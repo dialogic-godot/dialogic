@@ -1,4 +1,4 @@
-# Simple Dialog Addon
+# Simple Dialog Addon v0.1
 A simple Godot dialog addon to use in any kind of project. 
 
 ![Screenshot](https://coppolaemilio.com/godot/dialog-screenshot.png)
@@ -11,9 +11,7 @@ Then go to: `Project`>`Project Settings...`>`AutoLoad` and add the script `globa
 
 Now you can add the node `addons/dialogs/Dialog.tscn` to your scenes and use it on your projects.
 
-You can set the dialog script (.json) on the inspector variable "External File".
-
-You can also set the dialog content by changing the variable `dialog_script` of the node.
+You can set the dialog script (.json) on the inspector variable "External File" or by setting the dialog content by changing the variable `dialog_script` of the node.
 
 ### Credits
 Code made by [Emilio Coppola](https://github.com/coppolaemilio).
