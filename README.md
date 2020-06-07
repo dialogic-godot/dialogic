@@ -1,6 +1,8 @@
 # Simple Dialog Addon
 A simple Godot dialog addon to use in any kind of project. 
 
+![Screenshot](https://coppolaemilio.com/godot/dialog-screenshot.png)
+
 ## How to use:
 You first need to create a `global.gd` script for storing variables.  
 Inside your `global.gd` add a dictionary variable called `custom_variables`.  
