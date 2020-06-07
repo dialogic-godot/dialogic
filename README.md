@@ -22,4 +22,16 @@ Placeholder images are from Toen's YouTube DF series:
  - https://toen.world/
  - https://www.youtube.com/watch?v=B1ggwiat7PM
 
+Thank you to all my Patreons for making this possible!
+- Mike King
+- Allyson Ota
+- Buskmann12
+- David T. Baptiste
+- Francisco Lepe
+- Problematic Dave
+- Rienk Kroese
+- Tyler Dean Osborne
+
+Support me at [Patreon https://www.patreon.com/coppolaemilio](https://www.patreon.com/coppolaemilio)
+
 MIT License
