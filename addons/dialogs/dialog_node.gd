@@ -9,6 +9,9 @@ var waiting_for_input = false
 export(String, FILE, "*.json") var extenal_file = ''
 var dialog_script = [
 	{
+		'fade-in': 2
+	},
+	{
 		'background': "res://addons/dialogs/Images/background/placeholder-2.png"
 	},
 	{
@@ -66,7 +69,7 @@ func file(file_path):
 		file.close()
 		return dict
 	else:
-		push_error('File ' + file_path  + ' doesn\'t exists. ')
+		push_error("File " + file_path  + " doesn't exists. ")
 	return dict
 
 func parse_text(text):
@@ -201,6 +204,15 @@ func event_handler(event):
 		{'background'}:
 			$Background.visible = true
 			$Background.texture = load(event['background'])
+			dialog_index += 1
+			load_dialog(true)
+		{'fade-in'}:
+			$FX/FadeInNode.modulate = Color(0,0,0,1)
+			$FX/FadeInNode/Tween.interpolate_property(
+				$FX/FadeInNode, "modulate", Color(0,0,0,1), Color(0,0,0,0), event['fade-in'],
+				Tween.TRANS_LINEAR, Tween.EASE_IN_OUT
+			)
+			$FX/FadeInNode/Tween.start()
 			dialog_index += 1
 			load_dialog(true)
 		{'sound'}:

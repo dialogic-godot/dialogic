@@ -179,4 +179,24 @@ margin_left = 8.0
 margin_top = 8.0
 margin_right = 376.0
 margin_bottom = 55.0
+
+[node name="FX" type="Control" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="FadeInNode" type="ColorRect" parent="FX"]
+modulate = Color( 1, 1, 1, 0 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+color = Color( 0, 0, 0, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Tween" type="Tween" parent="FX/FadeInNode"]
 [connection signal="tween_completed" from="TextBubble/Tween" to="." method="_on_Tween_tween_completed"]
