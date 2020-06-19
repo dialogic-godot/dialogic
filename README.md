@@ -1,4 +1,4 @@
-# Simple Dialog Addon v0.1
+# Simple Dialog Addon v0.2
 A simple Godot dialog addon to use in any kind of project. 
 
 ![Screenshot](https://coppolaemilio.com/godot/dialog-screenshot.png)
