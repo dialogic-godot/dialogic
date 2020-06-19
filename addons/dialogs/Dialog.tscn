@@ -1,10 +1,9 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://addons/dialogs/Images/dialog-background.png" type="Texture" id=1]
 [ext_resource path="res://addons/dialogs/Images/next-indicator.png" type="Texture" id=2]
 [ext_resource path="res://addons/dialogs/dialog_node.gd" type="Script" id=3]
 [ext_resource path="res://addons/dialogs/Theme.tres" type="Theme" id=4]
-[ext_resource path="res://addons/dialogs/Images/portraits/df-1.png" type="Texture" id=5]
 
 [sub_resource type="Animation" id=1]
 resource_name = "IDLE"
@@ -41,30 +40,11 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="CloseUp" type="Control" parent="."]
-visible = false
-anchor_right = 1.0
-anchor_bottom = 1.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="ColorRect" type="ColorRect" parent="CloseUp"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-color = Color( 0.0392157, 0.0392157, 0.0392157, 0.690196 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="PortraitLeft" type="TextureRect" parent="CloseUp"]
+[node name="Portraits" type="Control" parent="."]
+anchor_left = 0.5
 anchor_top = 1.0
+anchor_right = 0.5
 anchor_bottom = 1.0
-margin_top = -361.0
-margin_right = 221.0
-texture = ExtResource( 5 )
-expand = true
-stretch_mode = 5
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -185,6 +165,8 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2
 __meta__ = {
+"_edit_group_": true,
+"_edit_lock_": true,
 "_edit_use_anchors_": false
 }
 

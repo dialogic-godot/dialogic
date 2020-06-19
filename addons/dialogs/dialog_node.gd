@@ -3,19 +3,67 @@ extends Control
 var input_next = 'ui_accept'
 var dialog_index = 0
 var finished = false
-var text_tween_duration = 1.0
+var text_speed = 0.02 # Higher = lower speed
 var waiting_for_answer = false
 var waiting_for_input = false
+onready var Portrait = load("res://addons/dialogs/Nodes/Portrait.tscn")
 export(String, FILE, "*.json") var extenal_file = ''
 var dialog_script = [
-	{
-		'fade-in': 2
-	},
+	#{
+	#	'fade-in': 2
+	#},
 	{
 		'background': "res://addons/dialogs/Images/background/placeholder-2.png"
 	},
 	{
-		'text': 'Welcome to the dialog node! You can pick options'
+		'character': 'Iteb',
+		'position': 'center',
+		'text': 'Hello, my name is {Iteb}. This demo has everything you might need for your dialogs. Shall we start?'
+	},
+	{
+		'character': 'Zas',
+		'text': 'Hey {Kubuk}, do you know what this is?'
+	},
+	{
+		'character': 'Kubuk',
+		'position': 'right',
+		'text': 'Maybe! It this about the dialog addon?'
+	},
+	{
+		'character': 'Iteb',
+		'position': 'center',
+		'text': 'Is everything okay?'
+	},
+	{
+		'character': 'Zas',
+		'text': 'Yes {Iteb}, everything is under control. Thanks for asking~!'
+	},
+	{
+		'character': 'Zas',
+		'text': 'So {Kubuk}, do you see it now? Do you see anything different?'
+	},
+	{
+		'character': 'Kubuk',
+		'text': 'Maybe... Now that you mention it, I can actually see your face!',
+	},
+	{
+		'character': 'Iteb',
+		'position': 'center',
+		'text': 'That\'s right, we all have a representation! If you would like to modify this you can do so by creating your characters in the [color=#faa61a]characters.gd[/color] file. Remember to read the documentation!'
+	},
+	{
+		'action': 'clear_portraits'
+	},
+	{
+		'text': 'The dwarf left in a hurry. [color=#ffdb5e]Armok[/color] might have something in mind...'
+	},
+	{
+		'character': 'Kubuk',
+		'position': 'right',
+		'text': 'I\'m actually still here... Hello?'
+	},
+	{
+		'action': 'focusout_portraits'
 	},
 	{
 		'question': 'Choose your favourite color',
@@ -48,6 +96,14 @@ var dialog_script = [
 		'name': '[color=fav_color.value][name][/color]',
 		'text': 'I actually want to be able to pick more colors but you won\'t let me!'
 	},
+	{
+		'character': 'Kubuk',
+		'position': 'right',
+		'text': 'Maybe I should leave...'
+	},
+	{
+		'action': 'clear_portraits'
+	},
 	{  
 		'name': 'Dialog System',
 		'text': 'It doesn\'t matter, this is only a demonstration!'
@@ -76,6 +132,15 @@ func parse_text(text):
 	# This will parse the text and automatically format some of your available variables
 	var end_text = text
 	
+	# for character variables
+	if '{' and '}' in end_text:
+		for c in characters.get_script().get_script_property_list():
+			var current = characters.get(c['name'])
+			if current['name'] in end_text:
+				end_text = end_text.replace('{' + current['name']+ '}',
+					'[color=#' + current['color'].to_html() + ']' + current['name'] + '[/color]'
+				)
+		
 	var c_variable
 	for g in global.custom_variables:
 		if global.custom_variables.has(g):
@@ -98,7 +163,6 @@ func _ready():
 	# Setting everything up for the node to be default
 	$TextBubble/NameLabel.text = ''
 	$Background.visible = false
-	$CloseUp.visible = false
 	load_dialog()
 
 func _process(delta):
@@ -112,7 +176,7 @@ func _process(delta):
 	if Input.is_action_just_pressed(input_next):
 		if $TextBubble/Tween.is_active():
 			# Skip to end if key is pressed during the text animation
-			$TextBubble/Tween.seek(text_tween_duration)
+			$TextBubble/Tween.seek(999)
 			finished = true
 		else:
 			if waiting_for_answer == false and waiting_for_input == false:
@@ -126,29 +190,26 @@ func show_dialog():
 
 func start_text_tween():
 	# This will start the animation that makes the text appear letter by letter
+	var tween_duration = text_speed * $TextBubble/RichTextLabel.get_total_character_count()
 	$TextBubble/Tween.interpolate_property(
-		$TextBubble/RichTextLabel, "percent_visible", 0, 1, text_tween_duration,
+		$TextBubble/RichTextLabel, "percent_visible", 0, 1, tween_duration,
 		Tween.TRANS_LINEAR, Tween.EASE_IN_OUT
 	)
 	$TextBubble/Tween.start()
 
-func update_name(event):
-	# This function will search for the name key and try to parse it into the NameLabel node of the dialog
-	if event.has('name'):
-		$TextBubble/NameLabel.bbcode_text = parse_text(event['name'])
-		if '[name]' in event['name']:
-			$CloseUp.visible = true
-		else:
-			$CloseUp.visible = false
-	else:
-		$TextBubble/NameLabel.bbcode_text = ''
-		$CloseUp.visible = false
+func update_name(name_string, color='FFFFFF'):
+	var parsed_name = parse_text(name_string)
+	$TextBubble/NameLabel.bbcode_text = '[color=#' + color + ']' + parsed_name + '[/color]'
+	return true
 
 func update_text(text):
 	# Updating the text and starting the animation from 0
 	$TextBubble/RichTextLabel.bbcode_text = parse_text(text)
 	$TextBubble/RichTextLabel.percent_visible = 0
-	start_text_tween()
+	
+	# The call to this function needs to be deferred. 
+	# More info: https://github.com/godotengine/godot/issues/36381
+	call_deferred("start_text_tween")
 	return true
 
 func load_dialog(skip_add = false):
@@ -160,20 +221,57 @@ func load_dialog(skip_add = false):
 	if skip_add == false:
 		dialog_index += 1
 
+func get_character_variable(name):
+	for c in characters.get_script().get_script_property_list():
+		return characters.get(name)
+	return false
+
+func reset_dialog_extras():
+	$TextBubble/NameLabel.bbcode_text = ''
+
 func event_handler(event):
 	# Handling an event and updating the available nodes accordingly. 
+	reset_dialog_extras()
 	match event:
 		{'text'}, {'text', 'name'}:
 			show_dialog()
 			finished = false
-			update_name(event)
 			update_text(event['text'])
+			if event.has('name'):
+				update_name(event['name'])
+		{'text', 'character'}, {'text', 'character', ..}:
+			show_dialog()
+			finished = false
+			var character_data = get_character_variable(event['character'])
+			update_name(character_data.name, character_data.color.to_html())
+			var exists = false
+			var existing
+			for portrait in $Portraits.get_children():
+				if portrait.character_data == character_data:
+					exists = true
+					existing = portrait
+				else:
+					portrait.focusout()
 			
+			if exists:
+				existing.focus()
+			if exists == false:
+				var p = Portrait.instance()
+				p.character_data = character_data
+				p.debug = true
+				if event.has('position'):
+					p.init(event['position'])
+				else:
+					p.init('left') # Default character position
+				$Portraits.add_child(p)
+				p.fade_in()
+			update_text(event['text'])
 		{'question', ..}:
 			show_dialog()
 			finished = false
 			waiting_for_answer = true
-			update_name(event)
+			if event.has('name'):
+				update_name(event['name'])			
 			update_text(event['question'])
 			for o in event['options']:
 				var button = Button.new()
@@ -199,6 +297,16 @@ func event_handler(event):
 		{'action'}:
 			if event['action'] == 'game_end':
 				get_tree().quit()
+			if event['action'] == 'clear_portraits':
+				for p in $Portraits.get_children():
+					p.fade_out()
+				dialog_index += 1
+				load_dialog(true)
+			if event['action'] == 'focusout_portraits':
+				for p in $Portraits.get_children():
+					p.focusout()
+				dialog_index += 1
+				load_dialog(true)
 		{'scene'}:
 			get_tree().change_scene(event['scene'])
 		{'background'}:
