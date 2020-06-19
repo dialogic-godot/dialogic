@@ -1,7 +1,7 @@
 # Simple Dialog Addon v0.2
 A simple Godot dialog addon to use in any kind of project. 
 
-![Screenshot](https://coppolaemilio.com/godot/dialog-screenshot.png)
+![Screenshot](https://coppolaemilio.com/godot/github-portrait.png?v1)
 
 ## How to use:
 You first need to create a `global.gd` and a `characters.gd` script for storing variables.  
