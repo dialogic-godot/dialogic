@@ -6,8 +6,11 @@ var finished = false
 var text_speed = 0.02 # Higher = lower speed
 var waiting_for_answer = false
 var waiting_for_input = false
+
+export(Resource) var dialog_resource = load("res://addons/dialogs/Resources/DefaultDialogResource.tres")
+export(Array, Resource) var dialog_characters
+
 onready var Portrait = load("res://addons/dialogs/Nodes/Portrait.tscn")
-export(String, FILE, "*.json") var extenal_file = ''
 var dialog_script = [
 	#{
 	#	'fade-in': 2
@@ -134,32 +137,36 @@ func parse_text(text):
 	
 	# for character variables
 	if '{' and '}' in end_text:
-		for c in characters.get_script().get_script_property_list():
-			var current = characters.get(c['name'])
-			if current['name'] in end_text:
-				end_text = end_text.replace('{' + current['name']+ '}',
-					'[color=#' + current['color'].to_html() + ']' + current['name'] + '[/color]'
+		for c in dialog_characters: #dialog_resource.characters:
+			if c.name in end_text:
+				end_text = end_text.replace('{' + c.name + '}',
+					'[color=#' + c.color.to_html() + ']' + c.name + '[/color]'
 				)
 		
 	var c_variable
-	for g in global.custom_variables:
-		if global.custom_variables.has(g):
-			c_variable = global.custom_variables[g]
-			# If it is a dictionary, get the label key
-			if typeof(c_variable) == TYPE_DICTIONARY:
-				if c_variable.has('label'):
-					if '.value' in end_text:
-						end_text = end_text.replace(g + '.value', c_variable['value'])
-					end_text = end_text.replace('[' + g + ']', c_variable['label'])
-			# Otherwise, just replace the value
-			else:
-				end_text = end_text.replace('[' + g + ']', c_variable)
+	for key in dialog_resource.custom_variables.keys():
+		c_variable = dialog_resource.custom_variables[key]
+		# If it is a dictionary, get the label key
+		if typeof(c_variable) == TYPE_DICTIONARY:
+			if c_variable.has('label'):
+				if '.value' in end_text:
+					end_text = end_text.replace(key + '.value', c_variable['value'])
+				end_text = end_text.replace('[' + key + ']', c_variable['label'])
+		# Otherwise, just replace the value
+		else:
+			end_text = end_text.replace('[' + key + ']', c_variable)
 	return end_text
 
 func _ready():
 	# Checking if the dialog should read the code from a external file
-	if extenal_file != '':
-		dialog_script = file(extenal_file)
+	if dialog_resource.dialog_json != '':
+		dialog_script = file(dialog_resource.dialog_json)
+	
+	# Check if dialog has a valid resource file
+	#if not dialog_resource or not dialog_resource.characters:
+	#	print("You must provide a valid DialogResource")
+	#	return
+	
 	# Setting everything up for the node to be default
 	$TextBubble/NameLabel.text = ''
 	$Background.visible = false
@@ -222,8 +229,10 @@ func load_dialog(skip_add = false):
 		dialog_index += 1
 
 func get_character_variable(name):
-	for c in characters.get_script().get_script_property_list():
-		return characters.get(name)
+	for c in dialog_characters:#dialog_resource.characters:
+		if c.name == name:
+			return c
+	push_error('Can\'t find your DialogCharacterResource. Make sure the name field is not empty.')
 	return false
 
 func reset_dialog_extras():
@@ -258,7 +267,7 @@ func event_handler(event):
 			if exists == false:
 				var p = Portrait.instance()
 				p.character_data = character_data
-				p.debug = true
+				#p.debug = true
 				if event.has('position'):
 					p.init(event['position'])
 				else:
@@ -336,14 +345,14 @@ func _on_input_set(variable):
 	if input_value == '':
 		$TextInputDialog.popup_centered()
 	else:
-		global.custom_variables[variable] = input_value
+		dialog_resource.custom_variables[variable] = input_value
 		waiting_for_input = false
 		$TextInputDialog/LineEdit.text = ''
 		$TextInputDialog.disconnect("confirmed", self, '_on_input_set')
 		$TextInputDialog.visible = false
 		load_dialog()
 		print('[!] Input selected: ', input_value)
-		print(global.custom_variables)
+		print('[!] dialog variables: ', dialog_resource.custom_variables)
 
 func reset_options():
 	# Clearing out the options after one was selected.
@@ -360,12 +369,12 @@ func change_position(i, checkpoint):
 	load_dialog()
 
 func _on_option_selected(option, variable, value):
-	global.custom_variables[variable] = value
+	dialog_resource.custom_variables[variable] = value
 	waiting_for_answer = false
 	reset_options()
 	load_dialog()
 	print('[!] Option selected: ', option.text, ' value= ' , value)
-	print(global.custom_variables)
+	#print(dialog_resource.custom_variables)
 
 func _on_Tween_tween_completed(object, key):
 	finished = true
