@@ -13,7 +13,8 @@ func init(position_offset = 'left'):
 	rect_position += positions[position_offset]
 	direction = position_offset
 	modulate = Color(1,1,1,0)
-	$TextureRect.texture = load(character_data.image)
+	print(character_data.name)
+	$TextureRect.texture = character_data.image
 	print('height: ', $TextureRect.texture.get_height())
 	rect_position -= Vector2($TextureRect.texture.get_width() * 0.5, $TextureRect.texture.get_height())
 
