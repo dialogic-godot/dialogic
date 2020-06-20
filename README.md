@@ -1,4 +1,4 @@
-# Simple Dialog Addon v0.2
+# Simple Dialog Addon v0.3
 A simple Godot dialog addon to use in any kind of project. 
 
 ![Screenshot](https://coppolaemilio.com/godot/github-portrait.png?v1)
@@ -37,6 +37,7 @@ v0.1 - Release
 
 ## Credits
 Code made by [Emilio Coppola](https://github.com/coppolaemilio).
+Contributors: [Tom Glenn](https://github.com/tomglenn)
 
 Placeholder images are from Toen's YouTube DF series:
  - https://toen.world/
