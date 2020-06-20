@@ -4,43 +4,26 @@ A simple Godot dialog addon to use in any kind of project.
 ![Screenshot](https://coppolaemilio.com/godot/github-portrait.png?v1)
 
 ## How to use:
-You first need to create a `global.gd` and a `characters.gd` script for storing variables.  
+You first need to create a `DialogCharacterResource` for each character you wish to have in your dialog.
+To do this, right click in your FileSystem and choose `New Resource`, search for `DialogCharacterResource` and create it.
+It's good practice to put these inside a `Resources/Characters` folder.
+You can assign each character a Name, Image and Color.
 
-Inside your `global.gd` add a dictionary variable called `custom_variables`.  
-`var custom_variables = {}`.
+Once you have created your characters it's time to create a `DialogResource` for your dialog.
+Note you can create a separate dialog resource for each of your dialogs if you wish to keep things logically separate, or you can create a master `DialogResource` if you prefer.
+To create a `DialogResource`, right click in your FileSystem and choose `New Resource`, search for `DialogResource` and create it.
+Again, it's good practice to put these inside a folder such as `Resources/Dialogs`.
+Each `DialogResource` can contain a Dictionary of custom variables that will be replaced by their value when you add them to a script in the form of "This is a [custom] value" where the value for the dictionary key `custom` will replace `[custom]`.
+You must also provide the `DialogResource` with an array of your `DialogCharacterResource` files.
+You can set the dialog script (.json) on the inspector variable "Dialog Json" or by setting the dialog content by changing the variable `dialog_script` of the node.
 
-On your `characters.gd` you need to define your custom characters. If you want to run the example you can copy and paste this values:
-```
-extends Node
-
-var Zas = {
-	'name': 'Zas',
-	'image': "res://addons/dialogs/Images/portraits/df-1.png",
-	'color': Color(0.304688, 0.445923, 1)
-}
-
-var Kubuk = {
-	'name': 'Kubuk',
-	'image': "res://addons/dialogs/Images/portraits/df-2.png",
-	'color': Color(0.632689, 0.157166, 0.804688)
-}
-
-var Iteb = {
-	'name': 'Iteb',
-	'image': "res://addons/dialogs/Images/portraits/df-3.png",
-	'color': Color(0.253906, 1, 0.44043)
-}
-```
-
-Then go to: `Project`>`Project Settings...`>`AutoLoad` and add the script `global.gd` with name `global`, the script `characters.gd` with name `characters` and **enable** the `Singleton` option.
-
-![Screenshot](https://coppolaemilio.com/godot/dialog-script-settings.png)
-
-Now you can add the node `addons/dialogs/Dialog.tscn` to your scenes and use it on your projects.
-
-You can set the dialog script (.json) on the inspector variable "External File" or by setting the dialog content by changing the variable `dialog_script` of the node.
+Now you can add the node `addons/dialogs/Dialog.tscn` to your scenes, assign the desired `DialogResource` file and use it on your projects.
 
 ## Changelog
+v0.3
+ - Removed requirement for `global.gd` and `characters.gd` autoload scripts.
+ - Added `DialogResource` and `DialogCharacterResource` resources to create a cleaner way of specifying dialog content
+
 v0.2:
  - Changed text speed to fixed per character instead of total time span
  - New character support
