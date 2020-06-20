@@ -4,11 +4,22 @@ A simple Godot dialog addon to use in any kind of project.
 ![Screenshot](https://coppolaemilio.com/godot/github-portrait.png?v1)
 
 ## How to use:
+
+### 1) Creating Characters:
+_If you don't plan on using character portraits you can skip this step._
+
 You first need to create a `DialogCharacterResource` for each character you wish to have in your dialog.
 To do this, right click in your FileSystem and choose `New Resource`, search for `DialogCharacterResource` and create it.
 It's good practice to put these inside a `Resources/Characters` folder.
 You can assign each character a Name, Image and Color.
 
+There are 3 characters used for the example located at `addons\dialogs\Resources\Characters`.
+
+![Screenshot](https://coppolaemilio.com/godot/character-resource-inspector.PNG?v1)
+
+
+
+### 2) Creating dialogs
 Once you have created your characters it's time to create a `DialogResource` for your dialog.
 Note you can create a separate dialog resource for each of your dialogs if you wish to keep things logically separate, or you can create a master `DialogResource` if you prefer.
 To create a `DialogResource`, right click in your FileSystem and choose `New Resource`, search for `DialogResource` and create it.
@@ -20,11 +31,11 @@ You can set the dialog script (.json) on the inspector variable "Dialog Json" or
 Now you can add the node `addons/dialogs/Dialog.tscn` to your scenes, assign the desired `DialogResource` file and use it on your projects.
 
 ## Changelog
-v0.3
+v0.3 - Using Resources
  - Removed requirement for `global.gd` and `characters.gd` autoload scripts.
  - Added `DialogResource` and `DialogCharacterResource` resources to create a cleaner way of specifying dialog content
 
-v0.2:
+v0.2 - Adding Characters:
  - Changed text speed to fixed per character instead of total time span
  - New character support
  - Added portrait to characters
@@ -37,13 +48,14 @@ v0.1 - Release
 
 ## Credits
 Code made by [Emilio Coppola](https://github.com/coppolaemilio).
+
 Contributors: [Tom Glenn](https://github.com/tomglenn)
 
 Placeholder images are from Toen's YouTube DF series:
  - https://toen.world/
  - https://www.youtube.com/watch?v=B1ggwiat7PM
 
-Thank you to all my Patreons for making this possible!
+### Thank you to all my Patreons for making this possible!
 - Mike King
 - Allyson Ota
 - Buskmann12
@@ -53,6 +65,6 @@ Thank you to all my Patreons for making this possible!
 - Rienk Kroese
 - Tyler Dean Osborne
 
-Support me at [Patreon https://www.patreon.com/coppolaemilio](https://www.patreon.com/coppolaemilio)
+Support me on [Patreon https://www.patreon.com/coppolaemilio](https://www.patreon.com/coppolaemilio)
 
 MIT License
