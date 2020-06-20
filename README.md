@@ -1,7 +1,7 @@
 # Simple Dialog Addon v0.3
 A simple Godot dialog addon to use in any kind of project. 
 
-![Screenshot](https://coppolaemilio.com/godot/github-portrait.png?v1)
+![Screenshot](https://coppolaemilio.com/godot/github-portrait.png)
 
 ## How to use:
 
@@ -15,11 +15,14 @@ You can assign each character a Name, Image and Color.
 
 There are 3 characters used for the example located at `addons\dialogs\Resources\Characters`.
 
-![Screenshot](https://coppolaemilio.com/godot/character-resource-inspector.PNG?v1)
-
+![Screenshot](https://coppolaemilio.com/godot/character-resource-inspector.PNG?v2)
 
 
 ### 2) Creating dialogs
+You can set the dialog code inside the dialog node variable `dialog_script` like in the example and then add the characters that are going to be present in that conversation with the variable `dialog_characters`. 
+
+![Screenshot](https://coppolaemilio.com/godot/characters-in-node.PNG)
+
 Once you have created your characters it's time to create a `DialogResource` for your dialog.
 Note you can create a separate dialog resource for each of your dialogs if you wish to keep things logically separate, or you can create a master `DialogResource` if you prefer.
 To create a `DialogResource`, right click in your FileSystem and choose `New Resource`, search for `DialogResource` and create it.
