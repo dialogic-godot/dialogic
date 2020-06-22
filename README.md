@@ -23,20 +23,23 @@ You can set the dialog code inside the dialog node variable `dialog_script` like
 
 ![Screenshot](https://coppolaemilio.com/godot/characters-in-node.PNG)
 
-Once you have created your characters it's time to create a `DialogResource` for your dialog.
-Note you can create a separate dialog resource for each of your dialogs if you wish to keep things logically separate, or you can create a master `DialogResource` if you prefer.
+Alternatively you can create a separate dialog resource for each of your dialogs if you wish to keep things logically separate, or you can create a master `DialogResource` if you prefer.
 To create a `DialogResource`, right click in your FileSystem and choose `New Resource`, search for `DialogResource` and create it.
 Again, it's good practice to put these inside a folder such as `Resources/Dialogs`.
 Each `DialogResource` can contain a Dictionary of custom variables that will be replaced by their value when you add them to a script in the form of "This is a [custom] value" where the value for the dictionary key `custom` will replace `[custom]`.
-You must also provide the `DialogResource` with an array of your `DialogCharacterResource` files.
+Same as before, you must also provide the `DialogResource` with an array of your `DialogCharacterResource` files.
+
+
 You can set the dialog script (.json) on the inspector variable "Dialog Json" or by setting the dialog content by changing the variable `dialog_script` of the node.
 
-Now you can add the node `addons/dialogs/Dialog.tscn` to your scenes, assign the desired `DialogResource` file and use it on your projects.
+### 3) Adding the node
+Now you can add the node `addons/dialogs/Dialog.tscn` to your scenes, assign the desired variable values or `DialogResource` file and use it on your projects.
 
 ## Changelog
 v0.3 - Using Resources
  - Removed requirement for `global.gd` and `characters.gd` autoload scripts.
  - Added `DialogResource` and `DialogCharacterResource` resources to create a cleaner way of specifying dialog content
+ - Added icon to the existing dialog node.
 
 v0.2 - Adding Characters:
  - Changed text speed to fixed per character instead of total time span

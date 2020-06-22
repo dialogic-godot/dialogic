@@ -1,4 +1,5 @@
 extends Control
+class_name DialogNode, "res://addons/dialogs/icon.svg"
 
 var input_next = 'ui_accept'
 var dialog_index = 0
