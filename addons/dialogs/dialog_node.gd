@@ -53,7 +53,7 @@ var dialog_script = [
 	{
 		'character': 'Iteb',
 		'position': 'center',
-		'text': 'That\'s right, we all have a representation! If you would like to modify this you can do so by creating your characters in the [color=#faa61a]characters.gd[/color] file. Remember to read the documentation!'
+		'text': 'That\'s right, we all have a representation! If you would like to modify this you can do so by creating your characters resources. Remember to read the documentation!'
 	},
 	{
 		'action': 'clear_portraits'
