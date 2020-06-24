@@ -1,0 +1,33 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://addons/dialogs/Editor/editor_view.gd" type="Script" id=1]
+
+[node name="Control" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+rect_min_size = Vector2( 0, 200 )
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="GraphEdit" type="GraphEdit" parent="."]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="Label" type="Label" parent="PanelContainer"]
+margin_left = 7.0
+margin_top = 533.0
+margin_right = 1913.0
+margin_bottom = 547.0
+text = "Select a Dialog node to create and edit dialogs."
+align = 1
+valign = 1
