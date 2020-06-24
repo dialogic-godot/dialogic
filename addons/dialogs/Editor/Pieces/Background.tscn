@@ -1,0 +1,56 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://addons/dialogs/Editor/Pieces/MasterPiece.gd" type="Script" id=1]
+
+[node name="Control" type="GraphNode"]
+margin_left = 1.0
+margin_top = -1.0
+margin_right = 310.0
+margin_bottom = 67.0
+title = "Scene"
+show_close = true
+resizable = true
+slot/0/left_enabled = true
+slot/0/left_type = 0
+slot/0/left_color = Color( 1, 1, 1, 1 )
+slot/0/right_enabled = true
+slot/0/right_type = 0
+slot/0/right_color = Color( 1, 1, 1, 1 )
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+margin_left = 16.0
+margin_top = 24.0
+margin_right = 293.0
+margin_bottom = 66.0
+rect_min_size = Vector2( 0, 20 )
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="VBoxContainer"]
+margin_right = 277.0
+margin_bottom = 14.0
+text = "Background Image"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+margin_top = 18.0
+margin_right = 277.0
+margin_bottom = 42.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="FilePath" type="LineEdit" parent="VBoxContainer/HBoxContainer"]
+margin_right = 249.0
+margin_bottom = 24.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+
+[node name="Button" type="Button" parent="VBoxContainer/HBoxContainer"]
+margin_left = 253.0
+margin_right = 277.0
+margin_bottom = 24.0
+text = "..."

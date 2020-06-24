@@ -2,7 +2,7 @@
 
 [ext_resource path="res://addons/dialogs/Editor/editor_view.gd" type="Script" id=1]
 
-[node name="Control" type="Control"]
+[node name="EditorView" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 rect_min_size = Vector2( 0, 200 )
@@ -11,19 +11,49 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="GraphEdit" type="GraphEdit" parent="."]
-visible = false
+[node name="Editor" type="HSplitContainer" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="PanelContainer" type="PanelContainer" parent="."]
+[node name="VBoxContainer" type="VBoxContainer" parent="Editor"]
+margin_right = 110.0
+margin_bottom = 1080.0
+
+[node name="ButtonText" type="Button" parent="Editor/VBoxContainer"]
+margin_right = 110.0
+margin_bottom = 20.0
+text = "Add Text"
+
+[node name="Label" type="Label" parent="Editor/VBoxContainer"]
+margin_top = 24.0
+margin_right = 110.0
+margin_bottom = 38.0
+text = "Scene Elements"
+
+[node name="ButtonBackground" type="Button" parent="Editor/VBoxContainer"]
+margin_top = 42.0
+margin_right = 110.0
+margin_bottom = 62.0
+text = "Set Background"
+
+[node name="GraphEdit" type="GraphEdit" parent="Editor"]
+margin_left = 122.0
+margin_right = 1920.0
+margin_bottom = 1080.0
+scroll_offset = Vector2( -8, 0 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="EmptyMessage" type="PanelContainer" parent="."]
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 
-[node name="Label" type="Label" parent="PanelContainer"]
+[node name="Label" type="Label" parent="EmptyMessage"]
 margin_left = 7.0
 margin_top = 533.0
 margin_right = 1913.0
@@ -31,3 +61,5 @@ margin_bottom = 547.0
 text = "Select a Dialog node to create and edit dialogs."
 align = 1
 valign = 1
+[connection signal="pressed" from="Editor/VBoxContainer/ButtonText" to="." method="_on_ButtonText_pressed"]
+[connection signal="pressed" from="Editor/VBoxContainer/ButtonBackground" to="." method="_on_ButtonBackground_pressed"]
