@@ -1,4 +1,4 @@
-# Simple Dialog Addon v0.3
+# Simple Dialog Addon v0.3 ![Godot v3.2](https://img.shields.io/badge/godot-v3.2-%23478cbf)
 A simple Godot dialog addon to use in any kind of project. 
 
 ![Screenshot](https://coppolaemilio.com/godot/github-portrait.png)
