@@ -1,4 +1,4 @@
-# Simple Dialog Addon v0.3 ![Godot v3.2](https://img.shields.io/badge/godot-v3.2-%23478cbf)
+# Simple Dialog Addon v0.4 ![Godot v3.2](https://img.shields.io/badge/godot-v3.2-%23478cbf)
 A simple Godot dialog addon to use in any kind of project. 
 
 ![Screenshot](https://coppolaemilio.com/godot/github-portrait.png)
@@ -36,6 +36,8 @@ You can set the dialog script (.json) on the inspector variable "Dialog Json" or
 Now you can add the node `addons/dialogs/Dialog.tscn` to your scenes, assign the desired variable values or `DialogResource` file and use it on your projects.
 
 ## Changelog
+v0.4 - Dialog editor
+ - Added a new panel to the editor
 v0.3 - Using Resources
  - Removed requirement for `global.gd` and `characters.gd` autoload scripts.
  - Added `DialogResource` and `DialogCharacterResource` resources to create a cleaner way of specifying dialog content
