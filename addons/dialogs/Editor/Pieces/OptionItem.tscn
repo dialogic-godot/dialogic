@@ -1,0 +1,33 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://addons/dialogs/Images/Remove.svg" type="Texture" id=1]
+
+[node name="OptionItem" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+rect_min_size = Vector2( 0, 30 )
+size_flags_horizontal = 3
+size_flags_vertical = 11
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Container" type="HBoxContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="Label" type="Label" parent="Container"]
+margin_top = 533.0
+margin_right = 1888.0
+margin_bottom = 547.0
+size_flags_horizontal = 3
+text = "Option name"
+
+[node name="Button" type="Button" parent="Container"]
+margin_left = 1892.0
+margin_right = 1920.0
+margin_bottom = 1080.0
+icon = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}

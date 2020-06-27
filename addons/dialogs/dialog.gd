@@ -50,9 +50,16 @@ func _on_selection_changed():
 	print(selected_nodes)
 	for node in selected_nodes:
 		if node is DialogNode:
+			print(node.dialog_resource)
+			if node.dialog_resource:
+				print('It has a resource: ', node.dialog_resource)
+			else:
+				print('[!] No resource loaded')
 			_graph_editor_view.enable_template_editor_for(node)
 			return
-	_graph_editor_view.clear_template_editor()
+	print('Here.')
+	if _graph_editor_view:
+		_graph_editor_view.clear_template_editor()
 	
 
 func _on_scene_changed(_param):

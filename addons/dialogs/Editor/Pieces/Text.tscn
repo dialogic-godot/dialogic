@@ -1,19 +1,21 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://addons/dialogs/Editor/Pieces/MasterPiece.gd" type="Script" id=1]
+[ext_resource path="res://addons/dialogs/Images/Add.svg" type="Texture" id=2]
 
 [node name="Control" type="GraphNode"]
 margin_left = 1.0
 margin_top = -1.0
-margin_right = 310.0
-margin_bottom = 109.0
+margin_right = 301.0
+margin_bottom = 149.0
+rect_min_size = Vector2( 300, 0 )
 title = "Text Message"
 show_close = true
 resizable = true
-slot/0/left_enabled = false
+slot/0/left_enabled = true
 slot/0/left_type = 0
 slot/0/left_color = Color( 1, 1, 1, 1 )
-slot/0/right_enabled = false
+slot/0/right_enabled = true
 slot/0/right_type = 0
 slot/0/right_color = Color( 1, 1, 1, 1 )
 script = ExtResource( 1 )
@@ -24,33 +26,61 @@ __meta__ = {
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 margin_left = 16.0
 margin_top = 24.0
-margin_right = 293.0
-margin_bottom = 134.0
+margin_right = 284.0
+margin_bottom = 202.0
 rect_min_size = Vector2( 0, 80 )
-size_flags_horizontal = 3
-size_flags_vertical = 3
+size_flags_horizontal = 11
+size_flags_vertical = 11
 
-[node name="Label" type="Label" parent="VBoxContainer"]
-margin_right = 277.0
-margin_bottom = 14.0
+[node name="Character" type="HBoxContainer" parent="VBoxContainer"]
+margin_right = 268.0
+margin_bottom = 20.0
+
+[node name="Label" type="Label" parent="VBoxContainer/Character"]
+margin_top = 3.0
+margin_right = 64.0
+margin_bottom = 17.0
 text = "Character:"
 
-[node name="CharacterOption" type="OptionButton" parent="VBoxContainer"]
-margin_top = 18.0
-margin_right = 277.0
-margin_bottom = 38.0
+[node name="OptionButton" type="OptionButton" parent="VBoxContainer/Character"]
+margin_left = 68.0
+margin_right = 268.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
 
 [node name="Label2" type="Label" parent="VBoxContainer"]
-margin_top = 42.0
-margin_right = 277.0
-margin_bottom = 56.0
+margin_top = 24.0
+margin_right = 268.0
+margin_bottom = 38.0
 text = "Display text"
 
 [node name="TextEdit" type="TextEdit" parent="VBoxContainer"]
-margin_top = 60.0
-margin_right = 277.0
-margin_bottom = 110.0
-rect_min_size = Vector2( 0, 50 )
+margin_top = 42.0
+margin_right = 268.0
+margin_bottom = 122.0
+rect_min_size = Vector2( 0, 80 )
 size_flags_horizontal = 3
 size_flags_vertical = 3
 wrap_enabled = true
+
+[node name="OptionsCheckBox" type="CheckBox" parent="VBoxContainer"]
+margin_top = 126.0
+margin_right = 268.0
+margin_bottom = 150.0
+text = "Options"
+
+[node name="OptionsEditor" type="HBoxContainer" parent="VBoxContainer"]
+margin_top = 154.0
+margin_right = 268.0
+margin_bottom = 178.0
+
+[node name="LineEdit" type="LineEdit" parent="VBoxContainer/OptionsEditor"]
+margin_right = 236.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+
+[node name="AddButton" type="Button" parent="VBoxContainer/OptionsEditor"]
+margin_left = 240.0
+margin_right = 268.0
+margin_bottom = 24.0
+icon = ExtResource( 2 )

@@ -22,21 +22,27 @@ __meta__ = {
 margin_right = 110.0
 margin_bottom = 1080.0
 
-[node name="ButtonText" type="Button" parent="Editor/VBoxContainer"]
+[node name="LabelText" type="Label" parent="Editor/VBoxContainer"]
 margin_right = 110.0
-margin_bottom = 20.0
+margin_bottom = 14.0
+text = "Text Elements"
+
+[node name="ButtonText" type="Button" parent="Editor/VBoxContainer"]
+margin_top = 18.0
+margin_right = 110.0
+margin_bottom = 38.0
 text = "Add Text"
 
 [node name="Label" type="Label" parent="Editor/VBoxContainer"]
-margin_top = 24.0
+margin_top = 42.0
 margin_right = 110.0
-margin_bottom = 38.0
+margin_bottom = 56.0
 text = "Scene Elements"
 
 [node name="ButtonBackground" type="Button" parent="Editor/VBoxContainer"]
-margin_top = 42.0
+margin_top = 60.0
 margin_right = 110.0
-margin_bottom = 62.0
+margin_bottom = 80.0
 text = "Set Background"
 
 [node name="GraphEdit" type="GraphEdit" parent="Editor"]
@@ -52,6 +58,9 @@ __meta__ = {
 visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Label" type="Label" parent="EmptyMessage"]
 margin_left = 7.0
