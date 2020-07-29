@@ -12,6 +12,7 @@ var undo_redo: UndoRedo
 var testing_mode = true
 var dialog_selected_node
 var testing = true
+onready var timeline = $Editor/ScrollContainer/TimeLine
 
 func _ready():
 	if testing_mode == false:
@@ -37,15 +38,25 @@ func clear_template_editor():
 
 # Creating text node
 func _on_ButtonText_pressed():
-	var piece = load("res://addons/dialogs/Editor/Pieces/Text.tscn").instance()
-	#piece.offset = get_new_node_offset()
-	piece.add_character_list(dialog_selected_node.dialog_characters)
-	$Editor/GraphEdit.add_child(piece)
+	var piece = load("res://addons/dialogs/Editor/Pieces/TextBlock.tscn").instance()
+	timeline.add_child(piece)
+	piece.editor_reference = self
 
 func _on_ButtonBackground_pressed():
-	var piece = load("res://addons/dialogs/Editor/Pieces/Background.tscn").instance()
-	#piece.offset = get_new_node_offset()
-	$Editor/GraphEdit.add_child(piece)
+	pass
+
+# ordering blocks in timeline
+func _move_block(block, direction):
+	var block_index = block.get_index()
+	if direction == 'up':
+		if block_index > 0:	
+			timeline.move_child(block, block_index - 1)
+			return true
+	if direction == 'down':
+		timeline.move_child(block, block_index + 1)
+		return true
+	print('[!] Failed to move block ', block)
+	return false
 
 # Saving and loading
 func _on_ButtonSave_pressed():

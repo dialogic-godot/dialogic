@@ -1,9 +1,8 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://addons/dialogs/Editor/Pieces/TextBlock.gd" type="Script" id=1]
-[ext_resource path="res://addons/dialogs/Images/open-icon.svg" type="Texture" id=2]
-[ext_resource path="res://addons/dialogs/Images/closed-icon.svg" type="Texture" id=3]
-[ext_resource path="res://addons/dialogs/Images/expand-icon.svg" type="Texture" id=4]
+[ext_resource path="res://addons/dialogs/Editor/Pieces/Common/VisibleToggle.tscn" type="PackedScene" id=2]
+[ext_resource path="res://addons/dialogs/Editor/Pieces/Common/PieceExtraSettings.tscn" type="PackedScene" id=4]
 
 [sub_resource type="StyleBoxFlat" id=1]
 content_margin_left = 6.0
@@ -38,13 +37,7 @@ size_flags_horizontal = 3
 margin_right = 1786.0
 margin_bottom = 30.0
 
-[node name="VisibleToggle" type="CheckBox" parent="VBoxContainer/Header"]
-margin_right = 30.0
-margin_bottom = 30.0
-custom_icons/checked = ExtResource( 2 )
-custom_icons/unchecked = ExtResource( 3 )
-pressed = true
-flat = true
+[node name="VisibleToggle" parent="VBoxContainer/Header" instance=ExtResource( 2 )]
 
 [node name="Title" type="Label" parent="VBoxContainer/Header"]
 margin_left = 34.0
@@ -53,21 +46,22 @@ margin_right = 99.0
 margin_bottom = 22.0
 text = "Text block"
 
+[node name="Preview" type="Label" parent="VBoxContainer/Header"]
+visible = false
+margin_left = 103.0
+margin_top = 8.0
+margin_right = 131.0
+margin_bottom = 22.0
+custom_colors/font_color = Color( 1, 1, 1, 0.513726 )
+text = "    ..."
+
 [node name="Spacer" type="Control" parent="VBoxContainer/Header"]
 margin_left = 103.0
 margin_right = 1745.0
 margin_bottom = 30.0
 size_flags_horizontal = 3
 
-[node name="OptionButton" type="MenuButton" parent="VBoxContainer/Header"]
-margin_left = 1749.0
-margin_right = 1786.0
-margin_bottom = 30.0
-text = "Item 0"
-icon = ExtResource( 4 )
-clip_text = true
-align = 2
-items = [ "Move Up", null, 0, false, false, 0, 0, null, "", false, "Move Down", null, 0, false, false, 1, 0, null, "", false, "", null, 0, false, false, 2, 0, null, "", true, "Remove", null, 0, false, false, 3, 0, null, "", false ]
+[node name="OptionButton" parent="VBoxContainer/Header" instance=ExtResource( 4 )]
 
 [node name="TextEdit" type="TextEdit" parent="VBoxContainer"]
 margin_top = 34.0
@@ -77,3 +71,4 @@ rect_min_size = Vector2( 0, 80 )
 size_flags_horizontal = 3
 size_flags_vertical = 3
 show_line_numbers = true
+[connection signal="text_changed" from="VBoxContainer/TextEdit" to="." method="_on_TextEdit_text_changed"]
