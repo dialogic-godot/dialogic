@@ -2,13 +2,14 @@ tool
 extends GraphNode
 
 var options = false
-var option_item = load("res://addons/dialogs/Editor/Pieces/OptionItem.tscn")
+var option_item = preload("res://addons/dialogs/Editor/Pieces/OptionItem.tscn")
 var slot_index = 1
 var colors = [Color(1,1,1,1), Color(1, 0.4375, 0.4375), Color(0.4375, 0.828613, 1), Color(0.4375, 1, 0.459473)]
 
 func _ready():
 	connect("close_request", self, "_on_close_request")
 	connect("resize_request", self, "_on_resize_request")
+	$VBoxContainer/ErrorLabel/Timer.connect("timeout", self, "_on_error_timeout")
 	set_slot(0, true, 0, Color(1,1,1,1), true, 0, Color(1,1,1,1))
 	if $VBoxContainer/OptionsCheckBox:
 		$VBoxContainer/OptionsEditor.visible = false
@@ -35,15 +36,29 @@ func _on_options_toggled(button_pressed):
 	$VBoxContainer/OptionsEditor.visible = button_pressed
 
 func _on_adding_option():
-	if $VBoxContainer/OptionsEditor/LineEdit.text != '':
-		set_slot(0, true, 0, Color(1,1,1), false, 0, Color(0,0,0))
+	var line_edit = $VBoxContainer/OptionsEditor/LineEdit
+	if line_edit.text != '':
+		for option in get_children():
+			if "OptionItem" in option.name:
+				if line_edit.text == option.get_node("Container/Label").text:
+					$VBoxContainer/ErrorLabel.visible = true
+					$VBoxContainer/ErrorLabel/Timer.start(2)
+					return false
 		var new_option = option_item.instance()
-		new_option.get_node("Container/Label").text = $VBoxContainer/OptionsEditor/LineEdit.text
+		set_slot(0, true, 0, Color(1,1,1), false, 0, Color(0,0,0))
 		new_option.get_node("Container/Button").connect('pressed', self, "_on_remove_option", [new_option])
+		new_option.get_node("Container/Label").text = line_edit.text
 		set_slot(slot_index, false, 0, Color(0,0,0), true, 0, random_color())
 		slot_index += 1
-		$VBoxContainer/OptionsEditor/LineEdit.text = ''
 		add_child(new_option)
+		line_edit.text = ''
+		return true
+	else:
+		line_edit.grab_focus()
+		return false
+
+func _on_error_timeout():
+	$VBoxContainer/ErrorLabel.visible = false
 
 func _on_remove_option(option):
 	#TODO: Clear slot connections here!!!!

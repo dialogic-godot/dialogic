@@ -27,7 +27,7 @@ __meta__ = {
 margin_left = 16.0
 margin_top = 24.0
 margin_right = 284.0
-margin_bottom = 202.0
+margin_bottom = 174.0
 rect_min_size = Vector2( 0, 80 )
 size_flags_horizontal = 11
 size_flags_vertical = 11
@@ -69,7 +69,18 @@ margin_right = 268.0
 margin_bottom = 150.0
 text = "Options"
 
+[node name="ErrorLabel" type="Label" parent="VBoxContainer"]
+visible = false
+margin_top = 154.0
+margin_right = 268.0
+margin_bottom = 168.0
+custom_colors/font_color = Color( 1, 0.223529, 0.223529, 1 )
+text = "That option already exists!"
+
+[node name="Timer" type="Timer" parent="VBoxContainer/ErrorLabel"]
+
 [node name="OptionsEditor" type="HBoxContainer" parent="VBoxContainer"]
+visible = false
 margin_top = 154.0
 margin_right = 268.0
 margin_bottom = 178.0

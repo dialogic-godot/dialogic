@@ -159,6 +159,7 @@ func parse_text(text):
 	return end_text
 
 func _ready():
+	print('-------------------------\n', dialog_resource.nodes)
 	# Checking if the dialog should read the code from a external file
 	if dialog_resource.dialog_json != '':
 		dialog_script = file(dialog_resource.dialog_json)
@@ -233,7 +234,7 @@ func get_character_variable(name):
 	for c in dialog_characters:#dialog_resource.characters:
 		if c.name == name:
 			return c
-	push_error('Can\'t find your DialogCharacterResource. Make sure the name field is not empty.')
+	push_error('DialogCharacterResource [' + name + '] does not exists. Make sure the name field is not empty.')
 	return false
 
 func reset_dialog_extras():

@@ -1,5 +1,5 @@
 tool
-#class_name DialogGraphEditorView
+class_name DialogGraphEditorView
 extends Control
 
 """
@@ -34,17 +34,20 @@ func clear_template_editor():
 	$Editor.visible = false
 	$EmptyMessage.visible = true
 
+func get_new_node_offset():
+	var initial_position = Vector2(40,40)
+	return ($Editor/GraphEdit.scroll_offset + initial_position) / $Editor/GraphEdit.zoom
 
 # Creating text node
 func _on_ButtonText_pressed():
 	var piece = load("res://addons/dialogs/Editor/Pieces/Text.tscn").instance()
-	#piece.offset = get_new_node_offset()
+	piece.offset = get_new_node_offset()
 	piece.add_character_list(dialog_selected_node.dialog_characters)
 	$Editor/GraphEdit.add_child(piece)
 
 func _on_ButtonBackground_pressed():
 	var piece = load("res://addons/dialogs/Editor/Pieces/Background.tscn").instance()
-	#piece.offset = get_new_node_offset()
+	piece.offset = get_new_node_offset()
 	$Editor/GraphEdit.add_child(piece)
 
 # Saving and loading

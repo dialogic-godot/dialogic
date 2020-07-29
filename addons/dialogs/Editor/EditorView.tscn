@@ -1,11 +1,14 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://addons/dialogs/Editor/editor_view.gd" type="Script" id=1]
+[ext_resource path="res://addons/dialogs/Editor/Pieces/TextBlock.tscn" type="PackedScene" id=2]
 
 [node name="EditorView" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 rect_min_size = Vector2( 0, 200 )
+size_flags_horizontal = 3
+size_flags_vertical = 3
 script = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -45,14 +48,116 @@ margin_right = 110.0
 margin_bottom = 80.0
 text = "Set Background"
 
-[node name="GraphEdit" type="GraphEdit" parent="Editor"]
+[node name="Panel" type="Panel" parent="Editor/VBoxContainer"]
+margin_top = 84.0
+margin_right = 110.0
+margin_bottom = 104.0
+rect_min_size = Vector2( 0, 20 )
+
+[node name="LabelResource" type="Label" parent="Editor/VBoxContainer"]
+margin_top = 108.0
+margin_right = 110.0
+margin_bottom = 122.0
+text = "Resource:"
+
+[node name="ButtonSave" type="Button" parent="Editor/VBoxContainer"]
+margin_top = 126.0
+margin_right = 110.0
+margin_bottom = 146.0
+text = "Save"
+
+[node name="Label3" type="Label" parent="Editor/VBoxContainer"]
+margin_top = 150.0
+margin_right = 110.0
+margin_bottom = 164.0
+text = "Editor v1"
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Editor"]
 margin_left = 122.0
 margin_right = 1920.0
 margin_bottom = 1080.0
-scroll_offset = Vector2( -8, 0 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Editor/ScrollContainer"]
+margin_right = 1786.0
+margin_bottom = 2456.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 9
+
+[node name="TextBlock" parent="Editor/ScrollContainer/VBoxContainer" instance=ExtResource( 2 )]
+margin_right = 1786.0
+margin_bottom = 160.0
+
+[node name="TextBlock2" parent="Editor/ScrollContainer/VBoxContainer" instance=ExtResource( 2 )]
+margin_top = 164.0
+margin_right = 1786.0
+margin_bottom = 324.0
+
+[node name="TextBlock3" parent="Editor/ScrollContainer/VBoxContainer" instance=ExtResource( 2 )]
+margin_top = 328.0
+margin_right = 1786.0
+margin_bottom = 488.0
+
+[node name="TextBlock4" parent="Editor/ScrollContainer/VBoxContainer" instance=ExtResource( 2 )]
+margin_top = 492.0
+margin_right = 1786.0
+margin_bottom = 652.0
+
+[node name="TextBlock5" parent="Editor/ScrollContainer/VBoxContainer" instance=ExtResource( 2 )]
+margin_top = 656.0
+margin_right = 1786.0
+margin_bottom = 816.0
+
+[node name="TextBlock6" parent="Editor/ScrollContainer/VBoxContainer" instance=ExtResource( 2 )]
+margin_top = 820.0
+margin_right = 1786.0
+margin_bottom = 980.0
+
+[node name="TextBlock7" parent="Editor/ScrollContainer/VBoxContainer" instance=ExtResource( 2 )]
+margin_top = 984.0
+margin_right = 1786.0
+margin_bottom = 1144.0
+
+[node name="TextBlock8" parent="Editor/ScrollContainer/VBoxContainer" instance=ExtResource( 2 )]
+margin_top = 1148.0
+margin_right = 1786.0
+margin_bottom = 1308.0
+
+[node name="TextBlock9" parent="Editor/ScrollContainer/VBoxContainer" instance=ExtResource( 2 )]
+margin_top = 1312.0
+margin_right = 1786.0
+margin_bottom = 1472.0
+
+[node name="TextBlock10" parent="Editor/ScrollContainer/VBoxContainer" instance=ExtResource( 2 )]
+margin_top = 1476.0
+margin_right = 1786.0
+margin_bottom = 1636.0
+
+[node name="TextBlock11" parent="Editor/ScrollContainer/VBoxContainer" instance=ExtResource( 2 )]
+margin_top = 1640.0
+margin_right = 1786.0
+margin_bottom = 1800.0
+
+[node name="TextBlock12" parent="Editor/ScrollContainer/VBoxContainer" instance=ExtResource( 2 )]
+margin_top = 1804.0
+margin_right = 1786.0
+margin_bottom = 1964.0
+
+[node name="TextBlock13" parent="Editor/ScrollContainer/VBoxContainer" instance=ExtResource( 2 )]
+margin_top = 1968.0
+margin_right = 1786.0
+margin_bottom = 2128.0
+
+[node name="TextBlock14" parent="Editor/ScrollContainer/VBoxContainer" instance=ExtResource( 2 )]
+margin_top = 2132.0
+margin_right = 1786.0
+margin_bottom = 2292.0
+
+[node name="TextBlock15" parent="Editor/ScrollContainer/VBoxContainer" instance=ExtResource( 2 )]
+margin_top = 2296.0
+margin_right = 1786.0
+margin_bottom = 2456.0
 
 [node name="EmptyMessage" type="PanelContainer" parent="."]
 visible = false
@@ -67,8 +172,9 @@ margin_left = 7.0
 margin_top = 533.0
 margin_right = 1913.0
 margin_bottom = 547.0
-text = "Select a Dialog node to create and edit dialogs."
+text = "Select a Dialog node with a valid DialogResource use the editor."
 align = 1
 valign = 1
 [connection signal="pressed" from="Editor/VBoxContainer/ButtonText" to="." method="_on_ButtonText_pressed"]
 [connection signal="pressed" from="Editor/VBoxContainer/ButtonBackground" to="." method="_on_ButtonBackground_pressed"]
+[connection signal="pressed" from="Editor/VBoxContainer/ButtonSave" to="." method="_on_ButtonSave_pressed"]

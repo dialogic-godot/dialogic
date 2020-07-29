@@ -9,16 +9,33 @@ func _enter_tree():
 	_add_custom_editor_view()
 	_connect_editor_signals()
 	
+	get_editor_interface().get_editor_viewport().add_child(_graph_editor_view)
+	# Hide the main panel. Very much required.
+	make_visible(false)
+	
 func _exit_tree():
 	_remove_custom_editor_view()
 	_disconnect_editor_signals()
 
+func has_main_screen():
+	return true
 
+func get_plugin_name():
+	return "Dialog System"
+
+func make_visible(visible):
+	if _graph_editor_view:
+		_graph_editor_view.visible = visible
+
+func get_plugin_icon():
+	# Must return some kind of Texture for the icon.
+	return get_editor_interface().get_base_control().get_icon("Node", "EditorIcons")
+	
 func _add_custom_editor_view():
 	_graph_editor_view = preload("res://addons/dialogs/Editor/EditorView.tscn").instance()
 	_graph_editor_view.undo_redo = get_undo_redo()
-	_panel_button = add_control_to_bottom_panel(_graph_editor_view, "Dialog Editor")
-	_panel_button.visible = true
+	#_panel_button = add_control_to_bottom_panel(_graph_editor_view, "Dialog Editor")
+	#_panel_button.visible = true
 
 
 func _remove_custom_editor_view():
@@ -53,9 +70,9 @@ func _on_selection_changed():
 			print(node.dialog_resource)
 			if node.dialog_resource:
 				print('It has a resource: ', node.dialog_resource)
+				_graph_editor_view.enable_template_editor_for(node)
 			else:
 				print('[!] No resource loaded')
-			_graph_editor_view.enable_template_editor_for(node)
 			return
 	print('Here.')
 	if _graph_editor_view:

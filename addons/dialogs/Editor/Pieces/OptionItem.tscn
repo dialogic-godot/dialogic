@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://addons/dialogs/Images/Remove.svg" type="Texture" id=1]
+[ext_resource path="res://addons/dialogs/Editor/Pieces/OptionItem.gd" type="Script" id=2]
 
 [node name="OptionItem" type="Control"]
 anchor_right = 1.0
@@ -8,6 +9,7 @@ anchor_bottom = 1.0
 rect_min_size = Vector2( 0, 30 )
 size_flags_horizontal = 3
 size_flags_vertical = 11
+script = ExtResource( 2 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -15,6 +17,9 @@ __meta__ = {
 [node name="Container" type="HBoxContainer" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Label" type="Label" parent="Container"]
 margin_top = 533.0
