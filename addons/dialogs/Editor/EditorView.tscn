@@ -25,66 +25,78 @@ __meta__ = {
 }
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Editor"]
-margin_right = 110.0
+margin_right = 111.0
 margin_bottom = 1064.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="Panel2" type="Panel" parent="Editor/VBoxContainer"]
+margin_right = 111.0
+margin_bottom = 7.065
+rect_min_size = Vector2( 0, 7.065 )
+
 [node name="LabelText" type="Label" parent="Editor/VBoxContainer"]
-margin_right = 110.0
-margin_bottom = 14.0
-text = "Text Elements"
+margin_top = 11.0
+margin_right = 111.0
+margin_bottom = 25.0
+text = "Pieces"
 
 [node name="ButtonText" type="Button" parent="Editor/VBoxContainer"]
-margin_top = 18.0
-margin_right = 110.0
-margin_bottom = 38.0
-text = "Add Text"
-
-[node name="Label" type="Label" parent="Editor/VBoxContainer"]
-margin_top = 42.0
-margin_right = 110.0
-margin_bottom = 56.0
-text = "Scene Elements"
+margin_top = 29.0
+margin_right = 111.0
+margin_bottom = 49.0
+text = "Text Event"
 
 [node name="ButtonBackground" type="Button" parent="Editor/VBoxContainer"]
-margin_top = 60.0
-margin_right = 110.0
-margin_bottom = 80.0
-text = "Set Background"
+margin_top = 53.0
+margin_right = 111.0
+margin_bottom = 73.0
+text = "Scene Event"
+
+[node name="ButtonCharacter" type="Button" parent="Editor/VBoxContainer"]
+margin_top = 77.0
+margin_right = 111.0
+margin_bottom = 97.0
+text = "Character Event"
 
 [node name="Panel" type="Panel" parent="Editor/VBoxContainer"]
-margin_top = 84.0
-margin_right = 110.0
-margin_bottom = 104.0
-rect_min_size = Vector2( 0, 20 )
+margin_top = 101.0
+margin_right = 111.0
+margin_bottom = 108.065
+rect_min_size = Vector2( 0, 7.065 )
 
 [node name="LabelResource" type="Label" parent="Editor/VBoxContainer"]
-margin_top = 108.0
-margin_right = 110.0
-margin_bottom = 122.0
+margin_top = 112.0
+margin_right = 111.0
+margin_bottom = 126.0
 text = "Resource:"
 
+[node name="ReloadResource" type="Button" parent="Editor/VBoxContainer"]
+margin_top = 130.0
+margin_right = 111.0
+margin_bottom = 150.0
+text = "Reload"
+
 [node name="ButtonSave" type="Button" parent="Editor/VBoxContainer"]
-margin_top = 126.0
-margin_right = 110.0
-margin_bottom = 146.0
+margin_top = 154.0
+margin_right = 111.0
+margin_bottom = 174.0
 text = "Save"
 
 [node name="Label3" type="Label" parent="Editor/VBoxContainer"]
-margin_top = 150.0
-margin_right = 110.0
-margin_bottom = 164.0
+margin_top = 178.0
+margin_right = 111.0
+margin_bottom = 192.0
 text = "Editor v1"
 
 [node name="ScrollContainer" type="ScrollContainer" parent="Editor"]
-margin_left = 122.0
+margin_left = 123.0
 margin_right = 1904.0
 margin_bottom = 1064.0
 
 [node name="TimeLine" type="VBoxContainer" parent="Editor/ScrollContainer"]
-margin_right = 1782.0
+margin_right = 1781.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
@@ -111,4 +123,6 @@ align = 1
 valign = 1
 [connection signal="pressed" from="Editor/VBoxContainer/ButtonText" to="." method="_on_ButtonText_pressed"]
 [connection signal="pressed" from="Editor/VBoxContainer/ButtonBackground" to="." method="_on_ButtonBackground_pressed"]
+[connection signal="pressed" from="Editor/VBoxContainer/ButtonCharacter" to="." method="_on_ButtonCharacter_pressed"]
+[connection signal="pressed" from="Editor/VBoxContainer/ReloadResource" to="." method="_on_ReloadResource_pressed"]
 [connection signal="pressed" from="Editor/VBoxContainer/ButtonSave" to="." method="_on_ButtonSave_pressed"]

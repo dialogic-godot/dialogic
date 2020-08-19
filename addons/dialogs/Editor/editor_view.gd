@@ -7,10 +7,12 @@ The graph editor shown in the bottom panel. When a DialogNode is selected, its D
 is added as a child of the main editor view so it's editable by the user and removed (but not
 deleted) when the DialogGraph is deselected.
 """
+var plugin_reference
 
 var undo_redo: UndoRedo
 var testing_mode = true
 var dialog_selected_node
+var editor_file_dialog # EditorFileDialog
 var testing = true
 onready var timeline = $Editor/ScrollContainer/TimeLine
 
@@ -19,6 +21,10 @@ func _ready():
 		clear_template_editor()
 	if testing == false:
 		$Editor/GraphEdit.connect("connection_request", self, "_on_piece_connect")
+	
+	# Adding file dialog to get used by pieces
+	editor_file_dialog = EditorFileDialog.new()
+	plugin_reference.get_editor_interface().get_editor_viewport().add_child(editor_file_dialog)
 	
 func _on_piece_connect(from, from_slot, to, to_slot):
 	$Editor/GraphEdit.connect_node(from, from_slot, to, to_slot)
@@ -29,6 +35,7 @@ func enable_template_editor_for(node: DialogNode):
 	dialog_selected_node = node
 	$Editor.visible = true
 	$EmptyMessage.visible = false
+	load_nodes()
 
 func clear_template_editor():
 	print('here111')
@@ -38,12 +45,31 @@ func clear_template_editor():
 
 # Creating text node
 func _on_ButtonText_pressed():
-	var piece = load("res://addons/dialogs/Editor/Pieces/TextBlock.tscn").instance()
-	timeline.add_child(piece)
-	piece.editor_reference = self
+	create_text_node()
+	return true
 
 func _on_ButtonBackground_pressed():
-	pass
+	create_scene_node()
+
+func _on_ButtonCharacter_pressed():
+	create_character_node()
+
+func create_text_node(text=''):
+	var piece = load("res://addons/dialogs/Editor/Pieces/TextBlock.tscn").instance()
+	timeline.add_child(piece)
+	piece.load_text(text)
+	piece.editor_reference = self
+
+func create_scene_node(path=''):
+	var piece = load("res://addons/dialogs/Editor/Pieces/SceneBlock.tscn").instance()
+	timeline.add_child(piece)
+	piece.load_image(path)
+	piece.editor_reference = self
+
+func create_character_node(path=''):
+	var piece = load("res://addons/dialogs/Editor/Pieces/CharacterBlock.tscn").instance()
+	timeline.add_child(piece)
+	piece.editor_reference = self
 
 # ordering blocks in timeline
 func _move_block(block, direction):
@@ -57,6 +83,18 @@ func _move_block(block, direction):
 		return true
 	print('[!] Failed to move block ', block)
 	return false
+
+
+# Clear timeline
+func clear_timeline():
+	for event in $Editor/ScrollContainer/TimeLine.get_children():
+		event.queue_free()
+
+# Reload button
+func _on_ReloadResource_pressed():
+	clear_timeline()
+	load_nodes()
+	print('Reloaded')
 
 # Saving and loading
 func _on_ButtonSave_pressed():
@@ -72,4 +110,34 @@ func _on_ButtonSave_pressed():
 	print('Saved resource data: ', dialog_selected_node.dialog_resource.nodes)
 
 func load_nodes():
-	pass
+	# Json
+	var data_file = File.new()
+	if data_file.open(dialog_selected_node.dialog_resource.dialog_json, File.READ) != OK:
+		return
+	var data_text = data_file.get_as_text()
+	data_file.close()
+	var data_parse = JSON.parse(data_text)
+	if data_parse.error != OK:
+		return
+	var data = data_parse.result
+
+	for i in data:
+		match i:
+			{'text'}:
+				create_text_node(i['text'])
+				print('element: ', i)
+			{'background'}:
+				create_scene_node(i['background'])
+				print('element: ', i)
+
+# Godot dialog
+func godot_dialog():
+	editor_file_dialog.mode = EditorFileDialog.MODE_OPEN_FILE
+	editor_file_dialog.clear_filters()
+	editor_file_dialog.popup_centered_ratio(0.75)
+	
+	return editor_file_dialog
+
+
+func _on_file_selected(path):
+	print(path)

@@ -1,7 +1,7 @@
 tool
 extends EditorPlugin
 
-var _graph_editor_view
+var _editor_view # This is the plugin Scene
 var _panel_button: Button
 var _editor_selection: EditorSelection
 
@@ -9,7 +9,7 @@ func _enter_tree():
 	_add_custom_editor_view()
 	_connect_editor_signals()
 	
-	get_editor_interface().get_editor_viewport().add_child(_graph_editor_view)
+	get_editor_interface().get_editor_viewport().add_child(_editor_view)
 	# Hide the main panel. Very much required.
 	make_visible(false)
 	
@@ -24,24 +24,25 @@ func get_plugin_name():
 	return "Dialog System"
 
 func make_visible(visible):
-	if _graph_editor_view:
-		_graph_editor_view.visible = visible
+	if _editor_view:
+		_editor_view.visible = visible
 
 func get_plugin_icon():
 	# Must return some kind of Texture for the icon.
 	return get_editor_interface().get_base_control().get_icon("Node", "EditorIcons")
 	
 func _add_custom_editor_view():
-	_graph_editor_view = preload("res://addons/dialogs/Editor/EditorView.tscn").instance()
-	_graph_editor_view.undo_redo = get_undo_redo()
-	#_panel_button = add_control_to_bottom_panel(_graph_editor_view, "Dialog Editor")
+	_editor_view = preload("res://addons/dialogs/Editor/EditorView.tscn").instance()
+	_editor_view.plugin_reference = self
+	_editor_view.undo_redo = get_undo_redo()
+	#_panel_button = add_control_to_bottom_panel(_editor_view, "Dialog Editor")
 	#_panel_button.visible = true
 
 
 func _remove_custom_editor_view():
-	if _graph_editor_view:
-		remove_control_from_bottom_panel(_graph_editor_view)
-		_graph_editor_view.queue_free()
+	if _editor_view:
+		remove_control_from_bottom_panel(_editor_view)
+		_editor_view.queue_free()
 
 func _connect_editor_signals():
 	_editor_selection = get_editor_interface().get_selection()
@@ -70,15 +71,15 @@ func _on_selection_changed():
 			print(node.dialog_resource)
 			if node.dialog_resource:
 				print('It has a resource: ', node.dialog_resource)
-				_graph_editor_view.enable_template_editor_for(node)
+				_editor_view.enable_template_editor_for(node)
 			else:
 				print('[!] No resource loaded')
 			return
 	print('Here.')
-	if _graph_editor_view:
-		_graph_editor_view.clear_template_editor()
+	if _editor_view:
+		_editor_view.clear_template_editor()
 	
 
 func _on_scene_changed(_param):
-	_graph_editor_view.clear_template_editor()
+	_editor_view.clear_template_editor()
 	_on_selection_changed()
