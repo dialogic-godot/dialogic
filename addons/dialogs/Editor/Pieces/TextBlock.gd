@@ -23,4 +23,6 @@ func update_preview():
 	if '\n' in text_edit_text:
 		text_edit_text = text_edit_text.split('\n')[0]
 	preview = text_edit_text
+	if preview.length() > 60:
+		preview = preview.left(60) + '...'
 	return preview

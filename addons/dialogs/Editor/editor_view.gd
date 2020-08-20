@@ -59,17 +59,22 @@ func create_text_node(text=''):
 	timeline.add_child(piece)
 	piece.load_text(text)
 	piece.editor_reference = self
+	return piece
 
 func create_scene_node(path=''):
 	var piece = load("res://addons/dialogs/Editor/Pieces/SceneBlock.tscn").instance()
 	timeline.add_child(piece)
 	piece.load_image(path)
 	piece.editor_reference = self
+	return piece
 
-func create_character_node(path=''):
+func create_character_node(character='', clear_all=false):
 	var piece = load("res://addons/dialogs/Editor/Pieces/CharacterBlock.tscn").instance()
 	timeline.add_child(piece)
+	if clear_all == true:
+		piece._on_option_selected(2)
 	piece.editor_reference = self
+	return piece
 
 # ordering blocks in timeline
 func _move_block(block, direction):
@@ -126,8 +131,17 @@ func load_nodes():
 			{'text'}:
 				create_text_node(i['text'])
 				print('element: ', i)
+			{'text', 'character'}:
+				create_text_node(i['text'])
+				print('element: ', i)
 			{'background'}:
 				create_scene_node(i['background'])
+				print('element: ', i)
+			{'character', 'position'}:
+				create_character_node(i['character'])
+				print('element: ', i)
+			{'clearall'}:
+				create_character_node('', true)
 				print('element: ', i)
 
 # Godot dialog
@@ -141,3 +155,14 @@ func godot_dialog():
 
 func _on_file_selected(path):
 	print(path)
+
+
+# Folding
+func _on_ButtonFold_pressed():
+	for event in $Editor/ScrollContainer/TimeLine.get_children():
+		event.get_node("VBoxContainer/Header/VisibleToggle").set_pressed(false)
+
+func _on_ButtonUnfold_pressed():
+	for event in $Editor/ScrollContainer/TimeLine.get_children():
+		event.get_node("VBoxContainer/Header/VisibleToggle").set_pressed(true)
+		print(event.get_node("VBoxContainer/Header/VisibleToggle"))
