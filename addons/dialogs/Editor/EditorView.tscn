@@ -23,13 +23,15 @@ __meta__ = {
 [node name="Editor" type="HSplitContainer" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
+margin_left = 8.0
+margin_top = 26.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Editor"]
 margin_right = 135.0
-margin_bottom = 1064.0
+margin_bottom = 1038.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -132,11 +134,11 @@ text = "Editor v1"
 
 [node name="ScrollContainer" type="ScrollContainer" parent="Editor"]
 margin_left = 147.0
-margin_right = 1904.0
-margin_bottom = 1064.0
+margin_right = 1896.0
+margin_bottom = 1038.0
 
 [node name="TimeLine" type="VBoxContainer" parent="Editor/ScrollContainer"]
-margin_right = 1757.0
+margin_right = 1749.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
@@ -155,12 +157,24 @@ __meta__ = {
 
 [node name="Label" type="Label" parent="EmptyMessage"]
 margin_left = 7.0
-margin_top = 533.0
-margin_right = 1913.0
-margin_bottom = 547.0
+margin_top = 525.0
+margin_right = 1897.0
+margin_bottom = 539.0
 text = "Select a Dialog node with a valid DialogResource use the editor."
 align = 1
 valign = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+anchor_right = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MenuButton" type="MenuButton" parent="HBoxContainer"]
+margin_right = 35.0
+margin_bottom = 20.0
+text = "File"
+items = [ "New dialog", null, 0, false, false, 0, 0, null, "", false ]
 [connection signal="pressed" from="Editor/VBoxContainer/ButtonText" to="." method="_on_ButtonText_pressed"]
 [connection signal="pressed" from="Editor/VBoxContainer/ButtonBackground" to="." method="_on_ButtonBackground_pressed"]
 [connection signal="pressed" from="Editor/VBoxContainer/ButtonCharacter" to="." method="_on_ButtonCharacter_pressed"]

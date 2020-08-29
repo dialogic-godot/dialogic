@@ -6,6 +6,7 @@ var editorPopup
 var preview = ""
 var action_selected = 'none'
 var joining_position
+var available_positions = ['left', 'middle', 'right'] #TODO: I should use this or enum instead of hard coding the position options. 
 var character_selected = ''
 	
 func _ready():
@@ -19,7 +20,19 @@ func _ready():
 	positionMenu.connect("id_pressed", self, "_on_position_selected")
 
 func _on_position_selected(option):
-	set_character_position(option)
+  set_character_position(option)
+
+func load_character_position(name):
+	print('Loading character joining in: ', name)
+	var index_position = 0
+	match name:
+		'left':
+			index_position = 0
+		'middle':
+			index_position = 1
+		'right':
+			index_position = 2
+	set_character_position(index_position)
 
 func set_character_position(index):
 	match index:
@@ -33,6 +46,7 @@ func set_character_position(index):
 			joining_position = 'right'
 			$VBoxContainer/HBoxContainer/JoinIn/MenuPosition.text = 'Right'
 	preview = character_selected + ', ' + joining_position
+	return joining_position
 
 func _on_option_selected(option):
 	match option:

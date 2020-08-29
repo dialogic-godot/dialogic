@@ -52,7 +52,7 @@ func _on_ButtonBackground_pressed():
 	create_scene_node()
 
 func _on_ButtonCharacter_pressed():
-	create_character_node()
+	create_character_node('', '')
 
 func create_text_node(text=''):
 	var piece = load("res://addons/dialogs/Editor/Pieces/TextBlock.tscn").instance()
@@ -68,11 +68,19 @@ func create_scene_node(path=''):
 	piece.editor_reference = self
 	return piece
 
-func create_character_node(character='', clear_all=false):
+func create_character_node(character, action, joining_position = 0, clear_all=false):
 	var piece = load("res://addons/dialogs/Editor/Pieces/CharacterBlock.tscn").instance()
 	timeline.add_child(piece)
-	if clear_all == true:
+	if action == 'join':
+		piece._on_option_selected(0)
+		piece.load_character_position(joining_position)
+	elif action == 'leave':
+		piece._on_option_selected(1)
+	elif action == 'leaveall':
 		piece._on_option_selected(2)
+	else:
+		if clear_all == true:
+			piece._on_option_selected(2)
 	piece.editor_reference = self
 	return piece
 
@@ -88,7 +96,6 @@ func _move_block(block, direction):
 		return true
 	print('[!] Failed to move block ', block)
 	return false
-
 
 # Clear timeline
 func clear_timeline():
@@ -117,7 +124,11 @@ func _on_ButtonSave_pressed():
 func load_nodes():
 	# Json
 	var data_file = File.new()
-	if data_file.open(dialog_selected_node.dialog_resource.dialog_json, File.READ) != OK:
+	var data_file_path = dialog_selected_node.dialog_resource.dialog_json
+	# DEBUG OVERWRITE
+	data_file_path = "res://dialogs/dialog.json"
+	# END OVERWRITE
+	if data_file.open(data_file_path, File.READ) != OK:
 		return
 	var data_text = data_file.get_as_text()
 	data_file.close()
@@ -130,19 +141,22 @@ func load_nodes():
 		match i:
 			{'text'}:
 				create_text_node(i['text'])
-				print('element: ', i)
+				print('text-element: ', i)
 			{'text', 'character'}:
 				create_text_node(i['text'])
-				print('element: ', i)
+				print('text-element: ', i)
 			{'background'}:
 				create_scene_node(i['background'])
-				print('element: ', i)
-			{'character', 'position'}:
-				create_character_node(i['character'])
-				print('element: ', i)
-			{'clearall'}:
-				create_character_node('', true)
-				print('element: ', i)
+				print('background-element: ', i)
+				
+			{'character', 'action', 'position'}:
+				create_character_node(i['character'], i['action'],i['position'])
+				print('character-element: ', i)
+			
+			{'character', 'action'}:
+				create_character_node(i['character'], i['action'])
+				print('character-block: ', i)
+	fold_all_nodes()
 
 # Godot dialog
 func godot_dialog():
@@ -158,11 +172,17 @@ func _on_file_selected(path):
 
 
 # Folding
-func _on_ButtonFold_pressed():
+func fold_all_nodes():
 	for event in $Editor/ScrollContainer/TimeLine.get_children():
 		event.get_node("VBoxContainer/Header/VisibleToggle").set_pressed(false)
 
-func _on_ButtonUnfold_pressed():
+func unfold_all_nodes():
 	for event in $Editor/ScrollContainer/TimeLine.get_children():
 		event.get_node("VBoxContainer/Header/VisibleToggle").set_pressed(true)
 		print(event.get_node("VBoxContainer/Header/VisibleToggle"))
+
+func _on_ButtonFold_pressed():
+	fold_all_nodes()
+
+func _on_ButtonUnfold_pressed():
+	unfold_all_nodes()
