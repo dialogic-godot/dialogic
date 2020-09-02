@@ -1,0 +1,188 @@
+[gd_scene load_steps=9 format=2]
+
+[ext_resource path="res://addons/dialogic/Images/dialog-background.png" type="Texture" id=1]
+[ext_resource path="res://addons/dialogic/Images/next-indicator.png" type="Texture" id=2]
+[ext_resource path="res://addons/dialogic/dialog_node.gd" type="Script" id=3]
+[ext_resource path="res://addons/dialogic/Theme.tres" type="Theme" id=4]
+[ext_resource path="res://addons/dialogic/Resources/Characters/Iteb.tres" type="Resource" id=5]
+[ext_resource path="res://addons/dialogic/Resources/Characters/Zas.tres" type="Resource" id=6]
+[ext_resource path="res://addons/dialogic/Resources/Characters/Kubuk.tres" type="Resource" id=7]
+
+[sub_resource type="Animation" id=1]
+resource_name = "IDLE"
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:margin_bottom")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 12.0, 55.0 ]
+}
+
+[node name="DialogNode" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme = ExtResource( 4 )
+script = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+dialog_characters = [ ExtResource( 6 ), ExtResource( 5 ), ExtResource( 7 ) ]
+
+[node name="Background" type="TextureRect" parent="."]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+expand = true
+stretch_mode = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Portraits" type="Control" parent="."]
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextBubble" type="Control" parent="."]
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -455.0
+margin_top = -209.488
+margin_right = 455.0
+margin_bottom = -42.4877
+__meta__ = {
+"_edit_group_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="TextureRect" type="TextureRect" parent="TextBubble"]
+self_modulate = Color( 0.109804, 0.109804, 0.109804, 1 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture = ExtResource( 1 )
+expand = true
+stretch_mode = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="RichTextLabel" type="RichTextLabel" parent="TextBubble"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 15.0
+margin_top = 15.0
+margin_right = -15.0
+margin_bottom = -15.0
+bbcode_enabled = true
+bbcode_text = "Placeholder text for testing and formatting."
+text = "Placeholder text for testing and formatting."
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Tween" type="Tween" parent="TextBubble"]
+
+[node name="NextIndicator" type="TextureRect" parent="TextBubble"]
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -36.4279
+margin_top = -35.9016
+margin_right = 14.5721
+margin_bottom = 51.4957
+rect_scale = Vector2( 0.4, 0.4 )
+texture = ExtResource( 2 )
+stretch_mode = 4
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="TextBubble/NextIndicator"]
+autoplay = "IDLE"
+anims/IDLE = SubResource( 1 )
+
+[node name="NameLabel" type="RichTextLabel" parent="TextBubble"]
+margin_left = 2.0
+margin_top = -37.0
+margin_right = 369.0
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
+custom_constants/shadow_as_outline = 10
+bbcode_enabled = true
+bbcode_text = "Name Here"
+text = "Name Here"
+scroll_active = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Options" type="VBoxContainer" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -20.0
+margin_top = -19.9999
+margin_right = 20.0
+margin_bottom = 19.9999
+grow_horizontal = 2
+grow_vertical = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextInputDialog" type="AcceptDialog" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -192.0
+margin_top = -57.0
+margin_right = 192.0
+margin_bottom = 57.0
+popup_exclusive = true
+dialog_hide_on_ok = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="LineEdit" type="LineEdit" parent="TextInputDialog"]
+margin_left = 8.0
+margin_top = 8.0
+margin_right = 376.0
+margin_bottom = 55.0
+
+[node name="FX" type="Control" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+__meta__ = {
+"_edit_group_": true,
+"_edit_lock_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="FadeInNode" type="ColorRect" parent="FX"]
+modulate = Color( 1, 1, 1, 0 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+color = Color( 0, 0, 0, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Tween" type="Tween" parent="FX/FadeInNode"]
+[connection signal="tween_completed" from="TextBubble/Tween" to="." method="_on_Tween_tween_completed"]

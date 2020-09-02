@@ -1,5 +1,5 @@
-# Simple Dialog Addon v0.4 ![Godot v3.2](https://img.shields.io/badge/godot-v3.2-%23478cbf)
-A simple Godot dialog addon to use in any kind of project. 
+# Dialogic v0.4 ![Godot v3.2](https://img.shields.io/badge/godot-v3.2-%23478cbf)
+Create dialogs, characters and scenes to display conversations in your Godot games. 
 
 ![Screenshot](https://coppolaemilio.com/godot/github-portrait.png)
 
@@ -37,6 +37,8 @@ Now you can add the node `addons/dialogs/Dialog.tscn` to your scenes, assign the
 
 ## Changelog
 v0.4 - Dialog editor
+ - Changed how the main editor works, instead of being a graphedit it is now an event timeline.
+ - Renamed the plugin to Dialogic. Thanks to [Òscar](https://twitter.com/oscartes) for always knowing how to name things. 
  - Added a new panel to the editor
 v0.3 - Using Resources
  - Removed requirement for `global.gd` and `characters.gd` autoload scripts.
@@ -57,7 +59,7 @@ v0.1 - Release
 ## Credits
 Code made by [Emilio Coppola](https://github.com/coppolaemilio).
 
-Contributors: [Tom Glenn](https://github.com/tomglenn)
+Contributors: [Tom Glenn](https://github.com/tomglenn), [Òscar](https://twitter.com/oscartes)
 
 Placeholder images are from Toen's YouTube DF series:
  - https://toen.world/
