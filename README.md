@@ -59,7 +59,7 @@ v0.1 - Release
 ## Credits
 Code made by [Emilio Coppola](https://github.com/coppolaemilio).
 
-Contributors: [Tom Glenn](https://github.com/tomglenn), [Òscar](https://twitter.com/oscartes)
+Contributors: [Toen](https://twitter.com/ToenAndreMC), [Òscar Villarreal](https://twitter.com/oscartes), [Tom Glenn](https://github.com/tomglenn)
 
 Placeholder images are from Toen's YouTube DF series:
  - https://toen.world/

@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://addons/dialogic/Editor/editor_view.gd" type="Script" id=1]
 [ext_resource path="res://addons/dialogic/Images/dialog.svg" type="Texture" id=2]
@@ -7,6 +7,9 @@
 [ext_resource path="res://addons/dialogic/Images/character-leave.svg" type="Texture" id=5]
 [ext_resource path="res://addons/dialogic/Images/Script.svg" type="Texture" id=6]
 [ext_resource path="res://addons/dialogic/Images/character.svg" type="Texture" id=7]
+[ext_resource path="res://addons/dialogic/Images/audio-event.svg" type="Texture" id=8]
+[ext_resource path="res://addons/dialogic/Images/open-icon.svg" type="Texture" id=9]
+[ext_resource path="res://addons/dialogic/Images/closed-icon.svg" type="Texture" id=10]
 
 [sub_resource type="StyleBoxFlat" id=1]
 content_margin_left = 5.0
@@ -14,6 +17,18 @@ content_margin_right = 5.0
 content_margin_top = 5.0
 content_margin_bottom = 5.0
 bg_color = Color( 0.14902, 0.172549, 0.231373, 1 )
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color( 0.0980392, 0.113725, 0.152941, 1 )
+
+[sub_resource type="StyleBoxFlat" id=2]
+content_margin_left = 5.0
+content_margin_right = 5.0
+content_margin_top = 5.0
+content_margin_bottom = 5.0
+bg_color = Color( 0.2, 0.219608, 0.278431, 1 )
 border_width_left = 1
 border_width_top = 1
 border_width_right = 1
@@ -45,20 +60,27 @@ __meta__ = {
 }
 
 [node name="MenuButton" type="MenuButton" parent="HBoxContainer"]
+visible = false
 margin_right = 35.0
 margin_bottom = 28.0
 text = "File"
 items = [ "New dialog", null, 0, false, false, 0, 0, null, "", false ]
 
-[node name="ScenesButton" type="Button" parent="HBoxContainer"]
-margin_left = 35.0
-margin_right = 69.0
+[node name="Label" type="Label" parent="HBoxContainer"]
+margin_top = 7.0
+margin_right = 62.0
+margin_bottom = 21.0
+text = "Toolbox   "
+
+[node name="EventButton" type="Button" parent="HBoxContainer"]
+margin_left = 62.0
+margin_right = 96.0
 margin_bottom = 28.0
 icon = ExtResource( 6 )
 
 [node name="CharactersButton" type="Button" parent="HBoxContainer"]
-margin_left = 69.0
-margin_right = 103.0
+margin_left = 96.0
+margin_right = 130.0
 margin_bottom = 28.0
 icon = ExtResource( 7 )
 
@@ -66,157 +88,292 @@ icon = ExtResource( 7 )
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 6.0
-margin_top = 34.0
+margin_top = 38.0
 margin_right = -5.0
 margin_bottom = -5.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="VBoxContainer2" type="VBoxContainer" parent="Editor"]
-margin_right = 145.0
-margin_bottom = 545.0
+[node name="EventTools" type="VBoxContainer" parent="Editor"]
+margin_right = 180.0
+margin_bottom = 541.0
+rect_min_size = Vector2( 180, 0 )
 
-[node name="ScrollContainer" type="ScrollContainer" parent="Editor/VBoxContainer2"]
-margin_right = 145.0
-
-[node name="VBoxContainer" type="VBoxContainer" parent="Editor/VBoxContainer2/ScrollContainer"]
-
-[node name="VBoxContainer" type="VBoxContainer" parent="Editor/VBoxContainer2"]
-margin_top = 4.0
-margin_right = 145.0
-margin_bottom = 329.0
+[node name="VBoxContainer" type="VBoxContainer" parent="Editor/EventTools"]
+margin_right = 180.0
+margin_bottom = 355.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="LabelText" type="Label" parent="Editor/VBoxContainer2/VBoxContainer"]
-margin_right = 145.0
-margin_bottom = 14.0
-text = "Pieces"
-
-[node name="ButtonText" type="Button" parent="Editor/VBoxContainer2/VBoxContainer"]
-margin_top = 18.0
-margin_right = 145.0
-margin_bottom = 46.0
+[node name="ButtonText" type="Button" parent="Editor/EventTools/VBoxContainer"]
+margin_right = 180.0
+margin_bottom = 28.0
 text = "  Text Event"
 icon = ExtResource( 2 )
 align = 0
 
-[node name="ButtonBackground" type="Button" parent="Editor/VBoxContainer2/VBoxContainer"]
-margin_top = 50.0
-margin_right = 145.0
-margin_bottom = 78.0
+[node name="ButtonBackground" type="Button" parent="Editor/EventTools/VBoxContainer"]
+margin_top = 32.0
+margin_right = 180.0
+margin_bottom = 60.0
 text = "  Scene Event"
 icon = ExtResource( 4 )
 align = 0
 
-[node name="ButtonCharacterJoin" type="Button" parent="Editor/VBoxContainer2/VBoxContainer"]
-margin_top = 82.0
-margin_right = 145.0
-margin_bottom = 110.0
+[node name="ButtonAudio" type="Button" parent="Editor/EventTools/VBoxContainer"]
+margin_top = 64.0
+margin_right = 180.0
+margin_bottom = 92.0
+text = "  Audio Event"
+icon = ExtResource( 8 )
+align = 0
+
+[node name="ButtonCharacterJoin" type="Button" parent="Editor/EventTools/VBoxContainer"]
+margin_top = 96.0
+margin_right = 180.0
+margin_bottom = 124.0
 text = "  Character Join"
 icon = ExtResource( 3 )
 align = 0
 
-[node name="ButtonCharacterLeave" type="Button" parent="Editor/VBoxContainer2/VBoxContainer"]
-margin_top = 114.0
-margin_right = 145.0
-margin_bottom = 142.0
+[node name="ButtonCharacterLeave" type="Button" parent="Editor/EventTools/VBoxContainer"]
+margin_top = 128.0
+margin_right = 180.0
+margin_bottom = 156.0
 text = "  Character Leave"
 icon = ExtResource( 5 )
 align = 0
 
-[node name="Separator" type="Panel" parent="Editor/VBoxContainer2/VBoxContainer"]
+[node name="Separator" type="Panel" parent="Editor/EventTools/VBoxContainer"]
 self_modulate = Color( 1, 1, 1, 0 )
-margin_top = 146.0
-margin_right = 145.0
-margin_bottom = 153.065
+margin_top = 160.0
+margin_right = 180.0
+margin_bottom = 167.065
 rect_min_size = Vector2( 0, 7.065 )
 
-[node name="LabelNodes" type="Label" parent="Editor/VBoxContainer2/VBoxContainer"]
-margin_top = 157.0
-margin_right = 145.0
-margin_bottom = 171.0
+[node name="LabelNodes" type="Label" parent="Editor/EventTools/VBoxContainer"]
+margin_top = 171.0
+margin_right = 180.0
+margin_bottom = 185.0
 text = "View"
 
-[node name="ButtonFold" type="Button" parent="Editor/VBoxContainer2/VBoxContainer"]
-margin_top = 175.0
-margin_right = 145.0
-margin_bottom = 195.0
+[node name="ButtonFold" type="Button" parent="Editor/EventTools/VBoxContainer"]
+margin_top = 189.0
+margin_right = 180.0
+margin_bottom = 217.0
 text = "Fold all"
+icon = ExtResource( 10 )
 align = 0
 
-[node name="ButtonUnfold" type="Button" parent="Editor/VBoxContainer2/VBoxContainer"]
-margin_top = 199.0
-margin_right = 145.0
-margin_bottom = 219.0
+[node name="ButtonUnfold" type="Button" parent="Editor/EventTools/VBoxContainer"]
+margin_top = 221.0
+margin_right = 180.0
+margin_bottom = 249.0
 text = "Unfold all"
+icon = ExtResource( 9 )
 align = 0
 
-[node name="Separator2" type="Panel" parent="Editor/VBoxContainer2/VBoxContainer"]
+[node name="Separator2" type="Panel" parent="Editor/EventTools/VBoxContainer"]
 self_modulate = Color( 1, 1, 1, 0 )
-margin_top = 223.0
-margin_right = 145.0
-margin_bottom = 230.065
+margin_top = 253.0
+margin_right = 180.0
+margin_bottom = 260.065
 rect_min_size = Vector2( 0, 7.065 )
 
-[node name="LabelResource" type="Label" parent="Editor/VBoxContainer2/VBoxContainer"]
-margin_top = 234.0
-margin_right = 145.0
-margin_bottom = 248.0
+[node name="LabelResource" type="Label" parent="Editor/EventTools/VBoxContainer"]
+margin_top = 264.0
+margin_right = 180.0
+margin_bottom = 278.0
 text = "Resource:"
 
-[node name="ReloadResource" type="Button" parent="Editor/VBoxContainer2/VBoxContainer"]
-margin_top = 252.0
-margin_right = 145.0
-margin_bottom = 272.0
+[node name="ReloadResource" type="Button" parent="Editor/EventTools/VBoxContainer"]
+margin_top = 282.0
+margin_right = 180.0
+margin_bottom = 302.0
 text = "Reload"
 align = 0
 
-[node name="ButtonSave" type="Button" parent="Editor/VBoxContainer2/VBoxContainer"]
-margin_top = 276.0
-margin_right = 145.0
-margin_bottom = 296.0
+[node name="ButtonSave" type="Button" parent="Editor/EventTools/VBoxContainer"]
+margin_top = 306.0
+margin_right = 180.0
+margin_bottom = 326.0
 text = "Save"
 align = 0
 
-[node name="Separator3" type="Panel" parent="Editor/VBoxContainer2/VBoxContainer"]
+[node name="Separator3" type="Panel" parent="Editor/EventTools/VBoxContainer"]
 self_modulate = Color( 1, 1, 1, 0 )
-margin_top = 300.0
-margin_right = 145.0
-margin_bottom = 307.065
+margin_top = 330.0
+margin_right = 180.0
+margin_bottom = 337.065
 rect_min_size = Vector2( 0, 7.065 )
 
-[node name="Label3" type="Label" parent="Editor/VBoxContainer2/VBoxContainer"]
-margin_top = 311.0
-margin_right = 145.0
-margin_bottom = 325.0
+[node name="Label3" type="Label" parent="Editor/EventTools/VBoxContainer"]
+margin_top = 341.0
+margin_right = 180.0
+margin_bottom = 355.0
 text = "Dialogic Editor v0.1"
 
-[node name="ScrollContainer" type="ScrollContainer" parent="Editor"]
-margin_left = 157.0
+[node name="EventEditor" type="ScrollContainer" parent="Editor"]
+margin_left = 192.0
 margin_right = 997.0
-margin_bottom = 545.0
+margin_bottom = 541.0
 custom_styles/bg = SubResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="TimeLine" type="VBoxContainer" parent="Editor/ScrollContainer"]
+[node name="TimeLine" type="VBoxContainer" parent="Editor/EventEditor"]
 margin_left = 5.0
 margin_top = 5.0
-margin_right = 835.0
+margin_right = 800.0
 margin_bottom = 5.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 9
-[connection signal="pressed" from="Editor/VBoxContainer2/VBoxContainer/ButtonText" to="." method="_on_ButtonText_pressed"]
-[connection signal="pressed" from="Editor/VBoxContainer2/VBoxContainer/ButtonBackground" to="." method="_on_ButtonBackground_pressed"]
-[connection signal="pressed" from="Editor/VBoxContainer2/VBoxContainer/ButtonCharacterJoin" to="." method="_on_ButtonCharacter_pressed"]
-[connection signal="pressed" from="Editor/VBoxContainer2/VBoxContainer/ButtonCharacterLeave" to="." method="_on_ButtonCharacterLeave_pressed"]
-[connection signal="pressed" from="Editor/VBoxContainer2/VBoxContainer/ButtonFold" to="." method="_on_ButtonFold_pressed"]
-[connection signal="pressed" from="Editor/VBoxContainer2/VBoxContainer/ButtonUnfold" to="." method="_on_ButtonUnfold_pressed"]
-[connection signal="pressed" from="Editor/VBoxContainer2/VBoxContainer/ReloadResource" to="." method="_on_ReloadResource_pressed"]
-[connection signal="pressed" from="Editor/VBoxContainer2/VBoxContainer/ButtonSave" to="." method="_on_ButtonSave_pressed"]
+
+[node name="CharacterTools" type="VBoxContainer" parent="Editor"]
+visible = false
+margin_left = 22.0
+margin_right = 997.0
+margin_bottom = 541.0
+rect_min_size = Vector2( 180, 0 )
+
+[node name="Button" type="Button" parent="Editor/CharacterTools"]
+margin_right = 975.0
+margin_bottom = 20.0
+text = "Add character +"
+
+[node name="CharacterList" type="ScrollContainer" parent="Editor/CharacterTools"]
+margin_top = 24.0
+margin_right = 975.0
+margin_bottom = 541.0
+rect_min_size = Vector2( 0, 100 )
+size_flags_vertical = 3
+
+[node name="ItemList" type="ItemList" parent="Editor/CharacterTools/CharacterList"]
+margin_right = 975.0
+margin_bottom = 517.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="CharacterEditor" type="ScrollContainer" parent="Editor"]
+visible = false
+margin_left = 192.0
+margin_right = 997.0
+margin_bottom = 541.0
+custom_styles/bg = SubResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TimeLine" type="VBoxContainer" parent="Editor/CharacterEditor"]
+margin_left = 5.0
+margin_top = 5.0
+margin_right = 800.0
+margin_bottom = 203.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 9
+
+[node name="Name" type="HBoxContainer" parent="Editor/CharacterEditor/TimeLine"]
+margin_right = 795.0
+margin_bottom = 24.0
+
+[node name="Label" type="Label" parent="Editor/CharacterEditor/TimeLine/Name"]
+margin_top = 5.0
+margin_right = 130.0
+margin_bottom = 19.0
+rect_min_size = Vector2( 130, 0 )
+text = "Name: "
+
+[node name="LineEdit" type="LineEdit" parent="Editor/CharacterEditor/TimeLine/Name"]
+margin_left = 134.0
+margin_right = 274.0
+margin_bottom = 24.0
+rect_min_size = Vector2( 140, 0 )
+
+[node name="Color" type="HBoxContainer" parent="Editor/CharacterEditor/TimeLine"]
+margin_top = 28.0
+margin_right = 795.0
+margin_bottom = 42.0
+
+[node name="Label" type="Label" parent="Editor/CharacterEditor/TimeLine/Color"]
+margin_right = 130.0
+margin_bottom = 14.0
+rect_min_size = Vector2( 130, 0 )
+text = "Color: "
+
+[node name="ColorRect" type="ColorRect" parent="Editor/CharacterEditor/TimeLine/Color"]
+margin_left = 134.0
+margin_right = 184.0
+margin_bottom = 14.0
+rect_min_size = Vector2( 50, 0 )
+
+[node name="Description" type="HBoxContainer" parent="Editor/CharacterEditor/TimeLine"]
+margin_top = 46.0
+margin_right = 795.0
+margin_bottom = 146.0
+
+[node name="Label" type="Label" parent="Editor/CharacterEditor/TimeLine/Description"]
+margin_top = 43.0
+margin_right = 130.0
+margin_bottom = 57.0
+rect_min_size = Vector2( 130, 0 )
+text = "Description: "
+
+[node name="TextEdit" type="TextEdit" parent="Editor/CharacterEditor/TimeLine/Description"]
+margin_left = 134.0
+margin_right = 795.0
+margin_bottom = 100.0
+rect_min_size = Vector2( 100, 100 )
+size_flags_horizontal = 3
+
+[node name="FileName" type="HBoxContainer" parent="Editor/CharacterEditor/TimeLine"]
+margin_top = 150.0
+margin_right = 795.0
+margin_bottom = 174.0
+
+[node name="Label" type="Label" parent="Editor/CharacterEditor/TimeLine/FileName"]
+margin_top = 5.0
+margin_right = 130.0
+margin_bottom = 19.0
+rect_min_size = Vector2( 130, 0 )
+text = "File:"
+
+[node name="LineEdit" type="LineEdit" parent="Editor/CharacterEditor/TimeLine/FileName"]
+margin_left = 134.0
+margin_right = 795.0
+margin_bottom = 24.0
+rect_min_size = Vector2( 140, 0 )
+focus_mode = 0
+size_flags_horizontal = 3
+editable = false
+
+[node name="Actions" type="HBoxContainer" parent="Editor/CharacterEditor/TimeLine"]
+margin_top = 178.0
+margin_right = 795.0
+margin_bottom = 198.0
+
+[node name="SaveButton" type="Button" parent="Editor/CharacterEditor/TimeLine/Actions"]
+margin_right = 60.0
+margin_bottom = 20.0
+rect_min_size = Vector2( 60, 0 )
+text = "Save"
+[connection signal="pressed" from="HBoxContainer/EventButton" to="." method="_on_EventButton_pressed"]
+[connection signal="pressed" from="HBoxContainer/CharactersButton" to="." method="_on_CharactersButton_pressed"]
+[connection signal="pressed" from="Editor/EventTools/VBoxContainer/ButtonText" to="." method="_on_ButtonText_pressed"]
+[connection signal="pressed" from="Editor/EventTools/VBoxContainer/ButtonBackground" to="." method="_on_ButtonBackground_pressed"]
+[connection signal="pressed" from="Editor/EventTools/VBoxContainer/ButtonAudio" to="." method="_on_ButtonAudio_pressed"]
+[connection signal="pressed" from="Editor/EventTools/VBoxContainer/ButtonCharacterJoin" to="." method="_on_ButtonCharacter_pressed"]
+[connection signal="pressed" from="Editor/EventTools/VBoxContainer/ButtonCharacterLeave" to="." method="_on_ButtonCharacterLeave_pressed"]
+[connection signal="pressed" from="Editor/EventTools/VBoxContainer/ButtonFold" to="." method="_on_ButtonFold_pressed"]
+[connection signal="pressed" from="Editor/EventTools/VBoxContainer/ButtonUnfold" to="." method="_on_ButtonUnfold_pressed"]
+[connection signal="pressed" from="Editor/EventTools/VBoxContainer/ReloadResource" to="." method="_on_ReloadResource_pressed"]
+[connection signal="pressed" from="Editor/EventTools/VBoxContainer/ButtonSave" to="." method="_on_ButtonSave_pressed"]
+[connection signal="pressed" from="Editor/CharacterTools/Button" to="." method="_on_Button_pressed"]
+[connection signal="item_selected" from="Editor/CharacterTools/CharacterList/ItemList" to="." method="_on_ItemList_item_selected"]
+[connection signal="pressed" from="Editor/CharacterEditor/TimeLine/Actions/SaveButton" to="." method="_on_character_SaveButton_pressed"]

@@ -39,6 +39,7 @@ margin_right = 1786.0
 margin_bottom = 30.0
 
 [node name="VisibleToggle" parent="VBoxContainer/Header" instance=ExtResource( 2 )]
+self_modulate = Color( 0, 0, 0, 0 )
 
 [node name="TextureRect" type="TextureRect" parent="VBoxContainer/Header"]
 margin_left = 34.0
