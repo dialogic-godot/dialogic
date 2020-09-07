@@ -2,9 +2,7 @@ tool
 extends PanelContainer
 
 var editor_reference
-var editorPopup
-var available_positions = ['left', 'middle', 'right'] #TODO: I should use this or enum instead of hard coding the position options. 
-var character_selected = ''
+var available_positions = ['left', 'middle', 'right']
 
 onready var position_selector = $VBoxContainer/Header/MenuPosition
 
@@ -19,31 +17,32 @@ func _ready():
 	var positionMenu = position_selector.get_popup()
 	positionMenu.connect("id_pressed", self, "_on_position_selected")
 	$VBoxContainer/Header/VisibleToggle.disabled()
-	
-func _on_position_selected(option):
-  set_character_position(option)
+	$VBoxContainer/Header/CharacterDropdown.get_popup().connect("index_pressed", self, '_on_character_selected')
 
-func load_character_position(name):
-	print('Loading character joining in: ', name)
-	var index_position = 0
-	match name:
-		'left':
-			index_position = 0
-		'middle':
-			index_position = 1
-		'right':
-			index_position = 2
-	set_character_position(index_position)
 
-func set_character_position(index):
-	match index:
-		0:
-			event_data['position'] = 'left'
-			position_selector.text = 'Left'
-		1:
-			event_data['position'] = 'middle'
-			position_selector.text = 'Middle'
-		2:
-			event_data['position'] = 'right'
-			position_selector.text = 'Right'
-	return event_data['position']
+func _on_MenuCharacter_about_to_show():
+	var Dropdown = $VBoxContainer/Header/CharacterDropdown
+	Dropdown.get_popup().clear()
+	var index = 0
+	for c in editor_reference.get_character_list():
+		Dropdown.get_popup().add_item(c['name'])
+		Dropdown.get_popup().set_item_metadata(index, {'file': c['file'], 'color': Color('#ffffff')})
+		index += 1
+
+func _on_character_selected(index):
+	var text = $VBoxContainer/Header/CharacterDropdown.get_popup().get_item_text(index)
+	var metadata = $VBoxContainer/Header/CharacterDropdown.get_popup().get_item_metadata(index)
+	$VBoxContainer/Header/CharacterDropdown.text = text
+	event_data['character'] = metadata['file']
+
+func _on_position_selected(index):
+	var selected = position_selector.get_popup().get_item_text(index)
+	$VBoxContainer/Header/MenuPosition.text = selected
+	event_data['position'] = selected.to_lower()
+
+func load_data(data):
+	if data['position'] != '':
+		$VBoxContainer/Header/MenuPosition.text = data['position'].capitalize()
+	if data['character'] != '':
+		$VBoxContainer/Header/CharacterDropdown.text = editor_reference.get_character_name(data['character'])
+	event_data = data

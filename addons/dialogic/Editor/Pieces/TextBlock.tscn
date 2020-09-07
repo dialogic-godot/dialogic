@@ -48,7 +48,7 @@ margin_bottom = 30.0
 texture = ExtResource( 3 )
 stretch_mode = 6
 
-[node name="MenuButton" type="MenuButton" parent="VBoxContainer/Header"]
+[node name="CharacterDropdown" type="MenuButton" parent="VBoxContainer/Header"]
 margin_left = 60.0
 margin_right = 140.0
 margin_bottom = 30.0
@@ -83,5 +83,5 @@ rect_min_size = Vector2( 0, 80 )
 size_flags_horizontal = 3
 size_flags_vertical = 3
 show_line_numbers = true
-[connection signal="about_to_show" from="VBoxContainer/Header/MenuButton" to="." method="_on_MenuButton_about_to_show"]
+[connection signal="about_to_show" from="VBoxContainer/Header/CharacterDropdown" to="." method="_on_MenuButton_about_to_show"]
 [connection signal="text_changed" from="VBoxContainer/TextEdit" to="." method="_on_TextEdit_text_changed"]

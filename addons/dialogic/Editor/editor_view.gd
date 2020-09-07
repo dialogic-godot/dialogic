@@ -1,12 +1,6 @@
 tool
-#class_name DialogGraphEditorView
 extends Control
 
-"""
-The graph editor shown in the bottom panel. When a DialogNode is selected, its DialogResource
-is added as a child of the main editor view so it's editable by the user and removed (but not
-deleted) when the DialogGraph is deselected.
-"""
 var plugin_reference
 
 var undo_redo: UndoRedo
@@ -16,6 +10,14 @@ var testing = true
 var WORKING_DIR = "res://dialogic"
 var CHAR_DIR = WORKING_DIR + "/characters"
 onready var Timeline = $Editor/EventEditor/TimeLine
+onready var CharacterList = $Editor/CharacterTools/CharacterList/ItemList
+onready var CharacterEditor = {
+	'editor': $Editor/CharacterEditor/Container,
+	'name': $Editor/CharacterEditor/Container/Name/LineEdit,
+	'description': $Editor/CharacterEditor/Container/Description/TextEdit,
+	'file': $Editor/CharacterEditor/Container/FileName/LineEdit,
+	'color': $Editor/CharacterEditor/Container/Color/ColorPickerButton
+}
 
 func _ready():
 	if testing_mode == false:
@@ -27,6 +29,7 @@ func _ready():
 	editor_file_dialog = EditorFileDialog.new()
 	plugin_reference.get_editor_interface().get_editor_viewport().add_child(editor_file_dialog)
 	$Editor.visible = true
+	$Editor/CharacterEditor/Container.visible = false
 	load_nodes("res://addons/dialogic/demo/example.json")
 	refresh_character_list()
 	
@@ -56,9 +59,9 @@ func _on_ButtonAudio_pressed():
 
 func create_text_node(data):
 	var piece = load("res://addons/dialogic/Editor/Pieces/TextBlock.tscn").instance()
-	piece.load_data(data)
 	piece.editor_reference = self
 	Timeline.add_child(piece)
+	piece.load_data(data)
 	return piece
 
 func create_scene_node(path=''):
@@ -68,11 +71,11 @@ func create_scene_node(path=''):
 	Timeline.add_child(piece)
 	return piece
 
-func create_character_join_node(character='', action='join', joining_position = 0, clear_all=false):
+func create_character_join_node(data):
 	var piece = load("res://addons/dialogic/Editor/Pieces/CharacterJoinBlock.tscn").instance()
-	piece.load_character_position(joining_position)
-	piece.editor_reference = self
+	piece.editor_reference = self	
 	Timeline.add_child(piece)
+	piece.load_data(data)
 	return piece
 
 func create_character_leave_node(character='', action='leave', joining_position = 0, clear_all=false):
@@ -139,12 +142,13 @@ func load_nodes(path):
 			{'text', 'character'}:
 				create_text_node(i)
 				print('text-element: ', i)
+			
 			{'background'}:
 				create_scene_node(i['background'])
 				print('background-element: ', i)
 				
 			{'character', 'action', 'position'}:
-				create_character_join_node(i['character'], i['action'],i['position'])
+				create_character_join_node(i)
 				print('character-join-element: ', i)
 			
 			{'audio', 'file'}:
@@ -158,12 +162,17 @@ func load_nodes(path):
 
 # Character Creation
 func _on_Button_pressed():
-	create_character()
+	var file = create_character()
 	refresh_character_list()
-	
+	for i in range(CharacterList.get_item_count()):
+		if CharacterList.get_item_metadata(i)['file'] == file:
+			CharacterList.select(i)
+			_on_ItemList_item_selected(i)
+
 func create_character():
 	var character_file = 'character-' + str(rand_range(1000,9999)) + '-' + str(OS.get_unix_time()) + '.json'
 	var character = {
+		'color': 'ffffff',
 		'id': character_file
 	}
 	var directory = Directory.new()
@@ -175,55 +184,87 @@ func create_character():
 	file.open(CHAR_DIR + '/' + character_file, File.WRITE)
 	file.store_line(to_json(character))
 	file.close()
+	return character_file
 
 func get_character_list():
 	var characters = []
 	for file in listdir(CHAR_DIR):
 		var data = load_json(CHAR_DIR + '/' + file)
+		var color = Color("#ffffff")
+		if data.has('color'):
+			color = Color('#' + data['color'])
 		if data.has('name'):
-			characters.append(data['name'])
+			characters.append({'name':data['name'], 'color': color, 'file': file })
 		else:
-			characters.append(data['id'])
+			characters.append({'name':data['id'], 'color': color, 'file': file })
 	return characters
 
 func refresh_character_list():
-	var CharacterList = $Editor/CharacterTools/CharacterList/ItemList
 	CharacterList.clear()
 	var icon = load("res://addons/dialogic/Images/character.svg")
+	var index = 0
 	for c in get_character_list():
-		CharacterList.add_item(c, icon)
+		CharacterList.add_item(c['name'], icon)
+		CharacterList.set_item_metadata(index, {'file': c['file'], 'index': index})
+		CharacterList.set_item_icon_modulate(index, c['color'])
+		index += 1
 
 func _on_ItemList_item_selected(index):
-	var selected = $Editor/CharacterTools/CharacterList/ItemList.get_item_text(index)
-	for file in listdir(CHAR_DIR):
-		var data = load_json(CHAR_DIR + '/' + file)
-		if data['id'] == selected:
-			load_character_editor(CHAR_DIR + '/' + file)
-		else:
-			if data.has('name'):
-				if data['name'] == selected:
-					load_character_editor(CHAR_DIR + '/' + file)
+	var selected = CharacterList.get_item_text(index)
+	var file = CharacterList.get_item_metadata(index)['file']
+	var data = load_json(CHAR_DIR + '/' + file)
+	$Editor/CharacterEditor/Container.visible = true
+	load_character_editor(data)
 
-func load_character_editor(path):
-	var data = load_json(path)
-	print(data)
-	$Editor/CharacterEditor/TimeLine/FileName/LineEdit.text = data['id']
+func load_character_editor(data):
+	clear_character_editor()
+	CharacterEditor['file'].text = data['id']
 	if data.has('name'):
-		$Editor/CharacterEditor/TimeLine/Name/LineEdit.text = data['name']
-	else:
-		$Editor/CharacterEditor/TimeLine/Name/LineEdit.text = ''
+		CharacterEditor['name'].text = data['name']
+	if data.has('description'):
+		CharacterEditor['description'].text = data['description']
+	if data.has('color'):
+		CharacterEditor['color'].color = Color('#' + data['color'])
 
 func _on_character_SaveButton_pressed():
-	var path = CHAR_DIR + '/' + $Editor/CharacterEditor/TimeLine/FileName/LineEdit.text
+	var path = CHAR_DIR + '/' + CharacterEditor['file'].text
 	var info_to_save = {
-		'name': $Editor/CharacterEditor/TimeLine/Name/LineEdit.text,
-		'id': $Editor/CharacterEditor/TimeLine/FileName/LineEdit.text
+		'name': CharacterEditor['name'].text,
+		'id': CharacterEditor['file'].text,
+		'description': CharacterEditor['description'].text,
+		'color': CharacterEditor['color'].color.to_html()
 	}
 	var file = File.new()
 	file.open(path, File.WRITE)
 	file.store_line(to_json(info_to_save))
 	file.close()
 	refresh_character_list()
+
+func get_character_name(file):
+	var data = load_json(CHAR_DIR + '/' + file)
+	if data.has('name'):
+		return data['name']
+
+func clear_character_editor():
+	CharacterEditor['file'].text = ''
+	CharacterEditor['name'].text = ''
+	CharacterEditor['description'].text = ''
+	CharacterEditor['color'].color = Color('#ffffff')
+
+func _on_RemoveConfirmation_confirmed():
+	print('remove')
+	var selected = $Editor/CharacterTools/CharacterList/ItemList.get_selected_items()[0]
+	var file = $Editor/CharacterTools/CharacterList/ItemList.get_item_metadata(selected)['file']
+	print('Remove ', $Editor/CharacterTools/CharacterList/ItemList.get_item_metadata(selected)['file'])
+	var dir = Directory.new()
+	dir.remove(CHAR_DIR + '/' + file)
+	$Editor/CharacterEditor/Container.visible = false
+	clear_character_editor()
+	refresh_character_list()
+
+
+func _on_DeleteButton_pressed():
+	$RemoveConfirmation.popup_centered()
 
 # Generic functions
 func listdir(path):
@@ -251,6 +292,7 @@ func load_json(path):
 	if data_parse.error != OK:
 		return
 	return data_parse.result
+
 
 # Godot dialog
 func godot_dialog():

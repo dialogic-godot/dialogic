@@ -15,19 +15,28 @@ var event_data = {
 func _ready():
 	connect("gui_input", self, '_on_gui_input')
 	$VBoxContainer/TextEdit.set("rect_min_size", Vector2(0, 80))
-	print(editor_reference)
-	$VBoxContainer/Header/MenuButton.get_popup().connect("index_pressed", self, '_on_character_selected')
+	$VBoxContainer/Header/CharacterDropdown.get_popup().connect("index_pressed", self, '_on_character_selected')
 	update_preview()
 
 func _on_MenuButton_about_to_show():
-	$VBoxContainer/Header/MenuButton.get_popup().clear()
+	var Dropdown = $VBoxContainer/Header/CharacterDropdown
+	Dropdown.get_popup().clear()
+	var index = 0
 	for c in editor_reference.get_character_list():
-		$VBoxContainer/Header/MenuButton.get_popup().add_item(c)
+		Dropdown.get_popup().add_item(c['name'])
+		if c.has('color'):
+			Dropdown.get_popup().set_item_metadata(index, {'file': c['file'],'color': c['color']})
+		else:
+			Dropdown.get_popup().set_item_metadata(index, {'file': c['file'], 'color': Color('#ffffff')})
+		index += 1
 
 func _on_character_selected(index):
-	var text = $VBoxContainer/Header/MenuButton.get_popup().get_item_text(index)
-	$VBoxContainer/Header/MenuButton.text = text
-	event_data['character'] = text
+	var text = $VBoxContainer/Header/CharacterDropdown.get_popup().get_item_text(index)
+	var metadata = $VBoxContainer/Header/CharacterDropdown.get_popup().get_item_metadata(index)
+	var color = metadata['color']
+	$VBoxContainer/Header/CharacterDropdown.text = text
+	event_data['character'] = metadata['file']
+	update_preview()
 
 func _on_TextEdit_text_changed():
 	event_data['text'] = $VBoxContainer/TextEdit.text
@@ -41,11 +50,14 @@ func load_text(text):
 func load_data(data):
 	event_data = data
 	$VBoxContainer/TextEdit.text = event_data['text']
-	if event_data['character'] != '':
-		$VBoxContainer/Header/MenuButton.text = event_data['character']
 	update_preview()
 
 func update_preview():
+	if editor_reference:
+		for c in editor_reference.get_character_list():
+			if c['file'] == event_data['character']:
+				$VBoxContainer/Header/CharacterDropdown.text = c['name']
+				$VBoxContainer/Header/TextureRect.set("self_modulate", c['color'])
 	var text = event_data['text']
 	if text == '':
 		return '...'
