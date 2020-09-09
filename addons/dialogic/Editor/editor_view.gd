@@ -12,11 +12,11 @@ var CHAR_DIR = WORKING_DIR + "/characters"
 onready var Timeline = $Editor/EventEditor/TimeLine
 onready var CharacterList = $Editor/CharacterTools/CharacterList/ItemList
 onready var CharacterEditor = {
-	'editor': $Editor/CharacterEditor/Container,
-	'name': $Editor/CharacterEditor/Container/Name/LineEdit,
-	'description': $Editor/CharacterEditor/Container/Description/TextEdit,
-	'file': $Editor/CharacterEditor/Container/FileName/LineEdit,
-	'color': $Editor/CharacterEditor/Container/Color/ColorPickerButton
+	'editor': $Editor/CharacterEditor/HBoxContainer/Container,
+	'name': $Editor/CharacterEditor/HBoxContainer/Container/Name/LineEdit,
+	'description': $Editor/CharacterEditor/HBoxContainer/Container/Description/TextEdit,
+	'file': $Editor/CharacterEditor/HBoxContainer/Container/FileName/LineEdit,
+	'color': $Editor/CharacterEditor/HBoxContainer/Container/Color/ColorPickerButton
 }
 
 func _ready():
@@ -29,7 +29,7 @@ func _ready():
 	editor_file_dialog = EditorFileDialog.new()
 	plugin_reference.get_editor_interface().get_editor_viewport().add_child(editor_file_dialog)
 	$Editor.visible = true
-	$Editor/CharacterEditor/Container.visible = false
+	$Editor/CharacterEditor/HBoxContainer/Container.visible = false
 	load_nodes("res://addons/dialogic/demo/example.json")
 	refresh_character_list()
 	
@@ -170,7 +170,7 @@ func _on_Button_pressed():
 			_on_ItemList_item_selected(i)
 
 func create_character():
-	var character_file = 'character-' + str(rand_range(1000,9999)) + '-' + str(OS.get_unix_time()) + '.json'
+	var character_file = 'character-' + str(OS.get_unix_time()) + '.json'
 	var character = {
 		'color': 'ffffff',
 		'id': character_file
@@ -213,7 +213,7 @@ func _on_ItemList_item_selected(index):
 	var selected = CharacterList.get_item_text(index)
 	var file = CharacterList.get_item_metadata(index)['file']
 	var data = load_json(CHAR_DIR + '/' + file)
-	$Editor/CharacterEditor/Container.visible = true
+	$Editor/CharacterEditor/HBoxContainer/Container.visible = true
 	load_character_editor(data)
 
 func load_character_editor(data):
@@ -258,7 +258,7 @@ func _on_RemoveConfirmation_confirmed():
 	print('Remove ', $Editor/CharacterTools/CharacterList/ItemList.get_item_metadata(selected)['file'])
 	var dir = Directory.new()
 	dir.remove(CHAR_DIR + '/' + file)
-	$Editor/CharacterEditor/Container.visible = false
+	$Editor/CharacterEditor/HBoxContainer/Container.visible = false
 	clear_character_editor()
 	refresh_character_list()
 

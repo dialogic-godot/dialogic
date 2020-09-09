@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://addons/dialogic/Editor/editor_view.gd" type="Script" id=1]
 [ext_resource path="res://addons/dialogic/Images/dialog.svg" type="Texture" id=2]
@@ -10,6 +10,7 @@
 [ext_resource path="res://addons/dialogic/Images/audio-event.svg" type="Texture" id=8]
 [ext_resource path="res://addons/dialogic/Images/open-icon.svg" type="Texture" id=9]
 [ext_resource path="res://addons/dialogic/Images/closed-icon.svg" type="Texture" id=10]
+[ext_resource path="res://addons/dialogic/Images/portraits/df-1.png" type="Texture" id=11]
 
 [sub_resource type="StyleBoxFlat" id=1]
 content_margin_left = 5.0
@@ -267,46 +268,52 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Container" type="VBoxContainer" parent="Editor/CharacterEditor"]
+[node name="HBoxContainer" type="HBoxContainer" parent="Editor/CharacterEditor"]
 margin_left = 5.0
 margin_top = 5.0
 margin_right = 800.0
-margin_bottom = 209.0
+margin_bottom = 536.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Container" type="VBoxContainer" parent="Editor/CharacterEditor/HBoxContainer"]
+margin_right = 395.0
+margin_bottom = 531.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 9
 
-[node name="Name" type="HBoxContainer" parent="Editor/CharacterEditor/Container"]
-margin_right = 795.0
+[node name="Name" type="HBoxContainer" parent="Editor/CharacterEditor/HBoxContainer/Container"]
+margin_right = 395.0
 margin_bottom = 24.0
 
-[node name="Label" type="Label" parent="Editor/CharacterEditor/Container/Name"]
+[node name="Label" type="Label" parent="Editor/CharacterEditor/HBoxContainer/Container/Name"]
 margin_top = 5.0
 margin_right = 130.0
 margin_bottom = 19.0
 rect_min_size = Vector2( 130, 0 )
 text = "Name: "
 
-[node name="LineEdit" type="LineEdit" parent="Editor/CharacterEditor/Container/Name"]
+[node name="LineEdit" type="LineEdit" parent="Editor/CharacterEditor/HBoxContainer/Container/Name"]
 margin_left = 134.0
 margin_right = 274.0
 margin_bottom = 24.0
 rect_min_size = Vector2( 140, 0 )
 
-[node name="Color" type="HBoxContainer" parent="Editor/CharacterEditor/Container"]
+[node name="Color" type="HBoxContainer" parent="Editor/CharacterEditor/HBoxContainer/Container"]
 margin_top = 28.0
-margin_right = 795.0
+margin_right = 395.0
 margin_bottom = 48.0
 
-[node name="Label" type="Label" parent="Editor/CharacterEditor/Container/Color"]
+[node name="Label" type="Label" parent="Editor/CharacterEditor/HBoxContainer/Container/Color"]
 margin_top = 3.0
 margin_right = 130.0
 margin_bottom = 17.0
 rect_min_size = Vector2( 130, 0 )
 text = "Color: "
 
-[node name="ColorPickerButton" type="ColorPickerButton" parent="Editor/CharacterEditor/Container/Color"]
+[node name="ColorPickerButton" type="ColorPickerButton" parent="Editor/CharacterEditor/HBoxContainer/Container/Color"]
 margin_left = 134.0
 margin_right = 194.0
 margin_bottom = 20.0
@@ -314,68 +321,105 @@ rect_min_size = Vector2( 60, 0 )
 color = Color( 1, 1, 1, 1 )
 edit_alpha = false
 
-[node name="Description" type="HBoxContainer" parent="Editor/CharacterEditor/Container"]
+[node name="Description" type="HBoxContainer" parent="Editor/CharacterEditor/HBoxContainer/Container"]
 margin_top = 52.0
-margin_right = 795.0
+margin_right = 395.0
 margin_bottom = 152.0
 
-[node name="Label" type="Label" parent="Editor/CharacterEditor/Container/Description"]
+[node name="Label" type="Label" parent="Editor/CharacterEditor/HBoxContainer/Container/Description"]
 margin_top = 43.0
 margin_right = 130.0
 margin_bottom = 57.0
 rect_min_size = Vector2( 130, 0 )
 text = "Description: "
 
-[node name="TextEdit" type="TextEdit" parent="Editor/CharacterEditor/Container/Description"]
+[node name="TextEdit" type="TextEdit" parent="Editor/CharacterEditor/HBoxContainer/Container/Description"]
 margin_left = 134.0
-margin_right = 795.0
+margin_right = 395.0
 margin_bottom = 100.0
 rect_min_size = Vector2( 100, 100 )
 size_flags_horizontal = 3
 
-[node name="FileName" type="HBoxContainer" parent="Editor/CharacterEditor/Container"]
+[node name="FileName" type="HBoxContainer" parent="Editor/CharacterEditor/HBoxContainer/Container"]
 margin_top = 156.0
-margin_right = 795.0
+margin_right = 395.0
 margin_bottom = 180.0
 
-[node name="Label" type="Label" parent="Editor/CharacterEditor/Container/FileName"]
+[node name="Label" type="Label" parent="Editor/CharacterEditor/HBoxContainer/Container/FileName"]
 margin_top = 5.0
 margin_right = 130.0
 margin_bottom = 19.0
 rect_min_size = Vector2( 130, 0 )
 text = "File:"
 
-[node name="LineEdit" type="LineEdit" parent="Editor/CharacterEditor/Container/FileName"]
+[node name="LineEdit" type="LineEdit" parent="Editor/CharacterEditor/HBoxContainer/Container/FileName"]
 margin_left = 134.0
-margin_right = 795.0
+margin_right = 395.0
 margin_bottom = 24.0
 rect_min_size = Vector2( 140, 0 )
 focus_mode = 0
 size_flags_horizontal = 3
 editable = false
 
-[node name="Actions" type="HBoxContainer" parent="Editor/CharacterEditor/Container"]
+[node name="Actions" type="HBoxContainer" parent="Editor/CharacterEditor/HBoxContainer/Container"]
 margin_top = 184.0
-margin_right = 795.0
+margin_right = 395.0
 margin_bottom = 204.0
 
-[node name="SaveButton" type="Button" parent="Editor/CharacterEditor/Container/Actions"]
+[node name="SaveButton" type="Button" parent="Editor/CharacterEditor/HBoxContainer/Container/Actions"]
 margin_right = 60.0
 margin_bottom = 20.0
 rect_min_size = Vector2( 60, 0 )
 text = "Save"
 
-[node name="Control" type="Control" parent="Editor/CharacterEditor/Container/Actions"]
+[node name="Control" type="Control" parent="Editor/CharacterEditor/HBoxContainer/Container/Actions"]
 margin_left = 64.0
-margin_right = 736.0
+margin_right = 336.0
 margin_bottom = 20.0
 size_flags_horizontal = 3
 
-[node name="DeleteButton" type="Button" parent="Editor/CharacterEditor/Container/Actions"]
-margin_left = 740.0
-margin_right = 795.0
+[node name="DeleteButton" type="Button" parent="Editor/CharacterEditor/HBoxContainer/Container/Actions"]
+margin_left = 340.0
+margin_right = 395.0
 margin_bottom = 20.0
 text = "Delete"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Editor/CharacterEditor/HBoxContainer"]
+margin_left = 399.0
+margin_right = 795.0
+margin_bottom = 531.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Control" type="Control" parent="Editor/CharacterEditor/HBoxContainer/VBoxContainer"]
+margin_right = 396.0
+margin_bottom = 507.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="TextureRect" type="TextureRect" parent="Editor/CharacterEditor/HBoxContainer/VBoxContainer/Control"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -94.5
+margin_top = -167.5
+margin_right = 94.5
+margin_bottom = 167.5
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 11 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Button" type="Button" parent="Editor/CharacterEditor/HBoxContainer/VBoxContainer"]
+margin_top = 511.0
+margin_right = 396.0
+margin_bottom = 531.0
+text = "Select Portrait"
 
 [node name="RemoveConfirmation" type="ConfirmationDialog" parent="."]
 margin_right = 325.0
@@ -399,6 +443,6 @@ __meta__ = {
 [connection signal="pressed" from="Editor/EventTools/VBoxContainer/ButtonSave" to="." method="_on_ButtonSave_pressed"]
 [connection signal="pressed" from="Editor/CharacterTools/Button" to="." method="_on_Button_pressed"]
 [connection signal="item_selected" from="Editor/CharacterTools/CharacterList/ItemList" to="." method="_on_ItemList_item_selected"]
-[connection signal="pressed" from="Editor/CharacterEditor/Container/Actions/SaveButton" to="." method="_on_character_SaveButton_pressed"]
-[connection signal="pressed" from="Editor/CharacterEditor/Container/Actions/DeleteButton" to="." method="_on_DeleteButton_pressed"]
+[connection signal="pressed" from="Editor/CharacterEditor/HBoxContainer/Container/Actions/SaveButton" to="." method="_on_character_SaveButton_pressed"]
+[connection signal="pressed" from="Editor/CharacterEditor/HBoxContainer/Container/Actions/DeleteButton" to="." method="_on_DeleteButton_pressed"]
 [connection signal="confirmed" from="RemoveConfirmation" to="." method="_on_RemoveConfirmation_confirmed"]
