@@ -8,9 +8,12 @@ var testing_mode = true
 var editor_file_dialog # EditorFileDialog
 var testing = true
 var WORKING_DIR = "res://dialogic"
+var DIALOG_DIR = WORKING_DIR + "/dialogs"
 var CHAR_DIR = WORKING_DIR + "/characters"
+var working_dialog_file = ''
 onready var Timeline = $Editor/EventEditor/TimeLine
-onready var CharacterList = $Editor/CharacterTools/CharacterList/ItemList
+onready var DialogList = $Editor/EventTools/DialogItemList
+onready var CharacterList = $Editor/CharacterTools/CharacterItemList
 onready var CharacterEditor = {
 	'editor': $Editor/CharacterEditor/HBoxContainer/Container,
 	'name': $Editor/CharacterEditor/HBoxContainer/Container/Name/LineEdit,
@@ -30,8 +33,15 @@ func _ready():
 	plugin_reference.get_editor_interface().get_editor_viewport().add_child(editor_file_dialog)
 	$Editor.visible = true
 	$Editor/CharacterEditor/HBoxContainer/Container.visible = false
-	load_nodes("res://addons/dialogic/demo/example.json")
+	
+	$HBoxContainer/EventButton.set('self_modulate', Color('#6a9dea'))
+	#load_nodes()
+	# Refreshing the list of items
 	refresh_character_list()
+	refresh_dialog_list()
+	# Making the dialog editor the default
+	hide_editors()
+	_on_EventButton_pressed()
 	
 func _on_piece_connect(from, from_slot, to, to_slot):
 	$Editor/GraphEdit.connect_node(from, from_slot, to, to_slot)
@@ -49,7 +59,7 @@ func _on_ButtonBackground_pressed():
 	create_scene_node()
 
 func _on_ButtonCharacter_pressed():
-	create_character_join_node('')
+	create_character_join_node({'position': {"0":false,"1":false,"2":false,"3":false,"4":false}, 'character': '', 'action': 'join'})
 
 func _on_ButtonCharacterLeave_pressed():
 	create_character_leave_node('')
@@ -111,18 +121,23 @@ func clear_timeline():
 # Reload button
 func _on_ReloadResource_pressed():
 	clear_timeline()
-	load_nodes("res://addons/dialogic/demo/example.json")
-	print('Reloaded')
+	load_nodes(working_dialog_file)
+	print('[!] Reloaded -----')
 
 # Saving and loading
 func _on_ButtonSave_pressed():
-	save_nodes("res://addons/dialogic/demo/example.json")
+	save_nodes(working_dialog_file)
 
 func save_nodes(path):
 	print('Saving resource --------')
-	var info_to_save = []
+	var info_to_save = {
+		'metadata': {
+			'dialogic-version': '0.4'
+		},
+		'events': []
+	}
 	for event in Timeline.get_children():
-		info_to_save.append(event.event_data)
+		info_to_save['events'].append(event.event_data)
 	
 	var file = File.new()
 	file.open(path, File.WRITE)
@@ -132,8 +147,10 @@ func save_nodes(path):
 	print(info_to_save)
 	
 func load_nodes(path):
+	working_dialog_file = path
+	
 	var data = load_json(path)
-
+	data = data['events']
 	for i in data:
 		match i:
 			{'text'}:
@@ -158,7 +175,39 @@ func load_nodes(path):
 			{'character', 'action'}:
 				create_character_leave_node(i['character'], i['action'])
 				print('character-leave-block: ', i)
+	
 	fold_all_nodes()
+
+# Conversation files
+func get_dialog_list():
+	var dialogs = []
+	for file in listdir(DIALOG_DIR):
+		var color = Color("#ffffff")
+		dialogs.append({'name':file.split('.')[0], 'color': color, 'file': file })
+		#var data = load_json(DIALOG_DIR + '/' + file)
+		#if data.has('color'):
+		#	color = Color('#' + data['color'])
+		#if data.has('name'):
+		#	characters.append({'name':data['name'], 'color': color, 'file': file })
+		#else:
+		#	characters.append({'name':data['id'], 'color': color, 'file': file })
+	return dialogs
+
+func refresh_dialog_list():
+	DialogList.clear()
+	var icon = load("res://addons/dialogic/Images/Script.svg")
+	var index = 0
+	for c in get_dialog_list():
+		DialogList.add_item(c['name'], icon)
+		DialogList.set_item_metadata(index, {'file': c['file'], 'index': index})
+		index += 1
+
+
+func _on_DialogItemList_item_selected(index):
+	var selected = DialogList.get_item_text(index)
+	var file = DialogList.get_item_metadata(index)['file']
+	clear_timeline()
+	load_nodes(DIALOG_DIR + '/' + file)
 
 # Character Creation
 func _on_Button_pressed():
@@ -253,9 +302,9 @@ func clear_character_editor():
 
 func _on_RemoveConfirmation_confirmed():
 	print('remove')
-	var selected = $Editor/CharacterTools/CharacterList/ItemList.get_selected_items()[0]
-	var file = $Editor/CharacterTools/CharacterList/ItemList.get_item_metadata(selected)['file']
-	print('Remove ', $Editor/CharacterTools/CharacterList/ItemList.get_item_metadata(selected)['file'])
+	var selected = CharacterList.get_selected_items()[0]
+	var file = CharacterList.get_item_metadata(selected)['file']
+	print('Remove ', CharacterList.get_item_metadata(selected)['file'])
 	var dir = Directory.new()
 	dir.remove(CHAR_DIR + '/' + file)
 	$Editor/CharacterEditor/HBoxContainer/Container.visible = false
@@ -322,6 +371,8 @@ func _on_ButtonUnfold_pressed():
 	unfold_all_nodes()
 
 func hide_editors():
+	$HBoxContainer/EventButton.set('self_modulate', Color('#dedede'))
+	$HBoxContainer/CharactersButton.set('self_modulate', Color('#dedede'))
 	for n in $Editor.get_children():
 		n.visible = false
 
@@ -329,8 +380,10 @@ func _on_EventButton_pressed():
 	hide_editors()
 	$Editor/EventTools.visible = true
 	$Editor/EventEditor.visible = true
+	$HBoxContainer/EventButton.set('self_modulate', Color('#6a9dea'))
 
 func _on_CharactersButton_pressed():
 	hide_editors()
 	$Editor/CharacterTools.visible = true
 	$Editor/CharacterEditor.visible = true
+	$HBoxContainer/CharactersButton.set('self_modulate', Color('#6a9dea'))
