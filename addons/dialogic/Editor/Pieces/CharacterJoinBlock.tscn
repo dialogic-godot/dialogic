@@ -32,7 +32,7 @@ __meta__ = {
 margin_left = 6.0
 margin_top = 6.0
 margin_right = 1792.0
-margin_bottom = 46.0
+margin_bottom = 36.0
 size_flags_horizontal = 3
 
 [node name="Header" type="HBoxContainer" parent="VBoxContainer"]

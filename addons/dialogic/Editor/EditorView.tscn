@@ -82,6 +82,7 @@ icon = ExtResource( 7 )
 flat = true
 
 [node name="ButtonSave" type="Button" parent="HBoxContainer"]
+visible = false
 margin_left = 68.0
 margin_right = 109.0
 margin_bottom = 28.0
@@ -89,14 +90,15 @@ text = "Save"
 align = 0
 
 [node name="ReloadResource" type="Button" parent="HBoxContainer"]
-margin_left = 109.0
-margin_right = 164.0
+visible = false
+margin_left = 68.0
+margin_right = 123.0
 margin_bottom = 28.0
 text = "Reload"
 align = 0
 
 [node name="Control" type="Control" parent="HBoxContainer"]
-margin_left = 164.0
+margin_left = 68.0
 margin_right = 885.0
 margin_bottom = 28.0
 size_flags_horizontal = 3
@@ -135,6 +137,7 @@ margin_right = 180.0
 margin_bottom = 270.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
+allow_rmb_select = true
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Editor/EventTools"]
 margin_top = 274.0
@@ -426,10 +429,41 @@ dialog_text = "Are you sure you want to remove this character?
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="RenameDialog" type="AcceptDialog" parent="."]
+visible = true
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -250.0
+margin_top = -44.0
+margin_right = 250.0
+margin_bottom = 44.0
+rect_min_size = Vector2( 500, 0 )
+window_title = "Renaming Dialog"
+resizable = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="LineEdit" type="LineEdit" parent="RenameDialog"]
+anchor_left = -0.00237569
+anchor_top = -0.00809895
+anchor_right = -0.00237569
+anchor_bottom = -0.00809895
+margin_left = 9.18785
+margin_top = 8.71271
+margin_right = 493.188
+margin_bottom = 52.7127
+__meta__ = {
+"_edit_use_anchors_": false
+}
 [connection signal="pressed" from="HBoxContainer/EventButton" to="." method="_on_EventButton_pressed"]
 [connection signal="pressed" from="HBoxContainer/CharactersButton" to="." method="_on_CharactersButton_pressed"]
 [connection signal="pressed" from="HBoxContainer/ButtonSave" to="." method="_on_ButtonSave_pressed"]
 [connection signal="pressed" from="HBoxContainer/ReloadResource" to="." method="_on_ReloadResource_pressed"]
+[connection signal="item_rmb_selected" from="Editor/EventTools/DialogItemList" to="." method="_on_DialogItemList_item_rmb_selected"]
 [connection signal="item_selected" from="Editor/EventTools/DialogItemList" to="." method="_on_DialogItemList_item_selected"]
 [connection signal="pressed" from="Editor/EventTools/VBoxContainer/ButtonText" to="." method="_on_ButtonText_pressed"]
 [connection signal="pressed" from="Editor/EventTools/VBoxContainer/ButtonBackground" to="." method="_on_ButtonBackground_pressed"]
@@ -443,3 +477,4 @@ __meta__ = {
 [connection signal="pressed" from="Editor/CharacterEditor/HBoxContainer/Container/Actions/SaveButton" to="." method="_on_character_SaveButton_pressed"]
 [connection signal="pressed" from="Editor/CharacterEditor/HBoxContainer/Container/Actions/DeleteButton" to="." method="_on_DeleteButton_pressed"]
 [connection signal="confirmed" from="RemoveConfirmation" to="." method="_on_RemoveConfirmation_confirmed"]
+[connection signal="confirmed" from="RenameDialog" to="." method="_on_RenameDialog_confirmed"]

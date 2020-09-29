@@ -11,6 +11,9 @@ var WORKING_DIR = "res://dialogic"
 var DIALOG_DIR = WORKING_DIR + "/dialogs"
 var CHAR_DIR = WORKING_DIR + "/characters"
 var working_dialog_file = ''
+var timer_duration = 200
+var timer_interval = 30
+var autosaving_hash
 onready var Timeline = $Editor/EventEditor/TimeLine
 onready var DialogList = $Editor/EventTools/DialogItemList
 onready var CharacterList = $Editor/CharacterTools/CharacterItemList
@@ -42,6 +45,12 @@ func _ready():
 	# Making the dialog editor the default
 	hide_editors()
 	_on_EventButton_pressed()
+
+func _process(delta):
+	timer_interval -= 1
+	if timer_interval < 0 :
+		timer_interval = timer_duration
+		_on_AutoSaver_timeout()
 	
 func _on_piece_connect(from, from_slot, to, to_slot):
 	$Editor/GraphEdit.connect_node(from, from_slot, to, to_slot)
@@ -128,8 +137,7 @@ func _on_ReloadResource_pressed():
 func _on_ButtonSave_pressed():
 	save_nodes(working_dialog_file)
 
-func save_nodes(path):
-	print('Saving resource --------')
+func generate_save_data():
 	var info_to_save = {
 		'metadata': {
 			'dialogic-version': '0.4'
@@ -138,13 +146,16 @@ func save_nodes(path):
 	}
 	for event in Timeline.get_children():
 		info_to_save['events'].append(event.event_data)
-	
+	return info_to_save
+
+func save_nodes(path):
+	print('Saving resource --------')
+	var info_to_save = generate_save_data()
 	var file = File.new()
 	file.open(path, File.WRITE)
 	file.store_line(to_json(info_to_save))
 	file.close()
-
-	print(info_to_save)
+	autosaving_hash = info_to_save.hash()
 	
 func load_nodes(path):
 	working_dialog_file = path
@@ -176,6 +187,7 @@ func load_nodes(path):
 				create_character_leave_node(i['character'], i['action'])
 				print('character-leave-block: ', i)
 	
+	autosaving_hash = generate_save_data().hash()
 	fold_all_nodes()
 
 # Conversation files
@@ -202,12 +214,29 @@ func refresh_dialog_list():
 		DialogList.set_item_metadata(index, {'file': c['file'], 'index': index})
 		index += 1
 
-
 func _on_DialogItemList_item_selected(index):
 	var selected = DialogList.get_item_text(index)
 	var file = DialogList.get_item_metadata(index)['file']
 	clear_timeline()
 	load_nodes(DIALOG_DIR + '/' + file)
+
+# Renaming dialogs
+
+func _on_DialogItemList_item_rmb_selected(index, at_position):
+	print(index)
+	$RenameDialog.register_text_enter($RenameDialog/LineEdit)
+	$RenameDialog/LineEdit.text = get_filename_from_path(working_dialog_file)
+	$RenameDialog.set_as_minsize()
+	$RenameDialog.popup_centered()
+
+func _on_RenameDialog_confirmed():
+	var new_name = $RenameDialog/LineEdit.text + '.json'
+	var dir = Directory.new()
+	var new_full_path = DIALOG_DIR + '/' + new_name
+	dir.rename(working_dialog_file, new_full_path)
+	working_dialog_file = new_full_path
+	$RenameDialog/LineEdit.text = ''
+	refresh_dialog_list()
 
 # Character Creation
 func _on_Button_pressed():
@@ -289,6 +318,18 @@ func _on_character_SaveButton_pressed():
 	file.close()
 	refresh_character_list()
 
+func get_character_data(file):
+	var data = load_json(CHAR_DIR + '/' + file)
+	return data
+
+func get_character_color(file):
+	var data = load_json(CHAR_DIR + '/' + file)
+	if is_instance_valid(data):
+		if data.has('color'):
+			return data['color']
+	else:
+		return "ffffff"
+
 func get_character_name(file):
 	var data = load_json(CHAR_DIR + '/' + file)
 	if data.has('name'):
@@ -310,7 +351,6 @@ func _on_RemoveConfirmation_confirmed():
 	$Editor/CharacterEditor/HBoxContainer/Container.visible = false
 	clear_character_editor()
 	refresh_character_list()
-
 
 func _on_DeleteButton_pressed():
 	$RemoveConfirmation.popup_centered()
@@ -342,6 +382,11 @@ func load_json(path):
 		return
 	return data_parse.result
 
+func get_filename_from_path(path):
+	if OS.get_name() == "Windows":
+		return path.split('/')[-1].replace('.json', '')
+	else:
+		return path.split('\\')[-1].replace('.json', '')
 
 # Godot dialog
 func godot_dialog():
@@ -362,7 +407,6 @@ func fold_all_nodes():
 func unfold_all_nodes():
 	for event in Timeline.get_children():
 		event.get_node("VBoxContainer/Header/VisibleToggle").set_pressed(true)
-		print(event.get_node("VBoxContainer/Header/VisibleToggle"))
 
 func _on_ButtonFold_pressed():
 	fold_all_nodes()
@@ -387,3 +431,10 @@ func _on_CharactersButton_pressed():
 	$Editor/CharacterTools.visible = true
 	$Editor/CharacterEditor.visible = true
 	$HBoxContainer/CharactersButton.set('self_modulate', Color('#6a9dea'))
+
+# Auto saving
+
+func _on_AutoSaver_timeout():
+	if autosaving_hash != generate_save_data().hash():
+		save_nodes(working_dialog_file)
+		print('[!] Changes detected. Auto saving. ', autosaving_hash)
