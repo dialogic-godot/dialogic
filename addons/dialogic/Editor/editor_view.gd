@@ -5,7 +5,10 @@ var plugin_reference
 
 var undo_redo: UndoRedo
 var testing_mode = true
+
 var editor_file_dialog # EditorFileDialog
+var file_picker_data = {'method': '', 'node': self}
+
 var testing = true
 var WORKING_DIR = "res://dialogic"
 var DIALOG_DIR = WORKING_DIR + "/dialogs"
@@ -15,7 +18,7 @@ var timer_duration = 200
 var timer_interval = 30
 var autosaving_hash
 onready var Timeline = $Editor/EventEditor/TimeLine
-onready var DialogList = $Editor/EventTools/DialogItemList
+onready var DialogList = $Editor/EventTools/VBoxContainer2/DialogItemList
 onready var CharacterList = $Editor/CharacterTools/CharacterItemList
 onready var CharacterEditor = {
 	'editor': $Editor/CharacterEditor/HBoxContainer/Container,
@@ -97,16 +100,18 @@ func create_character_join_node(data):
 	piece.load_data(data)
 	return piece
 
-func create_character_leave_node(character='', action='leave', joining_position = 0, clear_all=false):
+func create_character_leave_node(data):
 	var piece = load("res://addons/dialogic/Editor/Pieces/CharacterLeaveBlock.tscn").instance()
 	piece.editor_reference = self
 	Timeline.add_child(piece)
+	piece.load_data(data)
 	return piece
 
-func create_audio_node(audio='', file=''):
+func create_audio_node(data):
 	var piece = load("res://addons/dialogic/Editor/Pieces/AudioBlock.tscn").instance()
 	piece.editor_reference = self
 	Timeline.add_child(piece)
+	piece.load_data(data)
 	return piece
 
 # ordering blocks in timeline
@@ -180,11 +185,11 @@ func load_nodes(path):
 				print('character-join-element: ', i)
 			
 			{'audio', 'file'}:
-				create_audio_node(i['audio'], i['file'])
+				create_audio_node(i)
 				print('audio-block: ', i)
 			
 			{'character', 'action'}:
-				create_character_leave_node(i['character'], i['action'])
+				create_character_leave_node(i)
 				print('character-leave-block: ', i)
 	
 	autosaving_hash = generate_save_data().hash()
@@ -393,8 +398,24 @@ func godot_dialog():
 	editor_file_dialog.mode = EditorFileDialog.MODE_OPEN_FILE
 	editor_file_dialog.clear_filters()
 	editor_file_dialog.popup_centered_ratio(0.75)
-	
 	return editor_file_dialog
+
+func godot_dialog_connect(who, method_name):
+	var signal_name = "file_selected"
+	# Checking if previous connection exists, if it does, disconnect it.
+	if editor_file_dialog.is_connected(
+		signal_name,
+		file_picker_data['node'],
+		file_picker_data['method']):
+			editor_file_dialog.disconnect(
+				signal_name,
+				file_picker_data['node'],
+				file_picker_data['method']
+			)
+	# Connect new signal
+	editor_file_dialog.connect(signal_name, who, method_name, [who])
+	file_picker_data['method'] = method_name
+	file_picker_data['node'] = who
 
 func _on_file_selected(path):
 	print(path)

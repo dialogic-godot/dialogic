@@ -1,9 +1,10 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://addons/dialogic/Editor/Pieces/AudioBlock.gd" type="Script" id=1]
 [ext_resource path="res://addons/dialogic/Editor/Pieces/Common/VisibleToggle.tscn" type="PackedScene" id=2]
 [ext_resource path="res://addons/dialogic/Images/audio-event.svg" type="Texture" id=3]
 [ext_resource path="res://addons/dialogic/Editor/Pieces/Common/PieceExtraSettings.tscn" type="PackedScene" id=4]
+[ext_resource path="res://addons/dialogic/Images/play.svg" type="Texture" id=5]
 
 [sub_resource type="StyleBoxFlat" id=1]
 content_margin_left = 6.0
@@ -55,15 +56,18 @@ margin_right = 117.0
 margin_bottom = 22.0
 text = "  Audio   "
 
-[node name="MenuButton" type="MenuButton" parent="VBoxContainer/Header"]
+[node name="ButtonAudio" type="Button" parent="VBoxContainer/Header"]
 margin_left = 121.0
-margin_right = 221.0
+margin_right = 145.0
 margin_bottom = 30.0
-rect_min_size = Vector2( 100, 0 )
-text = "[All]"
-flat = false
-align = 0
-items = [ "All", null, 0, false, false, 0, 0, null, "", false ]
+text = "..."
+
+[node name="ButtonPreviewPlay" type="Button" parent="VBoxContainer/Header"]
+margin_left = 149.0
+margin_right = 183.0
+margin_bottom = 30.0
+disabled = true
+icon = ExtResource( 5 )
 
 [node name="Preview" type="Label" parent="VBoxContainer/Header"]
 visible = false
@@ -75,10 +79,12 @@ custom_colors/font_color = Color( 1, 1, 1, 0.513726 )
 text = "    ..."
 
 [node name="Spacer" type="Control" parent="VBoxContainer/Header"]
-margin_left = 225.0
+margin_left = 187.0
 margin_right = 1745.0
 margin_bottom = 30.0
 size_flags_horizontal = 3
 
 [node name="OptionButton" parent="VBoxContainer/Header" instance=ExtResource( 4 )]
 items = [ "Move Up", null, 0, false, false, 0, 0, null, "", false, "Move Down", null, 0, false, false, 1, 0, null, "", false, "", null, 0, false, false, 2, 0, null, "", true, "Remove", null, 0, false, false, 3, 0, null, "", false ]
+[connection signal="pressed" from="VBoxContainer/Header/ButtonAudio" to="." method="_on_ButtonAudio_pressed"]
+[connection signal="pressed" from="VBoxContainer/Header/ButtonPreviewPlay" to="." method="_on_ButtonPreviewPlay_pressed"]

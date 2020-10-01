@@ -18,7 +18,9 @@ func _ready():
 func _on_ImageButton_pressed():
 	var file_dialog = editor_reference.godot_dialog()
 	file_dialog.add_filter("*.png, *.jpg, *.jpeg, *.tga, *.svg, *.svgz, *.bmp, *.webp;Image")
-	file_dialog.connect("file_selected", self, "_on_file_selected", [self])
+	#file_dialog.connect("file_selected", self, "_on_file_selected", [self])
+	editor_reference.godot_dialog_connect(self, "_on_file_selected")
+	
 
 func _on_file_selected(path, target):
 	print('here')

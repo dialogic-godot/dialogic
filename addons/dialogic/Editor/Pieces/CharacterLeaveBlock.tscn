@@ -55,7 +55,7 @@ margin_right = 169.0
 margin_bottom = 22.0
 text = "  Character Leave"
 
-[node name="MenuButton" type="MenuButton" parent="VBoxContainer/Header"]
+[node name="CharacterDropdown" type="MenuButton" parent="VBoxContainer/Header"]
 margin_left = 173.0
 margin_right = 273.0
 margin_bottom = 30.0
@@ -82,3 +82,4 @@ size_flags_horizontal = 3
 
 [node name="OptionButton" parent="VBoxContainer/Header" instance=ExtResource( 4 )]
 items = [ "Move Up", null, 0, false, false, 0, 0, null, "", false, "Move Down", null, 0, false, false, 1, 0, null, "", false, "", null, 0, false, false, 2, 0, null, "", true, "Remove", null, 0, false, false, 3, 0, null, "", false ]
+[connection signal="about_to_show" from="VBoxContainer/Header/CharacterDropdown" to="." method="_on_MenuButton_about_to_show"]
