@@ -1,4 +1,4 @@
-# Dialogic v0.4 ![Godot v3.2](https://img.shields.io/badge/godot-v3.2-%23478cbf)
+# Dialogic v0.5 ![Godot v3.2](https://img.shields.io/badge/godot-v3.2-%23478cbf)
 Create dialogs, characters and scenes to display conversations in your Godot games. 
 
 ![Screenshot](https://coppolaemilio.com/images/thumbnail/dialogic-2.png)
@@ -8,6 +8,8 @@ The plugin is not working right now, make sure to follow the repo for the next u
 
 
 ## Changelog
+v0.5 - WIP
+
 v0.4 - Dialogic
  - Changed how the main editor works, instead of being a graphedit it is now an event timeline.
  - Renamed the plugin to Dialogic. Thanks to Òscar for always knowing how to name things. 
