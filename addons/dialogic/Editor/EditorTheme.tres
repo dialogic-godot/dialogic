@@ -1,0 +1,36 @@
+[gd_resource type="Theme" load_steps=2 format=2]
+
+[sub_resource type="StyleBoxFlat" id=1]
+content_margin_left = 20.0
+content_margin_right = 20.0
+content_margin_top = 40.0
+bg_color = Color( 0.105882, 0.105882, 0.105882, 0.678431 )
+border_width_top = 30
+border_color = Color( 0.2, 0.345098, 0.576471, 1 )
+corner_detail = 10
+expand_margin_bottom = 10.0
+shadow_color = Color( 0, 0, 0, 0.121569 )
+shadow_size = 4
+shadow_offset = Vector2( 0, 5 )
+anti_aliasing = false
+
+[resource]
+GraphNode/colors/close_color = Color( 1, 1, 1, 1 )
+GraphNode/colors/resizer_color = Color( 1, 1, 1, 1 )
+GraphNode/colors/title_color = Color( 1, 1, 1, 1 )
+GraphNode/constants/close_offset = 25
+GraphNode/constants/port_offset = 0
+GraphNode/constants/separation = -10
+GraphNode/constants/title_offset = 25
+GraphNode/fonts/title_font = null
+GraphNode/icons/close = null
+GraphNode/icons/port = null
+GraphNode/icons/resizer = null
+GraphNode/styles/breakpoint = null
+GraphNode/styles/comment = null
+GraphNode/styles/commentfocus = null
+GraphNode/styles/defaultfocus = SubResource( 1 )
+GraphNode/styles/defaultframe = SubResource( 1 )
+GraphNode/styles/frame = SubResource( 1 )
+GraphNode/styles/position = null
+GraphNode/styles/selectedframe = SubResource( 1 )

@@ -1,0 +1,106 @@
+[
+	{
+		"background": "res://addons/dialogic/Images/background/placeholder-2.png"
+  },
+  {
+    "character": "Iteb",
+    "action": "join",
+		"position": "middle"
+  },
+	{
+    "character": "Iteb",
+		"text": "Hello, my name is {Iteb}. This demo has everything you might need for your dialogs. Shall we start?"
+  },
+  {
+    "character": "Zas",
+    "action": "join",
+		"position": "left"
+  },
+	{
+		"character": "Zas",
+		"text": "Hey {Kubuk}, do you know what this is?"
+  },
+  {
+    "character": "Kubuk",
+    "action": "join",
+    "position": "right"
+  },
+	{
+		"character": "Kubuk",
+		"text": "Maybe! It this about the dialog addon?"
+	},
+	{
+		"character": "Iteb",
+		"text": "Is everything okay?"
+	},
+	{
+		"character": "Zas",
+		"text": "Yes {Iteb}, everything is under control. Thanks for asking~!\nSo {Kubuk}, do you see it now? Do you see anything different?"
+	},
+	{
+		"character": "Kubuk",
+		"text": "Maybe... Now that you mention it, I can actually see your face!",
+	},
+	{
+		"character": "Iteb",
+		"text": "That\"s right, we all have a representation! If you would like to modify this you can do so by creating your characters resources. Remember to read the documentation!"
+	},
+  {
+    "character": "",
+    "action": "leaveall"
+  },
+	{
+		"text": "The dwarf left in a hurry. [color=#ffdb5e]Armok[/color] might have something in mind..."
+	},
+	{
+		"character": "Kubuk",
+		"text": "I\"m actually still here... Hello?"
+	},
+  {
+    "character": "",
+    "action": "leaveall"
+  },
+	{
+		"question": "Choose your favourite color",
+		"options": [
+			{ "label": "Red", "value": "#f7411d"},
+			{ "label": "Blue", "value": "#1da0f7"}
+		],
+		"variable": "fav_color"
+	},
+	{
+		"text": "You picked the color [color=fav_color.value][fav_color][/color]"
+	},
+	{
+		"question": "Are you sure you want the color [fav_color]?",
+		"options": [
+			{ "label": "No, let me pick again", "value": "0"},
+			{ "label": "Yes, I love it", "value": "1"}
+		],
+		"checkpoint": "-3"
+	},
+	{
+		"input": "Now the name you want to set.",
+		"window_title": "Write your name",
+		"variable": "name"
+	},
+	{
+		"text": "So, your name is [name] and you like the color [color=fav_color.value][fav_color][/color]."
+	},
+	{
+		"name": "[color=fav_color.value][name][/color]",
+		"text": "I actually want to be able to pick more colors but you won\"t let me!"
+	},
+	{
+		"character": "Kubuk",
+		"text": "Maybe I should leave..."
+	},
+  {
+    "character": "",
+    "action": "leaveall"
+  },
+	{  
+		"name": "Dialog System",
+		"text": "It doesn\"t matter, this is only a demonstration!"
+	},
+]

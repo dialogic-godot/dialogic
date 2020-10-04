@@ -1,0 +1,10 @@
+[gd_resource type="Resource" load_steps=3 format=2]
+
+[ext_resource path="res://addons/dialogic/dialog_character_resource.gd" type="Script" id=1]
+[ext_resource path="res://addons/dialogic/Images/portraits/df-3.png" type="Texture" id=2]
+
+[resource]
+script = ExtResource( 1 )
+name = "Iteb"
+image = ExtResource( 2 )
+color = Color( 0.27451, 0.92549, 0.254902, 1 )

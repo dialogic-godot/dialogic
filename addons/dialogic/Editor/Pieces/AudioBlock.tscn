@@ -1,0 +1,99 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://addons/dialogic/Editor/Pieces/AudioBlock.gd" type="Script" id=1]
+[ext_resource path="res://addons/dialogic/Editor/Pieces/Common/VisibleToggle.tscn" type="PackedScene" id=2]
+[ext_resource path="res://addons/dialogic/Images/audio-event.svg" type="Texture" id=3]
+[ext_resource path="res://addons/dialogic/Editor/Pieces/Common/PieceExtraSettings.tscn" type="PackedScene" id=4]
+[ext_resource path="res://addons/dialogic/Images/play.svg" type="Texture" id=5]
+
+[sub_resource type="StyleBoxFlat" id=1]
+content_margin_left = 6.0
+content_margin_right = 6.0
+content_margin_top = 6.0
+content_margin_bottom = 6.0
+bg_color = Color( 0.176471, 0.278431, 0.407843, 1 )
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[node name="AudioBlock" type="PanelContainer"]
+margin_right = 1798.0
+margin_bottom = 42.0
+size_flags_horizontal = 3
+size_flags_vertical = 9
+custom_styles/panel = SubResource( 1 )
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+margin_left = 6.0
+margin_top = 6.0
+margin_right = 1792.0
+margin_bottom = 36.0
+size_flags_horizontal = 3
+
+[node name="Header" type="HBoxContainer" parent="VBoxContainer"]
+margin_right = 1786.0
+margin_bottom = 30.0
+
+[node name="VisibleToggle" parent="VBoxContainer/Header" instance=ExtResource( 2 )]
+self_modulate = Color( 0, 0, 0, 0 )
+
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/Header"]
+margin_left = 34.0
+margin_right = 56.0
+margin_bottom = 30.0
+texture = ExtResource( 3 )
+stretch_mode = 6
+
+[node name="Title" type="Label" parent="VBoxContainer/Header"]
+margin_left = 60.0
+margin_top = 8.0
+margin_right = 117.0
+margin_bottom = 22.0
+text = "  Audio   "
+
+[node name="Name" type="Label" parent="VBoxContainer/Header"]
+margin_left = 121.0
+margin_top = 8.0
+margin_right = 121.0
+margin_bottom = 22.0
+
+[node name="ButtonAudio" type="Button" parent="VBoxContainer/Header"]
+margin_left = 125.0
+margin_right = 149.0
+margin_bottom = 30.0
+text = "..."
+
+[node name="ButtonPreviewPlay" type="Button" parent="VBoxContainer/Header"]
+margin_left = 153.0
+margin_right = 187.0
+margin_bottom = 30.0
+disabled = true
+icon = ExtResource( 5 )
+
+[node name="Preview" type="Label" parent="VBoxContainer/Header"]
+visible = false
+margin_left = 103.0
+margin_top = 8.0
+margin_right = 131.0
+margin_bottom = 22.0
+custom_colors/font_color = Color( 1, 1, 1, 0.513726 )
+text = "    ..."
+
+[node name="Spacer" type="Control" parent="VBoxContainer/Header"]
+margin_left = 191.0
+margin_right = 1745.0
+margin_bottom = 30.0
+size_flags_horizontal = 3
+
+[node name="OptionButton" parent="VBoxContainer/Header" instance=ExtResource( 4 )]
+items = [ "Move Up", null, 0, false, false, 0, 0, null, "", false, "Move Down", null, 0, false, false, 1, 0, null, "", false, "", null, 0, false, false, 2, 0, null, "", true, "Remove", null, 0, false, false, 3, 0, null, "", false ]
+
+[node name="AudioPreview" type="AudioStreamPlayer" parent="."]
+[connection signal="pressed" from="VBoxContainer/Header/ButtonAudio" to="." method="_on_ButtonAudio_pressed"]
+[connection signal="pressed" from="VBoxContainer/Header/ButtonPreviewPlay" to="." method="_on_ButtonPreviewPlay_pressed"]
+[connection signal="finished" from="AudioPreview" to="." method="_on_AudioPreview_finished"]

@@ -1,0 +1,513 @@
+[gd_scene load_steps=15 format=2]
+
+[ext_resource path="res://addons/dialogic/Editor/editor_view.gd" type="Script" id=1]
+[ext_resource path="res://addons/dialogic/Images/dialog.svg" type="Texture" id=2]
+[ext_resource path="res://addons/dialogic/Images/character-join.svg" type="Texture" id=3]
+[ext_resource path="res://addons/dialogic/Images/scene.svg" type="Texture" id=4]
+[ext_resource path="res://addons/dialogic/Images/character-leave.svg" type="Texture" id=5]
+[ext_resource path="res://addons/dialogic/Images/Script.svg" type="Texture" id=6]
+[ext_resource path="res://addons/dialogic/Images/character.svg" type="Texture" id=7]
+[ext_resource path="res://addons/dialogic/Images/audio-event.svg" type="Texture" id=8]
+[ext_resource path="res://addons/dialogic/Images/open-icon.svg" type="Texture" id=9]
+[ext_resource path="res://addons/dialogic/Images/closed-icon.svg" type="Texture" id=10]
+[ext_resource path="res://addons/dialogic/Images/portraits/df-1.png" type="Texture" id=11]
+[ext_resource path="res://addons/dialogic/Images/change-scene.svg" type="Texture" id=12]
+
+[sub_resource type="StyleBoxFlat" id=1]
+content_margin_left = 5.0
+content_margin_right = 5.0
+content_margin_top = 5.0
+content_margin_bottom = 5.0
+bg_color = Color( 0.14902, 0.172549, 0.231373, 1 )
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color( 0.0980392, 0.113725, 0.152941, 1 )
+
+[sub_resource type="StyleBoxFlat" id=2]
+content_margin_left = 5.0
+content_margin_right = 5.0
+content_margin_top = 5.0
+content_margin_bottom = 5.0
+bg_color = Color( 0.2, 0.219608, 0.278431, 1 )
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color( 0.0980392, 0.113725, 0.152941, 1 )
+
+[node name="EditorView" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 8.0
+margin_top = 8.0
+margin_right = -8.0
+margin_bottom = -8.0
+rect_min_size = Vector2( 0, 200 )
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+anchor_right = 1.0
+margin_bottom = 27.0
+custom_constants/separation = 0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MenuButton" type="MenuButton" parent="HBoxContainer"]
+visible = false
+margin_right = 35.0
+margin_bottom = 28.0
+text = "File"
+items = [ "New dialog", null, 0, false, false, 0, 0, null, "", false ]
+
+[node name="EventButton" type="Button" parent="HBoxContainer"]
+margin_right = 34.0
+margin_bottom = 28.0
+focus_mode = 0
+icon = ExtResource( 6 )
+flat = true
+
+[node name="CharactersButton" type="Button" parent="HBoxContainer"]
+margin_left = 34.0
+margin_right = 68.0
+margin_bottom = 28.0
+focus_mode = 0
+icon = ExtResource( 7 )
+flat = true
+
+[node name="ButtonSave" type="Button" parent="HBoxContainer"]
+visible = false
+margin_left = 68.0
+margin_right = 109.0
+margin_bottom = 28.0
+text = "Save"
+align = 0
+
+[node name="ReloadResource" type="Button" parent="HBoxContainer"]
+visible = false
+margin_left = 68.0
+margin_right = 123.0
+margin_bottom = 28.0
+text = "Reload"
+align = 0
+
+[node name="Control" type="Control" parent="HBoxContainer"]
+margin_left = 68.0
+margin_right = 885.0
+margin_bottom = 28.0
+size_flags_horizontal = 3
+
+[node name="EditorLabel" type="Label" parent="HBoxContainer"]
+margin_left = 885.0
+margin_top = 7.0
+margin_right = 1008.0
+margin_bottom = 21.0
+text = "Dialogic Editor v0.1"
+
+[node name="Editor" type="HSplitContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 6.0
+margin_top = 38.0
+margin_right = -5.0
+margin_bottom = -5.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="EventTools" type="VSplitContainer" parent="Editor"]
+margin_right = 180.0
+margin_bottom = 541.0
+rect_min_size = Vector2( 180, 0 )
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="Editor/EventTools"]
+margin_right = 180.0
+margin_bottom = 180.0
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="Editor/EventTools/VBoxContainer2"]
+margin_right = 180.0
+margin_bottom = 14.0
+text = "Dialogs"
+
+[node name="DialogItemList" type="ItemList" parent="Editor/EventTools/VBoxContainer2"]
+margin_top = 18.0
+margin_right = 180.0
+margin_bottom = 180.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+allow_rmb_select = true
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Editor/EventTools"]
+margin_top = 192.0
+margin_right = 180.0
+margin_bottom = 541.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="LabelEvents" type="Label" parent="Editor/EventTools/VBoxContainer"]
+margin_right = 180.0
+margin_bottom = 14.0
+text = "Events"
+
+[node name="ButtonText" type="Button" parent="Editor/EventTools/VBoxContainer"]
+margin_top = 18.0
+margin_right = 180.0
+margin_bottom = 46.0
+text = "  Text Event"
+icon = ExtResource( 2 )
+align = 0
+
+[node name="ButtonBackground" type="Button" parent="Editor/EventTools/VBoxContainer"]
+margin_top = 50.0
+margin_right = 180.0
+margin_bottom = 78.0
+text = "  Scene Event"
+icon = ExtResource( 4 )
+align = 0
+
+[node name="ButtonChangeScene" type="Button" parent="Editor/EventTools/VBoxContainer"]
+margin_top = 82.0
+margin_right = 180.0
+margin_bottom = 110.0
+text = "  Change Scene"
+icon = ExtResource( 12 )
+align = 0
+
+[node name="ButtonAudio" type="Button" parent="Editor/EventTools/VBoxContainer"]
+margin_top = 114.0
+margin_right = 180.0
+margin_bottom = 142.0
+text = "  Audio Event"
+icon = ExtResource( 8 )
+align = 0
+
+[node name="ButtonCharacterJoin" type="Button" parent="Editor/EventTools/VBoxContainer"]
+margin_top = 146.0
+margin_right = 180.0
+margin_bottom = 174.0
+text = "  Character Join"
+icon = ExtResource( 3 )
+align = 0
+
+[node name="ButtonCharacterLeave" type="Button" parent="Editor/EventTools/VBoxContainer"]
+margin_top = 178.0
+margin_right = 180.0
+margin_bottom = 206.0
+text = "  Character Leave"
+icon = ExtResource( 5 )
+align = 0
+
+[node name="Separator" type="Panel" parent="Editor/EventTools/VBoxContainer"]
+self_modulate = Color( 1, 1, 1, 0 )
+margin_top = 210.0
+margin_right = 180.0
+margin_bottom = 217.065
+rect_min_size = Vector2( 0, 7.065 )
+
+[node name="LabelNodes" type="Label" parent="Editor/EventTools/VBoxContainer"]
+margin_top = 221.0
+margin_right = 180.0
+margin_bottom = 235.0
+text = "View"
+
+[node name="ButtonFold" type="Button" parent="Editor/EventTools/VBoxContainer"]
+margin_top = 239.0
+margin_right = 180.0
+margin_bottom = 267.0
+text = "Fold all"
+icon = ExtResource( 10 )
+align = 0
+
+[node name="ButtonUnfold" type="Button" parent="Editor/EventTools/VBoxContainer"]
+margin_top = 271.0
+margin_right = 180.0
+margin_bottom = 299.0
+text = "Unfold all"
+icon = ExtResource( 9 )
+align = 0
+
+[node name="LabelNodes2" type="Label" parent="Editor/EventTools/VBoxContainer"]
+margin_top = 303.0
+margin_right = 180.0
+margin_bottom = 317.0
+text = "Other"
+
+[node name="ButtonGDScript" type="Button" parent="Editor/EventTools/VBoxContainer"]
+margin_top = 321.0
+margin_right = 180.0
+margin_bottom = 349.0
+text = "  GDScript"
+icon = ExtResource( 6 )
+align = 0
+
+[node name="EventEditor" type="ScrollContainer" parent="Editor"]
+margin_left = 192.0
+margin_right = 997.0
+margin_bottom = 541.0
+custom_styles/bg = SubResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TimeLine" type="VBoxContainer" parent="Editor/EventEditor"]
+margin_left = 5.0
+margin_top = 5.0
+margin_right = 800.0
+margin_bottom = 5.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 9
+
+[node name="CharacterTools" type="VBoxContainer" parent="Editor"]
+visible = false
+margin_right = 180.0
+margin_bottom = 541.0
+rect_min_size = Vector2( 180, 0 )
+
+[node name="Button" type="Button" parent="Editor/CharacterTools"]
+margin_right = 180.0
+margin_bottom = 20.0
+text = "Add character +"
+
+[node name="CharacterItemList" type="ItemList" parent="Editor/CharacterTools"]
+margin_top = 24.0
+margin_right = 180.0
+margin_bottom = 541.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="CharacterEditor" type="ScrollContainer" parent="Editor"]
+visible = false
+margin_right = 997.0
+margin_bottom = 541.0
+custom_styles/bg = SubResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Editor/CharacterEditor"]
+margin_left = 5.0
+margin_top = 5.0
+margin_right = 992.0
+margin_bottom = 536.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Container" type="VBoxContainer" parent="Editor/CharacterEditor/HBoxContainer"]
+margin_right = 491.0
+margin_bottom = 531.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 9
+
+[node name="Name" type="HBoxContainer" parent="Editor/CharacterEditor/HBoxContainer/Container"]
+margin_right = 491.0
+margin_bottom = 24.0
+
+[node name="Label" type="Label" parent="Editor/CharacterEditor/HBoxContainer/Container/Name"]
+margin_top = 5.0
+margin_right = 130.0
+margin_bottom = 19.0
+rect_min_size = Vector2( 130, 0 )
+text = "Name: "
+
+[node name="LineEdit" type="LineEdit" parent="Editor/CharacterEditor/HBoxContainer/Container/Name"]
+margin_left = 134.0
+margin_right = 274.0
+margin_bottom = 24.0
+rect_min_size = Vector2( 140, 0 )
+
+[node name="Color" type="HBoxContainer" parent="Editor/CharacterEditor/HBoxContainer/Container"]
+margin_top = 28.0
+margin_right = 491.0
+margin_bottom = 48.0
+
+[node name="Label" type="Label" parent="Editor/CharacterEditor/HBoxContainer/Container/Color"]
+margin_top = 3.0
+margin_right = 130.0
+margin_bottom = 17.0
+rect_min_size = Vector2( 130, 0 )
+text = "Color: "
+
+[node name="ColorPickerButton" type="ColorPickerButton" parent="Editor/CharacterEditor/HBoxContainer/Container/Color"]
+margin_left = 134.0
+margin_right = 194.0
+margin_bottom = 20.0
+rect_min_size = Vector2( 60, 0 )
+color = Color( 1, 1, 1, 1 )
+edit_alpha = false
+
+[node name="Description" type="HBoxContainer" parent="Editor/CharacterEditor/HBoxContainer/Container"]
+margin_top = 52.0
+margin_right = 491.0
+margin_bottom = 152.0
+
+[node name="Label" type="Label" parent="Editor/CharacterEditor/HBoxContainer/Container/Description"]
+margin_top = 43.0
+margin_right = 130.0
+margin_bottom = 57.0
+rect_min_size = Vector2( 130, 0 )
+text = "Description: "
+
+[node name="TextEdit" type="TextEdit" parent="Editor/CharacterEditor/HBoxContainer/Container/Description"]
+margin_left = 134.0
+margin_right = 491.0
+margin_bottom = 100.0
+rect_min_size = Vector2( 100, 100 )
+size_flags_horizontal = 3
+
+[node name="FileName" type="HBoxContainer" parent="Editor/CharacterEditor/HBoxContainer/Container"]
+margin_top = 156.0
+margin_right = 491.0
+margin_bottom = 180.0
+
+[node name="Label" type="Label" parent="Editor/CharacterEditor/HBoxContainer/Container/FileName"]
+margin_top = 5.0
+margin_right = 130.0
+margin_bottom = 19.0
+rect_min_size = Vector2( 130, 0 )
+text = "File:"
+
+[node name="LineEdit" type="LineEdit" parent="Editor/CharacterEditor/HBoxContainer/Container/FileName"]
+margin_left = 134.0
+margin_right = 491.0
+margin_bottom = 24.0
+rect_min_size = Vector2( 140, 0 )
+focus_mode = 0
+size_flags_horizontal = 3
+editable = false
+
+[node name="Actions" type="HBoxContainer" parent="Editor/CharacterEditor/HBoxContainer/Container"]
+margin_top = 184.0
+margin_right = 491.0
+margin_bottom = 204.0
+
+[node name="SaveButton" type="Button" parent="Editor/CharacterEditor/HBoxContainer/Container/Actions"]
+margin_right = 60.0
+margin_bottom = 20.0
+rect_min_size = Vector2( 60, 0 )
+text = "Save"
+
+[node name="Control" type="Control" parent="Editor/CharacterEditor/HBoxContainer/Container/Actions"]
+margin_left = 64.0
+margin_right = 432.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+
+[node name="DeleteButton" type="Button" parent="Editor/CharacterEditor/HBoxContainer/Container/Actions"]
+margin_left = 436.0
+margin_right = 491.0
+margin_bottom = 20.0
+text = "Delete"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Editor/CharacterEditor/HBoxContainer"]
+margin_left = 495.0
+margin_right = 987.0
+margin_bottom = 531.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Control" type="Control" parent="Editor/CharacterEditor/HBoxContainer/VBoxContainer"]
+margin_right = 492.0
+margin_bottom = 507.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="TextureRect" type="TextureRect" parent="Editor/CharacterEditor/HBoxContainer/VBoxContainer/Control"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -94.5
+margin_top = -167.5
+margin_right = 94.5
+margin_bottom = 167.5
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 11 )
+expand = true
+stretch_mode = 5
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Button" type="Button" parent="Editor/CharacterEditor/HBoxContainer/VBoxContainer"]
+margin_top = 511.0
+margin_right = 492.0
+margin_bottom = 531.0
+text = "Select Portrait"
+
+[node name="RemoveConfirmation" type="ConfirmationDialog" parent="."]
+margin_right = 325.0
+margin_bottom = 88.0
+rect_min_size = Vector2( 250, 87.5 )
+dialog_text = "Are you sure you want to remove this character?
+(Can't be restored)"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="RenameDialog" type="AcceptDialog" parent="."]
+visible = true
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -250.0
+margin_top = -44.0
+margin_right = 250.0
+margin_bottom = 44.0
+rect_min_size = Vector2( 500, 0 )
+window_title = "Renaming Dialog"
+resizable = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="LineEdit" type="LineEdit" parent="RenameDialog"]
+anchor_left = -0.00237569
+anchor_top = -0.00809895
+anchor_right = -0.00237569
+anchor_bottom = -0.00809895
+margin_left = 9.18785
+margin_top = 8.71271
+margin_right = 493.188
+margin_bottom = 52.7127
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="AudioPreview" type="AudioStreamPlayer" parent="."]
+[connection signal="pressed" from="HBoxContainer/EventButton" to="." method="_on_EventButton_pressed"]
+[connection signal="pressed" from="HBoxContainer/CharactersButton" to="." method="_on_CharactersButton_pressed"]
+[connection signal="pressed" from="HBoxContainer/ButtonSave" to="." method="_on_ButtonSave_pressed"]
+[connection signal="pressed" from="HBoxContainer/ReloadResource" to="." method="_on_ReloadResource_pressed"]
+[connection signal="item_rmb_selected" from="Editor/EventTools/VBoxContainer2/DialogItemList" to="." method="_on_DialogItemList_item_rmb_selected"]
+[connection signal="item_selected" from="Editor/EventTools/VBoxContainer2/DialogItemList" to="." method="_on_DialogItemList_item_selected"]
+[connection signal="pressed" from="Editor/EventTools/VBoxContainer/ButtonText" to="." method="_on_ButtonText_pressed"]
+[connection signal="pressed" from="Editor/EventTools/VBoxContainer/ButtonBackground" to="." method="_on_ButtonBackground_pressed"]
+[connection signal="pressed" from="Editor/EventTools/VBoxContainer/ButtonChangeScene" to="." method="_on_ButtonBackground_pressed"]
+[connection signal="pressed" from="Editor/EventTools/VBoxContainer/ButtonAudio" to="." method="_on_ButtonAudio_pressed"]
+[connection signal="pressed" from="Editor/EventTools/VBoxContainer/ButtonCharacterJoin" to="." method="_on_ButtonCharacter_pressed"]
+[connection signal="pressed" from="Editor/EventTools/VBoxContainer/ButtonCharacterLeave" to="." method="_on_ButtonCharacterLeave_pressed"]
+[connection signal="pressed" from="Editor/EventTools/VBoxContainer/ButtonFold" to="." method="_on_ButtonFold_pressed"]
+[connection signal="pressed" from="Editor/EventTools/VBoxContainer/ButtonUnfold" to="." method="_on_ButtonUnfold_pressed"]
+[connection signal="pressed" from="Editor/EventTools/VBoxContainer/ButtonGDScript" to="." method="_on_ButtonBackground_pressed"]
+[connection signal="pressed" from="Editor/CharacterTools/Button" to="." method="_on_Button_pressed"]
+[connection signal="item_selected" from="Editor/CharacterTools/CharacterItemList" to="." method="_on_ItemList_item_selected"]
+[connection signal="pressed" from="Editor/CharacterEditor/HBoxContainer/Container/Actions/SaveButton" to="." method="_on_character_SaveButton_pressed"]
+[connection signal="pressed" from="Editor/CharacterEditor/HBoxContainer/Container/Actions/DeleteButton" to="." method="_on_DeleteButton_pressed"]
+[connection signal="confirmed" from="RemoveConfirmation" to="." method="_on_RemoveConfirmation_confirmed"]
+[connection signal="confirmed" from="RenameDialog" to="." method="_on_RenameDialog_confirmed"]
+[connection signal="finished" from="AudioPreview" to="." method="_on_AudioPreview_finished"]
