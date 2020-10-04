@@ -199,15 +199,16 @@ func load_nodes(path):
 func get_dialog_list():
 	var dialogs = []
 	for file in listdir(DIALOG_DIR):
-		var color = Color("#ffffff")
-		dialogs.append({'name':file.split('.')[0], 'color': color, 'file': file })
-		#var data = load_json(DIALOG_DIR + '/' + file)
-		#if data.has('color'):
-		#	color = Color('#' + data['color'])
-		#if data.has('name'):
-		#	characters.append({'name':data['name'], 'color': color, 'file': file })
-		#else:
-		#	characters.append({'name':data['id'], 'color': color, 'file': file })
+		if '.json' in file:
+			var color = Color("#ffffff")
+			dialogs.append({'name':file.split('.')[0], 'color': color, 'file': file })
+			#var data = load_json(DIALOG_DIR + '/' + file)
+			#if data.has('color'):
+			#	color = Color('#' + data['color'])
+			#if data.has('name'):
+			#	characters.append({'name':data['name'], 'color': color, 'file': file })
+			#else:
+			#	characters.append({'name':data['id'], 'color': color, 'file': file })
 	return dialogs
 
 func refresh_dialog_list():

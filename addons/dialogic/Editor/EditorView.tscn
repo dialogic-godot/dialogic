@@ -488,7 +488,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="AudioPreview" type="AudioStreamPlayer2D" parent="."]
+[node name="AudioPreview" type="AudioStreamPlayer" parent="."]
 [connection signal="pressed" from="HBoxContainer/EventButton" to="." method="_on_EventButton_pressed"]
 [connection signal="pressed" from="HBoxContainer/CharactersButton" to="." method="_on_CharactersButton_pressed"]
 [connection signal="pressed" from="HBoxContainer/ButtonSave" to="." method="_on_ButtonSave_pressed"]
@@ -510,3 +510,4 @@ __meta__ = {
 [connection signal="pressed" from="Editor/CharacterEditor/HBoxContainer/Container/Actions/DeleteButton" to="." method="_on_DeleteButton_pressed"]
 [connection signal="confirmed" from="RemoveConfirmation" to="." method="_on_RemoveConfirmation_confirmed"]
 [connection signal="confirmed" from="RenameDialog" to="." method="_on_RenameDialog_confirmed"]
+[connection signal="finished" from="AudioPreview" to="." method="_on_AudioPreview_finished"]

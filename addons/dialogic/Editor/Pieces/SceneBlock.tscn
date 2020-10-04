@@ -50,9 +50,9 @@ stretch_mode = 6
 [node name="Title" type="Label" parent="VBoxContainer/Header"]
 margin_left = 60.0
 margin_top = 8.0
-margin_right = 145.0
+margin_right = 165.0
 margin_bottom = 22.0
-text = "  Scene Block"
+text = "  Scene settings "
 
 [node name="Preview" type="Label" parent="VBoxContainer/Header"]
 visible = false
@@ -64,7 +64,7 @@ custom_colors/font_color = Color( 1, 1, 1, 0.513726 )
 text = "    ..."
 
 [node name="Spacer" type="Control" parent="VBoxContainer/Header"]
-margin_left = 149.0
+margin_left = 169.0
 margin_right = 1745.0
 margin_bottom = 30.0
 mouse_filter = 1
