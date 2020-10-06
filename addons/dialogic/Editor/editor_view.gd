@@ -17,7 +17,7 @@ var working_dialog_file = ''
 var timer_duration = 200
 var timer_interval = 30
 var autosaving_hash
-onready var Timeline = $Editor/EventEditor/TimeLine
+var Timeline
 onready var DialogList = $Editor/EventTools/VBoxContainer2/DialogItemList
 onready var CharacterList = $Editor/CharacterTools/CharacterItemList
 onready var CharacterEditor = {
@@ -36,7 +36,8 @@ func _ready():
 	
 	# Adding file dialog to get used by pieces
 	editor_file_dialog = EditorFileDialog.new()
-	plugin_reference.get_editor_interface().get_editor_viewport().add_child(editor_file_dialog)
+	#plugin_reference.get_editor_interface().get_editor_viewport().add_child(editor_file_dialog)
+	Timeline = $Editor/EventEditor/TimeLine
 	$Editor.visible = true
 	$Editor/CharacterEditor/HBoxContainer/Container.visible = false
 	
@@ -213,7 +214,7 @@ func get_dialog_list():
 
 func refresh_dialog_list():
 	DialogList.clear()
-	var icon = load("res://addons/dialogic/Images/Script.svg")
+	var icon = load("res://addons/dialogic/Images/timeline.svg")
 	var index = 0
 	for c in get_dialog_list():
 		DialogList.add_item(c['name'], icon)
@@ -460,3 +461,9 @@ func _on_AutoSaver_timeout():
 	if autosaving_hash != generate_save_data().hash():
 		save_nodes(working_dialog_file)
 		print('[!] Changes detected. Auto saving. ', autosaving_hash)
+
+
+func _on_Logo_gui_input(event):
+	# I should probably replace this with an "About Dialogic" dialog
+	if event is InputEventMouseButton and event.button_index == 1:
+		OS.shell_open("https://github.com/coppolaemilio/dialogic")

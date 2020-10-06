@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=18 format=2]
 
 [ext_resource path="res://addons/dialogic/Editor/editor_view.gd" type="Script" id=1]
 [ext_resource path="res://addons/dialogic/Images/dialog.svg" type="Texture" id=2]
@@ -12,6 +12,9 @@
 [ext_resource path="res://addons/dialogic/Images/closed-icon.svg" type="Texture" id=10]
 [ext_resource path="res://addons/dialogic/Images/portraits/df-1.png" type="Texture" id=11]
 [ext_resource path="res://addons/dialogic/Images/change-scene.svg" type="Texture" id=12]
+[ext_resource path="res://addons/dialogic/Images/Add.svg" type="Texture" id=13]
+[ext_resource path="res://addons/dialogic/Images/logo.png" type="Texture" id=14]
+[ext_resource path="res://addons/dialogic/Images/timeline.svg" type="Texture" id=15]
 
 [sub_resource type="StyleBoxFlat" id=1]
 content_margin_left = 5.0
@@ -54,7 +57,7 @@ __meta__ = {
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
 anchor_right = 1.0
-margin_bottom = 27.0
+margin_bottom = 28.0
 custom_constants/separation = 0
 __meta__ = {
 "_edit_use_anchors_": false
@@ -71,7 +74,7 @@ items = [ "New dialog", null, 0, false, false, 0, 0, null, "", false ]
 margin_right = 34.0
 margin_bottom = 28.0
 focus_mode = 0
-icon = ExtResource( 6 )
+icon = ExtResource( 15 )
 flat = true
 
 [node name="CharactersButton" type="Button" parent="HBoxContainer"]
@@ -81,6 +84,43 @@ margin_bottom = 28.0
 focus_mode = 0
 icon = ExtResource( 7 )
 flat = true
+
+[node name="ThemeButton" type="Button" parent="HBoxContainer"]
+margin_left = 68.0
+margin_right = 102.0
+margin_bottom = 28.0
+disabled = true
+icon = ExtResource( 2 )
+flat = true
+
+[node name="GlossaryButton" type="Button" parent="HBoxContainer"]
+margin_left = 102.0
+margin_right = 130.0
+margin_bottom = 28.0
+disabled = true
+icon = ExtResource( 13 )
+flat = true
+
+[node name="Label" type="Label" parent="HBoxContainer"]
+margin_left = 130.0
+margin_top = 7.0
+margin_right = 189.0
+margin_bottom = 21.0
+text = "      Fold  "
+
+[node name="ButtonFold" type="Button" parent="HBoxContainer"]
+margin_left = 189.0
+margin_right = 223.0
+margin_bottom = 28.0
+icon = ExtResource( 10 )
+align = 0
+
+[node name="ButtonUnfold" type="Button" parent="HBoxContainer"]
+margin_left = 223.0
+margin_right = 257.0
+margin_bottom = 28.0
+icon = ExtResource( 9 )
+align = 0
 
 [node name="ButtonSave" type="Button" parent="HBoxContainer"]
 visible = false
@@ -99,17 +139,20 @@ text = "Reload"
 align = 0
 
 [node name="Control" type="Control" parent="HBoxContainer"]
-margin_left = 68.0
-margin_right = 885.0
+margin_left = 257.0
+margin_right = 888.0
 margin_bottom = 28.0
 size_flags_horizontal = 3
 
-[node name="EditorLabel" type="Label" parent="HBoxContainer"]
-margin_left = 885.0
-margin_top = 7.0
+[node name="Logo" type="TextureRect" parent="HBoxContainer"]
+margin_left = 888.0
 margin_right = 1008.0
-margin_bottom = 21.0
-text = "Dialogic Editor v0.1"
+margin_bottom = 28.0
+rect_min_size = Vector2( 120, 0 )
+mouse_default_cursor_shape = 2
+texture = ExtResource( 14 )
+expand = true
+stretch_mode = 5
 
 [node name="Editor" type="HSplitContainer" parent="."]
 anchor_right = 1.0
@@ -129,24 +172,24 @@ rect_min_size = Vector2( 180, 0 )
 
 [node name="VBoxContainer2" type="VBoxContainer" parent="Editor/EventTools"]
 margin_right = 180.0
-margin_bottom = 180.0
+margin_bottom = 262.0
 size_flags_vertical = 3
 
-[node name="Label" type="Label" parent="Editor/EventTools/VBoxContainer2"]
+[node name="Button" type="Button" parent="Editor/EventTools/VBoxContainer2"]
 margin_right = 180.0
-margin_bottom = 14.0
-text = "Dialogs"
+margin_bottom = 20.0
+text = "Add timeline +"
 
 [node name="DialogItemList" type="ItemList" parent="Editor/EventTools/VBoxContainer2"]
-margin_top = 18.0
+margin_top = 24.0
 margin_right = 180.0
-margin_bottom = 180.0
+margin_bottom = 262.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 allow_rmb_select = true
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Editor/EventTools"]
-margin_top = 192.0
+margin_top = 274.0
 margin_right = 180.0
 margin_bottom = 541.0
 __meta__ = {
@@ -213,38 +256,16 @@ margin_right = 180.0
 margin_bottom = 217.065
 rect_min_size = Vector2( 0, 7.065 )
 
-[node name="LabelNodes" type="Label" parent="Editor/EventTools/VBoxContainer"]
+[node name="LabelNodes2" type="Label" parent="Editor/EventTools/VBoxContainer"]
 margin_top = 221.0
 margin_right = 180.0
 margin_bottom = 235.0
-text = "View"
-
-[node name="ButtonFold" type="Button" parent="Editor/EventTools/VBoxContainer"]
-margin_top = 239.0
-margin_right = 180.0
-margin_bottom = 267.0
-text = "Fold all"
-icon = ExtResource( 10 )
-align = 0
-
-[node name="ButtonUnfold" type="Button" parent="Editor/EventTools/VBoxContainer"]
-margin_top = 271.0
-margin_right = 180.0
-margin_bottom = 299.0
-text = "Unfold all"
-icon = ExtResource( 9 )
-align = 0
-
-[node name="LabelNodes2" type="Label" parent="Editor/EventTools/VBoxContainer"]
-margin_top = 303.0
-margin_right = 180.0
-margin_bottom = 317.0
 text = "Other"
 
 [node name="ButtonGDScript" type="Button" parent="Editor/EventTools/VBoxContainer"]
-margin_top = 321.0
+margin_top = 239.0
 margin_right = 180.0
-margin_bottom = 349.0
+margin_bottom = 267.0
 text = "  GDScript"
 icon = ExtResource( 6 )
 align = 0
@@ -487,12 +508,15 @@ margin_bottom = 52.7127
 __meta__ = {
 "_edit_use_anchors_": false
 }
-
-[node name="AudioPreview" type="AudioStreamPlayer" parent="."]
 [connection signal="pressed" from="HBoxContainer/EventButton" to="." method="_on_EventButton_pressed"]
 [connection signal="pressed" from="HBoxContainer/CharactersButton" to="." method="_on_CharactersButton_pressed"]
+[connection signal="pressed" from="HBoxContainer/ThemeButton" to="." method="_on_CharactersButton_pressed"]
+[connection signal="pressed" from="HBoxContainer/GlossaryButton" to="." method="_on_CharactersButton_pressed"]
+[connection signal="pressed" from="HBoxContainer/ButtonFold" to="." method="_on_ButtonFold_pressed"]
+[connection signal="pressed" from="HBoxContainer/ButtonUnfold" to="." method="_on_ButtonUnfold_pressed"]
 [connection signal="pressed" from="HBoxContainer/ButtonSave" to="." method="_on_ButtonSave_pressed"]
 [connection signal="pressed" from="HBoxContainer/ReloadResource" to="." method="_on_ReloadResource_pressed"]
+[connection signal="gui_input" from="HBoxContainer/Logo" to="." method="_on_Logo_gui_input"]
 [connection signal="item_rmb_selected" from="Editor/EventTools/VBoxContainer2/DialogItemList" to="." method="_on_DialogItemList_item_rmb_selected"]
 [connection signal="item_selected" from="Editor/EventTools/VBoxContainer2/DialogItemList" to="." method="_on_DialogItemList_item_selected"]
 [connection signal="pressed" from="Editor/EventTools/VBoxContainer/ButtonText" to="." method="_on_ButtonText_pressed"]
@@ -501,8 +525,6 @@ __meta__ = {
 [connection signal="pressed" from="Editor/EventTools/VBoxContainer/ButtonAudio" to="." method="_on_ButtonAudio_pressed"]
 [connection signal="pressed" from="Editor/EventTools/VBoxContainer/ButtonCharacterJoin" to="." method="_on_ButtonCharacter_pressed"]
 [connection signal="pressed" from="Editor/EventTools/VBoxContainer/ButtonCharacterLeave" to="." method="_on_ButtonCharacterLeave_pressed"]
-[connection signal="pressed" from="Editor/EventTools/VBoxContainer/ButtonFold" to="." method="_on_ButtonFold_pressed"]
-[connection signal="pressed" from="Editor/EventTools/VBoxContainer/ButtonUnfold" to="." method="_on_ButtonUnfold_pressed"]
 [connection signal="pressed" from="Editor/EventTools/VBoxContainer/ButtonGDScript" to="." method="_on_ButtonBackground_pressed"]
 [connection signal="pressed" from="Editor/CharacterTools/Button" to="." method="_on_Button_pressed"]
 [connection signal="item_selected" from="Editor/CharacterTools/CharacterItemList" to="." method="_on_ItemList_item_selected"]
@@ -510,4 +532,3 @@ __meta__ = {
 [connection signal="pressed" from="Editor/CharacterEditor/HBoxContainer/Container/Actions/DeleteButton" to="." method="_on_DeleteButton_pressed"]
 [connection signal="confirmed" from="RemoveConfirmation" to="." method="_on_RemoveConfirmation_confirmed"]
 [connection signal="confirmed" from="RenameDialog" to="." method="_on_RenameDialog_confirmed"]
-[connection signal="finished" from="AudioPreview" to="." method="_on_AudioPreview_finished"]
