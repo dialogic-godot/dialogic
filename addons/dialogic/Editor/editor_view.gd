@@ -37,7 +37,7 @@ func _ready():
 	# Adding file dialog to get used by pieces
 	editor_file_dialog = EditorFileDialog.new()
 	#plugin_reference.get_editor_interface().get_editor_viewport().add_child(editor_file_dialog)
-	Timeline = $Editor/EventEditor/TimeLine
+	Timeline = $Editor/TimelineArea/VBoxContainer/TimeLine
 	$Editor.visible = true
 	$Editor/CharacterEditor/HBoxContainer/Container.visible = false
 	
@@ -446,7 +446,7 @@ func hide_editors():
 func _on_EventButton_pressed():
 	hide_editors()
 	$Editor/EventTools.visible = true
-	$Editor/EventEditor.visible = true
+	$Editor/TimelineArea.visible = true
 	$HBoxContainer/EventButton.set('self_modulate', Color('#6a9dea'))
 
 func _on_CharactersButton_pressed():
