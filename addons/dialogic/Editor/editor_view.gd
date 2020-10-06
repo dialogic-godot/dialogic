@@ -17,7 +17,7 @@ var working_dialog_file = ''
 var timer_duration = 200
 var timer_interval = 30
 var autosaving_hash
-var Timeline
+onready var Timeline = $Editor/TimelineEditor/TimelineArea/TimeLine
 onready var DialogList = $Editor/EventTools/VBoxContainer2/DialogItemList
 onready var CharacterList = $Editor/CharacterTools/CharacterItemList
 onready var CharacterEditor = {
@@ -37,7 +37,6 @@ func _ready():
 	# Adding file dialog to get used by pieces
 	editor_file_dialog = EditorFileDialog.new()
 	#plugin_reference.get_editor_interface().get_editor_viewport().add_child(editor_file_dialog)
-	Timeline = $Editor/TimelineArea/VBoxContainer/TimeLine
 	$Editor.visible = true
 	$Editor/CharacterEditor/HBoxContainer/Container.visible = false
 	
@@ -446,7 +445,7 @@ func hide_editors():
 func _on_EventButton_pressed():
 	hide_editors()
 	$Editor/EventTools.visible = true
-	$Editor/TimelineArea.visible = true
+	$Editor/TimelineEditor.visible = true
 	$HBoxContainer/EventButton.set('self_modulate', Color('#6a9dea'))
 
 func _on_CharactersButton_pressed():
