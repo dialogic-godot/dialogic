@@ -9,6 +9,8 @@ var testing_mode = true
 var editor_file_dialog # EditorFileDialog
 var file_picker_data = {'method': '', 'node': self}
 
+var version_string = "0.5"
+
 var testing = true
 var WORKING_DIR = "res://dialogic"
 var DIALOG_DIR = WORKING_DIR + "/dialogs"
@@ -74,7 +76,7 @@ func _on_ButtonCharacter_pressed():
 	create_character_join_node({'position': {"0":false,"1":false,"2":false,"3":false,"4":false}, 'character': '', 'action': 'join'})
 
 func _on_ButtonCharacterLeave_pressed():
-	create_character_leave_node('')
+	create_character_leave_node({'action': 'leaveall','character': '[All]'})
 
 func _on_ButtonAudio_pressed():
 	create_audio_node('')
@@ -243,6 +245,32 @@ func _on_RenameDialog_confirmed():
 	working_dialog_file = new_full_path
 	$RenameDialog/LineEdit.text = ''
 	refresh_dialog_list()
+
+# Create timeline
+func _on_AddTimelineButton_pressed():
+	var file = create_timeline()
+	refresh_dialog_list()
+	#for i in range(CharacterList.get_item_count()):
+	#	if CharacterList.get_item_metadata(i)['file'] == file:
+	#		CharacterList.select(i)
+	#		_on_ItemList_item_selected(i)
+
+func create_timeline():
+	var timeline_file = 'timeline-' + str(OS.get_unix_time()) + '.json'
+	var timeline = {
+		"events": [],
+		"metadata":{"dialogic-version": version_string}
+	}
+	var directory = Directory.new()
+	if not directory.dir_exists(WORKING_DIR):
+		directory.make_dir(WORKING_DIR)
+	if not directory.dir_exists(DIALOG_DIR):
+		directory.make_dir(DIALOG_DIR)
+	var file = File.new()
+	file.open(DIALOG_DIR + '/' + timeline_file, File.WRITE)
+	file.store_line(to_json(timeline))
+	file.close()
+	return timeline_file
 
 # Character Creation
 func _on_Button_pressed():
@@ -460,7 +488,6 @@ func _on_AutoSaver_timeout():
 	if autosaving_hash != generate_save_data().hash():
 		save_nodes(working_dialog_file)
 		print('[!] Changes detected. Auto saving. ', autosaving_hash)
-
 
 func _on_Logo_gui_input(event):
 	# I should probably replace this with an "About Dialogic" dialog

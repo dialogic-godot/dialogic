@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=2]
+[gd_scene load_steps=20 format=2]
 
 [ext_resource path="res://addons/dialogic/Editor/editor_view.gd" type="Script" id=1]
 [ext_resource path="res://addons/dialogic/Images/dialog.svg" type="Texture" id=2]
@@ -12,9 +12,11 @@
 [ext_resource path="res://addons/dialogic/Images/closed-icon.svg" type="Texture" id=10]
 [ext_resource path="res://addons/dialogic/Images/portraits/df-1.png" type="Texture" id=11]
 [ext_resource path="res://addons/dialogic/Images/change-scene.svg" type="Texture" id=12]
-[ext_resource path="res://addons/dialogic/Images/Add.svg" type="Texture" id=13]
+[ext_resource path="res://addons/dialogic/Images/glossary.svg" type="Texture" id=13]
 [ext_resource path="res://addons/dialogic/Images/logo.png" type="Texture" id=14]
 [ext_resource path="res://addons/dialogic/Images/timeline.svg" type="Texture" id=15]
+[ext_resource path="res://addons/dialogic/Images/theme.svg" type="Texture" id=16]
+[ext_resource path="res://addons/dialogic/Images/character-tab.svg" type="Texture" id=17]
 
 [sub_resource type="StyleBoxFlat" id=1]
 content_margin_left = 5.0
@@ -84,7 +86,7 @@ margin_left = 34.0
 margin_right = 68.0
 margin_bottom = 28.0
 focus_mode = 0
-icon = ExtResource( 7 )
+icon = ExtResource( 17 )
 flat = true
 
 [node name="ThemeButton" type="Button" parent="HBoxContainer"]
@@ -92,34 +94,34 @@ margin_left = 68.0
 margin_right = 102.0
 margin_bottom = 28.0
 disabled = true
-icon = ExtResource( 2 )
+icon = ExtResource( 16 )
 flat = true
 
 [node name="GlossaryButton" type="Button" parent="HBoxContainer"]
 margin_left = 102.0
-margin_right = 130.0
+margin_right = 136.0
 margin_bottom = 28.0
 disabled = true
 icon = ExtResource( 13 )
 flat = true
 
 [node name="Label" type="Label" parent="HBoxContainer"]
-margin_left = 130.0
+margin_left = 136.0
 margin_top = 7.0
-margin_right = 189.0
+margin_right = 195.0
 margin_bottom = 21.0
 text = "      Fold  "
 
 [node name="ButtonFold" type="Button" parent="HBoxContainer"]
-margin_left = 189.0
-margin_right = 223.0
+margin_left = 195.0
+margin_right = 229.0
 margin_bottom = 28.0
 icon = ExtResource( 10 )
 align = 0
 
 [node name="ButtonUnfold" type="Button" parent="HBoxContainer"]
-margin_left = 223.0
-margin_right = 257.0
+margin_left = 229.0
+margin_right = 263.0
 margin_bottom = 28.0
 icon = ExtResource( 9 )
 align = 0
@@ -141,7 +143,7 @@ text = "Reload"
 align = 0
 
 [node name="Control" type="Control" parent="HBoxContainer"]
-margin_left = 257.0
+margin_left = 263.0
 margin_right = 888.0
 margin_bottom = 28.0
 size_flags_horizontal = 3
@@ -177,7 +179,7 @@ margin_right = 180.0
 margin_bottom = 541.0
 size_flags_vertical = 3
 
-[node name="Button" type="Button" parent="Editor/EventTools/VBoxContainer2"]
+[node name="AddTimelineButton" type="Button" parent="Editor/EventTools/VBoxContainer2"]
 margin_right = 180.0
 margin_bottom = 20.0
 text = "Add timeline +"
@@ -529,6 +531,7 @@ __meta__ = {
 [connection signal="pressed" from="HBoxContainer/ButtonSave" to="." method="_on_ButtonSave_pressed"]
 [connection signal="pressed" from="HBoxContainer/ReloadResource" to="." method="_on_ReloadResource_pressed"]
 [connection signal="gui_input" from="HBoxContainer/Logo" to="." method="_on_Logo_gui_input"]
+[connection signal="pressed" from="Editor/EventTools/VBoxContainer2/AddTimelineButton" to="." method="_on_AddTimelineButton_pressed"]
 [connection signal="item_rmb_selected" from="Editor/EventTools/VBoxContainer2/DialogItemList" to="." method="_on_DialogItemList_item_rmb_selected"]
 [connection signal="item_selected" from="Editor/EventTools/VBoxContainer2/DialogItemList" to="." method="_on_DialogItemList_item_selected"]
 [connection signal="pressed" from="Editor/TimelineEditor/EventContainer/HBoxContainer/ButtonText" to="." method="_on_ButtonText_pressed"]

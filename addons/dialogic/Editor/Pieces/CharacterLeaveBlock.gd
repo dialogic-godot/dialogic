@@ -7,7 +7,7 @@ var character_selected = ''
 # This is the information of this event and it will get parsed and saved to the JSON file.
 var event_data = {
 	'action': 'leaveall',
-	'character': '',
+	'character': '[All]',
 }
 
 func _ready():
