@@ -11,7 +11,7 @@ var file_picker_data = {'method': '', 'node': self}
 var version_string = "0.5"
 
 var WORKING_DIR = "res://dialogic"
-var DIALOG_DIR = WORKING_DIR + "/dialogs"
+var TIMELINE_DIR = WORKING_DIR + "/dialogs"
 var CHAR_DIR = WORKING_DIR + "/characters"
 var working_dialog_file = ''
 var timer_duration = 200
@@ -73,6 +73,8 @@ func _on_ButtonCharacterLeave_pressed():
 func _on_ButtonAudio_pressed():
 	create_event("AudioBlock", {'file': ''})
 
+func _on_ButtonChangeTimeline_pressed():
+	create_event("ChangeTimeline", {'change_timeline': ''})
 
 func create_event(scene, data):
 	var piece = load("res://addons/dialogic/Editor/Pieces/" + scene + ".tscn").instance()
@@ -148,30 +150,25 @@ func load_nodes(path):
 				create_event("AudioBlock", i)
 			{'character', 'action'}:
 				create_event("CharacterLeaveBlock", i)
+			{'change_timeline'}:
+				create_event("ChangeTimeline", i)
 	autosaving_hash = generate_save_data().hash()
 	fold_all_nodes()
 
 # Conversation files
-func get_dialog_list():
-	var dialogs = []
-	for file in listdir(DIALOG_DIR):
+func get_timeline_list():
+	var timelines = []
+	for file in listdir(TIMELINE_DIR):
 		if '.json' in file:
 			var color = Color("#ffffff")
-			dialogs.append({'name':file.split('.')[0], 'color': color, 'file': file })
-			#var data = load_json(DIALOG_DIR + '/' + file)
-			#if data.has('color'):
-			#	color = Color('#' + data['color'])
-			#if data.has('name'):
-			#	characters.append({'name':data['name'], 'color': color, 'file': file })
-			#else:
-			#	characters.append({'name':data['id'], 'color': color, 'file': file })
-	return dialogs
+			timelines.append({'name':file.split('.')[0], 'color': color, 'file': file })
+	return timelines
 
 func refresh_dialog_list():
 	DialogList.clear()
 	var icon = load("res://addons/dialogic/Images/timeline.svg")
 	var index = 0
-	for c in get_dialog_list():
+	for c in get_timeline_list():
 		DialogList.add_item(c['name'], icon)
 		DialogList.set_item_metadata(index, {'file': c['file'], 'index': index})
 		index += 1
@@ -180,7 +177,7 @@ func _on_DialogItemList_item_selected(index):
 	var selected = DialogList.get_item_text(index)
 	var file = DialogList.get_item_metadata(index)['file']
 	clear_timeline()
-	load_nodes(DIALOG_DIR + '/' + file)
+	load_nodes(TIMELINE_DIR + '/' + file)
 
 # Renaming dialogs
 
@@ -194,7 +191,7 @@ func _on_DialogItemList_item_rmb_selected(index, at_position):
 func _on_RenameDialog_confirmed():
 	var new_name = $RenameDialog/LineEdit.text + '.json'
 	var dir = Directory.new()
-	var new_full_path = DIALOG_DIR + '/' + new_name
+	var new_full_path = TIMELINE_DIR + '/' + new_name
 	dir.rename(working_dialog_file, new_full_path)
 	working_dialog_file = new_full_path
 	$RenameDialog/LineEdit.text = ''
@@ -218,10 +215,10 @@ func create_timeline():
 	var directory = Directory.new()
 	if not directory.dir_exists(WORKING_DIR):
 		directory.make_dir(WORKING_DIR)
-	if not directory.dir_exists(DIALOG_DIR):
-		directory.make_dir(DIALOG_DIR)
+	if not directory.dir_exists(TIMELINE_DIR):
+		directory.make_dir(TIMELINE_DIR)
 	var file = File.new()
-	file.open(DIALOG_DIR + '/' + timeline_file, File.WRITE)
+	file.open(TIMELINE_DIR + '/' + timeline_file, File.WRITE)
 	file.store_line(to_json(timeline))
 	file.close()
 	return timeline_file

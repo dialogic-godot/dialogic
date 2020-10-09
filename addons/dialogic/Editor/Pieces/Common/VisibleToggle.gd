@@ -39,7 +39,7 @@ func _on_VisibleToggle_toggled(button_pressed):
 				if index > 0:
 					node.hide()
 				index += 1
-			
-			current_piece.get_node("VBoxContainer/Header/Preview").text = current_piece.preview
+			if "preview" in current_piece:
+				current_piece.get_node("VBoxContainer/Header/Preview").text = current_piece.preview
 			current_piece.set("rect_size", Vector2(current_rect_size.x,0))
 	release_focus()

@@ -14,7 +14,6 @@ func _ready():
 	$VBoxContainer/Header/VisibleToggle.disabled()
 	$VBoxContainer/Header/CharacterDropdown.get_popup().connect("index_pressed", self, '_on_character_selected')
 
-
 func _on_MenuButton_about_to_show():
 	var Dropdown = $VBoxContainer/Header/CharacterDropdown
 	Dropdown.get_popup().clear()

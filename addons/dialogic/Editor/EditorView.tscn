@@ -11,7 +11,7 @@
 [ext_resource path="res://addons/dialogic/Images/open-icon.svg" type="Texture" id=9]
 [ext_resource path="res://addons/dialogic/Images/closed-icon.svg" type="Texture" id=10]
 [ext_resource path="res://addons/dialogic/Images/portraits/df-1.png" type="Texture" id=11]
-[ext_resource path="res://addons/dialogic/Images/change-scene.svg" type="Texture" id=12]
+[ext_resource path="res://addons/dialogic/Images/change-timeline.svg" type="Texture" id=12]
 [ext_resource path="res://addons/dialogic/Images/glossary.svg" type="Texture" id=13]
 [ext_resource path="res://addons/dialogic/Images/logo.png" type="Texture" id=14]
 [ext_resource path="res://addons/dialogic/Images/timeline.svg" type="Texture" id=15]
@@ -190,7 +190,7 @@ margin_right = 180.0
 margin_bottom = 541.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-items = [ "Example", ExtResource( 15 ), false, "Hello World", ExtResource( 15 ), false ]
+items = [ "Example", ExtResource( 15 ), false, "Hello World", ExtResource( 15 ), false, "test", ExtResource( 15 ), false, "timeline-1602109889", ExtResource( 15 ), false ]
 allow_rmb_select = true
 
 [node name="TimelineEditor" type="VBoxContainer" parent="Editor"]
@@ -258,17 +258,17 @@ text = "  Scene Event"
 icon = ExtResource( 4 )
 align = 0
 
-[node name="ButtonChangeScene" type="Button" parent="Editor/TimelineEditor/EventContainer/HBoxContainer"]
+[node name="ButtonChangeTimeline" type="Button" parent="Editor/TimelineEditor/EventContainer/HBoxContainer"]
 margin_left = 239.0
-margin_right = 371.0
+margin_right = 389.0
 margin_bottom = 28.0
-text = "  Change Scene"
+text = "  Change Timeline"
 icon = ExtResource( 12 )
 align = 0
 
 [node name="ButtonGDScript" type="Button" parent="Editor/TimelineEditor/EventContainer/HBoxContainer"]
-margin_left = 375.0
-margin_right = 475.0
+margin_left = 393.0
+margin_right = 493.0
 margin_bottom = 28.0
 text = "  GDScript"
 icon = ExtResource( 6 )
@@ -536,7 +536,7 @@ __meta__ = {
 [connection signal="item_selected" from="Editor/EventTools/VBoxContainer2/DialogItemList" to="." method="_on_DialogItemList_item_selected"]
 [connection signal="pressed" from="Editor/TimelineEditor/EventContainer/HBoxContainer/ButtonText" to="." method="_on_ButtonText_pressed"]
 [connection signal="pressed" from="Editor/TimelineEditor/EventContainer/HBoxContainer/ButtonBackground" to="." method="_on_ButtonBackground_pressed"]
-[connection signal="pressed" from="Editor/TimelineEditor/EventContainer/HBoxContainer/ButtonChangeScene" to="." method="_on_ButtonBackground_pressed"]
+[connection signal="pressed" from="Editor/TimelineEditor/EventContainer/HBoxContainer/ButtonChangeTimeline" to="." method="_on_ButtonChangeTimeline_pressed"]
 [connection signal="pressed" from="Editor/TimelineEditor/EventContainer/HBoxContainer/ButtonGDScript" to="." method="_on_ButtonBackground_pressed"]
 [connection signal="pressed" from="Editor/TimelineEditor/EventContainer/HBoxContainer2/ButtonCharacterJoin" to="." method="_on_ButtonCharacter_pressed"]
 [connection signal="pressed" from="Editor/TimelineEditor/EventContainer/HBoxContainer2/ButtonCharacterLeave" to="." method="_on_ButtonCharacterLeave_pressed"]
