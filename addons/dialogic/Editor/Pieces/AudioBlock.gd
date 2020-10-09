@@ -18,8 +18,7 @@ func _ready():
 
 
 func _on_ButtonAudio_pressed():
-	var file_dialog = editor_reference.godot_dialog()
-	file_dialog.add_filter("*.wav, *.ogg")
+	editor_reference.godot_dialog("*.wav, *.ogg")
 	editor_reference.godot_dialog_connect(self, "_on_file_selected")
 
 func _on_file_selected(path, target):

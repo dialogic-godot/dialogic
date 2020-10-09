@@ -4,14 +4,12 @@ extends Control
 var plugin_reference
 
 var undo_redo: UndoRedo
-var testing_mode = true
 
 var editor_file_dialog # EditorFileDialog
 var file_picker_data = {'method': '', 'node': self}
 
 var version_string = "0.5"
 
-var testing = true
 var WORKING_DIR = "res://dialogic"
 var DIALOG_DIR = WORKING_DIR + "/dialogs"
 var CHAR_DIR = WORKING_DIR + "/characters"
@@ -31,19 +29,14 @@ onready var CharacterEditor = {
 }
 
 func _ready():
-	if testing_mode == false:
-		clear_template_editor()
-	if testing == false:
-		$Editor/GraphEdit.connect("connection_request", self, "_on_piece_connect")
-	
 	# Adding file dialog to get used by pieces
 	editor_file_dialog = EditorFileDialog.new()
-	#plugin_reference.get_editor_interface().get_editor_viewport().add_child(editor_file_dialog)
+	add_child(editor_file_dialog)
 	$Editor.visible = true
 	$Editor/CharacterEditor/HBoxContainer/Container.visible = false
 	
 	$HBoxContainer/EventButton.set('self_modulate', Color('#6a9dea'))
-	#load_nodes()
+
 	# Refreshing the list of items
 	refresh_character_list()
 	refresh_dialog_list()
@@ -59,10 +52,6 @@ func _process(delta):
 	
 func _on_piece_connect(from, from_slot, to, to_slot):
 	$Editor/GraphEdit.connect_node(from, from_slot, to, to_slot)
-
-func clear_template_editor():
-	$Editor.visible = false
-	$EmptyMessage.visible = true
 
 # Creating text node
 func _on_ButtonText_pressed():
@@ -388,10 +377,11 @@ func get_filename_from_path(path):
 		return path.split('\\')[-1].replace('.json', '')
 
 # Godot dialog
-func godot_dialog():
+func godot_dialog(filter):
 	editor_file_dialog.mode = EditorFileDialog.MODE_OPEN_FILE
 	editor_file_dialog.clear_filters()
 	editor_file_dialog.popup_centered_ratio(0.75)
+	editor_file_dialog.add_filter(filter)
 	return editor_file_dialog
 
 func godot_dialog_connect(who, method_name):
@@ -418,6 +408,7 @@ func _on_file_selected(path):
 func fold_all_nodes():
 	for event in Timeline.get_children():
 		event.get_node("VBoxContainer/Header/VisibleToggle").set_pressed(false)
+
 
 func unfold_all_nodes():
 	for event in Timeline.get_children():
@@ -448,7 +439,6 @@ func _on_CharactersButton_pressed():
 	$HBoxContainer/CharactersButton.set('self_modulate', Color('#6a9dea'))
 
 # Auto saving
-
 func _on_AutoSaver_timeout():
 	if autosaving_hash != generate_save_data().hash():
 		save_nodes(working_dialog_file)
