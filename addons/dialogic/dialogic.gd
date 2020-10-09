@@ -26,8 +26,7 @@ func make_visible(visible):
 		_editor_view.visible = visible
 
 func get_plugin_icon():
-	# Must return some kind of Texture for the icon.
-	return get_editor_interface().get_base_control().get_icon("Node", "EditorIcons")
+	return preload("res://addons/dialogic/Images/plugin-editor-icon.svg")
 	
 func _add_custom_editor_view():
 	_editor_view = preload("res://addons/dialogic/Editor/EditorView.tscn").instance()
