@@ -27,7 +27,7 @@ onready var CharacterEditor = {
 	'name': $Editor/CharacterEditor/HBoxContainer/Container/Name/LineEdit,
 	'description': $Editor/CharacterEditor/HBoxContainer/Container/Description/TextEdit,
 	'file': $Editor/CharacterEditor/HBoxContainer/Container/FileName/LineEdit,
-	'color': $Editor/CharacterEditor/HBoxContainer/Container/Color/ColorPickerButton
+	'color': $Editor/CharacterEditor/HBoxContainer/Container/Color/ColorPickerButton,
 }
 
 func _ready():
@@ -66,51 +66,27 @@ func clear_template_editor():
 
 # Creating text node
 func _on_ButtonText_pressed():
-	create_text_node({'character': '', 'text': ''})
-	return true
+	create_event("TextBlock", {'character': '', 'text': ''})
 
 func _on_ButtonBackground_pressed():
-	create_scene_node()
+	create_event("SceneBlock", {'background': ''})
 
 func _on_ButtonCharacter_pressed():
-	create_character_join_node({'position': {"0":false,"1":false,"2":false,"3":false,"4":false}, 'character': '', 'action': 'join'})
+	create_event("CharacterJoinBlock", {
+			'position': {"0":false,"1":false,"2":false,"3":false,"4":false},
+			'character': '',
+			'action': 'join',
+		})
 
 func _on_ButtonCharacterLeave_pressed():
-	create_character_leave_node({'action': 'leaveall','character': '[All]'})
+	create_event("CharacterLeaveBlock", {'action': 'leaveall','character': '[All]'})
 
 func _on_ButtonAudio_pressed():
-	create_audio_node('')
+	create_event("AudioBlock", {'file': ''})
 
-func create_text_node(data):
-	var piece = load("res://addons/dialogic/Editor/Pieces/TextBlock.tscn").instance()
-	piece.editor_reference = self
-	Timeline.add_child(piece)
-	piece.load_data(data)
-	return piece
 
-func create_scene_node(path=''):
-	var piece = load("res://addons/dialogic/Editor/Pieces/SceneBlock.tscn").instance()
-	piece.load_image(path)
-	piece.editor_reference = self
-	Timeline.add_child(piece)
-	return piece
-
-func create_character_join_node(data):
-	var piece = load("res://addons/dialogic/Editor/Pieces/CharacterJoinBlock.tscn").instance()
-	piece.editor_reference = self	
-	Timeline.add_child(piece)
-	piece.load_data(data)
-	return piece
-
-func create_character_leave_node(data):
-	var piece = load("res://addons/dialogic/Editor/Pieces/CharacterLeaveBlock.tscn").instance()
-	piece.editor_reference = self
-	Timeline.add_child(piece)
-	piece.load_data(data)
-	return piece
-
-func create_audio_node(data):
-	var piece = load("res://addons/dialogic/Editor/Pieces/AudioBlock.tscn").instance()
+func create_event(scene, data):
+	var piece = load("res://addons/dialogic/Editor/Pieces/" + scene + ".tscn").instance()
 	piece.editor_reference = self
 	Timeline.add_child(piece)
 	piece.load_data(data)
@@ -163,7 +139,7 @@ func save_nodes(path):
 	file.store_line(to_json(info_to_save))
 	file.close()
 	autosaving_hash = info_to_save.hash()
-	
+
 func load_nodes(path):
 	working_dialog_file = path
 	
@@ -172,28 +148,17 @@ func load_nodes(path):
 	for i in data:
 		match i:
 			{'text'}:
-				create_text_node(i)
-				print('text-element: ', i)
+				create_event("TextBlock", i)
 			{'text', 'character'}:
-				create_text_node(i)
-				print('text-element: ', i)
-			
+				create_event("TextBlock", i)
 			{'background'}:
-				create_scene_node(i['background'])
-				print('background-element: ', i)
-				
+				create_event("SceneBlock", i)
 			{'character', 'action', 'position'}:
-				create_character_join_node(i)
-				print('character-join-element: ', i)
-			
+				create_event("CharacterJoinBlock", i)
 			{'audio', 'file'}:
-				create_audio_node(i)
-				print('audio-block: ', i)
-			
+				create_event("AudioBlock", i)
 			{'character', 'action'}:
-				create_character_leave_node(i)
-				print('character-leave-block: ', i)
-	
+				create_event("CharacterLeaveBlock", i)
 	autosaving_hash = generate_save_data().hash()
 	fold_all_nodes()
 

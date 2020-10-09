@@ -26,6 +26,10 @@ func _on_file_selected(path, target):
 	print('here')
 	target.load_image(path)
 
+func load_data(data):
+	event_data = data
+	load_image(event_data['background'])
+
 func load_image(img_src):
 	event_data['background'] = img_src
 	if event_data['background'] != '':
