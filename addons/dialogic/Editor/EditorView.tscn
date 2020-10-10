@@ -504,7 +504,7 @@ margin_top = -44.0
 margin_right = 250.0
 margin_bottom = 44.0
 rect_min_size = Vector2( 500, 0 )
-window_title = "Renaming Dialog"
+window_title = "Renaming Timeline"
 resizable = true
 __meta__ = {
 "_edit_use_anchors_": false
