@@ -16,7 +16,7 @@ func _ready():
 	$PanelContainer/VBoxContainer/Header/CharacterDropdown.get_popup().connect("index_pressed", self, '_on_character_selected')
 
 
-func _on_MenuButton_about_to_show():
+func _on_CharacterDropdown_about_to_show():
 	var Dropdown = $PanelContainer/VBoxContainer/Header/CharacterDropdown
 	Dropdown.get_popup().clear()
 	Dropdown.get_popup().add_item("[All]")
@@ -29,7 +29,7 @@ func _on_MenuButton_about_to_show():
 
 func _on_character_selected(index):
 	var text = $PanelContainer/VBoxContainer/Header/CharacterDropdown.get_popup().get_item_text(index)
-	var metadata = $VPanelContainer/BoxContainer/Header/CharacterDropdown.get_popup().get_item_metadata(index)
+	var metadata = $PanelContainer/VBoxContainer/Header/CharacterDropdown.get_popup().get_item_metadata(index)
 	$PanelContainer/VBoxContainer/Header/CharacterDropdown.text = text
 	event_data['character'] = metadata['file']
 
@@ -41,3 +41,4 @@ func load_data(data):
 			var character_data = editor_reference.get_character_data(data['character'])
 			if character_data.has('name'):
 				$PanelContainer/VBoxContainer/Header/CharacterDropdown.text = character_data['name']
+

@@ -58,11 +58,11 @@ func _on_piece_connect(from, from_slot, to, to_slot):
 
 # Creating text node
 func _on_ButtonText_pressed():
-	create_event("TextBlock", {'character': '', 'text': ''})
+	create_event("TextBlock", {'character': '', 'text': ''}, true)
 
 
 func _on_ButtonBackground_pressed():
-	create_event("SceneBlock", {'background': ''})
+	create_event("SceneBlock", {'background': ''}, true)
 
 
 func _on_ButtonCharacter_pressed():
@@ -70,34 +70,36 @@ func _on_ButtonCharacter_pressed():
 			'position': {"0":false,"1":false,"2":false,"3":false,"4":false},
 			'character': '',
 			'action': 'join',
-		})
+		}, true)
 
 
 func _on_ButtonChoice_pressed():
-	create_event("Choice", {'choice': ''})
+	create_event("Choice", {'choice': ''}, true)
 
 
 func _on_ButtonEndChoice_pressed():
-	create_event("EndChoice", {'endchoice': ''})
+	create_event("EndChoice", {'endchoice': ''}, true)
 
 
 func _on_ButtonCharacterLeave_pressed():
-	create_event("CharacterLeaveBlock", {'action': 'leaveall','character': '[All]'})
+	create_event("CharacterLeaveBlock", {'action': 'leaveall','character': '[All]'}, true)
 
 
 func _on_ButtonAudio_pressed():
-	create_event("AudioBlock", {'file': ''})
+	create_event("AudioBlock", {'file': ''}, true)
 
 
 func _on_ButtonChangeTimeline_pressed():
 	create_event("ChangeTimeline", {'change_timeline': ''})
 
 
-func create_event(scene, data):
+func create_event(scene, data, indent = false):
 	var piece = load("res://addons/dialogic/Editor/Pieces/" + scene + ".tscn").instance()
 	piece.editor_reference = self
 	Timeline.add_child(piece)
 	piece.load_data(data)
+	if indent:
+		indent_events()
 	return piece
 
 
