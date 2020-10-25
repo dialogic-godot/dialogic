@@ -13,6 +13,7 @@ var event_data = {
 	'position': {"0":false,"1":false,"2":false,"3":false,"4":false}
 }
 
+
 func _ready():
 	for p in $PanelContainer/VBoxContainer/Header/PositionsContainer.get_children():
 		p.connect('pressed', self, "position_button_pressed", [p.name])
@@ -28,6 +29,7 @@ func _on_MenuCharacter_about_to_show():
 		Dropdown.get_popup().add_item(c['name'])
 		Dropdown.get_popup().set_item_metadata(index, {'file': c['file'], 'color': c['color']})
 		index += 1
+
 
 func _on_character_selected(index):
 	var text = $PanelContainer/VBoxContainer/Header/CharacterDropdown.get_popup().get_item_text(index)
@@ -46,6 +48,7 @@ func _on_character_selected(index):
 	$PanelContainer/VBoxContainer/Header/CharacterDropdown.text = text
 	event_data['character'] = metadata['file']
 
+
 func position_button_pressed(name):
 	clear_all_positions()
 	var selected_index = name.split('-')[1]
@@ -56,12 +59,14 @@ func position_button_pressed(name):
 	event_data['position'][selected_index] = true
 	print('here', selected_index)
 
+
 func clear_all_positions():
 	for i in range(5):
 		event_data['position'][str(i)] = false
 	for p in $PanelContainer/VBoxContainer/Header/PositionsContainer.get_children():
 		p.set('self_modulate', default_icon_color)
 		p.pressed = false
+
 
 func check_active_position(active_color = Color("#ffffff")):
 	var index = 0
@@ -70,6 +75,7 @@ func check_active_position(active_color = Color("#ffffff")):
 			p.pressed = true
 			p.set('self_modulate', active_color)
 		index += 1
+
 
 func load_data(data):
 	event_data = data

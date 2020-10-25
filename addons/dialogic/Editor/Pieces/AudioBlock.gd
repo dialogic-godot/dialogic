@@ -21,9 +21,11 @@ func _on_ButtonAudio_pressed():
 	editor_reference.godot_dialog("*.wav, *.ogg")
 	editor_reference.godot_dialog_connect(self, "_on_file_selected")
 
+
 func _on_file_selected(path, target):
 	print('[Dialogic] Loading audio block ', path, target)
 	target.load_audio(path)
+
 
 func load_audio(path):
 	$PanelContainer/VBoxContainer/Header/Name.text = path
@@ -35,7 +37,8 @@ func load_data(data):
 	event_data = data
 	if data['file'] != '':
 		load_audio(data['file'])
-	
+
+
 func _on_ButtonPreviewPlay_pressed():
 	print('[Dialogic] Playing audio ' + event_data['file'])
 	if $PanelContainer/AudioPreview.is_playing():
@@ -44,7 +47,6 @@ func _on_ButtonPreviewPlay_pressed():
 		$PanelContainer/AudioPreview.stream = load(event_data['file'])
 		$PanelContainer/AudioPreview.play()
 		$PanelContainer/VBoxContainer/Header/ButtonPreviewPlay.icon = stop_icon
-		
 
 
 func _on_AudioPreview_finished():

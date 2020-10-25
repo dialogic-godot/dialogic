@@ -12,11 +12,13 @@ var event_data = {
 	'text': ''
 }
 
+
 func _ready():
 	connect("gui_input", self, '_on_gui_input')
 	$PanelContainer/VBoxContainer/TextEdit.set("rect_min_size", Vector2(0, 80))
 	$PanelContainer/VBoxContainer/Header/CharacterDropdown.get_popup().connect("index_pressed", self, '_on_character_selected')
 	update_preview()
+
 
 func _on_MenuButton_about_to_show():
 	var Dropdown = $PanelContainer/VBoxContainer/Header/CharacterDropdown
@@ -30,6 +32,7 @@ func _on_MenuButton_about_to_show():
 			Dropdown.get_popup().set_item_metadata(index, {'file': c['file'], 'color': Color('#ffffff')})
 		index += 1
 
+
 func _on_character_selected(index):
 	var text = $PanelContainer/VBoxContainer/Header/CharacterDropdown.get_popup().get_item_text(index)
 	var metadata = $PanelContainer/VBoxContainer/Header/CharacterDropdown.get_popup().get_item_metadata(index)
@@ -38,19 +41,23 @@ func _on_character_selected(index):
 	event_data['character'] = metadata['file']
 	update_preview()
 
+
 func _on_TextEdit_text_changed():
 	event_data['text'] = $PanelContainer/VBoxContainer/TextEdit.text
 	update_preview()
+
 
 func load_text(text):
 	get_node("VBoxContainer/TextEdit").text = text
 	event_data['text'] = text
 	update_preview()
 
+
 func load_data(data):
 	event_data = data
 	$PanelContainer/VBoxContainer/TextEdit.text = event_data['text']
 	update_preview()
+
 
 func update_preview():
 	if editor_reference:

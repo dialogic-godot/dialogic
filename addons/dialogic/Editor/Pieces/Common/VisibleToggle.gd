@@ -4,14 +4,17 @@ extends CheckBox
 var current_piece
 var is_disabled = false
 
+
 func _ready():
 	# Gotta love the nodes system some times
 	current_piece = get_parent().get_parent().get_parent().get_parent()
 	connect("toggled", self, "_on_VisibleToggle_toggled")
 
+
 func disabled():
 	self_modulate = Color(0,0,0,0)
 	is_disabled = true
+
 
 func _on_VisibleToggle_toggled(button_pressed):
 	if is_disabled:

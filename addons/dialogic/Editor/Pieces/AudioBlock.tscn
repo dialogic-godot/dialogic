@@ -18,7 +18,6 @@ corner_radius_bottom_right = 6
 corner_radius_bottom_left = 6
 
 [node name="AudioBlock" type="HBoxContainer"]
-modulate = Color( 1, 1, 1, 0.443137 )
 margin_right = 1798.0
 margin_bottom = 42.0
 size_flags_horizontal = 3

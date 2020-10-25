@@ -10,9 +10,11 @@ var event_data = {
 	'character': '[All]',
 }
 
+
 func _ready():
 	$PanelContainer/VBoxContainer/Header/VisibleToggle.disabled()
 	$PanelContainer/VBoxContainer/Header/CharacterDropdown.get_popup().connect("index_pressed", self, '_on_character_selected')
+
 
 func _on_MenuButton_about_to_show():
 	var Dropdown = $PanelContainer/VBoxContainer/Header/CharacterDropdown
@@ -24,11 +26,13 @@ func _on_MenuButton_about_to_show():
 		Dropdown.get_popup().set_item_metadata(index, {'file': c['file'], 'color': c['color']})
 		index += 1
 
+
 func _on_character_selected(index):
 	var text = $PanelContainer/VBoxContainer/Header/CharacterDropdown.get_popup().get_item_text(index)
 	var metadata = $VPanelContainer/BoxContainer/Header/CharacterDropdown.get_popup().get_item_metadata(index)
 	$PanelContainer/VBoxContainer/Header/CharacterDropdown.text = text
 	event_data['character'] = metadata['file']
+
 
 func load_data(data):
 	event_data = data

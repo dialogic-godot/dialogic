@@ -11,21 +11,26 @@ var event_data = {
 	'background': ''
 }
 
+
 func _ready():
 	connect("gui_input", self, '_on_gui_input')
 	load_image(event_data['background'])
+
 
 func _on_ImageButton_pressed():
 	editor_reference.godot_dialog("*.png, *.jpg, *.jpeg, *.tga, *.svg, *.svgz, *.bmp, *.webp;Image")
 	editor_reference.godot_dialog_connect(self, "_on_file_selected")
 
+
 func _on_file_selected(path, target):
 	print('here')
 	target.load_image(path)
 
+
 func load_data(data):
 	event_data = data
 	load_image(event_data['background'])
+
 
 func load_image(img_src):
 	event_data['background'] = img_src
@@ -36,6 +41,7 @@ func load_image(img_src):
 		preview = event_data['background']
 	else:
 		$PanelContainer/VBoxContainer/TextureRect.rect_min_size = Vector2(0,0)
+
 
 func _on_gui_input(event):
 	if event is InputEventMouseButton and event.pressed:
