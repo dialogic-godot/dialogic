@@ -67,6 +67,12 @@ func _on_ButtonCharacter_pressed():
 			'action': 'join',
 		})
 
+func _on_ButtonChoice_pressed():
+	create_event("Choice", {'choice': ''})
+
+func _on_ButtonEndChoice_pressed():
+	create_event("EndChoice", {'endchoices': ''})
+
 func _on_ButtonCharacterLeave_pressed():
 	create_event("CharacterLeaveBlock", {'action': 'leaveall','character': '[All]'})
 
@@ -132,6 +138,7 @@ func save_nodes(path):
 	autosaving_hash = info_to_save.hash()
 
 func load_nodes(path):
+	var start_time = OS.get_ticks_msec()
 	working_dialog_file = path
 	
 	var data = load_json(path)
@@ -148,12 +155,17 @@ func load_nodes(path):
 				create_event("CharacterJoinBlock", i)
 			{'audio', 'file'}:
 				create_event("AudioBlock", i)
+			{'choice'}:
+				create_event("Choice", i)
+			{'endchoices'}:
+				create_event("EndChoice", i)
 			{'character', 'action'}:
 				create_event("CharacterLeaveBlock", i)
 			{'change_timeline'}:
 				create_event("ChangeTimeline", i)
 	autosaving_hash = generate_save_data().hash()
 	fold_all_nodes()
+	print("Elapsed time: ", OS.get_ticks_msec() - start_time)
 
 # Conversation files
 func get_timeline_list():
@@ -445,3 +457,6 @@ func _on_Logo_gui_input(event):
 	# I should probably replace this with an "About Dialogic" dialog
 	if event is InputEventMouseButton and event.button_index == 1:
 		OS.shell_open("https://github.com/coppolaemilio/dialogic")
+
+
+

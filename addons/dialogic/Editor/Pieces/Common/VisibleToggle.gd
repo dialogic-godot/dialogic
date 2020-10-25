@@ -11,7 +11,6 @@ func _ready():
 func disabled():
 	self_modulate = Color(0,0,0,0)
 	is_disabled = true
-	
 
 func _on_VisibleToggle_toggled(button_pressed):
 	if is_disabled:

@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=2]
+[gd_scene load_steps=22 format=2]
 
 [ext_resource path="res://addons/dialogic/Editor/editor_view.gd" type="Script" id=1]
 [ext_resource path="res://addons/dialogic/Images/dialog.svg" type="Texture" id=2]
@@ -17,6 +17,8 @@
 [ext_resource path="res://addons/dialogic/Images/timeline.svg" type="Texture" id=15]
 [ext_resource path="res://addons/dialogic/Images/theme.svg" type="Texture" id=16]
 [ext_resource path="res://addons/dialogic/Images/character-tab.svg" type="Texture" id=17]
+[ext_resource path="res://addons/dialogic/Images/choice.svg" type="Texture" id=18]
+[ext_resource path="res://addons/dialogic/Images/end-choice.svg" type="Texture" id=19]
 
 [sub_resource type="StyleBoxFlat" id=1]
 content_margin_left = 5.0
@@ -76,6 +78,7 @@ items = [ "New dialog", null, 0, false, false, 0, 0, null, "", false ]
 self_modulate = Color( 0.415686, 0.615686, 0.917647, 1 )
 margin_right = 34.0
 margin_bottom = 28.0
+hint_tooltip = "Timelines"
 focus_mode = 0
 icon = ExtResource( 15 )
 flat = true
@@ -85,6 +88,7 @@ self_modulate = Color( 0.870588, 0.870588, 0.870588, 1 )
 margin_left = 34.0
 margin_right = 68.0
 margin_bottom = 28.0
+hint_tooltip = "Characters"
 focus_mode = 0
 icon = ExtResource( 17 )
 flat = true
@@ -93,6 +97,7 @@ flat = true
 margin_left = 68.0
 margin_right = 102.0
 margin_bottom = 28.0
+hint_tooltip = "Dialog Theme"
 disabled = true
 icon = ExtResource( 16 )
 flat = true
@@ -101,6 +106,7 @@ flat = true
 margin_left = 102.0
 margin_right = 136.0
 margin_bottom = 28.0
+hint_tooltip = "Glossary"
 disabled = true
 icon = ExtResource( 13 )
 flat = true
@@ -250,25 +256,41 @@ text = "  Text Event"
 icon = ExtResource( 2 )
 align = 0
 
-[node name="ButtonBackground" type="Button" parent="Editor/TimelineEditor/EventContainer/HBoxContainer"]
+[node name="ButtonChoice" type="Button" parent="Editor/TimelineEditor/EventContainer/HBoxContainer"]
 margin_left = 114.0
-margin_right = 235.0
+margin_right = 201.0
+margin_bottom = 28.0
+text = "  Choice"
+icon = ExtResource( 18 )
+align = 0
+
+[node name="ButtonEndChoice" type="Button" parent="Editor/TimelineEditor/EventContainer/HBoxContainer"]
+margin_left = 205.0
+margin_right = 319.0
+margin_bottom = 28.0
+text = "  End Choice"
+icon = ExtResource( 19 )
+align = 0
+
+[node name="ButtonBackground" type="Button" parent="Editor/TimelineEditor/EventContainer/HBoxContainer"]
+margin_left = 323.0
+margin_right = 444.0
 margin_bottom = 28.0
 text = "  Scene Event"
 icon = ExtResource( 4 )
 align = 0
 
 [node name="ButtonChangeTimeline" type="Button" parent="Editor/TimelineEditor/EventContainer/HBoxContainer"]
-margin_left = 239.0
-margin_right = 389.0
+margin_left = 448.0
+margin_right = 598.0
 margin_bottom = 28.0
 text = "  Change Timeline"
 icon = ExtResource( 12 )
 align = 0
 
 [node name="ButtonGDScript" type="Button" parent="Editor/TimelineEditor/EventContainer/HBoxContainer"]
-margin_left = 393.0
-margin_right = 493.0
+margin_left = 602.0
+margin_right = 702.0
 margin_bottom = 28.0
 text = "  GDScript"
 icon = ExtResource( 6 )
@@ -522,6 +544,7 @@ margin_bottom = 52.7127
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
 [connection signal="pressed" from="HBoxContainer/EventButton" to="." method="_on_EventButton_pressed"]
 [connection signal="pressed" from="HBoxContainer/CharactersButton" to="." method="_on_CharactersButton_pressed"]
 [connection signal="pressed" from="HBoxContainer/ThemeButton" to="." method="_on_CharactersButton_pressed"]
@@ -535,6 +558,8 @@ __meta__ = {
 [connection signal="item_rmb_selected" from="Editor/EventTools/VBoxContainer2/DialogItemList" to="." method="_on_DialogItemList_item_rmb_selected"]
 [connection signal="item_selected" from="Editor/EventTools/VBoxContainer2/DialogItemList" to="." method="_on_DialogItemList_item_selected"]
 [connection signal="pressed" from="Editor/TimelineEditor/EventContainer/HBoxContainer/ButtonText" to="." method="_on_ButtonText_pressed"]
+[connection signal="pressed" from="Editor/TimelineEditor/EventContainer/HBoxContainer/ButtonChoice" to="." method="_on_ButtonChoice_pressed"]
+[connection signal="pressed" from="Editor/TimelineEditor/EventContainer/HBoxContainer/ButtonEndChoice" to="." method="_on_ButtonEndChoice_pressed"]
 [connection signal="pressed" from="Editor/TimelineEditor/EventContainer/HBoxContainer/ButtonBackground" to="." method="_on_ButtonBackground_pressed"]
 [connection signal="pressed" from="Editor/TimelineEditor/EventContainer/HBoxContainer/ButtonChangeTimeline" to="." method="_on_ButtonChangeTimeline_pressed"]
 [connection signal="pressed" from="Editor/TimelineEditor/EventContainer/HBoxContainer/ButtonGDScript" to="." method="_on_ButtonBackground_pressed"]

@@ -83,5 +83,8 @@ rect_min_size = Vector2( 0, 80 )
 size_flags_horizontal = 3
 size_flags_vertical = 3
 show_line_numbers = true
+smooth_scrolling = true
+wrap_enabled = true
+
 [connection signal="about_to_show" from="VBoxContainer/Header/CharacterDropdown" to="." method="_on_MenuButton_about_to_show"]
 [connection signal="text_changed" from="VBoxContainer/TextEdit" to="." method="_on_TextEdit_text_changed"]
