@@ -78,7 +78,7 @@ func _on_ButtonChoice_pressed():
 
 
 func _on_ButtonEndChoice_pressed():
-	create_event("EndChoice", {'endchoices': ''})
+	create_event("EndChoice", {'endchoice': ''})
 
 
 func _on_ButtonCharacterLeave_pressed():
@@ -175,15 +175,41 @@ func load_nodes(path):
 				create_event("AudioBlock", i)
 			{'choice'}:
 				create_event("Choice", i)
-			{'endchoices'}:
+			{'endchoice'}:
 				create_event("EndChoice", i)
 			{'character', 'action'}:
 				create_event("CharacterLeaveBlock", i)
 			{'change_timeline'}:
 				create_event("ChangeTimeline", i)
+
 	autosaving_hash = generate_save_data().hash()
+	indent_events()
 	fold_all_nodes()
 	print("Elapsed time: ", OS.get_ticks_msec() - start_time)
+
+
+func indent_events():
+	var indent = 0
+	var starter = false
+	for event in Timeline.get_children():
+		if event.event_data.has('choice'):
+			indent += 1
+			starter = true
+		if event.event_data.has('endchoice'):
+			indent -= 1
+			if indent < 0:
+				indent = 0
+
+		if indent > 0:
+			var indent_node = event.get_node("Indent")
+			indent_node.rect_min_size = Vector2(25 * indent, 0)
+			indent_node.visible = true
+			if starter:
+				indent_node.rect_min_size = Vector2(25 * (indent - 1), 0)
+				if indent - 1 == 0:
+					indent_node.visible = false
+				
+		starter = false
 
 
 # Conversation files

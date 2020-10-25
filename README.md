@@ -16,6 +16,7 @@ v0.5 - WIP
  - Made new icons for the editor tabs
  - Added some tooltips
  - Restructured the events node structure to add indentation
+ - Changed event default colors
 
 v0.4 - Dialogic
  - Changed how the main editor works, instead of being a graphedit it is now an event timeline.
