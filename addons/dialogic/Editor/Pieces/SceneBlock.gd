@@ -1,10 +1,10 @@
 tool
-extends PanelContainer
+extends Control
 
 var editor_reference
 var editorPopup
 var preview = "..."
-onready var toggler = get_node("VBoxContainer/Header/VisibleToggle")
+onready var toggler = get_node("PanelContainer/VBoxContainer/Header/VisibleToggle")
 
 # This is the information of this event and it will get parsed and saved to the JSON file.
 var event_data = {
@@ -30,12 +30,12 @@ func load_data(data):
 func load_image(img_src):
 	event_data['background'] = img_src
 	if event_data['background'] != '':
-		$VBoxContainer/HBoxContainer/LineEdit.text = event_data['background']
-		$VBoxContainer/TextureRect.texture = load(event_data['background'])
-		$VBoxContainer/TextureRect.rect_min_size = Vector2(200,200)
+		$PanelContainer/VBoxContainer/HBoxContainer/LineEdit.text = event_data['background']
+		$PanelContainer/VBoxContainer/TextureRect.texture = load(event_data['background'])
+		$PanelContainer/VBoxContainer/TextureRect.rect_min_size = Vector2(200,200)
 		preview = event_data['background']
 	else:
-		$VBoxContainer/TextureRect.rect_min_size = Vector2(0,0)
+		$PanelContainer/VBoxContainer/TextureRect.rect_min_size = Vector2(0,0)
 
 func _on_gui_input(event):
 	if event is InputEventMouseButton and event.pressed:

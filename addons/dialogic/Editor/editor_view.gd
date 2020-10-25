@@ -120,7 +120,7 @@ func _on_ButtonSave_pressed():
 func generate_save_data():
 	var info_to_save = {
 		'metadata': {
-			'dialogic-version': '0.4'
+			'dialogic-version': version_string
 		},
 		'events': []
 	}
@@ -416,12 +416,12 @@ func _on_file_selected(path):
 # Folding
 func fold_all_nodes():
 	for event in Timeline.get_children():
-		event.get_node("VBoxContainer/Header/VisibleToggle").set_pressed(false)
+		event.get_node("PanelContainer/VBoxContainer/Header/VisibleToggle").set_pressed(false)
 
 
 func unfold_all_nodes():
 	for event in Timeline.get_children():
-		event.get_node("VBoxContainer/Header/VisibleToggle").set_pressed(true)
+		event.get_node("PanelContainer/VBoxContainer/Header/VisibleToggle").set_pressed(true)
 
 func _on_ButtonFold_pressed():
 	fold_all_nodes()
