@@ -28,6 +28,7 @@ onready var CharacterEditor = {
 	'color': $Editor/CharacterEditor/HBoxContainer/Container/Color/ColorPickerButton,
 }
 
+
 func _ready():
 	# Adding file dialog to get used by pieces
 	editor_file_dialog = EditorFileDialog.new()
@@ -107,13 +108,12 @@ func create_event(scene, data, indent_on_create = false):
 func _move_block(block, direction):
 	var block_index = block.get_index()
 	if direction == 'up':
-		if block_index > 0:	
+		if block_index > 0:
 			get_node(TimelinePath).move_child(block, block_index - 1)
 			return true
 	if direction == 'down':
 		get_node(TimelinePath).move_child(block, block_index + 1)
 		return true
-	print('[!] Failed to move block ', block)
 	return false
 
 
@@ -196,6 +196,11 @@ func indent_events():
 	var event_list = get_node(TimelinePath).get_children()
 	if event_list.size() < 2:
 		return
+	# Resetting all the indents
+	for event in event_list:
+		var indent_node = event.get_node("Indent")
+		indent_node.visible = false
+	# Adding new indents
 	for event in event_list:
 		if event.event_data.has('choice'):
 			indent += 1
@@ -228,7 +233,6 @@ func get_timeline_list():
 
 
 func refresh_dialog_list():
-	DialogList.clear()
 	get_node(DialogListPath).clear()
 	var icon = load("res://addons/dialogic/Images/timeline.svg")
 	var index = 0
