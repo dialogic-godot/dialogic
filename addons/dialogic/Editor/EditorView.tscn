@@ -196,7 +196,7 @@ margin_right = 180.0
 margin_bottom = 541.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-items = [ "Example", ExtResource( 15 ), false, "Hello World", ExtResource( 15 ), false, "test", ExtResource( 15 ), false, "timeline-1602109889", ExtResource( 15 ), false ]
+items = [ "Example", ExtResource( 15 ), false, "Hello World", ExtResource( 15 ), false, "test", ExtResource( 15 ), false, "Testing new nodes", ExtResource( 15 ), false, "timeline-1603627709", ExtResource( 15 ), false ]
 allow_rmb_select = true
 
 [node name="TimelineEditor" type="VBoxContainer" parent="Editor"]

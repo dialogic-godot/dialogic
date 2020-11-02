@@ -17,8 +17,8 @@ var working_dialog_file = ''
 var timer_duration = 200
 var timer_interval = 30
 var autosaving_hash
-onready var Timeline = $Editor/TimelineEditor/TimelineArea/TimeLine
-onready var DialogList = $Editor/EventTools/VBoxContainer2/DialogItemList
+var TimelinePath = "Editor/TimelineEditor/TimelineArea/TimeLine"
+var DialogListPath = "Editor/EventTools/VBoxContainer2/DialogItemList"
 onready var CharacterList = $Editor/CharacterTools/CharacterItemList
 onready var CharacterEditor = {
 	'editor': $Editor/CharacterEditor/HBoxContainer/Container,
@@ -93,12 +93,12 @@ func _on_ButtonChangeTimeline_pressed():
 	create_event("ChangeTimeline", {'change_timeline': ''})
 
 
-func create_event(scene, data, indent = false):
+func create_event(scene, data, indent_on_create = false):
 	var piece = load("res://addons/dialogic/Editor/Pieces/" + scene + ".tscn").instance()
 	piece.editor_reference = self
-	Timeline.add_child(piece)
+	get_node(TimelinePath).add_child(piece)
 	piece.load_data(data)
-	if indent:
+	if indent_on_create:
 		indent_events()
 	return piece
 
@@ -108,10 +108,10 @@ func _move_block(block, direction):
 	var block_index = block.get_index()
 	if direction == 'up':
 		if block_index > 0:	
-			Timeline.move_child(block, block_index - 1)
+			get_node(TimelinePath).move_child(block, block_index - 1)
 			return true
 	if direction == 'down':
-		Timeline.move_child(block, block_index + 1)
+		get_node(TimelinePath).move_child(block, block_index + 1)
 		return true
 	print('[!] Failed to move block ', block)
 	return false
@@ -119,8 +119,8 @@ func _move_block(block, direction):
 
 # Clear timeline
 func clear_timeline():
-	for event in Timeline.get_children():
-		event.queue_free()
+	for event in get_node(TimelinePath).get_children():
+		event.free()
 
 
 # Reload button
@@ -142,7 +142,7 @@ func generate_save_data():
 		},
 		'events': []
 	}
-	for event in Timeline.get_children():
+	for event in get_node(TimelinePath).get_children():
 		info_to_save['events'].append(event.event_data)
 	return info_to_save
 
@@ -193,7 +193,10 @@ func load_nodes(path):
 func indent_events():
 	var indent = 0
 	var starter = false
-	for event in Timeline.get_children():
+	var event_list = get_node(TimelinePath).get_children()
+	if event_list.size() < 2:
+		return
+	for event in event_list:
 		if event.event_data.has('choice'):
 			indent += 1
 			starter = true
@@ -226,17 +229,18 @@ func get_timeline_list():
 
 func refresh_dialog_list():
 	DialogList.clear()
+	get_node(DialogListPath).clear()
 	var icon = load("res://addons/dialogic/Images/timeline.svg")
 	var index = 0
 	for c in get_timeline_list():
-		DialogList.add_item(c['name'], icon)
-		DialogList.set_item_metadata(index, {'file': c['file'], 'index': index})
+		get_node(DialogListPath).add_item(c['name'], icon)
+		get_node(DialogListPath).set_item_metadata(index, {'file': c['file'], 'index': index})
 		index += 1
 
 
 func _on_DialogItemList_item_selected(index):
-	var selected = DialogList.get_item_text(index)
-	var file = DialogList.get_item_metadata(index)['file']
+	var selected = get_node(DialogListPath).get_item_text(index)
+	var file = get_node(DialogListPath).get_item_metadata(index)['file']
 	clear_timeline()
 	load_nodes(TIMELINE_DIR + '/' + file)
 
@@ -487,12 +491,12 @@ func _on_file_selected(path):
 
 # Folding
 func fold_all_nodes():
-	for event in Timeline.get_children():
+	for event in get_node(TimelinePath).get_children():
 		event.get_node("PanelContainer/VBoxContainer/Header/VisibleToggle").set_pressed(false)
 
 
 func unfold_all_nodes():
-	for event in Timeline.get_children():
+	for event in get_node(TimelinePath).get_children():
 		event.get_node("PanelContainer/VBoxContainer/Header/VisibleToggle").set_pressed(true)
 
 
