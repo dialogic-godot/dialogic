@@ -21,9 +21,6 @@ func _on_VisibleToggle_toggled(button_pressed):
 		return
 	var current_rect_size = current_piece.get("rect_size")
 	if button_pressed:
-		# TODO: Replace all this "get node" with a better way
-		# to only show the header node and hide the rest of the
-		# children for the main VBoxContainer
 		current_piece.get_node("PanelContainer/VBoxContainer/Header/Preview").hide()
 		
 		var index = 0
@@ -31,9 +28,7 @@ func _on_VisibleToggle_toggled(button_pressed):
 			if index > 0:
 				node.show()
 			index += 1
-		#current_piece.get_node("PanelContainer/VBoxContainer/TextEdit").set("rect_min_size", Vector2(0, 80))
 	else:
-		# TODO: Same here.
 		if current_piece.has_node("PanelContainer/VBoxContainer/Header/Preview"):
 			current_piece.get_node("PanelContainer/VBoxContainer/Header/Preview").show()
 			

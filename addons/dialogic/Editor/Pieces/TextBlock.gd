@@ -78,7 +78,7 @@ func update_preview():
 
 
 func _on_gui_input(event):
-	if event is InputEventMouseButton and event.pressed:
+	if event is InputEventMouseButton and event.is_pressed() and event.doubleclick:
 		if event.button_index == 1:
 			if toggler.pressed:
 				toggler.pressed = false
