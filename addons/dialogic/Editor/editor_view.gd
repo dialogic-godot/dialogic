@@ -10,6 +10,8 @@ var file_picker_data = {'method': '', 'node': self}
 
 var version_string = "0.5"
 
+var current_editor_view = 'Timeline'
+
 var WORKING_DIR = "res://dialogic"
 var TIMELINE_DIR = WORKING_DIR + "/dialogs"
 var CHAR_DIR = WORKING_DIR + "/characters"
@@ -17,10 +19,10 @@ var working_dialog_file = ''
 var timer_duration = 200
 var timer_interval = 30
 var autosaving_hash
-var TimelinePath = "Editor/TimelineEditor/TimelineArea/TimeLine"
-var DialogListPath = "Editor/EventTools/VBoxContainer2/DialogItemList"
-onready var CharacterList = $Editor/CharacterTools/CharacterItemList
-onready var CharacterEditor = {
+var timeline_path = "Editor/TimelineEditor/TimelineArea/TimeLine"
+var dialog_list_path = "Editor/EventTools/VBoxContainer2/DialogItemList"
+onready var character_list_path = "Editor/CharacterTools/CharacterItemList"
+onready var character_editor = {
 	'editor': $Editor/CharacterEditor/HBoxContainer/Container,
 	'name': $Editor/CharacterEditor/HBoxContainer/Container/Name/LineEdit,
 	'description': $Editor/CharacterEditor/HBoxContainer/Container/Description/TextEdit,
@@ -42,7 +44,7 @@ func _ready():
 	refresh_character_list()
 	refresh_dialog_list()
 	# Making the dialog editor the default
-	hide_editors()
+	change_tab('Timeline')
 	_on_EventButton_pressed()
 
 
@@ -81,13 +83,16 @@ func _on_ButtonChoice_pressed():
 func _on_ButtonEndChoice_pressed():
 	create_event("EndChoice", {'endchoice': ''}, true)
 
+func _on_ButtonCondition_pressed():
+	create_event("IfCondition", {'condition': ''}, true)
+
 
 func _on_ButtonCharacterLeave_pressed():
 	create_event("CharacterLeaveBlock", {'action': 'leaveall','character': '[All]'}, true)
 
 
 func _on_ButtonAudio_pressed():
-	create_event("AudioBlock", {'file': ''}, true)
+	create_event("AudioBlock", {'audio':'play', 'file': ''}, true)
 
 
 func _on_ButtonChangeTimeline_pressed():
@@ -97,8 +102,9 @@ func _on_ButtonChangeTimeline_pressed():
 func create_event(scene, data, indent_on_create = false):
 	var piece = load("res://addons/dialogic/Editor/Pieces/" + scene + ".tscn").instance()
 	piece.editor_reference = self
-	get_node(TimelinePath).add_child(piece)
+	get_node(timeline_path).add_child(piece)
 	piece.load_data(data)
+	$Editor/TimelineEditor/NoEventsOnTimeline.visible = false
 	if indent_on_create:
 		indent_events()
 	return piece
@@ -109,17 +115,17 @@ func _move_block(block, direction):
 	var block_index = block.get_index()
 	if direction == 'up':
 		if block_index > 0:
-			get_node(TimelinePath).move_child(block, block_index - 1)
+			get_node(timeline_path).move_child(block, block_index - 1)
 			return true
 	if direction == 'down':
-		get_node(TimelinePath).move_child(block, block_index + 1)
+		get_node(timeline_path).move_child(block, block_index + 1)
 		return true
 	return false
 
 
 # Clear timeline
 func clear_timeline():
-	for event in get_node(TimelinePath).get_children():
+	for event in get_node(timeline_path).get_children():
 		event.free()
 
 
@@ -142,7 +148,7 @@ func generate_save_data():
 		},
 		'events': []
 	}
-	for event in get_node(TimelinePath).get_children():
+	for event in get_node(timeline_path).get_children():
 		info_to_save['events'].append(event.event_data)
 	return info_to_save
 
@@ -160,6 +166,9 @@ func save_nodes(path):
 func load_nodes(path):
 	var start_time = OS.get_ticks_msec()
 	working_dialog_file = path
+	# Making editor visible
+	$Editor/TimelineEditor.visible = true
+	$Editor/CenterContainer.visible = false
 	
 	var data = load_json(path)
 	data = data['events']
@@ -183,17 +192,25 @@ func load_nodes(path):
 				create_event("CharacterLeaveBlock", i)
 			{'change_timeline'}:
 				create_event("ChangeTimeline", i)
+			{'condition'}:
+				create_event("IfCondition", i)
 
 	autosaving_hash = generate_save_data().hash()
-	indent_events()
-	fold_all_nodes()
-	print("Elapsed time: ", OS.get_ticks_msec() - start_time)
+	if data.size() < 1:
+		$Editor/TimelineEditor/NoEventsOnTimeline.visible = true
+	else:
+		$Editor/TimelineEditor/NoEventsOnTimeline.visible = false
+		indent_events()
+		fold_all_nodes()
+	
+	var elapsed_time: float = (OS.get_ticks_msec() - start_time) * 0.001
+	print("Elapsed time: ", elapsed_time)
 
 
 func indent_events():
 	var indent = 0
 	var starter = false
-	var event_list = get_node(TimelinePath).get_children()
+	var event_list = get_node(timeline_path).get_children()
 	if event_list.size() < 2:
 		return
 	# Resetting all the indents
@@ -202,7 +219,7 @@ func indent_events():
 		indent_node.visible = false
 	# Adding new indents
 	for event in event_list:
-		if event.event_data.has('choice'):
+		if event.event_data.has('choice') or event.event_data.has('condition'):
 			indent += 1
 			starter = true
 		if event.event_data.has('endchoice'):
@@ -233,18 +250,18 @@ func get_timeline_list():
 
 
 func refresh_dialog_list():
-	get_node(DialogListPath).clear()
+	get_node(dialog_list_path).clear()
 	var icon = load("res://addons/dialogic/Images/timeline.svg")
 	var index = 0
 	for c in get_timeline_list():
-		get_node(DialogListPath).add_item(c['name'], icon)
-		get_node(DialogListPath).set_item_metadata(index, {'file': c['file'], 'index': index})
+		get_node(dialog_list_path).add_item(c['name'], icon)
+		get_node(dialog_list_path).set_item_metadata(index, {'file': c['file'], 'index': index})
 		index += 1
 
 
 func _on_DialogItemList_item_selected(index):
-	var selected = get_node(DialogListPath).get_item_text(index)
-	var file = get_node(DialogListPath).get_item_metadata(index)['file']
+	var selected = get_node(dialog_list_path).get_item_text(index)
+	var file = get_node(dialog_list_path).get_item_metadata(index)['file']
 	clear_timeline()
 	load_nodes(TIMELINE_DIR + '/' + file)
 
@@ -272,10 +289,8 @@ func _on_RenameDialog_confirmed():
 func _on_AddTimelineButton_pressed():
 	var file = create_timeline()
 	refresh_dialog_list()
-	#for i in range(CharacterList.get_item_count()):
-	#	if CharacterList.get_item_metadata(i)['file'] == file:
-	#		CharacterList.select(i)
-	#		_on_ItemList_item_selected(i)
+	clear_timeline()
+	load_nodes(TIMELINE_DIR + '/' + file)
 
 
 func create_timeline():
@@ -300,9 +315,9 @@ func create_timeline():
 func _on_Button_pressed():
 	var file = create_character()
 	refresh_character_list()
-	for i in range(CharacterList.get_item_count()):
-		if CharacterList.get_item_metadata(i)['file'] == file:
-			CharacterList.select(i)
+	for i in range(get_node(character_list_path).get_item_count()):
+		if get_node(character_list_path).get_item_metadata(i)['file'] == file:
+			get_node(character_list_path).select(i)
 			_on_ItemList_item_selected(i)
 
 
@@ -339,19 +354,19 @@ func get_character_list():
 
 
 func refresh_character_list():
-	CharacterList.clear()
+	get_node(character_list_path).clear()
 	var icon = load("res://addons/dialogic/Images/character.svg")
 	var index = 0
 	for c in get_character_list():
-		CharacterList.add_item(c['name'], icon)
-		CharacterList.set_item_metadata(index, {'file': c['file'], 'index': index})
-		CharacterList.set_item_icon_modulate(index, c['color'])
+		get_node(character_list_path).add_item(c['name'], icon)
+		get_node(character_list_path).set_item_metadata(index, {'file': c['file'], 'index': index})
+		get_node(character_list_path).set_item_icon_modulate(index, c['color'])
 		index += 1
 
 
 func _on_ItemList_item_selected(index):
-	var selected = CharacterList.get_item_text(index)
-	var file = CharacterList.get_item_metadata(index)['file']
+	var selected = get_node(character_list_path).get_item_text(index)
+	var file = get_node(character_list_path).get_item_metadata(index)['file']
 	var data = load_json(CHAR_DIR + '/' + file)
 	$Editor/CharacterEditor/HBoxContainer/Container.visible = true
 	load_character_editor(data)
@@ -359,22 +374,22 @@ func _on_ItemList_item_selected(index):
 
 func load_character_editor(data):
 	clear_character_editor()
-	CharacterEditor['file'].text = data['id']
+	character_editor['file'].text = data['id']
 	if data.has('name'):
-		CharacterEditor['name'].text = data['name']
+		character_editor['name'].text = data['name']
 	if data.has('description'):
-		CharacterEditor['description'].text = data['description']
+		character_editor['description'].text = data['description']
 	if data.has('color'):
-		CharacterEditor['color'].color = Color('#' + data['color'])
+		character_editor['color'].color = Color('#' + data['color'])
 
 
 func _on_character_SaveButton_pressed():
-	var path = CHAR_DIR + '/' + CharacterEditor['file'].text
+	var path = CHAR_DIR + '/' + character_editor['file'].text
 	var info_to_save = {
-		'name': CharacterEditor['name'].text,
-		'id': CharacterEditor['file'].text,
-		'description': CharacterEditor['description'].text,
-		'color': CharacterEditor['color'].color.to_html()
+		'name': character_editor['name'].text,
+		'id': character_editor['file'].text,
+		'description': character_editor['description'].text,
+		'color': character_editor['color'].color.to_html()
 	}
 	var file = File.new()
 	file.open(path, File.WRITE)
@@ -404,17 +419,17 @@ func get_character_name(file):
 
 
 func clear_character_editor():
-	CharacterEditor['file'].text = ''
-	CharacterEditor['name'].text = ''
-	CharacterEditor['description'].text = ''
-	CharacterEditor['color'].color = Color('#ffffff')
+	character_editor['file'].text = ''
+	character_editor['name'].text = ''
+	character_editor['description'].text = ''
+	character_editor['color'].color = Color('#ffffff')
 
 
 func _on_RemoveConfirmation_confirmed():
 	print('remove')
-	var selected = CharacterList.get_selected_items()[0]
-	var file = CharacterList.get_item_metadata(selected)['file']
-	print('Remove ', CharacterList.get_item_metadata(selected)['file'])
+	var selected = get_node(character_list_path).get_selected_items()[0]
+	var file = get_node(character_list_path).get_item_metadata(selected)['file']
+	print('Remove ', get_node(character_list_path).get_item_metadata(selected)['file'])
 	var dir = Directory.new()
 	dir.remove(CHAR_DIR + '/' + file)
 	$Editor/CharacterEditor/HBoxContainer/Container.visible = false
@@ -495,12 +510,12 @@ func _on_file_selected(path):
 
 # Folding
 func fold_all_nodes():
-	for event in get_node(TimelinePath).get_children():
+	for event in get_node(timeline_path).get_children():
 		event.get_node("PanelContainer/VBoxContainer/Header/VisibleToggle").set_pressed(false)
 
 
 func unfold_all_nodes():
-	for event in get_node(TimelinePath).get_children():
+	for event in get_node(timeline_path).get_children():
 		event.get_node("PanelContainer/VBoxContainer/Header/VisibleToggle").set_pressed(true)
 
 
@@ -512,25 +527,39 @@ func _on_ButtonUnfold_pressed():
 	unfold_all_nodes()
 
 
-func hide_editors():
-	$HBoxContainer/EventButton.set('self_modulate', Color('#dedede'))
-	$HBoxContainer/CharactersButton.set('self_modulate', Color('#dedede'))
-	for n in $Editor.get_children():
-		n.visible = false
-
-
 func _on_EventButton_pressed():
-	hide_editors()
-	$Editor/EventTools.visible = true
-	$Editor/TimelineEditor.visible = true
-	$HBoxContainer/EventButton.set('self_modulate', Color('#6a9dea'))
+	change_tab('Timeline')
 
 
 func _on_CharactersButton_pressed():
-	hide_editors()
-	$Editor/CharacterTools.visible = true
-	$Editor/CharacterEditor.visible = true
-	$HBoxContainer/CharactersButton.set('self_modulate', Color('#6a9dea'))
+	change_tab('Characters')
+
+
+func change_tab(tab):
+	# Hiding everything
+	$HBoxContainer/EventButton.set('self_modulate', Color('#dedede'))
+	$HBoxContainer/CharactersButton.set('self_modulate', Color('#dedede'))
+	$HBoxContainer/FoldTools.visible = false
+	for n in $Editor.get_children():
+		n.visible = false
+	
+	current_editor_view == tab
+	if tab == 'Timeline':
+		$Editor/EventTools.visible = true
+		$HBoxContainer/EventButton.set('self_modulate', Color('#6a9dea'))
+		$HBoxContainer/FoldTools.visible = true
+		if working_dialog_file == '':
+			$Editor/TimelineEditor.visible = false
+			$Editor/CenterContainer.visible = true
+		else:
+			$Editor/TimelineEditor.visible = true
+			$Editor/CenterContainer.visible = false
+		
+	elif tab == 'Characters':
+		$Editor/CharacterTools.visible = true
+		$Editor/CharacterEditor.visible = true
+		$HBoxContainer/CharactersButton.set('self_modulate', Color('#6a9dea'))
+		current_editor_view == 'Characters'
 
 
 # Auto saving
@@ -544,4 +573,7 @@ func _on_Logo_gui_input(event):
 	# I should probably replace this with an "About Dialogic" dialog
 	if event is InputEventMouseButton and event.button_index == 1:
 		OS.shell_open("https://github.com/coppolaemilio/dialogic")
+
+
+
 
