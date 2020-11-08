@@ -244,6 +244,7 @@ __meta__ = {
 }
 
 [node name="TimelineEditor" type="VBoxContainer" parent="Editor"]
+visible = false
 margin_left = 192.0
 margin_right = 997.0
 margin_bottom = 541.0
@@ -420,7 +421,7 @@ margin_right = 180.0
 margin_bottom = 541.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-items = [ "Narrator", ExtResource( 7 ), false, "Kubuk", ExtResource( 7 ), false, "Placeholder", ExtResource( 7 ), false, "Toen", ExtResource( 7 ), false, "Emilio", ExtResource( 7 ), false ]
+items = [ "Narrator", ExtResource( 7 ), false, "Kubuk", ExtResource( 7 ), false, "Placeholder", ExtResource( 7 ), false, "Toen", ExtResource( 7 ), false, "Test", ExtResource( 7 ), false, "Emilio", ExtResource( 7 ), false ]
 
 [node name="CharacterEditor" type="ScrollContainer" parent="Editor"]
 visible = false

@@ -9,6 +9,7 @@ var editor_file_dialog # EditorFileDialog
 var file_picker_data = {'method': '', 'node': self}
 
 var version_string = "0.5"
+var timeline_name = "" # The currently opened timeline name (for saving)
 
 var current_editor_view = 'Timeline'
 
@@ -42,7 +43,7 @@ func _ready():
 
 	# Refreshing the list of items
 	refresh_character_list()
-	refresh_dialog_list()
+	refresh_timeline_list()
 	# Making the dialog editor the default
 	change_tab('Timeline')
 	_on_EventButton_pressed()
@@ -132,19 +133,20 @@ func clear_timeline():
 # Reload button
 func _on_ReloadResource_pressed():
 	clear_timeline()
-	load_nodes(working_dialog_file)
+	load_timeline(working_dialog_file)
 	print('[!] Reloaded -----')
 
 
 # Saving and loading
 func _on_ButtonSave_pressed():
-	save_nodes(working_dialog_file)
+	save_timeline(working_dialog_file)
 
 
 func generate_save_data():
 	var info_to_save = {
 		'metadata': {
-			'dialogic-version': version_string
+			'dialogic-version': version_string,
+			'name': timeline_name,
 		},
 		'events': []
 	}
@@ -153,7 +155,7 @@ func generate_save_data():
 	return info_to_save
 
 
-func save_nodes(path):
+func save_timeline(path):
 	print('Saving resource --------')
 	var info_to_save = generate_save_data()
 	var file = File.new()
@@ -163,7 +165,7 @@ func save_nodes(path):
 	autosaving_hash = info_to_save.hash()
 
 
-func load_nodes(path):
+func load_timeline(path):
 	var start_time = OS.get_ticks_msec()
 	working_dialog_file = path
 	# Making editor visible
@@ -171,6 +173,8 @@ func load_nodes(path):
 	$Editor/CenterContainer.visible = false
 	
 	var data = load_json(path)
+	if data['metadata'].has('name'):
+		timeline_name = data['metadata']['name']
 	data = data['events']
 	for i in data:
 		match i:
@@ -244,12 +248,17 @@ func get_timeline_list():
 	var timelines = []
 	for file in listdir(TIMELINE_DIR):
 		if '.json' in file:
+			var data = load_json(TIMELINE_DIR + '/' + file)
+			var metadata = data['metadata']
 			var color = Color("#ffffff")
-			timelines.append({'name':file.split('.')[0], 'color': color, 'file': file })
+			if metadata.has('name'):
+				timelines.append({'name':metadata['name'], 'color': color, 'file': file })
+			else:
+				timelines.append({'name':file.split('.')[0], 'color': color, 'file': file })
 	return timelines
 
 
-func refresh_dialog_list():
+func refresh_timeline_list():
 	get_node(dialog_list_path).clear()
 	var icon = load("res://addons/dialogic/Images/timeline.svg")
 	var index = 0
@@ -257,40 +266,38 @@ func refresh_dialog_list():
 		get_node(dialog_list_path).add_item(c['name'], icon)
 		get_node(dialog_list_path).set_item_metadata(index, {'file': c['file'], 'index': index})
 		index += 1
+	get_node(dialog_list_path).sort_items_by_text()
 
 
 func _on_DialogItemList_item_selected(index):
 	var selected = get_node(dialog_list_path).get_item_text(index)
 	var file = get_node(dialog_list_path).get_item_metadata(index)['file']
 	clear_timeline()
-	load_nodes(TIMELINE_DIR + '/' + file)
+	load_timeline(TIMELINE_DIR + '/' + file)
 
 
 # Renaming dialogs
 func _on_DialogItemList_item_rmb_selected(index, at_position):
-	print(index)
 	$RenameDialog.register_text_enter($RenameDialog/LineEdit)
-	$RenameDialog/LineEdit.text = get_filename_from_path(working_dialog_file)
+	timeline_name = get_node(dialog_list_path).get_item_text(index)
+	$RenameDialog/LineEdit.text = timeline_name
 	$RenameDialog.set_as_minsize()
 	$RenameDialog.popup_centered()
 
 
 func _on_RenameDialog_confirmed():
-	var new_name = $RenameDialog/LineEdit.text + '.json'
-	var dir = Directory.new()
-	var new_full_path = TIMELINE_DIR + '/' + new_name
-	dir.rename(working_dialog_file, new_full_path)
-	working_dialog_file = new_full_path
+	timeline_name = $RenameDialog/LineEdit.text
 	$RenameDialog/LineEdit.text = ''
-	refresh_dialog_list()
+	save_timeline(working_dialog_file)
+	refresh_timeline_list()
 
 
 # Create timeline
 func _on_AddTimelineButton_pressed():
 	var file = create_timeline()
-	refresh_dialog_list()
+	refresh_timeline_list()
 	clear_timeline()
-	load_nodes(TIMELINE_DIR + '/' + file)
+	load_timeline(TIMELINE_DIR + '/' + file)
 
 
 func create_timeline():
@@ -565,7 +572,7 @@ func change_tab(tab):
 # Auto saving
 func _on_AutoSaver_timeout():
 	if autosaving_hash != generate_save_data().hash():
-		save_nodes(working_dialog_file)
+		save_timeline(working_dialog_file)
 		print('[!] Changes detected. Auto saving. ', autosaving_hash)
 
 
