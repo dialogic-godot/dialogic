@@ -1,8 +1,8 @@
 [gd_scene load_steps=7 format=2]
 
-[ext_resource path="res://addons/dialogic/Editor/Pieces/TextBlock.gd" type="Script" id=1]
+[ext_resource path="res://addons/dialogic/Editor/Pieces/ChangeTimeline.gd" type="Script" id=1]
 [ext_resource path="res://addons/dialogic/Editor/Pieces/Common/VisibleToggle.tscn" type="PackedScene" id=2]
-[ext_resource path="res://addons/dialogic/Images/dialog.svg" type="Texture" id=3]
+[ext_resource path="res://addons/dialogic/Images/change-timeline.svg" type="Texture" id=3]
 [ext_resource path="res://addons/dialogic/Editor/Pieces/Common/PieceExtraSettings.tscn" type="PackedScene" id=4]
 [ext_resource path="res://addons/dialogic/Editor/Pieces/Common/DragController.tscn" type="PackedScene" id=5]
 
@@ -11,15 +11,15 @@ content_margin_left = 6.0
 content_margin_right = 6.0
 content_margin_top = 6.0
 content_margin_bottom = 6.0
-bg_color = Color( 0.243137, 0.243137, 0.243137, 1 )
+bg_color = Color( 0.603922, 0.301961, 0.462745, 1 )
 corner_radius_top_left = 6
 corner_radius_top_right = 6
 corner_radius_bottom_right = 6
 corner_radius_bottom_left = 6
 
-[node name="TextBlock" type="HBoxContainer"]
-anchor_right = 1.0
-margin_bottom = 126.0
+[node name="ChangeTimelineBlock" type="HBoxContainer"]
+margin_right = 1798.0
+margin_bottom = 42.0
 size_flags_horizontal = 3
 size_flags_vertical = 9
 script = ExtResource( 1 )
@@ -29,33 +29,29 @@ __meta__ = {
 
 [node name="Indent" type="Control" parent="."]
 visible = false
-margin_right = 25.0
-margin_bottom = 126.0
-rect_min_size = Vector2( 25, 0 )
+margin_bottom = 42.0
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
-margin_right = 1024.0
-margin_bottom = 126.0
+margin_right = 1798.0
+margin_bottom = 42.0
 mouse_filter = 1
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_styles/panel = SubResource( 1 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer"]
 margin_left = 6.0
 margin_top = 6.0
-margin_right = 1018.0
-margin_bottom = 120.0
+margin_right = 1792.0
+margin_bottom = 36.0
 size_flags_horizontal = 3
 
 [node name="Header" type="HBoxContainer" parent="PanelContainer/VBoxContainer"]
-margin_right = 1012.0
+margin_right = 1786.0
 margin_bottom = 30.0
 
 [node name="VisibleToggle" parent="PanelContainer/VBoxContainer/Header" instance=ExtResource( 2 )]
+self_modulate = Color( 0, 0, 0, 0 )
 
 [node name="TextureRect" type="TextureRect" parent="PanelContainer/VBoxContainer/Header"]
 margin_left = 34.0
@@ -64,52 +60,35 @@ margin_bottom = 30.0
 texture = ExtResource( 3 )
 stretch_mode = 6
 
-[node name="Label" type="Label" parent="PanelContainer/VBoxContainer/Header"]
+[node name="Title" type="Label" parent="PanelContainer/VBoxContainer/Header"]
 margin_left = 60.0
 margin_top = 8.0
-margin_right = 103.0
+margin_right = 174.0
 margin_bottom = 22.0
-text = "  Text  "
+text = "  Change Timeline"
 
-[node name="CharacterDropdown" type="MenuButton" parent="PanelContainer/VBoxContainer/Header"]
-margin_left = 107.0
-margin_right = 187.0
+[node name="MenuButton" type="MenuButton" parent="PanelContainer/VBoxContainer/Header"]
+margin_left = 178.0
+margin_right = 297.0
 margin_bottom = 30.0
-text = "[Character]"
+text = "[Select Timeline]"
 
 [node name="Preview" type="Label" parent="PanelContainer/VBoxContainer/Header"]
-visible = false
-margin_left = 234.0
+margin_left = 301.0
 margin_top = 8.0
-margin_right = 246.0
+margin_right = 301.0
 margin_bottom = 22.0
 custom_colors/font_color = Color( 1, 1, 1, 0.513726 )
-text = "..."
 
 [node name="Spacer" type="Control" parent="PanelContainer/VBoxContainer/Header"]
-margin_left = 191.0
-margin_right = 971.0
+margin_left = 305.0
+margin_right = 1745.0
 margin_bottom = 30.0
-mouse_filter = 1
 size_flags_horizontal = 3
 
 [node name="OptionButton" parent="PanelContainer/VBoxContainer/Header" instance=ExtResource( 4 )]
-margin_left = 975.0
-margin_right = 1012.0
 items = [ "Move Up", null, 0, false, false, 0, 0, null, "", false, "Move Down", null, 0, false, false, 1, 0, null, "", false, "", null, 0, false, false, 2, 0, null, "", true, "Remove", null, 0, false, false, 3, 0, null, "", false ]
-
-[node name="TextEdit" type="TextEdit" parent="PanelContainer/VBoxContainer"]
-margin_top = 34.0
-margin_right = 1012.0
-margin_bottom = 114.0
-rect_min_size = Vector2( 0, 80 )
-size_flags_horizontal = 3
-size_flags_vertical = 3
-show_line_numbers = true
-smooth_scrolling = true
-wrap_enabled = true
 
 [node name="DragController" parent="." instance=ExtResource( 5 )]
 
-[connection signal="about_to_show" from="PanelContainer/VBoxContainer/Header/CharacterDropdown" to="." method="_on_MenuButton_about_to_show"]
-[connection signal="text_changed" from="PanelContainer/VBoxContainer/TextEdit" to="." method="_on_TextEdit_text_changed"]
+[connection signal="about_to_show" from="PanelContainer/VBoxContainer/Header/MenuButton" to="." method="_on_MenuButton_about_to_show"]

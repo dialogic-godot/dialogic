@@ -1,5 +1,5 @@
 tool
-extends PanelContainer
+extends Control
 
 var editor_reference
 var editorPopup
@@ -14,21 +14,22 @@ var event_data = {
 }
 
 func _ready():	
-	$VBoxContainer/Header/VisibleToggle.disabled()
+	$PanelContainer/VBoxContainer/Header/VisibleToggle.disabled()
 
 
 func _on_ButtonAudio_pressed():
-	var file_dialog = editor_reference.godot_dialog()
-	file_dialog.add_filter("*.wav, *.ogg")
+	editor_reference.godot_dialog("*.wav, *.ogg")
 	editor_reference.godot_dialog_connect(self, "_on_file_selected")
+
 
 func _on_file_selected(path, target):
 	print('[Dialogic] Loading audio block ', path, target)
 	target.load_audio(path)
 
+
 func load_audio(path):
-	$VBoxContainer/Header/Name.text = path
-	$VBoxContainer/Header/ButtonPreviewPlay.disabled = false
+	$PanelContainer/VBoxContainer/Header/Name.text = path
+	$PanelContainer/VBoxContainer/Header/ButtonPreviewPlay.disabled = false
 	event_data['file'] = path
 
 
@@ -36,17 +37,17 @@ func load_data(data):
 	event_data = data
 	if data['file'] != '':
 		load_audio(data['file'])
-	
+
+
 func _on_ButtonPreviewPlay_pressed():
 	print('[Dialogic] Playing audio ' + event_data['file'])
-	if $AudioPreview.is_playing():
-		$AudioPreview.stop()
+	if $PanelContainer/AudioPreview.is_playing():
+		$PanelContainer/AudioPreview.stop()
 	else:
-		$AudioPreview.stream = load(event_data['file'])
-		$AudioPreview.play()
-		$VBoxContainer/Header/ButtonPreviewPlay.icon = stop_icon
-		
+		$PanelContainer/AudioPreview.stream = load(event_data['file'])
+		$PanelContainer/AudioPreview.play()
+		$PanelContainer/VBoxContainer/Header/ButtonPreviewPlay.icon = stop_icon
 
 
 func _on_AudioPreview_finished():
-	$VBoxContainer/Header/ButtonPreviewPlay.icon = play_icon
+	$PanelContainer/VBoxContainer/Header/ButtonPreviewPlay.icon = play_icon

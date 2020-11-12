@@ -1,17 +1,25 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=25 format=2]
 
 [ext_resource path="res://addons/dialogic/Editor/editor_view.gd" type="Script" id=1]
 [ext_resource path="res://addons/dialogic/Images/dialog.svg" type="Texture" id=2]
 [ext_resource path="res://addons/dialogic/Images/character-join.svg" type="Texture" id=3]
 [ext_resource path="res://addons/dialogic/Images/scene.svg" type="Texture" id=4]
 [ext_resource path="res://addons/dialogic/Images/character-leave.svg" type="Texture" id=5]
-[ext_resource path="res://addons/dialogic/Images/Script.svg" type="Texture" id=6]
+[ext_resource path="res://addons/dialogic/Images/condition.svg" type="Texture" id=6]
 [ext_resource path="res://addons/dialogic/Images/character.svg" type="Texture" id=7]
 [ext_resource path="res://addons/dialogic/Images/audio-event.svg" type="Texture" id=8]
 [ext_resource path="res://addons/dialogic/Images/open-icon.svg" type="Texture" id=9]
 [ext_resource path="res://addons/dialogic/Images/closed-icon.svg" type="Texture" id=10]
 [ext_resource path="res://addons/dialogic/Images/portraits/df-1.png" type="Texture" id=11]
-[ext_resource path="res://addons/dialogic/Images/change-scene.svg" type="Texture" id=12]
+[ext_resource path="res://addons/dialogic/Images/change-timeline.svg" type="Texture" id=12]
+[ext_resource path="res://addons/dialogic/Images/glossary.svg" type="Texture" id=13]
+[ext_resource path="res://addons/dialogic/Images/logo.png" type="Texture" id=14]
+[ext_resource path="res://addons/dialogic/Images/timeline.svg" type="Texture" id=15]
+[ext_resource path="res://addons/dialogic/Images/theme.svg" type="Texture" id=16]
+[ext_resource path="res://addons/dialogic/Images/character-tab.svg" type="Texture" id=17]
+[ext_resource path="res://addons/dialogic/Images/choice.svg" type="Texture" id=18]
+[ext_resource path="res://addons/dialogic/Images/end-choice.svg" type="Texture" id=19]
+[ext_resource path="res://addons/dialogic/Images/tutorials/arrow-down.svg" type="Texture" id=20]
 
 [sub_resource type="StyleBoxFlat" id=1]
 content_margin_left = 5.0
@@ -25,7 +33,16 @@ border_width_right = 1
 border_width_bottom = 1
 border_color = Color( 0.0980392, 0.113725, 0.152941, 1 )
 
-[sub_resource type="StyleBoxFlat" id=2]
+[sub_resource type="Theme" id=2]
+
+[sub_resource type="StyleBoxFlat" id=3]
+bg_color = Color( 0.878431, 0.768627, 0.282353, 1 )
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[sub_resource type="StyleBoxFlat" id=4]
 content_margin_left = 5.0
 content_margin_right = 5.0
 content_margin_top = 5.0
@@ -54,7 +71,7 @@ __meta__ = {
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
 anchor_right = 1.0
-margin_bottom = 27.0
+margin_bottom = 28.0
 custom_constants/separation = 0
 __meta__ = {
 "_edit_use_anchors_": false
@@ -68,19 +85,66 @@ text = "File"
 items = [ "New dialog", null, 0, false, false, 0, 0, null, "", false ]
 
 [node name="EventButton" type="Button" parent="HBoxContainer"]
+self_modulate = Color( 0.415686, 0.615686, 0.917647, 1 )
 margin_right = 34.0
 margin_bottom = 28.0
+hint_tooltip = "Timelines"
 focus_mode = 0
-icon = ExtResource( 6 )
+icon = ExtResource( 15 )
 flat = true
 
 [node name="CharactersButton" type="Button" parent="HBoxContainer"]
+self_modulate = Color( 0.870588, 0.870588, 0.870588, 1 )
 margin_left = 34.0
 margin_right = 68.0
 margin_bottom = 28.0
+hint_tooltip = "Characters"
 focus_mode = 0
-icon = ExtResource( 7 )
+icon = ExtResource( 17 )
 flat = true
+
+[node name="ThemeButton" type="Button" parent="HBoxContainer"]
+margin_left = 68.0
+margin_right = 102.0
+margin_bottom = 28.0
+hint_tooltip = "Dialog Theme"
+disabled = true
+icon = ExtResource( 16 )
+flat = true
+
+[node name="GlossaryButton" type="Button" parent="HBoxContainer"]
+margin_left = 102.0
+margin_right = 136.0
+margin_bottom = 28.0
+hint_tooltip = "Glossary"
+disabled = true
+icon = ExtResource( 13 )
+flat = true
+
+[node name="FoldTools" type="HBoxContainer" parent="HBoxContainer"]
+margin_left = 136.0
+margin_right = 271.0
+margin_bottom = 28.0
+
+[node name="Label" type="Label" parent="HBoxContainer/FoldTools"]
+margin_top = 7.0
+margin_right = 59.0
+margin_bottom = 21.0
+text = "      Fold  "
+
+[node name="ButtonFold" type="Button" parent="HBoxContainer/FoldTools"]
+margin_left = 63.0
+margin_right = 97.0
+margin_bottom = 28.0
+icon = ExtResource( 10 )
+align = 0
+
+[node name="ButtonUnfold" type="Button" parent="HBoxContainer/FoldTools"]
+margin_left = 101.0
+margin_right = 135.0
+margin_bottom = 28.0
+icon = ExtResource( 9 )
+align = 0
 
 [node name="ButtonSave" type="Button" parent="HBoxContainer"]
 visible = false
@@ -99,17 +163,20 @@ text = "Reload"
 align = 0
 
 [node name="Control" type="Control" parent="HBoxContainer"]
-margin_left = 68.0
-margin_right = 885.0
+margin_left = 271.0
+margin_right = 888.0
 margin_bottom = 28.0
 size_flags_horizontal = 3
 
-[node name="EditorLabel" type="Label" parent="HBoxContainer"]
-margin_left = 885.0
-margin_top = 7.0
+[node name="Logo" type="TextureRect" parent="HBoxContainer"]
+margin_left = 888.0
 margin_right = 1008.0
-margin_bottom = 21.0
-text = "Dialogic Editor v0.1"
+margin_bottom = 28.0
+rect_min_size = Vector2( 120, 0 )
+mouse_default_cursor_shape = 2
+texture = ExtResource( 14 )
+expand = true
+stretch_mode = 5
 
 [node name="Editor" type="HSplitContainer" parent="."]
 anchor_right = 1.0
@@ -129,136 +196,73 @@ rect_min_size = Vector2( 180, 0 )
 
 [node name="VBoxContainer2" type="VBoxContainer" parent="Editor/EventTools"]
 margin_right = 180.0
-margin_bottom = 180.0
+margin_bottom = 541.0
 size_flags_vertical = 3
 
-[node name="Label" type="Label" parent="Editor/EventTools/VBoxContainer2"]
+[node name="AddTimelineButton" type="Button" parent="Editor/EventTools/VBoxContainer2"]
 margin_right = 180.0
-margin_bottom = 14.0
-text = "Dialogs"
+margin_bottom = 20.0
+text = "Add timeline +"
 
 [node name="DialogItemList" type="ItemList" parent="Editor/EventTools/VBoxContainer2"]
-margin_top = 18.0
-margin_right = 180.0
-margin_bottom = 180.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-allow_rmb_select = true
-
-[node name="VBoxContainer" type="VBoxContainer" parent="Editor/EventTools"]
-margin_top = 192.0
+margin_top = 24.0
 margin_right = 180.0
 margin_bottom = 541.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+items = [ "1", ExtResource( 15 ), false, "2", ExtResource( 15 ), false, "Example", ExtResource( 15 ), false, "Hello World", ExtResource( 15 ), false, "test", ExtResource( 15 ), false, "Testing new nodes", ExtResource( 15 ), false, "timeline-1603627709", ExtResource( 15 ), false, "timeline-1604767299", ExtResource( 15 ), false, "timeline-1604768053", ExtResource( 15 ), false, "timeline-1604768115", ExtResource( 15 ), false, "timeline-1604768138", ExtResource( 15 ), false, "timeline-1604768150", ExtResource( 15 ), false, "timeline-1604768192", ExtResource( 15 ), false ]
+allow_rmb_select = true
+
+[node name="CenterContainer" type="CenterContainer" parent="Editor"]
+margin_left = 192.0
+margin_right = 997.0
+margin_bottom = 541.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Editor/CenterContainer"]
+margin_left = 222.0
+margin_top = 251.0
+margin_right = 582.0
+margin_bottom = 289.0
+
+[node name="Label" type="Label" parent="Editor/CenterContainer/VBoxContainer"]
+margin_right = 360.0
+margin_bottom = 14.0
+text = "Select or add a timeline to start working on your dialogs."
+
+[node name="Control" type="CenterContainer" parent="Editor/CenterContainer/VBoxContainer"]
+margin_top = 18.0
+margin_right = 360.0
+margin_bottom = 38.0
+
+[node name="Button" type="Button" parent="Editor/CenterContainer/VBoxContainer/Control"]
+margin_left = 117.0
+margin_right = 242.0
+margin_bottom = 20.0
+text = "Add new timeline"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="LabelEvents" type="Label" parent="Editor/EventTools/VBoxContainer"]
-margin_right = 180.0
-margin_bottom = 14.0
-text = "Events"
-
-[node name="ButtonText" type="Button" parent="Editor/EventTools/VBoxContainer"]
-margin_top = 18.0
-margin_right = 180.0
-margin_bottom = 46.0
-text = "  Text Event"
-icon = ExtResource( 2 )
-align = 0
-
-[node name="ButtonBackground" type="Button" parent="Editor/EventTools/VBoxContainer"]
-margin_top = 50.0
-margin_right = 180.0
-margin_bottom = 78.0
-text = "  Scene Event"
-icon = ExtResource( 4 )
-align = 0
-
-[node name="ButtonChangeScene" type="Button" parent="Editor/EventTools/VBoxContainer"]
-margin_top = 82.0
-margin_right = 180.0
-margin_bottom = 110.0
-text = "  Change Scene"
-icon = ExtResource( 12 )
-align = 0
-
-[node name="ButtonAudio" type="Button" parent="Editor/EventTools/VBoxContainer"]
-margin_top = 114.0
-margin_right = 180.0
-margin_bottom = 142.0
-text = "  Audio Event"
-icon = ExtResource( 8 )
-align = 0
-
-[node name="ButtonCharacterJoin" type="Button" parent="Editor/EventTools/VBoxContainer"]
-margin_top = 146.0
-margin_right = 180.0
-margin_bottom = 174.0
-text = "  Character Join"
-icon = ExtResource( 3 )
-align = 0
-
-[node name="ButtonCharacterLeave" type="Button" parent="Editor/EventTools/VBoxContainer"]
-margin_top = 178.0
-margin_right = 180.0
-margin_bottom = 206.0
-text = "  Character Leave"
-icon = ExtResource( 5 )
-align = 0
-
-[node name="Separator" type="Panel" parent="Editor/EventTools/VBoxContainer"]
-self_modulate = Color( 1, 1, 1, 0 )
-margin_top = 210.0
-margin_right = 180.0
-margin_bottom = 217.065
-rect_min_size = Vector2( 0, 7.065 )
-
-[node name="LabelNodes" type="Label" parent="Editor/EventTools/VBoxContainer"]
-margin_top = 221.0
-margin_right = 180.0
-margin_bottom = 235.0
-text = "View"
-
-[node name="ButtonFold" type="Button" parent="Editor/EventTools/VBoxContainer"]
-margin_top = 239.0
-margin_right = 180.0
-margin_bottom = 267.0
-text = "Fold all"
-icon = ExtResource( 10 )
-align = 0
-
-[node name="ButtonUnfold" type="Button" parent="Editor/EventTools/VBoxContainer"]
-margin_top = 271.0
-margin_right = 180.0
-margin_bottom = 299.0
-text = "Unfold all"
-icon = ExtResource( 9 )
-align = 0
-
-[node name="LabelNodes2" type="Label" parent="Editor/EventTools/VBoxContainer"]
-margin_top = 303.0
-margin_right = 180.0
-margin_bottom = 317.0
-text = "Other"
-
-[node name="ButtonGDScript" type="Button" parent="Editor/EventTools/VBoxContainer"]
-margin_top = 321.0
-margin_right = 180.0
-margin_bottom = 349.0
-text = "  GDScript"
-icon = ExtResource( 6 )
-align = 0
-
-[node name="EventEditor" type="ScrollContainer" parent="Editor"]
+[node name="TimelineEditor" type="VBoxContainer" parent="Editor"]
+visible = false
 margin_left = 192.0
 margin_right = 997.0
 margin_bottom = 541.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_constants/separation = 0
+
+[node name="TimelineArea" type="ScrollContainer" parent="Editor/TimelineEditor"]
+margin_right = 805.0
+margin_bottom = 463.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
 custom_styles/bg = SubResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="TimeLine" type="VBoxContainer" parent="Editor/EventEditor"]
+[node name="TimeLine" type="VBoxContainer" parent="Editor/TimelineEditor/TimelineArea"]
 margin_left = 5.0
 margin_top = 5.0
 margin_right = 800.0
@@ -267,6 +271,138 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 9
+
+[node name="NoEventsOnTimeline" type="Panel" parent="Editor/TimelineEditor"]
+visible = false
+margin_top = 426.0
+margin_right = 805.0
+margin_bottom = 463.762
+rect_min_size = Vector2( 0, 37.762 )
+size_flags_horizontal = 3
+theme = SubResource( 2 )
+custom_styles/panel = SubResource( 3 )
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Editor/TimelineEditor/NoEventsOnTimeline"]
+margin_right = 40.0
+margin_bottom = 40.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextureRect" type="TextureRect" parent="Editor/TimelineEditor/NoEventsOnTimeline/HBoxContainer"]
+margin_right = 40.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 40, 40 )
+texture = ExtResource( 20 )
+stretch_mode = 4
+
+[node name="Label" type="Label" parent="Editor/TimelineEditor/NoEventsOnTimeline/HBoxContainer"]
+margin_left = 44.0
+margin_top = 13.0
+margin_right = 323.0
+margin_bottom = 27.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Add an event to start building your timeline"
+
+[node name="EventContainer" type="VBoxContainer" parent="Editor/TimelineEditor"]
+margin_top = 463.0
+margin_right = 805.0
+margin_bottom = 541.0
+size_flags_horizontal = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="Editor/TimelineEditor/EventContainer"]
+margin_right = 805.0
+margin_bottom = 14.0
+
+[node name="LabelEvents" type="Label" parent="Editor/TimelineEditor/EventContainer/HBoxContainer3"]
+margin_right = 71.0
+margin_bottom = 14.0
+text = "Add Events"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Editor/TimelineEditor/EventContainer"]
+margin_top = 18.0
+margin_right = 805.0
+margin_bottom = 46.0
+
+[node name="ButtonText" type="Button" parent="Editor/TimelineEditor/EventContainer/HBoxContainer"]
+margin_right = 110.0
+margin_bottom = 28.0
+text = "  Text Event"
+icon = ExtResource( 2 )
+align = 0
+
+[node name="ButtonChoice" type="Button" parent="Editor/TimelineEditor/EventContainer/HBoxContainer"]
+margin_left = 114.0
+margin_right = 201.0
+margin_bottom = 28.0
+text = "  Choice"
+icon = ExtResource( 18 )
+align = 0
+
+[node name="ButtonCondition" type="Button" parent="Editor/TimelineEditor/EventContainer/HBoxContainer"]
+margin_left = 205.0
+margin_right = 306.0
+margin_bottom = 28.0
+text = " Condition"
+icon = ExtResource( 6 )
+align = 0
+
+[node name="ButtonEndChoice" type="Button" parent="Editor/TimelineEditor/EventContainer/HBoxContainer"]
+margin_left = 310.0
+margin_right = 425.0
+margin_bottom = 28.0
+text = "  End Branch"
+icon = ExtResource( 19 )
+align = 0
+
+[node name="ButtonBackground" type="Button" parent="Editor/TimelineEditor/EventContainer/HBoxContainer"]
+margin_left = 429.0
+margin_right = 550.0
+margin_bottom = 28.0
+text = "  Scene Event"
+icon = ExtResource( 4 )
+align = 0
+
+[node name="ButtonChangeTimeline" type="Button" parent="Editor/TimelineEditor/EventContainer/HBoxContainer"]
+margin_left = 554.0
+margin_right = 704.0
+margin_bottom = 28.0
+text = "  Change Timeline"
+icon = ExtResource( 12 )
+align = 0
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="Editor/TimelineEditor/EventContainer"]
+margin_top = 50.0
+margin_right = 805.0
+margin_bottom = 78.0
+
+[node name="ButtonCharacterJoin" type="Button" parent="Editor/TimelineEditor/EventContainer/HBoxContainer2"]
+margin_right = 131.0
+margin_bottom = 28.0
+text = "  Character Join"
+icon = ExtResource( 3 )
+align = 0
+
+[node name="ButtonCharacterLeave" type="Button" parent="Editor/TimelineEditor/EventContainer/HBoxContainer2"]
+margin_left = 135.0
+margin_right = 280.0
+margin_bottom = 28.0
+text = "  Character Leave"
+icon = ExtResource( 5 )
+align = 0
+
+[node name="ButtonAudio" type="Button" parent="Editor/TimelineEditor/EventContainer/HBoxContainer2"]
+margin_left = 284.0
+margin_right = 404.0
+margin_bottom = 28.0
+text = "  Audio Event"
+icon = ExtResource( 8 )
+align = 0
 
 [node name="CharacterTools" type="VBoxContainer" parent="Editor"]
 visible = false
@@ -285,12 +421,13 @@ margin_right = 180.0
 margin_bottom = 541.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
+items = [ "Narrator", ExtResource( 7 ), false, "Kubuk", ExtResource( 7 ), false, "Placeholder", ExtResource( 7 ), false, "Toen", ExtResource( 7 ), false, "Test", ExtResource( 7 ), false, "Emilio", ExtResource( 7 ), false ]
 
 [node name="CharacterEditor" type="ScrollContainer" parent="Editor"]
 visible = false
 margin_right = 997.0
 margin_bottom = 541.0
-custom_styles/bg = SubResource( 2 )
+custom_styles/bg = SubResource( 4 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -304,6 +441,7 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="Container" type="VBoxContainer" parent="Editor/CharacterEditor/HBoxContainer"]
+visible = false
 margin_right = 491.0
 margin_bottom = 531.0
 grow_horizontal = 2
@@ -459,7 +597,6 @@ __meta__ = {
 }
 
 [node name="RenameDialog" type="AcceptDialog" parent="."]
-visible = true
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -469,7 +606,7 @@ margin_top = -44.0
 margin_right = 250.0
 margin_bottom = 44.0
 rect_min_size = Vector2( 500, 0 )
-window_title = "Renaming Dialog"
+window_title = "Renaming Timeline"
 resizable = true
 __meta__ = {
 "_edit_use_anchors_": false
@@ -488,26 +625,31 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="AudioPreview" type="AudioStreamPlayer" parent="."]
 [connection signal="pressed" from="HBoxContainer/EventButton" to="." method="_on_EventButton_pressed"]
 [connection signal="pressed" from="HBoxContainer/CharactersButton" to="." method="_on_CharactersButton_pressed"]
+[connection signal="pressed" from="HBoxContainer/ThemeButton" to="." method="_on_CharactersButton_pressed"]
+[connection signal="pressed" from="HBoxContainer/GlossaryButton" to="." method="_on_CharactersButton_pressed"]
+[connection signal="pressed" from="HBoxContainer/FoldTools/ButtonFold" to="." method="_on_ButtonFold_pressed"]
+[connection signal="pressed" from="HBoxContainer/FoldTools/ButtonUnfold" to="." method="_on_ButtonUnfold_pressed"]
 [connection signal="pressed" from="HBoxContainer/ButtonSave" to="." method="_on_ButtonSave_pressed"]
 [connection signal="pressed" from="HBoxContainer/ReloadResource" to="." method="_on_ReloadResource_pressed"]
+[connection signal="gui_input" from="HBoxContainer/Logo" to="." method="_on_Logo_gui_input"]
+[connection signal="pressed" from="Editor/EventTools/VBoxContainer2/AddTimelineButton" to="." method="_on_AddTimelineButton_pressed"]
 [connection signal="item_rmb_selected" from="Editor/EventTools/VBoxContainer2/DialogItemList" to="." method="_on_DialogItemList_item_rmb_selected"]
 [connection signal="item_selected" from="Editor/EventTools/VBoxContainer2/DialogItemList" to="." method="_on_DialogItemList_item_selected"]
-[connection signal="pressed" from="Editor/EventTools/VBoxContainer/ButtonText" to="." method="_on_ButtonText_pressed"]
-[connection signal="pressed" from="Editor/EventTools/VBoxContainer/ButtonBackground" to="." method="_on_ButtonBackground_pressed"]
-[connection signal="pressed" from="Editor/EventTools/VBoxContainer/ButtonChangeScene" to="." method="_on_ButtonBackground_pressed"]
-[connection signal="pressed" from="Editor/EventTools/VBoxContainer/ButtonAudio" to="." method="_on_ButtonAudio_pressed"]
-[connection signal="pressed" from="Editor/EventTools/VBoxContainer/ButtonCharacterJoin" to="." method="_on_ButtonCharacter_pressed"]
-[connection signal="pressed" from="Editor/EventTools/VBoxContainer/ButtonCharacterLeave" to="." method="_on_ButtonCharacterLeave_pressed"]
-[connection signal="pressed" from="Editor/EventTools/VBoxContainer/ButtonFold" to="." method="_on_ButtonFold_pressed"]
-[connection signal="pressed" from="Editor/EventTools/VBoxContainer/ButtonUnfold" to="." method="_on_ButtonUnfold_pressed"]
-[connection signal="pressed" from="Editor/EventTools/VBoxContainer/ButtonGDScript" to="." method="_on_ButtonBackground_pressed"]
+[connection signal="pressed" from="Editor/CenterContainer/VBoxContainer/Control/Button" to="." method="_on_AddTimelineButton_pressed"]
+[connection signal="pressed" from="Editor/TimelineEditor/EventContainer/HBoxContainer/ButtonText" to="." method="_on_ButtonText_pressed"]
+[connection signal="pressed" from="Editor/TimelineEditor/EventContainer/HBoxContainer/ButtonChoice" to="." method="_on_ButtonChoice_pressed"]
+[connection signal="pressed" from="Editor/TimelineEditor/EventContainer/HBoxContainer/ButtonCondition" to="." method="_on_ButtonCondition_pressed"]
+[connection signal="pressed" from="Editor/TimelineEditor/EventContainer/HBoxContainer/ButtonEndChoice" to="." method="_on_ButtonEndChoice_pressed"]
+[connection signal="pressed" from="Editor/TimelineEditor/EventContainer/HBoxContainer/ButtonBackground" to="." method="_on_ButtonBackground_pressed"]
+[connection signal="pressed" from="Editor/TimelineEditor/EventContainer/HBoxContainer/ButtonChangeTimeline" to="." method="_on_ButtonChangeTimeline_pressed"]
+[connection signal="pressed" from="Editor/TimelineEditor/EventContainer/HBoxContainer2/ButtonCharacterJoin" to="." method="_on_ButtonCharacter_pressed"]
+[connection signal="pressed" from="Editor/TimelineEditor/EventContainer/HBoxContainer2/ButtonCharacterLeave" to="." method="_on_ButtonCharacterLeave_pressed"]
+[connection signal="pressed" from="Editor/TimelineEditor/EventContainer/HBoxContainer2/ButtonAudio" to="." method="_on_ButtonAudio_pressed"]
 [connection signal="pressed" from="Editor/CharacterTools/Button" to="." method="_on_Button_pressed"]
 [connection signal="item_selected" from="Editor/CharacterTools/CharacterItemList" to="." method="_on_ItemList_item_selected"]
 [connection signal="pressed" from="Editor/CharacterEditor/HBoxContainer/Container/Actions/SaveButton" to="." method="_on_character_SaveButton_pressed"]
 [connection signal="pressed" from="Editor/CharacterEditor/HBoxContainer/Container/Actions/DeleteButton" to="." method="_on_DeleteButton_pressed"]
 [connection signal="confirmed" from="RemoveConfirmation" to="." method="_on_RemoveConfirmation_confirmed"]
 [connection signal="confirmed" from="RenameDialog" to="." method="_on_RenameDialog_confirmed"]
-[connection signal="finished" from="AudioPreview" to="." method="_on_AudioPreview_finished"]

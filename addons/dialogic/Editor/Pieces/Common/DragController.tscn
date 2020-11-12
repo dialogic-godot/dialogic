@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://addons/dialogic/Editor/Pieces/Common/DragController.gd" type="Script" id=1]
+
+[node name="DragController" type="Control"]
+visible = false
+margin_left = 1024.0
+margin_right = 1024.0
+margin_bottom = 126.0
+script = ExtResource( 1 )

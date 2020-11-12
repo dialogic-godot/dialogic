@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/change-scene.svg-6741e154480a026a1704d39dc9993684.stex"
+path="res://.import/plugin-editor-icon.svg-b27733904a7899b70bf2e32c6ffbb24b.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://addons/dialogic/Images/change-scene.svg"
-dest_files=[ "res://.import/change-scene.svg-6741e154480a026a1704d39dc9993684.stex" ]
+source_file="res://addons/dialogic/Images/plugin-editor-icon.svg"
+dest_files=[ "res://.import/plugin-editor-icon.svg-b27733904a7899b70bf2e32c6ffbb24b.stex" ]
 
 [params]
 
