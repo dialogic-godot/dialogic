@@ -4,14 +4,15 @@ Create dialogs, characters and scenes to display conversations in your Godot gam
 ![Screenshot](https://coppolaemilio.com/images/dialogic/dialogic05.png)
 
 ## ⚠️ Under development! ⚠️
-The plugin is not working right now, make sure to follow the repo for the next update.
+The plugin is not production ready, make sure to follow the repo for the next update.
 
 
 ## Changelog
-v0.5 - WIP
+v0.5 - Indentation Magic
+ - Video: https://youtu.be/mrTyWy2TJOM
  - Added new events:
    - Choice
-   - End Choice
+   - End branch
    - Change Timeline
  - You can now drag and drop events in a timeline
  - Made new icons for the editor tabs
@@ -20,12 +21,14 @@ v0.5 - WIP
  - Changed event default colors
 
 v0.4 - Dialogic
+ - Video: https://youtu.be/Hf_gywa6vZE
  - Changed how the main editor works, instead of being a graphedit it is now an event timeline.
  - Renamed the plugin to Dialogic. Thanks to Òscar for always knowing how to name things. 
  - Moved all data to .json files
  - Broke the addon for working. Nice :)
 
 v0.3 - Using Resources
+ - Video: https://youtu.be/PzzOE4LbGAo
  - Removed requirement for `global.gd` and `characters.gd` autoload scripts.
  - Added `DialogResource` and `DialogCharacterResource` resources to create a cleaner way of specifying dialog content
  - Added icon to the existing dialog node.
@@ -38,7 +41,7 @@ v0.2 - Adding Characters:
  - Curly brackets introduced for character names.
 
 v0.1 - Release
- - You can watch the presentation video here https://www.youtube.com/watch?v=TXmf4FP8OCA
+ - You can watch the presentation video here https://youtu.be/TXmf4FP8OCA
 ---
 
 ## Credits
