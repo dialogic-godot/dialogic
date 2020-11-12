@@ -13,6 +13,7 @@ v0.5 - WIP
    - Choice
    - End Choice
    - Change Timeline
+ - You can now drag and drop events in a timeline
  - Made new icons for the editor tabs
  - Added some tooltips
  - Restructured the events node structure to add indentation
