@@ -1,0 +1,1 @@
+I'll move the changelog here once v1.0 gets released so the readme is not full of noise

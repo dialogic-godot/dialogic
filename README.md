@@ -10,6 +10,7 @@ The plugin is not production ready, make sure to follow the repo for the next up
 ## Changelog
 v0.6 - WIP
  - Characters
+   - Different display name
    - Added Default Speaker setting
 
 

@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=2]
+[gd_scene load_steps=26 format=2]
 
 [ext_resource path="res://addons/dialogic/Editor/editor_view.gd" type="Script" id=1]
 [ext_resource path="res://addons/dialogic/Images/dialog.svg" type="Texture" id=2]
@@ -20,6 +20,7 @@
 [ext_resource path="res://addons/dialogic/Images/choice.svg" type="Texture" id=18]
 [ext_resource path="res://addons/dialogic/Images/end-choice.svg" type="Texture" id=19]
 [ext_resource path="res://addons/dialogic/Images/tutorials/arrow-down.svg" type="Texture" id=20]
+[ext_resource path="res://addons/dialogic/Editor/CharacterEditor.gd" type="Script" id=21]
 
 [sub_resource type="StyleBoxFlat" id=1]
 content_margin_left = 5.0
@@ -178,7 +179,7 @@ texture = ExtResource( 14 )
 expand = true
 stretch_mode = 5
 
-[node name="Editor" type="HSplitContainer" parent="."]
+[node name="EditorTimeline" type="HSplitContainer" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 6.0
@@ -189,22 +190,22 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="EventTools" type="VSplitContainer" parent="Editor"]
+[node name="EventTools" type="VSplitContainer" parent="EditorTimeline"]
 margin_right = 180.0
 margin_bottom = 541.0
 rect_min_size = Vector2( 180, 0 )
 
-[node name="VBoxContainer2" type="VBoxContainer" parent="Editor/EventTools"]
+[node name="VBoxContainer2" type="VBoxContainer" parent="EditorTimeline/EventTools"]
 margin_right = 180.0
 margin_bottom = 541.0
 size_flags_vertical = 3
 
-[node name="AddTimelineButton" type="Button" parent="Editor/EventTools/VBoxContainer2"]
+[node name="AddTimelineButton" type="Button" parent="EditorTimeline/EventTools/VBoxContainer2"]
 margin_right = 180.0
 margin_bottom = 20.0
 text = "Add timeline +"
 
-[node name="DialogItemList" type="ItemList" parent="Editor/EventTools/VBoxContainer2"]
+[node name="DialogItemList" type="ItemList" parent="EditorTimeline/EventTools/VBoxContainer2"]
 margin_top = 24.0
 margin_right = 180.0
 margin_bottom = 541.0
@@ -213,28 +214,28 @@ size_flags_vertical = 3
 items = [ "timeline-1605295354", ExtResource( 15 ), false ]
 allow_rmb_select = true
 
-[node name="CenterContainer" type="CenterContainer" parent="Editor"]
+[node name="CenterContainer" type="CenterContainer" parent="EditorTimeline"]
 margin_left = 192.0
 margin_right = 997.0
 margin_bottom = 541.0
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Editor/CenterContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="EditorTimeline/CenterContainer"]
 margin_left = 222.0
 margin_top = 251.0
 margin_right = 582.0
 margin_bottom = 289.0
 
-[node name="Label" type="Label" parent="Editor/CenterContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="EditorTimeline/CenterContainer/VBoxContainer"]
 margin_right = 360.0
 margin_bottom = 14.0
 text = "Select or add a timeline to start working on your dialogs."
 
-[node name="Control" type="CenterContainer" parent="Editor/CenterContainer/VBoxContainer"]
+[node name="Control" type="CenterContainer" parent="EditorTimeline/CenterContainer/VBoxContainer"]
 margin_top = 18.0
 margin_right = 360.0
 margin_bottom = 38.0
 
-[node name="Button" type="Button" parent="Editor/CenterContainer/VBoxContainer/Control"]
+[node name="Button" type="Button" parent="EditorTimeline/CenterContainer/VBoxContainer/Control"]
 margin_left = 117.0
 margin_right = 242.0
 margin_bottom = 20.0
@@ -243,7 +244,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="TimelineEditor" type="VBoxContainer" parent="Editor"]
+[node name="TimelineEditor" type="VBoxContainer" parent="EditorTimeline"]
 visible = false
 margin_left = 192.0
 margin_right = 997.0
@@ -252,7 +253,7 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_constants/separation = 0
 
-[node name="TimelineArea" type="ScrollContainer" parent="Editor/TimelineEditor"]
+[node name="TimelineArea" type="ScrollContainer" parent="EditorTimeline/TimelineEditor"]
 margin_right = 805.0
 margin_bottom = 463.0
 size_flags_horizontal = 3
@@ -262,7 +263,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="TimeLine" type="VBoxContainer" parent="Editor/TimelineEditor/TimelineArea"]
+[node name="TimeLine" type="VBoxContainer" parent="EditorTimeline/TimelineEditor/TimelineArea"]
 margin_left = 5.0
 margin_top = 5.0
 margin_right = 800.0
@@ -272,7 +273,7 @@ grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 9
 
-[node name="NoEventsOnTimeline" type="Panel" parent="Editor/TimelineEditor"]
+[node name="NoEventsOnTimeline" type="Panel" parent="EditorTimeline/TimelineEditor"]
 visible = false
 margin_top = 426.0
 margin_right = 805.0
@@ -282,7 +283,7 @@ size_flags_horizontal = 3
 theme = SubResource( 2 )
 custom_styles/panel = SubResource( 3 )
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Editor/TimelineEditor/NoEventsOnTimeline"]
+[node name="HBoxContainer" type="HBoxContainer" parent="EditorTimeline/TimelineEditor/NoEventsOnTimeline"]
 margin_right = 40.0
 margin_bottom = 40.0
 size_flags_horizontal = 3
@@ -291,14 +292,14 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="TextureRect" type="TextureRect" parent="Editor/TimelineEditor/NoEventsOnTimeline/HBoxContainer"]
+[node name="TextureRect" type="TextureRect" parent="EditorTimeline/TimelineEditor/NoEventsOnTimeline/HBoxContainer"]
 margin_right = 40.0
 margin_bottom = 40.0
 rect_min_size = Vector2( 40, 40 )
 texture = ExtResource( 20 )
 stretch_mode = 4
 
-[node name="Label" type="Label" parent="Editor/TimelineEditor/NoEventsOnTimeline/HBoxContainer"]
+[node name="Label" type="Label" parent="EditorTimeline/TimelineEditor/NoEventsOnTimeline/HBoxContainer"]
 margin_left = 44.0
 margin_top = 13.0
 margin_right = 323.0
@@ -306,7 +307,7 @@ margin_bottom = 27.0
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "Add an event to start building your timeline"
 
-[node name="EventContainer" type="VBoxContainer" parent="Editor/TimelineEditor"]
+[node name="EventContainer" type="VBoxContainer" parent="EditorTimeline/TimelineEditor"]
 margin_top = 463.0
 margin_right = 805.0
 margin_bottom = 541.0
@@ -315,28 +316,28 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="HBoxContainer3" type="HBoxContainer" parent="Editor/TimelineEditor/EventContainer"]
+[node name="HBoxContainer3" type="HBoxContainer" parent="EditorTimeline/TimelineEditor/EventContainer"]
 margin_right = 805.0
 margin_bottom = 14.0
 
-[node name="LabelEvents" type="Label" parent="Editor/TimelineEditor/EventContainer/HBoxContainer3"]
+[node name="LabelEvents" type="Label" parent="EditorTimeline/TimelineEditor/EventContainer/HBoxContainer3"]
 margin_right = 71.0
 margin_bottom = 14.0
 text = "Add Events"
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Editor/TimelineEditor/EventContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="EditorTimeline/TimelineEditor/EventContainer"]
 margin_top = 18.0
 margin_right = 805.0
 margin_bottom = 46.0
 
-[node name="ButtonText" type="Button" parent="Editor/TimelineEditor/EventContainer/HBoxContainer"]
+[node name="ButtonText" type="Button" parent="EditorTimeline/TimelineEditor/EventContainer/HBoxContainer"]
 margin_right = 110.0
 margin_bottom = 28.0
 text = "  Text Event"
 icon = ExtResource( 2 )
 align = 0
 
-[node name="ButtonChoice" type="Button" parent="Editor/TimelineEditor/EventContainer/HBoxContainer"]
+[node name="ButtonChoice" type="Button" parent="EditorTimeline/TimelineEditor/EventContainer/HBoxContainer"]
 margin_left = 114.0
 margin_right = 201.0
 margin_bottom = 28.0
@@ -344,7 +345,7 @@ text = "  Choice"
 icon = ExtResource( 18 )
 align = 0
 
-[node name="ButtonCondition" type="Button" parent="Editor/TimelineEditor/EventContainer/HBoxContainer"]
+[node name="ButtonCondition" type="Button" parent="EditorTimeline/TimelineEditor/EventContainer/HBoxContainer"]
 margin_left = 205.0
 margin_right = 306.0
 margin_bottom = 28.0
@@ -352,7 +353,7 @@ text = " Condition"
 icon = ExtResource( 6 )
 align = 0
 
-[node name="ButtonEndChoice" type="Button" parent="Editor/TimelineEditor/EventContainer/HBoxContainer"]
+[node name="ButtonEndChoice" type="Button" parent="EditorTimeline/TimelineEditor/EventContainer/HBoxContainer"]
 margin_left = 310.0
 margin_right = 425.0
 margin_bottom = 28.0
@@ -360,7 +361,7 @@ text = "  End Branch"
 icon = ExtResource( 19 )
 align = 0
 
-[node name="ButtonBackground" type="Button" parent="Editor/TimelineEditor/EventContainer/HBoxContainer"]
+[node name="ButtonBackground" type="Button" parent="EditorTimeline/TimelineEditor/EventContainer/HBoxContainer"]
 margin_left = 429.0
 margin_right = 550.0
 margin_bottom = 28.0
@@ -368,7 +369,7 @@ text = "  Scene Event"
 icon = ExtResource( 4 )
 align = 0
 
-[node name="ButtonChangeTimeline" type="Button" parent="Editor/TimelineEditor/EventContainer/HBoxContainer"]
+[node name="ButtonChangeTimeline" type="Button" parent="EditorTimeline/TimelineEditor/EventContainer/HBoxContainer"]
 margin_left = 554.0
 margin_right = 704.0
 margin_bottom = 28.0
@@ -376,19 +377,19 @@ text = "  Change Timeline"
 icon = ExtResource( 12 )
 align = 0
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="Editor/TimelineEditor/EventContainer"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="EditorTimeline/TimelineEditor/EventContainer"]
 margin_top = 50.0
 margin_right = 805.0
 margin_bottom = 78.0
 
-[node name="ButtonCharacterJoin" type="Button" parent="Editor/TimelineEditor/EventContainer/HBoxContainer2"]
+[node name="ButtonCharacterJoin" type="Button" parent="EditorTimeline/TimelineEditor/EventContainer/HBoxContainer2"]
 margin_right = 131.0
 margin_bottom = 28.0
 text = "  Character Join"
 icon = ExtResource( 3 )
 align = 0
 
-[node name="ButtonCharacterLeave" type="Button" parent="Editor/TimelineEditor/EventContainer/HBoxContainer2"]
+[node name="ButtonCharacterLeave" type="Button" parent="EditorTimeline/TimelineEditor/EventContainer/HBoxContainer2"]
 margin_left = 135.0
 margin_right = 280.0
 margin_bottom = 28.0
@@ -396,7 +397,7 @@ text = "  Character Leave"
 icon = ExtResource( 5 )
 align = 0
 
-[node name="ButtonAudio" type="Button" parent="Editor/TimelineEditor/EventContainer/HBoxContainer2"]
+[node name="ButtonAudio" type="Button" parent="EditorTimeline/TimelineEditor/EventContainer/HBoxContainer2"]
 margin_left = 284.0
 margin_right = 404.0
 margin_bottom = 28.0
@@ -404,17 +405,28 @@ text = "  Audio Event"
 icon = ExtResource( 8 )
 align = 0
 
-[node name="CharacterTools" type="VBoxContainer" parent="Editor"]
+[node name="EditorCharacter" type="HSplitContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 6.0
+margin_top = 38.0
+margin_right = -5.0
+margin_bottom = -5.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CharacterTools" type="VBoxContainer" parent="EditorCharacter"]
 margin_right = 180.0
 margin_bottom = 541.0
 rect_min_size = Vector2( 180, 0 )
 
-[node name="Button" type="Button" parent="Editor/CharacterTools"]
+[node name="Button" type="Button" parent="EditorCharacter/CharacterTools"]
 margin_right = 180.0
 margin_bottom = 20.0
 text = "Add character +"
 
-[node name="CharacterItemList" type="ItemList" parent="Editor/CharacterTools"]
+[node name="CharacterItemList" type="ItemList" parent="EditorCharacter/CharacterTools"]
 margin_top = 24.0
 margin_right = 180.0
 margin_bottom = 541.0
@@ -422,60 +434,94 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 items = [ "character-1605296220.json", ExtResource( 7 ), false ]
 
-[node name="CharacterEditor" type="ScrollContainer" parent="Editor"]
+[node name="CharacterEditor" type="ScrollContainer" parent="EditorCharacter"]
+margin_left = 192.0
 margin_right = 997.0
 margin_bottom = 541.0
 custom_styles/bg = SubResource( 4 )
+script = ExtResource( 21 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Editor/CharacterEditor"]
+[node name="HBoxContainer" type="HBoxContainer" parent="EditorCharacter/CharacterEditor"]
 margin_left = 5.0
 margin_top = 5.0
-margin_right = 992.0
+margin_right = 800.0
 margin_bottom = 536.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="Container" type="VBoxContainer" parent="Editor/CharacterEditor/HBoxContainer"]
-margin_right = 491.0
+[node name="Container" type="VBoxContainer" parent="EditorCharacter/CharacterEditor/HBoxContainer"]
+margin_right = 451.0
 margin_bottom = 531.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 9
 
-[node name="Name" type="HBoxContainer" parent="Editor/CharacterEditor/HBoxContainer/Container"]
-margin_right = 491.0
+[node name="Name" type="HBoxContainer" parent="EditorCharacter/CharacterEditor/HBoxContainer/Container"]
+margin_right = 451.0
 margin_bottom = 24.0
 
-[node name="Label" type="Label" parent="Editor/CharacterEditor/HBoxContainer/Container/Name"]
+[node name="Label" type="Label" parent="EditorCharacter/CharacterEditor/HBoxContainer/Container/Name"]
 margin_top = 5.0
 margin_right = 130.0
 margin_bottom = 19.0
 rect_min_size = Vector2( 130, 0 )
 text = "Name: "
 
-[node name="LineEdit" type="LineEdit" parent="Editor/CharacterEditor/HBoxContainer/Container/Name"]
+[node name="LineEdit" type="LineEdit" parent="EditorCharacter/CharacterEditor/HBoxContainer/Container/Name"]
 margin_left = 134.0
 margin_right = 274.0
 margin_bottom = 24.0
 rect_min_size = Vector2( 140, 0 )
 
-[node name="Color" type="HBoxContainer" parent="Editor/CharacterEditor/HBoxContainer/Container"]
+[node name="CheckBox" type="CheckBox" parent="EditorCharacter/CharacterEditor/HBoxContainer/Container/Name"]
+margin_left = 278.0
+margin_right = 451.0
+margin_bottom = 24.0
+text = "Different display name"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="DisplayName" type="HBoxContainer" parent="EditorCharacter/CharacterEditor/HBoxContainer/Container"]
+visible = false
 margin_top = 28.0
 margin_right = 491.0
+margin_bottom = 52.0
+__meta__ = {
+"_editor_description_": "Display name is the name that will
+show up on the dialogs in game."
+}
+
+[node name="Label" type="Label" parent="EditorCharacter/CharacterEditor/HBoxContainer/Container/DisplayName"]
+margin_top = 5.0
+margin_right = 130.0
+margin_bottom = 19.0
+rect_min_size = Vector2( 130, 0 )
+text = "Display Name: "
+
+[node name="LineEdit" type="LineEdit" parent="EditorCharacter/CharacterEditor/HBoxContainer/Container/DisplayName"]
+margin_left = 134.0
+margin_right = 274.0
+margin_bottom = 24.0
+rect_min_size = Vector2( 140, 0 )
+
+[node name="Color" type="HBoxContainer" parent="EditorCharacter/CharacterEditor/HBoxContainer/Container"]
+margin_top = 28.0
+margin_right = 451.0
 margin_bottom = 48.0
 
-[node name="Label" type="Label" parent="Editor/CharacterEditor/HBoxContainer/Container/Color"]
+[node name="Label" type="Label" parent="EditorCharacter/CharacterEditor/HBoxContainer/Container/Color"]
 margin_top = 3.0
 margin_right = 130.0
 margin_bottom = 17.0
 rect_min_size = Vector2( 130, 0 )
 text = "Color: "
 
-[node name="ColorPickerButton" type="ColorPickerButton" parent="Editor/CharacterEditor/HBoxContainer/Container/Color"]
+[node name="ColorPickerButton" type="ColorPickerButton" parent="EditorCharacter/CharacterEditor/HBoxContainer/Container/Color"]
 margin_left = 134.0
 margin_right = 194.0
 margin_bottom = 20.0
@@ -483,94 +529,98 @@ rect_min_size = Vector2( 60, 0 )
 color = Color( 1, 1, 1, 1 )
 edit_alpha = false
 
-[node name="Description" type="HBoxContainer" parent="Editor/CharacterEditor/HBoxContainer/Container"]
+[node name="Description" type="HBoxContainer" parent="EditorCharacter/CharacterEditor/HBoxContainer/Container"]
 margin_top = 52.0
-margin_right = 491.0
+margin_right = 451.0
 margin_bottom = 152.0
 
-[node name="Label" type="Label" parent="Editor/CharacterEditor/HBoxContainer/Container/Description"]
+[node name="Label" type="Label" parent="EditorCharacter/CharacterEditor/HBoxContainer/Container/Description"]
 margin_top = 43.0
 margin_right = 130.0
 margin_bottom = 57.0
 rect_min_size = Vector2( 130, 0 )
 text = "Description: "
 
-[node name="TextEdit" type="TextEdit" parent="Editor/CharacterEditor/HBoxContainer/Container/Description"]
+[node name="TextEdit" type="TextEdit" parent="EditorCharacter/CharacterEditor/HBoxContainer/Container/Description"]
 margin_left = 134.0
-margin_right = 491.0
+margin_right = 451.0
 margin_bottom = 100.0
 rect_min_size = Vector2( 100, 100 )
 size_flags_horizontal = 3
 
-[node name="FileName" type="HBoxContainer" parent="Editor/CharacterEditor/HBoxContainer/Container"]
+[node name="FileName" type="HBoxContainer" parent="EditorCharacter/CharacterEditor/HBoxContainer/Container"]
 margin_top = 156.0
-margin_right = 491.0
+margin_right = 451.0
 margin_bottom = 180.0
 
-[node name="Label" type="Label" parent="Editor/CharacterEditor/HBoxContainer/Container/FileName"]
+[node name="Label" type="Label" parent="EditorCharacter/CharacterEditor/HBoxContainer/Container/FileName"]
 margin_top = 5.0
 margin_right = 130.0
 margin_bottom = 19.0
 rect_min_size = Vector2( 130, 0 )
 text = "File:"
 
-[node name="LineEdit" type="LineEdit" parent="Editor/CharacterEditor/HBoxContainer/Container/FileName"]
+[node name="LineEdit" type="LineEdit" parent="EditorCharacter/CharacterEditor/HBoxContainer/Container/FileName"]
 margin_left = 134.0
-margin_right = 491.0
+margin_right = 451.0
 margin_bottom = 24.0
 rect_min_size = Vector2( 140, 0 )
 focus_mode = 0
 size_flags_horizontal = 3
 editable = false
 
-[node name="ExtraSettings" type="HBoxContainer" parent="Editor/CharacterEditor/HBoxContainer/Container"]
+[node name="ExtraSettings" type="HBoxContainer" parent="EditorCharacter/CharacterEditor/HBoxContainer/Container"]
 margin_top = 184.0
-margin_right = 491.0
+margin_right = 451.0
 margin_bottom = 208.0
 
-[node name="CheckBox" type="CheckBox" parent="Editor/CharacterEditor/HBoxContainer/Container/ExtraSettings"]
+[node name="CheckBox" type="CheckBox" parent="EditorCharacter/CharacterEditor/HBoxContainer/Container/ExtraSettings"]
 margin_right = 128.0
 margin_bottom = 24.0
-hint_tooltip = "By selecting \"Default Speaker\" all the new Text Events created will automatically select this character by default. You can only have 1 Default Speaker per project."
+hint_tooltip = "By selecting \"Default Speaker\" all the new
+Text Events created will automatically
+select this character by default.
+You can only have 1 Default Speaker
+per project."
 text = "Default Speaker"
 
-[node name="Actions" type="HBoxContainer" parent="Editor/CharacterEditor/HBoxContainer/Container"]
+[node name="Actions" type="HBoxContainer" parent="EditorCharacter/CharacterEditor/HBoxContainer/Container"]
 margin_top = 212.0
-margin_right = 491.0
+margin_right = 451.0
 margin_bottom = 232.0
 
-[node name="SaveButton" type="Button" parent="Editor/CharacterEditor/HBoxContainer/Container/Actions"]
+[node name="SaveButton" type="Button" parent="EditorCharacter/CharacterEditor/HBoxContainer/Container/Actions"]
 margin_right = 60.0
 margin_bottom = 20.0
 rect_min_size = Vector2( 60, 0 )
 text = "Save"
 
-[node name="Control" type="Control" parent="Editor/CharacterEditor/HBoxContainer/Container/Actions"]
+[node name="Control" type="Control" parent="EditorCharacter/CharacterEditor/HBoxContainer/Container/Actions"]
 margin_left = 64.0
-margin_right = 432.0
+margin_right = 392.0
 margin_bottom = 20.0
 size_flags_horizontal = 3
 
-[node name="DeleteButton" type="Button" parent="Editor/CharacterEditor/HBoxContainer/Container/Actions"]
-margin_left = 436.0
-margin_right = 491.0
+[node name="DeleteButton" type="Button" parent="EditorCharacter/CharacterEditor/HBoxContainer/Container/Actions"]
+margin_left = 396.0
+margin_right = 451.0
 margin_bottom = 20.0
 text = "Delete"
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Editor/CharacterEditor/HBoxContainer"]
-margin_left = 495.0
-margin_right = 987.0
+[node name="VBoxContainer" type="VBoxContainer" parent="EditorCharacter/CharacterEditor/HBoxContainer"]
+margin_left = 455.0
+margin_right = 795.0
 margin_bottom = 531.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="Control" type="Control" parent="Editor/CharacterEditor/HBoxContainer/VBoxContainer"]
-margin_right = 492.0
+[node name="Control" type="Control" parent="EditorCharacter/CharacterEditor/HBoxContainer/VBoxContainer"]
+margin_right = 340.0
 margin_bottom = 507.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="TextureRect" type="TextureRect" parent="Editor/CharacterEditor/HBoxContainer/VBoxContainer/Control"]
+[node name="TextureRect" type="TextureRect" parent="EditorCharacter/CharacterEditor/HBoxContainer/VBoxContainer/Control"]
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -588,9 +638,9 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Button" type="Button" parent="Editor/CharacterEditor/HBoxContainer/VBoxContainer"]
+[node name="Button" type="Button" parent="EditorCharacter/CharacterEditor/HBoxContainer/VBoxContainer"]
 margin_top = 511.0
-margin_right = 492.0
+margin_right = 340.0
 margin_bottom = 531.0
 text = "Select Portrait"
 
@@ -642,22 +692,23 @@ __meta__ = {
 [connection signal="pressed" from="HBoxContainer/ButtonSave" to="." method="_on_ButtonSave_pressed"]
 [connection signal="pressed" from="HBoxContainer/ReloadResource" to="." method="_on_ReloadResource_pressed"]
 [connection signal="gui_input" from="HBoxContainer/Logo" to="." method="_on_Logo_gui_input"]
-[connection signal="pressed" from="Editor/EventTools/VBoxContainer2/AddTimelineButton" to="." method="_on_AddTimelineButton_pressed"]
-[connection signal="item_rmb_selected" from="Editor/EventTools/VBoxContainer2/DialogItemList" to="." method="_on_DialogItemList_item_rmb_selected"]
-[connection signal="item_selected" from="Editor/EventTools/VBoxContainer2/DialogItemList" to="." method="_on_DialogItemList_item_selected"]
-[connection signal="pressed" from="Editor/CenterContainer/VBoxContainer/Control/Button" to="." method="_on_AddTimelineButton_pressed"]
-[connection signal="pressed" from="Editor/TimelineEditor/EventContainer/HBoxContainer/ButtonText" to="." method="_on_ButtonText_pressed"]
-[connection signal="pressed" from="Editor/TimelineEditor/EventContainer/HBoxContainer/ButtonChoice" to="." method="_on_ButtonChoice_pressed"]
-[connection signal="pressed" from="Editor/TimelineEditor/EventContainer/HBoxContainer/ButtonCondition" to="." method="_on_ButtonCondition_pressed"]
-[connection signal="pressed" from="Editor/TimelineEditor/EventContainer/HBoxContainer/ButtonEndChoice" to="." method="_on_ButtonEndChoice_pressed"]
-[connection signal="pressed" from="Editor/TimelineEditor/EventContainer/HBoxContainer/ButtonBackground" to="." method="_on_ButtonBackground_pressed"]
-[connection signal="pressed" from="Editor/TimelineEditor/EventContainer/HBoxContainer/ButtonChangeTimeline" to="." method="_on_ButtonChangeTimeline_pressed"]
-[connection signal="pressed" from="Editor/TimelineEditor/EventContainer/HBoxContainer2/ButtonCharacterJoin" to="." method="_on_ButtonCharacter_pressed"]
-[connection signal="pressed" from="Editor/TimelineEditor/EventContainer/HBoxContainer2/ButtonCharacterLeave" to="." method="_on_ButtonCharacterLeave_pressed"]
-[connection signal="pressed" from="Editor/TimelineEditor/EventContainer/HBoxContainer2/ButtonAudio" to="." method="_on_ButtonAudio_pressed"]
-[connection signal="pressed" from="Editor/CharacterTools/Button" to="." method="_on_Button_pressed"]
-[connection signal="item_selected" from="Editor/CharacterTools/CharacterItemList" to="." method="_on_ItemList_item_selected"]
-[connection signal="pressed" from="Editor/CharacterEditor/HBoxContainer/Container/Actions/SaveButton" to="." method="_on_character_SaveButton_pressed"]
-[connection signal="pressed" from="Editor/CharacterEditor/HBoxContainer/Container/Actions/DeleteButton" to="." method="_on_DeleteButton_pressed"]
+[connection signal="pressed" from="EditorTimeline/EventTools/VBoxContainer2/AddTimelineButton" to="." method="_on_AddTimelineButton_pressed"]
+[connection signal="item_rmb_selected" from="EditorTimeline/EventTools/VBoxContainer2/DialogItemList" to="." method="_on_DialogItemList_item_rmb_selected"]
+[connection signal="item_selected" from="EditorTimeline/EventTools/VBoxContainer2/DialogItemList" to="." method="_on_DialogItemList_item_selected"]
+[connection signal="pressed" from="EditorTimeline/CenterContainer/VBoxContainer/Control/Button" to="." method="_on_AddTimelineButton_pressed"]
+[connection signal="pressed" from="EditorTimeline/TimelineEditor/EventContainer/HBoxContainer/ButtonText" to="." method="_on_ButtonText_pressed"]
+[connection signal="pressed" from="EditorTimeline/TimelineEditor/EventContainer/HBoxContainer/ButtonChoice" to="." method="_on_ButtonChoice_pressed"]
+[connection signal="pressed" from="EditorTimeline/TimelineEditor/EventContainer/HBoxContainer/ButtonCondition" to="." method="_on_ButtonCondition_pressed"]
+[connection signal="pressed" from="EditorTimeline/TimelineEditor/EventContainer/HBoxContainer/ButtonEndChoice" to="." method="_on_ButtonEndChoice_pressed"]
+[connection signal="pressed" from="EditorTimeline/TimelineEditor/EventContainer/HBoxContainer/ButtonBackground" to="." method="_on_ButtonBackground_pressed"]
+[connection signal="pressed" from="EditorTimeline/TimelineEditor/EventContainer/HBoxContainer/ButtonChangeTimeline" to="." method="_on_ButtonChangeTimeline_pressed"]
+[connection signal="pressed" from="EditorTimeline/TimelineEditor/EventContainer/HBoxContainer2/ButtonCharacterJoin" to="." method="_on_ButtonCharacter_pressed"]
+[connection signal="pressed" from="EditorTimeline/TimelineEditor/EventContainer/HBoxContainer2/ButtonCharacterLeave" to="." method="_on_ButtonCharacterLeave_pressed"]
+[connection signal="pressed" from="EditorTimeline/TimelineEditor/EventContainer/HBoxContainer2/ButtonAudio" to="." method="_on_ButtonAudio_pressed"]
+[connection signal="pressed" from="EditorCharacter/CharacterTools/Button" to="." method="_on_Button_pressed"]
+[connection signal="item_selected" from="EditorCharacter/CharacterTools/CharacterItemList" to="." method="_on_ItemList_item_selected"]
+[connection signal="toggled" from="EditorCharacter/CharacterEditor/HBoxContainer/Container/Name/CheckBox" to="EditorCharacter/CharacterEditor" method="_on_CheckBox_toggled"]
+[connection signal="pressed" from="EditorCharacter/CharacterEditor/HBoxContainer/Container/Actions/SaveButton" to="." method="_on_character_SaveButton_pressed"]
+[connection signal="pressed" from="EditorCharacter/CharacterEditor/HBoxContainer/Container/Actions/DeleteButton" to="." method="_on_DeleteButton_pressed"]
 [connection signal="confirmed" from="RemoveConfirmation" to="." method="_on_RemoveConfirmation_confirmed"]
 [connection signal="confirmed" from="RenameDialog" to="." method="_on_RenameDialog_confirmed"]

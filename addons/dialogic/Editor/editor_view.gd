@@ -8,7 +8,7 @@ var undo_redo: UndoRedo
 var editor_file_dialog # EditorFileDialog
 var file_picker_data = {'method': '', 'node': self}
 
-var version_string = "0.5"
+var version_string = "0.6"
 var timeline_name = "" # The currently opened timeline name (for saving)
 
 var current_editor_view = 'Timeline'
@@ -20,15 +20,15 @@ var working_dialog_file = ''
 var timer_duration = 200
 var timer_interval = 30
 var autosaving_hash
-var timeline_path = "Editor/TimelineEditor/TimelineArea/TimeLine"
-var dialog_list_path = "Editor/EventTools/VBoxContainer2/DialogItemList"
-onready var character_list_path = "Editor/CharacterTools/CharacterItemList"
+var timeline_path = "EditorTimeline/TimelineEditor/TimelineArea/TimeLine"
+var dialog_list_path = "EditorTimeline/EventTools/VBoxContainer2/DialogItemList"
+onready var character_list_path = "EditorCharacter/CharacterTools/CharacterItemList"
 onready var character_editor = {
-	'editor': $Editor/CharacterEditor/HBoxContainer/Container,
-	'name': $Editor/CharacterEditor/HBoxContainer/Container/Name/LineEdit,
-	'description': $Editor/CharacterEditor/HBoxContainer/Container/Description/TextEdit,
-	'file': $Editor/CharacterEditor/HBoxContainer/Container/FileName/LineEdit,
-	'color': $Editor/CharacterEditor/HBoxContainer/Container/Color/ColorPickerButton,
+	'editor': $EditorCharacter/CharacterEditor/HBoxContainer/Container,
+	'name': $EditorCharacter/CharacterEditor/HBoxContainer/Container/Name/LineEdit,
+	'description': $EditorCharacter/CharacterEditor/HBoxContainer/Container/Description/TextEdit,
+	'file': $EditorCharacter/CharacterEditor/HBoxContainer/Container/FileName/LineEdit,
+	'color': $EditorCharacter/CharacterEditor/HBoxContainer/Container/Color/ColorPickerButton,
 }
 
 
@@ -36,8 +36,6 @@ func _ready():
 	# Adding file dialog to get used by pieces
 	editor_file_dialog = EditorFileDialog.new()
 	add_child(editor_file_dialog)
-	$Editor.visible = true
-	$Editor/CharacterEditor/HBoxContainer/Container.visible = false
 	
 	$HBoxContainer/EventButton.set('self_modulate', Color('#6a9dea'))
 
@@ -54,10 +52,6 @@ func _process(delta):
 	if timer_interval < 0 :
 		timer_interval = timer_duration
 		_on_AutoSaver_timeout()
-
-
-func _on_piece_connect(from, from_slot, to, to_slot):
-	$Editor/GraphEdit.connect_node(from, from_slot, to, to_slot)
 
 
 # Creating text node
@@ -105,7 +99,7 @@ func create_event(scene, data, indent_on_create = false):
 	piece.editor_reference = self
 	get_node(timeline_path).add_child(piece)
 	piece.load_data(data)
-	$Editor/TimelineEditor/NoEventsOnTimeline.visible = false
+	$EditorTimeline/TimelineEditor/NoEventsOnTimeline.visible = false
 	if indent_on_create:
 		indent_events()
 	return piece
@@ -169,8 +163,8 @@ func load_timeline(path):
 	var start_time = OS.get_ticks_msec()
 	working_dialog_file = path
 	# Making editor visible
-	$Editor/TimelineEditor.visible = true
-	$Editor/CenterContainer.visible = false
+	$EditorTimeline/TimelineEditor.visible = true
+	$EditorTimeline/CenterContainer.visible = false
 	
 	var data = load_json(path)
 	if data['metadata'].has('name'):
@@ -201,9 +195,9 @@ func load_timeline(path):
 
 	autosaving_hash = generate_save_data().hash()
 	if data.size() < 1:
-		$Editor/TimelineEditor/NoEventsOnTimeline.visible = true
+		$EditorTimeline/TimelineEditor/NoEventsOnTimeline.visible = true
 	else:
-		$Editor/TimelineEditor/NoEventsOnTimeline.visible = false
+		$EditorTimeline/TimelineEditor/NoEventsOnTimeline.visible = false
 		indent_events()
 		fold_all_nodes()
 	
@@ -332,7 +326,8 @@ func create_character():
 	var character_file = 'character-' + str(OS.get_unix_time()) + '.json'
 	var character = {
 		'color': 'ffffff',
-		'id': character_file
+		'id': character_file,
+		'default_speaker': 'false',
 	}
 	var directory = Directory.new()
 	if not directory.dir_exists(WORKING_DIR):
@@ -375,7 +370,7 @@ func _on_ItemList_item_selected(index):
 	var selected = get_node(character_list_path).get_item_text(index)
 	var file = get_node(character_list_path).get_item_metadata(index)['file']
 	var data = load_json(CHAR_DIR + '/' + file)
-	$Editor/CharacterEditor/HBoxContainer/Container.visible = true
+	$EditorCharacter/CharacterEditor/HBoxContainer/Container.visible = true
 	load_character_editor(data)
 
 
@@ -439,7 +434,7 @@ func _on_RemoveConfirmation_confirmed():
 	print('Remove ', get_node(character_list_path).get_item_metadata(selected)['file'])
 	var dir = Directory.new()
 	dir.remove(CHAR_DIR + '/' + file)
-	$Editor/CharacterEditor/HBoxContainer/Container.visible = false
+	$EditorCharacter/CharacterEditor/HBoxContainer/Container.visible = false
 	clear_character_editor()
 	refresh_character_list()
 
@@ -547,24 +542,23 @@ func change_tab(tab):
 	$HBoxContainer/EventButton.set('self_modulate', Color('#dedede'))
 	$HBoxContainer/CharactersButton.set('self_modulate', Color('#dedede'))
 	$HBoxContainer/FoldTools.visible = false
-	for n in $Editor.get_children():
-		n.visible = false
+	$EditorTimeline.visible = false
+	$EditorCharacter.visible = false
 	
 	current_editor_view == tab
 	if tab == 'Timeline':
-		$Editor/EventTools.visible = true
+		$EditorTimeline.visible = true
 		$HBoxContainer/EventButton.set('self_modulate', Color('#6a9dea'))
 		$HBoxContainer/FoldTools.visible = true
 		if working_dialog_file == '':
-			$Editor/TimelineEditor.visible = false
-			$Editor/CenterContainer.visible = true
+			$EditorTimeline/TimelineEditor.visible = false
+			$EditorTimeline/CenterContainer.visible = true
 		else:
-			$Editor/TimelineEditor.visible = true
-			$Editor/CenterContainer.visible = false
+			$EditorTimeline/TimelineEditor.visible = true
+			$EditorTimeline/CenterContainer.visible = false
 		
 	elif tab == 'Characters':
-		$Editor/CharacterTools.visible = true
-		$Editor/CharacterEditor.visible = true
+		$EditorCharacter.visible = true
 		$HBoxContainer/CharactersButton.set('self_modulate', Color('#6a9dea'))
 		current_editor_view == 'Characters'
 
