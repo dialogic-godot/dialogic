@@ -1,13 +1,18 @@
-# Dialogic v0.5 ![Godot v3.2](https://img.shields.io/badge/godot-v3.2.4-%23478cbf)
+# Dialogic v0.6 ![Godot v3.2](https://img.shields.io/badge/godot-v3.2.4-%23478cbf)
 Create dialogs, characters and scenes to display conversations in your Godot games. 
 
-![Screenshot](https://coppolaemilio.com/images/dialogic/dialogic05.png)
+![Screenshot](https://coppolaemilio.com/images/dialogic/dialogic06.png?1)
 
 ## ⚠️ Under development! ⚠️
 The plugin is not production ready, make sure to follow the repo for the next update.
 
 
 ## Changelog
+v0.6 - WIP
+ - Characters
+   - Added Default Speaker setting
+
+
 v0.5 - Indentation Magic
  - Video: https://youtu.be/mrTyWy2TJOM
  - Added new events:

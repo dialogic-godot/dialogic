@@ -210,7 +210,7 @@ margin_right = 180.0
 margin_bottom = 541.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-items = [ "1", ExtResource( 15 ), false, "2", ExtResource( 15 ), false, "Example", ExtResource( 15 ), false, "Hello World", ExtResource( 15 ), false, "test", ExtResource( 15 ), false, "Testing new nodes", ExtResource( 15 ), false, "timeline-1603627709", ExtResource( 15 ), false, "timeline-1604767299", ExtResource( 15 ), false, "timeline-1604768053", ExtResource( 15 ), false, "timeline-1604768115", ExtResource( 15 ), false, "timeline-1604768138", ExtResource( 15 ), false, "timeline-1604768150", ExtResource( 15 ), false, "timeline-1604768192", ExtResource( 15 ), false ]
+items = [ "timeline-1605295354", ExtResource( 15 ), false ]
 allow_rmb_select = true
 
 [node name="CenterContainer" type="CenterContainer" parent="Editor"]
@@ -405,7 +405,6 @@ icon = ExtResource( 8 )
 align = 0
 
 [node name="CharacterTools" type="VBoxContainer" parent="Editor"]
-visible = false
 margin_right = 180.0
 margin_bottom = 541.0
 rect_min_size = Vector2( 180, 0 )
@@ -421,10 +420,9 @@ margin_right = 180.0
 margin_bottom = 541.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-items = [ "Narrator", ExtResource( 7 ), false, "Kubuk", ExtResource( 7 ), false, "Placeholder", ExtResource( 7 ), false, "Toen", ExtResource( 7 ), false, "Test", ExtResource( 7 ), false, "Emilio", ExtResource( 7 ), false ]
+items = [ "character-1605296220.json", ExtResource( 7 ), false ]
 
 [node name="CharacterEditor" type="ScrollContainer" parent="Editor"]
-visible = false
 margin_right = 997.0
 margin_bottom = 541.0
 custom_styles/bg = SubResource( 4 )
@@ -441,7 +439,6 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="Container" type="VBoxContainer" parent="Editor/CharacterEditor/HBoxContainer"]
-visible = false
 margin_right = 491.0
 margin_bottom = 531.0
 grow_horizontal = 2
@@ -526,10 +523,21 @@ focus_mode = 0
 size_flags_horizontal = 3
 editable = false
 
-[node name="Actions" type="HBoxContainer" parent="Editor/CharacterEditor/HBoxContainer/Container"]
+[node name="ExtraSettings" type="HBoxContainer" parent="Editor/CharacterEditor/HBoxContainer/Container"]
 margin_top = 184.0
 margin_right = 491.0
-margin_bottom = 204.0
+margin_bottom = 208.0
+
+[node name="CheckBox" type="CheckBox" parent="Editor/CharacterEditor/HBoxContainer/Container/ExtraSettings"]
+margin_right = 128.0
+margin_bottom = 24.0
+hint_tooltip = "By selecting \"Default Speaker\" all the new Text Events created will automatically select this character by default. You can only have 1 Default Speaker per project."
+text = "Default Speaker"
+
+[node name="Actions" type="HBoxContainer" parent="Editor/CharacterEditor/HBoxContainer/Container"]
+margin_top = 212.0
+margin_right = 491.0
+margin_bottom = 232.0
 
 [node name="SaveButton" type="Button" parent="Editor/CharacterEditor/HBoxContainer/Container/Actions"]
 margin_right = 60.0
