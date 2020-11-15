@@ -22,14 +22,6 @@ var timer_interval = 30
 var autosaving_hash
 var timeline_path = "EditorTimeline/TimelineEditor/TimelineArea/TimeLine"
 var dialog_list_path = "EditorTimeline/EventTools/VBoxContainer2/DialogItemList"
-onready var character_list_path = "EditorCharacter/CharacterTools/CharacterItemList"
-onready var character_editor = {
-	'editor': $EditorCharacter/CharacterEditor/HBoxContainer/Container,
-	'name': $EditorCharacter/CharacterEditor/HBoxContainer/Container/Name/LineEdit,
-	'description': $EditorCharacter/CharacterEditor/HBoxContainer/Container/Description/TextEdit,
-	'file': $EditorCharacter/CharacterEditor/HBoxContainer/Container/FileName/LineEdit,
-	'color': $EditorCharacter/CharacterEditor/HBoxContainer/Container/Color/ColorPickerButton,
-}
 
 
 func _ready():
@@ -39,9 +31,8 @@ func _ready():
 	
 	$HBoxContainer/EventButton.set('self_modulate', Color('#6a9dea'))
 
-	# Refreshing the list of items
-	refresh_character_list()
-	refresh_timeline_list()
+	$EditorCharacter.editor_reference = self
+	$EditorCharacter.refresh_character_list()
 	# Making the dialog editor the default
 	change_tab('Timeline')
 	_on_EventButton_pressed()
@@ -77,6 +68,7 @@ func _on_ButtonChoice_pressed():
 
 func _on_ButtonEndChoice_pressed():
 	create_event("EndChoice", {'endchoice': ''}, true)
+
 
 func _on_ButtonCondition_pressed():
 	create_event("IfCondition", {'condition': ''}, true)
@@ -313,34 +305,6 @@ func create_timeline():
 
 
 # Character Creation
-func _on_Button_pressed():
-	var file = create_character()
-	refresh_character_list()
-	for i in range(get_node(character_list_path).get_item_count()):
-		if get_node(character_list_path).get_item_metadata(i)['file'] == file:
-			get_node(character_list_path).select(i)
-			_on_ItemList_item_selected(i)
-
-
-func create_character():
-	var character_file = 'character-' + str(OS.get_unix_time()) + '.json'
-	var character = {
-		'color': 'ffffff',
-		'id': character_file,
-		'default_speaker': 'false',
-	}
-	var directory = Directory.new()
-	if not directory.dir_exists(WORKING_DIR):
-		directory.make_dir(WORKING_DIR)
-	if not directory.dir_exists(CHAR_DIR):
-		directory.make_dir(CHAR_DIR)
-	var file = File.new()
-	file.open(CHAR_DIR + '/' + character_file, File.WRITE)
-	file.store_line(to_json(character))
-	file.close()
-	return character_file
-
-
 func get_character_list():
 	var characters = []
 	for file in listdir(CHAR_DIR):
@@ -353,51 +317,6 @@ func get_character_list():
 		else:
 			characters.append({'name':data['id'], 'color': color, 'file': file })
 	return characters
-
-
-func refresh_character_list():
-	get_node(character_list_path).clear()
-	var icon = load("res://addons/dialogic/Images/character.svg")
-	var index = 0
-	for c in get_character_list():
-		get_node(character_list_path).add_item(c['name'], icon)
-		get_node(character_list_path).set_item_metadata(index, {'file': c['file'], 'index': index})
-		get_node(character_list_path).set_item_icon_modulate(index, c['color'])
-		index += 1
-
-
-func _on_ItemList_item_selected(index):
-	var selected = get_node(character_list_path).get_item_text(index)
-	var file = get_node(character_list_path).get_item_metadata(index)['file']
-	var data = load_json(CHAR_DIR + '/' + file)
-	$EditorCharacter/CharacterEditor/HBoxContainer/Container.visible = true
-	load_character_editor(data)
-
-
-func load_character_editor(data):
-	clear_character_editor()
-	character_editor['file'].text = data['id']
-	if data.has('name'):
-		character_editor['name'].text = data['name']
-	if data.has('description'):
-		character_editor['description'].text = data['description']
-	if data.has('color'):
-		character_editor['color'].color = Color('#' + data['color'])
-
-
-func _on_character_SaveButton_pressed():
-	var path = CHAR_DIR + '/' + character_editor['file'].text
-	var info_to_save = {
-		'name': character_editor['name'].text,
-		'id': character_editor['file'].text,
-		'description': character_editor['description'].text,
-		'color': character_editor['color'].color.to_html()
-	}
-	var file = File.new()
-	file.open(path, File.WRITE)
-	file.store_line(to_json(info_to_save))
-	file.close()
-	refresh_character_list()
 
 
 func get_character_data(file):
@@ -418,29 +337,6 @@ func get_character_name(file):
 	var data = load_json(CHAR_DIR + '/' + file)
 	if data.has('name'):
 		return data['name']
-
-
-func clear_character_editor():
-	character_editor['file'].text = ''
-	character_editor['name'].text = ''
-	character_editor['description'].text = ''
-	character_editor['color'].color = Color('#ffffff')
-
-
-func _on_RemoveConfirmation_confirmed():
-	print('remove')
-	var selected = get_node(character_list_path).get_selected_items()[0]
-	var file = get_node(character_list_path).get_item_metadata(selected)['file']
-	print('Remove ', get_node(character_list_path).get_item_metadata(selected)['file'])
-	var dir = Directory.new()
-	dir.remove(CHAR_DIR + '/' + file)
-	$EditorCharacter/CharacterEditor/HBoxContainer/Container.visible = false
-	clear_character_editor()
-	refresh_character_list()
-
-
-func _on_DeleteButton_pressed():
-	$RemoveConfirmation.popup_centered()
 
 
 # Generic functions
@@ -547,8 +443,8 @@ func change_tab(tab):
 	
 	current_editor_view == tab
 	if tab == 'Timeline':
-		$EditorTimeline.visible = true
 		$HBoxContainer/EventButton.set('self_modulate', Color('#6a9dea'))
+		$EditorTimeline.visible = true
 		$HBoxContainer/FoldTools.visible = true
 		if working_dialog_file == '':
 			$EditorTimeline/TimelineEditor.visible = false
@@ -558,8 +454,13 @@ func change_tab(tab):
 			$EditorTimeline/CenterContainer.visible = false
 		
 	elif tab == 'Characters':
-		$EditorCharacter.visible = true
 		$HBoxContainer/CharactersButton.set('self_modulate', Color('#6a9dea'))
+		$EditorCharacter.visible = true
+		# Select the first character in the list
+		if $EditorCharacter/CharacterTools/CharacterItemList.is_anything_selected() == false:
+			if $EditorCharacter/CharacterTools/CharacterItemList.get_item_count() > 0:
+				$EditorCharacter._on_ItemList_item_selected(0)
+				$EditorCharacter/CharacterTools/CharacterItemList.select(0)
 		current_editor_view == 'Characters'
 
 

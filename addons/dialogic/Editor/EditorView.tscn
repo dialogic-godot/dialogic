@@ -20,7 +20,7 @@
 [ext_resource path="res://addons/dialogic/Images/choice.svg" type="Texture" id=18]
 [ext_resource path="res://addons/dialogic/Images/end-choice.svg" type="Texture" id=19]
 [ext_resource path="res://addons/dialogic/Images/tutorials/arrow-down.svg" type="Texture" id=20]
-[ext_resource path="res://addons/dialogic/Editor/CharacterEditor.gd" type="Script" id=21]
+[ext_resource path="res://addons/dialogic/Editor/EditorCharacter.gd" type="Script" id=21]
 
 [sub_resource type="StyleBoxFlat" id=1]
 content_margin_left = 5.0
@@ -180,6 +180,7 @@ expand = true
 stretch_mode = 5
 
 [node name="EditorTimeline" type="HSplitContainer" parent="."]
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 6.0
@@ -211,7 +212,7 @@ margin_right = 180.0
 margin_bottom = 541.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-items = [ "timeline-1605295354", ExtResource( 15 ), false ]
+items = [ "First", ExtResource( 15 ), false ]
 allow_rmb_select = true
 
 [node name="CenterContainer" type="CenterContainer" parent="EditorTimeline"]
@@ -412,6 +413,7 @@ margin_left = 6.0
 margin_top = 38.0
 margin_right = -5.0
 margin_bottom = -5.0
+script = ExtResource( 21 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -432,14 +434,13 @@ margin_right = 180.0
 margin_bottom = 541.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-items = [ "character-1605296220.json", ExtResource( 7 ), false ]
+items = [ "Nuevo", ExtResource( 7 ), false, "dada", ExtResource( 7 ), false ]
 
 [node name="CharacterEditor" type="ScrollContainer" parent="EditorCharacter"]
 margin_left = 192.0
 margin_right = 997.0
 margin_bottom = 541.0
 custom_styles/bg = SubResource( 4 )
-script = ExtResource( 21 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -705,10 +706,10 @@ __meta__ = {
 [connection signal="pressed" from="EditorTimeline/TimelineEditor/EventContainer/HBoxContainer2/ButtonCharacterJoin" to="." method="_on_ButtonCharacter_pressed"]
 [connection signal="pressed" from="EditorTimeline/TimelineEditor/EventContainer/HBoxContainer2/ButtonCharacterLeave" to="." method="_on_ButtonCharacterLeave_pressed"]
 [connection signal="pressed" from="EditorTimeline/TimelineEditor/EventContainer/HBoxContainer2/ButtonAudio" to="." method="_on_ButtonAudio_pressed"]
-[connection signal="pressed" from="EditorCharacter/CharacterTools/Button" to="." method="_on_Button_pressed"]
-[connection signal="item_selected" from="EditorCharacter/CharacterTools/CharacterItemList" to="." method="_on_ItemList_item_selected"]
-[connection signal="toggled" from="EditorCharacter/CharacterEditor/HBoxContainer/Container/Name/CheckBox" to="EditorCharacter/CharacterEditor" method="_on_CheckBox_toggled"]
-[connection signal="pressed" from="EditorCharacter/CharacterEditor/HBoxContainer/Container/Actions/SaveButton" to="." method="_on_character_SaveButton_pressed"]
-[connection signal="pressed" from="EditorCharacter/CharacterEditor/HBoxContainer/Container/Actions/DeleteButton" to="." method="_on_DeleteButton_pressed"]
-[connection signal="confirmed" from="RemoveConfirmation" to="." method="_on_RemoveConfirmation_confirmed"]
+[connection signal="pressed" from="EditorCharacter/CharacterTools/Button" to="EditorCharacter" method="_on_New_Character_Button_pressed"]
+[connection signal="item_selected" from="EditorCharacter/CharacterTools/CharacterItemList" to="EditorCharacter" method="_on_ItemList_item_selected"]
+[connection signal="toggled" from="EditorCharacter/CharacterEditor/HBoxContainer/Container/Name/CheckBox" to="EditorCharacter" method="_on_CheckBox_toggled"]
+[connection signal="pressed" from="EditorCharacter/CharacterEditor/HBoxContainer/Container/Actions/SaveButton" to="EditorCharacter" method="_on_SaveButton_pressed"]
+[connection signal="pressed" from="EditorCharacter/CharacterEditor/HBoxContainer/Container/Actions/DeleteButton" to="EditorCharacter" method="_on_DeleteButton_pressed"]
+[connection signal="confirmed" from="RemoveConfirmation" to="EditorCharacter" method="_on_RemoveConfirmation_confirmed"]
 [connection signal="confirmed" from="RenameDialog" to="." method="_on_RenameDialog_confirmed"]
