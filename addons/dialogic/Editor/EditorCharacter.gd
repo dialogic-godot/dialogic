@@ -32,6 +32,13 @@ func refresh_character_list():
 		$CharacterTools/CharacterItemList.set_item_metadata(index, {'file': c['file'], 'index': index})
 		$CharacterTools/CharacterItemList.set_item_icon_modulate(index, c['color'])
 		index += 1
+	# If there are no characters, show the welcome screen
+	if index == 0:
+		$NoCharacters.visible = true
+		$CharacterEditor.visible = false
+	else:
+		$NoCharacters.visible = false
+		$CharacterEditor.visible = true
 
 
 func clear_character_editor():
@@ -92,7 +99,6 @@ func _on_SaveButton_pressed():
 
 
 func _on_ItemList_item_selected(index):
-	print(index)
 	var selected = $CharacterTools/CharacterItemList.get_item_text(index)
 	var file = $CharacterTools/CharacterItemList.get_item_metadata(index)['file']
 	var data = editor_reference.load_json(editor_reference.CHAR_DIR + '/' + file)
@@ -117,7 +123,6 @@ func load_character_editor(data):
 
 # Removing character
 func _on_RemoveConfirmation_confirmed():
-	print('remove')
 	var selected = $CharacterTools/CharacterItemList.get_selected_items()[0]
 	var file = $CharacterTools/CharacterItemList.get_item_metadata(selected)['file']
 	print('Remove ', $CharacterTools/CharacterItemList.get_item_metadata(selected)['file'])

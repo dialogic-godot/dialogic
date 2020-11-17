@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=2]
+[gd_scene load_steps=25 format=2]
 
 [ext_resource path="res://addons/dialogic/Editor/editor_view.gd" type="Script" id=1]
 [ext_resource path="res://addons/dialogic/Images/dialog.svg" type="Texture" id=2]
@@ -6,7 +6,6 @@
 [ext_resource path="res://addons/dialogic/Images/scene.svg" type="Texture" id=4]
 [ext_resource path="res://addons/dialogic/Images/character-leave.svg" type="Texture" id=5]
 [ext_resource path="res://addons/dialogic/Images/condition.svg" type="Texture" id=6]
-[ext_resource path="res://addons/dialogic/Images/character.svg" type="Texture" id=7]
 [ext_resource path="res://addons/dialogic/Images/audio-event.svg" type="Texture" id=8]
 [ext_resource path="res://addons/dialogic/Images/open-icon.svg" type="Texture" id=9]
 [ext_resource path="res://addons/dialogic/Images/closed-icon.svg" type="Texture" id=10]
@@ -434,9 +433,37 @@ margin_right = 180.0
 margin_bottom = 541.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-items = [ "Nuevo", ExtResource( 7 ), false, "dada", ExtResource( 7 ), false ]
+
+[node name="NoCharacters" type="CenterContainer" parent="EditorCharacter"]
+margin_left = 192.0
+margin_right = 997.0
+margin_bottom = 541.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="EditorCharacter/NoCharacters"]
+margin_left = 257.0
+margin_top = 251.0
+margin_right = 547.0
+margin_bottom = 289.0
+
+[node name="Label" type="Label" parent="EditorCharacter/NoCharacters/VBoxContainer"]
+margin_right = 290.0
+margin_bottom = 14.0
+text = "You don't have any characters in your project."
+align = 1
+
+[node name="CenterContainer" type="CenterContainer" parent="EditorCharacter/NoCharacters/VBoxContainer"]
+margin_top = 18.0
+margin_right = 290.0
+margin_bottom = 38.0
+
+[node name="Button" type="Button" parent="EditorCharacter/NoCharacters/VBoxContainer/CenterContainer"]
+margin_left = 75.0
+margin_right = 214.0
+margin_bottom = 20.0
+text = "Create a character +"
 
 [node name="CharacterEditor" type="ScrollContainer" parent="EditorCharacter"]
+visible = false
 margin_left = 192.0
 margin_right = 997.0
 margin_bottom = 541.0
@@ -708,6 +735,7 @@ __meta__ = {
 [connection signal="pressed" from="EditorTimeline/TimelineEditor/EventContainer/HBoxContainer2/ButtonAudio" to="." method="_on_ButtonAudio_pressed"]
 [connection signal="pressed" from="EditorCharacter/CharacterTools/Button" to="EditorCharacter" method="_on_New_Character_Button_pressed"]
 [connection signal="item_selected" from="EditorCharacter/CharacterTools/CharacterItemList" to="EditorCharacter" method="_on_ItemList_item_selected"]
+[connection signal="pressed" from="EditorCharacter/NoCharacters/VBoxContainer/CenterContainer/Button" to="EditorCharacter" method="_on_New_Character_Button_pressed"]
 [connection signal="toggled" from="EditorCharacter/CharacterEditor/HBoxContainer/Container/Name/CheckBox" to="EditorCharacter" method="_on_CheckBox_toggled"]
 [connection signal="pressed" from="EditorCharacter/CharacterEditor/HBoxContainer/Container/Actions/SaveButton" to="EditorCharacter" method="_on_SaveButton_pressed"]
 [connection signal="pressed" from="EditorCharacter/CharacterEditor/HBoxContainer/Container/Actions/DeleteButton" to="EditorCharacter" method="_on_DeleteButton_pressed"]

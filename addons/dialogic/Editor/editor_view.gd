@@ -29,6 +29,8 @@ func _ready():
 	editor_file_dialog = EditorFileDialog.new()
 	add_child(editor_file_dialog)
 	
+	refresh_timeline_list()
+	
 	$HBoxContainer/EventButton.set('self_modulate', Color('#6a9dea'))
 
 	$EditorCharacter.editor_reference = self
