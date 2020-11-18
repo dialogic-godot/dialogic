@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=2]
+[gd_scene load_steps=26 format=2]
 
 [ext_resource path="res://addons/dialogic/Editor/editor_view.gd" type="Script" id=1]
 [ext_resource path="res://addons/dialogic/Images/dialog.svg" type="Texture" id=2]
@@ -6,6 +6,7 @@
 [ext_resource path="res://addons/dialogic/Images/scene.svg" type="Texture" id=4]
 [ext_resource path="res://addons/dialogic/Images/character-leave.svg" type="Texture" id=5]
 [ext_resource path="res://addons/dialogic/Images/condition.svg" type="Texture" id=6]
+[ext_resource path="res://addons/dialogic/Images/character.svg" type="Texture" id=7]
 [ext_resource path="res://addons/dialogic/Images/audio-event.svg" type="Texture" id=8]
 [ext_resource path="res://addons/dialogic/Images/open-icon.svg" type="Texture" id=9]
 [ext_resource path="res://addons/dialogic/Images/closed-icon.svg" type="Texture" id=10]
@@ -179,7 +180,6 @@ expand = true
 stretch_mode = 5
 
 [node name="EditorTimeline" type="HSplitContainer" parent="."]
-visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 6.0
@@ -211,7 +211,7 @@ margin_right = 180.0
 margin_bottom = 541.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-items = [ "First", ExtResource( 15 ), false ]
+items = [ "First", ExtResource( 15 ), false, "timeline-1605634781", ExtResource( 15 ), false ]
 allow_rmb_select = true
 
 [node name="CenterContainer" type="CenterContainer" parent="EditorTimeline"]
@@ -433,8 +433,10 @@ margin_right = 180.0
 margin_bottom = 541.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
+items = [ "Narrator", ExtResource( 7 ), false, "Rando", ExtResource( 7 ), false, "Pepito", ExtResource( 7 ), false, "rfsafsfsfs", ExtResource( 7 ), false ]
 
 [node name="NoCharacters" type="CenterContainer" parent="EditorCharacter"]
+visible = false
 margin_left = 192.0
 margin_right = 997.0
 margin_bottom = 541.0
@@ -463,7 +465,6 @@ margin_bottom = 20.0
 text = "Create a character +"
 
 [node name="CharacterEditor" type="ScrollContainer" parent="EditorCharacter"]
-visible = false
 margin_left = 192.0
 margin_right = 997.0
 margin_bottom = 541.0
@@ -617,14 +618,7 @@ margin_top = 212.0
 margin_right = 451.0
 margin_bottom = 232.0
 
-[node name="SaveButton" type="Button" parent="EditorCharacter/CharacterEditor/HBoxContainer/Container/Actions"]
-margin_right = 60.0
-margin_bottom = 20.0
-rect_min_size = Vector2( 60, 0 )
-text = "Save"
-
 [node name="Control" type="Control" parent="EditorCharacter/CharacterEditor/HBoxContainer/Container/Actions"]
-margin_left = 64.0
 margin_right = 392.0
 margin_bottom = 20.0
 size_flags_horizontal = 3
@@ -737,7 +731,6 @@ __meta__ = {
 [connection signal="item_selected" from="EditorCharacter/CharacterTools/CharacterItemList" to="EditorCharacter" method="_on_ItemList_item_selected"]
 [connection signal="pressed" from="EditorCharacter/NoCharacters/VBoxContainer/CenterContainer/Button" to="EditorCharacter" method="_on_New_Character_Button_pressed"]
 [connection signal="toggled" from="EditorCharacter/CharacterEditor/HBoxContainer/Container/Name/CheckBox" to="EditorCharacter" method="_on_CheckBox_toggled"]
-[connection signal="pressed" from="EditorCharacter/CharacterEditor/HBoxContainer/Container/Actions/SaveButton" to="EditorCharacter" method="_on_SaveButton_pressed"]
 [connection signal="pressed" from="EditorCharacter/CharacterEditor/HBoxContainer/Container/Actions/DeleteButton" to="EditorCharacter" method="_on_DeleteButton_pressed"]
 [connection signal="confirmed" from="RemoveConfirmation" to="EditorCharacter" method="_on_RemoveConfirmation_confirmed"]
 [connection signal="confirmed" from="RenameDialog" to="." method="_on_RenameDialog_confirmed"]

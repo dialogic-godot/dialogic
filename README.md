@@ -11,6 +11,8 @@ The plugin is not production ready, make sure to follow the repo for the next up
 v0.6 - WIP
  - Splitting the main script into smaller pieces
  - Characters
+   - Characters welcome screen when there are 0
+   - Autosave enabled on characters
    - Different display name
    - Added Default Speaker setting
 
@@ -75,6 +77,7 @@ Placeholder images are from Toen's YouTube DF series:
 - Kyncho
 - JDA
 - SIM KIM SIA
+- Chris Shove
 
 Support me on [Patreon https://www.patreon.com/coppolaemilio](https://www.patreon.com/coppolaemilio)
 

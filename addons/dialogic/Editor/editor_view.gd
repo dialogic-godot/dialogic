@@ -443,7 +443,6 @@ func change_tab(tab):
 	$EditorTimeline.visible = false
 	$EditorCharacter.visible = false
 	
-	current_editor_view == tab
 	if tab == 'Timeline':
 		$HBoxContainer/EventButton.set('self_modulate', Color('#6a9dea'))
 		$EditorTimeline.visible = true
@@ -463,14 +462,20 @@ func change_tab(tab):
 			if $EditorCharacter/CharacterTools/CharacterItemList.get_item_count() > 0:
 				$EditorCharacter._on_ItemList_item_selected(0)
 				$EditorCharacter/CharacterTools/CharacterItemList.select(0)
-		current_editor_view == 'Characters'
+	
+	current_editor_view = tab
 
 
 # Auto saving
 func _on_AutoSaver_timeout():
-	if autosaving_hash != generate_save_data().hash():
-		save_timeline(working_dialog_file)
-		print('[!] Changes detected. Auto saving. ', autosaving_hash)
+	if current_editor_view == 'Timeline':
+		if autosaving_hash != generate_save_data().hash():
+			save_timeline(working_dialog_file)
+			print('[!] Timeline changes detected. Saving: ', autosaving_hash)
+	if current_editor_view == 'Characters':
+		if compare_dicts($EditorCharacter.opened_character_data, $EditorCharacter.generate_character_data_to_save()) == false:
+			print('[!] Character changes detected. Saving')
+			$EditorCharacter.save_current_character()
 
 
 func _on_Logo_gui_input(event):
@@ -479,5 +484,10 @@ func _on_Logo_gui_input(event):
 		OS.shell_open("https://github.com/coppolaemilio/dialogic")
 
 
-
-
+func compare_dicts(dict_1, dict_2):
+	# I tried using the .hash() function but it was returning different numbers
+	# even when the dictionary was exactly the same.
+	if str(dict_1) != "Null" and str(dict_2) != "Null":
+		if str(dict_1) == str(dict_2):
+			return true
+	return false

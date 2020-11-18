@@ -3,6 +3,7 @@ extends HSplitContainer
 
 
 var editor_reference
+var opened_character_data
 onready var character_editor = {
 	'editor': $CharacterEditor/HBoxContainer/Container,
 	'name': $CharacterEditor/HBoxContainer/Container/Name/LineEdit,
@@ -13,9 +14,6 @@ onready var character_editor = {
 }
 
 func _ready():
-	
-	#_on_ItemList_item_selected(0)
-	#$CharacterTools/CharacterItemList.select(0)
 	pass
 
 
@@ -80,7 +78,9 @@ func _on_New_Character_Button_pressed():
 
 # Saving and Loading
 func _on_SaveButton_pressed():
-	var path = editor_reference.CHAR_DIR + '/' + character_editor['file'].text
+	save_current_character()
+
+func generate_character_data_to_save():
 	var default_speaker = 'false'
 	if character_editor['default_speaker'].pressed:
 		default_speaker = 'true'
@@ -91,10 +91,16 @@ func _on_SaveButton_pressed():
 		'color': character_editor['color'].color.to_html(),
 		'default_speaker': default_speaker,
 	}
+	return info_to_save
+
+func save_current_character():
+	var path = editor_reference.CHAR_DIR + '/' + character_editor['file'].text
+	var info_to_save = generate_character_data_to_save()
 	var file = File.new()
 	file.open(path, File.WRITE)
 	file.store_line(to_json(info_to_save))
 	file.close()
+	opened_character_data = info_to_save
 	refresh_character_list()
 
 
@@ -108,6 +114,7 @@ func _on_ItemList_item_selected(index):
 
 func load_character_editor(data):
 	clear_character_editor()
+	opened_character_data = data
 	character_editor['file'].text = data['id']
 	character_editor['default_speaker'].pressed = false
 	if data.has('name'):
