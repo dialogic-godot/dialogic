@@ -310,14 +310,15 @@ func create_timeline():
 func get_character_list():
 	var characters = []
 	for file in listdir(CHAR_DIR):
-		var data = load_json(CHAR_DIR + '/' + file)
-		var color = Color("#ffffff")
-		if data.has('color'):
-			color = Color('#' + data['color'])
-		if data.has('name'):
-			characters.append({'name':data['name'], 'color': color, 'file': file })
-		else:
-			characters.append({'name':data['id'], 'color': color, 'file': file })
+		if '.json' in file:
+			var data = load_json(CHAR_DIR + '/' + file)
+			var color = Color("#ffffff")
+			if data.has('color'):
+				color = Color('#' + data['color'])
+			if data.has('name'):
+				characters.append({'name':data['name'], 'color': color, 'file': file })
+			else:
+				characters.append({'name':data['id'], 'color': color, 'file': file })
 	return characters
 
 
@@ -361,6 +362,7 @@ func listdir(path):
 func load_json(path):
 	var file = File.new()
 	if file.open(path, File.READ) != OK:
+		file.close()
 		return
 	var data_text = file.get_as_text()
 	file.close()

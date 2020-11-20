@@ -8,6 +8,8 @@ var text_speed = 0.02 # Higher = lower speed
 var waiting_for_answer = false
 var waiting_for_input = false
 
+export(String, "Option", "Another one", "Last one") var character_name
+
 export(Resource) var dialog_resource = load("res://addons/dialogic/Resources/DefaultDialogResource.tres")
 export(Array, Resource) var dialog_characters
 

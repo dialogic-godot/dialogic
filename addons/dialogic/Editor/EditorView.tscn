@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=2]
+[gd_scene load_steps=27 format=2]
 
 [ext_resource path="res://addons/dialogic/Editor/editor_view.gd" type="Script" id=1]
 [ext_resource path="res://addons/dialogic/Images/dialog.svg" type="Texture" id=2]
@@ -21,6 +21,7 @@
 [ext_resource path="res://addons/dialogic/Images/end-choice.svg" type="Texture" id=19]
 [ext_resource path="res://addons/dialogic/Images/tutorials/arrow-down.svg" type="Texture" id=20]
 [ext_resource path="res://addons/dialogic/Editor/EditorCharacter.gd" type="Script" id=21]
+[ext_resource path="res://addons/dialogic/Images/Remove.svg" type="Texture" id=22]
 
 [sub_resource type="StyleBoxFlat" id=1]
 content_margin_left = 5.0
@@ -433,7 +434,7 @@ margin_right = 180.0
 margin_bottom = 541.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-items = [ "Narrator", ExtResource( 7 ), false, "Rando", ExtResource( 7 ), false, "Pepito", ExtResource( 7 ), false, "rfsafsfsfs", ExtResource( 7 ), false ]
+items = [ "Narrator", ExtResource( 7 ), false, "Rando", ExtResource( 7 ), false, "Pepito", ExtResource( 7 ), false, "Ralph", ExtResource( 7 ), false ]
 
 [node name="NoCharacters" type="CenterContainer" parent="EditorCharacter"]
 visible = false
@@ -577,10 +578,246 @@ margin_bottom = 100.0
 rect_min_size = Vector2( 100, 100 )
 size_flags_horizontal = 3
 
-[node name="FileName" type="HBoxContainer" parent="EditorCharacter/CharacterEditor/HBoxContainer/Container"]
+[node name="Separator" type="Control" parent="EditorCharacter/CharacterEditor/HBoxContainer/Container"]
 margin_top = 156.0
 margin_right = 451.0
-margin_bottom = 180.0
+margin_bottom = 166.0
+rect_min_size = Vector2( 0, 10 )
+
+[node name="Portraits" type="HBoxContainer" parent="EditorCharacter/CharacterEditor/HBoxContainer/Container"]
+margin_top = 170.0
+margin_right = 451.0
+margin_bottom = 184.0
+
+[node name="Label" type="Label" parent="EditorCharacter/CharacterEditor/HBoxContainer/Container/Portraits"]
+margin_right = 143.0
+margin_bottom = 14.0
+text = "Portraits / Expressions"
+
+[node name="Labels" type="HBoxContainer" parent="EditorCharacter/CharacterEditor/HBoxContainer/Container"]
+margin_top = 188.0
+margin_right = 451.0
+margin_bottom = 202.0
+
+[node name="LineEdit" type="Label" parent="EditorCharacter/CharacterEditor/HBoxContainer/Container/Labels"]
+margin_right = 100.0
+margin_bottom = 14.0
+rect_min_size = Vector2( 100, 0 )
+text = "Name"
+
+[node name="LineEdit2" type="Label" parent="EditorCharacter/CharacterEditor/HBoxContainer/Container/Labels"]
+margin_left = 104.0
+margin_right = 254.0
+margin_bottom = 14.0
+rect_min_size = Vector2( 150, 0 )
+text = "Path"
+
+[node name="ScrollContainer" type="ScrollContainer" parent="EditorCharacter/CharacterEditor/HBoxContainer/Container"]
+margin_top = 206.0
+margin_right = 451.0
+margin_bottom = 475.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="EditorCharacter/CharacterEditor/HBoxContainer/Container/ScrollContainer"]
+margin_right = 451.0
+margin_bottom = 269.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="PortraitList" type="VBoxContainer" parent="EditorCharacter/CharacterEditor/HBoxContainer/Container/ScrollContainer/VBoxContainer"]
+margin_right = 451.0
+margin_bottom = 136.0
+size_flags_horizontal = 3
+
+[node name="PortraitEntry" type="HBoxContainer" parent="EditorCharacter/CharacterEditor/HBoxContainer/Container/ScrollContainer/VBoxContainer/PortraitList"]
+margin_right = 451.0
+margin_bottom = 24.0
+
+[node name="NameEdit" type="LineEdit" parent="EditorCharacter/CharacterEditor/HBoxContainer/Container/ScrollContainer/VBoxContainer/PortraitList/PortraitEntry"]
+margin_right = 100.0
+margin_bottom = 24.0
+rect_min_size = Vector2( 100, 0 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="PathEdit" type="LineEdit" parent="EditorCharacter/CharacterEditor/HBoxContainer/Container/ScrollContainer/VBoxContainer/PortraitList/PortraitEntry"]
+margin_left = 104.0
+margin_right = 391.0
+margin_bottom = 24.0
+rect_min_size = Vector2( 150, 0 )
+size_flags_horizontal = 3
+editable = false
+selecting_enabled = false
+
+[node name="Button" type="Button" parent="EditorCharacter/CharacterEditor/HBoxContainer/Container/ScrollContainer/VBoxContainer/PortraitList/PortraitEntry"]
+margin_left = 395.0
+margin_right = 419.0
+margin_bottom = 24.0
+text = "..."
+
+[node name="ButtonDelete" type="Button" parent="EditorCharacter/CharacterEditor/HBoxContainer/Container/ScrollContainer/VBoxContainer/PortraitList/PortraitEntry"]
+margin_left = 423.0
+margin_right = 451.0
+margin_bottom = 24.0
+icon = ExtResource( 22 )
+flat = true
+
+[node name="PortraitEntry2" type="HBoxContainer" parent="EditorCharacter/CharacterEditor/HBoxContainer/Container/ScrollContainer/VBoxContainer/PortraitList"]
+margin_top = 28.0
+margin_right = 451.0
+margin_bottom = 52.0
+
+[node name="NameEdit" type="LineEdit" parent="EditorCharacter/CharacterEditor/HBoxContainer/Container/ScrollContainer/VBoxContainer/PortraitList/PortraitEntry2"]
+margin_right = 100.0
+margin_bottom = 24.0
+rect_min_size = Vector2( 100, 0 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="PathEdit" type="LineEdit" parent="EditorCharacter/CharacterEditor/HBoxContainer/Container/ScrollContainer/VBoxContainer/PortraitList/PortraitEntry2"]
+margin_left = 104.0
+margin_right = 391.0
+margin_bottom = 24.0
+rect_min_size = Vector2( 150, 0 )
+size_flags_horizontal = 3
+editable = false
+selecting_enabled = false
+
+[node name="Button" type="Button" parent="EditorCharacter/CharacterEditor/HBoxContainer/Container/ScrollContainer/VBoxContainer/PortraitList/PortraitEntry2"]
+margin_left = 395.0
+margin_right = 419.0
+margin_bottom = 24.0
+text = "..."
+
+[node name="ButtonDelete" type="Button" parent="EditorCharacter/CharacterEditor/HBoxContainer/Container/ScrollContainer/VBoxContainer/PortraitList/PortraitEntry2"]
+margin_left = 423.0
+margin_right = 451.0
+margin_bottom = 24.0
+icon = ExtResource( 22 )
+flat = true
+
+[node name="PortraitEntry3" type="HBoxContainer" parent="EditorCharacter/CharacterEditor/HBoxContainer/Container/ScrollContainer/VBoxContainer/PortraitList"]
+margin_top = 56.0
+margin_right = 451.0
+margin_bottom = 80.0
+
+[node name="NameEdit" type="LineEdit" parent="EditorCharacter/CharacterEditor/HBoxContainer/Container/ScrollContainer/VBoxContainer/PortraitList/PortraitEntry3"]
+margin_right = 100.0
+margin_bottom = 24.0
+rect_min_size = Vector2( 100, 0 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="PathEdit" type="LineEdit" parent="EditorCharacter/CharacterEditor/HBoxContainer/Container/ScrollContainer/VBoxContainer/PortraitList/PortraitEntry3"]
+margin_left = 104.0
+margin_right = 391.0
+margin_bottom = 24.0
+rect_min_size = Vector2( 150, 0 )
+size_flags_horizontal = 3
+editable = false
+selecting_enabled = false
+
+[node name="Button" type="Button" parent="EditorCharacter/CharacterEditor/HBoxContainer/Container/ScrollContainer/VBoxContainer/PortraitList/PortraitEntry3"]
+margin_left = 395.0
+margin_right = 419.0
+margin_bottom = 24.0
+text = "..."
+
+[node name="ButtonDelete" type="Button" parent="EditorCharacter/CharacterEditor/HBoxContainer/Container/ScrollContainer/VBoxContainer/PortraitList/PortraitEntry3"]
+margin_left = 423.0
+margin_right = 451.0
+margin_bottom = 24.0
+icon = ExtResource( 22 )
+flat = true
+
+[node name="PortraitEntry4" type="HBoxContainer" parent="EditorCharacter/CharacterEditor/HBoxContainer/Container/ScrollContainer/VBoxContainer/PortraitList"]
+margin_top = 84.0
+margin_right = 451.0
+margin_bottom = 108.0
+
+[node name="NameEdit" type="LineEdit" parent="EditorCharacter/CharacterEditor/HBoxContainer/Container/ScrollContainer/VBoxContainer/PortraitList/PortraitEntry4"]
+margin_right = 100.0
+margin_bottom = 24.0
+rect_min_size = Vector2( 100, 0 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="PathEdit" type="LineEdit" parent="EditorCharacter/CharacterEditor/HBoxContainer/Container/ScrollContainer/VBoxContainer/PortraitList/PortraitEntry4"]
+margin_left = 104.0
+margin_right = 391.0
+margin_bottom = 24.0
+rect_min_size = Vector2( 150, 0 )
+size_flags_horizontal = 3
+editable = false
+selecting_enabled = false
+
+[node name="Button" type="Button" parent="EditorCharacter/CharacterEditor/HBoxContainer/Container/ScrollContainer/VBoxContainer/PortraitList/PortraitEntry4"]
+margin_left = 395.0
+margin_right = 419.0
+margin_bottom = 24.0
+text = "..."
+
+[node name="ButtonDelete" type="Button" parent="EditorCharacter/CharacterEditor/HBoxContainer/Container/ScrollContainer/VBoxContainer/PortraitList/PortraitEntry4"]
+margin_left = 423.0
+margin_right = 451.0
+margin_bottom = 24.0
+icon = ExtResource( 22 )
+flat = true
+
+[node name="PortraitEntry5" type="HBoxContainer" parent="EditorCharacter/CharacterEditor/HBoxContainer/Container/ScrollContainer/VBoxContainer/PortraitList"]
+margin_top = 112.0
+margin_right = 451.0
+margin_bottom = 136.0
+
+[node name="NameEdit" type="LineEdit" parent="EditorCharacter/CharacterEditor/HBoxContainer/Container/ScrollContainer/VBoxContainer/PortraitList/PortraitEntry5"]
+margin_right = 100.0
+margin_bottom = 24.0
+rect_min_size = Vector2( 100, 0 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="PathEdit" type="LineEdit" parent="EditorCharacter/CharacterEditor/HBoxContainer/Container/ScrollContainer/VBoxContainer/PortraitList/PortraitEntry5"]
+margin_left = 104.0
+margin_right = 391.0
+margin_bottom = 24.0
+rect_min_size = Vector2( 150, 0 )
+size_flags_horizontal = 3
+editable = false
+selecting_enabled = false
+
+[node name="Button" type="Button" parent="EditorCharacter/CharacterEditor/HBoxContainer/Container/ScrollContainer/VBoxContainer/PortraitList/PortraitEntry5"]
+margin_left = 395.0
+margin_right = 419.0
+margin_bottom = 24.0
+text = "..."
+
+[node name="ButtonDelete" type="Button" parent="EditorCharacter/CharacterEditor/HBoxContainer/Container/ScrollContainer/VBoxContainer/PortraitList/PortraitEntry5"]
+margin_left = 423.0
+margin_right = 451.0
+margin_bottom = 24.0
+icon = ExtResource( 22 )
+flat = true
+
+[node name="HBoxContainer" type="HBoxContainer" parent="EditorCharacter/CharacterEditor/HBoxContainer/Container/ScrollContainer/VBoxContainer"]
+margin_top = 140.0
+margin_right = 451.0
+margin_bottom = 160.0
+
+[node name="Button" type="Button" parent="EditorCharacter/CharacterEditor/HBoxContainer/Container/ScrollContainer/VBoxContainer/HBoxContainer"]
+margin_right = 87.0
+margin_bottom = 20.0
+text = " Add new + "
+
+[node name="FileName" type="HBoxContainer" parent="EditorCharacter/CharacterEditor/HBoxContainer/Container"]
+margin_top = 479.0
+margin_right = 451.0
+margin_bottom = 503.0
 
 [node name="Label" type="Label" parent="EditorCharacter/CharacterEditor/HBoxContainer/Container/FileName"]
 margin_top = 5.0
@@ -598,12 +835,12 @@ focus_mode = 0
 size_flags_horizontal = 3
 editable = false
 
-[node name="ExtraSettings" type="HBoxContainer" parent="EditorCharacter/CharacterEditor/HBoxContainer/Container"]
-margin_top = 184.0
+[node name="Actions" type="HBoxContainer" parent="EditorCharacter/CharacterEditor/HBoxContainer/Container"]
+margin_top = 507.0
 margin_right = 451.0
-margin_bottom = 208.0
+margin_bottom = 531.0
 
-[node name="CheckBox" type="CheckBox" parent="EditorCharacter/CharacterEditor/HBoxContainer/Container/ExtraSettings"]
+[node name="DefaultSpeaker" type="CheckBox" parent="EditorCharacter/CharacterEditor/HBoxContainer/Container/Actions"]
 margin_right = 128.0
 margin_bottom = 24.0
 hint_tooltip = "By selecting \"Default Speaker\" all the new
@@ -613,21 +850,18 @@ You can only have 1 Default Speaker
 per project."
 text = "Default Speaker"
 
-[node name="Actions" type="HBoxContainer" parent="EditorCharacter/CharacterEditor/HBoxContainer/Container"]
-margin_top = 212.0
-margin_right = 451.0
-margin_bottom = 232.0
-
 [node name="Control" type="Control" parent="EditorCharacter/CharacterEditor/HBoxContainer/Container/Actions"]
-margin_right = 392.0
-margin_bottom = 20.0
+margin_left = 132.0
+margin_right = 306.0
+margin_bottom = 24.0
 size_flags_horizontal = 3
 
 [node name="DeleteButton" type="Button" parent="EditorCharacter/CharacterEditor/HBoxContainer/Container/Actions"]
-margin_left = 396.0
+margin_left = 310.0
 margin_right = 451.0
-margin_bottom = 20.0
-text = "Delete"
+margin_bottom = 24.0
+text = " Delete Character"
+icon = ExtResource( 22 )
 
 [node name="VBoxContainer" type="VBoxContainer" parent="EditorCharacter/CharacterEditor/HBoxContainer"]
 margin_left = 455.0
@@ -636,35 +870,37 @@ margin_bottom = 531.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="Control" type="Control" parent="EditorCharacter/CharacterEditor/HBoxContainer/VBoxContainer"]
+[node name="Control" type="Panel" parent="EditorCharacter/CharacterEditor/HBoxContainer/VBoxContainer"]
 margin_right = 340.0
-margin_bottom = 507.0
+margin_bottom = 531.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="TextureRect" type="TextureRect" parent="EditorCharacter/CharacterEditor/HBoxContainer/VBoxContainer/Control"]
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = -94.5
-margin_top = -167.5
-margin_right = 94.5
-margin_bottom = 167.5
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 30.0
+margin_top = 30.0
+margin_right = -30.0
+margin_bottom = -30.0
+rect_min_size = Vector2( 100, 100 )
 size_flags_horizontal = 3
 size_flags_vertical = 3
 texture = ExtResource( 11 )
 expand = true
-stretch_mode = 5
+stretch_mode = 6
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Button" type="Button" parent="EditorCharacter/CharacterEditor/HBoxContainer/VBoxContainer"]
-margin_top = 511.0
+[node name="Label" type="Label" parent="EditorCharacter/CharacterEditor/HBoxContainer/VBoxContainer/Control"]
+self_modulate = Color( 1, 1, 1, 0.396078 )
 margin_right = 340.0
-margin_bottom = 531.0
-text = "Select Portrait"
+margin_bottom = 14.0
+text = "Preview"
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="RemoveConfirmation" type="ConfirmationDialog" parent="."]
 margin_right = 325.0

@@ -10,7 +10,7 @@ onready var character_editor = {
 	'description': $CharacterEditor/HBoxContainer/Container/Description/TextEdit,
 	'file': $CharacterEditor/HBoxContainer/Container/FileName/LineEdit,
 	'color': $CharacterEditor/HBoxContainer/Container/Color/ColorPickerButton,
-	'default_speaker': $CharacterEditor/HBoxContainer/Container/ExtraSettings/CheckBox,
+	'default_speaker': $CharacterEditor/HBoxContainer/Container/Actions/DefaultSpeaker,
 }
 
 func _ready():
@@ -22,6 +22,10 @@ func _on_CheckBox_toggled(button_pressed):
 
 
 func refresh_character_list():
+	var selected_id = 0
+	if $CharacterTools/CharacterItemList.is_anything_selected():
+		selected_id = $CharacterTools/CharacterItemList.get_selected_items()[0]
+
 	$CharacterTools/CharacterItemList.clear()
 	var icon = load("res://addons/dialogic/Images/character.svg")
 	var index = 0
@@ -30,6 +34,8 @@ func refresh_character_list():
 		$CharacterTools/CharacterItemList.set_item_metadata(index, {'file': c['file'], 'index': index})
 		$CharacterTools/CharacterItemList.set_item_icon_modulate(index, c['color'])
 		index += 1
+	if index >= selected_id:
+		$CharacterTools/CharacterItemList.select(selected_id)
 	# If there are no characters, show the welcome screen
 	if index == 0:
 		$NoCharacters.visible = true
@@ -85,12 +91,15 @@ func generate_character_data_to_save():
 	if character_editor['default_speaker'].pressed:
 		default_speaker = 'true'
 	var info_to_save = {
-		'name': character_editor['name'].text,
 		'id': character_editor['file'].text,
 		'description': character_editor['description'].text,
 		'color': character_editor['color'].color.to_html(),
 		'default_speaker': default_speaker,
 	}
+	# Adding name later for cases when no name is provided
+	if character_editor['name'].text != '':
+		info_to_save['name'] = character_editor['name'].text
+	
 	return info_to_save
 
 func save_current_character():
