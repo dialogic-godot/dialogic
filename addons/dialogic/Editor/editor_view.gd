@@ -313,12 +313,21 @@ func get_character_list():
 		if '.json' in file:
 			var data = load_json(CHAR_DIR + '/' + file)
 			var color = Color("#ffffff")
+			var c_name = data['id']
+			var default_speaker = 'false'
 			if data.has('color'):
 				color = Color('#' + data['color'])
 			if data.has('name'):
-				characters.append({'name':data['name'], 'color': color, 'file': file })
-			else:
-				characters.append({'name':data['id'], 'color': color, 'file': file })
+				c_name = data['name']
+			if data.has('default_speaker'):
+				default_speaker = data['default_speaker']
+			characters.append({
+				'name': c_name,
+				'color': color,
+				'file': file,
+				'default_speaker' : default_speaker,
+			})
+
 	return characters
 
 

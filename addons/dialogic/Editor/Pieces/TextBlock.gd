@@ -17,6 +17,10 @@ func _ready():
 	connect("gui_input", self, '_on_gui_input')
 	$PanelContainer/VBoxContainer/TextEdit.set("rect_min_size", Vector2(0, 80))
 	$PanelContainer/VBoxContainer/Header/CharacterDropdown.get_popup().connect("index_pressed", self, '_on_character_selected')
+	# Default Speaker
+	for c in editor_reference.get_character_list():
+		if c['default_speaker'] == 'true':
+			event_data['character'] = c['file']
 	update_preview()
 
 

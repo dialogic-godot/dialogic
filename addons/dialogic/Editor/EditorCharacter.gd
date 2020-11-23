@@ -34,8 +34,7 @@ func refresh_character_list():
 		$CharacterTools/CharacterItemList.set_item_metadata(index, {'file': c['file'], 'index': index})
 		$CharacterTools/CharacterItemList.set_item_icon_modulate(index, c['color'])
 		index += 1
-	if index >= selected_id:
-		$CharacterTools/CharacterItemList.select(selected_id)
+
 	# If there are no characters, show the welcome screen
 	if index == 0:
 		$NoCharacters.visible = true
