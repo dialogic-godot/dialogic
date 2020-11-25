@@ -1,0 +1,47 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://addons/dialogic/Images/Remove.svg" type="Texture" id=1]
+[ext_resource path="res://addons/dialogic/Editor/CharacterEditor/PortraitEntry.gd" type="Script" id=2]
+
+[node name="PortraitEntry" type="HBoxContainer"]
+margin_right = 451.0
+margin_bottom = 24.0
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="NameEdit" type="LineEdit" parent="."]
+margin_right = 100.0
+margin_bottom = 24.0
+rect_min_size = Vector2( 100, 0 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="PathEdit" type="LineEdit" parent="."]
+margin_left = 104.0
+margin_right = 391.0
+margin_bottom = 24.0
+rect_min_size = Vector2( 150, 0 )
+size_flags_horizontal = 3
+editable = false
+selecting_enabled = false
+
+[node name="ButtonSelect" type="Button" parent="."]
+margin_left = 395.0
+margin_right = 419.0
+margin_bottom = 24.0
+text = "..."
+
+[node name="ButtonDelete" type="Button" parent="."]
+margin_left = 423.0
+margin_right = 451.0
+margin_bottom = 24.0
+icon = ExtResource( 1 )
+flat = true
+
+[connection signal="focus_entered" from="NameEdit" to="." method="_on_focus_entered"]
+[connection signal="focus_entered" from="PathEdit" to="." method="_on_focus_entered"]
+[connection signal="pressed" from="ButtonSelect" to="." method="_on_ButtonSelect_pressed"]
+[connection signal="pressed" from="ButtonDelete" to="." method="_on_ButtonDelete_pressed"]

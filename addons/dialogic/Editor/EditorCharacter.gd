@@ -4,6 +4,7 @@ extends HSplitContainer
 
 var editor_reference
 var opened_character_data
+var portrait_entry = load("res://addons/dialogic/Editor/CharacterEditor/PortraitEntry.tscn")
 onready var character_editor = {
 	'editor': $CharacterEditor/HBoxContainer/Container,
 	'name': $CharacterEditor/HBoxContainer/Container/Name/LineEdit,
@@ -50,6 +51,11 @@ func clear_character_editor():
 	character_editor['description'].text = ''
 	character_editor['color'].color = Color('#ffffff')
 	character_editor['default_speaker'].pressed = false
+	character_editor['portraits'] = []
+	# Clearing portraits
+	for p in $CharacterEditor/HBoxContainer/Container/ScrollContainer/VBoxContainer/PortraitList.get_children():
+		p.queue_free()
+	$CharacterEditor/HBoxContainer/VBoxContainer/Control/TextureRect.texture = null
 
 
 # Character Creation
@@ -59,6 +65,7 @@ func create_character():
 		'color': 'ffffff',
 		'id': character_file,
 		'default_speaker': 'false',
+		'portraits': []
 	}
 	var directory = Directory.new()
 	if not directory.dir_exists(editor_reference.WORKING_DIR):
@@ -94,6 +101,7 @@ func generate_character_data_to_save():
 		'description': character_editor['description'].text,
 		'color': character_editor['color'].color.to_html(),
 		'default_speaker': default_speaker,
+		'portraits': character_editor['portraits']
 	}
 	# Adding name later for cases when no name is provided
 	if character_editor['name'].text != '':
@@ -134,6 +142,18 @@ func load_character_editor(data):
 	if data.has('default_speaker'):
 		if data['default_speaker'] == 'true':
 			character_editor['default_speaker'].pressed = true
+			
+	# Portraits
+	var default_portrait = create_portrait_entry()
+	default_portrait.get_node('NameEdit').text = 'Default'
+	default_portrait.get_node('NameEdit').editable = false
+	default_portrait.get_node('ButtonDelete').disabled = true
+	if data.has('portraits'):
+		for p in data['portraits']:
+			if p['name'] == 'Default':
+				default_portrait.get_node('PathEdit').text = p['path']
+			else:
+				create_portrait_entry(p['name'], p['path'])
 
 
 # Removing character
@@ -150,3 +170,22 @@ func _on_RemoveConfirmation_confirmed():
 
 func _on_DeleteButton_pressed():
 	editor_reference.get_node("RemoveConfirmation").popup_centered()
+
+
+# Portraits
+func _on_New_Portrait_Button_pressed():
+	create_portrait_entry()
+
+
+func create_portrait_entry(p_name = '', path = ''):
+	var p = portrait_entry.instance()
+	p.editor_reference = editor_reference
+	p.image_node = $CharacterEditor/HBoxContainer/VBoxContainer/Control/TextureRect
+	var p_list = $CharacterEditor/HBoxContainer/Container/ScrollContainer/VBoxContainer/PortraitList
+	p_list.add_child(p)
+	p.get_node("NameEdit").grab_focus()
+	if p_name != '':
+		p.get_node("NameEdit").text = p_name
+	if path != '':
+		p.get_node("PathEdit").text = path
+	return p
