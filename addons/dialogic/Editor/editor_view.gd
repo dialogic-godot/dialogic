@@ -382,10 +382,7 @@ func load_json(path):
 
 
 func get_filename_from_path(path):
-	if OS.get_name() == "Windows":
-		return path.split('/')[-1].replace('.json', '')
-	else:
-		return path.split('\\')[-1].replace('.json', '')
+	return path.split('/')[-1].replace('.json', '')
 
 
 # Godot dialog
