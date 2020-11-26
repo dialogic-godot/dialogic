@@ -13,7 +13,11 @@ func _process(_delta):
 
 
 func _on_ButtonDelete_pressed():
-	queue_free()
+	if $NameEdit.text == 'Default':
+		$PathEdit.text = ''
+		update_preview('')
+	else:
+		queue_free()
 
 
 func _on_ButtonSelect_pressed():
@@ -34,7 +38,9 @@ func _on_focus_entered():
 
 
 func update_preview(path):
-	if path != '':
+	if path == '':
+		image_node.texture = null
+	else:
 		if '.png' in path or '.svg' in path:
 			image_node.texture = load(path)
 			return true

@@ -153,7 +153,6 @@ func load_character_editor(data):
 	var default_portrait = create_portrait_entry()
 	default_portrait.get_node('NameEdit').text = 'Default'
 	default_portrait.get_node('NameEdit').editable = false
-	default_portrait.get_node('ButtonDelete').disabled = true
 	if data.has('portraits'):
 		for p in data['portraits']:
 			if p['name'] == 'Default':
