@@ -9,7 +9,8 @@ onready var toggler = get_node("PanelContainer/VBoxContainer/Header/VisibleToggl
 # This is the information of this event and it will get parsed and saved to the JSON file.
 var event_data = {
 	'character': '',
-	'text': ''
+	'text': '',
+	'portrait': '',
 }
 
 
@@ -17,6 +18,7 @@ func _ready():
 	connect("gui_input", self, '_on_gui_input')
 	$PanelContainer/VBoxContainer/TextEdit.set("rect_min_size", Vector2(0, 80))
 	$PanelContainer/VBoxContainer/Header/CharacterDropdown.get_popup().connect("index_pressed", self, '_on_character_selected')
+	$PanelContainer/VBoxContainer/Header/PortraitDropdown.get_popup().connect("index_pressed", self, '_on_portrait_selected')
 	# Default Speaker
 	for c in editor_reference.get_character_list():
 		if c['default_speaker'] == 'true':
@@ -46,6 +48,26 @@ func _on_character_selected(index):
 	update_preview()
 
 
+func _on_PortraitDropdown_about_to_show():
+	var Dropdown = $PanelContainer/VBoxContainer/Header/PortraitDropdown
+	Dropdown.get_popup().clear()
+	var index = 0
+	for c in editor_reference.get_character_list():
+		if c['file'] == event_data['character']:
+			for p in c['portraits']:
+				Dropdown.get_popup().add_item(p['name'])
+				index += 1
+
+func _on_portrait_selected(index):
+	var text = $PanelContainer/VBoxContainer/Header/PortraitDropdown.get_popup().get_item_text(index)
+	$PanelContainer/VBoxContainer/Header/CharacterDropdown.text = text
+	event_data['portrait'] = text
+	update_preview()
+
+func check_portraits():
+	pass
+
+
 func _on_TextEdit_text_changed():
 	event_data['text'] = $PanelContainer/VBoxContainer/TextEdit.text
 	update_preview()
@@ -64,11 +86,18 @@ func load_data(data):
 
 
 func update_preview():
+	$PanelContainer/VBoxContainer/Header/PortraitDropdown.visible = false
 	if editor_reference:
 		for c in editor_reference.get_character_list():
 			if c['file'] == event_data['character']:
 				$PanelContainer/VBoxContainer/Header/CharacterDropdown.text = c['name']
 				$PanelContainer/VBoxContainer/Header/TextureRect.set("self_modulate", c['color'])
+				if c.has('portraits'):
+					if c['portraits'].size() > 1:
+						$PanelContainer/VBoxContainer/Header/PortraitDropdown.visible = true
+						for p in c['portraits']:
+							if p['name'] == event_data['portrait']:
+								$PanelContainer/VBoxContainer/Header/PortraitDropdown.text = event_data['portrait']
 	var text = event_data['text']
 	if text == '':
 		return '...'
@@ -77,6 +106,9 @@ func update_preview():
 	preview = text
 	if preview.length() > 60:
 		preview = preview.left(60) + '...'
+	
+	
+	
 	
 	return preview
 

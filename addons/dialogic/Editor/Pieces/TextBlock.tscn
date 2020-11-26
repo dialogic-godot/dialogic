@@ -77,6 +77,13 @@ margin_right = 187.0
 margin_bottom = 30.0
 text = "[Character]"
 
+[node name="PortraitDropdown" type="MenuButton" parent="PanelContainer/VBoxContainer/Header"]
+visible = false
+margin_left = 191.0
+margin_right = 257.0
+margin_bottom = 30.0
+text = "[Default]"
+
 [node name="Preview" type="Label" parent="PanelContainer/VBoxContainer/Header"]
 visible = false
 margin_left = 234.0
@@ -112,4 +119,5 @@ wrap_enabled = true
 [node name="DragController" parent="." instance=ExtResource( 5 )]
 
 [connection signal="about_to_show" from="PanelContainer/VBoxContainer/Header/CharacterDropdown" to="." method="_on_MenuButton_about_to_show"]
+[connection signal="about_to_show" from="PanelContainer/VBoxContainer/Header/PortraitDropdown" to="." method="_on_PortraitDropdown_about_to_show"]
 [connection signal="text_changed" from="PanelContainer/VBoxContainer/TextEdit" to="." method="_on_TextEdit_text_changed"]

@@ -49,7 +49,7 @@ func _process(delta):
 
 # Creating text node
 func _on_ButtonText_pressed():
-	create_event("TextBlock", {'character': '', 'text': ''}, true)
+	create_event("TextBlock", {'character': '', 'text': '', 'portrait': ''}, true)
 
 
 func _on_ButtonBackground_pressed():
@@ -166,9 +166,7 @@ func load_timeline(path):
 	data = data['events']
 	for i in data:
 		match i:
-			{'text'}:
-				create_event("TextBlock", i)
-			{'text', 'character'}:
+			{'text', 'character', 'portrait'}:
 				create_event("TextBlock", i)
 			{'background'}:
 				create_event("SceneBlock", i)
@@ -315,17 +313,21 @@ func get_character_list():
 			var color = Color("#ffffff")
 			var c_name = data['id']
 			var default_speaker = 'false'
+			var portraits = []
 			if data.has('color'):
 				color = Color('#' + data['color'])
 			if data.has('name'):
 				c_name = data['name']
 			if data.has('default_speaker'):
 				default_speaker = data['default_speaker']
+			if data.has('portraits'):
+				portraits = data['portraits']
 			characters.append({
 				'name': c_name,
 				'color': color,
 				'file': file,
 				'default_speaker' : default_speaker,
+				'portraits': portraits,
 			})
 
 	return characters
@@ -349,6 +351,11 @@ func get_character_name(file):
 	var data = load_json(CHAR_DIR + '/' + file)
 	if data.has('name'):
 		return data['name']
+
+func get_character_portraits(file):
+	var data = load_json(CHAR_DIR + '/' + file)
+	if data.has('portraits'):
+		return data['portraits']
 
 
 # Generic functions
