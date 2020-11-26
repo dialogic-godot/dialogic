@@ -17,12 +17,12 @@ func _on_ButtonDelete_pressed():
 
 
 func _on_ButtonSelect_pressed():
-	editor_reference.godot_dialog("*.png, *.jpg, *.jpeg, *.tga, *.svg, *.svgz, *.bmp, *.webp;Image")
+	editor_reference.godot_dialog("*.png, *.svg")
 	editor_reference.godot_dialog_connect(self, "_on_file_selected")
 
 
 func _on_file_selected(path, target):
-	image_node.texture = load(path)
+	update_preview(path)
 	$PathEdit.text = path
 	if $NameEdit.text == '':
 		$NameEdit.text = editor_reference.get_filename_from_path(path)
@@ -30,4 +30,12 @@ func _on_file_selected(path, target):
 
 func _on_focus_entered():
 	if $PathEdit.text != '':
-		image_node.texture = load($PathEdit.text)
+		update_preview($PathEdit.text)
+
+
+func update_preview(path):
+	if path != '':
+		if '.png' in path or '.svg' in path:
+			image_node.texture = load(path)
+			return true
+	return false

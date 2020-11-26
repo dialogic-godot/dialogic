@@ -96,12 +96,18 @@ func generate_character_data_to_save():
 	var default_speaker = 'false'
 	if character_editor['default_speaker'].pressed:
 		default_speaker = 'true'
+	var portraits = []
+	for p in $CharacterEditor/HBoxContainer/Container/ScrollContainer/VBoxContainer/PortraitList.get_children():
+		var entry = {}
+		entry['name'] = p.get_node("NameEdit").text
+		entry['path'] = p.get_node("PathEdit").text
+		portraits.append(entry)
 	var info_to_save = {
 		'id': character_editor['file'].text,
 		'description': character_editor['description'].text,
 		'color': character_editor['color'].color.to_html(),
 		'default_speaker': default_speaker,
-		'portraits': character_editor['portraits']
+		'portraits': portraits
 	}
 	# Adding name later for cases when no name is provided
 	if character_editor['name'].text != '':
@@ -152,6 +158,7 @@ func load_character_editor(data):
 		for p in data['portraits']:
 			if p['name'] == 'Default':
 				default_portrait.get_node('PathEdit').text = p['path']
+				default_portrait.update_preview(p['path'])
 			else:
 				create_portrait_entry(p['name'], p['path'])
 
@@ -174,18 +181,20 @@ func _on_DeleteButton_pressed():
 
 # Portraits
 func _on_New_Portrait_Button_pressed():
-	create_portrait_entry()
+	create_portrait_entry('', '', true)
 
 
-func create_portrait_entry(p_name = '', path = ''):
+func create_portrait_entry(p_name = '', path = '', grab_focus = false):
 	var p = portrait_entry.instance()
 	p.editor_reference = editor_reference
 	p.image_node = $CharacterEditor/HBoxContainer/VBoxContainer/Control/TextureRect
 	var p_list = $CharacterEditor/HBoxContainer/Container/ScrollContainer/VBoxContainer/PortraitList
 	p_list.add_child(p)
-	p.get_node("NameEdit").grab_focus()
 	if p_name != '':
 		p.get_node("NameEdit").text = p_name
 	if path != '':
 		p.get_node("PathEdit").text = path
+	if grab_focus:
+		p.get_node("NameEdit").grab_focus()
+		p._on_ButtonSelect_pressed()
 	return p

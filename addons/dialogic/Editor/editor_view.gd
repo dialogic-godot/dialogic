@@ -381,8 +381,11 @@ func load_json(path):
 	return data_parse.result
 
 
-func get_filename_from_path(path):
-	return path.split('/')[-1].replace('.json', '')
+func get_filename_from_path(path, extension = false):
+	var file_name = path.split('/')[-1]
+	if extension == false:
+		file_name = file_name.split('.')[0]
+	return file_name
 
 
 # Godot dialog

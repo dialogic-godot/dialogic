@@ -407,6 +407,7 @@ icon = ExtResource( 8 )
 align = 0
 
 [node name="EditorCharacter" type="HSplitContainer" parent="."]
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 6.0
@@ -434,7 +435,7 @@ margin_right = 180.0
 margin_bottom = 541.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-items = [ "Narrator", ExtResource( 7 ), false, "Rando", ExtResource( 7 ), false, "Pepito", ExtResource( 7 ), false, "Ralph", ExtResource( 7 ), false ]
+items = [ "Narrator", ExtResource( 7 ), false, "Rando", ExtResource( 7 ), false, "Pepito", ExtResource( 7 ), false, "Shia", ExtResource( 7 ), false ]
 
 [node name="NoCharacters" type="CenterContainer" parent="EditorCharacter"]
 visible = false
