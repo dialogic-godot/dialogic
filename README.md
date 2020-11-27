@@ -9,6 +9,7 @@ The plugin is not production ready, make sure to follow the repo for the next up
 
 ## Changelog
 v0.6 - Character portraits
+ - Video: https://youtu.be/okWYt_yGKNI
  - Splitting the main script into smaller pieces
  - Characters
    - Characters welcome screen when there are 0
