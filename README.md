@@ -8,14 +8,16 @@ The plugin is not production ready, make sure to follow the repo for the next up
 
 
 ## Changelog
-v0.6 - WIP
+v0.6 - Character portraits
  - Splitting the main script into smaller pieces
  - Characters
    - Characters welcome screen when there are 0
-   - Autosave enabled on characters
    - Different display name
+   - Autosave enabled on characters
+   - Character portraits
    - Added Default Speaker setting
-
+ - Events:
+   - Text block now has a portrait dropdown
 
 v0.5 - Indentation Magic
  - Video: https://youtu.be/mrTyWy2TJOM
