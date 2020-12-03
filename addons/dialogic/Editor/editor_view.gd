@@ -248,11 +248,37 @@ func refresh_timeline_list():
 	get_node(dialog_list_path).clear()
 	var icon = load("res://addons/dialogic/Images/timeline.svg")
 	var index = 0
+	var timeline_list = []
 	for c in get_timeline_list():
 		get_node(dialog_list_path).add_item(c['name'], icon)
+		timeline_list.append(c['name'])
 		get_node(dialog_list_path).set_item_metadata(index, {'file': c['file'], 'index': index})
 		index += 1
 	get_node(dialog_list_path).sort_items_by_text()
+	
+	# Updating the dialog node script
+	var f = File.new()
+	f.open("res://addons/dialogic/Dialog/dialog_node.gd", File.READ_WRITE)
+	var script_lines = f.get_as_text().split('\n')
+	var new_lines = []
+	for l in script_lines:
+		if "Timeline-var-replace" in l:
+			var export_timelines = 'export(String{replace_list}) var timeline # Timeline-var-replace'
+			var timelines_string = ''
+			for tl in timeline_list:
+				timelines_string = timelines_string + ', "' + tl + '"'
+			export_timelines = export_timelines.replace("{replace_list}", timelines_string)
+			new_lines.append(export_timelines)
+		else:
+			new_lines.append(l)
+	
+	var final_script = ''
+	for l in new_lines:
+		final_script += l + '\n'
+	print(final_script)
+	f.store_string(final_script)
+	f.close()
+	
 
 
 func _on_DialogItemList_item_selected(index):
