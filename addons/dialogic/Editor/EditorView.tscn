@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=2]
+[gd_scene load_steps=29 format=2]
 
 [ext_resource path="res://addons/dialogic/Editor/editor_view.gd" type="Script" id=1]
 [ext_resource path="res://addons/dialogic/Images/dialog.svg" type="Texture" id=2]
@@ -10,6 +10,7 @@
 [ext_resource path="res://addons/dialogic/Images/audio-event.svg" type="Texture" id=8]
 [ext_resource path="res://addons/dialogic/Images/open-icon.svg" type="Texture" id=9]
 [ext_resource path="res://addons/dialogic/Images/closed-icon.svg" type="Texture" id=10]
+[ext_resource path="res://addons/dialogic/Images/ActionCopy.svg" type="Texture" id=11]
 [ext_resource path="res://addons/dialogic/Images/change-timeline.svg" type="Texture" id=12]
 [ext_resource path="res://addons/dialogic/Images/glossary.svg" type="Texture" id=13]
 [ext_resource path="res://addons/dialogic/Images/logo.png" type="Texture" id=14]
@@ -22,6 +23,7 @@
 [ext_resource path="res://addons/dialogic/Editor/EditorCharacter.gd" type="Script" id=21]
 [ext_resource path="res://addons/dialogic/Images/Remove.svg" type="Texture" id=22]
 [ext_resource path="res://addons/dialogic/Editor/CharacterEditor/PortraitEntry.tscn" type="PackedScene" id=23]
+[ext_resource path="res://addons/dialogic/Images/Folder.svg" type="Texture" id=24]
 
 [sub_resource type="StyleBoxFlat" id=1]
 content_margin_left = 5.0
@@ -148,6 +150,12 @@ margin_bottom = 28.0
 icon = ExtResource( 9 )
 align = 0
 
+[node name="Spacer" type="Control" parent="HBoxContainer"]
+margin_left = 271.0
+margin_right = 301.0
+margin_bottom = 28.0
+rect_min_size = Vector2( 30, 0 )
+
 [node name="ButtonSave" type="Button" parent="HBoxContainer"]
 visible = false
 margin_left = 68.0
@@ -165,10 +173,33 @@ text = "Reload"
 align = 0
 
 [node name="Control" type="Control" parent="HBoxContainer"]
-margin_left = 271.0
-margin_right = 888.0
+margin_left = 301.0
+margin_right = 680.0
 margin_bottom = 28.0
 size_flags_horizontal = 3
+
+[node name="ExtraOptions" type="HBoxContainer" parent="HBoxContainer"]
+margin_left = 680.0
+margin_right = 888.0
+margin_bottom = 28.0
+
+[node name="ButtonCopyID" type="Button" parent="HBoxContainer/ExtraOptions"]
+margin_right = 144.0
+margin_bottom = 28.0
+text = " Copy Timeline ID"
+icon = ExtResource( 11 )
+
+[node name="ButtonRevealFolder" type="Button" parent="HBoxContainer/ExtraOptions"]
+margin_left = 148.0
+margin_right = 176.0
+margin_bottom = 28.0
+icon = ExtResource( 24 )
+
+[node name="ButtonRemove" type="Button" parent="HBoxContainer/ExtraOptions"]
+margin_left = 180.0
+margin_right = 208.0
+margin_bottom = 28.0
+icon = ExtResource( 22 )
 
 [node name="Logo" type="TextureRect" parent="HBoxContainer"]
 margin_left = 888.0
@@ -212,7 +243,7 @@ margin_right = 180.0
 margin_bottom = 541.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-items = [ "First", ExtResource( 15 ), false, "timeline-1605634781", ExtResource( 15 ), false ]
+items = [ "First", ExtResource( 15 ), false, "New Timeline New", ExtResource( 15 ), false, "Second", ExtResource( 15 ), false, "Third", ExtResource( 15 ), false ]
 allow_rmb_select = true
 
 [node name="CenterContainer" type="CenterContainer" parent="EditorTimeline"]
@@ -435,7 +466,7 @@ margin_right = 180.0
 margin_bottom = 541.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-items = [ "Narrator", ExtResource( 7 ), false, "Rando", ExtResource( 7 ), false, "Pepito", ExtResource( 7 ), false, "Shia", ExtResource( 7 ), false ]
+items = [ "Narrator", ExtResource( 7 ), false, "Shia", ExtResource( 7 ), false, "Lyra", ExtResource( 7 ), false ]
 
 [node name="NoCharacters" type="CenterContainer" parent="EditorCharacter"]
 visible = false
@@ -777,6 +808,8 @@ __meta__ = {
 [connection signal="pressed" from="HBoxContainer/FoldTools/ButtonUnfold" to="." method="_on_ButtonUnfold_pressed"]
 [connection signal="pressed" from="HBoxContainer/ButtonSave" to="." method="_on_ButtonSave_pressed"]
 [connection signal="pressed" from="HBoxContainer/ReloadResource" to="." method="_on_ReloadResource_pressed"]
+[connection signal="pressed" from="HBoxContainer/ExtraOptions/ButtonCopyID" to="." method="_on_ButtonCopyID_pressed"]
+[connection signal="pressed" from="HBoxContainer/ExtraOptions/ButtonRevealFolder" to="." method="_on_ButtonRevealFolder_pressed"]
 [connection signal="gui_input" from="HBoxContainer/Logo" to="." method="_on_Logo_gui_input"]
 [connection signal="pressed" from="EditorTimeline/EventTools/VBoxContainer2/AddTimelineButton" to="." method="_on_AddTimelineButton_pressed"]
 [connection signal="item_rmb_selected" from="EditorTimeline/EventTools/VBoxContainer2/DialogItemList" to="." method="_on_DialogItemList_item_rmb_selected"]

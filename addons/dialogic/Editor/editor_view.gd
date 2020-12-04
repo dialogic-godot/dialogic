@@ -248,37 +248,11 @@ func refresh_timeline_list():
 	get_node(dialog_list_path).clear()
 	var icon = load("res://addons/dialogic/Images/timeline.svg")
 	var index = 0
-	var timeline_list = []
 	for c in get_timeline_list():
 		get_node(dialog_list_path).add_item(c['name'], icon)
-		timeline_list.append(c['name'])
 		get_node(dialog_list_path).set_item_metadata(index, {'file': c['file'], 'index': index})
 		index += 1
 	get_node(dialog_list_path).sort_items_by_text()
-	
-	# Updating the dialog node script
-	var f = File.new()
-	f.open("res://addons/dialogic/Dialog/dialog_node.gd", File.READ_WRITE)
-	var script_lines = f.get_as_text().split('\n')
-	var new_lines = []
-	for l in script_lines:
-		if "Timeline-var-replace" in l:
-			var export_timelines = 'export(String{replace_list}) var timeline # Timeline-var-replace'
-			var timelines_string = ''
-			for tl in timeline_list:
-				timelines_string = timelines_string + ', "' + tl + '"'
-			export_timelines = export_timelines.replace("{replace_list}", timelines_string)
-			new_lines.append(export_timelines)
-		else:
-			new_lines.append(l)
-	
-	var final_script = ''
-	for l in new_lines:
-		final_script += l + '\n'
-	print(final_script)
-	f.store_string(final_script)
-	f.close()
-	
 
 
 func _on_DialogItemList_item_selected(index):
@@ -463,12 +437,20 @@ func unfold_all_nodes():
 		event.get_node("PanelContainer/VBoxContainer/Header/VisibleToggle").set_pressed(true)
 
 
+# Toolbar
 func _on_ButtonFold_pressed():
 	fold_all_nodes()
 
 
 func _on_ButtonUnfold_pressed():
 	unfold_all_nodes()
+
+func _on_ButtonCopyID_pressed():
+	var current_id = get_filename_from_path(working_dialog_file)
+	if current_id != '':
+		OS.set_clipboard(current_id)
+		return current_id
+	return false
 
 
 func _on_EventButton_pressed():
@@ -535,3 +517,15 @@ func compare_dicts(dict_1, dict_2):
 		if str(dict_1) == str(dict_2):
 			return true
 	return false
+
+
+
+
+func _on_ButtonRevealFolder_pressed():
+	# Getting it from the tab
+	if current_editor_view == 'Timeline':
+		OS.shell_open(ProjectSettings.globalize_path(TIMELINE_DIR))
+	elif current_editor_view == 'Characters':
+		OS.shell_open(ProjectSettings.globalize_path(CHAR_DIR))
+	# Getting it from a res: file
+	#OS.shell_open(ProjectSettings.globalize_path(working_dialog_file.get_base_dir()))
