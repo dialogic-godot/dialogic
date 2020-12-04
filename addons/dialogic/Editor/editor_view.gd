@@ -264,8 +264,21 @@ func _on_DialogItemList_item_selected(index):
 
 # Renaming dialogs
 func _on_DialogItemList_item_rmb_selected(index, at_position):
-	$RenameDialog.register_text_enter($RenameDialog/LineEdit)
+	$TimelinePopupMenu.rect_position = get_viewport().get_mouse_position()
+	$TimelinePopupMenu.popup()
 	timeline_name = get_node(dialog_list_path).get_item_text(index)
+
+
+func _on_TimelinePopupMenu_id_pressed(id):
+	if id == 0: # rename
+		popup_rename()
+	if id == 2:
+		var current_id = get_filename_from_path(working_dialog_file)
+		if current_id != '':
+			OS.set_clipboard(current_id)
+
+func popup_rename():
+	$RenameDialog.register_text_enter($RenameDialog/LineEdit)
 	$RenameDialog/LineEdit.text = timeline_name
 	$RenameDialog.set_as_minsize()
 	$RenameDialog.popup_centered()
@@ -445,13 +458,6 @@ func _on_ButtonFold_pressed():
 func _on_ButtonUnfold_pressed():
 	unfold_all_nodes()
 
-func _on_ButtonCopyID_pressed():
-	var current_id = get_filename_from_path(working_dialog_file)
-	if current_id != '':
-		OS.set_clipboard(current_id)
-		return current_id
-	return false
-
 
 func _on_EventButton_pressed():
 	change_tab('Timeline')
@@ -529,3 +535,4 @@ func _on_ButtonRevealFolder_pressed():
 		OS.shell_open(ProjectSettings.globalize_path(CHAR_DIR))
 	# Getting it from a res: file
 	#OS.shell_open(ProjectSettings.globalize_path(working_dialog_file.get_base_dir()))
+

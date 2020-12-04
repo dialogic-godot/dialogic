@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=2]
+[gd_scene load_steps=30 format=2]
 
 [ext_resource path="res://addons/dialogic/Editor/editor_view.gd" type="Script" id=1]
 [ext_resource path="res://addons/dialogic/Images/dialog.svg" type="Texture" id=2]
@@ -23,7 +23,8 @@
 [ext_resource path="res://addons/dialogic/Editor/EditorCharacter.gd" type="Script" id=21]
 [ext_resource path="res://addons/dialogic/Images/Remove.svg" type="Texture" id=22]
 [ext_resource path="res://addons/dialogic/Editor/CharacterEditor/PortraitEntry.tscn" type="PackedScene" id=23]
-[ext_resource path="res://addons/dialogic/Images/Folder.svg" type="Texture" id=24]
+[ext_resource path="res://addons/dialogic/Images/Rename.svg" type="Texture" id=25]
+[ext_resource path="res://addons/dialogic/Images/Filesystem.svg" type="Texture" id=26]
 
 [sub_resource type="StyleBoxFlat" id=1]
 content_margin_left = 5.0
@@ -174,32 +175,9 @@ align = 0
 
 [node name="Control" type="Control" parent="HBoxContainer"]
 margin_left = 301.0
-margin_right = 680.0
-margin_bottom = 28.0
-size_flags_horizontal = 3
-
-[node name="ExtraOptions" type="HBoxContainer" parent="HBoxContainer"]
-margin_left = 680.0
 margin_right = 888.0
 margin_bottom = 28.0
-
-[node name="ButtonCopyID" type="Button" parent="HBoxContainer/ExtraOptions"]
-margin_right = 144.0
-margin_bottom = 28.0
-text = " Copy Timeline ID"
-icon = ExtResource( 11 )
-
-[node name="ButtonRevealFolder" type="Button" parent="HBoxContainer/ExtraOptions"]
-margin_left = 148.0
-margin_right = 176.0
-margin_bottom = 28.0
-icon = ExtResource( 24 )
-
-[node name="ButtonRemove" type="Button" parent="HBoxContainer/ExtraOptions"]
-margin_left = 180.0
-margin_right = 208.0
-margin_bottom = 28.0
-icon = ExtResource( 22 )
+size_flags_horizontal = 3
 
 [node name="Logo" type="TextureRect" parent="HBoxContainer"]
 margin_left = 888.0
@@ -761,6 +739,16 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="TimelinePopupMenu" type="PopupMenu" parent="."]
+margin_left = 151.0
+margin_top = 276.0
+margin_right = 325.0
+margin_bottom = 332.0
+items = [ "Rename", ExtResource( 25 ), 0, false, false, 0, 0, null, "", false, "Show in File Manager", ExtResource( 26 ), 0, false, false, 1, 0, null, "", false, "Copy Timeline ID", ExtResource( 11 ), 0, false, false, 2, 0, null, "", false, "Move to Trash", ExtResource( 22 ), 0, false, false, 3, 0, null, "", false ]
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="RemoveConfirmation" type="ConfirmationDialog" parent="."]
 margin_right = 325.0
 margin_bottom = 88.0
@@ -808,8 +796,6 @@ __meta__ = {
 [connection signal="pressed" from="HBoxContainer/FoldTools/ButtonUnfold" to="." method="_on_ButtonUnfold_pressed"]
 [connection signal="pressed" from="HBoxContainer/ButtonSave" to="." method="_on_ButtonSave_pressed"]
 [connection signal="pressed" from="HBoxContainer/ReloadResource" to="." method="_on_ReloadResource_pressed"]
-[connection signal="pressed" from="HBoxContainer/ExtraOptions/ButtonCopyID" to="." method="_on_ButtonCopyID_pressed"]
-[connection signal="pressed" from="HBoxContainer/ExtraOptions/ButtonRevealFolder" to="." method="_on_ButtonRevealFolder_pressed"]
 [connection signal="gui_input" from="HBoxContainer/Logo" to="." method="_on_Logo_gui_input"]
 [connection signal="pressed" from="EditorTimeline/EventTools/VBoxContainer2/AddTimelineButton" to="." method="_on_AddTimelineButton_pressed"]
 [connection signal="item_rmb_selected" from="EditorTimeline/EventTools/VBoxContainer2/DialogItemList" to="." method="_on_DialogItemList_item_rmb_selected"]
@@ -830,5 +816,6 @@ __meta__ = {
 [connection signal="toggled" from="EditorCharacter/CharacterEditor/HBoxContainer/Container/Name/CheckBox" to="EditorCharacter" method="_on_CheckBox_toggled"]
 [connection signal="pressed" from="EditorCharacter/CharacterEditor/HBoxContainer/Container/ScrollContainer/VBoxContainer/HBoxContainer/Button" to="EditorCharacter" method="_on_New_Portrait_Button_pressed"]
 [connection signal="pressed" from="EditorCharacter/CharacterEditor/HBoxContainer/Container/Actions/DeleteButton" to="EditorCharacter" method="_on_DeleteButton_pressed"]
+[connection signal="id_pressed" from="TimelinePopupMenu" to="." method="_on_TimelinePopupMenu_id_pressed"]
 [connection signal="confirmed" from="RemoveConfirmation" to="EditorCharacter" method="_on_RemoveConfirmation_confirmed"]
 [connection signal="confirmed" from="RenameDialog" to="." method="_on_RenameDialog_confirmed"]
