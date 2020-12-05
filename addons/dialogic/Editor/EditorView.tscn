@@ -221,7 +221,7 @@ margin_right = 180.0
 margin_bottom = 541.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-items = [ "First", ExtResource( 15 ), false, "New Timeline New", ExtResource( 15 ), false, "Second", ExtResource( 15 ), false, "Third", ExtResource( 15 ), false ]
+items = [ "Test", ExtResource( 15 ), false ]
 allow_rmb_select = true
 
 [node name="CenterContainer" type="CenterContainer" parent="EditorTimeline"]
@@ -444,7 +444,7 @@ margin_right = 180.0
 margin_bottom = 541.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-items = [ "Narrator", ExtResource( 7 ), false, "Shia", ExtResource( 7 ), false, "Lyra", ExtResource( 7 ), false ]
+items = [ "Narrator", ExtResource( 7 ), false, "Shia", ExtResource( 7 ), false, "Lyra", ExtResource( 7 ), false, "character-1607047358.json", ExtResource( 7 ), false ]
 
 [node name="NoCharacters" type="CenterContainer" parent="EditorCharacter"]
 visible = false

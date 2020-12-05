@@ -5,6 +5,8 @@ var plugin_reference
 
 var undo_redo: UndoRedo
 
+var debug_mode = true # For printing info
+
 var editor_file_dialog # EditorFileDialog
 var file_picker_data = {'method': '', 'node': self}
 
@@ -122,7 +124,7 @@ func clear_timeline():
 func _on_ReloadResource_pressed():
 	clear_timeline()
 	load_timeline(working_dialog_file)
-	print('[!] Reloaded -----')
+	dprint('[!] Reloaded -----')
 
 
 # Saving and loading
@@ -144,7 +146,7 @@ func generate_save_data():
 
 
 func save_timeline(path):
-	print('Saving resource --------')
+	dprint('Saving resource --------')
 	var info_to_save = generate_save_data()
 	var file = File.new()
 	file.open(path, File.WRITE)
@@ -194,7 +196,7 @@ func load_timeline(path):
 		fold_all_nodes()
 	
 	var elapsed_time: float = (OS.get_ticks_msec() - start_time) * 0.001
-	print("Elapsed time: ", elapsed_time)
+	dprint("Elapsed time: " + str(elapsed_time))
 
 
 func indent_events():
@@ -253,7 +255,9 @@ func refresh_timeline_list():
 		get_node(dialog_list_path).set_item_metadata(index, {'file': c['file'], 'index': index})
 		index += 1
 	get_node(dialog_list_path).sort_items_by_text()
-	# TODO if there are no elements on the list, show welcome screen again
+	if $EditorTimeline/EventTools/VBoxContainer2/DialogItemList.get_item_count() == 0:
+		change_tab('Timeline')
+		
 
 func _on_DialogItemList_item_selected(index):
 	var selected = get_node(dialog_list_path).get_item_text(index)
@@ -298,12 +302,11 @@ func _on_RenameDialog_confirmed():
 func _on_RemoveTimelineConfirmation_confirmed():
 	var dir = Directory.new()
 	dir.remove(working_dialog_file)
+	working_dialog_file = ''
 	refresh_timeline_list()
-	# TODO Handle errors if there are no more elements in the list. This should go in the refresh_timeline_list() function probably
-	if $EditorTimeline/EventTools/VBoxContainer2/DialogItemList.get_item_count() != 1:
+	if $EditorTimeline/EventTools/VBoxContainer2/DialogItemList.get_item_count() != 0:
 		_on_DialogItemList_item_selected(0)
 		$EditorTimeline/EventTools/VBoxContainer2/DialogItemList.select(0)
-		print($EditorTimeline/EventTools/VBoxContainer2/DialogItemList.get_item_count())
 
 
 # Create timeline
@@ -452,7 +455,7 @@ func godot_dialog_connect(who, method_name):
 
 
 func _on_file_selected(path):
-	print(path)
+	dprint(path)
 
 
 # Folding
@@ -519,10 +522,10 @@ func _on_AutoSaver_timeout():
 	if current_editor_view == 'Timeline':
 		if autosaving_hash != generate_save_data().hash():
 			save_timeline(working_dialog_file)
-			print('[!] Timeline changes detected. Saving: ', autosaving_hash)
+			dprint('[!] Timeline changes detected. Saving: ' + str(autosaving_hash))
 	if current_editor_view == 'Characters':
 		if compare_dicts($EditorCharacter.opened_character_data, $EditorCharacter.generate_character_data_to_save()) == false:
-			print('[!] Character changes detected. Saving')
+			dprint('[!] Character changes detected. Saving')
 			$EditorCharacter.save_current_character()
 
 
@@ -540,3 +543,6 @@ func compare_dicts(dict_1, dict_2):
 			return true
 	return false
 
+func dprint(what):
+	if debug_mode:
+		print(what)
