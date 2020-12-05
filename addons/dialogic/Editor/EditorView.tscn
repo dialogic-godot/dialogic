@@ -190,6 +190,7 @@ expand = true
 stretch_mode = 5
 
 [node name="EditorTimeline" type="HSplitContainer" parent="."]
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 6.0
@@ -221,7 +222,7 @@ margin_right = 180.0
 margin_bottom = 541.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-items = [ "Test", ExtResource( 15 ), false ]
+items = [ "timeline-1607136163", ExtResource( 15 ), false ]
 allow_rmb_select = true
 
 [node name="CenterContainer" type="CenterContainer" parent="EditorTimeline"]
@@ -416,7 +417,6 @@ icon = ExtResource( 8 )
 align = 0
 
 [node name="EditorCharacter" type="HSplitContainer" parent="."]
-visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 6.0
@@ -445,6 +445,7 @@ margin_bottom = 541.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 items = [ "Narrator", ExtResource( 7 ), false, "Shia", ExtResource( 7 ), false, "Lyra", ExtResource( 7 ), false, "character-1607047358.json", ExtResource( 7 ), false ]
+allow_rmb_select = true
 
 [node name="NoCharacters" type="CenterContainer" parent="EditorCharacter"]
 visible = false
@@ -690,16 +691,9 @@ text = "Default Speaker"
 
 [node name="Control" type="Control" parent="EditorCharacter/CharacterEditor/HBoxContainer/Container/Actions"]
 margin_left = 132.0
-margin_right = 306.0
-margin_bottom = 24.0
-size_flags_horizontal = 3
-
-[node name="DeleteButton" type="Button" parent="EditorCharacter/CharacterEditor/HBoxContainer/Container/Actions"]
-margin_left = 310.0
 margin_right = 451.0
 margin_bottom = 24.0
-text = " Delete Character"
-icon = ExtResource( 22 )
+size_flags_horizontal = 3
 
 [node name="VBoxContainer" type="VBoxContainer" parent="EditorCharacter/CharacterEditor/HBoxContainer"]
 margin_left = 455.0
@@ -745,6 +739,16 @@ margin_top = 276.0
 margin_right = 325.0
 margin_bottom = 332.0
 items = [ "Rename", ExtResource( 25 ), 0, false, false, 0, 0, null, "", false, "Show in File Manager", ExtResource( 26 ), 0, false, false, 1, 0, null, "", false, "Copy Timeline ID", ExtResource( 11 ), 0, false, false, 2, 0, null, "", false, "Move to Trash", ExtResource( 22 ), 0, false, false, 3, 0, null, "", false ]
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CharacterPopupMenu" type="PopupMenu" parent="."]
+margin_left = 171.799
+margin_top = 209.0
+margin_right = 267.799
+margin_bottom = 229.0
+items = [ "Show in File Manager", ExtResource( 26 ), 0, false, false, 0, 0, null, "", false, "Remove Character", ExtResource( 22 ), 0, false, false, 1, 0, null, "", false ]
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -821,12 +825,13 @@ __meta__ = {
 [connection signal="pressed" from="EditorTimeline/TimelineEditor/EventContainer/HBoxContainer2/ButtonCharacterLeave" to="." method="_on_ButtonCharacterLeave_pressed"]
 [connection signal="pressed" from="EditorTimeline/TimelineEditor/EventContainer/HBoxContainer2/ButtonAudio" to="." method="_on_ButtonAudio_pressed"]
 [connection signal="pressed" from="EditorCharacter/CharacterTools/Button" to="EditorCharacter" method="_on_New_Character_Button_pressed"]
+[connection signal="item_rmb_selected" from="EditorCharacter/CharacterTools/CharacterItemList" to="EditorCharacter" method="_on_CharacterItemList_item_rmb_selected"]
 [connection signal="item_selected" from="EditorCharacter/CharacterTools/CharacterItemList" to="EditorCharacter" method="_on_ItemList_item_selected"]
 [connection signal="pressed" from="EditorCharacter/NoCharacters/VBoxContainer/CenterContainer/Button" to="EditorCharacter" method="_on_New_Character_Button_pressed"]
 [connection signal="toggled" from="EditorCharacter/CharacterEditor/HBoxContainer/Container/Name/CheckBox" to="EditorCharacter" method="_on_CheckBox_toggled"]
 [connection signal="pressed" from="EditorCharacter/CharacterEditor/HBoxContainer/Container/ScrollContainer/VBoxContainer/HBoxContainer/Button" to="EditorCharacter" method="_on_New_Portrait_Button_pressed"]
-[connection signal="pressed" from="EditorCharacter/CharacterEditor/HBoxContainer/Container/Actions/DeleteButton" to="EditorCharacter" method="_on_DeleteButton_pressed"]
 [connection signal="id_pressed" from="TimelinePopupMenu" to="." method="_on_TimelinePopupMenu_id_pressed"]
+[connection signal="id_pressed" from="CharacterPopupMenu" to="EditorCharacter" method="_on_CharacterPopupMenu_id_pressed"]
 [connection signal="confirmed" from="RemoveCharacterConfirmation" to="EditorCharacter" method="_on_RemoveConfirmation_confirmed"]
 [connection signal="confirmed" from="RemoveTimelineConfirmation" to="." method="_on_RemoveTimelineConfirmation_confirmed"]
 [connection signal="confirmed" from="RenameDialog" to="." method="_on_RenameDialog_confirmed"]
