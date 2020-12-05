@@ -196,7 +196,6 @@ func create_portrait_entry(p_name = '', path = '', grab_focus = false):
 
 
 func _on_CharacterItemList_item_rmb_selected(index, at_position):
-	print('here')
 	editor_reference.get_node("CharacterPopupMenu").rect_position = get_viewport().get_mouse_position()
 	editor_reference.get_node("CharacterPopupMenu").popup()
 

@@ -9,7 +9,17 @@ The plugin is not production ready, make sure to follow the repo for the next up
 
 ## Changelog
 v0.7 - WIP
- - 
+ - Characters tab
+   - Added context menu
+   - Moved the Remove Character button to a context menu
+   - You can open the working directory
+ - Timeline tab
+   - Added context menu
+   - You can remove timelines now
+   - You can rename them from the new menu
+   - You can open the working directory
+   - You can copy the timeline ID
+
 
 v0.6 - Character portraits
  - Video: https://youtu.be/okWYt_yGKNI
