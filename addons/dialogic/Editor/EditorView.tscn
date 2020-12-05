@@ -749,11 +749,21 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="RemoveConfirmation" type="ConfirmationDialog" parent="."]
+[node name="RemoveCharacterConfirmation" type="ConfirmationDialog" parent="."]
 margin_right = 325.0
 margin_bottom = 88.0
 rect_min_size = Vector2( 250, 87.5 )
 dialog_text = "Are you sure you want to remove this character?
+(Can't be restored)"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="RemoveTimelineConfirmation" type="ConfirmationDialog" parent="."]
+margin_right = 325.0
+margin_bottom = 88.0
+rect_min_size = Vector2( 250, 87.5 )
+dialog_text = "Are you sure you want to remove this timeline?
 (Can't be restored)"
 __meta__ = {
 "_edit_use_anchors_": false
@@ -817,5 +827,6 @@ __meta__ = {
 [connection signal="pressed" from="EditorCharacter/CharacterEditor/HBoxContainer/Container/ScrollContainer/VBoxContainer/HBoxContainer/Button" to="EditorCharacter" method="_on_New_Portrait_Button_pressed"]
 [connection signal="pressed" from="EditorCharacter/CharacterEditor/HBoxContainer/Container/Actions/DeleteButton" to="EditorCharacter" method="_on_DeleteButton_pressed"]
 [connection signal="id_pressed" from="TimelinePopupMenu" to="." method="_on_TimelinePopupMenu_id_pressed"]
-[connection signal="confirmed" from="RemoveConfirmation" to="EditorCharacter" method="_on_RemoveConfirmation_confirmed"]
+[connection signal="confirmed" from="RemoveCharacterConfirmation" to="EditorCharacter" method="_on_RemoveConfirmation_confirmed"]
+[connection signal="confirmed" from="RemoveTimelineConfirmation" to="." method="_on_RemoveTimelineConfirmation_confirmed"]
 [connection signal="confirmed" from="RenameDialog" to="." method="_on_RenameDialog_confirmed"]

@@ -175,7 +175,7 @@ func _on_RemoveConfirmation_confirmed():
 
 
 func _on_DeleteButton_pressed():
-	editor_reference.get_node("RemoveConfirmation").popup_centered()
+	editor_reference.get_node("RemoveCharacterConfirmation").popup_centered()
 
 
 # Portraits

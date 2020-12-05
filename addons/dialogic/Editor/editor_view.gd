@@ -8,7 +8,7 @@ var undo_redo: UndoRedo
 var editor_file_dialog # EditorFileDialog
 var file_picker_data = {'method': '', 'node': self}
 
-var version_string = "0.6"
+var version_string = "0.7"
 var timeline_name = "" # The currently opened timeline name (for saving)
 
 var current_editor_view = 'Timeline'
@@ -253,7 +253,7 @@ func refresh_timeline_list():
 		get_node(dialog_list_path).set_item_metadata(index, {'file': c['file'], 'index': index})
 		index += 1
 	get_node(dialog_list_path).sort_items_by_text()
-
+	# TODO if there are no elements on the list, show welcome screen again
 
 func _on_DialogItemList_item_selected(index):
 	var selected = get_node(dialog_list_path).get_item_text(index)
@@ -272,10 +272,14 @@ func _on_DialogItemList_item_rmb_selected(index, at_position):
 func _on_TimelinePopupMenu_id_pressed(id):
 	if id == 0: # rename
 		popup_rename()
+	if id == 1:
+		OS.shell_open(ProjectSettings.globalize_path(TIMELINE_DIR))
 	if id == 2:
 		var current_id = get_filename_from_path(working_dialog_file)
 		if current_id != '':
 			OS.set_clipboard(current_id)
+	if id == 3:
+		$RemoveTimelineConfirmation.popup_centered()
 
 func popup_rename():
 	$RenameDialog.register_text_enter($RenameDialog/LineEdit)
@@ -289,6 +293,17 @@ func _on_RenameDialog_confirmed():
 	$RenameDialog/LineEdit.text = ''
 	save_timeline(working_dialog_file)
 	refresh_timeline_list()
+
+
+func _on_RemoveTimelineConfirmation_confirmed():
+	var dir = Directory.new()
+	dir.remove(working_dialog_file)
+	refresh_timeline_list()
+	# TODO Handle errors if there are no more elements in the list. This should go in the refresh_timeline_list() function probably
+	if $EditorTimeline/EventTools/VBoxContainer2/DialogItemList.get_item_count() != 1:
+		_on_DialogItemList_item_selected(0)
+		$EditorTimeline/EventTools/VBoxContainer2/DialogItemList.select(0)
+		print($EditorTimeline/EventTools/VBoxContainer2/DialogItemList.get_item_count())
 
 
 # Create timeline
@@ -364,6 +379,7 @@ func get_character_name(file):
 	var data = load_json(CHAR_DIR + '/' + file)
 	if data.has('name'):
 		return data['name']
+
 
 func get_character_portraits(file):
 	var data = load_json(CHAR_DIR + '/' + file)
@@ -523,16 +539,4 @@ func compare_dicts(dict_1, dict_2):
 		if str(dict_1) == str(dict_2):
 			return true
 	return false
-
-
-
-
-func _on_ButtonRevealFolder_pressed():
-	# Getting it from the tab
-	if current_editor_view == 'Timeline':
-		OS.shell_open(ProjectSettings.globalize_path(TIMELINE_DIR))
-	elif current_editor_view == 'Characters':
-		OS.shell_open(ProjectSettings.globalize_path(CHAR_DIR))
-	# Getting it from a res: file
-	#OS.shell_open(ProjectSettings.globalize_path(working_dialog_file.get_base_dir()))
 
