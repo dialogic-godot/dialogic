@@ -8,16 +8,18 @@ var text_speed = 0.02 # Higher = lower speed
 var waiting_for_answer = false
 var waiting_for_input = false
 
-export(String, "Option", "Another one", "Last one") var character_name
+
+var WORKING_DIR = "res://dialogic"
+var TIMELINE_DIR = WORKING_DIR + "/dialogs"
+var CHAR_DIR = WORKING_DIR + "/characters"
+export(String) var timeline_id # Timeline-var-replace
+
 
 export(Resource) var dialog_resource = load("res://addons/dialogic/Resources/DefaultDialogResource.tres")
 export(Array, Resource) var dialog_characters
 
 onready var Portrait = load("res://addons/dialogic/Nodes/Portrait.tscn")
 var dialog_script = [
-	#{
-	#	'fade-in': 2
-	#},
 	{
 		'background': "res://addons/dialogic/Images/background/placeholder-2.png"
 	},
@@ -119,20 +121,6 @@ var dialog_script = [
 	}
 ]
 
-func file(file_path):
-	# Reading a json file to use as a dialog.
-	var file = File.new()
-	var fileExists = file.file_exists(file_path)
-	var dict = []
-	if fileExists:
-		file.open(file_path, File.READ)
-		var content = file.get_as_text()
-		dict = parse_json(content)
-		file.close()
-		return dict
-	else:
-		push_error("File " + file_path  + " doesn't exists. ")
-	return dict
 
 func parse_text(text):
 	# This will parse the text and automatically format some of your available variables
@@ -160,23 +148,20 @@ func parse_text(text):
 			end_text = end_text.replace('[' + key + ']', c_variable)
 	return end_text
 
+
 func _ready():
-	print('-------------------------\n', dialog_resource.nodes)
 	# Checking if the dialog should read the code from a external file
-	if dialog_resource.dialog_json != '':
-		dialog_script = file(dialog_resource.dialog_json)
-	
-	# Check if dialog has a valid resource file
-	#if not dialog_resource or not dialog_resource.characters:
-	#	print("You must provide a valid DialogResource")
-	#	return
+	if timeline_id != '':
+		dialog_script = load_json(TIMELINE_DIR + '/' + timeline_id + '.json')
+		print(dialog_script)
 	
 	# Setting everything up for the node to be default
 	$TextBubble/NameLabel.text = ''
 	$Background.visible = false
 	load_dialog()
 
-func _process(delta):
+
+func _process(_delta):
 	$TextBubble/NextIndicator.visible = finished
 	# Multiple choices
 	if waiting_for_answer:
@@ -192,12 +177,12 @@ func _process(delta):
 		else:
 			if waiting_for_answer == false and waiting_for_input == false:
 				load_dialog()
+	pass
 
-func hide_dialog():
-	visible = false
 
 func show_dialog():
 	visible = true
+
 
 func start_text_tween():
 	# This will start the animation that makes the text appear letter by letter
@@ -208,10 +193,12 @@ func start_text_tween():
 	)
 	$TextBubble/Tween.start()
 
+
 func update_name(name_string, color='FFFFFF'):
 	var parsed_name = parse_text(name_string)
 	$TextBubble/NameLabel.bbcode_text = '[color=#' + color + ']' + parsed_name + '[/color]'
 	return true
+
 
 func update_text(text):
 	# Updating the text and starting the animation from 0
@@ -223,24 +210,28 @@ func update_text(text):
 	call_deferred("start_text_tween")
 	return true
 
+
 func load_dialog(skip_add = false):
 	# This will load the next entry in the dialog_script array.
-	if dialog_index < dialog_script.size():
-		event_handler(dialog_script[dialog_index])
+	if dialog_index < dialog_script['events'].size():
+		event_handler(dialog_script['events'][dialog_index])
 	else:
 		queue_free()
 	if skip_add == false:
 		dialog_index += 1
 
+
 func get_character_variable(name):
 	for c in dialog_characters:#dialog_resource.characters:
 		if c.name == name:
 			return c
-	push_error('DialogCharacterResource [' + name + '] does not exists. Make sure the name field is not empty.')
+	#push_error('DialogCharacterResource [' + name + '] does not exists. Make sure the name field is not empty.')
 	return false
+
 
 func reset_dialog_extras():
 	$TextBubble/NameLabel.bbcode_text = ''
+
 
 func event_handler(event):
 	# Handling an event and updating the available nodes accordingly. 
@@ -256,7 +247,7 @@ func event_handler(event):
 			show_dialog()
 			finished = false
 			var character_data = get_character_variable(event['character'])
-			update_name(character_data.name, character_data.color.to_html())
+			#update_name(character_data.name, character_data.color.to_html())
 			var exists = false
 			var existing
 			for portrait in $Portraits.get_children():
@@ -341,8 +332,9 @@ func event_handler(event):
 			dialog_index += 1
 			load_dialog()
 		_:
-			hide_dialog()
+			visible = false
 			print('Other event. ', event)
+
 
 func _on_input_set(variable):
 	var input_value = $TextInputDialog/LineEdit.text
@@ -358,10 +350,12 @@ func _on_input_set(variable):
 		print('[!] Input selected: ', input_value)
 		print('[!] dialog variables: ', dialog_resource.custom_variables)
 
+
 func reset_options():
 	# Clearing out the options after one was selected.
 	for option in $Options.get_children():
 		option.queue_free()
+
 
 func change_position(i, checkpoint):
 	print('[!] Going back ', checkpoint, i)
@@ -372,6 +366,7 @@ func change_position(i, checkpoint):
 	reset_options()
 	load_dialog()
 
+
 func _on_option_selected(option, variable, value):
 	dialog_resource.custom_variables[variable] = value
 	waiting_for_answer = false
@@ -380,8 +375,23 @@ func _on_option_selected(option, variable, value):
 	print('[!] Option selected: ', option.text, ' value= ' , value)
 	#print(dialog_resource.custom_variables)
 
+
 func _on_Tween_tween_completed(object, key):
 	finished = true
 
+
 func _on_TextInputDialog_confirmed():
 	pass # Replace with function body.
+
+
+func load_json(path):
+	var file = File.new()
+	if file.open(path, File.READ) != OK:
+		file.close()
+		return
+	var data_text = file.get_as_text()
+	file.close()
+	var data_parse = JSON.parse(data_text)
+	if data_parse.error != OK:
+		return
+	return data_parse.result

@@ -16,7 +16,7 @@ v0.7 - WIP
  - Timeline tab
    - Added context menu
    - You can remove timelines now
-   - You can rename them from the new menu
+   - Right click no longer renames timelines, to do so you have to use the new menu
    - You can open the working directory
    - You can copy the timeline ID
 

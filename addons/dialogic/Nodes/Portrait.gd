@@ -13,10 +13,10 @@ func init(position_offset = 'left'):
 	rect_position += positions[position_offset]
 	direction = position_offset
 	modulate = Color(1,1,1,0)
-	if character_data.image == null:
-		push_error('The DialogCharacterResource [' + character_data.name + '] doesn\'t have an Image set.')
-		character_data.image = load("res://addons/dialogic/Images/portraits/df-1.png")
-	$TextureRect.texture = character_data.image
+	#if character_data.image == null:
+	#	push_error('The DialogCharacterResource [' + character_data.name + '] doesn\'t have an Image set.')
+	#	character_data.image = load("res://addons/dialogic/Images/portraits/df-1.png")
+	#$TextureRect.texture = character_data.image
 	rect_position -= Vector2($TextureRect.texture.get_width() * 0.5, $TextureRect.texture.get_height())
 
 func _ready():

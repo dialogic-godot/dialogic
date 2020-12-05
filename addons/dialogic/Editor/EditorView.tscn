@@ -113,7 +113,7 @@ margin_left = 68.0
 margin_right = 102.0
 margin_bottom = 28.0
 hint_tooltip = "Dialog Theme"
-disabled = true
+focus_mode = 0
 icon = ExtResource( 16 )
 flat = true
 
@@ -417,6 +417,7 @@ icon = ExtResource( 8 )
 align = 0
 
 [node name="EditorCharacter" type="HSplitContainer" parent="."]
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 6.0
@@ -733,6 +734,65 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="EditorTheme" type="VBoxContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 6.0
+margin_top = 38.0
+margin_right = -5.0
+margin_bottom = -5.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="EditorTheme"]
+margin_right = 997.0
+margin_bottom = 66.0
+
+[node name="Label" type="Label" parent="EditorTheme/VBoxContainer"]
+margin_right = 997.0
+margin_bottom = 14.0
+text = "Dialog Settings"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="EditorTheme/VBoxContainer"]
+margin_top = 18.0
+margin_right = 997.0
+margin_bottom = 38.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="EditorTheme/VBoxContainer/HBoxContainer"]
+margin_top = 3.0
+margin_right = 67.0
+margin_bottom = 17.0
+text = "Action key"
+
+[node name="OptionButton" type="OptionButton" parent="EditorTheme/VBoxContainer/HBoxContainer"]
+margin_left = 71.0
+margin_right = 185.0
+margin_bottom = 20.0
+text = "[Select Input]"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="EditorTheme/VBoxContainer"]
+margin_top = 42.0
+margin_right = 997.0
+margin_bottom = 66.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="EditorTheme/VBoxContainer/HBoxContainer2"]
+margin_top = 5.0
+margin_right = 137.0
+margin_bottom = 19.0
+text = "Mouse click as action"
+
+[node name="CheckBox" type="CheckBox" parent="EditorTheme/VBoxContainer/HBoxContainer2"]
+margin_left = 141.0
+margin_right = 165.0
+margin_bottom = 24.0
+
 [node name="TimelinePopupMenu" type="PopupMenu" parent="."]
 margin_left = 151.0
 margin_top = 276.0
@@ -804,7 +864,7 @@ __meta__ = {
 
 [connection signal="pressed" from="HBoxContainer/EventButton" to="." method="_on_EventButton_pressed"]
 [connection signal="pressed" from="HBoxContainer/CharactersButton" to="." method="_on_CharactersButton_pressed"]
-[connection signal="pressed" from="HBoxContainer/ThemeButton" to="." method="_on_CharactersButton_pressed"]
+[connection signal="pressed" from="HBoxContainer/ThemeButton" to="." method="_on_ThemeButton_pressed"]
 [connection signal="pressed" from="HBoxContainer/GlossaryButton" to="." method="_on_CharactersButton_pressed"]
 [connection signal="pressed" from="HBoxContainer/FoldTools/ButtonFold" to="." method="_on_ButtonFold_pressed"]
 [connection signal="pressed" from="HBoxContainer/FoldTools/ButtonUnfold" to="." method="_on_ButtonUnfold_pressed"]

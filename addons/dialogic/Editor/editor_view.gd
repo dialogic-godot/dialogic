@@ -486,13 +486,19 @@ func _on_CharactersButton_pressed():
 	change_tab('Characters')
 
 
+func _on_ThemeButton_pressed():
+	change_tab('Theme')
+
+
 func change_tab(tab):
 	# Hiding everything
 	$HBoxContainer/EventButton.set('self_modulate', Color('#dedede'))
 	$HBoxContainer/CharactersButton.set('self_modulate', Color('#dedede'))
+	$HBoxContainer/ThemeButton.set('self_modulate', Color('#dedede'))
 	$HBoxContainer/FoldTools.visible = false
 	$EditorTimeline.visible = false
 	$EditorCharacter.visible = false
+	$EditorTheme.visible = false
 	
 	if tab == 'Timeline':
 		$HBoxContainer/EventButton.set('self_modulate', Color('#6a9dea'))
@@ -513,7 +519,11 @@ func change_tab(tab):
 			if $EditorCharacter/CharacterTools/CharacterItemList.get_item_count() > 0:
 				$EditorCharacter._on_ItemList_item_selected(0)
 				$EditorCharacter/CharacterTools/CharacterItemList.select(0)
-	
+
+	elif tab == 'Theme':
+		$HBoxContainer/ThemeButton.set('self_modulate', Color('#6a9dea'))
+		$EditorTheme.visible = true
+		
 	current_editor_view = tab
 
 
