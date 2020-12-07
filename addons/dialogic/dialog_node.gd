@@ -237,38 +237,33 @@ func event_handler(event):
 	# Handling an event and updating the available nodes accordingly. 
 	reset_dialog_extras()
 	match event:
-		{'text'}, {'text', 'name'}:
-			show_dialog()
-			finished = false
-			update_text(event['text'])
-			if event.has('name'):
-				update_name(event['name'])
 		{'text', 'character'}, {'text', 'character', ..}:
 			show_dialog()
 			finished = false
-			var character_data = get_character_variable(event['character'])
-			#update_name(character_data.name, character_data.color.to_html())
-			var exists = false
-			var existing
-			for portrait in $Portraits.get_children():
-				if portrait.character_data == character_data:
-					exists = true
-					existing = portrait
-				else:
-					portrait.focusout()
+			#var character_data = get_character_variable(event['character'])
+			##update_name(character_data.name, character_data.color.to_html())
+			#var exists = false
+			#var existing
+			#for portrait in $Portraits.get_children():
+			#	if portrait.character_data == character_data:
+			#		exists = true
+			#		existing = portrait
+			#	else:
+			#		portrait.focusout()
+			#
+			#if exists:
+			#	existing.focus()
+			#if exists == false:
+			#	var p = Portrait.instance()
+			#	p.character_data = character_data
+			#	#p.debug = true
+			#	if event.has('position'):
+			#		p.init(event['position'])
+			#	else:
+			#		p.init('left') # Default character position
+			#	$Portraits.add_child(p)
+			#	p.fade_in()
 			
-			if exists:
-				existing.focus()
-			if exists == false:
-				var p = Portrait.instance()
-				p.character_data = character_data
-				#p.debug = true
-				if event.has('position'):
-					p.init(event['position'])
-				else:
-					p.init('left') # Default character position
-				$Portraits.add_child(p)
-				p.fade_in()
 			update_text(event['text'])
 		{'question', ..}:
 			show_dialog()

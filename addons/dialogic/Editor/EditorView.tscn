@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=2]
+[gd_scene load_steps=33 format=2]
 
 [ext_resource path="res://addons/dialogic/Editor/editor_view.gd" type="Script" id=1]
 [ext_resource path="res://addons/dialogic/Images/dialog.svg" type="Texture" id=2]
@@ -23,8 +23,11 @@
 [ext_resource path="res://addons/dialogic/Editor/EditorCharacter.gd" type="Script" id=21]
 [ext_resource path="res://addons/dialogic/Images/Remove.svg" type="Texture" id=22]
 [ext_resource path="res://addons/dialogic/Editor/CharacterEditor/PortraitEntry.tscn" type="PackedScene" id=23]
+[ext_resource path="res://addons/dialogic/Images/next-indicator.png" type="Texture" id=24]
 [ext_resource path="res://addons/dialogic/Images/Rename.svg" type="Texture" id=25]
 [ext_resource path="res://addons/dialogic/Images/Filesystem.svg" type="Texture" id=26]
+[ext_resource path="res://addons/dialogic/Images/dialog-background.png" type="Texture" id=27]
+[ext_resource path="res://addons/dialogic/Editor/EditorTheme.gd" type="Script" id=28]
 
 [sub_resource type="StyleBoxFlat" id=1]
 content_margin_left = 5.0
@@ -109,6 +112,7 @@ icon = ExtResource( 17 )
 flat = true
 
 [node name="ThemeButton" type="Button" parent="HBoxContainer"]
+self_modulate = Color( 0.870588, 0.870588, 0.870588, 1 )
 margin_left = 68.0
 margin_right = 102.0
 margin_bottom = 28.0
@@ -222,7 +226,7 @@ margin_right = 180.0
 margin_bottom = 541.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-items = [ "timeline-1607136163", ExtResource( 15 ), false ]
+items = [ "Intro", ExtResource( 15 ), false, "Sections", ExtResource( 15 ), false, "timeline-1607183167", ExtResource( 15 ), false ]
 allow_rmb_select = true
 
 [node name="CenterContainer" type="CenterContainer" parent="EditorTimeline"]
@@ -445,7 +449,7 @@ margin_right = 180.0
 margin_bottom = 541.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-items = [ "Narrator", ExtResource( 7 ), false, "Shia", ExtResource( 7 ), false, "Lyra", ExtResource( 7 ), false, "character-1607047358.json", ExtResource( 7 ), false ]
+items = [ "Narrator", ExtResource( 7 ), false, "Shia", ExtResource( 7 ), false, "Lyra", ExtResource( 7 ), false ]
 allow_rmb_select = true
 
 [node name="NoCharacters" type="CenterContainer" parent="EditorCharacter"]
@@ -741,64 +745,172 @@ margin_left = 6.0
 margin_top = 38.0
 margin_right = -5.0
 margin_bottom = -5.0
+script = ExtResource( 28 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="VBoxContainer" type="VBoxContainer" parent="EditorTheme"]
 margin_right = 997.0
-margin_bottom = 66.0
+margin_bottom = 453.0
+custom_constants/separation = 15
 
 [node name="Label" type="Label" parent="EditorTheme/VBoxContainer"]
 margin_right = 997.0
 margin_bottom = 14.0
 text = "Dialog Settings"
 
-[node name="HBoxContainer" type="HBoxContainer" parent="EditorTheme/VBoxContainer"]
-margin_top = 18.0
+[node name="VBoxContainer" type="VBoxContainer" parent="EditorTheme/VBoxContainer"]
+margin_top = 29.0
+margin_right = 997.0
+margin_bottom = 67.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="EditorTheme/VBoxContainer/VBoxContainer"]
 margin_right = 997.0
 margin_bottom = 38.0
+custom_constants/separation = 16
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Label" type="Label" parent="EditorTheme/VBoxContainer/HBoxContainer"]
-margin_top = 3.0
+[node name="Label" type="Label" parent="EditorTheme/VBoxContainer/VBoxContainer/HBoxContainer"]
 margin_right = 67.0
-margin_bottom = 17.0
+margin_bottom = 38.0
+size_flags_vertical = 5
 text = "Action key"
 
-[node name="OptionButton" type="OptionButton" parent="EditorTheme/VBoxContainer/HBoxContainer"]
-margin_left = 71.0
-margin_right = 185.0
+[node name="VBoxContainer" type="VBoxContainer" parent="EditorTheme/VBoxContainer/VBoxContainer/HBoxContainer"]
+margin_left = 83.0
+margin_right = 511.0
+margin_bottom = 38.0
+
+[node name="ActionOptionButton" type="OptionButton" parent="EditorTheme/VBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
+margin_right = 121.0
 margin_bottom = 20.0
-text = "[Select Input]"
+size_flags_horizontal = 0
+text = "[Select Action]"
+
+[node name="Label2" type="Label" parent="EditorTheme/VBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
+self_modulate = Color( 1, 1, 1, 0.607843 )
+margin_top = 24.0
+margin_right = 428.0
+margin_bottom = 38.0
+text = "To add/remove actions go to Project > Project Settings > Input Map"
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="EditorTheme/VBoxContainer"]
-margin_top = 42.0
+margin_top = 82.0
 margin_right = 997.0
-margin_bottom = 66.0
+margin_bottom = 106.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Label" type="Label" parent="EditorTheme/VBoxContainer/HBoxContainer2"]
 margin_top = 5.0
-margin_right = 137.0
+margin_right = 218.0
 margin_bottom = 19.0
-text = "Mouse click as action"
+text = "Mouse click anywhere to continue"
 
 [node name="CheckBox" type="CheckBox" parent="EditorTheme/VBoxContainer/HBoxContainer2"]
-margin_left = 141.0
-margin_right = 165.0
+margin_left = 222.0
+margin_right = 246.0
 margin_bottom = 24.0
+
+[node name="HBoxContainer4" type="HBoxContainer" parent="EditorTheme/VBoxContainer"]
+margin_top = 121.0
+margin_right = 997.0
+margin_bottom = 221.0
+custom_constants/separation = 10
+
+[node name="Label" type="Label" parent="EditorTheme/VBoxContainer/HBoxContainer4"]
+margin_top = 43.0
+margin_right = 126.0
+margin_bottom = 57.0
+text = "Background Texture"
+
+[node name="Button" type="Button" parent="EditorTheme/VBoxContainer/HBoxContainer4"]
+margin_left = 136.0
+margin_right = 496.0
+margin_bottom = 100.0
+rect_min_size = Vector2( 360, 100 )
+icon = ExtResource( 27 )
+expand_icon = true
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="EditorTheme/VBoxContainer"]
+margin_top = 236.0
+margin_right = 997.0
+margin_bottom = 293.0
+custom_constants/separation = 10
+
+[node name="Label" type="Label" parent="EditorTheme/VBoxContainer/HBoxContainer3"]
+margin_top = 21.0
+margin_right = 132.0
+margin_bottom = 35.0
+text = "Next dialog indicator"
+
+[node name="Button" type="Button" parent="EditorTheme/VBoxContainer/HBoxContainer3"]
+margin_left = 142.0
+margin_right = 205.0
+margin_bottom = 57.0
+icon = ExtResource( 24 )
+
+[node name="HBoxContainer5" type="HBoxContainer" parent="EditorTheme/VBoxContainer"]
+margin_top = 308.0
+margin_right = 997.0
+margin_bottom = 408.0
+custom_constants/separation = 10
+
+[node name="Label" type="Label" parent="EditorTheme/VBoxContainer/HBoxContainer5"]
+margin_top = 43.0
+margin_right = 28.0
+margin_bottom = 57.0
+text = "Font"
+
+[node name="Button" type="Button" parent="EditorTheme/VBoxContainer/HBoxContainer5"]
+margin_left = 38.0
+margin_top = 40.0
+margin_right = 162.0
+margin_bottom = 60.0
+size_flags_vertical = 4
+text = "Choose font file..."
+
+[node name="TextEdit" type="TextEdit" parent="EditorTheme/VBoxContainer/HBoxContainer5"]
+margin_left = 172.0
+margin_right = 572.0
+margin_bottom = 100.0
+rect_min_size = Vector2( 400, 100 )
+text = "Almost before we knew it, we had left the ground."
+wrap_enabled = true
+
+[node name="RichTextLabel" type="RichTextLabel" parent="EditorTheme/VBoxContainer/HBoxContainer5"]
+margin_left = 582.0
+margin_right = 582.0
+margin_bottom = 100.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="EditorTheme/VBoxContainer"]
+margin_top = 423.0
+margin_right = 997.0
+margin_bottom = 453.0
+custom_constants/separation = 10
+
+[node name="Label" type="Label" parent="EditorTheme/VBoxContainer/HBoxContainer"]
+margin_top = 8.0
+margin_right = 63.0
+margin_bottom = 22.0
+text = "Text color"
+
+[node name="ColorPickerButton" type="ColorPickerButton" parent="EditorTheme/VBoxContainer/HBoxContainer"]
+margin_left = 73.0
+margin_right = 123.0
+margin_bottom = 30.0
+rect_min_size = Vector2( 50, 30 )
 
 [node name="TimelinePopupMenu" type="PopupMenu" parent="."]
 margin_left = 151.0
 margin_top = 276.0
 margin_right = 325.0
 margin_bottom = 332.0
-items = [ "Rename", ExtResource( 25 ), 0, false, false, 0, 0, null, "", false, "Show in File Manager", ExtResource( 26 ), 0, false, false, 1, 0, null, "", false, "Copy Timeline ID", ExtResource( 11 ), 0, false, false, 2, 0, null, "", false, "Move to Trash", ExtResource( 22 ), 0, false, false, 3, 0, null, "", false ]
+items = [ "Rename", ExtResource( 25 ), 0, false, false, 0, 0, null, "", false, "Show in File Manager", ExtResource( 26 ), 0, false, false, 1, 0, null, "", false, "Copy Timeline ID", ExtResource( 11 ), 0, false, false, 2, 0, null, "", false, "Remove", ExtResource( 22 ), 0, false, false, 3, 0, null, "", false ]
 __meta__ = {
 "_edit_use_anchors_": false
 }
