@@ -6,9 +6,23 @@ Create dialogs, characters and scenes to display conversations in your Godot gam
 ## ⚠️ Under development! ⚠️
 The plugin is not production ready, make sure to follow the repo for the next update.
 
+---
+
+## FAQ 
+### 🔷 How can I install Dialogic?
+To install a Dialogic, download it as a ZIP archive. All releases are listed here: https://github.com/coppolaemilio/dialogic/releases
+
+Extract the ZIP archive and move the `addons/` folder it contains into your project folder. 
+
+If you want to know more you can read the [official documentation page](https://docs.godotengine.org/en/stable/tutorials/plugins/editor/installing_plugins.html).
+
+### 🔷 Can I use Dialogic in one of my projects?
+Yes, you can use Dialogic to make any kind of game (even commercial ones). The project is developed under the [MIT License](https://github.com/coppolaemilio/dialogic/blob/master/LICENSE).
+
+---
 
 ## Changelog
-v0.7 - WIP
+### 🆕 v0.7 - WIP
  - New plugin tab icon
  - Added settings to toolbar
  - Removed legacy files
@@ -26,7 +40,7 @@ v0.7 - WIP
    - You can copy the timeline ID
 
 
-v0.6 - Character portraits
+### v0.6 - Character portraits
  - Video: https://youtu.be/okWYt_yGKNI
  - Splitting the main script into smaller pieces
  - Characters
@@ -38,7 +52,7 @@ v0.6 - Character portraits
  - Events:
    - Text block now has a portrait dropdown
 
-Full changelog here https://github.com/coppolaemilio/dialogic/blob/master/CHANGELOG.md
+To view the full changelog [click here](https://github.com/coppolaemilio/dialogic/blob/master/CHANGELOG.md). 
 
 ---
 
@@ -51,7 +65,7 @@ Placeholder images are from Toen's YouTube DF series:
  - https://toen.world/
  - https://www.youtube.com/watch?v=B1ggwiat7PM
 
-### Thank you to all my Patreons for making this possible!
+### Thank you to all my [Patreons](https://www.patreon.com/coppolaemilio) for making this possible!
 - Mike King
 - Allyson Ota
 - Buskmann12
@@ -71,4 +85,4 @@ Placeholder images are from Toen's YouTube DF series:
 
 Support me on [Patreon https://www.patreon.com/coppolaemilio](https://www.patreon.com/coppolaemilio)
 
-MIT License
+[MIT License](https://github.com/coppolaemilio/dialogic/blob/master/LICENSE)
