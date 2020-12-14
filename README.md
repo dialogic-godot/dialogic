@@ -10,9 +10,7 @@ The plugin is not production ready, make sure to follow the repo for the next up
 
 ## FAQ 
 ### 🔷 How can I install Dialogic?
-To install a Dialogic, download it as a ZIP archive. All releases are listed here: https://github.com/coppolaemilio/dialogic/releases
-
-Extract the ZIP archive and move the `addons/` folder it contains into your project folder. 
+To install a Dialogic, download it as a ZIP archive. All releases are listed here: https://github.com/coppolaemilio/dialogic/releases. Then extract the ZIP archive and move the `addons/` folder it contains into your project folder.
 
 If you want to know more you can read the [official documentation page](https://docs.godotengine.org/en/stable/tutorials/plugins/editor/installing_plugins.html).
 
