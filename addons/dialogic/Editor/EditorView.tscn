@@ -1,4 +1,4 @@
-[gd_scene load_steps=33 format=2]
+[gd_scene load_steps=34 format=2]
 
 [ext_resource path="res://addons/dialogic/Editor/editor_view.gd" type="Script" id=1]
 [ext_resource path="res://addons/dialogic/Images/dialog.svg" type="Texture" id=2]
@@ -12,7 +12,7 @@
 [ext_resource path="res://addons/dialogic/Images/closed-icon.svg" type="Texture" id=10]
 [ext_resource path="res://addons/dialogic/Images/ActionCopy.svg" type="Texture" id=11]
 [ext_resource path="res://addons/dialogic/Images/change-timeline.svg" type="Texture" id=12]
-[ext_resource path="res://addons/dialogic/Images/glossary.svg" type="Texture" id=13]
+[ext_resource path="res://addons/dialogic/Images/ListSelect.svg" type="Texture" id=13]
 [ext_resource path="res://addons/dialogic/Images/logo.png" type="Texture" id=14]
 [ext_resource path="res://addons/dialogic/Images/timeline.svg" type="Texture" id=15]
 [ext_resource path="res://addons/dialogic/Images/theme.svg" type="Texture" id=16]
@@ -28,6 +28,7 @@
 [ext_resource path="res://addons/dialogic/Images/Filesystem.svg" type="Texture" id=26]
 [ext_resource path="res://addons/dialogic/Images/dialog-background.png" type="Texture" id=27]
 [ext_resource path="res://addons/dialogic/Editor/EditorTheme.gd" type="Script" id=28]
+[ext_resource path="res://addons/dialogic/Images/Tools.svg" type="Texture" id=29]
 
 [sub_resource type="StyleBoxFlat" id=1]
 content_margin_left = 5.0
@@ -111,28 +112,18 @@ focus_mode = 0
 icon = ExtResource( 17 )
 flat = true
 
-[node name="ThemeButton" type="Button" parent="HBoxContainer"]
-self_modulate = Color( 0.870588, 0.870588, 0.870588, 1 )
-margin_left = 68.0
-margin_right = 102.0
-margin_bottom = 28.0
-hint_tooltip = "Dialog Theme"
-focus_mode = 0
-icon = ExtResource( 16 )
-flat = true
-
 [node name="GlossaryButton" type="Button" parent="HBoxContainer"]
-margin_left = 102.0
-margin_right = 136.0
+margin_left = 68.0
+margin_right = 96.0
 margin_bottom = 28.0
 hint_tooltip = "Glossary"
-disabled = true
+focus_mode = 0
 icon = ExtResource( 13 )
 flat = true
 
 [node name="FoldTools" type="HBoxContainer" parent="HBoxContainer"]
-margin_left = 136.0
-margin_right = 271.0
+margin_left = 96.0
+margin_right = 231.0
 margin_bottom = 28.0
 
 [node name="Label" type="Label" parent="HBoxContainer/FoldTools"]
@@ -156,8 +147,8 @@ icon = ExtResource( 9 )
 align = 0
 
 [node name="Spacer" type="Control" parent="HBoxContainer"]
-margin_left = 271.0
-margin_right = 301.0
+margin_left = 231.0
+margin_right = 261.0
 margin_bottom = 28.0
 rect_min_size = Vector2( 30, 0 )
 
@@ -178,10 +169,31 @@ text = "Reload"
 align = 0
 
 [node name="Control" type="Control" parent="HBoxContainer"]
-margin_left = 301.0
-margin_right = 888.0
+margin_left = 261.0
+margin_right = 826.0
 margin_bottom = 28.0
 size_flags_horizontal = 3
+
+[node name="ThemeButton" type="Button" parent="HBoxContainer"]
+self_modulate = Color( 0.870588, 0.870588, 0.870588, 1 )
+margin_left = 826.0
+margin_right = 860.0
+margin_bottom = 28.0
+hint_tooltip = "Dialog Theme"
+focus_mode = 0
+icon = ExtResource( 16 )
+flat = true
+
+[node name="SettingsButton" type="Button" parent="HBoxContainer"]
+self_modulate = Color( 0.870588, 0.870588, 0.870588, 1 )
+margin_left = 860.0
+margin_right = 888.0
+margin_bottom = 28.0
+hint_tooltip = "Dialog Theme"
+focus_mode = 0
+disabled = true
+icon = ExtResource( 29 )
+flat = true
 
 [node name="Logo" type="TextureRect" parent="HBoxContainer"]
 margin_left = 888.0
@@ -789,6 +801,8 @@ margin_right = 121.0
 margin_bottom = 20.0
 size_flags_horizontal = 0
 text = "[Select Action]"
+items = [ "[Select Action]", null, false, 0, null, "ui_select", null, false, 1, null, "ui_cancel", null, false, 2, null, "ui_page_up", null, false, 3, null, "ui_focus_next", null, false, 4, null, "ui_home", null, false, 5, null, "ui_left", null, false, 6, null, "ui_right", null, false, 7, null, "ui_down", null, false, 8, null, "ui_page_down", null, false, 9, null, "ui_end", null, false, 10, null, "ui_accept", null, false, 11, null, "ui_focus_prev", null, false, 12, null, "ui_up", null, false, 13, null ]
+selected = 0
 
 [node name="Label2" type="Label" parent="EditorTheme/VBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
 self_modulate = Color( 1, 1, 1, 0.607843 )
@@ -828,7 +842,7 @@ margin_right = 126.0
 margin_bottom = 57.0
 text = "Background Texture"
 
-[node name="Button" type="Button" parent="EditorTheme/VBoxContainer/HBoxContainer4"]
+[node name="BackgroundTextureButton" type="Button" parent="EditorTheme/VBoxContainer/HBoxContainer4"]
 margin_left = 136.0
 margin_right = 496.0
 margin_bottom = 100.0
@@ -848,7 +862,7 @@ margin_right = 132.0
 margin_bottom = 35.0
 text = "Next dialog indicator"
 
-[node name="Button" type="Button" parent="EditorTheme/VBoxContainer/HBoxContainer3"]
+[node name="NextIndicatorButton" type="Button" parent="EditorTheme/VBoxContainer/HBoxContainer3"]
 margin_left = 142.0
 margin_right = 205.0
 margin_bottom = 57.0
@@ -879,7 +893,7 @@ margin_left = 172.0
 margin_right = 572.0
 margin_bottom = 100.0
 rect_min_size = Vector2( 400, 100 )
-text = "Almost before we knew it, we had left the ground."
+text = "This is preview text."
 wrap_enabled = true
 
 [node name="RichTextLabel" type="RichTextLabel" parent="EditorTheme/VBoxContainer/HBoxContainer5"]
@@ -976,12 +990,13 @@ __meta__ = {
 
 [connection signal="pressed" from="HBoxContainer/EventButton" to="." method="_on_EventButton_pressed"]
 [connection signal="pressed" from="HBoxContainer/CharactersButton" to="." method="_on_CharactersButton_pressed"]
-[connection signal="pressed" from="HBoxContainer/ThemeButton" to="." method="_on_ThemeButton_pressed"]
 [connection signal="pressed" from="HBoxContainer/GlossaryButton" to="." method="_on_CharactersButton_pressed"]
 [connection signal="pressed" from="HBoxContainer/FoldTools/ButtonFold" to="." method="_on_ButtonFold_pressed"]
 [connection signal="pressed" from="HBoxContainer/FoldTools/ButtonUnfold" to="." method="_on_ButtonUnfold_pressed"]
 [connection signal="pressed" from="HBoxContainer/ButtonSave" to="." method="_on_ButtonSave_pressed"]
 [connection signal="pressed" from="HBoxContainer/ReloadResource" to="." method="_on_ReloadResource_pressed"]
+[connection signal="pressed" from="HBoxContainer/ThemeButton" to="." method="_on_ThemeButton_pressed"]
+[connection signal="pressed" from="HBoxContainer/SettingsButton" to="." method="_on_ThemeButton_pressed"]
 [connection signal="gui_input" from="HBoxContainer/Logo" to="." method="_on_Logo_gui_input"]
 [connection signal="pressed" from="EditorTimeline/EventTools/VBoxContainer2/AddTimelineButton" to="." method="_on_AddTimelineButton_pressed"]
 [connection signal="item_rmb_selected" from="EditorTimeline/EventTools/VBoxContainer2/DialogItemList" to="." method="_on_DialogItemList_item_rmb_selected"]
@@ -1002,6 +1017,8 @@ __meta__ = {
 [connection signal="pressed" from="EditorCharacter/NoCharacters/VBoxContainer/CenterContainer/Button" to="EditorCharacter" method="_on_New_Character_Button_pressed"]
 [connection signal="toggled" from="EditorCharacter/CharacterEditor/HBoxContainer/Container/Name/CheckBox" to="EditorCharacter" method="_on_CheckBox_toggled"]
 [connection signal="pressed" from="EditorCharacter/CharacterEditor/HBoxContainer/Container/ScrollContainer/VBoxContainer/HBoxContainer/Button" to="EditorCharacter" method="_on_New_Portrait_Button_pressed"]
+[connection signal="pressed" from="EditorTheme/VBoxContainer/HBoxContainer4/BackgroundTextureButton" to="EditorTheme" method="_on_BackgroundTextureButton_pressed"]
+[connection signal="pressed" from="EditorTheme/VBoxContainer/HBoxContainer3/NextIndicatorButton" to="EditorTheme" method="_on_NextIndicatorButton_pressed"]
 [connection signal="id_pressed" from="TimelinePopupMenu" to="." method="_on_TimelinePopupMenu_id_pressed"]
 [connection signal="id_pressed" from="CharacterPopupMenu" to="EditorCharacter" method="_on_CharacterPopupMenu_id_pressed"]
 [connection signal="confirmed" from="RemoveCharacterConfirmation" to="EditorCharacter" method="_on_RemoveConfirmation_confirmed"]

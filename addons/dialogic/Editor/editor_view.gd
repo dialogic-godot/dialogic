@@ -16,6 +16,7 @@ var timeline_name = "" # The currently opened timeline name (for saving)
 var current_editor_view = 'Timeline'
 
 var WORKING_DIR = "res://dialogic"
+var SETTINGS_FILE = WORKING_DIR + "/settings.json"
 var TIMELINE_DIR = WORKING_DIR + "/dialogs"
 var CHAR_DIR = WORKING_DIR + "/characters"
 var working_dialog_file = ''
@@ -37,6 +38,9 @@ func _ready():
 
 	$EditorCharacter.editor_reference = self
 	$EditorCharacter.refresh_character_list()
+	
+	$EditorTheme.editor_reference = self
+	
 	# Making the dialog editor the default
 	change_tab('Timeline')
 	_on_EventButton_pressed()

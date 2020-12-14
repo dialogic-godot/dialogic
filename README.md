@@ -9,6 +9,11 @@ The plugin is not production ready, make sure to follow the repo for the next up
 
 ## Changelog
 v0.7 - WIP
+ - New plugin tab icon
+ - Added settings to toolbar
+ - Removed legacy files
+ - Theme tab
+   - Added some dialog settings and customization of the basic components of the in-game dialog node.
  - Characters tab
    - Added context menu
    - Moved the Remove Character button to a context menu
@@ -60,8 +65,9 @@ Placeholder images are from Toen's YouTube DF series:
 - Joe Constant
 - Kyncho
 - JDA
-- SIM KIM SIA
 - Chris Shove
+- Luke Peters
+- Wapiti
 
 Support me on [Patreon https://www.patreon.com/coppolaemilio](https://www.patreon.com/coppolaemilio)
 
