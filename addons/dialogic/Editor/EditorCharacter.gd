@@ -129,7 +129,7 @@ func save_current_character():
 func _on_ItemList_item_selected(index):
 	var selected = $CharacterTools/CharacterItemList.get_item_text(index)
 	var file = $CharacterTools/CharacterItemList.get_item_metadata(index)['file']
-	var data = editor_reference.load_json(editor_reference.CHAR_DIR + '/' + file)
+	var data = DialogicUtil.load_json(editor_reference.CHAR_DIR + '/' + file)
 	$CharacterEditor/HBoxContainer/Container.visible = true
 	load_character_editor(data)
 

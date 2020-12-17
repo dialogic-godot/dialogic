@@ -8,6 +8,7 @@ func _ready():
 	action_option_button.add_item('[Select Action]')
 	for a in InputMap.get_actions():
 		action_option_button.add_item(a)
+	DialogicUtil.test()
 
 
 func _on_BackgroundTextureButton_pressed():

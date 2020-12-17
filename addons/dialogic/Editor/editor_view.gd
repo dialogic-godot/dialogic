@@ -166,7 +166,7 @@ func load_timeline(path):
 	$EditorTimeline/TimelineEditor.visible = true
 	$EditorTimeline/CenterContainer.visible = false
 	
-	var data = load_json(path)
+	var data = DialogicUtil.load_json(path)
 	if data['metadata'].has('name'):
 		timeline_name = data['metadata']['name']
 	data = data['events']
@@ -240,7 +240,7 @@ func get_timeline_list():
 	var timelines = []
 	for file in listdir(TIMELINE_DIR):
 		if '.json' in file:
-			var data = load_json(TIMELINE_DIR + '/' + file)
+			var data = DialogicUtil.load_json(TIMELINE_DIR + '/' + file)
 			var metadata = data['metadata']
 			var color = Color("#ffffff")
 			if metadata.has('name'):
@@ -344,7 +344,7 @@ func get_character_list():
 	var characters = []
 	for file in listdir(CHAR_DIR):
 		if '.json' in file:
-			var data = load_json(CHAR_DIR + '/' + file)
+			var data = DialogicUtil.load_json(CHAR_DIR + '/' + file)
 			var color = Color("#ffffff")
 			var c_name = data['id']
 			var default_speaker = 'false'
@@ -369,12 +369,12 @@ func get_character_list():
 
 
 func get_character_data(file):
-	var data = load_json(CHAR_DIR + '/' + file)
+	var data = DialogicUtil.load_json(CHAR_DIR + '/' + file)
 	return data
 
 
 func get_character_color(file):
-	var data = load_json(CHAR_DIR + '/' + file)
+	var data = DialogicUtil.load_json(CHAR_DIR + '/' + file)
 	if is_instance_valid(data):
 		if data.has('color'):
 			return data['color']
@@ -383,13 +383,13 @@ func get_character_color(file):
 
 
 func get_character_name(file):
-	var data = load_json(CHAR_DIR + '/' + file)
+	var data = DialogicUtil.load_json(CHAR_DIR + '/' + file)
 	if data.has('name'):
 		return data['name']
 
 
 func get_character_portraits(file):
-	var data = load_json(CHAR_DIR + '/' + file)
+	var data = DialogicUtil.load_json(CHAR_DIR + '/' + file)
 	if data.has('portraits'):
 		return data['portraits']
 
@@ -409,19 +409,6 @@ func listdir(path):
 			files.append(file)
 	dir.list_dir_end()
 	return files
-
-
-func load_json(path):
-	var file = File.new()
-	if file.open(path, File.READ) != OK:
-		file.close()
-		return
-	var data_text = file.get_as_text()
-	file.close()
-	var data_parse = JSON.parse(data_text)
-	if data_parse.error != OK:
-		return
-	return data_parse.result
 
 
 func get_filename_from_path(path, extension = false):

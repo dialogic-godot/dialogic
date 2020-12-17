@@ -40,3 +40,6 @@ func _remove_custom_editor_view():
 	if _editor_view:
 		remove_control_from_bottom_panel(_editor_view)
 		_editor_view.queue_free()
+
+func hello_world():
+	print('Yes, I am here')
