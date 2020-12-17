@@ -135,17 +135,17 @@ func parse_text(text):
 				)
 		
 	var c_variable
-	for key in dialog_resource.custom_variables.keys():
-		c_variable = dialog_resource.custom_variables[key]
-		# If it is a dictionary, get the label key
-		if typeof(c_variable) == TYPE_DICTIONARY:
-			if c_variable.has('label'):
-				if '.value' in end_text:
-					end_text = end_text.replace(key + '.value', c_variable['value'])
-				end_text = end_text.replace('[' + key + ']', c_variable['label'])
-		# Otherwise, just replace the value
-		else:
-			end_text = end_text.replace('[' + key + ']', c_variable)
+	#for key in dialog_resource.custom_variables.keys():
+	#	c_variable = dialog_resource.custom_variables[key]
+	#	# If it is a dictionary, get the label key
+	#	if typeof(c_variable) == TYPE_DICTIONARY:
+	#		if c_variable.has('label'):
+	#			if '.value' in end_text:
+	#				end_text = end_text.replace(key + '.value', c_variable['value'])
+	#			end_text = end_text.replace('[' + key + ']', c_variable['label'])
+	#	# Otherwise, just replace the value
+	#	else:
+	#		end_text = end_text.replace('[' + key + ']', c_variable)
 	return end_text
 
 

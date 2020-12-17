@@ -9,13 +9,21 @@ static func load_json(path):
 	var file = File.new()
 	if file.open(path, File.READ) != OK:
 		file.close()
-		return
+		return {'error':'file read error'}
 	var data_text = file.get_as_text()
 	file.close()
 	var data_parse = JSON.parse(data_text)
 	if data_parse.error != OK:
-		return
+		return {'error':'data parse error'}
 	return data_parse.result
+
+
+static func load_settings():
+	var settings = load_json(get_path('SETTINGS_FILE'))
+	if settings.has('error'):
+		settings = {}
+		print('[!] settings loaded: ' + str(settings))
+	return settings
 
 
 static func get_path(name, extra=''):
