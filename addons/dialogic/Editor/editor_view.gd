@@ -234,7 +234,7 @@ func indent_events():
 # Conversation files
 func get_timeline_list():
 	var timelines = []
-	for file in listdir(DialogicUtil.get_path('TIMELINE_DIR')):
+	for file in DialogicUtil.listdir(DialogicUtil.get_path('TIMELINE_DIR')):
 		if '.json' in file:
 			var data = DialogicUtil.load_json(DialogicUtil.get_path('TIMELINE_DIR', file))
 			var metadata = data['metadata']
@@ -336,32 +336,7 @@ func create_timeline():
 
 
 # Character Creation
-func get_character_list():
-	var characters = []
-	for file in listdir(DialogicUtil.get_path('CHAR_DIR')):
-		if '.json' in file:
-			var data = DialogicUtil.load_json(DialogicUtil.get_path('CHAR_DIR', file))
-			var color = Color("#ffffff")
-			var c_name = data['id']
-			var default_speaker = 'false'
-			var portraits = []
-			if data.has('color'):
-				color = Color('#' + data['color'])
-			if data.has('name'):
-				c_name = data['name']
-			if data.has('default_speaker'):
-				default_speaker = data['default_speaker']
-			if data.has('portraits'):
-				portraits = data['portraits']
-			characters.append({
-				'name': c_name,
-				'color': color,
-				'file': file,
-				'default_speaker' : default_speaker,
-				'portraits': portraits,
-			})
 
-	return characters
 
 
 func get_character_data(file):
@@ -388,23 +363,6 @@ func get_character_portraits(file):
 	var data = DialogicUtil.get_path('CHAR_DIR', file)
 	if data.has('portraits'):
 		return data['portraits']
-
-
-# Generic functions
-func listdir(path):
-	# https://godotengine.org/qa/5175/how-to-get-all-the-files-inside-a-folder
-	var files = []
-	var dir = Directory.new()
-	dir.open(path)
-	dir.list_dir_begin()
-	while true:
-		var file = dir.get_next()
-		if file == "":
-			break
-		elif not file.begins_with("."):
-			files.append(file)
-	dir.list_dir_end()
-	return files
 
 
 # Godot dialog

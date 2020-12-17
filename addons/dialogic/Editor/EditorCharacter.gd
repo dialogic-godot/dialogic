@@ -30,7 +30,7 @@ func refresh_character_list():
 	$CharacterTools/CharacterItemList.clear()
 	var icon = load("res://addons/dialogic/Images/character.svg")
 	var index = 0
-	for c in editor_reference.get_character_list():
+	for c in DialogicUtil.get_character_list():
 		$CharacterTools/CharacterItemList.add_item(c['name'], icon)
 		$CharacterTools/CharacterItemList.set_item_metadata(index, {'file': c['file'], 'index': index})
 		$CharacterTools/CharacterItemList.set_item_icon_modulate(index, c['color'])
