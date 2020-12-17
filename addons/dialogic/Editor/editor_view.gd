@@ -331,10 +331,7 @@ func create_timeline():
 	return timeline_file
 
 
-# Character Creation
-
-
-
+# Character Creations
 func get_character_data(file):
 	var data = DialogicUtil.load_json(DialogicUtil.get_path('CHAR_DIR', file))
 	return data
