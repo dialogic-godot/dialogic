@@ -68,12 +68,12 @@ func create_character():
 		'portraits': []
 	}
 	var directory = Directory.new()
-	if not directory.dir_exists(editor_reference.WORKING_DIR):
-		directory.make_dir(editor_reference.WORKING_DIR)
-	if not directory.dir_exists(editor_reference.CHAR_DIR):
-		directory.make_dir(editor_reference.CHAR_DIR)
+	if not directory.dir_exists(DialogicUtil.get_path('WORKING_DIR')):
+		directory.make_dir(DialogicUtil.get_path('WORKING_DIR'))
+	if not directory.dir_exists(DialogicUtil.get_path('CHAR_DIR')):
+		directory.make_dir(DialogicUtil.get_path('CHAR_DIR'))
 	var file = File.new()
-	file.open(editor_reference.CHAR_DIR + '/' + character_file, File.WRITE)
+	file.open(DialogicUtil.get_path('CHAR_DIR', character_file), File.WRITE)
 	file.store_line(to_json(character))
 	file.close()
 	return character_file
@@ -116,7 +116,7 @@ func generate_character_data_to_save():
 	return info_to_save
 
 func save_current_character():
-	var path = editor_reference.CHAR_DIR + '/' + character_editor['file'].text
+	var path = DialogicUtil.get_path('CHAR_DIR', character_editor['file'].text)
 	var info_to_save = generate_character_data_to_save()
 	var file = File.new()
 	file.open(path, File.WRITE)
@@ -129,7 +129,7 @@ func save_current_character():
 func _on_ItemList_item_selected(index):
 	var selected = $CharacterTools/CharacterItemList.get_item_text(index)
 	var file = $CharacterTools/CharacterItemList.get_item_metadata(index)['file']
-	var data = DialogicUtil.load_json(editor_reference.CHAR_DIR + '/' + file)
+	var data = DialogicUtil.load_json(DialogicUtil.get_path('CHAR_DIR', file))
 	$CharacterEditor/HBoxContainer/Container.visible = true
 	load_character_editor(data)
 
@@ -168,7 +168,7 @@ func _on_RemoveConfirmation_confirmed():
 	var file = $CharacterTools/CharacterItemList.get_item_metadata(selected)['file']
 	print('Remove ', $CharacterTools/CharacterItemList.get_item_metadata(selected)['file'])
 	var dir = Directory.new()
-	dir.remove(editor_reference.CHAR_DIR + '/' + file)
+	dir.remove(DialogicUtil.get_path('CHAR_DIR', file))
 	$CharacterEditor/HBoxContainer/Container.visible = false
 	clear_character_editor()
 	refresh_character_list()
@@ -202,6 +202,6 @@ func _on_CharacterItemList_item_rmb_selected(index, at_position):
 
 func _on_CharacterPopupMenu_id_pressed(id):
 	if id == 0:
-		OS.shell_open(ProjectSettings.globalize_path(editor_reference.CHAR_DIR))
+		OS.shell_open(ProjectSettings.globalize_path(DialogicUtil.get_path('CHAR_DIR')))
 	if id == 1:
 		editor_reference.get_node("RemoveCharacterConfirmation").popup_centered()

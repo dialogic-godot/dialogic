@@ -15,10 +15,6 @@ var timeline_name = "" # The currently opened timeline name (for saving)
 
 var current_editor_view = 'Timeline'
 
-var WORKING_DIR = "res://dialogic"
-var SETTINGS_FILE = WORKING_DIR + "/settings.json"
-var TIMELINE_DIR = WORKING_DIR + "/dialogs"
-var CHAR_DIR = WORKING_DIR + "/characters"
 var working_dialog_file = ''
 var timer_duration = 200
 var timer_interval = 30
@@ -238,9 +234,9 @@ func indent_events():
 # Conversation files
 func get_timeline_list():
 	var timelines = []
-	for file in listdir(TIMELINE_DIR):
+	for file in listdir(DialogicUtil.get_path('TIMELINE_DIR')):
 		if '.json' in file:
-			var data = DialogicUtil.load_json(TIMELINE_DIR + '/' + file)
+			var data = DialogicUtil.load_json(DialogicUtil.get_path('TIMELINE_DIR', file))
 			var metadata = data['metadata']
 			var color = Color("#ffffff")
 			if metadata.has('name'):
@@ -267,7 +263,7 @@ func _on_DialogItemList_item_selected(index):
 	var selected = get_node(dialog_list_path).get_item_text(index)
 	var file = get_node(dialog_list_path).get_item_metadata(index)['file']
 	clear_timeline()
-	load_timeline(TIMELINE_DIR + '/' + file)
+	load_timeline(DialogicUtil.get_path('TIMELINE_DIR', file))
 
 
 # Renaming dialogs
@@ -281,9 +277,9 @@ func _on_TimelinePopupMenu_id_pressed(id):
 	if id == 0: # rename
 		popup_rename()
 	if id == 1:
-		OS.shell_open(ProjectSettings.globalize_path(TIMELINE_DIR))
+		OS.shell_open(ProjectSettings.globalize_path(DialogicUtil.get_path('TIMELINE_DIR')))
 	if id == 2:
-		var current_id = get_filename_from_path(working_dialog_file)
+		var current_id = DialogicUtil.get_filename_from_path(working_dialog_file)
 		if current_id != '':
 			OS.set_clipboard(current_id)
 	if id == 3:
@@ -318,7 +314,7 @@ func _on_AddTimelineButton_pressed():
 	var file = create_timeline()
 	refresh_timeline_list()
 	clear_timeline()
-	load_timeline(TIMELINE_DIR + '/' + file)
+	load_timeline(DialogicUtil.get_path('TIMELINE_DIR', file))
 
 
 func create_timeline():
@@ -328,12 +324,12 @@ func create_timeline():
 		"metadata":{"dialogic-version": version_string}
 	}
 	var directory = Directory.new()
-	if not directory.dir_exists(WORKING_DIR):
-		directory.make_dir(WORKING_DIR)
-	if not directory.dir_exists(TIMELINE_DIR):
-		directory.make_dir(TIMELINE_DIR)
+	if not directory.dir_exists(DialogicUtil.get_path('WORKING_DIR')):
+		directory.make_dir(DialogicUtil.get_path('WORKING_DIR'))
+	if not directory.dir_exists(DialogicUtil.get_path('TIMELINE_DIR')):
+		directory.make_dir(DialogicUtil.get_path('TIMELINE_DIR'))
 	var file = File.new()
-	file.open(TIMELINE_DIR + '/' + timeline_file, File.WRITE)
+	file.open(DialogicUtil.get_path('TIMELINE_DIR') + '/' + timeline_file, File.WRITE)
 	file.store_line(to_json(timeline))
 	file.close()
 	return timeline_file
@@ -342,9 +338,9 @@ func create_timeline():
 # Character Creation
 func get_character_list():
 	var characters = []
-	for file in listdir(CHAR_DIR):
+	for file in listdir(DialogicUtil.get_path('CHAR_DIR')):
 		if '.json' in file:
-			var data = DialogicUtil.load_json(CHAR_DIR + '/' + file)
+			var data = DialogicUtil.load_json(DialogicUtil.get_path('CHAR_DIR', file))
 			var color = Color("#ffffff")
 			var c_name = data['id']
 			var default_speaker = 'false'
@@ -369,12 +365,12 @@ func get_character_list():
 
 
 func get_character_data(file):
-	var data = DialogicUtil.load_json(CHAR_DIR + '/' + file)
+	var data = DialogicUtil.get_path('CHAR_DIR', file)
 	return data
 
 
 func get_character_color(file):
-	var data = DialogicUtil.load_json(CHAR_DIR + '/' + file)
+	var data = DialogicUtil.get_path('CHAR_DIR', file)
 	if is_instance_valid(data):
 		if data.has('color'):
 			return data['color']
@@ -383,13 +379,13 @@ func get_character_color(file):
 
 
 func get_character_name(file):
-	var data = DialogicUtil.load_json(CHAR_DIR + '/' + file)
+	var data = DialogicUtil.get_path('CHAR_DIR', file)
 	if data.has('name'):
 		return data['name']
 
 
 func get_character_portraits(file):
-	var data = DialogicUtil.load_json(CHAR_DIR + '/' + file)
+	var data = DialogicUtil.get_path('CHAR_DIR', file)
 	if data.has('portraits'):
 		return data['portraits']
 
@@ -409,13 +405,6 @@ func listdir(path):
 			files.append(file)
 	dir.list_dir_end()
 	return files
-
-
-func get_filename_from_path(path, extension = false):
-	var file_name = path.split('/')[-1]
-	if extension == false:
-		file_name = file_name.split('.')[0]
-	return file_name
 
 
 # Godot dialog
