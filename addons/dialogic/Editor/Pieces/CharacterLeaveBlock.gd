@@ -21,7 +21,7 @@ func _on_CharacterDropdown_about_to_show():
 	Dropdown.get_popup().clear()
 	Dropdown.get_popup().add_item("[All]")
 	var index = 0
-	for c in editor_reference.get_character_list():
+	for c in DialogicUtil.get_character_list():
 		Dropdown.get_popup().add_item(c['name'])
 		Dropdown.get_popup().set_item_metadata(index, {'file': c['file'], 'color': c['color']})
 		index += 1

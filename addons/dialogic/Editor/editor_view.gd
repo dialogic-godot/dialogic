@@ -128,10 +128,6 @@ func _on_ReloadResource_pressed():
 
 
 # Saving and loading
-func _on_ButtonSave_pressed():
-	save_timeline(working_dialog_file)
-
-
 func generate_save_data():
 	var info_to_save = {
 		'metadata': {
@@ -340,12 +336,12 @@ func create_timeline():
 
 
 func get_character_data(file):
-	var data = DialogicUtil.get_path('CHAR_DIR', file)
+	var data = DialogicUtil.load_json(DialogicUtil.get_path('CHAR_DIR', file))
 	return data
 
 
 func get_character_color(file):
-	var data = DialogicUtil.get_path('CHAR_DIR', file)
+	var data = DialogicUtil.load_json(DialogicUtil.get_path('CHAR_DIR', file))
 	if is_instance_valid(data):
 		if data.has('color'):
 			return data['color']
