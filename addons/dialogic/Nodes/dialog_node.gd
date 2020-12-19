@@ -15,112 +15,11 @@ var CHAR_DIR = WORKING_DIR + "/characters"
 export(String) var timeline_id # Timeline-var-replace
 
 
-export(Resource) var dialog_resource = load("res://addons/dialogic/Resources/DefaultDialogResource.tres")
+var dialog_resource
 export(Array, Resource) var dialog_characters
 
 onready var Portrait = load("res://addons/dialogic/Nodes/Portrait.tscn")
-var dialog_script = [
-	{
-		'background': "res://addons/dialogic/Images/background/placeholder-2.png"
-	},
-	{
-		'character': 'Iteb',
-		'position': 'center',
-		'text': 'Hello, my name is {Iteb}. This demo has everything you might need for your dialogs. Shall we start?'
-	},
-	{
-		'character': 'Zas',
-		'text': 'Hey {Kubuk}, do you know what this is?'
-	},
-	{
-		'character': 'Kubuk',
-		'position': 'right',
-		'text': 'Maybe! It this about the dialog addon?'
-	},
-	{
-		'character': 'Iteb',
-		'position': 'center',
-		'text': 'Is everything okay?'
-	},
-	{
-		'character': 'Zas',
-		'text': 'Yes {Iteb}, everything is under control. Thanks for asking~!'
-	},
-	{
-		'character': 'Zas',
-		'text': 'So {Kubuk}, do you see it now? Do you see anything different?'
-	},
-	{
-		'character': 'Kubuk',
-		'text': 'Maybe... Now that you mention it, I can actually see your face!',
-	},
-	{
-		'character': 'Iteb',
-		'position': 'center',
-		'text': 'That\'s right, we all have a representation! If you would like to modify this you can do so by creating your characters resources. Remember to read the documentation!'
-	},
-	{
-		'action': 'clear_portraits'
-	},
-	{
-		'text': 'The dwarf left in a hurry. [color=#ffdb5e]Armok[/color] might have something in mind...'
-	},
-	{
-		'character': 'Kubuk',
-		'position': 'right',
-		'text': 'I\'m actually still here... Hello?'
-	},
-	{
-		'action': 'focusout_portraits'
-	},
-	{
-		'question': 'Choose your favourite color',
-		'options': [
-			{ 'label': 'Red', 'value': '#f7411d'},
-			{ 'label': 'Blue', 'value': '#1da0f7'}
-		],
-		'variable': 'fav_color'
-	},
-	{
-		'text': 'You picked the color [color=fav_color.value][fav_color][/color]'
-	},
-	{
-		'question': 'Are you sure you want the color [fav_color]?',
-		'options': [
-			{ 'label': 'No, let me pick again', 'value': '0'},
-			{ 'label': 'Yes, I love it', 'value': '1'}
-		],
-		'checkpoint': '-3'
-	},
-	{
-		'input': 'Now the name you want to set.',
-		'window_title': 'Write your name',
-		'variable': 'name'
-	},
-	{
-		'text': 'So, your name is [name] and you like the color [color=fav_color.value][fav_color][/color].'
-	},
-	{
-		'name': '[color=fav_color.value][name][/color]',
-		'text': 'I actually want to be able to pick more colors but you won\'t let me!'
-	},
-	{
-		'character': 'Kubuk',
-		'position': 'right',
-		'text': 'Maybe I should leave...'
-	},
-	{
-		'action': 'clear_portraits'
-	},
-	{  
-		'name': 'Dialog System',
-		'text': 'It doesn\'t matter, this is only a demonstration!'
-	},
-	{
-		'action': 'game_end'
-	}
-]
-
+var dialog_script
 
 func parse_text(text):
 	# This will parse the text and automatically format some of your available variables
@@ -158,6 +57,16 @@ func _ready():
 	# Setting everything up for the node to be default
 	$TextBubble/NameLabel.text = ''
 	$Background.visible = false
+	
+	# Loading theme properties
+	var settings = DialogicUtil.load_settings()
+	if settings.has('theme_text_color'):
+		$TextBubble/RichTextLabel.set('custom_colors/default_color', Color('#' + str(settings['theme_text_color'])))
+	if settings.has('theme_text_shadow'):
+		if settings['theme_text_shadow']:
+			if settings.has('theme_text_shadow_color'):
+				$TextBubble/RichTextLabel.set('custom_colors/font_color_shadow', Color('#' + str(settings['theme_text_shadow_color'])))
+		
 	load_dialog()
 
 
@@ -213,10 +122,11 @@ func update_text(text):
 
 func load_dialog(skip_add = false):
 	# This will load the next entry in the dialog_script array.
-	if dialog_index < dialog_script['events'].size():
-		event_handler(dialog_script['events'][dialog_index])
-	else:
-		queue_free()
+	if dialog_script.has('events'):
+		if dialog_index < dialog_script['events'].size():
+			event_handler(dialog_script['events'][dialog_index])
+		else:
+			queue_free()
 	if skip_add == false:
 		dialog_index += 1
 

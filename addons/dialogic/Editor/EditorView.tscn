@@ -801,7 +801,7 @@ margin_right = 121.0
 margin_bottom = 20.0
 size_flags_horizontal = 0
 text = "[Select Action]"
-items = [ "[Select Action]", null, false, 0, null, "ui_select", null, false, 1, null, "ui_cancel", null, false, 2, null, "ui_page_up", null, false, 3, null, "ui_focus_next", null, false, 4, null, "ui_home", null, false, 5, null, "ui_left", null, false, 6, null, "ui_right", null, false, 7, null, "ui_down", null, false, 8, null, "ui_page_down", null, false, 9, null, "ui_end", null, false, 10, null, "ui_accept", null, false, 11, null, "ui_focus_prev", null, false, 12, null, "ui_up", null, false, 13, null, "[Select Action]", null, false, 14, null, "ui_right", null, false, 15, null, "ui_page_down", null, false, 16, null, "ui_focus_next", null, false, 17, null, "ui_left", null, false, 18, null, "ui_focus_prev", null, false, 19, null, "ui_select", null, false, 20, null, "ui_cancel", null, false, 21, null, "ui_home", null, false, 22, null, "ui_down", null, false, 23, null, "ui_end", null, false, 24, null, "ui_up", null, false, 25, null, "ui_accept", null, false, 26, null, "ui_page_up", null, false, 27, null ]
+items = [ "[Select Action]", null, false, 0, null, "ui_select", null, false, 1, null, "ui_cancel", null, false, 2, null, "ui_page_up", null, false, 3, null, "ui_focus_next", null, false, 4, null, "ui_home", null, false, 5, null, "ui_left", null, false, 6, null, "ui_right", null, false, 7, null, "ui_down", null, false, 8, null, "ui_page_down", null, false, 9, null, "ui_end", null, false, 10, null, "ui_accept", null, false, 11, null, "ui_focus_prev", null, false, 12, null, "ui_up", null, false, 13, null, "[Select Action]", null, false, 14, null, "ui_right", null, false, 15, null, "ui_page_down", null, false, 16, null, "ui_focus_next", null, false, 17, null, "ui_left", null, false, 18, null, "ui_focus_prev", null, false, 19, null, "ui_select", null, false, 20, null, "ui_cancel", null, false, 21, null, "ui_home", null, false, 22, null, "ui_down", null, false, 23, null, "ui_end", null, false, 24, null, "ui_up", null, false, 25, null, "ui_accept", null, false, 26, null, "ui_page_up", null, false, 27, null, "[Select Action]", null, false, 28, null, "ui_up", null, false, 29, null, "ui_accept", null, false, 30, null, "ui_focus_prev", null, false, 31, null, "ui_page_down", null, false, 32, null, "ui_cancel", null, false, 33, null, "ui_select", null, false, 34, null, "ui_focus_next", null, false, 35, null, "ui_right", null, false, 36, null, "ui_left", null, false, 37, null, "ui_end", null, false, 38, null, "ui_home", null, false, 39, null, "ui_down", null, false, 40, null, "ui_page_up", null, false, 41, null ]
 selected = 0
 
 [node name="Label2" type="Label" parent="EditorTheme/VBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
@@ -918,6 +918,32 @@ margin_left = 73.0
 margin_right = 123.0
 margin_bottom = 30.0
 rect_min_size = Vector2( 50, 30 )
+color = Color( 0.780392, 0.419608, 0.392157, 1 )
+
+[node name="Control" type="Control" parent="EditorTheme/VBoxContainer/HBoxContainer"]
+margin_left = 133.0
+margin_right = 163.0
+margin_bottom = 30.0
+rect_min_size = Vector2( 30, 0 )
+
+[node name="Label2" type="Label" parent="EditorTheme/VBoxContainer/HBoxContainer"]
+margin_left = 173.0
+margin_top = 8.0
+margin_right = 252.0
+margin_bottom = 22.0
+text = "Text shadow"
+
+[node name="CheckBoxShadow" type="CheckBox" parent="EditorTheme/VBoxContainer/HBoxContainer"]
+margin_left = 262.0
+margin_right = 286.0
+margin_bottom = 30.0
+
+[node name="ColorPickerButtonShadow" type="ColorPickerButton" parent="EditorTheme/VBoxContainer/HBoxContainer"]
+margin_left = 296.0
+margin_right = 346.0
+margin_bottom = 30.0
+rect_min_size = Vector2( 50, 30 )
+color = Color( 0.0901961, 0.0901961, 0.0901961, 0.819608 )
 
 [node name="TimelinePopupMenu" type="PopupMenu" parent="."]
 margin_left = 151.0
@@ -1020,6 +1046,8 @@ __meta__ = {
 [connection signal="pressed" from="EditorTheme/VBoxContainer/HBoxContainer4/BackgroundTextureButton" to="EditorTheme" method="_on_BackgroundTextureButton_pressed"]
 [connection signal="pressed" from="EditorTheme/VBoxContainer/HBoxContainer3/NextIndicatorButton" to="EditorTheme" method="_on_NextIndicatorButton_pressed"]
 [connection signal="color_changed" from="EditorTheme/VBoxContainer/HBoxContainer/ColorPickerButton" to="EditorTheme" method="_on_ColorPickerButton_color_changed"]
+[connection signal="toggled" from="EditorTheme/VBoxContainer/HBoxContainer/CheckBoxShadow" to="EditorTheme" method="_on_CheckBoxShadow_toggled"]
+[connection signal="color_changed" from="EditorTheme/VBoxContainer/HBoxContainer/ColorPickerButtonShadow" to="EditorTheme" method="_on_ColorPickerButtonShadow_color_changed"]
 [connection signal="id_pressed" from="TimelinePopupMenu" to="." method="_on_TimelinePopupMenu_id_pressed"]
 [connection signal="id_pressed" from="CharacterPopupMenu" to="EditorCharacter" method="_on_CharacterPopupMenu_id_pressed"]
 [connection signal="confirmed" from="RemoveCharacterConfirmation" to="EditorCharacter" method="_on_RemoveConfirmation_confirmed"]

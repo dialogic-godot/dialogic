@@ -26,6 +26,16 @@ static func load_settings():
 	return settings
 
 
+static func update_setting(key, value):
+	var data = load_settings()
+	data[key] = value
+	
+	var file = File.new()
+	file.open(get_path('SETTINGS_FILE'), File.WRITE)
+	file.store_line(to_json(data))
+	file.close()
+
+
 static func get_path(name, extra=''):
 	var WORKING_DIR = "res://dialogic"
 	var paths = {
