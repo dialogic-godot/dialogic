@@ -66,6 +66,10 @@ func _ready():
 		if settings['theme_text_shadow']:
 			if settings.has('theme_text_shadow_color'):
 				$TextBubble/RichTextLabel.set('custom_colors/font_color_shadow', Color('#' + str(settings['theme_text_shadow_color'])))
+	if settings.has('theme_shadow_offset_x'):
+		$TextBubble/RichTextLabel.set('custom_constants/shadow_offset_x', settings['theme_shadow_offset_x'])
+	if settings.has('theme_shadow_offset_y'):
+		$TextBubble/RichTextLabel.set('custom_constants/shadow_offset_y', settings['theme_shadow_offset_y'])
 		
 	load_dialog()
 

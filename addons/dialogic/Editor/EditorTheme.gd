@@ -11,16 +11,22 @@ func _ready():
 	DialogicUtil.test()
 	var settings = DialogicUtil.load_settings()
 	if settings.has('theme_text_color'):
-		$VBoxContainer/HBoxContainer/ColorPickerButton.color = Color('#' + str(settings['theme_text_color']))
+		$VBoxContainer/HBoxContainer6/ColorPickerButton.color = Color('#' + str(settings['theme_text_color']))
 	if settings.has('theme_text_shadow'):
 		$VBoxContainer/HBoxContainer/CheckBoxShadow.pressed = settings['theme_text_shadow']
 	if settings.has('theme_text_shadow_color'):
 		$VBoxContainer/HBoxContainer/ColorPickerButtonShadow.color = Color('#' + str(settings['theme_text_shadow_color']))
-		
+	
+	if settings.has('theme_shadow_offset_x'):
+		$VBoxContainer/HBoxContainer/ShadowOffsetX.value = settings['theme_shadow_offset_x']
+	if settings.has('theme_shadow_offset_y'):
+		$VBoxContainer/HBoxContainer/ShadowOffsetY.value = settings['theme_shadow_offset_y']
+
 
 func _on_BackgroundTextureButton_pressed():
 	editor_reference.godot_dialog("*.png")
 	editor_reference.godot_dialog_connect(self, "_on_background_selected")
+
 
 func _on_background_selected(path, target):
 	$VBoxContainer/HBoxContainer4/BackgroundTextureButton.icon = load(path)
@@ -30,8 +36,9 @@ func _on_NextIndicatorButton_pressed():
 	editor_reference.godot_dialog("*.png")
 	editor_reference.godot_dialog_connect(self, "_on_indicator_selected")
 
+
 func _on_indicator_selected(path, target):
-	$VBoxContainer/HBoxContainer3/NextIndicatorButton.icon = load(path)
+	$VBoxContainer/HBoxContainer4/NextIndicatorButton.icon = load(path)
 
 
 func _on_ColorPickerButton_color_changed(color):
@@ -45,3 +52,8 @@ func _on_ColorPickerButtonShadow_color_changed(color):
 
 func _on_CheckBoxShadow_toggled(button_pressed):
 	DialogicUtil.update_setting('theme_text_shadow', button_pressed)
+
+
+func _on_ShadowOffset_value_changed(_value):
+	DialogicUtil.update_setting('theme_shadow_offset_x', $VBoxContainer/HBoxContainer/ShadowOffsetX.value)
+	DialogicUtil.update_setting('theme_shadow_offset_y', $VBoxContainer/HBoxContainer/ShadowOffsetY.value)
