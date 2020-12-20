@@ -12,18 +12,25 @@ func _ready():
 	
 	
 	var settings = DialogicUtil.load_settings()
+	# Text and shadows
 	if settings.has('theme_text_color'):
 		$VBoxContainer/HBoxContainer6/ColorPickerButton.color = Color('#' + str(settings['theme_text_color']))
 	if settings.has('theme_text_shadow'):
 		$VBoxContainer/HBoxContainer/CheckBoxShadow.pressed = settings['theme_text_shadow']
 	if settings.has('theme_text_shadow_color'):
 		$VBoxContainer/HBoxContainer/ColorPickerButtonShadow.color = Color('#' + str(settings['theme_text_shadow_color']))
-	
 	if settings.has('theme_shadow_offset_x'):
 		$VBoxContainer/HBoxContainer/ShadowOffsetX.value = settings['theme_shadow_offset_x']
 	if settings.has('theme_shadow_offset_y'):
 		$VBoxContainer/HBoxContainer/ShadowOffsetY.value = settings['theme_shadow_offset_y']
 
+	# Images
+	if settings.has('theme_background_image'):
+		$VBoxContainer/HBoxContainer4/BackgroundTextureButton.text = settings['theme_background_image']
+	if settings.has('theme_next_image'):
+		$VBoxContainer/HBoxContainer4/NextIndicatorButton.text = settings['theme_next_image']
+	
+	
 	#Refreshing the dialog 
 	#_on_PreviewButton_pressed()
 
@@ -33,7 +40,8 @@ func _on_BackgroundTextureButton_pressed():
 
 
 func _on_background_selected(path, target):
-	$VBoxContainer/HBoxContainer4/BackgroundTextureButton.icon = load(path)
+	DialogicUtil.update_setting('theme_background_image', path)
+	$VBoxContainer/HBoxContainer4/BackgroundTextureButton.text = path
 
 
 func _on_NextIndicatorButton_pressed():
@@ -42,7 +50,8 @@ func _on_NextIndicatorButton_pressed():
 
 
 func _on_indicator_selected(path, target):
-	$VBoxContainer/HBoxContainer4/NextIndicatorButton.icon = load(path)
+	DialogicUtil.update_setting('theme_next_image', path)
+	$VBoxContainer/HBoxContainer4/NextIndicatorButton.text = path
 
 
 func _on_ColorPickerButton_color_changed(color):
@@ -64,10 +73,11 @@ func _on_ShadowOffset_value_changed(_value):
 
 
 func _on_PreviewButton_pressed():
-	if $VBoxContainer/Panel.has_node("DialogNode"):
-		$VBoxContainer/Panel/DialogNode.free()
+	for i in $VBoxContainer/Panel.get_children():
+		i.free()
 	var dialogic_node = load("res://addons/dialogic/Nodes/Dialog.tscn")
 	var preview_dialog = dialogic_node.instance()
+	preview_dialog.get_node('TextBubble/NextIndicator/AnimationPlayer').play('IDLE')
 	preview_dialog.dialog_script['events'] = [{
 		"character":"",
 		"portrait":"",
