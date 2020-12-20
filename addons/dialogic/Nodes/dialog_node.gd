@@ -1,3 +1,4 @@
+tool
 extends Control
 class_name DialogNode, "res://addons/dialogic/Images/icon.svg"
 
@@ -19,7 +20,7 @@ var dialog_resource
 export(Array, Resource) var dialog_characters
 
 onready var Portrait = load("res://addons/dialogic/Nodes/Portrait.tscn")
-var dialog_script
+var dialog_script = {}
 
 func parse_text(text):
 	# This will parse the text and automatically format some of your available variables

@@ -1,11 +1,54 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://addons/dialogic/Images/dialog-background.png" type="Texture" id=1]
 [ext_resource path="res://addons/dialogic/Images/next-indicator.png" type="Texture" id=2]
 [ext_resource path="res://addons/dialogic/Nodes/dialog_node.gd" type="Script" id=6]
 
-[sub_resource type="Animation" id=1]
-resource_name = "IDLE"
+[sub_resource type="StyleBoxFlat" id=3]
+bg_color = Color( 0.862745, 0.862745, 0.862745, 0 )
+
+[sub_resource type="Theme" id=1]
+TextEdit/colors/background_color = Color( 0, 0, 0, 0 )
+TextEdit/colors/bookmark_color = Color( 0.08, 0.49, 0.98, 1 )
+TextEdit/colors/brace_mismatch_color = Color( 1, 0.2, 0.2, 1 )
+TextEdit/colors/breakpoint_color = Color( 0.8, 0.8, 0.4, 0.2 )
+TextEdit/colors/caret_background_color = Color( 0, 0, 0, 1 )
+TextEdit/colors/caret_color = Color( 0.88, 0.88, 0.88, 1 )
+TextEdit/colors/code_folding_color = Color( 0.8, 0.8, 0.8, 0.8 )
+TextEdit/colors/completion_background_color = Color( 0.17, 0.16, 0.2, 1 )
+TextEdit/colors/completion_existing_color = Color( 0.87, 0.87, 0.87, 0.13 )
+TextEdit/colors/completion_font_color = Color( 0.67, 0.67, 0.67, 1 )
+TextEdit/colors/completion_scroll_color = Color( 1, 1, 1, 1 )
+TextEdit/colors/completion_selected_color = Color( 0.26, 0.26, 0.27, 1 )
+TextEdit/colors/current_line_color = Color( 0.25, 0.25, 0.26, 0.8 )
+TextEdit/colors/executing_line_color = Color( 0.2, 0.8, 0.2, 0.4 )
+TextEdit/colors/font_color = Color( 0.88, 0.88, 0.88, 1 )
+TextEdit/colors/font_color_readonly = Color( 0.88, 0.88, 0.88, 0.5 )
+TextEdit/colors/font_color_selected = Color( 0, 0, 0, 1 )
+TextEdit/colors/function_color = Color( 0.4, 0.64, 0.81, 1 )
+TextEdit/colors/line_number_color = Color( 0.67, 0.67, 0.67, 0.4 )
+TextEdit/colors/mark_color = Color( 1, 0.4, 0.4, 0.4 )
+TextEdit/colors/member_variable_color = Color( 0.9, 0.31, 0.35, 1 )
+TextEdit/colors/number_color = Color( 0.92, 0.58, 0.2, 1 )
+TextEdit/colors/safe_line_number_color = Color( 0.67, 0.78, 0.67, 0.6 )
+TextEdit/colors/selection_color = Color( 0.49, 0.49, 0.49, 1 )
+TextEdit/colors/symbol_color = Color( 0.94, 0.94, 0.94, 1 )
+TextEdit/colors/word_highlighted_color = Color( 0.8, 0.9, 0.9, 0.15 )
+TextEdit/constants/completion_lines = 7
+TextEdit/constants/completion_max_width = 50
+TextEdit/constants/completion_scroll_width = 3
+TextEdit/constants/line_spacing = 4
+TextEdit/fonts/font = null
+TextEdit/icons/fold = null
+TextEdit/icons/folded = null
+TextEdit/icons/space = null
+TextEdit/icons/tab = null
+TextEdit/styles/completion = null
+TextEdit/styles/focus = null
+TextEdit/styles/normal = null
+TextEdit/styles/read_only = SubResource( 3 )
+
+[sub_resource type="Animation" id=2]
 loop = true
 tracks/0/type = "value"
 tracks/0/path = NodePath(".:margin_bottom")
@@ -23,6 +66,7 @@ tracks/0/keys = {
 [node name="DialogNode" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
+theme = SubResource( 1 )
 script = ExtResource( 6 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -78,6 +122,9 @@ margin_left = 15.0
 margin_top = 15.0
 margin_right = -15.0
 margin_bottom = -15.0
+custom_colors/default_color = Color( 1, 0.243137, 0.243137, 1 )
+custom_constants/shadow_offset_x = 0
+custom_constants/shadow_offset_y = 0
 bbcode_enabled = true
 bbcode_text = "Placeholder text for testing and formatting."
 text = "Placeholder text for testing and formatting."
@@ -88,6 +135,7 @@ __meta__ = {
 [node name="Tween" type="Tween" parent="TextBubble"]
 
 [node name="NextIndicator" type="TextureRect" parent="TextBubble"]
+visible = false
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
@@ -105,7 +153,7 @@ __meta__ = {
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="TextBubble/NextIndicator"]
 autoplay = "IDLE"
-anims/IDLE = SubResource( 1 )
+anims/IDLE = SubResource( 2 )
 
 [node name="NameLabel" type="RichTextLabel" parent="TextBubble"]
 margin_left = 2.0
@@ -115,13 +163,13 @@ custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
 custom_constants/shadow_as_outline = 10
 bbcode_enabled = true
 bbcode_text = "Name Here"
-text = "Name Here"
 scroll_active = false
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Options" type="VBoxContainer" parent="."]
+visible = false
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5

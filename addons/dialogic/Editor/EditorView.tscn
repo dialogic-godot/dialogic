@@ -1,4 +1,4 @@
-[gd_scene load_steps=33 format=2]
+[gd_scene load_steps=32 format=2]
 
 [ext_resource path="res://addons/dialogic/Editor/editor_view.gd" type="Script" id=1]
 [ext_resource path="res://addons/dialogic/Images/dialog.svg" type="Texture" id=2]
@@ -23,7 +23,6 @@
 [ext_resource path="res://addons/dialogic/Editor/EditorCharacter.gd" type="Script" id=21]
 [ext_resource path="res://addons/dialogic/Images/Remove.svg" type="Texture" id=22]
 [ext_resource path="res://addons/dialogic/Editor/CharacterEditor/PortraitEntry.tscn" type="PackedScene" id=23]
-[ext_resource path="res://addons/dialogic/Nodes/Dialog.tscn" type="PackedScene" id=24]
 [ext_resource path="res://addons/dialogic/Images/Rename.svg" type="Texture" id=25]
 [ext_resource path="res://addons/dialogic/Images/Filesystem.svg" type="Texture" id=26]
 [ext_resource path="res://addons/dialogic/Editor/EditorTheme.gd" type="Script" id=28]
@@ -749,7 +748,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="EditorTheme" type="VBoxContainer" parent="."]
+[node name="EditorTheme" type="ScrollContainer" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 6.0
@@ -762,22 +761,24 @@ __meta__ = {
 }
 
 [node name="VBoxContainer" type="VBoxContainer" parent="EditorTheme"]
-margin_right = 997.0
-margin_bottom = 561.0
+margin_right = 985.0
+margin_bottom = 696.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
 custom_constants/separation = 15
 
 [node name="Label" type="Label" parent="EditorTheme/VBoxContainer"]
-margin_right = 997.0
+margin_right = 985.0
 margin_bottom = 14.0
 text = "Dialog Settings"
 
 [node name="VBoxContainer" type="VBoxContainer" parent="EditorTheme/VBoxContainer"]
 margin_top = 29.0
-margin_right = 997.0
+margin_right = 985.0
 margin_bottom = 67.0
 
 [node name="HBoxContainer" type="HBoxContainer" parent="EditorTheme/VBoxContainer/VBoxContainer"]
-margin_right = 997.0
+margin_right = 985.0
 margin_bottom = 38.0
 custom_constants/separation = 16
 __meta__ = {
@@ -800,7 +801,7 @@ margin_right = 121.0
 margin_bottom = 20.0
 size_flags_horizontal = 0
 text = "[Select Action]"
-items = [ "[Select Action]", null, false, 0, null, "ui_select", null, false, 1, null, "ui_cancel", null, false, 2, null, "ui_page_up", null, false, 3, null, "ui_focus_next", null, false, 4, null, "ui_home", null, false, 5, null, "ui_left", null, false, 6, null, "ui_right", null, false, 7, null, "ui_down", null, false, 8, null, "ui_page_down", null, false, 9, null, "ui_end", null, false, 10, null, "ui_accept", null, false, 11, null, "ui_focus_prev", null, false, 12, null, "ui_up", null, false, 13, null, "[Select Action]", null, false, 14, null, "ui_right", null, false, 15, null, "ui_page_down", null, false, 16, null, "ui_focus_next", null, false, 17, null, "ui_left", null, false, 18, null, "ui_focus_prev", null, false, 19, null, "ui_select", null, false, 20, null, "ui_cancel", null, false, 21, null, "ui_home", null, false, 22, null, "ui_down", null, false, 23, null, "ui_end", null, false, 24, null, "ui_up", null, false, 25, null, "ui_accept", null, false, 26, null, "ui_page_up", null, false, 27, null, "[Select Action]", null, false, 28, null, "ui_up", null, false, 29, null, "ui_accept", null, false, 30, null, "ui_focus_prev", null, false, 31, null, "ui_page_down", null, false, 32, null, "ui_cancel", null, false, 33, null, "ui_select", null, false, 34, null, "ui_focus_next", null, false, 35, null, "ui_right", null, false, 36, null, "ui_left", null, false, 37, null, "ui_end", null, false, 38, null, "ui_home", null, false, 39, null, "ui_down", null, false, 40, null, "ui_page_up", null, false, 41, null, "[Select Action]", null, false, 42, null, "ui_right", null, false, 43, null, "ui_left", null, false, 44, null, "ui_up", null, false, 45, null, "ui_page_up", null, false, 46, null, "ui_page_down", null, false, 47, null, "ui_end", null, false, 48, null, "ui_select", null, false, 49, null, "ui_focus_next", null, false, 50, null, "ui_accept", null, false, 51, null, "ui_focus_prev", null, false, 52, null, "ui_cancel", null, false, 53, null, "ui_down", null, false, 54, null, "ui_home", null, false, 55, null, "[Select Action]", null, false, 56, null, "ui_focus_next", null, false, 57, null, "ui_accept", null, false, 58, null, "ui_select", null, false, 59, null, "ui_focus_prev", null, false, 60, null, "ui_left", null, false, 61, null, "ui_down", null, false, 62, null, "ui_page_up", null, false, 63, null, "ui_page_down", null, false, 64, null, "ui_right", null, false, 65, null, "ui_home", null, false, 66, null, "ui_cancel", null, false, 67, null, "ui_up", null, false, 68, null, "ui_end", null, false, 69, null ]
+items = [ "[Select Action]", null, false, 0, null, "ui_select", null, false, 1, null, "ui_cancel", null, false, 2, null, "ui_page_up", null, false, 3, null, "ui_focus_next", null, false, 4, null, "ui_home", null, false, 5, null, "ui_left", null, false, 6, null, "ui_right", null, false, 7, null, "ui_down", null, false, 8, null, "ui_page_down", null, false, 9, null, "ui_end", null, false, 10, null, "ui_accept", null, false, 11, null, "ui_focus_prev", null, false, 12, null, "ui_up", null, false, 13, null, "[Select Action]", null, false, 14, null, "ui_right", null, false, 15, null, "ui_page_down", null, false, 16, null, "ui_focus_next", null, false, 17, null, "ui_left", null, false, 18, null, "ui_focus_prev", null, false, 19, null, "ui_select", null, false, 20, null, "ui_cancel", null, false, 21, null, "ui_home", null, false, 22, null, "ui_down", null, false, 23, null, "ui_end", null, false, 24, null, "ui_up", null, false, 25, null, "ui_accept", null, false, 26, null, "ui_page_up", null, false, 27, null, "[Select Action]", null, false, 28, null, "ui_up", null, false, 29, null, "ui_accept", null, false, 30, null, "ui_focus_prev", null, false, 31, null, "ui_page_down", null, false, 32, null, "ui_cancel", null, false, 33, null, "ui_select", null, false, 34, null, "ui_focus_next", null, false, 35, null, "ui_right", null, false, 36, null, "ui_left", null, false, 37, null, "ui_end", null, false, 38, null, "ui_home", null, false, 39, null, "ui_down", null, false, 40, null, "ui_page_up", null, false, 41, null, "[Select Action]", null, false, 42, null, "ui_right", null, false, 43, null, "ui_left", null, false, 44, null, "ui_up", null, false, 45, null, "ui_page_up", null, false, 46, null, "ui_page_down", null, false, 47, null, "ui_end", null, false, 48, null, "ui_select", null, false, 49, null, "ui_focus_next", null, false, 50, null, "ui_accept", null, false, 51, null, "ui_focus_prev", null, false, 52, null, "ui_cancel", null, false, 53, null, "ui_down", null, false, 54, null, "ui_home", null, false, 55, null, "[Select Action]", null, false, 56, null, "ui_focus_next", null, false, 57, null, "ui_accept", null, false, 58, null, "ui_select", null, false, 59, null, "ui_focus_prev", null, false, 60, null, "ui_left", null, false, 61, null, "ui_down", null, false, 62, null, "ui_page_up", null, false, 63, null, "ui_page_down", null, false, 64, null, "ui_right", null, false, 65, null, "ui_home", null, false, 66, null, "ui_cancel", null, false, 67, null, "ui_up", null, false, 68, null, "ui_end", null, false, 69, null, "[Select Action]", null, false, 70, null, "ui_focus_next", null, false, 71, null, "ui_accept", null, false, 72, null, "ui_select", null, false, 73, null, "ui_focus_prev", null, false, 74, null, "ui_left", null, false, 75, null, "ui_down", null, false, 76, null, "ui_page_up", null, false, 77, null, "ui_page_down", null, false, 78, null, "ui_right", null, false, 79, null, "ui_home", null, false, 80, null, "ui_cancel", null, false, 81, null, "ui_up", null, false, 82, null, "ui_end", null, false, 83, null ]
 selected = 0
 
 [node name="Label2" type="Label" parent="EditorTheme/VBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
@@ -812,7 +813,7 @@ text = "To add/remove actions go to Project > Project Settings > Input Map"
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="EditorTheme/VBoxContainer"]
 margin_top = 82.0
-margin_right = 997.0
+margin_right = 985.0
 margin_bottom = 106.0
 __meta__ = {
 "_edit_use_anchors_": false
@@ -831,7 +832,7 @@ margin_bottom = 24.0
 
 [node name="HBoxContainer4" type="HBoxContainer" parent="EditorTheme/VBoxContainer"]
 margin_top = 121.0
-margin_right = 997.0
+margin_right = 985.0
 margin_bottom = 141.0
 custom_constants/separation = 10
 
@@ -862,7 +863,7 @@ text = "..."
 
 [node name="HBoxContainer6" type="HBoxContainer" parent="EditorTheme/VBoxContainer"]
 margin_top = 156.0
-margin_right = 997.0
+margin_right = 985.0
 margin_bottom = 186.0
 custom_constants/separation = 10
 
@@ -877,7 +878,7 @@ margin_left = 73.0
 margin_right = 123.0
 margin_bottom = 30.0
 rect_min_size = Vector2( 50, 30 )
-color = Color( 1, 1, 1, 1 )
+color = Color( 1, 0.243137, 0.243137, 1 )
 
 [node name="Control" type="Control" parent="EditorTheme/VBoxContainer/HBoxContainer6"]
 margin_left = 133.0
@@ -902,7 +903,7 @@ text = "Choose font file..."
 
 [node name="HBoxContainer5" type="HBoxContainer" parent="EditorTheme/VBoxContainer"]
 margin_top = 201.0
-margin_right = 997.0
+margin_right = 985.0
 margin_bottom = 301.0
 custom_constants/separation = 10
 
@@ -920,7 +921,7 @@ margin_bottom = 100.0
 
 [node name="HBoxContainer" type="HBoxContainer" parent="EditorTheme/VBoxContainer"]
 margin_top = 316.0
-margin_right = 997.0
+margin_right = 985.0
 margin_bottom = 346.0
 custom_constants/separation = 10
 
@@ -976,13 +977,21 @@ margin_bottom = 30.0
 rounded = true
 allow_lesser = true
 
-[node name="Panel" type="Panel" parent="EditorTheme/VBoxContainer"]
+[node name="HBoxContainer3" type="HBoxContainer" parent="EditorTheme/VBoxContainer"]
 margin_top = 361.0
-margin_right = 997.0
-margin_bottom = 561.0
-rect_min_size = Vector2( 0, 200 )
+margin_right = 985.0
+margin_bottom = 381.0
 
-[node name="DialogNode" parent="EditorTheme/VBoxContainer/Panel" instance=ExtResource( 24 )]
+[node name="PreviewButton" type="Button" parent="EditorTheme/VBoxContainer/HBoxContainer3"]
+margin_right = 118.0
+margin_bottom = 20.0
+text = "Preview changes"
+
+[node name="Panel" type="Panel" parent="EditorTheme/VBoxContainer"]
+margin_top = 396.0
+margin_right = 985.0
+margin_bottom = 696.0
+rect_min_size = Vector2( 0, 300 )
 
 [node name="TimelinePopupMenu" type="PopupMenu" parent="."]
 margin_left = 151.0
@@ -1089,6 +1098,7 @@ __meta__ = {
 [connection signal="color_changed" from="EditorTheme/VBoxContainer/HBoxContainer/ColorPickerButtonShadow" to="EditorTheme" method="_on_ColorPickerButtonShadow_color_changed"]
 [connection signal="value_changed" from="EditorTheme/VBoxContainer/HBoxContainer/ShadowOffsetX" to="EditorTheme" method="_on_ShadowOffset_value_changed"]
 [connection signal="value_changed" from="EditorTheme/VBoxContainer/HBoxContainer/ShadowOffsetY" to="EditorTheme" method="_on_ShadowOffset_value_changed"]
+[connection signal="pressed" from="EditorTheme/VBoxContainer/HBoxContainer3/PreviewButton" to="EditorTheme" method="_on_PreviewButton_pressed"]
 [connection signal="id_pressed" from="TimelinePopupMenu" to="." method="_on_TimelinePopupMenu_id_pressed"]
 [connection signal="id_pressed" from="CharacterPopupMenu" to="EditorCharacter" method="_on_CharacterPopupMenu_id_pressed"]
 [connection signal="confirmed" from="RemoveCharacterConfirmation" to="EditorCharacter" method="_on_RemoveConfirmation_confirmed"]
