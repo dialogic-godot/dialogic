@@ -4,15 +4,10 @@ extends Control
 var editor_reference
 
 func _ready():
-	var action_option_button = $VBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/ActionOptionButton
-	action_option_button.clear()
-	action_option_button.add_item('[Select Action]')
-	for a in InputMap.get_actions():
-		action_option_button.add_item(a)
-	DialogicUtil.test()
-	
-	
 	var settings = DialogicUtil.load_settings()
+	# Font 
+	if settings.has('theme_font'):
+		$VBoxContainer/HBoxContainer6/FontButton.text = settings['theme_font']
 	# Text and shadows
 	if settings.has('theme_text_color'):
 		$VBoxContainer/HBoxContainer6/ColorPickerButton.color = Color('#' + str(settings['theme_text_color']))
@@ -34,7 +29,7 @@ func _ready():
 	# Action
 	if settings.has('theme_action_key'):
 		$VBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/ActionOptionButton.text = settings['theme_action_key']
-	
+
 	#Refreshing the dialog 
 	_on_PreviewButton_pressed()
 
@@ -92,3 +87,23 @@ func _on_PreviewButton_pressed():
 
 func _on_ActionOptionButton_item_selected(index):
 	DialogicUtil.update_setting('theme_action_key', $VBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/ActionOptionButton.text)
+
+
+func _on_ActionOptionButton_pressed():
+	var action_option_button = $VBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/ActionOptionButton
+	action_option_button.clear()
+	action_option_button.add_item('[Select Action]')
+	InputMap.load_from_globals()
+	print(InputMap.get_actions())
+	for a in InputMap.get_actions():
+		action_option_button.add_item(a)
+
+
+func _on_FontButton_pressed():
+	editor_reference.godot_dialog("*.tres")
+	editor_reference.godot_dialog_connect(self, "_on_Font_selected")
+
+
+func _on_Font_selected(path, target):
+	DialogicUtil.update_setting('theme_font', path)
+	$VBoxContainer/HBoxContainer6/FontButton.text = path

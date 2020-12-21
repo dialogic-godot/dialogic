@@ -459,7 +459,7 @@ margin_right = 180.0
 margin_bottom = 541.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-items = [ "Narrator", ExtResource( 7 ), false, "Shia", ExtResource( 7 ), false, "Lyra", ExtResource( 7 ), false ]
+items = [ "Lyra", ExtResource( 7 ), false, "Shia", ExtResource( 7 ), false, "Narrator", ExtResource( 7 ), false ]
 allow_rmb_select = true
 
 [node name="NoCharacters" type="CenterContainer" parent="EditorCharacter"]
@@ -762,7 +762,7 @@ __meta__ = {
 
 [node name="VBoxContainer" type="VBoxContainer" parent="EditorTheme"]
 margin_right = 985.0
-margin_bottom = 696.0
+margin_bottom = 657.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_constants/separation = 15
@@ -797,11 +797,11 @@ margin_right = 511.0
 margin_bottom = 38.0
 
 [node name="ActionOptionButton" type="OptionButton" parent="EditorTheme/VBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
-margin_right = 121.0
+margin_right = 76.0
 margin_bottom = 20.0
 size_flags_horizontal = 0
-text = "[Select Action]"
-items = [ "[Select Action]", null, false, 0, null, "ui_down", null, false, 1, null, "ui_right", null, false, 2, null, "ui_end", null, false, 3, null, "ui_accept", null, false, 4, null, "ui_cancel", null, false, 5, null, "ui_up", null, false, 6, null, "ui_focus_next", null, false, 7, null, "ui_page_up", null, false, 8, null, "ui_page_down", null, false, 9, null, "ui_home", null, false, 10, null, "ui_left", null, false, 11, null, "ui_select", null, false, 12, null, "ui_focus_prev", null, false, 13, null ]
+text = "ui_right"
+items = [ "[Select Action]", null, false, 0, null, "ui_accept", null, false, 1, null, "ui_select", null, false, 2, null, "ui_cancel", null, false, 3, null, "ui_focus_next", null, false, 4, null, "ui_focus_prev", null, false, 5, null, "ui_left", null, false, 6, null, "ui_right", null, false, 7, null, "ui_up", null, false, 8, null, "ui_down", null, false, 9, null, "ui_page_up", null, false, 10, null, "ui_page_down", null, false, 11, null, "ui_home", null, false, 12, null, "ui_end", null, false, 13, null ]
 selected = 0
 
 [node name="Label2" type="Label" parent="EditorTheme/VBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
@@ -811,29 +811,10 @@ margin_right = 428.0
 margin_bottom = 38.0
 text = "To add/remove actions go to Project > Project Settings > Input Map"
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="EditorTheme/VBoxContainer"]
+[node name="HBoxContainer4" type="HBoxContainer" parent="EditorTheme/VBoxContainer"]
 margin_top = 82.0
 margin_right = 985.0
-margin_bottom = 106.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Label" type="Label" parent="EditorTheme/VBoxContainer/HBoxContainer2"]
-margin_top = 5.0
-margin_right = 218.0
-margin_bottom = 19.0
-text = "Mouse click anywhere to continue"
-
-[node name="CheckBox" type="CheckBox" parent="EditorTheme/VBoxContainer/HBoxContainer2"]
-margin_left = 222.0
-margin_right = 246.0
-margin_bottom = 24.0
-
-[node name="HBoxContainer4" type="HBoxContainer" parent="EditorTheme/VBoxContainer"]
-margin_top = 121.0
-margin_right = 985.0
-margin_bottom = 141.0
+margin_bottom = 102.0
 custom_constants/separation = 10
 
 [node name="Label" type="Label" parent="EditorTheme/VBoxContainer/HBoxContainer4"]
@@ -862,9 +843,9 @@ margin_bottom = 20.0
 text = "res://icon.png"
 
 [node name="HBoxContainer6" type="HBoxContainer" parent="EditorTheme/VBoxContainer"]
-margin_top = 156.0
+margin_top = 117.0
 margin_right = 985.0
-margin_bottom = 186.0
+margin_bottom = 147.0
 custom_constants/separation = 10
 
 [node name="Label2" type="Label" parent="EditorTheme/VBoxContainer/HBoxContainer6"]
@@ -893,7 +874,7 @@ margin_right = 181.0
 margin_bottom = 22.0
 text = "Font"
 
-[node name="Button" type="Button" parent="EditorTheme/VBoxContainer/HBoxContainer6"]
+[node name="FontButton" type="Button" parent="EditorTheme/VBoxContainer/HBoxContainer6"]
 margin_left = 191.0
 margin_top = 5.0
 margin_right = 315.0
@@ -902,9 +883,9 @@ size_flags_vertical = 4
 text = "Choose font file..."
 
 [node name="HBoxContainer" type="HBoxContainer" parent="EditorTheme/VBoxContainer"]
-margin_top = 201.0
+margin_top = 162.0
 margin_right = 985.0
-margin_bottom = 231.0
+margin_bottom = 192.0
 custom_constants/separation = 10
 
 [node name="Label2" type="Label" parent="EditorTheme/VBoxContainer/HBoxContainer"]
@@ -964,9 +945,9 @@ rounded = true
 allow_lesser = true
 
 [node name="HBoxContainer5" type="HBoxContainer" parent="EditorTheme/VBoxContainer"]
-margin_top = 246.0
+margin_top = 207.0
 margin_right = 985.0
-margin_bottom = 346.0
+margin_bottom = 307.0
 custom_constants/separation = 10
 
 [node name="TextEdit" type="TextEdit" parent="EditorTheme/VBoxContainer/HBoxContainer5"]
@@ -982,9 +963,9 @@ margin_right = 410.0
 margin_bottom = 100.0
 
 [node name="HBoxContainer3" type="HBoxContainer" parent="EditorTheme/VBoxContainer"]
-margin_top = 361.0
+margin_top = 322.0
 margin_right = 985.0
-margin_bottom = 381.0
+margin_bottom = 342.0
 
 [node name="PreviewButton" type="Button" parent="EditorTheme/VBoxContainer/HBoxContainer3"]
 margin_right = 118.0
@@ -992,9 +973,9 @@ margin_bottom = 20.0
 text = "Preview changes"
 
 [node name="Panel" type="Panel" parent="EditorTheme/VBoxContainer"]
-margin_top = 396.0
+margin_top = 357.0
 margin_right = 985.0
-margin_bottom = 696.0
+margin_bottom = 657.0
 rect_min_size = Vector2( 0, 300 )
 
 [node name="TimelinePopupMenu" type="PopupMenu" parent="."]
@@ -1096,9 +1077,11 @@ __meta__ = {
 [connection signal="toggled" from="EditorCharacter/CharacterEditor/HBoxContainer/Container/Name/CheckBox" to="EditorCharacter" method="_on_CheckBox_toggled"]
 [connection signal="pressed" from="EditorCharacter/CharacterEditor/HBoxContainer/Container/ScrollContainer/VBoxContainer/HBoxContainer/Button" to="EditorCharacter" method="_on_New_Portrait_Button_pressed"]
 [connection signal="item_selected" from="EditorTheme/VBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/ActionOptionButton" to="EditorTheme" method="_on_ActionOptionButton_item_selected"]
+[connection signal="pressed" from="EditorTheme/VBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/ActionOptionButton" to="EditorTheme" method="_on_ActionOptionButton_pressed"]
 [connection signal="pressed" from="EditorTheme/VBoxContainer/HBoxContainer4/BackgroundTextureButton" to="EditorTheme" method="_on_BackgroundTextureButton_pressed"]
 [connection signal="pressed" from="EditorTheme/VBoxContainer/HBoxContainer4/NextIndicatorButton" to="EditorTheme" method="_on_NextIndicatorButton_pressed"]
 [connection signal="color_changed" from="EditorTheme/VBoxContainer/HBoxContainer6/ColorPickerButton" to="EditorTheme" method="_on_ColorPickerButton_color_changed"]
+[connection signal="pressed" from="EditorTheme/VBoxContainer/HBoxContainer6/FontButton" to="EditorTheme" method="_on_FontButton_pressed"]
 [connection signal="toggled" from="EditorTheme/VBoxContainer/HBoxContainer/CheckBoxShadow" to="EditorTheme" method="_on_CheckBoxShadow_toggled"]
 [connection signal="color_changed" from="EditorTheme/VBoxContainer/HBoxContainer/ColorPickerButtonShadow" to="EditorTheme" method="_on_ColorPickerButtonShadow_color_changed"]
 [connection signal="value_changed" from="EditorTheme/VBoxContainer/HBoxContainer/ShadowOffsetX" to="EditorTheme" method="_on_ShadowOffset_value_changed"]

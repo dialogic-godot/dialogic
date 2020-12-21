@@ -125,6 +125,7 @@ custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
 custom_constants/shadow_as_outline = 10
 bbcode_enabled = true
 bbcode_text = "Name Here"
+text = "Name Here"
 scroll_active = false
 __meta__ = {
 "_edit_use_anchors_": false

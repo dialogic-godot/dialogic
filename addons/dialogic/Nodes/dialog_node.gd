@@ -56,6 +56,9 @@ func _ready():
 	
 	# Loading theme properties and settings
 	var settings = DialogicUtil.load_settings()
+	if settings.has('theme_font'):
+		$TextBubble/RichTextLabel.set('custom_fonts/normal_font', load(settings['theme_font']))
+	# Text
 	if settings.has('theme_text_color'):
 		$TextBubble/RichTextLabel.set('custom_colors/default_color', Color('#' + str(settings['theme_text_color'])))
 	if settings.has('theme_text_shadow'):

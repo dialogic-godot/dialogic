@@ -1,9 +1,6 @@
 tool
 class_name DialogicUtil
 
-static func test():
-	print("Foo")
-
 
 static func load_json(path):
 	var file = File.new()
