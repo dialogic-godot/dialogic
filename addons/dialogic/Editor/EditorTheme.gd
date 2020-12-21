@@ -76,6 +76,7 @@ func _on_PreviewButton_pressed():
 		i.free()
 	var dialogic_node = load("res://addons/dialogic/Nodes/Dialog.tscn")
 	var preview_dialog = dialogic_node.instance()
+	preview_dialog.preview_mode = true
 	preview_dialog.get_node('TextBubble/NextIndicator/AnimationPlayer').play('IDLE')
 	preview_dialog.dialog_script['events'] = [{
 		"character":"",

@@ -24,8 +24,13 @@ Yes, you can use Dialogic to make any kind of game (even commercial ones). The p
  - New plugin tab icon
  - Added settings to toolbar
  - Removed legacy files
- - Theme tab
-   - Added some dialog settings and customization of the basic components of the in-game dialog node.
+ - From the theme tab you can now:
+   - Pick the default text color
+   - Set the sadows and shadow offset
+   - Select your own fonts (.tres)
+   - Set background and next indicator images
+   - Choose an action to trigger the "next" event
+   - Preview changes in a dialog
  - Characters tab
    - Added context menu
    - Moved the Remove Character button to a context menu

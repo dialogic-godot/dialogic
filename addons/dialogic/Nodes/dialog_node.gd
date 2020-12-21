@@ -2,6 +2,8 @@ tool
 extends Control
 class_name DialogNode, "res://addons/dialogic/Images/icon.svg"
 
+var preview_mode = false
+
 var input_next = 'ui_accept'
 var dialog_index = 0
 var finished = false
@@ -91,15 +93,15 @@ func _process(_delta):
 	else:
 		$Options.visible = false
 	
-	if Input.is_action_just_pressed(input_next):
-		if $TextBubble/Tween.is_active():
-			# Skip to end if key is pressed during the text animation
-			$TextBubble/Tween.seek(999)
-			finished = true
-		else:
-			if waiting_for_answer == false and waiting_for_input == false:
-				load_dialog()
-	pass
+	if preview_mode == false:
+		if Input.is_action_just_pressed(input_next):
+			if $TextBubble/Tween.is_active():
+				# Skip to end if key is pressed during the text animation
+				$TextBubble/Tween.seek(999)
+				finished = true
+			else:
+				if waiting_for_answer == false and waiting_for_input == false:
+					load_dialog()
 
 
 func show_dialog():
