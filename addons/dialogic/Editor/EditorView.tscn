@@ -801,7 +801,7 @@ margin_right = 121.0
 margin_bottom = 20.0
 size_flags_horizontal = 0
 text = "[Select Action]"
-items = [ "[Select Action]", null, false, 0, null, "ui_select", null, false, 1, null, "ui_cancel", null, false, 2, null, "ui_page_up", null, false, 3, null, "ui_focus_next", null, false, 4, null, "ui_home", null, false, 5, null, "ui_left", null, false, 6, null, "ui_right", null, false, 7, null, "ui_down", null, false, 8, null, "ui_page_down", null, false, 9, null, "ui_end", null, false, 10, null, "ui_accept", null, false, 11, null, "ui_focus_prev", null, false, 12, null, "ui_up", null, false, 13, null, "[Select Action]", null, false, 14, null, "ui_right", null, false, 15, null, "ui_page_down", null, false, 16, null, "ui_focus_next", null, false, 17, null, "ui_left", null, false, 18, null, "ui_focus_prev", null, false, 19, null, "ui_select", null, false, 20, null, "ui_cancel", null, false, 21, null, "ui_home", null, false, 22, null, "ui_down", null, false, 23, null, "ui_end", null, false, 24, null, "ui_up", null, false, 25, null, "ui_accept", null, false, 26, null, "ui_page_up", null, false, 27, null, "[Select Action]", null, false, 28, null, "ui_up", null, false, 29, null, "ui_accept", null, false, 30, null, "ui_focus_prev", null, false, 31, null, "ui_page_down", null, false, 32, null, "ui_cancel", null, false, 33, null, "ui_select", null, false, 34, null, "ui_focus_next", null, false, 35, null, "ui_right", null, false, 36, null, "ui_left", null, false, 37, null, "ui_end", null, false, 38, null, "ui_home", null, false, 39, null, "ui_down", null, false, 40, null, "ui_page_up", null, false, 41, null, "[Select Action]", null, false, 42, null, "ui_right", null, false, 43, null, "ui_left", null, false, 44, null, "ui_up", null, false, 45, null, "ui_page_up", null, false, 46, null, "ui_page_down", null, false, 47, null, "ui_end", null, false, 48, null, "ui_select", null, false, 49, null, "ui_focus_next", null, false, 50, null, "ui_accept", null, false, 51, null, "ui_focus_prev", null, false, 52, null, "ui_cancel", null, false, 53, null, "ui_down", null, false, 54, null, "ui_home", null, false, 55, null, "[Select Action]", null, false, 56, null, "ui_focus_next", null, false, 57, null, "ui_accept", null, false, 58, null, "ui_select", null, false, 59, null, "ui_focus_prev", null, false, 60, null, "ui_left", null, false, 61, null, "ui_down", null, false, 62, null, "ui_page_up", null, false, 63, null, "ui_page_down", null, false, 64, null, "ui_right", null, false, 65, null, "ui_home", null, false, 66, null, "ui_cancel", null, false, 67, null, "ui_up", null, false, 68, null, "ui_end", null, false, 69, null, "[Select Action]", null, false, 70, null, "ui_focus_next", null, false, 71, null, "ui_accept", null, false, 72, null, "ui_select", null, false, 73, null, "ui_focus_prev", null, false, 74, null, "ui_left", null, false, 75, null, "ui_down", null, false, 76, null, "ui_page_up", null, false, 77, null, "ui_page_down", null, false, 78, null, "ui_right", null, false, 79, null, "ui_home", null, false, 80, null, "ui_cancel", null, false, 81, null, "ui_up", null, false, 82, null, "ui_end", null, false, 83, null, "[Select Action]", null, false, 84, null, "ui_right", null, false, 85, null, "ui_cancel", null, false, 86, null, "ui_up", null, false, 87, null, "ui_page_up", null, false, 88, null, "ui_end", null, false, 89, null, "ui_select", null, false, 90, null, "ui_focus_next", null, false, 91, null, "ui_focus_prev", null, false, 92, null, "ui_page_down", null, false, 93, null, "ui_down", null, false, 94, null, "ui_left", null, false, 95, null, "ui_home", null, false, 96, null, "ui_accept", null, false, 97, null, "[Select Action]", null, false, 98, null, "ui_down", null, false, 99, null, "ui_left", null, false, 100, null, "ui_cancel", null, false, 101, null, "ui_right", null, false, 102, null, "ui_up", null, false, 103, null, "ui_select", null, false, 104, null, "ui_accept", null, false, 105, null, "ui_focus_prev", null, false, 106, null, "ui_page_down", null, false, 107, null, "ui_end", null, false, 108, null, "ui_page_up", null, false, 109, null, "ui_focus_next", null, false, 110, null, "ui_home", null, false, 111, null ]
+items = [ "[Select Action]", null, false, 0, null, "ui_down", null, false, 1, null, "ui_right", null, false, 2, null, "ui_end", null, false, 3, null, "ui_accept", null, false, 4, null, "ui_cancel", null, false, 5, null, "ui_up", null, false, 6, null, "ui_focus_next", null, false, 7, null, "ui_page_up", null, false, 8, null, "ui_page_down", null, false, 9, null, "ui_home", null, false, 10, null, "ui_left", null, false, 11, null, "ui_select", null, false, 12, null, "ui_focus_prev", null, false, 13, null ]
 selected = 0
 
 [node name="Label2" type="Label" parent="EditorTheme/VBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
@@ -844,22 +844,22 @@ text = "Background Texture"
 
 [node name="BackgroundTextureButton" type="Button" parent="EditorTheme/VBoxContainer/HBoxContainer4"]
 margin_left = 136.0
-margin_right = 160.0
+margin_right = 530.0
 margin_bottom = 20.0
-text = "..."
+text = "res://addons/dialogic/Images/background/background-2.png"
 
 [node name="Label2" type="Label" parent="EditorTheme/VBoxContainer/HBoxContainer4"]
-margin_left = 170.0
+margin_left = 540.0
 margin_top = 3.0
-margin_right = 302.0
+margin_right = 672.0
 margin_bottom = 17.0
 text = "Next dialog indicator"
 
 [node name="NextIndicatorButton" type="Button" parent="EditorTheme/VBoxContainer/HBoxContainer4"]
-margin_left = 312.0
-margin_right = 336.0
+margin_left = 682.0
+margin_right = 782.0
 margin_bottom = 20.0
-text = "..."
+text = "res://icon.png"
 
 [node name="HBoxContainer6" type="HBoxContainer" parent="EditorTheme/VBoxContainer"]
 margin_top = 156.0
@@ -924,6 +924,7 @@ margin_left = 123.0
 margin_right = 173.0
 margin_bottom = 30.0
 rect_min_size = Vector2( 50, 30 )
+color = Color( 0, 0, 0, 0.576471 )
 
 [node name="Label3" type="Label" parent="EditorTheme/VBoxContainer/HBoxContainer"]
 margin_left = 183.0
@@ -1094,6 +1095,7 @@ __meta__ = {
 [connection signal="pressed" from="EditorCharacter/NoCharacters/VBoxContainer/CenterContainer/Button" to="EditorCharacter" method="_on_New_Character_Button_pressed"]
 [connection signal="toggled" from="EditorCharacter/CharacterEditor/HBoxContainer/Container/Name/CheckBox" to="EditorCharacter" method="_on_CheckBox_toggled"]
 [connection signal="pressed" from="EditorCharacter/CharacterEditor/HBoxContainer/Container/ScrollContainer/VBoxContainer/HBoxContainer/Button" to="EditorCharacter" method="_on_New_Portrait_Button_pressed"]
+[connection signal="item_selected" from="EditorTheme/VBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/ActionOptionButton" to="EditorTheme" method="_on_ActionOptionButton_item_selected"]
 [connection signal="pressed" from="EditorTheme/VBoxContainer/HBoxContainer4/BackgroundTextureButton" to="EditorTheme" method="_on_BackgroundTextureButton_pressed"]
 [connection signal="pressed" from="EditorTheme/VBoxContainer/HBoxContainer4/NextIndicatorButton" to="EditorTheme" method="_on_NextIndicatorButton_pressed"]
 [connection signal="color_changed" from="EditorTheme/VBoxContainer/HBoxContainer6/ColorPickerButton" to="EditorTheme" method="_on_ColorPickerButton_color_changed"]

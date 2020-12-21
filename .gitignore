@@ -7,3 +7,4 @@ test-scenes
 /icon.png
 *.import
 /.vscode
+/addons/godot-plugin-refresher

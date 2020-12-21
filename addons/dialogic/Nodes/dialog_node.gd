@@ -9,12 +9,7 @@ var text_speed = 0.02 # Higher = lower speed
 var waiting_for_answer = false
 var waiting_for_input = false
 
-
-var WORKING_DIR = "res://dialogic"
-var TIMELINE_DIR = WORKING_DIR + "/dialogs"
-var CHAR_DIR = WORKING_DIR + "/characters"
 export(String) var timeline_id # Timeline-var-replace
-
 
 var dialog_resource
 export(Array, Resource) var dialog_characters
@@ -52,14 +47,14 @@ func parse_text(text):
 func _ready():
 	# Checking if the dialog should read the code from a external file
 	if timeline_id != '':
-		dialog_script = load_json(TIMELINE_DIR + '/' + timeline_id + '.json')
+		dialog_script = load_json(DialogicUtil.get_path('TIMELINE_DIR', '/' + timeline_id + '.json'))
 		print(dialog_script)
 	
 	# Setting everything up for the node to be default
 	$TextBubble/NameLabel.text = ''
 	$Background.visible = false
 	
-	# Loading theme properties
+	# Loading theme properties and settings
 	var settings = DialogicUtil.load_settings()
 	if settings.has('theme_text_color'):
 		$TextBubble/RichTextLabel.set('custom_colors/default_color', Color('#' + str(settings['theme_text_color'])))
@@ -76,7 +71,12 @@ func _ready():
 		$TextBubble/TextureRect.texture = load(settings['theme_background_image'])
 	if settings.has('theme_next_image'):
 		$TextBubble/NextIndicator.texture = load(settings['theme_next_image'])
-		
+	
+	if settings.has('theme_action_key'):
+		input_next = settings['theme_action_key']
+	
+	
+	
 	load_dialog()
 
 

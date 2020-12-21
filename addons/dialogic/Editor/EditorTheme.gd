@@ -5,6 +5,7 @@ var editor_reference
 
 func _ready():
 	var action_option_button = $VBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/ActionOptionButton
+	action_option_button.clear()
 	action_option_button.add_item('[Select Action]')
 	for a in InputMap.get_actions():
 		action_option_button.add_item(a)
@@ -30,9 +31,12 @@ func _ready():
 	if settings.has('theme_next_image'):
 		$VBoxContainer/HBoxContainer4/NextIndicatorButton.text = settings['theme_next_image']
 	
+	# Action
+	if settings.has('theme_action_key'):
+		$VBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/ActionOptionButton.text = settings['theme_action_key']
 	
 	#Refreshing the dialog 
-	#_on_PreviewButton_pressed()
+	_on_PreviewButton_pressed()
 
 func _on_BackgroundTextureButton_pressed():
 	editor_reference.godot_dialog("*.png")
@@ -84,3 +88,7 @@ func _on_PreviewButton_pressed():
 		"text": $VBoxContainer/HBoxContainer5/TextEdit.text
 	}]
 	$VBoxContainer/Panel.add_child(preview_dialog)
+
+
+func _on_ActionOptionButton_item_selected(index):
+	DialogicUtil.update_setting('theme_action_key', $VBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/ActionOptionButton.text)
