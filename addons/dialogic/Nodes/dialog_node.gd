@@ -12,7 +12,7 @@ var waiting_for_input = false
 export(String) var timeline_id # Timeline-var-replace
 
 var dialog_resource
-export(Array, Resource) var dialog_characters
+var characters
 
 onready var Portrait = load("res://addons/dialogic/Nodes/Portrait.tscn")
 var dialog_script = {}
@@ -22,12 +22,12 @@ func parse_text(text):
 	var end_text = text
 	
 	# for character variables
-	if '{' and '}' in end_text:
-		for c in dialog_characters: #dialog_resource.characters:
-			if c.name in end_text:
-				end_text = end_text.replace('{' + c.name + '}',
-					'[color=#' + c.color.to_html() + ']' + c.name + '[/color]'
-				)
+	#if '{' and '}' in end_text:
+	#	for c in characters: #dialog_resource.characters:
+	#		if c.name in end_text:
+	#			end_text = end_text.replace('{' + c.name + '}',
+	#				'[color=#' + c.color.to_html() + ']' + c.name + '[/color]'
+	#			)
 		
 	var c_variable
 	#for key in dialog_resource.custom_variables.keys():
@@ -54,31 +54,40 @@ func _ready():
 	$TextBubble/NameLabel.text = ''
 	$Background.visible = false
 	
+	# Getting the character information
+	characters = DialogicUtil.get_character_list()
+	print(characters)
+	
 	# Loading theme properties and settings
-	var settings = DialogicUtil.load_settings()
+	var settings = DialogicUtil.load_settings()	
 	if settings.has('theme_font'):
 		$TextBubble/RichTextLabel.set('custom_fonts/normal_font', load(settings['theme_font']))
+		$TextBubble/NameLabel.set('custom_fonts/normal_font', load(settings['theme_font']))
 	# Text
 	if settings.has('theme_text_color'):
 		$TextBubble/RichTextLabel.set('custom_colors/default_color', Color('#' + str(settings['theme_text_color'])))
+		$TextBubble/NameLabel.set('custom_colors/default_color', Color('#' + str(settings['theme_text_color'])))
 	if settings.has('theme_text_shadow'):
 		if settings['theme_text_shadow']:
 			if settings.has('theme_text_shadow_color'):
 				$TextBubble/RichTextLabel.set('custom_colors/font_color_shadow', Color('#' + str(settings['theme_text_shadow_color'])))
+				$TextBubble/NameLabel.set('custom_colors/font_color_shadow', Color('#' + str(settings['theme_text_shadow_color'])))
 	if settings.has('theme_shadow_offset_x'):
 		$TextBubble/RichTextLabel.set('custom_constants/shadow_offset_x', settings['theme_shadow_offset_x'])
+		$TextBubble/NameLabel.set('custom_constants/shadow_offset_x', settings['theme_shadow_offset_x'])
 	if settings.has('theme_shadow_offset_y'):
 		$TextBubble/RichTextLabel.set('custom_constants/shadow_offset_y', settings['theme_shadow_offset_y'])
+		$TextBubble/NameLabel.set('custom_constants/shadow_offset_y', settings['theme_shadow_offset_y'])
 	# Text speed
 	if settings.has('theme_text_speed'):
 		text_speed = settings['theme_text_speed'] * 0.01
 	# Margin
 	if settings.has('theme_text_margin'):
-		if settings.has('theme_text_margin_h'):
-			$TextBubble/RichTextLabel.set('margin_left', settings['theme_text_margin_h'])
-			$TextBubble/RichTextLabel.set('margin_top', settings['theme_text_margin'])
-			$TextBubble/RichTextLabel.set('margin_right', settings['theme_text_margin_h'] * -1)
-			$TextBubble/RichTextLabel.set('margin_bottom', settings['theme_text_margin'] * -1)
+		$TextBubble/RichTextLabel.set('margin_top', settings['theme_text_margin'])
+		$TextBubble/RichTextLabel.set('margin_bottom', settings['theme_text_margin'] * -1)
+	if settings.has('theme_text_margin_h'):
+		$TextBubble/RichTextLabel.set('margin_left', settings['theme_text_margin_h'])
+		$TextBubble/RichTextLabel.set('margin_right', settings['theme_text_margin_h'] * -1)
 	# Images
 	if settings.has('theme_background_image'):
 		$TextBubble/TextureRect.texture = load(settings['theme_background_image'])
@@ -125,9 +134,14 @@ func start_text_tween():
 	$TextBubble/Tween.start()
 
 
-func update_name(name_string, color='FFFFFF'):
-	var parsed_name = parse_text(name_string)
-	$TextBubble/NameLabel.bbcode_text = '[color=#' + color + ']' + parsed_name + '[/color]'
+func update_name(character, color='FFFFFF'):
+	if str(character) == '':
+		$TextBubble/NameLabel.bbcode_text = ''
+	else:
+		var parsed_name = character['name']
+		if character.has('color'):
+			color = character['color'].to_html()
+		$TextBubble/NameLabel.bbcode_text = '[color=#' + color + ']' + parsed_name + '[/color]'
 	return true
 
 
@@ -154,16 +168,15 @@ func load_dialog(skip_add = false):
 		dialog_index += 1
 
 
-func get_character_variable(name):
-	for c in dialog_characters:#dialog_resource.characters:
-		if c.name == name:
-			return c
-	#push_error('DialogCharacterResource [' + name + '] does not exists. Make sure the name field is not empty.')
-	return false
-
-
 func reset_dialog_extras():
 	$TextBubble/NameLabel.bbcode_text = ''
+
+
+func get_character(character_id):
+	for c in characters:
+		if c['file'] == character_id:
+			return c
+	return ''
 
 
 func event_handler(event):
@@ -173,8 +186,7 @@ func event_handler(event):
 		{'text', 'character'}, {'text', 'character', ..}:
 			show_dialog()
 			finished = false
-			#var character_data = get_character_variable(event['character'])
-			##update_name(character_data.name, character_data.color.to_html())
+			update_name(get_character(event['character']))
 			#var exists = false
 			#var existing
 			#for portrait in $Portraits.get_children():
@@ -196,14 +208,14 @@ func event_handler(event):
 			#		p.init('left') # Default character position
 			#	$Portraits.add_child(p)
 			#	p.fade_in()
-			
+
 			update_text(event['text'])
 		{'question', ..}:
 			show_dialog()
 			finished = false
 			waiting_for_answer = true
 			if event.has('name'):
-				update_name(event['name'])			
+				update_name(event['name'])
 			update_text(event['question'])
 			for o in event['options']:
 				var button = Button.new()
