@@ -1,7 +1,8 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://icon.png" type="Texture" id=1]
 [ext_resource path="res://addons/dialogic/Images/background/background-2.png" type="Texture" id=2]
+[ext_resource path="res://addons/dialogic/Fonts/DefaultFont.tres" type="DynamicFont" id=3]
 [ext_resource path="res://addons/dialogic/Nodes/dialog_node.gd" type="Script" id=6]
 
 [sub_resource type="StyleBoxFlat" id=1]
@@ -82,6 +83,7 @@ margin_right = -15.0
 margin_bottom = -15.0
 rect_clip_content = false
 custom_styles/normal = SubResource( 1 )
+custom_fonts/normal_font = ExtResource( 3 )
 custom_colors/default_color = Color( 1, 1, 1, 1 )
 custom_colors/font_color_shadow = Color( 0, 0, 0, 0.576471 )
 custom_constants/shadow_offset_x = 1

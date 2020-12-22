@@ -31,6 +31,8 @@ Yes, you can use Dialogic to make any kind of game (even commercial ones). The p
    - Set background and next indicator images
    - Choose an action to trigger the "next" event
    - Preview changes in a dialog
+   - Change text speed
+   - Set text margins
  - Characters tab
    - Added context menu
    - Moved the Remove Character button to a context menu

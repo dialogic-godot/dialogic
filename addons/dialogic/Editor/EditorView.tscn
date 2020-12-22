@@ -893,7 +893,9 @@ text = "Text speed (bigger = slower)"
 margin_left = 684.0
 margin_right = 758.0
 margin_bottom = 30.0
+max_value = 10.0
 value = 2.0
+rounded = true
 
 [node name="HBoxContainer" type="HBoxContainer" parent="EditorTheme/VBoxContainer"]
 margin_top = 162.0
@@ -927,35 +929,46 @@ margin_right = 274.0
 margin_bottom = 22.0
 text = "Shadow Offset"
 
-[node name="Label5" type="Label" parent="EditorTheme/VBoxContainer/HBoxContainer"]
-margin_left = 284.0
-margin_top = 8.0
-margin_right = 292.0
-margin_bottom = 22.0
-text = "X"
-
 [node name="ShadowOffsetX" type="SpinBox" parent="EditorTheme/VBoxContainer/HBoxContainer"]
-margin_left = 302.0
-margin_right = 376.0
+margin_left = 284.0
+margin_right = 358.0
 margin_bottom = 30.0
 value = 1.0
 rounded = true
 allow_lesser = true
-
-[node name="Label4" type="Label" parent="EditorTheme/VBoxContainer/HBoxContainer"]
-margin_left = 386.0
-margin_top = 8.0
-margin_right = 393.0
-margin_bottom = 22.0
-text = "Y"
+prefix = "X"
 
 [node name="ShadowOffsetY" type="SpinBox" parent="EditorTheme/VBoxContainer/HBoxContainer"]
-margin_left = 403.0
-margin_right = 477.0
+margin_left = 368.0
+margin_right = 442.0
 margin_bottom = 30.0
 value = 1.0
 rounded = true
 allow_lesser = true
+prefix = "Y"
+
+[node name="Label6" type="Label" parent="EditorTheme/VBoxContainer/HBoxContainer"]
+margin_left = 452.0
+margin_top = 8.0
+margin_right = 559.0
+margin_bottom = 22.0
+text = "        Text margin"
+
+[node name="TextMargin" type="SpinBox" parent="EditorTheme/VBoxContainer/HBoxContainer"]
+margin_left = 569.0
+margin_right = 643.0
+margin_bottom = 30.0
+value = 15.0
+rounded = true
+prefix = "V"
+
+[node name="TextMarginH" type="SpinBox" parent="EditorTheme/VBoxContainer/HBoxContainer"]
+margin_left = 653.0
+margin_right = 727.0
+margin_bottom = 30.0
+value = 15.0
+rounded = true
+prefix = "H"
 
 [node name="HBoxContainer5" type="HBoxContainer" parent="EditorTheme/VBoxContainer"]
 margin_top = 207.0
@@ -1100,6 +1113,8 @@ __meta__ = {
 [connection signal="color_changed" from="EditorTheme/VBoxContainer/HBoxContainer/ColorPickerButtonShadow" to="EditorTheme" method="_on_ColorPickerButtonShadow_color_changed"]
 [connection signal="value_changed" from="EditorTheme/VBoxContainer/HBoxContainer/ShadowOffsetX" to="EditorTheme" method="_on_ShadowOffset_value_changed"]
 [connection signal="value_changed" from="EditorTheme/VBoxContainer/HBoxContainer/ShadowOffsetY" to="EditorTheme" method="_on_ShadowOffset_value_changed"]
+[connection signal="value_changed" from="EditorTheme/VBoxContainer/HBoxContainer/TextMargin" to="EditorTheme" method="_on_TextMargin_value_changed"]
+[connection signal="value_changed" from="EditorTheme/VBoxContainer/HBoxContainer/TextMarginH" to="EditorTheme" method="_on_TextMarginH_value_changed"]
 [connection signal="pressed" from="EditorTheme/VBoxContainer/HBoxContainer3/PreviewButton" to="EditorTheme" method="_on_PreviewButton_pressed"]
 [connection signal="id_pressed" from="TimelinePopupMenu" to="." method="_on_TimelinePopupMenu_id_pressed"]
 [connection signal="id_pressed" from="CharacterPopupMenu" to="EditorCharacter" method="_on_CharacterPopupMenu_id_pressed"]

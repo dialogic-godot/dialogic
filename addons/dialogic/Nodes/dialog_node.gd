@@ -72,8 +72,13 @@ func _ready():
 	# Text speed
 	if settings.has('theme_text_speed'):
 		text_speed = settings['theme_text_speed'] * 0.01
-		print('Text speed: ', text_speed)
-	
+	# Margin
+	if settings.has('theme_text_margin'):
+		if settings.has('theme_text_margin_h'):
+			$TextBubble/RichTextLabel.set('margin_left', settings['theme_text_margin_h'])
+			$TextBubble/RichTextLabel.set('margin_top', settings['theme_text_margin'])
+			$TextBubble/RichTextLabel.set('margin_right', settings['theme_text_margin_h'] * -1)
+			$TextBubble/RichTextLabel.set('margin_bottom', settings['theme_text_margin'] * -1)
 	# Images
 	if settings.has('theme_background_image'):
 		$TextBubble/TextureRect.texture = load(settings['theme_background_image'])

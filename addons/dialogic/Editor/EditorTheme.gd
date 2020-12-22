@@ -22,7 +22,11 @@ func _ready():
 	# Text speed
 	if settings.has('theme_text_speed'):
 		$VBoxContainer/HBoxContainer6/TextSpeed.value = settings['theme_text_speed']
-
+	# Margin
+	if settings.has('theme_text_margin'):
+		$VBoxContainer/HBoxContainer/TextMargin.value = settings['theme_text_margin']
+	if settings.has('theme_text_margin_h'):
+		$VBoxContainer/HBoxContainer/TextMarginH.value = settings['theme_text_margin_h']
 	
 	# Images
 	if settings.has('theme_background_image'):
@@ -115,4 +119,11 @@ func _on_Font_selected(path, target):
 
 func _on_textSpeed_value_changed(value):
 	DialogicUtil.update_setting('theme_text_speed', value)
-	
+
+
+func _on_TextMargin_value_changed(value):
+	DialogicUtil.update_setting('theme_text_margin', value)
+
+
+func _on_TextMarginH_value_changed(value):
+	DialogicUtil.update_setting('theme_text_margin_h', value)
