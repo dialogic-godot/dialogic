@@ -459,7 +459,7 @@ margin_right = 180.0
 margin_bottom = 541.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-items = [ "Narrator", ExtResource( 7 ), false, "Shia", ExtResource( 7 ), false, "Lyra", ExtResource( 7 ), false ]
+items = [ "Lyra", ExtResource( 7 ), false, "Shia", ExtResource( 7 ), false, "Narrator", ExtResource( 7 ), false ]
 allow_rmb_select = true
 
 [node name="NoCharacters" type="CenterContainer" parent="EditorCharacter"]
@@ -797,10 +797,10 @@ margin_right = 511.0
 margin_bottom = 38.0
 
 [node name="ActionOptionButton" type="OptionButton" parent="EditorTheme/VBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
-margin_right = 76.0
+margin_right = 104.0
 margin_bottom = 20.0
 size_flags_horizontal = 0
-text = "ui_right"
+text = "mouse_test"
 items = [ "[Select Action]", null, false, 0, null, "ui_accept", null, false, 1, null, "ui_select", null, false, 2, null, "ui_cancel", null, false, 3, null, "ui_focus_next", null, false, 4, null, "ui_focus_prev", null, false, 5, null, "ui_left", null, false, 6, null, "ui_right", null, false, 7, null, "ui_up", null, false, 8, null, "ui_down", null, false, 9, null, "ui_page_up", null, false, 10, null, "ui_page_down", null, false, 11, null, "ui_home", null, false, 12, null, "ui_end", null, false, 13, null ]
 selected = 0
 
@@ -885,16 +885,15 @@ text = "res://addons/dialogic/Fonts/DefaultFont.tres"
 [node name="Label3" type="Label" parent="EditorTheme/VBoxContainer/HBoxContainer6"]
 margin_left = 495.0
 margin_top = 8.0
-margin_right = 565.0
+margin_right = 674.0
 margin_bottom = 22.0
-text = "Text speed"
+text = "Text speed (bigger = slower)"
 
-[node name="ShadowOffsetX2" type="SpinBox" parent="EditorTheme/VBoxContainer/HBoxContainer6"]
-margin_left = 575.0
-margin_right = 649.0
+[node name="TextSpeed" type="SpinBox" parent="EditorTheme/VBoxContainer/HBoxContainer6"]
+margin_left = 684.0
+margin_right = 758.0
 margin_bottom = 30.0
-value = 1.0
-prefix = "0."
+value = 2.0
 
 [node name="HBoxContainer" type="HBoxContainer" parent="EditorTheme/VBoxContainer"]
 margin_top = 162.0
@@ -919,7 +918,7 @@ margin_left = 123.0
 margin_right = 173.0
 margin_bottom = 30.0
 rect_min_size = Vector2( 50, 30 )
-color = Color( 0, 0, 0, 0.576471 )
+color = Color( 0.207843, 0.968627, 0.898039, 0.576471 )
 
 [node name="Label3" type="Label" parent="EditorTheme/VBoxContainer/HBoxContainer"]
 margin_left = 183.0
@@ -1096,7 +1095,7 @@ __meta__ = {
 [connection signal="pressed" from="EditorTheme/VBoxContainer/HBoxContainer4/NextIndicatorButton" to="EditorTheme" method="_on_NextIndicatorButton_pressed"]
 [connection signal="color_changed" from="EditorTheme/VBoxContainer/HBoxContainer6/ColorPickerButton" to="EditorTheme" method="_on_ColorPickerButton_color_changed"]
 [connection signal="pressed" from="EditorTheme/VBoxContainer/HBoxContainer6/FontButton" to="EditorTheme" method="_on_FontButton_pressed"]
-[connection signal="value_changed" from="EditorTheme/VBoxContainer/HBoxContainer6/ShadowOffsetX2" to="EditorTheme" method="_on_ShadowOffset_value_changed"]
+[connection signal="value_changed" from="EditorTheme/VBoxContainer/HBoxContainer6/TextSpeed" to="EditorTheme" method="_on_textSpeed_value_changed"]
 [connection signal="toggled" from="EditorTheme/VBoxContainer/HBoxContainer/CheckBoxShadow" to="EditorTheme" method="_on_CheckBoxShadow_toggled"]
 [connection signal="color_changed" from="EditorTheme/VBoxContainer/HBoxContainer/ColorPickerButtonShadow" to="EditorTheme" method="_on_ColorPickerButtonShadow_color_changed"]
 [connection signal="value_changed" from="EditorTheme/VBoxContainer/HBoxContainer/ShadowOffsetX" to="EditorTheme" method="_on_ShadowOffset_value_changed"]

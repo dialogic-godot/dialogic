@@ -19,7 +19,11 @@ func _ready():
 		$VBoxContainer/HBoxContainer/ShadowOffsetX.value = settings['theme_shadow_offset_x']
 	if settings.has('theme_shadow_offset_y'):
 		$VBoxContainer/HBoxContainer/ShadowOffsetY.value = settings['theme_shadow_offset_y']
+	# Text speed
+	if settings.has('theme_text_speed'):
+		$VBoxContainer/HBoxContainer6/TextSpeed.value = settings['theme_text_speed']
 
+	
 	# Images
 	if settings.has('theme_background_image'):
 		$VBoxContainer/HBoxContainer4/BackgroundTextureButton.text = settings['theme_background_image']
@@ -107,3 +111,8 @@ func _on_FontButton_pressed():
 func _on_Font_selected(path, target):
 	DialogicUtil.update_setting('theme_font', path)
 	$VBoxContainer/HBoxContainer6/FontButton.text = path
+
+
+func _on_textSpeed_value_changed(value):
+	DialogicUtil.update_setting('theme_text_speed', value)
+	

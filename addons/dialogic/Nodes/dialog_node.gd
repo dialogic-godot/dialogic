@@ -69,7 +69,12 @@ func _ready():
 		$TextBubble/RichTextLabel.set('custom_constants/shadow_offset_x', settings['theme_shadow_offset_x'])
 	if settings.has('theme_shadow_offset_y'):
 		$TextBubble/RichTextLabel.set('custom_constants/shadow_offset_y', settings['theme_shadow_offset_y'])
+	# Text speed
+	if settings.has('theme_text_speed'):
+		text_speed = settings['theme_text_speed'] * 0.01
+		print('Text speed: ', text_speed)
 	
+	# Images
 	if settings.has('theme_background_image'):
 		$TextBubble/TextureRect.texture = load(settings['theme_background_image'])
 	if settings.has('theme_next_image'):
