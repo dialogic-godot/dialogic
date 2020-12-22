@@ -79,6 +79,7 @@ static func get_character_list():
 			var c_name = data['id']
 			var default_speaker = 'false'
 			var portraits = []
+			var display_name = ''
 			if data.has('color'):
 				color = Color('#' + data['color'])
 			if data.has('name'):
@@ -87,12 +88,18 @@ static func get_character_list():
 				default_speaker = data['default_speaker']
 			if data.has('portraits'):
 				portraits = data['portraits']
+			if data.has('display_name'):
+				if data['display_name_bool']:
+					if data.has('display_name'):
+						display_name = data['display_name']
+						
 			characters.append({
 				'name': c_name,
 				'color': color,
 				'file': file,
 				'default_speaker' : default_speaker,
 				'portraits': portraits,
+				'display_name': display_name
 			})
 
 	return characters

@@ -12,6 +12,8 @@ onready var character_editor = {
 	'file': $CharacterEditor/HBoxContainer/Container/FileName/LineEdit,
 	'color': $CharacterEditor/HBoxContainer/Container/Color/ColorPickerButton,
 	'default_speaker': $CharacterEditor/HBoxContainer/Container/Actions/DefaultSpeaker,
+	'display_name_checkbox': $CharacterEditor/HBoxContainer/Container/Name/CheckBox,
+	'display_name': $CharacterEditor/HBoxContainer/Container/DisplayName/LineEdit,
 }
 
 func _ready():
@@ -51,6 +53,8 @@ func clear_character_editor():
 	character_editor['description'].text = ''
 	character_editor['color'].color = Color('#ffffff')
 	character_editor['default_speaker'].pressed = false
+	character_editor['display_name_checkbox'].pressed = false
+	character_editor['display_name'].text = ''
 	character_editor['portraits'] = []
 	# Clearing portraits
 	for p in $CharacterEditor/HBoxContainer/Container/ScrollContainer/VBoxContainer/PortraitList.get_children():
@@ -107,7 +111,9 @@ func generate_character_data_to_save():
 		'description': character_editor['description'].text,
 		'color': character_editor['color'].color.to_html(),
 		'default_speaker': default_speaker,
-		'portraits': portraits
+		'portraits': portraits,
+		'display_name_bool': character_editor['display_name_checkbox'].pressed,
+		'display_name': character_editor['display_name'].text,
 	}
 	# Adding name later for cases when no name is provided
 	if character_editor['name'].text != '':
@@ -148,7 +154,12 @@ func load_character_editor(data):
 	if data.has('default_speaker'):
 		if data['default_speaker'] == 'true':
 			character_editor['default_speaker'].pressed = true
-			
+	
+	if data.has('display_name_bool'):
+		character_editor['display_name_checkbox'].pressed = data['display_name_bool']
+	if data.has('display_name'):
+		character_editor['display_name'].text = data['display_name']
+
 	# Portraits
 	var default_portrait = create_portrait_entry()
 	default_portrait.get_node('NameEdit').text = 'Default'
