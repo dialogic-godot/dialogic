@@ -2,8 +2,6 @@ tool
 extends Control
 class_name DialogNode, "res://addons/dialogic/Images/icon.svg"
 
-var preview_mode = false
-
 var input_next = 'ui_accept'
 var dialog_index = 0
 var finished = false
@@ -81,7 +79,6 @@ func _ready():
 		input_next = settings['theme_action_key']
 	
 	
-	
 	load_dialog()
 
 
@@ -93,7 +90,7 @@ func _process(_delta):
 	else:
 		$Options.visible = false
 	
-	if preview_mode == false:
+	if Engine.is_editor_hint() == false:
 		if Input.is_action_just_pressed(input_next):
 			if $TextBubble/Tween.is_active():
 				# Skip to end if key is pressed during the text animation
@@ -141,7 +138,8 @@ func load_dialog(skip_add = false):
 		if dialog_index < dialog_script['events'].size():
 			event_handler(dialog_script['events'][dialog_index])
 		else:
-			queue_free()
+			if Engine.is_editor_hint() == false:
+				queue_free()
 	if skip_add == false:
 		dialog_index += 1
 
