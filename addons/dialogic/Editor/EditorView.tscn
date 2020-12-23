@@ -1,4 +1,4 @@
-[gd_scene load_steps=32 format=2]
+[gd_scene load_steps=33 format=2]
 
 [ext_resource path="res://addons/dialogic/Editor/editor_view.gd" type="Script" id=1]
 [ext_resource path="res://addons/dialogic/Images/dialog.svg" type="Texture" id=2]
@@ -23,6 +23,7 @@
 [ext_resource path="res://addons/dialogic/Editor/EditorCharacter.gd" type="Script" id=21]
 [ext_resource path="res://addons/dialogic/Images/Remove.svg" type="Texture" id=22]
 [ext_resource path="res://addons/dialogic/Editor/CharacterEditor/PortraitEntry.tscn" type="PackedScene" id=23]
+[ext_resource path="res://addons/dialogic/Images/plugin-editor-icon.svg" type="Texture" id=24]
 [ext_resource path="res://addons/dialogic/Images/Rename.svg" type="Texture" id=25]
 [ext_resource path="res://addons/dialogic/Images/Filesystem.svg" type="Texture" id=26]
 [ext_resource path="res://addons/dialogic/Editor/EditorTheme.gd" type="Script" id=28]
@@ -431,6 +432,7 @@ icon = ExtResource( 8 )
 align = 0
 
 [node name="EditorCharacter" type="HSplitContainer" parent="."]
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 6.0
@@ -458,7 +460,7 @@ margin_right = 180.0
 margin_bottom = 541.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-items = [ "Lyra", ExtResource( 7 ), false, "Shia", ExtResource( 7 ), false, "Narrator", ExtResource( 7 ), false ]
+items = [ "Narrator", ExtResource( 7 ), false, "Shia", ExtResource( 7 ), false, "Lyra", ExtResource( 7 ), false ]
 allow_rmb_select = true
 
 [node name="NoCharacters" type="CenterContainer" parent="EditorCharacter"]
@@ -748,7 +750,6 @@ __meta__ = {
 }
 
 [node name="EditorTheme" type="ScrollContainer" parent="."]
-visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 6.0
@@ -761,246 +762,296 @@ __meta__ = {
 }
 
 [node name="VBoxContainer" type="VBoxContainer" parent="EditorTheme"]
-margin_right = 997.0
-margin_bottom = 657.0
+margin_right = 1023.0
+margin_bottom = 604.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_constants/separation = 15
 
-[node name="Label" type="Label" parent="EditorTheme/VBoxContainer"]
-margin_right = 985.0
-margin_bottom = 14.0
-text = "Dialog Settings"
+[node name="HBoxContainer2" type="HBoxContainer" parent="EditorTheme/VBoxContainer"]
+margin_right = 1023.0
+margin_bottom = 214.0
 
-[node name="VBoxContainer" type="VBoxContainer" parent="EditorTheme/VBoxContainer"]
-margin_top = 29.0
-margin_right = 985.0
-margin_bottom = 67.0
-
-[node name="HBoxContainer" type="HBoxContainer" parent="EditorTheme/VBoxContainer/VBoxContainer"]
-margin_right = 985.0
-margin_bottom = 38.0
-custom_constants/separation = 16
+[node name="Text" type="VBoxContainer" parent="EditorTheme/VBoxContainer/HBoxContainer2"]
+margin_right = 483.0
+margin_bottom = 214.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Label" type="Label" parent="EditorTheme/VBoxContainer/VBoxContainer/HBoxContainer"]
-margin_right = 67.0
-margin_bottom = 38.0
-size_flags_vertical = 5
-text = "Action key"
-
-[node name="VBoxContainer" type="VBoxContainer" parent="EditorTheme/VBoxContainer/VBoxContainer/HBoxContainer"]
-margin_left = 83.0
-margin_right = 511.0
-margin_bottom = 38.0
-
-[node name="ActionOptionButton" type="OptionButton" parent="EditorTheme/VBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
-margin_right = 104.0
-margin_bottom = 20.0
-size_flags_horizontal = 0
-text = "mouse_test"
-items = [ "[Select Action]", null, false, 0, null, "ui_accept", null, false, 1, null, "ui_select", null, false, 2, null, "ui_cancel", null, false, 3, null, "ui_focus_next", null, false, 4, null, "ui_focus_prev", null, false, 5, null, "ui_left", null, false, 6, null, "ui_right", null, false, 7, null, "ui_up", null, false, 8, null, "ui_down", null, false, 9, null, "ui_page_up", null, false, 10, null, "ui_page_down", null, false, 11, null, "ui_home", null, false, 12, null, "ui_end", null, false, 13, null ]
-selected = 0
-
-[node name="Label2" type="Label" parent="EditorTheme/VBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
-self_modulate = Color( 1, 1, 1, 0.607843 )
-margin_top = 24.0
-margin_right = 428.0
-margin_bottom = 38.0
-text = "To add/remove actions go to Project > Project Settings > Input Map"
-
-[node name="HBoxContainer4" type="HBoxContainer" parent="EditorTheme/VBoxContainer"]
-margin_top = 82.0
-margin_right = 985.0
-margin_bottom = 102.0
-custom_constants/separation = 10
-
-[node name="Label" type="Label" parent="EditorTheme/VBoxContainer/HBoxContainer4"]
-margin_top = 3.0
-margin_right = 126.0
-margin_bottom = 17.0
-text = "Background Texture"
-
-[node name="BackgroundTextureButton" type="Button" parent="EditorTheme/VBoxContainer/HBoxContainer4"]
-margin_left = 136.0
-margin_right = 530.0
-margin_bottom = 20.0
-text = "res://addons/dialogic/Images/background/background-2.png"
-
-[node name="Label2" type="Label" parent="EditorTheme/VBoxContainer/HBoxContainer4"]
-margin_left = 540.0
-margin_top = 3.0
-margin_right = 672.0
-margin_bottom = 17.0
-text = "Next dialog indicator"
-
-[node name="NextIndicatorButton" type="Button" parent="EditorTheme/VBoxContainer/HBoxContainer4"]
-margin_left = 682.0
-margin_right = 782.0
-margin_bottom = 20.0
-text = "res://icon.png"
-
-[node name="HBoxContainer6" type="HBoxContainer" parent="EditorTheme/VBoxContainer"]
-margin_top = 117.0
-margin_right = 985.0
-margin_bottom = 147.0
-custom_constants/separation = 10
-
-[node name="Label2" type="Label" parent="EditorTheme/VBoxContainer/HBoxContainer6"]
-margin_top = 8.0
-margin_right = 63.0
-margin_bottom = 22.0
-text = "Text color"
-
-[node name="ColorPickerButton" type="ColorPickerButton" parent="EditorTheme/VBoxContainer/HBoxContainer6"]
-margin_left = 73.0
-margin_right = 123.0
+[node name="PanelContainer" type="Panel" parent="EditorTheme/VBoxContainer/HBoxContainer2/Text"]
+margin_right = 483.0
 margin_bottom = 30.0
-rect_min_size = Vector2( 50, 30 )
-color = Color( 1, 1, 1, 1 )
+rect_min_size = Vector2( 0, 30 )
 
-[node name="Control" type="Control" parent="EditorTheme/VBoxContainer/HBoxContainer6"]
-margin_left = 133.0
-margin_right = 143.0
-margin_bottom = 30.0
-rect_min_size = Vector2( 10, 0 )
+[node name="Label" type="Label" parent="EditorTheme/VBoxContainer/HBoxContainer2/Text/PanelContainer"]
+margin_right = 40.0
+margin_bottom = 14.0
+text = "Text"
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
-[node name="Label" type="Label" parent="EditorTheme/VBoxContainer/HBoxContainer6"]
-margin_left = 153.0
-margin_top = 8.0
-margin_right = 181.0
-margin_bottom = 22.0
+[node name="GridContainer" type="GridContainer" parent="EditorTheme/VBoxContainer/HBoxContainer2/Text"]
+margin_top = 34.0
+margin_right = 483.0
+margin_bottom = 214.0
+size_flags_horizontal = 3
+custom_constants/hseparation = 10
+columns = 2
+
+[node name="Label5" type="Label" parent="EditorTheme/VBoxContainer/HBoxContainer2/Text/GridContainer"]
+margin_top = 3.0
+margin_right = 179.0
+margin_bottom = 17.0
+size_flags_horizontal = 3
 text = "Font"
 
-[node name="FontButton" type="Button" parent="EditorTheme/VBoxContainer/HBoxContainer6"]
-margin_left = 191.0
-margin_top = 5.0
-margin_right = 485.0
-margin_bottom = 25.0
+[node name="FontButton" type="Button" parent="EditorTheme/VBoxContainer/HBoxContainer2/Text/GridContainer"]
+margin_left = 189.0
+margin_right = 483.0
+margin_bottom = 20.0
 size_flags_vertical = 4
 text = "res://addons/dialogic/Fonts/DefaultFont.tres"
 
-[node name="Label3" type="Label" parent="EditorTheme/VBoxContainer/HBoxContainer6"]
-margin_left = 495.0
-margin_top = 8.0
-margin_right = 674.0
-margin_bottom = 22.0
+[node name="Label3" type="Label" parent="EditorTheme/VBoxContainer/HBoxContainer2/Text/GridContainer"]
+margin_top = 32.0
+margin_right = 179.0
+margin_bottom = 46.0
+text = "Color"
+
+[node name="ColorPickerButton" type="ColorPickerButton" parent="EditorTheme/VBoxContainer/HBoxContainer2/Text/GridContainer"]
+margin_left = 189.0
+margin_top = 24.0
+margin_right = 483.0
+margin_bottom = 54.0
+rect_min_size = Vector2( 50, 30 )
+color = Color( 1, 1, 1, 1 )
+
+[node name="Label6" type="Label" parent="EditorTheme/VBoxContainer/HBoxContainer2/Text/GridContainer"]
+margin_top = 63.0
+margin_right = 179.0
+margin_bottom = 77.0
 text = "Text speed (bigger = slower)"
 
-[node name="TextSpeed" type="SpinBox" parent="EditorTheme/VBoxContainer/HBoxContainer6"]
-margin_left = 684.0
-margin_right = 758.0
-margin_bottom = 30.0
+[node name="TextSpeed" type="SpinBox" parent="EditorTheme/VBoxContainer/HBoxContainer2/Text/GridContainer"]
+margin_left = 189.0
+margin_top = 58.0
+margin_right = 483.0
+margin_bottom = 82.0
 max_value = 10.0
 value = 2.0
 rounded = true
 
-[node name="HBoxContainer" type="HBoxContainer" parent="EditorTheme/VBoxContainer"]
-margin_top = 162.0
-margin_right = 985.0
-margin_bottom = 192.0
-custom_constants/separation = 10
+[node name="HSeparator" type="HSeparator" parent="EditorTheme/VBoxContainer/HBoxContainer2/Text/GridContainer"]
+margin_top = 86.0
+margin_right = 179.0
+margin_bottom = 90.0
 
-[node name="Label2" type="Label" parent="EditorTheme/VBoxContainer/HBoxContainer"]
-margin_top = 8.0
-margin_right = 79.0
-margin_bottom = 22.0
-text = "Text shadow"
+[node name="HSeparator2" type="HSeparator" parent="EditorTheme/VBoxContainer/HBoxContainer2/Text/GridContainer"]
+margin_left = 189.0
+margin_top = 86.0
+margin_right = 483.0
+margin_bottom = 90.0
 
-[node name="CheckBoxShadow" type="CheckBox" parent="EditorTheme/VBoxContainer/HBoxContainer"]
-margin_left = 89.0
-margin_right = 113.0
-margin_bottom = 30.0
+[node name="Label2" type="Label" parent="EditorTheme/VBoxContainer/HBoxContainer2/Text/GridContainer"]
+margin_top = 99.0
+margin_right = 179.0
+margin_bottom = 113.0
+text = "Enable Shadow"
 
-[node name="ColorPickerButtonShadow" type="ColorPickerButton" parent="EditorTheme/VBoxContainer/HBoxContainer"]
-margin_left = 123.0
-margin_right = 173.0
-margin_bottom = 30.0
+[node name="CheckBoxShadow" type="CheckBox" parent="EditorTheme/VBoxContainer/HBoxContainer2/Text/GridContainer"]
+margin_left = 189.0
+margin_top = 94.0
+margin_right = 483.0
+margin_bottom = 118.0
+pressed = true
+
+[node name="Label" type="Label" parent="EditorTheme/VBoxContainer/HBoxContainer2/Text/GridContainer"]
+margin_top = 130.0
+margin_right = 179.0
+margin_bottom = 144.0
+text = "Shadow Color"
+
+[node name="ColorPickerButtonShadow" type="ColorPickerButton" parent="EditorTheme/VBoxContainer/HBoxContainer2/Text/GridContainer"]
+margin_left = 189.0
+margin_top = 122.0
+margin_right = 483.0
+margin_bottom = 152.0
 rect_min_size = Vector2( 50, 30 )
-color = Color( 0.996078, 0.145098, 0.00784314, 0.823529 )
+color = Color( 0, 0, 0, 0.576471 )
 
-[node name="Label3" type="Label" parent="EditorTheme/VBoxContainer/HBoxContainer"]
-margin_left = 183.0
-margin_top = 8.0
-margin_right = 274.0
-margin_bottom = 22.0
+[node name="Label4" type="Label" parent="EditorTheme/VBoxContainer/HBoxContainer2/Text/GridContainer"]
+margin_top = 161.0
+margin_right = 179.0
+margin_bottom = 175.0
 text = "Shadow Offset"
 
-[node name="ShadowOffsetX" type="SpinBox" parent="EditorTheme/VBoxContainer/HBoxContainer"]
-margin_left = 284.0
-margin_right = 358.0
-margin_bottom = 30.0
+[node name="HBoxContainer" type="HBoxContainer" parent="EditorTheme/VBoxContainer/HBoxContainer2/Text/GridContainer"]
+margin_left = 189.0
+margin_top = 156.0
+margin_right = 483.0
+margin_bottom = 180.0
+custom_constants/separation = 10
+
+[node name="ShadowOffsetX" type="SpinBox" parent="EditorTheme/VBoxContainer/HBoxContainer2/Text/GridContainer/HBoxContainer"]
+margin_right = 74.0
+margin_bottom = 24.0
 value = 1.0
 rounded = true
 allow_lesser = true
 prefix = "X"
 
-[node name="ShadowOffsetY" type="SpinBox" parent="EditorTheme/VBoxContainer/HBoxContainer"]
-margin_left = 368.0
-margin_right = 442.0
-margin_bottom = 30.0
-value = 4.0
+[node name="ShadowOffsetY" type="SpinBox" parent="EditorTheme/VBoxContainer/HBoxContainer2/Text/GridContainer/HBoxContainer"]
+margin_left = 84.0
+margin_right = 158.0
+margin_bottom = 24.0
+value = 1.0
 rounded = true
 allow_lesser = true
 prefix = "Y"
 
-[node name="Label6" type="Label" parent="EditorTheme/VBoxContainer/HBoxContainer"]
-margin_left = 452.0
-margin_top = 8.0
-margin_right = 559.0
-margin_bottom = 22.0
-text = "        Text margin"
+[node name="DialogBox" type="VBoxContainer" parent="EditorTheme/VBoxContainer/HBoxContainer2"]
+margin_left = 487.0
+margin_right = 1023.0
+margin_bottom = 214.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
-[node name="TextMargin" type="SpinBox" parent="EditorTheme/VBoxContainer/HBoxContainer"]
-margin_left = 569.0
-margin_right = 643.0
+[node name="PanelContainer" type="Panel" parent="EditorTheme/VBoxContainer/HBoxContainer2/DialogBox"]
+margin_right = 536.0
 margin_bottom = 30.0
+rect_min_size = Vector2( 0, 30 )
+
+[node name="Label" type="Label" parent="EditorTheme/VBoxContainer/HBoxContainer2/DialogBox/PanelContainer"]
+margin_right = 40.0
+margin_bottom = 14.0
+text = "Dialog Box"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="GridContainer" type="GridContainer" parent="EditorTheme/VBoxContainer/HBoxContainer2/DialogBox"]
+margin_top = 34.0
+margin_right = 536.0
+margin_bottom = 199.0
+size_flags_horizontal = 3
+custom_constants/hseparation = 10
+columns = 2
+
+[node name="Label" type="Label" parent="EditorTheme/VBoxContainer/HBoxContainer2/DialogBox/GridContainer"]
+margin_top = 3.0
+margin_right = 132.0
+margin_bottom = 17.0
+text = "Background Texture"
+
+[node name="BackgroundTextureButton" type="Button" parent="EditorTheme/VBoxContainer/HBoxContainer2/DialogBox/GridContainer"]
+margin_left = 142.0
+margin_right = 536.0
+margin_bottom = 20.0
+text = "res://addons/dialogic/Images/background/background-2.png"
+
+[node name="Label2" type="Label" parent="EditorTheme/VBoxContainer/HBoxContainer2/DialogBox/GridContainer"]
+margin_top = 27.0
+margin_right = 132.0
+margin_bottom = 41.0
+text = "Next dialog indicator"
+
+[node name="NextIndicatorButton" type="Button" parent="EditorTheme/VBoxContainer/HBoxContainer2/DialogBox/GridContainer"]
+margin_left = 142.0
+margin_top = 24.0
+margin_right = 536.0
+margin_bottom = 44.0
+text = "res://icon.png"
+
+[node name="Label6" type="Label" parent="EditorTheme/VBoxContainer/HBoxContainer2/DialogBox/GridContainer"]
+margin_top = 53.0
+margin_right = 132.0
+margin_bottom = 67.0
+text = "Box padding"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="EditorTheme/VBoxContainer/HBoxContainer2/DialogBox/GridContainer"]
+margin_left = 142.0
+margin_top = 48.0
+margin_right = 536.0
+margin_bottom = 72.0
+
+[node name="TextOffsetV" type="SpinBox" parent="EditorTheme/VBoxContainer/HBoxContainer2/DialogBox/GridContainer/HBoxContainer"]
+margin_right = 74.0
+margin_bottom = 24.0
 value = 15.0
 rounded = true
 prefix = "V"
 
-[node name="TextMarginH" type="SpinBox" parent="EditorTheme/VBoxContainer/HBoxContainer"]
-margin_left = 653.0
-margin_right = 727.0
-margin_bottom = 30.0
-value = 15.0
+[node name="TextOffsetH" type="SpinBox" parent="EditorTheme/VBoxContainer/HBoxContainer2/DialogBox/GridContainer/HBoxContainer"]
+margin_left = 78.0
+margin_right = 152.0
+margin_bottom = 24.0
+value = 26.0
 rounded = true
 prefix = "H"
 
-[node name="HBoxContainer5" type="HBoxContainer" parent="EditorTheme/VBoxContainer"]
-margin_top = 207.0
-margin_right = 985.0
-margin_bottom = 307.0
-custom_constants/separation = 10
+[node name="Label3" type="Label" parent="EditorTheme/VBoxContainer/HBoxContainer2/DialogBox/GridContainer"]
+margin_top = 76.0
+margin_right = 132.0
+margin_bottom = 96.0
+size_flags_vertical = 5
+text = "Action key"
 
-[node name="TextEdit" type="TextEdit" parent="EditorTheme/VBoxContainer/HBoxContainer5"]
-margin_right = 400.0
-margin_bottom = 100.0
-rect_min_size = Vector2( 400, 100 )
-text = "This is preview text. You can use  [color=#A5EFAC]BBCode[/color] to style it. [wave amp=50 freq=2]You can even use effects![/wave]"
-wrap_enabled = true
+[node name="BoxContainer" type="HBoxContainer" parent="EditorTheme/VBoxContainer/HBoxContainer2/DialogBox/GridContainer"]
+margin_left = 142.0
+margin_top = 76.0
+margin_right = 536.0
+margin_bottom = 96.0
 
-[node name="RichTextLabel" type="RichTextLabel" parent="EditorTheme/VBoxContainer/HBoxContainer5"]
-margin_left = 410.0
-margin_right = 410.0
-margin_bottom = 100.0
+[node name="ActionOptionButton" type="OptionButton" parent="EditorTheme/VBoxContainer/HBoxContainer2/DialogBox/GridContainer/BoxContainer"]
+margin_right = 121.0
+margin_bottom = 20.0
+size_flags_horizontal = 0
+text = "[Select Action]"
+items = [ "[Select Action]", null, false, 0, null, "ui_accept", null, false, 1, null, "ui_select", null, false, 2, null, "ui_cancel", null, false, 3, null, "ui_focus_next", null, false, 4, null, "ui_focus_prev", null, false, 5, null, "ui_left", null, false, 6, null, "ui_right", null, false, 7, null, "ui_up", null, false, 8, null, "ui_down", null, false, 9, null, "ui_page_up", null, false, 10, null, "ui_page_down", null, false, 11, null, "ui_home", null, false, 12, null, "ui_end", null, false, 13, null ]
+selected = 0
+
+[node name="Label4" type="Label" parent="EditorTheme/VBoxContainer/HBoxContainer2/DialogBox/GridContainer"]
+self_modulate = Color( 1, 1, 1, 0.607843 )
+margin_top = 100.0
+margin_right = 132.0
+margin_bottom = 165.0
+size_flags_horizontal = 3
+text = "To add/remove actions go to Project > Project Settings > Input Map"
+autowrap = true
 
 [node name="HBoxContainer3" type="HBoxContainer" parent="EditorTheme/VBoxContainer"]
-margin_top = 322.0
-margin_right = 985.0
-margin_bottom = 342.0
+margin_top = 229.0
+margin_right = 1023.0
+margin_bottom = 289.0
+custom_constants/separation = 10
+
+[node name="TextEdit" type="TextEdit" parent="EditorTheme/VBoxContainer/HBoxContainer3"]
+margin_right = 861.0
+margin_bottom = 60.0
+rect_min_size = Vector2( 400, 60 )
+size_flags_horizontal = 3
+text = "This is preview text. You can use  [color=#A5EFAC]BBCode[/color] to style it.
+[wave amp=50 freq=2]You can even use effects![/wave]"
+wrap_enabled = true
 
 [node name="PreviewButton" type="Button" parent="EditorTheme/VBoxContainer/HBoxContainer3"]
-margin_right = 118.0
-margin_bottom = 20.0
-text = "Preview changes"
+margin_left = 871.0
+margin_right = 1023.0
+margin_bottom = 60.0
+text = "  Preview changes  "
+icon = ExtResource( 24 )
 
 [node name="Panel" type="Panel" parent="EditorTheme/VBoxContainer"]
-margin_top = 357.0
-margin_right = 985.0
-margin_bottom = 657.0
+margin_top = 304.0
+margin_right = 1023.0
+margin_bottom = 604.0
 rect_min_size = Vector2( 0, 300 )
 
 [node name="TimelinePopupMenu" type="PopupMenu" parent="."]
@@ -1101,19 +1152,19 @@ __meta__ = {
 [connection signal="pressed" from="EditorCharacter/NoCharacters/VBoxContainer/CenterContainer/Button" to="EditorCharacter" method="_on_New_Character_Button_pressed"]
 [connection signal="toggled" from="EditorCharacter/CharacterEditor/HBoxContainer/Container/Name/CheckBox" to="EditorCharacter" method="_on_CheckBox_toggled"]
 [connection signal="pressed" from="EditorCharacter/CharacterEditor/HBoxContainer/Container/ScrollContainer/VBoxContainer/HBoxContainer/Button" to="EditorCharacter" method="_on_New_Portrait_Button_pressed"]
-[connection signal="item_selected" from="EditorTheme/VBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/ActionOptionButton" to="EditorTheme" method="_on_ActionOptionButton_item_selected"]
-[connection signal="pressed" from="EditorTheme/VBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/ActionOptionButton" to="EditorTheme" method="_on_ActionOptionButton_pressed"]
-[connection signal="pressed" from="EditorTheme/VBoxContainer/HBoxContainer4/BackgroundTextureButton" to="EditorTheme" method="_on_BackgroundTextureButton_pressed"]
-[connection signal="pressed" from="EditorTheme/VBoxContainer/HBoxContainer4/NextIndicatorButton" to="EditorTheme" method="_on_NextIndicatorButton_pressed"]
-[connection signal="color_changed" from="EditorTheme/VBoxContainer/HBoxContainer6/ColorPickerButton" to="EditorTheme" method="_on_ColorPickerButton_color_changed"]
-[connection signal="pressed" from="EditorTheme/VBoxContainer/HBoxContainer6/FontButton" to="EditorTheme" method="_on_FontButton_pressed"]
-[connection signal="value_changed" from="EditorTheme/VBoxContainer/HBoxContainer6/TextSpeed" to="EditorTheme" method="_on_textSpeed_value_changed"]
-[connection signal="toggled" from="EditorTheme/VBoxContainer/HBoxContainer/CheckBoxShadow" to="EditorTheme" method="_on_CheckBoxShadow_toggled"]
-[connection signal="color_changed" from="EditorTheme/VBoxContainer/HBoxContainer/ColorPickerButtonShadow" to="EditorTheme" method="_on_ColorPickerButtonShadow_color_changed"]
-[connection signal="value_changed" from="EditorTheme/VBoxContainer/HBoxContainer/ShadowOffsetX" to="EditorTheme" method="_on_ShadowOffset_value_changed"]
-[connection signal="value_changed" from="EditorTheme/VBoxContainer/HBoxContainer/ShadowOffsetY" to="EditorTheme" method="_on_ShadowOffset_value_changed"]
-[connection signal="value_changed" from="EditorTheme/VBoxContainer/HBoxContainer/TextMargin" to="EditorTheme" method="_on_TextMargin_value_changed"]
-[connection signal="value_changed" from="EditorTheme/VBoxContainer/HBoxContainer/TextMarginH" to="EditorTheme" method="_on_TextMarginH_value_changed"]
+[connection signal="pressed" from="EditorTheme/VBoxContainer/HBoxContainer2/Text/GridContainer/FontButton" to="EditorTheme" method="_on_FontButton_pressed"]
+[connection signal="color_changed" from="EditorTheme/VBoxContainer/HBoxContainer2/Text/GridContainer/ColorPickerButton" to="EditorTheme" method="_on_ColorPickerButton_color_changed"]
+[connection signal="value_changed" from="EditorTheme/VBoxContainer/HBoxContainer2/Text/GridContainer/TextSpeed" to="EditorTheme" method="_on_textSpeed_value_changed"]
+[connection signal="toggled" from="EditorTheme/VBoxContainer/HBoxContainer2/Text/GridContainer/CheckBoxShadow" to="EditorTheme" method="_on_CheckBoxShadow_toggled"]
+[connection signal="color_changed" from="EditorTheme/VBoxContainer/HBoxContainer2/Text/GridContainer/ColorPickerButtonShadow" to="EditorTheme" method="_on_ColorPickerButtonShadow_color_changed"]
+[connection signal="value_changed" from="EditorTheme/VBoxContainer/HBoxContainer2/Text/GridContainer/HBoxContainer/ShadowOffsetX" to="EditorTheme" method="_on_ShadowOffset_value_changed"]
+[connection signal="value_changed" from="EditorTheme/VBoxContainer/HBoxContainer2/Text/GridContainer/HBoxContainer/ShadowOffsetY" to="EditorTheme" method="_on_ShadowOffset_value_changed"]
+[connection signal="pressed" from="EditorTheme/VBoxContainer/HBoxContainer2/DialogBox/GridContainer/BackgroundTextureButton" to="EditorTheme" method="_on_BackgroundTextureButton_pressed"]
+[connection signal="pressed" from="EditorTheme/VBoxContainer/HBoxContainer2/DialogBox/GridContainer/NextIndicatorButton" to="EditorTheme" method="_on_NextIndicatorButton_pressed"]
+[connection signal="value_changed" from="EditorTheme/VBoxContainer/HBoxContainer2/DialogBox/GridContainer/HBoxContainer/TextOffsetV" to="EditorTheme" method="_on_TextMargin_value_changed"]
+[connection signal="value_changed" from="EditorTheme/VBoxContainer/HBoxContainer2/DialogBox/GridContainer/HBoxContainer/TextOffsetH" to="EditorTheme" method="_on_TextMarginH_value_changed"]
+[connection signal="item_selected" from="EditorTheme/VBoxContainer/HBoxContainer2/DialogBox/GridContainer/BoxContainer/ActionOptionButton" to="EditorTheme" method="_on_ActionOptionButton_item_selected"]
+[connection signal="pressed" from="EditorTheme/VBoxContainer/HBoxContainer2/DialogBox/GridContainer/BoxContainer/ActionOptionButton" to="EditorTheme" method="_on_ActionOptionButton_pressed"]
 [connection signal="pressed" from="EditorTheme/VBoxContainer/HBoxContainer3/PreviewButton" to="EditorTheme" method="_on_PreviewButton_pressed"]
 [connection signal="id_pressed" from="TimelinePopupMenu" to="." method="_on_TimelinePopupMenu_id_pressed"]
 [connection signal="id_pressed" from="CharacterPopupMenu" to="EditorCharacter" method="_on_CharacterPopupMenu_id_pressed"]

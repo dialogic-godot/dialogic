@@ -3,40 +3,61 @@ extends Control
 
 var editor_reference
 
+# The amazing and revolutionary path system that magically works and you can't
+# complain because "that is not how you are supposed to work". If there was only
+# a way to set an id and then access that node via id...
+# Here you have paths in all its glory. Praise the paths (っ´ω`c)♡
+onready var nodes = {
+	'shadow_bool': $VBoxContainer/HBoxContainer2/Text/GridContainer/CheckBoxShadow,
+	'shadow_picker': $VBoxContainer/HBoxContainer2/Text/GridContainer/ColorPickerButtonShadow,
+	'color_picker': $VBoxContainer/HBoxContainer2/Text/GridContainer/ColorPickerButton,
+	'font_button': $VBoxContainer/HBoxContainer2/Text/GridContainer/FontButton,
+	'shadow_offset_x': $VBoxContainer/HBoxContainer2/Text/GridContainer/HBoxContainer/ShadowOffsetX,
+	'shadow_offset_y': $VBoxContainer/HBoxContainer2/Text/GridContainer/HBoxContainer/ShadowOffsetY,
+	'text_speed': $VBoxContainer/HBoxContainer2/Text/GridContainer/TextSpeed,
+	'text_offset_v': $VBoxContainer/HBoxContainer2/DialogBox/GridContainer/HBoxContainer/TextOffsetV,
+	'text_offset_h': $VBoxContainer/HBoxContainer2/DialogBox/GridContainer/HBoxContainer/TextOffsetH,
+	'background_texture_button': $VBoxContainer/HBoxContainer2/DialogBox/GridContainer/BackgroundTextureButton,
+	'next_indicator_button': $VBoxContainer/HBoxContainer2/DialogBox/GridContainer/NextIndicatorButton,
+	'next_action_button': $VBoxContainer/HBoxContainer2/DialogBox/GridContainer/BoxContainer/ActionOptionButton,
+	'text_preview': $VBoxContainer/HBoxContainer3/TextEdit,
+	'preview_panel': $VBoxContainer/Panel,
+}
+
 func _ready():
 	var settings = DialogicUtil.load_settings()
 	# Font 
 	if settings.has('theme_font'):
-		$VBoxContainer/HBoxContainer6/FontButton.text = settings['theme_font']
+		nodes['font_button'].text = DialogicUtil.get_filename_from_path(settings['theme_font'])
 	# Text and shadows
 	if settings.has('theme_text_color'):
-		$VBoxContainer/HBoxContainer6/ColorPickerButton.color = Color('#' + str(settings['theme_text_color']))
+		nodes['color_picker'].color = Color('#' + str(settings['theme_text_color']))
 	if settings.has('theme_text_shadow'):
-		$VBoxContainer/HBoxContainer/CheckBoxShadow.pressed = settings['theme_text_shadow']
+		nodes['shadow_bool'].pressed = settings['theme_text_shadow']
 	if settings.has('theme_text_shadow_color'):
-		$VBoxContainer/HBoxContainer/ColorPickerButtonShadow.color = Color('#' + str(settings['theme_text_shadow_color']))
+		nodes['shadow_picker'].color = Color('#' + str(settings['theme_text_shadow_color']))
 	if settings.has('theme_shadow_offset_x'):
-		$VBoxContainer/HBoxContainer/ShadowOffsetX.value = settings['theme_shadow_offset_x']
+		nodes['shadow_offset_x'].value = settings['theme_shadow_offset_x']
 	if settings.has('theme_shadow_offset_y'):
-		$VBoxContainer/HBoxContainer/ShadowOffsetY.value = settings['theme_shadow_offset_y']
+		nodes['shadow_offset_y'].value = settings['theme_shadow_offset_y']
 	# Text speed
 	if settings.has('theme_text_speed'):
-		$VBoxContainer/HBoxContainer6/TextSpeed.value = settings['theme_text_speed']
+		nodes['text_speed'].value = settings['theme_text_speed']
 	# Margin
 	if settings.has('theme_text_margin'):
-		$VBoxContainer/HBoxContainer/TextMargin.value = settings['theme_text_margin']
+		nodes['text_offset_v'].value = settings['theme_text_margin']
 	if settings.has('theme_text_margin_h'):
-		$VBoxContainer/HBoxContainer/TextMarginH.value = settings['theme_text_margin_h']
+		nodes['text_offset_h'].value = settings['theme_text_margin_h']
 	
 	# Images
 	if settings.has('theme_background_image'):
-		$VBoxContainer/HBoxContainer4/BackgroundTextureButton.text = settings['theme_background_image']
+		nodes['background_texture_button'].text = DialogicUtil.get_filename_from_path(settings['theme_background_image'])
 	if settings.has('theme_next_image'):
-		$VBoxContainer/HBoxContainer4/NextIndicatorButton.text = settings['theme_next_image']
+		nodes['next_indicator_button'].text = DialogicUtil.get_filename_from_path(settings['theme_next_image'])
 	
 	# Action
 	if settings.has('theme_action_key'):
-		$VBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/ActionOptionButton.text = settings['theme_action_key']
+		nodes['next_action_button'].text = settings['theme_action_key']
 
 	#Refreshing the dialog 
 	_on_PreviewButton_pressed()
@@ -48,7 +69,7 @@ func _on_BackgroundTextureButton_pressed():
 
 func _on_background_selected(path, target):
 	DialogicUtil.update_setting('theme_background_image', path)
-	$VBoxContainer/HBoxContainer4/BackgroundTextureButton.text = path
+	nodes['background_texture_button'].text = DialogicUtil.get_filename_from_path(path)
 
 
 func _on_NextIndicatorButton_pressed():
@@ -58,7 +79,7 @@ func _on_NextIndicatorButton_pressed():
 
 func _on_indicator_selected(path, target):
 	DialogicUtil.update_setting('theme_next_image', path)
-	$VBoxContainer/HBoxContainer4/NextIndicatorButton.text = path
+	nodes['next_indicator_button'].text = DialogicUtil.get_filename_from_path(path)
 
 
 func _on_ColorPickerButton_color_changed(color):
@@ -67,7 +88,7 @@ func _on_ColorPickerButton_color_changed(color):
 
 func _on_ColorPickerButtonShadow_color_changed(color):
 	DialogicUtil.update_setting('theme_text_shadow_color', color.to_html())
-	$VBoxContainer/HBoxContainer/CheckBoxShadow.pressed = true
+	nodes['shadow_bool'].pressed = true
 
 
 func _on_CheckBoxShadow_toggled(button_pressed):
@@ -75,12 +96,12 @@ func _on_CheckBoxShadow_toggled(button_pressed):
 
 
 func _on_ShadowOffset_value_changed(_value):
-	DialogicUtil.update_setting('theme_shadow_offset_x', $VBoxContainer/HBoxContainer/ShadowOffsetX.value)
-	DialogicUtil.update_setting('theme_shadow_offset_y', $VBoxContainer/HBoxContainer/ShadowOffsetY.value)
+	DialogicUtil.update_setting('theme_shadow_offset_x', nodes['shadow_offset_x'].value)
+	DialogicUtil.update_setting('theme_shadow_offset_y', nodes['shadow_offset_y'].value)
 
 
 func _on_PreviewButton_pressed():
-	for i in $VBoxContainer/Panel.get_children():
+	for i in nodes['preview_panel'].get_children():
 		i.free()
 	var dialogic_node = load("res://addons/dialogic/Nodes/Dialog.tscn")
 	var preview_dialog = dialogic_node.instance()
@@ -88,23 +109,22 @@ func _on_PreviewButton_pressed():
 	preview_dialog.dialog_script['events'] = [{
 		"character":"",
 		"portrait":"",
-		"text": $VBoxContainer/HBoxContainer5/TextEdit.text
+		"text": nodes['text_preview'].text
 	}]
-	$VBoxContainer/Panel.add_child(preview_dialog)
+	nodes['preview_panel'].add_child(preview_dialog)
 
 
 func _on_ActionOptionButton_item_selected(index):
-	DialogicUtil.update_setting('theme_action_key', $VBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/ActionOptionButton.text)
+	DialogicUtil.update_setting('theme_action_key', nodes['next_action_button'].text)
 
 
 func _on_ActionOptionButton_pressed():
-	var action_option_button = $VBoxContainer/VBoxContainer/HBoxContainer/VBoxContainer/ActionOptionButton
-	action_option_button.clear()
-	action_option_button.add_item('[Select Action]')
+	nodes['next_action_button'].clear()
+	nodes['next_action_button'].add_item('[Select Action]')
 	InputMap.load_from_globals()
 	print(InputMap.get_actions())
 	for a in InputMap.get_actions():
-		action_option_button.add_item(a)
+		nodes['next_action_button'].add_item(a)
 
 
 func _on_FontButton_pressed():
@@ -114,7 +134,7 @@ func _on_FontButton_pressed():
 
 func _on_Font_selected(path, target):
 	DialogicUtil.update_setting('theme_font', path)
-	$VBoxContainer/HBoxContainer6/FontButton.text = path
+	nodes['font_button'].text = DialogicUtil.get_filename_from_path(path)
 
 
 func _on_textSpeed_value_changed(value):
