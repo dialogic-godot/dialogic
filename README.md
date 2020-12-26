@@ -1,4 +1,4 @@
-# Dialogic v0.7 ![Godot v3.2](https://img.shields.io/badge/godot-v3.2.4-%23478cbf)
+# Dialogic v0.8 ![Godot v3.2](https://img.shields.io/badge/godot-v3.2.4-%23478cbf)
 Create dialogs, characters and scenes to display conversations in your Godot games. 
 
 ![Screenshot](https://coppolaemilio.com/images/dialogic/dialogic07.png?1)
@@ -20,7 +20,10 @@ Yes, you can use Dialogic to make any kind of game (even commercial ones). The p
 ---
 
 ## Changelog
-### 🆕 v0.7 - Looking good
+### 🆕 v0.8 - WIP
+ - Change timeline event is now working
+
+### v0.7 - Looking good
  - Video: https://youtu.be/wREIVj55eBM
  - New plugin tab icon
  - Removed legacy files
@@ -43,19 +46,6 @@ Yes, you can use Dialogic to make any kind of game (even commercial ones). The p
    - Right click no longer renames timelines, to do so you have to use the new menu
    - You can open the working directory
    - You can copy the timeline ID
-
-
-### v0.6 - Character portraits
- - Video: https://youtu.be/okWYt_yGKNI
- - Splitting the main script into smaller pieces
- - Characters
-   - Characters welcome screen when there are 0
-   - Different display name
-   - Autosave enabled on characters
-   - Character portraits
-   - Added Default Speaker setting
- - Events:
-   - Text block now has a portrait dropdown
 
 To view the full changelog [click here](https://github.com/coppolaemilio/dialogic/blob/master/CHANGELOG.md). 
 

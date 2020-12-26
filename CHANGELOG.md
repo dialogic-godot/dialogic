@@ -1,3 +1,27 @@
+v0.7 - Looking good
+ - Video: https://youtu.be/wREIVj55eBM
+ - New plugin tab icon
+ - Removed legacy files
+ - From the theme tab you can now:
+   - Pick the default text color
+   - Set the sadows and shadow offset
+   - Select your own fonts (.tres)
+   - Set background and next indicator images
+   - Choose an action to trigger the "next" event
+   - Preview changes in a dialog
+   - Change text speed
+   - Set text margins
+ - Characters tab
+   - Added context menu
+   - Moved the Remove Character button to a context menu
+   - You can open the working directory
+ - Timeline tab
+   - Added context menu
+   - You can remove timelines now
+   - Right click no longer renames timelines, to do so you have to use the new menu
+   - You can open the working directory
+   - You can copy the timeline ID
+
 v0.6 - Character portraits
  - Video: https://youtu.be/okWYt_yGKNI
  - Splitting the main script into smaller pieces

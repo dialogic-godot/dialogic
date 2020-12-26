@@ -17,6 +17,24 @@ var characters
 onready var Portrait = load("res://addons/dialogic/Nodes/Portrait.tscn")
 var dialog_script = {}
 
+
+func _ready():
+	# Checking if the dialog should read the code from a external file
+	if timeline_id != '':
+		dialog_script = load_json(DialogicUtil.get_path('TIMELINE_DIR', '/' + timeline_id + '.json'))
+		print(dialog_script)
+	
+	# Setting everything up for the node to be default
+	$TextBubble/NameLabel.text = ''
+	$Background.visible = false
+	
+	# Getting the character information
+	characters = DialogicUtil.get_character_list()
+	
+	load_theme()
+	load_dialog()
+
+
 func parse_text(text):
 	# This will parse the text and automatically format some of your available variables
 	var end_text = text
@@ -42,63 +60,6 @@ func parse_text(text):
 	#	else:
 	#		end_text = end_text.replace('[' + key + ']', c_variable)
 	return end_text
-
-
-func _ready():
-	# Checking if the dialog should read the code from a external file
-	if timeline_id != '':
-		dialog_script = load_json(DialogicUtil.get_path('TIMELINE_DIR', '/' + timeline_id + '.json'))
-		print(dialog_script)
-	
-	# Setting everything up for the node to be default
-	$TextBubble/NameLabel.text = ''
-	$Background.visible = false
-	
-	# Getting the character information
-	characters = DialogicUtil.get_character_list()
-	print(characters)
-	
-	# Loading theme properties and settings
-	var settings = DialogicUtil.load_settings()	
-	if settings.has('theme_font'):
-		$TextBubble/RichTextLabel.set('custom_fonts/normal_font', load(settings['theme_font']))
-		$TextBubble/NameLabel.set('custom_fonts/normal_font', load(settings['theme_font']))
-	# Text
-	if settings.has('theme_text_color'):
-		$TextBubble/RichTextLabel.set('custom_colors/default_color', Color('#' + str(settings['theme_text_color'])))
-		$TextBubble/NameLabel.set('custom_colors/default_color', Color('#' + str(settings['theme_text_color'])))
-	if settings.has('theme_text_shadow'):
-		if settings['theme_text_shadow']:
-			if settings.has('theme_text_shadow_color'):
-				$TextBubble/RichTextLabel.set('custom_colors/font_color_shadow', Color('#' + str(settings['theme_text_shadow_color'])))
-				$TextBubble/NameLabel.set('custom_colors/font_color_shadow', Color('#' + str(settings['theme_text_shadow_color'])))
-	if settings.has('theme_shadow_offset_x'):
-		$TextBubble/RichTextLabel.set('custom_constants/shadow_offset_x', settings['theme_shadow_offset_x'])
-		$TextBubble/NameLabel.set('custom_constants/shadow_offset_x', settings['theme_shadow_offset_x'])
-	if settings.has('theme_shadow_offset_y'):
-		$TextBubble/RichTextLabel.set('custom_constants/shadow_offset_y', settings['theme_shadow_offset_y'])
-		$TextBubble/NameLabel.set('custom_constants/shadow_offset_y', settings['theme_shadow_offset_y'])
-	# Text speed
-	if settings.has('theme_text_speed'):
-		text_speed = settings['theme_text_speed'] * 0.01
-	# Margin
-	if settings.has('theme_text_margin'):
-		$TextBubble/RichTextLabel.set('margin_top', settings['theme_text_margin'])
-		$TextBubble/RichTextLabel.set('margin_bottom', settings['theme_text_margin'] * -1)
-	if settings.has('theme_text_margin_h'):
-		$TextBubble/RichTextLabel.set('margin_left', settings['theme_text_margin_h'])
-		$TextBubble/RichTextLabel.set('margin_right', settings['theme_text_margin_h'] * -1)
-	# Images
-	if settings.has('theme_background_image'):
-		$TextBubble/TextureRect.texture = load(settings['theme_background_image'])
-	if settings.has('theme_next_image'):
-		$TextBubble/NextIndicator.texture = load(settings['theme_next_image'])
-	
-	if settings.has('theme_action_key'):
-		input_next = settings['theme_action_key']
-	
-	
-	load_dialog()
 
 
 func _process(_delta):
@@ -274,6 +235,13 @@ func event_handler(event):
 			print('Play sound here: ', event)
 			dialog_index += 1
 			load_dialog()
+		{'change_timeline'}:
+			print('change to timeline ', event)
+			dialog_script = load_json(DialogicUtil.get_path('TIMELINE_DIR', '/' + event['change_timeline']))
+			dialog_index = 0
+			print(dialog_script)
+			load_dialog(true)
+			print(dialog_script)
 		_:
 			visible = false
 			print('Other event. ', event)
@@ -338,3 +306,44 @@ func load_json(path):
 	if data_parse.error != OK:
 		return
 	return data_parse.result
+
+
+func load_theme():
+	# Loading theme properties and settings
+	var settings = DialogicUtil.load_settings()	
+	if settings.has('theme_font'):
+		$TextBubble/RichTextLabel.set('custom_fonts/normal_font', load(settings['theme_font']))
+		$TextBubble/NameLabel.set('custom_fonts/normal_font', load(settings['theme_font']))
+	# Text
+	if settings.has('theme_text_color'):
+		$TextBubble/RichTextLabel.set('custom_colors/default_color', Color('#' + str(settings['theme_text_color'])))
+		$TextBubble/NameLabel.set('custom_colors/default_color', Color('#' + str(settings['theme_text_color'])))
+	if settings.has('theme_text_shadow'):
+		if settings['theme_text_shadow']:
+			if settings.has('theme_text_shadow_color'):
+				$TextBubble/RichTextLabel.set('custom_colors/font_color_shadow', Color('#' + str(settings['theme_text_shadow_color'])))
+				$TextBubble/NameLabel.set('custom_colors/font_color_shadow', Color('#' + str(settings['theme_text_shadow_color'])))
+	if settings.has('theme_shadow_offset_x'):
+		$TextBubble/RichTextLabel.set('custom_constants/shadow_offset_x', settings['theme_shadow_offset_x'])
+		$TextBubble/NameLabel.set('custom_constants/shadow_offset_x', settings['theme_shadow_offset_x'])
+	if settings.has('theme_shadow_offset_y'):
+		$TextBubble/RichTextLabel.set('custom_constants/shadow_offset_y', settings['theme_shadow_offset_y'])
+		$TextBubble/NameLabel.set('custom_constants/shadow_offset_y', settings['theme_shadow_offset_y'])
+	# Text speed
+	if settings.has('theme_text_speed'):
+		text_speed = settings['theme_text_speed'] * 0.01
+	# Margin
+	if settings.has('theme_text_margin'):
+		$TextBubble/RichTextLabel.set('margin_top', settings['theme_text_margin'])
+		$TextBubble/RichTextLabel.set('margin_bottom', settings['theme_text_margin'] * -1)
+	if settings.has('theme_text_margin_h'):
+		$TextBubble/RichTextLabel.set('margin_left', settings['theme_text_margin_h'])
+		$TextBubble/RichTextLabel.set('margin_right', settings['theme_text_margin_h'] * -1)
+	# Images
+	if settings.has('theme_background_image'):
+		$TextBubble/TextureRect.texture = load(settings['theme_background_image'])
+	if settings.has('theme_next_image'):
+		$TextBubble/NextIndicator.texture = load(settings['theme_next_image'])
+	
+	if settings.has('theme_action_key'):
+		input_next = settings['theme_action_key']
