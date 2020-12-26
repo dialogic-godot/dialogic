@@ -146,6 +146,9 @@ func get_character(character_id):
 func event_handler(event):
 	# Handling an event and updating the available nodes accordingly. 
 	reset_dialog_extras()
+	print(' ')
+	print('[!] Event: ', event)
+	print('    dialog_index: ', dialog_index)
 	match event:
 		{'text', 'character'}, {'text', 'character', ..}:
 			show_dialog()
@@ -202,19 +205,47 @@ func event_handler(event):
 			$TextInputDialog.window_title = event['window_title']
 			$TextInputDialog.popup_centered()
 			$TextInputDialog.connect("confirmed", self, "_on_input_set", [event['variable']])
-		{'action'}:
-			if event['action'] == 'game_end':
-				get_tree().quit()
-			if event['action'] == 'clear_portraits':
-				for p in $Portraits.get_children():
-					p.fade_out()
-				dialog_index += 1
-				load_dialog(true)
-			if event['action'] == 'focusout_portraits':
-				for p in $Portraits.get_children():
-					p.focusout()
-				dialog_index += 1
-				load_dialog(true)
+		{'action', ..}:
+			if event['action'] == 'leaveall':
+				if event['character'] == '[All]':
+					for p in $Portraits.get_children():
+						p.fade_out()
+				else:
+					for p in $Portraits.get_children():
+						print(p.character_data['file'])
+						if p.character_data['file'] == event['character']:
+							p.fade_out()
+					
+				go_to_next_event()
+			elif event['action'] == 'join':
+				var exists = false
+				#var existing
+				#for portrait in $Portraits.get_children():
+				#	if portrait.character_data == character_data:
+				#		exists = true
+				#		existing = portrait
+				#	else:
+				#		portrait.focusout()
+				#
+				#if exists:
+				#	existing.focus()
+				if exists == false:
+					var p = Portrait.instance()
+					p.character_data = get_character(event['character'])
+					# Todo: get position from  `position:{0:True, 1:False, 2:False, 3:False, 4:False}`
+					
+					p.init('Default', get_character_position(event['position']))
+					$Portraits.add_child(p)
+					p.fade_in()
+					go_to_next_event()
+		#{'action'}:
+		#	if event['action'] == 'game_end':
+		#		get_tree().quit()
+		#	if event['action'] == 'focusout_portraits':
+		#		for p in $Portraits.get_children():
+		#			p.focusout()
+		#		dialog_index += 1
+		#		load_dialog(true)
 		{'scene'}:
 			get_tree().change_scene(event['scene'])
 		{'background'}:
@@ -235,8 +266,8 @@ func event_handler(event):
 			if event['audio'] == 'play':
 				$FX/AudioStreamPlayer.stream = load(event['file'])
 				$FX/AudioStreamPlayer.play()
-			dialog_index += 1
-			load_dialog()
+			# Todo: audio stop
+			go_to_next_event()
 		{'change_timeline'}:
 			print('change to timeline ', event)
 			dialog_script = load_json(DialogicUtil.get_path('TIMELINE_DIR', '/' + event['change_timeline']))
@@ -297,6 +328,12 @@ func _on_TextInputDialog_confirmed():
 	pass # Replace with function body.
 
 
+func go_to_next_event():
+	# The entire event reading system should be refactored... but not today!
+	dialog_index += 1
+	load_dialog(true)
+
+
 func load_json(path):
 	var file = File.new()
 	if file.open(path, File.READ) != OK:
@@ -308,6 +345,19 @@ func load_json(path):
 	if data_parse.error != OK:
 		return
 	return data_parse.result
+
+
+func get_character_position(positions):
+	if positions['0']:
+		return 'left'
+	if positions['1']:
+		return 'center_left'
+	if positions['2']:
+		return 'center'
+	if positions['3']:
+		return 'center_right'
+	if positions['4']:
+		return 'right'
 
 
 func load_theme():

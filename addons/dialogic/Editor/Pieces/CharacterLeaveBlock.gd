@@ -20,7 +20,7 @@ func _on_CharacterDropdown_about_to_show():
 	var Dropdown = $PanelContainer/VBoxContainer/Header/CharacterDropdown
 	Dropdown.get_popup().clear()
 	Dropdown.get_popup().add_item("[All]")
-	var index = 0
+	var index = 1
 	for c in DialogicUtil.get_character_list():
 		Dropdown.get_popup().add_item(c['name'])
 		Dropdown.get_popup().set_item_metadata(index, {'file': c['file'], 'color': c['color']})
