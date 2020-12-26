@@ -231,8 +231,10 @@ func event_handler(event):
 			$FX/FadeInNode/Tween.start()
 			dialog_index += 1
 			load_dialog(true)
-		{'sound'}:
-			print('Play sound here: ', event)
+		{'audio'}, {'audio', 'file'}:
+			if event['audio'] == 'play':
+				$FX/AudioStreamPlayer.stream = load(event['file'])
+				$FX/AudioStreamPlayer.play()
 			dialog_index += 1
 			load_dialog()
 		{'change_timeline'}:

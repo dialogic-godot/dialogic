@@ -22,6 +22,7 @@ Yes, you can use Dialogic to make any kind of game (even commercial ones). The p
 ## Changelog
 ### 🆕 v0.8 - WIP
  - Change timeline event is now working
+ - Audio event can play sounds
 
 ### v0.7 - Looking good
  - Video: https://youtu.be/wREIVj55eBM

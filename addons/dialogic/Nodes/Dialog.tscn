@@ -77,17 +77,17 @@ __meta__ = {
 [node name="RichTextLabel" type="RichTextLabel" parent="TextBubble"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = 15.0
-margin_top = 15.0
-margin_right = -15.0
-margin_bottom = -15.0
+margin_left = 20.0
+margin_top = 20.0
+margin_right = -20.0
+margin_bottom = -20.0
 rect_clip_content = false
 custom_styles/normal = SubResource( 1 )
 custom_fonts/normal_font = ExtResource( 3 )
 custom_colors/default_color = Color( 1, 1, 1, 1 )
 custom_colors/font_color_shadow = Color( 0, 0, 0, 0.576471 )
-custom_constants/shadow_offset_x = 1
-custom_constants/shadow_offset_y = 4
+custom_constants/shadow_offset_x = 0
+custom_constants/shadow_offset_y = 0
 bbcode_enabled = true
 bbcode_text = "Placeholder text for testing and formatting."
 text = "Placeholder text for testing and formatting."
@@ -127,8 +127,8 @@ custom_styles/normal = SubResource( 1 )
 custom_fonts/normal_font = ExtResource( 3 )
 custom_colors/default_color = Color( 1, 1, 1, 1 )
 custom_colors/font_color_shadow = Color( 0, 0, 0, 0.576471 )
-custom_constants/shadow_offset_x = 1
-custom_constants/shadow_offset_y = 4
+custom_constants/shadow_offset_x = 0
+custom_constants/shadow_offset_y = 0
 custom_constants/shadow_as_outline = 10
 bbcode_enabled = true
 bbcode_text = "Name Here"
@@ -195,5 +195,7 @@ __meta__ = {
 }
 
 [node name="Tween" type="Tween" parent="FX/FadeInNode"]
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="FX"]
 
 [connection signal="tween_completed" from="TextBubble/Tween" to="." method="_on_Tween_tween_completed"]
