@@ -21,7 +21,7 @@ var dialog_script = {}
 func _ready():
 	# Checking if the dialog should read the code from a external file
 	if timeline_id != '':
-		dialog_script = load_json(DialogicUtil.get_path('TIMELINE_DIR', '/' + timeline_id + '.json'))
+		dialog_script = set_current_dialog('/' + timeline_id + '.json')
 	
 	# Setting everything up for the node to be default
 	$TextBubble/NameLabel.text = ''
@@ -32,6 +32,36 @@ func _ready():
 	
 	load_theme()
 	load_dialog()
+
+
+func set_current_dialog(dialog_path):
+	var dialog_script = load_json(DialogicUtil.get_path('TIMELINE_DIR', dialog_path))
+	dialog_script = parse_branches(dialog_script)
+	return dialog_script
+
+
+func parse_branches(unparsed_dialog_script):
+	var parsed_dialog = unparsed_dialog_script
+	var choices = []
+	var new_events = []
+	for event in unparsed_dialog_script['events']:
+		if event.has('choice'):
+			print('[!] here')
+			new_events.append({
+				'question': 'Choose your favourite color',
+				'options': [
+					{ 'label': 'Red', 'value': '#f7411d'},
+					{ 'label': 'Blue', 'value': '#1da0f7'}
+				],
+				'variable': 'fav_color'
+			})
+		else:
+			new_events.append(event)
+	print('----------------- Parsed events -------------------')
+	print(parsed_dialog)
+	print('---------------------------------------------------')
+	parsed_dialog['events'] = new_events
+	return parsed_dialog
 
 
 func parse_text(text):
@@ -237,7 +267,7 @@ func event_handler(event):
 			# Todo: audio stop
 			go_to_next_event()
 		{'change_timeline'}:
-			dialog_script = load_json(DialogicUtil.get_path('TIMELINE_DIR', '/' + event['change_timeline']))
+			dialog_script = set_current_dialog('/' + event['change_timeline'])
 			dialog_index = 0
 			load_dialog(true)
 		_:
