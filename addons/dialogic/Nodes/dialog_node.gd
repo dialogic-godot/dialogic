@@ -22,7 +22,6 @@ func _ready():
 	# Checking if the dialog should read the code from a external file
 	if timeline_id != '':
 		dialog_script = load_json(DialogicUtil.get_path('TIMELINE_DIR', '/' + timeline_id + '.json'))
-		print(dialog_script)
 	
 	# Setting everything up for the node to be default
 	$TextBubble/NameLabel.text = ''
@@ -96,9 +95,7 @@ func start_text_tween():
 
 
 func update_name(character, color='FFFFFF'):
-	if str(character) == '':
-		$TextBubble/NameLabel.bbcode_text = ''
-	else:
+	if character.has('name'):
 		var parsed_name = character['name']
 		if character.has('display_name'):
 			if character['display_name'] != '':
@@ -106,6 +103,8 @@ func update_name(character, color='FFFFFF'):
 		if character.has('color'):
 			color = character['color'].to_html()
 		$TextBubble/NameLabel.bbcode_text = '[color=#' + color + ']' + parsed_name + '[/color]'
+	else:
+		$TextBubble/NameLabel.bbcode_text = ''
 	return true
 
 
@@ -140,7 +139,7 @@ func get_character(character_id):
 	for c in characters:
 		if c['file'] == character_id:
 			return c
-	return ''
+	return {}
 
 
 func event_handler(event):
@@ -153,29 +152,9 @@ func event_handler(event):
 		{'text', 'character'}, {'text', 'character', ..}:
 			show_dialog()
 			finished = false
-			update_name(get_character(event['character']))
-			#var exists = false
-			#var existing
-			#for portrait in $Portraits.get_children():
-			#	if portrait.character_data == character_data:
-			#		exists = true
-			#		existing = portrait
-			#	else:
-			#		portrait.focusout()
-			#
-			#if exists:
-			#	existing.focus()
-			#if exists == false:
-			#	var p = Portrait.instance()
-			#	p.character_data = character_data
-			#	#p.debug = true
-			#	if event.has('position'):
-			#		p.init(event['position'])
-			#	else:
-			#		p.init('left') # Default character position
-			#	$Portraits.add_child(p)
-			#	p.fade_in()
-
+			var character_data = get_character(event['character'])
+			update_name(character_data)
+			grab_portrait_focus(character_data)
 			update_text(event['text'])
 		{'question', ..}:
 			show_dialog()
@@ -212,28 +191,17 @@ func event_handler(event):
 						p.fade_out()
 				else:
 					for p in $Portraits.get_children():
-						print(p.character_data['file'])
 						if p.character_data['file'] == event['character']:
 							p.fade_out()
 					
 				go_to_next_event()
 			elif event['action'] == 'join':
-				var exists = false
-				#var existing
-				#for portrait in $Portraits.get_children():
-				#	if portrait.character_data == character_data:
-				#		exists = true
-				#		existing = portrait
-				#	else:
-				#		portrait.focusout()
-				#
-				#if exists:
-				#	existing.focus()
+				var character_data = get_character(event['character'])
+				var exists = grab_portrait_focus(character_data)
 				if exists == false:
 					var p = Portrait.instance()
-					p.character_data = get_character(event['character'])
-					# Todo: get position from  `position:{0:True, 1:False, 2:False, 3:False, 4:False}`
-					
+					p.character_data = character_data
+					# Todo: get current expression instead of 'Default'
 					p.init('Default', get_character_position(event['position']))
 					$Portraits.add_child(p)
 					p.fade_in()
@@ -269,12 +237,9 @@ func event_handler(event):
 			# Todo: audio stop
 			go_to_next_event()
 		{'change_timeline'}:
-			print('change to timeline ', event)
 			dialog_script = load_json(DialogicUtil.get_path('TIMELINE_DIR', '/' + event['change_timeline']))
 			dialog_index = 0
-			print(dialog_script)
 			load_dialog(true)
-			print(dialog_script)
 		_:
 			visible = false
 			print('Other event. ', event)
@@ -345,6 +310,17 @@ func load_json(path):
 	if data_parse.error != OK:
 		return
 	return data_parse.result
+
+
+func grab_portrait_focus(character_data):
+	var exists = false
+	for portrait in $Portraits.get_children():
+		if portrait.character_data == character_data:
+			exists = true
+			portrait.focus()
+		else:
+			portrait.focusout()
+	return exists
 
 
 func get_character_position(positions):
