@@ -44,11 +44,15 @@ func parse_branches(unparsed_dialog_script):
 	var parsed_dialog = unparsed_dialog_script
 	var choices = []
 	var new_events = []
+	var previous_event
 	for event in unparsed_dialog_script['events']:
 		if event.has('choice'):
 			print('[!] here')
+			var question = ''
+			if previous_event.has('text'):
+				question = previous_event['text']
 			new_events.append({
-				'question': 'Choose your favourite color',
+				'question': question,
 				'options': [
 					{ 'label': 'Red', 'value': '#f7411d'},
 					{ 'label': 'Blue', 'value': '#1da0f7'}
@@ -57,6 +61,7 @@ func parse_branches(unparsed_dialog_script):
 			})
 		else:
 			new_events.append(event)
+		previous_event = event
 	print('----------------- Parsed events -------------------')
 	print(parsed_dialog)
 	print('---------------------------------------------------')

@@ -21,7 +21,7 @@ var timer_interval = 30
 var autosaving_hash
 var timeline_path = "EditorTimeline/TimelineEditor/TimelineArea/TimeLine"
 var dialog_list_path = "EditorTimeline/EventTools/VBoxContainer2/DialogItemList"
-
+onready var events_warning = $EditorTimeline/TimelineEditor/ScrollContainer/EventContainer/EventsWarning
 
 func _ready():
 	# Adding file dialog to get used by pieces
@@ -95,7 +95,7 @@ func create_event(scene, data, indent_on_create = false):
 	piece.editor_reference = self
 	get_node(timeline_path).add_child(piece)
 	piece.load_data(data)
-	$EditorTimeline/TimelineEditor/NoEventsOnTimeline.visible = false
+	events_warning.visible = false
 	if indent_on_create:
 		indent_events()
 	return piece
@@ -185,9 +185,9 @@ func load_timeline(path):
 
 	autosaving_hash = generate_save_data().hash()
 	if data.size() < 1:
-		$EditorTimeline/TimelineEditor/NoEventsOnTimeline.visible = true
+		events_warning.visible = true
 	else:
-		$EditorTimeline/TimelineEditor/NoEventsOnTimeline.visible = false
+		events_warning.visible = false
 		indent_events()
 		fold_all_nodes()
 	
