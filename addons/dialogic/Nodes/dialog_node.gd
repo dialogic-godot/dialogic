@@ -42,26 +42,24 @@ func set_current_dialog(dialog_path):
 
 func parse_branches(unparsed_dialog_script):
 	var parsed_dialog = unparsed_dialog_script
-	var choices = []
+	var questions = []
+	var question_index = -1 # increments each time it finds another question
 	var new_events = []
-	var previous_event
+	var event_id = 0
 	for event in unparsed_dialog_script['events']:
-		if event.has('choice'):
+		if event.has('question'):
 			print('[!] here')
-			var question = ''
-			if previous_event.has('text'):
-				question = previous_event['text']
-			new_events.append({
-				'question': question,
-				'options': [
-					{ 'label': 'Red', 'value': '#f7411d'},
-					{ 'label': 'Blue', 'value': '#1da0f7'}
-				],
-				'variable': 'fav_color'
-			})
-		else:
-			new_events.append(event)
-		previous_event = event
+			# recording the existance of a question
+			questions.append({'id': event_id, 'answered': false})
+			question_index += 1
+		if event.has('choice'):
+			new_events[questions[question_index]['id']]['options'].append({
+				'label': event['choice'],
+				'value': event_id - 1 #next event after this one
+				})
+
+		new_events.append(event)
+		event_id += 1
 	print('----------------- Parsed events -------------------')
 	print(parsed_dialog)
 	print('---------------------------------------------------')
@@ -198,19 +196,12 @@ func event_handler(event):
 			if event.has('name'):
 				update_name(event['name'])
 			update_text(event['question'])
-			for o in event['options']:
-				var button = Button.new()
-				button.text = o['label']
-				if event.has('variable'):
-					button.connect("pressed", self, "_on_option_selected", [button, event['variable'], o])
-				else:
-					# Checking for checkpoints
-					if o['value'] == '0':
-						button.connect("pressed", self, "change_position", [button, int(event['checkpoint'])])
-					else:
-						# Continue
-						button.connect("pressed", self, "change_position", [button, 0])
-				$Options.add_child(button)
+			if event.has('options'):
+				for o in event['options']:
+					var button = Button.new()
+					button.text = o['label']
+					button.connect("pressed", self, "change_position", [button, o['value']])
+					$Options.add_child(button)
 		{'input', ..}:
 			show_dialog()
 			finished = false
@@ -270,6 +261,8 @@ func event_handler(event):
 				$FX/AudioStreamPlayer.stream = load(event['file'])
 				$FX/AudioStreamPlayer.play()
 			# Todo: audio stop
+			go_to_next_event()
+		{'endchoice'}:
 			go_to_next_event()
 		{'change_timeline'}:
 			dialog_script = set_current_dialog('/' + event['change_timeline'])

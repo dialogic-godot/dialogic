@@ -7,7 +7,8 @@ var editorPopup
 
 # This is the information of this event and it will get parsed and saved to the JSON file.
 var event_data = {
-	'question': ''
+	'question': '',
+	'options': []
 }
 
 

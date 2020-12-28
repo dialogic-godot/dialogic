@@ -28,6 +28,7 @@ Yes, you can use Dialogic to make any kind of game (even commercial ones). The p
     - Character join (left, center and right) working
     - Focus in and out of portraits when speaking
     - Character leave events working
+    - Basic question/answers support
  - Timelines:
     - Moved the event buttons to a new column
 

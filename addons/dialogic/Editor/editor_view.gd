@@ -90,6 +90,10 @@ func _on_ButtonChangeTimeline_pressed():
 	create_event("ChangeTimeline", {'change_timeline': ''})
 
 
+func _on_ButtonQuestion_pressed():
+	create_event("Question", {'question': '', 'options': []}, true)
+
+
 func create_event(scene, data, indent_on_create = false):
 	var piece = load("res://addons/dialogic/Editor/Pieces/" + scene + ".tscn").instance()
 	piece.editor_reference = self
@@ -172,6 +176,8 @@ func load_timeline(path):
 				create_event("CharacterJoinBlock", i)
 			{'audio', 'file'}:
 				create_event("AudioBlock", i)
+			{'question'}:
+				create_event("Question", i)
 			{'choice'}:
 				create_event("Choice", i)
 			{'endchoice'}:
@@ -487,3 +493,4 @@ func compare_dicts(dict_1, dict_2):
 func dprint(what):
 	if debug_mode:
 		print(what)
+

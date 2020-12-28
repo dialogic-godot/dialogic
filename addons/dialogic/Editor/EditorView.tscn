@@ -1,4 +1,4 @@
-[gd_scene load_steps=31 format=2]
+[gd_scene load_steps=32 format=2]
 
 [ext_resource path="res://addons/dialogic/Editor/editor_view.gd" type="Script" id=1]
 [ext_resource path="res://addons/dialogic/Images/dialog.svg" type="Texture" id=2]
@@ -26,6 +26,7 @@
 [ext_resource path="res://addons/dialogic/Images/plugin-editor-icon.svg" type="Texture" id=24]
 [ext_resource path="res://addons/dialogic/Images/Rename.svg" type="Texture" id=25]
 [ext_resource path="res://addons/dialogic/Images/Filesystem.svg" type="Texture" id=26]
+[ext_resource path="res://addons/dialogic/Images/question.svg" type="Texture" id=27]
 [ext_resource path="res://addons/dialogic/Editor/EditorTheme.gd" type="Script" id=28]
 
 [sub_resource type="StyleBoxFlat" id=1]
@@ -378,56 +379,64 @@ margin_top = 194.0
 margin_right = 190.0
 margin_bottom = 198.0
 
-[node name="ButtonChoice" type="Button" parent="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer"]
+[node name="ButtonQuestion" type="Button" parent="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer"]
 margin_top = 202.0
 margin_right = 190.0
 margin_bottom = 230.0
+text = "  Question"
+icon = ExtResource( 27 )
+align = 0
+
+[node name="ButtonChoice" type="Button" parent="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer"]
+margin_top = 234.0
+margin_right = 190.0
+margin_bottom = 262.0
 text = "  Choice"
 icon = ExtResource( 18 )
 align = 0
 
 [node name="ButtonCondition" type="Button" parent="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer"]
-margin_top = 234.0
+margin_top = 266.0
 margin_right = 190.0
-margin_bottom = 262.0
+margin_bottom = 294.0
 text = " Condition"
 icon = ExtResource( 6 )
 align = 0
 
 [node name="ButtonEndChoice" type="Button" parent="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer"]
-margin_top = 266.0
+margin_top = 298.0
 margin_right = 190.0
-margin_bottom = 294.0
+margin_bottom = 326.0
 text = "  End Branch"
 icon = ExtResource( 19 )
 align = 0
 
 [node name="HSeparator2" type="HSeparator" parent="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer"]
-margin_top = 298.0
-margin_right = 190.0
-margin_bottom = 302.0
-
-[node name="ButtonChangeTimeline" type="Button" parent="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer"]
-margin_top = 306.0
+margin_top = 330.0
 margin_right = 190.0
 margin_bottom = 334.0
+
+[node name="ButtonChangeTimeline" type="Button" parent="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer"]
+margin_top = 338.0
+margin_right = 190.0
+margin_bottom = 366.0
 hint_tooltip = "This will instantly teleport you to the start of the desired timeline."
 text = "  Change Timeline"
 icon = ExtResource( 12 )
 align = 0
 
 [node name="ButtonBackground" type="Button" parent="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer"]
-margin_top = 338.0
+margin_top = 370.0
 margin_right = 190.0
-margin_bottom = 366.0
+margin_bottom = 398.0
 text = "  Scene Event"
 icon = ExtResource( 4 )
 align = 0
 
 [node name="ButtonAudio" type="Button" parent="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer"]
-margin_top = 370.0
+margin_top = 402.0
 margin_right = 190.0
-margin_bottom = 398.0
+margin_bottom = 430.0
 text = "  Audio Event"
 icon = ExtResource( 8 )
 align = 0
@@ -1138,6 +1147,7 @@ __meta__ = {
 [connection signal="pressed" from="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer/ButtonText" to="." method="_on_ButtonText_pressed"]
 [connection signal="pressed" from="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer/ButtonCharacterJoin" to="." method="_on_ButtonCharacter_pressed"]
 [connection signal="pressed" from="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer/ButtonCharacterLeave" to="." method="_on_ButtonCharacterLeave_pressed"]
+[connection signal="pressed" from="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer/ButtonQuestion" to="." method="_on_ButtonQuestion_pressed"]
 [connection signal="pressed" from="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer/ButtonChoice" to="." method="_on_ButtonChoice_pressed"]
 [connection signal="pressed" from="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer/ButtonCondition" to="." method="_on_ButtonCondition_pressed"]
 [connection signal="pressed" from="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer/ButtonEndChoice" to="." method="_on_ButtonEndChoice_pressed"]
