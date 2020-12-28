@@ -4,7 +4,7 @@ Create dialogs, characters and scenes to display conversations in your Godot gam
 ![Screenshot](https://coppolaemilio.com/images/dialogic/dialogic08.png)
 
 ## ⚠️ Under development! ⚠️
-The plugin is not production ready, make sure to follow the repo for the next update.
+The plugin is not production ready, this means that it will not work in your game right now unless you know what you are doing. Make sure to follow the repo for the next update.
 
 ---
 
