@@ -16,7 +16,7 @@ var characters
 
 onready var Portrait = load("res://addons/dialogic/Nodes/Portrait.tscn")
 var dialog_script = {}
-
+var questions #for keeping track of the questions answered
 
 func _ready():
 	# Checking if the dialog should read the code from a external file
@@ -42,26 +42,31 @@ func set_current_dialog(dialog_path):
 
 func parse_branches(unparsed_dialog_script):
 	var parsed_dialog = unparsed_dialog_script
-	var questions = []
+	questions = [] # Resetting the questions 
 	var question_index = -1 # increments each time it finds another question
 	var new_events = []
 	var event_id = 0
 	for event in unparsed_dialog_script['events']:
 		if event.has('question'):
-			print('[!] here')
 			# recording the existance of a question
 			questions.append({'id': event_id, 'answered': false})
 			question_index += 1
 		if event.has('choice'):
+			event['question_id'] = question_index
 			new_events[questions[question_index]['id']]['options'].append({
+				'question_id': question_index,
 				'label': event['choice'],
 				'value': event_id - 1 #next event after this one
 				})
-
+		if event.has('endchoice'):
+			new_events[questions[question_index]['id']]['question_id'] = question_index
+			questions[question_index]['end_id'] = event_id
 		new_events.append(event)
 		event_id += 1
 	print('----------------- Parsed events -------------------')
 	print(parsed_dialog)
+	print('------------------- Questions ---------------------')
+	print(questions)
 	print('---------------------------------------------------')
 	parsed_dialog['events'] = new_events
 	return parsed_dialog
@@ -200,8 +205,20 @@ func event_handler(event):
 				for o in event['options']:
 					var button = Button.new()
 					button.text = o['label']
-					button.connect("pressed", self, "change_position", [button, o['value']])
+					button.connect("pressed", self, "answer_question", [button, o['value'], o['question_id']])
 					$Options.add_child(button)
+		{'choice', 'question_id'}:
+			var current_question = questions[event['question_id']]
+			print('####################')
+			print(questions)
+			print('####################')
+			if current_question['answered']:
+				# If the option is for an answered question, skip to the end of it.
+				dialog_index = current_question['end_id']
+				load_dialog(true)
+			else:
+				# It should never get here, but if it does, go to the next place.
+				go_to_next_event()
 		{'input', ..}:
 			show_dialog()
 			finished = false
@@ -294,11 +311,12 @@ func reset_options():
 		option.queue_free()
 
 
-func change_position(i, checkpoint):
-	print('[!] Going back ', checkpoint, i)
+func answer_question(i, checkpoint, question_id):
+	print('[!] Going back ', checkpoint, i, 'question_id:', question_id)
 	print('    From ', dialog_index, ' to ', dialog_index - checkpoint)
 	waiting_for_answer = false
 	dialog_index += checkpoint
+	questions[question_id]['answered'] = true
 	print('    dialog_index = ', dialog_index)
 	reset_options()
 	load_dialog()

@@ -176,7 +176,7 @@ func load_timeline(path):
 				create_event("CharacterJoinBlock", i)
 			{'audio', 'file'}:
 				create_event("AudioBlock", i)
-			{'question'}:
+			{'question', 'options'}:
 				create_event("Question", i)
 			{'choice'}:
 				create_event("Choice", i)
@@ -213,7 +213,7 @@ func indent_events():
 		indent_node.visible = false
 	# Adding new indents
 	for event in event_list:
-		if event.event_data.has('choice') or event.event_data.has('condition'):
+		if event.event_data.has('question') or event.event_data.has('condition'):
 			indent += 1
 			starter = true
 		if event.event_data.has('endchoice'):
