@@ -43,26 +43,39 @@ func set_current_dialog(dialog_path):
 func parse_branches(unparsed_dialog_script):
 	var parsed_dialog = unparsed_dialog_script
 	questions = [] # Resetting the questions 
-	var question_index = -1 # increments each time it finds another question
 	var new_events = []
 	var event_id = 0
+	var closed_question_index = 0
 	for event in unparsed_dialog_script['events']:
 		if event.has('question'):
 			# recording the existance of a question
-			questions.append({'id': event_id, 'answered': false})
-			question_index += 1
+			questions.append({
+				'event_id': event_id,
+				'answered': false,
+				'text': event['question'],
+				'index': questions.size()
+			})
 		if event.has('choice'):
-			event['question_id'] = question_index
-			new_events[questions[question_index]['id']]['options'].append({
-				'question_id': question_index,
+			var parent_question_id = questions.size() - closed_question_index - 1
+			var c_question = questions[parent_question_id]
+			
+			event['question_id'] = c_question['index']
+			new_events[c_question['event_id']]['options'].append({
+				'question_id': c_question['index'],
 				'label': event['choice'],
-				'value': event_id - 1 #next event after this one
+				'event_id': event_id
 				})
+		
 		if event.has('endchoice'):
-			new_events[questions[question_index]['id']]['question_id'] = question_index
-			questions[question_index]['end_id'] = event_id
+			var c_question = questions[questions.size() - closed_question_index - 1]
+			print('closing question ', c_question)
+			new_events[c_question['event_id']]['question_id'] = closed_question_index
+			c_question['end_id'] = event_id
+			closed_question_index += 1
+		
 		new_events.append(event)
 		event_id += 1
+
 	print('----------------- Parsed events -------------------')
 	print(parsed_dialog)
 	print('------------------- Questions ---------------------')
@@ -205,7 +218,7 @@ func event_handler(event):
 				for o in event['options']:
 					var button = Button.new()
 					button.text = o['label']
-					button.connect("pressed", self, "answer_question", [button, o['value'], o['question_id']])
+					button.connect("pressed", self, "answer_question", [button, o['event_id'], o['question_id']])
 					$Options.add_child(button)
 		{'choice', 'question_id'}:
 			var current_question = questions[event['question_id']]
@@ -311,11 +324,11 @@ func reset_options():
 		option.queue_free()
 
 
-func answer_question(i, checkpoint, question_id):
-	print('[!] Going back ', checkpoint, i, 'question_id:', question_id)
-	print('    From ', dialog_index, ' to ', dialog_index - checkpoint)
+func answer_question(i, event_id, question_id):
+	print('[!] Going to ', event_id + 1, i, 'question_id:', question_id)
+	print('')
 	waiting_for_answer = false
-	dialog_index += checkpoint
+	dialog_index = event_id + 1
 	questions[question_id]['answered'] = true
 	print('    dialog_index = ', dialog_index)
 	reset_options()
