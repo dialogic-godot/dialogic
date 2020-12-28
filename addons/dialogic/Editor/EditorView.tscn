@@ -41,7 +41,7 @@ border_width_right = 1
 border_width_bottom = 1
 border_color = Color( 0.0980392, 0.113725, 0.152941, 1 )
 
-[sub_resource type="StyleBoxFlat" id=5]
+[sub_resource type="StyleBoxFlat" id=2]
 content_margin_right = 6.0
 content_margin_top = 10.0
 content_margin_bottom = 10.0
@@ -51,7 +51,7 @@ corner_radius_top_right = 5
 corner_radius_bottom_right = 5
 corner_radius_bottom_left = 5
 
-[sub_resource type="StyleBoxFlat" id=4]
+[sub_resource type="StyleBoxFlat" id=3]
 content_margin_left = 5.0
 content_margin_right = 5.0
 content_margin_top = 5.0
@@ -228,11 +228,10 @@ margin_right = 180.0
 margin_bottom = 541.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-items = [ "Intro", ExtResource( 15 ), false, "Nice :)", ExtResource( 15 ), false, "alternative timeline", ExtResource( 15 ), false, "timeline-1609107708", ExtResource( 15 ), false ]
+items = [ "234234", ExtResource( 15 ), false, "Intro", ExtResource( 15 ), false, "Nice :)", ExtResource( 15 ), false, "alternative timeline", ExtResource( 15 ), false ]
 allow_rmb_select = true
 
 [node name="CenterContainer" type="CenterContainer" parent="EditorTimeline"]
-visible = false
 margin_left = 192.0
 margin_right = 997.0
 margin_bottom = 541.0
@@ -309,7 +308,7 @@ __meta__ = {
 [node name="EventsWarning" type="PanelContainer" parent="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer"]
 margin_right = 190.0
 margin_bottom = 68.0
-custom_styles/panel = SubResource( 5 )
+custom_styles/panel = SubResource( 2 )
 
 [node name="HBoxContainer" type="HBoxContainer" parent="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer/EventsWarning"]
 margin_top = 10.0
@@ -399,6 +398,7 @@ align = 0
 margin_top = 266.0
 margin_right = 190.0
 margin_bottom = 294.0
+disabled = true
 text = " Condition"
 icon = ExtResource( 6 )
 align = 0
@@ -429,6 +429,7 @@ align = 0
 margin_top = 370.0
 margin_right = 190.0
 margin_bottom = 398.0
+disabled = true
 text = "  Scene Event"
 icon = ExtResource( 4 )
 align = 0
@@ -506,7 +507,7 @@ text = "Create a character +"
 margin_left = 192.0
 margin_right = 997.0
 margin_bottom = 541.0
-custom_styles/bg = SubResource( 4 )
+custom_styles/bg = SubResource( 3 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
