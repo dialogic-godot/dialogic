@@ -47,17 +47,17 @@ static func get_path(name, extra=''):
 		return paths[name]
 
 
-static func get_filename_from_path(path, extension = false):
-	var file_name = path.split('/')[-1]
+static func get_filename_from_path(path: String, extension = false) -> String:
+	var file_name: String = path.split('/')[-1]
 	if extension == false:
 		file_name = file_name.split('.')[0]
 	return file_name
 
 
-static func listdir(path):
+static func listdir(path: String) -> Array:
 	# https://godotengine.org/qa/5175/how-to-get-all-the-files-inside-a-folder
-	var files = []
-	var dir = Directory.new()
+	var files: Array = []
+	var dir: Directory = Directory.new()
 	dir.open(path)
 	dir.list_dir_begin()
 	while true:
@@ -70,16 +70,17 @@ static func listdir(path):
 	return files
 
 
-static func get_character_list():
-	var characters = []
+static func get_character_list() -> Array:
+	var characters: Array = []
 	for file in listdir(get_path('CHAR_DIR')):
 		if '.json' in file:
-			var data = load_json(get_path('CHAR_DIR', file))
-			var color = Color("#ffffff")
-			var c_name = data['id']
-			var default_speaker = 'false'
-			var portraits = []
-			var display_name = ''
+			var data: Dictionary     = load_json(get_path('CHAR_DIR', file))
+			var color: Color         = Color("#ffffff")
+			var c_name: String       = data['id']
+			var default_speaker      = false
+			var portraits: Array     = []
+			var display_name: String = ''
+			
 			if data.has('color'):
 				color = Color('#' + data['color'])
 			if data.has('name'):

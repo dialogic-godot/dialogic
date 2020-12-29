@@ -21,7 +21,7 @@ func _ready():
 	$PanelContainer/VBoxContainer/Header/PortraitDropdown.get_popup().connect("index_pressed", self, '_on_portrait_selected')
 	# Default Speaker
 	for c in DialogicUtil.get_character_list():
-		if c['default_speaker'] == 'true':
+		if c['default_speaker']:
 			event_data['character'] = c['file']
 	update_preview()
 

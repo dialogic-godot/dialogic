@@ -68,7 +68,7 @@ func create_character():
 	var character = {
 		'color': 'ffffff',
 		'id': character_file,
-		'default_speaker': 'false',
+		'default_speaker': false,
 		'portraits': []
 	}
 	var directory = Directory.new()
@@ -97,9 +97,7 @@ func _on_SaveButton_pressed():
 	save_current_character()
 
 func generate_character_data_to_save():
-	var default_speaker = 'false'
-	if character_editor['default_speaker'].pressed:
-		default_speaker = 'true'
+	var default_speaker: bool = character_editor['default_speaker'].pressed
 	var portraits = []
 	for p in $CharacterEditor/HBoxContainer/Container/ScrollContainer/VBoxContainer/PortraitList.get_children():
 		var entry = {}
@@ -152,7 +150,7 @@ func load_character_editor(data):
 	if data.has('color'):
 		character_editor['color'].color = Color('#' + data['color'])
 	if data.has('default_speaker'):
-		if data['default_speaker'] == 'true':
+		if data['default_speaker']:
 			character_editor['default_speaker'].pressed = true
 	
 	if data.has('display_name_bool'):
