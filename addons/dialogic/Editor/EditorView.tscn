@@ -404,6 +404,7 @@ icon = ExtResource( 6 )
 align = 0
 
 [node name="ButtonEndChoice" type="Button" parent="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer"]
+visible = false
 margin_top = 298.0
 margin_right = 190.0
 margin_bottom = 326.0
@@ -412,32 +413,32 @@ icon = ExtResource( 19 )
 align = 0
 
 [node name="HSeparator2" type="HSeparator" parent="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer"]
-margin_top = 330.0
+margin_top = 298.0
 margin_right = 190.0
-margin_bottom = 334.0
+margin_bottom = 302.0
 
 [node name="ButtonChangeTimeline" type="Button" parent="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer"]
-margin_top = 338.0
+margin_top = 306.0
 margin_right = 190.0
-margin_bottom = 366.0
+margin_bottom = 334.0
 hint_tooltip = "This will instantly teleport you to the start of the desired timeline."
 text = "  Change Timeline"
 icon = ExtResource( 12 )
 align = 0
 
 [node name="ButtonBackground" type="Button" parent="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer"]
-margin_top = 370.0
+margin_top = 338.0
 margin_right = 190.0
-margin_bottom = 398.0
+margin_bottom = 366.0
 disabled = true
 text = "  Scene Event"
 icon = ExtResource( 4 )
 align = 0
 
 [node name="ButtonAudio" type="Button" parent="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer"]
-margin_top = 402.0
+margin_top = 370.0
 margin_right = 190.0
-margin_bottom = 430.0
+margin_bottom = 398.0
 text = "  Audio Event"
 icon = ExtResource( 8 )
 align = 0

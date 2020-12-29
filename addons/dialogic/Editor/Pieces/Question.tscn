@@ -72,21 +72,23 @@ text = "  Question "
 
 [node name="LineEdit" type="LineEdit" parent="PanelContainer/VBoxContainer/Header"]
 margin_left = 135.0
-margin_right = 193.0
+margin_right = 335.0
 margin_bottom = 30.0
+rect_min_size = Vector2( 200, 0 )
 expand_to_text_length = true
+placeholder_text = "Write your promt here"
 caret_blink = true
 caret_blink_speed = 0.5
 
 [node name="Preview" type="Label" parent="PanelContainer/VBoxContainer/Header"]
-margin_left = 197.0
+margin_left = 339.0
 margin_top = 8.0
-margin_right = 197.0
+margin_right = 339.0
 margin_bottom = 22.0
 custom_colors/font_color = Color( 1, 1, 1, 0.513726 )
 
 [node name="Spacer" type="Control" parent="PanelContainer/VBoxContainer/Header"]
-margin_left = 201.0
+margin_left = 343.0
 margin_right = 951.0
 margin_bottom = 30.0
 size_flags_horizontal = 3

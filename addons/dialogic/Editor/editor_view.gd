@@ -92,6 +92,7 @@ func _on_ButtonChangeTimeline_pressed():
 
 func _on_ButtonQuestion_pressed():
 	create_event("Question", {'question': '', 'options': []}, true)
+	create_event("EndChoice", {'endchoice': ''}, true)
 
 
 func create_event(scene, data, indent_on_create = false):
