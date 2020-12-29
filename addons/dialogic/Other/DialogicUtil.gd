@@ -2,40 +2,40 @@ tool
 class_name DialogicUtil
 
 
-static func load_json(path):
-	var file = File.new()
+static func load_json(path: String) -> Dictionary:
+	var file:File = File.new()
 	if file.open(path, File.READ) != OK:
 		file.close()
 		return {'error':'file read error'}
-	var data_text = file.get_as_text()
+	var data_text: String = file.get_as_text()
 	file.close()
-	var data_parse = JSON.parse(data_text)
+	var data_parse:JSONParseResult = JSON.parse(data_text)
 	if data_parse.error != OK:
 		return {'error':'data parse error'}
 	return data_parse.result
 
 
-static func load_settings():
-	var settings = load_json(get_path('SETTINGS_FILE'))
+static func load_settings() -> Dictionary:
+	var settings: Dictionary = load_json(get_path('SETTINGS_FILE'))
 	if settings.has('error'):
 		settings = {}
 		print('[!] settings loaded: ' + str(settings))
 	return settings
 
 
-static func update_setting(key, value):
+static func update_setting(key: String, value) -> void:
 	var data = load_settings()
 	data[key] = value
 	
-	var file = File.new()
+	var file:File = File.new()
 	file.open(get_path('SETTINGS_FILE'), File.WRITE)
 	file.store_line(to_json(data))
 	file.close()
 
 
-static func get_path(name, extra=''):
-	var WORKING_DIR = "res://dialogic"
-	var paths = {
+static func get_path(name: String, extra: String ='') -> String:
+	var WORKING_DIR: String = "res://dialogic"
+	var paths: Dictionary = {
 		'WORKING_DIR': WORKING_DIR,
 		'TIMELINE_DIR': WORKING_DIR + "/dialogs",
 		'CHAR_DIR': WORKING_DIR + "/characters",

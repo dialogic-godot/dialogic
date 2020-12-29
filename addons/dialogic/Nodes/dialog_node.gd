@@ -2,14 +2,14 @@ tool
 extends Control
 class_name DialogNode, "res://addons/dialogic/Images/icon.svg"
 
-var input_next = 'ui_accept'
-var dialog_index = 0
-var finished = false
+var input_next: String = 'ui_accept'
+var dialog_index: int = 0
+var finished: bool = false
 var text_speed = 0.02 # Higher = lower speed
-var waiting_for_answer = false
-var waiting_for_input = false
+var waiting_for_answer: bool = false
+var waiting_for_input: bool = false
 
-export(String) var timeline_id # Timeline-var-replace
+export(String) var timeline_id: String # Timeline-var-replace
 
 var dialog_resource
 var characters
@@ -35,17 +35,17 @@ func _ready():
 
 
 func set_current_dialog(dialog_path):
-	var dialog_script = load_json(DialogicUtil.get_path('TIMELINE_DIR', dialog_path))
+	var dialog_script = DialogicUtil.load_json(DialogicUtil.get_path('TIMELINE_DIR', dialog_path))
 	dialog_script = parse_branches(dialog_script)
 	return dialog_script
 
 
-func parse_branches(unparsed_dialog_script):
-	var parsed_dialog = unparsed_dialog_script
+func parse_branches(unparsed_dialog_script: Dictionary) -> Dictionary:
+	var parsed_dialog: Dictionary = unparsed_dialog_script
 	questions = [] # Resetting the questions 
-	var new_events = []
-	var event_id = 0
-	var closed_question_index = 0
+	var new_events: Array = []
+	var event_id: int = 0
+	var closed_question_index: int = 0
 	for event in unparsed_dialog_script['events']:
 		if event.has('question'):
 			# recording the existance of a question
@@ -76,11 +76,11 @@ func parse_branches(unparsed_dialog_script):
 		new_events.append(event)
 		event_id += 1
 
-	print('----------------- Parsed events -------------------')
-	print(parsed_dialog)
-	print('------------------- Questions ---------------------')
-	print(questions)
-	print('---------------------------------------------------')
+	#print('----------------- Parsed events -------------------')
+	#print(parsed_dialog)
+	#print('------------------- Questions ---------------------')
+	#print(questions)
+	#print('---------------------------------------------------')
 	parsed_dialog['events'] = new_events
 	return parsed_dialog
 
@@ -193,7 +193,7 @@ func get_character(character_id):
 	return {}
 
 
-func event_handler(event):
+func event_handler(event: Dictionary):
 	# Handling an event and updating the available nodes accordingly. 
 	reset_dialog_extras()
 	print(' ')
@@ -358,19 +358,6 @@ func go_to_next_event():
 	load_dialog(true)
 
 
-func load_json(path):
-	var file = File.new()
-	if file.open(path, File.READ) != OK:
-		file.close()
-		return
-	var data_text = file.get_as_text()
-	file.close()
-	var data_parse = JSON.parse(data_text)
-	if data_parse.error != OK:
-		return
-	return data_parse.result
-
-
 func grab_portrait_focus(character_data):
 	var exists = false
 	for portrait in $Portraits.get_children():
@@ -393,9 +380,10 @@ func get_character_position(positions):
 		return 'center_right'
 	if positions['4']:
 		return 'right'
+	return 
 
 
-func load_theme():
+func load_theme() -> void:
 	# Loading theme properties and settings
 	var settings = DialogicUtil.load_settings()	
 	if settings.has('theme_font'):

@@ -31,6 +31,10 @@ Yes, you can use Dialogic to make any kind of game (even commercial ones). The p
     - Basic question/answers support
  - Timelines:
     - Moved the event buttons to a new column
+    - When creating a `Question` event a `End Branch` event will be added automatically
+    - Added a warning for `Choice` events on the root level of indentation
+    - Disabled unfinished events
+
 
 ### v0.7 - Looking good
  - Video: https://youtu.be/wREIVj55eBM
