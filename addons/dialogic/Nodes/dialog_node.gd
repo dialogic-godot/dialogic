@@ -277,15 +277,6 @@ func event_handler(event: Dictionary):
 			$Background.texture = load(event['background'])
 			dialog_index += 1
 			load_dialog(true)
-		{'fade-in'}:
-			$FX/FadeInNode.modulate = Color(0,0,0,1)
-			$FX/FadeInNode/Tween.interpolate_property(
-				$FX/FadeInNode, "modulate", Color(0,0,0,1), Color(0,0,0,0), event['fade-in'],
-				Tween.TRANS_LINEAR, Tween.EASE_IN_OUT
-			)
-			$FX/FadeInNode/Tween.start()
-			dialog_index += 1
-			load_dialog(true)
 		{'audio'}, {'audio', 'file'}:
 			if event['audio'] == 'play':
 				$FX/AudioStreamPlayer.stream = load(event['file'])
