@@ -30,39 +30,27 @@ onready var nodes = {
 func _ready():
 	var settings = DialogicUtil.load_settings()
 	# Font 
-	if settings.has('theme_font'):
-		nodes['font_button'].text = DialogicUtil.get_filename_from_path(settings['theme_font'])
+	nodes['font_button'].text = DialogicUtil.get_filename_from_path(DialogicUtil.load_key(settings, 'theme_font', 'res://addons/dialogic/Fonts/DefaultFont.tres'))
+	
 	# Text and shadows
-	if settings.has('theme_text_color'):
-		nodes['color_picker'].color = Color('#' + str(settings['theme_text_color']))
-	if settings.has('theme_text_shadow'):
-		nodes['shadow_bool'].pressed = settings['theme_text_shadow']
-	if settings.has('theme_text_shadow_color'):
-		nodes['shadow_picker'].color = Color('#' + str(settings['theme_text_shadow_color']))
-	if settings.has('theme_shadow_offset_x'):
-		nodes['shadow_offset_x'].value = settings['theme_shadow_offset_x']
-	if settings.has('theme_shadow_offset_y'):
-		nodes['shadow_offset_y'].value = settings['theme_shadow_offset_y']
+	nodes['color_picker'].color = Color('#' + str(DialogicUtil.load_key(settings, 'theme_text_color', 'ff000000')))
+	nodes['shadow_bool'].pressed = DialogicUtil.load_key(settings, 'theme_text_shadow', false)
+	nodes['shadow_picker'].color = Color('#' + str(DialogicUtil.load_key(settings, 'theme_text_shadow_color', 'ff000000')))
+	
+	nodes['shadow_offset_x'].value = DialogicUtil.load_key(settings, 'theme_shadow_offset_x', 2)
+	nodes['shadow_offset_y'].value = DialogicUtil.load_key(settings, 'theme_shadow_offset_y', 2)
+	
 	# Text speed
-	if settings.has('theme_text_speed'):
-		nodes['text_speed'].value = settings['theme_text_speed']
-	# Margin
-	if settings.has('theme_text_margin'):
-		nodes['text_offset_v'].value = settings['theme_text_margin']
-	if settings.has('theme_text_margin_h'):
-		nodes['text_offset_h'].value = settings['theme_text_margin_h']
+	nodes['text_speed'].value = DialogicUtil.load_key(settings, 'theme_text_speed', 2)
+		
+	# Margin	
+	nodes['text_offset_v'].value = DialogicUtil.load_key(settings, 'theme_text_margin', 10)
+	nodes['text_offset_h'].value = DialogicUtil.load_key(settings, 'theme_text_margin_h', 10)
 	
 	# Backgrounds
-	if settings.has('theme_background_image'):
-		nodes['background_texture_button'].text = DialogicUtil.get_filename_from_path(settings['theme_background_image'])
-
-	if settings.has('background_texture_button_visible'):
-		nodes['background_texture_button_visible'].pressed = settings['background_texture_button_visible']
-	if settings.has('theme_background_color'):
-		nodes['theme_background_color'].color = Color('#' + str(settings['theme_background_color']))
-	
-	#	if settings.has('theme_background_color_visible'):
-	#		nodes['theme_background_color_visible'].pressed = settings['theme_background_color_visible']
+	nodes['background_texture_button'].text = DialogicUtil.get_filename_from_path(DialogicUtil.load_key(settings, 'theme_background_image', 'res://addons/dialogic/Images/background/background-2.png'))
+	nodes['background_texture_button_visible'].pressed = DialogicUtil.load_key(settings, 'background_texture_button_visible', true)
+	nodes['theme_background_color'].color = Color('#' + str(DialogicUtil.load_key(settings, 'theme_background_color', 'ff000000')))
 	nodes['theme_background_color_visible'].pressed = DialogicUtil.load_key(settings, 'theme_background_color_visible', false)
 	
 	# Next image
@@ -70,8 +58,7 @@ func _ready():
 		nodes['next_indicator_button'].text = DialogicUtil.get_filename_from_path(settings['theme_next_image'])
 	
 	# Action
-	if settings.has('theme_action_key'):
-		nodes['next_action_button'].text = settings['theme_action_key']
+	nodes['next_action_button'].text = DialogicUtil.load_key(settings, 'theme_action_key', 'ui_accept')
 
 	#Refreshing the dialog 
 	_on_PreviewButton_pressed()

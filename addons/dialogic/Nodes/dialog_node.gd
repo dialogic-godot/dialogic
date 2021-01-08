@@ -430,6 +430,8 @@ func load_theme() -> void:
 	if settings.has('theme_background_color'):
 		$TextBubble/ColorRect.color = Color('#' + str(settings['theme_background_color']))
 	
+	$TextBubble/TextureRect.visible = DialogicUtil.load_key(settings, 'background_texture_button_visible', true)
+	
 	# Next image
 	if settings.has('theme_next_image'):
 		$TextBubble/NextIndicator.texture = load(settings['theme_next_image'])
