@@ -229,7 +229,7 @@ margin_right = 180.0
 margin_bottom = 541.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-items = [ "234234", ExtResource( 15 ), false, "Intro", ExtResource( 15 ), false, "Nice :)", ExtResource( 15 ), false, "alternative timeline", ExtResource( 15 ), false ]
+items = [ "Intro", ExtResource( 15 ), false, "Sections", ExtResource( 15 ), false ]
 allow_rmb_select = true
 
 [node name="CenterContainer" type="CenterContainer" parent="EditorTimeline"]
@@ -474,7 +474,7 @@ margin_right = 180.0
 margin_bottom = 541.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-items = [ "Narrator", ExtResource( 7 ), false, "Shia", ExtResource( 7 ), false, "Lyra", ExtResource( 7 ), false ]
+items = [ "Lyra", ExtResource( 7 ), false, "Shia", ExtResource( 7 ), false, "Narrator", ExtResource( 7 ), false ]
 allow_rmb_select = true
 
 [node name="NoCharacters" type="CenterContainer" parent="EditorCharacter"]
@@ -874,7 +874,6 @@ margin_bottom = 116.0
 [node name="CheckBoxShadow" type="CheckBox" parent="EditorTheme/VBoxContainer/HBoxContainer2/Text/GridContainer/HBoxContainer2"]
 margin_right = 24.0
 margin_bottom = 30.0
-pressed = true
 
 [node name="ColorPickerButtonShadow" type="ColorPickerButton" parent="EditorTheme/VBoxContainer/HBoxContainer2/Text/GridContainer/HBoxContainer2"]
 margin_left = 28.0
@@ -882,7 +881,7 @@ margin_right = 158.0
 margin_bottom = 30.0
 rect_min_size = Vector2( 50, 30 )
 size_flags_horizontal = 3
-color = Color( 1, 1, 1, 0 )
+color = Color( 0.996078, 0.145098, 0.00784314, 0.823529 )
 
 [node name="Label4" type="Label" parent="EditorTheme/VBoxContainer/HBoxContainer2/Text/GridContainer"]
 margin_top = 125.0
@@ -900,6 +899,7 @@ custom_constants/separation = 10
 [node name="ShadowOffsetX" type="SpinBox" parent="EditorTheme/VBoxContainer/HBoxContainer2/Text/GridContainer/HBoxContainer"]
 margin_right = 74.0
 margin_bottom = 24.0
+value = 1.0
 rounded = true
 allow_lesser = true
 prefix = "X"
@@ -908,6 +908,7 @@ prefix = "X"
 margin_left = 84.0
 margin_right = 158.0
 margin_bottom = 24.0
+value = 4.0
 rounded = true
 allow_lesser = true
 prefix = "Y"
@@ -963,7 +964,6 @@ margin_left = 28.0
 margin_right = 152.0
 margin_bottom = 24.0
 size_flags_horizontal = 3
-color = Color( 0.188235, 0.784314, 0.588235, 1 )
 
 [node name="Label" type="Label" parent="EditorTheme/VBoxContainer/HBoxContainer2/DialogBox/GridContainer"]
 margin_top = 33.0
@@ -1017,7 +1017,7 @@ margin_bottom = 104.0
 [node name="TextOffsetV" type="SpinBox" parent="EditorTheme/VBoxContainer/HBoxContainer2/DialogBox/GridContainer/HBoxContainer"]
 margin_right = 74.0
 margin_bottom = 24.0
-value = 20.0
+value = 15.0
 rounded = true
 prefix = "V"
 
@@ -1025,7 +1025,7 @@ prefix = "V"
 margin_left = 78.0
 margin_right = 152.0
 margin_bottom = 24.0
-value = 20.0
+value = 15.0
 rounded = true
 prefix = "H"
 
@@ -1043,10 +1043,10 @@ margin_right = 315.0
 margin_bottom = 128.0
 
 [node name="ActionOptionButton" type="OptionButton" parent="EditorTheme/VBoxContainer/HBoxContainer2/DialogBox/GridContainer/BoxContainer"]
-margin_right = 76.0
+margin_right = 104.0
 margin_bottom = 20.0
 size_flags_horizontal = 0
-text = "ui_right"
+text = "mouse_test"
 items = [ "[Select Action]", null, false, 0, null, "ui_accept", null, false, 1, null, "ui_select", null, false, 2, null, "ui_cancel", null, false, 3, null, "ui_focus_next", null, false, 4, null, "ui_focus_prev", null, false, 5, null, "ui_left", null, false, 6, null, "ui_right", null, false, 7, null, "ui_up", null, false, 8, null, "ui_down", null, false, 9, null, "ui_page_up", null, false, 10, null, "ui_page_down", null, false, 11, null, "ui_home", null, false, 12, null, "ui_end", null, false, 13, null ]
 selected = 0
 
@@ -1085,7 +1085,7 @@ __meta__ = {
 [node name="GridContainer" type="GridContainer" parent="EditorTheme/VBoxContainer/HBoxContainer2/ButtonStyle"]
 margin_top = 34.0
 margin_right = 315.0
-margin_bottom = 114.0
+margin_bottom = 142.0
 size_flags_horizontal = 3
 custom_constants/hseparation = 10
 columns = 2
@@ -1162,6 +1162,20 @@ margin_bottom = 24.0
 value = 20.0
 rounded = true
 prefix = "H"
+
+[node name="Label2" type="Label" parent="EditorTheme/VBoxContainer/HBoxContainer2/ButtonStyle/GridContainer"]
+margin_top = 89.0
+margin_right = 126.0
+margin_bottom = 103.0
+text = "Vertical separation"
+
+[node name="VerticalSeparation" type="SpinBox" parent="EditorTheme/VBoxContainer/HBoxContainer2/ButtonStyle/GridContainer"]
+margin_left = 136.0
+margin_top = 84.0
+margin_right = 288.0
+margin_bottom = 108.0
+value = 20.0
+rounded = true
 
 [node name="HBoxContainer3" type="HBoxContainer" parent="EditorTheme/VBoxContainer"]
 margin_top = 229.0
@@ -1259,6 +1273,7 @@ margin_bottom = 52.7127
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
 [connection signal="pressed" from="HBoxContainer/EventButton" to="." method="_on_EventButton_pressed"]
 [connection signal="pressed" from="HBoxContainer/CharactersButton" to="." method="_on_CharactersButton_pressed"]
 [connection signal="pressed" from="HBoxContainer/GlossaryButton" to="." method="_on_CharactersButton_pressed"]
@@ -1308,8 +1323,6 @@ __meta__ = {
 [connection signal="color_changed" from="EditorTheme/VBoxContainer/HBoxContainer2/ButtonStyle/GridContainer/HBoxContainer2/ColorPickerButton" to="EditorTheme" method="_on_BackgroundColor_ColorPickerButton_color_changed"]
 [connection signal="toggled" from="EditorTheme/VBoxContainer/HBoxContainer2/ButtonStyle/GridContainer/HBoxContainer3/CheckBox" to="EditorTheme" method="_on_BackgroundTexture_CheckBox_toggled"]
 [connection signal="pressed" from="EditorTheme/VBoxContainer/HBoxContainer2/ButtonStyle/GridContainer/HBoxContainer3/BackgroundTextureButton" to="EditorTheme" method="_on_BackgroundTextureButton_pressed"]
-[connection signal="value_changed" from="EditorTheme/VBoxContainer/HBoxContainer2/ButtonStyle/GridContainer/HBoxContainer/TextOffsetV" to="EditorTheme" method="_on_TextMargin_value_changed"]
-[connection signal="value_changed" from="EditorTheme/VBoxContainer/HBoxContainer2/ButtonStyle/GridContainer/HBoxContainer/TextOffsetH" to="EditorTheme" method="_on_TextMarginH_value_changed"]
 [connection signal="pressed" from="EditorTheme/VBoxContainer/HBoxContainer3/PreviewButton" to="EditorTheme" method="_on_PreviewButton_pressed"]
 [connection signal="id_pressed" from="TimelinePopupMenu" to="." method="_on_TimelinePopupMenu_id_pressed"]
 [connection signal="id_pressed" from="CharacterPopupMenu" to="EditorCharacter" method="_on_CharacterPopupMenu_id_pressed"]
