@@ -1,6 +1,5 @@
 tool
 extends Control
-class_name DialogNode, "res://addons/dialogic/Images/icon.svg"
 
 var input_next: String = 'ui_accept'
 var dialog_index: int = 0
@@ -15,6 +14,7 @@ export(String) var timeline_id: String # Timeline-var-replace
 var dialog_resource
 var characters
 
+onready var ChoiceButton = load("res://addons/dialogic/Nodes/ChoiceButton.tscn")
 onready var Portrait = load("res://addons/dialogic/Nodes/Portrait.tscn")
 var dialog_script = {}
 var questions #for keeping track of the questions answered
@@ -229,10 +229,14 @@ func event_handler(event: Dictionary):
 			update_text(event['question'])
 			if event.has('options'):
 				for o in event['options']:
-					var button = Button.new()
+					var button = ChoiceButton.instance()
 					button.text = o['label']
 					if settings.has('theme_font'):
 						button.set('custom_fonts/font', load(settings['theme_font']))
+					if settings.has('theme_text_color'):
+						button.set('custom_colors/font_color', Color('#' + str(settings['theme_text_color'])))
+						button.set('custom_colors/font_color_hover', Color('#' + str(settings['theme_text_color'])))
+						button.set('custom_colors/font_color_pressed', Color('#' + str(settings['theme_text_color'])))
 					button.connect("pressed", self, "answer_question", [button, o['event_id'], o['question_id']])
 					
 					$Options.add_child(button)

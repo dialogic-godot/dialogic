@@ -24,6 +24,7 @@ Yes, you can use Dialogic to make any kind of game (even commercial ones). The p
  - Moved the theme editor tool icon to the left
  - Themes:
     - Added a color background as an option
+    - Reduced the vertical size needed to show all options
  - In game dialog:
     - Change timeline event is now working
     - Audio event can play sounds

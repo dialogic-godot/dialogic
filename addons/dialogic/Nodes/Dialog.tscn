@@ -6,7 +6,7 @@
 [ext_resource path="res://addons/dialogic/Nodes/dialog_node.gd" type="Script" id=6]
 
 [sub_resource type="StyleBoxFlat" id=1]
-bg_color = Color( 0.6, 0.6, 0.6, 0 )
+bg_color = Color( 1, 1, 1, 0 )
 
 [sub_resource type="Animation" id=2]
 loop = true
@@ -68,6 +68,7 @@ __meta__ = {
 visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
+color = Color( 0.188235, 0.784314, 0.588235, 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -93,7 +94,7 @@ rect_clip_content = false
 custom_styles/normal = SubResource( 1 )
 custom_fonts/normal_font = ExtResource( 3 )
 custom_colors/default_color = Color( 1, 1, 1, 1 )
-custom_colors/font_color_shadow = Color( 0, 0, 0, 0.576471 )
+custom_colors/font_color_shadow = Color( 1, 1, 1, 0 )
 custom_constants/shadow_offset_x = 0
 custom_constants/shadow_offset_y = 0
 bbcode_enabled = true
@@ -134,7 +135,7 @@ rect_clip_content = false
 custom_styles/normal = SubResource( 1 )
 custom_fonts/normal_font = ExtResource( 3 )
 custom_colors/default_color = Color( 1, 1, 1, 1 )
-custom_colors/font_color_shadow = Color( 0, 0, 0, 0.576471 )
+custom_colors/font_color_shadow = Color( 1, 1, 1, 0 )
 custom_constants/shadow_offset_x = 0
 custom_constants/shadow_offset_y = 0
 custom_constants/shadow_as_outline = 10
