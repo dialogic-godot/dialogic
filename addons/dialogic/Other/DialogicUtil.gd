@@ -23,6 +23,12 @@ static func load_settings() -> Dictionary:
 	return settings
 
 
+static func load_key(settings, key, default):
+	if settings.has(key):
+		return settings[key]
+	return default
+
+
 static func update_setting(key: String, value) -> void:
 	var data = load_settings()
 	data[key] = value

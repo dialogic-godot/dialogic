@@ -17,11 +17,14 @@ onready var nodes = {
 	'text_speed': $VBoxContainer/HBoxContainer2/Text/GridContainer/TextSpeed,
 	'text_offset_v': $VBoxContainer/HBoxContainer2/DialogBox/GridContainer/HBoxContainer/TextOffsetV,
 	'text_offset_h': $VBoxContainer/HBoxContainer2/DialogBox/GridContainer/HBoxContainer/TextOffsetH,
-	'background_texture_button': $VBoxContainer/HBoxContainer2/DialogBox/GridContainer/BackgroundTextureButton,
+	'background_texture_button_visible': $VBoxContainer/HBoxContainer2/DialogBox/GridContainer/HBoxContainer3/CheckBox,
+	'background_texture_button': $VBoxContainer/HBoxContainer2/DialogBox/GridContainer/HBoxContainer3/BackgroundTextureButton,
 	'next_indicator_button': $VBoxContainer/HBoxContainer2/DialogBox/GridContainer/NextIndicatorButton,
 	'next_action_button': $VBoxContainer/HBoxContainer2/DialogBox/GridContainer/BoxContainer/ActionOptionButton,
 	'text_preview': $VBoxContainer/HBoxContainer3/TextEdit,
 	'preview_panel': $VBoxContainer/Panel,
+	'theme_background_color_visible': $VBoxContainer/HBoxContainer2/DialogBox/GridContainer/HBoxContainer2/CheckBox,
+	'theme_background_color': $VBoxContainer/HBoxContainer2/DialogBox/GridContainer/HBoxContainer2/ColorPickerButton,
 }
 
 func _ready():
@@ -49,9 +52,20 @@ func _ready():
 	if settings.has('theme_text_margin_h'):
 		nodes['text_offset_h'].value = settings['theme_text_margin_h']
 	
-	# Images
+	# Backgrounds
 	if settings.has('theme_background_image'):
 		nodes['background_texture_button'].text = DialogicUtil.get_filename_from_path(settings['theme_background_image'])
+
+	if settings.has('background_texture_button_visible'):
+		nodes['background_texture_button_visible'].pressed = settings['background_texture_button_visible']
+	if settings.has('theme_background_color'):
+		nodes['theme_background_color'].color = Color('#' + str(settings['theme_background_color']))
+	
+	#	if settings.has('theme_background_color_visible'):
+	#		nodes['theme_background_color_visible'].pressed = settings['theme_background_color_visible']
+	nodes['theme_background_color_visible'].pressed = DialogicUtil.load_key(settings, 'theme_background_color_visible', false)
+	
+	# Next image
 	if settings.has('theme_next_image'):
 		nodes['next_indicator_button'].text = DialogicUtil.get_filename_from_path(settings['theme_next_image'])
 	
@@ -147,3 +161,15 @@ func _on_TextMargin_value_changed(value):
 
 func _on_TextMarginH_value_changed(value):
 	DialogicUtil.update_setting('theme_text_margin_h', value)
+
+
+func _on_BackgroundColor_CheckBox_toggled(button_pressed):
+	DialogicUtil.update_setting('theme_background_color_visible', button_pressed)
+
+
+func _on_BackgroundColor_ColorPickerButton_color_changed(color):
+	DialogicUtil.update_setting('theme_background_color', color.to_html())
+
+
+func _on_BackgroundTexture_CheckBox_toggled(button_pressed):
+	DialogicUtil.update_setting('background_texture_button_visible', button_pressed)

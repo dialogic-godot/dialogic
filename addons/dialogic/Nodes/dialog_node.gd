@@ -8,6 +8,7 @@ var finished: bool = false
 var text_speed = 0.02 # Higher = lower speed
 var waiting_for_answer: bool = false
 var waiting_for_input: bool = false
+var settings
 
 export(String) var timeline_id: String # Timeline-var-replace
 
@@ -230,7 +231,10 @@ func event_handler(event: Dictionary):
 				for o in event['options']:
 					var button = Button.new()
 					button.text = o['label']
+					if settings.has('theme_font'):
+						button.set('custom_fonts/font', load(settings['theme_font']))
 					button.connect("pressed", self, "answer_question", [button, o['event_id'], o['question_id']])
+					
 					$Options.add_child(button)
 		{'choice', 'question_id'}:
 			var current_question = questions[event['question_id']]
@@ -388,7 +392,7 @@ func get_character_position(positions):
 
 func load_theme() -> void:
 	# Loading theme properties and settings
-	var settings = DialogicUtil.load_settings()	
+	settings = DialogicUtil.load_settings()	
 	if settings.has('theme_font'):
 		$TextBubble/RichTextLabel.set('custom_fonts/normal_font', load(settings['theme_font']))
 		$TextBubble/NameLabel.set('custom_fonts/normal_font', load(settings['theme_font']))
@@ -417,9 +421,16 @@ func load_theme() -> void:
 	if settings.has('theme_text_margin_h'):
 		$TextBubble/RichTextLabel.set('margin_left', settings['theme_text_margin_h'])
 		$TextBubble/RichTextLabel.set('margin_right', settings['theme_text_margin_h'] * -1)
-	# Images
+	
+	# Backgrounds
 	if settings.has('theme_background_image'):
 		$TextBubble/TextureRect.texture = load(settings['theme_background_image'])
+	if settings.has('theme_background_color_visible'):
+		$TextBubble/ColorRect.visible = settings['theme_background_color_visible']
+	if settings.has('theme_background_color'):
+		$TextBubble/ColorRect.color = Color('#' + str(settings['theme_background_color']))
+	
+	# Next image
 	if settings.has('theme_next_image'):
 		$TextBubble/NextIndicator.texture = load(settings['theme_next_image'])
 	
