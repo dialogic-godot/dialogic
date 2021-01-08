@@ -18,10 +18,15 @@ onready var Portrait = load("res://addons/dialogic/Nodes/Portrait.tscn")
 var dialog_script = {}
 var questions #for keeping track of the questions answered
 
+
 func _ready():
 	# Checking if the dialog should read the code from a external file
 	if timeline_id != '':
 		dialog_script = set_current_dialog('/' + timeline_id + '.json')
+	
+	# Connecting resize signal
+	get_viewport().connect("size_changed", self, "resize_main")
+	resize_main()
 	
 	# Setting everything up for the node to be default
 	$TextBubble/NameLabel.text = ''
@@ -32,6 +37,13 @@ func _ready():
 	
 	load_theme()
 	load_dialog()
+
+
+func resize_main():
+	if Engine.is_editor_hint() == false:
+		set_global_position(Vector2(0,0))
+		rect_size = get_viewport().size
+		print(get_viewport().size)
 
 
 func set_current_dialog(dialog_path):
@@ -114,13 +126,13 @@ func parse_text(text):
 
 func _process(_delta):
 	$TextBubble/NextIndicator.visible = finished
-	# Multiple choices
-	if waiting_for_answer:
-		$Options.visible = finished
-	else:
-		$Options.visible = false
-	
 	if Engine.is_editor_hint() == false:
+		# Multiple choices
+		if waiting_for_answer:
+			$Options.visible = finished
+		else:
+			$Options.visible = false
+		
 		if Input.is_action_just_pressed(input_next):
 			if $TextBubble/Tween.is_active():
 				# Skip to end if key is pressed during the text animation

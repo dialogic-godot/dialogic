@@ -132,13 +132,13 @@ custom_constants/shadow_offset_y = 0
 custom_constants/shadow_as_outline = 10
 bbcode_enabled = true
 bbcode_text = "Name Here"
+text = "Name Here"
 scroll_active = false
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Options" type="VBoxContainer" parent="."]
-visible = false
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -197,5 +197,4 @@ __meta__ = {
 [node name="Tween" type="Tween" parent="FX/FadeInNode"]
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="FX"]
-
 [connection signal="tween_completed" from="TextBubble/Tween" to="." method="_on_Tween_tween_completed"]
