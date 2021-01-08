@@ -391,11 +391,16 @@ func get_character_position(positions):
 
 
 func load_theme() -> void:
+	# TODO: I should probably replace those settings and start using
+	#       DialogicUtil.load_key with defaults, same as in EditorTheme.gd
+	#       I'm not feeling like doing it now, but might have to soon.
+
 	# Loading theme properties and settings
-	settings = DialogicUtil.load_settings()	
-	if settings.has('theme_font'):
-		$TextBubble/RichTextLabel.set('custom_fonts/normal_font', load(settings['theme_font']))
-		$TextBubble/NameLabel.set('custom_fonts/normal_font', load(settings['theme_font']))
+	settings = DialogicUtil.load_settings()
+
+	$TextBubble/RichTextLabel.set('custom_fonts/normal_font', load(DialogicUtil.load_key(settings, 'theme_font', 'res://addons/dialogic/Fonts/DefaultFont.tres')))
+	$TextBubble/NameLabel.set('custom_fonts/normal_font', load(DialogicUtil.load_key(settings, 'theme_font', 'res://addons/dialogic/Fonts/DefaultFont.tres')))
+	
 	# Text
 	if settings.has('theme_text_color'):
 		$TextBubble/RichTextLabel.set('custom_colors/default_color', Color('#' + str(settings['theme_text_color'])))
@@ -425,11 +430,10 @@ func load_theme() -> void:
 	# Backgrounds
 	if settings.has('theme_background_image'):
 		$TextBubble/TextureRect.texture = load(settings['theme_background_image'])
-	if settings.has('theme_background_color_visible'):
-		$TextBubble/ColorRect.visible = settings['theme_background_color_visible']
 	if settings.has('theme_background_color'):
 		$TextBubble/ColorRect.color = Color('#' + str(settings['theme_background_color']))
 	
+	$TextBubble/ColorRect.visible = DialogicUtil.load_key(settings, 'theme_background_color_visible', false)
 	$TextBubble/TextureRect.visible = DialogicUtil.load_key(settings, 'background_texture_button_visible', true)
 	
 	# Next image

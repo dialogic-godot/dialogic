@@ -777,18 +777,18 @@ __meta__ = {
 
 [node name="VBoxContainer" type="VBoxContainer" parent="EditorTheme"]
 margin_right = 985.0
-margin_bottom = 604.0
+margin_bottom = 587.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_constants/separation = 15
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="EditorTheme/VBoxContainer"]
 margin_right = 985.0
-margin_bottom = 214.0
+margin_bottom = 197.0
 
 [node name="Text" type="VBoxContainer" parent="EditorTheme/VBoxContainer/HBoxContainer2"]
 margin_right = 490.0
-margin_bottom = 214.0
+margin_bottom = 197.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 __meta__ = {
@@ -811,7 +811,7 @@ __meta__ = {
 [node name="GridContainer" type="GridContainer" parent="EditorTheme/VBoxContainer/HBoxContainer2/Text"]
 margin_top = 34.0
 margin_right = 490.0
-margin_bottom = 214.0
+margin_bottom = 186.0
 size_flags_horizontal = 3
 custom_constants/hseparation = 10
 columns = 2
@@ -870,43 +870,42 @@ margin_top = 86.0
 margin_right = 490.0
 margin_bottom = 90.0
 
-[node name="Label2" type="Label" parent="EditorTheme/VBoxContainer/HBoxContainer2/Text/GridContainer"]
-margin_top = 99.0
+[node name="Label" type="Label" parent="EditorTheme/VBoxContainer/HBoxContainer2/Text/GridContainer"]
+margin_top = 102.0
 margin_right = 322.0
-margin_bottom = 113.0
-text = "Enable Shadow"
+margin_bottom = 116.0
+text = "Shadow"
 
-[node name="CheckBoxShadow" type="CheckBox" parent="EditorTheme/VBoxContainer/HBoxContainer2/Text/GridContainer"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="EditorTheme/VBoxContainer/HBoxContainer2/Text/GridContainer"]
 margin_left = 332.0
 margin_top = 94.0
 margin_right = 490.0
-margin_bottom = 118.0
+margin_bottom = 124.0
 
-[node name="Label" type="Label" parent="EditorTheme/VBoxContainer/HBoxContainer2/Text/GridContainer"]
-margin_top = 130.0
-margin_right = 322.0
-margin_bottom = 144.0
-text = "Shadow Color"
+[node name="CheckBoxShadow" type="CheckBox" parent="EditorTheme/VBoxContainer/HBoxContainer2/Text/GridContainer/HBoxContainer2"]
+margin_right = 24.0
+margin_bottom = 30.0
+pressed = true
 
-[node name="ColorPickerButtonShadow" type="ColorPickerButton" parent="EditorTheme/VBoxContainer/HBoxContainer2/Text/GridContainer"]
-margin_left = 332.0
-margin_top = 122.0
-margin_right = 490.0
-margin_bottom = 152.0
+[node name="ColorPickerButtonShadow" type="ColorPickerButton" parent="EditorTheme/VBoxContainer/HBoxContainer2/Text/GridContainer/HBoxContainer2"]
+margin_left = 28.0
+margin_right = 158.0
+margin_bottom = 30.0
 rect_min_size = Vector2( 50, 30 )
-color = Color( 0.92549, 1, 0.0352941, 0 )
+size_flags_horizontal = 3
+color = Color( 1, 1, 1, 0 )
 
 [node name="Label4" type="Label" parent="EditorTheme/VBoxContainer/HBoxContainer2/Text/GridContainer"]
-margin_top = 161.0
+margin_top = 133.0
 margin_right = 322.0
-margin_bottom = 175.0
+margin_bottom = 147.0
 text = "Shadow Offset"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="EditorTheme/VBoxContainer/HBoxContainer2/Text/GridContainer"]
 margin_left = 332.0
-margin_top = 156.0
+margin_top = 128.0
 margin_right = 490.0
-margin_bottom = 180.0
+margin_bottom = 152.0
 custom_constants/separation = 10
 
 [node name="ShadowOffsetX" type="SpinBox" parent="EditorTheme/VBoxContainer/HBoxContainer2/Text/GridContainer/HBoxContainer"]
@@ -927,7 +926,7 @@ prefix = "Y"
 [node name="DialogBox" type="VBoxContainer" parent="EditorTheme/VBoxContainer/HBoxContainer2"]
 margin_left = 494.0
 margin_right = 985.0
-margin_bottom = 214.0
+margin_bottom = 197.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 __meta__ = {
@@ -975,6 +974,7 @@ margin_left = 28.0
 margin_right = 152.0
 margin_bottom = 24.0
 size_flags_horizontal = 3
+color = Color( 0.188235, 0.784314, 0.588235, 1 )
 
 [node name="Label" type="Label" parent="EditorTheme/VBoxContainer/HBoxContainer2/DialogBox/GridContainer"]
 margin_top = 33.0
@@ -991,6 +991,7 @@ margin_bottom = 52.0
 [node name="CheckBox" type="CheckBox" parent="EditorTheme/VBoxContainer/HBoxContainer2/DialogBox/GridContainer/HBoxContainer3"]
 margin_right = 24.0
 margin_bottom = 24.0
+pressed = true
 
 [node name="BackgroundTextureButton" type="Button" parent="EditorTheme/VBoxContainer/HBoxContainer2/DialogBox/GridContainer/HBoxContainer3"]
 margin_left = 28.0
@@ -1070,9 +1071,9 @@ text = "To add/remove actions go to Project > Project Settings > Input Map"
 autowrap = true
 
 [node name="HBoxContainer3" type="HBoxContainer" parent="EditorTheme/VBoxContainer"]
-margin_top = 229.0
+margin_top = 212.0
 margin_right = 985.0
-margin_bottom = 289.0
+margin_bottom = 272.0
 custom_constants/separation = 10
 
 [node name="TextEdit" type="TextEdit" parent="EditorTheme/VBoxContainer/HBoxContainer3"]
@@ -1092,9 +1093,9 @@ text = "  Preview changes  "
 icon = ExtResource( 24 )
 
 [node name="Panel" type="Panel" parent="EditorTheme/VBoxContainer"]
-margin_top = 304.0
+margin_top = 287.0
 margin_right = 985.0
-margin_bottom = 604.0
+margin_bottom = 587.0
 rect_min_size = Vector2( 0, 300 )
 
 [node name="TimelinePopupMenu" type="PopupMenu" parent="."]
@@ -1197,8 +1198,8 @@ __meta__ = {
 [connection signal="pressed" from="EditorTheme/VBoxContainer/HBoxContainer2/Text/GridContainer/FontButton" to="EditorTheme" method="_on_FontButton_pressed"]
 [connection signal="color_changed" from="EditorTheme/VBoxContainer/HBoxContainer2/Text/GridContainer/ColorPickerButton" to="EditorTheme" method="_on_ColorPickerButton_color_changed"]
 [connection signal="value_changed" from="EditorTheme/VBoxContainer/HBoxContainer2/Text/GridContainer/TextSpeed" to="EditorTheme" method="_on_textSpeed_value_changed"]
-[connection signal="toggled" from="EditorTheme/VBoxContainer/HBoxContainer2/Text/GridContainer/CheckBoxShadow" to="EditorTheme" method="_on_CheckBoxShadow_toggled"]
-[connection signal="color_changed" from="EditorTheme/VBoxContainer/HBoxContainer2/Text/GridContainer/ColorPickerButtonShadow" to="EditorTheme" method="_on_ColorPickerButtonShadow_color_changed"]
+[connection signal="toggled" from="EditorTheme/VBoxContainer/HBoxContainer2/Text/GridContainer/HBoxContainer2/CheckBoxShadow" to="EditorTheme" method="_on_CheckBoxShadow_toggled"]
+[connection signal="color_changed" from="EditorTheme/VBoxContainer/HBoxContainer2/Text/GridContainer/HBoxContainer2/ColorPickerButtonShadow" to="EditorTheme" method="_on_ColorPickerButtonShadow_color_changed"]
 [connection signal="value_changed" from="EditorTheme/VBoxContainer/HBoxContainer2/Text/GridContainer/HBoxContainer/ShadowOffsetX" to="EditorTheme" method="_on_ShadowOffset_value_changed"]
 [connection signal="value_changed" from="EditorTheme/VBoxContainer/HBoxContainer2/Text/GridContainer/HBoxContainer/ShadowOffsetY" to="EditorTheme" method="_on_ShadowOffset_value_changed"]
 [connection signal="toggled" from="EditorTheme/VBoxContainer/HBoxContainer2/DialogBox/GridContainer/HBoxContainer2/CheckBox" to="EditorTheme" method="_on_BackgroundColor_CheckBox_toggled"]

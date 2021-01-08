@@ -8,8 +8,8 @@ var editor_reference
 # a way to set an id and then access that node via id...
 # Here you have paths in all its glory. Praise the paths (っ´ω`c)♡
 onready var nodes = {
-	'shadow_bool': $VBoxContainer/HBoxContainer2/Text/GridContainer/CheckBoxShadow,
-	'shadow_picker': $VBoxContainer/HBoxContainer2/Text/GridContainer/ColorPickerButtonShadow,
+	'shadow_bool': $VBoxContainer/HBoxContainer2/Text/GridContainer/HBoxContainer2/CheckBoxShadow,
+	'shadow_picker': $VBoxContainer/HBoxContainer2/Text/GridContainer/HBoxContainer2/ColorPickerButtonShadow,
 	'color_picker': $VBoxContainer/HBoxContainer2/Text/GridContainer/ColorPickerButton,
 	'font_button': $VBoxContainer/HBoxContainer2/Text/GridContainer/FontButton,
 	'shadow_offset_x': $VBoxContainer/HBoxContainer2/Text/GridContainer/HBoxContainer/ShadowOffsetX,
@@ -36,7 +36,6 @@ func _ready():
 	nodes['color_picker'].color = Color('#' + str(DialogicUtil.load_key(settings, 'theme_text_color', 'ff000000')))
 	nodes['shadow_bool'].pressed = DialogicUtil.load_key(settings, 'theme_text_shadow', false)
 	nodes['shadow_picker'].color = Color('#' + str(DialogicUtil.load_key(settings, 'theme_text_shadow_color', 'ff000000')))
-	
 	nodes['shadow_offset_x'].value = DialogicUtil.load_key(settings, 'theme_shadow_offset_x', 2)
 	nodes['shadow_offset_y'].value = DialogicUtil.load_key(settings, 'theme_shadow_offset_y', 2)
 	
@@ -89,7 +88,6 @@ func _on_ColorPickerButton_color_changed(color):
 
 func _on_ColorPickerButtonShadow_color_changed(color):
 	DialogicUtil.update_setting('theme_text_shadow_color', color.to_html())
-	nodes['shadow_bool'].pressed = true
 
 
 func _on_CheckBoxShadow_toggled(button_pressed):
@@ -123,7 +121,6 @@ func _on_ActionOptionButton_pressed():
 	nodes['next_action_button'].clear()
 	nodes['next_action_button'].add_item('[Select Action]')
 	InputMap.load_from_globals()
-	print(InputMap.get_actions())
 	for a in InputMap.get_actions():
 		nodes['next_action_button'].add_item(a)
 
