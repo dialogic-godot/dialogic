@@ -28,6 +28,8 @@ onready var nodes = {
 	# Buttons
 	'button_background': $VBoxContainer/HBoxContainer2/ButtonStyle/GridContainer/HBoxContainer2/ColorPickerButton,
 	'button_background_visible': $VBoxContainer/HBoxContainer2/ButtonStyle/GridContainer/HBoxContainer2/CheckBox,
+	'button_image': $VBoxContainer/HBoxContainer2/ButtonStyle/GridContainer/HBoxContainer3/BackgroundTextureButton,
+	'button_image_visible': $VBoxContainer/HBoxContainer2/ButtonStyle/GridContainer/HBoxContainer3/CheckBox,
 	'button_offset_x': $VBoxContainer/HBoxContainer2/ButtonStyle/GridContainer/HBoxContainer/TextOffsetH,
 	'button_offset_y': $VBoxContainer/HBoxContainer2/ButtonStyle/GridContainer/HBoxContainer/TextOffsetV,
 	'button_separation': $VBoxContainer/HBoxContainer2/ButtonStyle/GridContainer/VerticalSeparation,
@@ -59,11 +61,20 @@ func _ready():
 	nodes['theme_background_color_visible'].pressed = DialogicUtil.load_key(settings, 'theme_background_color_visible', false)
 	
 	# Next image
-	if settings.has('theme_next_image'):
-		nodes['next_indicator_button'].text = DialogicUtil.get_filename_from_path(settings['theme_next_image'])
-	
+	nodes['next_indicator_button'].text = DialogicUtil.get_filename_from_path(DialogicUtil.load_key(settings, 'theme_next_image', 'res://addons/dialogic/Images/next-indicator.png'))
+
 	# Action
 	nodes['next_action_button'].text = DialogicUtil.load_key(settings, 'theme_action_key', 'ui_accept')
+	
+	# Buttons
+	nodes['button_background'].color = Color('#' + str(DialogicUtil.load_key(settings, 'button_background', 'ff000000')))
+	nodes['button_background_visible'].pressed = DialogicUtil.load_key(settings, 'button_background_visible', false)
+	nodes['button_image'].text = DialogicUtil.get_filename_from_path(DialogicUtil.load_key(settings, 'button_image', 'res://addons/dialogic/Images/background/background-2.png'))
+	nodes['button_image_visible'].pressed = DialogicUtil.load_key(settings, 'button_image_visible', false)
+	
+	nodes['button_offset_x'].value = DialogicUtil.load_key(settings, 'button_offset_x', 0)
+	nodes['button_offset_y'].value = DialogicUtil.load_key(settings, 'button_offset_y', 0)
+	nodes['button_separation'].value = DialogicUtil.load_key(settings, 'button_separation', 0)
 
 	#Refreshing the dialog 
 	_on_PreviewButton_pressed()
@@ -163,3 +174,34 @@ func _on_BackgroundColor_ColorPickerButton_color_changed(color):
 
 func _on_BackgroundTexture_CheckBox_toggled(button_pressed):
 	DialogicUtil.update_setting('background_texture_button_visible', button_pressed)
+
+
+func _on_button_background_visible_toggled(button_pressed):
+	DialogicUtil.update_setting('button_background_visible', button_pressed)
+
+
+func _on_button_background_color_color_changed(color):
+	DialogicUtil.update_setting('button_background', color.to_html())
+
+
+func _on_ButtonOffset_value_changed(value):
+	DialogicUtil.update_setting('button_offset_x', nodes['button_offset_x'].value)
+	DialogicUtil.update_setting('button_offset_y', nodes['button_offset_y'].value)
+
+
+func _on_VerticalSeparation_value_changed(value):
+	DialogicUtil.update_setting('button_separation', nodes['button_separation'].value)
+
+
+func _on_button_texture_toggled(button_pressed):
+	DialogicUtil.update_setting('button_image_visible', button_pressed)
+
+
+func _on_ButtonTextureButton_pressed():
+	editor_reference.godot_dialog("*.png")
+	editor_reference.godot_dialog_connect(self, "_on_button_texture_selected")
+
+
+func _on_button_texture_selected(path, target):
+	DialogicUtil.update_setting('button_image', path)
+	nodes['button_image'].text = DialogicUtil.get_filename_from_path(path)

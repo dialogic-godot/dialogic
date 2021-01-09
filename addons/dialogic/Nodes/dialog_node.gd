@@ -229,17 +229,7 @@ func event_handler(event: Dictionary):
 			update_text(event['question'])
 			if event.has('options'):
 				for o in event['options']:
-					var button = ChoiceButton.instance()
-					button.text = o['label']
-					if settings.has('theme_font'):
-						button.set('custom_fonts/font', load(settings['theme_font']))
-					if settings.has('theme_text_color'):
-						button.set('custom_colors/font_color', Color('#' + str(settings['theme_text_color'])))
-						button.set('custom_colors/font_color_hover', Color('#' + str(settings['theme_text_color'])))
-						button.set('custom_colors/font_color_pressed', Color('#' + str(settings['theme_text_color'])))
-					button.connect("pressed", self, "answer_question", [button, o['event_id'], o['question_id']])
-					
-					$Options.add_child(button)
+					add_choice_button(o)
 		{'choice', 'question_id'}:
 			var current_question = questions[event['question_id']]
 			print('####################')
@@ -335,6 +325,42 @@ func reset_options():
 		option.queue_free()
 
 
+func add_choice_button(option):
+	var button = ChoiceButton.instance()
+	button.text = option['label']
+	# Text
+	if settings.has('theme_font'):
+		button.set('custom_fonts/font', load(settings['theme_font']))
+	if settings.has('theme_text_color'):
+		button.set('custom_colors/font_color', Color('#' + str(settings['theme_text_color'])))
+		button.set('custom_colors/font_color_hover', Color('#' + str(settings['theme_text_color'])))
+		button.set('custom_colors/font_color_pressed', Color('#' + str(settings['theme_text_color'])))
+	# Background
+	
+	button.get_node('ColorRect').color = Color('#' + str(DialogicUtil.load_key(settings, 'button_background', 'ff000000')))
+	button.get_node('ColorRect').visible = DialogicUtil.load_key(settings, 'button_background_visible', false)
+	if settings.has('button_image'):
+		button.get_node('TextureRect').texture = load(settings['button_image'])
+	button.get_node('TextureRect').visible = DialogicUtil.load_key(settings, 'button_image_visible', false)
+	
+	button.get_node('ColorRect').set('margin_left', -1 * DialogicUtil.load_key(settings, 'button_offset_x', 0))
+	button.get_node('ColorRect').set('margin_right',  DialogicUtil.load_key(settings, 'button_offset_x', 0))
+	button.get_node('ColorRect').set('margin_top', -1 * DialogicUtil.load_key(settings, 'button_offset_y', 0))
+	button.get_node('ColorRect').set('margin_bottom', DialogicUtil.load_key(settings, 'button_offset_y', 0))
+	
+	button.get_node('TextureRect').set('margin_left', -1 * DialogicUtil.load_key(settings, 'button_offset_x', 0))
+	button.get_node('TextureRect').set('margin_right',  DialogicUtil.load_key(settings, 'button_offset_x', 0))
+	button.get_node('TextureRect').set('margin_top', -1 * DialogicUtil.load_key(settings, 'button_offset_y', 0))
+	button.get_node('TextureRect').set('margin_bottom', DialogicUtil.load_key(settings, 'button_offset_y', 0))
+	
+	$Options.set('custom_constants/separation', DialogicUtil.load_key(settings, 'button_separation', 0) + (DialogicUtil.load_key(settings, 'button_offset_y', 0)*2))
+	#nodes['button_offset_x'].value = DialogicUtil.load_key(settings, 'button_offset_x', 0)
+	#nodes['button_offset_y'].value = DialogicUtil.load_key(settings, 'button_offset_y', 0)
+	
+	button.connect("pressed", self, "answer_question", [button, option['event_id'], option['question_id']])
+	
+	$Options.add_child(button)
+
 func answer_question(i, event_id, question_id):
 	print('[!] Going to ', event_id + 1, i, 'question_id:', question_id)
 	print('')
@@ -409,11 +435,15 @@ func load_theme() -> void:
 	if settings.has('theme_text_color'):
 		$TextBubble/RichTextLabel.set('custom_colors/default_color', Color('#' + str(settings['theme_text_color'])))
 		$TextBubble/NameLabel.set('custom_colors/default_color', Color('#' + str(settings['theme_text_color'])))
+
+	$TextBubble/RichTextLabel.set('custom_colors/font_color_shadow', Color('#00ffffff'))
+	$TextBubble/NameLabel.set('custom_colors/font_color_shadow', Color('#00ffffff' ))
 	if settings.has('theme_text_shadow'):
 		if settings['theme_text_shadow']:
 			if settings.has('theme_text_shadow_color'):
 				$TextBubble/RichTextLabel.set('custom_colors/font_color_shadow', Color('#' + str(settings['theme_text_shadow_color'])))
 				$TextBubble/NameLabel.set('custom_colors/font_color_shadow', Color('#' + str(settings['theme_text_shadow_color'])))
+				
 	if settings.has('theme_shadow_offset_x'):
 		$TextBubble/RichTextLabel.set('custom_constants/shadow_offset_x', settings['theme_shadow_offset_x'])
 		$TextBubble/NameLabel.set('custom_constants/shadow_offset_x', settings['theme_shadow_offset_x'])
