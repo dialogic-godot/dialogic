@@ -331,10 +331,17 @@ func add_choice_button(option):
 	# Text
 	if settings.has('theme_font'):
 		button.set('custom_fonts/font', load(settings['theme_font']))
+	
 	if settings.has('theme_text_color'):
 		button.set('custom_colors/font_color', Color('#' + str(settings['theme_text_color'])))
 		button.set('custom_colors/font_color_hover', Color('#' + str(settings['theme_text_color'])))
 		button.set('custom_colors/font_color_pressed', Color('#' + str(settings['theme_text_color'])))
+	if settings.has('button_text_color'):
+		if settings.has('button_text_color_enabled'):
+			if settings['button_text_color_enabled']:
+				button.set('custom_colors/font_color', Color('#' + str(settings['button_text_color'])))
+				button.set('custom_colors/font_color_hover', Color('#' + str(settings['button_text_color'])))
+				button.set('custom_colors/font_color_pressed', Color('#' + str(settings['button_text_color'])))
 	# Background
 	
 	button.get_node('ColorRect').color = Color('#' + str(DialogicUtil.load_key(settings, 'button_background', 'ff000000')))

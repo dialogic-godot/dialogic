@@ -26,6 +26,8 @@ onready var nodes = {
 	'theme_background_color_visible': $VBoxContainer/HBoxContainer2/DialogBox/GridContainer/HBoxContainer2/CheckBox,
 	'theme_background_color': $VBoxContainer/HBoxContainer2/DialogBox/GridContainer/HBoxContainer2/ColorPickerButton,
 	# Buttons
+	'button_text_color_enabled': $VBoxContainer/HBoxContainer2/ButtonStyle/GridContainer/HBoxContainer4/CheckBox2,
+	'button_text_color': $VBoxContainer/HBoxContainer2/ButtonStyle/GridContainer/HBoxContainer4/ButtonTextColor,
 	'button_background': $VBoxContainer/HBoxContainer2/ButtonStyle/GridContainer/HBoxContainer2/ColorPickerButton,
 	'button_background_visible': $VBoxContainer/HBoxContainer2/ButtonStyle/GridContainer/HBoxContainer2/CheckBox,
 	'button_image': $VBoxContainer/HBoxContainer2/ButtonStyle/GridContainer/HBoxContainer3/BackgroundTextureButton,
@@ -67,6 +69,9 @@ func _ready():
 	nodes['next_action_button'].text = DialogicUtil.load_key(settings, 'theme_action_key', 'ui_accept')
 	
 	# Buttons
+	nodes['button_text_color_enabled'].pressed = DialogicUtil.load_key(settings, 'button_text_color_enabled', false)
+	nodes['button_text_color'].color = Color('#' + str(DialogicUtil.load_key(settings, 'button_text_color', 'ffffff')))
+	
 	nodes['button_background'].color = Color('#' + str(DialogicUtil.load_key(settings, 'button_background', 'ff000000')))
 	nodes['button_background_visible'].pressed = DialogicUtil.load_key(settings, 'button_background_visible', false)
 	nodes['button_image'].text = DialogicUtil.get_filename_from_path(DialogicUtil.load_key(settings, 'button_image', 'res://addons/dialogic/Images/background/background-2.png'))
@@ -205,3 +210,11 @@ func _on_ButtonTextureButton_pressed():
 func _on_button_texture_selected(path, target):
 	DialogicUtil.update_setting('button_image', path)
 	nodes['button_image'].text = DialogicUtil.get_filename_from_path(path)
+
+
+func _on_ButtonTextColor_color_changed(color):
+	DialogicUtil.update_setting('button_text_color', color.to_html())
+
+
+func _on_Custom_Button_Color_toggled(button_pressed):
+	DialogicUtil.update_setting('button_text_color_enabled', button_pressed)
