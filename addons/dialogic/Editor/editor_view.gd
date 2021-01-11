@@ -36,7 +36,7 @@ func _ready():
 	$EditorCharacter.refresh_character_list()
 	
 	$EditorTheme.editor_reference = self
-	
+
 	# Making the dialog editor the default
 	change_tab('Timeline')
 	_on_EventButton_pressed()

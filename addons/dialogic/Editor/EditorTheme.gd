@@ -7,7 +7,7 @@ var editor_reference
 # complain because "that is not how you are supposed to work". If there was only
 # a way to set an id and then access that node via id...
 # Here you have paths in all its glory. Praise the paths (っ´ω`c)♡
-onready var nodes = {
+onready var n = {
 	'shadow_bool': $VBoxContainer/HBoxContainer2/Text/GridContainer/HBoxContainer2/CheckBoxShadow,
 	'shadow_picker': $VBoxContainer/HBoxContainer2/Text/GridContainer/HBoxContainer2/ColorPickerButtonShadow,
 	'color_picker': $VBoxContainer/HBoxContainer2/Text/GridContainer/ColorPickerButton,
@@ -40,46 +40,46 @@ onready var nodes = {
 func _ready():
 	var settings = DialogicUtil.load_settings()
 	# Font 
-	nodes['font_button'].text = DialogicUtil.get_filename_from_path(DialogicUtil.load_key(settings, 'theme_font', 'res://addons/dialogic/Fonts/DefaultFont.tres'))
+	n['font_button'].text = DialogicUtil.get_filename_from_path(settings['theme_font'])
 	
 	# Text and shadows
-	nodes['color_picker'].color = Color('#' + str(DialogicUtil.load_key(settings, 'theme_text_color', 'ff000000')))
-	nodes['shadow_bool'].pressed = DialogicUtil.load_key(settings, 'theme_text_shadow', false)
-	nodes['shadow_picker'].color = Color('#' + str(DialogicUtil.load_key(settings, 'theme_text_shadow_color', 'ff000000')))
-	nodes['shadow_offset_x'].value = DialogicUtil.load_key(settings, 'theme_shadow_offset_x', 2)
-	nodes['shadow_offset_y'].value = DialogicUtil.load_key(settings, 'theme_shadow_offset_y', 2)
+	n['color_picker'].color = Color(settings['theme_text_color'])
+	n['shadow_bool'].pressed = settings['theme_text_shadow']
+	n['shadow_picker'].color = Color(settings['theme_text_shadow_color'])
+	n['shadow_offset_x'].value = settings['theme_shadow_offset_x']
+	n['shadow_offset_y'].value = settings['theme_shadow_offset_y']
 	
 	# Text speed
-	nodes['text_speed'].value = DialogicUtil.load_key(settings, 'theme_text_speed', 2)
+	n['text_speed'].value = settings['theme_text_speed']
 		
 	# Margin	
-	nodes['text_offset_v'].value = DialogicUtil.load_key(settings, 'theme_text_margin', 10)
-	nodes['text_offset_h'].value = DialogicUtil.load_key(settings, 'theme_text_margin_h', 10)
+	n['text_offset_v'].value = settings['theme_text_margin']
+	n['text_offset_h'].value = settings['theme_text_margin_h']
 	
 	# Backgrounds
-	nodes['background_texture_button'].text = DialogicUtil.get_filename_from_path(DialogicUtil.load_key(settings, 'theme_background_image', 'res://addons/dialogic/Images/background/background-2.png'))
-	nodes['background_texture_button_visible'].pressed = DialogicUtil.load_key(settings, 'background_texture_button_visible', true)
-	nodes['theme_background_color'].color = Color('#' + str(DialogicUtil.load_key(settings, 'theme_background_color', 'ff000000')))
-	nodes['theme_background_color_visible'].pressed = DialogicUtil.load_key(settings, 'theme_background_color_visible', false)
+	n['background_texture_button'].text = DialogicUtil.get_filename_from_path(settings['theme_background_image'])
+	n['background_texture_button_visible'].pressed = settings['background_texture_button_visible']
+	n['theme_background_color'].color = Color(settings['theme_background_color'])
+	n['theme_background_color_visible'].pressed = settings['theme_background_color_visible']
 	
 	# Next image
-	nodes['next_indicator_button'].text = DialogicUtil.get_filename_from_path(DialogicUtil.load_key(settings, 'theme_next_image', 'res://addons/dialogic/Images/next-indicator.png'))
+	n['next_indicator_button'].text = DialogicUtil.get_filename_from_path(settings['theme_next_image'])
 
 	# Action
-	nodes['next_action_button'].text = DialogicUtil.load_key(settings, 'theme_action_key', 'ui_accept')
+	n['next_action_button'].text = settings['theme_action_key']
 	
 	# Buttons
-	nodes['button_text_color_enabled'].pressed = DialogicUtil.load_key(settings, 'button_text_color_enabled', false)
-	nodes['button_text_color'].color = Color('#' + str(DialogicUtil.load_key(settings, 'button_text_color', 'ffffff')))
+	n['button_text_color_enabled'].pressed = settings['button_text_color_enabled']
+	n['button_text_color'].color = Color(settings['button_text_color'])
 	
-	nodes['button_background'].color = Color('#' + str(DialogicUtil.load_key(settings, 'button_background', 'ff000000')))
-	nodes['button_background_visible'].pressed = DialogicUtil.load_key(settings, 'button_background_visible', false)
-	nodes['button_image'].text = DialogicUtil.get_filename_from_path(DialogicUtil.load_key(settings, 'button_image', 'res://addons/dialogic/Images/background/background-2.png'))
-	nodes['button_image_visible'].pressed = DialogicUtil.load_key(settings, 'button_image_visible', false)
+	n['button_background'].color = Color(settings['button_background'])
+	n['button_background_visible'].pressed = settings['button_background_visible']
+	n['button_image'].text = DialogicUtil.get_filename_from_path(settings['button_image'])
+	n['button_image_visible'].pressed = settings['button_image_visible']
 	
-	nodes['button_offset_x'].value = DialogicUtil.load_key(settings, 'button_offset_x', 0)
-	nodes['button_offset_y'].value = DialogicUtil.load_key(settings, 'button_offset_y', 0)
-	nodes['button_separation'].value = DialogicUtil.load_key(settings, 'button_separation', 0)
+	n['button_offset_x'].value = settings['button_offset_x']
+	n['button_offset_y'].value = settings['button_offset_y']
+	n['button_separation'].value = settings['button_separation']
 
 	#Refreshing the dialog 
 	_on_PreviewButton_pressed()
@@ -91,7 +91,7 @@ func _on_BackgroundTextureButton_pressed():
 
 func _on_background_selected(path, target):
 	DialogicUtil.update_setting('theme_background_image', path)
-	nodes['background_texture_button'].text = DialogicUtil.get_filename_from_path(path)
+	n['background_texture_button'].text = DialogicUtil.get_filename_from_path(path)
 
 
 func _on_NextIndicatorButton_pressed():
@@ -101,15 +101,15 @@ func _on_NextIndicatorButton_pressed():
 
 func _on_indicator_selected(path, target):
 	DialogicUtil.update_setting('theme_next_image', path)
-	nodes['next_indicator_button'].text = DialogicUtil.get_filename_from_path(path)
+	n['next_indicator_button'].text = DialogicUtil.get_filename_from_path(path)
 
 
 func _on_ColorPickerButton_color_changed(color):
-	DialogicUtil.update_setting('theme_text_color', color.to_html())
+	DialogicUtil.update_setting('theme_text_color', '#' + color.to_html())
 
 
 func _on_ColorPickerButtonShadow_color_changed(color):
-	DialogicUtil.update_setting('theme_text_shadow_color', color.to_html())
+	DialogicUtil.update_setting('theme_text_shadow_color', '#' + color.to_html())
 
 
 func _on_CheckBoxShadow_toggled(button_pressed):
@@ -117,12 +117,12 @@ func _on_CheckBoxShadow_toggled(button_pressed):
 
 
 func _on_ShadowOffset_value_changed(_value):
-	DialogicUtil.update_setting('theme_shadow_offset_x', nodes['shadow_offset_x'].value)
-	DialogicUtil.update_setting('theme_shadow_offset_y', nodes['shadow_offset_y'].value)
+	DialogicUtil.update_setting('theme_shadow_offset_x', n['shadow_offset_x'].value)
+	DialogicUtil.update_setting('theme_shadow_offset_y', n['shadow_offset_y'].value)
 
 
 func _on_PreviewButton_pressed():
-	for i in nodes['preview_panel'].get_children():
+	for i in n['preview_panel'].get_children():
 		i.free()
 	var dialogic_node = load("res://addons/dialogic/Nodes/Dialog.tscn")
 	var preview_dialog = dialogic_node.instance()
@@ -130,21 +130,21 @@ func _on_PreviewButton_pressed():
 	preview_dialog.dialog_script['events'] = [{
 		"character":"",
 		"portrait":"",
-		"text": nodes['text_preview'].text
+		"text": n['text_preview'].text
 	}]
-	nodes['preview_panel'].add_child(preview_dialog)
+	n['preview_panel'].add_child(preview_dialog)
 
 
 func _on_ActionOptionButton_item_selected(index):
-	DialogicUtil.update_setting('theme_action_key', nodes['next_action_button'].text)
+	DialogicUtil.update_setting('theme_action_key', n['next_action_button'].text)
 
 
 func _on_ActionOptionButton_pressed():
-	nodes['next_action_button'].clear()
-	nodes['next_action_button'].add_item('[Select Action]')
+	n['next_action_button'].clear()
+	n['next_action_button'].add_item('[Select Action]')
 	InputMap.load_from_globals()
 	for a in InputMap.get_actions():
-		nodes['next_action_button'].add_item(a)
+		n['next_action_button'].add_item(a)
 
 
 func _on_FontButton_pressed():
@@ -154,7 +154,7 @@ func _on_FontButton_pressed():
 
 func _on_Font_selected(path, target):
 	DialogicUtil.update_setting('theme_font', path)
-	nodes['font_button'].text = DialogicUtil.get_filename_from_path(path)
+	n['font_button'].text = DialogicUtil.get_filename_from_path(path)
 
 
 func _on_textSpeed_value_changed(value):
@@ -174,7 +174,7 @@ func _on_BackgroundColor_CheckBox_toggled(button_pressed):
 
 
 func _on_BackgroundColor_ColorPickerButton_color_changed(color):
-	DialogicUtil.update_setting('theme_background_color', color.to_html())
+	DialogicUtil.update_setting('theme_background_color', '#' + color.to_html())
 
 
 func _on_BackgroundTexture_CheckBox_toggled(button_pressed):
@@ -186,16 +186,16 @@ func _on_button_background_visible_toggled(button_pressed):
 
 
 func _on_button_background_color_color_changed(color):
-	DialogicUtil.update_setting('button_background', color.to_html())
+	DialogicUtil.update_setting('button_background', '#' + color.to_html())
 
 
 func _on_ButtonOffset_value_changed(value):
-	DialogicUtil.update_setting('button_offset_x', nodes['button_offset_x'].value)
-	DialogicUtil.update_setting('button_offset_y', nodes['button_offset_y'].value)
+	DialogicUtil.update_setting('button_offset_x', n['button_offset_x'].value)
+	DialogicUtil.update_setting('button_offset_y', n['button_offset_y'].value)
 
 
 func _on_VerticalSeparation_value_changed(value):
-	DialogicUtil.update_setting('button_separation', nodes['button_separation'].value)
+	DialogicUtil.update_setting('button_separation', n['button_separation'].value)
 
 
 func _on_button_texture_toggled(button_pressed):
@@ -209,11 +209,11 @@ func _on_ButtonTextureButton_pressed():
 
 func _on_button_texture_selected(path, target):
 	DialogicUtil.update_setting('button_image', path)
-	nodes['button_image'].text = DialogicUtil.get_filename_from_path(path)
+	n['button_image'].text = DialogicUtil.get_filename_from_path(path)
 
 
 func _on_ButtonTextColor_color_changed(color):
-	DialogicUtil.update_setting('button_text_color', color.to_html())
+	DialogicUtil.update_setting('button_text_color', '#' + color.to_html())
 
 
 func _on_Custom_Button_Color_toggled(button_pressed):

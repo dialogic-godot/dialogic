@@ -329,42 +329,39 @@ func add_choice_button(option):
 	var button = ChoiceButton.instance()
 	button.text = option['label']
 	# Text
-	button.set('custom_fonts/font', load(DialogicUtil.load_key(settings, 'theme_font')))
+	button.set('custom_fonts/font', load(settings['theme_font']))
 	
-	button.set('custom_colors/font_color', Color('#' + str(DialogicUtil.load_key(settings, 'theme_text_color'))))
-	button.set('custom_colors/font_color_hover', Color('#' + str(DialogicUtil.load_key(settings, 'theme_text_color'))))
-	button.set('custom_colors/font_color_pressed', Color('#' + str(DialogicUtil.load_key(settings, 'theme_text_color'))))
+	button.set('custom_colors/font_color', Color(settings['theme_text_color']))
+	button.set('custom_colors/font_color_hover', Color(settings['theme_text_color']))
+	button.set('custom_colors/font_color_pressed', Color(settings['theme_text_color']))
 	
 	# This part makes me cry
-	var current_color = DialogicUtil.load_key(settings, 'button_text_color')
+	var current_color = settings['button_text_color']
 	
-	if settings.has('button_text_color'):
-		if DialogicUtil.load_key(settings, 'button_text_color_enabled'):
-			button.set('custom_colors/font_color', Color('#' + str(DialogicUtil.load_key(settings, 'button_text_color'))))
-			button.set('custom_colors/font_color_hover', Color('#' + str(DialogicUtil.load_key(settings, 'button_text_color'))))
-			button.set('custom_colors/font_color_pressed', Color('#' + str(DialogicUtil.load_key(settings, 'button_text_color'))))
+	if settings['button_text_color_enabled']:
+		button.set('custom_colors/font_color', Color(settings['button_text_color']))
+		button.set('custom_colors/font_color_hover', Color(settings['button_text_color']))
+		button.set('custom_colors/font_color_pressed', Color(settings['button_text_color']))
 	# Background
 	
-	button.get_node('ColorRect').color = Color('#' + str(DialogicUtil.load_key(settings, 'button_background', 'ff000000')))
-	button.get_node('ColorRect').visible = DialogicUtil.load_key(settings, 'button_background_visible', false)
+	button.get_node('ColorRect').color = Color(settings['button_background'])
+	button.get_node('ColorRect').visible = settings['button_background_visible']
 
-	button.get_node('TextureRect').texture = load(DialogicUtil.load_key(settings, 'button_image'))
-	button.get_node('TextureRect').visible = DialogicUtil.load_key(settings, 'button_image_visible')
+	button.get_node('TextureRect').texture = load(settings['button_image'])
+	button.get_node('TextureRect').visible = settings['button_image_visible']
 	
-	button.get_node('ColorRect').set('margin_left', -1 * DialogicUtil.load_key(settings, 'button_offset_x', 0))
-	button.get_node('ColorRect').set('margin_right',  DialogicUtil.load_key(settings, 'button_offset_x', 0))
-	button.get_node('ColorRect').set('margin_top', -1 * DialogicUtil.load_key(settings, 'button_offset_y', 0))
-	button.get_node('ColorRect').set('margin_bottom', DialogicUtil.load_key(settings, 'button_offset_y', 0))
+	button.get_node('ColorRect').set('margin_left', -1 * settings['button_offset_x'])
+	button.get_node('ColorRect').set('margin_right',  settings['button_offset_x'])
+	button.get_node('ColorRect').set('margin_top', -1 * settings['button_offset_y'])
+	button.get_node('ColorRect').set('margin_bottom', settings['button_offset_y'])
 	
-	button.get_node('TextureRect').set('margin_left', -1 * DialogicUtil.load_key(settings, 'button_offset_x', 0))
-	button.get_node('TextureRect').set('margin_right',  DialogicUtil.load_key(settings, 'button_offset_x', 0))
-	button.get_node('TextureRect').set('margin_top', -1 * DialogicUtil.load_key(settings, 'button_offset_y', 0))
-	button.get_node('TextureRect').set('margin_bottom', DialogicUtil.load_key(settings, 'button_offset_y', 0))
+	button.get_node('TextureRect').set('margin_left', -1 * settings['button_offset_x'])
+	button.get_node('TextureRect').set('margin_right',  settings['button_offset_x'])
+	button.get_node('TextureRect').set('margin_top', -1 * settings['button_offset_y'])
+	button.get_node('TextureRect').set('margin_bottom', settings['button_offset_y'])
 	
-	$Options.set('custom_constants/separation', DialogicUtil.load_key(settings, 'button_separation', 0) + (DialogicUtil.load_key(settings, 'button_offset_y', 0)*2))
-	#nodes['button_offset_x'].value = DialogicUtil.load_key(settings, 'button_offset_x', 0)
-	#nodes['button_offset_y'].value = DialogicUtil.load_key(settings, 'button_offset_y', 0)
-	
+	$Options.set('custom_constants/separation', settings['button_separation'] + (settings['button_offset_y']*2))
+
 	button.connect("pressed", self, "answer_question", [button, option['event_id'], option['question_id']])
 	
 	$Options.add_child(button)
@@ -429,28 +426,29 @@ func get_character_position(positions):
 
 
 func load_theme() -> void:
-	# TODO: I should probably replace those settings and start using
-	#       DialogicUtil.load_key with defaults, same as in EditorTheme.gd
-	#       I'm not feeling like doing it now, but might have to soon.
-
 	# Loading theme properties and settings
 	settings = DialogicUtil.load_settings()
+	
+	print('-------------')
+	print('dialog_node.gd loading settings')
+	print(settings)
+	print('-------------')
 
-	$TextBubble/RichTextLabel.set('custom_fonts/normal_font', load(DialogicUtil.load_key(settings, 'theme_font', 'res://addons/dialogic/Fonts/DefaultFont.tres')))
-	$TextBubble/NameLabel.set('custom_fonts/normal_font', load(DialogicUtil.load_key(settings, 'theme_font', 'res://addons/dialogic/Fonts/DefaultFont.tres')))
+	$TextBubble/RichTextLabel.set('custom_fonts/normal_font', load(settings['theme_font']))
+	$TextBubble/NameLabel.set('custom_fonts/normal_font', load(settings['theme_font']))
 	
 	# Text
 	if settings.has('theme_text_color'):
-		$TextBubble/RichTextLabel.set('custom_colors/default_color', Color('#' + str(settings['theme_text_color'])))
-		$TextBubble/NameLabel.set('custom_colors/default_color', Color('#' + str(settings['theme_text_color'])))
+		$TextBubble/RichTextLabel.set('custom_colors/default_color', Color(settings['theme_text_color']))
+		$TextBubble/NameLabel.set('custom_colors/default_color', Color(settings['theme_text_color']))
 
 	$TextBubble/RichTextLabel.set('custom_colors/font_color_shadow', Color('#00ffffff'))
 	$TextBubble/NameLabel.set('custom_colors/font_color_shadow', Color('#00ffffff' ))
 	if settings.has('theme_text_shadow'):
 		if settings['theme_text_shadow']:
 			if settings.has('theme_text_shadow_color'):
-				$TextBubble/RichTextLabel.set('custom_colors/font_color_shadow', Color('#' + str(settings['theme_text_shadow_color'])))
-				$TextBubble/NameLabel.set('custom_colors/font_color_shadow', Color('#' + str(settings['theme_text_shadow_color'])))
+				$TextBubble/RichTextLabel.set('custom_colors/font_color_shadow', Color(settings['theme_text_shadow_color']))
+				$TextBubble/NameLabel.set('custom_colors/font_color_shadow', Color(settings['theme_text_shadow_color']))
 				
 	if settings.has('theme_shadow_offset_x'):
 		$TextBubble/RichTextLabel.set('custom_constants/shadow_offset_x', settings['theme_shadow_offset_x'])
@@ -470,17 +468,12 @@ func load_theme() -> void:
 		$TextBubble/RichTextLabel.set('margin_right', settings['theme_text_margin_h'] * -1)
 	
 	# Backgrounds
-	if settings.has('theme_background_image'):
-		$TextBubble/TextureRect.texture = load(settings['theme_background_image'])
-	if settings.has('theme_background_color'):
-		$TextBubble/ColorRect.color = Color('#' + str(settings['theme_background_color']))
+	$TextBubble/TextureRect.texture = load(settings['theme_background_image'])
+	$TextBubble/ColorRect.color = Color(settings['theme_background_color'])
 	
-	$TextBubble/ColorRect.visible = DialogicUtil.load_key(settings, 'theme_background_color_visible', false)
-	$TextBubble/TextureRect.visible = DialogicUtil.load_key(settings, 'background_texture_button_visible', true)
+	$TextBubble/ColorRect.visible = settings['theme_background_color_visible']
+	$TextBubble/TextureRect.visible = settings['background_texture_button_visible']
 	
 	# Next image
-	if settings.has('theme_next_image'):
-		$TextBubble/NextIndicator.texture = load(settings['theme_next_image'])
-	
-	if settings.has('theme_action_key'):
-		input_next = settings['theme_action_key']
+	$TextBubble/NextIndicator.texture = load(settings['theme_next_image'])
+	input_next = settings['theme_action_key']
