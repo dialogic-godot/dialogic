@@ -8,19 +8,19 @@ var editor_reference
 # a way to set an id and then access that node via id...
 # Here you have paths in all its glory. Praise the paths (っ´ω`c)♡
 onready var n = {
-	'shadow_bool': $VBoxContainer/HBoxContainer2/Text/GridContainer/HBoxContainer2/CheckBoxShadow,
-	'shadow_picker': $VBoxContainer/HBoxContainer2/Text/GridContainer/HBoxContainer2/ColorPickerButtonShadow,
-	'color_picker': $VBoxContainer/HBoxContainer2/Text/GridContainer/ColorPickerButton,
-	'font_button': $VBoxContainer/HBoxContainer2/Text/GridContainer/FontButton,
-	'shadow_offset_x': $VBoxContainer/HBoxContainer2/Text/GridContainer/HBoxContainer/ShadowOffsetX,
-	'shadow_offset_y': $VBoxContainer/HBoxContainer2/Text/GridContainer/HBoxContainer/ShadowOffsetY,
-	'text_speed': $VBoxContainer/HBoxContainer2/Text/GridContainer/TextSpeed,
-	'text_offset_v': $VBoxContainer/HBoxContainer2/DialogBox/GridContainer/HBoxContainer/TextOffsetV,
-	'text_offset_h': $VBoxContainer/HBoxContainer2/DialogBox/GridContainer/HBoxContainer/TextOffsetH,
+	'theme_text_shadow': $VBoxContainer/HBoxContainer2/Text/GridContainer/HBoxContainer2/CheckBoxShadow,
+	'theme_text_shadow_color': $VBoxContainer/HBoxContainer2/Text/GridContainer/HBoxContainer2/ColorPickerButtonShadow,
+	'theme_text_color': $VBoxContainer/HBoxContainer2/Text/GridContainer/ColorPickerButton,
+	'theme_font': $VBoxContainer/HBoxContainer2/Text/GridContainer/FontButton,
+	'theme_shadow_offset_x': $VBoxContainer/HBoxContainer2/Text/GridContainer/HBoxContainer/ShadowOffsetX,
+	'theme_shadow_offset_y': $VBoxContainer/HBoxContainer2/Text/GridContainer/HBoxContainer/ShadowOffsetY,
+	'theme_text_speed': $VBoxContainer/HBoxContainer2/Text/GridContainer/TextSpeed,
+	'theme_text_margin': $VBoxContainer/HBoxContainer2/DialogBox/GridContainer/HBoxContainer/TextOffsetV,
+	'theme_text_margin_h': $VBoxContainer/HBoxContainer2/DialogBox/GridContainer/HBoxContainer/TextOffsetH,
 	'background_texture_button_visible': $VBoxContainer/HBoxContainer2/DialogBox/GridContainer/HBoxContainer3/CheckBox,
-	'background_texture_button': $VBoxContainer/HBoxContainer2/DialogBox/GridContainer/HBoxContainer3/BackgroundTextureButton,
-	'next_indicator_button': $VBoxContainer/HBoxContainer2/DialogBox/GridContainer/NextIndicatorButton,
-	'next_action_button': $VBoxContainer/HBoxContainer2/DialogBox/GridContainer/BoxContainer/ActionOptionButton,
+	'theme_background_image': $VBoxContainer/HBoxContainer2/DialogBox/GridContainer/HBoxContainer3/BackgroundTextureButton,
+	'theme_next_image': $VBoxContainer/HBoxContainer2/DialogBox/GridContainer/NextIndicatorButton,
+	'theme_action_key': $VBoxContainer/HBoxContainer2/DialogBox/GridContainer/BoxContainer/ActionOptionButton,
 	'text_preview': $VBoxContainer/HBoxContainer3/TextEdit,
 	'preview_panel': $VBoxContainer/Panel,
 	'theme_background_color_visible': $VBoxContainer/HBoxContainer2/DialogBox/GridContainer/HBoxContainer2/CheckBox,
@@ -40,33 +40,33 @@ onready var n = {
 func _ready():
 	var settings = DialogicUtil.load_settings()
 	# Font 
-	n['font_button'].text = DialogicUtil.get_filename_from_path(settings['theme_font'])
+	n['theme_font'].text = DialogicUtil.get_filename_from_path(settings['theme_font'])
 	
 	# Text and shadows
-	n['color_picker'].color = Color(settings['theme_text_color'])
-	n['shadow_bool'].pressed = settings['theme_text_shadow']
-	n['shadow_picker'].color = Color(settings['theme_text_shadow_color'])
-	n['shadow_offset_x'].value = settings['theme_shadow_offset_x']
-	n['shadow_offset_y'].value = settings['theme_shadow_offset_y']
+	n['theme_text_color'].color = Color(settings['theme_text_color'])
+	n['theme_text_shadow'].pressed = settings['theme_text_shadow']
+	n['theme_text_shadow_color'].color = Color(settings['theme_text_shadow_color'])
+	n['theme_shadow_offset_x'].value = settings['theme_shadow_offset_x']
+	n['theme_shadow_offset_y'].value = settings['theme_shadow_offset_y']
 	
 	# Text speed
-	n['text_speed'].value = settings['theme_text_speed']
+	n['theme_text_speed'].value = settings['theme_text_speed']
 		
 	# Margin	
-	n['text_offset_v'].value = settings['theme_text_margin']
-	n['text_offset_h'].value = settings['theme_text_margin_h']
+	n['theme_text_margin'].value = settings['theme_text_margin']
+	n['theme_text_margin_h'].value = settings['theme_text_margin_h']
 	
 	# Backgrounds
-	n['background_texture_button'].text = DialogicUtil.get_filename_from_path(settings['theme_background_image'])
+	n['theme_background_image'].text = DialogicUtil.get_filename_from_path(settings['theme_background_image'])
 	n['background_texture_button_visible'].pressed = settings['background_texture_button_visible']
 	n['theme_background_color'].color = Color(settings['theme_background_color'])
 	n['theme_background_color_visible'].pressed = settings['theme_background_color_visible']
 	
 	# Next image
-	n['next_indicator_button'].text = DialogicUtil.get_filename_from_path(settings['theme_next_image'])
+	n['theme_next_image'].text = DialogicUtil.get_filename_from_path(settings['theme_next_image'])
 
 	# Action
-	n['next_action_button'].text = settings['theme_action_key']
+	n['theme_action_key'].text = settings['theme_action_key']
 	
 	# Buttons
 	n['button_text_color_enabled'].pressed = settings['button_text_color_enabled']
@@ -91,7 +91,7 @@ func _on_BackgroundTextureButton_pressed():
 
 func _on_background_selected(path, target):
 	DialogicUtil.update_setting('theme_background_image', path)
-	n['background_texture_button'].text = DialogicUtil.get_filename_from_path(path)
+	n['theme_background_image'].text = DialogicUtil.get_filename_from_path(path)
 
 
 func _on_NextIndicatorButton_pressed():
@@ -101,7 +101,7 @@ func _on_NextIndicatorButton_pressed():
 
 func _on_indicator_selected(path, target):
 	DialogicUtil.update_setting('theme_next_image', path)
-	n['next_indicator_button'].text = DialogicUtil.get_filename_from_path(path)
+	n['theme_next_image'].text = DialogicUtil.get_filename_from_path(path)
 
 
 func _on_ColorPickerButton_color_changed(color):
@@ -117,8 +117,8 @@ func _on_CheckBoxShadow_toggled(button_pressed):
 
 
 func _on_ShadowOffset_value_changed(_value):
-	DialogicUtil.update_setting('theme_shadow_offset_x', n['shadow_offset_x'].value)
-	DialogicUtil.update_setting('theme_shadow_offset_y', n['shadow_offset_y'].value)
+	DialogicUtil.update_setting('theme_shadow_offset_x', n['theme_shadow_offset_x'].value)
+	DialogicUtil.update_setting('theme_shadow_offset_y', n['theme_shadow_offset_y'].value)
 
 
 func _on_PreviewButton_pressed():
@@ -136,15 +136,15 @@ func _on_PreviewButton_pressed():
 
 
 func _on_ActionOptionButton_item_selected(index):
-	DialogicUtil.update_setting('theme_action_key', n['next_action_button'].text)
+	DialogicUtil.update_setting('theme_action_key', n['theme_action_key'].text)
 
 
 func _on_ActionOptionButton_pressed():
-	n['next_action_button'].clear()
-	n['next_action_button'].add_item('[Select Action]')
+	n['theme_action_key'].clear()
+	n['theme_action_key'].add_item('[Select Action]')
 	InputMap.load_from_globals()
 	for a in InputMap.get_actions():
-		n['next_action_button'].add_item(a)
+		n['theme_action_key'].add_item(a)
 
 
 func _on_FontButton_pressed():
@@ -154,7 +154,7 @@ func _on_FontButton_pressed():
 
 func _on_Font_selected(path, target):
 	DialogicUtil.update_setting('theme_font', path)
-	n['font_button'].text = DialogicUtil.get_filename_from_path(path)
+	n['theme_font'].text = DialogicUtil.get_filename_from_path(path)
 
 
 func _on_textSpeed_value_changed(value):
