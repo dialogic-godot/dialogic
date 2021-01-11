@@ -116,7 +116,7 @@ static func default_settings():
 		"button_background": "#ff000000",
 		"button_background_visible": false,
 		"button_image": "res://addons/dialogic/Images/background/background-2.png",
-		"button_image_visible": false,
+		"button_image_visible": true,
 		"button_offset_x": 5,
 		"button_offset_y": 5,
 		"button_separation": 5,

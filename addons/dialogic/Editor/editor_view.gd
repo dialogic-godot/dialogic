@@ -92,6 +92,8 @@ func _on_ButtonChangeTimeline_pressed():
 
 func _on_ButtonQuestion_pressed():
 	create_event("Question", {'question': '', 'options': []}, true)
+	create_event("Choice", {'choice': ''}, true)
+	create_event("Choice", {'choice': ''}, true)
 	create_event("EndChoice", {'endchoice': ''}, true)
 
 
@@ -202,10 +204,12 @@ func load_timeline(path):
 	dprint("Elapsed time: " + str(elapsed_time))
 
 
-func indent_events():
-	var indent = 0
-	var starter = false
-	var event_list = get_node(timeline_path).get_children()
+func indent_events() -> void:
+	var indent: int = 0
+	var starter: bool = false
+	var event_list: Array = get_node(timeline_path).get_children()
+	var question_index: int = 0
+	var question_indent = {}
 	if event_list.size() < 2:
 		return
 	# Resetting all the indents
@@ -214,11 +218,19 @@ func indent_events():
 		indent_node.visible = false
 	# Adding new indents
 	for event in event_list:
-		if event.event_data.has('question') or event.event_data.has('condition'):
+		if event.event_data.has('question'):
 			indent += 1
 			starter = true
+			question_index += 1
+			question_indent[question_index] = indent
+		if event.event_data.has('choice'):
+			if question_index > 0:
+				indent = question_indent[question_index] + 1
+				starter = true
 		if event.event_data.has('endchoice'):
+			indent = question_indent[question_index]
 			indent -= 1
+			question_index -= 1
 			if indent < 0:
 				indent = 0
 
