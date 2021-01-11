@@ -25,6 +25,7 @@ Yes, you can use Dialogic to make any kind of game (even commercial ones). The p
  - Themes:
     - Added a color background as an option
     - Reduced the vertical size needed to show all options
+    - Style your choice buttons! (Color, background, etc...)
  - In game dialog:
     - Change timeline event is now working
     - Audio event can play sounds
@@ -32,11 +33,14 @@ Yes, you can use Dialogic to make any kind of game (even commercial ones). The p
     - Focus in and out of portraits when speaking
     - Character leave events working
     - Basic question/answers support
+    - Better scene resizing and position
+    - Button styles
  - Timelines:
     - Moved the event buttons to a new column
     - When creating a `Question` event a `End Branch` event will be added automatically
     - Added a warning for `Choice` events on the root level of indentation
     - Disabled unfinished events
+    - The Change Timeline event tells you your current timeline (this is for going back to the start)
 
 
 ### v0.7 - Looking good

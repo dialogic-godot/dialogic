@@ -4,7 +4,7 @@ v0.7 - Looking good
  - Removed legacy files
  - From the theme tab you can now:
    - Pick the default text color
-   - Set the sadows and shadow offset
+   - Set the shadows and shadow offset
    - Select your own fonts (.tres)
    - Set background and next indicator images
    - Choose an action to trigger the "next" event
