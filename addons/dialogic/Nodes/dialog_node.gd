@@ -329,26 +329,27 @@ func add_choice_button(option):
 	var button = ChoiceButton.instance()
 	button.text = option['label']
 	# Text
-	if settings.has('theme_font'):
-		button.set('custom_fonts/font', load(settings['theme_font']))
+	button.set('custom_fonts/font', load(DialogicUtil.load_key(settings, 'theme_font')))
 	
-	if settings.has('theme_text_color'):
-		button.set('custom_colors/font_color', Color('#' + str(settings['theme_text_color'])))
-		button.set('custom_colors/font_color_hover', Color('#' + str(settings['theme_text_color'])))
-		button.set('custom_colors/font_color_pressed', Color('#' + str(settings['theme_text_color'])))
+	button.set('custom_colors/font_color', Color('#' + str(DialogicUtil.load_key(settings, 'theme_text_color'))))
+	button.set('custom_colors/font_color_hover', Color('#' + str(DialogicUtil.load_key(settings, 'theme_text_color'))))
+	button.set('custom_colors/font_color_pressed', Color('#' + str(DialogicUtil.load_key(settings, 'theme_text_color'))))
+	
+	# This part makes me cry
+	var current_color = DialogicUtil.load_key(settings, 'button_text_color')
+	
 	if settings.has('button_text_color'):
-		if settings.has('button_text_color_enabled'):
-			if settings['button_text_color_enabled']:
-				button.set('custom_colors/font_color', Color('#' + str(settings['button_text_color'])))
-				button.set('custom_colors/font_color_hover', Color('#' + str(settings['button_text_color'])))
-				button.set('custom_colors/font_color_pressed', Color('#' + str(settings['button_text_color'])))
+		if DialogicUtil.load_key(settings, 'button_text_color_enabled'):
+			button.set('custom_colors/font_color', Color('#' + str(DialogicUtil.load_key(settings, 'button_text_color'))))
+			button.set('custom_colors/font_color_hover', Color('#' + str(DialogicUtil.load_key(settings, 'button_text_color'))))
+			button.set('custom_colors/font_color_pressed', Color('#' + str(DialogicUtil.load_key(settings, 'button_text_color'))))
 	# Background
 	
 	button.get_node('ColorRect').color = Color('#' + str(DialogicUtil.load_key(settings, 'button_background', 'ff000000')))
 	button.get_node('ColorRect').visible = DialogicUtil.load_key(settings, 'button_background_visible', false)
-	if settings.has('button_image'):
-		button.get_node('TextureRect').texture = load(settings['button_image'])
-	button.get_node('TextureRect').visible = DialogicUtil.load_key(settings, 'button_image_visible', false)
+
+	button.get_node('TextureRect').texture = load(DialogicUtil.load_key(settings, 'button_image'))
+	button.get_node('TextureRect').visible = DialogicUtil.load_key(settings, 'button_image_visible')
 	
 	button.get_node('ColorRect').set('margin_left', -1 * DialogicUtil.load_key(settings, 'button_offset_x', 0))
 	button.get_node('ColorRect').set('margin_right',  DialogicUtil.load_key(settings, 'button_offset_x', 0))
