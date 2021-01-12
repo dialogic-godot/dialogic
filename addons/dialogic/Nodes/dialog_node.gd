@@ -295,6 +295,8 @@ func event_handler(event: Dictionary):
 			go_to_next_event()
 		{'endchoice'}:
 			go_to_next_event()
+		{'close_dialog'}:
+			queue_free()
 		{'change_timeline'}:
 			dialog_script = set_current_dialog('/' + event['change_timeline'])
 			dialog_index = 0

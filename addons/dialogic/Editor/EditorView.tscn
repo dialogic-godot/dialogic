@@ -6,7 +6,7 @@
 [ext_resource path="res://addons/dialogic/Images/scene.svg" type="Texture" id=4]
 [ext_resource path="res://addons/dialogic/Images/character-leave.svg" type="Texture" id=5]
 [ext_resource path="res://addons/dialogic/Images/condition.svg" type="Texture" id=6]
-[ext_resource path="res://addons/dialogic/Images/character.svg" type="Texture" id=7]
+[ext_resource path="res://addons/dialogic/Images/end-dialog.svg" type="Texture" id=7]
 [ext_resource path="res://addons/dialogic/Images/audio-event.svg" type="Texture" id=8]
 [ext_resource path="res://addons/dialogic/Images/open-icon.svg" type="Texture" id=9]
 [ext_resource path="res://addons/dialogic/Images/closed-icon.svg" type="Texture" id=10]
@@ -195,7 +195,6 @@ expand = true
 stretch_mode = 5
 
 [node name="EditorTimeline" type="HSplitContainer" parent="."]
-visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 6.0
@@ -229,10 +228,11 @@ margin_right = 180.0
 margin_bottom = 541.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-items = [ "234234", ExtResource( 15 ), false, "Intro", ExtResource( 15 ), false, "Nice :)", ExtResource( 15 ), false, "alternative timeline", ExtResource( 15 ), false ]
+items = [ "timeline-1610448960", ExtResource( 15 ), false ]
 allow_rmb_select = true
 
 [node name="CenterContainer" type="CenterContainer" parent="EditorTimeline"]
+visible = false
 margin_left = 192.0
 margin_right = 997.0
 margin_bottom = 541.0
@@ -263,7 +263,6 @@ __meta__ = {
 }
 
 [node name="TimelineEditor" type="HSplitContainer" parent="EditorTimeline"]
-visible = false
 margin_left = 192.0
 margin_right = 997.0
 margin_bottom = 541.0
@@ -445,6 +444,14 @@ text = "  Audio Event"
 icon = ExtResource( 8 )
 align = 0
 
+[node name="ButtonCloseDialog" type="Button" parent="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer"]
+margin_top = 402.0
+margin_right = 190.0
+margin_bottom = 430.0
+text = "  Close Dialog"
+icon = ExtResource( 7 )
+align = 0
+
 [node name="EditorCharacter" type="HSplitContainer" parent="."]
 visible = false
 anchor_right = 1.0
@@ -474,11 +481,9 @@ margin_right = 180.0
 margin_bottom = 541.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-items = [ "Narrator", ExtResource( 7 ), false, "Shia", ExtResource( 7 ), false, "Lyra", ExtResource( 7 ), false ]
 allow_rmb_select = true
 
 [node name="NoCharacters" type="CenterContainer" parent="EditorCharacter"]
-visible = false
 margin_left = 192.0
 margin_right = 997.0
 margin_bottom = 541.0
@@ -507,6 +512,7 @@ margin_bottom = 20.0
 text = "Create a character +"
 
 [node name="CharacterEditor" type="ScrollContainer" parent="EditorCharacter"]
+visible = false
 margin_left = 192.0
 margin_right = 997.0
 margin_bottom = 541.0
@@ -764,6 +770,7 @@ __meta__ = {
 }
 
 [node name="EditorTheme" type="ScrollContainer" parent="."]
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 6.0
@@ -776,7 +783,7 @@ __meta__ = {
 }
 
 [node name="VBoxContainer" type="VBoxContainer" parent="EditorTheme"]
-margin_right = 985.0
+margin_right = 997.0
 margin_bottom = 604.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -881,7 +888,7 @@ margin_right = 158.0
 margin_bottom = 30.0
 rect_min_size = Vector2( 50, 30 )
 size_flags_horizontal = 3
-color = Color( 0.933333, 0.0392157, 0.0392157, 1 )
+color = Color( 0, 0, 0, 0.619608 )
 
 [node name="Label4" type="Label" parent="EditorTheme/VBoxContainer/HBoxContainer2/Text/GridContainer"]
 margin_top = 125.0
@@ -1026,7 +1033,7 @@ prefix = "V"
 margin_left = 78.0
 margin_right = 152.0
 margin_bottom = 24.0
-value = 10.0
+value = 20.0
 rounded = true
 allow_lesser = true
 prefix = "H"
@@ -1048,7 +1055,7 @@ margin_bottom = 128.0
 margin_right = 152.0
 margin_bottom = 20.0
 size_flags_horizontal = 3
-text = "ui_right"
+text = "ui_accept"
 items = [ "[Select Action]", null, false, 0, null, "ui_accept", null, false, 1, null, "ui_select", null, false, 2, null, "ui_cancel", null, false, 3, null, "ui_focus_next", null, false, 4, null, "ui_focus_prev", null, false, 5, null, "ui_left", null, false, 6, null, "ui_right", null, false, 7, null, "ui_up", null, false, 8, null, "ui_down", null, false, 9, null, "ui_page_up", null, false, 10, null, "ui_page_down", null, false, 11, null, "ui_home", null, false, 12, null, "ui_end", null, false, 13, null ]
 selected = 0
 
@@ -1109,6 +1116,7 @@ __meta__ = {
 [node name="CheckBox2" type="CheckBox" parent="EditorTheme/VBoxContainer/HBoxContainer2/ButtonStyle/GridContainer/HBoxContainer4"]
 margin_right = 24.0
 margin_bottom = 24.0
+pressed = true
 
 [node name="ButtonTextColor" type="ColorPickerButton" parent="EditorTheme/VBoxContainer/HBoxContainer2/ButtonStyle/GridContainer/HBoxContainer4"]
 margin_left = 28.0
@@ -1178,6 +1186,7 @@ margin_bottom = 108.0
 [node name="TextOffsetV" type="SpinBox" parent="EditorTheme/VBoxContainer/HBoxContainer2/ButtonStyle/GridContainer/HBoxContainer"]
 margin_right = 74.0
 margin_bottom = 24.0
+value = 5.0
 rounded = true
 allow_lesser = true
 prefix = "V"
@@ -1186,6 +1195,7 @@ prefix = "V"
 margin_left = 78.0
 margin_right = 152.0
 margin_bottom = 24.0
+value = 5.0
 rounded = true
 allow_lesser = true
 prefix = "H"
@@ -1201,7 +1211,7 @@ margin_left = 136.0
 margin_top = 112.0
 margin_right = 288.0
 margin_bottom = 136.0
-value = 4.0
+value = 5.0
 rounded = true
 allow_lesser = true
 
@@ -1301,6 +1311,7 @@ margin_bottom = 52.7127
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
 [connection signal="pressed" from="HBoxContainer/EventButton" to="." method="_on_EventButton_pressed"]
 [connection signal="pressed" from="HBoxContainer/CharactersButton" to="." method="_on_CharactersButton_pressed"]
 [connection signal="pressed" from="HBoxContainer/GlossaryButton" to="." method="_on_CharactersButton_pressed"]
@@ -1324,6 +1335,7 @@ __meta__ = {
 [connection signal="pressed" from="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer/ButtonChangeTimeline" to="." method="_on_ButtonChangeTimeline_pressed"]
 [connection signal="pressed" from="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer/ButtonBackground" to="." method="_on_ButtonBackground_pressed"]
 [connection signal="pressed" from="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer/ButtonAudio" to="." method="_on_ButtonAudio_pressed"]
+[connection signal="pressed" from="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer/ButtonCloseDialog" to="." method="_on_ButtonCloseDialog_pressed"]
 [connection signal="pressed" from="EditorCharacter/CharacterTools/Button" to="EditorCharacter" method="_on_New_Character_Button_pressed"]
 [connection signal="item_rmb_selected" from="EditorCharacter/CharacterTools/CharacterItemList" to="EditorCharacter" method="_on_CharacterItemList_item_rmb_selected"]
 [connection signal="item_selected" from="EditorCharacter/CharacterTools/CharacterItemList" to="EditorCharacter" method="_on_ItemList_item_selected"]

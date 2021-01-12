@@ -86,6 +86,10 @@ func _on_ButtonAudio_pressed():
 	create_event("AudioBlock", {'audio':'play', 'file': ''}, true)
 
 
+func _on_ButtonCloseDialog_pressed():
+	create_event("CloseDialog", {'close_dialog': ''}, true)
+
+
 func _on_ButtonChangeTimeline_pressed():
 	create_event("ChangeTimeline", {'change_timeline': ''})
 
@@ -189,6 +193,8 @@ func load_timeline(path):
 				create_event("CharacterLeaveBlock", i)
 			{'change_timeline'}:
 				create_event("ChangeTimeline", i)
+			{'close_dialog'}:
+				create_event("CloseDialog", i)
 			{'condition'}:
 				create_event("IfCondition", i)
 

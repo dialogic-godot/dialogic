@@ -41,6 +41,7 @@ Yes, you can use Dialogic to make any kind of game (even commercial ones). The p
     - Added a warning for `Choice` events on the root level of indentation
     - Disabled unfinished events
     - The Change Timeline event tells you your current timeline (this is for going back to the start)
+    - New `Close Dialog` event. This event closes the dialog whenever it is called.
 
 
 ### v0.7 - Looking good
