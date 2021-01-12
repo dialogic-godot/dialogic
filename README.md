@@ -26,6 +26,7 @@ Yes, you can use Dialogic to make any kind of game (even commercial ones). The p
     - Added a color background as an option
     - Reduced the vertical size needed to show all options
     - Style your choice buttons! (Color, background, etc...)
+    - Better default support for unchanged styles
  - Timeline Editor:
     - Moved the event buttons to a new column
     - When creating a `Question` event a `End Branch` event will be added automatically
