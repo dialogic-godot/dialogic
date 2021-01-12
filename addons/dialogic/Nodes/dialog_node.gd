@@ -9,8 +9,9 @@ var waiting_for_answer: bool = false
 var waiting_for_input: bool = false
 var settings
 
-export(String) var timeline_id: String # Timeline-var-replace
+#export(String) var timeline: String # Timeline-var-replace
 
+export(String, "TimelineDropdown") var timeline: String
 
 var dialog_resource
 var characters
@@ -23,8 +24,8 @@ var questions #for keeping track of the questions answered
 
 func _ready():
 	# Checking if the dialog should read the code from a external file
-	if timeline_id != '':
-		dialog_script = set_current_dialog('/' + timeline_id + '.json')
+	if timeline != '':
+		dialog_script = set_current_dialog('/' + timeline + '.json')
 	
 	# Connecting resize signal
 	get_viewport().connect("size_changed", self, "resize_main")

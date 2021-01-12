@@ -5,15 +5,21 @@ var _editor_view # This is the plugin Scene
 var _panel_button: Button
 var _editor_selection: EditorSelection
 
-func _enter_tree():
+var _parts_inspector
+
+func _enter_tree() -> void:
+	_parts_inspector = preload("res://addons/dialogic/Other/inspector_timeline_picker.gd").new()
+	add_inspector_plugin(_parts_inspector)
+	
 	_add_custom_editor_view()
 	
 	get_editor_interface().get_editor_viewport().add_child(_editor_view)
 	# Hide the main panel. Very much required.
 	make_visible(false)
 	
-func _exit_tree():
+func _exit_tree() -> void:
 	_remove_custom_editor_view()
+	remove_inspector_plugin(_parts_inspector)
 
 func has_main_screen():
 	return true
