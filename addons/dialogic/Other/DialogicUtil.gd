@@ -110,6 +110,20 @@ static func get_character_list() -> Array:
 	return characters
 
 
+static func get_timeline_list() -> Array:
+	var timelines: Array = []
+	for file in listdir(get_path('TIMELINE_DIR')):
+		if '.json' in file:
+			var data = load_json(get_path('TIMELINE_DIR', file))
+			var metadata = data['metadata']
+			var color = Color("#ffffff")
+			if metadata.has('name'):
+				timelines.append({'name':metadata['name'], 'color': color, 'file': file })
+			else:
+				timelines.append({'name':file.split('.')[0], 'color': color, 'file': file })
+	return timelines
+
+
 static func default_settings():
 	var ds = {
 		"background_texture_button_visible": true,

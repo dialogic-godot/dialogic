@@ -18,7 +18,7 @@ func _ready():
 func load_data(data):
 	event_data = data
 	if event_data['change_timeline'] != '':
-		for c in editor_reference.get_timeline_list():
+		for c in DialogicUtil.get_timeline_list():
 			if c['file'] == event_data['change_timeline']:
 				$PanelContainer/VBoxContainer/Header/MenuButton.text = c['name']
 
@@ -27,7 +27,7 @@ func _on_MenuButton_about_to_show():
 	var Dropdown = $PanelContainer/VBoxContainer/Header/MenuButton
 	Dropdown.get_popup().clear()
 	var index = 0
-	for c in editor_reference.get_timeline_list():
+	for c in DialogicUtil.get_timeline_list():
 		print(c['file'].replace('.json', ''), DialogicUtil.get_filename_from_path(editor_reference.working_dialog_file))
 		if c['file'].replace('.json', '') == DialogicUtil.get_filename_from_path(editor_reference.working_dialog_file):
 			Dropdown.get_popup().add_item('(Current) ' + c['name'])

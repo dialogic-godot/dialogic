@@ -253,25 +253,11 @@ func indent_events() -> void:
 
 
 # Conversation files
-func get_timeline_list():
-	var timelines = []
-	for file in DialogicUtil.listdir(DialogicUtil.get_path('TIMELINE_DIR')):
-		if '.json' in file:
-			var data = DialogicUtil.load_json(DialogicUtil.get_path('TIMELINE_DIR', file))
-			var metadata = data['metadata']
-			var color = Color("#ffffff")
-			if metadata.has('name'):
-				timelines.append({'name':metadata['name'], 'color': color, 'file': file })
-			else:
-				timelines.append({'name':file.split('.')[0], 'color': color, 'file': file })
-	return timelines
-
-
 func refresh_timeline_list():
 	get_node(dialog_list_path).clear()
 	var icon = load("res://addons/dialogic/Images/timeline.svg")
 	var index = 0
-	for c in get_timeline_list():
+	for c in DialogicUtil.get_timeline_list():
 		get_node(dialog_list_path).add_item(c['name'], icon)
 		get_node(dialog_list_path).set_item_metadata(index, {'file': c['file'], 'index': index})
 		index += 1
