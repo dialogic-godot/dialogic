@@ -34,7 +34,9 @@ Yes, you can use Dialogic to make any kind of game (even commercial ones). The p
     - Disabled unfinished events
     - The Change Timeline event tells you your current timeline (this is for going back to the start)
     - New `Close Dialog` event. This event closes the dialog whenever it is called.
+    - When renaming a dialog the popup's text field is already selected and focused.
  - In game dialog:
+    - You can now select the current timeline from the inspector without manually copying the timeline id.
     - Change timeline event is now working
     - Audio event can play sounds
     - Character join (left, center and right) working

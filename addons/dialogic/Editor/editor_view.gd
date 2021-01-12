@@ -297,6 +297,8 @@ func popup_rename():
 	$RenameDialog/LineEdit.text = timeline_name
 	$RenameDialog.set_as_minsize()
 	$RenameDialog.popup_centered()
+	$RenameDialog/LineEdit.grab_focus()
+	$RenameDialog/LineEdit.select_all()
 
 
 func _on_RenameDialog_confirmed():
