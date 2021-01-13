@@ -29,7 +29,7 @@ Yes, you can use Dialogic to make any kind of game (even commercial ones). The p
     - Better default support for unchanged styles
  - Timeline Editor:
     - Moved the event buttons to a new column
-    - When creating a `Question` event a `End Branch` event will be added automatically
+    - When creating a `Question` two `Choice` events and a `End Branch` event will be added automatically
     - Added a warning for `Choice` events on the root level of indentation
     - Disabled unfinished events
     - The Change Timeline event tells you your current timeline (this is for going back to the start)

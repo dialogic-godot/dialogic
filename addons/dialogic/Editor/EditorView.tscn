@@ -196,6 +196,7 @@ expand = true
 stretch_mode = 5
 
 [node name="EditorTimeline" type="HSplitContainer" parent="."]
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 6.0
@@ -772,7 +773,6 @@ __meta__ = {
 }
 
 [node name="EditorTheme" type="ScrollContainer" parent="."]
-visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 6.0
@@ -785,19 +785,19 @@ __meta__ = {
 }
 
 [node name="VBoxContainer" type="VBoxContainer" parent="EditorTheme"]
-margin_right = 997.0
-margin_bottom = 604.0
+margin_right = 985.0
+margin_bottom = 568.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_constants/separation = 15
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="EditorTheme/VBoxContainer"]
 margin_right = 985.0
-margin_bottom = 214.0
+margin_bottom = 178.0
 
 [node name="Text" type="VBoxContainer" parent="EditorTheme/VBoxContainer/HBoxContainer2"]
 margin_right = 347.0
-margin_bottom = 214.0
+margin_bottom = 178.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 __meta__ = {
@@ -925,7 +925,7 @@ prefix = "Y"
 [node name="DialogBox" type="VBoxContainer" parent="EditorTheme/VBoxContainer/HBoxContainer2"]
 margin_left = 351.0
 margin_right = 666.0
-margin_bottom = 214.0
+margin_bottom = 178.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 __meta__ = {
@@ -948,20 +948,20 @@ __meta__ = {
 [node name="GridContainer" type="GridContainer" parent="EditorTheme/VBoxContainer/HBoxContainer2/DialogBox"]
 margin_top = 34.0
 margin_right = 315.0
-margin_bottom = 214.0
+margin_bottom = 162.0
 size_flags_horizontal = 3
 custom_constants/hseparation = 10
 columns = 2
 
 [node name="Label5" type="Label" parent="EditorTheme/VBoxContainer/HBoxContainer2/DialogBox/GridContainer"]
 margin_top = 5.0
-margin_right = 153.0
+margin_right = 132.0
 margin_bottom = 19.0
 text = "Background Color"
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="EditorTheme/VBoxContainer/HBoxContainer2/DialogBox/GridContainer"]
-margin_left = 163.0
-margin_right = 315.0
+margin_left = 142.0
+margin_right = 294.0
 margin_bottom = 24.0
 
 [node name="CheckBox" type="CheckBox" parent="EditorTheme/VBoxContainer/HBoxContainer2/DialogBox/GridContainer/HBoxContainer2"]
@@ -976,14 +976,14 @@ size_flags_horizontal = 3
 
 [node name="Label" type="Label" parent="EditorTheme/VBoxContainer/HBoxContainer2/DialogBox/GridContainer"]
 margin_top = 33.0
-margin_right = 153.0
+margin_right = 132.0
 margin_bottom = 47.0
 text = "Background Texture"
 
 [node name="HBoxContainer3" type="HBoxContainer" parent="EditorTheme/VBoxContainer/HBoxContainer2/DialogBox/GridContainer"]
-margin_left = 163.0
+margin_left = 142.0
 margin_top = 28.0
-margin_right = 315.0
+margin_right = 294.0
 margin_bottom = 52.0
 
 [node name="CheckBox" type="CheckBox" parent="EditorTheme/VBoxContainer/HBoxContainer2/DialogBox/GridContainer/HBoxContainer3"]
@@ -1000,27 +1000,27 @@ text = "background-2"
 
 [node name="Label2" type="Label" parent="EditorTheme/VBoxContainer/HBoxContainer2/DialogBox/GridContainer"]
 margin_top = 59.0
-margin_right = 153.0
+margin_right = 132.0
 margin_bottom = 73.0
 text = "Next dialog indicator"
 
 [node name="NextIndicatorButton" type="Button" parent="EditorTheme/VBoxContainer/HBoxContainer2/DialogBox/GridContainer"]
-margin_left = 163.0
+margin_left = 142.0
 margin_top = 56.0
-margin_right = 315.0
+margin_right = 294.0
 margin_bottom = 76.0
 text = "next-indicator"
 
 [node name="Label6" type="Label" parent="EditorTheme/VBoxContainer/HBoxContainer2/DialogBox/GridContainer"]
 margin_top = 85.0
-margin_right = 153.0
+margin_right = 132.0
 margin_bottom = 99.0
 text = "Box padding"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="EditorTheme/VBoxContainer/HBoxContainer2/DialogBox/GridContainer"]
-margin_left = 163.0
+margin_left = 142.0
 margin_top = 80.0
-margin_right = 315.0
+margin_right = 294.0
 margin_bottom = 104.0
 
 [node name="TextOffsetV" type="SpinBox" parent="EditorTheme/VBoxContainer/HBoxContainer2/DialogBox/GridContainer/HBoxContainer"]
@@ -1042,38 +1042,30 @@ prefix = "H"
 
 [node name="Label3" type="Label" parent="EditorTheme/VBoxContainer/HBoxContainer2/DialogBox/GridContainer"]
 margin_top = 108.0
-margin_right = 153.0
+margin_right = 132.0
 margin_bottom = 128.0
 size_flags_vertical = 5
 text = "Action key"
 
 [node name="BoxContainer" type="HBoxContainer" parent="EditorTheme/VBoxContainer/HBoxContainer2/DialogBox/GridContainer"]
-margin_left = 163.0
+margin_left = 142.0
 margin_top = 108.0
-margin_right = 315.0
+margin_right = 294.0
 margin_bottom = 128.0
 
 [node name="ActionOptionButton" type="OptionButton" parent="EditorTheme/VBoxContainer/HBoxContainer2/DialogBox/GridContainer/BoxContainer"]
 margin_right = 152.0
 margin_bottom = 20.0
+hint_tooltip = "To add/remove actions go to Project > Project Settings > Input Map"
 size_flags_horizontal = 3
 text = "ui_accept"
 items = [ "[Select Action]", null, false, 0, null, "ui_accept", null, false, 1, null, "ui_select", null, false, 2, null, "ui_cancel", null, false, 3, null, "ui_focus_next", null, false, 4, null, "ui_focus_prev", null, false, 5, null, "ui_left", null, false, 6, null, "ui_right", null, false, 7, null, "ui_up", null, false, 8, null, "ui_down", null, false, 9, null, "ui_page_up", null, false, 10, null, "ui_page_down", null, false, 11, null, "ui_home", null, false, 12, null, "ui_end", null, false, 13, null ]
 selected = 0
 
-[node name="Label4" type="Label" parent="EditorTheme/VBoxContainer/HBoxContainer2/DialogBox/GridContainer"]
-self_modulate = Color( 1, 1, 1, 0.607843 )
-margin_top = 132.0
-margin_right = 153.0
-margin_bottom = 180.0
-size_flags_horizontal = 3
-text = "To add/remove actions go to Project > Project Settings > Input Map"
-autowrap = true
-
 [node name="ButtonStyle" type="VBoxContainer" parent="EditorTheme/VBoxContainer/HBoxContainer2"]
 margin_left = 670.0
 margin_right = 985.0
-margin_bottom = 214.0
+margin_bottom = 178.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 __meta__ = {
@@ -1218,9 +1210,9 @@ rounded = true
 allow_lesser = true
 
 [node name="HBoxContainer3" type="HBoxContainer" parent="EditorTheme/VBoxContainer"]
-margin_top = 229.0
+margin_top = 193.0
 margin_right = 985.0
-margin_bottom = 289.0
+margin_bottom = 253.0
 custom_constants/separation = 10
 
 [node name="TextEdit" type="TextEdit" parent="EditorTheme/VBoxContainer/HBoxContainer3"]
@@ -1240,9 +1232,9 @@ text = "  Preview changes  "
 icon = ExtResource( 24 )
 
 [node name="Panel" type="Panel" parent="EditorTheme/VBoxContainer"]
-margin_top = 304.0
+margin_top = 268.0
 margin_right = 985.0
-margin_bottom = 604.0
+margin_bottom = 568.0
 rect_min_size = Vector2( 0, 300 )
 
 [node name="TimelinePopupMenu" type="PopupMenu" parent="."]
