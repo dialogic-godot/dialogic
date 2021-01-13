@@ -122,12 +122,13 @@ func generate_character_data_to_save():
 func save_current_character():
 	var path = DialogicUtil.get_path('CHAR_DIR', character_editor['file'].text)
 	var info_to_save = generate_character_data_to_save()
-	var file = File.new()
-	file.open(path, File.WRITE)
-	file.store_line(to_json(info_to_save))
-	file.close()
-	opened_character_data = info_to_save
-	refresh_character_list()
+	if info_to_save['id']:
+		var file = File.new()
+		file.open(path, File.WRITE)
+		file.store_line(to_json(info_to_save))
+		file.close()
+		opened_character_data = info_to_save
+		refresh_character_list()
 
 
 func _on_ItemList_item_selected(index):
