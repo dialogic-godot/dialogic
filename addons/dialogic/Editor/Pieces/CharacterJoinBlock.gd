@@ -57,7 +57,6 @@ func position_button_pressed(name):
 	button.set('self_modulate', current_color)
 	button.pressed = true
 	event_data['position'][selected_index] = true
-	print('here', selected_index)
 
 
 func clear_all_positions():

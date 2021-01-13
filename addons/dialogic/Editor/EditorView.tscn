@@ -1,4 +1,4 @@
-[gd_scene load_steps=33 format=2]
+[gd_scene load_steps=32 format=2]
 
 [ext_resource path="res://addons/dialogic/Editor/editor_view.gd" type="Script" id=1]
 [ext_resource path="res://addons/dialogic/Images/dialog.svg" type="Texture" id=2]
@@ -28,7 +28,6 @@
 [ext_resource path="res://addons/dialogic/Images/Filesystem.svg" type="Texture" id=26]
 [ext_resource path="res://addons/dialogic/Images/question.svg" type="Texture" id=27]
 [ext_resource path="res://addons/dialogic/Editor/EditorTheme.gd" type="Script" id=28]
-[ext_resource path="res://addons/dialogic/Images/character.svg" type="Texture" id=29]
 
 [sub_resource type="StyleBoxFlat" id=1]
 content_margin_left = 5.0
@@ -230,7 +229,6 @@ margin_right = 180.0
 margin_bottom = 541.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-items = [ "234234", ExtResource( 15 ), false, "I want to select this one", ExtResource( 15 ), false, "Intro", ExtResource( 15 ), false, "Nice :)", ExtResource( 15 ), false, "alternative timeline", ExtResource( 15 ), false ]
 allow_rmb_select = true
 
 [node name="CenterContainer" type="CenterContainer" parent="EditorTimeline"]
@@ -483,11 +481,9 @@ margin_right = 180.0
 margin_bottom = 541.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-items = [ "Narrator", ExtResource( 29 ), false, "Shia", ExtResource( 29 ), false, "Lyra", ExtResource( 29 ), false ]
 allow_rmb_select = true
 
 [node name="NoCharacters" type="CenterContainer" parent="EditorCharacter"]
-visible = false
 margin_left = 192.0
 margin_right = 997.0
 margin_bottom = 541.0
@@ -516,6 +512,7 @@ margin_bottom = 20.0
 text = "Create a character +"
 
 [node name="CharacterEditor" type="ScrollContainer" parent="EditorCharacter"]
+visible = false
 margin_left = 192.0
 margin_right = 997.0
 margin_bottom = 541.0
@@ -1058,7 +1055,7 @@ margin_right = 152.0
 margin_bottom = 20.0
 hint_tooltip = "To add/remove actions go to Project > Project Settings > Input Map"
 size_flags_horizontal = 3
-text = "ui_accept"
+text = "[Select Action]"
 items = [ "[Select Action]", null, false, 0, null, "ui_accept", null, false, 1, null, "ui_select", null, false, 2, null, "ui_cancel", null, false, 3, null, "ui_focus_next", null, false, 4, null, "ui_focus_prev", null, false, 5, null, "ui_left", null, false, 6, null, "ui_right", null, false, 7, null, "ui_up", null, false, 8, null, "ui_down", null, false, 9, null, "ui_page_up", null, false, 10, null, "ui_page_down", null, false, 11, null, "ui_home", null, false, 12, null, "ui_end", null, false, 13, null ]
 selected = 0
 

@@ -17,14 +17,17 @@ static func load_json(path: String) -> Dictionary:
 
 static func load_settings() -> Dictionary:
 	var defaults = default_settings()
-	var settings: Dictionary = load_json(get_path('SETTINGS_FILE'))
-	for x in defaults:
-		if settings.has(x) == false:
-			settings[x] = defaults[x]
-	if settings.has('error'):
-		settings = {}
-		print('[!] settings loaded: ' + str(settings))
-	return settings
+	var directory = Directory.new();
+	if directory.file_exists(get_path('SETTINGS_FILE')):
+		var settings: Dictionary = load_json(get_path('SETTINGS_FILE'))
+		for x in defaults:
+			if settings.has(x) == false:
+				settings[x] = defaults[x]
+		if settings.has('error'):
+			settings = {}
+		return settings
+	else:
+		return defaults
 
 
 static func update_setting(key: String, value) -> void:

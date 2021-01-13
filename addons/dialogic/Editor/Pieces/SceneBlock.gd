@@ -23,7 +23,6 @@ func _on_ImageButton_pressed():
 
 
 func _on_file_selected(path, target):
-	print('here')
 	target.load_image(path)
 
 

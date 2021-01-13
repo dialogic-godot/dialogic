@@ -9,3 +9,4 @@ test-scenes
 *.import
 /.vscode
 /addons/godot-plugin-refresher
+/previous

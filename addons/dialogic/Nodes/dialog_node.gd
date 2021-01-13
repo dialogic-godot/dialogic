@@ -211,9 +211,6 @@ func get_character(character_id):
 func event_handler(event: Dictionary):
 	# Handling an event and updating the available nodes accordingly. 
 	reset_dialog_extras()
-	print(' ')
-	print('[!] Event: ', event)
-	print('    dialog_index: ', dialog_index)
 	match event:
 		{'text', 'character'}, {'text', 'character', ..}:
 			show_dialog()
@@ -432,11 +429,6 @@ func get_character_position(positions):
 func load_theme() -> void:
 	# Loading theme properties and settings
 	settings = DialogicUtil.load_settings()
-	
-	print('-------------')
-	print('dialog_node.gd loading settings')
-	print(settings)
-	print('-------------')
 
 	$TextBubble/RichTextLabel.set('custom_fonts/normal_font', load(settings['theme_font']))
 	$TextBubble/NameLabel.set('custom_fonts/normal_font', load(settings['theme_font']))
