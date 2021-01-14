@@ -46,6 +46,7 @@ static func get_path(name: String, extra: String ='') -> String:
 		'WORKING_DIR': WORKING_DIR,
 		'TIMELINE_DIR': WORKING_DIR + "/timelines",
 		'CHAR_DIR': WORKING_DIR + "/characters",
+		'GLOSSARY_DIR': WORKING_DIR + "/glossary",
 		'SETTINGS_FILE': WORKING_DIR + "/settings.json",
 	}
 	if extra != '':

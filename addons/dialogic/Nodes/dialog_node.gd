@@ -7,6 +7,7 @@ var finished: bool = false
 var text_speed = 0.02 # Higher = lower speed
 var waiting_for_answer: bool = false
 var waiting_for_input: bool = false
+var glossary_visible: bool = false
 var settings
 
 #export(String) var timeline: String # Timeline-var-replace
@@ -15,6 +16,7 @@ export(String, "TimelineDropdown") var timeline: String
 
 var dialog_resource
 var characters
+
 
 onready var ChoiceButton = load("res://addons/dialogic/Nodes/ChoiceButton.tscn")
 onready var Portrait = load("res://addons/dialogic/Nodes/Portrait.tscn")
@@ -34,6 +36,8 @@ func _ready():
 	# Setting everything up for the node to be default
 	$TextBubble/NameLabel.text = ''
 	$Background.visible = false
+	$TextBubble/RichTextLabel.meta_underlined = false
+	$GlossaryInfo.visible = false
 	
 	# Getting the character information
 	characters = DialogicUtil.get_character_list()
@@ -129,6 +133,11 @@ func parse_text(text):
 
 func _process(_delta):
 	$TextBubble/NextIndicator.visible = finished
+	if glossary_visible: 
+		if get_local_mouse_position().x - $GlossaryInfo.rect_size.x < 0:
+			$GlossaryInfo.rect_global_position = get_global_mouse_position() - Vector2(0, $GlossaryInfo.rect_size.y)
+		else:
+			$GlossaryInfo.rect_global_position = get_global_mouse_position() - $GlossaryInfo.rect_size
 	if Engine.is_editor_hint() == false:
 		# Multiple choices
 		if waiting_for_answer:
@@ -388,6 +397,7 @@ func _on_option_selected(option, variable, value):
 
 
 func _on_Tween_tween_completed(object, key):
+	#$TextBubble/RichTextLabel.meta_underlined = true
 	finished = true
 
 
@@ -433,6 +443,11 @@ func load_theme() -> void:
 	$TextBubble/RichTextLabel.set('custom_fonts/normal_font', load(settings['theme_font']))
 	$TextBubble/NameLabel.set('custom_fonts/normal_font', load(settings['theme_font']))
 	
+	# Glossary
+	$GlossaryInfo/VBoxContainer/Title.set('custom_fonts/normal_font', load(settings['theme_font']))
+	$GlossaryInfo/VBoxContainer/Content.set('custom_fonts/normal_font', load(settings['theme_font']))
+	$GlossaryInfo/VBoxContainer/Extra.set('custom_fonts/normal_font', load(settings['theme_font']))
+	
 	# Text
 	if settings.has('theme_text_color'):
 		$TextBubble/RichTextLabel.set('custom_colors/default_color', Color(settings['theme_text_color']))
@@ -473,3 +488,22 @@ func load_theme() -> void:
 	# Next image
 	$TextBubble/NextIndicator.texture = load(settings['theme_next_image'])
 	input_next = settings['theme_action_key']
+
+
+func _on_RichTextLabel_meta_hover_started(meta):
+	print(meta)
+	glossary_visible = true
+	$GlossaryInfo.visible = glossary_visible
+	# Adding a timer to avoid a graphical glitch
+	$GlossaryInfo/Timer.stop()
+	
+
+func _on_RichTextLabel_meta_hover_ended(meta):
+	# Adding a timer to avoid a graphical glitch
+	$GlossaryInfo/Timer.start(0.1)
+
+
+func _on_Glossary_Timer_timeout():
+	# Adding a timer to avoid a graphical glitch
+	glossary_visible = false
+	$GlossaryInfo.visible = glossary_visible

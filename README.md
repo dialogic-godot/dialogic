@@ -22,7 +22,8 @@ Yes, you can use Dialogic to make any kind of game (even commercial ones). The p
 ## Changelog
 
 ### 🆕 v0.9 - WIP
-
+ - New tool: Glossary Editor
+ - New default asset: Glossary Font
 
 ### v0.8 - Dialog enters the game
  - Video: https://youtu.be/NfTyRrsdB1I
