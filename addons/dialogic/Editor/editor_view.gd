@@ -434,15 +434,21 @@ func _on_ThemeButton_pressed():
 	change_tab('Theme')
 
 
+func _on_GlossaryButton_pressed():
+	change_tab('Glossary')
+
+
 func change_tab(tab):
 	# Hiding everything
 	$HBoxContainer/EventButton.set('self_modulate', Color('#dedede'))
 	$HBoxContainer/CharactersButton.set('self_modulate', Color('#dedede'))
 	$HBoxContainer/ThemeButton.set('self_modulate', Color('#dedede'))
+	$HBoxContainer/GlossaryButton.set('self_modulate', Color('#dedede'))
 	$HBoxContainer/FoldTools.visible = false
 	$EditorTimeline.visible = false
 	$EditorCharacter.visible = false
 	$EditorTheme.visible = false
+	$EditorGlossary.visible = false
 	
 	if tab == 'Timeline':
 		$HBoxContainer/EventButton.set('self_modulate', Color('#6a9dea'))
@@ -467,6 +473,10 @@ func change_tab(tab):
 	elif tab == 'Theme':
 		$HBoxContainer/ThemeButton.set('self_modulate', Color('#6a9dea'))
 		$EditorTheme.visible = true
+	
+	elif tab == 'Glossary':
+		$HBoxContainer/GlossaryButton.set('self_modulate', Color('#6a9dea'))
+		$EditorGlossary.visible = true
 		
 	current_editor_view = tab
 
