@@ -25,7 +25,9 @@ Yes, you can use Dialogic to make any kind of game (even commercial ones). The p
   - New tool: Glossary Editor
   - New default asset: Glossary Font
   - Theme Editor:
-    - Added new options to customize the glossary popup
+    - Added new options to customize the glossary popup (still not working)
+  - Timeline Editor:
+    - New `Emit Signal` event. This event will make the Dialog node emit a signal called `dialogic_signal`. You can connect this in a moment of your timeline with other scripts.
 
 ### v0.8 - Dialog enters the game
   - Video: https://youtu.be/NfTyRrsdB1I

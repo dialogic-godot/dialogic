@@ -1,4 +1,4 @@
-[gd_scene load_steps=34 format=2]
+[gd_scene load_steps=35 format=2]
 
 [ext_resource path="res://addons/dialogic/Editor/editor_view.gd" type="Script" id=1]
 [ext_resource path="res://addons/dialogic/Images/dialog.svg" type="Texture" id=2]
@@ -30,6 +30,7 @@
 [ext_resource path="res://addons/dialogic/Editor/EditorTheme.gd" type="Script" id=28]
 [ext_resource path="res://addons/dialogic/Editor/EditorGlossary.gd" type="Script" id=29]
 [ext_resource path="res://addons/dialogic/Images/character.svg" type="Texture" id=30]
+[ext_resource path="res://addons/dialogic/Images/signal.svg" type="Texture" id=31]
 
 [sub_resource type="StyleBoxFlat" id=1]
 content_margin_left = 5.0
@@ -234,14 +235,13 @@ items = [ "Testing Glossary", ExtResource( 15 ), false ]
 allow_rmb_select = true
 
 [node name="CenterContainer" type="CenterContainer" parent="EditorTimeline"]
-margin_left = 192.0
-margin_right = 1253.0
+visible = false
+margin_right = 360.0
 margin_bottom = 661.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="EditorTimeline/CenterContainer"]
-margin_left = 350.0
 margin_top = 311.0
-margin_right = 710.0
+margin_right = 360.0
 margin_bottom = 349.0
 
 [node name="Label" type="Label" parent="EditorTimeline/CenterContainer/VBoxContainer"]
@@ -264,18 +264,17 @@ __meta__ = {
 }
 
 [node name="TimelineEditor" type="HSplitContainer" parent="EditorTimeline"]
-visible = false
 margin_left = 192.0
-margin_right = 997.0
-margin_bottom = 541.0
+margin_right = 1253.0
+margin_bottom = 661.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_constants/separation = 0
 split_offset = 7
 
 [node name="TimelineArea" type="ScrollContainer" parent="EditorTimeline/TimelineEditor"]
-margin_right = 607.0
-margin_bottom = 541.0
+margin_right = 863.0
+margin_bottom = 661.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_styles/bg = SubResource( 1 )
@@ -286,22 +285,22 @@ __meta__ = {
 [node name="TimeLine" type="VBoxContainer" parent="EditorTimeline/TimelineEditor/TimelineArea"]
 margin_left = 5.0
 margin_top = 5.0
-margin_right = 602.0
-margin_bottom = 536.0
+margin_right = 858.0
+margin_bottom = 656.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="ScrollContainer" type="ScrollContainer" parent="EditorTimeline/TimelineEditor"]
-margin_left = 615.0
-margin_right = 805.0
-margin_bottom = 541.0
+margin_left = 871.0
+margin_right = 1061.0
+margin_bottom = 661.0
 rect_min_size = Vector2( 190, 0 )
 
 [node name="EventContainer" type="VBoxContainer" parent="EditorTimeline/TimelineEditor/ScrollContainer"]
 margin_right = 190.0
-margin_bottom = 541.0
+margin_bottom = 661.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 __meta__ = {
@@ -415,41 +414,49 @@ text = "  End Branch"
 icon = ExtResource( 19 )
 align = 0
 
-[node name="HSeparator2" type="HSeparator" parent="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer"]
+[node name="ButtonEmitSignal" type="Button" parent="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer"]
 margin_top = 298.0
 margin_right = 190.0
-margin_bottom = 302.0
+margin_bottom = 326.0
+text = "  Emit Signal"
+icon = ExtResource( 31 )
+align = 0
 
-[node name="ButtonChangeTimeline" type="Button" parent="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer"]
-margin_top = 306.0
+[node name="HSeparator2" type="HSeparator" parent="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer"]
+margin_top = 330.0
 margin_right = 190.0
 margin_bottom = 334.0
+
+[node name="ButtonChangeTimeline" type="Button" parent="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer"]
+margin_top = 338.0
+margin_right = 190.0
+margin_bottom = 366.0
 hint_tooltip = "This will instantly teleport you to the start of the desired timeline."
 text = "  Change Timeline"
 icon = ExtResource( 12 )
 align = 0
 
 [node name="ButtonBackground" type="Button" parent="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer"]
-margin_top = 338.0
+margin_top = 370.0
 margin_right = 190.0
-margin_bottom = 366.0
+margin_bottom = 398.0
 disabled = true
 text = "  Scene Event"
 icon = ExtResource( 4 )
 align = 0
 
 [node name="ButtonAudio" type="Button" parent="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer"]
-margin_top = 370.0
+margin_top = 402.0
 margin_right = 190.0
-margin_bottom = 398.0
+margin_bottom = 430.0
 text = "  Audio Event"
 icon = ExtResource( 8 )
 align = 0
 
 [node name="ButtonCloseDialog" type="Button" parent="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer"]
-margin_top = 402.0
+margin_top = 434.0
 margin_right = 190.0
-margin_bottom = 430.0
+margin_bottom = 462.0
 text = "  Close Dialog"
 icon = ExtResource( 7 )
 align = 0
@@ -469,7 +476,7 @@ __meta__ = {
 
 [node name="VBoxContainer" type="VBoxContainer" parent="EditorGlossary"]
 margin_right = 89.0
-margin_bottom = 541.0
+margin_bottom = 661.0
 
 [node name="Button" type="Button" parent="EditorGlossary/VBoxContainer"]
 margin_right = 89.0
@@ -479,14 +486,14 @@ text = "New entry +"
 [node name="ItemList" type="ItemList" parent="EditorGlossary/VBoxContainer"]
 margin_top = 24.0
 margin_right = 89.0
-margin_bottom = 541.0
+margin_bottom = 661.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="CenterContainer" type="CenterContainer" parent="EditorGlossary"]
 margin_left = 101.0
-margin_right = 997.0
-margin_bottom = 541.0
+margin_right = 1253.0
+margin_bottom = 661.0
 
 [node name="EditorCharacter" type="HSplitContainer" parent="."]
 visible = false
@@ -831,7 +838,7 @@ margin_right = 1253.0
 margin_bottom = 178.0
 
 [node name="Text" type="VBoxContainer" parent="EditorTheme/VBoxContainer/HBoxContainer2"]
-margin_right = 415.0
+margin_right = 316.0
 margin_bottom = 178.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -840,7 +847,7 @@ __meta__ = {
 }
 
 [node name="PanelContainer" type="Panel" parent="EditorTheme/VBoxContainer/HBoxContainer2/Text"]
-margin_right = 415.0
+margin_right = 316.0
 margin_bottom = 30.0
 rect_min_size = Vector2( 0, 30 )
 
@@ -854,7 +861,7 @@ __meta__ = {
 
 [node name="GridContainer" type="GridContainer" parent="EditorTheme/VBoxContainer/HBoxContainer2/Text"]
 margin_top = 34.0
-margin_right = 415.0
+margin_right = 316.0
 margin_bottom = 178.0
 size_flags_horizontal = 3
 custom_constants/hseparation = 10
@@ -862,42 +869,42 @@ columns = 2
 
 [node name="Label5" type="Label" parent="EditorTheme/VBoxContainer/HBoxContainer2/Text/GridContainer"]
 margin_top = 3.0
-margin_right = 247.0
+margin_right = 148.0
 margin_bottom = 17.0
 size_flags_horizontal = 3
 text = "Font"
 
 [node name="FontButton" type="Button" parent="EditorTheme/VBoxContainer/HBoxContainer2/Text/GridContainer"]
-margin_left = 257.0
-margin_right = 415.0
+margin_left = 158.0
+margin_right = 316.0
 margin_bottom = 20.0
 size_flags_vertical = 4
 text = "DefaultFont"
 
 [node name="Label3" type="Label" parent="EditorTheme/VBoxContainer/HBoxContainer2/Text/GridContainer"]
 margin_top = 32.0
-margin_right = 247.0
+margin_right = 148.0
 margin_bottom = 46.0
 text = "Color"
 
 [node name="ColorPickerButton" type="ColorPickerButton" parent="EditorTheme/VBoxContainer/HBoxContainer2/Text/GridContainer"]
-margin_left = 257.0
+margin_left = 158.0
 margin_top = 24.0
-margin_right = 415.0
+margin_right = 316.0
 margin_bottom = 54.0
 rect_min_size = Vector2( 50, 30 )
 color = Color( 1, 1, 1, 1 )
 
 [node name="Label6" type="Label" parent="EditorTheme/VBoxContainer/HBoxContainer2/Text/GridContainer"]
 margin_top = 63.0
-margin_right = 247.0
+margin_right = 148.0
 margin_bottom = 77.0
-text = "Text speed (bigger = slower)"
+text = "Speed (bigger = slower)"
 
 [node name="TextSpeed" type="SpinBox" parent="EditorTheme/VBoxContainer/HBoxContainer2/Text/GridContainer"]
-margin_left = 257.0
+margin_left = 158.0
 margin_top = 58.0
-margin_right = 415.0
+margin_right = 316.0
 margin_bottom = 82.0
 max_value = 10.0
 value = 2.0
@@ -905,14 +912,14 @@ rounded = true
 
 [node name="Label" type="Label" parent="EditorTheme/VBoxContainer/HBoxContainer2/Text/GridContainer"]
 margin_top = 94.0
-margin_right = 247.0
+margin_right = 148.0
 margin_bottom = 108.0
 text = "Shadow"
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="EditorTheme/VBoxContainer/HBoxContainer2/Text/GridContainer"]
-margin_left = 257.0
+margin_left = 158.0
 margin_top = 86.0
-margin_right = 415.0
+margin_right = 316.0
 margin_bottom = 116.0
 
 [node name="CheckBoxShadow" type="CheckBox" parent="EditorTheme/VBoxContainer/HBoxContainer2/Text/GridContainer/HBoxContainer2"]
@@ -929,14 +936,14 @@ color = Color( 0, 0, 0, 0.619608 )
 
 [node name="Label4" type="Label" parent="EditorTheme/VBoxContainer/HBoxContainer2/Text/GridContainer"]
 margin_top = 125.0
-margin_right = 247.0
+margin_right = 148.0
 margin_bottom = 139.0
 text = "Shadow Offset"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="EditorTheme/VBoxContainer/HBoxContainer2/Text/GridContainer"]
-margin_left = 257.0
+margin_left = 158.0
 margin_top = 120.0
-margin_right = 415.0
+margin_right = 316.0
 margin_bottom = 144.0
 custom_constants/separation = 10
 
@@ -958,8 +965,8 @@ allow_lesser = true
 prefix = "Y"
 
 [node name="DialogBox" type="VBoxContainer" parent="EditorTheme/VBoxContainer/HBoxContainer2"]
-margin_left = 419.0
-margin_right = 834.0
+margin_left = 320.0
+margin_right = 628.0
 margin_bottom = 178.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -968,7 +975,7 @@ __meta__ = {
 }
 
 [node name="PanelContainer" type="Panel" parent="EditorTheme/VBoxContainer/HBoxContainer2/DialogBox"]
-margin_right = 415.0
+margin_right = 308.0
 margin_bottom = 30.0
 rect_min_size = Vector2( 0, 30 )
 
@@ -982,7 +989,7 @@ __meta__ = {
 
 [node name="GridContainer" type="GridContainer" parent="EditorTheme/VBoxContainer/HBoxContainer2/DialogBox"]
 margin_top = 34.0
-margin_right = 415.0
+margin_right = 308.0
 margin_bottom = 162.0
 size_flags_horizontal = 3
 custom_constants/hseparation = 10
@@ -1098,8 +1105,8 @@ items = [ "[Select Action]", null, false, 0, null, "ui_accept", null, false, 1, 
 selected = 0
 
 [node name="ButtonStyle" type="VBoxContainer" parent="EditorTheme/VBoxContainer/HBoxContainer2"]
-margin_left = 838.0
-margin_right = 1253.0
+margin_left = 632.0
+margin_right = 940.0
 margin_bottom = 178.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -1108,7 +1115,7 @@ __meta__ = {
 }
 
 [node name="PanelContainer" type="Panel" parent="EditorTheme/VBoxContainer/HBoxContainer2/ButtonStyle"]
-margin_right = 415.0
+margin_right = 308.0
 margin_bottom = 30.0
 rect_min_size = Vector2( 0, 30 )
 
@@ -1122,7 +1129,7 @@ __meta__ = {
 
 [node name="GridContainer" type="GridContainer" parent="EditorTheme/VBoxContainer/HBoxContainer2/ButtonStyle"]
 margin_top = 34.0
-margin_right = 415.0
+margin_right = 308.0
 margin_bottom = 170.0
 size_flags_horizontal = 3
 custom_constants/hseparation = 10
@@ -1244,6 +1251,119 @@ value = 5.0
 rounded = true
 allow_lesser = true
 
+[node name="Glossary" type="VBoxContainer" parent="EditorTheme/VBoxContainer/HBoxContainer2"]
+margin_left = 944.0
+margin_right = 1253.0
+margin_bottom = 178.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="PanelContainer" type="Panel" parent="EditorTheme/VBoxContainer/HBoxContainer2/Glossary"]
+margin_right = 309.0
+margin_bottom = 30.0
+rect_min_size = Vector2( 0, 30 )
+
+[node name="Label" type="Label" parent="EditorTheme/VBoxContainer/HBoxContainer2/Glossary/PanelContainer"]
+margin_right = 40.0
+margin_bottom = 14.0
+text = "Glossary Panel"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="GridContainer" type="GridContainer" parent="EditorTheme/VBoxContainer/HBoxContainer2/Glossary"]
+margin_top = 34.0
+margin_right = 309.0
+margin_bottom = 150.0
+size_flags_horizontal = 3
+custom_constants/hseparation = 10
+columns = 2
+
+[node name="Label5" type="Label" parent="EditorTheme/VBoxContainer/HBoxContainer2/Glossary/GridContainer"]
+margin_top = 3.0
+margin_right = 141.0
+margin_bottom = 17.0
+size_flags_horizontal = 3
+text = "Font"
+
+[node name="FontButton" type="Button" parent="EditorTheme/VBoxContainer/HBoxContainer2/Glossary/GridContainer"]
+margin_left = 151.0
+margin_right = 309.0
+margin_bottom = 20.0
+size_flags_vertical = 4
+text = "DefaultFont"
+
+[node name="Label3" type="Label" parent="EditorTheme/VBoxContainer/HBoxContainer2/Glossary/GridContainer"]
+margin_top = 32.0
+margin_right = 141.0
+margin_bottom = 46.0
+text = "Color"
+
+[node name="ColorPickerButton" type="ColorPickerButton" parent="EditorTheme/VBoxContainer/HBoxContainer2/Glossary/GridContainer"]
+margin_left = 151.0
+margin_top = 24.0
+margin_right = 309.0
+margin_bottom = 54.0
+rect_min_size = Vector2( 50, 30 )
+color = Color( 1, 1, 1, 1 )
+
+[node name="Label" type="Label" parent="EditorTheme/VBoxContainer/HBoxContainer2/Glossary/GridContainer"]
+margin_top = 66.0
+margin_right = 141.0
+margin_bottom = 80.0
+text = "Shadow"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="EditorTheme/VBoxContainer/HBoxContainer2/Glossary/GridContainer"]
+margin_left = 151.0
+margin_top = 58.0
+margin_right = 309.0
+margin_bottom = 88.0
+
+[node name="CheckBoxShadow" type="CheckBox" parent="EditorTheme/VBoxContainer/HBoxContainer2/Glossary/GridContainer/HBoxContainer2"]
+margin_right = 24.0
+margin_bottom = 30.0
+
+[node name="ColorPickerButtonShadow" type="ColorPickerButton" parent="EditorTheme/VBoxContainer/HBoxContainer2/Glossary/GridContainer/HBoxContainer2"]
+margin_left = 28.0
+margin_right = 158.0
+margin_bottom = 30.0
+rect_min_size = Vector2( 50, 30 )
+size_flags_horizontal = 3
+color = Color( 0, 0, 0, 0.619608 )
+
+[node name="Label4" type="Label" parent="EditorTheme/VBoxContainer/HBoxContainer2/Glossary/GridContainer"]
+margin_top = 97.0
+margin_right = 141.0
+margin_bottom = 111.0
+text = "S, Offset"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="EditorTheme/VBoxContainer/HBoxContainer2/Glossary/GridContainer"]
+margin_left = 151.0
+margin_top = 92.0
+margin_right = 309.0
+margin_bottom = 116.0
+custom_constants/separation = 10
+
+[node name="ShadowOffsetX" type="SpinBox" parent="EditorTheme/VBoxContainer/HBoxContainer2/Glossary/GridContainer/HBoxContainer"]
+margin_right = 74.0
+margin_bottom = 24.0
+value = 2.0
+rounded = true
+allow_lesser = true
+prefix = "X"
+
+[node name="ShadowOffsetY" type="SpinBox" parent="EditorTheme/VBoxContainer/HBoxContainer2/Glossary/GridContainer/HBoxContainer"]
+margin_left = 84.0
+margin_right = 158.0
+margin_bottom = 24.0
+value = 2.0
+rounded = true
+allow_lesser = true
+prefix = "Y"
+
 [node name="HBoxContainer3" type="HBoxContainer" parent="EditorTheme/VBoxContainer"]
 margin_top = 193.0
 margin_right = 1253.0
@@ -1271,6 +1391,16 @@ margin_top = 268.0
 margin_right = 1253.0
 margin_bottom = 568.0
 rect_min_size = Vector2( 0, 300 )
+
+[node name="HBoxContainer" type="HBoxContainer" parent="EditorTheme/VBoxContainer"]
+margin_top = 583.0
+margin_right = 1253.0
+margin_bottom = 583.0
+
+[node name="Control" type="Control" parent="EditorTheme/VBoxContainer/HBoxContainer"]
+margin_right = 1253.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
 
 [node name="TimelinePopupMenu" type="PopupMenu" parent="."]
 margin_left = 151.0
@@ -1360,6 +1490,7 @@ __meta__ = {
 [connection signal="pressed" from="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer/ButtonChoice" to="." method="_on_ButtonChoice_pressed"]
 [connection signal="pressed" from="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer/ButtonCondition" to="." method="_on_ButtonCondition_pressed"]
 [connection signal="pressed" from="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer/ButtonEndChoice" to="." method="_on_ButtonEndChoice_pressed"]
+[connection signal="pressed" from="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer/ButtonEmitSignal" to="." method="_on_ButtonEmitSignal_pressed"]
 [connection signal="pressed" from="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer/ButtonChangeTimeline" to="." method="_on_ButtonChangeTimeline_pressed"]
 [connection signal="pressed" from="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer/ButtonBackground" to="." method="_on_ButtonBackground_pressed"]
 [connection signal="pressed" from="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer/ButtonAudio" to="." method="_on_ButtonAudio_pressed"]
@@ -1395,6 +1526,11 @@ __meta__ = {
 [connection signal="value_changed" from="EditorTheme/VBoxContainer/HBoxContainer2/ButtonStyle/GridContainer/HBoxContainer/TextOffsetV" to="EditorTheme" method="_on_ButtonOffset_value_changed"]
 [connection signal="value_changed" from="EditorTheme/VBoxContainer/HBoxContainer2/ButtonStyle/GridContainer/HBoxContainer/TextOffsetH" to="EditorTheme" method="_on_ButtonOffset_value_changed"]
 [connection signal="value_changed" from="EditorTheme/VBoxContainer/HBoxContainer2/ButtonStyle/GridContainer/VerticalSeparation" to="EditorTheme" method="_on_VerticalSeparation_value_changed"]
+[connection signal="color_changed" from="EditorTheme/VBoxContainer/HBoxContainer2/Glossary/GridContainer/ColorPickerButton" to="EditorTheme" method="_on_ColorPickerButton_color_changed"]
+[connection signal="toggled" from="EditorTheme/VBoxContainer/HBoxContainer2/Glossary/GridContainer/HBoxContainer2/CheckBoxShadow" to="EditorTheme" method="_on_CheckBoxShadow_toggled"]
+[connection signal="color_changed" from="EditorTheme/VBoxContainer/HBoxContainer2/Glossary/GridContainer/HBoxContainer2/ColorPickerButtonShadow" to="EditorTheme" method="_on_ColorPickerButtonShadow_color_changed"]
+[connection signal="value_changed" from="EditorTheme/VBoxContainer/HBoxContainer2/Glossary/GridContainer/HBoxContainer/ShadowOffsetX" to="EditorTheme" method="_on_ShadowOffset_value_changed"]
+[connection signal="value_changed" from="EditorTheme/VBoxContainer/HBoxContainer2/Glossary/GridContainer/HBoxContainer/ShadowOffsetY" to="EditorTheme" method="_on_ShadowOffset_value_changed"]
 [connection signal="pressed" from="EditorTheme/VBoxContainer/HBoxContainer3/PreviewButton" to="EditorTheme" method="_on_PreviewButton_pressed"]
 [connection signal="id_pressed" from="TimelinePopupMenu" to="." method="_on_TimelinePopupMenu_id_pressed"]
 [connection signal="id_pressed" from="CharacterPopupMenu" to="EditorCharacter" method="_on_CharacterPopupMenu_id_pressed"]

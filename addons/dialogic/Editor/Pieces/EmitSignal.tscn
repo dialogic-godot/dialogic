@@ -1,7 +1,7 @@
 [gd_scene load_steps=9 format=2]
 
-[ext_resource path="res://addons/dialogic/Images/choice.svg" type="Texture" id=1]
-[ext_resource path="res://addons/dialogic/Editor/Pieces/Choice.gd" type="Script" id=2]
+[ext_resource path="res://addons/dialogic/Images/signal.svg" type="Texture" id=1]
+[ext_resource path="res://addons/dialogic/Editor/Pieces/EmitSignal.gd" type="Script" id=2]
 [ext_resource path="res://addons/dialogic/Editor/Pieces/Common/VisibleToggle.tscn" type="PackedScene" id=3]
 [ext_resource path="res://addons/dialogic/Editor/Pieces/Common/PieceExtraSettings.tscn" type="PackedScene" id=4]
 [ext_resource path="res://addons/dialogic/Editor/Pieces/Common/DragController.tscn" type="PackedScene" id=5]
@@ -12,19 +12,14 @@ content_margin_left = 6.0
 content_margin_right = 6.0
 content_margin_top = 6.0
 content_margin_bottom = 6.0
-bg_color = Color( 0.243137, 0.231373, 0.396078, 0 )
-border_width_left = 10
-border_width_top = 2
-border_width_right = 54
-border_width_bottom = 2
-border_color = Color( 0.243137, 0.231373, 0.396078, 1 )
+bg_color = Color( 0.14902, 0.333333, 0.509804, 1 )
 corner_radius_top_left = 6
 corner_radius_top_right = 6
 corner_radius_bottom_right = 6
 corner_radius_bottom_left = 6
 
 [sub_resource type="StyleBoxFlat" id=2]
-bg_color = Color( 0.529412, 0.529412, 0.529412, 1 )
+bg_color = Color( 0.745098, 0.745098, 0.745098, 1 )
 corner_radius_top_left = 4
 corner_radius_top_right = 4
 corner_radius_bottom_right = 4
@@ -32,7 +27,7 @@ corner_radius_bottom_left = 4
 expand_margin_left = 5.0
 expand_margin_right = 5.0
 
-[node name="Choice" type="HBoxContainer"]
+[node name="EmitSignal" type="HBoxContainer"]
 margin_right = 1004.0
 margin_bottom = 42.0
 size_flags_horizontal = 3

@@ -94,6 +94,10 @@ func _on_ButtonChangeTimeline_pressed():
 	create_event("ChangeTimeline", {'change_timeline': ''})
 
 
+func _on_ButtonEmitSignal_pressed():
+	create_event("EmitSignal", {'emit_signal': ''})
+
+
 func _on_ButtonQuestion_pressed():
 	create_event("Question", {'question': '', 'options': []}, true)
 	create_event("Choice", {'choice': ''}, true)
@@ -193,6 +197,8 @@ func load_timeline(path):
 				create_event("CharacterLeaveBlock", i)
 			{'change_timeline'}:
 				create_event("ChangeTimeline", i)
+			{'emit_signal'}:
+				create_event("EmitSignal", i)
 			{'close_dialog'}:
 				create_event("CloseDialog", i)
 			{'condition'}:
@@ -436,6 +442,7 @@ func _on_ThemeButton_pressed():
 
 func _on_GlossaryButton_pressed():
 	change_tab('Glossary')
+	
 
 
 func change_tab(tab):

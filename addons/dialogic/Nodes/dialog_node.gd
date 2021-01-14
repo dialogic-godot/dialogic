@@ -13,6 +13,7 @@ var settings
 #export(String) var timeline: String # Timeline-var-replace
 
 export(String, "TimelineDropdown") var timeline: String
+signal dialogic_signal(value)
 
 var dialog_resource
 var characters
@@ -50,7 +51,6 @@ func resize_main():
 	if Engine.is_editor_hint() == false:
 		set_global_position(Vector2(0,0))
 		rect_size = get_viewport().size
-		print(get_viewport().size)
 
 
 func set_current_dialog(dialog_path):
@@ -303,6 +303,9 @@ func event_handler(event: Dictionary):
 			go_to_next_event()
 		{'endchoice'}:
 			go_to_next_event()
+		{'emit_signal'}:
+			print('[!] Emitting signal: ', event['emit_signal'])
+			emit_signal("dialogic_signal", event['emit_signal'])
 		{'close_dialog'}:
 			queue_free()
 		{'change_timeline'}:
@@ -491,7 +494,6 @@ func load_theme() -> void:
 
 
 func _on_RichTextLabel_meta_hover_started(meta):
-	print(meta)
 	glossary_visible = true
 	$GlossaryInfo.visible = glossary_visible
 	# Adding a timer to avoid a graphical glitch
