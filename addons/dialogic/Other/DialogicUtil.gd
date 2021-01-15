@@ -2,7 +2,23 @@ tool
 class_name DialogicUtil
 
 
+static func init_dialogic_files() -> void:
+	# This functions makes sure that the needed files and folders
+	# exists when the plugin is loaded. If they don't, we create 
+	# them.
+	var directory = Directory.new();
+	var paths = get_working_directories()
+	for dir in paths:
+		if 'settings.json' in paths[dir]:
+			update_setting()
+		else:
+			if directory.dir_exists(paths[dir]) == false:
+				directory.make_dir(paths[dir])
+				print('[+] Creating dir: ', paths[dir])
+
+
 static func load_json(path: String) -> Dictionary:
+	# An easy function to load json files and handle common errors.
 	var file:File = File.new()
 	if file.open(path, File.READ) != OK:
 		file.close()
@@ -16,6 +32,9 @@ static func load_json(path: String) -> Dictionary:
 
 
 static func load_settings() -> Dictionary:
+	# This functions tries to load the settings. If it fails, it will
+	# generate the default values and save them so we have a file to
+	# work with and avoid future error messages.
 	var defaults = default_settings()
 	var directory = Directory.new();
 	if directory.file_exists(get_path('SETTINGS_FILE')):
@@ -30,9 +49,11 @@ static func load_settings() -> Dictionary:
 		return defaults
 
 
-static func update_setting(key: String, value) -> void:
+static func update_setting(key: String = '', value = '') -> void:
+	# This function will open the settings file and update one of the values
 	var data = load_settings()
-	data[key] = value
+	if key != '':
+		data[key] = value
 	
 	var file:File = File.new()
 	file.open(get_path('SETTINGS_FILE'), File.WRITE)
@@ -40,7 +61,7 @@ static func update_setting(key: String, value) -> void:
 	file.close()
 
 
-static func get_path(name: String, extra: String ='') -> String:
+static func get_working_directories() -> Dictionary:
 	var WORKING_DIR: String = "res://dialogic"
 	var paths: Dictionary = {
 		'WORKING_DIR': WORKING_DIR,
@@ -49,6 +70,11 @@ static func get_path(name: String, extra: String ='') -> String:
 		'GLOSSARY_DIR': WORKING_DIR + "/glossary",
 		'SETTINGS_FILE': WORKING_DIR + "/settings.json",
 	}
+	return paths
+
+
+static func get_path(name: String, extra: String ='') -> String:
+	var paths: Dictionary = get_working_directories()
 	if extra != '':
 		return paths[name] + '/' + extra
 	else:
