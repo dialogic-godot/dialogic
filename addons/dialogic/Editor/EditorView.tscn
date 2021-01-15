@@ -1,4 +1,4 @@
-[gd_scene load_steps=35 format=2]
+[gd_scene load_steps=36 format=2]
 
 [ext_resource path="res://addons/dialogic/Editor/editor_view.gd" type="Script" id=1]
 [ext_resource path="res://addons/dialogic/Images/dialog.svg" type="Texture" id=2]
@@ -31,6 +31,7 @@
 [ext_resource path="res://addons/dialogic/Editor/EditorGlossary.gd" type="Script" id=29]
 [ext_resource path="res://addons/dialogic/Images/character.svg" type="Texture" id=30]
 [ext_resource path="res://addons/dialogic/Images/signal.svg" type="Texture" id=31]
+[ext_resource path="res://addons/dialogic/Images/GodotScene.svg" type="Texture" id=32]
 
 [sub_resource type="StyleBoxFlat" id=1]
 content_margin_left = 5.0
@@ -183,13 +184,13 @@ align = 0
 
 [node name="Control" type="Control" parent="HBoxContainer"]
 margin_left = 295.0
-margin_right = 1144.0
+margin_right = 888.0
 margin_bottom = 30.0
 size_flags_horizontal = 3
 
 [node name="Logo" type="TextureRect" parent="HBoxContainer"]
-margin_left = 1144.0
-margin_right = 1264.0
+margin_left = 888.0
+margin_right = 1008.0
 margin_bottom = 30.0
 rect_min_size = Vector2( 120, 0 )
 mouse_default_cursor_shape = 2
@@ -212,12 +213,12 @@ __meta__ = {
 
 [node name="EventTools" type="VSplitContainer" parent="EditorTimeline"]
 margin_right = 180.0
-margin_bottom = 661.0
+margin_bottom = 541.0
 rect_min_size = Vector2( 180, 0 )
 
 [node name="VBoxContainer2" type="VBoxContainer" parent="EditorTimeline/EventTools"]
 margin_right = 180.0
-margin_bottom = 661.0
+margin_bottom = 541.0
 size_flags_vertical = 3
 
 [node name="AddTimelineButton" type="Button" parent="EditorTimeline/EventTools/VBoxContainer2"]
@@ -228,21 +229,23 @@ text = "Add timeline +"
 [node name="DialogItemList" type="ItemList" parent="EditorTimeline/EventTools/VBoxContainer2"]
 margin_top = 24.0
 margin_right = 180.0
-margin_bottom = 661.0
+margin_bottom = 541.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-items = [ "Testing Glossary", ExtResource( 15 ), false ]
+items = [ "Hola", ExtResource( 15 ), false ]
 allow_rmb_select = true
 
 [node name="CenterContainer" type="CenterContainer" parent="EditorTimeline"]
 visible = false
-margin_right = 360.0
-margin_bottom = 661.0
+margin_left = 192.0
+margin_right = 997.0
+margin_bottom = 541.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="EditorTimeline/CenterContainer"]
-margin_top = 311.0
-margin_right = 360.0
-margin_bottom = 349.0
+margin_left = 222.0
+margin_top = 251.0
+margin_right = 582.0
+margin_bottom = 289.0
 
 [node name="Label" type="Label" parent="EditorTimeline/CenterContainer/VBoxContainer"]
 margin_right = 360.0
@@ -265,16 +268,16 @@ __meta__ = {
 
 [node name="TimelineEditor" type="HSplitContainer" parent="EditorTimeline"]
 margin_left = 192.0
-margin_right = 1253.0
-margin_bottom = 661.0
+margin_right = 997.0
+margin_bottom = 541.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_constants/separation = 0
 split_offset = 7
 
 [node name="TimelineArea" type="ScrollContainer" parent="EditorTimeline/TimelineEditor"]
-margin_right = 863.0
-margin_bottom = 661.0
+margin_right = 607.0
+margin_bottom = 541.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_styles/bg = SubResource( 1 )
@@ -285,22 +288,22 @@ __meta__ = {
 [node name="TimeLine" type="VBoxContainer" parent="EditorTimeline/TimelineEditor/TimelineArea"]
 margin_left = 5.0
 margin_top = 5.0
-margin_right = 858.0
-margin_bottom = 656.0
+margin_right = 602.0
+margin_bottom = 536.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="ScrollContainer" type="ScrollContainer" parent="EditorTimeline/TimelineEditor"]
-margin_left = 871.0
-margin_right = 1061.0
-margin_bottom = 661.0
+margin_left = 615.0
+margin_right = 805.0
+margin_bottom = 541.0
 rect_min_size = Vector2( 190, 0 )
 
 [node name="EventContainer" type="VBoxContainer" parent="EditorTimeline/TimelineEditor/ScrollContainer"]
 margin_right = 190.0
-margin_bottom = 661.0
+margin_bottom = 541.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 __meta__ = {
@@ -461,6 +464,15 @@ text = "  Close Dialog"
 icon = ExtResource( 7 )
 align = 0
 
+[node name="ButtonChangeScene" type="Button" parent="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer"]
+margin_top = 466.0
+margin_right = 190.0
+margin_bottom = 488.0
+hint_tooltip = "This will instantly teleport you to the start of the desired timeline."
+text = "  Change Scene"
+icon = ExtResource( 32 )
+align = 0
+
 [node name="EditorGlossary" type="HSplitContainer" parent="."]
 visible = false
 anchor_right = 1.0
@@ -524,7 +536,7 @@ margin_right = 180.0
 margin_bottom = 541.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-items = [ "Emilio", ExtResource( 30 ), false ]
+items = [ "Emi", ExtResource( 30 ), false ]
 allow_rmb_select = true
 
 [node name="NoCharacters" type="CenterContainer" parent="EditorCharacter"]
@@ -827,8 +839,8 @@ __meta__ = {
 }
 
 [node name="VBoxContainer" type="VBoxContainer" parent="EditorTheme"]
-margin_right = 1253.0
-margin_bottom = 661.0
+margin_right = 1132.0
+margin_bottom = 583.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_constants/separation = 15
@@ -893,7 +905,7 @@ margin_top = 24.0
 margin_right = 316.0
 margin_bottom = 54.0
 rect_min_size = Vector2( 50, 30 )
-color = Color( 1, 1, 1, 1 )
+color = Color( 0.215686, 0.215686, 0.215686, 1 )
 
 [node name="Label6" type="Label" parent="EditorTheme/VBoxContainer/HBoxContainer2/Text/GridContainer"]
 margin_top = 63.0
@@ -1009,12 +1021,14 @@ margin_bottom = 24.0
 [node name="CheckBox" type="CheckBox" parent="EditorTheme/VBoxContainer/HBoxContainer2/DialogBox/GridContainer/HBoxContainer2"]
 margin_right = 24.0
 margin_bottom = 24.0
+pressed = true
 
 [node name="ColorPickerButton" type="ColorPickerButton" parent="EditorTheme/VBoxContainer/HBoxContainer2/DialogBox/GridContainer/HBoxContainer2"]
 margin_left = 28.0
 margin_right = 152.0
 margin_bottom = 24.0
 size_flags_horizontal = 3
+color = Color( 0.839216, 0.839216, 0.839216, 1 )
 
 [node name="Label" type="Label" parent="EditorTheme/VBoxContainer/HBoxContainer2/DialogBox/GridContainer"]
 margin_top = 33.0
@@ -1031,7 +1045,6 @@ margin_bottom = 52.0
 [node name="CheckBox" type="CheckBox" parent="EditorTheme/VBoxContainer/HBoxContainer2/DialogBox/GridContainer/HBoxContainer3"]
 margin_right = 24.0
 margin_bottom = 24.0
-pressed = true
 
 [node name="BackgroundTextureButton" type="Button" parent="EditorTheme/VBoxContainer/HBoxContainer2/DialogBox/GridContainer/HBoxContainer3"]
 margin_left = 28.0
@@ -1470,6 +1483,7 @@ margin_bottom = 52.7127
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
 [connection signal="pressed" from="HBoxContainer/EventButton" to="." method="_on_EventButton_pressed"]
 [connection signal="pressed" from="HBoxContainer/CharactersButton" to="." method="_on_CharactersButton_pressed"]
 [connection signal="pressed" from="HBoxContainer/GlossaryButton" to="." method="_on_GlossaryButton_pressed"]
@@ -1495,6 +1509,7 @@ __meta__ = {
 [connection signal="pressed" from="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer/ButtonBackground" to="." method="_on_ButtonBackground_pressed"]
 [connection signal="pressed" from="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer/ButtonAudio" to="." method="_on_ButtonAudio_pressed"]
 [connection signal="pressed" from="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer/ButtonCloseDialog" to="." method="_on_ButtonCloseDialog_pressed"]
+[connection signal="pressed" from="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer/ButtonChangeScene" to="." method="_on_ButtonChangeScene_pressed"]
 [connection signal="pressed" from="EditorCharacter/CharacterTools/Button" to="EditorCharacter" method="_on_New_Character_Button_pressed"]
 [connection signal="item_rmb_selected" from="EditorCharacter/CharacterTools/CharacterItemList" to="EditorCharacter" method="_on_CharacterItemList_item_rmb_selected"]
 [connection signal="item_selected" from="EditorCharacter/CharacterTools/CharacterItemList" to="EditorCharacter" method="_on_ItemList_item_selected"]

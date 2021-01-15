@@ -98,6 +98,10 @@ func _on_ButtonEmitSignal_pressed():
 	create_event("EmitSignal", {'emit_signal': ''})
 
 
+func _on_ButtonChangeScene_pressed():
+	create_event("ChangeScene", {'change_scene': ''})
+
+
 func _on_ButtonQuestion_pressed():
 	create_event("Question", {'question': '', 'options': []}, true)
 	create_event("Choice", {'choice': ''}, true)
@@ -199,6 +203,8 @@ func load_timeline(path):
 				create_event("ChangeTimeline", i)
 			{'emit_signal'}:
 				create_event("EmitSignal", i)
+			{'change_scene'}:
+				create_event("ChangeScene", i)
 			{'close_dialog'}:
 				create_event("CloseDialog", i)
 			{'condition'}:

@@ -303,6 +303,8 @@ func event_handler(event: Dictionary):
 			go_to_next_event()
 		{'endchoice'}:
 			go_to_next_event()
+		{'change_scene'}:
+			get_tree().change_scene(event['change_scene'])
 		{'emit_signal'}:
 			print('[!] Emitting signal: ', event['emit_signal'])
 			emit_signal("dialogic_signal", event['emit_signal'])
