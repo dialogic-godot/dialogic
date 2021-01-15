@@ -23,7 +23,3 @@ func load_data(data):
 
 func _on_LineEdit_text_changed(new_text):
 	event_data['emit_signal'] = new_text
-
-
-func _on_Indent_visibility_changed():
-	$PanelContainer/VBoxContainer/Header/Warning.visible = !$Indent.visible
