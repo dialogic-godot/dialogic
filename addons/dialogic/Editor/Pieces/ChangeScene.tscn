@@ -2,7 +2,7 @@
 
 [ext_resource path="res://addons/dialogic/Editor/Pieces/ChangeScene.gd" type="Script" id=1]
 [ext_resource path="res://addons/dialogic/Editor/Pieces/Common/VisibleToggle.tscn" type="PackedScene" id=2]
-[ext_resource path="res://addons/dialogic/Images/GodotScene.svg" type="Texture" id=3]
+[ext_resource path="res://addons/dialogic/Images/change-scene.svg" type="Texture" id=3]
 [ext_resource path="res://addons/dialogic/Editor/Pieces/Common/PieceExtraSettings.tscn" type="PackedScene" id=4]
 [ext_resource path="res://addons/dialogic/Editor/Pieces/Common/DragController.tscn" type="PackedScene" id=6]
 
@@ -102,6 +102,5 @@ items = [ "Move Up", null, 0, false, false, 0, 0, null, "", false, "Move Down", 
 [node name="AudioPreview" type="AudioStreamPlayer" parent="PanelContainer"]
 
 [node name="DragController" parent="." instance=ExtResource( 6 )]
-
 [connection signal="pressed" from="PanelContainer/VBoxContainer/Header/ButtonScenePicker" to="." method="_on_ButtonScenePicker_pressed"]
 [connection signal="finished" from="PanelContainer/AudioPreview" to="." method="_on_AudioPreview_finished"]
