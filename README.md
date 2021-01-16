@@ -34,9 +34,19 @@ Yes, you can use Dialogic to make any kind of game (even commercial ones). The p
     - Re-adding the `End Branch` event.
   - New `Dialogic` class. With this new class you can add dialogs from code easily:
     ```
-    var new_dialog = Dialogic.start('Whatever with spaces')
+    var new_dialog = Dialogic.start('Your Timeline Name Here')
     add_child(new_dialog)
     ```
+    To connect signals you can also do:
+    ```
+    func _ready():
+        var new_dialog = Dialogic.start('Your Timeline Name Here')
+        add_child(new_dialog)
+        new_dialog.connect("dialogic_signal", self, 'signal_from_dialogic')
+
+    func signal_from_dialogic(value):
+        print(value)
+  ```
   - Bug fixes:
     - Fixing an error when having an empty join event in a timeline.
 
