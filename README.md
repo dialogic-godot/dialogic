@@ -46,7 +46,8 @@ Yes, you can use Dialogic to make any kind of game (even commercial ones). The p
 
     func signal_from_dialogic(value):
         print(value)
-  ```
+    ```
+
   - Bug fixes:
     - Fixing an error when having an empty join event in a timeline.
 
