@@ -102,6 +102,10 @@ func _on_ButtonChangeScene_pressed():
 	create_event("ChangeScene", {'change_scene': ''})
 
 
+func _on_ButtonEndBranch_pressed():
+	pass # Replace with function body.
+
+
 func _on_ButtonQuestion_pressed():
 	create_event("Question", {'question': '', 'options': []}, true)
 	create_event("Choice", {'choice': ''}, true)
@@ -524,3 +528,6 @@ func compare_dicts(dict_1, dict_2):
 func dprint(what):
 	if debug_mode:
 		print(what)
+
+
+

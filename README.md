@@ -22,13 +22,23 @@ Yes, you can use Dialogic to make any kind of game (even commercial ones). The p
 ## Changelog
 
 ### 🆕 v0.9 - WIP
+  - Moved `Dialog.tscn` to the root of the addon so it is easier to find.
   - New tool: Glossary Editor
   - New default asset: Glossary Font
   - Theme Editor:
     - Added new options to customize the glossary popup (still not working)
   - Timeline Editor:
+    - Added categories for the events.
     - New `Emit Signal` event. This event will make the Dialog node emit a signal called `dialogic_signal`. You can connect this in a moment of your timeline with other scripts.
     - New `Change Scene` event. You can change the current Scene to whatever `.tscn` you pick. This will happen instantly, but in the future I'll add some transition effects so it is not that abrupt.
+    - Re-adding the `End Branch` event.
+  - New `Dialogic` class. With this new class you can add dialogs from code easily:
+    ```
+    var new_dialog = Dialogic.start('Whatever with spaces')
+    add_child(new_dialog)
+    ```
+  - Bug fixes:
+    - Fixing an error when having an empty join event in a timeline.
 
 ### v0.8 - Dialog enters the game
   - Video: https://youtu.be/NfTyRrsdB1I

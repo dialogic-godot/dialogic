@@ -99,6 +99,7 @@ custom_constants/shadow_offset_x = 2
 custom_constants/shadow_offset_y = 2
 bbcode_enabled = true
 bbcode_text = "Placeholder text for testing and formatting."
+meta_underlined = false
 text = "Placeholder text for testing and formatting."
 __meta__ = {
 "_edit_use_anchors_": false
@@ -141,7 +142,6 @@ custom_constants/shadow_offset_y = 2
 custom_constants/shadow_as_outline = 10
 bbcode_enabled = true
 bbcode_text = "Name Here"
-text = "Name Here"
 scroll_active = false
 __meta__ = {
 "_edit_use_anchors_": false
@@ -208,6 +208,7 @@ __meta__ = {
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="FX"]
 
 [node name="GlossaryInfo" type="Control" parent="."]
+visible = false
 margin_right = 475.0
 margin_bottom = 269.0
 __meta__ = {

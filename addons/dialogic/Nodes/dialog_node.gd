@@ -240,9 +240,6 @@ func event_handler(event: Dictionary):
 					add_choice_button(o)
 		{'choice', 'question_id'}:
 			var current_question = questions[event['question_id']]
-			print('####################')
-			print(questions)
-			print('####################')
 			if current_question['answered']:
 				# If the option is for an answered question, skip to the end of it.
 				dialog_index = current_question['end_id']
@@ -270,16 +267,19 @@ func event_handler(event: Dictionary):
 					
 				go_to_next_event()
 			elif event['action'] == 'join':
-				var character_data = get_character(event['character'])
-				var exists = grab_portrait_focus(character_data)
-				if exists == false:
-					var p = Portrait.instance()
-					p.character_data = character_data
-					# Todo: get current expression instead of 'Default'
-					p.init('Default', get_character_position(event['position']))
-					$Portraits.add_child(p)
-					p.fade_in()
+				if event['character'] == '':
 					go_to_next_event()
+				else:
+					var character_data = get_character(event['character'])
+					var exists = grab_portrait_focus(character_data)
+					if exists == false:
+						var p = Portrait.instance()
+						p.character_data = character_data
+						# Todo: get current expression instead of 'Default'
+						p.init('Default', get_character_position(event['position']))
+						$Portraits.add_child(p)
+						p.fade_in()
+						go_to_next_event()
 		#{'action'}:
 		#	if event['action'] == 'game_end':
 		#		get_tree().quit()

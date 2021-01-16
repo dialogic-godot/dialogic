@@ -346,11 +346,21 @@ custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "Add an event to start building your timeline"
 autowrap = true
 
-[node name="LabelEvents" type="Label" parent="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer"]
+[node name="HBoxContainer6" type="HBoxContainer" parent="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer"]
 margin_top = 72.0
 margin_right = 190.0
 margin_bottom = 86.0
-text = "Add Events"
+
+[node name="Label" type="Label" parent="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer/HBoxContainer6"]
+margin_right = 77.0
+margin_bottom = 14.0
+text = "Main Events"
+
+[node name="HSeparator2" type="HSeparator" parent="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer/HBoxContainer6"]
+margin_left = 81.0
+margin_right = 190.0
+margin_bottom = 14.0
+size_flags_horizontal = 3
 
 [node name="ButtonText" type="Button" parent="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer"]
 margin_top = 90.0
@@ -360,117 +370,163 @@ text = "  Text Event"
 icon = ExtResource( 2 )
 align = 0
 
-[node name="HSeparator3" type="HSeparator" parent="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer"]
+[node name="ButtonCharacterJoin" type="Button" parent="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer"]
 margin_top = 122.0
 margin_right = 190.0
-margin_bottom = 126.0
-
-[node name="ButtonCharacterJoin" type="Button" parent="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer"]
-margin_top = 130.0
-margin_right = 190.0
-margin_bottom = 158.0
+margin_bottom = 150.0
 text = "  Character Join"
 icon = ExtResource( 3 )
 align = 0
 
 [node name="ButtonCharacterLeave" type="Button" parent="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer"]
-margin_top = 162.0
+margin_top = 154.0
 margin_right = 190.0
-margin_bottom = 190.0
+margin_bottom = 182.0
 text = "  Character Leave"
 icon = ExtResource( 5 )
 align = 0
 
-[node name="HSeparator" type="HSeparator" parent="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer"]
-margin_top = 194.0
+[node name="HBoxContainer5" type="HBoxContainer" parent="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer"]
+margin_top = 186.0
 margin_right = 190.0
-margin_bottom = 198.0
+margin_bottom = 200.0
+
+[node name="Label" type="Label" parent="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer/HBoxContainer5"]
+margin_right = 33.0
+margin_bottom = 14.0
+text = "Logic"
+
+[node name="HSeparator2" type="HSeparator" parent="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer/HBoxContainer5"]
+margin_left = 37.0
+margin_right = 190.0
+margin_bottom = 14.0
+size_flags_horizontal = 3
 
 [node name="ButtonQuestion" type="Button" parent="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer"]
-margin_top = 202.0
+margin_top = 204.0
 margin_right = 190.0
-margin_bottom = 230.0
+margin_bottom = 232.0
 text = "  Question"
 icon = ExtResource( 27 )
 align = 0
 
 [node name="ButtonChoice" type="Button" parent="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer"]
-margin_top = 234.0
+margin_top = 236.0
 margin_right = 190.0
-margin_bottom = 262.0
+margin_bottom = 264.0
 text = "  Choice"
 icon = ExtResource( 18 )
 align = 0
 
 [node name="ButtonCondition" type="Button" parent="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer"]
-margin_top = 266.0
+margin_top = 268.0
 margin_right = 190.0
-margin_bottom = 294.0
-disabled = true
+margin_bottom = 296.0
 text = " Condition"
 icon = ExtResource( 6 )
 align = 0
 
 [node name="ButtonEndChoice" type="Button" parent="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer"]
-visible = false
-margin_top = 298.0
+margin_top = 300.0
 margin_right = 190.0
-margin_bottom = 326.0
+margin_bottom = 328.0
 text = "  End Branch"
 icon = ExtResource( 19 )
 align = 0
 
-[node name="ButtonEmitSignal" type="Button" parent="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer"]
-margin_top = 298.0
+[node name="HBoxContainer3" type="HBoxContainer" parent="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer"]
+margin_top = 332.0
 margin_right = 190.0
-margin_bottom = 326.0
-text = "  Emit Signal"
-icon = ExtResource( 31 )
-align = 0
+margin_bottom = 346.0
 
-[node name="HSeparator2" type="HSeparator" parent="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer"]
-margin_top = 330.0
+[node name="Label" type="Label" parent="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer/HBoxContainer3"]
+margin_right = 56.0
+margin_bottom = 14.0
+text = "Timeline"
+
+[node name="HSeparator2" type="HSeparator" parent="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer/HBoxContainer3"]
+margin_left = 60.0
 margin_right = 190.0
-margin_bottom = 334.0
+margin_bottom = 14.0
+size_flags_horizontal = 3
 
 [node name="ButtonChangeTimeline" type="Button" parent="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer"]
-margin_top = 338.0
+margin_top = 350.0
 margin_right = 190.0
-margin_bottom = 366.0
+margin_bottom = 378.0
 hint_tooltip = "This will instantly teleport you to the start of the desired timeline."
 text = "  Change Timeline"
 icon = ExtResource( 12 )
 align = 0
 
 [node name="ButtonBackground" type="Button" parent="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer"]
-margin_top = 370.0
+margin_top = 382.0
 margin_right = 190.0
-margin_bottom = 398.0
-disabled = true
+margin_bottom = 410.0
 text = "  Scene Event"
 icon = ExtResource( 4 )
 align = 0
 
-[node name="ButtonAudio" type="Button" parent="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer"]
-margin_top = 402.0
-margin_right = 190.0
-margin_bottom = 430.0
-text = "  Audio Event"
-icon = ExtResource( 8 )
-align = 0
-
 [node name="ButtonCloseDialog" type="Button" parent="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer"]
-margin_top = 434.0
+margin_top = 414.0
 margin_right = 190.0
-margin_bottom = 462.0
+margin_bottom = 442.0
 text = "  Close Dialog"
 icon = ExtResource( 7 )
 align = 0
 
-[node name="ButtonChangeScene" type="Button" parent="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer"]
-margin_top = 466.0
+[node name="HBoxContainer4" type="HBoxContainer" parent="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer"]
+margin_top = 446.0
 margin_right = 190.0
-margin_bottom = 494.0
+margin_bottom = 460.0
+
+[node name="Label" type="Label" parent="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer/HBoxContainer4"]
+margin_right = 37.0
+margin_bottom = 14.0
+text = "Audio"
+
+[node name="HSeparator2" type="HSeparator" parent="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer/HBoxContainer4"]
+margin_left = 41.0
+margin_right = 190.0
+margin_bottom = 14.0
+size_flags_horizontal = 3
+
+[node name="ButtonAudio" type="Button" parent="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer"]
+margin_top = 464.0
+margin_right = 190.0
+margin_bottom = 492.0
+text = "  Audio Event"
+icon = ExtResource( 8 )
+align = 0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer"]
+margin_top = 496.0
+margin_right = 190.0
+margin_bottom = 510.0
+
+[node name="Label" type="Label" parent="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer/HBoxContainer"]
+margin_right = 39.0
+margin_bottom = 14.0
+text = "Godot"
+
+[node name="HSeparator2" type="HSeparator" parent="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer/HBoxContainer"]
+margin_left = 43.0
+margin_right = 190.0
+margin_bottom = 14.0
+size_flags_horizontal = 3
+
+[node name="ButtonEmitSignal" type="Button" parent="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer"]
+margin_top = 514.0
+margin_right = 190.0
+margin_bottom = 542.0
+text = "  Emit Signal"
+icon = ExtResource( 31 )
+align = 0
+
+[node name="ButtonChangeScene" type="Button" parent="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer"]
+margin_top = 546.0
+margin_right = 190.0
+margin_bottom = 574.0
 hint_tooltip = "This will instantly teleport you to the start of the desired timeline."
 text = "  Change Scene"
 icon = SubResource( 3 )
@@ -1505,11 +1561,11 @@ __meta__ = {
 [connection signal="pressed" from="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer/ButtonChoice" to="." method="_on_ButtonChoice_pressed"]
 [connection signal="pressed" from="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer/ButtonCondition" to="." method="_on_ButtonCondition_pressed"]
 [connection signal="pressed" from="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer/ButtonEndChoice" to="." method="_on_ButtonEndChoice_pressed"]
-[connection signal="pressed" from="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer/ButtonEmitSignal" to="." method="_on_ButtonEmitSignal_pressed"]
 [connection signal="pressed" from="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer/ButtonChangeTimeline" to="." method="_on_ButtonChangeTimeline_pressed"]
 [connection signal="pressed" from="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer/ButtonBackground" to="." method="_on_ButtonBackground_pressed"]
-[connection signal="pressed" from="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer/ButtonAudio" to="." method="_on_ButtonAudio_pressed"]
 [connection signal="pressed" from="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer/ButtonCloseDialog" to="." method="_on_ButtonCloseDialog_pressed"]
+[connection signal="pressed" from="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer/ButtonAudio" to="." method="_on_ButtonAudio_pressed"]
+[connection signal="pressed" from="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer/ButtonEmitSignal" to="." method="_on_ButtonEmitSignal_pressed"]
 [connection signal="pressed" from="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer/ButtonChangeScene" to="." method="_on_ButtonChangeScene_pressed"]
 [connection signal="pressed" from="EditorCharacter/CharacterTools/Button" to="EditorCharacter" method="_on_New_Character_Button_pressed"]
 [connection signal="item_rmb_selected" from="EditorCharacter/CharacterTools/CharacterItemList" to="EditorCharacter" method="_on_CharacterItemList_item_rmb_selected"]

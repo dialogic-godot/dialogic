@@ -126,7 +126,7 @@ func _on_ShadowOffset_value_changed(_value):
 func _on_PreviewButton_pressed():
 	for i in n['preview_panel'].get_children():
 		i.free()
-	var dialogic_node = load("res://addons/dialogic/Nodes/Dialog.tscn")
+	var dialogic_node = load("res://addons/dialogic/Dialog.tscn")
 	var preview_dialog = dialogic_node.instance()
 	preview_dialog.get_node('TextBubble/NextIndicator/AnimationPlayer').play('IDLE')
 	preview_dialog.dialog_script['events'] = [{
