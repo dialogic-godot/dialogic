@@ -202,6 +202,7 @@ expand = true
 stretch_mode = 5
 
 [node name="EditorTimeline" type="HSplitContainer" parent="."]
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 6.0
@@ -533,7 +534,6 @@ icon = SubResource( 3 )
 align = 0
 
 [node name="EditorGlossary" type="HSplitContainer" parent="."]
-visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 6.0
@@ -546,22 +546,111 @@ __meta__ = {
 }
 
 [node name="VBoxContainer" type="VBoxContainer" parent="EditorGlossary"]
-margin_right = 89.0
+margin_right = 140.0
 margin_bottom = 661.0
+rect_min_size = Vector2( 140, 0 )
 
 [node name="Button" type="Button" parent="EditorGlossary/VBoxContainer"]
-margin_right = 89.0
+margin_right = 140.0
 margin_bottom = 20.0
 text = "New entry +"
 
 [node name="ItemList" type="ItemList" parent="EditorGlossary/VBoxContainer"]
 margin_top = 24.0
-margin_right = 89.0
+margin_right = 140.0
 margin_bottom = 661.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
+[node name="ScrollContainer" type="ScrollContainer" parent="EditorGlossary"]
+margin_left = 152.0
+margin_right = 1253.0
+margin_bottom = 661.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="EditorGlossary/ScrollContainer"]
+margin_right = 1101.0
+margin_bottom = 661.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="EditorGlossary/ScrollContainer/VBoxContainer"]
+margin_right = 1101.0
+margin_bottom = 236.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="EditorGlossary/ScrollContainer/VBoxContainer/HBoxContainer"]
+margin_right = 300.0
+margin_bottom = 236.0
+rect_min_size = Vector2( 300, 0 )
+
+[node name="Label" type="Label" parent="EditorGlossary/ScrollContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
+margin_right = 300.0
+margin_bottom = 14.0
+text = "Internal"
+
+[node name="LineEdit3" type="LineEdit" parent="EditorGlossary/ScrollContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
+margin_top = 18.0
+margin_right = 300.0
+margin_bottom = 42.0
+placeholder_text = "Name"
+
+[node name="MenuButton" type="OptionButton" parent="EditorGlossary/ScrollContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
+margin_top = 46.0
+margin_right = 300.0
+margin_bottom = 66.0
+text = "Text (String)"
+expand_icon = true
+items = [ "Text (String)", null, false, 0, false, "Number (Int: 1, 2, 3, ...)", null, false, 0, false ]
+selected = 0
+
+[node name="Label3" type="Label" parent="EditorGlossary/ScrollContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
+margin_top = 70.0
+margin_right = 300.0
+margin_bottom = 84.0
+text = "Visible"
+
+[node name="LineEdit" type="LineEdit" parent="EditorGlossary/ScrollContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
+margin_top = 88.0
+margin_right = 300.0
+margin_bottom = 112.0
+placeholder_text = "Title"
+
+[node name="Label2" type="Label" parent="EditorGlossary/ScrollContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
+margin_top = 116.0
+margin_right = 300.0
+margin_bottom = 130.0
+text = "Body"
+
+[node name="RichTextLabel" type="TextEdit" parent="EditorGlossary/ScrollContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
+margin_top = 134.0
+margin_right = 300.0
+margin_bottom = 184.0
+rect_min_size = Vector2( 0, 50 )
+
+[node name="LineEdit2" type="LineEdit" parent="EditorGlossary/ScrollContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
+margin_top = 188.0
+margin_right = 300.0
+margin_bottom = 212.0
+placeholder_text = "Extra"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="EditorGlossary/ScrollContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
+margin_top = 216.0
+margin_right = 300.0
+margin_bottom = 236.0
+
+[node name="Label" type="Label" parent="EditorGlossary/ScrollContainer/VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer"]
+margin_top = 3.0
+margin_right = 33.0
+margin_bottom = 17.0
+text = "Color"
+
+[node name="ColorPickerButton" type="ColorPickerButton" parent="EditorGlossary/ScrollContainer/VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer"]
+margin_left = 37.0
+margin_right = 300.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+
 [node name="CenterContainer" type="CenterContainer" parent="EditorGlossary"]
+visible = false
 margin_left = 101.0
 margin_right = 1253.0
 margin_bottom = 661.0

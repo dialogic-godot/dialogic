@@ -11,6 +11,8 @@ static func init_dialogic_files() -> void:
 	for dir in paths:
 		if 'settings.json' in paths[dir]:
 			update_setting()
+		elif 'glossary.json' in paths[dir]:
+			load_glossary()
 		else:
 			if directory.dir_exists(paths[dir]) == false:
 				directory.make_dir(paths[dir])
@@ -49,6 +51,21 @@ static func load_settings() -> Dictionary:
 		return defaults
 
 
+static func load_glossary() -> Dictionary:
+	var directory = Directory.new();
+	if directory.file_exists(get_path('GLOSSARY_FILE')):
+		var glossary: Dictionary = load_json(get_path('GLOSSARY_FILE'))
+		if glossary.has('error'):
+			glossary = {}
+		return glossary
+	else:
+		var file:File = File.new()
+		file.open(get_path('GLOSSARY_FILE'), File.WRITE)
+		file.store_line(to_json({}))
+		file.close()
+		return {}
+
+
 static func update_setting(key: String = '', value = '') -> void:
 	# This function will open the settings file and update one of the values
 	var data = load_settings()
@@ -67,8 +84,8 @@ static func get_working_directories() -> Dictionary:
 		'WORKING_DIR': WORKING_DIR,
 		'TIMELINE_DIR': WORKING_DIR + "/timelines",
 		'CHAR_DIR': WORKING_DIR + "/characters",
-		'GLOSSARY_DIR': WORKING_DIR + "/glossary",
 		'SETTINGS_FILE': WORKING_DIR + "/settings.json",
+		'GLOSSARY_FILE': WORKING_DIR + "/glossary.json",
 	}
 	return paths
 
