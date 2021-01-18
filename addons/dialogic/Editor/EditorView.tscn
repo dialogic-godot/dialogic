@@ -1,4 +1,4 @@
-[gd_scene load_steps=36 format=2]
+[gd_scene load_steps=38 format=2]
 
 [ext_resource path="res://addons/dialogic/Editor/editor_view.gd" type="Script" id=1]
 [ext_resource path="res://addons/dialogic/Images/dialog.svg" type="Texture" id=2]
@@ -58,7 +58,22 @@ corner_radius_bottom_left = 5
 flags = 4
 load_path = "res://.import/ChangeScene.svg-ef7c5a102f8a9b3a1c35188b427bf44b.stex"
 
-[sub_resource type="StyleBoxFlat" id=4]
+[sub_resource type="Image" id=7]
+data = {
+"data": PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ),
+"format": "LumAlpha8",
+"height": 16,
+"mipmaps": false,
+"width": 16
+}
+
+[sub_resource type="ImageTexture" id=5]
+flags = 4
+flags = 4
+image = SubResource( 7 )
+size = Vector2( 16, 16 )
+
+[sub_resource type="StyleBoxFlat" id=6]
 content_margin_left = 5.0
 content_margin_right = 5.0
 content_margin_top = 5.0
@@ -236,11 +251,10 @@ margin_right = 180.0
 margin_bottom = 661.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-items = [ "Testing Glossary", ExtResource( 15 ), false, "timeline-1610659478", ExtResource( 15 ), false ]
+items = [ "Testing Glossary", ExtResource( 15 ), false, "Whatever with spaces", ExtResource( 15 ), false, "testing-defaults", ExtResource( 15 ), false ]
 allow_rmb_select = true
 
 [node name="CenterContainer" type="CenterContainer" parent="EditorTimeline"]
-visible = false
 margin_left = 192.0
 margin_right = 1253.0
 margin_bottom = 661.0
@@ -271,6 +285,7 @@ __meta__ = {
 }
 
 [node name="TimelineEditor" type="HSplitContainer" parent="EditorTimeline"]
+visible = false
 margin_left = 192.0
 margin_right = 1253.0
 margin_bottom = 661.0
@@ -550,7 +565,7 @@ margin_right = 140.0
 margin_bottom = 661.0
 rect_min_size = Vector2( 140, 0 )
 
-[node name="Button" type="Button" parent="EditorGlossary/VBoxContainer"]
+[node name="NewEntryButton" type="Button" parent="EditorGlossary/VBoxContainer"]
 margin_right = 140.0
 margin_bottom = 20.0
 text = "New entry +"
@@ -561,6 +576,8 @@ margin_right = 140.0
 margin_bottom = 661.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
+items = [ "hola", SubResource( 5 ), false, "manola", SubResource( 5 ), false ]
+allow_rmb_select = true
 
 [node name="ScrollContainer" type="ScrollContainer" parent="EditorGlossary"]
 margin_left = 152.0
@@ -575,11 +592,11 @@ size_flags_vertical = 3
 
 [node name="HBoxContainer" type="HBoxContainer" parent="EditorGlossary/ScrollContainer/VBoxContainer"]
 margin_right = 1101.0
-margin_bottom = 236.0
+margin_bottom = 212.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="EditorGlossary/ScrollContainer/VBoxContainer/HBoxContainer"]
 margin_right = 300.0
-margin_bottom = 236.0
+margin_bottom = 212.0
 rect_min_size = Vector2( 300, 0 )
 
 [node name="Label" type="Label" parent="EditorGlossary/ScrollContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
@@ -594,6 +611,7 @@ margin_bottom = 42.0
 placeholder_text = "Name"
 
 [node name="MenuButton" type="OptionButton" parent="EditorGlossary/ScrollContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
+visible = false
 margin_top = 46.0
 margin_right = 300.0
 margin_bottom = 66.0
@@ -603,39 +621,39 @@ items = [ "Text (String)", null, false, 0, false, "Number (Int: 1, 2, 3, ...)", 
 selected = 0
 
 [node name="Label3" type="Label" parent="EditorGlossary/ScrollContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
-margin_top = 70.0
+margin_top = 46.0
 margin_right = 300.0
-margin_bottom = 84.0
-text = "Visible"
+margin_bottom = 60.0
+text = "Title"
 
 [node name="LineEdit" type="LineEdit" parent="EditorGlossary/ScrollContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
-margin_top = 88.0
+margin_top = 64.0
 margin_right = 300.0
-margin_bottom = 112.0
+margin_bottom = 88.0
 placeholder_text = "Title"
 
 [node name="Label2" type="Label" parent="EditorGlossary/ScrollContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
-margin_top = 116.0
+margin_top = 92.0
 margin_right = 300.0
-margin_bottom = 130.0
+margin_bottom = 106.0
 text = "Body"
 
 [node name="RichTextLabel" type="TextEdit" parent="EditorGlossary/ScrollContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
-margin_top = 134.0
+margin_top = 110.0
 margin_right = 300.0
-margin_bottom = 184.0
+margin_bottom = 160.0
 rect_min_size = Vector2( 0, 50 )
 
 [node name="LineEdit2" type="LineEdit" parent="EditorGlossary/ScrollContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
-margin_top = 188.0
+margin_top = 164.0
 margin_right = 300.0
-margin_bottom = 212.0
+margin_bottom = 188.0
 placeholder_text = "Extra"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="EditorGlossary/ScrollContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
-margin_top = 216.0
+margin_top = 192.0
 margin_right = 300.0
-margin_bottom = 236.0
+margin_bottom = 212.0
 
 [node name="Label" type="Label" parent="EditorGlossary/ScrollContainer/VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer"]
 margin_top = 3.0
@@ -720,7 +738,7 @@ text = "Create a character +"
 margin_left = 192.0
 margin_right = 997.0
 margin_bottom = 541.0
-custom_styles/bg = SubResource( 4 )
+custom_styles/bg = SubResource( 6 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -1582,11 +1600,31 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="GlossaryPopupMenu" type="PopupMenu" parent="."]
+margin_left = 171.799
+margin_top = 209.0
+margin_right = 267.799
+margin_bottom = 229.0
+items = [ "Show in File Manager", ExtResource( 26 ), 0, false, false, 0, 0, null, "", false, "Remove Character", ExtResource( 22 ), 0, false, false, 1, 0, null, "", false ]
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="RemoveCharacterConfirmation" type="ConfirmationDialog" parent="."]
 margin_right = 325.0
 margin_bottom = 88.0
 rect_min_size = Vector2( 250, 87.5 )
 dialog_text = "Are you sure you want to remove this character?
+(Can't be restored)"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="RemoveGlossaryConfirmation" type="ConfirmationDialog" parent="."]
+margin_right = 325.0
+margin_bottom = 88.0
+rect_min_size = Vector2( 250, 87.5 )
+dialog_text = "Are you sure you want to remove this entry?
 (Can't be restored)"
 __meta__ = {
 "_edit_use_anchors_": false
@@ -1656,6 +1694,9 @@ __meta__ = {
 [connection signal="pressed" from="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer/ButtonAudio" to="." method="_on_ButtonAudio_pressed"]
 [connection signal="pressed" from="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer/ButtonEmitSignal" to="." method="_on_ButtonEmitSignal_pressed"]
 [connection signal="pressed" from="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer/ButtonChangeScene" to="." method="_on_ButtonChangeScene_pressed"]
+[connection signal="pressed" from="EditorGlossary/VBoxContainer/NewEntryButton" to="EditorGlossary" method="_on_NewEntryButton_pressed"]
+[connection signal="item_rmb_selected" from="EditorGlossary/VBoxContainer/ItemList" to="EditorGlossary" method="_on_ItemList_item_rmb_selected"]
+[connection signal="item_selected" from="EditorGlossary/VBoxContainer/ItemList" to="EditorGlossary" method="_on_ItemList_item_selected"]
 [connection signal="pressed" from="EditorCharacter/CharacterTools/Button" to="EditorCharacter" method="_on_New_Character_Button_pressed"]
 [connection signal="item_rmb_selected" from="EditorCharacter/CharacterTools/CharacterItemList" to="EditorCharacter" method="_on_CharacterItemList_item_rmb_selected"]
 [connection signal="item_selected" from="EditorCharacter/CharacterTools/CharacterItemList" to="EditorCharacter" method="_on_ItemList_item_selected"]
@@ -1695,6 +1736,8 @@ __meta__ = {
 [connection signal="pressed" from="EditorTheme/VBoxContainer/HBoxContainer3/PreviewButton" to="EditorTheme" method="_on_PreviewButton_pressed"]
 [connection signal="id_pressed" from="TimelinePopupMenu" to="." method="_on_TimelinePopupMenu_id_pressed"]
 [connection signal="id_pressed" from="CharacterPopupMenu" to="EditorCharacter" method="_on_CharacterPopupMenu_id_pressed"]
+[connection signal="id_pressed" from="GlossaryPopupMenu" to="EditorGlossary" method="_on_GlossaryPopupMenu_id_pressed"]
 [connection signal="confirmed" from="RemoveCharacterConfirmation" to="EditorCharacter" method="_on_RemoveConfirmation_confirmed"]
+[connection signal="confirmed" from="RemoveGlossaryConfirmation" to="EditorGlossary" method="_on_RemoveGlossaryConfirmation_confirmed"]
 [connection signal="confirmed" from="RemoveTimelineConfirmation" to="." method="_on_RemoveTimelineConfirmation_confirmed"]
 [connection signal="confirmed" from="RenameDialog" to="." method="_on_RenameDialog_confirmed"]

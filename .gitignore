@@ -10,4 +10,5 @@ test-scenes
 *.import
 /.vscode
 /addons/godot-plugin-refresher
+/addons/explore-editor-theme
 /previous

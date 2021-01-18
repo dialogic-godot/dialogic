@@ -66,6 +66,14 @@ static func load_glossary() -> Dictionary:
 		return {}
 
 
+static func save_glossary(glossary) -> void:
+	var file:File = File.new()
+	file.open(get_path('GLOSSARY_FILE'), File.WRITE)
+	file.store_line(to_json(glossary))
+	file.close()
+	print(glossary)
+
+
 static func update_setting(key: String = '', value = '') -> void:
 	# This function will open the settings file and update one of the values
 	var data = load_settings()
@@ -200,3 +208,7 @@ static func default_settings():
 		"theme_text_speed": 2
 	}
 	return ds
+
+
+static func generate_random_id() -> String:
+	return str(OS.get_unix_time()) + '-' + str(100 + randi()%899+1)
