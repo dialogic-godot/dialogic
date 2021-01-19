@@ -2,7 +2,9 @@ tool
 extends HSplitContainer
 
 var editor_reference
+var last_saved_glossary
 var glossary
+var current_entry
 
 
 onready var nodes = {
@@ -15,8 +17,22 @@ onready var nodes = {
 
 func _ready():
 	glossary = DialogicUtil.load_glossary()
+	last_saved_glossary = DialogicUtil.load_glossary()
+	
+	nodes['name'].connect("text_changed", self, '_on_field_text_changed', [nodes['name']])
 	refresh_list()
 
+
+func _on_field_text_changed(new_text, node):
+	if node == nodes['name']:
+		var f_text = new_text
+		glossary[current_entry]['name'] = new_text
+		if f_text == '':
+			f_text = current_entry
+		var item_id = $VBoxContainer/ItemList.get_selected_items()[0]		
+		$VBoxContainer/ItemList.set_item_text(item_id, f_text)
+	#print(new_text, node)
+	
 
 func _on_NewEntryButton_pressed():
 	var index = 0
@@ -30,6 +46,7 @@ func _on_NewEntryButton_pressed():
 		'extra': '',
 		'color': '#000000'
 	}
+	current_entry = new_entry_id
 	DialogicUtil.save_glossary(glossary)
 	refresh_list()
 
@@ -53,6 +70,7 @@ func _on_ItemList_item_rmb_selected(index, at_position):
 func _on_ItemList_item_selected(index):
 	var selected = $VBoxContainer/ItemList.get_item_text(index)
 	var entry_id = $VBoxContainer/ItemList.get_item_metadata(index)['file'].replace('.json', '')
+	current_entry = entry_id
 	update_editor(glossary[entry_id])
 
 
@@ -78,7 +96,12 @@ func _on_RemoveGlossaryConfirmation_confirmed():
 
 
 func save_glossary():
-	DialogicUtil.save_glossary(glossary)
+	var changed = false
+	if glossary.hash() != last_saved_glossary.hash():
+		print('[+] Saving glossary')
+		changed = true
+		DialogicUtil.save_glossary(glossary)
+		last_saved_glossary = DialogicUtil.load_glossary()
 
 
 func update_editor(data):
