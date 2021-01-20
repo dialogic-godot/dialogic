@@ -1,4 +1,4 @@
-# Dialogic v0.8 ![Godot v3.2](https://img.shields.io/badge/godot-v3.2.4-%23478cbf)
+# Dialogic v0.9 ![Godot v3.2](https://img.shields.io/badge/godot-v3.2.4-%23478cbf)
 Create dialogs, characters and scenes to display conversations in your Godot games. 
 
 ![Screenshot](https://coppolaemilio.com/images/dialogic/dialogic08.png)
