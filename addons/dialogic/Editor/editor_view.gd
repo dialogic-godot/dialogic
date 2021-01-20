@@ -10,7 +10,7 @@ var debug_mode = true # For printing info
 var editor_file_dialog # EditorFileDialog
 var file_picker_data = {'method': '', 'node': self}
 
-var version_string = "0.7"
+var version_string = "0.9"
 var timeline_name = "" # The currently opened timeline name (for saving)
 
 var current_editor_view = 'Timeline'
