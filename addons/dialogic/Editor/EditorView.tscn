@@ -133,21 +133,10 @@ hint_tooltip = "Character Editor"
 focus_mode = 0
 icon = ExtResource( 17 )
 
-[node name="GlossaryButton" type="Button" parent="HBoxContainer"]
-self_modulate = Color( 0.870588, 0.870588, 0.870588, 1 )
-margin_left = 68.0
-margin_right = 96.0
-margin_bottom = 30.0
-hint_tooltip = "Glossary Editor"
-focus_mode = 0
-disabled = true
-icon = ExtResource( 13 )
-flat = true
-
 [node name="ThemeButton" type="Button" parent="HBoxContainer"]
 self_modulate = Color( 0.870588, 0.870588, 0.870588, 1 )
-margin_left = 96.0
-margin_right = 130.0
+margin_left = 68.0
+margin_right = 102.0
 margin_bottom = 30.0
 hint_tooltip = "Theme Editor"
 focus_mode = 0
@@ -155,8 +144,8 @@ icon = ExtResource( 16 )
 flat = true
 
 [node name="FoldTools" type="HBoxContainer" parent="HBoxContainer"]
-margin_left = 130.0
-margin_right = 265.0
+margin_left = 102.0
+margin_right = 237.0
 margin_bottom = 30.0
 
 [node name="Label" type="Label" parent="HBoxContainer/FoldTools"]
@@ -180,8 +169,8 @@ icon = ExtResource( 9 )
 align = 0
 
 [node name="Spacer" type="Control" parent="HBoxContainer"]
-margin_left = 265.0
-margin_right = 295.0
+margin_left = 237.0
+margin_right = 267.0
 margin_bottom = 30.0
 rect_min_size = Vector2( 30, 0 )
 
@@ -202,14 +191,14 @@ text = "Reload"
 align = 0
 
 [node name="Control" type="Control" parent="HBoxContainer"]
-margin_left = 295.0
-margin_right = 1144.0
+margin_left = 267.0
+margin_right = 1116.0
 margin_bottom = 30.0
 size_flags_horizontal = 3
 
 [node name="Logo" type="TextureRect" parent="HBoxContainer"]
-margin_left = 1144.0
-margin_right = 1264.0
+margin_left = 1116.0
+margin_right = 1236.0
 margin_bottom = 30.0
 rect_min_size = Vector2( 120, 0 )
 mouse_default_cursor_shape = 2
@@ -217,8 +206,18 @@ texture = ExtResource( 14 )
 expand = true
 stretch_mode = 5
 
+[node name="GlossaryButton" type="Button" parent="HBoxContainer"]
+self_modulate = Color( 0.870588, 0.870588, 0.870588, 1 )
+margin_left = 1236.0
+margin_right = 1264.0
+margin_bottom = 30.0
+hint_tooltip = "Glossary Editor"
+focus_mode = 0
+disabled = true
+icon = ExtResource( 13 )
+flat = true
+
 [node name="EditorTimeline" type="HSplitContainer" parent="."]
-visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 6.0
@@ -256,6 +255,7 @@ items = [ "Testing Glossary", ExtResource( 15 ), false, "Whatever with spaces", 
 allow_rmb_select = true
 
 [node name="CenterContainer" type="CenterContainer" parent="EditorTimeline"]
+visible = false
 margin_left = 192.0
 margin_right = 1253.0
 margin_bottom = 661.0
@@ -286,7 +286,6 @@ __meta__ = {
 }
 
 [node name="TimelineEditor" type="HSplitContainer" parent="EditorTimeline"]
-visible = false
 margin_left = 192.0
 margin_right = 1253.0
 margin_bottom = 661.0
@@ -439,6 +438,7 @@ align = 0
 margin_top = 268.0
 margin_right = 190.0
 margin_bottom = 296.0
+disabled = true
 text = " Condition"
 icon = ExtResource( 6 )
 align = 0
@@ -480,6 +480,7 @@ align = 0
 margin_top = 382.0
 margin_right = 190.0
 margin_bottom = 410.0
+disabled = true
 text = "  Scene Event"
 icon = ExtResource( 4 )
 align = 0
@@ -550,6 +551,7 @@ icon = SubResource( 3 )
 align = 0
 
 [node name="EditorGlossary" type="HSplitContainer" parent="."]
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 6.0
@@ -1671,13 +1673,13 @@ __meta__ = {
 }
 [connection signal="pressed" from="HBoxContainer/EventButton" to="." method="_on_EventButton_pressed"]
 [connection signal="pressed" from="HBoxContainer/CharactersButton" to="." method="_on_CharactersButton_pressed"]
-[connection signal="pressed" from="HBoxContainer/GlossaryButton" to="." method="_on_GlossaryButton_pressed"]
 [connection signal="pressed" from="HBoxContainer/ThemeButton" to="." method="_on_ThemeButton_pressed"]
 [connection signal="pressed" from="HBoxContainer/FoldTools/ButtonFold" to="." method="_on_ButtonFold_pressed"]
 [connection signal="pressed" from="HBoxContainer/FoldTools/ButtonUnfold" to="." method="_on_ButtonUnfold_pressed"]
 [connection signal="pressed" from="HBoxContainer/ButtonSave" to="." method="_on_ButtonSave_pressed"]
 [connection signal="pressed" from="HBoxContainer/ReloadResource" to="." method="_on_ReloadResource_pressed"]
 [connection signal="gui_input" from="HBoxContainer/Logo" to="." method="_on_Logo_gui_input"]
+[connection signal="pressed" from="HBoxContainer/GlossaryButton" to="." method="_on_GlossaryButton_pressed"]
 [connection signal="pressed" from="EditorTimeline/EventTools/VBoxContainer2/AddTimelineButton" to="." method="_on_AddTimelineButton_pressed"]
 [connection signal="item_rmb_selected" from="EditorTimeline/EventTools/VBoxContainer2/DialogItemList" to="." method="_on_DialogItemList_item_rmb_selected"]
 [connection signal="item_selected" from="EditorTimeline/EventTools/VBoxContainer2/DialogItemList" to="." method="_on_DialogItemList_item_selected"]
