@@ -1,4 +1,4 @@
-[gd_scene load_steps=38 format=2]
+[gd_scene load_steps=39 format=2]
 
 [ext_resource path="res://addons/dialogic/Editor/editor_view.gd" type="Script" id=1]
 [ext_resource path="res://addons/dialogic/Images/dialog.svg" type="Texture" id=2]
@@ -31,6 +31,7 @@
 [ext_resource path="res://addons/dialogic/Editor/EditorGlossary.gd" type="Script" id=29]
 [ext_resource path="res://addons/dialogic/Images/character.svg" type="Texture" id=30]
 [ext_resource path="res://addons/dialogic/Images/signal.svg" type="Texture" id=31]
+[ext_resource path="res://addons/dialogic/Images/Wait.svg" type="Texture" id=32]
 
 [sub_resource type="StyleBoxFlat" id=1]
 content_margin_left = 5.0
@@ -58,7 +59,7 @@ corner_radius_bottom_left = 5
 flags = 4
 load_path = "res://.import/ChangeScene.svg-ef7c5a102f8a9b3a1c35188b427bf44b.stex"
 
-[sub_resource type="Image" id=7]
+[sub_resource type="Image" id=4]
 data = {
 "data": PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ),
 "format": "LumAlpha8",
@@ -70,7 +71,7 @@ data = {
 [sub_resource type="ImageTexture" id=5]
 flags = 4
 flags = 4
-image = SubResource( 7 )
+image = SubResource( 4 )
 size = Vector2( 16, 16 )
 
 [sub_resource type="StyleBoxFlat" id=6]
@@ -133,10 +134,21 @@ hint_tooltip = "Character Editor"
 focus_mode = 0
 icon = ExtResource( 17 )
 
-[node name="ThemeButton" type="Button" parent="HBoxContainer"]
+[node name="GlossaryButton" type="Button" parent="HBoxContainer"]
 self_modulate = Color( 0.870588, 0.870588, 0.870588, 1 )
 margin_left = 68.0
-margin_right = 102.0
+margin_right = 96.0
+margin_bottom = 30.0
+hint_tooltip = "Glossary Editor"
+focus_mode = 0
+disabled = true
+icon = ExtResource( 13 )
+flat = true
+
+[node name="ThemeButton" type="Button" parent="HBoxContainer"]
+self_modulate = Color( 0.870588, 0.870588, 0.870588, 1 )
+margin_left = 96.0
+margin_right = 130.0
 margin_bottom = 30.0
 hint_tooltip = "Theme Editor"
 focus_mode = 0
@@ -144,8 +156,8 @@ icon = ExtResource( 16 )
 flat = true
 
 [node name="FoldTools" type="HBoxContainer" parent="HBoxContainer"]
-margin_left = 102.0
-margin_right = 237.0
+margin_left = 130.0
+margin_right = 265.0
 margin_bottom = 30.0
 
 [node name="Label" type="Label" parent="HBoxContainer/FoldTools"]
@@ -169,8 +181,8 @@ icon = ExtResource( 9 )
 align = 0
 
 [node name="Spacer" type="Control" parent="HBoxContainer"]
-margin_left = 237.0
-margin_right = 267.0
+margin_left = 265.0
+margin_right = 295.0
 margin_bottom = 30.0
 rect_min_size = Vector2( 30, 0 )
 
@@ -191,31 +203,20 @@ text = "Reload"
 align = 0
 
 [node name="Control" type="Control" parent="HBoxContainer"]
-margin_left = 267.0
-margin_right = 1116.0
+margin_left = 295.0
+margin_right = 1144.0
 margin_bottom = 30.0
 size_flags_horizontal = 3
 
 [node name="Logo" type="TextureRect" parent="HBoxContainer"]
-margin_left = 1116.0
-margin_right = 1236.0
+margin_left = 1144.0
+margin_right = 1264.0
 margin_bottom = 30.0
 rect_min_size = Vector2( 120, 0 )
 mouse_default_cursor_shape = 2
 texture = ExtResource( 14 )
 expand = true
 stretch_mode = 5
-
-[node name="GlossaryButton" type="Button" parent="HBoxContainer"]
-self_modulate = Color( 0.870588, 0.870588, 0.870588, 1 )
-margin_left = 1236.0
-margin_right = 1264.0
-margin_bottom = 30.0
-hint_tooltip = "Glossary Editor"
-focus_mode = 0
-disabled = true
-icon = ExtResource( 13 )
-flat = true
 
 [node name="EditorTimeline" type="HSplitContainer" parent="."]
 anchor_right = 1.0
@@ -255,7 +256,6 @@ items = [ "Testing Glossary", ExtResource( 15 ), false, "Whatever with spaces", 
 allow_rmb_select = true
 
 [node name="CenterContainer" type="CenterContainer" parent="EditorTimeline"]
-visible = false
 margin_left = 192.0
 margin_right = 1253.0
 margin_bottom = 661.0
@@ -286,6 +286,7 @@ __meta__ = {
 }
 
 [node name="TimelineEditor" type="HSplitContainer" parent="EditorTimeline"]
+visible = false
 margin_left = 192.0
 margin_right = 1253.0
 margin_bottom = 661.0
@@ -493,10 +494,18 @@ text = "  Close Dialog"
 icon = ExtResource( 7 )
 align = 0
 
-[node name="HBoxContainer4" type="HBoxContainer" parent="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer"]
+[node name="ButtonWait" type="Button" parent="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer"]
 margin_top = 446.0
 margin_right = 190.0
-margin_bottom = 460.0
+margin_bottom = 474.0
+text = "  Wait Seconds"
+icon = ExtResource( 32 )
+align = 0
+
+[node name="HBoxContainer4" type="HBoxContainer" parent="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer"]
+margin_top = 478.0
+margin_right = 190.0
+margin_bottom = 492.0
 
 [node name="Label" type="Label" parent="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer/HBoxContainer4"]
 margin_right = 37.0
@@ -510,17 +519,17 @@ margin_bottom = 14.0
 size_flags_horizontal = 3
 
 [node name="ButtonAudio" type="Button" parent="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer"]
-margin_top = 464.0
+margin_top = 496.0
 margin_right = 190.0
-margin_bottom = 492.0
+margin_bottom = 524.0
 text = "  Audio Event"
 icon = ExtResource( 8 )
 align = 0
 
 [node name="HBoxContainer" type="HBoxContainer" parent="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer"]
-margin_top = 496.0
+margin_top = 528.0
 margin_right = 190.0
-margin_bottom = 510.0
+margin_bottom = 542.0
 
 [node name="Label" type="Label" parent="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer/HBoxContainer"]
 margin_right = 39.0
@@ -534,17 +543,17 @@ margin_bottom = 14.0
 size_flags_horizontal = 3
 
 [node name="ButtonEmitSignal" type="Button" parent="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer"]
-margin_top = 514.0
+margin_top = 546.0
 margin_right = 190.0
-margin_bottom = 542.0
+margin_bottom = 574.0
 text = "  Emit Signal"
 icon = ExtResource( 31 )
 align = 0
 
 [node name="ButtonChangeScene" type="Button" parent="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer"]
-margin_top = 546.0
+margin_top = 578.0
 margin_right = 190.0
-margin_bottom = 574.0
+margin_bottom = 606.0
 hint_tooltip = "This will instantly teleport you to the start of the desired timeline."
 text = "  Change Scene"
 icon = SubResource( 3 )
@@ -579,7 +588,7 @@ margin_right = 140.0
 margin_bottom = 661.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-items = [ "hola", SubResource( 5 ), false, "manola", SubResource( 5 ), false ]
+items = [ "manola", SubResource( 5 ), false, "Segunda", SubResource( 5 ), false, "asdadd", SubResource( 5 ), false, "whatever", SubResource( 5 ), false, "ssss", SubResource( 5 ), false ]
 allow_rmb_select = true
 
 [node name="ScrollContainer" type="ScrollContainer" parent="EditorGlossary"]
@@ -1673,13 +1682,13 @@ __meta__ = {
 }
 [connection signal="pressed" from="HBoxContainer/EventButton" to="." method="_on_EventButton_pressed"]
 [connection signal="pressed" from="HBoxContainer/CharactersButton" to="." method="_on_CharactersButton_pressed"]
+[connection signal="pressed" from="HBoxContainer/GlossaryButton" to="." method="_on_GlossaryButton_pressed"]
 [connection signal="pressed" from="HBoxContainer/ThemeButton" to="." method="_on_ThemeButton_pressed"]
 [connection signal="pressed" from="HBoxContainer/FoldTools/ButtonFold" to="." method="_on_ButtonFold_pressed"]
 [connection signal="pressed" from="HBoxContainer/FoldTools/ButtonUnfold" to="." method="_on_ButtonUnfold_pressed"]
 [connection signal="pressed" from="HBoxContainer/ButtonSave" to="." method="_on_ButtonSave_pressed"]
 [connection signal="pressed" from="HBoxContainer/ReloadResource" to="." method="_on_ReloadResource_pressed"]
 [connection signal="gui_input" from="HBoxContainer/Logo" to="." method="_on_Logo_gui_input"]
-[connection signal="pressed" from="HBoxContainer/GlossaryButton" to="." method="_on_GlossaryButton_pressed"]
 [connection signal="pressed" from="EditorTimeline/EventTools/VBoxContainer2/AddTimelineButton" to="." method="_on_AddTimelineButton_pressed"]
 [connection signal="item_rmb_selected" from="EditorTimeline/EventTools/VBoxContainer2/DialogItemList" to="." method="_on_DialogItemList_item_rmb_selected"]
 [connection signal="item_selected" from="EditorTimeline/EventTools/VBoxContainer2/DialogItemList" to="." method="_on_DialogItemList_item_selected"]
@@ -1694,6 +1703,7 @@ __meta__ = {
 [connection signal="pressed" from="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer/ButtonChangeTimeline" to="." method="_on_ButtonChangeTimeline_pressed"]
 [connection signal="pressed" from="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer/ButtonBackground" to="." method="_on_ButtonBackground_pressed"]
 [connection signal="pressed" from="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer/ButtonCloseDialog" to="." method="_on_ButtonCloseDialog_pressed"]
+[connection signal="pressed" from="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer/ButtonWait" to="." method="_on_ButtonWait_pressed"]
 [connection signal="pressed" from="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer/ButtonAudio" to="." method="_on_ButtonAudio_pressed"]
 [connection signal="pressed" from="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer/ButtonEmitSignal" to="." method="_on_ButtonEmitSignal_pressed"]
 [connection signal="pressed" from="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer/ButtonChangeScene" to="." method="_on_ButtonChangeScene_pressed"]

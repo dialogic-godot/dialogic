@@ -1,7 +1,7 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=7 format=2]
 
-[ext_resource path="res://addons/dialogic/Images/signal.svg" type="Texture" id=1]
-[ext_resource path="res://addons/dialogic/Editor/Pieces/EmitSignal.gd" type="Script" id=2]
+[ext_resource path="res://addons/dialogic/Images/Wait.svg" type="Texture" id=1]
+[ext_resource path="res://addons/dialogic/Editor/Pieces/WaitSeconds.gd" type="Script" id=2]
 [ext_resource path="res://addons/dialogic/Editor/Pieces/Common/VisibleToggle.tscn" type="PackedScene" id=3]
 [ext_resource path="res://addons/dialogic/Editor/Pieces/Common/PieceExtraSettings.tscn" type="PackedScene" id=4]
 [ext_resource path="res://addons/dialogic/Editor/Pieces/Common/DragController.tscn" type="PackedScene" id=5]
@@ -17,16 +17,7 @@ corner_radius_top_right = 6
 corner_radius_bottom_right = 6
 corner_radius_bottom_left = 6
 
-[sub_resource type="StyleBoxFlat" id=2]
-bg_color = Color( 0.745098, 0.745098, 0.745098, 1 )
-corner_radius_top_left = 4
-corner_radius_top_right = 4
-corner_radius_bottom_right = 4
-corner_radius_bottom_left = 4
-expand_margin_left = 5.0
-expand_margin_right = 5.0
-
-[node name="EmitSignal" type="HBoxContainer"]
+[node name="WaitSeconds" type="HBoxContainer"]
 margin_right = 1004.0
 margin_bottom = 42.0
 size_flags_horizontal = 3
@@ -75,37 +66,35 @@ stretch_mode = 6
 [node name="Title" type="Label" parent="PanelContainer/VBoxContainer/Header"]
 margin_left = 60.0
 margin_top = 8.0
-margin_right = 158.0
+margin_right = 109.0
 margin_bottom = 22.0
-text = "  Emit Signal     "
+text = "  Wait   "
 
-[node name="LineEdit" type="LineEdit" parent="PanelContainer/VBoxContainer/Header"]
-margin_left = 162.0
-margin_right = 210.0
+[node name="SpinBox" type="SpinBox" parent="PanelContainer/VBoxContainer/Header"]
+margin_left = 113.0
+margin_right = 187.0
 margin_bottom = 30.0
-custom_styles/read_only = SubResource( 2 )
-custom_styles/focus = SubResource( 2 )
-custom_styles/normal = SubResource( 2 )
-custom_colors/selection_color = Color( 0.345098, 0.345098, 0.345098, 1 )
-custom_colors/cursor_color = Color( 0, 0, 0, 1 )
-custom_colors/clear_button_color_pressed = Color( 0, 0, 0, 1 )
-custom_colors/font_color_selected = Color( 0, 0, 0, 1 )
-custom_colors/font_color = Color( 0, 0, 0, 1 )
-custom_colors/clear_button_color = Color( 0, 0, 0, 1 )
-custom_colors/font_color_uneditable = Color( 0, 0, 0, 1 )
-expand_to_text_length = true
-caret_blink = true
-caret_blink_speed = 0.5
+min_value = 0.1
+value = 0.1
+allow_greater = true
+align = 1
+
+[node name="Title2" type="Label" parent="PanelContainer/VBoxContainer/Header"]
+margin_left = 191.0
+margin_top = 8.0
+margin_right = 252.0
+margin_bottom = 22.0
+text = "  Seconds"
 
 [node name="Preview" type="Label" parent="PanelContainer/VBoxContainer/Header"]
-margin_left = 214.0
+margin_left = 256.0
 margin_top = 8.0
-margin_right = 214.0
+margin_right = 256.0
 margin_bottom = 22.0
 custom_colors/font_color = Color( 1, 1, 1, 0.513726 )
 
 [node name="Spacer" type="Control" parent="PanelContainer/VBoxContainer/Header"]
-margin_left = 218.0
+margin_left = 260.0
 margin_right = 951.0
 margin_bottom = 30.0
 size_flags_horizontal = 3
@@ -116,4 +105,4 @@ margin_right = 992.0
 items = [ "Move Up", null, 0, false, false, 0, 0, null, "", false, "Move Down", null, 0, false, false, 1, 0, null, "", false, "", null, 0, false, false, 2, 0, null, "", true, "Remove", null, 0, false, false, 3, 0, null, "", false ]
 
 [node name="DragController" parent="." instance=ExtResource( 5 )]
-[connection signal="text_changed" from="PanelContainer/VBoxContainer/Header/LineEdit" to="." method="_on_LineEdit_text_changed"]
+[connection signal="value_changed" from="PanelContainer/VBoxContainer/Header/SpinBox" to="." method="_on_SpinBox_value_changed"]

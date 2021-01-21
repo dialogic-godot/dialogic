@@ -103,6 +103,10 @@ func _on_ButtonChangeScene_pressed():
 	create_event("ChangeScene", {'change_scene': ''})
 
 
+func _on_ButtonWait_pressed():
+	create_event("WaitSeconds", {'wait_seconds': 0})
+
+
 func _on_ButtonEndBranch_pressed():
 	pass # Replace with function body.
 
@@ -212,6 +216,8 @@ func load_timeline(path):
 				create_event("ChangeScene", i)
 			{'close_dialog'}:
 				create_event("CloseDialog", i)
+			{'wait_seconds'}:
+				create_event("WaitSeconds", i)
 			{'condition'}:
 				create_event("IfCondition", i)
 
@@ -531,6 +537,9 @@ func compare_dicts(dict_1, dict_2):
 func dprint(what):
 	if debug_mode:
 		print(what)
+
+
+
 
 
 

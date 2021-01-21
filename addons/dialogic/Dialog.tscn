@@ -275,7 +275,10 @@ __meta__ = {
 }
 
 [node name="Timer" type="Timer" parent="GlossaryInfo"]
+
+[node name="WaitSeconds" type="Timer" parent="."]
 [connection signal="meta_hover_ended" from="TextBubble/RichTextLabel" to="." method="_on_RichTextLabel_meta_hover_ended"]
 [connection signal="meta_hover_started" from="TextBubble/RichTextLabel" to="." method="_on_RichTextLabel_meta_hover_started"]
 [connection signal="tween_completed" from="TextBubble/Tween" to="." method="_on_Tween_tween_completed"]
 [connection signal="timeout" from="GlossaryInfo/Timer" to="." method="_on_Glossary_Timer_timeout"]
+[connection signal="timeout" from="WaitSeconds" to="." method="_on_WaitSeconds_timeout"]

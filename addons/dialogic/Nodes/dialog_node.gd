@@ -310,6 +310,8 @@ func event_handler(event: Dictionary):
 			emit_signal("dialogic_signal", event['emit_signal'])
 		{'close_dialog'}:
 			queue_free()
+		{'wait_seconds'}:
+			wait_seconds(event['wait_seconds'])
 		{'change_timeline'}:
 			dialog_script = set_current_dialog('/' + event['change_timeline'])
 			dialog_index = 0
@@ -511,3 +513,14 @@ func _on_Glossary_Timer_timeout():
 	# Adding a timer to avoid a graphical glitch
 	glossary_visible = false
 	$GlossaryInfo.visible = glossary_visible
+
+
+func wait_seconds(seconds):
+	$WaitSeconds.start(seconds)
+	$TextBubble.visible = false
+
+
+func _on_WaitSeconds_timeout():
+	$WaitSeconds.stop()
+	$TextBubble.visible = true
+	load_dialog()
