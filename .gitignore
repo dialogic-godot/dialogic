@@ -12,3 +12,5 @@ test-scenes
 /addons/godot-plugin-refresher
 /addons/explore-editor-theme
 /previous
+export_presets.cfg
+/builds

@@ -18,6 +18,10 @@ If you want to know more you can read the [official documentation page](https://
 Yes, you can use Dialogic to make any kind of game (even commercial ones). The project is developed under the [MIT License](https://github.com/coppolaemilio/dialogic/blob/master/LICENSE).
 
 
+### Why are the dialogs are not working when exporting my project?
+When you export a project using Dialogic, you need to add `*.json` on the Resources tab (see the image below) and also make sure to copy the `dialogic` folder to the same place where the executable of your game is (again, see bottom right side of the image).
+![Screenshot](https://coppolaemilio.com/images/dialogic/exporting.png)
+
 ---
 
 ## Changelog
