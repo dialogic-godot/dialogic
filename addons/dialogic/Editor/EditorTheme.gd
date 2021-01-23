@@ -36,7 +36,8 @@ onready var n = {
 	'button_offset_y': $VBoxContainer/HBoxContainer2/ButtonStyle/GridContainer/HBoxContainer/TextOffsetV,
 	'button_separation': $VBoxContainer/HBoxContainer2/ButtonStyle/GridContainer/VerticalSeparation,
 	# Glossary
-	
+	'glossary_font': $VBoxContainer/HBoxContainer2/Glossary/GridContainer/FontButton,
+	'glossary_color': $VBoxContainer/HBoxContainer2/Glossary/GridContainer/ColorPickerButton,
 }
 
 func _ready():
@@ -82,6 +83,9 @@ func _ready():
 	n['button_offset_x'].value = settings['button_offset_x']
 	n['button_offset_y'].value = settings['button_offset_y']
 	n['button_separation'].value = settings['button_separation']
+	
+	n['glossary_color'].color = Color(settings['glossary_color'])
+	n['glossary_font'].text = DialogicUtil.get_filename_from_path(settings['glossary_font'])
 
 	#Refreshing the dialog 
 	_on_PreviewButton_pressed()
@@ -220,3 +224,16 @@ func _on_ButtonTextColor_color_changed(color):
 
 func _on_Custom_Button_Color_toggled(button_pressed):
 	DialogicUtil.update_setting('button_text_color_enabled', button_pressed)
+
+
+func _on_GlossaryColorPicker_color_changed(color):
+	DialogicUtil.update_setting('glossary_color', '#' + color.to_html())
+
+
+func _on_GlossaryFontButton_pressed():
+	editor_reference.godot_dialog("*.tres")
+	editor_reference.godot_dialog_connect(self, "_on_Glossary_Font_selected")
+
+func _on_Glossary_Font_selected(path, target):
+	DialogicUtil.update_setting('glossary_font', path)
+	n['glossary_font'].text = DialogicUtil.get_filename_from_path(path)

@@ -26,6 +26,9 @@ var questions #for keeping track of the questions answered
 
 
 func _ready():
+	# Loading the theme first to have the `settings` ready.
+	load_theme()
+	
 	# Checking if the dialog should read the code from a external file
 	if timeline != '':
 		dialog_script = set_current_dialog('/' + timeline + '.json')
@@ -43,7 +46,6 @@ func _ready():
 	# Getting the character information
 	characters = DialogicUtil.get_character_list()
 	
-	load_theme()
 	load_dialog()
 
 
@@ -56,6 +58,7 @@ func resize_main():
 func set_current_dialog(dialog_path):
 	var dialog_script = DialogicUtil.load_json(DialogicUtil.get_path('TIMELINE_DIR', dialog_path))
 	dialog_script = parse_branches(dialog_script)
+	dialog_script = parse_glossary(dialog_script)
 	return dialog_script
 
 
@@ -95,40 +98,29 @@ func parse_branches(unparsed_dialog_script: Dictionary) -> Dictionary:
 		new_events.append(event)
 		event_id += 1
 
-	#print('----------------- Parsed events -------------------')
-	#print(parsed_dialog)
-	#print('------------------- Questions ---------------------')
-	#print(questions)
-	#print('---------------------------------------------------')
 	parsed_dialog['events'] = new_events
 	return parsed_dialog
 
 
-func parse_text(text):
-	# This will parse the text and automatically format some of your available variables
-	var end_text = text
+func parse_glossary(dialog_script):
+	print('[+] Parsing glossary terms')
+	var glossary = DialogicUtil.load_glossary()
+	var words = []
+	for g in glossary:
+		words.append(glossary[g]['name'])
 	
-	# for character variables
-	#if '{' and '}' in end_text:
-	#	for c in characters: #dialog_resource.characters:
-	#		if c.name in end_text:
-	#			end_text = end_text.replace('{' + c.name + '}',
-	#				'[color=#' + c.color.to_html() + ']' + c.name + '[/color]'
-	#			)
-		
-	var c_variable
-	#for key in dialog_resource.custom_variables.keys():
-	#	c_variable = dialog_resource.custom_variables[key]
-	#	# If it is a dictionary, get the label key
-	#	if typeof(c_variable) == TYPE_DICTIONARY:
-	#		if c_variable.has('label'):
-	#			if '.value' in end_text:
-	#				end_text = end_text.replace(key + '.value', c_variable['value'])
-	#			end_text = end_text.replace('[' + key + ']', c_variable['label'])
-	#	# Otherwise, just replace the value
-	#	else:
-	#		end_text = end_text.replace('[' + key + ']', c_variable)
-	return end_text
+	var index = 0
+	for t in dialog_script['events']:
+		var text = t['text']
+		for w in words:
+			dialog_script['events'][index]['text'] = t['text'].replace(w,
+				'[url=<url>]' +
+					'[color=' + settings['glossary_color'] + ']' + w + '[/color]' +
+				'[/url]'
+			)
+		index += 1
+	print(dialog_script)
+	return dialog_script
 
 
 func _process(_delta):
@@ -185,7 +177,7 @@ func update_name(character, color='FFFFFF'):
 
 func update_text(text):
 	# Updating the text and starting the animation from 0
-	$TextBubble/RichTextLabel.bbcode_text = parse_text(text)
+	$TextBubble/RichTextLabel.bbcode_text = text
 	$TextBubble/RichTextLabel.percent_visible = 0
 	
 	# The call to this function needs to be deferred. 
@@ -495,7 +487,11 @@ func load_theme() -> void:
 	# Next image
 	$TextBubble/NextIndicator.texture = load(settings['theme_next_image'])
 	input_next = settings['theme_action_key']
-
+	
+	# Glossary
+	$GlossaryInfo/VBoxContainer/Title.set('custom_fonts/normal_font', load(settings['glossary_font']))
+	$GlossaryInfo/VBoxContainer/Content.set('custom_fonts/normal_font', load(settings['glossary_font']))
+	$GlossaryInfo/VBoxContainer/Extra.set('custom_fonts/normal_font', load(settings['glossary_font']))
 
 func _on_RichTextLabel_meta_hover_started(meta):
 	glossary_visible = true

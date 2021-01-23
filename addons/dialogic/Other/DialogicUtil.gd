@@ -51,21 +51,6 @@ static func load_settings() -> Dictionary:
 		return defaults
 
 
-static func load_glossary() -> Dictionary:
-	var directory = Directory.new();
-	if directory.file_exists(get_path('GLOSSARY_FILE')):
-		var glossary: Dictionary = load_json(get_path('GLOSSARY_FILE'))
-		if glossary.has('error'):
-			glossary = {}
-		return glossary
-	else:
-		var file:File = File.new()
-		file.open(get_path('GLOSSARY_FILE'), File.WRITE)
-		file.store_line(to_json({}))
-		file.close()
-		return {}
-
-
 static func save_glossary(glossary) -> void:
 	var file:File = File.new()
 	file.open(get_path('GLOSSARY_FILE'), File.WRITE)
@@ -179,6 +164,20 @@ static func get_timeline_list() -> Array:
 	return timelines
 
 
+static func load_glossary() -> Dictionary:
+	var directory = Directory.new();
+	if directory.file_exists(get_path('GLOSSARY_FILE')):
+		var glossary: Dictionary = load_json(get_path('GLOSSARY_FILE'))
+		if glossary.has('error'):
+			glossary = {}
+		return glossary
+	else:
+		var file:File = File.new()
+		file.open(get_path('GLOSSARY_FILE'), File.WRITE)
+		file.store_line(to_json({}))
+		file.close()
+		return {}
+
 static func default_settings():
 	var ds = {
 		"background_texture_button_visible": true,
@@ -205,7 +204,10 @@ static func default_settings():
 		"theme_text_margin_h": 20,
 		"theme_text_shadow": false,
 		"theme_text_shadow_color": "#9e000000",
-		"theme_text_speed": 2
+		"theme_text_speed": 2,
+		
+		"glossary_font": "res://addons/dialogic/Fonts/GlossaryFont.tres",
+		"glossary_color": "#ffffffff",
 	}
 	return ds
 

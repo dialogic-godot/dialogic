@@ -4,5 +4,5 @@
 font_path = "res://addons/dialogic/Fonts/Overlock/Overlock-Black.ttf"
 
 [resource]
-size = 30
+size = 20
 font_data = SubResource( 1 )
