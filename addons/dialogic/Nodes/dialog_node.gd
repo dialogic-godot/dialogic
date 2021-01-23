@@ -109,17 +109,18 @@ func parse_glossary(dialog_script):
 	for g in glossary:
 		words.append(glossary[g]['name'])
 	
-	var index = 0
-	for t in dialog_script['events']:
-		var text = t['text']
-		for w in words:
-			dialog_script['events'][index]['text'] = t['text'].replace(w,
-				'[url=<url>]' +
-					'[color=' + settings['glossary_color'] + ']' + w + '[/color]' +
-				'[/url]'
-			)
-		index += 1
-	print(dialog_script)
+	if words.size() > 0:
+		var index = 0
+		for t in dialog_script['events']:
+			var text = t['text']
+			for w in words:
+				dialog_script['events'][index]['text'] = t['text'].replace(w,
+					'[url=<url>]' +
+						'[color=' + settings['glossary_color'] + ']' + w + '[/color]' +
+					'[/url]'
+				)
+			index += 1
+		print(dialog_script)
 	return dialog_script
 
 
@@ -187,6 +188,10 @@ func update_text(text):
 
 
 func load_dialog(skip_add = false):
+	# Hiding glossary
+	glossary_visible = false
+	$GlossaryInfo.visible = glossary_visible
+	
 	# This will load the next entry in the dialog_script array.
 	if dialog_script.has('events'):
 		if dialog_index < dialog_script['events'].size():
