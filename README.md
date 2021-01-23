@@ -22,6 +22,7 @@ The plugin is not production ready, this means that it will not work in your gam
     - New `Change Scene` event. You can change the current Scene to whatever `.tscn` you pick. This will happen instantly, but in the future I'll add some transition effects so it is not that abrupt.
     - New `Wait Seconds` event. This will hide the dialog and wait X seconds until continuing with the rest of the timeline. 
     - Re-adding the `End Branch` event.
+    - Renamed the `Copy Timeline ID` right click menu option to `Copy Timeline Name` since you now have to use that to set the current timeline from code instead of the ID.
   - New `Dialogic` class. With this new class you can add dialogs from code easily:
     ```
     var new_dialog = Dialogic.start('Your Timeline Name Here')
@@ -87,6 +88,11 @@ Placeholder images are from Toen's YouTube DF series:
 - Chris Shove
 - Luke Peters
 - Wapiti
+- Noah Felt
+- Penny
+- Lukas Stranzl
+- Sl Tu
+- Garrett Guillotte
 
 Support me on [Patreon https://www.patreon.com/coppolaemilio](https://www.patreon.com/coppolaemilio)
 

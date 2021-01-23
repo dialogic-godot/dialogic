@@ -309,9 +309,9 @@ func _on_TimelinePopupMenu_id_pressed(id):
 	if id == 1:
 		OS.shell_open(ProjectSettings.globalize_path(DialogicUtil.get_path('TIMELINE_DIR')))
 	if id == 2:
-		var current_id = DialogicUtil.get_filename_from_path(working_dialog_file)
-		if current_id != '':
-			OS.set_clipboard(current_id)
+		#var current_id = DialogicUtil.get_filename_from_path(working_dialog_file)
+		#if current_id != '':
+		OS.set_clipboard(timeline_name)
 	if id == 3:
 		$RemoveTimelineConfirmation.popup_centered()
 
