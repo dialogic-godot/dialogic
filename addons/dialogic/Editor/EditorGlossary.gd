@@ -19,20 +19,28 @@ func _ready():
 	glossary = DialogicUtil.load_glossary()
 	last_saved_glossary = DialogicUtil.load_glossary()
 	
-	nodes['name'].connect("text_changed", self, '_on_field_text_changed', [nodes['name']])
+	nodes['name'].connect("text_changed", self, '_on_field_name_changed', [nodes['name']])
+	refresh_list()
+	nodes['title'].connect("text_changed", self, '_on_field_text_changed', ['title'])
+	refresh_list()
+	nodes['body'].connect("text_changed", self, '_on_field_text_changed', ['', 'body'])
+	refresh_list()
+	nodes['extra'].connect("text_changed", self, '_on_field_text_changed', ['extra'])
 	refresh_list()
 
 
-func _on_field_text_changed(new_text, node):
-	if node == nodes['name']:
-		var f_text = new_text
-		glossary[current_entry]['name'] = new_text
-		if f_text == '':
-			f_text = current_entry
-		var item_id = $VBoxContainer/ItemList.get_selected_items()[0]		
-		$VBoxContainer/ItemList.set_item_text(item_id, f_text)
-	#print(new_text, node)
+func _on_field_text_changed(new_text, key):
+	if key == 'body':
+		new_text = nodes['body'].text
+	glossary[current_entry][key] = new_text
 	
+func _on_field_name_changed(new_text):
+	var f_text = new_text
+	glossary[current_entry]['name'] = new_text
+	if f_text == '':
+		f_text = current_entry
+	var item_id = $VBoxContainer/ItemList.get_selected_items()[0]		
+	$VBoxContainer/ItemList.set_item_text(item_id, f_text)
 
 func _on_NewEntryButton_pressed():
 	var index = 0

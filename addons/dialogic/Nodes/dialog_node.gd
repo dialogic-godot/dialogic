@@ -9,6 +9,7 @@ var waiting_for_answer: bool = false
 var waiting_for_input: bool = false
 var glossary_visible: bool = false
 var settings
+var glossary
 
 #export(String) var timeline: String # Timeline-var-replace
 
@@ -24,10 +25,12 @@ onready var Portrait = load("res://addons/dialogic/Nodes/Portrait.tscn")
 var dialog_script = {}
 var questions #for keeping track of the questions answered
 
-
 func _ready():
 	# Loading the theme first to have the `settings` ready.
 	load_theme()
+	
+	# Loading the glossary
+	glossary = DialogicUtil.load_glossary()
 	
 	# Checking if the dialog should read the code from a external file
 	if timeline != '':
@@ -104,7 +107,6 @@ func parse_branches(unparsed_dialog_script: Dictionary) -> Dictionary:
 
 func parse_glossary(dialog_script):
 	print('[+] Parsing glossary terms')
-	var glossary = DialogicUtil.load_glossary()
 	var words = []
 	for g in glossary:
 		words.append(glossary[g]['name'])
@@ -113,10 +115,10 @@ func parse_glossary(dialog_script):
 		var index = 0
 		for t in dialog_script['events']:
 			var text = t['text']
-			for w in words:
-				dialog_script['events'][index]['text'] = t['text'].replace(w,
-					'[url=<url>]' +
-						'[color=' + settings['glossary_color'] + ']' + w + '[/color]' +
+			for w in glossary:
+				dialog_script['events'][index]['text'] = t['text'].replace(glossary[w]['name'],
+					'[url=' + glossary[w]['name'] + ']' +
+						'[color=' + settings['glossary_color'] + ']' + glossary[w]['name'] + '[/color]' +
 					'[/url]'
 				)
 			index += 1
@@ -126,11 +128,6 @@ func parse_glossary(dialog_script):
 
 func _process(_delta):
 	$TextBubble/NextIndicator.visible = finished
-	if glossary_visible: 
-		if get_local_mouse_position().x - $GlossaryInfo.rect_size.x < 0:
-			$GlossaryInfo.rect_global_position = get_global_mouse_position() - Vector2(0, $GlossaryInfo.rect_size.y)
-		else:
-			$GlossaryInfo.rect_global_position = get_global_mouse_position() - $GlossaryInfo.rect_size
 	if Engine.is_editor_hint() == false:
 		# Multiple choices
 		if waiting_for_answer:
@@ -499,6 +496,10 @@ func load_theme() -> void:
 	$GlossaryInfo/VBoxContainer/Extra.set('custom_fonts/normal_font', load(settings['glossary_font']))
 
 func _on_RichTextLabel_meta_hover_started(meta):
+	for g in glossary:
+		if glossary[g]['name'] == meta:
+			$GlossaryInfo.load_preview(glossary[g])
+
 	glossary_visible = true
 	$GlossaryInfo.visible = glossary_visible
 	# Adding a timer to avoid a graphical glitch
@@ -507,6 +508,7 @@ func _on_RichTextLabel_meta_hover_started(meta):
 
 func _on_RichTextLabel_meta_hover_ended(meta):
 	# Adding a timer to avoid a graphical glitch
+	
 	$GlossaryInfo/Timer.start(0.1)
 
 

@@ -256,7 +256,6 @@ items = [ "Testing Glossary", ExtResource( 15 ), false, "Whatever with spaces", 
 allow_rmb_select = true
 
 [node name="CenterContainer" type="CenterContainer" parent="EditorTimeline"]
-visible = false
 margin_left = 192.0
 margin_right = 1253.0
 margin_bottom = 661.0
@@ -287,6 +286,7 @@ __meta__ = {
 }
 
 [node name="TimelineEditor" type="HSplitContainer" parent="EditorTimeline"]
+visible = false
 margin_left = 192.0
 margin_right = 1253.0
 margin_bottom = 661.0
@@ -588,7 +588,7 @@ margin_right = 140.0
 margin_bottom = 661.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-items = [ "manola", SubResource( 5 ), false, "Segunda", SubResource( 5 ), false, "asdadd", SubResource( 5 ), false, "whatever", SubResource( 5 ), false, "ssss", SubResource( 5 ), false ]
+items = [ "Glossary", SubResource( 5 ), false, "manola", SubResource( 5 ), false, "asdadd", SubResource( 5 ), false, "whatever", SubResource( 5 ), false, "ssss", SubResource( 5 ), false ]
 allow_rmb_select = true
 
 [node name="ScrollContainer" type="ScrollContainer" parent="EditorGlossary"]
@@ -604,23 +604,22 @@ size_flags_vertical = 3
 
 [node name="HBoxContainer" type="HBoxContainer" parent="EditorGlossary/ScrollContainer/VBoxContainer"]
 margin_right = 1101.0
-margin_bottom = 212.0
+margin_bottom = 220.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="EditorGlossary/ScrollContainer/VBoxContainer/HBoxContainer"]
 margin_right = 300.0
-margin_bottom = 212.0
+margin_bottom = 220.0
 rect_min_size = Vector2( 300, 0 )
 
 [node name="Label" type="Label" parent="EditorGlossary/ScrollContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
 margin_right = 300.0
 margin_bottom = 14.0
-text = "Internal"
+text = "Name"
 
 [node name="LineEdit3" type="LineEdit" parent="EditorGlossary/ScrollContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
 margin_top = 18.0
 margin_right = 300.0
 margin_bottom = 42.0
-placeholder_text = "Name"
 
 [node name="MenuButton" type="OptionButton" parent="EditorGlossary/ScrollContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
 visible = false
@@ -636,48 +635,26 @@ selected = 0
 margin_top = 46.0
 margin_right = 300.0
 margin_bottom = 60.0
-text = "Title"
+text = "Text:"
 
 [node name="LineEdit" type="LineEdit" parent="EditorGlossary/ScrollContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
 margin_top = 64.0
 margin_right = 300.0
 margin_bottom = 88.0
-placeholder_text = "Title"
-
-[node name="Label2" type="Label" parent="EditorGlossary/ScrollContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
-margin_top = 92.0
-margin_right = 300.0
-margin_bottom = 106.0
-text = "Body"
 
 [node name="RichTextLabel" type="TextEdit" parent="EditorGlossary/ScrollContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
-margin_top = 110.0
+margin_top = 92.0
 margin_right = 300.0
-margin_bottom = 160.0
-rect_min_size = Vector2( 0, 50 )
+margin_bottom = 192.0
+rect_min_size = Vector2( 0, 100 )
+size_flags_vertical = 3
+wrap_enabled = true
 
 [node name="LineEdit2" type="LineEdit" parent="EditorGlossary/ScrollContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
-margin_top = 164.0
+margin_top = 196.0
 margin_right = 300.0
-margin_bottom = 188.0
+margin_bottom = 220.0
 placeholder_text = "Extra"
-
-[node name="HBoxContainer" type="HBoxContainer" parent="EditorGlossary/ScrollContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
-margin_top = 192.0
-margin_right = 300.0
-margin_bottom = 212.0
-
-[node name="Label" type="Label" parent="EditorGlossary/ScrollContainer/VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer"]
-margin_top = 3.0
-margin_right = 33.0
-margin_bottom = 17.0
-text = "Color"
-
-[node name="ColorPickerButton" type="ColorPickerButton" parent="EditorGlossary/ScrollContainer/VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer"]
-margin_left = 37.0
-margin_right = 300.0
-margin_bottom = 20.0
-size_flags_horizontal = 3
 
 [node name="CenterContainer" type="CenterContainer" parent="EditorGlossary"]
 visible = false
@@ -700,7 +677,7 @@ __meta__ = {
 
 [node name="CharacterTools" type="VBoxContainer" parent="EditorCharacter"]
 margin_right = 180.0
-margin_bottom = 541.0
+margin_bottom = 661.0
 rect_min_size = Vector2( 180, 0 )
 
 [node name="Button" type="Button" parent="EditorCharacter/CharacterTools"]
@@ -711,7 +688,7 @@ text = "Add character +"
 [node name="CharacterItemList" type="ItemList" parent="EditorCharacter/CharacterTools"]
 margin_top = 24.0
 margin_right = 180.0
-margin_bottom = 541.0
+margin_bottom = 661.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 items = [ "Emilio", ExtResource( 30 ), false ]
@@ -748,8 +725,8 @@ text = "Create a character +"
 
 [node name="CharacterEditor" type="ScrollContainer" parent="EditorCharacter"]
 margin_left = 192.0
-margin_right = 997.0
-margin_bottom = 541.0
+margin_right = 1253.0
+margin_bottom = 661.0
 custom_styles/bg = SubResource( 6 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -758,21 +735,21 @@ __meta__ = {
 [node name="HBoxContainer" type="HBoxContainer" parent="EditorCharacter/CharacterEditor"]
 margin_left = 5.0
 margin_top = 5.0
-margin_right = 800.0
-margin_bottom = 536.0
+margin_right = 1056.0
+margin_bottom = 656.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="Container" type="VBoxContainer" parent="EditorCharacter/CharacterEditor/HBoxContainer"]
-margin_right = 451.0
-margin_bottom = 531.0
+margin_right = 523.0
+margin_bottom = 651.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 9
 
 [node name="Name" type="HBoxContainer" parent="EditorCharacter/CharacterEditor/HBoxContainer/Container"]
-margin_right = 451.0
+margin_right = 523.0
 margin_bottom = 24.0
 
 [node name="Label" type="Label" parent="EditorCharacter/CharacterEditor/HBoxContainer/Container/Name"]
@@ -822,7 +799,7 @@ rect_min_size = Vector2( 140, 0 )
 
 [node name="Color" type="HBoxContainer" parent="EditorCharacter/CharacterEditor/HBoxContainer/Container"]
 margin_top = 28.0
-margin_right = 451.0
+margin_right = 523.0
 margin_bottom = 48.0
 
 [node name="Label" type="Label" parent="EditorCharacter/CharacterEditor/HBoxContainer/Container/Color"]
@@ -842,7 +819,7 @@ edit_alpha = false
 
 [node name="Description" type="HBoxContainer" parent="EditorCharacter/CharacterEditor/HBoxContainer/Container"]
 margin_top = 52.0
-margin_right = 451.0
+margin_right = 523.0
 margin_bottom = 152.0
 
 [node name="Label" type="Label" parent="EditorCharacter/CharacterEditor/HBoxContainer/Container/Description"]
@@ -854,20 +831,20 @@ text = "Description: "
 
 [node name="TextEdit" type="TextEdit" parent="EditorCharacter/CharacterEditor/HBoxContainer/Container/Description"]
 margin_left = 134.0
-margin_right = 451.0
+margin_right = 523.0
 margin_bottom = 100.0
 rect_min_size = Vector2( 100, 100 )
 size_flags_horizontal = 3
 
 [node name="Separator" type="Control" parent="EditorCharacter/CharacterEditor/HBoxContainer/Container"]
 margin_top = 156.0
-margin_right = 451.0
+margin_right = 523.0
 margin_bottom = 166.0
 rect_min_size = Vector2( 0, 10 )
 
 [node name="Portraits" type="HBoxContainer" parent="EditorCharacter/CharacterEditor/HBoxContainer/Container"]
 margin_top = 170.0
-margin_right = 451.0
+margin_right = 523.0
 margin_bottom = 184.0
 
 [node name="Label" type="Label" parent="EditorCharacter/CharacterEditor/HBoxContainer/Container/Portraits"]
@@ -877,7 +854,7 @@ text = "Portraits / Expressions"
 
 [node name="Labels" type="HBoxContainer" parent="EditorCharacter/CharacterEditor/HBoxContainer/Container"]
 margin_top = 188.0
-margin_right = 451.0
+margin_right = 523.0
 margin_bottom = 202.0
 
 [node name="LineEdit" type="Label" parent="EditorCharacter/CharacterEditor/HBoxContainer/Container/Labels"]
@@ -895,27 +872,28 @@ text = "Path"
 
 [node name="ScrollContainer" type="ScrollContainer" parent="EditorCharacter/CharacterEditor/HBoxContainer/Container"]
 margin_top = 206.0
-margin_right = 451.0
-margin_bottom = 475.0
+margin_right = 523.0
+margin_bottom = 595.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="VBoxContainer" type="VBoxContainer" parent="EditorCharacter/CharacterEditor/HBoxContainer/Container/ScrollContainer"]
-margin_right = 451.0
-margin_bottom = 269.0
+margin_right = 523.0
+margin_bottom = 389.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="PortraitList" type="VBoxContainer" parent="EditorCharacter/CharacterEditor/HBoxContainer/Container/ScrollContainer/VBoxContainer"]
-margin_right = 451.0
+margin_right = 523.0
 margin_bottom = 24.0
 size_flags_horizontal = 3
 
 [node name="PortraitEntry" parent="EditorCharacter/CharacterEditor/HBoxContainer/Container/ScrollContainer/VBoxContainer/PortraitList" instance=ExtResource( 23 )]
+margin_right = 523.0
 
 [node name="HBoxContainer" type="HBoxContainer" parent="EditorCharacter/CharacterEditor/HBoxContainer/Container/ScrollContainer/VBoxContainer"]
 margin_top = 28.0
-margin_right = 451.0
+margin_right = 523.0
 margin_bottom = 48.0
 
 [node name="Button" type="Button" parent="EditorCharacter/CharacterEditor/HBoxContainer/Container/ScrollContainer/VBoxContainer/HBoxContainer"]
@@ -924,9 +902,9 @@ margin_bottom = 20.0
 text = " Add new + "
 
 [node name="FileName" type="HBoxContainer" parent="EditorCharacter/CharacterEditor/HBoxContainer/Container"]
-margin_top = 479.0
-margin_right = 451.0
-margin_bottom = 503.0
+margin_top = 599.0
+margin_right = 523.0
+margin_bottom = 623.0
 
 [node name="Label" type="Label" parent="EditorCharacter/CharacterEditor/HBoxContainer/Container/FileName"]
 margin_top = 5.0
@@ -937,7 +915,7 @@ text = "File:"
 
 [node name="LineEdit" type="LineEdit" parent="EditorCharacter/CharacterEditor/HBoxContainer/Container/FileName"]
 margin_left = 134.0
-margin_right = 451.0
+margin_right = 523.0
 margin_bottom = 24.0
 rect_min_size = Vector2( 140, 0 )
 focus_mode = 0
@@ -945,9 +923,9 @@ size_flags_horizontal = 3
 editable = false
 
 [node name="Actions" type="HBoxContainer" parent="EditorCharacter/CharacterEditor/HBoxContainer/Container"]
-margin_top = 507.0
-margin_right = 451.0
-margin_bottom = 531.0
+margin_top = 627.0
+margin_right = 523.0
+margin_bottom = 651.0
 
 [node name="DefaultSpeaker" type="CheckBox" parent="EditorCharacter/CharacterEditor/HBoxContainer/Container/Actions"]
 margin_right = 128.0
@@ -961,20 +939,20 @@ text = "Default Speaker"
 
 [node name="Control" type="Control" parent="EditorCharacter/CharacterEditor/HBoxContainer/Container/Actions"]
 margin_left = 132.0
-margin_right = 451.0
+margin_right = 523.0
 margin_bottom = 24.0
 size_flags_horizontal = 3
 
 [node name="VBoxContainer" type="VBoxContainer" parent="EditorCharacter/CharacterEditor/HBoxContainer"]
-margin_left = 455.0
-margin_right = 795.0
-margin_bottom = 531.0
+margin_left = 527.0
+margin_right = 1051.0
+margin_bottom = 651.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="Control" type="Panel" parent="EditorCharacter/CharacterEditor/HBoxContainer/VBoxContainer"]
-margin_right = 340.0
-margin_bottom = 531.0
+margin_right = 524.0
+margin_bottom = 651.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
@@ -1473,31 +1451,31 @@ columns = 2
 
 [node name="Label5" type="Label" parent="EditorTheme/VBoxContainer/HBoxContainer2/Glossary/GridContainer"]
 margin_top = 3.0
-margin_right = 213.0
+margin_right = 204.0
 margin_bottom = 17.0
 size_flags_horizontal = 3
 text = "Font"
 
 [node name="FontButton" type="Button" parent="EditorTheme/VBoxContainer/HBoxContainer2/Glossary/GridContainer"]
-margin_left = 223.0
+margin_left = 214.0
 margin_right = 309.0
 margin_bottom = 20.0
 size_flags_vertical = 4
-text = "DefaultFont"
+text = "GlossaryFont"
 
 [node name="Label3" type="Label" parent="EditorTheme/VBoxContainer/HBoxContainer2/Glossary/GridContainer"]
 margin_top = 32.0
-margin_right = 213.0
+margin_right = 204.0
 margin_bottom = 46.0
 text = "Color"
 
 [node name="ColorPickerButton" type="ColorPickerButton" parent="EditorTheme/VBoxContainer/HBoxContainer2/Glossary/GridContainer"]
-margin_left = 223.0
+margin_left = 214.0
 margin_top = 24.0
 margin_right = 309.0
 margin_bottom = 54.0
 rect_min_size = Vector2( 50, 30 )
-color = Color( 1, 1, 1, 1 )
+color = Color( 0.603922, 0.301961, 0.462745, 1 )
 
 [node name="Label" type="Label" parent="EditorTheme/VBoxContainer/HBoxContainer2/Glossary/GridContainer"]
 visible = false
@@ -1566,7 +1544,7 @@ margin_right = 1091.0
 margin_bottom = 60.0
 rect_min_size = Vector2( 400, 60 )
 size_flags_horizontal = 3
-text = "This is preview text. You can use  [color=#A5EFAC]BBCode[/color] to style it. Also, check out the [url=<url>]Glossary[/url]. 
+text = "This is preview text. You can use  [color=#A5EFAC]BBCode[/color] to style it. Also, check out the Glossary. 
 [wave amp=50 freq=2]You can even use effects![/wave]"
 wrap_enabled = true
 

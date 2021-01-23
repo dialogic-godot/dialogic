@@ -132,12 +132,17 @@ func _on_PreviewButton_pressed():
 		i.free()
 	var dialogic_node = load("res://addons/dialogic/Dialog.tscn")
 	var preview_dialog = dialogic_node.instance()
+	var glossary = DialogicUtil.load_glossary()
+	preview_dialog.glossary = glossary
+	preview_dialog.settings = DialogicUtil.load_settings()
+	preview_dialog.get_node('GlossaryInfo').in_theme_editor = true
 	preview_dialog.get_node('TextBubble/NextIndicator/AnimationPlayer').play('IDLE')
 	preview_dialog.dialog_script['events'] = [{
 		"character":"",
 		"portrait":"",
 		"text": n['text_preview'].text
 	}]
+	preview_dialog.parse_glossary(preview_dialog.dialog_script)
 	n['preview_panel'].add_child(preview_dialog)
 
 
