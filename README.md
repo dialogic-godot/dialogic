@@ -13,6 +13,7 @@ The plugin is not production ready, this means that it will not work in your gam
 ### 🆕 v0.9 - WIP
   - Moved `Dialog.tscn` to the root of the addon so it is easier to find.
   - New tool: Glossary Editor
+    - You are now able to write extra lore for any word and Dialogic will create a hover card with that extra information.
   - New default asset: Glossary Font
   - Theme Editor:
     - Added new options to customize the glossary popup (still not working)
