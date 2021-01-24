@@ -14,6 +14,7 @@ var margin = 10
 func _ready():
 	rect_size.y = 0
 
+
 func _process(delta):
 	if Engine.is_editor_hint() == false or in_theme_editor == true:
 		if visible:
@@ -27,25 +28,21 @@ func _process(delta):
 			$ColorRect.margin_right = rect_size.x + margin * 1.25
 			$ColorRect.margin_bottom = rect_size.y + margin
 
+
 func load_preview(info):
-	var final_h_size = 0
 	nodes['title'].visible = false
 	nodes['body'].visible = false
 	nodes['extra'].visible = false
 	
-	# 
 	if info['title'] != '':
 		nodes['title'].text = info['title']
 		nodes['title'].visible = true
 		nodes['title'].set('custom_colors/default_color', get_parent().settings['glossary_color'])
-		print('has title')
 	
 	if info['body'] != '':
 		nodes['body'].text = info['body']
 		nodes['body'].visible = true
-		print('has body')
 	
 	if info['extra'] != '':
 		nodes['extra'].text = info['extra']
 		nodes['extra'].visible = true
-		print('has extra')
