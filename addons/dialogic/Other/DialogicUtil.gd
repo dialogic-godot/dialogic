@@ -56,7 +56,6 @@ static func save_glossary(glossary) -> void:
 	file.open(get_path('GLOSSARY_FILE'), File.WRITE)
 	file.store_line(to_json(glossary))
 	file.close()
-	print(glossary)
 
 
 static func update_setting(key: String = '', value = '') -> void:

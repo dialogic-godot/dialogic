@@ -33,6 +33,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 script = ExtResource( 6 )
 __meta__ = {
+"_edit_lock_": true,
 "_edit_use_anchors_": false
 }
 
@@ -214,6 +215,7 @@ __meta__ = {
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="FX"]
 
 [node name="GlossaryInfo" type="PanelContainer" parent="."]
+visible = false
 margin_right = 208.0
 margin_bottom = 143.0
 size_flags_horizontal = 3

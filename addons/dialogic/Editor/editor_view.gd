@@ -516,8 +516,10 @@ func _on_AutoSaver_timeout():
 			if compare_dicts($EditorCharacter.opened_character_data, $EditorCharacter.generate_character_data_to_save()) == false:
 				dprint('[!] Character changes detected. Saving')
 				$EditorCharacter.save_current_character()
-	if current_editor_view == 'Glossary':
-		$EditorGlossary.save_glossary()
+	
+	# I'm trying a different approach on the glossary.
+	#if current_editor_view == 'Glossary':
+	#	$EditorGlossary.save_glossary()
 
 
 func _on_Logo_gui_input(event):
