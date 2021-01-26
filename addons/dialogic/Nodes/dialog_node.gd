@@ -111,16 +111,19 @@ func parse_glossary(dialog_script):
 	for g in glossary:
 		words.append(glossary[g]['name'])
 	
+	# I should use regex here, but this is way easier :)
+	
 	if words.size() > 0:
 		var index = 0
 		for t in dialog_script['events']:
 			var text = t['text']
 			for w in glossary:
-				dialog_script['events'][index]['text'] = t['text'].replace(glossary[w]['name'],
-					'[url=' + glossary[w]['name'] + ']' +
-						'[color=' + settings['glossary_color'] + ']' + glossary[w]['name'] + '[/color]' +
-					'[/url]'
-				)
+				if glossary[w]['type'] == 0:
+					dialog_script['events'][index]['text'] = t['text'].replace(glossary[w]['name'],
+						'[url=' + glossary[w]['name'] + ']' +
+							'[color=' + settings['glossary_color'] + ']' + glossary[w]['name'] + '[/color]' +
+						'[/url]'
+					)
 			index += 1
 		print(dialog_script)
 	return dialog_script
@@ -496,14 +499,18 @@ func load_theme() -> void:
 	$GlossaryInfo/VBoxContainer/Extra.set('custom_fonts/normal_font', load(settings['glossary_font']))
 
 func _on_RichTextLabel_meta_hover_started(meta):
+	var correct_type = false
 	for g in glossary:
 		if glossary[g]['name'] == meta:
 			$GlossaryInfo.load_preview(glossary[g])
+			if glossary[g]['type'] == 0:
+				correct_type = true
 
-	glossary_visible = true
-	$GlossaryInfo.visible = glossary_visible
-	# Adding a timer to avoid a graphical glitch
-	$GlossaryInfo/Timer.stop()
+	if correct_type:
+		glossary_visible = true
+		$GlossaryInfo.visible = glossary_visible
+		# Adding a timer to avoid a graphical glitch
+		$GlossaryInfo/Timer.stop()
 	
 
 func _on_RichTextLabel_meta_hover_ended(meta):

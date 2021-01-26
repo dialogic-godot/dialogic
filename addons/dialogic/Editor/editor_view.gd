@@ -76,7 +76,7 @@ func _on_ButtonEndChoice_pressed():
 
 
 func _on_ButtonCondition_pressed():
-	create_event("IfCondition", {'condition': ''}, true)
+	create_event("IfCondition", {'condition': '', 'glossary': ''}, true)
 
 
 func _on_ButtonCharacterLeave_pressed():
@@ -218,7 +218,7 @@ func load_timeline(path):
 				create_event("CloseDialog", i)
 			{'wait_seconds'}:
 				create_event("WaitSeconds", i)
-			{'condition'}:
+			{'condition', 'glossary'}:
 				create_event("IfCondition", i)
 
 	autosaving_hash = generate_save_data().hash()
@@ -247,7 +247,7 @@ func indent_events() -> void:
 		indent_node.visible = false
 	# Adding new indents
 	for event in event_list:
-		if event.event_data.has('question'):
+		if event.event_data.has('question') or event.event_data.has('condition'):
 			indent += 1
 			starter = true
 			question_index += 1

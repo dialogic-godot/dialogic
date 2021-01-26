@@ -63,22 +63,21 @@ margin_bottom = 30.0
 texture = ExtResource( 1 )
 stretch_mode = 6
 
-[node name="Title" type="Label" parent="PanelContainer/VBoxContainer/Header"]
+[node name="MenuButton" type="MenuButton" parent="PanelContainer/VBoxContainer/Header"]
 margin_left = 60.0
-margin_top = 8.0
-margin_right = 137.0
-margin_bottom = 22.0
-text = "  Condition  "
+margin_right = 217.0
+margin_bottom = 30.0
+text = "[ Select from glossary ]"
 
 [node name="Preview" type="Label" parent="PanelContainer/VBoxContainer/Header"]
-margin_left = 141.0
+margin_left = 221.0
 margin_top = 8.0
-margin_right = 141.0
+margin_right = 221.0
 margin_bottom = 22.0
 custom_colors/font_color = Color( 1, 1, 1, 0.513726 )
 
 [node name="Spacer" type="Control" parent="PanelContainer/VBoxContainer/Header"]
-margin_left = 145.0
+margin_left = 225.0
 margin_right = 951.0
 margin_bottom = 30.0
 size_flags_horizontal = 3
@@ -89,3 +88,4 @@ margin_right = 992.0
 items = [ "Move Up", null, 0, false, false, 0, 0, null, "", false, "Move Down", null, 0, false, false, 1, 0, null, "", false, "", null, 0, false, false, 2, 0, null, "", true, "Remove", null, 0, false, false, 3, 0, null, "", false ]
 
 [node name="DragController" parent="." instance=ExtResource( 5 )]
+[connection signal="about_to_show" from="PanelContainer/VBoxContainer/Header/MenuButton" to="." method="_on_MenuButton_about_to_show"]

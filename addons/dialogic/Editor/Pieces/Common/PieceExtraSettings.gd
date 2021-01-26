@@ -5,6 +5,7 @@ var current_piece
 
 func _ready():
 	# Gotta love the nodes system some times
+	# Praise the paths (っ´ω`c)♡
 	current_piece = get_parent().get_parent().get_parent().get_parent()
 	var popup = get_popup()
 	popup.connect("index_pressed", self, "_on_OptionSelected")

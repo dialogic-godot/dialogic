@@ -218,7 +218,6 @@ expand = true
 stretch_mode = 5
 
 [node name="EditorTimeline" type="HSplitContainer" parent="."]
-visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 6.0
@@ -256,6 +255,7 @@ items = [ "Testing Glossary", ExtResource( 15 ), false, "Whatever with spaces", 
 allow_rmb_select = true
 
 [node name="CenterContainer" type="CenterContainer" parent="EditorTimeline"]
+visible = false
 margin_left = 192.0
 margin_right = 1253.0
 margin_bottom = 661.0
@@ -286,7 +286,6 @@ __meta__ = {
 }
 
 [node name="TimelineEditor" type="HSplitContainer" parent="EditorTimeline"]
-visible = false
 margin_left = 192.0
 margin_right = 1253.0
 margin_bottom = 661.0
@@ -439,7 +438,6 @@ align = 0
 margin_top = 268.0
 margin_right = 190.0
 margin_bottom = 296.0
-disabled = true
 text = " Condition"
 icon = ExtResource( 6 )
 align = 0
@@ -560,6 +558,7 @@ icon = SubResource( 3 )
 align = 0
 
 [node name="EditorGlossary" type="HSplitContainer" parent="."]
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 6.0
@@ -603,32 +602,32 @@ size_flags_vertical = 3
 
 [node name="HBoxContainer" type="HBoxContainer" parent="EditorGlossary/ScrollContainer/VBoxContainer"]
 margin_right = 1101.0
-margin_bottom = 262.0
+margin_bottom = 351.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="EditorGlossary/ScrollContainer/VBoxContainer/HBoxContainer"]
-margin_right = 300.0
-margin_bottom = 262.0
-rect_min_size = Vector2( 300, 0 )
+margin_right = 320.0
+margin_bottom = 351.0
+rect_min_size = Vector2( 320, 0 )
 
 [node name="Label" type="Label" parent="EditorGlossary/ScrollContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
-margin_right = 300.0
+margin_right = 320.0
 margin_bottom = 14.0
 text = "Name"
 
 [node name="LineEdit3" type="LineEdit" parent="EditorGlossary/ScrollContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
 margin_top = 18.0
-margin_right = 300.0
+margin_right = 320.0
 margin_bottom = 42.0
 
 [node name="Label2" type="Label" parent="EditorGlossary/ScrollContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
 margin_top = 46.0
-margin_right = 300.0
+margin_right = 320.0
 margin_bottom = 60.0
 text = "Type:"
 
 [node name="TypeMenuButton" type="OptionButton" parent="EditorGlossary/ScrollContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
 margin_top = 64.0
-margin_right = 300.0
+margin_right = 320.0
 margin_bottom = 84.0
 text = "Extra information"
 expand_icon = true
@@ -637,31 +636,44 @@ selected = 0
 
 [node name="ExtraInfo" type="VBoxContainer" parent="EditorGlossary/ScrollContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
 margin_top = 88.0
-margin_right = 300.0
-margin_bottom = 262.0
+margin_right = 320.0
+margin_bottom = 351.0
+
+[node name="RichTextLabel2" type="Label" parent="EditorGlossary/ScrollContainer/VBoxContainer/HBoxContainer/VBoxContainer/ExtraInfo"]
+margin_right = 320.0
+margin_bottom = 31.0
+text = "A popup will display this information when a player hovers the word in a dialog. "
+autowrap = true
+
+[node name="Control" type="Control" parent="EditorGlossary/ScrollContainer/VBoxContainer/HBoxContainer/VBoxContainer/ExtraInfo"]
+margin_top = 35.0
+margin_right = 320.0
+margin_bottom = 85.0
+rect_min_size = Vector2( 0, 50 )
 
 [node name="Label3" type="Label" parent="EditorGlossary/ScrollContainer/VBoxContainer/HBoxContainer/VBoxContainer/ExtraInfo"]
-margin_right = 300.0
-margin_bottom = 14.0
+margin_top = 89.0
+margin_right = 320.0
+margin_bottom = 103.0
 text = "Title, body and extra:"
 
 [node name="LineEdit" type="LineEdit" parent="EditorGlossary/ScrollContainer/VBoxContainer/HBoxContainer/VBoxContainer/ExtraInfo"]
-margin_top = 18.0
-margin_right = 300.0
-margin_bottom = 42.0
+margin_top = 107.0
+margin_right = 320.0
+margin_bottom = 131.0
 
 [node name="RichTextLabel" type="TextEdit" parent="EditorGlossary/ScrollContainer/VBoxContainer/HBoxContainer/VBoxContainer/ExtraInfo"]
-margin_top = 46.0
-margin_right = 300.0
-margin_bottom = 146.0
+margin_top = 135.0
+margin_right = 320.0
+margin_bottom = 235.0
 rect_min_size = Vector2( 0, 100 )
 size_flags_vertical = 3
 wrap_enabled = true
 
 [node name="LineEdit2" type="LineEdit" parent="EditorGlossary/ScrollContainer/VBoxContainer/HBoxContainer/VBoxContainer/ExtraInfo"]
-margin_top = 150.0
-margin_right = 300.0
-margin_bottom = 174.0
+margin_top = 239.0
+margin_right = 320.0
+margin_bottom = 263.0
 placeholder_text = "Extra"
 
 [node name="Number" type="VBoxContainer" parent="EditorGlossary/ScrollContainer/VBoxContainer/HBoxContainer/VBoxContainer"]

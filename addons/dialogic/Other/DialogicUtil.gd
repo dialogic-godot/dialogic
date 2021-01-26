@@ -177,6 +177,15 @@ static func load_glossary() -> Dictionary:
 		file.close()
 		return {}
 
+
+static func get_glossary_by_file(filename) -> Dictionary:
+	var glossary = load_glossary()
+	for g in glossary:
+		if glossary[g]['file'] == filename:
+			return glossary[g]
+	
+	return {}
+
 static func default_settings():
 	var ds = {
 		"background_texture_button_visible": true,

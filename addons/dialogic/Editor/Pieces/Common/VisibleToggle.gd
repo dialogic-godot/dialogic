@@ -7,6 +7,7 @@ var is_disabled = false
 
 func _ready():
 	# Gotta love the nodes system some times
+	# Praise the paths (っ´ω`c)♡
 	current_piece = get_parent().get_parent().get_parent().get_parent()
 	connect("toggled", self, "_on_VisibleToggle_toggled")
 
