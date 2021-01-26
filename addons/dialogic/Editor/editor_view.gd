@@ -38,6 +38,7 @@ func _ready():
 	$EditorTheme.editor_reference = self
 	$EditorGlossary.editor_reference = self
 
+	# We connect all the event buttons to the event creation functions
 	for b in $EditorTimeline/TimelineEditor/ScrollContainer/EventContainer.get_children():
 		if b is Button:
 			if b.name == 'ButtonQuestion':

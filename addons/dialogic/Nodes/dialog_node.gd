@@ -114,15 +114,16 @@ func parse_glossary(dialog_script):
 	if words.size() > 0:
 		var index = 0
 		for t in dialog_script['events']:
-			var text = t['text']
-			for w in glossary:
-				if glossary[w]['type'] == 0:
-					dialog_script['events'][index]['text'] = t['text'].replace(glossary[w]['name'],
-						'[url=' + glossary[w]['name'] + ']' +
-							'[color=' + settings['glossary_color'] + ']' + glossary[w]['name'] + '[/color]' +
-						'[/url]'
-					)
-			index += 1
+			if t.has('text') and t.has('character'):
+				var text = t['text']
+				for w in glossary:
+					if glossary[w]['type'] == 0:
+						dialog_script['events'][index]['text'] = t['text'].replace(glossary[w]['name'],
+							'[url=' + glossary[w]['name'] + ']' +
+								'[color=' + settings['glossary_color'] + ']' + glossary[w]['name'] + '[/color]' +
+							'[/url]'
+						)
+				index += 1
 	return dialog_script
 
 
@@ -299,9 +300,10 @@ func event_handler(event: Dictionary):
 			go_to_next_event()
 		{'change_scene'}:
 			get_tree().change_scene(event['change_scene'])
-		{'emit_signal'}:
+		{'emit_signal', ..}:
 			print('[!] Emitting signal: ', event['emit_signal'])
 			emit_signal("dialogic_signal", event['emit_signal'])
+			go_to_next_event()
 		{'close_dialog'}:
 			queue_free()
 		{'wait_seconds'}:

@@ -105,4 +105,5 @@ margin_right = 992.0
 items = [ "Move Up", null, 0, false, false, 0, 0, null, "", false, "Move Down", null, 0, false, false, 1, 0, null, "", false, "", null, 0, false, false, 2, 0, null, "", true, "Remove", null, 0, false, false, 3, 0, null, "", false ]
 
 [node name="DragController" parent="." instance=ExtResource( 5 )]
+
 [connection signal="value_changed" from="PanelContainer/VBoxContainer/Header/SpinBox" to="." method="_on_SpinBox_value_changed"]
