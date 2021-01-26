@@ -52,59 +52,55 @@ func _process(delta):
 
 # Creating text node
 func _on_ButtonText_pressed():
-	create_event("TextBlock", {'character': '', 'text': '', 'portrait': ''}, true)
+	create_event("TextBlock")
 
 
 func _on_ButtonBackground_pressed():
-	create_event("SceneBlock", {'background': ''}, true)
+	create_event("SceneBlock")
 
 
 func _on_ButtonCharacter_pressed():
-	create_event("CharacterJoinBlock", {
-			'position': {"0":false,"1":false,"2":false,"3":false,"4":false},
-			'character': '',
-			'action': 'join',
-		}, true)
+	create_event("CharacterJoinBlock")
 
 
 func _on_ButtonChoice_pressed():
-	create_event("Choice", {'choice': ''}, true)
+	create_event("Choice")
 
 
 func _on_ButtonEndChoice_pressed():
-	create_event("EndChoice", {'endchoice': ''}, true)
+	create_event("EndChoice")
 
 
 func _on_ButtonCondition_pressed():
-	create_event("IfCondition", {'condition': '', 'glossary': ''}, true)
+	create_event("IfCondition")
 
 
 func _on_ButtonCharacterLeave_pressed():
-	create_event("CharacterLeaveBlock", {'action': 'leaveall','character': '[All]'}, true)
+	create_event("CharacterLeaveBlock")
 
 
 func _on_ButtonAudio_pressed():
-	create_event("AudioBlock", {'audio':'play', 'file': ''}, true)
+	create_event("AudioBlock")
 
 
 func _on_ButtonCloseDialog_pressed():
-	create_event("CloseDialog", {'close_dialog': ''}, true)
+	create_event("CloseDialog")
 
 
 func _on_ButtonChangeTimeline_pressed():
-	create_event("ChangeTimeline", {'change_timeline': ''})
+	create_event("ChangeTimeline")
 
 
 func _on_ButtonEmitSignal_pressed():
-	create_event("EmitSignal", {'emit_signal': ''})
+	create_event("EmitSignal")
 
 
 func _on_ButtonChangeScene_pressed():
-	create_event("ChangeScene", {'change_scene': ''})
+	create_event("ChangeScene")
 
 
 func _on_ButtonWait_pressed():
-	create_event("WaitSeconds", {'wait_seconds': 0})
+	create_event("WaitSeconds")
 
 
 func _on_ButtonEndBranch_pressed():
@@ -118,11 +114,12 @@ func _on_ButtonQuestion_pressed():
 	create_event("EndChoice", {'endchoice': ''}, true)
 
 
-func create_event(scene, data, indent_on_create = false):
+func create_event(scene, data = {'no-data': true}, indent_on_create = false):
 	var piece = load("res://addons/dialogic/Editor/Pieces/" + scene + ".tscn").instance()
 	piece.editor_reference = self
 	get_node(timeline_path).add_child(piece)
-	piece.load_data(data)
+	if data.has('no-data') == false:
+		piece.load_data(data)
 	events_warning.visible = false
 	if indent_on_create:
 		indent_events()

@@ -7,6 +7,7 @@ var _editor_selection: EditorSelection
 
 var _parts_inspector
 
+
 func _enter_tree() -> void:
 	_parts_inspector = preload("res://addons/dialogic/Other/inspector_timeline_picker.gd").new()
 	add_inspector_plugin(_parts_inspector)
@@ -40,13 +41,11 @@ func make_visible(visible):
 func get_plugin_icon():
 	return preload("res://addons/dialogic/Images/plugin-editor-icon.svg")
 
-	
+
 func _add_custom_editor_view():
 	_editor_view = preload("res://addons/dialogic/Editor/EditorView.tscn").instance()
 	_editor_view.plugin_reference = self
 	_editor_view.undo_redo = get_undo_redo()
-	#_panel_button = add_control_to_bottom_panel(_editor_view, "Dialog Editor")
-	#_panel_button.visible = true
 
 
 func _remove_custom_editor_view():

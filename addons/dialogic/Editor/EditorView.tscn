@@ -59,7 +59,7 @@ corner_radius_bottom_left = 5
 flags = 4
 load_path = "res://.import/ChangeScene.svg-ef7c5a102f8a9b3a1c35188b427bf44b.stex"
 
-[sub_resource type="Image" id=7]
+[sub_resource type="Image" id=4]
 data = {
 "data": PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ),
 "format": "LumAlpha8",
@@ -71,7 +71,7 @@ data = {
 [sub_resource type="ImageTexture" id=5]
 flags = 4
 flags = 4
-image = SubResource( 7 )
+image = SubResource( 4 )
 size = Vector2( 16, 16 )
 
 [sub_resource type="StyleBoxFlat" id=6]
@@ -251,11 +251,10 @@ margin_right = 180.0
 margin_bottom = 661.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-items = [ "Testing Glossary", ExtResource( 15 ), false, "Whatever with spaces", ExtResource( 15 ), false, "testing-defaults", ExtResource( 15 ), false ]
+items = [ "Whatever with spaces", ExtResource( 15 ), false, "testing-defaults", ExtResource( 15 ), false ]
 allow_rmb_select = true
 
 [node name="CenterContainer" type="CenterContainer" parent="EditorTimeline"]
-visible = false
 margin_left = 192.0
 margin_right = 1253.0
 margin_bottom = 661.0
@@ -286,6 +285,7 @@ __meta__ = {
 }
 
 [node name="TimelineEditor" type="HSplitContainer" parent="EditorTimeline"]
+visible = false
 margin_left = 192.0
 margin_right = 1253.0
 margin_bottom = 661.0
@@ -586,7 +586,7 @@ margin_right = 140.0
 margin_bottom = 661.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-items = [ "Glossary", SubResource( 5 ), false, "manola", SubResource( 5 ), false ]
+items = [ "Glossary", SubResource( 5 ), false, "age", SubResource( 5 ), false, "meme", SubResource( 5 ), false ]
 allow_rmb_select = true
 
 [node name="ScrollContainer" type="ScrollContainer" parent="EditorGlossary"]
@@ -618,6 +618,7 @@ text = "Name"
 margin_top = 18.0
 margin_right = 320.0
 margin_bottom = 42.0
+editable = false
 
 [node name="Label2" type="Label" parent="EditorGlossary/ScrollContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
 margin_top = 46.0
@@ -629,7 +630,8 @@ text = "Type:"
 margin_top = 64.0
 margin_right = 320.0
 margin_bottom = 84.0
-text = "Extra information"
+disabled = true
+text = "Extra Information"
 expand_icon = true
 items = [ "Extra information", null, false, 0, false, "Number", null, false, 0, false, "Text", null, false, 2, null ]
 selected = 0
@@ -661,6 +663,7 @@ text = "Title, body and extra:"
 margin_top = 107.0
 margin_right = 320.0
 margin_bottom = 131.0
+editable = false
 
 [node name="RichTextLabel" type="TextEdit" parent="EditorGlossary/ScrollContainer/VBoxContainer/HBoxContainer/VBoxContainer/ExtraInfo"]
 margin_top = 135.0
@@ -668,12 +671,14 @@ margin_right = 320.0
 margin_bottom = 235.0
 rect_min_size = Vector2( 0, 100 )
 size_flags_vertical = 3
+readonly = true
 wrap_enabled = true
 
 [node name="LineEdit2" type="LineEdit" parent="EditorGlossary/ScrollContainer/VBoxContainer/HBoxContainer/VBoxContainer/ExtraInfo"]
 margin_top = 239.0
 margin_right = 320.0
 margin_bottom = 263.0
+editable = false
 placeholder_text = "Extra"
 
 [node name="Number" type="VBoxContainer" parent="EditorGlossary/ScrollContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
@@ -1714,6 +1719,7 @@ margin_bottom = 52.7127
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
 [connection signal="pressed" from="HBoxContainer/EventButton" to="." method="_on_EventButton_pressed"]
 [connection signal="pressed" from="HBoxContainer/CharactersButton" to="." method="_on_CharactersButton_pressed"]
 [connection signal="pressed" from="HBoxContainer/GlossaryButton" to="." method="_on_GlossaryButton_pressed"]
