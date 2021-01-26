@@ -93,7 +93,6 @@ func parse_branches(unparsed_dialog_script: Dictionary) -> Dictionary:
 		
 		if event.has('endchoice'):
 			var c_question = questions[questions.size() - closed_question_index - 1]
-			print('closing question ', c_question)
 			new_events[c_question['event_id']]['question_id'] = closed_question_index
 			c_question['end_id'] = event_id
 			closed_question_index += 1
@@ -106,7 +105,6 @@ func parse_branches(unparsed_dialog_script: Dictionary) -> Dictionary:
 
 
 func parse_glossary(dialog_script):
-	print('[+] Parsing glossary terms')
 	var words = []
 	for g in glossary:
 		words.append(glossary[g]['name'])
@@ -125,7 +123,6 @@ func parse_glossary(dialog_script):
 						'[/url]'
 					)
 			index += 1
-		print(dialog_script)
 	return dialog_script
 
 

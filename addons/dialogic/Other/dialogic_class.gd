@@ -7,9 +7,7 @@ static func start(timeline: String):
 	var d = dialog.instance()
 	for t in DialogicUtil.get_timeline_list():
 		if t['name'] == timeline:
-			print(t)
 			d.timeline = t['file'].replace('.json', '')
-			print(d.timeline)
 			return d
 	d.dialog_script = {
 		"events":[{"character":"","portrait":"",

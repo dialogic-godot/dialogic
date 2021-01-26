@@ -156,7 +156,6 @@ func _on_ItemList_item_rmb_selected(index, at_position):
 
 func _on_ItemList_item_selected(index):
 	var selected = nodes['item_list'].get_item_text(index)
-	print(selected, nodes['item_list'].get_item_metadata(index))
 	var entry_id = nodes['item_list'].get_item_metadata(index)['file'].replace('.json', '')
 	current_entry = entry_id
 	clear_editor()
@@ -178,8 +177,7 @@ func _on_RemoveGlossaryConfirmation_confirmed():
 		if entry == entry_id:
 			glossary.erase(entry)
 	DialogicUtil.save_glossary(glossary)
-	print('[-] Removing ', nodes['item_list'].get_item_metadata(selected)['file'])
-
+	
 	clear_editor()
 	refresh_list()
 
@@ -187,9 +185,7 @@ func _on_RemoveGlossaryConfirmation_confirmed():
 func save_glossary():
 	var changed = false
 	if glossary.hash() != last_saved_glossary.hash():
-		print('[+] Saving glossary')
 		changed = true
-		DialogicUtil.save_glossary(glossary)
 		last_saved_glossary = DialogicUtil.load_glossary()
 
 
@@ -233,4 +229,3 @@ func _on_TypeMenuButton_item_selected(index):
 	glossary[current_entry]['type'] = index
 	
 	change_editor(types[index])
-	print(types[index])

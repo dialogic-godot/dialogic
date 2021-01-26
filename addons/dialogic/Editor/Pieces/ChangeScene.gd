@@ -18,7 +18,6 @@ func _on_ButtonScenePicker_pressed():
 
 
 func _on_file_selected(path, target):
-	print('[+] Scene selected ', path, target)
 	target.select_scene(path)
 
 

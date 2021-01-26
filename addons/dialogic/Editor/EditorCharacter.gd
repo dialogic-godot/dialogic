@@ -176,7 +176,6 @@ func load_character_editor(data):
 func _on_RemoveConfirmation_confirmed():
 	var selected = $CharacterTools/CharacterItemList.get_selected_items()[0]
 	var file = $CharacterTools/CharacterItemList.get_item_metadata(selected)['file']
-	print('Remove ', $CharacterTools/CharacterItemList.get_item_metadata(selected)['file'])
 	var dir = Directory.new()
 	dir.remove(DialogicUtil.get_path('CHAR_DIR', file))
 	$CharacterEditor/HBoxContainer/Container.visible = false

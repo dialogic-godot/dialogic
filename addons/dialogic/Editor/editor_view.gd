@@ -5,7 +5,7 @@ var plugin_reference
 
 var undo_redo: UndoRedo
 
-var debug_mode = true # For printing info
+var debug_mode = false # For printing info
 
 var editor_file_dialog # EditorFileDialog
 var file_picker_data = {'method': '', 'node': self}

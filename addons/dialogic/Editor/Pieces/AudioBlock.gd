@@ -23,7 +23,6 @@ func _on_ButtonAudio_pressed():
 
 
 func _on_file_selected(path, target):
-	print('[Dialogic] Loading audio block ', path, target)
 	target.load_audio(path)
 
 
@@ -40,7 +39,6 @@ func load_data(data):
 
 
 func _on_ButtonPreviewPlay_pressed():
-	print('[Dialogic] Playing audio ' + event_data['file'])
 	if $PanelContainer/AudioPreview.is_playing():
 		$PanelContainer/AudioPreview.stop()
 	else:

@@ -16,8 +16,7 @@ static func init_dialogic_files() -> void:
 		else:
 			if directory.dir_exists(paths[dir]) == false:
 				directory.make_dir(paths[dir])
-				print('[+] Creating dir: ', paths[dir])
-
+				
 
 static func load_json(path: String) -> Dictionary:
 	# An easy function to load json files and handle common errors.
