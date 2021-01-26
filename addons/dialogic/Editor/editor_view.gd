@@ -38,6 +38,13 @@ func _ready():
 	$EditorTheme.editor_reference = self
 	$EditorGlossary.editor_reference = self
 
+	for b in $EditorTimeline/TimelineEditor/ScrollContainer/EventContainer.get_children():
+		if b is Button:
+			if b.name == 'ButtonQuestion':
+				b.connect('pressed', self, "_on_ButtonQuestion_pressed", [])
+			else:
+				b.connect('pressed', self, "_create_event_button_pressed", [b.name])
+
 	# Making the dialog editor the default
 	change_tab('Timeline')
 	_on_EventButton_pressed()
@@ -50,78 +57,29 @@ func _process(delta):
 		_on_AutoSaver_timeout()
 
 
-# Creating text node
-func _on_ButtonText_pressed():
-	create_event("TextBlock")
+# Event Creation signal for buttons
+func _create_event_button_pressed(button_name):
+	create_event(button_name)
 
 
-func _on_ButtonBackground_pressed():
-	create_event("SceneBlock")
+# Special event creation for multiple events clicking one button
+func _on_ButtonQuestion_pressed() -> void:
+	create_event("Question", {'no-data': true}, true)
+	create_event("Choice", {'no-data': true}, true)
+	create_event("Choice", {'no-data': true}, true)
+	create_event("EndChoice", {'no-data': true}, true)
 
 
-func _on_ButtonCharacter_pressed():
-	create_event("CharacterJoinBlock")
-
-
-func _on_ButtonChoice_pressed():
-	create_event("Choice")
-
-
-func _on_ButtonEndChoice_pressed():
-	create_event("EndChoice")
-
-
-func _on_ButtonCondition_pressed():
-	create_event("IfCondition")
-
-
-func _on_ButtonCharacterLeave_pressed():
-	create_event("CharacterLeaveBlock")
-
-
-func _on_ButtonAudio_pressed():
-	create_event("AudioBlock")
-
-
-func _on_ButtonCloseDialog_pressed():
-	create_event("CloseDialog")
-
-
-func _on_ButtonChangeTimeline_pressed():
-	create_event("ChangeTimeline")
-
-
-func _on_ButtonEmitSignal_pressed():
-	create_event("EmitSignal")
-
-
-func _on_ButtonChangeScene_pressed():
-	create_event("ChangeScene")
-
-
-func _on_ButtonWait_pressed():
-	create_event("WaitSeconds")
-
-
-func _on_ButtonEndBranch_pressed():
-	pass # Replace with function body.
-
-
-func _on_ButtonQuestion_pressed():
-	create_event("Question", {'question': '', 'options': []}, true)
-	create_event("Choice", {'choice': ''}, true)
-	create_event("Choice", {'choice': ''}, true)
-	create_event("EndChoice", {'endchoice': ''}, true)
-
-
-func create_event(scene, data = {'no-data': true}, indent_on_create = false):
+func create_event(scene: String, data: Dictionary = {'no-data': true} , indent: bool = false):
+	# This function will create an event in the timeline.
 	var piece = load("res://addons/dialogic/Editor/Pieces/" + scene + ".tscn").instance()
 	piece.editor_reference = self
 	get_node(timeline_path).add_child(piece)
 	if data.has('no-data') == false:
 		piece.load_data(data)
 	events_warning.visible = false
-	if indent_on_create:
+	# Indent on create
+	if indent:
 		indent_events()
 	return piece
 
