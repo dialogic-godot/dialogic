@@ -72,6 +72,12 @@ func parse_branches(unparsed_dialog_script: Dictionary) -> Dictionary:
 	var new_events: Array = []
 	var event_id: int = 0
 	var closed_question_index: int = 0
+	
+	# Return the same thing if it doesn't have events
+	if unparsed_dialog_script.has('events') == false:
+		return unparsed_dialog_script
+	
+	# Parsing
 	for event in unparsed_dialog_script['events']:
 		if event.has('question'):
 			# recording the existance of a question
