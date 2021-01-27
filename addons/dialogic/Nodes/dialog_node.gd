@@ -1,6 +1,7 @@
 tool
 extends Control
 
+var debug_mode = true
 var input_next: String = 'ui_accept'
 var dialog_index: int = 0
 var finished: bool = false
@@ -216,7 +217,7 @@ func event_handler(event: Dictionary):
 	# Handling an event and updating the available nodes accordingly. 
 	reset_dialog_extras()
 	match event:
-		{'text', 'character'}, {'text', 'character', ..}:
+		{'text', 'character', 'portrait'}:
 			show_dialog()
 			finished = false
 			var character_data = get_character(event['character'])
@@ -275,14 +276,6 @@ func event_handler(event: Dictionary):
 						$Portraits.add_child(p)
 						p.fade_in()
 						go_to_next_event()
-		#{'action'}:
-		#	if event['action'] == 'game_end':
-		#		get_tree().quit()
-		#	if event['action'] == 'focusout_portraits':
-		#		for p in $Portraits.get_children():
-		#			p.focusout()
-		#		dialog_index += 1
-		#		load_dialog(true)
 		{'scene'}:
 			get_tree().change_scene(event['scene'])
 		{'background'}:
@@ -301,7 +294,7 @@ func event_handler(event: Dictionary):
 		{'change_scene'}:
 			get_tree().change_scene(event['change_scene'])
 		{'emit_signal', ..}:
-			print('[!] Emitting signal: ', event['emit_signal'])
+			print('[!] Emitting signal: dialogic_signal(', event['emit_signal'], ')')
 			emit_signal("dialogic_signal", event['emit_signal'])
 			go_to_next_event()
 		{'close_dialog'}:
@@ -314,7 +307,7 @@ func event_handler(event: Dictionary):
 			load_dialog(true)
 		_:
 			visible = false
-			print('Other event. ', event)
+			dprint('Other event. ', event)
 
 
 func _on_input_set(variable):
@@ -379,6 +372,7 @@ func add_choice_button(option):
 	
 	$Options.add_child(button)
 
+
 func answer_question(i, event_id, question_id):
 	print('[!] Going to ', event_id + 1, i, 'question_id:', question_id)
 	print('')
@@ -395,8 +389,8 @@ func _on_option_selected(option, variable, value):
 	waiting_for_answer = false
 	reset_options()
 	load_dialog()
-	print('[!] Option selected: ', option.text, ' value= ' , value)
 	#print(dialog_resource.custom_variables)
+	print('[!] Option selected: ', option.text, ' value= ' , value)
 
 
 func _on_Tween_tween_completed(object, key):
@@ -497,6 +491,7 @@ func load_theme() -> void:
 	$GlossaryInfo/VBoxContainer/Content.set('custom_fonts/normal_font', load(settings['glossary_font']))
 	$GlossaryInfo/VBoxContainer/Extra.set('custom_fonts/normal_font', load(settings['glossary_font']))
 
+
 func _on_RichTextLabel_meta_hover_started(meta):
 	var correct_type = false
 	for g in glossary:
@@ -533,3 +528,8 @@ func _on_WaitSeconds_timeout():
 	$WaitSeconds.stop()
 	$TextBubble.visible = true
 	load_dialog()
+
+
+func dprint(string, arg1='', arg2='', arg3=''):
+	if debug_mode:
+		print(str(string) + str(arg1) + str(arg2) + str(arg3))

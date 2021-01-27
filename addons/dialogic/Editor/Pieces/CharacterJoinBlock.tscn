@@ -18,7 +18,7 @@ corner_radius_top_right = 6
 corner_radius_bottom_right = 6
 corner_radius_bottom_left = 6
 
-[node name="CharacterBlock" type="HBoxContainer"]
+[node name="CharacterJoinBlock" type="HBoxContainer"]
 margin_right = 1798.0
 margin_bottom = 42.0
 size_flags_horizontal = 3
