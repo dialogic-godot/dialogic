@@ -1,6 +1,7 @@
 tool
 extends Control
 
+var last_mouse_mode = null
 var debug_mode = true
 var input_next: String = 'ui_accept'
 var dialog_index: int = 0
@@ -377,6 +378,8 @@ func add_choice_button(option):
 
 	button.connect("pressed", self, "answer_question", [button, option['event_id'], option['question_id']])
 	
+	last_mouse_mode = Input.get_mouse_mode()
+	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE) # Make sure the cursor is visible for the options selection
 	$Options.add_child(button)
 
 
@@ -389,7 +392,9 @@ func answer_question(i, event_id, question_id):
 	print('    dialog_index = ', dialog_index)
 	reset_options()
 	load_dialog()
-
+	
+	Input.set_mouse_mode(last_mouse_mode) # Revert to last mouse mode when selection is done
+	last_mouse_mode = null
 
 func _on_option_selected(option, variable, value):
 	dialog_resource.custom_variables[variable] = value
