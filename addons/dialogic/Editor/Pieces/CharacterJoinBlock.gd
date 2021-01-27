@@ -10,6 +10,7 @@ var default_icon_color = Color("#65989898")
 var event_data = {
 	'action': 'join',
 	'character': '',
+	'portrait': '',
 	'position': {"0":false,"1":false,"2":false,"3":false,"4":false}
 }
 

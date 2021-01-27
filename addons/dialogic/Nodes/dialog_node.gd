@@ -216,6 +216,7 @@ func get_character(character_id):
 func event_handler(event: Dictionary):
 	# Handling an event and updating the available nodes accordingly. 
 	reset_dialog_extras()
+	dprint('[D] Current Event: ', event)
 	match event:
 		{'text', 'character', 'portrait'}:
 			show_dialog()

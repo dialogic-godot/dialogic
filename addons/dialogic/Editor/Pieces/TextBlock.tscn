@@ -1,10 +1,12 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://addons/dialogic/Editor/Pieces/TextBlock.gd" type="Script" id=1]
 [ext_resource path="res://addons/dialogic/Editor/Pieces/Common/VisibleToggle.tscn" type="PackedScene" id=2]
 [ext_resource path="res://addons/dialogic/Images/dialog.svg" type="Texture" id=3]
 [ext_resource path="res://addons/dialogic/Editor/Pieces/Common/PieceExtraSettings.tscn" type="PackedScene" id=4]
 [ext_resource path="res://addons/dialogic/Editor/Pieces/Common/DragController.tscn" type="PackedScene" id=5]
+[ext_resource path="res://addons/dialogic/Images/character.svg" type="Texture" id=6]
+[ext_resource path="res://addons/dialogic/Images/Portrait.svg" type="Texture" id=7]
 
 [sub_resource type="StyleBoxFlat" id=1]
 content_margin_left = 6.0
@@ -34,7 +36,7 @@ margin_bottom = 126.0
 rect_min_size = Vector2( 25, 0 )
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
-margin_right = 1024.0
+margin_right = 1280.0
 margin_bottom = 126.0
 mouse_filter = 1
 size_flags_horizontal = 3
@@ -47,12 +49,12 @@ __meta__ = {
 [node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer"]
 margin_left = 6.0
 margin_top = 6.0
-margin_right = 1018.0
+margin_right = 1274.0
 margin_bottom = 120.0
 size_flags_horizontal = 3
 
 [node name="Header" type="HBoxContainer" parent="PanelContainer/VBoxContainer"]
-margin_right = 1012.0
+margin_right = 1268.0
 margin_bottom = 30.0
 
 [node name="VisibleToggle" parent="PanelContainer/VBoxContainer/Header" instance=ExtResource( 2 )]
@@ -74,16 +76,19 @@ text = "  Text  "
 
 [node name="CharacterDropdown" type="MenuButton" parent="PanelContainer/VBoxContainer/Header"]
 margin_left = 60.0
-margin_right = 140.0
+margin_right = 165.0
 margin_bottom = 30.0
 text = "[Character]"
+icon = ExtResource( 6 )
+flat = false
 
 [node name="PortraitDropdown" type="MenuButton" parent="PanelContainer/VBoxContainer/Header"]
-visible = false
-margin_left = 191.0
-margin_right = 257.0
+margin_left = 169.0
+margin_right = 252.0
 margin_bottom = 30.0
 text = "Default"
+icon = ExtResource( 7 )
+flat = false
 
 [node name="Preview" type="Label" parent="PanelContainer/VBoxContainer/Header"]
 visible = false
@@ -95,20 +100,20 @@ custom_colors/font_color = Color( 1, 1, 1, 0.513726 )
 text = "..."
 
 [node name="Spacer" type="Control" parent="PanelContainer/VBoxContainer/Header"]
-margin_left = 144.0
-margin_right = 971.0
+margin_left = 256.0
+margin_right = 1227.0
 margin_bottom = 30.0
 mouse_filter = 1
 size_flags_horizontal = 3
 
 [node name="OptionButton" parent="PanelContainer/VBoxContainer/Header" instance=ExtResource( 4 )]
-margin_left = 975.0
-margin_right = 1012.0
+margin_left = 1231.0
+margin_right = 1268.0
 items = [ "Move Up", null, 0, false, false, 0, 0, null, "", false, "Move Down", null, 0, false, false, 1, 0, null, "", false, "", null, 0, false, false, 2, 0, null, "", true, "Remove", null, 0, false, false, 3, 0, null, "", false ]
 
 [node name="TextEdit" type="TextEdit" parent="PanelContainer/VBoxContainer"]
 margin_top = 34.0
-margin_right = 1012.0
+margin_right = 1268.0
 margin_bottom = 114.0
 rect_min_size = Vector2( 0, 80 )
 size_flags_horizontal = 3

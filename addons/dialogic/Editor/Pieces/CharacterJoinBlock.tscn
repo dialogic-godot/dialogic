@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://addons/dialogic/Editor/Pieces/Common/VisibleToggle.tscn" type="PackedScene" id=1]
 [ext_resource path="res://addons/dialogic/Editor/Pieces/Common/PieceExtraSettings.tscn" type="PackedScene" id=2]
@@ -6,6 +6,7 @@
 [ext_resource path="res://addons/dialogic/Images/character-join.svg" type="Texture" id=4]
 [ext_resource path="res://addons/dialogic/Images/character.svg" type="Texture" id=5]
 [ext_resource path="res://addons/dialogic/Editor/Pieces/Common/DragController.tscn" type="PackedScene" id=6]
+[ext_resource path="res://addons/dialogic/Images/Portrait.svg" type="Texture" id=7]
 
 [sub_resource type="StyleBoxFlat" id=1]
 content_margin_left = 6.0
@@ -69,10 +70,24 @@ text = "  Character join: "
 
 [node name="CharacterDropdown" type="MenuButton" parent="PanelContainer/VBoxContainer/Header"]
 margin_left = 168.0
-margin_right = 268.0
+margin_right = 273.0
 margin_bottom = 30.0
 rect_min_size = Vector2( 100, 0 )
 text = "[Character]"
+icon = ExtResource( 5 )
+flat = false
+align = 0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="PortraitPicker" type="MenuButton" parent="PanelContainer/VBoxContainer/Header"]
+margin_left = 277.0
+margin_right = 360.0
+margin_bottom = 30.0
+focus_mode = 2
+text = "Default"
+icon = ExtResource( 7 )
 flat = false
 align = 0
 __meta__ = {
@@ -80,15 +95,15 @@ __meta__ = {
 }
 
 [node name="LabelPosition" type="Label" parent="PanelContainer/VBoxContainer/Header"]
-margin_left = 272.0
+margin_left = 364.0
 margin_top = 8.0
-margin_right = 336.0
+margin_right = 428.0
 margin_bottom = 22.0
 text = "  Position:"
 
 [node name="PositionsContainer" type="HBoxContainer" parent="PanelContainer/VBoxContainer/Header"]
-margin_left = 340.0
-margin_right = 526.0
+margin_left = 432.0
+margin_right = 618.0
 margin_bottom = 30.0
 
 [node name="position-0" type="ToolButton" parent="PanelContainer/VBoxContainer/Header/PositionsContainer"]
@@ -126,7 +141,7 @@ margin_bottom = 30.0
 icon = ExtResource( 5 )
 
 [node name="Spacer" type="Control" parent="PanelContainer/VBoxContainer/Header"]
-margin_left = 530.0
+margin_left = 622.0
 margin_right = 1745.0
 margin_bottom = 30.0
 size_flags_horizontal = 3
@@ -137,3 +152,4 @@ items = [ "Move Up", null, 0, false, false, 0, 0, null, "", false, "Move Down", 
 [node name="DragController" parent="." instance=ExtResource( 6 )]
 
 [connection signal="about_to_show" from="PanelContainer/VBoxContainer/Header/CharacterDropdown" to="." method="_on_MenuCharacter_about_to_show"]
+[connection signal="about_to_show" from="PanelContainer/VBoxContainer/Header/PortraitPicker" to="." method="_on_MenuCharacter_about_to_show"]
