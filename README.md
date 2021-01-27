@@ -76,6 +76,35 @@ Yes, you can use Dialogic to make any kind of game (even commercial ones). The p
 
 ---
 
+# Source structure
+
+## At the root level: /
+`plugin.cgf` - The required file to be recognized by Godot.
+
+`dialogic.gd` - This is the script that loads the addon. Very minimal and should probably have more stuff? Not sure.
+
+`Dialog.tscn` - Main scene containing the text bubble and all the required sub-nodes to display your timelines in-game. I left this file in the root node because it will be easier to find and drag-drop to an existing scene.
+
+## /Fonts
+This directory contains the font files and the resources to load. 
+
+`DefaultFont.tres` - This is the default font used for dialog text such as buttons, names, and the main chat bubble.
+
+`GlossaryFont.tres` - The default font for the small popup on hover. This is basically the same font but smaller because you know... Godot <3 Fonts
+
+## /Images
+You shouldn't open this folder expecting it to be organized. Welcome to the world of mixed naming conventions and CaSiNgSyLeS.
+
+All icons are `.svg` files so they can scale nicely. I tried reusing many of the default Godot icons, but instead of using the native ones I copy-pasted the svgs and run with it. I should probably replace them and make the custom one more in line with the rest of the editor.
+
+`/Images/background` - Here you will find the default background images for the dialogs. More will come in the future.
+
+`/Images/portraits` - Some placeholder images for an example project. I might delete these since I'll probably be hosting that somewhere else.
+
+`/Images/tutorials` - Right now it only has one file, but every image created for warnings/tutorials/tips will be placed here. Hopefully.
+
+---
+
 ## Credits
 Code made by [Emilio Coppola](https://github.com/coppolaemilio).
 
