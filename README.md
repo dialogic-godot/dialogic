@@ -30,7 +30,8 @@ The plugin is not production ready, this means that it will not work in your gam
     add_child(new_dialog)
     ```
     To connect signals you can also do:
-    ```
+    
+    ```swift
     func _ready():
         var new_dialog = Dialogic.start('Your Timeline Name Here')
         add_child(new_dialog)
