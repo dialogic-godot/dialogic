@@ -30,7 +30,7 @@ The plugin is not production ready, this means that it will not work in your gam
     add_child(new_dialog)
     ```
     To connect signals you can also do:
-    
+
     ```swift
     func _ready():
         var new_dialog = Dialogic.start('Your Timeline Name Here')
@@ -79,12 +79,24 @@ Yes, you can use Dialogic to make any kind of game (even commercial ones). The p
 
 ## Source structure
 
-### At the root level: /
+### / (At the root level)
 `plugin.cgf` - The required file to be recognized by Godot.
 
 `dialogic.gd` - This is the script that loads the addon. Very minimal and should probably have more stuff? Not sure.
 
 `Dialog.tscn` - Main scene containing the text bubble and all the required sub-nodes to display your timelines in-game. I left this file in the root node because it will be easier to find and drag-drop to an existing scene.
+
+
+### /Editor
+
+`EditorView.tscn` - When you click on the Dialogic tab, this is the scene you see on the main editor panel. This contains all the sub editors and scripts needed for managing your data.
+
+`editor_view.gd`
+
+`EditorTheme.gd`
+
+`EditorGlossary.gd`
+
 
 ### /Fonts
 This directory contains the font files and the resources to load. 
@@ -103,6 +115,17 @@ All icons are `.svg` files so they can scale nicely. I tried reusing many of the
 `/Images/portraits` - Some placeholder images for an example project. I might delete these since I'll probably be hosting that somewhere else.
 
 `/Images/tutorials` - Right now it only has one file, but every image created for warnings/tutorials/tips will be placed here. Hopefully.
+
+
+### /Nodes
+
+`ChoiceButton.tscn` 
+
+`dialog_node.gd` 
+
+`glossary_info.gd`
+
+`Portrait.tscn` and `Portrait.gd` - 
 
 ---
 
