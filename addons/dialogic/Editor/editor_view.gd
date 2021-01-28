@@ -46,6 +46,15 @@ func _ready():
 			else:
 				b.connect('pressed', self, "_create_event_button_pressed", [b.name])
 
+	# Adding native icons
+	$EditorTimeline/EventTools/VBoxContainer2/AddTimelineButton.icon = get_icon("Add", "EditorIcons")
+	$EditorGlossary/VBoxContainer/NewEntryButton.icon = get_icon("Add", "EditorIcons")
+	$EditorCharacter/CharacterTools/Button.icon = get_icon("Add", "EditorIcons")
+	
+	$HBoxContainer/Docs.icon = get_icon("Instance", "EditorIcons")
+	$HBoxContainer/Docs.connect('pressed', self, "_docs_button", [])
+	
+	
 	# Making the dialog editor the default
 	change_tab('Timeline')
 	_on_EventButton_pressed()
@@ -497,7 +506,6 @@ func dprint(what):
 		print(what)
 
 
-
-
-
+func _docs_button():
+	OS.shell_open("https://dialogic.coppolaemilio.com")
 

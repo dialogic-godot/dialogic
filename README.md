@@ -12,6 +12,7 @@ The plugin is not production ready, this means that it will not work in your gam
 
 ### 🆕 v0.9 - WIP
   - Moved `Dialog.tscn` to the root of the addon so it is easier to find.
+  - Added a link to the documentation from the editor
   - New tool: Glossary Editor
     - You are now able to write extra lore for any word and Dialogic will create a hover card with that extra information.
   - New default asset: Glossary Font
@@ -119,13 +120,13 @@ All icons are `.svg` files so they can scale nicely. I tried reusing many of the
 
 ### /Nodes
 
-`ChoiceButton.tscn` 
+`ChoiceButton.tscn` - This is the button created by Dialogic's options events. The node `/Dialog.tscn` will instance these when displaying the options to the user.
 
-`dialog_node.gd` 
+`dialog_node.gd` - The script associated with `/Dialog.tscn`. This contains all the logic behind the node and manages everything from timeline parsing, in-game signals and all the visual aspects of the dialog.
 
-`glossary_info.gd`
+`glossary_info.gd` - Handles the logic behind the small popup that shows up when you hover the cursor on one of the highlighted words from the glossary inside a dialog. Part of this logic lives inside the `dialog_node.gd` script and should probably be moved here.
 
-`Portrait.tscn` and `Portrait.gd` - 
+`Portrait.tscn` and `Portrait.gd` - Whenever you make a character join a scene, this is the node used for instancing and displaying an image in the screen. It also contains a few effects for fading in/out of a scene.
 
 ---
 
