@@ -1,7 +1,7 @@
 # Dialogic v0.9 ![Godot v3.2](https://img.shields.io/badge/godot-v3.2.4-%23478cbf)
 Create dialogs, characters and scenes to display conversations in your Godot games. 
 
-![Screenshot](https://coppolaemilio.com/images/dialogic/dialogic08.png)
+![Screenshot](https://coppolaemilio.com/images/dialogic/dialogic-hero.webp)
 
 ## ⚠️ Under development! ⚠️
 The plugin is not production ready, this means that it will not work in your game right now unless you know what you are doing. Make sure to follow the repo for the next update.
@@ -71,7 +71,7 @@ And using the editor, you can drag and drop the scene located at `/addons/dialog
 
 ### 🔷 Why are the dialogs are not working when exporting my project?
 When you export a project using Dialogic, you need to add `*.json` on the Resources tab (see the image below) and also make sure to copy the `dialogic` folder to the same place where the executable of your game is (again, see bottom right side of the image).
-![Screenshot](https://coppolaemilio.com/images/dialogic/exporting.png)
+![Screenshot](https://coppolaemilio.com/images/dialogic/exporting.webp)
 
 ### 🔷 Can I use Dialogic in one of my projects?
 Yes, you can use Dialogic to make any kind of game (even commercial ones). The project is developed under the [MIT License](https://github.com/coppolaemilio/dialogic/blob/master/LICENSE). Please remember to credit!
