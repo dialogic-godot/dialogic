@@ -138,6 +138,8 @@ Code made by [Emilio Coppola](https://github.com/coppolaemilio).
 
 Contributors: [Toen](https://twitter.com/ToenAndreMC), Òscar, [Tom Glenn](https://github.com/tomglenn), 
 
+Documentation page generated using: https://documentation.page/ by [Francisco Presencia](https://francisco.io/)
+
 Placeholder images are from Toen's YouTube DF series:
  - https://toen.world/
  - https://www.youtube.com/watch?v=B1ggwiat7PM
