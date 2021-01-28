@@ -110,7 +110,7 @@ This directory contains the font files and the resources to load.
 `GlossaryFont.tres` - The default font for the small popup on hover. This is basically the same font but smaller because you know... Godot <3 Fonts
 
 ### /Images
-You shouldn't open this folder expecting it to be organized. Welcome to the world of mixed naming conventions and CaSiNgSyLeS.
+You shouldn't open this folder expecting it to be organized. Welcome to the world of mixed naming conventions and CaSiNgStYlEs.
 
 All icons are `.svg` files so they can scale nicely. I tried reusing many of the default Godot icons, but instead of using the native ones I copy-pasted the svgs and run with it. I should probably replace them and make the custom one more in line with the rest of the editor.
 
