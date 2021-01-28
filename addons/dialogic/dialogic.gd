@@ -9,7 +9,7 @@ var _parts_inspector
 
 
 func _enter_tree() -> void:
-	_parts_inspector = preload("res://addons/dialogic/Other/inspector_timeline_picker.gd").new()
+	_parts_inspector = load("res://addons/dialogic/Other/inspector_timeline_picker.gd").new()
 	add_inspector_plugin(_parts_inspector)
 	
 	_add_custom_editor_view()
@@ -18,6 +18,7 @@ func _enter_tree() -> void:
 	# Hide the main panel. Very much required.
 	make_visible(false)
 	DialogicUtil.init_dialogic_files()
+	get_editor_interface().get_resource_filesystem().scan()
 
 
 func _exit_tree() -> void:
