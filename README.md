@@ -90,14 +90,17 @@ Yes, you can use Dialogic to make any kind of game (even commercial ones). The p
 
 ### /Editor
 
-`EditorView.tscn` - When you click on the Dialogic tab, this is the scene you see on the main editor panel. This contains all the sub editors and scripts needed for managing your data.
+`EditorView.tscn` - When you click on the Dialogic tab, this is the scene you see on the main editor panel. This contains all the sub editors and scripts needed for managing your data. This contains way too many nodes and stuff. Splitting it will come eventually, but for now I like having everything in the same scene because of how connected most of the features are.
 
-`editor_view.gd`
+`editor_view.gd` - This is the code embedded in the `EditorView.tscn`. The biggest chunk of code of this project is probably this one. I've been trying to make it smaller by splitting this into a few more sub-scripts (`EditorTheme.gd` and `EditorGlossary.gd`). The editor that is still taking part of this script is the Timeline Editor, which will eventually be moved to its own `EditorTimeline.gd` in the future.
 
-`EditorTheme.gd`
+`EditorTheme.gd` - Everything related to the theme editor tab.
 
-`EditorGlossary.gd`
+`EditorGlossary.gd` - Everything related to the glossary editor tab.
 
+`/Pieces` - Inside this directory you have all the event nodes that populate the timeline editor. Each one has its own name and script. **The name is important** since it has to be instanced from the `editor_view.gd` when clicking on buttons of the same name.
+
+`/CharacterEditor` - This contains the script `PortraitEntry.gd` and the scene `PortraitEntry.tscn`. When you add a new expression for one of your characters in the Character Editor this node/script will be instanced for handling the settings.
 
 ### /Fonts
 This directory contains the font files and the resources to load. 
