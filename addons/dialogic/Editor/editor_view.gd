@@ -54,6 +54,8 @@ func _ready():
 	$HBoxContainer/Docs.icon = get_icon("Instance", "EditorIcons")
 	$HBoxContainer/Docs.connect('pressed', self, "_docs_button", [])
 	
+	# Adding custom icons. For some reason they don't load properly otherwise.
+	$EditorTimeline/TimelineEditor/ScrollContainer/EventContainer/ChangeScene.icon = load("res://addons/dialogic/Images/change-scene.svg")
 	
 	# Making the dialog editor the default
 	change_tab('Timeline')
