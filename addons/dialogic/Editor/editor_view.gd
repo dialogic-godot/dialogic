@@ -5,7 +5,7 @@ var plugin_reference
 
 var undo_redo: UndoRedo
 
-var debug_mode = false # For printing info
+var debug_mode = true # For printing info
 
 var editor_file_dialog # EditorFileDialog
 var file_picker_data = {'method': '', 'node': self}
@@ -488,6 +488,11 @@ func _on_AutoSaver_timeout():
 	#if current_editor_view == 'Glossary':
 	#	$EditorGlossary.save_glossary()
 
+
+func manual_save():
+	if current_editor_view == 'Timeline':
+		save_timeline(working_dialog_file)
+		print('[!] Saving: ' + str(working_dialog_file))
 
 func _on_Logo_gui_input(event):
 	# I should probably replace this with an "About Dialogic" dialog

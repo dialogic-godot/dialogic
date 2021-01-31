@@ -19,32 +19,45 @@ func _ready():
 	$PanelContainer/VBoxContainer/TextEdit.set("rect_min_size", Vector2(0, 80))
 	$PanelContainer/VBoxContainer/Header/CharacterDropdown.get_popup().connect("index_pressed", self, '_on_character_selected')
 	$PanelContainer/VBoxContainer/Header/PortraitDropdown.get_popup().connect("index_pressed", self, '_on_portrait_selected')
-	# Default Speaker
-	for c in DialogicUtil.get_character_list():
-		if c['default_speaker']:
-			event_data['character'] = c['file']
+
+	var c_list = DialogicUtil.get_character_list()
+	if c_list.size() == 0:
+		$PanelContainer/VBoxContainer/Header/CharacterDropdown.visible = false
+		$PanelContainer/VBoxContainer/Header/CharacterIcon.visible = false
+	else:
+		# Default Speaker
+		for c in c_list:
+			if c['default_speaker']:
+				event_data['character'] = c['file']
 	update_preview()
 
 
 func _on_MenuButton_about_to_show():
 	var Dropdown = $PanelContainer/VBoxContainer/Header/CharacterDropdown
 	Dropdown.get_popup().clear()
-	var index = 0
+	
+	Dropdown.get_popup().add_item('No Character')
+	Dropdown.get_popup().set_item_metadata(0, {'file': '', 'color': Color('#ffffff')})
+	
+	var index = 1
 	for c in DialogicUtil.get_character_list():
 		Dropdown.get_popup().add_item(c['name'])
-		if c.has('color'):
-			Dropdown.get_popup().set_item_metadata(index, {'file': c['file'],'color': c['color']})
-		else:
-			Dropdown.get_popup().set_item_metadata(index, {'file': c['file'], 'color': Color('#ffffff')})
+		Dropdown.get_popup().set_item_metadata(index, {'file': c['file'],'color': c['color']})
 		index += 1
 
 
 func _on_character_selected(index):
-	var text = $PanelContainer/VBoxContainer/Header/CharacterDropdown.get_popup().get_item_text(index)
-	var metadata = $PanelContainer/VBoxContainer/Header/CharacterDropdown.get_popup().get_item_metadata(index)
-	var color = metadata['color']
-	$PanelContainer/VBoxContainer/Header/CharacterDropdown.text = text
-	event_data['character'] = metadata['file']
+	if index == 0:
+		$PanelContainer/VBoxContainer/Header/CharacterDropdown.text = '[Character]'
+		$PanelContainer/VBoxContainer/Header/CharacterIcon.set("self_modulate", Color('#FFFFFF'))
+		event_data['character'] = ''
+	else:
+		var text = $PanelContainer/VBoxContainer/Header/CharacterDropdown.get_popup().get_item_text(index)
+		var metadata = $PanelContainer/VBoxContainer/Header/CharacterDropdown.get_popup().get_item_metadata(index)
+		var color = metadata['color']
+		$PanelContainer/VBoxContainer/Header/CharacterDropdown.text = text
+		event_data['character'] = metadata['file']
+	
 	update_preview()
 
 
@@ -90,13 +103,16 @@ func update_preview():
 	for c in DialogicUtil.get_character_list():
 		if c['file'] == event_data['character']:
 			$PanelContainer/VBoxContainer/Header/CharacterDropdown.text = c['name']
-			$PanelContainer/VBoxContainer/Header/TextureRect.set("self_modulate", c['color'])
+			$PanelContainer/VBoxContainer/Header/CharacterIcon.set("self_modulate", c['color'])
 			if c.has('portraits'):
 				if c['portraits'].size() > 1:
 					$PanelContainer/VBoxContainer/Header/PortraitDropdown.visible = true
 					for p in c['portraits']:
 						if p['name'] == event_data['portrait']:
 							$PanelContainer/VBoxContainer/Header/PortraitDropdown.text = event_data['portrait']
+	
+	editor_reference.manual_save()
+	
 	var text = event_data['text']
 	if text == '':
 		return '...'
@@ -105,9 +121,6 @@ func update_preview():
 	preview = text
 	if preview.length() > 60:
 		preview = preview.left(60) + '...'
-	
-	
-	
 	
 	return preview
 
