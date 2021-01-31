@@ -40,7 +40,6 @@ func _ready():
 	
 	# Connecting resize signal
 	get_viewport().connect("size_changed", self, "resize_main")
-	resize_main()
 	
 	# Setting everything up for the node to be default
 	$TextBubble/NameLabel.text = ''
