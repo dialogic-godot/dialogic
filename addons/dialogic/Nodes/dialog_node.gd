@@ -176,7 +176,7 @@ func update_name(character, color='FFFFFF'):
 				parsed_name = character['display_name']
 		if character.has('color'):
 			color = character['color'].to_html()
-		$TextBubble/NameLabel.bbcode_text = '[color=#' + color + ']' + parsed_name + '[/color]'
+		$TextBubble/NameLabel.bbcode_text = '[color=' + color + ']' + parsed_name + '[/color]'
 	else:
 		$TextBubble/NameLabel.bbcode_text = ''
 	return true

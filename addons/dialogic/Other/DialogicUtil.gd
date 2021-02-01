@@ -124,7 +124,7 @@ static func get_character_list() -> Array:
 			var display_name: String = ''
 			
 			if data.has('color'):
-				color = Color('#' + data['color'])
+				color = Color(data['color'])
 			if data.has('name'):
 				c_name = data['name']
 			if data.has('default_speaker'):

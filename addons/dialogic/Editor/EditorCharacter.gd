@@ -66,7 +66,7 @@ func clear_character_editor():
 func create_character():
 	var character_file = 'character-' + str(OS.get_unix_time()) + '.json'
 	var character = {
-		'color': 'ffffff',
+		'color': '#ffffff',
 		'id': character_file,
 		'default_speaker': false,
 		'portraits': []
@@ -107,7 +107,7 @@ func generate_character_data_to_save():
 	var info_to_save = {
 		'id': character_editor['file'].text,
 		'description': character_editor['description'].text,
-		'color': character_editor['color'].color.to_html(),
+		'color': '#' + character_editor['color'].color.to_html(),
 		'default_speaker': default_speaker,
 		'portraits': portraits,
 		'display_name_bool': character_editor['display_name_checkbox'].pressed,
@@ -149,7 +149,7 @@ func load_character_editor(data):
 	if data.has('description'):
 		character_editor['description'].text = data['description']
 	if data.has('color'):
-		character_editor['color'].color = Color('#' + data['color'])
+		character_editor['color'].color = Color(data['color'])
 	if data.has('default_speaker'):
 		if data['default_speaker']:
 			character_editor['default_speaker'].pressed = true

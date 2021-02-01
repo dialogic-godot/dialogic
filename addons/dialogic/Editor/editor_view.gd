@@ -163,7 +163,7 @@ func load_timeline(path):
 				create_event("TextBlock", i)
 			{'background'}:
 				create_event("SceneBlock", i)
-			{'character', 'action', 'position'}:
+			{'character', 'action', 'position', 'portrait'}:
 				create_event("CharacterJoinBlock", i)
 			{'audio', 'file'}:
 				create_event("AudioBlock", i)
@@ -335,11 +335,6 @@ func create_timeline():
 
 
 # Character Creations
-func get_character_data(file):
-	var data = DialogicUtil.load_json(DialogicUtil.get_path('CHAR_DIR', file))
-	return data
-
-
 func get_character_color(file):
 	var data = DialogicUtil.load_json(DialogicUtil.get_path('CHAR_DIR', file))
 	if is_instance_valid(data):
