@@ -488,6 +488,7 @@ func _on_AutoSaver_timeout():
 func manual_save():
 	if current_editor_view == 'Timeline':
 		save_timeline(working_dialog_file)
+		dprint('[!] Saving: ' + str(working_dialog_file))
 
 func _on_Logo_gui_input(event):
 	# I should probably replace this with an "About Dialogic" dialog
