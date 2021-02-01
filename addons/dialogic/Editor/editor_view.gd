@@ -198,6 +198,13 @@ func load_timeline(path):
 	
 	var elapsed_time: float = (OS.get_ticks_msec() - start_time) * 0.001
 	dprint("Elapsed time: " + str(elapsed_time))
+	
+	# Preventing a bug here....
+	# I'm not sure why, but some times when you load a timeline
+	# and you close it, it won't save all the events. This prevents
+	# it from happening for now, but I might want to revamp
+	# the entire saving system sooner than later.
+	manual_save()
 
 
 func indent_events() -> void:
