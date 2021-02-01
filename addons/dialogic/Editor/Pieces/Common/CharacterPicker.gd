@@ -8,7 +8,6 @@ func _ready():
 	$Dropdown.get_popup().connect("index_pressed", self, '_on_character_selected')
 
 func _on_Dropdown_about_to_show():
-	print('here')
 	var popup = $Dropdown.get_popup()
 	popup.clear()
 	popup.add_item('No Character')

@@ -257,9 +257,10 @@ func refresh_timeline_list():
 		
 
 func _on_DialogItemList_item_selected(index):
+	manual_save() # Making sure we save before changing tabs
+	clear_timeline()
 	var selected = get_node(dialog_list_path).get_item_text(index)
 	var file = get_node(dialog_list_path).get_item_metadata(index)['file']
-	clear_timeline()
 	load_timeline(DialogicUtil.get_path('TIMELINE_DIR', file))
 
 
@@ -487,7 +488,6 @@ func _on_AutoSaver_timeout():
 func manual_save():
 	if current_editor_view == 'Timeline':
 		save_timeline(working_dialog_file)
-		print('[!] Saving: ' + str(working_dialog_file))
 
 func _on_Logo_gui_input(event):
 	# I should probably replace this with an "About Dialogic" dialog
