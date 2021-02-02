@@ -13,6 +13,7 @@ The plugin is not production ready, this means that it will not work in your gam
 ### 🆕 v0.9 - WIP
   - Moved `Dialog.tscn` to the root of the addon so it is easier to find.
   - Added a link to the documentation from the editor
+  - Refactored a lot of the code and continued splitting the main plugin code into smaller pieces.
   - New tool: Glossary Editor
     - You are now able to write extra lore for any word and Dialogic will create a hover card with that extra information.
   - New default asset: Glossary Font
@@ -25,6 +26,8 @@ The plugin is not production ready, this means that it will not work in your gam
     - New `Wait Seconds` event. This will hide the dialog and wait X seconds until continuing with the rest of the timeline. 
     - Re-adding the `End Branch` event.
     - Renamed the `Copy Timeline ID` right click menu option to `Copy Timeline Name` since you now have to use that to set the current timeline from code instead of the ID.
+    - Fixed several bugs that corrupted saved files
+    - Thanks to [mindtonix](https://github.com/mindtonix) and [Crystalwarrior](https://github.com/Crystalwarrior) for your first contribution on the choice buttons 
   - New `Dialogic` class. With this new class you can add dialogs from code easily:
     ```
     var new_dialog = Dialogic.start('Your Timeline Name Here')

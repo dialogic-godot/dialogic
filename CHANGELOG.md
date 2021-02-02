@@ -1,7 +1,6 @@
 ## v0.8 - Dialog enters the game
  - Video: https://youtu.be/NfTyRrsdB1I
  - Moved the theme editor tool icon to the left
- - Refactored a lot of the code and continued splitting the main plugin code into smaller pieces.
  - Theme Editor:
     - Added a color background as an option
     - Reduced the vertical size needed to show all options
@@ -15,7 +14,6 @@
     - The Change Timeline event tells you your current timeline (this is for going back to the start)
     - New `Close Dialog` event. This event closes the dialog whenever it is called.
     - When renaming a dialog the popup's text field is already selected and focused.
-    - Fixed several bugs that corrupted saved files
  - In game dialog:
     - You can now select the current timeline from the inspector without manually copying the timeline id.
     - Change timeline event is now working
@@ -26,7 +24,6 @@
     - Basic question/answers support
     - Better scene resizing and position
     - Button styles
-    - Thanks to [mindtonix](https://github.com/mindtonix) and [Crystalwarrior](https://github.com/Crystalwarrior) for your first contribution on the choice buttons 
 
 ## v0.7 - Looking good
  - Video: https://youtu.be/wREIVj55eBM
