@@ -35,6 +35,7 @@ func _ready():
 	$EditorCharacter.editor_reference = self
 	$EditorCharacter.refresh_character_list()
 	
+	$EditorTimeline.editor_reference = self
 	$EditorTheme.editor_reference = self
 	$EditorGlossary.editor_reference = self
 
@@ -60,7 +61,11 @@ func _ready():
 	# Making the dialog editor the default
 	change_tab('Timeline')
 	_on_EventButton_pressed()
-
+	
+	
+	# Toolbar button connections
+	$HBoxContainer/FoldTools/ButtonFold.connect('pressed', $EditorTimeline, 'fold_all_nodes')
+	$HBoxContainer/FoldTools/ButtonUnfold.connect('pressed', $EditorTimeline, 'unfold_all_nodes')
 
 func _process(delta):
 	timer_interval -= 1
@@ -96,30 +101,7 @@ func create_event(scene: String, data: Dictionary = {'no-data': true} , indent: 
 	return piece
 
 
-# ordering blocks in timeline
-func _move_block(block, direction):
-	var block_index = block.get_index()
-	if direction == 'up':
-		if block_index > 0:
-			get_node(timeline_path).move_child(block, block_index - 1)
-			return true
-	if direction == 'down':
-		get_node(timeline_path).move_child(block, block_index + 1)
-		return true
-	return false
 
-
-# Clear timeline
-func clear_timeline():
-	for event in get_node(timeline_path).get_children():
-		event.free()
-
-
-# Reload button
-func _on_ReloadResource_pressed():
-	clear_timeline()
-	load_timeline(working_dialog_file)
-	dprint('[!] Reloaded -----')
 
 
 # Saving and loading
@@ -194,7 +176,7 @@ func load_timeline(path):
 	else:
 		events_warning.visible = false
 		indent_events()
-		fold_all_nodes()
+		$EditorTimeline.fold_all_nodes()
 	
 	var elapsed_time: float = (OS.get_ticks_msec() - start_time) * 0.001
 	dprint("Elapsed time: " + str(elapsed_time))
@@ -261,21 +243,6 @@ func refresh_timeline_list():
 	get_node(dialog_list_path).sort_items_by_text()
 	if $EditorTimeline/EventTools/VBoxContainer2/DialogItemList.get_item_count() == 0:
 		change_tab('Timeline')
-		
-
-func _on_DialogItemList_item_selected(index):
-	manual_save() # Making sure we save before changing tabs
-	clear_timeline()
-	var selected = get_node(dialog_list_path).get_item_text(index)
-	var file = get_node(dialog_list_path).get_item_metadata(index)['file']
-	load_timeline(DialogicUtil.get_path('TIMELINE_DIR', file))
-
-
-# Renaming dialogs
-func _on_DialogItemList_item_rmb_selected(index, at_position):
-	$TimelinePopupMenu.rect_position = get_viewport().get_mouse_position()
-	$TimelinePopupMenu.popup()
-	timeline_name = get_node(dialog_list_path).get_item_text(index)
 
 
 func _on_TimelinePopupMenu_id_pressed(id):
@@ -289,6 +256,7 @@ func _on_TimelinePopupMenu_id_pressed(id):
 		OS.set_clipboard(timeline_name)
 	if id == 3:
 		$RemoveTimelineConfirmation.popup_centered()
+
 
 func popup_rename():
 	$RenameDialog.register_text_enter($RenameDialog/LineEdit)
@@ -312,7 +280,7 @@ func _on_RemoveTimelineConfirmation_confirmed():
 	working_dialog_file = ''
 	refresh_timeline_list()
 	if $EditorTimeline/EventTools/VBoxContainer2/DialogItemList.get_item_count() != 0:
-		_on_DialogItemList_item_selected(0)
+		$EditorTimeline._on_DialogItemList_item_selected(0)
 		$EditorTimeline/EventTools/VBoxContainer2/DialogItemList.select(0)
 
 
@@ -320,7 +288,7 @@ func _on_RemoveTimelineConfirmation_confirmed():
 func _on_AddTimelineButton_pressed():
 	var file = create_timeline()
 	refresh_timeline_list()
-	clear_timeline()
+	$EditorTimeline.clear_timeline()
 	load_timeline(DialogicUtil.get_path('TIMELINE_DIR', file))
 
 
@@ -395,25 +363,7 @@ func _on_file_selected(path):
 	dprint(path)
 
 
-# Folding
-func fold_all_nodes():
-	for event in get_node(timeline_path).get_children():
-		event.get_node("PanelContainer/VBoxContainer/Header/VisibleToggle").set_pressed(false)
-
-
-func unfold_all_nodes():
-	for event in get_node(timeline_path).get_children():
-		event.get_node("PanelContainer/VBoxContainer/Header/VisibleToggle").set_pressed(true)
-
-
 # Toolbar
-func _on_ButtonFold_pressed():
-	fold_all_nodes()
-
-
-func _on_ButtonUnfold_pressed():
-	unfold_all_nodes()
-
 
 func _on_EventButton_pressed():
 	change_tab('Timeline')
@@ -497,6 +447,7 @@ func manual_save():
 		save_timeline(working_dialog_file)
 		dprint('[!] Saving: ' + str(working_dialog_file))
 
+
 func _on_Logo_gui_input(event):
 	# I should probably replace this with an "About Dialogic" dialog
 	if event is InputEventMouseButton and event.button_index == 1:
@@ -511,6 +462,7 @@ func compare_dicts(dict_1, dict_2):
 			return true
 	return false
 
+
 func dprint(what):
 	if debug_mode:
 		print(what)
@@ -518,4 +470,3 @@ func dprint(what):
 
 func _docs_button():
 	OS.shell_open("https://dialogic.coppolaemilio.com")
-

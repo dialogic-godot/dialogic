@@ -92,7 +92,9 @@ Yes, you can use Dialogic to make any kind of game (even commercial ones). The p
 
 `EditorView.tscn` - When you click on the Dialogic tab, this is the scene you see on the main editor panel. This contains all the sub editors and scripts needed for managing your data. This contains way too many nodes and stuff. Splitting it will come eventually, but for now I like having everything in the same scene because of how connected most of the features are.
 
-`editor_view.gd` - This is the code embedded in the `EditorView.tscn`. The biggest chunk of code of this project is probably this one. I've been trying to make it smaller by splitting this into a few more sub-scripts (`EditorTheme.gd` and `EditorGlossary.gd`). The editor that is still taking part of this script is the Timeline Editor, which will eventually be moved to its own `EditorTimeline.gd` in the future.
+`editor_view.gd` - This is the code embedded in the `EditorView.tscn`. The biggest chunk of code of this project is probably this one. I've been trying to make it smaller by splitting this into a few more sub-scripts (`EditorTimeline.gd`, `EditorTheme.gd` and `EditorGlossary.gd`)
+
+`EditorTimeline.gd` - _Almost_ everything related to the timeline editor. Still working on splitting this file.
 
 `EditorTheme.gd` - Everything related to the theme editor tab.
 

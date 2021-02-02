@@ -14,10 +14,10 @@ func _ready():
 func _on_OptionSelected(index):
 	if index == 0:
 		# Moving this up
-		current_piece.editor_reference._move_block(current_piece, 'up')
+		current_piece.editor_reference.get_node('EditorTimeline')._move_block(current_piece, 'up')
 	elif index == 1:
 		# Moving piece down
-		current_piece.editor_reference._move_block(current_piece, 'down')
+		current_piece.editor_reference.get_node('EditorTimeline')._move_block(current_piece, 'down')
 	elif index == 3:
 		# Remove
 		# TODO: Add a warning here
