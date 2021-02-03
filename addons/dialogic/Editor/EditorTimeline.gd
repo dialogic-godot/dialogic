@@ -74,7 +74,7 @@ func load_timeline(path):
 	else:
 		editor_reference.events_warning.visible = false
 		editor_reference.indent_events()
-		$EditorTimeline.fold_all_nodes()
+		fold_all_nodes()
 	
 	var elapsed_time: float = (OS.get_ticks_msec() - start_time) * 0.001
 	editor_reference.dprint("Elapsed time: " + str(elapsed_time))
@@ -96,7 +96,7 @@ func _create_event_button_pressed(button_name):
 func create_event(scene: String, data: Dictionary = {'no-data': true} , indent: bool = false):
 	# This function will create an event in the timeline.
 	var piece = load("res://addons/dialogic/Editor/Pieces/" + scene + ".tscn").instance()
-	piece.editor_reference = self
+	piece.editor_reference = editor_reference
 	timeline.add_child(piece)
 	if data.has('no-data') == false:
 		piece.load_data(data)
