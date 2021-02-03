@@ -39,14 +39,6 @@ func _ready():
 	$EditorTheme.editor_reference = self
 	$EditorGlossary.editor_reference = self
 
-	# We connect all the event buttons to the event creation functions
-	for b in $EditorTimeline/TimelineEditor/ScrollContainer/EventContainer.get_children():
-		if b is Button:
-			if b.name == 'ButtonQuestion':
-				b.connect('pressed', self, "_on_ButtonQuestion_pressed", [])
-			else:
-				b.connect('pressed', self, "_create_event_button_pressed", [b.name])
-
 	# Adding native icons
 	$EditorTimeline/EventTools/VBoxContainer2/AddTimelineButton.icon = get_icon("Add", "EditorIcons")
 	$EditorGlossary/VBoxContainer/NewEntryButton.icon = get_icon("Add", "EditorIcons")
@@ -74,36 +66,6 @@ func _process(delta):
 		_on_AutoSaver_timeout()
 
 
-# Event Creation signal for buttons
-func _create_event_button_pressed(button_name):
-	create_event(button_name)
-
-
-# Special event creation for multiple events clicking one button
-func _on_ButtonQuestion_pressed() -> void:
-	create_event("Question", {'no-data': true}, true)
-	create_event("Choice", {'no-data': true}, true)
-	create_event("Choice", {'no-data': true}, true)
-	create_event("EndChoice", {'no-data': true}, true)
-
-
-func create_event(scene: String, data: Dictionary = {'no-data': true} , indent: bool = false):
-	# This function will create an event in the timeline.
-	var piece = load("res://addons/dialogic/Editor/Pieces/" + scene + ".tscn").instance()
-	piece.editor_reference = self
-	get_node(timeline_path).add_child(piece)
-	if data.has('no-data') == false:
-		piece.load_data(data)
-	events_warning.visible = false
-	# Indent on create
-	if indent:
-		indent_events()
-	return piece
-
-
-
-
-
 # Saving and loading
 func generate_save_data():
 	var info_to_save = {
@@ -126,67 +88,6 @@ func save_timeline(path):
 	file.store_line(to_json(info_to_save))
 	file.close()
 	autosaving_hash = info_to_save.hash()
-
-
-func load_timeline(path):
-	var start_time = OS.get_ticks_msec()
-	working_dialog_file = path
-	# Making editor visible
-	$EditorTimeline/TimelineEditor.visible = true
-	$EditorTimeline/CenterContainer.visible = false
-	
-	var data = DialogicUtil.load_json(path)
-	if data['metadata'].has('name'):
-		timeline_name = data['metadata']['name']
-	data = data['events']
-	for i in data:
-		match i:
-			{'text', 'character', 'portrait'}:
-				create_event("TextBlock", i)
-			{'background'}:
-				create_event("SceneBlock", i)
-			{'character', 'action', 'position', 'portrait'}:
-				create_event("CharacterJoinBlock", i)
-			{'audio', 'file'}:
-				create_event("AudioBlock", i)
-			{'question', 'options'}:
-				create_event("Question", i)
-			{'choice'}:
-				create_event("Choice", i)
-			{'endchoice'}:
-				create_event("EndChoice", i)
-			{'character', 'action'}:
-				create_event("CharacterLeaveBlock", i)
-			{'change_timeline'}:
-				create_event("ChangeTimeline", i)
-			{'emit_signal'}:
-				create_event("EmitSignal", i)
-			{'change_scene'}:
-				create_event("ChangeScene", i)
-			{'close_dialog'}:
-				create_event("CloseDialog", i)
-			{'wait_seconds'}:
-				create_event("WaitSeconds", i)
-			{'condition', 'glossary'}:
-				create_event("IfCondition", i)
-
-	autosaving_hash = generate_save_data().hash()
-	if data.size() < 1:
-		events_warning.visible = true
-	else:
-		events_warning.visible = false
-		indent_events()
-		$EditorTimeline.fold_all_nodes()
-	
-	var elapsed_time: float = (OS.get_ticks_msec() - start_time) * 0.001
-	dprint("Elapsed time: " + str(elapsed_time))
-	
-	# Preventing a bug here....
-	# I'm not sure why, but some times when you load a timeline
-	# and you close it, it won't save all the events. This prevents
-	# it from happening for now, but I might want to revamp
-	# the entire saving system sooner than later.
-	manual_save()
 
 
 func indent_events() -> void:
@@ -289,7 +190,7 @@ func _on_AddTimelineButton_pressed():
 	var file = create_timeline()
 	refresh_timeline_list()
 	$EditorTimeline.clear_timeline()
-	load_timeline(DialogicUtil.get_path('TIMELINE_DIR', file))
+	$EditorTimeline.load_timeline(DialogicUtil.get_path('TIMELINE_DIR', file))
 
 
 func create_timeline():
