@@ -38,22 +38,16 @@ func _ready():
 	last_saved_glossary = DialogicUtil.load_glossary()
 	
 	nodes['name'].connect("text_changed", self, '_on_field_name_changed', [])
-	refresh_list()
 	nodes['title'].connect("text_changed", self, '_on_field_text_changed', ['title'])
-	refresh_list()
 	nodes['body'].connect("text_changed", self, '_on_field_text_changed', ['', 'body'])
-	refresh_list()
 	nodes['extra'].connect("text_changed", self, '_on_field_text_changed', ['extra'])
-	refresh_list()
 	
 	nodes['string'].connect("text_changed", self, '_on_field_text_changed', ['string'])
-	refresh_list()
 	
 	nodes['number'].connect("value_changed", self, '_on_number_changed', [])
-	refresh_list()
 	
 	change_editor(types[0]) # Default view
-	
+	refresh_list()
 	disable_all()
 
 
@@ -85,11 +79,11 @@ func change_editor(type):
 	if type == 'Text':
 		section['Text'].visible = true
 	
-	
 	nodes['type'].text = type
 
 
 func _on_number_changed(value):
+	print(value)
 	glossary[current_entry]['number'] = nodes['number'].value
 	save_glossary()
 
@@ -104,11 +98,9 @@ func _on_field_text_changed(new_text, key):
 func _on_field_name_changed(new_text):
 	var f_text = new_text
 	glossary[current_entry]['name'] = new_text
-	if f_text == '':
-		f_text = current_entry
-	var item_id = nodes['item_list'].get_selected_items()[0]		
-	nodes['item_list'].set_item_text(item_id, f_text)
+	
 	save_glossary()
+	refresh_list(glossary[current_entry]['file'])
 
 
 func _on_NewEntryButton_pressed():
@@ -136,17 +128,16 @@ func refresh_list(select = ''):
 	#var icon = load("res://addons/dialogic/Images/character.svg")
 	var index = 0
 	for entry in glossary:
-		var e = glossary[entry]
-		nodes['item_list'].add_item(e['name'], get_icon("MultiLine", "EditorIcons"))
-		nodes['item_list'].set_item_metadata(index, {'file': e['file']})
+		nodes['item_list'].add_item(glossary[entry]['name'], get_icon("MultiLine", "EditorIcons"))
+		nodes['item_list'].set_item_metadata(index, {'file': entry, 'index': index})
+		print('metadata: ', entry)
+		print(nodes['item_list'].get_item_metadata(index))
 		
 		# Auto selecting on create
 		if select != '':
-			if e['name'] == select:
+			if glossary[entry]['name'] == select:
 				_on_ItemList_item_selected(index)
 		index += 1
-	
-		
 
 
 func _on_ItemList_item_rmb_selected(index, at_position):
