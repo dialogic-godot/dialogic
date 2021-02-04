@@ -43,9 +43,18 @@ func _on_MenuButton_about_to_show():
 	var index = 0
 	for c in glossary:
 		if glossary[c]['type'] != 0:
-			nodes['dropdown'].get_popup().add_item(glossary[c]['name'] + '(' + str(glossary[c]['type']) + ')')
+			nodes['dropdown'].get_popup().add_item(glossary[c]['name'] + ' (' + glossary_type_to_human(glossary[c]['type']) + ')')
 			nodes['dropdown'].get_popup().set_item_metadata(index, {
 				'file': glossary[c]['file'],
 				'type': glossary[c]['type']
 			})
 			index += 1
+
+
+static func glossary_type_to_human(value: int) -> String:
+	var types = {
+		0: 'Extra Information',
+		1: 'Number',
+		2: 'Text'
+	}
+	return types[value]
