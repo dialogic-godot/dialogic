@@ -43,7 +43,7 @@ func _on_MenuButton_about_to_show():
 	var index = 0
 	for c in glossary:
 		if glossary[c]['type'] != 0:
-			nodes['dropdown'].get_popup().add_item(glossary[c]['name'])
+			nodes['dropdown'].get_popup().add_item(glossary[c]['name'] + '(' + str(glossary[c]['type']) + ')')
 			nodes['dropdown'].get_popup().set_item_metadata(index, {
 				'file': glossary[c]['file'],
 				'type': glossary[c]['type']
