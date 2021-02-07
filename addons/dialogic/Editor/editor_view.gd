@@ -42,6 +42,7 @@ func _ready():
 	# Adding native icons
 	$EditorTimeline/EventTools/VBoxContainer2/AddTimelineButton.icon = get_icon("Add", "EditorIcons")
 	$EditorGlossary/VBoxContainer/NewEntryButton.icon = get_icon("Add", "EditorIcons")
+	$EditorGlossary/CenterContainer/VBoxContainer/CenterContainer/NewEntryButton2.icon = get_icon("Add", "EditorIcons")
 	$EditorCharacter/CharacterTools/Button.icon = get_icon("Add", "EditorIcons")
 	
 	$HBoxContainer/Docs.icon = get_icon("Instance", "EditorIcons")

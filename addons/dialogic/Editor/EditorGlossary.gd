@@ -146,6 +146,11 @@ func _on_ItemList_item_rmb_selected(index, at_position):
 
 
 func _on_ItemList_item_selected(index):
+	select_entry(index)
+
+
+func select_entry(index):
+	print('[!] Select entry ', index)
 	var selected = nodes['item_list'].get_item_text(index)
 	var entry_id = nodes['item_list'].get_item_metadata(index)['file'].replace('.json', '')
 	current_entry = entry_id
@@ -171,6 +176,10 @@ func _on_RemoveGlossaryConfirmation_confirmed():
 	
 	clear_editor()
 	refresh_list()
+	
+	if glossary.size() > 0:
+		nodes['item_list'].select(0)
+		select_entry(0)
 
 
 func save_glossary():
@@ -200,6 +209,12 @@ func update_editor(data):
 
 
 func clear_editor():
+	if glossary.size() == 0:
+		$ScrollContainer.visible = false
+		$CenterContainer.visible = true
+	else:
+		$ScrollContainer.visible = true
+		$CenterContainer.visible = false
 	nodes['name'].text = ''
 	nodes['title'].text = ''
 	nodes['body'].text = ''
