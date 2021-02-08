@@ -91,48 +91,6 @@ func save_timeline(path):
 	autosaving_hash = info_to_save.hash()
 
 
-func indent_events() -> void:
-	var indent: int = 0
-	var starter: bool = false
-	var event_list: Array = get_node(timeline_path).get_children()
-	var question_index: int = 0
-	var question_indent = {}
-	if event_list.size() < 2:
-		return
-	# Resetting all the indents
-	for event in event_list:
-		var indent_node = event.get_node("Indent")
-		indent_node.visible = false
-	# Adding new indents
-	for event in event_list:
-		if event.event_data.has('question') or event.event_data.has('condition'):
-			indent += 1
-			starter = true
-			question_index += 1
-			question_indent[question_index] = indent
-		if event.event_data.has('choice'):
-			if question_index > 0:
-				indent = question_indent[question_index] + 1
-				starter = true
-		if event.event_data.has('endchoice'):
-			indent = question_indent[question_index]
-			indent -= 1
-			question_index -= 1
-			if indent < 0:
-				indent = 0
-
-		if indent > 0:
-			var indent_node = event.get_node("Indent")
-			indent_node.rect_min_size = Vector2(25 * indent, 0)
-			indent_node.visible = true
-			if starter:
-				indent_node.rect_min_size = Vector2(25 * (indent - 1), 0)
-				if indent - 1 == 0:
-					indent_node.visible = false
-				
-		starter = false
-
-
 # Conversation files
 func refresh_timeline_list():
 	get_node(dialog_list_path).clear()

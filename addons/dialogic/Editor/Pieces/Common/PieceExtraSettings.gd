@@ -22,4 +22,4 @@ func _on_OptionSelected(index):
 		# Remove
 		# TODO: Add a warning here
 		current_piece.queue_free()
-	current_piece.editor_reference.indent_events()
+	current_piece.editor_reference.get_node('EditorTimeline').indent_events()

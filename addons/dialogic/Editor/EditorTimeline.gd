@@ -73,7 +73,7 @@ func load_timeline(path):
 		editor_reference.events_warning.visible = true
 	else:
 		editor_reference.events_warning.visible = false
-		editor_reference.indent_events()
+		indent_events()
 		fold_all_nodes()
 	
 	var elapsed_time: float = (OS.get_ticks_msec() - start_time) * 0.001
@@ -86,10 +86,52 @@ func load_timeline(path):
 	# the entire saving system sooner than later.
 	editor_reference.manual_save()
 
+# Event Indenting
+func indent_events() -> void:
+	var indent: int = 0
+	var starter: bool = false
+	var event_list: Array = timeline.get_children()
+	var question_index: int = 0
+	var question_indent = {}
+	if event_list.size() < 2:
+		return
+	# Resetting all the indents
+	for event in event_list:
+		var indent_node = event.get_node("Indent")
+		indent_node.visible = false
+	# Adding new indents
+	for event in event_list:
+		if event.event_data.has('question') or event.event_data.has('condition'):
+			indent += 1
+			starter = true
+			question_index += 1
+			question_indent[question_index] = indent
+		if event.event_data.has('choice'):
+			if question_index > 0:
+				indent = question_indent[question_index] + 1
+				starter = true
+		if event.event_data.has('endchoice'):
+			indent = question_indent[question_index]
+			indent -= 1
+			question_index -= 1
+			if indent < 0:
+				indent = 0
+
+		if indent > 0:
+			var indent_node = event.get_node("Indent")
+			indent_node.rect_min_size = Vector2(25 * indent, 0)
+			indent_node.visible = true
+			if starter:
+				indent_node.rect_min_size = Vector2(25 * (indent - 1), 0)
+				if indent - 1 == 0:
+					indent_node.visible = false
+				
+		starter = false
 
 # Event Creation signal for buttons
 func _create_event_button_pressed(button_name):
 	create_event(button_name)
+	indent_events()
 
 
 # Adding an event to the timeline
@@ -103,7 +145,7 @@ func create_event(scene: String, data: Dictionary = {'no-data': true} , indent: 
 	editor_reference.events_warning.visible = false
 	# Indent on create
 	if indent:
-		editor_reference.indent_events()
+		indent_events()
 	return piece
 
 
