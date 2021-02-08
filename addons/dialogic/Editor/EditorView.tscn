@@ -584,7 +584,6 @@ size_flags_vertical = 3
 allow_rmb_select = true
 
 [node name="ScrollContainer" type="ScrollContainer" parent="EditorGlossary"]
-visible = false
 margin_left = 152.0
 margin_right = 1253.0
 margin_bottom = 661.0
@@ -597,11 +596,11 @@ size_flags_vertical = 3
 
 [node name="HBoxContainer" type="HBoxContainer" parent="EditorGlossary/ScrollContainer/VBoxContainer"]
 margin_right = 1101.0
-margin_bottom = 351.0
+margin_bottom = 148.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="EditorGlossary/ScrollContainer/VBoxContainer/HBoxContainer"]
 margin_right = 320.0
-margin_bottom = 351.0
+margin_bottom = 148.0
 rect_min_size = Vector2( 320, 0 )
 
 [node name="Label" type="Label" parent="EditorGlossary/ScrollContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
@@ -632,6 +631,7 @@ items = [ "Extra information", null, false, 0, false, "Number", null, false, 0, 
 selected = 0
 
 [node name="ExtraInfo" type="VBoxContainer" parent="EditorGlossary/ScrollContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
+visible = false
 margin_top = 88.0
 margin_right = 320.0
 margin_bottom = 351.0
@@ -677,22 +677,19 @@ editable = false
 placeholder_text = "Extra"
 
 [node name="Number" type="VBoxContainer" parent="EditorGlossary/ScrollContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
-visible = false
-margin_top = 355.0
+margin_top = 88.0
 margin_right = 320.0
-margin_bottom = 415.0
+margin_bottom = 148.0
 
 [node name="Label5" type="Label" parent="EditorGlossary/ScrollContainer/VBoxContainer/HBoxContainer/VBoxContainer/Number"]
 margin_right = 320.0
 margin_bottom = 14.0
 text = "Number:"
 
-[node name="SpinBox" type="SpinBox" parent="EditorGlossary/ScrollContainer/VBoxContainer/HBoxContainer/VBoxContainer/Number"]
+[node name="SpinBox" type="LineEdit" parent="EditorGlossary/ScrollContainer/VBoxContainer/HBoxContainer/VBoxContainer/Number"]
 margin_top = 18.0
 margin_right = 320.0
 margin_bottom = 42.0
-allow_greater = true
-allow_lesser = true
 
 [node name="Label6" type="Label" parent="EditorGlossary/ScrollContainer/VBoxContainer/HBoxContainer/VBoxContainer/Number"]
 margin_top = 46.0
@@ -717,6 +714,7 @@ margin_right = 320.0
 margin_bottom = 42.0
 
 [node name="CenterContainer" type="CenterContainer" parent="EditorGlossary"]
+visible = false
 margin_left = 152.0
 margin_right = 1253.0
 margin_bottom = 661.0
@@ -740,10 +738,10 @@ margin_right = 152.0
 margin_bottom = 57.0
 
 [node name="NewEntryButton2" type="Button" parent="EditorGlossary/CenterContainer/VBoxContainer/CenterContainer"]
-margin_left = 28.0
-margin_right = 123.0
+margin_left = 26.0
+margin_right = 125.0
 margin_bottom = 22.0
-text = "New entry"
+text = "Create one"
 icon = SubResource( 2 )
 
 [node name="EditorCharacter" type="HSplitContainer" parent="."]

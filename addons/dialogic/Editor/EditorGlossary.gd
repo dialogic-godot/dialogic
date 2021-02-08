@@ -6,6 +6,8 @@ var last_saved_glossary
 var glossary
 var current_entry
 
+var number_characters = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '.']
+
 var types = {
 	0: 'Extra Information',
 	1: 'Number',
@@ -44,7 +46,8 @@ func _ready():
 	
 	nodes['string'].connect("text_changed", self, '_on_field_text_changed', ['string'])
 	
-	nodes['number'].connect("value_changed", self, '_on_number_changed', [])
+	
+	nodes['number'].connect("text_changed", self, '_on_field_text_changed', ['number'])
 	
 	change_editor(types[0]) # Default view
 	refresh_list()
@@ -82,16 +85,22 @@ func change_editor(type):
 	nodes['type'].text = type
 
 
-func _on_number_changed(value):
-	print(value)
-	glossary[current_entry]['number'] = nodes['number'].value
-	save_glossary()
-
-
 func _on_field_text_changed(new_text, key):
 	if key == 'body':
 		new_text = nodes['body'].text
-	glossary[current_entry][key] = new_text
+	if key == 'number':
+		# I had to do this because the SpinBox was not properly saving
+		# any edits I made to it.
+		var n = ''
+		for c in new_text:
+			if c in number_characters:
+				n = n + c
+		glossary[current_entry][key] = n
+		var caret_position = nodes['number'].caret_position
+		nodes['number'].text = n
+		nodes['number'].caret_position = caret_position
+	else:
+		glossary[current_entry][key] = new_text
 	save_glossary()
 
 
@@ -115,7 +124,7 @@ func _on_NewEntryButton_pressed():
 		'body': '',
 		'extra': '',
 		'string': '',
-		'number': 0,
+		'number': '0',
 		'color': '#000000',
 	}
 	current_entry = new_entry_id
@@ -186,6 +195,7 @@ func save_glossary():
 	var changed = false
 	if glossary.hash() != last_saved_glossary.hash():
 		changed = true
+		DialogicUtil.save_glossary(glossary)
 		last_saved_glossary = DialogicUtil.load_glossary()
 
 
@@ -199,7 +209,7 @@ func update_editor(data):
 		nodes['extra'].text = data['extra']
 	
 	if data.has('number'):
-		nodes['number'].value = data['number']
+		nodes['number'].text = data['number']
 	
 	if data.has('string'):
 		nodes['string'].text = data['string']
@@ -220,7 +230,7 @@ func clear_editor():
 	nodes['body'].text = ''
 	nodes['extra'].text = ''
 	nodes['string'].text = ''
-	nodes['number'].value = 0
+	nodes['number'].text = '0'
 	nodes['type'].text = types[0]
 
 
