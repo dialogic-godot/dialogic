@@ -113,7 +113,6 @@ func _on_field_name_changed(new_text):
 
 
 func _on_NewEntryButton_pressed():
-	var index = 0
 	var new_entry_id = 'entry-' + DialogicUtil.generate_random_id()
 	var add_new = true
 	glossary[new_entry_id] = {
@@ -130,6 +129,11 @@ func _on_NewEntryButton_pressed():
 	current_entry = new_entry_id
 	DialogicUtil.save_glossary(glossary)
 	refresh_list(new_entry_id)
+	
+	for index in range(nodes['item_list'].get_item_count()):
+		if nodes['item_list'].get_item_text(index) == new_entry_id:
+			nodes['item_list'].select(index)
+			select_entry(index)
 
 
 func refresh_list(select = ''):
@@ -139,13 +143,8 @@ func refresh_list(select = ''):
 	for entry in glossary:
 		nodes['item_list'].add_item(glossary[entry]['name'], get_icon("MultiLine", "EditorIcons"))
 		nodes['item_list'].set_item_metadata(index, {'file': entry, 'index': index})
-		print('metadata: ', entry)
-		print(nodes['item_list'].get_item_metadata(index))
 		
-		# Auto selecting on create
-		if select != '':
-			if glossary[entry]['name'] == select:
-				_on_ItemList_item_selected(index)
+		nodes['item_list'].sort_items_by_text()
 		index += 1
 
 
