@@ -19,8 +19,14 @@ static func start(timeline: String):
 static func get_var(variable: String):
 	var glossary = DialogicUtil.load_glossary()
 	for g in glossary:
-		if glossary[g]['name'] == variable:
-			return glossary[g]
+		var current = glossary[g]
+		if current['name'] == variable:
+			if current['type'] == 2: #Number
+				if '.' in current['number']:
+					return float(current['number'])
+				else:
+					return int(current['number'])
+			return current
 	
 	return {}
 
