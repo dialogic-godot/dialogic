@@ -4,6 +4,7 @@ extends HSplitContainer
 var editor_reference
 onready var timeline = $TimelineEditor/TimelineArea/TimeLine
 onready var dialog_list = $EventTools/VBoxContainer2/DialogItemList
+onready var events_warning = $TimelineEditor/ScrollContainer/EventContainer/EventsWarning
 
 func _ready():
 	$EventTools/VBoxContainer2/DialogItemList.connect('item_selected', self, '_on_DialogItemList_item_selected')
@@ -70,9 +71,9 @@ func load_timeline(path):
 
 	editor_reference.autosaving_hash = editor_reference.generate_save_data().hash()
 	if data.size() < 1:
-		editor_reference.events_warning.visible = true
+		events_warning.visible = true
 	else:
-		editor_reference.events_warning.visible = false
+		events_warning.visible = false
 		indent_events()
 		fold_all_nodes()
 	
@@ -142,7 +143,7 @@ func create_event(scene: String, data: Dictionary = {'no-data': true} , indent: 
 	timeline.add_child(piece)
 	if data.has('no-data') == false:
 		piece.load_data(data)
-	editor_reference.events_warning.visible = false
+	events_warning.visible = false
 	# Indent on create
 	if indent:
 		indent_events()
@@ -160,8 +161,8 @@ func _on_DialogItemList_item_selected(index):
 
 # Popup menu with options for a timeline
 func _on_DialogItemList_item_rmb_selected(index, at_position):
-	$TimelinePopupMenu.rect_position = get_viewport().get_mouse_position()
-	$TimelinePopupMenu.popup()
+	editor_reference.get_node('TimelinePopupMenu').rect_position = get_viewport().get_mouse_position()
+	editor_reference.get_node('TimelinePopupMenu').popup()
 	editor_reference.timeline_name = dialog_list.get_item_text(index)
 
 

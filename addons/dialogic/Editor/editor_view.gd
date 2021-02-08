@@ -5,23 +5,22 @@ var plugin_reference
 
 var undo_redo: UndoRedo
 
-var debug_mode = true # For printing info
+var debug_mode: bool = true # For printing info
 
 var editor_file_dialog # EditorFileDialog
-var file_picker_data = {'method': '', 'node': self}
+var file_picker_data: Dictionary = {'method': '', 'node': self}
 
-var version_string = "0.9"
-var timeline_name = "" # The currently opened timeline name (for saving)
+var version_string: String = "0.9"
+var timeline_name: String = "" # The currently opened timeline name (for saving)
 
-var current_editor_view = 'Timeline'
+var current_editor_view: String = 'Timeline'
 
-var working_dialog_file = ''
+var working_dialog_file: String = ''
 var timer_duration = 200
 var timer_interval = 30
 var autosaving_hash
 var timeline_path = "EditorTimeline/TimelineEditor/TimelineArea/TimeLine"
 var dialog_list_path = "EditorTimeline/EventTools/VBoxContainer2/DialogItemList"
-onready var events_warning = $EditorTimeline/TimelineEditor/ScrollContainer/EventContainer/EventsWarning
 
 func _ready():
 	# Adding file dialog to get used by pieces
@@ -286,47 +285,35 @@ func change_tab(tab):
 
 
 # Auto saving
-func _on_AutoSaver_timeout():
+func _on_AutoSaver_timeout() -> void:
 	if current_editor_view == 'Timeline':
 		if autosaving_hash != generate_save_data().hash():
 			save_timeline(working_dialog_file)
 			dprint('[!] Timeline changes detected. Saving: ' + str(autosaving_hash))
 	if current_editor_view == 'Characters':
 		if $EditorCharacter.opened_character_data:
-			if compare_dicts($EditorCharacter.opened_character_data, $EditorCharacter.generate_character_data_to_save()) == false:
+			if DialogicUtil.compare_dicts($EditorCharacter.opened_character_data, $EditorCharacter.generate_character_data_to_save()) == false:
 				dprint('[!] Character changes detected. Saving')
 				$EditorCharacter.save_current_character()
-	
 	# I'm trying a different approach on the glossary.
-	#if current_editor_view == 'Glossary':
-	#	$EditorGlossary.save_glossary()
 
 
-func manual_save():
+func manual_save() -> void:
 	if current_editor_view == 'Timeline':
 		save_timeline(working_dialog_file)
 		dprint('[!] Saving: ' + str(working_dialog_file))
 
 
-func _on_Logo_gui_input(event):
+func _on_Logo_gui_input(event) -> void:
 	# I should probably replace this with an "About Dialogic" dialog
 	if event is InputEventMouseButton and event.button_index == 1:
 		OS.shell_open("https://github.com/coppolaemilio/dialogic")
 
 
-func compare_dicts(dict_1, dict_2):
-	# I tried using the .hash() function but it was returning different numbers
-	# even when the dictionary was exactly the same.
-	if str(dict_1) != "Null" and str(dict_2) != "Null":
-		if str(dict_1) == str(dict_2):
-			return true
-	return false
-
-
-func dprint(what):
+func dprint(what) -> void:
 	if debug_mode:
 		print(what)
 
 
-func _docs_button():
+func _docs_button() -> void:
 	OS.shell_open("https://dialogic.coppolaemilio.com")

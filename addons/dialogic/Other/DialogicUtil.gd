@@ -185,6 +185,7 @@ static func get_glossary_by_file(filename) -> Dictionary:
 	
 	return {}
 
+
 static func default_settings():
 	var ds = {
 		"background_texture_button_visible": true,
@@ -221,3 +222,12 @@ static func default_settings():
 
 static func generate_random_id() -> String:
 	return str(OS.get_unix_time()) + '-' + str(100 + randi()%899+1)
+
+
+static func compare_dicts(dict_1: Dictionary, dict_2: Dictionary) -> bool:
+	# I tried using the .hash() function but it was returning different numbers
+	# even when the dictionary was exactly the same.
+	if str(dict_1) != "Null" and str(dict_2) != "Null":
+		if str(dict_1) == str(dict_2):
+			return true
+	return false
