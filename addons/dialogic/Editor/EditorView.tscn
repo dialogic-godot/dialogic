@@ -625,9 +625,8 @@ margin_top = 64.0
 margin_right = 320.0
 margin_bottom = 84.0
 disabled = true
-text = "Extra Information"
+text = "None"
 expand_icon = true
-items = [ "Extra information", null, false, 0, false, "Number", null, false, 0, false, "Text", null, false, 2, null ]
 selected = 0
 
 [node name="ExtraInfo" type="VBoxContainer" parent="EditorGlossary/ScrollContainer/VBoxContainer/HBoxContainer/VBoxContainer"]

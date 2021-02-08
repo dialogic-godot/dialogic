@@ -9,9 +9,10 @@ var current_entry
 var number_characters = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '.']
 
 var types = {
-	0: 'Extra Information',
-	1: 'Number',
-	2: 'Text'
+	0: 'None',
+	1: 'Extra Information',
+	2: 'Number',
+	3: 'Text'
 }
 
 onready var nodes = {
@@ -38,6 +39,10 @@ onready var section = {
 func _ready():
 	glossary = DialogicUtil.load_glossary()
 	last_saved_glossary = DialogicUtil.load_glossary()
+	
+	nodes['type'].text = 'Select type'
+	for t in types:
+		nodes['type'].add_item(types[t])
 	
 	nodes['name'].connect("text_changed", self, '_on_field_name_changed', [])
 	nodes['title'].connect("text_changed", self, '_on_field_text_changed', ['title'])
@@ -70,17 +75,18 @@ func enable_all():
 	nodes['extra'].editable = true
 
 
-func change_editor(type):
+func change_editor(type: String):
 	section['ExtraInfo'].visible = false
 	section['Number'].visible = false
 	section['Text'].visible = false
 	
-	if type == 'Extra Information':
-		section['ExtraInfo'].visible = true
-	if type == 'Number':
-		section['Number'].visible = true
-	if type == 'Text':
-		section['Text'].visible = true
+	match type:
+		'Extra Information':
+			section['ExtraInfo'].visible = true
+		'Number':
+			section['Number'].visible = true
+		'Text':
+			section['Text'].visible = true
 	
 	nodes['type'].text = type
 
@@ -130,6 +136,8 @@ func _on_NewEntryButton_pressed():
 	DialogicUtil.save_glossary(glossary)
 	refresh_list(new_entry_id)
 	
+	nodes['type'].text = 'Select type'
+	
 	for index in range(nodes['item_list'].get_item_count()):
 		if nodes['item_list'].get_item_text(index) == new_entry_id:
 			nodes['item_list'].select(index)
@@ -158,7 +166,6 @@ func _on_ItemList_item_selected(index):
 
 
 func select_entry(index):
-	print('[!] Select entry ', index)
 	var selected = nodes['item_list'].get_item_text(index)
 	var entry_id = nodes['item_list'].get_item_metadata(index)['file'].replace('.json', '')
 	current_entry = entry_id

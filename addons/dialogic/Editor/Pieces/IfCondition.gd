@@ -53,8 +53,9 @@ func _on_MenuButton_about_to_show():
 
 static func glossary_type_to_human(value: int) -> String:
 	var types = {
-		0: 'Extra Information',
-		1: 'Number',
-		2: 'Text'
+		0: 'None',
+		1: 'Extra Information',
+		2: 'Number',
+		3: 'Text'
 	}
 	return types[value]
