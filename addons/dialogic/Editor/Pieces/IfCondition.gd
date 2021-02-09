@@ -17,7 +17,6 @@ onready var nodes = {
 
 func _ready():
 	nodes['dropdown'].get_popup().connect("index_pressed", self, '_on_glossary_entry_selected')
-	
 
 
 func load_data(data):

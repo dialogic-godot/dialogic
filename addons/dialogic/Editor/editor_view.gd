@@ -10,8 +10,6 @@ var debug_mode: bool = true # For printing info
 var editor_file_dialog # EditorFileDialog
 var file_picker_data: Dictionary = {'method': '', 'node': self}
 
-var version_string: String = "0.9"
-
 var current_editor_view: String = 'Timeline'
 
 var working_dialog_file: String = ''

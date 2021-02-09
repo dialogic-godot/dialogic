@@ -16,6 +16,7 @@ onready var character_editor = {
 	'display_name': $CharacterEditor/HBoxContainer/Container/DisplayName/LineEdit,
 }
 
+
 func _ready():
 	pass
 
@@ -96,6 +97,7 @@ func _on_New_Character_Button_pressed():
 func _on_SaveButton_pressed():
 	save_current_character()
 
+
 func generate_character_data_to_save():
 	var default_speaker: bool = character_editor['default_speaker'].pressed
 	var portraits = []
@@ -118,6 +120,7 @@ func generate_character_data_to_save():
 		info_to_save['name'] = character_editor['name'].text
 	
 	return info_to_save
+
 
 func save_current_character():
 	var path = DialogicUtil.get_path('CHAR_DIR', character_editor['file'].text)

@@ -3,6 +3,7 @@ extends HSplitContainer
 
 var editor_reference
 var timeline_name: String = "" # The currently opened timeline name (for saving)
+var version_string: String = "0.9"
 
 onready var timeline = $TimelineEditor/TimelineArea/TimeLine
 onready var dialog_list = $EventTools/VBoxContainer2/DialogItemList
@@ -210,7 +211,7 @@ func create_timeline():
 	var timeline_file = 'timeline-' + str(OS.get_unix_time()) + '.json'
 	var timeline = {
 		"events": [],
-		"metadata":{"dialogic-version": editor_reference.version_string}
+		"metadata":{"dialogic-version": version_string}
 	}
 	var directory = Directory.new()
 	if not directory.dir_exists(DialogicUtil.get_path('WORKING_DIR')):
@@ -241,7 +242,7 @@ func refresh_timeline_list():
 func generate_save_data():
 	var info_to_save = {
 		'metadata': {
-			'dialogic-version': editor_reference.version_string,
+			'dialogic-version': version_string,
 			'name': timeline_name,
 		},
 		'events': []
