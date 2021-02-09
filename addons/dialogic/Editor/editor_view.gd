@@ -12,15 +12,13 @@ var file_picker_data: Dictionary = {'method': '', 'node': self}
 
 var version_string: String = "0.9"
 
-
 var current_editor_view: String = 'Timeline'
 
 var working_dialog_file: String = ''
 var timer_duration = 200
 var timer_interval = 30
 var autosaving_hash
-var timeline_path = "EditorTimeline/TimelineEditor/TimelineArea/TimeLine"
-var dialog_list_path = "EditorTimeline/EventTools/VBoxContainer2/DialogItemList"
+
 
 func _ready():
 	# Adding file dialog to get used by pieces
@@ -28,7 +26,7 @@ func _ready():
 	add_child(editor_file_dialog)
 	
 	
-	$HBoxContainer/EventButton.set('self_modulate', Color('#6a9dea'))
+	$ToolBar/EventButton.set('self_modulate', Color('#6a9dea'))
 
 	$EditorCharacter.editor_reference = self
 	$EditorCharacter.refresh_character_list()
@@ -45,8 +43,8 @@ func _ready():
 	$EditorGlossary/CenterContainer/VBoxContainer/CenterContainer/NewEntryButton2.icon = get_icon("Add", "EditorIcons")
 	$EditorCharacter/CharacterTools/Button.icon = get_icon("Add", "EditorIcons")
 	
-	$HBoxContainer/Docs.icon = get_icon("Instance", "EditorIcons")
-	$HBoxContainer/Docs.connect('pressed', self, "_docs_button", [])
+	$ToolBar/Docs.icon = get_icon("Instance", "EditorIcons")
+	$ToolBar/Docs.connect('pressed', self, "_docs_button", [])
 	
 	# Adding custom icons. For some reason they don't load properly otherwise.
 	$EditorTimeline/TimelineEditor/ScrollContainer/EventContainer/ChangeScene.icon = load("res://addons/dialogic/Images/change-scene.svg")
@@ -57,8 +55,8 @@ func _ready():
 	
 	
 	# Toolbar button connections
-	$HBoxContainer/FoldTools/ButtonFold.connect('pressed', $EditorTimeline, 'fold_all_nodes')
-	$HBoxContainer/FoldTools/ButtonUnfold.connect('pressed', $EditorTimeline, 'unfold_all_nodes')
+	$ToolBar/FoldTools/ButtonFold.connect('pressed', $EditorTimeline, 'fold_all_nodes')
+	$ToolBar/FoldTools/ButtonUnfold.connect('pressed', $EditorTimeline, 'unfold_all_nodes')
 
 
 func _process(delta):
@@ -180,20 +178,20 @@ func _on_GlossaryButton_pressed():
 
 func change_tab(tab):
 	# Hiding everything
-	$HBoxContainer/EventButton.set('self_modulate', Color('#dedede'))
-	$HBoxContainer/CharactersButton.set('self_modulate', Color('#dedede'))
-	$HBoxContainer/ThemeButton.set('self_modulate', Color('#dedede'))
-	$HBoxContainer/GlossaryButton.set('self_modulate', Color('#dedede'))
-	$HBoxContainer/FoldTools.visible = false
+	$ToolBar/EventButton.set('self_modulate', Color('#dedede'))
+	$ToolBar/CharactersButton.set('self_modulate', Color('#dedede'))
+	$ToolBar/ThemeButton.set('self_modulate', Color('#dedede'))
+	$ToolBar/GlossaryButton.set('self_modulate', Color('#dedede'))
+	$ToolBar/FoldTools.visible = false
 	$EditorTimeline.visible = false
 	$EditorCharacter.visible = false
 	$EditorTheme.visible = false
 	$EditorGlossary.visible = false
 	
 	if tab == 'Timeline':
-		$HBoxContainer/EventButton.set('self_modulate', Color('#6a9dea'))
+		$ToolBar/EventButton.set('self_modulate', Color('#6a9dea'))
 		$EditorTimeline.visible = true
-		$HBoxContainer/FoldTools.visible = true
+		$ToolBar/FoldTools.visible = true
 		if working_dialog_file == '':
 			$EditorTimeline/TimelineEditor.visible = false
 			$EditorTimeline/CenterContainer.visible = true
@@ -202,7 +200,7 @@ func change_tab(tab):
 			$EditorTimeline/CenterContainer.visible = false
 		
 	elif tab == 'Characters':
-		$HBoxContainer/CharactersButton.set('self_modulate', Color('#6a9dea'))
+		$ToolBar/CharactersButton.set('self_modulate', Color('#6a9dea'))
 		$EditorCharacter.visible = true
 		# Select the first character in the list
 		if $EditorCharacter/CharacterTools/CharacterItemList.is_anything_selected() == false:
@@ -211,11 +209,11 @@ func change_tab(tab):
 				$EditorCharacter/CharacterTools/CharacterItemList.select(0)
 
 	elif tab == 'Theme':
-		$HBoxContainer/ThemeButton.set('self_modulate', Color('#6a9dea'))
+		$ToolBar/ThemeButton.set('self_modulate', Color('#6a9dea'))
 		$EditorTheme.visible = true
 	
 	elif tab == 'Glossary':
-		$HBoxContainer/GlossaryButton.set('self_modulate', Color('#6a9dea'))
+		$ToolBar/GlossaryButton.set('self_modulate', Color('#6a9dea'))
 		$EditorGlossary.visible = true
 		
 	current_editor_view = tab
