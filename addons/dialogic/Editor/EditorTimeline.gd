@@ -69,7 +69,7 @@ func load_timeline(path):
 			{'condition', 'glossary'}:
 				create_event("IfCondition", i)
 
-	editor_reference.autosaving_hash = editor_reference.generate_save_data().hash()
+	editor_reference.autosaving_hash = generate_save_data().hash()
 	if data.size() < 1:
 		events_warning.visible = true
 	else:
@@ -233,3 +233,25 @@ func refresh_timeline_list():
 	dialog_list.sort_items_by_text()
 	if $EventTools/VBoxContainer2/DialogItemList.get_item_count() == 0:
 		editor_reference.change_tab('Timeline')
+
+# Saving
+func generate_save_data():
+	var info_to_save = {
+		'metadata': {
+			'dialogic-version': editor_reference.version_string,
+			'name': editor_reference.timeline_name,
+		},
+		'events': []
+	}
+	for event in timeline.get_children():
+		info_to_save['events'].append(event.event_data)
+	return info_to_save
+
+
+func save_timeline(path):
+	var info_to_save = generate_save_data()
+	var file = File.new()
+	file.open(path, File.WRITE)
+	file.store_line(to_json(info_to_save))
+	file.close()
+	editor_reference.autosaving_hash = info_to_save.hash()

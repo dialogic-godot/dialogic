@@ -35,6 +35,7 @@ func _ready():
 	
 	$EditorTimeline.editor_reference = self
 	$EditorTimeline.refresh_timeline_list()
+	
 	$EditorTheme.editor_reference = self
 	$EditorGlossary.editor_reference = self
 
@@ -67,30 +68,6 @@ func _process(delta):
 		_on_AutoSaver_timeout()
 
 
-# Saving and loading
-func generate_save_data():
-	var info_to_save = {
-		'metadata': {
-			'dialogic-version': version_string,
-			'name': timeline_name,
-		},
-		'events': []
-	}
-	for event in get_node(timeline_path).get_children():
-		info_to_save['events'].append(event.event_data)
-	return info_to_save
-
-
-func save_timeline(path):
-	dprint('Saving resource --------')
-	var info_to_save = generate_save_data()
-	var file = File.new()
-	file.open(path, File.WRITE)
-	file.store_line(to_json(info_to_save))
-	file.close()
-	autosaving_hash = info_to_save.hash()
-
-
 func _on_TimelinePopupMenu_id_pressed(id):
 	if id == 0: # rename
 		popup_rename()
@@ -116,7 +93,7 @@ func popup_rename():
 func _on_RenameDialog_confirmed():
 	timeline_name = $RenameDialog/LineEdit.text
 	$RenameDialog/LineEdit.text = ''
-	save_timeline(working_dialog_file)
+	$EditorTimeline.save_timeline(working_dialog_file)
 	$EditorTimeline.refresh_timeline_list()
 
 
@@ -184,7 +161,6 @@ func _on_file_selected(path):
 
 
 # Toolbar
-
 func _on_EventButton_pressed():
 	change_tab('Timeline')
 
@@ -248,8 +224,8 @@ func change_tab(tab):
 # Auto saving
 func _on_AutoSaver_timeout() -> void:
 	if current_editor_view == 'Timeline':
-		if autosaving_hash != generate_save_data().hash():
-			save_timeline(working_dialog_file)
+		if autosaving_hash != $EditorTimeline.generate_save_data().hash():
+			$EditorTimeline.save_timeline(working_dialog_file)
 			dprint('[!] Timeline changes detected. Saving: ' + str(autosaving_hash))
 	if current_editor_view == 'Characters':
 		if $EditorCharacter.opened_character_data:
@@ -261,7 +237,7 @@ func _on_AutoSaver_timeout() -> void:
 
 func manual_save() -> void:
 	if current_editor_view == 'Timeline':
-		save_timeline(working_dialog_file)
+		$EditorTimeline.save_timeline(working_dialog_file)
 		dprint('[!] Saving: ' + str(working_dialog_file))
 
 
