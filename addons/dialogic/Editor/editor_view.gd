@@ -11,7 +11,7 @@ var editor_file_dialog # EditorFileDialog
 var file_picker_data: Dictionary = {'method': '', 'node': self}
 
 var version_string: String = "0.9"
-var timeline_name: String = "" # The currently opened timeline name (for saving)
+
 
 var current_editor_view: String = 'Timeline'
 
@@ -76,14 +76,14 @@ func _on_TimelinePopupMenu_id_pressed(id):
 	if id == 2:
 		#var current_id = DialogicUtil.get_filename_from_path(working_dialog_file)
 		#if current_id != '':
-		OS.set_clipboard(timeline_name)
+		OS.set_clipboard($EditorTimeline.timeline_name)
 	if id == 3:
 		$RemoveTimelineConfirmation.popup_centered()
 
 
 func popup_rename():
 	$RenameDialog.register_text_enter($RenameDialog/LineEdit)
-	$RenameDialog/LineEdit.text = timeline_name
+	$RenameDialog/LineEdit.text = $EditorTimeline.timeline_name
 	$RenameDialog.set_as_minsize()
 	$RenameDialog.popup_centered()
 	$RenameDialog/LineEdit.grab_focus()
@@ -91,7 +91,7 @@ func popup_rename():
 
 
 func _on_RenameDialog_confirmed():
-	timeline_name = $RenameDialog/LineEdit.text
+	$EditorTimeline.timeline_name = $RenameDialog/LineEdit.text
 	$RenameDialog/LineEdit.text = ''
 	$EditorTimeline.save_timeline(working_dialog_file)
 	$EditorTimeline.refresh_timeline_list()

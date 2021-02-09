@@ -2,9 +2,12 @@ tool
 extends HSplitContainer
 
 var editor_reference
+var timeline_name: String = "" # The currently opened timeline name (for saving)
+
 onready var timeline = $TimelineEditor/TimelineArea/TimeLine
 onready var dialog_list = $EventTools/VBoxContainer2/DialogItemList
 onready var events_warning = $TimelineEditor/ScrollContainer/EventContainer/EventsWarning
+
 
 func _ready():
 	$EventTools/VBoxContainer2/DialogItemList.connect('item_selected', self, '_on_DialogItemList_item_selected')
@@ -36,7 +39,7 @@ func load_timeline(path):
 	
 	var data = DialogicUtil.load_json(path)
 	if data['metadata'].has('name'):
-		editor_reference.timeline_name = data['metadata']['name']
+		timeline_name = data['metadata']['name']
 	data = data['events']
 	for i in data:
 		match i:
@@ -163,7 +166,7 @@ func _on_DialogItemList_item_selected(index):
 func _on_DialogItemList_item_rmb_selected(index, at_position):
 	editor_reference.get_node('TimelinePopupMenu').rect_position = get_viewport().get_mouse_position()
 	editor_reference.get_node('TimelinePopupMenu').popup()
-	editor_reference.timeline_name = dialog_list.get_item_text(index)
+	timeline_name = dialog_list.get_item_text(index)
 
 
 # Clear timeline
@@ -239,7 +242,7 @@ func generate_save_data():
 	var info_to_save = {
 		'metadata': {
 			'dialogic-version': editor_reference.version_string,
-			'name': editor_reference.timeline_name,
+			'name': timeline_name,
 		},
 		'events': []
 	}
