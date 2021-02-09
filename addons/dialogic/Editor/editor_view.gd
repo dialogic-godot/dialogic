@@ -27,7 +27,6 @@ func _ready():
 	editor_file_dialog = EditorFileDialog.new()
 	add_child(editor_file_dialog)
 	
-	refresh_timeline_list()
 	
 	$HBoxContainer/EventButton.set('self_modulate', Color('#6a9dea'))
 
@@ -35,6 +34,7 @@ func _ready():
 	$EditorCharacter.refresh_character_list()
 	
 	$EditorTimeline.editor_reference = self
+	$EditorTimeline.refresh_timeline_list()
 	$EditorTheme.editor_reference = self
 	$EditorGlossary.editor_reference = self
 
@@ -58,6 +58,7 @@ func _ready():
 	# Toolbar button connections
 	$HBoxContainer/FoldTools/ButtonFold.connect('pressed', $EditorTimeline, 'fold_all_nodes')
 	$HBoxContainer/FoldTools/ButtonUnfold.connect('pressed', $EditorTimeline, 'unfold_all_nodes')
+
 
 func _process(delta):
 	timer_interval -= 1
@@ -90,20 +91,6 @@ func save_timeline(path):
 	autosaving_hash = info_to_save.hash()
 
 
-# Conversation files
-func refresh_timeline_list():
-	get_node(dialog_list_path).clear()
-	var icon = load("res://addons/dialogic/Images/timeline.svg")
-	var index = 0
-	for c in DialogicUtil.get_timeline_list():
-		get_node(dialog_list_path).add_item(c['name'], icon)
-		get_node(dialog_list_path).set_item_metadata(index, {'file': c['file'], 'index': index})
-		index += 1
-	get_node(dialog_list_path).sort_items_by_text()
-	if $EditorTimeline/EventTools/VBoxContainer2/DialogItemList.get_item_count() == 0:
-		change_tab('Timeline')
-
-
 func _on_TimelinePopupMenu_id_pressed(id):
 	if id == 0: # rename
 		popup_rename()
@@ -130,43 +117,17 @@ func _on_RenameDialog_confirmed():
 	timeline_name = $RenameDialog/LineEdit.text
 	$RenameDialog/LineEdit.text = ''
 	save_timeline(working_dialog_file)
-	refresh_timeline_list()
+	$EditorTimeline.refresh_timeline_list()
 
 
 func _on_RemoveTimelineConfirmation_confirmed():
 	var dir = Directory.new()
 	dir.remove(working_dialog_file)
 	working_dialog_file = ''
-	refresh_timeline_list()
+	$EditorTimeline.refresh_timeline_list()
 	if $EditorTimeline/EventTools/VBoxContainer2/DialogItemList.get_item_count() != 0:
 		$EditorTimeline._on_DialogItemList_item_selected(0)
 		$EditorTimeline/EventTools/VBoxContainer2/DialogItemList.select(0)
-
-
-# Create timeline
-func _on_AddTimelineButton_pressed():
-	var file = create_timeline()
-	refresh_timeline_list()
-	$EditorTimeline.clear_timeline()
-	$EditorTimeline.load_timeline(DialogicUtil.get_path('TIMELINE_DIR', file))
-
-
-func create_timeline():
-	var timeline_file = 'timeline-' + str(OS.get_unix_time()) + '.json'
-	var timeline = {
-		"events": [],
-		"metadata":{"dialogic-version": version_string}
-	}
-	var directory = Directory.new()
-	if not directory.dir_exists(DialogicUtil.get_path('WORKING_DIR')):
-		directory.make_dir(DialogicUtil.get_path('WORKING_DIR'))
-	if not directory.dir_exists(DialogicUtil.get_path('TIMELINE_DIR')):
-		directory.make_dir(DialogicUtil.get_path('TIMELINE_DIR'))
-	var file = File.new()
-	file.open(DialogicUtil.get_path('TIMELINE_DIR') + '/' + timeline_file, File.WRITE)
-	file.store_line(to_json(timeline))
-	file.close()
-	return timeline_file
 
 
 # Character Creations
@@ -238,7 +199,7 @@ func _on_ThemeButton_pressed():
 
 func _on_GlossaryButton_pressed():
 	change_tab('Glossary')
-	
+
 
 
 func change_tab(tab):

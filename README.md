@@ -47,6 +47,8 @@ The plugin is not production ready, this means that it will not work in your gam
 
   - Bug fixes:
     - Fixing an error when having an empty join event in a timeline.
+    - Fixing many saving/loading bug in timelines
+    - And a lot more that I completely forgot to report, but in general everything is more stable now.
 
 To view the full changelog [click here](https://github.com/coppolaemilio/dialogic/blob/master/CHANGELOG.md). 
 

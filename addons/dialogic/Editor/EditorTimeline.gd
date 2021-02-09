@@ -193,3 +193,43 @@ func _move_block(block, direction):
 		timeline.move_child(block, block_index + 1)
 		return true
 	return false
+
+
+# Create timeline
+func _on_AddTimelineButton_pressed():
+	var file = create_timeline()
+	refresh_timeline_list()
+	clear_timeline()
+	load_timeline(DialogicUtil.get_path('TIMELINE_DIR', file))
+
+
+func create_timeline():
+	var timeline_file = 'timeline-' + str(OS.get_unix_time()) + '.json'
+	var timeline = {
+		"events": [],
+		"metadata":{"dialogic-version": editor_reference.version_string}
+	}
+	var directory = Directory.new()
+	if not directory.dir_exists(DialogicUtil.get_path('WORKING_DIR')):
+		directory.make_dir(DialogicUtil.get_path('WORKING_DIR'))
+	if not directory.dir_exists(DialogicUtil.get_path('TIMELINE_DIR')):
+		directory.make_dir(DialogicUtil.get_path('TIMELINE_DIR'))
+	var file = File.new()
+	file.open(DialogicUtil.get_path('TIMELINE_DIR') + '/' + timeline_file, File.WRITE)
+	file.store_line(to_json(timeline))
+	file.close()
+	return timeline_file
+
+
+# Conversation files
+func refresh_timeline_list():
+	dialog_list.clear()
+	var icon = load("res://addons/dialogic/Images/timeline.svg")
+	var index = 0
+	for c in DialogicUtil.get_timeline_list():
+		dialog_list.add_item(c['name'], icon)
+		dialog_list.set_item_metadata(index, {'file': c['file'], 'index': index})
+		index += 1
+	dialog_list.sort_items_by_text()
+	if $EventTools/VBoxContainer2/DialogItemList.get_item_count() == 0:
+		editor_reference.change_tab('Timeline')
