@@ -168,14 +168,14 @@ func start_text_tween():
 	$TextBubble/Tween.start()
 
 
-func update_name(character, color='FFFFFF'):
+func update_name(character, color='#FFFFFF'):
 	if character.has('name'):
 		var parsed_name = character['name']
 		if character.has('display_name'):
 			if character['display_name'] != '':
 				parsed_name = character['display_name']
 		if character.has('color'):
-			color = character['color'].to_html()
+			color = '#' + character['color'].to_html()
 		$TextBubble/NameLabel.bbcode_text = '[color=' + color + ']' + parsed_name + '[/color]'
 	else:
 		$TextBubble/NameLabel.bbcode_text = ''
