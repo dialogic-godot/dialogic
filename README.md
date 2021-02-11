@@ -180,6 +180,7 @@ Placeholder images are from Toen's YouTube DF series:
 - Lukas Stranzl
 - Sl Tu
 - Garrett Guillotte
+- George Castro
 
 Support me on [Patreon https://www.patreon.com/coppolaemilio](https://www.patreon.com/coppolaemilio)
 
