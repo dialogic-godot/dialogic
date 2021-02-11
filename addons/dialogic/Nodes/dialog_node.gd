@@ -230,7 +230,7 @@ func event_handler(event: Dictionary):
 			finished = false
 			var character_data = get_character(event['character'])
 			update_name(character_data)
-			grab_portrait_focus(character_data)
+			grab_portrait_focus(character_data, event)
 			update_text(event['text'])
 		{'question', ..}:
 			show_dialog()
@@ -278,9 +278,11 @@ func event_handler(event: Dictionary):
 					var exists = grab_portrait_focus(character_data)
 					if exists == false:
 						var p = Portrait.instance()
+						var char_portrait = event['portrait']
+						if char_portrait == '':
+							char_portrait = 'Default'
 						p.character_data = character_data
-						# Todo: get current expression instead of 'Default'
-						p.init('Default', get_character_position(event['position']))
+						p.init(char_portrait, get_character_position(event['position']))
 						$Portraits.add_child(p)
 						p.fade_in()
 						go_to_next_event()
@@ -423,12 +425,14 @@ func go_to_next_event():
 	load_dialog(true)
 
 
-func grab_portrait_focus(character_data):
+func grab_portrait_focus(character_data, event: Dictionary = {}) -> bool:
 	var exists = false
 	for portrait in $Portraits.get_children():
 		if portrait.character_data == character_data:
 			exists = true
 			portrait.focus()
+			if event.has('portrait'):
+				portrait.set_portrait(event['portrait'])
 		else:
 			portrait.focusout()
 	return exists
