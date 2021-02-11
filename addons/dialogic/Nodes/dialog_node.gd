@@ -161,7 +161,7 @@ func parse_glossary(dialog_script):
 			if t.has('text') and t.has('character'):
 				var text = t['text']
 				for w in glossary:
-					if glossary[w]['type'] == 0:
+					if glossary[w]['type'] == 1:
 						dialog_script['events'][index]['text'] = t['text'].replace(glossary[w]['name'],
 							'[url=' + glossary[w]['name'] + ']' +
 								'[color=' + settings['glossary_color'] + ']' + glossary[w]['name'] + '[/color]' +
@@ -553,7 +553,7 @@ func _on_RichTextLabel_meta_hover_started(meta):
 	for g in glossary:
 		if glossary[g]['name'] == meta:
 			$GlossaryInfo.load_preview(glossary[g])
-			if glossary[g]['type'] == 0:
+			if glossary[g]['type'] == 1:
 				correct_type = true
 
 	if correct_type:

@@ -217,6 +217,7 @@ __meta__ = {
 [node name="GlossaryInfo" type="PanelContainer" parent="."]
 visible = false
 margin_right = 208.0
+mouse_filter = 1
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_styles/panel = SubResource( 3 )
@@ -227,7 +228,7 @@ __meta__ = {
 }
 
 [node name="ColorRect" type="ColorRect" parent="GlossaryInfo"]
-mouse_filter = 2
+mouse_filter = 1
 size_flags_horizontal = 0
 size_flags_vertical = 0
 color = Color( 0.12549, 0.12549, 0.12549, 1 )

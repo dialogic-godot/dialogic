@@ -30,6 +30,9 @@ The plugin is not production ready, this means that it will not work in your gam
     - New `Wait Seconds` event. This will hide the dialog and wait X seconds until continuing with the rest of the timeline. 
     - Created independent Character and Portrait picker for reusing in event nodes.
     - Portrait picker added to `Text Events` and `Character Join` events.
+    - `Text Events` text editor vertical size grows witch each line added.
+    - `Text Events` now properly create a new message for each line inside the text editor.
+    - `Text Events` Line count are now displayed next to the text
     - Re-adding the `End Branch` event.
     - Renamed the `Copy Timeline ID` right click menu option to `Copy Timeline Name` since you now have to use that to set the current timeline from code instead of the ID.
     - Fixed several bugs that corrupted saved files

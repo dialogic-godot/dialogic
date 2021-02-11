@@ -3,7 +3,7 @@ extends Control
 
 var text_height = 26
 var editor_reference
-var preview = '...'
+var preview = ''
 onready var toggler = get_node("PanelContainer/VBoxContainer/Header/VisibleToggle")
 
 # This is the information of this event and it will get parsed and saved to the JSON file.
@@ -66,7 +66,7 @@ func load_data(data):
 	update_preview()
 
 
-func update_preview():
+func update_preview() -> String:
 	portrait_picker.set_character(event_data['character'], event_data['portrait'])
 	var t = $PanelContainer/VBoxContainer/TextEdit.text
 	$PanelContainer/VBoxContainer/TextEdit.rect_min_size.y = text_height * (2 + t.count('\n'))
@@ -78,14 +78,17 @@ func update_preview():
 	editor_reference.manual_save()
 	
 	var text = event_data['text']
+	var lines = text.count('\n')
 	if text == '':
-		return '...'
+		return ''
 	if '\n' in text:
 		text = text.split('\n')[0]
 	preview = text
 	if preview.length() > 60:
 		preview = preview.left(60) + '...'
 	
+	if lines > 0:
+		preview += '  -  ' + str(lines + 1) + ' lines'
 	return preview
 
 

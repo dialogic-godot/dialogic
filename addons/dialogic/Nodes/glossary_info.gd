@@ -15,7 +15,7 @@ func _ready():
 	rect_size.y = 0
 
 
-func _process(delta):
+func _process(_delta):
 	if Engine.is_editor_hint() == false or in_theme_editor == true:
 		if visible:
 			if get_global_mouse_position().x < get_viewport().size.x * 0.5:
