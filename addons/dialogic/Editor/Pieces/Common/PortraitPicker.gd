@@ -6,6 +6,7 @@ var portrait
 
 
 func _ready():
+	visible = false
 	connect("about_to_show", self, '_on_about_to_show')
 
 

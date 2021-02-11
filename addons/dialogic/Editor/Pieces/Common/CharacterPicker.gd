@@ -1,11 +1,12 @@
 tool
-
 extends HBoxContainer
 
 signal character_selected(value)
 
+
 func _ready():
 	$Dropdown.get_popup().connect("index_pressed", self, '_on_character_selected')
+
 
 func _on_Dropdown_about_to_show():
 	var popup = $Dropdown.get_popup()
@@ -38,6 +39,7 @@ func set_data_by_file(file_name):
 	# This method is used when you don't know the character's color
 	var character = DialogicUtil.load_json(DialogicUtil.get_path('CHAR_DIR', file_name))
 	set_data(character['name'], Color(character['color']))
+
 
 func set_data(text: String, color:Color = Color('#FFFFFF')) -> void:
 	$Dropdown.text = text

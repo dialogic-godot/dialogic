@@ -2,6 +2,7 @@ tool
 extends Control
 
 var editor_reference
+onready var portrait_picker = $PanelContainer/VBoxContainer/Header/PortraitPicker
 
 var current_color = Color('#ffffff')
 var default_icon_color = Color("#65989898")
@@ -20,7 +21,8 @@ func _ready():
 		p.connect('pressed', self, "position_button_pressed", [p.name])
 	$PanelContainer/VBoxContainer/Header/VisibleToggle.disabled()
 	$PanelContainer/VBoxContainer/Header/CharacterPicker.connect('character_selected', self , '_on_character_selected')
-	
+	portrait_picker.get_popup().connect("index_pressed", self, '_on_portrait_selected')
+
 
 func _on_character_selected(data):
 	# Updating icon Color
@@ -33,6 +35,14 @@ func _on_character_selected(data):
 			p.set('self_modulate', default_icon_color)
 		c_c_ind += 1
 	event_data['character'] = data['file']
+	portrait_picker.set_character(event_data['character'], event_data['portrait'])
+	editor_reference.manual_save()
+
+
+func _on_portrait_selected(index):
+	var text = portrait_picker.get_popup().get_item_text(index)
+	event_data['portrait'] = text
+	portrait_picker.set_character(event_data['character'], event_data['portrait'])
 	editor_reference.manual_save()
 
 
@@ -70,6 +80,7 @@ func load_data(data):
 	if data['character'] != '':
 		var character_data = DialogicUtil.load_json(DialogicUtil.get_path('CHAR_DIR', data['character']))
 		$PanelContainer/VBoxContainer/Header/CharacterPicker.set_data(character_data['name'], Color(character_data['color']))
+		portrait_picker.set_character(data['character'], data['portrait'])
 		current_color = Color(character_data['color'])
 		check_active_position(current_color)
 		return

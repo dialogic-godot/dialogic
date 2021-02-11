@@ -40,9 +40,9 @@ func _on_character_selected(data):
 
 func _on_portrait_selected(index):
 	var text = portrait_picker.get_popup().get_item_text(index)
-	#$PanelContainer/VBoxContainer/Header/CharacterDropdown.text = text
 	event_data['portrait'] = text
 	update_preview()
+
 
 func check_portraits():
 	pass
