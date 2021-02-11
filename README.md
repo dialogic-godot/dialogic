@@ -10,13 +10,16 @@ The plugin is not production ready, this means that it will not work in your gam
 
 ## Changelog
 
-### 🆕 v0.9 - WIP
+### 🆕 v0.9 - House keeping
   - Moved `Dialog.tscn` to the root of the addon so it is easier to find.
   - Added a link to the documentation from the editor
   - Refactored a lot of the code and continued splitting the main plugin code into smaller pieces.
   - New tool: Glossary Editor
     - You are now able to write extra lore for any word and Dialogic will create a hover card with that extra information.
   - New default asset: Glossary Font
+  - In game:
+    - Portraits changes are reflected in-game.
+    - Many small improvements.
   - Theme Editor:
     - Added new options to customize the glossary popup (still not working)
   - Timeline Editor:
@@ -24,6 +27,8 @@ The plugin is not production ready, this means that it will not work in your gam
     - New `Emit Signal` event. This event will make the Dialog node emit a signal called `dialogic_signal`. You can connect this in a moment of your timeline with other scripts.
     - New `Change Scene` event. You can change the current Scene to whatever `.tscn` you pick. This will happen instantly, but in the future I'll add some transition effects so it is not that abrupt.
     - New `Wait Seconds` event. This will hide the dialog and wait X seconds until continuing with the rest of the timeline. 
+    - Created independent Character and Portrait picker for reusing in event nodes.
+    - Portrait picker added to `Text Events` and `Character Join` events.
     - Re-adding the `End Branch` event.
     - Renamed the `Copy Timeline ID` right click menu option to `Copy Timeline Name` since you now have to use that to set the current timeline from code instead of the ID.
     - Fixed several bugs that corrupted saved files
@@ -106,6 +111,8 @@ Yes, you can use Dialogic to make any kind of game (even commercial ones). The p
 `EditorGlossary.gd` - Everything related to the glossary editor tab.
 
 `/Pieces` - Inside this directory you have all the event nodes that populate the timeline editor. Each one has its own name and script. **The name is important** since it has to be instanced from the `editor_view.gd` when clicking on buttons of the same name.
+
+`/Pieces/Common` - This is where some of the common element of the pieces are saved. Things like the Character Picker, the Portrait Picker or the Drag Controller are used in several event nodes, so I'm trying to make them easier to plug in to future events that might need them as well.
 
 `/CharacterEditor` - This contains the script `PortraitEntry.gd` and the scene `PortraitEntry.tscn`. When you add a new expression for one of your characters in the Character Editor this node/script will be instanced for handling the settings.
 
