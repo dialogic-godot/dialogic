@@ -23,7 +23,6 @@ func _ready():
 	editor_file_dialog = EditorFileDialog.new()
 	add_child(editor_file_dialog)
 	
-	
 	$ToolBar/EventButton.set('self_modulate', Color('#6a9dea'))
 
 	$EditorCharacter.editor_reference = self
@@ -50,7 +49,6 @@ func _ready():
 	# Making the dialog editor the default
 	change_tab('Timeline')
 	_on_EventButton_pressed()
-	
 	
 	# Toolbar button connections
 	$ToolBar/FoldTools/ButtonFold.connect('pressed', $EditorTimeline, 'fold_all_nodes')
@@ -171,7 +169,6 @@ func _on_ThemeButton_pressed():
 
 func _on_GlossaryButton_pressed():
 	change_tab('Glossary')
-
 
 
 func change_tab(tab):

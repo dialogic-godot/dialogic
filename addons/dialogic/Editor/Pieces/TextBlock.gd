@@ -13,12 +13,13 @@ var event_data = {
 	'portrait': '',
 }
 
+onready var portrait_picker = $PanelContainer/VBoxContainer/Header/PortraitPicker
 
 func _ready():
 	connect("gui_input", self, '_on_gui_input')
 	$PanelContainer/VBoxContainer/TextEdit.set("rect_min_size", Vector2(0, 80))
 	$PanelContainer/VBoxContainer/Header/CharacterPicker.connect('character_selected', self , '_on_character_selected')
-	$PanelContainer/VBoxContainer/Header/PortraitDropdown.get_popup().connect("index_pressed", self, '_on_portrait_selected')
+	portrait_picker.get_popup().connect("index_pressed", self, '_on_portrait_selected')
 
 	var c_list = DialogicUtil.get_character_list()
 	if c_list.size() == 0:
@@ -37,19 +38,9 @@ func _on_character_selected(data):
 	update_preview()
 
 
-func _on_PortraitDropdown_about_to_show():
-	var Dropdown = $PanelContainer/VBoxContainer/Header/PortraitDropdown
-	Dropdown.get_popup().clear()
-	var index = 0
-	for c in DialogicUtil.get_character_list():
-		if c['file'] == event_data['character']:
-			for p in c['portraits']:
-				Dropdown.get_popup().add_item(p['name'])
-				index += 1
-
 func _on_portrait_selected(index):
-	var text = $PanelContainer/VBoxContainer/Header/PortraitDropdown.get_popup().get_item_text(index)
-	$PanelContainer/VBoxContainer/Header/CharacterDropdown.text = text
+	var text = portrait_picker.get_popup().get_item_text(index)
+	#$PanelContainer/VBoxContainer/Header/CharacterDropdown.text = text
 	event_data['portrait'] = text
 	update_preview()
 
@@ -75,16 +66,11 @@ func load_data(data):
 
 
 func update_preview():
-	$PanelContainer/VBoxContainer/Header/PortraitDropdown.visible = false
+	portrait_picker.set_character(event_data['character'], event_data['portrait'])
+
 	for c in DialogicUtil.get_character_list():
 		if c['file'] == event_data['character']:
 			$PanelContainer/VBoxContainer/Header/CharacterPicker.set_data_by_file(event_data['character'])
-			if c.has('portraits'):
-				if c['portraits'].size() > 1:
-					$PanelContainer/VBoxContainer/Header/PortraitDropdown.visible = true
-					for p in c['portraits']:
-						if p['name'] == event_data['portrait']:
-							$PanelContainer/VBoxContainer/Header/PortraitDropdown.text = event_data['portrait']
 
 	editor_reference.manual_save()
 	

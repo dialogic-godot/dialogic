@@ -123,7 +123,7 @@ func _on_NewEntryButton_pressed():
 	var add_new = true
 	glossary[new_entry_id] = {
 		'file': new_entry_id + '.json',
-		'name': new_entry_id,
+		'name': 'Untitled',
 		'type': 0,
 		'title': '',
 		'body': '',
