@@ -62,9 +62,45 @@ func resize_main():
 
 func set_current_dialog(dialog_path):
 	var dialog_script = DialogicUtil.load_json(DialogicUtil.get_path('TIMELINE_DIR', dialog_path))
+	# All this parse events should be happening in the same loop ideally
+	# But until performance is not an issue I will probably stay lazy
+	# And keep adding different functions for each parsing operation.
 	dialog_script = parse_branches(dialog_script)
 	dialog_script = parse_glossary(dialog_script)
+	dialog_script = parse_text_lines(dialog_script)
 	return dialog_script
+
+
+func parse_text_lines(unparsed_dialog_script: Dictionary) -> Dictionary:
+	var parsed_dialog: Dictionary = unparsed_dialog_script
+	var new_events: Array = []
+	
+	# Return the same thing if it doesn't have events
+	if unparsed_dialog_script.has('events') == false:
+		return unparsed_dialog_script
+			
+	# Parsing
+	for event in unparsed_dialog_script['events']:
+		if event.has('text') and event.has('character') and event.has('portrait'):
+			if '\n' in event['text']:
+				var lines = event['text'].split('\n')
+				var i = 0
+				for line in lines:
+					var _e = {
+						'text': lines[i],
+						'character': event['character'],
+						'portrait': event['portrait']
+					}
+					new_events.append(_e)
+					i += 1
+			else:
+				new_events.append(event)
+		else:
+			new_events.append(event)
+
+	parsed_dialog['events'] = new_events
+
+	return parsed_dialog
 
 
 func parse_branches(unparsed_dialog_script: Dictionary) -> Dictionary:

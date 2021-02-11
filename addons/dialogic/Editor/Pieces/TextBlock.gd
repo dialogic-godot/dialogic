@@ -1,7 +1,7 @@
 tool
 extends Control
 
-var text_height = 80
+var text_height = 26
 var editor_reference
 var preview = '...'
 onready var toggler = get_node("PanelContainer/VBoxContainer/Header/VisibleToggle")
@@ -48,7 +48,9 @@ func _on_portrait_selected(index):
 
 
 func _on_TextEdit_text_changed():
-	event_data['text'] = $PanelContainer/VBoxContainer/TextEdit.text
+	var text = $PanelContainer/VBoxContainer/TextEdit.text
+	event_data['text'] = text
+	
 	update_preview()
 
 
@@ -66,6 +68,8 @@ func load_data(data):
 
 func update_preview():
 	portrait_picker.set_character(event_data['character'], event_data['portrait'])
+	var t = $PanelContainer/VBoxContainer/TextEdit.text
+	$PanelContainer/VBoxContainer/TextEdit.rect_min_size.y = text_height * (2 + t.count('\n'))
 
 	for c in DialogicUtil.get_character_list():
 		if c['file'] == event_data['character']:
