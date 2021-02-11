@@ -41,6 +41,8 @@ func _on_character_selected(data):
 
 func _on_portrait_selected(index):
 	var text = portrait_picker.get_popup().get_item_text(index)
+	if text == "[Don't change]":
+		text = ''
 	event_data['portrait'] = text
 	portrait_picker.set_character(event_data['character'], event_data['portrait'])
 	editor_reference.manual_save()

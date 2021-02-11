@@ -22,11 +22,14 @@ func set_character(c: String, p: String = '') -> void:
 					for p in c['portraits']:
 						if p['name'] == portrait:
 							text = portrait
+	if p == "[Don't change]":
+		text = ''
 
 
 func _on_about_to_show():
 	get_popup().clear()
-	var index = 0
+	get_popup().add_item("[Don't change]")
+	var index = 1
 	for c in DialogicUtil.get_character_list():
 		if c['file'] == character:
 			for p in c['portraits']:

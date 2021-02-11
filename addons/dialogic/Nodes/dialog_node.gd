@@ -432,7 +432,8 @@ func grab_portrait_focus(character_data, event: Dictionary = {}) -> bool:
 			exists = true
 			portrait.focus()
 			if event.has('portrait'):
-				portrait.set_portrait(event['portrait'])
+				if event['portrait'] != '':
+					portrait.set_portrait(event['portrait'])
 		else:
 			portrait.focusout()
 	return exists
