@@ -42,6 +42,7 @@ func _on_portrait_selected(index):
 	var text = portrait_picker.get_popup().get_item_text(index)
 	if text == "[Don't change]":
 		text = ''
+		portrait_picker.text = ''
 	event_data['portrait'] = text
 	update_preview()
 

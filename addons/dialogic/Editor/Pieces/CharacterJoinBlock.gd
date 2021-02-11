@@ -22,6 +22,7 @@ func _ready():
 	$PanelContainer/VBoxContainer/Header/VisibleToggle.disabled()
 	$PanelContainer/VBoxContainer/Header/CharacterPicker.connect('character_selected', self , '_on_character_selected')
 	portrait_picker.get_popup().connect("index_pressed", self, '_on_portrait_selected')
+	portrait_picker.allow_dont_change = false
 
 
 func _on_character_selected(data):
@@ -36,13 +37,15 @@ func _on_character_selected(data):
 		c_c_ind += 1
 	event_data['character'] = data['file']
 	portrait_picker.set_character(event_data['character'], event_data['portrait'])
+	portrait_picker.text = 'Default'
 	editor_reference.manual_save()
 
 
 func _on_portrait_selected(index):
 	var text = portrait_picker.get_popup().get_item_text(index)
-	if text == "[Don't change]":
-		text = ''
+	if portrait_picker.allow_dont_change:
+		if text == "[Don't change]":
+			text = ''
 	event_data['portrait'] = text
 	portrait_picker.set_character(event_data['character'], event_data['portrait'])
 	editor_reference.manual_save()
