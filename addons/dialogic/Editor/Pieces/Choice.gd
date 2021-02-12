@@ -13,12 +13,13 @@ var event_data = {
 
 func _ready():
 	$PanelContainer/VBoxContainer/Header/Warning.visible = false
+	$PanelContainer/VBoxContainer/Header/CustomLineEdit.connect('text_changed', self, '_on_LineEdit_text_changed')
 	pass
 
 
 func load_data(data):
 	event_data = data
-	$PanelContainer/VBoxContainer/Header/LineEdit.text = event_data['choice']
+	$PanelContainer/VBoxContainer/Header/CustomLineEdit.text = event_data['choice']
 
 
 func _on_LineEdit_text_changed(new_text):

@@ -65,9 +65,9 @@ func set_current_dialog(dialog_path):
 	# All this parse events should be happening in the same loop ideally
 	# But until performance is not an issue I will probably stay lazy
 	# And keep adding different functions for each parsing operation.
-	dialog_script = parse_branches(dialog_script)
-	dialog_script = parse_glossary(dialog_script)
 	dialog_script = parse_text_lines(dialog_script)
+	dialog_script = parse_glossary(dialog_script)
+	dialog_script = parse_branches(dialog_script)
 	return dialog_script
 
 
@@ -158,8 +158,7 @@ func parse_glossary(dialog_script):
 	if words.size() > 0:
 		var index = 0
 		for t in dialog_script['events']:
-			if t.has('text') and t.has('character'):
-				var text = t['text']
+			if t.has('text') and t.has('character') and t.has('portrait'):
 				for w in glossary:
 					if glossary[w]['type'] == 1:
 						dialog_script['events'][index]['text'] = t['text'].replace(glossary[w]['name'],
@@ -167,7 +166,7 @@ func parse_glossary(dialog_script):
 								'[color=' + settings['glossary_color'] + ']' + glossary[w]['name'] + '[/color]' +
 							'[/url]'
 						)
-				index += 1
+			index += 1
 	return dialog_script
 
 
