@@ -103,64 +103,44 @@ func parse_text_lines(unparsed_dialog_script: Dictionary) -> Dictionary:
 	return parsed_dialog
 
 
-func parse_branches(unparsed_dialog_script: Dictionary) -> Dictionary:
-	var parsed_dialog: Dictionary = unparsed_dialog_script
+func parse_branches(dialog_script: Dictionary) -> Dictionary:
 	questions = [] # Resetting the questions 
-	var new_events: Array = []
-	var event_id: int = 0
-	var closed_question_index: int = 0
-	
+
+
 	# Return the same thing if it doesn't have events
-	if unparsed_dialog_script.has('events') == false:
-		return unparsed_dialog_script
-	
-	# Parsing
-	for event in unparsed_dialog_script['events']:
+	if dialog_script.has('events') == false:
+		return dialog_script
+
+	var parser_queue = [] # This saves the last question opened, and it gets removed once it was consumed by a endbranch event
+	var event_id: int = 0 # The current id for jumping later on
+	var question_id: int = 0 # identifying the questions to assign options to it
+	for event in dialog_script['events']:
 		if event.has('question'):
-			# recording the existance of a question
-			questions.append({
-				'event_id': event_id,
-				'answered': false,
-				'text': event['question'],
-				'index': questions.size(),
-				'is_conditional': false
-			})
-		if event.has('condition') and event.has('glossary'):
-			# I copy pasted the previous block and added the
-			# is_conditional. This is super cheap but I don't
-			# want to go back and remake it better now, since
-			# it will probably be updated after v1.0. Until 
-			# then, I'm just looking for finishing it faster.
-			# Sorry future Emilio ._.
-			questions.append({
-				'event_id': event_id,
-				'answered': false,
-				'text': event['glossary'],
-				'index': questions.size(),
-				'is_conditional': true
-			})
+			event['event_id'] = event_id
+			event['question_id'] = question_id
+			event['answered'] = false
+			question_id += 1
+			questions.append(event)
+			parser_queue.append(event)
+		
 		if event.has('choice'):
-			var parent_question_id = questions.size() - closed_question_index - 1
-			var c_question = questions[parent_question_id]
-			
-			event['question_id'] = c_question['index']
-			new_events[c_question['event_id']]['options'].append({
-				'question_id': c_question['index'],
+			var opened_branch = parser_queue.back()
+			dialog_script['events'][opened_branch['event_id']]['options'].append({
+				'question_id': opened_branch['question_id'],
 				'label': event['choice'],
-				'event_id': event_id
+				'event_id': event_id,
 				})
-		
+			event['question_id'] = opened_branch['question_id']
+			
 		if event.has('endbranch'):
-			var c_question = questions[questions.size() - closed_question_index - 1]
-			new_events[c_question['event_id']]['question_id'] = closed_question_index
-			c_question['end_id'] = event_id
-			closed_question_index += 1
-		
-		new_events.append(event)
+			event['event_id'] = event_id
+			var opened_branch = parser_queue.pop_back()
+			event['end_branch_of'] = opened_branch['question_id']
+			dialog_script['events'][opened_branch['event_id']]['end_id'] = event_id
 		event_id += 1
 
-	parsed_dialog['events'] = new_events
-	return parsed_dialog
+	return dialog_script
+
 
 
 func parse_glossary(dialog_script):
@@ -274,7 +254,6 @@ func event_handler(event: Dictionary):
 	# Handling an event and updating the available nodes accordingly. 
 	reset_dialog_extras()
 	dprint('[D] Current Event: ', event)
-	print(event)
 	match event:
 		{'text', 'character', 'portrait'}:
 			show_dialog()
@@ -294,14 +273,14 @@ func event_handler(event: Dictionary):
 				for o in event['options']:
 					add_choice_button(o)
 		{'choice', 'question_id'}:
-			var current_question = questions[event['question_id']]
-			if current_question['answered']:
-				# If the option is for an answered question, skip to the end of it.
-				dialog_index = current_question['end_id']
-				load_dialog(true)
-			else:
-				# It should never get here, but if it does, go to the next place.
-				go_to_next_event()
+			for q in questions:
+				if q['question_id'] == event['question_id']:
+					if q['answered']:
+						# If the option is for an answered question, skip to the end of it.
+						dialog_index = q['end_id']
+						load_dialog(true)
+			# It should never get here, but if it does, go to the next place.
+			#go_to_next_event()
 		{'input', ..}:
 			show_dialog()
 			finished = false
@@ -350,7 +329,7 @@ func event_handler(event: Dictionary):
 				$FX/AudioStreamPlayer.play()
 			# Todo: audio stop
 			go_to_next_event()
-		{'endbranch'}:
+		{'endbranch', ..}:
 			go_to_next_event()
 		{'change_scene'}:
 			get_tree().change_scene(event['change_scene'])
@@ -364,8 +343,8 @@ func event_handler(event: Dictionary):
 			wait_seconds(event['wait_seconds'])
 		{'change_timeline'}:
 			dialog_script = set_current_dialog('/' + event['change_timeline'])
-			dialog_index = 0
-			load_dialog(true)
+			dialog_index = -1
+			go_to_next_event()
 		{'condition', 'glossary', 'value', 'question_id'}:
 			# Treating this conditional as an option on a regular question event
 			var current_question = questions[event['question_id']]
