@@ -25,6 +25,9 @@ The plugin is not production ready, this means that it will not work in your gam
   - Timeline Editor:
     - Added categories for the events.
     - Color coded some of the events in the same category to avoid having a distracting rainbow in the timelines.
+    - Conditional event working, but only with "equal to". More conditions coming later.
+    - Renamed the `End Branch` file names to match the name of the event. This will break the conditionals you have, but this is the time for making breaking changes. Sorry!
+    - New `Set Value` event. Change the current value of a glossary variable inside a timeline. This will reset when you close the game, so a saving system will have to be added later on.
     - New `Emit Signal` event. This event will make the Dialog node emit a signal called `dialogic_signal`. You can connect this in a moment of your timeline with other scripts.
     - New `Change Scene` event. You can change the current Scene to whatever `.tscn` you pick. This will happen instantly, but in the future I'll add some transition effects so it is not that abrupt.
     - New `Wait Seconds` event. This will hide the dialog and wait X seconds until continuing with the rest of the timeline. 

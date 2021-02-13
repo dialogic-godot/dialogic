@@ -150,7 +150,7 @@ func parse_branches(unparsed_dialog_script: Dictionary) -> Dictionary:
 				'event_id': event_id
 				})
 		
-		if event.has('endchoice'):
+		if event.has('endbranch'):
 			var c_question = questions[questions.size() - closed_question_index - 1]
 			new_events[c_question['event_id']]['question_id'] = closed_question_index
 			c_question['end_id'] = event_id
@@ -283,7 +283,7 @@ func event_handler(event: Dictionary):
 			update_name(character_data)
 			grab_portrait_focus(character_data, event)
 			update_text(event['text'])
-		{'question', 'text', ..}:
+		{'question', 'question_id', 'options', ..}:
 			show_dialog()
 			finished = false
 			waiting_for_answer = true
@@ -350,7 +350,7 @@ func event_handler(event: Dictionary):
 				$FX/AudioStreamPlayer.play()
 			# Todo: audio stop
 			go_to_next_event()
-		{'endchoice'}:
+		{'endbranch'}:
 			go_to_next_event()
 		{'change_scene'}:
 			get_tree().change_scene(event['change_scene'])

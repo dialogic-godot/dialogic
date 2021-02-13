@@ -28,7 +28,7 @@ func _on_ButtonQuestion_pressed() -> void:
 	create_event("Question", {'no-data': true}, true)
 	create_event("Choice", {'no-data': true}, true)
 	create_event("Choice", {'no-data': true}, true)
-	create_event("EndChoice", {'no-data': true}, true)
+	create_event("EndBranch", {'no-data': true}, true)
 
 
 func load_timeline(path):
@@ -56,8 +56,8 @@ func load_timeline(path):
 				create_event("Question", i)
 			{'choice'}:
 				create_event("Choice", i)
-			{'endchoice'}:
-				create_event("EndChoice", i)
+			{'endbranch'}:
+				create_event("EndBranch", i)
 			{'character', 'action'}:
 				create_event("CharacterLeaveBlock", i)
 			{'change_timeline'}:
@@ -72,6 +72,8 @@ func load_timeline(path):
 				create_event("WaitSeconds", i)
 			{'condition', 'glossary', 'value'}:
 				create_event("IfCondition", i)
+			{'set_value', 'glossary'}:
+				create_event("SetValue", i)
 
 	editor_reference.autosaving_hash = generate_save_data().hash()
 	if data.size() < 1:
@@ -115,12 +117,15 @@ func indent_events() -> void:
 			if question_index > 0:
 				indent = question_indent[question_index] + 1
 				starter = true
-		if event.event_data.has('endchoice'):
-			indent = question_indent[question_index]
-			indent -= 1
-			question_index -= 1
-			if indent < 0:
-				indent = 0
+		if event.event_data.has('endbranch'):
+			print(question_indent)
+			print(question_index)
+			if question_indent.has(question_index):
+				indent = question_indent[question_index]
+				indent -= 1
+				question_index -= 1
+				if indent < 0:
+					indent = 0
 
 		if indent > 0:
 			var indent_node = event.get_node("Indent")

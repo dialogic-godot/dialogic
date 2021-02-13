@@ -1,0 +1,91 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://addons/dialogic/Editor/Pieces/Common/PieceExtraSettings.tscn" type="PackedScene" id=1]
+[ext_resource path="res://addons/dialogic/Editor/Pieces/Common/VisibleToggle.tscn" type="PackedScene" id=2]
+[ext_resource path="res://addons/dialogic/Editor/Pieces/Common/DragController.tscn" type="PackedScene" id=3]
+[ext_resource path="res://addons/dialogic/Editor/Pieces/EndBranch.gd" type="Script" id=4]
+[ext_resource path="res://addons/dialogic/Images/end-choice.svg" type="Texture" id=5]
+
+[sub_resource type="StyleBoxFlat" id=1]
+content_margin_left = 6.0
+content_margin_right = 6.0
+content_margin_top = 6.0
+content_margin_bottom = 6.0
+bg_color = Color( 0.243137, 0.231373, 0.396078, 1 )
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[node name="EndBranch" type="HBoxContainer"]
+anchor_left = 0.043
+anchor_right = 0.063
+margin_left = -44.032
+margin_right = 959.968
+margin_bottom = 42.0
+size_flags_horizontal = 3
+size_flags_vertical = 9
+script = ExtResource( 4 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Indent" type="Control" parent="."]
+visible = false
+margin_bottom = 42.0
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+margin_right = 1029.0
+margin_bottom = 42.0
+mouse_filter = 1
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_styles/panel = SubResource( 1 )
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer"]
+margin_left = 6.0
+margin_top = 6.0
+margin_right = 1023.0
+margin_bottom = 36.0
+size_flags_horizontal = 3
+
+[node name="Header" type="HBoxContainer" parent="PanelContainer/VBoxContainer"]
+margin_right = 1017.0
+margin_bottom = 30.0
+
+[node name="VisibleToggle" parent="PanelContainer/VBoxContainer/Header" instance=ExtResource( 2 )]
+self_modulate = Color( 1, 1, 1, 0 )
+
+[node name="TextureRect" type="TextureRect" parent="PanelContainer/VBoxContainer/Header"]
+margin_left = 34.0
+margin_right = 56.0
+margin_bottom = 30.0
+texture = ExtResource( 5 )
+stretch_mode = 6
+
+[node name="Title" type="Label" parent="PanelContainer/VBoxContainer/Header"]
+margin_left = 60.0
+margin_top = 8.0
+margin_right = 139.0
+margin_bottom = 22.0
+text = "  End Branch"
+
+[node name="Preview" type="Label" parent="PanelContainer/VBoxContainer/Header"]
+margin_left = 143.0
+margin_top = 8.0
+margin_right = 143.0
+margin_bottom = 22.0
+custom_colors/font_color = Color( 1, 1, 1, 0.513726 )
+
+[node name="Spacer" type="Control" parent="PanelContainer/VBoxContainer/Header"]
+margin_left = 147.0
+margin_right = 976.0
+margin_bottom = 30.0
+size_flags_horizontal = 3
+
+[node name="OptionButton" parent="PanelContainer/VBoxContainer/Header" instance=ExtResource( 1 )]
+margin_left = 980.0
+margin_right = 1017.0
+items = [ "Move Up", null, 0, false, false, 0, 0, null, "", false, "Move Down", null, 0, false, false, 1, 0, null, "", false, "", null, 0, false, false, 2, 0, null, "", true, "Remove", null, 0, false, false, 3, 0, null, "", false ]
+
+[node name="DragController" parent="." instance=ExtResource( 3 )]
