@@ -70,7 +70,7 @@ func load_timeline(path):
 				create_event("CloseDialog", i)
 			{'wait_seconds'}:
 				create_event("WaitSeconds", i)
-			{'condition', 'glossary'}:
+			{'condition', 'glossary', 'value'}:
 				create_event("IfCondition", i)
 
 	editor_reference.autosaving_hash = generate_save_data().hash()

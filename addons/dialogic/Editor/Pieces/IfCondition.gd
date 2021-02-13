@@ -8,7 +8,8 @@ var editorPopup
 # This is the information of this event and it will get parsed and saved to the JSON file.
 var event_data = {
 	'condition': '',
-	'glossary': ''
+	'glossary': '',
+	'value': ''
 }
 
 onready var nodes = {
@@ -17,10 +18,16 @@ onready var nodes = {
 
 func _ready():
 	nodes['dropdown'].get_popup().connect("index_pressed", self, '_on_glossary_entry_selected')
+	$PanelContainer/VBoxContainer/Header/CustomLineEdit.connect("text_changed", self, '_on_text_changed')
+
+
+func _on_text_changed(new_text):
+	event_data['value'] = new_text
 
 
 func load_data(data):
 	event_data = data
+	$PanelContainer/VBoxContainer/Header/CustomLineEdit.text = event_data['value']
 	if data['glossary'] != '':
 		nodes['dropdown'].text = DialogicUtil.get_glossary_by_file(data['glossary'])['name']
 
@@ -41,7 +48,7 @@ func _on_MenuButton_about_to_show():
 	
 	var index = 0
 	for c in glossary:
-		if glossary[c]['type'] > 1:
+		if glossary[c]['type'] != DialogicUtil.GLOSSARY_EXTRA and glossary[c]['type'] != DialogicUtil.GLOSSARY_NONE:
 			nodes['dropdown'].get_popup().add_item(glossary[c]['name'] + ' (' + glossary_type_to_human(glossary[c]['type']) + ')')
 			nodes['dropdown'].get_popup().set_item_metadata(index, {
 				'file': glossary[c]['file'],

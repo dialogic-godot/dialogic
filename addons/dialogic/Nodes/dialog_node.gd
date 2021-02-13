@@ -122,7 +122,22 @@ func parse_branches(unparsed_dialog_script: Dictionary) -> Dictionary:
 				'event_id': event_id,
 				'answered': false,
 				'text': event['question'],
-				'index': questions.size()
+				'index': questions.size(),
+				'is_conditional': false
+			})
+		if event.has('condition') and event.has('glossary'):
+			# I copy pasted the previous block and added the
+			# is_conditional. This is super cheap but I don't
+			# want to go back and remake it better now, since
+			# it will probably be updated after v1.0. Until 
+			# then, I'm just looking for finishing it faster.
+			# Sorry future Emilio ._.
+			questions.append({
+				'event_id': event_id,
+				'answered': false,
+				'text': event['glossary'],
+				'index': questions.size(),
+				'is_conditional': true
 			})
 		if event.has('choice'):
 			var parent_question_id = questions.size() - closed_question_index - 1
@@ -160,7 +175,7 @@ func parse_glossary(dialog_script):
 		for t in dialog_script['events']:
 			if t.has('text') and t.has('character') and t.has('portrait'):
 				for w in glossary:
-					if glossary[w]['type'] == 1:
+					if glossary[w]['type'] == DialogicUtil.GLOSSARY_EXTRA:
 						dialog_script['events'][index]['text'] = t['text'].replace(glossary[w]['name'],
 							'[url=' + glossary[w]['name'] + ']' +
 								'[color=' + settings['glossary_color'] + ']' + glossary[w]['name'] + '[/color]' +
@@ -259,6 +274,7 @@ func event_handler(event: Dictionary):
 	# Handling an event and updating the available nodes accordingly. 
 	reset_dialog_extras()
 	dprint('[D] Current Event: ', event)
+	print(event)
 	match event:
 		{'text', 'character', 'portrait'}:
 			show_dialog()
@@ -267,7 +283,7 @@ func event_handler(event: Dictionary):
 			update_name(character_data)
 			grab_portrait_focus(character_data, event)
 			update_text(event['text'])
-		{'question', ..}:
+		{'question', 'text', ..}:
 			show_dialog()
 			finished = false
 			waiting_for_answer = true
@@ -320,7 +336,7 @@ func event_handler(event: Dictionary):
 						p.init(char_portrait, get_character_position(event['position']))
 						$Portraits.add_child(p)
 						p.fade_in()
-						go_to_next_event()
+				go_to_next_event()
 		{'scene'}:
 			get_tree().change_scene(event['scene'])
 		{'background'}:
@@ -350,6 +366,35 @@ func event_handler(event: Dictionary):
 			dialog_script = set_current_dialog('/' + event['change_timeline'])
 			dialog_index = 0
 			load_dialog(true)
+		{'condition', 'glossary', 'value', 'question_id'}:
+			# Treating this conditional as an option on a regular question event
+			var current_question = questions[event['question_id']]
+			var g_var = DialogicUtil.get_glossary_by_file(event['glossary'])
+			#print('----------------------------')
+			#print(event)
+			#print(' ')
+			#print(current_question)
+			#print(g_var)
+			#print('----------------------------')
+			if g_var['type'] == DialogicUtil.GLOSSARY_STRING:
+				if g_var['string'] == event['value']:
+					pass
+				else:
+					current_question['answered'] = true # This will abort the current conditional branch
+			if g_var['type'] == DialogicUtil.GLOSSARY_NUMBER:
+				if g_var['number'] == event['value']:
+					pass
+				else:
+					current_question['answered'] = true # This will abort the current conditional branch
+			
+			
+			if current_question['answered']:
+				# If the option is for an answered question, skip to the end of it.
+				dialog_index = current_question['end_id']
+				load_dialog(true)
+			else:
+				# It should never get here, but if it does, go to the next place.
+				go_to_next_event()
 		_:
 			visible = false
 			dprint('Other event. ', event)
@@ -366,8 +411,8 @@ func _on_input_set(variable):
 		$TextInputDialog.disconnect("confirmed", self, '_on_input_set')
 		$TextInputDialog.visible = false
 		load_dialog()
-		print('[!] Input selected: ', input_value)
-		print('[!] dialog variables: ', dialog_resource.custom_variables)
+		dprint('[!] Input selected: ', input_value)
+		dprint('[!] dialog variables: ', dialog_resource.custom_variables)
 
 
 func reset_options():
@@ -552,7 +597,7 @@ func _on_RichTextLabel_meta_hover_started(meta):
 	for g in glossary:
 		if glossary[g]['name'] == meta:
 			$GlossaryInfo.load_preview(glossary[g])
-			if glossary[g]['type'] == 1:
+			if glossary[g]['type'] == DialogicUtil.GLOSSARY_EXTRA:
 				correct_type = true
 
 	if correct_type:
@@ -585,6 +630,8 @@ func _on_WaitSeconds_timeout():
 	load_dialog()
 
 
-func dprint(string, arg1='', arg2='', arg3=''):
+func dprint(string, arg1='', arg2='', arg3='', arg4='' ):
+	# HAHAHA if you are here wondering what this is... 
+	# I ask myself the same question :')
 	if debug_mode:
-		print(str(string) + str(arg1) + str(arg2) + str(arg3))
+		print(str(string) + str(arg1) + str(arg2) + str(arg3) + str(arg4))

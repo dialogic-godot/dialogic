@@ -1,6 +1,7 @@
 tool
 class_name DialogicUtil
 
+enum {GLOSSARY_NONE, GLOSSARY_EXTRA, GLOSSARY_NUMBER, GLOSSARY_STRING}
 
 static func init_dialogic_files() -> void:
 	# This functions makes sure that the needed files and folders

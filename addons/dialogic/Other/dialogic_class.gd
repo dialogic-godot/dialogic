@@ -21,7 +21,7 @@ static func get_var(variable: String):
 	for g in glossary:
 		var current = glossary[g]
 		if current['name'] == variable:
-			if current['type'] == 2: #Number
+			if current['type'] == DialogicUtil.GLOSSARY_NUMBER:
 				if '.' in current['number']:
 					return float(current['number'])
 				else:
