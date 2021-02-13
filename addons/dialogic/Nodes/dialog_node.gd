@@ -106,7 +106,6 @@ func parse_text_lines(unparsed_dialog_script: Dictionary) -> Dictionary:
 func parse_branches(dialog_script: Dictionary) -> Dictionary:
 	questions = [] # Resetting the questions 
 
-
 	# Return the same thing if it doesn't have events
 	if dialog_script.has('events') == false:
 		return dialog_script

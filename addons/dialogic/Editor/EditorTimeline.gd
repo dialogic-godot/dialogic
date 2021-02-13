@@ -19,6 +19,8 @@ func _ready():
 		if b is Button:
 			if b.name == 'ButtonQuestion':
 				b.connect('pressed', self, "_on_ButtonQuestion_pressed", [])
+			elif b.name == 'IfCondition':
+				b.connect('pressed', self, "_on_ButtonCondition_pressed", [])
 			else:
 				b.connect('pressed', self, "_create_event_button_pressed", [b.name])
 
@@ -28,6 +30,11 @@ func _on_ButtonQuestion_pressed() -> void:
 	create_event("Question", {'no-data': true}, true)
 	create_event("Choice", {'no-data': true}, true)
 	create_event("Choice", {'no-data': true}, true)
+	create_event("EndBranch", {'no-data': true}, true)
+
+
+func _on_ButtonCondition_pressed() -> void:
+	create_event("IfCondition", {'no-data': true}, true)
 	create_event("EndBranch", {'no-data': true}, true)
 
 

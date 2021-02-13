@@ -245,7 +245,7 @@ margin_right = 180.0
 margin_bottom = 661.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-items = [ "aaa", ExtResource( 15 ), false, "dadadad", ExtResource( 15 ), false, "test-timeline", ExtResource( 15 ), false ]
+items = [ "aaa", ExtResource( 15 ), false, "bbb", ExtResource( 15 ), false, "test-timeline", ExtResource( 15 ), false ]
 allow_rmb_select = true
 
 [node name="CenterContainer" type="CenterContainer" parent="EditorTimeline"]
@@ -279,6 +279,7 @@ __meta__ = {
 }
 
 [node name="TimelineEditor" type="HSplitContainer" parent="EditorTimeline"]
+visible = false
 margin_left = 192.0
 margin_right = 997.0
 margin_bottom = 541.0
@@ -314,8 +315,8 @@ margin_bottom = 541.0
 rect_min_size = Vector2( 190, 0 )
 
 [node name="EventContainer" type="VBoxContainer" parent="EditorTimeline/TimelineEditor/ScrollContainer"]
-margin_right = 178.0
-margin_bottom = 632.0
+margin_right = 190.0
+margin_bottom = 584.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 __meta__ = {
@@ -635,7 +636,7 @@ margin_bottom = 84.0
 disabled = true
 text = "None"
 expand_icon = true
-items = [ "None", null, false, 0, null, "Extra Information", null, false, 1, null, "Number", null, false, 2, null, "Text", null, false, 3, null, "None", null, false, 4, null, "Extra Information", null, false, 5, null, "Number", null, false, 6, null, "Text", null, false, 7, null, "None", null, false, 8, null, "Extra Information", null, false, 9, null, "Number", null, false, 10, null, "Text", null, false, 11, null ]
+items = [ "None", null, false, 0, null, "Extra Information", null, false, 1, null, "Number", null, false, 2, null, "Text", null, false, 3, null, "None", null, false, 4, null, "Extra Information", null, false, 5, null, "Number", null, false, 6, null, "Text", null, false, 7, null, "None", null, false, 8, null, "Extra Information", null, false, 9, null, "Number", null, false, 10, null, "Text", null, false, 11, null, "None", null, false, 12, null, "Extra Information", null, false, 13, null, "Number", null, false, 14, null, "Text", null, false, 15, null ]
 selected = 0
 
 [node name="ExtraInfo" type="VBoxContainer" parent="EditorGlossary/ScrollContainer/VBoxContainer/HBoxContainer/VBoxContainer"]

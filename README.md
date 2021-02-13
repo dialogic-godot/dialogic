@@ -14,20 +14,23 @@ The plugin is not production ready, this means that it will not work in your gam
   - Moved `Dialog.tscn` to the root of the addon so it is easier to find.
   - Added a link to the documentation from the editor
   - Refactored a lot of the code and continued splitting the main plugin code into smaller pieces.
+  - Rewrote most of the saving and branching systems.
   - New tool: Glossary Editor
     - You are now able to write extra lore for any word and Dialogic will create a hover card with that extra information.
-  - New default asset: Glossary Font
+    - You can create `strings` and `number` variables.
+    - You can access to those variables from the `Dialogic` Class: `Dialogic.get_var('variable_name')`
   - In game:
     - Portraits changes are reflected in-game.
     - Many small improvements.
   - Theme Editor:
-    - Added new options to customize the glossary popup (still not working)
+    - New default asset: Glossary Font
+    - Added new options to customize the glossary popup
   - Timeline Editor:
     - Added categories for the events.
     - Color coded some of the events in the same category to avoid having a distracting rainbow in the timelines.
     - Conditional event working, but only with "equal to". More conditions coming later.
     - Renamed the `End Branch` file names to match the name of the event. This will break the conditionals you have, but this is the time for making breaking changes. Sorry!
-    - New `Set Value` event. Change the current value of a glossary variable inside a timeline. This will reset when you close the game, so a saving system will have to be added later on.
+    - New `Set Value` event. Change the current value of a glossary variable inside a timeline. This will reset when you close the game, so a saving system will have to be added on the next version.
     - New `Emit Signal` event. This event will make the Dialog node emit a signal called `dialogic_signal`. You can connect this in a moment of your timeline with other scripts.
     - New `Change Scene` event. You can change the current Scene to whatever `.tscn` you pick. This will happen instantly, but in the future I'll add some transition effects so it is not that abrupt.
     - New `Wait Seconds` event. This will hide the dialog and wait X seconds until continuing with the rest of the timeline. 
@@ -35,8 +38,8 @@ The plugin is not production ready, this means that it will not work in your gam
     - Portrait picker added to `Text Events` and `Character Join` events.
     - `Text Events` text editor vertical size grows witch each line added.
     - `Text Events` now properly create a new message for each line inside the text editor.
-    - `Text Events` Line count are now displayed next to the text
-    - Re-adding the `End Branch` event.
+    - `Text Events` Line count are now displayed next to the preview text when folded.
+    - Re-adding the `End Branch` event just in case you removed the end and you want to add it again in the timeline.
     - Renamed the `Copy Timeline ID` right click menu option to `Copy Timeline Name` since you now have to use that to set the current timeline from code instead of the ID.
     - Fixed several bugs that corrupted saved files
     - Thanks to [mindtonix](https://github.com/mindtonix) and [Crystalwarrior](https://github.com/Crystalwarrior) for your first contribution on the choice buttons 
@@ -56,11 +59,6 @@ The plugin is not production ready, this means that it will not work in your gam
     func signal_from_dialogic(value):
         print(value)
     ```
-
-  - Bug fixes:
-    - Fixing an error when having an empty join event in a timeline.
-    - Fixing many saving/loading bug in timelines
-    - And a lot more that I completely forgot to report, but in general everything is more stable now.
 
 To view the full changelog [click here](https://github.com/coppolaemilio/dialogic/blob/master/CHANGELOG.md). 
 
