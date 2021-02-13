@@ -123,6 +123,14 @@ func parse_branches(dialog_script: Dictionary) -> Dictionary:
 			questions.append(event)
 			parser_queue.append(event)
 		
+		if event.has('condition'):
+			event['event_id'] = event_id
+			event['question_id'] = question_id
+			event['answered'] = false
+			question_id += 1
+			questions.append(event)
+			parser_queue.append(event)
+		
 		if event.has('choice'):
 			var opened_branch = parser_queue.back()
 			dialog_script['events'][opened_branch['event_id']]['options'].append({
@@ -345,7 +353,7 @@ func event_handler(event: Dictionary):
 			dialog_script = set_current_dialog('/' + event['change_timeline'])
 			dialog_index = -1
 			go_to_next_event()
-		{'condition', 'glossary', 'value', 'question_id'}:
+		{'condition', 'glossary', 'value', 'question_id', ..}:
 			# Treating this conditional as an option on a regular question event
 			var current_question = questions[event['question_id']]
 			var g_var = DialogicUtil.get_glossary_by_file(event['glossary'])
