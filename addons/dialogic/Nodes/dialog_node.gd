@@ -362,16 +362,17 @@ func event_handler(event: Dictionary):
 			#print(current_question)
 			#print(g_var)
 			#print('----------------------------')
-			if g_var['type'] == DialogicUtil.GLOSSARY_STRING:
-				if g_var['string'] == event['value']:
-					pass
-				else:
-					current_question['answered'] = true # This will abort the current conditional branch
-			if g_var['type'] == DialogicUtil.GLOSSARY_NUMBER:
-				if g_var['number'] == event['value']:
-					pass
-				else:
-					current_question['answered'] = true # This will abort the current conditional branch
+			if g_var.has('type'):
+				if g_var['type'] == DialogicUtil.GLOSSARY_STRING:
+					if g_var['string'] == event['value']:
+						pass
+					else:
+						current_question['answered'] = true # This will abort the current conditional branch
+				if g_var['type'] == DialogicUtil.GLOSSARY_NUMBER:
+					if g_var['number'] == event['value']:
+						pass
+					else:
+						current_question['answered'] = true # This will abort the current conditional branch
 			
 			
 			if current_question['answered']:
