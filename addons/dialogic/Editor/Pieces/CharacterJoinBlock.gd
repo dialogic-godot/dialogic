@@ -89,5 +89,4 @@ func load_data(data):
 		current_color = Color(character_data['color'])
 		check_active_position(current_color)
 		return
-	print(event_data)
 	check_active_position()

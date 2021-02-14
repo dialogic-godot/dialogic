@@ -178,6 +178,31 @@ static func load_glossary() -> Dictionary:
 		return {}
 
 
+static func get_var(variable: String):
+	var glossary = load_glossary()
+	for g in glossary:
+		var current = glossary[g]
+		if current['name'] == variable:
+			if current['type'] == GLOSSARY_NUMBER:
+				if '.' in current['number']:
+					return float(current['number'])
+				else:
+					return int(current['number'])
+			return current
+	
+	return {}
+
+
+static func set_var_by_id(id, value, glossary):
+	#var glossary = load_glossary()
+	var _id = id.replace('.json', '')
+	if glossary[_id]['type'] == GLOSSARY_NUMBER:
+		glossary[_id]['number'] = value
+	if glossary[_id]['type'] == GLOSSARY_STRING:
+		glossary[_id]['string'] = value
+	return glossary
+
+
 static func get_glossary_by_file(filename) -> Dictionary:
 	var glossary = load_glossary()
 	for g in glossary:

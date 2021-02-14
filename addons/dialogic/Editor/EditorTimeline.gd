@@ -125,8 +125,6 @@ func indent_events() -> void:
 				indent = question_indent[question_index] + 1
 				starter = true
 		if event.event_data.has('endbranch'):
-			print(question_indent)
-			print(question_index)
 			if question_indent.has(question_index):
 				indent = question_indent[question_index]
 				indent -= 1

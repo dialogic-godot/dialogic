@@ -17,19 +17,8 @@ static func start(timeline: String):
 
 
 static func get_var(variable: String):
-	var glossary = DialogicUtil.load_glossary()
-	for g in glossary:
-		var current = glossary[g]
-		if current['name'] == variable:
-			if current['type'] == DialogicUtil.GLOSSARY_NUMBER:
-				if '.' in current['number']:
-					return float(current['number'])
-				else:
-					return int(current['number'])
-			return current
-	
-	return {}
+	return DialogicUtil.get_var(variable)
 
 
 static func set_var(variable: String):
-	pass
+	DialogicUtil.set_var(variable)

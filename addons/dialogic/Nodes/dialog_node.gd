@@ -149,7 +149,6 @@ func parse_branches(dialog_script: Dictionary) -> Dictionary:
 	return dialog_script
 
 
-
 func parse_glossary(dialog_script):
 	var words = []
 	for g in glossary:
@@ -355,13 +354,9 @@ func event_handler(event: Dictionary):
 		{'condition', 'glossary', 'value', 'question_id', ..}:
 			# Treating this conditional as an option on a regular question event
 			var current_question = questions[event['question_id']]
-			var g_var = DialogicUtil.get_glossary_by_file(event['glossary'])
-			#print('----------------------------')
-			#print(event)
-			#print(' ')
-			#print(current_question)
-			#print(g_var)
-			#print('----------------------------')
+			#var g_var = DialogicUtil.get_glossary_by_file(event['glossary'])
+			var g_var = glossary[event['glossary'].replace('.json', '')]
+			
 			if g_var.has('type'):
 				if g_var['type'] == DialogicUtil.GLOSSARY_STRING:
 					if g_var['string'] == event['value']:
@@ -382,6 +377,10 @@ func event_handler(event: Dictionary):
 			else:
 				# It should never get here, but if it does, go to the next place.
 				go_to_next_event()
+		{'set_value', 'glossary'}:
+			glossary = DialogicUtil.set_var_by_id(event['glossary'], event['set_value'], glossary)
+			print(glossary)
+			go_to_next_event()
 		_:
 			visible = false
 			dprint('Other event. ', event)
@@ -455,12 +454,12 @@ func add_choice_button(option):
 
 
 func answer_question(i, event_id, question_id):
-	print('[!] Going to ', event_id + 1, i, 'question_id:', question_id)
-	print('')
+	dprint('[!] Going to ', event_id + 1, i, 'question_id:', question_id)
+	dprint('')
 	waiting_for_answer = false
 	dialog_index = event_id + 1
 	questions[question_id]['answered'] = true
-	print('    dialog_index = ', dialog_index)
+	dprint('    dialog_index = ', dialog_index)
 	reset_options()
 	load_dialog()
 	if last_mouse_mode != null:
@@ -474,7 +473,7 @@ func _on_option_selected(option, variable, value):
 	reset_options()
 	load_dialog()
 	#print(dialog_resource.custom_variables)
-	print('[!] Option selected: ', option.text, ' value= ' , value)
+	dprint('[!] Option selected: ', option.text, ' value= ' , value)
 
 
 func _on_Tween_tween_completed(object, key):

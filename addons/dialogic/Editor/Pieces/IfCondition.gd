@@ -13,11 +13,11 @@ var event_data = {
 }
 
 onready var nodes = {
-	'dropdown': $PanelContainer/VBoxContainer/Header/MenuButton,
+	'glossary_picker': $PanelContainer/VBoxContainer/Header/GlossaryPicker,
 }
 
 func _ready():
-	nodes['dropdown'].get_popup().connect("index_pressed", self, '_on_glossary_entry_selected')
+	nodes['glossary_picker'].get_popup().connect("index_pressed", self, '_on_glossary_entry_selected')
 	$PanelContainer/VBoxContainer/Header/CustomLineEdit.connect("text_changed", self, '_on_text_changed')
 
 
@@ -29,39 +29,9 @@ func load_data(data):
 	event_data = data
 	$PanelContainer/VBoxContainer/Header/CustomLineEdit.text = event_data['value']
 	if data['glossary'] != '':
-		nodes['dropdown'].text = DialogicUtil.get_glossary_by_file(data['glossary'])['name']
+		nodes['glossary_picker'].text = DialogicUtil.get_glossary_by_file(data['glossary'])['name']
 
 
 func _on_glossary_entry_selected(index):
-	var text = nodes['dropdown'].get_popup().get_item_text(index)
-	var metadata = nodes['dropdown'].get_popup().get_item_metadata(index)
-
-	nodes['dropdown'].text = text
-	
+	var metadata = nodes['glossary_picker'].get_popup().get_item_metadata(index)
 	event_data['glossary'] = metadata['file']
-	#update_preview()
-
-
-func _on_MenuButton_about_to_show():
-	var glossary = DialogicUtil.load_glossary()
-	nodes['dropdown'].get_popup().clear()
-	
-	var index = 0
-	for c in glossary:
-		if glossary[c]['type'] != DialogicUtil.GLOSSARY_EXTRA and glossary[c]['type'] != DialogicUtil.GLOSSARY_NONE:
-			nodes['dropdown'].get_popup().add_item(glossary[c]['name'] + ' (' + glossary_type_to_human(glossary[c]['type']) + ')')
-			nodes['dropdown'].get_popup().set_item_metadata(index, {
-				'file': glossary[c]['file'],
-				'type': glossary[c]['type']
-			})
-			index += 1
-
-
-static func glossary_type_to_human(value: int) -> String:
-	var types = {
-		0: 'None',
-		1: 'Extra Information',
-		2: 'Number',
-		3: 'Text'
-	}
-	return types[value]
