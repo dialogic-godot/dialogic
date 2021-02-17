@@ -39,7 +39,7 @@ onready var section = {
 func _ready():
 	glossary = DialogicUtil.load_glossary()
 	last_saved_glossary = DialogicUtil.load_glossary()
-	
+	nodes['type'].clear()
 	nodes['type'].text = 'Select type'
 	for t in types:
 		nodes['type'].add_item(types[t])
