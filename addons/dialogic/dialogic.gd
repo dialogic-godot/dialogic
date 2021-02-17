@@ -17,8 +17,15 @@ func _enter_tree() -> void:
 	get_editor_interface().get_editor_viewport().add_child(_editor_view)
 	# Hide the main panel. Very much required.
 	make_visible(false)
-	DialogicUtil.init_dialogic_files()
-	get_editor_interface().get_resource_filesystem().scan()
+
+
+func _ready():
+	if Engine.editor_hint:
+		# Make sure the core files exist 
+		DialogicUtil.init_dialogic_files()
+		# Force Godot to show the dialogic folder
+		get_editor_interface().get_resource_filesystem().scan()
+	
 
 
 func _exit_tree() -> void:
