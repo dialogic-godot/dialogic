@@ -210,6 +210,7 @@ expand = true
 stretch_mode = 5
 
 [node name="EditorTimeline" type="HSplitContainer" parent="."]
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 6.0
@@ -279,7 +280,6 @@ __meta__ = {
 }
 
 [node name="TimelineEditor" type="HSplitContainer" parent="EditorTimeline"]
-visible = false
 margin_left = 192.0
 margin_right = 997.0
 margin_bottom = 541.0
@@ -560,7 +560,6 @@ icon = ExtResource( 30 )
 align = 0
 
 [node name="EditorGlossary" type="HSplitContainer" parent="."]
-visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 6.0
@@ -636,7 +635,7 @@ margin_bottom = 84.0
 disabled = true
 text = "None"
 expand_icon = true
-items = [ "None", null, false, 0, null, "Extra Information", null, false, 1, null, "Number", null, false, 2, null, "Text", null, false, 3, null, "None", null, false, 4, null, "Extra Information", null, false, 5, null, "Number", null, false, 6, null, "Text", null, false, 7, null, "None", null, false, 8, null, "Extra Information", null, false, 9, null, "Number", null, false, 10, null, "Text", null, false, 11, null, "None", null, false, 12, null, "Extra Information", null, false, 13, null, "Number", null, false, 14, null, "Text", null, false, 15, null ]
+items = [ "None", null, false, 0, null, "Extra Information", null, false, 1, null, "Number", null, false, 2, null, "Text", null, false, 3, null, "None", null, false, 4, null, "Extra Information", null, false, 5, null, "Number", null, false, 6, null, "Text", null, false, 7, null, "None", null, false, 8, null, "Extra Information", null, false, 9, null, "Number", null, false, 10, null, "Text", null, false, 11, null, "None", null, false, 12, null, "Extra Information", null, false, 13, null, "Number", null, false, 14, null, "Text", null, false, 15, null, "None", null, false, 16, null, "Extra Information", null, false, 17, null, "Number", null, false, 18, null, "Text", null, false, 19, null ]
 selected = 0
 
 [node name="ExtraInfo" type="VBoxContainer" parent="EditorGlossary/ScrollContainer/VBoxContainer/HBoxContainer/VBoxContainer"]

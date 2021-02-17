@@ -3,6 +3,7 @@ extends MenuButton
 
 func _ready():
 	get_popup().connect("index_pressed", self, '_on_entry_selected')
+	get_popup().clear()
 	connect("about_to_show", self, "_on_MenuButton_about_to_show")
 
 
