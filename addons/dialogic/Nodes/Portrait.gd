@@ -6,11 +6,21 @@ var character_data = {
 	'color': Color(0.973511, 1, 0.152344),
 	'file': ''
 }
-var positions = {'left': Vector2(-400,0), 'right': Vector2(+400,0), 'center': Vector2(0,0), 'center_right': Vector2(200,0), 'center_left': Vector2(-200,0)}
+# Changed
+var positions = {
+	'left': Vector2(-400,0), 
+	'right': Vector2(+400,0), 
+	'center': Vector2(0,0), 
+	'center_right': Vector2(200,0), 
+	'center_left': Vector2(-200,0),
+	'none': Vector2.ZERO
+}
+
 var direction = 'left'
 var debug = false
 
 func init(expression: String = '', position_offset = 'left') -> void:
+	
 	rect_position += positions[position_offset]
 	direction = position_offset
 	modulate = Color(1,1,1,0)

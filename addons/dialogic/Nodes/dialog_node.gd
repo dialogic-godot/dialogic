@@ -1,4 +1,3 @@
-tool
 extends Control
 
 var last_mouse_mode = null
@@ -318,7 +317,10 @@ func event_handler(event: Dictionary):
 						if char_portrait == '':
 							char_portrait = 'Default'
 						p.character_data = character_data
-						p.init(char_portrait, get_character_position(event['position']))
+						# Changed
+						var _dict = (event as Dictionary).get("position")
+						var _char_position = get_character_position(_dict)
+						p.init(char_portrait, _char_position)
 						$Portraits.add_child(p)
 						p.fade_in()
 				go_to_next_event()
@@ -505,7 +507,7 @@ func grab_portrait_focus(character_data, event: Dictionary = {}) -> bool:
 	return exists
 
 
-func get_character_position(positions):
+func get_character_position(positions) -> String:
 	if positions['0']:
 		return 'left'
 	if positions['1']:
@@ -516,7 +518,7 @@ func get_character_position(positions):
 		return 'center_right'
 	if positions['4']:
 		return 'right'
-	return 
+	return 'none'
 
 
 func load_theme() -> void:
