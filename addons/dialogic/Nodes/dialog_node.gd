@@ -1,4 +1,3 @@
-tool
 extends Control
 
 var last_mouse_mode = null
