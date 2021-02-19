@@ -1,41 +1,27 @@
-[gd_scene load_steps=40 format=2]
+[gd_scene load_steps=24 format=2]
 
 [ext_resource path="res://addons/dialogic/Editor/editor_view.gd" type="Script" id=1]
-[ext_resource path="res://addons/dialogic/Images/dialog.svg" type="Texture" id=2]
-[ext_resource path="res://addons/dialogic/Images/character-join.svg" type="Texture" id=3]
-[ext_resource path="res://addons/dialogic/Images/scene.svg" type="Texture" id=4]
-[ext_resource path="res://addons/dialogic/Images/character-leave.svg" type="Texture" id=5]
-[ext_resource path="res://addons/dialogic/Images/condition.svg" type="Texture" id=6]
-[ext_resource path="res://addons/dialogic/Images/end-dialog.svg" type="Texture" id=7]
-[ext_resource path="res://addons/dialogic/Images/audio-event.svg" type="Texture" id=8]
+[ext_resource path="res://addons/dialogic/Editor/TimelineEditor/TimelineEditor.tscn" type="PackedScene" id=2]
 [ext_resource path="res://addons/dialogic/Images/open-icon.svg" type="Texture" id=9]
 [ext_resource path="res://addons/dialogic/Images/closed-icon.svg" type="Texture" id=10]
 [ext_resource path="res://addons/dialogic/Images/ActionCopy.svg" type="Texture" id=11]
-[ext_resource path="res://addons/dialogic/Images/change-timeline.svg" type="Texture" id=12]
 [ext_resource path="res://addons/dialogic/Images/ListSelect.svg" type="Texture" id=13]
 [ext_resource path="res://addons/dialogic/Images/logo.png" type="Texture" id=14]
 [ext_resource path="res://addons/dialogic/Images/timeline.svg" type="Texture" id=15]
 [ext_resource path="res://addons/dialogic/Images/theme.svg" type="Texture" id=16]
 [ext_resource path="res://addons/dialogic/Images/character-tab.svg" type="Texture" id=17]
-[ext_resource path="res://addons/dialogic/Images/choice.svg" type="Texture" id=18]
-[ext_resource path="res://addons/dialogic/Images/end-choice.svg" type="Texture" id=19]
-[ext_resource path="res://addons/dialogic/Images/tutorials/arrow-down.svg" type="Texture" id=20]
 [ext_resource path="res://addons/dialogic/Editor/EditorCharacter.gd" type="Script" id=21]
 [ext_resource path="res://addons/dialogic/Images/Remove.svg" type="Texture" id=22]
 [ext_resource path="res://addons/dialogic/Editor/CharacterEditor/PortraitEntry.tscn" type="PackedScene" id=23]
 [ext_resource path="res://addons/dialogic/Images/plugin-editor-icon.svg" type="Texture" id=24]
 [ext_resource path="res://addons/dialogic/Images/Rename.svg" type="Texture" id=25]
 [ext_resource path="res://addons/dialogic/Images/Filesystem.svg" type="Texture" id=26]
-[ext_resource path="res://addons/dialogic/Images/question.svg" type="Texture" id=27]
 [ext_resource path="res://addons/dialogic/Editor/EditorTheme.gd" type="Script" id=28]
 [ext_resource path="res://addons/dialogic/Editor/EditorGlossary.gd" type="Script" id=29]
-[ext_resource path="res://addons/dialogic/Images/change-scene.svg" type="Texture" id=30]
-[ext_resource path="res://addons/dialogic/Images/signal.svg" type="Texture" id=31]
-[ext_resource path="res://addons/dialogic/Images/Wait.svg" type="Texture" id=32]
 [ext_resource path="res://addons/dialogic/Images/character.svg" type="Texture" id=33]
-[ext_resource path="res://addons/dialogic/Editor/EditorTimeline.gd" type="Script" id=34]
+[ext_resource path="res://addons/dialogic/Editor/MasterTree/MasterTree.tscn" type="PackedScene" id=35]
 
-[sub_resource type="Image" id=6]
+[sub_resource type="Image" id=4]
 data = {
 "data": PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ),
 "format": "LumAlpha8",
@@ -47,32 +33,10 @@ data = {
 [sub_resource type="ImageTexture" id=2]
 flags = 4
 flags = 4
-image = SubResource( 6 )
+image = SubResource( 4 )
 size = Vector2( 16, 16 )
 
 [sub_resource type="StyleBoxFlat" id=3]
-content_margin_left = 5.0
-content_margin_right = 5.0
-content_margin_top = 5.0
-content_margin_bottom = 5.0
-bg_color = Color( 0.14902, 0.172549, 0.231373, 1 )
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
-border_color = Color( 0.0980392, 0.113725, 0.152941, 1 )
-
-[sub_resource type="StyleBoxFlat" id=4]
-content_margin_right = 6.0
-content_margin_top = 10.0
-content_margin_bottom = 10.0
-bg_color = Color( 0.94902, 1, 0.482353, 1 )
-corner_radius_top_left = 5
-corner_radius_top_right = 5
-corner_radius_bottom_right = 5
-corner_radius_bottom_left = 5
-
-[sub_resource type="StyleBoxFlat" id=5]
 content_margin_left = 5.0
 content_margin_right = 5.0
 content_margin_top = 5.0
@@ -115,7 +79,7 @@ text = "File"
 items = [ "New dialog", null, 0, false, false, 0, 0, null, "", false ]
 
 [node name="EventButton" type="Button" parent="ToolBar"]
-self_modulate = Color( 0.415686, 0.615686, 0.917647, 1 )
+self_modulate = Color( 0.870588, 0.870588, 0.870588, 1 )
 margin_right = 34.0
 margin_bottom = 30.0
 hint_tooltip = "Timeline Editor"
@@ -153,6 +117,7 @@ icon = ExtResource( 16 )
 flat = true
 
 [node name="FoldTools" type="HBoxContainer" parent="ToolBar"]
+visible = false
 margin_left = 130.0
 margin_right = 265.0
 margin_bottom = 30.0
@@ -178,13 +143,13 @@ icon = ExtResource( 9 )
 align = 0
 
 [node name="Spacer" type="Control" parent="ToolBar"]
-margin_left = 265.0
-margin_right = 295.0
+margin_left = 130.0
+margin_right = 160.0
 margin_bottom = 30.0
 rect_min_size = Vector2( 30, 0 )
 
 [node name="Control" type="Control" parent="ToolBar"]
-margin_left = 295.0
+margin_left = 160.0
 margin_right = 1034.0
 margin_bottom = 30.0
 size_flags_horizontal = 3
@@ -209,357 +174,29 @@ texture = ExtResource( 14 )
 expand = true
 stretch_mode = 5
 
-[node name="EditorTimeline" type="HSplitContainer" parent="."]
-visible = false
+[node name="MainPanel" type="HSplitContainer" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 6.0
 margin_top = 38.0
 margin_right = -5.0
 margin_bottom = -5.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-script = ExtResource( 34 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="EventTools" type="VSplitContainer" parent="EditorTimeline"]
+[node name="MasterTree" parent="MainPanel" instance=ExtResource( 35 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
 margin_right = 180.0
 margin_bottom = 661.0
 rect_min_size = Vector2( 180, 0 )
-
-[node name="VBoxContainer2" type="VBoxContainer" parent="EditorTimeline/EventTools"]
-margin_right = 180.0
-margin_bottom = 661.0
 size_flags_vertical = 3
 
-[node name="AddTimelineButton" type="Button" parent="EditorTimeline/EventTools/VBoxContainer2"]
-margin_right = 180.0
-margin_bottom = 22.0
-text = "Add timeline"
-icon = SubResource( 2 )
-
-[node name="DialogItemList" type="ItemList" parent="EditorTimeline/EventTools/VBoxContainer2"]
-margin_top = 26.0
-margin_right = 180.0
-margin_bottom = 661.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-items = [ "aaa", ExtResource( 15 ), false, "bbb", ExtResource( 15 ), false, "test-timeline", ExtResource( 15 ), false ]
-allow_rmb_select = true
-
-[node name="CenterContainer" type="CenterContainer" parent="EditorTimeline"]
-margin_left = 192.0
-margin_right = 1253.0
-margin_bottom = 661.0
-
-[node name="VBoxContainer" type="VBoxContainer" parent="EditorTimeline/CenterContainer"]
-margin_left = 350.0
-margin_top = 311.0
-margin_right = 710.0
-margin_bottom = 349.0
-
-[node name="Label" type="Label" parent="EditorTimeline/CenterContainer/VBoxContainer"]
-margin_right = 360.0
-margin_bottom = 14.0
-text = "Select or add a timeline to start working on your dialogs."
-
-[node name="Control" type="CenterContainer" parent="EditorTimeline/CenterContainer/VBoxContainer"]
-margin_top = 18.0
-margin_right = 360.0
-margin_bottom = 38.0
-
-[node name="Button" type="Button" parent="EditorTimeline/CenterContainer/VBoxContainer/Control"]
-margin_left = 117.0
-margin_right = 242.0
-margin_bottom = 20.0
-text = "Add new timeline"
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="TimelineEditor" type="HSplitContainer" parent="EditorTimeline"]
-margin_left = 192.0
-margin_right = 997.0
-margin_bottom = 541.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-custom_constants/separation = 0
-split_offset = 7
-
-[node name="TimelineArea" type="ScrollContainer" parent="EditorTimeline/TimelineEditor"]
-margin_right = 607.0
-margin_bottom = 541.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-custom_styles/bg = SubResource( 3 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="TimeLine" type="VBoxContainer" parent="EditorTimeline/TimelineEditor/TimelineArea"]
-margin_left = 5.0
-margin_top = 5.0
-margin_right = 602.0
-margin_bottom = 536.0
-grow_horizontal = 2
-grow_vertical = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="ScrollContainer" type="ScrollContainer" parent="EditorTimeline/TimelineEditor"]
-margin_left = 615.0
-margin_right = 805.0
-margin_bottom = 541.0
-rect_min_size = Vector2( 190, 0 )
-
-[node name="EventContainer" type="VBoxContainer" parent="EditorTimeline/TimelineEditor/ScrollContainer"]
-margin_right = 190.0
-margin_bottom = 584.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="EventsWarning" type="PanelContainer" parent="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer"]
-margin_right = 178.0
-margin_bottom = 68.0
-custom_styles/panel = SubResource( 4 )
-
-[node name="HBoxContainer" type="HBoxContainer" parent="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer/EventsWarning"]
-margin_top = 10.0
-margin_right = 172.0
-margin_bottom = 58.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="TextureRect" type="TextureRect" parent="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer/EventsWarning/HBoxContainer"]
-margin_right = 40.0
-margin_bottom = 48.0
-rect_min_size = Vector2( 40, 40 )
-texture = ExtResource( 20 )
-stretch_mode = 4
-
-[node name="Label" type="Label" parent="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer/EventsWarning/HBoxContainer"]
-margin_left = 44.0
-margin_right = 172.0
-margin_bottom = 48.0
-rect_min_size = Vector2( 100, 0 )
-size_flags_horizontal = 3
-size_flags_vertical = 1
-custom_colors/font_color = Color( 0, 0, 0, 1 )
-text = "Add an event to start building your timeline"
-autowrap = true
-
-[node name="HBoxContainer6" type="HBoxContainer" parent="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer"]
-margin_top = 72.0
-margin_right = 178.0
-margin_bottom = 86.0
-
-[node name="Label" type="Label" parent="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer/HBoxContainer6"]
-margin_right = 77.0
-margin_bottom = 14.0
-text = "Main Events"
-
-[node name="HSeparator2" type="HSeparator" parent="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer/HBoxContainer6"]
-margin_left = 81.0
-margin_right = 178.0
-margin_bottom = 14.0
-size_flags_horizontal = 3
-
-[node name="TextBlock" type="Button" parent="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer"]
-margin_top = 90.0
-margin_right = 178.0
-margin_bottom = 118.0
-text = "  Text Event"
-icon = ExtResource( 2 )
-align = 0
-
-[node name="CharacterJoinBlock" type="Button" parent="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer"]
-margin_top = 122.0
-margin_right = 178.0
-margin_bottom = 150.0
-text = "  Character Join"
-icon = ExtResource( 3 )
-align = 0
-
-[node name="CharacterLeaveBlock" type="Button" parent="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer"]
-margin_top = 154.0
-margin_right = 178.0
-margin_bottom = 182.0
-text = "  Character Leave"
-icon = ExtResource( 5 )
-align = 0
-
-[node name="HBoxContainer5" type="HBoxContainer" parent="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer"]
-margin_top = 186.0
-margin_right = 178.0
-margin_bottom = 200.0
-
-[node name="Label" type="Label" parent="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer/HBoxContainer5"]
-margin_right = 33.0
-margin_bottom = 14.0
-text = "Logic"
-
-[node name="HSeparator2" type="HSeparator" parent="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer/HBoxContainer5"]
-margin_left = 37.0
-margin_right = 178.0
-margin_bottom = 14.0
-size_flags_horizontal = 3
-
-[node name="ButtonQuestion" type="Button" parent="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer"]
-margin_top = 204.0
-margin_right = 178.0
-margin_bottom = 232.0
-text = "  Question"
-icon = ExtResource( 27 )
-align = 0
-
-[node name="Choice" type="Button" parent="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer"]
-margin_top = 236.0
-margin_right = 178.0
-margin_bottom = 264.0
-text = "  Choice"
-icon = ExtResource( 18 )
-align = 0
-
-[node name="IfCondition" type="Button" parent="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer"]
-margin_top = 268.0
-margin_right = 178.0
-margin_bottom = 296.0
-text = " Condition"
-icon = ExtResource( 6 )
-align = 0
-
-[node name="EndBranch" type="Button" parent="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer"]
-margin_top = 300.0
-margin_right = 178.0
-margin_bottom = 328.0
-text = "  End Branch"
-icon = ExtResource( 19 )
-align = 0
-
-[node name="SetValue" type="Button" parent="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer"]
-margin_top = 332.0
-margin_right = 178.0
-margin_bottom = 354.0
-text = "  Set Value"
-icon = ExtResource( 13 )
-align = 0
-
-[node name="HBoxContainer3" type="HBoxContainer" parent="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer"]
-margin_top = 358.0
-margin_right = 178.0
-margin_bottom = 372.0
-
-[node name="Label" type="Label" parent="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer/HBoxContainer3"]
-margin_right = 56.0
-margin_bottom = 14.0
-text = "Timeline"
-
-[node name="HSeparator2" type="HSeparator" parent="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer/HBoxContainer3"]
-margin_left = 60.0
-margin_right = 178.0
-margin_bottom = 14.0
-size_flags_horizontal = 3
-
-[node name="ChangeTimeline" type="Button" parent="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer"]
-margin_top = 376.0
-margin_right = 178.0
-margin_bottom = 404.0
-hint_tooltip = "This will instantly teleport you to the start of the desired timeline."
-text = "  Change Timeline"
-icon = ExtResource( 12 )
-align = 0
-
-[node name="ButtonBackground" type="Button" parent="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer"]
-margin_top = 408.0
-margin_right = 178.0
-margin_bottom = 436.0
-disabled = true
-text = "  Scene Event"
-icon = ExtResource( 4 )
-align = 0
-
-[node name="CloseDialog" type="Button" parent="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer"]
-margin_top = 440.0
-margin_right = 178.0
-margin_bottom = 468.0
-text = "  Close Dialog"
-icon = ExtResource( 7 )
-align = 0
-
-[node name="WaitSeconds" type="Button" parent="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer"]
-margin_top = 472.0
-margin_right = 178.0
-margin_bottom = 500.0
-text = "  Wait Seconds"
-icon = ExtResource( 32 )
-align = 0
-
-[node name="HBoxContainer4" type="HBoxContainer" parent="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer"]
-margin_top = 504.0
-margin_right = 178.0
-margin_bottom = 518.0
-
-[node name="Label" type="Label" parent="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer/HBoxContainer4"]
-margin_right = 37.0
-margin_bottom = 14.0
-text = "Audio"
-
-[node name="HSeparator2" type="HSeparator" parent="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer/HBoxContainer4"]
-margin_left = 41.0
-margin_right = 178.0
-margin_bottom = 14.0
-size_flags_horizontal = 3
-
-[node name="AudioBlock" type="Button" parent="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer"]
-margin_top = 522.0
-margin_right = 178.0
-margin_bottom = 550.0
-text = "  Audio Event"
-icon = ExtResource( 8 )
-align = 0
-
-[node name="HBoxContainer" type="HBoxContainer" parent="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer"]
-margin_top = 554.0
-margin_right = 178.0
-margin_bottom = 568.0
-
-[node name="Label" type="Label" parent="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer/HBoxContainer"]
-margin_right = 39.0
-margin_bottom = 14.0
-text = "Godot"
-
-[node name="HSeparator2" type="HSeparator" parent="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer/HBoxContainer"]
-margin_left = 43.0
-margin_right = 178.0
-margin_bottom = 14.0
-size_flags_horizontal = 3
-
-[node name="EmitSignal" type="Button" parent="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer"]
-margin_top = 572.0
-margin_right = 178.0
-margin_bottom = 600.0
-text = "  Emit Signal"
-icon = ExtResource( 31 )
-align = 0
-
-[node name="ChangeScene" type="Button" parent="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer"]
-margin_top = 604.0
-margin_right = 178.0
-margin_bottom = 632.0
-hint_tooltip = "This will instantly teleport you to the start of the desired timeline."
-text = "  Change Scene"
-icon = ExtResource( 30 )
-align = 0
+[node name="TimelineEditor" parent="MainPanel" instance=ExtResource( 2 )]
 
 [node name="EditorGlossary" type="HSplitContainer" parent="."]
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 6.0
@@ -635,7 +272,7 @@ margin_bottom = 84.0
 disabled = true
 text = "None"
 expand_icon = true
-items = [ "None", null, false, 0, null, "Extra Information", null, false, 1, null, "Number", null, false, 2, null, "Text", null, false, 3, null, "None", null, false, 4, null, "Extra Information", null, false, 5, null, "Number", null, false, 6, null, "Text", null, false, 7, null, "None", null, false, 8, null, "Extra Information", null, false, 9, null, "Number", null, false, 10, null, "Text", null, false, 11, null, "None", null, false, 12, null, "Extra Information", null, false, 13, null, "Number", null, false, 14, null, "Text", null, false, 15, null, "None", null, false, 16, null, "Extra Information", null, false, 17, null, "Number", null, false, 18, null, "Text", null, false, 19, null ]
+items = [ "None", null, false, 0, null, "Extra Information", null, false, 1, null, "Number", null, false, 2, null, "Text", null, false, 3, null ]
 selected = 0
 
 [node name="ExtraInfo" type="VBoxContainer" parent="EditorGlossary/ScrollContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
@@ -813,7 +450,7 @@ text = "Create a character +"
 margin_left = 192.0
 margin_right = 1253.0
 margin_bottom = 661.0
-custom_styles/bg = SubResource( 5 )
+custom_styles/bg = SubResource( 3 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -1747,13 +1384,13 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="Node" type="Node" parent="."]
+
 [connection signal="pressed" from="ToolBar/EventButton" to="." method="_on_EventButton_pressed"]
 [connection signal="pressed" from="ToolBar/CharactersButton" to="." method="_on_CharactersButton_pressed"]
 [connection signal="pressed" from="ToolBar/GlossaryButton" to="." method="_on_GlossaryButton_pressed"]
 [connection signal="pressed" from="ToolBar/ThemeButton" to="." method="_on_ThemeButton_pressed"]
 [connection signal="gui_input" from="ToolBar/Logo" to="." method="_on_Logo_gui_input"]
-[connection signal="pressed" from="EditorTimeline/EventTools/VBoxContainer2/AddTimelineButton" to="EditorTimeline" method="_on_AddTimelineButton_pressed"]
-[connection signal="pressed" from="EditorTimeline/CenterContainer/VBoxContainer/Control/Button" to="EditorTimeline" method="_on_AddTimelineButton_pressed"]
 [connection signal="pressed" from="EditorGlossary/VBoxContainer/NewEntryButton" to="EditorGlossary" method="_on_NewEntryButton_pressed"]
 [connection signal="item_rmb_selected" from="EditorGlossary/VBoxContainer/ItemList" to="EditorGlossary" method="_on_ItemList_item_rmb_selected"]
 [connection signal="item_selected" from="EditorGlossary/VBoxContainer/ItemList" to="EditorGlossary" method="_on_ItemList_item_selected"]

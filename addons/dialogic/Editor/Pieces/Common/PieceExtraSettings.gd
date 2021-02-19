@@ -14,12 +14,14 @@ func _ready():
 func _on_OptionSelected(index):
 	if index == 0:
 		# Moving this up
-		current_piece.editor_reference.get_node('EditorTimeline')._move_block(current_piece, 'up')
+		current_piece.editor_reference.get_node('MainPanel/TimelineEditor').move_block(current_piece, 'up')
 	elif index == 1:
 		# Moving piece down
-		current_piece.editor_reference.get_node('EditorTimeline')._move_block(current_piece, 'down')
+		current_piece.editor_reference.get_node('MainPanel/TimelineEditor').move_block(current_piece, 'down')
 	elif index == 3:
 		# Remove
 		# TODO: Add a warning here
+		var node = current_piece.editor_reference.get_node('MainPanel/TimelineEditor')
 		current_piece.queue_free()
-	current_piece.editor_reference.get_node('EditorTimeline').indent_events()
+		node.save_timeline(node.working_dialog_file)
+	current_piece.editor_reference.get_node('MainPanel/TimelineEditor').indent_events()

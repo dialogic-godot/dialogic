@@ -1,0 +1,325 @@
+[gd_scene load_steps=20 format=2]
+
+[ext_resource path="res://addons/dialogic/Images/character-join.svg" type="Texture" id=1]
+[ext_resource path="res://addons/dialogic/Images/dialog.svg" type="Texture" id=2]
+[ext_resource path="res://addons/dialogic/Images/audio-event.svg" type="Texture" id=3]
+[ext_resource path="res://addons/dialogic/Images/scene.svg" type="Texture" id=4]
+[ext_resource path="res://addons/dialogic/Images/condition.svg" type="Texture" id=5]
+[ext_resource path="res://addons/dialogic/Images/end-dialog.svg" type="Texture" id=6]
+[ext_resource path="res://addons/dialogic/Images/character-leave.svg" type="Texture" id=7]
+[ext_resource path="res://addons/dialogic/Images/question.svg" type="Texture" id=8]
+[ext_resource path="res://addons/dialogic/Images/end-choice.svg" type="Texture" id=9]
+[ext_resource path="res://addons/dialogic/Images/change-timeline.svg" type="Texture" id=10]
+[ext_resource path="res://addons/dialogic/Images/ListSelect.svg" type="Texture" id=11]
+[ext_resource path="res://addons/dialogic/Images/choice.svg" type="Texture" id=12]
+[ext_resource path="res://addons/dialogic/Images/tutorials/arrow-down.svg" type="Texture" id=13]
+[ext_resource path="res://addons/dialogic/Images/Wait.svg" type="Texture" id=14]
+[ext_resource path="res://addons/dialogic/Images/change-scene.svg" type="Texture" id=15]
+[ext_resource path="res://addons/dialogic/Images/signal.svg" type="Texture" id=16]
+[ext_resource path="res://addons/dialogic/Editor/TimelineEditor/TimelineEditor.gd" type="Script" id=17]
+
+[sub_resource type="StyleBoxFlat" id=1]
+content_margin_left = 5.0
+content_margin_right = 5.0
+content_margin_top = 5.0
+content_margin_bottom = 5.0
+bg_color = Color( 0.14902, 0.172549, 0.231373, 1 )
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color( 0.0980392, 0.113725, 0.152941, 1 )
+
+[sub_resource type="StyleBoxFlat" id=2]
+content_margin_right = 6.0
+content_margin_top = 10.0
+content_margin_bottom = 10.0
+bg_color = Color( 0.94902, 1, 0.482353, 1 )
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[node name="TimelineEditor" type="HSplitContainer"]
+margin_left = 192.0
+margin_right = 1253.0
+margin_bottom = 661.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_constants/separation = 0
+split_offset = 7
+script = ExtResource( 17 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TimelineArea" type="ScrollContainer" parent="."]
+margin_right = 863.0
+margin_bottom = 661.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_styles/bg = SubResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TimeLine" type="VBoxContainer" parent="TimelineArea"]
+margin_left = 5.0
+margin_top = 5.0
+margin_right = 858.0
+margin_bottom = 656.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="ScrollContainer" type="ScrollContainer" parent="."]
+margin_left = 871.0
+margin_right = 1061.0
+margin_bottom = 661.0
+rect_min_size = Vector2( 190, 0 )
+
+[node name="EventContainer" type="VBoxContainer" parent="ScrollContainer"]
+margin_right = 190.0
+margin_bottom = 661.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="EventsWarning" type="PanelContainer" parent="ScrollContainer/EventContainer"]
+margin_right = 190.0
+margin_bottom = 68.0
+custom_styles/panel = SubResource( 2 )
+
+[node name="HBoxContainer" type="HBoxContainer" parent="ScrollContainer/EventContainer/EventsWarning"]
+margin_top = 10.0
+margin_right = 184.0
+margin_bottom = 58.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextureRect" type="TextureRect" parent="ScrollContainer/EventContainer/EventsWarning/HBoxContainer"]
+margin_right = 40.0
+margin_bottom = 48.0
+rect_min_size = Vector2( 40, 40 )
+texture = ExtResource( 13 )
+stretch_mode = 4
+
+[node name="Label" type="Label" parent="ScrollContainer/EventContainer/EventsWarning/HBoxContainer"]
+margin_left = 44.0
+margin_right = 184.0
+margin_bottom = 48.0
+rect_min_size = Vector2( 100, 0 )
+size_flags_horizontal = 3
+size_flags_vertical = 1
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Add an event to start building your timeline"
+autowrap = true
+
+[node name="HBoxContainer6" type="HBoxContainer" parent="ScrollContainer/EventContainer"]
+margin_top = 72.0
+margin_right = 190.0
+margin_bottom = 86.0
+
+[node name="Label" type="Label" parent="ScrollContainer/EventContainer/HBoxContainer6"]
+margin_right = 77.0
+margin_bottom = 14.0
+text = "Main Events"
+
+[node name="HSeparator2" type="HSeparator" parent="ScrollContainer/EventContainer/HBoxContainer6"]
+margin_left = 81.0
+margin_right = 190.0
+margin_bottom = 14.0
+size_flags_horizontal = 3
+
+[node name="TextBlock" type="Button" parent="ScrollContainer/EventContainer"]
+margin_top = 90.0
+margin_right = 190.0
+margin_bottom = 118.0
+text = "  Text Event"
+icon = ExtResource( 2 )
+align = 0
+
+[node name="CharacterJoinBlock" type="Button" parent="ScrollContainer/EventContainer"]
+margin_top = 122.0
+margin_right = 190.0
+margin_bottom = 150.0
+text = "  Character Join"
+icon = ExtResource( 1 )
+align = 0
+
+[node name="CharacterLeaveBlock" type="Button" parent="ScrollContainer/EventContainer"]
+margin_top = 154.0
+margin_right = 190.0
+margin_bottom = 182.0
+text = "  Character Leave"
+icon = ExtResource( 7 )
+align = 0
+
+[node name="HBoxContainer5" type="HBoxContainer" parent="ScrollContainer/EventContainer"]
+margin_top = 186.0
+margin_right = 190.0
+margin_bottom = 200.0
+
+[node name="Label" type="Label" parent="ScrollContainer/EventContainer/HBoxContainer5"]
+margin_right = 33.0
+margin_bottom = 14.0
+text = "Logic"
+
+[node name="HSeparator2" type="HSeparator" parent="ScrollContainer/EventContainer/HBoxContainer5"]
+margin_left = 37.0
+margin_right = 190.0
+margin_bottom = 14.0
+size_flags_horizontal = 3
+
+[node name="ButtonQuestion" type="Button" parent="ScrollContainer/EventContainer"]
+margin_top = 204.0
+margin_right = 190.0
+margin_bottom = 232.0
+text = "  Question"
+icon = ExtResource( 8 )
+align = 0
+
+[node name="Choice" type="Button" parent="ScrollContainer/EventContainer"]
+margin_top = 236.0
+margin_right = 190.0
+margin_bottom = 264.0
+text = "  Choice"
+icon = ExtResource( 12 )
+align = 0
+
+[node name="IfCondition" type="Button" parent="ScrollContainer/EventContainer"]
+margin_top = 268.0
+margin_right = 190.0
+margin_bottom = 296.0
+text = " Condition"
+icon = ExtResource( 5 )
+align = 0
+
+[node name="EndBranch" type="Button" parent="ScrollContainer/EventContainer"]
+margin_top = 300.0
+margin_right = 190.0
+margin_bottom = 328.0
+text = "  End Branch"
+icon = ExtResource( 9 )
+align = 0
+
+[node name="SetValue" type="Button" parent="ScrollContainer/EventContainer"]
+margin_top = 332.0
+margin_right = 190.0
+margin_bottom = 354.0
+text = "  Set Value"
+icon = ExtResource( 11 )
+align = 0
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="ScrollContainer/EventContainer"]
+margin_top = 358.0
+margin_right = 190.0
+margin_bottom = 372.0
+
+[node name="Label" type="Label" parent="ScrollContainer/EventContainer/HBoxContainer3"]
+margin_right = 56.0
+margin_bottom = 14.0
+text = "Timeline"
+
+[node name="HSeparator2" type="HSeparator" parent="ScrollContainer/EventContainer/HBoxContainer3"]
+margin_left = 60.0
+margin_right = 190.0
+margin_bottom = 14.0
+size_flags_horizontal = 3
+
+[node name="ChangeTimeline" type="Button" parent="ScrollContainer/EventContainer"]
+margin_top = 376.0
+margin_right = 190.0
+margin_bottom = 404.0
+hint_tooltip = "This will instantly teleport you to the start of the desired timeline."
+text = "  Change Timeline"
+icon = ExtResource( 10 )
+align = 0
+
+[node name="ButtonBackground" type="Button" parent="ScrollContainer/EventContainer"]
+margin_top = 408.0
+margin_right = 190.0
+margin_bottom = 436.0
+disabled = true
+text = "  Scene Event"
+icon = ExtResource( 4 )
+align = 0
+
+[node name="CloseDialog" type="Button" parent="ScrollContainer/EventContainer"]
+margin_top = 440.0
+margin_right = 190.0
+margin_bottom = 468.0
+text = "  Close Dialog"
+icon = ExtResource( 6 )
+align = 0
+
+[node name="WaitSeconds" type="Button" parent="ScrollContainer/EventContainer"]
+margin_top = 472.0
+margin_right = 190.0
+margin_bottom = 500.0
+text = "  Wait Seconds"
+icon = ExtResource( 14 )
+align = 0
+
+[node name="HBoxContainer4" type="HBoxContainer" parent="ScrollContainer/EventContainer"]
+margin_top = 504.0
+margin_right = 190.0
+margin_bottom = 518.0
+
+[node name="Label" type="Label" parent="ScrollContainer/EventContainer/HBoxContainer4"]
+margin_right = 37.0
+margin_bottom = 14.0
+text = "Audio"
+
+[node name="HSeparator2" type="HSeparator" parent="ScrollContainer/EventContainer/HBoxContainer4"]
+margin_left = 41.0
+margin_right = 190.0
+margin_bottom = 14.0
+size_flags_horizontal = 3
+
+[node name="AudioBlock" type="Button" parent="ScrollContainer/EventContainer"]
+margin_top = 522.0
+margin_right = 190.0
+margin_bottom = 550.0
+text = "  Audio Event"
+icon = ExtResource( 3 )
+align = 0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="ScrollContainer/EventContainer"]
+margin_top = 554.0
+margin_right = 190.0
+margin_bottom = 568.0
+
+[node name="Label" type="Label" parent="ScrollContainer/EventContainer/HBoxContainer"]
+margin_right = 39.0
+margin_bottom = 14.0
+text = "Godot"
+
+[node name="HSeparator2" type="HSeparator" parent="ScrollContainer/EventContainer/HBoxContainer"]
+margin_left = 43.0
+margin_right = 190.0
+margin_bottom = 14.0
+size_flags_horizontal = 3
+
+[node name="EmitSignal" type="Button" parent="ScrollContainer/EventContainer"]
+margin_top = 572.0
+margin_right = 190.0
+margin_bottom = 600.0
+text = "  Emit Signal"
+icon = ExtResource( 16 )
+align = 0
+
+[node name="ChangeScene" type="Button" parent="ScrollContainer/EventContainer"]
+margin_top = 604.0
+margin_right = 190.0
+margin_bottom = 632.0
+hint_tooltip = "This will instantly teleport you to the start of the desired timeline."
+text = "  Change Scene"
+icon = ExtResource( 15 )
+align = 0
