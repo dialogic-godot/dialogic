@@ -3,7 +3,7 @@ extends HSplitContainer
 
 var editor_reference
 var timeline_name: String = "" # The currently opened timeline name (for saving)
-var version_string: String = "0.9"
+var version_string: String
 
 onready var timeline = $TimelineEditor/TimelineArea/TimeLine
 onready var dialog_list = $EventTools/VBoxContainer2/DialogItemList
@@ -11,6 +11,12 @@ onready var events_warning = $TimelineEditor/ScrollContainer/EventContainer/Even
 
 
 func _ready():
+	# Loading the version number
+	var config = ConfigFile.new()
+	var err = config.load("res://addons/dialogic/plugin.cfg")
+	if err == OK:
+		version_string = config.get_value("plugin", "version", "?")
+	
 	$EventTools/VBoxContainer2/DialogItemList.connect('item_selected', self, '_on_DialogItemList_item_selected')
 	$EventTools/VBoxContainer2/DialogItemList.connect('item_rmb_selected', self, '_on_DialogItemList_item_rmb_selected')
 	
