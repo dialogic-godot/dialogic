@@ -11,6 +11,7 @@ var editor_file_dialog # EditorFileDialog
 var file_picker_data: Dictionary = {'method': '', 'node': self}
 
 var current_editor_view: String = 'Master'
+onready var timeline = $MainPanel/TimelineEditor
 
 var working_dialog_file: String = ''
 var timer_duration = 200
@@ -28,7 +29,7 @@ func _ready():
 	$ToolBar/EventButton.set('self_modulate', Color('#6a9dea'))
 
 	$MainPanel/MasterTree.editor_reference = self
-	$MainPanel/TimelineEditor.editor_reference = self
+	timeline.editor_reference = self
 	
 	
 	$EditorCharacter.editor_reference = self
@@ -45,9 +46,6 @@ func _ready():
 	
 	$ToolBar/Docs.icon = get_icon("Instance", "EditorIcons")
 	$ToolBar/Docs.connect('pressed', self, "_docs_button", [])
-	
-	# Adding custom icons. For some reason they don't load properly otherwise.
-	#$EditorTimeline/TimelineEditor/ScrollContainer/EventContainer/ChangeScene.icon = load("res://addons/dialogic/Images/change-scene.svg")
 	
 	# Making the dialog editor the default
 	#change_tab('Timeline')
@@ -188,21 +186,10 @@ func change_tab(tab):
 	$ToolBar/ThemeButton.set('self_modulate', Color('#dedede'))
 	$ToolBar/GlossaryButton.set('self_modulate', Color('#dedede'))
 	$ToolBar/FoldTools.visible = false
-	#$EditorTimeline.visible = false
 	$EditorCharacter.visible = false
 	$EditorTheme.visible = false
 	$EditorGlossary.visible = false
-	
-	#if tab == 'Timeline':
-	#	$ToolBar/EventButton.set('self_modulate', Color('#6a9dea'))
-	#	$EditorTimeline.visible = true
-	#	$ToolBar/FoldTools.visible = true
-	#	if working_dialog_file == '':
-	#		$EditorTimeline/TimelineEditor.visible = false
-	#		$EditorTimeline/CenterContainer.visible = true
-	#	else:
-	#		$EditorTimeline/TimelineEditor.visible = true
-	#		$EditorTimeline/CenterContainer.visible = false
+
 	#	
 	#elif tab == 'Characters':
 	#	$ToolBar/CharactersButton.set('self_modulate', Color('#6a9dea'))
@@ -237,13 +224,6 @@ func _on_AutoSaver_timeout() -> void:
 	#			$EditorCharacter.save_current_character()
 	pass
 	# I'm trying a different approach on the glossary.
-
-
-func manual_save() -> void:
-	if current_editor_view == 'Timeline':
-		#$EditorTimeline.save_timeline(working_dialog_file)
-		#dprint('[!] Saving: ' + str(working_dialog_file))
-		print('nothing here')
 
 
 func _on_Logo_gui_input(event) -> void:

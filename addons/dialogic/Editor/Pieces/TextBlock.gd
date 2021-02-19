@@ -75,7 +75,7 @@ func update_preview() -> String:
 		if c['file'] == event_data['character']:
 			$PanelContainer/VBoxContainer/Header/CharacterPicker.set_data_by_file(event_data['character'])
 
-	editor_reference.manual_save()
+	editor_reference.timeline.save_timeline()
 	
 	var text = event_data['text']
 	var lines = text.count('\n')

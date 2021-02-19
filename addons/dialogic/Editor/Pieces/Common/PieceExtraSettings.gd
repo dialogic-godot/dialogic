@@ -19,9 +19,10 @@ func _on_OptionSelected(index):
 		# Moving piece down
 		current_piece.editor_reference.get_node('MainPanel/TimelineEditor').move_block(current_piece, 'down')
 	elif index == 3:
-		# Remove
-		# TODO: Add a warning here
-		var node = current_piece.editor_reference.get_node('MainPanel/TimelineEditor')
+		# Removing a piece
+		# TODO: Add a warning here if the event has changes
 		current_piece.queue_free()
-		node.save_timeline(node.working_dialog_file)
+		# Saving after removing the piece
+		var node = current_piece.editor_reference.get_node('MainPanel/TimelineEditor')
+		node.save_timeline()
 	current_piece.editor_reference.get_node('MainPanel/TimelineEditor').indent_events()

@@ -56,7 +56,7 @@ func _on_item_selected():
 	print(item)
 
 	if item['editor'] == 'EditorTimeline':
-		#editor_reference.manual_save()
+		timeline_editor.save_timeline()
 		timeline_editor.clear_timeline()
 		timeline_editor.load_timeline(DialogicUtil.get_path('TIMELINE_DIR', item['file']))
 

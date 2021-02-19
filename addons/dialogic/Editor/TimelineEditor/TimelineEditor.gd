@@ -27,7 +27,7 @@ func _ready():
 func _create_event_button_pressed(button_name):
 	create_event(button_name)
 	indent_events()
-	save_timeline(working_dialog_file)
+	save_timeline()
 
 
 func _on_ButtonQuestion_pressed() -> void:
@@ -35,13 +35,13 @@ func _on_ButtonQuestion_pressed() -> void:
 	create_event("Choice", {'no-data': true}, true)
 	create_event("Choice", {'no-data': true}, true)
 	create_event("EndBranch", {'no-data': true}, true)
-	save_timeline(working_dialog_file)
+	save_timeline()
 
 
 func _on_ButtonCondition_pressed() -> void:
 	create_event("IfCondition", {'no-data': true}, true)
 	create_event("EndBranch", {'no-data': true}, true)
-	save_timeline(working_dialog_file)
+	save_timeline()
 
 
 # Adding an event to the timeline
@@ -160,7 +160,7 @@ func load_timeline(path):
 	# and you close it, it won't save all the events. This prevents
 	# it from happening for now, but I might want to revamp
 	# the entire saving system sooner than later.
-	editor_reference.manual_save()
+	editor_reference.timeline.save_timeline()
 
 
 func clear_timeline():
@@ -223,13 +223,10 @@ func generate_save_data():
 	return info_to_save
 
 
-func save_timeline(path: String = '') -> void:
-	print('1111')
-	if path == '':
-		print('Tried to save a timeline but `working_dialog_file` is not set')
+func save_timeline() -> void:
 	var info_to_save = generate_save_data()
 	var file = File.new()
-	file.open(path, File.WRITE)
+	file.open(working_dialog_file, File.WRITE)
 	file.store_line(to_json(info_to_save))
 	file.close()
 	editor_reference.autosaving_hash = info_to_save.hash()
