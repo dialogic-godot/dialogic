@@ -11,6 +11,7 @@ The plugin is not production ready, this means that it will not work in your gam
 ## Changelog
 
 ### 🆕 v0.9 - House keeping
+  - Video https://youtu.be/pL0RWVmlM6g
   - Moved `Dialog.tscn` to the root of the addon so it is easier to find.
   - Added a link to the documentation from the editor
   - Refactored a lot of the code and continued splitting the main plugin code into smaller pieces.
