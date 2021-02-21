@@ -3,7 +3,7 @@ extends HSplitContainer
 
 var editor_reference
 var timeline_name
-var working_dialog_file
+var working_dialog_file: String = ''
 
 onready var master_tree = get_node('../MasterTree')
 
@@ -224,9 +224,21 @@ func generate_save_data():
 
 
 func save_timeline() -> void:
-	var info_to_save = generate_save_data()
-	var file = File.new()
-	file.open(working_dialog_file, File.WRITE)
-	file.store_line(to_json(info_to_save))
-	file.close()
-	editor_reference.autosaving_hash = info_to_save.hash()
+	if working_dialog_file != '':
+		var info_to_save = generate_save_data()
+		var file = File.new()
+		file.open(working_dialog_file, File.WRITE)
+		file.store_line(to_json(info_to_save))
+		file.close()
+		editor_reference.autosaving_hash = info_to_save.hash()
+
+
+# Utilities
+func fold_all_nodes():
+	for event in timeline.get_children():
+		event.get_node("PanelContainer/VBoxContainer/Header/VisibleToggle").set_pressed(false)
+
+
+func unfold_all_nodes():
+	for event in timeline.get_children():
+		event.get_node("PanelContainer/VBoxContainer/Header/VisibleToggle").set_pressed(true)

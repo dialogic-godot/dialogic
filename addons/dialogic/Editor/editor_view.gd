@@ -14,8 +14,6 @@ var current_editor_view: String = 'Master'
 onready var timeline = $MainPanel/TimelineEditor
 
 var working_dialog_file: String = ''
-var timer_duration = 200
-var timer_interval = 30
 var autosaving_hash
 
 var version_string: String 
@@ -60,13 +58,6 @@ func _ready():
 	var err = config.load("res://addons/dialogic/plugin.cfg")
 	if err == OK:
 		version_string = config.get_value("plugin", "version", "?")
-
-
-func _process(delta):
-	timer_interval -= 1
-	if timer_interval < 0 :
-		timer_interval = timer_duration
-		_on_AutoSaver_timeout()
 
 
 func _on_TimelinePopupMenu_id_pressed(id):
@@ -212,7 +203,7 @@ func change_tab(tab):
 
 
 # Auto saving
-func _on_AutoSaver_timeout() -> void:
+#func _on_AutoSaver_timeout() -> void:
 	#if current_editor_view == 'Timeline':
 	#	if autosaving_hash != $EditorTimeline.generate_save_data().hash():
 	#		$EditorTimeline.save_timeline(working_dialog_file)
@@ -222,7 +213,7 @@ func _on_AutoSaver_timeout() -> void:
 	#		if DialogicUtil.compare_dicts($EditorCharacter.opened_character_data, $EditorCharacter.generate_character_data_to_save()) == false:
 	#			dprint('[!] Character changes detected. Saving')
 	#			$EditorCharacter.save_current_character()
-	pass
+#	pass
 	# I'm trying a different approach on the glossary.
 
 
