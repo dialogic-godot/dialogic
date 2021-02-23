@@ -78,12 +78,9 @@ func _on_RenameDialog_confirmed():
 
 func _on_RemoveTimelineConfirmation_confirmed():
 	var dir = Directory.new()
-	dir.remove(working_timeline_file)
-	working_timeline_file = ''
-	#$EditorTimeline.refresh_timeline_list()
-	#if $EditorTimeline/EventTools/VBoxContainer2/DialogItemList.get_item_count() != 0:
-	#	$EditorTimeline._on_DialogItemList_item_selected(0)
-	#	$EditorTimeline/EventTools/VBoxContainer2/DialogItemList.select(0)
+	var target = $MainPanel/TimelineEditor.working_timeline_file
+	dir.remove(target)
+	$MainPanel/MasterTree.remove_selected()
 
 
 # Character Creations

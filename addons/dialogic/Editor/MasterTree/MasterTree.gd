@@ -17,8 +17,10 @@ func _ready():
 	# Creating the parents
 	timelines_tree = tree.create_item(root)
 	timelines_tree.set_text(0, "Timelines")
+	timelines_tree.set_metadata(0, {'editor': 'tree'})
 	characters_tree = tree.create_item(root)
 	characters_tree.set_text(0, "Characters")
+	characters_tree.set_metadata(0, {'editor': 'tree'})
 	
 	
 	connect('item_selected', self, '_on_item_selected')
@@ -57,7 +59,6 @@ func _on_item_rmb_selected(position):
 	if item['editor'] == 'EditorTimeline':
 		editor_reference.get_node('TimelinePopupMenu').rect_position = get_viewport().get_mouse_position()
 		editor_reference.get_node('TimelinePopupMenu').popup()
-		#timeline_name = dialog_list.get_item_text(index)
 
 
 func add_timeline(timeline, select = false):
@@ -70,9 +71,14 @@ func add_timeline(timeline, select = false):
 	timeline['editor'] = 'EditorTimeline'
 	item.set_metadata(0, timeline)
 	#item.set_editable(0, true)
-	#dialog_list.set_item_metadata(index, {'file': c['file'], 'index': index})
-	if select:
+	if select: # Auto selecting
 		item.select(0)
+
+
+func remove_selected():
+	var item = get_selected()
+	item.free()
+	timelines_tree.select(0)
 
 
 func refresh_timeline_list():
