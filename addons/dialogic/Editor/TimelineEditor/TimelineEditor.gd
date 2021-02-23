@@ -208,15 +208,6 @@ func create_timeline():
 func new_timeline():
 	# This event creates and selects the new timeline
 	master_tree.add_timeline(create_timeline()['metadata'], true)
-	
-
-
-func _on_AddTimelineButton_pressed():
-	# TODO
-	var file = create_timeline()
-	master_tree.refresh_timeline_list()
-	clear_timeline()
-	load_timeline(DialogicUtil.get_path('TIMELINE_DIR', file))
 
 
 # Saving

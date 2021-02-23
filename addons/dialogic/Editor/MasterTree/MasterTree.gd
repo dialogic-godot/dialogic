@@ -10,6 +10,7 @@ var timelines_tree
 var characters_tree
 
 func _ready():
+	allow_rmb_select = true
 	var root = tree.create_item()
 	tree.set_hide_root(true)
 	
@@ -21,6 +22,7 @@ func _ready():
 	
 	
 	connect('item_selected', self, '_on_item_selected')
+	connect('item_rmb_selected', self, '_on_item_rmb_selected')
 	
 	#var subchild1 = tree.create_item(timelines_tree)
 	#subchild1.set_text(0, "Subchild1")
@@ -44,16 +46,21 @@ func _ready():
 
 func _on_item_selected():
 	var item = get_selected().get_metadata(0)
-	print(item)
-
 	if item['editor'] == 'EditorTimeline':
 		timeline_editor.save_timeline()
 		timeline_editor.clear_timeline()
 		timeline_editor.load_timeline(DialogicUtil.get_path('TIMELINE_DIR', item['file']))
 
 
+func _on_item_rmb_selected(position):
+	var item = get_selected().get_metadata(0)
+	if item['editor'] == 'EditorTimeline':
+		editor_reference.get_node('TimelinePopupMenu').rect_position = get_viewport().get_mouse_position()
+		editor_reference.get_node('TimelinePopupMenu').popup()
+		#timeline_name = dialog_list.get_item_text(index)
+
+
 func add_timeline(timeline, select = false):
-	print(timeline)
 	var item = tree.create_item(timelines_tree)
 	item.set_icon(0, timeline_icon)
 	if timeline.has('name'):
@@ -66,7 +73,6 @@ func add_timeline(timeline, select = false):
 	#dialog_list.set_item_metadata(index, {'file': c['file'], 'index': index})
 	if select:
 		item.select(0)
-
 
 
 func refresh_timeline_list():

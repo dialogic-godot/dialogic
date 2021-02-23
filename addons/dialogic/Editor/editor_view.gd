@@ -50,16 +50,13 @@ func _ready():
 
 
 func _on_TimelinePopupMenu_id_pressed(id):
-	if id == 0: # rename
+	if id == 0: # Rename
 		popup_rename()
-	if id == 1:
+	if id == 1: # View files
 		OS.shell_open(ProjectSettings.globalize_path(DialogicUtil.get_path('TIMELINE_DIR')))
-	if id == 2:
-		#var current_id = DialogicUtil.get_filename_from_path(working_timeline_file)
-		#if current_id != '':
-		#OS.set_clipboard($EditorTimeline.timeline_name)
-		pass
-	if id == 3:
+	if id == 2: # Copy to clipboard
+		OS.set_clipboard($MainPanel/TimelineEditor.timeline_name)
+	if id == 3: # Remove
 		$RemoveTimelineConfirmation.popup_centered()
 
 
