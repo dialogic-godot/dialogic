@@ -8,6 +8,7 @@ var timeline_icon = load("res://addons/dialogic/Images/timeline.svg")
 var character_icon = load("res://addons/dialogic/Images/character.svg")
 var timelines_tree
 var characters_tree
+var glossary_tree
 
 func _ready():
 	allow_rmb_select = true
@@ -21,6 +22,9 @@ func _ready():
 	characters_tree = tree.create_item(root)
 	characters_tree.set_text(0, "Characters")
 	characters_tree.set_metadata(0, {'editor': 'tree'})
+	glossary_tree = tree.create_item(root)
+	glossary_tree.set_text(0, "Glossary")
+	glossary_tree.set_metadata(0, {'editor': 'glossary'})
 	
 	
 	connect('item_selected', self, '_on_item_selected')
@@ -35,30 +39,13 @@ func _ready():
 	
 	# Adding characters
 	for c in DialogicUtil.get_character_list():
-		var item = tree.create_item(characters_tree)
-		item.set_icon(0, character_icon)
-		item.set_text(0, c['name'])
-		c['editor'] = 'EditorCharacter'
-		item.set_metadata(0, c)
-		#item.set_editable(0, true)
-		item.set_icon_modulate(0, c['color'])
+		add_character(c)
 	
+	var glossary = DialogicUtil.load_glossary()
+	for c in glossary:
+		add_glossary(glossary[c])
 	# Glossary
 	# TODO
-
-func _on_item_selected():
-	var item = get_selected().get_metadata(0)
-	if item['editor'] == 'EditorTimeline':
-		timeline_editor.save_timeline()
-		timeline_editor.clear_timeline()
-		timeline_editor.load_timeline(DialogicUtil.get_path('TIMELINE_DIR', item['file']))
-
-
-func _on_item_rmb_selected(position):
-	var item = get_selected().get_metadata(0)
-	if item['editor'] == 'EditorTimeline':
-		editor_reference.get_node('TimelinePopupMenu').rect_position = get_viewport().get_mouse_position()
-		editor_reference.get_node('TimelinePopupMenu').popup()
 
 
 func add_timeline(timeline, select = false):
@@ -73,6 +60,52 @@ func add_timeline(timeline, select = false):
 	#item.set_editable(0, true)
 	if select: # Auto selecting
 		item.select(0)
+
+
+func add_character(character, select = false):
+	var item = tree.create_item(characters_tree)
+	item.set_icon(0, character_icon)
+	item.set_text(0, character['name'])
+	character['editor'] = 'EditorCharacter'
+	item.set_metadata(0, character)
+	#item.set_editable(0, true)
+	item.set_icon_modulate(0, character['color'])
+	if select: # Auto selecting
+		item.select(0)
+
+
+func add_glossary(glossary, select = false):
+	print(glossary)
+	var item = tree.create_item(glossary_tree)
+	if glossary['type'] == DialogicUtil.GLOSSARY_STRING:
+		item.set_icon(0, get_icon("String", "EditorIcons"))
+	if glossary['type'] == DialogicUtil.GLOSSARY_EXTRA:
+		item.set_icon(0, get_icon("ScriptCreateDialog", "EditorIcons"))
+	if glossary['type'] == DialogicUtil.GLOSSARY_NUMBER:
+		item.set_icon(0, get_icon("int", "EditorIcons"))
+	#item.set_icon(0, character_icon)
+	item.set_text(0, glossary['name'])
+	glossary['editor'] = 'EditorGlossary'
+	item.set_metadata(0, glossary)
+
+	#item.set_icon_modulate(0, character['color'])
+	if select: # Auto selecting
+		item.select(0)
+
+
+func _on_item_selected():
+	var item = get_selected().get_metadata(0)
+	if item['editor'] == 'EditorTimeline':
+		timeline_editor.save_timeline()
+		timeline_editor.clear_timeline()
+		timeline_editor.load_timeline(DialogicUtil.get_path('TIMELINE_DIR', item['file']))
+
+
+func _on_item_rmb_selected(position):
+	var item = get_selected().get_metadata(0)
+	if item['editor'] == 'EditorTimeline':
+		editor_reference.get_node('TimelinePopupMenu').rect_position = get_viewport().get_mouse_position()
+		editor_reference.get_node('TimelinePopupMenu').popup()
 
 
 func remove_selected():
