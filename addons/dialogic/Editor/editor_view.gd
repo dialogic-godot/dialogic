@@ -2,30 +2,23 @@ tool
 extends Control
 
 var plugin_reference
-
 var undo_redo: UndoRedo
-
 var debug_mode: bool = true # For printing info
-
 var editor_file_dialog # EditorFileDialog
 var file_picker_data: Dictionary = {'method': '', 'node': self}
-
 var current_editor_view: String = 'Master'
-onready var timeline = $MainPanel/TimelineEditor
-
-var working_dialog_file: String = ''
+var working_timeline_file: String = ''
 var autosaving_hash
-
 var version_string: String 
+onready var timeline = $MainPanel/TimelineEditor
 
 
 func _ready():
 	# Adding file dialog to get used by pieces
 	editor_file_dialog = EditorFileDialog.new()
 	add_child(editor_file_dialog)
-	
-	$ToolBar/EventButton.set('self_modulate', Color('#6a9dea'))
 
+	$ToolBar/NewTimelineButton.connect('pressed', $MainPanel/TimelineEditor, 'new_timeline')
 	$MainPanel/MasterTree.editor_reference = self
 	timeline.editor_reference = self
 	
@@ -45,10 +38,6 @@ func _ready():
 	$ToolBar/Docs.icon = get_icon("Instance", "EditorIcons")
 	$ToolBar/Docs.connect('pressed', self, "_docs_button", [])
 	
-	# Making the dialog editor the default
-	#change_tab('Timeline')
-	_on_EventButton_pressed()
-	
 	# Toolbar button connections
 	#$ToolBar/FoldTools/ButtonFold.connect('pressed', $EditorTimeline, 'fold_all_nodes')
 	#$ToolBar/FoldTools/ButtonUnfold.connect('pressed', $EditorTimeline, 'unfold_all_nodes')
@@ -66,7 +55,7 @@ func _on_TimelinePopupMenu_id_pressed(id):
 	if id == 1:
 		OS.shell_open(ProjectSettings.globalize_path(DialogicUtil.get_path('TIMELINE_DIR')))
 	if id == 2:
-		#var current_id = DialogicUtil.get_filename_from_path(working_dialog_file)
+		#var current_id = DialogicUtil.get_filename_from_path(working_timeline_file)
 		#if current_id != '':
 		#OS.set_clipboard($EditorTimeline.timeline_name)
 		pass
@@ -86,14 +75,14 @@ func popup_rename():
 func _on_RenameDialog_confirmed():
 	#$EditorTimeline.timeline_name = $RenameDialog/LineEdit.text
 	$RenameDialog/LineEdit.text = ''
-	#$EditorTimeline.save_timeline(working_dialog_file)
+	#$EditorTimeline.save_timeline(working_timeline_file)
 	#$EditorTimeline.refresh_timeline_list()
 
 
 func _on_RemoveTimelineConfirmation_confirmed():
 	var dir = Directory.new()
-	dir.remove(working_dialog_file)
-	working_dialog_file = ''
+	dir.remove(working_timeline_file)
+	working_timeline_file = ''
 	#$EditorTimeline.refresh_timeline_list()
 	#if $EditorTimeline/EventTools/VBoxContainer2/DialogItemList.get_item_count() != 0:
 	#	$EditorTimeline._on_DialogItemList_item_selected(0)
@@ -154,67 +143,6 @@ func _on_file_selected(path):
 
 
 # Toolbar
-func _on_EventButton_pressed():
-	change_tab('Timeline')
-
-
-func _on_CharactersButton_pressed():
-	change_tab('Characters')
-
-
-func _on_ThemeButton_pressed():
-	change_tab('Theme')
-
-
-func _on_GlossaryButton_pressed():
-	change_tab('Glossary')
-
-
-func change_tab(tab):
-	# Hiding everything
-	$ToolBar/EventButton.set('self_modulate', Color('#dedede'))
-	$ToolBar/CharactersButton.set('self_modulate', Color('#dedede'))
-	$ToolBar/ThemeButton.set('self_modulate', Color('#dedede'))
-	$ToolBar/GlossaryButton.set('self_modulate', Color('#dedede'))
-	$ToolBar/FoldTools.visible = false
-	$EditorCharacter.visible = false
-	$EditorTheme.visible = false
-	$EditorGlossary.visible = false
-
-	#	
-	#elif tab == 'Characters':
-	#	$ToolBar/CharactersButton.set('self_modulate', Color('#6a9dea'))
-	#	$EditorCharacter.visible = true
-	#	# Select the first character in the list
-	#	if $EditorCharacter/CharacterTools/CharacterItemList.is_anything_selected() == false:
-	#		if $EditorCharacter/CharacterTools/CharacterItemList.get_item_count() > 0:
-	#			$EditorCharacter._on_ItemList_item_selected(0)
-	#			$EditorCharacter/CharacterTools/CharacterItemList.select(0)
-
-	#elif tab == 'Theme':
-	#	$ToolBar/ThemeButton.set('self_modulate', Color('#6a9dea'))
-	#	$EditorTheme.visible = true
-	#
-	#elif tab == 'Glossary':
-	#	$ToolBar/GlossaryButton.set('self_modulate', Color('#6a9dea'))
-	#	$EditorGlossary.visible = true
-		
-	current_editor_view = tab
-
-
-# Auto saving
-#func _on_AutoSaver_timeout() -> void:
-	#if current_editor_view == 'Timeline':
-	#	if autosaving_hash != $EditorTimeline.generate_save_data().hash():
-	#		$EditorTimeline.save_timeline(working_dialog_file)
-	#		dprint('[!] Timeline changes detected. Saving: ' + str(autosaving_hash))
-	#if current_editor_view == 'Characters':
-	#	if $EditorCharacter.opened_character_data:
-	#		if DialogicUtil.compare_dicts($EditorCharacter.opened_character_data, $EditorCharacter.generate_character_data_to_save()) == false:
-	#			dprint('[!] Character changes detected. Saving')
-	#			$EditorCharacter.save_current_character()
-#	pass
-	# I'm trying a different approach on the glossary.
 
 
 func _on_Logo_gui_input(event) -> void:

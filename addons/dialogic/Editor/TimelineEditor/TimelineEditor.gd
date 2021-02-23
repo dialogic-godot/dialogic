@@ -3,7 +3,7 @@ extends HSplitContainer
 
 var editor_reference
 var timeline_name
-var working_dialog_file: String = ''
+var working_timeline_file: String = ''
 
 onready var master_tree = get_node('../MasterTree')
 
@@ -105,11 +105,13 @@ func indent_events() -> void:
 
 func load_timeline(path):
 	var start_time = OS.get_ticks_msec()
-	working_dialog_file = path
+	working_timeline_file = path
 	
 	var data = DialogicUtil.load_json(path)
 	if data['metadata'].has('name'):
 		timeline_name = data['metadata']['name']
+	else:
+		timeline_name = data['metadata']['file']
 	data = data['events']
 	for i in data:
 		match i:
@@ -186,7 +188,10 @@ func create_timeline():
 	var timeline_file = 'timeline-' + str(OS.get_unix_time()) + '.json'
 	var timeline = {
 		"events": [],
-		"metadata":{"dialogic-version": editor_reference.version_string}
+		"metadata":{
+			"dialogic-version": editor_reference.version_string,
+			"file": timeline_file
+		}
 	}
 	var directory = Directory.new()
 	if not directory.dir_exists(DialogicUtil.get_path('WORKING_DIR')):
@@ -197,7 +202,13 @@ func create_timeline():
 	file.open(DialogicUtil.get_path('TIMELINE_DIR') + '/' + timeline_file, File.WRITE)
 	file.store_line(to_json(timeline))
 	file.close()
-	return timeline_file
+	return timeline
+
+
+func new_timeline():
+	# This event creates and selects the new timeline
+	master_tree.add_timeline(create_timeline()['metadata'], true)
+	
 
 
 func _on_AddTimelineButton_pressed():
@@ -210,10 +221,15 @@ func _on_AddTimelineButton_pressed():
 
 # Saving
 func generate_save_data():
+	var t_name = timeline_name
+	var f_name = DialogicUtil.get_filename_from_path(working_timeline_file)
+	if t_name == '':
+		timeline_name = f_name
 	var info_to_save = {
 		'metadata': {
 			'dialogic-version': editor_reference.version_string,
-			'name': timeline_name,
+			'name': t_name,
+			'file': f_name
 		},
 		'events': []
 	}
@@ -224,10 +240,10 @@ func generate_save_data():
 
 
 func save_timeline() -> void:
-	if working_dialog_file != '':
+	if working_timeline_file != '':
 		var info_to_save = generate_save_data()
 		var file = File.new()
-		file.open(working_dialog_file, File.WRITE)
+		file.open(working_timeline_file, File.WRITE)
 		file.store_line(to_json(info_to_save))
 		file.close()
 		editor_reference.autosaving_hash = info_to_save.hash()
