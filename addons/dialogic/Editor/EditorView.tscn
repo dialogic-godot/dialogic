@@ -1,6 +1,6 @@
 [gd_scene load_steps=21 format=2]
 
-[ext_resource path="res://addons/dialogic/Editor/editor_view.gd" type="Script" id=1]
+[ext_resource path="res://addons/dialogic/Editor/EditorView.gd" type="Script" id=1]
 [ext_resource path="res://addons/dialogic/Editor/TimelineEditor/TimelineEditor.tscn" type="PackedScene" id=2]
 [ext_resource path="res://addons/dialogic/Images/Toolbar/add-timeline.svg" type="Texture" id=3]
 [ext_resource path="res://addons/dialogic/Images/Toolbar/add-character.svg" type="Texture" id=4]
@@ -51,7 +51,7 @@ __meta__ = {
 
 [node name="ToolBar" type="HBoxContainer" parent="."]
 anchor_right = 1.0
-margin_bottom = 28.0
+margin_bottom = 30.0
 custom_constants/separation = 0
 __meta__ = {
 "_edit_use_anchors_": false
@@ -66,7 +66,7 @@ focus_mode = 0
 icon = ExtResource( 3 )
 flat = true
 
-[node name="CharactersButton" type="ToolButton" parent="ToolBar"]
+[node name="NewCharactersButton" type="ToolButton" parent="ToolBar"]
 self_modulate = Color( 0.870588, 0.870588, 0.870588, 1 )
 margin_left = 34.0
 margin_right = 68.0
@@ -75,7 +75,7 @@ hint_tooltip = "Character Editor"
 focus_mode = 0
 icon = ExtResource( 4 )
 
-[node name="GlossaryButton" type="Button" parent="ToolBar"]
+[node name="NewGlossaryButton" type="Button" parent="ToolBar"]
 self_modulate = Color( 0.870588, 0.870588, 0.870588, 1 )
 margin_left = 68.0
 margin_right = 96.0
@@ -86,7 +86,7 @@ disabled = true
 icon = ExtResource( 13 )
 flat = true
 
-[node name="ThemeButton" type="Button" parent="ToolBar"]
+[node name="NewThemeButton" type="Button" parent="ToolBar"]
 self_modulate = Color( 0.870588, 0.870588, 0.870588, 1 )
 margin_left = 96.0
 margin_right = 130.0
@@ -240,36 +240,6 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="RenameDialog" type="AcceptDialog" parent="."]
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = -250.0
-margin_top = -44.0
-margin_right = 250.0
-margin_bottom = 44.0
-rect_min_size = Vector2( 500, 0 )
-window_title = "Renaming Timeline"
-resizable = true
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="LineEdit" type="LineEdit" parent="RenameDialog"]
-anchor_left = -0.00237569
-anchor_top = -0.00809895
-anchor_right = -0.00237569
-anchor_bottom = -0.00809895
-margin_left = 9.18785
-margin_top = 8.71271
-margin_right = 493.188
-margin_bottom = 52.7127
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
 [connection signal="gui_input" from="ToolBar/Logo" to="." method="_on_Logo_gui_input"]
 [connection signal="id_pressed" from="TimelinePopupMenu" to="." method="_on_TimelinePopupMenu_id_pressed"]
 [connection signal="confirmed" from="RemoveTimelineConfirmation" to="." method="_on_RemoveTimelineConfirmation_confirmed"]
-[connection signal="confirmed" from="RenameDialog" to="." method="_on_RenameDialog_confirmed"]

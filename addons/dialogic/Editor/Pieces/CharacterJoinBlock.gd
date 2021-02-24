@@ -38,7 +38,7 @@ func _on_character_selected(data):
 	event_data['character'] = data['file']
 	portrait_picker.set_character(event_data['character'], event_data['portrait'])
 	portrait_picker.text = 'Default'
-	editor_reference.timeline.save_timeline()
+	editor_reference.timeline_editor.save_timeline()
 
 
 func _on_portrait_selected(index):
@@ -48,7 +48,7 @@ func _on_portrait_selected(index):
 			text = ''
 	event_data['portrait'] = text
 	portrait_picker.set_character(event_data['character'], event_data['portrait'])
-	editor_reference.timeline.save_timeline()
+	editor_reference.timeline_editor.save_timeline()
 
 
 func position_button_pressed(name):
@@ -59,7 +59,7 @@ func position_button_pressed(name):
 	button.set('self_modulate', current_color)
 	button.pressed = true
 	event_data['position'][selected_index] = true
-	editor_reference.timeline.save_timeline()
+	editor_reference.timeline_editor.save_timeline()
 
 
 func clear_all_positions():
@@ -68,7 +68,7 @@ func clear_all_positions():
 	for p in $PanelContainer/VBoxContainer/Header/PositionsContainer.get_children():
 		p.set('self_modulate', default_icon_color)
 		p.pressed = false
-	editor_reference.timeline.save_timeline()
+	editor_reference.timeline_editor.save_timeline()
 
 
 func check_active_position(active_color = Color("#ffffff")):

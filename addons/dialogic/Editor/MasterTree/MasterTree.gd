@@ -126,7 +126,7 @@ func _on_item_selected():
 
 func _on_item_rmb_selected(position):
 	var item = get_selected().get_metadata(0)
-	if item['editor'] == 'EditorTimeline':
+	if item['editor'] == 'Timeline':
 		editor_reference.get_node('TimelinePopupMenu').rect_position = get_viewport().get_mouse_position()
 		editor_reference.get_node('TimelinePopupMenu').popup()
 

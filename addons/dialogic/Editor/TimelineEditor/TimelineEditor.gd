@@ -163,7 +163,7 @@ func load_timeline(path):
 	# and you close it, it won't save all the events. This prevents
 	# it from happening for now, but I might want to revamp
 	# the entire saving system sooner than later.
-	editor_reference.timeline.save_timeline()
+	editor_reference.timeline_editor.save_timeline()
 
 
 func clear_timeline():

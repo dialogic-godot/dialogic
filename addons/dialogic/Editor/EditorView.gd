@@ -10,7 +10,10 @@ var current_editor_view: String = 'Master'
 var working_timeline_file: String = ''
 var autosaving_hash
 var version_string: String 
-onready var timeline = $MainPanel/TimelineEditor
+onready var timeline_editor = $MainPanel/TimelineEditor
+onready var character_editor = $MainPanel/CharacterEditor
+onready var glossary_editor = $MainPanel/GlossaryEditor
+onready var theme_editor = $MainPanel/ThemeEditor
 
 
 func _ready():
@@ -18,18 +21,18 @@ func _ready():
 	editor_file_dialog = EditorFileDialog.new()
 	add_child(editor_file_dialog)
 
-	$ToolBar/NewTimelineButton.connect('pressed', $MainPanel/TimelineEditor, 'new_timeline')
+	# Setting references to this node
 	$MainPanel/MasterTree.editor_reference = self
-	timeline.editor_reference = self
+	timeline_editor.editor_reference = self
+	character_editor.editor_reference = self
+	glossary_editor.editor_reference = self
+	theme_editor.editor_reference = self
 
-	
-	#$EditorTheme.editor_reference = self
-	#$EditorGlossary.editor_reference = self
-
-	# Adding native icons
+	# Toolbar
+	$ToolBar/NewTimelineButton.connect('pressed', $MainPanel/TimelineEditor, 'new_timeline')
+	$ToolBar/NewCharactersButton.connect('pressed', $MainPanel/CharacterEditor, 'new_character')
 	$ToolBar/Docs.icon = get_icon("Instance", "EditorIcons")
-	$ToolBar/Docs.connect('pressed', self, "_docs_button", [])
-	# Toolbar button connections
+	$ToolBar/Docs.connect('pressed', OS, "shell_open", ["https://dialogic.coppolaemilio.com"])
 	#$ToolBar/FoldTools/ButtonFold.connect('pressed', $EditorTimeline, 'fold_all_nodes')
 	#$ToolBar/FoldTools/ButtonUnfold.connect('pressed', $EditorTimeline, 'unfold_all_nodes')
 	
@@ -42,29 +45,13 @@ func _ready():
 
 func _on_TimelinePopupMenu_id_pressed(id):
 	if id == 0: # Rename
-		popup_rename()
+		pass
 	if id == 1: # View files
 		OS.shell_open(ProjectSettings.globalize_path(DialogicUtil.get_path('TIMELINE_DIR')))
 	if id == 2: # Copy to clipboard
 		OS.set_clipboard($MainPanel/TimelineEditor.timeline_name)
 	if id == 3: # Remove
 		$RemoveTimelineConfirmation.popup_centered()
-
-
-func popup_rename():
-	$RenameDialog.register_text_enter($RenameDialog/LineEdit)
-	#$RenameDialog/LineEdit.text = $EditorTimeline.timeline_name
-	$RenameDialog.set_as_minsize()
-	$RenameDialog.popup_centered()
-	$RenameDialog/LineEdit.grab_focus()
-	$RenameDialog/LineEdit.select_all()
-
-
-func _on_RenameDialog_confirmed():
-	#$EditorTimeline.timeline_name = $RenameDialog/LineEdit.text
-	$RenameDialog/LineEdit.text = ''
-	#$EditorTimeline.save_timeline(working_timeline_file)
-	#$EditorTimeline.refresh_timeline_list()
 
 
 func _on_RemoveTimelineConfirmation_confirmed():
@@ -139,7 +126,3 @@ func _on_Logo_gui_input(event) -> void:
 func dprint(what) -> void:
 	if debug_mode:
 		print(what)
-
-
-func _docs_button() -> void:
-	OS.shell_open("https://dialogic.coppolaemilio.com")

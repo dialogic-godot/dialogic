@@ -1,11 +1,6 @@
 tool
 extends ScrollContainer
 
-
-func _ready():
-	pass # Replace with function body.
-
-
 var editor_reference
 var opened_character_data
 var portrait_entry = load("res://addons/dialogic/Editor/CharacterEditor/PortraitEntry.tscn")
@@ -65,7 +60,7 @@ func clear_character_editor():
 
 
 # Character Creation
-func create_character():
+func new_character():
 	var character_file = 'character-' + str(OS.get_unix_time()) + '.json'
 	var character = {
 		'color': '#ffffff',
@@ -86,7 +81,7 @@ func create_character():
 
 
 #func _on_New_Character_Button_pressed():
-#	var file = create_character()
+#	var file = new_character()
 #	refresh_character_list()
 #	for i in range($CharacterTools/CharacterItemList.get_item_count()):
 #		if $CharacterTools/CharacterItemList.get_item_metadata(i)['file'] == file:
