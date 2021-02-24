@@ -10,8 +10,14 @@ func _enter_tree() -> void:
 	_add_custom_editor_view()
 	get_editor_interface().get_editor_viewport().add_child(_editor_view)
 	make_visible(false)
-	DialogicUtil.init_dialogic_files()
-	get_editor_interface().get_resource_filesystem().scan()
+
+
+func _ready():
+	if Engine.editor_hint:
+		# Make sure the core files exist 
+		DialogicUtil.init_dialogic_files()
+		# Force Godot to show the dialogic folder
+		get_editor_interface().get_resource_filesystem().scan()
 
 
 func _exit_tree() -> void:
