@@ -21,23 +21,14 @@ func _ready():
 	$ToolBar/NewTimelineButton.connect('pressed', $MainPanel/TimelineEditor, 'new_timeline')
 	$MainPanel/MasterTree.editor_reference = self
 	timeline.editor_reference = self
+
 	
-	
-	$EditorCharacter.editor_reference = self
-	$EditorCharacter.refresh_character_list()
-	
-	$EditorTheme.editor_reference = self
-	$EditorGlossary.editor_reference = self
+	#$EditorTheme.editor_reference = self
+	#$EditorGlossary.editor_reference = self
 
 	# Adding native icons
-	#$EditorTimeline/EventTools/VBoxContainer2/AddTimelineButton.icon = get_icon("Add", "EditorIcons")
-	$EditorGlossary/VBoxContainer/NewEntryButton.icon = get_icon("Add", "EditorIcons")
-	$EditorGlossary/CenterContainer/VBoxContainer/CenterContainer/NewEntryButton2.icon = get_icon("Add", "EditorIcons")
-	$EditorCharacter/CharacterTools/Button.icon = get_icon("Add", "EditorIcons")
-	
 	$ToolBar/Docs.icon = get_icon("Instance", "EditorIcons")
 	$ToolBar/Docs.connect('pressed', self, "_docs_button", [])
-	
 	# Toolbar button connections
 	#$ToolBar/FoldTools/ButtonFold.connect('pressed', $EditorTimeline, 'fold_all_nodes')
 	#$ToolBar/FoldTools/ButtonUnfold.connect('pressed', $EditorTimeline, 'unfold_all_nodes')

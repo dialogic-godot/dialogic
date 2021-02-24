@@ -1,51 +1,52 @@
 tool
-extends HSplitContainer
+extends ScrollContainer
+
+
+func _ready():
+	pass # Replace with function body.
 
 
 var editor_reference
 var opened_character_data
 var portrait_entry = load("res://addons/dialogic/Editor/CharacterEditor/PortraitEntry.tscn")
 onready var character_editor = {
-	'editor': $CharacterEditor/HBoxContainer/Container,
-	'name': $CharacterEditor/HBoxContainer/Container/Name/LineEdit,
-	'description': $CharacterEditor/HBoxContainer/Container/Description/TextEdit,
-	'file': $CharacterEditor/HBoxContainer/Container/FileName/LineEdit,
-	'color': $CharacterEditor/HBoxContainer/Container/Color/ColorPickerButton,
-	'default_speaker': $CharacterEditor/HBoxContainer/Container/Actions/DefaultSpeaker,
-	'display_name_checkbox': $CharacterEditor/HBoxContainer/Container/Name/CheckBox,
-	'display_name': $CharacterEditor/HBoxContainer/Container/DisplayName/LineEdit,
+	'editor': $HBoxContainer/Container,
+	'name': $HBoxContainer/Container/Name/LineEdit,
+	'description': $HBoxContainer/Container/Description/TextEdit,
+	'file': $HBoxContainer/Container/FileName/LineEdit,
+	'color': $HBoxContainer/Container/Color/ColorPickerButton,
+	'default_speaker': $HBoxContainer/Container/Actions/DefaultSpeaker,
+	'display_name_checkbox': $HBoxContainer/Container/Name/CheckBox,
+	'display_name': $HBoxContainer/Container/DisplayName/LineEdit,
 }
 
 
-func _ready():
-	pass
-
-
 func _on_CheckBox_toggled(button_pressed):
-	$CharacterEditor/HBoxContainer/Container/DisplayName.visible = button_pressed
+	$HBoxContainer/Container/DisplayName.visible = button_pressed
 
 
 func refresh_character_list():
-	var selected_id = 0
-	if $CharacterTools/CharacterItemList.is_anything_selected():
-		selected_id = $CharacterTools/CharacterItemList.get_selected_items()[0]
+	pass
+	#var selected_id = 0
+	#if $CharacterTools/CharacterItemList.is_anything_selected():
+	#	selected_id = $CharacterTools/CharacterItemList.get_selected_items()[0]
 
-	$CharacterTools/CharacterItemList.clear()
-	var icon = load("res://addons/dialogic/Images/character.svg")
-	var index = 0
-	for c in DialogicUtil.get_character_list():
-		$CharacterTools/CharacterItemList.add_item(c['name'], icon)
-		$CharacterTools/CharacterItemList.set_item_metadata(index, {'file': c['file'], 'index': index})
-		$CharacterTools/CharacterItemList.set_item_icon_modulate(index, c['color'])
-		index += 1
+	#$CharacterTools/CharacterItemList.clear()
+	#var icon = load("res://addons/dialogic/Images/character.svg")
+	#var index = 0
+	#for c in DialogicUtil.get_character_list():
+	#	$CharacterTools/CharacterItemList.add_item(c['name'], icon)
+	#	$CharacterTools/CharacterItemList.set_item_metadata(index, {'file': c['file'], 'index': index})
+	#	$CharacterTools/CharacterItemList.set_item_icon_modulate(index, c['color'])
+	#	index += 1
 
 	# If there are no characters, show the welcome screen
-	if index == 0:
-		$NoCharacters.visible = true
-		$CharacterEditor.visible = false
-	else:
-		$NoCharacters.visible = false
-		$CharacterEditor.visible = true
+	#if index == 0:
+	#	$NoCharacters.visible = true
+	#	$CharacterEditor.visible = false
+	#else:
+	#	$NoCharacters.visible = false
+	#	$CharacterEditor.visible = true
 
 
 func clear_character_editor():
@@ -58,9 +59,9 @@ func clear_character_editor():
 	character_editor['display_name'].text = ''
 	character_editor['portraits'] = []
 	# Clearing portraits
-	for p in $CharacterEditor/HBoxContainer/Container/ScrollContainer/VBoxContainer/PortraitList.get_children():
+	for p in $HBoxContainer/Container/ScrollContainer/VBoxContainer/PortraitList.get_children():
 		p.queue_free()
-	$CharacterEditor/HBoxContainer/VBoxContainer/Control/TextureRect.texture = null
+	$HBoxContainer/VBoxContainer/Control/TextureRect.texture = null
 
 
 # Character Creation
@@ -84,13 +85,13 @@ func create_character():
 	return character_file
 
 
-func _on_New_Character_Button_pressed():
-	var file = create_character()
-	refresh_character_list()
-	for i in range($CharacterTools/CharacterItemList.get_item_count()):
-		if $CharacterTools/CharacterItemList.get_item_metadata(i)['file'] == file:
-			$CharacterTools/CharacterItemList.select(i)
-			_on_ItemList_item_selected(i)
+#func _on_New_Character_Button_pressed():
+#	var file = create_character()
+#	refresh_character_list()
+#	for i in range($CharacterTools/CharacterItemList.get_item_count()):
+#		if $CharacterTools/CharacterItemList.get_item_metadata(i)['file'] == file:
+#			$CharacterTools/CharacterItemList.select(i)
+#			_on_ItemList_item_selected(i)
 
 
 # Saving and Loading
@@ -101,7 +102,7 @@ func _on_SaveButton_pressed():
 func generate_character_data_to_save():
 	var default_speaker: bool = character_editor['default_speaker'].pressed
 	var portraits = []
-	for p in $CharacterEditor/HBoxContainer/Container/ScrollContainer/VBoxContainer/PortraitList.get_children():
+	for p in $HBoxContainer/Container/ScrollContainer/VBoxContainer/PortraitList.get_children():
 		var entry = {}
 		entry['name'] = p.get_node("NameEdit").text
 		entry['path'] = p.get_node("PathEdit").text
@@ -134,15 +135,16 @@ func save_current_character():
 		refresh_character_list()
 
 
-func _on_ItemList_item_selected(index):
-	var selected = $CharacterTools/CharacterItemList.get_item_text(index)
-	var file = $CharacterTools/CharacterItemList.get_item_metadata(index)['file']
-	var data = DialogicUtil.load_json(DialogicUtil.get_path('CHAR_DIR', file))
-	$CharacterEditor/HBoxContainer/Container.visible = true
-	load_character(data)
+#func _on_ItemList_item_selected(index):
+#	var selected = $CharacterTools/CharacterItemList.get_item_text(index)
+#	var file = $CharacterTools/CharacterItemList.get_item_metadata(index)['file']
+#	var data = DialogicUtil.load_json(DialogicUtil.get_path('CHAR_DIR', file))
+#	$CharacterEditor/HBoxContainer/Container.visible = true
+#	load_character(data)
 
 
-func load_character(data):
+func load_character(path):
+	var data = DialogicUtil.load_json(path)
 	clear_character_editor()
 	opened_character_data = data
 	character_editor['file'].text = data['id']
@@ -176,14 +178,14 @@ func load_character(data):
 
 
 # Removing character
-func _on_RemoveConfirmation_confirmed():
-	var selected = $CharacterTools/CharacterItemList.get_selected_items()[0]
-	var file = $CharacterTools/CharacterItemList.get_item_metadata(selected)['file']
-	var dir = Directory.new()
-	dir.remove(DialogicUtil.get_path('CHAR_DIR', file))
-	$CharacterEditor/HBoxContainer/Container.visible = false
-	clear_character_editor()
-	refresh_character_list()
+#func _on_RemoveConfirmation_confirmed():
+#	var selected = $CharacterTools/CharacterItemList.get_selected_items()[0]
+#	var file = $CharacterTools/CharacterItemList.get_item_metadata(selected)['file']
+#	var dir = Directory.new()
+#	dir.remove(DialogicUtil.get_path('CHAR_DIR', file))
+#	$CharacterEditor/HBoxContainer/Container.visible = false
+#	clear_character_editor()
+#	refresh_character_list()
 
 
 # Portraits
@@ -194,8 +196,8 @@ func _on_New_Portrait_Button_pressed():
 func create_portrait_entry(p_name = '', path = '', grab_focus = false):
 	var p = portrait_entry.instance()
 	p.editor_reference = editor_reference
-	p.image_node = $CharacterEditor/HBoxContainer/VBoxContainer/Control/TextureRect
-	var p_list = $CharacterEditor/HBoxContainer/Container/ScrollContainer/VBoxContainer/PortraitList
+	p.image_node = $HBoxContainer/VBoxContainer/Control/TextureRect
+	var p_list = $HBoxContainer/Container/ScrollContainer/VBoxContainer/PortraitList
 	p_list.add_child(p)
 	if p_name != '':
 		p.get_node("NameEdit").text = p_name
@@ -207,13 +209,13 @@ func create_portrait_entry(p_name = '', path = '', grab_focus = false):
 	return p
 
 
-func _on_CharacterItemList_item_rmb_selected(index, at_position):
-	editor_reference.get_node("CharacterPopupMenu").rect_position = get_viewport().get_mouse_position()
-	editor_reference.get_node("CharacterPopupMenu").popup()
+#func _on_CharacterItemList_item_rmb_selected(index, at_position):
+#	editor_reference.get_node("CharacterPopupMenu").rect_position = get_viewport().get_mouse_position()
+#	editor_reference.get_node("CharacterPopupMenu").popup()
 
 
-func _on_CharacterPopupMenu_id_pressed(id):
-	if id == 0:
-		OS.shell_open(ProjectSettings.globalize_path(DialogicUtil.get_path('CHAR_DIR')))
-	if id == 1:
-		editor_reference.get_node("RemoveCharacterConfirmation").popup_centered()
+#func _on_CharacterPopupMenu_id_pressed(id):
+#	if id == 0:
+#		OS.shell_open(ProjectSettings.globalize_path(DialogicUtil.get_path('CHAR_DIR')))
+#	if id == 1:
+#		editor_reference.get_node("RemoveCharacterConfirmation").popup_centered()

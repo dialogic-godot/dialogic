@@ -104,6 +104,7 @@ func indent_events() -> void:
 
 
 func load_timeline(path):
+	clear_timeline()
 	var start_time = OS.get_ticks_msec()
 	working_timeline_file = path
 	

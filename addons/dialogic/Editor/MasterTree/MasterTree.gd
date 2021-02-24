@@ -3,12 +3,17 @@ extends Tree
 
 var editor_reference
 onready var timeline_editor = get_node('../TimelineEditor')
+onready var character_editor = get_node('../CharacterEditor')
+onready var glossary_editor = get_node('../GlossaryEditor')
+onready var theme_editor = get_node('../ThemeEditor')
+
 onready var tree = self
 var timeline_icon = load("res://addons/dialogic/Images/timeline.svg")
 var character_icon = load("res://addons/dialogic/Images/character.svg")
 var timelines_tree
 var characters_tree
 var glossary_tree
+var themes_tree
 
 func _ready():
 	allow_rmb_select = true
@@ -17,15 +22,22 @@ func _ready():
 	
 	# Creating the parents
 	timelines_tree = tree.create_item(root)
+	timelines_tree.set_selectable(0, false)
 	timelines_tree.set_text(0, "Timelines")
-	timelines_tree.set_metadata(0, {'editor': 'tree'})
-	characters_tree = tree.create_item(root)
-	characters_tree.set_text(0, "Characters")
-	characters_tree.set_metadata(0, {'editor': 'tree'})
-	glossary_tree = tree.create_item(root)
-	glossary_tree.set_text(0, "Glossary")
-	glossary_tree.set_metadata(0, {'editor': 'glossary'})
+
 	
+	characters_tree = tree.create_item(root)
+	characters_tree.set_selectable(0, false)
+	characters_tree.set_text(0, "Characters")
+
+	glossary_tree = tree.create_item(root)
+	glossary_tree.set_selectable(0, false)
+	glossary_tree.set_text(0, "Glossary")
+
+	themes_tree = tree.create_item(root)
+	themes_tree.set_selectable(0, false)
+	themes_tree.set_text(0, "Themes")
+
 	
 	connect('item_selected', self, '_on_item_selected')
 	connect('item_rmb_selected', self, '_on_item_rmb_selected')
@@ -55,7 +67,7 @@ func add_timeline(timeline, select = false):
 		item.set_text(0, timeline['name'])
 	else:
 		item.set_text(0, timeline['file'])
-	timeline['editor'] = 'EditorTimeline'
+	timeline['editor'] = 'Timeline'
 	item.set_metadata(0, timeline)
 	#item.set_editable(0, true)
 	if select: # Auto selecting
@@ -66,7 +78,7 @@ func add_character(character, select = false):
 	var item = tree.create_item(characters_tree)
 	item.set_icon(0, character_icon)
 	item.set_text(0, character['name'])
-	character['editor'] = 'EditorCharacter'
+	character['editor'] = 'Character'
 	item.set_metadata(0, character)
 	#item.set_editable(0, true)
 	item.set_icon_modulate(0, character['color'])
@@ -84,8 +96,11 @@ func add_glossary(glossary, select = false):
 	if glossary['type'] == DialogicUtil.GLOSSARY_NUMBER:
 		item.set_icon(0, get_icon("int", "EditorIcons"))
 	#item.set_icon(0, character_icon)
-	item.set_text(0, glossary['name'])
-	glossary['editor'] = 'EditorGlossary'
+	if glossary['type'] == DialogicUtil.GLOSSARY_STRING:
+		item.set_text(0, glossary['name'] + ' = ' + glossary['string'])
+	else:
+		item.set_text(0, glossary['name'])
+	glossary['editor'] = 'Glossary'
 	item.set_metadata(0, glossary)
 
 	#item.set_icon_modulate(0, character['color'])
@@ -95,11 +110,19 @@ func add_glossary(glossary, select = false):
 
 func _on_item_selected():
 	var item = get_selected().get_metadata(0)
-	if item['editor'] == 'EditorTimeline':
+	character_editor.visible = false
+	timeline_editor.visible = false
+	glossary_editor.visible = false
+	theme_editor.visible = false
+	if item['editor'] == 'Timeline':
+		timeline_editor.visible = true
 		timeline_editor.save_timeline()
-		timeline_editor.clear_timeline()
 		timeline_editor.load_timeline(DialogicUtil.get_path('TIMELINE_DIR', item['file']))
-
+	if item['editor'] == 'Character':
+		character_editor.visible = true
+		character_editor.load_character(DialogicUtil.get_path('CHAR_DIR', item['file']))
+	if item['editor'] == 'Glossary':
+		glossary_editor.visible = true
 
 func _on_item_rmb_selected(position):
 	var item = get_selected().get_metadata(0)
