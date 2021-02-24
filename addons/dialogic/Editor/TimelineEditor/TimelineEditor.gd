@@ -147,7 +147,6 @@ func load_timeline(path):
 			{'set_value', 'glossary'}:
 				create_event("SetValue", i)
 
-	#editor_reference.autosaving_hash = generate_save_data().hash()
 	if data.size() < 1:
 		events_warning.visible = true
 	else:
@@ -238,7 +237,6 @@ func save_timeline() -> void:
 		file.open(working_timeline_file, File.WRITE)
 		file.store_line(to_json(info_to_save))
 		file.close()
-		editor_reference.autosaving_hash = info_to_save.hash()
 
 
 # Utilities

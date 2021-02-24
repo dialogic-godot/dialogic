@@ -77,12 +77,17 @@ func add_timeline(timeline, select = false):
 func add_character(character, select = false):
 	var item = tree.create_item(characters_tree)
 	item.set_icon(0, character_icon)
-	item.set_text(0, character['name'])
+	if character.has('name'):
+		item.set_text(0, character['name'])
+	else:
+		item.set_text(0, character['file'])
 	character['editor'] = 'Character'
 	item.set_metadata(0, character)
 	#item.set_editable(0, true)
-	item.set_icon_modulate(0, character['color'])
-	if select: # Auto selecting
+	if character.has('color'):
+		item.set_icon_modulate(0, character['color'])
+	# Auto selecting
+	if select: 
 		item.select(0)
 
 
@@ -123,6 +128,7 @@ func _on_item_selected():
 		character_editor.load_character(DialogicUtil.get_path('CHAR_DIR', item['file']))
 	if item['editor'] == 'Glossary':
 		glossary_editor.visible = true
+
 
 func _on_item_rmb_selected(position):
 	var item = get_selected().get_metadata(0)

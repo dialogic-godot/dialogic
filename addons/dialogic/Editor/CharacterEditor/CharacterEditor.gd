@@ -2,6 +2,7 @@ tool
 extends ScrollContainer
 
 var editor_reference
+onready var master_tree = get_node('../MasterTree')
 var opened_character_data
 var portrait_entry = load("res://addons/dialogic/Editor/CharacterEditor/PortraitEntry.tscn")
 onready var character_editor = {
@@ -60,7 +61,7 @@ func clear_character_editor():
 
 
 # Character Creation
-func new_character():
+func create_character():
 	var character_file = 'character-' + str(OS.get_unix_time()) + '.json'
 	var character = {
 		'color': '#ffffff',
@@ -77,16 +78,14 @@ func new_character():
 	file.open(DialogicUtil.get_path('CHAR_DIR', character_file), File.WRITE)
 	file.store_line(to_json(character))
 	file.close()
-	return character_file
+	character['metadata'] = {'file': character_file}
+	return character
 
 
-#func _on_New_Character_Button_pressed():
-#	var file = new_character()
-#	refresh_character_list()
-#	for i in range($CharacterTools/CharacterItemList.get_item_count()):
-#		if $CharacterTools/CharacterItemList.get_item_metadata(i)['file'] == file:
-#			$CharacterTools/CharacterItemList.select(i)
-#			_on_ItemList_item_selected(i)
+
+func new_character():
+	# This event creates and selects the new timeline
+	master_tree.add_character(create_character()['metadata'], true)
 
 
 # Saving and Loading

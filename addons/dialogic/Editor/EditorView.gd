@@ -2,13 +2,11 @@ tool
 extends Control
 
 var plugin_reference
-var undo_redo: UndoRedo
 var debug_mode: bool = true # For printing info
 var editor_file_dialog # EditorFileDialog
 var file_picker_data: Dictionary = {'method': '', 'node': self}
 var current_editor_view: String = 'Master'
 var working_timeline_file: String = ''
-var autosaving_hash
 var version_string: String 
 onready var timeline_editor = $MainPanel/TimelineEditor
 onready var character_editor = $MainPanel/CharacterEditor
@@ -61,28 +59,6 @@ func _on_RemoveTimelineConfirmation_confirmed():
 	$MainPanel/MasterTree.remove_selected()
 
 
-# Character Creations
-func get_character_color(file):
-	var data = DialogicUtil.load_json(DialogicUtil.get_path('CHAR_DIR', file))
-	if is_instance_valid(data):
-		if data.has('color'):
-			return data['color']
-	else:
-		return "ffffff"
-
-
-func get_character_name(file):
-	var data = DialogicUtil.get_path('CHAR_DIR', file)
-	if data.has('name'):
-		return data['name']
-
-
-func get_character_portraits(file):
-	var data = DialogicUtil.get_path('CHAR_DIR', file)
-	if data.has('portraits'):
-		return data['portraits']
-
-
 # Godot dialog
 func godot_dialog(filter):
 	editor_file_dialog.mode = EditorFileDialog.MODE_OPEN_FILE
@@ -112,9 +88,6 @@ func godot_dialog_connect(who, method_name):
 
 func _on_file_selected(path):
 	dprint(path)
-
-
-# Toolbar
 
 
 func _on_Logo_gui_input(event) -> void:
