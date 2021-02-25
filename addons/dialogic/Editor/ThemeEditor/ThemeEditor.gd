@@ -87,8 +87,11 @@ func _ready():
 	n['glossary_color'].color = Color(settings['glossary_color'])
 	n['glossary_font'].text = DialogicUtil.get_filename_from_path(settings['glossary_font'])
 
-	#Refreshing the dialog 
-	_on_PreviewButton_pressed()
+	# Signal connection to free up some memory (and i don't want to use the editor)
+	connect("visibility_changed", self, "_on_visibility_changed")
+	# Force preview update
+	_on_visibility_changed()
+
 
 func _on_BackgroundTextureButton_pressed():
 	editor_reference.godot_dialog("*.png")
@@ -242,3 +245,14 @@ func _on_GlossaryFontButton_pressed():
 func _on_Glossary_Font_selected(path, target):
 	DialogicUtil.update_setting('glossary_font', path)
 	n['glossary_font'].text = DialogicUtil.get_filename_from_path(path)
+
+
+func _on_visibility_changed():
+	if visible:
+		# Refreshing the dialog 
+		_on_PreviewButton_pressed()
+	else:
+		# Erasing all previews since them keeps working
+		# on background
+		for i in n['preview_panel'].get_children():
+			i.queue_free()
