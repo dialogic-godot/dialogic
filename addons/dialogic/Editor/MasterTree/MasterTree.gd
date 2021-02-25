@@ -136,6 +136,9 @@ func _on_item_rmb_selected(position):
 		editor_reference.get_node('TimelinePopupMenu').rect_position = get_viewport().get_mouse_position()
 		editor_reference.get_node('TimelinePopupMenu').popup()
 
+	if item['editor'] == 'Character':
+		editor_reference.get_node("CharacterPopupMenu").rect_position = get_viewport().get_mouse_position()
+		editor_reference.get_node("CharacterPopupMenu").popup()
 
 func remove_selected():
 	var item = get_selected()

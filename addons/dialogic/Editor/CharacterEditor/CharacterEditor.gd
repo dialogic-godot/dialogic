@@ -201,15 +201,3 @@ func create_portrait_entry(p_name = '', path = '', grab_focus = false):
 		p.get_node("NameEdit").grab_focus()
 		p._on_ButtonSelect_pressed()
 	return p
-
-
-#func _on_CharacterItemList_item_rmb_selected(index, at_position):
-#	editor_reference.get_node("CharacterPopupMenu").rect_position = get_viewport().get_mouse_position()
-#	editor_reference.get_node("CharacterPopupMenu").popup()
-
-
-#func _on_CharacterPopupMenu_id_pressed(id):
-#	if id == 0:
-#		OS.shell_open(ProjectSettings.globalize_path(DialogicUtil.get_path('CHAR_DIR')))
-#	if id == 1:
-#		editor_reference.get_node("RemoveCharacterConfirmation").popup_centered()

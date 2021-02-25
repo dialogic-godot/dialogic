@@ -52,6 +52,14 @@ func _on_TimelinePopupMenu_id_pressed(id):
 		$RemoveTimelineConfirmation.popup_centered()
 
 
+func _on_CharacterPopupMenu_id_pressed(id):
+	if id == 0:
+		OS.shell_open(ProjectSettings.globalize_path(DialogicUtil.get_path('CHAR_DIR')))
+	if id == 1:
+		get_node("RemoveCharacterConfirmation").popup_centered()
+
+
+
 func _on_RemoveTimelineConfirmation_confirmed():
 	var dir = Directory.new()
 	var target = $MainPanel/TimelineEditor.working_timeline_file
