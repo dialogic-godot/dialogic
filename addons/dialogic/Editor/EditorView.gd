@@ -41,6 +41,7 @@ func _ready():
 		version_string = config.get_value("plugin", "version", "?")
 
 
+# Timeline context menu
 func _on_TimelinePopupMenu_id_pressed(id):
 	if id == 0: # Rename
 		pass
@@ -52,6 +53,14 @@ func _on_TimelinePopupMenu_id_pressed(id):
 		$RemoveTimelineConfirmation.popup_centered()
 
 
+func _on_RemoveTimelineConfirmation_confirmed():
+	var dir = Directory.new()
+	var target = $MainPanel/TimelineEditor.working_timeline_file
+	dir.remove(target)
+	$MainPanel/MasterTree.remove_selected()
+
+
+# Character context menu
 func _on_CharacterPopupMenu_id_pressed(id):
 	if id == 0:
 		OS.shell_open(ProjectSettings.globalize_path(DialogicUtil.get_path('CHAR_DIR')))
@@ -59,10 +68,10 @@ func _on_CharacterPopupMenu_id_pressed(id):
 		get_node("RemoveCharacterConfirmation").popup_centered()
 
 
-
-func _on_RemoveTimelineConfirmation_confirmed():
+func _on_RemoveCharacterConfirmation_confirmed():
 	var dir = Directory.new()
-	var target = $MainPanel/TimelineEditor.working_timeline_file
+	print($MainPanel/CharacterEditor.opened_character_data)
+	var target = DialogicUtil.get_path('CHAR_DIR', $MainPanel/CharacterEditor.opened_character_data['id']) 
 	dir.remove(target)
 	$MainPanel/MasterTree.remove_selected()
 
