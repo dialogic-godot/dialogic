@@ -167,6 +167,7 @@ rect_min_size = Vector2( 180, 0 )
 size_flags_vertical = 3
 
 [node name="TimelineEditor" parent="MainPanel" instance=ExtResource( 2 )]
+visible = false
 
 [node name="CharacterEditor" parent="MainPanel" instance=ExtResource( 7 )]
 visible = false
@@ -177,6 +178,22 @@ visible = false
 
 [node name="ThemeEditor" parent="MainPanel" instance=ExtResource( 8 )]
 visible = false
+
+[node name="Empty" type="CenterContainer" parent="MainPanel"]
+margin_left = 192.0
+margin_right = 1253.0
+margin_bottom = 661.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MainPanel/Empty"]
+margin_left = 390.0
+margin_top = 323.0
+margin_right = 670.0
+margin_bottom = 337.0
+
+[node name="Label" type="Label" parent="MainPanel/Empty/VBoxContainer"]
+margin_right = 280.0
+margin_bottom = 14.0
+text = "Select or create an element to start working"
 
 [node name="TimelinePopupMenu" type="PopupMenu" parent="."]
 margin_left = 151.0

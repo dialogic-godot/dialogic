@@ -56,6 +56,7 @@ func _on_RemoveTimelineConfirmation_confirmed():
 	var target = $MainPanel/TimelineEditor.working_timeline_file
 	dir.remove(target)
 	$MainPanel/MasterTree.remove_selected()
+	$MainPanel/MasterTree.hide_all_editors(true)
 
 
 # Character context menu

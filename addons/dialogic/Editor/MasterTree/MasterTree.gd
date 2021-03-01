@@ -6,6 +6,7 @@ onready var timeline_editor = get_node('../TimelineEditor')
 onready var character_editor = get_node('../CharacterEditor')
 onready var glossary_editor = get_node('../GlossaryEditor')
 onready var theme_editor = get_node('../ThemeEditor')
+onready var empty_editor = get_node('../Empty')
 
 onready var tree = self
 var timeline_icon = load("res://addons/dialogic/Images/timeline.svg")
@@ -119,10 +120,7 @@ func add_glossary(glossary, select = false):
 
 func _on_item_selected():
 	var item = get_selected().get_metadata(0)
-	character_editor.visible = false
-	timeline_editor.visible = false
-	glossary_editor.visible = false
-	theme_editor.visible = false
+	hide_all_editors()
 	if item['editor'] == 'Timeline':
 		timeline_editor.visible = true
 		timeline_editor.save_timeline()
@@ -132,6 +130,16 @@ func _on_item_selected():
 		character_editor.load_character(DialogicUtil.get_path('CHAR_DIR', item['file']))
 	if item['editor'] == 'Glossary':
 		glossary_editor.visible = true
+
+
+func hide_all_editors(show_empty = false):
+	character_editor.visible = false
+	timeline_editor.visible = false
+	glossary_editor.visible = false
+	theme_editor.visible = false
+	empty_editor.visible = false
+	if show_empty:
+		empty_editor.visible = true
 
 
 func _on_item_rmb_selected(position):
