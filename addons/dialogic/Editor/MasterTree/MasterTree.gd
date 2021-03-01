@@ -41,6 +41,9 @@ func _ready():
 	
 	connect('item_selected', self, '_on_item_selected')
 	connect('item_rmb_selected', self, '_on_item_rmb_selected')
+	connect('gui_input', self, '_on_gui_input')
+	connect('item_edited', self, '_on_item_edited')
+	$RenamerReset.connect("timeout", self, '_on_renamer_reset_timeout')
 	
 	#var subchild1 = tree.create_item(timelines_tree)
 	#subchild1.set_text(0, "Subchild1")
@@ -58,6 +61,7 @@ func _ready():
 		add_glossary(glossary[c])
 	# Glossary
 	# TODO
+	
 
 
 func add_timeline(timeline, select = false):
@@ -148,3 +152,29 @@ func remove_selected():
 
 func refresh_timeline_list():
 	print('update timeline list')
+
+
+func _on_renamer_reset_timeout():
+	get_selected().set_editable(0, false)
+
+
+func _on_gui_input(event):
+	if event is InputEventMouseButton and event.button_index == 1:
+		if event.is_pressed() and event.doubleclick:
+			double_click_action()
+
+
+func double_click_action():
+	print("double clicked !")
+	var item = get_selected()
+	var metadata = item.get_metadata(0)
+	item.set_editable(0, true)
+	$RenamerReset.start(0.5)
+
+
+func _on_item_edited():
+	var item = get_selected()
+	var metadata = item.get_metadata(0)
+	if metadata['editor'] == 'Timeline':
+		timeline_editor.timeline_name = item.get_text(0)
+		timeline_editor.save_timeline()

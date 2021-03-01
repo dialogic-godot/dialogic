@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=2]
+[gd_scene load_steps=20 format=2]
 
 [ext_resource path="res://addons/dialogic/Editor/EditorView.gd" type="Script" id=1]
 [ext_resource path="res://addons/dialogic/Editor/TimelineEditor/TimelineEditor.tscn" type="PackedScene" id=2]
@@ -15,7 +15,6 @@
 [ext_resource path="res://addons/dialogic/Images/ListSelect.svg" type="Texture" id=13]
 [ext_resource path="res://addons/dialogic/Images/logo.png" type="Texture" id=14]
 [ext_resource path="res://addons/dialogic/Images/Remove.svg" type="Texture" id=22]
-[ext_resource path="res://addons/dialogic/Images/Rename.svg" type="Texture" id=25]
 [ext_resource path="res://addons/dialogic/Images/Filesystem.svg" type="Texture" id=26]
 [ext_resource path="res://addons/dialogic/Editor/MasterTree/MasterTree.tscn" type="PackedScene" id=35]
 
@@ -166,7 +165,6 @@ margin_right = 180.0
 margin_bottom = 661.0
 rect_min_size = Vector2( 180, 0 )
 size_flags_vertical = 3
-allow_rmb_select = true
 
 [node name="TimelineEditor" parent="MainPanel" instance=ExtResource( 2 )]
 
@@ -185,7 +183,7 @@ margin_left = 151.0
 margin_top = 276.0
 margin_right = 325.0
 margin_bottom = 332.0
-items = [ "Rename", ExtResource( 25 ), 0, false, false, 0, 0, null, "", false, "Show in File Manager", ExtResource( 26 ), 0, false, false, 1, 0, null, "", false, "Copy Timeline Name", ExtResource( 11 ), 0, false, false, 2, 0, null, "", false, "Remove", ExtResource( 22 ), 0, false, false, 3, 0, null, "", false ]
+items = [ "Show in File Manager", ExtResource( 26 ), 0, false, false, 0, 0, null, "", false, "Copy Timeline Name", ExtResource( 11 ), 0, false, false, 1, 0, null, "", false, "Remove", ExtResource( 22 ), 0, false, false, 2, 0, null, "", false ]
 __meta__ = {
 "_edit_use_anchors_": false
 }

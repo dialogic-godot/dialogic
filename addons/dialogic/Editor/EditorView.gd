@@ -43,13 +43,11 @@ func _ready():
 
 # Timeline context menu
 func _on_TimelinePopupMenu_id_pressed(id):
-	if id == 0: # Rename
-		pass
-	if id == 1: # View files
+	if id == 0: # View files
 		OS.shell_open(ProjectSettings.globalize_path(DialogicUtil.get_path('TIMELINE_DIR')))
-	if id == 2: # Copy to clipboard
+	if id == 1: # Copy to clipboard
 		OS.set_clipboard($MainPanel/TimelineEditor.timeline_name)
-	if id == 3: # Remove
+	if id == 2: # Remove
 		$RemoveTimelineConfirmation.popup_centered()
 
 
