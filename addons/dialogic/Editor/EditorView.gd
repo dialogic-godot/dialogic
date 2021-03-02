@@ -6,7 +6,6 @@ var debug_mode: bool = true # For printing info
 var editor_file_dialog # EditorFileDialog
 var file_picker_data: Dictionary = {'method': '', 'node': self}
 var current_editor_view: String = 'Master'
-var working_timeline_file: String = ''
 var version_string: String 
 onready var timeline_editor = $MainPanel/TimelineEditor
 onready var character_editor = $MainPanel/CharacterEditor
@@ -54,6 +53,7 @@ func _on_TimelinePopupMenu_id_pressed(id):
 func _on_RemoveTimelineConfirmation_confirmed():
 	var dir = Directory.new()
 	var target = $MainPanel/TimelineEditor.working_timeline_file
+	print('target: ', target)
 	dir.remove(target)
 	$MainPanel/MasterTree.remove_selected()
 	$MainPanel/MasterTree.hide_all_editors(true)

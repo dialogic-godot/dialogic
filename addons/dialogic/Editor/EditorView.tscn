@@ -1,11 +1,10 @@
-[gd_scene load_steps=20 format=2]
+[gd_scene load_steps=19 format=2]
 
 [ext_resource path="res://addons/dialogic/Editor/EditorView.gd" type="Script" id=1]
 [ext_resource path="res://addons/dialogic/Editor/TimelineEditor/TimelineEditor.tscn" type="PackedScene" id=2]
 [ext_resource path="res://addons/dialogic/Images/Toolbar/add-timeline.svg" type="Texture" id=3]
 [ext_resource path="res://addons/dialogic/Images/Toolbar/add-character.svg" type="Texture" id=4]
 [ext_resource path="res://addons/dialogic/Images/Toolbar/add-theme.svg" type="Texture" id=5]
-[ext_resource path="res://addons/dialogic/Editor/CharacterEditor/CharacterEditor.gd" type="Script" id=6]
 [ext_resource path="res://addons/dialogic/Editor/CharacterEditor/CharacterEditor.tscn" type="PackedScene" id=7]
 [ext_resource path="res://addons/dialogic/Editor/ThemeEditor/ThemeEditor.tscn" type="PackedScene" id=8]
 [ext_resource path="res://addons/dialogic/Images/open-icon.svg" type="Texture" id=9]
@@ -171,7 +170,6 @@ visible = false
 
 [node name="CharacterEditor" parent="MainPanel" instance=ExtResource( 7 )]
 visible = false
-script = ExtResource( 6 )
 
 [node name="GlossaryEditor" parent="MainPanel" instance=ExtResource( 12 )]
 visible = false

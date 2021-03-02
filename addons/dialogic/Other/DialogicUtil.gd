@@ -30,7 +30,13 @@ static func load_json(path: String) -> Dictionary:
 	var data_parse:JSONParseResult = JSON.parse(data_text)
 	if data_parse.error != OK:
 		return {'error':'data parse error'}
-	return data_parse.result
+
+	var final_data = data_parse.result
+	if typeof(final_data) == TYPE_DICTIONARY:
+		return final_data
+	
+	# If everything else fails
+	return {'error':'data parse error'}
 
 
 static func load_settings() -> Dictionary:
@@ -154,12 +160,13 @@ static func get_timeline_list() -> Array:
 	for file in listdir(get_path('TIMELINE_DIR')):
 		if '.json' in file:
 			var data = load_json(get_path('TIMELINE_DIR', file))
-			var metadata = data['metadata']
-			var color = Color("#ffffff")
-			if metadata.has('name'):
-				timelines.append({'name':metadata['name'], 'color': color, 'file': file })
-			else:
-				timelines.append({'name':file.split('.')[0], 'color': color, 'file': file })
+			if data.has('error') == false:
+				var metadata = data['metadata']
+				var color = Color("#ffffff")
+				if metadata.has('name'):
+					timelines.append({'name':metadata['name'], 'color': color, 'file': file })
+				else:
+					timelines.append({'name':file.split('.')[0], 'color': color, 'file': file })
 	return timelines
 
 

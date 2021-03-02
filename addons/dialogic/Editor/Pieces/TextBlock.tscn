@@ -111,7 +111,7 @@ items = [ "Move Up", null, 0, false, false, 0, 0, null, "", false, "Move Down", 
 margin_top = 34.0
 margin_right = 1268.0
 margin_bottom = 114.0
-rect_min_size = Vector2( 0, 52 )
+rect_min_size = Vector2( 0, 80 )
 size_flags_horizontal = 3
 size_flags_vertical = 3
 show_line_numbers = true
@@ -119,8 +119,5 @@ smooth_scrolling = true
 wrap_enabled = true
 
 [node name="DragController" parent="." instance=ExtResource( 5 )]
-
-[node name="SaverTimer" type="Timer" parent="."]
-one_shot = true
 
 [connection signal="text_changed" from="PanelContainer/VBoxContainer/TextEdit" to="." method="_on_TextEdit_text_changed"]

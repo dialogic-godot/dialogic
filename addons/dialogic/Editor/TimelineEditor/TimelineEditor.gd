@@ -5,10 +5,10 @@ var editor_reference
 var timeline_name
 var working_timeline_file: String = ''
 
-onready var master_tree = get_node('../MasterTree')
+var current_timeline: Dictionary = {}
 
+onready var master_tree = get_node('../MasterTree')
 onready var timeline = $TimelineArea/TimeLine
-#onready var dialog_list = $EventTools/VBoxContainer2/DialogItemList
 onready var events_warning = $ScrollContainer/EventContainer/EventsWarning
 
 func _ready():
@@ -27,7 +27,6 @@ func _ready():
 func _create_event_button_pressed(button_name):
 	create_event(button_name)
 	indent_events()
-	save_timeline()
 
 
 func _on_ButtonQuestion_pressed() -> void:
@@ -35,13 +34,11 @@ func _on_ButtonQuestion_pressed() -> void:
 	create_event("Choice", {'no-data': true}, true)
 	create_event("Choice", {'no-data': true}, true)
 	create_event("EndBranch", {'no-data': true}, true)
-	save_timeline()
 
 
 func _on_ButtonCondition_pressed() -> void:
 	create_event("IfCondition", {'no-data': true}, true)
 	create_event("EndBranch", {'no-data': true}, true)
-	save_timeline()
 
 
 # Adding an event to the timeline
@@ -104,6 +101,8 @@ func indent_events() -> void:
 
 
 func load_timeline(path):
+	print('---------------------------')
+	print('Loading: ',path)
 	clear_timeline()
 	var start_time = OS.get_system_time_msecs()
 	working_timeline_file = path
@@ -156,13 +155,6 @@ func load_timeline(path):
 	
 	var elapsed_time = (OS.get_system_time_msecs() - start_time) * 0.001
 	editor_reference.dprint("Loading time: " + str(elapsed_time))
-	
-	# Preventing a bug here....
-	# I'm not sure why, but some times when you load a timeline
-	# and you close it, it won't save all the events. This prevents
-	# it from happening for now, but I might want to revamp
-	# the entire saving system sooner than later.
-	editor_reference.timeline_editor.save_timeline()
 
 
 func clear_timeline():
@@ -237,6 +229,7 @@ func save_timeline() -> void:
 		file.open(working_timeline_file, File.WRITE)
 		file.store_line(to_json(info_to_save))
 		file.close()
+		print('[+] Saving: ' , working_timeline_file)
 
 
 # Utilities

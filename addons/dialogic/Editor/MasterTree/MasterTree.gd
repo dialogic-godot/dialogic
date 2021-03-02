@@ -124,7 +124,6 @@ func _on_item_selected():
 	hide_all_editors()
 	if item['editor'] == 'Timeline':
 		timeline_editor.visible = true
-		timeline_editor.save_timeline()
 		timeline_editor.load_timeline(DialogicUtil.get_path('TIMELINE_DIR', item['file']))
 	if item['editor'] == 'Character':
 		character_editor.visible = true
@@ -170,15 +169,10 @@ func _on_renamer_reset_timeout():
 func _on_gui_input(event):
 	if event is InputEventMouseButton and event.button_index == 1:
 		if event.is_pressed() and event.doubleclick:
-			double_click_action()
-
-
-func double_click_action():
-	print("double clicked !")
-	var item = get_selected()
-	var metadata = item.get_metadata(0)
-	item.set_editable(0, true)
-	$RenamerReset.start(0.5)
+			var item = get_selected()
+			var metadata = item.get_metadata(0)
+			item.set_editable(0, true)
+			$RenamerReset.start(0.5)
 
 
 func _on_item_edited():
@@ -186,4 +180,3 @@ func _on_item_edited():
 	var metadata = item.get_metadata(0)
 	if metadata['editor'] == 'Timeline':
 		timeline_editor.timeline_name = item.get_text(0)
-		timeline_editor.save_timeline()
