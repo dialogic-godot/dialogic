@@ -14,10 +14,16 @@ onready var character_editor = {
 	'default_speaker': $HBoxContainer/Container/Actions/DefaultSpeaker,
 	'display_name_checkbox': $HBoxContainer/Container/Name/CheckBox,
 	'display_name': $HBoxContainer/Container/DisplayName/LineEdit,
+	'new_portrait_button': $HBoxContainer/Container/ScrollContainer/VBoxContainer/HBoxContainer/Button,
 }
 
 
-func _on_CheckBox_toggled(button_pressed):
+func _ready():
+	character_editor['new_portrait_button'].connect('pressed', self, '_on_New_Portrait_Button_pressed')
+	character_editor['display_name_checkbox'].connect('toggled', self, '_on_display_name_toggled')
+
+
+func _on_display_name_toggled(button_pressed):
 	$HBoxContainer/Container/DisplayName.visible = button_pressed
 
 

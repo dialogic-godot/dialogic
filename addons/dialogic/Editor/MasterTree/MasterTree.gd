@@ -125,7 +125,10 @@ func add_glossary(glossary, select = false):
 
 
 func _on_item_selected():
-	# Selecting and opening the proper editor
+	# TODO: Ideally I would perform a "save" here before opening the next
+	#       resource. Unfortunately there has been so many bugs doing that 
+	#       that I'll revisit it in the future. 
+	#       save_current_resource()
 	var item = get_selected()
 	var metadata = item.get_metadata(0)
 	hide_all_editors()
@@ -190,7 +193,6 @@ func _on_item_edited():
 
 
 func _on_autosave_timeout():
-	#print('Autosaving')
 	save_current_resource()
 
 
