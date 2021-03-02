@@ -63,7 +63,12 @@ func _ready():
 	# Glossary
 	# TODO
 	
-	hide_all_editors(true) # Default empty screen.
+	# Default empty screen.
+	hide_all_editors(true) 
+	
+	# AutoSave timer
+	$AutoSave.connect("timeout", self, '_on_autosave_timeout')
+	$AutoSave.start(1)
 
 
 func add_timeline(timeline, select = false):
@@ -120,15 +125,17 @@ func add_glossary(glossary, select = false):
 
 
 func _on_item_selected():
-	var item = get_selected().get_metadata(0)
+	# Selecting and opening the proper editor
+	var item = get_selected()
+	var metadata = item.get_metadata(0)
 	hide_all_editors()
-	if item['editor'] == 'Timeline':
+	if metadata['editor'] == 'Timeline':
 		timeline_editor.visible = true
-		timeline_editor.load_timeline(DialogicUtil.get_path('TIMELINE_DIR', item['file']))
-	if item['editor'] == 'Character':
+		timeline_editor.load_timeline(DialogicUtil.get_path('TIMELINE_DIR', metadata['file']))
+	if metadata['editor'] == 'Character':
 		character_editor.visible = true
-		character_editor.load_character(DialogicUtil.get_path('CHAR_DIR', item['file']))
-	if item['editor'] == 'Glossary':
+		character_editor.load_character(DialogicUtil.get_path('CHAR_DIR', metadata['file']))
+	if metadata['editor'] == 'Glossary':
 		glossary_editor.visible = true
 
 
@@ -180,3 +187,21 @@ func _on_item_edited():
 	var metadata = item.get_metadata(0)
 	if metadata['editor'] == 'Timeline':
 		timeline_editor.timeline_name = item.get_text(0)
+
+
+func _on_autosave_timeout():
+	#print('Autosaving')
+	save_current_resource()
+
+
+func save_current_resource():
+	var item: TreeItem = get_selected()
+	var metadata: Dictionary
+	if item != null:
+		metadata = item.get_metadata(0)
+		if metadata['editor'] == 'Timeline':
+			timeline_editor.save_timeline()
+		if metadata['editor'] == 'Character':
+			character_editor.save_character()
+		if metadata['editor'] == 'Glossary':
+			print('Save Glossary')

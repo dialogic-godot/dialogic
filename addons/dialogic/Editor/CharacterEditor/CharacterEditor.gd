@@ -66,7 +66,7 @@ func new_character():
 
 # Saving and Loading
 func _on_SaveButton_pressed():
-	save_current_character()
+	save_character()
 
 
 func generate_character_data_to_save():
@@ -93,7 +93,7 @@ func generate_character_data_to_save():
 	return info_to_save
 
 
-func save_current_character():
+func save_character():
 	var path = DialogicUtil.get_path('CHAR_DIR', character_editor['file'].text)
 	var info_to_save = generate_character_data_to_save()
 	if info_to_save['id']:

@@ -14,3 +14,5 @@ __meta__ = {
 
 [node name="RenamerReset" type="Timer" parent="."]
 one_shot = true
+
+[node name="AutoSave" type="Timer" parent="."]
