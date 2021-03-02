@@ -20,6 +20,7 @@ func _ready():
 	$PanelContainer/VBoxContainer/TextEdit.set("rect_min_size", Vector2(0, 80))
 	$PanelContainer/VBoxContainer/Header/CharacterPicker.connect('character_selected', self , '_on_character_selected')
 	portrait_picker.get_popup().connect("index_pressed", self, '_on_portrait_selected')
+	$SaverTimer.connect("timeout", self, '_on_saver_timer_timeout')
 
 	var c_list = DialogicUtil.get_character_list()
 	if c_list.size() == 0:
@@ -51,7 +52,9 @@ func _on_TextEdit_text_changed():
 	var text = $PanelContainer/VBoxContainer/TextEdit.text
 	event_data['text'] = text
 	
-	update_preview()
+	# This delay is added so you don't save as soon as you type a letter
+	update_preview(false)
+	$SaverTimer.start(0.5)
 
 
 func load_text(text):
@@ -66,7 +69,7 @@ func load_data(data):
 	update_preview()
 
 
-func update_preview() -> String:
+func update_preview(save = true) -> String:
 	portrait_picker.set_character(event_data['character'], event_data['portrait'])
 	var t = $PanelContainer/VBoxContainer/TextEdit.text
 	$PanelContainer/VBoxContainer/TextEdit.rect_min_size.y = text_height * (2 + t.count('\n'))
@@ -74,8 +77,9 @@ func update_preview() -> String:
 	for c in DialogicUtil.get_character_list():
 		if c['file'] == event_data['character']:
 			$PanelContainer/VBoxContainer/Header/CharacterPicker.set_data_by_file(event_data['character'])
-
-	editor_reference.timeline_editor.save_timeline()
+	
+	if save:
+		editor_reference.timeline_editor.save_timeline()
 	
 	var text = event_data['text']
 	var lines = text.count('\n')
@@ -99,3 +103,6 @@ func _on_gui_input(event):
 				toggler.pressed = false
 			else:
 				toggler.pressed = true
+
+func _on_saver_timer_timeout():
+	update_preview()

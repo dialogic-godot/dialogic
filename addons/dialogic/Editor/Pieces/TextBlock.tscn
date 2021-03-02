@@ -37,7 +37,7 @@ rect_min_size = Vector2( 25, 0 )
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
 margin_right = 1280.0
-margin_bottom = 173.0
+margin_bottom = 126.0
 mouse_filter = 1
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -50,7 +50,7 @@ __meta__ = {
 margin_left = 6.0
 margin_top = 6.0
 margin_right = 1274.0
-margin_bottom = 167.0
+margin_bottom = 120.0
 size_flags_horizontal = 3
 
 [node name="Header" type="HBoxContainer" parent="PanelContainer/VBoxContainer"]
@@ -110,8 +110,8 @@ items = [ "Move Up", null, 0, false, false, 0, 0, null, "", false, "Move Down", 
 [node name="TextEdit" type="TextEdit" parent="PanelContainer/VBoxContainer"]
 margin_top = 34.0
 margin_right = 1268.0
-margin_bottom = 161.0
-rect_min_size = Vector2( 0, 80 )
+margin_bottom = 114.0
+rect_min_size = Vector2( 0, 52 )
 size_flags_horizontal = 3
 size_flags_vertical = 3
 show_line_numbers = true
@@ -119,5 +119,8 @@ smooth_scrolling = true
 wrap_enabled = true
 
 [node name="DragController" parent="." instance=ExtResource( 5 )]
+
+[node name="SaverTimer" type="Timer" parent="."]
+one_shot = true
 
 [connection signal="text_changed" from="PanelContainer/VBoxContainer/TextEdit" to="." method="_on_TextEdit_text_changed"]

@@ -21,30 +21,6 @@ func _on_CheckBox_toggled(button_pressed):
 	$HBoxContainer/Container/DisplayName.visible = button_pressed
 
 
-func refresh_character_list():
-	pass
-	#var selected_id = 0
-	#if $CharacterTools/CharacterItemList.is_anything_selected():
-	#	selected_id = $CharacterTools/CharacterItemList.get_selected_items()[0]
-
-	#$CharacterTools/CharacterItemList.clear()
-	#var icon = load("res://addons/dialogic/Images/character.svg")
-	#var index = 0
-	#for c in DialogicUtil.get_character_list():
-	#	$CharacterTools/CharacterItemList.add_item(c['name'], icon)
-	#	$CharacterTools/CharacterItemList.set_item_metadata(index, {'file': c['file'], 'index': index})
-	#	$CharacterTools/CharacterItemList.set_item_icon_modulate(index, c['color'])
-	#	index += 1
-
-	# If there are no characters, show the welcome screen
-	#if index == 0:
-	#	$NoCharacters.visible = true
-	#	$CharacterEditor.visible = false
-	#else:
-	#	$NoCharacters.visible = false
-	#	$CharacterEditor.visible = true
-
-
 func clear_character_editor():
 	character_editor['file'].text = ''
 	character_editor['name'].text = ''
@@ -126,15 +102,6 @@ func save_current_character():
 		file.store_line(to_json(info_to_save))
 		file.close()
 		opened_character_data = info_to_save
-		refresh_character_list()
-
-
-#func _on_ItemList_item_selected(index):
-#	var selected = $CharacterTools/CharacterItemList.get_item_text(index)
-#	var file = $CharacterTools/CharacterItemList.get_item_metadata(index)['file']
-#	var data = DialogicUtil.load_json(DialogicUtil.get_path('CHAR_DIR', file))
-#	$CharacterEditor/HBoxContainer/Container.visible = true
-#	load_character(data)
 
 
 func load_character(path):
@@ -169,17 +136,6 @@ func load_character(path):
 				default_portrait.update_preview(p['path'])
 			else:
 				create_portrait_entry(p['name'], p['path'])
-
-
-# Removing character
-#func _on_RemoveConfirmation_confirmed():
-#	var selected = $CharacterTools/CharacterItemList.get_selected_items()[0]
-#	var file = $CharacterTools/CharacterItemList.get_item_metadata(selected)['file']
-#	var dir = Directory.new()
-#	dir.remove(DialogicUtil.get_path('CHAR_DIR', file))
-#	$CharacterEditor/HBoxContainer/Container.visible = false
-#	clear_character_editor()
-#	refresh_character_list()
 
 
 # Portraits

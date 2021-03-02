@@ -105,7 +105,7 @@ func indent_events() -> void:
 
 func load_timeline(path):
 	clear_timeline()
-	var start_time = OS.get_ticks_msec()
+	var start_time = OS.get_system_time_msecs()
 	working_timeline_file = path
 	
 	var data = DialogicUtil.load_json(path)
@@ -154,8 +154,8 @@ func load_timeline(path):
 		indent_events()
 		#fold_all_nodes()
 	
-	var elapsed_time: float = (OS.get_ticks_msec() - start_time) * 0.001
-	editor_reference.dprint("Elapsed time: " + str(elapsed_time))
+	var elapsed_time = (OS.get_system_time_msecs() - start_time) * 0.001
+	editor_reference.dprint("Loading time: " + str(elapsed_time))
 	
 	# Preventing a bug here....
 	# I'm not sure why, but some times when you load a timeline

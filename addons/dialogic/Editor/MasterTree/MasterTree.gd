@@ -63,6 +63,7 @@ func _ready():
 	# Glossary
 	# TODO
 	
+	hide_all_editors(true) # Default empty screen.
 
 
 func add_timeline(timeline, select = false):
