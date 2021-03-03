@@ -197,13 +197,14 @@ func _on_autosave_timeout():
 
 
 func save_current_resource():
-	var item: TreeItem = get_selected()
-	var metadata: Dictionary
-	if item != null:
-		metadata = item.get_metadata(0)
-		if metadata['editor'] == 'Timeline':
-			timeline_editor.save_timeline()
-		if metadata['editor'] == 'Character':
-			character_editor.save_character()
-		if metadata['editor'] == 'Glossary':
-			print('Save Glossary')
+	if editor_reference.visible: #Only save if the editor is open
+		var item: TreeItem = get_selected()
+		var metadata: Dictionary
+		if item != null:
+			metadata = item.get_metadata(0)
+			if metadata['editor'] == 'Timeline':
+				timeline_editor.save_timeline()
+			if metadata['editor'] == 'Character':
+				character_editor.save_character()
+			if metadata['editor'] == 'Glossary':
+				print('Save Glossary')

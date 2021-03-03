@@ -229,7 +229,7 @@ func save_timeline() -> void:
 		file.open(working_timeline_file, File.WRITE)
 		file.store_line(to_json(info_to_save))
 		file.close()
-		print('[+] Saving: ' , working_timeline_file)
+		#print('[+] Saving: ' , working_timeline_file)
 
 
 # Utilities
