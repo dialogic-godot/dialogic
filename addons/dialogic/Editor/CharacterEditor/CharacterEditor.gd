@@ -21,10 +21,16 @@ onready var character_editor = {
 func _ready():
 	character_editor['new_portrait_button'].connect('pressed', self, '_on_New_Portrait_Button_pressed')
 	character_editor['display_name_checkbox'].connect('toggled', self, '_on_display_name_toggled')
+	character_editor['name'].connect('text_changed', self, '_on_name_changed')
 
 
 func _on_display_name_toggled(button_pressed):
 	$HBoxContainer/Container/DisplayName.visible = button_pressed
+
+
+func _on_name_changed(value):
+	var item = master_tree.get_selected()
+	item.set_text(0, value)
 
 
 func clear_character_editor():
@@ -71,10 +77,6 @@ func new_character():
 
 
 # Saving and Loading
-func _on_SaveButton_pressed():
-	save_character()
-
-
 func generate_character_data_to_save():
 	var default_speaker: bool = character_editor['default_speaker'].pressed
 	var portraits = []
