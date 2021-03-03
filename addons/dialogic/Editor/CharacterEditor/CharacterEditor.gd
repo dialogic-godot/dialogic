@@ -22,7 +22,7 @@ func _ready():
 	character_editor['new_portrait_button'].connect('pressed', self, '_on_New_Portrait_Button_pressed')
 	character_editor['display_name_checkbox'].connect('toggled', self, '_on_display_name_toggled')
 	character_editor['name'].connect('text_changed', self, '_on_name_changed')
-
+	character_editor['color'].connect('color_changed', self, '_on_color_changed')
 
 func _on_display_name_toggled(button_pressed):
 	$HBoxContainer/Container/DisplayName.visible = button_pressed
@@ -31,6 +31,10 @@ func _on_display_name_toggled(button_pressed):
 func _on_name_changed(value):
 	var item = master_tree.get_selected()
 	item.set_text(0, value)
+
+func _on_color_changed(color):
+	var item = master_tree.get_selected()
+	item.set_icon_modulate(0, color)
 
 
 func clear_character_editor():
