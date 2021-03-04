@@ -19,7 +19,6 @@ func _ready():
 	add_child(editor_file_dialog)
 
 	# Setting references to this node
-	$MainPanel/MasterTree.editor_reference = self
 	timeline_editor.editor_reference = self
 	character_editor.editor_reference = self
 	glossary_editor.editor_reference = self
@@ -28,6 +27,7 @@ func _ready():
 	# Toolbar
 	$ToolBar/NewTimelineButton.connect('pressed', $MainPanel/TimelineEditor, 'new_timeline')
 	$ToolBar/NewCharactersButton.connect('pressed', $MainPanel/CharacterEditor, 'new_character')
+	$ToolBar/NewThemeButton.connect('pressed', $MainPanel/ThemeEditor, 'new_theme')
 	$ToolBar/Docs.icon = get_icon("Instance", "EditorIcons")
 	$ToolBar/Docs.connect('pressed', OS, "shell_open", ["https://dialogic.coppolaemilio.com"])
 	#$ToolBar/FoldTools/ButtonFold.connect('pressed', $EditorTimeline, 'fold_all_nodes')

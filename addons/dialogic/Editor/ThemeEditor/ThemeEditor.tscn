@@ -257,7 +257,7 @@ margin_bottom = 24.0
 value = 10.0
 rounded = true
 allow_lesser = true
-prefix = "V"
+prefix = "H"
 
 [node name="TextOffsetH" type="SpinBox" parent="VBoxContainer/HBoxContainer2/DialogBox/GridContainer/HBoxContainer"]
 margin_left = 78.0
@@ -266,7 +266,7 @@ margin_bottom = 24.0
 value = 20.0
 rounded = true
 allow_lesser = true
-prefix = "H"
+prefix = "V"
 
 [node name="Label3" type="Label" parent="VBoxContainer/HBoxContainer2/DialogBox/GridContainer"]
 margin_top = 108.0
@@ -603,7 +603,7 @@ size_flags_vertical = 3
 [connection signal="pressed" from="VBoxContainer/HBoxContainer2/DialogBox/GridContainer/HBoxContainer3/BackgroundTextureButton" to="." method="_on_BackgroundTextureButton_pressed"]
 [connection signal="pressed" from="VBoxContainer/HBoxContainer2/DialogBox/GridContainer/NextIndicatorButton" to="." method="_on_NextIndicatorButton_pressed"]
 [connection signal="value_changed" from="VBoxContainer/HBoxContainer2/DialogBox/GridContainer/HBoxContainer/TextOffsetV" to="." method="_on_TextMargin_value_changed"]
-[connection signal="value_changed" from="VBoxContainer/HBoxContainer2/DialogBox/GridContainer/HBoxContainer/TextOffsetH" to="." method="_on_TextMarginH_value_changed"]
+[connection signal="value_changed" from="VBoxContainer/HBoxContainer2/DialogBox/GridContainer/HBoxContainer/TextOffsetH" to="." method="_on_TextMargin_value_changed"]
 [connection signal="item_selected" from="VBoxContainer/HBoxContainer2/DialogBox/GridContainer/BoxContainer/ActionOptionButton" to="." method="_on_ActionOptionButton_item_selected"]
 [connection signal="pressed" from="VBoxContainer/HBoxContainer2/DialogBox/GridContainer/BoxContainer/ActionOptionButton" to="." method="_on_ActionOptionButton_pressed"]
 [connection signal="toggled" from="VBoxContainer/HBoxContainer2/ButtonStyle/GridContainer/HBoxContainer4/CheckBox2" to="." method="_on_Custom_Button_Color_toggled"]

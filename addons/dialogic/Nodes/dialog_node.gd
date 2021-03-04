@@ -10,8 +10,9 @@ var text_speed = 0.02 # Higher = lower speed
 var waiting_for_answer: bool = false
 var waiting_for_input: bool = false
 var glossary_visible: bool = false
-var settings
 var glossary
+
+var current_theme
 
 #export(String) var timeline: String # Timeline-var-replace
 
@@ -28,8 +29,9 @@ var dialog_script = {}
 var questions #for keeping track of the questions answered
 
 func _ready():
-	# Loading the theme first to have the `settings` ready.
-	load_theme()
+	# Loading the theme first
+	# TODO: Replace with a "default theme option"
+	load_theme(DialogicUtil.get_theme_list()[0]['file'])
 	
 	# Loading the glossary
 	glossary = DialogicUtil.load_glossary()
@@ -156,18 +158,20 @@ func parse_glossary(dialog_script):
 	
 	# I should use regex here, but this is way easier :)
 	
-	if words.size() > 0:
-		var index = 0
-		for t in dialog_script['events']:
-			if t.has('text') and t.has('character') and t.has('portrait'):
-				for w in glossary:
-					if glossary[w]['type'] == DialogicUtil.GLOSSARY_EXTRA:
-						dialog_script['events'][index]['text'] = t['text'].replace(glossary[w]['name'],
-							'[url=' + glossary[w]['name'] + ']' +
-								'[color=' + settings['glossary_color'] + ']' + glossary[w]['name'] + '[/color]' +
-							'[/url]'
-						)
-			index += 1
+	
+	# TODO: Remake with new themes
+	#if words.size() > 0:
+	#	var index = 0
+	#	for t in dialog_script['events']:
+	#		if t.has('text') and t.has('character') and t.has('portrait'):
+	#			for w in glossary:
+	#				if glossary[w]['type'] == DialogicUtil.GLOSSARY_EXTRA:
+	#					dialog_script['events'][index]['text'] = t['text'].replace(glossary[w]['name'],
+	#						'[url=' + glossary[w]['name'] + ']' +
+	#							'[color=' + settings['glossary_color'] + ']' + glossary[w]['name'] + '[/color]' +
+	#						'[/url]'
+	#					)
+	#		index += 1
 	return dialog_script
 
 
@@ -408,41 +412,44 @@ func reset_options():
 
 
 func add_choice_button(option):
+	var theme = current_theme
+	
 	var button = ChoiceButton.instance()
 	button.text = option['label']
 	# Text
-	button.set('custom_fonts/font', load(settings['theme_font']))
+	button.set('custom_fonts/font', load(theme.get_value('text', 'font', "res://addons/dialogic/Fonts/DefaultFont.tres")))
 	
-	button.set('custom_colors/font_color', Color(settings['theme_text_color']))
-	button.set('custom_colors/font_color_hover', Color(settings['theme_text_color']))
-	button.set('custom_colors/font_color_pressed', Color(settings['theme_text_color']))
+	var text_color = Color(theme.get_value('text', 'color', "#ffffffff"))
+	button.set('custom_colors/font_color', text_color)
+	button.set('custom_colors/font_color_hover', text_color)
+	button.set('custom_colors/font_color_pressed', text_color)
 	
-	# This part makes me cry
-	var current_color = settings['button_text_color']
-	
-	if settings['button_text_color_enabled']:
-		button.set('custom_colors/font_color', Color(settings['button_text_color']))
-		button.set('custom_colors/font_color_hover', Color(settings['button_text_color']))
-		button.set('custom_colors/font_color_pressed', Color(settings['button_text_color']))
-	# Background
-	
-	button.get_node('ColorRect').color = Color(settings['button_background'])
-	button.get_node('ColorRect').visible = settings['button_background_visible']
+	if theme.get_value('buttons', 'text_color_enabled', true):
+		var button_text_color = Color(theme.get_value('buttons', 'text_color', "#ffffffff"))
+		button.set('custom_colors/font_color', button_text_color)
+		button.set('custom_colors/font_color_hover', button_text_color)
+		button.set('custom_colors/font_color_pressed', button_text_color)
 
-	button.get_node('TextureRect').texture = load(settings['button_image'])
-	button.get_node('TextureRect').visible = settings['button_image_visible']
+	# Background
+	button.get_node('ColorRect').color = Color(theme.get_value('buttons', 'background_color', '#ff000000'))
+	button.get_node('ColorRect').visible = theme.get_value('buttons', 'use_background_color', false)
+
+	button.get_node('TextureRect').visible = theme.get_value('buttons', 'use_image', true)
+	if theme.get_value('buttons', 'use_image', true):
+		button.get_node('TextureRect').texture = load(theme.get_value('buttons', 'image', "res://addons/dialogic/Images/background/background-2.png"))
 	
-	button.get_node('ColorRect').set('margin_left', -1 * settings['button_offset_x'])
-	button.get_node('ColorRect').set('margin_right',  settings['button_offset_x'])
-	button.get_node('ColorRect').set('margin_top', -1 * settings['button_offset_y'])
-	button.get_node('ColorRect').set('margin_bottom', settings['button_offset_y'])
+	var padding = theme.get_value('buttons', 'padding', Vector2(5,5))
+	button.get_node('ColorRect').set('margin_left', -1 * padding.x)
+	button.get_node('ColorRect').set('margin_right',  padding.x)
+	button.get_node('ColorRect').set('margin_top', -1 * padding.y)
+	button.get_node('ColorRect').set('margin_bottom', padding.y)
 	
-	button.get_node('TextureRect').set('margin_left', -1 * settings['button_offset_x'])
-	button.get_node('TextureRect').set('margin_right',  settings['button_offset_x'])
-	button.get_node('TextureRect').set('margin_top', -1 * settings['button_offset_y'])
-	button.get_node('TextureRect').set('margin_bottom', settings['button_offset_y'])
+	button.get_node('TextureRect').set('margin_left', -1 * padding.x)
+	button.get_node('TextureRect').set('margin_right',  padding.x)
+	button.get_node('TextureRect').set('margin_top', -1 * padding.y)
+	button.get_node('TextureRect').set('margin_bottom', padding.y)
 	
-	$Options.set('custom_constants/separation', settings['button_separation'] + (settings['button_offset_y']*2))
+	$Options.set('custom_constants/separation', theme.get_value('buttons', 'gap', 20) + (padding.y*2))
 
 	button.connect("pressed", self, "answer_question", [button, option['event_id'], option['question_id']])
 	
@@ -519,63 +526,58 @@ func get_character_position(positions):
 	return 
 
 
-func load_theme() -> void:
-	# Loading theme properties and settings
-	settings = DialogicUtil.load_settings()
-
-	$TextBubble/RichTextLabel.set('custom_fonts/normal_font', load(settings['theme_font']))
-	$TextBubble/NameLabel.set('custom_fonts/normal_font', load(settings['theme_font']))
+func load_theme(filename) -> void:
+	var theme = DialogicUtil.get_theme(filename) 
+	current_theme = theme
 	
-	# Glossary
-	$GlossaryInfo/VBoxContainer/Title.set('custom_fonts/normal_font', load(settings['theme_font']))
-	$GlossaryInfo/VBoxContainer/Content.set('custom_fonts/normal_font', load(settings['theme_font']))
-	$GlossaryInfo/VBoxContainer/Extra.set('custom_fonts/normal_font', load(settings['theme_font']))
+	var theme_font = load(theme.get_value('text', 'font', 'res://addons/dialogic/Fonts/DefaultFont.tres'))
+	$TextBubble/RichTextLabel.set('custom_fonts/normal_font', theme_font)
+	$TextBubble/NameLabel.set('custom_fonts/normal_font', theme_font)
 	
-	# Text
-	if settings.has('theme_text_color'):
-		$TextBubble/RichTextLabel.set('custom_colors/default_color', Color(settings['theme_text_color']))
-		$TextBubble/NameLabel.set('custom_colors/default_color', Color(settings['theme_text_color']))
-
+	var text_color = Color(theme.get_value('text', 'color', '#ffffffff'))
+	$TextBubble/RichTextLabel.set('custom_colors/default_color', text_color)
+	$TextBubble/NameLabel.set('custom_colors/default_color', text_color)
+	
+	# Shadow
 	$TextBubble/RichTextLabel.set('custom_colors/font_color_shadow', Color('#00ffffff'))
 	$TextBubble/NameLabel.set('custom_colors/font_color_shadow', Color('#00ffffff' ))
-	if settings.has('theme_text_shadow'):
-		if settings['theme_text_shadow']:
-			if settings.has('theme_text_shadow_color'):
-				$TextBubble/RichTextLabel.set('custom_colors/font_color_shadow', Color(settings['theme_text_shadow_color']))
-				$TextBubble/NameLabel.set('custom_colors/font_color_shadow', Color(settings['theme_text_shadow_color']))
-				
-	if settings.has('theme_shadow_offset_x'):
-		$TextBubble/RichTextLabel.set('custom_constants/shadow_offset_x', settings['theme_shadow_offset_x'])
-		$TextBubble/NameLabel.set('custom_constants/shadow_offset_x', settings['theme_shadow_offset_x'])
-	if settings.has('theme_shadow_offset_y'):
-		$TextBubble/RichTextLabel.set('custom_constants/shadow_offset_y', settings['theme_shadow_offset_y'])
-		$TextBubble/NameLabel.set('custom_constants/shadow_offset_y', settings['theme_shadow_offset_y'])
+	
+	var text_shadow_color = Color(theme.get_value('text', 'shadow_color', '#9e000000'))
+	$TextBubble/RichTextLabel.set('custom_colors/font_color_shadow', text_shadow_color)
+	$TextBubble/NameLabel.set('custom_colors/font_color_shadow', text_shadow_color)
+	
+	var shadow_offset = theme.get_value('text', 'shadow_offset', Vector2(2,2))
+	$TextBubble/RichTextLabel.set('custom_constants/shadow_offset_x', shadow_offset.x)
+	$TextBubble/NameLabel.set('custom_constants/shadow_offset_x', shadow_offset.x)
+	$TextBubble/RichTextLabel.set('custom_constants/shadow_offset_y', shadow_offset.y)
+	$TextBubble/NameLabel.set('custom_constants/shadow_offset_y', shadow_offset.y)
+	
 	# Text speed
-	if settings.has('theme_text_speed'):
-		text_speed = settings['theme_text_speed'] * 0.01
+	text_speed = theme.get_value('text','speed', 2) * 0.01
+	
 	# Margin
-	if settings.has('theme_text_margin'):
-		$TextBubble/RichTextLabel.set('margin_top', settings['theme_text_margin'])
-		$TextBubble/RichTextLabel.set('margin_bottom', settings['theme_text_margin'] * -1)
-	if settings.has('theme_text_margin_h'):
-		$TextBubble/RichTextLabel.set('margin_left', settings['theme_text_margin_h'])
-		$TextBubble/RichTextLabel.set('margin_right', settings['theme_text_margin_h'] * -1)
+	var text_margin = theme.get_value('text', 'margin', Vector2(10,20))
+	$TextBubble/RichTextLabel.set('margin_left', text_margin.x)
+	$TextBubble/RichTextLabel.set('margin_right', text_margin.x * -1)
+	$TextBubble/RichTextLabel.set('margin_top', text_margin.y)
+	$TextBubble/RichTextLabel.set('margin_bottom', text_margin.y * -1)
 	
 	# Backgrounds
-	$TextBubble/TextureRect.texture = load(settings['theme_background_image'])
-	$TextBubble/ColorRect.color = Color(settings['theme_background_color'])
+	$TextBubble/TextureRect.texture = load(theme.get_value('background','image', "res://addons/dialogic/Images/background/background-2.png"))
+	$TextBubble/ColorRect.color = Color(theme.get_value('background','color', "#ff000000"))
 	
-	$TextBubble/ColorRect.visible = settings['theme_background_color_visible']
-	$TextBubble/TextureRect.visible = settings['background_texture_button_visible']
+	$TextBubble/ColorRect.visible = theme.get_value('background', 'use_color', false)
+	$TextBubble/TextureRect.visible = theme.get_value('background', 'use_image', true)
 	
 	# Next image
-	$TextBubble/NextIndicator.texture = load(settings['theme_next_image'])
-	input_next = settings['theme_action_key']
+	$TextBubble/NextIndicator.texture = load(theme.get_value('next_indicator', 'image', 'res://addons/dialogic/Images/next-indicator.png'))
+	input_next = theme.get_value('settings', 'action_key', 'ui_accept')
 	
 	# Glossary
-	$GlossaryInfo/VBoxContainer/Title.set('custom_fonts/normal_font', load(settings['glossary_font']))
-	$GlossaryInfo/VBoxContainer/Content.set('custom_fonts/normal_font', load(settings['glossary_font']))
-	$GlossaryInfo/VBoxContainer/Extra.set('custom_fonts/normal_font', load(settings['glossary_font']))
+	var definitions_font = load(theme.get_value('definitions', 'font', 'res://addons/dialogic/Fonts/GlossaryFont.tres'))
+	$GlossaryInfo/VBoxContainer/Title.set('custom_fonts/normal_font', definitions_font)
+	$GlossaryInfo/VBoxContainer/Content.set('custom_fonts/normal_font', definitions_font)
+	$GlossaryInfo/VBoxContainer/Extra.set('custom_fonts/normal_font', definitions_font)
 
 
 func _on_RichTextLabel_meta_hover_started(meta):

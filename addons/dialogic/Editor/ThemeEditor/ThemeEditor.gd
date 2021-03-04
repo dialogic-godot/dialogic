@@ -2,6 +2,8 @@ tool
 extends Control
 
 var editor_reference
+onready var master_tree = get_node('../MasterTree')
+var current_theme = ''
 
 # The amazing and revolutionary path system that magically works and you can't
 # complain because "that is not how you are supposed to work". If there was only
@@ -41,56 +43,62 @@ onready var n = {
 }
 
 func _ready():
-	var settings = DialogicUtil.load_settings()
-	# Font 
-	n['theme_font'].text = DialogicUtil.get_filename_from_path(settings['theme_font'])
-	
-	# Text and shadows
-	n['theme_text_color'].color = Color(settings['theme_text_color'])
-	n['theme_text_shadow'].pressed = settings['theme_text_shadow']
-	n['theme_text_shadow_color'].color = Color(settings['theme_text_shadow_color'])
-	n['theme_shadow_offset_x'].value = settings['theme_shadow_offset_x']
-	n['theme_shadow_offset_y'].value = settings['theme_shadow_offset_y']
-	
-	# Text speed
-	n['theme_text_speed'].value = settings['theme_text_speed']
-		
-	# Margin	
-	n['theme_text_margin'].value = settings['theme_text_margin']
-	n['theme_text_margin_h'].value = settings['theme_text_margin_h']
-	
-	# Backgrounds
-	n['theme_background_image'].text = DialogicUtil.get_filename_from_path(settings['theme_background_image'])
-	n['background_texture_button_visible'].pressed = settings['background_texture_button_visible']
-	n['theme_background_color'].color = Color(settings['theme_background_color'])
-	n['theme_background_color_visible'].pressed = settings['theme_background_color_visible']
-	
-	# Next image
-	n['theme_next_image'].text = DialogicUtil.get_filename_from_path(settings['theme_next_image'])
-
-	# Action
-	n['theme_action_key'].text = settings['theme_action_key']
-	
-	# Buttons
-	n['button_text_color_enabled'].pressed = settings['button_text_color_enabled']
-	n['button_text_color'].color = Color(settings['button_text_color'])
-	
-	n['button_background'].color = Color(settings['button_background'])
-	n['button_background_visible'].pressed = settings['button_background_visible']
-	n['button_image'].text = DialogicUtil.get_filename_from_path(settings['button_image'])
-	n['button_image_visible'].pressed = settings['button_image_visible']
-	
-	n['button_offset_x'].value = settings['button_offset_x']
-	n['button_offset_y'].value = settings['button_offset_y']
-	n['button_separation'].value = settings['button_separation']
-	
-	n['glossary_color'].color = Color(settings['glossary_color'])
-	n['glossary_font'].text = DialogicUtil.get_filename_from_path(settings['glossary_font'])
-
-	# Signal connection to free up some memory (and i don't want to use the editor)
+	# Signal connection to free up some memory
 	connect("visibility_changed", self, "_on_visibility_changed")
 	# Force preview update
 	_on_visibility_changed()
+
+
+func load_theme(filename):
+	current_theme = filename
+	var theme = DialogicUtil.get_theme(filename) 
+	# Settings
+	n['theme_action_key'].text = theme.get_value('settings', 'action_key', 'ui_accept')
+	
+	# Background
+	n['theme_background_image'].text = DialogicUtil.get_filename_from_path(theme.get_value('background', 'image', 'res://addons/dialogic/Images/background/background-2.png'))
+	n['background_texture_button_visible'].pressed = theme.get_value('background', 'use_image', true)
+	n['theme_background_color'].color = Color(theme.get_value('background', 'color', '#ff000000'))
+	n['theme_background_color_visible'].pressed = theme.get_value('background', 'use_color', true)
+	
+	# Next Indicator
+	n['theme_next_image'].text = DialogicUtil.get_filename_from_path(theme.get_value('next_indicator', 'image', 'res://addons/dialogic/Images/next-indicator.png'))
+	
+	# Buttons
+	n['button_text_color_enabled'].pressed = theme.get_value('buttons', 'text_color_enabled', true)
+	n['button_text_color'].color = Color(theme.get_value('buttons', 'text_color', "#ffffffff"))
+	n['button_background'].color = Color(theme.get_value('buttons', 'background_color', "#ff000000"))
+	n['button_background_visible'].pressed = theme.get_value('buttons', 'use_background_color', false)
+	n['button_image'].text = DialogicUtil.get_filename_from_path(theme.get_value('buttons', 'image', 'res://addons/dialogic/Images/background/background-2.png'))
+	n['button_image_visible'].pressed = theme.get_value('buttons', 'use_image', true)
+	n['button_offset_x'].value = theme.get_value('buttons', 'padding', Vector2(5,5)).x
+	n['button_offset_y'].value = theme.get_value('buttons', 'padding', Vector2(5,5)).y
+	n['button_separation'].value = theme.get_value('buttons', 'gap', 5)
+	
+	# Definitions
+	n['glossary_color'].color = Color(theme.get_value('definitions', 'color', "#ffffffff"))
+	n['glossary_font'].text = DialogicUtil.get_filename_from_path(theme.get_value('definitions', 'font', "res://addons/dialogic/Fonts/GlossaryFont.tres"))
+	
+	# Text
+	n['theme_text_speed'].value = theme.get_value('text','speed', 2)
+	n['theme_font'].text = DialogicUtil.get_filename_from_path(theme.get_value('text', 'font', 'res://addons/dialogic/Fonts/DefaultFont.tres'))
+	n['theme_text_color'].color = Color(theme.get_value('text', 'color', '#ffffffff'))
+	n['theme_text_shadow'].pressed = theme.get_value('text', 'shadow', false)
+	n['theme_text_shadow_color'].color = Color(theme.get_value('text', 'shadow_color', '#9e000000'))
+	n['theme_shadow_offset_x'].value = theme.get_value('text', 'shadow_offset', Vector2(2,2)).x
+	n['theme_shadow_offset_y'].value = theme.get_value('text', 'shadow_offset', Vector2(2,2)).y
+	n['theme_text_margin'].value = theme.get_value('text', 'margin', Vector2(10, 20)).x
+	n['theme_text_margin_h'].value = theme.get_value('text', 'margin', Vector2(10, 20)).y
+
+
+func new_theme():
+	var theme_file = 'theme-' + str(OS.get_unix_time()) + '.cfg'
+	var file = File.new()
+	file.open(DialogicUtil.get_path('THEME_DIR', theme_file), File.WRITE)
+	file.store_string('')
+	file.close()
+	master_tree.add_theme({'file': theme_file, 'name': theme_file})
+	load_theme(theme_file)
 
 
 func _on_BackgroundTextureButton_pressed():
@@ -99,7 +107,7 @@ func _on_BackgroundTextureButton_pressed():
 
 
 func _on_background_selected(path, target):
-	DialogicUtil.update_setting('theme_background_image', path)
+	DialogicUtil.set_theme_value(current_theme, 'background','image', path)
 	n['theme_background_image'].text = DialogicUtil.get_filename_from_path(path)
 
 
@@ -109,25 +117,24 @@ func _on_NextIndicatorButton_pressed():
 
 
 func _on_indicator_selected(path, target):
-	DialogicUtil.update_setting('theme_next_image', path)
+	DialogicUtil.set_theme_value(current_theme, 'next_indicator','image', path)
 	n['theme_next_image'].text = DialogicUtil.get_filename_from_path(path)
 
 
 func _on_ColorPickerButton_color_changed(color):
-	DialogicUtil.update_setting('theme_text_color', '#' + color.to_html())
+	DialogicUtil.set_theme_value(current_theme, 'text','color', '#' + color.to_html())
 
 
 func _on_ColorPickerButtonShadow_color_changed(color):
-	DialogicUtil.update_setting('theme_text_shadow_color', '#' + color.to_html())
+	DialogicUtil.set_theme_value(current_theme, 'text','shadow_color', '#' + color.to_html())
 
 
 func _on_CheckBoxShadow_toggled(button_pressed):
-	DialogicUtil.update_setting('theme_text_shadow', button_pressed)
+	DialogicUtil.set_theme_value(current_theme, 'text','shadow', button_pressed)
 
 
 func _on_ShadowOffset_value_changed(_value):
-	DialogicUtil.update_setting('theme_shadow_offset_x', n['theme_shadow_offset_x'].value)
-	DialogicUtil.update_setting('theme_shadow_offset_y', n['theme_shadow_offset_y'].value)
+	DialogicUtil.set_theme_value(current_theme, 'text','shadow_offset', Vector2(n['theme_shadow_offset_x'].value,n['theme_shadow_offset_y'].value))
 
 
 func _on_PreviewButton_pressed():
@@ -137,7 +144,7 @@ func _on_PreviewButton_pressed():
 	var preview_dialog = dialogic_node.instance()
 	var glossary = DialogicUtil.load_glossary()
 	preview_dialog.glossary = glossary
-	preview_dialog.settings = DialogicUtil.load_settings()
+	preview_dialog.load_theme(current_theme)
 	preview_dialog.get_node('GlossaryInfo').in_theme_editor = true
 	preview_dialog.get_node('TextBubble/NextIndicator/AnimationPlayer').play('IDLE')
 	preview_dialog.dialog_script['events'] = [{
@@ -150,7 +157,7 @@ func _on_PreviewButton_pressed():
 
 
 func _on_ActionOptionButton_item_selected(index):
-	DialogicUtil.update_setting('theme_action_key', n['theme_action_key'].text)
+	DialogicUtil.set_theme_value(current_theme, 'settings','action_key', n['theme_action_key'].text)
 
 
 func _on_ActionOptionButton_pressed():
@@ -167,53 +174,56 @@ func _on_FontButton_pressed():
 
 
 func _on_Font_selected(path, target):
-	DialogicUtil.update_setting('theme_font', path)
+	DialogicUtil.set_theme_value(current_theme, 'text','font', path)
 	n['theme_font'].text = DialogicUtil.get_filename_from_path(path)
 
 
 func _on_textSpeed_value_changed(value):
-	DialogicUtil.update_setting('theme_text_speed', value)
+	DialogicUtil.set_theme_value(current_theme, 'text','speed', value)
 
 
 func _on_TextMargin_value_changed(value):
-	DialogicUtil.update_setting('theme_text_margin', value)
-
-
-func _on_TextMarginH_value_changed(value):
-	DialogicUtil.update_setting('theme_text_margin_h', value)
+	var final_vector = Vector2(
+		n['theme_text_margin'].value,
+		n['theme_text_margin_h'].value
+	)
+	DialogicUtil.set_theme_value(current_theme, 'text', 'margin', final_vector)
 
 
 func _on_BackgroundColor_CheckBox_toggled(button_pressed):
-	DialogicUtil.update_setting('theme_background_color_visible', button_pressed)
+	DialogicUtil.set_theme_value(current_theme, 'background', 'use_color', button_pressed)
 
 
 func _on_BackgroundColor_ColorPickerButton_color_changed(color):
-	DialogicUtil.update_setting('theme_background_color', '#' + color.to_html())
+	DialogicUtil.set_theme_value(current_theme, 'background', 'color', '#' + color.to_html())
 
 
 func _on_BackgroundTexture_CheckBox_toggled(button_pressed):
-	DialogicUtil.update_setting('background_texture_button_visible', button_pressed)
+	DialogicUtil.set_theme_value(current_theme, 'background', 'use_image', button_pressed)
 
 
 func _on_button_background_visible_toggled(button_pressed):
-	DialogicUtil.update_setting('button_background_visible', button_pressed)
+	DialogicUtil.set_theme_value(current_theme, 'buttons', 'use_background_color', button_pressed)
 
 
 func _on_button_background_color_color_changed(color):
-	DialogicUtil.update_setting('button_background', '#' + color.to_html())
+	DialogicUtil.set_theme_value(current_theme, 'buttons', 'background_color', '#' + color.to_html())
 
 
 func _on_ButtonOffset_value_changed(value):
-	DialogicUtil.update_setting('button_offset_x', n['button_offset_x'].value)
-	DialogicUtil.update_setting('button_offset_y', n['button_offset_y'].value)
+	var final_vector = Vector2(
+		n['button_offset_x'].value,
+		n['button_offset_y'].value
+	)
+	DialogicUtil.set_theme_value(current_theme, 'buttons', 'padding', final_vector)
 
 
 func _on_VerticalSeparation_value_changed(value):
-	DialogicUtil.update_setting('button_separation', n['button_separation'].value)
+	DialogicUtil.set_theme_value(current_theme, 'buttons', 'gap', n['button_separation'].value)
 
 
 func _on_button_texture_toggled(button_pressed):
-	DialogicUtil.update_setting('button_image_visible', button_pressed)
+	DialogicUtil.set_theme_value(current_theme, 'buttons', 'use_image', button_pressed)
 
 
 func _on_ButtonTextureButton_pressed():
@@ -222,20 +232,20 @@ func _on_ButtonTextureButton_pressed():
 
 
 func _on_button_texture_selected(path, target):
-	DialogicUtil.update_setting('button_image', path)
+	DialogicUtil.set_theme_value(current_theme, 'buttons', 'image', path)
 	n['button_image'].text = DialogicUtil.get_filename_from_path(path)
 
 
 func _on_ButtonTextColor_color_changed(color):
-	DialogicUtil.update_setting('button_text_color', '#' + color.to_html())
+	DialogicUtil.set_theme_value(current_theme, 'buttons', 'text_color', '#' + color.to_html())
 
 
 func _on_Custom_Button_Color_toggled(button_pressed):
-	DialogicUtil.update_setting('button_text_color_enabled', button_pressed)
+	DialogicUtil.set_theme_value(current_theme, 'buttons', 'text_color_enabled', button_pressed)
 
 
 func _on_GlossaryColorPicker_color_changed(color):
-	DialogicUtil.update_setting('glossary_color', '#' + color.to_html())
+	DialogicUtil.set_theme_value(current_theme, 'definitions', 'color', '#' + color.to_html())
 
 
 func _on_GlossaryFontButton_pressed():
@@ -243,7 +253,7 @@ func _on_GlossaryFontButton_pressed():
 	editor_reference.godot_dialog_connect(self, "_on_Glossary_Font_selected")
 
 func _on_Glossary_Font_selected(path, target):
-	DialogicUtil.update_setting('glossary_font', path)
+	DialogicUtil.set_theme_value(current_theme, 'definitions', 'font', path)
 	n['glossary_font'].text = DialogicUtil.get_filename_from_path(path)
 
 

@@ -1,10 +1,10 @@
 tool
 extends Tree
 
-var editor_reference
+onready var editor_reference = get_node('../..')
 onready var timeline_editor = get_node('../TimelineEditor')
 onready var character_editor = get_node('../CharacterEditor')
-onready var glossary_editor = get_node('../GlossaryEditor')
+onready var definitions_editor = get_node('../GlossaryEditor')
 onready var theme_editor = get_node('../ThemeEditor')
 onready var empty_editor = get_node('../Empty')
 
@@ -13,7 +13,7 @@ var timeline_icon = load("res://addons/dialogic/Images/timeline.svg")
 var character_icon = load("res://addons/dialogic/Images/character.svg")
 var timelines_tree
 var characters_tree
-var glossary_tree
+var definitions_tree
 var themes_tree
 
 func _ready():
@@ -31,9 +31,9 @@ func _ready():
 	characters_tree.set_selectable(0, false)
 	characters_tree.set_text(0, "Characters")
 
-	glossary_tree = tree.create_item(root)
-	glossary_tree.set_selectable(0, false)
-	glossary_tree.set_text(0, "Glossary")
+	definitions_tree = tree.create_item(root)
+	definitions_tree.set_selectable(0, false)
+	definitions_tree.set_text(0, "Definitions")
 
 	themes_tree = tree.create_item(root)
 	themes_tree.set_selectable(0, false)
@@ -57,11 +57,14 @@ func _ready():
 	for c in DialogicUtil.get_character_list():
 		add_character(c)
 	
+	# Adding Definitions (previously known as glossary)
 	var glossary = DialogicUtil.load_glossary()
 	for c in glossary:
 		add_glossary(glossary[c])
-	# Glossary
-	# TODO
+	
+	# Adding Themes
+	for c in DialogicUtil.get_theme_list():
+		add_theme(c)
 	
 	# Default empty screen.
 	hide_all_editors(true) 
@@ -85,6 +88,16 @@ func add_timeline(timeline, select = false):
 		item.select(0)
 
 
+func add_theme(theme_item, select = false):
+	var item = tree.create_item(themes_tree)
+	item.set_icon(0, get_icon("StyleBoxTexture", "EditorIcons"))
+	item.set_text(0, theme_item['name'])
+	theme_item['editor'] = 'Theme'
+	item.set_metadata(0, theme_item)
+	#item.set_editable(0, true)
+	if select: # Auto selecting
+		item.select(0)
+
 func add_character(character, select = false):
 	var item = tree.create_item(characters_tree)
 	item.set_icon(0, character_icon)
@@ -104,7 +117,7 @@ func add_character(character, select = false):
 
 func add_glossary(glossary, select = false):
 	print(glossary)
-	var item = tree.create_item(glossary_tree)
+	var item = tree.create_item(definitions_tree)
 	if glossary['type'] == DialogicUtil.GLOSSARY_STRING:
 		item.set_icon(0, get_icon("String", "EditorIcons"))
 	if glossary['type'] == DialogicUtil.GLOSSARY_EXTRA:
@@ -139,13 +152,17 @@ func _on_item_selected():
 		character_editor.visible = true
 		character_editor.load_character(DialogicUtil.get_path('CHAR_DIR', metadata['file']))
 	if metadata['editor'] == 'Glossary':
-		glossary_editor.visible = true
+		# TODO: Load values here
+		definitions_editor.visible = true
+	if metadata['editor'] == 'Theme':
+		theme_editor.load_theme(metadata['file'])
+		theme_editor.visible = true
 
 
 func hide_all_editors(show_empty = false):
 	character_editor.visible = false
 	timeline_editor.visible = false
-	glossary_editor.visible = false
+	definitions_editor.visible = false
 	theme_editor.visible = false
 	empty_editor.visible = false
 	if show_empty:
@@ -190,6 +207,8 @@ func _on_item_edited():
 	var metadata = item.get_metadata(0)
 	if metadata['editor'] == 'Timeline':
 		timeline_editor.timeline_name = item.get_text(0)
+	if metadata['editor'] == 'Theme':
+		DialogicUtil.set_theme_value(metadata['file'], 'settings', 'name', item.get_text(0))
 
 
 func _on_autosave_timeout():
@@ -197,7 +216,8 @@ func _on_autosave_timeout():
 
 
 func save_current_resource():
-	if editor_reference.visible: #Only save if the editor is open
+	var root = get_node('../..') # This is the same as the editor_reference
+	if root.visible: #Only save if the editor is open
 		var item: TreeItem = get_selected()
 		var metadata: Dictionary
 		if item != null:
@@ -208,3 +228,4 @@ func save_current_resource():
 				character_editor.save_character()
 			if metadata['editor'] == 'Glossary':
 				print('Save Glossary')
+			# Theme auto saves on change

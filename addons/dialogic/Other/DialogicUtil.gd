@@ -10,14 +10,15 @@ static func init_dialogic_files() -> void:
 	var directory = Directory.new();
 	var paths = get_working_directories()
 	for dir in paths:
-		if 'settings.json' in paths[dir]:
-			update_setting()
+		if 'settings.cfg' in paths[dir]:
+			# TODO: Create settings.cfg here
+			pass
 		elif 'glossary.json' in paths[dir]:
 			load_glossary()
 		else:
 			if directory.dir_exists(paths[dir]) == false:
 				directory.make_dir(paths[dir])
-				
+
 
 static func load_json(path: String) -> Dictionary:
 	# An easy function to load json files and handle common errors.
@@ -39,40 +40,10 @@ static func load_json(path: String) -> Dictionary:
 	return {'error':'data parse error'}
 
 
-static func load_settings() -> Dictionary:
-	# This functions tries to load the settings. If it fails, it will
-	# generate the default values and save them so we have a file to
-	# work with and avoid future error messages.
-	var defaults = default_settings()
-	var directory = Directory.new();
-	if directory.file_exists(get_path('SETTINGS_FILE')):
-		var settings: Dictionary = load_json(get_path('SETTINGS_FILE'))
-		for x in defaults:
-			if settings.has(x) == false:
-				settings[x] = defaults[x]
-		if settings.has('error'):
-			settings = {}
-		return settings
-	else:
-		return defaults
-
-
 static func save_glossary(glossary) -> void:
 	var file:File = File.new()
 	file.open(get_path('GLOSSARY_FILE'), File.WRITE)
 	file.store_line(to_json(glossary))
-	file.close()
-
-
-static func update_setting(key: String = '', value = '') -> void:
-	# This function will open the settings file and update one of the values
-	var data = load_settings()
-	if key != '':
-		data[key] = value
-	
-	var file:File = File.new()
-	file.open(get_path('SETTINGS_FILE'), File.WRITE)
-	file.store_line(to_json(data))
 	file.close()
 
 
@@ -81,8 +52,9 @@ static func get_working_directories() -> Dictionary:
 	var paths: Dictionary = {
 		'WORKING_DIR': WORKING_DIR,
 		'TIMELINE_DIR': WORKING_DIR + "/timelines",
+		'THEME_DIR': WORKING_DIR + "/themes",
 		'CHAR_DIR': WORKING_DIR + "/characters",
-		'SETTINGS_FILE': WORKING_DIR + "/settings.json",
+		'SETTINGS_FILE': WORKING_DIR + "/settings.cfg",
 		'GLOSSARY_FILE': WORKING_DIR + "/glossary.json",
 	}
 	return paths
@@ -264,3 +236,38 @@ static func compare_dicts(dict_1: Dictionary, dict_2: Dictionary) -> bool:
 		if str(dict_1) == str(dict_2):
 			return true
 	return false
+
+
+static func get_theme_list() -> Array:
+	var themes: Array = []
+	for file in listdir(get_path('THEME_DIR')):
+		if '.cfg' in file:
+			var config = ConfigFile.new()
+			var err = config.load(get_path('THEME_DIR', file))
+			if err == OK: # If not, something went wrong with the file loading
+				themes.append({
+					'file': file,
+					'name': config.get_value('settings','name', file),
+					'config': config
+				})
+			else:
+				print('Error loading ',file , ' - Error: ', err)
+	return themes
+
+
+static func get_theme(filename):
+	var config = ConfigFile.new()
+	var err = config.load(get_path('THEME_DIR', filename))
+	if err == OK:
+		return config
+	#else:
+	#	return AQUI EL DEFAULT THEME
+
+
+static func set_theme_value(filename, section, key, value):
+	var config = ConfigFile.new()
+	var file = get_path('THEME_DIR', filename)
+	var err = config.load(file)
+	if err == OK:
+		config.set_value(section, key, value)
+		config.save(file)
