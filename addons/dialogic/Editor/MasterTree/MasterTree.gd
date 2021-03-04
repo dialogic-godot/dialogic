@@ -177,6 +177,9 @@ func _on_item_rmb_selected(position):
 	if item['editor'] == 'Character':
 		editor_reference.get_node("CharacterPopupMenu").rect_position = get_viewport().get_mouse_position()
 		editor_reference.get_node("CharacterPopupMenu").popup()
+	if item['editor'] == 'Theme':
+		editor_reference.get_node("ThemePopupMenu").rect_position = get_viewport().get_mouse_position()
+		editor_reference.get_node("ThemePopupMenu").popup()
 
 
 func remove_selected():

@@ -33,6 +33,17 @@ func _ready():
 	#$ToolBar/FoldTools/ButtonFold.connect('pressed', $EditorTimeline, 'fold_all_nodes')
 	#$ToolBar/FoldTools/ButtonUnfold.connect('pressed', $EditorTimeline, 'unfold_all_nodes')
 	
+	
+	# Connecting context menus
+	$TimelinePopupMenu.connect('id_pressed', self, '_on_TimelinePopupMenu_id_pressed')
+	$CharacterPopupMenu.connect('id_pressed', self, '_on_CharacterPopupMenu_id_pressed')
+	$ThemePopupMenu.connect('id_pressed', self, '_on_ThemePopupMenu_id_pressed')
+	
+	#Connecting confirmation menus
+	$RemoveTimelineConfirmation.connect('confirmed', self, '_on_RemoveTimelineConfirmation_confirmed')
+	$RemoveCharacterConfirmation.connect('confirmed', self, '_on_RemoveCharacterConfirmation_confirmed')
+	$RemoveThemeConfirmation.connect('confirmed', self, '_on_RemoveThemeConfirmation_confirmed')
+	
 	# Loading the version number
 	var config = ConfigFile.new()
 	var err = config.load("res://addons/dialogic/plugin.cfg")
@@ -67,12 +78,30 @@ func _on_CharacterPopupMenu_id_pressed(id):
 		get_node("RemoveCharacterConfirmation").popup_centered()
 
 
+# Theme context menu
+func _on_ThemePopupMenu_id_pressed(id):
+	if id == 0:
+		OS.shell_open(ProjectSettings.globalize_path(DialogicUtil.get_path('THEME_DIR')))
+	if id == 1:
+		get_node("RemoveThemeConfirmation").popup_centered()
+
+
 func _on_RemoveCharacterConfirmation_confirmed():
 	var dir = Directory.new()
 	print($MainPanel/CharacterEditor.opened_character_data)
 	var target = DialogicUtil.get_path('CHAR_DIR', $MainPanel/CharacterEditor.opened_character_data['id']) 
 	dir.remove(target)
 	$MainPanel/MasterTree.remove_selected()
+	$MainPanel/MasterTree.hide_all_editors(true)
+
+
+func _on_RemoveThemeConfirmation_confirmed():
+	var dir = Directory.new()
+	var filepath = $MainPanel/MasterTree.get_selected().get_metadata(0)['file']
+	var target = DialogicUtil.get_path('THEME_DIR', filepath) 
+	dir.remove(target)
+	$MainPanel/MasterTree.remove_selected()
+	$MainPanel/MasterTree.hide_all_editors(true)
 
 
 # Godot dialog
