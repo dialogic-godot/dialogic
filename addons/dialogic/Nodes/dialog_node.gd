@@ -29,9 +29,6 @@ var dialog_script = {}
 var questions #for keeping track of the questions answered
 
 func _ready():
-	# Loading the theme first
-	# TODO: Replace with a "default theme option"
-	load_theme(DialogicUtil.get_theme_list()[0]['file'])
 	
 	# Loading the glossary
 	glossary = DialogicUtil.load_glossary()
@@ -538,13 +535,13 @@ func load_theme(filename) -> void:
 	$TextBubble/RichTextLabel.set('custom_colors/default_color', text_color)
 	$TextBubble/NameLabel.set('custom_colors/default_color', text_color)
 	
-	# Shadow
 	$TextBubble/RichTextLabel.set('custom_colors/font_color_shadow', Color('#00ffffff'))
-	$TextBubble/NameLabel.set('custom_colors/font_color_shadow', Color('#00ffffff' ))
+	$TextBubble/NameLabel.set('custom_colors/font_color_shadow', Color('#00ffffff'))
 	
-	var text_shadow_color = Color(theme.get_value('text', 'shadow_color', '#9e000000'))
-	$TextBubble/RichTextLabel.set('custom_colors/font_color_shadow', text_shadow_color)
-	$TextBubble/NameLabel.set('custom_colors/font_color_shadow', text_shadow_color)
+	if theme.get_value('text', 'shadow', false):
+		var text_shadow_color = Color(theme.get_value('text', 'shadow_color', '#9e000000'))
+		$TextBubble/RichTextLabel.set('custom_colors/font_color_shadow', text_shadow_color)
+		$TextBubble/NameLabel.set('custom_colors/font_color_shadow', text_shadow_color)
 	
 	var shadow_offset = theme.get_value('text', 'shadow_offset', Vector2(2,2))
 	$TextBubble/RichTextLabel.set('custom_constants/shadow_offset_x', shadow_offset.x)

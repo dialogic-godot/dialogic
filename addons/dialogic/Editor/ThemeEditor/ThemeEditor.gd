@@ -59,7 +59,7 @@ func load_theme(filename):
 	n['theme_background_image'].text = DialogicUtil.get_filename_from_path(theme.get_value('background', 'image', 'res://addons/dialogic/Images/background/background-2.png'))
 	n['background_texture_button_visible'].pressed = theme.get_value('background', 'use_image', true)
 	n['theme_background_color'].color = Color(theme.get_value('background', 'color', '#ff000000'))
-	n['theme_background_color_visible'].pressed = theme.get_value('background', 'use_color', true)
+	n['theme_background_color_visible'].pressed = theme.get_value('background', 'use_color', false)
 	
 	# Next Indicator
 	n['theme_next_image'].text = DialogicUtil.get_filename_from_path(theme.get_value('next_indicator', 'image', 'res://addons/dialogic/Images/next-indicator.png'))
