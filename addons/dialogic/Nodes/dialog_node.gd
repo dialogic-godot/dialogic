@@ -553,7 +553,7 @@ func load_theme(filename) -> void:
 	text_speed = theme.get_value('text','speed', 2) * 0.01
 	
 	# Margin
-	var text_margin = theme.get_value('text', 'margin', Vector2(10,20))
+	var text_margin = theme.get_value('text', 'margin', Vector2(20, 10))
 	$TextBubble/RichTextLabel.set('margin_left', text_margin.x)
 	$TextBubble/RichTextLabel.set('margin_right', text_margin.x * -1)
 	$TextBubble/RichTextLabel.set('margin_top', text_margin.y)

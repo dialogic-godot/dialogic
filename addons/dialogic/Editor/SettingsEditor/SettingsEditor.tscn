@@ -1,0 +1,39 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://addons/dialogic/Editor/SettingsEditor/SettingsEditor.gd" type="Script" id=1]
+
+[node name="SettingsEditor" type="ScrollContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+margin_right = 1280.0
+margin_bottom = 720.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="VBoxContainer"]
+margin_right = 1280.0
+margin_bottom = 14.0
+text = "Settings editor"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+margin_top = 18.0
+margin_right = 1280.0
+margin_bottom = 38.0
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer"]
+margin_top = 3.0
+margin_right = 94.0
+margin_bottom = 17.0
+text = "Default Theme"
+
+[node name="ThemeOptionButton" type="OptionButton" parent="VBoxContainer/HBoxContainer"]
+margin_left = 98.0
+margin_right = 238.0
+margin_bottom = 20.0
+rect_min_size = Vector2( 140, 0 )

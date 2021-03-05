@@ -11,6 +11,7 @@ onready var timeline_editor = $MainPanel/TimelineEditor
 onready var character_editor = $MainPanel/CharacterEditor
 onready var glossary_editor = $MainPanel/GlossaryEditor
 onready var theme_editor = $MainPanel/ThemeEditor
+onready var settings_editor = $MainPanel/SettingsEditor
 
 
 func _ready():

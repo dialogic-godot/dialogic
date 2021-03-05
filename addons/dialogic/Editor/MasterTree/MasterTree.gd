@@ -5,6 +5,7 @@ onready var editor_reference = get_node('../..')
 onready var timeline_editor = get_node('../TimelineEditor')
 onready var character_editor = get_node('../CharacterEditor')
 onready var definitions_editor = get_node('../GlossaryEditor')
+onready var settings_editor = get_node('../SettingsEditor')
 onready var theme_editor = get_node('../ThemeEditor')
 onready var empty_editor = get_node('../Empty')
 
@@ -15,6 +16,7 @@ var timelines_tree
 var characters_tree
 var definitions_tree
 var themes_tree
+var settings_tree
 
 func _ready():
 	allow_rmb_select = true
@@ -25,19 +27,30 @@ func _ready():
 	timelines_tree = tree.create_item(root)
 	timelines_tree.set_selectable(0, false)
 	timelines_tree.set_text(0, "Timelines")
-
+	#timelines_tree.set_icon(0, get_icon("Folder", "EditorIcons"))
 	
 	characters_tree = tree.create_item(root)
 	characters_tree.set_selectable(0, false)
 	characters_tree.set_text(0, "Characters")
+	#characters_tree.set_icon(0, get_icon("Folder", "EditorIcons"))
 
 	definitions_tree = tree.create_item(root)
 	definitions_tree.set_selectable(0, false)
 	definitions_tree.set_text(0, "Definitions")
+	#definitions_tree.set_icon(0, get_icon("Folder", "EditorIcons"))
 
 	themes_tree = tree.create_item(root)
 	themes_tree.set_selectable(0, false)
 	themes_tree.set_text(0, "Themes")
+	#themes_tree.set_icon(0, get_icon("Folder", "EditorIcons"))
+	
+	
+	
+	settings_tree = tree.create_item(root)
+	settings_tree.set_selectable(0, true)
+	settings_tree.set_text(0, "Settings")
+	settings_tree.set_icon(0, get_icon("GDScript", "EditorIcons"))
+	settings_tree.set_metadata(0, {'editor': 'Settings'})
 
 	
 	connect('item_selected', self, '_on_item_selected')
@@ -157,6 +170,9 @@ func _on_item_selected():
 	if metadata['editor'] == 'Theme':
 		theme_editor.load_theme(metadata['file'])
 		theme_editor.visible = true
+	if metadata['editor'] == 'Settings':
+		settings_editor.update_data()
+		settings_editor.visible = true
 
 
 func hide_all_editors(show_empty = false):
@@ -165,6 +181,7 @@ func hide_all_editors(show_empty = false):
 	definitions_editor.visible = false
 	theme_editor.visible = false
 	empty_editor.visible = false
+	settings_editor.visible = false
 	if show_empty:
 		empty_editor.visible = true
 

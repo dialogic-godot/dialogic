@@ -1,10 +1,11 @@
-[gd_scene load_steps=19 format=2]
+[gd_scene load_steps=20 format=2]
 
 [ext_resource path="res://addons/dialogic/Editor/EditorView.gd" type="Script" id=1]
 [ext_resource path="res://addons/dialogic/Editor/TimelineEditor/TimelineEditor.tscn" type="PackedScene" id=2]
 [ext_resource path="res://addons/dialogic/Images/Toolbar/add-timeline.svg" type="Texture" id=3]
 [ext_resource path="res://addons/dialogic/Images/Toolbar/add-character.svg" type="Texture" id=4]
 [ext_resource path="res://addons/dialogic/Images/Toolbar/add-theme.svg" type="Texture" id=5]
+[ext_resource path="res://addons/dialogic/Editor/SettingsEditor/SettingsEditor.tscn" type="PackedScene" id=6]
 [ext_resource path="res://addons/dialogic/Editor/CharacterEditor/CharacterEditor.tscn" type="PackedScene" id=7]
 [ext_resource path="res://addons/dialogic/Editor/ThemeEditor/ThemeEditor.tscn" type="PackedScene" id=8]
 [ext_resource path="res://addons/dialogic/Images/open-icon.svg" type="Texture" id=9]
@@ -176,6 +177,13 @@ visible = false
 
 [node name="ThemeEditor" parent="MainPanel" instance=ExtResource( 8 )]
 visible = false
+
+[node name="SettingsEditor" parent="MainPanel" instance=ExtResource( 6 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 192.0
+margin_right = 1253.0
+margin_bottom = 661.0
 
 [node name="Empty" type="CenterContainer" parent="MainPanel"]
 margin_left = 192.0

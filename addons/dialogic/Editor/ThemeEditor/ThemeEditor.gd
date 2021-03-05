@@ -87,8 +87,8 @@ func load_theme(filename):
 	n['theme_text_shadow_color'].color = Color(theme.get_value('text', 'shadow_color', '#9e000000'))
 	n['theme_shadow_offset_x'].value = theme.get_value('text', 'shadow_offset', Vector2(2,2)).x
 	n['theme_shadow_offset_y'].value = theme.get_value('text', 'shadow_offset', Vector2(2,2)).y
-	n['theme_text_margin'].value = theme.get_value('text', 'margin', Vector2(10, 20)).x
-	n['theme_text_margin_h'].value = theme.get_value('text', 'margin', Vector2(10, 20)).y
+	n['theme_text_margin'].value = theme.get_value('text', 'margin', Vector2(20, 10)).x
+	n['theme_text_margin_h'].value = theme.get_value('text', 'margin', Vector2(20, 10)).y
 
 
 func new_theme():
