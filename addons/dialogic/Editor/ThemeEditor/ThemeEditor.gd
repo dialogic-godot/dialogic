@@ -93,10 +93,7 @@ func load_theme(filename):
 
 func new_theme():
 	var theme_file = 'theme-' + str(OS.get_unix_time()) + '.cfg'
-	var file = File.new()
-	file.open(DialogicUtil.get_path('THEME_DIR', theme_file), File.WRITE)
-	file.store_string('')
-	file.close()
+	DialogicUtil.create_empty_file(DialogicUtil.get_path('THEME_DIR', theme_file))
 	master_tree.add_theme({'file': theme_file, 'name': theme_file})
 	load_theme(theme_file)
 

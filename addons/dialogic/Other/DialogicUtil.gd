@@ -3,6 +3,14 @@ class_name DialogicUtil
 
 enum {GLOSSARY_NONE, GLOSSARY_EXTRA, GLOSSARY_NUMBER, GLOSSARY_STRING}
 
+# This class was initially for doing small things... but after a while
+# it ended up being one of the corner stones of the plugin. 
+# It should probably be split into several other classes and leave 
+# just the basic stuff here, but I'll keep working like this until I have
+# some extra time to burn. 
+# A good point to start would be to add a "resource manager" instead of
+# handling most of that here. But who knows? (:
+
 static func init_dialogic_files() -> void:
 	# This functions makes sure that the needed files and folders
 	# exists when the plugin is loaded. If they don't, we create 
@@ -11,8 +19,9 @@ static func init_dialogic_files() -> void:
 	var paths = get_working_directories()
 	for dir in paths:
 		if 'settings.cfg' in paths[dir]:
-			# TODO: Create settings.cfg here
-			pass
+			if directory.file_exists(paths['SETTINGS_FILE']) == false:
+				create_empty_file(paths['SETTINGS_FILE'])
+				print('created')
 		elif 'glossary.json' in paths[dir]:
 			load_glossary()
 		else:
@@ -271,3 +280,19 @@ static func set_theme_value(filename, section, key, value):
 	if err == OK:
 		config.set_value(section, key, value)
 		config.save(file)
+
+
+static func create_empty_file(path):
+	var file = File.new()
+	file.open(path, File.WRITE)
+	file.store_string('')
+	file.close()
+
+
+static func get_settings():
+	var config = ConfigFile.new()
+	var err = config.load(get_path('SETTINGS_FILE'))
+	if err == OK:
+		return config
+	else:
+		print('Error loading ', get_path('SETTINGS_FILE'), '. Was it modified manually? Make sure it exists!')

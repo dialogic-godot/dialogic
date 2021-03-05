@@ -203,6 +203,7 @@ func remove_selected():
 	var item = get_selected()
 	item.free()
 	timelines_tree.select(0)
+	settings_editor.update_data()
 
 
 func refresh_timeline_list():
