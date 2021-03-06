@@ -351,6 +351,10 @@ func event_handler(event: Dictionary):
 			go_to_next_event()
 		{'close_dialog'}:
 			queue_free()
+		{'set_theme'}:
+			if event['set_theme'] != '':
+				load_theme(event['set_theme'])
+			go_to_next_event()
 		{'wait_seconds'}:
 			wait_seconds(event['wait_seconds'])
 		{'change_timeline'}:

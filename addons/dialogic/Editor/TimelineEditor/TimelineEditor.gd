@@ -145,6 +145,8 @@ func load_timeline(path):
 				create_event("IfCondition", i)
 			{'set_value', 'glossary'}:
 				create_event("SetValue", i)
+			{'set_theme'}:
+				create_event("SetTheme", i)
 
 	if data.size() < 1:
 		events_warning.visible = true
