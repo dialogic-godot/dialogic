@@ -15,7 +15,7 @@ static func init_dialogic_files() -> void:
 	# This functions makes sure that the needed files and folders
 	# exists when the plugin is loaded. If they don't, we create 
 	# them.
-	var directory = Directory.new();
+	var directory = Directory.new()
 	var paths = get_working_directories()
 	for dir in paths:
 		if 'settings.cfg' in paths[dir]:

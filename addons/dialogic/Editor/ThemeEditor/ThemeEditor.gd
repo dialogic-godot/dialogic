@@ -3,6 +3,7 @@ extends Control
 
 var editor_reference
 onready var master_tree = get_node('../MasterTree')
+onready var settings_editor = get_node('../SettingsEditor')
 var current_theme = ''
 
 # The amazing and revolutionary path system that magically works and you can't
@@ -96,6 +97,10 @@ func new_theme():
 	DialogicUtil.create_empty_file(DialogicUtil.get_path('THEME_DIR', theme_file))
 	master_tree.add_theme({'file': theme_file, 'name': theme_file})
 	load_theme(theme_file)
+	# Check if it is the only theme to set as default
+	if DialogicUtil.get_theme_list().size() == 1:
+		print('only theme, setting as default')
+		settings_editor.set_value('theme', 'default', theme_file)
 
 
 func _on_BackgroundTextureButton_pressed():
