@@ -29,6 +29,10 @@ var dialog_script = {}
 var questions #for keeping track of the questions answered
 
 func _ready():
+	var settings = DialogicUtil.get_settings()
+	var theme = settings.get_value('theme', 'default')
+	if theme:
+		load_theme(theme)
 	
 	# Loading the glossary
 	glossary = DialogicUtil.load_glossary()

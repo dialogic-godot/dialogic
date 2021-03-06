@@ -141,7 +141,6 @@ func _on_PreviewButton_pressed():
 	var preview_dialog = dialogic_node.instance()
 	var glossary = DialogicUtil.load_glossary()
 	preview_dialog.glossary = glossary
-	preview_dialog.load_theme(current_theme)
 	preview_dialog.get_node('GlossaryInfo').in_theme_editor = true
 	preview_dialog.get_node('TextBubble/NextIndicator/AnimationPlayer').play('IDLE')
 	preview_dialog.dialog_script['events'] = [{
@@ -151,6 +150,7 @@ func _on_PreviewButton_pressed():
 	}]
 	preview_dialog.parse_glossary(preview_dialog.dialog_script)
 	n['preview_panel'].add_child(preview_dialog)
+	preview_dialog.load_theme(current_theme)
 
 
 func _on_ActionOptionButton_item_selected(index):
