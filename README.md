@@ -8,7 +8,12 @@ Create dialogs, characters and scenes to display conversations in your Godot gam
 ## Changelog
 
 ### 🆕 v1.0 - WIP
-  - 
+  - New layout.
+    - All editors in the same screen. Say goodbye to tabs!
+    - You can now rename resources by double clicking them
+  - Add multiple themes
+  - Set Theme event
+  - Settings panel to pick the default theme
 
 To view the full changelog [click here](https://github.com/coppolaemilio/dialogic/blob/master/CHANGELOG.md). 
 
