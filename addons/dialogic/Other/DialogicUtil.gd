@@ -130,7 +130,8 @@ static func get_character_list() -> Array:
 				'file': file,
 				'default_speaker' : default_speaker,
 				'portraits': portraits,
-				'display_name': display_name
+				'display_name': display_name,
+				'data': data # This should be the only thing passed... not sure what I was thinking
 			})
 
 	return characters

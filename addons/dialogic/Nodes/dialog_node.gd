@@ -11,6 +11,7 @@ var waiting_for_answer: bool = false
 var waiting_for_input: bool = false
 var glossary_visible: bool = false
 var glossary
+var waiting = false
 
 var current_theme
 
@@ -186,7 +187,7 @@ func _process(_delta):
 		else:
 			$Options.visible = false
 		
-		if Input.is_action_just_pressed(input_next):
+		if Input.is_action_just_pressed(input_next) and waiting == false:
 			if $TextBubble/Tween.is_active():
 				# Skip to end if key is pressed during the text animation
 				$TextBubble/Tween.seek(999)
@@ -357,6 +358,7 @@ func event_handler(event: Dictionary):
 			go_to_next_event()
 		{'wait_seconds'}:
 			wait_seconds(event['wait_seconds'])
+			waiting = true
 		{'change_timeline'}:
 			dialog_script = set_current_dialog('/' + event['change_timeline'])
 			dialog_index = -1
@@ -619,6 +621,7 @@ func wait_seconds(seconds):
 
 
 func _on_WaitSeconds_timeout():
+	waiting = false
 	$WaitSeconds.stop()
 	$TextBubble.visible = true
 	load_dialog()

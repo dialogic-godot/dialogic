@@ -5,7 +5,7 @@ var editor_reference
 onready var master_tree = get_node('../MasterTree')
 var opened_character_data
 var portrait_entry = load("res://addons/dialogic/Editor/CharacterEditor/PortraitEntry.tscn")
-onready var character_editor = {
+onready var nodes = {
 	'editor': $HBoxContainer/Container,
 	'name': $HBoxContainer/Container/Name/LineEdit,
 	'description': $HBoxContainer/Container/Description/TextEdit,
@@ -15,14 +15,20 @@ onready var character_editor = {
 	'display_name_checkbox': $HBoxContainer/Container/Name/CheckBox,
 	'display_name': $HBoxContainer/Container/DisplayName/LineEdit,
 	'new_portrait_button': $HBoxContainer/Container/ScrollContainer/VBoxContainer/HBoxContainer/Button,
+	'portrait_preview': $HBoxContainer/VBoxContainer/Control/TextureRect,
+	'origin_marker': $HBoxContainer/VBoxContainer/Control/OriginMarker,
+	'scale': $HBoxContainer/VBoxContainer/HBoxContainer/Scale,
 }
 
 
 func _ready():
-	character_editor['new_portrait_button'].connect('pressed', self, '_on_New_Portrait_Button_pressed')
-	character_editor['display_name_checkbox'].connect('toggled', self, '_on_display_name_toggled')
-	character_editor['name'].connect('text_changed', self, '_on_name_changed')
-	character_editor['color'].connect('color_changed', self, '_on_color_changed')
+	nodes['new_portrait_button'].connect('pressed', self, '_on_New_Portrait_Button_pressed')
+	nodes['display_name_checkbox'].connect('toggled', self, '_on_display_name_toggled')
+	nodes['name'].connect('text_changed', self, '_on_name_changed')
+	nodes['color'].connect('color_changed', self, '_on_color_changed')
+	nodes['portrait_preview'].connect('gui_input', self, '_on_preview_gui_input')
+	nodes['scale'].connect('value_changed', self, '_on_scale_changed')
+
 
 func _on_display_name_toggled(button_pressed):
 	$HBoxContainer/Container/DisplayName.visible = button_pressed
@@ -32,24 +38,26 @@ func _on_name_changed(value):
 	var item = master_tree.get_selected()
 	item.set_text(0, value)
 
+
 func _on_color_changed(color):
 	var item = master_tree.get_selected()
 	item.set_icon_modulate(0, color)
 
 
 func clear_character_editor():
-	character_editor['file'].text = ''
-	character_editor['name'].text = ''
-	character_editor['description'].text = ''
-	character_editor['color'].color = Color('#ffffff')
-	character_editor['default_speaker'].pressed = false
-	character_editor['display_name_checkbox'].pressed = false
-	character_editor['display_name'].text = ''
-	character_editor['portraits'] = []
+	nodes['file'].text = ''
+	nodes['name'].text = ''
+	nodes['description'].text = ''
+	nodes['color'].color = Color('#ffffff')
+	nodes['default_speaker'].pressed = false
+	nodes['display_name_checkbox'].pressed = false
+	nodes['display_name'].text = ''
+	nodes['portraits'] = []
+	# TODO: Clear new size and origin fields
 	# Clearing portraits
 	for p in $HBoxContainer/Container/ScrollContainer/VBoxContainer/PortraitList.get_children():
 		p.queue_free()
-	$HBoxContainer/VBoxContainer/Control/TextureRect.texture = null
+	nodes['portrait_preview'].texture = null
 
 
 # Character Creation
@@ -74,7 +82,6 @@ func create_character():
 	return character
 
 
-
 func new_character():
 	# This event creates and selects the new timeline
 	master_tree.add_character(create_character()['metadata'], true)
@@ -82,7 +89,7 @@ func new_character():
 
 # Saving and Loading
 func generate_character_data_to_save():
-	var default_speaker: bool = character_editor['default_speaker'].pressed
+	var default_speaker: bool = nodes['default_speaker'].pressed
 	var portraits = []
 	for p in $HBoxContainer/Container/ScrollContainer/VBoxContainer/PortraitList.get_children():
 		var entry = {}
@@ -90,23 +97,24 @@ func generate_character_data_to_save():
 		entry['path'] = p.get_node("PathEdit").text
 		portraits.append(entry)
 	var info_to_save = {
-		'id': character_editor['file'].text,
-		'description': character_editor['description'].text,
-		'color': '#' + character_editor['color'].color.to_html(),
+		'id': nodes['file'].text,
+		'description': nodes['description'].text,
+		'color': '#' + nodes['color'].color.to_html(),
 		'default_speaker': default_speaker,
 		'portraits': portraits,
-		'display_name_bool': character_editor['display_name_checkbox'].pressed,
-		'display_name': character_editor['display_name'].text,
+		'display_name_bool': nodes['display_name_checkbox'].pressed,
+		'display_name': nodes['display_name'].text,
+		'scale': str(nodes['scale'].value),
 	}
 	# Adding name later for cases when no name is provided
-	if character_editor['name'].text != '':
-		info_to_save['name'] = character_editor['name'].text
+	if nodes['name'].text != '':
+		info_to_save['name'] = nodes['name'].text
 	
 	return info_to_save
 
 
 func save_character():
-	var path = DialogicUtil.get_path('CHAR_DIR', character_editor['file'].text)
+	var path = DialogicUtil.get_path('CHAR_DIR', nodes['file'].text)
 	var info_to_save = generate_character_data_to_save()
 	if info_to_save['id']:
 		var file = File.new()
@@ -120,22 +128,25 @@ func load_character(path):
 	var data = DialogicUtil.load_json(path)
 	clear_character_editor()
 	opened_character_data = data
-	character_editor['file'].text = data['id']
-	character_editor['default_speaker'].pressed = false
+	nodes['file'].text = data['id']
+	nodes['default_speaker'].pressed = false
 	if data.has('name'):
-		character_editor['name'].text = data['name']
+		nodes['name'].text = data['name']
 	if data.has('description'):
-		character_editor['description'].text = data['description']
+		nodes['description'].text = data['description']
 	if data.has('color'):
-		character_editor['color'].color = Color(data['color'])
+		nodes['color'].color = Color(data['color'])
 	if data.has('default_speaker'):
 		if data['default_speaker']:
-			character_editor['default_speaker'].pressed = true
+			nodes['default_speaker'].pressed = true
 	
 	if data.has('display_name_bool'):
-		character_editor['display_name_checkbox'].pressed = data['display_name_bool']
+		nodes['display_name_checkbox'].pressed = data['display_name_bool']
 	if data.has('display_name'):
-		character_editor['display_name'].text = data['display_name']
+		nodes['display_name'].text = data['display_name']
+	if data.has('scale'):
+		nodes['scale'].value = float(data['scale'])
+		
 
 	# Portraits
 	var default_portrait = create_portrait_entry()
@@ -150,6 +161,21 @@ func load_character(path):
 				create_portrait_entry(p['name'], p['path'])
 
 
+# Size and origin
+func _on_preview_gui_input(event) -> void:
+	if event is InputEventMouseButton and event.button_index == 1:
+		var mouse = get_global_mouse_position()
+		var local_mouse = nodes['portrait_preview'].get_local_mouse_position()
+		var texture_size = nodes['portrait_preview'].texture.get_size()
+		print(local_mouse, ' texture_size=', texture_size, event)
+		nodes['origin_marker'].set_global_position(mouse - Vector2(24,24)) 
+		
+
+func _on_scale_changed(value):
+	#var final_number = str(new_value).replace('.00', '')
+	#nodes['scale'].text = final_number
+	print('changed')
+
 # Portraits
 func _on_New_Portrait_Button_pressed():
 	create_portrait_entry('', '', true)
@@ -158,7 +184,7 @@ func _on_New_Portrait_Button_pressed():
 func create_portrait_entry(p_name = '', path = '', grab_focus = false):
 	var p = portrait_entry.instance()
 	p.editor_reference = editor_reference
-	p.image_node = $HBoxContainer/VBoxContainer/Control/TextureRect
+	p.image_node = nodes['portrait_preview']
 	var p_list = $HBoxContainer/Container/ScrollContainer/VBoxContainer/PortraitList
 	p_list.add_child(p)
 	if p_name != '':

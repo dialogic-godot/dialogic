@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://addons/dialogic/Editor/CharacterEditor/PortraitEntry.tscn" type="PackedScene" id=1]
 [ext_resource path="res://addons/dialogic/Editor/CharacterEditor/CharacterEditor.gd" type="Script" id=2]
+[ext_resource path="res://addons/dialogic/Editor/CharacterEditor/origin.svg" type="Texture" id=3]
 
 [sub_resource type="StyleBoxFlat" id=1]
 content_margin_left = 5.0
@@ -166,13 +167,13 @@ text = "Path"
 [node name="ScrollContainer" type="ScrollContainer" parent="HBoxContainer/Container"]
 margin_top = 206.0
 margin_right = 523.0
-margin_bottom = 595.0
+margin_bottom = 623.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/Container/ScrollContainer"]
 margin_right = 523.0
-margin_bottom = 389.0
+margin_bottom = 417.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
@@ -195,6 +196,7 @@ margin_bottom = 20.0
 text = " Add new + "
 
 [node name="FileName" type="HBoxContainer" parent="HBoxContainer/Container"]
+visible = false
 margin_top = 599.0
 margin_right = 523.0
 margin_bottom = 623.0
@@ -245,7 +247,7 @@ size_flags_vertical = 3
 
 [node name="Control" type="Panel" parent="HBoxContainer/VBoxContainer"]
 margin_right = 524.0
-margin_bottom = 651.0
+margin_bottom = 623.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
@@ -273,3 +275,48 @@ text = "Preview"
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="OriginMarker" type="TextureRect" parent="HBoxContainer/VBoxContainer/Control"]
+mouse_filter = 2
+texture = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/VBoxContainer"]
+margin_top = 627.0
+margin_right = 524.0
+margin_bottom = 651.0
+
+[node name="Label" type="Label" parent="HBoxContainer/VBoxContainer/HBoxContainer"]
+margin_top = 5.0
+margin_right = 33.0
+margin_bottom = 19.0
+text = "Scale"
+
+[node name="Scale" type="SpinBox" parent="HBoxContainer/VBoxContainer/HBoxContainer"]
+margin_left = 37.0
+margin_right = 111.0
+margin_bottom = 24.0
+value = 100.0
+allow_greater = true
+align = 2
+
+[node name="Label2" type="Label" parent="HBoxContainer/VBoxContainer/HBoxContainer"]
+margin_left = 115.0
+margin_top = 5.0
+margin_right = 186.0
+margin_bottom = 19.0
+text = "        Origin"
+
+[node name="LineEdit2" type="LineEdit" parent="HBoxContainer/VBoxContainer/HBoxContainer"]
+margin_left = 190.0
+margin_right = 248.0
+margin_bottom = 24.0
+text = "0"
+
+[node name="LineEdit3" type="LineEdit" parent="HBoxContainer/VBoxContainer/HBoxContainer"]
+margin_left = 252.0
+margin_right = 310.0
+margin_bottom = 24.0
+text = "0"

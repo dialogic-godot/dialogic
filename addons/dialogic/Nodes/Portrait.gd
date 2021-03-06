@@ -14,11 +14,22 @@ func init(expression: String = '', position_offset = 'left') -> void:
 	rect_position += positions[position_offset]
 	direction = position_offset
 	modulate = Color(1,1,1,0)
-	#if character_data.image == null:
-	#	push_error('The DialogCharacterResource [' + character_data.name + '] doesn\'t have an Image set.')
-	#	character_data.image = load("res://addons/dialogic/Images/portraits/df-1.png")
+	
+	# Setting the scale of the portrait
+	var custom_scale = Vector2(1, 1)
+	if character_data.has('data'):
+		if character_data['data'].has('scale'):
+			custom_scale = Vector2(
+				float(character_data['data']['scale']) / 100,
+				float(character_data['data']['scale']) / 100
+			)
+			rect_scale = custom_scale
+
 	set_portrait(expression)
-	rect_position -= Vector2($TextureRect.texture.get_width() * 0.5, $TextureRect.texture.get_height())
+	rect_position -= Vector2(
+		$TextureRect.texture.get_width() * 0.5,
+		$TextureRect.texture.get_height()
+	) * custom_scale
 
 
 func _ready():
@@ -36,6 +47,7 @@ func set_portrait(expression: String) -> void:
 			$TextureRect.texture = load(p['path'])
 
 
+# Tween stuff
 func fade_in(node = self, time = 0.5):
 	tween_modulate(Color(1,1,1,0), Color(1,1,1,1), time)
 	

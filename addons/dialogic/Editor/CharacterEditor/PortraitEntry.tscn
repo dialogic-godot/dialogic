@@ -12,15 +12,15 @@ __meta__ = {
 }
 
 [node name="NameEdit" type="LineEdit" parent="."]
-margin_right = 100.0
+margin_right = 160.0
 margin_bottom = 24.0
-rect_min_size = Vector2( 100, 0 )
+rect_min_size = Vector2( 160, 0 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="PathEdit" type="LineEdit" parent="."]
-margin_left = 104.0
+margin_left = 164.0
 margin_right = 391.0
 margin_bottom = 24.0
 rect_min_size = Vector2( 150, 0 )
