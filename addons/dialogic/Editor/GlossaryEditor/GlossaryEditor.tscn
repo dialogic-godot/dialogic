@@ -3,22 +3,21 @@
 [ext_resource path="res://addons/dialogic/Editor/GlossaryEditor/GlossaryEditor.gd" type="Script" id=1]
 
 [node name="GlossaryEditor" type="ScrollContainer"]
-margin_left = 192.0
-margin_right = 1253.0
-margin_bottom = 661.0
+anchor_right = 1.0
+anchor_bottom = 1.0
 script = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
-margin_right = 1061.0
-margin_bottom = 661.0
+margin_right = 1280.0
+margin_bottom = 720.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
-margin_right = 1061.0
+margin_right = 1280.0
 margin_bottom = 84.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer"]
