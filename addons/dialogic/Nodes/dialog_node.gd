@@ -334,8 +334,7 @@ func event_handler(event: Dictionary):
 		{'background'}:
 			$Background.visible = true
 			$Background.texture = load(event['background'])
-			dialog_index += 1
-			load_dialog(true)
+			go_to_next_event()
 		{'audio'}, {'audio', 'file'}:
 			if event['audio'] == 'play':
 				$FX/AudioStreamPlayer.stream = load(event['file'])

@@ -293,6 +293,7 @@ margin_bottom = 24.0
 value = 100.0
 allow_greater = true
 align = 2
+suffix = "%"
 
 [node name="Label2" type="Label" parent="HBoxContainer/VBoxContainer/HBoxContainer"]
 margin_left = 115.0
@@ -303,16 +304,18 @@ text = "        Offset"
 
 [node name="OffsetX" type="SpinBox" parent="HBoxContainer/VBoxContainer/HBoxContainer"]
 margin_left = 190.0
-margin_right = 264.0
+margin_right = 290.0
 margin_bottom = 24.0
+rect_min_size = Vector2( 100, 0 )
 allow_greater = true
 allow_lesser = true
 suffix = "X"
 
 [node name="OffsetY" type="SpinBox" parent="HBoxContainer/VBoxContainer/HBoxContainer"]
-margin_left = 268.0
-margin_right = 342.0
+margin_left = 294.0
+margin_right = 394.0
 margin_bottom = 24.0
+rect_min_size = Vector2( 100, 0 )
 allow_greater = true
 allow_lesser = true
 suffix = "Y"

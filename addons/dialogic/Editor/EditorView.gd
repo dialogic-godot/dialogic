@@ -50,6 +50,7 @@ func _ready():
 	var err = config.load("res://addons/dialogic/plugin.cfg")
 	if err == OK:
 		version_string = config.get_value("plugin", "version", "?")
+		$ToolBar/Version.text = 'v' + version_string
 
 
 # Timeline context menu

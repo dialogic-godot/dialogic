@@ -30,7 +30,7 @@ func has_main_screen():
 
 
 func get_plugin_name():
-	return "dialogic"
+	return "Dialogic"
 
 
 func make_visible(visible):

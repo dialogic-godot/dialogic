@@ -118,7 +118,7 @@ func load_timeline(path):
 			{'text', 'character', 'portrait'}:
 				create_event("TextBlock", i)
 			{'background'}:
-				create_event("SceneBlock", i)
+				create_event("SceneEvent", i)
 			{'character', 'action', 'position', 'portrait'}:
 				create_event("CharacterJoinBlock", i)
 			{'audio', 'file'}:
