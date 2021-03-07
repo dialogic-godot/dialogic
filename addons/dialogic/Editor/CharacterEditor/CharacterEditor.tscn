@@ -1,8 +1,7 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://addons/dialogic/Editor/CharacterEditor/PortraitEntry.tscn" type="PackedScene" id=1]
 [ext_resource path="res://addons/dialogic/Editor/CharacterEditor/CharacterEditor.gd" type="Script" id=2]
-[ext_resource path="res://addons/dialogic/Editor/CharacterEditor/origin.svg" type="Texture" id=3]
 
 [sub_resource type="StyleBoxFlat" id=1]
 content_margin_left = 5.0
@@ -276,13 +275,6 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="OriginMarker" type="TextureRect" parent="HBoxContainer/VBoxContainer/Control"]
-mouse_filter = 2
-texture = ExtResource( 3 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
 [node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/VBoxContainer"]
 margin_top = 627.0
 margin_right = 524.0
@@ -307,16 +299,20 @@ margin_left = 115.0
 margin_top = 5.0
 margin_right = 186.0
 margin_bottom = 19.0
-text = "        Origin"
+text = "        Offset"
 
-[node name="LineEdit2" type="LineEdit" parent="HBoxContainer/VBoxContainer/HBoxContainer"]
+[node name="OffsetX" type="SpinBox" parent="HBoxContainer/VBoxContainer/HBoxContainer"]
 margin_left = 190.0
-margin_right = 248.0
+margin_right = 264.0
 margin_bottom = 24.0
-text = "0"
+allow_greater = true
+allow_lesser = true
+suffix = "X"
 
-[node name="LineEdit3" type="LineEdit" parent="HBoxContainer/VBoxContainer/HBoxContainer"]
-margin_left = 252.0
-margin_right = 310.0
+[node name="OffsetY" type="SpinBox" parent="HBoxContainer/VBoxContainer/HBoxContainer"]
+margin_left = 268.0
+margin_right = 342.0
 margin_bottom = 24.0
-text = "0"
+allow_greater = true
+allow_lesser = true
+suffix = "Y"

@@ -16,8 +16,9 @@ onready var nodes = {
 	'display_name': $HBoxContainer/Container/DisplayName/LineEdit,
 	'new_portrait_button': $HBoxContainer/Container/ScrollContainer/VBoxContainer/HBoxContainer/Button,
 	'portrait_preview': $HBoxContainer/VBoxContainer/Control/TextureRect,
-	'origin_marker': $HBoxContainer/VBoxContainer/Control/OriginMarker,
 	'scale': $HBoxContainer/VBoxContainer/HBoxContainer/Scale,
+	'offset_x': $HBoxContainer/VBoxContainer/HBoxContainer/OffsetX,
+	'offset_y': $HBoxContainer/VBoxContainer/HBoxContainer/OffsetY,
 }
 
 
@@ -26,8 +27,6 @@ func _ready():
 	nodes['display_name_checkbox'].connect('toggled', self, '_on_display_name_toggled')
 	nodes['name'].connect('text_changed', self, '_on_name_changed')
 	nodes['color'].connect('color_changed', self, '_on_color_changed')
-	nodes['portrait_preview'].connect('gui_input', self, '_on_preview_gui_input')
-	nodes['scale'].connect('value_changed', self, '_on_scale_changed')
 
 
 func _on_display_name_toggled(button_pressed):
@@ -53,7 +52,10 @@ func clear_character_editor():
 	nodes['display_name_checkbox'].pressed = false
 	nodes['display_name'].text = ''
 	nodes['portraits'] = []
-	# TODO: Clear new size and origin fields
+	nodes['scale'].value = 100
+	nodes['offset_x'].value = 0
+	nodes['offset_y'].value = 0
+
 	# Clearing portraits
 	for p in $HBoxContainer/Container/ScrollContainer/VBoxContainer/PortraitList.get_children():
 		p.queue_free()
@@ -104,7 +106,9 @@ func generate_character_data_to_save():
 		'portraits': portraits,
 		'display_name_bool': nodes['display_name_checkbox'].pressed,
 		'display_name': nodes['display_name'].text,
-		'scale': str(nodes['scale'].value),
+		'scale': nodes['scale'].value,
+		'offset_x': nodes['offset_x'].value,
+		'offset_y': nodes['offset_y'].value,
 	}
 	# Adding name later for cases when no name is provided
 	if nodes['name'].text != '':
@@ -146,7 +150,10 @@ func load_character(path):
 		nodes['display_name'].text = data['display_name']
 	if data.has('scale'):
 		nodes['scale'].value = float(data['scale'])
-		
+	
+	if data.has('offset_x'):
+		nodes['offset_x'].value = data['offset_x']
+		nodes['offset_y'].value = data['offset_y']
 
 	# Portraits
 	var default_portrait = create_portrait_entry()
@@ -160,21 +167,6 @@ func load_character(path):
 			else:
 				create_portrait_entry(p['name'], p['path'])
 
-
-# Size and origin
-func _on_preview_gui_input(event) -> void:
-	if event is InputEventMouseButton and event.button_index == 1:
-		var mouse = get_global_mouse_position()
-		var local_mouse = nodes['portrait_preview'].get_local_mouse_position()
-		var texture_size = nodes['portrait_preview'].texture.get_size()
-		print(local_mouse, ' texture_size=', texture_size, event)
-		nodes['origin_marker'].set_global_position(mouse - Vector2(24,24)) 
-		
-
-func _on_scale_changed(value):
-	#var final_number = str(new_value).replace('.00', '')
-	#nodes['scale'].text = final_number
-	print('changed')
 
 # Portraits
 func _on_New_Portrait_Button_pressed():

@@ -24,6 +24,11 @@ func init(expression: String = '', position_offset = 'left') -> void:
 				float(character_data['data']['scale']) / 100
 			)
 			rect_scale = custom_scale
+		if character_data['data'].has('offset_x'):
+			rect_position += Vector2(
+				character_data['data']['offset_x'],
+				character_data['data']['offset_y']
+			)
 
 	set_portrait(expression)
 	rect_position -= Vector2(
