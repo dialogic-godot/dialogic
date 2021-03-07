@@ -23,14 +23,12 @@ func _ready():
 
 	var c_list = DialogicUtil.get_character_list()
 	if c_list.size() == 0:
-		$PanelContainer/VBoxContainer/Header/CharacterDropdown.visible = false
-		$PanelContainer/VBoxContainer/Header/CharacterIcon.visible = false
+		$PanelContainer/VBoxContainer/Header/CharacterPicker.visible = false
 	else:
 		# Default Speaker
 		for c in c_list:
 			if c['default_speaker']:
 				event_data['character'] = c['file']
-	#update_preview()
 
 
 func _on_character_selected(data):
