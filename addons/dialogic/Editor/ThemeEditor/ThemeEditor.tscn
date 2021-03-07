@@ -562,7 +562,7 @@ margin_right = 1118.0
 margin_bottom = 60.0
 rect_min_size = Vector2( 400, 60 )
 size_flags_horizontal = 3
-text = "This is preview text. You can use  [color=#A5EFAC]BBCode[/color] to style it. Also, check out the Glossary. 
+text = "This is preview text. You can use  [color=#A5EFAC]BBCode[/color] to style it. 
 [wave amp=50 freq=2]You can even use effects![/wave]"
 wrap_enabled = true
 

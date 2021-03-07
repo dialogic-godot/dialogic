@@ -33,8 +33,9 @@ func _ready():
 	var settings = DialogicUtil.get_settings()
 	var theme_file = settings.get_value('theme', 'default')
 	var directory = Directory.new()
-	if directory.file_exists(DialogicUtil.get_path('THEME_DIR', theme_file)):
-		load_theme(theme_file)
+	if theme_file:
+		if directory.file_exists(DialogicUtil.get_path('THEME_DIR', theme_file)):
+			load_theme(theme_file)
 	
 	# Loading the glossary
 	glossary = DialogicUtil.load_glossary()
