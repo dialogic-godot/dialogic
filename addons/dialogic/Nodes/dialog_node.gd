@@ -35,7 +35,7 @@ func _ready():
 	var directory = Directory.new()
 	if theme_file:
 		if directory.file_exists(DialogicUtil.get_path('THEME_DIR', theme_file)):
-			load_theme(theme_file)
+			current_theme = load_theme(theme_file)
 	
 	# Loading the glossary
 	glossary = DialogicUtil.load_glossary()
@@ -64,6 +64,8 @@ func resize_main():
 	if Engine.is_editor_hint() == false:
 		set_global_position(Vector2(0,0))
 		set_deferred('rect_size', get_viewport().size)
+	$TextBubble.rect_position.x = (rect_size.x / 2) - ($TextBubble.rect_size.x / 2)
+	$TextBubble.rect_position.y = (rect_size.y) - ($TextBubble.rect_size.y) - 40
 
 
 func set_current_dialog(dialog_path):
@@ -354,7 +356,7 @@ func event_handler(event: Dictionary):
 			queue_free()
 		{'set_theme'}:
 			if event['set_theme'] != '':
-				load_theme(event['set_theme'])
+				current_theme = load_theme(event['set_theme'])
 			go_to_next_event()
 		{'wait_seconds'}:
 			wait_seconds(event['wait_seconds'])
@@ -534,10 +536,15 @@ func get_character_position(positions):
 	return 
 
 
-func load_theme(filename) -> void:
+func load_theme(filename):
 	var theme = DialogicUtil.get_theme(filename) 
-	current_theme = theme
 	
+	# Box size
+	$TextBubble.rect_size = theme.get_value('box', 'size', Vector2(910, 167))
+	if $TextBubble.rect_size != Vector2(910, 167):
+		resize_main()
+	
+	# Text
 	var theme_font = load(theme.get_value('text', 'font', 'res://addons/dialogic/Fonts/DefaultFont.tres'))
 	$TextBubble/RichTextLabel.set('custom_fonts/normal_font', theme_font)
 	$TextBubble/NameLabel.set('custom_fonts/normal_font', theme_font)
@@ -586,6 +593,8 @@ func load_theme(filename) -> void:
 	$GlossaryInfo/VBoxContainer/Title.set('custom_fonts/normal_font', definitions_font)
 	$GlossaryInfo/VBoxContainer/Content.set('custom_fonts/normal_font', definitions_font)
 	$GlossaryInfo/VBoxContainer/Extra.set('custom_fonts/normal_font', definitions_font)
+	
+	return theme
 
 
 func _on_RichTextLabel_meta_hover_started(meta):

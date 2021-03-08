@@ -11,6 +11,7 @@ var current_theme = ''
 # a way to set an id and then access that node via id...
 # Here you have paths in all its glory. Praise the paths (っ´ω`c)♡
 onready var n = {
+	# Text
 	'theme_text_shadow': $VBoxContainer/HBoxContainer2/Text/GridContainer/HBoxContainer2/CheckBoxShadow,
 	'theme_text_shadow_color': $VBoxContainer/HBoxContainer2/Text/GridContainer/HBoxContainer2/ColorPickerButtonShadow,
 	'theme_text_color': $VBoxContainer/HBoxContainer2/Text/GridContainer/ColorPickerButton,
@@ -18,16 +19,19 @@ onready var n = {
 	'theme_shadow_offset_x': $VBoxContainer/HBoxContainer2/Text/GridContainer/HBoxContainer/ShadowOffsetX,
 	'theme_shadow_offset_y': $VBoxContainer/HBoxContainer2/Text/GridContainer/HBoxContainer/ShadowOffsetY,
 	'theme_text_speed': $VBoxContainer/HBoxContainer2/Text/GridContainer/TextSpeed,
-	'theme_text_margin': $VBoxContainer/HBoxContainer2/DialogBox/GridContainer/HBoxContainer/TextOffsetV,
-	'theme_text_margin_h': $VBoxContainer/HBoxContainer2/DialogBox/GridContainer/HBoxContainer/TextOffsetH,
+	
+	# Dialog box
 	'background_texture_button_visible': $VBoxContainer/HBoxContainer2/DialogBox/GridContainer/HBoxContainer3/CheckBox,
 	'theme_background_image': $VBoxContainer/HBoxContainer2/DialogBox/GridContainer/HBoxContainer3/BackgroundTextureButton,
 	'theme_next_image': $VBoxContainer/HBoxContainer2/DialogBox/GridContainer/NextIndicatorButton,
 	'theme_action_key': $VBoxContainer/HBoxContainer2/DialogBox/GridContainer/BoxContainer/ActionOptionButton,
-	'text_preview': $VBoxContainer/HBoxContainer3/TextEdit,
-	'preview_panel': $VBoxContainer/Panel,
 	'theme_background_color_visible': $VBoxContainer/HBoxContainer2/DialogBox/GridContainer/HBoxContainer2/CheckBox,
 	'theme_background_color': $VBoxContainer/HBoxContainer2/DialogBox/GridContainer/HBoxContainer2/ColorPickerButton,
+	'theme_text_margin': $VBoxContainer/HBoxContainer2/DialogBox/GridContainer/HBoxContainer/TextOffsetV,
+	'theme_text_margin_h': $VBoxContainer/HBoxContainer2/DialogBox/GridContainer/HBoxContainer/TextOffsetH,
+	'size_w': $VBoxContainer/HBoxContainer2/DialogBox/GridContainer/HBoxContainer4/BoxSizeW,
+	'size_h': $VBoxContainer/HBoxContainer2/DialogBox/GridContainer/HBoxContainer4/BoxSizeH, 
+	
 	# Buttons
 	'button_text_color_enabled': $VBoxContainer/HBoxContainer2/ButtonStyle/GridContainer/HBoxContainer4/CheckBox2,
 	'button_text_color': $VBoxContainer/HBoxContainer2/ButtonStyle/GridContainer/HBoxContainer4/ButtonTextColor,
@@ -38,9 +42,13 @@ onready var n = {
 	'button_offset_x': $VBoxContainer/HBoxContainer2/ButtonStyle/GridContainer/HBoxContainer/TextOffsetH,
 	'button_offset_y': $VBoxContainer/HBoxContainer2/ButtonStyle/GridContainer/HBoxContainer/TextOffsetV,
 	'button_separation': $VBoxContainer/HBoxContainer2/ButtonStyle/GridContainer/VerticalSeparation,
+	
 	# Glossary
 	'glossary_font': $VBoxContainer/HBoxContainer2/Glossary/GridContainer/FontButton,
 	'glossary_color': $VBoxContainer/HBoxContainer2/Glossary/GridContainer/ColorPickerButton,
+	# Text preview
+	'preview_panel': $VBoxContainer/Panel,
+	'text_preview': $VBoxContainer/HBoxContainer3/TextEdit,
 }
 
 func _ready():
@@ -61,9 +69,11 @@ func load_theme(filename):
 	n['background_texture_button_visible'].pressed = theme.get_value('background', 'use_image', true)
 	n['theme_background_color'].color = Color(theme.get_value('background', 'color', '#ff000000'))
 	n['theme_background_color_visible'].pressed = theme.get_value('background', 'use_color', false)
-	
-	# Next Indicator
 	n['theme_next_image'].text = DialogicUtil.get_filename_from_path(theme.get_value('next_indicator', 'image', 'res://addons/dialogic/Images/next-indicator.png'))
+	
+	var size_value = theme.get_value('box', 'size', Vector2(910, 167))
+	n['size_w'].value = size_value.x
+	n['size_h'].value = size_value.y
 	
 	# Buttons
 	n['button_text_color_enabled'].pressed = theme.get_value('buttons', 'text_color_enabled', true)
@@ -155,7 +165,8 @@ func _on_PreviewButton_pressed():
 	}]
 	preview_dialog.parse_glossary(preview_dialog.dialog_script)
 	n['preview_panel'].add_child(preview_dialog)
-	preview_dialog.load_theme(current_theme)
+	var theme = preview_dialog.load_theme(current_theme)
+	n['preview_panel'].rect_min_size.y = theme.get_value('box', 'size', Vector2(910, 167)).y + 90
 
 
 func _on_ActionOptionButton_item_selected(index):
@@ -268,3 +279,8 @@ func _on_visibility_changed():
 		# on background
 		for i in n['preview_panel'].get_children():
 			i.queue_free()
+
+
+func _on_BoxSize_value_changed(value):
+	var size_value = Vector2(n['size_w'].value, n['size_h'].value)
+	DialogicUtil.set_theme_value(current_theme, 'box', 'size', size_value)
