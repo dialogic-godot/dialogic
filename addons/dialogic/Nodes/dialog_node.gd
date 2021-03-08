@@ -63,7 +63,11 @@ func _ready():
 func resize_main():
 	if Engine.is_editor_hint() == false:
 		set_global_position(Vector2(0,0))
-		set_deferred('rect_size', get_viewport().size)
+		var window_stretch = ProjectSettings.get_setting("display/window/stretch/mode")
+		print(window_stretch)
+		if window_stretch != '2d':
+			set_deferred('rect_size', get_viewport().size)
+		print(get_viewport().size)
 	$TextBubble.rect_position.x = (rect_size.x / 2) - ($TextBubble.rect_size.x / 2)
 	$TextBubble.rect_position.y = (rect_size.y) - ($TextBubble.rect_size.y) - 40
 
@@ -540,8 +544,9 @@ func load_theme(filename):
 	var theme = DialogicUtil.get_theme(filename) 
 	
 	# Box size
+	var current_size = $TextBubble.rect_size
 	$TextBubble.rect_size = theme.get_value('box', 'size', Vector2(910, 167))
-	if $TextBubble.rect_size != Vector2(910, 167):
+	if current_size != $TextBubble.rect_size:
 		resize_main()
 	
 	# Text

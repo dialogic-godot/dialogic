@@ -11,9 +11,16 @@ Create dialogs, characters and scenes to display conversations in your Godot gam
   - New layout.
     - All editors in the same screen. Say goodbye to tabs!
     - You can now rename resources by double clicking them
-  - Add multiple themes
-  - Set Theme event
-  - Settings panel to pick the default theme
+    - New Settings panel for advanced properties
+  - Character Editor
+    - Set the scale of your character's portrait
+    - Add offset to the portrait
+  - Timeline Editor
+    - New `Theme event` to change the theme in the middle of a timeline
+    - Re-enabled the `Scene Event`
+  - Theme Editor
+    - You can now add multiple themes
+    - New property: `Box size` set the width and height of the dialogue box in pixels
 
 To view the full changelog [click here](https://github.com/coppolaemilio/dialogic/blob/master/CHANGELOG.md). 
 

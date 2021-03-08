@@ -33,7 +33,6 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 script = ExtResource( 6 )
 __meta__ = {
-"_edit_lock_": true,
 "_edit_use_anchors_": false
 }
 
@@ -61,10 +60,10 @@ anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-margin_left = 185.0
-margin_top = 513.0
-margin_right = 1095.0
-margin_bottom = 680.0
+margin_left = -455.0
+margin_top = -207.0
+margin_right = 455.0
+margin_bottom = -40.0
 __meta__ = {
 "_edit_group_": true,
 "_edit_use_anchors_": false
