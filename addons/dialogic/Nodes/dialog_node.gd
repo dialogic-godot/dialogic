@@ -63,9 +63,7 @@ func _ready():
 func resize_main():
 	if Engine.is_editor_hint() == false:
 		set_global_position(Vector2(0,0))
-		var window_stretch = ProjectSettings.get_setting("display/window/stretch/mode")
-		print(window_stretch)
-		if window_stretch != '2d':
+		if ProjectSettings.get_setting("display/window/stretch/mode") != '2d':
 			set_deferred('rect_size', get_viewport().size)
 		print(get_viewport().size)
 	$TextBubble.rect_position.x = (rect_size.x / 2) - ($TextBubble.rect_size.x / 2)
