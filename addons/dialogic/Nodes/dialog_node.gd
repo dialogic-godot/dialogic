@@ -92,7 +92,9 @@ func parse_text_lines(unparsed_dialog_script: Dictionary) -> Dictionary:
 	# Parsing
 	for event in unparsed_dialog_script['events']:
 		if event.has('text') and event.has('character') and event.has('portrait'):
-			if '\n' in event['text']:
+			if event['text'] == '':
+				pass
+			elif '\n' in event['text']:
 				var lines = event['text'].split('\n')
 				var i = 0
 				for line in lines:
