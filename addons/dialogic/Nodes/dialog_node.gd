@@ -57,7 +57,8 @@ func _ready():
 func resize_main():
 	if Engine.is_editor_hint() == false:
 		set_global_position(Vector2(0,0))
-		rect_size = get_viewport().size
+		if ProjectSettings.get_setting("display/window/stretch/mode") != '2d':
+			rect_size = get_viewport().size
 
 
 func set_current_dialog(dialog_path):
