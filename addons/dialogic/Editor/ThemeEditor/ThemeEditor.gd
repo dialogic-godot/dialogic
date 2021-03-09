@@ -19,6 +19,7 @@ onready var n = {
 	'theme_shadow_offset_x': $VBoxContainer/HBoxContainer2/Text/GridContainer/HBoxContainer/ShadowOffsetX,
 	'theme_shadow_offset_y': $VBoxContainer/HBoxContainer2/Text/GridContainer/HBoxContainer/ShadowOffsetY,
 	'theme_text_speed': $VBoxContainer/HBoxContainer2/Text/GridContainer/TextSpeed,
+	'alignment': $VBoxContainer/HBoxContainer2/Text/GridContainer/HBoxContainer3/Alignment,
 	
 	# Dialog box
 	'background_texture_button_visible': $VBoxContainer/HBoxContainer2/DialogBox/GridContainer/HBoxContainer3/CheckBox,
@@ -100,6 +101,14 @@ func load_theme(filename):
 	n['theme_shadow_offset_y'].value = theme.get_value('text', 'shadow_offset', Vector2(2,2)).y
 	n['theme_text_margin'].value = theme.get_value('text', 'margin', Vector2(20, 10)).x
 	n['theme_text_margin_h'].value = theme.get_value('text', 'margin', Vector2(20, 10)).y
+	n['alignment'].text = theme.get_value('text', 'alignment', 'Left')
+	match n['alignment'].text:
+		'Left':
+			n['alignment'].select(0)
+		'Center':
+			n['alignment'].select(1)
+		'Right':
+			n['alignment'].select(2)
 
 
 func new_theme():
@@ -156,6 +165,7 @@ func _on_PreviewButton_pressed():
 	var preview_dialog = dialogic_node.instance()
 	var glossary = DialogicUtil.load_glossary()
 	preview_dialog.glossary = glossary
+	preview_dialog.preview = true
 	preview_dialog.get_node('GlossaryInfo').in_theme_editor = true
 	preview_dialog.get_node('TextBubble/NextIndicator/AnimationPlayer').play('IDLE')
 	preview_dialog.dialog_script['events'] = [{
@@ -163,10 +173,16 @@ func _on_PreviewButton_pressed():
 		"portrait":"",
 		"text": n['text_preview'].text
 	}]
-	preview_dialog.parse_glossary(preview_dialog.dialog_script)
+	# Alignment
+	preview_dialog.current_theme = preview_dialog.load_theme(current_theme)
+	preview_dialog.dialog_script = preview_dialog.parse_glossary(preview_dialog.dialog_script)
+	preview_dialog.dialog_script = preview_dialog.parse_text_lines(preview_dialog.dialog_script)
 	n['preview_panel'].add_child(preview_dialog)
-	var theme = preview_dialog.load_theme(current_theme)
-	n['preview_panel'].rect_min_size.y = theme.get_value('box', 'size', Vector2(910, 167)).y + 90
+	# Not sure why but I need to reload the theme again for it to work properly
+	preview_dialog.current_theme = preview_dialog.load_theme(current_theme)
+	
+	# maintaining the preview panel big enough for the dialog box
+	n['preview_panel'].rect_min_size.y = preview_dialog.current_theme.get_value('box', 'size', Vector2(910, 167)).y + 90
 
 
 func _on_ActionOptionButton_item_selected(index):
@@ -284,3 +300,12 @@ func _on_visibility_changed():
 func _on_BoxSize_value_changed(value):
 	var size_value = Vector2(n['size_w'].value, n['size_h'].value)
 	DialogicUtil.set_theme_value(current_theme, 'box', 'size', size_value)
+
+
+func _on_Alignment_item_selected(index):
+	if index == 0:
+		DialogicUtil.set_theme_value(current_theme, 'text', 'alignment', 'Left')
+	elif index == 1:
+		DialogicUtil.set_theme_value(current_theme, 'text', 'alignment', 'Center')
+	elif index == 2:
+		DialogicUtil.set_theme_value(current_theme, 'text', 'alignment', 'Right')

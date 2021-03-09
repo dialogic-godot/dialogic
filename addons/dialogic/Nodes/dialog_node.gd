@@ -12,6 +12,7 @@ var waiting_for_input: bool = false
 var glossary_visible: bool = false
 var glossary
 var waiting = false
+var preview = false
 
 var current_theme
 
@@ -84,28 +85,44 @@ func set_current_dialog(dialog_path):
 func parse_text_lines(unparsed_dialog_script: Dictionary) -> Dictionary:
 	var parsed_dialog: Dictionary = unparsed_dialog_script
 	var new_events: Array = []
+	var alignment = 'Left'
 	
 	# Return the same thing if it doesn't have events
 	if unparsed_dialog_script.has('events') == false:
 		return unparsed_dialog_script
-			
+	
+	
+	if current_theme != null:
+		alignment = current_theme.get_value('text', 'alignment', 'Left')
+	
+	print('preview ', preview)
 	# Parsing
 	for event in unparsed_dialog_script['events']:
 		if event.has('text') and event.has('character') and event.has('portrait'):
 			if event['text'] == '':
 				pass
-			elif '\n' in event['text']:
+			elif '\n' in event['text'] and preview == false:
 				var lines = event['text'].split('\n')
 				var i = 0
 				for line in lines:
+					var text = lines[i]
+					if alignment == 'Center':
+						text = '[center]' + lines[i] + '[/center]'
+					elif alignment == 'Right':
+						text = '[right]' + lines[i] + '[/right]'
 					var _e = {
-						'text': lines[i],
+						'text': text,
 						'character': event['character'],
 						'portrait': event['portrait']
 					}
 					new_events.append(_e)
 					i += 1
 			else:
+				var text = event['text']
+				if alignment == 'Center':
+					event['text'] = '[center]' + text + '[/center]'
+				elif alignment == 'Right':
+					event['text'] = '[right]' + text + '[/right]'
 				new_events.append(event)
 		else:
 			new_events.append(event)

@@ -21,6 +21,7 @@ Create dialogs, characters and scenes to display conversations in your Godot gam
   - Theme Editor
     - You can now add multiple themes
     - New property: `Box size` set the width and height of the dialogue box in pixels
+    - New property: `Alignment` you can now align the text displayed (Left, Center, Right)
 
 To view the full changelog [click here](https://github.com/coppolaemilio/dialogic/blob/master/CHANGELOG.md). 
 
