@@ -72,7 +72,7 @@ func resize_main():
 		set_global_position(Vector2(0,0))
 		if ProjectSettings.get_setting("display/window/stretch/mode") != '2d':
 			set_deferred('rect_size', get_viewport().size)
-		print(get_viewport().size)
+		dprint("Viewport", get_viewport().size)
 	$TextBubble.rect_position.x = (rect_size.x / 2) - ($TextBubble.rect_size.x / 2)
 	$TextBubble.rect_position.y = (rect_size.y) - ($TextBubble.rect_size.y) - 40
 
@@ -101,7 +101,7 @@ func parse_text_lines(unparsed_dialog_script: Dictionary) -> Dictionary:
 	if current_theme != null:
 		alignment = current_theme.get_value('text', 'alignment', 'Left')
 
-	print('preview ', preview)
+	dprint('preview ', preview)
 	# Parsing
 	for event in unparsed_dialog_script['events']:
 		if event.has('text') and event.has('character') and event.has('portrait'):
@@ -271,6 +271,11 @@ func load_dialog(skip_add = false):
 	glossary_visible = false
 	$GlossaryInfo.visible = glossary_visible
 
+	if dialog_index == 0:
+		emit_signal("dialogue_start")
+	elif dialog_index == dialog_script['events'].size():
+		emit_signal("dialogue_end")
+
 	# This will load the next entry in the dialog_script array.
 	if dialog_script.has('events'):
 		if dialog_index < dialog_script['events'].size():
@@ -377,7 +382,7 @@ func event_handler(event: Dictionary):
 		{'change_scene'}:
 			get_tree().change_scene(event['change_scene'])
 		{'emit_signal', ..}:
-			print('[!] Emitting signal: dialogic_signal(', event['emit_signal'], ')')
+			dprint('[!] Emitting signal: dialogic_signal(', event['emit_signal'], ')')
 			emit_signal("dialogic_signal", event['emit_signal'])
 			go_to_next_event()
 		{'close_dialog'}:
@@ -421,7 +426,7 @@ func event_handler(event: Dictionary):
 				go_to_next_event()
 		{'set_value', 'glossary'}:
 			glossary = DialogicUtil.set_var_by_id(event['glossary'], event['set_value'], glossary)
-			print(glossary)
+			dprint("Glossary:", glossary)
 			go_to_next_event()
 		_:
 			visible = false
