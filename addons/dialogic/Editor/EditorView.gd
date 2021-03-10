@@ -9,7 +9,7 @@ var current_editor_view: String = 'Master'
 var version_string: String 
 onready var timeline_editor = $MainPanel/TimelineEditor
 onready var character_editor = $MainPanel/CharacterEditor
-onready var glossary_editor = $MainPanel/GlossaryEditor
+onready var definition_editor = $MainPanel/DefinitionEditor
 onready var theme_editor = $MainPanel/ThemeEditor
 onready var settings_editor = $MainPanel/SettingsEditor
 
@@ -22,13 +22,14 @@ func _ready():
 	# Setting references to this node
 	timeline_editor.editor_reference = self
 	character_editor.editor_reference = self
-	glossary_editor.editor_reference = self
+	definition_editor.editor_reference = self
 	theme_editor.editor_reference = self
 
 	# Toolbar
 	$ToolBar/NewTimelineButton.connect('pressed', $MainPanel/TimelineEditor, 'new_timeline')
 	$ToolBar/NewCharactersButton.connect('pressed', $MainPanel/CharacterEditor, 'new_character')
 	$ToolBar/NewThemeButton.connect('pressed', $MainPanel/ThemeEditor, 'new_theme')
+	$ToolBar/NewDefinitionButton.connect('pressed', $MainPanel/DefinitionEditor, 'new_definition')
 	$ToolBar/Docs.icon = get_icon("Instance", "EditorIcons")
 	$ToolBar/Docs.connect('pressed', OS, "shell_open", ["https://dialogic.coppolaemilio.com"])
 	#$ToolBar/FoldTools/ButtonFold.connect('pressed', $EditorTimeline, 'fold_all_nodes')

@@ -60,10 +60,10 @@ anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-margin_left = -455.0
-margin_top = -144.0
-margin_right = 455.0
-margin_bottom = -40.0
+margin_left = 57.0
+margin_top = 456.0
+margin_right = 967.0
+margin_bottom = 560.0
 __meta__ = {
 "_edit_group_": true,
 "_edit_use_anchors_": false

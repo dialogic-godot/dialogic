@@ -9,11 +9,12 @@ var finished: bool = false
 var text_speed = 0.02 # Higher = lower speed
 var waiting_for_answer: bool = false
 var waiting_for_input: bool = false
-var glossary_visible: bool = false
-var glossary
 var waiting = false
 var preview = false
+var definitions
+var glossary_visible = false
 
+var settings
 var current_theme
 
 #export(String) var timeline: String # Timeline-var-replace
@@ -31,7 +32,7 @@ var dialog_script = {}
 var questions #for keeping track of the questions answered
 
 func _ready():
-	var settings = DialogicUtil.get_settings()
+	settings = DialogicUtil.get_settings()
 	var theme_file = settings.get_value('theme', 'default')
 	var directory = Directory.new()
 	if theme_file:
@@ -39,7 +40,7 @@ func _ready():
 			current_theme = load_theme(theme_file)
 	
 	# Loading the glossary
-	glossary = DialogicUtil.load_glossary()
+	definitions = DialogicUtil.get_definition_list()
 	
 	# Checking if the dialog should read the code from a external file
 	if timeline != '':
@@ -86,12 +87,19 @@ func parse_text_lines(unparsed_dialog_script: Dictionary) -> Dictionary:
 	var parsed_dialog: Dictionary = unparsed_dialog_script
 	var new_events: Array = []
 	var alignment = 'Left'
+	var split_new_lines = true
+	var remove_empty_messages = true
 	
 	# Return the same thing if it doesn't have events
 	if unparsed_dialog_script.has('events') == false:
 		return unparsed_dialog_script
 	
-	
+	# Getting extra settings
+	if settings.has_section_key('dialog', 'remove_empty_messages'):
+		remove_empty_messages = settings.get_value('dialog', 'remove_empty_messages')
+	if settings.has_section_key('dialog', 'new_lines'):
+		split_new_lines = settings.get_value('dialog', 'new_lines')
+
 	if current_theme != null:
 		alignment = current_theme.get_value('text', 'alignment', 'Left')
 	
@@ -99,9 +107,9 @@ func parse_text_lines(unparsed_dialog_script: Dictionary) -> Dictionary:
 	# Parsing
 	for event in unparsed_dialog_script['events']:
 		if event.has('text') and event.has('character') and event.has('portrait'):
-			if event['text'] == '':
+			if event['text'] == '' and remove_empty_messages == true:
 				pass
-			elif '\n' in event['text'] and preview == false:
+			elif '\n' in event['text'] and preview == false and split_new_lines == true:
 				var lines = event['text'].split('\n')
 				var i = 0
 				for line in lines:
@@ -180,8 +188,8 @@ func parse_branches(dialog_script: Dictionary) -> Dictionary:
 
 func parse_glossary(dialog_script):
 	var words = []
-	for g in glossary:
-		words.append(glossary[g]['name'])
+	#for g in glossary:
+	#	words.append(glossary[g]['name'])
 	
 	# I should use regex here, but this is way easier :)
 	
@@ -390,19 +398,19 @@ func event_handler(event: Dictionary):
 			# Treating this conditional as an option on a regular question event
 			var current_question = questions[event['question_id']]
 			#var g_var = DialogicUtil.get_glossary_by_file(event['glossary'])
-			var g_var = glossary[event['glossary'].replace('.json', '')]
+			#var g_var = glossary[event['glossary'].replace('.json', '')]
 			
-			if g_var.has('type'):
-				if g_var['type'] == DialogicUtil.GLOSSARY_STRING:
-					if g_var['string'] == event['value']:
-						pass
-					else:
-						current_question['answered'] = true # This will abort the current conditional branch
-				if g_var['type'] == DialogicUtil.GLOSSARY_NUMBER:
-					if g_var['number'] == event['value']:
-						pass
-					else:
-						current_question['answered'] = true # This will abort the current conditional branch
+			#if g_var.has('type'):
+			#	if g_var['type'] == DialogicUtil.GLOSSARY_STRING:
+			#		if g_var['string'] == event['value']:
+			#			pass
+			#		else:
+			#			current_question['answered'] = true # This will abort the current conditional branch
+			#	if g_var['type'] == DialogicUtil.GLOSSARY_NUMBER:
+			#		if g_var['number'] == event['value']:
+			#			pass
+			#		else:
+			#			current_question['answered'] = true # This will abort the current conditional branch
 			
 			
 			if current_question['answered']:
@@ -413,8 +421,8 @@ func event_handler(event: Dictionary):
 				# It should never get here, but if it does, go to the next place.
 				go_to_next_event()
 		{'set_value', 'glossary'}:
-			glossary = DialogicUtil.set_var_by_id(event['glossary'], event['set_value'], glossary)
-			print(glossary)
+			#glossary = DialogicUtil.set_var_by_id(event['glossary'], event['set_value'], glossary)
+			#print(glossary)
 			go_to_next_event()
 		_:
 			visible = false
@@ -543,7 +551,7 @@ func grab_portrait_focus(character_data, event: Dictionary = {}) -> bool:
 	return exists
 
 
-func get_character_position(positions):
+func get_character_position(positions) -> String:
 	if positions['0']:
 		return 'left'
 	if positions['1']:
@@ -554,7 +562,7 @@ func get_character_position(positions):
 		return 'center_right'
 	if positions['4']:
 		return 'right'
-	return 
+	return 'left'
 
 
 func load_theme(filename):
@@ -621,11 +629,11 @@ func load_theme(filename):
 
 func _on_RichTextLabel_meta_hover_started(meta):
 	var correct_type = false
-	for g in glossary:
-		if glossary[g]['name'] == meta:
-			$GlossaryInfo.load_preview(glossary[g])
-			if glossary[g]['type'] == DialogicUtil.GLOSSARY_EXTRA:
-				correct_type = true
+	#for g in glossary:
+	#	if glossary[g]['name'] == meta:
+	#		$GlossaryInfo.load_preview(glossary[g])
+	#		if glossary[g]['type'] == DialogicUtil.GLOSSARY_EXTRA:
+	#			correct_type = true
 
 	if correct_type:
 		glossary_visible = true

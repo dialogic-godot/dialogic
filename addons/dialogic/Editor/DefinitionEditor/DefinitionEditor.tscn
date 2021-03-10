@@ -1,8 +1,8 @@
 [gd_scene load_steps=2 format=2]
 
-[ext_resource path="res://addons/dialogic/Editor/GlossaryEditor/GlossaryEditor.gd" type="Script" id=1]
+[ext_resource path="res://addons/dialogic/Editor/DefinitionEditor/DefinitionEditor.gd" type="Script" id=1]
 
-[node name="GlossaryEditor" type="ScrollContainer"]
+[node name="DefinitionEditor" type="ScrollContainer"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 script = ExtResource( 1 )
@@ -11,13 +11,13 @@ __meta__ = {
 }
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
-margin_right = 1280.0
-margin_bottom = 720.0
+margin_right = 1024.0
+margin_bottom = 600.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
-margin_right = 1280.0
+margin_right = 1024.0
 margin_bottom = 84.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer"]
@@ -116,9 +116,9 @@ margin_bottom = 42.0
 
 [node name="Text" type="VBoxContainer" parent="VBoxContainer/HBoxContainer/VBoxContainer"]
 visible = false
-margin_top = 355.0
+margin_top = 88.0
 margin_right = 320.0
-margin_bottom = 397.0
+margin_bottom = 130.0
 
 [node name="Label4" type="Label" parent="VBoxContainer/HBoxContainer/VBoxContainer/Text"]
 margin_right = 320.0

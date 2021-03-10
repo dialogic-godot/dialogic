@@ -4,7 +4,7 @@ extends Tree
 onready var editor_reference = get_node('../..')
 onready var timeline_editor = get_node('../TimelineEditor')
 onready var character_editor = get_node('../CharacterEditor')
-onready var definitions_editor = get_node('../GlossaryEditor')
+onready var definition_editor = get_node('../DefinitionEditor')
 onready var settings_editor = get_node('../SettingsEditor')
 onready var theme_editor = get_node('../ThemeEditor')
 onready var empty_editor = get_node('../Empty')
@@ -63,21 +63,20 @@ func _ready():
 	#subchild1.set_text(0, "Subchild1")
 	
 	# Adding timelines
-	for c in DialogicUtil.get_timeline_list():
-		add_timeline(c)
+	for t in DialogicUtil.get_timeline_list():
+		add_timeline(t)
 	
 	# Adding characters
 	for c in DialogicUtil.get_character_list():
 		add_character(c)
 	
 	# Adding Definitions (previously known as glossary)
-	var glossary = DialogicUtil.load_glossary()
-	for c in glossary:
-		add_glossary(glossary[c])
+	for d in DialogicUtil.get_definition_list():
+		add_definition(d)
 	
 	# Adding Themes
-	for c in DialogicUtil.get_theme_list():
-		add_theme(c)
+	for m in DialogicUtil.get_theme_list():
+		add_theme(m)
 	
 	# Default empty screen.
 	hide_all_editors(true) 
@@ -111,6 +110,7 @@ func add_theme(theme_item, select = false):
 	if select: # Auto selecting
 		item.select(0)
 
+
 func add_character(character, select = false):
 	var item = tree.create_item(characters_tree)
 	item.set_icon(0, character_icon)
@@ -128,26 +128,27 @@ func add_character(character, select = false):
 		item.select(0)
 
 
-func add_glossary(glossary, select = false):
-	print(glossary)
+func add_definition(definition, select = false):
 	var item = tree.create_item(definitions_tree)
-	if glossary['type'] == DialogicUtil.GLOSSARY_STRING:
-		item.set_icon(0, get_icon("String", "EditorIcons"))
-	if glossary['type'] == DialogicUtil.GLOSSARY_EXTRA:
-		item.set_icon(0, get_icon("ScriptCreateDialog", "EditorIcons"))
-	if glossary['type'] == DialogicUtil.GLOSSARY_NUMBER:
-		item.set_icon(0, get_icon("int", "EditorIcons"))
+	#if glossary['type'] == DialogicUtil.GLOSSARY_STRING:
+	#	item.set_icon(0, get_icon("String", "EditorIcons"))
+	#if glossary['type'] == DialogicUtil.GLOSSARY_EXTRA:
+	#	item.set_icon(0, get_icon("ScriptCreateDialog", "EditorIcons"))
+	#if glossary['type'] == DialogicUtil.GLOSSARY_NUMBER:
+	#	item.set_icon(0, get_icon("int", "EditorIcons"))
 	#item.set_icon(0, character_icon)
-	if glossary['type'] == DialogicUtil.GLOSSARY_STRING:
-		item.set_text(0, glossary['name'] + ' = ' + glossary['string'])
-	else:
-		item.set_text(0, glossary['name'])
-	glossary['editor'] = 'Glossary'
-	item.set_metadata(0, glossary)
-
-	#item.set_icon_modulate(0, character['color'])
+	#if glossary['type'] == DialogicUtil.GLOSSARY_STRING:
+	#	item.set_text(0, glossary['name'] + ' = ' + glossary['string'])
+	#else:
+	#	item.set_text(0, glossary['name'])
+	item.set_text(0, definition['name'])
+	item.set_icon(0, get_icon("ScriptCreateDialog", "EditorIcons"))
+	definition['editor'] = 'Definition'
+	item.set_metadata(0, definition)
 	if select: # Auto selecting
 		item.select(0)
+	
+	
 
 
 func _on_item_selected():
@@ -164,9 +165,9 @@ func _on_item_selected():
 	if metadata['editor'] == 'Character':
 		character_editor.visible = true
 		character_editor.load_character(DialogicUtil.get_path('CHAR_DIR', metadata['file']))
-	if metadata['editor'] == 'Glossary':
+	if metadata['editor'] == 'Definition':
 		# TODO: Load values here
-		definitions_editor.visible = true
+		definition_editor.visible = true
 	if metadata['editor'] == 'Theme':
 		theme_editor.load_theme(metadata['file'])
 		theme_editor.visible = true
@@ -178,7 +179,7 @@ func _on_item_selected():
 func hide_all_editors(show_empty = false):
 	character_editor.visible = false
 	timeline_editor.visible = false
-	definitions_editor.visible = false
+	definition_editor.visible = false
 	theme_editor.visible = false
 	empty_editor.visible = false
 	settings_editor.visible = false

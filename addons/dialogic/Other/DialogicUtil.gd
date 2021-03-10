@@ -21,9 +21,9 @@ static func init_dialogic_files() -> void:
 		if 'settings.cfg' in paths[dir]:
 			if directory.file_exists(paths['SETTINGS_FILE']) == false:
 				create_empty_file(paths['SETTINGS_FILE'])
-				print('created')
-		elif 'glossary.json' in paths[dir]:
-			load_glossary()
+		elif 'definitions.cfg' in paths[dir]:
+			if directory.file_exists(paths['DEFINITIONS_FILE']) == false:
+				create_empty_file(paths['DEFINITIONS_FILE'])
 		else:
 			if directory.dir_exists(paths[dir]) == false:
 				directory.make_dir(paths[dir])
@@ -49,13 +49,6 @@ static func load_json(path: String) -> Dictionary:
 	return {'error':'data parse error'}
 
 
-static func save_glossary(glossary) -> void:
-	var file:File = File.new()
-	file.open(get_path('GLOSSARY_FILE'), File.WRITE)
-	file.store_line(to_json(glossary))
-	file.close()
-
-
 static func get_working_directories() -> Dictionary:
 	var WORKING_DIR: String = "res://dialogic"
 	var paths: Dictionary = {
@@ -63,8 +56,8 @@ static func get_working_directories() -> Dictionary:
 		'TIMELINE_DIR': WORKING_DIR + "/timelines",
 		'THEME_DIR': WORKING_DIR + "/themes",
 		'CHAR_DIR': WORKING_DIR + "/characters",
+		'DEFINITIONS_FILE': WORKING_DIR + "/definitions.cfg",
 		'SETTINGS_FILE': WORKING_DIR + "/settings.cfg",
-		'GLOSSARY_FILE': WORKING_DIR + "/glossary.json",
 	}
 	return paths
 
@@ -152,19 +145,22 @@ static func get_timeline_list() -> Array:
 	return timelines
 
 
+static func get_definition_list() -> Array:
+	var definitions: Array = []
+	var config = ConfigFile.new()
+	var err = config.load(get_path('DEFINITIONS_FILE'))
+	if err == OK:
+		for section in config.get_sections():
+			definitions.append({
+				'section': section,
+				'name': config.get_value(section, 'name', section),
+				'config': config
+			})
+	return definitions
+
+
 static func load_glossary() -> Dictionary:
-	var directory = Directory.new();
-	if directory.file_exists(get_path('GLOSSARY_FILE')):
-		var glossary: Dictionary = load_json(get_path('GLOSSARY_FILE'))
-		if glossary.has('error'):
-			glossary = {}
-		return glossary
-	else:
-		var file:File = File.new()
-		file.open(get_path('GLOSSARY_FILE'), File.WRITE)
-		file.store_line(to_json({}))
-		file.close()
-		return {}
+	return {}
 
 
 static func get_var(variable: String):
@@ -199,40 +195,6 @@ static func get_glossary_by_file(filename) -> Dictionary:
 			return glossary[g]
 	
 	return {}
-
-
-static func default_settings():
-	var ds = {
-		"background_texture_button_visible": true,
-		"button_background": "#ff000000",
-		"button_background_visible": false,
-		"button_image": "res://addons/dialogic/Images/background/background-2.png",
-		"button_image_visible": true,
-		"button_offset_x": 5,
-		"button_offset_y": 5,
-		"button_separation": 5,
-		"button_text_color": "#ffffffff",
-		"button_text_color_enabled": true,
-		
-		"theme_action_key": "ui_accept",
-		"theme_background_color": "#ff000000",
-		"theme_background_color_visible": false,
-		"theme_background_image": "res://addons/dialogic/Images/background/background-2.png",
-		"theme_font": "res://addons/dialogic/Fonts/DefaultFont.tres",
-		"theme_next_image": "res://addons/dialogic/Images/next-indicator.png",
-		"theme_shadow_offset_x": 2,
-		"theme_shadow_offset_y": 2,
-		"theme_text_color": "#ffffffff",
-		"theme_text_margin": 10,
-		"theme_text_margin_h": 20,
-		"theme_text_shadow": false,
-		"theme_text_shadow_color": "#9e000000",
-		"theme_text_speed": 2,
-		
-		"glossary_font": "res://addons/dialogic/Fonts/GlossaryFont.tres",
-		"glossary_color": "#ffffffff",
-	}
-	return ds
 
 
 static func generate_random_id() -> String:

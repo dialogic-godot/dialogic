@@ -164,7 +164,7 @@ func _on_PreviewButton_pressed():
 	var dialogic_node = load("res://addons/dialogic/Dialog.tscn")
 	var preview_dialog = dialogic_node.instance()
 	var glossary = DialogicUtil.load_glossary()
-	preview_dialog.glossary = glossary
+	#preview_dialog.glossary = glossary
 	preview_dialog.preview = true
 	preview_dialog.get_node('GlossaryInfo').in_theme_editor = true
 	preview_dialog.get_node('TextBubble/NextIndicator/AnimationPlayer').play('IDLE')
@@ -173,6 +173,8 @@ func _on_PreviewButton_pressed():
 		"portrait":"",
 		"text": n['text_preview'].text
 	}]
+	# Settings
+	preview_dialog.settings = DialogicUtil.get_settings()
 	# Alignment
 	preview_dialog.current_theme = preview_dialog.load_theme(current_theme)
 	preview_dialog.dialog_script = preview_dialog.parse_glossary(preview_dialog.dialog_script)

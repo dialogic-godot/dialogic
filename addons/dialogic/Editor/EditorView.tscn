@@ -11,8 +11,8 @@
 [ext_resource path="res://addons/dialogic/Images/open-icon.svg" type="Texture" id=9]
 [ext_resource path="res://addons/dialogic/Images/closed-icon.svg" type="Texture" id=10]
 [ext_resource path="res://addons/dialogic/Images/ActionCopy.svg" type="Texture" id=11]
-[ext_resource path="res://addons/dialogic/Editor/GlossaryEditor/GlossaryEditor.tscn" type="PackedScene" id=12]
-[ext_resource path="res://addons/dialogic/Images/ListSelect.svg" type="Texture" id=13]
+[ext_resource path="res://addons/dialogic/Editor/DefinitionEditor/DefinitionEditor.tscn" type="PackedScene" id=12]
+[ext_resource path="res://addons/dialogic/Images/Toolbar/add-definition.svg" type="Texture" id=13]
 [ext_resource path="res://addons/dialogic/Images/logo.png" type="Texture" id=14]
 [ext_resource path="res://addons/dialogic/Images/Remove.svg" type="Texture" id=22]
 [ext_resource path="res://addons/dialogic/Images/Filesystem.svg" type="Texture" id=26]
@@ -74,21 +74,20 @@ hint_tooltip = "New Character"
 focus_mode = 0
 icon = ExtResource( 4 )
 
-[node name="NewGlossaryButton" type="Button" parent="ToolBar"]
+[node name="NewDefinitionButton" type="Button" parent="ToolBar"]
 self_modulate = Color( 0.870588, 0.870588, 0.870588, 1 )
 margin_left = 68.0
-margin_right = 96.0
+margin_right = 102.0
 margin_bottom = 30.0
 hint_tooltip = "New Definition"
 focus_mode = 0
-disabled = true
 icon = ExtResource( 13 )
 flat = true
 
 [node name="NewThemeButton" type="Button" parent="ToolBar"]
 self_modulate = Color( 0.870588, 0.870588, 0.870588, 1 )
-margin_left = 96.0
-margin_right = 130.0
+margin_left = 102.0
+margin_right = 136.0
 margin_bottom = 30.0
 hint_tooltip = "New Theme"
 focus_mode = 0
@@ -122,15 +121,15 @@ icon = ExtResource( 9 )
 align = 0
 
 [node name="Spacer" type="Control" parent="ToolBar"]
-margin_left = 130.0
-margin_right = 1007.0
+margin_left = 136.0
+margin_right = 751.0
 margin_bottom = 30.0
 size_flags_horizontal = 3
 
 [node name="Docs" type="ToolButton" parent="ToolBar"]
 self_modulate = Color( 0.870588, 0.870588, 0.870588, 1 )
-margin_left = 1007.0
-margin_right = 1117.0
+margin_left = 751.0
+margin_right = 861.0
 margin_bottom = 30.0
 hint_tooltip = "Theme Editor"
 mouse_default_cursor_shape = 2
@@ -138,8 +137,8 @@ text = "Online Docs"
 icon = SubResource( 2 )
 
 [node name="Logo" type="TextureRect" parent="ToolBar"]
-margin_left = 1117.0
-margin_right = 1237.0
+margin_left = 861.0
+margin_right = 981.0
 margin_bottom = 30.0
 rect_min_size = Vector2( 120, 0 )
 mouse_default_cursor_shape = 2
@@ -149,9 +148,9 @@ stretch_mode = 5
 
 [node name="Version" type="Label" parent="ToolBar"]
 self_modulate = Color( 1, 1, 1, 0.631373 )
-margin_left = 1237.0
+margin_left = 981.0
 margin_top = 8.0
-margin_right = 1264.0
+margin_right = 1008.0
 margin_bottom = 22.0
 text = "v1.0"
 
@@ -170,7 +169,7 @@ __meta__ = {
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_right = 180.0
-margin_bottom = 661.0
+margin_bottom = 541.0
 rect_min_size = Vector2( 180, 0 )
 size_flags_vertical = 3
 
@@ -180,7 +179,7 @@ visible = false
 [node name="CharacterEditor" parent="MainPanel" instance=ExtResource( 7 )]
 visible = false
 
-[node name="GlossaryEditor" parent="MainPanel" instance=ExtResource( 12 )]
+[node name="DefinitionEditor" parent="MainPanel" instance=ExtResource( 12 )]
 visible = false
 
 [node name="ThemeEditor" parent="MainPanel" instance=ExtResource( 8 )]
@@ -196,14 +195,14 @@ margin_bottom = 661.0
 
 [node name="Empty" type="CenterContainer" parent="MainPanel"]
 margin_left = 192.0
-margin_right = 1253.0
-margin_bottom = 661.0
+margin_right = 997.0
+margin_bottom = 541.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MainPanel/Empty"]
-margin_left = 390.0
-margin_top = 323.0
-margin_right = 670.0
-margin_bottom = 337.0
+margin_left = 262.0
+margin_top = 263.0
+margin_right = 542.0
+margin_bottom = 277.0
 
 [node name="Label" type="Label" parent="MainPanel/Empty/VBoxContainer"]
 margin_right = 280.0
