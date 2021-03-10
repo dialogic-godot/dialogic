@@ -8,9 +8,6 @@ var event_data = {
 	'change_scene': ''
 }
 
-func _ready():	
-	$PanelContainer/VBoxContainer/Header/VisibleToggle.disabled()
-
 
 func _on_ButtonScenePicker_pressed():
 	editor_reference.godot_dialog("*.tscn")

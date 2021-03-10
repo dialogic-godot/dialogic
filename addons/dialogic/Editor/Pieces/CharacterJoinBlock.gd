@@ -19,7 +19,6 @@ var event_data = {
 func _ready():
 	for p in $PanelContainer/VBoxContainer/Header/PositionsContainer.get_children():
 		p.connect('pressed', self, "position_button_pressed", [p.name])
-	$PanelContainer/VBoxContainer/Header/VisibleToggle.disabled()
 	$PanelContainer/VBoxContainer/Header/CharacterPicker.connect('character_selected', self , '_on_character_selected')
 	portrait_picker.get_popup().connect("index_pressed", self, '_on_portrait_selected')
 	portrait_picker.allow_dont_change = false

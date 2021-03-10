@@ -1,14 +1,13 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://addons/dialogic/Editor/Pieces/SetValue.gd" type="Script" id=1]
-[ext_resource path="res://addons/dialogic/Images/ListSelect.svg" type="Texture" id=2]
-[ext_resource path="res://addons/dialogic/Editor/Pieces/Common/VisibleToggle.tscn" type="PackedScene" id=3]
+[ext_resource path="res://addons/dialogic/Images/Events/set-value.svg" type="Texture" id=2]
 [ext_resource path="res://addons/dialogic/Editor/Pieces/Common/PieceExtraSettings.tscn" type="PackedScene" id=4]
 [ext_resource path="res://addons/dialogic/Editor/Pieces/Common/DragController.tscn" type="PackedScene" id=5]
 [ext_resource path="res://addons/dialogic/Editor/Pieces/Common/GlossaryPicker.tscn" type="PackedScene" id=6]
 
 [sub_resource type="StyleBoxFlat" id=1]
-content_margin_left = 6.0
+content_margin_left = 16.0
 content_margin_right = 6.0
 content_margin_top = 6.0
 content_margin_bottom = 6.0
@@ -58,48 +57,45 @@ __meta__ = {
 }
 
 [node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer"]
-margin_left = 6.0
+margin_left = 16.0
 margin_top = 6.0
 margin_right = 998.0
 margin_bottom = 36.0
 size_flags_horizontal = 3
 
 [node name="Header" type="HBoxContainer" parent="PanelContainer/VBoxContainer"]
-margin_right = 992.0
-margin_bottom = 30.0
-
-[node name="VisibleToggle" parent="PanelContainer/VBoxContainer/Header" instance=ExtResource( 3 )]
-self_modulate = Color( 1, 1, 1, 0 )
+margin_right = 982.0
+margin_bottom = 28.0
 
 [node name="TextureRect" type="TextureRect" parent="PanelContainer/VBoxContainer/Header"]
-margin_left = 34.0
-margin_right = 50.0
-margin_bottom = 30.0
+margin_right = 22.0
+margin_bottom = 28.0
 texture = ExtResource( 2 )
 stretch_mode = 6
 
 [node name="Title" type="Label" parent="PanelContainer/VBoxContainer/Header"]
-margin_left = 54.0
-margin_top = 8.0
-margin_right = 161.0
-margin_bottom = 22.0
+margin_left = 26.0
+margin_top = 7.0
+margin_right = 133.0
+margin_bottom = 21.0
 text = "  Set the value of"
 
 [node name="GlossaryPicker" parent="PanelContainer/VBoxContainer/Header" instance=ExtResource( 6 )]
-margin_left = 165.0
-margin_right = 322.0
+margin_left = 137.0
+margin_right = 294.0
+margin_bottom = 28.0
 
 [node name="Title2" type="Label" parent="PanelContainer/VBoxContainer/Header"]
-margin_left = 326.0
-margin_top = 8.0
-margin_right = 375.0
-margin_bottom = 22.0
+margin_left = 298.0
+margin_top = 7.0
+margin_right = 347.0
+margin_bottom = 21.0
 text = "to be    "
 
 [node name="LineEdit" type="LineEdit" parent="PanelContainer/VBoxContainer/Header"]
-margin_left = 379.0
-margin_right = 427.0
-margin_bottom = 30.0
+margin_left = 351.0
+margin_right = 399.0
+margin_bottom = 28.0
 custom_styles/read_only = SubResource( 2 )
 custom_styles/focus = SubResource( 2 )
 custom_styles/normal = SubResource( 2 )
@@ -115,21 +111,22 @@ caret_blink = true
 caret_blink_speed = 0.5
 
 [node name="Preview" type="Label" parent="PanelContainer/VBoxContainer/Header"]
-margin_left = 431.0
-margin_top = 8.0
-margin_right = 431.0
-margin_bottom = 22.0
+margin_left = 403.0
+margin_top = 7.0
+margin_right = 403.0
+margin_bottom = 21.0
 custom_colors/font_color = Color( 1, 1, 1, 0.513726 )
 
 [node name="Spacer" type="Control" parent="PanelContainer/VBoxContainer/Header"]
-margin_left = 435.0
-margin_right = 951.0
-margin_bottom = 30.0
+margin_left = 407.0
+margin_right = 941.0
+margin_bottom = 28.0
 size_flags_horizontal = 3
 
 [node name="OptionButton" parent="PanelContainer/VBoxContainer/Header" instance=ExtResource( 4 )]
-margin_left = 955.0
-margin_right = 992.0
+margin_left = 945.0
+margin_right = 982.0
+margin_bottom = 28.0
 items = [ "Move Up", null, 0, false, false, 0, 0, null, "", false, "Move Down", null, 0, false, false, 1, 0, null, "", false, "", null, 0, false, false, 2, 0, null, "", true, "Remove", null, 0, false, false, 3, 0, null, "", false ]
 
 [node name="DragController" parent="." instance=ExtResource( 5 )]

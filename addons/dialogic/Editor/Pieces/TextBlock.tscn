@@ -62,11 +62,14 @@ size_flags_horizontal = 3
 margin_right = 1012.0
 margin_bottom = 30.0
 
-[node name="VisibleToggle" parent="PanelContainer/VBoxContainer/Header" instance=ExtResource( 2 )]
+[node name="Spacer1" type="Control" parent="PanelContainer/VBoxContainer/Header"]
+margin_right = 5.0
+margin_bottom = 30.0
+rect_min_size = Vector2( 5, 0 )
 
 [node name="TextureRect" type="TextureRect" parent="PanelContainer/VBoxContainer/Header"]
-margin_left = 34.0
-margin_right = 56.0
+margin_left = 9.0
+margin_right = 31.0
 margin_bottom = 30.0
 texture = ExtResource( 3 )
 stretch_mode = 6
@@ -80,16 +83,20 @@ margin_bottom = 22.0
 text = "  Text  "
 
 [node name="VSeparator" type="VSeparator" parent="PanelContainer/VBoxContainer/Header"]
-margin_left = 60.0
-margin_right = 64.0
+margin_left = 35.0
+margin_right = 39.0
 margin_bottom = 30.0
 
 [node name="CharacterPicker" parent="PanelContainer/VBoxContainer/Header" instance=ExtResource( 6 )]
-margin_left = 68.0
-margin_right = 174.0
+margin_left = 43.0
+margin_right = 149.0
 
 [node name="PortraitPicker" parent="PanelContainer/VBoxContainer/Header" instance=ExtResource( 7 )]
 visible = false
+
+[node name="VisibleToggle" parent="PanelContainer/VBoxContainer/Header" instance=ExtResource( 2 )]
+margin_left = 153.0
+margin_right = 183.0
 
 [node name="Preview" type="Label" parent="PanelContainer/VBoxContainer/Header"]
 visible = false
@@ -101,7 +108,7 @@ custom_colors/font_color = Color( 1, 1, 1, 0.513726 )
 text = "..."
 
 [node name="Spacer" type="Control" parent="PanelContainer/VBoxContainer/Header"]
-margin_left = 178.0
+margin_left = 187.0
 margin_right = 971.0
 margin_bottom = 30.0
 mouse_filter = 1

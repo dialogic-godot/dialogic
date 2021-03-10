@@ -1,13 +1,12 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://addons/dialogic/Editor/Pieces/ChangeScene.gd" type="Script" id=1]
-[ext_resource path="res://addons/dialogic/Editor/Pieces/Common/VisibleToggle.tscn" type="PackedScene" id=2]
 [ext_resource path="res://addons/dialogic/Images/change-scene.svg" type="Texture" id=3]
 [ext_resource path="res://addons/dialogic/Editor/Pieces/Common/PieceExtraSettings.tscn" type="PackedScene" id=4]
 [ext_resource path="res://addons/dialogic/Editor/Pieces/Common/DragController.tscn" type="PackedScene" id=6]
 
 [sub_resource type="StyleBoxFlat" id=1]
-content_margin_left = 6.0
+content_margin_left = 16.0
 content_margin_right = 6.0
 content_margin_top = 6.0
 content_margin_bottom = 6.0
@@ -47,43 +46,39 @@ size_flags_horizontal = 3
 custom_styles/panel = SubResource( 1 )
 
 [node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer"]
-margin_left = 6.0
+margin_left = 16.0
 margin_top = 6.0
 margin_right = 1792.0
 margin_bottom = 36.0
 size_flags_horizontal = 3
 
 [node name="Header" type="HBoxContainer" parent="PanelContainer/VBoxContainer"]
-margin_right = 1786.0
-margin_bottom = 30.0
-
-[node name="VisibleToggle" parent="PanelContainer/VBoxContainer/Header" instance=ExtResource( 2 )]
-self_modulate = Color( 0, 0, 0, 0 )
+margin_right = 1776.0
+margin_bottom = 28.0
 
 [node name="TextureRect" type="TextureRect" parent="PanelContainer/VBoxContainer/Header"]
-margin_left = 34.0
-margin_right = 56.0
-margin_bottom = 30.0
+margin_right = 22.0
+margin_bottom = 28.0
 texture = ExtResource( 3 )
 stretch_mode = 6
 
 [node name="Title" type="Label" parent="PanelContainer/VBoxContainer/Header"]
-margin_left = 60.0
-margin_top = 8.0
-margin_right = 168.0
-margin_bottom = 22.0
+margin_left = 26.0
+margin_top = 7.0
+margin_right = 134.0
+margin_bottom = 21.0
 text = "  Change Scene   "
 
 [node name="Name" type="Label" parent="PanelContainer/VBoxContainer/Header"]
-margin_left = 172.0
-margin_top = 8.0
-margin_right = 172.0
-margin_bottom = 22.0
+margin_left = 138.0
+margin_top = 7.0
+margin_right = 138.0
+margin_bottom = 21.0
 
 [node name="ButtonScenePicker" type="Button" parent="PanelContainer/VBoxContainer/Header"]
-margin_left = 176.0
-margin_right = 200.0
-margin_bottom = 30.0
+margin_left = 142.0
+margin_right = 166.0
+margin_bottom = 28.0
 text = "..."
 
 [node name="Preview" type="Label" parent="PanelContainer/VBoxContainer/Header"]
@@ -96,12 +91,15 @@ custom_colors/font_color = Color( 1, 1, 1, 0.513726 )
 text = "    ..."
 
 [node name="Spacer" type="Control" parent="PanelContainer/VBoxContainer/Header"]
-margin_left = 204.0
-margin_right = 1745.0
-margin_bottom = 30.0
+margin_left = 170.0
+margin_right = 1735.0
+margin_bottom = 28.0
 size_flags_horizontal = 3
 
 [node name="OptionButton" parent="PanelContainer/VBoxContainer/Header" instance=ExtResource( 4 )]
+margin_left = 1739.0
+margin_right = 1776.0
+margin_bottom = 28.0
 items = [ "Move Up", null, 0, false, false, 0, 0, null, "", false, "Move Down", null, 0, false, false, 1, 0, null, "", false, "", null, 0, false, false, 2, 0, null, "", true, "Remove", null, 0, false, false, 3, 0, null, "", false ]
 
 [node name="AudioPreview" type="AudioStreamPlayer" parent="PanelContainer"]
