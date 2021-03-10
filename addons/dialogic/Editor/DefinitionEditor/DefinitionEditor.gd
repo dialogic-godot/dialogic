@@ -17,5 +17,5 @@ func new_definition():
 	var file = DialogicUtil.get_path('DEFINITIONS_FILE')
 	var err = config.load(file)
 	if err == OK:
-		config.set_value(section_name, 'name', 'definition')
+		config.set_value(section_name, 'name', 'New definition')
 		config.save(file)
