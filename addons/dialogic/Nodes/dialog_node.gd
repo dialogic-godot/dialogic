@@ -20,8 +20,8 @@ var current_theme
 export(String, "TimelineDropdown") var timeline: String
 export(bool) var debug_mode = true
 signal dialogic_signal(value)
-signal dialogue_start()
-signal dialogue_end()
+signal timeline_start()
+signal timeline_end()
 signal text_event(event)
 signal wait_event_start(seconds)
 signal wait_event_timeout()
@@ -267,14 +267,14 @@ func update_text(text):
 
 
 func load_dialog(skip_add = false):
+	if dialog_index == 0:
+		emit_signal("timeline_start")
+	elif dialog_index == dialog_script['events'].size():
+		emit_signal("timeline_end")
+
 	# Hiding glossary
 	glossary_visible = false
 	$GlossaryInfo.visible = glossary_visible
-
-	if dialog_index == 0:
-		emit_signal("dialogue_start")
-	elif dialog_index == dialog_script['events'].size():
-		emit_signal("dialogue_end")
 
 	# This will load the next entry in the dialog_script array.
 	if dialog_script.has('events'):
