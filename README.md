@@ -22,6 +22,7 @@ Create dialogs, characters and scenes to display conversations in your Godot gam
     - You can now add multiple themes
     - New property: `Box size` set the width and height of the dialogue box in pixels
     - New property: `Alignment` you can now align the text displayed (Left, Center, Right)
+  - Glossary was renamed to Definitions. I feel like Definitions cover both variables and lore a bit better.
 
 To view the full changelog [click here](https://github.com/coppolaemilio/dialogic/blob/master/CHANGELOG.md). 
 
@@ -54,6 +55,15 @@ When you export a project using Dialogic, you need to add `*.json` on the Resour
 ### 🔷 Can I use Dialogic in one of my projects?
 Yes, you can use Dialogic to make any kind of game (even commercial ones). The project is developed under the [MIT License](https://github.com/coppolaemilio/dialogic/blob/master/LICENSE). Please remember to credit!
 
+
+### 🔷 Why are you not using graph nodes?
+When I started developing Dialogic I wanted to do it with graph nodes, but when I tried some of the existing solutions myself I found that they are not very useful for long conversations. Because of how the graph nodes are, the screen gets full of UI elements and it gets harder to follow. I also researched other tools for making Visual Novels (like TyranoBuilder and Visual Novel Maker) and they both work with a series of events flowing from top to bottom. I still haven't developed a complex game using both systems to tell which one is better but I don't want to break the conventions too much. 
+If you want to use graph based editors you can try [Levraut's LE Dialogue Editor](https://levrault.itch.io/le-dialogue-editor) or [EXP Godot Dialog System](https://github.com/EXPWorlds/Godot-Dialog-System).
+
+
+### 🔷 The plugin is cool! Why is it not shipped with Godot?
+I see a lot of people saying that the plugin should come with Godot, but I believe this should stay as a plugin since most of the people making games won't be using it. I'm flattered by your comments but this will remain a plugin :)
+
 ---
 
 ## Source structure
@@ -68,21 +78,25 @@ Yes, you can use Dialogic to make any kind of game (even commercial ones). The p
 
 ### /Editor
 
-`EditorView.tscn` - When you click on the Dialogic tab, this is the scene you see on the main editor panel. This contains all the sub editors and scripts needed for managing your data. This contains way too many nodes and stuff. Splitting it will come eventually, but for now I like having everything in the same scene because of how connected most of the features are.
+`EditorView.tscn` - When you click on the Dialogic tab, this is the scene you see on the main editor panel. This contains all the sub editors and scripts needed for managing your data.
 
-`editor_view.gd` - This is the code embedded in the `EditorView.tscn`. The biggest chunk of code of this project is probably this one. I've been trying to make it smaller by splitting this into a few more sub-scripts (`EditorTimeline.gd`, `EditorTheme.gd` and `EditorGlossary.gd`). This is mostly done but you might still find some functionality here.
+`editor_view.gd` - This is the code embedded in the `EditorView.tscn`. It handles the right click context menus, resource removing dialogs and file selectors.
 
-`EditorTimeline.gd` - Everything related to the timeline editor.
+`/MasterTree` - This is the [Tree](https://docs.godotengine.org/en/stable/classes/class_tree.html#class-tree) with all the resources. It handles many things like renaming, saving and several other aspects of resource management.
 
-`EditorTheme.gd` - Everything related to the theme editor tab.
+`/TimelineEditor` - Everything related to the timeline editor.
 
-`EditorGlossary.gd` - Everything related to the glossary editor tab.
+`/ThemeEditor` - Everything related to the theme editor.
+
+`/DefinitionEditor` - Everything related to the definition editor.
+
+`/SettingsEditor` - A very simple editor for changing how Dialogic behaves.
 
 `/Pieces` - Inside this directory you have all the event nodes that populate the timeline editor. Each one has its own name and script. **The name is important** since it has to be instanced from the `editor_view.gd` when clicking on buttons of the same name.
 
 `/Pieces/Common` - This is where some of the common element of the pieces are saved. Things like the Character Picker, the Portrait Picker or the Drag Controller are used in several event nodes, so I'm trying to make them easier to plug in to future events that might need them as well.
 
-`/CharacterEditor` - This contains the script `PortraitEntry.gd` and the scene `PortraitEntry.tscn`. When you add a new expression for one of your characters in the Character Editor this node/script will be instanced for handling the settings.
+`/CharacterEditor` - Everything related to the character editor. This also contains the script `PortraitEntry.gd` and the scene `PortraitEntry.tscn`. When you add a new expression for one of your characters in the Character Editor this node/script will be instanced for handling the settings.
 
 ### /Fonts
 This directory contains the font files and the resources to load. 
@@ -101,6 +115,8 @@ All icons are `.svg` files so they can scale nicely. I tried reusing many of the
 `/Images/portraits` - Some placeholder images for an example project. I might delete these since I'll probably be hosting that somewhere else.
 
 `/Images/tutorials` - Right now it only has one file, but every image created for warnings/tutorials/tips will be placed here. Hopefully.
+
+`/Images/Toolbar` - It contains the icons for the toolbar in the main view.
 
 
 ### /Nodes

@@ -80,32 +80,17 @@ margin_bottom = 54.0
 rect_min_size = Vector2( 50, 30 )
 color = Color( 1, 1, 1, 1 )
 
-[node name="Label6" type="Label" parent="VBoxContainer/HBoxContainer2/Text/GridContainer"]
-margin_top = 63.0
-margin_right = 148.0
-margin_bottom = 77.0
-text = "Speed (bigger = slower)"
-
-[node name="TextSpeed" type="SpinBox" parent="VBoxContainer/HBoxContainer2/Text/GridContainer"]
-margin_left = 158.0
-margin_top = 58.0
-margin_right = 316.0
-margin_bottom = 82.0
-max_value = 10.0
-value = 2.0
-rounded = true
-
 [node name="Label" type="Label" parent="VBoxContainer/HBoxContainer2/Text/GridContainer"]
-margin_top = 94.0
+margin_top = 66.0
 margin_right = 148.0
-margin_bottom = 108.0
+margin_bottom = 80.0
 text = "Shadow"
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer/HBoxContainer2/Text/GridContainer"]
 margin_left = 158.0
-margin_top = 86.0
+margin_top = 58.0
 margin_right = 316.0
-margin_bottom = 116.0
+margin_bottom = 88.0
 
 [node name="CheckBoxShadow" type="CheckBox" parent="VBoxContainer/HBoxContainer2/Text/GridContainer/HBoxContainer2"]
 margin_right = 24.0
@@ -120,16 +105,16 @@ size_flags_horizontal = 3
 color = Color( 0, 0, 0, 0.619608 )
 
 [node name="Label4" type="Label" parent="VBoxContainer/HBoxContainer2/Text/GridContainer"]
-margin_top = 125.0
+margin_top = 97.0
 margin_right = 148.0
-margin_bottom = 139.0
+margin_bottom = 111.0
 text = "Shadow Offset"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/HBoxContainer2/Text/GridContainer"]
 margin_left = 158.0
-margin_top = 120.0
+margin_top = 92.0
 margin_right = 316.0
-margin_bottom = 144.0
+margin_bottom = 116.0
 custom_constants/separation = 10
 
 [node name="ShadowOffsetX" type="SpinBox" parent="VBoxContainer/HBoxContainer2/Text/GridContainer/HBoxContainer"]
@@ -148,6 +133,21 @@ value = 2.0
 rounded = true
 allow_lesser = true
 prefix = "Y"
+
+[node name="Label6" type="Label" parent="VBoxContainer/HBoxContainer2/Text/GridContainer"]
+margin_top = 125.0
+margin_right = 148.0
+margin_bottom = 139.0
+text = "Speed (bigger = slower)"
+
+[node name="TextSpeed" type="SpinBox" parent="VBoxContainer/HBoxContainer2/Text/GridContainer"]
+margin_left = 158.0
+margin_top = 120.0
+margin_right = 316.0
+margin_bottom = 144.0
+max_value = 10.0
+value = 2.0
+rounded = true
 
 [node name="Label2" type="Label" parent="VBoxContainer/HBoxContainer2/Text/GridContainer"]
 margin_top = 151.0
@@ -639,11 +639,11 @@ size_flags_vertical = 3
 
 [connection signal="pressed" from="VBoxContainer/HBoxContainer2/Text/GridContainer/FontButton" to="." method="_on_FontButton_pressed"]
 [connection signal="color_changed" from="VBoxContainer/HBoxContainer2/Text/GridContainer/ColorPickerButton" to="." method="_on_ColorPickerButton_color_changed"]
-[connection signal="value_changed" from="VBoxContainer/HBoxContainer2/Text/GridContainer/TextSpeed" to="." method="_on_textSpeed_value_changed"]
 [connection signal="toggled" from="VBoxContainer/HBoxContainer2/Text/GridContainer/HBoxContainer2/CheckBoxShadow" to="." method="_on_CheckBoxShadow_toggled"]
 [connection signal="color_changed" from="VBoxContainer/HBoxContainer2/Text/GridContainer/HBoxContainer2/ColorPickerButtonShadow" to="." method="_on_ColorPickerButtonShadow_color_changed"]
 [connection signal="value_changed" from="VBoxContainer/HBoxContainer2/Text/GridContainer/HBoxContainer/ShadowOffsetX" to="." method="_on_ShadowOffset_value_changed"]
 [connection signal="value_changed" from="VBoxContainer/HBoxContainer2/Text/GridContainer/HBoxContainer/ShadowOffsetY" to="." method="_on_ShadowOffset_value_changed"]
+[connection signal="value_changed" from="VBoxContainer/HBoxContainer2/Text/GridContainer/TextSpeed" to="." method="_on_textSpeed_value_changed"]
 [connection signal="item_selected" from="VBoxContainer/HBoxContainer2/Text/GridContainer/HBoxContainer3/Alignment" to="." method="_on_Alignment_item_selected"]
 [connection signal="toggled" from="VBoxContainer/HBoxContainer2/DialogBox/GridContainer/HBoxContainer2/CheckBox" to="." method="_on_BackgroundColor_CheckBox_toggled"]
 [connection signal="color_changed" from="VBoxContainer/HBoxContainer2/DialogBox/GridContainer/HBoxContainer2/ColorPickerButton" to="." method="_on_BackgroundColor_ColorPickerButton_color_changed"]

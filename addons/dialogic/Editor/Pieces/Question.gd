@@ -12,11 +12,6 @@ var event_data = {
 }
 
 
-func _ready():
-	#
-	pass
-
-
 func load_data(data):
 	event_data = data
 	$PanelContainer/VBoxContainer/Header/LineEdit.text = event_data['question']

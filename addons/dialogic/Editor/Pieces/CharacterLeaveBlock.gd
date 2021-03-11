@@ -12,7 +12,6 @@ var event_data = {
 
 
 func _ready():
-	$PanelContainer/VBoxContainer/Header/VisibleToggle.disabled()
 	$PanelContainer/VBoxContainer/Header/CharacterDropdown.get_popup().connect("index_pressed", self, '_on_character_selected')
 
 

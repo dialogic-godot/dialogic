@@ -13,9 +13,6 @@ var event_data = {
 	'file': ''
 }
 
-func _ready():	
-	$PanelContainer/VBoxContainer/Header/VisibleToggle.disabled()
-
 
 func _on_ButtonAudio_pressed():
 	editor_reference.godot_dialog("*.wav, *.ogg")

@@ -104,9 +104,9 @@ text = "Color: "
 
 [node name="ColorPickerButton" type="ColorPickerButton" parent="HBoxContainer/Container/Color"]
 margin_left = 134.0
-margin_right = 194.0
+margin_right = 274.0
 margin_bottom = 20.0
-rect_min_size = Vector2( 60, 0 )
+rect_min_size = Vector2( 140, 0 )
 color = Color( 1, 1, 1, 1 )
 edit_alpha = false
 

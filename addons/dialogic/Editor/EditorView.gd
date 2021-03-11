@@ -9,7 +9,7 @@ var current_editor_view: String = 'Master'
 var version_string: String 
 onready var timeline_editor = $MainPanel/TimelineEditor
 onready var character_editor = $MainPanel/CharacterEditor
-onready var glossary_editor = $MainPanel/GlossaryEditor
+onready var definition_editor = $MainPanel/DefinitionEditor
 onready var theme_editor = $MainPanel/ThemeEditor
 onready var settings_editor = $MainPanel/SettingsEditor
 
@@ -22,13 +22,14 @@ func _ready():
 	# Setting references to this node
 	timeline_editor.editor_reference = self
 	character_editor.editor_reference = self
-	glossary_editor.editor_reference = self
+	definition_editor.editor_reference = self
 	theme_editor.editor_reference = self
 
 	# Toolbar
 	$ToolBar/NewTimelineButton.connect('pressed', $MainPanel/TimelineEditor, 'new_timeline')
 	$ToolBar/NewCharactersButton.connect('pressed', $MainPanel/CharacterEditor, 'new_character')
 	$ToolBar/NewThemeButton.connect('pressed', $MainPanel/ThemeEditor, 'new_theme')
+	$ToolBar/NewDefinitionButton.connect('pressed', $MainPanel/DefinitionEditor, 'new_definition')
 	$ToolBar/Docs.icon = get_icon("Instance", "EditorIcons")
 	$ToolBar/Docs.connect('pressed', OS, "shell_open", ["https://dialogic.coppolaemilio.com"])
 	#$ToolBar/FoldTools/ButtonFold.connect('pressed', $EditorTimeline, 'fold_all_nodes')
@@ -39,11 +40,13 @@ func _ready():
 	$TimelinePopupMenu.connect('id_pressed', self, '_on_TimelinePopupMenu_id_pressed')
 	$CharacterPopupMenu.connect('id_pressed', self, '_on_CharacterPopupMenu_id_pressed')
 	$ThemePopupMenu.connect('id_pressed', self, '_on_ThemePopupMenu_id_pressed')
+	$DefinitionPopupMenu.connect('id_pressed', self, '_on_DefinitionPopupMenu_id_pressed')
 	
 	#Connecting confirmation menus
 	$RemoveTimelineConfirmation.connect('confirmed', self, '_on_RemoveTimelineConfirmation_confirmed')
 	$RemoveCharacterConfirmation.connect('confirmed', self, '_on_RemoveCharacterConfirmation_confirmed')
 	$RemoveThemeConfirmation.connect('confirmed', self, '_on_RemoveThemeConfirmation_confirmed')
+	$RemoveDefinitionConfirmation.connect('confirmed', self, '_on_RemoveDefinitionConfirmation_confirmed')
 	
 	# Loading the version number
 	var config = ConfigFile.new()
@@ -77,7 +80,7 @@ func _on_CharacterPopupMenu_id_pressed(id):
 	if id == 0:
 		OS.shell_open(ProjectSettings.globalize_path(DialogicUtil.get_path('CHAR_DIR')))
 	if id == 1:
-		get_node("RemoveCharacterConfirmation").popup_centered()
+		$RemoveCharacterConfirmation.popup_centered()
 
 
 # Theme context menu
@@ -85,7 +88,28 @@ func _on_ThemePopupMenu_id_pressed(id):
 	if id == 0:
 		OS.shell_open(ProjectSettings.globalize_path(DialogicUtil.get_path('THEME_DIR')))
 	if id == 1:
-		get_node("RemoveThemeConfirmation").popup_centered()
+		$RemoveThemeConfirmation.popup_centered()
+
+
+# Definition context menu
+func _on_DefinitionPopupMenu_id_pressed(id):
+	if id == 0:
+		OS.shell_open(ProjectSettings.globalize_path(DialogicUtil.get_path('DEFINITIONS_FILE')))
+	if id == 1:
+		$RemoveDefinitionConfirmation.popup_centered()
+
+
+func _on_RemoveDefinitionConfirmation_confirmed():
+	var target = $MainPanel/DefinitionEditor.current_section
+	var config = ConfigFile.new()
+	var err = config.load(DialogicUtil.get_path('DEFINITIONS_FILE'))
+	if err == OK:
+		config.erase_section(target)
+		config.save(DialogicUtil.get_path('DEFINITIONS_FILE'))
+		$MainPanel/MasterTree.remove_selected()
+		$MainPanel/MasterTree.hide_all_editors(true)
+	else:
+		print('Error loading definitions')
 
 
 func _on_RemoveCharacterConfirmation_confirmed():
