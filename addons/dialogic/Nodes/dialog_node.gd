@@ -43,6 +43,7 @@ func _ready():
 
 	# Loading the glossary
 	definitions = DialogicUtil.get_definition_list()
+
 	# Checking if the dialog should read the code from a external file
 	if timeline != '':
 		dialog_script = set_current_dialog('/' + timeline + '.json')
