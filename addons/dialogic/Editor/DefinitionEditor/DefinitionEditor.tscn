@@ -70,13 +70,13 @@ margin_right = 300.0
 margin_bottom = 70.0
 rect_min_size = Vector2( 0, 35 )
 
-[node name="LineEdit" type="LineEdit" parent="VBoxContainer/HBoxContainer/ExtraInfo"]
+[node name="Title" type="LineEdit" parent="VBoxContainer/HBoxContainer/ExtraInfo"]
 margin_top = 74.0
 margin_right = 300.0
 margin_bottom = 98.0
 placeholder_text = "Title"
 
-[node name="RichTextLabel" type="TextEdit" parent="VBoxContainer/HBoxContainer/ExtraInfo"]
+[node name="Text" type="TextEdit" parent="VBoxContainer/HBoxContainer/ExtraInfo"]
 margin_top = 102.0
 margin_right = 300.0
 margin_bottom = 202.0
@@ -84,7 +84,7 @@ rect_min_size = Vector2( 0, 100 )
 size_flags_vertical = 3
 wrap_enabled = true
 
-[node name="LineEdit2" type="LineEdit" parent="VBoxContainer/HBoxContainer/ExtraInfo"]
+[node name="Extra" type="LineEdit" parent="VBoxContainer/HBoxContainer/ExtraInfo"]
 margin_top = 206.0
 margin_right = 300.0
 margin_bottom = 230.0
