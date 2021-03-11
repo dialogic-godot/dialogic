@@ -19,23 +19,9 @@ var current_theme
 
 export(String, "TimelineDropdown") var timeline: String
 export(bool) var debug_mode = true
-signal timeline_start()
-signal text_event(event)
-signal question_event(event)
-signal choice_event(event)
-signal input_event(event)
-signal action_event(event)
-signal background_event(event)
-signal audio_event(event)
-signal endbranch_event(event)
+signal event_start(type, event)
+signal event_end(type)
 signal dialogic_signal(value)
-signal close_dialog_event(event)
-signal set_theme_event(event)
-signal wait_event_start(event)
-signal wait_timeout()
-signal set_value_event(event)
-signal timeline_end()
-
 
 var dialog_resource
 var characters
@@ -278,9 +264,9 @@ func update_text(text):
 
 func load_dialog(skip_add = false):
 	if dialog_index == 0:
-		emit_signal("timeline_start")
+		emit_signal("event_start", "timeline", timeline)
 	elif dialog_index == dialog_script['events'].size():
-		emit_signal("timeline_end")
+		emit_signal("event_end", "timeline")
 
 	# Hiding glossary
 	glossary_visible = false
@@ -314,7 +300,7 @@ func event_handler(event: Dictionary):
 	dprint('[D] Current Event: ', event)
 	match event:
 		{'text', 'character', 'portrait'}:
-			emit_signal("text_event", event)
+			emit_signal("event_start", "text", event)
 			show_dialog()
 			finished = false
 			var character_data = get_character(event['character'])
@@ -322,7 +308,7 @@ func event_handler(event: Dictionary):
 			grab_portrait_focus(character_data, event)
 			update_text(event['text'])
 		{'question', 'question_id', 'options', ..}:
-			emit_signal("question_event", event)
+			emit_signal("event_start", "question", event)
 			show_dialog()
 			finished = false
 			waiting_for_answer = true
@@ -333,7 +319,7 @@ func event_handler(event: Dictionary):
 				for o in event['options']:
 					add_choice_button(o)
 		{'choice', 'question_id'}:
-			emit_signal("choice_event", event)
+			emit_signal("event_start", "choice", event)
 			for q in questions:
 				if q['question_id'] == event['question_id']:
 					if q['answered']:
@@ -343,7 +329,7 @@ func event_handler(event: Dictionary):
 			# It should never get here, but if it does, go to the next place.
 			#go_to_next_event()
 		{'input', ..}:
-			emit_signal("input_event", event)
+			emit_signal("event_start", "input", event)
 			show_dialog()
 			finished = false
 			waiting_for_input = true
@@ -352,7 +338,7 @@ func event_handler(event: Dictionary):
 			$TextInputDialog.popup_centered()
 			$TextInputDialog.connect("confirmed", self, "_on_input_set", [event['variable']])
 		{'action', ..}:
-			emit_signal("action_event", event)
+			emit_signal("event_start", "action", event)
 			if event['action'] == 'leaveall':
 				if event['character'] == '[All]':
 					for p in $Portraits.get_children():
@@ -382,19 +368,19 @@ func event_handler(event: Dictionary):
 		{'scene'}:
 			get_tree().change_scene(event['scene'])
 		{'background'}:
-			emit_signal("background_event", event)
+			emit_signal("event_start", "background", event)
 			$Background.visible = true
 			$Background.texture = load(event['background'])
 			go_to_next_event()
 		{'audio'}, {'audio', 'file'}:
-			emit_signal("audio_event", event)
+			emit_signal("event_start", "audio", event)
 			if event['audio'] == 'play':
 				$FX/AudioStreamPlayer.stream = load(event['file'])
 				$FX/AudioStreamPlayer.play()
 			# Todo: audio stop
 			go_to_next_event()
 		{'endbranch', ..}:
-			emit_signal("endbranch_event", event)
+			emit_signal("event_start", "endbranch", event)
 			go_to_next_event()
 		{'change_scene'}:
 			get_tree().change_scene(event['change_scene'])
@@ -403,15 +389,15 @@ func event_handler(event: Dictionary):
 			emit_signal("dialogic_signal", event['emit_signal'])
 			go_to_next_event()
 		{'close_dialog'}:
-			emit_signal("close_dialog_event", event)
+			emit_signal("event_start", "close_dialog", event)
 			queue_free()
 		{'set_theme'}:
-			emit_signal("set_theme_event", event)
+			emit_signal("set_theme", event)
 			if event['set_theme'] != '':
 				current_theme = load_theme(event['set_theme'])
 			go_to_next_event()
 		{'wait_seconds'}:
-			emit_signal("wait_event_start", event)
+			emit_signal("event_start", "wait", event)
 			wait_seconds(event['wait_seconds'])
 			waiting = true
 		{'change_timeline'}:
@@ -445,7 +431,7 @@ func event_handler(event: Dictionary):
 				# It should never get here, but if it does, go to the next place.
 				go_to_next_event()
 		{'set_value', 'glossary'}:
-			emit_signal("set_value_event", event)
+			emit_signal("event_start", "set_value", event)
 			glossary = DialogicUtil.set_var_by_id(event['glossary'], event['set_value'], glossary)
 			dprint("Glossary:", glossary)
 			go_to_next_event()
@@ -685,7 +671,7 @@ func wait_seconds(seconds):
 
 
 func _on_WaitSeconds_timeout():
-	emit_signal("wait_timeout")
+	emit_signal("event_end", "wait")
 	waiting = false
 	$WaitSeconds.stop()
 	$TextBubble.visible = true
