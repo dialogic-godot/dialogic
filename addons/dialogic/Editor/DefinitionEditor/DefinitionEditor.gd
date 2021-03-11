@@ -8,9 +8,8 @@ var current_section = ''
 onready var nodes = {
 	'name' : $VBoxContainer/HBoxContainer/VBoxContainer/Name,
 	'type': $VBoxContainer/HBoxContainer/VBoxContainer/TypeMenuButton,
-	'extra_editor': $VBoxContainer/HBoxContainer/VBoxContainer/ExtraInfo,
-	'number_editor': $VBoxContainer/HBoxContainer/VBoxContainer/Number,
-	'string_editor': $VBoxContainer/HBoxContainer/VBoxContainer/Text,
+	'extra_editor': $VBoxContainer/HBoxContainer/ExtraInfo,
+	'value_editor': $VBoxContainer/HBoxContainer/Value,
 }
 
 func _ready():
@@ -44,26 +43,19 @@ func _on_type_selected(index):
 	nodes['type'].select(index)
 	save_definition('type', index)
 	var item = master_tree.get_selected()
+	item.set_icon(0, get_icon("Variant", "EditorIcons"))
 	if index == 1:
 		item.set_icon(0, get_icon("ScriptCreateDialog", "EditorIcons"))
-	elif index == 2:
-		item.set_icon(0, get_icon("int", "EditorIcons"))
-	elif index == 3:
-		item.set_icon(0, get_icon("String", "EditorIcons"))
-	else:
-		item.set_icon(0, get_icon("GuiUnchecked", "EditorIcons"))
 	show_sub_editor(index)
+
 
 func show_sub_editor(type):
 	nodes['extra_editor'].visible = false
-	nodes['number_editor'].visible = false
-	nodes['string_editor'].visible = false
+	nodes['value_editor'].visible = false
+	if type == 0:
+		nodes['value_editor'].visible = true
 	if type == 1:
 		nodes['extra_editor'].visible = true
-	if type == 2:
-		nodes['number_editor'].visible = true
-	if type == 3:
-		nodes['string_editor'].visible = true
 
 
 func new_definition():

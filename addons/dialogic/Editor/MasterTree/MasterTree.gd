@@ -130,26 +130,10 @@ func add_character(character, select = false):
 
 func add_definition(definition, select = false):
 	var item = tree.create_item(definitions_tree)
-	#if glossary['type'] == DialogicUtil.GLOSSARY_STRING:
-	#	item.set_icon(0, get_icon("String", "EditorIcons"))
-	#if glossary['type'] == DialogicUtil.GLOSSARY_EXTRA:
-	#	item.set_icon(0, get_icon("ScriptCreateDialog", "EditorIcons"))
-	#if glossary['type'] == DialogicUtil.GLOSSARY_NUMBER:
-	#	item.set_icon(0, get_icon("int", "EditorIcons"))
-	#item.set_icon(0, character_icon)
-	#if glossary['type'] == DialogicUtil.GLOSSARY_STRING:
-	#	item.set_text(0, glossary['name'] + ' = ' + glossary['string'])
-	#else:
-	#	item.set_text(0, glossary['name'])
 	item.set_text(0, definition['name'])
+	item.set_icon(0, get_icon("Variant", "EditorIcons"))
 	if definition['type'] == 1:
 		item.set_icon(0, get_icon("ScriptCreateDialog", "EditorIcons"))
-	elif definition['type'] == 2:
-		item.set_icon(0, get_icon("int", "EditorIcons"))
-	elif definition['type'] == 3:
-		item.set_icon(0, get_icon("String", "EditorIcons"))
-	else:
-		item.set_icon(0, get_icon("GuiUnchecked", "EditorIcons"))
 		
 	definition['editor'] = 'Definition'
 	item.set_metadata(0, definition)
@@ -206,6 +190,9 @@ func _on_item_rmb_selected(position):
 	if item['editor'] == 'Theme':
 		editor_reference.get_node("ThemePopupMenu").rect_position = get_viewport().get_mouse_position()
 		editor_reference.get_node("ThemePopupMenu").popup()
+	if item['editor'] == 'Definition':
+		editor_reference.get_node("DefinitionPopupMenu").rect_position = get_viewport().get_mouse_position()
+		editor_reference.get_node("DefinitionPopupMenu").popup()
 
 
 func remove_selected():

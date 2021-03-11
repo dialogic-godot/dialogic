@@ -239,12 +239,12 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="GlossaryPopupMenu" type="PopupMenu" parent="."]
+[node name="DefinitionPopupMenu" type="PopupMenu" parent="."]
 margin_left = 171.799
 margin_top = 209.0
 margin_right = 267.799
 margin_bottom = 229.0
-items = [ "Show in File Manager", ExtResource( 26 ), 0, false, false, 0, 0, null, "", false, "Remove Character", ExtResource( 22 ), 0, false, false, 1, 0, null, "", false ]
+items = [ "Edit definitions file", ExtResource( 26 ), 0, false, false, 0, 0, null, "", false, "Remove Definition", ExtResource( 22 ), 0, false, false, 1, 0, null, "", false ]
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -254,6 +254,16 @@ margin_right = 325.0
 margin_bottom = 88.0
 rect_min_size = Vector2( 250, 87.5 )
 dialog_text = "Are you sure you want to remove this character?
+(Can't be restored)"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="RemoveDefinitionConfirmation" type="ConfirmationDialog" parent="."]
+margin_right = 325.0
+margin_bottom = 88.0
+rect_min_size = Vector2( 250, 87.5 )
+dialog_text = "Are you sure you want to remove this definition?
 (Can't be restored)"
 __meta__ = {
 "_edit_use_anchors_": false
