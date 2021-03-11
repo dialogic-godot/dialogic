@@ -34,14 +34,12 @@ func reset_editor():
 
 
 func _on_name_changed(text):
-	save_definition('name', text)
 	var item = master_tree.get_selected()
 	item.set_text(0, text)
 
 
 func _on_type_selected(index):
 	nodes['type'].select(index)
-	save_definition('type', index)
 	var item = master_tree.get_selected()
 	item.set_icon(0, get_icon("Variant", "EditorIcons"))
 	if index == 1:
@@ -58,6 +56,16 @@ func show_sub_editor(type):
 		nodes['extra_editor'].visible = true
 
 
+func get_definition(key, default):
+	if current_section != '':
+		var config = ConfigFile.new()
+		config.load(DialogicUtil.get_path('DEFINITIONS_FILE'))
+		if config.has_section(current_section):
+			return config.get_value(current_section, key, default)
+	else:
+		return default
+
+
 func new_definition():
 	var config = ConfigFile.new()
 	var section = DialogicUtil.generate_random_id()
@@ -71,21 +79,11 @@ func new_definition():
 		print('Error loading definitions')
 
 
-func get_definition(key, default):
+func save_definition():
 	if current_section != '':
 		var config = ConfigFile.new()
-		config.load(DialogicUtil.get_path('DEFINITIONS_FILE'))
-		if config.has_section(current_section):
-			return config.get_value(current_section, key, default)
-	else:
-		return default
-
-
-func save_definition(key, value):	
-	if current_section != '':
-		var config = ConfigFile.new()
-		var section = DialogicUtil.generate_random_id()
 		var err = config.load(DialogicUtil.get_path('DEFINITIONS_FILE'))
 		if err == OK:
-			config.set_value(current_section, key, value)
+			config.set_value(current_section, 'name', nodes['name'].text)
+			config.set_value(current_section, 'type', nodes['type'].selected)
 			config.save(DialogicUtil.get_path('DEFINITIONS_FILE'))
