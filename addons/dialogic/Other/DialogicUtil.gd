@@ -154,7 +154,8 @@ static func get_definition_list() -> Array:
 			definitions.append({
 				'section': section,
 				'name': config.get_value(section, 'name', section),
-				'config': config
+				'config': config,
+				'type': config.get_value(section, 'type', 0),
 			})
 	return definitions
 

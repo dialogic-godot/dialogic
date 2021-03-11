@@ -142,7 +142,15 @@ func add_definition(definition, select = false):
 	#else:
 	#	item.set_text(0, glossary['name'])
 	item.set_text(0, definition['name'])
-	item.set_icon(0, get_icon("ScriptCreateDialog", "EditorIcons"))
+	if definition['type'] == 1:
+		item.set_icon(0, get_icon("ScriptCreateDialog", "EditorIcons"))
+	elif definition['type'] == 2:
+		item.set_icon(0, get_icon("int", "EditorIcons"))
+	elif definition['type'] == 3:
+		item.set_icon(0, get_icon("String", "EditorIcons"))
+	else:
+		item.set_icon(0, get_icon("GuiUnchecked", "EditorIcons"))
+		
 	definition['editor'] = 'Definition'
 	item.set_metadata(0, definition)
 	if select: # Auto selecting
@@ -166,8 +174,8 @@ func _on_item_selected():
 		character_editor.visible = true
 		character_editor.load_character(DialogicUtil.get_path('CHAR_DIR', metadata['file']))
 	if metadata['editor'] == 'Definition':
-		# TODO: Load values here
 		definition_editor.visible = true
+		definition_editor.load_definition(metadata['section'])
 	if metadata['editor'] == 'Theme':
 		theme_editor.load_theme(metadata['file'])
 		theme_editor.visible = true
@@ -231,6 +239,12 @@ func _on_item_edited():
 		timeline_editor.timeline_name = item.get_text(0)
 	if metadata['editor'] == 'Theme':
 		DialogicUtil.set_theme_value(metadata['file'], 'settings', 'name', item.get_text(0))
+	if metadata['editor'] == 'Character':
+		character_editor.nodes['name'].text = item.get_text(0)
+	if metadata['editor'] == 'Definition':
+		definition_editor.nodes['name'].text = item.get_text(0)
+		# Not sure why this signal doesn't triggers
+		definition_editor._on_name_changed(item.get_text(0))
 
 
 func _on_autosave_timeout():
