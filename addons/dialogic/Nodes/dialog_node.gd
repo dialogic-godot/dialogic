@@ -412,24 +412,16 @@ func event_handler(event: Dictionary):
 			dialog_script = set_current_dialog('/' + event['change_timeline'])
 			dialog_index = -1
 			go_to_next_event()
-		{'condition', 'glossary', 'value', 'question_id', ..}:
+		{'condition', 'definition', 'value', 'question_id', ..}:
 			# Treating this conditional as an option on a regular question event
+			var def_value = null
 			var current_question = questions[event['question_id']]
-			#var g_var = DialogicUtil.get_glossary_by_file(event['glossary'])
-			#var g_var = glossary[event['glossary'].replace('.json', '')]
-
-			#if g_var.has('type'):
-			#	if g_var['type'] == DialogicUtil.GLOSSARY_STRING:
-			#		if g_var['string'] == event['value']:
-			#			pass
-			#		else:
-			#			current_question['answered'] = true # This will abort the current conditional branch
-			#	if g_var['type'] == DialogicUtil.GLOSSARY_NUMBER:
-			#		if g_var['number'] == event['value']:
-			#			pass
-			#		else:
-			#			current_question['answered'] = true # This will abort the current conditional branch
-
+			for d in definitions:
+				if d['section'] == event['definition']:
+					def_value = d['config'].get_value(event['definition'], 'value', null)
+			if def_value != null:
+				if def_value != event['value']:
+					current_question['answered'] = true # This will abort the current conditional branch
 
 			if current_question['answered']:
 				# If the option is for an answered question, skip to the end of it.

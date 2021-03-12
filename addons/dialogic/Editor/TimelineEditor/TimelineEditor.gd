@@ -141,9 +141,9 @@ func load_timeline(path):
 				create_event("CloseDialog", i)
 			{'wait_seconds'}:
 				create_event("WaitSeconds", i)
-			{'condition', 'glossary', 'value'}:
+			{'condition', 'definition', 'value'}:
 				create_event("IfCondition", i)
-			{'set_value', 'glossary'}:
+			{'set_value', 'definition'}:
 				create_event("SetValue", i)
 			{'set_theme'}:
 				create_event("SetTheme", i)

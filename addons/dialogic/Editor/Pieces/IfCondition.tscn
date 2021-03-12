@@ -5,7 +5,7 @@
 [ext_resource path="res://addons/dialogic/Editor/Pieces/Common/PieceExtraSettings.tscn" type="PackedScene" id=4]
 [ext_resource path="res://addons/dialogic/Editor/Pieces/Common/DragController.tscn" type="PackedScene" id=5]
 [ext_resource path="res://addons/dialogic/Editor/Pieces/Common/CustomLineEdit.tscn" type="PackedScene" id=6]
-[ext_resource path="res://addons/dialogic/Editor/Pieces/Common/GlossaryPicker.tscn" type="PackedScene" id=7]
+[ext_resource path="res://addons/dialogic/Editor/Pieces/Common/DefinitionPicker.tscn" type="PackedScene" id=7]
 
 [sub_resource type="StyleBoxFlat" id=1]
 content_margin_left = 16.0
@@ -23,7 +23,7 @@ corner_radius_top_right = 6
 corner_radius_bottom_right = 6
 corner_radius_bottom_left = 6
 
-[node name="Choice" type="HBoxContainer"]
+[node name="IfCondition" type="HBoxContainer"]
 margin_right = 1004.0
 margin_bottom = 42.0
 size_flags_horizontal = 3
@@ -65,31 +65,31 @@ margin_bottom = 28.0
 texture = ExtResource( 1 )
 stretch_mode = 6
 
-[node name="GlossaryPicker" parent="PanelContainer/VBoxContainer/Header" instance=ExtResource( 7 )]
+[node name="DefinitionPicker" parent="PanelContainer/VBoxContainer/Header" instance=ExtResource( 7 )]
 margin_left = 26.0
-margin_right = 183.0
+margin_right = 169.0
 margin_bottom = 28.0
 
 [node name="MenuButton2" type="MenuButton" parent="PanelContainer/VBoxContainer/Header"]
-margin_left = 187.0
-margin_right = 266.0
+margin_left = 173.0
+margin_right = 252.0
 margin_bottom = 28.0
 text = "[ Equal to ]"
 
 [node name="CustomLineEdit" parent="PanelContainer/VBoxContainer/Header" instance=ExtResource( 6 )]
-margin_left = 270.0
-margin_right = 318.0
+margin_left = 256.0
+margin_right = 304.0
 margin_bottom = 28.0
 
 [node name="Preview" type="Label" parent="PanelContainer/VBoxContainer/Header"]
-margin_left = 322.0
+margin_left = 308.0
 margin_top = 7.0
-margin_right = 322.0
+margin_right = 308.0
 margin_bottom = 21.0
 custom_colors/font_color = Color( 1, 1, 1, 0.513726 )
 
 [node name="Spacer" type="Control" parent="PanelContainer/VBoxContainer/Header"]
-margin_left = 326.0
+margin_left = 312.0
 margin_right = 941.0
 margin_bottom = 28.0
 size_flags_horizontal = 3

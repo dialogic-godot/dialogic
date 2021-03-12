@@ -8,6 +8,10 @@ Create dialogs, characters and scenes to display conversations in your Godot gam
 ## Changelog
 
 ### 🆕 v1.0 - WIP
+  - When upgrading from 0.9 to the current version things might not work as expected
+    - ⚠ **PLEASE MAKE A BACKUP OF YOUR PROJECT BEFORE UPGRADING** ⚠
+    - Glossary variables will be lost
+    - Glossary related events will not be loaded (`If condition Event` and `Set Value Event`)
   - New layout.
     - All editors in the same screen. Say goodbye to tabs!
     - You can now rename resources by double clicking them
@@ -23,6 +27,9 @@ Create dialogs, characters and scenes to display conversations in your Godot gam
     - New property: `Box size` set the width and height of the dialogue box in pixels
     - New property: `Alignment` you can now align the text displayed (Left, Center, Right)
   - Glossary was renamed to Definitions. I feel like Definitions cover both variables and lore a bit better.
+  - Definitions
+    - Only two types for now. Variables and Extra Information.
+    - Case sensitive matching in the `If Condition Event`
   - The events now emit signals. Thank you [Jesse Lieberg](https://github.com/GammaGames) for your first contribution!
 
 To view the full changelog [click here](https://github.com/coppolaemilio/dialogic/blob/master/CHANGELOG.md). 

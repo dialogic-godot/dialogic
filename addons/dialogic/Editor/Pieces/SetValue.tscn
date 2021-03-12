@@ -4,7 +4,7 @@
 [ext_resource path="res://addons/dialogic/Images/Events/set-value.svg" type="Texture" id=2]
 [ext_resource path="res://addons/dialogic/Editor/Pieces/Common/PieceExtraSettings.tscn" type="PackedScene" id=4]
 [ext_resource path="res://addons/dialogic/Editor/Pieces/Common/DragController.tscn" type="PackedScene" id=5]
-[ext_resource path="res://addons/dialogic/Editor/Pieces/Common/GlossaryPicker.tscn" type="PackedScene" id=6]
+[ext_resource path="res://addons/dialogic/Editor/Pieces/Common/DefinitionPicker.tscn" type="PackedScene" id=6]
 
 [sub_resource type="StyleBoxFlat" id=1]
 content_margin_left = 16.0
@@ -80,21 +80,21 @@ margin_right = 133.0
 margin_bottom = 21.0
 text = "  Set the value of"
 
-[node name="GlossaryPicker" parent="PanelContainer/VBoxContainer/Header" instance=ExtResource( 6 )]
+[node name="DefinitionPicker" parent="PanelContainer/VBoxContainer/Header" instance=ExtResource( 6 )]
 margin_left = 137.0
-margin_right = 294.0
+margin_right = 280.0
 margin_bottom = 28.0
 
 [node name="Title2" type="Label" parent="PanelContainer/VBoxContainer/Header"]
-margin_left = 298.0
+margin_left = 284.0
 margin_top = 7.0
-margin_right = 347.0
+margin_right = 333.0
 margin_bottom = 21.0
 text = "to be    "
 
 [node name="LineEdit" type="LineEdit" parent="PanelContainer/VBoxContainer/Header"]
-margin_left = 351.0
-margin_right = 399.0
+margin_left = 337.0
+margin_right = 385.0
 margin_bottom = 28.0
 custom_styles/read_only = SubResource( 2 )
 custom_styles/focus = SubResource( 2 )
@@ -111,14 +111,14 @@ caret_blink = true
 caret_blink_speed = 0.5
 
 [node name="Preview" type="Label" parent="PanelContainer/VBoxContainer/Header"]
-margin_left = 403.0
+margin_left = 389.0
 margin_top = 7.0
-margin_right = 403.0
+margin_right = 389.0
 margin_bottom = 21.0
 custom_colors/font_color = Color( 1, 1, 1, 0.513726 )
 
 [node name="Spacer" type="Control" parent="PanelContainer/VBoxContainer/Header"]
-margin_left = 407.0
+margin_left = 393.0
 margin_right = 941.0
 margin_bottom = 28.0
 size_flags_horizontal = 3
