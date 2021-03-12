@@ -23,6 +23,7 @@ Create dialogs, characters and scenes to display conversations in your Godot gam
     - New property: `Box size` set the width and height of the dialogue box in pixels
     - New property: `Alignment` you can now align the text displayed (Left, Center, Right)
   - Glossary was renamed to Definitions. I feel like Definitions cover both variables and lore a bit better.
+  - The events now emit signals. Thank you [Jesse Lieberg](https://github.com/GammaGames) for your first contribution!
 
 To view the full changelog [click here](https://github.com/coppolaemilio/dialogic/blob/master/CHANGELOG.md). 
 
@@ -165,6 +166,10 @@ Placeholder images are from Toen's YouTube DF series:
 - Sl Tu
 - Garrett Guillotte
 - George Castro
+- GammaGames
+- Karl Anderson
+- A P
+- Rokatansky
 
 Support me on [Patreon https://www.patreon.com/coppolaemilio](https://www.patreon.com/coppolaemilio)
 

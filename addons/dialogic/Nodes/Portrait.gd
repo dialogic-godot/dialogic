@@ -61,6 +61,8 @@ func fade_in(node = self, time = 0.5):
 		end_pos = Vector2(+40, 0)
 	elif direction == 'left':
 		end_pos = Vector2(-40, 0)
+	else:
+		node.rect_position += Vector2(0, 40)
 	
 	var tween_node = node.get_node('Tween')
 	tween_node.interpolate_property(
