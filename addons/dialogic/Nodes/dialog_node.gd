@@ -34,15 +34,15 @@ var dialog_script = {}
 var questions #for keeping track of the questions answered
 
 func _ready():
-	settings = DialogicUtil.get_settings()
-	var theme_file = settings.get_value('theme', 'default')
-	var directory = Directory.new()
-	if theme_file:
-		if directory.file_exists(DialogicUtil.get_path('THEME_DIR', theme_file)):
-			current_theme = load_theme(theme_file)
-
 	# Loading the glossary
 	definitions = DialogicUtil.get_definition_list()
+	
+	# Loading settings
+	settings = DialogicUtil.get_settings()
+	var theme_file = 'res://addons/dialogic/Editor/ThemeEditor/default-theme.cfg'
+	if settings.has_section('theme'):
+		theme_file = settings.get_value('theme', 'default')
+	current_theme = load_theme(theme_file)
 
 	# Checking if the dialog should read the code from a external file
 	if timeline != '':
@@ -294,10 +294,12 @@ func update_text(text):
 
 
 func load_dialog(skip_add = false):
-	if dialog_index == 0:
-		emit_signal("event_start", "timeline", timeline)
-	elif dialog_index == dialog_script['events'].size():
-		emit_signal("event_end", "timeline")
+	# Emitting signals
+	if dialog_script.has('events'):
+		if dialog_index == 0:
+			emit_signal("event_start", "timeline", timeline)
+		elif dialog_index == dialog_script['events'].size():
+			emit_signal("event_end", "timeline")
 
 	# Hiding glossary
 	glossary_visible = false

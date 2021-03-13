@@ -217,11 +217,14 @@ static func get_theme_list() -> Array:
 
 static func get_theme(filename):
 	var config = ConfigFile.new()
-	var err = config.load(get_path('THEME_DIR', filename))
+	var path
+	if 'res://' in filename:
+		path = filename
+	else:
+		path = get_path('THEME_DIR', filename)
+	var err = config.load(path)
 	if err == OK:
 		return config
-	#else:
-	#	return AQUI EL DEFAULT THEME
 
 
 static func set_theme_value(filename, section, key, value):
