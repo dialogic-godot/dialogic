@@ -77,6 +77,10 @@ If you want to use graph based editors you can try [Levraut's LE Dialogue Editor
 ### 🔷 The plugin is cool! Why is it not shipped with Godot?
 I see a lot of people saying that the plugin should come with Godot, but I believe this should stay as a plugin since most of the people making games won't be using it. I'm flattered by your comments but this will remain a plugin :)
 
+
+### 🔷 Can I use C# with Dialogic?
+You probably can, but I have no idea how to 😓. If you know your way around C# and Godot please let me know! https://github.com/coppolaemilio/dialogic/issues/55
+
 ---
 
 ## Source structure
