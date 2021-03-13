@@ -31,10 +31,11 @@ func init(expression: String = '', position_offset = 'left') -> void:
 			)
 
 	set_portrait(expression)
-	rect_position -= Vector2(
-		$TextureRect.texture.get_width() * 0.5,
-		$TextureRect.texture.get_height()
-	) * custom_scale
+	if $TextureRect.texture:
+		rect_position -= Vector2(
+			$TextureRect.texture.get_width() * 0.5,
+			$TextureRect.texture.get_height()
+		) * custom_scale
 
 
 func _ready():

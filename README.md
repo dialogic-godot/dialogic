@@ -31,6 +31,7 @@ Create dialogs, characters and scenes to display conversations in your Godot gam
     - Only two types for now. Variables and Extra Information.
     - Case sensitive matching in the `If Condition Event`
   - The events now emit signals. Thank you [Jesse Lieberg](https://github.com/GammaGames) for your first contribution!
+  - Re-added the auto color for character names in text messages
 
 To view the full changelog [click here](https://github.com/coppolaemilio/dialogic/blob/master/CHANGELOG.md). 
 
