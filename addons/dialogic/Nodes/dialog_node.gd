@@ -580,14 +580,17 @@ func get_character_position(positions) -> String:
 	return 'left'
 
 
+func deferred_resize(current_size, result):
+	#var result = theme.get_value('box', 'size', Vector2(910, 167))
+	$TextBubble.rect_size = result
+	if current_size != $TextBubble.rect_size:
+		resize_main()
+
 func load_theme(filename):
 	var theme = DialogicUtil.get_theme(filename)
 
 	# Box size
-	var current_size = $TextBubble.rect_size
-	#$TextBubble.rect_size = theme.get_value('box', 'size', Vector2(910, 167))
-	if current_size != $TextBubble.rect_size:
-		resize_main()
+	call_deferred('deferred_resize', $TextBubble.rect_size, theme.get_value('box', 'size', Vector2(910, 167)))
 
 	# Text
 	var theme_font = load(theme.get_value('text', 'font', 'res://addons/dialogic/Fonts/DefaultFont.tres'))
