@@ -19,7 +19,6 @@ var event_data = {
 func _ready():
 	for p in $PanelContainer/VBoxContainer/Header/PositionsContainer.get_children():
 		p.connect('pressed', self, "position_button_pressed", [p.name])
-	$PanelContainer/VBoxContainer/Header/VisibleToggle.disabled()
 	$PanelContainer/VBoxContainer/Header/CharacterPicker.connect('character_selected', self , '_on_character_selected')
 	portrait_picker.get_popup().connect("index_pressed", self, '_on_portrait_selected')
 	portrait_picker.allow_dont_change = false
@@ -38,7 +37,6 @@ func _on_character_selected(data):
 	event_data['character'] = data['file']
 	portrait_picker.set_character(event_data['character'], event_data['portrait'])
 	portrait_picker.text = 'Default'
-	editor_reference.manual_save()
 
 
 func _on_portrait_selected(index):
@@ -48,7 +46,6 @@ func _on_portrait_selected(index):
 			text = ''
 	event_data['portrait'] = text
 	portrait_picker.set_character(event_data['character'], event_data['portrait'])
-	editor_reference.manual_save()
 
 
 func position_button_pressed(name):
@@ -59,7 +56,6 @@ func position_button_pressed(name):
 	button.set('self_modulate', current_color)
 	button.pressed = true
 	event_data['position'][selected_index] = true
-	editor_reference.manual_save()
 
 
 func clear_all_positions():
@@ -68,7 +64,6 @@ func clear_all_positions():
 	for p in $PanelContainer/VBoxContainer/Header/PositionsContainer.get_children():
 		p.set('self_modulate', default_icon_color)
 		p.pressed = false
-	editor_reference.manual_save()
 
 
 func check_active_position(active_color = Color("#ffffff")):

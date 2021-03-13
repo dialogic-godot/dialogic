@@ -1,41 +1,24 @@
-[gd_scene load_steps=40 format=2]
+[gd_scene load_steps=20 format=2]
 
-[ext_resource path="res://addons/dialogic/Editor/editor_view.gd" type="Script" id=1]
-[ext_resource path="res://addons/dialogic/Images/dialog.svg" type="Texture" id=2]
-[ext_resource path="res://addons/dialogic/Images/character-join.svg" type="Texture" id=3]
-[ext_resource path="res://addons/dialogic/Images/scene.svg" type="Texture" id=4]
-[ext_resource path="res://addons/dialogic/Images/character-leave.svg" type="Texture" id=5]
-[ext_resource path="res://addons/dialogic/Images/condition.svg" type="Texture" id=6]
-[ext_resource path="res://addons/dialogic/Images/end-dialog.svg" type="Texture" id=7]
-[ext_resource path="res://addons/dialogic/Images/audio-event.svg" type="Texture" id=8]
+[ext_resource path="res://addons/dialogic/Editor/EditorView.gd" type="Script" id=1]
+[ext_resource path="res://addons/dialogic/Editor/TimelineEditor/TimelineEditor.tscn" type="PackedScene" id=2]
+[ext_resource path="res://addons/dialogic/Images/Toolbar/add-timeline.svg" type="Texture" id=3]
+[ext_resource path="res://addons/dialogic/Images/Toolbar/add-character.svg" type="Texture" id=4]
+[ext_resource path="res://addons/dialogic/Images/Toolbar/add-theme.svg" type="Texture" id=5]
+[ext_resource path="res://addons/dialogic/Editor/SettingsEditor/SettingsEditor.tscn" type="PackedScene" id=6]
+[ext_resource path="res://addons/dialogic/Editor/CharacterEditor/CharacterEditor.tscn" type="PackedScene" id=7]
+[ext_resource path="res://addons/dialogic/Editor/ThemeEditor/ThemeEditor.tscn" type="PackedScene" id=8]
 [ext_resource path="res://addons/dialogic/Images/open-icon.svg" type="Texture" id=9]
 [ext_resource path="res://addons/dialogic/Images/closed-icon.svg" type="Texture" id=10]
 [ext_resource path="res://addons/dialogic/Images/ActionCopy.svg" type="Texture" id=11]
-[ext_resource path="res://addons/dialogic/Images/change-timeline.svg" type="Texture" id=12]
-[ext_resource path="res://addons/dialogic/Images/ListSelect.svg" type="Texture" id=13]
+[ext_resource path="res://addons/dialogic/Editor/DefinitionEditor/DefinitionEditor.tscn" type="PackedScene" id=12]
+[ext_resource path="res://addons/dialogic/Images/Toolbar/add-definition.svg" type="Texture" id=13]
 [ext_resource path="res://addons/dialogic/Images/logo.png" type="Texture" id=14]
-[ext_resource path="res://addons/dialogic/Images/timeline.svg" type="Texture" id=15]
-[ext_resource path="res://addons/dialogic/Images/theme.svg" type="Texture" id=16]
-[ext_resource path="res://addons/dialogic/Images/character-tab.svg" type="Texture" id=17]
-[ext_resource path="res://addons/dialogic/Images/choice.svg" type="Texture" id=18]
-[ext_resource path="res://addons/dialogic/Images/end-choice.svg" type="Texture" id=19]
-[ext_resource path="res://addons/dialogic/Images/tutorials/arrow-down.svg" type="Texture" id=20]
-[ext_resource path="res://addons/dialogic/Editor/EditorCharacter.gd" type="Script" id=21]
 [ext_resource path="res://addons/dialogic/Images/Remove.svg" type="Texture" id=22]
-[ext_resource path="res://addons/dialogic/Editor/CharacterEditor/PortraitEntry.tscn" type="PackedScene" id=23]
-[ext_resource path="res://addons/dialogic/Images/plugin-editor-icon.svg" type="Texture" id=24]
-[ext_resource path="res://addons/dialogic/Images/Rename.svg" type="Texture" id=25]
 [ext_resource path="res://addons/dialogic/Images/Filesystem.svg" type="Texture" id=26]
-[ext_resource path="res://addons/dialogic/Images/question.svg" type="Texture" id=27]
-[ext_resource path="res://addons/dialogic/Editor/EditorTheme.gd" type="Script" id=28]
-[ext_resource path="res://addons/dialogic/Editor/EditorGlossary.gd" type="Script" id=29]
-[ext_resource path="res://addons/dialogic/Images/change-scene.svg" type="Texture" id=30]
-[ext_resource path="res://addons/dialogic/Images/signal.svg" type="Texture" id=31]
-[ext_resource path="res://addons/dialogic/Images/Wait.svg" type="Texture" id=32]
-[ext_resource path="res://addons/dialogic/Images/character.svg" type="Texture" id=33]
-[ext_resource path="res://addons/dialogic/Editor/EditorTimeline.gd" type="Script" id=34]
+[ext_resource path="res://addons/dialogic/Editor/MasterTree/MasterTree.tscn" type="PackedScene" id=35]
 
-[sub_resource type="Image" id=6]
+[sub_resource type="Image" id=3]
 data = {
 "data": PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ),
 "format": "LumAlpha8",
@@ -47,42 +30,8 @@ data = {
 [sub_resource type="ImageTexture" id=2]
 flags = 4
 flags = 4
-image = SubResource( 6 )
+image = SubResource( 3 )
 size = Vector2( 16, 16 )
-
-[sub_resource type="StyleBoxFlat" id=3]
-content_margin_left = 5.0
-content_margin_right = 5.0
-content_margin_top = 5.0
-content_margin_bottom = 5.0
-bg_color = Color( 0.14902, 0.172549, 0.231373, 1 )
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
-border_color = Color( 0.0980392, 0.113725, 0.152941, 1 )
-
-[sub_resource type="StyleBoxFlat" id=4]
-content_margin_right = 6.0
-content_margin_top = 10.0
-content_margin_bottom = 10.0
-bg_color = Color( 0.94902, 1, 0.482353, 1 )
-corner_radius_top_left = 5
-corner_radius_top_right = 5
-corner_radius_bottom_right = 5
-corner_radius_bottom_left = 5
-
-[sub_resource type="StyleBoxFlat" id=5]
-content_margin_left = 5.0
-content_margin_right = 5.0
-content_margin_top = 5.0
-content_margin_bottom = 5.0
-bg_color = Color( 0.2, 0.219608, 0.278431, 1 )
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
-border_color = Color( 0.0980392, 0.113725, 0.152941, 1 )
 
 [node name="EditorView" type="Control"]
 anchor_right = 1.0
@@ -101,60 +50,54 @@ __meta__ = {
 
 [node name="ToolBar" type="HBoxContainer" parent="."]
 anchor_right = 1.0
-margin_bottom = 28.0
+margin_bottom = 30.0
 custom_constants/separation = 0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="MenuButton" type="MenuButton" parent="ToolBar"]
-visible = false
-margin_right = 35.0
-margin_bottom = 28.0
-text = "File"
-items = [ "New dialog", null, 0, false, false, 0, 0, null, "", false ]
-
-[node name="EventButton" type="Button" parent="ToolBar"]
-self_modulate = Color( 0.415686, 0.615686, 0.917647, 1 )
+[node name="NewTimelineButton" type="Button" parent="ToolBar"]
+self_modulate = Color( 0.870588, 0.870588, 0.870588, 1 )
 margin_right = 34.0
 margin_bottom = 30.0
-hint_tooltip = "Timeline Editor"
+hint_tooltip = "New Timeline"
 focus_mode = 0
-icon = ExtResource( 15 )
+icon = ExtResource( 3 )
 flat = true
 
-[node name="CharactersButton" type="ToolButton" parent="ToolBar"]
+[node name="NewCharactersButton" type="ToolButton" parent="ToolBar"]
 self_modulate = Color( 0.870588, 0.870588, 0.870588, 1 )
 margin_left = 34.0
 margin_right = 68.0
 margin_bottom = 30.0
-hint_tooltip = "Character Editor"
+hint_tooltip = "New Character"
 focus_mode = 0
-icon = ExtResource( 17 )
+icon = ExtResource( 4 )
 
-[node name="GlossaryButton" type="Button" parent="ToolBar"]
+[node name="NewDefinitionButton" type="Button" parent="ToolBar"]
 self_modulate = Color( 0.870588, 0.870588, 0.870588, 1 )
 margin_left = 68.0
-margin_right = 96.0
+margin_right = 102.0
 margin_bottom = 30.0
-hint_tooltip = "Glossary Editor"
+hint_tooltip = "New Definition"
 focus_mode = 0
 icon = ExtResource( 13 )
 flat = true
 
-[node name="ThemeButton" type="Button" parent="ToolBar"]
+[node name="NewThemeButton" type="Button" parent="ToolBar"]
 self_modulate = Color( 0.870588, 0.870588, 0.870588, 1 )
-margin_left = 96.0
-margin_right = 130.0
+margin_left = 102.0
+margin_right = 136.0
 margin_bottom = 30.0
-hint_tooltip = "Theme Editor"
+hint_tooltip = "New Theme"
 focus_mode = 0
-icon = ExtResource( 16 )
+icon = ExtResource( 5 )
 flat = true
 
 [node name="FoldTools" type="HBoxContainer" parent="ToolBar"]
-margin_left = 130.0
-margin_right = 265.0
+visible = false
+margin_left = 136.0
+margin_right = 271.0
 margin_bottom = 30.0
 
 [node name="Label" type="Label" parent="ToolBar/FoldTools"]
@@ -178,21 +121,15 @@ icon = ExtResource( 9 )
 align = 0
 
 [node name="Spacer" type="Control" parent="ToolBar"]
-margin_left = 265.0
-margin_right = 295.0
-margin_bottom = 30.0
-rect_min_size = Vector2( 30, 0 )
-
-[node name="Control" type="Control" parent="ToolBar"]
-margin_left = 295.0
-margin_right = 1034.0
+margin_left = 136.0
+margin_right = 751.0
 margin_bottom = 30.0
 size_flags_horizontal = 3
 
 [node name="Docs" type="ToolButton" parent="ToolBar"]
 self_modulate = Color( 0.870588, 0.870588, 0.870588, 1 )
-margin_left = 1034.0
-margin_right = 1144.0
+margin_left = 751.0
+margin_right = 861.0
 margin_bottom = 30.0
 hint_tooltip = "Theme Editor"
 mouse_default_cursor_shape = 2
@@ -200,8 +137,8 @@ text = "Online Docs"
 icon = SubResource( 2 )
 
 [node name="Logo" type="TextureRect" parent="ToolBar"]
-margin_left = 1144.0
-margin_right = 1264.0
+margin_left = 861.0
+margin_right = 981.0
 margin_bottom = 30.0
 rect_min_size = Vector2( 120, 0 )
 mouse_default_cursor_shape = 2
@@ -209,1461 +146,75 @@ texture = ExtResource( 14 )
 expand = true
 stretch_mode = 5
 
-[node name="EditorTimeline" type="HSplitContainer" parent="."]
-visible = false
+[node name="Version" type="Label" parent="ToolBar"]
+self_modulate = Color( 1, 1, 1, 0.631373 )
+margin_left = 981.0
+margin_top = 8.0
+margin_right = 1008.0
+margin_bottom = 22.0
+text = "v1.0"
+
+[node name="MainPanel" type="HSplitContainer" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 6.0
 margin_top = 38.0
 margin_right = -5.0
 margin_bottom = -5.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-script = ExtResource( 34 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="EventTools" type="VSplitContainer" parent="EditorTimeline"]
+[node name="MasterTree" parent="MainPanel" instance=ExtResource( 35 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
 margin_right = 180.0
-margin_bottom = 661.0
+margin_bottom = 541.0
 rect_min_size = Vector2( 180, 0 )
-
-[node name="VBoxContainer2" type="VBoxContainer" parent="EditorTimeline/EventTools"]
-margin_right = 180.0
-margin_bottom = 661.0
 size_flags_vertical = 3
 
-[node name="AddTimelineButton" type="Button" parent="EditorTimeline/EventTools/VBoxContainer2"]
-margin_right = 180.0
-margin_bottom = 22.0
-text = "Add timeline"
-icon = SubResource( 2 )
+[node name="TimelineEditor" parent="MainPanel" instance=ExtResource( 2 )]
+visible = false
 
-[node name="DialogItemList" type="ItemList" parent="EditorTimeline/EventTools/VBoxContainer2"]
-margin_top = 26.0
-margin_right = 180.0
-margin_bottom = 661.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-items = [ "aaa", ExtResource( 15 ), false, "bbb", ExtResource( 15 ), false, "test-timeline", ExtResource( 15 ), false ]
-allow_rmb_select = true
+[node name="CharacterEditor" parent="MainPanel" instance=ExtResource( 7 )]
+visible = false
 
-[node name="CenterContainer" type="CenterContainer" parent="EditorTimeline"]
+[node name="DefinitionEditor" parent="MainPanel" instance=ExtResource( 12 )]
+visible = false
+
+[node name="ThemeEditor" parent="MainPanel" instance=ExtResource( 8 )]
+visible = false
+
+[node name="SettingsEditor" parent="MainPanel" instance=ExtResource( 6 )]
+visible = false
+anchor_right = 0.0
+anchor_bottom = 0.0
 margin_left = 192.0
 margin_right = 1253.0
 margin_bottom = 661.0
 
-[node name="VBoxContainer" type="VBoxContainer" parent="EditorTimeline/CenterContainer"]
-margin_left = 350.0
-margin_top = 311.0
-margin_right = 710.0
-margin_bottom = 349.0
-
-[node name="Label" type="Label" parent="EditorTimeline/CenterContainer/VBoxContainer"]
-margin_right = 360.0
-margin_bottom = 14.0
-text = "Select or add a timeline to start working on your dialogs."
-
-[node name="Control" type="CenterContainer" parent="EditorTimeline/CenterContainer/VBoxContainer"]
-margin_top = 18.0
-margin_right = 360.0
-margin_bottom = 38.0
-
-[node name="Button" type="Button" parent="EditorTimeline/CenterContainer/VBoxContainer/Control"]
-margin_left = 117.0
-margin_right = 242.0
-margin_bottom = 20.0
-text = "Add new timeline"
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="TimelineEditor" type="HSplitContainer" parent="EditorTimeline"]
-margin_left = 192.0
-margin_right = 997.0
-margin_bottom = 541.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-custom_constants/separation = 0
-split_offset = 7
-
-[node name="TimelineArea" type="ScrollContainer" parent="EditorTimeline/TimelineEditor"]
-margin_right = 607.0
-margin_bottom = 541.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-custom_styles/bg = SubResource( 3 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="TimeLine" type="VBoxContainer" parent="EditorTimeline/TimelineEditor/TimelineArea"]
-margin_left = 5.0
-margin_top = 5.0
-margin_right = 602.0
-margin_bottom = 536.0
-grow_horizontal = 2
-grow_vertical = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="ScrollContainer" type="ScrollContainer" parent="EditorTimeline/TimelineEditor"]
-margin_left = 615.0
-margin_right = 805.0
-margin_bottom = 541.0
-rect_min_size = Vector2( 190, 0 )
-
-[node name="EventContainer" type="VBoxContainer" parent="EditorTimeline/TimelineEditor/ScrollContainer"]
-margin_right = 190.0
-margin_bottom = 584.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="EventsWarning" type="PanelContainer" parent="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer"]
-margin_right = 178.0
-margin_bottom = 68.0
-custom_styles/panel = SubResource( 4 )
-
-[node name="HBoxContainer" type="HBoxContainer" parent="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer/EventsWarning"]
-margin_top = 10.0
-margin_right = 172.0
-margin_bottom = 58.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="TextureRect" type="TextureRect" parent="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer/EventsWarning/HBoxContainer"]
-margin_right = 40.0
-margin_bottom = 48.0
-rect_min_size = Vector2( 40, 40 )
-texture = ExtResource( 20 )
-stretch_mode = 4
-
-[node name="Label" type="Label" parent="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer/EventsWarning/HBoxContainer"]
-margin_left = 44.0
-margin_right = 172.0
-margin_bottom = 48.0
-rect_min_size = Vector2( 100, 0 )
-size_flags_horizontal = 3
-size_flags_vertical = 1
-custom_colors/font_color = Color( 0, 0, 0, 1 )
-text = "Add an event to start building your timeline"
-autowrap = true
-
-[node name="HBoxContainer6" type="HBoxContainer" parent="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer"]
-margin_top = 72.0
-margin_right = 178.0
-margin_bottom = 86.0
-
-[node name="Label" type="Label" parent="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer/HBoxContainer6"]
-margin_right = 77.0
-margin_bottom = 14.0
-text = "Main Events"
-
-[node name="HSeparator2" type="HSeparator" parent="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer/HBoxContainer6"]
-margin_left = 81.0
-margin_right = 178.0
-margin_bottom = 14.0
-size_flags_horizontal = 3
-
-[node name="TextBlock" type="Button" parent="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer"]
-margin_top = 90.0
-margin_right = 178.0
-margin_bottom = 118.0
-text = "  Text Event"
-icon = ExtResource( 2 )
-align = 0
-
-[node name="CharacterJoinBlock" type="Button" parent="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer"]
-margin_top = 122.0
-margin_right = 178.0
-margin_bottom = 150.0
-text = "  Character Join"
-icon = ExtResource( 3 )
-align = 0
-
-[node name="CharacterLeaveBlock" type="Button" parent="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer"]
-margin_top = 154.0
-margin_right = 178.0
-margin_bottom = 182.0
-text = "  Character Leave"
-icon = ExtResource( 5 )
-align = 0
-
-[node name="HBoxContainer5" type="HBoxContainer" parent="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer"]
-margin_top = 186.0
-margin_right = 178.0
-margin_bottom = 200.0
-
-[node name="Label" type="Label" parent="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer/HBoxContainer5"]
-margin_right = 33.0
-margin_bottom = 14.0
-text = "Logic"
-
-[node name="HSeparator2" type="HSeparator" parent="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer/HBoxContainer5"]
-margin_left = 37.0
-margin_right = 178.0
-margin_bottom = 14.0
-size_flags_horizontal = 3
-
-[node name="ButtonQuestion" type="Button" parent="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer"]
-margin_top = 204.0
-margin_right = 178.0
-margin_bottom = 232.0
-text = "  Question"
-icon = ExtResource( 27 )
-align = 0
-
-[node name="Choice" type="Button" parent="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer"]
-margin_top = 236.0
-margin_right = 178.0
-margin_bottom = 264.0
-text = "  Choice"
-icon = ExtResource( 18 )
-align = 0
-
-[node name="IfCondition" type="Button" parent="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer"]
-margin_top = 268.0
-margin_right = 178.0
-margin_bottom = 296.0
-text = " Condition"
-icon = ExtResource( 6 )
-align = 0
-
-[node name="EndBranch" type="Button" parent="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer"]
-margin_top = 300.0
-margin_right = 178.0
-margin_bottom = 328.0
-text = "  End Branch"
-icon = ExtResource( 19 )
-align = 0
-
-[node name="SetValue" type="Button" parent="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer"]
-margin_top = 332.0
-margin_right = 178.0
-margin_bottom = 354.0
-text = "  Set Value"
-icon = ExtResource( 13 )
-align = 0
-
-[node name="HBoxContainer3" type="HBoxContainer" parent="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer"]
-margin_top = 358.0
-margin_right = 178.0
-margin_bottom = 372.0
-
-[node name="Label" type="Label" parent="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer/HBoxContainer3"]
-margin_right = 56.0
-margin_bottom = 14.0
-text = "Timeline"
-
-[node name="HSeparator2" type="HSeparator" parent="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer/HBoxContainer3"]
-margin_left = 60.0
-margin_right = 178.0
-margin_bottom = 14.0
-size_flags_horizontal = 3
-
-[node name="ChangeTimeline" type="Button" parent="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer"]
-margin_top = 376.0
-margin_right = 178.0
-margin_bottom = 404.0
-hint_tooltip = "This will instantly teleport you to the start of the desired timeline."
-text = "  Change Timeline"
-icon = ExtResource( 12 )
-align = 0
-
-[node name="ButtonBackground" type="Button" parent="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer"]
-margin_top = 408.0
-margin_right = 178.0
-margin_bottom = 436.0
-disabled = true
-text = "  Scene Event"
-icon = ExtResource( 4 )
-align = 0
-
-[node name="CloseDialog" type="Button" parent="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer"]
-margin_top = 440.0
-margin_right = 178.0
-margin_bottom = 468.0
-text = "  Close Dialog"
-icon = ExtResource( 7 )
-align = 0
-
-[node name="WaitSeconds" type="Button" parent="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer"]
-margin_top = 472.0
-margin_right = 178.0
-margin_bottom = 500.0
-text = "  Wait Seconds"
-icon = ExtResource( 32 )
-align = 0
-
-[node name="HBoxContainer4" type="HBoxContainer" parent="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer"]
-margin_top = 504.0
-margin_right = 178.0
-margin_bottom = 518.0
-
-[node name="Label" type="Label" parent="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer/HBoxContainer4"]
-margin_right = 37.0
-margin_bottom = 14.0
-text = "Audio"
-
-[node name="HSeparator2" type="HSeparator" parent="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer/HBoxContainer4"]
-margin_left = 41.0
-margin_right = 178.0
-margin_bottom = 14.0
-size_flags_horizontal = 3
-
-[node name="AudioBlock" type="Button" parent="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer"]
-margin_top = 522.0
-margin_right = 178.0
-margin_bottom = 550.0
-text = "  Audio Event"
-icon = ExtResource( 8 )
-align = 0
-
-[node name="HBoxContainer" type="HBoxContainer" parent="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer"]
-margin_top = 554.0
-margin_right = 178.0
-margin_bottom = 568.0
-
-[node name="Label" type="Label" parent="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer/HBoxContainer"]
-margin_right = 39.0
-margin_bottom = 14.0
-text = "Godot"
-
-[node name="HSeparator2" type="HSeparator" parent="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer/HBoxContainer"]
-margin_left = 43.0
-margin_right = 178.0
-margin_bottom = 14.0
-size_flags_horizontal = 3
-
-[node name="EmitSignal" type="Button" parent="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer"]
-margin_top = 572.0
-margin_right = 178.0
-margin_bottom = 600.0
-text = "  Emit Signal"
-icon = ExtResource( 31 )
-align = 0
-
-[node name="ChangeScene" type="Button" parent="EditorTimeline/TimelineEditor/ScrollContainer/EventContainer"]
-margin_top = 604.0
-margin_right = 178.0
-margin_bottom = 632.0
-hint_tooltip = "This will instantly teleport you to the start of the desired timeline."
-text = "  Change Scene"
-icon = ExtResource( 30 )
-align = 0
-
-[node name="EditorGlossary" type="HSplitContainer" parent="."]
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_left = 6.0
-margin_top = 38.0
-margin_right = -5.0
-margin_bottom = -5.0
-script = ExtResource( 29 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="VBoxContainer" type="VBoxContainer" parent="EditorGlossary"]
-margin_right = 140.0
-margin_bottom = 661.0
-rect_min_size = Vector2( 140, 0 )
-
-[node name="NewEntryButton" type="Button" parent="EditorGlossary/VBoxContainer"]
-margin_right = 140.0
-margin_bottom = 22.0
-text = "New entry"
-icon = SubResource( 2 )
-
-[node name="ItemList" type="ItemList" parent="EditorGlossary/VBoxContainer"]
-margin_top = 26.0
-margin_right = 140.0
-margin_bottom = 661.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-items = [ "Emilio", SubResource( 2 ), false, "numeroloco", SubResource( 2 ), false, "text", SubResource( 2 ), false ]
-allow_rmb_select = true
-
-[node name="ScrollContainer" type="ScrollContainer" parent="EditorGlossary"]
-margin_left = 152.0
-margin_right = 1253.0
-margin_bottom = 661.0
-
-[node name="VBoxContainer" type="VBoxContainer" parent="EditorGlossary/ScrollContainer"]
-margin_right = 1101.0
-margin_bottom = 661.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="HBoxContainer" type="HBoxContainer" parent="EditorGlossary/ScrollContainer/VBoxContainer"]
-margin_right = 1101.0
-margin_bottom = 84.0
-
-[node name="VBoxContainer" type="VBoxContainer" parent="EditorGlossary/ScrollContainer/VBoxContainer/HBoxContainer"]
-margin_right = 320.0
-margin_bottom = 84.0
-rect_min_size = Vector2( 320, 0 )
-
-[node name="Label" type="Label" parent="EditorGlossary/ScrollContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
-margin_right = 320.0
-margin_bottom = 14.0
-text = "Name"
-
-[node name="LineEdit3" type="LineEdit" parent="EditorGlossary/ScrollContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
-margin_top = 18.0
-margin_right = 320.0
-margin_bottom = 42.0
-editable = false
-
-[node name="Label2" type="Label" parent="EditorGlossary/ScrollContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
-margin_top = 46.0
-margin_right = 320.0
-margin_bottom = 60.0
-text = "Type:"
-
-[node name="TypeMenuButton" type="OptionButton" parent="EditorGlossary/ScrollContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
-margin_top = 64.0
-margin_right = 320.0
-margin_bottom = 84.0
-disabled = true
-text = "None"
-expand_icon = true
-items = [ "None", null, false, 0, null, "Extra Information", null, false, 1, null, "Number", null, false, 2, null, "Text", null, false, 3, null, "None", null, false, 4, null, "Extra Information", null, false, 5, null, "Number", null, false, 6, null, "Text", null, false, 7, null, "None", null, false, 8, null, "Extra Information", null, false, 9, null, "Number", null, false, 10, null, "Text", null, false, 11, null, "None", null, false, 12, null, "Extra Information", null, false, 13, null, "Number", null, false, 14, null, "Text", null, false, 15, null, "None", null, false, 16, null, "Extra Information", null, false, 17, null, "Number", null, false, 18, null, "Text", null, false, 19, null ]
-selected = 0
-
-[node name="ExtraInfo" type="VBoxContainer" parent="EditorGlossary/ScrollContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
-visible = false
-margin_top = 88.0
-margin_right = 320.0
-margin_bottom = 351.0
-
-[node name="RichTextLabel2" type="Label" parent="EditorGlossary/ScrollContainer/VBoxContainer/HBoxContainer/VBoxContainer/ExtraInfo"]
-margin_right = 320.0
-margin_bottom = 31.0
-text = "A popup will display this information when a player hovers the word in a dialog. "
-autowrap = true
-
-[node name="Control" type="Control" parent="EditorGlossary/ScrollContainer/VBoxContainer/HBoxContainer/VBoxContainer/ExtraInfo"]
-margin_top = 35.0
-margin_right = 320.0
-margin_bottom = 85.0
-rect_min_size = Vector2( 0, 50 )
-
-[node name="Label3" type="Label" parent="EditorGlossary/ScrollContainer/VBoxContainer/HBoxContainer/VBoxContainer/ExtraInfo"]
-margin_top = 89.0
-margin_right = 320.0
-margin_bottom = 103.0
-text = "Title, body and extra:"
-
-[node name="LineEdit" type="LineEdit" parent="EditorGlossary/ScrollContainer/VBoxContainer/HBoxContainer/VBoxContainer/ExtraInfo"]
-margin_top = 107.0
-margin_right = 320.0
-margin_bottom = 131.0
-editable = false
-
-[node name="RichTextLabel" type="TextEdit" parent="EditorGlossary/ScrollContainer/VBoxContainer/HBoxContainer/VBoxContainer/ExtraInfo"]
-margin_top = 135.0
-margin_right = 320.0
-margin_bottom = 235.0
-rect_min_size = Vector2( 0, 100 )
-size_flags_vertical = 3
-readonly = true
-wrap_enabled = true
-
-[node name="LineEdit2" type="LineEdit" parent="EditorGlossary/ScrollContainer/VBoxContainer/HBoxContainer/VBoxContainer/ExtraInfo"]
-margin_top = 239.0
-margin_right = 320.0
-margin_bottom = 263.0
-editable = false
-placeholder_text = "Extra"
-
-[node name="Number" type="VBoxContainer" parent="EditorGlossary/ScrollContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
-visible = false
-margin_top = 88.0
-margin_right = 320.0
-margin_bottom = 130.0
-
-[node name="Label5" type="Label" parent="EditorGlossary/ScrollContainer/VBoxContainer/HBoxContainer/VBoxContainer/Number"]
-margin_right = 320.0
-margin_bottom = 14.0
-text = "Number:"
-
-[node name="SpinBox" type="LineEdit" parent="EditorGlossary/ScrollContainer/VBoxContainer/HBoxContainer/VBoxContainer/Number"]
-margin_top = 18.0
-margin_right = 320.0
-margin_bottom = 42.0
-
-[node name="Text" type="VBoxContainer" parent="EditorGlossary/ScrollContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
-visible = false
-margin_top = 355.0
-margin_right = 320.0
-margin_bottom = 397.0
-
-[node name="Label4" type="Label" parent="EditorGlossary/ScrollContainer/VBoxContainer/HBoxContainer/VBoxContainer/Text"]
-margin_right = 320.0
-margin_bottom = 14.0
-text = "Text: (String)"
-
-[node name="LineEdit3" type="LineEdit" parent="EditorGlossary/ScrollContainer/VBoxContainer/HBoxContainer/VBoxContainer/Text"]
-margin_top = 18.0
-margin_right = 320.0
-margin_bottom = 42.0
-
-[node name="CenterContainer" type="CenterContainer" parent="EditorGlossary"]
-visible = false
-margin_left = 152.0
-margin_right = 1253.0
-margin_bottom = 661.0
-
-[node name="VBoxContainer" type="VBoxContainer" parent="EditorGlossary/CenterContainer"]
-margin_left = 474.0
-margin_top = 302.0
-margin_right = 626.0
-margin_bottom = 359.0
-
-[node name="Label" type="Label" parent="EditorGlossary/CenterContainer/VBoxContainer"]
-margin_right = 152.0
-margin_bottom = 31.0
-text = "You don't have any
-glossary entry selected."
-align = 1
-
-[node name="CenterContainer" type="CenterContainer" parent="EditorGlossary/CenterContainer/VBoxContainer"]
-margin_top = 35.0
-margin_right = 152.0
-margin_bottom = 57.0
-
-[node name="NewEntryButton2" type="Button" parent="EditorGlossary/CenterContainer/VBoxContainer/CenterContainer"]
-margin_left = 26.0
-margin_right = 125.0
-margin_bottom = 22.0
-text = "Create one"
-icon = SubResource( 2 )
-
-[node name="EditorCharacter" type="HSplitContainer" parent="."]
-visible = false
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_left = 6.0
-margin_top = 38.0
-margin_right = -5.0
-margin_bottom = -5.0
-script = ExtResource( 21 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="CharacterTools" type="VBoxContainer" parent="EditorCharacter"]
-margin_right = 180.0
-margin_bottom = 661.0
-rect_min_size = Vector2( 180, 0 )
-
-[node name="Button" type="Button" parent="EditorCharacter/CharacterTools"]
-margin_right = 180.0
-margin_bottom = 22.0
-text = "Add Character"
-icon = SubResource( 2 )
-
-[node name="CharacterItemList" type="ItemList" parent="EditorCharacter/CharacterTools"]
-margin_top = 26.0
-margin_right = 180.0
-margin_bottom = 661.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-items = [ "Emilio", ExtResource( 33 ), false, "Pepe", ExtResource( 33 ), false, "character-1613148305.json", ExtResource( 33 ), false ]
-allow_rmb_select = true
-
-[node name="NoCharacters" type="CenterContainer" parent="EditorCharacter"]
-visible = false
+[node name="Empty" type="CenterContainer" parent="MainPanel"]
 margin_left = 192.0
 margin_right = 997.0
 margin_bottom = 541.0
 
-[node name="VBoxContainer" type="VBoxContainer" parent="EditorCharacter/NoCharacters"]
-margin_left = 257.0
-margin_top = 251.0
-margin_right = 547.0
-margin_bottom = 289.0
+[node name="VBoxContainer" type="VBoxContainer" parent="MainPanel/Empty"]
+margin_left = 262.0
+margin_top = 263.0
+margin_right = 542.0
+margin_bottom = 277.0
 
-[node name="Label" type="Label" parent="EditorCharacter/NoCharacters/VBoxContainer"]
-margin_right = 290.0
+[node name="Label" type="Label" parent="MainPanel/Empty/VBoxContainer"]
+margin_right = 280.0
 margin_bottom = 14.0
-text = "You don't have any characters in your project."
-align = 1
-
-[node name="CenterContainer" type="CenterContainer" parent="EditorCharacter/NoCharacters/VBoxContainer"]
-margin_top = 18.0
-margin_right = 290.0
-margin_bottom = 38.0
-
-[node name="Button" type="Button" parent="EditorCharacter/NoCharacters/VBoxContainer/CenterContainer"]
-margin_left = 75.0
-margin_right = 214.0
-margin_bottom = 20.0
-text = "Create a character +"
-
-[node name="CharacterEditor" type="ScrollContainer" parent="EditorCharacter"]
-margin_left = 192.0
-margin_right = 1253.0
-margin_bottom = 661.0
-custom_styles/bg = SubResource( 5 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="HBoxContainer" type="HBoxContainer" parent="EditorCharacter/CharacterEditor"]
-margin_left = 5.0
-margin_top = 5.0
-margin_right = 1056.0
-margin_bottom = 656.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="Container" type="VBoxContainer" parent="EditorCharacter/CharacterEditor/HBoxContainer"]
-margin_right = 523.0
-margin_bottom = 651.0
-grow_horizontal = 2
-grow_vertical = 2
-size_flags_horizontal = 3
-size_flags_vertical = 9
-
-[node name="Name" type="HBoxContainer" parent="EditorCharacter/CharacterEditor/HBoxContainer/Container"]
-margin_right = 523.0
-margin_bottom = 24.0
-
-[node name="Label" type="Label" parent="EditorCharacter/CharacterEditor/HBoxContainer/Container/Name"]
-margin_top = 5.0
-margin_right = 130.0
-margin_bottom = 19.0
-rect_min_size = Vector2( 130, 0 )
-text = "Name: "
-
-[node name="LineEdit" type="LineEdit" parent="EditorCharacter/CharacterEditor/HBoxContainer/Container/Name"]
-margin_left = 134.0
-margin_right = 274.0
-margin_bottom = 24.0
-rect_min_size = Vector2( 140, 0 )
-
-[node name="CheckBox" type="CheckBox" parent="EditorCharacter/CharacterEditor/HBoxContainer/Container/Name"]
-margin_left = 278.0
-margin_right = 451.0
-margin_bottom = 24.0
-text = "Different display name"
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="DisplayName" type="HBoxContainer" parent="EditorCharacter/CharacterEditor/HBoxContainer/Container"]
-visible = false
-margin_top = 28.0
-margin_right = 491.0
-margin_bottom = 52.0
-__meta__ = {
-"_editor_description_": "Display name is the name that will
-show up on the dialogs in game."
-}
-
-[node name="Label" type="Label" parent="EditorCharacter/CharacterEditor/HBoxContainer/Container/DisplayName"]
-margin_top = 5.0
-margin_right = 130.0
-margin_bottom = 19.0
-rect_min_size = Vector2( 130, 0 )
-text = "Display Name: "
-
-[node name="LineEdit" type="LineEdit" parent="EditorCharacter/CharacterEditor/HBoxContainer/Container/DisplayName"]
-margin_left = 134.0
-margin_right = 274.0
-margin_bottom = 24.0
-rect_min_size = Vector2( 140, 0 )
-
-[node name="Color" type="HBoxContainer" parent="EditorCharacter/CharacterEditor/HBoxContainer/Container"]
-margin_top = 28.0
-margin_right = 523.0
-margin_bottom = 48.0
-
-[node name="Label" type="Label" parent="EditorCharacter/CharacterEditor/HBoxContainer/Container/Color"]
-margin_top = 3.0
-margin_right = 130.0
-margin_bottom = 17.0
-rect_min_size = Vector2( 130, 0 )
-text = "Color: "
-
-[node name="ColorPickerButton" type="ColorPickerButton" parent="EditorCharacter/CharacterEditor/HBoxContainer/Container/Color"]
-margin_left = 134.0
-margin_right = 194.0
-margin_bottom = 20.0
-rect_min_size = Vector2( 60, 0 )
-color = Color( 1, 1, 1, 1 )
-edit_alpha = false
-
-[node name="Description" type="HBoxContainer" parent="EditorCharacter/CharacterEditor/HBoxContainer/Container"]
-margin_top = 52.0
-margin_right = 523.0
-margin_bottom = 152.0
-
-[node name="Label" type="Label" parent="EditorCharacter/CharacterEditor/HBoxContainer/Container/Description"]
-margin_top = 43.0
-margin_right = 130.0
-margin_bottom = 57.0
-rect_min_size = Vector2( 130, 0 )
-text = "Description: "
-
-[node name="TextEdit" type="TextEdit" parent="EditorCharacter/CharacterEditor/HBoxContainer/Container/Description"]
-margin_left = 134.0
-margin_right = 523.0
-margin_bottom = 100.0
-rect_min_size = Vector2( 100, 100 )
-size_flags_horizontal = 3
-
-[node name="Separator" type="Control" parent="EditorCharacter/CharacterEditor/HBoxContainer/Container"]
-margin_top = 156.0
-margin_right = 523.0
-margin_bottom = 166.0
-rect_min_size = Vector2( 0, 10 )
-
-[node name="Portraits" type="HBoxContainer" parent="EditorCharacter/CharacterEditor/HBoxContainer/Container"]
-margin_top = 170.0
-margin_right = 523.0
-margin_bottom = 184.0
-
-[node name="Label" type="Label" parent="EditorCharacter/CharacterEditor/HBoxContainer/Container/Portraits"]
-margin_right = 143.0
-margin_bottom = 14.0
-text = "Portraits / Expressions"
-
-[node name="Labels" type="HBoxContainer" parent="EditorCharacter/CharacterEditor/HBoxContainer/Container"]
-margin_top = 188.0
-margin_right = 523.0
-margin_bottom = 202.0
-
-[node name="LineEdit" type="Label" parent="EditorCharacter/CharacterEditor/HBoxContainer/Container/Labels"]
-margin_right = 100.0
-margin_bottom = 14.0
-rect_min_size = Vector2( 100, 0 )
-text = "Name"
-
-[node name="LineEdit2" type="Label" parent="EditorCharacter/CharacterEditor/HBoxContainer/Container/Labels"]
-margin_left = 104.0
-margin_right = 254.0
-margin_bottom = 14.0
-rect_min_size = Vector2( 150, 0 )
-text = "Path"
-
-[node name="ScrollContainer" type="ScrollContainer" parent="EditorCharacter/CharacterEditor/HBoxContainer/Container"]
-margin_top = 206.0
-margin_right = 523.0
-margin_bottom = 595.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="VBoxContainer" type="VBoxContainer" parent="EditorCharacter/CharacterEditor/HBoxContainer/Container/ScrollContainer"]
-margin_right = 523.0
-margin_bottom = 389.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="PortraitList" type="VBoxContainer" parent="EditorCharacter/CharacterEditor/HBoxContainer/Container/ScrollContainer/VBoxContainer"]
-margin_right = 523.0
-margin_bottom = 24.0
-size_flags_horizontal = 3
-
-[node name="PortraitEntry" parent="EditorCharacter/CharacterEditor/HBoxContainer/Container/ScrollContainer/VBoxContainer/PortraitList" instance=ExtResource( 23 )]
-margin_right = 523.0
-
-[node name="HBoxContainer" type="HBoxContainer" parent="EditorCharacter/CharacterEditor/HBoxContainer/Container/ScrollContainer/VBoxContainer"]
-margin_top = 28.0
-margin_right = 523.0
-margin_bottom = 48.0
-
-[node name="Button" type="Button" parent="EditorCharacter/CharacterEditor/HBoxContainer/Container/ScrollContainer/VBoxContainer/HBoxContainer"]
-margin_right = 87.0
-margin_bottom = 20.0
-text = " Add new + "
-
-[node name="FileName" type="HBoxContainer" parent="EditorCharacter/CharacterEditor/HBoxContainer/Container"]
-margin_top = 599.0
-margin_right = 523.0
-margin_bottom = 623.0
-
-[node name="Label" type="Label" parent="EditorCharacter/CharacterEditor/HBoxContainer/Container/FileName"]
-margin_top = 5.0
-margin_right = 130.0
-margin_bottom = 19.0
-rect_min_size = Vector2( 130, 0 )
-text = "File:"
-
-[node name="LineEdit" type="LineEdit" parent="EditorCharacter/CharacterEditor/HBoxContainer/Container/FileName"]
-margin_left = 134.0
-margin_right = 523.0
-margin_bottom = 24.0
-rect_min_size = Vector2( 140, 0 )
-focus_mode = 0
-size_flags_horizontal = 3
-editable = false
-
-[node name="Actions" type="HBoxContainer" parent="EditorCharacter/CharacterEditor/HBoxContainer/Container"]
-margin_top = 627.0
-margin_right = 523.0
-margin_bottom = 651.0
-
-[node name="DefaultSpeaker" type="CheckBox" parent="EditorCharacter/CharacterEditor/HBoxContainer/Container/Actions"]
-margin_right = 128.0
-margin_bottom = 24.0
-hint_tooltip = "By selecting \"Default Speaker\" all the new
-Text Events created will automatically
-select this character by default.
-You can only have 1 Default Speaker
-per project."
-text = "Default Speaker"
-
-[node name="Control" type="Control" parent="EditorCharacter/CharacterEditor/HBoxContainer/Container/Actions"]
-margin_left = 132.0
-margin_right = 523.0
-margin_bottom = 24.0
-size_flags_horizontal = 3
-
-[node name="VBoxContainer" type="VBoxContainer" parent="EditorCharacter/CharacterEditor/HBoxContainer"]
-margin_left = 527.0
-margin_right = 1051.0
-margin_bottom = 651.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="Control" type="Panel" parent="EditorCharacter/CharacterEditor/HBoxContainer/VBoxContainer"]
-margin_right = 524.0
-margin_bottom = 651.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="TextureRect" type="TextureRect" parent="EditorCharacter/CharacterEditor/HBoxContainer/VBoxContainer/Control"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_left = 30.0
-margin_top = 30.0
-margin_right = -30.0
-margin_bottom = -30.0
-rect_min_size = Vector2( 100, 100 )
-size_flags_horizontal = 3
-size_flags_vertical = 3
-expand = true
-stretch_mode = 6
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Label" type="Label" parent="EditorCharacter/CharacterEditor/HBoxContainer/VBoxContainer/Control"]
-self_modulate = Color( 1, 1, 1, 0.396078 )
-margin_right = 340.0
-margin_bottom = 14.0
-text = "Preview"
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="EditorTheme" type="ScrollContainer" parent="."]
-visible = false
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_left = 6.0
-margin_top = 38.0
-margin_right = -5.0
-margin_bottom = -5.0
-script = ExtResource( 28 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="VBoxContainer" type="VBoxContainer" parent="EditorTheme"]
-margin_right = 1253.0
-margin_bottom = 661.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-custom_constants/separation = 15
-
-[node name="HBoxContainer2" type="HBoxContainer" parent="EditorTheme/VBoxContainer"]
-margin_right = 1253.0
-margin_bottom = 178.0
-
-[node name="Text" type="VBoxContainer" parent="EditorTheme/VBoxContainer/HBoxContainer2"]
-margin_right = 316.0
-margin_bottom = 178.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="PanelContainer" type="Panel" parent="EditorTheme/VBoxContainer/HBoxContainer2/Text"]
-margin_right = 316.0
-margin_bottom = 30.0
-rect_min_size = Vector2( 0, 30 )
-
-[node name="Label" type="Label" parent="EditorTheme/VBoxContainer/HBoxContainer2/Text/PanelContainer"]
-margin_right = 40.0
-margin_bottom = 14.0
-text = "Text"
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="GridContainer" type="GridContainer" parent="EditorTheme/VBoxContainer/HBoxContainer2/Text"]
-margin_top = 34.0
-margin_right = 316.0
-margin_bottom = 178.0
-size_flags_horizontal = 3
-custom_constants/hseparation = 10
-columns = 2
-
-[node name="Label5" type="Label" parent="EditorTheme/VBoxContainer/HBoxContainer2/Text/GridContainer"]
-margin_top = 3.0
-margin_right = 148.0
-margin_bottom = 17.0
-size_flags_horizontal = 3
-text = "Font"
-
-[node name="FontButton" type="Button" parent="EditorTheme/VBoxContainer/HBoxContainer2/Text/GridContainer"]
-margin_left = 158.0
-margin_right = 316.0
-margin_bottom = 20.0
-size_flags_vertical = 4
-text = "DefaultFont"
-
-[node name="Label3" type="Label" parent="EditorTheme/VBoxContainer/HBoxContainer2/Text/GridContainer"]
-margin_top = 32.0
-margin_right = 148.0
-margin_bottom = 46.0
-text = "Color"
-
-[node name="ColorPickerButton" type="ColorPickerButton" parent="EditorTheme/VBoxContainer/HBoxContainer2/Text/GridContainer"]
-margin_left = 158.0
-margin_top = 24.0
-margin_right = 316.0
-margin_bottom = 54.0
-rect_min_size = Vector2( 50, 30 )
-color = Color( 1, 1, 1, 1 )
-
-[node name="Label6" type="Label" parent="EditorTheme/VBoxContainer/HBoxContainer2/Text/GridContainer"]
-margin_top = 63.0
-margin_right = 148.0
-margin_bottom = 77.0
-text = "Speed (bigger = slower)"
-
-[node name="TextSpeed" type="SpinBox" parent="EditorTheme/VBoxContainer/HBoxContainer2/Text/GridContainer"]
-margin_left = 158.0
-margin_top = 58.0
-margin_right = 316.0
-margin_bottom = 82.0
-max_value = 10.0
-value = 2.0
-rounded = true
-
-[node name="Label" type="Label" parent="EditorTheme/VBoxContainer/HBoxContainer2/Text/GridContainer"]
-margin_top = 94.0
-margin_right = 148.0
-margin_bottom = 108.0
-text = "Shadow"
-
-[node name="HBoxContainer2" type="HBoxContainer" parent="EditorTheme/VBoxContainer/HBoxContainer2/Text/GridContainer"]
-margin_left = 158.0
-margin_top = 86.0
-margin_right = 316.0
-margin_bottom = 116.0
-
-[node name="CheckBoxShadow" type="CheckBox" parent="EditorTheme/VBoxContainer/HBoxContainer2/Text/GridContainer/HBoxContainer2"]
-margin_right = 24.0
-margin_bottom = 30.0
-
-[node name="ColorPickerButtonShadow" type="ColorPickerButton" parent="EditorTheme/VBoxContainer/HBoxContainer2/Text/GridContainer/HBoxContainer2"]
-margin_left = 28.0
-margin_right = 158.0
-margin_bottom = 30.0
-rect_min_size = Vector2( 50, 30 )
-size_flags_horizontal = 3
-color = Color( 0, 0, 0, 0.619608 )
-
-[node name="Label4" type="Label" parent="EditorTheme/VBoxContainer/HBoxContainer2/Text/GridContainer"]
-margin_top = 125.0
-margin_right = 148.0
-margin_bottom = 139.0
-text = "Shadow Offset"
-
-[node name="HBoxContainer" type="HBoxContainer" parent="EditorTheme/VBoxContainer/HBoxContainer2/Text/GridContainer"]
-margin_left = 158.0
-margin_top = 120.0
-margin_right = 316.0
-margin_bottom = 144.0
-custom_constants/separation = 10
-
-[node name="ShadowOffsetX" type="SpinBox" parent="EditorTheme/VBoxContainer/HBoxContainer2/Text/GridContainer/HBoxContainer"]
-margin_right = 74.0
-margin_bottom = 24.0
-value = 2.0
-rounded = true
-allow_lesser = true
-prefix = "X"
-
-[node name="ShadowOffsetY" type="SpinBox" parent="EditorTheme/VBoxContainer/HBoxContainer2/Text/GridContainer/HBoxContainer"]
-margin_left = 84.0
-margin_right = 158.0
-margin_bottom = 24.0
-value = 2.0
-rounded = true
-allow_lesser = true
-prefix = "Y"
-
-[node name="DialogBox" type="VBoxContainer" parent="EditorTheme/VBoxContainer/HBoxContainer2"]
-margin_left = 320.0
-margin_right = 628.0
-margin_bottom = 178.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="PanelContainer" type="Panel" parent="EditorTheme/VBoxContainer/HBoxContainer2/DialogBox"]
-margin_right = 308.0
-margin_bottom = 30.0
-rect_min_size = Vector2( 0, 30 )
-
-[node name="Label" type="Label" parent="EditorTheme/VBoxContainer/HBoxContainer2/DialogBox/PanelContainer"]
-margin_right = 40.0
-margin_bottom = 14.0
-text = "Dialog Box"
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="GridContainer" type="GridContainer" parent="EditorTheme/VBoxContainer/HBoxContainer2/DialogBox"]
-margin_top = 34.0
-margin_right = 308.0
-margin_bottom = 162.0
-size_flags_horizontal = 3
-custom_constants/hseparation = 10
-columns = 2
-
-[node name="Label5" type="Label" parent="EditorTheme/VBoxContainer/HBoxContainer2/DialogBox/GridContainer"]
-margin_top = 5.0
-margin_right = 132.0
-margin_bottom = 19.0
-text = "Background Color"
-
-[node name="HBoxContainer2" type="HBoxContainer" parent="EditorTheme/VBoxContainer/HBoxContainer2/DialogBox/GridContainer"]
-margin_left = 142.0
-margin_right = 294.0
-margin_bottom = 24.0
-
-[node name="CheckBox" type="CheckBox" parent="EditorTheme/VBoxContainer/HBoxContainer2/DialogBox/GridContainer/HBoxContainer2"]
-margin_right = 24.0
-margin_bottom = 24.0
-
-[node name="ColorPickerButton" type="ColorPickerButton" parent="EditorTheme/VBoxContainer/HBoxContainer2/DialogBox/GridContainer/HBoxContainer2"]
-margin_left = 28.0
-margin_right = 152.0
-margin_bottom = 24.0
-size_flags_horizontal = 3
-
-[node name="Label" type="Label" parent="EditorTheme/VBoxContainer/HBoxContainer2/DialogBox/GridContainer"]
-margin_top = 33.0
-margin_right = 132.0
-margin_bottom = 47.0
-text = "Background Texture"
-
-[node name="HBoxContainer3" type="HBoxContainer" parent="EditorTheme/VBoxContainer/HBoxContainer2/DialogBox/GridContainer"]
-margin_left = 142.0
-margin_top = 28.0
-margin_right = 294.0
-margin_bottom = 52.0
-
-[node name="CheckBox" type="CheckBox" parent="EditorTheme/VBoxContainer/HBoxContainer2/DialogBox/GridContainer/HBoxContainer3"]
-margin_right = 24.0
-margin_bottom = 24.0
-pressed = true
-
-[node name="BackgroundTextureButton" type="Button" parent="EditorTheme/VBoxContainer/HBoxContainer2/DialogBox/GridContainer/HBoxContainer3"]
-margin_left = 28.0
-margin_right = 152.0
-margin_bottom = 24.0
-size_flags_horizontal = 3
-text = "background-2"
-
-[node name="Label2" type="Label" parent="EditorTheme/VBoxContainer/HBoxContainer2/DialogBox/GridContainer"]
-margin_top = 59.0
-margin_right = 132.0
-margin_bottom = 73.0
-text = "Next dialog indicator"
-
-[node name="NextIndicatorButton" type="Button" parent="EditorTheme/VBoxContainer/HBoxContainer2/DialogBox/GridContainer"]
-margin_left = 142.0
-margin_top = 56.0
-margin_right = 294.0
-margin_bottom = 76.0
-text = "next-indicator"
-
-[node name="Label6" type="Label" parent="EditorTheme/VBoxContainer/HBoxContainer2/DialogBox/GridContainer"]
-margin_top = 85.0
-margin_right = 132.0
-margin_bottom = 99.0
-text = "Box padding"
-
-[node name="HBoxContainer" type="HBoxContainer" parent="EditorTheme/VBoxContainer/HBoxContainer2/DialogBox/GridContainer"]
-margin_left = 142.0
-margin_top = 80.0
-margin_right = 294.0
-margin_bottom = 104.0
-
-[node name="TextOffsetV" type="SpinBox" parent="EditorTheme/VBoxContainer/HBoxContainer2/DialogBox/GridContainer/HBoxContainer"]
-margin_right = 74.0
-margin_bottom = 24.0
-value = 10.0
-rounded = true
-allow_lesser = true
-prefix = "V"
-
-[node name="TextOffsetH" type="SpinBox" parent="EditorTheme/VBoxContainer/HBoxContainer2/DialogBox/GridContainer/HBoxContainer"]
-margin_left = 78.0
-margin_right = 152.0
-margin_bottom = 24.0
-value = 20.0
-rounded = true
-allow_lesser = true
-prefix = "H"
-
-[node name="Label3" type="Label" parent="EditorTheme/VBoxContainer/HBoxContainer2/DialogBox/GridContainer"]
-margin_top = 108.0
-margin_right = 132.0
-margin_bottom = 128.0
-size_flags_vertical = 5
-text = "Action key"
-
-[node name="BoxContainer" type="HBoxContainer" parent="EditorTheme/VBoxContainer/HBoxContainer2/DialogBox/GridContainer"]
-margin_left = 142.0
-margin_top = 108.0
-margin_right = 294.0
-margin_bottom = 128.0
-
-[node name="ActionOptionButton" type="OptionButton" parent="EditorTheme/VBoxContainer/HBoxContainer2/DialogBox/GridContainer/BoxContainer"]
-margin_right = 152.0
-margin_bottom = 20.0
-hint_tooltip = "To add/remove actions go to Project > Project Settings > Input Map"
-size_flags_horizontal = 3
-text = "ui_accept"
-items = [ "[Select Action]", null, false, 0, null, "ui_accept", null, false, 1, null, "ui_select", null, false, 2, null, "ui_cancel", null, false, 3, null, "ui_focus_next", null, false, 4, null, "ui_focus_prev", null, false, 5, null, "ui_left", null, false, 6, null, "ui_right", null, false, 7, null, "ui_up", null, false, 8, null, "ui_down", null, false, 9, null, "ui_page_up", null, false, 10, null, "ui_page_down", null, false, 11, null, "ui_home", null, false, 12, null, "ui_end", null, false, 13, null ]
-selected = 0
-
-[node name="ButtonStyle" type="VBoxContainer" parent="EditorTheme/VBoxContainer/HBoxContainer2"]
-margin_left = 632.0
-margin_right = 940.0
-margin_bottom = 178.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="PanelContainer" type="Panel" parent="EditorTheme/VBoxContainer/HBoxContainer2/ButtonStyle"]
-margin_right = 308.0
-margin_bottom = 30.0
-rect_min_size = Vector2( 0, 30 )
-
-[node name="Label" type="Label" parent="EditorTheme/VBoxContainer/HBoxContainer2/ButtonStyle/PanelContainer"]
-margin_right = 40.0
-margin_bottom = 14.0
-text = "Buttons"
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="GridContainer" type="GridContainer" parent="EditorTheme/VBoxContainer/HBoxContainer2/ButtonStyle"]
-margin_top = 34.0
-margin_right = 308.0
-margin_bottom = 170.0
-size_flags_horizontal = 3
-custom_constants/hseparation = 10
-columns = 2
-
-[node name="Label5" type="Label" parent="EditorTheme/VBoxContainer/HBoxContainer2/ButtonStyle/GridContainer"]
-margin_top = 5.0
-margin_right = 126.0
-margin_bottom = 19.0
-text = "Text Color "
-
-[node name="HBoxContainer4" type="HBoxContainer" parent="EditorTheme/VBoxContainer/HBoxContainer2/ButtonStyle/GridContainer"]
-margin_left = 136.0
-margin_right = 288.0
-margin_bottom = 24.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="CheckBox2" type="CheckBox" parent="EditorTheme/VBoxContainer/HBoxContainer2/ButtonStyle/GridContainer/HBoxContainer4"]
-margin_right = 24.0
-margin_bottom = 24.0
-pressed = true
-
-[node name="ButtonTextColor" type="ColorPickerButton" parent="EditorTheme/VBoxContainer/HBoxContainer2/ButtonStyle/GridContainer/HBoxContainer4"]
-margin_left = 28.0
-margin_right = 152.0
-margin_bottom = 24.0
-size_flags_horizontal = 3
-color = Color( 1, 1, 1, 1 )
-
-[node name="Label7" type="Label" parent="EditorTheme/VBoxContainer/HBoxContainer2/ButtonStyle/GridContainer"]
-margin_top = 33.0
-margin_right = 126.0
-margin_bottom = 47.0
-text = "Background Color"
-
-[node name="HBoxContainer2" type="HBoxContainer" parent="EditorTheme/VBoxContainer/HBoxContainer2/ButtonStyle/GridContainer"]
-margin_left = 136.0
-margin_top = 28.0
-margin_right = 288.0
-margin_bottom = 52.0
-
-[node name="CheckBox" type="CheckBox" parent="EditorTheme/VBoxContainer/HBoxContainer2/ButtonStyle/GridContainer/HBoxContainer2"]
-margin_right = 24.0
-margin_bottom = 24.0
-
-[node name="ColorPickerButton" type="ColorPickerButton" parent="EditorTheme/VBoxContainer/HBoxContainer2/ButtonStyle/GridContainer/HBoxContainer2"]
-margin_left = 28.0
-margin_right = 152.0
-margin_bottom = 24.0
-size_flags_horizontal = 3
-
-[node name="Label" type="Label" parent="EditorTheme/VBoxContainer/HBoxContainer2/ButtonStyle/GridContainer"]
-margin_top = 61.0
-margin_right = 126.0
-margin_bottom = 75.0
-text = "Background Texture"
-
-[node name="HBoxContainer3" type="HBoxContainer" parent="EditorTheme/VBoxContainer/HBoxContainer2/ButtonStyle/GridContainer"]
-margin_left = 136.0
-margin_top = 56.0
-margin_right = 288.0
-margin_bottom = 80.0
-
-[node name="CheckBox" type="CheckBox" parent="EditorTheme/VBoxContainer/HBoxContainer2/ButtonStyle/GridContainer/HBoxContainer3"]
-margin_right = 24.0
-margin_bottom = 24.0
-pressed = true
-
-[node name="BackgroundTextureButton" type="Button" parent="EditorTheme/VBoxContainer/HBoxContainer2/ButtonStyle/GridContainer/HBoxContainer3"]
-margin_left = 28.0
-margin_right = 152.0
-margin_bottom = 24.0
-size_flags_horizontal = 3
-text = "background-2"
-
-[node name="Label6" type="Label" parent="EditorTheme/VBoxContainer/HBoxContainer2/ButtonStyle/GridContainer"]
-margin_top = 89.0
-margin_right = 126.0
-margin_bottom = 103.0
-text = "Box padding"
-
-[node name="HBoxContainer" type="HBoxContainer" parent="EditorTheme/VBoxContainer/HBoxContainer2/ButtonStyle/GridContainer"]
-margin_left = 136.0
-margin_top = 84.0
-margin_right = 288.0
-margin_bottom = 108.0
-
-[node name="TextOffsetV" type="SpinBox" parent="EditorTheme/VBoxContainer/HBoxContainer2/ButtonStyle/GridContainer/HBoxContainer"]
-margin_right = 74.0
-margin_bottom = 24.0
-value = 5.0
-rounded = true
-allow_lesser = true
-prefix = "V"
-
-[node name="TextOffsetH" type="SpinBox" parent="EditorTheme/VBoxContainer/HBoxContainer2/ButtonStyle/GridContainer/HBoxContainer"]
-margin_left = 78.0
-margin_right = 152.0
-margin_bottom = 24.0
-value = 5.0
-rounded = true
-allow_lesser = true
-prefix = "H"
-
-[node name="Label2" type="Label" parent="EditorTheme/VBoxContainer/HBoxContainer2/ButtonStyle/GridContainer"]
-margin_top = 117.0
-margin_right = 126.0
-margin_bottom = 131.0
-text = "Vertical separation"
-
-[node name="VerticalSeparation" type="SpinBox" parent="EditorTheme/VBoxContainer/HBoxContainer2/ButtonStyle/GridContainer"]
-margin_left = 136.0
-margin_top = 112.0
-margin_right = 288.0
-margin_bottom = 136.0
-value = 5.0
-rounded = true
-allow_lesser = true
-
-[node name="Glossary" type="VBoxContainer" parent="EditorTheme/VBoxContainer/HBoxContainer2"]
-margin_left = 944.0
-margin_right = 1253.0
-margin_bottom = 178.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="PanelContainer" type="Panel" parent="EditorTheme/VBoxContainer/HBoxContainer2/Glossary"]
-margin_right = 309.0
-margin_bottom = 30.0
-rect_min_size = Vector2( 0, 30 )
-
-[node name="Label" type="Label" parent="EditorTheme/VBoxContainer/HBoxContainer2/Glossary/PanelContainer"]
-margin_right = 40.0
-margin_bottom = 14.0
-text = "Glossary Panel"
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="GridContainer" type="GridContainer" parent="EditorTheme/VBoxContainer/HBoxContainer2/Glossary"]
-margin_top = 34.0
-margin_right = 309.0
-margin_bottom = 88.0
-size_flags_horizontal = 3
-custom_constants/hseparation = 10
-columns = 2
-
-[node name="Label5" type="Label" parent="EditorTheme/VBoxContainer/HBoxContainer2/Glossary/GridContainer"]
-margin_top = 3.0
-margin_right = 204.0
-margin_bottom = 17.0
-size_flags_horizontal = 3
-text = "Font"
-
-[node name="FontButton" type="Button" parent="EditorTheme/VBoxContainer/HBoxContainer2/Glossary/GridContainer"]
-margin_left = 214.0
-margin_right = 309.0
-margin_bottom = 20.0
-size_flags_vertical = 4
-text = "GlossaryFont"
-
-[node name="Label3" type="Label" parent="EditorTheme/VBoxContainer/HBoxContainer2/Glossary/GridContainer"]
-margin_top = 32.0
-margin_right = 204.0
-margin_bottom = 46.0
-text = "Color"
-
-[node name="ColorPickerButton" type="ColorPickerButton" parent="EditorTheme/VBoxContainer/HBoxContainer2/Glossary/GridContainer"]
-margin_left = 214.0
-margin_top = 24.0
-margin_right = 309.0
-margin_bottom = 54.0
-rect_min_size = Vector2( 50, 30 )
-color = Color( 0.215686, 0.654902, 0.67451, 1 )
-
-[node name="Label" type="Label" parent="EditorTheme/VBoxContainer/HBoxContainer2/Glossary/GridContainer"]
-visible = false
-margin_top = 66.0
-margin_right = 141.0
-margin_bottom = 80.0
-text = "Shadow"
-
-[node name="HBoxContainer2" type="HBoxContainer" parent="EditorTheme/VBoxContainer/HBoxContainer2/Glossary/GridContainer"]
-visible = false
-margin_top = 58.0
-margin_right = 213.0
-margin_bottom = 88.0
-
-[node name="CheckBoxShadow" type="CheckBox" parent="EditorTheme/VBoxContainer/HBoxContainer2/Glossary/GridContainer/HBoxContainer2"]
-margin_right = 24.0
-margin_bottom = 30.0
-
-[node name="ColorPickerButtonShadow" type="ColorPickerButton" parent="EditorTheme/VBoxContainer/HBoxContainer2/Glossary/GridContainer/HBoxContainer2"]
-margin_left = 28.0
-margin_right = 213.0
-margin_bottom = 30.0
-rect_min_size = Vector2( 50, 30 )
-size_flags_horizontal = 3
-color = Color( 0, 0, 0, 0.619608 )
-
-[node name="Label4" type="Label" parent="EditorTheme/VBoxContainer/HBoxContainer2/Glossary/GridContainer"]
-visible = false
-margin_top = 63.0
-margin_right = 141.0
-margin_bottom = 77.0
-text = "S, Offset"
-
-[node name="HBoxContainer" type="HBoxContainer" parent="EditorTheme/VBoxContainer/HBoxContainer2/Glossary/GridContainer"]
-visible = false
-margin_top = 58.0
-margin_right = 213.0
-margin_bottom = 82.0
-custom_constants/separation = 10
-
-[node name="ShadowOffsetX" type="SpinBox" parent="EditorTheme/VBoxContainer/HBoxContainer2/Glossary/GridContainer/HBoxContainer"]
-margin_right = 74.0
-margin_bottom = 24.0
-value = 2.0
-rounded = true
-allow_lesser = true
-prefix = "X"
-
-[node name="ShadowOffsetY" type="SpinBox" parent="EditorTheme/VBoxContainer/HBoxContainer2/Glossary/GridContainer/HBoxContainer"]
-margin_left = 84.0
-margin_right = 158.0
-margin_bottom = 24.0
-value = 2.0
-rounded = true
-allow_lesser = true
-prefix = "Y"
-
-[node name="HBoxContainer3" type="HBoxContainer" parent="EditorTheme/VBoxContainer"]
-margin_top = 193.0
-margin_right = 1253.0
-margin_bottom = 253.0
-custom_constants/separation = 10
-
-[node name="TextEdit" type="TextEdit" parent="EditorTheme/VBoxContainer/HBoxContainer3"]
-margin_right = 1091.0
-margin_bottom = 60.0
-rect_min_size = Vector2( 400, 60 )
-size_flags_horizontal = 3
-text = "This is preview text. You can use  [color=#A5EFAC]BBCode[/color] to style it. Also, check out the Glossary. 
-[wave amp=50 freq=2]You can even use effects![/wave]"
-wrap_enabled = true
-
-[node name="PreviewButton" type="Button" parent="EditorTheme/VBoxContainer/HBoxContainer3"]
-margin_left = 1101.0
-margin_right = 1253.0
-margin_bottom = 60.0
-text = "  Preview changes  "
-icon = ExtResource( 24 )
-
-[node name="Panel" type="Panel" parent="EditorTheme/VBoxContainer"]
-margin_top = 268.0
-margin_right = 1253.0
-margin_bottom = 568.0
-rect_min_size = Vector2( 0, 300 )
-
-[node name="HBoxContainer" type="HBoxContainer" parent="EditorTheme/VBoxContainer"]
-margin_top = 583.0
-margin_right = 1253.0
-margin_bottom = 583.0
-
-[node name="Control" type="Control" parent="EditorTheme/VBoxContainer/HBoxContainer"]
-margin_right = 1253.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
+text = "Select or create an element to start working"
 
 [node name="TimelinePopupMenu" type="PopupMenu" parent="."]
 margin_left = 151.0
 margin_top = 276.0
 margin_right = 325.0
 margin_bottom = 332.0
-items = [ "Rename", ExtResource( 25 ), 0, false, false, 0, 0, null, "", false, "Show in File Manager", ExtResource( 26 ), 0, false, false, 1, 0, null, "", false, "Copy Timeline Name", ExtResource( 11 ), 0, false, false, 2, 0, null, "", false, "Remove", ExtResource( 22 ), 0, false, false, 3, 0, null, "", false ]
+items = [ "Show in File Manager", ExtResource( 26 ), 0, false, false, 0, 0, null, "", false, "Copy Timeline Name", ExtResource( 11 ), 0, false, false, 1, 0, null, "", false, "Remove", ExtResource( 22 ), 0, false, false, 2, 0, null, "", false ]
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -1678,12 +229,22 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="GlossaryPopupMenu" type="PopupMenu" parent="."]
+[node name="ThemePopupMenu" type="PopupMenu" parent="."]
 margin_left = 171.799
 margin_top = 209.0
 margin_right = 267.799
 margin_bottom = 229.0
-items = [ "Show in File Manager", ExtResource( 26 ), 0, false, false, 0, 0, null, "", false, "Remove Character", ExtResource( 22 ), 0, false, false, 1, 0, null, "", false ]
+items = [ "Show in File Manager", ExtResource( 26 ), 0, false, false, 0, 0, null, "", false, "Remove Theme", ExtResource( 22 ), 0, false, false, 1, 0, null, "", false ]
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="DefinitionPopupMenu" type="PopupMenu" parent="."]
+margin_left = 171.799
+margin_top = 209.0
+margin_right = 267.799
+margin_bottom = 229.0
+items = [ "Edit definitions file", ExtResource( 26 ), 0, false, false, 0, 0, null, "", false, "Remove Definition", ExtResource( 22 ), 0, false, false, 1, 0, null, "", false ]
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -1693,6 +254,26 @@ margin_right = 325.0
 margin_bottom = 88.0
 rect_min_size = Vector2( 250, 87.5 )
 dialog_text = "Are you sure you want to remove this character?
+(Can't be restored)"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="RemoveDefinitionConfirmation" type="ConfirmationDialog" parent="."]
+margin_right = 325.0
+margin_bottom = 88.0
+rect_min_size = Vector2( 250, 87.5 )
+dialog_text = "Are you sure you want to remove this definition?
+(Can't be restored)"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="RemoveThemeConfirmation" type="ConfirmationDialog" parent="."]
+margin_right = 325.0
+margin_bottom = 88.0
+rect_min_size = Vector2( 250, 87.5 )
+dialog_text = "Are you sure you want to remove this theme?
 (Can't be restored)"
 __meta__ = {
 "_edit_use_anchors_": false
@@ -1718,89 +299,4 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="RenameDialog" type="AcceptDialog" parent="."]
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = -250.0
-margin_top = -44.0
-margin_right = 250.0
-margin_bottom = 44.0
-rect_min_size = Vector2( 500, 0 )
-window_title = "Renaming Timeline"
-resizable = true
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="LineEdit" type="LineEdit" parent="RenameDialog"]
-anchor_left = -0.00237569
-anchor_top = -0.00809895
-anchor_right = -0.00237569
-anchor_bottom = -0.00809895
-margin_left = 9.18785
-margin_top = 8.71271
-margin_right = 493.188
-margin_bottom = 52.7127
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[connection signal="pressed" from="ToolBar/EventButton" to="." method="_on_EventButton_pressed"]
-[connection signal="pressed" from="ToolBar/CharactersButton" to="." method="_on_CharactersButton_pressed"]
-[connection signal="pressed" from="ToolBar/GlossaryButton" to="." method="_on_GlossaryButton_pressed"]
-[connection signal="pressed" from="ToolBar/ThemeButton" to="." method="_on_ThemeButton_pressed"]
 [connection signal="gui_input" from="ToolBar/Logo" to="." method="_on_Logo_gui_input"]
-[connection signal="pressed" from="EditorTimeline/EventTools/VBoxContainer2/AddTimelineButton" to="EditorTimeline" method="_on_AddTimelineButton_pressed"]
-[connection signal="pressed" from="EditorTimeline/CenterContainer/VBoxContainer/Control/Button" to="EditorTimeline" method="_on_AddTimelineButton_pressed"]
-[connection signal="pressed" from="EditorGlossary/VBoxContainer/NewEntryButton" to="EditorGlossary" method="_on_NewEntryButton_pressed"]
-[connection signal="item_rmb_selected" from="EditorGlossary/VBoxContainer/ItemList" to="EditorGlossary" method="_on_ItemList_item_rmb_selected"]
-[connection signal="item_selected" from="EditorGlossary/VBoxContainer/ItemList" to="EditorGlossary" method="_on_ItemList_item_selected"]
-[connection signal="item_selected" from="EditorGlossary/ScrollContainer/VBoxContainer/HBoxContainer/VBoxContainer/TypeMenuButton" to="EditorGlossary" method="_on_TypeMenuButton_item_selected"]
-[connection signal="pressed" from="EditorGlossary/CenterContainer/VBoxContainer/CenterContainer/NewEntryButton2" to="EditorGlossary" method="_on_NewEntryButton_pressed"]
-[connection signal="pressed" from="EditorCharacter/CharacterTools/Button" to="EditorCharacter" method="_on_New_Character_Button_pressed"]
-[connection signal="item_rmb_selected" from="EditorCharacter/CharacterTools/CharacterItemList" to="EditorCharacter" method="_on_CharacterItemList_item_rmb_selected"]
-[connection signal="item_selected" from="EditorCharacter/CharacterTools/CharacterItemList" to="EditorCharacter" method="_on_ItemList_item_selected"]
-[connection signal="pressed" from="EditorCharacter/NoCharacters/VBoxContainer/CenterContainer/Button" to="EditorCharacter" method="_on_New_Character_Button_pressed"]
-[connection signal="toggled" from="EditorCharacter/CharacterEditor/HBoxContainer/Container/Name/CheckBox" to="EditorCharacter" method="_on_CheckBox_toggled"]
-[connection signal="pressed" from="EditorCharacter/CharacterEditor/HBoxContainer/Container/ScrollContainer/VBoxContainer/HBoxContainer/Button" to="EditorCharacter" method="_on_New_Portrait_Button_pressed"]
-[connection signal="pressed" from="EditorTheme/VBoxContainer/HBoxContainer2/Text/GridContainer/FontButton" to="EditorTheme" method="_on_FontButton_pressed"]
-[connection signal="color_changed" from="EditorTheme/VBoxContainer/HBoxContainer2/Text/GridContainer/ColorPickerButton" to="EditorTheme" method="_on_ColorPickerButton_color_changed"]
-[connection signal="value_changed" from="EditorTheme/VBoxContainer/HBoxContainer2/Text/GridContainer/TextSpeed" to="EditorTheme" method="_on_textSpeed_value_changed"]
-[connection signal="toggled" from="EditorTheme/VBoxContainer/HBoxContainer2/Text/GridContainer/HBoxContainer2/CheckBoxShadow" to="EditorTheme" method="_on_CheckBoxShadow_toggled"]
-[connection signal="color_changed" from="EditorTheme/VBoxContainer/HBoxContainer2/Text/GridContainer/HBoxContainer2/ColorPickerButtonShadow" to="EditorTheme" method="_on_ColorPickerButtonShadow_color_changed"]
-[connection signal="value_changed" from="EditorTheme/VBoxContainer/HBoxContainer2/Text/GridContainer/HBoxContainer/ShadowOffsetX" to="EditorTheme" method="_on_ShadowOffset_value_changed"]
-[connection signal="value_changed" from="EditorTheme/VBoxContainer/HBoxContainer2/Text/GridContainer/HBoxContainer/ShadowOffsetY" to="EditorTheme" method="_on_ShadowOffset_value_changed"]
-[connection signal="toggled" from="EditorTheme/VBoxContainer/HBoxContainer2/DialogBox/GridContainer/HBoxContainer2/CheckBox" to="EditorTheme" method="_on_BackgroundColor_CheckBox_toggled"]
-[connection signal="color_changed" from="EditorTheme/VBoxContainer/HBoxContainer2/DialogBox/GridContainer/HBoxContainer2/ColorPickerButton" to="EditorTheme" method="_on_BackgroundColor_ColorPickerButton_color_changed"]
-[connection signal="toggled" from="EditorTheme/VBoxContainer/HBoxContainer2/DialogBox/GridContainer/HBoxContainer3/CheckBox" to="EditorTheme" method="_on_BackgroundTexture_CheckBox_toggled"]
-[connection signal="pressed" from="EditorTheme/VBoxContainer/HBoxContainer2/DialogBox/GridContainer/HBoxContainer3/BackgroundTextureButton" to="EditorTheme" method="_on_BackgroundTextureButton_pressed"]
-[connection signal="pressed" from="EditorTheme/VBoxContainer/HBoxContainer2/DialogBox/GridContainer/NextIndicatorButton" to="EditorTheme" method="_on_NextIndicatorButton_pressed"]
-[connection signal="value_changed" from="EditorTheme/VBoxContainer/HBoxContainer2/DialogBox/GridContainer/HBoxContainer/TextOffsetV" to="EditorTheme" method="_on_TextMargin_value_changed"]
-[connection signal="value_changed" from="EditorTheme/VBoxContainer/HBoxContainer2/DialogBox/GridContainer/HBoxContainer/TextOffsetH" to="EditorTheme" method="_on_TextMarginH_value_changed"]
-[connection signal="item_selected" from="EditorTheme/VBoxContainer/HBoxContainer2/DialogBox/GridContainer/BoxContainer/ActionOptionButton" to="EditorTheme" method="_on_ActionOptionButton_item_selected"]
-[connection signal="pressed" from="EditorTheme/VBoxContainer/HBoxContainer2/DialogBox/GridContainer/BoxContainer/ActionOptionButton" to="EditorTheme" method="_on_ActionOptionButton_pressed"]
-[connection signal="toggled" from="EditorTheme/VBoxContainer/HBoxContainer2/ButtonStyle/GridContainer/HBoxContainer4/CheckBox2" to="EditorTheme" method="_on_Custom_Button_Color_toggled"]
-[connection signal="color_changed" from="EditorTheme/VBoxContainer/HBoxContainer2/ButtonStyle/GridContainer/HBoxContainer4/ButtonTextColor" to="EditorTheme" method="_on_ButtonTextColor_color_changed"]
-[connection signal="toggled" from="EditorTheme/VBoxContainer/HBoxContainer2/ButtonStyle/GridContainer/HBoxContainer2/CheckBox" to="EditorTheme" method="_on_button_background_visible_toggled"]
-[connection signal="color_changed" from="EditorTheme/VBoxContainer/HBoxContainer2/ButtonStyle/GridContainer/HBoxContainer2/ColorPickerButton" to="EditorTheme" method="_on_button_background_color_color_changed"]
-[connection signal="toggled" from="EditorTheme/VBoxContainer/HBoxContainer2/ButtonStyle/GridContainer/HBoxContainer3/CheckBox" to="EditorTheme" method="_on_button_texture_toggled"]
-[connection signal="pressed" from="EditorTheme/VBoxContainer/HBoxContainer2/ButtonStyle/GridContainer/HBoxContainer3/BackgroundTextureButton" to="EditorTheme" method="_on_ButtonTextureButton_pressed"]
-[connection signal="value_changed" from="EditorTheme/VBoxContainer/HBoxContainer2/ButtonStyle/GridContainer/HBoxContainer/TextOffsetV" to="EditorTheme" method="_on_ButtonOffset_value_changed"]
-[connection signal="value_changed" from="EditorTheme/VBoxContainer/HBoxContainer2/ButtonStyle/GridContainer/HBoxContainer/TextOffsetH" to="EditorTheme" method="_on_ButtonOffset_value_changed"]
-[connection signal="value_changed" from="EditorTheme/VBoxContainer/HBoxContainer2/ButtonStyle/GridContainer/VerticalSeparation" to="EditorTheme" method="_on_VerticalSeparation_value_changed"]
-[connection signal="pressed" from="EditorTheme/VBoxContainer/HBoxContainer2/Glossary/GridContainer/FontButton" to="EditorTheme" method="_on_GlossaryFontButton_pressed"]
-[connection signal="color_changed" from="EditorTheme/VBoxContainer/HBoxContainer2/Glossary/GridContainer/ColorPickerButton" to="EditorTheme" method="_on_GlossaryColorPicker_color_changed"]
-[connection signal="toggled" from="EditorTheme/VBoxContainer/HBoxContainer2/Glossary/GridContainer/HBoxContainer2/CheckBoxShadow" to="EditorTheme" method="_on_CheckBoxShadow_toggled"]
-[connection signal="color_changed" from="EditorTheme/VBoxContainer/HBoxContainer2/Glossary/GridContainer/HBoxContainer2/ColorPickerButtonShadow" to="EditorTheme" method="_on_ColorPickerButtonShadow_color_changed"]
-[connection signal="value_changed" from="EditorTheme/VBoxContainer/HBoxContainer2/Glossary/GridContainer/HBoxContainer/ShadowOffsetX" to="EditorTheme" method="_on_ShadowOffset_value_changed"]
-[connection signal="value_changed" from="EditorTheme/VBoxContainer/HBoxContainer2/Glossary/GridContainer/HBoxContainer/ShadowOffsetY" to="EditorTheme" method="_on_ShadowOffset_value_changed"]
-[connection signal="pressed" from="EditorTheme/VBoxContainer/HBoxContainer3/PreviewButton" to="EditorTheme" method="_on_PreviewButton_pressed"]
-[connection signal="id_pressed" from="TimelinePopupMenu" to="." method="_on_TimelinePopupMenu_id_pressed"]
-[connection signal="id_pressed" from="CharacterPopupMenu" to="EditorCharacter" method="_on_CharacterPopupMenu_id_pressed"]
-[connection signal="id_pressed" from="GlossaryPopupMenu" to="EditorGlossary" method="_on_GlossaryPopupMenu_id_pressed"]
-[connection signal="confirmed" from="RemoveCharacterConfirmation" to="EditorCharacter" method="_on_RemoveConfirmation_confirmed"]
-[connection signal="confirmed" from="RemoveGlossaryConfirmation" to="EditorGlossary" method="_on_RemoveGlossaryConfirmation_confirmed"]
-[connection signal="confirmed" from="RemoveTimelineConfirmation" to="." method="_on_RemoveTimelineConfirmation_confirmed"]
-[connection signal="confirmed" from="RenameDialog" to="." method="_on_RenameDialog_confirmed"]

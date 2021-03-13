@@ -1,0 +1,108 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://addons/dialogic/Editor/DefinitionEditor/DefinitionEditor.gd" type="Script" id=1]
+
+[node name="DefinitionEditor" type="ScrollContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+margin_right = 1024.0
+margin_bottom = 600.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+margin_right = 1024.0
+margin_bottom = 230.0
+custom_constants/separation = 16
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer"]
+margin_right = 300.0
+margin_bottom = 230.0
+rect_min_size = Vector2( 300, 0 )
+custom_constants/separation = 10
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/VBoxContainer"]
+margin_right = 300.0
+margin_bottom = 14.0
+text = "Name"
+
+[node name="Name" type="LineEdit" parent="VBoxContainer/HBoxContainer/VBoxContainer"]
+margin_top = 24.0
+margin_right = 300.0
+margin_bottom = 48.0
+
+[node name="Label2" type="Label" parent="VBoxContainer/HBoxContainer/VBoxContainer"]
+margin_top = 58.0
+margin_right = 300.0
+margin_bottom = 72.0
+text = "Type:"
+
+[node name="TypeMenuButton" type="OptionButton" parent="VBoxContainer/HBoxContainer/VBoxContainer"]
+margin_top = 82.0
+margin_right = 300.0
+margin_bottom = 102.0
+text = "Variable"
+expand_icon = true
+items = [ "Variable", null, false, 0, null, "Extra Information", null, false, 1, null ]
+selected = 0
+
+[node name="ExtraInfo" type="VBoxContainer" parent="VBoxContainer/HBoxContainer"]
+margin_left = 316.0
+margin_right = 616.0
+margin_bottom = 230.0
+rect_min_size = Vector2( 300, 0 )
+
+[node name="RichTextLabel2" type="Label" parent="VBoxContainer/HBoxContainer/ExtraInfo"]
+margin_right = 300.0
+margin_bottom = 31.0
+text = "A popup will display this information when a player hovers the word in a dialog. "
+autowrap = true
+
+[node name="Control" type="Control" parent="VBoxContainer/HBoxContainer/ExtraInfo"]
+margin_top = 35.0
+margin_right = 300.0
+margin_bottom = 70.0
+rect_min_size = Vector2( 0, 35 )
+
+[node name="Title" type="LineEdit" parent="VBoxContainer/HBoxContainer/ExtraInfo"]
+margin_top = 74.0
+margin_right = 300.0
+margin_bottom = 98.0
+placeholder_text = "Title"
+
+[node name="Text" type="TextEdit" parent="VBoxContainer/HBoxContainer/ExtraInfo"]
+margin_top = 102.0
+margin_right = 300.0
+margin_bottom = 202.0
+rect_min_size = Vector2( 0, 100 )
+size_flags_vertical = 3
+wrap_enabled = true
+
+[node name="Extra" type="LineEdit" parent="VBoxContainer/HBoxContainer/ExtraInfo"]
+margin_top = 206.0
+margin_right = 300.0
+margin_bottom = 230.0
+placeholder_text = "Extra"
+
+[node name="Value" type="VBoxContainer" parent="VBoxContainer/HBoxContainer"]
+margin_left = 632.0
+margin_right = 932.0
+margin_bottom = 230.0
+rect_min_size = Vector2( 300, 0 )
+custom_constants/separation = 10
+
+[node name="Label5" type="Label" parent="VBoxContainer/HBoxContainer/Value"]
+margin_right = 300.0
+margin_bottom = 14.0
+text = "Value:"
+
+[node name="ValueInput" type="LineEdit" parent="VBoxContainer/HBoxContainer/Value"]
+margin_top = 24.0
+margin_right = 300.0
+margin_bottom = 48.0

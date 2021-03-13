@@ -23,14 +23,12 @@ func _ready():
 
 	var c_list = DialogicUtil.get_character_list()
 	if c_list.size() == 0:
-		$PanelContainer/VBoxContainer/Header/CharacterDropdown.visible = false
-		$PanelContainer/VBoxContainer/Header/CharacterIcon.visible = false
+		$PanelContainer/VBoxContainer/Header/CharacterPicker.visible = false
 	else:
 		# Default Speaker
 		for c in c_list:
 			if c['default_speaker']:
 				event_data['character'] = c['file']
-	update_preview()
 
 
 func _on_character_selected(data):
@@ -50,7 +48,6 @@ func _on_portrait_selected(index):
 func _on_TextEdit_text_changed():
 	var text = $PanelContainer/VBoxContainer/TextEdit.text
 	event_data['text'] = text
-	
 	update_preview()
 
 
@@ -74,8 +71,6 @@ func update_preview() -> String:
 	for c in DialogicUtil.get_character_list():
 		if c['file'] == event_data['character']:
 			$PanelContainer/VBoxContainer/Header/CharacterPicker.set_data_by_file(event_data['character'])
-
-	editor_reference.manual_save()
 	
 	var text = event_data['text']
 	var lines = text.count('\n')
@@ -99,3 +94,7 @@ func _on_gui_input(event):
 				toggler.pressed = false
 			else:
 				toggler.pressed = true
+
+
+func _on_saver_timer_timeout():
+	update_preview()

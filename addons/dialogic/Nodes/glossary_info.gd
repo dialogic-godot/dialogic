@@ -12,7 +12,7 @@ var margin = 10
 
 
 func _ready():
-	rect_size.y = 0
+	set_deferred('rect_size.y', 0)
 
 
 func _process(_delta):

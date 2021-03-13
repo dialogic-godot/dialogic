@@ -1,65 +1,41 @@
-# Dialogic v0.9 ![Godot v3.2](https://img.shields.io/badge/godot-v3.2.4-%23478cbf)
+# Dialogic Release Candidate v1.0 ![Godot v3.2](https://img.shields.io/badge/godot-v3.2.4-%23478cbf)
 Create dialogs, characters and scenes to display conversations in your Godot games. 
 
 ![Screenshot](https://coppolaemilio.com/images/dialogic/dialogic-hero.png?v2)
 
-## ⚠️ Under development! ⚠️
+⚠️ Under development! ⚠️
+
 The plugin is not production ready, this means that it will not work in your game right now unless you know what you are doing. Make sure to follow the repo for the next update.
 
 ---
 
 ## Changelog
 
-### 🆕 v0.9 - House keeping
-  - Video https://youtu.be/pL0RWVmlM6g
-  - Moved `Dialog.tscn` to the root of the addon so it is easier to find.
-  - Added a link to the documentation from the editor
-  - Refactored a lot of the code and continued splitting the main plugin code into smaller pieces.
-  - Rewrote most of the saving and branching systems.
-  - New tool: Glossary Editor
-    - You are now able to write extra lore for any word and Dialogic will create a hover card with that extra information.
-    - You can create `strings` and `number` variables.
-    - You can access to those variables from the `Dialogic` Class: `Dialogic.get_var('variable_name')`
-  - In game:
-    - Portraits changes are reflected in-game.
-    - Many small improvements.
-  - Theme Editor:
-    - New default asset: Glossary Font
-    - Added new options to customize the glossary popup
-  - Timeline Editor:
-    - Added categories for the events.
-    - Color coded some of the events in the same category to avoid having a distracting rainbow in the timelines.
-    - Conditional event working, but only with "equal to". More conditions coming later.
-    - Renamed the `End Branch` file names to match the name of the event. This will break the conditionals you have, but this is the time for making breaking changes. Sorry!
-    - New `Set Value` event. Change the current value of a glossary variable inside a timeline. This will reset when you close the game, so a saving system will have to be added on the next version.
-    - New `Emit Signal` event. This event will make the Dialog node emit a signal called `dialogic_signal`. You can connect this in a moment of your timeline with other scripts.
-    - New `Change Scene` event. You can change the current Scene to whatever `.tscn` you pick. This will happen instantly, but in the future I'll add some transition effects so it is not that abrupt.
-    - New `Wait Seconds` event. This will hide the dialog and wait X seconds until continuing with the rest of the timeline. 
-    - Created independent Character and Portrait picker for reusing in event nodes.
-    - Portrait picker added to `Text Events` and `Character Join` events.
-    - `Text Events` text editor vertical size grows witch each line added.
-    - `Text Events` now properly create a new message for each line inside the text editor.
-    - `Text Events` Line count are now displayed next to the preview text when folded.
-    - Re-adding the `End Branch` event just in case you removed the end and you want to add it again in the timeline.
-    - Renamed the `Copy Timeline ID` right click menu option to `Copy Timeline Name` since you now have to use that to set the current timeline from code instead of the ID.
-    - Fixed several bugs that corrupted saved files
-    - Thanks to [mindtonix](https://github.com/mindtonix) and [Crystalwarrior](https://github.com/Crystalwarrior) for your first contribution on the choice buttons 
-  - New `Dialogic` class. With this new class you can add dialogs from code easily:
-    ```
-    var new_dialog = Dialogic.start('Your Timeline Name Here')
-    add_child(new_dialog)
-    ```
-    To connect signals you can also do:
-
-    ```swift
-    func _ready():
-        var new_dialog = Dialogic.start('Your Timeline Name Here')
-        add_child(new_dialog)
-        new_dialog.connect("dialogic_signal", self, 'signal_from_dialogic')
-
-    func signal_from_dialogic(value):
-        print(value)
-    ```
+### 🆕 v1.0 - WIP
+  - When upgrading from 0.9 to the current version things might not work as expected
+    - ⚠ **PLEASE MAKE A BACKUP OF YOUR PROJECT BEFORE UPGRADING** ⚠
+    - Glossary variables will be lost
+    - Glossary related events will not be loaded (`If condition Event` and `Set Value Event`)
+  - New layout.
+    - All editors in the same screen. Say goodbye to tabs!
+    - You can now rename resources by double clicking them
+    - New Settings panel for advanced properties
+  - Character Editor
+    - Set the scale of your character's portrait
+    - Add offset to the portrait
+  - Timeline Editor
+    - New `Theme event` to change the theme in the middle of a timeline
+    - Re-enabled the `Scene Event`
+  - Theme Editor
+    - You can now add multiple themes
+    - New property: `Box size` set the width and height of the dialogue box in pixels
+    - New property: `Alignment` you can now align the text displayed (Left, Center, Right)
+  - Glossary was renamed to Definitions. I feel like Definitions cover both variables and lore a bit better.
+  - Definitions
+    - Only two types for now. Variables and Extra Information.
+    - Case sensitive matching in the `If Condition Event`
+  - The events now emit signals. Thank you [Jesse Lieberg](https://github.com/GammaGames) for your first contribution!
+  - Re-added the auto color for character names in text messages
 
 To view the full changelog [click here](https://github.com/coppolaemilio/dialogic/blob/master/CHANGELOG.md). 
 
@@ -92,6 +68,15 @@ When you export a project using Dialogic, you need to add `*.json` on the Resour
 ### 🔷 Can I use Dialogic in one of my projects?
 Yes, you can use Dialogic to make any kind of game (even commercial ones). The project is developed under the [MIT License](https://github.com/coppolaemilio/dialogic/blob/master/LICENSE). Please remember to credit!
 
+
+### 🔷 Why are you not using graph nodes?
+When I started developing Dialogic I wanted to do it with graph nodes, but when I tried some of the existing solutions myself I found that they are not very useful for long conversations. Because of how the graph nodes are, the screen gets full of UI elements and it gets harder to follow. I also researched other tools for making Visual Novels (like TyranoBuilder and Visual Novel Maker) and they both work with a series of events flowing from top to bottom. I still haven't developed a complex game using both systems to tell which one is better but I don't want to break the conventions too much. 
+If you want to use graph based editors you can try [Levraut's LE Dialogue Editor](https://levrault.itch.io/le-dialogue-editor) or [EXP Godot Dialog System](https://github.com/EXPWorlds/Godot-Dialog-System).
+
+
+### 🔷 The plugin is cool! Why is it not shipped with Godot?
+I see a lot of people saying that the plugin should come with Godot, but I believe this should stay as a plugin since most of the people making games won't be using it. I'm flattered by your comments but this will remain a plugin :)
+
 ---
 
 ## Source structure
@@ -106,21 +91,25 @@ Yes, you can use Dialogic to make any kind of game (even commercial ones). The p
 
 ### /Editor
 
-`EditorView.tscn` - When you click on the Dialogic tab, this is the scene you see on the main editor panel. This contains all the sub editors and scripts needed for managing your data. This contains way too many nodes and stuff. Splitting it will come eventually, but for now I like having everything in the same scene because of how connected most of the features are.
+`EditorView.tscn` - When you click on the Dialogic tab, this is the scene you see on the main editor panel. This contains all the sub editors and scripts needed for managing your data.
 
-`editor_view.gd` - This is the code embedded in the `EditorView.tscn`. The biggest chunk of code of this project is probably this one. I've been trying to make it smaller by splitting this into a few more sub-scripts (`EditorTimeline.gd`, `EditorTheme.gd` and `EditorGlossary.gd`). This is mostly done but you might still find some functionality here.
+`editor_view.gd` - This is the code embedded in the `EditorView.tscn`. It handles the right click context menus, resource removing dialogs and file selectors.
 
-`EditorTimeline.gd` - Everything related to the timeline editor.
+`/MasterTree` - This is the [Tree](https://docs.godotengine.org/en/stable/classes/class_tree.html#class-tree) with all the resources. It handles many things like renaming, saving and several other aspects of resource management.
 
-`EditorTheme.gd` - Everything related to the theme editor tab.
+`/TimelineEditor` - Everything related to the timeline editor.
 
-`EditorGlossary.gd` - Everything related to the glossary editor tab.
+`/ThemeEditor` - Everything related to the theme editor.
+
+`/DefinitionEditor` - Everything related to the definition editor.
+
+`/SettingsEditor` - A very simple editor for changing how Dialogic behaves.
 
 `/Pieces` - Inside this directory you have all the event nodes that populate the timeline editor. Each one has its own name and script. **The name is important** since it has to be instanced from the `editor_view.gd` when clicking on buttons of the same name.
 
 `/Pieces/Common` - This is where some of the common element of the pieces are saved. Things like the Character Picker, the Portrait Picker or the Drag Controller are used in several event nodes, so I'm trying to make them easier to plug in to future events that might need them as well.
 
-`/CharacterEditor` - This contains the script `PortraitEntry.gd` and the scene `PortraitEntry.tscn`. When you add a new expression for one of your characters in the Character Editor this node/script will be instanced for handling the settings.
+`/CharacterEditor` - Everything related to the character editor. This also contains the script `PortraitEntry.gd` and the scene `PortraitEntry.tscn`. When you add a new expression for one of your characters in the Character Editor this node/script will be instanced for handling the settings.
 
 ### /Fonts
 This directory contains the font files and the resources to load. 
@@ -140,6 +129,8 @@ All icons are `.svg` files so they can scale nicely. I tried reusing many of the
 
 `/Images/tutorials` - Right now it only has one file, but every image created for warnings/tutorials/tips will be placed here. Hopefully.
 
+`/Images/Toolbar` - It contains the icons for the toolbar in the main view.
+
 
 ### /Nodes
 
@@ -156,7 +147,7 @@ All icons are `.svg` files so they can scale nicely. I tried reusing many of the
 ## Credits
 Code made by [Emilio Coppola](https://github.com/coppolaemilio).
 
-Contributors: [Toen](https://twitter.com/ToenAndreMC), Òscar, [Tom Glenn](https://github.com/tomglenn), 
+Contributors: [Toen](https://twitter.com/ToenAndreMC), Òscar, [and more!](https://github.com/coppolaemilio/dialogic/graphs/contributors)
 
 Documentation page generated using: https://documentation.page/ by [Francisco Presencia](https://francisco.io/)
 
@@ -187,6 +178,10 @@ Placeholder images are from Toen's YouTube DF series:
 - Sl Tu
 - Garrett Guillotte
 - George Castro
+- GammaGames
+- Karl Anderson
+- A P
+- Rokatansky
 
 Support me on [Patreon https://www.patreon.com/coppolaemilio](https://www.patreon.com/coppolaemilio)
 

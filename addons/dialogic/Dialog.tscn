@@ -33,7 +33,6 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 script = ExtResource( 6 )
 __meta__ = {
-"_edit_lock_": true,
 "_edit_use_anchors_": false
 }
 
@@ -61,10 +60,10 @@ anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-margin_left = -455.0
-margin_top = -209.488
-margin_right = 455.0
-margin_bottom = -42.4877
+margin_left = 57.0
+margin_top = 456.0
+margin_right = 967.0
+margin_bottom = 560.0
 __meta__ = {
 "_edit_group_": true,
 "_edit_use_anchors_": false
@@ -99,7 +98,7 @@ margin_bottom = -10.0
 rect_clip_content = false
 custom_styles/normal = SubResource( 1 )
 custom_fonts/normal_font = ExtResource( 3 )
-custom_colors/default_color = Color( 1, 1, 1, 1 )
+custom_colors/default_color = Color( 0.301961, 0.74902, 0.176471, 1 )
 custom_colors/font_color_shadow = Color( 1, 1, 1, 0 )
 custom_constants/shadow_offset_x = 2
 custom_constants/shadow_offset_y = 2
@@ -141,14 +140,13 @@ margin_right = 369.0
 rect_clip_content = false
 custom_styles/normal = SubResource( 1 )
 custom_fonts/normal_font = ExtResource( 3 )
-custom_colors/default_color = Color( 1, 1, 1, 1 )
+custom_colors/default_color = Color( 0.301961, 0.74902, 0.176471, 1 )
 custom_colors/font_color_shadow = Color( 1, 1, 1, 0 )
 custom_constants/shadow_offset_x = 2
 custom_constants/shadow_offset_y = 2
 custom_constants/shadow_as_outline = 10
 bbcode_enabled = true
 bbcode_text = "Name Here"
-text = "Name Here"
 scroll_active = false
 __meta__ = {
 "_edit_use_anchors_": false

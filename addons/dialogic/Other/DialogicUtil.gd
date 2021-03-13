@@ -1,23 +1,31 @@
 tool
 class_name DialogicUtil
 
-enum {GLOSSARY_NONE, GLOSSARY_EXTRA, GLOSSARY_NUMBER, GLOSSARY_STRING}
+# This class was initially for doing small things... but after a while
+# it ended up being one of the corner stones of the plugin. 
+# It should probably be split into several other classes and leave 
+# just the basic stuff here, but I'll keep working like this until I have
+# some extra time to burn. 
+# A good point to start would be to add a "resource manager" instead of
+# handling most of that here. But who knows? (:
 
 static func init_dialogic_files() -> void:
 	# This functions makes sure that the needed files and folders
 	# exists when the plugin is loaded. If they don't, we create 
 	# them.
-	var directory = Directory.new();
+	var directory = Directory.new()
 	var paths = get_working_directories()
 	for dir in paths:
-		if 'settings.json' in paths[dir]:
-			update_setting()
-		elif 'glossary.json' in paths[dir]:
-			load_glossary()
+		if 'settings.cfg' in paths[dir]:
+			if directory.file_exists(paths['SETTINGS_FILE']) == false:
+				create_empty_file(paths['SETTINGS_FILE'])
+		elif 'definitions.cfg' in paths[dir]:
+			if directory.file_exists(paths['DEFINITIONS_FILE']) == false:
+				create_empty_file(paths['DEFINITIONS_FILE'])
 		else:
 			if directory.dir_exists(paths[dir]) == false:
 				directory.make_dir(paths[dir])
-				
+
 
 static func load_json(path: String) -> Dictionary:
 	# An easy function to load json files and handle common errors.
@@ -30,44 +38,13 @@ static func load_json(path: String) -> Dictionary:
 	var data_parse:JSONParseResult = JSON.parse(data_text)
 	if data_parse.error != OK:
 		return {'error':'data parse error'}
-	return data_parse.result
 
-
-static func load_settings() -> Dictionary:
-	# This functions tries to load the settings. If it fails, it will
-	# generate the default values and save them so we have a file to
-	# work with and avoid future error messages.
-	var defaults = default_settings()
-	var directory = Directory.new();
-	if directory.file_exists(get_path('SETTINGS_FILE')):
-		var settings: Dictionary = load_json(get_path('SETTINGS_FILE'))
-		for x in defaults:
-			if settings.has(x) == false:
-				settings[x] = defaults[x]
-		if settings.has('error'):
-			settings = {}
-		return settings
-	else:
-		return defaults
-
-
-static func save_glossary(glossary) -> void:
-	var file:File = File.new()
-	file.open(get_path('GLOSSARY_FILE'), File.WRITE)
-	file.store_line(to_json(glossary))
-	file.close()
-
-
-static func update_setting(key: String = '', value = '') -> void:
-	# This function will open the settings file and update one of the values
-	var data = load_settings()
-	if key != '':
-		data[key] = value
+	var final_data = data_parse.result
+	if typeof(final_data) == TYPE_DICTIONARY:
+		return final_data
 	
-	var file:File = File.new()
-	file.open(get_path('SETTINGS_FILE'), File.WRITE)
-	file.store_line(to_json(data))
-	file.close()
+	# If everything else fails
+	return {'error':'data parse error'}
 
 
 static func get_working_directories() -> Dictionary:
@@ -75,9 +52,10 @@ static func get_working_directories() -> Dictionary:
 	var paths: Dictionary = {
 		'WORKING_DIR': WORKING_DIR,
 		'TIMELINE_DIR': WORKING_DIR + "/timelines",
+		'THEME_DIR': WORKING_DIR + "/themes",
 		'CHAR_DIR': WORKING_DIR + "/characters",
-		'SETTINGS_FILE': WORKING_DIR + "/settings.json",
-		'GLOSSARY_FILE': WORKING_DIR + "/glossary.json",
+		'DEFINITIONS_FILE': WORKING_DIR + "/definitions.cfg",
+		'SETTINGS_FILE': WORKING_DIR + "/settings.cfg",
 	}
 	return paths
 
@@ -143,7 +121,8 @@ static func get_character_list() -> Array:
 				'file': file,
 				'default_speaker' : default_speaker,
 				'portraits': portraits,
-				'display_name': display_name
+				'display_name': display_name,
+				'data': data # This should be the only thing passed... not sure what I was thinking
 			})
 
 	return characters
@@ -154,96 +133,52 @@ static func get_timeline_list() -> Array:
 	for file in listdir(get_path('TIMELINE_DIR')):
 		if '.json' in file:
 			var data = load_json(get_path('TIMELINE_DIR', file))
-			var metadata = data['metadata']
-			var color = Color("#ffffff")
-			if metadata.has('name'):
-				timelines.append({'name':metadata['name'], 'color': color, 'file': file })
-			else:
-				timelines.append({'name':file.split('.')[0], 'color': color, 'file': file })
+			if data.has('error') == false:
+				var metadata = data['metadata']
+				var color = Color("#ffffff")
+				if metadata.has('name'):
+					timelines.append({'name':metadata['name'], 'color': color, 'file': file })
+				else:
+					timelines.append({'name':file.split('.')[0], 'color': color, 'file': file })
 	return timelines
 
 
-static func load_glossary() -> Dictionary:
-	var directory = Directory.new();
-	if directory.file_exists(get_path('GLOSSARY_FILE')):
-		var glossary: Dictionary = load_json(get_path('GLOSSARY_FILE'))
-		if glossary.has('error'):
-			glossary = {}
-		return glossary
-	else:
-		var file:File = File.new()
-		file.open(get_path('GLOSSARY_FILE'), File.WRITE)
-		file.store_line(to_json({}))
-		file.close()
-		return {}
+static func get_definition_list() -> Array:
+	var definitions: Array = []
+	var config = ConfigFile.new()
+	var err = config.load(get_path('DEFINITIONS_FILE'))
+	if err == OK:
+		for section in config.get_sections():
+			definitions.append({
+				'section': section,
+				'name': config.get_value(section, 'name', section),
+				'config': config,
+				'type': config.get_value(section, 'type', 0),
+			})
+	return definitions
+
+
+static func set_definition(current_section: String, key,  value) -> void:
+	var config = ConfigFile.new()
+	var err = config.load(get_path('DEFINITIONS_FILE'))
+	if err == OK:
+		config.set_value(current_section, key, str(value))
+		config.save(get_path('DEFINITIONS_FILE'))
 
 
 static func get_var(variable: String):
-	var glossary = load_glossary()
-	for g in glossary:
-		var current = glossary[g]
-		if current['name'] == variable:
-			if current['type'] == GLOSSARY_NUMBER:
-				if '.' in current['number']:
-					return float(current['number'])
-				else:
-					return int(current['number'])
-			return current
-	
-	return {}
-
-
-static func set_var_by_id(id, value, glossary):
 	#var glossary = load_glossary()
-	var _id = id.replace('.json', '')
-	if glossary[_id]['type'] == GLOSSARY_NUMBER:
-		glossary[_id]['number'] = value
-	if glossary[_id]['type'] == GLOSSARY_STRING:
-		glossary[_id]['string'] = value
-	return glossary
-
-
-static func get_glossary_by_file(filename) -> Dictionary:
-	var glossary = load_glossary()
-	for g in glossary:
-		if glossary[g]['file'] == filename:
-			return glossary[g]
-	
+	#for g in glossary:
+	#	var current = glossary[g]
+	#	if current['name'] == variable:
+	#		if current['type'] == GLOSSARY_NUMBER:
+	#			if '.' in current['number']:
+	#				return float(current['number'])
+	#			else:
+	#				return int(current['number'])
+	#		return current
+	get_definition_list()
 	return {}
-
-
-static func default_settings():
-	var ds = {
-		"background_texture_button_visible": true,
-		"button_background": "#ff000000",
-		"button_background_visible": false,
-		"button_image": "res://addons/dialogic/Images/background/background-2.png",
-		"button_image_visible": true,
-		"button_offset_x": 5,
-		"button_offset_y": 5,
-		"button_separation": 5,
-		"button_text_color": "#ffffffff",
-		"button_text_color_enabled": true,
-		
-		"theme_action_key": "ui_accept",
-		"theme_background_color": "#ff000000",
-		"theme_background_color_visible": false,
-		"theme_background_image": "res://addons/dialogic/Images/background/background-2.png",
-		"theme_font": "res://addons/dialogic/Fonts/DefaultFont.tres",
-		"theme_next_image": "res://addons/dialogic/Images/next-indicator.png",
-		"theme_shadow_offset_x": 2,
-		"theme_shadow_offset_y": 2,
-		"theme_text_color": "#ffffffff",
-		"theme_text_margin": 10,
-		"theme_text_margin_h": 20,
-		"theme_text_shadow": false,
-		"theme_text_shadow_color": "#9e000000",
-		"theme_text_speed": 2,
-		
-		"glossary_font": "res://addons/dialogic/Fonts/GlossaryFont.tres",
-		"glossary_color": "#ffffffff",
-	}
-	return ds
 
 
 static func generate_random_id() -> String:
@@ -257,3 +192,54 @@ static func compare_dicts(dict_1: Dictionary, dict_2: Dictionary) -> bool:
 		if str(dict_1) == str(dict_2):
 			return true
 	return false
+
+
+static func get_theme_list() -> Array:
+	var themes: Array = []
+	for file in listdir(get_path('THEME_DIR')):
+		if '.cfg' in file:
+			var config = ConfigFile.new()
+			var err = config.load(get_path('THEME_DIR', file))
+			if err == OK: # If not, something went wrong with the file loading
+				themes.append({
+					'file': file,
+					'name': config.get_value('settings','name', file),
+					'config': config
+				})
+			else:
+				print('Error loading ',file , ' - Error: ', err)
+	return themes
+
+
+static func get_theme(filename):
+	var config = ConfigFile.new()
+	var err = config.load(get_path('THEME_DIR', filename))
+	if err == OK:
+		return config
+	#else:
+	#	return AQUI EL DEFAULT THEME
+
+
+static func set_theme_value(filename, section, key, value):
+	var config = ConfigFile.new()
+	var file = get_path('THEME_DIR', filename)
+	var err = config.load(file)
+	if err == OK:
+		config.set_value(section, key, value)
+		config.save(file)
+
+
+static func create_empty_file(path):
+	var file = File.new()
+	file.open(path, File.WRITE)
+	file.store_string('')
+	file.close()
+
+
+static func get_settings():
+	var config = ConfigFile.new()
+	var err = config.load(get_path('SETTINGS_FILE'))
+	if err == OK:
+		return config
+	else:
+		print('Error loading ', get_path('SETTINGS_FILE'), '. Was it modified manually? Make sure it exists!')
