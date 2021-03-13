@@ -50,7 +50,11 @@ func set_portrait(expression: String) -> void:
 	var portraits = character_data['portraits']
 	for p in portraits:
 		if p['name'] == expression:
-			$TextureRect.texture = load(p['path'])
+			var directory = Directory.new();
+			if directory.file_exists(p['path']):
+				$TextureRect.texture = load(p['path'])
+			else:
+				$TextureRect.texture = Texture.new()
 
 
 # Tween stuff
