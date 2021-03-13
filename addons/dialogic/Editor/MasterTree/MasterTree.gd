@@ -81,7 +81,7 @@ func _ready():
 	
 	# AutoSave timer
 	$AutoSave.connect("timeout", self, '_on_autosave_timeout')
-	$AutoSave.start(1)
+	$AutoSave.start(0.5)
 
 
 func add_timeline(timeline, select = false):
@@ -137,8 +137,6 @@ func add_definition(definition, select = false):
 	item.set_metadata(0, definition)
 	if select: # Auto selecting
 		item.select(0)
-	
-	
 
 
 func _on_item_selected():

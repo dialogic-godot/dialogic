@@ -171,18 +171,19 @@ static func set_definition(current_section: String, key,  value) -> void:
 
 
 static func get_var(variable: String):
-	#var glossary = load_glossary()
-	#for g in glossary:
-	#	var current = glossary[g]
-	#	if current['name'] == variable:
-	#		if current['type'] == GLOSSARY_NUMBER:
-	#			if '.' in current['number']:
-	#				return float(current['number'])
-	#			else:
-	#				return int(current['number'])
-	#		return current
-	get_definition_list()
-	return {}
+	print(get_definition_list())
+	for d in get_definition_list():
+		if d['name'] == variable:
+			return d['config'].get_value(d['section'], 'value')
+	return ''
+
+
+static func set_var(variable: String):
+	print(get_definition_list())
+	for d in get_definition_list():
+		if d['name'] == variable:
+			return d['config'].get_value(d['section'], 'value')
+	return ''
 
 
 static func generate_random_id() -> String:
