@@ -4,7 +4,8 @@ extends ScrollContainer
 onready var nodes = {
 	'themes': $VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer/HBoxContainer/ThemeOptionButton,
 	'new_lines': $VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2/HBoxContainer2/NewLines,
-	'remove_empty_messages': $VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2/HBoxContainer/RemoveEmptyMessages
+	'remove_empty_messages': $VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2/HBoxContainer/RemoveEmptyMessages,
+	'auto_color_names': $VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2/HBoxContainer3/AutoColorNames,
 }
 func _ready():
 	update_data()
@@ -12,6 +13,7 @@ func _ready():
 	nodes['themes'].connect('item_selected', self, '_on_default_theme_selected')
 	nodes['new_lines'].connect('toggled', self, '_on_new_line_toggled')
 	nodes['remove_empty_messages'].connect('toggled', self, '_on_remove_empty_message_toggled')
+	nodes['auto_color_names'].connect('toggled', self, '_on_auto_color_names_toggled')
 
 
 func update_data():
@@ -61,6 +63,10 @@ func _on_remove_empty_message_toggled(value):
 
 func _on_new_line_toggled(value):
 	set_value('dialog', 'new_lines', value)
+
+
+func _on_auto_color_names_toggled(value):
+	set_value('dialog', 'auto_color_names', value)
 
 
 # Reading and saving data to the settings file

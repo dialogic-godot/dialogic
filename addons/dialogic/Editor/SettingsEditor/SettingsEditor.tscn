@@ -18,19 +18,19 @@ size_flags_vertical = 3
 
 [node name="HBoxContainer3" type="HBoxContainer" parent="VBoxContainer"]
 margin_right = 1024.0
-margin_bottom = 156.0
+margin_bottom = 184.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer3"]
-margin_right = 265.0
-margin_bottom = 156.0
+margin_right = 288.0
+margin_bottom = 184.0
 custom_constants/separation = 16
 
 [node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer"]
-margin_right = 265.0
+margin_right = 288.0
 margin_bottom = 54.0
 
 [node name="Panel" type="Panel" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer"]
-margin_right = 265.0
+margin_right = 288.0
 margin_bottom = 30.0
 rect_min_size = Vector2( 0, 30 )
 size_flags_horizontal = 3
@@ -45,7 +45,7 @@ __meta__ = {
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer"]
 margin_top = 34.0
-margin_right = 265.0
+margin_right = 288.0
 margin_bottom = 54.0
 
 [node name="Label" type="Label" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer/HBoxContainer"]
@@ -62,20 +62,20 @@ rect_min_size = Vector2( 140, 0 )
 text = "Default"
 items = [ "Default", null, false, 0, {
 "file": "theme-1614997416.cfg"
-}, "verde", null, false, 1, {
+}, "Alternative", null, false, 1, {
 "file": "theme-1614997426.cfg"
-}, "Blanco", null, false, 2, {
+}, "Small", null, false, 2, {
 "file": "theme-1615080820.cfg"
 } ]
 selected = 0
 
 [node name="VBoxContainer2" type="VBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer"]
 margin_top = 70.0
-margin_right = 265.0
-margin_bottom = 156.0
+margin_right = 288.0
+margin_bottom = 184.0
 
 [node name="Panel2" type="Panel" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2"]
-margin_right = 265.0
+margin_right = 288.0
 margin_bottom = 30.0
 rect_min_size = Vector2( 0, 30 )
 size_flags_horizontal = 3
@@ -90,7 +90,7 @@ __meta__ = {
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2"]
 margin_top = 34.0
-margin_right = 265.0
+margin_right = 288.0
 margin_bottom = 58.0
 
 [node name="Label" type="Label" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2/HBoxContainer2"]
@@ -109,7 +109,7 @@ pressed = true
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2"]
 margin_top = 62.0
-margin_right = 265.0
+margin_right = 288.0
 margin_bottom = 86.0
 
 [node name="Label" type="Label" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2/HBoxContainer"]
@@ -120,6 +120,24 @@ text = "Remove empty messages"
 
 [node name="RemoveEmptyMessages" type="CheckBox" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2/HBoxContainer"]
 margin_left = 169.0
-margin_right = 193.0
+margin_right = 288.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+pressed = true
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2"]
+margin_top = 90.0
+margin_right = 288.0
+margin_bottom = 114.0
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2/HBoxContainer3"]
+margin_top = 5.0
+margin_right = 260.0
+margin_bottom = 19.0
+text = "Auto color character names in messages"
+
+[node name="AutoColorNames" type="CheckBox" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2/HBoxContainer3"]
+margin_left = 264.0
+margin_right = 288.0
 margin_bottom = 24.0
 pressed = true

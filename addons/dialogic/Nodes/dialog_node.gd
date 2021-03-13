@@ -80,9 +80,31 @@ func set_current_dialog(dialog_path):
 	# All this parse events should be happening in the same loop ideally
 	# But until performance is not an issue I will probably stay lazy
 	# And keep adding different functions for each parsing operation.
+	if settings.has_section_key('dialog', 'auto_color_names'):
+		if settings.get_value('dialog', 'auto_color_names'):
+			dialog_script = parse_characters(dialog_script)
+	else:
+		dialog_script = parse_characters(dialog_script)
+	
 	dialog_script = parse_text_lines(dialog_script)
 	dialog_script = parse_glossary(dialog_script)
 	dialog_script = parse_branches(dialog_script)
+	return dialog_script
+
+
+func parse_characters(dialog_script):
+	var names = DialogicUtil.get_character_list()
+	# I should use regex here, but this is way easier :)
+	if names.size() > 0:
+		var index = 0
+		for t in dialog_script['events']:
+			if t.has('text'):
+				for n in names:
+					if n.has('name'):
+						dialog_script['events'][index]['text'] = t['text'].replace(n['name'],
+							'[color=#' + n['color'].to_html() + ']' + n['name'] + '[/color]'
+						)
+			index += 1
 	return dialog_script
 
 
@@ -401,7 +423,7 @@ func event_handler(event: Dictionary):
 			emit_signal("event_start", "close_dialog", event)
 			queue_free()
 		{'set_theme'}:
-			emit_signal("set_theme", event)
+			emit_signal("event_start", "set_theme", event)
 			if event['set_theme'] != '':
 				current_theme = load_theme(event['set_theme'])
 			go_to_next_event()
