@@ -1,7 +1,11 @@
-# Dialogic v1.0 ![Godot v3.2](https://img.shields.io/badge/godot-v3.2.4-%23478cbf)
+# Dialogic Release Candidate v1.0 ![Godot v3.2](https://img.shields.io/badge/godot-v3.2.4-%23478cbf)
 Create dialogs, characters and scenes to display conversations in your Godot games. 
 
 ![Screenshot](https://coppolaemilio.com/images/dialogic/dialogic-hero.png?v2)
+
+⚠️ Under development! ⚠️
+
+The plugin is not production ready, this means that it will not work in your game right now unless you know what you are doing. Make sure to follow the repo for the next update.
 
 ---
 
