@@ -47,7 +47,7 @@ func refresh_themes(settings):
 	# More than one theme? Select which the default one is
 	if index > 1:
 		if settings.has_section_key('theme', 'default'):
-			nodes['themes'].select(theme_indexes[settings.get_value('theme', 'default')])
+			nodes['themes'].select(theme_indexes[settings.get_value('theme', 'default', null)])
 		else:
 			# Fallback
 			set_value('theme', 'default', theme_list[0]['file'])

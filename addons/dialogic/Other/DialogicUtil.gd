@@ -93,6 +93,10 @@ static func listdir(path: String) -> Array:
 
 static func get_character_list() -> Array:
 	var characters: Array = []
+	var directory = Directory.new();
+	if directory.dir_exists(get_path('CHAR_DIR')) == false:
+		return characters
+		
 	for file in listdir(get_path('CHAR_DIR')):
 		if '.json' in file:
 			var data: Dictionary     = load_json(get_path('CHAR_DIR', file))
@@ -237,9 +241,10 @@ static func create_empty_file(path):
 
 
 static func get_settings():
+	var directory = Directory.new()
 	var config = ConfigFile.new()
-	var err = config.load(get_path('SETTINGS_FILE'))
-	if err == OK:
-		return config
-	else:
-		print('Error loading ', get_path('SETTINGS_FILE'), '. Was it modified manually? Make sure it exists!')
+	if directory.file_exists(get_path('SETTINGS_FILE')):
+		var err = config.load(get_path('SETTINGS_FILE'))
+		if err == OK:
+			return config
+	return config
