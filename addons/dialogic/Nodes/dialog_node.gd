@@ -61,7 +61,8 @@ func _ready():
 	# Getting the character information
 	characters = DialogicUtil.get_character_list()
 
-	load_dialog()
+	if Engine.is_editor_hint() == false:
+		load_dialog()
 
 
 func resize_main():
@@ -418,7 +419,10 @@ func event_handler(event: Dictionary):
 			var current_question = questions[event['question_id']]
 			for d in definitions:
 				if d['section'] == event['definition']:
-					def_value = d['config'].get_value(event['definition'], 'value', null)
+					#if d['config'].has_section('runtime_value'):
+					#	def_value = d['config'].get_value(event['definition'], 'runtime_value', null)
+					#else:
+						def_value = d['config'].get_value(event['definition'], 'value', null)
 			if def_value != null:
 				if def_value != event['value']:
 					current_question['answered'] = true # This will abort the current conditional branch
@@ -430,10 +434,10 @@ func event_handler(event: Dictionary):
 			else:
 				# It should never get here, but if it does, go to the next place.
 				go_to_next_event()
-		{'set_value', 'glossary'}:
-			#emit_signal("event_start", "set_value", event)
-			#glossary = DialogicUtil.set_var_by_id(event['glossary'], event['set_value'], glossary)
-			#dprint(glossary)
+		{'set_value', 'definition'}:
+			emit_signal("event_start", "set_value", event)
+			#DialogicUtil.set_definition(event['definition'], 'runtime_value', event['set_value'])
+			DialogicUtil.set_definition(event['definition'], 'value', event['set_value'])
 			go_to_next_event()
 		_:
 			visible = false
@@ -581,7 +585,7 @@ func load_theme(filename):
 
 	# Box size
 	var current_size = $TextBubble.rect_size
-	$TextBubble.rect_size = theme.get_value('box', 'size', Vector2(910, 167))
+	#$TextBubble.rect_size = theme.get_value('box', 'size', Vector2(910, 167))
 	if current_size != $TextBubble.rect_size:
 		resize_main()
 

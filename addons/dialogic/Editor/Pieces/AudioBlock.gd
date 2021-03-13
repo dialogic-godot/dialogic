@@ -15,7 +15,7 @@ var event_data = {
 
 
 func _on_ButtonAudio_pressed():
-	editor_reference.godot_dialog("*.wav, *.ogg")
+	editor_reference.godot_dialog("*.wav, *.ogg, *.mp3")
 	editor_reference.godot_dialog_connect(self, "_on_file_selected")
 
 

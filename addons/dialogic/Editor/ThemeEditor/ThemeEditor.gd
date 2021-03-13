@@ -163,8 +163,6 @@ func _on_PreviewButton_pressed():
 		i.free()
 	var dialogic_node = load("res://addons/dialogic/Dialog.tscn")
 	var preview_dialog = dialogic_node.instance()
-	var glossary = DialogicUtil.load_glossary()
-	#preview_dialog.glossary = glossary
 	preview_dialog.preview = true
 	preview_dialog.get_node('GlossaryInfo').in_theme_editor = true
 	preview_dialog.get_node('TextBubble/NextIndicator/AnimationPlayer').play('IDLE')
@@ -176,11 +174,11 @@ func _on_PreviewButton_pressed():
 	# Settings
 	preview_dialog.settings = DialogicUtil.get_settings()
 	# Alignment
-	preview_dialog.current_theme = preview_dialog.load_theme(current_theme)
 	preview_dialog.dialog_script = preview_dialog.parse_glossary(preview_dialog.dialog_script)
 	preview_dialog.dialog_script = preview_dialog.parse_text_lines(preview_dialog.dialog_script)
 	n['preview_panel'].add_child(preview_dialog)
 	# Not sure why but I need to reload the theme again for it to work properly
+	preview_dialog.load_dialog()
 	preview_dialog.current_theme = preview_dialog.load_theme(current_theme)
 	
 	# maintaining the preview panel big enough for the dialog box

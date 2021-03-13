@@ -68,7 +68,7 @@ func _ready():
 	for c in DialogicUtil.get_character_list():
 		add_character(c)
 	
-	# Adding Definitions (previously known as glossary)
+	# Adding Definitions
 	for d in DialogicUtil.get_definition_list():
 		add_definition(d)
 	

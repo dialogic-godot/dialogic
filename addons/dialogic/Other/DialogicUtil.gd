@@ -158,6 +158,14 @@ static func get_definition_list() -> Array:
 	return definitions
 
 
+static func set_definition(current_section: String, key,  value) -> void:
+	var config = ConfigFile.new()
+	var err = config.load(get_path('DEFINITIONS_FILE'))
+	if err == OK:
+		config.set_value(current_section, key, str(value))
+		config.save(get_path('DEFINITIONS_FILE'))
+
+
 static func get_var(variable: String):
 	#var glossary = load_glossary()
 	#for g in glossary:
