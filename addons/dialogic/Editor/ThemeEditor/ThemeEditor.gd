@@ -44,7 +44,7 @@ onready var n = {
 	'button_offset_y': $VBoxContainer/HBoxContainer2/ButtonStyle/GridContainer/HBoxContainer/TextOffsetV,
 	'button_separation': $VBoxContainer/HBoxContainer2/ButtonStyle/GridContainer/VerticalSeparation,
 	
-	# Glossary
+	# Definitions
 	'glossary_font': $VBoxContainer/HBoxContainer2/Glossary/GridContainer/FontButton,
 	'glossary_color': $VBoxContainer/HBoxContainer2/Glossary/GridContainer/ColorPickerButton,
 	# Text preview
@@ -164,7 +164,7 @@ func _on_PreviewButton_pressed():
 	var dialogic_node = load("res://addons/dialogic/Dialog.tscn")
 	var preview_dialog = dialogic_node.instance()
 	preview_dialog.preview = true
-	preview_dialog.get_node('GlossaryInfo').in_theme_editor = true
+	preview_dialog.get_node('DefinitionInfo').in_theme_editor = true
 	preview_dialog.get_node('TextBubble/NextIndicator/AnimationPlayer').play('IDLE')
 	preview_dialog.dialog_script['events'] = [{
 		"character":"",
@@ -178,8 +178,8 @@ func _on_PreviewButton_pressed():
 	preview_dialog.dialog_script = preview_dialog.parse_text_lines(preview_dialog.dialog_script)
 	n['preview_panel'].add_child(preview_dialog)
 	# Not sure why but I need to reload the theme again for it to work properly
-	preview_dialog.load_dialog()
 	preview_dialog.current_theme = preview_dialog.load_theme(current_theme)
+	preview_dialog.load_dialog()
 	
 	# maintaining the preview panel big enough for the dialog box
 	n['preview_panel'].rect_min_size.y = preview_dialog.current_theme.get_value('box', 'size', Vector2(910, 167)).y + 90

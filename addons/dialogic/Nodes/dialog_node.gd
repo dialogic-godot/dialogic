@@ -11,12 +11,10 @@ var waiting_for_input: bool = false
 var waiting = false
 var preview = false
 var definitions
-var glossary_visible = false
+var definition_visible = false
 
 var settings
 var current_theme
-
-#export(String) var timeline: String # Timeline-var-replace
 
 export(String, "TimelineDropdown") var timeline: String
 export(bool) var debug_mode = true
@@ -27,22 +25,15 @@ signal dialogic_signal(value)
 var dialog_resource
 var characters
 
-
 onready var ChoiceButton = load("res://addons/dialogic/Nodes/ChoiceButton.tscn")
 onready var Portrait = load("res://addons/dialogic/Nodes/Portrait.tscn")
 var dialog_script = {}
 var questions #for keeping track of the questions answered
 
 func _ready():
-	# Loading the glossary
-	definitions = DialogicUtil.get_definition_list()
+	# Loading the config files
+	load_config_files()
 	
-	# Loading settings
-	settings = DialogicUtil.get_settings()
-	var theme_file = 'res://addons/dialogic/Editor/ThemeEditor/default-theme.cfg'
-	if settings.has_section('theme'):
-		theme_file = settings.get_value('theme', 'default')
-	current_theme = load_theme(theme_file)
 
 	# Checking if the dialog should read the code from a external file
 	if timeline != '':
@@ -56,7 +47,7 @@ func _ready():
 	$TextBubble/NameLabel.text = ''
 	$Background.visible = false
 	$TextBubble/RichTextLabel.meta_underlined = false
-	$GlossaryInfo.visible = false
+	$DefinitionInfo.visible = false
 
 	# Getting the character information
 	characters = DialogicUtil.get_character_list()
@@ -65,7 +56,18 @@ func _ready():
 		load_dialog()
 
 
+func load_config_files():
+	definitions = DialogicUtil.get_definition_list()
+	settings = DialogicUtil.get_settings()
+	var theme_file = 'res://addons/dialogic/Editor/ThemeEditor/default-theme.cfg'
+	if settings.has_section('theme'):
+		theme_file = settings.get_value('theme', 'default')
+	current_theme = load_theme(theme_file)
+
+
 func resize_main():
+	# This function makes sure that the dialog is displayed at the correct
+	# size and position in the screen. 
 	if Engine.is_editor_hint() == false:
 		set_global_position(Vector2(0,0))
 		if ProjectSettings.get_setting("display/window/stretch/mode") != '2d':
@@ -87,7 +89,7 @@ func set_current_dialog(dialog_path):
 		dialog_script = parse_characters(dialog_script)
 	
 	dialog_script = parse_text_lines(dialog_script)
-	dialog_script = parse_glossary(dialog_script)
+	dialog_script = parse_definitions(dialog_script)
 	dialog_script = parse_branches(dialog_script)
 	return dialog_script
 
@@ -211,27 +213,33 @@ func parse_branches(dialog_script: Dictionary) -> Dictionary:
 	return dialog_script
 
 
-func parse_glossary(dialog_script):
+func parse_definitions(dialog_script):
 	var words = []
-	#for g in glossary:
-	#	words.append(glossary[g]['name'])
+	var definition_list = DialogicUtil.get_definition_list()
+	if Engine.is_editor_hint():
+		# Loading variables again to avoid issues in the preview dialog
+		load_config_files()
+		
+
+	for d in definitions:
+		if d['type'] == 1:
+			words.append(d)
 
 	# I should use regex here, but this is way easier :)
+	if words.size() > 0:
+		var color = current_theme.get_value('definitions', 'color', '#ffbebebe')
+		var index = 0
+		for t in dialog_script['events']:
+			if t.has('text') and t.has('character') and t.has('portrait'):
+				for d in definitions:
+					if d['type'] == 1:
+						dialog_script['events'][index]['text'] = t['text'].replace(d['name'],
+							'[url=' + d['section'] + ']' +
+								'[color=' + color + ']' + d['name'] + '[/color]' +
+							'[/url]'
+						)
+			index += 1
 
-
-	# TODO: Remake with new themes
-	#if words.size() > 0:
-	#	var index = 0
-	#	for t in dialog_script['events']:
-	#		if t.has('text') and t.has('character') and t.has('portrait'):
-	#			for w in glossary:
-	#				if glossary[w]['type'] == DialogicUtil.GLOSSARY_EXTRA:
-	#					dialog_script['events'][index]['text'] = t['text'].replace(glossary[w]['name'],
-	#						'[url=' + glossary[w]['name'] + ']' +
-	#							'[color=' + settings['glossary_color'] + ']' + glossary[w]['name'] + '[/color]' +
-	#						'[/url]'
-	#					)
-	#		index += 1
 	return dialog_script
 
 
@@ -301,9 +309,9 @@ func load_dialog(skip_add = false):
 		elif dialog_index == dialog_script['events'].size():
 			emit_signal("event_end", "timeline")
 
-	# Hiding glossary
-	glossary_visible = false
-	$GlossaryInfo.visible = glossary_visible
+	# Hiding definitions popup
+	definition_visible = false
+	$DefinitionInfo.visible = definition_visible
 
 	# This will load the next entry in the dialog_script array.
 	if dialog_script.has('events'):
@@ -359,8 +367,6 @@ func event_handler(event: Dictionary):
 						# If the option is for an answered question, skip to the end of it.
 						dialog_index = q['end_id']
 						load_dialog(true)
-			# It should never get here, but if it does, go to the next place.
-			#go_to_next_event()
 		{'input', ..}:
 			emit_signal("event_start", "input", event)
 			show_dialog()
@@ -660,40 +666,46 @@ func load_theme(filename):
 	$TextBubble/NextIndicator.texture = load(theme.get_value('next_indicator', 'image', 'res://addons/dialogic/Images/next-indicator.png'))
 	input_next = theme.get_value('settings', 'action_key', 'ui_accept')
 
-	# Glossary
+	# Definitions
 	var definitions_font = load(theme.get_value('definitions', 'font', 'res://addons/dialogic/Fonts/GlossaryFont.tres'))
-	$GlossaryInfo/VBoxContainer/Title.set('custom_fonts/normal_font', definitions_font)
-	$GlossaryInfo/VBoxContainer/Content.set('custom_fonts/normal_font', definitions_font)
-	$GlossaryInfo/VBoxContainer/Extra.set('custom_fonts/normal_font', definitions_font)
+	$DefinitionInfo/VBoxContainer/Title.set('custom_fonts/normal_font', definitions_font)
+	$DefinitionInfo/VBoxContainer/Content.set('custom_fonts/normal_font', definitions_font)
+	$DefinitionInfo/VBoxContainer/Extra.set('custom_fonts/normal_font', definitions_font)
 
 	return theme
 
 
 func _on_RichTextLabel_meta_hover_started(meta):
 	var correct_type = false
-	#for g in glossary:
-	#	if glossary[g]['name'] == meta:
-	#		$GlossaryInfo.load_preview(glossary[g])
-	#		if glossary[g]['type'] == DialogicUtil.GLOSSARY_EXTRA:
-	#			correct_type = true
+	for d in definitions:
+		if d['section'] == meta:
+			if d['type'] == 1:
+				$DefinitionInfo.load_preview({
+					'title': d['config'].get_value(d['section'], 'extra_title', ''),
+					'body': d['config'].get_value(d['section'], 'extra_text', ''),
+					'extra': d['config'].get_value(d['section'], 'extra_extra', ''),
+					'color': current_theme.get_value('definitions', 'color', '#ffbebebe'),
+				})
+				correct_type = true
+				print(d)
 
 	if correct_type:
-		glossary_visible = true
-		$GlossaryInfo.visible = glossary_visible
+		definition_visible = true
+		$DefinitionInfo.visible = definition_visible
 		# Adding a timer to avoid a graphical glitch
-		$GlossaryInfo/Timer.stop()
+		$DefinitionInfo/Timer.stop()
 
 
 func _on_RichTextLabel_meta_hover_ended(meta):
 	# Adding a timer to avoid a graphical glitch
 
-	$GlossaryInfo/Timer.start(0.1)
+	$DefinitionInfo/Timer.start(0.1)
 
 
-func _on_Glossary_Timer_timeout():
+func _on_Definition_Timer_timeout():
 	# Adding a timer to avoid a graphical glitch
-	glossary_visible = false
-	$GlossaryInfo.visible = glossary_visible
+	definition_visible = false
+	$DefinitionInfo.visible = definition_visible
 
 
 func wait_seconds(seconds):

@@ -60,10 +60,10 @@ anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-margin_left = 57.0
-margin_top = 456.0
-margin_right = 967.0
-margin_bottom = 560.0
+margin_left = -455.0
+margin_top = -207.0
+margin_right = 455.0
+margin_bottom = -40.0
 __meta__ = {
 "_edit_group_": true,
 "_edit_use_anchors_": false
@@ -98,8 +98,8 @@ margin_bottom = -10.0
 rect_clip_content = false
 custom_styles/normal = SubResource( 1 )
 custom_fonts/normal_font = ExtResource( 3 )
-custom_colors/default_color = Color( 0.301961, 0.74902, 0.176471, 1 )
-custom_colors/font_color_shadow = Color( 1, 1, 1, 0 )
+custom_colors/default_color = Color( 0.756863, 0.172549, 0.172549, 1 )
+custom_colors/font_color_shadow = Color( 0, 0, 0, 0.619608 )
 custom_constants/shadow_offset_x = 2
 custom_constants/shadow_offset_y = 2
 bbcode_enabled = true
@@ -140,13 +140,14 @@ margin_right = 369.0
 rect_clip_content = false
 custom_styles/normal = SubResource( 1 )
 custom_fonts/normal_font = ExtResource( 3 )
-custom_colors/default_color = Color( 0.301961, 0.74902, 0.176471, 1 )
-custom_colors/font_color_shadow = Color( 1, 1, 1, 0 )
+custom_colors/default_color = Color( 0.756863, 0.172549, 0.172549, 1 )
+custom_colors/font_color_shadow = Color( 0, 0, 0, 0.619608 )
 custom_constants/shadow_offset_x = 2
 custom_constants/shadow_offset_y = 2
 custom_constants/shadow_as_outline = 10
 bbcode_enabled = true
 bbcode_text = "Name Here"
+text = "Name Here"
 scroll_active = false
 __meta__ = {
 "_edit_use_anchors_": false
@@ -212,7 +213,7 @@ __meta__ = {
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="FX"]
 
-[node name="GlossaryInfo" type="PanelContainer" parent="."]
+[node name="DefinitionInfo" type="PanelContainer" parent="."]
 visible = false
 margin_right = 208.0
 mouse_filter = 1
@@ -225,7 +226,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="ColorRect" type="ColorRect" parent="GlossaryInfo"]
+[node name="ColorRect" type="ColorRect" parent="DefinitionInfo"]
 mouse_filter = 1
 size_flags_horizontal = 0
 size_flags_vertical = 0
@@ -234,7 +235,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="VBoxContainer" type="VBoxContainer" parent="GlossaryInfo"]
+[node name="VBoxContainer" type="VBoxContainer" parent="DefinitionInfo"]
 margin_right = 208.0
 margin_bottom = 143.0
 size_flags_horizontal = 3
@@ -243,7 +244,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Title" type="RichTextLabel" parent="GlossaryInfo/VBoxContainer"]
+[node name="Title" type="RichTextLabel" parent="DefinitionInfo/VBoxContainer"]
 margin_right = 208.0
 margin_bottom = 27.0
 size_flags_horizontal = 3
@@ -255,7 +256,7 @@ text = "This is the title"
 fit_content_height = true
 scroll_active = false
 
-[node name="Content" type="RichTextLabel" parent="GlossaryInfo/VBoxContainer"]
+[node name="Content" type="RichTextLabel" parent="DefinitionInfo/VBoxContainer"]
 margin_top = 31.0
 margin_right = 208.0
 margin_bottom = 112.0
@@ -269,7 +270,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Extra" type="RichTextLabel" parent="GlossaryInfo/VBoxContainer"]
+[node name="Extra" type="RichTextLabel" parent="DefinitionInfo/VBoxContainer"]
 self_modulate = Color( 1, 1, 1, 0.345098 )
 margin_top = 116.0
 margin_right = 208.0
@@ -284,12 +285,12 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Timer" type="Timer" parent="GlossaryInfo"]
+[node name="Timer" type="Timer" parent="DefinitionInfo"]
 
 [node name="WaitSeconds" type="Timer" parent="."]
 
 [connection signal="meta_hover_ended" from="TextBubble/RichTextLabel" to="." method="_on_RichTextLabel_meta_hover_ended"]
 [connection signal="meta_hover_started" from="TextBubble/RichTextLabel" to="." method="_on_RichTextLabel_meta_hover_started"]
 [connection signal="tween_completed" from="TextBubble/Tween" to="." method="_on_Tween_tween_completed"]
-[connection signal="timeout" from="GlossaryInfo/Timer" to="." method="_on_Glossary_Timer_timeout"]
+[connection signal="timeout" from="DefinitionInfo/Timer" to="." method="_on_Definition_Timer_timeout"]
 [connection signal="timeout" from="WaitSeconds" to="." method="_on_WaitSeconds_timeout"]

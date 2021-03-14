@@ -37,7 +37,7 @@ func load_preview(info):
 	if info['title'] != '':
 		nodes['title'].text = info['title']
 		nodes['title'].visible = true
-		nodes['title'].set('custom_colors/default_color', get_parent().settings['glossary_color'])
+		nodes['title'].set('custom_colors/default_color', info['color'])
 	
 	if info['body'] != '':
 		nodes['body'].text = info['body']
