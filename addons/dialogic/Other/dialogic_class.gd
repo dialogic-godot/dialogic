@@ -2,8 +2,8 @@ extends Node
 class_name Dialogic
 
 
-static func start(timeline: String, debug_mode=true):
-	var dialog = load("res://addons/dialogic/Dialog.tscn")
+static func start(timeline: String, dialog_scene_path: String="res://addons/dialogic/Dialog.tscn", debug_mode:bool=false):
+	var dialog = load(dialog_scene_path)
 	var d = dialog.instance()
 	d.debug_mode = debug_mode
 	for t in DialogicUtil.get_timeline_list():
