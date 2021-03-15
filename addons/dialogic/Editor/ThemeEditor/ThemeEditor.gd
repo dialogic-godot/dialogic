@@ -174,7 +174,7 @@ func _on_PreviewButton_pressed():
 	# Settings
 	preview_dialog.settings = DialogicUtil.get_settings()
 	# Alignment
-	preview_dialog.dialog_script = preview_dialog.parse_glossary(preview_dialog.dialog_script)
+	preview_dialog.dialog_script = preview_dialog.parse_definitions(preview_dialog.dialog_script)
 	preview_dialog.dialog_script = preview_dialog.parse_text_lines(preview_dialog.dialog_script)
 	n['preview_panel'].add_child(preview_dialog)
 	# Not sure why but I need to reload the theme again for it to work properly

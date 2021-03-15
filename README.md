@@ -16,6 +16,7 @@ The plugin is not production ready, this means that it will not work in your gam
     - ⚠ **PLEASE MAKE A BACKUP OF YOUR PROJECT BEFORE UPGRADING** ⚠
     - Glossary variables will be lost
     - Glossary related events will not be loaded (`If condition Event` and `Set Value Event`)
+    - The theme you made in the 0.9 theme editor will be lost. You will have to remake it.
   - New layout.
     - All editors in the same screen. Say goodbye to tabs!
     - You can now rename resources by double clicking them
