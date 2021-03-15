@@ -32,6 +32,7 @@ onready var n = {
 	'theme_text_margin_h': $VBoxContainer/HBoxContainer2/DialogBox/GridContainer/HBoxContainer/TextOffsetH,
 	'size_w': $VBoxContainer/HBoxContainer2/DialogBox/GridContainer/HBoxContainer4/BoxSizeW,
 	'size_h': $VBoxContainer/HBoxContainer2/DialogBox/GridContainer/HBoxContainer4/BoxSizeH, 
+	'bottom_gap': $VBoxContainer/HBoxContainer2/DialogBox/GridContainer/HBoxContainer5/BottomGap,
 	
 	# Buttons
 	'button_text_color_enabled': $VBoxContainer/HBoxContainer2/ButtonStyle/GridContainer/HBoxContainer4/CheckBox2,
@@ -75,6 +76,8 @@ func load_theme(filename):
 	var size_value = theme.get_value('box', 'size', Vector2(910, 167))
 	n['size_w'].value = size_value.x
 	n['size_h'].value = size_value.y
+	
+	n['bottom_gap'].value = theme.get_value('box', 'bottom_gap', 40)
 	
 	# Buttons
 	n['button_text_color_enabled'].pressed = theme.get_value('buttons', 'text_color_enabled', true)
@@ -182,8 +185,8 @@ func _on_PreviewButton_pressed():
 	preview_dialog.load_dialog()
 	
 	# maintaining the preview panel big enough for the dialog box
-	n['preview_panel'].rect_min_size.y = preview_dialog.current_theme.get_value('box', 'size', Vector2(910, 167)).y + 90
-
+	n['preview_panel'].rect_min_size.y = preview_dialog.current_theme.get_value('box', 'size', Vector2(910, 167)).y + 90 + preview_dialog.current_theme.get_value('box', 'bottom_gap', 40)
+	n['preview_panel'].rect_size = Vector2(0,0)
 
 func _on_ActionOptionButton_item_selected(index):
 	DialogicUtil.set_theme_value(current_theme, 'settings','action_key', n['theme_action_key'].text)
@@ -302,6 +305,10 @@ func _on_BoxSize_value_changed(value):
 	DialogicUtil.set_theme_value(current_theme, 'box', 'size', size_value)
 
 
+func _on_BottomGap_value_changed(value):
+	DialogicUtil.set_theme_value(current_theme, 'box', 'bottom_gap', value)
+
+
 func _on_Alignment_item_selected(index):
 	if index == 0:
 		DialogicUtil.set_theme_value(current_theme, 'text', 'alignment', 'Left')
@@ -309,3 +316,4 @@ func _on_Alignment_item_selected(index):
 		DialogicUtil.set_theme_value(current_theme, 'text', 'alignment', 'Center')
 	elif index == 2:
 		DialogicUtil.set_theme_value(current_theme, 'text', 'alignment', 'Right')
+

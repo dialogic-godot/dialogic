@@ -74,7 +74,7 @@ func resize_main():
 			set_deferred('rect_size', get_viewport().size)
 		dprint("Viewport", get_viewport().size)
 	$TextBubble.rect_position.x = (rect_size.x / 2) - ($TextBubble.rect_size.x / 2)
-	$TextBubble.rect_position.y = (rect_size.y) - ($TextBubble.rect_size.y) - 40
+	$TextBubble.rect_position.y = (rect_size.y) - ($TextBubble.rect_size.y) - current_theme.get_value('box', 'bottom_gap', 40)
 
 
 func set_current_dialog(dialog_path):
