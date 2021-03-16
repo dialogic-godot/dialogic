@@ -456,7 +456,7 @@ func event_handler(event: Dictionary):
 			var current_question = questions[event['question_id']]
 			for d in definitions:
 				if d['section'] == event['definition']:
-					if d['config'].has_section('value-' + runtime_id):
+					if d['config'].has_section_key(event['definition'], 'value-' + runtime_id):
 						def_value = d['config'].get_value(event['definition'], 'value-' + runtime_id, null)
 					else:
 						def_value = d['config'].get_value(event['definition'], 'value', null)
