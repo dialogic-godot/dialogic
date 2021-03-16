@@ -18,7 +18,6 @@ static func start(timeline: String, debug_mode=true):
 
 
 static func get_var(variable: String):
-	return DialogicUtil.get_var(variable)
 	var singleton = DialogicSingleton
 	return DialogicUtil.get_var(variable, singleton)
 
