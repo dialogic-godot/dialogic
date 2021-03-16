@@ -24,5 +24,5 @@ static func get_var(variable: String):
 static func set_var(variable: String, value):
 	for d in DialogicUtil.get_definition_list():
 		if d['name'] == variable:
-			DialogicUtil.set_definition(d['section'], 'value', value)
+			DialogicUtil.set_definition(d['section'], 'value-' + DialogicSingleton.running_id, value)
 	return value

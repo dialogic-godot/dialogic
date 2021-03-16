@@ -174,7 +174,10 @@ static func get_var(variable: String):
 	print(get_definition_list())
 	for d in get_definition_list():
 		if d['name'] == variable:
-			return d['config'].get_value(d['section'], 'value')
+			if d['config'].has_section_key(d['section'], 'value-' + DialogicSingleton.running_id):
+				return d['config'].get_value(d['section'], 'value-' + DialogicSingleton.running_id)
+			else:
+				return d['config'].get_value(d['section'], 'value')
 	return ''
 
 

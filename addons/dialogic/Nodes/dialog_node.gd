@@ -29,6 +29,8 @@ onready var ChoiceButton = load("res://addons/dialogic/Nodes/ChoiceButton.tscn")
 onready var Portrait = load("res://addons/dialogic/Nodes/Portrait.tscn")
 var dialog_script = {}
 var questions #for keeping track of the questions answered
+var runtime_id = ''
+var savegame_id = '' # This variable is the saved game `running_id` value.
 
 func _ready():
 	# Loading the config files
@@ -54,6 +56,8 @@ func _ready():
 
 	if Engine.is_editor_hint() == false:
 		load_dialog()
+		runtime_id = DialogicSingleton.generate_runtime_id(savegame_id)
+		dprint('[!] runtime_id = ' + runtime_id)
 
 
 func load_config_files():
@@ -338,6 +342,9 @@ func get_character(character_id):
 func event_handler(event: Dictionary):
 	# Handling an event and updating the available nodes accordingly.
 	reset_dialog_extras()
+	# Updating the settings and definitions in case that they were modified by a timelien
+	load_config_files()
+	
 	dprint('[D] Current Event: ', event)
 	match event:
 		{'text', 'character', 'portrait'}:
@@ -449,9 +456,9 @@ func event_handler(event: Dictionary):
 			var current_question = questions[event['question_id']]
 			for d in definitions:
 				if d['section'] == event['definition']:
-					#if d['config'].has_section('runtime_value'):
-					#	def_value = d['config'].get_value(event['definition'], 'runtime_value', null)
-					#else:
+					if d['config'].has_section('value-' + runtime_id):
+						def_value = d['config'].get_value(event['definition'], 'value-' + runtime_id, null)
+					else:
 						def_value = d['config'].get_value(event['definition'], 'value', null)
 			if def_value != null:
 				if def_value != event['value']:
@@ -466,8 +473,7 @@ func event_handler(event: Dictionary):
 				go_to_next_event()
 		{'set_value', 'definition'}:
 			emit_signal("event_start", "set_value", event)
-			#DialogicUtil.set_definition(event['definition'], 'runtime_value', event['set_value'])
-			DialogicUtil.set_definition(event['definition'], 'value', event['set_value'])
+			DialogicUtil.set_definition(event['definition'], 'value-' + runtime_id, event['set_value'])
 			go_to_next_event()
 		_:
 			visible = false

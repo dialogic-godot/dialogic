@@ -9,6 +9,7 @@ func _enter_tree() -> void:
 	add_inspector_plugin(_parts_inspector)
 	_add_custom_editor_view()
 	get_editor_interface().get_editor_viewport().add_child(_editor_view)
+	add_autoload_singleton('DialogicSingleton', "res://addons/dialogic/Other/DialogicSingleton.gd")
 	make_visible(false)
 
 
