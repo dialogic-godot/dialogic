@@ -1,7 +1,8 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://addons/dialogic/Images/condition.svg" type="Texture" id=1]
 [ext_resource path="res://addons/dialogic/Editor/Pieces/IfCondition.gd" type="Script" id=2]
+[ext_resource path="res://addons/dialogic/Editor/Pieces/Common/ConditionPicker.tscn" type="PackedScene" id=3]
 [ext_resource path="res://addons/dialogic/Editor/Pieces/Common/PieceExtraSettings.tscn" type="PackedScene" id=4]
 [ext_resource path="res://addons/dialogic/Editor/Pieces/Common/DragController.tscn" type="PackedScene" id=5]
 [ext_resource path="res://addons/dialogic/Editor/Pieces/Common/CustomLineEdit.tscn" type="PackedScene" id=6]
@@ -70,26 +71,23 @@ margin_left = 26.0
 margin_right = 169.0
 margin_bottom = 28.0
 
-[node name="MenuButton2" type="MenuButton" parent="PanelContainer/VBoxContainer/Header"]
-margin_left = 173.0
-margin_right = 252.0
-margin_bottom = 28.0
-text = "[ Equal to ]"
+[node name="ConditionPicker" parent="PanelContainer/VBoxContainer/Header" instance=ExtResource( 3 )]
+margin_right = 209.0
 
 [node name="CustomLineEdit" parent="PanelContainer/VBoxContainer/Header" instance=ExtResource( 6 )]
-margin_left = 256.0
-margin_right = 304.0
+margin_left = 213.0
+margin_right = 261.0
 margin_bottom = 28.0
 
 [node name="Preview" type="Label" parent="PanelContainer/VBoxContainer/Header"]
-margin_left = 308.0
+margin_left = 265.0
 margin_top = 7.0
-margin_right = 308.0
+margin_right = 265.0
 margin_bottom = 21.0
 custom_colors/font_color = Color( 1, 1, 1, 0.513726 )
 
 [node name="Spacer" type="Control" parent="PanelContainer/VBoxContainer/Header"]
-margin_left = 312.0
+margin_left = 269.0
 margin_right = 941.0
 margin_bottom = 28.0
 size_flags_horizontal = 3
