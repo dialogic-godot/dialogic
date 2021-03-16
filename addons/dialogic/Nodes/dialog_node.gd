@@ -462,16 +462,30 @@ func event_handler(event: Dictionary):
 						def_value = d['config'].get_value(event['definition'], 'value-' + runtime_id, null)
 					else:
 						def_value = d['config'].get_value(event['definition'], 'value', null)
-			if def_value != null:
-				if def_value != event['value']:
-					current_question['answered'] = true # This will abort the current conditional branch
 
-			if current_question['answered']:
-				# If the option is for an answered question, skip to the end of it.
+			var condition_met = false;
+			if def_value != null:
+				match event['condition']:
+					"==":
+						condition_met = def_value == event['value']
+					"!=":
+						condition_met = def_value != event['value']
+					">":
+						condition_met = def_value > event['value']
+					">=":
+						condition_met = def_value >= event['value']
+					"<":
+						condition_met = def_value < event['value']
+					"<=":
+						condition_met = def_value <= event['value']
+			
+			current_question['answered'] = !condition_met
+			if !condition_met:
+				# condition not met, skipping branch
 				dialog_index = current_question['end_id']
 				load_dialog(true)
 			else:
-				# It should never get here, but if it does, go to the next place.
+				# condition met, entering branch
 				go_to_next_event()
 		{'set_value', 'definition'}:
 			emit_signal("event_start", "set_value", event)
