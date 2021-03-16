@@ -72,22 +72,21 @@ margin_right = 169.0
 margin_bottom = 28.0
 
 [node name="ConditionPicker" parent="PanelContainer/VBoxContainer/Header" instance=ExtResource( 3 )]
-margin_right = 209.0
 
 [node name="CustomLineEdit" parent="PanelContainer/VBoxContainer/Header" instance=ExtResource( 6 )]
-margin_left = 213.0
-margin_right = 261.0
+margin_left = 256.0
+margin_right = 304.0
 margin_bottom = 28.0
 
 [node name="Preview" type="Label" parent="PanelContainer/VBoxContainer/Header"]
-margin_left = 265.0
+margin_left = 308.0
 margin_top = 7.0
-margin_right = 265.0
+margin_right = 308.0
 margin_bottom = 21.0
 custom_colors/font_color = Color( 1, 1, 1, 0.513726 )
 
 [node name="Spacer" type="Control" parent="PanelContainer/VBoxContainer/Header"]
-margin_left = 269.0
+margin_left = 312.0
 margin_right = 941.0
 margin_bottom = 28.0
 size_flags_horizontal = 3

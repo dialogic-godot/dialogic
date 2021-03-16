@@ -6,7 +6,7 @@
 margin_left = 173.0
 margin_right = 252.0
 margin_bottom = 28.0
-text = "[ = ]"
+text = "[ Equal to ]"
 script = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
