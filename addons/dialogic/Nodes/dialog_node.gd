@@ -29,6 +29,7 @@ onready var ChoiceButton = load("res://addons/dialogic/Nodes/ChoiceButton.tscn")
 onready var Portrait = load("res://addons/dialogic/Nodes/Portrait.tscn")
 var dialog_script = {}
 var questions #for keeping track of the questions answered
+var singleton
 var runtime_id = ''
 var savegame_id = '' # This variable is the saved game `running_id` value.
 
@@ -56,7 +57,7 @@ func _ready():
 
 	if Engine.is_editor_hint() == false:
 		load_dialog()
-		runtime_id = DialogicSingleton.generate_runtime_id(savegame_id)
+		runtime_id = singleton.generate_runtime_id(savegame_id)
 		dprint('[!] runtime_id = ' + runtime_id)
 
 
@@ -67,6 +68,7 @@ func load_config_files():
 	if settings.has_section('theme'):
 		theme_file = settings.get_value('theme', 'default')
 	current_theme = load_theme(theme_file)
+	singleton = DialogicSingleton
 
 
 func resize_main():

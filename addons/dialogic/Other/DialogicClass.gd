@@ -19,10 +19,13 @@ static func start(timeline: String, debug_mode=true):
 
 static func get_var(variable: String):
 	return DialogicUtil.get_var(variable)
+	var singleton = DialogicSingleton
+	return DialogicUtil.get_var(variable, singleton)
 
 
 static func set_var(variable: String, value):
+	var singleton = DialogicSingleton
 	for d in DialogicUtil.get_definition_list():
 		if d['name'] == variable:
-			DialogicUtil.set_definition(d['section'], 'value-' + DialogicSingleton.running_id, value)
+			DialogicUtil.set_definition(d['section'], 'value-' + singleton.running_id, value)
 	return value
