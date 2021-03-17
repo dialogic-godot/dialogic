@@ -170,11 +170,14 @@ static func set_definition(current_section: String, key,  value) -> void:
 		config.save(get_path('DEFINITIONS_FILE'))
 
 
-static func get_var(variable: String):
+static func get_var(variable: String, singleton):
 	print(get_definition_list())
 	for d in get_definition_list():
 		if d['name'] == variable:
-			return d['config'].get_value(d['section'], 'value')
+			if d['config'].has_section_key(d['section'], 'value-' + singleton.running_id):
+				return d['config'].get_value(d['section'], 'value-' + singleton.running_id)
+			else:
+				return d['config'].get_value(d['section'], 'value')
 	return ''
 
 

@@ -1,0 +1,13 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://addons/dialogic/Editor/Pieces/Common/ConditionPicker.gd" type="Script" id=1]
+
+[node name="ConditionPicker" type="MenuButton"]
+margin_left = 173.0
+margin_right = 252.0
+margin_bottom = 28.0
+text = "[ Equal to ]"
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}

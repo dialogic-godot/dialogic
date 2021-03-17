@@ -29,6 +29,9 @@ onready var ChoiceButton = load("res://addons/dialogic/Nodes/ChoiceButton.tscn")
 onready var Portrait = load("res://addons/dialogic/Nodes/Portrait.tscn")
 var dialog_script = {}
 var questions #for keeping track of the questions answered
+var singleton
+var runtime_id = ''
+var savegame_id = '' # This variable is the saved game `running_id` value.
 
 func _ready():
 	# Loading the config files
@@ -54,6 +57,8 @@ func _ready():
 
 	if Engine.is_editor_hint() == false:
 		load_dialog()
+		runtime_id = singleton.generate_runtime_id(savegame_id)
+		dprint('[!] runtime_id = ' + runtime_id)
 
 
 func load_config_files():
@@ -63,6 +68,7 @@ func load_config_files():
 	if settings.has_section('theme'):
 		theme_file = settings.get_value('theme', 'default')
 	current_theme = load_theme(theme_file)
+	singleton = DialogicSingleton
 
 
 func resize_main():
@@ -338,6 +344,9 @@ func get_character(character_id):
 func event_handler(event: Dictionary):
 	# Handling an event and updating the available nodes accordingly.
 	reset_dialog_extras()
+	# Updating the settings and definitions in case that they were modified by a timelien
+	load_config_files()
+	
 	dprint('[D] Current Event: ', event)
 	match event:
 		{'text', 'character', 'portrait'}:
@@ -449,25 +458,38 @@ func event_handler(event: Dictionary):
 			var current_question = questions[event['question_id']]
 			for d in definitions:
 				if d['section'] == event['definition']:
-					#if d['config'].has_section('runtime_value'):
-					#	def_value = d['config'].get_value(event['definition'], 'runtime_value', null)
-					#else:
+					if d['config'].has_section_key(event['definition'], 'value-' + runtime_id):
+						def_value = d['config'].get_value(event['definition'], 'value-' + runtime_id, null)
+					else:
 						def_value = d['config'].get_value(event['definition'], 'value', null)
-			if def_value != null:
-				if def_value != event['value']:
-					current_question['answered'] = true # This will abort the current conditional branch
 
-			if current_question['answered']:
-				# If the option is for an answered question, skip to the end of it.
+			var condition_met = false;
+			if def_value != null:
+				match event['condition']:
+					"==":
+						condition_met = def_value == event['value']
+					"!=":
+						condition_met = def_value != event['value']
+					">":
+						condition_met = def_value > event['value']
+					">=":
+						condition_met = def_value >= event['value']
+					"<":
+						condition_met = def_value < event['value']
+					"<=":
+						condition_met = def_value <= event['value']
+			
+			current_question['answered'] = !condition_met
+			if !condition_met:
+				# condition not met, skipping branch
 				dialog_index = current_question['end_id']
 				load_dialog(true)
 			else:
-				# It should never get here, but if it does, go to the next place.
+				# condition met, entering branch
 				go_to_next_event()
 		{'set_value', 'definition'}:
 			emit_signal("event_start", "set_value", event)
-			#DialogicUtil.set_definition(event['definition'], 'runtime_value', event['set_value'])
-			DialogicUtil.set_definition(event['definition'], 'value', event['set_value'])
+			DialogicUtil.set_definition(event['definition'], 'value-' + runtime_id, event['set_value'])
 			go_to_next_event()
 		_:
 			visible = false

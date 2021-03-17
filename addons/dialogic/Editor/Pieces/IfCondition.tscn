@@ -1,7 +1,8 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://addons/dialogic/Images/condition.svg" type="Texture" id=1]
 [ext_resource path="res://addons/dialogic/Editor/Pieces/IfCondition.gd" type="Script" id=2]
+[ext_resource path="res://addons/dialogic/Editor/Pieces/Common/ConditionPicker.tscn" type="PackedScene" id=3]
 [ext_resource path="res://addons/dialogic/Editor/Pieces/Common/PieceExtraSettings.tscn" type="PackedScene" id=4]
 [ext_resource path="res://addons/dialogic/Editor/Pieces/Common/DragController.tscn" type="PackedScene" id=5]
 [ext_resource path="res://addons/dialogic/Editor/Pieces/Common/CustomLineEdit.tscn" type="PackedScene" id=6]
@@ -70,11 +71,7 @@ margin_left = 26.0
 margin_right = 169.0
 margin_bottom = 28.0
 
-[node name="MenuButton2" type="MenuButton" parent="PanelContainer/VBoxContainer/Header"]
-margin_left = 173.0
-margin_right = 252.0
-margin_bottom = 28.0
-text = "[ Equal to ]"
+[node name="ConditionPicker" parent="PanelContainer/VBoxContainer/Header" instance=ExtResource( 3 )]
 
 [node name="CustomLineEdit" parent="PanelContainer/VBoxContainer/Header" instance=ExtResource( 6 )]
 margin_left = 256.0

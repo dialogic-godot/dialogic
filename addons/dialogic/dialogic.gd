@@ -9,6 +9,7 @@ func _enter_tree() -> void:
 	add_inspector_plugin(_parts_inspector)
 	_add_custom_editor_view()
 	get_editor_interface().get_editor_viewport().add_child(_editor_view)
+	add_autoload_singleton('DialogicSingleton', "res://addons/dialogic/Other/DialogicSingleton.gd")
 	make_visible(false)
 
 
@@ -18,6 +19,7 @@ func _ready():
 		DialogicUtil.init_dialogic_files()
 		# Force Godot to show the dialogic folder
 		get_editor_interface().get_resource_filesystem().scan()
+	
 
 
 func _exit_tree() -> void:
@@ -44,7 +46,7 @@ func get_plugin_icon():
 
 func _add_custom_editor_view():
 	_editor_view = preload("res://addons/dialogic/Editor/EditorView.tscn").instance()
-	_editor_view.plugin_reference = self
+	#_editor_view.plugin_reference = self
 
 
 func _remove_custom_editor_view():
