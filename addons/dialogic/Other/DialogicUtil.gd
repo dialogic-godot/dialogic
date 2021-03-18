@@ -76,27 +76,24 @@ static func get_filename_from_path(path: String, extension = false) -> String:
 
 
 static func listdir(path: String) -> Array:
-	# https://godotengine.org/qa/5175/how-to-get-all-the-files-inside-a-folder
+	# https://docs.godotengine.org/en/stable/classes/class_directory.html#description
 	var files: Array = []
-	var dir: Directory = Directory.new()
-	dir.open(path)
-	dir.list_dir_begin()
-	while true:
-		var file = dir.get_next()
-		if file == "":
-			break
-		elif not file.begins_with("."):
-			files.append(file)
-	dir.list_dir_end()
+	var dir := Directory.new()
+	if dir.open(path) == OK:
+		dir.list_dir_begin()
+		var file_name = dir.get_next()
+		while file_name != "":
+			if not dir.current_is_dir() and not file_name.begins_with("."):
+				files.append(file_name)
+			file_name = dir.get_next()
+		dir.list_dir_end()
+	else:
+		print("Error while accessing path " + path)
 	return files
 
 
 static func get_character_list() -> Array:
 	var characters: Array = []
-	var directory = Directory.new();
-	if directory.dir_exists(get_path('CHAR_DIR')) == false:
-		return characters
-		
 	for file in listdir(get_path('CHAR_DIR')):
 		if '.json' in file:
 			var data: Dictionary     = load_json(get_path('CHAR_DIR', file))
