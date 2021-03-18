@@ -181,12 +181,14 @@ func _on_PreviewButton_pressed():
 	preview_dialog.dialog_script = preview_dialog.parse_text_lines(preview_dialog.dialog_script)
 	n['preview_panel'].add_child(preview_dialog)
 	# Not sure why but I need to reload the theme again for it to work properly
-	preview_dialog.current_theme = preview_dialog.load_theme(current_theme)
 	preview_dialog.load_dialog()
+	preview_dialog.current_theme = preview_dialog.load_theme(current_theme)
 	
 	# maintaining the preview panel big enough for the dialog box
+
 	n['preview_panel'].rect_min_size.y = preview_dialog.current_theme.get_value('box', 'size', Vector2(910, 167)).y + 90 + preview_dialog.current_theme.get_value('box', 'bottom_gap', 40)
-	n['preview_panel'].rect_size = Vector2(0,0)
+	n['preview_panel'].rect_size.y = 0
+
 
 func _on_ActionOptionButton_item_selected(index):
 	DialogicUtil.set_theme_value(current_theme, 'settings','action_key', n['theme_action_key'].text)
