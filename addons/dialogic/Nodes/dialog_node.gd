@@ -40,7 +40,7 @@ func _ready():
 
 	# Checking if the dialog should read the code from a external file
 	if timeline != '':
-		dialog_script = set_current_dialog('/' + timeline + '.json')
+		dialog_script = set_current_dialog(timeline + '.json')
 
 	# Connecting resize signal
 	get_viewport().connect("size_changed", self, "resize_main")
@@ -449,7 +449,7 @@ func event_handler(event: Dictionary):
 			wait_seconds(event['wait_seconds'])
 			waiting = true
 		{'change_timeline'}:
-			dialog_script = set_current_dialog('/' + event['change_timeline'])
+			dialog_script = set_current_dialog(event['change_timeline'])
 			dialog_index = -1
 			go_to_next_event()
 		{'condition', 'definition', 'value', 'question_id', ..}:
