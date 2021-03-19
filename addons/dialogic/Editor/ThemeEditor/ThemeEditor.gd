@@ -172,12 +172,11 @@ func _on_PreviewButton_pressed():
 	preview_dialog.dialog_script['events'] = [{
 		"character":"",
 		"portrait":"",
-		"text": n['text_preview'].text
+		"text": preview_dialog.parse_definitions(n['text_preview'].text)
 	}]
 	# Settings
 	preview_dialog.settings = DialogicUtil.get_settings()
 	# Alignment
-	preview_dialog.dialog_script = preview_dialog.parse_definitions(preview_dialog.dialog_script)
 	preview_dialog.dialog_script = preview_dialog.parse_text_lines(preview_dialog.dialog_script)
 	n['preview_panel'].add_child(preview_dialog)
 	# Not sure why but I need to reload the theme again for it to work properly
