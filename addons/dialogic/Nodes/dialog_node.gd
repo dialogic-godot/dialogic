@@ -463,21 +463,7 @@ func event_handler(event: Dictionary):
 					else:
 						def_value = d['config'].get_value(event['definition'], 'value', null)
 
-			var condition_met = false;
-			if def_value != null:
-				match event['condition']:
-					"==":
-						condition_met = def_value == event['value']
-					"!=":
-						condition_met = def_value != event['value']
-					">":
-						condition_met = def_value > event['value']
-					">=":
-						condition_met = def_value >= event['value']
-					"<":
-						condition_met = def_value < event['value']
-					"<=":
-						condition_met = def_value <= event['value']
+			var condition_met = self._compare_definitions(def_value, event['value'], event['condition']);
 			
 			current_question['answered'] = !condition_met
 			if !condition_met:
@@ -748,3 +734,27 @@ func dprint(string, arg1='', arg2='', arg3='', arg4='' ):
 	# I ask myself the same question :')
 	if debug_mode:
 		print(str(string) + str(arg1) + str(arg2) + str(arg3) + str(arg4))
+
+
+func _compare_definitions(def_value: String, event_value: String, condition: String):
+	var condition_met = false;
+	if def_value != null and event_value != null:
+		var converted_def_value = def_value
+		var converted_event_value = event_value
+		if def_value.is_valid_float() and event_value.is_valid_float():
+			converted_def_value = float(def_value)
+			converted_event_value = float(event_value)
+		match condition:
+			"==":
+				condition_met = converted_def_value == converted_event_value
+			"!=":
+				condition_met = converted_def_value != converted_event_value
+			">":
+				condition_met = converted_def_value > converted_event_value
+			">=":
+				condition_met = converted_def_value >= converted_event_value
+			"<":
+				condition_met = converted_def_value < converted_event_value
+			"<=":
+				condition_met = converted_def_value <= converted_event_value
+	return condition_met
