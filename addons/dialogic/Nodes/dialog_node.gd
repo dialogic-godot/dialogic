@@ -95,7 +95,6 @@ func set_current_dialog(dialog_path):
 		dialog_script = parse_characters(dialog_script)
 	
 	dialog_script = parse_text_lines(dialog_script)
-	dialog_script = parse_definitions(dialog_script)
 	dialog_script = parse_branches(dialog_script)
 	return dialog_script
 
@@ -219,28 +218,27 @@ func parse_branches(dialog_script: Dictionary) -> Dictionary:
 	return dialog_script
 
 
-func parse_definitions(dialog_script):
+func parse_definitions(text: String):
 	var words = []
 	var definition_list = DialogicUtil.get_definition_list()
 	if Engine.is_editor_hint():
 		# Loading variables again to avoid issues in the preview dialog
 		load_config_files()
-		
 
+	var final_text: String;
+	final_text = _insert_variable_definitions(text)
+	final_text = _insert_glossary_definitions(final_text)
+	return final_text
+
+func _insert_variable_definitions(text: String):
+	var final_text := text;
 	for d in definitions:
-		if d['type'] == 1:
-			words.append(d)
-	if words.size() > 0:
-		for t in dialog_script['events']:
-			# Text node
-			if t.has('text') and t.has('character') and t.has('portrait'):
-				t['text'] = _insert_glossary_definitions(t['text'])
-			# Question node
-			if t.has('question'):
-				t['question'] = _insert_glossary_definitions(t['question'])
-
-	return dialog_script
-
+		if d['type'] == 0:
+			var value = DialogicUtil.get_definition_value(d, runtime_id)
+			final_text = final_text.replace('[' + d['name'] + ']', value)
+	return final_text;
+	
+	
 func _insert_glossary_definitions(text: String):
 	var color = self.current_theme.get_value('definitions', 'color', '#ffbebebe')
 	var final_text := text;
@@ -304,7 +302,7 @@ func update_name(character, color='#FFFFFF'):
 
 func update_text(text):
 	# Updating the text and starting the animation from 0
-	$TextBubble/RichTextLabel.bbcode_text = text
+	$TextBubble/RichTextLabel.bbcode_text = self.parse_definitions(text)
 	$TextBubble/RichTextLabel.percent_visible = 0
 
 	# The call to this function needs to be deferred.
@@ -464,10 +462,7 @@ func event_handler(event: Dictionary):
 			var current_question = questions[event['question_id']]
 			for d in definitions:
 				if d['section'] == event['definition']:
-					if d['config'].has_section_key(event['definition'], 'value-' + runtime_id):
-						def_value = d['config'].get_value(event['definition'], 'value-' + runtime_id, null)
-					else:
-						def_value = d['config'].get_value(event['definition'], 'value', null)
+					def_value = DialogicUtil.get_definition_value(d, runtime_id)
 
 			var condition_met = self._compare_definitions(def_value, event['value'], event['condition']);
 			
