@@ -235,7 +235,7 @@ func _insert_variable_definitions(text: String):
 	for d in definitions:
 		if d['type'] == 0:
 			var value = DialogicUtil.get_definition_value(d, runtime_id)
-			final_text = final_text.replace('${' + d['name'] + '}', value)
+			final_text = final_text.replace('[' + d['name'] + ']', value)
 	return final_text;
 	
 	
