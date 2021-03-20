@@ -230,23 +230,29 @@ func parse_definitions(dialog_script):
 	for d in definitions:
 		if d['type'] == 1:
 			words.append(d)
-
-	# I should use regex here, but this is way easier :)
 	if words.size() > 0:
-		var color = current_theme.get_value('definitions', 'color', '#ffbebebe')
-		var index = 0
 		for t in dialog_script['events']:
+			# Text node
 			if t.has('text') and t.has('character') and t.has('portrait'):
-				for d in definitions:
-					if d['type'] == 1:
-						dialog_script['events'][index]['text'] = t['text'].replace(d['name'],
-							'[url=' + d['section'] + ']' +
-								'[color=' + color + ']' + d['name'] + '[/color]' +
-							'[/url]'
-						)
-			index += 1
+				t['text'] = _insert_glossary_definitions(t['text'])
+			# Question node
+			if t.has('question'):
+				t['question'] = _insert_glossary_definitions(t['question'])
 
 	return dialog_script
+
+func _insert_glossary_definitions(text: String):
+	var color = self.current_theme.get_value('definitions', 'color', '#ffbebebe')
+	var final_text := text;
+	# I should use regex here, but this is way easier :)
+	for d in definitions:
+		if d['type'] == 1:
+			final_text = final_text.replace(d['name'],
+				'[url=' + d['section'] + ']' +
+				'[color=' + color + ']' + d['name'] + '[/color]' +
+				'[/url]'
+			)
+	return final_text;
 
 
 func _process(_delta):
