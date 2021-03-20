@@ -17,6 +17,15 @@ static func start(timeline: String, dialog_scene_path: String="res://addons/dial
 	return d
 
 
+static func load_game(runtime_id: String):
+	var singleton = DialogicSingleton
+	singleton.runtime_id = runtime_id
+	return runtime_id
+
+
+# TODO: add a method to the get the current runtime_id from the singleton
+
+
 static func get_var(variable: String):
 	var singleton = DialogicSingleton
 	return DialogicUtil.get_var(variable, singleton)
@@ -26,5 +35,5 @@ static func set_var(variable: String, value):
 	var singleton = DialogicSingleton
 	for d in DialogicUtil.get_definition_list():
 		if d['name'] == variable:
-			DialogicUtil.set_definition(d['section'], 'value-' + singleton.running_id, value)
+			DialogicUtil.set_definition(d['section'], 'value-' + singleton.runtime_id, value)
 	return value

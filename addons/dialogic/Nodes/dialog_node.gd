@@ -31,7 +31,7 @@ var dialog_script = {}
 var questions #for keeping track of the questions answered
 var singleton
 var runtime_id = ''
-var savegame_id = '' # This variable is the saved game `running_id` value.
+var savegame_id = '' # This variable is the saved game `runtime_id` value.
 
 func _ready():
 	# Loading the config files
