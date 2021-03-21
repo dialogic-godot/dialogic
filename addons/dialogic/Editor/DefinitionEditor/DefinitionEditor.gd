@@ -72,7 +72,7 @@ func show_sub_editor(type):
 
 func get_definition(key: String, default):
 	if current_section != '':
-		return DialogicResources.get_default_definition(current_section, key, default)
+		return DialogicResources.get_default_definition_key(current_section, key, default)
 	else:
 		return default
 

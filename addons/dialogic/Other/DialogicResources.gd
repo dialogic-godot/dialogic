@@ -30,23 +30,19 @@ static func init_dialogic_files() -> void:
 	# This functions makes sure that the needed files and folders
 	# exists when the plugin is loaded. If they don't, we create 
 	# them.
+	# WARNING: only call while in the editor
 	var directory = Directory.new()
 	var paths = get_working_directories()
 	var files = get_config_files_paths()
 	# Create directories
-	print('folders start')
 	for dir in paths:
 		if not directory.dir_exists(paths[dir]):
 			directory.make_dir_recursive(paths[dir])
 	# Create empty files
-	print('files start')
 	for f in files:
 		print(f)
 		if not directory.file_exists(files[f]):
-			print('creating empty file')
 			create_empty_file(files[f])
-	print('files end')
-	#init_definitions_saves(false)
 
 
 static func get_working_directories() -> Dictionary:
@@ -73,22 +69,32 @@ static func init_definitions_saves(overwrite: bool=true):
 	var sink := File.new()
 	var paths := get_config_files_paths()
 	
-	var err = sink.open(paths["SAVED_DEFINITIONS_FILE"], File.READ_WRITE)
+	var err := directory.make_dir_recursive(get_working_directories()['WORKING_DIR'])
+	
 	if err == OK:
-		if overwrite or sink.get_len() == 0:
+		if not directory.file_exists(paths["SAVED_DEFINITIONS_FILE"]):
+			err = sink.open(paths["SAVED_DEFINITIONS_FILE"], File.WRITE)
+			print('Saved definitions not present, creating file: ' + str(err))
 			if err == OK:
-				err = sink.open(paths["DEFAULT_DEFINITIONS_FILE"], File.READ)
+				sink.store_string('')
+				sink.close()
 			else:
-				print('Error opening base definitions file: ' + str(err))
-				
-			if err == OK:
-				sink.store_string(source.get_as_text())
+				print('Error opening saved definitions file: ' + str(err))
+		
+		err = sink.open(paths["SAVED_DEFINITIONS_FILE"], File.READ_WRITE)
+		if err == OK:
+			if overwrite or sink.get_len() == 0:
+				err = source.open(paths["DEFAULT_DEFINITIONS_FILE"], File.READ)
+				if err == OK:
+					sink.store_string(source.get_as_text())
+				else:
+					print('Error opening default definitions file: ' + str(err))
 			else:
-				print('Error reading saved definitions file: ' + str(err))
+				print('Did not overwrite previous saved definitions')
 		else:
-			print('Did not overwrite saved definitions')
+			print('Error opening saved definitions file: ' + str(err))
 	else:
-		print('Error opening saved definitions file: ' + str(err))
+		print('Error creating working directory: ' + str(err))
 	
 	source.close()
 	sink.close()
@@ -246,78 +252,93 @@ static func set_settings_value(section: String, key: String, value):
 	config.save(get_config_files_paths()['SETTINGS_FILE'])
 
 
-# DEFAULT DEFINITIONS
+# DEFINITIONS UTIL
+# used by default and saved definitions
 
-
-static func get_default_definitions_config():
-	return get_config("DEFAULT_DEFINITIONS_FILE")
-
-
-static func get_default_definition(section: String, key: String, default):
-	var config = get_default_definitions_config()
+static func get_definition_key(config_id: String, section: String, key: String, default):
+	var config = get_config(config_id)
 	if config.has_section(section):
 		return config.get_value(section, key, default)
 	else:
 		return default
 
 
-static func set_default_definition(section: String, key: String,  value):
-	# WARNING: For use in the editor only
-	var config = get_default_definitions_config()
-	config.set_value(section, key, str(value))
-	return config.save(get_config_files_paths()['DEFAULT_DEFINITIONS_FILE'])
-
-
-static func set_default_definition_variable(section: String, name: String,  value):
-	# WARNING: For use in the editor only
-	var config = get_default_definitions_config()
+static func set_definition_variable(config_id: String, section: String, name: String,  value):
+	var config = get_config(config_id)
 	config.set_value(section, 'name', name)
 	config.set_value(section, 'type', 0)
 	config.set_value(section, 'value', str(value))
-	return config.save(get_config_files_paths()['DEFAULT_DEFINITIONS_FILE'])
+	return config.save(get_config_files_paths()[config_id])
 
 
-static func set_default_definition_glossary(section: String, name: String,  extra_title: String,  extra_text: String,  extra_extra: String):
-	# WARNING: For use in the editor only
-	var config = get_default_definitions_config()
+static func set_definition_glossary(config_id: String, section: String, name: String,  extra_title: String,  extra_text: String,  extra_extra: String):
+	var config = get_config(config_id)
 	config.set_value(section, 'name', name)
 	config.set_value(section, 'type', 1)
 	config.set_value(section, 'extra_title', extra_title)
 	config.set_value(section, 'extra_text', extra_text)
 	config.set_value(section, 'extra_extra', extra_extra)
-	return config.save(get_config_files_paths()['DEFAULT_DEFINITIONS_FILE'])
+	return config.save(get_config_files_paths()[config_id])
+
+
+static func add_definition_variable(config_id: String, section: String, name: String, type: int, value):
+	var config = get_config(config_id)
+	config.set_value(section, 'name', name)
+	config.set_value(section, 'type', type)
+	config.set_value(section, 'value', str(value))
+	return config.save(get_config_files_paths()[config_id])
+
+
+static func delete_definition(config_id: String, section: String):
+	var config = get_config(config_id)
+	config.erase_section(section)
+	return config.save(get_config_files_paths()[config_id])
+
+
+
+# DEFAULT DEFINITIONS
+# Can only be edited in the editor
+
+static func get_default_definitions_config():
+	return get_config('DEFAULT_DEFINITIONS_FILE')
+
+
+static func get_default_definition_key(section: String, key: String, default):
+	return get_definition_key('DEFAULT_DEFINITIONS_FILE', section, key, default)
+
+
+static func set_default_definition_variable(section: String, name: String,  value):
+	# WARNING: For use in the editor only
+	return set_definition_variable('DEFAULT_DEFINITIONS_FILE', section, name, value)
+
+
+static func set_default_definition_glossary(section: String, name: String,  extra_title: String,  extra_text: String,  extra_extra: String):
+	# WARNING: For use in the editor only
+	return set_definition_glossary('DEFAULT_DEFINITIONS_FILE', section, name, extra_title, extra_text, extra_extra)
 
 
 static func add_default_definition_variable(section: String, name: String, type: int, value):
 	# WARNING: For use in the editor only
-	var config = get_default_definitions_config()
-	config.set_value(section, 'name', name)
-	config.set_value(section, 'type', type)
-	config.set_value(section, 'value', str(value))
-	config.save(get_config_files_paths()['DEFAULT_DEFINITIONS_FILE'])
+	return add_definition_variable('DEFAULT_DEFINITIONS_FILE', section, name, type, value)
 
 
 static func delete_default_definition(section: String):
 	# WARNING: For use in the editor only
-	var config = get_saved_definitions_config()
-	config.erase_section(section)
-	return config.save(get_config_files_paths()['DEFAULT_DEFINITIONS_FILE'])
+	return delete_definition('DEFAULT_DEFINITIONS_FILE', section)
 
 
 # SAVED DEFINITIONS
+# Can be edited at runtime, and will persist across runs
 
 
 static func get_saved_definitions_config():
 	return get_config("SAVED_DEFINITIONS_FILE")
 
 
-static func set_saved_definition(current_section: String, key,  value):
-	var config = get_saved_definitions_config()
-	config.set_value(current_section, key, str(value))
-	return config.save(get_config_files_paths()['SAVED_DEFINITIONS_FILE'])
+static func set_saved_definition_variable(section: String, name: String,  value):
+	return set_definition_variable('SAVED_DEFINITIONS_FILE', section, name, value)
 
 
-static func remove_saved_definition(target: String):
-	var config = get_saved_definitions_config()
-	config.erase_section(target)
-	return config.save(get_config_files_paths()['SAVED_DEFINITIONS_FILE'])
+static func set_saved_definition_glossary(section: String, name: String,  extra_title: String,  extra_text: String,  extra_extra: String):
+	return set_definition_glossary('SAVED_DEFINITIONS_FILE', section, name, extra_title, extra_text, extra_extra)
+

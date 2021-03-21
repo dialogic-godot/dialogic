@@ -78,7 +78,7 @@ static func get_theme_list() -> Array:
 
 static func get_definition_list() -> Array:
 	var definitions: Array = []
-	var config = DialogicResources.get_default_definitions_config()
+	var config = DialogicResources.get_saved_definitions_config()
 	for section in config.get_sections():
 		definitions.append({
 			'section': section,
@@ -99,7 +99,7 @@ static func get_var(variable: String) -> String:
 static func set_var(variable: String, value) -> void:
 	for d in get_definition_list():
 		if d['name'] == variable:
-			DialogicResources.set_default_definition(d['section'], 'value', value)
+			DialogicResources.set_saved_definition_variable(d['section'], d['name'], value)
 
 
 static func generate_random_id() -> String:
