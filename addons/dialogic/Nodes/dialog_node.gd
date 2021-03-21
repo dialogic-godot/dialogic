@@ -17,6 +17,7 @@ var settings
 var current_theme
 
 export(String, "TimelineDropdown") var timeline: String
+export(bool) var reset_saves = true
 export(bool) var debug_mode = true
 signal event_start(type, event)
 signal event_end(type)
@@ -34,7 +35,9 @@ func _ready():
 	# Loading the config files
 	load_config_files()
 	
-
+	# Make sure saves are ready
+	DialogicResources.init_definitions_saves(reset_saves)
+	
 	# Checking if the dialog should read the code from a external file
 	if timeline != '':
 		dialog_script = set_current_dialog(timeline + '.json')

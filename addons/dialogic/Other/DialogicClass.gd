@@ -17,8 +17,8 @@ static func start(timeline: String, dialog_scene_path: String="res://addons/dial
 	return d
 
 
-static func load_game(new_game: bool=false):
-	DialogicResources.init_definitions_saves(new_game)
+static func reset_saves():
+	DialogicResources.init_definitions_saves(true)
 
 
 static func get_var(variable: String):
