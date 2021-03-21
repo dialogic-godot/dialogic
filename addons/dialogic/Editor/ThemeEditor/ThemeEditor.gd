@@ -112,7 +112,10 @@ func load_theme(filename):
 			n['alignment'].select(1)
 		'Right':
 			n['alignment'].select(2)
-
+	
+	# Preview text
+	n['text_preview'].text = theme.get_value('text', 'preview', 'This is preview text. You can use  [color=#A5EFAC]BBCode[/color] to style it.\n[wave amp=50 freq=2]You can even use effects![/wave]')
+	
 
 func new_theme():
 	var theme_file = 'theme-' + str(OS.get_unix_time()) + '.cfg'
@@ -317,3 +320,7 @@ func _on_Alignment_item_selected(index):
 	elif index == 2:
 		DialogicUtil.set_theme_value(current_theme, 'text', 'alignment', 'Right')
 
+
+
+func _on_Preview_text_changed():
+	DialogicUtil.set_theme_value(current_theme, 'text', 'preview', n['text_preview'].text)
