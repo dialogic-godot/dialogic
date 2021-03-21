@@ -12,31 +12,36 @@ The plugin is not production ready, this means that it will not work in your gam
 ## Changelog
 
 ### 🆕 v1.0 - WIP
-  - When upgrading from 0.9 to the current version things might not work as expected
+  - When upgrading from 0.9 to the current version things might not work as expected:
     - ⚠ **PLEASE MAKE A BACKUP OF YOUR PROJECT BEFORE UPGRADING** ⚠
     - Glossary variables will be lost
     - Glossary related events will not be loaded (`If condition Event` and `Set Value Event`)
     - The theme you made in the 0.9 theme editor will be lost. You will have to remake it.
-  - New layout.
+  - New layout:
     - All editors in the same screen. Say goodbye to tabs!
     - You can now rename resources by double clicking them
     - New Settings panel for advanced properties
-  - Character Editor
+  - Character Editor:
     - Set the scale of your character's portrait
     - Add offset to the portrait
-  - Timeline Editor
+  - Timeline Editor:
     - New `Theme event` to change the theme in the middle of a timeline
     - Re-enabled the `Scene Event`
-  - Theme Editor
+  - Theme Editor:
     - You can now add multiple themes
-    - New property: `Box size` set the width and height of the dialogue box in pixels
-    - New property: `Alignment` you can now align the text displayed (Left, Center, Right)
-  - Glossary was renamed to Definitions. I feel like Definitions cover both variables and lore a bit better.
-  - Definitions
-    - Only two types for now. Variables and Extra Information.
-    - Case sensitive matching in the `If Condition Event`
+    - Moved the preview button to the left side so it is never hidden by default in small screens
+    - New properties:
+      - `Box size` set the width and height of the dialogue box in pixels
+      - `Alignment` you can now align the text displayed (Left, Center, Right)
+      - `Bottom Gap` The distance between the bottom of the screen and the start of the dialog box.
+  - Glossary was renamed to Definitions. I feel like the word `Definitions` cover both "variables" and "lore" a bit better.
+  - Definitions:
+    - Dynamic types! All variables are just dynamic, so they can be ints, floats or strings.
   - The events now emit signals. Thank you [Jesse Lieberg](https://github.com/GammaGames) for your first contribution!
   - Re-added the auto color for character names in text messages
+  - You can display the definition values in a text event by doing: `[definition name here]`.
+  - Fixed some resource issues with exported games
+  - Special thanks to [Arnaud Vergnet](https://github.com/arnaudvergnet) for all your work in improving Definitions, conditional events and many more! 🙇‍♂️
 
 To view the full changelog [click here](https://github.com/coppolaemilio/dialogic/blob/master/CHANGELOG.md). 
 

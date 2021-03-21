@@ -694,3 +694,4 @@ size_flags_vertical = 3
 [connection signal="value_changed" from="VBoxContainer/HBoxContainer2/Glossary/GridContainer/HBoxContainer/ShadowOffsetX" to="." method="_on_ShadowOffset_value_changed"]
 [connection signal="value_changed" from="VBoxContainer/HBoxContainer2/Glossary/GridContainer/HBoxContainer/ShadowOffsetY" to="." method="_on_ShadowOffset_value_changed"]
 [connection signal="pressed" from="VBoxContainer/HBoxContainer3/PreviewButton" to="." method="_on_PreviewButton_pressed"]
+[connection signal="text_changed" from="VBoxContainer/HBoxContainer3/TextEdit" to="." method="_on_Preview_text_changed"]
