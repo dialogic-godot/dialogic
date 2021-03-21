@@ -461,7 +461,7 @@ func event_handler(event: Dictionary):
 			for d in definitions:
 				if d['section'] == event['definition']:
 					def_value = DialogicUtil.get_var(d['name'])
-
+			
 			var condition_met = self._compare_definitions(def_value, event['value'], event['condition']);
 			
 			current_question['answered'] = !condition_met
@@ -474,7 +474,7 @@ func event_handler(event: Dictionary):
 				go_to_next_event()
 		{'set_value', 'definition'}:
 			emit_signal("event_start", "set_value", event)
-			DialogicUtil.set_var(event['definition'], event['set_value'])
+			DialogicResources.set_saved_definition_variable_value(event['definition'], event['set_value'])
 			go_to_next_event()
 		_:
 			visible = false

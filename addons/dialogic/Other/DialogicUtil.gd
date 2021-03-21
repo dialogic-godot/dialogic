@@ -76,6 +76,19 @@ static func get_theme_list() -> Array:
 	return themes
 
 
+static func get_default_definition_list() -> Array:
+	var definitions: Array = []
+	var config = DialogicResources.get_default_definitions_config()
+	for section in config.get_sections():
+		definitions.append({
+			'section': section,
+			'name': config.get_value(section, 'name', section),
+			'config': config,
+			'type': config.get_value(section, 'type', 0),
+		})
+	return definitions
+
+
 static func get_definition_list() -> Array:
 	var definitions: Array = []
 	var config = DialogicResources.get_saved_definitions_config()

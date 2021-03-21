@@ -69,7 +69,7 @@ func _ready():
 		add_character(c)
 	
 	# Adding Definitions
-	for d in DialogicUtil.get_definition_list():
+	for d in DialogicUtil.get_default_definition_list():
 		add_definition(d)
 	
 	# Adding Themes

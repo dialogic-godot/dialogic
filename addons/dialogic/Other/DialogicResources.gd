@@ -40,7 +40,6 @@ static func init_dialogic_files() -> void:
 			directory.make_dir_recursive(paths[dir])
 	# Create empty files
 	for f in files:
-		print(f)
 		if not directory.file_exists(files[f]):
 			create_empty_file(files[f])
 
@@ -149,7 +148,7 @@ static func get_config(id: String) -> ConfigFile:
 	if id in paths.keys():
 		var err = config.load(paths[id])
 		if err != OK:
-			print("Error while opening config file " + paths[id] + ". Error: " + err)
+			print("Error while opening config file " + paths[id] + ". Error: " + str(err))
 	return config
 
 
@@ -338,6 +337,11 @@ static func get_saved_definitions_config():
 
 static func set_saved_definition_variable(section: String, name: String,  value):
 	return set_definition_variable('SAVED_DEFINITIONS_FILE', section, name, value)
+
+
+static func set_saved_definition_variable_value(section: String, value):
+	var config = get_saved_definitions_config()
+	return set_definition_variable('SAVED_DEFINITIONS_FILE', section, config.get_value(section, 'name', section), value)
 
 
 static func set_saved_definition_glossary(section: String, name: String,  extra_title: String,  extra_text: String,  extra_extra: String):
