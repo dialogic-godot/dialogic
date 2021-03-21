@@ -119,7 +119,8 @@ static func listdir(path: String) -> Array:
 	# https://docs.godotengine.org/en/stable/classes/class_directory.html#description
 	var files: Array = []
 	var dir := Directory.new()
-	if dir.open(path) == OK:
+	var err = dir.open(path)
+	if err == OK:
 		dir.list_dir_begin()
 		var file_name = dir.get_next()
 		while file_name != "":
@@ -128,7 +129,7 @@ static func listdir(path: String) -> Array:
 			file_name = dir.get_next()
 		dir.list_dir_end()
 	else:
-		print("Error while accessing path " + path)
+		print("Error while accessing path " + path + " - Error: " + str(err))
 	return files
 
 
