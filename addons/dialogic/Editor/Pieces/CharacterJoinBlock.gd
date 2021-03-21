@@ -78,7 +78,7 @@ func check_active_position(active_color = Color("#ffffff")):
 func load_data(data):
 	event_data = data
 	if data['character'] != '':
-		var character_data = DialogicUtil.load_json(DialogicUtil.get_path('CHAR_DIR', data['character']))
+		var character_data = DialogicResources.get_character_json(data['character'])
 		$PanelContainer/VBoxContainer/Header/CharacterPicker.set_data(character_data['name'], Color(character_data['color']))
 		portrait_picker.set_character(data['character'], data['portrait'])
 		current_color = Color(character_data['color'])

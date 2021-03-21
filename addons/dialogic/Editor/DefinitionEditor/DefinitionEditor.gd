@@ -70,43 +70,23 @@ func show_sub_editor(type):
 		nodes['extra_editor'].visible = true
 
 
-func get_definition(key, default):
+func get_definition(key: String, default):
 	if current_section != '':
-		var config = ConfigFile.new()
-		config.load(DialogicUtil.get_path('DEFINITIONS_FILE'))
-		if config.has_section(current_section):
-			return config.get_value(current_section, key, default)
+		return DialogicResources.get_default_definition(current_section, key, default)
 	else:
 		return default
 
 
 func new_definition():
-	var config = ConfigFile.new()
 	var section = DialogicUtil.generate_random_id()
-	var err = config.load(DialogicUtil.get_path('DEFINITIONS_FILE'))
-	if err == OK:
-		config.set_value(section, 'name', 'New definition')
-		config.set_value(section, 'type', 0)
-		config.set_value(section, 'value', '')
-		config.save(DialogicUtil.get_path('DEFINITIONS_FILE'))
-		master_tree.add_definition({'section': section,'name': 'New definition', 'type': 0}, true)
-	else:
-		print('Error loading definitions')
+	DialogicResources.add_default_definition_variable(section, 'New definition', 0, '')
+	master_tree.add_definition({'section': section,'name': 'New definition', 'type': 0}, true)
 
 
 func save_definition():
 	if current_section != '':
-		var config = ConfigFile.new()
-		var err = config.load(DialogicUtil.get_path('DEFINITIONS_FILE'))
-		if err == OK:
-			config.set_value(current_section, 'name', nodes['name'].text)
-			var type = nodes['type'].selected
-			config.set_value(current_section, 'type', type)
-			if type == 0:
-				config.set_value(current_section, 'value', nodes['value'].text)
-			if type == 1:
-				config.set_value(current_section, 'extra_title', nodes['extra_title'].text)
-				config.set_value(current_section, 'extra_text', nodes['extra_text'].text)
-				config.set_value(current_section, 'extra_extra', nodes['extra_extra'].text)
-			
-			config.save(DialogicUtil.get_path('DEFINITIONS_FILE'))
+		var type: int = nodes['type'].selected
+		if type == 0:
+			DialogicResources.set_default_definition_variable(current_section, nodes['name'].text, nodes['value'].text)
+		if type == 1:
+			DialogicResources.set_default_definition_glossary(current_section, nodes['name'].text, nodes['extra_title'].text, nodes['extra_text'].text, nodes['extra_extra'].text)

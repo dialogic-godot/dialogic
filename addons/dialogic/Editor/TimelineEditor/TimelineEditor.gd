@@ -2,9 +2,8 @@ tool
 extends HSplitContainer
 
 var editor_reference
-var timeline_name
-var working_timeline_file: String = ''
-
+var timeline_name: String = ''
+var timeline_file: String = ''
 var current_timeline: Dictionary = {}
 
 onready var master_tree = get_node('../MasterTree')
@@ -100,14 +99,14 @@ func indent_events() -> void:
 		starter = false
 
 
-func load_timeline(path):
+func load_timeline(filename: String):
 	print('---------------------------')
-	print('Loading: ',path)
+	print('Loading: ', filename)
 	clear_timeline()
 	var start_time = OS.get_system_time_msecs()
-	working_timeline_file = path
+	timeline_file = filename
 	
-	var data = DialogicUtil.load_json(path)
+	var data = DialogicResources.get_timeline_json(filename)
 	if data['metadata'].has('name'):
 		timeline_name = data['metadata']['name']
 	else:
@@ -177,9 +176,8 @@ func move_block(block, direction):
 	return false
 
 
-# Create timeline
 func create_timeline():
-	var timeline_file = 'timeline-' + str(OS.get_unix_time()) + '.json'
+	timeline_file = 'timeline-' + str(OS.get_unix_time()) + '.json'
 	var timeline = {
 		"events": [],
 		"metadata":{
@@ -187,15 +185,7 @@ func create_timeline():
 			"file": timeline_file
 		}
 	}
-	var directory = Directory.new()
-	if not directory.dir_exists(DialogicUtil.get_path('WORKING_DIR')):
-		directory.make_dir(DialogicUtil.get_path('WORKING_DIR'))
-	if not directory.dir_exists(DialogicUtil.get_path('TIMELINE_DIR')):
-		directory.make_dir(DialogicUtil.get_path('TIMELINE_DIR'))
-	var file = File.new()
-	file.open(DialogicUtil.get_path('TIMELINE_DIR') + '/' + timeline_file, File.WRITE)
-	file.store_line(to_json(timeline))
-	file.close()
+	DialogicResources.set_timeline(timeline)
 	return timeline
 
 
@@ -206,15 +196,11 @@ func new_timeline():
 
 # Saving
 func generate_save_data():
-	var t_name = timeline_name
-	var f_name = DialogicUtil.get_filename_from_path(working_timeline_file)
-	if t_name == '':
-		timeline_name = f_name
 	var info_to_save = {
 		'metadata': {
 			'dialogic-version': editor_reference.version_string,
-			'name': t_name,
-			'file': f_name
+			'name': timeline_name,
+			'file': timeline_file
 		},
 		'events': []
 	}
@@ -225,13 +211,10 @@ func generate_save_data():
 
 
 func save_timeline() -> void:
-	if working_timeline_file != '':
+	if timeline_file != '':
 		var info_to_save = generate_save_data()
-		var file = File.new()
-		file.open(working_timeline_file, File.WRITE)
-		file.store_line(to_json(info_to_save))
-		file.close()
-		#print('[+] Saving: ' , working_timeline_file)
+		DialogicResources.set_timeline(info_to_save)
+		#print('[+] Saving: ' , timeline_file)
 
 
 # Utilities

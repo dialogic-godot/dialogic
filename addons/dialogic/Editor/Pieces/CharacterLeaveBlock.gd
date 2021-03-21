@@ -37,6 +37,6 @@ func load_data(data):
 	event_data = data
 	if data['character'] != '[All]':
 		if data['character'] != '':
-			var character_data = DialogicUtil.load_json(DialogicUtil.get_path('CHAR_DIR', data['character']))
+			var character_data = DialogicResources.get_character_json(data['character'])
 			if character_data.has('name'):
 				$PanelContainer/VBoxContainer/Header/CharacterDropdown.text = character_data['name']

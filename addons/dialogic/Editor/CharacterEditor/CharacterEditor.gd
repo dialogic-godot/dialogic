@@ -71,15 +71,7 @@ func create_character():
 		'default_speaker': false,
 		'portraits': []
 	}
-	var directory = Directory.new()
-	if not directory.dir_exists(DialogicUtil.get_path('WORKING_DIR')):
-		directory.make_dir(DialogicUtil.get_path('WORKING_DIR'))
-	if not directory.dir_exists(DialogicUtil.get_path('CHAR_DIR')):
-		directory.make_dir(DialogicUtil.get_path('CHAR_DIR'))
-	var file = File.new()
-	file.open(DialogicUtil.get_path('CHAR_DIR', character_file), File.WRITE)
-	file.store_line(to_json(character))
-	file.close()
+	DialogicResources.set_character(character)
 	character['metadata'] = {'file': character_file}
 	return character
 
@@ -118,19 +110,16 @@ func generate_character_data_to_save():
 
 
 func save_character():
-	var path = DialogicUtil.get_path('CHAR_DIR', nodes['file'].text)
 	var info_to_save = generate_character_data_to_save()
 	if info_to_save['id']:
-		var file = File.new()
-		file.open(path, File.WRITE)
-		file.store_line(to_json(info_to_save))
-		file.close()
+		DialogicResources.set_character(info_to_save)
 		opened_character_data = info_to_save
 
 
-func load_character(path):
-	var data = DialogicUtil.load_json(path)
+
+func load_character(filename: String):
 	clear_character_editor()
+	var data = DialogicResources.get_character_json(filename)
 	opened_character_data = data
 	nodes['file'].text = data['id']
 	nodes['default_speaker'].pressed = false

@@ -62,16 +62,16 @@ func _ready():
 
 func load_theme(filename):
 	current_theme = filename
-	var theme = DialogicUtil.get_theme(filename) 
+	var theme = DialogicResources.get_theme_config(filename) 
 	# Settings
 	n['theme_action_key'].text = theme.get_value('settings', 'action_key', 'ui_accept')
 	
 	# Background
-	n['theme_background_image'].text = DialogicUtil.get_filename_from_path(theme.get_value('background', 'image', 'res://addons/dialogic/Images/background/background-2.png'))
+	n['theme_background_image'].text = DialogicResources.get_filename_from_path(theme.get_value('background', 'image', 'res://addons/dialogic/Images/background/background-2.png'))
 	n['background_texture_button_visible'].pressed = theme.get_value('background', 'use_image', true)
 	n['theme_background_color'].color = Color(theme.get_value('background', 'color', '#ff000000'))
 	n['theme_background_color_visible'].pressed = theme.get_value('background', 'use_color', false)
-	n['theme_next_image'].text = DialogicUtil.get_filename_from_path(theme.get_value('next_indicator', 'image', 'res://addons/dialogic/Images/next-indicator.png'))
+	n['theme_next_image'].text = DialogicResources.get_filename_from_path(theme.get_value('next_indicator', 'image', 'res://addons/dialogic/Images/next-indicator.png'))
 	
 	var size_value = theme.get_value('box', 'size', Vector2(910, 167))
 	n['size_w'].value = size_value.x
@@ -84,7 +84,7 @@ func load_theme(filename):
 	n['button_text_color'].color = Color(theme.get_value('buttons', 'text_color', "#ffffffff"))
 	n['button_background'].color = Color(theme.get_value('buttons', 'background_color', "#ff000000"))
 	n['button_background_visible'].pressed = theme.get_value('buttons', 'use_background_color', false)
-	n['button_image'].text = DialogicUtil.get_filename_from_path(theme.get_value('buttons', 'image', 'res://addons/dialogic/Images/background/background-2.png'))
+	n['button_image'].text = DialogicResources.get_filename_from_path(theme.get_value('buttons', 'image', 'res://addons/dialogic/Images/background/background-2.png'))
 	n['button_image_visible'].pressed = theme.get_value('buttons', 'use_image', true)
 	n['button_offset_x'].value = theme.get_value('buttons', 'padding', Vector2(5,5)).x
 	n['button_offset_y'].value = theme.get_value('buttons', 'padding', Vector2(5,5)).y
@@ -92,11 +92,11 @@ func load_theme(filename):
 	
 	# Definitions
 	n['glossary_color'].color = Color(theme.get_value('definitions', 'color', "#ffffffff"))
-	n['glossary_font'].text = DialogicUtil.get_filename_from_path(theme.get_value('definitions', 'font', "res://addons/dialogic/Fonts/GlossaryFont.tres"))
+	n['glossary_font'].text = DialogicResources.get_filename_from_path(theme.get_value('definitions', 'font', "res://addons/dialogic/Fonts/GlossaryFont.tres"))
 	
 	# Text
 	n['theme_text_speed'].value = theme.get_value('text','speed', 2)
-	n['theme_font'].text = DialogicUtil.get_filename_from_path(theme.get_value('text', 'font', 'res://addons/dialogic/Fonts/DefaultFont.tres'))
+	n['theme_font'].text = DialogicResources.get_filename_from_path(theme.get_value('text', 'font', 'res://addons/dialogic/Fonts/DefaultFont.tres'))
 	n['theme_text_color'].color = Color(theme.get_value('text', 'color', '#ffffffff'))
 	n['theme_text_shadow'].pressed = theme.get_value('text', 'shadow', false)
 	n['theme_text_shadow_color'].color = Color(theme.get_value('text', 'shadow_color', '#9e000000'))
@@ -116,7 +116,7 @@ func load_theme(filename):
 
 func new_theme():
 	var theme_file = 'theme-' + str(OS.get_unix_time()) + '.cfg'
-	DialogicUtil.create_empty_file(DialogicUtil.get_path('THEME_DIR', theme_file))
+	DialogicResources.add_theme(theme_file)
 	master_tree.add_theme({'file': theme_file, 'name': theme_file})
 	load_theme(theme_file)
 	# Check if it is the only theme to set as default
@@ -131,8 +131,8 @@ func _on_BackgroundTextureButton_pressed():
 
 
 func _on_background_selected(path, target):
-	DialogicUtil.set_theme_value(current_theme, 'background','image', path)
-	n['theme_background_image'].text = DialogicUtil.get_filename_from_path(path)
+	DialogicResources.set_theme_value(current_theme, 'background','image', path)
+	n['theme_background_image'].text = DialogicResources.get_filename_from_path(path)
 
 
 func _on_NextIndicatorButton_pressed():
@@ -141,24 +141,24 @@ func _on_NextIndicatorButton_pressed():
 
 
 func _on_indicator_selected(path, target):
-	DialogicUtil.set_theme_value(current_theme, 'next_indicator','image', path)
-	n['theme_next_image'].text = DialogicUtil.get_filename_from_path(path)
+	DialogicResources.set_theme_value(current_theme, 'next_indicator','image', path)
+	n['theme_next_image'].text = DialogicResources.get_filename_from_path(path)
 
 
 func _on_ColorPickerButton_color_changed(color):
-	DialogicUtil.set_theme_value(current_theme, 'text','color', '#' + color.to_html())
+	DialogicResources.set_theme_value(current_theme, 'text','color', '#' + color.to_html())
 
 
 func _on_ColorPickerButtonShadow_color_changed(color):
-	DialogicUtil.set_theme_value(current_theme, 'text','shadow_color', '#' + color.to_html())
+	DialogicResources.set_theme_value(current_theme, 'text','shadow_color', '#' + color.to_html())
 
 
 func _on_CheckBoxShadow_toggled(button_pressed):
-	DialogicUtil.set_theme_value(current_theme, 'text','shadow', button_pressed)
+	DialogicResources.set_theme_value(current_theme, 'text','shadow', button_pressed)
 
 
 func _on_ShadowOffset_value_changed(_value):
-	DialogicUtil.set_theme_value(current_theme, 'text','shadow_offset', Vector2(n['theme_shadow_offset_x'].value,n['theme_shadow_offset_y'].value))
+	DialogicResources.set_theme_value(current_theme, 'text','shadow_offset', Vector2(n['theme_shadow_offset_x'].value,n['theme_shadow_offset_y'].value))
 
 
 func _on_PreviewButton_pressed():
@@ -175,7 +175,7 @@ func _on_PreviewButton_pressed():
 		"text": preview_dialog.parse_definitions(n['text_preview'].text)
 	}]
 	# Settings
-	preview_dialog.settings = DialogicUtil.get_settings()
+	preview_dialog.settings = DialogicResources.get_settings_config()
 	# Alignment
 	preview_dialog.dialog_script = preview_dialog.parse_text_lines(preview_dialog.dialog_script)
 	n['preview_panel'].add_child(preview_dialog)
@@ -190,7 +190,7 @@ func _on_PreviewButton_pressed():
 
 
 func _on_ActionOptionButton_item_selected(index):
-	DialogicUtil.set_theme_value(current_theme, 'settings','action_key', n['theme_action_key'].text)
+	DialogicResources.set_theme_value(current_theme, 'settings','action_key', n['theme_action_key'].text)
 
 
 func _on_ActionOptionButton_pressed():
@@ -207,12 +207,12 @@ func _on_FontButton_pressed():
 
 
 func _on_Font_selected(path, target):
-	DialogicUtil.set_theme_value(current_theme, 'text','font', path)
-	n['theme_font'].text = DialogicUtil.get_filename_from_path(path)
+	DialogicResources.set_theme_value(current_theme, 'text','font', path)
+	n['theme_font'].text = DialogicResources.get_filename_from_path(path)
 
 
 func _on_textSpeed_value_changed(value):
-	DialogicUtil.set_theme_value(current_theme, 'text','speed', value)
+	DialogicResources.set_theme_value(current_theme, 'text','speed', value)
 
 
 func _on_TextMargin_value_changed(value):
@@ -220,27 +220,27 @@ func _on_TextMargin_value_changed(value):
 		n['theme_text_margin'].value,
 		n['theme_text_margin_h'].value
 	)
-	DialogicUtil.set_theme_value(current_theme, 'text', 'margin', final_vector)
+	DialogicResources.set_theme_value(current_theme, 'text', 'margin', final_vector)
 
 
 func _on_BackgroundColor_CheckBox_toggled(button_pressed):
-	DialogicUtil.set_theme_value(current_theme, 'background', 'use_color', button_pressed)
+	DialogicResources.set_theme_value(current_theme, 'background', 'use_color', button_pressed)
 
 
 func _on_BackgroundColor_ColorPickerButton_color_changed(color):
-	DialogicUtil.set_theme_value(current_theme, 'background', 'color', '#' + color.to_html())
+	DialogicResources.set_theme_value(current_theme, 'background', 'color', '#' + color.to_html())
 
 
 func _on_BackgroundTexture_CheckBox_toggled(button_pressed):
-	DialogicUtil.set_theme_value(current_theme, 'background', 'use_image', button_pressed)
+	DialogicResources.set_theme_value(current_theme, 'background', 'use_image', button_pressed)
 
 
 func _on_button_background_visible_toggled(button_pressed):
-	DialogicUtil.set_theme_value(current_theme, 'buttons', 'use_background_color', button_pressed)
+	DialogicResources.set_theme_value(current_theme, 'buttons', 'use_background_color', button_pressed)
 
 
 func _on_button_background_color_color_changed(color):
-	DialogicUtil.set_theme_value(current_theme, 'buttons', 'background_color', '#' + color.to_html())
+	DialogicResources.set_theme_value(current_theme, 'buttons', 'background_color', '#' + color.to_html())
 
 
 func _on_ButtonOffset_value_changed(value):
@@ -248,15 +248,15 @@ func _on_ButtonOffset_value_changed(value):
 		n['button_offset_x'].value,
 		n['button_offset_y'].value
 	)
-	DialogicUtil.set_theme_value(current_theme, 'buttons', 'padding', final_vector)
+	DialogicResources.set_theme_value(current_theme, 'buttons', 'padding', final_vector)
 
 
 func _on_VerticalSeparation_value_changed(value):
-	DialogicUtil.set_theme_value(current_theme, 'buttons', 'gap', n['button_separation'].value)
+	DialogicResources.set_theme_value(current_theme, 'buttons', 'gap', n['button_separation'].value)
 
 
 func _on_button_texture_toggled(button_pressed):
-	DialogicUtil.set_theme_value(current_theme, 'buttons', 'use_image', button_pressed)
+	DialogicResources.set_theme_value(current_theme, 'buttons', 'use_image', button_pressed)
 
 
 func _on_ButtonTextureButton_pressed():
@@ -265,20 +265,20 @@ func _on_ButtonTextureButton_pressed():
 
 
 func _on_button_texture_selected(path, target):
-	DialogicUtil.set_theme_value(current_theme, 'buttons', 'image', path)
-	n['button_image'].text = DialogicUtil.get_filename_from_path(path)
+	DialogicResources.set_theme_value(current_theme, 'buttons', 'image', path)
+	n['button_image'].text = DialogicResources.get_filename_from_path(path)
 
 
 func _on_ButtonTextColor_color_changed(color):
-	DialogicUtil.set_theme_value(current_theme, 'buttons', 'text_color', '#' + color.to_html())
+	DialogicResources.set_theme_value(current_theme, 'buttons', 'text_color', '#' + color.to_html())
 
 
 func _on_Custom_Button_Color_toggled(button_pressed):
-	DialogicUtil.set_theme_value(current_theme, 'buttons', 'text_color_enabled', button_pressed)
+	DialogicResources.set_theme_value(current_theme, 'buttons', 'text_color_enabled', button_pressed)
 
 
 func _on_GlossaryColorPicker_color_changed(color):
-	DialogicUtil.set_theme_value(current_theme, 'definitions', 'color', '#' + color.to_html())
+	DialogicResources.set_theme_value(current_theme, 'definitions', 'color', '#' + color.to_html())
 
 
 func _on_GlossaryFontButton_pressed():
@@ -286,8 +286,8 @@ func _on_GlossaryFontButton_pressed():
 	editor_reference.godot_dialog_connect(self, "_on_Glossary_Font_selected")
 
 func _on_Glossary_Font_selected(path, target):
-	DialogicUtil.set_theme_value(current_theme, 'definitions', 'font', path)
-	n['glossary_font'].text = DialogicUtil.get_filename_from_path(path)
+	DialogicResources.set_theme_value(current_theme, 'definitions', 'font', path)
+	n['glossary_font'].text = DialogicResources.get_filename_from_path(path)
 
 
 func _on_visibility_changed():
@@ -303,18 +303,18 @@ func _on_visibility_changed():
 
 func _on_BoxSize_value_changed(value):
 	var size_value = Vector2(n['size_w'].value, n['size_h'].value)
-	DialogicUtil.set_theme_value(current_theme, 'box', 'size', size_value)
+	DialogicResources.set_theme_value(current_theme, 'box', 'size', size_value)
 
 
 func _on_BottomGap_value_changed(value):
-	DialogicUtil.set_theme_value(current_theme, 'box', 'bottom_gap', value)
+	DialogicResources.set_theme_value(current_theme, 'box', 'bottom_gap', value)
 
 
 func _on_Alignment_item_selected(index):
 	if index == 0:
-		DialogicUtil.set_theme_value(current_theme, 'text', 'alignment', 'Left')
+		DialogicResources.set_theme_value(current_theme, 'text', 'alignment', 'Left')
 	elif index == 1:
-		DialogicUtil.set_theme_value(current_theme, 'text', 'alignment', 'Center')
+		DialogicResources.set_theme_value(current_theme, 'text', 'alignment', 'Center')
 	elif index == 2:
-		DialogicUtil.set_theme_value(current_theme, 'text', 'alignment', 'Right')
+		DialogicResources.set_theme_value(current_theme, 'text', 'alignment', 'Right')
 

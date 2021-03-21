@@ -58,7 +58,7 @@ func _ready():
 # Timeline context menu
 func _on_TimelinePopupMenu_id_pressed(id):
 	if id == 0: # View files
-		OS.shell_open(ProjectSettings.globalize_path(DialogicUtil.get_path('TIMELINE_DIR')))
+		OS.shell_open(ProjectSettings.globalize_path(DialogicResources.get_path('TIMELINE_DIR')))
 	if id == 1: # Copy to clipboard
 		OS.set_clipboard($MainPanel/TimelineEditor.timeline_name)
 	if id == 2: # Remove
@@ -77,7 +77,7 @@ func _on_RemoveTimelineConfirmation_confirmed():
 # Character context menu
 func _on_CharacterPopupMenu_id_pressed(id):
 	if id == 0:
-		OS.shell_open(ProjectSettings.globalize_path(DialogicUtil.get_path('CHAR_DIR')))
+		OS.shell_open(ProjectSettings.globalize_path(DialogicResources.get_path('CHAR_DIR')))
 	if id == 1:
 		$RemoveCharacterConfirmation.popup_centered()
 
@@ -85,7 +85,7 @@ func _on_CharacterPopupMenu_id_pressed(id):
 # Theme context menu
 func _on_ThemePopupMenu_id_pressed(id):
 	if id == 0:
-		OS.shell_open(ProjectSettings.globalize_path(DialogicUtil.get_path('THEME_DIR')))
+		OS.shell_open(ProjectSettings.globalize_path(DialogicResources.get_path('THEME_DIR')))
 	if id == 1:
 		$RemoveThemeConfirmation.popup_centered()
 
@@ -93,38 +93,28 @@ func _on_ThemePopupMenu_id_pressed(id):
 # Definition context menu
 func _on_DefinitionPopupMenu_id_pressed(id):
 	if id == 0:
-		OS.shell_open(ProjectSettings.globalize_path(DialogicUtil.get_path('DEFINITIONS_FILE')))
+		OS.shell_open(ProjectSettings.globalize_path(DialogicResources.get_path('DEFAULT_DEFINITIONS_FILE')))
 	if id == 1:
 		$RemoveDefinitionConfirmation.popup_centered()
 
 
 func _on_RemoveDefinitionConfirmation_confirmed():
 	var target = $MainPanel/DefinitionEditor.current_section
-	var config = ConfigFile.new()
-	var err = config.load(DialogicUtil.get_path('DEFINITIONS_FILE'))
-	if err == OK:
-		config.erase_section(target)
-		config.save(DialogicUtil.get_path('DEFINITIONS_FILE'))
-		$MainPanel/MasterTree.remove_selected()
-		$MainPanel/MasterTree.hide_all_editors(true)
-	else:
-		print('Error loading definitions')
+	DialogicResources.delete_default_definition(target)
+	$MainPanel/MasterTree.remove_selected()
+	$MainPanel/MasterTree.hide_all_editors(true)
 
 
 func _on_RemoveCharacterConfirmation_confirmed():
-	var dir = Directory.new()
-	print($MainPanel/CharacterEditor.opened_character_data)
-	var target = DialogicUtil.get_path('CHAR_DIR', $MainPanel/CharacterEditor.opened_character_data['id']) 
-	dir.remove(target)
+	var filename = DialogicResources.get_path('CHAR_DIR', $MainPanel/CharacterEditor.opened_character_data['id']) 
+	DialogicResources.delete_character(filename)
 	$MainPanel/MasterTree.remove_selected()
 	$MainPanel/MasterTree.hide_all_editors(true)
 
 
 func _on_RemoveThemeConfirmation_confirmed():
-	var dir = Directory.new()
-	var filepath = $MainPanel/MasterTree.get_selected().get_metadata(0)['file']
-	var target = DialogicUtil.get_path('THEME_DIR', filepath) 
-	dir.remove(target)
+	var filename = $MainPanel/MasterTree.get_selected().get_metadata(0)['file']
+	DialogicResources.delete_timeline(filename)
 	$MainPanel/MasterTree.remove_selected()
 	$MainPanel/MasterTree.hide_all_editors(true)
 
