@@ -27,6 +27,21 @@ static func init_dialogic_files() -> void:
 				directory.make_dir(paths[dir])
 
 
+static func init_dialogic_user_files() -> void:
+	var directory = Directory.new()
+	if directory.file_exists(get_path('SETTINGS_FILE')) == false:
+		if directory.file_exists(get_path('RES_SETTINGS_FILE')) == false:
+			create_empty_file(get_path('SETTINGS_FILE'))
+		else:
+			directory.copy(get_path('RES_SETTINGS_FILE'), get_path('SETTINGS_FILE'))
+
+	if directory.file_exists(get_path('DEFINITIONS_FILE')) == false:
+		if directory.file_exists(get_path('RES_DEFINITIONS_FILE')) == false:
+			create_empty_file(get_path('USER_DEFINITIONS_FILE'))
+		else:
+			directory.copy(get_path('RES_DEFINITIONS_FILE'), get_path('DEFINITIONS_FILE'))
+
+
 static func load_json(path: String) -> Dictionary:
 	# An easy function to load json files and handle common errors.
 	var file:File = File.new()
@@ -56,7 +71,14 @@ static func get_working_directories() -> Dictionary:
 		'CHAR_DIR': WORKING_DIR + "/characters",
 		'DEFINITIONS_FILE': WORKING_DIR + "/definitions.cfg",
 		'SETTINGS_FILE': WORKING_DIR + "/settings.cfg",
+		'RES_DEFINITIONS_FILE': WORKING_DIR + "/definitions.cfg",
+		'RES_SETTINGS_FILE': WORKING_DIR + "/settings.cfg",
 	}
+
+	if Engine.editor_hint == false:
+		paths['DEFINITIONS_FILE'] = "user://dialogic_definitions.cfg"
+		paths['SETTINGS_FILE'] = "user://dialogic_settings.cfg"
+
 	return paths
 
 

@@ -34,9 +34,11 @@ var runtime_id = ''
 var savegame_id = '' # This variable is the saved game `runtime_id` value.
 
 func _ready():
+	if Engine.editor_hint == false:
+		DialogicUtil.init_dialogic_user_files()
+
 	# Loading the config files
 	load_config_files()
-	
 
 	# Checking if the dialog should read the code from a external file
 	if timeline != '':
