@@ -1,14 +1,6 @@
 tool
 class_name DialogicUtil
 
-# This class was initially for doing small things... but after a while
-# it ended up being one of the corner stones of the plugin. 
-# It should probably be split into several other classes and leave 
-# just the basic stuff here, but I'll keep working like this until I have
-# some extra time to burn. 
-# A good point to start would be to add a "resource manager" instead of
-# handling most of that here. But who knows? (:
-
 
 static func get_character_list() -> Array:
 	var characters: Array = []
