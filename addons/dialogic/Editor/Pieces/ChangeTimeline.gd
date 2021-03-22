@@ -28,10 +28,7 @@ func _on_MenuButton_about_to_show():
 	Dropdown.get_popup().clear()
 	var index = 0
 	for c in DialogicUtil.get_timeline_list():
-		if c['file'].replace('.json', '') == DialogicResources.get_filename_from_path(editor_reference.get_node('MainPanel/TimelineEditor').working_timeline_file):
-			Dropdown.get_popup().add_item('(Current) ' + c['name'])
-		else:
-			Dropdown.get_popup().add_item(c['name'])
+		Dropdown.get_popup().add_item(c['name'])
 		Dropdown.get_popup().set_item_metadata(index, {'file': c['file'], 'color': c['color']})
 		index += 1
 
