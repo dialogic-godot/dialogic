@@ -37,7 +37,7 @@ func _on_character_selected(index: int):
 
 func set_data_by_file(file_name):
 	# This method is used when you don't know the character's color
-	var character = DialogicUtil.load_json(DialogicUtil.get_path('CHAR_DIR', file_name))
+	var character = DialogicResources.get_character_json(file_name)
 	set_data(character['name'], Color(character['color']))
 
 

@@ -9,94 +9,12 @@ class_name DialogicUtil
 # A good point to start would be to add a "resource manager" instead of
 # handling most of that here. But who knows? (:
 
-static func init_dialogic_files() -> void:
-	# This functions makes sure that the needed files and folders
-	# exists when the plugin is loaded. If they don't, we create 
-	# them.
-	var directory = Directory.new()
-	var paths = get_working_directories()
-	for dir in paths:
-		if 'settings.cfg' in paths[dir]:
-			if directory.file_exists(paths['SETTINGS_FILE']) == false:
-				create_empty_file(paths['SETTINGS_FILE'])
-		elif 'definitions.cfg' in paths[dir]:
-			if directory.file_exists(paths['DEFINITIONS_FILE']) == false:
-				create_empty_file(paths['DEFINITIONS_FILE'])
-		else:
-			if directory.dir_exists(paths[dir]) == false:
-				directory.make_dir(paths[dir])
-
-
-static func load_json(path: String) -> Dictionary:
-	# An easy function to load json files and handle common errors.
-	var file:File = File.new()
-	if file.open(path, File.READ) != OK:
-		file.close()
-		return {'error':'file read error'}
-	var data_text: String = file.get_as_text()
-	file.close()
-	var data_parse:JSONParseResult = JSON.parse(data_text)
-	if data_parse.error != OK:
-		return {'error':'data parse error'}
-
-	var final_data = data_parse.result
-	if typeof(final_data) == TYPE_DICTIONARY:
-		return final_data
-	
-	# If everything else fails
-	return {'error':'data parse error'}
-
-
-static func get_working_directories() -> Dictionary:
-	var WORKING_DIR: String = "res://dialogic"
-	var paths: Dictionary = {
-		'WORKING_DIR': WORKING_DIR,
-		'TIMELINE_DIR': WORKING_DIR + "/timelines",
-		'THEME_DIR': WORKING_DIR + "/themes",
-		'CHAR_DIR': WORKING_DIR + "/characters",
-		'DEFINITIONS_FILE': WORKING_DIR + "/definitions.cfg",
-		'SETTINGS_FILE': WORKING_DIR + "/settings.cfg",
-	}
-	return paths
-
-
-static func get_path(name: String, extra: String ='') -> String:
-	var paths: Dictionary = get_working_directories()
-	if extra != '':
-		return paths[name] + '/' + extra
-	else:
-		return paths[name]
-
-
-static func get_filename_from_path(path: String, extension = false) -> String:
-	var file_name: String = path.split('/')[-1]
-	if extension == false:
-		file_name = file_name.split('.')[0]
-	return file_name
-
-
-static func listdir(path: String) -> Array:
-	# https://docs.godotengine.org/en/stable/classes/class_directory.html#description
-	var files: Array = []
-	var dir := Directory.new()
-	if dir.open(path) == OK:
-		dir.list_dir_begin()
-		var file_name = dir.get_next()
-		while file_name != "":
-			if not dir.current_is_dir() and not file_name.begins_with("."):
-				files.append(file_name)
-			file_name = dir.get_next()
-		dir.list_dir_end()
-	else:
-		print("Error while accessing path " + path)
-	return files
-
 
 static func get_character_list() -> Array:
 	var characters: Array = []
-	for file in listdir(get_path('CHAR_DIR')):
+	for file in DialogicResources.listdir(DialogicResources.get_path('CHAR_DIR')):
 		if '.json' in file:
-			var data: Dictionary     = load_json(get_path('CHAR_DIR', file))
+			var data: Dictionary     = DialogicResources.get_character_json(file)
 			var color: Color         = Color("#ffffff")
 			var c_name: String       = data['id']
 			var default_speaker      = false
@@ -131,9 +49,9 @@ static func get_character_list() -> Array:
 
 static func get_timeline_list() -> Array:
 	var timelines: Array = []
-	for file in listdir(get_path('TIMELINE_DIR')):
+	for file in DialogicResources.listdir(DialogicResources.get_path('TIMELINE_DIR')):
 		if '.json' in file:
-			var data = load_json(get_path('TIMELINE_DIR', file))
+			var data = DialogicResources.get_timeline_json(file)
 			if data.has('error') == false:
 				var metadata = data['metadata']
 				var color = Color("#ffffff")
@@ -144,48 +62,57 @@ static func get_timeline_list() -> Array:
 	return timelines
 
 
-static func get_definition_list() -> Array:
-	var definitions: Array = []
-	var config = ConfigFile.new()
-	var err = config.load(get_path('DEFINITIONS_FILE'))
-	if err == OK:
-		for section in config.get_sections():
-			definitions.append({
-				'section': section,
-				'name': config.get_value(section, 'name', section),
-				'config': config,
-				'type': config.get_value(section, 'type', 0),
+static func get_theme_list() -> Array:
+	var themes: Array = []
+	for file in DialogicResources.listdir(DialogicResources.get_path('THEME_DIR')):
+		if '.cfg' in file:
+			var config = ConfigFile.new()
+			var err = DialogicResources.get_theme_config(file)
+			themes.append({
+				'file': file,
+				'name': config.get_value('settings','name', file),
+				'config': config
 			})
+	return themes
+
+
+static func get_default_definition_list() -> Array:
+	var definitions: Array = []
+	var config = DialogicResources.get_default_definitions_config()
+	for section in config.get_sections():
+		definitions.append({
+			'section': section,
+			'name': config.get_value(section, 'name', section),
+			'config': config,
+			'type': config.get_value(section, 'type', 0),
+		})
 	return definitions
 
 
-static func set_definition(current_section: String, key,  value) -> void:
-	var config = ConfigFile.new()
-	var err = config.load(get_path('DEFINITIONS_FILE'))
-	if err == OK:
-		config.set_value(current_section, key, str(value))
-		config.save(get_path('DEFINITIONS_FILE'))
+static func get_definition_list() -> Array:
+	var definitions: Array = []
+	var config = DialogicResources.get_saved_definitions_config()
+	for section in config.get_sections():
+		definitions.append({
+			'section': section,
+			'name': config.get_value(section, 'name', section),
+			'config': config,
+			'type': config.get_value(section, 'type', 0),
+		})
+	return definitions
 
 
-static func get_definition_value(d, runtime_id):
-	if d['config'].has_section_key(d['section'], 'value-' + runtime_id):
-		return d['config'].get_value(d['section'], 'value-' + runtime_id)
-	else:
-		return d['config'].get_value(d['section'], 'value')
-
-
-static func get_var(variable: String, singleton):
-	for d in get_definition_list():
-		if d['name'] == variable:
-			return get_definition_value(d, singleton.runtime_id)
-	return ''
-
-
-static func set_var(variable: String):
+static func get_var(variable: String) -> String:
 	for d in get_definition_list():
 		if d['name'] == variable:
 			return d['config'].get_value(d['section'], 'value')
 	return ''
+
+
+static func set_var(variable: String, value) -> void:
+	for d in get_definition_list():
+		if d['name'] == variable:
+			DialogicResources.set_saved_definition_variable(d['section'], d['name'], value)
 
 
 static func generate_random_id() -> String:
@@ -201,56 +128,3 @@ static func compare_dicts(dict_1: Dictionary, dict_2: Dictionary) -> bool:
 	return false
 
 
-static func get_theme_list() -> Array:
-	var themes: Array = []
-	for file in listdir(get_path('THEME_DIR')):
-		if '.cfg' in file:
-			var config = ConfigFile.new()
-			var err = config.load(get_path('THEME_DIR', file))
-			if err == OK: # If not, something went wrong with the file loading
-				themes.append({
-					'file': file,
-					'name': config.get_value('settings','name', file),
-					'config': config
-				})
-			else:
-				print('Error loading ',file , ' - Error: ', err)
-	return themes
-
-
-static func get_theme(filename):
-	var config = ConfigFile.new()
-	var path
-	if 'res://' in filename:
-		path = filename
-	else:
-		path = get_path('THEME_DIR', filename)
-	var err = config.load(path)
-	if err == OK:
-		return config
-
-
-static func set_theme_value(filename, section, key, value):
-	var config = ConfigFile.new()
-	var file = get_path('THEME_DIR', filename)
-	var err = config.load(file)
-	if err == OK:
-		config.set_value(section, key, value)
-		config.save(file)
-
-
-static func create_empty_file(path):
-	var file = File.new()
-	file.open(path, File.WRITE)
-	file.store_string('')
-	file.close()
-
-
-static func get_settings():
-	var directory = Directory.new()
-	var config = ConfigFile.new()
-	if directory.file_exists(get_path('SETTINGS_FILE')):
-		var err = config.load(get_path('SETTINGS_FILE'))
-		if err == OK:
-			return config
-	return config

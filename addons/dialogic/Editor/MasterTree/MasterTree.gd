@@ -69,7 +69,7 @@ func _ready():
 		add_character(c)
 	
 	# Adding Definitions
-	for d in DialogicUtil.get_definition_list():
+	for d in DialogicUtil.get_default_definition_list():
 		add_definition(d)
 	
 	# Adding Themes
@@ -149,10 +149,10 @@ func _on_item_selected():
 	hide_all_editors()
 	if metadata['editor'] == 'Timeline':
 		timeline_editor.visible = true
-		timeline_editor.load_timeline(DialogicUtil.get_path('TIMELINE_DIR', metadata['file']))
+		timeline_editor.load_timeline(metadata['file'])
 	if metadata['editor'] == 'Character':
 		character_editor.visible = true
-		character_editor.load_character(DialogicUtil.get_path('CHAR_DIR', metadata['file']))
+		character_editor.load_character(metadata['file'])
 	if metadata['editor'] == 'Definition':
 		definition_editor.visible = true
 		definition_editor.load_definition(metadata['section'])
@@ -221,7 +221,7 @@ func _on_item_edited():
 	if metadata['editor'] == 'Timeline':
 		timeline_editor.timeline_name = item.get_text(0)
 	if metadata['editor'] == 'Theme':
-		DialogicUtil.set_theme_value(metadata['file'], 'settings', 'name', item.get_text(0))
+		DialogicResources.set_theme_value(metadata['file'], 'settings', 'name', item.get_text(0))
 	if metadata['editor'] == 'Character':
 		character_editor.nodes['name'].text = item.get_text(0)
 	if metadata['editor'] == 'Definition':

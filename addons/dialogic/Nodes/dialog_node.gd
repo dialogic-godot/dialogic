@@ -17,6 +17,7 @@ var settings
 var current_theme
 
 export(String, "TimelineDropdown") var timeline: String
+export(bool) var reset_saves = true
 export(bool) var debug_mode = true
 signal event_start(type, event)
 signal event_end(type)
@@ -29,15 +30,14 @@ onready var ChoiceButton = load("res://addons/dialogic/Nodes/ChoiceButton.tscn")
 onready var Portrait = load("res://addons/dialogic/Nodes/Portrait.tscn")
 var dialog_script = {}
 var questions #for keeping track of the questions answered
-var singleton
-var runtime_id = ''
-var savegame_id = '' # This variable is the saved game `runtime_id` value.
 
 func _ready():
 	# Loading the config files
 	load_config_files()
 	
-
+	# Make sure saves are ready
+	DialogicResources.init_definitions_saves(reset_saves)
+	
 	# Checking if the dialog should read the code from a external file
 	if timeline != '':
 		dialog_script = set_current_dialog(timeline + '.json')
@@ -57,18 +57,15 @@ func _ready():
 
 	if Engine.is_editor_hint() == false:
 		load_dialog()
-		runtime_id = singleton.generate_runtime_id(savegame_id)
-		dprint('[!] runtime_id = ' + runtime_id)
 
 
 func load_config_files():
 	definitions = DialogicUtil.get_definition_list()
-	settings = DialogicUtil.get_settings()
+	settings = DialogicResources.get_settings_config()
 	var theme_file = 'res://addons/dialogic/Editor/ThemeEditor/default-theme.cfg'
 	if settings.has_section('theme'):
 		theme_file = settings.get_value('theme', 'default')
 	current_theme = load_theme(theme_file)
-	singleton = DialogicSingleton
 
 
 func resize_main():
@@ -84,7 +81,7 @@ func resize_main():
 
 
 func set_current_dialog(dialog_path):
-	var dialog_script = DialogicUtil.load_json(DialogicUtil.get_path('TIMELINE_DIR', dialog_path))
+	var dialog_script = DialogicResources.get_timeline_json(dialog_path)
 	# All this parse events should be happening in the same loop ideally
 	# But until performance is not an issue I will probably stay lazy
 	# And keep adding different functions for each parsing operation.
@@ -234,8 +231,9 @@ func _insert_variable_definitions(text: String):
 	var final_text := text;
 	for d in definitions:
 		if d['type'] == 0:
-			var value = DialogicUtil.get_definition_value(d, runtime_id)
-			final_text = final_text.replace('[' + d['name'] + ']', value)
+			var name : String = d['name'];
+			var value = DialogicUtil.get_var(name)
+			final_text = final_text.replace('[' + name + ']', value)
 	return final_text;
 	
 	
@@ -462,8 +460,8 @@ func event_handler(event: Dictionary):
 			var current_question = questions[event['question_id']]
 			for d in definitions:
 				if d['section'] == event['definition']:
-					def_value = DialogicUtil.get_definition_value(d, runtime_id)
-
+					def_value = DialogicUtil.get_var(d['name'])
+			
 			var condition_met = self._compare_definitions(def_value, event['value'], event['condition']);
 			
 			current_question['answered'] = !condition_met
@@ -476,7 +474,7 @@ func event_handler(event: Dictionary):
 				go_to_next_event()
 		{'set_value', 'definition'}:
 			emit_signal("event_start", "set_value", event)
-			DialogicUtil.set_definition(event['definition'], 'value-' + runtime_id, event['set_value'])
+			DialogicResources.set_saved_definition_variable_value(event['definition'], event['set_value'])
 			go_to_next_event()
 		_:
 			visible = false
@@ -626,7 +624,7 @@ func deferred_resize(current_size, result):
 		resize_main()
 
 func load_theme(filename):
-	var theme = DialogicUtil.get_theme(filename)
+	var theme = DialogicResources.get_theme_config(filename)
 
 	# Box size
 	call_deferred('deferred_resize', $TextBubble.rect_size, theme.get_value('box', 'size', Vector2(910, 167)))

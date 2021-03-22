@@ -17,7 +17,7 @@ func _ready():
 
 
 func update_data():
-	var settings = DialogicUtil.get_settings()
+	var settings = DialogicResources.get_settings_config()
 	refresh_themes(settings)
 	dialog_options(settings)
 
@@ -71,9 +71,4 @@ func _on_auto_color_names_toggled(value):
 
 # Reading and saving data to the settings file
 func set_value(section, key, value):
-	var config = ConfigFile.new()
-	var file = DialogicUtil.get_path('SETTINGS_FILE')
-	var err = config.load(file)
-	if err == OK:
-		config.set_value(section, key, value)
-		config.save(file)
+	DialogicResources.set_settings_value(section, key, value)
