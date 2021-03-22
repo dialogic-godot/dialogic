@@ -214,7 +214,7 @@ All icons are `.svg` files so they can scale nicely. I tried reusing many of the
 ## Credits
 Code made by [Emilio Coppola](https://github.com/coppolaemilio).
 
-Contributors: [Toen](https://twitter.com/ToenAndreMC), Òscar, [and more!](https://github.com/coppolaemilio/dialogic/graphs/contributors)
+Contributors: [Toen](https://twitter.com/ToenAndreMC), Òscar, [Arnaud](https://github.com/arnaudvergnet), [and more!](https://github.com/coppolaemilio/dialogic/graphs/contributors)
 
 Documentation page generated using: https://documentation.page/ by [Francisco Presencia](https://francisco.io/)
 
