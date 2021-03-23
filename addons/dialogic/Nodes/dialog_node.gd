@@ -36,7 +36,10 @@ func _ready():
 	load_config_files()
 	
 	# Make sure saves are ready
-	DialogicResources.init_definitions_saves(reset_saves)
+	if (reset_saves):
+		DialogicDefinitionsSingleton.reset_to_defaults()
+	else:
+		DialogicResources.init_definitions_saves(false)
 	
 	# Checking if the dialog should read the code from a external file
 	if timeline != '':
@@ -60,7 +63,7 @@ func _ready():
 
 
 func load_config_files():
-	definitions = DialogicUtil.get_definition_list()
+	definitions = DialogicDefinitionsSingleton.get_definitions_list()
 	settings = DialogicResources.get_settings_config()
 	var theme_file = 'res://addons/dialogic/Editor/ThemeEditor/default-theme.cfg'
 	if settings.has_section('theme'):
@@ -217,7 +220,7 @@ func parse_branches(dialog_script: Dictionary) -> Dictionary:
 
 func parse_definitions(text: String):
 	var words = []
-	var definition_list = DialogicUtil.get_definition_list()
+	var definition_list = DialogicDefinitionsSingleton.get_definitions_list()
 	if Engine.is_editor_hint():
 		# Loading variables again to avoid issues in the preview dialog
 		load_config_files()
@@ -232,8 +235,7 @@ func _insert_variable_definitions(text: String):
 	for d in definitions:
 		if d['type'] == 0:
 			var name : String = d['name'];
-			var value = DialogicUtil.get_var(name)
-			final_text = final_text.replace('[' + name + ']', value)
+			final_text = final_text.replace('[' + name + ']', d['value'])
 	return final_text;
 	
 	
@@ -309,13 +311,21 @@ func update_text(text):
 	return true
 
 
+func on_timeline_start():
+	emit_signal("event_start", "timeline", timeline)
+
+
+func on_timeline_end():
+	DialogicDefinitionsSingleton.save_definitions()
+	emit_signal("event_end", "timeline")
+
 func load_dialog(skip_add = false):
 	# Emitting signals
 	if dialog_script.has('events'):
 		if dialog_index == 0:
-			emit_signal("event_start", "timeline", timeline)
+			on_timeline_start()
 		elif dialog_index == dialog_script['events'].size():
-			emit_signal("event_end", "timeline")
+			on_timeline_end()
 
 	# Hiding definitions popup
 	definition_visible = false
@@ -440,6 +450,7 @@ func event_handler(event: Dictionary):
 			go_to_next_event()
 		{'close_dialog'}:
 			emit_signal("event_start", "close_dialog", event)
+			on_timeline_end()
 			queue_free()
 		{'set_theme'}:
 			emit_signal("event_start", "set_theme", event)
@@ -460,9 +471,9 @@ func event_handler(event: Dictionary):
 			var current_question = questions[event['question_id']]
 			for d in definitions:
 				if d['section'] == event['definition']:
-					def_value = DialogicUtil.get_var(d['name'])
+					def_value = d['value']
 			
-			var condition_met = self._compare_definitions(def_value, event['value'], event['condition']);
+			var condition_met = _compare_definitions(def_value, event['value'], event['condition']);
 			
 			current_question['answered'] = !condition_met
 			if !condition_met:
@@ -474,7 +485,7 @@ func event_handler(event: Dictionary):
 				go_to_next_event()
 		{'set_value', 'definition'}:
 			emit_signal("event_start", "set_value", event)
-			DialogicResources.set_saved_definition_variable_value(event['definition'], event['set_value'])
+			DialogicDefinitionsSingleton.set_variable_from_id(event['definition'], event['set_value'])
 			go_to_next_event()
 		_:
 			visible = false
@@ -688,9 +699,9 @@ func _on_RichTextLabel_meta_hover_started(meta):
 		if d['section'] == meta:
 			if d['type'] == 1:
 				$DefinitionInfo.load_preview({
-					'title': d['config'].get_value(d['section'], 'extra_title', ''),
-					'body': d['config'].get_value(d['section'], 'extra_text', ''),
-					'extra': d['config'].get_value(d['section'], 'extra_extra', ''),
+					'title': d['title'],
+					'body': d['text'],
+					'extra': d['extra'],
 					'color': current_theme.get_value('definitions', 'color', '#ffbebebe'),
 				})
 				correct_type = true

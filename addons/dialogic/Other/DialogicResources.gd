@@ -179,6 +179,8 @@ static func set_json(dir_id: String, path: String, data: Dictionary):
 
 
 # TIMELINE
+# Can only be edited in the editor
+
 
 static func get_timeline_json(path: String):
 	return get_json('TIMELINE_DIR', path)
@@ -195,6 +197,7 @@ static func delete_timeline(filename: String):
 
 
 # CHARACTER
+# Can only be edited in the editor
 
 
 static func get_character_json(path: String):
@@ -212,6 +215,7 @@ static func delete_character(filename: String):
 
 
 # THEME
+# Can only be edited in the editor
 
 
 static func get_theme_config(filename: String):
@@ -240,6 +244,7 @@ static func add_theme(filename: String):
 
 
 # SETTINGS
+# Can only be edited in the editor
 
 
 static func get_settings_config():
@@ -252,79 +257,49 @@ static func set_settings_value(section: String, key: String, value):
 	config.save(get_config_files_paths()['SETTINGS_FILE'])
 
 
-# DEFINITIONS UTIL
-# used by default and saved definitions
-
-static func get_definition_key(config_id: String, section: String, key: String, default):
-	var config = get_config(config_id)
-	if config.has_section(section):
-		return config.get_value(section, key, default)
-	else:
-		return default
-
-
-static func set_definition_variable(config_id: String, section: String, name: String,  value):
-	var config = get_config(config_id)
-	config.set_value(section, 'name', name)
-	config.set_value(section, 'type', 0)
-	config.set_value(section, 'value', str(value))
-	return config.save(get_config_files_paths()[config_id])
-
-
-static func set_definition_glossary(config_id: String, section: String, name: String,  extra_title: String,  extra_text: String,  extra_extra: String):
-	var config = get_config(config_id)
-	config.set_value(section, 'name', name)
-	config.set_value(section, 'type', 1)
-	config.set_value(section, 'extra_title', extra_title)
-	config.set_value(section, 'extra_text', extra_text)
-	config.set_value(section, 'extra_extra', extra_extra)
-	return config.save(get_config_files_paths()[config_id])
-
-
-static func add_definition_variable(config_id: String, section: String, name: String, type: int, value):
-	var config = get_config(config_id)
-	config.set_value(section, 'name', name)
-	config.set_value(section, 'type', type)
-	config.set_value(section, 'value', str(value))
-	return config.save(get_config_files_paths()[config_id])
-
-
-static func delete_definition(config_id: String, section: String):
-	var config = get_config(config_id)
-	config.erase_section(section)
-	return config.save(get_config_files_paths()[config_id])
-
-
-
 # DEFAULT DEFINITIONS
 # Can only be edited in the editor
+
 
 static func get_default_definitions_config():
 	return get_config('DEFAULT_DEFINITIONS_FILE')
 
 
+static func save_default_definitions_config(config: ConfigFile):
+	return config.save(get_config_files_paths()['DEFAULT_DEFINITIONS_FILE'])
+
+
 static func get_default_definition_key(section: String, key: String, default):
-	return get_definition_key('DEFAULT_DEFINITIONS_FILE', section, key, default)
+	var config = get_default_definitions_config()
+	return DialogicDefinitionsUtil.get_definition_key(config, section, key, default)
 
 
 static func set_default_definition_variable(section: String, name: String,  value):
 	# WARNING: For use in the editor only
-	return set_definition_variable('DEFAULT_DEFINITIONS_FILE', section, name, value)
+	var config = get_default_definitions_config()
+	DialogicDefinitionsUtil.set_definition_variable(config, section, name, value)
+	return save_default_definitions_config(config)
 
 
 static func set_default_definition_glossary(section: String, name: String,  extra_title: String,  extra_text: String,  extra_extra: String):
 	# WARNING: For use in the editor only
-	return set_definition_glossary('DEFAULT_DEFINITIONS_FILE', section, name, extra_title, extra_text, extra_extra)
+	var config = get_default_definitions_config()
+	DialogicDefinitionsUtil.set_definition_glossary(config, section, name, extra_title, extra_text, extra_extra)
+	return save_default_definitions_config(config)
 
 
 static func add_default_definition_variable(section: String, name: String, type: int, value):
 	# WARNING: For use in the editor only
-	return add_definition_variable('DEFAULT_DEFINITIONS_FILE', section, name, type, value)
+	var config = get_default_definitions_config()
+	DialogicDefinitionsUtil.add_definition_variable(config, section, name, type, value)
+	return save_default_definitions_config(config)
 
 
 static func delete_default_definition(section: String):
 	# WARNING: For use in the editor only
-	return delete_definition('DEFAULT_DEFINITIONS_FILE', section)
+	var config = get_default_definitions_config()
+	DialogicDefinitionsUtil.delete_definition(config, section)
+	return save_default_definitions_config(config)
 
 
 # SAVED DEFINITIONS
@@ -332,18 +307,8 @@ static func delete_default_definition(section: String):
 
 
 static func get_saved_definitions_config():
-	return get_config("SAVED_DEFINITIONS_FILE")
+	return get_config('SAVED_DEFINITIONS_FILE')
 
 
-static func set_saved_definition_variable(section: String, name: String,  value):
-	return set_definition_variable('SAVED_DEFINITIONS_FILE', section, name, value)
-
-
-static func set_saved_definition_variable_value(section: String, value):
-	var config = get_saved_definitions_config()
-	return set_definition_variable('SAVED_DEFINITIONS_FILE', section, config.get_value(section, 'name', section), value)
-
-
-static func set_saved_definition_glossary(section: String, name: String,  extra_title: String,  extra_text: String,  extra_extra: String):
-	return set_definition_glossary('SAVED_DEFINITIONS_FILE', section, name, extra_title, extra_text, extra_extra)
-
+static func save_saved_definitions(config: ConfigFile):
+	return config.save(get_config_files_paths()['SAVED_DEFINITIONS_FILE'])
