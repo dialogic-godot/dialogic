@@ -36,10 +36,7 @@ func _ready():
 	load_config_files()
 	
 	# Make sure saves are ready
-	if (reset_saves):
-		DialogicDefinitionsSingleton.reset_to_defaults()
-	else:
-		DialogicResources.init_definitions_saves(false)
+	DialogicDefinitionsSingleton.init(reset_saves)
 	
 	# Checking if the dialog should read the code from a external file
 	if timeline != '':

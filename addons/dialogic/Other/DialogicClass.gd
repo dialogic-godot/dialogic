@@ -11,9 +11,10 @@ class_name Dialogic
 # Do not use methods from other classes as it could break the plugin's integrity
 # ### /!\ ###
 
-static func start(timeline: String, dialog_scene_path: String="res://addons/dialogic/Dialog.tscn", debug_mode: bool=false):
-	var dialog = load(dialog_scene_path)
+static func start(timeline: String, reset_saves: bool=true, dialog_scene_path: String="res://addons/dialogic/Dialog.tscn", debug_mode: bool=false):
+	var dialog:  = load(dialog_scene_path)
 	var d = dialog.instance()
+	d.reset_saves = reset_saves
 	d.debug_mode = debug_mode
 	for t in DialogicUtil.get_timeline_list():
 		if t['name'] == timeline:
@@ -39,7 +40,7 @@ func save_definitions():
 
 
 func reset_definitions():
-	return DialogicDefinitionsSingleton.reset_to_defaults()
+	return DialogicDefinitionsSingleton.init(true)
 
 
 static func get_variable(name: String) -> String:

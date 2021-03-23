@@ -4,8 +4,9 @@ var current_definitions: Array
 var default_definitions: Array
 
 
-func _init() -> void:
+func init(reset: bool=false) -> void:
 	# Loads saved definitions into memory
+	DialogicResources.init_definitions_saves(reset)
 	current_definitions = []
 	var config = DialogicResources.get_saved_definitions_config()
 	current_definitions = DialogicDefinitionsUtil.definitions_config_to_array(config)
@@ -31,11 +32,6 @@ func save_definitions():
 			DialogicDefinitionsUtil.set_definition_glossary(config, s, d['name'], d['title'], d['text'], d['extra'])
 	
 	return DialogicResources.save_saved_definitions(config)
-
-
-func reset_to_defaults():
-	DialogicResources.init_definitions_saves(true)
-	self._init()
 
 
 func get_variable(name: String) -> String:
