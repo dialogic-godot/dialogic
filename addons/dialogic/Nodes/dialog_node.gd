@@ -35,9 +35,6 @@ func _ready():
 	# Loading the config files
 	load_config_files()
 	
-	# Make sure saves are ready
-	DialogicDefinitionsSingleton.init(reset_saves)
-	
 	# Checking if the dialog should read the code from a external file
 	if timeline != '':
 		dialog_script = set_current_dialog(timeline + '.json')
@@ -55,12 +52,17 @@ func _ready():
 	# Getting the character information
 	characters = DialogicUtil.get_character_list()
 
-	if Engine.is_editor_hint() == false:
+	if not Engine.is_editor_hint():
 		load_dialog()
 
 
 func load_config_files():
-	definitions = DialogicDefinitionsSingleton.get_definitions_list()
+	if not Engine.is_editor_hint():
+		# Make sure saves are ready
+		DialogicDefinitionsSingleton.init(reset_saves)
+		definitions = DialogicDefinitionsSingleton.get_definitions_list()
+	else:
+		definitions = DialogicUtil.get_default_definitions_list()
 	settings = DialogicResources.get_settings_config()
 	var theme_file = 'res://addons/dialogic/Editor/ThemeEditor/default-theme.cfg'
 	if settings.has_section('theme'):
@@ -217,7 +219,6 @@ func parse_branches(dialog_script: Dictionary) -> Dictionary:
 
 func parse_definitions(text: String):
 	var words = []
-	var definition_list = DialogicDefinitionsSingleton.get_definitions_list()
 	if Engine.is_editor_hint():
 		# Loading variables again to avoid issues in the preview dialog
 		load_config_files()
@@ -353,8 +354,6 @@ func get_character(character_id):
 func event_handler(event: Dictionary):
 	# Handling an event and updating the available nodes accordingly.
 	reset_dialog_extras()
-	# Updating the settings and definitions in case that they were modified by a timelien
-	load_config_files()
 	
 	dprint('[D] Current Event: ', event)
 	match event:
