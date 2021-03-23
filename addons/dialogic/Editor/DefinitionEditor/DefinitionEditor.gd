@@ -3,7 +3,7 @@ extends ScrollContainer
 
 var editor_reference
 onready var master_tree = get_node('../MasterTree')
-var current_section = ''
+var current_definition = null
 
 onready var nodes = {
 	'name' : $VBoxContainer/HBoxContainer/VBoxContainer/Name,
@@ -22,19 +22,19 @@ func _ready():
 	nodes['type'].connect('item_selected', self, '_on_type_selected')
 
 
-func load_definition(section):
-	current_section = section
+func load_definition(id):
+	current_definition = DialogicResources.get_default_definition_item(id)
 	reset_editor()
 	nodes['name'].editable = true
-	nodes['name'].text = get_definition('name', 'Unnamed')
-	var type = get_definition('type', 0)
+	nodes['name'].text = current_definition['name']
+	var type = current_definition['type']
 	nodes['type'].select(type)
 	if type == 0:
-		nodes['value'].text = get_definition('value', '')
+		nodes['value'].text = current_definition['value']
 	if type == 1:
-		nodes['extra_title'].text = get_definition('extra_title', '')
-		nodes['extra_text'].text = get_definition('extra_text', '')
-		nodes['extra_extra'].text = get_definition('extra_extra', '')
+		nodes['extra_title'].text = current_definition['title']
+		nodes['extra_text'].text = current_definition['text']
+		nodes['extra_extra'].text = current_definition['extra']
 	show_sub_editor(type)
 
 
@@ -44,7 +44,10 @@ func reset_editor():
 	nodes['extra_title'].text = ''
 	nodes['extra_text'].text = ''
 	nodes['extra_extra'].text = ''
-	nodes['type'].select(get_definition('type', 0))
+	var type = 0
+	if current_definition != null:
+		type = current_definition['type']
+	nodes['type'].select(type)
 
 
 func _on_name_changed(text):
@@ -70,23 +73,16 @@ func show_sub_editor(type):
 		nodes['extra_editor'].visible = true
 
 
-func get_definition(key: String, default):
-	if current_section != '':
-		return DialogicResources.get_default_definition_key(current_section, key, default)
-	else:
-		return default
-
-
 func new_definition():
-	var section = DialogicUtil.generate_random_id()
-	DialogicResources.add_default_definition_variable(section, 'New definition', 0, '')
-	master_tree.add_definition({'section': section,'name': 'New definition', 'type': 0}, true)
+	var id = DialogicUtil.generate_random_id()
+	DialogicResources.set_default_definition_variable(id, 'New definition', '')
+	master_tree.add_definition({'id': id, 'name': 'New definition', 'type': 0}, true)
 
 
 func save_definition():
-	if current_section != '':
+	if current_definition['id'] != '':
 		var type: int = nodes['type'].selected
 		if type == 0:
-			DialogicResources.set_default_definition_variable(current_section, nodes['name'].text, nodes['value'].text)
+			DialogicResources.set_default_definition_variable(current_definition['id'], nodes['name'].text, nodes['value'].text)
 		if type == 1:
-			DialogicResources.set_default_definition_glossary(current_section, nodes['name'].text, nodes['extra_title'].text, nodes['extra_text'].text, nodes['extra_extra'].text)
+			DialogicResources.set_default_definition_glossary(current_definition['id'], nodes['name'].text, nodes['extra_title'].text, nodes['extra_text'].text, nodes['extra_extra'].text)

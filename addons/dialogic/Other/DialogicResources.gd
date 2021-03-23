@@ -6,24 +6,26 @@ const RESOURCES_DIR: String = "res://dialogic" # Readonly, used for static data
 const WORKING_DIR: String = "user://dialogic" # Readwrite, used for saves
 
 
-static func load_json(path: String) -> Dictionary:
+static func load_json(path: String, default: Dictionary={}) -> Dictionary:
 	# An easy function to load json files and handle common errors.
-	var file:File = File.new()
+	var file := File.new()
 	if file.open(path, File.READ) != OK:
 		file.close()
-		return {'error':'file read error'}
+		return default
 	var data_text: String = file.get_as_text()
 	file.close()
-	var data_parse:JSONParseResult = JSON.parse(data_text)
+	if data_text.empty():
+		return default
+	var data_parse: JSONParseResult = JSON.parse(data_text)
 	if data_parse.error != OK:
-		return {'error':'data parse error'}
+		return default
 
 	var final_data = data_parse.result
 	if typeof(final_data) == TYPE_DICTIONARY:
 		return final_data
 	
 	# If everything else fails
-	return {'error':'data parse error'}
+	return default
 
 
 static func init_dialogic_files() -> void:
@@ -57,8 +59,8 @@ static func get_working_directories() -> Dictionary:
 static func get_config_files_paths() -> Dictionary:
 	return {
 		'SETTINGS_FILE': RESOURCES_DIR + "/settings.cfg",
-		'DEFAULT_DEFINITIONS_FILE': RESOURCES_DIR + "/definitions.cfg",
-		'SAVED_DEFINITIONS_FILE': WORKING_DIR + "/definitions.cfg",
+		'DEFAULT_DEFINITIONS_FILE': RESOURCES_DIR + "/definitions.json",
+		'SAVED_DEFINITIONS_FILE': WORKING_DIR + "/definitions.json",
 		'SAVED_STATE_FILE': WORKING_DIR + "/state.cfg",
 	}
 
@@ -188,17 +190,9 @@ static func remove_file(path: String):
 # JSON UTIL
 
 
-static func get_json(dir_id: String, path: String):
-	return load_json(get_path(dir_id, path))
-
-
-static func set_json(dir_id: String, path: String, data: Dictionary):
-	var directory = Directory.new()
-	var base_path := get_path(dir_id)
-	if not directory.dir_exists(base_path):
-		directory.make_dir_recursive(base_path)
+static func set_json(path: String, data: Dictionary):
 	var file = File.new()
-	file.open(get_path(dir_id, path), File.WRITE)
+	file.open(path, File.WRITE)
 	file.store_line(to_json(data))
 	file.close()
 
@@ -208,12 +202,12 @@ static func set_json(dir_id: String, path: String, data: Dictionary):
 
 
 static func get_timeline_json(path: String):
-	return get_json('TIMELINE_DIR', path)
+	return load_json(get_path('TIMELINE_DIR', path))
 
 
 static func set_timeline(timeline: Dictionary):
 	# WARNING: For use in the editor only
-	set_json('TIMELINE_DIR', timeline['metadata']['file'], timeline)
+	set_json(get_path('TIMELINE_DIR', timeline['metadata']['file']), timeline)
 
 
 static func delete_timeline(filename: String):
@@ -226,12 +220,12 @@ static func delete_timeline(filename: String):
 
 
 static func get_character_json(path: String):
-	return get_json('CHAR_DIR', path)
+	return load_json(get_path('CHAR_DIR', path))
 
 
 static func set_character(character: Dictionary):
 	# WARNING: For use in the editor only
-	set_json('CHAR_DIR', character['id'], character)
+	set_json(get_path('CHAR_DIR', character['id']), character)
 
 
 static func delete_character(filename: String):
@@ -257,8 +251,6 @@ static func get_theme_config(filename: String):
 
 static func set_theme_value(filename, section, key, value):
 	# WARNING: For use in the editor only
-	print('=> theme update')
-	print(filename)
 	var config = get_theme_config(filename)
 	config.set_value(section, key, value)
 	config.save(get_path('THEME_DIR', filename))
@@ -267,6 +259,9 @@ static func set_theme_value(filename, section, key, value):
 static func add_theme(filename: String):
 	create_empty_file(get_path('THEME_DIR', filename))
 
+
+static func delete_theme(filename: String):
+	remove_file(get_path('THEME_DIR', filename))
 
 # SETTINGS
 # Can only be edited in the editor
@@ -308,54 +303,47 @@ static func set_saved_state_general_key(key: String, value):
 # Can only be edited in the editor
 
 
-static func get_default_definitions_config() -> ConfigFile:
-	return get_config('DEFAULT_DEFINITIONS_FILE')
+static func get_default_definitions() -> Dictionary:
+	return load_json(get_config_files_paths()['DEFAULT_DEFINITIONS_FILE'], {'variables': [], 'glossary': []})
 
 
-static func save_default_definitions_config(config: ConfigFile):
-	return config.save(get_config_files_paths()['DEFAULT_DEFINITIONS_FILE'])
+static func save_default_definitions(data: Dictionary):
+	set_json(get_config_files_paths()['DEFAULT_DEFINITIONS_FILE'], data)
 
 
-static func get_default_definition_key(section: String, key: String, default):
-	var config = get_default_definitions_config()
-	return DialogicDefinitionsUtil.get_definition_key(config, section, key, default)
+static func get_default_definition_item(id: String):
+	var data = get_default_definitions()
+	return DialogicDefinitionsUtil.get_definition_by_id(data, id)
 
 
-static func set_default_definition_variable(section: String, name: String,  value):
+static func set_default_definition_variable(id: String, name: String, value):
 	# WARNING: For use in the editor only
-	var config = get_default_definitions_config()
-	DialogicDefinitionsUtil.set_definition_variable(config, section, name, value)
-	return save_default_definitions_config(config)
+	var data = get_default_definitions()
+	DialogicDefinitionsUtil.set_definition_variable(data, id, name, value)
+	save_default_definitions(data)
 
 
-static func set_default_definition_glossary(section: String, name: String,  extra_title: String,  extra_text: String,  extra_extra: String):
+static func set_default_definition_glossary(id: String, name: String, extra_title: String,  extra_text: String,  extra_extra: String):
 	# WARNING: For use in the editor only
-	var config = get_default_definitions_config()
-	DialogicDefinitionsUtil.set_definition_glossary(config, section, name, extra_title, extra_text, extra_extra)
-	return save_default_definitions_config(config)
+	var data = get_default_definitions()
+	DialogicDefinitionsUtil.set_definition_glossary(data, id, name, extra_title, extra_text, extra_extra)
+	save_default_definitions(data)
 
 
-static func add_default_definition_variable(section: String, name: String, type: int, value):
+static func delete_default_definition(id: String):
 	# WARNING: For use in the editor only
-	var config = get_default_definitions_config()
-	DialogicDefinitionsUtil.add_definition_variable(config, section, name, type, value)
-	return save_default_definitions_config(config)
-
-
-static func delete_default_definition(section: String):
-	# WARNING: For use in the editor only
-	var config = get_default_definitions_config()
-	DialogicDefinitionsUtil.delete_definition(config, section)
-	return save_default_definitions_config(config)
+	var data = get_default_definitions()
+	DialogicDefinitionsUtil.delete_definition(data, id)
+	save_default_definitions(data)
 
 
 # SAVED DEFINITIONS
 # Can be edited at runtime, and will persist across runs
 
 
-static func get_saved_definitions_config() -> ConfigFile:
-	return get_config('SAVED_DEFINITIONS_FILE')
+static func get_saved_definitions() -> Dictionary:
+	return load_json(get_config_files_paths()['SAVED_DEFINITIONS_FILE'])
 
 
-static func save_saved_definitions(config: ConfigFile):
-	return config.save(get_config_files_paths()['SAVED_DEFINITIONS_FILE'])
+static func save_saved_definitions(data: Dictionary):
+	return set_json(get_config_files_paths()['SAVED_DEFINITIONS_FILE'], data)

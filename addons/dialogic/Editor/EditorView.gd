@@ -67,9 +67,9 @@ func _on_TimelinePopupMenu_id_pressed(id):
 
 func _on_RemoveTimelineConfirmation_confirmed():
 	var dir = Directory.new()
-	var target = $MainPanel/TimelineEditor.working_timeline_file
+	var target = $MainPanel/TimelineEditor.timeline_file
 	print('target: ', target)
-	dir.remove(target)
+	DialogicResources.delete_timeline(target)
 	$MainPanel/MasterTree.remove_selected()
 	$MainPanel/MasterTree.hide_all_editors(true)
 
@@ -99,7 +99,7 @@ func _on_DefinitionPopupMenu_id_pressed(id):
 
 
 func _on_RemoveDefinitionConfirmation_confirmed():
-	var target = $MainPanel/DefinitionEditor.current_section
+	var target = $MainPanel/DefinitionEditor.current_definition['id']
 	DialogicResources.delete_default_definition(target)
 	$MainPanel/MasterTree.remove_selected()
 	$MainPanel/MasterTree.hide_all_editors(true)
@@ -114,7 +114,7 @@ func _on_RemoveCharacterConfirmation_confirmed():
 
 func _on_RemoveThemeConfirmation_confirmed():
 	var filename = $MainPanel/MasterTree.get_selected().get_metadata(0)['file']
-	DialogicResources.delete_timeline(filename)
+	DialogicResources.delete_theme(filename)
 	$MainPanel/MasterTree.remove_selected()
 	$MainPanel/MasterTree.hide_all_editors(true)
 

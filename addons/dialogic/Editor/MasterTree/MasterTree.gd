@@ -155,7 +155,7 @@ func _on_item_selected():
 		character_editor.load_character(metadata['file'])
 	if metadata['editor'] == 'Definition':
 		definition_editor.visible = true
-		definition_editor.load_definition(metadata['section'])
+		definition_editor.load_definition(metadata['id'])
 	if metadata['editor'] == 'Theme':
 		theme_editor.load_theme(metadata['file'])
 		theme_editor.visible = true

@@ -10,7 +10,7 @@ var waiting_for_answer: bool = false
 var waiting_for_input: bool = false
 var waiting = false
 var preview = false
-var definitions
+var definitions = {}
 var definition_visible = false
 
 var settings
@@ -66,9 +66,9 @@ func load_config_files():
 	if not Engine.is_editor_hint():
 		# Make sure saves are ready
 		DialogicSingleton.init(reset_saves)
-		definitions = DialogicSingleton.get_definitions_list()
+		definitions = DialogicSingleton.get_definitions()
 	else:
-		definitions = DialogicUtil.get_default_definitions_list()
+		definitions = DialogicResources.get_default_definitions()
 	settings = DialogicResources.get_settings_config()
 	var theme_file = 'res://addons/dialogic/Editor/ThemeEditor/default-theme.cfg'
 	if settings.has_section('theme'):
@@ -237,10 +237,9 @@ func parse_definitions(text: String):
 
 func _insert_variable_definitions(text: String):
 	var final_text := text;
-	for d in definitions:
-		if d['type'] == 0:
-			var name : String = d['name'];
-			final_text = final_text.replace('[' + name + ']', d['value'])
+	for d in definitions['variables']:
+		var name : String = d['name'];
+		final_text = final_text.replace('[' + name + ']', d['value'])
 	return final_text;
 	
 	
@@ -248,13 +247,12 @@ func _insert_glossary_definitions(text: String):
 	var color = self.current_theme.get_value('definitions', 'color', '#ffbebebe')
 	var final_text := text;
 	# I should use regex here, but this is way easier :)
-	for d in definitions:
-		if d['type'] == 1:
-			final_text = final_text.replace(d['name'],
-				'[url=' + d['section'] + ']' +
-				'[color=' + color + ']' + d['name'] + '[/color]' +
-				'[/url]'
-			)
+	for d in definitions['glossary']:
+		final_text = final_text.replace(d['name'],
+			'[url=' + d['id'] + ']' +
+			'[color=' + color + ']' + d['name'] + '[/color]' +
+			'[/url]'
+		)
 	return final_text;
 
 
@@ -317,14 +315,16 @@ func update_text(text):
 
 
 func on_timeline_start():
-	DialogicSingleton.save_definitions()
-	DialogicSingleton.set_current_timeline(current_timeline)
+	if not Engine.is_editor_hint():
+		DialogicSingleton.save_definitions()
+		DialogicSingleton.set_current_timeline(current_timeline)
 	emit_signal("event_start", "timeline", current_timeline)
 
 
 func on_timeline_end():
-	DialogicSingleton.save_definitions()
-	DialogicSingleton.set_current_timeline('')
+	if not Engine.is_editor_hint():
+		DialogicSingleton.save_definitions()
+		DialogicSingleton.set_current_timeline('')
 	emit_signal("event_end", "timeline")
 
 func load_dialog(skip_add = false):
@@ -475,11 +475,12 @@ func event_handler(event: Dictionary):
 			# Treating this conditional as an option on a regular question event
 			var def_value = null
 			var current_question = questions[event['question_id']]
-			for d in definitions:
-				if d['section'] == event['definition']:
+			
+			for d in definitions['variables']:
+				if d['id'] == event['definition']:
 					def_value = d['value']
 			
-			var condition_met = _compare_definitions(def_value, event['value'], event['condition']);
+			var condition_met = def_value != null and _compare_definitions(def_value, event['value'], event['condition']);
 			
 			current_question['answered'] = !condition_met
 			if !condition_met:
@@ -587,7 +588,6 @@ func _on_option_selected(option, variable, value):
 	waiting_for_answer = false
 	reset_options()
 	load_dialog()
-	#print(dialog_resource.custom_variables)
 	dprint('[!] Option selected: ', option.text, ' value= ' , value)
 
 
@@ -701,17 +701,16 @@ func load_theme(filename):
 
 func _on_RichTextLabel_meta_hover_started(meta):
 	var correct_type = false
-	for d in definitions:
-		if d['section'] == meta:
-			if d['type'] == 1:
-				$DefinitionInfo.load_preview({
-					'title': d['title'],
-					'body': d['text'],
-					'extra': d['extra'],
-					'color': current_theme.get_value('definitions', 'color', '#ffbebebe'),
-				})
-				correct_type = true
-				print(d)
+	for d in definitions['glossary']:
+		if d['id'] == meta:
+			$DefinitionInfo.load_preview({
+				'title': d['title'],
+				'body': d['text'],
+				'extra': d['extra'],
+				'color': current_theme.get_value('definitions', 'color', '#ffbebebe'),
+			})
+			correct_type = true
+			print(d)
 
 	if correct_type:
 		definition_visible = true

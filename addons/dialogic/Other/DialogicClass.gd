@@ -35,12 +35,12 @@ static func start_from_save(initial_timeline: String, dialog_scene_path: String=
 	return start(current, false, dialog_scene_path, debug_mode)
 
 
-static func get_default_definitions_list() -> Array:
-	return DialogicSingleton.get_default_definitions_list()
+static func get_default_definitions() -> Dictionary:
+	return DialogicSingleton.get_default_definitions()
 
 
-static func get_definitions_list() -> Array:
-	return DialogicSingleton.get_definitions_list()
+static func get_definitions() -> Dictionary:
+	return DialogicSingleton.get_default_definitions()
 
 
 func save_definitions():
