@@ -15,6 +15,7 @@ var definition_visible = false
 
 var settings
 var current_theme
+var current_timeline := ''
 
 export(String, "TimelineDropdown") var timeline: String
 export(bool) var reset_saves = true
@@ -36,9 +37,14 @@ func _ready():
 	load_config_files()
 	
 	# Checking if the dialog should read the code from a external file
-	if timeline != '':
-		dialog_script = set_current_dialog(timeline + '.json')
-
+	if not timeline.empty():
+		dialog_script = set_current_dialog(timeline)
+	elif dialog_script.keys().size() == 0:
+		dialog_script = {
+			"events":[{"character":"","portrait":"",
+			"text":"[Dialogic Error] No timeline specified."}]
+		}
+	
 	# Connecting resize signal
 	get_viewport().connect("size_changed", self, "resize_main")
 	resize_main()
@@ -59,8 +65,8 @@ func _ready():
 func load_config_files():
 	if not Engine.is_editor_hint():
 		# Make sure saves are ready
-		DialogicDefinitionsSingleton.init(reset_saves)
-		definitions = DialogicDefinitionsSingleton.get_definitions_list()
+		DialogicSingleton.init(reset_saves)
+		definitions = DialogicSingleton.get_definitions_list()
 	else:
 		definitions = DialogicUtil.get_default_definitions_list()
 	settings = DialogicResources.get_settings_config()
@@ -82,7 +88,8 @@ func resize_main():
 	$TextBubble.rect_position.y = (rect_size.y) - ($TextBubble.rect_size.y) - current_theme.get_value('box', 'bottom_gap', 40)
 
 
-func set_current_dialog(dialog_path):
+func set_current_dialog(dialog_path: String):
+	current_timeline = dialog_path
 	var dialog_script = DialogicResources.get_timeline_json(dialog_path)
 	# All this parse events should be happening in the same loop ideally
 	# But until performance is not an issue I will probably stay lazy
@@ -310,11 +317,14 @@ func update_text(text):
 
 
 func on_timeline_start():
-	emit_signal("event_start", "timeline", timeline)
+	DialogicSingleton.save_definitions()
+	DialogicSingleton.set_current_timeline(current_timeline)
+	emit_signal("event_start", "timeline", current_timeline)
 
 
 func on_timeline_end():
-	DialogicDefinitionsSingleton.save_definitions()
+	DialogicSingleton.save_definitions()
+	DialogicSingleton.set_current_timeline('')
 	emit_signal("event_end", "timeline")
 
 func load_dialog(skip_add = false):
@@ -481,7 +491,7 @@ func event_handler(event: Dictionary):
 				go_to_next_event()
 		{'set_value', 'definition'}:
 			emit_signal("event_start", "set_value", event)
-			DialogicDefinitionsSingleton.set_variable_from_id(event['definition'], event['set_value'])
+			DialogicSingleton.set_variable_from_id(event['definition'], event['set_value'])
 			go_to_next_event()
 		_:
 			visible = false

@@ -59,7 +59,37 @@ static func get_config_files_paths() -> Dictionary:
 		'SETTINGS_FILE': RESOURCES_DIR + "/settings.cfg",
 		'DEFAULT_DEFINITIONS_FILE': RESOURCES_DIR + "/definitions.cfg",
 		'SAVED_DEFINITIONS_FILE': WORKING_DIR + "/definitions.cfg",
+		'SAVED_STATE_FILE': WORKING_DIR + "/state.cfg",
 	}
+
+
+static func init_saves(overwrite: bool=true):
+	var err = init_working_dir()
+	var paths := get_config_files_paths()
+	
+	if err == OK:
+		init_state_saves(overwrite)
+		init_definitions_saves(overwrite)
+	else:
+		print('Error creating working directory: ' + str(err))
+
+
+static func init_working_dir():
+	var directory := Directory.new()
+	return directory.make_dir_recursive(get_working_directories()['WORKING_DIR'])
+
+
+static func init_state_saves(overwrite: bool=true):
+	var file := File.new()
+	var paths := get_config_files_paths()
+	
+	if not file.file_exists(paths["SAVED_STATE_FILE"]) or overwrite:
+		var err = file.open(paths["SAVED_STATE_FILE"], File.WRITE)
+		if err == OK:
+			file.store_string('')
+			file.close()
+		else:
+			print('Error opening saved state file: ' + str(err))
 
 
 static func init_definitions_saves(overwrite: bool=true):
@@ -67,33 +97,28 @@ static func init_definitions_saves(overwrite: bool=true):
 	var source := File.new()
 	var sink := File.new()
 	var paths := get_config_files_paths()
-	
-	var err := directory.make_dir_recursive(get_working_directories()['WORKING_DIR'])
-	
-	if err == OK:
-		if not directory.file_exists(paths["SAVED_DEFINITIONS_FILE"]):
-			err = sink.open(paths["SAVED_DEFINITIONS_FILE"], File.WRITE)
-			print('Saved definitions not present, creating file: ' + str(err))
-			if err == OK:
-				sink.store_string('')
-				sink.close()
-			else:
-				print('Error opening saved definitions file: ' + str(err))
-		
-		err = sink.open(paths["SAVED_DEFINITIONS_FILE"], File.READ_WRITE)
+	var err
+	if not directory.file_exists(paths["SAVED_DEFINITIONS_FILE"]):
+		err = sink.open(paths["SAVED_DEFINITIONS_FILE"], File.WRITE)
+		print('Saved definitions not present, creating file: ' + str(err))
 		if err == OK:
-			if overwrite or sink.get_len() == 0:
-				err = source.open(paths["DEFAULT_DEFINITIONS_FILE"], File.READ)
-				if err == OK:
-					sink.store_string(source.get_as_text())
-				else:
-					print('Error opening default definitions file: ' + str(err))
-			else:
-				print('Did not overwrite previous saved definitions')
+			sink.store_string('')
+			sink.close()
 		else:
 			print('Error opening saved definitions file: ' + str(err))
+	
+	err = sink.open(paths["SAVED_DEFINITIONS_FILE"], File.READ_WRITE)
+	if err == OK:
+		if overwrite or sink.get_len() == 0:
+			err = source.open(paths["DEFAULT_DEFINITIONS_FILE"], File.READ)
+			if err == OK:
+				sink.store_string(source.get_as_text())
+			else:
+				print('Error opening default definitions file: ' + str(err))
+		else:
+			print('Did not overwrite previous saved definitions')
 	else:
-		print('Error creating working directory: ' + str(err))
+		print('Error opening saved definitions file: ' + str(err))
 	
 	source.close()
 	sink.close()
@@ -247,7 +272,7 @@ static func add_theme(filename: String):
 # Can only be edited in the editor
 
 
-static func get_settings_config():
+static func get_settings_config() -> ConfigFile:
 	return get_config("SETTINGS_FILE")
 
 
@@ -257,11 +282,33 @@ static func set_settings_value(section: String, key: String, value):
 	config.save(get_config_files_paths()['SETTINGS_FILE'])
 
 
+# STATE
+
+
+static func get_saved_state_config() -> ConfigFile:
+	return get_config('SAVED_STATE_FILE')
+
+
+static func save_saved_state_config(config: ConfigFile):
+	return config.save(get_config_files_paths()['SAVED_STATE_FILE'])
+
+
+static func get_saved_state_general_key(key: String) -> String:
+	var config = get_saved_state_config()
+	return config.get_value('general', key, '')
+
+
+static func set_saved_state_general_key(key: String, value):
+	var config = get_saved_state_config()
+	config.set_value('general', key, str(value))
+	return save_saved_state_config(config)
+
+
 # DEFAULT DEFINITIONS
 # Can only be edited in the editor
 
 
-static func get_default_definitions_config():
+static func get_default_definitions_config() -> ConfigFile:
 	return get_config('DEFAULT_DEFINITIONS_FILE')
 
 
@@ -306,7 +353,7 @@ static func delete_default_definition(section: String):
 # Can be edited at runtime, and will persist across runs
 
 
-static func get_saved_definitions_config():
+static func get_saved_definitions_config() -> ConfigFile:
 	return get_config('SAVED_DEFINITIONS_FILE')
 
 

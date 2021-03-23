@@ -1,17 +1,23 @@
 extends Node
 
-var current_definitions: Array
-var default_definitions: Array
+var current_definitions := []
+var default_definitions := []
+
+var current_timeline := ''
+
+func _init() -> void:
+	init(false)
 
 
 func init(reset: bool=false) -> void:
 	# Loads saved definitions into memory
-	DialogicResources.init_definitions_saves(reset)
+	DialogicResources.init_saves(reset)
 	current_definitions = []
-	var config = DialogicResources.get_saved_definitions_config()
+	var config := DialogicResources.get_saved_definitions_config()
 	current_definitions = DialogicDefinitionsUtil.definitions_config_to_array(config)
 	config = DialogicResources.get_default_definitions_config()
 	default_definitions = DialogicDefinitionsUtil.definitions_config_to_array(config)
+	current_timeline = DialogicResources.get_saved_state_general_key('timeline')
 
 
 func get_definitions_list() -> Array:
@@ -69,3 +75,15 @@ func set_glossary(name: String, title: String, text: String, extra: String) -> v
 			d['title'] = title
 			d['text'] = text
 			d['extra'] = extra
+
+
+func set_current_timeline(timeline: String):
+	print('====> saving timeline ' + timeline)
+	current_timeline = timeline
+	DialogicResources.set_saved_state_general_key('timeline', timeline)
+
+
+func get_current_timeline() -> String:
+	return current_timeline
+
+
