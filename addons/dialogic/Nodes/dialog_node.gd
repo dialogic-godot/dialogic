@@ -19,6 +19,7 @@ var current_theme
 export(String, "TimelineDropdown") var timeline: String
 export(bool) var reset_saves = true
 export(bool) var debug_mode = true
+export(bool) var stop_on_load = false
 signal event_start(type, event)
 signal event_end(type)
 signal dialogic_signal(value)
@@ -55,7 +56,17 @@ func _ready():
 	# Getting the character information
 	characters = DialogicUtil.get_character_list()
 
-	if Engine.is_editor_hint() == false:
+	if stop_on_load:
+		hide()
+		set_process(false)
+	else:
+		start()
+
+
+func start():
+	if Engine.is_editor_hint() == false && timeline != '':
+		show_dialog()
+		set_process(true)
 		load_dialog()
 
 
