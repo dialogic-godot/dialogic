@@ -145,17 +145,6 @@ Gets default values for definitions.
 - **@returns** Dictionary in the format `{'variables': [], 'glossary': []}`
 
 
-### 🔶 get_default_definitions
-
-```gdscript
-get_default_definitions()
-```
-
-Gets default values for definitions.
-
-- **@returns** Dictionary in the format `{'variables': [], 'glossary': []}`
-
-
 ### 🔶 get_definitions
 
 ```gdscript
