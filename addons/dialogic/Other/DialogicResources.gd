@@ -345,7 +345,7 @@ static func delete_default_definition(id: String):
 
 
 static func get_saved_definitions() -> Dictionary:
-	return load_json(get_config_files_paths()['SAVED_DEFINITIONS_FILE'])
+	return load_json(get_config_files_paths()['SAVED_DEFINITIONS_FILE'], {'variables': [], 'glossary': []})
 
 
 static func save_saved_definitions(data: Dictionary):
