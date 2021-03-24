@@ -61,7 +61,7 @@ static func get_config_files_paths() -> Dictionary:
 		'SETTINGS_FILE': RESOURCES_DIR + "/settings.cfg",
 		'DEFAULT_DEFINITIONS_FILE': RESOURCES_DIR + "/definitions.json",
 		'SAVED_DEFINITIONS_FILE': WORKING_DIR + "/definitions.json",
-		'SAVED_STATE_FILE': WORKING_DIR + "/state.cfg",
+		'SAVED_STATE_FILE': WORKING_DIR + "/state.json",
 	}
 
 
@@ -280,23 +280,26 @@ static func set_settings_value(section: String, key: String, value):
 # STATE
 
 
-static func get_saved_state_config() -> ConfigFile:
-	return get_config('SAVED_STATE_FILE')
+static func get_saved_state() -> Dictionary:
+	return load_json(get_config_files_paths()['SAVED_STATE_FILE'], {'general': {}})
 
 
-static func save_saved_state_config(config: ConfigFile):
-	return config.save(get_config_files_paths()['SAVED_STATE_FILE'])
+static func save_saved_state_config(data: Dictionary):
+	set_json(get_config_files_paths()['SAVED_STATE_FILE'], data)
 
 
 static func get_saved_state_general_key(key: String) -> String:
-	var config = get_saved_state_config()
-	return config.get_value('general', key, '')
+	var data = get_saved_state()
+	if key in data['general'].keys():
+		return data['general'][key]
+	else:
+		return ''
 
 
 static func set_saved_state_general_key(key: String, value):
-	var config = get_saved_state_config()
-	config.set_value('general', key, str(value))
-	return save_saved_state_config(config)
+	var data = get_saved_state()
+	data['general'][key] = str(value)
+	save_saved_state_config(data)
 
 
 # DEFAULT DEFINITIONS
