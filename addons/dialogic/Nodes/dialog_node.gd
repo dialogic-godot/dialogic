@@ -307,7 +307,7 @@ func get_character(character_id):
 
 func event_handler(event: Dictionary):
 	# Handling an event and updating the available nodes accordingly.
-	get_node("TextBubble").reset_dialog_extras()
+	$TextBubble.reset_dialog_extras()
 	# Updating the settings and definitions in case that they were modified by a timelien
 	load_config_files()
 	
