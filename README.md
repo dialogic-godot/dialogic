@@ -9,9 +9,20 @@ The plugin is not production ready, this means that it will not work in your gam
 
 ---
 
-## Changelog
+## Contents
 
-### 🆕 v1.0 - WIP
+- [Changleog](#-changelog)
+- [Installation](#-installation)
+- [Basic Usage](#-basic-usage)
+- [Documentation](#-v1.0-documentation)
+- [FAQ](#-faq)
+- [Source structure](#-source-structure)
+- [Credits](#-credits)
+
+
+## 🆕 Changelog
+
+### v1.0 - WIP
   - When upgrading from 0.9 to the current version things might not work as expected:
     - ⚠ **PLEASE MAKE A BACKUP OF YOUR PROJECT BEFORE UPGRADING** ⚠
     - Glossary variables will be lost
@@ -47,9 +58,9 @@ To view the full changelog [click here](https://github.com/coppolaemilio/dialogi
 
 ---
 
-## Installation
+## ⚙ Installation
 
-### Downloading the plugin
+### ⬇ Downloading the plugin
 
 To install a Dialogic, download it as a ZIP archive. All releases are listed here: https://github.com/coppolaemilio/dialogic/releases. Then extract the ZIP archive and move the `addons/` folder it contains into your project folder. Then, enable the plugin in project settings.
 
@@ -57,13 +68,13 @@ If you want to know more about installing plugins you can read the [official doc
 
 You can also install Dialogic using the **AssetLib** tab in the editor, but the version here will not be the latest one available since it takes some time for it to be approved.
 
-### Preparing the export
+### 📦 Preparing the export
 
 When you export a project using Dialogic, you need to add `*.json, *.cfg` on the Resources tab (see the image below). This allows Godot to pack the files from the `/dialogic` folder.
 
 ![Screenshot](https://coppolaemilio.com/images/dialogic/exporting-2.png?v2)
 
-## Basic Usage
+## ✅ Basic Usage
 
 After installing the plugin, you will find a new **Dialogic** tab at the top, next to the Assets Lib. Clicking on it will display the Dialogic editor.
 
@@ -78,44 +89,177 @@ Using the buttons on the top left, you can create 4 types of objects:
 
 Dialogic is very simple to use, try it a bit and you will quickly understand how to master it.
 
-## v1.0 Documentation
+## 📖 v1.0 Documentation
 
 **Note:** ⚠️ This documentation is valid only for the v1.0 branch. ⚠️
 
 The `Dialogic` class exposes methods allowing you to control the plugin:
 
-* Node `start(timeline: String, dialog_scene_path: String, debug_mode: bool)`
+### 🔶 start
+
+```gdscript
+start(
+  timeline: String, 
+  reset_saves: bool=true, 
+  dialog_scene_path: String="res://addons/dialogic/Dialog.tscn", 
+  debug_mode: bool=false
+  )
+```
 
 Starts the dialog for the given timeline and returns a Dialog node. You must then add it manually to the scene to display the dialog.
 
-If you made a custom Dialog scene or moved it from its default path, you can specify its new path here. Debug is disabled by default but can be enabled if needed.
-
-Example usage:
-
-```
+Example:
+```gdscript
 var new_dialog = Dialogic.start('Your Timeline Name Here')
 add_child(new_dialog)
 ```
 
-This is exactly the same as using the editor: you can drag and drop the scene located at `/addons/dialogic/Dialog.tscn` and set the current timeline via the inspector.
+This is exactly the same as using the editor: you can drag and drop the scene located at /addons/dialogic/Dialog.tscn and set the current timeline via the inspector.
 
-* void `reset_saves()`
+- **@param** `timeline`	The timeline to load. You can provide the timeline name or the filename.
+- **@param** `reset_saves` True to reset dialogic saved data such as definitions.
+- **@param** `dialog_scene_path` If you made a custom Dialog scene or moved it from its default path, you can specify its new path here.
+- **@param** `debug_mode` Debug is disabled by default but can be enabled if needed.
+- **@returns** A Dialog node to be added into the scene tree.
 
-Resets saved data (definitions) to the default values you set in the editor. Definitions are saved across runs in `user://dialogic/definitions.cfg`, calling this function will clear this file. Useful for a `New Game` behavior.
+### 🔶 reset_saves
 
-* String `get_var(variable: String)`
+```gdscript
+start_from_save(
+  initial_timeline: String, 
+  dialog_scene_path: String="res://addons/dialogic/Dialog.tscn", 
+  debug_mode: bool=false
+  )
+```
 
-Gets the value associated to the given variable. Currently, only variable definitions can be queried.
+Same as the start method above, but using the last timeline saved.
+
+### 🔶 get_default_definitions
+
+```gdscript
+get_default_definitions()
+```
+
+Gets default values for definitions.
+
+- **@returns** Dictionary in the format `{'variables': [], 'glossary': []}`
+
+
+### 🔶 get_default_definitions
+
+```gdscript
+get_default_definitions()
+```
+
+Gets default values for definitions.
+
+- **@returns** Dictionary in the format `{'variables': [], 'glossary': []}`
+
+
+### 🔶 get_definitions
+
+```gdscript
+get_definitions()
+```
+
+Gets currently saved values for definitions.
+
+- **@returns** Dictionary in the format `{'variables': [], 'glossary': []}`
+
+
+### 🔶 save_definitions
+
+```gdscript
+save_definitions()
+```
+
+Save current definitions to the filesystem. Definitions are automatically saved on timeline start/end.
+
+- **@returns** Error status, `OK` if all went well
+
+
+### 🔶 reset_saves
+
+```gdscript
+reset_saves()
+```
+
+Resets data to default values. This is the same as calling start with reset_saves to true.
+
+
+### 🔶 get_variable
+
+```gdscript
+get_variable(name: String)
+```
+
+Gets the value for the variable with the given name.
 
 The returned value is a String but can be easily converted into a number using Godot built-in methods: [`is_valid_float`](https://docs.godotengine.org/en/stable/classes/class_string.html#class-string-method-is-valid-float) and [`float()`](https://docs.godotengine.org/en/stable/classes/class_float.html#class-float-method-float).
 
-* String `set_var(variable: String, value)`
+- **@param** `name` The name of the variable to find.
+- **@returns** The variable's value as string, or an empty string if not found.
 
-Sets the value associated to the given variable. Currently, only variable definitions can be set.
 
-The given value will be converted to string using the [`str()`](https://docs.godotengine.org/en/stable/classes/class_string.html) function. 
+### 🔶 set_variable
 
-## FAQ 
+```gdscript
+set_variable(name: String, value)
+```
+
+Sets the value for the variable with the given name.
+
+The given value will be converted to string using the [`str()`](https://docs.godotengine.org/en/stable/classes/class_string.html) function.
+
+- **@param** `name` The name of the variable to edit.
+- **@param** `value` The value to set the variable to.
+- **@returns** The variable's value as string, or an empty string if not found.
+
+
+### 🔶 get_glossary
+
+```gdscript
+get_glossary(name: String)
+```
+
+Gets the glossary data for the definition with the given name.
+
+Returned format: `{ title': '', 'text' : '', 'extra': '' }`
+
+- **@param** `name` The name of the glossary to find.
+- **@returns** The glossary data as a Dictionary. A structure with empty strings is returned if the glossary was not found. 
+
+
+### 🔶 set_glossary
+
+```gdscript
+set_glossary(name: String, title: String, text: String, extra: String)
+```
+
+Sets the data for the glossary of the given name.
+
+Returned format: `{ title': '', 'text' : '', 'extra': '' }`
+
+- **@param** `name` The name of the glossary to edit.
+- **@param** `title	` The title to show in the information box.
+- **@param** `text` The text to show in the information box.
+- **@param** `extra` The extra information at the bottom of the box.
+
+
+### 🔶 get_current_timeline
+
+```gdscript
+get_current_timeline()
+```
+
+Gets the currently saved timeline.
+
+Timeline saves are set on timeline start, and cleared on end. This means you can keep track of timeline changes and detect when the dialog ends.
+
+- **@returns** The current timeline filename, or an empty string if none was saved.
+
+
+## ❔ FAQ 
 
 ### 🔷 How can I make a dialog show up in game?
 There are two ways of doing this; using gdscript or the scene editor.
@@ -146,7 +290,7 @@ You probably can, but I have no idea how to 😓. If you know your way around C#
 
 ---
 
-## Source structure
+## 🌳 Source structure
 
 ### / (At the root level)
 `plugin.cgf` - The required file to be recognized by Godot.
@@ -211,7 +355,7 @@ All icons are `.svg` files so they can scale nicely. I tried reusing many of the
 
 ---
 
-## Credits
+## ❤ Credits
 Code made by [Emilio Coppola](https://github.com/coppolaemilio).
 
 Contributors: [Toen](https://twitter.com/ToenAndreMC), Òscar, [Arnaud](https://github.com/arnaudvergnet), [and more!](https://github.com/coppolaemilio/dialogic/graphs/contributors)

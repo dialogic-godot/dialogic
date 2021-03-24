@@ -192,9 +192,11 @@ static func remove_file(path: String):
 
 static func set_json(path: String, data: Dictionary):
 	var file = File.new()
-	file.open(path, File.WRITE)
-	file.store_line(to_json(data))
-	file.close()
+	var err = file.open(path, File.WRITE)
+	if err == OK:
+		file.store_line(to_json(data))
+		file.close()
+	return err
 
 
 # TIMELINE
