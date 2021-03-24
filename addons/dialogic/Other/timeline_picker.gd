@@ -36,7 +36,7 @@ func _about_to_show_menu():
 func _on_timeline_selected(index):
 	var text = timelines_dropdown.get_popup().get_item_text(index)
 	var metadata = timelines_dropdown.get_popup().get_item_metadata(index)
-	current_value = metadata['file'].replace('.json', '')
+	current_value = metadata['file']
 	timelines_dropdown.text = text
 	emit_changed(get_edited_property(), current_value)
 
@@ -52,6 +52,6 @@ func update_property():
 	current_value = new_value
 	# Checking for the display name
 	for c in DialogicUtil.get_timeline_list():
-		if c['file'].replace('.json', '') == current_value:
+		if c['file'] == current_value:
 			timelines_dropdown.text = c['name']
 	updating = false
