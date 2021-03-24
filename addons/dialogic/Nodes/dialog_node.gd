@@ -17,9 +17,13 @@ var settings
 var current_theme
 var current_timeline := ''
 
+## The timeline to load when starting the scene
 export(String, "TimelineDropdown") var timeline: String
+## Should we clear saved data (definitions and timeline progress) on start?
 export(bool) var reset_saves = true
+## Should we show debug information when running?
 export(bool) var debug_mode = true
+
 signal event_start(type, event)
 signal event_end(type)
 signal dialogic_signal(value)
