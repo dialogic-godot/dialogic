@@ -5,7 +5,6 @@ var last_mouse_mode = null
 var input_next: String = 'ui_accept'
 var dialog_index: int = 0
 var finished: bool = false
-var text_speed = 0.02 # Higher = lower speed
 var waiting_for_answer: bool = false
 var waiting_for_input: bool = false
 var waiting = false
@@ -47,9 +46,7 @@ func _ready():
 	resize_main()
 
 	# Setting everything up for the node to be default
-	$TextBubble/NameLabel.text = ''
 	$Background.visible = false
-	$TextBubble/RichTextLabel.meta_underlined = false
 	$DefinitionInfo.visible = false
 
 	# Getting the character information
@@ -274,39 +271,8 @@ func show_dialog():
 	visible = true
 
 
-func start_text_tween():
-	# This will start the animation that makes the text appear letter by letter
-	var tween_duration = text_speed * $TextBubble/RichTextLabel.get_total_character_count()
-	$TextBubble/Tween.interpolate_property(
-		$TextBubble/RichTextLabel, "percent_visible", 0, 1, tween_duration,
-		Tween.TRANS_LINEAR, Tween.EASE_IN_OUT
-	)
-	$TextBubble/Tween.start()
-
-
-func update_name(character, color='#FFFFFF'):
-	if character.has('name'):
-		var parsed_name = character['name']
-		if character.has('display_name'):
-			if character['display_name'] != '':
-				parsed_name = character['display_name']
-		if character.has('color'):
-			color = '#' + character['color'].to_html()
-		$TextBubble/NameLabel.bbcode_text = '[color=' + color + ']' + parsed_name + '[/color]'
-	else:
-		$TextBubble/NameLabel.bbcode_text = ''
-	return true
-
-
 func update_text(text):
-	# Updating the text and starting the animation from 0
-	$TextBubble/RichTextLabel.bbcode_text = self.parse_definitions(text)
-	$TextBubble/RichTextLabel.percent_visible = 0
-
-	# The call to this function needs to be deferred.
-	# More info: https://github.com/godotengine/godot/issues/36381
-	call_deferred("start_text_tween")
-	return true
+	$TextBubble.update_text(self.parse_definitions(text))
 
 
 func load_dialog(skip_add = false):
@@ -332,10 +298,6 @@ func load_dialog(skip_add = false):
 		dialog_index += 1
 
 
-func reset_dialog_extras():
-	$TextBubble/NameLabel.bbcode_text = ''
-
-
 func get_character(character_id):
 	for c in characters:
 		if c['file'] == character_id:
@@ -345,7 +307,7 @@ func get_character(character_id):
 
 func event_handler(event: Dictionary):
 	# Handling an event and updating the available nodes accordingly.
-	reset_dialog_extras()
+	get_node("TextBubble").reset_dialog_extras()
 	# Updating the settings and definitions in case that they were modified by a timelien
 	load_config_files()
 	
@@ -356,7 +318,7 @@ func event_handler(event: Dictionary):
 			show_dialog()
 			finished = false
 			var character_data = get_character(event['character'])
-			update_name(character_data)
+			$TextBubble.update_name(character_data)
 			grab_portrait_focus(character_data, event)
 			update_text(event['text'])
 		{'question', 'question_id', 'options', ..}:
@@ -365,7 +327,7 @@ func event_handler(event: Dictionary):
 			finished = false
 			waiting_for_answer = true
 			if event.has('name'):
-				update_name(event['name'])
+				$TextBubble.update_name(event['name'])
 			update_text(event['question'])
 			if event.has('options'):
 				for o in event['options']:
@@ -574,7 +536,7 @@ func _on_option_selected(option, variable, value):
 	dprint('[!] Option selected: ', option.text, ' value= ' , value)
 
 
-func _on_Tween_tween_completed(object, key):
+func _on_text_completed():
 	#$TextBubble/RichTextLabel.meta_underlined = true
 	finished = true
 
@@ -653,7 +615,7 @@ func load_theme(filename):
 	$TextBubble/NameLabel.set('custom_constants/shadow_offset_y', shadow_offset.y)
 
 	# Text speed
-	text_speed = theme.get_value('text','speed', 2) * 0.01
+	$TextBubble.text_speed = theme.get_value('text','speed', 2) * 0.01
 
 	# Margin
 	var text_margin = theme.get_value('text', 'margin', Vector2(20, 10))

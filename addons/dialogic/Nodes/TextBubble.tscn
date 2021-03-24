@@ -1,0 +1,125 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://addons/dialogic/Nodes/text_bubble.gd" type="Script" id=1]
+[ext_resource path="res://addons/dialogic/Fonts/DefaultFont.tres" type="DynamicFont" id=2]
+[ext_resource path="res://addons/dialogic/Images/next-indicator.png" type="Texture" id=3]
+[ext_resource path="res://addons/dialogic/Images/background/background-2.png" type="Texture" id=4]
+
+[sub_resource type="StyleBoxFlat" id=1]
+bg_color = Color( 1, 1, 1, 0 )
+
+[sub_resource type="Animation" id=2]
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:margin_bottom")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 12.0, 55.0 ]
+}
+
+[node name="TextBubble" type="Control"]
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -455.0
+margin_top = -207.0
+margin_right = 455.0
+margin_bottom = -40.0
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_group_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="ColorRect" type="ColorRect" parent="."]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 0, 0, 0, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextureRect" type="TextureRect" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture = ExtResource( 4 )
+expand = true
+stretch_mode = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="RichTextLabel" type="RichTextLabel" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 20.0
+margin_top = 10.0
+margin_right = -20.0
+margin_bottom = -10.0
+rect_clip_content = false
+custom_styles/normal = SubResource( 1 )
+custom_fonts/normal_font = ExtResource( 2 )
+custom_colors/default_color = Color( 0.756863, 0.172549, 0.172549, 1 )
+custom_colors/font_color_shadow = Color( 0, 0, 0, 0.619608 )
+custom_constants/shadow_offset_x = 2
+custom_constants/shadow_offset_y = 2
+bbcode_enabled = true
+bbcode_text = "Placeholder text for testing and formatting."
+meta_underlined = false
+text = "Placeholder text for testing and formatting."
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Tween" type="Tween" parent="."]
+
+[node name="NextIndicator" type="TextureRect" parent="."]
+visible = false
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -36.4279
+margin_top = -35.9016
+margin_right = 14.5721
+margin_bottom = 12.0
+rect_scale = Vector2( 0.4, 0.4 )
+texture = ExtResource( 3 )
+stretch_mode = 4
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="NextIndicator"]
+autoplay = "IDLE"
+anims/IDLE = SubResource( 2 )
+
+[node name="NameLabel" type="RichTextLabel" parent="."]
+margin_left = 2.0
+margin_top = -37.0
+margin_right = 369.0
+rect_clip_content = false
+custom_styles/normal = SubResource( 1 )
+custom_fonts/normal_font = ExtResource( 2 )
+custom_colors/default_color = Color( 0.756863, 0.172549, 0.172549, 1 )
+custom_colors/font_color_shadow = Color( 0, 0, 0, 0.619608 )
+custom_constants/shadow_offset_x = 2
+custom_constants/shadow_offset_y = 2
+custom_constants/shadow_as_outline = 10
+bbcode_enabled = true
+bbcode_text = "Name Here"
+text = "Name Here"
+scroll_active = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[connection signal="tween_completed" from="Tween" to="." method="_on_Tween_tween_completed"]
