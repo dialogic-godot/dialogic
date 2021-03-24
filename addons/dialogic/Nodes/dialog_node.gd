@@ -10,11 +10,12 @@ var waiting_for_answer: bool = false
 var waiting_for_input: bool = false
 var waiting = false
 var preview = false
-var definitions
+var definitions = {}
 var definition_visible = false
 
 var settings
 var current_theme
+var current_timeline := ''
 
 export(String, "TimelineDropdown") var timeline: String
 export(bool) var reset_saves = true
@@ -35,13 +36,15 @@ func _ready():
 	# Loading the config files
 	load_config_files()
 	
-	# Make sure saves are ready
-	DialogicResources.init_definitions_saves(reset_saves)
-	
 	# Checking if the dialog should read the code from a external file
-	if timeline != '':
-		dialog_script = set_current_dialog(timeline + '.json')
-
+	if not timeline.empty():
+		dialog_script = set_current_dialog(timeline)
+	elif dialog_script.keys().size() == 0:
+		dialog_script = {
+			"events":[{"character":"","portrait":"",
+			"text":"[Dialogic Error] No timeline specified."}]
+		}
+	
 	# Connecting resize signal
 	get_viewport().connect("size_changed", self, "resize_main")
 	resize_main()
@@ -55,12 +58,17 @@ func _ready():
 	# Getting the character information
 	characters = DialogicUtil.get_character_list()
 
-	if Engine.is_editor_hint() == false:
+	if not Engine.is_editor_hint():
 		load_dialog()
 
 
 func load_config_files():
-	definitions = DialogicUtil.get_definition_list()
+	if not Engine.is_editor_hint():
+		# Make sure saves are ready
+		DialogicSingleton.init(reset_saves)
+		definitions = DialogicSingleton.get_definitions()
+	else:
+		definitions = DialogicResources.get_default_definitions()
 	settings = DialogicResources.get_settings_config()
 	var theme_file = 'res://addons/dialogic/Editor/ThemeEditor/default-theme.cfg'
 	if settings.has_section('theme'):
@@ -80,7 +88,8 @@ func resize_main():
 	$TextBubble.rect_position.y = (rect_size.y) - ($TextBubble.rect_size.y) - current_theme.get_value('box', 'bottom_gap', 40)
 
 
-func set_current_dialog(dialog_path):
+func set_current_dialog(dialog_path: String):
+	current_timeline = dialog_path
 	var dialog_script = DialogicResources.get_timeline_json(dialog_path)
 	# All this parse events should be happening in the same loop ideally
 	# But until performance is not an issue I will probably stay lazy
@@ -217,7 +226,6 @@ func parse_branches(dialog_script: Dictionary) -> Dictionary:
 
 func parse_definitions(text: String):
 	var words = []
-	var definition_list = DialogicUtil.get_definition_list()
 	if Engine.is_editor_hint():
 		# Loading variables again to avoid issues in the preview dialog
 		load_config_files()
@@ -229,11 +237,9 @@ func parse_definitions(text: String):
 
 func _insert_variable_definitions(text: String):
 	var final_text := text;
-	for d in definitions:
-		if d['type'] == 0:
-			var name : String = d['name'];
-			var value = DialogicUtil.get_var(name)
-			final_text = final_text.replace('[' + name + ']', value)
+	for d in definitions['variables']:
+		var name : String = d['name'];
+		final_text = final_text.replace('[' + name + ']', d['value'])
 	return final_text;
 	
 	
@@ -241,13 +247,12 @@ func _insert_glossary_definitions(text: String):
 	var color = self.current_theme.get_value('definitions', 'color', '#ffbebebe')
 	var final_text := text;
 	# I should use regex here, but this is way easier :)
-	for d in definitions:
-		if d['type'] == 1:
-			final_text = final_text.replace(d['name'],
-				'[url=' + d['section'] + ']' +
-				'[color=' + color + ']' + d['name'] + '[/color]' +
-				'[/url]'
-			)
+	for d in definitions['glossary']:
+		final_text = final_text.replace(d['name'],
+			'[url=' + d['id'] + ']' +
+			'[color=' + color + ']' + d['name'] + '[/color]' +
+			'[/url]'
+		)
 	return final_text;
 
 
@@ -309,13 +314,26 @@ func update_text(text):
 	return true
 
 
+func on_timeline_start():
+	if not Engine.is_editor_hint():
+		DialogicSingleton.save_definitions()
+		DialogicSingleton.set_current_timeline(current_timeline)
+	emit_signal("event_start", "timeline", current_timeline)
+
+
+func on_timeline_end():
+	if not Engine.is_editor_hint():
+		DialogicSingleton.save_definitions()
+		DialogicSingleton.set_current_timeline('')
+	emit_signal("event_end", "timeline")
+
 func load_dialog(skip_add = false):
 	# Emitting signals
 	if dialog_script.has('events'):
 		if dialog_index == 0:
-			emit_signal("event_start", "timeline", timeline)
+			on_timeline_start()
 		elif dialog_index == dialog_script['events'].size():
-			emit_signal("event_end", "timeline")
+			on_timeline_end()
 
 	# Hiding definitions popup
 	definition_visible = false
@@ -346,8 +364,6 @@ func get_character(character_id):
 func event_handler(event: Dictionary):
 	# Handling an event and updating the available nodes accordingly.
 	reset_dialog_extras()
-	# Updating the settings and definitions in case that they were modified by a timelien
-	load_config_files()
 	
 	dprint('[D] Current Event: ', event)
 	match event:
@@ -440,6 +456,7 @@ func event_handler(event: Dictionary):
 			go_to_next_event()
 		{'close_dialog'}:
 			emit_signal("event_start", "close_dialog", event)
+			on_timeline_end()
 			queue_free()
 		{'set_theme'}:
 			emit_signal("event_start", "set_theme", event)
@@ -458,11 +475,12 @@ func event_handler(event: Dictionary):
 			# Treating this conditional as an option on a regular question event
 			var def_value = null
 			var current_question = questions[event['question_id']]
-			for d in definitions:
-				if d['section'] == event['definition']:
-					def_value = DialogicUtil.get_var(d['name'])
 			
-			var condition_met = self._compare_definitions(def_value, event['value'], event['condition']);
+			for d in definitions['variables']:
+				if d['id'] == event['definition']:
+					def_value = d['value']
+			
+			var condition_met = def_value != null and _compare_definitions(def_value, event['value'], event['condition']);
 			
 			current_question['answered'] = !condition_met
 			if !condition_met:
@@ -474,7 +492,7 @@ func event_handler(event: Dictionary):
 				go_to_next_event()
 		{'set_value', 'definition'}:
 			emit_signal("event_start", "set_value", event)
-			DialogicResources.set_saved_definition_variable_value(event['definition'], event['set_value'])
+			DialogicSingleton.set_variable_from_id(event['definition'], event['set_value'])
 			go_to_next_event()
 		_:
 			visible = false
@@ -570,7 +588,6 @@ func _on_option_selected(option, variable, value):
 	waiting_for_answer = false
 	reset_options()
 	load_dialog()
-	#print(dialog_resource.custom_variables)
 	dprint('[!] Option selected: ', option.text, ' value= ' , value)
 
 
@@ -684,17 +701,16 @@ func load_theme(filename):
 
 func _on_RichTextLabel_meta_hover_started(meta):
 	var correct_type = false
-	for d in definitions:
-		if d['section'] == meta:
-			if d['type'] == 1:
-				$DefinitionInfo.load_preview({
-					'title': d['config'].get_value(d['section'], 'extra_title', ''),
-					'body': d['config'].get_value(d['section'], 'extra_text', ''),
-					'extra': d['config'].get_value(d['section'], 'extra_extra', ''),
-					'color': current_theme.get_value('definitions', 'color', '#ffbebebe'),
-				})
-				correct_type = true
-				print(d)
+	for d in definitions['glossary']:
+		if d['id'] == meta:
+			$DefinitionInfo.load_preview({
+				'title': d['title'],
+				'body': d['text'],
+				'extra': d['extra'],
+				'color': current_theme.get_value('definitions', 'color', '#ffbebebe'),
+			})
+			correct_type = true
+			print(d)
 
 	if correct_type:
 		definition_visible = true

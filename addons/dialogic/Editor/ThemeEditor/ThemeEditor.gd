@@ -323,4 +323,4 @@ func _on_Alignment_item_selected(index):
 
 
 func _on_Preview_text_changed():
-	DialogicUtil.set_theme_value(current_theme, 'text', 'preview', n['text_preview'].text)
+	DialogicResources.set_theme_value(current_theme, 'text', 'preview', n['text_preview'].text)

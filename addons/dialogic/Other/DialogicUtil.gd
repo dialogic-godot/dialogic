@@ -68,43 +68,8 @@ static func get_theme_list() -> Array:
 	return themes
 
 
-static func get_default_definition_list() -> Array:
-	var definitions: Array = []
-	var config = DialogicResources.get_default_definitions_config()
-	for section in config.get_sections():
-		definitions.append({
-			'section': section,
-			'name': config.get_value(section, 'name', section),
-			'config': config,
-			'type': config.get_value(section, 'type', 0),
-		})
-	return definitions
-
-
-static func get_definition_list() -> Array:
-	var definitions: Array = []
-	var config = DialogicResources.get_saved_definitions_config()
-	for section in config.get_sections():
-		definitions.append({
-			'section': section,
-			'name': config.get_value(section, 'name', section),
-			'config': config,
-			'type': config.get_value(section, 'type', 0),
-		})
-	return definitions
-
-
-static func get_var(variable: String) -> String:
-	for d in get_definition_list():
-		if d['name'] == variable:
-			return d['config'].get_value(d['section'], 'value')
-	return ''
-
-
-static func set_var(variable: String, value) -> void:
-	for d in get_definition_list():
-		if d['name'] == variable:
-			DialogicResources.set_saved_definition_variable(d['section'], d['name'], value)
+static func get_default_definitions_list() -> Array:
+	return DialogicDefinitionsUtil.definitions_json_to_array(DialogicResources.get_default_definitions())
 
 
 static func generate_random_id() -> String:

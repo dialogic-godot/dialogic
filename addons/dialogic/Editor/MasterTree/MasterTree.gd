@@ -69,7 +69,7 @@ func _ready():
 		add_character(c)
 	
 	# Adding Definitions
-	for d in DialogicUtil.get_default_definition_list():
+	for d in DialogicUtil.get_default_definitions_list():
 		add_definition(d)
 	
 	# Adding Themes
@@ -155,7 +155,7 @@ func _on_item_selected():
 		character_editor.load_character(metadata['file'])
 	if metadata['editor'] == 'Definition':
 		definition_editor.visible = true
-		definition_editor.load_definition(metadata['section'])
+		definition_editor.load_definition(metadata['id'])
 	if metadata['editor'] == 'Theme':
 		theme_editor.load_theme(metadata['file'])
 		theme_editor.visible = true

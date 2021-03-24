@@ -36,7 +36,7 @@ func load_data(data):
 
 func _on_definition_entry_selected(index):
 	var metadata = nodes['definition_picker'].get_popup().get_item_metadata(index)
-	event_data['definition'] = metadata['section']
+	event_data['definition'] = metadata['id']
 
 
 func _on_condition_entry_selected(index):
