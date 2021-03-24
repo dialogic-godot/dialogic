@@ -68,6 +68,10 @@ static func get_theme_list() -> Array:
 	return themes
 
 
+static func get_default_definitions_list() -> Array:
+	return DialogicDefinitionsUtil.definitions_json_to_array(DialogicResources.get_default_definitions())
+
+
 static func generate_random_id() -> String:
 	return str(OS.get_unix_time()) + '-' + str(100 + randi()%899+1)
 
