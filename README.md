@@ -1,4 +1,4 @@
-# Dialogic Release - Candidate v1.0 ![Godot v3.3](https://img.shields.io/badge/godot-v3.3-%23478cbf)
+# Dialogic - Release Candidate v1.0 ![Godot v3.3](https://img.shields.io/badge/godot-v3.3-%23478cbf)
 Create dialogs, characters and scenes to display conversations in your Godot games. 
 
 ![Screenshot](https://coppolaemilio.com/images/dialogic/dialogic-hero.png?v2)
