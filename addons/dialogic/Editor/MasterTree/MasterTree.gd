@@ -18,6 +18,8 @@ var definitions_tree
 var themes_tree
 var settings_tree
 
+signal editor_selected(selected)
+
 func _ready():
 	allow_rmb_select = true
 	var root = tree.create_item()
@@ -150,21 +152,27 @@ func _on_item_selected():
 	if metadata['editor'] == 'Timeline':
 		timeline_editor.visible = true
 		timeline_editor.load_timeline(metadata['file'])
+		emit_signal("editor_selected", 'timeline')
 	if metadata['editor'] == 'Character':
 		character_editor.visible = true
 		character_editor.load_character(metadata['file'])
+		emit_signal("editor_selected", 'character')
 	if metadata['editor'] == 'Definition':
 		definition_editor.visible = true
 		definition_editor.load_definition(metadata['id'])
+		emit_signal("editor_selected", 'definition')
 	if metadata['editor'] == 'Theme':
 		theme_editor.load_theme(metadata['file'])
 		theme_editor.visible = true
+		emit_signal("editor_selected", 'theme')
 	if metadata['editor'] == 'Settings':
 		settings_editor.update_data()
 		settings_editor.visible = true
+		emit_signal("editor_selected", 'settings')
 
 
 func hide_all_editors(show_empty = false):
+	emit_signal("editor_selected", 'none')
 	character_editor.visible = false
 	timeline_editor.visible = false
 	definition_editor.visible = false

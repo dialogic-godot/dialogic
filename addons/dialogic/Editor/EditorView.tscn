@@ -298,5 +298,4 @@ dialog_text = "Are you sure you want to remove this timeline?
 __meta__ = {
 "_edit_use_anchors_": false
 }
-
 [connection signal="gui_input" from="ToolBar/Logo" to="." method="_on_Logo_gui_input"]
