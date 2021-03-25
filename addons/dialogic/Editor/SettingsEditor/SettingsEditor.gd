@@ -31,7 +31,7 @@ func dialog_options(settings):
 
 func refresh_themes(settings):
 	nodes['themes'].clear()
-	var theme_list = DialogicUtil.get_theme_list()
+	var theme_list = DialogicUtil.get_sorted_theme_list()
 	var theme_indexes = {}
 	var index = 0
 	for theme in theme_list:

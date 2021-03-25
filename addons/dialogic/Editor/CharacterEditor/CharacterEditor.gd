@@ -29,6 +29,9 @@ func _ready():
 	nodes['color'].connect('color_changed', self, '_on_color_changed')
 
 
+func is_selected(file: String):
+	return nodes['file'].text == file
+
 func _on_display_name_toggled(button_pressed):
 	$HBoxContainer/Container/DisplayName.visible = button_pressed
 
@@ -36,6 +39,8 @@ func _on_display_name_toggled(button_pressed):
 func _on_name_changed(value):
 	var item = master_tree.get_selected()
 	item.set_text(0, value)
+	save_character()
+	master_tree.build_characters(nodes['file'].text)
 
 
 func _on_color_changed(color):
@@ -77,8 +82,8 @@ func create_character():
 
 
 func new_character():
-	# This event creates and selects the new timeline
-	master_tree.add_character(create_character()['metadata'], true)
+	# This event creates and selects the new character
+	master_tree.build_characters(create_character()['metadata']['file'])
 
 
 # Saving and Loading

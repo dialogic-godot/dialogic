@@ -242,7 +242,7 @@ func create_timeline():
 
 func new_timeline():
 	# This event creates and selects the new timeline
-	master_tree.add_timeline(create_timeline()['metadata'], true)
+	master_tree.build_timelines(create_timeline()['metadata']['file'])
 
 
 # Saving

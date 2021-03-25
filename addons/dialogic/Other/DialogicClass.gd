@@ -102,7 +102,7 @@ static func get_variable(name: String) -> String:
 ## [`str()`](https://docs.godotengine.org/en/stable/classes/class_string.html) function.
 ##
 ## @param name					The name of the variable to edit.
-## @param value					The value of the variable to set.
+## @param value					The value to set the variable to.
 static func set_variable(name: String, value) -> void:
 	DialogicSingleton.set_variable(name, value)
 

@@ -63,30 +63,37 @@ func _ready():
 	#subchild1.set_text(0, "Subchild1")
 	
 	# Adding timelines
-	for t in DialogicUtil.get_timeline_list():
-		add_timeline(t)
+	build_timelines()
 	
 	# Adding characters
-	for c in DialogicUtil.get_character_list():
-		add_character(c)
+	build_characters()
 	
 	# Adding Definitions
-	for d in DialogicUtil.get_default_definitions_list():
-		add_definition(d)
+	build_definitions()
 	
 	# Adding Themes
-	for m in DialogicUtil.get_theme_list():
-		add_theme(m)
+	build_themes()
 	
 	# Default empty screen.
-	hide_all_editors(true) 
+	hide_all_editors() 
 	
 	# AutoSave timer
 	$AutoSave.connect("timeout", self, '_on_autosave_timeout')
 	$AutoSave.start(0.5)
 
 
-func add_timeline(timeline, select = false):
+func _clear_tree_children(parent: TreeItem):
+	while parent.get_children() != null:
+		parent.get_children().free()
+
+
+func build_timelines(selected_item: String=''):
+	_clear_tree_children(timelines_tree)
+	for t in DialogicUtil.get_sorted_timeline_list():
+		_add_timeline(t, not selected_item.empty() and t['file'] == selected_item)
+
+
+func _add_timeline(timeline, select = false):
 	var item = tree.create_item(timelines_tree)
 	item.set_icon(0, timeline_icon)
 	if timeline.has('name'):
@@ -100,7 +107,13 @@ func add_timeline(timeline, select = false):
 		item.select(0)
 
 
-func add_theme(theme_item, select = false):
+func build_themes(selected_item: String=''):
+	_clear_tree_children(themes_tree)
+	for t in DialogicUtil.get_sorted_theme_list():
+		_add_theme(t, not selected_item.empty() and t['file'] == selected_item)
+
+
+func _add_theme(theme_item, select = false):
 	var item = tree.create_item(themes_tree)
 	item.set_icon(0, get_icon("StyleBoxTexture", "EditorIcons"))
 	item.set_text(0, theme_item['name'])
@@ -111,7 +124,13 @@ func add_theme(theme_item, select = false):
 		item.select(0)
 
 
-func add_character(character, select = false):
+func build_characters(selected_item: String=''):
+	_clear_tree_children(characters_tree)
+	for t in DialogicUtil.get_sorted_character_list():
+		_add_character(t, not selected_item.empty() and t['file'] == selected_item)
+
+
+func _add_character(character, select = false):
 	var item = tree.create_item(characters_tree)
 	item.set_icon(0, character_icon)
 	if character.has('name'):
@@ -128,7 +147,13 @@ func add_character(character, select = false):
 		item.select(0)
 
 
-func add_definition(definition, select = false):
+func build_definitions(selected_item: String=''):
+	_clear_tree_children(definitions_tree)
+	for t in DialogicUtil.get_sorted_default_definitions_list():
+		_add_definition(t, not selected_item.empty() and t['id'] == selected_item)
+
+
+func _add_definition(definition, select = false):
 	var item = tree.create_item(definitions_tree)
 	item.set_text(0, definition['name'])
 	item.set_icon(0, get_icon("Variant", "EditorIcons"))
@@ -148,39 +173,79 @@ func _on_item_selected():
 	#       save_current_resource()
 	var item = get_selected()
 	var metadata = item.get_metadata(0)
-	hide_all_editors()
 	if metadata['editor'] == 'Timeline':
-		timeline_editor.visible = true
 		timeline_editor.load_timeline(metadata['file'])
-		emit_signal("editor_selected", 'timeline')
+		show_timeline_editor()
 	if metadata['editor'] == 'Character':
-		character_editor.visible = true
-		character_editor.load_character(metadata['file'])
-		emit_signal("editor_selected", 'character')
+		if not character_editor.is_selected(metadata['file']):
+			character_editor.load_character(metadata['file'])
+		show_character_editor()
 	if metadata['editor'] == 'Definition':
-		definition_editor.visible = true
-		definition_editor.load_definition(metadata['id'])
-		emit_signal("editor_selected", 'definition')
+		if not definition_editor.is_selected(metadata['id']):
+			definition_editor.visible = true
+			definition_editor.load_definition(metadata['id'])
+		show_definition_editor()
 	if metadata['editor'] == 'Theme':
 		theme_editor.load_theme(metadata['file'])
-		theme_editor.visible = true
-		emit_signal("editor_selected", 'theme')
+		show_theme_editor()
 	if metadata['editor'] == 'Settings':
 		settings_editor.update_data()
-		settings_editor.visible = true
-		emit_signal("editor_selected", 'settings')
+		show_settings_editor()
 
 
-func hide_all_editors(show_empty = false):
+func show_character_editor():
+	emit_signal("editor_selected", 'character')
+	character_editor.visible = true
+	timeline_editor.visible = false
+	definition_editor.visible = false
+	theme_editor.visible = false
+	settings_editor.visible = false
+	empty_editor.visible = false
+
+func show_timeline_editor():
+	emit_signal("editor_selected", 'timeline')
+	character_editor.visible = false
+	timeline_editor.visible = true
+	definition_editor.visible = false
+	theme_editor.visible = false
+	settings_editor.visible = false
+	empty_editor.visible = false
+
+func show_definition_editor():
+	emit_signal("editor_selected", 'definition')
+	character_editor.visible = false
+	timeline_editor.visible = false
+	definition_editor.visible = true
+	theme_editor.visible = false
+	settings_editor.visible = false
+	empty_editor.visible = false
+
+func show_theme_editor():
+	emit_signal("editor_selected", 'theme')
+	character_editor.visible = false
+	timeline_editor.visible = false
+	definition_editor.visible = false
+	theme_editor.visible = true
+	settings_editor.visible = false
+	empty_editor.visible = false
+
+func show_settings_editor():
+	emit_signal("editor_selected", 'theme')
+	character_editor.visible = false
+	timeline_editor.visible = false
+	definition_editor.visible = false
+	theme_editor.visible = false
+	settings_editor.visible = true
+	empty_editor.visible = false
+
+func hide_all_editors():
 	emit_signal("editor_selected", 'none')
 	character_editor.visible = false
 	timeline_editor.visible = false
 	definition_editor.visible = false
 	theme_editor.visible = false
-	empty_editor.visible = false
 	settings_editor.visible = false
-	if show_empty:
-		empty_editor.visible = true
+	empty_editor.visible = true
 
 
 func _on_item_rmb_selected(position):
@@ -224,18 +289,26 @@ func _on_gui_input(event):
 
 
 func _on_item_edited():
+	print('edited')
 	var item = get_selected()
 	var metadata = item.get_metadata(0)
 	if metadata['editor'] == 'Timeline':
 		timeline_editor.timeline_name = item.get_text(0)
+		save_current_resource()
+		build_timelines(metadata['file'])
 	if metadata['editor'] == 'Theme':
 		DialogicResources.set_theme_value(metadata['file'], 'settings', 'name', item.get_text(0))
+		build_themes(metadata['file'])
 	if metadata['editor'] == 'Character':
 		character_editor.nodes['name'].text = item.get_text(0)
+		save_current_resource()
+		build_characters(metadata['file'])
 	if metadata['editor'] == 'Definition':
 		definition_editor.nodes['name'].text = item.get_text(0)
 		# Not sure why this signal doesn't triggers
 		definition_editor._on_name_changed(item.get_text(0))
+		save_current_resource()
+		build_definitions(metadata['id'])
 
 
 func _on_autosave_timeout():

@@ -37,7 +37,7 @@ func _on_about_to_show():
 	if allow_dont_change:
 		get_popup().add_item("[Don't change]")
 		index += 1
-	for c in DialogicUtil.get_character_list():
+	for c in DialogicUtil.get_sorted_character_list():
 		if c['file'] == character:
 			for p in c['portraits']:
 				get_popup().add_item(p['name'])
