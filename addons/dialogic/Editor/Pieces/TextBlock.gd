@@ -21,7 +21,7 @@ func _ready():
 	$PanelContainer/VBoxContainer/Header/CharacterPicker.connect('character_selected', self , '_on_character_selected')
 	portrait_picker.get_popup().connect("index_pressed", self, '_on_portrait_selected')
 
-	var c_list = DialogicUtil.get_character_list()
+	var c_list = DialogicUtil.get_sorted_character_list()
 	if c_list.size() == 0:
 		$PanelContainer/VBoxContainer/Header/CharacterPicker.visible = false
 	else:

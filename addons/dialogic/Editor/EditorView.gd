@@ -71,7 +71,7 @@ func _on_RemoveTimelineConfirmation_confirmed():
 	print('target: ', target)
 	DialogicResources.delete_timeline(target)
 	$MainPanel/MasterTree.remove_selected()
-	$MainPanel/MasterTree.hide_all_editors(true)
+	$MainPanel/MasterTree.hide_all_editors()
 
 
 # Character context menu
@@ -102,21 +102,21 @@ func _on_RemoveDefinitionConfirmation_confirmed():
 	var target = $MainPanel/DefinitionEditor.current_definition['id']
 	DialogicResources.delete_default_definition(target)
 	$MainPanel/MasterTree.remove_selected()
-	$MainPanel/MasterTree.hide_all_editors(true)
+	$MainPanel/MasterTree.hide_all_editors()
 
 
 func _on_RemoveCharacterConfirmation_confirmed():
 	var filename = DialogicResources.get_path('CHAR_DIR', $MainPanel/CharacterEditor.opened_character_data['id']) 
 	DialogicResources.delete_character(filename)
 	$MainPanel/MasterTree.remove_selected()
-	$MainPanel/MasterTree.hide_all_editors(true)
+	$MainPanel/MasterTree.hide_all_editors()
 
 
 func _on_RemoveThemeConfirmation_confirmed():
 	var filename = $MainPanel/MasterTree.get_selected().get_metadata(0)['file']
 	DialogicResources.delete_theme(filename)
 	$MainPanel/MasterTree.remove_selected()
-	$MainPanel/MasterTree.hide_all_editors(true)
+	$MainPanel/MasterTree.hide_all_editors()
 
 
 # Godot dialog

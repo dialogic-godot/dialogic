@@ -12,12 +12,13 @@ func _ready():
 func _on_MenuButton_about_to_show():
 	get_popup().clear()
 	var index = 0
-	for d in DialogicResources.get_default_definitions()['variables']:
-		get_popup().add_item(d['name'])
-		get_popup().set_item_metadata(index, {
-			'id': d['id'],
-		})
-		index += 1
+	for d in DialogicUtil.get_sorted_default_definitions_list():
+		if d['type'] == 0:
+			get_popup().add_item(d['name'])
+			get_popup().set_item_metadata(index, {
+				'id': d['id'],
+			})
+			index += 1
 
 
 func _on_entry_selected(index):
