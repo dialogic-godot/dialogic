@@ -31,20 +31,25 @@ func _ready():
 				b.connect('pressed', self, "_create_event_button_pressed", [b.name])
 
 
-func _select_item(item: Node):
+func _clear_selection():
 	if selected_item != null and saved_style != null:
 		var selected_panel: PanelContainer = selected_item.get_node("PanelContainer")
 		if selected_panel != null:
 			selected_panel.set('custom_styles/panel', saved_style)
+	selected_item = null
+	saved_style = null
+
+
+func _select_item(item: Node):
 	if item != selected_item:
+		_clear_selection()
 		var panel: PanelContainer = item.get_node("PanelContainer")
 		if panel != null:
 			saved_style = panel.get('custom_styles/panel')
 			selected_item = item
 			panel.set('custom_styles/panel', selected_style)
 	else:
-		selected_item = null
-		saved_style = null
+		_clear_selection()
 
 
 func _on_gui_input(event, item: Node):
@@ -202,6 +207,7 @@ func load_timeline(filename: String):
 
 
 func clear_timeline():
+	_clear_selection()
 	for event in timeline.get_children():
 		event.free()
 
