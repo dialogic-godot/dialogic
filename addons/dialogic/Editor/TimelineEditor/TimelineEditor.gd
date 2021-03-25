@@ -64,15 +64,29 @@ func _create_event_button_pressed(button_name):
 
 
 func _on_ButtonQuestion_pressed() -> void:
-	create_event("Question", {'no-data': true}, true)
-	create_event("Choice", {'no-data': true}, true)
-	create_event("Choice", {'no-data': true}, true)
-	create_event("EndBranch", {'no-data': true}, true)
+	if selected_item != null:
+		# Events are added bellow the selected node
+		# So we must reverse the adding order
+		create_event("EndBranch", {'no-data': true}, true)
+		create_event("Choice", {'no-data': true}, true)
+		create_event("Choice", {'no-data': true}, true)
+		create_event("Question", {'no-data': true}, true)
+	else:
+		create_event("Question", {'no-data': true}, true)
+		create_event("Choice", {'no-data': true}, true)
+		create_event("Choice", {'no-data': true}, true)
+		create_event("EndBranch", {'no-data': true}, true)
 
 
 func _on_ButtonCondition_pressed() -> void:
-	create_event("IfCondition", {'no-data': true}, true)
-	create_event("EndBranch", {'no-data': true}, true)
+	if selected_item != null:
+		# Events are added bellow the selected node
+		# So we must reverse the adding order
+		create_event("EndBranch", {'no-data': true}, true)
+		create_event("IfCondition", {'no-data': true}, true)
+	else:
+		create_event("IfCondition", {'no-data': true}, true)
+		create_event("EndBranch", {'no-data': true}, true)
 
 
 func _on_ButtonFold_pressed() -> void:
