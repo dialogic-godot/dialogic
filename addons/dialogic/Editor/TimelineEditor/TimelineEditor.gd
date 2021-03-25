@@ -18,6 +18,10 @@ func _ready():
 				b.connect('pressed', self, "_on_ButtonQuestion_pressed", [])
 			elif b.name == 'IfCondition':
 				b.connect('pressed', self, "_on_ButtonCondition_pressed", [])
+			elif b.name == 'Fold':
+				b.connect('pressed', self, "_on_ButtonFold_pressed", [])
+			elif b.name == 'Unfold':
+				b.connect('pressed', self, "_on_ButtonUnfold_pressed", [])
 			else:
 				b.connect('pressed', self, "_create_event_button_pressed", [b.name])
 
@@ -38,6 +42,14 @@ func _on_ButtonQuestion_pressed() -> void:
 func _on_ButtonCondition_pressed() -> void:
 	create_event("IfCondition", {'no-data': true}, true)
 	create_event("EndBranch", {'no-data': true}, true)
+
+
+func _on_ButtonFold_pressed() -> void:
+	fold_all_nodes()
+
+
+func _on_ButtonUnfold_pressed() -> void:
+	unfold_all_nodes()
 
 
 # Adding an event to the timeline
@@ -220,9 +232,11 @@ func save_timeline() -> void:
 # Utilities
 func fold_all_nodes():
 	for event in timeline.get_children():
-		event.get_node("PanelContainer/VBoxContainer/Header/VisibleToggle").set_pressed(false)
+		if event.has_node("PanelContainer/VBoxContainer/Header/VisibleToggle"):
+			event.get_node("PanelContainer/VBoxContainer/Header/VisibleToggle").set_pressed(false)
 
 
 func unfold_all_nodes():
 	for event in timeline.get_children():
-		event.get_node("PanelContainer/VBoxContainer/Header/VisibleToggle").set_pressed(true)
+		if event.has_node("PanelContainer/VBoxContainer/Header/VisibleToggle"):
+			event.get_node("PanelContainer/VBoxContainer/Header/VisibleToggle").set_pressed(true)
