@@ -11,7 +11,7 @@ The plugin is not production ready, this means that it will not work in your gam
 
 ## Contents
 
-- [Changleog](#-changelog)
+- [Changelog](#-changelog)
 - [Installation](#-installation)
 - [Basic Usage](#-basic-usage)
 - [Documentation](#-v1.0-documentation)
@@ -122,7 +122,7 @@ This is exactly the same as using the editor: you can drag and drop the scene lo
 - **@param** `debug_mode` Debug is disabled by default but can be enabled if needed.
 - **@returns** A Dialog node to be added into the scene tree.
 
-### 🔶 reset_saves
+### 🔶 start_from_save
 
 ```gdscript
 start_from_save(
