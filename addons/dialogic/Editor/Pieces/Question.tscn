@@ -1,7 +1,8 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://addons/dialogic/Images/question.svg" type="Texture" id=1]
 [ext_resource path="res://addons/dialogic/Editor/Pieces/Question.gd" type="Script" id=2]
+[ext_resource path="res://addons/dialogic/Editor/Pieces/Common/Spacer.tscn" type="PackedScene" id=3]
 [ext_resource path="res://addons/dialogic/Editor/Pieces/Common/PieceExtraSettings.tscn" type="PackedScene" id=4]
 [ext_resource path="res://addons/dialogic/Editor/Pieces/Common/DragController.tscn" type="PackedScene" id=5]
 
@@ -87,11 +88,10 @@ margin_right = 305.0
 margin_bottom = 21.0
 custom_colors/font_color = Color( 1, 1, 1, 0.513726 )
 
-[node name="Spacer" type="Control" parent="PanelContainer/VBoxContainer/Header"]
+[node name="Spacer" parent="PanelContainer/VBoxContainer/Header" instance=ExtResource( 3 )]
 margin_left = 309.0
 margin_right = 941.0
 margin_bottom = 28.0
-size_flags_horizontal = 3
 
 [node name="OptionButton" parent="PanelContainer/VBoxContainer/Header" instance=ExtResource( 4 )]
 margin_left = 945.0
@@ -100,5 +100,4 @@ margin_bottom = 28.0
 items = [ "Move Up", null, 0, false, false, 0, 0, null, "", false, "Move Down", null, 0, false, false, 1, 0, null, "", false, "", null, 0, false, false, 2, 0, null, "", true, "Remove", null, 0, false, false, 3, 0, null, "", false ]
 
 [node name="DragController" parent="." instance=ExtResource( 5 )]
-
 [connection signal="text_changed" from="PanelContainer/VBoxContainer/Header/LineEdit" to="." method="_on_LineEdit_text_changed"]

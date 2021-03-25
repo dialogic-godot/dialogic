@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://addons/dialogic/Images/condition.svg" type="Texture" id=1]
 [ext_resource path="res://addons/dialogic/Editor/Pieces/IfCondition.gd" type="Script" id=2]
@@ -7,6 +7,7 @@
 [ext_resource path="res://addons/dialogic/Editor/Pieces/Common/DragController.tscn" type="PackedScene" id=5]
 [ext_resource path="res://addons/dialogic/Editor/Pieces/Common/CustomLineEdit.tscn" type="PackedScene" id=6]
 [ext_resource path="res://addons/dialogic/Editor/Pieces/Common/DefinitionPicker.tscn" type="PackedScene" id=7]
+[ext_resource path="res://addons/dialogic/Editor/Pieces/Common/Spacer.tscn" type="PackedScene" id=8]
 
 [sub_resource type="StyleBoxFlat" id=1]
 content_margin_left = 16.0
@@ -85,11 +86,10 @@ margin_right = 308.0
 margin_bottom = 21.0
 custom_colors/font_color = Color( 1, 1, 1, 0.513726 )
 
-[node name="Spacer" type="Control" parent="PanelContainer/VBoxContainer/Header"]
+[node name="Spacer" parent="PanelContainer/VBoxContainer/Header" instance=ExtResource( 8 )]
 margin_left = 312.0
 margin_right = 941.0
 margin_bottom = 28.0
-size_flags_horizontal = 3
 
 [node name="OptionButton" parent="PanelContainer/VBoxContainer/Header" instance=ExtResource( 4 )]
 margin_left = 945.0
