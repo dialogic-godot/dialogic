@@ -26,7 +26,7 @@ func load_data(data):
 
 func _on_MenuButton_about_to_show():
 	var Dropdown = $PanelContainer/VBoxContainer/Header/MenuButton
-	var theme_list = DialogicUtil.get_theme_list()
+	var theme_list = DialogicUtil.get_sorted_theme_list()
 	var index = 0
 
 	Dropdown.get_popup().clear()

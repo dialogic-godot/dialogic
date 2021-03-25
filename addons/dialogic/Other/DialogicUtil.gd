@@ -39,6 +39,12 @@ static func get_character_list() -> Array:
 	return characters
 
 
+static func get_sorted_character_list():
+	var array = get_character_list()
+	array.sort_custom(DialgicSorter, 'sort_resources')
+	return array
+
+
 static func get_timeline_list() -> Array:
 	var timelines: Array = []
 	for file in DialogicResources.listdir(DialogicResources.get_path('TIMELINE_DIR')):
@@ -54,12 +60,17 @@ static func get_timeline_list() -> Array:
 	return timelines
 
 
+static func get_sorted_timeline_list():
+	var array = get_timeline_list()
+	array.sort_custom(DialgicSorter, 'sort_resources')
+	return array
+
+
 static func get_theme_list() -> Array:
 	var themes: Array = []
 	for file in DialogicResources.listdir(DialogicResources.get_path('THEME_DIR')):
 		if '.cfg' in file:
-			var config = ConfigFile.new()
-			var err = DialogicResources.get_theme_config(file)
+			var config = DialogicResources.get_theme_config(file)
 			themes.append({
 				'file': file,
 				'name': config.get_value('settings','name', file),
@@ -68,8 +79,20 @@ static func get_theme_list() -> Array:
 	return themes
 
 
+static func get_sorted_theme_list():
+	var array = get_theme_list()
+	array.sort_custom(DialgicSorter, 'sort_resources')
+	return array
+
+
 static func get_default_definitions_list() -> Array:
 	return DialogicDefinitionsUtil.definitions_json_to_array(DialogicResources.get_default_definitions())
+
+
+static func get_sorted_default_definitions_list():
+	var array = get_default_definitions_list()
+	array.sort_custom(DialgicSorter, 'sort_resources')
+	return array
 
 
 static func generate_random_id() -> String:
@@ -83,5 +106,3 @@ static func compare_dicts(dict_1: Dictionary, dict_2: Dictionary) -> bool:
 		if str(dict_1) == str(dict_2):
 			return true
 	return false
-
-

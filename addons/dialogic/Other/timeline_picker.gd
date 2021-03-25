@@ -28,7 +28,7 @@ func _about_to_show_menu():
 	# Adding timelines
 	timelines_dropdown.get_popup().clear()
 	var index = 0
-	for c in DialogicUtil.get_timeline_list():
+	for c in DialogicUtil.get_sorted_timeline_list():
 		timelines_dropdown.get_popup().add_item(c['name'])
 		timelines_dropdown.get_popup().set_item_metadata(index, {'file': c['file'], 'color': c['color']})
 		index += 1

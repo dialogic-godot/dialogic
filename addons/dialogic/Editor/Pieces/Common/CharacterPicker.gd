@@ -15,7 +15,7 @@ func _on_Dropdown_about_to_show():
 	popup.set_item_metadata(0, {'file': '', 'color': Color('#ffffff')})
 	
 	var index = 1
-	for c in DialogicUtil.get_character_list():
+	for c in DialogicUtil.get_sorted_character_list():
 		popup.add_item(c['name'])
 		popup.set_item_metadata(index, {'file': c['file'],'color': c['color']})
 		index += 1
