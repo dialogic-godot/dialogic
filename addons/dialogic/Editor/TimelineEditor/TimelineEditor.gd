@@ -10,6 +10,11 @@ onready var master_tree = get_node('../MasterTree')
 onready var timeline = $TimelineArea/TimeLine
 onready var events_warning = $ScrollContainer/EventContainer/EventsWarning
 
+var hovered_item = null
+var selected_style : StyleBoxFlat = load("res://addons/dialogic/Editor/Pieces/selected_styleboxflat.tres")
+var saved_style : StyleBoxFlat
+var selected_item : Node
+
 func _ready():
 	# We connect all the event buttons to the event creation functions
 	for b in $ScrollContainer/EventContainer.get_children():
@@ -22,6 +27,32 @@ func _ready():
 				b.connect('pressed', self, "_create_event_button_pressed", [b.name])
 
 
+func _clear_selection():
+	if selected_item != null and saved_style != null:
+		var selected_panel: PanelContainer = selected_item.get_node("PanelContainer")
+		if selected_panel != null:
+			selected_panel.set('custom_styles/panel', saved_style)
+	selected_item = null
+	saved_style = null
+
+
+func _select_item(item: Node):
+	if item != selected_item:
+		_clear_selection()
+		var panel: PanelContainer = item.get_node("PanelContainer")
+		if panel != null:
+			saved_style = panel.get('custom_styles/panel')
+			selected_item = item
+			panel.set('custom_styles/panel', selected_style)
+	else:
+		_clear_selection()
+
+
+func _on_gui_input(event, item: Node):
+	if event is InputEventMouseButton and event.button_index == 1 and event.is_pressed():
+		_select_item(item)
+
+
 # Event Creation signal for buttons
 func _create_event_button_pressed(button_name):
 	create_event(button_name)
@@ -29,15 +60,29 @@ func _create_event_button_pressed(button_name):
 
 
 func _on_ButtonQuestion_pressed() -> void:
-	create_event("Question", {'no-data': true}, true)
-	create_event("Choice", {'no-data': true}, true)
-	create_event("Choice", {'no-data': true}, true)
-	create_event("EndBranch", {'no-data': true}, true)
+	if selected_item != null:
+		# Events are added bellow the selected node
+		# So we must reverse the adding order
+		create_event("EndBranch", {'no-data': true}, true)
+		create_event("Choice", {'no-data': true}, true)
+		create_event("Choice", {'no-data': true}, true)
+		create_event("Question", {'no-data': true}, true)
+	else:
+		create_event("Question", {'no-data': true}, true)
+		create_event("Choice", {'no-data': true}, true)
+		create_event("Choice", {'no-data': true}, true)
+		create_event("EndBranch", {'no-data': true}, true)
 
 
 func _on_ButtonCondition_pressed() -> void:
-	create_event("IfCondition", {'no-data': true}, true)
-	create_event("EndBranch", {'no-data': true}, true)
+	if selected_item != null:
+		# Events are added bellow the selected node
+		# So we must reverse the adding order
+		create_event("EndBranch", {'no-data': true}, true)
+		create_event("IfCondition", {'no-data': true}, true)
+	else:
+		create_event("IfCondition", {'no-data': true}, true)
+		create_event("EndBranch", {'no-data': true}, true)
 
 
 # Adding an event to the timeline
@@ -45,9 +90,14 @@ func create_event(scene: String, data: Dictionary = {'no-data': true} , indent: 
 	# This function will create an event in the timeline.
 	var piece = load("res://addons/dialogic/Editor/Pieces/" + scene + ".tscn").instance()
 	piece.editor_reference = editor_reference
-	timeline.add_child(piece)
+	if selected_item != null:
+		timeline.add_child_below_node(selected_item, piece)
+	else:
+		timeline.add_child(piece)
 	if data.has('no-data') == false:
 		piece.load_data(data)
+	
+	piece.connect("gui_input", self, '_on_gui_input', [piece])
 	events_warning.visible = false
 	# Indent on create
 	if indent:
@@ -159,6 +209,7 @@ func load_timeline(filename: String):
 
 
 func clear_timeline():
+	_clear_selection()
 	for event in timeline.get_children():
 		event.free()
 
@@ -220,9 +271,11 @@ func save_timeline() -> void:
 # Utilities
 func fold_all_nodes():
 	for event in timeline.get_children():
-		event.get_node("PanelContainer/VBoxContainer/Header/VisibleToggle").set_pressed(false)
+		if event.has_node("PanelContainer/VBoxContainer/Header/VisibleToggle"):
+			event.get_node("PanelContainer/VBoxContainer/Header/VisibleToggle").set_pressed(false)
 
 
 func unfold_all_nodes():
 	for event in timeline.get_children():
-		event.get_node("PanelContainer/VBoxContainer/Header/VisibleToggle").set_pressed(true)
+		if event.has_node("PanelContainer/VBoxContainer/Header/VisibleToggle"):
+			event.get_node("PanelContainer/VBoxContainer/Header/VisibleToggle").set_pressed(true)

@@ -6,6 +6,7 @@ var editor_file_dialog # EditorFileDialog
 var file_picker_data: Dictionary = {'method': '', 'node': self}
 var current_editor_view: String = 'Master'
 var version_string: String 
+onready var master_tree = $MainPanel/MasterTree
 onready var timeline_editor = $MainPanel/TimelineEditor
 onready var character_editor = $MainPanel/CharacterEditor
 onready var definition_editor = $MainPanel/DefinitionEditor
@@ -24,6 +25,8 @@ func _ready():
 	definition_editor.editor_reference = self
 	theme_editor.editor_reference = self
 
+	master_tree.connect("editor_selected", self, 'on_master_tree_editor_selected')
+
 	# Toolbar
 	$ToolBar/NewTimelineButton.connect('pressed', $MainPanel/TimelineEditor, 'new_timeline')
 	$ToolBar/NewCharactersButton.connect('pressed', $MainPanel/CharacterEditor, 'new_character')
@@ -31,8 +34,8 @@ func _ready():
 	$ToolBar/NewDefinitionButton.connect('pressed', $MainPanel/DefinitionEditor, 'new_definition')
 	$ToolBar/Docs.icon = get_icon("Instance", "EditorIcons")
 	$ToolBar/Docs.connect('pressed', OS, "shell_open", ["https://dialogic.coppolaemilio.com"])
-	#$ToolBar/FoldTools/ButtonFold.connect('pressed', $EditorTimeline, 'fold_all_nodes')
-	#$ToolBar/FoldTools/ButtonUnfold.connect('pressed', $EditorTimeline, 'unfold_all_nodes')
+	$ToolBar/FoldTools/ButtonFold.connect('pressed', timeline_editor, 'fold_all_nodes')
+	$ToolBar/FoldTools/ButtonUnfold.connect('pressed', timeline_editor, 'unfold_all_nodes')
 	
 	
 	# Connecting context menus
@@ -53,6 +56,10 @@ func _ready():
 	if err == OK:
 		version_string = config.get_value("plugin", "version", "?")
 		$ToolBar/Version.text = 'v' + version_string
+
+
+func on_master_tree_editor_selected(editor: String):
+	$ToolBar/FoldTools.visible = editor == 'timeline'
 
 
 # Timeline context menu

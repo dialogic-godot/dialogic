@@ -18,6 +18,8 @@ var definitions_tree
 var themes_tree
 var settings_tree
 
+signal editor_selected(selected)
+
 func _ready():
 	allow_rmb_select = true
 	var root = tree.create_item()
@@ -192,6 +194,7 @@ func _on_item_selected():
 
 
 func show_character_editor():
+	emit_signal("editor_selected", 'character')
 	character_editor.visible = true
 	timeline_editor.visible = false
 	definition_editor.visible = false
@@ -200,6 +203,7 @@ func show_character_editor():
 	empty_editor.visible = false
 
 func show_timeline_editor():
+	emit_signal("editor_selected", 'timeline')
 	character_editor.visible = false
 	timeline_editor.visible = true
 	definition_editor.visible = false
@@ -208,6 +212,7 @@ func show_timeline_editor():
 	empty_editor.visible = false
 
 func show_definition_editor():
+	emit_signal("editor_selected", 'definition')
 	character_editor.visible = false
 	timeline_editor.visible = false
 	definition_editor.visible = true
@@ -216,6 +221,7 @@ func show_definition_editor():
 	empty_editor.visible = false
 
 func show_theme_editor():
+	emit_signal("editor_selected", 'theme')
 	character_editor.visible = false
 	timeline_editor.visible = false
 	definition_editor.visible = false
@@ -224,6 +230,7 @@ func show_theme_editor():
 	empty_editor.visible = false
 
 func show_settings_editor():
+	emit_signal("editor_selected", 'theme')
 	character_editor.visible = false
 	timeline_editor.visible = false
 	definition_editor.visible = false
@@ -232,6 +239,7 @@ func show_settings_editor():
 	empty_editor.visible = false
 
 func hide_all_editors():
+	emit_signal("editor_selected", 'none')
 	character_editor.visible = false
 	timeline_editor.visible = false
 	definition_editor.visible = false

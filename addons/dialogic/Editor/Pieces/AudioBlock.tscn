@@ -1,6 +1,7 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://addons/dialogic/Editor/Pieces/AudioBlock.gd" type="Script" id=1]
+[ext_resource path="res://addons/dialogic/Editor/Pieces/Common/Spacer.tscn" type="PackedScene" id=2]
 [ext_resource path="res://addons/dialogic/Images/audio-event.svg" type="Texture" id=3]
 [ext_resource path="res://addons/dialogic/Editor/Pieces/Common/PieceExtraSettings.tscn" type="PackedScene" id=4]
 [ext_resource path="res://addons/dialogic/Images/play.svg" type="Texture" id=5]
@@ -98,11 +99,10 @@ margin_bottom = 22.0
 custom_colors/font_color = Color( 1, 1, 1, 0.513726 )
 text = "    ..."
 
-[node name="Spacer" type="Control" parent="PanelContainer/VBoxContainer/Header"]
+[node name="Spacer" parent="PanelContainer/VBoxContainer/Header" instance=ExtResource( 2 )]
 margin_left = 157.0
 margin_right = 1735.0
 margin_bottom = 28.0
-size_flags_horizontal = 3
 
 [node name="OptionButton" parent="PanelContainer/VBoxContainer/Header" instance=ExtResource( 4 )]
 margin_left = 1739.0
@@ -113,7 +113,6 @@ items = [ "Move Up", null, 0, false, false, 0, 0, null, "", false, "Move Down", 
 [node name="AudioPreview" type="AudioStreamPlayer" parent="PanelContainer"]
 
 [node name="DragController" parent="." instance=ExtResource( 6 )]
-
 [connection signal="pressed" from="PanelContainer/VBoxContainer/Header/ButtonAudio" to="." method="_on_ButtonAudio_pressed"]
 [connection signal="pressed" from="PanelContainer/VBoxContainer/Header/ButtonPreviewPlay" to="." method="_on_ButtonPreviewPlay_pressed"]
 [connection signal="finished" from="PanelContainer/AudioPreview" to="." method="_on_AudioPreview_finished"]
