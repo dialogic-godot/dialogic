@@ -51,6 +51,18 @@ onready var n = {
 	# Text preview
 	'preview_panel': $VBoxContainer/Panel,
 	'text_preview': $VBoxContainer/HBoxContainer3/TextEdit,
+	
+	# Character Names
+	'name_auto_color': $VBoxContainer/HBoxContainer2/Glossary/GridContainer2/CheckBox,
+	'name_background_visible': $VBoxContainer/HBoxContainer2/Glossary/GridContainer2/HBoxContainer2/CheckBox,
+	'name_background': $VBoxContainer/HBoxContainer2/Glossary/GridContainer2/HBoxContainer2/ColorPickerButton,
+	'name_image': $VBoxContainer/HBoxContainer2/Glossary/GridContainer2/HBoxContainer3/BackgroundTextureButton,
+	'name_image_visible': $VBoxContainer/HBoxContainer2/Glossary/GridContainer2/HBoxContainer3/CheckBox,
+	'name_shadow': $VBoxContainer/HBoxContainer2/Glossary/GridContainer2/HBoxContainer4/ColorPickerButtonShadow,
+	'name_shadow_visible': $VBoxContainer/HBoxContainer2/Glossary/GridContainer2/HBoxContainer4/CheckBoxShadow,
+	'name_shadow_offset_x': $VBoxContainer/HBoxContainer2/Glossary/GridContainer2/HBoxContainer/ShadowOffsetX,
+	'name_shadow_offset_y': $VBoxContainer/HBoxContainer2/Glossary/GridContainer2/HBoxContainer/ShadowOffsetY,
+	'name_bottom_gap': $VBoxContainer/HBoxContainer2/Glossary/GridContainer2/HBoxContainer5/BottomGap,
 }
 
 func _ready():
@@ -113,9 +125,29 @@ func load_theme(filename):
 		'Right':
 			n['alignment'].select(2)
 	
+	
+	# Name
+	n['name_auto_color'].pressed = theme.get_value('name', 'auto_color', true)
+	n['name_background_visible'].pressed = theme.get_value('name', 'background_visible', false)
+	n['name_background'].color = Color(theme.get_value('name', 'background', "#ff000000"))
+	n['name_image_visible'].pressed = theme.get_value('name', 'image_visible', false)
+	n['name_image'].text = DialogicResources.get_filename_from_path(theme.get_value('name', 'image', 'res://addons/dialogic/Images/background/background-2.png'))
+	
+	
+	n['name_shadow'].color = Color(theme.get_value('name', 'shadow', "#9e000000"))
+	n['name_shadow_visible'].pressed = theme.get_value('name', 'shadow_visible', true)
+	n['name_shadow_offset_x'].value = theme.get_value('name', 'shadow_offset', Vector2(2,2)).x
+	n['name_shadow_offset_y'].value = theme.get_value('name', 'shadow_offset', Vector2(2,2)).y
+	n['name_bottom_gap'].value = theme.get_value('name', 'bottom_gap', 48)
+	
+	
+	
 	# Preview text
 	n['text_preview'].text = theme.get_value('text', 'preview', 'This is preview text. You can use  [color=#A5EFAC]BBCode[/color] to style it.\n[wave amp=50 freq=2]You can even use effects![/wave]')
 	
+	# Updating the preview
+	_on_PreviewButton_pressed()
+
 
 func new_theme():
 	var theme_file = 'theme-' + str(OS.get_unix_time()) + '.cfg'
@@ -172,21 +204,36 @@ func _on_PreviewButton_pressed():
 	preview_dialog.preview = true
 	preview_dialog.get_node('DefinitionInfo').in_theme_editor = true
 	preview_dialog.get_node('TextBubble/NextIndicator/AnimationPlayer').play('IDLE')
+	
+	# Random character preview if there are any
+	var characters = DialogicUtil.get_character_list()
+	var character_file = ''
+	if characters.size():
+		characters.shuffle()
+		character_file = characters[0]['file']
+	
+	# Creating the one event timeline for the dialog
 	preview_dialog.dialog_script['events'] = [{
-		"character":"",
-		"portrait":"",
+		"character": '',
+		"portrait":'',
 		"text": preview_dialog.parse_definitions(n['text_preview'].text)
 	}]
-	# Settings
+	preview_dialog.parse_characters(preview_dialog.dialog_script)
 	preview_dialog.settings = DialogicResources.get_settings_config()
+	
 	# Alignment
 	n['preview_panel'].add_child(preview_dialog)
-	# Not sure why but I need to reload the theme again for it to work properly
+	
 	preview_dialog.load_dialog()
 	preview_dialog.current_theme = preview_dialog.load_theme(current_theme)
 	
+	# When not performing this step, the dialog name doesn't update the color for some reason
+	# I should probably refactor the preview dialog to stop making everything manually.
+	if n['name_auto_color'].pressed:
+		if characters.size():
+			preview_dialog.get_node('TextBubble/NameLabel').set('custom_colors/font_color', characters[0]['color'])
+	
 	# maintaining the preview panel big enough for the dialog box
-
 	n['preview_panel'].rect_min_size.y = preview_dialog.current_theme.get_value('box', 'size', Vector2(910, 167)).y + 90 + preview_dialog.current_theme.get_value('box', 'bottom_gap', 40)
 	n['preview_panel'].rect_size.y = 0
 
@@ -324,3 +371,46 @@ func _on_Alignment_item_selected(index):
 
 func _on_Preview_text_changed():
 	DialogicResources.set_theme_value(current_theme, 'text', 'preview', n['text_preview'].text)
+
+
+func _on_name_auto_color_toggled(button_pressed):
+	DialogicResources.set_theme_value(current_theme, 'name', 'auto_color', button_pressed)
+
+
+func _on_name_background_visible_toggled(button_pressed):
+	DialogicResources.set_theme_value(current_theme, 'name', 'background_visible', button_pressed)
+
+
+func _on_name_background_color_changed(color):
+	DialogicResources.set_theme_value(current_theme, 'name', 'background', '#' + color.to_html())
+
+
+func _on_name_image_visible_toggled(button_pressed):
+	DialogicResources.set_theme_value(current_theme, 'name', 'image_visible', button_pressed)
+
+
+func _on_name_image_pressed():
+	editor_reference.godot_dialog("*.png")
+	editor_reference.godot_dialog_connect(self, "_on_name_texture_selected")
+
+
+func _on_name_texture_selected(path, target):
+	DialogicResources.set_theme_value(current_theme, 'name', 'image', path)
+	n['name_image'].text = DialogicResources.get_filename_from_path(path)
+
+
+func _on_shadow_visible_toggled(button_pressed):
+	DialogicResources.set_theme_value(current_theme, 'name', 'shadow_visible', button_pressed)
+
+
+func _on_name_shadow_color_changed(color):
+	DialogicResources.set_theme_value(current_theme, 'name', 'shadow', '#' + color.to_html())
+
+
+func _on_name_ShadowOffset_value_changed(_value):
+	DialogicResources.set_theme_value(current_theme, 'name','shadow_offset', 
+			Vector2(n['name_shadow_offset_x'].value,n['name_shadow_offset_y'].value))
+
+
+func _on_name_BottomGap_value_changed(value):
+	DialogicResources.set_theme_value(current_theme, 'name', 'bottom_gap', value)
