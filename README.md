@@ -37,6 +37,7 @@ The plugin is not production ready, this means that it will not work in your gam
     - Add offset to the portrait
   - Timeline Editor:
     - New `Theme event` to change the theme in the middle of a timeline
+    - New `Background Music Event` to play music in your dialog. Music can crossfade when changing track and fade in/out when starting/stopping.
     - Re-enabled the `Scene Event`
   - Theme Editor:
     - You can now add multiple themes
