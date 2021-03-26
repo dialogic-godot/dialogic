@@ -37,6 +37,7 @@ The plugin is not production ready, this means that it will not work in your gam
     - Add offset to the portrait
   - Timeline Editor:
     - New `Theme event` to change the theme in the middle of a timeline
+    - Allow making basic calculations such as `+`, `-`, `*`, `/` in `Set value events`.
     - Re-enabled the `Scene Event`
   - Theme Editor:
     - You can now add multiple themes
