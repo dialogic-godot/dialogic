@@ -455,6 +455,14 @@ func event_handler(event: Dictionary):
 				$FX/AudioStreamPlayer.play()
 			# Todo: audio stop
 			go_to_next_event()
+		{'background-music'}, {'background-music', 'file'}:
+			emit_signal("event_start", "background-music", event)
+			if event['background-music'] == 'play' and 'file' in event.keys() and not event['file'].empty():
+				var stream: AudioStream = load(event['file'])
+				$FX/BackgroundMusic.crossfade_to(stream)
+			else:
+				$FX/BackgroundMusic.fade_out()
+			go_to_next_event()
 		{'endbranch', ..}:
 			emit_signal("event_start", "endbranch", event)
 			go_to_next_event()

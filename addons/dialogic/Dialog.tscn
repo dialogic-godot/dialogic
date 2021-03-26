@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://addons/dialogic/Images/next-indicator.png" type="Texture" id=1]
 [ext_resource path="res://addons/dialogic/Images/background/background-2.png" type="Texture" id=2]
@@ -6,6 +6,7 @@
 [ext_resource path="res://addons/dialogic/Fonts/GlossaryFont.tres" type="DynamicFont" id=4]
 [ext_resource path="res://addons/dialogic/Nodes/glossary_info.gd" type="Script" id=5]
 [ext_resource path="res://addons/dialogic/Nodes/dialog_node.gd" type="Script" id=6]
+[ext_resource path="res://addons/dialogic/BackgroundMusic.tscn" type="PackedScene" id=7]
 
 [sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 1, 1, 1, 0 )
@@ -98,8 +99,8 @@ margin_bottom = -10.0
 rect_clip_content = false
 custom_styles/normal = SubResource( 1 )
 custom_fonts/normal_font = ExtResource( 3 )
-custom_colors/default_color = Color( 0.756863, 0.172549, 0.172549, 1 )
-custom_colors/font_color_shadow = Color( 0, 0, 0, 0.619608 )
+custom_colors/default_color = Color( 1, 1, 1, 1 )
+custom_colors/font_color_shadow = Color( 1, 1, 1, 0 )
 custom_constants/shadow_offset_x = 2
 custom_constants/shadow_offset_y = 2
 bbcode_enabled = true
@@ -140,14 +141,13 @@ margin_right = 369.0
 rect_clip_content = false
 custom_styles/normal = SubResource( 1 )
 custom_fonts/normal_font = ExtResource( 3 )
-custom_colors/default_color = Color( 0.756863, 0.172549, 0.172549, 1 )
-custom_colors/font_color_shadow = Color( 0, 0, 0, 0.619608 )
+custom_colors/default_color = Color( 1, 1, 1, 1 )
+custom_colors/font_color_shadow = Color( 1, 1, 1, 0 )
 custom_constants/shadow_offset_x = 2
 custom_constants/shadow_offset_y = 2
 custom_constants/shadow_as_outline = 10
 bbcode_enabled = true
 bbcode_text = "Name Here"
-text = "Name Here"
 scroll_active = false
 __meta__ = {
 "_edit_use_anchors_": false
@@ -212,6 +212,8 @@ __meta__ = {
 [node name="Tween" type="Tween" parent="FX/FadeInNode"]
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="FX"]
+
+[node name="BackgroundMusic" parent="FX" instance=ExtResource( 7 )]
 
 [node name="DefinitionInfo" type="PanelContainer" parent="."]
 visible = false
@@ -288,7 +290,6 @@ __meta__ = {
 [node name="Timer" type="Timer" parent="DefinitionInfo"]
 
 [node name="WaitSeconds" type="Timer" parent="."]
-
 [connection signal="meta_hover_ended" from="TextBubble/RichTextLabel" to="." method="_on_RichTextLabel_meta_hover_ended"]
 [connection signal="meta_hover_started" from="TextBubble/RichTextLabel" to="." method="_on_RichTextLabel_meta_hover_started"]
 [connection signal="tween_completed" from="TextBubble/Tween" to="." method="_on_Tween_tween_completed"]

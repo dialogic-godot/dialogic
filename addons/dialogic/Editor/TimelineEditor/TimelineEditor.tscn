@@ -81,7 +81,7 @@ rect_min_size = Vector2( 190, 0 )
 
 [node name="EventContainer" type="VBoxContainer" parent="ScrollContainer"]
 margin_right = 178.0
-margin_bottom = 664.0
+margin_bottom = 696.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 __meta__ = {
@@ -298,10 +298,18 @@ text = "  Audio Event"
 icon = ExtResource( 3 )
 align = 0
 
-[node name="HBoxContainer" type="HBoxContainer" parent="ScrollContainer/EventContainer"]
+[node name="BackgroundMusic" type="Button" parent="ScrollContainer/EventContainer"]
 margin_top = 586.0
 margin_right = 178.0
-margin_bottom = 600.0
+margin_bottom = 614.0
+text = "Background Music"
+icon = ExtResource( 3 )
+align = 0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="ScrollContainer/EventContainer"]
+margin_top = 618.0
+margin_right = 178.0
+margin_bottom = 632.0
 
 [node name="Label" type="Label" parent="ScrollContainer/EventContainer/HBoxContainer"]
 margin_right = 39.0
@@ -315,17 +323,17 @@ margin_bottom = 14.0
 size_flags_horizontal = 3
 
 [node name="EmitSignal" type="Button" parent="ScrollContainer/EventContainer"]
-margin_top = 604.0
+margin_top = 636.0
 margin_right = 178.0
-margin_bottom = 632.0
+margin_bottom = 664.0
 text = "  Emit Signal"
 icon = ExtResource( 16 )
 align = 0
 
 [node name="ChangeScene" type="Button" parent="ScrollContainer/EventContainer"]
-margin_top = 636.0
+margin_top = 668.0
 margin_right = 178.0
-margin_bottom = 664.0
+margin_bottom = 696.0
 hint_tooltip = "This will instantly change
 the current scene."
 text = "  Change Scene"
