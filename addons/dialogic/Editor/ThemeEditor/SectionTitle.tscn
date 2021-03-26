@@ -1,0 +1,35 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://addons/dialogic/Editor/ThemeEditor/SectionTitle.gd" type="Script" id=1]
+
+[node name="PanelContainer" type="Panel"]
+margin_right = 138.0
+margin_bottom = 30.0
+rect_min_size = Vector2( 0, 30 )
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="HBoxContainer"]
+margin_top = 8.0
+margin_right = 138.0
+margin_bottom = 22.0
+size_flags_horizontal = 3
+text = "PanelContainer"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CheckBox" type="CheckBox" parent="HBoxContainer"]
+visible = false
+margin_left = 114.0
+margin_right = 138.0
+margin_bottom = 30.0

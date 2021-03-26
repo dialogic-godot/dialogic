@@ -10,6 +10,7 @@
 
 [sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 1, 1, 1, 0 )
+expand_margin_left = 10.0
 
 [sub_resource type="Animation" id=2]
 loop = true
@@ -25,6 +26,12 @@ tracks/0/keys = {
 "update": 0,
 "values": [ 12.0, 55.0 ]
 }
+
+[sub_resource type="StyleBoxFlat" id=4]
+content_margin_left = 10.0
+content_margin_right = 10.0
+bg_color = Color( 1, 1, 1, 0 )
+expand_margin_left = 10.0
 
 [sub_resource type="StyleBoxFlat" id=3]
 bg_color = Color( 0.196078, 0.196078, 0.196078, 0 )
@@ -62,11 +69,10 @@ anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
 margin_left = -455.0
-margin_top = -207.0
+margin_top = 393.0
 margin_right = 455.0
-margin_bottom = -40.0
+margin_bottom = 560.0
 __meta__ = {
-"_edit_group_": true,
 "_edit_use_anchors_": false
 }
 
@@ -134,21 +140,42 @@ __meta__ = {
 autoplay = "IDLE"
 anims/IDLE = SubResource( 2 )
 
-[node name="NameLabel" type="RichTextLabel" parent="TextBubble"]
-margin_left = 2.0
-margin_top = -37.0
-margin_right = 369.0
-rect_clip_content = false
-custom_styles/normal = SubResource( 1 )
-custom_fonts/normal_font = ExtResource( 3 )
-custom_colors/default_color = Color( 1, 1, 1, 1 )
+[node name="NameLabel" type="Label" parent="TextBubble"]
+margin_top = -48.0
+margin_right = 58.0
+margin_bottom = -8.0
+size_flags_vertical = 1
+custom_styles/normal = SubResource( 4 )
 custom_colors/font_color_shadow = Color( 1, 1, 1, 0 )
 custom_constants/shadow_offset_x = 2
 custom_constants/shadow_offset_y = 2
-custom_constants/shadow_as_outline = 10
-bbcode_enabled = true
-bbcode_text = "Name Here"
-scroll_active = false
+text = "Hello "
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ColorRect" type="ColorRect" parent="TextBubble/NameLabel"]
+show_behind_parent = true
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_horizontal = 15
+size_flags_vertical = 15
+color = Color( 0.156863, 0.156863, 0.156863, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextureRect" type="TextureRect" parent="TextBubble/NameLabel"]
+show_behind_parent = true
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 2 )
+expand = true
+stretch_mode = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }

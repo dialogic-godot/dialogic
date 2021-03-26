@@ -239,6 +239,7 @@ func parse_definitions(text: String):
 	final_text = _insert_glossary_definitions(final_text)
 	return final_text
 
+
 func _insert_variable_definitions(text: String):
 	var final_text := text;
 	for d in definitions['variables']:
@@ -299,18 +300,23 @@ func start_text_tween():
 	$TextBubble/Tween.start()
 
 
-func update_name(character, color='#FFFFFF'):
+func update_name(character, color: Color = Color.white) -> void:
 	if character.has('name'):
 		var parsed_name = character['name']
 		if character.has('display_name'):
 			if character['display_name'] != '':
 				parsed_name = character['display_name']
 		if character.has('color'):
-			color = '#' + character['color'].to_html()
-		$TextBubble/NameLabel.bbcode_text = '[color=' + color + ']' + parsed_name + '[/color]'
+			color = character['color']
+		$TextBubble/NameLabel.visible = true
+		# Hack to reset the size
+		$TextBubble/NameLabel.rect_min_size = Vector2(0, 0)
+		$TextBubble/NameLabel.rect_size = Vector2(-1, 40)
+		# Setting the color and text
+		$TextBubble/NameLabel.text = parsed_name
+		$TextBubble/NameLabel.set('custom_colors/font_color', color)
 	else:
-		$TextBubble/NameLabel.bbcode_text = ''
-	return true
+		$TextBubble/NameLabel.visible = false
 
 
 func update_text(text):
@@ -337,6 +343,7 @@ func on_timeline_end():
 		DialogicSingleton.set_current_timeline('')
 	emit_signal("event_end", "timeline")
 
+
 func load_dialog(skip_add = false):
 	# Emitting signals
 	if dialog_script.has('events'):
@@ -361,7 +368,8 @@ func load_dialog(skip_add = false):
 
 
 func reset_dialog_extras():
-	$TextBubble/NameLabel.bbcode_text = ''
+	$TextBubble/NameLabel.text = ''
+	$TextBubble/NameLabel.visible = false
 
 
 func get_character(character_id):
@@ -658,6 +666,7 @@ func deferred_resize(current_size, result):
 	if current_size != $TextBubble.rect_size:
 		resize_main()
 
+
 func load_theme(filename):
 	var theme = DialogicResources.get_theme_config(filename)
 
@@ -667,11 +676,11 @@ func load_theme(filename):
 	# Text
 	var theme_font = load(theme.get_value('text', 'font', 'res://addons/dialogic/Fonts/DefaultFont.tres'))
 	$TextBubble/RichTextLabel.set('custom_fonts/normal_font', theme_font)
-	$TextBubble/NameLabel.set('custom_fonts/normal_font', theme_font)
+	$TextBubble/NameLabel.set('custom_fonts/font', theme_font)
 
 	var text_color = Color(theme.get_value('text', 'color', '#ffffffff'))
 	$TextBubble/RichTextLabel.set('custom_colors/default_color', text_color)
-	$TextBubble/NameLabel.set('custom_colors/default_color', text_color)
+	$TextBubble/NameLabel.set('custom_colors/font_color', text_color)
 
 	$TextBubble/RichTextLabel.set('custom_colors/font_color_shadow', Color('#00ffffff'))
 	$TextBubble/NameLabel.set('custom_colors/font_color_shadow', Color('#00ffffff'))
@@ -679,13 +688,11 @@ func load_theme(filename):
 	if theme.get_value('text', 'shadow', false):
 		var text_shadow_color = Color(theme.get_value('text', 'shadow_color', '#9e000000'))
 		$TextBubble/RichTextLabel.set('custom_colors/font_color_shadow', text_shadow_color)
-		$TextBubble/NameLabel.set('custom_colors/font_color_shadow', text_shadow_color)
 
 	var shadow_offset = theme.get_value('text', 'shadow_offset', Vector2(2,2))
 	$TextBubble/RichTextLabel.set('custom_constants/shadow_offset_x', shadow_offset.x)
-	$TextBubble/NameLabel.set('custom_constants/shadow_offset_x', shadow_offset.x)
 	$TextBubble/RichTextLabel.set('custom_constants/shadow_offset_y', shadow_offset.y)
-	$TextBubble/NameLabel.set('custom_constants/shadow_offset_y', shadow_offset.y)
+	
 
 	# Text speed
 	text_speed = theme.get_value('text','speed', 2) * 0.01
@@ -713,7 +720,19 @@ func load_theme(filename):
 	$DefinitionInfo/VBoxContainer/Title.set('custom_fonts/normal_font', definitions_font)
 	$DefinitionInfo/VBoxContainer/Content.set('custom_fonts/normal_font', definitions_font)
 	$DefinitionInfo/VBoxContainer/Extra.set('custom_fonts/normal_font', definitions_font)
-
+	
+	# Character Name
+	$TextBubble/NameLabel/ColorRect.visible = theme.get_value('name', 'background_visible', false)
+	$TextBubble/NameLabel/ColorRect.color = Color(theme.get_value('name', 'background', '#282828'))
+	$TextBubble/NameLabel/TextureRect.visible = theme.get_value('name', 'image_visible', false)
+	$TextBubble/NameLabel/TextureRect.texture = load(theme.get_value('name','image', "res://addons/dialogic/Images/background/background-2.png"))
+	var name_shadow_offset = theme.get_value('name', 'shadow_offset', Vector2(2,2))
+	if theme.get_value('name', 'shadow_visible', false):
+		$TextBubble/NameLabel.set('custom_colors/font_color_shadow', Color(theme.get_value('name', 'shadow', '#9e000000')))
+		$TextBubble/NameLabel.set('custom_constants/shadow_offset_x', name_shadow_offset.x)
+		$TextBubble/NameLabel.set('custom_constants/shadow_offset_y', name_shadow_offset.y)
+	$TextBubble/NameLabel.rect_position.y = theme.get_value('name', 'bottom_gap', 48) * -1
+	
 	return theme
 
 

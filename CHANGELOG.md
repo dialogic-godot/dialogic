@@ -14,6 +14,7 @@
   - Theme Editor:
     - New default asset: Glossary Font
     - Added new options to customize the glossary popup
+    - Added new section to edit how the character names are displayed
   - Timeline Editor:
     - Added categories for the events.
     - Color coded some of the events in the same category to avoid having a distracting rainbow in the timelines.
