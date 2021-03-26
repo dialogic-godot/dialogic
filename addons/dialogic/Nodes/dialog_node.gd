@@ -458,10 +458,11 @@ func event_handler(event: Dictionary):
 			go_to_next_event()
 		{'audio'}, {'audio', 'file'}:
 			emit_signal("event_start", "audio", event)
-			if event['audio'] == 'play':
+			if event['audio'] == 'play' and 'file' in event.keys() and not event['file'].empty():
 				$FX/AudioStreamPlayer.stream = load(event['file'])
 				$FX/AudioStreamPlayer.play()
-			# Todo: audio stop
+			else:
+				$FX/AudioStreamPlayer.stop()
 			go_to_next_event()
 		{'background-music'}, {'background-music', 'file'}:
 			emit_signal("event_start", "background-music", event)

@@ -34,7 +34,7 @@ func load_audio(path: String):
 		event_data['file'] = path
 		event_data['background-music'] = 'play'
 	else:
-		$PanelContainer/VBoxContainer/Header/Name.text = 'None'
+		$PanelContainer/VBoxContainer/Header/Name.text = 'No music (will stop with fade out)'
 		$PanelContainer/VBoxContainer/Header/ButtonClear.disabled = true
 		$PanelContainer/VBoxContainer/Header/ButtonPreviewPlay.disabled = true
 		event_data['file'] = ''
