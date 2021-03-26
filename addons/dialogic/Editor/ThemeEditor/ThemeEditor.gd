@@ -214,7 +214,7 @@ func _on_PreviewButton_pressed():
 	
 	# Creating the one event timeline for the dialog
 	preview_dialog.dialog_script['events'] = [{
-		"character": '',
+		"character": character_file,
 		"portrait":'',
 		"text": preview_dialog.parse_definitions(n['text_preview'].text)
 	}]
