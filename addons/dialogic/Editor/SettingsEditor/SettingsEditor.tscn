@@ -18,11 +18,11 @@ size_flags_vertical = 3
 
 [node name="HBoxContainer3" type="HBoxContainer" parent="VBoxContainer"]
 margin_right = 1024.0
-margin_bottom = 184.0
+margin_bottom = 212.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer3"]
 margin_right = 288.0
-margin_bottom = 184.0
+margin_bottom = 212.0
 custom_constants/separation = 16
 
 [node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer"]
@@ -59,20 +59,16 @@ margin_left = 50.0
 margin_right = 190.0
 margin_bottom = 20.0
 rect_min_size = Vector2( 140, 0 )
-text = "Default"
-items = [ "Default", null, false, 0, {
-"file": "theme-1614997416.cfg"
-}, "Alternative", null, false, 1, {
-"file": "theme-1614997426.cfg"
-}, "Small", null, false, 2, {
-"file": "theme-1615080820.cfg"
+text = "test"
+items = [ "test", null, false, 0, {
+"file": "theme-1616687382.cfg"
 } ]
 selected = 0
 
 [node name="VBoxContainer2" type="VBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer"]
 margin_top = 70.0
 margin_right = 288.0
-margin_bottom = 184.0
+margin_bottom = 212.0
 
 [node name="Panel2" type="Panel" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2"]
 margin_right = 288.0
@@ -139,5 +135,22 @@ text = "Auto color character names in messages"
 [node name="AutoColorNames" type="CheckBox" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2/HBoxContainer3"]
 margin_left = 264.0
 margin_right = 288.0
+margin_bottom = 24.0
+pressed = true
+
+[node name="HBoxContainer4" type="HBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2"]
+margin_top = 118.0
+margin_right = 288.0
+margin_bottom = 142.0
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2/HBoxContainer4"]
+margin_top = 5.0
+margin_right = 219.0
+margin_bottom = 19.0
+text = "Propagate input to rest of the Tree"
+
+[node name="PropagateInput" type="CheckBox" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2/HBoxContainer4"]
+margin_left = 223.0
+margin_right = 247.0
 margin_bottom = 24.0
 pressed = true
