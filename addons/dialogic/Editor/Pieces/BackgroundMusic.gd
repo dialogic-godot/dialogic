@@ -14,6 +14,9 @@ var event_data = {
 }
 
 
+func _ready():
+	load_audio('')
+
 func _on_ButtonAudio_pressed():
 	editor_reference.godot_dialog("*.wav, *.ogg, *.mp3")
 	editor_reference.godot_dialog_connect(self, "_on_file_selected")
@@ -23,17 +26,24 @@ func _on_file_selected(path, target):
 	target.load_audio(path)
 
 
-func load_audio(path):
-	$PanelContainer/VBoxContainer/Header/Name.text = path
-	$PanelContainer/VBoxContainer/Header/ButtonPreviewPlay.disabled = false
-	event_data['file'] = path
-	event_data['background-music'] = 'play'
+func load_audio(path: String):
+	if not path.empty():
+		$PanelContainer/VBoxContainer/Header/Name.text = path
+		$PanelContainer/VBoxContainer/Header/ButtonClear.disabled = false
+		$PanelContainer/VBoxContainer/Header/ButtonPreviewPlay.disabled = false
+		event_data['file'] = path
+		event_data['background-music'] = 'play'
+	else:
+		$PanelContainer/VBoxContainer/Header/Name.text = 'None'
+		$PanelContainer/VBoxContainer/Header/ButtonClear.disabled = true
+		$PanelContainer/VBoxContainer/Header/ButtonPreviewPlay.disabled = true
+		event_data['file'] = ''
+		event_data['background-music'] = 'stop'
 
 
 func load_data(data):
 	event_data = data
-	if data['file'] != '':
-		load_audio(data['file'])
+	load_audio(data['file'])
 
 
 func _on_ButtonPreviewPlay_pressed():
@@ -47,3 +57,7 @@ func _on_ButtonPreviewPlay_pressed():
 
 func _on_AudioPreview_finished():
 	$PanelContainer/VBoxContainer/Header/ButtonPreviewPlay.icon = play_icon
+
+
+func _on_ButtonClear_pressed():
+	load_audio('')

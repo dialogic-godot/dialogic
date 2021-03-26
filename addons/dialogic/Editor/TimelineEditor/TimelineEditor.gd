@@ -172,6 +172,8 @@ func load_timeline(filename: String):
 				create_event("CharacterJoinBlock", i)
 			{'audio', 'file'}:
 				create_event("AudioBlock", i)
+			{'background-music', 'file'}:
+				create_event("BackgroundMusic", i)
 			{'question', 'options'}:
 				create_event("Question", i)
 			{'choice'}:

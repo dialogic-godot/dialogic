@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://addons/dialogic/Editor/Pieces/BackgroundMusic.gd" type="Script" id=1]
 [ext_resource path="res://addons/dialogic/Editor/Pieces/Common/Spacer.tscn" type="PackedScene" id=2]
@@ -6,13 +6,14 @@
 [ext_resource path="res://addons/dialogic/Editor/Pieces/Common/PieceExtraSettings.tscn" type="PackedScene" id=4]
 [ext_resource path="res://addons/dialogic/Images/play.svg" type="Texture" id=5]
 [ext_resource path="res://addons/dialogic/Editor/Pieces/Common/DragController.tscn" type="PackedScene" id=6]
+[ext_resource path="res://addons/dialogic/Images/Remove.svg" type="Texture" id=7]
 
 [sub_resource type="StyleBoxFlat" id=1]
 content_margin_left = 16.0
 content_margin_right = 6.0
 content_margin_top = 6.0
 content_margin_bottom = 6.0
-bg_color = Color( 0.580392, 0.286275, 0.227451, 0.447059 )
+bg_color = Color( 0.298039, 0.172549, 0.14902, 0.447059 )
 border_width_left = 2
 border_width_top = 2
 border_width_right = 2
@@ -74,18 +75,26 @@ text = "  Background Music"
 [node name="Name" type="Label" parent="PanelContainer/VBoxContainer/Header"]
 margin_left = 154.0
 margin_top = 7.0
-margin_right = 154.0
+margin_right = 188.0
 margin_bottom = 21.0
+text = "None"
 
 [node name="ButtonAudio" type="Button" parent="PanelContainer/VBoxContainer/Header"]
-margin_left = 158.0
-margin_right = 182.0
+margin_left = 192.0
+margin_right = 216.0
 margin_bottom = 28.0
 text = "..."
 
+[node name="ButtonClear" type="Button" parent="PanelContainer/VBoxContainer/Header"]
+margin_left = 220.0
+margin_right = 248.0
+margin_bottom = 28.0
+disabled = true
+icon = ExtResource( 7 )
+
 [node name="ButtonPreviewPlay" type="Button" parent="PanelContainer/VBoxContainer/Header"]
-margin_left = 186.0
-margin_right = 220.0
+margin_left = 252.0
+margin_right = 286.0
 margin_bottom = 28.0
 disabled = true
 icon = ExtResource( 5 )
@@ -100,7 +109,7 @@ custom_colors/font_color = Color( 1, 1, 1, 0.513726 )
 text = "    ..."
 
 [node name="Spacer" parent="PanelContainer/VBoxContainer/Header" instance=ExtResource( 2 )]
-margin_left = 224.0
+margin_left = 290.0
 margin_right = 1735.0
 margin_bottom = 28.0
 
@@ -114,5 +123,6 @@ items = [ "Move Up", null, 0, false, false, 0, 0, null, "", false, "Move Down", 
 
 [node name="DragController" parent="." instance=ExtResource( 6 )]
 [connection signal="pressed" from="PanelContainer/VBoxContainer/Header/ButtonAudio" to="." method="_on_ButtonAudio_pressed"]
+[connection signal="pressed" from="PanelContainer/VBoxContainer/Header/ButtonClear" to="." method="_on_ButtonClear_pressed"]
 [connection signal="pressed" from="PanelContainer/VBoxContainer/Header/ButtonPreviewPlay" to="." method="_on_ButtonPreviewPlay_pressed"]
 [connection signal="finished" from="PanelContainer/AudioPreview" to="." method="_on_AudioPreview_finished"]
