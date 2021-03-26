@@ -7,11 +7,11 @@ var character_data = {
 	'file': ''
 }
 var positions = {
-	'left': Vector2(-400,-130),
-	'right': Vector2(+400,-130),
-	'center': Vector2(0,-130),
-	'center_right': Vector2(200,-130),
-	'center_left': Vector2(-200,-130)}
+	'left': Vector2(-400, 0),
+	'right': Vector2(+400, 0),
+	'center': Vector2(0, 0),
+	'center_right': Vector2(200, 0),
+	'center_left': Vector2(-200, 0)}
 var direction = 'left'
 var debug = false
 
