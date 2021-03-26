@@ -260,23 +260,25 @@ func _insert_glossary_definitions(text: String):
 	return final_text;
 
 
-func _process(_delta):
+func _process(delta):
 	$TextBubble/NextIndicator.visible = finished
-	if Engine.is_editor_hint() == false:
+	if not Engine.is_editor_hint():
 		# Multiple choices
 		if waiting_for_answer:
 			$Options.visible = finished
 		else:
 			$Options.visible = false
 
-		if Input.is_action_just_pressed(input_next) and waiting == false:
-			if $TextBubble/Tween.is_active():
-				# Skip to end if key is pressed during the text animation
-				$TextBubble/Tween.seek(999)
-				finished = true
-			else:
-				if waiting_for_answer == false and waiting_for_input == false:
-					load_dialog()
+
+func _input(event: InputEvent) -> void:
+	if not Engine.is_editor_hint() and event.is_action_pressed(input_next) and not waiting:
+		if $TextBubble/Tween.is_active():
+			# Skip to end if key is pressed during the text animation
+			$TextBubble/Tween.seek(999)
+			finished = true
+		else:
+			if waiting_for_answer == false and waiting_for_input == false:
+				load_dialog()
 
 
 func show_dialog():
