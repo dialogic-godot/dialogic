@@ -50,10 +50,35 @@ func set_variable(name: String, value) -> void:
 			d['value'] = str(value)
 
 
-func set_variable_from_id(id: String, value) -> void:
+func set_variable_from_id(id: String, value: String, operation: String) -> void:
+	var target_def: Dictionary;
 	for d in current_definitions['variables']:
 		if d['id'] == id:
-			d['value'] = str(value)
+			target_def = d;
+	if target_def != null:
+		var converted_set_value = value
+		var converted_target_value = target_def['value']
+		var is_number = converted_set_value.is_valid_float() and converted_target_value.is_valid_float()
+		if is_number:
+			converted_set_value = float(value)
+			converted_target_value = float(target_def['value'])
+		var result = target_def['value']
+		# Do nothing for -, * and / operations on string
+		match operation:
+			'=':
+				result = converted_set_value
+			'+':
+				result = converted_target_value + converted_set_value
+			'-':
+				if is_number:
+					result = converted_target_value - converted_set_value
+			'*':
+				if is_number:
+					result = converted_target_value * converted_set_value
+			'/':
+				if is_number:
+					result = converted_target_value / converted_set_value
+		target_def['value'] = str(result)
 
 
 func get_glossary(name: String) -> Dictionary:

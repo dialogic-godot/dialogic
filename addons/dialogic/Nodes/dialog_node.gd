@@ -508,9 +508,12 @@ func event_handler(event: Dictionary):
 			else:
 				# condition met, entering branch
 				go_to_next_event()
-		{'set_value', 'definition'}:
+		{'set_value', 'definition', ..}:
 			emit_signal("event_start", "set_value", event)
-			DialogicSingleton.set_variable_from_id(event['definition'], event['set_value'])
+			var operation = '='
+			if 'operation' in event and not event['operation'].empty():
+				operation = event["operation"]
+			DialogicSingleton.set_variable_from_id(event['definition'], event['set_value'], operation)
 			go_to_next_event()
 		_:
 			visible = false
