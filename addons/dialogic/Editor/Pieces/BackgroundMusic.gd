@@ -9,7 +9,7 @@ var stop_icon = load("res://addons/dialogic/Images/stop.svg")
 
 # This is the information of this event and it will get parsed and saved to the JSON file.
 var event_data = {
-	'audio': 'stop',
+	'background-music': 'stop',
 	'file': ''
 }
 
@@ -32,13 +32,13 @@ func load_audio(path: String):
 		$PanelContainer/VBoxContainer/Header/ButtonClear.disabled = false
 		$PanelContainer/VBoxContainer/Header/ButtonPreviewPlay.disabled = false
 		event_data['file'] = path
-		event_data['audio'] = 'play'
+		event_data['background-music'] = 'play'
 	else:
-		$PanelContainer/VBoxContainer/Header/Name.text = 'No sound (will stop previous audio event)'
+		$PanelContainer/VBoxContainer/Header/Name.text = 'No music (will stop with fade out)'
 		$PanelContainer/VBoxContainer/Header/ButtonClear.disabled = true
 		$PanelContainer/VBoxContainer/Header/ButtonPreviewPlay.disabled = true
 		event_data['file'] = ''
-		event_data['audio'] = 'stop'
+		event_data['background-music'] = 'stop'
 
 
 func load_data(data):
