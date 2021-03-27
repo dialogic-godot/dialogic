@@ -37,12 +37,13 @@ The plugin is not production ready, this means that it will not work in your gam
     - Add offset to the portrait
   - Timeline Editor:
     - New `Theme event` to change the theme in the middle of a timeline
-    - Allow making basic calculations such as `+`, `-`, `*`, `/` in `Set value events`.
     - New `Background Music Event` to play music in your dialog. Music can crossfade when changing track and fade in/out when starting/stopping.
     - Re-enabled the `Scene Event`
+    - Allow making basic calculations such as `+`, `-`, `*`, `/` in `Set value events`.
   - Theme Editor:
-    - You can now add multiple themes
-    - Moved the preview button to the left side so it is never hidden by default in small screens
+    - You can now add multiple themes.
+    - Moved the preview button to the left side so it is never hidden by default in small screens.
+    - New section to edit how the character names are displayed.
     - New properties:
       - `Box size` set the width and height of the dialogue box in pixels
       - `Alignment` you can now align the text displayed (Left, Center, Right)
@@ -50,10 +51,15 @@ The plugin is not production ready, this means that it will not work in your gam
   - Glossary was renamed to Definitions. I feel like the word `Definitions` cover both "variables" and "lore" a bit better.
   - Definitions:
     - Dynamic types! All variables are just dynamic, so they can be ints, floats or strings.
+    - The name of a character can be set to be a definition.
+    - You can display definition values in a Text Event by doing: `[definition name here]`.
+  - Settings:
+    - Re-added the auto color for character names in text messages
+    - Removing empty Text Event from timelines
+    - New lines to create new Text Event messages
+    - Propagation of input to the rest of the Tree
+  - Fixed many resource issues with exported games
   - The events now emit signals. Thank you [Jesse Lieberg](https://github.com/GammaGames) for your first contribution!
-  - Re-added the auto color for character names in text messages
-  - You can display the definition values in a text event by doing: `[definition name here]`.
-  - Fixed some resource issues with exported games
   - Special thanks to [Arnaud Vergnet](https://github.com/arnaudvergnet) for all your work in improving Definitions, conditional events and many more! 🙇‍♂️
 
 To view the full changelog [click here](https://github.com/coppolaemilio/dialogic/blob/master/CHANGELOG.md). 

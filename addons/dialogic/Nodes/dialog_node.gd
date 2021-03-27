@@ -308,6 +308,7 @@ func update_name(character, color: Color = Color.white) -> void:
 				parsed_name = character['display_name']
 		if character.has('color'):
 			color = character['color']
+		parsed_name = parse_definitions(parsed_name)
 		$TextBubble/NameLabel.visible = true
 		# Hack to reset the size
 		$TextBubble/NameLabel.rect_min_size = Vector2(0, 0)
@@ -321,7 +322,7 @@ func update_name(character, color: Color = Color.white) -> void:
 
 func update_text(text):
 	# Updating the text and starting the animation from 0
-	$TextBubble/RichTextLabel.bbcode_text = self.parse_definitions(text)
+	$TextBubble/RichTextLabel.bbcode_text = parse_definitions(text)
 	$TextBubble/RichTextLabel.percent_visible = 0
 
 	# The call to this function needs to be deferred.
