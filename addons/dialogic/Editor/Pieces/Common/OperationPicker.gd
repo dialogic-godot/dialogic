@@ -15,11 +15,11 @@ var options = [
 		"operation": "-"
 	},
 	{
-		"text": "[ multiply ]",
+		"text": "[ multiply by ]",
 		"operation": "*"
 	},
 	{
-		"text": "[ divide ]",
+		"text": "[ divide by ]",
 		"operation": "/"
 	},
 ]
