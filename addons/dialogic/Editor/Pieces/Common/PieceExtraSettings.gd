@@ -12,14 +12,17 @@ func _ready():
 
 
 func _on_OptionSelected(index):
+	var timeline_editor = current_piece.editor_reference.get_node('MainPanel/TimelineEditor')
 	if index == 0:
 		# Moving this up
-		current_piece.editor_reference.get_node('MainPanel/TimelineEditor').move_block(current_piece, 'up')
+		timeline_editor.move_block(current_piece, 'up')
 	elif index == 1:
 		# Moving piece down
-		current_piece.editor_reference.get_node('MainPanel/TimelineEditor').move_block(current_piece, 'down')
+		timeline_editor.move_block(current_piece, 'down')
 	elif index == 3:
 		# Removing a piece
+		if timeline_editor.selected_item == current_piece:
+			timeline_editor.selected_item = null
 		# TODO: Add a warning here if the event has changes
 		current_piece.queue_free()
-	current_piece.editor_reference.get_node('MainPanel/TimelineEditor').indent_events()
+	timeline_editor.indent_events()
