@@ -194,7 +194,7 @@ func load_timeline(filename: String):
 				create_event("WaitSeconds", i)
 			{'condition', 'definition', 'value'}:
 				create_event("IfCondition", i)
-			{'set_value', 'definition'}:
+			{'set_value', 'definition', ..}:
 				create_event("SetValue", i)
 			{'set_theme'}:
 				create_event("SetTheme", i)

@@ -1,0 +1,13 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://addons/dialogic/Editor/Pieces/Common/OperationPicker.gd" type="Script" id=1]
+
+[node name="OperationPicker" type="MenuButton"]
+margin_left = 284.0
+margin_right = 296.0
+margin_bottom = 28.0
+text = "[ To be ]"
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
