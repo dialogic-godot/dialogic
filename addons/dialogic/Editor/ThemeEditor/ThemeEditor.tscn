@@ -306,7 +306,6 @@ margin_right = 74.0
 margin_bottom = 24.0
 max_value = 999.0
 value = 48.0
-rounded = true
 allow_greater = true
 allow_lesser = true
 

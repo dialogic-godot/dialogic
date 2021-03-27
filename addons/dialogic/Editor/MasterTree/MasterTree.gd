@@ -12,6 +12,9 @@ onready var empty_editor = get_node('../Empty')
 onready var tree = self
 var timeline_icon = load("res://addons/dialogic/Images/timeline.svg")
 var character_icon = load("res://addons/dialogic/Images/character.svg")
+var theme_icon = load("res://addons/dialogic/Images/Resources/theme.svg")
+var definition_icon = load("res://addons/dialogic/Images/Resources/definition.svg")
+var glossary_icon = load("res://addons/dialogic/Images/Resources/glossary.svg")
 var timelines_tree
 var characters_tree
 var definitions_tree
@@ -115,7 +118,7 @@ func build_themes(selected_item: String=''):
 
 func _add_theme(theme_item, select = false):
 	var item = tree.create_item(themes_tree)
-	item.set_icon(0, get_icon("StyleBoxTexture", "EditorIcons"))
+	item.set_icon(0, theme_icon)
 	item.set_text(0, theme_item['name'])
 	theme_item['editor'] = 'Theme'
 	item.set_metadata(0, theme_item)
@@ -156,9 +159,9 @@ func build_definitions(selected_item: String=''):
 func _add_definition(definition, select = false):
 	var item = tree.create_item(definitions_tree)
 	item.set_text(0, definition['name'])
-	item.set_icon(0, get_icon("Variant", "EditorIcons"))
+	item.set_icon(0, definition_icon)
 	if definition['type'] == 1:
-		item.set_icon(0, get_icon("ScriptCreateDialog", "EditorIcons"))
+		item.set_icon(0, glossary_icon)
 		
 	definition['editor'] = 'Definition'
 	item.set_metadata(0, definition)
