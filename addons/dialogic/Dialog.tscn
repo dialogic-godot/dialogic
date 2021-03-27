@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://addons/dialogic/Images/next-indicator.png" type="Texture" id=1]
 [ext_resource path="res://addons/dialogic/Images/background/background-2.png" type="Texture" id=2]
@@ -6,7 +6,7 @@
 [ext_resource path="res://addons/dialogic/Fonts/GlossaryFont.tres" type="DynamicFont" id=4]
 [ext_resource path="res://addons/dialogic/Nodes/glossary_info.gd" type="Script" id=5]
 [ext_resource path="res://addons/dialogic/Nodes/dialog_node.gd" type="Script" id=6]
-[ext_resource path="res://addons/dialogic/BackgroundMusic.tscn" type="PackedScene" id=7]
+[ext_resource path="res://addons/dialogic/Nodes/BackgroundMusic.tscn" type="PackedScene" id=7]
 
 [sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 1, 1, 1, 0 )
@@ -27,13 +27,13 @@ tracks/0/keys = {
 "values": [ 12.0, 55.0 ]
 }
 
-[sub_resource type="StyleBoxFlat" id=4]
+[sub_resource type="StyleBoxFlat" id=3]
 content_margin_left = 10.0
 content_margin_right = 10.0
 bg_color = Color( 1, 1, 1, 0 )
 expand_margin_left = 10.0
 
-[sub_resource type="StyleBoxFlat" id=3]
+[sub_resource type="StyleBoxFlat" id=4]
 bg_color = Color( 0.196078, 0.196078, 0.196078, 0 )
 
 [node name="DialogNode" type="Control"]
@@ -69,23 +69,23 @@ anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
 margin_left = -455.0
-margin_top = 393.0
+margin_top = -207.0
 margin_right = 455.0
-margin_bottom = 560.0
+margin_bottom = -40.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="ColorRect" type="ColorRect" parent="TextBubble"]
-visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
-color = Color( 0, 0, 0, 1 )
+color = Color( 0, 0, 0, 0.639216 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="TextureRect" type="TextureRect" parent="TextBubble"]
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 texture = ExtResource( 2 )
@@ -141,15 +141,15 @@ autoplay = "IDLE"
 anims/IDLE = SubResource( 2 )
 
 [node name="NameLabel" type="Label" parent="TextBubble"]
-margin_top = -48.0
+margin_top = -40.0
 margin_right = 58.0
-margin_bottom = -8.0
 size_flags_vertical = 1
-custom_styles/normal = SubResource( 4 )
+custom_styles/normal = SubResource( 3 )
+custom_fonts/font = ExtResource( 3 )
+custom_colors/font_color = Color( 1, 1, 1, 1 )
 custom_colors/font_color_shadow = Color( 1, 1, 1, 0 )
 custom_constants/shadow_offset_x = 2
 custom_constants/shadow_offset_y = 2
-text = "Hello "
 align = 1
 valign = 1
 __meta__ = {
@@ -162,12 +162,13 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 size_flags_horizontal = 15
 size_flags_vertical = 15
-color = Color( 0.156863, 0.156863, 0.156863, 1 )
+color = Color( 0, 0, 0, 0.721569 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="TextureRect" type="TextureRect" parent="TextBubble/NameLabel"]
+visible = false
 show_behind_parent = true
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -248,7 +249,7 @@ margin_right = 208.0
 mouse_filter = 1
 size_flags_horizontal = 3
 size_flags_vertical = 3
-custom_styles/panel = SubResource( 3 )
+custom_styles/panel = SubResource( 4 )
 script = ExtResource( 5 )
 __meta__ = {
 "_edit_group_": true,
@@ -317,6 +318,7 @@ __meta__ = {
 [node name="Timer" type="Timer" parent="DefinitionInfo"]
 
 [node name="WaitSeconds" type="Timer" parent="."]
+
 [connection signal="meta_hover_ended" from="TextBubble/RichTextLabel" to="." method="_on_RichTextLabel_meta_hover_ended"]
 [connection signal="meta_hover_started" from="TextBubble/RichTextLabel" to="." method="_on_RichTextLabel_meta_hover_started"]
 [connection signal="tween_completed" from="TextBubble/Tween" to="." method="_on_Tween_tween_completed"]
