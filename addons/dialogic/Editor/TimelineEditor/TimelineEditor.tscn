@@ -77,7 +77,7 @@ size_flags_vertical = 3
 margin_left = 834.0
 margin_right = 1024.0
 margin_bottom = 600.0
-rect_min_size = Vector2( 190, 0 )
+rect_min_size = Vector2( 200, 0 )
 
 [node name="EventContainer" type="VBoxContainer" parent="ScrollContainer"]
 margin_right = 178.0
