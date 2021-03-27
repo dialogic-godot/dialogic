@@ -1,7 +1,7 @@
 [gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://addons/dialogic/Editor/Pieces/SetValue.gd" type="Script" id=1]
-[ext_resource path="res://addons/dialogic/Images/Events/set-value.svg" type="Texture" id=2]
+[ext_resource path="res://addons/dialogic/Images/Resources/definition.svg" type="Texture" id=2]
 [ext_resource path="res://addons/dialogic/Editor/Pieces/Common/Spacer.tscn" type="PackedScene" id=3]
 [ext_resource path="res://addons/dialogic/Editor/Pieces/Common/PieceExtraSettings.tscn" type="PackedScene" id=4]
 [ext_resource path="res://addons/dialogic/Editor/Pieces/Common/DragController.tscn" type="PackedScene" id=5]
@@ -127,4 +127,5 @@ margin_bottom = 28.0
 items = [ "Move Up", null, 0, false, false, 0, 0, null, "", false, "Move Down", null, 0, false, false, 1, 0, null, "", false, "", null, 0, false, false, 2, 0, null, "", true, "Remove", null, 0, false, false, 3, 0, null, "", false ]
 
 [node name="DragController" parent="." instance=ExtResource( 5 )]
+
 [connection signal="text_changed" from="PanelContainer/VBoxContainer/Header/LineEdit" to="." method="_on_LineEdit_text_changed"]
