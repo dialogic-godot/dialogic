@@ -10,7 +10,7 @@
 [ext_resource path="res://addons/dialogic/Images/question.svg" type="Texture" id=8]
 [ext_resource path="res://addons/dialogic/Images/end-choice.svg" type="Texture" id=9]
 [ext_resource path="res://addons/dialogic/Images/change-timeline.svg" type="Texture" id=10]
-[ext_resource path="res://addons/dialogic/Images/ListSelect.svg" type="Texture" id=11]
+[ext_resource path="res://addons/dialogic/Images/Resources/definition.svg" type="Texture" id=11]
 [ext_resource path="res://addons/dialogic/Images/choice.svg" type="Texture" id=12]
 [ext_resource path="res://addons/dialogic/Images/tutorials/arrow-down.svg" type="Texture" id=13]
 [ext_resource path="res://addons/dialogic/Images/Wait.svg" type="Texture" id=14]
@@ -54,7 +54,7 @@ __meta__ = {
 }
 
 [node name="TimelineArea" type="ScrollContainer" parent="."]
-margin_right = 826.0
+margin_right = 816.0
 margin_bottom = 600.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -66,7 +66,7 @@ __meta__ = {
 [node name="TimeLine" type="VBoxContainer" parent="TimelineArea"]
 margin_left = 5.0
 margin_top = 5.0
-margin_right = 821.0
+margin_right = 811.0
 margin_bottom = 595.0
 grow_horizontal = 2
 grow_vertical = 2
@@ -74,14 +74,14 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="ScrollContainer" type="ScrollContainer" parent="."]
-margin_left = 834.0
+margin_left = 824.0
 margin_right = 1024.0
 margin_bottom = 600.0
 rect_min_size = Vector2( 200, 0 )
 
 [node name="EventContainer" type="VBoxContainer" parent="ScrollContainer"]
-margin_right = 178.0
-margin_bottom = 696.0
+margin_right = 188.0
+margin_bottom = 702.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 __meta__ = {
@@ -89,13 +89,13 @@ __meta__ = {
 }
 
 [node name="EventsWarning" type="PanelContainer" parent="ScrollContainer/EventContainer"]
-margin_right = 178.0
+margin_right = 188.0
 margin_bottom = 68.0
 custom_styles/panel = SubResource( 2 )
 
 [node name="HBoxContainer" type="HBoxContainer" parent="ScrollContainer/EventContainer/EventsWarning"]
 margin_top = 10.0
-margin_right = 172.0
+margin_right = 182.0
 margin_bottom = 58.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -112,7 +112,7 @@ stretch_mode = 4
 
 [node name="Label" type="Label" parent="ScrollContainer/EventContainer/EventsWarning/HBoxContainer"]
 margin_left = 44.0
-margin_right = 172.0
+margin_right = 182.0
 margin_bottom = 48.0
 rect_min_size = Vector2( 100, 0 )
 size_flags_horizontal = 3
@@ -123,7 +123,7 @@ autowrap = true
 
 [node name="HBoxContainer6" type="HBoxContainer" parent="ScrollContainer/EventContainer"]
 margin_top = 72.0
-margin_right = 178.0
+margin_right = 188.0
 margin_bottom = 86.0
 
 [node name="Label" type="Label" parent="ScrollContainer/EventContainer/HBoxContainer6"]
@@ -133,13 +133,13 @@ text = "Main Events"
 
 [node name="HSeparator2" type="HSeparator" parent="ScrollContainer/EventContainer/HBoxContainer6"]
 margin_left = 81.0
-margin_right = 178.0
+margin_right = 188.0
 margin_bottom = 14.0
 size_flags_horizontal = 3
 
 [node name="TextBlock" type="Button" parent="ScrollContainer/EventContainer"]
 margin_top = 90.0
-margin_right = 178.0
+margin_right = 188.0
 margin_bottom = 118.0
 text = "  Text Event"
 icon = ExtResource( 2 )
@@ -147,7 +147,7 @@ align = 0
 
 [node name="CharacterJoinBlock" type="Button" parent="ScrollContainer/EventContainer"]
 margin_top = 122.0
-margin_right = 178.0
+margin_right = 188.0
 margin_bottom = 150.0
 text = "  Character Join"
 icon = ExtResource( 1 )
@@ -155,7 +155,7 @@ align = 0
 
 [node name="CharacterLeaveBlock" type="Button" parent="ScrollContainer/EventContainer"]
 margin_top = 154.0
-margin_right = 178.0
+margin_right = 188.0
 margin_bottom = 182.0
 text = "  Character Leave"
 icon = ExtResource( 7 )
@@ -163,7 +163,7 @@ align = 0
 
 [node name="HBoxContainer5" type="HBoxContainer" parent="ScrollContainer/EventContainer"]
 margin_top = 186.0
-margin_right = 178.0
+margin_right = 188.0
 margin_bottom = 200.0
 
 [node name="Label" type="Label" parent="ScrollContainer/EventContainer/HBoxContainer5"]
@@ -173,13 +173,13 @@ text = "Logic"
 
 [node name="HSeparator2" type="HSeparator" parent="ScrollContainer/EventContainer/HBoxContainer5"]
 margin_left = 37.0
-margin_right = 178.0
+margin_right = 188.0
 margin_bottom = 14.0
 size_flags_horizontal = 3
 
 [node name="ButtonQuestion" type="Button" parent="ScrollContainer/EventContainer"]
 margin_top = 204.0
-margin_right = 178.0
+margin_right = 188.0
 margin_bottom = 232.0
 text = "  Question"
 icon = ExtResource( 8 )
@@ -187,7 +187,7 @@ align = 0
 
 [node name="Choice" type="Button" parent="ScrollContainer/EventContainer"]
 margin_top = 236.0
-margin_right = 178.0
+margin_right = 188.0
 margin_bottom = 264.0
 text = "  Choice"
 icon = ExtResource( 12 )
@@ -195,7 +195,7 @@ align = 0
 
 [node name="IfCondition" type="Button" parent="ScrollContainer/EventContainer"]
 margin_top = 268.0
-margin_right = 178.0
+margin_right = 188.0
 margin_bottom = 296.0
 text = " Condition"
 icon = ExtResource( 5 )
@@ -203,7 +203,7 @@ align = 0
 
 [node name="EndBranch" type="Button" parent="ScrollContainer/EventContainer"]
 margin_top = 300.0
-margin_right = 178.0
+margin_right = 188.0
 margin_bottom = 328.0
 text = "  End Branch"
 icon = ExtResource( 9 )
@@ -211,16 +211,16 @@ align = 0
 
 [node name="SetValue" type="Button" parent="ScrollContainer/EventContainer"]
 margin_top = 332.0
-margin_right = 178.0
-margin_bottom = 354.0
+margin_right = 188.0
+margin_bottom = 360.0
 text = "  Set Value"
 icon = ExtResource( 11 )
 align = 0
 
 [node name="HBoxContainer3" type="HBoxContainer" parent="ScrollContainer/EventContainer"]
-margin_top = 358.0
-margin_right = 178.0
-margin_bottom = 372.0
+margin_top = 364.0
+margin_right = 188.0
+margin_bottom = 378.0
 
 [node name="Label" type="Label" parent="ScrollContainer/EventContainer/HBoxContainer3"]
 margin_right = 56.0
@@ -229,55 +229,55 @@ text = "Timeline"
 
 [node name="HSeparator2" type="HSeparator" parent="ScrollContainer/EventContainer/HBoxContainer3"]
 margin_left = 60.0
-margin_right = 178.0
+margin_right = 188.0
 margin_bottom = 14.0
 size_flags_horizontal = 3
 
 [node name="ChangeTimeline" type="Button" parent="ScrollContainer/EventContainer"]
-margin_top = 376.0
-margin_right = 178.0
-margin_bottom = 404.0
+margin_top = 382.0
+margin_right = 188.0
+margin_bottom = 410.0
 hint_tooltip = "This will instantly teleport you to the start of the desired timeline."
 text = "  Change Timeline"
 icon = ExtResource( 10 )
 align = 0
 
 [node name="SceneEvent" type="Button" parent="ScrollContainer/EventContainer"]
-margin_top = 408.0
-margin_right = 178.0
-margin_bottom = 436.0
+margin_top = 414.0
+margin_right = 188.0
+margin_bottom = 442.0
 text = "  Scene Event"
 icon = ExtResource( 4 )
 align = 0
 
 [node name="CloseDialog" type="Button" parent="ScrollContainer/EventContainer"]
-margin_top = 440.0
-margin_right = 178.0
-margin_bottom = 468.0
+margin_top = 446.0
+margin_right = 188.0
+margin_bottom = 474.0
 text = "  Close Dialog"
 icon = ExtResource( 6 )
 align = 0
 
 [node name="WaitSeconds" type="Button" parent="ScrollContainer/EventContainer"]
-margin_top = 472.0
-margin_right = 178.0
-margin_bottom = 500.0
+margin_top = 478.0
+margin_right = 188.0
+margin_bottom = 506.0
 text = "  Wait Seconds"
 icon = ExtResource( 14 )
 align = 0
 
 [node name="SetTheme" type="Button" parent="ScrollContainer/EventContainer"]
-margin_top = 504.0
-margin_right = 178.0
-margin_bottom = 532.0
+margin_top = 510.0
+margin_right = 188.0
+margin_bottom = 538.0
 text = "  Set Theme"
 icon = ExtResource( 18 )
 align = 0
 
 [node name="HBoxContainer4" type="HBoxContainer" parent="ScrollContainer/EventContainer"]
-margin_top = 536.0
-margin_right = 178.0
-margin_bottom = 550.0
+margin_top = 542.0
+margin_right = 188.0
+margin_bottom = 556.0
 
 [node name="Label" type="Label" parent="ScrollContainer/EventContainer/HBoxContainer4"]
 margin_right = 37.0
@@ -286,30 +286,30 @@ text = "Audio"
 
 [node name="HSeparator2" type="HSeparator" parent="ScrollContainer/EventContainer/HBoxContainer4"]
 margin_left = 41.0
-margin_right = 178.0
+margin_right = 188.0
 margin_bottom = 14.0
 size_flags_horizontal = 3
 
 [node name="AudioBlock" type="Button" parent="ScrollContainer/EventContainer"]
-margin_top = 554.0
-margin_right = 178.0
-margin_bottom = 582.0
+margin_top = 560.0
+margin_right = 188.0
+margin_bottom = 588.0
 text = "  Audio Event"
 icon = ExtResource( 3 )
 align = 0
 
 [node name="BackgroundMusic" type="Button" parent="ScrollContainer/EventContainer"]
-margin_top = 586.0
-margin_right = 178.0
-margin_bottom = 614.0
+margin_top = 592.0
+margin_right = 188.0
+margin_bottom = 620.0
 text = "  Background Music"
 icon = ExtResource( 3 )
 align = 0
 
 [node name="HBoxContainer" type="HBoxContainer" parent="ScrollContainer/EventContainer"]
-margin_top = 618.0
-margin_right = 178.0
-margin_bottom = 632.0
+margin_top = 624.0
+margin_right = 188.0
+margin_bottom = 638.0
 
 [node name="Label" type="Label" parent="ScrollContainer/EventContainer/HBoxContainer"]
 margin_right = 39.0
@@ -318,22 +318,22 @@ text = "Godot"
 
 [node name="HSeparator2" type="HSeparator" parent="ScrollContainer/EventContainer/HBoxContainer"]
 margin_left = 43.0
-margin_right = 178.0
+margin_right = 188.0
 margin_bottom = 14.0
 size_flags_horizontal = 3
 
 [node name="EmitSignal" type="Button" parent="ScrollContainer/EventContainer"]
-margin_top = 636.0
-margin_right = 178.0
-margin_bottom = 664.0
+margin_top = 642.0
+margin_right = 188.0
+margin_bottom = 670.0
 text = "  Emit Signal"
 icon = ExtResource( 16 )
 align = 0
 
 [node name="ChangeScene" type="Button" parent="ScrollContainer/EventContainer"]
-margin_top = 668.0
-margin_right = 178.0
-margin_bottom = 696.0
+margin_top = 674.0
+margin_right = 188.0
+margin_bottom = 702.0
 hint_tooltip = "This will instantly change
 the current scene."
 text = "  Change Scene"
