@@ -27,6 +27,8 @@ func _ready():
 	nodes['display_name_checkbox'].connect('toggled', self, '_on_display_name_toggled')
 	nodes['name'].connect('text_changed', self, '_on_name_changed')
 	nodes['color'].connect('color_changed', self, '_on_color_changed')
+	var style = get('custom_styles/bg')
+	style.set('bg_color', get_color("dark_color_1", "Editor"))
 
 
 func is_selected(file: String):

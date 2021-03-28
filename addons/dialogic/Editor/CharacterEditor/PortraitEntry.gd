@@ -8,10 +8,6 @@ func _ready():
 	pass
 
 
-func _process(_delta):
-	pass
-
-
 func _on_ButtonDelete_pressed():
 	if $NameEdit.text == 'Default':
 		$PathEdit.text = ''

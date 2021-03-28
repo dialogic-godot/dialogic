@@ -26,6 +26,9 @@ func _ready():
 				b.connect('pressed', self, "_on_ButtonCondition_pressed", [])
 			else:
 				b.connect('pressed', self, "_create_event_button_pressed", [b.name])
+	
+	var style = $TimelineArea.get('custom_styles/bg')
+	style.set('bg_color', get_color("dark_color_1", "Editor"))
 
 
 func _clear_selection():

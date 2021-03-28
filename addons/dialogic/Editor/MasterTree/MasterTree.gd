@@ -105,6 +105,8 @@ func _add_timeline(timeline, select = false):
 		item.set_text(0, timeline['file'])
 	timeline['editor'] = 'Timeline'
 	item.set_metadata(0, timeline)
+	if not get_constant("dark_theme", "Editor"):
+		item.set_icon_modulate(0, get_color("property_color", "Editor"))
 	#item.set_editable(0, true)
 	if select: # Auto selecting
 		item.select(0)
@@ -122,7 +124,8 @@ func _add_theme(theme_item, select = false):
 	item.set_text(0, theme_item['name'])
 	theme_item['editor'] = 'Theme'
 	item.set_metadata(0, theme_item)
-	#item.set_editable(0, true)
+	if not get_constant("dark_theme", "Editor"):
+		item.set_icon_modulate(0, get_color("property_color", "Editor"))
 	if select: # Auto selecting
 		item.select(0)
 
@@ -162,9 +165,10 @@ func _add_definition(definition, select = false):
 	item.set_icon(0, definition_icon)
 	if definition['type'] == 1:
 		item.set_icon(0, glossary_icon)
-		
 	definition['editor'] = 'Definition'
 	item.set_metadata(0, definition)
+	if not get_constant("dark_theme", "Editor"):
+		item.set_icon_modulate(0, get_color("property_color", "Editor"))
 	if select: # Auto selecting
 		item.select(0)
 

@@ -68,6 +68,10 @@ onready var n = {
 func _ready():
 	# Signal connection to free up some memory
 	connect("visibility_changed", self, "_on_visibility_changed")
+	if get_constant("dark_theme", "Editor"):
+		$VBoxContainer/HBoxContainer3/PreviewButton.icon = load("res://addons/dialogic/Images/Plugin/plugin-editor-icon-dark-theme.svg")
+	else:
+		$VBoxContainer/HBoxContainer3/PreviewButton.icon = load("res://addons/dialogic/Images/Plugin/plugin-editor-icon-light-theme.svg")
 	# Force preview update
 	_on_visibility_changed()
 
