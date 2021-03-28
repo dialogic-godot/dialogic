@@ -73,7 +73,7 @@ static func init_saves(overwrite: bool=true):
 		init_state_saves(overwrite)
 		init_definitions_saves(overwrite)
 	else:
-		print('Error creating working directory: ' + str(err))
+		print('[Dialogic] Error creating working directory: ' + str(err))
 
 
 static func init_working_dir():
@@ -91,7 +91,7 @@ static func init_state_saves(overwrite: bool=true):
 			file.store_string('')
 			file.close()
 		else:
-			print('Error opening saved state file: ' + str(err))
+			print('[Dialogic] Error opening saved state file: ' + str(err))
 
 
 static func init_definitions_saves(overwrite: bool=true):
@@ -102,12 +102,12 @@ static func init_definitions_saves(overwrite: bool=true):
 	var err
 	if not directory.file_exists(paths["SAVED_DEFINITIONS_FILE"]):
 		err = sink.open(paths["SAVED_DEFINITIONS_FILE"], File.WRITE)
-		print('Saved definitions not present, creating file: ' + str(err))
+		print('[Dialogic] Saved definitions not present, creating file: ' + str(err))
 		if err == OK:
 			sink.store_string('')
 			sink.close()
 		else:
-			print('Error opening saved definitions file: ' + str(err))
+			print('[Dialogic] Error opening saved definitions file: ' + str(err))
 	
 	err = sink.open(paths["SAVED_DEFINITIONS_FILE"], File.READ_WRITE)
 	if err == OK:
@@ -116,11 +116,11 @@ static func init_definitions_saves(overwrite: bool=true):
 			if err == OK:
 				sink.store_string(source.get_as_text())
 			else:
-				print('Error opening default definitions file: ' + str(err))
+				print('[Dialogic] Error opening default definitions file: ' + str(err))
 		else:
-			print('Did not overwrite previous saved definitions')
+			print('[Dialogic] Did not overwrite previous saved definitions')
 	else:
-		print('Error opening saved definitions file: ' + str(err))
+		print('[Dialogic] Error opening saved definitions file: ' + str(err))
 	
 	source.close()
 	sink.close()
@@ -155,7 +155,7 @@ static func listdir(path: String) -> Array:
 			file_name = dir.get_next()
 		dir.list_dir_end()
 	else:
-		print("Error while accessing path " + path + " - Error: " + str(err))
+		print("[Dialogic] Error while accessing path " + path + " - Error: " + str(err))
 	return files
 
 
@@ -175,7 +175,7 @@ static func get_config(id: String) -> ConfigFile:
 	if id in paths.keys():
 		var err = config.load(paths[id])
 		if err != OK:
-			print("Error while opening config file " + paths[id] + ". Error: " + str(err))
+			print("[Dialogic] Error while opening config file " + paths[id] + ". Error: " + str(err))
 	return config
 
 
