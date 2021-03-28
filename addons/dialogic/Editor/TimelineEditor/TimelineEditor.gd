@@ -12,6 +12,7 @@ onready var events_warning = $ScrollContainer/EventContainer/EventsWarning
 
 var hovered_item = null
 var selected_style : StyleBoxFlat = load("res://addons/dialogic/Editor/Pieces/selected_styleboxflat.tres")
+var selected_style_text : StyleBoxFlat = load("res://addons/dialogic/Editor/Pieces/selected_styleboxflat_text_event.tres")
 var saved_style : StyleBoxFlat
 var selected_item : Node
 
@@ -43,7 +44,11 @@ func _select_item(item: Node):
 		if panel != null:
 			saved_style = panel.get('custom_styles/panel')
 			selected_item = item
-			panel.set('custom_styles/panel', selected_style)
+			print(selected_item.event_data)
+			if selected_item.event_data.has('text') and selected_item.event_data.has('character'):
+				panel.set('custom_styles/panel', selected_style_text)
+			else:
+				panel.set('custom_styles/panel', selected_style)
 	else:
 		_clear_selection()
 

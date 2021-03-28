@@ -130,4 +130,5 @@ smooth_scrolling = true
 wrap_enabled = true
 
 [node name="DragController" parent="." instance=ExtResource( 5 )]
+
 [connection signal="text_changed" from="PanelContainer/VBoxContainer/TextEdit" to="." method="_on_TextEdit_text_changed"]
