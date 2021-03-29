@@ -147,7 +147,7 @@ func load_theme(filename):
 	
 	
 	# Next indicator animations
-	var animations = ['Up and down', 'Pulse'] # TODO: dynamically get all the animations from the Dialog.tscn NextIndicator
+	var animations = ['Up and down', 'Pulse', 'Static'] # TODO: dynamically get all the animations from the Dialog.tscn NextIndicator
 	n['next_animation'].clear()
 	var next_animation_selected = theme.get_value('next_indicator', 'animation', 'Up and down')
 	var nix = 0

@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://addons/dialogic/Images/next-indicator.png" type="Texture" id=1]
 [ext_resource path="res://addons/dialogic/Images/background/background-2.png" type="Texture" id=2]
@@ -27,6 +27,9 @@ tracks/0/keys = {
 "update": 0,
 "values": [ Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
 }
+
+[sub_resource type="Animation" id=7]
+resource_name = "Static"
 
 [sub_resource type="Animation" id=3]
 loop = true
@@ -155,6 +158,7 @@ __meta__ = {
 [node name="AnimationPlayer" type="AnimationPlayer" parent="TextBubble/NextIndicator"]
 autoplay = "Up and down"
 anims/Pulse = SubResource( 2 )
+anims/Static = SubResource( 7 )
 "anims/Up and down" = SubResource( 3 )
 
 [node name="NameLabel" type="Label" parent="TextBubble"]

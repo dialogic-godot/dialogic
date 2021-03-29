@@ -740,6 +740,7 @@ func load_theme(filename):
 	
 	
 	# Setting next indicator animation
+	$TextBubble/NextIndicator.self_modulate = Color('#ffffff')
 	$TextBubble/NextIndicator/AnimationPlayer.play(
 		theme.get_value('next_indicator', 'animation', 'Up and down')
 	)
