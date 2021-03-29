@@ -25,6 +25,7 @@ onready var n = {
 	'background_texture_button_visible': $VBoxContainer/HBoxContainer2/DialogBox/GridContainer/HBoxContainer3/CheckBox,
 	'theme_background_image': $VBoxContainer/HBoxContainer2/DialogBox/GridContainer/HBoxContainer3/BackgroundTextureButton,
 	'theme_next_image': $VBoxContainer/HBoxContainer2/DialogBox/GridContainer/NextIndicatorButton,
+	'next_animation': $VBoxContainer/HBoxContainer2/DialogBox/GridContainer/NextAnimation,
 	'theme_action_key': $VBoxContainer/HBoxContainer2/DialogBox/GridContainer/BoxContainer/ActionOptionButton,
 	'theme_background_color_visible': $VBoxContainer/HBoxContainer2/DialogBox/GridContainer/HBoxContainer2/CheckBox,
 	'theme_background_color': $VBoxContainer/HBoxContainer2/DialogBox/GridContainer/HBoxContainer2/ColorPickerButton,
@@ -145,6 +146,16 @@ func load_theme(filename):
 	n['name_bottom_gap'].value = theme.get_value('name', 'bottom_gap', 48)
 	
 	
+	# Next indicator animations
+	var animations = ['Up and down', 'Pulse'] # TODO: dynamically get all the animations from the Dialog.tscn NextIndicator
+	n['next_animation'].clear()
+	var next_animation_selected = theme.get_value('next_indicator', 'animation', 'Up and down')
+	var nix = 0
+	for a in animations:
+		n['next_animation'].add_item(a)
+		if a == next_animation_selected:
+			n['next_animation'].select(nix)
+		nix += 1
 	
 	# Preview text
 	n['text_preview'].text = theme.get_value('text', 'preview', 'This is preview text. You can use  [color=#A5EFAC]BBCode[/color] to style it.\n[wave amp=50 freq=2]You can even use effects![/wave]')
@@ -184,6 +195,10 @@ func _on_indicator_selected(path, target):
 	n['theme_next_image'].text = DialogicResources.get_filename_from_path(path)
 
 
+func _on_NextAnimation_item_selected(index):
+	DialogicResources.set_theme_value(current_theme, 'next_indicator', 'animation', n['next_animation'].get_item_text(index))
+
+
 func _on_ColorPickerButton_color_changed(color):
 	DialogicResources.set_theme_value(current_theme, 'text','color', '#' + color.to_html())
 
@@ -207,7 +222,6 @@ func _on_PreviewButton_pressed():
 	var preview_dialog = dialogic_node.instance()
 	preview_dialog.preview = true
 	preview_dialog.get_node('DefinitionInfo').in_theme_editor = true
-	preview_dialog.get_node('TextBubble/NextIndicator/AnimationPlayer').play('IDLE')
 	
 	# Random character preview if there are any
 	var characters = DialogicUtil.get_character_list()

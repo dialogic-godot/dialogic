@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://addons/dialogic/Images/next-indicator.png" type="Texture" id=1]
 [ext_resource path="res://addons/dialogic/Images/background/background-2.png" type="Texture" id=2]
@@ -13,6 +13,22 @@ bg_color = Color( 1, 1, 1, 0 )
 expand_margin_left = 10.0
 
 [sub_resource type="Animation" id=2]
+resource_name = "Pulse"
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:self_modulate")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
+}
+
+[sub_resource type="Animation" id=3]
 loop = true
 tracks/0/type = "value"
 tracks/0/path = NodePath(".:margin_bottom")
@@ -27,13 +43,13 @@ tracks/0/keys = {
 "values": [ 12.0, 55.0 ]
 }
 
-[sub_resource type="StyleBoxFlat" id=3]
+[sub_resource type="StyleBoxFlat" id=4]
 content_margin_left = 10.0
 content_margin_right = 10.0
 bg_color = Color( 1, 1, 1, 0 )
 expand_margin_left = 10.0
 
-[sub_resource type="StyleBoxFlat" id=4]
+[sub_resource type="StyleBoxFlat" id=5]
 bg_color = Color( 0.196078, 0.196078, 0.196078, 0 )
 
 [node name="DialogNode" type="Control"]
@@ -77,15 +93,15 @@ __meta__ = {
 }
 
 [node name="ColorRect" type="ColorRect" parent="TextBubble"]
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
-color = Color( 0, 0, 0, 0.639216 )
+color = Color( 0, 0, 0, 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="TextureRect" type="TextureRect" parent="TextBubble"]
-visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 texture = ExtResource( 2 )
@@ -137,17 +153,19 @@ __meta__ = {
 }
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="TextBubble/NextIndicator"]
-autoplay = "IDLE"
-anims/IDLE = SubResource( 2 )
+autoplay = "Up and down"
+anims/Pulse = SubResource( 2 )
+"anims/Up and down" = SubResource( 3 )
 
 [node name="NameLabel" type="Label" parent="TextBubble"]
-margin_top = -40.0
+margin_top = -48.0
 margin_right = 58.0
+margin_bottom = -8.0
 size_flags_vertical = 1
-custom_styles/normal = SubResource( 3 )
+custom_styles/normal = SubResource( 4 )
 custom_fonts/font = ExtResource( 3 )
 custom_colors/font_color = Color( 1, 1, 1, 1 )
-custom_colors/font_color_shadow = Color( 1, 1, 1, 0 )
+custom_colors/font_color_shadow = Color( 0, 0, 0, 0.619608 )
 custom_constants/shadow_offset_x = 2
 custom_constants/shadow_offset_y = 2
 align = 1
@@ -157,12 +175,13 @@ __meta__ = {
 }
 
 [node name="ColorRect" type="ColorRect" parent="TextBubble/NameLabel"]
+visible = false
 show_behind_parent = true
 anchor_right = 1.0
 anchor_bottom = 1.0
 size_flags_horizontal = 15
 size_flags_vertical = 15
-color = Color( 0, 0, 0, 0.721569 )
+color = Color( 0.156863, 0.156863, 0.156863, 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -249,7 +268,7 @@ margin_right = 208.0
 mouse_filter = 1
 size_flags_horizontal = 3
 size_flags_vertical = 3
-custom_styles/panel = SubResource( 4 )
+custom_styles/panel = SubResource( 5 )
 script = ExtResource( 5 )
 __meta__ = {
 "_edit_group_": true,

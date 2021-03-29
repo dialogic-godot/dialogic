@@ -738,6 +738,12 @@ func load_theme(filename):
 		$TextBubble/NameLabel.set('custom_constants/shadow_offset_y', name_shadow_offset.y)
 	$TextBubble/NameLabel.rect_position.y = theme.get_value('name', 'bottom_gap', 48) * -1
 	
+	
+	# Setting next indicator animation
+	$TextBubble/NextIndicator/AnimationPlayer.play(
+		theme.get_value('next_indicator', 'animation', 'Up and down')
+	)
+	
 	return theme
 
 

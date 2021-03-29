@@ -48,6 +48,7 @@ The plugin is not production ready, this means that it will not work in your gam
       - `Box size` set the width and height of the dialogue box in pixels
       - `Alignment` you can now align the text displayed (Left, Center, Right)
       - `Bottom Gap` The distance between the bottom of the screen and the start of the dialog box.
+      - `Next animation` Set an animation for the "Next Dialog Indicator"
   - Glossary was renamed to Definitions. I feel like the word `Definitions` cover both "variables" and "lore" a bit better.
   - Definitions:
     - Dynamic types! All variables are just dynamic, so they can be ints, floats or strings.
