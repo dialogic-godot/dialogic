@@ -6,6 +6,7 @@ var default_definitions := {}
 var current_timeline := ''
 
 func _init() -> void:
+	# Load saves on script init
 	init(false)
 
 

@@ -68,8 +68,8 @@ func _ready():
 
 func load_config_files():
 	if not Engine.is_editor_hint():
-		# Make sure saves are ready
-		DialogicSingleton.init(reset_saves)
+		if reset_saves:
+			DialogicSingleton.init(reset_saves)
 		definitions = DialogicSingleton.get_definitions()
 	else:
 		definitions = DialogicResources.get_default_definitions()
