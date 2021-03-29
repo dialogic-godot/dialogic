@@ -59,6 +59,8 @@ The plugin is not production ready, this means that it will not work in your gam
     - New lines to create new Text Event messages
     - Propagation of input to the rest of the Tree
   - Fixed many resource issues with exported games
+  - New icons all around.
+  - Added some basic light theme support. This is not finished, but it is on a much better state than before.
   - The events now emit signals. Thank you [Jesse Lieberg](https://github.com/GammaGames) for your first contribution!
   - Special thanks to [Arnaud Vergnet](https://github.com/arnaudvergnet) for all your work in improving Definitions, conditional events and many more! 🙇‍♂️
 

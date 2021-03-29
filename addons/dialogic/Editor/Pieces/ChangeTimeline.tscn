@@ -2,7 +2,7 @@
 
 [ext_resource path="res://addons/dialogic/Editor/Pieces/ChangeTimeline.gd" type="Script" id=1]
 [ext_resource path="res://addons/dialogic/Editor/Pieces/Common/Spacer.tscn" type="PackedScene" id=2]
-[ext_resource path="res://addons/dialogic/Images/change-timeline.svg" type="Texture" id=3]
+[ext_resource path="res://addons/dialogic/Images/Events/change-timeline.svg" type="Texture" id=3]
 [ext_resource path="res://addons/dialogic/Editor/Pieces/Common/PieceExtraSettings.tscn" type="PackedScene" id=4]
 [ext_resource path="res://addons/dialogic/Editor/Pieces/Common/DragController.tscn" type="PackedScene" id=5]
 
@@ -93,4 +93,5 @@ margin_bottom = 28.0
 items = [ "Move Up", null, 0, false, false, 0, 0, null, "", false, "Move Down", null, 0, false, false, 1, 0, null, "", false, "", null, 0, false, false, 2, 0, null, "", true, "Remove", null, 0, false, false, 3, 0, null, "", false ]
 
 [node name="DragController" parent="." instance=ExtResource( 5 )]
+
 [connection signal="about_to_show" from="PanelContainer/VBoxContainer/Header/MenuButton" to="." method="_on_MenuButton_about_to_show"]

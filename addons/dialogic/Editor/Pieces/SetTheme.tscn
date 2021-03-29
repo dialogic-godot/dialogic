@@ -11,7 +11,7 @@ content_margin_left = 16.0
 content_margin_right = 6.0
 content_margin_top = 6.0
 content_margin_bottom = 6.0
-bg_color = Color( 0.203922, 0.478431, 0.45098, 0.443137 )
+bg_color = Color( 0.219608, 0.34902, 0.701961, 0.443137 )
 border_width_left = 2
 border_width_top = 2
 border_width_right = 2
@@ -93,4 +93,5 @@ margin_bottom = 28.0
 items = [ "Move Up", null, 0, false, false, 0, 0, null, "", false, "Move Down", null, 0, false, false, 1, 0, null, "", false, "", null, 0, false, false, 2, 0, null, "", true, "Remove", null, 0, false, false, 3, 0, null, "", false ]
 
 [node name="DragController" parent="." instance=ExtResource( 5 )]
+
 [connection signal="about_to_show" from="PanelContainer/VBoxContainer/Header/MenuButton" to="." method="_on_MenuButton_about_to_show"]

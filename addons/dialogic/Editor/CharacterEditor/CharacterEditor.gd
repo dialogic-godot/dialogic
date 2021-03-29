@@ -28,7 +28,7 @@ func _ready():
 	nodes['name'].connect('text_changed', self, '_on_name_changed')
 	nodes['color'].connect('color_changed', self, '_on_color_changed')
 	var style = get('custom_styles/bg')
-	style.set('bg_color', get_color("dark_color_1", "Editor"))
+	style.set('bg_color', get_color("base_color", "Editor"))
 
 
 func is_selected(file: String):
