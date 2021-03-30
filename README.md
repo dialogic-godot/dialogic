@@ -1,8 +1,9 @@
 # Dialogic - v1.0 ![Godot v3.3](https://img.shields.io/badge/godot-v3.3-%23478cbf)
+
+
+![Screenshot](https://coppolaemilio.com/images/dialogic/dialogic-hero-1.0.png?v)
+
 Create dialogs, characters and scenes to display conversations in your Godot games. 
-
-![Screenshot](https://coppolaemilio.com/images/dialogic/dialogic-hero.png?v2)
-
 
 ## Contents
 
@@ -60,7 +61,7 @@ Create dialogs, characters and scenes to display conversations in your Godot gam
   - The events now emit signals. Thank you [Jesse Lieberg](https://github.com/GammaGames) for your first contribution!
   - Special thanks to [Arnaud Vergnet](https://github.com/arnaudvergnet) for all your work in improving Definitions, conditional events and many more! 🙇‍♂️
 
-To view previous changes [click here](https://github.com/coppolaemilio/dialogic/blob/master/CHANGELOG.md). 
+To view previous changes [click here](https://github.com/coppolaemilio/dialogic/blob/main/CHANGELOG.md). 
 
 ---
 
@@ -391,4 +392,4 @@ Placeholder images are from Toen's YouTube DF series:
 
 Support me on [Patreon https://www.patreon.com/coppolaemilio](https://www.patreon.com/coppolaemilio)
 
-[MIT License](https://github.com/coppolaemilio/dialogic/blob/master/LICENSE)
+[MIT License](https://github.com/coppolaemilio/dialogic/blob/main/LICENSE)
