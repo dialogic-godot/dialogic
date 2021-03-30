@@ -46,7 +46,12 @@ func _ready():
 	elif dialog_script.keys().size() == 0:
 		dialog_script = {
 			"events":[{"character":"","portrait":"",
-			"text":"[Dialogic Error] No timeline specified."}]
+			"text":"{error} {error_info}".format(
+				{
+					"error":DialogicTranslator.translate(DialogicUtil.Error.DIALOGIC_ERROR),
+					"error_info":DialogicTranslator.translate(DialogicUtil.Error.TIMELINE_NOT_SPECIFIED)
+				}
+			)}]
 		}
 	
 	# Connecting resize signal
@@ -322,7 +327,7 @@ func update_name(character, color: Color = Color.white) -> void:
 
 func update_text(text):
 	# Updating the text and starting the animation from 0
-	$TextBubble/RichTextLabel.bbcode_text = parse_definitions(text)
+	$TextBubble/RichTextLabel.bbcode_text = DialogicTranslator.translate(parse_definitions(text))
 	$TextBubble/RichTextLabel.percent_visible = 0
 
 	# The call to this function needs to be deferred.

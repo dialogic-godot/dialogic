@@ -133,3 +133,8 @@ class DialgicSorter:
 
 	static func sort_resources(a: Dictionary, b: Dictionary):
 		return get_compare_value(a).to_lower() < get_compare_value(b).to_lower()
+
+class Error:
+	const DIALOGIC_ERROR = "DIALOGIC_ERROR"
+	const TIMELINE_NOT_FOUND = "ERROR_TIMELINE_NOT_FOUND"
+	const TIMELINE_NOT_SPECIFIED = "ERROR_TIMELINE_NOT_SPECIFIED"

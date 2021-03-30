@@ -41,7 +41,12 @@ static func start(timeline: String, reset_saves: bool=true, dialog_scene_path: S
 				return d
 		d.dialog_script = {
 			"events":[{"character":"","portrait":"",
-			"text":"[Dialogic Error] Loading dialog [color=red]" + timeline + "[/color]. It seems like the timeline doesn't exists. Maybe the name is wrong?"}]
+			"text":"{error} {error_info}".format(
+					{
+					"error":DialogicTranslator.translate(DialogicUtil.Error.DIALOGIC_ERROR),
+					"error_info":DialogicTranslator.translate(DialogicUtil.Error.TIMELINE_NOT_FOUND).format({"timeline":timeline})
+					}
+				)}]
 		}
 	return d
 

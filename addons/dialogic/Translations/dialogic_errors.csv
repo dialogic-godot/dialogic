@@ -1,0 +1,4 @@
+key,en,es
+DIALOGIC_ERROR,[Dialogic Error],
+ERROR_TIMELINE_NOT_FOUND,Loading dialog [color=red]{timeline}[/color]. It seems like the timeline doesn't exists. Maybe the name is wrong?,
+ERROR_TIMELINE_NOT_SPECIFIED,No timeline specified.,No se especificó una linea de tiempo
