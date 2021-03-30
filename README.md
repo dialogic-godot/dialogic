@@ -1,13 +1,8 @@
-# Dialogic - Release Candidate v1.0 ![Godot v3.3](https://img.shields.io/badge/godot-v3.3-%23478cbf)
+# Dialogic - v1.0 ![Godot v3.3](https://img.shields.io/badge/godot-v3.3-%23478cbf)
 Create dialogs, characters and scenes to display conversations in your Godot games. 
 
 ![Screenshot](https://coppolaemilio.com/images/dialogic/dialogic-hero.png?v2)
 
-⚠️ Under development! ⚠️
-
-The plugin is not production ready, this means that it will not work in your game right now unless you know what you are doing. Make sure to follow the repo for the next update.
-
----
 
 ## Contents
 
@@ -22,7 +17,7 @@ The plugin is not production ready, this means that it will not work in your gam
 
 ## 🆕 Changelog
 
-### v1.0 - WIP
+### v1.0 - We made it! 🎉
   - When upgrading from 0.9 to the current version things might not work as expected:
     - ⚠ **PLEASE MAKE A BACKUP OF YOUR PROJECT BEFORE UPGRADING** ⚠
     - Glossary variables will be lost
@@ -32,6 +27,11 @@ The plugin is not production ready, this means that it will not work in your gam
     - All editors in the same screen. Say goodbye to tabs!
     - You can now rename resources by double clicking them
     - New Settings panel for advanced properties
+      - Settings:
+        - Re-added the auto color for character names in text messages
+        - Removing empty Text Event from timelines
+        - New lines to create new Text Event messages
+        - Propagation of input to the rest of the Tree
   - Character Editor:
     - Set the scale of your character's portrait
     - Add offset to the portrait
@@ -54,18 +54,13 @@ The plugin is not production ready, this means that it will not work in your gam
     - Dynamic types! All variables are just dynamic, so they can be ints, floats or strings.
     - The name of a character can be set to be a definition.
     - You can display definition values in a Text Event by doing: `[definition name here]`.
-  - Settings:
-    - Re-added the auto color for character names in text messages
-    - Removing empty Text Event from timelines
-    - New lines to create new Text Event messages
-    - Propagation of input to the rest of the Tree
   - Fixed many resource issues with exported games
   - New icons all around.
   - Added some basic light theme support. This is not finished, but it is on a much better state than before.
   - The events now emit signals. Thank you [Jesse Lieberg](https://github.com/GammaGames) for your first contribution!
   - Special thanks to [Arnaud Vergnet](https://github.com/arnaudvergnet) for all your work in improving Definitions, conditional events and many more! 🙇‍♂️
 
-To view the full changelog [click here](https://github.com/coppolaemilio/dialogic/blob/master/CHANGELOG.md). 
+To view previous changes [click here](https://github.com/coppolaemilio/dialogic/blob/master/CHANGELOG.md). 
 
 ---
 
