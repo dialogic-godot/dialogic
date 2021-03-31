@@ -24,6 +24,7 @@ Create dialogs, characters and scenes to display conversations in your Godot gam
     - Glossary variables will be lost
     - Glossary related events will not be loaded (`If condition Event` and `Set Value Event`)
     - The theme you made in the 0.9 theme editor will be lost. You will have to remake it.
+  - Video https://youtu.be/MeaS3zZxpbA
   - New layout:
     - All editors in the same screen. Say goodbye to tabs!
     - You can now rename resources by double clicking them
