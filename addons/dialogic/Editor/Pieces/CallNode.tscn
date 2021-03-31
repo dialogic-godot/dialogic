@@ -1,0 +1,149 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://addons/dialogic/Images/Script.svg" type="Texture" id=1]
+[ext_resource path="res://addons/dialogic/Editor/Pieces/CallNode.gd" type="Script" id=2]
+[ext_resource path="res://addons/dialogic/Editor/Pieces/Common/Spacer.tscn" type="PackedScene" id=3]
+[ext_resource path="res://addons/dialogic/Editor/Pieces/Common/PieceExtraSettings.tscn" type="PackedScene" id=4]
+[ext_resource path="res://addons/dialogic/Editor/Pieces/Common/DragController.tscn" type="PackedScene" id=5]
+
+[sub_resource type="StyleBoxFlat" id=1]
+content_margin_left = 16.0
+content_margin_right = 6.0
+content_margin_top = 6.0
+content_margin_bottom = 6.0
+bg_color = Color( 0.14902, 0.333333, 0.509804, 0.4 )
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color( 0.12549, 0.12549, 0.12549, 1 )
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[node name="CallNode" type="HBoxContainer"]
+margin_right = 1004.0
+margin_bottom = 100.0
+size_flags_horizontal = 3
+size_flags_vertical = 9
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Indent" type="Control" parent="."]
+visible = false
+margin_bottom = 42.0
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+margin_right = 1004.0
+margin_bottom = 100.0
+mouse_filter = 1
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_styles/panel = SubResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer"]
+margin_left = 16.0
+margin_top = 6.0
+margin_right = 998.0
+margin_bottom = 94.0
+size_flags_horizontal = 3
+
+[node name="Header" type="HBoxContainer" parent="PanelContainer/VBoxContainer"]
+margin_right = 982.0
+margin_bottom = 28.0
+
+[node name="TextureRect" type="TextureRect" parent="PanelContainer/VBoxContainer/Header"]
+margin_right = 22.0
+margin_bottom = 28.0
+texture = ExtResource( 1 )
+stretch_mode = 6
+
+[node name="Title" type="Label" parent="PanelContainer/VBoxContainer/Header"]
+margin_left = 26.0
+margin_top = 7.0
+margin_right = 87.0
+margin_bottom = 21.0
+text = "Call Node"
+
+[node name="Preview" type="Label" parent="PanelContainer/VBoxContainer/Header"]
+margin_left = 91.0
+margin_top = 7.0
+margin_right = 91.0
+margin_bottom = 21.0
+custom_colors/font_color = Color( 1, 1, 1, 0.513726 )
+
+[node name="Spacer" parent="PanelContainer/VBoxContainer/Header" instance=ExtResource( 3 )]
+margin_left = 95.0
+margin_right = 941.0
+margin_bottom = 28.0
+
+[node name="OptionButton" parent="PanelContainer/VBoxContainer/Header" instance=ExtResource( 4 )]
+margin_left = 945.0
+margin_right = 982.0
+margin_bottom = 28.0
+items = [ "Move Up", null, 0, false, false, 0, 0, null, "", false, "Move Down", null, 0, false, false, 1, 0, null, "", false, "", null, 0, false, false, 2, 0, null, "", true, "Remove", null, 0, false, false, 3, 0, null, "", false ]
+
+[node name="Target" type="HBoxContainer" parent="PanelContainer/VBoxContainer"]
+margin_top = 32.0
+margin_right = 982.0
+margin_bottom = 56.0
+custom_constants/separation = 20
+
+[node name="Title" type="Label" parent="PanelContainer/VBoxContainer/Target"]
+margin_top = 5.0
+margin_right = 81.0
+margin_bottom = 19.0
+text = "Target Node:"
+
+[node name="LineEdit" type="LineEdit" parent="PanelContainer/VBoxContainer/Target"]
+margin_left = 101.0
+margin_right = 471.0
+margin_bottom = 24.0
+rect_min_size = Vector2( 370, 0 )
+
+[node name="Method" type="HBoxContainer" parent="PanelContainer/VBoxContainer"]
+margin_top = 60.0
+margin_right = 982.0
+margin_bottom = 84.0
+custom_constants/separation = 20
+
+[node name="Label" type="Label" parent="PanelContainer/VBoxContainer/Method"]
+margin_top = 5.0
+margin_right = 80.0
+margin_bottom = 19.0
+text = "Call Method:"
+
+[node name="LineEdit" type="LineEdit" parent="PanelContainer/VBoxContainer/Method"]
+margin_left = 100.0
+margin_right = 300.0
+margin_bottom = 24.0
+rect_min_size = Vector2( 200, 0 )
+
+[node name="Label2" type="Label" parent="PanelContainer/VBoxContainer/Method"]
+margin_left = 320.0
+margin_top = 5.0
+margin_right = 394.0
+margin_bottom = 19.0
+text = "Arguments:"
+
+[node name="ArgumentsSpinBox" type="SpinBox" parent="PanelContainer/VBoxContainer/Method"]
+margin_left = 414.0
+margin_right = 488.0
+margin_bottom = 24.0
+max_value = 99.0
+
+[node name="Arguments" type="VBoxContainer" parent="PanelContainer/VBoxContainer"]
+margin_top = 88.0
+margin_right = 982.0
+margin_bottom = 88.0
+
+[node name="DragController" parent="." instance=ExtResource( 5 )]
+[connection signal="text_changed" from="PanelContainer/VBoxContainer/Target/LineEdit" to="." method="_on_Target_LineEdit_text_changed"]
+[connection signal="text_changed" from="PanelContainer/VBoxContainer/Method/LineEdit" to="." method="_on_Method_LineEdit_text_changed"]
+[connection signal="value_changed" from="PanelContainer/VBoxContainer/Method/ArgumentsSpinBox" to="." method="_on_ArgumentsSpinBox_value_changed"]
