@@ -126,8 +126,14 @@ func indent_events() -> void:
 	for event in event_list:
 		var indent_node = event.get_node("Indent")
 		indent_node.visible = false
+		
 	# Adding new indents
 	for event in event_list:
+		# since there are indicators now, not all elements
+		# in this list have an event_data property
+		if (not "event_data" in event):
+			continue
+			
 		if event.event_data.has('question') or event.event_data.has('condition'):
 			indent += 1
 			starter = true
@@ -268,6 +274,9 @@ func generate_save_data():
 		'events': []
 	}
 	for event in timeline.get_children():
+		# check that event has event_data (e.g. drag drop indicators)
+		if (not "event_data" in event):
+			continue
 		if event.is_queued_for_deletion() == false: # Checking that the event is not waiting to be removed
 			info_to_save['events'].append(event.event_data)
 	return info_to_save
