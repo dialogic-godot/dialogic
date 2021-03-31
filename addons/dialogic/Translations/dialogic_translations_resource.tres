@@ -1,0 +1,11 @@
+[gd_resource type="Resource" load_steps=2 format=2]
+
+[sub_resource type="GDScript" id=1]
+script/source = "extends Resource
+
+export(PoolStringArray) var translations 
+"
+
+[resource]
+script = SubResource( 1 )
+translations = PoolStringArray( "res://addons/dialogic/Translations/dialogic_errors.en.translation", "res://addons/dialogic/Translations/dialogic_errors.es.translation" )

@@ -8,6 +8,8 @@ func _init():
 	if Engine.editor_hint:
 		# Make sure the core files exist 
 		DialogicResources.init_dialogic_files()
+		# Load all dialogic translations
+		DialogicTranslator.load_translations()
 	add_autoload_singleton('DialogicSingleton', "res://addons/dialogic/Other/DialogicSingleton.gd")
 
 
