@@ -2,9 +2,9 @@
 
 [ext_resource path="res://addons/dialogic/Nodes/BackgroundMusic.gd" type="Script" id=1]
 
-
-[sub_resource type="Animation" id=3]
+[sub_resource type="Animation" id=1]
 resource_name = "FadeOut"
+length = 0.5
 tracks/0/type = "value"
 tracks/0/path = NodePath("Track1:volume_db")
 tracks/0/interp = 1
@@ -54,8 +54,7 @@ tracks/3/keys = {
 "values": [ false ]
 }
 
-[sub_resource type="Animation" id=1]
-resource_name = "FadeToTrack1"
+[sub_resource type="Animation" id=2]
 length = 0.5
 tracks/0/type = "value"
 tracks/0/path = NodePath("Track1:volume_db")
@@ -94,8 +93,7 @@ tracks/2/keys = {
 "values": [ false ]
 }
 
-[sub_resource type="Animation" id=2]
-resource_name = "FadeToTrack2"
+[sub_resource type="Animation" id=3]
 length = 0.5
 tracks/0/type = "value"
 tracks/0/path = NodePath("Track1:volume_db")
@@ -145,8 +143,9 @@ __meta__ = {
 [node name="Track1" type="AudioStreamPlayer" parent="."]
 
 [node name="Track2" type="AudioStreamPlayer" parent="."]
+volume_db = -80.0
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-anims/FadeOut = SubResource( 3 )
-anims/FadeToTrack1 = SubResource( 1 )
-anims/FadeToTrack2 = SubResource( 2 )
+anims/FadeOut = SubResource( 1 )
+anims/FadeToTrack1 = SubResource( 2 )
+anims/FadeToTrack2 = SubResource( 3 )
