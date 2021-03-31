@@ -468,8 +468,7 @@ func event_handler(event: Dictionary):
 		{'background-music'}, {'background-music', 'file'}:
 			emit_signal("event_start", "background-music", event)
 			if event['background-music'] == 'play' and 'file' in event.keys() and not event['file'].empty():
-				var stream: AudioStream = load(event['file'])
-				$FX/BackgroundMusic.crossfade_to(stream)
+				$FX/BackgroundMusic.crossfade_to(event['file'])
 			else:
 				$FX/BackgroundMusic.fade_out()
 			go_to_next_event()

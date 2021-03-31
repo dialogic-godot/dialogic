@@ -28,10 +28,10 @@ tracks/0/keys = {
 "values": [ Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
 }
 
-[sub_resource type="Animation" id=7]
+[sub_resource type="Animation" id=3]
 resource_name = "Static"
 
-[sub_resource type="Animation" id=3]
+[sub_resource type="Animation" id=4]
 loop = true
 tracks/0/type = "value"
 tracks/0/path = NodePath(".:margin_bottom")
@@ -46,13 +46,13 @@ tracks/0/keys = {
 "values": [ 12.0, 55.0 ]
 }
 
-[sub_resource type="StyleBoxFlat" id=4]
+[sub_resource type="StyleBoxFlat" id=5]
 content_margin_left = 10.0
 content_margin_right = 10.0
 bg_color = Color( 1, 1, 1, 0 )
 expand_margin_left = 10.0
 
-[sub_resource type="StyleBoxFlat" id=5]
+[sub_resource type="StyleBoxFlat" id=6]
 bg_color = Color( 0.196078, 0.196078, 0.196078, 0 )
 
 [node name="DialogNode" type="Control"]
@@ -147,7 +147,7 @@ anchor_bottom = 1.0
 margin_left = -36.4279
 margin_top = -35.9016
 margin_right = 14.5721
-margin_bottom = 12.0
+margin_bottom = 29.4015
 rect_scale = Vector2( 0.4, 0.4 )
 texture = ExtResource( 1 )
 stretch_mode = 4
@@ -158,15 +158,15 @@ __meta__ = {
 [node name="AnimationPlayer" type="AnimationPlayer" parent="TextBubble/NextIndicator"]
 autoplay = "Up and down"
 anims/Pulse = SubResource( 2 )
-anims/Static = SubResource( 7 )
-"anims/Up and down" = SubResource( 3 )
+anims/Static = SubResource( 3 )
+"anims/Up and down" = SubResource( 4 )
 
 [node name="NameLabel" type="Label" parent="TextBubble"]
 margin_top = -48.0
 margin_right = 58.0
 margin_bottom = -8.0
 size_flags_vertical = 1
-custom_styles/normal = SubResource( 4 )
+custom_styles/normal = SubResource( 5 )
 custom_fonts/font = ExtResource( 3 )
 custom_colors/font_color = Color( 1, 1, 1, 1 )
 custom_colors/font_color_shadow = Color( 0, 0, 0, 0.619608 )
@@ -191,7 +191,6 @@ __meta__ = {
 }
 
 [node name="TextureRect" type="TextureRect" parent="TextBubble/NameLabel"]
-visible = false
 show_behind_parent = true
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -272,7 +271,7 @@ margin_right = 208.0
 mouse_filter = 1
 size_flags_horizontal = 3
 size_flags_vertical = 3
-custom_styles/panel = SubResource( 5 )
+custom_styles/panel = SubResource( 6 )
 script = ExtResource( 5 )
 __meta__ = {
 "_edit_group_": true,
@@ -341,7 +340,6 @@ __meta__ = {
 [node name="Timer" type="Timer" parent="DefinitionInfo"]
 
 [node name="WaitSeconds" type="Timer" parent="."]
-
 [connection signal="meta_hover_ended" from="TextBubble/RichTextLabel" to="." method="_on_RichTextLabel_meta_hover_ended"]
 [connection signal="meta_hover_started" from="TextBubble/RichTextLabel" to="." method="_on_RichTextLabel_meta_hover_started"]
 [connection signal="tween_completed" from="TextBubble/Tween" to="." method="_on_Tween_tween_completed"]
