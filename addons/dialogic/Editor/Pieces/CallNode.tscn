@@ -1,10 +1,9 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://addons/dialogic/Images/Script.svg" type="Texture" id=1]
 [ext_resource path="res://addons/dialogic/Editor/Pieces/CallNode.gd" type="Script" id=2]
 [ext_resource path="res://addons/dialogic/Editor/Pieces/Common/Spacer.tscn" type="PackedScene" id=3]
 [ext_resource path="res://addons/dialogic/Editor/Pieces/Common/PieceExtraSettings.tscn" type="PackedScene" id=4]
-[ext_resource path="res://addons/dialogic/Editor/Pieces/Common/DragController.tscn" type="PackedScene" id=5]
 
 [sub_resource type="StyleBoxFlat" id=1]
 content_margin_left = 16.0
@@ -139,7 +138,6 @@ margin_right = 982.0
 margin_bottom = 60.0
 custom_constants/separation = 5
 
-[node name="DragController" parent="." instance=ExtResource( 5 )]
 [connection signal="text_changed" from="PanelContainer/VBoxContainer/Properties/TargetNodeEdit" to="." method="_on_Target_LineEdit_text_changed"]
 [connection signal="text_changed" from="PanelContainer/VBoxContainer/Properties/CallMethodEdit" to="." method="_on_Method_LineEdit_text_changed"]
 [connection signal="value_changed" from="PanelContainer/VBoxContainer/Properties/ArgumentsSpinBox" to="." method="_on_ArgumentsSpinBox_value_changed"]
