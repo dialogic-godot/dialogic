@@ -360,7 +360,9 @@ func load_dialog(skip_add = false):
 	# This will load the next entry in the dialog_script array.
 	if dialog_script.has('events'):
 		if dialog_index < dialog_script['events'].size():
-			event_handler(dialog_script['events'][dialog_index])
+			var func_state = event_handler(dialog_script['events'][dialog_index])
+			if (func_state is GDScriptFunctionState):
+				yield(func_state, "completed")
 		else:
 			if Engine.is_editor_hint() == false:
 				queue_free()
@@ -468,8 +470,7 @@ func event_handler(event: Dictionary):
 		{'background-music'}, {'background-music', 'file'}:
 			emit_signal("event_start", "background-music", event)
 			if event['background-music'] == 'play' and 'file' in event.keys() and not event['file'].empty():
-				var stream: AudioStream = load(event['file'])
-				$FX/BackgroundMusic.crossfade_to(stream)
+				$FX/BackgroundMusic.crossfade_to(event['file'])
 			else:
 				$FX/BackgroundMusic.fade_out()
 			go_to_next_event()
@@ -524,6 +525,31 @@ func event_handler(event: Dictionary):
 			if 'operation' in event and not event['operation'].empty():
 				operation = event["operation"]
 			DialogicSingleton.set_variable_from_id(event['definition'], event['set_value'], operation)
+			go_to_next_event()
+		{'call_node', ..}:
+			dprint('[!] Call Node signal: dialogic_signal(call_node) ', var2str(event['call_node']))
+			emit_signal("event_start", "call_node", event)
+			$TextBubble.visible = false
+			waiting = true
+			var target = get_node_or_null(event['call_node']['target_node_path'])
+			var method_name = event['call_node']['method_name']
+			var args = event['call_node']['arguments']
+			if (not args is Array):
+				args = []
+
+			if (target != null):
+				if (target.has_method(method_name)):
+					if (args.empty()):
+						var func_result = target.call(method_name)
+						if (func_result is GDScriptFunctionState):
+							yield(func_result, "completed")
+					else:
+						var func_result = target.call(method_name, args)
+						if (func_result is GDScriptFunctionState):
+							yield(func_result, "completed")
+
+			waiting = false
+			$TextBubble.visible = true
 			go_to_next_event()
 		_:
 			visible = false

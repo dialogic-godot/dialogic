@@ -17,49 +17,11 @@ Create dialogs, characters and scenes to display conversations in your Godot gam
 
 
 ## 🆕 Changelog
+v1.1 - WIP
+- Improved event dragging and selection 
+- Timeline:
+  - New event `Call Node`: Call a Godot NodePath and a method name. In addition you can add arguments as well. The Timeline will execute those methods and wait for completion, if the method in question is async and/or yielding. By [ellogwen](https://github.com/ellogwen)
 
-### v1.0 - We made it! 🎉
-  - When upgrading from 0.9 to the current version things might not work as expected:
-    - ⚠ **PLEASE MAKE A BACKUP OF YOUR PROJECT BEFORE UPGRADING** ⚠
-    - Glossary variables will be lost
-    - Glossary related events will not be loaded (`If condition Event` and `Set Value Event`)
-    - The theme you made in the 0.9 theme editor will be lost. You will have to remake it.
-  - New layout:
-    - All editors in the same screen. Say goodbye to tabs!
-    - You can now rename resources by double clicking them
-    - New Settings panel for advanced properties
-      - Settings:
-        - Re-added the auto color for character names in text messages
-        - Removing empty Text Event from timelines
-        - New lines to create new Text Event messages
-        - Propagation of input to the rest of the Tree
-  - Character Editor:
-    - Set the scale of your character's portrait
-    - Add offset to the portrait
-  - Timeline Editor:
-    - New `Theme event` to change the theme in the middle of a timeline
-    - New `Background Music Event` to play music in your dialog. Music can crossfade when changing track and fade in/out when starting/stopping.
-    - Re-enabled the `Scene Event`
-    - Allow making basic calculations such as `+`, `-`, `*`, `/` in `Set value events`.
-  - Theme Editor:
-    - You can now add multiple themes.
-    - Moved the preview button to the left side so it is never hidden by default in small screens.
-    - New section to edit how the character names are displayed.
-    - New properties:
-      - `Box size` set the width and height of the dialogue box in pixels
-      - `Alignment` you can now align the text displayed (Left, Center, Right)
-      - `Bottom Gap` The distance between the bottom of the screen and the start of the dialog box.
-      - `Next animation` Set an animation for the "Next Dialog Indicator"
-  - Glossary was renamed to Definitions. I feel like the word `Definitions` cover both "variables" and "lore" a bit better.
-  - Definitions:
-    - Dynamic types! All variables are just dynamic, so they can be ints, floats or strings.
-    - The name of a character can be set to be a definition.
-    - You can display definition values in a Text Event by doing: `[definition name here]`.
-  - Fixed many resource issues with exported games
-  - New icons all around.
-  - Added some basic light theme support. This is not finished, but it is on a much better state than before.
-  - The events now emit signals. Thank you [Jesse Lieberg](https://github.com/GammaGames) for your first contribution!
-  - Special thanks to [Arnaud Vergnet](https://github.com/arnaudvergnet) for all your work in improving Definitions, conditional events and many more! 🙇‍♂️
 
 To view previous changes [click here](https://github.com/coppolaemilio/dialogic/blob/main/CHANGELOG.md). 
 
