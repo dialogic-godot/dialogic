@@ -16,6 +16,9 @@ var selected_style_text : StyleBoxFlat = load("res://addons/dialogic/Editor/Piec
 var saved_style : StyleBoxFlat
 var selected_item : Node
 
+
+var moving_piece = null
+
 func _ready():
 	# We connect all the event buttons to the event creation functions
 	for b in $ScrollContainer/EventContainer.get_children():
@@ -31,6 +34,23 @@ func _ready():
 	style.set('bg_color', get_color("dark_color_1", "Editor"))
 
 
+func _process(delta):
+	if moving_piece != null:
+		var current_position = get_global_mouse_position()
+		var node_position = moving_piece.rect_global_position.y
+		var height = get_block_height(moving_piece)
+		var up_offset = get_block_height(get_block_above(moving_piece))
+		var down_offset = get_block_height(get_block_below(moving_piece))
+		if up_offset != null:
+			up_offset = (up_offset / 2) + 5
+			if current_position.y < node_position - up_offset:
+				move_block(moving_piece, 'up')
+		if down_offset != null:
+			down_offset = height + (down_offset / 2) + 5
+			if current_position.y > node_position + down_offset:
+				move_block(moving_piece, 'down')
+
+
 func _clear_selection():
 	if selected_item != null and saved_style != null:
 		var selected_panel: PanelContainer = selected_item.get_node("PanelContainer")
@@ -40,14 +60,17 @@ func _clear_selection():
 	saved_style = null
 
 
+func _is_item_selected(item: Node):
+	return item == selected_item
+
+
 func _select_item(item: Node):
-	if item != selected_item:
+	if item != null and not _is_item_selected(item):
 		_clear_selection()
 		var panel: PanelContainer = item.get_node("PanelContainer")
 		if panel != null:
 			saved_style = panel.get('custom_styles/panel')
 			selected_item = item
-			print(selected_item.event_data)
 			if selected_item.event_data.has('text') and selected_item.event_data.has('character'):
 				panel.set('custom_styles/panel', selected_style_text)
 			else:
@@ -57,8 +80,13 @@ func _select_item(item: Node):
 
 
 func _on_gui_input(event, item: Node):
-	if event is InputEventMouseButton and event.button_index == 1 and event.is_pressed():
-		_select_item(item)
+	if event is InputEventMouseButton and event.button_index == 1:
+		if event.is_pressed():
+			if not _is_item_selected(item):
+				_select_item(item)
+			moving_piece = item
+		else:
+			moving_piece = null
 
 
 # Event Creation signal for buttons
@@ -222,6 +250,29 @@ func clear_timeline():
 	_clear_selection()
 	for event in timeline.get_children():
 		event.free()
+
+
+func get_block_above(block):
+	var block_index = block.get_index()
+	var item = null
+	if block_index > 0:
+		item = timeline.get_child(block_index - 1)
+	return item
+
+
+func get_block_below(block):
+	var block_index = block.get_index()
+	var item = null
+	if block_index < timeline.get_child_count() - 1:
+		item = timeline.get_child(block_index + 1)
+	return item
+
+
+func get_block_height(block):
+	if block != null:
+		return block.get_node("PanelContainer").rect_size.y
+	else:
+		return null
 
 
 # ordering blocks in timeline
