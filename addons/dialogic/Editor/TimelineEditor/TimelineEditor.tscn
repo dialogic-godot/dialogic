@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-[gd_scene load_steps=25 format=2]
-=======
-[gd_scene load_steps=22 format=2]
->>>>>>> parent of e7b995b... Added call-node feature
+[gd_scene load_steps=24 format=2]
 
 [ext_resource path="res://addons/dialogic/Images/character-join.svg" type="Texture" id=1]
 [ext_resource path="res://addons/dialogic/Images/dialog.svg" type="Texture" id=2]
@@ -23,12 +19,8 @@
 [ext_resource path="res://addons/dialogic/Editor/TimelineEditor/TimelineEditor.gd" type="Script" id=17]
 [ext_resource path="res://addons/dialogic/Images/theme.svg" type="Texture" id=18]
 [ext_resource path="res://addons/dialogic/Images/Events/background-music.svg" type="Texture" id=19]
-<<<<<<< HEAD
-[ext_resource path="res://addons/dialogic/Images/Script.svg" type="Texture" id=20]
 [ext_resource path="res://addons/dialogic/Editor/TimelineEditor/EventButton.gd" type="Script" id=21]
 [ext_resource path="res://addons/dialogic/Editor/TimelineEditor/TimelineArea.gd" type="Script" id=22]
-=======
->>>>>>> parent of e7b995b... Added call-node feature
 
 [sub_resource type="StyleBoxFlat" id=1]
 content_margin_left = 5.0
@@ -384,18 +376,5 @@ the current scene."
 text = "  Change Scene"
 icon = ExtResource( 15 )
 align = 0
-<<<<<<< HEAD
 script = ExtResource( 21 )
 EventName = "ChangeScene"
-
-[node name="CallNode" type="Button" parent="ScrollContainer/EventContainer"]
-margin_top = 698.0
-margin_right = 200.0
-margin_bottom = 726.0
-text = "Call Node"
-icon = ExtResource( 20 )
-align = 0
-script = ExtResource( 21 )
-EventName = "CallNode"
-=======
->>>>>>> parent of e7b995b... Added call-node feature
