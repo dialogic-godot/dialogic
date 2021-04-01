@@ -228,15 +228,16 @@ func parse_branches(dialog_script: Dictionary) -> Dictionary:
 	return dialog_script
 
 
-func parse_definitions(text: String):
-	var words = []
+func parse_definitions(text: String, variables: bool = true, glossary: bool = true):
 	if Engine.is_editor_hint():
 		# Loading variables again to avoid issues in the preview dialog
 		load_config_files()
 
-	var final_text: String;
-	final_text = _insert_variable_definitions(text)
-	final_text = _insert_glossary_definitions(final_text)
+	var final_text: String = text
+	if variables:
+		final_text = _insert_variable_definitions(text)
+	if glossary:
+		final_text = _insert_glossary_definitions(final_text)
 	return final_text
 
 
@@ -308,7 +309,7 @@ func update_name(character, color: Color = Color.white) -> void:
 				parsed_name = character['display_name']
 		if character.has('color'):
 			color = character['color']
-		parsed_name = parse_definitions(parsed_name)
+		parsed_name = parse_definitions(parsed_name, true, false)
 		$TextBubble/NameLabel.visible = true
 		# Hack to reset the size
 		$TextBubble/NameLabel.rect_min_size = Vector2(0, 0)
