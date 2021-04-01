@@ -212,8 +212,6 @@ func load_timeline(filename: String):
 				create_event("SetValue", i)
 			{'set_theme'}:
 				create_event("SetTheme", i)
-			{'call_node'}:
-				create_event("CallNode", i)
 
 	if data.size() < 1:
 		events_warning.visible = true
