@@ -37,6 +37,10 @@ func drop_data(position, data):
 				parent.remove_child(piece)
 				parent.add_child_below_node(_drag_drop_indicator, piece)
 				timeline_editor.indent_events()
+				# @todo _select_item seems to be a "private" function
+				# maybe expose it as "public" or add a public helper function
+				# to TimelineEditor.gd
+				timeline_editor._select_item(piece)
 				
 	_is_drag_receiving = false
 	_last_event_button_drop_attempt = ''
@@ -69,7 +73,7 @@ func _create_drop_indicator():
 	indicator.name = "DropIndicator"
 	indicator.rect_size.y = 100
 	indicator.rect_min_size.y = 100
-	indicator.color = Color.lightpink
+	indicator.color = Color(0.35, 0.37, 0.44) # default editor light blue
 	indicator.mouse_filter = MOUSE_FILTER_IGNORE
 	
 	# add indent node like the other scene nodes have
