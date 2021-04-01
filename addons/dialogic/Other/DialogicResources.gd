@@ -184,7 +184,12 @@ static func get_config(id: String) -> ConfigFile:
 
 static func remove_file(path: String):
 	var dir = Directory.new()
-	dir.remove(path)
+	var _err = dir.remove(path)
+	
+	if _err != OK:
+		print("[D] There was an error when deleting file at {filepath}. Error: {error}".format(
+			{"filepath":path,"error":_err}
+		))
 
 
 # JSON UTIL
