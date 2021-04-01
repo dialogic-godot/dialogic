@@ -90,6 +90,7 @@ func _unhandled_key_input(event):
 			# move selected down
 			if (selected_item != null):
 				move_block(selected_item, "up")
+				indent_events()
 				get_tree().set_input_as_handled()
 				
 			pass
@@ -105,6 +106,7 @@ func _unhandled_key_input(event):
 			# move selected down
 			if (selected_item != null):
 				move_block(selected_item, "down")
+				indent_events()
 				get_tree().set_input_as_handled()
 				
 			pass
