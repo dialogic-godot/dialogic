@@ -66,7 +66,7 @@ func _input(event):
 			and event.scancode == KEY_DOWN
 			and event.echo == false
 		):
-			# select previous
+			# select next
 			if (selected_item != null):
 				var next = min(timeline.get_child_count() - 1, selected_item.get_index() + 1)
 				var next_node = timeline.get_child(next)
@@ -87,7 +87,7 @@ func _unhandled_key_input(event):
 			and event.scancode == KEY_UP
 			and event.echo == false
 		):
-			# move selected down
+			# move selected up
 			if (selected_item != null):
 				move_block(selected_item, "up")
 				indent_events()
@@ -111,39 +111,6 @@ func _unhandled_key_input(event):
 				
 			pass
 			
-		# CTRL UP
-		if (event.pressed
-			and event.alt == false
-			and event.shift == false
-			and event.control == true
-			and event.scancode == KEY_UP
-			and event.echo == false
-		):
-			# select previous
-			if (selected_item != null):
-				var prev = max(0, selected_item.get_index() - 1)
-				var prev_node = timeline.get_child(prev)
-				_select_item(prev_node)
-				get_tree().set_input_as_handled()
-				
-			pass
-			
-		# CTRL DOWN
-		if (event.pressed
-			and event.alt == false
-			and event.shift == false
-			and event.control == true
-			and event.scancode == KEY_DOWN
-			and event.echo == false
-		):
-			# select previous
-			if (selected_item != null):
-				var next = min(timeline.get_child_count() - 1, selected_item.get_index() + 1)
-				var next_node = timeline.get_child(next)
-				_select_item(next_node)
-				get_tree().set_input_as_handled()
-				
-			pass
 	pass
 	
 func _process(delta):
