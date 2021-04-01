@@ -19,6 +19,8 @@ Create dialogs, characters and scenes to display conversations in your Godot gam
 ## 🆕 Changelog
 v1.1 - WIP
 - Improved event dragging and selection 
+- Timeline:
+  - New event `Call Node`: Call a Godot NodePath and a method name. In addition you can add arguments as well. The Timeline will execute those methods and wait for completion, if the method in question is async and/or yielding. By [ellogwen](https://github.com/ellogwen)
 
 
 To view previous changes [click here](https://github.com/coppolaemilio/dialogic/blob/main/CHANGELOG.md). 
