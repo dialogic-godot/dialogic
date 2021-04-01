@@ -8,5 +8,22 @@ New Theme,,Nuevo Tema
 ,,
       Fold  ,,
 ,,
-Online Docs,,Documentación
+Online Docs,,Documentación Online
 Theme Editor,,En inglés
+,,
+Edit definitions file,,Editar archivo de definiciones
+Remove definition,,Eliminar definición
+,,
+Show in File Manager,,Ver en el explorador de archivos
+Remove Theme,,Eliminar tema
+,,
+Remove Character,,Eliminar personaje
+,,
+Copy Timeline Name,,Copiar nombre
+Remove,,Eliminar
+,,
+REMOVE_CHARACTER_CONFIRMATION,Are you sure you want to remove this character?\n(Can't be restored),¿Estás seguro de querer eliminar este personaje?\n(No se puede deshacer)
+REMOVE_DEFINITION_CONFIRMATION,Are you sure you want to remove this definition?\n(Can't be restored),¿Estás seguro de querer eliminar esta definición?\n(No se puede deshacer)
+REMOVE_THEME_CONFIRMATION,Are you sure you want to remove this theme?\n(Can't be restored),¿Estás seguro de querer eliminar este tema?\n(No se puede deshacer)
+REMOVE_GLOSSARY_CONFIRMATION,Are you sure you want to remove this entry?\n(Can't be restored),¿Estás seguro de eliminar esta entrada?\n(No se puede deshacer)
+REMOVE_TIMELINE_CONFIRMATION,Are you sure you want to remove this timeline?\n(Can't be restored),¿Estás seguro de eliminar esta linea de tiempo?\n(No se puede deshacer)

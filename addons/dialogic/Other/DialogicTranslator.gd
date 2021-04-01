@@ -58,6 +58,14 @@ static func _translate_node(node:Node):
 				(node as Control).hint_tooltip = translate(node.get_meta("HINT_TOOLTIP_KEY"))
 	
 			continue
+		"PopupMenu":
+			for _item_idx in range((node as PopupMenu).get_item_count()):
+				var _item_metadata = (node as PopupMenu).get_item_metadata(_item_idx)
+				if typeof(_item_metadata) == TYPE_STRING:
+					(node as PopupMenu).set_item_text(_item_idx, translate(_item_metadata))
+		"ConfirmationDialog":
+			if node.has_meta("DIALOG_TEXT_KEY"):
+				(node as ConfirmationDialog).dialog_text = translate(node.get_meta("DIALOG_TEXT_KEY"))
 		_:
 			pass
 		
