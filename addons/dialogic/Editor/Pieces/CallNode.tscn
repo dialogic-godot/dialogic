@@ -89,61 +89,57 @@ margin_right = 982.0
 margin_bottom = 28.0
 items = [ "Move Up", null, 0, false, false, 0, 0, null, "", false, "Move Down", null, 0, false, false, 1, 0, null, "", false, "", null, 0, false, false, 2, 0, null, "", true, "Remove", null, 0, false, false, 3, 0, null, "", false ]
 
-[node name="Target" type="HBoxContainer" parent="PanelContainer/VBoxContainer"]
+[node name="Properties" type="HBoxContainer" parent="PanelContainer/VBoxContainer"]
 margin_top = 32.0
 margin_right = 982.0
 margin_bottom = 56.0
-custom_constants/separation = 20
+custom_constants/separation = 8
 
-[node name="Title" type="Label" parent="PanelContainer/VBoxContainer/Target"]
+[node name="TargetNodeLabel" type="Label" parent="PanelContainer/VBoxContainer/Properties"]
 margin_top = 5.0
 margin_right = 81.0
 margin_bottom = 19.0
 text = "Target Node:"
 
-[node name="LineEdit" type="LineEdit" parent="PanelContainer/VBoxContainer/Target"]
-margin_left = 101.0
-margin_right = 471.0
+[node name="TargetNodeEdit" type="LineEdit" parent="PanelContainer/VBoxContainer/Properties"]
+margin_left = 89.0
+margin_right = 339.0
 margin_bottom = 24.0
-rect_min_size = Vector2( 370, 0 )
+rect_min_size = Vector2( 250, 0 )
 
-[node name="Method" type="HBoxContainer" parent="PanelContainer/VBoxContainer"]
-margin_top = 60.0
-margin_right = 982.0
-margin_bottom = 84.0
-custom_constants/separation = 20
-
-[node name="Label" type="Label" parent="PanelContainer/VBoxContainer/Method"]
+[node name="CallMethodLabel" type="Label" parent="PanelContainer/VBoxContainer/Properties"]
+margin_left = 347.0
 margin_top = 5.0
-margin_right = 80.0
+margin_right = 427.0
 margin_bottom = 19.0
 text = "Call Method:"
 
-[node name="LineEdit" type="LineEdit" parent="PanelContainer/VBoxContainer/Method"]
-margin_left = 100.0
-margin_right = 300.0
+[node name="CallMethodEdit" type="LineEdit" parent="PanelContainer/VBoxContainer/Properties"]
+margin_left = 435.0
+margin_right = 635.0
 margin_bottom = 24.0
 rect_min_size = Vector2( 200, 0 )
 
-[node name="Label2" type="Label" parent="PanelContainer/VBoxContainer/Method"]
-margin_left = 320.0
+[node name="ArgumentsLabel" type="Label" parent="PanelContainer/VBoxContainer/Properties"]
+margin_left = 643.0
 margin_top = 5.0
-margin_right = 394.0
+margin_right = 717.0
 margin_bottom = 19.0
 text = "Arguments:"
 
-[node name="ArgumentsSpinBox" type="SpinBox" parent="PanelContainer/VBoxContainer/Method"]
-margin_left = 414.0
-margin_right = 488.0
+[node name="ArgumentsSpinBox" type="SpinBox" parent="PanelContainer/VBoxContainer/Properties"]
+margin_left = 725.0
+margin_right = 799.0
 margin_bottom = 24.0
 max_value = 99.0
 
 [node name="Arguments" type="VBoxContainer" parent="PanelContainer/VBoxContainer"]
-margin_top = 88.0
+margin_top = 60.0
 margin_right = 982.0
-margin_bottom = 88.0
+margin_bottom = 60.0
+custom_constants/separation = 5
 
 [node name="DragController" parent="." instance=ExtResource( 5 )]
-[connection signal="text_changed" from="PanelContainer/VBoxContainer/Target/LineEdit" to="." method="_on_Target_LineEdit_text_changed"]
-[connection signal="text_changed" from="PanelContainer/VBoxContainer/Method/LineEdit" to="." method="_on_Method_LineEdit_text_changed"]
-[connection signal="value_changed" from="PanelContainer/VBoxContainer/Method/ArgumentsSpinBox" to="." method="_on_ArgumentsSpinBox_value_changed"]
+[connection signal="text_changed" from="PanelContainer/VBoxContainer/Properties/TargetNodeEdit" to="." method="_on_Target_LineEdit_text_changed"]
+[connection signal="text_changed" from="PanelContainer/VBoxContainer/Properties/CallMethodEdit" to="." method="_on_Method_LineEdit_text_changed"]
+[connection signal="value_changed" from="PanelContainer/VBoxContainer/Properties/ArgumentsSpinBox" to="." method="_on_ArgumentsSpinBox_value_changed"]

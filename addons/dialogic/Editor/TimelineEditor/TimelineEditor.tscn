@@ -347,6 +347,6 @@ align = 0
 margin_top = 698.0
 margin_right = 200.0
 margin_bottom = 726.0
-text = "Call Node"
+text = "  Call Node"
 icon = ExtResource( 20 )
 align = 0

@@ -25,9 +25,9 @@ func load_data(data):
 		if (event_data['call_node']['arguments'][i] == null):
 			event_data['call_node']['arguments'][i] = ''
 	
-	$PanelContainer/VBoxContainer/Target/LineEdit.text = event_data['call_node']['target_node_path']
-	$PanelContainer/VBoxContainer/Method/LineEdit.text = event_data['call_node']['method_name']
-	$PanelContainer/VBoxContainer/Method/ArgumentsSpinBox.value = event_data['call_node']['arguments'].size()
+	$PanelContainer/VBoxContainer/Properties/TargetNodeEdit.text = event_data['call_node']['target_node_path']
+	$PanelContainer/VBoxContainer/Properties/CallMethodEdit.text = event_data['call_node']['method_name']
+	$PanelContainer/VBoxContainer/Properties/ArgumentsSpinBox.value = event_data['call_node']['arguments'].size()
 	
 	_create_argument_controls()
 
@@ -76,13 +76,14 @@ func _create_argument_controls():
 		var label = Label.new()
 		label.name = "ArgumentLabel"
 		label.text = "Argument %s:" % index
+		label.rect_min_size.x = 100
 		container.add_child(label)
 		
 		var edit = LineEdit.new()
 		edit.name = "ArgumentValue"
 		edit.text = str(a)
 		edit.connect("text_changed", self, "_on_argument_value_changed", [ index ])
-		edit.rect_min_size.x = 200
+		edit.rect_min_size.x = 250
 		container.add_child(edit)
 		
 		$PanelContainer/VBoxContainer/Arguments.add_child(container)
