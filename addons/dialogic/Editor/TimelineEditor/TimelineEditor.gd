@@ -81,7 +81,6 @@ func _select_item(item: Node):
 
 func _on_gui_input(event, item: Node):
 	if event is InputEventMouseButton and event.button_index == 1:
-		print(item)
 		if event.is_pressed():
 			if not _is_item_selected(item):
 				_select_item(item)
@@ -264,7 +263,7 @@ func get_block_above(block):
 func get_block_below(block):
 	var block_index = block.get_index()
 	var item = null
-	if block_index < timeline.get_child_count():
+	if block_index < timeline.get_child_count() - 1:
 		item = timeline.get_child(block_index + 1)
 	return item
 
