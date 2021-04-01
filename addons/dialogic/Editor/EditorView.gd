@@ -15,6 +15,7 @@ onready var settings_editor = $MainPanel/SettingsEditor
 
 
 func _ready():
+	DialogicTranslator.translate_node_recursively(self)
 	# Adding file dialog to get used by pieces
 	editor_file_dialog = EditorFileDialog.new()
 	add_child(editor_file_dialog)

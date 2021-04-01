@@ -8,4 +8,4 @@ export(PoolStringArray) var translations
 
 [resource]
 script = SubResource( 1 )
-translations = PoolStringArray( "res://addons/dialogic/Translations/dialogic_errors.en.translation", "res://addons/dialogic/Translations/dialogic_errors.es.translation" )
+translations = PoolStringArray( "res://addons/dialogic/Translations/dialogic_errors.en.translation", "res://addons/dialogic/Translations/dialogic_errors.es.translation", "res://addons/dialogic/Translations/dialogic_editor.en.translation", "res://addons/dialogic/Translations/dialogic_editor.es.translation" )

@@ -21,7 +21,6 @@ static func load_translations()->void:
 		
 		if project_translations.has(translation):
 			continue
-		
 		project_translations.append(translation)
 	
 	var new_pr_translations = PoolStringArray(project_translations)
@@ -33,3 +32,33 @@ static func load_translations()->void:
 			"error_info":err}))
 	else:
 		print("[Dialogic] All translations added") # Replace with translation
+
+static func translate_node_recursively(node:Node):
+	_get_nodes_recursively(node)
+	pass
+
+
+static func _get_nodes_recursively(main_node:Node):
+	for node in main_node.get_children():
+		if node.get_child_count() > 0:
+			_translate_node(node)
+			_get_nodes_recursively(node)
+		else:
+			_translate_node(node)
+	_translate_node(main_node)
+
+
+static func _translate_node(node:Node):
+	match node.get_class():
+		"Button", "ToolButton", "Label", "Control":
+			if node.has_meta("TEXT_KEY"):
+				node.text = translate(node.get_meta("TEXT_KEY"))
+
+			if node.has_meta("HINT_TOOLTIP_KEY"):
+				(node as Control).hint_tooltip = translate(node.get_meta("HINT_TOOLTIP_KEY"))
+	
+			continue
+		_:
+			pass
+		
+	pass
