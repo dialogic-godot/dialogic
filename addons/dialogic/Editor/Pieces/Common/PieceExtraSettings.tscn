@@ -11,7 +11,7 @@ text = "Item 0"
 icon = ExtResource( 1 )
 clip_text = true
 align = 2
-items = [ "Move Up", null, 0, false, false, 0, 0, null, "", false, "Move Down", null, 0, false, false, 1, 0, null, "", false, "", null, 0, false, false, 2, 0, null, "", true, "Remove", null, 0, false, false, 3, 0, null, "", false ]
+items = [ "Move Up (Alt+Up)", null, 0, false, false, 0, 0, null, "", false, "Move Down (Alt+Down)", null, 0, false, false, 1, 0, null, "", false, "", null, 0, false, false, 2, 0, null, "", true, "Remove", null, 0, false, false, 3, 0, null, "", false ]
 script = ExtResource( 2 )
 __meta__ = {
 "_edit_use_anchors_": false
