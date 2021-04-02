@@ -17,6 +17,8 @@ func _enter_tree() -> void:
 	_add_custom_editor_view()
 	get_editor_interface().get_editor_viewport().add_child(_editor_view)
 	make_visible(false)
+	_parts_inspector.dialogic_editor_plugin = self
+	_parts_inspector.dialogic_editor_view = _editor_view
 
 
 func _ready():
