@@ -1,9 +1,9 @@
 key,en,es
 Select or create an element to start working,,Selecciona un elemento
 ,,
-New Timeline,,Nueva Linea de Tiempo
+New Timeline,,Nueva Secuencia
 New Character,,Nuevo Personaje
-New Definition,,Nueva Definición
+New Definition,,Nuevo Término
 New Theme,,Nuevo Tema
 ,,
       Fold  ,,
@@ -12,7 +12,7 @@ Online Docs,,Documentación Online
 Theme Editor,,En inglés
 ,,
 Edit definitions file,,Editar archivo de definiciones
-Remove definition,,Eliminar definición
+Remove definition,,Eliminar término
 ,,
 Show in File Manager,,Ver en el explorador de archivos
 Remove Theme,,Eliminar tema
@@ -23,7 +23,13 @@ Copy Timeline Name,,Copiar nombre
 Remove,,Eliminar
 ,,
 REMOVE_CHARACTER_CONFIRMATION,Are you sure you want to remove this character?\n(Can't be restored),¿Estás seguro de querer eliminar este personaje?\n(No se puede deshacer)
-REMOVE_DEFINITION_CONFIRMATION,Are you sure you want to remove this definition?\n(Can't be restored),¿Estás seguro de querer eliminar esta definición?\n(No se puede deshacer)
+REMOVE_DEFINITION_CONFIRMATION,Are you sure you want to remove this definition?\n(Can't be restored),¿Estás seguro de querer eliminar este término?\n(No se puede deshacer)
 REMOVE_THEME_CONFIRMATION,Are you sure you want to remove this theme?\n(Can't be restored),¿Estás seguro de querer eliminar este tema?\n(No se puede deshacer)
 REMOVE_GLOSSARY_CONFIRMATION,Are you sure you want to remove this entry?\n(Can't be restored),¿Estás seguro de eliminar esta entrada?\n(No se puede deshacer)
-REMOVE_TIMELINE_CONFIRMATION,Are you sure you want to remove this timeline?\n(Can't be restored),¿Estás seguro de eliminar esta linea de tiempo?\n(No se puede deshacer)
+REMOVE_TIMELINE_CONFIRMATION,Are you sure you want to remove this timeline?\n(Can't be restored),¿Estás seguro de eliminar esta secuencia?\n(No se puede deshacer)
+,,
+Timelines,,Secuencias
+Characters,,Personajes
+Definitions,,Términos
+Themes,,Temas
+Settings,,Configuración

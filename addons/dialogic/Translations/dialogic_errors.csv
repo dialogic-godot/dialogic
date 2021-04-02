@@ -1,4 +1,4 @@
 key,en,es
 DIALOGIC_ERROR,[Dialogic Error],
-ERROR_TIMELINE_NOT_FOUND,Loading dialog [color=red]{timeline}[/color] failed. It seems like the timeline doesn't exists. Maybe the name is wrong?,Hubo un problema al cargar [color=red]{timeline}[/color]. Parece que esta linea de tiempo no existe. ¿Quizas está mal escrito el nombre?
-ERROR_TIMELINE_NOT_SPECIFIED,No timeline specified.,No se especificó una linea de tiempo
+ERROR_TIMELINE_NOT_FOUND,Loading dialog [color=red]{timeline}[/color] failed. It seems like the timeline doesn't exists. Maybe the name is wrong?,Hubo un problema al cargar [color=red]{timeline}[/color]. Parece que esta secuencia no existe. ¿Quizas está mal escrito el nombre?
+ERROR_TIMELINE_NOT_SPECIFIED,No timeline specified.,No se especificó una secuencia
