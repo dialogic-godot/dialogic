@@ -18,13 +18,14 @@ Create dialogs, characters and scenes to display conversations in your Godot gam
 
 ## 🆕 Changelog
 v1.1 - WIP
-- Improved event dragging and selection 
+- Improved event dragging and selection [[Arnaud Vergnet](https://github.com/arnaudvergnet)]
+- Fixed a bug that prevented the deletion of Characters [[AnidemDex](https://github.com/AnidemDex)]
+- Added a folder icon to each section of the resource tree. 
 - Timeline:
-  - New event `Call Node`: Call a Godot NodePath and a method name. In addition you can add arguments as well. The Timeline will execute those methods and wait for completion, if the method in question is async and/or yielding.
-  - You now can drag and drop events into the timeline! 
+  - New event `Call Node`: Call a Godot NodePath and a method name. In addition you can add arguments as well. The Timeline will execute those methods and wait for completion, if the method in question is async and/or yielding [[ellogwen](https://github.com/ellogwen)]
+  - You now can drag and drop events into the timeline! [[ellogwen](https://github.com/ellogwen)]
 - Dialog node
   - Fixed a bug where Glossary Definitions plain text was being added to the name label.
-- Thanks [ellogwen](https://github.com/ellogwen) for your contributions on the new `Call Node` and the drag and drop events!
 
 To view previous changes [click here](https://github.com/coppolaemilio/dialogic/blob/main/CHANGELOG.md). 
 
