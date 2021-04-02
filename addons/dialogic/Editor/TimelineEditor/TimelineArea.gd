@@ -5,9 +5,11 @@ var _drag_drop_indicator = null
 # store last attempts since godot sometimes misses drop events
 var _is_drag_receiving = false
 var _last_event_button_drop_attempt = '' 
+var _mouse_exited = false
 
 func _ready():
-	get_parent().connect("mouse_exited", self, '_on_mouse_exited')
+	connect("mouse_entered", self, '_on_mouse_entered')
+	connect("mouse_exited", self, '_on_mouse_exited')
 	connect("gui_input", self, '_on_gui_input')
 
 
@@ -23,6 +25,13 @@ func can_drop_data(position, data):
 	_remove_drop_indicator()
 	return false
 	
+
+func cancel_drop():
+	_is_drag_receiving = false
+	_last_event_button_drop_attempt = ''
+	_remove_drop_indicator()
+	pass
+
 	
 func drop_data(position, data):
 	# todo, getting timeline like this is prone to fail someday
@@ -48,9 +57,19 @@ func drop_data(position, data):
 	
 	
 func _on_mouse_exited():
-	_remove_drop_indicator()
+	_mouse_exited = true
 	
+  
+func _on_mouse_entered():
+	_mouse_exited = false	
 	
+  
+func _input(event):
+	if (event is InputEventMouseButton and is_visible_in_tree() and event.button_index == BUTTON_LEFT):
+		if (_mouse_exited and _is_drag_receiving):
+			cancel_drop()
+			
+      
 func _on_gui_input(event):
 	# godot sometimes misses drop events
 	if (event is InputEventMouseButton and event.button_index == BUTTON_LEFT):

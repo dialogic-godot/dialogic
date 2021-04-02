@@ -113,7 +113,7 @@ func _on_RemoveDefinitionConfirmation_confirmed():
 
 
 func _on_RemoveCharacterConfirmation_confirmed():
-	var filename = DialogicResources.get_path('CHAR_DIR', $MainPanel/CharacterEditor.opened_character_data['id']) 
+	var filename = $MainPanel/CharacterEditor.opened_character_data['id']
 	DialogicResources.delete_character(filename)
 	$MainPanel/MasterTree.remove_selected()
 	$MainPanel/MasterTree.hide_all_editors()
