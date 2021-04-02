@@ -105,7 +105,8 @@ func _input(event):
 						next_node = timeline.get_child(max(0, timeline.get_child_count() - 1))
 						if (next_node != null):
 							_select_item(next_node)
-					
+							
+				indent_events()
 				get_tree().set_input_as_handled()
 				
 			pass
