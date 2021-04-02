@@ -36,6 +36,7 @@ func _ready():
 
 func _input(event):
 	# some shortcuts need to get handled in the common input event
+	# especially CTRL-based
 	# because certain godot controls swallow events (like textedit)
 	# we protect this with is_visible_in_tree to not 
 	# invoke a shortcut by accident
@@ -72,6 +73,39 @@ func _input(event):
 				var next_node = timeline.get_child(next)
 				if (next_node != selected_item):
 					_select_item(next_node)
+				get_tree().set_input_as_handled()
+				
+			pass
+			
+		# CTRL DELETE
+		if (event.pressed
+			and event.alt == false
+			and event.shift == false
+			and event.control == true
+			and event.scancode == KEY_DELETE
+			and event.echo == false
+		):
+			if (selected_item != null):
+				# get next element
+				var next = min(timeline.get_child_count() - 1, selected_item.get_index() + 1)
+				var next_node = timeline.get_child(next)
+				if (next_node == selected_item):
+					next_node = null
+					
+				# remove current
+				selected_item.get_parent().remove_child(selected_item)
+				selected_item.queue_free()
+				selected_item = null
+					
+				# select next
+				if (next_node != null):
+					_select_item(next_node)
+				else:
+					if (timeline.get_child_count() > 0):
+						next_node = timeline.get_child(max(0, timeline.get_child_count() - 1))
+						if (next_node != null):
+							_select_item(next_node)
+					
 				get_tree().set_input_as_handled()
 				
 			pass
