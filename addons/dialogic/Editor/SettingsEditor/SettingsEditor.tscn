@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://addons/dialogic/Editor/SettingsEditor/SettingsEditor.gd" type="Script" id=1]
+[ext_resource path="res://addons/dialogic/Other/translation_service/scripts/TS_Label.gd" type="Script" id=2]
 
 [node name="SettingsEditor" type="ScrollContainer"]
 anchor_right = 1.0
@@ -39,9 +40,11 @@ size_flags_horizontal = 3
 margin_right = 40.0
 margin_bottom = 14.0
 text = "Theme"
+script = ExtResource( 2 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
+text_key = "Theme"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer"]
 margin_top = 34.0
@@ -53,15 +56,17 @@ margin_top = 3.0
 margin_right = 46.0
 margin_bottom = 17.0
 text = "Default"
+script = ExtResource( 2 )
+text_key = "Default"
 
 [node name="ThemeOptionButton" type="OptionButton" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer/HBoxContainer"]
 margin_left = 50.0
-margin_right = 190.0
+margin_right = 228.0
 margin_bottom = 20.0
 rect_min_size = Vector2( 140, 0 )
-text = "test"
-items = [ "test", null, false, 0, {
-"file": "theme-1616687382.cfg"
+text = "theme-1617334895.cfg"
+items = [ "theme-1617334895.cfg", null, false, 0, {
+"file": "theme-1617334895.cfg"
 } ]
 selected = 0
 
@@ -80,9 +85,11 @@ size_flags_horizontal = 3
 margin_right = 40.0
 margin_bottom = 14.0
 text = "Dialog"
+script = ExtResource( 2 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
+text_key = "Dialog"
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2"]
 margin_top = 34.0
@@ -94,6 +101,8 @@ margin_top = 5.0
 margin_right = 237.0
 margin_bottom = 19.0
 text = "New lines will create extra messages"
+script = ExtResource( 2 )
+text_key = "New lines will create extra messages"
 
 [node name="NewLines" type="CheckBox" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2/HBoxContainer2"]
 margin_left = 241.0
@@ -113,6 +122,8 @@ margin_top = 5.0
 margin_right = 165.0
 margin_bottom = 19.0
 text = "Remove empty messages"
+script = ExtResource( 2 )
+text_key = "Remove empty messages"
 
 [node name="RemoveEmptyMessages" type="CheckBox" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2/HBoxContainer"]
 margin_left = 169.0
@@ -131,6 +142,8 @@ margin_top = 5.0
 margin_right = 260.0
 margin_bottom = 19.0
 text = "Auto color character names in messages"
+script = ExtResource( 2 )
+text_key = "Auto color character names in messages"
 
 [node name="AutoColorNames" type="CheckBox" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2/HBoxContainer3"]
 margin_left = 264.0
@@ -148,6 +161,8 @@ margin_top = 5.0
 margin_right = 219.0
 margin_bottom = 19.0
 text = "Propagate input to rest of the Tree"
+script = ExtResource( 2 )
+text_key = "Propagate input to rest of the Tree"
 
 [node name="PropagateInput" type="CheckBox" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2/HBoxContainer4"]
 margin_left = 223.0

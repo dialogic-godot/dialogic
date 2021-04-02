@@ -30,6 +30,7 @@ static func get_translations() -> Dictionary:
 			translations[t.locale].append(t)
 		else:
 			translations[t.locale] = [t]
+		t = null
 	return translations
 
 

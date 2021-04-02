@@ -31,27 +31,27 @@ func _ready():
 	# Creating the parents
 	timelines_tree = tree.create_item(root)
 	timelines_tree.set_selectable(0, false)
-	timelines_tree.set_text(0, "Timelines")
+	timelines_tree.set_text(0, DialogicTranslator.translate("Timelines"))
 	#timelines_tree.set_icon(0, get_icon("Folder", "EditorIcons"))
 	
 	characters_tree = tree.create_item(root)
 	characters_tree.set_selectable(0, false)
-	characters_tree.set_text(0, "Characters")
+	characters_tree.set_text(0, DialogicTranslator.translate("Characters"))
 	#characters_tree.set_icon(0, get_icon("Folder", "EditorIcons"))
 
 	definitions_tree = tree.create_item(root)
 	definitions_tree.set_selectable(0, false)
-	definitions_tree.set_text(0, "Definitions")
+	definitions_tree.set_text(0, DialogicTranslator.translate("Definitions"))
 	#definitions_tree.set_icon(0, get_icon("Folder", "EditorIcons"))
 	
 	themes_tree = tree.create_item(root)
 	themes_tree.set_selectable(0, false)
-	themes_tree.set_text(0, "Themes")
+	themes_tree.set_text(0, DialogicTranslator.translate("Themes"))
 	#themes_tree.set_icon(0, get_icon("Folder", "EditorIcons"))
 	
 	settings_tree = tree.create_item(root)
 	settings_tree.set_selectable(0, true)
-	settings_tree.set_text(0, "Settings")
+	settings_tree.set_text(0, DialogicTranslator.translate("Settings"))
 	settings_tree.set_icon(0, get_icon("GDScript", "EditorIcons"))
 	settings_tree.set_metadata(0, {'editor': 'Settings'})
 
