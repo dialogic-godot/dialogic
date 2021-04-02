@@ -8,8 +8,6 @@ func _init():
 	if Engine.editor_hint:
 		# Make sure the core files exist 
 		DialogicResources.init_dialogic_files()
-		# Load all dialogic translations
-		DialogicTranslator.load_translations()
 	add_autoload_singleton('DialogicSingleton', "res://addons/dialogic/Other/DialogicSingleton.gd")
 
 
@@ -23,6 +21,8 @@ func _enter_tree() -> void:
 
 func _ready():
 	if Engine.editor_hint:
+		# Load all dialogic translations
+		DialogicTranslator.load_translations()
 		# Force Godot to show the dialogic folder
 		get_editor_interface().get_resource_filesystem().scan()
 	
