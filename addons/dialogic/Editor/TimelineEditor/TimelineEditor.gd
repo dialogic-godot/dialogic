@@ -110,6 +110,20 @@ func _input(event):
 				get_tree().set_input_as_handled()
 				
 			pass
+			
+		# CTRL T
+		if (event.pressed
+			and event.alt == false
+			and event.shift == false
+			and event.control == true
+			and event.scancode == KEY_T
+			and event.echo == false
+		):
+			var new_text = create_event("TextBlock")
+			_select_item(new_text)
+			indent_events()
+			get_tree().set_input_as_handled()
+			pass
 
 
 func _unhandled_key_input(event):
