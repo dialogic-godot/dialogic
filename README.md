@@ -34,7 +34,7 @@ v1.1 - WIP
   - Fixed a bug where Glossary Definitions plain text was being added to the name label.
 - Settings
   - Added a new option to toggle the character "focus"/"dim" while speaking. 
-- Added an button in timeline inspector plugin to open the selected timeline in the editor. [[ellogwen](https://github.com/ellogwen)]
+- Added a button in timeline inspector plugin to open the selected timeline in the editor. [[ellogwen](https://github.com/ellogwen)]
 
 To view previous changes [click here](https://github.com/coppolaemilio/dialogic/blob/main/CHANGELOG.md). 
 
