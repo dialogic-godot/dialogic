@@ -5,11 +5,11 @@ tool
 
 
 # Translates a message using translation catalogs configured in the Project Settings.
-static func translate(message:String)->String:
+static func translate(message:String, ignore_test_locale:bool = false)->String:
 	var translation
 
 	if Engine.editor_hint:
-		translation = _get_translation(message)
+		translation = _get_translation(message, ignore_test_locale)
 		
 	else:
 		translation = TranslationServer.translate(message)
@@ -34,14 +34,14 @@ static func get_translations() -> Dictionary:
 	return translations
 
 
-static func _get_translation(_msg:String)->String:
+static func _get_translation(_msg:String, _ignore_test_locale:bool)->String:
 	var _returned_translation:String = _msg
 	var _translations:Dictionary = get_translations()
 	var _default_fallback:String = ProjectSettings.get_setting("locale/fallback")
 	var _test_locale:String = ProjectSettings.get_setting("locale/test")
 	var _locale = TranslationServer.get_locale()
 	
-	if _test_locale:
+	if _test_locale and not _ignore_test_locale:
 		# There's a test locale property defined, use that instead editor locale
 		_locale = _test_locale
 

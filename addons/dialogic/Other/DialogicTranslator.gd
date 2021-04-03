@@ -6,8 +6,8 @@ const _TrService = preload("res://addons/dialogic/Other/translation_service/core
 const DIALOGIC_TRANSLATIONS:PoolStringArray = preload("res://addons/dialogic/Translations/dialogic_translations_resource.tres").translations
 
 # You can't override tr function
-static func translate(message:String)->String:
-	return _TrService.translate(message)
+static func translate(message:String, ignore_test_locale:bool=false)->String:
+	return _TrService.translate(message, ignore_test_locale)
 
 
 ## Load the translations saved in DIALOGIC_TRANSLATIONS
@@ -52,20 +52,20 @@ static func _translate_node(node:Node):
 	match node.get_class():
 		"Button", "ToolButton", "Label", "Control":
 			if node.has_meta("TEXT_KEY"):
-				node.text = translate(node.get_meta("TEXT_KEY"))
+				node.text = translate(node.get_meta("TEXT_KEY"), true)
 
 			if node.has_meta("HINT_TOOLTIP_KEY"):
-				(node as Control).hint_tooltip = translate(node.get_meta("HINT_TOOLTIP_KEY"))
+				(node as Control).hint_tooltip = translate(node.get_meta("HINT_TOOLTIP_KEY"), true)
 	
 			continue
 		"PopupMenu":
 			for _item_idx in range((node as PopupMenu).get_item_count()):
 				var _item_metadata = (node as PopupMenu).get_item_metadata(_item_idx)
 				if typeof(_item_metadata) == TYPE_STRING:
-					(node as PopupMenu).set_item_text(_item_idx, translate(_item_metadata))
+					(node as PopupMenu).set_item_text(_item_idx, translate(_item_metadata, true))
 		"ConfirmationDialog":
 			if node.has_meta("DIALOG_TEXT_KEY"):
-				(node as ConfirmationDialog).dialog_text = translate(node.get_meta("DIALOG_TEXT_KEY"))
+				(node as ConfirmationDialog).dialog_text = translate(node.get_meta("DIALOG_TEXT_KEY"), true)
 		_:
 			pass
 		

@@ -42,8 +42,11 @@ margin_bottom = 14.0
 text = "Theme"
 script = ExtResource( 2 )
 __meta__ = {
+"HINT_TOOLTIP_KEY": "",
+"TEXT_KEY": "Theme",
 "_edit_use_anchors_": false
 }
+hint_tooltip_key = ""
 text_key = "Theme"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer"]
@@ -57,6 +60,11 @@ margin_right = 46.0
 margin_bottom = 17.0
 text = "Default"
 script = ExtResource( 2 )
+__meta__ = {
+"HINT_TOOLTIP_KEY": "",
+"TEXT_KEY": "Default"
+}
+hint_tooltip_key = ""
 text_key = "Default"
 
 [node name="ThemeOptionButton" type="OptionButton" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer/HBoxContainer"]
@@ -87,8 +95,11 @@ margin_bottom = 14.0
 text = "Dialog"
 script = ExtResource( 2 )
 __meta__ = {
+"HINT_TOOLTIP_KEY": "",
+"TEXT_KEY": "Dialog",
 "_edit_use_anchors_": false
 }
+hint_tooltip_key = ""
 text_key = "Dialog"
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2"]
@@ -102,6 +113,11 @@ margin_right = 237.0
 margin_bottom = 19.0
 text = "New lines will create extra messages"
 script = ExtResource( 2 )
+__meta__ = {
+"HINT_TOOLTIP_KEY": "",
+"TEXT_KEY": "New lines will create extra messages"
+}
+hint_tooltip_key = ""
 text_key = "New lines will create extra messages"
 
 [node name="NewLines" type="CheckBox" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2/HBoxContainer2"]
@@ -123,6 +139,11 @@ margin_right = 165.0
 margin_bottom = 19.0
 text = "Remove empty messages"
 script = ExtResource( 2 )
+__meta__ = {
+"HINT_TOOLTIP_KEY": "",
+"TEXT_KEY": "Remove empty messages"
+}
+hint_tooltip_key = ""
 text_key = "Remove empty messages"
 
 [node name="RemoveEmptyMessages" type="CheckBox" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2/HBoxContainer"]
@@ -143,6 +164,11 @@ margin_right = 260.0
 margin_bottom = 19.0
 text = "Auto color character names in messages"
 script = ExtResource( 2 )
+__meta__ = {
+"HINT_TOOLTIP_KEY": "",
+"TEXT_KEY": "Auto color character names in messages"
+}
+hint_tooltip_key = ""
 text_key = "Auto color character names in messages"
 
 [node name="AutoColorNames" type="CheckBox" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2/HBoxContainer3"]
@@ -162,6 +188,11 @@ margin_right = 219.0
 margin_bottom = 19.0
 text = "Propagate input to rest of the Tree"
 script = ExtResource( 2 )
+__meta__ = {
+"HINT_TOOLTIP_KEY": "",
+"TEXT_KEY": "Propagate input to rest of the Tree"
+}
+hint_tooltip_key = ""
 text_key = "Propagate input to rest of the Tree"
 
 [node name="PropagateInput" type="CheckBox" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2/HBoxContainer4"]

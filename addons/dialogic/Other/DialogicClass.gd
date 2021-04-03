@@ -43,8 +43,8 @@ static func start(timeline: String, reset_saves: bool=true, dialog_scene_path: S
 			"events":[{"character":"","portrait":"",
 			"text":"{error} {error_info}".format(
 					{
-					"error":DialogicTranslator.translate(DialogicUtil.Error.DIALOGIC_ERROR),
-					"error_info":DialogicTranslator.translate(DialogicUtil.Error.TIMELINE_NOT_FOUND).format({"timeline":timeline})
+					"error":DialogicTranslator.translate(DialogicUtil.Error.DIALOGIC_ERROR, true),
+					"error_info":DialogicTranslator.translate(DialogicUtil.Error.TIMELINE_NOT_FOUND, true).format({"timeline":timeline})
 					}
 				)}]
 		}

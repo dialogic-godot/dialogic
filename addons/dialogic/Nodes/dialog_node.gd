@@ -48,8 +48,8 @@ func _ready():
 			"events":[{"character":"","portrait":"",
 			"text":"{error} {error_info}".format(
 				{
-					"error":DialogicTranslator.translate(DialogicUtil.Error.DIALOGIC_ERROR),
-					"error_info":DialogicTranslator.translate(DialogicUtil.Error.TIMELINE_NOT_SPECIFIED)
+					"error":DialogicTranslator.translate(DialogicUtil.Error.DIALOGIC_ERROR, true),
+					"error_info":DialogicTranslator.translate(DialogicUtil.Error.TIMELINE_NOT_SPECIFIED, true)
 				}
 			)}]
 		}
