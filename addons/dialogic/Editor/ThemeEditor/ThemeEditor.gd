@@ -220,6 +220,7 @@ func _on_PreviewButton_pressed():
 		i.free()
 	var dialogic_node = load("res://addons/dialogic/Dialog.tscn")
 	var preview_dialog = dialogic_node.instance()
+	preview_dialog.timeline = ''
 	preview_dialog.preview = true
 	preview_dialog.get_node('DefinitionInfo').in_theme_editor = true
 	
