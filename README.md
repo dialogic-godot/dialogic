@@ -24,6 +24,11 @@ v1.1 - WIP
 - Timeline:
   - New event `Call Node`: Call a Godot NodePath and a method name. In addition you can add arguments as well. The Timeline will execute those methods and wait for completion, if the method in question is async and/or yielding [[ellogwen](https://github.com/ellogwen)]
   - You now can drag and drop events into the timeline! [[ellogwen](https://github.com/ellogwen)]
+  - Shortcuts added! [[ellogwen](https://github.com/ellogwen)]
+    - Selecting previous and next event in the timeline with `CTRL + UP` and `CTRL + DOWN`
+    - Moving currently selected event up and down the timeline `ALT + UP` and `ALT + DOWN`
+    - Remove the currently selected event node and selects the next/last event node `CTRL DELETE`
+    - Create a new text event node below the currently selected and focus it's textbox to continue writing `CTRL T`
 - Dialog node
   - Fixed a bug where Glossary Definitions plain text was being added to the name label.
 
@@ -63,8 +68,6 @@ Using the buttons on the top left, you can create 4 types of objects:
 Dialogic is very simple to use, try it a bit and you will quickly understand how to master it.
 
 ## 📖 v1.0 Documentation
-
-**Note:** ⚠️ This documentation is valid only for the v1.0 branch. ⚠️
 
 The `Dialogic` class exposes methods allowing you to control the plugin:
 
