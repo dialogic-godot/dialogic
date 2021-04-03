@@ -1,0 +1,47 @@
+[gd_scene format=2]
+
+[node name="MarginContainer" type="MarginContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_horizontal = 11
+size_flags_vertical = 3
+custom_constants/margin_left = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Panel" type="Panel" parent="."]
+visible = false
+margin_left = 2.0
+margin_right = 1024.0
+margin_bottom = 600.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+margin_left = 2.0
+margin_right = 1024.0
+margin_bottom = 600.0
+
+[node name="Panel" type="Panel" parent="VBoxContainer"]
+margin_right = 1022.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 0, 32 )
+
+[node name="Label" type="Label" parent="VBoxContainer/Panel"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "Localización"
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label2" type="Label" parent="VBoxContainer"]
+margin_top = 36.0
+margin_right = 1022.0
+margin_bottom = 50.0
+text = "Idioma de dialogic"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer"]
+margin_top = 54.0
+margin_right = 1022.0
+margin_bottom = 54.0
