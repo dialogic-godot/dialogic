@@ -34,6 +34,134 @@ func _ready():
 	style.set('bg_color', get_color("dark_color_1", "Editor"))
 
 
+func _input(event):
+	# some shortcuts need to get handled in the common input event
+	# especially CTRL-based
+	# because certain godot controls swallow events (like textedit)
+	# we protect this with is_visible_in_tree to not 
+	# invoke a shortcut by accident
+	if (event is InputEventKey and event is InputEventWithModifiers and is_visible_in_tree()):
+		# CTRL UP
+		if (event.pressed
+			and event.alt == false
+			and event.shift == false
+			and event.control == true
+			and event.scancode == KEY_UP
+			and event.echo == false
+		):
+			# select previous
+			if (selected_item != null):
+				var prev = max(0, selected_item.get_index() - 1)
+				var prev_node = timeline.get_child(prev)
+				if (prev_node != selected_item):
+					_select_item(prev_node)
+				get_tree().set_input_as_handled()
+				
+			pass
+			
+		# CTRL DOWN
+		if (event.pressed
+			and event.alt == false
+			and event.shift == false
+			and event.control == true
+			and event.scancode == KEY_DOWN
+			and event.echo == false
+		):
+			# select next
+			if (selected_item != null):
+				var next = min(timeline.get_child_count() - 1, selected_item.get_index() + 1)
+				var next_node = timeline.get_child(next)
+				if (next_node != selected_item):
+					_select_item(next_node)
+				get_tree().set_input_as_handled()
+				
+			pass
+			
+		# CTRL DELETE
+		if (event.pressed
+			and event.alt == false
+			and event.shift == false
+			and event.control == true
+			and event.scancode == KEY_DELETE
+			and event.echo == false
+		):
+			if (selected_item != null):
+				# get next element
+				var next = min(timeline.get_child_count() - 1, selected_item.get_index() + 1)
+				var next_node = timeline.get_child(next)
+				if (next_node == selected_item):
+					next_node = null
+					
+				# remove current
+				selected_item.get_parent().remove_child(selected_item)
+				selected_item.queue_free()
+				selected_item = null
+					
+				# select next
+				if (next_node != null):
+					_select_item(next_node)
+				else:
+					if (timeline.get_child_count() > 0):
+						next_node = timeline.get_child(max(0, timeline.get_child_count() - 1))
+						if (next_node != null):
+							_select_item(next_node)
+							
+				indent_events()
+				get_tree().set_input_as_handled()
+				
+			pass
+			
+		# CTRL T
+		if (event.pressed
+			and event.alt == false
+			and event.shift == false
+			and event.control == true
+			and event.scancode == KEY_T
+			and event.echo == false
+		):
+			var new_text = create_event("TextBlock")
+			_select_item(new_text)
+			indent_events()
+			get_tree().set_input_as_handled()
+			pass
+
+
+func _unhandled_key_input(event):
+	if (event is InputEventWithModifiers):
+		# ALT UP
+		if (event.pressed
+			and event.alt == true 
+			and event.shift == false 
+			and event.control == false 
+			and event.scancode == KEY_UP
+			and event.echo == false
+		):
+			# move selected up
+			if (selected_item != null):
+				move_block(selected_item, "up")
+				indent_events()
+				get_tree().set_input_as_handled()
+				
+			pass
+			
+		# ALT DOWN
+		if (event.pressed
+			and event.alt == true 
+			and event.shift == false 
+			and event.control == false 
+			and event.scancode == KEY_DOWN
+			and event.echo == false
+		):
+			# move selected down
+			if (selected_item != null):
+				move_block(selected_item, "down")
+				indent_events()
+				get_tree().set_input_as_handled()
+				
+			pass
+			
+	pass
+	
 func _process(delta):
 	if moving_piece != null:
 		var current_position = get_global_mouse_position()
@@ -56,6 +184,7 @@ func _clear_selection():
 		var selected_panel: PanelContainer = selected_item.get_node("PanelContainer")
 		if selected_panel != null:
 			selected_panel.set('custom_styles/panel', saved_style)
+			
 	selected_item = null
 	saved_style = null
 
@@ -75,6 +204,9 @@ func _select_item(item: Node):
 				panel.set('custom_styles/panel', selected_style_text)
 			else:
 				panel.set('custom_styles/panel', selected_style)
+			# allow event panels to do additional operation when getting selected
+			if (selected_item.has_method("on_timeline_selected")):
+				selected_item.on_timeline_selected()
 	else:
 		_clear_selection()
 
@@ -87,7 +219,7 @@ func _on_gui_input(event, item: Node):
 			moving_piece = item
 		else:
 			moving_piece = null
-
+			
 
 # Event Creation signal for buttons
 func _create_event_button_pressed(button_name):
