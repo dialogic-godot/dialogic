@@ -336,3 +336,55 @@ func save_current_resource():
 			if metadata['editor'] == 'Definition':
 				definition_editor.save_definition()
 			# Note: Theme files auto saves on change
+
+
+func select_timeline_item(timeline_name):
+	if (timeline_name == ''):
+		return
+
+	var main_item = tree.get_root().get_children()
+	
+	# wow, godots tree traversal is extremly odd, or I just don't get it
+	while (main_item):
+		
+		if (main_item == null):
+			break
+			
+		if (main_item.has_method("get_text") && main_item.get_text(0) == "Timelines"):
+			var item = main_item.get_children()
+			while (item):
+							
+				if (not item.has_method("get_metadata")):
+					item = item.get_next()
+					continue
+			
+				var meta = item.get_metadata(0)
+		
+				if (meta == null):
+					item = item.get_next()
+					continue
+		
+				if (not meta.has("editor") or meta["editor"] != "Timeline"):
+					item = item.get_next()
+					continue
+			
+				# search for filename
+				if (meta.has("file") and meta["file"] == timeline_name):
+					# select this one
+					item.select(0)
+					return;
+			
+				# search for name
+				if (meta.has("name") and meta["name"] == timeline_name):
+					# select this one
+					item.select(0)
+					return;
+	
+				item = item.get_next()
+			break
+		else:
+			main_item = main_item.get_next()
+			
+	# fallback
+	hide_all_editors()
+	pass
