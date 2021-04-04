@@ -27,11 +27,19 @@ func _ready():
 
 	master_tree.connect("editor_selected", self, 'on_master_tree_editor_selected')
 
+	
 	# Toolbar icons
-	$ToolBar/NewTimelineButton.icon = load_icon("res://addons/dialogic/Images/Toolbar/add-timeline.svg")
-	$ToolBar/NewCharactersButton.icon = load_icon("res://addons/dialogic/Images/Toolbar/add-character.svg")
-	$ToolBar/NewDefinitionButton.icon = load_icon("res://addons/dialogic/Images/Toolbar/add-definition.svg")
-	$ToolBar/NewThemeButton.icon = load_icon("res://addons/dialogic/Images/Toolbar/add-theme.svg")
+	var modifier = ''
+	var _scale = get_constant("inspector_margin", "Editor")
+	_scale = _scale * 0.125
+	if _scale == 1.25:
+		modifier = '-1.25'
+	if _scale == 2:
+		modifier = '-2'
+	$ToolBar/NewTimelineButton.icon = load("res://addons/dialogic/Images/Toolbar/add-timeline" + modifier + ".svg")
+	$ToolBar/NewCharactersButton.icon = load("res://addons/dialogic/Images/Toolbar/add-character" + modifier + ".svg")
+	$ToolBar/NewDefinitionButton.icon = load("res://addons/dialogic/Images/Toolbar/add-definition" + modifier + ".svg")
+	$ToolBar/NewThemeButton.icon = load("res://addons/dialogic/Images/Toolbar/add-theme" + modifier + ".svg")
 	
 	# Toolbar
 	$ToolBar/NewTimelineButton.connect('pressed', $MainPanel/TimelineEditor, 'new_timeline')
@@ -174,24 +182,3 @@ func _on_Logo_gui_input(event) -> void:
 func dprint(what) -> void:
 	if debug_mode:
 		print(what)
-
-
-func get_editor_scale():
-	var _scale = get_constant("inspector_margin", "Editor")
-	return _scale * 0.125
-
-
-func load_icon(path):
-	var scale = get_editor_scale()
-	var split = 'http://www.w3.org/2000/svg'
-	var icon_size = str(16 * scale)
-	var file = File.new()
-	file.open(path, File.READ)
-	var content = file.get_as_text().split(split)
-	content[0] = '<svg width="' + icon_size + '" height="' + icon_size + '" viewBox="0 0 16 16" fill="none" xmlns="'
-	file.close()
-	
-	file.open(path, File.WRITE)
-	file.store_string(content[0] + split + content[1])
-	file.close()
-	return load(path)

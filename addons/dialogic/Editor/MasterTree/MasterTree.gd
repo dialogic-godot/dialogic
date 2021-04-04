@@ -12,11 +12,11 @@ onready var filter_tree_edit = get_node('../FilterMasterTreeEdit')
 
 onready var tree = self
 
-onready var timeline_icon = load_icon("res://addons/dialogic/Images/Resources/timeline.svg")
-onready var character_icon = load_icon("res://addons/dialogic/Images/Resources/character.svg")
-onready var theme_icon = load_icon("res://addons/dialogic/Images/Resources/theme.svg")
-onready var definition_icon = load_icon("res://addons/dialogic/Images/Resources/definition.svg")
-onready var glossary_icon = load_icon("res://addons/dialogic/Images/Resources/glossary.svg")
+var timeline_icon = load("res://addons/dialogic/Images/Resources/timeline.svg")
+var character_icon = load("res://addons/dialogic/Images/Resources/character.svg")
+var theme_icon = load("res://addons/dialogic/Images/Resources/theme.svg")
+var definition_icon = load("res://addons/dialogic/Images/Resources/definition.svg")
+var glossary_icon = load("res://addons/dialogic/Images/Resources/glossary.svg")
 
 var timelines_tree
 var characters_tree
@@ -433,23 +433,3 @@ func select_timeline_item(timeline_name):
 	hide_all_editors()
 	pass
 
-
-func get_editor_scale():
-	var _scale = get_constant("inspector_margin", "Editor")
-	return _scale * 0.125
-	
-
-func load_icon(path):
-	var scale = get_editor_scale()
-	var split = 'http://www.w3.org/2000/svg'
-	var icon_size = str(16 * scale)
-	var file = File.new()
-	file.open(path, File.READ)
-	var content = file.get_as_text().split(split)
-	content[0] = '<svg width="' + icon_size + '" height="' + icon_size + '" viewBox="0 0 16 16" fill="none" xmlns="'
-	file.close()
-	
-	file.open(path, File.WRITE)
-	file.store_string(content[0] + split + content[1])
-	file.close()
-	return load(path)

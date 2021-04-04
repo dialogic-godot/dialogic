@@ -2,9 +2,9 @@
 
 [ext_resource path="res://addons/dialogic/Editor/EditorView.gd" type="Script" id=1]
 [ext_resource path="res://addons/dialogic/Editor/TimelineEditor/TimelineEditor.tscn" type="PackedScene" id=2]
-[ext_resource path="res://addons/dialogic/Images/Toolbar/add-timeline.svg" type="Texture" id=3]
-[ext_resource path="res://addons/dialogic/Images/Toolbar/add-character.svg" type="Texture" id=4]
-[ext_resource path="res://addons/dialogic/Images/Toolbar/add-theme.svg" type="Texture" id=5]
+[ext_resource path="res://addons/dialogic/Images/Toolbar/add-character.svg" type="Texture" id=3]
+[ext_resource path="res://addons/dialogic/Images/Toolbar/add-timeline.svg" type="Texture" id=4]
+[ext_resource path="res://addons/dialogic/Images/Toolbar/add-definition.svg" type="Texture" id=5]
 [ext_resource path="res://addons/dialogic/Editor/SettingsEditor/SettingsEditor.tscn" type="PackedScene" id=6]
 [ext_resource path="res://addons/dialogic/Editor/CharacterEditor/CharacterEditor.tscn" type="PackedScene" id=7]
 [ext_resource path="res://addons/dialogic/Editor/ThemeEditor/ThemeEditor.tscn" type="PackedScene" id=8]
@@ -12,7 +12,7 @@
 [ext_resource path="res://addons/dialogic/Images/closed-icon.svg" type="Texture" id=10]
 [ext_resource path="res://addons/dialogic/Images/ActionCopy.svg" type="Texture" id=11]
 [ext_resource path="res://addons/dialogic/Editor/DefinitionEditor/DefinitionEditor.tscn" type="PackedScene" id=12]
-[ext_resource path="res://addons/dialogic/Images/Toolbar/add-definition.svg" type="Texture" id=13]
+[ext_resource path="res://addons/dialogic/Images/Toolbar/add-theme.svg" type="Texture" id=13]
 [ext_resource path="res://addons/dialogic/Images/logo.png" type="Texture" id=14]
 [ext_resource path="res://addons/dialogic/Images/Remove.svg" type="Texture" id=22]
 [ext_resource path="res://addons/dialogic/Images/Filesystem.svg" type="Texture" id=26]
@@ -50,7 +50,7 @@ __meta__ = {
 
 [node name="ToolBar" type="HBoxContainer" parent="."]
 anchor_right = 1.0
-margin_bottom = 30.0
+margin_bottom = 32.0
 custom_constants/separation = 0
 __meta__ = {
 "_edit_use_anchors_": false
@@ -58,40 +58,41 @@ __meta__ = {
 
 [node name="NewTimelineButton" type="Button" parent="ToolBar"]
 self_modulate = Color( 0.870588, 0.870588, 0.870588, 1 )
-margin_right = 44.0
-margin_bottom = 40.0
+margin_right = 32.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 32, 32 )
 hint_tooltip = "New Timeline"
 focus_mode = 0
-icon = ExtResource( 3 )
+icon = ExtResource( 4 )
 flat = true
 
 [node name="NewCharactersButton" type="ToolButton" parent="ToolBar"]
 self_modulate = Color( 0.870588, 0.870588, 0.870588, 1 )
-margin_left = 44.0
-margin_right = 88.0
-margin_bottom = 40.0
+margin_left = 32.0
+margin_right = 60.0
+margin_bottom = 32.0
 hint_tooltip = "New Character"
 focus_mode = 0
-icon = ExtResource( 4 )
+icon = ExtResource( 3 )
 
 [node name="NewDefinitionButton" type="Button" parent="ToolBar"]
 self_modulate = Color( 0.870588, 0.870588, 0.870588, 1 )
-margin_left = 88.0
-margin_right = 132.0
-margin_bottom = 40.0
+margin_left = 60.0
+margin_right = 88.0
+margin_bottom = 32.0
 hint_tooltip = "New Definition"
 focus_mode = 0
-icon = ExtResource( 13 )
+icon = ExtResource( 5 )
 flat = true
 
 [node name="NewThemeButton" type="Button" parent="ToolBar"]
 self_modulate = Color( 0.870588, 0.870588, 0.870588, 1 )
-margin_left = 132.0
-margin_right = 176.0
-margin_bottom = 40.0
+margin_left = 88.0
+margin_right = 116.0
+margin_bottom = 32.0
 hint_tooltip = "New Theme"
 focus_mode = 0
-icon = ExtResource( 5 )
+icon = ExtResource( 13 )
 flat = true
 
 [node name="FoldTools" type="HBoxContainer" parent="ToolBar"]
@@ -121,16 +122,16 @@ icon = ExtResource( 9 )
 align = 0
 
 [node name="Spacer" type="Control" parent="ToolBar"]
-margin_left = 176.0
+margin_left = 116.0
 margin_right = 751.0
-margin_bottom = 40.0
+margin_bottom = 32.0
 size_flags_horizontal = 3
 
 [node name="Docs" type="ToolButton" parent="ToolBar"]
 self_modulate = Color( 0.870588, 0.870588, 0.870588, 1 )
 margin_left = 751.0
 margin_right = 861.0
-margin_bottom = 40.0
+margin_bottom = 32.0
 hint_tooltip = "Theme Editor"
 mouse_default_cursor_shape = 2
 text = "Online Docs"
@@ -139,7 +140,7 @@ icon = SubResource( 2 )
 [node name="Logo" type="TextureRect" parent="ToolBar"]
 margin_left = 861.0
 margin_right = 981.0
-margin_bottom = 40.0
+margin_bottom = 32.0
 rect_min_size = Vector2( 120, 0 )
 mouse_default_cursor_shape = 2
 texture = ExtResource( 14 )
@@ -149,9 +150,9 @@ stretch_mode = 5
 [node name="Version" type="Label" parent="ToolBar"]
 self_modulate = Color( 1, 1, 1, 0.631373 )
 margin_left = 981.0
-margin_top = 13.0
+margin_top = 9.0
 margin_right = 1008.0
-margin_bottom = 27.0
+margin_bottom = 23.0
 text = "v1.1"
 
 [node name="MainPanel" type="HSplitContainer" parent="."]
