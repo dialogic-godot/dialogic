@@ -36,14 +36,20 @@ func _ready():
 	var modifier = ''
 	var _scale = get_constant("inspector_margin", "Editor")
 	_scale = _scale * 0.125
+	rect_min_size.x = 150
 	if _scale == 1.25:
 		modifier = '-1.25'
+		rect_min_size.x = 180
 	if _scale == 1.5:
 		modifier = '-1.25'
+		rect_min_size.x = 250
 	if _scale == 1.75:
 		modifier = '-1.25'
+		rect_min_size.x = 250
 	if _scale == 2:
 		modifier = '-2'
+		rect_min_size.x = 360
+	rect_size.x = 0
 	timeline_icon = load("res://addons/dialogic/Images/Resources/timeline" + modifier + ".svg")
 	character_icon = load("res://addons/dialogic/Images/Resources/character" + modifier + ".svg")
 	theme_icon = load("res://addons/dialogic/Images/Resources/theme" + modifier + ".svg")

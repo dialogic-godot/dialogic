@@ -20,6 +20,23 @@ var selected_item : Node
 var moving_piece = null
 
 func _ready():
+	var modifier = ''
+	var _scale = get_constant("inspector_margin", "Editor")
+	_scale = _scale * 0.125
+	$ScrollContainer.rect_min_size.x = 180
+	if _scale == 1.25:
+		modifier = '-1.25'
+		$ScrollContainer.rect_min_size.x = 200
+	if _scale == 1.5:
+		modifier = '-1.25'
+		$ScrollContainer.rect_min_size.x = 200
+	if _scale == 1.75:
+		modifier = '-1.25'
+		$ScrollContainer.rect_min_size.x = 390
+	if _scale == 2:
+		modifier = '-2'
+		$ScrollContainer.rect_min_size.x = 390
+	
 	# We connect all the event buttons to the event creation functions
 	for b in $ScrollContainer/EventContainer.get_children():
 		if b is Button:
