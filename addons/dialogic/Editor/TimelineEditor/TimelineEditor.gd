@@ -6,7 +6,7 @@ var timeline_name: String = ''
 var timeline_file: String = ''
 var current_timeline: Dictionary = {}
 
-onready var master_tree = get_node('../MasterTree')
+onready var master_tree = get_node('../MasterTreeContainer/MasterTree')
 onready var timeline = $TimelineArea/TimeLine
 onready var events_warning = $ScrollContainer/EventContainer/EventsWarning
 

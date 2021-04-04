@@ -2,7 +2,7 @@ tool
 extends Control
 
 var editor_reference
-onready var master_tree = get_node('../MasterTree')
+onready var master_tree = get_node('../MasterTreeContainer/MasterTree')
 onready var settings_editor = get_node('../SettingsEditor')
 var current_theme = ''
 

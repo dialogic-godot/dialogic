@@ -1,13 +1,14 @@
 tool
 extends Tree
 
-onready var editor_reference = get_node('../..')
-onready var timeline_editor = get_node('../TimelineEditor')
-onready var character_editor = get_node('../CharacterEditor')
-onready var definition_editor = get_node('../DefinitionEditor')
-onready var settings_editor = get_node('../SettingsEditor')
-onready var theme_editor = get_node('../ThemeEditor')
-onready var empty_editor = get_node('../Empty')
+onready var editor_reference = get_node('../../../')
+onready var timeline_editor = get_node('../../TimelineEditor')
+onready var character_editor = get_node('../../CharacterEditor')
+onready var definition_editor = get_node('../../DefinitionEditor')
+onready var settings_editor = get_node('../../SettingsEditor')
+onready var theme_editor = get_node('../../ThemeEditor')
+onready var empty_editor = get_node('../../Empty')
+onready var filter_tree_edit = get_node('../FilterMasterTreeEdit')
 
 onready var tree = self
 var timeline_icon = load("res://addons/dialogic/Images/timeline.svg")
@@ -20,6 +21,8 @@ var characters_tree
 var definitions_tree
 var themes_tree
 var settings_tree
+
+var filter_tree_term = ''
 
 signal editor_selected(selected)
 
@@ -62,6 +65,8 @@ func _ready():
 	connect('item_edited', self, '_on_item_edited')
 	$RenamerReset.connect("timeout", self, '_on_renamer_reset_timeout')
 	
+	filter_tree_edit.connect("text_changed", self, '_on_filter_tree_edit_changed')
+	
 	#var subchild1 = tree.create_item(timelines_tree)
 	#subchild1.set_text(0, "Subchild1")
 	
@@ -93,7 +98,13 @@ func _clear_tree_children(parent: TreeItem):
 func build_timelines(selected_item: String=''):
 	_clear_tree_children(timelines_tree)
 	for t in DialogicUtil.get_sorted_timeline_list():
-		_add_timeline(t, not selected_item.empty() and t['file'] == selected_item)
+		if (filter_tree_term != ''):
+			if (filter_tree_term.to_lower() in t['file'].to_lower() or filter_tree_term.to_lower() in t['name'].to_lower()):
+				_add_timeline(t, not selected_item.empty() and t['file'] == selected_item)
+		else:
+			_add_timeline(t, not selected_item.empty() and t['file'] == selected_item)
+	# force redraw control
+	update()
 
 
 func _add_timeline(timeline, select = false):
@@ -115,8 +126,13 @@ func _add_timeline(timeline, select = false):
 func build_themes(selected_item: String=''):
 	_clear_tree_children(themes_tree)
 	for t in DialogicUtil.get_sorted_theme_list():
-		_add_theme(t, not selected_item.empty() and t['file'] == selected_item)
-
+		if (filter_tree_term != ''):
+			if (filter_tree_term.to_lower() in t['file'].to_lower() or filter_tree_term.to_lower() in t['name'].to_lower()):
+				_add_theme(t, not selected_item.empty() and t['file'] == selected_item)
+		else:
+			_add_theme(t, not selected_item.empty() and t['file'] == selected_item)
+	# force redraw tree
+	update()
 
 func _add_theme(theme_item, select = false):
 	var item = tree.create_item(themes_tree)
@@ -133,8 +149,13 @@ func _add_theme(theme_item, select = false):
 func build_characters(selected_item: String=''):
 	_clear_tree_children(characters_tree)
 	for t in DialogicUtil.get_sorted_character_list():
-		_add_character(t, not selected_item.empty() and t['file'] == selected_item)
-
+		if (filter_tree_term != ''):
+			if (filter_tree_term.to_lower() in t['file'].to_lower() or filter_tree_term.to_lower() in t['name'].to_lower()):
+				_add_character(t, not selected_item.empty() and t['file'] == selected_item)
+		else:		
+			_add_character(t, not selected_item.empty() and t['file'] == selected_item)
+	# force redraw tree
+	update()
 
 func _add_character(character, select = false):
 	var item = tree.create_item(characters_tree)
@@ -156,7 +177,13 @@ func _add_character(character, select = false):
 func build_definitions(selected_item: String=''):
 	_clear_tree_children(definitions_tree)
 	for t in DialogicUtil.get_sorted_default_definitions_list():
-		_add_definition(t, not selected_item.empty() and t['id'] == selected_item)
+		if (filter_tree_term != ''):
+			if (filter_tree_term.to_lower() in t['name'].to_lower()):
+				_add_definition(t, not selected_item.empty() and t['file'] == selected_item)
+		else:		
+			_add_definition(t, not selected_item.empty() and t['id'] == selected_item)
+	# force redraw tree
+	update()
 
 
 func _add_definition(definition, select = false):
@@ -320,6 +347,14 @@ func _on_item_edited():
 
 func _on_autosave_timeout():
 	save_current_resource()
+	
+	
+func _on_filter_tree_edit_changed(value):
+	filter_tree_term = value
+	build_timelines()
+	build_themes()
+	build_characters()
+	build_definitions()
 
 
 func save_current_resource():

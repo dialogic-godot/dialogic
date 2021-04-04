@@ -6,7 +6,7 @@ var editor_file_dialog # EditorFileDialog
 var file_picker_data: Dictionary = {'method': '', 'node': self}
 var current_editor_view: String = 'Master'
 var version_string: String 
-onready var master_tree = $MainPanel/MasterTree
+onready var master_tree = $MainPanel/MasterTreeContainer/MasterTree
 onready var timeline_editor = $MainPanel/TimelineEditor
 onready var character_editor = $MainPanel/CharacterEditor
 onready var definition_editor = $MainPanel/DefinitionEditor
@@ -77,8 +77,8 @@ func _on_RemoveTimelineConfirmation_confirmed():
 	var target = $MainPanel/TimelineEditor.timeline_file
 	print('target: ', target)
 	DialogicResources.delete_timeline(target)
-	$MainPanel/MasterTree.remove_selected()
-	$MainPanel/MasterTree.hide_all_editors()
+	$MainPanel/MasterTreeContainer/MasterTree.remove_selected()
+	$MainPanel/MasterTreeContainer/MasterTree.hide_all_editors()
 
 
 # Character context menu
@@ -108,22 +108,22 @@ func _on_DefinitionPopupMenu_id_pressed(id):
 func _on_RemoveDefinitionConfirmation_confirmed():
 	var target = $MainPanel/DefinitionEditor.current_definition['id']
 	DialogicResources.delete_default_definition(target)
-	$MainPanel/MasterTree.remove_selected()
-	$MainPanel/MasterTree.hide_all_editors()
+	$MainPanel/MasterTreeContainer/MasterTree.remove_selected()
+	$MainPanel/MasterTreeContainer/MasterTree.hide_all_editors()
 
 
 func _on_RemoveCharacterConfirmation_confirmed():
 	var filename = $MainPanel/CharacterEditor.opened_character_data['id']
 	DialogicResources.delete_character(filename)
-	$MainPanel/MasterTree.remove_selected()
-	$MainPanel/MasterTree.hide_all_editors()
+	$MainPanel/MasterTreeContainer/MasterTree.remove_selected()
+	$MainPanel/MasterTreeContainer/MasterTree.hide_all_editors()
 
 
 func _on_RemoveThemeConfirmation_confirmed():
-	var filename = $MainPanel/MasterTree.get_selected().get_metadata(0)['file']
+	var filename = $MainPanel/MasterTreeContainer/MasterTree.get_selected().get_metadata(0)['file']
 	DialogicResources.delete_theme(filename)
-	$MainPanel/MasterTree.remove_selected()
-	$MainPanel/MasterTree.hide_all_editors()
+	$MainPanel/MasterTreeContainer/MasterTree.remove_selected()
+	$MainPanel/MasterTreeContainer/MasterTree.hide_all_editors()
 
 
 # Godot dialog
