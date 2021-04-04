@@ -11,11 +11,13 @@ onready var empty_editor = get_node('../../Empty')
 onready var filter_tree_edit = get_node('../FilterMasterTreeEdit')
 
 onready var tree = self
-var timeline_icon = load("res://addons/dialogic/Images/timeline.svg")
-var character_icon = load("res://addons/dialogic/Images/character.svg")
-var theme_icon = load("res://addons/dialogic/Images/Resources/theme.svg")
-var definition_icon = load("res://addons/dialogic/Images/Resources/definition.svg")
-var glossary_icon = load("res://addons/dialogic/Images/Resources/glossary.svg")
+
+onready var timeline_icon = editor_reference.load_icon("res://addons/dialogic/Images/Resources/timeline.svg")
+onready var character_icon = editor_reference.load_icon("res://addons/dialogic/Images/Resources/character.svg")
+onready var theme_icon = editor_reference.load_icon("res://addons/dialogic/Images/Resources/theme.svg")
+onready var definition_icon = editor_reference.load_icon("res://addons/dialogic/Images/Resources/definition.svg")
+onready var glossary_icon = editor_reference.load_icon("res://addons/dialogic/Images/Resources/glossary.svg")
+
 var timelines_tree
 var characters_tree
 var definitions_tree
@@ -134,6 +136,7 @@ func build_themes(selected_item: String=''):
 	# force redraw tree
 	update()
 
+
 func _add_theme(theme_item, select = false):
 	var item = tree.create_item(themes_tree)
 	item.set_icon(0, theme_icon)
@@ -156,6 +159,7 @@ func build_characters(selected_item: String=''):
 			_add_character(t, not selected_item.empty() and t['file'] == selected_item)
 	# force redraw tree
 	update()
+
 
 func _add_character(character, select = false):
 	var item = tree.create_item(characters_tree)
@@ -236,6 +240,7 @@ func show_character_editor():
 	settings_editor.visible = false
 	empty_editor.visible = false
 
+
 func show_timeline_editor():
 	emit_signal("editor_selected", 'timeline')
 	character_editor.visible = false
@@ -244,6 +249,7 @@ func show_timeline_editor():
 	theme_editor.visible = false
 	settings_editor.visible = false
 	empty_editor.visible = false
+
 
 func show_definition_editor():
 	emit_signal("editor_selected", 'definition')
@@ -254,6 +260,7 @@ func show_definition_editor():
 	settings_editor.visible = false
 	empty_editor.visible = false
 
+
 func show_theme_editor():
 	emit_signal("editor_selected", 'theme')
 	character_editor.visible = false
@@ -263,6 +270,7 @@ func show_theme_editor():
 	settings_editor.visible = false
 	empty_editor.visible = false
 
+
 func show_settings_editor():
 	emit_signal("editor_selected", 'theme')
 	character_editor.visible = false
@@ -271,6 +279,7 @@ func show_settings_editor():
 	theme_editor.visible = false
 	settings_editor.visible = true
 	empty_editor.visible = false
+
 
 func hide_all_editors():
 	emit_signal("editor_selected", 'none')
@@ -423,3 +432,4 @@ func select_timeline_item(timeline_name):
 	# fallback
 	hide_all_editors()
 	pass
+
