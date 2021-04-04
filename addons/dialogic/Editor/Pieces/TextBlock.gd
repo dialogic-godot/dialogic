@@ -17,6 +17,7 @@ onready var portrait_picker = $PanelContainer/VBoxContainer/Header/PortraitPicke
 
 func _ready():
 	connect("gui_input", self, '_on_gui_input')
+	$PanelContainer/VBoxContainer/TextEdit.connect("focus_entered", self, "_on_TextEdit_focus_entered")
 	$PanelContainer/VBoxContainer/TextEdit.set("rect_min_size", Vector2(0, 80))
 	$PanelContainer/VBoxContainer/Header/CharacterPicker.connect('character_selected', self , '_on_character_selected')
 	portrait_picker.get_popup().connect("index_pressed", self, '_on_portrait_selected')
@@ -96,5 +97,23 @@ func _on_gui_input(event):
 				toggler.pressed = true
 
 
+func _on_TextEdit_focus_entered():
+	# propagate to timeline to make this text event as active selected
+	# to help improve keyboard shortcut workflows
+	var timeline_editor = editor_reference.get_node_or_null('MainPanel/TimelineEditor')
+	if (timeline_editor != null):
+		# @todo select item and clear selection is marked as "private" in TimelineEditor.gd
+		# consider to make it "public" or add a public helper function
+		timeline_editor._clear_selection()
+		timeline_editor._select_item(self)
+	pass
+	
+	
 func _on_saver_timer_timeout():
 	update_preview()
+	
+	
+# gets called when the user selects this node in the timeline
+func on_timeline_selected():
+	$PanelContainer/VBoxContainer/TextEdit.grab_focus()
+	pass

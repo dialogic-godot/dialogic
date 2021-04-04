@@ -662,15 +662,22 @@ func go_to_next_event():
 
 func grab_portrait_focus(character_data, event: Dictionary = {}) -> bool:
 	var exists = false
+	var visually_focus = true
+	if settings.has_section_key('dialog', 'dim_characters'):
+		visually_focus = settings.get_value('dialog', 'dim_characters')
+
 	for portrait in $Portraits.get_children():
 		if portrait.character_data == character_data:
 			exists = true
-			portrait.focus()
+			
+			if visually_focus:
+				portrait.focus()
 			if event.has('portrait'):
 				if event['portrait'] != '':
 					portrait.set_portrait(event['portrait'])
 		else:
-			portrait.focusout()
+			if visually_focus:
+				portrait.focusout()
 	return exists
 
 

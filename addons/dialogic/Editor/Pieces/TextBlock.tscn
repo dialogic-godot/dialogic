@@ -76,9 +76,9 @@ stretch_mode = 6
 
 [node name="Label" type="Label" parent="PanelContainer/VBoxContainer/Header"]
 visible = false
-margin_left = 60.0
+margin_left = 35.0
 margin_top = 8.0
-margin_right = 103.0
+margin_right = 78.0
 margin_bottom = 22.0
 text = "  Text  "
 
@@ -93,6 +93,8 @@ margin_right = 149.0
 
 [node name="PortraitPicker" parent="PanelContainer/VBoxContainer/Header" instance=ExtResource( 7 )]
 visible = false
+margin_left = 153.0
+margin_right = 187.0
 
 [node name="VisibleToggle" parent="PanelContainer/VBoxContainer/Header" instance=ExtResource( 2 )]
 margin_left = 153.0
