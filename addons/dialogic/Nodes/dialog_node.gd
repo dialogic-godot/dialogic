@@ -274,9 +274,10 @@ func _process(delta):
 
 func _input(event: InputEvent) -> void:
 	if not Engine.is_editor_hint() and event.is_action_pressed(input_next) and not waiting:
-		if $TextBubble/Tween.is_active():
+		if not $TextBubble/TextTimer.is_stopped():
 			# Skip to end if key is pressed during the text animation
-			$TextBubble/Tween.seek(999)
+			$TextBubble/TextTimer.stop()
+			$TextBubble/RichTextLabel.visible_characters = $TextBubble/RichTextLabel.get_total_character_count()
 			finished = true
 		else:
 			if waiting_for_answer == false and waiting_for_input == false:
@@ -291,14 +292,16 @@ func show_dialog():
 	visible = true
 
 
-func start_text_tween():
-	# This will start the animation that makes the text appear letter by letter
-	var tween_duration = text_speed * $TextBubble/RichTextLabel.get_total_character_count()
-	$TextBubble/Tween.interpolate_property(
-		$TextBubble/RichTextLabel, "percent_visible", 0, 1, tween_duration,
-		Tween.TRANS_LINEAR, Tween.EASE_IN_OUT
-	)
-	$TextBubble/Tween.start()
+func _on_TextTimer_timeout():
+	if text_speed == 0:
+		$TextBubble/RichTextLabel.visible_characters = -1
+		finished = true
+	else:
+		$TextBubble/RichTextLabel.visible_characters += 1
+		if $TextBubble/RichTextLabel.visible_characters < $TextBubble/RichTextLabel.get_total_character_count():
+			$TextBubble/TextTimer.start(text_speed)
+		else:
+			finished = true
 
 
 func update_name(character, color: Color = Color.white) -> void:
@@ -326,9 +329,7 @@ func update_text(text):
 	$TextBubble/RichTextLabel.bbcode_text = parse_definitions(text)
 	$TextBubble/RichTextLabel.percent_visible = 0
 
-	# The call to this function needs to be deferred.
-	# More info: https://github.com/godotengine/godot/issues/36381
-	call_deferred("start_text_tween")
+	$TextBubble/TextTimer.start(text_speed)
 	return true
 
 
@@ -647,11 +648,6 @@ func _on_option_selected(option, variable, value):
 	reset_options()
 	load_dialog()
 	dprint('[!] Option selected: ', option.text, ' value= ' , value)
-
-
-func _on_Tween_tween_completed(object, key):
-	#$TextBubble/RichTextLabel.meta_underlined = true
-	finished = true
 
 
 func _on_TextInputDialog_confirmed():
