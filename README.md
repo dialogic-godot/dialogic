@@ -22,6 +22,7 @@ v1.1 - WIP
 - Fixed a bug that prevented the deletion of Characters [[AnidemDex](https://github.com/AnidemDex)]
 - Fixed a bug that allowed you to overwrite the event on the theme preview dialog.
 - Added a folder icon to each section of the resource tree.
+- Fixed how the toolbar and the main view spacing looks in different display scales.
 - You can now filter resources from the main view [[ellogwen](https://github.com/ellogwen)]
 - Timeline:
   - New event `Call Node`: Call a Godot NodePath and a method name. In addition you can add arguments as well. The Timeline will execute those methods and wait for completion, if the method in question is async and/or yielding [[ellogwen](https://github.com/ellogwen)]
