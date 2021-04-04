@@ -26,6 +26,7 @@ v1.1 - WIP
   - You now can drag and drop events into the timeline! [[ellogwen](https://github.com/ellogwen)]
 - Dialog node
   - Fixed a bug where Glossary Definitions plain text was being added to the name label.
+  - Text is now incrementally displayed based on a timer instead of a tween [[Crystalwarrior](https://github.com/Crystalwarrior)]
 
 To view previous changes [click here](https://github.com/coppolaemilio/dialogic/blob/main/CHANGELOG.md). 
 
