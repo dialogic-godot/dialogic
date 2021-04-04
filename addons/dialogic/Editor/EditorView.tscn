@@ -165,9 +165,20 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="MasterTree" parent="MainPanel" instance=ExtResource( 35 )]
+[node name="MasterTreeContainer" type="VBoxContainer" parent="MainPanel"]
+margin_right = 180.0
+margin_bottom = 541.0
+
+[node name="FilterMasterTreeEdit" type="LineEdit" parent="MainPanel/MasterTreeContainer"]
+margin_right = 180.0
+margin_bottom = 24.0
+clear_button_enabled = true
+placeholder_text = "Filter"
+
+[node name="MasterTree" parent="MainPanel/MasterTreeContainer" instance=ExtResource( 35 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
+margin_top = 28.0
 margin_right = 180.0
 margin_bottom = 541.0
 rect_min_size = Vector2( 180, 0 )
@@ -298,5 +309,4 @@ dialog_text = "Are you sure you want to remove this timeline?
 __meta__ = {
 "_edit_use_anchors_": false
 }
-
 [connection signal="gui_input" from="ToolBar/Logo" to="." method="_on_Logo_gui_input"]
