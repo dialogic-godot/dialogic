@@ -176,8 +176,13 @@ func dprint(what) -> void:
 		print(what)
 
 
+func get_editor_scale():
+	var _scale = get_constant("inspector_margin", "Editor")
+	return _scale * 0.125
+
+
 func load_icon(path, icon_size = 16):
-	var scale = get_constant("inspector_margin", "Editor") * 0.125
+	var scale = get_editor_scale()
 	var split = 'http://www.w3.org/2000/svg'
 	icon_size = str(16 * scale)
 	var file = File.new()
