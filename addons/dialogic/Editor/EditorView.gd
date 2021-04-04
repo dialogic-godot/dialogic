@@ -56,6 +56,8 @@ func _ready():
 	if err == OK:
 		version_string = config.get_value("plugin", "version", "?")
 		$ToolBar/Version.text = 'v' + version_string
+		
+	$MainPanel/MasterTreeContainer/FilterMasterTreeEdit.right_icon = get_icon("Search", "EditorIcons")
 
 
 func on_master_tree_editor_selected(editor: String):
