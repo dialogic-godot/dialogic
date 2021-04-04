@@ -12,11 +12,11 @@ onready var filter_tree_edit = get_node('../FilterMasterTreeEdit')
 
 onready var tree = self
 
-var timeline_icon = load("res://addons/dialogic/Images/Resources/timeline.svg")
-var character_icon = load("res://addons/dialogic/Images/Resources/character.svg")
-var theme_icon = load("res://addons/dialogic/Images/Resources/theme.svg")
-var definition_icon = load("res://addons/dialogic/Images/Resources/definition.svg")
-var glossary_icon = load("res://addons/dialogic/Images/Resources/glossary.svg")
+var timeline_icon
+var character_icon
+var theme_icon
+var definition_icon
+var glossary_icon
 
 var timelines_tree
 var characters_tree
@@ -32,6 +32,23 @@ func _ready():
 	allow_rmb_select = true
 	var root = tree.create_item()
 	tree.set_hide_root(true)
+	
+	var modifier = ''
+	var _scale = get_constant("inspector_margin", "Editor")
+	_scale = _scale * 0.125
+	if _scale == 1.25:
+		modifier = '-1.25'
+	if _scale == 1.5:
+		modifier = '-1.25'
+	if _scale == 1.75:
+		modifier = '-1.25'
+	if _scale == 2:
+		modifier = '-2'
+	timeline_icon = load("res://addons/dialogic/Images/Resources/timeline" + modifier + ".svg")
+	character_icon = load("res://addons/dialogic/Images/Resources/character" + modifier + ".svg")
+	theme_icon = load("res://addons/dialogic/Images/Resources/theme" + modifier + ".svg")
+	definition_icon = load("res://addons/dialogic/Images/Resources/definition" + modifier + ".svg")
+	glossary_icon = load("res://addons/dialogic/Images/Resources/glossary" + modifier + ".svg")
 	
 	# Creating the parents
 	timelines_tree = tree.create_item(root)
