@@ -178,16 +178,15 @@ func dprint(what) -> void:
 
 func load_icon(path, icon_size = 16):
 	var scale = get_constant("inspector_margin", "Editor") * 0.125
+	var split = 'http://www.w3.org/2000/svg'
 	icon_size = str(16 * scale)
 	var file = File.new()
-	file.open(path, File.READ_WRITE)
-	var content = file.get_as_text().split('\n')
-	content[0] = '<svg width="' + icon_size + '" height="' + icon_size + '" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">'
-	var text = ''
-	for line in content:
-		text = text + line + '\n'
-	text = text.replace('\n\n', '')
-	file.store_string(text)
+	file.open(path, File.READ)
+	var content = file.get_as_text().split(split)
+	content[0] = '<svg width="' + icon_size + '" height="' + icon_size + '" viewBox="0 0 16 16" fill="none" xmlns="'
 	file.close()
-
+	
+	file.open(path, File.WRITE)
+	file.store_string(content[0] + split + content[1])
+	file.close()
 	return load(path)
