@@ -36,6 +36,7 @@ onready var Portrait = load("res://addons/dialogic/Nodes/Portrait.tscn")
 var dialog_script = {}
 var questions #for keeping track of the questions answered
 
+
 func _ready():
 	# Loading the config files
 	load_config_files()
@@ -274,10 +275,9 @@ func _process(delta):
 
 func _input(event: InputEvent) -> void:
 	if not Engine.is_editor_hint() and event.is_action_pressed(input_next) and not waiting:
-		if not $TextBubble/TextTimer.is_stopped():
+		if $TextBubble/Tween.is_active():
 			# Skip to end if key is pressed during the text animation
-			$TextBubble/TextTimer.stop()
-			$TextBubble/RichTextLabel.visible_characters = $TextBubble/RichTextLabel.get_total_character_count()
+			$TextBubble/Tween.seek(999)
 			finished = true
 		else:
 			if waiting_for_answer == false and waiting_for_input == false:
@@ -292,16 +292,8 @@ func show_dialog():
 	visible = true
 
 
-func _on_TextTimer_timeout():
-	if text_speed == 0:
-		$TextBubble/RichTextLabel.visible_characters = -1
-		finished = true
-	else:
-		$TextBubble/RichTextLabel.visible_characters += 1
-		if $TextBubble/RichTextLabel.visible_characters < $TextBubble/RichTextLabel.get_total_character_count():
-			$TextBubble/TextTimer.start(text_speed)
-		else:
-			finished = true
+func _on_Tween_tween_completed(object, key):
+	finished = true
 
 
 func update_name(character, color: Color = Color.white) -> void:
@@ -329,8 +321,20 @@ func update_text(text):
 	$TextBubble/RichTextLabel.bbcode_text = parse_definitions(text)
 	$TextBubble/RichTextLabel.percent_visible = 0
 
-	$TextBubble/TextTimer.start(text_speed)
+	# The call to this function needs to be deferred.
+	# More info: https://github.com/godotengine/godot/issues/36381
+	call_deferred("start_text_tween")
 	return true
+
+
+func start_text_tween():
+	# This will start the animation that makes the text appear letter by letter
+	var tween_duration = text_speed * $TextBubble/RichTextLabel.get_total_character_count()
+	$TextBubble/Tween.interpolate_property(
+		$TextBubble/RichTextLabel, "percent_visible", 0, 1, tween_duration,
+		Tween.TRANS_LINEAR, Tween.EASE_IN_OUT
+	)
+	$TextBubble/Tween.start()
 
 
 func on_timeline_start():
@@ -430,8 +434,7 @@ func event_handler(event: Dictionary):
 			emit_signal("event_start", "action", event)
 			if event['action'] == 'leaveall':
 				if event['character'] == '[All]':
-					for p in $Portraits.get_children():
-						p.fade_out()
+					characters_leave_all()
 				else:
 					for p in $Portraits.get_children():
 						if p.character_data['file'] == event['character']:
@@ -487,8 +490,7 @@ func event_handler(event: Dictionary):
 			go_to_next_event()
 		{'close_dialog'}:
 			emit_signal("event_start", "close_dialog", event)
-			on_timeline_end()
-			queue_free()
+			close_dialog_event()
 		{'set_theme'}:
 			emit_signal("event_start", "set_theme", event)
 			if event['set_theme'] != '':
@@ -852,3 +854,27 @@ func _compare_definitions(def_value: String, event_value: String, condition: Str
 			"<=":
 				condition_met = converted_def_value <= converted_event_value
 	return condition_met
+
+
+func characters_leave_all():
+	for p in $Portraits.get_children():
+		p.fade_out()
+
+
+func close_dialog_event():
+	var tween = Tween.new()
+	add_child(tween)
+	tween.interpolate_property($TextBubble, "modulate",
+		$TextBubble.modulate, Color('#00ffffff'), 1,
+		Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
+	tween.start()
+	var close_dialog_timer = Timer.new()
+	close_dialog_timer.connect("timeout", self, '_on_close_dialog_timeout')
+	add_child(close_dialog_timer)
+	close_dialog_timer.start(2)
+	characters_leave_all()
+
+
+func _on_close_dialog_timeout():
+	on_timeline_end()
+	queue_free()

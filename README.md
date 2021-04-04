@@ -34,7 +34,6 @@ v1.1 - WIP
     - Create a new text event node below the currently selected and focus it's textbox to continue writing `CTRL T`
 - Dialog node
   - Fixed a bug where Glossary Definitions plain text was being added to the name label.
-  - Text is now incrementally displayed based on a timer instead of a tween [[Crystalwarrior](https://github.com/Crystalwarrior)]
 - Settings
   - Added a new option to toggle the character "focus"/"dim" while speaking. 
 - Added a button in timeline inspector plugin to open the selected timeline in the editor. [[ellogwen](https://github.com/ellogwen)]
