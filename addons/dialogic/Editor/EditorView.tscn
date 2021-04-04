@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=2]
+[gd_scene load_steps=17 format=2]
 
 [ext_resource path="res://addons/dialogic/Editor/EditorView.gd" type="Script" id=1]
 [ext_resource path="res://addons/dialogic/Editor/TimelineEditor/TimelineEditor.tscn" type="PackedScene" id=2]
@@ -8,8 +8,6 @@
 [ext_resource path="res://addons/dialogic/Editor/SettingsEditor/SettingsEditor.tscn" type="PackedScene" id=6]
 [ext_resource path="res://addons/dialogic/Editor/CharacterEditor/CharacterEditor.tscn" type="PackedScene" id=7]
 [ext_resource path="res://addons/dialogic/Editor/ThemeEditor/ThemeEditor.tscn" type="PackedScene" id=8]
-[ext_resource path="res://addons/dialogic/Images/open-icon.svg" type="Texture" id=9]
-[ext_resource path="res://addons/dialogic/Images/closed-icon.svg" type="Texture" id=10]
 [ext_resource path="res://addons/dialogic/Images/ActionCopy.svg" type="Texture" id=11]
 [ext_resource path="res://addons/dialogic/Editor/DefinitionEditor/DefinitionEditor.tscn" type="PackedScene" id=12]
 [ext_resource path="res://addons/dialogic/Images/Toolbar/add-theme.svg" type="Texture" id=13]
@@ -90,8 +88,9 @@ icon = ExtResource( 13 )
 flat = true
 
 [node name="FoldTools" type="HBoxContainer" parent="ToolBar"]
+visible = false
 margin_left = 112.0
-margin_right = 247.0
+margin_right = 203.0
 margin_bottom = 32.0
 
 [node name="Label" type="Label" parent="ToolBar/FoldTools"]
@@ -100,22 +99,20 @@ margin_right = 59.0
 margin_bottom = 23.0
 text = "      Fold  "
 
-[node name="ButtonFold" type="Button" parent="ToolBar/FoldTools"]
+[node name="ButtonFold" type="ToolButton" parent="ToolBar/FoldTools"]
 margin_left = 63.0
-margin_right = 97.0
-margin_bottom = 28.0
-icon = ExtResource( 10 )
+margin_right = 75.0
+margin_bottom = 32.0
 align = 0
 
-[node name="ButtonUnfold" type="Button" parent="ToolBar/FoldTools"]
-margin_left = 101.0
-margin_right = 135.0
-margin_bottom = 28.0
-icon = ExtResource( 9 )
+[node name="ButtonUnfold" type="ToolButton" parent="ToolBar/FoldTools"]
+margin_left = 79.0
+margin_right = 91.0
+margin_bottom = 32.0
 align = 0
 
 [node name="Spacer" type="Control" parent="ToolBar"]
-margin_left = 247.0
+margin_left = 112.0
 margin_right = 832.0
 margin_bottom = 32.0
 size_flags_horizontal = 3
