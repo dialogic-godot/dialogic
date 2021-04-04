@@ -27,6 +27,12 @@ func _ready():
 
 	master_tree.connect("editor_selected", self, 'on_master_tree_editor_selected')
 
+	# Toolbar icons
+	$ToolBar/NewTimelineButton.icon = load_icon("res://addons/dialogic/Images/Toolbar/add-timeline.svg")
+	$ToolBar/NewCharactersButton.icon = load_icon("res://addons/dialogic/Images/Toolbar/add-character.svg")
+	$ToolBar/NewDefinitionButton.icon = load_icon("res://addons/dialogic/Images/Toolbar/add-definition.svg")
+	$ToolBar/NewThemeButton.icon = load_icon("res://addons/dialogic/Images/Toolbar/add-theme.svg")
+	
 	# Toolbar
 	$ToolBar/NewTimelineButton.connect('pressed', $MainPanel/TimelineEditor, 'new_timeline')
 	$ToolBar/NewCharactersButton.connect('pressed', $MainPanel/CharacterEditor, 'new_character')
@@ -176,9 +182,12 @@ func load_icon(path, icon_size = 16):
 	var file = File.new()
 	file.open(path, File.READ_WRITE)
 	var content = file.get_as_text().split('\n')
-	if content[0] != '<svg width="' + icon_size + '" height="' + icon_size + '" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">':
-		content[0] = '<svg width="' + icon_size + '" height="' + icon_size + '" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">'
-		file.store_string(content.join('\n'))
+	content[0] = '<svg width="' + icon_size + '" height="' + icon_size + '" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">'
+	var text = ''
+	for line in content:
+		text = text + line + '\n'
+	text = text.replace('\n\n', '')
+	file.store_string(text)
 	file.close()
-	
+
 	return load(path)
