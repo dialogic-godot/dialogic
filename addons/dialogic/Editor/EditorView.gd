@@ -28,13 +28,31 @@ func _ready():
 	master_tree.connect("editor_selected", self, 'on_master_tree_editor_selected')
 
 	
-	# Toolbar icons
+	# Sizes
+	# This part of the code is a bit terrible. But there is no better way
+	# of doing this in Godot at the moment. I'm sorry.
+	var separation = get_constant("separation", "BoxContainer")
+	$MainPanel.margin_left = separation
+	$MainPanel.margin_right = separation * -1
+	$MainPanel.margin_bottom = separation * -1
+	print(separation)
+	$MainPanel.margin_top = 38
 	var modifier = ''
 	var _scale = get_constant("inspector_margin", "Editor")
 	_scale = _scale * 0.125
+	if _scale == 1:
+		$MainPanel.margin_top = 30
 	if _scale == 1.25:
 		modifier = '-1.25'
+		$MainPanel.margin_top = 37
+	if _scale == 1.5:
+		modifier = '-1.25'
+		$MainPanel.margin_top = 46
+	if _scale == 1.75:
+		modifier = '-1.25'
+		$MainPanel.margin_top = 53
 	if _scale == 2:
+		$MainPanel.margin_top = 59
 		modifier = '-2'
 	$ToolBar/NewTimelineButton.icon = load("res://addons/dialogic/Images/Toolbar/add-timeline" + modifier + ".svg")
 	$ToolBar/NewCharactersButton.icon = load("res://addons/dialogic/Images/Toolbar/add-character" + modifier + ".svg")

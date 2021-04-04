@@ -36,10 +36,6 @@ size = Vector2( 16, 16 )
 [node name="EditorView" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = 8.0
-margin_top = 8.0
-margin_right = -8.0
-margin_bottom = -8.0
 rect_min_size = Vector2( 0, 200 )
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -123,14 +119,14 @@ align = 0
 
 [node name="Spacer" type="Control" parent="ToolBar"]
 margin_left = 116.0
-margin_right = 751.0
+margin_right = 767.0
 margin_bottom = 32.0
 size_flags_horizontal = 3
 
 [node name="Docs" type="ToolButton" parent="ToolBar"]
 self_modulate = Color( 0.870588, 0.870588, 0.870588, 1 )
-margin_left = 751.0
-margin_right = 861.0
+margin_left = 767.0
+margin_right = 877.0
 margin_bottom = 32.0
 hint_tooltip = "Theme Editor"
 mouse_default_cursor_shape = 2
@@ -138,8 +134,8 @@ text = "Online Docs"
 icon = SubResource( 2 )
 
 [node name="Logo" type="TextureRect" parent="ToolBar"]
-margin_left = 861.0
-margin_right = 981.0
+margin_left = 877.0
+margin_right = 997.0
 margin_bottom = 32.0
 rect_min_size = Vector2( 120, 0 )
 mouse_default_cursor_shape = 2
@@ -149,26 +145,23 @@ stretch_mode = 5
 
 [node name="Version" type="Label" parent="ToolBar"]
 self_modulate = Color( 1, 1, 1, 0.631373 )
-margin_left = 981.0
+margin_left = 997.0
 margin_top = 9.0
-margin_right = 1008.0
+margin_right = 1024.0
 margin_bottom = 23.0
 text = "v1.1"
 
 [node name="MainPanel" type="HSplitContainer" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = 6.0
 margin_top = 38.0
-margin_right = -5.0
-margin_bottom = -5.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="MasterTreeContainer" type="VBoxContainer" parent="MainPanel"]
 margin_right = 180.0
-margin_bottom = 541.0
+margin_bottom = 562.0
 
 [node name="FilterMasterTreeEdit" type="LineEdit" parent="MainPanel/MasterTreeContainer"]
 margin_right = 180.0
@@ -182,7 +175,7 @@ anchor_right = 0.0
 anchor_bottom = 0.0
 margin_top = 30.0
 margin_right = 180.0
-margin_bottom = 541.0
+margin_bottom = 562.0
 rect_min_size = Vector2( 180, 0 )
 size_flags_vertical = 3
 
@@ -208,14 +201,14 @@ margin_bottom = 661.0
 
 [node name="Empty" type="CenterContainer" parent="MainPanel"]
 margin_left = 192.0
-margin_right = 997.0
-margin_bottom = 541.0
+margin_right = 1024.0
+margin_bottom = 562.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MainPanel/Empty"]
-margin_left = 262.0
-margin_top = 263.0
-margin_right = 542.0
-margin_bottom = 277.0
+margin_left = 276.0
+margin_top = 274.0
+margin_right = 556.0
+margin_bottom = 288.0
 
 [node name="Label" type="Label" parent="MainPanel/Empty/VBoxContainer"]
 margin_right = 280.0
