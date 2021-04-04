@@ -35,7 +35,6 @@ func _ready():
 	$MainPanel.margin_left = separation
 	$MainPanel.margin_right = separation * -1
 	$MainPanel.margin_bottom = separation * -1
-	print(separation)
 	$MainPanel.margin_top = 38
 	var modifier = ''
 	var _scale = get_constant("inspector_margin", "Editor")
@@ -57,6 +56,7 @@ func _ready():
 	$ToolBar/NewTimelineButton.icon = load("res://addons/dialogic/Images/Toolbar/add-timeline" + modifier + ".svg")
 	$ToolBar/NewCharactersButton.icon = load("res://addons/dialogic/Images/Toolbar/add-character" + modifier + ".svg")
 	$ToolBar/NewDefinitionButton.icon = load("res://addons/dialogic/Images/Toolbar/add-definition" + modifier + ".svg")
+	$ToolBar/NewThemeButton.icon = load("res://addons/dialogic/Images/Toolbar/add-theme" + modifier + ".svg")
 	$ToolBar/NewThemeButton.icon = load("res://addons/dialogic/Images/Toolbar/add-theme" + modifier + ".svg")
 	
 	# Toolbar
@@ -87,7 +87,7 @@ func _ready():
 	var err = config.load("res://addons/dialogic/plugin.cfg")
 	if err == OK:
 		version_string = config.get_value("plugin", "version", "?")
-		$ToolBar/Version.text = 'v' + version_string
+		$ToolBar/Version.text = 'Dialogic v' + version_string
 		
 	$MainPanel/MasterTreeContainer/FilterMasterTreeEdit.right_icon = get_icon("Search", "EditorIcons")
 
@@ -189,12 +189,6 @@ func godot_dialog_connect(who, method_name):
 
 func _on_file_selected(path):
 	dprint(path)
-
-
-func _on_Logo_gui_input(event) -> void:
-	# I should probably replace this with an "About Dialogic" dialog
-	if event is InputEventMouseButton and event.button_index == 1:
-		OS.shell_open("https://github.com/coppolaemilio/dialogic")
 
 
 func dprint(what) -> void:

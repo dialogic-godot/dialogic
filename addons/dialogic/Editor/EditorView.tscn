@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=2]
+[gd_scene load_steps=19 format=2]
 
 [ext_resource path="res://addons/dialogic/Editor/EditorView.gd" type="Script" id=1]
 [ext_resource path="res://addons/dialogic/Editor/TimelineEditor/TimelineEditor.tscn" type="PackedScene" id=2]
@@ -13,12 +13,11 @@
 [ext_resource path="res://addons/dialogic/Images/ActionCopy.svg" type="Texture" id=11]
 [ext_resource path="res://addons/dialogic/Editor/DefinitionEditor/DefinitionEditor.tscn" type="PackedScene" id=12]
 [ext_resource path="res://addons/dialogic/Images/Toolbar/add-theme.svg" type="Texture" id=13]
-[ext_resource path="res://addons/dialogic/Images/logo.png" type="Texture" id=14]
 [ext_resource path="res://addons/dialogic/Images/Remove.svg" type="Texture" id=22]
 [ext_resource path="res://addons/dialogic/Images/Filesystem.svg" type="Texture" id=26]
 [ext_resource path="res://addons/dialogic/Editor/MasterTree/MasterTree.tscn" type="PackedScene" id=35]
 
-[sub_resource type="Image" id=1]
+[sub_resource type="Image" id=3]
 data = {
 "data": PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ),
 "format": "LumAlpha8",
@@ -30,7 +29,7 @@ data = {
 [sub_resource type="ImageTexture" id=2]
 flags = 4
 flags = 4
-image = SubResource( 1 )
+image = SubResource( 3 )
 size = Vector2( 16, 16 )
 
 [node name="EditorView" type="Control"]
@@ -119,37 +118,27 @@ align = 0
 
 [node name="Spacer" type="Control" parent="ToolBar"]
 margin_left = 116.0
-margin_right = 767.0
+margin_right = 832.0
 margin_bottom = 32.0
 size_flags_horizontal = 3
 
 [node name="Docs" type="ToolButton" parent="ToolBar"]
 self_modulate = Color( 0.870588, 0.870588, 0.870588, 1 )
-margin_left = 767.0
-margin_right = 877.0
+margin_left = 832.0
+margin_right = 942.0
 margin_bottom = 32.0
 hint_tooltip = "Theme Editor"
 mouse_default_cursor_shape = 2
 text = "Online Docs"
 icon = SubResource( 2 )
 
-[node name="Logo" type="TextureRect" parent="ToolBar"]
-margin_left = 877.0
-margin_right = 997.0
-margin_bottom = 32.0
-rect_min_size = Vector2( 120, 0 )
-mouse_default_cursor_shape = 2
-texture = ExtResource( 14 )
-expand = true
-stretch_mode = 5
-
 [node name="Version" type="Label" parent="ToolBar"]
 self_modulate = Color( 1, 1, 1, 0.631373 )
-margin_left = 997.0
+margin_left = 942.0
 margin_top = 9.0
 margin_right = 1024.0
 margin_bottom = 23.0
-text = "v1.1"
+text = "Dialogic v1.1"
 
 [node name="MainPanel" type="HSplitContainer" parent="."]
 anchor_right = 1.0
@@ -304,5 +293,3 @@ dialog_text = "Are you sure you want to remove this timeline?
 __meta__ = {
 "_edit_use_anchors_": false
 }
-
-[connection signal="gui_input" from="ToolBar/Logo" to="." method="_on_Logo_gui_input"]
