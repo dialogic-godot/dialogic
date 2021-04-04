@@ -293,11 +293,15 @@ func show_dialog():
 
 
 func _on_TextTimer_timeout():
-	$TextBubble/RichTextLabel.visible_characters += 1
-	if $TextBubble/RichTextLabel.visible_characters < $TextBubble/RichTextLabel.get_total_character_count():
-		$TextBubble/TextTimer.start(text_speed)
-	else:
+	if text_speed == 0:
+		$TextBubble/RichTextLabel.visible_characters = -1
 		finished = true
+	else:
+		$TextBubble/RichTextLabel.visible_characters += 1
+		if $TextBubble/RichTextLabel.visible_characters < $TextBubble/RichTextLabel.get_total_character_count():
+			$TextBubble/TextTimer.start(text_speed)
+		else:
+			finished = true
 
 
 func update_name(character, color: Color = Color.white) -> void:
