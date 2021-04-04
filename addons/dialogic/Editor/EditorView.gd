@@ -181,10 +181,10 @@ func get_editor_scale():
 	return _scale * 0.125
 
 
-func load_icon(path, icon_size = 16):
+func load_icon(path):
 	var scale = get_editor_scale()
 	var split = 'http://www.w3.org/2000/svg'
-	icon_size = str(16 * scale)
+	var icon_size = str(16 * scale)
 	var file = File.new()
 	file.open(path, File.READ)
 	var content = file.get_as_text().split(split)
