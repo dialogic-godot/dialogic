@@ -179,7 +179,7 @@ func build_definitions(selected_item: String=''):
 	for t in DialogicUtil.get_sorted_default_definitions_list():
 		if (filter_tree_term != ''):
 			if (filter_tree_term.to_lower() in t['name'].to_lower()):
-				_add_definition(t, not selected_item.empty() and t['file'] == selected_item)
+				_add_definition(t, not selected_item.empty() and t['id'] == selected_item)
 		else:		
 			_add_definition(t, not selected_item.empty() and t['id'] == selected_item)
 	# force redraw tree
