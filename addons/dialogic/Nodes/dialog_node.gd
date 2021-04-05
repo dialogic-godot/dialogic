@@ -778,6 +778,9 @@ func load_theme(filename):
 	$TextBubble/NextIndicator/AnimationPlayer.play(
 		theme.get_value('next_indicator', 'animation', 'Up and down')
 	)
+	var indicator_offset_x = int(theme.get_value('next_indicator', 'offset_x', 0))
+	var indicator_offset_y = int(theme.get_value('next_indicator', 'offset_y', 0))
+	$TextBubble/NextIndicator.rect_position += Vector2(indicator_offset_x, indicator_offset_y)
 	
 	return theme
 
