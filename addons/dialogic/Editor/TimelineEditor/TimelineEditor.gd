@@ -341,8 +341,8 @@ func indent_events() -> void:
 
 
 func load_timeline(filename: String):
-	print('---------------------------')
-	print('Loading: ', filename)
+	#print('---------------------------')
+	#print('Loading: ', filename)
 	clear_timeline()
 	var start_time = OS.get_system_time_msecs()
 	timeline_file = filename

@@ -111,7 +111,7 @@ func _on_TimelinePopupMenu_id_pressed(id):
 func _on_RemoveTimelineConfirmation_confirmed():
 	var dir = Directory.new()
 	var target = $MainPanel/TimelineEditor.timeline_file
-	print('target: ', target)
+	#'target: ', target)
 	DialogicResources.delete_timeline(target)
 	$MainPanel/MasterTreeContainer/MasterTree.remove_selected()
 	$MainPanel/MasterTreeContainer/MasterTree.hide_all_editors()

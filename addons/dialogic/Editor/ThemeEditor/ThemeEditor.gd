@@ -171,7 +171,7 @@ func new_theme():
 	load_theme(theme_file)
 	# Check if it is the only theme to set as default
 	if DialogicUtil.get_theme_list().size() == 1:
-		print('only theme, setting as default')
+		#print('only theme, setting as default')
 		settings_editor.set_value('theme', 'default', theme_file)
 
 

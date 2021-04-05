@@ -338,7 +338,8 @@ func remove_selected():
 
 
 func refresh_timeline_list():
-	print('update timeline list')
+	#print('update timeline list')
+	pass
 
 
 func _on_renamer_reset_timeout():
@@ -355,7 +356,6 @@ func _on_gui_input(event):
 
 
 func _on_item_edited():
-	print('edited')
 	var item = get_selected()
 	var metadata = item.get_metadata(0)
 	if metadata['editor'] == 'Timeline':
