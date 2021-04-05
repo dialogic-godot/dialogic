@@ -465,7 +465,18 @@ func event_handler(event: Dictionary):
 		{'background'}:
 			emit_signal("event_start", "background", event)
 			$Background.visible = true
-			$Background.texture = load(event['background'])
+			$Background.texture = null
+			if ($Background.get_child_count() > 0):
+				for c in $Background.get_children():
+					c.get_parent().remove_child(c)
+					c.queue_free()
+			if (event['background'].ends_with('.tscn')):
+				var bg_scene = load(event['background'])
+				if (bg_scene):
+					bg_scene = bg_scene.instance()
+					$Background.add_child(bg_scene)
+			elif (event['background'] != ''):
+				$Background.texture = load(event['background'])
 			go_to_next_event()
 		{'audio'}, {'audio', 'file'}:
 			emit_signal("event_start", "audio", event)
