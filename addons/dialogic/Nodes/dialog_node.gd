@@ -837,6 +837,11 @@ func dprint(string, arg1='', arg2='', arg3='', arg4='' ):
 func _compare_definitions(def_value: String, event_value: String, condition: String):
 	var condition_met = false;
 	if def_value != null and event_value != null:
+		# check if event_value equals a definition name and use that instead
+		for d in definitions['variables']:
+			if (d['name'] != '' and d['name'] == event_value):
+				event_value = d['value']
+				break;
 		var converted_def_value = def_value
 		var converted_event_value = event_value
 		if def_value.is_valid_float() and event_value.is_valid_float():
