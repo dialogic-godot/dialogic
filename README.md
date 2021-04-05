@@ -24,6 +24,7 @@ v1.1 - WIP
 - Added a folder icon to each section of the resource tree.
 - Greatly improved how the plugin is displayed in different display scales.
 - You can now filter resources from the main view [[ellogwen](https://github.com/ellogwen)]
+- You can now duplicate themes (from the context menu) [[ellogwen](https://github.com/ellogwen)]
 - Timeline:
   - New event `Call Node`: Call a Godot NodePath and a method name. In addition you can add arguments as well. The Timeline will execute those methods and wait for completion, if the method in question is async and/or yielding [[ellogwen](https://github.com/ellogwen)]
   - You now can drag and drop events into the timeline! [[ellogwen](https://github.com/ellogwen)]
