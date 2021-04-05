@@ -18,6 +18,7 @@ var selected_item : Node
 
 
 var moving_piece = null
+var piece_was_dragged = false
 
 func _ready():
 	var modifier = ''
@@ -190,10 +191,12 @@ func _process(delta):
 			up_offset = (up_offset / 2) + 5
 			if current_position.y < node_position - up_offset:
 				move_block(moving_piece, 'up')
+				piece_was_dragged = true
 		if down_offset != null:
 			down_offset = height + (down_offset / 2) + 5
 			if current_position.y > node_position + down_offset:
 				move_block(moving_piece, 'down')
+				piece_was_dragged = true
 
 
 func _clear_selection():
@@ -230,13 +233,18 @@ func _select_item(item: Node):
 
 func _on_gui_input(event, item: Node):
 	if event is InputEventMouseButton and event.button_index == 1:
-		if event.is_pressed():
+		if (not event.is_pressed()):
+			if (not piece_was_dragged and moving_piece != null):
+				_clear_selection()
+			moving_piece = null
+		elif event.is_pressed():
+			moving_piece = item
 			if not _is_item_selected(item):
 				_select_item(item)
-			moving_piece = item
-		else:
-			moving_piece = null
-			
+				piece_was_dragged = true
+			else:
+				piece_was_dragged = false
+
 
 # Event Creation signal for buttons
 func _create_event_button_pressed(button_name):
