@@ -1,7 +1,7 @@
 tool
 extends Control
 
-var text_height = 26
+var text_height = 21
 var editor_reference
 var preview = ''
 onready var toggler = get_node("PanelContainer/VBoxContainer/Header/VisibleToggle")
@@ -16,6 +16,9 @@ var event_data = {
 onready var portrait_picker = $PanelContainer/VBoxContainer/Header/PortraitPicker
 
 func _ready():
+	var _scale = get_constant("inspector_margin", "Editor")
+	_scale = _scale * 0.125
+	text_height = text_height * _scale
 	connect("gui_input", self, '_on_gui_input')
 	$PanelContainer/VBoxContainer/TextEdit.connect("focus_entered", self, "_on_TextEdit_focus_entered")
 	$PanelContainer/VBoxContainer/TextEdit.set("rect_min_size", Vector2(0, 80))
