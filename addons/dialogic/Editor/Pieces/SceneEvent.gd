@@ -18,7 +18,7 @@ func _ready():
 
 
 func _on_ImageButton_pressed():
-	editor_reference.godot_dialog("*.png, *.jpg, *.jpeg, *.tga, *.svg, *.svgz, *.bmp, *.webp;Image")
+	editor_reference.godot_dialog("*.png, *.jpg, *.jpeg, *.tga, *.svg, *.svgz, *.bmp, *.webp, *.tscn")
 	editor_reference.godot_dialog_connect(self, "_on_file_selected")
 
 
