@@ -1,11 +1,10 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://addons/dialogic/Images/next-indicator.png" type="Texture" id=1]
 [ext_resource path="res://addons/dialogic/Images/background/background-2.png" type="Texture" id=2]
 [ext_resource path="res://addons/dialogic/Fonts/DefaultFont.tres" type="DynamicFont" id=3]
 [ext_resource path="res://addons/dialogic/Fonts/GlossaryFont.tres" type="DynamicFont" id=4]
 [ext_resource path="res://addons/dialogic/Nodes/glossary_info.gd" type="Script" id=5]
-[ext_resource path="res://addons/dialogic/Nodes/dialog_node.gd" type="Script" id=6]
 [ext_resource path="res://addons/dialogic/Nodes/BackgroundMusic.tscn" type="PackedScene" id=7]
 
 [sub_resource type="StyleBoxFlat" id=1]
@@ -58,7 +57,6 @@ bg_color = Color( 0.196078, 0.196078, 0.196078, 0 )
 [node name="DialogNode" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-script = ExtResource( 6 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -83,15 +81,15 @@ __meta__ = {
 }
 
 [node name="TextBubble" type="Control" parent="."]
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
+anchor_top = 0.707
+anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = -455.0
-margin_top = -207.0
-margin_right = 455.0
-margin_bottom = -40.0
+margin_left = 8.0
+margin_top = -0.199982
+margin_right = -8.0
+margin_bottom = -8.0
 __meta__ = {
+"_edit_group_": true,
 "_edit_use_anchors_": false
 }
 
@@ -136,8 +134,6 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Tween" type="Tween" parent="TextBubble"]
-
 [node name="NextIndicator" type="TextureRect" parent="TextBubble"]
 visible = false
 anchor_left = 1.0
@@ -147,7 +143,7 @@ anchor_bottom = 1.0
 margin_left = -36.4279
 margin_top = -35.9016
 margin_right = 14.5721
-margin_bottom = 29.4015
+margin_bottom = 20.7038
 rect_scale = Vector2( 0.4, 0.4 )
 texture = ExtResource( 1 )
 stretch_mode = 4
@@ -163,7 +159,7 @@ anims/Static = SubResource( 3 )
 
 [node name="NameLabel" type="Label" parent="TextBubble"]
 margin_top = -48.0
-margin_right = 58.0
+margin_right = 200.0
 margin_bottom = -8.0
 size_flags_vertical = 1
 custom_styles/normal = SubResource( 5 )
@@ -172,7 +168,6 @@ custom_colors/font_color = Color( 1, 1, 1, 1 )
 custom_colors/font_color_shadow = Color( 0, 0, 0, 0.619608 )
 custom_constants/shadow_offset_x = 2
 custom_constants/shadow_offset_y = 2
-align = 1
 valign = 1
 __meta__ = {
 "_edit_use_anchors_": false
@@ -191,6 +186,7 @@ __meta__ = {
 }
 
 [node name="TextureRect" type="TextureRect" parent="TextBubble/NameLabel"]
+visible = false
 show_behind_parent = true
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -202,6 +198,8 @@ stretch_mode = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="TextTimer" type="Timer" parent="TextBubble"]
 
 [node name="Options" type="VBoxContainer" parent="."]
 anchor_left = 0.5
@@ -228,6 +226,7 @@ margin_top = -57.0
 margin_right = 192.0
 margin_bottom = 57.0
 popup_exclusive = true
+window_title = "¡Alerta!"
 dialog_hide_on_ok = false
 __meta__ = {
 "_edit_use_anchors_": false
@@ -342,6 +341,5 @@ __meta__ = {
 [node name="WaitSeconds" type="Timer" parent="."]
 [connection signal="meta_hover_ended" from="TextBubble/RichTextLabel" to="." method="_on_RichTextLabel_meta_hover_ended"]
 [connection signal="meta_hover_started" from="TextBubble/RichTextLabel" to="." method="_on_RichTextLabel_meta_hover_started"]
-[connection signal="tween_completed" from="TextBubble/Tween" to="." method="_on_Tween_tween_completed"]
 [connection signal="timeout" from="DefinitionInfo/Timer" to="." method="_on_Definition_Timer_timeout"]
 [connection signal="timeout" from="WaitSeconds" to="." method="_on_WaitSeconds_timeout"]
