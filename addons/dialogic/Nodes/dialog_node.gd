@@ -36,6 +36,7 @@ onready var Portrait = load("res://addons/dialogic/Nodes/Portrait.tscn")
 var dialog_script = {}
 var questions #for keeping track of the questions answered
 
+onready var tween_node = $TextBubble/Tween
 
 func _ready():
 	# Loading the config files
@@ -60,7 +61,7 @@ func _ready():
 	$TextBubble/RichTextLabel.meta_underlined = false
 	$DefinitionInfo.visible = false
 	
-	$TextBubble/Tween.connect("tween_completed", self, '_on_Tween_tween_completed')
+	tween_node.connect("tween_completed", self, '_on_Tween_tween_completed')
 
 	# Getting the character information
 	characters = DialogicUtil.get_character_list()
@@ -277,9 +278,9 @@ func _process(delta):
 
 func _input(event: InputEvent) -> void:
 	if not Engine.is_editor_hint() and event.is_action_pressed(input_next) and not waiting:
-		if $TextBubble/Tween.is_active():
+		if tween_node.is_active():
 			# Skip to end if key is pressed during the text animation
-			$TextBubble/Tween.seek(999)
+			tween_node.seek(999)
 			finished = true
 		else:
 			if waiting_for_answer == false and waiting_for_input == false:
@@ -332,11 +333,11 @@ func update_text(text):
 func start_text_tween():
 	# This will start the animation that makes the text appear letter by letter
 	var tween_duration = text_speed * $TextBubble/RichTextLabel.get_total_character_count()
-	$TextBubble/Tween.interpolate_property(
+	tween_node.interpolate_property(
 		$TextBubble/RichTextLabel, "percent_visible", 0, 1, tween_duration,
 		Tween.TRANS_LINEAR, Tween.EASE_IN_OUT
 	)
-	$TextBubble/Tween.start()
+	tween_node.start()
 
 
 func on_timeline_start():
