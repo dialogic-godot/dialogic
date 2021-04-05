@@ -444,20 +444,20 @@ __meta__ = {
 [node name="GridContainer" type="GridContainer" parent="VBoxContainer/HBoxContainer2/DialogBox"]
 margin_top = 34.0
 margin_right = 315.0
-margin_bottom = 242.0
+margin_bottom = 270.0
 size_flags_horizontal = 3
 custom_constants/hseparation = 10
 columns = 2
 
 [node name="Label5" type="Label" parent="VBoxContainer/HBoxContainer2/DialogBox/GridContainer"]
 margin_top = 5.0
-margin_right = 126.0
+margin_right = 127.0
 margin_bottom = 19.0
 text = "Background Color"
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer/HBoxContainer2/DialogBox/GridContainer"]
-margin_left = 136.0
-margin_right = 288.0
+margin_left = 137.0
+margin_right = 289.0
 margin_bottom = 24.0
 
 [node name="CheckBox" type="CheckBox" parent="VBoxContainer/HBoxContainer2/DialogBox/GridContainer/HBoxContainer2"]
@@ -472,14 +472,14 @@ size_flags_horizontal = 3
 
 [node name="Label" type="Label" parent="VBoxContainer/HBoxContainer2/DialogBox/GridContainer"]
 margin_top = 33.0
-margin_right = 126.0
+margin_right = 127.0
 margin_bottom = 47.0
 text = "Background Texture"
 
 [node name="HBoxContainer3" type="HBoxContainer" parent="VBoxContainer/HBoxContainer2/DialogBox/GridContainer"]
-margin_left = 136.0
+margin_left = 137.0
 margin_top = 28.0
-margin_right = 288.0
+margin_right = 289.0
 margin_bottom = 52.0
 
 [node name="CheckBox" type="CheckBox" parent="VBoxContainer/HBoxContainer2/DialogBox/GridContainer/HBoxContainer3"]
@@ -496,43 +496,79 @@ text = "background-2"
 
 [node name="Label2" type="Label" parent="VBoxContainer/HBoxContainer2/DialogBox/GridContainer"]
 margin_top = 59.0
-margin_right = 126.0
+margin_right = 127.0
 margin_bottom = 73.0
 text = "Next indicator"
 
 [node name="NextIndicatorButton" type="Button" parent="VBoxContainer/HBoxContainer2/DialogBox/GridContainer"]
-margin_left = 136.0
+margin_left = 137.0
 margin_top = 56.0
-margin_right = 288.0
+margin_right = 289.0
 margin_bottom = 76.0
 text = "next-indicator"
 
 [node name="Label4" type="Label" parent="VBoxContainer/HBoxContainer2/DialogBox/GridContainer"]
 margin_top = 83.0
-margin_right = 126.0
+margin_right = 127.0
 margin_bottom = 97.0
 text = "Next animation"
 
 [node name="NextAnimation" type="OptionButton" parent="VBoxContainer/HBoxContainer2/DialogBox/GridContainer"]
-margin_left = 136.0
+margin_left = 137.0
 margin_top = 80.0
-margin_right = 288.0
+margin_right = 289.0
 margin_bottom = 100.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Label6" type="Label" parent="VBoxContainer/HBoxContainer2/DialogBox/GridContainer"]
+[node name="IndicatorOffsetLabel" type="Label" parent="VBoxContainer/HBoxContainer2/DialogBox/GridContainer"]
 margin_top = 109.0
-margin_right = 126.0
+margin_right = 127.0
 margin_bottom = 123.0
+hint_tooltip = "You can offset the indicator to customize the final position. This may not be accurate in the preview, according to your Viewport-Settings"
+mouse_filter = 0
+text = "Indicator Offset (px)"
+
+[node name="IndicatorOffsetValues" type="HBoxContainer" parent="VBoxContainer/HBoxContainer2/DialogBox/GridContainer"]
+margin_left = 137.0
+margin_top = 104.0
+margin_right = 289.0
+margin_bottom = 128.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="IndicatorOffsetX" type="SpinBox" parent="VBoxContainer/HBoxContainer2/DialogBox/GridContainer/IndicatorOffsetValues"]
+margin_right = 74.0
+margin_bottom = 24.0
+min_value = -9999.0
+max_value = 9999.0
+rounded = true
+allow_greater = true
+allow_lesser = true
+
+[node name="IndicatorOffsetY" type="SpinBox" parent="VBoxContainer/HBoxContainer2/DialogBox/GridContainer/IndicatorOffsetValues"]
+margin_left = 78.0
+margin_right = 152.0
+margin_bottom = 24.0
+min_value = -9999.0
+max_value = 9999.0
+rounded = true
+allow_greater = true
+allow_lesser = true
+
+[node name="Label6" type="Label" parent="VBoxContainer/HBoxContainer2/DialogBox/GridContainer"]
+margin_top = 137.0
+margin_right = 127.0
+margin_bottom = 151.0
 text = "Box padding"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/HBoxContainer2/DialogBox/GridContainer"]
-margin_left = 136.0
-margin_top = 104.0
-margin_right = 288.0
-margin_bottom = 128.0
+margin_left = 137.0
+margin_top = 132.0
+margin_right = 289.0
+margin_bottom = 156.0
 
 [node name="TextOffsetV" type="SpinBox" parent="VBoxContainer/HBoxContainer2/DialogBox/GridContainer/HBoxContainer"]
 margin_right = 74.0
@@ -550,16 +586,16 @@ rounded = true
 allow_lesser = true
 
 [node name="Label7" type="Label" parent="VBoxContainer/HBoxContainer2/DialogBox/GridContainer"]
-margin_top = 137.0
-margin_right = 126.0
-margin_bottom = 151.0
+margin_top = 165.0
+margin_right = 127.0
+margin_bottom = 179.0
 text = "Box Size (pixels)"
 
 [node name="HBoxContainer4" type="HBoxContainer" parent="VBoxContainer/HBoxContainer2/DialogBox/GridContainer"]
-margin_left = 136.0
-margin_top = 132.0
-margin_right = 288.0
-margin_bottom = 156.0
+margin_left = 137.0
+margin_top = 160.0
+margin_right = 289.0
+margin_bottom = 184.0
 
 [node name="BoxSizeW" type="SpinBox" parent="VBoxContainer/HBoxContainer2/DialogBox/GridContainer/HBoxContainer4"]
 margin_right = 74.0
@@ -580,16 +616,16 @@ allow_greater = true
 allow_lesser = true
 
 [node name="Label8" type="Label" parent="VBoxContainer/HBoxContainer2/DialogBox/GridContainer"]
-margin_top = 165.0
-margin_right = 126.0
-margin_bottom = 179.0
+margin_top = 193.0
+margin_right = 127.0
+margin_bottom = 207.0
 text = "Bottom gap"
 
 [node name="HBoxContainer5" type="HBoxContainer" parent="VBoxContainer/HBoxContainer2/DialogBox/GridContainer"]
-margin_left = 136.0
-margin_top = 160.0
-margin_right = 288.0
-margin_bottom = 184.0
+margin_left = 137.0
+margin_top = 188.0
+margin_right = 289.0
+margin_bottom = 212.0
 
 [node name="BottomGap" type="SpinBox" parent="VBoxContainer/HBoxContainer2/DialogBox/GridContainer/HBoxContainer5"]
 margin_right = 74.0
@@ -601,17 +637,17 @@ allow_greater = true
 allow_lesser = true
 
 [node name="Label3" type="Label" parent="VBoxContainer/HBoxContainer2/DialogBox/GridContainer"]
-margin_top = 188.0
-margin_right = 126.0
-margin_bottom = 208.0
+margin_top = 216.0
+margin_right = 127.0
+margin_bottom = 236.0
 size_flags_vertical = 5
 text = "Action key"
 
 [node name="BoxContainer" type="HBoxContainer" parent="VBoxContainer/HBoxContainer2/DialogBox/GridContainer"]
-margin_left = 136.0
-margin_top = 188.0
-margin_right = 288.0
-margin_bottom = 208.0
+margin_left = 137.0
+margin_top = 216.0
+margin_right = 289.0
+margin_bottom = 236.0
 
 [node name="ActionOptionButton" type="OptionButton" parent="VBoxContainer/HBoxContainer2/DialogBox/GridContainer/BoxContainer"]
 margin_right = 152.0
@@ -806,7 +842,6 @@ margin_bottom = 701.0
 margin_right = 1273.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-
 [connection signal="pressed" from="VBoxContainer/HBoxContainer2/Text/GridContainer/FontButton" to="." method="_on_FontButton_pressed"]
 [connection signal="color_changed" from="VBoxContainer/HBoxContainer2/Text/GridContainer/ColorPickerButton" to="." method="_on_ColorPickerButton_color_changed"]
 [connection signal="toggled" from="VBoxContainer/HBoxContainer2/Text/GridContainer/HBoxContainer2/CheckBoxShadow" to="." method="_on_CheckBoxShadow_toggled"]
@@ -837,6 +872,8 @@ size_flags_vertical = 3
 [connection signal="pressed" from="VBoxContainer/HBoxContainer2/DialogBox/GridContainer/HBoxContainer3/BackgroundTextureButton" to="." method="_on_BackgroundTextureButton_pressed"]
 [connection signal="pressed" from="VBoxContainer/HBoxContainer2/DialogBox/GridContainer/NextIndicatorButton" to="." method="_on_NextIndicatorButton_pressed"]
 [connection signal="item_selected" from="VBoxContainer/HBoxContainer2/DialogBox/GridContainer/NextAnimation" to="." method="_on_NextAnimation_item_selected"]
+[connection signal="value_changed" from="VBoxContainer/HBoxContainer2/DialogBox/GridContainer/IndicatorOffsetValues/IndicatorOffsetX" to="." method="_on_IndicatorOffsetX_value_changed"]
+[connection signal="value_changed" from="VBoxContainer/HBoxContainer2/DialogBox/GridContainer/IndicatorOffsetValues/IndicatorOffsetY" to="." method="_on_IndicatorOffsetY_value_changed"]
 [connection signal="value_changed" from="VBoxContainer/HBoxContainer2/DialogBox/GridContainer/HBoxContainer/TextOffsetV" to="." method="_on_TextMargin_value_changed"]
 [connection signal="value_changed" from="VBoxContainer/HBoxContainer2/DialogBox/GridContainer/HBoxContainer/TextOffsetH" to="." method="_on_TextMargin_value_changed"]
 [connection signal="value_changed" from="VBoxContainer/HBoxContainer2/DialogBox/GridContainer/HBoxContainer4/BoxSizeW" to="." method="_on_BoxSize_value_changed"]

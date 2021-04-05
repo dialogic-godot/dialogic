@@ -34,6 +34,8 @@ onready var n = {
 	'size_w': $VBoxContainer/HBoxContainer2/DialogBox/GridContainer/HBoxContainer4/BoxSizeW,
 	'size_h': $VBoxContainer/HBoxContainer2/DialogBox/GridContainer/HBoxContainer4/BoxSizeH, 
 	'bottom_gap': $VBoxContainer/HBoxContainer2/DialogBox/GridContainer/HBoxContainer5/BottomGap,
+	'next_indicator_offset_x' : $VBoxContainer/HBoxContainer2/DialogBox/GridContainer/IndicatorOffsetValues/IndicatorOffsetX,
+	'next_indicator_offset_y' : $VBoxContainer/HBoxContainer2/DialogBox/GridContainer/IndicatorOffsetValues/IndicatorOffsetY,
 	
 	# Buttons
 	'button_text_color_enabled': $VBoxContainer/HBoxContainer2/ButtonStyle/GridContainer/HBoxContainer4/CheckBox2,
@@ -89,6 +91,8 @@ func load_theme(filename):
 	n['theme_background_color'].color = Color(theme.get_value('background', 'color', '#ff000000'))
 	n['theme_background_color_visible'].pressed = theme.get_value('background', 'use_color', false)
 	n['theme_next_image'].text = DialogicResources.get_filename_from_path(theme.get_value('next_indicator', 'image', 'res://addons/dialogic/Images/next-indicator.png'))
+	n['next_indicator_offset_x'].value = int(theme.get_value('next_indicator', 'offset_x', 0))
+	n['next_indicator_offset_y'].value = int(theme.get_value('next_indicator', 'offset_y', 0))
 	
 	var size_value = theme.get_value('box', 'size', Vector2(910, 167))
 	n['size_w'].value = size_value.x
@@ -433,3 +437,11 @@ func _on_name_ShadowOffset_value_changed(_value):
 
 func _on_name_BottomGap_value_changed(value):
 	DialogicResources.set_theme_value(current_theme, 'name', 'bottom_gap', value)
+
+
+func _on_IndicatorOffsetX_value_changed(value):
+	DialogicResources.set_theme_value(current_theme, 'next_indicator', 'offset_x', int(value))
+
+
+func _on_IndicatorOffsetY_value_changed(value):
+	DialogicResources.set_theme_value(current_theme, 'next_indicator', 'offset_y', int(value))
