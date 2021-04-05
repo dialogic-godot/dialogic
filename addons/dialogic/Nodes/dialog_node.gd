@@ -59,6 +59,8 @@ func _ready():
 	$Background.visible = false
 	$TextBubble/RichTextLabel.meta_underlined = false
 	$DefinitionInfo.visible = false
+	
+	$TextBubble/Tween.connect("tween_completed", self, '_on_Tween_tween_completed')
 
 	# Getting the character information
 	characters = DialogicUtil.get_character_list()
