@@ -131,6 +131,10 @@ func _on_ThemePopupMenu_id_pressed(id):
 		OS.shell_open(ProjectSettings.globalize_path(DialogicResources.get_path('THEME_DIR')))
 	if id == 1:
 		$RemoveThemeConfirmation.popup_centered()
+	if id == 2:
+		var filename = $MainPanel/MasterTreeContainer/MasterTree.get_selected().get_metadata(0)['file']
+		if (filename.begins_with('theme-')):
+			theme_editor.duplicate_theme(filename)
 
 
 # Definition context menu

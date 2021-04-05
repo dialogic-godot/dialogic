@@ -146,11 +146,11 @@ __meta__ = {
 }
 
 [node name="MasterTreeContainer" type="VBoxContainer" parent="MainPanel"]
-margin_right = 180.0
+margin_right = 150.0
 margin_bottom = 562.0
 
 [node name="FilterMasterTreeEdit" type="LineEdit" parent="MainPanel/MasterTreeContainer"]
-margin_right = 180.0
+margin_right = 150.0
 margin_bottom = 26.0
 clear_button_enabled = true
 right_icon = SubResource( 2 )
@@ -160,9 +160,9 @@ placeholder_text = "Filter"
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_top = 30.0
-margin_right = 180.0
+margin_right = 150.0
 margin_bottom = 562.0
-rect_min_size = Vector2( 180, 0 )
+rect_min_size = Vector2( 150, 0 )
 size_flags_vertical = 3
 
 [node name="TimelineEditor" parent="MainPanel" instance=ExtResource( 2 )]
@@ -186,14 +186,14 @@ margin_right = 1253.0
 margin_bottom = 661.0
 
 [node name="Empty" type="CenterContainer" parent="MainPanel"]
-margin_left = 192.0
+margin_left = 162.0
 margin_right = 1024.0
 margin_bottom = 562.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MainPanel/Empty"]
-margin_left = 276.0
+margin_left = 291.0
 margin_top = 274.0
-margin_right = 556.0
+margin_right = 571.0
 margin_bottom = 288.0
 
 [node name="Label" type="Label" parent="MainPanel/Empty/VBoxContainer"]
@@ -226,7 +226,7 @@ margin_left = 171.799
 margin_top = 209.0
 margin_right = 267.799
 margin_bottom = 229.0
-items = [ "Show in File Manager", ExtResource( 26 ), 0, false, false, 0, 0, null, "", false, "Remove Theme", ExtResource( 22 ), 0, false, false, 1, 0, null, "", false ]
+items = [ "Show in File Manager", ExtResource( 26 ), 0, false, false, 0, 0, null, "", false, "Remove Theme", ExtResource( 22 ), 0, false, false, 1, 0, null, "", false, "Duplicate Theme", ExtResource( 11 ), 0, false, false, 2, 0, null, "", false ]
 __meta__ = {
 "_edit_use_anchors_": false
 }

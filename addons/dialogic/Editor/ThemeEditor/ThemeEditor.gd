@@ -173,7 +173,15 @@ func new_theme():
 	if DialogicUtil.get_theme_list().size() == 1:
 		#print('only theme, setting as default')
 		settings_editor.set_value('theme', 'default', theme_file)
+		
 
+func duplicate_theme(from_filename):
+	var duplicate_theme = 'theme-' + str(OS.get_unix_time()) + '.cfg'
+	DialogicResources.duplicate_theme(from_filename, duplicate_theme)
+	DialogicResources.set_theme_value(duplicate_theme, 'settings', 'name', duplicate_theme)
+	master_tree.build_themes(duplicate_theme)
+	load_theme(duplicate_theme)
+	
 
 func _on_BackgroundTextureButton_pressed():
 	editor_reference.godot_dialog("*.png")
