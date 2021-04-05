@@ -28,6 +28,7 @@ v1.1 - WIP
   - New event `Call Node`: Call a Godot NodePath and a method name. In addition you can add arguments as well. The Timeline will execute those methods and wait for completion, if the method in question is async and/or yielding [[ellogwen](https://github.com/ellogwen)]
   - You now can drag and drop events into the timeline! [[ellogwen](https://github.com/ellogwen)]
   - You can un select a selected event by clicking it [[ellogwen](https://github.com/ellogwen)]
+  - The `Set Value` event can now use variables as the value. [[ellogwen](https://github.com/ellogwen)]
   - Shortcuts added! [[ellogwen](https://github.com/ellogwen)]
     - Selecting previous and next event in the timeline with `CTRL + UP` and `CTRL + DOWN`
     - Moving currently selected event up and down the timeline `ALT + UP` and `ALT + DOWN`
