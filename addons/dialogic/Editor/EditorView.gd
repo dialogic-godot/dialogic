@@ -134,7 +134,7 @@ func _on_ThemePopupMenu_id_pressed(id):
 	if id == 2:
 		var filename = $MainPanel/MasterTreeContainer/MasterTree.get_selected().get_metadata(0)['file']
 		if (filename.begins_with('theme-')):
-			theme_editor.duplidate_theme(filename)
+			theme_editor.duplicate_theme(filename)
 
 
 # Definition context menu
