@@ -132,7 +132,6 @@ func parse_characters(dialog_script):
 func parse_text_lines(unparsed_dialog_script: Dictionary) -> Dictionary:
 	var parsed_dialog: Dictionary = unparsed_dialog_script
 	var new_events: Array = []
-	var alignment = 'Left'
 	var split_new_lines = true
 	var remove_empty_messages = true
 
@@ -146,10 +145,6 @@ func parse_text_lines(unparsed_dialog_script: Dictionary) -> Dictionary:
 	if settings.has_section_key('dialog', 'new_lines'):
 		split_new_lines = settings.get_value('dialog', 'new_lines')
 
-	if current_theme != null:
-		alignment = current_theme.get_value('text', 'alignment', 'Left')
-
-	dprint('preview ', preview)
 	# Parsing
 	for event in unparsed_dialog_script['events']:
 		if event.has('text') and event.has('character') and event.has('portrait'):
@@ -159,24 +154,14 @@ func parse_text_lines(unparsed_dialog_script: Dictionary) -> Dictionary:
 				var lines = event['text'].split('\n')
 				var i = 0
 				for line in lines:
-					var text = lines[i]
-					if alignment == 'Center':
-						text = '[center]' + lines[i] + '[/center]'
-					elif alignment == 'Right':
-						text = '[right]' + lines[i] + '[/right]'
 					var _e = {
-						'text': text,
+						'text': lines[i],
 						'character': event['character'],
 						'portrait': event['portrait']
 					}
 					new_events.append(_e)
 					i += 1
 			else:
-				var text = event['text']
-				if alignment == 'Center':
-					event['text'] = '[center]' + text + '[/center]'
-				elif alignment == 'Right':
-					event['text'] = '[right]' + text + '[/right]'
 				new_events.append(event)
 		else:
 			new_events.append(event)
@@ -184,6 +169,20 @@ func parse_text_lines(unparsed_dialog_script: Dictionary) -> Dictionary:
 	parsed_dialog['events'] = new_events
 
 	return parsed_dialog
+
+
+func parse_alignment(text):
+	var alignment = current_theme.get_value('text', 'alignment', 'Left')
+	var fname = current_theme.get_value('settings', 'name', 'none')
+	
+	print(alignment, ' - ', current_theme, ' - ', fname)
+	
+	if alignment == 'Center':
+		text = '[center]' + text + '[/center]'
+	elif alignment == 'Right':
+		text = '[right]' + text + '[/right]'
+
+	return text
 
 
 func parse_branches(dialog_script: Dictionary) -> Dictionary:
@@ -254,7 +253,7 @@ func _insert_variable_definitions(text: String):
 	
 	
 func _insert_glossary_definitions(text: String):
-	var color = self.current_theme.get_value('definitions', 'color', '#ffbebebe')
+	var color = current_theme.get_value('definitions', 'color', '#ffbebebe')
 	var final_text := text;
 	# I should use regex here, but this is way easier :)
 	for d in definitions['glossary']:
@@ -321,6 +320,7 @@ func update_name(character, color: Color = Color.white) -> void:
 
 func update_text(text):
 	# Updating the text and starting the animation from 0
+	text = parse_alignment(text)
 	$TextBubble/RichTextLabel.bbcode_text = parse_definitions(text)
 	$TextBubble/RichTextLabel.percent_visible = 0
 
