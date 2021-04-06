@@ -103,13 +103,16 @@ func _on_gui_input(event):
 func _on_TextEdit_focus_entered():
 	# propagate to timeline to make this text event as active selected
 	# to help improve keyboard shortcut workflows
-	var timeline_editor = editor_reference.get_node_or_null('MainPanel/TimelineEditor')
-	if (timeline_editor != null):
-		# @todo select item and clear selection is marked as "private" in TimelineEditor.gd
-		# consider to make it "public" or add a public helper function
-		timeline_editor._clear_selection()
-		timeline_editor._select_item(self)
-	pass
+	# only maybe only do this on left click since mouse wheel and
+	# touch scrolling may triggers this event too
+	if (Input.is_mouse_button_pressed(BUTTON_LEFT)):
+		var timeline_editor = editor_reference.get_node_or_null('MainPanel/TimelineEditor')
+		if (timeline_editor != null):
+			# @todo select item and clear selection is marked as "private" in TimelineEditor.gd
+			# consider to make it "public" or add a public helper function
+			timeline_editor._clear_selection()
+			timeline_editor._select_item(self)
+		pass
 	
 	
 func _on_saver_timer_timeout():
