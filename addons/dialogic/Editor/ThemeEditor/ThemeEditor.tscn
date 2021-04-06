@@ -537,16 +537,20 @@ margin_bottom = 128.0
 [node name="TextOffsetV" type="SpinBox" parent="VBoxContainer/HBoxContainer2/DialogBox/GridContainer/HBoxContainer"]
 margin_right = 74.0
 margin_bottom = 24.0
+max_value = 1e+07
 value = 10.0
 rounded = true
+allow_greater = true
 allow_lesser = true
 
 [node name="TextOffsetH" type="SpinBox" parent="VBoxContainer/HBoxContainer2/DialogBox/GridContainer/HBoxContainer"]
 margin_left = 78.0
 margin_right = 152.0
 margin_bottom = 24.0
+max_value = 1e+07
 value = 20.0
 rounded = true
+allow_greater = true
 allow_lesser = true
 
 [node name="Label7" type="Label" parent="VBoxContainer/HBoxContainer2/DialogBox/GridContainer"]
