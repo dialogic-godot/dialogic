@@ -290,6 +290,7 @@ func _input(event: InputEvent) -> void:
 			$TextBubble.visible = true
 		elif auto_play:
 			auto_play = false
+			$WaitSeconds.stop()
 		elif not Engine.is_editor_hint() and not waiting:
 			if $TextBubble/Tween.is_active():
 				# Skip to end if key is pressed during the text animation
