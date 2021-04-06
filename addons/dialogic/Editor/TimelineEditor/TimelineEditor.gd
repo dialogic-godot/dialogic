@@ -238,6 +238,8 @@ func _on_gui_input(event, item: Node):
 		if (not event.is_pressed()):
 			if (not piece_was_dragged and moving_piece != null):
 				_clear_selection()
+			if (moving_piece != null):
+				indent_events()
 			moving_piece = null
 		elif event.is_pressed():
 			moving_piece = item
