@@ -1,0 +1,350 @@
+[gd_scene load_steps=15 format=2]
+
+[ext_resource path="res://addons/dialogic/Images/Toolbar/add-definition.svg" type="Texture" id=1]
+[ext_resource path="res://addons/dialogic/Images/Toolbar/add-character.svg" type="Texture" id=2]
+[ext_resource path="res://addons/dialogic/Images/Toolbar/add-timeline.svg" type="Texture" id=3]
+[ext_resource path="res://addons/dialogic/Images/Toolbar/add-theme.svg" type="Texture" id=4]
+[ext_resource path="res://addons/dialogic/Images/logo.png" type="Texture" id=5]
+[ext_resource path="res://DialogicEditor/CategoryContainer/CategoryContainer.tscn" type="PackedScene" id=6]
+[ext_resource path="res://DialogicEditor/Views/DefaultView.tscn" type="PackedScene" id=7]
+[ext_resource path="res://DialogicEditor/Views/SettingsView.tscn" type="PackedScene" id=8]
+[ext_resource path="res://DialogicEditor/EditorView.gd" type="Script" id=9]
+[ext_resource path="res://DialogicEditor/Views/TimelineEditorView.tscn" type="PackedScene" id=10]
+[ext_resource path="res://DialogicEditor/Views/CharacterEditorView.tscn" type="PackedScene" id=11]
+[ext_resource path="res://DialogicEditor/Views/DefinitionEditorView.tscn" type="PackedScene" id=12]
+[ext_resource path="res://DialogicEditor/Views/ThemeEditorView.tscn" type="PackedScene" id=13]
+
+[sub_resource type="StyleBoxEmpty" id=1]
+
+[node name="EditorView" type="VBoxContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 9 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+SettingsView_path = NodePath("Scene/HSplitContainer/SettingsView")
+DefaultView_path = NodePath("Scene/HSplitContainer/DefaultView")
+BlankView_path = NodePath("Scene/HSplitContainer/BlankView")
+TimelineView_path = NodePath("Scene/HSplitContainer/TimelineEditorView")
+CharacterView_path = NodePath("Scene/HSplitContainer/CharacterEditorView")
+DefinitionView_path = NodePath("Scene/HSplitContainer/DefinitionEditorView")
+ThemeView_path = NodePath("Scene/HSplitContainer/ThemeEditorView")
+
+[node name="ToolbarContainer" type="MarginContainer" parent="."]
+margin_right = 1024.0
+margin_bottom = 46.0
+custom_constants/margin_right = 8
+custom_constants/margin_top = 8
+custom_constants/margin_left = 8
+custom_constants/margin_bottom = 8
+
+[node name="Toolbar" type="HBoxContainer" parent="ToolbarContainer"]
+margin_left = 8.0
+margin_top = 8.0
+margin_right = 1016.0
+margin_bottom = 38.0
+custom_constants/separation = 0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Left" type="HBoxContainer" parent="ToolbarContainer/Toolbar"]
+margin_right = 180.0
+margin_bottom = 30.0
+rect_min_size = Vector2( 180, 0 )
+alignment = 1
+
+[node name="NewTimelineButton" type="ToolButton" parent="ToolbarContainer/Toolbar/Left"]
+margin_left = 4.0
+margin_right = 38.0
+margin_bottom = 30.0
+size_flags_horizontal = 6
+icon = ExtResource( 3 )
+
+[node name="NewCharacterButton" type="ToolButton" parent="ToolbarContainer/Toolbar/Left"]
+margin_left = 50.0
+margin_right = 84.0
+margin_bottom = 30.0
+size_flags_horizontal = 6
+icon = ExtResource( 2 )
+
+[node name="NewDefinitionButton" type="ToolButton" parent="ToolbarContainer/Toolbar/Left"]
+margin_left = 96.0
+margin_right = 130.0
+margin_bottom = 30.0
+size_flags_horizontal = 6
+icon = ExtResource( 1 )
+
+[node name="NewThemeButton" type="ToolButton" parent="ToolbarContainer/Toolbar/Left"]
+margin_left = 142.0
+margin_right = 176.0
+margin_bottom = 30.0
+size_flags_horizontal = 6
+icon = ExtResource( 4 )
+
+[node name="Center" type="HBoxContainer" parent="ToolbarContainer/Toolbar"]
+margin_left = 180.0
+margin_right = 697.0
+margin_bottom = 30.0
+size_flags_horizontal = 3
+
+[node name="VSeparator" type="VSeparator" parent="ToolbarContainer/Toolbar"]
+margin_left = 697.0
+margin_right = 701.0
+margin_bottom = 30.0
+
+[node name="Right" type="HBoxContainer" parent="ToolbarContainer/Toolbar"]
+margin_left = 701.0
+margin_right = 1008.0
+margin_bottom = 30.0
+
+[node name="ToolButton" type="ToolButton" parent="ToolbarContainer/Toolbar/Right"]
+margin_top = 4.0
+margin_right = 91.0
+margin_bottom = 26.0
+focus_mode = 0
+size_flags_vertical = 4
+enabled_focus_mode = 0
+text = "Online Docs"
+
+[node name="TextureRect" type="TextureRect" parent="ToolbarContainer/Toolbar/Right"]
+margin_left = 95.0
+margin_right = 215.0
+margin_bottom = 30.0
+rect_min_size = Vector2( 120, 30 )
+texture = ExtResource( 5 )
+expand = true
+
+[node name="Version" type="Label" parent="ToolbarContainer/Toolbar/Right"]
+margin_left = 219.0
+margin_top = 8.0
+margin_right = 307.0
+margin_bottom = 22.0
+text = "Custom_Build"
+
+[node name="Scene" type="MarginContainer" parent="."]
+margin_top = 50.0
+margin_right = 1024.0
+margin_bottom = 600.0
+size_flags_vertical = 3
+custom_constants/margin_right = 8
+custom_constants/margin_left = 8
+custom_constants/margin_bottom = 16
+
+[node name="HSplitContainer" type="HSplitContainer" parent="Scene"]
+margin_left = 8.0
+margin_right = 1016.0
+margin_bottom = 534.0
+size_flags_horizontal = 5
+size_flags_vertical = 7
+custom_constants/autohide = 1
+
+[node name="Menu" type="VBoxContainer" parent="Scene/HSplitContainer"]
+margin_right = 180.0
+margin_bottom = 534.0
+rect_min_size = Vector2( 180, 0 )
+size_flags_vertical = 3
+custom_constants/separation = 0
+
+[node name="Upper" type="ScrollContainer" parent="Scene/HSplitContainer/Menu"]
+margin_right = 180.0
+margin_bottom = 514.0
+rect_min_size = Vector2( 0, 514 )
+size_flags_vertical = 3
+scroll_horizontal_enabled = false
+
+[node name="Categories" type="PanelContainer" parent="Scene/HSplitContainer/Menu/Upper"]
+margin_right = 180.0
+margin_bottom = 514.0
+rect_min_size = Vector2( 0, 514 )
+size_flags_horizontal = 3
+custom_styles/panel = SubResource( 1 )
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Scene/HSplitContainer/Menu/Upper/Categories"]
+margin_right = 180.0
+margin_bottom = 514.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="TimelinesContainer" parent="Scene/HSplitContainer/Menu/Upper/Categories/VBoxContainer" instance=ExtResource( 6 )]
+margin_right = 180.0
+margin_bottom = 40.0
+
+[node name="Control" parent="Scene/HSplitContainer/Menu/Upper/Categories/VBoxContainer/TimelinesContainer" index="0"]
+margin_right = 176.0
+margin_bottom = 38.0
+
+[node name="HBoxContainer" parent="Scene/HSplitContainer/Menu/Upper/Categories/VBoxContainer/TimelinesContainer/Control" index="0"]
+margin_right = 172.0
+
+[node name="Label" parent="Scene/HSplitContainer/Menu/Upper/Categories/VBoxContainer/TimelinesContainer/Control/HBoxContainer" index="0"]
+margin_right = 63.0
+text = "Timelines"
+
+[node name="FoldButton" parent="Scene/HSplitContainer/Menu/Upper/Categories/VBoxContainer/TimelinesContainer/Control/HBoxContainer" index="1"]
+margin_left = 138.0
+margin_right = 172.0
+
+[node name="HSeparator" parent="Scene/HSplitContainer/Menu/Upper/Categories/VBoxContainer/TimelinesContainer/Control" index="1"]
+margin_right = 172.0
+
+[node name="Tree" parent="Scene/HSplitContainer/Menu/Upper/Categories/VBoxContainer/TimelinesContainer/Control" index="2"]
+margin_right = 166.0
+
+[node name="CharactersContainer" parent="Scene/HSplitContainer/Menu/Upper/Categories/VBoxContainer" instance=ExtResource( 6 )]
+margin_top = 44.0
+margin_right = 180.0
+margin_bottom = 84.0
+
+[node name="Control" parent="Scene/HSplitContainer/Menu/Upper/Categories/VBoxContainer/CharactersContainer" index="0"]
+margin_right = 176.0
+margin_bottom = 38.0
+
+[node name="HBoxContainer" parent="Scene/HSplitContainer/Menu/Upper/Categories/VBoxContainer/CharactersContainer/Control" index="0"]
+margin_right = 172.0
+
+[node name="Label" parent="Scene/HSplitContainer/Menu/Upper/Categories/VBoxContainer/CharactersContainer/Control/HBoxContainer" index="0"]
+margin_right = 67.0
+text = "Characters"
+
+[node name="FoldButton" parent="Scene/HSplitContainer/Menu/Upper/Categories/VBoxContainer/CharactersContainer/Control/HBoxContainer" index="1"]
+margin_left = 138.0
+margin_right = 172.0
+
+[node name="HSeparator" parent="Scene/HSplitContainer/Menu/Upper/Categories/VBoxContainer/CharactersContainer/Control" index="1"]
+margin_right = 172.0
+
+[node name="Tree" parent="Scene/HSplitContainer/Menu/Upper/Categories/VBoxContainer/CharactersContainer/Control" index="2"]
+margin_right = 166.0
+
+[node name="DefinitionsContainer" parent="Scene/HSplitContainer/Menu/Upper/Categories/VBoxContainer" instance=ExtResource( 6 )]
+margin_top = 88.0
+margin_right = 180.0
+margin_bottom = 128.0
+
+[node name="Control" parent="Scene/HSplitContainer/Menu/Upper/Categories/VBoxContainer/DefinitionsContainer" index="0"]
+margin_right = 176.0
+margin_bottom = 38.0
+
+[node name="HBoxContainer" parent="Scene/HSplitContainer/Menu/Upper/Categories/VBoxContainer/DefinitionsContainer/Control" index="0"]
+margin_right = 172.0
+
+[node name="Label" parent="Scene/HSplitContainer/Menu/Upper/Categories/VBoxContainer/DefinitionsContainer/Control/HBoxContainer" index="0"]
+margin_right = 70.0
+text = "Definitions"
+
+[node name="FoldButton" parent="Scene/HSplitContainer/Menu/Upper/Categories/VBoxContainer/DefinitionsContainer/Control/HBoxContainer" index="1"]
+margin_left = 138.0
+margin_right = 172.0
+
+[node name="HSeparator" parent="Scene/HSplitContainer/Menu/Upper/Categories/VBoxContainer/DefinitionsContainer/Control" index="1"]
+margin_right = 172.0
+
+[node name="Tree" parent="Scene/HSplitContainer/Menu/Upper/Categories/VBoxContainer/DefinitionsContainer/Control" index="2"]
+margin_right = 166.0
+
+[node name="ThemesContainer" parent="Scene/HSplitContainer/Menu/Upper/Categories/VBoxContainer" instance=ExtResource( 6 )]
+margin_top = 132.0
+margin_right = 180.0
+margin_bottom = 172.0
+
+[node name="Control" parent="Scene/HSplitContainer/Menu/Upper/Categories/VBoxContainer/ThemesContainer" index="0"]
+margin_right = 176.0
+margin_bottom = 38.0
+
+[node name="HBoxContainer" parent="Scene/HSplitContainer/Menu/Upper/Categories/VBoxContainer/ThemesContainer/Control" index="0"]
+margin_right = 172.0
+
+[node name="Label" parent="Scene/HSplitContainer/Menu/Upper/Categories/VBoxContainer/ThemesContainer/Control/HBoxContainer" index="0"]
+margin_right = 51.0
+text = "Themes"
+
+[node name="FoldButton" parent="Scene/HSplitContainer/Menu/Upper/Categories/VBoxContainer/ThemesContainer/Control/HBoxContainer" index="1"]
+margin_left = 138.0
+margin_right = 172.0
+
+[node name="HSeparator" parent="Scene/HSplitContainer/Menu/Upper/Categories/VBoxContainer/ThemesContainer/Control" index="1"]
+margin_right = 172.0
+
+[node name="Tree" parent="Scene/HSplitContainer/Menu/Upper/Categories/VBoxContainer/ThemesContainer/Control" index="2"]
+margin_right = 166.0
+
+[node name="Bottom" type="MarginContainer" parent="Scene/HSplitContainer/Menu"]
+margin_top = 514.0
+margin_right = 180.0
+margin_bottom = 534.0
+custom_constants/margin_right = 12
+
+[node name="SettingsButton" type="Button" parent="Scene/HSplitContainer/Menu/Bottom"]
+margin_right = 168.0
+margin_bottom = 20.0
+text = "Settings"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="BlankView" type="Panel" parent="Scene/HSplitContainer"]
+margin_left = 192.0
+margin_right = 1008.0
+margin_bottom = 534.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="DefaultView" parent="Scene/HSplitContainer" instance=ExtResource( 7 )]
+visible = false
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 192.0
+margin_right = 1008.0
+margin_bottom = 534.0
+
+[node name="SettingsView" parent="Scene/HSplitContainer" instance=ExtResource( 8 )]
+visible = false
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 192.0
+margin_right = 1008.0
+margin_bottom = 534.0
+
+[node name="TimelineEditorView" parent="Scene/HSplitContainer" instance=ExtResource( 10 )]
+visible = false
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 192.0
+margin_right = 1008.0
+margin_bottom = 534.0
+
+[node name="CharacterEditorView" parent="Scene/HSplitContainer" instance=ExtResource( 11 )]
+visible = false
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 192.0
+margin_right = 1008.0
+margin_bottom = 538.0
+
+[node name="DefinitionEditorView" parent="Scene/HSplitContainer" instance=ExtResource( 12 )]
+visible = false
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 192.0
+margin_right = 1008.0
+margin_bottom = 534.0
+
+[node name="ThemeEditorView" parent="Scene/HSplitContainer" instance=ExtResource( 13 )]
+visible = false
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 192.0
+margin_right = 1008.0
+margin_bottom = 534.0
+[connection signal="pressed" from="Scene/HSplitContainer/Menu/Bottom/SettingsButton" to="." method="_on_SettingsButton_pressed"]
+
+[editable path="Scene/HSplitContainer/Menu/Upper/Categories/VBoxContainer/TimelinesContainer"]
+
+[editable path="Scene/HSplitContainer/Menu/Upper/Categories/VBoxContainer/CharactersContainer"]
+
+[editable path="Scene/HSplitContainer/Menu/Upper/Categories/VBoxContainer/DefinitionsContainer"]
+
+[editable path="Scene/HSplitContainer/Menu/Upper/Categories/VBoxContainer/ThemesContainer"]

@@ -1,7 +1,7 @@
 extends DialogicEventResource
 class_name DialogicTextEventResource
 
-const EventTimer = preload("res://DialogicNode/TextEventTimer.gd")
+const EventTimer = preload("res://DialogicNodes/TextEventTimer.gd")
 
 export(String, MULTILINE) var text:String = ""
 export(Resource) var character = null
@@ -43,6 +43,7 @@ func _update_text() -> void:
 func _update_name() -> void:
 	if "NameNode" in _caller:
 		_caller.NameNode.text = character.display_name
+		_caller.NameNode.set('custom_colors/font_color', character.color)
 
 
 func _on_TextTimer_timeout():
@@ -52,4 +53,4 @@ func _on_TextTimer_timeout():
 	else:
 		_timer.stop()
 		_timer.queue_free()
-		emit_signal("event_finished")
+		finish()

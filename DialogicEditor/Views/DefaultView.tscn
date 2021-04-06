@@ -1,0 +1,18 @@
+[gd_scene format=2]
+
+[node name="DefaultView" type="CenterContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="."]
+margin_left = 429.0
+margin_top = 284.0
+margin_right = 595.0
+margin_bottom = 315.0
+text = "No hay nada seleccionado
+# FIXME"

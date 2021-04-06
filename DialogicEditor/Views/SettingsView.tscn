@@ -1,0 +1,66 @@
+[gd_scene format=2]
+
+[node name="SettingsView" type="MarginContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_constants/margin_right = 4
+custom_constants/margin_top = 8
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+margin_top = 8.0
+margin_right = 1020.0
+margin_bottom = 600.0
+
+[node name="Header" type="PanelContainer" parent="VBoxContainer"]
+margin_right = 1020.0
+margin_bottom = 28.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/Header"]
+margin_left = 7.0
+margin_top = 7.0
+margin_right = 1013.0
+margin_bottom = 21.0
+
+[node name="Left" type="HBoxContainer" parent="VBoxContainer/Header/HBoxContainer"]
+margin_right = 332.0
+margin_bottom = 14.0
+size_flags_horizontal = 3
+
+[node name="Center" type="HBoxContainer" parent="VBoxContainer/Header/HBoxContainer"]
+margin_left = 336.0
+margin_right = 669.0
+margin_bottom = 14.0
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="VBoxContainer/Header/HBoxContainer/Center"]
+margin_left = 121.0
+margin_right = 212.0
+margin_bottom = 14.0
+size_flags_horizontal = 6
+text = "Settings Menu"
+
+[node name="Right" type="HBoxContainer" parent="VBoxContainer/Header/HBoxContainer"]
+margin_left = 673.0
+margin_right = 1006.0
+margin_bottom = 14.0
+size_flags_horizontal = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+margin_top = 32.0
+margin_right = 1020.0
+margin_bottom = 574.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer"]
+margin_bottom = 542.0
+
+[node name="Footer" type="PanelContainer" parent="VBoxContainer"]
+margin_top = 578.0
+margin_right = 1020.0
+margin_bottom = 592.0

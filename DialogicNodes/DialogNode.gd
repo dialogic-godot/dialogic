@@ -12,14 +12,11 @@ var next_input = 'ui_accept'
 onready var TextNode:RichTextLabel = $TextBubble/RichTextLabel
 onready var NameNode:Label = $TextBubble/NameLabel
 onready var NextIndicatorNode:Control = $TextBubble/NextIndicator
+onready var PortraitsNode:Control = $Portraits
 
 func _ready() -> void:
-
 	if not timeline_name:
-		var _text_event = DialogicTextEventResource.new()
-		_text_event.text = "[Dialogic Error] No timeline specified."
-		timeline = DialogicTimelineResource.new()
-		timeline.events.append(_text_event)
+		timeline = preload("res://Other/DialogicUtil.gd").Error.not_found_timeline()
 	else:
 		load_timeline()
 
@@ -45,9 +42,9 @@ func load_timeline() -> void:
 	timeline = load(timeline_name)
 
 
-func _on_event_start(event):
+func _on_event_start(_event):
 	event_finished = false
 
 
-func _on_event_finished():
+func _on_event_finished(_event):
 	event_finished = true

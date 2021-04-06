@@ -1,0 +1,65 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://addons/dialogic/Images/open-icon.svg" type="Texture" id=1]
+[ext_resource path="res://DialogicEditor/CategoryContainer/CategoryContainer.gd" type="Script" id=2]
+
+[sub_resource type="StyleBoxFlat" id=1]
+content_margin_left = 4.0
+content_margin_right = 4.0
+content_margin_top = 2.0
+content_margin_bottom = 2.0
+bg_color = Color( 0.180392, 0.219608, 0.25098, 1 )
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+
+[node name="CategoryContainer" type="PanelContainer"]
+margin_right = 267.0
+margin_bottom = 186.0
+custom_styles/panel = SubResource( 1 )
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Control" type="VBoxContainer" parent="."]
+margin_left = 4.0
+margin_top = 2.0
+margin_right = 263.0
+margin_bottom = 184.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Control"]
+margin_right = 259.0
+margin_bottom = 28.0
+
+[node name="Label" type="Label" parent="Control/HBoxContainer"]
+margin_top = 7.0
+margin_right = 97.0
+margin_bottom = 21.0
+text = "Category Name"
+
+[node name="FoldButton" type="Button" parent="Control/HBoxContainer"]
+margin_left = 225.0
+margin_right = 259.0
+margin_bottom = 28.0
+rect_min_size = Vector2( 22, 0 )
+size_flags_horizontal = 10
+icon = ExtResource( 1 )
+align = 2
+
+[node name="HSeparator" type="HSeparator" parent="Control"]
+margin_top = 32.0
+margin_right = 259.0
+margin_bottom = 36.0
+
+[node name="Tree" type="Tree" parent="Control"]
+visible = false
+margin_top = 42.0
+margin_right = 259.0
+margin_bottom = 182.0
+size_flags_vertical = 3
+[connection signal="pressed" from="Control/HBoxContainer/FoldButton" to="." method="_on_FoldButton_pressed"]
