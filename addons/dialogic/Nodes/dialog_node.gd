@@ -869,14 +869,29 @@ func _compare_definitions(def_value: String, event_value: String, condition: Str
 ######								#####
 ######			DIALOGIC API		#####
 ######								#####
+## Functions that can be useful when using dialogic like make changes in middle
+## of the game, good for making in-game setting for the player
+##
+## to use you will have to get Dialogic node, if you have it added manually 
+## then use '$' to get it, getting through code can be done like this:
+## var dialogic_scene = Dialogic.start('test')
+##	add_child(dialogic_scene)
+##	var dialogic_node = get_child(0) # add_child() adds child at the top
 
-## Functions for user proggramers use in game
 
-## the function will make 
+## Makes the timeline load automatically without waiting for input,
+## cancelled if 'ui_accept' is pressed
+##
+## @param speed					Amount of time to wait before moving to next event(seconds)
+## @returns 					void
 func dialogic_set_auto_play(speed = 1):
 	auto_play = true
 	auto_play_speed = speed
 	print("itt's auto now")
 
+
+## Cancels auto play
+##
+## @returns 					void
 func dialogic_disable_auto_play():
 	auto_play = false
