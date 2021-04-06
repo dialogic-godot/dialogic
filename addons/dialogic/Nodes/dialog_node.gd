@@ -17,6 +17,11 @@ var settings
 var current_theme
 var current_timeline := ''
 
+## dialogic API variables
+var auto_play: bool = false
+var auto_play_speed: float = 1.0
+var text_bubble_hiden:bool = false
+
 ## The timeline to load when starting the scene
 export(String, "TimelineDropdown") var timeline: String
 ## Should we clear saved data (definitions and timeline progress) on start?
@@ -270,21 +275,34 @@ func _process(delta):
 			$Options.visible = finished
 		else:
 			$Options.visible = false
+	if auto_play and not waiting:
+		#dialog_index += 1
+		wait_seconds(auto_play_speed)
+	
+	
 
 
 func _input(event: InputEvent) -> void:
-	if not Engine.is_editor_hint() and event.is_action_pressed(input_next) and not waiting:
-		if $TextBubble/Tween.is_active():
-			# Skip to end if key is pressed during the text animation
-			$TextBubble/Tween.seek(999)
-			finished = true
-		else:
-			if waiting_for_answer == false and waiting_for_input == false:
-				load_dialog()
-		if settings.has_section_key('dialog', 'propagate_input'):
-			var propagate_input: bool = settings.get_value('dialog', 'propagate_input')
-			if not propagate_input:
-				get_tree().set_input_as_handled()
+	if event.is_action_pressed(input_next):
+		if text_bubble_hiden:
+			text_bubble_hiden = false
+			waiting = false
+			$TextBubble.visible = true
+		elif auto_play:
+			auto_play = false
+			$WaitSeconds.stop()
+		elif not Engine.is_editor_hint() and not waiting:
+			if $TextBubble/Tween.is_active():
+				# Skip to end if key is pressed during the text animation
+				$TextBubble/Tween.seek(999)
+				finished = true
+			else:
+				if waiting_for_answer == false and waiting_for_input == false:
+					load_dialog()
+			if settings.has_section_key('dialog', 'propagate_input'):
+				var propagate_input: bool = settings.get_value('dialog', 'propagate_input')
+				if not propagate_input:
+					get_tree().set_input_as_handled()
 
 
 func show_dialog():
@@ -397,6 +415,7 @@ func event_handler(event: Dictionary):
 			update_name(character_data)
 			grab_portrait_focus(character_data, event)
 			update_text(event['text'])
+			
 		{'question', 'question_id', 'options', ..}:
 			emit_signal("event_start", "question", event)
 			show_dialog()
@@ -496,7 +515,7 @@ func event_handler(event: Dictionary):
 		{'wait_seconds'}:
 			emit_signal("event_start", "wait", event)
 			wait_seconds(event['wait_seconds'])
-			waiting = true
+			
 		{'change_timeline'}:
 			dialog_script = set_current_dialog(event['change_timeline'])
 			dialog_index = -1
@@ -553,9 +572,10 @@ func event_handler(event: Dictionary):
 			$TextBubble.visible = true
 			go_to_next_event()
 		_:
+			
 			visible = false
 			dprint('Other event. ', event)
-
+	
 
 func _on_input_set(variable):
 	var input_value = $TextInputDialog/LineEdit.text
@@ -660,6 +680,7 @@ func _on_TextInputDialog_confirmed():
 
 func go_to_next_event():
 	# The entire event reading system should be refactored... but not today!
+	
 	dialog_index += 1
 	load_dialog(true)
 
@@ -809,7 +830,8 @@ func _on_Definition_Timer_timeout():
 
 func wait_seconds(seconds):
 	$WaitSeconds.start(seconds)
-	$TextBubble.visible = false
+	waiting = true
+	#$TextBubble.visible = false
 
 
 func _on_WaitSeconds_timeout():
@@ -849,3 +871,45 @@ func _compare_definitions(def_value: String, event_value: String, condition: Str
 			"<=":
 				condition_met = converted_def_value <= converted_event_value
 	return condition_met
+
+
+######								#####
+######			DIALOGIC API		#####
+######								#####
+## Functions that can get or change things to dialogic
+##
+## to use you will have to get Dialogic node, if you have it added manually 
+## then use '$' to get it, getting through code can be done like this:
+## var dialogic_scene = Dialogic.start('test')
+##	add_child(dialogic_scene)
+##	var dialogic_node = get_child(0) # add_child() adds child at the top
+
+
+## Makes the timeline load automatically without waiting for input,
+## cancelled if Action Key(@input_next) is pressed
+##
+## @param speed					Amount of time to wait before moving to next event(seconds)
+## @returns 					void
+func dialogic_set_auto_play(speed = 1):
+	auto_play = true
+	auto_play_speed = speed
+
+
+## Cancels auto play
+##
+## @returns 					void
+func dialogic_disable_auto_play():
+	auto_play = false
+	
+
+## Hides text bubble and stop auto play, will show back Action Key(@input_next) is pressed
+## 
+## @returns						void
+func dialogic_hide_text_bubble():
+	$WaitSeconds.stop()
+	$TextBubble.visible = false
+	text_bubble_hiden = true
+	dialogic_disable_auto_play()
+	
+	
+
