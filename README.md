@@ -36,6 +36,8 @@ v1.1 - WIP
     - Moving currently selected event up and down the timeline `ALT + UP` and `ALT + DOWN`
     - Remove the currently selected event node and selects the next/last event node `CTRL DELETE`
     - Create a new text event node below the currently selected and focus it's textbox to continue writing `CTRL T`
+- Theme Editor
+  - Removed the limitation of only 100px for the padding of the dialog box
 - Dialog node
   - Fixed a bug where Glossary Definitions plain text was being added to the name label.
   - The close dialog now performs a fade-out animation.
