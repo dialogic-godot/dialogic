@@ -17,6 +17,10 @@ var settings
 var current_theme
 var current_timeline := ''
 
+## dialogic API variables
+var auto_play: bool = false
+var auto_play_speed: float = 1.0
+
 ## The timeline to load when starting the scene
 export(String, "TimelineDropdown") var timeline: String
 ## Should we clear saved data (definitions and timeline progress) on start?
@@ -270,10 +274,17 @@ func _process(delta):
 			$Options.visible = finished
 		else:
 			$Options.visible = false
+	if auto_play and not waiting:
+		#dialog_index += 1
+		wait_seconds(auto_play_speed)
+	
+	
 
 
 func _input(event: InputEvent) -> void:
-	if not Engine.is_editor_hint() and event.is_action_pressed(input_next) and not waiting:
+	if auto_play:
+		auto_play = false
+	elif not Engine.is_editor_hint() and event.is_action_pressed(input_next) and not waiting:
 		if $TextBubble/Tween.is_active():
 			# Skip to end if key is pressed during the text animation
 			$TextBubble/Tween.seek(999)
@@ -397,6 +408,7 @@ func event_handler(event: Dictionary):
 			update_name(character_data)
 			grab_portrait_focus(character_data, event)
 			update_text(event['text'])
+			
 		{'question', 'question_id', 'options', ..}:
 			emit_signal("event_start", "question", event)
 			show_dialog()
@@ -496,7 +508,7 @@ func event_handler(event: Dictionary):
 		{'wait_seconds'}:
 			emit_signal("event_start", "wait", event)
 			wait_seconds(event['wait_seconds'])
-			waiting = true
+			
 		{'change_timeline'}:
 			dialog_script = set_current_dialog(event['change_timeline'])
 			dialog_index = -1
@@ -553,9 +565,10 @@ func event_handler(event: Dictionary):
 			$TextBubble.visible = true
 			go_to_next_event()
 		_:
+			
 			visible = false
 			dprint('Other event. ', event)
-
+	
 
 func _on_input_set(variable):
 	var input_value = $TextInputDialog/LineEdit.text
@@ -660,6 +673,7 @@ func _on_TextInputDialog_confirmed():
 
 func go_to_next_event():
 	# The entire event reading system should be refactored... but not today!
+	
 	dialog_index += 1
 	load_dialog(true)
 
@@ -809,7 +823,8 @@ func _on_Definition_Timer_timeout():
 
 func wait_seconds(seconds):
 	$WaitSeconds.start(seconds)
-	$TextBubble.visible = false
+	waiting = true
+	#$TextBubble.visible = false
 
 
 func _on_WaitSeconds_timeout():
@@ -849,3 +864,19 @@ func _compare_definitions(def_value: String, event_value: String, condition: Str
 			"<=":
 				condition_met = converted_def_value <= converted_event_value
 	return condition_met
+
+
+######								#####
+######			DIALOGIC API		#####
+######								#####
+
+## Functions for user proggramers use in game
+
+## the function will make 
+func dialogic_set_auto_play(speed = 1):
+	auto_play = true
+	auto_play_speed = speed
+	print("itt's auto now")
+
+func dialogic_disable_auto_play():
+	auto_play = false
