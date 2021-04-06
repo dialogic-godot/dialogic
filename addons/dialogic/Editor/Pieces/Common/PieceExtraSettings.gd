@@ -21,8 +21,7 @@ func _on_OptionSelected(index):
 		timeline_editor.move_block(current_piece, 'down')
 	elif index == 3:
 		# Removing a piece
-		if timeline_editor.selected_item == current_piece:
-			timeline_editor.selected_item = null
-		# TODO: Add a warning here if the event has changes
-		current_piece.queue_free()
+		if timeline_editor.selected_item != current_piece:
+			timeline_editor._select_item(current_piece)
+		timeline_editor.delete_event()
 	timeline_editor.indent_events()

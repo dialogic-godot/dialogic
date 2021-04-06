@@ -31,6 +31,7 @@ v1.1 - WIP
   - You can un select a selected event by clicking it [[ellogwen](https://github.com/ellogwen)]
   - The `Scene Event` can now take other Scenes (`.tscn`) files as backgrounds. [[ellogwen](https://github.com/ellogwen)]
   - The `If Condition` event can now use definition variables as values to compare against. [[ellogwen](https://github.com/ellogwen)]
+  - Fixed an indenting bug when removing events 
   - Shortcuts added! [[ellogwen](https://github.com/ellogwen)]
     - Selecting previous and next event in the timeline with `CTRL + UP` and `CTRL + DOWN`
     - Moving currently selected event up and down the timeline `ALT + UP` and `ALT + DOWN`

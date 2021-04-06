@@ -52,6 +52,29 @@ func _ready():
 	style.set('bg_color', get_color("dark_color_1", "Editor"))
 
 
+func delete_event():
+	# get next element
+	var next = min(timeline.get_child_count() - 1, selected_item.get_index() + 1)
+	var next_node = timeline.get_child(next)
+	if (next_node == selected_item):
+		next_node = null
+		
+	# remove current
+	selected_item.get_parent().remove_child(selected_item)
+	selected_item.queue_free()
+	selected_item = null
+	
+	# select next
+	if (next_node != null):
+		_select_item(next_node)
+	else:
+		if (timeline.get_child_count() > 0):
+			next_node = timeline.get_child(max(0, timeline.get_child_count() - 1))
+			if (next_node != null):
+				_select_item(next_node)
+				
+	indent_events()
+
 func _input(event):
 	# some shortcuts need to get handled in the common input event
 	# especially CTRL-based
@@ -104,29 +127,8 @@ func _input(event):
 			and event.echo == false
 		):
 			if (selected_item != null):
-				# get next element
-				var next = min(timeline.get_child_count() - 1, selected_item.get_index() + 1)
-				var next_node = timeline.get_child(next)
-				if (next_node == selected_item):
-					next_node = null
-					
-				# remove current
-				selected_item.get_parent().remove_child(selected_item)
-				selected_item.queue_free()
-				selected_item = null
-					
-				# select next
-				if (next_node != null):
-					_select_item(next_node)
-				else:
-					if (timeline.get_child_count() > 0):
-						next_node = timeline.get_child(max(0, timeline.get_child_count() - 1))
-						if (next_node != null):
-							_select_item(next_node)
-							
-				indent_events()
+				delete_event()
 				get_tree().set_input_as_handled()
-				
 			pass
 			
 		# CTRL T
