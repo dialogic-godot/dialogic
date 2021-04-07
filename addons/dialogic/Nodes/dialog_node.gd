@@ -180,7 +180,8 @@ func parse_alignment(text):
 		text = '[center]' + text + '[/center]'
 	elif alignment == 'Right':
 		text = '[right]' + text + '[/right]'
-
+	
+	print('-\n', text, '-')
 	return text
 
 

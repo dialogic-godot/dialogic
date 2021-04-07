@@ -283,8 +283,8 @@ func _on_PreviewButton_pressed():
 	preview_dialog.current_theme = preview_dialog.load_theme(current_theme)
 	
 	# Creating the one event timeline for the dialog
-	var text = preview_dialog.parse_alignment(n['text_preview'].text)
-	text = preview_dialog.parse_definitions(text)
+	#var text = preview_dialog.parse_alignment(n['text_preview'].text)
+	var text = preview_dialog.parse_definitions(n['text_preview'].text)
 	preview_dialog.dialog_script['events'] = [{
 		"character": character_file,
 		"portrait":'',
