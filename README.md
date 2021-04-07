@@ -43,6 +43,8 @@ v1.1 - WIP
   - Removed the limitation of only 100px for the padding of the dialog box
   - Added a new option for changing the color modulation of the dialog background image
   - Fixed a bug where the text alignment wasn't being shown on the preview
+  - Fixed a bug with the name label shadow
+  - Fixed a bug with the "auto color" option in game
 - Dialog node
   - Fixed a bug where Glossary Definitions plain text was being added to the name label.
   - Questions now properly show the theme text alignment.
@@ -50,6 +52,7 @@ v1.1 - WIP
 - Settings
   - Added a new option to toggle the character "focus"/"dim" while speaking. 
 - Added a button in timeline inspector plugin to open the selected timeline in the editor. [[ellogwen](https://github.com/ellogwen)]
+- Special thanks to [Jowan-Spooner](https://github.com/Jowan-Spooner) for the QA
 
 To view previous changes [click here](https://github.com/coppolaemilio/dialogic/blob/main/CHANGELOG.md). 
 
