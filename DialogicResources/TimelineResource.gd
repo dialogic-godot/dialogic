@@ -14,7 +14,7 @@ func start(caller):
 	if not (events[current_event] as Object).is_connected("event_finished", caller, "_on_event_finished"):
 		_err = (events[current_event] as Object).connect("event_finished", caller, "_on_event_finished")
 		if _err != OK:
-			print(_err)
+			print_debug(_err)
 	
 	events[current_event].excecute(caller)
 

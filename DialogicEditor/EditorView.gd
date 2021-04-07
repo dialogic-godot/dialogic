@@ -18,24 +18,41 @@ export(NodePath) var CharacterView_path:NodePath
 export(NodePath) var DefinitionView_path:NodePath
 export(NodePath) var ThemeView_path:NodePath
 
+export(NodePath) var TimelineContainer_path:NodePath
+export(NodePath) var CharacterContainer_path:NodePath
+export(NodePath) var DefinitionContainer_path:NodePath
+export(NodePath) var ThemeContainer_path:NodePath
+
+export(NodePath) var NewTimelinePopup_path:NodePath
+export(NodePath) var NewCharacterPopup_path:NodePath
+
 var _current_view:Dictionary = {
 	"state":EditorView.DEFAULT,
 	"reference":null
 	} setget _set_current_view
 
-onready var settings_view_node:Control = get_node_or_null(SettingsView_path)
-onready var default_view_node:Control = get_node_or_null(DefaultView_path)
-onready var blank_view_node:Control = get_node_or_null(BlankView_path)
-onready var timeline_view_node:Control = get_node_or_null(TimelineView_path)
-onready var character_view_node:Control = get_node_or_null(CharacterView_path)
-onready var definition_view_node:Control = get_node_or_null(DefinitionView_path)
-onready var theme_view_node:Control = get_node_or_null(ThemeView_path)
+onready var settings_view_node := get_node_or_null(SettingsView_path)
+onready var default_view_node := get_node_or_null(DefaultView_path)
+onready var blank_view_node := get_node_or_null(BlankView_path)
+onready var timeline_view_node := get_node_or_null(TimelineView_path)
+onready var character_view_node := get_node_or_null(CharacterView_path)
+onready var definition_view_node := get_node_or_null(DefinitionView_path)
+onready var theme_view_node := get_node_or_null(ThemeView_path)
+
+onready var timeline_container_node := get_node_or_null(TimelineContainer_path)
+onready var character_container_node := get_node_or_null(CharacterContainer_path)
+onready var definition_container_node := get_node_or_null(DefinitionContainer_path)
+onready var theme_container_node := get_node_or_null(ThemeContainer_path)
+
+onready var timeline_popup_node := get_node_or_null(NewTimelinePopup_path)
+onready var character_popup_node := get_node_or_null(NewCharacterPopup_path)
 
 func _ready() -> void:
 	self._current_view = {"state":EditorView.DEFAULT, "reference":default_view_node}
+	timeline_container_node.tree_resource = DialogicDB.Timelines.get_database()
+	character_container_node.tree_resource = DialogicDB.Characters.get_database()
 
-
-func _hide_all_views_except(who):
+func _hide_all_views_except(who) -> void:
 	var view_nodes = [
 		blank_view_node, 
 		default_view_node, 
@@ -74,3 +91,24 @@ func _set_current_view(view:Dictionary):
 
 func _on_SettingsButton_pressed() -> void:
 	self._current_view = {"state":EditorView.SETTINGS, "reference":settings_view_node}
+
+
+func _on_NewTimelineButton_pressed() -> void:
+	self._current_view = {}
+	(timeline_popup_node as ConfirmationDialog).popup_centered_minsize()
+	timeline_container_node.tree_resource = DialogicDB.Timelines.get_database()
+	timeline_container_node.force_update()
+
+
+func _on_NewTimelinePopup_confirmed() -> void:
+	var _name = timeline_popup_node.text_node.text
+	DialogicDB.Timelines.add(_name)
+
+
+func _on_NewCharacterButton_pressed() -> void:
+	self._current_view = {}
+	(character_popup_node as ConfirmationDialog).popup_centered_minsize()
+
+
+func _on_NewCharacterPopup_confirmed() -> void:
+	print("NewCharacter: ", character_popup_node.text_node.text)

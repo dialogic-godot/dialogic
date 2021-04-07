@@ -1,0 +1,11 @@
+[gd_resource type="Resource" load_steps=2 format=2]
+
+[sub_resource type="GDScript" id=1]
+script/source = "extends Resource
+
+export(bool) var editor_debug_mode = false
+"
+
+[resource]
+script = SubResource( 1 )
+editor_debug_mode = false

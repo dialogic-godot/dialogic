@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://addons/dialogic/Images/open-icon.svg" type="Texture" id=1]
 [ext_resource path="res://DialogicEditor/CategoryContainer/CategoryContainer.gd" type="Script" id=2]
+[ext_resource path="res://DialogicEditor/CategoryContainer/TreeView/TreeView.gd" type="Script" id=3]
 
 [sub_resource type="StyleBoxFlat" id=1]
 content_margin_left = 4.0
@@ -15,6 +16,7 @@ corner_radius_bottom_left = 2
 [node name="CategoryContainer" type="PanelContainer"]
 margin_right = 267.0
 margin_bottom = 186.0
+rect_min_size = Vector2( 0, 28 )
 custom_styles/panel = SubResource( 1 )
 script = ExtResource( 2 )
 __meta__ = {
@@ -62,4 +64,5 @@ margin_top = 42.0
 margin_right = 259.0
 margin_bottom = 182.0
 size_flags_vertical = 3
+script = ExtResource( 3 )
 [connection signal="pressed" from="Control/HBoxContainer/FoldButton" to="." method="_on_FoldButton_pressed"]

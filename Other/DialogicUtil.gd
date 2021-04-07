@@ -1,5 +1,6 @@
 tool
 
+
 class Error:
 	const DIALOGIC_ERROR = "[Dialogic Error]"
 	const TIMELINE_NOT_FOUND = "TIMELINE_NOT_FOUND"
@@ -15,3 +16,11 @@ class Error:
 		_text_event.text = TIMELINE_NOT_SELECTED
 		_timeline.events.append(_text_event)
 		return _timeline
+
+
+static func print(what) -> void:
+	var _info = "[Dialogic]"
+	match typeof(what):
+		var anything_else:
+			print("{mark} {info}".format({"mark":_info, "info":what}))
+	pass

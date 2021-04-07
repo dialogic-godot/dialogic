@@ -1,0 +1,7 @@
+[gd_resource type="Resource" load_steps=2 format=2]
+
+[ext_resource path="res://DialogicResources/Database/TimelineDatabaseResource.gd" type="Script" id=1]
+
+[resource]
+script = ExtResource( 1 )
+resources = PoolStringArray( "res://test_timeline.tres" )
