@@ -20,6 +20,10 @@ func init(expression: String = '', position_offset = 'left') -> void:
 	direction = position_offset
 	modulate = Color(1,1,1,0)
 	
+	# Setting the size of the TextureRect to match window size
+	$TextureRect.margin_right = ProjectSettings.get_setting("display/window/size/width")
+	$TextureRect.margin_bottom = ProjectSettings.get_setting("display/window/size/height")
+	
 	# Setting the scale of the portrait
 	var custom_scale = Vector2(1, 1)
 	if character_data.has('data'):
