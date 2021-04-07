@@ -175,13 +175,10 @@ func parse_text_lines(unparsed_dialog_script: Dictionary) -> Dictionary:
 func parse_alignment(text):
 	var alignment = current_theme.get_value('text', 'alignment', 'Left')
 	var fname = current_theme.get_value('settings', 'name', 'none')
-	
 	if alignment == 'Center':
 		text = '[center]' + text + '[/center]'
 	elif alignment == 'Right':
 		text = '[right]' + text + '[/right]'
-	
-	print('-\n', text, '-')
 	return text
 
 
