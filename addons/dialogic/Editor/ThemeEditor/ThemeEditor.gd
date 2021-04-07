@@ -41,6 +41,9 @@ onready var n = {
 	'size_w': $"VBoxContainer/TabContainer/Dialog Box/Column/GridContainer/HBoxContainer4/BoxSizeW",
 	'size_h': $"VBoxContainer/TabContainer/Dialog Box/Column/GridContainer/HBoxContainer4/BoxSizeH", 
 	'bottom_gap': $"VBoxContainer/TabContainer/Dialog Box/Column/GridContainer/HBoxContainer5/BottomGap",
+	'background_modulation': $"VBoxContainer/TabContainer/Dialog Box/Column/GridContainer/HBoxContainer6/CheckBox",
+	'background_modulation_color': $"VBoxContainer/TabContainer/Dialog Box/Column/GridContainer/HBoxContainer6/ColorPickerButton",
+	
 	
 	# Buttons
 	'button_text_color_enabled': $"VBoxContainer/TabContainer/Choice Buttons/Column/GridContainer/HBoxContainer4/CheckBox2",
@@ -100,6 +103,10 @@ func load_theme(filename):
 	n['theme_background_color'].color = Color(theme.get_value('background', 'color', '#ff000000'))
 	n['theme_background_color_visible'].pressed = theme.get_value('background', 'use_color', false)
 	n['theme_next_image'].text = DialogicResources.get_filename_from_path(theme.get_value('next_indicator', 'image', 'res://addons/dialogic/Images/next-indicator.png'))
+
+	n['background_modulation'].pressed = theme.get_value('background', 'modulation', false)
+	n['background_modulation_color'].color = Color(theme.get_value('background', 'modulation_color', '#ffffffff'))
+	
 	
 	var size_value = theme.get_value('box', 'size', Vector2(910, 167))
 	n['size_w'].value = size_value.x
@@ -567,3 +574,17 @@ func _on_name_BottomGap_value_changed(value):
 
 func _on_DelayPreview_timer_timeout():
 	_on_PreviewButton_pressed() # Refreshing the preview
+
+
+func _on_BackgroundTexture_Modulation_toggled(button_pressed):
+	if loading == true:
+		return
+	DialogicResources.set_theme_value(current_theme, 'background', 'modulation', button_pressed)
+	_on_PreviewButton_pressed() # Refreshing the preview
+
+
+func _on_ColorPicker_Background_texture_modulation_color_changed(color):
+	if loading == true:
+		return
+	DialogicResources.set_theme_value(current_theme, 'background', 'modulation_color', '#' + color.to_html())
+	$DelayPreviewTimer.start(0.5) # Calling a timer so the update doesn't get triggered many times

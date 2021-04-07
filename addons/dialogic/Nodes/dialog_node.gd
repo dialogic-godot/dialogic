@@ -93,7 +93,8 @@ func resize_main():
 			set_deferred('rect_size', get_viewport().size)
 		dprint("Viewport", get_viewport().size)
 	$TextBubble.rect_position.x = (rect_size.x / 2) - ($TextBubble.rect_size.x / 2)
-	$TextBubble.rect_position.y = (rect_size.y) - ($TextBubble.rect_size.y) - current_theme.get_value('box', 'bottom_gap', 40)
+	if current_theme != null:
+		$TextBubble.rect_position.y = (rect_size.y) - ($TextBubble.rect_size.y) - current_theme.get_value('box', 'bottom_gap', 40)
 
 
 func set_current_dialog(dialog_path: String):
@@ -756,6 +757,11 @@ func load_theme(filename):
 	# Backgrounds
 	$TextBubble/TextureRect.texture = load(theme.get_value('background','image', "res://addons/dialogic/Images/background/background-2.png"))
 	$TextBubble/ColorRect.color = Color(theme.get_value('background','color', "#ff000000"))
+
+	if theme.get_value('background', 'modulation', false) == true:
+		$TextBubble/TextureRect.modulate = Color(theme.get_value('background', 'modulation_color', '#ffffffff'))
+	else:
+		$TextBubble/TextureRect.modulate = Color('#ffffffff')
 
 	$TextBubble/ColorRect.visible = theme.get_value('background', 'use_color', false)
 	$TextBubble/TextureRect.visible = theme.get_value('background', 'use_image', true)

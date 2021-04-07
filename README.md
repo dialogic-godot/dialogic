@@ -41,6 +41,7 @@ v1.1 - WIP
   - Refreshed the UI to make room for more properties for each section
   - A reload of the preview dialog is performed when you change a property so you don't have to click the "preview changes" all the time
   - Removed the limitation of only 100px for the padding of the dialog box
+  - Added a new option for changing the color modulation of the dialog background image
   - Fixed a bug where the text alignment wasn't being shown on the preview
 - Dialog node
   - Fixed a bug where Glossary Definitions plain text was being added to the name label.
