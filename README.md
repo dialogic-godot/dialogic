@@ -38,6 +38,8 @@ v1.1 - WIP
     - Remove the currently selected event node and selects the next/last event node `CTRL DELETE`
     - Create a new text event node below the currently selected and focus it's textbox to continue writing `CTRL T`
 - Theme Editor
+  - Refreshed the UI to make room for more properties for each section
+  - A reload of the preview dialog is performed when you change a property so you don't have to click the "preview changes" all the time
   - Removed the limitation of only 100px for the padding of the dialog box
   - Fixed a bug where the text alignment wasn't being shown on the preview
 - Dialog node

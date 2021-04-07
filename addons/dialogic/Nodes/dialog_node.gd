@@ -175,8 +175,6 @@ func parse_alignment(text):
 	var alignment = current_theme.get_value('text', 'alignment', 'Left')
 	var fname = current_theme.get_value('settings', 'name', 'none')
 	
-	print(alignment, ' - ', current_theme, ' - ', fname)
-	
 	if alignment == 'Center':
 		text = '[center]' + text + '[/center]'
 	elif alignment == 'Right':
@@ -805,7 +803,7 @@ func _on_RichTextLabel_meta_hover_started(meta):
 				'color': current_theme.get_value('definitions', 'color', '#ffbebebe'),
 			})
 			correct_type = true
-			print(d)
+			dprint(d)
 
 	if correct_type:
 		definition_visible = true
