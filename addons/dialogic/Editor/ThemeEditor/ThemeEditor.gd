@@ -18,62 +18,62 @@ var loading = true
 # a way to set an id and then access that node via id...
 # Here you have paths in all its glory. Praise the paths (っ´ω`c)♡
 onready var n = {
-	# Text
-	'theme_text_shadow': $VBoxContainer/TabContainer/Text/Column/GridContainer/HBoxContainer2/CheckBoxShadow,
-	'theme_text_shadow_color': $VBoxContainer/TabContainer/Text/Column/GridContainer/HBoxContainer2/ColorPickerButtonShadow,
-	'theme_text_color': $VBoxContainer/TabContainer/Text/Column/GridContainer/ColorPickerButton,
-	'theme_font': $VBoxContainer/TabContainer/Text/Column/GridContainer/FontButton,
-	'theme_shadow_offset_x': $VBoxContainer/TabContainer/Text/Column/GridContainer/HBoxContainer/ShadowOffsetX,
-	'theme_shadow_offset_y': $VBoxContainer/TabContainer/Text/Column/GridContainer/HBoxContainer/ShadowOffsetY,
-	'theme_text_speed': $VBoxContainer/TabContainer/Text/Column/GridContainer/TextSpeed,
-	'alignment': $VBoxContainer/TabContainer/Text/Column/GridContainer/HBoxContainer3/Alignment,
+	# Dialog Text
+	'theme_text_shadow': $"VBoxContainer/TabContainer/Dialog Text/Column/GridContainer/HBoxContainer2/CheckBoxShadow",
+	'theme_text_shadow_color': $"VBoxContainer/TabContainer/Dialog Text/Column/GridContainer/HBoxContainer2/ColorPickerButtonShadow",
+	'theme_text_color': $"VBoxContainer/TabContainer/Dialog Text/Column/GridContainer/ColorPickerButton",
+	'theme_font': $"VBoxContainer/TabContainer/Dialog Text/Column/GridContainer/FontButton",
+	'theme_shadow_offset_x': $"VBoxContainer/TabContainer/Dialog Text/Column/GridContainer/HBoxContainer/ShadowOffsetX",
+	'theme_shadow_offset_y': $"VBoxContainer/TabContainer/Dialog Text/Column/GridContainer/HBoxContainer/ShadowOffsetY",
+	'theme_text_speed': $"VBoxContainer/TabContainer/Dialog Text/Column2/GridContainer/TextSpeed",
+	'alignment': $"VBoxContainer/TabContainer/Dialog Text/Column/GridContainer/HBoxContainer3/Alignment",
 	
 	# Dialog box
 	'background_texture_button_visible': $"VBoxContainer/TabContainer/Dialog Box/Column/GridContainer/HBoxContainer3/CheckBox",
 	'theme_background_image': $"VBoxContainer/TabContainer/Dialog Box/Column/GridContainer/HBoxContainer3/BackgroundTextureButton",
 	'theme_next_image': $"VBoxContainer/TabContainer/Dialog Box/Column/GridContainer/NextIndicatorButton",
 	'next_animation': $"VBoxContainer/TabContainer/Dialog Box/Column/GridContainer/NextAnimation",
-	'theme_action_key': $"VBoxContainer/TabContainer/Dialog Box/Column/GridContainer/BoxContainer/ActionOptionButton",
+	'theme_action_key': $"VBoxContainer/TabContainer/Dialog Box/Column3/GridContainer/BoxContainer/ActionOptionButton",
 	'theme_background_color_visible': $"VBoxContainer/TabContainer/Dialog Box/Column/GridContainer/HBoxContainer2/CheckBox",
 	'theme_background_color': $"VBoxContainer/TabContainer/Dialog Box/Column/GridContainer/HBoxContainer2/ColorPickerButton",
-	'theme_text_margin': $"VBoxContainer/TabContainer/Dialog Box/Column/GridContainer/HBoxContainer/TextOffsetV",
-	'theme_text_margin_h': $"VBoxContainer/TabContainer/Dialog Box/Column/GridContainer/HBoxContainer/TextOffsetH",
-	'size_w': $"VBoxContainer/TabContainer/Dialog Box/Column/GridContainer/HBoxContainer4/BoxSizeW",
-	'size_h': $"VBoxContainer/TabContainer/Dialog Box/Column/GridContainer/HBoxContainer4/BoxSizeH", 
-	'bottom_gap': $"VBoxContainer/TabContainer/Dialog Box/Column/GridContainer/HBoxContainer5/BottomGap",
+	'theme_text_margin': $"VBoxContainer/TabContainer/Dialog Box/Column2/GridContainer/HBoxContainer/TextOffsetV",
+	'theme_text_margin_h': $"VBoxContainer/TabContainer/Dialog Box/Column2/GridContainer/HBoxContainer/TextOffsetH",
+	'size_w': $"VBoxContainer/TabContainer/Dialog Box/Column2/GridContainer/HBoxContainer4/BoxSizeW",
+	'size_h': $"VBoxContainer/TabContainer/Dialog Box/Column2/GridContainer/HBoxContainer4/BoxSizeH", 
+	'bottom_gap': $"VBoxContainer/TabContainer/Dialog Box/Column2/GridContainer/HBoxContainer5/BottomGap",
 	'background_modulation': $"VBoxContainer/TabContainer/Dialog Box/Column/GridContainer/HBoxContainer6/CheckBox",
 	'background_modulation_color': $"VBoxContainer/TabContainer/Dialog Box/Column/GridContainer/HBoxContainer6/ColorPickerButton",
 	
+	# Character Names
+	'name_auto_color': $"VBoxContainer/TabContainer/Name Label/Column/GridContainer/CharacterColor",
+	'name_background_visible': $"VBoxContainer/TabContainer/Name Label/Column2/GridContainer/HBoxContainer2/CheckBox",
+	'name_background': $"VBoxContainer/TabContainer/Name Label/Column2/GridContainer/HBoxContainer2/ColorPickerButton",
+	'name_image': $"VBoxContainer/TabContainer/Name Label/Column2/GridContainer/HBoxContainer3/BackgroundTextureButton",
+	'name_image_visible': $"VBoxContainer/TabContainer/Name Label/Column2/GridContainer/HBoxContainer3/CheckBox",
+	'name_shadow': $"VBoxContainer/TabContainer/Name Label/Column/GridContainer/HBoxContainer4/ColorPickerButtonShadow",
+	'name_shadow_visible': $"VBoxContainer/TabContainer/Name Label/Column/GridContainer/HBoxContainer4/CheckBoxShadow",
+	'name_shadow_offset_x': $"VBoxContainer/TabContainer/Name Label/Column/GridContainer/HBoxContainer/ShadowOffsetX",
+	'name_shadow_offset_y': $"VBoxContainer/TabContainer/Name Label/Column/GridContainer/HBoxContainer/ShadowOffsetY",
+	'name_bottom_gap': $"VBoxContainer/TabContainer/Name Label/Column3/GridContainer/HBoxContainer5/BottomGap",
 	
-	# Buttons
+	# Choice Buttons
 	'button_text_color_enabled': $"VBoxContainer/TabContainer/Choice Buttons/Column/GridContainer/HBoxContainer4/CheckBox2",
 	'button_text_color': $"VBoxContainer/TabContainer/Choice Buttons/Column/GridContainer/HBoxContainer4/ButtonTextColor",
 	'button_background': $"VBoxContainer/TabContainer/Choice Buttons/Column/GridContainer/HBoxContainer2/ColorPickerButton",
 	'button_background_visible': $"VBoxContainer/TabContainer/Choice Buttons/Column/GridContainer/HBoxContainer2/CheckBox",
 	'button_image': $"VBoxContainer/TabContainer/Choice Buttons/Column/GridContainer/HBoxContainer3/BackgroundTextureButton",
 	'button_image_visible': $"VBoxContainer/TabContainer/Choice Buttons/Column/GridContainer/HBoxContainer3/CheckBox",
-	'button_offset_x': $"VBoxContainer/TabContainer/Choice Buttons/Column/GridContainer/HBoxContainer/TextOffsetH",
-	'button_offset_y': $"VBoxContainer/TabContainer/Choice Buttons/Column/GridContainer/HBoxContainer/TextOffsetV",
-	'button_separation': $"VBoxContainer/TabContainer/Choice Buttons/Column/GridContainer/VerticalSeparation",
+	'button_offset_x': $"VBoxContainer/TabContainer/Choice Buttons/Column2/GridContainer/HBoxContainer/TextOffsetH",
+	'button_offset_y': $"VBoxContainer/TabContainer/Choice Buttons/Column2/GridContainer/HBoxContainer/TextOffsetV",
+	'button_separation': $"VBoxContainer/TabContainer/Choice Buttons/Column2/GridContainer/VerticalSeparation",
 	
-	# Definitions
+	# Glossary
 	'glossary_font': $VBoxContainer/TabContainer/Glossary/Column/GridContainer/FontButton,
 	'glossary_color': $VBoxContainer/TabContainer/Glossary/Column/GridContainer/ColorPickerButton,
 	
 	# Text preview
 	'text_preview': $VBoxContainer/HBoxContainer3/TextEdit,
 	
-	# Character Names
-	'name_auto_color': $"VBoxContainer/TabContainer/Name Label/Column/GridContainer/CheckBox",
-	'name_background_visible': $"VBoxContainer/TabContainer/Name Label/Column/GridContainer/HBoxContainer2/CheckBox",
-	'name_background': $"VBoxContainer/TabContainer/Name Label/Column/GridContainer/HBoxContainer2/ColorPickerButton",
-	'name_image': $"VBoxContainer/TabContainer/Name Label/Column/GridContainer/HBoxContainer3/BackgroundTextureButton",
-	'name_image_visible': $"VBoxContainer/TabContainer/Name Label/Column/GridContainer/HBoxContainer3/CheckBox",
-	'name_shadow': $"VBoxContainer/TabContainer/Name Label/Column/GridContainer/HBoxContainer4/ColorPickerButtonShadow",
-	'name_shadow_visible': $"VBoxContainer/TabContainer/Name Label/Column/GridContainer/HBoxContainer4/CheckBoxShadow",
-	'name_shadow_offset_x': $"VBoxContainer/TabContainer/Name Label/Column/GridContainer/HBoxContainer/ShadowOffsetX",
-	'name_shadow_offset_y': $"VBoxContainer/TabContainer/Name Label/Column/GridContainer/HBoxContainer/ShadowOffsetY",
-	'name_bottom_gap': $"VBoxContainer/TabContainer/Name Label/Column/GridContainer/HBoxContainer5/BottomGap",
 }
 
 func _ready():
