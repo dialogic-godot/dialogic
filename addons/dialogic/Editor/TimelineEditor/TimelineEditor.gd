@@ -412,7 +412,7 @@ func load_timeline(filename: String):
 		#fold_all_nodes()
 	
 	var elapsed_time = (OS.get_system_time_msecs() - start_time) * 0.001
-	editor_reference.dprint("Loading time: " + str(elapsed_time))
+	#editor_reference.dprint("Loading time: " + str(elapsed_time))
 
 
 func clear_timeline():
