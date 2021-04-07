@@ -6,7 +6,7 @@ var timeline_name: String = ''
 var timeline_file: String = ''
 var current_timeline: Dictionary = {}
 
-onready var master_tree = get_node('../MasterTree')
+onready var master_tree = get_node('../MasterTreeContainer/MasterTree')
 onready var timeline = $TimelineArea/TimeLine
 onready var events_warning = $ScrollContainer/EventContainer/EventsWarning
 
@@ -18,8 +18,26 @@ var selected_item : Node
 
 
 var moving_piece = null
+var piece_was_dragged = false
 
 func _ready():
+	var modifier = ''
+	var _scale = get_constant("inspector_margin", "Editor")
+	_scale = _scale * 0.125
+	$ScrollContainer.rect_min_size.x = 180
+	if _scale == 1.25:
+		modifier = '-1.25'
+		$ScrollContainer.rect_min_size.x = 200
+	if _scale == 1.5:
+		modifier = '-1.25'
+		$ScrollContainer.rect_min_size.x = 200
+	if _scale == 1.75:
+		modifier = '-1.25'
+		$ScrollContainer.rect_min_size.x = 390
+	if _scale == 2:
+		modifier = '-2'
+		$ScrollContainer.rect_min_size.x = 390
+	
 	# We connect all the event buttons to the event creation functions
 	for b in $ScrollContainer/EventContainer.get_children():
 		if b is Button:
@@ -33,6 +51,29 @@ func _ready():
 	var style = $TimelineArea.get('custom_styles/bg')
 	style.set('bg_color', get_color("dark_color_1", "Editor"))
 
+
+func delete_event():
+	# get next element
+	var next = min(timeline.get_child_count() - 1, selected_item.get_index() + 1)
+	var next_node = timeline.get_child(next)
+	if (next_node == selected_item):
+		next_node = null
+		
+	# remove current
+	selected_item.get_parent().remove_child(selected_item)
+	selected_item.queue_free()
+	selected_item = null
+	
+	# select next
+	if (next_node != null):
+		_select_item(next_node)
+	else:
+		if (timeline.get_child_count() > 0):
+			next_node = timeline.get_child(max(0, timeline.get_child_count() - 1))
+			if (next_node != null):
+				_select_item(next_node)
+				
+	indent_events()
 
 func _input(event):
 	# some shortcuts need to get handled in the common input event
@@ -86,29 +127,8 @@ func _input(event):
 			and event.echo == false
 		):
 			if (selected_item != null):
-				# get next element
-				var next = min(timeline.get_child_count() - 1, selected_item.get_index() + 1)
-				var next_node = timeline.get_child(next)
-				if (next_node == selected_item):
-					next_node = null
-					
-				# remove current
-				selected_item.get_parent().remove_child(selected_item)
-				selected_item.queue_free()
-				selected_item = null
-					
-				# select next
-				if (next_node != null):
-					_select_item(next_node)
-				else:
-					if (timeline.get_child_count() > 0):
-						next_node = timeline.get_child(max(0, timeline.get_child_count() - 1))
-						if (next_node != null):
-							_select_item(next_node)
-							
-				indent_events()
+				delete_event()
 				get_tree().set_input_as_handled()
-				
 			pass
 			
 		# CTRL T
@@ -173,10 +193,12 @@ func _process(delta):
 			up_offset = (up_offset / 2) + 5
 			if current_position.y < node_position - up_offset:
 				move_block(moving_piece, 'up')
+				piece_was_dragged = true
 		if down_offset != null:
 			down_offset = height + (down_offset / 2) + 5
 			if current_position.y > node_position + down_offset:
 				move_block(moving_piece, 'down')
+				piece_was_dragged = true
 
 
 func _clear_selection():
@@ -213,13 +235,20 @@ func _select_item(item: Node):
 
 func _on_gui_input(event, item: Node):
 	if event is InputEventMouseButton and event.button_index == 1:
-		if event.is_pressed():
+		if (not event.is_pressed()):
+			if (not piece_was_dragged and moving_piece != null):
+				_clear_selection()
+			if (moving_piece != null):
+				indent_events()
+			moving_piece = null
+		elif event.is_pressed():
+			moving_piece = item
 			if not _is_item_selected(item):
 				_select_item(item)
-			moving_piece = item
-		else:
-			moving_piece = null
-			
+				piece_was_dragged = true
+			else:
+				piece_was_dragged = false
+
 
 # Event Creation signal for buttons
 func _create_event_button_pressed(button_name):
@@ -324,8 +353,8 @@ func indent_events() -> void:
 
 
 func load_timeline(filename: String):
-	print('---------------------------')
-	print('Loading: ', filename)
+	#print('---------------------------')
+	#print('Loading: ', filename)
 	clear_timeline()
 	var start_time = OS.get_system_time_msecs()
 	timeline_file = filename
@@ -383,7 +412,7 @@ func load_timeline(filename: String):
 		#fold_all_nodes()
 	
 	var elapsed_time = (OS.get_system_time_msecs() - start_time) * 0.001
-	editor_reference.dprint("Loading time: " + str(elapsed_time))
+	#editor_reference.dprint("Loading time: " + str(elapsed_time))
 
 
 func clear_timeline():

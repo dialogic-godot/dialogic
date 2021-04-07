@@ -2,9 +2,16 @@ tool
 extends Control
 
 var editor_reference
-onready var master_tree = get_node('../MasterTree')
+onready var master_tree = get_node('../MasterTreeContainer/MasterTree')
 onready var settings_editor = get_node('../SettingsEditor')
 var current_theme = ''
+
+# When loading the variables to the input fields in the 
+# load_theme function, every element thinks the value was updated
+# so it has to perform a "saving" of that property. 
+# The loading variable is a way to check if the values should be saved
+# or not.
+var loading = true 
 
 # The amazing and revolutionary path system that magically works and you can't
 # complain because "that is not how you are supposed to work". If there was only
@@ -12,58 +19,61 @@ var current_theme = ''
 # Here you have paths in all its glory. Praise the paths (っ´ω`c)♡
 onready var n = {
 	# Text
-	'theme_text_shadow': $VBoxContainer/HBoxContainer2/Text/GridContainer/HBoxContainer2/CheckBoxShadow,
-	'theme_text_shadow_color': $VBoxContainer/HBoxContainer2/Text/GridContainer/HBoxContainer2/ColorPickerButtonShadow,
-	'theme_text_color': $VBoxContainer/HBoxContainer2/Text/GridContainer/ColorPickerButton,
-	'theme_font': $VBoxContainer/HBoxContainer2/Text/GridContainer/FontButton,
-	'theme_shadow_offset_x': $VBoxContainer/HBoxContainer2/Text/GridContainer/HBoxContainer/ShadowOffsetX,
-	'theme_shadow_offset_y': $VBoxContainer/HBoxContainer2/Text/GridContainer/HBoxContainer/ShadowOffsetY,
-	'theme_text_speed': $VBoxContainer/HBoxContainer2/Text/GridContainer/TextSpeed,
-	'alignment': $VBoxContainer/HBoxContainer2/Text/GridContainer/HBoxContainer3/Alignment,
+	'theme_text_shadow': $VBoxContainer/TabContainer/Text/Column/GridContainer/HBoxContainer2/CheckBoxShadow,
+	'theme_text_shadow_color': $VBoxContainer/TabContainer/Text/Column/GridContainer/HBoxContainer2/ColorPickerButtonShadow,
+	'theme_text_color': $VBoxContainer/TabContainer/Text/Column/GridContainer/ColorPickerButton,
+	'theme_font': $VBoxContainer/TabContainer/Text/Column/GridContainer/FontButton,
+	'theme_shadow_offset_x': $VBoxContainer/TabContainer/Text/Column/GridContainer/HBoxContainer/ShadowOffsetX,
+	'theme_shadow_offset_y': $VBoxContainer/TabContainer/Text/Column/GridContainer/HBoxContainer/ShadowOffsetY,
+	'theme_text_speed': $VBoxContainer/TabContainer/Text/Column/GridContainer/TextSpeed,
+	'alignment': $VBoxContainer/TabContainer/Text/Column/GridContainer/HBoxContainer3/Alignment,
 	
 	# Dialog box
-	'background_texture_button_visible': $VBoxContainer/HBoxContainer2/DialogBox/GridContainer/HBoxContainer3/CheckBox,
-	'theme_background_image': $VBoxContainer/HBoxContainer2/DialogBox/GridContainer/HBoxContainer3/BackgroundTextureButton,
-	'theme_next_image': $VBoxContainer/HBoxContainer2/DialogBox/GridContainer/NextIndicatorButton,
-	'next_animation': $VBoxContainer/HBoxContainer2/DialogBox/GridContainer/NextAnimation,
-	'theme_action_key': $VBoxContainer/HBoxContainer2/DialogBox/GridContainer/BoxContainer/ActionOptionButton,
-	'theme_background_color_visible': $VBoxContainer/HBoxContainer2/DialogBox/GridContainer/HBoxContainer2/CheckBox,
-	'theme_background_color': $VBoxContainer/HBoxContainer2/DialogBox/GridContainer/HBoxContainer2/ColorPickerButton,
-	'theme_text_margin': $VBoxContainer/HBoxContainer2/DialogBox/GridContainer/HBoxContainer/TextOffsetV,
-	'theme_text_margin_h': $VBoxContainer/HBoxContainer2/DialogBox/GridContainer/HBoxContainer/TextOffsetH,
-	'size_w': $VBoxContainer/HBoxContainer2/DialogBox/GridContainer/HBoxContainer4/BoxSizeW,
-	'size_h': $VBoxContainer/HBoxContainer2/DialogBox/GridContainer/HBoxContainer4/BoxSizeH, 
-	'bottom_gap': $VBoxContainer/HBoxContainer2/DialogBox/GridContainer/HBoxContainer5/BottomGap,
+	'background_texture_button_visible': $"VBoxContainer/TabContainer/Dialog Box/Column/GridContainer/HBoxContainer3/CheckBox",
+	'theme_background_image': $"VBoxContainer/TabContainer/Dialog Box/Column/GridContainer/HBoxContainer3/BackgroundTextureButton",
+	'theme_next_image': $"VBoxContainer/TabContainer/Dialog Box/Column/GridContainer/NextIndicatorButton",
+	'next_animation': $"VBoxContainer/TabContainer/Dialog Box/Column/GridContainer/NextAnimation",
+	'theme_action_key': $"VBoxContainer/TabContainer/Dialog Box/Column/GridContainer/BoxContainer/ActionOptionButton",
+	'theme_background_color_visible': $"VBoxContainer/TabContainer/Dialog Box/Column/GridContainer/HBoxContainer2/CheckBox",
+	'theme_background_color': $"VBoxContainer/TabContainer/Dialog Box/Column/GridContainer/HBoxContainer2/ColorPickerButton",
+	'theme_text_margin': $"VBoxContainer/TabContainer/Dialog Box/Column/GridContainer/HBoxContainer/TextOffsetV",
+	'theme_text_margin_h': $"VBoxContainer/TabContainer/Dialog Box/Column/GridContainer/HBoxContainer/TextOffsetH",
+	'size_w': $"VBoxContainer/TabContainer/Dialog Box/Column/GridContainer/HBoxContainer4/BoxSizeW",
+	'size_h': $"VBoxContainer/TabContainer/Dialog Box/Column/GridContainer/HBoxContainer4/BoxSizeH", 
+	'bottom_gap': $"VBoxContainer/TabContainer/Dialog Box/Column/GridContainer/HBoxContainer5/BottomGap",
+	'background_modulation': $"VBoxContainer/TabContainer/Dialog Box/Column/GridContainer/HBoxContainer6/CheckBox",
+	'background_modulation_color': $"VBoxContainer/TabContainer/Dialog Box/Column/GridContainer/HBoxContainer6/ColorPickerButton",
+	
 	
 	# Buttons
-	'button_text_color_enabled': $VBoxContainer/HBoxContainer2/ButtonStyle/GridContainer/HBoxContainer4/CheckBox2,
-	'button_text_color': $VBoxContainer/HBoxContainer2/ButtonStyle/GridContainer/HBoxContainer4/ButtonTextColor,
-	'button_background': $VBoxContainer/HBoxContainer2/ButtonStyle/GridContainer/HBoxContainer2/ColorPickerButton,
-	'button_background_visible': $VBoxContainer/HBoxContainer2/ButtonStyle/GridContainer/HBoxContainer2/CheckBox,
-	'button_image': $VBoxContainer/HBoxContainer2/ButtonStyle/GridContainer/HBoxContainer3/BackgroundTextureButton,
-	'button_image_visible': $VBoxContainer/HBoxContainer2/ButtonStyle/GridContainer/HBoxContainer3/CheckBox,
-	'button_offset_x': $VBoxContainer/HBoxContainer2/ButtonStyle/GridContainer/HBoxContainer/TextOffsetH,
-	'button_offset_y': $VBoxContainer/HBoxContainer2/ButtonStyle/GridContainer/HBoxContainer/TextOffsetV,
-	'button_separation': $VBoxContainer/HBoxContainer2/ButtonStyle/GridContainer/VerticalSeparation,
+	'button_text_color_enabled': $"VBoxContainer/TabContainer/Choice Buttons/Column/GridContainer/HBoxContainer4/CheckBox2",
+	'button_text_color': $"VBoxContainer/TabContainer/Choice Buttons/Column/GridContainer/HBoxContainer4/ButtonTextColor",
+	'button_background': $"VBoxContainer/TabContainer/Choice Buttons/Column/GridContainer/HBoxContainer2/ColorPickerButton",
+	'button_background_visible': $"VBoxContainer/TabContainer/Choice Buttons/Column/GridContainer/HBoxContainer2/CheckBox",
+	'button_image': $"VBoxContainer/TabContainer/Choice Buttons/Column/GridContainer/HBoxContainer3/BackgroundTextureButton",
+	'button_image_visible': $"VBoxContainer/TabContainer/Choice Buttons/Column/GridContainer/HBoxContainer3/CheckBox",
+	'button_offset_x': $"VBoxContainer/TabContainer/Choice Buttons/Column/GridContainer/HBoxContainer/TextOffsetH",
+	'button_offset_y': $"VBoxContainer/TabContainer/Choice Buttons/Column/GridContainer/HBoxContainer/TextOffsetV",
+	'button_separation': $"VBoxContainer/TabContainer/Choice Buttons/Column/GridContainer/VerticalSeparation",
 	
 	# Definitions
-	'glossary_font': $VBoxContainer/HBoxContainer2/Glossary/GridContainer/FontButton,
-	'glossary_color': $VBoxContainer/HBoxContainer2/Glossary/GridContainer/ColorPickerButton,
+	'glossary_font': $VBoxContainer/TabContainer/Glossary/Column/GridContainer/FontButton,
+	'glossary_color': $VBoxContainer/TabContainer/Glossary/Column/GridContainer/ColorPickerButton,
+	
 	# Text preview
-	'preview_panel': $VBoxContainer/Panel,
 	'text_preview': $VBoxContainer/HBoxContainer3/TextEdit,
 	
 	# Character Names
-	'name_auto_color': $VBoxContainer/HBoxContainer2/Glossary/GridContainer2/CheckBox,
-	'name_background_visible': $VBoxContainer/HBoxContainer2/Glossary/GridContainer2/HBoxContainer2/CheckBox,
-	'name_background': $VBoxContainer/HBoxContainer2/Glossary/GridContainer2/HBoxContainer2/ColorPickerButton,
-	'name_image': $VBoxContainer/HBoxContainer2/Glossary/GridContainer2/HBoxContainer3/BackgroundTextureButton,
-	'name_image_visible': $VBoxContainer/HBoxContainer2/Glossary/GridContainer2/HBoxContainer3/CheckBox,
-	'name_shadow': $VBoxContainer/HBoxContainer2/Glossary/GridContainer2/HBoxContainer4/ColorPickerButtonShadow,
-	'name_shadow_visible': $VBoxContainer/HBoxContainer2/Glossary/GridContainer2/HBoxContainer4/CheckBoxShadow,
-	'name_shadow_offset_x': $VBoxContainer/HBoxContainer2/Glossary/GridContainer2/HBoxContainer/ShadowOffsetX,
-	'name_shadow_offset_y': $VBoxContainer/HBoxContainer2/Glossary/GridContainer2/HBoxContainer/ShadowOffsetY,
-	'name_bottom_gap': $VBoxContainer/HBoxContainer2/Glossary/GridContainer2/HBoxContainer5/BottomGap,
+	'name_auto_color': $"VBoxContainer/TabContainer/Name Label/Column/GridContainer/CheckBox",
+	'name_background_visible': $"VBoxContainer/TabContainer/Name Label/Column/GridContainer/HBoxContainer2/CheckBox",
+	'name_background': $"VBoxContainer/TabContainer/Name Label/Column/GridContainer/HBoxContainer2/ColorPickerButton",
+	'name_image': $"VBoxContainer/TabContainer/Name Label/Column/GridContainer/HBoxContainer3/BackgroundTextureButton",
+	'name_image_visible': $"VBoxContainer/TabContainer/Name Label/Column/GridContainer/HBoxContainer3/CheckBox",
+	'name_shadow': $"VBoxContainer/TabContainer/Name Label/Column/GridContainer/HBoxContainer4/ColorPickerButtonShadow",
+	'name_shadow_visible': $"VBoxContainer/TabContainer/Name Label/Column/GridContainer/HBoxContainer4/CheckBoxShadow",
+	'name_shadow_offset_x': $"VBoxContainer/TabContainer/Name Label/Column/GridContainer/HBoxContainer/ShadowOffsetX",
+	'name_shadow_offset_y': $"VBoxContainer/TabContainer/Name Label/Column/GridContainer/HBoxContainer/ShadowOffsetY",
+	'name_bottom_gap': $"VBoxContainer/TabContainer/Name Label/Column/GridContainer/HBoxContainer5/BottomGap",
 }
 
 func _ready():
@@ -73,11 +83,15 @@ func _ready():
 		$VBoxContainer/HBoxContainer3/PreviewButton.icon = load("res://addons/dialogic/Images/Plugin/plugin-editor-icon-dark-theme.svg")
 	else:
 		$VBoxContainer/HBoxContainer3/PreviewButton.icon = load("res://addons/dialogic/Images/Plugin/plugin-editor-icon-light-theme.svg")
+	
+	$DelayPreviewTimer.one_shot = true
+	$DelayPreviewTimer.connect("timeout", self, '_on_DelayPreview_timer_timeout')
 	# Force preview update
 	_on_visibility_changed()
 
 
 func load_theme(filename):
+	loading = true
 	current_theme = filename
 	var theme = DialogicResources.get_theme_config(filename) 
 	# Settings
@@ -89,6 +103,10 @@ func load_theme(filename):
 	n['theme_background_color'].color = Color(theme.get_value('background', 'color', '#ff000000'))
 	n['theme_background_color_visible'].pressed = theme.get_value('background', 'use_color', false)
 	n['theme_next_image'].text = DialogicResources.get_filename_from_path(theme.get_value('next_indicator', 'image', 'res://addons/dialogic/Images/next-indicator.png'))
+
+	n['background_modulation'].pressed = theme.get_value('background', 'modulation', false)
+	n['background_modulation_color'].color = Color(theme.get_value('background', 'modulation_color', '#ffffffff'))
+	
 	
 	var size_value = theme.get_value('box', 'size', Vector2(910, 167))
 	n['size_w'].value = size_value.x
@@ -160,6 +178,8 @@ func load_theme(filename):
 	# Preview text
 	n['text_preview'].text = theme.get_value('text', 'preview', 'This is preview text. You can use  [color=#A5EFAC]BBCode[/color] to style it.\n[wave amp=50 freq=2]You can even use effects![/wave]')
 	
+	# Finished loading
+	loading = false
 	# Updating the preview
 	_on_PreviewButton_pressed()
 
@@ -171,9 +191,17 @@ func new_theme():
 	load_theme(theme_file)
 	# Check if it is the only theme to set as default
 	if DialogicUtil.get_theme_list().size() == 1:
-		print('only theme, setting as default')
+		#print('only theme, setting as default')
 		settings_editor.set_value('theme', 'default', theme_file)
 
+
+func duplicate_theme(from_filename):
+	var duplicate_theme = 'theme-' + str(OS.get_unix_time()) + '.cfg'
+	DialogicResources.duplicate_theme(from_filename, duplicate_theme)
+	DialogicResources.set_theme_value(duplicate_theme, 'settings', 'name', duplicate_theme)
+	master_tree.build_themes(duplicate_theme)
+	load_theme(duplicate_theme)
+	
 
 func _on_BackgroundTextureButton_pressed():
 	editor_reference.godot_dialog("*.png")
@@ -181,8 +209,11 @@ func _on_BackgroundTextureButton_pressed():
 
 
 func _on_background_selected(path, target):
+	if loading == true:
+		return
 	DialogicResources.set_theme_value(current_theme, 'background','image', path)
 	n['theme_background_image'].text = DialogicResources.get_filename_from_path(path)
+	_on_PreviewButton_pressed() # Refreshing the preview
 
 
 func _on_NextIndicatorButton_pressed():
@@ -191,37 +222,54 @@ func _on_NextIndicatorButton_pressed():
 
 
 func _on_indicator_selected(path, target):
+	if loading == true:
+		return
 	DialogicResources.set_theme_value(current_theme, 'next_indicator','image', path)
 	n['theme_next_image'].text = DialogicResources.get_filename_from_path(path)
+	_on_PreviewButton_pressed() # Refreshing the preview
 
 
 func _on_NextAnimation_item_selected(index):
 	DialogicResources.set_theme_value(current_theme, 'next_indicator', 'animation', n['next_animation'].get_item_text(index))
+	_on_PreviewButton_pressed() # Refreshing the preview
 
 
 func _on_ColorPickerButton_color_changed(color):
+	if loading == true:
+		return
 	DialogicResources.set_theme_value(current_theme, 'text','color', '#' + color.to_html())
+	$DelayPreviewTimer.start(0.5) # Calling a timer so the update doesn't get triggered many times
 
 
 func _on_ColorPickerButtonShadow_color_changed(color):
+	if loading == true:
+		return
 	DialogicResources.set_theme_value(current_theme, 'text','shadow_color', '#' + color.to_html())
+	$DelayPreviewTimer.start(0.5) # Calling a timer so the update doesn't get triggered many times
 
 
 func _on_CheckBoxShadow_toggled(button_pressed):
+	if loading == true:
+		return
 	DialogicResources.set_theme_value(current_theme, 'text','shadow', button_pressed)
+	_on_PreviewButton_pressed() # Refreshing the preview
 
 
 func _on_ShadowOffset_value_changed(_value):
+	if loading == true:
+		return
 	DialogicResources.set_theme_value(current_theme, 'text','shadow_offset', Vector2(n['theme_shadow_offset_x'].value,n['theme_shadow_offset_y'].value))
+	_on_PreviewButton_pressed() # Refreshing the preview
 
 
 func _on_PreviewButton_pressed():
-	for i in n['preview_panel'].get_children():
+	for i in $VBoxContainer/Panel.get_children():
 		i.free()
 	var dialogic_node = load("res://addons/dialogic/Dialog.tscn")
 	var preview_dialog = dialogic_node.instance()
 	preview_dialog.timeline = ''
 	preview_dialog.preview = true
+	preview_dialog.debug_mode = false
 	preview_dialog.get_node('DefinitionInfo').in_theme_editor = true
 	
 	# Random character preview if there are any
@@ -231,20 +279,26 @@ func _on_PreviewButton_pressed():
 		characters.shuffle()
 		character_file = characters[0]['file']
 	
+	# Loading the theme here because I need it for the parse_alignment
+	preview_dialog.current_theme = preview_dialog.load_theme(current_theme)
+	
 	# Creating the one event timeline for the dialog
+	var text = preview_dialog.parse_definitions(n['text_preview'].text)
 	preview_dialog.dialog_script['events'] = [{
 		"character": character_file,
 		"portrait":'',
-		"text": preview_dialog.parse_definitions(n['text_preview'].text)
+		"text": text
 	}]
 	preview_dialog.parse_characters(preview_dialog.dialog_script)
 	preview_dialog.settings = DialogicResources.get_settings_config()
 	
 	# Alignment
-	n['preview_panel'].add_child(preview_dialog)
+	$VBoxContainer/Panel.add_child(preview_dialog)
 	
 	preview_dialog.load_dialog()
+	# Reloading the theme
 	preview_dialog.current_theme = preview_dialog.load_theme(current_theme)
+	
 	
 	# When not performing this step, the dialog name doesn't update the color for some reason
 	# I should probably refactor the preview dialog to stop making everything manually.
@@ -253,11 +307,13 @@ func _on_PreviewButton_pressed():
 			preview_dialog.get_node('TextBubble/NameLabel').set('custom_colors/font_color', characters[0]['color'])
 	
 	# maintaining the preview panel big enough for the dialog box
-	n['preview_panel'].rect_min_size.y = preview_dialog.current_theme.get_value('box', 'size', Vector2(910, 167)).y + 90 + preview_dialog.current_theme.get_value('box', 'bottom_gap', 40)
-	n['preview_panel'].rect_size.y = 0
+	$VBoxContainer/Panel.rect_min_size.y = preview_dialog.current_theme.get_value('box', 'size', Vector2(910, 167)).y + 90 + preview_dialog.current_theme.get_value('box', 'bottom_gap', 40)
+	$VBoxContainer/Panel.rect_size.y = 0
 
 
 func _on_ActionOptionButton_item_selected(index):
+	if loading == true:
+		return
 	DialogicResources.set_theme_value(current_theme, 'settings','action_key', n['theme_action_key'].text)
 
 
@@ -275,43 +331,68 @@ func _on_FontButton_pressed():
 
 
 func _on_Font_selected(path, target):
+	if loading == true:
+		return
 	DialogicResources.set_theme_value(current_theme, 'text','font', path)
 	n['theme_font'].text = DialogicResources.get_filename_from_path(path)
+	_on_PreviewButton_pressed() # Refreshing the preview
 
 
 func _on_textSpeed_value_changed(value):
+	if loading == true:
+		return
 	DialogicResources.set_theme_value(current_theme, 'text','speed', value)
+	_on_PreviewButton_pressed() # Refreshing the preview
 
 
 func _on_TextMargin_value_changed(value):
+	if loading == true:
+		return
 	var final_vector = Vector2(
 		n['theme_text_margin'].value,
 		n['theme_text_margin_h'].value
 	)
 	DialogicResources.set_theme_value(current_theme, 'text', 'margin', final_vector)
+	_on_PreviewButton_pressed() # Refreshing the preview
 
 
 func _on_BackgroundColor_CheckBox_toggled(button_pressed):
+	if loading == true:
+		return
 	DialogicResources.set_theme_value(current_theme, 'background', 'use_color', button_pressed)
+	_on_PreviewButton_pressed() # Refreshing the preview
 
 
 func _on_BackgroundColor_ColorPickerButton_color_changed(color):
+	if loading == true:
+		return
 	DialogicResources.set_theme_value(current_theme, 'background', 'color', '#' + color.to_html())
+	$DelayPreviewTimer.start(0.5) # Calling a timer so the update doesn't get triggered many times
 
 
 func _on_BackgroundTexture_CheckBox_toggled(button_pressed):
+	if loading == true:
+		return
 	DialogicResources.set_theme_value(current_theme, 'background', 'use_image', button_pressed)
-
+	_on_PreviewButton_pressed() # Refreshing the preview
+	
 
 func _on_button_background_visible_toggled(button_pressed):
+	if loading == true:
+		return
 	DialogicResources.set_theme_value(current_theme, 'buttons', 'use_background_color', button_pressed)
 
 
 func _on_button_background_color_color_changed(color):
+	if loading == true:
+		return
 	DialogicResources.set_theme_value(current_theme, 'buttons', 'background_color', '#' + color.to_html())
+	$DelayPreviewTimer.start(0.5) # Calling a timer so the update doesn't get triggered many times
 
 
 func _on_ButtonOffset_value_changed(value):
+	if loading == true:
+		return
 	var final_vector = Vector2(
 		n['button_offset_x'].value,
 		n['button_offset_y'].value
@@ -320,10 +401,14 @@ func _on_ButtonOffset_value_changed(value):
 
 
 func _on_VerticalSeparation_value_changed(value):
+	if loading == true:
+		return
 	DialogicResources.set_theme_value(current_theme, 'buttons', 'gap', n['button_separation'].value)
 
 
 func _on_button_texture_toggled(button_pressed):
+	if loading == true:
+		return
 	DialogicResources.set_theme_value(current_theme, 'buttons', 'use_image', button_pressed)
 
 
@@ -333,29 +418,43 @@ func _on_ButtonTextureButton_pressed():
 
 
 func _on_button_texture_selected(path, target):
+	if loading == true:
+		return
 	DialogicResources.set_theme_value(current_theme, 'buttons', 'image', path)
 	n['button_image'].text = DialogicResources.get_filename_from_path(path)
 
 
 func _on_ButtonTextColor_color_changed(color):
+	if loading == true:
+		return
 	DialogicResources.set_theme_value(current_theme, 'buttons', 'text_color', '#' + color.to_html())
+	$DelayPreviewTimer.start(0.5) # Calling a timer so the update doesn't get triggered many times
 
 
 func _on_Custom_Button_Color_toggled(button_pressed):
+	if loading == true:
+		return
 	DialogicResources.set_theme_value(current_theme, 'buttons', 'text_color_enabled', button_pressed)
 
 
 func _on_GlossaryColorPicker_color_changed(color):
+	if loading == true:
+		return
 	DialogicResources.set_theme_value(current_theme, 'definitions', 'color', '#' + color.to_html())
+	$DelayPreviewTimer.start(0.5) # Calling a timer so the update doesn't get triggered many times
 
 
 func _on_GlossaryFontButton_pressed():
 	editor_reference.godot_dialog("*.tres")
 	editor_reference.godot_dialog_connect(self, "_on_Glossary_Font_selected")
 
+
 func _on_Glossary_Font_selected(path, target):
+	if loading == true:
+		return
 	DialogicResources.set_theme_value(current_theme, 'definitions', 'font', path)
 	n['glossary_font'].text = DialogicResources.get_filename_from_path(path)
+	_on_PreviewButton_pressed() # Refreshing the preview
 
 
 func _on_visibility_changed():
@@ -365,47 +464,69 @@ func _on_visibility_changed():
 	else:
 		# Erasing all previews since them keeps working
 		# on background
-		for i in n['preview_panel'].get_children():
+		for i in $VBoxContainer/Panel.get_children():
 			i.queue_free()
 
 
 func _on_BoxSize_value_changed(value):
+	if loading == true:
+		return
 	var size_value = Vector2(n['size_w'].value, n['size_h'].value)
 	DialogicResources.set_theme_value(current_theme, 'box', 'size', size_value)
+	_on_PreviewButton_pressed() # Refreshing the preview
 
 
 func _on_BottomGap_value_changed(value):
+	if loading == true:
+		return
 	DialogicResources.set_theme_value(current_theme, 'box', 'bottom_gap', value)
+	_on_PreviewButton_pressed() # Refreshing the preview
 
 
 func _on_Alignment_item_selected(index):
+	if loading == true:
+		return
 	if index == 0:
 		DialogicResources.set_theme_value(current_theme, 'text', 'alignment', 'Left')
 	elif index == 1:
 		DialogicResources.set_theme_value(current_theme, 'text', 'alignment', 'Center')
 	elif index == 2:
 		DialogicResources.set_theme_value(current_theme, 'text', 'alignment', 'Right')
-
+	_on_PreviewButton_pressed() # Refreshing the preview
 
 
 func _on_Preview_text_changed():
+	if loading == true:
+		return
 	DialogicResources.set_theme_value(current_theme, 'text', 'preview', n['text_preview'].text)
 
 
 func _on_name_auto_color_toggled(button_pressed):
+	if loading == true:
+		return
 	DialogicResources.set_theme_value(current_theme, 'name', 'auto_color', button_pressed)
+	_on_PreviewButton_pressed() # Refreshing the preview
 
 
 func _on_name_background_visible_toggled(button_pressed):
+	if loading == true:
+		return
 	DialogicResources.set_theme_value(current_theme, 'name', 'background_visible', button_pressed)
+	_on_PreviewButton_pressed() # Refreshing the preview
 
 
 func _on_name_background_color_changed(color):
+	if loading == true:
+		return
 	DialogicResources.set_theme_value(current_theme, 'name', 'background', '#' + color.to_html())
+	$DelayPreviewTimer.start(0.5) # Calling a timer so the update doesn't get triggered many times
 
 
 func _on_name_image_visible_toggled(button_pressed):
+	if loading == true:
+		return
 	DialogicResources.set_theme_value(current_theme, 'name', 'image_visible', button_pressed)
+	_on_PreviewButton_pressed() # Refreshing the preview
 
 
 func _on_name_image_pressed():
@@ -414,22 +535,55 @@ func _on_name_image_pressed():
 
 
 func _on_name_texture_selected(path, target):
+	if loading == true:
+		return
 	DialogicResources.set_theme_value(current_theme, 'name', 'image', path)
 	n['name_image'].text = DialogicResources.get_filename_from_path(path)
+	_on_PreviewButton_pressed() # Refreshing the preview
 
 
 func _on_shadow_visible_toggled(button_pressed):
+	if loading == true:
+		return
 	DialogicResources.set_theme_value(current_theme, 'name', 'shadow_visible', button_pressed)
+	_on_PreviewButton_pressed() # Refreshing the preview
 
 
 func _on_name_shadow_color_changed(color):
+	if loading == true:
+		return
 	DialogicResources.set_theme_value(current_theme, 'name', 'shadow', '#' + color.to_html())
+	$DelayPreviewTimer.start(0.5) # Calling a timer so the update doesn't get triggered many times
 
 
 func _on_name_ShadowOffset_value_changed(_value):
+	if loading == true:
+		return
 	DialogicResources.set_theme_value(current_theme, 'name','shadow_offset', 
 			Vector2(n['name_shadow_offset_x'].value,n['name_shadow_offset_y'].value))
+	_on_PreviewButton_pressed() # Refreshing the preview
 
 
 func _on_name_BottomGap_value_changed(value):
+	if loading == true:
+		return
 	DialogicResources.set_theme_value(current_theme, 'name', 'bottom_gap', value)
+	_on_PreviewButton_pressed() # Refreshing the preview
+
+
+func _on_DelayPreview_timer_timeout():
+	_on_PreviewButton_pressed() # Refreshing the preview
+
+
+func _on_BackgroundTexture_Modulation_toggled(button_pressed):
+	if loading == true:
+		return
+	DialogicResources.set_theme_value(current_theme, 'background', 'modulation', button_pressed)
+	_on_PreviewButton_pressed() # Refreshing the preview
+
+
+func _on_ColorPicker_Background_texture_modulation_color_changed(color):
+	if loading == true:
+		return
+	DialogicResources.set_theme_value(current_theme, 'background', 'modulation_color', '#' + color.to_html())
+	$DelayPreviewTimer.start(0.5) # Calling a timer so the update doesn't get triggered many times

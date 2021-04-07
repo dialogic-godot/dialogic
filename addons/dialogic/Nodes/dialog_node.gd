@@ -41,6 +41,8 @@ onready var Portrait = load("res://addons/dialogic/Nodes/Portrait.tscn")
 var dialog_script = {}
 var questions #for keeping track of the questions answered
 
+onready var tween_node = $TextBubble/Tween
+
 func _ready():
 	# Loading the config files
 	load_config_files()
@@ -63,6 +65,8 @@ func _ready():
 	$Background.visible = false
 	$TextBubble/RichTextLabel.meta_underlined = false
 	$DefinitionInfo.visible = false
+	
+	tween_node.connect("tween_completed", self, '_on_Tween_tween_completed')
 
 	# Getting the character information
 	characters = DialogicUtil.get_character_list()
@@ -94,7 +98,8 @@ func resize_main():
 			set_deferred('rect_size', get_viewport().size)
 		dprint("Viewport", get_viewport().size)
 	$TextBubble.rect_position.x = (rect_size.x / 2) - ($TextBubble.rect_size.x / 2)
-	$TextBubble.rect_position.y = (rect_size.y) - ($TextBubble.rect_size.y) - current_theme.get_value('box', 'bottom_gap', 40)
+	if current_theme != null:
+		$TextBubble.rect_position.y = (rect_size.y) - ($TextBubble.rect_size.y) - current_theme.get_value('box', 'bottom_gap', 40)
 
 
 func set_current_dialog(dialog_path: String):
@@ -133,7 +138,6 @@ func parse_characters(dialog_script):
 func parse_text_lines(unparsed_dialog_script: Dictionary) -> Dictionary:
 	var parsed_dialog: Dictionary = unparsed_dialog_script
 	var new_events: Array = []
-	var alignment = 'Left'
 	var split_new_lines = true
 	var remove_empty_messages = true
 
@@ -147,10 +151,6 @@ func parse_text_lines(unparsed_dialog_script: Dictionary) -> Dictionary:
 	if settings.has_section_key('dialog', 'new_lines'):
 		split_new_lines = settings.get_value('dialog', 'new_lines')
 
-	if current_theme != null:
-		alignment = current_theme.get_value('text', 'alignment', 'Left')
-
-	dprint('preview ', preview)
 	# Parsing
 	for event in unparsed_dialog_script['events']:
 		if event.has('text') and event.has('character') and event.has('portrait'):
@@ -160,24 +160,14 @@ func parse_text_lines(unparsed_dialog_script: Dictionary) -> Dictionary:
 				var lines = event['text'].split('\n')
 				var i = 0
 				for line in lines:
-					var text = lines[i]
-					if alignment == 'Center':
-						text = '[center]' + lines[i] + '[/center]'
-					elif alignment == 'Right':
-						text = '[right]' + lines[i] + '[/right]'
 					var _e = {
-						'text': text,
+						'text': lines[i],
 						'character': event['character'],
 						'portrait': event['portrait']
 					}
 					new_events.append(_e)
 					i += 1
 			else:
-				var text = event['text']
-				if alignment == 'Center':
-					event['text'] = '[center]' + text + '[/center]'
-				elif alignment == 'Right':
-					event['text'] = '[right]' + text + '[/right]'
 				new_events.append(event)
 		else:
 			new_events.append(event)
@@ -185,6 +175,16 @@ func parse_text_lines(unparsed_dialog_script: Dictionary) -> Dictionary:
 	parsed_dialog['events'] = new_events
 
 	return parsed_dialog
+
+
+func parse_alignment(text):
+	var alignment = current_theme.get_value('text', 'alignment', 'Left')
+	var fname = current_theme.get_value('settings', 'name', 'none')
+	if alignment == 'Center':
+		text = '[center]' + text + '[/center]'
+	elif alignment == 'Right':
+		text = '[right]' + text + '[/right]'
+	return text
 
 
 func parse_branches(dialog_script: Dictionary) -> Dictionary:
@@ -255,7 +255,7 @@ func _insert_variable_definitions(text: String):
 	
 	
 func _insert_glossary_definitions(text: String):
-	var color = self.current_theme.get_value('definitions', 'color', '#ffbebebe')
+	var color = current_theme.get_value('definitions', 'color', '#ffbebebe')
 	var final_text := text;
 	# I should use regex here, but this is way easier :)
 	for d in definitions['glossary']:
@@ -309,14 +309,8 @@ func show_dialog():
 	visible = true
 
 
-func start_text_tween():
-	# This will start the animation that makes the text appear letter by letter
-	var tween_duration = text_speed * $TextBubble/RichTextLabel.get_total_character_count()
-	$TextBubble/Tween.interpolate_property(
-		$TextBubble/RichTextLabel, "percent_visible", 0, 1, tween_duration,
-		Tween.TRANS_LINEAR, Tween.EASE_IN_OUT
-	)
-	$TextBubble/Tween.start()
+func _on_Tween_tween_completed(object, key):
+	finished = true
 
 
 func update_name(character, color: Color = Color.white) -> void:
@@ -334,13 +328,15 @@ func update_name(character, color: Color = Color.white) -> void:
 		$TextBubble/NameLabel.rect_size = Vector2(-1, 40)
 		# Setting the color and text
 		$TextBubble/NameLabel.text = parsed_name
-		$TextBubble/NameLabel.set('custom_colors/font_color', color)
+		if current_theme.get_value('name', 'auto_color', true):
+			$TextBubble/NameLabel.set('custom_colors/font_color', color)
 	else:
 		$TextBubble/NameLabel.visible = false
 
 
 func update_text(text):
 	# Updating the text and starting the animation from 0
+	text = parse_alignment(text)
 	$TextBubble/RichTextLabel.bbcode_text = parse_definitions(text)
 	$TextBubble/RichTextLabel.percent_visible = 0
 
@@ -348,6 +344,16 @@ func update_text(text):
 	# More info: https://github.com/godotengine/godot/issues/36381
 	call_deferred("start_text_tween")
 	return true
+
+
+func start_text_tween():
+	# This will start the animation that makes the text appear letter by letter
+	var tween_duration = text_speed * $TextBubble/RichTextLabel.get_total_character_count()
+	tween_node.interpolate_property(
+		$TextBubble/RichTextLabel, "percent_visible", 0, 1, tween_duration,
+		Tween.TRANS_LINEAR, Tween.EASE_IN_OUT
+	)
+	tween_node.start()
 
 
 func on_timeline_start():
@@ -448,8 +454,7 @@ func event_handler(event: Dictionary):
 			emit_signal("event_start", "action", event)
 			if event['action'] == 'leaveall':
 				if event['character'] == '[All]':
-					for p in $Portraits.get_children():
-						p.fade_out()
+					characters_leave_all()
 				else:
 					for p in $Portraits.get_children():
 						if p.character_data['file'] == event['character']:
@@ -477,7 +482,18 @@ func event_handler(event: Dictionary):
 		{'background'}:
 			emit_signal("event_start", "background", event)
 			$Background.visible = true
-			$Background.texture = load(event['background'])
+			$Background.texture = null
+			if ($Background.get_child_count() > 0):
+				for c in $Background.get_children():
+					c.get_parent().remove_child(c)
+					c.queue_free()
+			if (event['background'].ends_with('.tscn')):
+				var bg_scene = load(event['background'])
+				if (bg_scene):
+					bg_scene = bg_scene.instance()
+					$Background.add_child(bg_scene)
+			elif (event['background'] != ''):
+				$Background.texture = load(event['background'])
 			go_to_next_event()
 		{'audio'}, {'audio', 'file'}:
 			emit_signal("event_start", "audio", event)
@@ -505,8 +521,7 @@ func event_handler(event: Dictionary):
 			go_to_next_event()
 		{'close_dialog'}:
 			emit_signal("event_start", "close_dialog", event)
-			on_timeline_end()
-			queue_free()
+			close_dialog_event()
 		{'set_theme'}:
 			emit_signal("event_start", "set_theme", event)
 			if event['set_theme'] != '':
@@ -669,11 +684,6 @@ func _on_option_selected(option, variable, value):
 	dprint('[!] Option selected: ', option.text, ' value= ' , value)
 
 
-func _on_Tween_tween_completed(object, key):
-	#$TextBubble/RichTextLabel.meta_underlined = true
-	finished = true
-
-
 func _on_TextInputDialog_confirmed():
 	pass # Replace with function body.
 
@@ -687,15 +697,22 @@ func go_to_next_event():
 
 func grab_portrait_focus(character_data, event: Dictionary = {}) -> bool:
 	var exists = false
+	var visually_focus = true
+	if settings.has_section_key('dialog', 'dim_characters'):
+		visually_focus = settings.get_value('dialog', 'dim_characters')
+
 	for portrait in $Portraits.get_children():
 		if portrait.character_data == character_data:
 			exists = true
-			portrait.focus()
+			
+			if visually_focus:
+				portrait.focus()
 			if event.has('portrait'):
 				if event['portrait'] != '':
 					portrait.set_portrait(event['portrait'])
 		else:
-			portrait.focusout()
+			if visually_focus:
+				portrait.focusout()
 	return exists
 
 
@@ -761,6 +778,11 @@ func load_theme(filename):
 	$TextBubble/TextureRect.texture = load(theme.get_value('background','image', "res://addons/dialogic/Images/background/background-2.png"))
 	$TextBubble/ColorRect.color = Color(theme.get_value('background','color', "#ff000000"))
 
+	if theme.get_value('background', 'modulation', false) == true:
+		$TextBubble/TextureRect.modulate = Color(theme.get_value('background', 'modulation_color', '#ffffffff'))
+	else:
+		$TextBubble/TextureRect.modulate = Color('#ffffffff')
+
 	$TextBubble/ColorRect.visible = theme.get_value('background', 'use_color', false)
 	$TextBubble/TextureRect.visible = theme.get_value('background', 'use_image', true)
 
@@ -780,7 +802,7 @@ func load_theme(filename):
 	$TextBubble/NameLabel/TextureRect.visible = theme.get_value('name', 'image_visible', false)
 	$TextBubble/NameLabel/TextureRect.texture = load(theme.get_value('name','image', "res://addons/dialogic/Images/background/background-2.png"))
 	var name_shadow_offset = theme.get_value('name', 'shadow_offset', Vector2(2,2))
-	if theme.get_value('name', 'shadow_visible', false):
+	if theme.get_value('name', 'shadow_visible', true):
 		$TextBubble/NameLabel.set('custom_colors/font_color_shadow', Color(theme.get_value('name', 'shadow', '#9e000000')))
 		$TextBubble/NameLabel.set('custom_constants/shadow_offset_x', name_shadow_offset.x)
 		$TextBubble/NameLabel.set('custom_constants/shadow_offset_y', name_shadow_offset.y)
@@ -807,7 +829,7 @@ func _on_RichTextLabel_meta_hover_started(meta):
 				'color': current_theme.get_value('definitions', 'color', '#ffbebebe'),
 			})
 			correct_type = true
-			print(d)
+			dprint(d)
 
 	if correct_type:
 		definition_visible = true
@@ -852,6 +874,11 @@ func dprint(string, arg1='', arg2='', arg3='', arg4='' ):
 func _compare_definitions(def_value: String, event_value: String, condition: String):
 	var condition_met = false;
 	if def_value != null and event_value != null:
+		# check if event_value equals a definition name and use that instead
+		for d in definitions['variables']:
+			if (d['name'] != '' and d['name'] == event_value):
+				event_value = d['value']
+				break;
 		var converted_def_value = def_value
 		var converted_event_value = event_value
 		if def_value.is_valid_float() and event_value.is_valid_float():
@@ -873,6 +900,29 @@ func _compare_definitions(def_value: String, event_value: String, condition: Str
 	return condition_met
 
 
+func characters_leave_all():
+	for p in $Portraits.get_children():
+		p.fade_out()
+
+
+func close_dialog_event():
+	var tween = Tween.new()
+	add_child(tween)
+	tween.interpolate_property($TextBubble, "modulate",
+		$TextBubble.modulate, Color('#00ffffff'), 1,
+		Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
+	tween.start()
+	var close_dialog_timer = Timer.new()
+	close_dialog_timer.connect("timeout", self, '_on_close_dialog_timeout')
+	add_child(close_dialog_timer)
+	close_dialog_timer.start(2)
+	characters_leave_all()
+
+
+func _on_close_dialog_timeout():
+	on_timeline_end()
+	queue_free()
+	
 ######								#####
 ######			DIALOGIC API		#####
 ######								#####
@@ -912,4 +962,3 @@ func dialogic_hide_text_bubble():
 	dialogic_disable_auto_play()
 	
 	
-

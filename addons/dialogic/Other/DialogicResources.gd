@@ -164,7 +164,34 @@ static func create_empty_file(path):
 	file.open(path, File.WRITE)
 	file.store_string('')
 	file.close()
-
+	
+	
+static func copy_file(path_from, path_to):
+	if (path_from == ''):
+		push_error("[Dialogic] Could not copy empty filename")
+		return ERR_FILE_BAD_PATH
+		
+	if (path_to == ''):
+		push_error("[Dialogic] Could not copy to empty filename")
+		return ERR_FILE_BAD_PATH
+	
+	var dir = Directory.new()
+	if (not dir.file_exists(path_from)):
+		push_error("[Dialogic] Could not copy file %s, File does not exists" % [ path_from ])
+		return ERR_FILE_NOT_FOUND
+		
+	if (dir.file_exists(path_to)):
+		push_error("[Dialogic] Could not copy file to %s, file already exists" % [ path_to ])
+		return ERR_ALREADY_EXISTS
+		
+	var error = dir.copy(path_from, path_to)
+	if (error):
+		push_error("[Dialogic] Error while copying %s to %s" % [ path_from, path_to ])
+		push_error(error)
+		return error
+		
+	return OK
+	pass
 
 # CONFIG UTIL
 
@@ -269,6 +296,10 @@ static func add_theme(filename: String):
 
 static func delete_theme(filename: String):
 	remove_file(get_path('THEME_DIR', filename))
+	
+	
+static func duplicate_theme(from_filename: String, to_filename: String):
+	copy_file(get_path('THEME_DIR', from_filename), get_path('THEME_DIR', to_filename))
 
 # SETTINGS
 # Can only be edited in the editor

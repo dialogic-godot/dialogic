@@ -22,17 +22,37 @@ v1.1 - WIP
 - Fixed a bug that prevented the deletion of Characters [[AnidemDex](https://github.com/AnidemDex)]
 - Fixed a bug that allowed you to overwrite the event on the theme preview dialog.
 - Added a folder icon to each section of the resource tree.
+- Greatly improved how the plugin is displayed in different display scales.
+- You can now filter resources from the main view [[ellogwen](https://github.com/ellogwen)]
+- You can now duplicate themes (from the context menu) [[ellogwen](https://github.com/ellogwen)]
 - Timeline:
   - New event `Call Node`: Call a Godot NodePath and a method name. In addition you can add arguments as well. The Timeline will execute those methods and wait for completion, if the method in question is async and/or yielding [[ellogwen](https://github.com/ellogwen)]
   - You now can drag and drop events into the timeline! [[ellogwen](https://github.com/ellogwen)]
+  - You can un select a selected event by clicking it [[ellogwen](https://github.com/ellogwen)]
+  - The `Scene Event` can now take other Scenes (`.tscn`) files as backgrounds. [[ellogwen](https://github.com/ellogwen)]
+  - The `If Condition` event can now use definition variables as values to compare against. [[ellogwen](https://github.com/ellogwen)]
+  - Fixed an indenting bug when removing events 
   - Shortcuts added! [[ellogwen](https://github.com/ellogwen)]
     - Selecting previous and next event in the timeline with `CTRL + UP` and `CTRL + DOWN`
     - Moving currently selected event up and down the timeline `ALT + UP` and `ALT + DOWN`
     - Remove the currently selected event node and selects the next/last event node `CTRL DELETE`
     - Create a new text event node below the currently selected and focus it's textbox to continue writing `CTRL T`
+- Theme Editor
+  - Refreshed the UI to make room for more properties for each section
+  - A reload of the preview dialog is performed when you change a property so you don't have to click the "preview changes" all the time
+  - Removed the limitation of only 100px for the padding of the dialog box
+  - Added a new option for changing the color modulation of the dialog background image
+  - Fixed a bug where the text alignment wasn't being shown on the preview
+  - Fixed a bug with the name label shadow
+  - Fixed a bug with the "auto color" option in game
 - Dialog node
   - Fixed a bug where Glossary Definitions plain text was being added to the name label.
-- Added an button in timeline inspector plugin to open the selected timeline in the editor. [[ellogwen](https://github.com/ellogwen)]
+  - Questions now properly show the theme text alignment.
+  - The close dialog now performs a fade-out animation.
+- Settings
+  - Added a new option to toggle the character "focus"/"dim" while speaking. 
+- Added a button in timeline inspector plugin to open the selected timeline in the editor. [[ellogwen](https://github.com/ellogwen)]
+- Special thanks to [Jowan-Spooner](https://github.com/Jowan-Spooner) for the QA
 
 To view previous changes [click here](https://github.com/coppolaemilio/dialogic/blob/main/CHANGELOG.md). 
 

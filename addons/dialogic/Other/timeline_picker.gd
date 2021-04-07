@@ -18,6 +18,11 @@ var updating = false
 func get_tooltip_text():
 	return "Click to select a Dialogic timeline.\nPress the tool button to directly switch to the editor"
 
+
+func _ready():
+	edit_button.icon = get_icon("Tools", "EditorIcons")
+
+
 func _init():
 	# setup controls
 	timelines_dropdown.rect_min_size.x = 80
@@ -25,8 +30,8 @@ func _init():
 	timelines_dropdown.clip_text = true
 	container.add_child(timelines_dropdown)
 	container.add_child(edit_button)
-	edit_button.hint_tooltip = "Edit Timeline"	
-	edit_button.icon = preload("res://addons/dialogic/Images/Tools.svg")
+	edit_button.flat = true
+	edit_button.hint_tooltip = "Edit Timeline"
 	edit_button.disabled = true
 	
 	# Add the container as a direct child

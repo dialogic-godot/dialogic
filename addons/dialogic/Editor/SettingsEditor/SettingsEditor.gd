@@ -7,7 +7,10 @@ onready var nodes = {
 	'remove_empty_messages': $VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2/HBoxContainer/RemoveEmptyMessages,
 	'auto_color_names': $VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2/HBoxContainer3/AutoColorNames,
 	'propagate_input': $VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2/HBoxContainer4/PropagateInput,
+	'dim_characters': $VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2/HBoxContainer5/DimCharacters,
 }
+
+
 func _ready():
 	update_data()
 	
@@ -16,6 +19,7 @@ func _ready():
 	nodes['remove_empty_messages'].connect('toggled', self, '_on_remove_empty_message_toggled')
 	nodes['auto_color_names'].connect('toggled', self, '_on_auto_color_names_toggled')
 	nodes['propagate_input'].connect('toggled', self, '_on_propagate_input_toggled')
+	nodes['dim_characters'].connect('toggled', self, '_on_dim_characters_toggled')
 
 
 func update_data():
@@ -33,6 +37,8 @@ func dialog_options(settings):
 		nodes['auto_color_names'].pressed = settings.get_value('dialog', 'auto_color_names')
 	if settings.has_section_key('dialog', 'propagate_input'):
 		nodes['propagate_input'].pressed = settings.get_value('dialog', 'propagate_input')
+	if settings.has_section_key('dialog', 'dim_characters'):
+		nodes['dim_characters'].pressed = settings.get_value('dialog', 'dim_characters')
 
 
 func refresh_themes(settings):
@@ -74,9 +80,13 @@ func _on_new_line_toggled(value):
 func _on_auto_color_names_toggled(value):
 	set_value('dialog', 'auto_color_names', value)
 
+
 func _on_propagate_input_toggled(value):
 	set_value('dialog', 'propagate_input', value)
 
+
+func _on_dim_characters_toggled(value):
+	set_value('dialog', 'dim_characters', value)
 
 # Reading and saving data to the settings file
 func set_value(section, key, value):

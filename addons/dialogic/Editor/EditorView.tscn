@@ -1,19 +1,16 @@
-[gd_scene load_steps=20 format=2]
+[gd_scene load_steps=17 format=2]
 
 [ext_resource path="res://addons/dialogic/Editor/EditorView.gd" type="Script" id=1]
 [ext_resource path="res://addons/dialogic/Editor/TimelineEditor/TimelineEditor.tscn" type="PackedScene" id=2]
-[ext_resource path="res://addons/dialogic/Images/Toolbar/add-timeline.svg" type="Texture" id=3]
-[ext_resource path="res://addons/dialogic/Images/Toolbar/add-character.svg" type="Texture" id=4]
-[ext_resource path="res://addons/dialogic/Images/Toolbar/add-theme.svg" type="Texture" id=5]
+[ext_resource path="res://addons/dialogic/Images/Toolbar/add-character.svg" type="Texture" id=3]
+[ext_resource path="res://addons/dialogic/Images/Toolbar/add-timeline.svg" type="Texture" id=4]
+[ext_resource path="res://addons/dialogic/Images/Toolbar/add-definition.svg" type="Texture" id=5]
 [ext_resource path="res://addons/dialogic/Editor/SettingsEditor/SettingsEditor.tscn" type="PackedScene" id=6]
 [ext_resource path="res://addons/dialogic/Editor/CharacterEditor/CharacterEditor.tscn" type="PackedScene" id=7]
 [ext_resource path="res://addons/dialogic/Editor/ThemeEditor/ThemeEditor.tscn" type="PackedScene" id=8]
-[ext_resource path="res://addons/dialogic/Images/open-icon.svg" type="Texture" id=9]
-[ext_resource path="res://addons/dialogic/Images/closed-icon.svg" type="Texture" id=10]
 [ext_resource path="res://addons/dialogic/Images/ActionCopy.svg" type="Texture" id=11]
 [ext_resource path="res://addons/dialogic/Editor/DefinitionEditor/DefinitionEditor.tscn" type="PackedScene" id=12]
-[ext_resource path="res://addons/dialogic/Images/Toolbar/add-definition.svg" type="Texture" id=13]
-[ext_resource path="res://addons/dialogic/Images/logo.png" type="Texture" id=14]
+[ext_resource path="res://addons/dialogic/Images/Toolbar/add-theme.svg" type="Texture" id=13]
 [ext_resource path="res://addons/dialogic/Images/Remove.svg" type="Texture" id=22]
 [ext_resource path="res://addons/dialogic/Images/Filesystem.svg" type="Texture" id=26]
 [ext_resource path="res://addons/dialogic/Editor/MasterTree/MasterTree.tscn" type="PackedScene" id=35]
@@ -36,10 +33,6 @@ size = Vector2( 16, 16 )
 [node name="EditorView" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = 8.0
-margin_top = 8.0
-margin_right = -8.0
-margin_bottom = -8.0
 rect_min_size = Vector2( 0, 200 )
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -50,7 +43,7 @@ __meta__ = {
 
 [node name="ToolBar" type="HBoxContainer" parent="."]
 anchor_right = 1.0
-margin_bottom = 30.0
+margin_bottom = 32.0
 custom_constants/separation = 0
 __meta__ = {
 "_edit_use_anchors_": false
@@ -58,119 +51,118 @@ __meta__ = {
 
 [node name="NewTimelineButton" type="Button" parent="ToolBar"]
 self_modulate = Color( 0.870588, 0.870588, 0.870588, 1 )
-margin_right = 34.0
-margin_bottom = 30.0
+margin_right = 28.0
+margin_bottom = 32.0
 hint_tooltip = "New Timeline"
 focus_mode = 0
-icon = ExtResource( 3 )
+icon = ExtResource( 4 )
 flat = true
 
 [node name="NewCharactersButton" type="ToolButton" parent="ToolBar"]
 self_modulate = Color( 0.870588, 0.870588, 0.870588, 1 )
-margin_left = 34.0
-margin_right = 68.0
-margin_bottom = 30.0
+margin_left = 28.0
+margin_right = 56.0
+margin_bottom = 32.0
 hint_tooltip = "New Character"
 focus_mode = 0
-icon = ExtResource( 4 )
+icon = ExtResource( 3 )
 
 [node name="NewDefinitionButton" type="Button" parent="ToolBar"]
 self_modulate = Color( 0.870588, 0.870588, 0.870588, 1 )
-margin_left = 68.0
-margin_right = 102.0
-margin_bottom = 30.0
+margin_left = 56.0
+margin_right = 84.0
+margin_bottom = 32.0
 hint_tooltip = "New Definition"
-focus_mode = 0
-icon = ExtResource( 13 )
-flat = true
-
-[node name="NewThemeButton" type="Button" parent="ToolBar"]
-self_modulate = Color( 0.870588, 0.870588, 0.870588, 1 )
-margin_left = 102.0
-margin_right = 136.0
-margin_bottom = 30.0
-hint_tooltip = "New Theme"
 focus_mode = 0
 icon = ExtResource( 5 )
 flat = true
 
+[node name="NewThemeButton" type="Button" parent="ToolBar"]
+self_modulate = Color( 0.870588, 0.870588, 0.870588, 1 )
+margin_left = 84.0
+margin_right = 112.0
+margin_bottom = 32.0
+hint_tooltip = "New Theme"
+focus_mode = 0
+icon = ExtResource( 13 )
+flat = true
+
 [node name="FoldTools" type="HBoxContainer" parent="ToolBar"]
 visible = false
-margin_left = 136.0
-margin_right = 271.0
-margin_bottom = 30.0
+margin_left = 112.0
+margin_right = 203.0
+margin_bottom = 32.0
 
 [node name="Label" type="Label" parent="ToolBar/FoldTools"]
-margin_top = 8.0
+margin_top = 9.0
 margin_right = 59.0
-margin_bottom = 22.0
+margin_bottom = 23.0
 text = "      Fold  "
 
-[node name="ButtonFold" type="Button" parent="ToolBar/FoldTools"]
+[node name="ButtonFold" type="ToolButton" parent="ToolBar/FoldTools"]
 margin_left = 63.0
-margin_right = 97.0
-margin_bottom = 30.0
-icon = ExtResource( 10 )
+margin_right = 75.0
+margin_bottom = 32.0
+icon = SubResource( 2 )
 align = 0
 
-[node name="ButtonUnfold" type="Button" parent="ToolBar/FoldTools"]
-margin_left = 101.0
-margin_right = 135.0
-margin_bottom = 30.0
-icon = ExtResource( 9 )
+[node name="ButtonUnfold" type="ToolButton" parent="ToolBar/FoldTools"]
+margin_left = 79.0
+margin_right = 91.0
+margin_bottom = 32.0
+icon = SubResource( 2 )
 align = 0
 
 [node name="Spacer" type="Control" parent="ToolBar"]
-margin_left = 136.0
-margin_right = 751.0
-margin_bottom = 30.0
+margin_left = 112.0
+margin_right = 832.0
+margin_bottom = 32.0
 size_flags_horizontal = 3
 
 [node name="Docs" type="ToolButton" parent="ToolBar"]
 self_modulate = Color( 0.870588, 0.870588, 0.870588, 1 )
-margin_left = 751.0
-margin_right = 861.0
-margin_bottom = 30.0
+margin_left = 832.0
+margin_right = 942.0
+margin_bottom = 32.0
 hint_tooltip = "Theme Editor"
 mouse_default_cursor_shape = 2
 text = "Online Docs"
 icon = SubResource( 2 )
 
-[node name="Logo" type="TextureRect" parent="ToolBar"]
-margin_left = 861.0
-margin_right = 981.0
-margin_bottom = 30.0
-rect_min_size = Vector2( 120, 0 )
-mouse_default_cursor_shape = 2
-texture = ExtResource( 14 )
-expand = true
-stretch_mode = 5
-
 [node name="Version" type="Label" parent="ToolBar"]
 self_modulate = Color( 1, 1, 1, 0.631373 )
-margin_left = 981.0
-margin_top = 8.0
-margin_right = 1008.0
-margin_bottom = 22.0
-text = "v1.1"
+margin_left = 942.0
+margin_top = 9.0
+margin_right = 1024.0
+margin_bottom = 23.0
+text = "Dialogic v1.1"
 
 [node name="MainPanel" type="HSplitContainer" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = 6.0
 margin_top = 38.0
-margin_right = -5.0
-margin_bottom = -5.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="MasterTree" parent="MainPanel" instance=ExtResource( 35 )]
+[node name="MasterTreeContainer" type="VBoxContainer" parent="MainPanel"]
+margin_right = 150.0
+margin_bottom = 562.0
+
+[node name="FilterMasterTreeEdit" type="LineEdit" parent="MainPanel/MasterTreeContainer"]
+margin_right = 150.0
+margin_bottom = 26.0
+clear_button_enabled = true
+right_icon = SubResource( 2 )
+placeholder_text = "Filter"
+
+[node name="MasterTree" parent="MainPanel/MasterTreeContainer" instance=ExtResource( 35 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_right = 180.0
-margin_bottom = 541.0
-rect_min_size = Vector2( 180, 0 )
+margin_top = 30.0
+margin_right = 150.0
+margin_bottom = 562.0
+rect_min_size = Vector2( 150, 0 )
 size_flags_vertical = 3
 
 [node name="TimelineEditor" parent="MainPanel" instance=ExtResource( 2 )]
@@ -194,15 +186,15 @@ margin_right = 1253.0
 margin_bottom = 661.0
 
 [node name="Empty" type="CenterContainer" parent="MainPanel"]
-margin_left = 192.0
-margin_right = 997.0
-margin_bottom = 541.0
+margin_left = 162.0
+margin_right = 1024.0
+margin_bottom = 562.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MainPanel/Empty"]
-margin_left = 262.0
-margin_top = 263.0
-margin_right = 542.0
-margin_bottom = 277.0
+margin_left = 291.0
+margin_top = 274.0
+margin_right = 571.0
+margin_bottom = 288.0
 
 [node name="Label" type="Label" parent="MainPanel/Empty/VBoxContainer"]
 margin_right = 280.0
@@ -234,7 +226,7 @@ margin_left = 171.799
 margin_top = 209.0
 margin_right = 267.799
 margin_bottom = 229.0
-items = [ "Show in File Manager", ExtResource( 26 ), 0, false, false, 0, 0, null, "", false, "Remove Theme", ExtResource( 22 ), 0, false, false, 1, 0, null, "", false ]
+items = [ "Show in File Manager", ExtResource( 26 ), 0, false, false, 0, 0, null, "", false, "Remove Theme", ExtResource( 22 ), 0, false, false, 1, 0, null, "", false, "Duplicate Theme", ExtResource( 11 ), 0, false, false, 2, 0, null, "", false ]
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -298,5 +290,3 @@ dialog_text = "Are you sure you want to remove this timeline?
 __meta__ = {
 "_edit_use_anchors_": false
 }
-
-[connection signal="gui_input" from="ToolBar/Logo" to="." method="_on_Logo_gui_input"]

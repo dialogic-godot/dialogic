@@ -18,7 +18,7 @@ func _ready():
 
 
 func _on_ImageButton_pressed():
-	editor_reference.godot_dialog("*.png, *.jpg, *.jpeg, *.tga, *.svg, *.svgz, *.bmp, *.webp;Image")
+	editor_reference.godot_dialog("*.png, *.jpg, *.jpeg, *.tga, *.svg, *.svgz, *.bmp, *.webp, *.tscn")
 	editor_reference.godot_dialog_connect(self, "_on_file_selected")
 
 
@@ -33,8 +33,8 @@ func load_data(data):
 
 func load_image(img_src):
 	event_data['background'] = img_src
-	if event_data['background'] != '':
-		$PanelContainer/VBoxContainer/HBoxContainer/LineEdit.text = event_data['background']
+	$PanelContainer/VBoxContainer/HBoxContainer/LineEdit.text = event_data['background']
+	if event_data['background'] != '' and not event_data['background'].ends_with('.tscn'):
 		$PanelContainer/VBoxContainer/TextureRect.texture = load(event_data['background'])
 		$PanelContainer/VBoxContainer/TextureRect.rect_min_size = Vector2(200,200)
 		preview = event_data['background']

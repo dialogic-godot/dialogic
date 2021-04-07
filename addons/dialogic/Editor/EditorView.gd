@@ -6,7 +6,7 @@ var editor_file_dialog # EditorFileDialog
 var file_picker_data: Dictionary = {'method': '', 'node': self}
 var current_editor_view: String = 'Master'
 var version_string: String 
-onready var master_tree = $MainPanel/MasterTree
+onready var master_tree = $MainPanel/MasterTreeContainer/MasterTree
 onready var timeline_editor = $MainPanel/TimelineEditor
 onready var character_editor = $MainPanel/CharacterEditor
 onready var definition_editor = $MainPanel/DefinitionEditor
@@ -27,6 +27,40 @@ func _ready():
 
 	master_tree.connect("editor_selected", self, 'on_master_tree_editor_selected')
 
+	
+	# Sizes
+	# This part of the code is a bit terrible. But there is no better way
+	# of doing this in Godot at the moment. I'm sorry.
+	var separation = get_constant("separation", "BoxContainer")
+	$MainPanel.margin_left = separation
+	$MainPanel.margin_right = separation * -1
+	$MainPanel.margin_bottom = separation * -1
+	$MainPanel.margin_top = 38
+	var modifier = ''
+	var _scale = get_constant("inspector_margin", "Editor")
+	_scale = _scale * 0.125
+	if _scale == 1:
+		$MainPanel.margin_top = 30
+	if _scale == 1.25:
+		modifier = '-1.25'
+		$MainPanel.margin_top = 37
+	if _scale == 1.5:
+		modifier = '-1.25'
+		$MainPanel.margin_top = 46
+	if _scale == 1.75:
+		modifier = '-1.25'
+		$MainPanel.margin_top = 53
+	if _scale == 2:
+		$MainPanel.margin_top = 59
+		modifier = '-2'
+	$ToolBar/NewTimelineButton.icon = load("res://addons/dialogic/Images/Toolbar/add-timeline" + modifier + ".svg")
+	$ToolBar/NewCharactersButton.icon = load("res://addons/dialogic/Images/Toolbar/add-character" + modifier + ".svg")
+	$ToolBar/NewDefinitionButton.icon = load("res://addons/dialogic/Images/Toolbar/add-definition" + modifier + ".svg")
+	$ToolBar/NewThemeButton.icon = load("res://addons/dialogic/Images/Toolbar/add-theme" + modifier + ".svg")
+	$ToolBar/NewThemeButton.icon = load("res://addons/dialogic/Images/Toolbar/add-theme" + modifier + ".svg")
+	
+	$ToolBar/FoldTools/ButtonFold.icon = get_icon("GuiTreeArrowRight", "EditorIcons")
+	$ToolBar/FoldTools/ButtonUnfold.icon = get_icon("GuiTreeArrowDown", "EditorIcons")
 	# Toolbar
 	$ToolBar/NewTimelineButton.connect('pressed', $MainPanel/TimelineEditor, 'new_timeline')
 	$ToolBar/NewCharactersButton.connect('pressed', $MainPanel/CharacterEditor, 'new_character')
@@ -55,7 +89,9 @@ func _ready():
 	var err = config.load("res://addons/dialogic/plugin.cfg")
 	if err == OK:
 		version_string = config.get_value("plugin", "version", "?")
-		$ToolBar/Version.text = 'v' + version_string
+		$ToolBar/Version.text = 'Dialogic v' + version_string
+		
+	$MainPanel/MasterTreeContainer/FilterMasterTreeEdit.right_icon = get_icon("Search", "EditorIcons")
 
 
 func on_master_tree_editor_selected(editor: String):
@@ -75,10 +111,10 @@ func _on_TimelinePopupMenu_id_pressed(id):
 func _on_RemoveTimelineConfirmation_confirmed():
 	var dir = Directory.new()
 	var target = $MainPanel/TimelineEditor.timeline_file
-	print('target: ', target)
+	#'target: ', target)
 	DialogicResources.delete_timeline(target)
-	$MainPanel/MasterTree.remove_selected()
-	$MainPanel/MasterTree.hide_all_editors()
+	$MainPanel/MasterTreeContainer/MasterTree.remove_selected()
+	$MainPanel/MasterTreeContainer/MasterTree.hide_all_editors()
 
 
 # Character context menu
@@ -95,6 +131,10 @@ func _on_ThemePopupMenu_id_pressed(id):
 		OS.shell_open(ProjectSettings.globalize_path(DialogicResources.get_path('THEME_DIR')))
 	if id == 1:
 		$RemoveThemeConfirmation.popup_centered()
+	if id == 2:
+		var filename = $MainPanel/MasterTreeContainer/MasterTree.get_selected().get_metadata(0)['file']
+		if (filename.begins_with('theme-')):
+			theme_editor.duplicate_theme(filename)
 
 
 # Definition context menu
@@ -108,22 +148,22 @@ func _on_DefinitionPopupMenu_id_pressed(id):
 func _on_RemoveDefinitionConfirmation_confirmed():
 	var target = $MainPanel/DefinitionEditor.current_definition['id']
 	DialogicResources.delete_default_definition(target)
-	$MainPanel/MasterTree.remove_selected()
-	$MainPanel/MasterTree.hide_all_editors()
+	$MainPanel/MasterTreeContainer/MasterTree.remove_selected()
+	$MainPanel/MasterTreeContainer/MasterTree.hide_all_editors()
 
 
 func _on_RemoveCharacterConfirmation_confirmed():
 	var filename = $MainPanel/CharacterEditor.opened_character_data['id']
 	DialogicResources.delete_character(filename)
-	$MainPanel/MasterTree.remove_selected()
-	$MainPanel/MasterTree.hide_all_editors()
+	$MainPanel/MasterTreeContainer/MasterTree.remove_selected()
+	$MainPanel/MasterTreeContainer/MasterTree.hide_all_editors()
 
 
 func _on_RemoveThemeConfirmation_confirmed():
-	var filename = $MainPanel/MasterTree.get_selected().get_metadata(0)['file']
+	var filename = $MainPanel/MasterTreeContainer/MasterTree.get_selected().get_metadata(0)['file']
 	DialogicResources.delete_theme(filename)
-	$MainPanel/MasterTree.remove_selected()
-	$MainPanel/MasterTree.hide_all_editors()
+	$MainPanel/MasterTreeContainer/MasterTree.remove_selected()
+	$MainPanel/MasterTreeContainer/MasterTree.hide_all_editors()
 
 
 # Godot dialog
@@ -155,12 +195,6 @@ func godot_dialog_connect(who, method_name):
 
 func _on_file_selected(path):
 	dprint(path)
-
-
-func _on_Logo_gui_input(event) -> void:
-	# I should probably replace this with an "About Dialogic" dialog
-	if event is InputEventMouseButton and event.button_index == 1:
-		OS.shell_open("https://github.com/coppolaemilio/dialogic")
 
 
 func dprint(what) -> void:

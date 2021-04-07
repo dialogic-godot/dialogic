@@ -75,8 +75,9 @@ margin_bottom = 28.0
 
 [node name="CustomLineEdit" parent="PanelContainer/VBoxContainer/Header" instance=ExtResource( 6 )]
 margin_left = 256.0
-margin_right = 304.0
+margin_right = 352.0
 margin_bottom = 28.0
+hint_tooltip = "you can enter a text-value, a number or you can enter the name of another definition to compare against."
 
 [node name="Preview" type="Label" parent="PanelContainer/VBoxContainer/Header"]
 margin_left = 308.0

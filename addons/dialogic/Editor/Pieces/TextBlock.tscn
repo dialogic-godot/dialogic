@@ -129,4 +129,5 @@ size_flags_vertical = 3
 show_line_numbers = true
 smooth_scrolling = true
 wrap_enabled = true
+
 [connection signal="text_changed" from="PanelContainer/VBoxContainer/TextEdit" to="." method="_on_TextEdit_text_changed"]

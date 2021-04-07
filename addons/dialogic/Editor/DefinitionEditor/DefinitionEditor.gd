@@ -2,7 +2,7 @@ tool
 extends ScrollContainer
 
 var editor_reference
-onready var master_tree = get_node('../MasterTree')
+onready var master_tree = get_node('../MasterTreeContainer/MasterTree')
 var current_definition = null
 
 onready var nodes = {
