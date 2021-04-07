@@ -1,168 +1,117 @@
 tool
-extends Control
+extends VBoxContainer
 
-var debug_mode: bool = true # For printing info
-var editor_file_dialog # EditorFileDialog
-var file_picker_data: Dictionary = {'method': '', 'node': self}
-var current_editor_view: String = 'Master'
-var version_string: String 
-onready var master_tree = $MainPanel/MasterTree
-onready var timeline_editor = $MainPanel/TimelineEditor
-onready var character_editor = $MainPanel/CharacterEditor
-onready var definition_editor = $MainPanel/DefinitionEditor
-onready var theme_editor = $MainPanel/ThemeEditor
-onready var settings_editor = $MainPanel/SettingsEditor
+const DialogicDB = preload("res://addons/dialogic/Core/DialogicDatabase.gd")
 
+enum EditorView {
+	BLANK=-1, 
+	DEFAULT, 
+	SETTINGS, 
+	TIMELINE, 
+	CHARACTER, 
+	DEFINITION,
+	THEME,
+	}
 
-func _ready():
-	# Adding file dialog to get used by pieces
-	editor_file_dialog = EditorFileDialog.new()
-	add_child(editor_file_dialog)
+export(NodePath) var SettingsView_path:NodePath
+export(NodePath) var DefaultView_path:NodePath
+export(NodePath) var BlankView_path:NodePath
+export(NodePath) var TimelineView_path:NodePath
+export(NodePath) var CharacterView_path:NodePath
+export(NodePath) var DefinitionView_path:NodePath
+export(NodePath) var ThemeView_path:NodePath
 
-	# Setting references to this node
-	timeline_editor.editor_reference = self
-	character_editor.editor_reference = self
-	definition_editor.editor_reference = self
-	theme_editor.editor_reference = self
+export(NodePath) var TimelineContainer_path:NodePath
+export(NodePath) var CharacterContainer_path:NodePath
+export(NodePath) var DefinitionContainer_path:NodePath
+export(NodePath) var ThemeContainer_path:NodePath
 
-	master_tree.connect("editor_selected", self, 'on_master_tree_editor_selected')
+export(NodePath) var NewTimelinePopup_path:NodePath
+export(NodePath) var NewCharacterPopup_path:NodePath
 
-	# Toolbar
-	$ToolBar/NewTimelineButton.connect('pressed', $MainPanel/TimelineEditor, 'new_timeline')
-	$ToolBar/NewCharactersButton.connect('pressed', $MainPanel/CharacterEditor, 'new_character')
-	$ToolBar/NewThemeButton.connect('pressed', $MainPanel/ThemeEditor, 'new_theme')
-	$ToolBar/NewDefinitionButton.connect('pressed', $MainPanel/DefinitionEditor, 'new_definition')
-	$ToolBar/Docs.icon = get_icon("Instance", "EditorIcons")
-	$ToolBar/Docs.connect('pressed', OS, "shell_open", ["https://dialogic.coppolaemilio.com"])
-	$ToolBar/FoldTools/ButtonFold.connect('pressed', timeline_editor, 'fold_all_nodes')
-	$ToolBar/FoldTools/ButtonUnfold.connect('pressed', timeline_editor, 'unfold_all_nodes')
+var _current_view:Dictionary = {
+	"state":EditorView.DEFAULT,
+	"reference":null
+	} setget _set_current_view
+
+onready var settings_view_node := get_node_or_null(SettingsView_path)
+onready var default_view_node := get_node_or_null(DefaultView_path)
+onready var blank_view_node := get_node_or_null(BlankView_path)
+onready var timeline_view_node := get_node_or_null(TimelineView_path)
+onready var character_view_node := get_node_or_null(CharacterView_path)
+onready var definition_view_node := get_node_or_null(DefinitionView_path)
+onready var theme_view_node := get_node_or_null(ThemeView_path)
+
+onready var timeline_container_node := get_node_or_null(TimelineContainer_path)
+onready var character_container_node := get_node_or_null(CharacterContainer_path)
+onready var definition_container_node := get_node_or_null(DefinitionContainer_path)
+onready var theme_container_node := get_node_or_null(ThemeContainer_path)
+
+onready var timeline_popup_node := get_node_or_null(NewTimelinePopup_path)
+onready var character_popup_node := get_node_or_null(NewCharacterPopup_path)
+
+func _ready() -> void:
+	self._current_view = {"state":EditorView.DEFAULT, "reference":default_view_node}
+	timeline_container_node.tree_resource = DialogicDB.Timelines.get_database()
+	character_container_node.tree_resource = DialogicDB.Characters.get_database()
+
+func _hide_all_views_except(who) -> void:
+	var view_nodes = [
+		blank_view_node, 
+		default_view_node, 
+		settings_view_node, 
+		timeline_view_node,
+		character_view_node,
+		]
+	
+	for view_node in view_nodes:
+		if view_node == who:
+			view_node.visible = true
+			continue
+		view_node.visible = false
+	
+
+func _set_current_view(view:Dictionary):
+	_current_view["state"] = view.get("state", EditorView.BLANK)
+	_current_view["reference"] = view.get("reference", blank_view_node)
 	
 	
-	# Connecting context menus
-	$TimelinePopupMenu.connect('id_pressed', self, '_on_TimelinePopupMenu_id_pressed')
-	$CharacterPopupMenu.connect('id_pressed', self, '_on_CharacterPopupMenu_id_pressed')
-	$ThemePopupMenu.connect('id_pressed', self, '_on_ThemePopupMenu_id_pressed')
-	$DefinitionPopupMenu.connect('id_pressed', self, '_on_DefinitionPopupMenu_id_pressed')
-	
-	#Connecting confirmation menus
-	$RemoveTimelineConfirmation.connect('confirmed', self, '_on_RemoveTimelineConfirmation_confirmed')
-	$RemoveCharacterConfirmation.connect('confirmed', self, '_on_RemoveCharacterConfirmation_confirmed')
-	$RemoveThemeConfirmation.connect('confirmed', self, '_on_RemoveThemeConfirmation_confirmed')
-	$RemoveDefinitionConfirmation.connect('confirmed', self, '_on_RemoveDefinitionConfirmation_confirmed')
-	
-	# Loading the version number
-	var config = ConfigFile.new()
-	var err = config.load("res://addons/dialogic/plugin.cfg")
-	if err == OK:
-		version_string = config.get_value("plugin", "version", "?")
-		$ToolBar/Version.text = 'v' + version_string
+	match _current_view["state"]:
+		
+		EditorView.SETTINGS:
+			blank_view_node.visible = false
+			default_view_node.visible = false
+			if settings_view_node.visible:
+				_current_view["state"] = EditorView.DEFAULT
+				_current_view["reference"] = default_view_node
+				_set_current_view(_current_view)
+			else:
+				settings_view_node.visible = true
+		
+		var _anything_else:
+			_hide_all_views_except(_current_view["reference"])
 
 
-func on_master_tree_editor_selected(editor: String):
-	$ToolBar/FoldTools.visible = editor == 'timeline'
+func _on_SettingsButton_pressed() -> void:
+	self._current_view = {"state":EditorView.SETTINGS, "reference":settings_view_node}
 
 
-# Timeline context menu
-func _on_TimelinePopupMenu_id_pressed(id):
-	if id == 0: # View files
-		OS.shell_open(ProjectSettings.globalize_path(DialogicResources.get_path('TIMELINE_DIR')))
-	if id == 1: # Copy to clipboard
-		OS.set_clipboard($MainPanel/TimelineEditor.timeline_name)
-	if id == 2: # Remove
-		$RemoveTimelineConfirmation.popup_centered()
+func _on_NewTimelineButton_pressed() -> void:
+	self._current_view = {}
+	(timeline_popup_node as ConfirmationDialog).popup_centered_minsize()
+	timeline_container_node.tree_resource = DialogicDB.Timelines.get_database()
+	timeline_container_node.force_update()
 
 
-func _on_RemoveTimelineConfirmation_confirmed():
-	var dir = Directory.new()
-	var target = $MainPanel/TimelineEditor.timeline_file
-	print('target: ', target)
-	DialogicResources.delete_timeline(target)
-	$MainPanel/MasterTree.remove_selected()
-	$MainPanel/MasterTree.hide_all_editors()
+func _on_NewTimelinePopup_confirmed() -> void:
+	var _name = timeline_popup_node.text_node.text
+	DialogicDB.Timelines.add(_name)
 
 
-# Character context menu
-func _on_CharacterPopupMenu_id_pressed(id):
-	if id == 0:
-		OS.shell_open(ProjectSettings.globalize_path(DialogicResources.get_path('CHAR_DIR')))
-	if id == 1:
-		$RemoveCharacterConfirmation.popup_centered()
+func _on_NewCharacterButton_pressed() -> void:
+	self._current_view = {}
+	(character_popup_node as ConfirmationDialog).popup_centered_minsize()
 
 
-# Theme context menu
-func _on_ThemePopupMenu_id_pressed(id):
-	if id == 0:
-		OS.shell_open(ProjectSettings.globalize_path(DialogicResources.get_path('THEME_DIR')))
-	if id == 1:
-		$RemoveThemeConfirmation.popup_centered()
-
-
-# Definition context menu
-func _on_DefinitionPopupMenu_id_pressed(id):
-	if id == 0:
-		OS.shell_open(ProjectSettings.globalize_path(DialogicResources.get_path('DEFAULT_DEFINITIONS_FILE')))
-	if id == 1:
-		$RemoveDefinitionConfirmation.popup_centered()
-
-
-func _on_RemoveDefinitionConfirmation_confirmed():
-	var target = $MainPanel/DefinitionEditor.current_definition['id']
-	DialogicResources.delete_default_definition(target)
-	$MainPanel/MasterTree.remove_selected()
-	$MainPanel/MasterTree.hide_all_editors()
-
-
-func _on_RemoveCharacterConfirmation_confirmed():
-	var filename = $MainPanel/CharacterEditor.opened_character_data['id']
-	DialogicResources.delete_character(filename)
-	$MainPanel/MasterTree.remove_selected()
-	$MainPanel/MasterTree.hide_all_editors()
-
-
-func _on_RemoveThemeConfirmation_confirmed():
-	var filename = $MainPanel/MasterTree.get_selected().get_metadata(0)['file']
-	DialogicResources.delete_theme(filename)
-	$MainPanel/MasterTree.remove_selected()
-	$MainPanel/MasterTree.hide_all_editors()
-
-
-# Godot dialog
-func godot_dialog(filter):
-	editor_file_dialog.mode = EditorFileDialog.MODE_OPEN_FILE
-	editor_file_dialog.clear_filters()
-	editor_file_dialog.popup_centered_ratio(0.75)
-	editor_file_dialog.add_filter(filter)
-	return editor_file_dialog
-
-
-func godot_dialog_connect(who, method_name):
-	var signal_name = "file_selected"
-	# Checking if previous connection exists, if it does, disconnect it.
-	if editor_file_dialog.is_connected(
-		signal_name,
-		file_picker_data['node'],
-		file_picker_data['method']):
-			editor_file_dialog.disconnect(
-				signal_name,
-				file_picker_data['node'],
-				file_picker_data['method']
-			)
-	# Connect new signal
-	editor_file_dialog.connect(signal_name, who, method_name, [who])
-	file_picker_data['method'] = method_name
-	file_picker_data['node'] = who
-
-
-func _on_file_selected(path):
-	dprint(path)
-
-
-func _on_Logo_gui_input(event) -> void:
-	# I should probably replace this with an "About Dialogic" dialog
-	if event is InputEventMouseButton and event.button_index == 1:
-		OS.shell_open("https://github.com/coppolaemilio/dialogic")
-
-
-func dprint(what) -> void:
-	if debug_mode:
-		print(what)
+func _on_NewCharacterPopup_confirmed() -> void:
+	print("NewCharacter: ", character_popup_node.text_node.text)

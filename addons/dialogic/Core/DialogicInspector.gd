@@ -1,0 +1,4 @@
+tool
+extends EditorInspectorPlugin
+
+
