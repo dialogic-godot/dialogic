@@ -780,7 +780,7 @@ func load_theme(filename):
 	$TextBubble/NameLabel/TextureRect.visible = theme.get_value('name', 'image_visible', false)
 	$TextBubble/NameLabel/TextureRect.texture = load(theme.get_value('name','image', "res://addons/dialogic/Images/background/background-2.png"))
 	var name_shadow_offset = theme.get_value('name', 'shadow_offset', Vector2(2,2))
-	if theme.get_value('name', 'shadow_visible', false):
+	if theme.get_value('name', 'shadow_visible', true):
 		$TextBubble/NameLabel.set('custom_colors/font_color_shadow', Color(theme.get_value('name', 'shadow', '#9e000000')))
 		$TextBubble/NameLabel.set('custom_constants/shadow_offset_x', name_shadow_offset.x)
 		$TextBubble/NameLabel.set('custom_constants/shadow_offset_y', name_shadow_offset.y)
