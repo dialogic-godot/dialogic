@@ -310,7 +310,8 @@ func update_name(character, color: Color = Color.white) -> void:
 		$TextBubble/NameLabel.rect_size = Vector2(-1, 40)
 		# Setting the color and text
 		$TextBubble/NameLabel.text = parsed_name
-		$TextBubble/NameLabel.set('custom_colors/font_color', color)
+		if current_theme.get_value('name', 'auto_color', true):
+			$TextBubble/NameLabel.set('custom_colors/font_color', color)
 	else:
 		$TextBubble/NameLabel.visible = false
 
