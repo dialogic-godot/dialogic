@@ -1,6 +1,11 @@
 tool
 extends Tree
 
+# Takes care about the tree behaviour
+# Here is where the magic is done
+
+const DialogicUtil = preload("res://addons/dialogic/Core/DialogicUtil.gd")
+
 var _base_resource = null
 
 var root
@@ -12,38 +17,62 @@ func _ready() -> void:
 	if _base_resource:
 		update_tree()
 
+func _gui_input(event: InputEvent) -> void:
+	if event is InputEventKey and event.scancode == KEY_DELETE and not event.echo:
+		if not event.pressed and get_selected():
+			remove_item(get_selected())
+
+
 func update_tree() -> void:
 	if not _base_resource:
-		print_debug("No base resource")
+		DialogicUtil.print("No base resource")
 		return
+
 	if get_root():
 		get_root().free()
+		clear()
 		root = create_item()
 	
 	for resource in _base_resource.resources:
-		var f = File.new()
-		if not f.file_exists(resource):
-			# I hate when the resource_path doesn't exist
-			# this prevents that loader doesn't load empty strings
-			continue
-		
-		var _resource = ResourceLoader.load(resource, "")
-		
-		if not _resource:
-			print("no resource")
-			continue
-		
-		if resource is EncodedObjectAsID:
-			_resource = instance_from_id(resource.object_id)
-			print("get resource by id: ", _resource)
-		
-		if not is_instance_valid(_resource):
-			print("instance is not valid")
-			continue
-		
-		var _item = create_item(root)
-		_item.set_text(0, _resource.resource_path)
+		create_tree_item(resource)
 
+
+func create_tree_item(with_resource)->void:
+	DialogicUtil.print("Creating a new tree item with:")
+	var f = File.new()
+	if not f.file_exists(with_resource):
+		# I hate when the resource_path doesn't exist
+		# this prevents that loader doesn't load empty strings
+		DialogicUtil.print(["The resource doesn't exist", with_resource])
+		return
+	
+	var _resource = ResourceLoader.load(with_resource, "")
+	
+	if not _resource:
+		DialogicUtil.print("no resource")
+		return
+	
+	if _resource is EncodedObjectAsID:
+		_resource = instance_from_id(_resource.object_id)
+		DialogicUtil.print(["get resource by id:", _resource])
+	
+	if not is_instance_valid(_resource):
+		DialogicUtil.print(["instance is not valid",_resource])
+		return
+	
+	var _item = create_item()
+	_item.set_text(0, _resource.get_good_name(_resource.resource_path))
+	_item.set_tooltip(0, _resource.resource_path.get_file())
+	_item.set_metadata(0, _resource.resource_path)
+	DialogicUtil.print("Tree item created")
+
+func remove_item(item:TreeItem = null):
+	if not item:
+		return
+	DialogicUtil.print(["Attempt to delete item", item.get_metadata(0)])
+
+func rename_item(item:TreeItem = null):
+	item.set_editable(0, true)
 
 func set_base(resource:Resource):
 	_base_resource = resource

@@ -14,8 +14,7 @@ class _DB:
 		pass
 
 
-class Timelines:
-	extends _DB
+class Timelines extends _DB:
 	
 	static func get_database() -> Resource:
 		var _db = ResourceLoader.load(
@@ -38,11 +37,21 @@ class Timelines:
 		get_database().add(file_path)
 
 
-class Characters:
-	extends _DB
+class Characters extends _DB:
 	
 	static func get_database() -> Resource:
 		var _db = ResourceLoader.load(
 			DialogicResources.CHARACTERDB_PATH,""
 		)
 		return _db
+
+
+class Definitions extends _DB:
+	pass
+
+class Themes extends _DB:
+	pass
+
+static func get_editor_configuration() -> Resource:
+	var _config = load(DialogicResources.CONFIGURATION_PATH)
+	return _config

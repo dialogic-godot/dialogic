@@ -1,19 +1,60 @@
-[gd_scene format=2]
+[gd_scene load_steps=3 format=2]
 
-[node name="TimelineEditorView" type="Control"]
+[ext_resource path="res://addons/dialogic/Editor/Views/timeline_editor_view.gd" type="Script" id=1]
+[ext_resource path="res://addons/dialogic/assets/Themes/styleboxflat_title_header.tres" type="StyleBox" id=2]
+
+[node name="TimelineEditorView" type="VBoxContainer"]
 anchor_right = 1.0
 anchor_bottom = 1.0
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+margin_right = 1024.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 0, 32 )
+custom_styles/panel = ExtResource( 2 )
+
+[node name="Label" type="Label" parent="PanelContainer"]
+margin_left = 463.0
+margin_top = 9.0
+margin_right = 560.0
+margin_bottom = 23.0
+size_flags_horizontal = 4
+text = "Timeline Editor"
+
+[node name="TimelineEditorView" type="VSplitContainer" parent="."]
+margin_top = 36.0
+margin_right = 1024.0
+margin_bottom = 600.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Panel" type="Panel" parent="."]
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_top = -72.0
+[node name="ScrollContainer" type="ScrollContainer" parent="TimelineEditorView"]
+margin_right = 1024.0
+margin_bottom = 464.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 5.0
+follow_focus = true
+scroll_horizontal_enabled = false
+
+[node name="VBoxContainer" type="VBoxContainer" parent="TimelineEditorView/ScrollContainer"]
+margin_right = 1024.0
+margin_bottom = 464.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="EventsPanel" type="Panel" parent="TimelineEditorView"]
+margin_top = 476.0
+margin_right = 1024.0
+margin_bottom = 564.0
+size_flags_vertical = 3
 __meta__ = {
 "_edit_use_anchors_": false
 }

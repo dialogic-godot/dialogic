@@ -1,6 +1,6 @@
 tool
-extends Resource
 class_name DialogicTimelineResource
+extends Resource
 
 export(Array, Resource) var events:Array = []
 
@@ -26,3 +26,17 @@ func go_to_next_event(caller):
 		caller.queue_free()
 	else:
 		start(caller)
+
+func get_good_name(with_name:String="") -> String:
+	var _good_name = with_name
+	
+	if not _good_name:
+		_good_name = resource_name if resource_name else resource_path
+	else:
+		if _good_name.begins_with("res://"):
+			_good_name = _good_name.replace("res://", "")
+		if _good_name.ends_with(".tres"):
+			_good_name = _good_name.replace(".tres", "")
+		_good_name = _good_name.capitalize()
+	
+	return _good_name

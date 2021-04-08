@@ -1,10 +1,10 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=7 format=2]
 
-[ext_resource path="res://addons/dialogic/Images/open-icon.svg" type="Texture" id=1]
+[ext_resource path="res://addons/dialogic/assets/Images/open-icon.svg" type="Texture" id=1]
 [ext_resource path="res://addons/dialogic/Editor/CategoryContainer/CategoryContainer.gd" type="Script" id=2]
 [ext_resource path="res://addons/dialogic/Editor/CategoryContainer/TreeView/TreeView.gd" type="Script" id=3]
-
-
+[ext_resource path="res://addons/dialogic/assets/Images/Remove.svg" type="Texture" id=4]
+[ext_resource path="res://addons/dialogic/assets/Images/Rename.svg" type="Texture" id=5]
 
 [sub_resource type="StyleBoxFlat" id=1]
 content_margin_left = 4.0
@@ -62,9 +62,32 @@ margin_bottom = 36.0
 
 [node name="Tree" type="Tree" parent="Control"]
 visible = false
-margin_top = 42.0
+margin_top = 40.0
 margin_right = 259.0
 margin_bottom = 182.0
 size_flags_vertical = 3
+allow_reselect = true
+allow_rmb_select = true
+hide_root = true
 script = ExtResource( 3 )
+
+[node name="PopupMenu" type="PopupMenu" parent="."]
+margin_left = 4.0
+margin_top = 2.0
+margin_right = 263.0
+margin_bottom = 184.0
+items = [ "Rename Item", ExtResource( 5 ), 0, false, true, 0, 0, null, "", false, "", null, 0, false, true, 1, 0, null, "", true, "Remove Item", ExtResource( 4 ), 0, false, false, 2, 0, null, "", false ]
+
+[node name="ConfirmationDialog" type="ConfirmationDialog" parent="."]
+margin_right = 181.0
+margin_bottom = 59.5
+rect_min_size = Vector2( 170, 59.5 )
+popup_exclusive = true
+window_title = "Por favor, Confirma..."
+dialog_text = "Estas seguro de que quieres eliminar este elemento?
+(No se puede deshacer)"
 [connection signal="pressed" from="Control/HBoxContainer/FoldButton" to="." method="_on_FoldButton_pressed"]
+[connection signal="item_rmb_selected" from="Control/Tree" to="." method="_on_Tree_item_rmb_selected"]
+[connection signal="item_selected" from="Control/Tree" to="." method="_on_Tree_item_selected"]
+[connection signal="id_pressed" from="PopupMenu" to="." method="_on_PopupMenu_id_pressed"]
+[connection signal="confirmed" from="ConfirmationDialog" to="." method="_on_ConfirmationDialog_confirmed"]

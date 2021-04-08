@@ -1,5 +1,6 @@
 tool
 
+const DialogicDB = preload("res://addons/dialogic/Core/DialogicDatabase.gd")
 
 class Error:
 	const DIALOGIC_ERROR = "[Dialogic Error]"
@@ -19,8 +20,11 @@ class Error:
 
 
 static func print(what) -> void:
+	if not DialogicDB.get_editor_configuration().editor_debug_mode:
+		return
+	
 	var _info = "[Dialogic]"
 	match typeof(what):
 		var anything_else:
 			print("{mark} {info}".format({"mark":_info, "info":what}))
-	pass
+

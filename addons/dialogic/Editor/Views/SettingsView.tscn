@@ -1,4 +1,7 @@
-[gd_scene format=2]
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://addons/dialogic/assets/Themes/styleboxflat_title_header.tres" type="StyleBox" id=1]
+[ext_resource path="res://addons/dialogic/Editor/Views/settings_view.gd" type="Script" id=2]
 
 [node name="SettingsView" type="MarginContainer"]
 anchor_right = 1.0
@@ -7,9 +10,11 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_constants/margin_right = 4
 custom_constants/margin_top = 8
+script = ExtResource( 2 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
+DisplayEditorDebug_path = NodePath("VBoxContainer/Content/VBoxContainer2/DisplayEditorDebugButton")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 margin_top = 8.0
@@ -18,49 +23,71 @@ margin_bottom = 600.0
 
 [node name="Header" type="PanelContainer" parent="VBoxContainer"]
 margin_right = 1020.0
-margin_bottom = 28.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 0, 32 )
+custom_styles/panel = ExtResource( 1 )
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/Header"]
-margin_left = 7.0
-margin_top = 7.0
-margin_right = 1013.0
-margin_bottom = 21.0
+margin_left = 2.0
+margin_top = 2.0
+margin_right = 1018.0
+margin_bottom = 30.0
 
 [node name="Left" type="HBoxContainer" parent="VBoxContainer/Header/HBoxContainer"]
-margin_right = 332.0
-margin_bottom = 14.0
+margin_right = 336.0
+margin_bottom = 28.0
 size_flags_horizontal = 3
 
 [node name="Center" type="HBoxContainer" parent="VBoxContainer/Header/HBoxContainer"]
-margin_left = 336.0
-margin_right = 669.0
-margin_bottom = 14.0
+margin_left = 340.0
+margin_right = 676.0
+margin_bottom = 28.0
 size_flags_horizontal = 3
 
 [node name="Label" type="Label" parent="VBoxContainer/Header/HBoxContainer/Center"]
-margin_left = 121.0
-margin_right = 212.0
-margin_bottom = 14.0
+margin_left = 122.0
+margin_top = 7.0
+margin_right = 213.0
+margin_bottom = 21.0
 size_flags_horizontal = 6
 text = "Settings Menu"
 
 [node name="Right" type="HBoxContainer" parent="VBoxContainer/Header/HBoxContainer"]
-margin_left = 673.0
-margin_right = 1006.0
-margin_bottom = 14.0
+margin_left = 680.0
+margin_right = 1016.0
+margin_bottom = 28.0
 size_flags_horizontal = 3
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
-margin_top = 32.0
+[node name="Content" type="HBoxContainer" parent="VBoxContainer"]
+margin_top = 36.0
 margin_right = 1020.0
-margin_bottom = 574.0
+margin_bottom = 568.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer"]
-margin_bottom = 542.0
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/Content"]
+margin_right = 168.0
+margin_bottom = 532.0
+
+[node name="Label" type="Label" parent="VBoxContainer/Content/VBoxContainer"]
+margin_right = 168.0
+margin_bottom = 14.0
+text = "Display debug information"
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="VBoxContainer/Content"]
+margin_left = 172.0
+margin_right = 196.0
+margin_bottom = 532.0
+
+[node name="DisplayEditorDebugButton" type="CheckBox" parent="VBoxContainer/Content/VBoxContainer2"]
+margin_right = 24.0
+margin_bottom = 24.0
+pressed = true
 
 [node name="Footer" type="PanelContainer" parent="VBoxContainer"]
-margin_top = 578.0
+margin_top = 572.0
 margin_right = 1020.0
 margin_bottom = 592.0
+rect_min_size = Vector2( 8, 20 )
+custom_styles/panel = ExtResource( 1 )
+[connection signal="toggled" from="VBoxContainer/Content/VBoxContainer2/DisplayEditorDebugButton" to="." method="_on_DisplayEditorDebugButton_pressed"]

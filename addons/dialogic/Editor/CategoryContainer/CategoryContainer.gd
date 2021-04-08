@@ -1,20 +1,32 @@
 tool
 extends PanelContainer
+# Takes care abour displaying itself and managing the tree,
+# but no tree items. Refer to the tree for that
 
-const MIN_SIZE = Vector2(0,140)
+signal tree_item_selected(tree_item)
+
+const DialogicUtil = preload("res://addons/dialogic/Core/DialogicUtil.gd")
+
 const MAX_SIZE = Vector2(0,512)
 
 var tree_resource:Resource = null setget _set_tree_resource
+var min_size = Vector2(0, 50)
 
 onready var tree_node:Tree = $Control/Tree
+onready var popup_menu_node:PopupMenu = $PopupMenu
+onready var confirmation_node:ConfirmationDialog = $ConfirmationDialog
 
 func force_update() -> void:
 	tree_node.update_tree()
 
 func show_category() -> void:
 	tree_node.visible = true
-	rect_min_size = Vector2(rect_min_size.x, MIN_SIZE.y)
-	size_flags_vertical = SIZE_EXPAND_FILL
+	min_size = Vector2(0,50)
+	if tree_node.get_root().get_children():
+		min_size.y = _explore_tree_recursively(tree_node.get_root().get_children(), 50)
+	rect_min_size = Vector2(rect_min_size.x, min_size.y)
+#	rect_min_size = Vector2(rect_min_size.x, MIN_SIZE.y)
+#	size_flags_vertical = SIZE_EXPAND_FILL
 
 
 func hide_category() -> void:
@@ -35,9 +47,44 @@ func _set_tree_resource(_resource:Resource):
 	tree_node.set_base(_resource)
 
 
+func _explore_tree_recursively(from:TreeItem, with_val:int):
+	DialogicUtil.print("Recursion with val: {v}".format({"v":with_val}))
+	if from.get_children():
+		_explore_tree_recursively(from.get_children(), with_val*2)
+	elif from.get_next():
+		_explore_tree_recursively(from.get_next(), with_val*2)
+	else:
+		return with_val*2
+
+
 func _on_FoldButton_pressed() -> void:
 	if tree_node.visible:
 		hide_category()
 	else:
 		show_category()
 		tree_node.update_tree()
+
+# Note: I hate this implementation, but its the less
+# breaking and scalable implementation
+
+func _on_Tree_item_rmb_selected(position: Vector2) -> void:
+	var _item:TreeItem = tree_node.get_selected()
+	var mouse_pos = get_global_mouse_position()
+	var rect = Rect2(mouse_pos, Vector2(60, 60))
+	popup_menu_node.popup(rect)
+
+
+func _on_PopupMenu_id_pressed(id: int) -> void:
+	match id:
+		0:
+			tree_node.rename_item(tree_node.get_selected())
+		2:
+			confirmation_node.popup_centered_minsize()
+
+
+func _on_ConfirmationDialog_confirmed() -> void:
+	tree_node.remove_item(tree_node.get_selected())
+
+
+func _on_Tree_item_selected() -> void:
+	emit_signal("tree_item_selected", tree_node.get_selected())

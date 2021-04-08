@@ -4,8 +4,11 @@
 script/source = "extends Resource
 
 export(bool) var editor_debug_mode = false
+
+func save(path):
+	ResourceSaver.save(path, self)
 "
 
 [resource]
 script = SubResource( 1 )
-editor_debug_mode = false
+editor_debug_mode = true

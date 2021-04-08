@@ -1,6 +1,7 @@
 tool
 extends VBoxContainer
 
+const DialogicUtil = preload("res://addons/dialogic/Core/DialogicUtil.gd")
 const DialogicDB = preload("res://addons/dialogic/Core/DialogicDatabase.gd")
 
 enum EditorView {
@@ -62,6 +63,7 @@ func _hide_all_views_except(who) -> void:
 		settings_view_node, 
 		timeline_view_node,
 		character_view_node,
+		theme_view_node,
 		]
 	
 	for view_node in view_nodes:
@@ -74,6 +76,7 @@ func _hide_all_views_except(who) -> void:
 func _set_current_view(view:Dictionary):
 	_current_view["state"] = view.get("state", EditorView.BLANK)
 	_current_view["reference"] = view.get("reference", blank_view_node)
+	DialogicUtil.print(["Changing view to:", _current_view["reference"].name])
 	
 	
 	match _current_view["state"]:
@@ -81,6 +84,9 @@ func _set_current_view(view:Dictionary):
 		EditorView.SETTINGS:
 			blank_view_node.visible = false
 			default_view_node.visible = false
+			timeline_view_node.visible = false
+			character_view_node.visible = false
+			theme_view_node.visible = false
 			if settings_view_node.visible:
 				_current_view["state"] = EditorView.DEFAULT
 				_current_view["reference"] = default_view_node
@@ -114,4 +120,11 @@ func _on_NewCharacterButton_pressed() -> void:
 
 
 func _on_NewCharacterPopup_confirmed() -> void:
-	print("NewCharacter: ", character_popup_node.text_node.text)
+	DialogicUtil.print(["NewCharacter: ", character_popup_node.text_node.text])
+
+
+func _on_TimelinesContainer_tree_item_selected(tree_item:TreeItem) -> void:
+	var _res_path = tree_item.get_metadata(0)
+	DialogicUtil.print(["Using resource:", _res_path])
+	timeline_view_node.base_resource_path = _res_path
+	self._current_view = {"state":EditorView.TIMELINE, "reference":timeline_view_node}

@@ -2,7 +2,6 @@
 
 [ext_resource path="res://addons/dialogic/Resources/Database/DatabaseResource.gd" type="Script" id=1]
 
-
 [resource]
 script = ExtResource( 1 )
 resources = PoolStringArray( "" )

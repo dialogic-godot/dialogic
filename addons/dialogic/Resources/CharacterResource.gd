@@ -16,3 +16,16 @@ func _get_display_name() -> String:
 		return display_name
 	else:
 		return name
+
+func get_good_name(with_name:String="") -> String:
+	var _good_name = with_name
+	
+	if self.display_name:
+		return self.display_name
+	else:
+		if _good_name.begins_with("res://"):
+			_good_name = _good_name.replace("res://", "")
+		if _good_name.ends_with(".tres"):
+			_good_name = _good_name.replace(".tres", "")
+		_good_name = _good_name.capitalize()
+		return _good_name
