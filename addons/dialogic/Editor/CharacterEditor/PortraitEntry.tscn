@@ -1,9 +1,6 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=2 format=2]
 
-[ext_resource path="res://addons/dialogic/Images/Context Menus/Remove.svg" type="Texture" id=1]
 [ext_resource path="res://addons/dialogic/Editor/CharacterEditor/PortraitEntry.gd" type="Script" id=2]
-
-
 
 [node name="PortraitEntry" type="HBoxContainer"]
 margin_right = 451.0
@@ -23,7 +20,7 @@ __meta__ = {
 
 [node name="PathEdit" type="LineEdit" parent="."]
 margin_left = 164.0
-margin_right = 391.0
+margin_right = 407.0
 margin_bottom = 24.0
 rect_min_size = Vector2( 150, 0 )
 size_flags_horizontal = 3
@@ -31,16 +28,15 @@ editable = false
 selecting_enabled = false
 
 [node name="ButtonSelect" type="Button" parent="."]
-margin_left = 395.0
-margin_right = 419.0
+margin_left = 411.0
+margin_right = 435.0
 margin_bottom = 24.0
 text = "..."
 
 [node name="ButtonDelete" type="Button" parent="."]
-margin_left = 423.0
+margin_left = 439.0
 margin_right = 451.0
 margin_bottom = 24.0
-icon = ExtResource( 1 )
 flat = true
 
 [connection signal="focus_entered" from="NameEdit" to="." method="_on_focus_entered"]
