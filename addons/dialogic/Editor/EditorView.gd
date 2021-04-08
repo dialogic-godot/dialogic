@@ -53,11 +53,11 @@ func _ready():
 	if _scale == 2:
 		$MainPanel.margin_top = 59
 		modifier = '-2'
-	$ToolBar/NewTimelineButton.icon = load("res://addons/dialogic/Images/Plugin/Toolbar/add-timeline" + modifier + ".svg")
-	$ToolBar/NewCharactersButton.icon = load("res://addons/dialogic/Images/Plugin/Toolbar/add-character" + modifier + ".svg")
-	$ToolBar/NewDefinitionButton.icon = load("res://addons/dialogic/Images/Plugin/Toolbar/add-definition" + modifier + ".svg")
-	$ToolBar/NewThemeButton.icon = load("res://addons/dialogic/Images/Plugin/Toolbar/add-theme" + modifier + ".svg")
-	$ToolBar/NewThemeButton.icon = load("res://addons/dialogic/Images/Plugin/Toolbar/add-theme" + modifier + ".svg")
+	$ToolBar/NewTimelineButton.icon = load("res://addons/dialogic/Images/Toolbar/add-timeline" + modifier + ".svg")
+	$ToolBar/NewCharactersButton.icon = load("res://addons/dialogic/Images/Toolbar/add-character" + modifier + ".svg")
+	$ToolBar/NewDefinitionButton.icon = load("res://addons/dialogic/Images/Toolbar/add-definition" + modifier + ".svg")
+	$ToolBar/NewThemeButton.icon = load("res://addons/dialogic/Images/Toolbar/add-theme" + modifier + ".svg")
+	$ToolBar/NewThemeButton.icon = load("res://addons/dialogic/Images/Toolbar/add-theme" + modifier + ".svg")
 	
 	$ToolBar/FoldTools/ButtonFold.icon = get_icon("GuiTreeArrowRight", "EditorIcons")
 	$ToolBar/FoldTools/ButtonUnfold.icon = get_icon("GuiTreeArrowDown", "EditorIcons")

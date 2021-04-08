@@ -50,11 +50,11 @@ func _ready():
 		modifier = '-2'
 		rect_min_size.x = 360
 	rect_size.x = 0
-	timeline_icon = load("res://addons/dialogic/Images/Plugin/Resources/timeline" + modifier + ".svg")
-	character_icon = load("res://addons/dialogic/Images/Plugin/Resources/character" + modifier + ".svg")
-	theme_icon = load("res://addons/dialogic/Images/Plugin/Resources/theme" + modifier + ".svg")
-	definition_icon = load("res://addons/dialogic/Images/Plugin/Resources/definition" + modifier + ".svg")
-	glossary_icon = load("res://addons/dialogic/Images/Plugin/Resources/glossary" + modifier + ".svg")
+	timeline_icon = load("res://addons/dialogic/Images/Resources/timeline" + modifier + ".svg")
+	character_icon = load("res://addons/dialogic/Images/Resources/character" + modifier + ".svg")
+	theme_icon = load("res://addons/dialogic/Images/Resources/theme" + modifier + ".svg")
+	definition_icon = load("res://addons/dialogic/Images/Resources/definition" + modifier + ".svg")
+	glossary_icon = load("res://addons/dialogic/Images/Resources/glossary" + modifier + ".svg")
 	
 	# Creating the parents
 	timelines_tree = tree.create_item(root)

@@ -2,11 +2,12 @@
 
 [ext_resource path="res://addons/dialogic/Editor/Pieces/TextBlock.gd" type="Script" id=1]
 [ext_resource path="res://addons/dialogic/Editor/Pieces/Common/VisibleToggle.tscn" type="PackedScene" id=2]
-[ext_resource path="res://addons/dialogic/Images/Plugin/Event Icons/Main Icons/text-event.svg" type="Texture" id=3]
+[ext_resource path="res://addons/dialogic/Images/Event Icons/Main Icons/text-event.svg" type="Texture" id=3]
 [ext_resource path="res://addons/dialogic/Editor/Pieces/Common/PieceExtraSettings.tscn" type="PackedScene" id=4]
 [ext_resource path="res://addons/dialogic/Editor/Pieces/Common/CharacterPicker.tscn" type="PackedScene" id=6]
 [ext_resource path="res://addons/dialogic/Editor/Pieces/Common/PortraitPicker.tscn" type="PackedScene" id=7]
 [ext_resource path="res://addons/dialogic/Editor/Pieces/Common/Spacer.tscn" type="PackedScene" id=8]
+
 
 
 [sub_resource type="StyleBoxFlat" id=1]
