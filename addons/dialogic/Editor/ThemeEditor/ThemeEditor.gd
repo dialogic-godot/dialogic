@@ -86,6 +86,9 @@ func _ready():
 	
 	$DelayPreviewTimer.one_shot = true
 	$DelayPreviewTimer.connect("timeout", self, '_on_DelayPreview_timer_timeout')
+	
+	var title_style = $"VBoxContainer/TabContainer/Dialog Text/Column/SectionTitle".get('custom_styles/normal')
+	title_style.set('bg_color', get_color("prop_category", "Editor"))
 	# Force preview update
 	_on_visibility_changed()
 
