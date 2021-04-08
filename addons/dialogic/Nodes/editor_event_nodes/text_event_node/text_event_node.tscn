@@ -1,76 +1,58 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=8 format=2]
 
-[ext_resource path="res://addons/dialogic/Nodes/editor_event_nodes/text_event_node/text_event_node.gd" type="Script" id=1]
+[ext_resource path="res://addons/dialogic/Nodes/editor_event_nodes/event_node_template.tscn" type="PackedScene" id=1]
+[ext_resource path="res://addons/dialogic/assets/Images/dialog.svg" type="Texture" id=2]
+[ext_resource path="res://addons/dialogic/Nodes/editor_event_nodes/text_event_node/text_event_node.gd" type="Script" id=3]
+[ext_resource path="res://addons/dialogic/Nodes/editor_event_nodes/text_event_node/characters_button.gd" type="Script" id=4]
+[ext_resource path="res://addons/dialogic/assets/Images/character-tab.svg" type="Texture" id=5]
+[ext_resource path="res://test_character.tres" type="Resource" id=6]
 
-[node name="TextEventNode" type="PanelContainer"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_bottom = -476.0
-rect_min_size = Vector2( 0, 132 )
-size_flags_horizontal = 3
-script = ExtResource( 1 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-TextEdit_path = NodePath("VBoxContainer/Center/ScrollContainer/MarginContainer/TextEdit")
+[sub_resource type="StreamTexture" id=1]
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
-margin_left = 7.0
-margin_top = 7.0
-margin_right = 1017.0
-margin_bottom = 125.0
+[node name="TextEventNode" instance=ExtResource( 1 )]
+margin_bottom = -464.0
+script = ExtResource( 3 )
+TextEdit_path = NodePath("VBoxContainer/Center/TextEdit")
+CharacterBtn_path = NodePath("VBoxContainer/Top/HBoxContainer/CharactersButton")
 
-[node name="HSeparator2" type="HSeparator" parent="VBoxContainer"]
-margin_right = 1010.0
-margin_bottom = 4.0
+[node name="VBoxContainer" parent="." index="0"]
+margin_bottom = 129.0
 
-[node name="Top" type="PanelContainer" parent="VBoxContainer"]
-margin_top = 8.0
-margin_right = 1010.0
-margin_bottom = 36.0
-size_flags_horizontal = 3
+[node name="Icon" parent="VBoxContainer/Top/HBoxContainer" index="0"]
+texture = ExtResource( 2 )
 
-[node name="Label" type="Label" parent="VBoxContainer/Top"]
+[node name="CharactersButton" type="OptionButton" parent="VBoxContainer/Top/HBoxContainer" index="2"]
+margin_left = 34.0
+margin_right = 99.0
+margin_bottom = 30.0
+custom_icons/arrow = SubResource( 1 )
+text = "[Empty]"
+flat = true
+items = [ "[Empty]", null, false, 0, null, "Godot", ExtResource( 5 ), false, 1, {
+"character": ExtResource( 6 )
+} ]
+selected = 0
+script = ExtResource( 4 )
+
+[node name="FoldButton" parent="VBoxContainer/Top/HBoxContainer" index="3"]
+margin_left = 103.0
+margin_right = 137.0
+
+[node name="Center" parent="VBoxContainer" index="1"]
+margin_bottom = 108.0
+
+[node name="TextEdit" type="TextEdit" parent="VBoxContainer/Center" index="0"]
 margin_left = 7.0
 margin_top = 7.0
 margin_right = 1003.0
-margin_bottom = 21.0
-text = "Text Event"
-
-[node name="Center" type="PanelContainer" parent="VBoxContainer"]
-margin_top = 40.0
-margin_right = 1010.0
-margin_bottom = 92.0
-size_flags_vertical = 7
-
-[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer/Center"]
-margin_left = 7.0
-margin_top = 7.0
-margin_right = 1003.0
-margin_bottom = 45.0
-
-[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/Center/ScrollContainer"]
-margin_right = 996.0
-margin_bottom = 38.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-
-[node name="TextEdit" type="TextEdit" parent="VBoxContainer/Center/ScrollContainer/MarginContainer"]
-margin_right = 996.0
-margin_bottom = 38.0
+margin_bottom = 57.0
+rect_min_size = Vector2( 0, 42 )
 highlight_current_line = true
 show_line_numbers = true
 wrap_enabled = true
-caret_blink = true
 
-[node name="Bottom" type="PanelContainer" parent="VBoxContainer"]
-margin_top = 96.0
-margin_right = 1010.0
-margin_bottom = 110.0
-
-[node name="HSeparator" type="HSeparator" parent="VBoxContainer"]
-margin_top = 114.0
-margin_right = 1010.0
-margin_bottom = 118.0
-[connection signal="focus_exited" from="VBoxContainer/Center/ScrollContainer/MarginContainer/TextEdit" to="." method="_on_TextEdit_focus_exited"]
-[connection signal="text_changed" from="VBoxContainer/Center/ScrollContainer/MarginContainer/TextEdit" to="." method="_on_TextEdit_text_changed"]
+[node name="Bottom" parent="VBoxContainer" index="2"]
+margin_top = 108.0
+margin_bottom = 122.0
+[connection signal="item_selected" from="VBoxContainer/Top/HBoxContainer/CharactersButton" to="." method="_on_CharactersButton_item_selected"]
+[connection signal="focus_exited" from="VBoxContainer/Center/TextEdit" to="." method="_on_TextEdit_focus_exited"]

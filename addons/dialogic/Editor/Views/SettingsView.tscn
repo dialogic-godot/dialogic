@@ -14,7 +14,7 @@ script = ExtResource( 2 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
-DisplayEditorDebug_path = NodePath("VBoxContainer/Content/VBoxContainer2/DisplayEditorDebugButton")
+DisplayEditorDebug_path = NodePath("VBoxContainer/Content/Column1/VBoxContainer/VBoxContainer2/DisplayEditorDebugButton")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 margin_top = 8.0
@@ -65,24 +65,62 @@ margin_bottom = 568.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/Content"]
+[node name="Column1" type="MarginContainer" parent="VBoxContainer/Content"]
+margin_right = 196.0
+margin_bottom = 532.0
+
+[node name="VBoxContainer" type="HBoxContainer" parent="VBoxContainer/Content/Column1"]
+margin_right = 196.0
+margin_bottom = 532.0
+
+[node name="LabelsContainer" type="VBoxContainer" parent="VBoxContainer/Content/Column1/VBoxContainer"]
 margin_right = 168.0
 margin_bottom = 532.0
 
-[node name="Label" type="Label" parent="VBoxContainer/Content/VBoxContainer"]
+[node name="Label" type="Label" parent="VBoxContainer/Content/Column1/VBoxContainer/LabelsContainer"]
 margin_right = 168.0
 margin_bottom = 14.0
 text = "Display debug information"
 
-[node name="VBoxContainer2" type="VBoxContainer" parent="VBoxContainer/Content"]
+[node name="VBoxContainer2" type="VBoxContainer" parent="VBoxContainer/Content/Column1/VBoxContainer"]
 margin_left = 172.0
 margin_right = 196.0
 margin_bottom = 532.0
 
-[node name="DisplayEditorDebugButton" type="CheckBox" parent="VBoxContainer/Content/VBoxContainer2"]
+[node name="DisplayEditorDebugButton" type="CheckBox" parent="VBoxContainer/Content/Column1/VBoxContainer/VBoxContainer2"]
 margin_right = 24.0
 margin_bottom = 24.0
 pressed = true
+
+[node name="Column2" type="MarginContainer" parent="VBoxContainer/Content"]
+visible = false
+margin_left = 200.0
+margin_right = 324.0
+margin_bottom = 532.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/Content/Column2"]
+margin_right = 124.0
+margin_bottom = 532.0
+
+[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer/Content/Column2/VBoxContainer"]
+margin_right = 124.0
+margin_bottom = 18.0
+custom_styles/panel = ExtResource( 1 )
+
+[node name="Label" type="Label" parent="VBoxContainer/Content/Column2/VBoxContainer/PanelContainer"]
+margin_left = 2.0
+margin_top = 2.0
+margin_right = 122.0
+margin_bottom = 16.0
+text = "Saved Timelines"
+
+[node name="ItemList" type="ItemList" parent="VBoxContainer/Content/Column2/VBoxContainer"]
+margin_top = 22.0
+margin_right = 124.0
+margin_bottom = 49.0
+rect_min_size = Vector2( 124, 0 )
+items = [ "Ítem 0", null, false ]
+auto_height = true
 
 [node name="Footer" type="PanelContainer" parent="VBoxContainer"]
 margin_top = 572.0
@@ -90,4 +128,4 @@ margin_right = 1020.0
 margin_bottom = 592.0
 rect_min_size = Vector2( 8, 20 )
 custom_styles/panel = ExtResource( 1 )
-[connection signal="toggled" from="VBoxContainer/Content/VBoxContainer2/DisplayEditorDebugButton" to="." method="_on_DisplayEditorDebugButton_pressed"]
+[connection signal="toggled" from="VBoxContainer/Content/Column1/VBoxContainer/VBoxContainer2/DisplayEditorDebugButton" to="." method="_on_DisplayEditorDebugButton_pressed"]

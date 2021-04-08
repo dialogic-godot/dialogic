@@ -4,4 +4,4 @@
 
 [resource]
 script = ExtResource( 1 )
-resources = PoolStringArray( "" )
+resources = PoolStringArray( "", "res://test_character.tres", "res://test_character2.tres" )
