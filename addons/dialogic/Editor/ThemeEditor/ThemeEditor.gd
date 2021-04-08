@@ -101,11 +101,11 @@ func load_theme(filename):
 	n['theme_action_key'].text = theme.get_value('settings', 'action_key', 'ui_accept')
 	
 	# Background
-	n['theme_background_image'].text = DialogicResources.get_filename_from_path(theme.get_value('background', 'image', 'res://addons/dialogic/Images/background/background-2.png'))
+	n['theme_background_image'].text = DialogicResources.get_filename_from_path(theme.get_value('background', 'image', 'res://addons/dialogic/Example Assets/backgrounds/background-2.png'))
 	n['background_texture_button_visible'].pressed = theme.get_value('background', 'use_image', true)
 	n['theme_background_color'].color = Color(theme.get_value('background', 'color', '#ff000000'))
 	n['theme_background_color_visible'].pressed = theme.get_value('background', 'use_color', false)
-	n['theme_next_image'].text = DialogicResources.get_filename_from_path(theme.get_value('next_indicator', 'image', 'res://addons/dialogic/Images/next-indicator.png'))
+	n['theme_next_image'].text = DialogicResources.get_filename_from_path(theme.get_value('next_indicator', 'image', 'res://addons/dialogic/Example Assets/next-indicator/next-indicator.png'))
 
 	n['background_modulation'].pressed = theme.get_value('background', 'modulation', false)
 	n['background_modulation_color'].color = Color(theme.get_value('background', 'modulation_color', '#ffffffff'))
@@ -122,7 +122,7 @@ func load_theme(filename):
 	n['button_text_color'].color = Color(theme.get_value('buttons', 'text_color', "#ffffffff"))
 	n['button_background'].color = Color(theme.get_value('buttons', 'background_color', "#ff000000"))
 	n['button_background_visible'].pressed = theme.get_value('buttons', 'use_background_color', false)
-	n['button_image'].text = DialogicResources.get_filename_from_path(theme.get_value('buttons', 'image', 'res://addons/dialogic/Images/background/background-2.png'))
+	n['button_image'].text = DialogicResources.get_filename_from_path(theme.get_value('buttons', 'image', 'res://addons/dialogic/Example Assets/backgrounds/background-2.png'))
 	n['button_image_visible'].pressed = theme.get_value('buttons', 'use_image', true)
 	n['button_offset_x'].value = theme.get_value('buttons', 'padding', Vector2(5,5)).x
 	n['button_offset_y'].value = theme.get_value('buttons', 'padding', Vector2(5,5)).y
@@ -130,11 +130,11 @@ func load_theme(filename):
 	
 	# Definitions
 	n['glossary_color'].color = Color(theme.get_value('definitions', 'color', "#ffffffff"))
-	n['glossary_font'].text = DialogicResources.get_filename_from_path(theme.get_value('definitions', 'font', "res://addons/dialogic/Fonts/GlossaryFont.tres"))
+	n['glossary_font'].text = DialogicResources.get_filename_from_path(theme.get_value('definitions', 'font', "res://addons/dialogic/Example Assets/Fonts/GlossaryFont.tres"))
 	
 	# Text
 	n['theme_text_speed'].value = theme.get_value('text','speed', 2)
-	n['theme_font'].text = DialogicResources.get_filename_from_path(theme.get_value('text', 'font', 'res://addons/dialogic/Fonts/DefaultFont.tres'))
+	n['theme_font'].text = DialogicResources.get_filename_from_path(theme.get_value('text', 'font', 'res://addons/dialogic/Example Assets/Fonts/DefaultFont.tres'))
 	n['theme_text_color'].color = Color(theme.get_value('text', 'color', '#ffffffff'))
 	n['theme_text_shadow'].pressed = theme.get_value('text', 'shadow', false)
 	n['theme_text_shadow_color'].color = Color(theme.get_value('text', 'shadow_color', '#9e000000'))
@@ -157,7 +157,7 @@ func load_theme(filename):
 	n['name_background_visible'].pressed = theme.get_value('name', 'background_visible', false)
 	n['name_background'].color = Color(theme.get_value('name', 'background', "#ff000000"))
 	n['name_image_visible'].pressed = theme.get_value('name', 'image_visible', false)
-	n['name_image'].text = DialogicResources.get_filename_from_path(theme.get_value('name', 'image', 'res://addons/dialogic/Images/background/background-2.png'))
+	n['name_image'].text = DialogicResources.get_filename_from_path(theme.get_value('name', 'image', 'res://addons/dialogic/Example Assets/backgrounds/background-2.png'))
 	
 	
 	n['name_shadow'].color = Color(theme.get_value('name', 'shadow', "#9e000000"))
