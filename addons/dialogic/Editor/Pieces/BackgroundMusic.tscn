@@ -1,10 +1,9 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://addons/dialogic/Editor/Pieces/BackgroundMusic.gd" type="Script" id=1]
 [ext_resource path="res://addons/dialogic/Editor/Pieces/Common/Spacer.tscn" type="PackedScene" id=2]
 [ext_resource path="res://addons/dialogic/Images/Event Icons/Main Icons/background-music.svg" type="Texture" id=3]
 [ext_resource path="res://addons/dialogic/Editor/Pieces/Common/PieceExtraSettings.tscn" type="PackedScene" id=4]
-[ext_resource path="res://addons/dialogic/Images/Context Menus/Remove.svg" type="Texture" id=7]
 
 [sub_resource type="StyleBoxFlat" id=1]
 content_margin_left = 16.0
@@ -85,14 +84,13 @@ text = "..."
 
 [node name="ButtonClear" type="Button" parent="PanelContainer/VBoxContainer/Header"]
 margin_left = 400.0
-margin_right = 428.0
+margin_right = 412.0
 margin_bottom = 28.0
 disabled = true
-icon = ExtResource( 7 )
 
 [node name="ButtonPreviewPlay" type="Button" parent="PanelContainer/VBoxContainer/Header"]
-margin_left = 432.0
-margin_right = 466.0
+margin_left = 416.0
+margin_right = 428.0
 margin_bottom = 28.0
 disabled = true
 
@@ -106,7 +104,7 @@ custom_colors/font_color = Color( 1, 1, 1, 0.513726 )
 text = "    ..."
 
 [node name="Spacer" parent="PanelContainer/VBoxContainer/Header" instance=ExtResource( 2 )]
-margin_left = 470.0
+margin_left = 432.0
 margin_right = 1735.0
 margin_bottom = 28.0
 

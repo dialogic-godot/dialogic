@@ -14,6 +14,7 @@ var event_data = {
 
 func _ready():
 	load_audio('')
+	$PanelContainer/VBoxContainer/Header/ButtonClear.icon = get_icon("Remove", "EditorIcons")
 	$PanelContainer/VBoxContainer/Header/ButtonPreviewPlay.icon = get_icon("Play", "EditorIcons")
 
 func _on_ButtonAudio_pressed():
