@@ -52,7 +52,7 @@ v1.1 - WIP
 - Settings
   - Added a new option to toggle the character "focus"/"dim" while speaking. 
 - Added a button in timeline inspector plugin to open the selected timeline in the editor. [[ellogwen](https://github.com/ellogwen)]
-- Special thanks to [Jowan-Spooner](https://github.com/Jowan-Spooner) for the QA
+- Special thanks to [Jowan-Spooner](https://github.com/Jowan-Spooner) for the QA and the facelift on the theme editor
 
 To view previous changes [click here](https://github.com/coppolaemilio/dialogic/blob/main/CHANGELOG.md). 
 
