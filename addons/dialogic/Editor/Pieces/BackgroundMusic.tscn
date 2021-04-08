@@ -1,13 +1,10 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://addons/dialogic/Editor/Pieces/BackgroundMusic.gd" type="Script" id=1]
 [ext_resource path="res://addons/dialogic/Editor/Pieces/Common/Spacer.tscn" type="PackedScene" id=2]
 [ext_resource path="res://addons/dialogic/Images/Event Icons/Main Icons/background-music.svg" type="Texture" id=3]
 [ext_resource path="res://addons/dialogic/Editor/Pieces/Common/PieceExtraSettings.tscn" type="PackedScene" id=4]
-[ext_resource path="res://addons/dialogic/Images/Event Icons/play.svg" type="Texture" id=5]
 [ext_resource path="res://addons/dialogic/Images/Context Menus/Remove.svg" type="Texture" id=7]
-
-
 
 [sub_resource type="StyleBoxFlat" id=1]
 content_margin_left = 16.0
@@ -98,7 +95,6 @@ margin_left = 432.0
 margin_right = 466.0
 margin_bottom = 28.0
 disabled = true
-icon = ExtResource( 5 )
 
 [node name="Preview" type="Label" parent="PanelContainer/VBoxContainer/Header"]
 visible = false
@@ -121,6 +117,7 @@ margin_bottom = 28.0
 items = [ "Move Up", null, 0, false, false, 0, 0, null, "", false, "Move Down", null, 0, false, false, 1, 0, null, "", false, "", null, 0, false, false, 2, 0, null, "", true, "Remove", null, 0, false, false, 3, 0, null, "", false ]
 
 [node name="AudioPreview" type="AudioStreamPlayer" parent="PanelContainer"]
+
 [connection signal="pressed" from="PanelContainer/VBoxContainer/Header/ButtonAudio" to="." method="_on_ButtonAudio_pressed"]
 [connection signal="pressed" from="PanelContainer/VBoxContainer/Header/ButtonClear" to="." method="_on_ButtonClear_pressed"]
 [connection signal="pressed" from="PanelContainer/VBoxContainer/Header/ButtonPreviewPlay" to="." method="_on_ButtonPreviewPlay_pressed"]

@@ -4,8 +4,7 @@ extends HBoxContainer
 var editor_reference
 var editorPopup
 
-var play_icon = load("res://addons/dialogic/Images/Events/play.svg")
-var stop_icon = load("res://addons/dialogic/Images/Events/stop.svg")
+
 
 # This is the information of this event and it will get parsed and saved to the JSON file.
 var event_data = {
@@ -16,6 +15,8 @@ var event_data = {
 
 func _ready():
 	load_audio('')
+	$PanelContainer/VBoxContainer/Header/ButtonPreviewPlay.icon = get_icon("Play", "EditorIcons")
+
 
 func _on_ButtonAudio_pressed():
 	editor_reference.godot_dialog("*.wav, *.ogg, *.mp3")
@@ -52,11 +53,11 @@ func _on_ButtonPreviewPlay_pressed():
 	else:
 		$PanelContainer/AudioPreview.stream = load(event_data['file'])
 		$PanelContainer/AudioPreview.play()
-		$PanelContainer/VBoxContainer/Header/ButtonPreviewPlay.icon = stop_icon
+		$PanelContainer/VBoxContainer/Header/ButtonPreviewPlay.icon = get_icon("Stop", "EditorIcons")
 
 
 func _on_AudioPreview_finished():
-	$PanelContainer/VBoxContainer/Header/ButtonPreviewPlay.icon = play_icon
+	$PanelContainer/VBoxContainer/Header/ButtonPreviewPlay.icon = get_icon("Play", "EditorIcons")
 
 
 func _on_ButtonClear_pressed():
