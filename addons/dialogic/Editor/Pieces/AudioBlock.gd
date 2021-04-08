@@ -4,8 +4,8 @@ extends HBoxContainer
 var editor_reference
 var editorPopup
 
-var play_icon = load("res://addons/dialogic/Images/play.svg")
-var stop_icon = load("res://addons/dialogic/Images/stop.svg")
+var play_icon = load("res://addons/dialogic/Images/Events/play.svg")
+var stop_icon = load("res://addons/dialogic/Images/Events/stop.svg")
 
 # This is the information of this event and it will get parsed and saved to the JSON file.
 var event_data = {

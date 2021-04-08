@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=2]
 
-[ext_resource path="res://addons/dialogic/Images/open-icon.svg" type="Texture" id=1]
-[ext_resource path="res://addons/dialogic/Images/closed-icon.svg" type="Texture" id=2]
+[ext_resource path="res://addons/dialogic/Images/Plugin/Pieces/open-icon.svg" type="Texture" id=1]
+[ext_resource path="res://addons/dialogic/Images/Plugin/Pieces/closed-icon.svg" type="Texture" id=2]
 [ext_resource path="res://addons/dialogic/Editor/Pieces/Common/VisibleToggle.gd" type="Script" id=3]
 
 [node name="VisibleToggle" type="CheckBox"]

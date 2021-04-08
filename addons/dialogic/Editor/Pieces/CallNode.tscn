@@ -1,9 +1,10 @@
 [gd_scene load_steps=6 format=2]
 
-[ext_resource path="res://addons/dialogic/Images/Script.svg" type="Texture" id=1]
+[ext_resource path="res://addons/dialogic/Images/Plugin/Event Icons/Main Icons/call-node.svg" type="Texture" id=1]
 [ext_resource path="res://addons/dialogic/Editor/Pieces/CallNode.gd" type="Script" id=2]
 [ext_resource path="res://addons/dialogic/Editor/Pieces/Common/Spacer.tscn" type="PackedScene" id=3]
 [ext_resource path="res://addons/dialogic/Editor/Pieces/Common/PieceExtraSettings.tscn" type="PackedScene" id=4]
+
 
 [sub_resource type="StyleBoxFlat" id=1]
 content_margin_left = 16.0

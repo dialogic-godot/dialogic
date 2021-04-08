@@ -618,7 +618,7 @@ func add_choice_button(option):
 
 	button.get_node('TextureRect').visible = theme.get_value('buttons', 'use_image', true)
 	if theme.get_value('buttons', 'use_image', true):
-		button.get_node('TextureRect').texture = load(theme.get_value('buttons', 'image', "res://addons/dialogic/Images/background/background-2.png"))
+		button.get_node('TextureRect').texture = load(theme.get_value('buttons', 'image', "res://addons/dialogic/Images/Example Assets/backgrounds/background-2.png"))
 
 	var padding = theme.get_value('buttons', 'padding', Vector2(5,5))
 	button.get_node('ColorRect').set('margin_left', -1 * padding.x)
@@ -754,7 +754,7 @@ func load_theme(filename):
 	$TextBubble/RichTextLabel.set('margin_bottom', text_margin.y * -1)
 
 	# Backgrounds
-	$TextBubble/TextureRect.texture = load(theme.get_value('background','image', "res://addons/dialogic/Images/background/background-2.png"))
+	$TextBubble/TextureRect.texture = load(theme.get_value('background','image', "res://addons/dialogic/Images/Example Assets/backgrounds/background-2.png"))
 	$TextBubble/ColorRect.color = Color(theme.get_value('background','color', "#ff000000"))
 
 	if theme.get_value('background', 'modulation', false) == true:
@@ -766,7 +766,7 @@ func load_theme(filename):
 	$TextBubble/TextureRect.visible = theme.get_value('background', 'use_image', true)
 
 	# Next image
-	$TextBubble/NextIndicator.texture = load(theme.get_value('next_indicator', 'image', 'res://addons/dialogic/Images/next-indicator.png'))
+	$TextBubble/NextIndicator.texture = load(theme.get_value('next_indicator', 'image', 'res://addons/dialogic/Images/Example Assets/next-indicator/next-indicator.png'))
 	input_next = theme.get_value('settings', 'action_key', 'ui_accept')
 
 	# Definitions
@@ -779,7 +779,7 @@ func load_theme(filename):
 	$TextBubble/NameLabel/ColorRect.visible = theme.get_value('name', 'background_visible', false)
 	$TextBubble/NameLabel/ColorRect.color = Color(theme.get_value('name', 'background', '#282828'))
 	$TextBubble/NameLabel/TextureRect.visible = theme.get_value('name', 'image_visible', false)
-	$TextBubble/NameLabel/TextureRect.texture = load(theme.get_value('name','image', "res://addons/dialogic/Images/background/background-2.png"))
+	$TextBubble/NameLabel/TextureRect.texture = load(theme.get_value('name','image', "res://addons/dialogic/Images/Example Assets/backgrounds/background-2.png"))
 	var name_shadow_offset = theme.get_value('name', 'shadow_offset', Vector2(2,2))
 	if theme.get_value('name', 'shadow_visible', true):
 		$TextBubble/NameLabel.set('custom_colors/font_color_shadow', Color(theme.get_value('name', 'shadow', '#9e000000')))
