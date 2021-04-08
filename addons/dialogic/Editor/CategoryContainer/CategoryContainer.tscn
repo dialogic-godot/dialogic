@@ -66,7 +66,6 @@ margin_top = 40.0
 margin_right = 259.0
 margin_bottom = 182.0
 size_flags_vertical = 3
-allow_reselect = true
 allow_rmb_select = true
 hide_root = true
 script = ExtResource( 3 )
@@ -87,6 +86,7 @@ window_title = "Por favor, Confirma..."
 dialog_text = "Estas seguro de que quieres eliminar este elemento?
 (No se puede deshacer)"
 [connection signal="pressed" from="Control/HBoxContainer/FoldButton" to="." method="_on_FoldButton_pressed"]
+[connection signal="focus_exited" from="Control/Tree" to="." method="_on_Tree_focus_exited"]
 [connection signal="item_rmb_selected" from="Control/Tree" to="." method="_on_Tree_item_rmb_selected"]
 [connection signal="item_selected" from="Control/Tree" to="." method="_on_Tree_item_selected"]
 [connection signal="id_pressed" from="PopupMenu" to="." method="_on_PopupMenu_id_pressed"]

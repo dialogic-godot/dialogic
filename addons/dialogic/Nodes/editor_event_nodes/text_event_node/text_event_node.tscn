@@ -1,0 +1,76 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://addons/dialogic/Nodes/editor_event_nodes/text_event_node/text_event_node.gd" type="Script" id=1]
+
+[node name="TextEventNode" type="PanelContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_bottom = -476.0
+rect_min_size = Vector2( 0, 132 )
+size_flags_horizontal = 3
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+TextEdit_path = NodePath("VBoxContainer/Center/ScrollContainer/MarginContainer/TextEdit")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+margin_left = 7.0
+margin_top = 7.0
+margin_right = 1017.0
+margin_bottom = 125.0
+
+[node name="HSeparator2" type="HSeparator" parent="VBoxContainer"]
+margin_right = 1010.0
+margin_bottom = 4.0
+
+[node name="Top" type="PanelContainer" parent="VBoxContainer"]
+margin_top = 8.0
+margin_right = 1010.0
+margin_bottom = 36.0
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="VBoxContainer/Top"]
+margin_left = 7.0
+margin_top = 7.0
+margin_right = 1003.0
+margin_bottom = 21.0
+text = "Text Event"
+
+[node name="Center" type="PanelContainer" parent="VBoxContainer"]
+margin_top = 40.0
+margin_right = 1010.0
+margin_bottom = 92.0
+size_flags_vertical = 7
+
+[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer/Center"]
+margin_left = 7.0
+margin_top = 7.0
+margin_right = 1003.0
+margin_bottom = 45.0
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/Center/ScrollContainer"]
+margin_right = 996.0
+margin_bottom = 38.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="TextEdit" type="TextEdit" parent="VBoxContainer/Center/ScrollContainer/MarginContainer"]
+margin_right = 996.0
+margin_bottom = 38.0
+highlight_current_line = true
+show_line_numbers = true
+wrap_enabled = true
+caret_blink = true
+
+[node name="Bottom" type="PanelContainer" parent="VBoxContainer"]
+margin_top = 96.0
+margin_right = 1010.0
+margin_bottom = 110.0
+
+[node name="HSeparator" type="HSeparator" parent="VBoxContainer"]
+margin_top = 114.0
+margin_right = 1010.0
+margin_bottom = 118.0
+[connection signal="focus_exited" from="VBoxContainer/Center/ScrollContainer/MarginContainer/TextEdit" to="." method="_on_TextEdit_focus_exited"]
+[connection signal="text_changed" from="VBoxContainer/Center/ScrollContainer/MarginContainer/TextEdit" to="." method="_on_TextEdit_text_changed"]

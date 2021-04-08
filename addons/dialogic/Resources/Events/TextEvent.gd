@@ -1,6 +1,6 @@
 tool
-extends DialogicEventResource
 class_name DialogicTextEventResource
+extends DialogicEventResource
 
 const EventTimer = preload("res://addons/dialogic/Nodes/TextEventTimer.gd")
 
@@ -55,3 +55,8 @@ func _on_TextTimer_timeout():
 		_timer.stop()
 		_timer.queue_free()
 		finish()
+
+func get_event_editor_node() -> Control:
+	var _instance = load("res://addons/dialogic/Nodes/editor_event_nodes/text_event_node/text_event_node.tscn").instance()
+	_instance.base_resource = self
+	return _instance

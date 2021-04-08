@@ -18,13 +18,19 @@ class Error:
 		_timeline.events.append(_text_event)
 		return _timeline
 
-
-static func print(what) -> void:
-	if not DialogicDB.get_editor_configuration().editor_debug_mode:
-		return
+class Logger:
+	const INFO = "[Dialogic]"
 	
-	var _info = "[Dialogic]"
-	match typeof(what):
-		var anything_else:
-			print("{mark} {info}".format({"mark":_info, "info":what}))
-
+	static func print(who, what) -> void:
+		if not DialogicDB.get_editor_configuration().editor_debug_mode:
+			return
+		
+		var _info = "[Dialogic]"
+		
+		match typeof(what):
+			var anything_else:
+				print("{mark} [{who}] {info}".format(
+					{"mark":INFO, 
+					"info":what,
+					"who":who.get_class(),
+					}))

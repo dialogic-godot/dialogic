@@ -12,5 +12,8 @@ func excecute(caller:Control) -> void:
 	emit_signal("event_started", self)
 
 
-func finish():
+func finish() -> void:
 	emit_signal("event_finished", self)
+
+func get_event_editor_node() -> Control:
+	return Control.new()

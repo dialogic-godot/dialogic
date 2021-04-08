@@ -10,6 +10,7 @@ script = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
+TimelineEventsContainer_path = NodePath("TimelineEditorView/ScrollContainer/VBoxContainer")
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
 margin_right = 1024.0

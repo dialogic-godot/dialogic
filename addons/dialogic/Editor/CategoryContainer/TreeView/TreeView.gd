@@ -25,7 +25,7 @@ func _gui_input(event: InputEvent) -> void:
 
 func update_tree() -> void:
 	if not _base_resource:
-		DialogicUtil.print("No base resource")
+		DialogicUtil.Logger.print(self,"No base resource")
 		return
 
 	if get_root():
@@ -38,38 +38,38 @@ func update_tree() -> void:
 
 
 func create_tree_item(with_resource)->void:
-	DialogicUtil.print("Creating a new tree item with:")
+	DialogicUtil.Logger.print(self,"Creating a new tree item with:")
 	var f = File.new()
 	if not f.file_exists(with_resource):
 		# I hate when the resource_path doesn't exist
 		# this prevents that loader doesn't load empty strings
-		DialogicUtil.print(["The resource doesn't exist", with_resource])
+		DialogicUtil.Logger.print(self,["The resource doesn't exist", with_resource])
 		return
 	
 	var _resource = ResourceLoader.load(with_resource, "")
 	
 	if not _resource:
-		DialogicUtil.print("no resource")
+		DialogicUtil.Logger.print(self,"no resource")
 		return
 	
 	if _resource is EncodedObjectAsID:
 		_resource = instance_from_id(_resource.object_id)
-		DialogicUtil.print(["get resource by id:", _resource])
+		DialogicUtil.Logger.print(self,["get resource by id:", _resource])
 	
 	if not is_instance_valid(_resource):
-		DialogicUtil.print(["instance is not valid",_resource])
+		DialogicUtil.Logger.print(self,["instance is not valid",_resource])
 		return
 	
 	var _item = create_item()
 	_item.set_text(0, _resource.get_good_name(_resource.resource_path))
 	_item.set_tooltip(0, _resource.resource_path.get_file())
 	_item.set_metadata(0, _resource.resource_path)
-	DialogicUtil.print("Tree item created")
+	DialogicUtil.Logger.print(self,"Tree item created")
 
 func remove_item(item:TreeItem = null):
 	if not item:
 		return
-	DialogicUtil.print(["Attempt to delete item", item.get_metadata(0)])
+	DialogicUtil.Logger.print(self,["Attempt to delete item", item.get_metadata(0)])
 
 func rename_item(item:TreeItem = null):
 	item.set_editable(0, true)

@@ -48,7 +48,7 @@ func _set_tree_resource(_resource:Resource):
 
 
 func _explore_tree_recursively(from:TreeItem, with_val:int):
-	DialogicUtil.print("Recursion with val: {v}".format({"v":with_val}))
+	DialogicUtil.Logger.print(self,"Recursion with val: {v}".format({"v":with_val}))
 	if from.get_children():
 		_explore_tree_recursively(from.get_children(), with_val*2)
 	elif from.get_next():
@@ -88,3 +88,7 @@ func _on_ConfirmationDialog_confirmed() -> void:
 
 func _on_Tree_item_selected() -> void:
 	emit_signal("tree_item_selected", tree_node.get_selected())
+
+
+func _on_Tree_focus_exited() -> void:
+	tree_node.get_selected().deselect(0)
