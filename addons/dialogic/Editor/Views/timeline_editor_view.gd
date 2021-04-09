@@ -20,7 +20,7 @@ func _unload_events():
 
 func _load_events() -> void:
 	_unload_events()
-	for event in (_resource as DialogicTimelineResource).events:
+	for event in (_resource as DialogicTimelineResource).events.get_resources():
 		DialogicUtil.Logger.print(self,["Trying to load event's node in:", event.resource_path])
 		var event_node = (event as DialogicEventResource).get_event_editor_node()
 		timeline_events_container_node.add_child(event_node)

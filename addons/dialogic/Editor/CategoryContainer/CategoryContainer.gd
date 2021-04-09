@@ -22,8 +22,9 @@ func force_update() -> void:
 func show_category() -> void:
 	tree_node.visible = true
 	min_size = Vector2(0,50)
-	if tree_node.get_root().get_children():
-		min_size.y = _explore_tree_recursively(tree_node.get_root().get_children(), 50)
+	var _tree_child = tree_node.get_root().get_children()
+	if _tree_child:
+		min_size.y = _explore_tree_recursively(_tree_child, 50)
 	rect_min_size = Vector2(rect_min_size.x, min_size.y)
 #	rect_min_size = Vector2(rect_min_size.x, MIN_SIZE.y)
 #	size_flags_vertical = SIZE_EXPAND_FILL
@@ -53,8 +54,8 @@ func _explore_tree_recursively(from:TreeItem, with_val:int):
 		_explore_tree_recursively(from.get_children(), with_val*2)
 	elif from.get_next():
 		_explore_tree_recursively(from.get_next(), with_val*2)
-	else:
-		return with_val*2
+
+	return with_val*2
 
 
 func _on_FoldButton_pressed() -> void:

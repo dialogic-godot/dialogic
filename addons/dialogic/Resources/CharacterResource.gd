@@ -8,7 +8,7 @@ export(bool) var display_name_bool:bool = false
 export(Color) var color:Color = Color.white
 export(bool) var default_speaker:bool = false
 export(String, MULTILINE) var description:String = ""
-export(Array, Resource) var portraits = []
+export(Resource) var portraits = ResourceArray.new()
 
 
 func _get_display_name() -> String:

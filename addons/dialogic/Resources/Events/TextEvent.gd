@@ -5,16 +5,10 @@ extends DialogicEventResource
 const EventTimer = preload("res://addons/dialogic/Nodes/TextEventTimer.gd")
 
 export(String, MULTILINE) var text:String = ""
-export(String) var character_path = null
-
-var character:Resource = null setget _set_character,_get_character
+export(Resource) var character = DialogicCharacterResource.new()
 
 var _caller = null
 var _timer = null
-
-func _init() -> void:
-	if character_path:
-		character = load(character_path)
 
 func excecute(caller:Control) -> void:
 	.excecute(caller)
@@ -32,7 +26,7 @@ func excecute(caller:Control) -> void:
 	
 	_update_text()
 	
-	if not character:
+	if not character.name:
 		# Default speaker should be displayed here
 		character = DialogicCharacterResource.new()
 
@@ -65,15 +59,3 @@ func get_event_editor_node() -> Control:
 	var _instance = load("res://addons/dialogic/Nodes/editor_event_nodes/text_event_node/text_event_node.tscn").instance()
 	_instance.base_resource = self
 	return _instance
-
-func _set_character(resource:Resource) -> void:
-	character = null
-	character_path = ""
-	if resource:
-		character = resource
-		character_path = resource.resource_path
-
-func _get_character() -> Resource:
-	if character_path:
-		return load(character_path)
-	return null

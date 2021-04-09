@@ -8,9 +8,9 @@ class Error:
 	const TIMELINE_NOT_SELECTED = "TIMELINE_NOT_SELECTED"
 	
 	static func not_found_timeline() -> Resource:
-		var _timeline = load("res://DialogicResources/TimelineResource.gd").new()
-		var _text_event = load("res://DialogicResources/Events/TextEvent.gd").new()
-		var _character = load("res://DialogicResources/CharacterResource.gd").new()
+		var _timeline = DialogicTimelineResource.new()
+		var _text_event = DialogicTextEventResource.new()
+		var _character = DialogicCharacterResource.new()
 		_character.name = DIALOGIC_ERROR
 		_character.color = Color.red
 		_text_event.character = _character

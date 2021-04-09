@@ -1,7 +1,18 @@
-[gd_resource type="Resource" load_steps=2 format=2]
+[gd_resource type="Resource" load_steps=7 format=2]
 
-[ext_resource path="res://addons/dialogic/Resources/Database/DatabaseResource.gd" type="Script" id=1]
+[ext_resource path="res://addons/dialogic/Resources/Database/TimelineDatabaseResource.gd" type="Script" id=1]
+[ext_resource path="res://resource_array.gd" type="Script" id=2]
+[ext_resource path="res://dialogic/timelines/a.tres" type="Resource" id=3]
+[ext_resource path="res://dialogic/timelines/test.tres" type="Resource" id=4]
+[ext_resource path="res://dialogic/timelines/food.tres" type="Resource" id=5]
+
+[sub_resource type="Resource" id=1]
+script = ExtResource( 2 )
+_resources = [ ExtResource( 3 ), ExtResource( 4 ), ExtResource( 5 ) ]
+values/0 = ExtResource( 3 )
+values/1 = ExtResource( 4 )
+values/2 = ExtResource( 5 )
 
 [resource]
 script = ExtResource( 1 )
-resources = PoolStringArray( "", "res://test_timeline.tres" )
+resources = SubResource( 1 )

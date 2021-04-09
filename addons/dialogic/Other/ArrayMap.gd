@@ -28,6 +28,7 @@ var _hint_string := ""
 
 func _init(p_name: String = "") -> void:
 	name = p_name
+	insert("a", DialogicTimelineResource.new())
 
 
 func has(p_key: String) -> bool:
@@ -102,22 +103,23 @@ func clear() -> void:
 # Export Array/Dictionary hack
 func _get_property_list():
 	var ret := []
-	for i in values.size():
-		ret.append({
-			"name": "values/" + str(i),
-			"type": _type,
-			"hint": _hint,
-			"hint_string": _hint_string,
-			"usage": PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_SCRIPT_VARIABLE
-		})
 	for a_key in keys:
 		ret.append({
 			"name": "keys/" + str(a_key),
 			"type": TYPE_INT,
 			"hint": PROPERTY_HINT_NONE,
 			"hint_string": "_hint_string",
-			"usage": PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_SCRIPT_VARIABLE
+			"usage": PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_SCRIPT_VARIABLE | PROPERTY_USAGE_EDITOR | PROPERTY_USAGE_CATEGORY ,
 		})
+	for i in values.size():
+		ret.append({
+			"name": "values/" + str(i),
+			"type": _type,
+			"hint": _hint,
+			"hint_string": _hint_string,
+			"usage": PROPERTY_USAGE_DEFAULT | PROPERTY_USAGE_SCRIPT_VARIABLE | PROPERTY_USAGE_EDITOR | PROPERTY_USAGE_STORAGE,
+		})
+	
 	return ret
 
 

@@ -1,12 +1,16 @@
 tool
 extends EditorPlugin
 
+const DialogicResources = preload("res://addons/dialogic/Core/DialogicResources.gd")
 const EditorView_Scene = preload("res://addons/dialogic/Editor/EditorView.tscn")
 
 var _editor_view
 var _parts_inspector
 
 func _enter_tree() -> void:
+	if not load(DialogicResources.CONFIGURATION_PATH).enabled:
+		return
+	DialogicResources.verify_resource_directories()
 	_parts_inspector = load("res://addons/dialogic/Core/DialogicInspector.gd").new()
 	_editor_view = EditorView_Scene.instance()
 	

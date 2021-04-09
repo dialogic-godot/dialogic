@@ -54,6 +54,7 @@ onready var character_popup_node := get_node_or_null(NewCharacterPopup_path)
 func _ready() -> void:
 	self._current_view = {"state":EditorView.DEFAULT, "reference":default_view_node}
 	timeline_container_node.tree_resource = DialogicDB.Timelines.get_database()
+	DialogicDB.Timelines.get_database().scan_timelines_folder()
 	character_container_node.tree_resource = DialogicDB.Characters.get_database()
 
 func _hide_all_views_except(who) -> void:
