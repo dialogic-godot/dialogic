@@ -619,6 +619,10 @@ func add_choice_button(option):
 	button.get_node('TextureRect').visible = theme.get_value('buttons', 'use_image', true)
 	if theme.get_value('buttons', 'use_image', true):
 		button.get_node('TextureRect').texture = DialogicUtil.path_fixer_load(theme.get_value('buttons', 'image', "res://addons/dialogic/Example Assets/backgrounds/background-2.png"))
+		if theme.get_value('buttons', 'modulation', false):
+			button.get_node('TextureRect').modulate = Color(theme.get_value('buttons', 'modulation_color', "#ffffffff"))
+		
+
 
 	var padding = theme.get_value('buttons', 'padding', Vector2(5,5))
 	button.get_node('ColorRect').set('margin_left', -1 * padding.x)
@@ -786,7 +790,10 @@ func load_theme(filename):
 		$TextBubble/NameLabel.set('custom_constants/shadow_offset_x', name_shadow_offset.x)
 		$TextBubble/NameLabel.set('custom_constants/shadow_offset_y', name_shadow_offset.y)
 	$TextBubble/NameLabel.rect_position.y = theme.get_value('name', 'bottom_gap', 48) * -1
-	
+	if theme.get_value('name', 'modulation', false) == true:
+		$TextBubble/NameLabel/TextureRect.modulate = Color(theme.get_value('name', 'modulation_color', '#ffffffff'))
+	else:
+		$TextBubble/NameLabel/TextureRect.modulate = Color('#ffffffff')
 	
 	# Setting next indicator animation
 	$TextBubble/NextIndicator.self_modulate = Color('#ffffff')
