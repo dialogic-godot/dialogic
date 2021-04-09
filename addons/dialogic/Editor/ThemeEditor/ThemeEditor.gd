@@ -55,6 +55,8 @@ onready var n = {
 	'name_shadow_offset_x': $"VBoxContainer/TabContainer/Name Label/Column/GridContainer/HBoxContainer/ShadowOffsetX",
 	'name_shadow_offset_y': $"VBoxContainer/TabContainer/Name Label/Column/GridContainer/HBoxContainer/ShadowOffsetY",
 	'name_bottom_gap': $"VBoxContainer/TabContainer/Name Label/Column3/GridContainer/HBoxContainer5/BottomGap",
+	'name_background_modulation': $"VBoxContainer/TabContainer/Name Label/Column2/GridContainer/HBoxContainer6/CheckBox",
+	'name_background_modulation_color': $"VBoxContainer/TabContainer/Name Label/Column2/GridContainer/HBoxContainer6/ColorPickerButton",
 	
 	# Choice Buttons
 	'button_text_color_enabled': $"VBoxContainer/TabContainer/Choice Buttons/Column/GridContainer/HBoxContainer4/CheckBox2",
@@ -63,6 +65,9 @@ onready var n = {
 	'button_background_visible': $"VBoxContainer/TabContainer/Choice Buttons/Column/GridContainer/HBoxContainer2/CheckBox",
 	'button_image': $"VBoxContainer/TabContainer/Choice Buttons/Column/GridContainer/HBoxContainer3/BackgroundTextureButton",
 	'button_image_visible': $"VBoxContainer/TabContainer/Choice Buttons/Column/GridContainer/HBoxContainer3/CheckBox",
+	'button_modulation': $"VBoxContainer/TabContainer/Choice Buttons/Column/GridContainer/HBoxContainer6/CheckBox",
+	'button_modulation_color': $"VBoxContainer/TabContainer/Choice Buttons/Column/GridContainer/HBoxContainer6/ColorPickerButton",
+	'button_use_native': $"VBoxContainer/TabContainer/Choice Buttons/Column/GridContainer/CheckBox",
 	'button_offset_x': $"VBoxContainer/TabContainer/Choice Buttons/Column2/GridContainer/HBoxContainer/TextOffsetH",
 	'button_offset_y': $"VBoxContainer/TabContainer/Choice Buttons/Column2/GridContainer/HBoxContainer/TextOffsetV",
 	'button_separation': $"VBoxContainer/TabContainer/Choice Buttons/Column2/GridContainer/VerticalSeparation",
@@ -124,9 +129,16 @@ func load_theme(filename):
 	n['button_background_visible'].pressed = theme.get_value('buttons', 'use_background_color', false)
 	n['button_image'].text = DialogicResources.get_filename_from_path(theme.get_value('buttons', 'image', 'res://addons/dialogic/Example Assets/backgrounds/background-2.png'))
 	n['button_image_visible'].pressed = theme.get_value('buttons', 'use_image', true)
+	n['button_use_native'].pressed = theme.get_value('buttons', 'use_native', false)
 	n['button_offset_x'].value = theme.get_value('buttons', 'padding', Vector2(5,5)).x
 	n['button_offset_y'].value = theme.get_value('buttons', 'padding', Vector2(5,5)).y
 	n['button_separation'].value = theme.get_value('buttons', 'gap', 5)
+	n['button_modulation'].pressed = theme.get_value('buttons', 'modulation', false)
+	n['button_modulation_color'].color = Color(theme.get_value('buttons', 'modulation_color', '#ffffffff'))
+	
+	
+	
+	toggle_button_customization_fields(not theme.get_value('buttons', 'use_native', false))
 	
 	# Definitions
 	n['glossary_color'].color = Color(theme.get_value('definitions', 'color', "#ffffffff"))
@@ -157,7 +169,11 @@ func load_theme(filename):
 	n['name_background_visible'].pressed = theme.get_value('name', 'background_visible', false)
 	n['name_background'].color = Color(theme.get_value('name', 'background', "#ff000000"))
 	n['name_image_visible'].pressed = theme.get_value('name', 'image_visible', false)
+
 	n['name_image'].text = DialogicResources.get_filename_from_path(theme.get_value('name', 'image', 'res://addons/dialogic/Example Assets/backgrounds/background-2.png'))
+	n['name_background_modulation'].pressed = theme.get_value('name', 'modulation', false)
+	n['name_background_modulation_color'].color = Color(theme.get_value('name', 'modulation_color', '#ffffffff'))
+
 	
 	
 	n['name_shadow'].color = Color(theme.get_value('name', 'shadow', "#9e000000"))
@@ -440,6 +456,26 @@ func _on_Custom_Button_Color_toggled(button_pressed):
 	DialogicResources.set_theme_value(current_theme, 'buttons', 'text_color_enabled', button_pressed)
 
 
+func _on_native_button_toggled(button_pressed):
+	if loading == true:
+		return
+	DialogicResources.set_theme_value(current_theme, 'buttons', 'use_native', button_pressed)
+	toggle_button_customization_fields(not button_pressed)
+
+func toggle_button_customization_fields(enabled):
+	var disabled = not enabled
+	n['button_text_color_enabled'].disabled = disabled
+	n['button_text_color'].disabled = disabled
+	n['button_background'].disabled = disabled
+	n['button_background_visible'].disabled = disabled
+	n['button_image'].disabled = disabled
+	n['button_image_visible'].disabled = disabled
+	n['button_modulation'].disabled = disabled
+	n['button_modulation_color'].disabled = disabled
+	n['button_offset_x'].editable = enabled
+	n['button_offset_y'].editable = enabled
+
+
 func _on_GlossaryColorPicker_color_changed(color):
 	if loading == true:
 		return
@@ -590,3 +626,32 @@ func _on_ColorPicker_Background_texture_modulation_color_changed(color):
 		return
 	DialogicResources.set_theme_value(current_theme, 'background', 'modulation_color', '#' + color.to_html())
 	$DelayPreviewTimer.start(0.5) # Calling a timer so the update doesn't get triggered many times
+
+
+func _on_ColorPicker_NameLabel_modulation_color_changed(color):
+	if loading == true:
+		return
+	DialogicResources.set_theme_value(current_theme, 'name', 'modulation_color', '#' + color.to_html())
+	$DelayPreviewTimer.start(0.5) # Calling a timer so the update doesn't get triggered many times
+
+
+func _on_NameLabel_texture_modulation_toggled(button_pressed):
+	if loading == true:
+		return
+	DialogicResources.set_theme_value(current_theme, 'name', 'modulation', button_pressed)
+	_on_PreviewButton_pressed() # Refreshing the preview
+
+
+func _on_ChoiceButtons_texture_modulate_toggled(button_pressed):
+	if loading == true:
+		return
+	DialogicResources.set_theme_value(current_theme, 'buttons', 'modulation', button_pressed)
+	_on_PreviewButton_pressed() # Refreshing the preview
+
+
+func _on_ColorPicker_ChoiceButtons_modulation_color_changed(color):
+	if loading == true:
+		return
+	DialogicResources.set_theme_value(current_theme, 'buttons', 'modulation_color', '#' + color.to_html())
+	$DelayPreviewTimer.start(0.5) # Calling a timer so the update doesn't get triggered many times
+
