@@ -44,6 +44,7 @@ v1.1 - WIP
   - Removed the limitation of only 100px for the padding of the dialog box
   - Added a new option for changing the color modulation of the dialog background image
   - Added modulation settings to the name label background texture and the choices buttons background textures. [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
+  - Added an option to use native buttons styles for choices [[Tim Krief](https://github.com/timkrief)]
   - Fixed a bug where the text alignment wasn't being shown on the preview
   - Fixed a bug with the name label shadow
   - Fixed a bug with the "auto color" option in game
