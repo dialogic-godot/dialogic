@@ -619,9 +619,7 @@ func add_choice_button(option):
 	button.get_node('TextureRect').visible = theme.get_value('buttons', 'use_image', true)
 	if theme.get_value('buttons', 'use_image', true):
 		button.get_node('TextureRect').texture = load(theme.get_value('buttons', 'image', "res://addons/dialogic/Images/background/background-2.png"))
-		print(button.get_children())
 		if theme.get_value('buttons', 'modulation', false):
-			print(button.get_node('TextureRect'))
 			button.get_node('TextureRect').modulate = Color(theme.get_value('buttons', 'modulation_color', "#ffffffff"))
 		
 	var padding = theme.get_value('buttons', 'padding', Vector2(5,5))
