@@ -700,6 +700,28 @@ margin_bottom = 24.0
 size_flags_horizontal = 3
 text = "background-2"
 
+[node name="Label9" type="Label" parent="VBoxContainer/TabContainer/Name Label/Column2/GridContainer"]
+margin_top = 61.0
+margin_right = 140.0
+margin_bottom = 75.0
+text = "Texture Modulation"
+
+[node name="HBoxContainer6" type="HBoxContainer" parent="VBoxContainer/TabContainer/Name Label/Column2/GridContainer"]
+margin_left = 144.0
+margin_top = 56.0
+margin_right = 270.0
+margin_bottom = 80.0
+
+[node name="CheckBox" type="CheckBox" parent="VBoxContainer/TabContainer/Name Label/Column2/GridContainer/HBoxContainer6"]
+margin_right = 24.0
+margin_bottom = 24.0
+
+[node name="ColorPickerButton" type="ColorPickerButton" parent="VBoxContainer/TabContainer/Name Label/Column2/GridContainer/HBoxContainer6"]
+margin_left = 28.0
+margin_right = 126.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+
 [node name="VSeparator2" type="VSeparator" parent="VBoxContainer/TabContainer/Name Label"]
 margin_left = 591.0
 margin_right = 595.0
@@ -852,6 +874,28 @@ margin_right = 126.0
 margin_bottom = 24.0
 size_flags_horizontal = 3
 text = "background-2"
+
+[node name="Label9" type="Label" parent="VBoxContainer/TabContainer/Choice Buttons/Column/GridContainer"]
+margin_top = 89.0
+margin_right = 134.0
+margin_bottom = 103.0
+text = "Texture Modulation"
+
+[node name="HBoxContainer6" type="HBoxContainer" parent="VBoxContainer/TabContainer/Choice Buttons/Column/GridContainer"]
+margin_left = 144.0
+margin_top = 84.0
+margin_right = 270.0
+margin_bottom = 108.0
+
+[node name="CheckBox" type="CheckBox" parent="VBoxContainer/TabContainer/Choice Buttons/Column/GridContainer/HBoxContainer6"]
+margin_right = 24.0
+margin_bottom = 24.0
+
+[node name="ColorPickerButton" type="ColorPickerButton" parent="VBoxContainer/TabContainer/Choice Buttons/Column/GridContainer/HBoxContainer6"]
+margin_left = 28.0
+margin_right = 126.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
 
 [node name="VSeparator" type="VSeparator" parent="VBoxContainer/TabContainer/Choice Buttons"]
 margin_left = 280.0
@@ -1076,6 +1120,8 @@ one_shot = true
 [connection signal="color_changed" from="VBoxContainer/TabContainer/Name Label/Column2/GridContainer/HBoxContainer2/ColorPickerButton" to="." method="_on_name_background_color_changed"]
 [connection signal="toggled" from="VBoxContainer/TabContainer/Name Label/Column2/GridContainer/HBoxContainer3/CheckBox" to="." method="_on_name_image_visible_toggled"]
 [connection signal="pressed" from="VBoxContainer/TabContainer/Name Label/Column2/GridContainer/HBoxContainer3/BackgroundTextureButton" to="." method="_on_name_image_pressed"]
+[connection signal="toggled" from="VBoxContainer/TabContainer/Name Label/Column2/GridContainer/HBoxContainer6/CheckBox" to="." method="_on_NameLabel_texture_modulation_toggled"]
+[connection signal="color_changed" from="VBoxContainer/TabContainer/Name Label/Column2/GridContainer/HBoxContainer6/ColorPickerButton" to="." method="_on_ColorPicker_NameLabel_modulation_color_changed"]
 [connection signal="value_changed" from="VBoxContainer/TabContainer/Name Label/Column3/GridContainer/HBoxContainer5/BottomGap" to="." method="_on_name_BottomGap_value_changed"]
 [connection signal="toggled" from="VBoxContainer/TabContainer/Choice Buttons/Column/GridContainer/HBoxContainer4/CheckBox2" to="." method="_on_Custom_Button_Color_toggled"]
 [connection signal="color_changed" from="VBoxContainer/TabContainer/Choice Buttons/Column/GridContainer/HBoxContainer4/ButtonTextColor" to="." method="_on_ButtonTextColor_color_changed"]
@@ -1083,6 +1129,8 @@ one_shot = true
 [connection signal="color_changed" from="VBoxContainer/TabContainer/Choice Buttons/Column/GridContainer/HBoxContainer2/ColorPickerButton" to="." method="_on_button_background_color_color_changed"]
 [connection signal="toggled" from="VBoxContainer/TabContainer/Choice Buttons/Column/GridContainer/HBoxContainer3/CheckBox" to="." method="_on_button_texture_toggled"]
 [connection signal="pressed" from="VBoxContainer/TabContainer/Choice Buttons/Column/GridContainer/HBoxContainer3/BackgroundTextureButton" to="." method="_on_ButtonTextureButton_pressed"]
+[connection signal="toggled" from="VBoxContainer/TabContainer/Choice Buttons/Column/GridContainer/HBoxContainer6/CheckBox" to="." method="_on_ChoiceButtons_texture_modulate_toggled"]
+[connection signal="color_changed" from="VBoxContainer/TabContainer/Choice Buttons/Column/GridContainer/HBoxContainer6/ColorPickerButton" to="." method="_on_ColorPicker_ChoiceButtons_modulation_color_changed"]
 [connection signal="value_changed" from="VBoxContainer/TabContainer/Choice Buttons/Column2/GridContainer/HBoxContainer/TextOffsetV" to="." method="_on_ButtonOffset_value_changed"]
 [connection signal="value_changed" from="VBoxContainer/TabContainer/Choice Buttons/Column2/GridContainer/HBoxContainer/TextOffsetH" to="." method="_on_ButtonOffset_value_changed"]
 [connection signal="value_changed" from="VBoxContainer/TabContainer/Choice Buttons/Column2/GridContainer/VerticalSeparation" to="." method="_on_VerticalSeparation_value_changed"]
