@@ -55,6 +55,7 @@ func _ready():
 	$TextBubble/RichTextLabel.meta_underlined = false
 	$DefinitionInfo.visible = false
 	
+	$TextBubble/CloseDialog/Timer.connect("timeout", self, '_on_close_dialog_timeout')
 	tween_node.connect("tween_completed", self, '_on_Tween_tween_completed')
 
 	# Getting the character information
@@ -66,10 +67,12 @@ func _ready():
 
 
 func start(given_timeline: String, reset: bool=true, debug: bool=false):
+	print("starting: " + given_timeline)
 	reset_saves = reset
 	debug_mode = debug
 	runtime_id = DialogicUtil.generate_random_id()
 	load_definitions()
+	stop_close_dialog()
 	if not given_timeline.empty():
 		dialog_script = null
 		for t in DialogicUtil.get_timeline_list():
@@ -423,6 +426,8 @@ func load_event():
 		var func_state = event_handler(dialog_script['events'][dialog_index])
 		if (func_state is GDScriptFunctionState):
 			yield(func_state, "completed")
+	else:
+		close_dialog_event()
 
 
 func event_handler(event: Dictionary):
@@ -935,18 +940,20 @@ func characters_leave_all():
 
 
 func close_dialog_event():
-	var tween = Tween.new()
-	add_child(tween)
+	var tween = $TextBubble/CloseDialog/Tween
 	tween.interpolate_property($TextBubble, "modulate",
 		$TextBubble.modulate, Color('#00ffffff'), 1,
 		Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
 	tween.start()
-	var close_dialog_timer = Timer.new()
-	close_dialog_timer.connect("timeout", self, '_on_close_dialog_timeout')
-	add_child(close_dialog_timer)
-	close_dialog_timer.start(2)
+	$TextBubble/CloseDialog/Timer.start(2)
 	characters_leave_all()
 
 
-func _on_close_dialog_timeout():
+func stop_close_dialog():
+	$TextBubble.modulate = Color('#ffffffff')
+	$TextBubble/CloseDialog/Tween.stop_all()
+	$TextBubble/CloseDialog/Timer.stop()
+
+
+func _on_close_dialog_timeout(tween, close_dialog_timer):
 	on_timeline_end()
