@@ -264,13 +264,9 @@ func _insert_glossary_definitions(text: String):
 
 func _process(delta):
 	$TextBubble/NextIndicator.visible = finished
-	if not Engine.is_editor_hint():
-		# Multiple choices
-		if waiting_for_answer:
-			$Options.visible = finished
-		else:
-			$Options.visible = false
-
+	if waiting_for_answer and Input.is_action_just_released(input_next):
+		if $Options.get_child_count() > 0:
+			$Options.get_child(0).grab_focus()
 
 func _input(event: InputEvent) -> void:
 	if not Engine.is_editor_hint() and event.is_action_pressed(input_next) and not waiting:
@@ -570,7 +566,8 @@ func event_handler(event: Dictionary):
 		_:
 			visible = false
 			dprint('Other event. ', event)
-
+	
+	$Options.visible = waiting_for_answer
 
 func _on_input_set(variable):
 	var input_value = $TextInputDialog/LineEdit.text
