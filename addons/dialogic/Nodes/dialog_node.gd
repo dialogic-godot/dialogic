@@ -38,18 +38,12 @@ var questions #for keeping track of the questions answered
 
 onready var tween_node = $TextBubble/Tween
 
+# Used to detect timeline change
+var runtime_id
+
 func _ready():
 	# Loading the config files
 	load_config_files()
-	
-	# Checking if the dialog should read the code from a external file
-	if not timeline.empty():
-		dialog_script = set_current_dialog(timeline)
-	elif dialog_script.keys().size() == 0:
-		dialog_script = {
-			"events":[{"character":"","portrait":"",
-			"text":"[Dialogic Error] No timeline specified."}]
-		}
 	
 	# Connecting resize signal
 	get_viewport().connect("size_changed", self, "resize_main")
@@ -66,17 +60,58 @@ func _ready():
 	# Getting the character information
 	characters = DialogicUtil.get_character_list()
 
+	# Try to start the timeline only if specified
+	if not timeline.empty():
+		start(timeline)
+
+
+func start(given_timeline: String, reset: bool=true, debug: bool=false):
+	reset_saves = reset
+	debug_mode = debug
+	runtime_id = DialogicUtil.generate_random_id()
+	load_definitions()
+	if not given_timeline.empty():
+		dialog_script = null
+		for t in DialogicUtil.get_timeline_list():
+			if t['name'] == given_timeline or t['file'] == given_timeline:
+				dialog_script = set_current_dialog(t['file'])
+		if dialog_script == null:
+			dialog_script = {
+				"events":[{
+					"character":"",
+					"portrait":"",
+					"text":"[color=red][Dialogic Error][/color] Could not load dialog '[color=red]" + given_timeline + "[/color]'. It seems like the timeline doesn't exists. Maybe the name is wrong?"
+				}]
+			}
+	elif dialog_script.keys().size() == 0:
+		dialog_script = {
+			"events":[{
+				"character":"",
+				"portrait":"",
+				"text":"[color=red][Dialogic Error][/color] No timeline specified."
+			}]
+		}
 	if not Engine.is_editor_hint():
-		load_dialog()
+		init_dialog()
 
 
-func load_config_files():
+func start_from_save(fallback: String, debug: bool=false):
+	var last = DialogicSingleton.get_current_timeline()
+	if last.empty():
+		last = fallback
+	start(last, false, debug)
+
+
+func load_definitions():
 	if not Engine.is_editor_hint():
 		if reset_saves:
 			DialogicSingleton.init(reset_saves)
 		definitions = DialogicSingleton.get_definitions()
 	else:
 		definitions = DialogicResources.get_default_definitions()
+
+
+func load_config_files():
 	settings = DialogicResources.get_settings_config()
 	var theme_file = 'res://addons/dialogic/Editor/ThemeEditor/default-theme.cfg'
 	if settings.has_section('theme'):
@@ -231,6 +266,7 @@ func parse_branches(dialog_script: Dictionary) -> Dictionary:
 func parse_definitions(text: String, variables: bool = true, glossary: bool = true):
 	if Engine.is_editor_hint():
 		# Loading variables again to avoid issues in the preview dialog
+		load_definitions()
 		load_config_files()
 
 	var final_text: String = text
@@ -280,7 +316,7 @@ func _input(event: InputEvent) -> void:
 			finished = true
 		else:
 			if waiting_for_answer == false and waiting_for_input == false:
-				load_dialog()
+				load_next_event(runtime_id)
 		if settings.has_section_key('dialog', 'propagate_input'):
 			var propagate_input: bool = settings.get_value('dialog', 'propagate_input')
 			if not propagate_input:
@@ -352,7 +388,25 @@ func on_timeline_end():
 	emit_signal("event_end", "timeline")
 
 
-func load_dialog(skip_add = false):
+func init_dialog():
+	dialog_index = 0
+	load_event()
+
+
+func load_event_at_index(index: int, current_runtime_id: String):
+	if current_runtime_id == runtime_id:
+		dialog_index = index
+		load_event()
+
+
+func load_next_event(current_runtime_id: String):
+	# The entire event reading system should be refactored... but not today!
+	if current_runtime_id == runtime_id:
+		dialog_index += 1
+		load_event()
+
+
+func load_event():
 	# Emitting signals
 	if dialog_script.has('events'):
 		if dialog_index == 0:
@@ -371,27 +425,16 @@ func load_dialog(skip_add = false):
 			if (func_state is GDScriptFunctionState):
 				yield(func_state, "completed")
 		else:
-			if Engine.is_editor_hint() == false:
+			if not Engine.is_editor_hint():
 				queue_free()
-	if skip_add == false:
-		dialog_index += 1
-
-
-func reset_dialog_extras():
-	$TextBubble/NameLabel.text = ''
-	$TextBubble/NameLabel.visible = false
-
-
-func get_character(character_id):
-	for c in characters:
-		if c['file'] == character_id:
-			return c
-	return {}
 
 
 func event_handler(event: Dictionary):
 	# Handling an event and updating the available nodes accordingly.
 	reset_dialog_extras()
+	reset_options()
+	
+	var current_runtime_id = runtime_id
 	
 	dprint('[D] Current Event: ', event)
 	match event:
@@ -420,8 +463,7 @@ func event_handler(event: Dictionary):
 				if q['question_id'] == event['question_id']:
 					if q['answered']:
 						# If the option is for an answered question, skip to the end of it.
-						dialog_index = q['end_id']
-						load_dialog(true)
+						load_event_at_index(q['end_id'], current_runtime_id)
 		{'input', ..}:
 			emit_signal("event_start", "input", event)
 			show_dialog()
@@ -441,10 +483,10 @@ func event_handler(event: Dictionary):
 						if p.character_data['file'] == event['character']:
 							p.fade_out()
 
-				go_to_next_event()
+				load_next_event(current_runtime_id)
 			elif event['action'] == 'join':
 				if event['character'] == '':
-					go_to_next_event()
+					load_next_event(current_runtime_id)
 				else:
 					var character_data = get_character(event['character'])
 					var exists = grab_portrait_focus(character_data)
@@ -457,9 +499,10 @@ func event_handler(event: Dictionary):
 						p.init(char_portrait, get_character_position(event['position']))
 						$Portraits.add_child(p)
 						p.fade_in()
-				go_to_next_event()
+				load_next_event(current_runtime_id)
 		{'scene'}:
 			get_tree().change_scene(event['scene'])
+			load_next_event(current_runtime_id)
 		{'background'}:
 			emit_signal("event_start", "background", event)
 			$Background.visible = true
@@ -475,7 +518,7 @@ func event_handler(event: Dictionary):
 					$Background.add_child(bg_scene)
 			elif (event['background'] != ''):
 				$Background.texture = load(event['background'])
-			go_to_next_event()
+			load_next_event(current_runtime_id)
 		{'audio'}, {'audio', 'file'}:
 			emit_signal("event_start", "audio", event)
 			if event['audio'] == 'play' and 'file' in event.keys() and not event['file'].empty():
@@ -483,23 +526,24 @@ func event_handler(event: Dictionary):
 				$FX/AudioStreamPlayer.play()
 			else:
 				$FX/AudioStreamPlayer.stop()
-			go_to_next_event()
+			load_next_event(current_runtime_id)
 		{'background-music'}, {'background-music', 'file'}:
 			emit_signal("event_start", "background-music", event)
 			if event['background-music'] == 'play' and 'file' in event.keys() and not event['file'].empty():
 				$FX/BackgroundMusic.crossfade_to(event['file'])
 			else:
 				$FX/BackgroundMusic.fade_out()
-			go_to_next_event()
+			load_next_event(current_runtime_id)
 		{'endbranch', ..}:
 			emit_signal("event_start", "endbranch", event)
-			go_to_next_event()
+			load_next_event(current_runtime_id)
 		{'change_scene'}:
 			get_tree().change_scene(event['change_scene'])
+			load_next_event(current_runtime_id)
 		{'emit_signal', ..}:
 			dprint('[!] Emitting signal: dialogic_signal(', event['emit_signal'], ')')
 			emit_signal("dialogic_signal", event['emit_signal'])
-			go_to_next_event()
+			load_next_event(current_runtime_id)
 		{'close_dialog'}:
 			emit_signal("event_start", "close_dialog", event)
 			close_dialog_event()
@@ -507,15 +551,14 @@ func event_handler(event: Dictionary):
 			emit_signal("event_start", "set_theme", event)
 			if event['set_theme'] != '':
 				current_theme = load_theme(event['set_theme'])
-			go_to_next_event()
+			load_next_event(current_runtime_id)
 		{'wait_seconds'}:
 			emit_signal("event_start", "wait", event)
 			wait_seconds(event['wait_seconds'])
 			waiting = true
 		{'change_timeline'}:
 			dialog_script = set_current_dialog(event['change_timeline'])
-			dialog_index = -1
-			go_to_next_event()
+			init_dialog()
 		{'condition', 'definition', 'value', 'question_id', ..}:
 			# Treating this conditional as an option on a regular question event
 			var def_value = null
@@ -530,18 +573,17 @@ func event_handler(event: Dictionary):
 			current_question['answered'] = !condition_met
 			if !condition_met:
 				# condition not met, skipping branch
-				dialog_index = current_question['end_id']
-				load_dialog(true)
+				load_event_at_index(current_question['end_id'], current_runtime_id)
 			else:
 				# condition met, entering branch
-				go_to_next_event()
+				load_next_event(current_runtime_id)
 		{'set_value', 'definition', ..}:
 			emit_signal("event_start", "set_value", event)
 			var operation = '='
 			if 'operation' in event and not event['operation'].empty():
 				operation = event["operation"]
 			DialogicSingleton.set_variable_from_id(event['definition'], event['set_value'], operation)
-			go_to_next_event()
+			load_next_event(current_runtime_id)
 		{'call_node', ..}:
 			dprint('[!] Call Node signal: dialogic_signal(call_node) ', var2str(event['call_node']))
 			emit_signal("event_start", "call_node", event)
@@ -566,10 +608,22 @@ func event_handler(event: Dictionary):
 
 			waiting = false
 			$TextBubble.visible = true
-			go_to_next_event()
+			load_next_event(current_runtime_id)
 		_:
 			visible = false
 			dprint('Other event. ', event)
+
+
+func reset_dialog_extras():
+	$TextBubble/NameLabel.text = ''
+	$TextBubble/NameLabel.visible = false
+
+
+func get_character(character_id):
+	for c in characters:
+		if c['file'] == character_id:
+			return c
+	return {}
 
 
 func _on_input_set(variable):
@@ -582,7 +636,7 @@ func _on_input_set(variable):
 		$TextInputDialog/LineEdit.text = ''
 		$TextInputDialog.disconnect("confirmed", self, '_on_input_set')
 		$TextInputDialog.visible = false
-		load_dialog()
+		load_next_event(runtime_id)
 		dprint('[!] Input selected: ', input_value)
 		dprint('[!] dialog variables: ', dialog_resource.custom_variables)
 
@@ -650,7 +704,7 @@ func answer_question(i, event_id, question_id):
 	questions[question_id]['answered'] = true
 	dprint('    dialog_index = ', dialog_index)
 	reset_options()
-	load_dialog()
+	load_next_event(runtime_id)
 	if last_mouse_mode != null:
 		Input.set_mouse_mode(last_mouse_mode) # Revert to last mouse mode when selection is done
 		last_mouse_mode = null
@@ -660,18 +714,12 @@ func _on_option_selected(option, variable, value):
 	dialog_resource.custom_variables[variable] = value
 	waiting_for_answer = false
 	reset_options()
-	load_dialog()
+	load_next_event(runtime_id)
 	dprint('[!] Option selected: ', option.text, ' value= ' , value)
 
 
 func _on_TextInputDialog_confirmed():
 	pass # Replace with function body.
-
-
-func go_to_next_event():
-	# The entire event reading system should be refactored... but not today!
-	dialog_index += 1
-	load_dialog(true)
 
 
 func grab_portrait_focus(character_data, event: Dictionary = {}) -> bool:
@@ -839,7 +887,7 @@ func _on_WaitSeconds_timeout():
 	waiting = false
 	$WaitSeconds.stop()
 	$TextBubble.visible = true
-	load_dialog()
+	load_next_event(runtime_id)
 
 
 func dprint(string, arg1='', arg2='', arg3='', arg4='' ):
