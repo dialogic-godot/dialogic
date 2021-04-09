@@ -8,8 +8,6 @@
 [ext_resource path="res://addons/dialogic/Nodes/dialog_node.gd" type="Script" id=6]
 [ext_resource path="res://addons/dialogic/Nodes/BackgroundMusic.tscn" type="PackedScene" id=7]
 
-
-
 [sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 1, 1, 1, 0 )
 expand_margin_left = 10.0
@@ -89,9 +87,9 @@ anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-margin_left = -250.0
+margin_left = -455.0
 margin_top = -207.0
-margin_right = 250.0
+margin_right = 455.0
 margin_bottom = -40.0
 __meta__ = {
 "_edit_use_anchors_": false
@@ -147,7 +145,7 @@ anchor_bottom = 1.0
 margin_left = -36.4279
 margin_top = -35.9016
 margin_right = 14.5721
-margin_bottom = 29.4015
+margin_bottom = 25.4599
 rect_scale = Vector2( 0.4, 0.4 )
 texture = ExtResource( 1 )
 stretch_mode = 4
@@ -204,6 +202,17 @@ __meta__ = {
 }
 
 [node name="Tween" type="Tween" parent="TextBubble"]
+
+[node name="CloseDialog" type="Control" parent="TextBubble"]
+margin_right = 40.0
+margin_bottom = 40.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Tween" type="Tween" parent="TextBubble/CloseDialog"]
+
+[node name="Timer" type="Timer" parent="TextBubble/CloseDialog"]
 
 [node name="Options" type="VBoxContainer" parent="."]
 anchor_left = 0.5
@@ -342,7 +351,6 @@ __meta__ = {
 [node name="Timer" type="Timer" parent="DefinitionInfo"]
 
 [node name="WaitSeconds" type="Timer" parent="."]
-
 [connection signal="meta_hover_ended" from="TextBubble/RichTextLabel" to="." method="_on_RichTextLabel_meta_hover_ended"]
 [connection signal="meta_hover_started" from="TextBubble/RichTextLabel" to="." method="_on_RichTextLabel_meta_hover_started"]
 [connection signal="timeout" from="DefinitionInfo/Timer" to="." method="_on_Definition_Timer_timeout"]
