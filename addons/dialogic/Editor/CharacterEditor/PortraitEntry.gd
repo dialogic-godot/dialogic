@@ -5,7 +5,7 @@ var editor_reference
 var image_node
 
 func _ready():
-	pass
+	$ButtonDelete.icon = get_icon("Remove", "EditorIcons")
 
 
 func _on_ButtonDelete_pressed():

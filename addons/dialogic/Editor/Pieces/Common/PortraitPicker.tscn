@@ -1,7 +1,9 @@
 [gd_scene load_steps=3 format=2]
 
-[ext_resource path="res://addons/dialogic/Images/Portrait.svg" type="Texture" id=1]
+[ext_resource path="res://addons/dialogic/Images/Event Icons/Portrait.svg" type="Texture" id=1]
 [ext_resource path="res://addons/dialogic/Editor/Pieces/Common/PortraitPicker.gd" type="Script" id=2]
+
+
 
 [node name="PortraitPicker" type="MenuButton"]
 margin_right = 34.0

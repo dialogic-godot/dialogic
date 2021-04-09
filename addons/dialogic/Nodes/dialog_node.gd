@@ -599,7 +599,7 @@ func add_choice_button(option):
 	var button = ChoiceButton.instance()
 	button.text = option['label']
 	# Text
-	button.set('custom_fonts/font', load(theme.get_value('text', 'font', "res://addons/dialogic/Fonts/DefaultFont.tres")))
+	button.set('custom_fonts/font', DialogicUtil.path_fixer_load(theme.get_value('text', 'font', "res://addons/dialogic/Example Assets/Fonts/DefaultFont.tres")))
 
 	var text_color = Color(theme.get_value('text', 'color', "#ffffffff"))
 	button.set('custom_colors/font_color', text_color)
@@ -618,10 +618,12 @@ func add_choice_button(option):
 
 	button.get_node('TextureRect').visible = theme.get_value('buttons', 'use_image', true)
 	if theme.get_value('buttons', 'use_image', true):
-		button.get_node('TextureRect').texture = load(theme.get_value('buttons', 'image', "res://addons/dialogic/Images/background/background-2.png"))
+		button.get_node('TextureRect').texture = DialogicUtil.path_fixer_load(theme.get_value('buttons', 'image', "res://addons/dialogic/Example Assets/backgrounds/background-2.png"))
 		if theme.get_value('buttons', 'modulation', false):
 			button.get_node('TextureRect').modulate = Color(theme.get_value('buttons', 'modulation_color', "#ffffffff"))
 		
+
+
 	var padding = theme.get_value('buttons', 'padding', Vector2(5,5))
 	button.get_node('ColorRect').set('margin_left', -1 * padding.x)
 	button.get_node('ColorRect').set('margin_right',  padding.x)
@@ -725,7 +727,7 @@ func load_theme(filename):
 	call_deferred('deferred_resize', $TextBubble.rect_size, theme.get_value('box', 'size', Vector2(910, 167)))
 
 	# Text
-	var theme_font = load(theme.get_value('text', 'font', 'res://addons/dialogic/Fonts/DefaultFont.tres'))
+	var theme_font = DialogicUtil.path_fixer_load(theme.get_value('text', 'font', 'res://addons/dialogic/Example Assets/Fonts/DefaultFont.tres'))
 	$TextBubble/RichTextLabel.set('custom_fonts/normal_font', theme_font)
 	$TextBubble/NameLabel.set('custom_fonts/font', theme_font)
 
@@ -756,7 +758,7 @@ func load_theme(filename):
 	$TextBubble/RichTextLabel.set('margin_bottom', text_margin.y * -1)
 
 	# Backgrounds
-	$TextBubble/TextureRect.texture = load(theme.get_value('background','image', "res://addons/dialogic/Images/background/background-2.png"))
+	$TextBubble/TextureRect.texture = DialogicUtil.path_fixer_load(theme.get_value('background','image', "res://addons/dialogic/Example Assets/backgrounds/background-2.png"))
 	$TextBubble/ColorRect.color = Color(theme.get_value('background','color', "#ff000000"))
 
 	if theme.get_value('background', 'modulation', false) == true:
@@ -768,11 +770,11 @@ func load_theme(filename):
 	$TextBubble/TextureRect.visible = theme.get_value('background', 'use_image', true)
 
 	# Next image
-	$TextBubble/NextIndicator.texture = load(theme.get_value('next_indicator', 'image', 'res://addons/dialogic/Images/next-indicator.png'))
+	$TextBubble/NextIndicator.texture = DialogicUtil.path_fixer_load(theme.get_value('next_indicator', 'image', 'res://addons/dialogic/Example Assets/next-indicator/next-indicator.png'))
 	input_next = theme.get_value('settings', 'action_key', 'ui_accept')
 
 	# Definitions
-	var definitions_font = load(theme.get_value('definitions', 'font', 'res://addons/dialogic/Fonts/GlossaryFont.tres'))
+	var definitions_font = DialogicUtil.path_fixer_load(theme.get_value('definitions', 'font', "res://addons/dialogic/Example Assets/Fonts/GlossaryFont.tres"))
 	$DefinitionInfo/VBoxContainer/Title.set('custom_fonts/normal_font', definitions_font)
 	$DefinitionInfo/VBoxContainer/Content.set('custom_fonts/normal_font', definitions_font)
 	$DefinitionInfo/VBoxContainer/Extra.set('custom_fonts/normal_font', definitions_font)
@@ -781,7 +783,7 @@ func load_theme(filename):
 	$TextBubble/NameLabel/ColorRect.visible = theme.get_value('name', 'background_visible', false)
 	$TextBubble/NameLabel/ColorRect.color = Color(theme.get_value('name', 'background', '#282828'))
 	$TextBubble/NameLabel/TextureRect.visible = theme.get_value('name', 'image_visible', false)
-	$TextBubble/NameLabel/TextureRect.texture = load(theme.get_value('name','image', "res://addons/dialogic/Images/background/background-2.png"))
+	$TextBubble/NameLabel/TextureRect.texture = DialogicUtil.path_fixer_load(theme.get_value('name','image', "res://addons/dialogic/Example Assets/backgrounds/background-2.png"))
 	var name_shadow_offset = theme.get_value('name', 'shadow_offset', Vector2(2,2))
 	if theme.get_value('name', 'shadow_visible', true):
 		$TextBubble/NameLabel.set('custom_colors/font_color_shadow', Color(theme.get_value('name', 'shadow', '#9e000000')))

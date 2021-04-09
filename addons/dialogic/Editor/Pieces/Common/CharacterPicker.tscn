@@ -1,7 +1,9 @@
 [gd_scene load_steps=3 format=2]
 
-[ext_resource path="res://addons/dialogic/Images/character.svg" type="Texture" id=1]
+[ext_resource path="res://addons/dialogic/Images/Event Icons/character.svg" type="Texture" id=1]
 [ext_resource path="res://addons/dialogic/Editor/Pieces/Common/CharacterPicker.gd" type="Script" id=2]
+
+
 
 [node name="CharacterPicker" type="HBoxContainer"]
 margin_right = 106.0

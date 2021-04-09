@@ -1,7 +1,8 @@
 [gd_scene load_steps=3 format=2]
 
-[ext_resource path="res://addons/dialogic/Images/expand-icon.svg" type="Texture" id=1]
+[ext_resource path="res://addons/dialogic/Images/Pieces/expand-icon.svg" type="Texture" id=1]
 [ext_resource path="res://addons/dialogic/Editor/Pieces/Common/PieceExtraSettings.gd" type="Script" id=2]
+
 
 [node name="OptionButton" type="MenuButton"]
 margin_left = 1749.0

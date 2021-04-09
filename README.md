@@ -25,6 +25,7 @@ v1.1 - WIP
 - Greatly improved how the plugin is displayed in different display scales.
 - You can now filter resources from the main view [[ellogwen](https://github.com/ellogwen)]
 - You can now duplicate themes (from the context menu) [[ellogwen](https://github.com/ellogwen)]
+- Organized the images and other assets into a tidier structure [[Jowan-Spooner](https://github.com/Jowan-Spooner)] _**Warning!** If you were using the example portrait assets you will have to load them again manually on the character editor._
 - Timeline:
   - New event `Call Node`: Call a Godot NodePath and a method name. In addition you can add arguments as well. The Timeline will execute those methods and wait for completion, if the method in question is async and/or yielding [[ellogwen](https://github.com/ellogwen)]
   - You now can drag and drop events into the timeline! [[ellogwen](https://github.com/ellogwen)]
