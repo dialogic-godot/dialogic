@@ -377,7 +377,7 @@ func load_timeline(filename: String):
 				create_event("AudioBlock", i)
 			{'background-music', 'file'}:
 				create_event("BackgroundMusic", i)
-			{'question', 'options'}:
+			{'question', 'options', ..}:
 				create_event("Question", i)
 			{'choice'}:
 				create_event("Choice", i)

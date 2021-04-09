@@ -1,11 +1,11 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://addons/dialogic/Images/Event Icons/Main Icons/question.svg" type="Texture" id=1]
 [ext_resource path="res://addons/dialogic/Editor/Pieces/Question.gd" type="Script" id=2]
 [ext_resource path="res://addons/dialogic/Editor/Pieces/Common/Spacer.tscn" type="PackedScene" id=3]
 [ext_resource path="res://addons/dialogic/Editor/Pieces/Common/PieceExtraSettings.tscn" type="PackedScene" id=4]
-
-
+[ext_resource path="res://addons/dialogic/Editor/Pieces/Common/CharacterPicker.tscn" type="PackedScene" id=5]
+[ext_resource path="res://addons/dialogic/Editor/Pieces/Common/PortraitPicker.tscn" type="PackedScene" id=6]
 
 [sub_resource type="StyleBoxFlat" id=1]
 content_margin_left = 16.0
@@ -66,15 +66,34 @@ texture = ExtResource( 1 )
 stretch_mode = 6
 
 [node name="Title" type="Label" parent="PanelContainer/VBoxContainer/Header"]
+visible = false
 margin_left = 26.0
 margin_top = 7.0
 margin_right = 97.0
 margin_bottom = 21.0
 text = "  Question "
 
+[node name="VSeparator" type="VSeparator" parent="PanelContainer/VBoxContainer/Header"]
+margin_left = 26.0
+margin_right = 30.0
+margin_bottom = 28.0
+
+[node name="CharacterPicker" parent="PanelContainer/VBoxContainer/Header" instance=ExtResource( 5 )]
+margin_left = 34.0
+margin_right = 140.0
+margin_bottom = 28.0
+
+[node name="PortraitPicker" parent="PanelContainer/VBoxContainer/Header" instance=ExtResource( 6 )]
+visible = false
+
+[node name="VSeparator2" type="VSeparator" parent="PanelContainer/VBoxContainer/Header"]
+margin_left = 144.0
+margin_right = 148.0
+margin_bottom = 28.0
+
 [node name="LineEdit" type="LineEdit" parent="PanelContainer/VBoxContainer/Header"]
-margin_left = 101.0
-margin_right = 301.0
+margin_left = 152.0
+margin_right = 352.0
 margin_bottom = 28.0
 rect_min_size = Vector2( 200, 0 )
 expand_to_text_length = true
@@ -83,14 +102,14 @@ caret_blink = true
 caret_blink_speed = 0.5
 
 [node name="Preview" type="Label" parent="PanelContainer/VBoxContainer/Header"]
-margin_left = 305.0
+margin_left = 356.0
 margin_top = 7.0
-margin_right = 305.0
+margin_right = 356.0
 margin_bottom = 21.0
 custom_colors/font_color = Color( 1, 1, 1, 0.513726 )
 
 [node name="Spacer" parent="PanelContainer/VBoxContainer/Header" instance=ExtResource( 3 )]
-margin_left = 309.0
+margin_left = 360.0
 margin_right = 941.0
 margin_bottom = 28.0
 
