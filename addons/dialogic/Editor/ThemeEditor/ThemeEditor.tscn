@@ -897,6 +897,18 @@ margin_right = 126.0
 margin_bottom = 24.0
 size_flags_horizontal = 3
 
+[node name="Label2" type="Label" parent="VBoxContainer/TabContainer/Choice Buttons/Column/GridContainer"]
+margin_top = 89.0
+margin_right = 134.0
+margin_bottom = 103.0
+text = "Use Native Buttons"
+
+[node name="CheckBox" type="CheckBox" parent="VBoxContainer/TabContainer/Choice Buttons/Column/GridContainer"]
+margin_left = 144.0
+margin_top = 84.0
+margin_right = 270.0
+margin_bottom = 108.0
+
 [node name="VSeparator" type="VSeparator" parent="VBoxContainer/TabContainer/Choice Buttons"]
 margin_left = 280.0
 margin_right = 284.0
@@ -1131,6 +1143,7 @@ one_shot = true
 [connection signal="pressed" from="VBoxContainer/TabContainer/Choice Buttons/Column/GridContainer/HBoxContainer3/BackgroundTextureButton" to="." method="_on_ButtonTextureButton_pressed"]
 [connection signal="toggled" from="VBoxContainer/TabContainer/Choice Buttons/Column/GridContainer/HBoxContainer6/CheckBox" to="." method="_on_ChoiceButtons_texture_modulate_toggled"]
 [connection signal="color_changed" from="VBoxContainer/TabContainer/Choice Buttons/Column/GridContainer/HBoxContainer6/ColorPickerButton" to="." method="_on_ColorPicker_ChoiceButtons_modulation_color_changed"]
+[connection signal="toggled" from="VBoxContainer/TabContainer/Choice Buttons/Column/GridContainer/CheckBox" to="." method="_on_native_button_toggled"]
 [connection signal="value_changed" from="VBoxContainer/TabContainer/Choice Buttons/Column2/GridContainer/HBoxContainer/TextOffsetV" to="." method="_on_ButtonOffset_value_changed"]
 [connection signal="value_changed" from="VBoxContainer/TabContainer/Choice Buttons/Column2/GridContainer/HBoxContainer/TextOffsetH" to="." method="_on_ButtonOffset_value_changed"]
 [connection signal="value_changed" from="VBoxContainer/TabContainer/Choice Buttons/Column2/GridContainer/VerticalSeparation" to="." method="_on_VerticalSeparation_value_changed"]
