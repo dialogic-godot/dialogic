@@ -419,14 +419,10 @@ func load_event():
 	$DefinitionInfo.visible = definition_visible
 
 	# This will load the next entry in the dialog_script array.
-	if dialog_script.has('events'):
-		if dialog_index < dialog_script['events'].size():
-			var func_state = event_handler(dialog_script['events'][dialog_index])
-			if (func_state is GDScriptFunctionState):
-				yield(func_state, "completed")
-		else:
-			if not Engine.is_editor_hint():
-				queue_free()
+	if dialog_script.has('events') and dialog_index < dialog_script['events'].size():
+		var func_state = event_handler(dialog_script['events'][dialog_index])
+		if (func_state is GDScriptFunctionState):
+			yield(func_state, "completed")
 
 
 func event_handler(event: Dictionary):
@@ -954,4 +950,3 @@ func close_dialog_event():
 
 func _on_close_dialog_timeout():
 	on_timeline_end()
-	queue_free()
