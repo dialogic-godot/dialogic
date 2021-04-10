@@ -1,3 +1,4 @@
+tool
 extends Control
 class_name DialogicNode
 
@@ -96,6 +97,10 @@ func start_from_save(fallback: String, debug: bool=false):
 	if last.empty():
 		last = fallback
 	start(last, false, debug)
+
+
+func load_preview(theme: String):
+	pass
 
 
 ## *****************************************************************************

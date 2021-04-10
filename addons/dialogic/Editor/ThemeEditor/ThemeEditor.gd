@@ -285,7 +285,7 @@ func _on_PreviewButton_pressed() -> void:
 	for i in $VBoxContainer/Panel.get_children():
 		i.free()
 	var dialogic_node = load("res://addons/dialogic/Dialog.tscn")
-	var preview_dialog = dialogic_node.instance()
+	var preview_dialog: DialogicNode = dialogic_node.instance()
 	preview_dialog.timeline = ''
 	preview_dialog.preview = true
 	preview_dialog.debug_mode = false
@@ -299,24 +299,24 @@ func _on_PreviewButton_pressed() -> void:
 		character_file = characters[0]['file']
 	
 	# Loading the theme here because I need it for the parse_alignment
-	preview_dialog.current_theme = preview_dialog.load_theme(current_theme)
+	preview_dialog.current_theme = preview_dialog._load_theme(current_theme)
 	
 	# Creating the one event timeline for the dialog
-	var text = preview_dialog.parse_definitions(n['text_preview'].text)
+	var text = preview_dialog._parse_definitions(n['text_preview'].text)
 	preview_dialog.dialog_script['events'] = [{
 		"character": character_file,
 		"portrait":'',
 		"text": text
 	}]
-	preview_dialog.parse_characters(preview_dialog.dialog_script)
+	preview_dialog._parse_characters(preview_dialog.dialog_script)
 	preview_dialog.settings = DialogicResources.get_settings_config()
 	
 	# Alignment
 	$VBoxContainer/Panel.add_child(preview_dialog)
 	
-	preview_dialog.load_dialog()
+	preview_dialog._init_dialog()
 	# Reloading the theme
-	preview_dialog.current_theme = preview_dialog.load_theme(current_theme)
+	preview_dialog.current_theme = preview_dialog._load_theme(current_theme)
 	
 	
 	# When not performing this step, the dialog name doesn't update the color for some reason
