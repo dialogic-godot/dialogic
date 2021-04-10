@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://addons/dialogic/Editor/Views/timeline_editor_view.gd" type="Script" id=1]
 [ext_resource path="res://addons/dialogic/assets/Themes/styleboxflat_title_header.tres" type="StyleBox" id=2]
+[ext_resource path="res://addons/dialogic/Editor/Views/timeline_editor/events_container/events_container.tscn" type="PackedScene" id=3]
 
 [node name="TimelineEditorView" type="VBoxContainer"]
 anchor_right = 1.0
@@ -38,24 +39,23 @@ __meta__ = {
 
 [node name="ScrollContainer" type="ScrollContainer" parent="TimelineEditorView"]
 margin_right = 1024.0
-margin_bottom = 464.0
+margin_bottom = 417.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-size_flags_stretch_ratio = 5.0
+size_flags_stretch_ratio = 3.0
 follow_focus = true
 scroll_horizontal_enabled = false
 
 [node name="VBoxContainer" type="VBoxContainer" parent="TimelineEditorView/ScrollContainer"]
 margin_right = 1024.0
-margin_bottom = 464.0
+margin_bottom = 417.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="EventsPanel" type="Panel" parent="TimelineEditorView"]
-margin_top = 476.0
+[node name="TabContainer" parent="TimelineEditorView" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 429.0
 margin_right = 1024.0
 margin_bottom = 564.0
 size_flags_vertical = 3
-__meta__ = {
-"_edit_use_anchors_": false
-}

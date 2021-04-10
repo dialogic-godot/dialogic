@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://addons/dialogic/assets/Images/Toolbar/add-definition.svg" type="Texture" id=1]
 [ext_resource path="res://addons/dialogic/assets/Images/Toolbar/add-character.svg" type="Texture" id=2]
@@ -14,8 +14,6 @@
 [ext_resource path="res://addons/dialogic/Editor/Views/DefinitionEditorView.tscn" type="PackedScene" id=12]
 [ext_resource path="res://addons/dialogic/Editor/Views/ThemeEditorView.tscn" type="PackedScene" id=13]
 [ext_resource path="res://addons/dialogic/Editor/Popups/NewItemPopup.tscn" type="PackedScene" id=14]
-[ext_resource path="res://addons/dialogic/assets/Images/Remove.svg" type="Texture" id=15]
-[ext_resource path="res://addons/dialogic/assets/Images/Rename.svg" type="Texture" id=16]
 
 [sub_resource type="StyleBoxEmpty" id=1]
 
@@ -179,11 +177,9 @@ size_flags_vertical = 3
 
 [node name="TimelinesContainer" parent="Scene/HSplitContainer/Menu/Upper/Categories/VBoxContainer" instance=ExtResource( 6 )]
 margin_right = 168.0
-margin_bottom = 40.0
 
 [node name="Control" parent="Scene/HSplitContainer/Menu/Upper/Categories/VBoxContainer/TimelinesContainer" index="0"]
 margin_right = 164.0
-margin_bottom = 38.0
 
 [node name="HBoxContainer" parent="Scene/HSplitContainer/Menu/Upper/Categories/VBoxContainer/TimelinesContainer/Control" index="0"]
 margin_right = 160.0
@@ -201,12 +197,11 @@ margin_right = 160.0
 
 [node name="Tree" parent="Scene/HSplitContainer/Menu/Upper/Categories/VBoxContainer/TimelinesContainer/Control" index="2"]
 margin_right = 160.0
-margin_bottom = 41.0
+margin_bottom = 90.0
 
 [node name="PopupMenu" parent="Scene/HSplitContainer/Menu/Upper/Categories/VBoxContainer/TimelinesContainer" index="1"]
 margin_right = 164.0
 margin_bottom = 76.0
-items = [ "Rename Item", ExtResource( 16 ), 0, false, true, 0, 0, null, "", false, "", null, 0, false, true, 1, 0, null, "", true, "Remove Item", ExtResource( 15 ), 0, false, false, 2, 0, null, "", false ]
 
 [node name="CharactersContainer" parent="Scene/HSplitContainer/Menu/Upper/Categories/VBoxContainer" instance=ExtResource( 6 )]
 margin_top = 44.0
@@ -215,7 +210,6 @@ margin_bottom = 84.0
 
 [node name="Control" parent="Scene/HSplitContainer/Menu/Upper/Categories/VBoxContainer/CharactersContainer" index="0"]
 margin_right = 164.0
-margin_bottom = 38.0
 
 [node name="HBoxContainer" parent="Scene/HSplitContainer/Menu/Upper/Categories/VBoxContainer/CharactersContainer/Control" index="0"]
 margin_right = 160.0
@@ -233,12 +227,11 @@ margin_right = 160.0
 
 [node name="Tree" parent="Scene/HSplitContainer/Menu/Upper/Categories/VBoxContainer/CharactersContainer/Control" index="2"]
 margin_right = 160.0
-margin_bottom = 41.0
+margin_bottom = 90.0
 
 [node name="PopupMenu" parent="Scene/HSplitContainer/Menu/Upper/Categories/VBoxContainer/CharactersContainer" index="1"]
 margin_right = 164.0
 margin_bottom = 76.0
-items = [ "Rename Item", ExtResource( 16 ), 0, false, true, 0, 0, null, "", false, "", null, 0, false, true, 1, 0, null, "", true, "Remove Item", ExtResource( 15 ), 0, false, false, 2, 0, null, "", false ]
 
 [node name="DefinitionsContainer" parent="Scene/HSplitContainer/Menu/Upper/Categories/VBoxContainer" instance=ExtResource( 6 )]
 margin_top = 88.0
@@ -247,7 +240,6 @@ margin_bottom = 128.0
 
 [node name="Control" parent="Scene/HSplitContainer/Menu/Upper/Categories/VBoxContainer/DefinitionsContainer" index="0"]
 margin_right = 164.0
-margin_bottom = 38.0
 
 [node name="HBoxContainer" parent="Scene/HSplitContainer/Menu/Upper/Categories/VBoxContainer/DefinitionsContainer/Control" index="0"]
 margin_right = 160.0
@@ -265,12 +257,11 @@ margin_right = 160.0
 
 [node name="Tree" parent="Scene/HSplitContainer/Menu/Upper/Categories/VBoxContainer/DefinitionsContainer/Control" index="2"]
 margin_right = 160.0
-margin_bottom = 41.0
+margin_bottom = 90.0
 
 [node name="PopupMenu" parent="Scene/HSplitContainer/Menu/Upper/Categories/VBoxContainer/DefinitionsContainer" index="1"]
 margin_right = 164.0
 margin_bottom = 76.0
-items = [ "Rename Item", ExtResource( 16 ), 0, false, true, 0, 0, null, "", false, "", null, 0, false, true, 1, 0, null, "", true, "Remove Item", ExtResource( 15 ), 0, false, false, 2, 0, null, "", false ]
 
 [node name="ThemesContainer" parent="Scene/HSplitContainer/Menu/Upper/Categories/VBoxContainer" instance=ExtResource( 6 )]
 margin_top = 132.0
@@ -279,7 +270,6 @@ margin_bottom = 172.0
 
 [node name="Control" parent="Scene/HSplitContainer/Menu/Upper/Categories/VBoxContainer/ThemesContainer" index="0"]
 margin_right = 164.0
-margin_bottom = 38.0
 
 [node name="HBoxContainer" parent="Scene/HSplitContainer/Menu/Upper/Categories/VBoxContainer/ThemesContainer/Control" index="0"]
 margin_right = 160.0
@@ -297,12 +287,11 @@ margin_right = 160.0
 
 [node name="Tree" parent="Scene/HSplitContainer/Menu/Upper/Categories/VBoxContainer/ThemesContainer/Control" index="2"]
 margin_right = 160.0
-margin_bottom = 41.0
+margin_bottom = 90.0
 
 [node name="PopupMenu" parent="Scene/HSplitContainer/Menu/Upper/Categories/VBoxContainer/ThemesContainer" index="1"]
 margin_right = 164.0
 margin_bottom = 76.0
-items = [ "Rename Item", ExtResource( 16 ), 0, false, true, 0, 0, null, "", false, "", null, 0, false, true, 1, 0, null, "", true, "Remove Item", ExtResource( 15 ), 0, false, false, 2, 0, null, "", false ]
 
 [node name="Bottom" type="MarginContainer" parent="Scene/HSplitContainer/Menu"]
 margin_top = 510.0

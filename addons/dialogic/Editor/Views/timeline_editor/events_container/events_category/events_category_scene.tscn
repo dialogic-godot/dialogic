@@ -1,0 +1,41 @@
+[gd_scene format=2]
+
+[node name="Category" type="PanelContainer"]
+margin_right = 1016.0
+margin_bottom = 32.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CategoryRow" type="VBoxContainer" parent="."]
+margin_left = 7.0
+margin_top = 7.0
+margin_right = 1009.0
+margin_bottom = 25.0
+
+[node name="Row1" type="MarginContainer" parent="CategoryRow"]
+margin_right = 1002.0
+margin_bottom = 14.0
+
+[node name="Items" type="HBoxContainer" parent="CategoryRow/Row1"]
+margin_right = 1002.0
+margin_bottom = 14.0
+
+[node name="Title" type="Label" parent="CategoryRow/Row1/Items"]
+margin_right = 89.0
+margin_bottom = 14.0
+text = "Category_Title"
+
+[node name="HSeparator" type="HSeparator" parent="CategoryRow/Row1/Items"]
+margin_left = 93.0
+margin_right = 1002.0
+margin_bottom = 14.0
+size_flags_horizontal = 3
+
+[node name="Row2" type="MarginContainer" parent="CategoryRow"]
+margin_top = 18.0
+margin_right = 1002.0
+margin_bottom = 18.0
+
+[node name="Items" type="HBoxContainer" parent="CategoryRow/Row2"]
+margin_right = 1002.0

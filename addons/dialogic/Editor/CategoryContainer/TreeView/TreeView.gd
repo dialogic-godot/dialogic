@@ -38,13 +38,14 @@ func update_tree() -> void:
 
 
 func create_tree_item(with_resource:Resource)->void:
-	DialogicUtil.Logger.print(self,"Creating a new tree item with:")
 	
 	var _resource = with_resource
 	
 	if not _resource:
 		DialogicUtil.Logger.print(self,"no resource")
 		return
+	
+	DialogicUtil.Logger.print(self,["Creating a new tree item with:", with_resource.resource_path.get_file()])
 	
 	if _resource is EncodedObjectAsID:
 		_resource = instance_from_id(_resource.object_id)
@@ -70,6 +71,8 @@ func rename_item(item:TreeItem = null):
 
 func set_base(resource:Resource):
 	# Look at this little and pottentially breaking code line. I hate him
+	# This can tolerate any kind of resource, but it should
+	# had .resources as ResourceArray
 	_base_resource = resource
 	update_tree()
 

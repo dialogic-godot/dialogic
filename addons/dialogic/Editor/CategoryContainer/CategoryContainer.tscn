@@ -17,7 +17,7 @@ corner_radius_bottom_left = 2
 
 [node name="CategoryContainer" type="PanelContainer"]
 margin_right = 267.0
-margin_bottom = 186.0
+margin_bottom = 40.0
 rect_min_size = Vector2( 0, 28 )
 custom_styles/panel = SubResource( 1 )
 script = ExtResource( 2 )
@@ -29,7 +29,7 @@ __meta__ = {
 margin_left = 4.0
 margin_top = 2.0
 margin_right = 263.0
-margin_bottom = 184.0
+margin_bottom = 38.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 __meta__ = {
@@ -65,6 +65,7 @@ visible = false
 margin_top = 40.0
 margin_right = 259.0
 margin_bottom = 182.0
+rect_min_size = Vector2( 0, 50 )
 size_flags_vertical = 3
 allow_rmb_select = true
 hide_root = true

@@ -54,7 +54,6 @@ onready var character_popup_node := get_node_or_null(NewCharacterPopup_path)
 func _ready() -> void:
 	self._current_view = {"state":EditorView.DEFAULT, "reference":default_view_node}
 	timeline_container_node.tree_resource = DialogicDB.Timelines.get_database()
-	DialogicDB.Timelines.get_database().scan_timelines_folder()
 	character_container_node.tree_resource = DialogicDB.Characters.get_database()
 
 func _hide_all_views_except(who) -> void:
@@ -128,4 +127,5 @@ func _on_TimelinesContainer_tree_item_selected(tree_item:TreeItem) -> void:
 	var _res_path = tree_item.get_metadata(0)
 	DialogicUtil.Logger.print(self,["Using resource:", _res_path])
 	timeline_view_node.base_resource_path = _res_path
-	self._current_view = {"state":EditorView.TIMELINE, "reference":timeline_view_node}
+	if _res_path:
+		self._current_view = {"state":EditorView.TIMELINE, "reference":timeline_view_node}

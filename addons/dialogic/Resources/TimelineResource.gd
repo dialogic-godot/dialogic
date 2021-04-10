@@ -2,7 +2,7 @@ tool
 class_name DialogicTimelineResource
 extends Resource
 
-export(Resource) var events = ResourceArray.new()
+export(Resource) var events = ResourceArray.new() setget _set_events
 
 var current_event = 0
 
@@ -41,3 +41,9 @@ func get_good_name(with_name:String="") -> String:
 		_good_name = _good_name.capitalize()
 	
 	return _good_name
+
+func _set_events(value) -> void:
+	events = value
+	if not value:
+		events = ResourceArray.new()
+	emit_signal("changed")

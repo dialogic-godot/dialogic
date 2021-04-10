@@ -16,6 +16,11 @@ onready var tree_node:Tree = $Control/Tree
 onready var popup_menu_node:PopupMenu = $PopupMenu
 onready var confirmation_node:ConfirmationDialog = $ConfirmationDialog
 
+func _gui_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and event.button_index == BUTTON_LEFT:
+		emit_signal("tree_item_selected", tree_node.get_root())
+		pass
+
 func force_update() -> void:
 	tree_node.update_tree()
 
@@ -49,13 +54,14 @@ func _set_tree_resource(_resource:Resource):
 
 
 func _explore_tree_recursively(from:TreeItem, with_val:int):
-	DialogicUtil.Logger.print(self,"Recursion with val: {v}".format({"v":with_val}))
+	var _val = with_val
+	DialogicUtil.Logger.print(self,"Recursion with val: {v}".format({"v":_val}))
 	if from.get_children():
-		_explore_tree_recursively(from.get_children(), with_val*2)
+		_val = _explore_tree_recursively(from.get_children(), _val*2)
 	elif from.get_next():
-		_explore_tree_recursively(from.get_next(), with_val*2)
+		_val = _explore_tree_recursively(from.get_next(), _val+45)
 
-	return with_val*2
+	return _val
 
 
 func _on_FoldButton_pressed() -> void:

@@ -8,7 +8,7 @@ extends Resource
 
 const DialogicResources = preload("res://addons/dialogic/Core/DialogicResources.gd")
 
-export(Resource) var resources = ResourceArray.new()
+export(Resource) var resources = ResourceArray.new() setget _set_resources
 
 
 func add(path):
@@ -23,3 +23,11 @@ func save(path: String) -> void:
 
 func _to_string() -> String:
 	return "[DatabaseResource]"
+
+func _set_resources(value):
+	if not value:
+		resources = ResourceArray.new()
+		return
+	resources = value
+	emit_signal("changed")
+	save(self.resource_path)

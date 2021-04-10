@@ -1,0 +1,49 @@
+[gd_scene format=2]
+
+[node name="TabContainer" type="TabContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+tab_align = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Events" type="Tabs" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = 32.0
+margin_right = -4.0
+margin_bottom = -4.0
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Events"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MarginContainer" type="MarginContainer" parent="Events/ScrollContainer"]
+margin_right = 1016.0
+margin_bottom = 564.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="EventsCategoryGroups" type="VBoxContainer" parent="Events/ScrollContainer/MarginContainer"]
+margin_right = 1016.0
+margin_bottom = 564.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Custom Events" type="Tabs" parent="."]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = 32.0
+margin_right = -4.0
+margin_bottom = -4.0

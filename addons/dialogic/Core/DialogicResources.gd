@@ -6,7 +6,7 @@ const CHARACTERDB_PATH = DB_PATH+"SavedCharacters.tres"
 
 const CONFIGURATION_PATH = DB_PATH+"EditorConfiguration.tres"
 
-const RESOURCES_DIR = "res://dialogic/"
+const RESOURCES_DIR = "res://dialogic_files/"
 const TIMELINES_DIR = RESOURCES_DIR+"timelines/"
 const CHARACTERS_DIR = RESOURCES_DIR+"characters/"
 
