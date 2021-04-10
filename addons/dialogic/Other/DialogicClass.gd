@@ -19,13 +19,30 @@ class_name Dialogic
 ## @param parent				The parent to add the dialogic node to.
 ## @param dialog_scene_path		If you made a custom Dialog scene or moved it from its default path, you can specify its new path here.
 ## @returns						The Dialog node or null if the parent was invalid.
-static func add_node(parent, dialog_scene_path: String="res://addons/dialogic/Dialog.tscn") -> DialogicNode:
+static func add_as_child_of(parent: Node, dialog_scene_path: String="res://addons/dialogic/Dialog.tscn") -> DialogicNode:
 	if parent is Control:
 		var dialog_node = get_instance(dialog_scene_path)
 		parent.add_child(dialog_node)
 		return dialog_node
 	else:
-		printerr("Dialogic node should have a Control parent")
+		printerr("[Dialogic] Node's parent should be a Control")
+		return null
+
+## Adds the dialogic node as a child of the given node, and below the given node
+## The parent node must be of type control
+## To start the timeline, use the start method from the returned node
+##
+## @param parent				The parent to add the dialogic node to.
+## @param node					The node to add dialogic below.
+## @param dialog_scene_path		If you made a custom Dialog scene or moved it from its default path, you can specify its new path here.
+## @returns						The Dialog node or null if the parent was invalid.
+static func add_as_child_of_below_node(parent: Node, node: Node, dialog_scene_path: String="res://addons/dialogic/Dialog.tscn") -> DialogicNode:
+	if parent is Control:
+		var dialog_node = get_instance(dialog_scene_path)
+		parent.add_child_below_node(node, dialog_node)
+		return dialog_node
+	else:
+		printerr("[Dialogic] Node's parent should be a Control")
 		return null
 
 
@@ -58,12 +75,12 @@ static func get_definitions() -> Dictionary:
 ## Definitions are automatically saved on timeline start/end
 ## 
 ## @returns						Error status, OK if all went well
-func save_definitions():
+static func save_definitions():
 	return DialogicSingleton.save_definitions()
 
 
 ## Resets data to default values. This is the same as calling start with reset_saves to true
-func reset_saves():
+static func reset_saves():
 	DialogicSingleton.init(true)
 
 
