@@ -19,7 +19,7 @@ class_name Dialogic
 ## @param parent				The parent to add the dialogic node to.
 ## @param dialog_scene_path		If you made a custom Dialog scene or moved it from its default path, you can specify its new path here.
 ## @returns						The Dialog node or null if the parent was invalid.
-static func add_node(parent, dialog_scene_path: String="res://addons/dialogic/Dialog.tscn"):
+static func add_node(parent, dialog_scene_path: String="res://addons/dialogic/Dialog.tscn") -> DialogicNode:
 	if parent is Control:
 		var dialog_node = get_instance(dialog_scene_path)
 		parent.add_child(dialog_node)
@@ -35,7 +35,7 @@ static func add_node(parent, dialog_scene_path: String="res://addons/dialogic/Di
 ##
 ## @param dialog_scene_path		If you made a custom Dialog scene or moved it from its default path, you can specify its new path here.
 ## @returns						A Dialog node to be added into the scene tree.
-static func get_instance(dialog_scene_path: String="res://addons/dialogic/Dialog.tscn"):
+static func get_instance(dialog_scene_path: String="res://addons/dialogic/Dialog.tscn") -> DialogicNode:
 	var dialog : = load(dialog_scene_path)
 	return dialog.instance()
 
@@ -145,7 +145,7 @@ static func get_current_timeline() -> String:
 ## @param dialog_scene_path		If you made a custom Dialog scene or moved it from its default path, you can specify its new path here.
 ## @param debug_mode			Debug is disabled by default but can be enabled if needed.
 ## @returns						A Dialog node to be added into the scene tree.
-static func start(timeline: String, reset_saves: bool=true, dialog_scene_path: String="res://addons/dialogic/Dialog.tscn", debug_mode: bool=false):
+static func start(timeline: String, reset_saves: bool=true, dialog_scene_path: String="res://addons/dialogic/Dialog.tscn", debug_mode: bool=false) -> DialogicNode:
 
 	var dialog:  = load(dialog_scene_path)
 	var d = dialog.instance()
@@ -172,7 +172,7 @@ static func start(timeline: String, reset_saves: bool=true, dialog_scene_path: S
 ## @param dialog_scene_path		If you made a custom Dialog scene or moved it from its default path, you can specify its new path here.
 ## @param debug_mode			Debug is disabled by default but can be enabled if needed.
 ## @returns						A Dialog node to be added into the scene tree.
-static func start_from_save(initial_timeline: String, dialog_scene_path: String="res://addons/dialogic/Dialog.tscn", debug_mode: bool=false):
+static func start_from_save(initial_timeline: String, dialog_scene_path: String="res://addons/dialogic/Dialog.tscn", debug_mode: bool=false) -> DialogicNode:
 	var current := get_current_timeline()
 	if current.empty():
 		current = initial_timeline

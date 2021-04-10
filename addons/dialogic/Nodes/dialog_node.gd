@@ -1,5 +1,5 @@
-tool
 extends Control
+class_name DialogicNode
 
 var last_mouse_mode = null
 var input_next: String = 'ui_accept'
