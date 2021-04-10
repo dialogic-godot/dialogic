@@ -571,7 +571,7 @@ func _event_handler(event: Dictionary):
 		_:
 			visible = false
 			_dprint('Other event. ', event)
-
+	$Options.visible = waiting_for_answer
 
 func _reset_dialog_extras():
 	$TextBubble/NameLabel.text = ''
@@ -614,41 +614,46 @@ func _add_choice_button(option):
 	# Text
 	button.set('custom_fonts/font', DialogicUtil.path_fixer_load(theme.get_value('text', 'font', "res://addons/dialogic/Example Assets/Fonts/DefaultFont.tres")))
 
-	var text_color = Color(theme.get_value('text', 'color', "#ffffffff"))
-	button.set('custom_colors/font_color', text_color)
-	button.set('custom_colors/font_color_hover', text_color)
-	button.set('custom_colors/font_color_pressed', text_color)
+	if not theme.get_value('buttons', 'use_native', false):
+		var text_color = Color(theme.get_value('text', 'color', "#ffffffff"))
+		button.set('custom_colors/font_color', text_color)
+		button.set('custom_colors/font_color_hover', text_color)
+		button.set('custom_colors/font_color_pressed', text_color)
 
-	if theme.get_value('buttons', 'text_color_enabled', true):
-		var button_text_color = Color(theme.get_value('buttons', 'text_color', "#ffffffff"))
-		button.set('custom_colors/font_color', button_text_color)
-		button.set('custom_colors/font_color_hover', button_text_color)
-		button.set('custom_colors/font_color_pressed', button_text_color)
+		if theme.get_value('buttons', 'text_color_enabled', true):
+			var button_text_color = Color(theme.get_value('buttons', 'text_color', "#ffffffff"))
+			button.set('custom_colors/font_color', button_text_color)
+			button.set('custom_colors/font_color_hover', button_text_color)
+			button.set('custom_colors/font_color_pressed', button_text_color)
 
-	# Background
-	button.get_node('ColorRect').color = Color(theme.get_value('buttons', 'background_color', '#ff000000'))
-	button.get_node('ColorRect').visible = theme.get_value('buttons', 'use_background_color', false)
+		# Background
+		button.get_node('ColorRect').color = Color(theme.get_value('buttons', 'background_color', '#ff000000'))
+		button.get_node('ColorRect').visible = theme.get_value('buttons', 'use_background_color', false)
 
-	button.get_node('TextureRect').visible = theme.get_value('buttons', 'use_image', true)
-	if theme.get_value('buttons', 'use_image', true):
-		button.get_node('TextureRect').texture = DialogicUtil.path_fixer_load(theme.get_value('buttons', 'image', "res://addons/dialogic/Example Assets/backgrounds/background-2.png"))
-		if theme.get_value('buttons', 'modulation', false):
-			button.get_node('TextureRect').modulate = Color(theme.get_value('buttons', 'modulation_color', "#ffffffff"))
+		button.get_node('TextureRect').visible = theme.get_value('buttons', 'use_image', true)
+		if theme.get_value('buttons', 'use_image', true):
+			button.get_node('TextureRect').texture = DialogicUtil.path_fixer_load(theme.get_value('buttons', 'image', "res://addons/dialogic/Example Assets/backgrounds/background-2.png"))
+			if theme.get_value('buttons', 'modulation', false):
+				button.get_node('TextureRect').modulate = Color(theme.get_value('buttons', 'modulation_color', "#ffffffff"))
+
+		var padding = theme.get_value('buttons', 'padding', Vector2(5,5))
+		button.get_node('ColorRect').set('margin_left', -1 * padding.x)
+		button.get_node('ColorRect').set('margin_right',  padding.x)
+		button.get_node('ColorRect').set('margin_top', -1 * padding.y)
+		button.get_node('ColorRect').set('margin_bottom', padding.y)
+
+		button.get_node('TextureRect').set('margin_left', -1 * padding.x)
+		button.get_node('TextureRect').set('margin_right',  padding.x)
+		button.get_node('TextureRect').set('margin_top', -1 * padding.y)
+		button.get_node('TextureRect').set('margin_bottom', padding.y)
 		
-
-
-	var padding = theme.get_value('buttons', 'padding', Vector2(5,5))
-	button.get_node('ColorRect').set('margin_left', -1 * padding.x)
-	button.get_node('ColorRect').set('margin_right',  padding.x)
-	button.get_node('ColorRect').set('margin_top', -1 * padding.y)
-	button.get_node('ColorRect').set('margin_bottom', padding.y)
-
-	button.get_node('TextureRect').set('margin_left', -1 * padding.x)
-	button.get_node('TextureRect').set('margin_right',  padding.x)
-	button.get_node('TextureRect').set('margin_top', -1 * padding.y)
-	button.get_node('TextureRect').set('margin_bottom', padding.y)
-
-	$Options.set('custom_constants/separation', theme.get_value('buttons', 'gap', 20) + (padding.y*2))
+		$Options.set('custom_constants/separation', theme.get_value('buttons', 'gap', 20) + (padding.y*2))
+	else:
+		button.get_node('ColorRect').visible = false
+		button.get_node('TextureRect').visible = false
+		button.set_flat(false)
+		
+		$Options.set('custom_constants/separation', theme.get_value('buttons', 'gap', 20))
 
 	button.connect("pressed", self, "_answer_question", [button, option['event_id'], option['question_id']])
 
@@ -950,12 +955,9 @@ func _ready():
 
 func _process(delta):
 	$TextBubble/NextIndicator.visible = finished
-	if not Engine.is_editor_hint():
-		# Multiple choices
-		if waiting_for_answer:
-			$Options.visible = finished
-		else:
-			$Options.visible = false
+	if waiting_for_answer and Input.is_action_just_released(input_next):
+		if $Options.get_child_count() > 0:
+			$Options.get_child(0).grab_focus()
 
 
 func _input(event: InputEvent) -> void:
