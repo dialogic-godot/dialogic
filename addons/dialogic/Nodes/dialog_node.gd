@@ -524,9 +524,9 @@ func _event_handler(event: Dictionary):
 			if event['set_theme'] != '':
 				current_theme = _load_theme(event['set_theme'])
 			_load_next_event(current_runtime_id)
-		{'_wait_seconds'}:
+		{'wait_seconds'}:
 			emit_signal("event_start", "wait", event)
-			_wait_seconds(event['_wait_seconds'])
+			_wait_seconds(event['wait_seconds'])
 			waiting = true
 		{'change_timeline'}:
 			dialog_script = _set_current_dialog(event['change_timeline'])
