@@ -668,7 +668,7 @@ func _answer_question(i, event_id, question_id):
 	_dprint('[!] Going to ', event_id + 1, i, 'question_id:', question_id)
 	_dprint('')
 	waiting_for_answer = false
-	dialog_index = event_id + 1
+	dialog_index = event_id
 	questions[question_id]['answered'] = true
 	_dprint('    dialog_index = ', dialog_index)
 	_reset_options()
