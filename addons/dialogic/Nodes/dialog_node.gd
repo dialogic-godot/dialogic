@@ -46,6 +46,15 @@ var runtime_id
 ##								PUBLIC METHODS
 ## *****************************************************************************
 
+## Starts the dialog for the given timeline.
+##
+## This is exactly the same as using the editor:
+## you can drag and drop the scene located at /addons/dialogic/Dialog.tscn 
+## and set the current timeline via the inspector.
+##
+## @param given_timeline		The timeline to load. You can provide the timeline name or the filename.
+## @param reset					True to reset dialogic saved data such as definitions.
+## @param debug					Debug is disabled by default but can be enabled if needed.
 func start(given_timeline: String, reset: bool=true, debug: bool=false):
 	show()
 	reset_saves = reset
@@ -78,6 +87,10 @@ func start(given_timeline: String, reset: bool=true, debug: bool=false):
 		_init_dialog()
 
 
+## Same as the start method, but using the last timeline saved.
+## 
+## @param fallback				The timeline to load in case no save is found.
+## @param debug					Debug is disabled by default but can be enabled if needed.
 func start_from_save(fallback: String, debug: bool=false):
 	var last = DialogicSingleton.get_current_timeline()
 	if last.empty():
