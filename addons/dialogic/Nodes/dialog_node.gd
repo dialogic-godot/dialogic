@@ -67,7 +67,7 @@ func _ready():
 
 
 func start(given_timeline: String, reset: bool=true, debug: bool=false):
-	print("starting: " + given_timeline)
+	show()
 	reset_saves = reset
 	debug_mode = debug
 	runtime_id = DialogicUtil.generate_random_id()
@@ -956,4 +956,5 @@ func stop_close_dialog():
 
 
 func _on_close_dialog_timeout(tween, close_dialog_timer):
+	hide()
 	on_timeline_end()
