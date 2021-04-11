@@ -77,9 +77,9 @@ anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-margin_left = 57.0
+margin_left = -455.0
 margin_top = 393.0
-margin_right = 967.0
+margin_right = 455.0
 margin_bottom = 560.0
 __meta__ = {
 "_edit_use_anchors_": false
@@ -135,7 +135,7 @@ anchor_bottom = 1.0
 margin_left = -36.4279
 margin_top = -35.9016
 margin_right = 14.5721
-margin_bottom = 25.409
+margin_bottom = 49.1179
 rect_scale = Vector2( 0.4, 0.4 )
 texture = ExtResource( 1 )
 stretch_mode = 4
@@ -199,12 +199,9 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -20.0
-margin_top = -19.9999
-margin_right = 20.0
-margin_bottom = 19.9999
 grow_horizontal = 2
 grow_vertical = 2
+alignment = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -239,20 +236,6 @@ __meta__ = {
 "_edit_lock_": true,
 "_edit_use_anchors_": false
 }
-
-[node name="FadeInNode" type="ColorRect" parent="FX"]
-modulate = Color( 1, 1, 1, 0 )
-anchor_right = 1.0
-anchor_bottom = 1.0
-mouse_filter = 2
-color = Color( 0, 0, 0, 1 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Tween" type="Tween" parent="FX/FadeInNode"]
-
-[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="FX"]
 
 [node name="BackgroundMusic" parent="FX" instance=ExtResource( 7 )]
 

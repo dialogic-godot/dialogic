@@ -487,10 +487,19 @@ func event_handler(event: Dictionary):
 		{'audio'}, {'audio', 'file'}:
 			emit_signal("event_start", "audio", event)
 			if event['audio'] == 'play' and 'file' in event.keys() and not event['file'].empty():
-				$FX/AudioStreamPlayer.stream = load(event['file'])
-				$FX/AudioStreamPlayer.play()
+				var audio = get_node_or_null('AudioEvent')
+				if audio == null:
+					audio = AudioStreamPlayer.new()
+					audio.name = 'AudioEvent'
+					add_child(audio)
+				audio.stream = load(event['file'])
+				audio.play()
+				print('play')
 			else:
-				$FX/AudioStreamPlayer.stop()
+				var audio = get_node_or_null('AudioEvent')
+				if audio != null:
+					audio.stop()
+					audio.queue_free()
 			go_to_next_event()
 		{'background-music'}, {'background-music', 'file'}:
 			emit_signal("event_start", "background-music", event)
