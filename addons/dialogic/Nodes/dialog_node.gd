@@ -280,7 +280,7 @@ func _input(event: InputEvent) -> void:
 func show_dialog():
 	visible = true
 
-func _update_text(text: String):
+func update_text(text: String):
 	var final_text = parse_definitions(parse_alignment(text))
 	$TextBubble.update_text(final_text)
 
@@ -368,7 +368,7 @@ func event_handler(event: Dictionary):
 			var character_data = get_character(event['character'])
 			update_name(character_data)
 			grab_portrait_focus(character_data, event)
-			_update_text(event['text'])
+			update_text(event['text'])
 		{'question', 'question_id', 'options', ..}:
 			emit_signal("event_start", "question", event)
 			show_dialog()
@@ -376,7 +376,7 @@ func event_handler(event: Dictionary):
 			waiting_for_answer = true
 			if event.has('name'):
 				update_name(event['name'])
-			_update_text(event['question'])
+			update_text(event['question'])
 			if event.has('options'):
 				for o in event['options']:
 					add_choice_button(o)
