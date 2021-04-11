@@ -7,14 +7,14 @@ var dialog_index: int = 0
 var finished: bool = false
 var waiting_for_answer: bool = false
 var waiting_for_input: bool = false
-var waiting = false
-var preview = false
-var definitions = {}
-var definition_visible = false
+var waiting: bool = false
+var preview: bool = false
+var definitions: Dictionary = {}
+var definition_visible: bool = false
 
-var settings
-var current_theme
-var current_timeline := ''
+var settings: ConfigFile
+var current_theme: ConfigFile
+var current_timeline: String = ''
 
 ## The timeline to load when starting the scene
 export(String, "TimelineDropdown") var timeline: String
@@ -32,7 +32,7 @@ var characters
 
 onready var ChoiceButton = load("res://addons/dialogic/Nodes/ChoiceButton.tscn")
 onready var Portrait = load("res://addons/dialogic/Nodes/Portrait.tscn")
-var dialog_script = {}
+var dialog_script: Dictionary = {}
 var questions #for keeping track of the questions answered
 
 
@@ -297,6 +297,7 @@ func update_name(character) -> void:
 
 func update_text(text: String) -> String:
 	var final_text = parse_definitions(parse_alignment(text))
+	final_text = final_text.replace('[br]', '\n')
 	$TextBubble.update_text(final_text)
 	return final_text
 
