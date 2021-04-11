@@ -1,10 +1,13 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=9 format=2]
 
-[ext_resource path="res://addons/dialogic/Images/Event Icons/Main Icons/wait-seconds.svg" type="Texture" id=1]
-[ext_resource path="res://addons/dialogic/Editor/Pieces/WaitSeconds.gd" type="Script" id=2]
-[ext_resource path="res://addons/dialogic/Editor/Pieces/Common/Spacer.tscn" type="PackedScene" id=3]
-[ext_resource path="res://addons/dialogic/Editor/Pieces/Common/PieceExtraSettings.tscn" type="PackedScene" id=4]
-[ext_resource path="res://addons/dialogic/Editor/Pieces/Common/SpinBoxPreventDnD.gd" type="Script" id=6]
+[ext_resource path="res://addons/dialogic/Images/Event Icons/Main Icons/condition.svg" type="Texture" id=1]
+[ext_resource path="res://addons/dialogic/Editor/Events/IfCondition.gd" type="Script" id=2]
+[ext_resource path="res://addons/dialogic/Editor/Events/Common/ConditionPicker.tscn" type="PackedScene" id=3]
+[ext_resource path="res://addons/dialogic/Editor/Events/Common/PieceExtraSettings.tscn" type="PackedScene" id=4]
+[ext_resource path="res://addons/dialogic/Editor/Events/Common/CustomLineEdit.tscn" type="PackedScene" id=6]
+[ext_resource path="res://addons/dialogic/Editor/Events/Common/DefinitionPicker.tscn" type="PackedScene" id=7]
+[ext_resource path="res://addons/dialogic/Editor/Events/Common/Spacer.tscn" type="PackedScene" id=8]
+
 
 
 
@@ -13,7 +16,7 @@ content_margin_left = 16.0
 content_margin_right = 6.0
 content_margin_top = 6.0
 content_margin_bottom = 6.0
-bg_color = Color( 0.435294, 0.301961, 0.603922, 0.192157 )
+bg_color = Color( 0.243137, 0.231373, 0.396078, 0.772549 )
 border_width_left = 2
 border_width_top = 2
 border_width_right = 2
@@ -24,7 +27,7 @@ corner_radius_top_right = 6
 corner_radius_bottom_right = 6
 corner_radius_bottom_left = 6
 
-[node name="WaitSeconds" type="HBoxContainer"]
+[node name="IfCondition" type="HBoxContainer"]
 margin_right = 1004.0
 margin_bottom = 42.0
 size_flags_horizontal = 3
@@ -66,39 +69,28 @@ margin_bottom = 28.0
 texture = ExtResource( 1 )
 stretch_mode = 6
 
-[node name="Title" type="Label" parent="PanelContainer/VBoxContainer/Header"]
+[node name="DefinitionPicker" parent="PanelContainer/VBoxContainer/Header" instance=ExtResource( 7 )]
 margin_left = 26.0
-margin_top = 7.0
-margin_right = 75.0
-margin_bottom = 21.0
-text = "  Wait   "
-
-[node name="SpinBox" type="SpinBox" parent="PanelContainer/VBoxContainer/Header"]
-margin_left = 79.0
-margin_right = 153.0
+margin_right = 169.0
 margin_bottom = 28.0
-min_value = 0.1
-value = 0.1
-allow_greater = true
-align = 1
-script = ExtResource( 6 )
 
-[node name="Title2" type="Label" parent="PanelContainer/VBoxContainer/Header"]
-margin_left = 157.0
-margin_top = 7.0
-margin_right = 218.0
-margin_bottom = 21.0
-text = "  Seconds"
+[node name="ConditionPicker" parent="PanelContainer/VBoxContainer/Header" instance=ExtResource( 3 )]
+
+[node name="CustomLineEdit" parent="PanelContainer/VBoxContainer/Header" instance=ExtResource( 6 )]
+margin_left = 256.0
+margin_right = 352.0
+margin_bottom = 28.0
+hint_tooltip = "you can enter a text-value, a number or you can enter the name of another definition to compare against."
 
 [node name="Preview" type="Label" parent="PanelContainer/VBoxContainer/Header"]
-margin_left = 222.0
+margin_left = 308.0
 margin_top = 7.0
-margin_right = 222.0
+margin_right = 308.0
 margin_bottom = 21.0
 custom_colors/font_color = Color( 1, 1, 1, 0.513726 )
 
-[node name="Spacer" parent="PanelContainer/VBoxContainer/Header" instance=ExtResource( 3 )]
-margin_left = 226.0
+[node name="Spacer" parent="PanelContainer/VBoxContainer/Header" instance=ExtResource( 8 )]
+margin_left = 312.0
 margin_right = 941.0
 margin_bottom = 28.0
 
@@ -107,4 +99,3 @@ margin_left = 945.0
 margin_right = 982.0
 margin_bottom = 28.0
 items = [ "Move Up", null, 0, false, false, 0, 0, null, "", false, "Move Down", null, 0, false, false, 1, 0, null, "", false, "", null, 0, false, false, 2, 0, null, "", true, "Remove", null, 0, false, false, 3, 0, null, "", false ]
-[connection signal="value_changed" from="PanelContainer/VBoxContainer/Header/SpinBox" to="." method="_on_SpinBox_value_changed"]

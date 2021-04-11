@@ -12,50 +12,51 @@ extends Node
 class_name Dialogic
 
 
-## Adds the dialogic node as a child of the given node
-## The parent node must be of type control
-## To start the timeline, use the start method from the returned node
+## Starts the dialog for the given timeline and returns a Dialog node.
+## You must then add it manually to the scene to display the dialog.
 ##
-## @param parent				The parent to add the dialogic node to.
-## @param dialog_scene_path		If you made a custom Dialog scene or moved it from its default path, you can specify its new path here.
-## @returns						The Dialog node or null if the parent was invalid.
-static func add_as_child_of(parent: Node, dialog_scene_path: String="res://addons/dialogic/Dialog.tscn") -> DialogicNode:
-	if parent is Control:
-		var dialog_node = get_instance(dialog_scene_path)
-		parent.add_child(dialog_node)
-		return dialog_node
-	else:
-		printerr("[Dialogic] Node's parent should be a Control")
-		return null
-
-## Adds the dialogic node as a child of the given node, and below the given node
-## The parent node must be of type control
-## To start the timeline, use the start method from the returned node
+## Example:
+## var new_dialog = Dialogic.start('Your Timeline Name Here')
+## add_child(new_dialog)
 ##
-## @param parent				The parent to add the dialogic node to.
-## @param node					The node to add dialogic below.
-## @param dialog_scene_path		If you made a custom Dialog scene or moved it from its default path, you can specify its new path here.
-## @returns						The Dialog node or null if the parent was invalid.
-static func add_as_child_of_below_node(parent: Node, node: Node, dialog_scene_path: String="res://addons/dialogic/Dialog.tscn") -> DialogicNode:
-	if parent is Control:
-		var dialog_node = get_instance(dialog_scene_path)
-		parent.add_child_below_node(node, dialog_node)
-		return dialog_node
-	else:
-		printerr("[Dialogic] Node's parent should be a Control")
-		return null
-
-
-## Gets a DialogicNode instance to be added to the tree
-## This instance can then be added to the tree using add_child()
-## To start the timeline, use the start method from the returned node
+## This is exactly the same as using the editor:
+## you can drag and drop the scene located at /addons/dialogic/Dialog.tscn 
+## and set the current timeline via the inspector.
 ##
+## @param timeline				The timeline to load. You can provide the timeline name or the filename.
+## @param reset_saves			True to reset dialogic saved data such as definitions.
 ## @param dialog_scene_path		If you made a custom Dialog scene or moved it from its default path, you can specify its new path here.
+## @param debug_mode			Debug is disabled by default but can be enabled if needed.
 ## @returns						A Dialog node to be added into the scene tree.
-static func get_instance(dialog_scene_path: String="res://addons/dialogic/Dialog.tscn") -> DialogicNode:
-	var dialog : = load(dialog_scene_path)
-	return dialog.instance()
+static func start(timeline: String, reset_saves: bool=true, dialog_scene_path: String="res://addons/dialogic/Dialog.tscn", debug_mode: bool=false):
 
+	var dialog:  = load(dialog_scene_path)
+	var d = dialog.instance()
+	d.reset_saves = reset_saves
+	d.debug_mode = debug_mode
+	if not timeline.empty():
+		for t in DialogicUtil.get_timeline_list():
+			if t['name'] == timeline or t['file'] == timeline:
+				d.timeline = t['file']
+				return d
+		d.dialog_script = {
+			"events":[{"character":"","portrait":"",
+			"text":"[Dialogic Error] Loading dialog [color=red]" + timeline + "[/color]. It seems like the timeline doesn't exists. Maybe the name is wrong?"}]
+		}
+	return d
+
+
+## Same as the start method above, but using the last timeline saved.
+## 
+## @param initial_timeline		The timeline to load in case no save is found.
+## @param dialog_scene_path		If you made a custom Dialog scene or moved it from its default path, you can specify its new path here.
+## @param debug_mode			Debug is disabled by default but can be enabled if needed.
+## @returns						A Dialog node to be added into the scene tree.
+static func start_from_save(initial_timeline: String, dialog_scene_path: String="res://addons/dialogic/Dialog.tscn", debug_mode: bool=false):
+	var current := get_current_timeline()
+	if current.empty():
+		current = initial_timeline
+	return start(current, false, dialog_scene_path, debug_mode)
 
 ## Gets default values for definitions.
 ## 
@@ -75,12 +76,12 @@ static func get_definitions() -> Dictionary:
 ## Definitions are automatically saved on timeline start/end
 ## 
 ## @returns						Error status, OK if all went well
-static func save_definitions():
+func save_definitions():
 	return DialogicSingleton.save_definitions()
 
 
 ## Resets data to default values. This is the same as calling start with reset_saves to true
-static func reset_saves():
+func reset_saves():
 	DialogicSingleton.init(true)
 
 
@@ -134,63 +135,3 @@ static func set_glossary(name: String, title: String, text: String, extra: Strin
 ## @returns						The current timeline filename, or an empty string if none was saved.
 static func get_current_timeline() -> String:
 	return DialogicSingleton.get_current_timeline()
-
-
-## ************************************************************
-## 					DEPRECATED FUNCTIONS
-##		These functions will be removed in future versions
-##					Use at your own risk
-## ************************************************************
-
-
-## /!\ DEPRECATED /!\
-## Use get_instance() instead
-##
-## Starts the dialog for the given timeline and returns a Dialog node.
-## You must then add it manually to the scene to display the dialog.
-##
-## Example:
-## var new_dialog = Dialogic.start('Your Timeline Name Here')
-## add_child(new_dialog)
-##
-## This is exactly the same as using the editor:
-## you can drag and drop the scene located at /addons/dialogic/Dialog.tscn 
-## and set the current timeline via the inspector.
-##
-## @param timeline				The timeline to load. You can provide the timeline name or the filename.
-## @param reset_saves			True to reset dialogic saved data such as definitions.
-## @param dialog_scene_path		If you made a custom Dialog scene or moved it from its default path, you can specify its new path here.
-## @param debug_mode			Debug is disabled by default but can be enabled if needed.
-## @returns						A Dialog node to be added into the scene tree.
-static func start(timeline: String, reset_saves: bool=true, dialog_scene_path: String="res://addons/dialogic/Dialog.tscn", debug_mode: bool=false) -> DialogicNode:
-
-	var dialog:  = load(dialog_scene_path)
-	var d = dialog.instance()
-	d.reset_saves = reset_saves
-	d.debug_mode = debug_mode
-	if not timeline.empty():
-		for t in DialogicUtil.get_timeline_list():
-			if t['name'] == timeline or t['file'] == timeline:
-				d.timeline = t['file']
-				return d
-		d.dialog_script = {
-			"events":[{"character":"","portrait":"",
-			"text":"[Dialogic Error] Loading dialog [color=red]" + timeline + "[/color]. It seems like the timeline doesn't exists. Maybe the name is wrong?"}]
-		}
-	return d
-
-
-## /!\ DEPRECATED /!\
-## Use get_instance() instead
-##
-## Same as the start method above, but using the last timeline saved.
-## 
-## @param initial_timeline		The timeline to load in case no save is found.
-## @param dialog_scene_path		If you made a custom Dialog scene or moved it from its default path, you can specify its new path here.
-## @param debug_mode			Debug is disabled by default but can be enabled if needed.
-## @returns						A Dialog node to be added into the scene tree.
-static func start_from_save(initial_timeline: String, dialog_scene_path: String="res://addons/dialogic/Dialog.tscn", debug_mode: bool=false) -> DialogicNode:
-	var current := get_current_timeline()
-	if current.empty():
-		current = initial_timeline
-	return start(current, false, dialog_scene_path, debug_mode)

@@ -1,12 +1,13 @@
 [gd_scene load_steps=9 format=2]
 
-[ext_resource path="res://addons/dialogic/Editor/Pieces/TextBlock.gd" type="Script" id=1]
-[ext_resource path="res://addons/dialogic/Editor/Pieces/Common/VisibleToggle.tscn" type="PackedScene" id=2]
+[ext_resource path="res://addons/dialogic/Editor/Events/TextBlock.gd" type="Script" id=1]
+[ext_resource path="res://addons/dialogic/Editor/Events/Common/VisibleToggle.tscn" type="PackedScene" id=2]
 [ext_resource path="res://addons/dialogic/Images/Event Icons/Main Icons/text-event.svg" type="Texture" id=3]
-[ext_resource path="res://addons/dialogic/Editor/Pieces/Common/PieceExtraSettings.tscn" type="PackedScene" id=4]
-[ext_resource path="res://addons/dialogic/Editor/Pieces/Common/CharacterPicker.tscn" type="PackedScene" id=6]
-[ext_resource path="res://addons/dialogic/Editor/Pieces/Common/PortraitPicker.tscn" type="PackedScene" id=7]
-[ext_resource path="res://addons/dialogic/Editor/Pieces/Common/Spacer.tscn" type="PackedScene" id=8]
+[ext_resource path="res://addons/dialogic/Editor/Events/Common/PieceExtraSettings.tscn" type="PackedScene" id=4]
+[ext_resource path="res://addons/dialogic/Editor/Events/Common/CharacterPicker.tscn" type="PackedScene" id=6]
+[ext_resource path="res://addons/dialogic/Editor/Events/Common/PortraitPicker.tscn" type="PackedScene" id=7]
+[ext_resource path="res://addons/dialogic/Editor/Events/Common/Spacer.tscn" type="PackedScene" id=8]
+
 
 
 
