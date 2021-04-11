@@ -57,7 +57,6 @@ func _ready():
 
 	# Setting everything up for the node to be default
 	$TextBubble/NameLabel.text = ''
-	$Background.visible = false
 	$TextBubble/RichTextLabel.meta_underlined = false
 	$DefinitionInfo.visible = false
 	
@@ -268,6 +267,7 @@ func _process(delta):
 		if $Options.get_child_count() > 0:
 			$Options.get_child(0).grab_focus()
 
+
 func _input(event: InputEvent) -> void:
 	if not Engine.is_editor_hint() and event.is_action_pressed(input_next) and not waiting:
 		if tween_node.is_active():
@@ -458,19 +458,31 @@ func event_handler(event: Dictionary):
 			get_tree().change_scene(event['scene'])
 		{'background'}:
 			emit_signal("event_start", "background", event)
-			$Background.visible = true
-			$Background.texture = null
-			if ($Background.get_child_count() > 0):
-				for c in $Background.get_children():
-					c.get_parent().remove_child(c)
-					c.queue_free()
-			if (event['background'].ends_with('.tscn')):
-				var bg_scene = load(event['background'])
-				if (bg_scene):
-					bg_scene = bg_scene.instance()
-					$Background.add_child(bg_scene)
-			elif (event['background'] != ''):
-				$Background.texture = load(event['background'])
+			var background = get_node_or_null('Background')
+			if event['background'] == '' and background != null:
+				background.queue_free()
+			else:
+				if background == null:
+					background = TextureRect.new()
+					background.expand = true
+					background.name = 'Background'
+					background.anchor_right = 1
+					background.anchor_bottom = 1
+					background.stretch_mode = TextureRect.STRETCH_SCALE
+					background.show_behind_parent = true
+					add_child(background)
+				background.texture = null
+				if (background.get_child_count() > 0):
+					for c in background.get_children():
+						c.get_parent().remove_child(c)
+						c.queue_free()
+				if (event['background'].ends_with('.tscn')):
+					var bg_scene = load(event['background'])
+					if (bg_scene):
+						bg_scene = bg_scene.instance()
+						background.add_child(bg_scene)
+				elif (event['background'] != ''):
+					background.texture = load(event['background'])
 			go_to_next_event()
 		{'audio'}, {'audio', 'file'}:
 			emit_signal("event_start", "audio", event)
@@ -568,6 +580,7 @@ func event_handler(event: Dictionary):
 			dprint('Other event. ', event)
 	
 	$Options.visible = waiting_for_answer
+
 
 func _on_input_set(variable):
 	var input_value = $TextInputDialog/LineEdit.text
@@ -856,7 +869,6 @@ func dprint(string, arg1='', arg2='', arg3='', arg4='' ):
 	# I ask myself the same question :')
 	if debug_mode:
 		print(str(string) + str(arg1) + str(arg2) + str(arg3) + str(arg4))
-
 
 func _compare_definitions(def_value: String, event_value: String, condition: String):
 	var condition_met = false;

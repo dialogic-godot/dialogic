@@ -8,8 +8,6 @@
 [ext_resource path="res://addons/dialogic/Nodes/dialog_node.gd" type="Script" id=6]
 [ext_resource path="res://addons/dialogic/Nodes/BackgroundMusic.tscn" type="PackedScene" id=7]
 
-
-
 [sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 1, 1, 1, 0 )
 expand_margin_left = 10.0
@@ -65,16 +63,6 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Background" type="TextureRect" parent="."]
-visible = false
-anchor_right = 1.0
-anchor_bottom = 1.0
-expand = true
-stretch_mode = 1
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
 [node name="Portraits" type="Control" parent="."]
 anchor_left = 0.5
 anchor_top = 1.0
@@ -89,10 +77,10 @@ anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-margin_left = -250.0
-margin_top = -207.0
-margin_right = 250.0
-margin_bottom = -40.0
+margin_left = 57.0
+margin_top = 393.0
+margin_right = 967.0
+margin_bottom = 560.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -126,7 +114,7 @@ margin_bottom = -10.0
 rect_clip_content = false
 custom_styles/normal = SubResource( 1 )
 custom_fonts/normal_font = ExtResource( 3 )
-custom_colors/default_color = Color( 1, 1, 1, 1 )
+custom_colors/default_color = Color( 0.423529, 0.580392, 0.74902, 1 )
 custom_colors/font_color_shadow = Color( 1, 1, 1, 0 )
 custom_constants/shadow_offset_x = 2
 custom_constants/shadow_offset_y = 2
@@ -147,7 +135,7 @@ anchor_bottom = 1.0
 margin_left = -36.4279
 margin_top = -35.9016
 margin_right = 14.5721
-margin_bottom = 29.4015
+margin_bottom = 21.1708
 rect_scale = Vector2( 0.4, 0.4 )
 texture = ExtResource( 1 )
 stretch_mode = 4
@@ -168,7 +156,7 @@ margin_bottom = -8.0
 size_flags_vertical = 1
 custom_styles/normal = SubResource( 5 )
 custom_fonts/font = ExtResource( 3 )
-custom_colors/font_color = Color( 1, 1, 1, 1 )
+custom_colors/font_color = Color( 0.423529, 0.580392, 0.74902, 1 )
 custom_colors/font_color_shadow = Color( 0, 0, 0, 0.619608 )
 custom_constants/shadow_offset_x = 2
 custom_constants/shadow_offset_y = 2
@@ -191,6 +179,7 @@ __meta__ = {
 }
 
 [node name="TextureRect" type="TextureRect" parent="TextBubble/NameLabel"]
+visible = false
 show_behind_parent = true
 anchor_right = 1.0
 anchor_bottom = 1.0
