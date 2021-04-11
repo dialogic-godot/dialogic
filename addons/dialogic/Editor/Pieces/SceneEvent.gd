@@ -14,7 +14,37 @@ var event_data = {
 
 func _ready():
 	connect("gui_input", self, '_on_gui_input')
+
+
+func load_data(data):
+	event_data = data
+	print("loading")
+	print(data)
 	load_image(event_data['background'])
+
+
+func load_image(img_src: String):
+	event_data['background'] = img_src
+	if not img_src.empty() and not img_src.ends_with('.tscn'):
+		$PanelContainer/VBoxContainer/Header/Name.text = img_src
+		$PanelContainer/VBoxContainer/TextureRect.texture = load(img_src)
+		$PanelContainer/VBoxContainer/TextureRect.rect_min_size = Vector2(200,200)
+		$PanelContainer/VBoxContainer/Header/ClearButton.disabled = false
+		preview = "..."
+		toggler.show()
+		toggler.set_visible(true)
+	else:
+		$PanelContainer/VBoxContainer/Header/Name.text = 'No image (will clear previous scene event)'
+		$PanelContainer/VBoxContainer/TextureRect.rect_min_size = Vector2(0,0)
+		$PanelContainer/VBoxContainer/Header/ClearButton.disabled = true
+		preview = ""
+		toggler.hide()
+		toggler.set_visible(false)
+
+
+func _on_gui_input(event):
+	if event is InputEventMouseButton and event.is_pressed() and event.doubleclick and event.button_index == 1 and toggler.visible:
+		toggler.set_visible(not toggler.pressed)
 
 
 func _on_ImageButton_pressed():
@@ -26,26 +56,5 @@ func _on_file_selected(path, target):
 	target.load_image(path)
 
 
-func load_data(data):
-	event_data = data
-	load_image(event_data['background'])
-
-
-func load_image(img_src):
-	event_data['background'] = img_src
-	$PanelContainer/VBoxContainer/HBoxContainer/LineEdit.text = event_data['background']
-	if event_data['background'] != '' and not event_data['background'].ends_with('.tscn'):
-		$PanelContainer/VBoxContainer/TextureRect.texture = load(event_data['background'])
-		$PanelContainer/VBoxContainer/TextureRect.rect_min_size = Vector2(200,200)
-		preview = event_data['background']
-	else:
-		$PanelContainer/VBoxContainer/TextureRect.rect_min_size = Vector2(0,0)
-
-
-func _on_gui_input(event):
-	if event is InputEventMouseButton and event.is_pressed() and event.doubleclick:
-		if event.button_index == 1:
-			if toggler.pressed:
-				toggler.pressed = false
-			else:
-				toggler.pressed = true
+func _on_ClearButton_pressed():
+	load_image('')
