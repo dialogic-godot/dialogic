@@ -54,11 +54,8 @@ func _ready():
 	resize_main()
 
 	# Setting everything up for the node to be default
-	$TextBubble/NameLabel.text = ''
-	$TextBubble/RichTextLabel.meta_underlined = false
 	$DefinitionInfo.visible = false
-	
-	tween_node.connect("tween_completed", self, '_on_Tween_tween_completed')
+	$TextBubble.connect("text_completed", self, "_on_text_completed")
 
 	# Getting the character information
 	characters = DialogicUtil.get_character_list()
@@ -268,10 +265,9 @@ func _process(delta):
 
 func _input(event: InputEvent) -> void:
 	if not Engine.is_editor_hint() and event.is_action_pressed(input_next) and not waiting:
-		if tween_node.is_active():
+		if not $TextBubble.is_finished():
 			# Skip to end if key is pressed during the text animation
-			tween_node.seek(999)
-			finished = true
+			$TextBubble.skip()
 		else:
 			if waiting_for_answer == false and waiting_for_input == false:
 				load_dialog()
@@ -285,7 +281,7 @@ func show_dialog():
 	visible = true
 
 func _update_text(text: String):
-	var final_text = _parse_definitions(_parse_alignment(text))
+	var final_text = parse_definitions(parse_alignment(text))
 	$TextBubble.update_text(final_text)
 
 
@@ -298,7 +294,7 @@ func update_name(character) -> void:
 				parsed_name = character['display_name']
 		if character.has('color'):
 			color = character['color']
-		parsed_name = _parse_definitions(parsed_name, true, false)
+		parsed_name = parse_definitions(parsed_name, true, false)
 		$TextBubble.update_name(parsed_name, color, current_theme.get_value('name', 'auto_color', true))
 	else:
 		$TextBubble.update_name('')
@@ -372,7 +368,7 @@ func event_handler(event: Dictionary):
 			var character_data = get_character(event['character'])
 			update_name(character_data)
 			grab_portrait_focus(character_data, event)
-			update_text(event['text'])
+			_update_text(event['text'])
 		{'question', 'question_id', 'options', ..}:
 			emit_signal("event_start", "question", event)
 			show_dialog()
@@ -380,7 +376,7 @@ func event_handler(event: Dictionary):
 			waiting_for_answer = true
 			if event.has('name'):
 				update_name(event['name'])
-			update_text(event['question'])
+			_update_text(event['question'])
 			if event.has('options'):
 				for o in event['options']:
 					add_choice_button(o)
