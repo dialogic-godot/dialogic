@@ -5,7 +5,6 @@ var last_mouse_mode = null
 var input_next: String = 'ui_accept'
 var dialog_index: int = 0
 var finished: bool = false
-var text_speed = 0.02 # Higher = lower speed
 var waiting_for_answer: bool = false
 var waiting_for_input: bool = false
 var waiting = false
@@ -36,7 +35,6 @@ onready var Portrait = load("res://addons/dialogic/Nodes/Portrait.tscn")
 var dialog_script = {}
 var questions #for keeping track of the questions answered
 
-onready var tween_node = $TextBubble/Tween
 
 func _ready():
 	# Loading the config files
@@ -56,11 +54,8 @@ func _ready():
 	resize_main()
 
 	# Setting everything up for the node to be default
-	$TextBubble/NameLabel.text = ''
-	$TextBubble/RichTextLabel.meta_underlined = false
 	$DefinitionInfo.visible = false
-	
-	tween_node.connect("tween_completed", self, '_on_Tween_tween_completed')
+	$TextBubble.connect("text_completed", self, "_on_text_completed")
 
 	# Getting the character information
 	characters = DialogicUtil.get_character_list()
@@ -269,10 +264,9 @@ func _process(delta):
 
 func _input(event: InputEvent) -> void:
 	if not Engine.is_editor_hint() and event.is_action_pressed(input_next) and not waiting:
-		if tween_node.is_active():
+		if not $TextBubble.is_finished():
 			# Skip to end if key is pressed during the text animation
-			tween_node.seek(999)
-			finished = true
+			$TextBubble.skip()
 		else:
 			if waiting_for_answer == false and waiting_for_input == false:
 				load_dialog()
@@ -286,52 +280,29 @@ func show_dialog():
 	visible = true
 
 
-func _on_Tween_tween_completed(object, key):
-	finished = true
-
-
-func update_name(character, color: Color = Color.white) -> void:
+func update_name(character) -> void:
 	if character.has('name'):
 		var parsed_name = character['name']
+		var color = Color.white
 		if character.has('display_name'):
 			if character['display_name'] != '':
 				parsed_name = character['display_name']
 		if character.has('color'):
 			color = character['color']
 		parsed_name = parse_definitions(parsed_name, true, false)
-		$TextBubble/NameLabel.visible = true
-		# Hack to reset the size
-		$TextBubble/NameLabel.rect_min_size = Vector2(0, 0)
-		$TextBubble/NameLabel.rect_size = Vector2(-1, 40)
-		# Setting the color and text
-		$TextBubble/NameLabel.text = parsed_name
-		if current_theme.get_value('name', 'auto_color', true):
-			$TextBubble/NameLabel.set('custom_colors/font_color', color)
+		$TextBubble.update_name(parsed_name, color, current_theme.get_value('name', 'auto_color', true))
 	else:
-		$TextBubble/NameLabel.visible = false
+		$TextBubble.update_name('')
 
 
 func update_text(text: String) -> String:
-	# Updating the text and starting the animation from 0
-	text = parse_alignment(text)
-	$TextBubble/RichTextLabel.bbcode_text = parse_definitions(text)
-	$TextBubble/RichTextLabel.percent_visible = 0
-
-	# The call to this function needs to be deferred.
-	# More info: https://github.com/godotengine/godot/issues/36381
-	call_deferred("start_text_tween")
-	return text
+	var final_text = parse_definitions(parse_alignment(text))
+	$TextBubble.update_text(final_text)
+	return final_text
 
 
-func start_text_tween():
-	# This will start the animation that makes the text appear letter by letter
-	var tween_duration = text_speed * $TextBubble/RichTextLabel.get_total_character_count()
-	tween_node.interpolate_property(
-		$TextBubble/RichTextLabel, "percent_visible", 0, 1, tween_duration,
-		Tween.TRANS_LINEAR, Tween.EASE_IN_OUT
-	)
-	tween_node.start()
-
+func _on_text_completed():
+	finished = true
 
 func on_timeline_start():
 	if not Engine.is_editor_hint():
@@ -386,7 +357,8 @@ func get_character(character_id):
 
 func event_handler(event: Dictionary):
 	# Handling an event and updating the available nodes accordingly.
-	reset_dialog_extras()
+	$TextBubble.reset()
+	reset_options()
 	
 	dprint('[D] Current Event: ', event)
 	match event:
@@ -721,51 +693,6 @@ func load_theme(filename):
 	# Box size
 	call_deferred('deferred_resize', $TextBubble.rect_size, theme.get_value('box', 'size', Vector2(910, 167)))
 
-	# Text
-	var theme_font = DialogicUtil.path_fixer_load(theme.get_value('text', 'font', 'res://addons/dialogic/Example Assets/Fonts/DefaultFont.tres'))
-	$TextBubble/RichTextLabel.set('custom_fonts/normal_font', theme_font)
-	$TextBubble/NameLabel.set('custom_fonts/font', theme_font)
-
-	var text_color = Color(theme.get_value('text', 'color', '#ffffffff'))
-	$TextBubble/RichTextLabel.set('custom_colors/default_color', text_color)
-	$TextBubble/NameLabel.set('custom_colors/font_color', text_color)
-
-	$TextBubble/RichTextLabel.set('custom_colors/font_color_shadow', Color('#00ffffff'))
-	$TextBubble/NameLabel.set('custom_colors/font_color_shadow', Color('#00ffffff'))
-
-	if theme.get_value('text', 'shadow', false):
-		var text_shadow_color = Color(theme.get_value('text', 'shadow_color', '#9e000000'))
-		$TextBubble/RichTextLabel.set('custom_colors/font_color_shadow', text_shadow_color)
-
-	var shadow_offset = theme.get_value('text', 'shadow_offset', Vector2(2,2))
-	$TextBubble/RichTextLabel.set('custom_constants/shadow_offset_x', shadow_offset.x)
-	$TextBubble/RichTextLabel.set('custom_constants/shadow_offset_y', shadow_offset.y)
-	
-
-	# Text speed
-	text_speed = theme.get_value('text','speed', 2) * 0.01
-
-	# Margin
-	var text_margin = theme.get_value('text', 'margin', Vector2(20, 10))
-	$TextBubble/RichTextLabel.set('margin_left', text_margin.x)
-	$TextBubble/RichTextLabel.set('margin_right', text_margin.x * -1)
-	$TextBubble/RichTextLabel.set('margin_top', text_margin.y)
-	$TextBubble/RichTextLabel.set('margin_bottom', text_margin.y * -1)
-
-	# Backgrounds
-	$TextBubble/TextureRect.texture = DialogicUtil.path_fixer_load(theme.get_value('background','image', "res://addons/dialogic/Example Assets/backgrounds/background-2.png"))
-	$TextBubble/ColorRect.color = Color(theme.get_value('background','color', "#ff000000"))
-
-	if theme.get_value('background', 'modulation', false) == true:
-		$TextBubble/TextureRect.modulate = Color(theme.get_value('background', 'modulation_color', '#ffffffff'))
-	else:
-		$TextBubble/TextureRect.modulate = Color('#ffffffff')
-
-	$TextBubble/ColorRect.visible = theme.get_value('background', 'use_color', false)
-	$TextBubble/TextureRect.visible = theme.get_value('background', 'use_image', true)
-
-	# Next image
-	$TextBubble/NextIndicator.texture = DialogicUtil.path_fixer_load(theme.get_value('next_indicator', 'image', 'res://addons/dialogic/Example Assets/next-indicator/next-indicator.png'))
 	input_next = theme.get_value('settings', 'action_key', 'ui_accept')
 
 	# Definitions
@@ -774,27 +701,7 @@ func load_theme(filename):
 	$DefinitionInfo/VBoxContainer/Content.set('custom_fonts/normal_font', definitions_font)
 	$DefinitionInfo/VBoxContainer/Extra.set('custom_fonts/normal_font', definitions_font)
 	
-	# Character Name
-	$TextBubble/NameLabel/ColorRect.visible = theme.get_value('name', 'background_visible', false)
-	$TextBubble/NameLabel/ColorRect.color = Color(theme.get_value('name', 'background', '#282828'))
-	$TextBubble/NameLabel/TextureRect.visible = theme.get_value('name', 'image_visible', false)
-	$TextBubble/NameLabel/TextureRect.texture = DialogicUtil.path_fixer_load(theme.get_value('name','image', "res://addons/dialogic/Example Assets/backgrounds/background-2.png"))
-	var name_shadow_offset = theme.get_value('name', 'shadow_offset', Vector2(2,2))
-	if theme.get_value('name', 'shadow_visible', true):
-		$TextBubble/NameLabel.set('custom_colors/font_color_shadow', Color(theme.get_value('name', 'shadow', '#9e000000')))
-		$TextBubble/NameLabel.set('custom_constants/shadow_offset_x', name_shadow_offset.x)
-		$TextBubble/NameLabel.set('custom_constants/shadow_offset_y', name_shadow_offset.y)
-	$TextBubble/NameLabel.rect_position.y = theme.get_value('name', 'bottom_gap', 48) * -1
-	if theme.get_value('name', 'modulation', false) == true:
-		$TextBubble/NameLabel/TextureRect.modulate = Color(theme.get_value('name', 'modulation_color', '#ffffffff'))
-	else:
-		$TextBubble/NameLabel/TextureRect.modulate = Color('#ffffffff')
-	
-	# Setting next indicator animation
-	$TextBubble/NextIndicator.self_modulate = Color('#ffffff')
-	$TextBubble/NextIndicator/AnimationPlayer.play(
-		theme.get_value('next_indicator', 'animation', 'Up and down')
-	)
+	$TextBubble.load_theme(theme)
 	
 	return theme
 
