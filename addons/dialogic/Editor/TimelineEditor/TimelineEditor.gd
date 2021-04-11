@@ -11,8 +11,8 @@ onready var timeline = $TimelineArea/TimeLine
 onready var events_warning = $ScrollContainer/EventContainer/EventsWarning
 
 var hovered_item = null
-var selected_style : StyleBoxFlat = load("res://addons/dialogic/Editor/Pieces/selected_styleboxflat.tres")
-var selected_style_text : StyleBoxFlat = load("res://addons/dialogic/Editor/Pieces/selected_styleboxflat_text_event.tres")
+var selected_style : StyleBoxFlat = load("res://addons/dialogic/Editor/Events/selected_styleboxflat.tres")
+var selected_style_text : StyleBoxFlat = load("res://addons/dialogic/Editor/Events/selected_styleboxflat_text_event.tres")
 var saved_style : StyleBoxFlat
 var selected_item : Node
 
@@ -285,7 +285,7 @@ func _on_ButtonCondition_pressed() -> void:
 # Adding an event to the timeline
 func create_event(scene: String, data: Dictionary = {'no-data': true} , indent: bool = false):
 	# This function will create an event in the timeline.
-	var piece = load("res://addons/dialogic/Editor/Pieces/" + scene + ".tscn").instance()
+	var piece = load("res://addons/dialogic/Editor/Events/" + scene + ".tscn").instance()
 	piece.editor_reference = editor_reference
 	if selected_item != null:
 		timeline.add_child_below_node(selected_item, piece)

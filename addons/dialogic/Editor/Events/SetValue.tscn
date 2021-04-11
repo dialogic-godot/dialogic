@@ -1,9 +1,11 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=9 format=2]
 
-[ext_resource path="res://addons/dialogic/Images/Event Icons/Main Icons/emit-signal.svg" type="Texture" id=1]
-[ext_resource path="res://addons/dialogic/Editor/Pieces/EmitSignal.gd" type="Script" id=2]
-[ext_resource path="res://addons/dialogic/Editor/Pieces/Common/Spacer.tscn" type="PackedScene" id=3]
-[ext_resource path="res://addons/dialogic/Editor/Pieces/Common/PieceExtraSettings.tscn" type="PackedScene" id=4]
+[ext_resource path="res://addons/dialogic/Editor/Events/SetValue.gd" type="Script" id=1]
+[ext_resource path="res://addons/dialogic/Images/Event Icons/Main Icons/set-value.svg" type="Texture" id=2]
+[ext_resource path="res://addons/dialogic/Editor/Events/Common/Spacer.tscn" type="PackedScene" id=3]
+[ext_resource path="res://addons/dialogic/Editor/Events/Common/PieceExtraSettings.tscn" type="PackedScene" id=4]
+[ext_resource path="res://addons/dialogic/Editor/Events/Common/DefinitionPicker.tscn" type="PackedScene" id=6]
+[ext_resource path="res://addons/dialogic/Editor/Events/Common/OperationPicker.tscn" type="PackedScene" id=7]
 
 
 
@@ -12,7 +14,7 @@ content_margin_left = 16.0
 content_margin_right = 6.0
 content_margin_top = 6.0
 content_margin_bottom = 6.0
-bg_color = Color( 0.14902, 0.333333, 0.509804, 0.4 )
+bg_color = Color( 0.243137, 0.231373, 0.396078, 0.772549 )
 border_width_left = 2
 border_width_top = 2
 border_width_right = 2
@@ -32,12 +34,12 @@ corner_radius_bottom_left = 4
 expand_margin_left = 5.0
 expand_margin_right = 5.0
 
-[node name="EmitSignal" type="HBoxContainer"]
+[node name="SetValue" type="HBoxContainer"]
 margin_right = 1004.0
 margin_bottom = 42.0
 size_flags_horizontal = 3
 size_flags_vertical = 9
-script = ExtResource( 2 )
+script = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -71,19 +73,27 @@ margin_bottom = 28.0
 [node name="TextureRect" type="TextureRect" parent="PanelContainer/VBoxContainer/Header"]
 margin_right = 22.0
 margin_bottom = 28.0
-texture = ExtResource( 1 )
+texture = ExtResource( 2 )
 stretch_mode = 6
 
 [node name="Title" type="Label" parent="PanelContainer/VBoxContainer/Header"]
 margin_left = 26.0
 margin_top = 7.0
-margin_right = 124.0
+margin_right = 133.0
 margin_bottom = 21.0
-text = "  Emit Signal     "
+text = "  Set the value of"
+
+[node name="DefinitionPicker" parent="PanelContainer/VBoxContainer/Header" instance=ExtResource( 6 )]
+margin_left = 137.0
+margin_right = 280.0
+margin_bottom = 28.0
+
+[node name="OperationPicker" parent="PanelContainer/VBoxContainer/Header" instance=ExtResource( 7 )]
+margin_right = 347.0
 
 [node name="LineEdit" type="LineEdit" parent="PanelContainer/VBoxContainer/Header"]
-margin_left = 128.0
-margin_right = 176.0
+margin_left = 351.0
+margin_right = 399.0
 margin_bottom = 28.0
 custom_styles/read_only = SubResource( 2 )
 custom_styles/focus = SubResource( 2 )
@@ -100,14 +110,14 @@ caret_blink = true
 caret_blink_speed = 0.5
 
 [node name="Preview" type="Label" parent="PanelContainer/VBoxContainer/Header"]
-margin_left = 180.0
+margin_left = 403.0
 margin_top = 7.0
-margin_right = 180.0
+margin_right = 403.0
 margin_bottom = 21.0
 custom_colors/font_color = Color( 1, 1, 1, 0.513726 )
 
 [node name="Spacer" parent="PanelContainer/VBoxContainer/Header" instance=ExtResource( 3 )]
-margin_left = 184.0
+margin_left = 407.0
 margin_right = 941.0
 margin_bottom = 28.0
 
