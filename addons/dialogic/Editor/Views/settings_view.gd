@@ -25,3 +25,11 @@ func load_configuration() -> void:
 func _on_DisplayEditorDebugButton_pressed(button_pressed: bool) -> void:
 	_db.editor_debug_mode = button_pressed
 	ResourceSaver.save(_db.resource_path, _db)
+
+
+func _on_ScanFoldersButton_pressed() -> void:
+	DialogicDB.Timelines.get_database().scan_timelines_folder()
+
+
+func _on_DropDatabaseButton_pressed() -> void:
+	DialogicDB.Timelines.get_database().resources = null

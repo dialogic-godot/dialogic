@@ -1,8 +1,8 @@
 tool
-class_name DialogicTextEventResource
+class_name DialogicTextEvent
 extends DialogicEventResource
 
-const EventTimer = preload("res://addons/dialogic/Nodes/TextEventTimer.gd")
+const EventTimer = preload("res://addons/dialogic/Resources/Events/TextEvent/TextEventTimer.gd")
 
 export(String, MULTILINE) var text:String = ""
 export(Resource) var character = DialogicCharacterResource.new()
@@ -55,7 +55,9 @@ func _on_TextTimer_timeout():
 		_timer.queue_free()
 		finish()
 
-func get_event_editor_node() -> Control:
-	var _instance = load("res://addons/dialogic/Nodes/editor_event_nodes/text_event_node/text_event_node.tscn").instance()
+func get_event_editor_node() -> DialogicEditorEventNode:
+	var _scene_resource:PackedScene = load("res://addons/dialogic/Nodes/editor_event_nodes/text_event_node/text_event_node.tscn")
+	_scene_resource.resource_local_to_scene = true
+	var _instance = _scene_resource.instance(PackedScene.GEN_EDIT_STATE_INSTANCE)
 	_instance.base_resource = self
 	return _instance

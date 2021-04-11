@@ -1,7 +1,7 @@
 tool
 extends VBoxContainer
 
-const DialogicUtil = preload("res://addons/dialogic/Core/DialogicUtil.gd")
+var DialogicUtil = preload("res://addons/dialogic/Core/DialogicUtil.gd")
 const DialogicDB = preload("res://addons/dialogic/Core/DialogicDatabase.gd")
 
 enum EditorView {
@@ -124,8 +124,10 @@ func _on_NewCharacterPopup_confirmed() -> void:
 
 
 func _on_TimelinesContainer_tree_item_selected(tree_item:TreeItem) -> void:
-	var _res_path = tree_item.get_metadata(0)
-	DialogicUtil.Logger.print(self,["Using resource:", _res_path])
-	timeline_view_node.base_resource_path = _res_path
-	if _res_path:
+	var _res = tree_item.get_metadata(0)
+	timeline_view_node.base_resource = _res
+	if _res:
+		DialogicUtil.Logger.print(self,["Using resource:", _res.resource_path])
 		self._current_view = {"state":EditorView.TIMELINE, "reference":timeline_view_node}
+	else:
+		self._current_view = {}

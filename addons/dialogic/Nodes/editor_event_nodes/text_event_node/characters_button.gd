@@ -19,15 +19,11 @@ func _ready() -> void:
 	select(0)
 	
 	var _idx = 1
-	for resource in _char_db.resources:
-		var _f = File.new()
-		if not _f.file_exists(resource):
-			continue
+	for resource in _char_db.resources.get_resources():
 		
 		DialogicUtil.Logger.print(self,"Creating a character item")
 		
-		var _char_path = resource
-		var _char = load(_char_path)
+		var _char = resource
 		var _char_icon = load(ICON_PATH)
 		add_icon_item(_char_icon, _char.display_name)
 		set_item_metadata(_idx, {"character":_char})

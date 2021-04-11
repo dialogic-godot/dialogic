@@ -28,6 +28,11 @@ func add(resource:Resource) -> void:
 	property_list_changed_notify()
 	emit_signal("changed")
 
+func remove(resource:Resource) -> void:
+	_resources.erase(resource)
+	property_list_changed_notify()
+	emit_signal("changed")
+
 func get_resources() -> Array:
 	return _resources
 

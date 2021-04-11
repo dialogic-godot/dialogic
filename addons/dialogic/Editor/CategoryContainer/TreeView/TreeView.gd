@@ -58,13 +58,14 @@ func create_tree_item(with_resource:Resource)->void:
 	var _item = create_item()
 	_item.set_text(0, _resource.resource_name)
 	_item.set_tooltip(0, _resource.resource_path.get_file())
-	_item.set_metadata(0, _resource.resource_path)
+	_item.set_metadata(0, _resource)
 	DialogicUtil.Logger.print(self,"Tree item created")
 
 func remove_item(item:TreeItem = null):
 	if not item:
 		return
 	DialogicUtil.Logger.print(self,["Attempt to delete item", item.get_metadata(0)])
+	(_base_resource as DialogicDatabaseResource).remove(item.get_metadata(0))
 
 func rename_item(item:TreeItem = null):
 	item.set_editable(0, true)

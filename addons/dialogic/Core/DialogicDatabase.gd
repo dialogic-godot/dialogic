@@ -31,11 +31,10 @@ class Timelines extends _DB:
 
 		var _err = ResourceSaver.save(
 			file_path, 
-			_n_tl,
-			ResourceSaver.FLAG_CHANGE_PATH
+			_n_tl
 			)
 		if _err != OK:
-			print_debug("FATAL_ERROR: ", _err)
+			push_error("FATAL_ERROR: "+str(_err))
 		get_database().add(_n_tl)
 
 

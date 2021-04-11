@@ -8,17 +8,19 @@ extends Resource
 
 const DialogicResources = preload("res://addons/dialogic/Core/DialogicResources.gd")
 
-export(Resource) var resources = ResourceArray.new() setget _set_resources
+export(Resource) var resources = null setget _set_resources
 
 
-func add(path):
+func add(item):
 	assert(false)
 
+func remove(item):
+	assert(false)
 
 func save(path: String) -> void:
-	var _err = ResourceSaver.save(path, self)
+	var _err = ResourceSaver.save(path, self, ResourceSaver.FLAG_CHANGE_PATH)
 	if _err != OK:
-		print_debug("FATAL_ERROR: ", _err)
+		push_error("FATAL_ERROR: "+str(_err))
 
 
 func _to_string() -> String:
@@ -30,4 +32,3 @@ func _set_resources(value):
 		return
 	resources = value
 	emit_signal("changed")
-	save(self.resource_path)

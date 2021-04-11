@@ -15,5 +15,5 @@ func excecute(caller:Control) -> void:
 func finish() -> void:
 	emit_signal("event_finished", self)
 
-func get_event_editor_node() -> Control:
-	return Control.new()
+func get_event_editor_node() -> DialogicEditorEventNode:
+	return DialogicEditorEventNode.new()

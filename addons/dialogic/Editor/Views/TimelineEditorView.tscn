@@ -11,7 +11,7 @@ script = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
-TimelineEventsContainer_path = NodePath("TimelineEditorView/ScrollContainer/VBoxContainer")
+TimelineEventsContainer_path = NodePath("TimelineView/ScrollContainer/TimelineEventsContainer")
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
 margin_right = 1024.0
@@ -27,7 +27,7 @@ margin_bottom = 23.0
 size_flags_horizontal = 4
 text = "Timeline Editor"
 
-[node name="TimelineEditorView" type="VSplitContainer" parent="."]
+[node name="TimelineView" type="VSplitContainer" parent="."]
 margin_top = 36.0
 margin_right = 1024.0
 margin_bottom = 600.0
@@ -37,25 +37,25 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="ScrollContainer" type="ScrollContainer" parent="TimelineEditorView"]
+[node name="ScrollContainer" type="ScrollContainer" parent="TimelineView"]
 margin_right = 1024.0
-margin_bottom = 417.0
+margin_bottom = 464.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 size_flags_stretch_ratio = 3.0
 follow_focus = true
 scroll_horizontal_enabled = false
 
-[node name="VBoxContainer" type="VBoxContainer" parent="TimelineEditorView/ScrollContainer"]
+[node name="TimelineEventsContainer" type="VBoxContainer" parent="TimelineView/ScrollContainer"]
 margin_right = 1024.0
-margin_bottom = 417.0
+margin_bottom = 464.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="TabContainer" parent="TimelineEditorView" instance=ExtResource( 3 )]
+[node name="EventButtonsContainer" parent="TimelineView" instance=ExtResource( 3 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_top = 429.0
+margin_top = 476.0
 margin_right = 1024.0
 margin_bottom = 564.0
-size_flags_vertical = 3
+[connection signal="event_pressed" from="TimelineView/EventButtonsContainer" to="." method="_on_EventButtonsContainer_event_pressed"]

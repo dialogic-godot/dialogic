@@ -15,11 +15,22 @@ func add(res:Resource):
 		if _idx != -1:
 			_r_array[_idx] = res
 			save(DialogicResources.TIMELINEDB_PATH)
+			emit_signal("changed")
 		return
 	DialogicUtil.Logger.print(self,["adding a resource:",res.resource_path])
-	resources.add(res)
+	(resources as ResourceArray).add(res)
 	save(DialogicResources.TIMELINEDB_PATH)
 	emit_signal("changed")
+
+func remove(item) -> void:
+	if not(item is DialogicTimelineResource):
+		push_error("item is not a timeline")
+		return
+	DialogicUtil.Logger.print(self,["removing a resource:",item.resource_path])
+	(resources as ResourceArray).remove(item)
+	save(DialogicResources.TIMELINEDB_PATH)
+	emit_signal("changed")
+
 
 func scan_timelines_folder() -> void:
 	push_warning("Scanning timelines folder")
@@ -44,6 +55,7 @@ func scan_timelines_folder() -> void:
 					
 			_file_name = _d.get_next()
 		_d.list_dir_end()
+		push_warning("Done")
 
 func _to_string() -> String:
 	return "[TimelineDatabase]"

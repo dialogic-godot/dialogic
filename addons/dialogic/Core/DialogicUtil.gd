@@ -9,7 +9,7 @@ class Error:
 	
 	static func not_found_timeline() -> Resource:
 		var _timeline = DialogicTimelineResource.new()
-		var _text_event = DialogicTextEventResource.new()
+		var _text_event = DialogicTextEvent.new()
 		var _character = DialogicCharacterResource.new()
 		_character.name = DIALOGIC_ERROR
 		_character.color = Color.red
@@ -21,7 +21,7 @@ class Error:
 class Logger:
 	const INFO = "[Dialogic]"
 	
-	static func print(who, what) -> void:
+	static func print(who:Object, what) -> void:
 		if not DialogicDB.get_editor_configuration().editor_debug_mode:
 			return
 		

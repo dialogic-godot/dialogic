@@ -1,0 +1,35 @@
+[gd_scene load_steps=10 format=2]
+
+[ext_resource path="res://addons/dialogic/Editor/Views/timeline_editor/events_container/event_button/generic_event_button.tscn" type="PackedScene" id=1]
+[ext_resource path="res://addons/dialogic/assets/Images/dialog.svg" type="Texture" id=2]
+[ext_resource path="res://addons/dialogic/Other/resource_array.gd" type="Script" id=3]
+[ext_resource path="res://addons/dialogic/Resources/CharacterResource.gd" type="Script" id=4]
+[ext_resource path="res://addons/dialogic/Resources/Events/TextEvent/TextEvent.gd" type="Script" id=5]
+
+[sub_resource type="StyleBoxFlat" id=1]
+resource_local_to_scene = true
+
+[sub_resource type="Resource" id=2]
+script = ExtResource( 3 )
+_resources = [  ]
+
+[sub_resource type="Resource" id=3]
+script = ExtResource( 4 )
+name = ""
+display_name = ""
+display_name_bool = false
+color = Color( 1, 1, 1, 1 )
+default_speaker = false
+description = ""
+portraits = SubResource( 2 )
+
+[sub_resource type="Resource" id=4]
+script = ExtResource( 5 )
+text = ""
+character = SubResource( 3 )
+
+[node name="TextEventButton" instance=ExtResource( 1 )]
+custom_styles/normal = SubResource( 1 )
+text = "Dialog"
+icon = ExtResource( 2 )
+event_resource = SubResource( 4 )

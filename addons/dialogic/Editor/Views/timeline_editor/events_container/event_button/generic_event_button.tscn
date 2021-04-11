@@ -1,0 +1,31 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://addons/dialogic/assets/Images/warning.svg" type="Texture" id=1]
+[ext_resource path="res://addons/dialogic/Editor/Views/timeline_editor/events_container/event_button/generic_event_button.gd" type="Script" id=2]
+
+[sub_resource type="StyleBoxFlat" id=1]
+bg_color = Color( 0.698039, 0.298039, 0.298039, 1 )
+
+[sub_resource type="StyleBoxFlat" id=2]
+resource_local_to_scene = true
+
+[node name="GenericEventButton" type="Button"]
+margin_right = 24.0
+margin_bottom = 22.0
+grow_horizontal = 2
+size_flags_vertical = 4
+custom_styles/hover = SubResource( 1 )
+custom_styles/normal = SubResource( 2 )
+keep_pressed_outside = true
+text = "Generic Event"
+icon = ExtResource( 1 )
+clip_text = true
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Tween" type="Tween" parent="."]
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]
+[connection signal="tween_completed" from="Tween" to="." method="_on_Tween_completed"]

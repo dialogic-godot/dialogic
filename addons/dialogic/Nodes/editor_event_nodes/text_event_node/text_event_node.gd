@@ -7,10 +7,12 @@ export(NodePath) var CharacterBtn_path:NodePath
 onready var text_edit_node = get_node_or_null(TextEdit_path)
 onready var character_button_node = get_node_or_null(CharacterBtn_path)
 
+
 func _ready() -> void:
 	if base_resource:
 		_update_node_values()
-
+	else:
+		return
 
 func _update_node_values() -> void:
 	text_edit_node.text = base_resource.text
@@ -18,16 +20,12 @@ func _update_node_values() -> void:
 		character_button_node.select_item_by_name(base_resource.character.display_name)
 	else:
 		character_button_node.select(0)
+	index_label_node.text = str(idx)
 
 
 func _save_resource() -> void:
-	var _err = ResourceSaver.save(base_resource.resource_path, base_resource)
-	if _err != OK:
-		print_debug(
-			DialogicUtil.Error.DIALOGIC_ERROR, 
-			" There was an error while saving: ", 
-			base_resource.resource_path, _err
-			)
+	var _res = base_resource
+	emit_signal("save_item_requested", base_resource)
 
 
 func _on_resource_change() -> void:
@@ -36,7 +34,7 @@ func _on_resource_change() -> void:
 
 func _on_TextEdit_text_changed() -> void:
 	if text_edit_node.text != base_resource.text:
-		(base_resource as DialogicTextEventResource).text = text_edit_node.text
+		(base_resource as DialogicTextEvent).text = text_edit_node.text
 
 
 func _on_TextEdit_focus_exited() -> void:

@@ -8,7 +8,7 @@ var current_event = 0
 
 func start(caller):
 	var _err
-	var _events = (events.get_resources() as DialogicEventResource)
+	var _events:Array = events.get_resources()
 	if not _events[current_event].is_connected("event_started", caller, "_on_event_start"):
 		_err = _events[current_event].connect("event_started", caller, "_on_event_start")
 		if _err != OK:
@@ -22,12 +22,13 @@ func start(caller):
 
 func go_to_next_event(caller):
 	current_event += 1
-	current_event = clamp(current_event, 0, events.size())
+	current_event = clamp(current_event, 0, events.get_resources().size())
 	if current_event == events.get_resources().size():
 		caller.queue_free()
 	else:
 		start(caller)
 
+# This method is probably unused, should be removed
 func get_good_name(with_name:String="") -> String:
 	var _good_name = with_name
 	

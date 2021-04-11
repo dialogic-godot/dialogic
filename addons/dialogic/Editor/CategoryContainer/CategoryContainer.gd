@@ -5,20 +5,21 @@ extends PanelContainer
 
 signal tree_item_selected(tree_item)
 
-const DialogicUtil = preload("res://addons/dialogic/Core/DialogicUtil.gd")
+var DialogicUtil = load("res://addons/dialogic/Core/DialogicUtil.gd")
 
 const MAX_SIZE = Vector2(0,512)
 
 var tree_resource:Resource = null setget _set_tree_resource
 var min_size = Vector2(0, 50)
 
-onready var tree_node:Tree = $Control/Tree
+onready var tree_node = get_node("Control/Tree")
 onready var popup_menu_node:PopupMenu = $PopupMenu
 onready var confirmation_node:ConfirmationDialog = $ConfirmationDialog
 
 func _gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == BUTTON_LEFT:
 		emit_signal("tree_item_selected", tree_node.get_root())
+		show_category()
 		pass
 
 func force_update() -> void:
@@ -90,7 +91,11 @@ func _on_PopupMenu_id_pressed(id: int) -> void:
 
 
 func _on_ConfirmationDialog_confirmed() -> void:
+	var _selected:TreeItem = tree_node.get_selected()
+	var _meta = _selected.get_metadata(0)
+	(tree_resource as DialogicDatabaseResource).remove(_meta)
 	tree_node.remove_item(tree_node.get_selected())
+	emit_signal("tree_item_selected", tree_node.get_root())
 
 
 func _on_Tree_item_selected() -> void:
@@ -98,4 +103,6 @@ func _on_Tree_item_selected() -> void:
 
 
 func _on_Tree_focus_exited() -> void:
-	tree_node.get_selected().deselect(0)
+	var _selected = tree_node.get_selected()
+	if _selected:
+		_selected.deselect(0)
