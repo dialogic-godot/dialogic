@@ -418,15 +418,6 @@ func event_handler(event: Dictionary):
 						# If the option is for an answered question, skip to the end of it.
 						dialog_index = q['end_id']
 						load_dialog(true)
-		{'input', ..}:
-			emit_signal("event_start", "input", event)
-			show_dialog()
-			finished = false
-			waiting_for_input = true
-			update_text(event['input'])
-			$TextInputDialog.window_title = event['window_title']
-			$TextInputDialog.popup_centered()
-			$TextInputDialog.connect("confirmed", self, "_on_input_set", [event['variable']])
 		{'action', ..}:
 			emit_signal("event_start", "action", event)
 			if event['action'] == 'leaveall':
@@ -591,21 +582,6 @@ func event_handler(event: Dictionary):
 	$Options.visible = waiting_for_answer
 
 
-func _on_input_set(variable):
-	var input_value = $TextInputDialog/LineEdit.text
-	if input_value == '':
-		$TextInputDialog.popup_centered()
-	else:
-		dialog_resource.custom_variables[variable] = input_value
-		waiting_for_input = false
-		$TextInputDialog/LineEdit.text = ''
-		$TextInputDialog.disconnect("confirmed", self, '_on_input_set')
-		$TextInputDialog.visible = false
-		load_dialog()
-		dprint('[!] Input selected: ', input_value)
-		dprint('[!] dialog variables: ', dialog_resource.custom_variables)
-
-
 func reset_options():
 	# Clearing out the options after one was selected.
 	for option in $Options.get_children():
@@ -690,10 +666,6 @@ func _on_option_selected(option, variable, value):
 	reset_options()
 	load_dialog()
 	dprint('[!] Option selected: ', option.text, ' value= ' , value)
-
-
-func _on_TextInputDialog_confirmed():
-	pass # Replace with function body.
 
 
 func go_to_next_event():
@@ -914,8 +886,10 @@ func _compare_definitions(def_value: String, event_value: String, condition: Str
 
 
 func characters_leave_all():
-	for p in $Portraits.get_children():
-		p.fade_out()
+	var portraits = get_node_or_null('Portraits')
+	if portraits != null:
+		for p in portraits.get_children():
+			p.fade_out()
 
 
 func close_dialog_event():
