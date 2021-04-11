@@ -284,46 +284,21 @@ func _on_ShadowOffset_value_changed(_value) -> void:
 func _on_PreviewButton_pressed() -> void:
 	for i in $VBoxContainer/Panel.get_children():
 		i.free()
-	var dialogic_node = load("res://addons/dialogic/Dialog.tscn")
-	var preview_dialog = dialogic_node.instance()
-	preview_dialog.timeline = ''
+	var characters : Array = DialogicUtil.get_character_list()
+	var character_file : String = ''
+	var preview_dialog = Dialogic.start('')
 	preview_dialog.preview = true
-	preview_dialog.debug_mode = false
-	preview_dialog.get_node('DefinitionInfo').in_theme_editor = true
-	
-	# Random character preview if there are any
-	var characters = DialogicUtil.get_character_list()
-	var character_file = ''
 	if characters.size():
 		characters.shuffle()
 		character_file = characters[0]['file']
-	
-	# Loading the theme here because I need it for the parse_alignment
-	preview_dialog.current_theme = preview_dialog.load_theme(current_theme)
-	
-	# Creating the one event timeline for the dialog
-	var text = preview_dialog.parse_definitions(n['text_preview'].text)
-	preview_dialog.dialog_script['events'] = [{
-		"character": character_file,
-		"portrait":'',
-		"text": text
-	}]
+	preview_dialog.dialog_script = {
+			"events":[
+				{ "set_theme": current_theme },
+				{ "character": character_file, "portrait":"", "text":n['text_preview'].text }
+			]
+		}
 	preview_dialog.parse_characters(preview_dialog.dialog_script)
-	preview_dialog.settings = DialogicResources.get_settings_config()
-	
-	# Alignment
 	$VBoxContainer/Panel.add_child(preview_dialog)
-	
-	preview_dialog.load_dialog()
-	# Reloading the theme
-	preview_dialog.current_theme = preview_dialog.load_theme(current_theme)
-	
-	
-	# When not performing this step, the dialog name doesn't update the color for some reason
-	# I should probably refactor the preview dialog to stop making everything manually.
-	if n['name_auto_color'].pressed:
-		if characters.size():
-			preview_dialog.get_node('TextBubble/NameLabel').set('custom_colors/font_color', characters[0]['color'])
 	
 	# maintaining the preview panel big enough for the dialog box
 	$VBoxContainer/Panel.rect_min_size.y = preview_dialog.current_theme.get_value('box', 'size', Vector2(910, 167)).y + 90 + preview_dialog.current_theme.get_value('box', 'bottom_gap', 40)

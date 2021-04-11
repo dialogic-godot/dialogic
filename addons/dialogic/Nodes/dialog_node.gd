@@ -65,7 +65,10 @@ func _ready():
 	# Getting the character information
 	characters = DialogicUtil.get_character_list()
 
-	if not Engine.is_editor_hint():
+	if Engine.is_editor_hint():
+		if preview:
+			load_dialog()
+	else:
 		load_dialog()
 
 
@@ -228,10 +231,6 @@ func parse_branches(dialog_script: Dictionary) -> Dictionary:
 
 
 func parse_definitions(text: String, variables: bool = true, glossary: bool = true):
-	if Engine.is_editor_hint():
-		# Loading variables again to avoid issues in the preview dialog
-		load_config_files()
-
 	var final_text: String = text
 	if variables:
 		final_text = _insert_variable_definitions(text)
@@ -312,7 +311,7 @@ func update_name(character, color: Color = Color.white) -> void:
 		$TextBubble/NameLabel.visible = false
 
 
-func update_text(text):
+func update_text(text: String) -> String:
 	# Updating the text and starting the animation from 0
 	text = parse_alignment(text)
 	$TextBubble/RichTextLabel.bbcode_text = parse_definitions(text)
@@ -321,7 +320,7 @@ func update_text(text):
 	# The call to this function needs to be deferred.
 	# More info: https://github.com/godotengine/godot/issues/36381
 	call_deferred("start_text_tween")
-	return true
+	return text
 
 
 func start_text_tween():
