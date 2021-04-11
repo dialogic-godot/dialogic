@@ -50,6 +50,7 @@ v1.1 - WIP
   - Fixed a bug with the "auto color" option in game
 - Dialog node
   - Fixed a bug where Glossary Definitions plain text was being added to the name label.
+  - You can now use [br] to insert line breaks
   - Questions now properly show the theme text alignment.
   - The close dialog now performs a fade-out animation.
   - Fixed a bug where portraits didn't come to the front when being focused [[AnidemDex](https://github.com/AnidemDex)]
