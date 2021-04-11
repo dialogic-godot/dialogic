@@ -60,7 +60,10 @@ func _ready():
 	# Getting the character information
 	characters = DialogicUtil.get_character_list()
 
-	if not Engine.is_editor_hint():
+	if Engine.is_editor_hint():
+		if preview:
+			load_dialog()
+	else:
 		load_dialog()
 
 
@@ -223,10 +226,6 @@ func parse_branches(dialog_script: Dictionary) -> Dictionary:
 
 
 func parse_definitions(text: String, variables: bool = true, glossary: bool = true):
-	if Engine.is_editor_hint():
-		# Loading variables again to avoid issues in the preview dialog
-		load_config_files()
-
 	var final_text: String = text
 	if variables:
 		final_text = _insert_variable_definitions(text)
@@ -280,10 +279,6 @@ func _input(event: InputEvent) -> void:
 func show_dialog():
 	visible = true
 
-func update_text(text: String):
-	var final_text = parse_definitions(parse_alignment(text))
-	$TextBubble.update_text(final_text)
-
 
 func update_name(character) -> void:
 	if character.has('name'):
@@ -298,6 +293,12 @@ func update_name(character) -> void:
 		$TextBubble.update_name(parsed_name, color, current_theme.get_value('name', 'auto_color', true))
 	else:
 		$TextBubble.update_name('')
+
+
+func update_text(text: String) -> String:
+	var final_text = parse_definitions(parse_alignment(text))
+	$TextBubble.update_text(final_text)
+	return final_text
 
 
 func _on_text_completed():
