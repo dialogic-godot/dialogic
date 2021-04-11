@@ -52,6 +52,7 @@ v1.1 - WIP
   - Fixed a bug where Glossary Definitions plain text was being added to the name label.
   - Questions now properly show the theme text alignment.
   - The close dialog now performs a fade-out animation.
+  - Fixed a bug where portraits didn't come to the front when being focused [[AnidemDex](https://github.com/AnidemDex)]
 - Settings
   - Added a new option to toggle the character "focus"/"dim" while speaking. 
 - Added a button in timeline inspector plugin to open the selected timeline in the editor. [[ellogwen](https://github.com/ellogwen)]
