@@ -856,6 +856,7 @@ func dprint(string, arg1='', arg2='', arg3='', arg4='' ):
 	if debug_mode:
 		print(str(string) + str(arg1) + str(arg2) + str(arg3) + str(arg4))
 
+
 func _compare_definitions(def_value: String, event_value: String, condition: String):
 	var condition_met = false;
 	if def_value != null and event_value != null:
