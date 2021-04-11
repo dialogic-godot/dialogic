@@ -135,7 +135,7 @@ anchor_bottom = 1.0
 margin_left = -36.4279
 margin_top = -35.9016
 margin_right = 14.5721
-margin_bottom = 21.1708
+margin_bottom = 25.409
 rect_scale = Vector2( 0.4, 0.4 )
 texture = ExtResource( 1 )
 stretch_mode = 4
@@ -330,9 +330,6 @@ __meta__ = {
 
 [node name="Timer" type="Timer" parent="DefinitionInfo"]
 
-[node name="WaitSeconds" type="Timer" parent="."]
-
 [connection signal="meta_hover_ended" from="TextBubble/RichTextLabel" to="." method="_on_RichTextLabel_meta_hover_ended"]
 [connection signal="meta_hover_started" from="TextBubble/RichTextLabel" to="." method="_on_RichTextLabel_meta_hover_started"]
 [connection signal="timeout" from="DefinitionInfo/Timer" to="." method="_on_Definition_Timer_timeout"]
-[connection signal="timeout" from="WaitSeconds" to="." method="_on_WaitSeconds_timeout"]

@@ -852,7 +852,11 @@ func _on_Definition_Timer_timeout():
 
 
 func wait_seconds(seconds):
-	$WaitSeconds.start(seconds)
+	var timer = Timer.new()
+	timer.name = 'WaitSeconds'
+	add_child(timer)
+	timer.connect("timeout", self, '_on_WaitSeconds_timeout')
+	timer.start(seconds)
 	$TextBubble.visible = false
 
 
@@ -860,6 +864,7 @@ func _on_WaitSeconds_timeout():
 	emit_signal("event_end", "wait")
 	waiting = false
 	$WaitSeconds.stop()
+	$WaitSeconds.queue_free()
 	$TextBubble.visible = true
 	load_dialog()
 
