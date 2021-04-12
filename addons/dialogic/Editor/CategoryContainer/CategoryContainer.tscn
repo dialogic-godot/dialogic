@@ -67,6 +67,7 @@ margin_right = 259.0
 margin_bottom = 182.0
 rect_min_size = Vector2( 0, 50 )
 size_flags_vertical = 3
+allow_reselect = true
 allow_rmb_select = true
 hide_root = true
 script = ExtResource( 3 )

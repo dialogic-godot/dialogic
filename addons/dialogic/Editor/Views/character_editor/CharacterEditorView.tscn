@@ -1,0 +1,247 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://addons/dialogic/assets/Themes/styleboxflat_title_header.tres" type="StyleBox" id=1]
+[ext_resource path="res://addons/dialogic/Editor/Views/character_editor/CharacterEditorView.gd" type="Script" id=2]
+[ext_resource path="res://addons/dialogic/Editor/Views/character_editor/alternativename_container.gd" type="Script" id=3]
+[ext_resource path="res://addons/dialogic/assets/Images/open-icon.svg" type="Texture" id=4]
+[ext_resource path="res://addons/dialogic/assets/Images/closed-icon.svg" type="Texture" id=5]
+[ext_resource path="res://addons/dialogic/Editor/Views/character_editor/Description.gd" type="Script" id=6]
+[ext_resource path="res://addons/dialogic/Editor/Views/character_editor/Title.gd" type="Script" id=7]
+
+[node name="CharacterEditorView" type="VBoxContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+Name_path = NodePath("HBoxContainer/PanelContainer/MarginContainer/Editor/Title/Label")
+DisplayName_path = NodePath("HBoxContainer/PanelContainer/MarginContainer/Editor/Properties/DisplayName/VBoxContainer/DisplayNameContainer/LineEdit")
+DisplayNameBool_path = NodePath("HBoxContainer/PanelContainer/MarginContainer/Editor/Properties/DisplayName/VBoxContainer/AlternativeNameSelector/CheckButton")
+DefaultSpeaker_path = NodePath("HBoxContainer/PanelContainer/MarginContainer/Editor/Properties/PanelContainer/HBoxContainer/DefaultspeakerBoolButton")
+Description_path = NodePath("HBoxContainer/PanelContainer/MarginContainer/Editor/Properties/Description/VBoxContainer/MarginContainer/TextEdit")
+
+[node name="Title" type="PanelContainer" parent="."]
+margin_right = 1024.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 0, 32 )
+custom_styles/panel = ExtResource( 1 )
+
+[node name="Label" type="Label" parent="Title"]
+margin_left = 461.0
+margin_top = 9.0
+margin_right = 562.0
+margin_bottom = 23.0
+size_flags_horizontal = 4
+text = "Character Editor"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+margin_top = 36.0
+margin_right = 1024.0
+margin_bottom = 600.0
+size_flags_vertical = 3
+
+[node name="PanelContainer" type="PanelContainer" parent="HBoxContainer"]
+margin_right = 510.0
+margin_bottom = 296.0
+size_flags_horizontal = 3
+size_flags_vertical = 0
+
+[node name="MarginContainer" type="MarginContainer" parent="HBoxContainer/PanelContainer"]
+margin_left = 7.0
+margin_top = 7.0
+margin_right = 503.0
+margin_bottom = 289.0
+
+[node name="Editor" type="VBoxContainer" parent="HBoxContainer/PanelContainer/MarginContainer"]
+margin_right = 496.0
+margin_bottom = 282.0
+
+[node name="Title" type="PanelContainer" parent="HBoxContainer/PanelContainer/MarginContainer/Editor"]
+margin_right = 496.0
+margin_bottom = 18.0
+custom_styles/panel = ExtResource( 1 )
+script = ExtResource( 7 )
+Properties_path = NodePath("../Properties")
+
+[node name="Label" type="Label" parent="HBoxContainer/PanelContainer/MarginContainer/Editor/Title"]
+margin_left = 197.0
+margin_top = 2.0
+margin_right = 299.0
+margin_bottom = 16.0
+size_flags_horizontal = 6
+text = "Character Name"
+
+[node name="ColorRect" type="ColorRect" parent="HBoxContainer/PanelContainer/MarginContainer/Editor/Title"]
+margin_left = 480.0
+margin_top = 2.0
+margin_right = 494.0
+margin_bottom = 16.0
+rect_min_size = Vector2( 14, 14 )
+size_flags_horizontal = 10
+size_flags_vertical = 4
+
+[node name="Properties" type="VBoxContainer" parent="HBoxContainer/PanelContainer/MarginContainer/Editor"]
+margin_top = 22.0
+margin_right = 496.0
+margin_bottom = 282.0
+
+[node name="PanelContainer" type="PanelContainer" parent="HBoxContainer/PanelContainer/MarginContainer/Editor/Properties"]
+margin_right = 496.0
+margin_bottom = 54.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/PanelContainer/MarginContainer/Editor/Properties/PanelContainer"]
+margin_left = 7.0
+margin_top = 7.0
+margin_right = 489.0
+margin_bottom = 47.0
+
+[node name="Label" type="Label" parent="HBoxContainer/PanelContainer/MarginContainer/Editor/Properties/PanelContainer/HBoxContainer"]
+margin_top = 13.0
+margin_right = 120.0
+margin_bottom = 27.0
+text = "Is default speaker?"
+
+[node name="DefaultspeakerBoolButton" type="CheckButton" parent="HBoxContainer/PanelContainer/MarginContainer/Editor/Properties/PanelContainer/HBoxContainer"]
+margin_left = 124.0
+margin_right = 200.0
+margin_bottom = 40.0
+
+[node name="Color" type="PanelContainer" parent="HBoxContainer/PanelContainer/MarginContainer/Editor/Properties/PanelContainer/HBoxContainer"]
+margin_left = 379.0
+margin_right = 482.0
+margin_bottom = 40.0
+size_flags_horizontal = 10
+
+[node name="Label3" type="Label" parent="HBoxContainer/PanelContainer/MarginContainer/Editor/Properties/PanelContainer/HBoxContainer/Color"]
+margin_left = 7.0
+margin_top = 13.0
+margin_right = 96.0
+margin_bottom = 27.0
+text = "Color Selector"
+
+[node name="DisplayName" type="PanelContainer" parent="HBoxContainer/PanelContainer/MarginContainer/Editor/Properties"]
+margin_top = 58.0
+margin_right = 496.0
+margin_bottom = 112.0
+script = ExtResource( 3 )
+AltNameBool_path = NodePath("../../Properties/DisplayName/VBoxContainer/AlternativeNameSelector/CheckButton")
+AltNameContainer_path = NodePath("../../Properties/DisplayName/VBoxContainer/DisplayNameContainer")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/PanelContainer/MarginContainer/Editor/Properties/DisplayName"]
+margin_left = 7.0
+margin_top = 7.0
+margin_right = 489.0
+margin_bottom = 47.0
+
+[node name="AlternativeNameSelector" type="HBoxContainer" parent="HBoxContainer/PanelContainer/MarginContainer/Editor/Properties/DisplayName/VBoxContainer"]
+margin_right = 482.0
+margin_bottom = 40.0
+
+[node name="Label" type="Label" parent="HBoxContainer/PanelContainer/MarginContainer/Editor/Properties/DisplayName/VBoxContainer/AlternativeNameSelector"]
+margin_top = 13.0
+margin_right = 143.0
+margin_bottom = 27.0
+text = "Use alternative name?"
+
+[node name="CheckButton" type="CheckButton" parent="HBoxContainer/PanelContainer/MarginContainer/Editor/Properties/DisplayName/VBoxContainer/AlternativeNameSelector"]
+margin_left = 147.0
+margin_right = 223.0
+margin_bottom = 40.0
+
+[node name="DisplayNameContainer" type="HBoxContainer" parent="HBoxContainer/PanelContainer/MarginContainer/Editor/Properties/DisplayName/VBoxContainer"]
+visible = false
+margin_top = 44.0
+margin_right = 478.0
+margin_bottom = 68.0
+size_flags_horizontal = 3
+
+[node name="Label2" type="Label" parent="HBoxContainer/PanelContainer/MarginContainer/Editor/Properties/DisplayName/VBoxContainer/DisplayNameContainer"]
+margin_top = 5.0
+margin_right = 89.0
+margin_bottom = 19.0
+text = "Display Name"
+
+[node name="LineEdit" type="LineEdit" parent="HBoxContainer/PanelContainer/MarginContainer/Editor/Properties/DisplayName/VBoxContainer/DisplayNameContainer"]
+margin_left = 93.0
+margin_right = 478.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+max_length = 32
+clear_button_enabled = true
+
+[node name="Portraits" type="PanelContainer" parent="HBoxContainer/PanelContainer/MarginContainer/Editor/Properties"]
+margin_top = 116.0
+margin_right = 496.0
+margin_bottom = 144.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/PanelContainer/MarginContainer/Editor/Properties/Portraits"]
+margin_left = 7.0
+margin_top = 7.0
+margin_right = 489.0
+margin_bottom = 21.0
+
+[node name="Label4" type="Label" parent="HBoxContainer/PanelContainer/MarginContainer/Editor/Properties/Portraits/VBoxContainer"]
+margin_right = 482.0
+margin_bottom = 14.0
+text = "Portraits"
+
+[node name="Description" type="PanelContainer" parent="HBoxContainer/PanelContainer/MarginContainer/Editor/Properties"]
+margin_top = 148.0
+margin_right = 496.0
+margin_bottom = 260.0
+script = ExtResource( 6 )
+HideButton_path = NodePath("VBoxContainer/HBoxContainer/CheckBox")
+DescriptionContainer_path = NodePath("VBoxContainer/MarginContainer")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/PanelContainer/MarginContainer/Editor/Properties/Description"]
+margin_left = 7.0
+margin_top = 7.0
+margin_right = 489.0
+margin_bottom = 105.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/PanelContainer/MarginContainer/Editor/Properties/Description/VBoxContainer"]
+margin_right = 482.0
+margin_bottom = 30.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="HBoxContainer/PanelContainer/MarginContainer/Editor/Properties/Description/VBoxContainer/HBoxContainer"]
+margin_top = 8.0
+margin_right = 74.0
+margin_bottom = 22.0
+text = "Description"
+
+[node name="CheckBox" type="CheckBox" parent="HBoxContainer/PanelContainer/MarginContainer/Editor/Properties/Description/VBoxContainer/HBoxContainer"]
+margin_left = 452.0
+margin_right = 482.0
+margin_bottom = 30.0
+size_flags_horizontal = 10
+custom_icons/checked = ExtResource( 4 )
+custom_icons/unchecked = ExtResource( 5 )
+
+[node name="MarginContainer" type="MarginContainer" parent="HBoxContainer/PanelContainer/MarginContainer/Editor/Properties/Description/VBoxContainer"]
+margin_top = 34.0
+margin_right = 482.0
+margin_bottom = 98.0
+
+[node name="TextEdit" type="TextEdit" parent="HBoxContainer/PanelContainer/MarginContainer/Editor/Properties/Description/VBoxContainer/MarginContainer"]
+margin_right = 482.0
+margin_bottom = 64.0
+rect_min_size = Vector2( 0, 64 )
+wrap_enabled = true
+
+[node name="Control" type="Control" parent="HBoxContainer"]
+margin_left = 514.0
+margin_right = 1024.0
+margin_bottom = 564.0
+size_flags_horizontal = 3
+[connection signal="toggled" from="HBoxContainer/PanelContainer/MarginContainer/Editor/Properties/PanelContainer/HBoxContainer/DefaultspeakerBoolButton" to="." method="_on_DefaultspeakerButton_toggled"]
+[connection signal="toggled" from="HBoxContainer/PanelContainer/MarginContainer/Editor/Properties/DisplayName/VBoxContainer/AlternativeNameSelector/CheckButton" to="HBoxContainer/PanelContainer/MarginContainer/Editor/Properties/DisplayName" method="_on_CheckButton_toggled"]
+[connection signal="toggled" from="HBoxContainer/PanelContainer/MarginContainer/Editor/Properties/DisplayName/VBoxContainer/AlternativeNameSelector/CheckButton" to="." method="_on_DisplayNameBool_toggled"]
+[connection signal="text_changed" from="HBoxContainer/PanelContainer/MarginContainer/Editor/Properties/DisplayName/VBoxContainer/DisplayNameContainer/LineEdit" to="." method="_on_DisplayName_text_changed"]
+[connection signal="toggled" from="HBoxContainer/PanelContainer/MarginContainer/Editor/Properties/Description/VBoxContainer/HBoxContainer/CheckBox" to="HBoxContainer/PanelContainer/MarginContainer/Editor/Properties/Description" method="_on_CheckBox_toggled"]
+[connection signal="text_changed" from="HBoxContainer/PanelContainer/MarginContainer/Editor/Properties/Description/VBoxContainer/MarginContainer/TextEdit" to="." method="_on_Description_text_changed"]

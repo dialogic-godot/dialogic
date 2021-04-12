@@ -137,3 +137,13 @@ func _on_TimelinesContainer_tree_item_selected(tree_item:TreeItem) -> void:
 		self._current_view = {"state":EditorView.TIMELINE, "reference":timeline_view_node}
 	else:
 		self._current_view = {}
+
+
+func _on_CharactersContainer_tree_item_selected(tree_item) -> void:
+	var _res = tree_item.get_metadata(0)
+	character_view_node.base_resource = _res
+	if _res:
+		DialogicUtil.Logger.print(self,["Using character:", _res.resource_path])
+		self._current_view = {"state": EditorView.CHARACTER, "reference":character_view_node}
+	else:
+		self._current_view = {}
