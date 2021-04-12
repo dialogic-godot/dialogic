@@ -47,9 +47,7 @@ func init(expression: String = '', position_offset = 'left') -> void:
 	if character_data["data"].has('mirror_portraits'):
 		if character_data["data"]['mirror_portraits']:
 			if direction in position_to_mirror:
-				$TextureRect.rect_pivot_offset.x = int($TextureRect.rect_size.x / 2)
-				$TextureRect.rect_scale.x = -1
-	
+				$TextureRect.flip_h = true
 
 func _ready():
 	if debug:
@@ -67,7 +65,7 @@ func set_portrait(expression: String) -> void:
 				$TextureRect.texture = load(p['path'])
 			else:
 				$TextureRect.texture = Texture.new()
-
+	
 
 # Tween stuff
 func fade_in(node = self, time = 0.5):
