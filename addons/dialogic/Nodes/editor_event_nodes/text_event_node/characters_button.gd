@@ -4,7 +4,7 @@ extends OptionButton
 const DialogicDB = preload("res://addons/dialogic/Core/DialogicDatabase.gd")
 const DialogicUtil = preload("res://addons/dialogic/Core/DialogicUtil.gd")
 
-const ICON_PATH = "res://addons/dialogic/assets/Images/character-tab.svg"
+const ICON_PATH = "res://addons/dialogic/assets/Images/Event Icons/character.svg"
 
 var _char_db = null
 

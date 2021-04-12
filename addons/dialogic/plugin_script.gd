@@ -21,6 +21,12 @@ func _enter_tree() -> void:
 	make_visible(false)
 
 
+func _ready() -> void:
+	if Engine.editor_hint:
+		# Force Godot to show the dialogic folder
+		get_editor_interface().get_resource_filesystem().scan()
+
+
 func _exit_tree() -> void:
 	if _editor_view:
 		_editor_view.queue_free()
@@ -30,8 +36,18 @@ func _exit_tree() -> void:
 func has_main_screen() -> bool:
 	return true
 
+
 func get_plugin_name() -> String:
 	return "Dialogic"
+
+
+# Copied
+func get_plugin_icon():
+	# https://github.com/godotengine/godot-proposals/issues/572
+	if get_editor_interface().get_editor_settings().get_setting("interface/theme/base_color").v > 0.5:
+		return load(DialogicResources.ICON_PATH_LIGHT)
+	return load(DialogicResources.ICON_PATH_DARK)
+
 
 func make_visible(visible: bool) -> void:
 	if _editor_view:

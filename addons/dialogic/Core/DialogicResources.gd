@@ -10,6 +10,9 @@ const RESOURCES_DIR = "res://dialogic_files/"
 const TIMELINES_DIR = RESOURCES_DIR+"timelines/"
 const CHARACTERS_DIR = RESOURCES_DIR+"characters/"
 
+const ICON_PATH_DARK = "res://addons/dialogic/assets/Images/Plugin/plugin-editor-icon-dark-theme.svg"
+const ICON_PATH_LIGHT = "res://addons/dialogic/assets/Images/Plugin/plugin-editor-icon-light-theme.svg"
+
 # This method should call a recursive one.
 # But not for now
 static func verify_resource_directories() -> void:

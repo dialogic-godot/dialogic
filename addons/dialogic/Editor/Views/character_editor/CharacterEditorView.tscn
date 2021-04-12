@@ -3,11 +3,13 @@
 [ext_resource path="res://addons/dialogic/assets/Themes/styleboxflat_title_header.tres" type="StyleBox" id=1]
 [ext_resource path="res://addons/dialogic/Editor/Views/character_editor/CharacterEditorView.gd" type="Script" id=2]
 [ext_resource path="res://addons/dialogic/Editor/Views/character_editor/alternativename_container.gd" type="Script" id=3]
-[ext_resource path="res://addons/dialogic/assets/Images/open-icon.svg" type="Texture" id=4]
-[ext_resource path="res://addons/dialogic/assets/Images/closed-icon.svg" type="Texture" id=5]
+[ext_resource path="res://addons/dialogic/assets/Images/Pieces/open-icon.svg" type="Texture" id=4]
+[ext_resource path="res://addons/dialogic/assets/Images/Pieces/closed-icon.svg" type="Texture" id=5]
 [ext_resource path="res://addons/dialogic/Editor/Views/character_editor/hide_category_container.gd" type="Script" id=6]
 [ext_resource path="res://addons/dialogic/Editor/Views/character_editor/Title.gd" type="Script" id=7]
 [ext_resource path="res://addons/dialogic/Editor/Views/character_editor/portrait_container/portrait_container.tscn" type="PackedScene" id=8]
+
+
 
 [node name="CharacterEditorView" type="VBoxContainer"]
 anchor_right = 1.0

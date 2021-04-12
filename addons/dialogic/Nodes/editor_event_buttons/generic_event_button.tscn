@@ -1,13 +1,13 @@
 [gd_scene load_steps=5 format=2]
 
-[ext_resource path="res://addons/dialogic/assets/Images/warning.svg" type="Texture" id=1]
-[ext_resource path="res://addons/dialogic/Editor/Views/timeline_editor/events_container/event_button/generic_event_button.gd" type="Script" id=2]
+[ext_resource path="res://addons/dialogic/assets/Images/Event Icons/warning.svg" type="Texture" id=1]
+[ext_resource path="res://addons/dialogic/Nodes/editor_event_buttons/generic_event_button.gd" type="Script" id=2]
 
 [sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 0.698039, 0.298039, 0.298039, 1 )
 
 [sub_resource type="StyleBoxFlat" id=2]
-resource_local_to_scene = true
+bg_color = Color( 0.243137, 0.243137, 0.243137, 1 )
 
 [node name="GenericEventButton" type="Button"]
 margin_right = 24.0

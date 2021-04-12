@@ -1,0 +1,52 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://addons/dialogic/Nodes/editor_event_nodes/event_node_template.tscn" type="PackedScene" id=1]
+[ext_resource path="res://addons/dialogic/assets/Images/Event Icons/Main Icons/wait-seconds.svg" type="Texture" id=2]
+[ext_resource path="res://addons/dialogic/Nodes/editor_event_nodes/wait_time_event_node/wait_time_event_node.gd" type="Script" id=3]
+
+[node name="WaitTimeEvent" instance=ExtResource( 1 )]
+margin_bottom = -514.0
+script = ExtResource( 3 )
+TimeLine_path = NodePath("VBoxContainer/Top/HBoxContainer/LineEdit")
+
+[node name="VBoxContainer" parent="." index="0"]
+margin_bottom = 79.0
+
+[node name="Icon" parent="VBoxContainer/Top/HBoxContainer" index="0"]
+texture = ExtResource( 2 )
+
+[node name="Label" type="Label" parent="VBoxContainer/Top/HBoxContainer" index="2"]
+margin_left = 34.0
+margin_top = 8.0
+margin_right = 63.0
+margin_bottom = 22.0
+text = "Wait"
+
+[node name="LineEdit" type="LineEdit" parent="VBoxContainer/Top/HBoxContainer" index="3"]
+margin_left = 67.0
+margin_right = 125.0
+margin_bottom = 30.0
+max_length = 4
+clear_button_enabled = true
+selecting_enabled = false
+
+[node name="Label2" type="Label" parent="VBoxContainer/Top/HBoxContainer" index="4"]
+margin_left = 129.0
+margin_top = 8.0
+margin_right = 182.0
+margin_bottom = 22.0
+text = "seconds"
+
+[node name="FoldButton" parent="VBoxContainer/Top/HBoxContainer" index="5"]
+margin_left = 186.0
+margin_right = 220.0
+
+[node name="Center" parent="VBoxContainer" index="1"]
+visible = false
+
+[node name="Bottom" parent="VBoxContainer" index="2"]
+margin_top = 44.0
+margin_bottom = 72.0
+[connection signal="focus_exited" from="VBoxContainer/Top/HBoxContainer/LineEdit" to="." method="_on_LineEdit_focus_exited"]
+[connection signal="text_changed" from="VBoxContainer/Top/HBoxContainer/LineEdit" to="." method="_on_LineEdit_text_changed"]
+[connection signal="text_entered" from="VBoxContainer/Top/HBoxContainer/LineEdit" to="." method="_on_LineEdit_text_entered"]

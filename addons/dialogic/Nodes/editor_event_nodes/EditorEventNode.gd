@@ -42,11 +42,19 @@ func _set_idx(value):
 		index_label_node.text = str(value)
 
 
+func _update_node_values() -> void:
+	# If you can see this, you didn't override this method
+	assert(false)
+
+func _save_resource() -> void:
+	emit_signal("save_item_requested", base_resource)
+
+
 func _on_resource_change() -> void:
-	pass
+	_update_node_values()
+
 
 func _on_MenuButtonPopup_id_pressed(id:int) -> void:
-	print_debug("Button ID pressed", id)
 	if id == 0:
 		emit_signal("delelete_item_requested", base_resource)
 
