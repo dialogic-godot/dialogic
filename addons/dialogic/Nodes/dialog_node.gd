@@ -398,6 +398,10 @@ func event_handler(event: Dictionary):
 			waiting_for_answer = true
 			if event.has('name'):
 				update_name(event['name'])
+			elif event.has('character'):
+				var character_data = get_character(event['character'])
+				update_name(character_data)
+				grab_portrait_focus(character_data, event)
 			update_text(event['question'])
 			if event.has('options'):
 				for o in event['options']:
