@@ -88,10 +88,18 @@ func fade_out(node = self, time = 0.5):
 
 func focus():
 	tween_modulate(modulate, Color(1,1,1,1))
+	var _parent = get_parent()
+	if _parent:
+		# Make sure that this portrait is the last to be _draw -ed
+		_parent.move_child(self, _parent.get_child_count())
 
 
 func focusout():
 	tween_modulate(modulate, Color(0.5,0.5,0.5,1))
+	var _parent = get_parent()
+	if _parent:
+		# Render this portrait first
+		_parent.move_child(self, 0)
 
 
 func tween_modulate(from_value, to_value, time = 0.5):

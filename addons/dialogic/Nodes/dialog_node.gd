@@ -5,17 +5,16 @@ var last_mouse_mode = null
 var input_next: String = 'ui_accept'
 var dialog_index: int = 0
 var finished: bool = false
-var text_speed = 0.02 # Higher = lower speed
 var waiting_for_answer: bool = false
 var waiting_for_input: bool = false
-var waiting = false
-var preview = false
-var definitions = {}
-var definition_visible = false
+var waiting: bool = false
+var preview: bool = false
+var definitions: Dictionary = {}
+var definition_visible: bool = false
 
-var settings
-var current_theme
-var current_timeline := ''
+var settings: ConfigFile
+var current_theme: ConfigFile
+var current_timeline: String = ''
 
 ## The timeline to load when starting the scene
 export(String, "TimelineDropdown") var timeline: String
@@ -33,10 +32,9 @@ var characters
 
 onready var ChoiceButton = load("res://addons/dialogic/Nodes/ChoiceButton.tscn")
 onready var Portrait = load("res://addons/dialogic/Nodes/Portrait.tscn")
-var dialog_script = {}
+var dialog_script: Dictionary = {}
 var questions #for keeping track of the questions answered
 
-onready var tween_node = $TextBubble/Tween
 
 func _ready():
 	# Loading the config files
@@ -56,17 +54,16 @@ func _ready():
 	resize_main()
 
 	# Setting everything up for the node to be default
-	$TextBubble/NameLabel.text = ''
-	$Background.visible = false
-	$TextBubble/RichTextLabel.meta_underlined = false
 	$DefinitionInfo.visible = false
-	
-	tween_node.connect("tween_completed", self, '_on_Tween_tween_completed')
+	$TextBubble.connect("text_completed", self, "_on_text_completed")
 
 	# Getting the character information
 	characters = DialogicUtil.get_character_list()
 
-	if not Engine.is_editor_hint():
+	if Engine.is_editor_hint():
+		if preview:
+			load_dialog()
+	else:
 		load_dialog()
 
 
@@ -229,10 +226,6 @@ func parse_branches(dialog_script: Dictionary) -> Dictionary:
 
 
 func parse_definitions(text: String, variables: bool = true, glossary: bool = true):
-	if Engine.is_editor_hint():
-		# Loading variables again to avoid issues in the preview dialog
-		load_config_files()
-
 	var final_text: String = text
 	if variables:
 		final_text = _insert_variable_definitions(text)
@@ -268,12 +261,12 @@ func _process(delta):
 		if $Options.get_child_count() > 0:
 			$Options.get_child(0).grab_focus()
 
+
 func _input(event: InputEvent) -> void:
 	if not Engine.is_editor_hint() and event.is_action_pressed(input_next) and not waiting:
-		if tween_node.is_active():
+		if not $TextBubble.is_finished():
 			# Skip to end if key is pressed during the text animation
-			tween_node.seek(999)
-			finished = true
+			$TextBubble.skip()
 		else:
 			if waiting_for_answer == false and waiting_for_input == false:
 				load_dialog()
@@ -287,52 +280,30 @@ func show_dialog():
 	visible = true
 
 
-func _on_Tween_tween_completed(object, key):
-	finished = true
-
-
-func update_name(character, color: Color = Color.white) -> void:
+func update_name(character) -> void:
 	if character.has('name'):
 		var parsed_name = character['name']
+		var color = Color.white
 		if character.has('display_name'):
 			if character['display_name'] != '':
 				parsed_name = character['display_name']
 		if character.has('color'):
 			color = character['color']
 		parsed_name = parse_definitions(parsed_name, true, false)
-		$TextBubble/NameLabel.visible = true
-		# Hack to reset the size
-		$TextBubble/NameLabel.rect_min_size = Vector2(0, 0)
-		$TextBubble/NameLabel.rect_size = Vector2(-1, 40)
-		# Setting the color and text
-		$TextBubble/NameLabel.text = parsed_name
-		if current_theme.get_value('name', 'auto_color', true):
-			$TextBubble/NameLabel.set('custom_colors/font_color', color)
+		$TextBubble.update_name(parsed_name, color, current_theme.get_value('name', 'auto_color', true))
 	else:
-		$TextBubble/NameLabel.visible = false
+		$TextBubble.update_name('')
 
 
-func update_text(text):
-	# Updating the text and starting the animation from 0
-	text = parse_alignment(text)
-	$TextBubble/RichTextLabel.bbcode_text = parse_definitions(text)
-	$TextBubble/RichTextLabel.percent_visible = 0
-
-	# The call to this function needs to be deferred.
-	# More info: https://github.com/godotengine/godot/issues/36381
-	call_deferred("start_text_tween")
-	return true
+func update_text(text: String) -> String:
+	var final_text = parse_definitions(parse_alignment(text))
+	final_text = final_text.replace('[br]', '\n')
+	$TextBubble.update_text(final_text)
+	return final_text
 
 
-func start_text_tween():
-	# This will start the animation that makes the text appear letter by letter
-	var tween_duration = text_speed * $TextBubble/RichTextLabel.get_total_character_count()
-	tween_node.interpolate_property(
-		$TextBubble/RichTextLabel, "percent_visible", 0, 1, tween_duration,
-		Tween.TRANS_LINEAR, Tween.EASE_IN_OUT
-	)
-	tween_node.start()
-
+func _on_text_completed():
+	finished = true
 
 func on_timeline_start():
 	if not Engine.is_editor_hint():
@@ -387,7 +358,8 @@ func get_character(character_id):
 
 func event_handler(event: Dictionary):
 	# Handling an event and updating the available nodes accordingly.
-	reset_dialog_extras()
+	$TextBubble.reset()
+	reset_options()
 	
 	dprint('[D] Current Event: ', event)
 	match event:
@@ -422,15 +394,6 @@ func event_handler(event: Dictionary):
 						# If the option is for an answered question, skip to the end of it.
 						dialog_index = q['end_id']
 						load_dialog(true)
-		{'input', ..}:
-			emit_signal("event_start", "input", event)
-			show_dialog()
-			finished = false
-			waiting_for_input = true
-			update_text(event['input'])
-			$TextInputDialog.window_title = event['window_title']
-			$TextInputDialog.popup_centered()
-			$TextInputDialog.connect("confirmed", self, "_on_input_set", [event['variable']])
 		{'action', ..}:
 			emit_signal("event_start", "action", event)
 			if event['action'] == 'leaveall':
@@ -462,27 +425,48 @@ func event_handler(event: Dictionary):
 			get_tree().change_scene(event['scene'])
 		{'background'}:
 			emit_signal("event_start", "background", event)
-			$Background.visible = true
-			$Background.texture = null
-			if ($Background.get_child_count() > 0):
-				for c in $Background.get_children():
-					c.get_parent().remove_child(c)
-					c.queue_free()
-			if (event['background'].ends_with('.tscn')):
-				var bg_scene = load(event['background'])
-				if (bg_scene):
-					bg_scene = bg_scene.instance()
-					$Background.add_child(bg_scene)
-			elif (event['background'] != ''):
-				$Background.texture = load(event['background'])
+			var background = get_node_or_null('Background')
+			if event['background'] == '' and background != null:
+				background.queue_free()
+			else:
+				if background == null:
+					background = TextureRect.new()
+					background.expand = true
+					background.name = 'Background'
+					background.anchor_right = 1
+					background.anchor_bottom = 1
+					background.stretch_mode = TextureRect.STRETCH_SCALE
+					background.show_behind_parent = true
+					add_child(background)
+				background.texture = null
+				if (background.get_child_count() > 0):
+					for c in background.get_children():
+						c.get_parent().remove_child(c)
+						c.queue_free()
+				if (event['background'].ends_with('.tscn')):
+					var bg_scene = load(event['background'])
+					if (bg_scene):
+						bg_scene = bg_scene.instance()
+						background.add_child(bg_scene)
+				elif (event['background'] != ''):
+					background.texture = load(event['background'])
 			go_to_next_event()
 		{'audio'}, {'audio', 'file'}:
 			emit_signal("event_start", "audio", event)
 			if event['audio'] == 'play' and 'file' in event.keys() and not event['file'].empty():
-				$FX/AudioStreamPlayer.stream = load(event['file'])
-				$FX/AudioStreamPlayer.play()
+				var audio = get_node_or_null('AudioEvent')
+				if audio == null:
+					audio = AudioStreamPlayer.new()
+					audio.name = 'AudioEvent'
+					add_child(audio)
+				audio.stream = load(event['file'])
+				audio.play()
+				print('play')
 			else:
-				$FX/AudioStreamPlayer.stop()
+				var audio = get_node_or_null('AudioEvent')
+				if audio != null:
+					audio.stop()
+					audio.queue_free()
 			go_to_next_event()
 		{'background-music'}, {'background-music', 'file'}:
 			emit_signal("event_start", "background-music", event)
@@ -573,20 +557,6 @@ func event_handler(event: Dictionary):
 	
 	$Options.visible = waiting_for_answer
 
-func _on_input_set(variable):
-	var input_value = $TextInputDialog/LineEdit.text
-	if input_value == '':
-		$TextInputDialog.popup_centered()
-	else:
-		dialog_resource.custom_variables[variable] = input_value
-		waiting_for_input = false
-		$TextInputDialog/LineEdit.text = ''
-		$TextInputDialog.disconnect("confirmed", self, '_on_input_set')
-		$TextInputDialog.visible = false
-		load_dialog()
-		dprint('[!] Input selected: ', input_value)
-		dprint('[!] dialog variables: ', dialog_resource.custom_variables)
-
 
 func reset_options():
 	# Clearing out the options after one was selected.
@@ -674,10 +644,6 @@ func _on_option_selected(option, variable, value):
 	dprint('[!] Option selected: ', option.text, ' value= ' , value)
 
 
-func _on_TextInputDialog_confirmed():
-	pass # Replace with function body.
-
-
 func go_to_next_event():
 	# The entire event reading system should be refactored... but not today!
 	dialog_index += 1
@@ -732,51 +698,6 @@ func load_theme(filename):
 	# Box size
 	call_deferred('deferred_resize', $TextBubble.rect_size, theme.get_value('box', 'size', Vector2(910, 167)))
 
-	# Text
-	var theme_font = DialogicUtil.path_fixer_load(theme.get_value('text', 'font', 'res://addons/dialogic/Example Assets/Fonts/DefaultFont.tres'))
-	$TextBubble/RichTextLabel.set('custom_fonts/normal_font', theme_font)
-	$TextBubble/NameLabel.set('custom_fonts/font', theme_font)
-
-	var text_color = Color(theme.get_value('text', 'color', '#ffffffff'))
-	$TextBubble/RichTextLabel.set('custom_colors/default_color', text_color)
-	$TextBubble/NameLabel.set('custom_colors/font_color', text_color)
-
-	$TextBubble/RichTextLabel.set('custom_colors/font_color_shadow', Color('#00ffffff'))
-	$TextBubble/NameLabel.set('custom_colors/font_color_shadow', Color('#00ffffff'))
-
-	if theme.get_value('text', 'shadow', false):
-		var text_shadow_color = Color(theme.get_value('text', 'shadow_color', '#9e000000'))
-		$TextBubble/RichTextLabel.set('custom_colors/font_color_shadow', text_shadow_color)
-
-	var shadow_offset = theme.get_value('text', 'shadow_offset', Vector2(2,2))
-	$TextBubble/RichTextLabel.set('custom_constants/shadow_offset_x', shadow_offset.x)
-	$TextBubble/RichTextLabel.set('custom_constants/shadow_offset_y', shadow_offset.y)
-	
-
-	# Text speed
-	text_speed = theme.get_value('text','speed', 2) * 0.01
-
-	# Margin
-	var text_margin = theme.get_value('text', 'margin', Vector2(20, 10))
-	$TextBubble/RichTextLabel.set('margin_left', text_margin.x)
-	$TextBubble/RichTextLabel.set('margin_right', text_margin.x * -1)
-	$TextBubble/RichTextLabel.set('margin_top', text_margin.y)
-	$TextBubble/RichTextLabel.set('margin_bottom', text_margin.y * -1)
-
-	# Backgrounds
-	$TextBubble/TextureRect.texture = DialogicUtil.path_fixer_load(theme.get_value('background','image', "res://addons/dialogic/Example Assets/backgrounds/background-2.png"))
-	$TextBubble/ColorRect.color = Color(theme.get_value('background','color', "#ff000000"))
-
-	if theme.get_value('background', 'modulation', false) == true:
-		$TextBubble/TextureRect.modulate = Color(theme.get_value('background', 'modulation_color', '#ffffffff'))
-	else:
-		$TextBubble/TextureRect.modulate = Color('#ffffffff')
-
-	$TextBubble/ColorRect.visible = theme.get_value('background', 'use_color', false)
-	$TextBubble/TextureRect.visible = theme.get_value('background', 'use_image', true)
-
-	# Next image
-	$TextBubble/NextIndicator.texture = DialogicUtil.path_fixer_load(theme.get_value('next_indicator', 'image', 'res://addons/dialogic/Example Assets/next-indicator/next-indicator.png'))
 	input_next = theme.get_value('settings', 'action_key', 'ui_accept')
 
 	# Definitions
@@ -785,27 +706,7 @@ func load_theme(filename):
 	$DefinitionInfo/VBoxContainer/Content.set('custom_fonts/normal_font', definitions_font)
 	$DefinitionInfo/VBoxContainer/Extra.set('custom_fonts/normal_font', definitions_font)
 	
-	# Character Name
-	$TextBubble/NameLabel/ColorRect.visible = theme.get_value('name', 'background_visible', false)
-	$TextBubble/NameLabel/ColorRect.color = Color(theme.get_value('name', 'background', '#282828'))
-	$TextBubble/NameLabel/TextureRect.visible = theme.get_value('name', 'image_visible', false)
-	$TextBubble/NameLabel/TextureRect.texture = DialogicUtil.path_fixer_load(theme.get_value('name','image', "res://addons/dialogic/Example Assets/backgrounds/background-2.png"))
-	var name_shadow_offset = theme.get_value('name', 'shadow_offset', Vector2(2,2))
-	if theme.get_value('name', 'shadow_visible', true):
-		$TextBubble/NameLabel.set('custom_colors/font_color_shadow', Color(theme.get_value('name', 'shadow', '#9e000000')))
-		$TextBubble/NameLabel.set('custom_constants/shadow_offset_x', name_shadow_offset.x)
-		$TextBubble/NameLabel.set('custom_constants/shadow_offset_y', name_shadow_offset.y)
-	$TextBubble/NameLabel.rect_position.y = theme.get_value('name', 'bottom_gap', 48) * -1
-	if theme.get_value('name', 'modulation', false) == true:
-		$TextBubble/NameLabel/TextureRect.modulate = Color(theme.get_value('name', 'modulation_color', '#ffffffff'))
-	else:
-		$TextBubble/NameLabel/TextureRect.modulate = Color('#ffffffff')
-	
-	# Setting next indicator animation
-	$TextBubble/NextIndicator.self_modulate = Color('#ffffff')
-	$TextBubble/NextIndicator/AnimationPlayer.play(
-		theme.get_value('next_indicator', 'animation', 'Up and down')
-	)
+	$TextBubble.load_theme(theme)
 	
 	return theme
 
@@ -843,7 +744,11 @@ func _on_Definition_Timer_timeout():
 
 
 func wait_seconds(seconds):
-	$WaitSeconds.start(seconds)
+	var timer = Timer.new()
+	timer.name = 'WaitSeconds'
+	add_child(timer)
+	timer.connect("timeout", self, '_on_WaitSeconds_timeout')
+	timer.start(seconds)
 	$TextBubble.visible = false
 
 
@@ -851,6 +756,7 @@ func _on_WaitSeconds_timeout():
 	emit_signal("event_end", "wait")
 	waiting = false
 	$WaitSeconds.stop()
+	$WaitSeconds.queue_free()
 	$TextBubble.visible = true
 	load_dialog()
 
@@ -892,8 +798,10 @@ func _compare_definitions(def_value: String, event_value: String, condition: Str
 
 
 func characters_leave_all():
-	for p in $Portraits.get_children():
-		p.fade_out()
+	var portraits = get_node_or_null('Portraits')
+	if portraits != null:
+		for p in portraits.get_children():
+			p.fade_out()
 
 
 func close_dialog_event():

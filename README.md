@@ -32,6 +32,7 @@ v1.1 - WIP
   - You can un select a selected event by clicking it [[ellogwen](https://github.com/ellogwen)]
   - The `Scene Event` can now take other Scenes (`.tscn`) files as backgrounds. [[ellogwen](https://github.com/ellogwen)]
   - The `If Condition` event can now use definition variables as values to compare against. [[ellogwen](https://github.com/ellogwen)]
+  - Added very basic syntax highlighting to the `Text Event` editor.
   - Fixed an indenting bug when removing events 
   - Shortcuts added! [[ellogwen](https://github.com/ellogwen)]
     - Selecting previous and next event in the timeline with `CTRL + UP` and `CTRL + DOWN`
@@ -50,8 +51,11 @@ v1.1 - WIP
   - Fixed a bug with the "auto color" option in game
 - Dialog node
   - Fixed a bug where Glossary Definitions plain text was being added to the name label.
+  - You can now use [br] to insert line breaks.
   - Questions now properly show the theme text alignment.
   - The close dialog now performs a fade-out animation.
+  - Fixed an issue when trying to display small sprites as characters portraits.
+  - Fixed a bug where portraits didn't come to the front when being focused [[AnidemDex](https://github.com/AnidemDex)]
 - Settings
   - Added a new option to toggle the character "focus"/"dim" while speaking. 
 - Added a button in timeline inspector plugin to open the selected timeline in the editor. [[ellogwen](https://github.com/ellogwen)]

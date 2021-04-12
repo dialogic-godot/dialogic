@@ -15,7 +15,7 @@ onready var settings_editor = $MainPanel/SettingsEditor
 
 
 func _ready():
-	# Adding file dialog to get used by pieces
+	# Adding file dialog to get used by Events
 	editor_file_dialog = EditorFileDialog.new()
 	add_child(editor_file_dialog)
 

@@ -17,11 +17,10 @@ func disabled():
 	is_disabled = true
 
 
-func _on_VisibleToggle_toggled(button_pressed):
-	if is_disabled:
-		return
+func set_visible(visible: bool):
+	pressed = visible
 	var current_rect_size = current_piece.get("rect_size")
-	if button_pressed:
+	if visible:
 		current_piece.get_node("PanelContainer/VBoxContainer/Header/Preview").hide()
 		
 		var index = 0
@@ -42,3 +41,9 @@ func _on_VisibleToggle_toggled(button_pressed):
 				current_piece.get_node("PanelContainer/VBoxContainer/Header/Preview").text = current_piece.preview
 			current_piece.set("rect_size", Vector2(current_rect_size.x,0))
 	release_focus()
+
+
+func _on_VisibleToggle_toggled(button_pressed):
+	if is_disabled:
+		return
+	set_visible(button_pressed)

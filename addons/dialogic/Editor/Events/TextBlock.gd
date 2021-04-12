@@ -3,7 +3,7 @@ extends Control
 
 var text_height = 21
 var editor_reference
-var preview = ''
+var preview: String = ''
 onready var toggler = get_node("PanelContainer/VBoxContainer/Header/VisibleToggle")
 
 # This is the information of this event and it will get parsed and saved to the JSON file.
@@ -14,14 +14,17 @@ var event_data = {
 }
 
 onready var portrait_picker = $PanelContainer/VBoxContainer/Header/PortraitPicker
+onready var text_editor = $PanelContainer/VBoxContainer/TextEdit
 
 func _ready():
+	text_editor.syntax_highlighting = true
+	text_editor.add_color_region('[', ']', get_color("axis_z_color", "Editor"))
 	var _scale = get_constant("inspector_margin", "Editor")
 	_scale = _scale * 0.125
 	text_height = text_height * _scale
 	connect("gui_input", self, '_on_gui_input')
-	$PanelContainer/VBoxContainer/TextEdit.connect("focus_entered", self, "_on_TextEdit_focus_entered")
-	$PanelContainer/VBoxContainer/TextEdit.set("rect_min_size", Vector2(0, 80))
+	text_editor.connect("focus_entered", self, "_on_TextEdit_focus_entered")
+	text_editor.set("rect_min_size", Vector2(0, 80))
 	$PanelContainer/VBoxContainer/Header/CharacterPicker.connect('character_selected', self , '_on_character_selected')
 	portrait_picker.get_popup().connect("index_pressed", self, '_on_portrait_selected')
 
@@ -35,12 +38,12 @@ func _ready():
 				event_data['character'] = c['file']
 
 
-func _on_character_selected(data):
+func _on_character_selected(data) -> void:
 	event_data['character'] = data['file']
 	update_preview()
 
 
-func _on_portrait_selected(index):
+func _on_portrait_selected(index) -> void:
 	var text = portrait_picker.get_popup().get_item_text(index)
 	if text == "[Don't change]":
 		text = ''
@@ -49,28 +52,28 @@ func _on_portrait_selected(index):
 	update_preview()
 
 
-func _on_TextEdit_text_changed():
-	var text = $PanelContainer/VBoxContainer/TextEdit.text
+func _on_TextEdit_text_changed() -> void:
+	var text = text_editor.text
 	event_data['text'] = text
 	update_preview()
 
 
-func load_text(text):
+func load_text(text) -> void:
 	get_node("VBoxContainer/TextEdit").text = text
 	event_data['text'] = text
 	update_preview()
 
 
-func load_data(data):
+func load_data(data) -> void:
 	event_data = data
-	$PanelContainer/VBoxContainer/TextEdit.text = event_data['text']
+	text_editor.text = event_data['text']
 	update_preview()
 
 
 func update_preview() -> String:
 	portrait_picker.set_character(event_data['character'], event_data['portrait'])
-	var t = $PanelContainer/VBoxContainer/TextEdit.text
-	$PanelContainer/VBoxContainer/TextEdit.rect_min_size.y = text_height * (2 + t.count('\n'))
+	var t = text_editor.text
+	text_editor.rect_min_size.y = text_height * (2 + t.count('\n'))
 
 	for c in DialogicUtil.get_character_list():
 		if c['file'] == event_data['character']:
@@ -91,7 +94,7 @@ func update_preview() -> String:
 	return preview
 
 
-func _on_gui_input(event):
+func _on_gui_input(event) -> void:
 	if event is InputEventMouseButton and event.is_pressed() and event.doubleclick:
 		if event.button_index == 1:
 			if toggler.pressed:
@@ -100,7 +103,7 @@ func _on_gui_input(event):
 				toggler.pressed = true
 
 
-func _on_TextEdit_focus_entered():
+func _on_TextEdit_focus_entered() -> void:
 	# propagate to timeline to make this text event as active selected
 	# to help improve keyboard shortcut workflows
 	# only maybe only do this on left click since mouse wheel and
@@ -112,14 +115,12 @@ func _on_TextEdit_focus_entered():
 			# consider to make it "public" or add a public helper function
 			timeline_editor._clear_selection()
 			timeline_editor._select_item(self)
-		pass
 	
 	
-func _on_saver_timer_timeout():
+func _on_saver_timer_timeout() -> void:
 	update_preview()
 	
 	
 # gets called when the user selects this node in the timeline
-func on_timeline_selected():
-	$PanelContainer/VBoxContainer/TextEdit.grab_focus()
-	pass
+func on_timeline_selected() -> void:
+	text_editor.grab_focus()
