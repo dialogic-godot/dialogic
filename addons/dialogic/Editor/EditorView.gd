@@ -77,6 +77,10 @@ func _ready():
 	$CharacterPopupMenu.connect('id_pressed', self, '_on_CharacterPopupMenu_id_pressed')
 	$ThemePopupMenu.connect('id_pressed', self, '_on_ThemePopupMenu_id_pressed')
 	$DefinitionPopupMenu.connect('id_pressed', self, '_on_DefinitionPopupMenu_id_pressed')
+	$TimelineRootPopupMenu.connect('id_pressed', self, '_on_TimelineRootPopupMenu_id_pressed')
+	$CharacterRootPopupMenu.connect('id_pressed', self, '_on_CharacterRootPopupMenu_id_pressed')
+	$ThemeRootPopupMenu.connect('id_pressed', self, '_on_ThemeRootPopupMenu_id_pressed')
+	$DefinitionRootPopupMenu.connect('id_pressed', self, '_on_DefinitionRootPopupMenu_id_pressed')
 	
 	#Connecting confirmation menus
 	$RemoveTimelineConfirmation.connect('confirmed', self, '_on_RemoveTimelineConfirmation_confirmed')
@@ -144,6 +148,26 @@ func _on_DefinitionPopupMenu_id_pressed(id):
 	if id == 1:
 		$RemoveDefinitionConfirmation.popup_centered()
 
+
+# Timeline Root context menu
+func _on_TimelineRootPopupMenu_id_pressed(id):
+	if id == 0: # Add Timeline
+		$MainPanel/TimelineEditor.new_timeline()
+
+# Character Root context menu
+func _on_CharacterRootPopupMenu_id_pressed(id):
+	if id == 0: # Add Character
+		$MainPanel/CharacterEditor.new_character()
+
+# Theme Root context menu
+func _on_ThemeRootPopupMenu_id_pressed(id):
+	if id == 0: # Add Theme
+		$MainPanel/ThemeEditor.new_theme()
+
+# Definition Root context menu
+func _on_DefinitionRootPopupMenu_id_pressed(id):
+	if id == 0: # Add Definition
+		$MainPanel/DefinitionEditor.new_definition()
 
 func _on_RemoveDefinitionConfirmation_confirmed():
 	var target = $MainPanel/DefinitionEditor.current_definition['id']
