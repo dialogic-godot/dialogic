@@ -23,18 +23,23 @@ func _ready():
 	character_picker.set_allow_portrait_dont_change(false)
 
 
-func _on_character_change(character_data: Dictionary, portrait: String):
+func _on_character_change(character: Dictionary, portrait: String):
 	# Updating icon Color
-	current_color = Color(character_data['color'])
-	var c_c_ind = 0
-	for p in $PanelContainer/VBoxContainer/Header/PositionsContainer.get_children():
-		if event_data['position'][str(c_c_ind)]:
-			p.set('self_modulate', Color(character_data['color']))
-		else:
-			p.set('self_modulate', default_icon_color)
-		c_c_ind += 1
-	event_data['character'] = character_data['file']
-	event_data['portrait'] = portrait
+	if character.keys().size() > 0:
+		current_color = Color(character['color'])
+		var c_c_ind = 0
+		for p in $PanelContainer/VBoxContainer/Header/PositionsContainer.get_children():
+			if event_data['position'][str(c_c_ind)]:
+				p.set('self_modulate', Color(character['color']))
+			else:
+				p.set('self_modulate', default_icon_color)
+			c_c_ind += 1
+		event_data['character'] = character['file']
+		event_data['portrait'] = portrait
+	else:
+		event_data['character'] = ''
+		event_data['portrait'] = ''
+		clear_all_positions()
 
 
 func position_button_pressed(name):
@@ -67,9 +72,8 @@ func check_active_position(active_color = Color("#ffffff")):
 func load_data(data):
 	event_data = data
 	if data['character'] != '':
-		var character_data = DialogicResources.get_character_json(data['character'])
-		character_picker.set_data(character_picker, data['portrait'])
-		current_color = Color(character_data['color'])
+		character_picker.set_data(data['character'], data['portrait'])
+		current_color = character_picker.get_selected_character()['color']
 		check_active_position(current_color)
 	else:
 		check_active_position()
