@@ -322,17 +322,18 @@ func indent_events() -> void:
 		# in this list have an event_data property
 		if (not "event_data" in event):
 			continue
-			
-		if event.event_data.has('question') or event.event_data.has('condition'):
-			indent += 1
-			starter = true
-			question_index += 1
-			question_indent[question_index] = indent
+		
+		
 		if event.event_data.has('choice'):
 			if question_index > 0:
 				indent = question_indent[question_index] + 1
 				starter = true
-		if event.event_data.has('endbranch'):
+		elif event.event_data.has('question') or event.event_data.has('condition'):
+			indent += 1
+			starter = true
+			question_index += 1
+			question_indent[question_index] = indent
+		elif event.event_data.has('endbranch'):
 			if question_indent.has(question_index):
 				indent = question_indent[question_index]
 				indent -= 1
