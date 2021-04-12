@@ -29,7 +29,9 @@ func _on_DisplayEditorDebugButton_pressed(button_pressed: bool) -> void:
 
 func _on_ScanFoldersButton_pressed() -> void:
 	DialogicDB.Timelines.get_database().scan_timelines_folder()
+	DialogicDB.Characters.get_database().scan_characters_folder()
 
 
 func _on_DropDatabaseButton_pressed() -> void:
 	DialogicDB.Timelines.get_database().resources = null
+	DialogicDB.Characters.get_database().resources = null

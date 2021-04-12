@@ -45,6 +45,19 @@ class Characters extends _DB:
 			DialogicResources.CHARACTERDB_PATH,""
 		)
 		return _db
+	
+	static func add(name:String) -> void:
+		var file_name:String = "{name}.tres".format({"name":name})
+		var file_path:String = DialogicResources.CHARACTERS_DIR+file_name
+		var _n_char:DialogicCharacterResource = DialogicCharacterResource.new()
+		
+		_n_char.resource_name = name
+		_n_char.resource_path = file_path
+		_n_char.name = name
+		
+		var _err = ResourceSaver.save(file_path, _n_char)
+		assert(_err == OK)
+		get_database().add(_n_char)
 
 
 class Definitions extends _DB:

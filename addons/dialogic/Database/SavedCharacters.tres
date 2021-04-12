@@ -1,6 +1,6 @@
 [gd_resource type="Resource" load_steps=4 format=2]
 
-[ext_resource path="res://addons/dialogic/Resources/Database/DatabaseResource.gd" type="Script" id=1]
+[ext_resource path="res://addons/dialogic/Resources/Database/CharacterDatabaseResource.gd" type="Script" id=1]
 [ext_resource path="res://addons/dialogic/Other/resource_array.gd" type="Script" id=2]
 
 [sub_resource type="Resource" id=1]

@@ -112,6 +112,8 @@ func _on_NewTimelineButton_pressed() -> void:
 func _on_NewTimelinePopup_confirmed() -> void:
 	var _name = timeline_popup_node.text_node.text
 	DialogicDB.Timelines.add(_name)
+	self._current_view = {"state":EditorView.TIMELINE, "reference":timeline_view_node}
+	timeline_container_node.show_category()
 
 
 func _on_NewCharacterButton_pressed() -> void:
@@ -121,6 +123,10 @@ func _on_NewCharacterButton_pressed() -> void:
 
 func _on_NewCharacterPopup_confirmed() -> void:
 	DialogicUtil.Logger.print(self,["NewCharacter: ", character_popup_node.text_node.text])
+	var _name = character_popup_node.text_node.text
+	DialogicDB.Characters.add(_name)
+	self._current_view = {"state":EditorView.CHARACTER, "reference":character_view_node}
+	character_container_node.show_category()
 
 
 func _on_TimelinesContainer_tree_item_selected(tree_item:TreeItem) -> void:
