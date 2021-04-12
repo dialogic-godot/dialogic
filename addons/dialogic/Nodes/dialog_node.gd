@@ -56,6 +56,8 @@ func _ready():
 	# Setting everything up for the node to be default
 	$DefinitionInfo.visible = false
 	$TextBubble.connect("text_completed", self, "_on_text_completed")
+	$TextBubble/RichTextLabel.connect('meta_hover_started', self, '_on_RichTextLabel_meta_hover_started')
+	$TextBubble/RichTextLabel.connect('meta_hover_ended', self, '_on_RichTextLabel_meta_hover_ended')
 
 	# Getting the character information
 	characters = DialogicUtil.get_character_list()
@@ -741,7 +743,6 @@ func _on_RichTextLabel_meta_hover_started(meta):
 
 func _on_RichTextLabel_meta_hover_ended(meta):
 	# Adding a timer to avoid a graphical glitch
-
 	$DefinitionInfo/Timer.start(0.1)
 
 
