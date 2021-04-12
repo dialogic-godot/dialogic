@@ -76,12 +76,12 @@ static func get_definitions() -> Dictionary:
 ## Definitions are automatically saved on timeline start/end
 ## 
 ## @returns						Error status, OK if all went well
-func save_definitions():
+static func save_definitions():
 	return DialogicSingleton.save_definitions()
 
 
 ## Resets data to default values. This is the same as calling start with reset_saves to true
-func reset_saves():
+static func reset_saves():
 	DialogicSingleton.init(true)
 
 
