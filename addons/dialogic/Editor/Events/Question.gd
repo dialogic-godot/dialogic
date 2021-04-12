@@ -30,6 +30,11 @@ func _ready():
 
 func load_data(data):
 	event_data = data
+	if not event_data.has('character'):
+		event_data['character'] = ''
+	if not event_data.has('portrait'):
+		event_data['portrait'] = ''
+	
 	$PanelContainer/VBoxContainer/Header/LineEdit.text = event_data['question']
 	update_preview()
 
