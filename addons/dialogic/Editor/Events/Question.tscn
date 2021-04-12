@@ -1,11 +1,10 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://addons/dialogic/Images/Event Icons/Main Icons/question.svg" type="Texture" id=1]
 [ext_resource path="res://addons/dialogic/Editor/Events/Question.gd" type="Script" id=2]
 [ext_resource path="res://addons/dialogic/Editor/Events/Common/Spacer.tscn" type="PackedScene" id=3]
 [ext_resource path="res://addons/dialogic/Editor/Events/Common/PieceExtraSettings.tscn" type="PackedScene" id=4]
-[ext_resource path="res://addons/dialogic/Editor/Events/Common/CharacterPicker.tscn" type="PackedScene" id=5]
-[ext_resource path="res://addons/dialogic/Editor/Events/Common/PortraitPicker.tscn" type="PackedScene" id=6]
+[ext_resource path="res://addons/dialogic/Editor/Events/Common/Characters/CharacterAndPortraitPicker.tscn" type="PackedScene" id=5]
 
 [sub_resource type="StyleBoxFlat" id=1]
 content_margin_left = 16.0
@@ -78,13 +77,12 @@ margin_left = 26.0
 margin_right = 30.0
 margin_bottom = 28.0
 
-[node name="CharacterPicker" parent="PanelContainer/VBoxContainer/Header" instance=ExtResource( 5 )]
+[node name="CharacterAndPortraitPicker" parent="PanelContainer/VBoxContainer/Header" instance=ExtResource( 5 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
 margin_left = 34.0
 margin_right = 140.0
 margin_bottom = 28.0
-
-[node name="PortraitPicker" parent="PanelContainer/VBoxContainer/Header" instance=ExtResource( 6 )]
-visible = false
 
 [node name="VSeparator2" type="VSeparator" parent="PanelContainer/VBoxContainer/Header"]
 margin_left = 144.0

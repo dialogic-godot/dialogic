@@ -2,7 +2,7 @@ tool
 extends Control
 
 var editor_reference
-onready var portrait_picker = $PanelContainer/VBoxContainer/Header/PortraitPicker
+onready var character_picker = $PanelContainer/VBoxContainer/Header/CharacterAndPortraitPicker
 
 var current_color = Color('#ffffff')
 var default_icon_color = Color("#65989898")
@@ -19,33 +19,27 @@ var event_data = {
 func _ready():
 	for p in $PanelContainer/VBoxContainer/Header/PositionsContainer.get_children():
 		p.connect('pressed', self, "position_button_pressed", [p.name])
-	$PanelContainer/VBoxContainer/Header/CharacterPicker.connect('character_selected', self , '_on_character_selected')
-	portrait_picker.get_popup().connect("index_pressed", self, '_on_portrait_selected')
-	portrait_picker.allow_dont_change = false
+	character_picker.connect("character_changed", self, '_on_character_change')
+	character_picker.set_allow_portrait_dont_change(false)
 
 
-func _on_character_selected(data):
+func _on_character_change(character: Dictionary, portrait: String):
 	# Updating icon Color
-	current_color = Color(data['color'])
-	var c_c_ind = 0
-	for p in $PanelContainer/VBoxContainer/Header/PositionsContainer.get_children():
-		if event_data['position'][str(c_c_ind)]:
-			p.set('self_modulate', Color(data['color']))
-		else:
-			p.set('self_modulate', default_icon_color)
-		c_c_ind += 1
-	event_data['character'] = data['file']
-	portrait_picker.set_character(event_data['character'], event_data['portrait'])
-	portrait_picker.text = 'Default'
-
-
-func _on_portrait_selected(index):
-	var text = portrait_picker.get_popup().get_item_text(index)
-	if portrait_picker.allow_dont_change:
-		if text == "[Don't change]":
-			text = ''
-	event_data['portrait'] = text
-	portrait_picker.set_character(event_data['character'], event_data['portrait'])
+	if character.keys().size() > 0:
+		current_color = Color(character['color'])
+		var c_c_ind = 0
+		for p in $PanelContainer/VBoxContainer/Header/PositionsContainer.get_children():
+			if event_data['position'][str(c_c_ind)]:
+				p.set('self_modulate', Color(character['color']))
+			else:
+				p.set('self_modulate', default_icon_color)
+			c_c_ind += 1
+		event_data['character'] = character['file']
+		event_data['portrait'] = portrait
+	else:
+		event_data['character'] = ''
+		event_data['portrait'] = ''
+		clear_all_positions()
 
 
 func position_button_pressed(name):
@@ -78,10 +72,8 @@ func check_active_position(active_color = Color("#ffffff")):
 func load_data(data):
 	event_data = data
 	if data['character'] != '':
-		var character_data = DialogicResources.get_character_json(data['character'])
-		$PanelContainer/VBoxContainer/Header/CharacterPicker.set_data(character_data['name'], Color(character_data['color']))
-		portrait_picker.set_character(data['character'], data['portrait'])
-		current_color = Color(character_data['color'])
+		character_picker.set_data(data['character'], data['portrait'])
+		current_color = character_picker.get_selected_character()['color']
 		check_active_position(current_color)
-		return
-	check_active_position()
+	else:
+		check_active_position()

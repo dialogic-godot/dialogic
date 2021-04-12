@@ -13,7 +13,7 @@ var event_data = {
 	'portrait': '',
 }
 
-onready var portrait_picker = $PanelContainer/VBoxContainer/Header/PortraitPicker
+onready var character_picker = $PanelContainer/VBoxContainer/Header/CharacterAndPortraitPicker
 onready var text_editor = $PanelContainer/VBoxContainer/TextEdit
 
 func _ready():
@@ -25,12 +25,11 @@ func _ready():
 	connect("gui_input", self, '_on_gui_input')
 	text_editor.connect("focus_entered", self, "_on_TextEdit_focus_entered")
 	text_editor.set("rect_min_size", Vector2(0, 80))
-	$PanelContainer/VBoxContainer/Header/CharacterPicker.connect('character_selected', self , '_on_character_selected')
-	portrait_picker.get_popup().connect("index_pressed", self, '_on_portrait_selected')
+	character_picker.connect('character_changed', self , '_on_character_changed')
 
 	var c_list = DialogicUtil.get_sorted_character_list()
 	if c_list.size() == 0:
-		$PanelContainer/VBoxContainer/Header/CharacterPicker.visible = false
+		character_picker.visible = false
 	else:
 		# Default Speaker
 		for c in c_list:
@@ -38,17 +37,13 @@ func _ready():
 				event_data['character'] = c['file']
 
 
-func _on_character_selected(data) -> void:
-	event_data['character'] = data['file']
-	update_preview()
-
-
-func _on_portrait_selected(index) -> void:
-	var text = portrait_picker.get_popup().get_item_text(index)
-	if text == "[Don't change]":
-		text = ''
-		portrait_picker.text = ''
-	event_data['portrait'] = text
+func _on_character_changed(character_data: Dictionary, portrait: String) -> void:
+	if character_data.keys().size() > 0:
+		event_data['character'] = character_data['file']
+		event_data['portrait'] = portrait
+	else:
+		event_data['character'] = ''
+		event_data['portrait'] = ''
 	update_preview()
 
 
@@ -67,17 +62,13 @@ func load_text(text) -> void:
 func load_data(data) -> void:
 	event_data = data
 	text_editor.text = event_data['text']
+	character_picker.set_data(event_data['character'], event_data['portrait'])
 	update_preview()
 
 
 func update_preview() -> String:
-	portrait_picker.set_character(event_data['character'], event_data['portrait'])
 	var t = text_editor.text
 	text_editor.rect_min_size.y = text_height * (2 + t.count('\n'))
-
-	for c in DialogicUtil.get_character_list():
-		if c['file'] == event_data['character']:
-			$PanelContainer/VBoxContainer/Header/CharacterPicker.set_data_by_file(event_data['character'])
 	
 	var text = event_data['text']
 	var lines = text.count('\n')
