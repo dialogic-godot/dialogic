@@ -12,6 +12,8 @@ var positions = {
 	'center': Vector2(0, 0),
 	'center_right': Vector2(200, 0),
 	'center_left': Vector2(-200, 0)}
+
+var position_to_mirror = ['center_right', 'right']
 var direction = 'left'
 var debug = false
 
@@ -41,7 +43,13 @@ func init(expression: String = '', position_offset = 'left') -> void:
 			$TextureRect.texture.get_width() * 0.5,
 			$TextureRect.texture.get_height()
 		) * custom_scale
-
+	
+	if character_data["data"].has('mirror_portraits'):
+		if character_data["data"]['mirror_portraits']:
+			if direction in position_to_mirror:
+				$TextureRect.rect_pivot_offset.x = int($TextureRect.rect_size.x / 2)
+				$TextureRect.rect_scale.x = -1
+	
 
 func _ready():
 	if debug:

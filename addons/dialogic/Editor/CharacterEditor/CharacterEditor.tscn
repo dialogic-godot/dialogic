@@ -140,10 +140,20 @@ margin_right = 143.0
 margin_bottom = 14.0
 text = "Portraits / Expressions"
 
-[node name="Labels" type="HBoxContainer" parent="HBoxContainer/Container"]
+[node name="MirrorOption" type="HBoxContainer" parent="HBoxContainer/Container"]
 margin_top = 188.0
 margin_right = 523.0
-margin_bottom = 202.0
+margin_bottom = 212.0
+
+[node name="MirrorPortraitsCheckBox" type="CheckBox" parent="HBoxContainer/Container/MirrorOption"]
+margin_right = 241.0
+margin_bottom = 24.0
+text = "Mirror portraits on right positions"
+
+[node name="Labels" type="HBoxContainer" parent="HBoxContainer/Container"]
+margin_top = 216.0
+margin_right = 523.0
+margin_bottom = 230.0
 
 [node name="LineEdit" type="Label" parent="HBoxContainer/Container/Labels"]
 margin_right = 100.0
