@@ -37,3 +37,10 @@ func select_item_by_name(name:String) -> void:
 		if _item_text == name:
 			select(_idx)
 
+func select_item_by_resource(resource:DialogicCharacterResource) -> void:
+	for _item_idx in range(get_item_count()):
+		var _idx = clamp(_item_idx, 0, get_item_count())
+		var _item_resource = get_item_metadata(_idx)
+		if _item_resource is Dictionary and "character" in _item_resource:
+			if _item_resource["character"] == resource:
+				select(_idx)

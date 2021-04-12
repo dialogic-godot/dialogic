@@ -4,7 +4,6 @@
 [ext_resource path="res://addons/dialogic/assets/Themes/styleboxflat_title_header.tres" type="StyleBox" id=2]
 [ext_resource path="res://addons/dialogic/Editor/Views/timeline_editor/events_container/events_container.tscn" type="PackedScene" id=3]
 
-
 [node name="TimelineEditorView" type="VBoxContainer"]
 anchor_right = 1.0
 anchor_bottom = 1.0

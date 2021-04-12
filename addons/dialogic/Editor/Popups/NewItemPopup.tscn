@@ -3,7 +3,6 @@
 [ext_resource path="res://addons/dialogic/Editor/Popups/NewItemPopup.gd" type="Script" id=1]
 
 [node name="NewItemPopup" type="ConfirmationDialog"]
-visible = true
 margin_right = 238.0
 margin_bottom = 90.0
 rect_min_size = Vector2( 170, 92 )

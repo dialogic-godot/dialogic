@@ -17,7 +17,7 @@ func _ready() -> void:
 func _update_node_values() -> void:
 	text_edit_node.text = base_resource.text
 	if base_resource.character:
-		character_button_node.select_item_by_name(base_resource.character.display_name)
+		character_button_node.select_item_by_resource(base_resource.character)
 	else:
 		character_button_node.select(0)
 	index_label_node.text = str(idx)
