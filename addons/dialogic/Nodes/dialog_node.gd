@@ -455,6 +455,7 @@ func event_handler(event: Dictionary):
 					background.anchor_bottom = 1
 					background.stretch_mode = TextureRect.STRETCH_SCALE
 					background.show_behind_parent = true
+					background.mouse_filter = Control.MOUSE_FILTER_IGNORE
 					add_child(background)
 				background.texture = null
 				if (background.get_child_count() > 0):
