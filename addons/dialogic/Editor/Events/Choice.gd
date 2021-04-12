@@ -30,8 +30,8 @@ func load_data(data):
 	event_data = data
 	$PanelContainer/VBoxContainer/Header/CustomLineEdit.text = event_data['choice']
 	if event_data.has('condition') and event_data.has('definition') and event_data.has('value'):
-		_load_condition_data(event_data)
 		condition_checkbox.pressed = not event_data['condition'].empty() and not event_data['definition'].empty() and not event_data['value'].empty()
+		_load_condition_data(event_data)
 	else:
 		condition_checkbox.pressed = false
 
@@ -52,13 +52,14 @@ func _load_condition_data(event_data):
 
 func _on_ConditionCheckBox_toggled(button_pressed):
 	$PanelContainer/VBoxContainer/Header/Condition.visible = button_pressed
-	event_data['value'] = ''
-	event_data['definition'] = ''
 	if not button_pressed:
 		event_data['condition'] = ''
-	else:
+		event_data['definition'] = ''
+		event_data['value'] = ''
+		_load_condition_data(event_data)
+	elif event_data['condition'].empty():
 		event_data['condition'] = '=='
-	_load_condition_data(event_data)
+		_load_condition_data(event_data)
 
 
 func _on_CustomLineEdit2_text_changed(new_text):

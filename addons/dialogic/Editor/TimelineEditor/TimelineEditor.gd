@@ -380,7 +380,7 @@ func load_timeline(filename: String):
 				create_event("BackgroundMusic", i)
 			{'question', 'options', ..}:
 				create_event("Question", i)
-			{'choice'}:
+			{'choice', ..}:
 				create_event("Choice", i)
 			{'endbranch'}:
 				create_event("EndBranch", i)
