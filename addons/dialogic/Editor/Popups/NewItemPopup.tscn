@@ -2,32 +2,43 @@
 
 [ext_resource path="res://addons/dialogic/Editor/Popups/NewItemPopup.gd" type="Script" id=1]
 
-
 [node name="NewItemPopup" type="ConfirmationDialog"]
+visible = true
 margin_right = 238.0
-margin_bottom = 82.0
-rect_min_size = Vector2( 170, 59.5 )
+margin_bottom = 90.0
+rect_min_size = Vector2( 170, 92 )
 window_title = "Por favor, Confirma..."
-dialog_text = "Nombre:"
 script = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
 margin_left = 8.0
-margin_top = 22.0
-margin_right = 230.0
-margin_bottom = 46.0
+margin_top = 8.0
+margin_right = -8.0
+margin_bottom = -36.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="LineEdit" type="LineEdit" parent="MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
 margin_right = 222.0
-margin_bottom = 24.0
+margin_bottom = 48.0
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer"]
+margin_right = 222.0
+margin_bottom = 14.0
+text = "Nombre:"
+
+[node name="LineEdit" type="LineEdit" parent="MarginContainer/VBoxContainer"]
+margin_top = 18.0
+margin_right = 222.0
+margin_bottom = 42.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 [connection signal="visibility_changed" from="." to="." method="_on_visibility_changed"]
-[connection signal="text_entered" from="MarginContainer/LineEdit" to="." method="_on_LineEdit_text_entered"]
+[connection signal="text_entered" from="MarginContainer/VBoxContainer/LineEdit" to="." method="_on_LineEdit_text_entered"]

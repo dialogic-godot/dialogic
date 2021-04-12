@@ -1,7 +1,7 @@
 tool
 extends ConfirmationDialog
 
-onready var text_node:LineEdit = $MarginContainer/LineEdit
+onready var text_node:LineEdit = $MarginContainer/VBoxContainer/LineEdit
 onready var _ok_button:Button = get_ok()
 
 func _ready() -> void:
