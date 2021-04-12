@@ -8,12 +8,14 @@ export(NodePath) var DisplayName_path:NodePath
 export(NodePath) var DisplayNameBool_path:NodePath
 export(NodePath) var DefaultSpeaker_path:NodePath
 export(NodePath) var Description_path:NodePath
+export(NodePath) var PortraitContainer_path:NodePath
 
 onready var name_node := get_node(Name_path)
 onready var display_name_node := get_node(DisplayName_path)
 onready var display_name_bool_node := get_node(DisplayNameBool_path)
 onready var default_speaker_node := get_node(DefaultSpeaker_path)
 onready var description_node := get_node(Description_path)
+onready var portrait_container_node := get_node(PortraitContainer_path)
 
 func _ready() -> void:
 	if not base_resource:
@@ -29,11 +31,12 @@ func _update_values() -> void:
 	description_node.text = base_resource.description
 	display_name_bool_node.pressed = base_resource.display_name_bool
 	default_speaker_node.pressed = base_resource.default_speaker
+	portrait_container_node.base_resource = base_resource
 
 
 func _set_base_resource(value:DialogicCharacterResource) -> void:
 	base_resource = value
-	if base_resource.is_connected("changed", self, "_on_BaseResource_changed"):
+	if not base_resource.is_connected("changed", self, "_on_BaseResource_changed"):
 		base_resource.connect("changed", self, "_on_BaseResource_changed")
 	_update_values()
 

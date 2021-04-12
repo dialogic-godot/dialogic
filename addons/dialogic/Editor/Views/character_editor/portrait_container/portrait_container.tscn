@@ -1,0 +1,60 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://addons/dialogic/Editor/Views/character_editor/portraits_container.gd" type="Script" id=1]
+[ext_resource path="res://addons/dialogic/Editor/Popups/NewItemPopup.tscn" type="PackedScene" id=2]
+
+[node name="PortraitContainer" type="PanelContainer"]
+margin_top = 34.0
+margin_right = 482.0
+margin_bottom = 72.0
+rect_min_size = Vector2( 0, 38 )
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+Confirmation_path = NodePath("NewItemPopup")
+AddItemBtn_path = NodePath("VBoxContainer/AddItemBtn")
+NameContainer_path = NodePath("VBoxContainer/HBoxContainer/NameContainer")
+PathContainer_path = NodePath("VBoxContainer/HBoxContainer/PathContainer")
+FileDialog_path = NodePath("FileDialog")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+margin_left = 7.0
+margin_top = 7.0
+margin_right = 475.0
+margin_bottom = 31.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+margin_right = 468.0
+
+[node name="NameContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer"]
+
+[node name="PathContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer"]
+margin_left = 4.0
+margin_right = 468.0
+size_flags_horizontal = 3
+
+[node name="AddItemBtn" type="Button" parent="VBoxContainer"]
+margin_top = 4.0
+margin_right = 468.0
+margin_bottom = 24.0
+text = "Add Item"
+
+[node name="FileDialog" type="FileDialog" parent="."]
+margin_left = 7.0
+margin_top = 7.0
+margin_right = 475.0
+margin_bottom = 137.0
+rect_min_size = Vector2( 170, 59.5 )
+window_title = "Abrir un Archivo"
+mode = 0
+filters = PoolStringArray( "*.png;PNG Images", "*.tres;Text Resource File", "*.tscn;Text Scene File", "*.svg;SVG" )
+
+[node name="NewItemPopup" parent="." instance=ExtResource( 2 )]
+margin_left = 7.0
+margin_top = 7.0
+margin_right = 475.0
+margin_bottom = 75.0
+[connection signal="pressed" from="VBoxContainer/AddItemBtn" to="." method="_on_AddItemBtn_pressed"]
+[connection signal="file_selected" from="FileDialog" to="." method="_on_FileDialog_file_selected"]
+[connection signal="confirmed" from="NewItemPopup" to="." method="_on_NewItemPopup_confirmed"]
