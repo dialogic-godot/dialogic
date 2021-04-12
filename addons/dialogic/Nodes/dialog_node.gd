@@ -318,6 +318,7 @@ func on_timeline_end():
 		DialogicSingleton.set_current_timeline('')
 	emit_signal("event_end", "timeline")
 
+
 func _init_dialog():
 	dialog_index = 0
 	_load_event()
@@ -342,26 +343,30 @@ func _is_dialog_finished():
 
 
 func _load_event():
-	# Emitting signals
+	_emit_timeline_signals()
+	_hide_definition_popup()
+	
+	if dialog_script.has('events'):
+		if not _is_dialog_finished():
+			var func_state = event_handler(dialog_script['events'][dialog_index])
+			if (func_state is GDScriptFunctionState):
+				yield(func_state, "completed")
+		elif not Engine.is_editor_hint():
+			# Do not free the dialog if we are in the preview
+			queue_free()
+
+
+func _emit_timeline_signals():
 	if dialog_script.has('events'):
 		if _is_dialog_starting():
 			on_timeline_start()
 		elif _is_dialog_finished():
 			on_timeline_end()
 
-	# Hiding definitions popup
+
+func _hide_definition_popup():
 	definition_visible = false
 	$DefinitionInfo.visible = definition_visible
-
-	# This will load the next entry in the dialog_script array.
-	if dialog_script.has('events'):
-		if not _is_dialog_finished():
-			var func_state = event_handler(dialog_script['events'][dialog_index])
-			if (func_state is GDScriptFunctionState):
-				yield(func_state, "completed")
-		else:
-			if Engine.is_editor_hint() == false:
-				queue_free()
 
 
 func get_character(character_id):
