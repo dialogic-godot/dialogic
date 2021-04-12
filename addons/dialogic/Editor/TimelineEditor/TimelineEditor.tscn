@@ -266,15 +266,15 @@ align = 0
 script = ExtResource( 21 )
 EventName = "ChangeTimeline"
 
-[node name="SceneEvent" type="Button" parent="ScrollContainer/EventContainer"]
+[node name="ChangeBackground" type="Button" parent="ScrollContainer/EventContainer"]
 margin_top = 408.0
 margin_right = 180.0
 margin_bottom = 436.0
-text = "  Scene Event"
+text = "Change Background"
 icon = ExtResource( 4 )
 align = 0
 script = ExtResource( 21 )
-EventName = "SceneEvent"
+EventName = "ChangeBackground"
 
 [node name="CloseDialog" type="Button" parent="ScrollContainer/EventContainer"]
 margin_top = 440.0

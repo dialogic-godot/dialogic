@@ -370,7 +370,7 @@ func load_timeline(filename: String):
 			{'text', 'character', 'portrait'}:
 				create_event("TextBlock", i)
 			{'background'}:
-				create_event("SceneEvent", i)
+				create_event("ChangeBackground", i)
 			{'character', 'action', 'position', 'portrait'}:
 				create_event("CharacterJoinBlock", i)
 			{'audio', 'file'}:
