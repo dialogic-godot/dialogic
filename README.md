@@ -52,6 +52,7 @@ v1.1 - WIP
   - A reload of the preview dialog is performed when you change a property so you don't have to click the "preview changes" all the time
   - Removed the limitation of only 100px for the padding of the dialog box
   - Added a new option for changing the color modulation of the dialog background image
+  - Added new customization options (scale, and offset) to the next indicator image
   - Added modulation settings to the name label background texture and the choices buttons background textures [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
   - Added an option to use native buttons styles for choices [[Tim Krief](https://github.com/timkrief)]
   - Fixed a bug where the text alignment wasn't being shown on the preview
