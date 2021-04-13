@@ -258,7 +258,7 @@ func _insert_glossary_definitions(text: String):
 
 
 func _process(delta):
-	$TextBubble/NextIndicator.visible = finished
+	$TextBubble/NextIndicatorContainer/NextIndicator.visible = finished
 	if waiting_for_answer and Input.is_action_just_released(input_next):
 		if $Options.get_child_count() > 0:
 			$Options.get_child(0).grab_focus()

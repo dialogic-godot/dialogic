@@ -32,6 +32,9 @@ onready var n : Dictionary = {
 	'background_texture_button_visible': $"VBoxContainer/TabContainer/Dialog Box/Column/GridContainer/HBoxContainer3/CheckBox",
 	'theme_background_image': $"VBoxContainer/TabContainer/Dialog Box/Column/GridContainer/HBoxContainer3/BackgroundTextureButton",
 	'theme_next_image': $"VBoxContainer/TabContainer/Dialog Box/Column/GridContainer/NextIndicatorButton",
+	'next_indicator_scale': $"VBoxContainer/TabContainer/Dialog Box/Column/GridContainer/HBoxContainer7/IndicatorScale",
+	'next_indicator_offset_x': $"VBoxContainer/TabContainer/Dialog Box/Column/GridContainer/HBoxContainer/NextOffsetX",
+	'next_indicator_offset_y': $"VBoxContainer/TabContainer/Dialog Box/Column/GridContainer/HBoxContainer/NextOffsetY",
 	'next_animation': $"VBoxContainer/TabContainer/Dialog Box/Column/GridContainer/NextAnimation",
 	'theme_action_key': $"VBoxContainer/TabContainer/Dialog Box/Column3/GridContainer/BoxContainer/ActionOptionButton",
 	'theme_background_color_visible': $"VBoxContainer/TabContainer/Dialog Box/Column/GridContainer/HBoxContainer2/CheckBox",
@@ -111,6 +114,10 @@ func load_theme(filename):
 	n['theme_background_color'].color = Color(theme.get_value('background', 'color', '#ff000000'))
 	n['theme_background_color_visible'].pressed = theme.get_value('background', 'use_color', false)
 	n['theme_next_image'].text = DialogicResources.get_filename_from_path(theme.get_value('next_indicator', 'image', 'res://addons/dialogic/Example Assets/next-indicator/next-indicator.png'))
+	n['next_indicator_scale'].value = theme.get_value('next_indicator', 'scale', 0.4)
+	var next_indicator_offset = theme.get_value('next_indicator', 'offset', Vector2(13,10))
+	n['next_indicator_offset_x'].value = next_indicator_offset.x
+	n['next_indicator_offset_y'].value = next_indicator_offset.y
 
 	n['background_modulation'].pressed = theme.get_value('background', 'modulation', false)
 	n['background_modulation_color'].color = Color(theme.get_value('background', 'modulation_color', '#ffffffff'))
@@ -245,6 +252,14 @@ func _on_indicator_selected(path, target) -> void:
 		return
 	DialogicResources.set_theme_value(current_theme, 'next_indicator','image', path)
 	n['theme_next_image'].text = DialogicResources.get_filename_from_path(path)
+	# Since people will probably want the sprite on fresh values and the default
+	# ones are for the custom dialogic theme, I reset the next indicator properties
+	# here so they can set the scale and offset they want.
+	DialogicResources.set_theme_value(current_theme, 'next_indicator', 'scale', 1)
+	DialogicResources.set_theme_value(current_theme, 'offset', 'scale', Vector2(10,10))
+	n['next_indicator_scale'].value = 1
+	n['next_indicator_offset_x'].value = 10
+	n['next_indicator_offset_y'].value = 10
 	_on_PreviewButton_pressed() # Refreshing the preview
 
 
@@ -634,3 +649,18 @@ func _on_ColorPicker_ChoiceButtons_modulation_color_changed(color) -> void:
 	DialogicResources.set_theme_value(current_theme, 'buttons', 'modulation_color', '#' + color.to_html())
 	$DelayPreviewTimer.start(0.5) # Calling a timer so the update doesn't get triggered many times
 
+
+
+func _on_IndicatorScale_value_changed(value) -> void:
+	if loading:
+		return
+	DialogicResources.set_theme_value(current_theme, 'next_indicator', 'scale', value)
+	_on_PreviewButton_pressed() # Refreshing the preview
+
+
+func _on_NextOffset_value_changed(value):
+	if loading:
+		return
+	var offset_value = Vector2(n['next_indicator_offset_x'].value, n['next_indicator_offset_y'].value)
+	DialogicResources.set_theme_value(current_theme, 'next_indicator', 'offset', offset_value)
+	_on_PreviewButton_pressed() # Refreshing the preview
