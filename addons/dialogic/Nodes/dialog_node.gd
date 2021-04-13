@@ -473,7 +473,7 @@ func event_handler(event: Dictionary):
 				elif (event['background'] != ''):
 					background.texture = load(event['background'])
 			_load_next_event()
-		{'audio'}, {'audio', 'file'}:
+		{'audio'}, {'audio', 'file', ..}:
 			emit_signal("event_start", "audio", event)
 			if event['audio'] == 'play' and 'file' in event.keys() and not event['file'].empty():
 				var audio = get_node_or_null('AudioEvent')
@@ -490,7 +490,7 @@ func event_handler(event: Dictionary):
 					audio.stop()
 					audio.queue_free()
 			_load_next_event()
-		{'background-music'}, {'background-music', 'file'}:
+		{'background-music'}, {'background-music', 'file',..}:
 			emit_signal("event_start", "background-music", event)
 			if event['background-music'] == 'play' and 'file' in event.keys() and not event['file'].empty():
 				$FX/BackgroundMusic.crossfade_to(event['file'])
