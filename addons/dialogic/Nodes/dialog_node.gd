@@ -319,6 +319,7 @@ func on_timeline_end():
 		DialogicSingleton.save_definitions()
 		DialogicSingleton.set_current_timeline('')
 	emit_signal("event_end", "timeline")
+	dprint('[D] Timeline End')
 
 
 func _init_dialog():
@@ -505,9 +506,12 @@ func event_handler(event: Dictionary):
 			dprint('[!] Emitting signal: dialogic_signal(', event['emit_signal'], ')')
 			emit_signal("dialogic_signal", event['emit_signal'])
 			_load_next_event()
-		{'close_dialog'}:
+		{'close_dialog', ..}:
 			emit_signal("event_start", "close_dialog", event)
-			close_dialog_event()
+			var transition_duration = 1.0
+			if event.has('transition_duration'):
+				transition_duration = event['transition_duration']
+			close_dialog_event(transition_duration)
 		{'set_theme'}:
 			emit_signal("event_start", "set_theme", event)
 			if event['set_theme'] != '':
@@ -812,18 +816,21 @@ func characters_leave_all():
 			p.fade_out()
 
 
-func close_dialog_event():
-	var tween = Tween.new()
-	add_child(tween)
-	tween.interpolate_property($TextBubble, "modulate",
-		$TextBubble.modulate, Color('#00ffffff'), 1,
-		Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
-	tween.start()
-	var close_dialog_timer = Timer.new()
-	close_dialog_timer.connect("timeout", self, '_on_close_dialog_timeout')
-	add_child(close_dialog_timer)
-	close_dialog_timer.start(2)
+func close_dialog_event(transition_duration):
 	characters_leave_all()
+	if transition_duration == 0:
+		_on_close_dialog_timeout()
+	else:
+		var tween = Tween.new()
+		add_child(tween)
+		tween.interpolate_property($TextBubble, "modulate",
+			$TextBubble.modulate, Color('#00ffffff'), transition_duration,
+			Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
+		tween.start()
+		var close_dialog_timer = Timer.new()
+		close_dialog_timer.connect("timeout", self, '_on_close_dialog_timeout')
+		add_child(close_dialog_timer)
+		close_dialog_timer.start(transition_duration)
 
 
 func _on_close_dialog_timeout():
