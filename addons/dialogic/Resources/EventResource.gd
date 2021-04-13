@@ -5,10 +5,10 @@ class_name DialogicEventResource
 signal event_started(event_resource)
 signal event_finished(event_resource)
 
-# Should be remade with (caller:DialogNode) when 4.0 comes out
+var _caller:DialogicNode = null
 
 #warning-ignore-all:unused_argument
-func excecute(caller:Control) -> void:
+func excecute(caller:DialogicNode) -> void:
 	emit_signal("event_started", self)
 
 

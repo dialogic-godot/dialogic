@@ -1,21 +1,23 @@
 tool
+class_name DialogicNode
 extends Control
 
-const DialogicUtil = preload("res://addons/dialogic/Core/DialogicUtil.gd")
+var DialogicUtil = load("res://addons/dialogic/Core/DialogicUtil.gd")
 
 ## The timeline to load when starting the scene
 #export(String, "TimelineDropdown") var timeline_name: String
 export(String, FILE) var timeline_name: String
+
+export(NodePath) var DialogNode_path:NodePath
+export(NodePath) var PortraitsNode_path:NodePath
 
 var timeline
 var text_speed = 0.02
 var event_finished = false
 var next_input = 'ui_accept'
 
-onready var TextNode:RichTextLabel = $TextBubble/RichTextLabel
-onready var NameNode:Label = $TextBubble/NameLabel
-onready var NextIndicatorNode:Control = $TextBubble/NextIndicator
-onready var PortraitsNode:Control = $Portraits
+onready var DialogNode := get_node_or_null(DialogNode_path)
+
 
 func _ready() -> void:
 	if not timeline_name:
@@ -27,10 +29,6 @@ func _ready() -> void:
 		load_dialog()
 	else:
 		set_process(false)
-
-
-func _process(_delta: float) -> void:
-	NextIndicatorNode.visible = event_finished
 
 
 func _input(event: InputEvent) -> void:
@@ -49,7 +47,11 @@ func load_timeline() -> void:
 
 func _on_event_start(_event):
 	event_finished = false
+	if DialogNode:
+		DialogNode.event_finished = event_finished
 
 
 func _on_event_finished(_event):
 	event_finished = true
+	if DialogNode:
+		DialogNode.event_finished = event_finished
