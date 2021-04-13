@@ -1,10 +1,11 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://addons/dialogic/Editor/Events/BackgroundMusic.gd" type="Script" id=1]
 [ext_resource path="res://addons/dialogic/Editor/Events/Common/Spacer.tscn" type="PackedScene" id=2]
 [ext_resource path="res://addons/dialogic/Images/Event Icons/Main Icons/background-music.svg" type="Texture" id=3]
 [ext_resource path="res://addons/dialogic/Editor/Events/Common/PieceExtraSettings.tscn" type="PackedScene" id=4]
 [ext_resource path="res://addons/dialogic/Editor/Events/Common/AudioPicker.tscn" type="PackedScene" id=5]
+[ext_resource path="res://addons/dialogic/Editor/Events/Common/VisibleToggle.tscn" type="PackedScene" id=8]
 
 [sub_resource type="StyleBoxFlat" id=1]
 content_margin_left = 16.0
@@ -55,33 +56,66 @@ size_flags_horizontal = 3
 
 [node name="Header" type="HBoxContainer" parent="PanelContainer/VBoxContainer"]
 margin_right = 1776.0
-margin_bottom = 28.0
+margin_bottom = 30.0
 
 [node name="TextureRect" type="TextureRect" parent="PanelContainer/VBoxContainer/Header"]
 margin_right = 22.0
-margin_bottom = 28.0
+margin_bottom = 30.0
 texture = ExtResource( 3 )
 stretch_mode = 6
 
 [node name="Title" type="Label" parent="PanelContainer/VBoxContainer/Header"]
 margin_left = 26.0
-margin_top = 7.0
+margin_top = 8.0
 margin_right = 150.0
-margin_bottom = 21.0
+margin_bottom = 22.0
 text = "  Background Music"
 
-[node name="AudioPicker" parent="PanelContainer/VBoxContainer/Header" instance=ExtResource( 5 )]
+[node name="VisibleToggle" parent="PanelContainer/VBoxContainer/Header" instance=ExtResource( 8 )]
 margin_left = 154.0
-margin_right = 511.0
-margin_bottom = 28.0
+margin_right = 184.0
+pressed = false
+
+[node name="Preview" type="Label" parent="PanelContainer/VBoxContainer/Header"]
+margin_left = 188.0
+margin_top = 8.0
+margin_right = 188.0
+margin_bottom = 22.0
+custom_colors/font_color = Color( 1, 1, 1, 0.513726 )
 
 [node name="Spacer" parent="PanelContainer/VBoxContainer/Header" instance=ExtResource( 2 )]
-margin_left = 515.0
+margin_left = 192.0
 margin_right = 1735.0
-margin_bottom = 28.0
+margin_bottom = 30.0
 
 [node name="OptionButton" parent="PanelContainer/VBoxContainer/Header" instance=ExtResource( 4 )]
 margin_left = 1739.0
 margin_right = 1776.0
-margin_bottom = 28.0
 items = [ "Move Up", null, 0, false, false, 0, 0, null, "", false, "Move Down", null, 0, false, false, 1, 0, null, "", false, "", null, 0, false, false, 2, 0, null, "", true, "Remove", null, 0, false, false, 3, 0, null, "", false ]
+
+[node name="Settings" type="HBoxContainer" parent="PanelContainer/VBoxContainer"]
+visible = false
+margin_top = 34.0
+margin_right = 1776.0
+margin_bottom = 58.0
+
+[node name="AudioPicker" parent="PanelContainer/VBoxContainer/Settings" instance=ExtResource( 5 )]
+margin_right = 334.0
+margin_bottom = 24.0
+event_name = "Background Music"
+
+[node name="FadeLengthLabel" type="Label" parent="PanelContainer/VBoxContainer/Settings"]
+margin_left = 338.0
+margin_top = 5.0
+margin_right = 425.0
+margin_bottom = 19.0
+text = "  Fade-length:"
+
+[node name="FadeLength" type="SpinBox" parent="PanelContainer/VBoxContainer/Settings"]
+margin_left = 429.0
+margin_right = 503.0
+margin_bottom = 24.0
+step = 0.01
+suffix = "s"
+
+[connection signal="value_changed" from="PanelContainer/VBoxContainer/Settings/FadeLength" to="." method="_on_FadeLength_value_changed"]
