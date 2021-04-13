@@ -15,7 +15,7 @@ class Error:
 		_character.color = Color.red
 		_text_event.character = _character
 		_text_event.text = TIMELINE_NOT_SELECTED
-		_timeline.events.append(_text_event)
+		_timeline.events.add(_text_event)
 		return _timeline
 
 class Logger:
