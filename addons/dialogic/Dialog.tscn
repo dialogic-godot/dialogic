@@ -5,7 +5,7 @@
 [ext_resource path="res://addons/dialogic/assets/Fonts/GlossaryFont.tres" type="DynamicFont" id=4]
 [ext_resource path="res://addons/dialogic/Nodes/glossary_info.gd" type="Script" id=5]
 
-[sub_resource type="StyleBoxFlat" id=1]
+[sub_resource type="StyleBoxFlat" id=3]
 bg_color = Color( 0.196078, 0.196078, 0.196078, 0 )
 
 [sub_resource type="StyleBoxFlat" id=2]
@@ -39,6 +39,45 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="Left" type="ReferenceRect" parent="Portraits"]
+anchor_top = 0.5
+anchor_bottom = 0.5
+margin_left = 45.0
+margin_top = -20.0
+margin_right = 85.0
+margin_bottom = 20.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Center" type="ReferenceRect" parent="Portraits"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -20.0
+margin_top = -20.0
+margin_right = 20.0
+margin_bottom = 20.0
+rect_pivot_offset = Vector2( 20, 20 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Right" type="ReferenceRect" parent="Portraits"]
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+margin_left = -78.9999
+margin_top = -20.0
+margin_right = -38.9999
+margin_bottom = 20.0
+rect_pivot_offset = Vector2( 20, 20 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="DialogNode" parent="." instance=ExtResource( 1 )]
 
 [node name="DefinitionInfo" type="PanelContainer" parent="."]
@@ -47,7 +86,7 @@ margin_right = 208.0
 mouse_filter = 1
 size_flags_horizontal = 3
 size_flags_vertical = 3
-custom_styles/panel = SubResource( 1 )
+custom_styles/panel = SubResource( 3 )
 script = ExtResource( 5 )
 __meta__ = {
 "_edit_group_": true,
