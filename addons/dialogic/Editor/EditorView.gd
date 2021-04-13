@@ -164,7 +164,8 @@ func _on_ThemePopupMenu_id_pressed(id):
 # Definition context menu
 func _on_DefinitionPopupMenu_id_pressed(id):
 	if id == 0:
-		OS.shell_open(ProjectSettings.globalize_path(DialogicResources.get_path('DEFAULT_DEFINITIONS_FILE')))
+		var paths = DialogicResources.get_config_files_paths()
+		OS.shell_open(ProjectSettings.globalize_path(paths['DEFAULT_DEFINITIONS_FILE']))
 	if id == 1:
 		$RemoveDefinitionConfirmation.popup_centered()
 
