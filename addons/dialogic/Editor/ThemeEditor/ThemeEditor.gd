@@ -101,7 +101,7 @@ func _ready() -> void:
 func load_theme(filename):
 	loading = true
 	current_theme = filename
-	var theme = DialogicResources.get_theme_config(filename) 
+	var theme = DialogicResources.get_theme_config(filename)
 	# Settings
 	n['theme_action_key'].text = theme.get_value('settings', 'action_key', 'ui_accept')
 	
@@ -301,8 +301,12 @@ func _on_PreviewButton_pressed() -> void:
 	$VBoxContainer/Panel.add_child(preview_dialog)
 	
 	# maintaining the preview panel big enough for the dialog box
-	$VBoxContainer/Panel.rect_min_size.y = preview_dialog.current_theme.get_value('box', 'size', Vector2(910, 167)).y + 90 + preview_dialog.current_theme.get_value('box', 'bottom_gap', 40)
+	var box_size = preview_dialog.current_theme.get_value('box', 'size', Vector2(910, 167)).y
+	var bottom_gap = preview_dialog.current_theme.get_value('box', 'bottom_gap', 40)
+	var extra = 90
+	$VBoxContainer/Panel.rect_min_size.y = box_size + extra + bottom_gap
 	$VBoxContainer/Panel.rect_size.y = 0
+	preview_dialog.call_deferred('resize_main')
 
 
 func _on_ActionOptionButton_item_selected(index) -> void:
