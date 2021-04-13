@@ -3,7 +3,7 @@ extends Control
 
 var editor_reference
 onready var character_picker = $PanelContainer/VBoxContainer/Header/CharacterAndPortraitPicker
-
+onready var mirror_toggle = $PanelContainer/VBoxContainer/Header/MirrorButton
 var current_color = Color('#ffffff')
 var default_icon_color = Color("#65989898")
 
@@ -12,7 +12,8 @@ var event_data = {
 	'action': 'join',
 	'character': '',
 	'portrait': '',
-	'position': {"0":false,"1":false,"2":false,"3":false,"4":false}
+	'position': {"0":false,"1":false,"2":false,"3":false,"4":false},
+	'mirror':false
 }
 
 
@@ -21,6 +22,7 @@ func _ready():
 		p.connect('pressed', self, "position_button_pressed", [p.name])
 	character_picker.connect("character_changed", self, '_on_character_change')
 	character_picker.set_allow_portrait_dont_change(false)
+	mirror_toggle.icon = get_icon("MirrorX", "EditorIcons")
 
 
 func _on_character_change(character: Dictionary, portrait: String):
@@ -77,3 +79,11 @@ func load_data(data):
 		check_active_position(current_color)
 	else:
 		check_active_position()
+	
+	if data.has('mirror'):
+		mirror_toggle.pressed = data['mirror']
+	else:
+		mirror_toggle.pressed = false
+
+func _on_MirrorButton_toggled(button_pressed):
+	event_data['mirror'] = button_pressed

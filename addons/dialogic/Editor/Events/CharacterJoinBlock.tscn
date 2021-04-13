@@ -121,8 +121,17 @@ margin_right = 186.0
 margin_bottom = 30.0
 icon = ExtResource( 5 )
 
-[node name="Spacer" parent="PanelContainer/VBoxContainer/Header" instance=ExtResource( 1 )]
+[node name="MirrorButton" type="ToolButton" parent="PanelContainer/VBoxContainer/Header"]
 margin_left = 502.0
+margin_right = 514.0
+margin_bottom = 30.0
+hint_tooltip = "Mirrors the character"
+focus_mode = 0
+toggle_mode = true
+enabled_focus_mode = 0
+
+[node name="Spacer" parent="PanelContainer/VBoxContainer/Header" instance=ExtResource( 1 )]
+margin_left = 518.0
 margin_right = 1735.0
 margin_bottom = 30.0
 
@@ -130,3 +139,5 @@ margin_bottom = 30.0
 margin_left = 1739.0
 margin_right = 1776.0
 items = [ "Move Up", null, 0, false, false, 0, 0, null, "", false, "Move Down", null, 0, false, false, 1, 0, null, "", false, "", null, 0, false, false, 2, 0, null, "", true, "Remove", null, 0, false, false, 3, 0, null, "", false ]
+
+[connection signal="toggled" from="PanelContainer/VBoxContainer/Header/MirrorButton" to="." method="_on_MirrorButton_toggled"]

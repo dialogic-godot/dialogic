@@ -8,7 +8,7 @@ content_margin_left = 5.0
 content_margin_right = 5.0
 content_margin_top = 5.0
 content_margin_bottom = 5.0
-bg_color = Color( 0.2, 0.23, 0.31, 1 )
+bg_color = Color( 0.03, 0.21, 0.26, 1 )
 
 [node name="CharacterEditor" type="ScrollContainer"]
 margin_left = 192.0
@@ -141,9 +141,9 @@ margin_bottom = 14.0
 text = "Portraits / Expressions"
 
 [node name="Labels" type="HBoxContainer" parent="HBoxContainer/Container"]
-margin_top = 188.0
+margin_top = 216.0
 margin_right = 523.0
-margin_bottom = 202.0
+margin_bottom = 230.0
 
 [node name="LineEdit" type="Label" parent="HBoxContainer/Container/Labels"]
 margin_right = 100.0
@@ -314,3 +314,15 @@ rect_min_size = Vector2( 100, 0 )
 allow_greater = true
 allow_lesser = true
 suffix = "Y"
+
+[node name="MirrorOption" type="HBoxContainer" parent="HBoxContainer/VBoxContainer/HBoxContainer"]
+margin_left = 398.0
+margin_right = 523.0
+margin_bottom = 24.0
+
+[node name="MirrorPortraitsCheckBox" type="CheckBox" parent="HBoxContainer/VBoxContainer/HBoxContainer/MirrorOption"]
+margin_right = 125.0
+margin_bottom = 24.0
+text = "Mirror portraits"
+
+[connection signal="toggled" from="HBoxContainer/VBoxContainer/HBoxContainer/MirrorOption/MirrorPortraitsCheckBox" to="." method="_on_MirrorPortraitsCheckBox_toggled"]

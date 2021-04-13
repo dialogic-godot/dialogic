@@ -11,6 +11,7 @@ onready var nodes = {
 	'description': $HBoxContainer/Container/Description/TextEdit,
 	'file': $HBoxContainer/Container/FileName/LineEdit,
 	'color': $HBoxContainer/Container/Color/ColorPickerButton,
+	'mirror_portraits_checkbox' : $HBoxContainer/VBoxContainer/HBoxContainer/MirrorOption/MirrorPortraitsCheckBox,
 	'default_speaker': $HBoxContainer/Container/Actions/DefaultSpeaker,
 	'display_name_checkbox': $HBoxContainer/Container/Name/CheckBox,
 	'display_name': $HBoxContainer/Container/DisplayName/LineEdit,
@@ -55,6 +56,7 @@ func clear_character_editor():
 	nodes['name'].text = ''
 	nodes['description'].text = ''
 	nodes['color'].color = Color('#ffffff')
+	nodes['mirror_portraits_checkbox'].pressed = false
 	nodes['default_speaker'].pressed = false
 	nodes['display_name_checkbox'].pressed = false
 	nodes['display_name'].text = ''
@@ -76,7 +78,8 @@ func create_character():
 		'color': '#ffffff',
 		'id': character_file,
 		'default_speaker': false,
-		'portraits': []
+		'portraits': [],
+		'mirror_portraits' :false
 	}
 	DialogicResources.set_character(character)
 	character['metadata'] = {'file': character_file}
@@ -101,6 +104,7 @@ func generate_character_data_to_save():
 		'id': nodes['file'].text,
 		'description': nodes['description'].text,
 		'color': '#' + nodes['color'].color.to_html(),
+		'mirror_portraits': nodes["mirror_portraits_checkbox"].pressed,
 		'default_speaker': default_speaker,
 		'portraits': portraits,
 		'display_name_bool': nodes['display_name_checkbox'].pressed,
@@ -150,7 +154,14 @@ func load_character(filename: String):
 	if data.has('offset_x'):
 		nodes['offset_x'].value = data['offset_x']
 		nodes['offset_y'].value = data['offset_y']
-
+	
+	if data.has('mirror_portraits'):
+		nodes['mirror_portraits_checkbox'].pressed = data['mirror_portraits']
+		nodes['portrait_preview'].flip_h = data['mirror_portraits']
+	else:
+		nodes['mirror_portraits_checkbox'].pressed = false
+		nodes['portrait_preview'].flip_h = false
+	
 	# Portraits
 	var default_portrait = create_portrait_entry()
 	default_portrait.get_node('NameEdit').text = 'Default'
@@ -183,3 +194,7 @@ func create_portrait_entry(p_name = '', path = '', grab_focus = false):
 		p.get_node("NameEdit").grab_focus()
 		p._on_ButtonSelect_pressed()
 	return p
+
+
+func _on_MirrorPortraitsCheckBox_toggled(button_pressed):
+	nodes['portrait_preview'].flip_h = button_pressed
