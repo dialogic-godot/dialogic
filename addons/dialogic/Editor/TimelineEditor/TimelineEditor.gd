@@ -391,7 +391,7 @@ func load_timeline(filename: String):
 				create_event("EmitSignal", i)
 			{'change_scene'}:
 				create_event("ChangeScene", i)
-			{'close_dialog'}:
+			{'close_dialog', ..}:
 				create_event("CloseDialog", i)
 			{'wait_seconds'}:
 				create_event("WaitSeconds", i)
