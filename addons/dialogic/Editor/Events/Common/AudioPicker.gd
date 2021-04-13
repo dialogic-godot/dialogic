@@ -15,6 +15,7 @@ signal audio_changed(file, audio, audio_bus, volume)
 
 func _ready():
 	load_audio('')
+	AudioServer.connect("bus_layout_changed", self, "update_bus_selector")
 	$ButtonClear.icon = get_icon("Remove", "EditorIcons")
 	$ButtonPreviewPlay.icon = get_icon("Play", "EditorIcons")
 	update_bus_selector()
