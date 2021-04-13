@@ -27,8 +27,7 @@ func set_data(c: String, p: String):
 	for ch in DialogicUtil.get_character_list():
 		if ch['file'] == c:
 			character = ch
-	print(c)
-	print(character)
+	
 	if character.has('name') and character.has('color'):
 		character_picker.set_data(character['name'], Color(character['color']))
 		portrait_picker.set_character(character, p)
@@ -39,8 +38,6 @@ func set_data(c: String, p: String):
 
 
 func _on_character_selected(data: Dictionary):
-	print("character selected")
-	print(data)
 	character = data
 	if allow_portrait_dont_change or character.keys().size() == 0:
 		portrait = ''

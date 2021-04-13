@@ -20,12 +20,12 @@ Create dialogs, characters and scenes to display conversations in your Godot gam
 v1.1 - WIP
 - Improved event dragging and selection [[Arnaud Vergnet](https://github.com/arnaudvergnet)]
 - Fixed a bug that prevented the deletion of Characters [[AnidemDex](https://github.com/AnidemDex)]
-- Fixed a bug that allowed you to overwrite the event on the theme preview dialog.
-- Added a folder icon to each section of the resource tree.
-- Greatly improved how the plugin is displayed in different display scales.
+- Fixed a bug that allowed you to overwrite the event on the theme preview dialog
+- Added a folder icon to each section of the resource tree
+- Greatly improved how the plugin is displayed in different display scales
 - You can now filter resources from the main view [[ellogwen](https://github.com/ellogwen)]
 - You can now duplicate themes (from the context menu) [[ellogwen](https://github.com/ellogwen)]
-- Organized the images and other assets into a tidier structure [[Jowan-Spooner](https://github.com/Jowan-Spooner)] _**Warning!** If you were using the example portrait assets you will have to load them again manually on the character editor._
+- Organized the images and other assets into a tidier structure [[Jowan-Spooner](https://github.com/Jowan-Spooner)] _**Warning!** If you were using the example portrait assets you will have to load them again manually on the character editor_
 - You can now create resources by right clicking the section and selecting "+ New" [[Tim Krief](https://github.com/timkrief)]
 - Remade all the PopupMenu items in gdscript and replaced the icons with native editor theme ones.
 - Timeline:
@@ -33,14 +33,15 @@ v1.1 - WIP
   - You now can drag and drop events into the timeline! [[ellogwen](https://github.com/ellogwen)]
   - You can un select a selected event by clicking it [[ellogwen](https://github.com/ellogwen)]
   - The `Scene Event` can now take other Scenes (`.tscn`) files as backgrounds. [[ellogwen](https://github.com/ellogwen)]
-  - The `If Condition` event can now use definition variables as values to compare against. [[ellogwen](https://github.com/ellogwen)]
+  - The `If Condition` event can now use definition variables as values to compare against [[ellogwen](https://github.com/ellogwen)]
   - You can now select a character to ask a question in the `Question Event` [[Tim Krief](https://github.com/timkrief)]
-  - Added very basic syntax highlighting to the `Text Event` editor.
+  - Added very basic syntax highlighting to the `Text Event` editor
   - Fixed an indenting bug when removing events 
   - The `Character Join` event now has a mirror option [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
   - The `Close Dialog` has a new setting for the duration of the fade-out animation. [[Tim Krief](https://github.com/timkrief)]
   - `Scene Event` renamed to `Change Background` to better represent what it does. [[Jowan-Spooner](https://github.com/Jowan-Spooner)] 
   - Both `Audio Event` and `Background Music` got more settings (audio Bus, volume, fade-length) [[Jowan-Spooner](https://github.com/Jowan-Spooner)] 
+
   - Shortcuts added! [[ellogwen](https://github.com/ellogwen)]
     - Selecting previous and next event in the timeline with `CTRL + UP` and `CTRL + DOWN`
     - Moving currently selected event up and down the timeline `ALT + UP` and `ALT + DOWN`
@@ -53,21 +54,21 @@ v1.1 - WIP
   - A reload of the preview dialog is performed when you change a property so you don't have to click the "preview changes" all the time
   - Removed the limitation of only 100px for the padding of the dialog box
   - Added a new option for changing the color modulation of the dialog background image
-  - Added modulation settings to the name label background texture and the choices buttons background textures. [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
+  - Added modulation settings to the name label background texture and the choices buttons background textures [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
   - Added an option to use native buttons styles for choices [[Tim Krief](https://github.com/timkrief)]
   - Fixed a bug where the text alignment wasn't being shown on the preview
   - Fixed a bug with the name label shadow
   - Fixed a bug with the "auto color" option in game
 - Dialog node
-  - Fixed a bug where Glossary Definitions plain text was being added to the name label.
-  - You can now use [br] to insert line breaks.
-  - Questions now properly show the theme text alignment.
-  - The close dialog now performs a fade-out animation.
-  - Fixed an issue when trying to display small sprites as characters portraits.
+  - Fixed a bug where Glossary Definitions plain text was being added to the name label
+  - You can now use [br] to insert line breaks
+  - Questions now properly show the theme text alignment
+  - The close dialog now performs a fade-out animation
+  - Fixed an issue when trying to display small sprites as characters portraits
   - Fixed a bug where portraits didn't come to the front when being focused [[AnidemDex](https://github.com/AnidemDex)]
 - Settings
-  - Added a new option to toggle the character "focus"/"dim" while speaking. 
-- Added a button in timeline inspector plugin to open the selected timeline in the editor. [[ellogwen](https://github.com/ellogwen)]
+  - Added a new option to toggle the character "focus"/"dim" while speaking 
+- Added a button in timeline inspector plugin to open the selected timeline in the editor [[ellogwen](https://github.com/ellogwen)]
 - Special thanks to [Jowan-Spooner](https://github.com/Jowan-Spooner) for the QA and the facelift on the theme editor
 
 To view previous changes [click here](https://github.com/coppolaemilio/dialogic/blob/main/CHANGELOG.md). 
