@@ -437,7 +437,7 @@ func event_handler(event: Dictionary):
 						if char_portrait == '':
 							char_portrait = 'Default'
 						p.character_data = character_data
-						p.init(char_portrait, get_character_position(event['position']))
+						p.init(char_portrait, get_character_position(event['position']), event.get('mirror', false))
 						$Portraits.add_child(p)
 						p.fade_in()
 				_load_next_event()

@@ -4,7 +4,8 @@ var character_data = {
 	'name': 'Default',
 	'image': "res://addons/dialogic/Example Assets/portraits/df-3.png",
 	'color': Color(0.973511, 1, 0.152344),
-	'file': ''
+	'file': '',
+	'mirror_portraits': false
 }
 var positions = {
 	'left': Vector2(-400, 0),
@@ -13,11 +14,10 @@ var positions = {
 	'center_right': Vector2(200, 0),
 	'center_left': Vector2(-200, 0)}
 
-var position_to_mirror = ['center_right', 'right']
 var direction = 'left'
 var debug = false
 
-func init(expression: String = '', position_offset = 'left') -> void:
+func init(expression: String = '', position_offset = 'left', mirror = false) -> void:
 	rect_position += positions[position_offset]
 	direction = position_offset
 	modulate = Color(1,1,1,0)
@@ -44,10 +44,13 @@ func init(expression: String = '', position_offset = 'left') -> void:
 			$TextureRect.texture.get_height()
 		) * custom_scale
 	
+	# the mirror setting of the character
 	if character_data["data"].has('mirror_portraits'):
 		if character_data["data"]['mirror_portraits']:
-			if direction in position_to_mirror:
-				$TextureRect.flip_h = true
+			$TextureRect.flip_h = true
+	# the mirror setting of the join event
+	if mirror:
+		$TextureRect.flip_h = !$TextureRect.flip_h
 
 func _ready():
 	if debug:
