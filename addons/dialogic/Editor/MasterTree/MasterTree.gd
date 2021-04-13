@@ -139,6 +139,7 @@ func _add_timeline(timeline, select = false):
 	else:
 		item.set_text(0, timeline['file'])
 	timeline['editor'] = 'Timeline'
+	timeline['editable'] = true
 	item.set_metadata(0, timeline)
 	if not get_constant("dark_theme", "Editor"):
 		item.set_icon_modulate(0, get_color("property_color", "Editor"))
@@ -164,6 +165,7 @@ func _add_theme(theme_item, select = false):
 	item.set_icon(0, theme_icon)
 	item.set_text(0, theme_item['name'])
 	theme_item['editor'] = 'Theme'
+	theme_item['editable'] = true
 	item.set_metadata(0, theme_item)
 	if not get_constant("dark_theme", "Editor"):
 		item.set_icon_modulate(0, get_color("property_color", "Editor"))
@@ -191,6 +193,7 @@ func _add_character(character, select = false):
 	else:
 		item.set_text(0, character['file'])
 	character['editor'] = 'Character'
+	character['editable'] = true
 	item.set_metadata(0, character)
 	#item.set_editable(0, true)
 	if character.has('color'):
@@ -219,6 +222,7 @@ func _add_definition(definition, select = false):
 	if definition['type'] == 1:
 		item.set_icon(0, glossary_icon)
 	definition['editor'] = 'Definition'
+	definition['editable'] = true
 	item.set_metadata(0, definition)
 	if not get_constant("dark_theme", "Editor"):
 		item.set_icon_modulate(0, get_color("property_color", "Editor"))
@@ -251,8 +255,6 @@ func _on_item_selected():
 	elif metadata['editor'] == 'Settings':
 		settings_editor.update_data()
 		show_settings_editor()
-	else:
-		item.deselect(0)
 
 func show_character_editor():
 	emit_signal("editor_selected", 'character')
@@ -362,8 +364,9 @@ func _on_gui_input(event):
 		if event.is_pressed() and event.doubleclick:
 			var item = get_selected()
 			var metadata = item.get_metadata(0)
-			item.set_editable(0, true)
-			$RenamerReset.start(0.5)
+			if metadata.has("editable") and metadata["editable"]:
+				item.set_editable(0, true)
+				$RenamerReset.start(0.5)
 
 
 func _on_item_edited():
