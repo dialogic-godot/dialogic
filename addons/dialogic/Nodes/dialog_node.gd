@@ -90,7 +90,7 @@ func resize_main():
 		set_global_position(Vector2(0,0))
 		if ProjectSettings.get_setting("display/window/stretch/mode") != '2d':
 			set_deferred('rect_size', get_viewport().size)
-		dprint("Viewport", get_viewport().size)
+		dprint("[Dialogic] Viewport", get_viewport().size)
 	$TextBubble.rect_position.x = (rect_size.x / 2) - ($TextBubble.rect_size.x / 2)
 	if current_theme != null:
 		$TextBubble.rect_position.y = (rect_size.y) - ($TextBubble.rect_size.y) - current_theme.get_value('box', 'bottom_gap', 40)
@@ -483,7 +483,6 @@ func event_handler(event: Dictionary):
 					add_child(audio)
 				audio.stream = load(event['file'])
 				audio.play()
-				print('play')
 			else:
 				var audio = get_node_or_null('AudioEvent')
 				if audio != null:
@@ -576,7 +575,7 @@ func event_handler(event: Dictionary):
 			_load_next_event()
 		_:
 			visible = false
-			dprint('Other event. ', event)
+			dprint('[D] Other event. ', event)
 	
 	$Options.visible = waiting_for_answer
 
@@ -736,7 +735,7 @@ func _on_RichTextLabel_meta_hover_started(meta):
 				'color': current_theme.get_value('definitions', 'color', '#ffbebebe'),
 			})
 			correct_type = true
-			dprint(d)
+			dprint('[D] Hovered over glossary entry: ', d)
 
 	if correct_type:
 		definition_visible = true

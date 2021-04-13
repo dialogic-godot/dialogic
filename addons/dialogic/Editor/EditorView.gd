@@ -239,7 +239,7 @@ func godot_dialog_connect(who, method_name):
 
 
 func _on_file_selected(path):
-	dprint(path)
+	dprint('[D] Selected '+str(path))
 
 
 func dprint(what) -> void:

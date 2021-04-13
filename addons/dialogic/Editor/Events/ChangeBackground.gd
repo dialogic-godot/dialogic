@@ -18,8 +18,6 @@ func _ready():
 
 func load_data(data):
 	event_data = data
-	print("loading")
-	print(data)
 	load_image(event_data['background'])
 
 
