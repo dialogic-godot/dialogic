@@ -192,32 +192,48 @@ func parse_branches(dialog_script: Dictionary) -> Dictionary:
 	var event_id: int = 0 # The current id for jumping later on
 	var question_id: int = 0 # identifying the questions to assign options to it
 	for event in dialog_script['events']:
-		if event.has('question'):
-			event['event_id'] = event_id
-			event['question_id'] = question_id
-			event['answered'] = false
-			question_id += 1
-			questions.append(event)
-			parser_queue.append(event)
-
-		if event.has('condition'):
-			event['event_id'] = event_id
-			event['question_id'] = question_id
-			event['answered'] = false
-			question_id += 1
-			questions.append(event)
-			parser_queue.append(event)
-
 		if event.has('choice'):
 			var opened_branch = parser_queue.back()
-			dialog_script['events'][opened_branch['event_id']]['options'].append({
+			var option = {
 				'question_id': opened_branch['question_id'],
 				'label': event['choice'],
 				'event_id': event_id,
-				})
+				}
+			if event.has('condition') and event.has('definition') and event.has('value'):
+				option = {
+					'question_id': opened_branch['question_id'],
+					'label': event['choice'],
+					'event_id': event_id,
+					'condition': event['condition'],
+					'definition': event['definition'],
+					'value': event['value'],
+					}
+			else:
+				option = {
+					'question_id': opened_branch['question_id'],
+					'label': event['choice'],
+					'event_id': event_id,
+					'condition': '',
+					'definition': '',
+					'value': '',
+					}
+			dialog_script['events'][opened_branch['event_id']]['options'].append(option)
 			event['question_id'] = opened_branch['question_id']
-
-		if event.has('endbranch'):
+		elif event.has('question'):
+			event['event_id'] = event_id
+			event['question_id'] = question_id
+			event['answered'] = false
+			question_id += 1
+			questions.append(event)
+			parser_queue.append(event)
+		elif event.has('condition'):
+			event['event_id'] = event_id
+			event['question_id'] = question_id
+			event['answered'] = false
+			question_id += 1
+			questions.append(event)
+			parser_queue.append(event)
+		elif event.has('endbranch'):
 			event['event_id'] = event_id
 			var opened_branch = parser_queue.pop_back()
 			event['end_branch_of'] = opened_branch['question_id']
@@ -586,7 +602,21 @@ func reset_options():
 		option.queue_free()
 
 
-func add_choice_button(option):
+func _should_add_choice_button(option: Dictionary):
+	if not option['condition'].empty() and not option['definition'].empty() and not option['value'].empty():
+		var def_value = null
+		for d in definitions['variables']:
+			if d['id'] == option['definition']:
+				def_value = d['value']
+		return def_value != null and _compare_definitions(def_value, option['value'], option['condition']);
+	else:
+		return true
+
+
+func add_choice_button(option: Dictionary):
+	if not _should_add_choice_button(option):
+		return
+	
 	var theme = current_theme
 
 	var button = ChoiceButton.instance()
