@@ -34,6 +34,7 @@ v1.1 - WIP
   - You can un select a selected event by clicking it [[ellogwen](https://github.com/ellogwen)]
   - The `Scene Event` can now take other Scenes (`.tscn`) files as backgrounds. [[ellogwen](https://github.com/ellogwen)]
   - The `If Condition` event can now use definition variables as values to compare against [[ellogwen](https://github.com/ellogwen)]
+  - You can now hide `Choice events` if a definition doesn't meet some requirements [[Arnaud](https://github.com/arnaudvergnet)]
   - You can now select a character to ask a question in the `Question Event` [[Tim Krief](https://github.com/timkrief)]
   - Added very basic syntax highlighting to the `Text Event` editor
   - Fixed an indenting bug when removing events 
@@ -52,6 +53,7 @@ v1.1 - WIP
   - A reload of the preview dialog is performed when you change a property so you don't have to click the "preview changes" all the time
   - Removed the limitation of only 100px for the padding of the dialog box
   - Added a new option for changing the color modulation of the dialog background image
+  - Added new customization options (scale, and offset) to the next indicator image
   - Added modulation settings to the name label background texture and the choices buttons background textures [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
   - Added an option to use native buttons styles for choices [[Tim Krief](https://github.com/timkrief)]
   - Fixed a bug where the text alignment wasn't being shown on the preview
@@ -360,7 +362,7 @@ All icons are `.svg` files so they can scale nicely. I tried reusing many of the
 ## ❤ Credits
 Code made by [Emilio Coppola](https://github.com/coppolaemilio).
 
-Contributors: [Toen](https://twitter.com/ToenAndreMC), Òscar, [Arnaud](https://github.com/arnaudvergnet), [and more!](https://github.com/coppolaemilio/dialogic/graphs/contributors)
+Contributors: [Toen](https://twitter.com/ToenAndreMC), Òscar, [Arnaud](https://github.com/arnaudvergnet), [ellogwen](https://github.com/ellogwen), [Jowan-Spooner](https://github.com/Jowan-Spooner), [Tim Krief](https://github.com/timkrief),  [and more!](https://github.com/coppolaemilio/dialogic/graphs/contributors)
 
 Documentation page generated using: https://documentation.page/ by [Francisco Presencia](https://francisco.io/)
 
@@ -369,32 +371,37 @@ Placeholder images are from Toen's YouTube DF series:
  - https://www.youtube.com/watch?v=B1ggwiat7PM
 
 ### Thank you to all my [Patreons](https://www.patreon.com/coppolaemilio) for making this possible!
+
 - Mike King
-- Allyson Ota
-- Buskmann12
-- David T. Baptiste
-- Francisco Lepe
-- Problematic Dave
-- Rienk Kroese
 - Tyler Dean Osborne
+- Problematic Dave
+- Allyson Ota
+- Francisco Lepe
 - Gemma M. Rull
 - Alex Barton
 - Joe Constant
-- Kyncho
+- Kycho
 - JDA
+- Kersla Margdel
 - Chris Shove
 - Luke Peters
 - Wapiti
-- Noah Felt
 - Penny
-- Lukas Stranzl
-- Sl Tu
 - Garrett Guillotte
-- George Castro
-- GammaGames
-- Karl Anderson
-- A P
+- Sl Tu
+- Alex Harry
 - Rokatansky
+- Karl Anderson
+- GammaGames
+- Taankydaanky
+- Alex (Well Done Games)
+- GodofGrunts
+- Tim Krief
+- Daniel Cheney
+- Carlo Cabanilla
+- Flaming Potato
+- Joseph Catrambone
+- AzulCrescent
 
 Support me on [Patreon https://www.patreon.com/coppolaemilio](https://www.patreon.com/coppolaemilio)
 

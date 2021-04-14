@@ -31,7 +31,7 @@ resource_name = "Static"
 [sub_resource type="Animation" id=4]
 loop = true
 tracks/0/type = "value"
-tracks/0/path = NodePath(".:margin_bottom")
+tracks/0/path = NodePath("..:rect_position")
 tracks/0/interp = 2
 tracks/0/loop_wrap = true
 tracks/0/imported = false
@@ -40,7 +40,7 @@ tracks/0/keys = {
 "times": PoolRealArray( 0, 0.5 ),
 "transitions": PoolRealArray( 1, 1 ),
 "update": 0,
-"values": [ 12.0, 55.0 ]
+"values": [ Vector2( 0, 0 ), Vector2( 0, -10 ) ]
 }
 
 [sub_resource type="StyleBoxFlat" id=5]
@@ -92,7 +92,7 @@ margin_bottom = -10.0
 rect_clip_content = false
 custom_styles/normal = SubResource( 1 )
 custom_fonts/normal_font = ExtResource( 1 )
-custom_colors/default_color = Color( 0.423529, 0.580392, 0.74902, 1 )
+custom_colors/default_color = Color( 1, 1, 1, 1 )
 custom_colors/font_color_shadow = Color( 1, 1, 1, 0 )
 custom_constants/shadow_offset_x = 2
 custom_constants/shadow_offset_y = 2
@@ -104,30 +104,31 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="NextIndicator" type="TextureRect" parent="."]
-visible = false
-anchor_left = 1.0
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_left = -36.4279
-margin_top = -35.9016
-margin_right = 14.5721
-margin_bottom = 44.8652
-rect_scale = Vector2( 0.4, 0.4 )
+[node name="NextIndicatorContainer" type="Control" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="NextIndicator" type="TextureRect" parent="NextIndicatorContainer"]
+margin_top = -10.0
+margin_right = 51.0
+margin_bottom = 41.0
 texture = ExtResource( 3 )
 stretch_mode = 4
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="NextIndicator"]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="NextIndicatorContainer/NextIndicator"]
 autoplay = "Up and down"
 anims/Pulse = SubResource( 2 )
 anims/Static = SubResource( 3 )
 "anims/Up and down" = SubResource( 4 )
 
 [node name="NameLabel" type="Label" parent="."]
+visible = false
 margin_top = -48.0
 margin_right = 58.0
 margin_bottom = -8.0
