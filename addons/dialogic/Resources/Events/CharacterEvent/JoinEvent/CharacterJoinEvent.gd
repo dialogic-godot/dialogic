@@ -6,7 +6,9 @@ extends DialogicEventResource
 export(Resource) var character = null
 export(int) var selected_portrait = 0
 # Refer to DialogicPortraitManager.Position
-export(int) var selected_position = 0
+export(DialogicPortraitManager.Position) var selected_position = 0
+# Refer to DialogicPortraitManager.PAnimation
+export(DialogicPortraitManager.PAnimation) var selected_animation = 0
 export(bool) var skip = true
 
 var _PortraitManager: DialogicPortraitManager
@@ -33,7 +35,12 @@ func excecute(caller:DialogicNode) -> void:
 	var _character_portraits:Array = character.portraits.get_resources()
 	var _portrait = _character_portraits[selected_portrait]
 	
-	_PortraitManager.add_portrait(character, _portrait, selected_position)
+	_PortraitManager.add_portrait(
+		character, 
+		_portrait,
+		selected_position,
+		selected_animation
+		)
 
 
 func _on_portrait_added()->void:

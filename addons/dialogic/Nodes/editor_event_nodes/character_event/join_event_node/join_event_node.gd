@@ -7,12 +7,14 @@ export(NodePath) var ReferenceButton_path:NodePath
 export(NodePath) var CharacterBtn_path:NodePath
 export(NodePath) var PortraitBtn_path:NodePath
 export(NodePath) var Preview_path:NodePath
+export(NodePath) var AnimationSelector_path:NodePath
 
 var buttons:ButtonGroup
 
-onready var character_button_node = get_node(CharacterBtn_path)
-onready var portrait_button_node = get_node(PortraitBtn_path)
-onready var portrait_preview_node = get_node(Preview_path)
+onready var character_button_node:OptionButton = get_node(CharacterBtn_path)
+onready var portrait_button_node:OptionButton = get_node(PortraitBtn_path)
+onready var portrait_preview_node:TextureRect = get_node(Preview_path)
+onready var anim_selector_node:OptionButton = get_node(AnimationSelector_path)
 
 func _ready() -> void:
 	if base_resource:
@@ -39,6 +41,9 @@ func _update_node_values() -> void:
 		character_button_node.select_item_by_resource(_char)
 	else:
 		character_button_node.select(0)
+		portrait_button_node.select(0)
+	
+	anim_selector_node.select(_base.selected_animation)
 
 
 func _on_PositionButton_toggled(button_pressed: bool) -> void:
@@ -67,5 +72,13 @@ func _on_PortraitsButton_item_selected(index: int) -> void:
 	else:
 		base_resource.selected_portrait = 0
 	
+	_save_resource()
+	_update_node_values()
+
+
+func _on_AnimationsButton_item_selected(index: int) -> void:
+	var _n = anim_selector_node.get_selected_metadata()
+	if base_resource:
+		(base_resource as DialogicCharacterJoinEvent).selected_animation = _n
 	_save_resource()
 	_update_node_values()

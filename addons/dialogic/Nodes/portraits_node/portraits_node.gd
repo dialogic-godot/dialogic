@@ -5,9 +5,9 @@ signal portrait_added(character)
 
 enum PAnimation {
 	NO_ANIMATION,
+	FADE_IN,
 	APPEAR,
-	DISAPPEAR,
-	FADE_IN, 
+	DISAPPEAR, 
 	FADE_OUT,
 	}
 

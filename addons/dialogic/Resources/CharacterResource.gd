@@ -9,7 +9,7 @@ export(Color) var color:Color = Color.white
 export(bool) var default_speaker:bool = false
 export(String, MULTILINE) var description:String = ""
 # Array of DialogicPortraitResource
-export(Resource) var portraits = ResourceArray.new()
+export(Resource) var portraits = ResourceArray.new() setget _set_portraits
 
 
 func _get_display_name() -> String:
@@ -30,3 +30,13 @@ func get_good_name(with_name:String="") -> String:
 			_good_name = _good_name.replace(".tres", "")
 		_good_name = _good_name.capitalize()
 		return _good_name
+
+
+func _set_portraits(value) -> void:
+	portraits = value
+	if not value:
+		portraits = ResourceArray.new()
+		var _p = DialogicPortraitResource.new()
+		_p.name = "Default"
+		_p.image = load("res://icon.png")
+		portraits.add(_p)

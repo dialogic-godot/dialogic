@@ -20,9 +20,17 @@ onready var portrait_container_node := get_node(PortraitContainer_path)
 func _ready() -> void:
 	if not base_resource:
 		return
-	if base_resource.is_connected("changed", self, "_on_BaseResource_changed"):
-		base_resource.connect("changed", self, "_on_BaseResource_changed")
+	if not base_resource.is_connected("changed", self, "_on_BaseResource_changed"):
+		var _err = base_resource.connect("changed", self, "_on_BaseResource_changed")
+		assert(_err == OK)
 	_update_values()
+
+func _draw() -> void:
+	if not visible:
+		base_resource = null
+	if visible and not base_resource:
+		print("[Dialogic] No character resource to edit")
+		visible = false
 	
 
 func _update_values() -> void:
