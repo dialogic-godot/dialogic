@@ -29,7 +29,7 @@ func _ready() -> void:
 		DialogicUtil.Logger.print(self,["There's no resource reference for this event", name])
 		return
 	
-	if (base_resource as Resource).is_connected("changed", self, "_on_resource_change"):
+	if not (base_resource as Resource).is_connected("changed", self, "_on_resource_change"):
 		base_resource.connect("changed", self, "_on_resource_change")
 	
 	var menu_button_popup_node:PopupMenu = menu_button_node.get_popup()
@@ -57,8 +57,3 @@ func _on_resource_change() -> void:
 func _on_MenuButtonPopup_id_pressed(id:int) -> void:
 	if id == 0:
 		emit_signal("delelete_item_requested", base_resource)
-
-
-func _on_FoldButton_pressed() -> void:
-	center_content_node.visible = !center_content_node.visible
-	bottom_content_node.visible = !bottom_content_node.visible

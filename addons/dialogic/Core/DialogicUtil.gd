@@ -10,12 +10,23 @@ class Error:
 	static func not_found_timeline() -> Resource:
 		var _timeline = DialogicTimelineResource.new()
 		var _text_event = DialogicTextEvent.new()
+		var _char_join_event = DialogicCharacterJoinEvent.new()
 		var _character = DialogicCharacterResource.new()
+		var _portrait = DialogicPortraitResource.new()
+		
+		_portrait.image = load("res://icon.png")
+		
 		_character.name = DIALOGIC_ERROR
 		_character.color = Color.red
+		_character.portraits.add(_portrait)
+		
+		_char_join_event.character = _character
+		
 		_text_event.character = _character
 		_text_event.text = TIMELINE_NOT_SELECTED
+		_timeline.events.add(_char_join_event)
 		_timeline.events.add(_text_event)
+		
 		return _timeline
 
 class Logger:

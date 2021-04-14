@@ -12,8 +12,8 @@ func excecute(caller:DialogicNode) -> void:
 	emit_signal("event_started", self)
 
 
-func finish() -> void:
-	emit_signal("event_finished", self)
+func finish(skip=false) -> void:
+	emit_signal("event_finished", self, skip)
 
 func get_event_editor_node() -> DialogicEditorEventNode:
 	return DialogicEditorEventNode.new()

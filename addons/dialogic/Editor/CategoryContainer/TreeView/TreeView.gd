@@ -57,7 +57,7 @@ func create_tree_item(with_resource:Resource)->void:
 	
 	var _item = create_item()
 	_item.set_text(0, _resource.resource_name)
-	_item.set_tooltip(0, _resource.resource_path.get_file())
+	_item.set_tooltip(0, _resource.resource_path)
 	_item.set_metadata(0, _resource)
 	DialogicUtil.Logger.print(self,"Tree item created")
 

@@ -17,15 +17,22 @@ var event_finished = false
 var next_input = 'ui_accept'
 
 onready var DialogNode := get_node_or_null(DialogNode_path)
+onready var PortraitManager := get_node_or_null(PortraitsNode_path)
 
 
 func _ready() -> void:
+	
 	if not timeline_name:
 		timeline = DialogicUtil.Error.not_found_timeline()
 	else:
 		load_timeline()
 
 	if not Engine.editor_hint:
+		visible = false
+		if DialogNode:
+			DialogNode.visible = false
+		if PortraitManager:
+			PortraitManager.visible = false
 		load_dialog()
 	else:
 		set_process(false)
@@ -51,7 +58,10 @@ func _on_event_start(_event):
 		DialogNode.event_finished = event_finished
 
 
-func _on_event_finished(_event):
+func _on_event_finished(_event, go_to_next_event=false):
 	event_finished = true
 	if DialogNode:
 		DialogNode.event_finished = event_finished
+	
+	if go_to_next_event:
+		timeline.go_to_next_event(self)

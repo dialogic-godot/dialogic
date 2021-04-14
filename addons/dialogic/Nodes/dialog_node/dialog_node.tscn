@@ -129,9 +129,11 @@ anims/Static = SubResource( 3 )
 "anims/Up and down" = SubResource( 4 )
 
 [node name="NameLabel" type="Label" parent="."]
-margin_top = -48.0
-margin_right = 200.0
-margin_bottom = -8.0
+anchor_top = -0.048
+anchor_bottom = -0.048
+margin_top = -39.936
+margin_right = 207.0
+margin_bottom = 0.0639982
 size_flags_vertical = 1
 custom_styles/normal = SubResource( 5 )
 custom_fonts/font = ExtResource( 1 )
@@ -139,7 +141,9 @@ custom_colors/font_color = Color( 1, 1, 1, 1 )
 custom_colors/font_color_shadow = Color( 0, 0, 0, 0.619608 )
 custom_constants/shadow_offset_x = 2
 custom_constants/shadow_offset_y = 2
+text = "Example Name"
 valign = 1
+clip_text = true
 __meta__ = {
 "_edit_use_anchors_": false
 }

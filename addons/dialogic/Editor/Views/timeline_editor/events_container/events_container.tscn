@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://addons/dialogic/Editor/Views/timeline_editor/events_container/events_container.gd" type="Script" id=1]
 [ext_resource path="res://addons/dialogic/Nodes/editor_event_buttons/text_event_button/dialog_event_button.tscn" type="PackedScene" id=2]
@@ -6,6 +6,7 @@
 [ext_resource path="res://addons/dialogic/Resources/CharacterResource.gd" type="Script" id=4]
 [ext_resource path="res://addons/dialogic/Resources/Events/TextEvent/TextEvent.gd" type="Script" id=5]
 [ext_resource path="res://addons/dialogic/Nodes/editor_event_buttons/wait_time_event_button/wait_time_event_button.tscn" type="PackedScene" id=6]
+[ext_resource path="res://addons/dialogic/Nodes/editor_event_buttons/character_event_button/join_event_button/join_event_button.tscn" type="PackedScene" id=7]
 
 [sub_resource type="Resource" id=1]
 script = ExtResource( 3 )
@@ -95,6 +96,12 @@ margin_top = 9.0
 margin_right = 52.0
 margin_bottom = 31.0
 
+[node name="JoinEventButton" parent="Events/ScrollContainer/MarginContainer/HBoxContainer" instance=ExtResource( 7 )]
+margin_left = 56.0
+margin_top = 9.0
+margin_right = 80.0
+margin_bottom = 31.0
+
 [node name="Custom Events" type="Tabs" parent="."]
 visible = false
 anchor_right = 1.0
@@ -105,3 +112,4 @@ margin_right = -4.0
 margin_bottom = -4.0
 [connection signal="pressed" from="Events/ScrollContainer/MarginContainer/HBoxContainer/TextEventButton" to="." method="_on_EventButton_pressed"]
 [connection signal="pressed" from="Events/ScrollContainer/MarginContainer/HBoxContainer/GenericEventButton" to="." method="_on_EventButton_pressed"]
+[connection signal="pressed" from="Events/ScrollContainer/MarginContainer/HBoxContainer/JoinEventButton" to="." method="_on_EventButton_pressed"]

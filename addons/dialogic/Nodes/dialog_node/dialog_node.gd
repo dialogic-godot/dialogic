@@ -14,4 +14,6 @@ onready var NameNode:Label = (get_node(NameNode_path) as Label)
 onready var NextIndicatorNode := get_node(NextIndicator_path)
 
 func _process(delta: float) -> void:
+	if not NextIndicatorNode:
+		return
 	NextIndicatorNode.visible = event_finished

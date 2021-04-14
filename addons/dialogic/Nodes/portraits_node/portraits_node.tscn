@@ -1,0 +1,82 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://addons/dialogic/Nodes/portraits_node/portraits_node.gd" type="Script" id=1]
+[ext_resource path="res://addons/dialogic/Nodes/portraits_node/tween_animations.gd" type="Script" id=2]
+
+[node name="Portraits" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+CenterNode_path = NodePath("Center")
+
+[node name="Left" type="ReferenceRect" parent="."]
+anchor_top = 0.5
+anchor_bottom = 0.5
+margin_left = 45.0
+margin_top = -20.0
+margin_right = 85.0
+margin_bottom = 20.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Center Left" type="ReferenceRect" parent="."]
+anchor_left = 0.25
+anchor_top = 0.5
+anchor_right = 0.25
+anchor_bottom = 0.5
+margin_left = -19.576
+margin_top = -20.0
+margin_right = 20.424
+margin_bottom = 20.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Center" type="ReferenceRect" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -20.0
+margin_top = -20.0
+margin_right = 20.0
+margin_bottom = 20.0
+rect_pivot_offset = Vector2( 20, 20 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Center Right" type="ReferenceRect" parent="."]
+anchor_left = 0.75
+anchor_top = 0.5
+anchor_right = 0.75
+anchor_bottom = 0.5
+margin_left = -20.0
+margin_top = -20.0
+margin_right = 20.0
+margin_bottom = 20.0
+rect_pivot_offset = Vector2( 20, 20 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Right" type="ReferenceRect" parent="."]
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+margin_left = -80.9999
+margin_top = -20.0
+margin_right = -40.9999
+margin_bottom = 20.0
+rect_pivot_offset = Vector2( 20, 20 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Tween" type="Tween" parent="."]
+script = ExtResource( 2 )

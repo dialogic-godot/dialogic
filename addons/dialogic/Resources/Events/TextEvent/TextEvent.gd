@@ -24,6 +24,7 @@ func excecute(caller:DialogicNode) -> void:
 		assert(_err == OK)
 
 	caller.visible = true
+	_DialogNode.visible = true
 	
 	_update_text()
 	

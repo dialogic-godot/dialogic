@@ -1,6 +1,7 @@
 tool
-extends DialogicEventResource
 class_name DialogicCharacterLeaveEvent
+extends DialogicEventResource
+
 export(Resource) var character = null
 
 func excecute(caller) -> void:

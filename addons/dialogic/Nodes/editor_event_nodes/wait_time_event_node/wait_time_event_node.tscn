@@ -39,7 +39,7 @@ text = "seconds"
 
 [node name="FoldButton" parent="VBoxContainer/Top/HBoxContainer" index="5"]
 margin_left = 186.0
-margin_right = 220.0
+margin_right = 216.0
 
 [node name="Center" parent="VBoxContainer" index="1"]
 visible = false

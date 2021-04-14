@@ -5,7 +5,7 @@ extends DialogicEventResource
 export(float, 0, 60, 1) var wait_time = 0.0
 
 
-func excecute(caller:Control) -> void:
+func excecute(caller:DialogicNode) -> void:
 	.excecute(caller)
 	yield(caller.get_tree().create_timer(wait_time), "timeout")
 	finish()
