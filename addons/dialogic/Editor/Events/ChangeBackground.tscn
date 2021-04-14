@@ -1,27 +1,10 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=6 format=2]
 
-[ext_resource path="res://addons/dialogic/Images/Context Menus/Remove.svg" type="Texture" id=1]
 [ext_resource path="res://addons/dialogic/Editor/Events/ChangeBackground.gd" type="Script" id=2]
-[ext_resource path="res://addons/dialogic/Editor/Events/Common/VisibleToggle.tscn" type="PackedScene" id=3]
-[ext_resource path="res://addons/dialogic/Editor/Events/Common/Spacer.tscn" type="PackedScene" id=4]
-[ext_resource path="res://addons/dialogic/Editor/Events/Common/PieceExtraSettings.tscn" type="PackedScene" id=5]
+[ext_resource path="res://addons/dialogic/Editor/Events/styles/ChangeBackground.tres" type="StyleBox" id=3]
+[ext_resource path="res://addons/dialogic/Editor/Events/Templates/EventTemplate.tscn" type="PackedScene" id=4]
 [ext_resource path="res://addons/dialogic/Images/Event Icons/Main Icons/change-background.svg" type="Texture" id=6]
-
-[sub_resource type="StyleBoxFlat" id=1]
-content_margin_left = 16.0
-content_margin_right = 6.0
-content_margin_top = 6.0
-content_margin_bottom = 6.0
-bg_color = Color( 0.219608, 0.34902, 0.701961, 0.443137 )
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color( 0.12549, 0.12549, 0.12549, 1 )
-corner_radius_top_left = 6
-corner_radius_top_right = 6
-corner_radius_bottom_right = 6
-corner_radius_bottom_left = 6
+[ext_resource path="res://addons/dialogic/Editor/Events/Common/ImagePicker.tscn" type="PackedScene" id=7]
 
 [node name="SceneBlock" type="HBoxContainer"]
 anchor_right = 1.0
@@ -33,95 +16,11 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Indent" type="Control" parent="."]
-visible = false
-margin_bottom = 46.0
-
-[node name="PanelContainer" type="PanelContainer" parent="."]
+[node name="EventTemplate" parent="." instance=ExtResource( 4 )]
+anchor_right = 0.0
 margin_right = 1024.0
-margin_bottom = 44.0
-mouse_filter = 1
-size_flags_horizontal = 3
-size_flags_vertical = 3
-custom_styles/panel = SubResource( 1 )
-
-[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer"]
-margin_left = 16.0
-margin_top = 6.0
-margin_right = 1018.0
-margin_bottom = 38.0
-size_flags_horizontal = 3
-
-[node name="Header" type="HBoxContainer" parent="PanelContainer/VBoxContainer"]
-margin_right = 1002.0
-margin_bottom = 28.0
-
-[node name="TextureRect" type="TextureRect" parent="PanelContainer/VBoxContainer/Header"]
-margin_right = 22.0
-margin_bottom = 28.0
-texture = ExtResource( 6 )
-stretch_mode = 6
-
-[node name="Title" type="Label" parent="PanelContainer/VBoxContainer/Header"]
-margin_left = 26.0
-margin_top = 7.0
-margin_right = 150.0
-margin_bottom = 21.0
-text = "Change Background"
-
-[node name="Name" type="Label" parent="PanelContainer/VBoxContainer/Header"]
-margin_left = 154.0
-margin_top = 7.0
-margin_right = 425.0
-margin_bottom = 21.0
-text = "No image (will clear previous scene event)"
-
-[node name="ImageButton" type="Button" parent="PanelContainer/VBoxContainer/Header"]
-margin_left = 429.0
-margin_right = 453.0
-margin_bottom = 28.0
-text = "..."
-
-[node name="ClearButton" type="Button" parent="PanelContainer/VBoxContainer/Header"]
-margin_left = 457.0
-margin_right = 485.0
-margin_bottom = 28.0
-disabled = true
-icon = ExtResource( 1 )
-
-[node name="VisibleToggle" parent="PanelContainer/VBoxContainer/Header" instance=ExtResource( 3 )]
-visible = false
-margin_left = 478.0
-margin_right = 508.0
-
-[node name="Preview" type="Label" parent="PanelContainer/VBoxContainer/Header"]
-visible = false
-margin_left = 512.0
-margin_top = 8.0
-margin_right = 540.0
-margin_bottom = 22.0
-custom_colors/font_color = Color( 1, 1, 1, 0.513726 )
-text = "    ..."
-
-[node name="Spacer" parent="PanelContainer/VBoxContainer/Header" instance=ExtResource( 4 )]
-margin_left = 489.0
-margin_right = 961.0
-margin_bottom = 28.0
-
-[node name="OptionButton" parent="PanelContainer/VBoxContainer/Header" instance=ExtResource( 5 )]
-margin_left = 965.0
-margin_right = 1002.0
-margin_bottom = 28.0
-items = [ "Move Up", null, 0, false, false, 0, 0, null, "", false, "Move Down", null, 0, false, false, 1, 0, null, "", false, "", null, 0, false, false, 2, 0, null, "", true, "Remove", null, 0, false, false, 3, 0, null, "", false ]
-
-[node name="TextureRect" type="TextureRect" parent="PanelContainer/VBoxContainer"]
-margin_top = 32.0
-margin_right = 1002.0
-margin_bottom = 32.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-expand = true
-stretch_mode = 5
-
-[connection signal="pressed" from="PanelContainer/VBoxContainer/Header/ImageButton" to="." method="_on_ImageButton_pressed"]
-[connection signal="pressed" from="PanelContainer/VBoxContainer/Header/ClearButton" to="." method="_on_ClearButton_pressed"]
+margin_bottom = 46.0
+event_style = ExtResource( 3 )
+event_icon = ExtResource( 6 )
+event_name = "Change Background"
+header_scene = ExtResource( 7 )

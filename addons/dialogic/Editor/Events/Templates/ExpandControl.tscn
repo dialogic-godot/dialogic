@@ -4,6 +4,7 @@
 [ext_resource path="res://addons/dialogic/Editor/Events/Common/VisibleToggle.tscn" type="PackedScene" id=4]
 
 [node name="ExpandControl" type="HBoxContainer"]
+visible = false
 margin_right = 62.0
 margin_bottom = 30.0
 script = ExtResource( 1 )
@@ -18,6 +19,7 @@ margin_bottom = 30.0
 [node name="VisibleToggle" parent="." instance=ExtResource( 4 )]
 margin_left = 8.0
 margin_right = 38.0
+pressed = false
 script = null
 
 [node name="MarginContainer" type="MarginContainer" parent="."]

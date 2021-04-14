@@ -313,8 +313,11 @@ func indent_events() -> void:
 		return
 	# Resetting all the indents
 	for event in event_list:
-		var indent_node = event.get_node("Indent")
-		indent_node.visible = false
+		var indent_node
+		# Keep old behavior for items without template
+		if not event.event_data.has("background"):
+			indent_node = event.get_node("Indent")
+			indent_node.visible = false
 		
 	# Adding new indents
 	for event in event_list:
@@ -342,13 +345,17 @@ func indent_events() -> void:
 					indent = 0
 
 		if indent > 0:
-			var indent_node = event.get_node("Indent")
-			indent_node.rect_min_size = Vector2(25 * indent, 0)
-			indent_node.visible = true
-			if starter:
-				indent_node.rect_min_size = Vector2(25 * (indent - 1), 0)
-				if indent - 1 == 0:
-					indent_node.visible = false
+			var indent_node
+			
+			# Keep old behavior for items without template
+			if not event.event_data.has("background"):
+				indent_node = event.get_node("Indent")
+				indent_node.rect_min_size = Vector2(25 * indent, 0)
+				indent_node.visible = true
+				if starter:
+					indent_node.rect_min_size = Vector2(25 * (indent - 1), 0)
+					if indent - 1 == 0:
+						indent_node.visible = false
 				
 		starter = false
 

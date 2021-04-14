@@ -45,13 +45,19 @@ func set_header(scene: PackedScene):
 
 func set_body(scene: PackedScene):
 	body_node = _set_content(body_content_container, scene)
+	expand_control.set_enabled(body_node != null)
 
 
 func get_body():
 	return body_node
 
+
 func get_header():
 	return header_node
+
+
+func set_preview(text: String):
+	expand_control.set_preview(text)
 
 
 ## *****************************************************************************
@@ -76,10 +82,12 @@ func _setup_event():
 func _set_content(container: Control, scene: PackedScene):
 	for c in container.get_children():
 		container.remove_child(c)
-	var node = scene.instance()
-	container.add_child(node)
-	node.set_owner(get_tree().get_edited_scene_root())
-	return node
+	if scene != null:
+		var node = scene.instance()
+		container.add_child(node)
+#		node.set_owner(get_tree().get_edited_scene_root())
+		return node
+	return null
 
 
 func _on_ExpandControl_state_changed(expanded: bool):
@@ -94,6 +102,11 @@ func _on_OptionsControl_action(action_name: String):
 	emit_signal("option_action", action_name)
 
 
+func _on_gui_input(event):
+	if event is InputEventMouseButton and event.is_pressed() and event.doubleclick and event.button_index == 1 and expand_control.expanded and expand_control.enabled:
+		expand_control.set_expanded(not expand_control.expanded)
+
+
 ## *****************************************************************************
 ##								OVERRIDES
 ## *****************************************************************************
@@ -101,6 +114,7 @@ func _on_OptionsControl_action(action_name: String):
 
 func _ready():
 	_setup_event()
-	expand_control.set_enabled(body_scene != null)
+	connect("gui_input", self, '_on_gui_input')
 	expand_control.connect("state_changed", self, "_on_ExpandControl_state_changed")
 	options_control.connect("action", self, "_on_OptionsControl_action")
+	expand_control.set_enabled(body_scene != null)
