@@ -14,4 +14,4 @@ func _on_OptionSelected(index):
 	elif index == 1:
 		emit_signal("action", "down")
 	elif index == 3:
-		emit_signal("action","delete")
+		emit_signal("action","remove")

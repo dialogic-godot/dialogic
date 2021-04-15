@@ -20,6 +20,10 @@ var selected_item : Node
 var moving_piece = null
 var piece_was_dragged = false
 
+func _has_template(event):
+	return event.event_data.has("background")
+
+
 func _ready():
 	var modifier = ''
 	var _scale = get_constant("inspector_margin", "Editor")
@@ -218,17 +222,18 @@ func _is_item_selected(item: Node):
 func _select_item(item: Node):
 	if item != null and not _is_item_selected(item):
 		_clear_selection()
-		var panel: PanelContainer = item.get_node("PanelContainer")
-		if panel != null:
-			saved_style = panel.get('custom_styles/panel')
-			selected_item = item
-			if selected_item.event_data.has('text') and selected_item.event_data.has('character'):
-				panel.set('custom_styles/panel', selected_style_text)
-			else:
-				panel.set('custom_styles/panel', selected_style)
-			# allow event panels to do additional operation when getting selected
-			if (selected_item.has_method("on_timeline_selected")):
-				selected_item.on_timeline_selected()
+		selected_item = item
+		if not _has_template(item):
+			var panel: PanelContainer = item.get_node("PanelContainer")
+			if panel != null:
+				saved_style = panel.get('custom_styles/panel')
+				if selected_item.event_data.has('text') and selected_item.event_data.has('character'):
+					panel.set('custom_styles/panel', selected_style_text)
+				else:
+					panel.set('custom_styles/panel', selected_style)
+				# allow event panels to do additional operation when getting selected
+				if (selected_item.has_method("on_timeline_selected")):
+					selected_item.on_timeline_selected()
 	else:
 		_clear_selection()
 
@@ -248,6 +253,16 @@ func _on_gui_input(event, item: Node):
 				piece_was_dragged = true
 			else:
 				piece_was_dragged = false
+
+
+func _on_event_options_action(action: String, item: Node):
+	if action == "remove":
+		if selected_item != item:
+			_select_item(item)
+		delete_event()
+	else:
+		move_block(item, action)
+	indent_events()
 
 
 # Event Creation signal for buttons
@@ -295,6 +310,8 @@ func create_event(scene: String, data: Dictionary = {'no-data': true} , indent: 
 		piece.load_data(data)
 	
 	piece.connect("gui_input", self, '_on_gui_input', [piece])
+	if _has_template(piece):
+		piece.event_template.connect("option_action", self, '_on_event_options_action', [piece])
 	events_warning.visible = false
 	# Indent on create
 	if indent:
@@ -315,9 +332,11 @@ func indent_events() -> void:
 	for event in event_list:
 		var indent_node
 		# Keep old behavior for items without template
-		if not event.event_data.has("background"):
+		if not _has_template(event):
 			indent_node = event.get_node("Indent")
 			indent_node.visible = false
+		else:
+			event.event_template.set_indent(0)
 		
 	# Adding new indents
 	for event in event_list:
@@ -345,24 +364,24 @@ func indent_events() -> void:
 					indent = 0
 
 		if indent > 0:
-			var indent_node
-			
 			# Keep old behavior for items without template
-			if not event.event_data.has("background"):
-				indent_node = event.get_node("Indent")
+			if not _has_template(event):
+				var indent_node = event.get_node("Indent")
 				indent_node.rect_min_size = Vector2(25 * indent, 0)
 				indent_node.visible = true
 				if starter:
 					indent_node.rect_min_size = Vector2(25 * (indent - 1), 0)
 					if indent - 1 == 0:
 						indent_node.visible = false
-				
+			else:
+				if starter:
+					event.event_template.set_indent(indent - 1)
+				else:
+					event.event_template.set_indent(indent)
 		starter = false
 
 
 func load_timeline(filename: String):
-	#print('---------------------------')
-	#print('Loading: ', filename)
 	clear_timeline()
 	var start_time = OS.get_system_time_msecs()
 	timeline_file = filename
@@ -447,7 +466,10 @@ func get_block_below(block):
 
 func get_block_height(block):
 	if block != null:
-		return block.get_node("PanelContainer").rect_size.y
+		if not _has_template(block):
+			return block.get_node("PanelContainer").rect_size.y
+		else:
+			return block.rect_size.y
 	else:
 		return null
 

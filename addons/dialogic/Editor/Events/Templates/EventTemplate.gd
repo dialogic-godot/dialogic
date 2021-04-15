@@ -17,10 +17,12 @@ onready var options_control = $PanelContainer/MarginContainer/VBoxContainer/Head
 onready var header_content_container = $PanelContainer/MarginContainer/VBoxContainer/Header/Content
 onready var body_container = $PanelContainer/MarginContainer/VBoxContainer/Body
 onready var body_content_container = $PanelContainer/MarginContainer/VBoxContainer/Body/Content
+onready var indent_node = $Indent
+
 
 var header_node
 var body_node
-
+var indent_size = 25
 
 ## *****************************************************************************
 ##								PUBLIC METHODS
@@ -58,6 +60,11 @@ func get_header():
 
 func set_preview(text: String):
 	expand_control.set_preview(text)
+
+
+func set_indent(indent: int):
+	indent_node.rect_min_size = Vector2(indent_size * indent, 0)
+	indent_node.visible = indent != 0
 
 
 ## *****************************************************************************
@@ -103,7 +110,8 @@ func _on_OptionsControl_action(action_name: String):
 
 
 func _on_gui_input(event):
-	if event is InputEventMouseButton and event.is_pressed() and event.doubleclick and event.button_index == 1 and expand_control.expanded and expand_control.enabled:
+	print('test')
+	if event is InputEventMouseButton and event.is_pressed() and event.doubleclick and event.button_index == 1 and expand_control.enabled:
 		expand_control.set_expanded(not expand_control.expanded)
 
 

@@ -133,6 +133,7 @@ margin_bottom = 28.0
 margin_left = 974.0
 margin_right = 1008.0
 margin_bottom = 28.0
+items = [ "Move Up", null, 0, false, false, 0, 0, null, "", false, "Move Down", null, 0, false, false, 1, 0, null, "", false, "", null, 0, false, false, 2, 0, null, "", false, "Remove", null, 0, false, false, 3, 0, null, "", false ]
 
 [node name="Body" type="VBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer"]
 visible = false
@@ -160,6 +161,10 @@ margin_top = 10.0
 margin_right = 1008.0
 margin_bottom = 210.0
 
+[node name="TextureRect" parent="PanelContainer/MarginContainer/VBoxContainer/Body/Content/ImagePreview" index="0"]
+margin_left = 404.0
+margin_right = 604.0
+
 [node name="TextureRect" type="TextureRect" parent="PanelContainer/MarginContainer/VBoxContainer/Body/Content/ImagePreview"]
 margin_left = 404.0
 margin_right = 604.0
@@ -170,9 +175,5 @@ size_flags_vertical = 5
 texture = ExtResource( 8 )
 expand = true
 stretch_mode = 6
-
-[node name="TextureRect" parent="PanelContainer/MarginContainer/VBoxContainer/Body/Content/ImagePreview" index="1"]
-margin_left = 404.0
-margin_right = 604.0
 
 [editable path="PanelContainer/MarginContainer/VBoxContainer/Body/Content/ImagePreview"]
