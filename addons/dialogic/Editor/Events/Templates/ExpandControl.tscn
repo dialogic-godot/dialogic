@@ -26,6 +26,7 @@ script = null
 margin_left = 42.0
 margin_right = 64.0
 margin_bottom = 30.0
+mouse_filter = 1
 custom_constants/margin_left = 10
 
 [node name="Preview" type="Label" parent="MarginContainer"]

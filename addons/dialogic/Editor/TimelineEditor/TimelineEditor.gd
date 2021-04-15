@@ -207,16 +207,12 @@ func _process(delta):
 
 
 func _clear_selection():
-	print(selected_item)
-	print(saved_style)
 	if selected_item != null and saved_style != null:
-		print(_has_template(selected_item))
 		if not _has_template(selected_item):
 			var selected_panel: PanelContainer = selected_item.get_node("PanelContainer")
 			if selected_panel != null:
 				selected_panel.set('custom_styles/panel', saved_style)
 		else:
-			print("reset")
 			selected_item.event_template.set_event_style(saved_style)
 	selected_item = null
 	saved_style = null
@@ -250,7 +246,6 @@ func _select_item(item: Node):
 
 
 func _on_gui_input(event, item: Node):
-#	print(item)
 	if event is InputEventMouseButton and event.button_index == 1:
 		if (not event.is_pressed()):
 			if (not piece_was_dragged and moving_piece != null):

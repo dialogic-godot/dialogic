@@ -49,6 +49,7 @@ margin_left = 2.0
 margin_top = 2.0
 margin_right = 1022.0
 margin_bottom = 44.0
+mouse_filter = 1
 custom_constants/margin_right = 6
 custom_constants/margin_top = 6
 custom_constants/margin_left = 6
@@ -64,31 +65,35 @@ size_flags_horizontal = 3
 
 [node name="Header" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer"]
 margin_right = 1008.0
-margin_bottom = 28.0
+margin_bottom = 30.0
+rect_min_size = Vector2( 0, 30 )
 size_flags_horizontal = 3
 
 [node name="IconMarginContainer" type="MarginContainer" parent="PanelContainer/MarginContainer/VBoxContainer/Header"]
 margin_right = 31.0
-margin_bottom = 28.0
+margin_bottom = 30.0
+mouse_filter = 1
 custom_constants/margin_right = 5
 custom_constants/margin_left = 10
 
 [node name="IconTexture" type="TextureRect" parent="PanelContainer/MarginContainer/VBoxContainer/Header/IconMarginContainer"]
 margin_left = 10.0
 margin_right = 26.0
-margin_bottom = 28.0
+margin_bottom = 30.0
 texture = ExtResource( 6 )
 stretch_mode = 6
 
 [node name="VSeparator" type="VSeparator" parent="PanelContainer/MarginContainer/VBoxContainer/Header"]
 margin_left = 35.0
 margin_right = 39.0
-margin_bottom = 28.0
+margin_bottom = 30.0
+mouse_filter = 1
 
 [node name="TitleMarginContainer" type="MarginContainer" parent="PanelContainer/MarginContainer/VBoxContainer/Header"]
 margin_left = 43.0
 margin_right = 152.0
-margin_bottom = 28.0
+margin_bottom = 30.0
+mouse_filter = 1
 custom_constants/margin_right = 5
 custom_constants/margin_left = 5
 __meta__ = {
@@ -97,20 +102,22 @@ __meta__ = {
 
 [node name="TitleLabel" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/Header/TitleMarginContainer"]
 margin_left = 5.0
-margin_top = 7.0
+margin_top = 8.0
 margin_right = 104.0
-margin_bottom = 21.0
+margin_bottom = 22.0
 text = "Event Template"
 
 [node name="VSeparator2" type="VSeparator" parent="PanelContainer/MarginContainer/VBoxContainer/Header"]
 margin_left = 156.0
 margin_right = 160.0
-margin_bottom = 28.0
+margin_bottom = 30.0
+mouse_filter = 1
 
 [node name="Content" type="MarginContainer" parent="PanelContainer/MarginContainer/VBoxContainer/Header"]
 margin_left = 164.0
 margin_right = 174.0
-margin_bottom = 28.0
+margin_bottom = 30.0
+mouse_filter = 1
 custom_constants/margin_right = 5
 custom_constants/margin_left = 5
 
@@ -121,17 +128,18 @@ margin_right = 230.0
 [node name="Spacer" parent="PanelContainer/MarginContainer/VBoxContainer/Header" instance=ExtResource( 4 )]
 margin_left = 178.0
 margin_right = 962.0
-margin_bottom = 28.0
+margin_bottom = 30.0
 
 [node name="VSeparator3" type="VSeparator" parent="PanelContainer/MarginContainer/VBoxContainer/Header"]
 margin_left = 966.0
 margin_right = 970.0
-margin_bottom = 28.0
+margin_bottom = 30.0
+mouse_filter = 1
 
 [node name="OptionsControl" parent="PanelContainer/MarginContainer/VBoxContainer/Header" instance=ExtResource( 5 )]
 margin_left = 974.0
 margin_right = 1008.0
-margin_bottom = 28.0
+margin_bottom = 30.0
 items = [ "Move Up", null, 0, false, false, 0, 0, null, "", false, "Move Down", null, 0, false, false, 1, 0, null, "", false, "", null, 0, false, false, 2, 0, null, "", false, "Remove", null, 0, false, false, 3, 0, null, "", false ]
 
 [node name="Body" type="VBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer"]
@@ -143,11 +151,13 @@ margin_bottom = 262.0
 [node name="HSeparator" type="HSeparator" parent="PanelContainer/MarginContainer/VBoxContainer/Body"]
 margin_right = 1008.0
 margin_bottom = 4.0
+mouse_filter = 1
 
 [node name="Content" type="MarginContainer" parent="PanelContainer/MarginContainer/VBoxContainer/Body"]
 margin_top = 8.0
 margin_right = 1008.0
 margin_bottom = 228.0
+mouse_filter = 1
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_constants/margin_top = 10

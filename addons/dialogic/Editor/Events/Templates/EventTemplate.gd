@@ -118,7 +118,6 @@ func _on_OptionsControl_action(action_name: String):
 
 
 func _on_gui_input(event):
-#	print('template')
 	if event is InputEventMouseButton and event.is_pressed() and event.doubleclick and event.button_index == 1 and expand_control.enabled:
 		expand_control.set_expanded(not expand_control.expanded)
 

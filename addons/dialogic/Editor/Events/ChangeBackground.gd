@@ -21,12 +21,7 @@ func _ready():
 	image_picker.editor_reference = editor_reference
 	image_picker.connect("file_selected", self, "_on_file_selected")
 	image_picker.connect("clear_pressed", self, "_on_clear_pressed")
-	connect("gui_input", self, '_on_gui_input')
 
-
-func _on_gui_input(event):
-#	print('top')
-	pass
 
 func load_data(data):
 	event_data = data
