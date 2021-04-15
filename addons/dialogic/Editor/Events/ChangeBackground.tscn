@@ -6,7 +6,7 @@
 [ext_resource path="res://addons/dialogic/Images/Event Icons/Main Icons/change-background.svg" type="Texture" id=6]
 [ext_resource path="res://addons/dialogic/Editor/Events/Common/ImagePicker.tscn" type="PackedScene" id=7]
 
-[node name="SceneBlock" type="HBoxContainer"]
+[node name="ChangeBackground" type="HBoxContainer"]
 anchor_right = 1.0
 margin_bottom = 44.0
 size_flags_horizontal = 3

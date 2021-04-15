@@ -1,12 +1,10 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://addons/dialogic/Editor/Events/Templates/EventTemplate.gd" type="Script" id=1]
 [ext_resource path="res://addons/dialogic/Editor/Events/Templates/ExpandControl.tscn" type="PackedScene" id=2]
-[ext_resource path="res://addons/dialogic/Editor/Events/Common/ImagePreview.tscn" type="PackedScene" id=3]
 [ext_resource path="res://addons/dialogic/Editor/Events/Common/Spacer.tscn" type="PackedScene" id=4]
 [ext_resource path="res://addons/dialogic/Editor/Events/Templates/OptionsControl.tscn" type="PackedScene" id=5]
 [ext_resource path="res://addons/dialogic/Images/Plugin/plugin-editor-icon-dark-theme.svg" type="Texture" id=6]
-[ext_resource path="res://backgrounds/office_background.jpg" type="Texture" id=8]
 
 [sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 0.262745, 0.262745, 0.262745, 1 )
@@ -41,6 +39,7 @@ margin_bottom = 64.0
 margin_right = 1024.0
 margin_bottom = 46.0
 mouse_filter = 1
+mouse_default_cursor_shape = 6
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_styles/panel = SubResource( 1 )
@@ -153,27 +152,3 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_constants/margin_top = 10
 custom_constants/margin_bottom = 10
-
-[node name="ImagePreview" parent="PanelContainer/MarginContainer/VBoxContainer/Body/Content" instance=ExtResource( 3 )]
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_top = 10.0
-margin_right = 1008.0
-margin_bottom = 210.0
-
-[node name="TextureRect" parent="PanelContainer/MarginContainer/VBoxContainer/Body/Content/ImagePreview" index="0"]
-margin_left = 404.0
-margin_right = 604.0
-
-[node name="TextureRect" type="TextureRect" parent="PanelContainer/MarginContainer/VBoxContainer/Body/Content/ImagePreview"]
-margin_left = 404.0
-margin_right = 604.0
-margin_bottom = 200.0
-rect_min_size = Vector2( 200, 200 )
-size_flags_horizontal = 5
-size_flags_vertical = 5
-texture = ExtResource( 8 )
-expand = true
-stretch_mode = 6
-
-[editable path="PanelContainer/MarginContainer/VBoxContainer/Body/Content/ImagePreview"]

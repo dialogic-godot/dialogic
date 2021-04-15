@@ -11,8 +11,9 @@ onready var timeline = $TimelineArea/TimeLine
 onready var events_warning = $ScrollContainer/EventContainer/EventsWarning
 
 var hovered_item = null
-var selected_style : StyleBoxFlat = load("res://addons/dialogic/Editor/Events/selected_styleboxflat.tres")
-var selected_style_text : StyleBoxFlat = load("res://addons/dialogic/Editor/Events/selected_styleboxflat_text_event.tres")
+var selected_style : StyleBoxFlat = load("res://addons/dialogic/Editor/Events/styles/selected_styleboxflat.tres")
+var selected_style_text : StyleBoxFlat = load("res://addons/dialogic/Editor/Events/styles/selected_styleboxflat_text_event.tres")
+var selected_style_template : StyleBoxFlat = load("res://addons/dialogic/Editor/Events/styles/selected_styleboxflat_template.tres")
 var saved_style : StyleBoxFlat
 var selected_item : Node
 
@@ -206,11 +207,17 @@ func _process(delta):
 
 
 func _clear_selection():
+	print(selected_item)
+	print(saved_style)
 	if selected_item != null and saved_style != null:
-		var selected_panel: PanelContainer = selected_item.get_node("PanelContainer")
-		if selected_panel != null:
-			selected_panel.set('custom_styles/panel', saved_style)
-			
+		print(_has_template(selected_item))
+		if not _has_template(selected_item):
+			var selected_panel: PanelContainer = selected_item.get_node("PanelContainer")
+			if selected_panel != null:
+				selected_panel.set('custom_styles/panel', saved_style)
+		else:
+			print("reset")
+			selected_item.event_template.set_event_style(saved_style)
 	selected_item = null
 	saved_style = null
 
@@ -234,11 +241,16 @@ func _select_item(item: Node):
 				# allow event panels to do additional operation when getting selected
 				if (selected_item.has_method("on_timeline_selected")):
 					selected_item.on_timeline_selected()
+		else:
+			saved_style = item.event_template.get_event_style()
+			item.event_template.set_event_style(selected_style_template)
+			selected_item.event_template.on_timeline_selected()
 	else:
 		_clear_selection()
 
 
 func _on_gui_input(event, item: Node):
+#	print(item)
 	if event is InputEventMouseButton and event.button_index == 1:
 		if (not event.is_pressed()):
 			if (not piece_was_dragged and moving_piece != null):
@@ -299,7 +311,6 @@ func _on_ButtonCondition_pressed() -> void:
 
 # Adding an event to the timeline
 func create_event(scene: String, data: Dictionary = {'no-data': true} , indent: bool = false):
-	# This function will create an event in the timeline.
 	var piece = load("res://addons/dialogic/Editor/Events/" + scene + ".tscn").instance()
 	piece.editor_reference = editor_reference
 	if selected_item != null:
@@ -309,9 +320,10 @@ func create_event(scene: String, data: Dictionary = {'no-data': true} , indent: 
 	if data.has('no-data') == false:
 		piece.load_data(data)
 	
-	piece.connect("gui_input", self, '_on_gui_input', [piece])
 	if _has_template(piece):
 		piece.event_template.connect("option_action", self, '_on_event_options_action', [piece])
+	
+	piece.connect("gui_input", self, '_on_gui_input', [piece])
 	events_warning.visible = false
 	# Indent on create
 	if indent:

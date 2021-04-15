@@ -8,6 +8,7 @@ export(PackedScene) var header_scene : PackedScene
 export(PackedScene) var body_scene : PackedScene
 
 signal option_action(action_name)
+signal selected()
 
 onready var panel = $PanelContainer
 onready var title_label = $PanelContainer/MarginContainer/VBoxContainer/Header/TitleMarginContainer/TitleLabel
@@ -31,6 +32,10 @@ var indent_size = 25
 
 func set_event_style(style: StyleBoxFlat):
 	panel.set('custom_styles/panel', style)
+
+
+func get_event_style():
+	return panel.get('custom_styles/panel')
 	
 
 func set_event_icon(icon: Texture):
@@ -67,13 +72,16 @@ func set_indent(indent: int):
 	indent_node.visible = indent != 0
 
 
+func on_timeline_selected():
+	emit_signal("selected")
+
+
 ## *****************************************************************************
 ##								PRIVATE METHODS
 ## *****************************************************************************
 
 
 func _setup_event():
-	print('set props')
 	if event_style != null:
 		set_event_style(event_style)
 	if event_icon != null:
@@ -110,7 +118,7 @@ func _on_OptionsControl_action(action_name: String):
 
 
 func _on_gui_input(event):
-	print('test')
+#	print('template')
 	if event is InputEventMouseButton and event.is_pressed() and event.doubleclick and event.button_index == 1 and expand_control.enabled:
 		expand_control.set_expanded(not expand_control.expanded)
 
@@ -122,7 +130,7 @@ func _on_gui_input(event):
 
 func _ready():
 	_setup_event()
-	connect("gui_input", self, '_on_gui_input')
+	panel.connect("gui_input", self, '_on_gui_input')
 	expand_control.connect("state_changed", self, "_on_ExpandControl_state_changed")
 	options_control.connect("action", self, "_on_OptionsControl_action")
 	expand_control.set_enabled(body_scene != null)
