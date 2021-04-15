@@ -35,6 +35,10 @@ func load_image(img_src: String):
 		event_template.set_body(preview_scene)
 		event_template.get_body().set_image(load(img_src))
 		image_picker.set_image(img_src)
+	elif img_src.ends_with('.tscn'):
+		event_template.set_preview("...")
+		image_picker.set_image(img_src)
+		event_template.set_body(null)
 	else:
 		event_template.set_body(null)
 		image_picker.clear_image()

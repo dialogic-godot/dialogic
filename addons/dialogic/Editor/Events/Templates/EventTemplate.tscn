@@ -84,9 +84,8 @@ texture = ExtResource( 6 )
 stretch_mode = 6
 
 [node name="TitleHBoxContainer" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer/Header"]
-visible = false
 margin_left = 35.0
-margin_right = 61.0
+margin_right = 160.0
 margin_bottom = 30.0
 
 [node name="VSeparator" type="VSeparator" parent="PanelContainer/MarginContainer/VBoxContainer/Header/TitleHBoxContainer"]
@@ -96,7 +95,7 @@ mouse_filter = 1
 
 [node name="TitleMarginContainer" type="MarginContainer" parent="PanelContainer/MarginContainer/VBoxContainer/Header/TitleHBoxContainer"]
 margin_left = 8.0
-margin_right = 18.0
+margin_right = 117.0
 margin_bottom = 30.0
 mouse_filter = 1
 custom_constants/margin_right = 5
@@ -108,18 +107,19 @@ __meta__ = {
 [node name="TitleLabel" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/Header/TitleHBoxContainer/TitleMarginContainer"]
 margin_left = 5.0
 margin_top = 8.0
-margin_right = 5.0
+margin_right = 104.0
 margin_bottom = 22.0
+text = "Event Template"
 
 [node name="VSeparator2" type="VSeparator" parent="PanelContainer/MarginContainer/VBoxContainer/Header/TitleHBoxContainer"]
-margin_left = 22.0
-margin_right = 26.0
+margin_left = 121.0
+margin_right = 125.0
 margin_bottom = 30.0
 mouse_filter = 1
 
 [node name="Content" type="MarginContainer" parent="PanelContainer/MarginContainer/VBoxContainer/Header"]
-margin_left = 35.0
-margin_right = 45.0
+margin_left = 164.0
+margin_right = 174.0
 margin_bottom = 30.0
 mouse_filter = 1
 custom_constants/margin_right = 5
@@ -130,7 +130,7 @@ margin_left = 178.0
 margin_right = 230.0
 
 [node name="Spacer" parent="PanelContainer/MarginContainer/VBoxContainer/Header" instance=ExtResource( 4 )]
-margin_left = 49.0
+margin_left = 178.0
 margin_right = 962.0
 margin_bottom = 30.0
 
