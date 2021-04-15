@@ -543,9 +543,13 @@ func fold_all_nodes():
 	for event in timeline.get_children():
 		if event.has_node("PanelContainer/VBoxContainer/Header/VisibleToggle"):
 			event.get_node("PanelContainer/VBoxContainer/Header/VisibleToggle").set_pressed(false)
+		elif _has_template(event):
+			event.event_template.set_expanded(false)
 
 
 func unfold_all_nodes():
 	for event in timeline.get_children():
 		if event.has_node("PanelContainer/VBoxContainer/Header/VisibleToggle"):
 			event.get_node("PanelContainer/VBoxContainer/Header/VisibleToggle").set_pressed(true)
+		elif _has_template(event):
+			event.event_template.set_expanded(true)

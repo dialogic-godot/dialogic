@@ -76,6 +76,10 @@ func on_timeline_selected():
 	emit_signal("selected")
 
 
+func set_expanded(expanded: bool):
+	expand_control.set_expanded(expanded)
+
+
 ## *****************************************************************************
 ##								PRIVATE METHODS
 ## *****************************************************************************
