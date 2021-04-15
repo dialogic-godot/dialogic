@@ -6,6 +6,7 @@ var text_speed := 0.02 # Higher = lower speed
 onready var text_label = $RichTextLabel
 onready var name_label = $NameLabel
 onready var tween = $Tween
+onready var next_indicator = $NextIndicatorContainer/NextIndicator
 
 var _finished := false
 
@@ -101,7 +102,20 @@ func load_theme(theme: ConfigFile):
 	$TextureRect.visible = theme.get_value('background', 'use_image', true)
 
 	# Next image
-	$NextIndicator.texture = DialogicUtil.path_fixer_load(theme.get_value('next_indicator', 'image', 'res://addons/dialogic/Example Assets/next-indicator/next-indicator.png'))
+	$NextIndicatorContainer.rect_position = Vector2(0,0)
+	next_indicator.texture = DialogicUtil.path_fixer_load(theme.get_value('next_indicator', 'image', 'res://addons/dialogic/Example Assets/next-indicator/next-indicator.png'))
+	# Reset for up and down animation
+	next_indicator.margin_top = 0 
+	next_indicator.margin_bottom = 0 
+	next_indicator.margin_left = 0 
+	next_indicator.margin_right = 0 
+	# Scale
+	var indicator_scale = theme.get_value('next_indicator', 'scale', 0.4)
+	next_indicator.rect_scale = Vector2(indicator_scale, indicator_scale)
+	# Offset
+	var offset = theme.get_value('next_indicator', 'offset', Vector2(13, 10))
+	next_indicator.rect_position = theme.get_value('box', 'size', Vector2(910, 167)) - (next_indicator.texture.get_size() * indicator_scale)
+	next_indicator.rect_position -= offset
 	
 	# Character Name
 	$NameLabel/ColorRect.visible = theme.get_value('name', 'background_visible', false)
@@ -120,10 +134,10 @@ func load_theme(theme: ConfigFile):
 		$NameLabel/TextureRect.modulate = Color('#ffffffff')
 	
 	# Setting next indicator animation
-	$NextIndicator.self_modulate = Color('#ffffff')
-	$NextIndicator/AnimationPlayer.play(
-		theme.get_value('next_indicator', 'animation', 'Up and down')
-	)
+	next_indicator.self_modulate = Color('#ffffff')
+	var animation = theme.get_value('next_indicator', 'animation', 'Up and down')
+	next_indicator.get_node('AnimationPlayer').play(animation)
+
 
 ## *****************************************************************************
 ##								PRIVATE METHODS

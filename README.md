@@ -28,12 +28,14 @@ v1.1 - WIP
 - Organized the images and other assets into a tidier structure [[Jowan-Spooner](https://github.com/Jowan-Spooner)] _**Warning!** If you were using the example portrait assets you will have to load them again manually on the character editor_
 - You can now create resources by right clicking the section and selecting "+ New" [[Tim Krief](https://github.com/timkrief)]
 - Remade all the PopupMenu items in gdscript and replaced the icons with native editor theme ones.
+- Experimental: Added a static proxy for C# projects. _Testing wanted!_ [[mscharley](https://github.com/mscharley)]
 - Timeline:
   - New event `Call Node`: Call a Godot NodePath and a method name. In addition you can add arguments as well. The Timeline will execute those methods and wait for completion, if the method in question is async and/or yielding [[ellogwen](https://github.com/ellogwen)]
   - You now can drag and drop events into the timeline! [[ellogwen](https://github.com/ellogwen)]
   - You can un select a selected event by clicking it [[ellogwen](https://github.com/ellogwen)]
   - The `Scene Event` can now take other Scenes (`.tscn`) files as backgrounds. [[ellogwen](https://github.com/ellogwen)]
   - The `If Condition` event can now use definition variables as values to compare against [[ellogwen](https://github.com/ellogwen)]
+  - You can now hide `Choice events` if a definition doesn't meet some requirements [[Arnaud](https://github.com/arnaudvergnet)]
   - You can now select a character to ask a question in the `Question Event` [[Tim Krief](https://github.com/timkrief)]
   - Added very basic syntax highlighting to the `Text Event` editor
   - Fixed an indenting bug when removing events 
@@ -54,18 +56,21 @@ v1.1 - WIP
   - A reload of the preview dialog is performed when you change a property so you don't have to click the "preview changes" all the time
   - Removed the limitation of only 100px for the padding of the dialog box
   - Added a new option for changing the color modulation of the dialog background image
+  - Added new customization options (scale, and offset) to the next indicator image
   - Added modulation settings to the name label background texture and the choices buttons background textures [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
   - Added an option to use native buttons styles for choices [[Tim Krief](https://github.com/timkrief)]
+  - Added new settings to set a fixed size for choice buttons (This is used to prevent premade texture stretching)
   - Fixed a bug where the text alignment wasn't being shown on the preview
   - Fixed a bug with the name label shadow
   - Fixed a bug with the "auto color" option in game
 - Dialog node
-  - Fixed a bug where Glossary Definitions plain text was being added to the name label
   - You can now use [br] to insert line breaks
   - Questions now properly show the theme text alignment
   - The close dialog now performs a fade-out animation
+  - Fixed a bug where Glossary Definitions plain text was being added to the name label
   - Fixed an issue when trying to display small sprites as characters portraits
   - Fixed a bug where portraits didn't come to the front when being focused [[AnidemDex](https://github.com/AnidemDex)]
+  - Fixed a bug when the display stretch was set to `2D`
 - Settings
   - Added a new option to toggle the character "focus"/"dim" while speaking 
 - Added a button in timeline inspector plugin to open the selected timeline in the editor [[ellogwen](https://github.com/ellogwen)]
@@ -362,7 +367,7 @@ All icons are `.svg` files so they can scale nicely. I tried reusing many of the
 ## ❤ Credits
 Code made by [Emilio Coppola](https://github.com/coppolaemilio).
 
-Contributors: [Toen](https://twitter.com/ToenAndreMC), Òscar, [Arnaud](https://github.com/arnaudvergnet), [and more!](https://github.com/coppolaemilio/dialogic/graphs/contributors)
+Contributors: [Toen](https://twitter.com/ToenAndreMC), Òscar, [Arnaud](https://github.com/arnaudvergnet), [ellogwen](https://github.com/ellogwen), [Jowan-Spooner](https://github.com/Jowan-Spooner), [Tim Krief](https://github.com/timkrief),  [and more!](https://github.com/coppolaemilio/dialogic/graphs/contributors)
 
 Documentation page generated using: https://documentation.page/ by [Francisco Presencia](https://francisco.io/)
 
@@ -371,32 +376,37 @@ Placeholder images are from Toen's YouTube DF series:
  - https://www.youtube.com/watch?v=B1ggwiat7PM
 
 ### Thank you to all my [Patreons](https://www.patreon.com/coppolaemilio) for making this possible!
+
 - Mike King
-- Allyson Ota
-- Buskmann12
-- David T. Baptiste
-- Francisco Lepe
-- Problematic Dave
-- Rienk Kroese
 - Tyler Dean Osborne
+- Problematic Dave
+- Allyson Ota
+- Francisco Lepe
 - Gemma M. Rull
 - Alex Barton
 - Joe Constant
-- Kyncho
+- Kycho
 - JDA
+- Kersla Margdel
 - Chris Shove
 - Luke Peters
 - Wapiti
-- Noah Felt
 - Penny
-- Lukas Stranzl
-- Sl Tu
 - Garrett Guillotte
-- George Castro
-- GammaGames
-- Karl Anderson
-- A P
+- Sl Tu
+- Alex Harry
 - Rokatansky
+- Karl Anderson
+- GammaGames
+- Taankydaanky
+- Alex (Well Done Games)
+- GodofGrunts
+- Tim Krief
+- Daniel Cheney
+- Carlo Cabanilla
+- Flaming Potato
+- Joseph Catrambone
+- AzulCrescent
 
 Support me on [Patreon https://www.patreon.com/coppolaemilio](https://www.patreon.com/coppolaemilio)
 
