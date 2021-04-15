@@ -17,12 +17,14 @@ var character_icon
 var theme_icon
 var definition_icon
 var glossary_icon
+var documentation_icon
 
 var timelines_tree
 var characters_tree
 var definitions_tree
 var themes_tree
 var settings_tree
+var documentation_tree
 
 var filter_tree_term = ''
 
@@ -81,6 +83,11 @@ func _ready():
 	settings_tree.set_text(0, "Settings")
 	settings_tree.set_icon(0, get_icon("GDScript", "EditorIcons"))
 	settings_tree.set_metadata(0, {'editor': 'Settings'})
+
+	documentation_tree = tree.create_item(root)
+	documentation_tree.set_text(0, "Documentation")
+	documentation_tree.set_icon(0, get_icon("HelpSearch", "EditorIcons"))
+	documentation_tree.set_metadata(0, {'editor': 'Documentation'})
 
 	
 	connect('item_selected', self, '_on_item_selected')
@@ -255,6 +262,10 @@ func _on_item_selected():
 	elif metadata['editor'] == 'Settings':
 		settings_editor.update_data()
 		show_settings_editor()
+	elif metadata['editor'] == 'Documentation':
+#		settings_editor.update_data()
+#		show_settings_editor()
+		pass
 
 func show_character_editor():
 	emit_signal("editor_selected", 'character')
