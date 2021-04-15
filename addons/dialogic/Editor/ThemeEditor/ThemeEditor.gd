@@ -75,6 +75,10 @@ onready var n : Dictionary = {
 	'button_offset_y': $"VBoxContainer/TabContainer/Choice Buttons/Column2/GridContainer/HBoxContainer/TextOffsetV",
 	'button_separation': $"VBoxContainer/TabContainer/Choice Buttons/Column2/GridContainer/VerticalSeparation",
 	
+	'button_fixed': $"VBoxContainer/TabContainer/Choice Buttons/Column2/GridContainer/HBoxContainer2/FixedSize",
+	'button_fixed_x': $"VBoxContainer/TabContainer/Choice Buttons/Column2/GridContainer/HBoxContainer2/ButtonSizeX",
+	'button_fixed_y': $"VBoxContainer/TabContainer/Choice Buttons/Column2/GridContainer/HBoxContainer2/ButtonSizeY",
+	
 	# Glossary
 	'glossary_font': $VBoxContainer/TabContainer/Glossary/Column/GridContainer/FontButton,
 	'glossary_color': $VBoxContainer/TabContainer/Glossary/Column/GridContainer/ColorPickerButton,
@@ -142,8 +146,9 @@ func load_theme(filename):
 	n['button_separation'].value = theme.get_value('buttons', 'gap', 5)
 	n['button_modulation'].pressed = theme.get_value('buttons', 'modulation', false)
 	n['button_modulation_color'].color = Color(theme.get_value('buttons', 'modulation_color', '#ffffffff'))
-	
-	
+	n['button_fixed'].pressed = theme.get_value('buttons', 'fixed', false)
+	n['button_fixed_x'].value = theme.get_value('buttons', 'fixed_size', Vector2(130,40)).x
+	n['button_fixed_y'].value = theme.get_value('buttons', 'fixed_size', Vector2(130,40)).y
 	
 	toggle_button_customization_fields(not theme.get_value('buttons', 'use_native', false))
 	
@@ -663,4 +668,18 @@ func _on_NextOffset_value_changed(value):
 		return
 	var offset_value = Vector2(n['next_indicator_offset_x'].value, n['next_indicator_offset_y'].value)
 	DialogicResources.set_theme_value(current_theme, 'next_indicator', 'offset', offset_value)
+	_on_PreviewButton_pressed() # Refreshing the preview
+
+
+func _on_FixedSize_toggled(button_pressed):
+	if loading:
+		return
+	DialogicResources.set_theme_value(current_theme, 'buttons', 'fixed', button_pressed)
+	_on_PreviewButton_pressed() # Refreshing the preview
+
+
+func _on_ButtonSize_value_changed(value):
+	if loading:
+		return
+	DialogicResources.set_theme_value(current_theme, 'buttons','fixed_size', Vector2(n['button_fixed_x'].value,n['button_fixed_y'].value))
 	_on_PreviewButton_pressed() # Refreshing the preview

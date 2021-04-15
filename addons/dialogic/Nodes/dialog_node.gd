@@ -629,6 +629,11 @@ func add_choice_button(option: Dictionary):
 		button.set('custom_colors/font_color', text_color)
 		button.set('custom_colors/font_color_hover', text_color)
 		button.set('custom_colors/font_color_pressed', text_color)
+		
+		if theme.get_value('buttons', 'fixed', false):
+			var size = theme.get_value('buttons', 'fixed_size', Vector2(130,40))
+			button.rect_min_size = size
+			button.rect_size = size
 
 		if theme.get_value('buttons', 'text_color_enabled', true):
 			var button_text_color = Color(theme.get_value('buttons', 'text_color', "#ffffffff"))

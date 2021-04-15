@@ -8,7 +8,7 @@ content_margin_left = 4.0
 content_margin_right = 4.0
 content_margin_top = 4.0
 content_margin_bottom = 4.0
-bg_color = Color( 0, 0, 0, 1 )
+bg_color = Color( 0.252, 0.2718, 0.3246, 1 )
 
 [node name="ThemeEditor" type="ScrollContainer"]
 anchor_right = 1.0
@@ -242,6 +242,7 @@ value = 2.0
 rounded = true
 
 [node name="Dialog Box" type="HBoxContainer" parent="VBoxContainer/TabContainer"]
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 4.0
@@ -823,7 +824,6 @@ allow_greater = true
 allow_lesser = true
 
 [node name="Choice Buttons" type="HBoxContainer" parent="VBoxContainer/TabContainer"]
-visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 4.0
@@ -834,7 +834,7 @@ custom_constants/separation = 10
 
 [node name="Column" type="VBoxContainer" parent="VBoxContainer/TabContainer/Choice Buttons"]
 margin_right = 270.0
-margin_bottom = 157.0
+margin_bottom = 325.0
 rect_min_size = Vector2( 270, 0 )
 size_flags_vertical = 3
 __meta__ = {
@@ -850,7 +850,7 @@ text = "Visuals"
 [node name="GridContainer" type="GridContainer" parent="VBoxContainer/TabContainer/Choice Buttons/Column"]
 margin_top = 26.0
 margin_right = 270.0
-margin_bottom = 106.0
+margin_bottom = 162.0
 size_flags_horizontal = 3
 custom_constants/hseparation = 10
 columns = 2
@@ -951,26 +951,26 @@ margin_bottom = 24.0
 size_flags_horizontal = 3
 
 [node name="Label2" type="Label" parent="VBoxContainer/TabContainer/Choice Buttons/Column/GridContainer"]
-margin_top = 89.0
+margin_top = 117.0
 margin_right = 134.0
-margin_bottom = 103.0
+margin_bottom = 131.0
 text = "Use Native Buttons"
 
 [node name="CheckBox" type="CheckBox" parent="VBoxContainer/TabContainer/Choice Buttons/Column/GridContainer"]
 margin_left = 144.0
-margin_top = 84.0
+margin_top = 112.0
 margin_right = 270.0
-margin_bottom = 108.0
+margin_bottom = 136.0
 
 [node name="VSeparator" type="VSeparator" parent="VBoxContainer/TabContainer/Choice Buttons"]
 margin_left = 280.0
 margin_right = 284.0
-margin_bottom = 157.0
+margin_bottom = 325.0
 
 [node name="Column2" type="VBoxContainer" parent="VBoxContainer/TabContainer/Choice Buttons"]
 margin_left = 294.0
-margin_right = 575.0
-margin_bottom = 157.0
+margin_right = 603.0
+margin_bottom = 325.0
 rect_min_size = Vector2( 270, 0 )
 size_flags_vertical = 3
 __meta__ = {
@@ -978,15 +978,15 @@ __meta__ = {
 }
 
 [node name="SectionTitle" type="Label" parent="VBoxContainer/TabContainer/Choice Buttons/Column2"]
-margin_right = 281.0
+margin_right = 309.0
 margin_bottom = 22.0
 custom_styles/normal = SubResource( 1 )
 text = "Placement"
 
 [node name="GridContainer" type="GridContainer" parent="VBoxContainer/TabContainer/Choice Buttons/Column2"]
 margin_top = 26.0
-margin_right = 281.0
-margin_bottom = 78.0
+margin_right = 309.0
+margin_bottom = 106.0
 size_flags_horizontal = 3
 custom_constants/hseparation = 10
 columns = 2
@@ -1000,7 +1000,7 @@ text = "Box padding"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/TabContainer/Choice Buttons/Column2/GridContainer"]
 margin_left = 129.0
-margin_right = 281.0
+margin_right = 309.0
 margin_bottom = 24.0
 
 [node name="TextOffsetV" type="SpinBox" parent="VBoxContainer/TabContainer/Choice Buttons/Column2/GridContainer/HBoxContainer"]
@@ -1029,10 +1029,42 @@ text = "Vertical separation"
 [node name="VerticalSeparation" type="SpinBox" parent="VBoxContainer/TabContainer/Choice Buttons/Column2/GridContainer"]
 margin_left = 129.0
 margin_top = 28.0
-margin_right = 281.0
+margin_right = 309.0
 margin_bottom = 52.0
 value = 5.0
 rounded = true
+allow_lesser = true
+
+[node name="Label" type="Label" parent="VBoxContainer/TabContainer/Choice Buttons/Column2/GridContainer"]
+margin_top = 61.0
+margin_right = 119.0
+margin_bottom = 75.0
+text = "Fixed size"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer/TabContainer/Choice Buttons/Column2/GridContainer"]
+margin_left = 129.0
+margin_top = 56.0
+margin_right = 309.0
+margin_bottom = 80.0
+
+[node name="FixedSize" type="CheckBox" parent="VBoxContainer/TabContainer/Choice Buttons/Column2/GridContainer/HBoxContainer2"]
+margin_right = 24.0
+margin_bottom = 24.0
+
+[node name="ButtonSizeX" type="SpinBox" parent="VBoxContainer/TabContainer/Choice Buttons/Column2/GridContainer/HBoxContainer2"]
+margin_left = 28.0
+margin_right = 102.0
+margin_bottom = 24.0
+rounded = true
+allow_greater = true
+allow_lesser = true
+
+[node name="ButtonSizeY" type="SpinBox" parent="VBoxContainer/TabContainer/Choice Buttons/Column2/GridContainer/HBoxContainer2"]
+margin_left = 106.0
+margin_right = 180.0
+margin_bottom = 24.0
+rounded = true
+allow_greater = true
 allow_lesser = true
 
 [node name="Glossary" type="HBoxContainer" parent="VBoxContainer/TabContainer"]
@@ -1203,6 +1235,9 @@ one_shot = true
 [connection signal="value_changed" from="VBoxContainer/TabContainer/Choice Buttons/Column2/GridContainer/HBoxContainer/TextOffsetV" to="." method="_on_ButtonOffset_value_changed"]
 [connection signal="value_changed" from="VBoxContainer/TabContainer/Choice Buttons/Column2/GridContainer/HBoxContainer/TextOffsetH" to="." method="_on_ButtonOffset_value_changed"]
 [connection signal="value_changed" from="VBoxContainer/TabContainer/Choice Buttons/Column2/GridContainer/VerticalSeparation" to="." method="_on_VerticalSeparation_value_changed"]
+[connection signal="toggled" from="VBoxContainer/TabContainer/Choice Buttons/Column2/GridContainer/HBoxContainer2/FixedSize" to="." method="_on_FixedSize_toggled"]
+[connection signal="value_changed" from="VBoxContainer/TabContainer/Choice Buttons/Column2/GridContainer/HBoxContainer2/ButtonSizeX" to="." method="_on_ButtonSize_value_changed"]
+[connection signal="value_changed" from="VBoxContainer/TabContainer/Choice Buttons/Column2/GridContainer/HBoxContainer2/ButtonSizeY" to="." method="_on_ButtonSize_value_changed"]
 [connection signal="pressed" from="VBoxContainer/TabContainer/Glossary/Column/GridContainer/FontButton" to="." method="_on_GlossaryFontButton_pressed"]
 [connection signal="color_changed" from="VBoxContainer/TabContainer/Glossary/Column/GridContainer/ColorPickerButton" to="." method="_on_GlossaryColorPicker_color_changed"]
 [connection signal="toggled" from="VBoxContainer/TabContainer/Glossary/Column/GridContainer/HBoxContainer2/CheckBoxShadow" to="." method="_on_CheckBoxShadow_toggled"]
