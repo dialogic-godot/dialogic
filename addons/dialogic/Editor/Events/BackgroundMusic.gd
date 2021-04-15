@@ -8,58 +8,35 @@ var editorPopup
 
 # This is the information of this event and it will get parsed and saved to the JSON file.
 var event_data = {
+	'event_name':'BackgroundMusic',
 	'background-music': 'stop',
-	'file': ''
+	'file': '',
+	'audio_bus':'Master',
+	'volume':0,
+	'fade_length':1,
 }
 
 
 func _ready():
-	load_audio('')
-	$PanelContainer/VBoxContainer/Header/ButtonClear.icon = get_icon("Remove", "EditorIcons")
-	$PanelContainer/VBoxContainer/Header/ButtonPreviewPlay.icon = get_icon("Play", "EditorIcons")
-
-
-func _on_ButtonAudio_pressed():
-	editor_reference.godot_dialog("*.wav, *.ogg, *.mp3")
-	editor_reference.godot_dialog_connect(self, "_on_file_selected")
-
-
-func _on_file_selected(path, target):
-	target.load_audio(path)
-
-
-func load_audio(path: String):
-	if not path.empty():
-		$PanelContainer/VBoxContainer/Header/Name.text = path
-		$PanelContainer/VBoxContainer/Header/ButtonClear.disabled = false
-		$PanelContainer/VBoxContainer/Header/ButtonPreviewPlay.disabled = false
-		event_data['file'] = path
-		event_data['background-music'] = 'play'
-	else:
-		$PanelContainer/VBoxContainer/Header/Name.text = 'No music (will stop with fade out)'
-		$PanelContainer/VBoxContainer/Header/ButtonClear.disabled = true
-		$PanelContainer/VBoxContainer/Header/ButtonPreviewPlay.disabled = true
-		event_data['file'] = ''
-		event_data['background-music'] = 'stop'
-
+	$PanelContainer/VBoxContainer/Header/VisibleToggle.set_visible(true)
+	$PanelContainer/VBoxContainer/Settings/AudioPicker.editor_reference = editor_reference
+	$PanelContainer/VBoxContainer/Settings/AudioPicker.connect("audio_changed", self, "update_audio_data")
 
 func load_data(data):
 	event_data = data
-	load_audio(data['file'])
+	$PanelContainer/VBoxContainer/Settings/FadeLength.value = event_data.get("fade_length", 1)
+	$PanelContainer/VBoxContainer/Settings/AudioPicker.load_data(data)
 
-
-func _on_ButtonPreviewPlay_pressed():
-	if $PanelContainer/AudioPreview.is_playing():
-		$PanelContainer/AudioPreview.stop()
+func update_audio_data(file, playing, audio_bus, volume):
+	event_data['background-music'] = playing
+	event_data['file'] = file
+	event_data['audio_bus'] = audio_bus
+	event_data['volume'] = volume
+	if file:
+		$PanelContainer/VBoxContainer/Header/Preview.text = 'Plays '+file.get_file()
 	else:
-		$PanelContainer/AudioPreview.stream = load(event_data['file'])
-		$PanelContainer/AudioPreview.play()
-		$PanelContainer/VBoxContainer/Header/ButtonPreviewPlay.icon = get_icon("Stop", "EditorIcons")
+		$PanelContainer/VBoxContainer/Header/Preview.text = 'Fades out previous background music'
 
+func _on_FadeLength_value_changed(value):
+	event_data['fade_length'] = value
 
-func _on_AudioPreview_finished():
-	$PanelContainer/VBoxContainer/Header/ButtonPreviewPlay.icon = get_icon("Play", "EditorIcons")
-
-
-func _on_ButtonClear_pressed():
-	load_audio('')

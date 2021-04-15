@@ -490,7 +490,7 @@ func event_handler(event: Dictionary):
 				elif (event['background'] != ''):
 					background.texture = load(event['background'])
 			_load_next_event()
-		{'audio'}, {'audio', 'file'}:
+		{'audio'}, {'audio', 'file', ..}:
 			emit_signal("event_start", "audio", event)
 			if event['audio'] == 'play' and 'file' in event.keys() and not event['file'].empty():
 				var audio = get_node_or_null('AudioEvent')
@@ -498,6 +498,11 @@ func event_handler(event: Dictionary):
 					audio = AudioStreamPlayer.new()
 					audio.name = 'AudioEvent'
 					add_child(audio)
+				if event.has('audio_bus'):
+					if AudioServer.get_bus_index(event['audio_bus']) >= 0:
+						audio.bus = event['audio_bus']
+				if event.has('volume'):
+					audio.volume_db = event['volume']
 				audio.stream = load(event['file'])
 				audio.play()
 			else:
@@ -506,12 +511,12 @@ func event_handler(event: Dictionary):
 					audio.stop()
 					audio.queue_free()
 			_load_next_event()
-		{'background-music'}, {'background-music', 'file'}:
+		{'background-music'}, {'background-music', 'file',..}:
 			emit_signal("event_start", "background-music", event)
 			if event['background-music'] == 'play' and 'file' in event.keys() and not event['file'].empty():
-				$FX/BackgroundMusic.crossfade_to(event['file'])
+				$FX/BackgroundMusic.crossfade_to(event['file'], event.get('audio_bus', 'Master'), event.get('volume', 0), event.get('fade_length', 1))
 			else:
-				$FX/BackgroundMusic.fade_out()
+				$FX/BackgroundMusic.fade_out(event.get('fade_length', 1))
 			_load_next_event()
 		{'endbranch', ..}:
 			emit_signal("event_start", "endbranch", event)
