@@ -1,0 +1,168 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://addons/dialogic/Editor/Events/Templates/EventTemplate.gd" type="Script" id=1]
+[ext_resource path="res://addons/dialogic/Editor/Events/Templates/ExpandControl.tscn" type="PackedScene" id=2]
+[ext_resource path="res://addons/dialogic/Editor/Events/Common/Spacer.tscn" type="PackedScene" id=4]
+[ext_resource path="res://addons/dialogic/Editor/Events/Templates/OptionsControl.tscn" type="PackedScene" id=5]
+[ext_resource path="res://addons/dialogic/Images/Plugin/plugin-editor-icon-dark-theme.svg" type="Texture" id=6]
+
+[sub_resource type="StyleBoxFlat" id=1]
+bg_color = Color( 0.262745, 0.262745, 0.262745, 1 )
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[node name="EventTemplate" type="HBoxContainer"]
+anchor_right = 1.0
+margin_bottom = 44.0
+rect_min_size = Vector2( 0, 44 )
+size_flags_horizontal = 3
+size_flags_vertical = 9
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+event_style = SubResource( 1 )
+event_icon = ExtResource( 6 )
+event_name = "Event Template"
+
+[node name="Indent" type="Control" parent="."]
+visible = false
+margin_bottom = 64.0
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+margin_right = 1024.0
+margin_bottom = 46.0
+mouse_filter = 1
+mouse_default_cursor_shape = 6
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_styles/panel = SubResource( 1 )
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer"]
+margin_left = 2.0
+margin_top = 2.0
+margin_right = 1022.0
+margin_bottom = 44.0
+mouse_filter = 1
+custom_constants/margin_right = 6
+custom_constants/margin_top = 6
+custom_constants/margin_left = 6
+custom_constants/margin_bottom = 6
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/MarginContainer"]
+margin_left = 6.0
+margin_top = 6.0
+margin_right = 1014.0
+margin_bottom = 36.0
+rect_min_size = Vector2( 0, 30 )
+size_flags_horizontal = 3
+
+[node name="Header" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer"]
+margin_right = 1008.0
+margin_bottom = 30.0
+rect_min_size = Vector2( 0, 30 )
+size_flags_horizontal = 3
+
+[node name="IconMarginContainer" type="MarginContainer" parent="PanelContainer/MarginContainer/VBoxContainer/Header"]
+margin_right = 31.0
+margin_bottom = 30.0
+mouse_filter = 1
+custom_constants/margin_right = 5
+custom_constants/margin_left = 10
+
+[node name="IconTexture" type="TextureRect" parent="PanelContainer/MarginContainer/VBoxContainer/Header/IconMarginContainer"]
+margin_left = 10.0
+margin_right = 26.0
+margin_bottom = 30.0
+texture = ExtResource( 6 )
+stretch_mode = 6
+
+[node name="TitleHBoxContainer" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer/Header"]
+margin_left = 35.0
+margin_right = 160.0
+margin_bottom = 30.0
+
+[node name="VSeparator" type="VSeparator" parent="PanelContainer/MarginContainer/VBoxContainer/Header/TitleHBoxContainer"]
+margin_right = 4.0
+margin_bottom = 30.0
+mouse_filter = 1
+
+[node name="TitleMarginContainer" type="MarginContainer" parent="PanelContainer/MarginContainer/VBoxContainer/Header/TitleHBoxContainer"]
+margin_left = 8.0
+margin_right = 117.0
+margin_bottom = 30.0
+mouse_filter = 1
+custom_constants/margin_right = 5
+custom_constants/margin_left = 5
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TitleLabel" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/Header/TitleHBoxContainer/TitleMarginContainer"]
+margin_left = 5.0
+margin_top = 8.0
+margin_right = 104.0
+margin_bottom = 22.0
+text = "Event Template"
+
+[node name="VSeparator2" type="VSeparator" parent="PanelContainer/MarginContainer/VBoxContainer/Header/TitleHBoxContainer"]
+margin_left = 121.0
+margin_right = 125.0
+margin_bottom = 30.0
+mouse_filter = 1
+
+[node name="Content" type="MarginContainer" parent="PanelContainer/MarginContainer/VBoxContainer/Header"]
+margin_left = 164.0
+margin_right = 174.0
+margin_bottom = 30.0
+mouse_filter = 1
+custom_constants/margin_right = 5
+custom_constants/margin_left = 5
+
+[node name="ExpandControl" parent="PanelContainer/MarginContainer/VBoxContainer/Header" instance=ExtResource( 2 )]
+margin_left = 178.0
+margin_right = 230.0
+
+[node name="Spacer" parent="PanelContainer/MarginContainer/VBoxContainer/Header" instance=ExtResource( 4 )]
+margin_left = 178.0
+margin_right = 962.0
+margin_bottom = 30.0
+
+[node name="VSeparator3" type="VSeparator" parent="PanelContainer/MarginContainer/VBoxContainer/Header"]
+margin_left = 966.0
+margin_right = 970.0
+margin_bottom = 30.0
+mouse_filter = 1
+
+[node name="OptionsControl" parent="PanelContainer/MarginContainer/VBoxContainer/Header" instance=ExtResource( 5 )]
+margin_left = 974.0
+margin_right = 1008.0
+margin_bottom = 30.0
+items = [ "Move Up", null, 0, false, false, 0, 0, null, "", false, "Move Down", null, 0, false, false, 1, 0, null, "", false, "", null, 0, false, false, 2, 0, null, "", false, "Remove", null, 0, false, false, 3, 0, null, "", false ]
+
+[node name="Body" type="VBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer"]
+visible = false
+margin_top = 34.0
+margin_right = 1008.0
+margin_bottom = 262.0
+
+[node name="HSeparator" type="HSeparator" parent="PanelContainer/MarginContainer/VBoxContainer/Body"]
+margin_right = 1008.0
+margin_bottom = 4.0
+mouse_filter = 1
+
+[node name="Content" type="MarginContainer" parent="PanelContainer/MarginContainer/VBoxContainer/Body"]
+margin_top = 8.0
+margin_right = 1008.0
+margin_bottom = 228.0
+mouse_filter = 1
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_constants/margin_top = 10
+custom_constants/margin_bottom = 10
