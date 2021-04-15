@@ -18,7 +18,7 @@ var event_data = {
 
 
 func _ready():
-	$PanelContainer/VBoxContainer/Header/VisibleToggle.set_visible(false)
+	$PanelContainer/VBoxContainer/Header/VisibleToggle.set_visible(true)
 	$PanelContainer/VBoxContainer/Settings/AudioPicker.editor_reference = editor_reference
 	$PanelContainer/VBoxContainer/Settings/AudioPicker.connect("audio_changed", self, "update_audio_data")
 
