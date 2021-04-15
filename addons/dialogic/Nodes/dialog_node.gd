@@ -85,15 +85,16 @@ func load_config_files():
 
 func resize_main():
 	# This function makes sure that the dialog is displayed at the correct
-	# size and position in the screen. 
-	if Engine.is_editor_hint() == false:
+	# size and position in the screen.
+	var reference = rect_size
+	if not Engine.is_editor_hint():
 		set_global_position(Vector2(0,0))
-		if ProjectSettings.get_setting("display/window/stretch/mode") != '2d':
-			set_deferred('rect_size', get_viewport().size)
-		dprint("[Dialogic] Viewport", get_viewport().size)
-	$TextBubble.rect_position.x = (rect_size.x / 2) - ($TextBubble.rect_size.x / 2)
+		reference = get_viewport().get_visible_rect().size
+
+	$TextBubble.rect_position.x = (reference.x / 2) - ($TextBubble.rect_size.x / 2)
 	if current_theme != null:
-		$TextBubble.rect_position.y = (rect_size.y) - ($TextBubble.rect_size.y) - current_theme.get_value('box', 'bottom_gap', 40)
+		$TextBubble.rect_position.y = (reference.y) - ($TextBubble.rect_size.y) - current_theme.get_value('box', 'bottom_gap', 40)
+
 
 
 func set_current_dialog(dialog_path: String):
