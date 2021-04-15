@@ -11,7 +11,8 @@ signal option_action(action_name)
 signal selected()
 
 onready var panel = $PanelContainer
-onready var title_label = $PanelContainer/MarginContainer/VBoxContainer/Header/TitleMarginContainer/TitleLabel
+onready var title_container = $PanelContainer/MarginContainer/VBoxContainer/Header/TitleHBoxContainer
+onready var title_label = $PanelContainer/MarginContainer/VBoxContainer/Header/TitleHBoxContainer/TitleMarginContainer/TitleLabel
 onready var icon_texture  = $PanelContainer/MarginContainer/VBoxContainer/Header/IconMarginContainer/IconTexture
 onready var expand_control = $PanelContainer/MarginContainer/VBoxContainer/Header/ExpandControl
 onready var options_control = $PanelContainer/MarginContainer/VBoxContainer/Header/OptionsControl
@@ -44,6 +45,10 @@ func set_event_icon(icon: Texture):
 
 func set_event_name(text: String):
 	title_label.text = text
+	if text.empty():
+		title_container.hide()
+	else:
+		title_container.show()
 
 
 func set_header(scene: PackedScene):
