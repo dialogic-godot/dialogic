@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://addons/dialogic/Editor/EditorView.gd" type="Script" id=1]
 [ext_resource path="res://addons/dialogic/Editor/TimelineEditor/TimelineEditor.tscn" type="PackedScene" id=2]
@@ -8,6 +8,7 @@
 [ext_resource path="res://addons/dialogic/Editor/SettingsEditor/SettingsEditor.tscn" type="PackedScene" id=6]
 [ext_resource path="res://addons/dialogic/Editor/CharacterEditor/CharacterEditor.tscn" type="PackedScene" id=7]
 [ext_resource path="res://addons/dialogic/Editor/ThemeEditor/ThemeEditor.tscn" type="PackedScene" id=8]
+[ext_resource path="res://addons/dialogic/Editor/DocumentationEditor/DocumentationEditor.tscn" type="PackedScene" id=9]
 [ext_resource path="res://addons/dialogic/Editor/DefinitionEditor/DefinitionEditor.tscn" type="PackedScene" id=12]
 [ext_resource path="res://addons/dialogic/Images/Toolbar/add-theme.svg" type="Texture" id=13]
 [ext_resource path="res://addons/dialogic/Editor/MasterTree/MasterTree.tscn" type="PackedScene" id=35]
@@ -182,6 +183,14 @@ margin_left = 192.0
 margin_right = 1253.0
 margin_bottom = 661.0
 
+[node name="DocumentationEditor" parent="MainPanel" instance=ExtResource( 9 )]
+visible = false
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 162.0
+margin_right = 1024.0
+margin_bottom = 562.0
+
 [node name="Empty" type="CenterContainer" parent="MainPanel"]
 margin_left = 162.0
 margin_right = 1024.0
@@ -203,6 +212,7 @@ margin_left = 151.0
 margin_top = 276.0
 margin_right = 325.0
 margin_bottom = 332.0
+items = [ "Show in File Manager", SubResource( 2 ), 0, false, false, 0, 0, null, "", false, "Copy Timeline Name", SubResource( 2 ), 0, false, false, 1, 0, null, "", false, "Remove Timeline", SubResource( 2 ), 0, false, false, 2, 0, null, "", false, "Show in File Manager", SubResource( 2 ), 0, false, false, 3, 0, null, "", false, "Copy Timeline Name", SubResource( 2 ), 0, false, false, 4, 0, null, "", false, "Remove Timeline", SubResource( 2 ), 0, false, false, 5, 0, null, "", false ]
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -212,6 +222,7 @@ margin_left = 171.799
 margin_top = 209.0
 margin_right = 267.799
 margin_bottom = 229.0
+items = [ "Show in File Manager", SubResource( 2 ), 0, false, false, 0, 0, null, "", false, "Remove Character", SubResource( 2 ), 0, false, false, 1, 0, null, "", false, "Show in File Manager", SubResource( 2 ), 0, false, false, 2, 0, null, "", false, "Remove Character", SubResource( 2 ), 0, false, false, 3, 0, null, "", false ]
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -221,6 +232,7 @@ margin_left = 171.799
 margin_top = 209.0
 margin_right = 267.799
 margin_bottom = 229.0
+items = [ "Edit Definitions File", SubResource( 2 ), 0, false, false, 0, 0, null, "", false, "Remove Definition", SubResource( 2 ), 0, false, false, 1, 0, null, "", false, "Edit Definitions File", SubResource( 2 ), 0, false, false, 2, 0, null, "", false, "Remove Definition", SubResource( 2 ), 0, false, false, 3, 0, null, "", false ]
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -230,6 +242,7 @@ margin_left = 171.799
 margin_top = 209.0
 margin_right = 267.799
 margin_bottom = 229.0
+items = [ "Show in File Manager", SubResource( 2 ), 0, false, false, 0, 0, null, "", false, "Duplicate Theme", SubResource( 2 ), 0, false, false, 1, 0, null, "", false, "Remove Theme", SubResource( 2 ), 0, false, false, 2, 0, null, "", false, "Show in File Manager", SubResource( 2 ), 0, false, false, 3, 0, null, "", false, "Duplicate Theme", SubResource( 2 ), 0, false, false, 4, 0, null, "", false, "Remove Theme", SubResource( 2 ), 0, false, false, 5, 0, null, "", false ]
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -239,6 +252,7 @@ margin_left = 159.0
 margin_top = 283.0
 margin_right = 227.0
 margin_bottom = 319.0
+items = [ "Add Timeline", SubResource( 2 ), 0, false, false, 0, 0, null, "", false, "Add Timeline", SubResource( 2 ), 0, false, false, 1, 0, null, "", false ]
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -248,6 +262,7 @@ margin_left = 159.0
 margin_top = 283.0
 margin_right = 227.0
 margin_bottom = 319.0
+items = [ "Add Character", SubResource( 2 ), 0, false, false, 0, 0, null, "", false, "Add Character", SubResource( 2 ), 0, false, false, 1, 0, null, "", false ]
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -257,6 +272,7 @@ margin_left = 159.0
 margin_top = 283.0
 margin_right = 227.0
 margin_bottom = 319.0
+items = [ "Add Theme", SubResource( 2 ), 0, false, false, 0, 0, null, "", false, "Add Theme", SubResource( 2 ), 0, false, false, 1, 0, null, "", false ]
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -266,6 +282,7 @@ margin_left = 159.0
 margin_top = 283.0
 margin_right = 227.0
 margin_bottom = 319.0
+items = [ "Add Definition", SubResource( 2 ), 0, false, false, 0, 0, null, "", false, "Add Definition", SubResource( 2 ), 0, false, false, 1, 0, null, "", false ]
 __meta__ = {
 "_edit_use_anchors_": false
 }

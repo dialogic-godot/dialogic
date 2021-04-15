@@ -7,6 +7,7 @@ onready var character_editor = get_node('../../CharacterEditor')
 onready var definition_editor = get_node('../../DefinitionEditor')
 onready var settings_editor = get_node('../../SettingsEditor')
 onready var theme_editor = get_node('../../ThemeEditor')
+onready var documentation_editor = get_node('../../DocumentationEditor')
 onready var empty_editor = get_node('../../Empty')
 onready var filter_tree_edit = get_node('../FilterMasterTreeEdit')
 
@@ -87,7 +88,7 @@ func _ready():
 	documentation_tree = tree.create_item(root)
 	documentation_tree.set_text(0, "Documentation")
 	documentation_tree.set_icon(0, get_icon("HelpSearch", "EditorIcons"))
-	documentation_tree.set_metadata(0, {'editor': 'Documentation'})
+	documentation_tree.set_metadata(0, {'editor': 'Documentation', 'name':'Start'})
 
 	
 	connect('item_selected', self, '_on_item_selected')
@@ -112,6 +113,9 @@ func _ready():
 	
 	# Adding Themes
 	build_themes()
+	
+	# Adding docs
+	build_documentation()
 	
 	# Default empty screen.
 	hide_all_editors() 
@@ -236,6 +240,47 @@ func _add_definition(definition, select = false):
 	if select: # Auto selecting
 		item.select(0)
 
+func list_files_in_directory(path):
+	## Lists the files in the given directory
+	var files = []
+	var dir = Directory.new()
+	dir.open(path)
+	dir.list_dir_begin()
+
+	while true:
+		var file = dir.get_next()
+		if file == "":
+			break
+		elif not file.begins_with(".") and not file.ends_with(".import"):
+			files.append(file)
+
+	dir.list_dir_end()
+
+	return files
+
+func build_documentation(selected_item: String=''):
+	_clear_tree_children(documentation_tree)
+	for file in list_files_in_directory("res://addons/dialogic/Documentation"):
+		var t = {'name':file.get_file().trim_suffix(".md")}
+		if (filter_tree_term != ''):
+			if (filter_tree_term.to_lower() in t['name'].to_lower()):
+				_add_documentation_page(t, not selected_item.empty() and t['id'] == selected_item)
+		else:		
+			_add_documentation_page(t, not selected_item.empty() and t['id'] == selected_item)
+	# force redraw tree
+	update()
+
+func _add_documentation_page(page_info, select = false):
+	var item = tree.create_item(documentation_tree)
+	item.set_text(0, page_info['name'])
+	item.set_icon(0, get_icon("HelpSearch", "EditorIcons"))
+	page_info['editor'] = 'Documentation'
+	page_info['editable'] = false
+	item.set_metadata(0, page_info)
+	if not get_constant("dark_theme", "Editor"):
+		item.set_icon_modulate(0, get_color("property_color", "Editor"))
+	if select: # Auto selecting
+		item.select(0)
 
 func _on_item_selected():
 	# TODO: Ideally I would perform a "save" here before opening the next
@@ -263,9 +308,9 @@ func _on_item_selected():
 		settings_editor.update_data()
 		show_settings_editor()
 	elif metadata['editor'] == 'Documentation':
-#		settings_editor.update_data()
-#		show_settings_editor()
-		pass
+		documentation_editor.load_page(metadata['name'])
+		show_documentatio_editor()
+
 
 func show_character_editor():
 	emit_signal("editor_selected", 'character')
@@ -274,6 +319,7 @@ func show_character_editor():
 	definition_editor.visible = false
 	theme_editor.visible = false
 	settings_editor.visible = false
+	documentation_editor.visible = false
 	empty_editor.visible = false
 
 
@@ -284,6 +330,7 @@ func show_timeline_editor():
 	definition_editor.visible = false
 	theme_editor.visible = false
 	settings_editor.visible = false
+	documentation_editor.visible = false
 	empty_editor.visible = false
 
 
@@ -294,6 +341,7 @@ func show_definition_editor():
 	definition_editor.visible = true
 	theme_editor.visible = false
 	settings_editor.visible = false
+	documentation_editor.visible = false
 	empty_editor.visible = false
 
 
@@ -304,6 +352,7 @@ func show_theme_editor():
 	definition_editor.visible = false
 	theme_editor.visible = true
 	settings_editor.visible = false
+	documentation_editor.visible = false
 	empty_editor.visible = false
 
 
@@ -314,8 +363,18 @@ func show_settings_editor():
 	definition_editor.visible = false
 	theme_editor.visible = false
 	settings_editor.visible = true
+	documentation_editor.visible = false
 	empty_editor.visible = false
 
+func show_documentatio_editor():
+	emit_signal("editor_selected", "documentation")
+	character_editor.visible = false
+	timeline_editor.visible = false
+	definition_editor.visible = false
+	theme_editor.visible = false
+	settings_editor.visible = false
+	documentation_editor.visible = true
+	empty_editor.visible = false
 
 func hide_all_editors():
 	emit_signal("editor_selected", 'none')
@@ -324,6 +383,7 @@ func hide_all_editors():
 	definition_editor.visible = false
 	theme_editor.visible = false
 	settings_editor.visible = false
+	documentation_editor.visible = false
 	empty_editor.visible = true
 
 
@@ -481,3 +541,47 @@ func select_timeline_item(timeline_name):
 	hide_all_editors()
 	pass
 
+func select_documentation_item(documentation_name):
+	if (documentation_name == ''):
+		return
+
+	var main_item = tree.get_root().get_children()
+	
+	# wow, godots tree traversal is extremly odd, or I just don't get it
+	while (main_item):
+		
+		if (main_item == null):
+			break
+			
+		if (main_item.has_method("get_text") && main_item.get_text(0) == "Documentation"):
+			var item = main_item.get_children()
+			while (item):
+							
+				if (not item.has_method("get_metadata")):
+					item = item.get_next()
+					continue
+			
+				var meta = item.get_metadata(0)
+		
+				if (meta == null):
+					item = item.get_next()
+					continue
+		
+				if (not meta.has("editor") or meta["editor"] != "Documentation"):
+					item = item.get_next()
+					continue
+			
+				# search for name
+				if (meta.has("name") and meta["name"] == documentation_name):
+					# select this one
+					item.select(0)
+					return;
+	
+				item = item.get_next()
+			break
+		else:
+			main_item = main_item.get_next()
+			
+	# fallback
+	hide_all_editors()
+	pass
