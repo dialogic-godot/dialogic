@@ -91,6 +91,9 @@ func resize_main():
 		set_global_position(Vector2(0,0))
 		reference = get_viewport().get_visible_rect().size
 
+	$Options.rect_position.x = (reference.x / 2) - ($Options.rect_size.x / 2)
+	$Options.rect_position.y = (reference.y / 2) - ($Options.rect_size.y / 2)
+	
 	$TextBubble.rect_position.x = (reference.x / 2) - ($TextBubble.rect_size.x / 2)
 	if current_theme != null:
 		$TextBubble.rect_position.y = (reference.y) - ($TextBubble.rect_size.y) - current_theme.get_value('box', 'bottom_gap', 40)

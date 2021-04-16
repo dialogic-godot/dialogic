@@ -6,10 +6,10 @@
 [ext_resource path="res://addons/dialogic/Nodes/dialog_node.gd" type="Script" id=6]
 [ext_resource path="res://addons/dialogic/Nodes/BackgroundMusic.tscn" type="PackedScene" id=7]
 
-[sub_resource type="StyleBoxFlat" id=2]
+[sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 0.196078, 0.196078, 0.196078, 0 )
 
-[sub_resource type="StyleBoxFlat" id=1]
+[sub_resource type="StyleBoxFlat" id=2]
 bg_color = Color( 1, 1, 1, 0 )
 expand_margin_left = 10.0
 
@@ -31,12 +31,12 @@ __meta__ = {
 }
 
 [node name="TextBubble" parent="." instance=ExtResource( 1 )]
+margin_left = -321.5
+margin_top = -264.0
+margin_right = 321.5
+margin_bottom = -60.0
 
 [node name="Options" type="VBoxContainer" parent="."]
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
 grow_horizontal = 2
 grow_vertical = 2
 alignment = 1
@@ -62,7 +62,7 @@ margin_right = 208.0
 mouse_filter = 1
 size_flags_horizontal = 3
 size_flags_vertical = 3
-custom_styles/panel = SubResource( 2 )
+custom_styles/panel = SubResource( 1 )
 script = ExtResource( 5 )
 __meta__ = {
 "_edit_group_": true,
@@ -92,7 +92,7 @@ margin_right = 208.0
 margin_bottom = 27.0
 size_flags_horizontal = 3
 size_flags_vertical = 4
-custom_styles/normal = SubResource( 1 )
+custom_styles/normal = SubResource( 2 )
 custom_fonts/normal_font = ExtResource( 4 )
 bbcode_text = "This is the title"
 text = "This is the title"
@@ -104,7 +104,7 @@ margin_top = 31.0
 margin_right = 208.0
 margin_bottom = 112.0
 size_flags_horizontal = 3
-custom_styles/normal = SubResource( 1 )
+custom_styles/normal = SubResource( 2 )
 custom_fonts/normal_font = ExtResource( 4 )
 text = "This is the main copy. Here you write the relevant"
 fit_content_height = true
@@ -119,7 +119,7 @@ margin_top = 116.0
 margin_right = 208.0
 margin_bottom = 143.0
 size_flags_horizontal = 3
-custom_styles/normal = SubResource( 1 )
+custom_styles/normal = SubResource( 2 )
 custom_fonts/normal_font = ExtResource( 4 )
 text = "Una linea extra"
 fit_content_height = true
@@ -129,4 +129,5 @@ __meta__ = {
 }
 
 [node name="Timer" type="Timer" parent="DefinitionInfo"]
+
 [connection signal="timeout" from="DefinitionInfo/Timer" to="." method="_on_Definition_Timer_timeout"]
