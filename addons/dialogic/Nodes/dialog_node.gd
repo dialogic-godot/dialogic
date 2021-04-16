@@ -97,7 +97,10 @@ func resize_main():
 	$TextBubble.rect_position.x = (reference.x / 2) - ($TextBubble.rect_size.x / 2)
 	if current_theme != null:
 		$TextBubble.rect_position.y = (reference.y) - ($TextBubble.rect_size.y) - current_theme.get_value('box', 'bottom_gap', 40)
-
+	
+	var background = get_node_or_null('Background')
+	if background != null:
+		background.rect_size = reference
 
 
 func set_current_dialog(dialog_path: String):
@@ -479,6 +482,8 @@ func event_handler(event: Dictionary):
 					background.stretch_mode = TextureRect.STRETCH_SCALE
 					background.show_behind_parent = true
 					background.mouse_filter = Control.MOUSE_FILTER_IGNORE
+					call_deferred('resize_main') # Executing the resize main to update the background size
+					
 					add_child(background)
 				background.texture = null
 				if (background.get_child_count() > 0):
