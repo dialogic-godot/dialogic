@@ -1,6 +1,5 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=6 format=2]
 
-[ext_resource path="res://addons/dialogic/Editor/Events/Templates/EventTemplate.gd" type="Script" id=1]
 [ext_resource path="res://addons/dialogic/Editor/Events/Templates/ExpandControl.tscn" type="PackedScene" id=2]
 [ext_resource path="res://addons/dialogic/Editor/Events/Common/Spacer.tscn" type="PackedScene" id=4]
 [ext_resource path="res://addons/dialogic/Editor/Events/Templates/OptionsControl.tscn" type="PackedScene" id=5]
@@ -23,13 +22,9 @@ margin_bottom = 44.0
 rect_min_size = Vector2( 0, 44 )
 size_flags_horizontal = 3
 size_flags_vertical = 9
-script = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
-event_style = SubResource( 1 )
-event_icon = ExtResource( 6 )
-event_name = "Event Template"
 
 [node name="Indent" type="Control" parent="."]
 visible = false

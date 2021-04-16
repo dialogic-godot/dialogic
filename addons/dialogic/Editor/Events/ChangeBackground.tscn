@@ -4,23 +4,46 @@
 [ext_resource path="res://addons/dialogic/Editor/Events/styles/ChangeBackground.tres" type="StyleBox" id=3]
 [ext_resource path="res://addons/dialogic/Editor/Events/Templates/EventTemplate.tscn" type="PackedScene" id=4]
 [ext_resource path="res://addons/dialogic/Images/Event Icons/Main Icons/change-background.svg" type="Texture" id=6]
-[ext_resource path="res://addons/dialogic/Editor/Events/Common/ImagePicker.tscn" type="PackedScene" id=7]
+[ext_resource path="res://addons/dialogic/Editor/Events/Common/Images/ImagePicker.tscn" type="PackedScene" id=7]
 
-[node name="ChangeBackground" type="HBoxContainer"]
-anchor_right = 1.0
-margin_bottom = 44.0
-size_flags_horizontal = 3
-size_flags_vertical = 9
+[node name="ChangeBackground" instance=ExtResource( 4 )]
 script = ExtResource( 2 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="EventTemplate" parent="." instance=ExtResource( 4 )]
-anchor_right = 0.0
-margin_right = 1024.0
-margin_bottom = 46.0
 event_style = ExtResource( 3 )
 event_icon = ExtResource( 6 )
 event_name = "Change Background"
 header_scene = ExtResource( 7 )
+
+[node name="PanelContainer" parent="." index="1"]
+custom_styles/panel = ExtResource( 3 )
+
+[node name="IconMarginContainer" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="0"]
+margin_right = 37.0
+
+[node name="IconTexture" parent="PanelContainer/MarginContainer/VBoxContainer/Header/IconMarginContainer" index="0"]
+margin_right = 32.0
+texture = ExtResource( 6 )
+
+[node name="TitleHBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="1"]
+margin_left = 41.0
+margin_right = 191.0
+
+[node name="TitleMarginContainer" parent="PanelContainer/MarginContainer/VBoxContainer/Header/TitleHBoxContainer" index="1"]
+margin_right = 142.0
+
+[node name="TitleLabel" parent="PanelContainer/MarginContainer/VBoxContainer/Header/TitleHBoxContainer/TitleMarginContainer" index="0"]
+margin_right = 129.0
+text = "Change Background"
+
+[node name="VSeparator2" parent="PanelContainer/MarginContainer/VBoxContainer/Header/TitleHBoxContainer" index="2"]
+margin_left = 146.0
+margin_right = 150.0
+
+[node name="Content" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="2"]
+margin_left = 195.0
+margin_right = 536.0
+
+[node name="Spacer" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="4"]
+margin_left = 540.0
+
+[node name="OptionsControl" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="6"]
+items = [ "Move Up", null, 0, false, false, 0, 0, null, "", false, "Move Down", null, 0, false, false, 1, 0, null, "", false, "", null, 0, false, false, 2, 0, null, "", false, "Remove", null, 0, false, false, 3, 0, null, "", false ]

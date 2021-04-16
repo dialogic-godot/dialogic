@@ -8,7 +8,6 @@ export(PackedScene) var header_scene : PackedScene
 export(PackedScene) var body_scene : PackedScene
 
 signal option_action(action_name)
-signal selected()
 
 onready var panel = $PanelContainer
 onready var title_container = $PanelContainer/MarginContainer/VBoxContainer/Header/TitleHBoxContainer
@@ -21,6 +20,7 @@ onready var body_container = $PanelContainer/MarginContainer/VBoxContainer/Body
 onready var body_content_container = $PanelContainer/MarginContainer/VBoxContainer/Body/Content
 onready var indent_node = $Indent
 
+var editor_reference
 
 var header_node
 var body_node
@@ -77,8 +77,9 @@ func set_indent(indent: int):
 	indent_node.visible = indent != 0
 
 
-func on_timeline_selected():
-	emit_signal("selected")
+# Override in inherited class
+func on_timeline_selected(selected: bool):
+	pass
 
 
 func set_expanded(expanded: bool):
