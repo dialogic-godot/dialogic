@@ -213,7 +213,8 @@ func _clear_selection():
 			if selected_panel != null:
 				selected_panel.set('custom_styles/panel', saved_style)
 		else:
-			selected_item.event_template.set_event_style(saved_style)
+			selected_item.set_event_style(saved_style)
+			selected_item.on_timeline_selected(false)
 	selected_item = null
 	saved_style = null
 
@@ -238,9 +239,9 @@ func _select_item(item: Node):
 				if (selected_item.has_method("on_timeline_selected")):
 					selected_item.on_timeline_selected()
 		else:
-			saved_style = item.event_template.get_event_style()
-			item.event_template.set_event_style(selected_style_template)
-			selected_item.event_template.on_timeline_selected()
+			saved_style = item.get_event_style()
+			item.set_event_style(selected_style_template)
+			selected_item.on_timeline_selected(true)
 	else:
 		_clear_selection()
 
@@ -316,7 +317,7 @@ func create_event(scene: String, data: Dictionary = {'no-data': true} , indent: 
 		piece.load_data(data)
 	
 	if _has_template(piece):
-		piece.event_template.connect("option_action", self, '_on_event_options_action', [piece])
+		piece.connect("option_action", self, '_on_event_options_action', [piece])
 	
 	piece.connect("gui_input", self, '_on_gui_input', [piece])
 	events_warning.visible = false
@@ -343,7 +344,7 @@ func indent_events() -> void:
 			indent_node = event.get_node("Indent")
 			indent_node.visible = false
 		else:
-			event.event_template.set_indent(0)
+			event.set_indent(0)
 		
 	# Adding new indents
 	for event in event_list:
@@ -382,9 +383,9 @@ func indent_events() -> void:
 						indent_node.visible = false
 			else:
 				if starter:
-					event.event_template.set_indent(indent - 1)
+					event.set_indent(indent - 1)
 				else:
-					event.event_template.set_indent(indent)
+					event.set_indent(indent)
 		starter = false
 
 
@@ -544,7 +545,7 @@ func fold_all_nodes():
 		if event.has_node("PanelContainer/VBoxContainer/Header/VisibleToggle"):
 			event.get_node("PanelContainer/VBoxContainer/Header/VisibleToggle").set_pressed(false)
 		elif _has_template(event):
-			event.event_template.set_expanded(false)
+			event.set_expanded(false)
 
 
 func unfold_all_nodes():
@@ -552,4 +553,4 @@ func unfold_all_nodes():
 		if event.has_node("PanelContainer/VBoxContainer/Header/VisibleToggle"):
 			event.get_node("PanelContainer/VBoxContainer/Header/VisibleToggle").set_pressed(true)
 		elif _has_template(event):
-			event.event_template.set_expanded(true)
+			event.set_expanded(true)

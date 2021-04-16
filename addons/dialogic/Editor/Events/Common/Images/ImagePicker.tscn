@@ -1,7 +1,8 @@
 [gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://addons/dialogic/Images/Context Menus/Remove.svg" type="Texture" id=1]
-[ext_resource path="res://addons/dialogic/Editor/Events/Common/ImagePicker.gd" type="Script" id=2]
+[ext_resource path="res://addons/dialogic/Editor/Events/Common/Images/ImagePicker.gd" type="Script" id=2]
+
 
 [node name="ImagePicker" type="HBoxContainer"]
 margin_left = 154.0
