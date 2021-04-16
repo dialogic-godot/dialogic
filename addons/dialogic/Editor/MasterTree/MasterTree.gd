@@ -88,7 +88,7 @@ func _ready():
 	documentation_tree = tree.create_item(root)
 	documentation_tree.set_text(0, "Documentation")
 	documentation_tree.set_icon(0, get_icon("HelpSearch", "EditorIcons"))
-	documentation_tree.set_metadata(0, {'editor': 'Documentation', 'name':'Start'})
+	documentation_tree.set_metadata(0, {'editor': 'Documentation', 'name':'Start', 'path':'Welcome.md'})
 
 	
 	connect('item_selected', self, '_on_item_selected')
@@ -240,38 +240,38 @@ func _add_definition(definition, select = false):
 	if select: # Auto selecting
 		item.select(0)
 
-func list_files_in_directory(path):
-	## Lists the files in the given directory
-	var files = []
-	var dir = Directory.new()
-	dir.open(path)
-	dir.list_dir_begin()
-
-	while true:
-		var file = dir.get_next()
-		if file == "":
-			break
-		elif not file.begins_with(".") and not file.ends_with(".import"):
-			files.append(file)
-
-	dir.list_dir_end()
-
-	return files
 
 func build_documentation(selected_item: String=''):
 	_clear_tree_children(documentation_tree)
-	for file in list_files_in_directory("res://addons/dialogic/Documentation"):
-		var t = {'name':file.get_file().trim_suffix(".md")}
-		if (filter_tree_term != ''):
-			if (filter_tree_term.to_lower() in t['name'].to_lower()):
-				_add_documentation_page(t, not selected_item.empty() and t['id'] == selected_item)
-		else:		
-			_add_documentation_page(t, not selected_item.empty() and t['id'] == selected_item)
-	# force redraw tree
+	var doc_structure = DocsHelper.get_documentation_content()
+	create_doc_tree(doc_structure, documentation_tree)
+
+
+func create_doc_tree(doc_structure, parent_item):
+	for key in doc_structure.keys():
+		if typeof(doc_structure[key]) == TYPE_DICTIONARY:
+			var folder_item = _add_documentation_folder(parent_item, {'name':key})
+			create_doc_tree(doc_structure[key], folder_item)
+			folder_item.collapsed = true
+		elif typeof(doc_structure[key]) == TYPE_ARRAY:
+			for file in doc_structure[key]:
+				_add_documentation_page(parent_item, {'name':file.get_file().trim_suffix(".md"), 'path': file})
+	# force redraw treet
 	update()
 
-func _add_documentation_page(page_info, select = false):
-	var item = tree.create_item(documentation_tree)
+func _add_documentation_folder(parent_item, info):
+	var item = tree.create_item(parent_item)
+	item.set_text(0, info['name'])
+	item.set_icon(0, get_icon("Folder", "EditorIcons"))
+	info['editor'] = 'DocumentationRoot'
+	info['editable'] = false
+	item.set_metadata(0, info)
+	if not get_constant("dark_theme", "Editor"):
+		item.set_icon_modulate(0, get_color("property_color", "Editor"))
+	return item
+
+func _add_documentation_page(parent, page_info, select = false):
+	var item = tree.create_item(parent)
 	item.set_text(0, page_info['name'])
 	item.set_icon(0, get_icon("HelpSearch", "EditorIcons"))
 	page_info['editor'] = 'Documentation'
@@ -281,6 +281,7 @@ func _add_documentation_page(page_info, select = false):
 		item.set_icon_modulate(0, get_color("property_color", "Editor"))
 	if select: # Auto selecting
 		item.select(0)
+	return item
 
 func _on_item_selected():
 	# TODO: Ideally I would perform a "save" here before opening the next
@@ -308,7 +309,7 @@ func _on_item_selected():
 		settings_editor.update_data()
 		show_settings_editor()
 	elif metadata['editor'] == 'Documentation':
-		documentation_viewer.load_page(metadata['name'])
+		documentation_viewer.load_page(metadata['path'])
 		show_documentatio_editor()
 
 

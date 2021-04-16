@@ -9,6 +9,8 @@ func _init():
 		# Make sure the core files exist 
 		DialogicResources.init_dialogic_files()
 	add_autoload_singleton('DialogicSingleton', "res://addons/dialogic/Other/DialogicSingleton.gd")
+	# needed to make the 
+	add_autoload_singleton('DocsHelper', "res://addons/dialogic/Documentation/Scripts/DocsHelper.gd")
 
 
 func _enter_tree() -> void:
