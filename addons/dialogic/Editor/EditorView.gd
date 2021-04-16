@@ -12,6 +12,7 @@ onready var character_editor = $MainPanel/CharacterEditor
 onready var definition_editor = $MainPanel/DefinitionEditor
 onready var theme_editor = $MainPanel/ThemeEditor
 onready var settings_editor = $MainPanel/SettingsEditor
+onready var documentation_viewer = $MainPanel/DocumentationViewer
 
 
 func _ready():
@@ -24,6 +25,7 @@ func _ready():
 	character_editor.editor_reference = self
 	definition_editor.editor_reference = self
 	theme_editor.editor_reference = self
+	documentation_viewer.editor_reference = self
 
 	master_tree.connect("editor_selected", self, 'on_master_tree_editor_selected')
 

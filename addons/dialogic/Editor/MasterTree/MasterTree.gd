@@ -7,7 +7,7 @@ onready var character_editor = get_node('../../CharacterEditor')
 onready var definition_editor = get_node('../../DefinitionEditor')
 onready var settings_editor = get_node('../../SettingsEditor')
 onready var theme_editor = get_node('../../ThemeEditor')
-onready var documentation_editor = get_node('../../DocumentationEditor')
+onready var documentation_viewer = get_node('../../DocumentationViewer')
 onready var empty_editor = get_node('../../Empty')
 onready var filter_tree_edit = get_node('../FilterMasterTreeEdit')
 
@@ -308,7 +308,7 @@ func _on_item_selected():
 		settings_editor.update_data()
 		show_settings_editor()
 	elif metadata['editor'] == 'Documentation':
-		documentation_editor.load_page(metadata['name'])
+		documentation_viewer.load_page(metadata['name'])
 		show_documentatio_editor()
 
 
@@ -319,7 +319,7 @@ func show_character_editor():
 	definition_editor.visible = false
 	theme_editor.visible = false
 	settings_editor.visible = false
-	documentation_editor.visible = false
+	documentation_viewer.visible = false
 	empty_editor.visible = false
 
 
@@ -330,7 +330,7 @@ func show_timeline_editor():
 	definition_editor.visible = false
 	theme_editor.visible = false
 	settings_editor.visible = false
-	documentation_editor.visible = false
+	documentation_viewer.visible = false
 	empty_editor.visible = false
 
 
@@ -341,7 +341,7 @@ func show_definition_editor():
 	definition_editor.visible = true
 	theme_editor.visible = false
 	settings_editor.visible = false
-	documentation_editor.visible = false
+	documentation_viewer.visible = false
 	empty_editor.visible = false
 
 
@@ -352,7 +352,7 @@ func show_theme_editor():
 	definition_editor.visible = false
 	theme_editor.visible = true
 	settings_editor.visible = false
-	documentation_editor.visible = false
+	documentation_viewer.visible = false
 	empty_editor.visible = false
 
 
@@ -363,7 +363,7 @@ func show_settings_editor():
 	definition_editor.visible = false
 	theme_editor.visible = false
 	settings_editor.visible = true
-	documentation_editor.visible = false
+	documentation_viewer.visible = false
 	empty_editor.visible = false
 
 func show_documentatio_editor():
@@ -373,7 +373,7 @@ func show_documentatio_editor():
 	definition_editor.visible = false
 	theme_editor.visible = false
 	settings_editor.visible = false
-	documentation_editor.visible = true
+	documentation_viewer.visible = true
 	empty_editor.visible = false
 
 func hide_all_editors():
@@ -383,7 +383,7 @@ func hide_all_editors():
 	definition_editor.visible = false
 	theme_editor.visible = false
 	settings_editor.visible = false
-	documentation_editor.visible = false
+	documentation_viewer.visible = false
 	empty_editor.visible = true
 
 
