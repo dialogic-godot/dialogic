@@ -1,22 +1,18 @@
-# Dialogic - v1.1 ![Godot v3.3](https://img.shields.io/badge/godot-v3.3-%23478cbf)
-
-
 ![Screenshot](https://coppolaemilio.com/images/dialogic/dialogic-hero-1.0.png?v)
-
 Create dialogs, characters and scenes to display conversations in your Godot games. 
 
-## Contents
+# Version 1.1 ![Godot v3.3](https://img.shields.io/badge/godot-v3.3-%23478cbf)
 
-- [Changelog](https://github.com/coppolaemilio/dialogic/blob/main/docs/changelog.md)
-- [Installation](#-installation)
-- [Basic Usage](https://github.com/coppolaemilio/dialogic/blob/main/docs/usage.md)
-- [FAQ](#-faq)
-- [Source structure](https://github.com/coppolaemilio/dialogic/blob/main/docs/source.md)
-- [Credits](#-credits)
+[Changelog](https://github.com/coppolaemilio/dialogic/blob/main/docs/changelog.md) — 
+[Installation](#-installation) — 
+[Basic Usage](https://github.com/coppolaemilio/dialogic/blob/main/docs/usage.md) — 
+[FAQ](#-faq) — 
+[Source structure](https://github.com/coppolaemilio/dialogic/blob/main/docs/source.md) — 
+[Credits](#-credits)
 
 ---
 
-## ⚙ Installation
+## Installation
 
 To install a Dialogic, download it as a ZIP archive. All releases are listed here: https://github.com/coppolaemilio/dialogic/releases. Then extract the ZIP archive and move the `addons/` folder it contains into your project folder. Then, enable the plugin in project settings.
 
@@ -26,7 +22,7 @@ You can also install Dialogic using the **AssetLib** tab in the editor, but the 
 
 ---
 
-## ❔ FAQ 
+## FAQ 
 
 ### 🔷 How can I make a dialog show up in game?
 There are two ways of doing this; using gdscript or the scene editor.
@@ -76,15 +72,13 @@ When you export a project using Dialogic, you need to add `*.json, *.cfg` on the
 ---
 
 ## ❤ Credits
-Code made by [Emilio Coppola](https://github.com/coppolaemilio).
+Made by [Emilio Coppola](https://github.com/coppolaemilio).
 
-Contributors: [Toen](https://twitter.com/ToenAndreMC), Òscar, [Arnaud](https://github.com/arnaudvergnet), [ellogwen](https://github.com/ellogwen), [Jowan-Spooner](https://github.com/Jowan-Spooner), [Tim Krief](https://github.com/timkrief),  [and more!](https://github.com/coppolaemilio/dialogic/graphs/contributors)
+Contributors:  [Arnaud](https://github.com/arnaudvergnet), [ellogwen](https://github.com/ellogwen), [Jowan-Spooner](https://github.com/Jowan-Spooner), [Tim Krief](https://github.com/timkrief),  [and more!](https://github.com/coppolaemilio/dialogic/graphs/contributors)
 
-Documentation page generated using: https://documentation.page/ by [Francisco Presencia](https://francisco.io/)
+Special thanks: [Toen](https://twitter.com/ToenAndreMC), Òscar, [Francisco Presencia](https://francisco.io/)
 
-Placeholder images are from Toen's YouTube DF series:
- - https://toen.world/
- - https://www.youtube.com/watch?v=B1ggwiat7PM
+Placeholder images are from [Toen's](https://toen.world/) [YouTube DF series](https://www.youtube.com/watch?v=B1ggwiat7PM)
 
 ### Thank you to all my [Patreons](https://www.patreon.com/coppolaemilio) for making this possible!
 
