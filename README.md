@@ -77,36 +77,36 @@ Placeholder images are from Toen's YouTube DF series:
 
 ### Thank you to all my [Patreons](https://www.patreon.com/coppolaemilio) for making this possible!
 
-- Mike King
-- Tyler Dean Osborne
-- Problematic Dave
-- Allyson Ota
-- Francisco Lepe
-- Gemma M. Rull
-- Alex Barton
-- Joe Constant
-- Kycho
-- JDA
-- Kersla Margdel
-- Chris Shove
-- Luke Peters
-- Wapiti
-- Penny
-- Garrett Guillotte
-- Sl Tu
-- Alex Harry
-- Rokatansky
-- Karl Anderson
-- GammaGames
-- Taankydaanky
-- Alex (Well Done Games)
-- GodofGrunts
-- Tim Krief
-- Daniel Cheney
-- Carlo Cabanilla
-- Flaming Potato
-- Joseph Catrambone
-- AzulCrescent
+Mike King,
+Tyler Dean Osborne,
+Problematic Dave,
+Allyson Ota,
+Francisco Lepe,
+Gemma M. Rull,
+Alex Barton,
+Joe Constant,
+Kycho,
+JDA,
+Kersla Margdel,
+Chris Shove,
+Luke Peters,
+Wapiti,
+Penny,
+Garrett Guillotte,
+Sl Tu,
+Alex Harry,
+Rokatansky,
+Karl Anderson,
+GammaGames,
+Taankydaanky,
+Alex (Well Done Games),
+GodofGrunts,
+Tim Krief,
+Daniel Cheney,
+Carlo Cabanilla,
+Flaming Potato,
+Joseph Catrambone,
+AzulCrescent
 
 Support me on [Patreon https://www.patreon.com/coppolaemilio](https://www.patreon.com/coppolaemilio)
 
