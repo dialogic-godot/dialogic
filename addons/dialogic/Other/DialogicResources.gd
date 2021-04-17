@@ -107,14 +107,11 @@ static func init_definitions_saves():
 
 	err = sink.open(paths["SAVED_DEFINITIONS_FILE"], File.READ_WRITE)
 	if err == OK:
-		if overwrite or sink.get_len() == 0:
-			err = source.open(paths["DEFAULT_DEFINITIONS_FILE"], File.READ)
-			if err == OK:
-				sink.store_string(source.get_as_text())
-			else:
-				print('[Dialogic] Error opening default definitions file: ' + str(err))
+		err = source.open(paths["DEFAULT_DEFINITIONS_FILE"], File.READ)
+		if err == OK:
+			sink.store_string(source.get_as_text())
 		else:
-			print('[Dialogic] Did not overwrite previous saved definitions')
+			print('[Dialogic] Error opening default definitions file: ' + str(err))
 	else:
 		print('[Dialogic] Error opening saved definitions file: ' + str(err))
 	
@@ -365,8 +362,8 @@ static func delete_default_definition(id: String):
 # Can be edited at runtime, and will persist across runs
 
 
-static func get_saved_definitions() -> Dictionary:
-	return load_json(get_config_files_paths()['SAVED_DEFINITIONS_FILE'], {'variables': [], 'glossary': []})
+static func get_saved_definitions(default: Dictionary = {'variables': [], 'glossary': []}) -> Dictionary:
+	return load_json(get_config_files_paths()['SAVED_DEFINITIONS_FILE'], default)
 
 
 static func save_saved_definitions(data: Dictionary):
