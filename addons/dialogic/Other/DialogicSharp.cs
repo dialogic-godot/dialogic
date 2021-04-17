@@ -35,6 +35,18 @@ public static class DialogicSharp
     }
   }
 
+  public static bool Autosave
+  {
+    get
+    {
+      return (bool)_dialogic.Call("get_autosave");
+    }
+    set
+    {
+      _dialogic.Call("set_autosave", value);
+    }
+  }
+
   public static Node Start(String timeline, bool resetSaves = true, bool debugMode = false)
   {
     return Start<Node>(timeline, DEFAULT_DIALOG_RESOURCE, resetSaves, debugMode);
@@ -73,5 +85,25 @@ public static class DialogicSharp
   public static void SetGlossary(String name, String title, String text, String extra)
   {
     _dialogic.Call("set_glossary", name, title, text, extra);
+  }
+
+  public static void ResetSaves()
+  {
+    _dialogic.Call("reset_saves");
+  }
+
+  public static Error SaveDefinitions()
+  {
+    return (Error)_dialogic.Call("save_definitions");
+  }
+
+  public static GC.Dictionary Export()
+  {
+    return (GC.Dictionary)_dialogic.Call("export");
+  }
+
+  public static void Import(GC.Dictionary data)
+  {
+    _dialogic.Call("import", data);
   }
 }

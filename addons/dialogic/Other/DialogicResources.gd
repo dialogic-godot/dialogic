@@ -326,20 +326,6 @@ static func save_saved_state_config(data: Dictionary):
 	set_json(get_config_files_paths()['SAVED_STATE_FILE'], data)
 
 
-static func get_saved_state_general_key(key: String) -> String:
-	var data = get_saved_state()
-	if key in data['general'].keys():
-		return data['general'][key]
-	else:
-		return ''
-
-
-static func set_saved_state_general_key(key: String, value):
-	var data = get_saved_state()
-	data['general'][key] = str(value)
-	save_saved_state_config(data)
-
-
 # DEFAULT DEFINITIONS
 # Can only be edited in the editor
 
