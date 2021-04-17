@@ -18,20 +18,13 @@ Create dialogs, characters and scenes to display conversations in your Godot gam
 
 ## ⚙ Installation
 
-### ⬇ Downloading the plugin
-
 To install a Dialogic, download it as a ZIP archive. All releases are listed here: https://github.com/coppolaemilio/dialogic/releases. Then extract the ZIP archive and move the `addons/` folder it contains into your project folder. Then, enable the plugin in project settings.
 
 If you want to know more about installing plugins you can read the [official documentation page](https://docs.godotengine.org/en/stable/tutorials/plugins/editor/installing_plugins.html).
 
 You can also install Dialogic using the **AssetLib** tab in the editor, but the version here will not be the latest one available since it takes some time for it to be approved.
 
-### 📦 Preparing the export
-
-When you export a project using Dialogic, you need to add `*.json, *.cfg` on the Resources tab (see the image below). This allows Godot to pack the files from the `/dialogic` folder.
-
-![Screenshot](https://coppolaemilio.com/images/dialogic/exporting-2.png?v2)
-
+---
 
 ## ❔ FAQ 
 
@@ -40,7 +33,7 @@ There are two ways of doing this; using gdscript or the scene editor.
 
 Using the `Dialogic` class you can add dialogs from code easily:
 
-```
+```gdscript
 var new_dialog = Dialogic.start('Your Timeline Name Here')
 add_child(new_dialog)
 ```
@@ -51,7 +44,7 @@ Yes, you can use Dialogic to make any kind of game (even commercial ones). The p
 
 
 ### 🔷 Why are you not using graph nodes?
-When I started developing Dialogic I wanted to do it with graph nodes, but when I tried some of the existing solutions myself I found that they are not very useful for long conversations. Because of how the graph nodes are, the screen gets full of UI elements and it gets harder to follow. I also researched other tools for making Visual Novels (like TyranoBuilder and Visual Novel Maker) and they both work with a series of events flowing from top to bottom. I still haven't developed a complex game using both systems to tell which one is better but I don't want to break the conventions too much. 
+Because of how the graph nodes are, the screen gets full of UI elements and it gets harder to follow.
 If you want to use graph based editors you can try [Levraut's LE Dialogue Editor](https://levrault.itch.io/le-dialogue-editor) or [EXP Godot Dialog System](https://github.com/EXPWorlds/Godot-Dialog-System).
 
 
@@ -60,7 +53,25 @@ I see a lot of people saying that the plugin should come with Godot, but I belie
 
 
 ### 🔷 Can I use C# with Dialogic?
-You probably can, but I have no idea how to 😓. If you know your way around C# and Godot please let me know! https://github.com/coppolaemilio/dialogic/issues/55
+It is experimental! So if you want to try it out and you find issues, let us know.
+Usage:
+```cs
+public override void _Ready()
+  {
+    var dialog = DialogicSharp.Start("Greeting", false);
+    AddChild(dialog);
+  }
+```
+This is the PR that added this feature: https://github.com/coppolaemilio/dialogic/pull/217
+
+
+---
+
+### 📦 Preparing the export
+
+When you export a project using Dialogic, you need to add `*.json, *.cfg` on the Resources tab (see the image below). This allows Godot to pack the files from the `/dialogic` folder.
+
+![Screenshot](https://coppolaemilio.com/images/dialogic/exporting-2.png?v2)
 
 ---
 
