@@ -1,4 +1,65 @@
-### v1.0 - We made it! 🎉
+## v1.1 - WIP
+- Improved event dragging and selection [[Arnaud Vergnet](https://github.com/arnaudvergnet)]
+- Fixed a bug that prevented the deletion of Characters [[AnidemDex](https://github.com/AnidemDex)]
+- Fixed a bug that allowed you to overwrite the event on the theme preview dialog
+- Added a folder icon to each section of the resource tree
+- Greatly improved how the plugin is displayed in different display scales
+- You can now filter resources from the main view [[ellogwen](https://github.com/ellogwen)]
+- You can now duplicate themes (from the context menu) [[ellogwen](https://github.com/ellogwen)]
+- Organized the images and other assets into a tidier structure [[Jowan-Spooner](https://github.com/Jowan-Spooner)] _**Warning!** If you were using the example portrait assets you will have to load them again manually on the character editor_
+- You can now create resources by right clicking the section and selecting "+ New" [[Tim Krief](https://github.com/timkrief)]
+- Remade all the PopupMenu items in gdscript and replaced the icons with native editor theme ones.
+- Experimental: Added a static proxy for C# projects. _Testing wanted!_ [[mscharley](https://github.com/mscharley)]
+- Timeline:
+  - New event `Call Node`: Call a Godot NodePath and a method name. In addition you can add arguments as well. The Timeline will execute those methods and wait for completion, if the method in question is async and/or yielding [[ellogwen](https://github.com/ellogwen)]
+  - You now can drag and drop events into the timeline! [[ellogwen](https://github.com/ellogwen)]
+  - You can un select a selected event by clicking it [[ellogwen](https://github.com/ellogwen)]
+  - The `Scene Event` can now take other Scenes (`.tscn`) files as backgrounds. [[ellogwen](https://github.com/ellogwen)]
+  - The `If Condition` event can now use definition variables as values to compare against [[ellogwen](https://github.com/ellogwen)]
+  - You can now hide `Choice events` if a definition doesn't meet some requirements [[Arnaud](https://github.com/arnaudvergnet)]
+  - You can now select a character to ask a question in the `Question Event` [[Tim Krief](https://github.com/timkrief)]
+  - Added very basic syntax highlighting to the `Text Event` editor
+  - Fixed an indenting bug when removing events 
+  - The `Character Join` event now has a mirror option [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
+  - The `Close Dialog` has a new setting for the duration of the fade-out animation. [[Tim Krief](https://github.com/timkrief)]
+  - `Scene Event` renamed to `Change Background` to better represent what it does. [[Jowan-Spooner](https://github.com/Jowan-Spooner)] 
+  - Both `Audio Event` and `Background Music` got more settings (audio Bus, volume, fade-length) [[Jowan-Spooner](https://github.com/Jowan-Spooner)] 
+
+  - Shortcuts added! [[ellogwen](https://github.com/ellogwen)]
+    - Selecting previous and next event in the timeline with `CTRL + UP` and `CTRL + DOWN`
+    - Moving currently selected event up and down the timeline `ALT + UP` and `ALT + DOWN`
+    - Remove the currently selected event node and selects the next/last event node `CTRL DELETE`
+    - Create a new text event node below the currently selected and focus it's textbox to continue writing `CTRL T`
+- Character Editor
+  - There is an option `mirror portraits` below the portrait preview now, that will mirror all portraits when they appear in the game [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
+- Theme Editor
+  - Refreshed the UI to make room for more properties for each section
+  - A reload of the preview dialog is performed when you change a property so you don't have to click the "preview changes" all the time
+  - Removed the limitation of only 100px for the padding of the dialog box
+  - Added a new option for changing the color modulation of the dialog background image
+  - Added new customization options (scale, and offset) to the next indicator image
+  - Added modulation settings to the name label background texture and the choices buttons background textures [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
+  - Added an option to use native buttons styles for choices [[Tim Krief](https://github.com/timkrief)]
+  - Added new settings to set a fixed size for choice buttons (This is used to prevent premade texture stretching)
+  - Fixed a bug where the text alignment wasn't being shown on the preview
+  - Fixed a bug with the name label shadow
+  - Fixed a bug with the "auto color" option in game
+- Dialog node
+  - You can now use [br] to insert line breaks
+  - Questions now properly show the theme text alignment
+  - The close dialog now performs a fade-out animation
+  - Fixed a bug where Glossary Definitions plain text was being added to the name label
+  - Fixed an issue when trying to display small sprites as characters portraits
+  - Fixed a bug where portraits didn't come to the front when being focused [[AnidemDex](https://github.com/AnidemDex)]
+  - Fixed a bug when the display stretch was set to `2D`
+- Settings
+  - Added a new option to toggle the character "focus"/"dim" while speaking 
+- Added a button in timeline inspector plugin to open the selected timeline in the editor [[ellogwen](https://github.com/ellogwen)]
+- Special thanks to [Jowan-Spooner](https://github.com/Jowan-Spooner) for the QA and the facelift on the theme editor
+
+To view previous changes [click here](https://github.com/coppolaemilio/dialogic/blob/main/CHANGELOG.md). 
+
+## v1.0 - We made it! 🎉
   - When upgrading from 0.9 to the current version things might not work as expected:
     - ⚠ **PLEASE MAKE A BACKUP OF YOUR PROJECT BEFORE UPGRADING** ⚠
     - Glossary variables will be lost
@@ -42,7 +103,7 @@
   - The events now emit signals. Thank you [Jesse Lieberg](https://github.com/GammaGames) for your first contribution!
   - Special thanks to [Arnaud Vergnet](https://github.com/arnaudvergnet) for all your work in improving Definitions, conditional events and many more! 🙇‍♂️
 
-### v0.9 - House keeping
+## v0.9 - House keeping
   - Video: https://youtu.be/pL0RWVmlM6g
   - Moved `Dialog.tscn` to the root of the addon so it is easier to find.
   - Added a link to the documentation from the editor
