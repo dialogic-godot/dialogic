@@ -39,6 +39,7 @@ v1.1 - WIP
   - You can now select a character to ask a question in the `Question Event` [[Tim Krief](https://github.com/timkrief)]
   - Added very basic syntax highlighting to the `Text Event` editor
   - Fixed an indenting bug when removing events 
+  - The `Wait Seconds` event can now set values in 0.1 increments.
   - The `Character Join` event now has a mirror option [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
   - The `Close Dialog` has a new setting for the duration of the fade-out animation. [[Tim Krief](https://github.com/timkrief)]
   - `Scene Event` renamed to `Change Background` to better represent what it does. [[Jowan-Spooner](https://github.com/Jowan-Spooner)] 
