@@ -3,7 +3,7 @@ extends Node
 var current_definitions := {}
 var default_definitions := {}
 var current_state := {}
-var autosave := false
+var autosave := true
 
 var current_timeline := ''
 
@@ -13,9 +13,9 @@ func _init() -> void:
 
 
 func init(reset: bool=false) -> void:
-	if reset and not autosave:
+	if reset:
 		# Loads saved definitions into memory
-		DialogicResources.init_saves(reset)
+		DialogicResources.init_saves()
 	current_definitions = DialogicResources.get_saved_definitions()
 	default_definitions = DialogicResources.get_default_definitions()
 	current_state = DialogicResources.get_saved_state()

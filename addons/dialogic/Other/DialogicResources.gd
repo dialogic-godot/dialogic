@@ -65,13 +65,13 @@ static func get_config_files_paths() -> Dictionary:
 	}
 
 
-static func init_saves(overwrite: bool=true):
+static func init_saves():
 	var err = init_working_dir()
 	var paths := get_config_files_paths()
-	
+
 	if err == OK:
-		init_state_saves(overwrite)
-		init_definitions_saves(overwrite)
+		init_state_saves()
+		init_definitions_saves()
 	else:
 		print('[Dialogic] Error creating working directory: ' + str(err))
 
@@ -81,34 +81,30 @@ static func init_working_dir():
 	return directory.make_dir_recursive(get_working_directories()['WORKING_DIR'])
 
 
-static func init_state_saves(overwrite: bool=true):
+static func init_state_saves():
 	var file := File.new()
 	var paths := get_config_files_paths()
-	
-	if not file.file_exists(paths["SAVED_STATE_FILE"]) or overwrite:
-		var err = file.open(paths["SAVED_STATE_FILE"], File.WRITE)
-		if err == OK:
-			file.store_string('')
-			file.close()
-		else:
-			print('[Dialogic] Error opening saved state file: ' + str(err))
+	var err = file.open(paths["SAVED_STATE_FILE"], File.WRITE)
+	if err == OK:
+		file.store_string('')
+		file.close()
+	else:
+		print('[Dialogic] Error opening saved state file: ' + str(err))
 
 
-static func init_definitions_saves(overwrite: bool=true):
+static func init_definitions_saves():
 	var directory := Directory.new()
 	var source := File.new()
 	var sink := File.new()
 	var paths := get_config_files_paths()
-	var err
-	if not directory.file_exists(paths["SAVED_DEFINITIONS_FILE"]):
-		err = sink.open(paths["SAVED_DEFINITIONS_FILE"], File.WRITE)
-		print('[Dialogic] Saved definitions not present, creating file: ' + str(err))
-		if err == OK:
-			sink.store_string('')
-			sink.close()
-		else:
-			print('[Dialogic] Error opening saved definitions file: ' + str(err))
-	
+	var err = sink.open(paths["SAVED_DEFINITIONS_FILE"], File.WRITE)
+	print('[Dialogic] Saved definitions not present, creating file: ' + str(err))
+	if err == OK:
+		sink.store_string('')
+		sink.close()
+	else:
+		print('[Dialogic] Error opening saved definitions file: ' + str(err))
+
 	err = sink.open(paths["SAVED_DEFINITIONS_FILE"], File.READ_WRITE)
 	if err == OK:
 		if overwrite or sink.get_len() == 0:
@@ -323,6 +319,7 @@ static func get_saved_state() -> Dictionary:
 
 
 static func save_saved_state_config(data: Dictionary):
+	init_working_dir()
 	set_json(get_config_files_paths()['SAVED_STATE_FILE'], data)
 
 
@@ -373,4 +370,5 @@ static func get_saved_definitions() -> Dictionary:
 
 
 static func save_saved_definitions(data: Dictionary):
+	init_working_dir()
 	return set_json(get_config_files_paths()['SAVED_DEFINITIONS_FILE'], data)
