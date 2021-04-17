@@ -13,7 +13,7 @@ func _init() -> void:
 
 
 func init(reset: bool=false) -> void:
-	if reset:
+	if reset and autosave:
 		# Loads saved definitions into memory
 		DialogicResources.init_saves()
 	current_definitions = DialogicResources.get_saved_definitions()
