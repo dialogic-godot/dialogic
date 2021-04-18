@@ -32,6 +32,7 @@
     - Create a new text event node below the currently selected and focus it's textbox to continue writing `CTRL T`
 - Character Editor
   - There is an option `mirror portraits` below the portrait preview now, that will mirror all portraits when they appear in the game [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
+  - Fixed a bug that prevented portrait previews to display if the extension was in capital letters. 
 - Theme Editor
   - Refreshed the UI to make room for more properties for each section
   - A reload of the preview dialog is performed when you change a property so you don't have to click the "preview changes" all the time

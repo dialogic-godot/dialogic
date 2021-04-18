@@ -34,6 +34,7 @@ func _on_focus_entered():
 
 
 func update_preview(path):
+	path = path.to_lower()
 	if path == '':
 		image_node.texture = null
 	else:
