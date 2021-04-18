@@ -250,11 +250,17 @@ func parse_branches(dialog_script: Dictionary) -> Dictionary:
 	return dialog_script
 
 
+func _should_show_glossary():
+	if current_theme != null:
+		return current_theme.get_value('definitions', 'show_glossary', true)
+	return true
+
+
 func parse_definitions(text: String, variables: bool = true, glossary: bool = true):
 	var final_text: String = text
 	if variables:
 		final_text = _insert_variable_definitions(text)
-	if glossary:
+	if glossary and _should_show_glossary():
 		final_text = _insert_glossary_definitions(final_text)
 	return final_text
 

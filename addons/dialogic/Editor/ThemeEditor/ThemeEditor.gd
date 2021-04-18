@@ -82,6 +82,7 @@ onready var n : Dictionary = {
 	# Glossary
 	'glossary_font': $VBoxContainer/TabContainer/Glossary/Column/GridContainer/FontButton,
 	'glossary_color': $VBoxContainer/TabContainer/Glossary/Column/GridContainer/ColorPickerButton,
+	'glossary_enabled': $VBoxContainer/TabContainer/Glossary/Column/GridContainer/ShowGlossaryCheckBox,
 	
 	# Text preview
 	'text_preview': $VBoxContainer/HBoxContainer3/TextEdit,
@@ -155,6 +156,7 @@ func load_theme(filename):
 	# Definitions
 	n['glossary_color'].color = Color(theme.get_value('definitions', 'color', "#ffffffff"))
 	n['glossary_font'].text = DialogicResources.get_filename_from_path(theme.get_value('definitions', 'font', "res://addons/dialogic/Example Assets/Fonts/GlossaryFont.tres"))
+	n['glossary_enabled'].pressed = theme.get_value('definitions', 'show_glossary', true)
 	
 	# Text
 	n['theme_text_speed'].value = theme.get_value('text','speed', 2)
@@ -495,6 +497,14 @@ func _on_Glossary_Font_selected(path, target) -> void:
 	_on_PreviewButton_pressed() # Refreshing the preview
 
 
+func _on_ShowGlossaryCheckBox_toggled(button_pressed):
+	if loading:
+		return
+	DialogicResources.set_theme_value(current_theme, 'definitions','show_glossary', button_pressed)
+	_on_PreviewButton_pressed() # Refreshing the preview
+
+
+
 func _on_visibility_changed() -> void:
 	if visible:
 		# Refreshing the dialog 
@@ -683,3 +693,4 @@ func _on_ButtonSize_value_changed(value):
 		return
 	DialogicResources.set_theme_value(current_theme, 'buttons','fixed_size', Vector2(n['button_fixed_x'].value,n['button_fixed_y'].value))
 	_on_PreviewButton_pressed() # Refreshing the preview
+
