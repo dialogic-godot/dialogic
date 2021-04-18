@@ -23,8 +23,13 @@ export(bool) var reset_saves = true
 ## Should we show debug information when running?
 export(bool) var debug_mode = true
 
+# Event end/start
 signal event_start(type, event)
 signal event_end(type)
+# Timeline end/start
+signal timeline_start(timeline_name)
+signal timeline_end(timeline_name)
+# Custom user signal
 signal dialogic_signal(value)
 
 var dialog_resource
@@ -340,14 +345,18 @@ func on_timeline_start():
 	if not Engine.is_editor_hint():
 		DialogicSingleton.save_definitions()
 		DialogicSingleton.set_current_timeline(current_timeline)
+	# TODO remove event_start in 2.0
 	emit_signal("event_start", "timeline", current_timeline)
+	emit_signal("timeline_start", current_timeline)
 
 
 func on_timeline_end():
 	if not Engine.is_editor_hint():
 		DialogicSingleton.save_definitions()
 		DialogicSingleton.set_current_timeline('')
+	# TODO remove event_end in 2.0
 	emit_signal("event_end", "timeline")
+	emit_signal("timeline_end", current_timeline)
 	dprint('[D] Timeline End')
 
 
