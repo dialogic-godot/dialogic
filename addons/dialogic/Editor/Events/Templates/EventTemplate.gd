@@ -26,6 +26,10 @@ var header_node
 var body_node
 var indent_size = 25
 
+# Setting this to true will ignore the event while saving
+# Useful for making placeholder events in drag and drop
+var ignore_save = false
+
 ## *****************************************************************************
 ##								PUBLIC METHODS
 ## *****************************************************************************
