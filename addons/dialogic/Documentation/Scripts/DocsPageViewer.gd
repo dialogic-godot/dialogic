@@ -47,7 +47,7 @@ func load_page(page_path: String, section : String=''):
 	current_page = page_path
 	
 	# parsing the file
-	bbcode_text = MarkdownParser.parse(f.get_as_text())
+	bbcode_text = MarkdownParser.parse(f.get_as_text(), current_page)
 	f.close()
 	
 	# saving the headings for going to sections
