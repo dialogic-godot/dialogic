@@ -142,7 +142,7 @@ func create_doc_tree(tree, parent_item, def_folder_info, def_page_info, doc_stru
 				if use_folder_files and file.trim_suffix('.md') in doc_structure.keys():
 					pass
 				else:
-					if not filter_term or (filter_term and filter_term.to_lower() in file.to_lower()):
+					if not filter_term or (filter_term and filter_term.to_lower() in get_title(file, '').to_lower()):
 						_add_documentation_page(tree, parent_item, {'name':file.get_file().trim_suffix(".md"), 'path': file}, def_page_info)
 
 func merge_dir(target: Dictionary, patch: Dictionary):
@@ -173,7 +173,7 @@ func _add_documentation_folder(tree, parent_item, folder_info, default_info):
 # this adds a page item to the tree
 func _add_documentation_page(tree, parent, page_info, default_info):
 	var item = tree.create_item(parent)
-	item.set_text(0, page_info['name'])
+	item.set_text(0, get_title(page_info['path'], page_info['name']))
 	item.set_tooltip(0,page_info['path'])
 	item.set_editable(0, false)
 	item.set_icon(0, tree.get_icon("HelpSearch", "EditorIcons"))
@@ -184,6 +184,16 @@ func _add_documentation_page(tree, parent, page_info, default_info):
 		item.set_icon_modulate(0, tree.get_color("property_color", "Editor"))
 	return item
 
+# returns the first line of a text_file, a bit cleaned up
+func get_title(path, default_name):
+	# opening the file
+	var f = File.new()
+	f.open(path, File.READ)
+	var arr = f.get_as_text().split('\n', false, 1)
+	if not arr.empty():
+		return arr[0].replace('#', '').strip_edges()
+	else:
+		return default_name
 ## ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ## For searching the tree
 ## used to search and select an item of the tree based on a info saved in the metadata
