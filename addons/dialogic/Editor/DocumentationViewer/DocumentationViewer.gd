@@ -13,11 +13,11 @@ onready var nodes = {
 }
 
 func _ready():
-	pass#load_page(current_page)
+	pass
 
 func load_page(page):
 	current_page = page
 	$VBoxContainer/DocsViewer.load_page(current_page)
 
-func _on_DocsViewer_open_non_html_link(link):
-	master_tree.select_documentatio_item(link)
+func _on_DocsViewer_open_non_html_link(link, section):
+	master_tree.select_documentation_item(link)

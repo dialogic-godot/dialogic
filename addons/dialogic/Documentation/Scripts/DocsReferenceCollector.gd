@@ -11,9 +11,9 @@ class_name ReferenceCollector
 # - Go to File -> Run to run the script in the editor.
 
 
-var Collector: SceneTree = load("DocsCollector.gd").new()
+var Collector: SceneTree = load("res://addons/dialogic/Documentation/Scripts/DocsCollector.gd").new()
 # A list of directories to collect files from.
-var directories := ["res://addons/dialogic/"]
+var directories := ["res://addons/dialogic/Nodes/"]
 # If true, explore each directory recursively
 var is_recursive: = true
 # A list of patterns to filter files.

@@ -87,7 +87,7 @@ func _ready():
 
 	documentation_tree = tree.create_item(root)
 	documentation_tree.set_text(0, "Documentation")
-	documentation_tree.set_icon(0, get_icon("HelpSearch", "EditorIcons"))
+	documentation_tree.set_icon(0, get_icon("Folder", "EditorIcons"))
 	documentation_tree.set_metadata(0, {'editor': 'Documentation', 'name':'Start', 'path':'Welcome.md'})
 
 	
@@ -240,48 +240,8 @@ func _add_definition(definition, select = false):
 	if select: # Auto selecting
 		item.select(0)
 
-
 func build_documentation(selected_item: String=''):
-	_clear_tree_children(documentation_tree)
-	var doc_structure = DocsHelper.get_documentation_content()
-	create_doc_tree(doc_structure, documentation_tree)
-
-
-func create_doc_tree(doc_structure, parent_item):
-	for key in doc_structure.keys():
-		if typeof(doc_structure[key]) == TYPE_DICTIONARY:
-			var folder_item = _add_documentation_folder(parent_item, {'name':key})
-			create_doc_tree(doc_structure[key], folder_item)
-			folder_item.collapsed = true
-		elif typeof(doc_structure[key]) == TYPE_ARRAY:
-			for file in doc_structure[key]:
-				_add_documentation_page(parent_item, {'name':file.get_file().trim_suffix(".md"), 'path': file})
-	# force redraw treet
-	update()
-
-func _add_documentation_folder(parent_item, info):
-	var item = tree.create_item(parent_item)
-	item.set_text(0, info['name'])
-	item.set_icon(0, get_icon("Folder", "EditorIcons"))
-	info['editor'] = 'DocumentationRoot'
-	info['editable'] = false
-	item.set_metadata(0, info)
-	if not get_constant("dark_theme", "Editor"):
-		item.set_icon_modulate(0, get_color("property_color", "Editor"))
-	return item
-
-func _add_documentation_page(parent, page_info, select = false):
-	var item = tree.create_item(parent)
-	item.set_text(0, page_info['name'])
-	item.set_icon(0, get_icon("HelpSearch", "EditorIcons"))
-	page_info['editor'] = 'Documentation'
-	page_info['editable'] = false
-	item.set_metadata(0, page_info)
-	if not get_constant("dark_theme", "Editor"):
-		item.set_icon_modulate(0, get_color("property_color", "Editor"))
-	if select: # Auto selecting
-		item.select(0)
-	return item
+	DocsHelper.build_documentation_tree(self, documentation_tree, {'editor':'Documentation', 'editable':'false'}, {'editor':'Documentation', 'editable':'false'})
 
 func _on_item_selected():
 	# TODO: Ideally I would perform a "save" here before opening the next
@@ -542,47 +502,7 @@ func select_timeline_item(timeline_name):
 	hide_all_editors()
 	pass
 
-func select_documentation_item(documentation_name):
-	if (documentation_name == ''):
-		return
 
-	var main_item = tree.get_root().get_children()
-	
-	# wow, godots tree traversal is extremly odd, or I just don't get it
-	while (main_item):
-		
-		if (main_item == null):
-			break
-			
-		if (main_item.has_method("get_text") && main_item.get_text(0) == "Documentation"):
-			var item = main_item.get_children()
-			while (item):
-							
-				if (not item.has_method("get_metadata")):
-					item = item.get_next()
-					continue
-			
-				var meta = item.get_metadata(0)
-		
-				if (meta == null):
-					item = item.get_next()
-					continue
-		
-				if (not meta.has("editor") or meta["editor"] != "Documentation"):
-					item = item.get_next()
-					continue
-			
-				# search for name
-				if (meta.has("name") and meta["name"] == documentation_name):
-					# select this one
-					item.select(0)
-					return;
-	
-				item = item.get_next()
-			break
-		else:
-			main_item = main_item.get_next()
-			
-	# fallback
-	hide_all_editors()
-	pass
+func select_documentation_item(docs_page_path):
+	if not DocsHelper.search_and_select_docs(documentation_tree, docs_page_path):
+		hide_all_editors()

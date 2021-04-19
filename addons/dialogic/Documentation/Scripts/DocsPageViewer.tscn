@@ -1,0 +1,43 @@
+[gd_scene load_steps=12 format=2]
+
+[ext_resource path="res://addons/dialogic/Documentation/Theme/Roboto/Roboto-Regular.ttf" type="DynamicFontData" id=1]
+[ext_resource path="res://addons/dialogic/Documentation/Theme/Roboto/Roboto-Italic.ttf" type="DynamicFontData" id=2]
+[ext_resource path="res://addons/dialogic/Documentation/Scripts/DocsPageViewer.gd" type="Script" id=3]
+[ext_resource path="res://addons/dialogic/Documentation/Theme/Roboto/Roboto-Bold.ttf" type="DynamicFontData" id=4]
+[ext_resource path="res://addons/dialogic/Documentation/Theme/Roboto/Roboto-Light.ttf" type="DynamicFontData" id=5]
+[ext_resource path="res://addons/dialogic/Documentation/Theme/Roboto/Roboto-BoldItalic.ttf" type="DynamicFontData" id=6]
+
+[sub_resource type="DynamicFont" id=1]
+use_filter = true
+font_data = ExtResource( 5 )
+
+[sub_resource type="DynamicFont" id=2]
+use_filter = true
+font_data = ExtResource( 6 )
+
+[sub_resource type="DynamicFont" id=3]
+font_data = ExtResource( 2 )
+
+[sub_resource type="DynamicFont" id=4]
+font_data = ExtResource( 4 )
+
+[sub_resource type="DynamicFont" id=5]
+use_filter = true
+font_data = ExtResource( 1 )
+
+[node name="DocsPageViewer" type="RichTextLabel"]
+margin_right = 1024.0
+margin_bottom = 600.0
+size_flags_vertical = 3
+custom_fonts/mono_font = SubResource( 1 )
+custom_fonts/bold_italics_font = SubResource( 2 )
+custom_fonts/italics_font = SubResource( 3 )
+custom_fonts/bold_font = SubResource( 4 )
+custom_fonts/normal_font = SubResource( 5 )
+bbcode_enabled = true
+script = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[connection signal="meta_clicked" from="." to="." method="_on_meta_clicked"]

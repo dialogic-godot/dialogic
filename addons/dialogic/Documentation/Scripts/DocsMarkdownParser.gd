@@ -6,29 +6,48 @@ var heading3_font = "res://addons/dialogic/Documentation/Theme/DocumentationH3.t
 var heading4_font = "res://addons/dialogic/Documentation/Theme/DocumentationH4.tres"
 var heading5_font = "res://addons/dialogic/Documentation/Theme/DocumentationH5.tres"
 
-# Called when the node enters the scene tree for the first time.
-func _ready():
-	pass # Replace with function body.
+## These will change with each parsing, but can be saved manually after parsing 
+var heading1s = []
+var heading2s = []
+var heading3s = []
+var heading4s = []
+var heading5s = []
+var result = ""
+var bolded = []
+var italics = []
+var striked = []
+var coded = []
+var linknames = []
+var links = []
+var imagenames = []
+var imagelinks = []
+var lists = []
+var underlined = []
+
+################################################################################
+##							PUBLIC FUNCTIONS 								  ##
+################################################################################
 
 ### Takes a markdown string and returns it as BBCode
 func parse(content : String):
-	var heading1s = []
-	var heading2s = []
-	var heading3s = []
-	var heading4s = []
-	var heading5s = []
-	var result = ""
-	var bolded = []
-	var italics = []
-	var striked = []
-	var coded = []
-	var linknames = []
-	var links = []
-	var imagenames = []
-	var imagelinks = []
-	var lists = []
-	var underlined = []
 	
+	heading1s = []
+	heading2s = []
+	heading3s = []
+	heading4s = []
+	heading5s = []
+	result = ""
+	bolded = []
+	italics = []
+	striked = []
+	coded = []
+	linknames = []
+	links = []
+	imagenames = []
+	imagelinks = []
+	lists = []
+	underlined = []
+
 	var regex = RegEx.new()
 	
 	## Find all occurences of bold text
@@ -145,8 +164,10 @@ func parse(content : String):
 		var imagelink_to_use = imagelinks[i]
 		if imagelink_to_use.begins_with("http"):
 			var path_parts = imagelink_to_use.split("/Documentation/")
-			if path_parts.length() > 1:
+			if path_parts.size() > 1:
 				imagelink_to_use = DocsHelper.documentation_path + path_parts[1]
+			else:
+				imagelink_to_use = "icon.png"
 		content = content.replace("!["+imagenames[i]+"]("+imagelinks[i]+")","[img]"+imagelink_to_use+"[/img]")
 	for heading1 in heading1s:
 		content = content.replace("#"+heading1, "[font="+heading1_font+"]"+heading1.strip_edges()+"[/font]")

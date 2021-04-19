@@ -1,0 +1,33 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://addons/dialogic/Documentation/Scripts/DocsPageViewer.tscn" type="PackedScene" id=1]
+[ext_resource path="res://addons/dialogic/Documentation/Scripts/DocumentationTree.tscn" type="PackedScene" id=2]
+[ext_resource path="res://addons/dialogic/Documentation/Scripts/DocumentationViewer.gd" type="Script" id=3]
+
+[node name="DocumentationViewer" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HSplit" type="HSplitContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="DocumentationTree" parent="HSplit" instance=ExtResource( 2 )]
+margin_right = 198.0
+size_flags_stretch_ratio = 0.25
+
+[node name="DocsPageViewer" parent="HSplit" instance=ExtResource( 1 )]
+margin_left = 210.0
+size_flags_horizontal = 3
+
+[connection signal="_page_selected" from="HSplit/DocumentationTree" to="." method="_on_DocumentationTree_page_selected"]
+[connection signal="open_non_html_link" from="HSplit/DocsPageViewer" to="." method="_on_DocsPageViewer_open_non_html_link"]

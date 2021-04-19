@@ -9,9 +9,9 @@ func _init():
 		# Make sure the core files exist 
 		DialogicResources.init_dialogic_files()
 	add_autoload_singleton('DialogicSingleton', "res://addons/dialogic/Other/DialogicSingleton.gd")
-	# needed to make the 
+	# needed to make the docs
 	add_autoload_singleton('DocsHelper', "res://addons/dialogic/Documentation/Scripts/DocsHelper.gd")
-
+	
 
 func _enter_tree() -> void:
 	_parts_inspector = load("res://addons/dialogic/Other/inspector_timeline_picker.gd").new()
@@ -33,6 +33,7 @@ func _ready():
 func _exit_tree() -> void:
 	_remove_custom_editor_view()
 	remove_inspector_plugin(_parts_inspector)
+	remove_autoload_singleton('DocsHelper')
 
 
 func has_main_screen():
@@ -57,6 +58,7 @@ func get_plugin_icon():
 
 func _add_custom_editor_view():
 	_editor_view = preload("res://addons/dialogic/Editor/EditorView.tscn").instance()
+	#_editor_view = preload("res://addons/dialogic/Documentation/Scripts/DocumentationViewer.tscn").instance()
 	#_editor_view.plugin_reference = self
 
 
