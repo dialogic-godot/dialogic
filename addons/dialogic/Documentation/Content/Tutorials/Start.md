@@ -3,6 +3,8 @@
 
 [Test link](Your first dialogic game)
 
+![Image](https://github.com/Jowan-Spooner/dialogic/blob/plugin-docs/addons/dialogic/Documentation/Content/Tutorials/Images/Dialogic_Tab.PNG)
+
 **Lalala**
 
 *Something*
