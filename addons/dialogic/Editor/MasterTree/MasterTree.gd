@@ -241,8 +241,13 @@ func _add_definition(definition, select = false):
 		item.select(0)
 
 func build_documentation(selected_item: String=''):
-	DocsHelper.build_documentation_tree(self, documentation_tree, {'editor':'Documentation', 'editable':'false'}, {'editor':'Documentation', 'editable':'false'})
-
+	var child = documentation_tree.get_children()
+	while child:
+		child.call_recursive("call_deferred", "free")
+		child = child.get_next()
+	DocsHelper.build_documentation_tree(self, documentation_tree, {'editor':'Documentation', 'editable':'false'}, {'editor':'Documentation', 'editable':'false'}, filter_tree_term)
+	call_deferred("update")
+	
 func _on_item_selected():
 	# TODO: Ideally I would perform a "save" here before opening the next
 	#       resource. Unfortunately there has been so many bugs doing that 
@@ -433,6 +438,7 @@ func _on_filter_tree_edit_changed(value):
 	build_themes()
 	build_characters()
 	build_definitions()
+	build_documentation()
 
 
 func save_current_resource():

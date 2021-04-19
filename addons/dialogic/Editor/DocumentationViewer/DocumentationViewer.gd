@@ -20,4 +20,5 @@ func load_page(page):
 	$VBoxContainer/DocsViewer.load_page(current_page)
 
 func _on_DocsViewer_open_non_html_link(link, section):
+	#print(link, " ", section)
 	master_tree.select_documentation_item(link)
