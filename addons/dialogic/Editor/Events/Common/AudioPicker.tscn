@@ -1,0 +1,101 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://addons/dialogic/Editor/Events/Common/AudioPicker.gd" type="Script" id=1]
+
+[sub_resource type="Image" id=3]
+data = {
+"data": PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ),
+"format": "LumAlpha8",
+"height": 16,
+"mipmaps": false,
+"width": 16
+}
+
+[sub_resource type="ImageTexture" id=2]
+flags = 4
+flags = 4
+image = SubResource( 3 )
+size = Vector2( 16, 16 )
+
+[node name="AudioPicker" type="HBoxContainer"]
+margin_right = 40.0
+margin_bottom = 40.0
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Name" type="Label" parent="."]
+margin_top = 13.0
+margin_right = 266.0
+margin_bottom = 27.0
+mouse_filter = 1
+text = "No sound (will stop previous Audio Event)"
+
+[node name="ButtonAudio" type="Button" parent="."]
+margin_left = 270.0
+margin_right = 294.0
+margin_bottom = 40.0
+text = "..."
+
+[node name="ButtonClear" type="Button" parent="."]
+visible = false
+margin_left = 297.0
+margin_right = 325.0
+margin_bottom = 40.0
+disabled = true
+icon = SubResource( 2 )
+
+[node name="ButtonPreviewPlay" type="Button" parent="."]
+visible = false
+margin_left = 329.0
+margin_right = 357.0
+margin_bottom = 40.0
+disabled = true
+icon = SubResource( 2 )
+
+[node name="BusSelector" type="OptionButton" parent="."]
+visible = false
+margin_left = 361.0
+margin_right = 390.0
+margin_bottom = 40.0
+text = "Master"
+items = [ "Master", null, false, 0, null, "Cool new bus", null, false, 1, null ]
+selected = 0
+
+[node name="VolumeLabel" type="Label" parent="."]
+margin_left = 298.0
+margin_top = 13.0
+margin_right = 359.0
+margin_bottom = 27.0
+text = "  Volume:"
+
+[node name="Volume" type="SpinBox" parent="."]
+margin_left = 363.0
+margin_right = 437.0
+margin_bottom = 40.0
+min_value = -80.0
+max_value = 24.0
+step = 0.01
+suffix = "dB"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Preview" type="Label" parent="."]
+visible = false
+margin_left = 329.0
+margin_top = 13.0
+margin_right = 357.0
+margin_bottom = 27.0
+custom_colors/font_color = Color( 1, 1, 1, 0.513726 )
+text = "    ..."
+
+[node name="AudioPreview" type="AudioStreamPlayer" parent="."]
+
+[connection signal="pressed" from="ButtonAudio" to="." method="_on_ButtonAudio_pressed"]
+[connection signal="pressed" from="ButtonClear" to="." method="_on_ButtonClear_pressed"]
+[connection signal="pressed" from="ButtonPreviewPlay" to="." method="_on_ButtonPreviewPlay_pressed"]
+[connection signal="item_selected" from="BusSelector" to="." method="_on_BusSelector_item_selected"]
+[connection signal="value_changed" from="Volume" to="." method="_on_Volume_value_changed"]
+[connection signal="finished" from="AudioPreview" to="." method="_on_AudioPreview_finished"]

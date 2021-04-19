@@ -77,7 +77,22 @@ static func get_definitions() -> Dictionary:
 ## 
 ## @returns						Error status, OK if all went well
 static func save_definitions():
-	return DialogicSingleton.save_definitions()
+	# Always try to save as much as possible.
+	var err1 = DialogicSingleton.save_definitions()
+	var err2 = DialogicSingleton.save_state()
+
+	# Try to combine the two error states in a way that makes sense.
+	return err1 if err1 != OK else err2
+
+
+## Sets whether to use Dialogic's built-in autosave functionality.
+static func set_autosave(save: bool) -> void:
+	DialogicSingleton.set_autosave(save);
+
+
+## Gets whether to use Dialogic's built-in autosave functionality.
+static func get_autosave() -> bool:
+	return DialogicSingleton.get_autosave();
 
 
 ## Resets data to default values. This is the same as calling start with reset_saves to true
@@ -135,3 +150,21 @@ static func set_glossary(name: String, title: String, text: String, extra: Strin
 ## @returns						The current timeline filename, or an empty string if none was saved.
 static func get_current_timeline() -> String:
 	return DialogicSingleton.get_current_timeline()
+
+
+## Export the current Dialogic state.
+## This can be used as part of your own saving mechanism if you have one. If you use this,
+## you should also disable autosaving.
+##
+## @return						A dictionary of data that can be later provided to import().
+static func export() -> Dictionary:
+	return DialogicSingleton.export()
+
+
+## Import a Dialogic state.
+## This can be used as part of your own saving mechanism if you have one. If you use this,
+## you should also disable autosaving.
+##
+## @param data				A dictionary of data as created by export().
+static func import(data: Dictionary) -> void:
+	DialogicSingleton.import(data)

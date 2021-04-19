@@ -23,8 +23,13 @@ export(bool) var reset_saves = true
 ## Should we show debug information when running?
 export(bool) var debug_mode = true
 
+# Event end/start
 signal event_start(type, event)
 signal event_end(type)
+# Timeline end/start
+signal timeline_start(timeline_name)
+signal timeline_end(timeline_name)
+# Custom user signal
 signal dialogic_signal(value)
 
 var dialog_resource
@@ -85,15 +90,22 @@ func load_config_files():
 
 func resize_main():
 	# This function makes sure that the dialog is displayed at the correct
-	# size and position in the screen. 
-	if Engine.is_editor_hint() == false:
+	# size and position in the screen.
+	var reference = rect_size
+	if not Engine.is_editor_hint():
 		set_global_position(Vector2(0,0))
-		if ProjectSettings.get_setting("display/window/stretch/mode") != '2d':
-			set_deferred('rect_size', get_viewport().size)
-		dprint("[Dialogic] Viewport", get_viewport().size)
-	$TextBubble.rect_position.x = (rect_size.x / 2) - ($TextBubble.rect_size.x / 2)
+		reference = get_viewport().get_visible_rect().size
+
+	$Options.rect_position.x = (reference.x / 2) - ($Options.rect_size.x / 2)
+	$Options.rect_position.y = (reference.y / 2) - ($Options.rect_size.y / 2)
+	
+	$TextBubble.rect_position.x = (reference.x / 2) - ($TextBubble.rect_size.x / 2)
 	if current_theme != null:
-		$TextBubble.rect_position.y = (rect_size.y) - ($TextBubble.rect_size.y) - current_theme.get_value('box', 'bottom_gap', 40)
+		$TextBubble.rect_position.y = (reference.y) - ($TextBubble.rect_size.y) - current_theme.get_value('box', 'bottom_gap', 40)
+	
+	var background = get_node_or_null('Background')
+	if background != null:
+		background.rect_size = reference
 
 
 func set_current_dialog(dialog_path: String):
@@ -243,11 +255,17 @@ func parse_branches(dialog_script: Dictionary) -> Dictionary:
 	return dialog_script
 
 
+func _should_show_glossary():
+	if current_theme != null:
+		return current_theme.get_value('definitions', 'show_glossary', true)
+	return true
+
+
 func parse_definitions(text: String, variables: bool = true, glossary: bool = true):
 	var final_text: String = text
 	if variables:
 		final_text = _insert_variable_definitions(text)
-	if glossary:
+	if glossary and _should_show_glossary():
 		final_text = _insert_glossary_definitions(final_text)
 	return final_text
 
@@ -327,14 +345,18 @@ func on_timeline_start():
 	if not Engine.is_editor_hint():
 		DialogicSingleton.save_definitions()
 		DialogicSingleton.set_current_timeline(current_timeline)
+	# TODO remove event_start in 2.0
 	emit_signal("event_start", "timeline", current_timeline)
+	emit_signal("timeline_start", current_timeline)
 
 
 func on_timeline_end():
 	if not Engine.is_editor_hint():
 		DialogicSingleton.save_definitions()
 		DialogicSingleton.set_current_timeline('')
+	# TODO remove event_end in 2.0
 	emit_signal("event_end", "timeline")
+	emit_signal("timeline_end", current_timeline)
 	dprint('[D] Timeline End')
 
 
@@ -475,6 +497,8 @@ func event_handler(event: Dictionary):
 					background.stretch_mode = TextureRect.STRETCH_SCALE
 					background.show_behind_parent = true
 					background.mouse_filter = Control.MOUSE_FILTER_IGNORE
+					call_deferred('resize_main') # Executing the resize main to update the background size
+					
 					add_child(background)
 				background.texture = null
 				if (background.get_child_count() > 0):
@@ -489,7 +513,7 @@ func event_handler(event: Dictionary):
 				elif (event['background'] != ''):
 					background.texture = load(event['background'])
 			_load_next_event()
-		{'audio'}, {'audio', 'file'}:
+		{'audio'}, {'audio', 'file', ..}:
 			emit_signal("event_start", "audio", event)
 			if event['audio'] == 'play' and 'file' in event.keys() and not event['file'].empty():
 				var audio = get_node_or_null('AudioEvent')
@@ -497,6 +521,11 @@ func event_handler(event: Dictionary):
 					audio = AudioStreamPlayer.new()
 					audio.name = 'AudioEvent'
 					add_child(audio)
+				if event.has('audio_bus'):
+					if AudioServer.get_bus_index(event['audio_bus']) >= 0:
+						audio.bus = event['audio_bus']
+				if event.has('volume'):
+					audio.volume_db = event['volume']
 				audio.stream = load(event['file'])
 				audio.play()
 			else:
@@ -505,12 +534,12 @@ func event_handler(event: Dictionary):
 					audio.stop()
 					audio.queue_free()
 			_load_next_event()
-		{'background-music'}, {'background-music', 'file'}:
+		{'background-music'}, {'background-music', 'file',..}:
 			emit_signal("event_start", "background-music", event)
 			if event['background-music'] == 'play' and 'file' in event.keys() and not event['file'].empty():
-				$FX/BackgroundMusic.crossfade_to(event['file'])
+				$FX/BackgroundMusic.crossfade_to(event['file'], event.get('audio_bus', 'Master'), event.get('volume', 0), event.get('fade_length', 1))
 			else:
-				$FX/BackgroundMusic.fade_out()
+				$FX/BackgroundMusic.fade_out(event.get('fade_length', 1))
 			_load_next_event()
 		{'endbranch', ..}:
 			emit_signal("event_start", "endbranch", event)

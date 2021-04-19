@@ -31,14 +31,12 @@ __meta__ = {
 }
 
 [node name="TextBubble" parent="." instance=ExtResource( 1 )]
-margin_top = -207.0
-margin_bottom = -40.0
+margin_left = -321.5
+margin_top = -264.0
+margin_right = 321.5
+margin_bottom = -60.0
 
 [node name="Options" type="VBoxContainer" parent="."]
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
 grow_horizontal = 2
 grow_vertical = 2
 alignment = 1

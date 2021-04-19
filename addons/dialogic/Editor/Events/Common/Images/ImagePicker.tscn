@@ -1,0 +1,35 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://addons/dialogic/Images/Context Menus/Remove.svg" type="Texture" id=1]
+[ext_resource path="res://addons/dialogic/Editor/Events/Common/Images/ImagePicker.gd" type="Script" id=2]
+
+
+[node name="ImagePicker" type="HBoxContainer"]
+margin_left = 154.0
+margin_right = 485.0
+margin_bottom = 28.0
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Name" type="Label" parent="."]
+margin_top = 7.0
+margin_right = 271.0
+margin_bottom = 21.0
+text = "No image (will clear previous scene event)"
+
+[node name="ImageButton" type="Button" parent="."]
+margin_left = 275.0
+margin_right = 299.0
+margin_bottom = 28.0
+text = "..."
+
+[node name="ClearButton" type="Button" parent="."]
+margin_left = 303.0
+margin_right = 331.0
+margin_bottom = 28.0
+disabled = true
+icon = ExtResource( 1 )
+[connection signal="pressed" from="ImageButton" to="." method="_on_ImageButton_pressed"]
+[connection signal="pressed" from="ClearButton" to="." method="_on_ClearButton_pressed"]
