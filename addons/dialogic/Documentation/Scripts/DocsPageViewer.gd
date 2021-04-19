@@ -5,7 +5,7 @@ export (bool) var enable_editing = false
 var documentation_path: String = ""
 var MarkdownParser = load("res://addons/dialogic/Documentation/Scripts/DocsMarkdownParser.gd").new()
 
-var current_page: String = ""
+var current_path: String = ""
 var current_headings = []
 
 signal open_non_html_link(link, section)
@@ -44,10 +44,10 @@ func load_page(page_path: String, section : String=''):
 	# opening the file
 	var f = File.new()
 	f.open(page_path,File.READ)
-	current_page = page_path
+	current_path = page_path
 	
 	# parsing the file
-	bbcode_text = MarkdownParser.parse(f.get_as_text(), current_page)
+	bbcode_text = MarkdownParser.parse(f.get_as_text(), current_path)
 	f.close()
 	
 	# saving the headings for going to sections
@@ -105,18 +105,21 @@ func _on_meta_clicked(meta):
 			var split = meta.split('#')
 			link = split[0]
 			section = split[1]
+		if link.begins_with('.'):
+			link = current_path.trim_suffix(current_path.get_file()).trim_suffix("/") + link.trim_prefix(".")
 		if not link.begins_with("res://"):
 			link = DocsHelper.documentation_path.plus_file('Content').plus_file(link)
 		if not link.ends_with(".md"):
 			link += '.md'
+
 		emit_signal("open_non_html_link", link, section)
 
 
 func _on_EditPage_pressed():
 	var x = File.new()
-	x.open(current_page, File.READ)
+	x.open(current_path, File.READ)
 	OS.shell_open(x.get_path_absolute())
 
 
 func _on_RefreshPage_pressed():
-	load_page(current_page)
+	load_page(current_path)
