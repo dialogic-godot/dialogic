@@ -1,6 +1,7 @@
 tool
 extends RichTextLabel
 
+export (bool) var enable_editing = false
 var documentation_path: String = ""
 var MarkdownParser = load("res://addons/dialogic/Documentation/Scripts/DocsMarkdownParser.gd").new()
 
@@ -43,7 +44,8 @@ func load_page(page_path: String, section : String=''):
 	# opening the file
 	var f = File.new()
 	f.open(page_path,File.READ)
-
+	current_page = page_path
+	
 	# parsing the file
 	bbcode_text = MarkdownParser.parse(f.get_as_text())
 	f.close()
@@ -73,6 +75,7 @@ func scroll_to_section(title):
 
 func _ready():
 	documentation_path = DocsHelper.documentation_path
+	$Editing.visible = enable_editing
 
 ## When one of the links is clicked
 func _on_meta_clicked(meta):
@@ -107,3 +110,13 @@ func _on_meta_clicked(meta):
 		if not link.ends_with(".md"):
 			link += '.md'
 		emit_signal("open_non_html_link", link, section)
+
+
+func _on_EditPage_pressed():
+	var x = File.new()
+	x.open(current_page, File.READ)
+	OS.shell_open(x.get_path_absolute())
+
+
+func _on_RefreshPage_pressed():
+	load_page(current_page)

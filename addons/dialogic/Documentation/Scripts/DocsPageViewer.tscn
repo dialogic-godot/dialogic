@@ -40,4 +40,31 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="Editing" type="HBoxContainer" parent="."]
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -197.15
+margin_top = 3.14981
+margin_right = -3.14978
+margin_bottom = 28.1498
+grow_horizontal = 0
+alignment = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="RefreshPage" type="Button" parent="Editing"]
+margin_left = 94.0
+margin_right = 154.0
+margin_bottom = 25.0
+text = "Refresh"
+
+[node name="EditPage" type="Button" parent="Editing"]
+margin_left = 158.0
+margin_right = 194.0
+margin_bottom = 25.0
+text = "Edit"
+
 [connection signal="meta_clicked" from="." to="." method="_on_meta_clicked"]
+[connection signal="pressed" from="Editing/RefreshPage" to="." method="_on_RefreshPage_pressed"]
+[connection signal="pressed" from="Editing/EditPage" to="." method="_on_EditPage_pressed"]
