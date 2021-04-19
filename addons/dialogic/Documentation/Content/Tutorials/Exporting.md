@@ -1,7 +1,5 @@
 # Exporting a dialogic game
 
-Before exporting, there is something --important-- to do!
+Before exporting, there is something important to do!
 
-***Quote on quote***
-
-no
+In the export window navigate to the resources tab. Add `*.json, *.cfg` to your resources to export.
