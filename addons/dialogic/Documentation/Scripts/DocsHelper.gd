@@ -28,15 +28,29 @@ var file_ignore_list = ['Welcome.md']
 ################################################################################
 
 ## Returns a dictionary that contains the important parts of the 
-## documentations Content folder.
+##   documentations Content folder.
 ##
 ## This is mainly used if you want to somehow display a list of the docs content,
-## for example to create a file-tree or a list of documents
+##   for example to create a file-tree or a list of documents
 ##
 ## Only files ending on .md are noticed. 
 ## Folders that contain no such files are ignored
 func get_documentation_content():
 	return get_dir_contents(documentation_path+"/Content")
+
+## Will create a hirarchy of TreeItems on the given 'trees' root_item
+## If not root_item is given a new root_item will be created
+## The root item does not have to be the actual root item of the whole tree, 
+##   but the root of the documentation branch.
+## 
+## With def_folder_info and def_page_info special information can be 
+##   added to the meta of the Items
+##
+## If a filter_term is given, only items with that filter will be created.
+## Right now there will always be all folders.
+func build_documentation_tree(tree : Tree, root_item:TreeItem = null, def_folder_info:Dictionary = {}, def_page_info:Dictionary = {}, filter_term:String = ''):
+	return _build_documentation_tree(tree, root_item, def_folder_info, def_page_info, filter_term)
+
 
 ################################################################################
 ##							PRIVATE FUNCTIONS 								  ##
@@ -91,35 +105,45 @@ func _add_dir_contents(dir: Directory) -> Dictionary:
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ### For bouilding the tree
 
-func build_documentation_tree(tree : Tree, root_item:TreeItem = null, def_folder_info:Dictionary = {}, def_page_info:Dictionary = {}):
+func _build_documentation_tree(tree : Tree, root_item:TreeItem = null, def_folder_info:Dictionary = {}, def_page_info:Dictionary = {}, filter_term:String =''):
 
 	var documentation_tree 
 	if root_item == null:
 		documentation_tree = tree.create_item()
+		documentation_tree.set_text(0, "Documentation")
+		
 	else:
 		documentation_tree = root_item
+	
+	# if no search is performed, collapse the tree by default
+	if not filter_term:
+		documentation_tree.collapsed = true
+	else:
+		documentation_tree.collapsed = false
 	
 	# create the rest of the tree based on the dict we get from the DocsHelper
 	var doc_structure = get_documentation_content()
 	#print(doc_structure)
-	create_doc_tree(tree, documentation_tree, def_folder_info, def_page_info, doc_structure)
+	create_doc_tree(tree, documentation_tree, def_folder_info, def_page_info, doc_structure, filter_term)
 	return documentation_tree
 
 # this calls itself recursivly to create the tree, based on the given dict
-func create_doc_tree(tree, parent_item, def_folder_info, def_page_info, doc_structure):
+func create_doc_tree(tree, parent_item, def_folder_info, def_page_info, doc_structure, filter_term):
 	for key in doc_structure.keys():
 		# if this is a folder
 		if typeof(doc_structure[key]) == TYPE_DICTIONARY:
 			var folder_item = _add_documentation_folder(tree, parent_item, {'name':key.get_file(), 'path':key}, def_folder_info)
-			create_doc_tree(tree, folder_item, def_folder_info, def_page_info, doc_structure[key])
-			folder_item.collapsed = true
+			create_doc_tree(tree, folder_item, def_folder_info, def_page_info, doc_structure[key], filter_term)
+			if not filter_term:
+				folder_item.collapsed = true
 		# if this is a page
 		elif typeof(doc_structure[key]) == TYPE_ARRAY:
 			for file in doc_structure[key]:
 				if use_folder_files and file.trim_suffix('.md') in doc_structure.keys():
 					pass
 				else:
-					_add_documentation_page(tree, parent_item, {'name':file.get_file().trim_suffix(".md"), 'path': file}, def_page_info)
+					if not filter_term or (filter_term and filter_term.to_lower() in file.to_lower()):
+						_add_documentation_page(tree, parent_item, {'name':file.get_file().trim_suffix(".md"), 'path': file}, def_page_info)
 
 func merge_dir(target: Dictionary, patch: Dictionary):
 	var copy = target.duplicate()
@@ -132,6 +156,7 @@ func _add_documentation_folder(tree, parent_item, folder_info, default_info):
 	var item = tree.create_item(parent_item)
 	item.set_text(0, folder_info['name'])
 	item.set_icon(0, tree.get_icon("Folder", "EditorIcons"))
+	item.set_editable(0, false)
 	if use_folder_files:
 		var x = File.new()
 		if x.file_exists(folder_info['path']+'.md'):
@@ -150,6 +175,7 @@ func _add_documentation_page(tree, parent, page_info, default_info):
 	var item = tree.create_item(parent)
 	item.set_text(0, page_info['name'])
 	item.set_tooltip(0,page_info['path'])
+	item.set_editable(0, false)
 	item.set_icon(0, tree.get_icon("HelpSearch", "EditorIcons"))
 	var new_dir =  merge_dir(default_info, page_info)
 	#print(new_dir)

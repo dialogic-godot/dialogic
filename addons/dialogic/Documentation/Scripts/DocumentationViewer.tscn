@@ -21,13 +21,30 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="DocumentationTree" parent="HSplit" instance=ExtResource( 2 )]
-margin_right = 198.0
-size_flags_stretch_ratio = 0.25
+[node name="VBoxContainer" type="VBoxContainer" parent="HSplit"]
+margin_right = 230.0
+margin_bottom = 600.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="FilterEntry" type="LineEdit" parent="HSplit/VBoxContainer"]
+margin_right = 230.0
+margin_bottom = 24.0
+placeholder_text = "Filter Documentation"
+placeholder_alpha = 0.502
+
+[node name="DocumentationTree" parent="HSplit/VBoxContainer" instance=ExtResource( 2 )]
+margin_top = 28.0
+margin_right = 230.0
 
 [node name="DocsPageViewer" parent="HSplit" instance=ExtResource( 1 )]
-margin_left = 210.0
+margin_left = 242.0
 size_flags_horizontal = 3
 
-[connection signal="_page_selected" from="HSplit/DocumentationTree" to="." method="_on_DocumentationTree_page_selected"]
+[connection signal="text_changed" from="HSplit/VBoxContainer/FilterEntry" to="." method="_on_FilterEntry_text_changed"]
+[connection signal="_page_selected" from="HSplit/VBoxContainer/DocumentationTree" to="." method="_on_DocumentationTree_page_selected"]
 [connection signal="open_non_html_link" from="HSplit/DocsPageViewer" to="." method="_on_DocsPageViewer_open_non_html_link"]

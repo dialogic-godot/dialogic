@@ -49,49 +49,51 @@ func parse(content : String):
 	underlined = []
 
 	var regex = RegEx.new()
-	
+
 	## Find all occurences of bold text
 	regex.compile('\\*\\*(?<boldtext>.*)\\*\\*')
 	result = regex.search_all(content)
 	if result:
 		for res in result:
 			bolded.append(res.get_string("boldtext"))
-	
+
 	## Find all occurences of underlined text
 	regex.compile('\\_\\_(?<underlinetext>.*)\\_\\_')
 	result = regex.search_all(content)
 	if result:
 		for res in result:
 			underlined.append(res.get_string("underlinetext"))
-	
+
 	## Find all occurences of italic text
 	regex.compile("\\*(?<italictext>.*)\\*")
 	result = regex.search_all(content)
 	if result:
 		for res in result:
 			italics.append(res.get_string("italictext"))
-	
+
 	## Find all occurences of underlined text
 	regex.compile("~~(?<strikedtext>.*)~~")
 	result = regex.search_all(content)
 	if result:
 		for res in result:
 			striked.append(res.get_string("strikedtext"))
-	
+
 	## Find all occurences of code snippets
 	regex.compile("`(?<coded>.*)`")
 	result = regex.search_all(content)
 	if result:
 		for res in result:
 			coded.append(res.get_string("coded"))
-	
-	## Find all occurences of list items
-	regex.compile("[+-*](?<element>\\s.*)")
-	result = regex.search_all(content)
-	if result:
-		for res in result:
-			lists.append(res.get_string("element"))
-	
+#
+#	This doesn't work right now. Just messes up everything.
+#   Try to fix this sometime.
+#	## Find all occurences of list items
+#	regex.compile("[-+*](?<element>\\s.*)")
+#	result = regex.search_all(content)
+#	if result:
+#		for res in result:
+#			lists.append(res.get_string("element"))
+
 	## Find all occurences of images
 	regex.compile("!\\[(?<imgname>.*)\\]\\((?<imglink>.*)\\)")
 	result = regex.search_all(content)
@@ -165,10 +167,10 @@ func parse(content : String):
 		if imagelink_to_use.begins_with("http"):
 			var path_parts = imagelink_to_use.split("/Documentation/")
 			if path_parts.size() > 1:
-				imagelink_to_use = DocsHelper.documentation_path + path_parts[1]
+				imagelink_to_use = DocsHelper.documentation_path +"/"+ path_parts[1]
 			else:
 				imagelink_to_use = "icon.png"
-		content = content.replace("!["+imagenames[i]+"]("+imagelinks[i]+")","[img]"+imagelink_to_use+"[/img]")
+		content = content.replace("!["+imagenames[i]+"]("+imagelinks[i]+")","[img=700]"+imagelink_to_use+"[/img]")
 	for heading1 in heading1s:
 		content = content.replace("#"+heading1, "[font="+heading1_font+"]"+heading1.strip_edges()+"[/font]")
 	for heading2 in heading2s:

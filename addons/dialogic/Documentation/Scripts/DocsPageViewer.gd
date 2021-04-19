@@ -27,7 +27,7 @@ func load_page(page_path: String, section : String=''):
 	
 	show()
 	
-	print("load page ", page_path)
+	#print("load page ", page_path)
 	# find a section specifier at the end of the path
 	if page_path.count("#") > 0:
 		var result = page_path.split('#')
@@ -56,7 +56,7 @@ func load_page(page_path: String, section : String=''):
 
 # looks if there is a heading similar to the given TITLE and then scrolls there
 func scroll_to_section(title):
-	print("load section ", title)
+	#print("load section ", title)
 	if not title:
 		return
 	# this is not really nicely done...
@@ -102,4 +102,8 @@ func _on_meta_clicked(meta):
 			var split = meta.split('#')
 			link = split[0]
 			section = split[1]
+		if not link.begins_with("res://"):
+			link = DocsHelper.documentation_path.plus_file('Content').plus_file(link)
+		if not link.ends_with(".md"):
+			link += '.md'
 		emit_signal("open_non_html_link", link, section)
