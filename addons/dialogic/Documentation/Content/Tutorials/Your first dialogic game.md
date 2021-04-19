@@ -1,8 +1,5 @@
-
 # Your first dialogic game!
 Let's begin creating your first dialog with dialogic!
-
-![Cool Image](res://addons/dialogic/Example Assets/portraits/df-1.png)
 
 - [Meeting the dialogic tab](#meeting-the-dialogic-tab)
 - [Creating your first character](#creating-your-first-character)
