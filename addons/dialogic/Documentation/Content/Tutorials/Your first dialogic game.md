@@ -13,11 +13,11 @@ Let's begin creating your first dialog with dialogic!
 - - -
 ## Meeting the dialogic tab
 All the things related to your dialog will be done in the dialogic tab. You can access it like the 2D and 3D tab on the very top of the editor. You can access all the things you create with dialogic here.  
-![Dialogic Tab](https://user-images.githubusercontent.com/42868150/114405867-5dc57f00-9ba7-11eb-835e-f685945af72e.PNG)
+![Dialogic Tab](https://github.com/Jowan-Spooner/dialogic/blob/plugin-docs/addons/dialogic/Documentation/Content/Tutorials/Images/Dialogic_Tab.PNG)
 
 Let's have a look into the toolbar at the top.
 
-![Toolbar](https://user-images.githubusercontent.com/42868150/114406011-79308a00-9ba7-11eb-9fa5-ba221eb8da96.PNG)
+![Toolbar](https://github.com/Jowan-Spooner/dialogic/blob/plugin-docs/addons/dialogic/Documentation/Content/Tutorials/Images/Toolbar.PNG)
 
 Here you can create dialogics four "ressources": 
 * **Timelines** that represent a list of events. Control characters, make them talk, change the background, ask questions, emit signals and more!
@@ -39,7 +39,7 @@ Click the little character icon in the toolbar to create a new character. You wi
 
 We will go over it step by step.
 Go on and give your character a name and a color. You can ignore the rest of these settings for now.
-![YFD Character NameColor](https://user-images.githubusercontent.com/42868150/114406074-88173c80-9ba7-11eb-9b33-92bac8c7890b.PNG)
+![YFD Character NameColor](https://github.com/Jowan-Spooner/dialogic/blob/plugin-docs/addons/dialogic/Documentation/Content/Tutorials/Images/YFD_Character_NameColor.PNG)
 Next let's add a default look for them. You can select a file by clicking the tree dots.
 ![grafik](https://user-images.githubusercontent.com/42868150/114315214-32d32080-9afe-11eb-8b80-660f68b8623e.png)
 
