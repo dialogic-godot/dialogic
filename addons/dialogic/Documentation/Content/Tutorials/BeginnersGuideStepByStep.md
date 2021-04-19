@@ -1,6 +1,5 @@
 # First dialogic game: step by step
 Let's begin creating your first dialog with dialogic!
-
 - [Meeting the dialogic tab](#meeting-the-dialogic-tab)
 - [Creating your first character](#creating-your-first-character)
 - [Creating your first timeline](#creating-your-first-timeline)
@@ -8,9 +7,7 @@ Let's begin creating your first dialog with dialogic!
 - [Making your first definition](#making-your-first-definition)
 - [Create your first dialog theme](#create-your-first-dialog-theme)
 - [How to export your game](#how-to-export-the-game)
-- [How to export your game](#how-to-export-the-game)
 
-- - -
 ## Meeting the dialogic tab
 All the things related to your dialog will be done in the dialogic tab. You can access it like the 2D and 3D tab on the very top of the editor. You can access all the things you create with dialogic here.  
 ![Dialogic Tab](https://github.com/Jowan-Spooner/dialogic/blob/plugin-docs/addons/dialogic/Documentation/Content/Tutorials/Images/Dialogic_Tab.PNG)
