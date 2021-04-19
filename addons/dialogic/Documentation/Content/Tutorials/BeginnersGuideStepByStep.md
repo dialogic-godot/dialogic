@@ -1,4 +1,4 @@
-# Your first dialogic game!
+# First dialogic game: step by step
 Let's begin creating your first dialog with dialogic!
 
 - [Meeting the dialogic tab](#meeting-the-dialogic-tab)
