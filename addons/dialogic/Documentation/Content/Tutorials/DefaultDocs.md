@@ -1,8 +1,6 @@
 # Full Documentation (old)
 I hope you find what you are looking for here. If not you can try asking on [emilios discord server](https://discord.gg/v4zhZNh)!
 
-* * *
-
 ## Contents
 
 [Getting Started](#getting-started)
@@ -15,16 +13,13 @@ I hope you find what you are looking for here. If not you can try asking on [emi
 
 [Plugin Development](#plugin-development)
 
-
-* * *
-
 # Getting started
 ## ⚙ Installation: Downloading the plugin
 
 To use Dialogic in your game you first have to insatll the plugin. You can do this using the **AssetLib** that is built into godot. Or you can download it from the github page. Because it takes some time to get approved, sometimes the version in the AssetLib is a bit outdated.
 
 ### Installation using the AssetLib
-You can find the AssetLib tab at the top of the editor. Search for Dialogic. Then click "Download". When the download is finnished, click "Install". You can deselect the ***.github*** folder. You only need the addons folder and all it's children.
+You can find the AssetLib tab at the top of the editor. Search for Dialogic. Then click "Download". When the download is finnished, click "Install". You can deselect the **.github** folder. You only need the addons folder and all it's children.
 ![grafik](https://user-images.githubusercontent.com/42868150/114314756-48dfe180-9afc-11eb-86d6-bd522ac1cbd4.png)
 
 Now go to the project settings then into the plugins tab and activate dialogic. You should see an Dialogic tab in the top now.
@@ -34,8 +29,6 @@ You can find all stable releases here: https://github.com/coppolaemilio/dialogic
 
 If you want to know more about installing plugins you can read the [official documentation page](https://docs.godotengine.org/en/stable/tutorials/plugins/editor/installing_plugins.html).
 
-- - -
-- - -
 
 # Tutorials
 Dialogic is very simple to use, try it a bit and you will quickly understand how to master it.

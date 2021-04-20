@@ -28,11 +28,9 @@ All your ressources are shown in the big master tree on the left. You can select
 
 Let's continue! What is the most important thing for a dialog? Someone to talk to. So we will create our first character.
 
-- - -
 ## Creating your first character
 Click the little character icon in the toolbar to create a new character. You will see the character editor now.
 ![Empty Character Editor](https://user-images.githubusercontent.com/42868150/114406042-80f02e80-9ba7-11eb-9c52-798d4a67f8d8.PNG)
-
 
 We will go over it step by step.
 Go on and give your character a name and a color. You can ignore the rest of these settings for now.
@@ -48,7 +46,6 @@ This is all for now. You can create a second character just like this.
 
 When you are ready let's create our first ever dialog!
 
-- - -
 ## Creating your first timeline
 Timelines specify what events happen in which order. Create a new timline with the icon in the toolbar.
 You can now see the timeline editor. You can find all possible events on the right.
@@ -89,7 +86,6 @@ You can find explenations for all events and their settings further down in the 
 ### | On we go
 Now your dialog is ready to be played! But how? Let's find out!
 
-- - -
 ## Adding your first DialogNode to a scene
 
 There are two ways of doing this, using gdscript or the scene editor.
@@ -108,7 +104,7 @@ Using the editor, you can drag and drop the scene located at `/addons/dialogic/D
 If you have done one of the previous steps, run your game (F5). I hope you will see your dialog appear. If not check if you missed something. You can also always ask for help on the discord.
 
 Before you start to make your own dialog, let us introduce some more cool things!
-- - -
+
 ## Making your first definition
 This is already pretty cool, but let's make things more complex. We mentioned them earlier but here they are: Definitons.
 
@@ -147,9 +143,10 @@ To use the extra information definitions you don't have to put them in brackets.
 
 Run the game and hover over the word. Cool, right?
 
-- - -
+
 ## Create your first dialog theme
-- - -
+This section is in the work... Please stay tuned!
+
 ## How to export the game
 When you export a project using Dialogic, you need to add `*.json, *.cfg` on the Resources tab (see the image below). This allows Godot to pack the files from the `/dialogic` folder.
 
