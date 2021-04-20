@@ -66,8 +66,7 @@ If you are setting the resolution of your game to a very small value, you will h
 
 
 ### 🔷 How do I connect signals?
-Signals work the same way as in any Godot node. If you are new to gdscript you should watch this video which cover how Godot signals work: [How to Use Godot's Signals](https://www.youtube.com/watch?v=NK_SYVO7lMA)
-Since you probably won't, here you have a small snippet of how to connect a Dialogic dialog created via code to a signal:
+Signals work the same way as in any Godot node. If you are new to gdscript you should watch this video which cover how Godot signals work: [How to Use Godot's Signals](https://www.youtube.com/watch?v=NK_SYVO7lMA). Since you probably won't, here you have a small snippet of how to connect a Dialogic dialog created via code to a signal:
 ```gdscript
 func _ready():
 	var new_dialog = Dialogic.start('Your Timeline Name Here')
