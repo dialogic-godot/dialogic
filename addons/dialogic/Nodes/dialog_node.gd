@@ -15,6 +15,7 @@ var definition_visible: bool = false
 var settings: ConfigFile
 var current_theme: ConfigFile
 var current_timeline: String = ''
+var current_event: Dictionary
 
 ## The timeline to load when starting the scene
 export(String, "TimelineDropdown") var timeline: String
@@ -346,6 +347,10 @@ func update_text(text: String) -> String:
 
 func _on_text_completed():
 	finished = true
+	if current_event.has('options'):
+		for o in current_event['options']:
+			add_choice_button(o)
+
 
 func on_timeline_start():
 	if not Engine.is_editor_hint():
@@ -429,6 +434,7 @@ func event_handler(event: Dictionary):
 	reset_options()
 	
 	dprint('[D] Current Event: ', event)
+	current_event = event
 	match event:
 		{'text', 'character', 'portrait'}:
 			emit_signal("event_start", "text", event)
@@ -450,9 +456,6 @@ func event_handler(event: Dictionary):
 				update_name(character_data)
 				grab_portrait_focus(character_data, event)
 			update_text(event['question'])
-			if event.has('options'):
-				for o in event['options']:
-					add_choice_button(o)
 		{'choice', 'question_id'}:
 			emit_signal("event_start", "choice", event)
 			for q in questions:
