@@ -49,9 +49,10 @@ func parse(content : String,  path:String = ''):
 	underlined = []
 
 	var regex = RegEx.new()
-
+	
+	
 	## Find all occurences of bold text
-	regex.compile('\\*\\*(?<boldtext>.*)\\*\\*')
+	regex.compile('\\*\\*(?<boldtext>(\\.|[^(\\*\\*)])*)\\*\\*')
 	result = regex.search_all(content)
 	if result:
 		for res in result:
@@ -63,13 +64,13 @@ func parse(content : String,  path:String = ''):
 	if result:
 		for res in result:
 			underlined.append(res.get_string("underlinetext"))
-
-	## Find all occurences of italic text
-	regex.compile("\\*(?<italictext>.*)\\*")
-	result = regex.search_all(content)
-	if result:
-		for res in result:
-			italics.append(res.get_string("italictext"))
+#
+#	## Find all occurences of italic text
+#	regex.compile("[^\\]*\\*(?<italictext>.*)\\*")
+#	result = regex.search_all(content)
+#	if result:
+#		for res in result:
+#			italics.append(res.get_string("italictext"))
 
 	## Find all occurences of underlined text
 	regex.compile("~~(?<strikedtext>.*)~~")
@@ -79,20 +80,19 @@ func parse(content : String,  path:String = ''):
 			striked.append(res.get_string("strikedtext"))
 
 	## Find all occurences of code snippets
-	regex.compile("`(?<coded>.*)`")
+	regex.compile("\\`(?<coded>(?:[^\\`]|\\n)*)\\`")
 	result = regex.search_all(content)
 	if result:
 		for res in result:
 			coded.append(res.get_string("coded"))
-#
-#	This doesn't work right now. Just messes up everything.
-#   Try to fix this sometime.
-#	## Find all occurences of list items
-#	regex.compile("[-+*](?<element>\\s.*)")
-#	result = regex.search_all(content)
-#	if result:
-#		for res in result:
-#			lists.append(res.get_string("element"))
+
+
+	## Find all occurences of list items
+	regex.compile("[-+*](?<element>\\s.*)")
+	result = regex.search_all(content)
+	if result:
+		for res in result:
+			lists.append(res.get_string("element"))
 
 	## Find all occurences of images
 	regex.compile("!\\[(?<imgname>.*)\\]\\((?<imglink>.*)\\)")
@@ -149,6 +149,7 @@ func parse(content : String,  path:String = ''):
 		for res in result:
 			heading5s.append(res.get_string("heading"))
 	
+	print(bolded)
 	## Add in all the changes
 	for bold in bolded:
 		content = content.replace("**"+bold+"**","[b]"+bold+"[/b]")
