@@ -22,7 +22,7 @@ var moving_piece = null
 var piece_was_dragged = false
 
 func _has_template(event):
-	return event.event_data.has("background")
+	return event.event_data.has("background") or event.event_data.has("wait_seconds")
 
 
 func _ready():

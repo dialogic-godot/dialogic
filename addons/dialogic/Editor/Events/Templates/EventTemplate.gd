@@ -30,9 +30,16 @@ var indent_size = 25
 # Useful for making placeholder events in drag and drop
 var ignore_save = false
 
+# This is the data that is going to be saved to json
+var event_data := {}
+
 ## *****************************************************************************
 ##								PUBLIC METHODS
 ## *****************************************************************************
+
+# Called when timeline editor loads
+func load_data(data):
+	event_data = data
 
 
 func set_event_style(style: StyleBoxFlat):
