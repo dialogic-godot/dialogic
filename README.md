@@ -84,10 +84,10 @@ Every event emits a signal called `event_start` when Dialogic starts that event'
 func _ready():
 	var new_dialog = Dialogic.start('Your Timeline Name Here')
 	add_child(new_dialog)
-	new_dialog.connect("timeline_end", self, '')
+	new_dialog.connect('timeline_end', self, 'after_dialog')
 
-func example_function(value):
-	print('value')
+func after_dialog(timeline_name):
+	print('Now you can resume with the game :)')
 ```
 
 ---
