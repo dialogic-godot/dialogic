@@ -28,6 +28,7 @@ font_data = ExtResource( 1 )
 [node name="DocsPageViewer" type="RichTextLabel"]
 margin_right = 1024.0
 margin_bottom = 600.0
+focus_mode = 2
 size_flags_vertical = 3
 custom_fonts/mono_font = SubResource( 1 )
 custom_fonts/bold_italics_font = SubResource( 2 )
@@ -35,12 +36,14 @@ custom_fonts/italics_font = SubResource( 3 )
 custom_fonts/bold_font = SubResource( 4 )
 custom_fonts/normal_font = SubResource( 5 )
 bbcode_enabled = true
+selection_enabled = true
 script = ExtResource( 3 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Editing" type="HBoxContainer" parent="."]
+visible = false
 anchor_left = 1.0
 anchor_right = 1.0
 margin_left = -197.15
@@ -65,6 +68,75 @@ margin_right = 194.0
 margin_bottom = 25.0
 text = "Edit"
 
+[node name="Up" type="Button" parent="."]
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -40.5946
+margin_top = -41.6541
+margin_right = -10.5946
+margin_bottom = -11.6541
+rect_min_size = Vector2( 30, 30 )
+expand_icon = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ContentMenu" type="VBoxContainer" parent="."]
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -207.0
+margin_top = -590.0
+margin_right = -49.0
+margin_bottom = -10.0
+grow_horizontal = 0
+grow_vertical = 0
+rect_min_size = Vector2( 50, 40 )
+size_flags_horizontal = 0
+size_flags_vertical = 9
+custom_constants/separation = 20
+alignment = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Panel" type="Control" parent="ContentMenu"]
+visible = false
+margin_top = 540.0
+margin_right = 158.0
+margin_bottom = 540.0
+
+[node name="VBox" type="VBoxContainer" parent="ContentMenu/Panel"]
+margin_top = 4.0
+margin_right = 156.0
+margin_bottom = 4.0
+grow_horizontal = 0
+grow_vertical = 0
+size_flags_horizontal = 3
+alignment = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Panel" type="Panel" parent="ContentMenu/Panel"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ToggleContents" type="Button" parent="ContentMenu"]
+margin_top = 560.0
+margin_right = 158.0
+margin_bottom = 580.0
+toggle_mode = true
+text = "Contents"
+
 [connection signal="meta_clicked" from="." to="." method="_on_meta_clicked"]
 [connection signal="pressed" from="Editing/RefreshPage" to="." method="_on_RefreshPage_pressed"]
 [connection signal="pressed" from="Editing/EditPage" to="." method="_on_EditPage_pressed"]
+[connection signal="pressed" from="Up" to="." method="_on_Up_pressed"]
+[connection signal="toggled" from="ContentMenu/ToggleContents" to="." method="_on_ToggleContents_toggled"]

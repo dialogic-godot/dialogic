@@ -52,7 +52,8 @@ func load_page(page_path: String, section : String=''):
 	
 	# saving the headings for going to sections
 	current_headings = MarkdownParser.heading1s + MarkdownParser.heading2s + MarkdownParser.heading3s + MarkdownParser.heading4s + MarkdownParser.heading5s
-	
+	create_content_menu(MarkdownParser.heading1s + MarkdownParser.heading2s)
+
 	# scroll to the given section
 	scroll_to_section(section)
 
@@ -63,11 +64,13 @@ func scroll_to_section(title):
 		return
 	# this is not really nicely done...
 	for heading in current_headings:
-		if heading.to_lower().strip_edges().replace(' ', '-') == title.replace('#', ''):
+		if (heading.to_lower().strip_edges().replace(' ', '-') == title.replace('#', '')) or \
+			(heading.to_lower().strip_edges() == title.to_lower().strip_edges()):
 			var x = bbcode_text.find(heading.replace('#', '').strip_edges()+"[/font]")
 			x = bbcode_text.count("\n", 0, x)
 			scroll_to_line(x)
 			return
+
 
 ################################################################################
 ##							PRIVATE FUNCTIONS 								  ##
@@ -75,7 +78,27 @@ func scroll_to_section(title):
 
 func _ready():
 	documentation_path = DocsHelper.documentation_path
+	$Up.icon = get_icon("ArrowUp", "EditorIcons")
+	
 	$Editing.visible = enable_editing
+
+# creates the conten menu
+func create_content_menu(headings):
+	for child in $ContentMenu/Panel/VBox.get_children():
+		child.queue_free()
+	if len(headings) < 2:
+		$ContentMenu.hide()
+		return
+	$ContentMenu.show()
+	for heading in headings:
+		var button = Button.new()
+		button.text = heading
+		button.align = Button.ALIGN_LEFT
+		button.connect("pressed", self, "content_button_pressed", [heading])
+		$ContentMenu/Panel/VBox.add_child(button)
+
+func content_button_pressed(heading):
+	scroll_to_section(heading)
 
 ## When one of the links is clicked
 func _on_meta_clicked(meta):
@@ -123,3 +146,12 @@ func _on_EditPage_pressed():
 
 func _on_RefreshPage_pressed():
 	load_page(current_path)
+
+
+func _on_Up_pressed():
+	scroll_to_line(0)
+
+
+
+func _on_ToggleContents_toggled(button_pressed):
+	$ContentMenu/Panel.visible = button_pressed
