@@ -61,6 +61,23 @@ public override void _Ready()
 This is the PR that added this feature: https://github.com/coppolaemilio/dialogic/pull/217
 
 
+### 🔷 My resolution is too small and the dialog is too big. Help!
+If you are setting the resolution of your game to a very small value, you will have to create a theme in Dialogic and pick a smaller font and make the box size of the Dialog Box smaller as well. 
+
+
+### 🔷 How do I connect signals?
+Signals work the same way as in any Godot node. If you are new to gdscript you should watch this video which cover how Godot signals work: [How to Use Godot's Signals](https://www.youtube.com/watch?v=NK_SYVO7lMA)
+Since you probably won't, here you have a small snippet of how to connect a Dialogic dialog created via code to a signal:
+```gdscript
+func _ready():
+	var new_dialog = Dialogic.start('Your Timeline Name Here')
+	add_child(new_dialog)
+	new_dialog.connect("dialogic_signal", self, 'example_function')
+
+func example_function(value):
+	print('value')
+```
+
 ---
 
 ### 📦 Preparing the export
