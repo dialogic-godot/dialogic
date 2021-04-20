@@ -48,11 +48,13 @@
 - Dialog node
   - You can now use [br] to insert line breaks
   - Questions now properly show the theme text alignment
+  - Options now show up when the question text finished displaying [[Arnaud Vergnet](https://github.com/arnaudvergnet)]
   - The close dialog now performs a fade-out animation
   - Fixed a bug where Glossary Definitions plain text was being added to the name label
   - Fixed an issue when trying to display small sprites as characters portraits
   - Fixed a bug where portraits didn't come to the front when being focused [[AnidemDex](https://github.com/AnidemDex)]
   - Fixed a bug when the display stretch was set to `2D`
+  - Fixed a bug where empty text lines were not removed properly [[Arnaud Vergnet](https://github.com/arnaudvergnet)]
 - Settings
   - Added a new option to toggle the character "focus"/"dim" while speaking 
 - Added a button in timeline inspector plugin to open the selected timeline in the editor [[ellogwen](https://github.com/ellogwen)]
