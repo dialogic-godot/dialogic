@@ -8,6 +8,7 @@ onready var nodes = {
 	'auto_color_names': $VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2/HBoxContainer3/AutoColorNames,
 	'propagate_input': $VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2/HBoxContainer4/PropagateInput,
 	'dim_characters': $VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2/HBoxContainer5/DimCharacters,
+	'advanced_themes': $VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2/HBoxContainer6/AdvancedThemes,
 }
 
 
@@ -20,6 +21,7 @@ func _ready():
 	nodes['auto_color_names'].connect('toggled', self, '_on_auto_color_names_toggled')
 	nodes['propagate_input'].connect('toggled', self, '_on_propagate_input_toggled')
 	nodes['dim_characters'].connect('toggled', self, '_on_dim_characters_toggled')
+	nodes['advanced_themes'].connect('toggled', self, '_on_advanced_themes_toggled')
 
 
 func update_data():
@@ -39,6 +41,8 @@ func dialog_options(settings):
 		nodes['propagate_input'].pressed = settings.get_value('dialog', 'propagate_input')
 	if settings.has_section_key('dialog', 'dim_characters'):
 		nodes['dim_characters'].pressed = settings.get_value('dialog', 'dim_characters')
+	if settings.has_section_key('dialog', 'advanced_themes'):
+		nodes['advanced_themes'].pressed = settings.get_value('dialog', 'advanced_themes')
 
 
 func refresh_themes(settings):
@@ -87,6 +91,11 @@ func _on_propagate_input_toggled(value):
 
 func _on_dim_characters_toggled(value):
 	set_value('dialog', 'dim_characters', value)
+
+
+func _on_advanced_themes_toggled(value):
+	set_value('dialog', 'advanced_themes', value)
+
 
 # Reading and saving data to the settings file
 func set_value(section, key, value):
