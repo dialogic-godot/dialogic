@@ -71,6 +71,9 @@ onready var n : Dictionary = {
 	'button_modulation': $"VBoxContainer/TabContainer/Choice Buttons/Column/GridContainer/HBoxContainer6/CheckBox",
 	'button_modulation_color': $"VBoxContainer/TabContainer/Choice Buttons/Column/GridContainer/HBoxContainer6/ColorPickerButton",
 	'button_use_native': $"VBoxContainer/TabContainer/Choice Buttons/Column/GridContainer/CheckBox",
+	'button_use_custom': $"VBoxContainer/TabContainer/Choice Buttons/Column/GridContainer/HBoxContainer5/CustomButtonsCheckBox",
+	'button_custom_path': $"VBoxContainer/TabContainer/Choice Buttons/Column/GridContainer/HBoxContainer5/CustomButtonsButton",
+	
 	'button_offset_x': $"VBoxContainer/TabContainer/Choice Buttons/Column2/GridContainer/HBoxContainer/TextOffsetH",
 	'button_offset_y': $"VBoxContainer/TabContainer/Choice Buttons/Column2/GridContainer/HBoxContainer/TextOffsetV",
 	'button_separation': $"VBoxContainer/TabContainer/Choice Buttons/Column2/GridContainer/VerticalSeparation",
@@ -142,6 +145,8 @@ func load_theme(filename):
 	n['button_image'].text = DialogicResources.get_filename_from_path(theme.get_value('buttons', 'image', 'res://addons/dialogic/Example Assets/backgrounds/background-2.png'))
 	n['button_image_visible'].pressed = theme.get_value('buttons', 'use_image', true)
 	n['button_use_native'].pressed = theme.get_value('buttons', 'use_native', false)
+	n['button_use_custom'].pressed = theme.get_value('buttons', 'use_custom', false)
+	n['button_custom_path'].text = DialogicResources.get_filename_from_path(theme.get_value('buttons', 'custom_path', ""))
 	n['button_offset_x'].value = theme.get_value('buttons', 'padding', Vector2(5,5)).x
 	n['button_offset_y'].value = theme.get_value('buttons', 'padding', Vector2(5,5)).y
 	n['button_separation'].value = theme.get_value('buttons', 'gap', 5)
@@ -151,7 +156,7 @@ func load_theme(filename):
 	n['button_fixed_x'].value = theme.get_value('buttons', 'fixed_size', Vector2(130,40)).x
 	n['button_fixed_y'].value = theme.get_value('buttons', 'fixed_size', Vector2(130,40)).y
 	
-	toggle_button_customization_fields(not theme.get_value('buttons', 'use_native', false))
+	toggle_button_customization_fields(theme.get_value('buttons', 'use_native', false), theme.get_value('buttons', 'use_custom', false))
 	
 	# Definitions
 	n['glossary_color'].color = Color(theme.get_value('definitions', 'color', "#ffffffff"))
@@ -461,20 +466,42 @@ func _on_native_button_toggled(button_pressed) -> void:
 	if loading:
 		return
 	DialogicResources.set_theme_value(current_theme, 'buttons', 'use_native', button_pressed)
-	toggle_button_customization_fields(not button_pressed)
+	toggle_button_customization_fields(button_pressed, false)
 
-func toggle_button_customization_fields(enabled) -> void:
-	var disabled = not enabled
-	n['button_text_color_enabled'].disabled = disabled
-	n['button_text_color'].disabled = disabled
-	n['button_background'].disabled = disabled
-	n['button_background_visible'].disabled = disabled
-	n['button_image'].disabled = disabled
-	n['button_image_visible'].disabled = disabled
-	n['button_modulation'].disabled = disabled
-	n['button_modulation_color'].disabled = disabled
-	n['button_offset_x'].editable = enabled
-	n['button_offset_y'].editable = enabled
+
+func toggle_button_customization_fields(native_enabled: bool, custom_enabled: bool) -> void:
+	var customization_disabled = native_enabled or custom_enabled
+	n['button_text_color_enabled'].disabled = customization_disabled
+	n['button_text_color'].disabled = customization_disabled
+	n['button_background'].disabled = customization_disabled
+	n['button_background_visible'].disabled = customization_disabled
+	n['button_image'].disabled = customization_disabled
+	n['button_image_visible'].disabled = customization_disabled
+	n['button_modulation'].disabled = customization_disabled
+	n['button_modulation_color'].disabled = customization_disabled
+	n['button_use_native'].disabled = custom_enabled
+	n['button_use_custom'].disabled = native_enabled
+	n['button_custom_path'].disabled = native_enabled
+	n['button_offset_x'].editable = not customization_disabled
+	n['button_offset_y'].editable = not customization_disabled
+
+
+func _on_CustomButtonsCheckBox_toggled(button_pressed):
+	if loading:
+		return
+	DialogicResources.set_theme_value(current_theme, 'buttons', 'use_custom', button_pressed)
+	toggle_button_customization_fields(false, button_pressed)
+
+
+func _on_CustomButtonsButton_pressed():
+	editor_reference.godot_dialog("*.tscn")
+	editor_reference.godot_dialog_connect(self, "_on_custom_button_selected")
+
+func _on_custom_button_selected(path, target) -> void:
+	if loading:
+		return
+	DialogicResources.set_theme_value(current_theme, 'buttons', 'custom_path', path)
+	n['button_custom_path'].text = DialogicResources.get_filename_from_path(path)
 
 
 func _on_GlossaryColorPicker_color_changed(color) -> void:

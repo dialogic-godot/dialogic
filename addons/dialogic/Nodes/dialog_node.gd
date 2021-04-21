@@ -649,18 +649,31 @@ func _should_add_choice_button(option: Dictionary):
 		return true
 
 
-func add_choice_button(option: Dictionary):
-	if not _should_add_choice_button(option):
-		return
-	
-	var theme = current_theme
+func use_custom_choice_button():
+	return current_theme.get_value('buttons', 'use_custom', false) and not current_theme.get_value('buttons', 'custom_path', "").empty()
 
-	var button = ChoiceButton.instance()
-	button.text = option['label']
+func use_native_choice_button():
+	return current_theme.get_value('buttons', 'use_native', false)
+
+
+
+func get_custom_choice_button(label: String):
+	var theme = current_theme
+	var custom_path = current_theme.get_value('buttons', 'custom_path', "")
+	var CustomChoiceButton = load(custom_path)
+	var button = CustomChoiceButton.instance()
+	button.text = label
+	return button
+
+
+func get_classic_choice_button(label: String):
+	var theme = current_theme
+	var button : Button = ChoiceButton.instance()
+	button.text = label
 	# Text
 	button.set('custom_fonts/font', DialogicUtil.path_fixer_load(theme.get_value('text', 'font', "res://addons/dialogic/Example Assets/Fonts/DefaultFont.tres")))
 
-	if not theme.get_value('buttons', 'use_native', false):
+	if not use_native_choice_button():
 		var text_color = Color(theme.get_value('text', 'color', "#ffffffff"))
 		button.set('custom_colors/font_color', text_color)
 		button.set('custom_colors/font_color_hover', text_color)
@@ -703,11 +716,23 @@ func add_choice_button(option: Dictionary):
 		button.get_node('ColorRect').visible = false
 		button.get_node('TextureRect').visible = false
 		button.set_flat(false)
-		
-		$Options.set('custom_constants/separation', theme.get_value('buttons', 'gap', 20))
+	return button
 
+
+func add_choice_button(option: Dictionary):
+	if not _should_add_choice_button(option):
+		return
+	
+	var button
+	print(use_custom_choice_button())
+	if use_custom_choice_button():
+		button = get_custom_choice_button(option['label'])
+	else:
+		button = get_classic_choice_button(option['label'])
 	button.connect("pressed", self, "answer_question", [button, option['event_id'], option['question_id']])
 
+	if use_native_choice_button() or use_custom_choice_button():
+		$Options.set('custom_constants/separation', current_theme.get_value('buttons', 'gap', 20))
 	$Options.add_child(button)
 
 	if Input.get_mouse_mode() != Input.MOUSE_MODE_VISIBLE:
