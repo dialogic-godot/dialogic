@@ -12,6 +12,7 @@ static func get_character_list() -> Array:
 			var default_speaker      = false
 			var portraits: Array     = []
 			var display_name: String = ''
+			var nickname: String = ''
 			
 			if data.has('color'):
 				color = Color(data['color'])
@@ -25,6 +26,10 @@ static func get_character_list() -> Array:
 				if data['display_name_bool']:
 					if data.has('display_name'):
 						display_name = data['display_name']
+			if data.has('nickname'):
+				if data['nickname_bool']:
+					if data.has('nickname'):
+						nickname = data['nickname']
 						
 			characters.append({
 				'name': c_name,
@@ -33,6 +38,7 @@ static func get_character_list() -> Array:
 				'default_speaker' : default_speaker,
 				'portraits': portraits,
 				'display_name': display_name,
+				'nickname': nickname,
 				'data': data # This should be the only thing passed... not sure what I was thinking
 			})
 
