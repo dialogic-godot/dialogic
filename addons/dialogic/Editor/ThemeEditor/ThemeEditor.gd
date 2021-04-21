@@ -6,6 +6,8 @@ onready var master_tree = get_node('../MasterTreeContainer/MasterTree')
 onready var settings_editor = get_node('../SettingsEditor')
 var current_theme : String = ''
 
+var use_advanced_themes := false
+
 # When loading the variables to the input fields in the 
 # load_theme function, every element thinks the value was updated
 # so it has to perform a "saving" of that property. 
@@ -17,6 +19,14 @@ var loading : bool = true
 # complain because "that is not how you are supposed to work". If there was only
 # a way to set an id and then access that node via id...
 # Here you have paths in all its glory. Praise the paths (っ´ω`c)♡
+
+onready var advanced_containers := {
+	'buttons' : {
+		'container': $"VBoxContainer/TabContainer/Choice Buttons/Column3/GridContainer",
+		'disabled_text': $"VBoxContainer/TabContainer/Choice Buttons/Column3/Label"
+	}
+}
+
 onready var n : Dictionary = {
 	# Dialog Text
 	'theme_text_shadow': $"VBoxContainer/TabContainer/Dialog Text/Column/GridContainer/HBoxContainer2/CheckBoxShadow",
@@ -71,9 +81,8 @@ onready var n : Dictionary = {
 	'button_modulation': $"VBoxContainer/TabContainer/Choice Buttons/Column/GridContainer/HBoxContainer6/CheckBox",
 	'button_modulation_color': $"VBoxContainer/TabContainer/Choice Buttons/Column/GridContainer/HBoxContainer6/ColorPickerButton",
 	'button_use_native': $"VBoxContainer/TabContainer/Choice Buttons/Column/GridContainer/CheckBox",
-	'button_use_custom': $"VBoxContainer/TabContainer/Choice Buttons/Column/GridContainer/HBoxContainer5/CustomButtonsCheckBox",
-	'button_custom_path': $"VBoxContainer/TabContainer/Choice Buttons/Column/GridContainer/HBoxContainer5/CustomButtonsButton",
-	
+	'button_use_custom': $"VBoxContainer/TabContainer/Choice Buttons/Column3/GridContainer/HBoxContainer5/CustomButtonsCheckBox",
+	'button_custom_path': $"VBoxContainer/TabContainer/Choice Buttons/Column3/GridContainer/HBoxContainer5/CustomButtonsButton",
 	'button_offset_x': $"VBoxContainer/TabContainer/Choice Buttons/Column2/GridContainer/HBoxContainer/TextOffsetH",
 	'button_offset_y': $"VBoxContainer/TabContainer/Choice Buttons/Column2/GridContainer/HBoxContainer/TextOffsetV",
 	'button_separation': $"VBoxContainer/TabContainer/Choice Buttons/Column2/GridContainer/VerticalSeparation",
@@ -109,10 +118,24 @@ func _ready() -> void:
 	_on_visibility_changed()
 
 
+func setup_advanced_containers():
+	use_advanced_themes = DialogicResources.get_settings_config().get_value('dialog', 'advanced_themes', false)
+	
+	for key in advanced_containers:
+		var c = advanced_containers[key]
+		if use_advanced_themes:
+			c["container"].show()
+			c["disabled_text"].hide()
+		else:
+			c["container"].hide()
+			c["disabled_text"].show()
+
+
 func load_theme(filename):
 	loading = true
 	current_theme = filename
 	var theme = DialogicResources.get_theme_config(filename)
+	setup_advanced_containers()
 	# Settings
 	n['theme_action_key'].text = theme.get_value('settings', 'action_key', 'ui_accept')
 	

@@ -850,7 +850,7 @@ text = "Visuals"
 [node name="GridContainer" type="GridContainer" parent="VBoxContainer/TabContainer/Choice Buttons/Column"]
 margin_top = 26.0
 margin_right = 270.0
-margin_bottom = 206.0
+margin_bottom = 170.0
 size_flags_horizontal = 3
 custom_constants/hseparation = 10
 columns = 2
@@ -979,52 +979,6 @@ margin_top = 120.0
 margin_right = 270.0
 margin_bottom = 144.0
 
-[node name="HSeparator3" type="HSeparator" parent="VBoxContainer/TabContainer/Choice Buttons/Column/GridContainer"]
-margin_top = 148.0
-margin_right = 134.0
-margin_bottom = 152.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="HSeparator4" type="HSeparator" parent="VBoxContainer/TabContainer/Choice Buttons/Column/GridContainer"]
-margin_left = 144.0
-margin_top = 148.0
-margin_right = 270.0
-margin_bottom = 152.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="CustomButtonsLabel" type="Label" parent="VBoxContainer/TabContainer/Choice Buttons/Column/GridContainer"]
-margin_top = 161.0
-margin_right = 134.0
-margin_bottom = 175.0
-hint_tooltip = "The selected scene must have the 'pressed' signal and the 'text' property'"
-mouse_filter = 1
-text = "Use Custom Buttons"
-__meta__ = {
-"_editor_description_": ""
-}
-
-[node name="HBoxContainer5" type="HBoxContainer" parent="VBoxContainer/TabContainer/Choice Buttons/Column/GridContainer"]
-margin_left = 144.0
-margin_top = 156.0
-margin_right = 270.0
-margin_bottom = 180.0
-
-[node name="CustomButtonsCheckBox" type="CheckBox" parent="VBoxContainer/TabContainer/Choice Buttons/Column/GridContainer/HBoxContainer5"]
-margin_right = 24.0
-margin_bottom = 24.0
-
-[node name="CustomButtonsButton" type="Button" parent="VBoxContainer/TabContainer/Choice Buttons/Column/GridContainer/HBoxContainer5"]
-margin_left = 28.0
-margin_right = 126.0
-margin_bottom = 24.0
-hint_tooltip = "The selected scene must have the 'pressed' signal and the 'text' property'"
-size_flags_horizontal = 3
-text = "custom"
-
 [node name="VSeparator" type="VSeparator" parent="VBoxContainer/TabContainer/Choice Buttons"]
 margin_left = 280.0
 margin_right = 284.0
@@ -1129,6 +1083,69 @@ margin_bottom = 24.0
 rounded = true
 allow_greater = true
 allow_lesser = true
+
+[node name="VSeparator2" type="VSeparator" parent="VBoxContainer/TabContainer/Choice Buttons"]
+margin_left = 613.0
+margin_right = 617.0
+margin_bottom = 488.0
+
+[node name="Column3" type="VBoxContainer" parent="VBoxContainer/TabContainer/Choice Buttons"]
+margin_left = 627.0
+margin_right = 897.0
+margin_bottom = 488.0
+rect_min_size = Vector2( 270, 0 )
+size_flags_vertical = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="SectionTitle" type="Label" parent="VBoxContainer/TabContainer/Choice Buttons/Column3"]
+margin_right = 270.0
+margin_bottom = 22.0
+custom_styles/normal = SubResource( 1 )
+text = "Advanced"
+
+[node name="Label" type="Label" parent="VBoxContainer/TabContainer/Choice Buttons/Column3"]
+margin_top = 26.0
+margin_right = 270.0
+margin_bottom = 40.0
+text = "Go to settings to enable those options"
+
+[node name="GridContainer" type="GridContainer" parent="VBoxContainer/TabContainer/Choice Buttons/Column3"]
+margin_top = 44.0
+margin_right = 270.0
+margin_bottom = 68.0
+size_flags_horizontal = 3
+custom_constants/hseparation = 10
+columns = 2
+
+[node name="CustomButtonsLabel" type="Label" parent="VBoxContainer/TabContainer/Choice Buttons/Column3/GridContainer"]
+margin_top = 5.0
+margin_right = 132.0
+margin_bottom = 19.0
+hint_tooltip = "The selected scene must have the 'pressed' signal and the 'text' property'"
+mouse_filter = 1
+text = "Use Custom Buttons"
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="HBoxContainer5" type="HBoxContainer" parent="VBoxContainer/TabContainer/Choice Buttons/Column3/GridContainer"]
+margin_left = 142.0
+margin_right = 230.0
+margin_bottom = 24.0
+
+[node name="CustomButtonsCheckBox" type="CheckBox" parent="VBoxContainer/TabContainer/Choice Buttons/Column3/GridContainer/HBoxContainer5"]
+margin_right = 24.0
+margin_bottom = 24.0
+
+[node name="CustomButtonsButton" type="Button" parent="VBoxContainer/TabContainer/Choice Buttons/Column3/GridContainer/HBoxContainer5"]
+margin_left = 28.0
+margin_right = 88.0
+margin_bottom = 24.0
+hint_tooltip = "The selected scene must have the 'pressed' signal and the 'text' property'"
+size_flags_horizontal = 3
+text = "custom"
 
 [node name="Glossary" type="HBoxContainer" parent="VBoxContainer/TabContainer"]
 visible = false
@@ -1313,14 +1330,14 @@ one_shot = true
 [connection signal="toggled" from="VBoxContainer/TabContainer/Choice Buttons/Column/GridContainer/HBoxContainer6/CheckBox" to="." method="_on_ChoiceButtons_texture_modulate_toggled"]
 [connection signal="color_changed" from="VBoxContainer/TabContainer/Choice Buttons/Column/GridContainer/HBoxContainer6/ColorPickerButton" to="." method="_on_ColorPicker_ChoiceButtons_modulation_color_changed"]
 [connection signal="toggled" from="VBoxContainer/TabContainer/Choice Buttons/Column/GridContainer/CheckBox" to="." method="_on_native_button_toggled"]
-[connection signal="toggled" from="VBoxContainer/TabContainer/Choice Buttons/Column/GridContainer/HBoxContainer5/CustomButtonsCheckBox" to="." method="_on_CustomButtonsCheckBox_toggled"]
-[connection signal="pressed" from="VBoxContainer/TabContainer/Choice Buttons/Column/GridContainer/HBoxContainer5/CustomButtonsButton" to="." method="_on_CustomButtonsButton_pressed"]
 [connection signal="value_changed" from="VBoxContainer/TabContainer/Choice Buttons/Column2/GridContainer/HBoxContainer/TextOffsetV" to="." method="_on_ButtonOffset_value_changed"]
 [connection signal="value_changed" from="VBoxContainer/TabContainer/Choice Buttons/Column2/GridContainer/HBoxContainer/TextOffsetH" to="." method="_on_ButtonOffset_value_changed"]
 [connection signal="value_changed" from="VBoxContainer/TabContainer/Choice Buttons/Column2/GridContainer/VerticalSeparation" to="." method="_on_VerticalSeparation_value_changed"]
 [connection signal="toggled" from="VBoxContainer/TabContainer/Choice Buttons/Column2/GridContainer/HBoxContainer2/FixedSize" to="." method="_on_FixedSize_toggled"]
 [connection signal="value_changed" from="VBoxContainer/TabContainer/Choice Buttons/Column2/GridContainer/HBoxContainer2/ButtonSizeX" to="." method="_on_ButtonSize_value_changed"]
 [connection signal="value_changed" from="VBoxContainer/TabContainer/Choice Buttons/Column2/GridContainer/HBoxContainer2/ButtonSizeY" to="." method="_on_ButtonSize_value_changed"]
+[connection signal="toggled" from="VBoxContainer/TabContainer/Choice Buttons/Column3/GridContainer/HBoxContainer5/CustomButtonsCheckBox" to="." method="_on_CustomButtonsCheckBox_toggled"]
+[connection signal="pressed" from="VBoxContainer/TabContainer/Choice Buttons/Column3/GridContainer/HBoxContainer5/CustomButtonsButton" to="." method="_on_CustomButtonsButton_pressed"]
 [connection signal="pressed" from="VBoxContainer/TabContainer/Glossary/Column/GridContainer/FontButton" to="." method="_on_GlossaryFontButton_pressed"]
 [connection signal="color_changed" from="VBoxContainer/TabContainer/Glossary/Column/GridContainer/ColorPickerButton" to="." method="_on_GlossaryColorPicker_color_changed"]
 [connection signal="toggled" from="VBoxContainer/TabContainer/Glossary/Column/GridContainer/ShowGlossaryCheckBox" to="." method="_on_ShowGlossaryCheckBox_toggled"]
