@@ -1,4 +1,4 @@
-## v1.1 - WIP
+## v1.1 - With a little help from my friends
 - Improved event dragging and selection [[Arnaud Vergnet](https://github.com/arnaudvergnet)]
 - Fixed a bug that prevented the deletion of Characters [[AnidemDex](https://github.com/AnidemDex)]
 - Fixed a bug that allowed you to overwrite the event on the theme preview dialog
