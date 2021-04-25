@@ -66,7 +66,9 @@ If you are setting the resolution of your game to a very small value, you will h
 
 
 ### 🔷 I can't see the character sprites during the dialog!
-For the characters to be visible during the dialog, you need to add them to the current scene buy using the "Character Join" Event. Select the character you want to add, the position and the rest of the settings. Whenever you want them to leave, use the "Character Leave" event. 
+For the characters to be visible during the dialog, you need to add them to the current scene by using the "Character Join" Event. Select the character you want to add, the position and the rest of the settings. Whenever you want them to leave, use the "Character Leave" event. 
+
+![image](https://user-images.githubusercontent.com/2206700/115998381-3a5af500-a5e7-11eb-95af-778a656a6e9e.png)
 
 
 ### 🔷 How do I connect signals?
