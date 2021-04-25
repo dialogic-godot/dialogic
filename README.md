@@ -65,6 +65,10 @@ This is the PR that added this feature: https://github.com/coppolaemilio/dialogi
 If you are setting the resolution of your game to a very small value, you will have to create a theme in Dialogic and pick a smaller font and make the box size of the Dialog Box smaller as well. 
 
 
+### 🔷 I can't see the character sprites during the dialog!
+For the characters to be visible during the dialog, you need to add them to the current scene buy using the "Character Join" Event. Select the character you want to add, the position and the rest of the settings. Whenever you want them to leave, use the "Character Leave" event. 
+
+
 ### 🔷 How do I connect signals?
 Signals work the same way as in any Godot node. If you are new to gdscript you should watch this video which cover how Godot signals work: [How to Use Godot's Signals](https://www.youtube.com/watch?v=NK_SYVO7lMA). Since you probably won't, here you have a small snippet of how to connect a Dialogic **Emit Signal** event:
 ```gdscript
