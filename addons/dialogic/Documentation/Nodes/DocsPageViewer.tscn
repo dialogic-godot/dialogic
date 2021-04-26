@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://addons/dialogic/Documentation/Theme/Roboto/Roboto-Regular.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://addons/dialogic/Documentation/Theme/Roboto/Roboto-Italic.ttf" type="DynamicFontData" id=2]
@@ -25,6 +25,21 @@ font_data = ExtResource( 3 )
 use_filter = true
 font_data = ExtResource( 1 )
 
+[sub_resource type="Image" id=8]
+data = {
+"data": PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ),
+"format": "LumAlpha8",
+"height": 16,
+"mipmaps": false,
+"width": 16
+}
+
+[sub_resource type="ImageTexture" id=7]
+flags = 4
+flags = 4
+image = SubResource( 8 )
+size = Vector2( 16, 16 )
+
 [node name="DocsPageViewer" type="RichTextLabel"]
 margin_right = 1024.0
 margin_bottom = 600.0
@@ -43,13 +58,12 @@ __meta__ = {
 }
 
 [node name="Editing" type="HBoxContainer" parent="."]
-visible = false
 anchor_left = 1.0
 anchor_right = 1.0
-margin_left = -197.15
-margin_top = 3.14981
-margin_right = -3.14978
-margin_bottom = 28.1498
+margin_left = -202.807
+margin_top = 8.09956
+margin_right = -8.80664
+margin_bottom = 33.0996
 grow_horizontal = 0
 alignment = 2
 __meta__ = {
@@ -59,13 +73,13 @@ __meta__ = {
 [node name="RefreshPage" type="Button" parent="Editing"]
 margin_left = 94.0
 margin_right = 154.0
-margin_bottom = 25.0
+margin_bottom = 24.0
 text = "Refresh"
 
 [node name="EditPage" type="Button" parent="Editing"]
 margin_left = 158.0
 margin_right = 194.0
-margin_bottom = 25.0
+margin_bottom = 24.0
 text = "Edit"
 
 [node name="Up" type="Button" parent="."]
@@ -78,6 +92,7 @@ margin_top = -41.6541
 margin_right = -10.5946
 margin_bottom = -11.6541
 rect_min_size = Vector2( 30, 30 )
+icon = SubResource( 7 )
 expand_icon = true
 __meta__ = {
 "_edit_use_anchors_": false
@@ -91,7 +106,7 @@ anchor_bottom = 1.0
 margin_left = -207.0
 margin_top = -590.0
 margin_right = -49.0
-margin_bottom = -10.0
+margin_bottom = -13.0
 grow_horizontal = 0
 grow_vertical = 0
 rect_min_size = Vector2( 50, 40 )
@@ -105,12 +120,12 @@ __meta__ = {
 
 [node name="Panel" type="Control" parent="ContentMenu"]
 visible = false
-margin_top = 540.0
+margin_top = 537.0
 margin_right = 158.0
-margin_bottom = 540.0
+margin_bottom = 537.0
 
 [node name="VBox" type="VBoxContainer" parent="ContentMenu/Panel"]
-margin_top = 4.0
+margin_top = -88.0
 margin_right = 156.0
 margin_bottom = 4.0
 grow_horizontal = 0
@@ -121,17 +136,10 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Panel" type="Panel" parent="ContentMenu/Panel"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
 [node name="ToggleContents" type="Button" parent="ContentMenu"]
-margin_top = 560.0
+margin_top = 557.0
 margin_right = 158.0
-margin_bottom = 580.0
+margin_bottom = 577.0
 toggle_mode = true
 text = "Contents"
 

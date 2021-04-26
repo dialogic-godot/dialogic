@@ -22,6 +22,16 @@ signal open_non_html_link(link, section)
 ## The section can either be passed as a second argument or in the PAGE_PATH with #
 ## E.g.: "Tuts/welcome#how-to-use-the-plugin" == "Tuts/welcome", "#how-to-use-the-plugin"
 func load_page(page_path: String, section : String=''):
+	set("custom_styles/normal", get_stylebox("Background", "EditorStyles"))
+	get('custom_styles/normal').content_margin_left = 15
+	get('custom_styles/normal').content_margin_top = 15
+	get('custom_styles/normal').content_margin_right = 15
+	get('custom_styles/normal').content_margin_bottom = 15
+	get('custom_styles/normal').border_width_left = 2
+	get('custom_styles/normal').border_width_top = 2
+	get('custom_styles/normal').border_width_right = 2
+	get('custom_styles/normal').border_width_bottom = 2
+	
 	# return if no path is given
 	if page_path == '' and not section:
 		return
@@ -69,8 +79,11 @@ func scroll_to_section(title):
 			var x = bbcode_text.find(heading.replace('#', '').strip_edges()+"[/font]")
 			x = bbcode_text.count("\n", 0, x)
 			scroll_to_line(x)
+			
+			$ContentMenu/Panel.hide()
+			
 			return
-
+	
 
 ################################################################################
 ##							PRIVATE FUNCTIONS 								  ##
@@ -90,8 +103,10 @@ func create_content_menu(headings):
 		$ContentMenu.hide()
 		return
 	$ContentMenu.show()
+	headings.pop_front()
 	for heading in headings:
 		var button = Button.new()
+		button.set("custom_styles/normal", get_stylebox("sub_inspector_bg0", "Editor"))
 		button.text = heading
 		button.align = Button.ALIGN_LEFT
 		button.connect("pressed", self, "content_button_pressed", [heading])
