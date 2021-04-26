@@ -2,24 +2,31 @@
 Let's begin creating your first dialog with dialogic!
 
 ## 1. Meeting the dialogic tab
-All the things related to your dialog will be done in the dialogic tab. You can access it like the 2D and 3D tab on the very top of the editor. You can access all the things you create with dialogic here.  
+All the things related to your dialogue will be done in the dialogic tab. You can access it like the 2D and 3D tab on the very top of the editor. You can access all the things you create with dialogic here.  
 ![Dialogic Tab](https://github.com/Jowan-Spooner/dialogic/blob/plugin-docs/addons/dialogic/Documentation/Content/Tutorials/Images/Dialogic_Tab.PNG)
 
 Let's have a look into the toolbar at the top.
 
 ![Toolbar](https://github.com/Jowan-Spooner/dialogic/blob/plugin-docs/addons/dialogic/Documentation/Content/Tutorials/Images/Toolbar.PNG)
 
-Here you can create dialogics four "ressources": 
-* **Timelines** that represent a list of events. Control characters, make them talk, change the background, ask questions, emit signals and more!
-* **Characters** that represent your characters. You can set a name, a description, a color, and set different images for expressions.
-* **Definitions** that can be used as variables (to branch your story or be used inside the texts) or as information for the player (a name and description are shwon when the player hovers over the word).
-* **Themes** that specify how your dialog is looking. There are many settings you can tweak to suit your need.
+Here you can create dialogics four **ressources**: 
+### Timelines
+that represent a list of events. Control characters, make them talk, change the background, ask questions, emit signals and more!
+
+### Characters
+that represent your characters. You can set a name, a description, a color, and set different images for expressions.
+
+### Definitions
+that can be used as variables (to branch your story or be used inside the texts) or as information for the player (a name and description are shwon when the player hovers over the word).
+
+### Themes
+that specify how your dialogue is looking. There are many settings you can tweak to suit your need.
 
 You will hear more on each of them later.
 
 All your ressources are shown in the big master tree on the left. You can select on which you want to work there.
 
-Let's continue! What is the most important thing for a dialog? Someone to talk to. So we will create our first character.
+Let's continue! What is the most important thing for a dialogue? Someone to talk to. So we will create our first character.
 
 ## 2. Creating your first character
 Click the little character icon in the toolbar to create a new character. You will see the character editor now.
@@ -35,7 +42,7 @@ If you do not have a image to use right now, you can use the default dwarf from 
 
 This is all for now. You can create a second character just like this.
 
-When you are ready let's create our first ever dialog!
+When you are ready let's create our first ever dialogue!
 
 ## 3. Creating your first timeline
 Timelines specify what events happen in which order. Create a new timline with the icon in the toolbar.
@@ -55,9 +62,6 @@ You can select events by left clicking them. When you click one of the event but
 
 You can select events and delte them with CRTL + DEL.
 
-+ something
-+ another thing
-
 In the timeline you can reorder the events by dragging and dropping them. You can also move the selected event up/down with ALT+UP/ALT+DOWN.
 
 ### | Let's do it!
@@ -73,8 +77,8 @@ For this event we can specify which character talks, the portrait they have whil
 
 Let your character say something!
 
-If you are ready let the character leave with the `Character Leave` event.
-You can find explenations for all events and their settings further down in the [refrence](#refrence).
+If you are ready, let the character leave with the `Character Leave` event.
+You can find explanations for all events and their settings further down in the [refrence](Reference/Events).
 
 ### | On we go
 Now your dialog is ready to be played! But how? Let's find out!
