@@ -88,11 +88,12 @@ func parse(content : String,  path:String = ''):
 
 
 	## Find all occurences of list items
-	regex.compile("[-+*](?<element>\\s.*)")
+	regex.compile("\\n\\s*[-+*](?<element>\\s.*)")
 	result = regex.search_all(content)
 	if result:
 		for res in result:
 			lists.append(res.get_string("element"))
+	
 
 	## Find all occurences of images
 	regex.compile("!\\[(?<imgname>.*)\\]\\((?<imglink>.*)\\)")
@@ -149,7 +150,6 @@ func parse(content : String,  path:String = ''):
 		for res in result:
 			heading5s.append(res.get_string("heading"))
 	
-	print(bolded)
 	## Add in all the changes
 	for bold in bolded:
 		content = content.replace("**"+bold+"**","[b]"+bold+"[/b]")
