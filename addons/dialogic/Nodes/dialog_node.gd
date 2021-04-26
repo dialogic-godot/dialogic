@@ -724,7 +724,6 @@ func add_choice_button(option: Dictionary):
 		return
 	
 	var button
-	print(use_custom_choice_button())
 	if use_custom_choice_button():
 		button = get_custom_choice_button(option['label'])
 	else:
