@@ -1,8 +1,9 @@
 [gd_scene load_steps=4 format=2]
 
-[ext_resource path="res://addons/dialogic/Documentation/Scripts/DocsPageViewer.tscn" type="PackedScene" id=1]
-[ext_resource path="res://addons/dialogic/Documentation/Scripts/DocumentationTree.tscn" type="PackedScene" id=2]
-[ext_resource path="res://addons/dialogic/Documentation/Scripts/DocumentationViewer.gd" type="Script" id=3]
+[ext_resource path="res://addons/dialogic/Documentation/Nodes/DocsPageViewer.tscn" type="PackedScene" id=1]
+[ext_resource path="res://addons/dialogic/Documentation/Nodes/DocumentationTree.tscn" type="PackedScene" id=2]
+[ext_resource path="res://addons/dialogic/Documentation/Nodes/DocumentationViewer.gd" type="Script" id=3]
+
 
 [node name="DocumentationViewer" type="Control"]
 anchor_right = 1.0

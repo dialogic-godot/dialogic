@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://addons/dialogic/Editor/DocumentationViewer/DocumentationViewer.gd" type="Script" id=1]
-[ext_resource path="res://addons/dialogic/Documentation/Scripts/DocsPageViewer.tscn" type="PackedScene" id=2]
+[ext_resource path="res://addons/dialogic/Documentation/Nodes/DocsPageViewer.tscn" type="PackedScene" id=2]
 
 [node name="DocumentationViewer" type="ScrollContainer"]
 anchor_right = 1.0

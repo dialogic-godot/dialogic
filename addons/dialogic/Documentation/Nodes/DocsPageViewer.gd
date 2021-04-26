@@ -3,7 +3,7 @@ extends RichTextLabel
 
 export (bool) var enable_editing = false
 var documentation_path: String = ""
-var MarkdownParser = load("res://addons/dialogic/Documentation/Scripts/DocsMarkdownParser.gd").new()
+var MarkdownParser = load("res://addons/dialogic/Documentation/Nodes/DocsMarkdownParser.gd").new()
 
 var current_path: String = ""
 var current_headings = []

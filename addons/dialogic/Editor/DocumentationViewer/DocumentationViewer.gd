@@ -4,7 +4,7 @@ extends ScrollContainer
 var editor_reference 
 onready var master_tree = get_node('../MasterTreeContainer/MasterTree')
 var current_page : String = "Start"
-var MarkdownParser = load("res://addons/dialogic/Documentation/Scripts/DocsMarkdownParser.gd").new()
+var MarkdownParser = load("res://addons/dialogic/Documentation/Nodes/DocsMarkdownParser.gd").new()
 
 signal open_link(link)
 
