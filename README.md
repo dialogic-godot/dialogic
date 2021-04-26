@@ -144,7 +144,9 @@ Daniel Cheney,
 Carlo Cabanilla,
 Flaming Potato,
 Joseph Catrambone,
-AzulCrescent
+AzulCrescent,
+Hector Na Em,
+Furroy
 
 Support me on [Patreon https://www.patreon.com/coppolaemilio](https://www.patreon.com/coppolaemilio)
 
