@@ -15,6 +15,7 @@ var definition_visible: bool = false
 var settings: ConfigFile
 var current_theme: ConfigFile
 var current_timeline: String = ''
+var current_event: Dictionary
 
 ## The timeline to load when starting the scene
 export(String, "TimelineDropdown") var timeline: String
@@ -103,9 +104,15 @@ func resize_main():
 	if current_theme != null:
 		$TextBubble.rect_position.y = (reference.y) - ($TextBubble.rect_size.y) - current_theme.get_value('box', 'bottom_gap', 40)
 	
+	
 	var background = get_node_or_null('Background')
 	if background != null:
 		background.rect_size = reference
+	
+	var portraits = get_node_or_null('Portraits')
+	if portraits != null:
+		portraits.rect_position.x = reference.x / 2
+		portraits.rect_position.y = reference.y
 
 
 func set_current_dialog(dialog_path: String):
@@ -160,19 +167,17 @@ func parse_text_lines(unparsed_dialog_script: Dictionary) -> Dictionary:
 	# Parsing
 	for event in unparsed_dialog_script['events']:
 		if event.has('text') and event.has('character') and event.has('portrait'):
-			if event['text'] == '' and remove_empty_messages == true:
+			if event['text'].empty() and remove_empty_messages == true:
 				pass
 			elif '\n' in event['text'] and preview == false and split_new_lines == true:
 				var lines = event['text'].split('\n')
-				var i = 0
 				for line in lines:
-					var _e = {
-						'text': lines[i],
-						'character': event['character'],
-						'portrait': event['portrait']
-					}
-					new_events.append(_e)
-					i += 1
+					if not line.empty():
+						new_events.append({
+							'text': line,
+							'character': event['character'],
+							'portrait': event['portrait']
+						})
 			else:
 				new_events.append(event)
 		else:
@@ -340,6 +345,10 @@ func update_text(text: String) -> String:
 
 func _on_text_completed():
 	finished = true
+	if current_event.has('options'):
+		for o in current_event['options']:
+			add_choice_button(o)
+
 
 func on_timeline_start():
 	if not Engine.is_editor_hint():
@@ -423,6 +432,7 @@ func event_handler(event: Dictionary):
 	reset_options()
 	
 	dprint('[D] Current Event: ', event)
+	current_event = event
 	match event:
 		{'text', 'character', 'portrait'}:
 			emit_signal("event_start", "text", event)
@@ -444,9 +454,6 @@ func event_handler(event: Dictionary):
 				update_name(character_data)
 				grab_portrait_focus(character_data, event)
 			update_text(event['question'])
-			if event.has('options'):
-				for o in event['options']:
-					add_choice_button(o)
 		{'choice', 'question_id'}:
 			emit_signal("event_start", "choice", event)
 			for q in questions:
@@ -642,18 +649,31 @@ func _should_add_choice_button(option: Dictionary):
 		return true
 
 
-func add_choice_button(option: Dictionary):
-	if not _should_add_choice_button(option):
-		return
-	
-	var theme = current_theme
+func use_custom_choice_button():
+	return current_theme.get_value('buttons', 'use_custom', false) and not current_theme.get_value('buttons', 'custom_path', "").empty()
 
-	var button = ChoiceButton.instance()
-	button.text = option['label']
+func use_native_choice_button():
+	return current_theme.get_value('buttons', 'use_native', false)
+
+
+
+func get_custom_choice_button(label: String):
+	var theme = current_theme
+	var custom_path = current_theme.get_value('buttons', 'custom_path', "")
+	var CustomChoiceButton = load(custom_path)
+	var button = CustomChoiceButton.instance()
+	button.text = label
+	return button
+
+
+func get_classic_choice_button(label: String):
+	var theme = current_theme
+	var button : Button = ChoiceButton.instance()
+	button.text = label
 	# Text
 	button.set('custom_fonts/font', DialogicUtil.path_fixer_load(theme.get_value('text', 'font', "res://addons/dialogic/Example Assets/Fonts/DefaultFont.tres")))
 
-	if not theme.get_value('buttons', 'use_native', false):
+	if not use_native_choice_button():
 		var text_color = Color(theme.get_value('text', 'color', "#ffffffff"))
 		button.set('custom_colors/font_color', text_color)
 		button.set('custom_colors/font_color_hover', text_color)
@@ -696,11 +716,23 @@ func add_choice_button(option: Dictionary):
 		button.get_node('ColorRect').visible = false
 		button.get_node('TextureRect').visible = false
 		button.set_flat(false)
-		
-		$Options.set('custom_constants/separation', theme.get_value('buttons', 'gap', 20))
+	return button
 
+
+func add_choice_button(option: Dictionary):
+	if not _should_add_choice_button(option):
+		return
+	
+	var button
+	print(use_custom_choice_button())
+	if use_custom_choice_button():
+		button = get_custom_choice_button(option['label'])
+	else:
+		button = get_classic_choice_button(option['label'])
 	button.connect("pressed", self, "answer_question", [button, option['event_id'], option['question_id']])
 
+	if use_native_choice_button() or use_custom_choice_button():
+		$Options.set('custom_constants/separation', current_theme.get_value('buttons', 'gap', 20))
 	$Options.add_child(button)
 
 	if Input.get_mouse_mode() != Input.MOUSE_MODE_VISIBLE:

@@ -12,6 +12,10 @@ Create dialogs, characters and scenes to display conversations in your Godot gam
 
 ---
 
+## Getting started
+
+This video will teach you everything you need to know to get started with Dialogic: https://www.youtube.com/watch?v=sYjgDIgD7AY
+
 ## Installation
 
 To install a Dialogic, download it as a ZIP archive. All releases are listed here: https://github.com/coppolaemilio/dialogic/releases. Then extract the ZIP archive and move the `addons/` folder it contains into your project folder. Then, enable the plugin in project settings.
@@ -61,6 +65,41 @@ public override void _Ready()
 This is the PR that added this feature: https://github.com/coppolaemilio/dialogic/pull/217
 
 
+### 🔷 My resolution is too small and the dialog is too big. Help!
+If you are setting the resolution of your game to a very small value, you will have to create a theme in Dialogic and pick a smaller font and make the box size of the Dialog Box smaller as well. 
+
+
+### 🔷 I can't see the character sprites during the dialog!
+For the characters to be visible during the dialog, you need to add them to the current scene by using the "Character Join" Event. Select the character you want to add, the position and the rest of the settings. Whenever you want them to leave, use the "Character Leave" event. 
+
+![image](https://user-images.githubusercontent.com/2206700/115998381-3a5af500-a5e7-11eb-95af-778a656a6e9e.png)
+
+
+### 🔷 How do I connect signals?
+Signals work the same way as in any Godot node. If you are new to gdscript you should watch this video which cover how Godot signals work: [How to Use Godot's Signals](https://www.youtube.com/watch?v=NK_SYVO7lMA). Since you probably won't, here you have a small snippet of how to connect a Dialogic **Emit Signal** event:
+```gdscript
+# Example for dialogic_signal
+func _ready():
+	var new_dialog = Dialogic.start('Your Timeline Name Here')
+	add_child(new_dialog)
+	new_dialog.connect("dialogic_signal", self, 'example_function')
+
+func example_function(value):
+	print('value')
+```
+Every event emits a signal called `event_start` when Dialogic starts that event's actions, but there are also two other named signals called `timeline_start(timeline_name)` and `timeline_end(timeline_name)` which are called at the start and at the end respectively. 
+
+```gdscript
+# Example for timeline_end
+func _ready():
+	var new_dialog = Dialogic.start('Your Timeline Name Here')
+	add_child(new_dialog)
+	new_dialog.connect('timeline_end', self, 'after_dialog')
+
+func after_dialog(timeline_name):
+	print('Now you can resume with the game :)')
+```
+
 ---
 
 ### 📦 Preparing the export
@@ -105,7 +144,9 @@ Daniel Cheney,
 Carlo Cabanilla,
 Flaming Potato,
 Joseph Catrambone,
-AzulCrescent
+AzulCrescent,
+Hector Na Em,
+Furroy
 
 Support me on [Patreon https://www.patreon.com/coppolaemilio](https://www.patreon.com/coppolaemilio)
 

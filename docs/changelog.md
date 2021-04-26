@@ -1,4 +1,4 @@
-## v1.1 - WIP
+## v1.1 - With a little help from my friends
 - Improved event dragging and selection [[Arnaud Vergnet](https://github.com/arnaudvergnet)]
 - Fixed a bug that prevented the deletion of Characters [[AnidemDex](https://github.com/AnidemDex)]
 - Fixed a bug that allowed you to overwrite the event on the theme preview dialog
@@ -41,6 +41,7 @@
   - Added new customization options (scale, and offset) to the next indicator image
   - Added modulation settings to the name label background texture and the choices buttons background textures [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
   - Added an option to use native buttons styles for choices [[Tim Krief](https://github.com/timkrief)]
+  - Added an advanced option to use a custom scene as a button for choices [[Arnaud Vergnet](https://github.com/arnaudvergnet)]
   - Added new settings to set a fixed size for choice buttons (This is used to prevent premade texture stretching)
   - Fixed a bug where the text alignment wasn't being shown on the preview
   - Fixed a bug with the name label shadow
@@ -48,12 +49,15 @@
 - Dialog node
   - You can now use [br] to insert line breaks
   - Questions now properly show the theme text alignment
+  - Options now show up when the question text finished displaying [[Arnaud Vergnet](https://github.com/arnaudvergnet)]
   - The close dialog now performs a fade-out animation
   - Fixed a bug where Glossary Definitions plain text was being added to the name label
   - Fixed an issue when trying to display small sprites as characters portraits
   - Fixed a bug where portraits didn't come to the front when being focused [[AnidemDex](https://github.com/AnidemDex)]
   - Fixed a bug when the display stretch was set to `2D`
+  - Fixed a bug where empty text lines were not removed properly [[Arnaud Vergnet](https://github.com/arnaudvergnet)]
 - Settings
+  - Added a new option to enable advanced theme settings [[Arnaud Vergnet](https://github.com/arnaudvergnet)]
   - Added a new option to toggle the character "focus"/"dim" while speaking 
 - Added a button in timeline inspector plugin to open the selected timeline in the editor [[ellogwen](https://github.com/ellogwen)]
 - Special thanks to [Jowan-Spooner](https://github.com/Jowan-Spooner) for the QA and the facelift on the theme editor

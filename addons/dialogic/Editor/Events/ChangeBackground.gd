@@ -6,10 +6,6 @@ var preview_scene = preload("res://addons/dialogic/Editor/Events/Common/Images/I
 var preview = "..."
 var image_picker
 
-# This is the information of this event and it will get parsed and saved to the JSON file.
-var event_data = {
-	'background': ''
-}
 
 func _ready():
 	image_picker = get_header()
@@ -17,10 +13,14 @@ func _ready():
 	image_picker.editor_reference = editor_reference
 	image_picker.connect("file_selected", self, "_on_file_selected")
 	image_picker.connect("clear_pressed", self, "_on_clear_pressed")
+	# Init the data
+	event_data = {
+		'background': ''
+	}
 
 
 func load_data(data):
-	event_data = data
+	.load_data(data)
 	load_image(event_data['background'])
 
 

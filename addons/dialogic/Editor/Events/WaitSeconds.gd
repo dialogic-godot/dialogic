@@ -1,18 +1,19 @@
 tool
-extends Control
+extends "res://addons/dialogic/Editor/Events/Templates/EventTemplate.gd"
 
-var editor_reference
 
-# This is the information of this event and it will get parsed and saved to the JSON file.
-var event_data = {
-	'wait_seconds': 0
-}
+func _ready():
+	event_data = {
+		'wait_seconds': 1
+	}
+	get_header().set_value(float(event_data['wait_seconds']))
+	get_header().connect("value_changed", self, "_on_Selector_value_changed")
 
 
 func load_data(data):
-	event_data = data
-	$PanelContainer/VBoxContainer/Header/SpinBox.value = event_data['wait_seconds']
+	.load_data(data)
+	get_header().set_value(float(event_data['wait_seconds']))
 
 
-func _on_SpinBox_value_changed(value):
+func _on_Selector_value_changed(value):
 	event_data['wait_seconds'] = value

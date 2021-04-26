@@ -1,110 +1,50 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://addons/dialogic/Images/Event Icons/Main Icons/wait-seconds.svg" type="Texture" id=1]
 [ext_resource path="res://addons/dialogic/Editor/Events/WaitSeconds.gd" type="Script" id=2]
-[ext_resource path="res://addons/dialogic/Editor/Events/Common/Spacer.tscn" type="PackedScene" id=3]
-[ext_resource path="res://addons/dialogic/Editor/Events/Common/PieceExtraSettings.tscn" type="PackedScene" id=4]
-[ext_resource path="res://addons/dialogic/Editor/Events/Common/SpinBoxPreventDnD.gd" type="Script" id=6]
+[ext_resource path="res://addons/dialogic/Editor/Events/Common/SecondsSelector.tscn" type="PackedScene" id=3]
+[ext_resource path="res://addons/dialogic/Editor/Events/Templates/EventTemplate.tscn" type="PackedScene" id=4]
+[ext_resource path="res://addons/dialogic/Editor/Events/styles/WaitSeconds.tres" type="StyleBox" id=5]
 
-[sub_resource type="StyleBoxFlat" id=1]
-content_margin_left = 16.0
-content_margin_right = 6.0
-content_margin_top = 6.0
-content_margin_bottom = 6.0
-bg_color = Color( 0.435294, 0.301961, 0.603922, 0.192157 )
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color( 0.12549, 0.12549, 0.12549, 1 )
-corner_radius_top_left = 6
-corner_radius_top_right = 6
-corner_radius_bottom_right = 6
-corner_radius_bottom_left = 6
-
-[node name="WaitSeconds" type="HBoxContainer"]
-margin_right = 1004.0
-margin_bottom = 42.0
-size_flags_horizontal = 3
-size_flags_vertical = 9
+[node name="EventTemplate" instance=ExtResource( 4 )]
+margin_bottom = 46.0
 script = ExtResource( 2 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
+event_style = ExtResource( 5 )
+event_icon = ExtResource( 1 )
+event_name = "Wait"
+header_scene = ExtResource( 3 )
 
-[node name="Indent" type="Control" parent="."]
-visible = false
-margin_bottom = 42.0
+[node name="PanelContainer" parent="." index="1"]
+custom_styles/panel = ExtResource( 5 )
 
-[node name="PanelContainer" type="PanelContainer" parent="."]
-margin_right = 1004.0
-margin_bottom = 42.0
-mouse_filter = 1
-size_flags_horizontal = 3
-size_flags_vertical = 3
-custom_styles/panel = SubResource( 1 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
+[node name="IconMarginContainer" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="0"]
+margin_right = 37.0
 
-[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer"]
-margin_left = 16.0
-margin_top = 6.0
-margin_right = 998.0
-margin_bottom = 36.0
-size_flags_horizontal = 3
-
-[node name="Header" type="HBoxContainer" parent="PanelContainer/VBoxContainer"]
-margin_right = 982.0
-margin_bottom = 28.0
-
-[node name="TextureRect" type="TextureRect" parent="PanelContainer/VBoxContainer/Header"]
-margin_right = 22.0
-margin_bottom = 28.0
+[node name="IconTexture" parent="PanelContainer/MarginContainer/VBoxContainer/Header/IconMarginContainer" index="0"]
+margin_right = 32.0
 texture = ExtResource( 1 )
-stretch_mode = 6
 
-[node name="Title" type="Label" parent="PanelContainer/VBoxContainer/Header"]
-margin_left = 26.0
-margin_top = 7.0
-margin_right = 75.0
-margin_bottom = 21.0
-text = "  Wait   "
+[node name="TitleHBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="1"]
+margin_left = 41.0
+margin_right = 96.0
 
-[node name="SpinBox" type="SpinBox" parent="PanelContainer/VBoxContainer/Header"]
-margin_left = 79.0
-margin_right = 153.0
-margin_bottom = 28.0
-min_value = 0.1
-step = 0.1
-value = 1.0
-allow_greater = true
-align = 1
-script = ExtResource( 6 )
+[node name="TitleMarginContainer" parent="PanelContainer/MarginContainer/VBoxContainer/Header/TitleHBoxContainer" index="1"]
+margin_right = 47.0
 
-[node name="Title2" type="Label" parent="PanelContainer/VBoxContainer/Header"]
-margin_left = 157.0
-margin_top = 7.0
-margin_right = 218.0
-margin_bottom = 21.0
-text = "  Seconds"
+[node name="TitleLabel" parent="PanelContainer/MarginContainer/VBoxContainer/Header/TitleHBoxContainer/TitleMarginContainer" index="0"]
+margin_right = 34.0
+text = "Wait"
 
-[node name="Preview" type="Label" parent="PanelContainer/VBoxContainer/Header"]
-margin_left = 222.0
-margin_top = 7.0
-margin_right = 222.0
-margin_bottom = 21.0
-custom_colors/font_color = Color( 1, 1, 1, 0.513726 )
+[node name="VSeparator2" parent="PanelContainer/MarginContainer/VBoxContainer/Header/TitleHBoxContainer" index="2"]
+margin_left = 51.0
+margin_right = 55.0
 
-[node name="Spacer" parent="PanelContainer/VBoxContainer/Header" instance=ExtResource( 3 )]
-margin_left = 226.0
-margin_right = 941.0
-margin_bottom = 28.0
+[node name="Content" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="2"]
+margin_left = 100.0
+margin_right = 249.0
 
-[node name="OptionButton" parent="PanelContainer/VBoxContainer/Header" instance=ExtResource( 4 )]
-margin_left = 945.0
-margin_right = 982.0
-margin_bottom = 28.0
-items = [ "Move Up", null, 0, false, false, 0, 0, null, "", false, "Move Down", null, 0, false, false, 1, 0, null, "", false, "", null, 0, false, false, 2, 0, null, "", true, "Remove", null, 0, false, false, 3, 0, null, "", false ]
+[node name="Spacer" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="4"]
+margin_left = 253.0
 
-[connection signal="value_changed" from="PanelContainer/VBoxContainer/Header/SpinBox" to="." method="_on_SpinBox_value_changed"]
+[node name="OptionsControl" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="6"]
+items = [ "Move Up", null, 0, false, false, 0, 0, null, "", false, "Move Down", null, 0, false, false, 1, 0, null, "", false, "", null, 0, false, false, 2, 0, null, "", false, "Remove", null, 0, false, false, 3, 0, null, "", false ]
