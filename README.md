@@ -12,6 +12,10 @@ Create dialogs, characters and scenes to display conversations in your Godot gam
 
 ---
 
+## Getting started
+
+This video will teach you everything you need to know to get started with Dialogic: https://www.youtube.com/watch?v=sYjgDIgD7AY
+
 ## Installation
 
 To install a Dialogic, download it as a ZIP archive. All releases are listed here: https://github.com/coppolaemilio/dialogic/releases. Then extract the ZIP archive and move the `addons/` folder it contains into your project folder. Then, enable the plugin in project settings.
