@@ -65,7 +65,8 @@ func load_page(page_path: String, section : String=''):
 	create_content_menu(MarkdownParser.heading1s + MarkdownParser.heading2s)
 
 	# scroll to the given section
-	scroll_to_section(section)
+	if not scroll_to_section(section):
+		scroll_to_line(0)
 
 # looks if there is a heading similar to the given TITLE and then scrolls there
 func scroll_to_section(title):
@@ -82,7 +83,7 @@ func scroll_to_section(title):
 			
 			$ContentMenu/Panel.hide()
 			
-			return
+			return true
 	
 
 ################################################################################

@@ -1,4 +1,4 @@
-# Exporting a dialogic game
+# Exporting a game with dialogic
 
 Before exporting, there is something important to do!
 

@@ -1,4 +1,4 @@
-# First dialogic game: step by step
+# Beginners Guide
 Let's begin creating your first dialog with dialogic!
 
 ## 1. Meeting the dialogic tab

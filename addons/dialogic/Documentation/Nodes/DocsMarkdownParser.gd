@@ -64,7 +64,7 @@ func parse(content : String,  path:String = ''):
 	if result:
 		for res in result:
 			underlined.append(res.get_string("underlinetext"))
-#
+
 #	## Find all occurences of italic text
 #	regex.compile("[^\\]*\\*(?<italictext>.*)\\*")
 #	result = regex.search_all(content)
