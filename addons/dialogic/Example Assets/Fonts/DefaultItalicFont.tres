@@ -1,0 +1,9 @@
+[gd_resource type="DynamicFont" load_steps=3 format=2]
+
+[ext_resource path="res://addons/dialogic/Example Assets/Fonts/Overlock/Overlock-BlackItalic.ttf" type="DynamicFontData" id=1]
+[ext_resource path="res://addons/dialogic/Example Assets/Fonts/Overlock/Overlock-Regular.ttf" type="DynamicFontData" id=2]
+
+[resource]
+size = 30
+font_data = ExtResource( 1 )
+fallback/0 = ExtResource( 2 )

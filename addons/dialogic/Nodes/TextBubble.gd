@@ -61,8 +61,11 @@ func load_theme(theme: ConfigFile):
 	# Text
 	var theme_font = DialogicUtil.path_fixer_load(theme.get_value('text', 'font', 'res://addons/dialogic/Example Assets/Fonts/DefaultFont.tres'))
 	text_label.set('custom_fonts/normal_font', theme_font)
+	text_label.set('custom_fonts/bold_font', DialogicUtil.path_fixer_load(theme.get_value('text', 'bold_font', 'res://addons/dialogic/Example Assets/Fonts/DefaultBoldFont.tres')))
+	text_label.set('custom_fonts/italics_font', DialogicUtil.path_fixer_load(theme.get_value('text', 'italic_font', 'res://addons/dialogic/Example Assets/Fonts/DefaultItalicFont.tres')))
 	name_label.set('custom_fonts/font', theme_font)
-
+	
+	
 	var text_color = Color(theme.get_value('text', 'color', '#ffffffff'))
 	text_label.set('custom_colors/default_color', text_color)
 	name_label.set('custom_colors/font_color', text_color)
