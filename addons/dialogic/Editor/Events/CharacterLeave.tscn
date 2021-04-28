@@ -1,9 +1,10 @@
 [gd_scene load_steps=6 format=2]
 
-[ext_resource path="res://addons/dialogic/Editor/Events/CharacterLeaveBlock.gd" type="Script" id=1]
+[ext_resource path="res://addons/dialogic/Editor/Events/CharacterLeave.gd" type="Script" id=1]
 [ext_resource path="res://addons/dialogic/Editor/Events/Common/Spacer.tscn" type="PackedScene" id=2]
 [ext_resource path="res://addons/dialogic/Images/Event Icons/Main Icons/character-leave.svg" type="Texture" id=3]
 [ext_resource path="res://addons/dialogic/Editor/Events/Common/PieceExtraSettings.tscn" type="PackedScene" id=4]
+
 
 
 

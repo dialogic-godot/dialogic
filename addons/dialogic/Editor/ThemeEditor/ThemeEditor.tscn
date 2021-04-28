@@ -8,7 +8,7 @@ content_margin_left = 4.0
 content_margin_right = 4.0
 content_margin_top = 4.0
 content_margin_bottom = 4.0
-bg_color = Color( 0.2652, 0.2784, 0.3114, 1 )
+bg_color = Color( 0.252, 0.2718, 0.3246, 1 )
 
 [node name="ThemeEditor" type="ScrollContainer"]
 anchor_right = 1.0
@@ -63,7 +63,6 @@ size_flags_vertical = 3
 tab_align = 0
 
 [node name="Dialog Text" type="HBoxContainer" parent="VBoxContainer/TabContainer"]
-visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 4.0
@@ -824,6 +823,7 @@ allow_greater = true
 allow_lesser = true
 
 [node name="Choice Buttons" type="HBoxContainer" parent="VBoxContainer/TabContainer"]
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 4.0
@@ -1281,6 +1281,7 @@ prefix = "Y"
 
 [node name="DelayPreviewTimer" type="Timer" parent="."]
 one_shot = true
+
 [connection signal="text_changed" from="VBoxContainer/HBoxContainer3/TextEdit" to="." method="_on_Preview_text_changed"]
 [connection signal="pressed" from="VBoxContainer/HBoxContainer3/PreviewButton" to="." method="_on_PreviewButton_pressed"]
 [connection signal="pressed" from="VBoxContainer/TabContainer/Dialog Text/Column/GridContainer/FontButton" to="." method="_on_FontButton_pressed"]

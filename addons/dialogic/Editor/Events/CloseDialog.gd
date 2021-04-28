@@ -7,6 +7,7 @@ var editorPopup
 
 # This is the information of this event and it will get parsed and saved to the JSON file.
 var event_data = {
+	'event_id':'dialogic_022',
 	'close_dialog': '',
 	'transition_duration': 1.0
 }

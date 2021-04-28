@@ -12,6 +12,7 @@ onready var condition_checkbox = $PanelContainer/VBoxContainer/Header/ConditionC
 
 # This is the information of this event and it will get parsed and saved to the JSON file.
 var event_data = {
+	'event_id':'dialogic_011',
 	'choice': '',
 	'condition': '',
 	'definition': '',

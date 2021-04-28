@@ -23,14 +23,12 @@
 [ext_resource path="res://addons/dialogic/Editor/TimelineEditor/EventButton.gd" type="Script" id=21]
 [ext_resource path="res://addons/dialogic/Editor/TimelineEditor/TimelineArea.gd" type="Script" id=22]
 
-
-
 [sub_resource type="StyleBoxFlat" id=1]
 content_margin_left = 5.0
 content_margin_right = 5.0
 content_margin_top = 5.0
 content_margin_bottom = 5.0
-bg_color = Color( 0, 0, 0, 1 )
+bg_color = Color( 0.15, 0.1725, 0.2325, 1 )
 border_width_left = 1
 border_width_top = 1
 border_width_right = 1
@@ -60,7 +58,7 @@ __meta__ = {
 }
 
 [node name="TimelineArea" type="ScrollContainer" parent="."]
-margin_right = 836.0
+margin_right = 832.0
 margin_bottom = 738.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -73,7 +71,7 @@ __meta__ = {
 [node name="TimeLine" type="VBoxContainer" parent="TimelineArea"]
 margin_left = 5.0
 margin_top = 5.0
-margin_right = 831.0
+margin_right = 827.0
 margin_bottom = 733.0
 grow_horizontal = 2
 grow_vertical = 2
@@ -144,7 +142,7 @@ margin_right = 180.0
 margin_bottom = 14.0
 size_flags_horizontal = 3
 
-[node name="TextBlock" type="Button" parent="ScrollContainer/EventContainer"]
+[node name="TextEvent" type="Button" parent="ScrollContainer/EventContainer"]
 margin_top = 90.0
 margin_right = 180.0
 margin_bottom = 118.0
@@ -152,9 +150,9 @@ text = "  Text Event"
 icon = ExtResource( 2 )
 align = 0
 script = ExtResource( 21 )
-EventName = "TextBlock"
+EventName = "TextEvent"
 
-[node name="CharacterJoinBlock" type="Button" parent="ScrollContainer/EventContainer"]
+[node name="CharacterJoin" type="Button" parent="ScrollContainer/EventContainer"]
 margin_top = 122.0
 margin_right = 180.0
 margin_bottom = 150.0
@@ -162,9 +160,9 @@ text = "  Character Join"
 icon = ExtResource( 1 )
 align = 0
 script = ExtResource( 21 )
-EventName = "CharacterJoinBlock"
+EventName = "CharacterJoin"
 
-[node name="CharacterLeaveBlock" type="Button" parent="ScrollContainer/EventContainer"]
+[node name="CharacterLeave" type="Button" parent="ScrollContainer/EventContainer"]
 margin_top = 154.0
 margin_right = 180.0
 margin_bottom = 182.0
@@ -172,7 +170,7 @@ text = "  Character Leave"
 icon = ExtResource( 7 )
 align = 0
 script = ExtResource( 21 )
-EventName = "CharacterLeaveBlock"
+EventName = "CharacterLeave"
 
 [node name="HBoxContainer5" type="HBoxContainer" parent="ScrollContainer/EventContainer"]
 margin_top = 186.0
@@ -210,7 +208,7 @@ align = 0
 script = ExtResource( 21 )
 EventName = "Choice"
 
-[node name="IfCondition" type="Button" parent="ScrollContainer/EventContainer"]
+[node name="Condition" type="Button" parent="ScrollContainer/EventContainer"]
 margin_top = 268.0
 margin_right = 180.0
 margin_bottom = 296.0
@@ -218,7 +216,7 @@ text = " Condition"
 icon = ExtResource( 5 )
 align = 0
 script = ExtResource( 21 )
-EventName = "IfCondition"
+EventName = "Condition"
 
 [node name="EndBranch" type="Button" parent="ScrollContainer/EventContainer"]
 margin_top = 300.0
