@@ -3,6 +3,6 @@
 We hope it can help you with your problem. You can use the searchbar to search.
 If you don't find your answer, consider asking on [emilios discord server](https://discord.gg/v4zhZNh)!
 
-[Link](https://www.google.com/)
+[Link](https://www.google.com)
 
 [Get started!](./Tutorials/BeginnersGuideStepByStep.md)

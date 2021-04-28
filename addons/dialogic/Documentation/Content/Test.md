@@ -9,3 +9,5 @@
 [GodotLinkHalf](Tutorials/Exporting)
 [GithubLink](https://github.com/Jowan-Spooner/dialogic/blob/plugin-docs/addons/dialogic/Documentation/Content/Tutorials/BeginnersGuideStepByStep.md)
 [RelativeLink](./Reference/Events/001.md)
+
+[WorldWideWeb](https://google.com)
