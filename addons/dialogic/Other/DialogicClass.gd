@@ -152,6 +152,14 @@ static func get_current_timeline() -> String:
 	return DialogicSingleton.get_current_timeline()
 
 
+## Sets the currently saved timeline.
+## Use this if you disabled current timeline autosave and want to control it yourself
+##
+## @param timelinie						The new timeline to save.
+static func set_current_timeline(new_timeline: String) -> String:
+	return DialogicSingleton.set_current_timeline(new_timeline)
+
+
 ## Export the current Dialogic state.
 ## This can be used as part of your own saving mechanism if you have one. If you use this,
 ## you should also disable autosaving.
