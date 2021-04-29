@@ -60,6 +60,7 @@ onready var n : Dictionary = {
 	'background_modulation_color': $"VBoxContainer/TabContainer/Dialog Box/Column/GridContainer/HBoxContainer6/ColorPickerButton",
 	
 	# Character Names
+	'name_font': $"VBoxContainer/TabContainer/Name Label/Column/GridContainer/RegularFont/NameFontButton",
 	'name_auto_color': $"VBoxContainer/TabContainer/Name Label/Column/GridContainer/CharacterColor",
 	'name_background_visible': $"VBoxContainer/TabContainer/Name Label/Column2/GridContainer/HBoxContainer2/CheckBox",
 	'name_background': $"VBoxContainer/TabContainer/Name Label/Column2/GridContainer/HBoxContainer2/ColorPickerButton",
@@ -217,6 +218,7 @@ func load_theme(filename):
 	
 	
 	# Name
+	n['name_font'].text = DialogicResources.get_filename_from_path(theme.get_value('name', 'font', 'res://addons/dialogic/Example Assets/Fonts/NameFont.tres'))
 	n['name_auto_color'].pressed = theme.get_value('name', 'auto_color', true)
 	n['name_background_visible'].pressed = theme.get_value('name', 'background_visible', false)
 	n['name_background'].color = Color(theme.get_value('name', 'background', "#ff000000"))
@@ -332,12 +334,14 @@ func _on_FontButton_pressed() -> void:
 	editor_reference.godot_dialog("*.tres")
 	editor_reference.godot_dialog_connect(self, "_on_Font_selected")
 
+
 func _on_Font_selected(path, target) -> void:
 	if loading:
 		return
 	DialogicResources.set_theme_value(current_theme, 'text','font', path)
 	n['theme_font'].text = DialogicResources.get_filename_from_path(path)
 	_on_PreviewButton_pressed() # Refreshing the preview
+
 
 func _on_FontOpen_pressed():
 	var theme = DialogicResources.get_theme_config(current_theme)
@@ -348,12 +352,14 @@ func _on_BoldFontButton_pressed():
 	editor_reference.godot_dialog("*.tres")
 	editor_reference.godot_dialog_connect(self, "_on_BoldFont_selected")
 
+
 func _on_BoldFont_selected(path, target) -> void:
 	if loading:
 		return
 	DialogicResources.set_theme_value(current_theme, 'text','bold_font', path)
 	n['theme_font_bold'].text = DialogicResources.get_filename_from_path(path)
 	_on_PreviewButton_pressed() # Refreshing the preview
+
 
 func _on_BoldFontOpen_pressed():
 	var theme = DialogicResources.get_theme_config(current_theme)
@@ -364,16 +370,31 @@ func _on_ItalicFontButton_pressed():
 	editor_reference.godot_dialog("*.tres")
 	editor_reference.godot_dialog_connect(self, "_on_ItalicFont_selected")
 
+
 func _on_ItalicFont_selected(path, target) -> void:
 	if loading:
 		return
-	DialogicResources.set_theme_value(current_theme, 'text','italic_font', path)
+	DialogicResources.set_theme_value(current_theme, 'text', 'italic_font', path)
 	n['theme_font_italic'].text = DialogicResources.get_filename_from_path(path)
 	_on_PreviewButton_pressed() # Refreshing the preview
+
 
 func _on_ItalicFontOpen_pressed():
 	var theme = DialogicResources.get_theme_config(current_theme)
 	editor_reference.editor_interface.inspect_object(load(theme.get_value('text', 'italic_font', 'res://addons/dialogic/Example Assets/Fonts/DefaultItalicFont.tres')))
+
+
+func _on_NameFont_pressed():
+	editor_reference.godot_dialog("*.tres")
+	editor_reference.godot_dialog_connect(self, "_on_NameFont_selected")
+
+
+func _on_NameFont_selected(path, target) -> void:
+	if loading:
+		return
+	DialogicResources.set_theme_value(current_theme, 'name', 'font', path)
+	n['name_font'].text = DialogicResources.get_filename_from_path(path)
+	_on_PreviewButton_pressed() # Refreshing the preview
 
 
 func _on_Alignment_item_selected(index) -> void:

@@ -679,32 +679,59 @@ text = "Text"
 [node name="GridContainer" type="GridContainer" parent="VBoxContainer/TabContainer/Name Label/Column"]
 margin_top = 26.0
 margin_right = 287.0
-margin_bottom = 112.0
+margin_bottom = 136.0
 columns = 2
 
-[node name="Label" type="Label" parent="VBoxContainer/TabContainer/Name Label/Column/GridContainer"]
-margin_top = 5.0
+[node name="Label5" type="Label" parent="VBoxContainer/TabContainer/Name Label/Column/GridContainer"]
+margin_top = 3.0
 margin_right = 125.0
-margin_bottom = 19.0
+margin_bottom = 17.0
+size_flags_horizontal = 3
+text = "Name label Font"
+
+[node name="RegularFont" type="HBoxContainer" parent="VBoxContainer/TabContainer/Name Label/Column/GridContainer"]
+margin_left = 129.0
+margin_right = 287.0
+margin_bottom = 20.0
+
+[node name="NameFontButton" type="Button" parent="VBoxContainer/TabContainer/Name Label/Column/GridContainer/RegularFont"]
+margin_right = 107.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+size_flags_vertical = 4
+text = "DefaultFont"
+
+[node name="NameFontOpen" type="Button" parent="VBoxContainer/TabContainer/Name Label/Column/GridContainer/RegularFont"]
+margin_left = 111.0
+margin_right = 158.0
+margin_bottom = 20.0
+size_flags_vertical = 4
+text = "Open"
+
+[node name="Label" type="Label" parent="VBoxContainer/TabContainer/Name Label/Column/GridContainer"]
+margin_top = 29.0
+margin_right = 125.0
+margin_bottom = 43.0
 size_flags_horizontal = 3
 text = "Use character Color"
 
 [node name="CharacterColor" type="CheckBox" parent="VBoxContainer/TabContainer/Name Label/Column/GridContainer"]
 margin_left = 129.0
+margin_top = 24.0
 margin_right = 287.0
-margin_bottom = 24.0
+margin_bottom = 48.0
 
 [node name="Label3" type="Label" parent="VBoxContainer/TabContainer/Name Label/Column/GridContainer"]
-margin_top = 36.0
+margin_top = 60.0
 margin_right = 125.0
-margin_bottom = 50.0
+margin_bottom = 74.0
 text = "Shadow"
 
 [node name="HBoxContainer4" type="HBoxContainer" parent="VBoxContainer/TabContainer/Name Label/Column/GridContainer"]
 margin_left = 129.0
-margin_top = 28.0
+margin_top = 52.0
 margin_right = 287.0
-margin_bottom = 58.0
+margin_bottom = 82.0
 
 [node name="CheckBoxShadow" type="CheckBox" parent="VBoxContainer/TabContainer/Name Label/Column/GridContainer/HBoxContainer4"]
 margin_right = 24.0
@@ -719,16 +746,16 @@ size_flags_horizontal = 3
 color = Color( 0, 0, 0, 0.619608 )
 
 [node name="Label4" type="Label" parent="VBoxContainer/TabContainer/Name Label/Column/GridContainer"]
-margin_top = 67.0
+margin_top = 91.0
 margin_right = 125.0
-margin_bottom = 81.0
+margin_bottom = 105.0
 text = "Shadow Offset"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/TabContainer/Name Label/Column/GridContainer"]
 margin_left = 129.0
-margin_top = 62.0
+margin_top = 86.0
 margin_right = 287.0
-margin_bottom = 86.0
+margin_bottom = 110.0
 custom_constants/separation = 10
 
 [node name="ShadowOffsetX" type="SpinBox" parent="VBoxContainer/TabContainer/Name Label/Column/GridContainer/HBoxContainer"]
@@ -1364,6 +1391,8 @@ one_shot = true
 [connection signal="value_changed" from="VBoxContainer/TabContainer/Dialog Box/Column2/GridContainer/HBoxContainer2/NextOffsetY" to="." method="_on_NextOffset_value_changed"]
 [connection signal="item_selected" from="VBoxContainer/TabContainer/Dialog Box/Column3/GridContainer/BoxContainer/ActionOptionButton" to="." method="_on_ActionOptionButton_item_selected"]
 [connection signal="pressed" from="VBoxContainer/TabContainer/Dialog Box/Column3/GridContainer/BoxContainer/ActionOptionButton" to="." method="_on_ActionOptionButton_pressed"]
+[connection signal="pressed" from="VBoxContainer/TabContainer/Name Label/Column/GridContainer/RegularFont/NameFontButton" to="." method="_on_NameFont_pressed"]
+[connection signal="pressed" from="VBoxContainer/TabContainer/Name Label/Column/GridContainer/RegularFont/NameFontOpen" to="." method="_on_FontOpen_pressed"]
 [connection signal="toggled" from="VBoxContainer/TabContainer/Name Label/Column/GridContainer/CharacterColor" to="." method="_on_name_auto_color_toggled"]
 [connection signal="toggled" from="VBoxContainer/TabContainer/Name Label/Column/GridContainer/HBoxContainer4/CheckBoxShadow" to="." method="_on_shadow_visible_toggled"]
 [connection signal="color_changed" from="VBoxContainer/TabContainer/Name Label/Column/GridContainer/HBoxContainer4/ColorPickerButtonShadow" to="." method="_on_name_shadow_color_changed"]
