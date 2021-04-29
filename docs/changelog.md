@@ -1,3 +1,8 @@
+## v1.2 - WIP
+- Added new fonts selector for italics, bold, and names. [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
+- Added extra options to allow the user to disable/enable saving of definitions and current timeline. [[Arnaud](https://github.com/arnaudvergnet)]
+- Modified the label on the emit signal event so it is easier to understand [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
+
 ## v1.1 - With a little help from my friends
 - Improved event dragging and selection [[Arnaud Vergnet](https://github.com/arnaudvergnet)]
 - Fixed a bug that prevented the deletion of Characters [[AnidemDex](https://github.com/AnidemDex)]

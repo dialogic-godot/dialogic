@@ -13,6 +13,8 @@ onready var definition_editor = $MainPanel/DefinitionEditor
 onready var theme_editor = $MainPanel/ThemeEditor
 onready var settings_editor = $MainPanel/SettingsEditor
 
+# this is set when the plugins main-view is instanced in dialogic.gd
+var editor_interface = null
 
 func _ready():
 	# Adding file dialog to get used by Events
