@@ -87,7 +87,7 @@ func _ready():
 
 	documentation_tree = tree.create_item(root)
 	documentation_tree.set_text(0, "Documentation")
-	documentation_tree.set_icon(0, get_icon("Folder", "EditorIcons"))
+	documentation_tree.set_icon(0, get_icon("Help", "EditorIcons"))
 	documentation_tree.set_metadata(0, {'editor': 'Documentation', 'name':'Start', 'path':'Welcome.md'})
 
 	
