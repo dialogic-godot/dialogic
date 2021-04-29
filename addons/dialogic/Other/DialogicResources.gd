@@ -219,7 +219,7 @@ static func set_json(path: String, data: Dictionary):
 	var file = File.new()
 	var err = file.open(path, File.WRITE)
 	if err == OK:
-		file.store_line(to_json(data))
+		file.store_line(JSON.print(data, '\t', true))
 		file.close()
 	return err
 
