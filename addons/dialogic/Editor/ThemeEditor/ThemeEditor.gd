@@ -29,16 +29,16 @@ onready var advanced_containers := {
 
 onready var n : Dictionary = {
 	# Dialog Text
-	'theme_text_shadow': $"VBoxContainer/TabContainer/Dialog Text/Column/GridContainer/HBoxContainer2/CheckBoxShadow",
-	'theme_text_shadow_color': $"VBoxContainer/TabContainer/Dialog Text/Column/GridContainer/HBoxContainer2/ColorPickerButtonShadow",
-	'theme_text_color': $"VBoxContainer/TabContainer/Dialog Text/Column/GridContainer/ColorPickerButton",
-	'theme_font': $"VBoxContainer/TabContainer/Dialog Text/Column/GridContainer/FontButton",
-	'theme_font_bold':$"VBoxContainer/TabContainer/Dialog Text/Column/GridContainer/BoldFontButton",
-	'theme_font_italic':$"VBoxContainer/TabContainer/Dialog Text/Column/GridContainer/ItalicFontButton",
-	'theme_shadow_offset_x': $"VBoxContainer/TabContainer/Dialog Text/Column/GridContainer/HBoxContainer/ShadowOffsetX",
-	'theme_shadow_offset_y': $"VBoxContainer/TabContainer/Dialog Text/Column/GridContainer/HBoxContainer/ShadowOffsetY",
-	'theme_text_speed': $"VBoxContainer/TabContainer/Dialog Text/Column2/GridContainer/TextSpeed",
-	'alignment': $"VBoxContainer/TabContainer/Dialog Text/Column/GridContainer/HBoxContainer3/Alignment",
+	'theme_text_shadow': $"VBoxContainer/TabContainer/Dialog Text/Column2/GridContainer/HBoxContainer2/CheckBoxShadow",
+	'theme_text_shadow_color': $"VBoxContainer/TabContainer/Dialog Text/Column2/GridContainer/HBoxContainer2/ColorPickerButtonShadow",
+	'theme_text_color': $"VBoxContainer/TabContainer/Dialog Text/Column2/GridContainer/ColorPickerButton",
+	'theme_font': $"VBoxContainer/TabContainer/Dialog Text/Column/GridContainer/RegularFont/RegularFontButton",
+	'theme_font_bold':$"VBoxContainer/TabContainer/Dialog Text/Column/GridContainer/BoldFont/BoldFontButton",
+	'theme_font_italic':$"VBoxContainer/TabContainer/Dialog Text/Column/GridContainer/ItalicFont/ItalicFontButton",
+	'theme_shadow_offset_x': $"VBoxContainer/TabContainer/Dialog Text/Column2/GridContainer/HBoxContainer/ShadowOffsetX",
+	'theme_shadow_offset_y': $"VBoxContainer/TabContainer/Dialog Text/Column2/GridContainer/HBoxContainer/ShadowOffsetY",
+	'theme_text_speed': $"VBoxContainer/TabContainer/Dialog Text/Column3/GridContainer/TextSpeed",
+	'alignment': $"VBoxContainer/TabContainer/Dialog Text/Column3/GridContainer/HBoxContainer3/Alignment",
 	
 	# Dialog box
 	'background_texture_button_visible': $"VBoxContainer/TabContainer/Dialog Box/Column/GridContainer/HBoxContainer3/CheckBox",
@@ -339,6 +339,11 @@ func _on_Font_selected(path, target) -> void:
 	n['theme_font'].text = DialogicResources.get_filename_from_path(path)
 	_on_PreviewButton_pressed() # Refreshing the preview
 
+func _on_FontOpen_pressed():
+	var theme = DialogicResources.get_theme_config(current_theme)
+	editor_reference.editor_interface.inspect_object(load(theme.get_value('text', 'font', 'res://addons/dialogic/Example Assets/Fonts/DefaultFont.tres')))
+
+
 func _on_BoldFontButton_pressed():
 	editor_reference.godot_dialog("*.tres")
 	editor_reference.godot_dialog_connect(self, "_on_BoldFont_selected")
@@ -350,6 +355,11 @@ func _on_BoldFont_selected(path, target) -> void:
 	n['theme_font_bold'].text = DialogicResources.get_filename_from_path(path)
 	_on_PreviewButton_pressed() # Refreshing the preview
 
+func _on_BoldFontOpen_pressed():
+	var theme = DialogicResources.get_theme_config(current_theme)
+	editor_reference.editor_interface.inspect_object(load(theme.get_value('text', 'bold_font', 'res://addons/dialogic/Example Assets/Fonts/DefaultBoldFont.tres')))
+
+
 func _on_ItalicFontButton_pressed():
 	editor_reference.godot_dialog("*.tres")
 	editor_reference.godot_dialog_connect(self, "_on_ItalicFont_selected")
@@ -360,6 +370,10 @@ func _on_ItalicFont_selected(path, target) -> void:
 	DialogicResources.set_theme_value(current_theme, 'text','italic_font', path)
 	n['theme_font_italic'].text = DialogicResources.get_filename_from_path(path)
 	_on_PreviewButton_pressed() # Refreshing the preview
+
+func _on_ItalicFontOpen_pressed():
+	var theme = DialogicResources.get_theme_config(current_theme)
+	editor_reference.editor_interface.inspect_object(load(theme.get_value('text', 'italic_font', 'res://addons/dialogic/Example Assets/Fonts/DefaultItalicFont.tres')))
 
 
 func _on_Alignment_item_selected(index) -> void:
@@ -756,4 +770,3 @@ func _on_ShowGlossaryCheckBox_toggled(button_pressed):
 		return
 	DialogicResources.set_theme_value(current_theme, 'definitions','show_glossary', button_pressed)
 	_on_PreviewButton_pressed() # Refreshing the preview
-
