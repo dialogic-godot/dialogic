@@ -123,6 +123,12 @@ func _ready() -> void:
 	
 	var title_style = $"VBoxContainer/TabContainer/Dialog Text/Column/SectionTitle".get('custom_styles/normal')
 	title_style.set('bg_color', get_color("prop_category", "Editor"))
+	
+	$"VBoxContainer/TabContainer/Name Label/Column/GridContainer/RegularFont/NameFontOpen".icon = get_icon("Edit", "EditorIcons")
+	$"VBoxContainer/TabContainer/Dialog Text/Column/GridContainer/BoldFont/BoldFontOpen".icon = get_icon("Edit", "EditorIcons")
+	$"VBoxContainer/TabContainer/Dialog Text/Column/GridContainer/ItalicFont/ItalicFontOpen".icon = get_icon("Edit", "EditorIcons")
+	$"VBoxContainer/TabContainer/Dialog Text/Column/GridContainer/RegularFont/RegularFontOpen".icon = get_icon("Edit", "EditorIcons")
+	
 	# Force preview update
 	_on_visibility_changed()
 
@@ -395,6 +401,11 @@ func _on_NameFont_selected(path, target) -> void:
 	DialogicResources.set_theme_value(current_theme, 'name', 'font', path)
 	n['name_font'].text = DialogicResources.get_filename_from_path(path)
 	_on_PreviewButton_pressed() # Refreshing the preview
+
+
+func _on_NameFontOpen_pressed():
+	var theme = DialogicResources.get_theme_config(current_theme)
+	editor_reference.editor_interface.inspect_object(load(theme.get_value('name', 'font', 'res://addons/dialogic/Example Assets/Fonts/NameFont.tres')))
 
 
 func _on_Alignment_item_selected(index) -> void:

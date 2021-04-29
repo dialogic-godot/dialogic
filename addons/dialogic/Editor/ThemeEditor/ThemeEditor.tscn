@@ -110,7 +110,6 @@ margin_left = 122.0
 margin_right = 169.0
 margin_bottom = 20.0
 size_flags_vertical = 4
-text = "Open"
 
 [node name="Label6" type="Label" parent="VBoxContainer/TabContainer/Dialog Text/Column/GridContainer"]
 margin_top = 27.0
@@ -137,7 +136,6 @@ margin_left = 122.0
 margin_right = 169.0
 margin_bottom = 20.0
 size_flags_vertical = 4
-text = "Open"
 
 [node name="Label7" type="Label" parent="VBoxContainer/TabContainer/Dialog Text/Column/GridContainer"]
 margin_top = 51.0
@@ -164,7 +162,6 @@ margin_left = 122.0
 margin_right = 169.0
 margin_bottom = 20.0
 size_flags_vertical = 4
-text = "Open"
 
 [node name="VSeparator" type="VSeparator" parent="VBoxContainer/TabContainer/Dialog Text"]
 margin_left = 280.0
@@ -695,18 +692,17 @@ margin_right = 287.0
 margin_bottom = 20.0
 
 [node name="NameFontButton" type="Button" parent="VBoxContainer/TabContainer/Name Label/Column/GridContainer/RegularFont"]
-margin_right = 107.0
+margin_right = 142.0
 margin_bottom = 20.0
 size_flags_horizontal = 3
 size_flags_vertical = 4
 text = "DefaultFont"
 
 [node name="NameFontOpen" type="Button" parent="VBoxContainer/TabContainer/Name Label/Column/GridContainer/RegularFont"]
-margin_left = 111.0
+margin_left = 146.0
 margin_right = 158.0
 margin_bottom = 20.0
 size_flags_vertical = 4
-text = "Open"
 
 [node name="Label" type="Label" parent="VBoxContainer/TabContainer/Name Label/Column/GridContainer"]
 margin_top = 29.0
@@ -1392,7 +1388,7 @@ one_shot = true
 [connection signal="item_selected" from="VBoxContainer/TabContainer/Dialog Box/Column3/GridContainer/BoxContainer/ActionOptionButton" to="." method="_on_ActionOptionButton_item_selected"]
 [connection signal="pressed" from="VBoxContainer/TabContainer/Dialog Box/Column3/GridContainer/BoxContainer/ActionOptionButton" to="." method="_on_ActionOptionButton_pressed"]
 [connection signal="pressed" from="VBoxContainer/TabContainer/Name Label/Column/GridContainer/RegularFont/NameFontButton" to="." method="_on_NameFont_pressed"]
-[connection signal="pressed" from="VBoxContainer/TabContainer/Name Label/Column/GridContainer/RegularFont/NameFontOpen" to="." method="_on_FontOpen_pressed"]
+[connection signal="pressed" from="VBoxContainer/TabContainer/Name Label/Column/GridContainer/RegularFont/NameFontOpen" to="." method="_on_NameFontOpen_pressed"]
 [connection signal="toggled" from="VBoxContainer/TabContainer/Name Label/Column/GridContainer/CharacterColor" to="." method="_on_name_auto_color_toggled"]
 [connection signal="toggled" from="VBoxContainer/TabContainer/Name Label/Column/GridContainer/HBoxContainer4/CheckBoxShadow" to="." method="_on_shadow_visible_toggled"]
 [connection signal="color_changed" from="VBoxContainer/TabContainer/Name Label/Column/GridContainer/HBoxContainer4/ColorPickerButtonShadow" to="." method="_on_name_shadow_color_changed"]
