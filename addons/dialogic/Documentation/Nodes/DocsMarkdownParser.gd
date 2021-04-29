@@ -47,52 +47,61 @@ func parse(content : String,  path:String = ''):
 	imagelinks = []
 	lists = []
 	underlined = []
-
-	var regex = RegEx.new()
 	
+	var paresed_text = content
+	
+	var regex = RegEx.new()
 	
 	## Find all occurences of bold text
 	regex.compile('\\*\\*(?<boldtext>(\\.|[^(\\*\\*)])*)\\*\\*')
 	result = regex.search_all(content)
 	if result:
 		for res in result:
-			bolded.append(res.get_string("boldtext"))
+			paresed_text = paresed_text.replace("**"+res.get_string("boldtext")+"**","[b]"+res.get_string("boldtext")+"[/b]")
 
 	## Find all occurences of underlined text
 	regex.compile('\\_\\_(?<underlinetext>.*)\\_\\_')
 	result = regex.search_all(content)
 	if result:
 		for res in result:
-			underlined.append(res.get_string("underlinetext"))
-
+			paresed_text = paresed_text.replace("__"+res.get_string("underlinetext")+"__","[u]"+res.get_string("underlinetext")+"[/u]")
+	
 #	## Find all occurences of italic text
 #	regex.compile("[^\\]*\\*(?<italictext>.*)\\*")
 #	result = regex.search_all(content)
 #	if result:
 #		for res in result:
 #			italics.append(res.get_string("italictext"))
-
+#	for italic in italics:
+#		content = content.replace("*"+italic+"*","[i]"+italic+"[/i]")
+	
+	
 	## Find all occurences of underlined text
 	regex.compile("~~(?<strikedtext>.*)~~")
 	result = regex.search_all(content)
 	if result:
 		for res in result:
-			striked.append(res.get_string("strikedtext"))
-
+			paresed_text = paresed_text.replace("~~"+res.get_string("strikedtext")+"~~","[s]"+res.get_string("strikedtext")+"[/s]")
+	
 	## Find all occurences of code snippets
 	regex.compile("\\`(?<coded>(?:[^\\`]|\\n)*)\\`")
 	result = regex.search_all(content)
 	if result:
 		for res in result:
-			coded.append(res.get_string("coded"))
-
+			paresed_text = paresed_text.replace("`"+res.get_string("coded")+"`","[code]"+res.get_string("coded")+"[/code]")
 
 	## Find all occurences of list items
 	regex.compile("\\n\\s*[-+*](?<element>\\s.*)")
 	result = regex.search_all(content)
 	if result:
 		for res in result:
-			lists.append(res.get_string("element"))
+			var element = res.get_string("element")
+			if paresed_text.find("- "+element):
+				paresed_text = paresed_text.replace("-"+element,"[indent]-"+element+"[/indent]")
+			if paresed_text.find("+ "+element):
+				paresed_text = paresed_text.replace("+"+element,"[indent]-"+element+"[/indent]")
+			if paresed_text.find("* "+element):
+				paresed_text = paresed_text.replace("+"+element,"[indent]-"+element+"[/indent]")
 	
 
 	## Find all occurences of images
@@ -120,49 +129,45 @@ func parse(content : String,  path:String = ''):
 	result = regex.search_all(content)
 	if result:
 		for res in result:
-			heading1s.append(res.get_string("heading"))
+			var heading1 = res.get_string("heading")
+			paresed_text = paresed_text.replace("#"+heading1, "[font="+heading1_font+"]"+heading1.strip_edges()+"[/font]")
 	
 	## Find all heading2s
 	regex.compile("(?:\\n|^)##(?<heading>[^#\\n]+)")
 	result = regex.search_all(content)
 	if result:
 		for res in result:
-			heading2s.append(res.get_string("heading"))
+			var heading = res.get_string("heading")
+			paresed_text = paresed_text.replace("##"+heading, "[font="+heading2_font+"]"+heading.strip_edges()+"[/font]")
 	
 	## Find all heading3s
 	regex.compile("(?:\\n|^)###(?<heading>[^#\\n]+)")
 	result = regex.search_all(content)
 	if result:
 		for res in result:
-			heading3s.append(res.get_string("heading"))
+			var heading = res.get_string("heading")
+			paresed_text = paresed_text.replace("###"+heading, "[font="+heading3_font+"]"+heading.strip_edges()+"[/font]")
 	
 	## Find all heading4s
 	regex.compile("(?:\\n|^)####(?<heading>[^#\\n]+)")
 	result = regex.search_all(content)
 	if result:
 		for res in result:
-			heading4s.append(res.get_string("heading"))
+			var heading = res.get_string("heading")
+			paresed_text = paresed_text.replace("####"+heading, "[font="+heading4_font+"]"+heading.strip_edges()+"[/font]")
+	
 	
 	## Find all heading5s
 	regex.compile("(?:\\n|^)#####(?<heading>[^#\\n]+)")
 	result = regex.search_all(content)
 	if result:
 		for res in result:
-			heading5s.append(res.get_string("heading"))
-	
-	## Add in all the changes
-	for bold in bolded:
-		content = content.replace("**"+bold+"**","[b]"+bold+"[/b]")
-	for italic in italics:
-		content = content.replace("*"+italic+"*","[i]"+italic+"[/i]")
-	for strik in striked:
-		content = content.replace("~~"+strik+"~~","[s]"+strik+"[/s]")
-	for underline in underlined:
-		content = content.replace("__"+underline+"__","[u]"+underline+"[/u]")
-	for code in coded:
-		content = content.replace("`"+code+"`","[code]"+code+"[/code]")
+			var heading = res.get_string("heading")
+			paresed_text = paresed_text.replace("#####"+heading, "[font="+heading5_font+"]"+heading.strip_edges()+"[/font]")
+
 	for i in links.size():
 		content = content.replace("["+linknames[i]+"]("+links[i]+")","[url="+links[i]+"]"+linknames[i]+"[/url]")
+	
 	for i in imagenames.size():
 		var imagelink_to_use = imagelinks[i]
 		if imagelink_to_use.begins_with("http"):
@@ -174,22 +179,5 @@ func parse(content : String,  path:String = ''):
 		if imagelink_to_use.begins_with(".") and path:
 			imagelink_to_use = path.trim_suffix(path.get_file()).trim_suffix("/") + imagelink_to_use.trim_prefix(".")
 		content = content.replace("!["+imagenames[i]+"]("+imagelinks[i]+")","[img=700]"+imagelink_to_use+"[/img]")
-	for heading1 in heading1s:
-		content = content.replace("#"+heading1, "[font="+heading1_font+"]"+heading1.strip_edges()+"[/font]")
-	for heading2 in heading2s:
-		content = content.replace("##"+heading2, "[font="+heading2_font+"]"+heading2.strip_edges()+"[/font]")
-	for heading3 in heading3s:
-		content = content.replace("###"+heading3, "[font="+heading3_font+"]"+heading3.strip_edges()+"[/font]")
-	for heading4 in heading4s:
-		content = content.replace("####"+heading4, "[font="+heading4_font+"]"+heading4.strip_edges()+"[/font]")
-	for heading5 in heading5s:
-		content = content.replace("#####"+heading5, "[font="+heading5_font+"]"+heading5.strip_edges()+"[/font]")
-	for element in lists:
-		if content.find("- "+element):
-			content = content.replace("-"+element,"[indent]-"+element+"[/indent]")
-		if content.find("+ "+element):
-			content = content.replace("+"+element,"[indent]-"+element+"[/indent]")
-		if content.find("* "+element):
-			content = content.replace("+"+element,"[indent]-"+element+"[/indent]")
 	
 	return content
