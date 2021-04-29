@@ -2,13 +2,7 @@
 
 [ext_resource path="res://addons/dialogic/Images/Plugin/plugin-editor-icon-light-theme.svg" type="Texture" id=1]
 [ext_resource path="res://addons/dialogic/Editor/ThemeEditor/ThemeEditor.gd" type="Script" id=2]
-
-[sub_resource type="StyleBoxFlat" id=1]
-content_margin_left = 4.0
-content_margin_right = 4.0
-content_margin_top = 4.0
-content_margin_bottom = 4.0
-bg_color = Color( 0.2652, 0.2784, 0.3114, 1 )
+[ext_resource path="res://addons/dialogic/Editor/Common/SectionTitle.tscn" type="PackedScene" id=3]
 
 [node name="ThemeEditor" type="ScrollContainer"]
 anchor_right = 1.0
@@ -81,11 +75,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="SectionTitle" type="Label" parent="VBoxContainer/TabContainer/Dialog Text/Column"]
-margin_right = 270.0
-margin_bottom = 22.0
-custom_styles/normal = SubResource( 1 )
-text = "Visuals"
+[node name="SectionTitle" parent="VBoxContainer/TabContainer/Dialog Text/Column" instance=ExtResource( 3 )]
 
 [node name="GridContainer" type="GridContainer" parent="VBoxContainer/TabContainer/Dialog Text/Column"]
 margin_top = 26.0
@@ -212,10 +202,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="SectionTitle" type="Label" parent="VBoxContainer/TabContainer/Dialog Text/Column2"]
-margin_right = 270.0
-margin_bottom = 22.0
-custom_styles/normal = SubResource( 1 )
+[node name="SectionTitle" parent="VBoxContainer/TabContainer/Dialog Text/Column2" instance=ExtResource( 3 )]
 text = "Behavior"
 
 [node name="GridContainer" type="GridContainer" parent="VBoxContainer/TabContainer/Dialog Text/Column2"]
@@ -253,18 +240,15 @@ custom_constants/separation = 10
 
 [node name="Column" type="VBoxContainer" parent="VBoxContainer/TabContainer/Dialog Box"]
 margin_right = 288.0
-margin_bottom = 325.0
+margin_bottom = 488.0
 rect_min_size = Vector2( 270, 0 )
 size_flags_vertical = 3
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="SectionTitle" type="Label" parent="VBoxContainer/TabContainer/Dialog Box/Column"]
+[node name="SectionTitle" parent="VBoxContainer/TabContainer/Dialog Box/Column" instance=ExtResource( 3 )]
 margin_right = 288.0
-margin_bottom = 22.0
-custom_styles/normal = SubResource( 1 )
-text = "Visuals"
 
 [node name="GridContainer" type="GridContainer" parent="VBoxContainer/TabContainer/Dialog Box/Column"]
 margin_top = 26.0
@@ -428,22 +412,19 @@ allow_lesser = true
 [node name="VSeparator" type="VSeparator" parent="VBoxContainer/TabContainer/Dialog Box"]
 margin_left = 298.0
 margin_right = 302.0
-margin_bottom = 325.0
+margin_bottom = 488.0
 
 [node name="Column2" type="VBoxContainer" parent="VBoxContainer/TabContainer/Dialog Box"]
 margin_left = 312.0
 margin_right = 582.0
-margin_bottom = 325.0
+margin_bottom = 488.0
 rect_min_size = Vector2( 270, 0 )
 size_flags_vertical = 3
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="SectionTitle" type="Label" parent="VBoxContainer/TabContainer/Dialog Box/Column2"]
-margin_right = 270.0
-margin_bottom = 22.0
-custom_styles/normal = SubResource( 1 )
+[node name="SectionTitle" parent="VBoxContainer/TabContainer/Dialog Box/Column2" instance=ExtResource( 3 )]
 text = "Next Indicator"
 
 [node name="GridContainer" type="GridContainer" parent="VBoxContainer/TabContainer/Dialog Box/Column2"]
@@ -537,22 +518,19 @@ allow_lesser = true
 [node name="VSeparator2" type="VSeparator" parent="VBoxContainer/TabContainer/Dialog Box"]
 margin_left = 592.0
 margin_right = 596.0
-margin_bottom = 325.0
+margin_bottom = 488.0
 
 [node name="Column3" type="VBoxContainer" parent="VBoxContainer/TabContainer/Dialog Box"]
 margin_left = 606.0
 margin_right = 876.0
-margin_bottom = 325.0
+margin_bottom = 488.0
 rect_min_size = Vector2( 270, 0 )
 size_flags_vertical = 3
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="SectionTitle" type="Label" parent="VBoxContainer/TabContainer/Dialog Box/Column3"]
-margin_right = 270.0
-margin_bottom = 22.0
-custom_styles/normal = SubResource( 1 )
+[node name="SectionTitle" parent="VBoxContainer/TabContainer/Dialog Box/Column3" instance=ExtResource( 3 )]
 text = "Behavior"
 
 [node name="GridContainer" type="GridContainer" parent="VBoxContainer/TabContainer/Dialog Box/Column3"]
@@ -596,17 +574,15 @@ custom_constants/separation = 10
 
 [node name="Column" type="VBoxContainer" parent="VBoxContainer/TabContainer/Name Label"]
 margin_right = 287.0
-margin_bottom = 325.0
+margin_bottom = 488.0
 rect_min_size = Vector2( 270, 0 )
 size_flags_vertical = 3
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="SectionTitle" type="Label" parent="VBoxContainer/TabContainer/Name Label/Column"]
+[node name="SectionTitle" parent="VBoxContainer/TabContainer/Name Label/Column" instance=ExtResource( 3 )]
 margin_right = 287.0
-margin_bottom = 22.0
-custom_styles/normal = SubResource( 1 )
 text = "Text"
 
 [node name="GridContainer" type="GridContainer" parent="VBoxContainer/TabContainer/Name Label/Column"]
@@ -684,22 +660,19 @@ prefix = "Y"
 [node name="VSeparator" type="VSeparator" parent="VBoxContainer/TabContainer/Name Label"]
 margin_left = 297.0
 margin_right = 301.0
-margin_bottom = 325.0
+margin_bottom = 488.0
 
 [node name="Column2" type="VBoxContainer" parent="VBoxContainer/TabContainer/Name Label"]
 margin_left = 311.0
 margin_right = 581.0
-margin_bottom = 325.0
+margin_bottom = 488.0
 rect_min_size = Vector2( 270, 0 )
 size_flags_vertical = 3
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="SectionTitle" type="Label" parent="VBoxContainer/TabContainer/Name Label/Column2"]
-margin_right = 270.0
-margin_bottom = 22.0
-custom_styles/normal = SubResource( 1 )
+[node name="SectionTitle" parent="VBoxContainer/TabContainer/Name Label/Column2" instance=ExtResource( 3 )]
 text = "Box"
 
 [node name="GridContainer" type="GridContainer" parent="VBoxContainer/TabContainer/Name Label/Column2"]
@@ -779,22 +752,19 @@ size_flags_horizontal = 3
 [node name="VSeparator2" type="VSeparator" parent="VBoxContainer/TabContainer/Name Label"]
 margin_left = 591.0
 margin_right = 595.0
-margin_bottom = 325.0
+margin_bottom = 488.0
 
 [node name="Column3" type="VBoxContainer" parent="VBoxContainer/TabContainer/Name Label"]
 margin_left = 605.0
 margin_right = 875.0
-margin_bottom = 325.0
+margin_bottom = 488.0
 rect_min_size = Vector2( 270, 0 )
 size_flags_vertical = 3
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="SectionTitle" type="Label" parent="VBoxContainer/TabContainer/Name Label/Column3"]
-margin_right = 270.0
-margin_bottom = 22.0
-custom_styles/normal = SubResource( 1 )
+[node name="SectionTitle" parent="VBoxContainer/TabContainer/Name Label/Column3" instance=ExtResource( 3 )]
 text = "Placement"
 
 [node name="GridContainer" type="GridContainer" parent="VBoxContainer/TabContainer/Name Label/Column3"]
@@ -824,6 +794,7 @@ allow_greater = true
 allow_lesser = true
 
 [node name="Choice Buttons" type="HBoxContainer" parent="VBoxContainer/TabContainer"]
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 4.0
@@ -841,11 +812,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="SectionTitle" type="Label" parent="VBoxContainer/TabContainer/Choice Buttons/Column"]
-margin_right = 270.0
-margin_bottom = 22.0
-custom_styles/normal = SubResource( 1 )
-text = "Visuals"
+[node name="SectionTitle" parent="VBoxContainer/TabContainer/Choice Buttons/Column" instance=ExtResource( 3 )]
 
 [node name="GridContainer" type="GridContainer" parent="VBoxContainer/TabContainer/Choice Buttons/Column"]
 margin_top = 26.0
@@ -994,10 +961,8 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="SectionTitle" type="Label" parent="VBoxContainer/TabContainer/Choice Buttons/Column2"]
+[node name="SectionTitle" parent="VBoxContainer/TabContainer/Choice Buttons/Column2" instance=ExtResource( 3 )]
 margin_right = 309.0
-margin_bottom = 22.0
-custom_styles/normal = SubResource( 1 )
 text = "Placement"
 
 [node name="GridContainer" type="GridContainer" parent="VBoxContainer/TabContainer/Choice Buttons/Column2"]
@@ -1099,10 +1064,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="SectionTitle" type="Label" parent="VBoxContainer/TabContainer/Choice Buttons/Column3"]
-margin_right = 270.0
-margin_bottom = 22.0
-custom_styles/normal = SubResource( 1 )
+[node name="SectionTitle" parent="VBoxContainer/TabContainer/Choice Buttons/Column3" instance=ExtResource( 3 )]
 text = "Advanced"
 
 [node name="Label" type="Label" parent="VBoxContainer/TabContainer/Choice Buttons/Column3"]
@@ -1148,7 +1110,6 @@ size_flags_horizontal = 3
 text = "custom"
 
 [node name="Glossary" type="HBoxContainer" parent="VBoxContainer/TabContainer"]
-visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 4.0
@@ -1162,11 +1123,7 @@ margin_right = 270.0
 margin_bottom = 488.0
 rect_min_size = Vector2( 270, 0 )
 
-[node name="SectionTitle" type="Label" parent="VBoxContainer/TabContainer/Glossary/Column"]
-margin_right = 270.0
-margin_bottom = 22.0
-custom_styles/normal = SubResource( 1 )
-text = "Visuals"
+[node name="SectionTitle" parent="VBoxContainer/TabContainer/Glossary/Column" instance=ExtResource( 3 )]
 
 [node name="GridContainer" type="GridContainer" parent="VBoxContainer/TabContainer/Glossary/Column"]
 margin_top = 26.0
