@@ -129,8 +129,8 @@ func parse(content : String,  path:String = ''):
 	result = regex.search_all(content)
 	if result:
 		for res in result:
-			var heading1 = res.get_string("heading")
-			paresed_text = paresed_text.replace("#"+heading1, "[font="+heading1_font+"]"+heading1.strip_edges()+"[/font]")
+			var heading = res.get_string("heading")
+			paresed_text = paresed_text.replace("#"+heading, "[font="+heading1_font+"]"+heading.strip_edges()+"[/font]")
 	
 	## Find all heading2s
 	regex.compile("(?:\\n|^)##(?<heading>[^#\\n]+)")
@@ -166,7 +166,7 @@ func parse(content : String,  path:String = ''):
 			paresed_text = paresed_text.replace("#####"+heading, "[font="+heading5_font+"]"+heading.strip_edges()+"[/font]")
 
 	for i in links.size():
-		content = content.replace("["+linknames[i]+"]("+links[i]+")","[url="+links[i]+"]"+linknames[i]+"[/url]")
+		paresed_text = paresed_text.replace("["+linknames[i]+"]("+links[i]+")","[url="+links[i]+"]"+linknames[i]+"[/url]")
 	
 	for i in imagenames.size():
 		var imagelink_to_use = imagelinks[i]
@@ -178,6 +178,6 @@ func parse(content : String,  path:String = ''):
 				imagelink_to_use = "icon.png"
 		if imagelink_to_use.begins_with(".") and path:
 			imagelink_to_use = path.trim_suffix(path.get_file()).trim_suffix("/") + imagelink_to_use.trim_prefix(".")
-		content = content.replace("!["+imagenames[i]+"]("+imagelinks[i]+")","[img=700]"+imagelink_to_use+"[/img]")
+		paresed_text = paresed_text.replace("!["+imagenames[i]+"]("+imagelinks[i]+")","[img=700]"+imagelink_to_use+"[/img]")
 	
-	return content
+	return paresed_text
