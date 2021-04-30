@@ -140,10 +140,19 @@ func parse_characters(dialog_script):
 		for t in dialog_script['events']:
 			if t.has('text'):
 				for n in names:
+					var name_end_check = [' ', ',', '.', '?', '!', "'"]
 					if n.has('name'):
-						dialog_script['events'][index]['text'] = t['text'].replace(n['name'],
-							'[color=#' + n['color'].to_html() + ']' + n['name'] + '[/color]'
-						)
+						for c in name_end_check:
+							dialog_script['events'][index]['text'] = t['text'].replace(n['name'] + c,
+								'[color=#' + n['color'].to_html() + ']' + n['name'] + '[/color]' + c
+							)
+						if n.has('nickname') and n['nickname'] != '':
+							var nicknames_array = n['nickname'].split(",", true, 0)
+							for c in name_end_check:
+								for nn in nicknames_array:
+									dialog_script['events'][index]['text'] = t['text'].replace(nn + c,
+										'[color=#' + n['color'].to_html() + ']' + nn + '[/color]' + c
+									)
 			index += 1
 	return dialog_script
 
