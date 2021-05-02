@@ -29,7 +29,7 @@ var underlined = []
 ################################################################################
 
 ### Takes a markdown string and returns it as BBCode
-func parse(content : String,  path:String = ''):
+func parse(content : String,  file_path:String = '', docs_path:String = ''):
 	
 	heading1s = []
 	heading2s = []
@@ -173,11 +173,11 @@ func parse(content : String,  path:String = ''):
 		if imagelink_to_use.begins_with("http"):
 			var path_parts = imagelink_to_use.split("/Documentation/")
 			if path_parts.size() > 1:
-				imagelink_to_use = DocsHelper.documentation_path +"/"+ path_parts[1]
+				imagelink_to_use = docs_path +"/"+ path_parts[1]
 			else:
 				imagelink_to_use = "icon.png"
-		if imagelink_to_use.begins_with(".") and path:
-			imagelink_to_use = path.trim_suffix(path.get_file()).trim_suffix("/") + imagelink_to_use.trim_prefix(".")
+		if imagelink_to_use.begins_with(".") and file_path:
+			imagelink_to_use = file_path.trim_suffix(file_path.get_file()).trim_suffix("/") + imagelink_to_use.trim_prefix(".")
 		paresed_text = paresed_text.replace("!["+imagenames[i]+"]("+imagelinks[i]+")","[img=700]"+imagelink_to_use+"[/img]")
 	
 	return paresed_text

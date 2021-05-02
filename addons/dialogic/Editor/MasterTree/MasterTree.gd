@@ -245,7 +245,7 @@ func build_documentation(selected_item: String=''):
 	while child:
 		child.call_recursive("call_deferred", "free")
 		child = child.get_next()
-	DocsHelper.build_documentation_tree(self, documentation_tree, {'editor':'Documentation', 'editable':'false'}, {'editor':'Documentation', 'editable':'false'}, filter_tree_term)
+	$DocsTreeHelper.build_documentation_tree(self, documentation_tree, {'editor':'Documentation', 'editable':'false'}, {'editor':'Documentation', 'editable':'false'}, filter_tree_term)
 	call_deferred("update")
 	
 func _on_item_selected():
@@ -510,5 +510,5 @@ func select_timeline_item(timeline_name):
 
 
 func select_documentation_item(docs_page_path):
-	if not DocsHelper.search_and_select_docs(documentation_tree, docs_page_path):
+	if not $DocsTreeHelper.search_and_select_docs(documentation_tree, docs_page_path):
 		hide_all_editors()

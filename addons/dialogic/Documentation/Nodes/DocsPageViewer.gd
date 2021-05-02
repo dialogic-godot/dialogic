@@ -2,7 +2,8 @@ tool
 extends RichTextLabel
 
 export (bool) var enable_editing = false
-var documentation_path: String = ""
+# needs to be corrected, if you use this on a diffrent plugin!!!
+export (String) var documentation_path: String = "res://addons/dialogic/Documentation"
 var MarkdownParser = load("res://addons/dialogic/Documentation/Nodes/DocsMarkdownParser.gd").new()
 
 var current_path: String = ""
@@ -57,7 +58,7 @@ func load_page(page_path: String, section : String=''):
 	current_path = page_path
 	
 	# parsing the file
-	bbcode_text = MarkdownParser.parse(f.get_as_text(), current_path)
+	bbcode_text = MarkdownParser.parse(f.get_as_text(), current_path, documentation_path)
 	f.close()
 	
 	# saving the headings for going to sections
@@ -91,7 +92,6 @@ func scroll_to_section(title):
 ################################################################################
 
 func _ready():
-	documentation_path = DocsHelper.documentation_path
 	$Up.icon = get_icon("ArrowUp", "EditorIcons")
 	
 	$Editing.visible = enable_editing
@@ -147,7 +147,7 @@ func _on_meta_clicked(meta):
 		if link.begins_with('.'):
 			link = current_path.trim_suffix(current_path.get_file()).trim_suffix("/") + link.trim_prefix(".")
 		if not link.begins_with("res://"):
-			link = DocsHelper.documentation_path.plus_file('Content').plus_file(link)
+			link = documentation_path.plus_file('Content').plus_file(link)
 		if not link.ends_with(".md"):
 			link += '.md'
 

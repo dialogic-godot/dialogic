@@ -1,15 +1,8 @@
 tool
-extends Node
-
-# This file needs to be added as a Singleton
-# to do this, add this line in the _init_ function of your plugin
-# add_autoload_singleton('DocsHelper', "res://addons/<YourPluginName>/Documentation/Scripts/DocsHelper.gd")
-
-# ATTENTION: REPLACE THIS WITH YOUR PLUGINS ROOT FOLDER NAME!
-var plugin_name = "dialogic"
+extends Control
 
 # Don't change this if possible
-var documentation_path = "res://addons/"+plugin_name+"/Documentation"
+export (String) var documentation_path : String = "res://addons/dialogic/Documentation"
 
 # This enables/disables the use of folder files
 # If enabled, the docs will expect a file named 
@@ -167,7 +160,7 @@ func _add_documentation_folder(tree, parent_item, folder_info, default_info):
 		folder_info['path'] = ''
 	item.set_metadata(0, merge_dir(default_info, folder_info))
 	if not tree.get_constant("dark_theme", "Editor"):
-		item.set_icon_modulate(0, tree.get_color("property_color", "Editor"))
+		item.set_icon_modulate(0, get_color("property_color", "Editor"))
 	return item
 
 # this adds a page item to the tree
@@ -181,7 +174,7 @@ func _add_documentation_page(tree, parent, page_info, default_info):
 	#print(new_dir)
 	item.set_metadata(0,new_dir)
 	if not tree.get_constant("dark_theme", "Editor"):
-		item.set_icon_modulate(0, tree.get_color("property_color", "Editor"))
+		item.set_icon_modulate(0, get_color("property_color", "Editor"))
 	return item
 
 # returns the first line of a text_file, a bit cleaned up
