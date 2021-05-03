@@ -12,7 +12,7 @@ func _init():
 	
 	## Remove after 2.0
 	if Engine.editor_hint:
-		DialogicUtil.event_fixer()
+		DialogicUtil.resource_fixer()
 	
 
 
