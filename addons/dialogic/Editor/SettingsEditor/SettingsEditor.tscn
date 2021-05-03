@@ -50,13 +50,15 @@ margin_left = 50.0
 margin_right = 190.0
 margin_bottom = 20.0
 rect_min_size = Vector2( 140, 0 )
-text = "normal"
-items = [ "no_gloss", null, false, 0, {
-"file": "theme-1618722854.cfg"
-}, "normal", null, false, 1, {
-"file": "theme-1616687382.cfg"
+text = "fight_theme"
+items = [ "fight_theme", null, false, 0, {
+"file": "theme-1618232296.cfg"
+}, "theme-1619648448.cfg", null, false, 1, {
+"file": "theme-1619648448.cfg"
+}, "theme-1619648499.cfg", null, false, 2, {
+"file": "theme-1619648499.cfg"
 } ]
-selected = 1
+selected = 0
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer"]
 margin_top = 50.0
@@ -74,7 +76,6 @@ text = "Advanced theme options"
 margin_left = 164.0
 margin_right = 188.0
 margin_bottom = 24.0
-pressed = true
 
 [node name="VBoxContainer2" type="VBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer"]
 margin_top = 90.0
@@ -102,7 +103,6 @@ margin_right = 265.0
 margin_bottom = 24.0
 hint_tooltip = "If enabled, every new line will be displayed
 as a separated message."
-pressed = true
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2"]
 margin_top = 54.0
@@ -120,7 +120,6 @@ margin_left = 169.0
 margin_right = 304.0
 margin_bottom = 24.0
 size_flags_horizontal = 3
-pressed = true
 
 [node name="HBoxContainer3" type="HBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2"]
 margin_top = 82.0
@@ -137,7 +136,6 @@ text = "Auto color character names in messages"
 margin_left = 264.0
 margin_right = 288.0
 margin_bottom = 24.0
-pressed = true
 
 [node name="HBoxContainer4" type="HBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2"]
 margin_top = 110.0
@@ -154,7 +152,6 @@ text = "Propagate input to rest of the Tree"
 margin_left = 223.0
 margin_right = 247.0
 margin_bottom = 24.0
-pressed = true
 
 [node name="HBoxContainer5" type="HBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2"]
 margin_top = 138.0
@@ -171,7 +168,6 @@ text = "Dim characters when they are not speaking"
 margin_left = 280.0
 margin_right = 304.0
 margin_bottom = 24.0
-pressed = true
 
 [node name="VBoxContainer3" type="VBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer"]
 margin_top = 268.0

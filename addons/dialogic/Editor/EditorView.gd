@@ -118,7 +118,7 @@ func _ready():
 		$ToolBar/Version.text = 'Dialogic v' + version_string
 		
 	$MainPanel/MasterTreeContainer/FilterMasterTreeEdit.right_icon = get_icon("Search", "EditorIcons")
-
+	
 
 func on_master_tree_editor_selected(editor: String):
 	$ToolBar/FoldTools.visible = editor == 'timeline'
