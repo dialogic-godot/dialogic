@@ -144,7 +144,7 @@ func _input(event):
 			and event.scancode == KEY_T
 			and event.echo == false
 		):
-			var new_text = create_event("TextBlock")
+			var new_text = create_event("TextEvent")
 			_select_item(new_text)
 			indent_events()
 			get_tree().set_input_as_handled()
