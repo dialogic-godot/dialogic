@@ -9,6 +9,7 @@ var default_icon_color = Color("#65989898")
 
 # This is the information of this event and it will get parsed and saved to the JSON file.
 var event_data = {
+	'event_id':'dialogic_002',
 	'action': 'join',
 	'character': '',
 	'portrait': '',

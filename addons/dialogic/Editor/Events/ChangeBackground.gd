@@ -13,8 +13,10 @@ func _ready():
 	image_picker.editor_reference = editor_reference
 	image_picker.connect("file_selected", self, "_on_file_selected")
 	image_picker.connect("clear_pressed", self, "_on_clear_pressed")
+	
 	# Init the data
 	event_data = {
+		'event_id':'dialogic_021',
 		'background': ''
 	}
 

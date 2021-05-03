@@ -4,6 +4,7 @@ extends "res://addons/dialogic/Editor/Events/Templates/EventTemplate.gd"
 
 func _ready():
 	event_data = {
+		'event_id':'dialogic_023',
 		'wait_seconds': 1
 	}
 	get_header().set_value(float(event_data['wait_seconds']))

@@ -309,8 +309,8 @@ func _on_PreviewButton_pressed() -> void:
 		character_file = characters[0]['file']
 	preview_dialog.dialog_script = {
 			"events":[
-				{ "set_theme": current_theme },
-				{ "character": character_file, "portrait":"", "text":n['text_preview'].text }
+				{ 'event_id':'dialogic_024', "set_theme": current_theme },
+				{ 'event_id':'dialogic_001', "character": character_file, "portrait":"", "text":n['text_preview'].text }
 			]
 		}
 	preview_dialog.parse_characters(preview_dialog.dialog_script)

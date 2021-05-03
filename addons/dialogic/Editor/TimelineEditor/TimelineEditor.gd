@@ -144,7 +144,7 @@ func _input(event):
 			and event.scancode == KEY_T
 			and event.echo == false
 		):
-			var new_text = create_event("TextBlock")
+			var new_text = create_event("TextEvent")
 			_select_item(new_text)
 			indent_events()
 			get_tree().set_input_as_handled()
@@ -429,44 +429,71 @@ func load_timeline(filename: String):
 		timeline_name = data['metadata']['file']
 	data = data['events']
 	for i in data:
-		match i:
-			{'text', 'character', 'portrait'}:
-				create_event("TextBlock", i)
-			{'background'}:
-				create_event("ChangeBackground", i)
-			{'character', 'action', 'position', 'portrait',..}:
-				create_event("CharacterJoinBlock", i)
-			{'audio', 'file', ..}:
-				create_event("AudioBlock", i)
-			{'background-music', 'file', ..}:
-				create_event("BackgroundMusic", i)
-			{'question', 'options', ..}:
-				create_event("Question", i)
-			{'choice', ..}:
-				create_event("Choice", i)
-			{'endbranch'}:
-				create_event("EndBranch", i)
-			{'character', 'action'}:
-				create_event("CharacterLeaveBlock", i)
-			{'change_timeline'}:
-				create_event("ChangeTimeline", i)
-			{'emit_signal'}:
-				create_event("EmitSignal", i)
-			{'change_scene'}:
-				create_event("ChangeScene", i)
-			{'close_dialog', ..}:
-				create_event("CloseDialog", i)
-			{'wait_seconds'}:
-				create_event("WaitSeconds", i)
-			{'condition', 'definition', 'value'}:
-				create_event("IfCondition", i)
-			{'set_value', 'definition', ..}:
-				create_event("SetValue", i)
-			{'set_theme'}:
-				create_event("SetTheme", i)
-			{'call_node'}:
-				create_event("CallNode", i)
-
+		match i['event_id']:
+					# MAIN EVENTS
+				# Text event
+				'dialogic_001':
+					create_event('TextEvent', i)
+				# Join event
+				'dialogic_002':
+					create_event("CharacterJoin", i)
+				# Character Leave event 
+				'dialogic_003':
+					create_event('CharacterLeave', i)
+				
+				# LOGIC EVENTS
+				# Question event
+				'dialogic_010':
+					create_event('Question', i)
+				# Choice event
+				'dialogic_011':
+					create_event('Choice', i)
+				# Condition event
+				'dialogic_012':
+					create_event('Condition', i)
+				# End Branch event
+				'dialogic_013':
+					create_event('EndBranch', i)
+				# Set Value event
+				'dialogic_014':
+					create_event('SetValue', i)
+				
+				# TIMELINE EVENTS
+				# Change Timeline event
+				'dialogic_020':
+					create_event('ChangeTimeline', i)
+				# Change Backround event
+				'dialogic_021':
+					create_event('ChangeBackground', i)
+				# Close Dialog event
+				'dialogic_022':
+					create_event('CloseDialog', i)
+				# Wait seconds event
+				'dialogic_023':
+					create_event('WaitSeconds', i)
+				# Set Theme event
+				'dialogic_024':
+					create_event('SetTheme', i)
+				
+				# AUDIO EVENTS
+				# Audio event
+				'dialogic_030':
+					create_event('AudioEvent', i)
+				# Background Music event
+				'dialogic_031':
+					create_event('BackgroundMusic', i)
+				
+				# GODOT EVENTS
+				# Emit signal event
+				'dialogic_040':
+					create_event('EmitSignal', i)
+				# Change Scene event
+				'dialogic_041':
+					create_event('ChangeScene', i)
+				# Call Node event
+				'dialogic_042':
+					create_event('CallNode', i)
+	
 	if data.size() < 1:
 		events_warning.visible = true
 	else:
