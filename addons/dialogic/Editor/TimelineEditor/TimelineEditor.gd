@@ -77,7 +77,7 @@ func delete_event():
 			next_node = timeline.get_child(max(0, timeline.get_child_count() - 1))
 			if (next_node != null):
 				_select_item(next_node)
-				
+	
 	indent_events()
 
 func _input(event):
@@ -149,7 +149,35 @@ func _input(event):
 			indent_events()
 			get_tree().set_input_as_handled()
 			pass
+		
+		# CTRL C
+		if (event.pressed
+			and event.alt == false
+			and event.shift == false
+			and event.control == true
+			and event.scancode == KEY_C
+			and event.echo == false
+		):
+			copy_event()
+			get_tree().set_input_as_handled()
+		
+		# CTRL V
+		if (event.pressed
+			and event.alt == false
+			and event.shift == false
+			and event.control == true
+			and event.scancode == KEY_V
+			and event.echo == false
+		):
+			paste_event()
+			get_tree().set_input_as_handled()
 
+func copy_event():
+	OS.clipboard = JSON.print(selected_item.event_data)
+
+func paste_event():
+	print("PAste", JSON.parse(OS.clipboard).result)
+	#create_event("something", )
 
 func _unhandled_key_input(event):
 	if (event is InputEventWithModifiers):
