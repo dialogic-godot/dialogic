@@ -171,13 +171,33 @@ func _input(event):
 		):
 			paste_event()
 			get_tree().set_input_as_handled()
+		
+		# CTRL X
+		if (event.pressed
+			and event.alt == false
+			and event.shift == false
+			and event.control == true
+			and event.scancode == KEY_X
+			and event.echo == false
+		):
+			cut_event()
+			get_tree().set_input_as_handled()
+
+func cut_event():
+	if not selected_item:
+		return
+	copy_event()
+	delete_event()
 
 func copy_event():
+	if not selected_item:
+		return
 	OS.clipboard = JSON.print(selected_item.event_data)
 
 func paste_event():
-	print("PAste", JSON.parse(OS.clipboard).result)
-	#create_event("something", )
+	var clipboard_parse = JSON.parse(OS.clipboard).result
+	if typeof(clipboard_parse) == TYPE_DICTIONARY and clipboard_parse.has('event_id'):
+		add_event_by_id(clipboard_parse['event_id'], clipboard_parse)
 
 func _unhandled_key_input(event):
 	if (event is InputEventWithModifiers):
@@ -457,70 +477,7 @@ func load_timeline(filename: String):
 		timeline_name = data['metadata']['file']
 	data = data['events']
 	for i in data:
-		match i['event_id']:
-					# MAIN EVENTS
-				# Text event
-				'dialogic_001':
-					create_event('TextEvent', i)
-				# Join event
-				'dialogic_002':
-					create_event("CharacterJoin", i)
-				# Character Leave event 
-				'dialogic_003':
-					create_event('CharacterLeave', i)
-				
-				# LOGIC EVENTS
-				# Question event
-				'dialogic_010':
-					create_event('Question', i)
-				# Choice event
-				'dialogic_011':
-					create_event('Choice', i)
-				# Condition event
-				'dialogic_012':
-					create_event('Condition', i)
-				# End Branch event
-				'dialogic_013':
-					create_event('EndBranch', i)
-				# Set Value event
-				'dialogic_014':
-					create_event('SetValue', i)
-				
-				# TIMELINE EVENTS
-				# Change Timeline event
-				'dialogic_020':
-					create_event('ChangeTimeline', i)
-				# Change Backround event
-				'dialogic_021':
-					create_event('ChangeBackground', i)
-				# Close Dialog event
-				'dialogic_022':
-					create_event('CloseDialog', i)
-				# Wait seconds event
-				'dialogic_023':
-					create_event('WaitSeconds', i)
-				# Set Theme event
-				'dialogic_024':
-					create_event('SetTheme', i)
-				
-				# AUDIO EVENTS
-				# Audio event
-				'dialogic_030':
-					create_event('AudioEvent', i)
-				# Background Music event
-				'dialogic_031':
-					create_event('BackgroundMusic', i)
-				
-				# GODOT EVENTS
-				# Emit signal event
-				'dialogic_040':
-					create_event('EmitSignal', i)
-				# Change Scene event
-				'dialogic_041':
-					create_event('ChangeScene', i)
-				# Call Node event
-				'dialogic_042':
-					create_event('CallNode', i)
+		add_event_by_id(i['event_id'], i)
 	
 	if data.size() < 1:
 		events_warning.visible = true
@@ -532,6 +489,71 @@ func load_timeline(filename: String):
 	var elapsed_time = (OS.get_system_time_msecs() - start_time) * 0.001
 	#editor_reference.dprint("Loading time: " + str(elapsed_time))
 
+func add_event_by_id(event_id, event_data):
+	match event_id:
+		# MAIN EVENTS
+		# Text event
+		'dialogic_001':
+			create_event('TextEvent', event_data)
+		# Join event
+		'dialogic_002':
+			create_event("CharacterJoin", event_data)
+		# Character Leave event 
+		'dialogic_003':
+			create_event('CharacterLeave', event_data)
+		
+		# LOGIC EVENTS
+		# Question event
+		'dialogic_010':
+			create_event('Question', event_data)
+		# Choice event
+		'dialogic_011':
+			create_event('Choice', event_data)
+		# Condition event
+		'dialogic_012':
+			create_event('Condition', event_data)
+		# End Branch event
+		'dialogic_013':
+			create_event('EndBranch', event_data)
+		# Set Value event
+		'dialogic_014':
+			create_event('SetValue', event_data)
+		
+		# TIMELINE EVENTS
+		# Change Timeline event
+		'dialogic_020':
+			create_event('ChangeTimeline', event_data)
+		# Change Backround event
+		'dialogic_021':
+			create_event('ChangeBackground', event_data)
+		# Close Dialog event
+		'dialogic_022':
+			create_event('CloseDialog', event_data)
+		# Wait seconds event
+		'dialogic_023':
+			create_event('WaitSeconds', event_data)
+		# Set Theme event
+		'dialogic_024':
+			create_event('SetTheme', event_data)
+		
+		# AUDIO EVENTS
+		# Audio event
+		'dialogic_030':
+			create_event('AudioEvent', event_data)
+		# Background Music event
+		'dialogic_031':
+			create_event('BackgroundMusic', event_data)
+		
+		# GODOT EVENTS
+		# Emit signal event
+		'dialogic_040':
+			create_event('EmitSignal', event_data)
+		# Change Scene event
+		'dialogic_041':
+			create_event('ChangeScene', event_data)
+		# Call Node event
+		'dialogic_042':
+			create_event('CallNode', event_data)
 
 func clear_timeline():
 	_clear_selection()
