@@ -15,7 +15,7 @@ var selected_style : StyleBoxFlat = load("res://addons/dialogic/Editor/Events/st
 var selected_style_text : StyleBoxFlat = load("res://addons/dialogic/Editor/Events/styles/selected_styleboxflat_text_event.tres")
 var selected_style_template : StyleBoxFlat = load("res://addons/dialogic/Editor/Events/styles/selected_styleboxflat_template.tres")
 var saved_style : StyleBoxFlat
-var selected_item : Node
+var selected_items : Array = []
 
 
 var moving_piece = null
@@ -56,18 +56,16 @@ func _ready():
 	var style = $TimelineArea.get('custom_styles/bg')
 	style.set('bg_color', get_color("dark_color_1", "Editor"))
 
-
-func delete_event():
+func delete_selected_events():
+	
 	# get next element
-	var next = min(timeline.get_child_count() - 1, selected_item.get_index() + 1)
+	var next = min(timeline.get_child_count() - 1, selected_items[-1].get_index() + 1)
 	var next_node = timeline.get_child(next)
-	if (next_node == selected_item):
+	if (next_node == selected_items[-1]):
 		next_node = null
-		
-	# remove current
-	selected_item.get_parent().remove_child(selected_item)
-	selected_item.queue_free()
-	selected_item = null
+	
+	for event in selected_items:
+		delete_event(event)
 	
 	# select next
 	if (next_node != null):
@@ -79,6 +77,10 @@ func delete_event():
 				_select_item(next_node)
 	
 	indent_events()
+
+func delete_event(event):
+	event.get_parent().remove_child(event)
+	event.queue_free()
 
 func _input(event):
 	# some shortcuts need to get handled in the common input event
@@ -96,10 +98,10 @@ func _input(event):
 			and event.echo == false
 		):
 			# select previous
-			if (selected_item != null):
-				var prev = max(0, selected_item.get_index() - 1)
+			if (len(selected_items) == 1):
+				var prev = max(0, selected_items[0].get_index() - 1)
 				var prev_node = timeline.get_child(prev)
-				if (prev_node != selected_item):
+				if (prev_node != selected_items[0]):
 					_select_item(prev_node)
 				get_tree().set_input_as_handled()
 				
@@ -114,10 +116,10 @@ func _input(event):
 			and event.echo == false
 		):
 			# select next
-			if (selected_item != null):
-				var next = min(timeline.get_child_count() - 1, selected_item.get_index() + 1)
+			if (len(selected_items) == 1):
+				var next = min(timeline.get_child_count() - 1, selected_items[0].get_index() + 1)
 				var next_node = timeline.get_child(next)
-				if (next_node != selected_item):
+				if (next_node != selected_items[0]):
 					_select_item(next_node)
 				get_tree().set_input_as_handled()
 				
@@ -131,8 +133,8 @@ func _input(event):
 			and event.scancode == KEY_DELETE
 			and event.echo == false
 		):
-			if (selected_item != null):
-				delete_event()
+			if (len(selected_items) != 0):
+				delete_selected_events()
 				get_tree().set_input_as_handled()
 			pass
 			
@@ -158,7 +160,7 @@ func _input(event):
 			and event.scancode == KEY_C
 			and event.echo == false
 		):
-			copy_event()
+			copy_selected_events()
 			get_tree().set_input_as_handled()
 		
 		# CTRL V
@@ -169,7 +171,7 @@ func _input(event):
 			and event.scancode == KEY_V
 			and event.echo == false
 		):
-			paste_event()
+			paste_events()
 			get_tree().set_input_as_handled()
 		
 		# CTRL X
@@ -180,24 +182,29 @@ func _input(event):
 			and event.scancode == KEY_X
 			and event.echo == false
 		):
-			cut_event()
+			cut_selected_events()
 			get_tree().set_input_as_handled()
 
-func cut_event():
-	if not selected_item:
-		return
-	copy_event()
-	delete_event()
+func cut_selected_events():
+	copy_selected_events()
+	delete_selected_events()
 
-func copy_event():
-	if not selected_item:
+func copy_selected_events():
+	if len(selected_items) == 0:
 		return
-	OS.clipboard = JSON.print(selected_item.event_data)
+	var copy_array = []
+	for item in selected_items:
+		copy_array.append(item.event_data)
+	
+	OS.clipboard = JSON.print(copy_array)
 
-func paste_event():
+func paste_events():
 	var clipboard_parse = JSON.parse(OS.clipboard).result
-	if typeof(clipboard_parse) == TYPE_DICTIONARY and clipboard_parse.has('event_id'):
-		add_event_by_id(clipboard_parse['event_id'], clipboard_parse)
+	
+	if typeof(clipboard_parse) == TYPE_ARRAY:
+		for item in clipboard_parse:
+			if typeof(item) == TYPE_DICTIONARY and item.has('event_id'):
+				add_event_by_id(item['event_id'], item)
 
 func _unhandled_key_input(event):
 	if (event is InputEventWithModifiers):
@@ -210,8 +217,8 @@ func _unhandled_key_input(event):
 			and event.echo == false
 		):
 			# move selected up
-			if (selected_item != null):
-				move_block(selected_item, "up")
+			if (len(selected_items) == 1):
+				move_block(selected_items[0], "up")
 				indent_events()
 				get_tree().set_input_as_handled()
 				
@@ -226,8 +233,8 @@ func _unhandled_key_input(event):
 			and event.echo == false
 		):
 			# move selected down
-			if (selected_item != null):
-				move_block(selected_item, "down")
+			if (len(selected_items) == 1):
+				move_block(selected_items[0], "down")
 				indent_events()
 				get_tree().set_input_as_handled()
 				
@@ -254,51 +261,68 @@ func _process(delta):
 				piece_was_dragged = true
 
 
-func _clear_selection():
-	if selected_item != null and saved_style != null:
-		if not _has_template(selected_item):
-			var selected_panel: PanelContainer = selected_item.get_node("PanelContainer")
+
+func _is_item_selected(item: Node):
+	return item in selected_items
+
+func _select_item(item: Node):
+	if item == null:
+		return
+	
+	if Input.is_key_pressed(KEY_CONTROL):
+		# deselect the item if it is selected
+		if _is_item_selected(item):
+			selected_items.erase(item)
+		selected_items.append(item)
+	else:
+		deselect_all_items()
+		selected_items = [item]
+#
+#		deselect_all_items()
+#		selected_item = item
+#		if not _has_template(item):
+#			var panel: PanelContainer = item.get_node("PanelContainer")
+#			if panel != null:
+#				saved_style = panel.get('custom_styles/panel')
+#				if selected_item.event_data.has('text') and selected_item.event_data.has('character'):
+#					panel.set('custom_styles/panel', selected_style_text)
+#				else:
+#					panel.set('custom_styles/panel', selected_style)
+#				# allow event panels to do additional operation when getting selected
+#				if (selected_item.has_method("on_timeline_selected")):
+#					selected_item.on_timeline_selected()
+#		else:
+#			saved_style = item.get_event_style()
+#			item.set_event_style(selected_style_template)
+#			selected_item.on_timeline_selected(true)
+#	else:
+#		deselect_all_items()
+
+func deselect_item(item):
+	if not _is_item_selected(item) or item == null:
+		return
+	
+	if saved_style != null:
+		if not _has_template(item):
+			var selected_panel: PanelContainer = item.get_node("PanelContainer")
 			if selected_panel != null:
 				selected_panel.set('custom_styles/panel', saved_style)
 		else:
-			selected_item.set_event_style(saved_style)
-			selected_item.on_timeline_selected(false)
-	selected_item = null
+			item.set_event_style(saved_style)
+			item.on_timeline_selected(false)
+		selected_items.erase(item)
+
+func deselect_all_items():
+	for item in selected_items:
+		deselect_item(item)
 	saved_style = null
-
-
-func _is_item_selected(item: Node):
-	return item == selected_item
-
-
-func _select_item(item: Node):
-	if item != null and not _is_item_selected(item):
-		_clear_selection()
-		selected_item = item
-		if not _has_template(item):
-			var panel: PanelContainer = item.get_node("PanelContainer")
-			if panel != null:
-				saved_style = panel.get('custom_styles/panel')
-				if selected_item.event_data.has('text') and selected_item.event_data.has('character'):
-					panel.set('custom_styles/panel', selected_style_text)
-				else:
-					panel.set('custom_styles/panel', selected_style)
-				# allow event panels to do additional operation when getting selected
-				if (selected_item.has_method("on_timeline_selected")):
-					selected_item.on_timeline_selected()
-		else:
-			saved_style = item.get_event_style()
-			item.set_event_style(selected_style_template)
-			selected_item.on_timeline_selected(true)
-	else:
-		_clear_selection()
 
 
 func _on_gui_input(event, item: Node):
 	if event is InputEventMouseButton and event.button_index == 1:
 		if (not event.is_pressed()):
 			if (not piece_was_dragged and moving_piece != null):
-				_clear_selection()
+				deselect_all_items()
 			if (moving_piece != null):
 				indent_events()
 			moving_piece = null
@@ -312,12 +336,13 @@ func _on_gui_input(event, item: Node):
 
 
 func _on_event_options_action(action: String, item: Node):
-	if action == "remove":
-		if selected_item != item:
-			_select_item(item)
-		delete_event()
-	else:
-		move_block(item, action)
+	### WORK TODO
+#	if action == "remove":
+#		if selected_item != item:
+#			_select_item(item)
+#		delete_event()
+#	else:
+#		move_block(item, action)
 	indent_events()
 
 
@@ -328,7 +353,7 @@ func _create_event_button_pressed(button_name):
 
 
 func _on_ButtonQuestion_pressed() -> void:
-	if selected_item != null:
+	if len(selected_items) != 0:
 		# Events are added bellow the selected node
 		# So we must reverse the adding order
 		create_event("EndBranch", {'no-data': true}, true)
@@ -343,7 +368,7 @@ func _on_ButtonQuestion_pressed() -> void:
 
 
 func _on_ButtonCondition_pressed() -> void:
-	if selected_item != null:
+	if len(selected_items) != 0:
 		# Events are added bellow the selected node
 		# So we must reverse the adding order
 		create_event("EndBranch", {'no-data': true}, true)
@@ -377,16 +402,16 @@ func cancel_drop_event():
 	if moving_piece != null:
 		moving_piece = null
 		piece_was_dragged = false
-		delete_event()
-		_clear_selection()
+		delete_selected_events()
+		deselect_all_items()
 
 
 # Adding an event to the timeline
 func create_event(scene: String, data: Dictionary = {'no-data': true} , indent: bool = false):
 	var piece = load("res://addons/dialogic/Editor/Events/" + scene + ".tscn").instance()
 	piece.editor_reference = editor_reference
-	if selected_item != null:
-		timeline.add_child_below_node(selected_item, piece)
+	if len(selected_items) != 0:
+		timeline.add_child_below_node(selected_items[0], piece)
 	else:
 		timeline.add_child(piece)
 	if data.has('no-data') == false:
@@ -556,7 +581,7 @@ func add_event_by_id(event_id, event_data):
 			create_event('CallNode', event_data)
 
 func clear_timeline():
-	_clear_selection()
+	deselect_all_items()
 	for event in timeline.get_children():
 		event.free()
 

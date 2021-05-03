@@ -6,27 +6,34 @@
 [ext_resource path="res://addons/dialogic/Editor/Events/Templates/EventTemplate.tscn" type="PackedScene" id=4]
 [ext_resource path="res://addons/dialogic/Editor/Events/styles/WaitSeconds.tres" type="StyleBox" id=5]
 
-[node name="EventTemplate" instance=ExtResource( 4 )]
+[node name="WaitSeconds" instance=ExtResource( 4 )]
 margin_bottom = 46.0
 script = ExtResource( 2 )
 event_style = ExtResource( 5 )
 event_icon = ExtResource( 1 )
-event_name = "Wait"
+event_name = "Wait Seconds"
 header_scene = ExtResource( 3 )
 
 [node name="PanelContainer" parent="." index="1"]
+margin_bottom = 46.0
 custom_styles/panel = ExtResource( 5 )
 
+[node name="MarginContainer" parent="PanelContainer" index="0"]
+margin_bottom = 46.0
+
+[node name="VBoxContainer" parent="PanelContainer/MarginContainer" index="0"]
+margin_bottom = 40.0
+
 [node name="IconMarginContainer" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="0"]
-margin_right = 37.0
+margin_right = 15.0
 
 [node name="IconTexture" parent="PanelContainer/MarginContainer/VBoxContainer/Header/IconMarginContainer" index="0"]
-margin_right = 32.0
-texture = ExtResource( 1 )
+margin_right = 10.0
+texture = null
 
 [node name="TitleHBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="1"]
-margin_left = 41.0
-margin_right = 96.0
+margin_left = 19.0
+margin_right = 74.0
 
 [node name="TitleMarginContainer" parent="PanelContainer/MarginContainer/VBoxContainer/Header/TitleHBoxContainer" index="1"]
 margin_right = 47.0
@@ -40,11 +47,11 @@ margin_left = 51.0
 margin_right = 55.0
 
 [node name="Content" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="2"]
-margin_left = 100.0
-margin_right = 249.0
+margin_left = 78.0
+margin_right = 88.0
+
+[node name="ExpandControl" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="3"]
+visible = false
 
 [node name="Spacer" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="4"]
-margin_left = 253.0
-
-[node name="OptionsControl" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="6"]
-items = [ "Move Up", null, 0, false, false, 0, 0, null, "", false, "Move Down", null, 0, false, false, 1, 0, null, "", false, "", null, 0, false, false, 2, 0, null, "", false, "Remove", null, 0, false, false, 3, 0, null, "", false ]
+margin_left = 92.0

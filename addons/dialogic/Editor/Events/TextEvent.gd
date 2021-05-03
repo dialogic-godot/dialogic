@@ -105,7 +105,7 @@ func _on_TextEdit_focus_entered() -> void:
 		if (timeline_editor != null):
 			# @todo select item and clear selection is marked as "private" in TimelineEditor.gd
 			# consider to make it "public" or add a public helper function
-			timeline_editor._clear_selection()
+			timeline_editor.deselect_all_items()
 			timeline_editor._select_item(self)
 	
 	

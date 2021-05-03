@@ -2,6 +2,8 @@ tool
 extends HBoxContainer
 
 export(StyleBoxFlat) var event_style : StyleBoxFlat
+var selected_style = preload("../styles/selected_styleboxflat.tres")
+
 export(Texture) var event_icon : Texture
 export(String) var event_name : String
 export(PackedScene) var header_scene : PackedScene
@@ -42,6 +44,12 @@ func load_data(data):
 	event_data = data
 
 
+func visual_select():
+	set_event_style(selected_style)
+
+func visual_deselect():
+	set_event_style(event_style)
+
 func set_event_style(style: StyleBoxFlat):
 	panel.set('custom_styles/panel', style)
 
@@ -69,6 +77,8 @@ func set_header(scene: PackedScene):
 func set_body(scene: PackedScene):
 	body_node = _set_content(body_content_container, scene)
 	expand_control.set_enabled(body_node != null)
+	if "editor_reference" in body_node:
+		body_node.editor_reference = editor_reference
 
 
 func get_body():
