@@ -321,7 +321,7 @@ margin_right = 180.0
 margin_bottom = 14.0
 size_flags_horizontal = 3
 
-[node name="AudioBlock" type="Button" parent="ScrollContainer/EventContainer"]
+[node name="AudioEvent" type="Button" parent="ScrollContainer/EventContainer"]
 margin_top = 554.0
 margin_right = 180.0
 margin_bottom = 582.0
@@ -329,7 +329,7 @@ text = "  Audio Event"
 icon = ExtResource( 3 )
 align = 0
 script = ExtResource( 21 )
-EventName = "AudioBlock"
+EventName = "AudioEvent"
 
 [node name="BackgroundMusic" type="Button" parent="ScrollContainer/EventContainer"]
 margin_top = 586.0
