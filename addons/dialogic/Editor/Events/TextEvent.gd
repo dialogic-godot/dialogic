@@ -39,15 +39,15 @@ func _ready():
 				event_data['character'] = c['file']
 
 
-func _on_character_changed(character_data: Dictionary, portrait: String, definition: String) -> void:
+func _on_character_changed(character_data: Dictionary, portrait: String, port_defn: String) -> void:
 	if character_data.keys().size() > 0:
 		event_data['character'] = character_data['file']
 		event_data['portrait'] = portrait
-		event_data['definition'] = definition
+		event_data['port_defn'] = port_defn
 	else:
 		event_data['character'] = ''
 		event_data['portrait'] = ''
-		event_data['definition'] = ''
+		event_data['port_defn'] = ''
 	update_preview()
 
 

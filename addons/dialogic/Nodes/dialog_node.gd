@@ -474,7 +474,7 @@ func event_handler(event: Dictionary):
 					var p = Portrait.instance()
 					
 					var char_portrait = event['portrait']
-					var portrait_definition = event['definition']
+					var portrait_definition = event['port_defn']
 					if char_portrait == '':
 						char_portrait = 'Default'
 						
