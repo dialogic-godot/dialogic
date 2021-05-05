@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://addons/dialogic/Editor/Events/Common/Spacer.tscn" type="PackedScene" id=1]
 [ext_resource path="res://addons/dialogic/Editor/Events/Common/PieceExtraSettings.tscn" type="PackedScene" id=2]
@@ -6,6 +6,7 @@
 [ext_resource path="res://addons/dialogic/Images/Event Icons/Main Icons/character-join.svg" type="Texture" id=4]
 [ext_resource path="res://addons/dialogic/Images/Event Icons/character.svg" type="Texture" id=5]
 [ext_resource path="res://addons/dialogic/Editor/Events/Common/Characters/CharacterAndPortraitPicker.tscn" type="PackedScene" id=6]
+
 
 [sub_resource type="StyleBoxFlat" id=1]
 content_margin_left = 16.0
@@ -22,21 +23,6 @@ corner_radius_top_left = 6
 corner_radius_top_right = 6
 corner_radius_bottom_right = 6
 corner_radius_bottom_left = 6
-
-[sub_resource type="Image" id=4]
-data = {
-"data": PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ),
-"format": "LumAlpha8",
-"height": 16,
-"mipmaps": false,
-"width": 16
-}
-
-[sub_resource type="ImageTexture" id=3]
-flags = 4
-flags = 4
-image = SubResource( 4 )
-size = Vector2( 16, 16 )
 
 [node name="CharacterJoinBlock" type="HBoxContainer"]
 margin_right = 1798.0
@@ -87,19 +73,19 @@ text = "  Character join: "
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_left = 134.0
-margin_right = 278.0
+margin_right = 240.0
 margin_bottom = 30.0
 
 [node name="LabelPosition" type="Label" parent="PanelContainer/VBoxContainer/Header"]
-margin_left = 282.0
+margin_left = 244.0
 margin_top = 8.0
-margin_right = 346.0
+margin_right = 308.0
 margin_bottom = 22.0
 text = "  Position:"
 
 [node name="PositionsContainer" type="HBoxContainer" parent="PanelContainer/VBoxContainer/Header"]
-margin_left = 350.0
-margin_right = 536.0
+margin_left = 312.0
+margin_right = 498.0
 margin_bottom = 30.0
 
 [node name="position-0" type="ToolButton" parent="PanelContainer/VBoxContainer/Header/PositionsContainer"]
@@ -137,17 +123,16 @@ margin_bottom = 30.0
 icon = ExtResource( 5 )
 
 [node name="MirrorButton" type="ToolButton" parent="PanelContainer/VBoxContainer/Header"]
-margin_left = 540.0
-margin_right = 568.0
+margin_left = 502.0
+margin_right = 514.0
 margin_bottom = 30.0
 hint_tooltip = "Mirrors the character"
 focus_mode = 0
 toggle_mode = true
 enabled_focus_mode = 0
-icon = SubResource( 3 )
 
 [node name="Spacer" parent="PanelContainer/VBoxContainer/Header" instance=ExtResource( 1 )]
-margin_left = 572.0
+margin_left = 518.0
 margin_right = 1735.0
 margin_bottom = 30.0
 
