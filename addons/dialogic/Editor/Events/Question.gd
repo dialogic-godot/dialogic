@@ -37,6 +37,7 @@ func load_data(data):
 	
 	$PanelContainer/VBoxContainer/Header/LineEdit.text = event_data['question']
 
+	# Backwards compatibility
 	var port_defn: String = event_data['port_defn'] if event_data.has('port_defn') else ''
 	character_picker.set_data(event_data['character'], event_data['portrait'], port_defn)
 

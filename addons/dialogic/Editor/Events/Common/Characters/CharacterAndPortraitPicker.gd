@@ -5,14 +5,14 @@ onready var character_picker = $CharacterPicker
 onready var portrait_picker = $PortraitPicker
 onready var definition_picker = $DefinitionPicker
 
-signal character_changed(character, portrait, definition)
+signal character_changed(character, portrait, port_defn)
 
 var allow_portrait_dont_change := true
 var allow_portrait_definition := true
 
 var character := {}
 var portrait: String
-var definition: String
+var port_defn: String
 
 
 func _ready():
@@ -57,13 +57,13 @@ func _on_character_selected(data: Dictionary):
 	else:
 		portrait = 'Default'
 	portrait_picker.set_character(character)
-	emit_signal("character_changed", character, portrait, definition)
+	emit_signal("character_changed", character, portrait, port_defn)
 
 
 func _on_portrait_selected(p: String):
 	portrait = p
 	definition_picker.visible = portrait_picker.is_definition_selected
-	emit_signal("character_changed", character, portrait, definition)
+	emit_signal("character_changed", character, portrait, port_defn)
 
 
 func _on_definition_selected(id: String):
