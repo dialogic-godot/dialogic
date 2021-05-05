@@ -36,7 +36,9 @@ func load_data(data):
 		event_data['portrait'] = ''
 	
 	$PanelContainer/VBoxContainer/Header/LineEdit.text = event_data['question']
-	character_picker.set_data(event_data['character'], event_data['portrait'], data['port_defn'])
+
+	var port_defn: String = event_data['port_defn'] if event_data.has('port_defn') else ''
+	character_picker.set_data(event_data['character'], event_data['portrait'], port_defn)
 
 
 func _on_LineEdit_text_changed(new_text):

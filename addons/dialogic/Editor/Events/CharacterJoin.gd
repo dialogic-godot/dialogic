@@ -78,7 +78,9 @@ func check_active_position(active_color = Color("#ffffff")):
 func load_data(data):
 	event_data = data
 	if data['character'] != '':
-		character_picker.set_data(data['character'], data['portrait'], data['port_defn'])
+		# Backwards compatibility
+		var port_defn: String = data['port_defn'] if data.has('port_defn') else ''
+		character_picker.set_data(data['character'], data['portrait'], port_defn)
 		current_color = character_picker.get_selected_character()['color']
 		check_active_position(current_color)
 	else:

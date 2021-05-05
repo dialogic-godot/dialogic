@@ -12,18 +12,18 @@ __meta__ = {
 }
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
-margin_right = 1024.0
-margin_bottom = 600.0
+margin_right = 1920.0
+margin_bottom = 1080.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="HBoxContainer3" type="HBoxContainer" parent="VBoxContainer"]
-margin_right = 1024.0
-margin_bottom = 452.0
+margin_right = 1920.0
+margin_bottom = 448.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer3"]
 margin_right = 356.0
-margin_bottom = 452.0
+margin_bottom = 448.0
 custom_constants/separation = 16
 
 [node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer"]
@@ -47,7 +47,7 @@ text = "Default"
 
 [node name="ThemeOptionButton" type="OptionButton" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer/HBoxContainer"]
 margin_left = 50.0
-margin_right = 228.0
+margin_right = 190.0
 margin_bottom = 20.0
 rect_min_size = Vector2( 140, 0 )
 text = "theme-1619305742.cfg"
@@ -78,55 +78,33 @@ margin_bottom = 24.0
 [node name="VBoxContainer2" type="VBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer"]
 margin_top = 90.0
 margin_right = 356.0
-margin_bottom = 302.0
+margin_bottom = 298.0
 
 [node name="SectionTitle" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2" instance=ExtResource( 2 )]
 margin_right = 356.0
 text = "Dialog"
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2"]
+[node name="HBoxContainer7" type="HBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2"]
 margin_top = 26.0
 margin_right = 356.0
 margin_bottom = 50.0
 
-[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2/HBoxContainer6"]
-margin_top = 5.0
-margin_right = 137.0
-margin_bottom = 19.0
-text = "Uses translation keys"
-
-[node name="Translations" type="CheckBox" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2/HBoxContainer6"]
-margin_left = 141.0
-margin_right = 165.0
-margin_bottom = 24.0
-hint_tooltip = "If enabled, inputs for text events will be treated as keys for tr()"
-
-[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2"]
-margin_top = 54.0
-margin_right = 304.0
-margin_bottom = 78.0
-
-[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2/HBoxContainer2"]
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2/HBoxContainer7"]
 margin_top = 5.0
 margin_right = 237.0
 margin_bottom = 19.0
 text = "New lines will create extra messages"
 
-[node name="NewLines" type="CheckBox" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2/HBoxContainer2"]
+[node name="NewLines" type="CheckBox" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2/HBoxContainer7"]
 margin_left = 241.0
 margin_right = 265.0
 margin_bottom = 24.0
 hint_tooltip = "If enabled, every new line will be displayed as a separated message."
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2"]
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2"]
 margin_top = 54.0
 margin_right = 356.0
-margin_bottom = 54.0
-
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2"]
-margin_top = 58.0
-margin_right = 356.0
-margin_bottom = 82.0
+margin_bottom = 78.0
 
 [node name="Label" type="Label" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2/HBoxContainer"]
 margin_top = 5.0
@@ -141,9 +119,9 @@ margin_bottom = 24.0
 size_flags_horizontal = 3
 
 [node name="HBoxContainer3" type="HBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2"]
-margin_top = 86.0
+margin_top = 82.0
 margin_right = 356.0
-margin_bottom = 110.0
+margin_bottom = 106.0
 
 [node name="Label" type="Label" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2/HBoxContainer3"]
 margin_top = 5.0
@@ -155,11 +133,12 @@ text = "Auto color character names in messages"
 margin_left = 264.0
 margin_right = 288.0
 margin_bottom = 24.0
+pressed = true
 
 [node name="HBoxContainer4" type="HBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2"]
-margin_top = 114.0
+margin_top = 110.0
 margin_right = 356.0
-margin_bottom = 138.0
+margin_bottom = 134.0
 
 [node name="Label" type="Label" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2/HBoxContainer4"]
 margin_top = 5.0
@@ -173,9 +152,9 @@ margin_right = 247.0
 margin_bottom = 24.0
 
 [node name="HBoxContainer5" type="HBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2"]
-margin_top = 142.0
+margin_top = 138.0
 margin_right = 356.0
-margin_bottom = 166.0
+margin_bottom = 162.0
 
 [node name="Label" type="Label" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2/HBoxContainer5"]
 margin_top = 5.0
@@ -187,17 +166,18 @@ text = "Dim characters when they are not speaking"
 margin_left = 280.0
 margin_right = 304.0
 margin_bottom = 24.0
+pressed = true
 
 [node name="Label2" type="Label" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2"]
-margin_top = 170.0
+margin_top = 166.0
 margin_right = 356.0
-margin_bottom = 184.0
+margin_bottom = 180.0
 text = "Experimental Translations:"
 
 [node name="HBoxContainer6" type="HBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2"]
-margin_top = 188.0
+margin_top = 184.0
 margin_right = 356.0
-margin_bottom = 212.0
+margin_bottom = 208.0
 
 [node name="Label" type="Label" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2/HBoxContainer6"]
 margin_top = 5.0
@@ -210,11 +190,12 @@ margin_left = 332.0
 margin_right = 356.0
 margin_bottom = 24.0
 hint_tooltip = "If enabled, inputs for text events will be treated as keys for tr()"
+pressed = true
 
 [node name="VBoxContainer3" type="VBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer"]
-margin_top = 318.0
+margin_top = 314.0
 margin_right = 356.0
-margin_bottom = 452.0
+margin_bottom = 448.0
 
 [node name="SectionTitle" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer3" instance=ExtResource( 2 )]
 margin_right = 356.0
