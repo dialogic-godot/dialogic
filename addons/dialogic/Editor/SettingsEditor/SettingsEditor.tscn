@@ -19,24 +19,24 @@ size_flags_vertical = 3
 
 [node name="HBoxContainer3" type="HBoxContainer" parent="VBoxContainer"]
 margin_right = 1024.0
-margin_bottom = 402.0
+margin_bottom = 452.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer3"]
-margin_right = 304.0
-margin_bottom = 402.0
+margin_right = 356.0
+margin_bottom = 452.0
 custom_constants/separation = 16
 
 [node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer"]
-margin_right = 304.0
+margin_right = 356.0
 margin_bottom = 74.0
 
 [node name="SectionTitle" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer" instance=ExtResource( 2 )]
-margin_right = 304.0
+margin_right = 356.0
 text = "Theme"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer"]
 margin_top = 26.0
-margin_right = 304.0
+margin_right = 356.0
 margin_bottom = 46.0
 
 [node name="Label" type="Label" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer/HBoxContainer"]
@@ -47,22 +47,20 @@ text = "Default"
 
 [node name="ThemeOptionButton" type="OptionButton" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer/HBoxContainer"]
 margin_left = 50.0
-margin_right = 190.0
+margin_right = 228.0
 margin_bottom = 20.0
 rect_min_size = Vector2( 140, 0 )
-text = "fight_theme"
-items = [ "fight_theme", null, false, 0, {
-"file": "theme-1618232296.cfg"
-}, "theme-1619648448.cfg", null, false, 1, {
-"file": "theme-1619648448.cfg"
-}, "theme-1619648499.cfg", null, false, 2, {
-"file": "theme-1619648499.cfg"
+text = "theme-1619305742.cfg"
+items = [ "theme-1619305742.cfg", null, false, 0, {
+"file": "theme-1619305742.cfg"
+}, "theme-1620071267.cfg", null, false, 1, {
+"file": "theme-1620071267.cfg"
 } ]
 selected = 0
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer"]
 margin_top = 50.0
-margin_right = 304.0
+margin_right = 356.0
 margin_bottom = 74.0
 hint_tooltip = "These options can lead to unexpected behaviors. Make sure to read the documentation before using these."
 
@@ -79,34 +77,17 @@ margin_bottom = 24.0
 
 [node name="VBoxContainer2" type="VBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer"]
 margin_top = 90.0
-margin_right = 304.0
-margin_bottom = 252.0
+margin_right = 356.0
+margin_bottom = 302.0
 
 [node name="SectionTitle" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2" instance=ExtResource( 2 )]
-margin_right = 304.0
+margin_right = 356.0
 text = "Dialog"
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2"]
 margin_top = 26.0
-margin_right = 304.0
+margin_right = 356.0
 margin_bottom = 50.0
-
-[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2/HBoxContainer6"]
-margin_top = 5.0
-margin_right = 137.0
-margin_bottom = 19.0
-text = "Uses translation keys"
-
-[node name="Translations" type="CheckBox" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2/HBoxContainer6"]
-margin_left = 141.0
-margin_right = 165.0
-margin_bottom = 24.0
-hint_tooltip = "If enabled, inputs for text events will be treated as keys for tr()"
-
-[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2"]
-margin_top = 54.0
-margin_right = 304.0
-margin_bottom = 78.0
 
 [node name="Label" type="Label" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2/HBoxContainer2"]
 margin_top = 5.0
@@ -120,11 +101,17 @@ margin_right = 265.0
 margin_bottom = 24.0
 hint_tooltip = "If enabled, every new line will be displayed
 as a separated message."
+pressed = true
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2"]
+margin_top = 54.0
+margin_right = 356.0
+margin_bottom = 54.0
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2"]
-margin_top = 54.0
-margin_right = 304.0
-margin_bottom = 78.0
+margin_top = 58.0
+margin_right = 356.0
+margin_bottom = 82.0
 
 [node name="Label" type="Label" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2/HBoxContainer"]
 margin_top = 5.0
@@ -134,14 +121,14 @@ text = "Remove empty messages"
 
 [node name="RemoveEmptyMessages" type="CheckBox" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2/HBoxContainer"]
 margin_left = 169.0
-margin_right = 304.0
+margin_right = 356.0
 margin_bottom = 24.0
 size_flags_horizontal = 3
 
 [node name="HBoxContainer3" type="HBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2"]
-margin_top = 82.0
-margin_right = 304.0
-margin_bottom = 106.0
+margin_top = 86.0
+margin_right = 356.0
+margin_bottom = 110.0
 
 [node name="Label" type="Label" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2/HBoxContainer3"]
 margin_top = 5.0
@@ -155,9 +142,9 @@ margin_right = 288.0
 margin_bottom = 24.0
 
 [node name="HBoxContainer4" type="HBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2"]
-margin_top = 110.0
-margin_right = 304.0
-margin_bottom = 134.0
+margin_top = 114.0
+margin_right = 356.0
+margin_bottom = 138.0
 
 [node name="Label" type="Label" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2/HBoxContainer4"]
 margin_top = 5.0
@@ -171,9 +158,9 @@ margin_right = 247.0
 margin_bottom = 24.0
 
 [node name="HBoxContainer5" type="HBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2"]
-margin_top = 138.0
-margin_right = 304.0
-margin_bottom = 162.0
+margin_top = 142.0
+margin_right = 356.0
+margin_bottom = 166.0
 
 [node name="Label" type="Label" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2/HBoxContainer5"]
 margin_top = 5.0
@@ -186,18 +173,41 @@ margin_left = 280.0
 margin_right = 304.0
 margin_bottom = 24.0
 
+[node name="Label2" type="Label" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2"]
+margin_top = 170.0
+margin_right = 356.0
+margin_bottom = 184.0
+text = "Experimental Translations:"
+
+[node name="HBoxContainer6" type="HBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2"]
+margin_top = 188.0
+margin_right = 356.0
+margin_bottom = 212.0
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2/HBoxContainer6"]
+margin_top = 5.0
+margin_right = 328.0
+margin_bottom = 19.0
+text = "Inputs for text events will be treated as keys for tr()"
+
+[node name="Translations" type="CheckBox" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2/HBoxContainer6"]
+margin_left = 332.0
+margin_right = 356.0
+margin_bottom = 24.0
+hint_tooltip = "If enabled, inputs for text events will be treated as keys for tr()"
+
 [node name="VBoxContainer3" type="VBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer"]
-margin_top = 268.0
-margin_right = 304.0
-margin_bottom = 402.0
+margin_top = 318.0
+margin_right = 356.0
+margin_bottom = 452.0
 
 [node name="SectionTitle" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer3" instance=ExtResource( 2 )]
-margin_right = 304.0
+margin_right = 356.0
 text = "Saving"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer3"]
 margin_top = 26.0
-margin_right = 304.0
+margin_right = 356.0
 margin_bottom = 50.0
 hint_tooltip = "The saved timeline can then be used to automatically start the dialog back to the last timeline"
 
@@ -209,14 +219,14 @@ text = "Save current timeline on timeline start"
 
 [node name="SaveCurrentTimeline" type="CheckBox" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer3/HBoxContainer"]
 margin_left = 252.0
-margin_right = 304.0
+margin_right = 356.0
 margin_bottom = 24.0
 size_flags_horizontal = 3
 pressed = true
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer3"]
 margin_top = 54.0
-margin_right = 304.0
+margin_right = 356.0
 margin_bottom = 78.0
 hint_tooltip = "Clearing the saved timeline can help automatically restarting the game when the timeline end is reached"
 
@@ -234,7 +244,7 @@ pressed = true
 
 [node name="HBoxContainer3" type="HBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer3"]
 margin_top = 82.0
-margin_right = 304.0
+margin_right = 356.0
 margin_bottom = 106.0
 hint_tooltip = "Saving definitions and timeline start helps maintaining a coherent save state when jumping from timeline to timeline"
 
@@ -252,7 +262,7 @@ pressed = true
 
 [node name="HBoxContainer4" type="HBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer3"]
 margin_top = 110.0
-margin_right = 304.0
+margin_right = 356.0
 margin_bottom = 134.0
 hint_tooltip = "Saving definitions on timeline end makes sure everything is saved when your dialog ends"
 
