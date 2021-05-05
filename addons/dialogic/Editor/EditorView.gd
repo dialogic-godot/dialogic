@@ -59,7 +59,12 @@ func _ready():
 	$ToolBar/NewCharactersButton.icon = load("res://addons/dialogic/Images/Toolbar/add-character" + modifier + ".svg")
 	$ToolBar/NewDefinitionButton.icon = load("res://addons/dialogic/Images/Toolbar/add-definition" + modifier + ".svg")
 	$ToolBar/NewThemeButton.icon = load("res://addons/dialogic/Images/Toolbar/add-theme" + modifier + ".svg")
-	$ToolBar/NewThemeButton.icon = load("res://addons/dialogic/Images/Toolbar/add-theme" + modifier + ".svg")
+	
+	if not get_constant("dark_theme", "Editor"):
+		$ToolBar/NewTimelineButton.modulate = get_color("property_color", "Editor")
+		$ToolBar/NewCharactersButton.modulate = get_color("property_color", "Editor")
+		$ToolBar/NewDefinitionButton.modulate = get_color("property_color", "Editor")
+		$ToolBar/NewThemeButton.modulate = get_color("property_color", "Editor")
 	
 	$ToolBar/FoldTools/ButtonFold.icon = get_icon("GuiTreeArrowRight", "EditorIcons")
 	$ToolBar/FoldTools/ButtonUnfold.icon = get_icon("GuiTreeArrowDown", "EditorIcons")
