@@ -27,6 +27,7 @@ func _ready():
 	text_editor.connect("focus_entered", self, "_on_TextEdit_focus_entered")
 	text_editor.set("rect_min_size", Vector2(0, 80))
 	character_picker.connect('character_changed', self , '_on_character_changed')
+	character_picker.set_allow_portrait_definition(false)
 
 	var c_list = DialogicUtil.get_sorted_character_list()
 	if c_list.size() == 0:
@@ -38,13 +39,15 @@ func _ready():
 				event_data['character'] = c['file']
 
 
-func _on_character_changed(character_data: Dictionary, portrait: String) -> void:
+func _on_character_changed(character_data: Dictionary, portrait: String, definition: String) -> void:
 	if character_data.keys().size() > 0:
 		event_data['character'] = character_data['file']
 		event_data['portrait'] = portrait
+		event_data['definition'] = definition
 	else:
 		event_data['character'] = ''
 		event_data['portrait'] = ''
+		event_data['definition'] = ''
 	update_preview()
 
 
@@ -63,7 +66,7 @@ func load_text(text) -> void:
 func load_data(data) -> void:
 	event_data = data
 	text_editor.text = event_data['text']
-	character_picker.set_data(event_data['character'], event_data['portrait'])
+	character_picker.set_data(event_data['character'], event_data['portrait'], '')
 	update_preview()
 
 

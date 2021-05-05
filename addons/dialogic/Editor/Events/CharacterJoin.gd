@@ -13,6 +13,7 @@ var event_data = {
 	'action': 'join',
 	'character': '',
 	'portrait': '',
+	'definition': '',
 	'position': {"0":false,"1":false,"2":false,"3":false,"4":false},
 	'mirror':false
 }
@@ -26,7 +27,7 @@ func _ready():
 	mirror_toggle.icon = get_icon("MirrorX", "EditorIcons")
 
 
-func _on_character_change(character: Dictionary, portrait: String):
+func _on_character_change(character: Dictionary, portrait: String, definition: String):
 	# Updating icon Color
 	if character.keys().size() > 0:
 		current_color = Color(character['color'])
@@ -39,9 +40,11 @@ func _on_character_change(character: Dictionary, portrait: String):
 			c_c_ind += 1
 		event_data['character'] = character['file']
 		event_data['portrait'] = portrait
+		event_data['definition'] = definition
 	else:
 		event_data['character'] = ''
 		event_data['portrait'] = ''
+		event_data['definition'] = ''
 		clear_all_positions()
 
 
@@ -75,7 +78,7 @@ func check_active_position(active_color = Color("#ffffff")):
 func load_data(data):
 	event_data = data
 	if data['character'] != '':
-		character_picker.set_data(data['character'], data['portrait'])
+		character_picker.set_data(data['character'], data['portrait'], data['definition'])
 		current_color = character_picker.get_selected_character()['color']
 		check_active_position(current_color)
 	else:

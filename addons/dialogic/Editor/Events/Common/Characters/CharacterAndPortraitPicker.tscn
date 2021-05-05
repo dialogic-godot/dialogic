@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://addons/dialogic/Editor/Events/Common/Characters/PortraitPicker.tscn" type="PackedScene" id=1]
 [ext_resource path="res://addons/dialogic/Editor/Events/Common/Characters/CharacterPicker.tscn" type="PackedScene" id=2]
 [ext_resource path="res://addons/dialogic/Editor/Events/Common/Characters/CharacterAndPortraitPicker.gd" type="Script" id=3]
+[ext_resource path="res://addons/dialogic/Editor/Events/Common/DefinitionPicker.tscn" type="PackedScene" id=4]
 
 [node name="CharacterAndPortraitPicker" type="HBoxContainer"]
 anchor_right = 1.0
@@ -16,8 +17,16 @@ __meta__ = {
 }
 
 [node name="CharacterPicker" parent="." instance=ExtResource( 2 )]
+margin_bottom = 510.0
 
 [node name="PortraitPicker" parent="." instance=ExtResource( 1 )]
 visible = false
 margin_left = 110.0
 margin_right = 144.0
+margin_bottom = 510.0
+
+[node name="DefinitionPicker" parent="." instance=ExtResource( 4 )]
+visible = false
+margin_left = 110.0
+margin_right = 253.0
+margin_bottom = 510.0

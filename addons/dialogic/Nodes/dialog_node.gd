@@ -472,13 +472,23 @@ func event_handler(event: Dictionary):
 				var exists = grab_portrait_focus(character_data)
 				if exists == false:
 					var p = Portrait.instance()
+					
 					var char_portrait = event['portrait']
+					var portrait_definition = event['definition']
 					if char_portrait == '':
 						char_portrait = 'Default'
+						
+						if portrait_definition != '':
+							for d in DialogicResources.get_default_definitions()['variables']:
+								if d['id'] == portrait_definition:
+									char_portrait = d['value']
+									break
+					
 					p.character_data = character_data
 					p.init(char_portrait, get_character_position(event['position']), event.get('mirror', false))
 					$Portraits.add_child(p)
 					p.fade_in()
+			
 			_load_next_event()
 		# Character Leave event 
 		'dialogic_003':

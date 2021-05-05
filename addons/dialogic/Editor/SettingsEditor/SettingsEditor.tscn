@@ -118,8 +118,7 @@ text = "New lines will create extra messages"
 margin_left = 241.0
 margin_right = 265.0
 margin_bottom = 24.0
-hint_tooltip = "If enabled, every new line will be displayed
-as a separated message."
+hint_tooltip = "If enabled, every new line will be displayed as a separated message."
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2"]
 margin_top = 54.0

@@ -1,6 +1,8 @@
 tool
 extends MenuButton
 
+signal definition_selected(definition_id)
+
 var default_text = '[ Select a definition ]'
 
 func _ready():
@@ -25,6 +27,7 @@ func _on_entry_selected(index):
 	var _text = get_popup().get_item_text(index)
 	var metadata = get_popup().get_item_metadata(index)
 	text = _text
+	emit_signal("definition_selected", metadata['id'])
 
 
 func load_definition(id):

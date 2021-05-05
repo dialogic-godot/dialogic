@@ -36,17 +36,19 @@ func load_data(data):
 		event_data['portrait'] = ''
 	
 	$PanelContainer/VBoxContainer/Header/LineEdit.text = event_data['question']
-	character_picker.set_data(event_data['character'], event_data['portrait'])
+	character_picker.set_data(event_data['character'], event_data['portrait'], data['definition'])
 
 
 func _on_LineEdit_text_changed(new_text):
 	event_data['question'] = new_text
 
 
-func _on_character_changed(character_data: Dictionary, portrait: String) -> void:
+func _on_character_changed(character_data: Dictionary, portrait: String, definition: String) -> void:
 	if character_data.keys().size() > 0:
 		event_data['character'] = character_data['file']
 		event_data['portrait'] = portrait
+		event_data['definition'] = definition
 	else:
 		event_data['character'] = ''
 		event_data['portrait'] = ''
+		event_data['definition'] = ''
