@@ -50,8 +50,6 @@ func _on_PositionPicker_data_changed(data):
 
 func _on_CharacterPortraitPicker_data_changed(data):
 	event_data = data
-	
-	position_picker.load_data(event_data)
 
 	# informs the parent about the changes!
 	data_changed()
