@@ -1,0 +1,38 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://addons/dialogic/Editor/Events/Parts/EventBlock/ExpandControl.gd" type="Script" id=1]
+[ext_resource path="res://addons/dialogic/Editor/Events/Parts/EventBlock/VisibleToggle.tscn" type="PackedScene" id=4]
+
+[node name="ExpandControl" type="HBoxContainer"]
+visible = false
+margin_right = 62.0
+margin_bottom = 30.0
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VSeparator" type="VSeparator" parent="."]
+margin_right = 4.0
+margin_bottom = 30.0
+
+[node name="VisibleToggle" parent="." instance=ExtResource( 4 )]
+margin_left = 8.0
+margin_right = 38.0
+pressed = false
+script = null
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+margin_left = 42.0
+margin_right = 64.0
+margin_bottom = 30.0
+mouse_filter = 1
+custom_constants/margin_left = 10
+
+[node name="Preview" type="Label" parent="MarginContainer"]
+margin_left = 10.0
+margin_top = 8.0
+margin_right = 22.0
+margin_bottom = 22.0
+custom_colors/font_color = Color( 1, 1, 1, 0.513726 )
+text = "..."

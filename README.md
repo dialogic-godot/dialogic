@@ -57,10 +57,10 @@ It is experimental! So if you want to try it out and you find issues, let us kno
 Usage:
 ```cs
 public override void _Ready()
-  {
-    var dialog = DialogicSharp.Start("Greeting", false);
-    AddChild(dialog);
-  }
+	{
+		var dialog = DialogicSharp.Start("Greeting", false);
+		AddChild(dialog);
+	}
 ```
 This is the PR that added this feature: https://github.com/coppolaemilio/dialogic/pull/217
 
@@ -99,6 +99,22 @@ func _ready():
 func after_dialog(timeline_name):
 	print('Now you can resume with the game :)')
 ```
+
+### 🔷 Can I create a dialog using GDScript?
+Yes! it is a bit harder since you will have to create each event yourself, and to do that they have to be **valid**. You can check already created timelines with a text editor and see how an event should look like, but after you know how, you can do something like this:
+
+```gdscript
+func _ready():
+	var gdscript_dialog = Dialogic.start('')
+	gdscript_dialog.dialog_script = {
+		"events":[
+			{ 'event_id':'dialogic_001', "character": "", "portrait":"", "text": "This dialog was created using GDScript!"}
+		]
+	}
+	add_child(gdscript_dialog)
+```
+
+This will add a simple timeline with a text event. 
 
 ---
 

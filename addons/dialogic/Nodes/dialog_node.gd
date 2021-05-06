@@ -185,6 +185,7 @@ func parse_text_lines(unparsed_dialog_script: Dictionary) -> Dictionary:
 				for line in lines:
 					if not line.empty():
 						new_events.append({
+							'event_id':'dialogic_001',
 							'text': line,
 							'character': event['character'],
 							'portrait': event['portrait']
@@ -220,7 +221,7 @@ func parse_branches(dialog_script: Dictionary) -> Dictionary:
 	var event_idx: int = 0 # The current id for jumping later on
 	var question_idx: int = 0 # identifying the questions to assign options to it
 	for event in dialog_script['events']:
-		if event.has('choice'):
+		if event['event_id'] == 'dialogic_011':
 			var opened_branch = parser_queue.back()
 			var option = {
 				'question_idx': opened_branch['question_idx'],
@@ -247,21 +248,21 @@ func parse_branches(dialog_script: Dictionary) -> Dictionary:
 					}
 			dialog_script['events'][opened_branch['event_idx']]['options'].append(option)
 			event['question_idx'] = opened_branch['question_idx']
-		elif event.has('question'):
+		elif event['event_id'] == 'dialogic_010':
 			event['event_idx'] = event_idx
 			event['question_idx'] = question_idx
 			event['answered'] = false
 			question_idx += 1
 			questions.append(event)
 			parser_queue.append(event)
-		elif event.has('condition'):
+		elif event['event_id'] == 'dialogic_012':
 			event['event_idx'] = event_idx
 			event['question_idx'] = question_idx
 			event['answered'] = false
 			question_idx += 1
 			questions.append(event)
 			parser_queue.append(event)
-		elif event.has('endbranch'):
+		elif event['event_id'] == 'dialogic_013':
 			event['event_idx'] = event_idx
 			var opened_branch = parser_queue.pop_back()
 			event['end_branch_of'] = opened_branch['question_idx']

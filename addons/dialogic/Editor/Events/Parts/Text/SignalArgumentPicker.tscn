@@ -1,0 +1,33 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://addons/dialogic/Editor/Events/Parts/Text/CustomLineEdit.tscn" type="PackedScene" id=1]
+[ext_resource path="res://addons/dialogic/Editor/Events/Parts/Text/EventPart_SignalArgumentPicker.gd" type="Script" id=2]
+
+[node name="SignalArgumentPicker" type="VBoxContainer"]
+margin_right = 40.0
+margin_bottom = 40.0
+size_flags_vertical = 6
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HBox" type="HBoxContainer" parent="."]
+margin_top = 6.0
+margin_right = 396.0
+margin_bottom = 33.0
+size_flags_vertical = 6
+
+[node name="Label" type="Label" parent="HBox"]
+margin_top = 6.0
+margin_right = 344.0
+margin_bottom = 20.0
+text = "Emit the dialogic_signal with the following argument:  "
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="InputField" parent="HBox" instance=ExtResource( 1 )]
+margin_left = 348.0
+margin_right = 396.0
+margin_bottom = 27.0

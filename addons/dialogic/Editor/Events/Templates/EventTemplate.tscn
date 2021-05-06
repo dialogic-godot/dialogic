@@ -1,7 +1,8 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=9 format=2]
 
+[ext_resource path="res://addons/dialogic/Editor/Events/Templates/EventBlock.gd" type="Script" id=1]
 [ext_resource path="res://addons/dialogic/Editor/Events/Templates/ExpandControl.tscn" type="PackedScene" id=2]
-[ext_resource path="res://addons/dialogic/Editor/Events/Common/Spacer.tscn" type="PackedScene" id=4]
+[ext_resource path="res://addons/dialogic/Editor/Events/Parts/EventBlock/Spacer.tscn" type="PackedScene" id=4]
 [ext_resource path="res://addons/dialogic/Editor/Events/Templates/OptionsControl.tscn" type="PackedScene" id=5]
 [ext_resource path="res://addons/dialogic/Images/Plugin/plugin-editor-icon-dark-theme.svg" type="Texture" id=6]
 
@@ -20,15 +21,35 @@ corner_radius_top_right = 6
 corner_radius_bottom_right = 6
 corner_radius_bottom_left = 6
 
+[sub_resource type="Image" id=3]
+data = {
+"data": PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ),
+"format": "LumAlpha8",
+"height": 16,
+"mipmaps": false,
+"width": 16
+}
+
+[sub_resource type="ImageTexture" id=2]
+flags = 4
+flags = 4
+image = SubResource( 3 )
+size = Vector2( 16, 16 )
+
 [node name="EventTemplate" type="HBoxContainer"]
 anchor_right = 1.0
 margin_bottom = 42.0
 rect_min_size = Vector2( 0, 42 )
 size_flags_horizontal = 3
 size_flags_vertical = 9
+script = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
+event_data = {
+"event_id": "dialogic_000"
+}
+expand_on_default = true
 
 [node name="Indent" type="Control" parent="."]
 visible = false
@@ -66,6 +87,20 @@ margin_bottom = 30.0
 rect_min_size = Vector2( 0, 30 )
 size_flags_horizontal = 3
 
+[node name="Warning" type="ToolButton" parent="PanelContainer/MarginContainer/VBoxContainer/Header"]
+visible = false
+margin_right = 34.0
+margin_bottom = 30.0
+hint_tooltip = "Choice events should go 
+between a [Question]
+and [End branch] events.
+
+[Question]
+    [Choice]
+    [...]
+[End branch]"
+icon = SubResource( 2 )
+
 [node name="IconMarginContainer" type="MarginContainer" parent="PanelContainer/MarginContainer/VBoxContainer/Header"]
 margin_right = 31.0
 margin_bottom = 30.0
@@ -81,6 +116,7 @@ texture = ExtResource( 6 )
 stretch_mode = 6
 
 [node name="TitleHBoxContainer" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer/Header"]
+visible = false
 margin_left = 35.0
 margin_right = 160.0
 margin_bottom = 30.0
@@ -106,7 +142,6 @@ margin_left = 5.0
 margin_top = 8.0
 margin_right = 104.0
 margin_bottom = 22.0
-text = "Event Template"
 
 [node name="VSeparator2" type="VSeparator" parent="PanelContainer/MarginContainer/VBoxContainer/Header/TitleHBoxContainer"]
 margin_left = 121.0
@@ -115,8 +150,8 @@ margin_bottom = 30.0
 mouse_filter = 1
 
 [node name="Content" type="MarginContainer" parent="PanelContainer/MarginContainer/VBoxContainer/Header"]
-margin_left = 164.0
-margin_right = 174.0
+margin_left = 35.0
+margin_right = 45.0
 margin_bottom = 30.0
 mouse_filter = 1
 custom_constants/margin_right = 5
@@ -124,10 +159,10 @@ custom_constants/margin_left = 5
 
 [node name="ExpandControl" parent="PanelContainer/MarginContainer/VBoxContainer/Header" instance=ExtResource( 2 )]
 margin_left = 178.0
-margin_right = 230.0
+margin_right = 242.0
 
 [node name="Spacer" parent="PanelContainer/MarginContainer/VBoxContainer/Header" instance=ExtResource( 4 )]
-margin_left = 178.0
+margin_left = 49.0
 margin_right = 966.0
 margin_bottom = 30.0
 
@@ -148,6 +183,7 @@ visible = false
 margin_top = 34.0
 margin_right = 1008.0
 margin_bottom = 262.0
+custom_constants/separation = 0
 
 [node name="HSeparator" type="HSeparator" parent="PanelContainer/MarginContainer/VBoxContainer/Body"]
 margin_right = 1008.0
@@ -161,5 +197,7 @@ margin_bottom = 228.0
 mouse_filter = 1
 size_flags_horizontal = 3
 size_flags_vertical = 3
-custom_constants/margin_top = 10
-custom_constants/margin_bottom = 10
+custom_constants/margin_top = 2
+custom_constants/margin_bottom = 2
+
+[connection signal="visibility_changed" from="Indent" to="." method="_on_Indent_visibility_changed"]
