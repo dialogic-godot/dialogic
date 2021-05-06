@@ -228,5 +228,6 @@ func _ready():
 	
 	if get_body():
 		set_expanded(expand_on_default)
-		
+	
+	_on_Indent_visibility_changed()
 

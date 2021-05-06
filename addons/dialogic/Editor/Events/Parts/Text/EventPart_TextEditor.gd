@@ -21,7 +21,7 @@ func _ready():
 	var _scale = get_constant("inspector_margin", "Editor")
 	_scale = _scale * 0.125
 	text_height = text_height * _scale
-	text_editor.set("rect_min_size", Vector2(0, 80))
+	text_editor.set("rect_min_size", Vector2(0, text_height*2))
 	
 
 # called by the event block
@@ -69,6 +69,7 @@ func _on_TextEditor_text_changed():
 	# otherwise
 	else:
 		event_data['text'] = text_editor.text
+	text_editor.rect_min_size.y = text_height * (2 + text_editor.text.count('\n'))
 	
 	# informs the parent about the changes!
 	data_changed()

@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://addons/dialogic/Editor/Events/Templates/ExpandControl.gd" type="Script" id=1]
-[ext_resource path="res://addons/dialogic/Editor/Events/Common/VisibleToggle.tscn" type="PackedScene" id=4]
+[ext_resource path="res://addons/dialogic/Editor/Events/Parts/EventBlock/VisibleToggle.tscn" type="PackedScene" id=4]
 
 [node name="ExpandControl" type="HBoxContainer"]
 visible = false
