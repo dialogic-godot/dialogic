@@ -1,0 +1,24 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://addons/dialogic/Images/Event Icons/Portrait.svg" type="Texture" id=1]
+[ext_resource path="res://addons/dialogic/Editor/Events/Parts/ResourcePickers/Characters/EventPart_PortraitPicker.gd" type="Script" id=2]
+
+[node name="PortraitPicker" type="VBoxContainer"]
+margin_right = 40.0
+margin_bottom = 40.0
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HBox" type="HBoxContainer" parent="."]
+margin_right = 92.0
+margin_bottom = 28.0
+
+[node name="MenuButton" type="MenuButton" parent="HBox"]
+margin_right = 92.0
+margin_bottom = 28.0
+focus_mode = 2
+text = "[Portrait]"
+icon = ExtResource( 1 )
+flat = false

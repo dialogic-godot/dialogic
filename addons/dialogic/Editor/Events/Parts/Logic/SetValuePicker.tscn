@@ -1,0 +1,48 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://addons/dialogic/Editor/Events/Parts/Logic/OperationPicker.tscn" type="PackedScene" id=1]
+[ext_resource path="res://addons/dialogic/Editor/Events/Parts/Text/CustomLineEdit.tscn" type="PackedScene" id=2]
+[ext_resource path="res://addons/dialogic/Editor/Events/Parts/ResourcePickers/Definitions/DefinitionPicker.tscn" type="PackedScene" id=3]
+[ext_resource path="res://addons/dialogic/Editor/Events/Parts/Logic/EventPart_SetValuePicker.gd" type="Script" id=4]
+
+[node name="SetValuePicker" type="VBoxContainer"]
+margin_right = 40.0
+margin_bottom = 40.0
+script = ExtResource( 4 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HBox" type="HBoxContainer" parent="."]
+margin_right = 281.0
+margin_bottom = 27.0
+
+[node name="Label" type="Label" parent="HBox"]
+margin_top = 6.0
+margin_right = 20.0
+margin_bottom = 20.0
+text = "Set"
+
+[node name="DefinitionPicker" parent="HBox" instance=ExtResource( 3 )]
+margin_left = 24.0
+margin_right = 148.0
+margin_bottom = 27.0
+
+[node name="OperationPicker" parent="HBox" instance=ExtResource( 1 )]
+margin_left = 152.0
+margin_right = 215.0
+margin_bottom = 27.0
+
+[node name="Spacer" type="Control" parent="HBox"]
+margin_left = 219.0
+margin_right = 229.0
+margin_bottom = 27.0
+rect_min_size = Vector2( 10, 0 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="InputField" parent="HBox" instance=ExtResource( 2 )]
+margin_left = 233.0
+margin_right = 281.0
+margin_bottom = 27.0

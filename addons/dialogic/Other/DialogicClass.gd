@@ -40,8 +40,12 @@ static func start(timeline: String, reset_saves: bool=true, dialog_scene_path: S
 				d.timeline = t['file']
 				return d
 		d.dialog_script = {
-			"events":[{"character":"","portrait":"",
-			"text":"[Dialogic Error] Loading dialog [color=red]" + timeline + "[/color]. It seems like the timeline doesn't exists. Maybe the name is wrong?"}]
+			"events":[
+				{"event_id":'dialogic_001',
+				"character":"",
+				"portrait":"",
+				"text":"[Dialogic Error] Loading dialog [color=red]" + timeline + "[/color]. It seems like the timeline doesn't exists. Maybe the name is wrong?"
+				}]
 		}
 	return d
 
