@@ -1,8 +1,8 @@
 tool
 extends "res://addons/dialogic/Editor/Events/Templates/EventTemplate.gd"
 
-
-func _ready():
+# when the event is created, set the default data
+func _init():
 	event_data = {
 		'event_id':'dialogic_030',
 		'event_name':'AudioEvent',
@@ -11,6 +11,10 @@ func _ready():
 		'audio_bus':'Master',
 		'volume':0
 	}
+
+# when it enters the tree, load the data.
+# If there is any external data, it will be set already BEFORE the event is added to tree
+func _ready():
 	get_body().load_data(event_data)
 	get_body().connect("audio_changed", self, "_on_AudioPicker_audio_changed")
 

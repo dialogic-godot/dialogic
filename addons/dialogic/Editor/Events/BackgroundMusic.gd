@@ -1,43 +1,34 @@
 tool
-extends HBoxContainer
-
-var editor_reference
-var editorPopup
-
-
-
-# This is the information of this event and it will get parsed and saved to the JSON file.
-var event_data = {
-	'event_id':'dialogic_031',
-	'event_name':'BackgroundMusic',
-	'background-music': 'stop',
-	'file': '',
-	'audio_bus':'Master',
-	'volume':0,
-	'fade_length':1,
-}
+extends "res://addons/dialogic/Editor/Events/Templates/EventTemplate.gd"
 
 
 func _ready():
-	$PanelContainer/VBoxContainer/Header/VisibleToggle.set_visible(true)
-	$PanelContainer/VBoxContainer/Settings/AudioPicker.editor_reference = editor_reference
-	$PanelContainer/VBoxContainer/Settings/AudioPicker.connect("audio_changed", self, "update_audio_data")
+	event_data = {
+		'event_id':'dialogic_031',
+		'event_name':'BackgroundMusic',
+		'background-music': 'stop',
+		'file': '',
+		'audio_bus':'Master',
+		'volume':0,
+		'fade_length':1,
+	}
+	get_body().load_data(event_data)
+	get_body().connect("audio_changed", self, "_on_ComplexAudioPicker_audio_changed")
+
 
 func load_data(data):
-	event_data = data
-	$PanelContainer/VBoxContainer/Settings/FadeLength.value = event_data.get("fade_length", 1)
-	$PanelContainer/VBoxContainer/Settings/AudioPicker.load_data(data)
+	.load_data(data)
+	get_body().load_data(data)
 
-func update_audio_data(file, playing, audio_bus, volume):
-	event_data['background-music'] = playing
+
+func _on_ComplexAudioPicker_audio_changed(file, playing, audio_bus, volume, fade_length):
 	event_data['file'] = file
+	event_data['background_music'] = playing
 	event_data['audio_bus'] = audio_bus
 	event_data['volume'] = volume
+	event_data['fade_length'] = fade_length
+
 	if file:
-		$PanelContainer/VBoxContainer/Header/Preview.text = 'Plays '+file.get_file()
+		set_preview('Plays '+file.get_file())
 	else:
-		$PanelContainer/VBoxContainer/Header/Preview.text = 'Fades out previous background music'
-
-func _on_FadeLength_value_changed(value):
-	event_data['fade_length'] = value
-
+		set_preview('Stops previous audio event')

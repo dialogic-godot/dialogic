@@ -1,7 +1,7 @@
 tool
-extends "res://addons/dialogic/Editor/Events/Templates/EventTemplate.gd"
+extends "res://addons/dialogic/Editor/Events/Templates/EventBlock.gd"
 
-var preview_scene = preload("res://addons/dialogic/Editor/Events/Common/Images/ImagePreview.tscn")
+var preview_scene = preload("res://addons/dialogic/Editor/Events/Parts/Images/ImagePreview.tscn")
 
 var preview = "..."
 var image_picker
@@ -23,22 +23,23 @@ func _ready():
 
 func load_data(data):
 	.load_data(data)
-	load_image(event_data['background'])
+	if get_header():
+		load_image(event_data['background'])
 
 
 func load_image(img_src: String):
 	event_data['background'] = img_src
 	if not img_src.empty() and not img_src.ends_with('.tscn'):
 		set_preview("...")
-		set_body(preview_scene)
+		_set_body(preview_scene)
 		get_body().set_image(load(img_src))
 		image_picker.set_image(img_src)
 	elif img_src.ends_with('.tscn'):
 		set_preview("...")
 		image_picker.set_image(img_src)
-		set_body(null)
+		_set_body(null)
 	else:
-		set_body(null)
+		_set_body(null)
 		image_picker.clear_image()
 
 

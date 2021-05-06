@@ -1,0 +1,35 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://addons/dialogic/Editor/Events/Parts/SpinBoxPreventDnD.gd" type="Script" id=1]
+[ext_resource path="res://addons/dialogic/Editor/Events/Parts/Numbers/EventPart_TransitonLengthPicker.gd" type="Script" id=2]
+
+[node name="TransitonLengthPicker" type="VBoxContainer"]
+margin_right = 195.0
+margin_bottom = 24.0
+size_flags_vertical = 3
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HBox" type="HBoxContainer" parent="."]
+margin_right = 195.0
+margin_bottom = 24.0
+size_flags_vertical = 3
+
+[node name="NameLabel" type="Label" parent="HBox"]
+margin_top = 5.0
+margin_right = 117.0
+margin_bottom = 19.0
+text = "Fade-out duration:"
+
+[node name="NumberBox" type="SpinBox" parent="HBox"]
+margin_left = 121.0
+margin_right = 195.0
+margin_bottom = 24.0
+size_flags_vertical = 6
+step = 0.1
+value = 1.0
+allow_greater = true
+align = 1
+script = ExtResource( 1 )

@@ -13,7 +13,8 @@ func _ready():
 
 func load_data(data):
 	.load_data(data)
-	get_header().set_value(float(event_data['wait_seconds']))
+	if get_header():
+		get_header().set_value(float(event_data['wait_seconds']))
 
 
 func _on_Selector_value_changed(value):

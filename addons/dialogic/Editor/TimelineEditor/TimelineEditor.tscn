@@ -188,7 +188,7 @@ margin_right = 180.0
 margin_bottom = 14.0
 size_flags_horizontal = 3
 
-[node name="ButtonQuestion" type="Button" parent="ScrollContainer/EventContainer"]
+[node name="Question" type="Button" parent="ScrollContainer/EventContainer"]
 margin_top = 204.0
 margin_right = 180.0
 margin_bottom = 232.0

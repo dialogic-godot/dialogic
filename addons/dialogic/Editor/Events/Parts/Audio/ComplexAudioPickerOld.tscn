@@ -1,0 +1,35 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://addons/dialogic/Editor/Events/Parts/Audio/AudioPicker.tscn" type="PackedScene" id=1]
+[ext_resource path="res://addons/dialogic/Editor/Events/Parts/Audio/ComplexAudioPickerOld.gd" type="Script" id=2]
+
+[node name="ComplexAudioPicker" type="HBoxContainer"]
+margin_right = 40.0
+margin_bottom = 40.0
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="AudioPicker" parent="." instance=ExtResource( 1 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 294.0
+margin_bottom = 40.0
+event_name = "Background Music"
+
+[node name="FadeLengthLabel" type="Label" parent="."]
+margin_left = 298.0
+margin_top = 13.0
+margin_right = 385.0
+margin_bottom = 27.0
+text = "  Fade-length:"
+
+[node name="FadeLength" type="SpinBox" parent="."]
+margin_left = 389.0
+margin_right = 463.0
+margin_bottom = 40.0
+step = 0.01
+suffix = "s"
+
+[connection signal="value_changed" from="FadeLength" to="." method="_on_FadeLength_value_changed"]

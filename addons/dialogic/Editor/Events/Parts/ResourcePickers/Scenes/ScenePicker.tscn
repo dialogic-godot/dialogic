@@ -1,0 +1,25 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://addons/dialogic/Editor/Events/Parts/ResourcePickers/Scenes/EventPart_ScenePicker.gd" type="Script" id=1]
+
+[node name="ScenePicker" type="VBoxContainer"]
+margin_right = 40.0
+margin_bottom = 40.0
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HBox" type="HBoxContainer" parent="."]
+margin_right = 40.0
+margin_bottom = 20.0
+
+[node name="Name" type="Label" parent="HBox"]
+margin_top = 3.0
+margin_bottom = 17.0
+
+[node name="ScenePickerButton" type="Button" parent="HBox"]
+margin_left = 4.0
+margin_right = 28.0
+margin_bottom = 20.0
+text = "..."
