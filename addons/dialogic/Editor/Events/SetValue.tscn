@@ -1,129 +1,49 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=5 format=2]
 
-[ext_resource path="res://addons/dialogic/Editor/Events/SetValue.gd" type="Script" id=1]
+[ext_resource path="res://addons/dialogic/Editor/Events/Templates/EventTemplate.tscn" type="PackedScene" id=1]
 [ext_resource path="res://addons/dialogic/Images/Event Icons/Main Icons/set-value.svg" type="Texture" id=2]
-[ext_resource path="res://addons/dialogic/Editor/Events/Common/Spacer.tscn" type="PackedScene" id=3]
-[ext_resource path="res://addons/dialogic/Editor/Events/Common/PieceExtraSettings.tscn" type="PackedScene" id=4]
-[ext_resource path="res://addons/dialogic/Editor/Events/Common/DefinitionPicker.tscn" type="PackedScene" id=6]
-[ext_resource path="res://addons/dialogic/Editor/Events/Common/OperationPicker.tscn" type="PackedScene" id=7]
+[ext_resource path="res://addons/dialogic/Editor/Events/styles/Logic.tres" type="StyleBox" id=3]
+[ext_resource path="res://addons/dialogic/Editor/Events/Parts/Logic/SetValuePicker.tscn" type="PackedScene" id=4]
 
-
-
-[sub_resource type="StyleBoxFlat" id=1]
-content_margin_left = 16.0
-content_margin_right = 6.0
-content_margin_top = 6.0
-content_margin_bottom = 6.0
-bg_color = Color( 0.243137, 0.231373, 0.396078, 0.772549 )
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color( 0.12549, 0.12549, 0.12549, 1 )
-corner_radius_top_left = 6
-corner_radius_top_right = 6
-corner_radius_bottom_right = 6
-corner_radius_bottom_left = 6
-
-[sub_resource type="StyleBoxFlat" id=2]
-bg_color = Color( 0.745098, 0.745098, 0.745098, 1 )
-corner_radius_top_left = 4
-corner_radius_top_right = 4
-corner_radius_bottom_right = 4
-corner_radius_bottom_left = 4
-expand_margin_left = 5.0
-expand_margin_right = 5.0
-
-[node name="SetValue" type="HBoxContainer"]
-margin_right = 1004.0
-margin_bottom = 42.0
-size_flags_horizontal = 3
-size_flags_vertical = 9
-script = ExtResource( 1 )
-__meta__ = {
-"_edit_use_anchors_": false
+[node name="SetValue" instance=ExtResource( 1 )]
+event_data = {
+"definition": "",
+"event_id": "dialogic_014",
+"operation": "=",
+"set_value": ""
 }
+event_style = ExtResource( 3 )
+event_icon = ExtResource( 2 )
+event_name = "Set Value"
+header_scene = ExtResource( 4 )
 
-[node name="Indent" type="Control" parent="."]
-visible = false
-margin_bottom = 42.0
+[node name="PanelContainer" parent="." index="1"]
+custom_styles/panel = ExtResource( 3 )
 
-[node name="PanelContainer" type="PanelContainer" parent="."]
-margin_right = 1004.0
-margin_bottom = 42.0
-mouse_filter = 1
-size_flags_horizontal = 3
-size_flags_vertical = 3
-custom_styles/panel = SubResource( 1 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
+[node name="Warning" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="0"]
+margin_right = 28.0
 
-[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer"]
-margin_left = 16.0
-margin_top = 6.0
-margin_right = 998.0
-margin_bottom = 36.0
-size_flags_horizontal = 3
-
-[node name="Header" type="HBoxContainer" parent="PanelContainer/VBoxContainer"]
-margin_right = 982.0
-margin_bottom = 28.0
-
-[node name="TextureRect" type="TextureRect" parent="PanelContainer/VBoxContainer/Header"]
-margin_right = 22.0
-margin_bottom = 28.0
+[node name="IconTexture" parent="PanelContainer/MarginContainer/VBoxContainer/Header/IconMarginContainer" index="0"]
 texture = ExtResource( 2 )
-stretch_mode = 6
 
-[node name="Title" type="Label" parent="PanelContainer/VBoxContainer/Header"]
-margin_left = 26.0
-margin_top = 7.0
-margin_right = 133.0
-margin_bottom = 21.0
-text = "  Set the value of"
+[node name="TitleHBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="2"]
+visible = true
+margin_right = 120.0
 
-[node name="DefinitionPicker" parent="PanelContainer/VBoxContainer/Header" instance=ExtResource( 6 )]
-margin_left = 137.0
-margin_right = 280.0
-margin_bottom = 28.0
+[node name="TitleMarginContainer" parent="PanelContainer/MarginContainer/VBoxContainer/Header/TitleHBoxContainer" index="1"]
+margin_right = 77.0
 
-[node name="OperationPicker" parent="PanelContainer/VBoxContainer/Header" instance=ExtResource( 7 )]
-margin_right = 347.0
+[node name="TitleLabel" parent="PanelContainer/MarginContainer/VBoxContainer/Header/TitleHBoxContainer/TitleMarginContainer" index="0"]
+margin_right = 64.0
+text = "Set Value"
 
-[node name="LineEdit" type="LineEdit" parent="PanelContainer/VBoxContainer/Header"]
-margin_left = 351.0
-margin_right = 399.0
-margin_bottom = 28.0
-custom_styles/read_only = SubResource( 2 )
-custom_styles/focus = SubResource( 2 )
-custom_styles/normal = SubResource( 2 )
-custom_colors/selection_color = Color( 0.345098, 0.345098, 0.345098, 1 )
-custom_colors/cursor_color = Color( 0, 0, 0, 1 )
-custom_colors/clear_button_color_pressed = Color( 0, 0, 0, 1 )
-custom_colors/font_color_selected = Color( 0, 0, 0, 1 )
-custom_colors/font_color = Color( 0, 0, 0, 1 )
-custom_colors/clear_button_color = Color( 0, 0, 0, 1 )
-custom_colors/font_color_uneditable = Color( 0, 0, 0, 1 )
-expand_to_text_length = true
-caret_blink = true
-caret_blink_speed = 0.5
+[node name="VSeparator2" parent="PanelContainer/MarginContainer/VBoxContainer/Header/TitleHBoxContainer" index="2"]
+margin_left = 81.0
+margin_right = 85.0
 
-[node name="Preview" type="Label" parent="PanelContainer/VBoxContainer/Header"]
-margin_left = 403.0
-margin_top = 7.0
-margin_right = 403.0
-margin_bottom = 21.0
-custom_colors/font_color = Color( 1, 1, 1, 0.513726 )
+[node name="Content" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="3"]
+margin_left = 124.0
+margin_right = 438.0
 
-[node name="Spacer" parent="PanelContainer/VBoxContainer/Header" instance=ExtResource( 3 )]
-margin_left = 407.0
-margin_right = 941.0
-margin_bottom = 28.0
-
-[node name="OptionButton" parent="PanelContainer/VBoxContainer/Header" instance=ExtResource( 4 )]
-margin_left = 945.0
-margin_right = 982.0
-margin_bottom = 28.0
-items = [ "Move Up", null, 0, false, false, 0, 0, null, "", false, "Move Down", null, 0, false, false, 1, 0, null, "", false, "", null, 0, false, false, 2, 0, null, "", true, "Remove", null, 0, false, false, 3, 0, null, "", false ]
-[connection signal="text_changed" from="PanelContainer/VBoxContainer/Header/LineEdit" to="." method="_on_LineEdit_text_changed"]
+[node name="Spacer" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="5"]
+margin_left = 442.0

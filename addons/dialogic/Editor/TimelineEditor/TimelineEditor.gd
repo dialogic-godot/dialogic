@@ -15,14 +15,13 @@ var selected_style : StyleBoxFlat = load("res://addons/dialogic/Editor/Events/st
 var selected_style_text : StyleBoxFlat = load("res://addons/dialogic/Editor/Events/styles/selected_styleboxflat_text_event.tres")
 var selected_style_template : StyleBoxFlat = load("res://addons/dialogic/Editor/Events/styles/selected_styleboxflat_template.tres")
 var saved_style : StyleBoxFlat
-var selected_item : Node
+var selected_items : Array = []
 
 
 var moving_piece = null
 var piece_was_dragged = false
 
-func _has_template(event):
-	return event.event_data.has("background") or event.event_data.has("wait_seconds")
+signal selection_updated
 
 
 func _ready():
@@ -46,39 +45,15 @@ func _ready():
 	# We connect all the event buttons to the event creation functions
 	for b in $ScrollContainer/EventContainer.get_children():
 		if b is Button:
-			if b.name == 'ButtonQuestion':
+			if b.name == 'Question':
 				b.connect('pressed', self, "_on_ButtonQuestion_pressed", [])
-			elif b.name == 'IfCondition':
+			elif b.name == 'Condition':
 				b.connect('pressed', self, "_on_ButtonCondition_pressed", [])
 			else:
 				b.connect('pressed', self, "_create_event_button_pressed", [b.name])
 	
 	var style = $TimelineArea.get('custom_styles/bg')
 	style.set('bg_color', get_color("dark_color_1", "Editor"))
-
-
-func delete_event():
-	# get next element
-	var next = min(timeline.get_child_count() - 1, selected_item.get_index() + 1)
-	var next_node = timeline.get_child(next)
-	if (next_node == selected_item):
-		next_node = null
-		
-	# remove current
-	selected_item.get_parent().remove_child(selected_item)
-	selected_item.queue_free()
-	selected_item = null
-	
-	# select next
-	if (next_node != null):
-		_select_item(next_node)
-	else:
-		if (timeline.get_child_count() > 0):
-			next_node = timeline.get_child(max(0, timeline.get_child_count() - 1))
-			if (next_node != null):
-				_select_item(next_node)
-				
-	indent_events()
 
 func _input(event):
 	# some shortcuts need to get handled in the common input event
@@ -91,16 +66,17 @@ func _input(event):
 		if (event.pressed
 			and event.alt == false
 			and event.shift == false
-			and event.control == true
+			and event.control == false
 			and event.scancode == KEY_UP
 			and event.echo == false
 		):
 			# select previous
-			if (selected_item != null):
-				var prev = max(0, selected_item.get_index() - 1)
+			if (len(selected_items) == 1):
+				var prev = max(0, selected_items[0].get_index() - 1)
 				var prev_node = timeline.get_child(prev)
-				if (prev_node != selected_item):
-					_select_item(prev_node)
+				if (prev_node != selected_items[0]):
+					selected_items = []
+					select_item(prev_node)
 				get_tree().set_input_as_handled()
 				
 			pass
@@ -109,16 +85,17 @@ func _input(event):
 		if (event.pressed
 			and event.alt == false
 			and event.shift == false
-			and event.control == true
+			and event.control == false
 			and event.scancode == KEY_DOWN
 			and event.echo == false
 		):
 			# select next
-			if (selected_item != null):
-				var next = min(timeline.get_child_count() - 1, selected_item.get_index() + 1)
+			if (len(selected_items) == 1):
+				var next = min(timeline.get_child_count() - 1, selected_items[0].get_index() + 1)
 				var next_node = timeline.get_child(next)
-				if (next_node != selected_item):
-					_select_item(next_node)
+				if (next_node != selected_items[0]):
+					selected_items = []
+					select_item(next_node)
 				get_tree().set_input_as_handled()
 				
 			pass
@@ -127,12 +104,12 @@ func _input(event):
 		if (event.pressed
 			and event.alt == false
 			and event.shift == false
-			and event.control == true
+			and event.control == false
 			and event.scancode == KEY_DELETE
 			and event.echo == false
 		):
-			if (selected_item != null):
-				delete_event()
+			if (len(selected_items) != 0):
+				delete_selected_events()
 				get_tree().set_input_as_handled()
 			pass
 			
@@ -145,11 +122,156 @@ func _input(event):
 			and event.echo == false
 		):
 			var new_text = create_event("TextEvent")
-			_select_item(new_text)
+			select_item(new_text)
 			indent_events()
 			get_tree().set_input_as_handled()
 			pass
+			
+		# CTRL A
+		if (event.pressed
+			and event.alt == false
+			and event.shift == false
+			and event.control == true
+			and event.scancode == KEY_A
+			and event.echo == false
+		):
+			if (len(selected_items) != 0):
+				select_all_items()
+			get_tree().set_input_as_handled()
+		
+		# CTRL SHIFT A
+		if (event.pressed
+			and event.alt == false
+			and event.shift == true
+			and event.control == true
+			and event.scancode == KEY_A
+			and event.echo == false
+		):
+			if (len(selected_items) != 0):
+				deselect_all_items()
+			get_tree().set_input_as_handled()
+		
+		# CTRL C
+		if (event.pressed
+			and event.alt == false
+			and event.shift == false
+			and event.control == true
+			and event.scancode == KEY_C
+			and event.echo == false
+		):
+			copy_selected_events()
+			get_tree().set_input_as_handled()
+		
+		# CTRL V
+		if (event.pressed
+			and event.alt == false
+			and event.shift == false
+			and event.control == true
+			and event.scancode == KEY_V
+			and event.echo == false
+		):
+			paste_events()
+			get_tree().set_input_as_handled()
+		
+		# CTRL X
+		if (event.pressed
+			and event.alt == false
+			and event.shift == false
+			and event.control == true
+			and event.scancode == KEY_X
+			and event.echo == false
+		):
+			cut_selected_events()
+			get_tree().set_input_as_handled()
 
+		# CTRL D
+		if (event.pressed
+			and event.alt == false
+			and event.shift == false
+			and event.control == true
+			and event.scancode == KEY_D
+			and event.echo == false
+		):
+			
+			if len(selected_items) > 0:
+				copy_selected_events()
+				select_item(selected_items[-1], false)
+				paste_events()
+			get_tree().set_input_as_handled()
+
+func delete_selected_events():
+	
+	if len(selected_items) == 0:
+		return
+	
+	# get next element
+	var next = min(timeline.get_child_count() - 1, selected_items[-1].get_index() + 1)
+	var next_node = timeline.get_child(next)
+	if _is_item_selected(next_node):
+		next_node = null
+	
+	for event in selected_items:
+		event.get_parent().remove_child(event)
+		event.queue_free()
+	
+	# select next
+	if (next_node != null):
+		select_item(next_node, false)
+	else:
+		if (timeline.get_child_count() > 0):
+			next_node = timeline.get_child(max(0, timeline.get_child_count() - 1))
+			if (next_node != null):
+				select_item(next_node, false)
+		else:
+			deselect_all_items()
+	
+	indent_events()
+
+func delete_event(event):
+	event.get_parent().remove_child(event)
+	event.queue_free()
+
+func cut_selected_events():
+	copy_selected_events()
+	delete_selected_events()
+
+func copy_selected_events():
+	if len(selected_items) == 0:
+		return
+	var event_copy_array = []
+	for item in selected_items:
+		event_copy_array.append(item.event_data)
+	
+	OS.clipboard = JSON.print(
+		{
+			"events":event_copy_array,
+			"dialogic_version": editor_reference.version_string,
+			"project_name": ProjectSettings.get_setting("application/config/name")
+		})
+
+func paste_events():
+	var clipboard_parse = JSON.parse(OS.clipboard).result
+	
+	if typeof(clipboard_parse) == TYPE_DICTIONARY:
+		if clipboard_parse.has("dialogic_version"):
+			if clipboard_parse['dialogic_version'] != editor_reference.version_string:
+				print("[D] Be careful when copying from older versions!")
+		if clipboard_parse.has("project_name"):
+			if clipboard_parse['project_name'] != ProjectSettings.get_setting("application/config/name"):
+				print("[D] Be careful when copying from another project!")
+		if clipboard_parse.has('events'):
+			var event_list = clipboard_parse['events']
+			if len(selected_items) > 0:
+				event_list.invert()
+			
+			var new_items = []
+			for item in event_list:
+				if typeof(item) == TYPE_DICTIONARY and item.has('event_id'):
+					new_items.append(add_event_by_id(item['event_id'], item))
+			selected_items = new_items
+			sort_selection()
+			visual_update_selection()
+			indent_events()
 
 func _unhandled_key_input(event):
 	if (event is InputEventWithModifiers):
@@ -162,8 +284,8 @@ func _unhandled_key_input(event):
 			and event.echo == false
 		):
 			# move selected up
-			if (selected_item != null):
-				move_block(selected_item, "up")
+			if (len(selected_items) == 1):
+				move_block(selected_items[0], "up")
 				indent_events()
 				get_tree().set_input_as_handled()
 				
@@ -178,8 +300,8 @@ func _unhandled_key_input(event):
 			and event.echo == false
 		):
 			# move selected down
-			if (selected_item != null):
-				move_block(selected_item, "down")
+			if (len(selected_items) == 1):
+				move_block(selected_items[0], "down")
 				indent_events()
 				get_tree().set_input_as_handled()
 				
@@ -206,68 +328,96 @@ func _process(delta):
 				piece_was_dragged = true
 
 
-func _clear_selection():
-	if selected_item != null and saved_style != null:
-		if not _has_template(selected_item):
-			var selected_panel: PanelContainer = selected_item.get_node("PanelContainer")
-			if selected_panel != null:
-				selected_panel.set('custom_styles/panel', saved_style)
-		else:
-			selected_item.set_event_style(saved_style)
-			selected_item.on_timeline_selected(false)
-	selected_item = null
-	saved_style = null
-
 
 func _is_item_selected(item: Node):
-	return item == selected_item
+	return item in selected_items
 
-
-func _select_item(item: Node):
-	if item != null and not _is_item_selected(item):
-		_clear_selection()
-		selected_item = item
-		if not _has_template(item):
-			var panel: PanelContainer = item.get_node("PanelContainer")
-			if panel != null:
-				saved_style = panel.get('custom_styles/panel')
-				if selected_item.event_data.has('text') and selected_item.event_data.has('character'):
-					panel.set('custom_styles/panel', selected_style_text)
-				else:
-					panel.set('custom_styles/panel', selected_style)
-				# allow event panels to do additional operation when getting selected
-				if (selected_item.has_method("on_timeline_selected")):
-					selected_item.on_timeline_selected()
+func select_item(item: Node, multi_possible:bool = true):
+	if item == null:
+		return
+	if Input.is_key_pressed(KEY_CONTROL) and multi_possible:
+		# deselect the item if it is selected
+		if _is_item_selected(item):
+			selected_items.erase(item)
 		else:
-			saved_style = item.get_event_style()
-			item.set_event_style(selected_style_template)
-			selected_item.on_timeline_selected(true)
+			selected_items.append(item)
+	elif Input.is_key_pressed(KEY_SHIFT) and multi_possible:
+		
+		if len(selected_items) == 0:
+			selected_items = [item]
+		else:
+			var index = selected_items[-1].get_index()
+			var goal_idx = item.get_index()
+			while true:
+				if index < goal_idx: index += 1
+				else: index -= 1
+				if not timeline.get_child(index) in selected_items:
+					selected_items.append(timeline.get_child(index))
+				
+				if index == goal_idx:
+					break
 	else:
-		_clear_selection()
+		if len(selected_items) == 1:
+			if _is_item_selected(item):
+				selected_items.erase(item)
+			else:
+				selected_items = [item]
+		else:
+			selected_items = [item]
+	
+	sort_selection()
+	
+	visual_update_selection()
 
+func sort_selection():
+	selected_items.sort_custom(self, 'custom_sort_selection')
 
-func _on_gui_input(event, item: Node):
+func custom_sort_selection(item1, item2):
+	return item1.get_index() < item2.get_index()
+
+func select_all_items():
+	selected_items = []
+	for event in timeline.get_children():
+		selected_items.append(event)
+	visual_update_selection()
+
+func deselect_all_items():
+	selected_items = []
+	visual_update_selection()
+
+func visual_update_selection():
+	for item in timeline.get_children():
+		item.visual_deselect()
+	for item in selected_items:
+		item.visual_select()
+	
+
+func _on_event_block_gui_input(event, item: Node):
 	if event is InputEventMouseButton and event.button_index == 1:
 		if (not event.is_pressed()):
 			if (not piece_was_dragged and moving_piece != null):
-				_clear_selection()
+				pass
 			if (moving_piece != null):
 				indent_events()
 			moving_piece = null
 		elif event.is_pressed():
 			moving_piece = item
 			if not _is_item_selected(item):
-				_select_item(item)
+				
 				piece_was_dragged = true
 			else:
 				piece_was_dragged = false
+			select_item(item)
+
+
 
 
 func _on_event_options_action(action: String, item: Node):
+	### WORK TODO
 	if action == "remove":
-		if selected_item != item:
-			_select_item(item)
-		delete_event()
+		if len(selected_items) != 1 or (len(selected_items) == 1 and selected_items[0] != item):
+			select_item(item, false)
+		delete_selected_events()
 	else:
 		move_block(item, action)
 	indent_events()
@@ -275,12 +425,12 @@ func _on_event_options_action(action: String, item: Node):
 
 # Event Creation signal for buttons
 func _create_event_button_pressed(button_name):
-	create_event(button_name)
+	select_item(create_event(button_name))
 	indent_events()
 
 
 func _on_ButtonQuestion_pressed() -> void:
-	if selected_item != null:
+	if len(selected_items) != 0:
 		# Events are added bellow the selected node
 		# So we must reverse the adding order
 		create_event("EndBranch", {'no-data': true}, true)
@@ -295,13 +445,13 @@ func _on_ButtonQuestion_pressed() -> void:
 
 
 func _on_ButtonCondition_pressed() -> void:
-	if selected_item != null:
+	if len(selected_items) != 0:
 		# Events are added bellow the selected node
 		# So we must reverse the adding order
 		create_event("EndBranch", {'no-data': true}, true)
-		create_event("IfCondition", {'no-data': true}, true)
+		create_event("Condition", {'no-data': true}, true)
 	else:
-		create_event("IfCondition", {'no-data': true}, true)
+		create_event("Condition", {'no-data': true}, true)
 		create_event("EndBranch", {'no-data': true}, true)
 
 
@@ -313,7 +463,7 @@ func create_drag_and_drop_event(scene: String):
 	moving_piece = piece
 	piece_was_dragged = true
 	set_event_ignore_save(piece, true)
-	_select_item(piece)
+	select_item(piece)
 	return piece
 
 
@@ -329,25 +479,26 @@ func cancel_drop_event():
 	if moving_piece != null:
 		moving_piece = null
 		piece_was_dragged = false
-		delete_event()
-		_clear_selection()
+		delete_selected_events()
+		deselect_all_items()
 
 
 # Adding an event to the timeline
 func create_event(scene: String, data: Dictionary = {'no-data': true} , indent: bool = false):
 	var piece = load("res://addons/dialogic/Editor/Events/" + scene + ".tscn").instance()
 	piece.editor_reference = editor_reference
-	if selected_item != null:
-		timeline.add_child_below_node(selected_item, piece)
+	if data.has('no-data') == false:
+		#piece.load_data(data)
+		piece.event_data = data
+	if len(selected_items) != 0:
+		timeline.add_child_below_node(selected_items[0], piece)
 	else:
 		timeline.add_child(piece)
-	if data.has('no-data') == false:
-		piece.load_data(data)
 	
-	if _has_template(piece):
-		piece.connect("option_action", self, '_on_event_options_action', [piece])
+
+	piece.connect("option_action", self, '_on_event_options_action', [piece])
 	
-	piece.connect("gui_input", self, '_on_gui_input', [piece])
+	piece.connect("gui_input", self, '_on_event_block_gui_input', [piece])
 	events_warning.visible = false
 	# Indent on create
 	if indent:
@@ -367,12 +518,8 @@ func indent_events() -> void:
 	# Resetting all the indents
 	for event in event_list:
 		var indent_node
-		# Keep old behavior for items without template
-		if not _has_template(event):
-			indent_node = event.get_node("Indent")
-			indent_node.visible = false
-		else:
-			event.set_indent(0)
+		
+		event.set_indent(0)
 		
 	# Adding new indents
 	for event in event_list:
@@ -382,16 +529,16 @@ func indent_events() -> void:
 			continue
 		
 		
-		if event.event_data.has('choice'):
+		if event.event_data['event_id'] == 'dialogic_011':
 			if question_index > 0:
 				indent = question_indent[question_index] + 1
 				starter = true
-		elif event.event_data.has('question') or event.event_data.has('condition'):
+		elif event.event_data['event_id'] == 'dialogic_010' or event.event_data['event_id'] == 'dialogic_012':
 			indent += 1
 			starter = true
 			question_index += 1
 			question_indent[question_index] = indent
-		elif event.event_data.has('endbranch'):
+		elif event.event_data['event_id'] == 'dialogic_013':
 			if question_indent.has(question_index):
 				indent = question_indent[question_index]
 				indent -= 1
@@ -401,19 +548,10 @@ func indent_events() -> void:
 
 		if indent > 0:
 			# Keep old behavior for items without template
-			if not _has_template(event):
-				var indent_node = event.get_node("Indent")
-				indent_node.rect_min_size = Vector2(25 * indent, 0)
-				indent_node.visible = true
-				if starter:
-					indent_node.rect_min_size = Vector2(25 * (indent - 1), 0)
-					if indent - 1 == 0:
-						indent_node.visible = false
+			if starter:
+				event.set_indent(indent - 1)
 			else:
-				if starter:
-					event.set_indent(indent - 1)
-				else:
-					event.set_indent(indent)
+				event.set_indent(indent)
 		starter = false
 
 
@@ -429,70 +567,7 @@ func load_timeline(filename: String):
 		timeline_name = data['metadata']['file']
 	data = data['events']
 	for i in data:
-		match i['event_id']:
-					# MAIN EVENTS
-				# Text event
-				'dialogic_001':
-					create_event('TextEvent', i)
-				# Join event
-				'dialogic_002':
-					create_event("CharacterJoin", i)
-				# Character Leave event 
-				'dialogic_003':
-					create_event('CharacterLeave', i)
-				
-				# LOGIC EVENTS
-				# Question event
-				'dialogic_010':
-					create_event('Question', i)
-				# Choice event
-				'dialogic_011':
-					create_event('Choice', i)
-				# Condition event
-				'dialogic_012':
-					create_event('Condition', i)
-				# End Branch event
-				'dialogic_013':
-					create_event('EndBranch', i)
-				# Set Value event
-				'dialogic_014':
-					create_event('SetValue', i)
-				
-				# TIMELINE EVENTS
-				# Change Timeline event
-				'dialogic_020':
-					create_event('ChangeTimeline', i)
-				# Change Backround event
-				'dialogic_021':
-					create_event('ChangeBackground', i)
-				# Close Dialog event
-				'dialogic_022':
-					create_event('CloseDialog', i)
-				# Wait seconds event
-				'dialogic_023':
-					create_event('WaitSeconds', i)
-				# Set Theme event
-				'dialogic_024':
-					create_event('SetTheme', i)
-				
-				# AUDIO EVENTS
-				# Audio event
-				'dialogic_030':
-					create_event('AudioEvent', i)
-				# Background Music event
-				'dialogic_031':
-					create_event('BackgroundMusic', i)
-				
-				# GODOT EVENTS
-				# Emit signal event
-				'dialogic_040':
-					create_event('EmitSignal', i)
-				# Change Scene event
-				'dialogic_041':
-					create_event('ChangeScene', i)
-				# Call Node event
-				'dialogic_042':
-					create_event('CallNode', i)
+		add_event_by_id(i['event_id'], i)
 	
 	if data.size() < 1:
 		events_warning.visible = true
@@ -504,9 +579,74 @@ func load_timeline(filename: String):
 	var elapsed_time = (OS.get_system_time_msecs() - start_time) * 0.001
 	#editor_reference.dprint("Loading time: " + str(elapsed_time))
 
+func add_event_by_id(event_id, event_data):
+	match event_id:
+		# MAIN EVENTS
+		# Text event
+		'dialogic_001':
+			return create_event('TextEvent', event_data)
+		# Join event
+		'dialogic_002':
+			return create_event("CharacterJoin", event_data)
+		# Character Leave event 
+		'dialogic_003':
+			return create_event('CharacterLeave', event_data)
+		
+		# LOGIC EVENTS
+		# Question event
+		'dialogic_010':
+			return create_event('Question', event_data)
+		# Choice event
+		'dialogic_011':
+			return create_event('Choice', event_data)
+		# Condition event
+		'dialogic_012':
+			return create_event('Condition', event_data)
+		# End Branch event
+		'dialogic_013':
+			return create_event('EndBranch', event_data)
+		# Set Value event
+		'dialogic_014':
+			return create_event('SetValue', event_data)
+		
+		# TIMELINE EVENTS
+		# Change Timeline event
+		'dialogic_020':
+			return create_event('ChangeTimeline', event_data)
+		# Change Backround event
+		'dialogic_021':
+			return create_event('ChangeBackground', event_data)
+		# Close Dialog event
+		'dialogic_022':
+			return create_event('CloseDialog', event_data)
+		# Wait seconds event
+		'dialogic_023':
+			return create_event('WaitSeconds', event_data)
+		# Set Theme event
+		'dialogic_024':
+			return create_event('SetTheme', event_data)
+		
+		# AUDIO EVENTS
+		# Audio event
+		'dialogic_030':
+			return create_event('AudioEvent', event_data)
+		# Background Music event
+		'dialogic_031':
+			return create_event('BackgroundMusic', event_data)
+		
+		# GODOT EVENTS
+		# Emit signal event
+		'dialogic_040':
+			return create_event('EmitSignal', event_data)
+		# Change Scene event
+		'dialogic_041':
+			return create_event('ChangeScene', event_data)
+		# Call Node event
+		'dialogic_042':
+			return create_event('CallNode', event_data)
 
 func clear_timeline():
-	_clear_selection()
+	deselect_all_items()
 	for event in timeline.get_children():
 		event.free()
 
@@ -529,10 +669,7 @@ func get_block_below(block):
 
 func get_block_height(block):
 	if block != null:
-		if not _has_template(block):
-			return block.get_node("PanelContainer").rect_size.y
-		else:
-			return block.rect_size.y
+		return block.rect_size.y
 	else:
 		return null
 
@@ -597,20 +734,11 @@ func generate_save_data():
 
 
 func set_event_ignore_save(event: Node, ignore: bool):
-	if _has_template(event):
-		event.ignore_save = ignore
-	else:
-		if ignore:
-			event.event_data["_ignore_save"] = true
-		else:
-			event.event_data.erase("_ignore_save")
-
+	event.ignore_save = ignore
+	
 
 func get_event_ignore_save(event: Node) -> bool:
-	if _has_template(event):
-		return event.ignore_save
-	else:
-		return event.event_data.has("_ignore_save") and event.event_data["_ignore_save"]
+	return event.ignore_save
 
 
 func save_timeline() -> void:
@@ -623,15 +751,9 @@ func save_timeline() -> void:
 # Utilities
 func fold_all_nodes():
 	for event in timeline.get_children():
-		if event.has_node("PanelContainer/VBoxContainer/Header/VisibleToggle"):
-			event.get_node("PanelContainer/VBoxContainer/Header/VisibleToggle").set_pressed(false)
-		elif _has_template(event):
-			event.set_expanded(false)
+		event.set_expanded(false)
 
 
 func unfold_all_nodes():
 	for event in timeline.get_children():
-		if event.has_node("PanelContainer/VBoxContainer/Header/VisibleToggle"):
-			event.get_node("PanelContainer/VBoxContainer/Header/VisibleToggle").set_pressed(true)
-		elif _has_template(event):
-			event.set_expanded(true)
+		event.set_expanded(true)
