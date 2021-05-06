@@ -39,6 +39,9 @@ func load_data(data:Dictionary):
 	# otherwise
 	else:
 		text_editor.text = event_data['text']
+	
+	# resize the text_editor to the correct size 
+	text_editor.rect_min_size.y = text_height * (2 + text_editor.text.count('\n'))
 
 # has to return the wanted preview, only useful for body parts
 func get_preview():
