@@ -1,9 +1,9 @@
 [gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://addons/dialogic/Editor/Events/Templates/EventBlock.gd" type="Script" id=1]
-[ext_resource path="res://addons/dialogic/Editor/Events/Templates/ExpandControl.tscn" type="PackedScene" id=2]
+[ext_resource path="res://addons/dialogic/Editor/Events/Parts/EventBlock/ExpandControl.tscn" type="PackedScene" id=2]
 [ext_resource path="res://addons/dialogic/Editor/Events/Parts/EventBlock/Spacer.tscn" type="PackedScene" id=4]
-[ext_resource path="res://addons/dialogic/Editor/Events/Templates/OptionsControl.tscn" type="PackedScene" id=5]
+[ext_resource path="res://addons/dialogic/Editor/Events/Parts/EventBlock/OptionsControl.tscn" type="PackedScene" id=5]
 [ext_resource path="res://addons/dialogic/Images/Plugin/plugin-editor-icon-dark-theme.svg" type="Texture" id=6]
 
 [sub_resource type="StyleBoxFlat" id=1]
@@ -21,7 +21,7 @@ corner_radius_top_right = 6
 corner_radius_bottom_right = 6
 corner_radius_bottom_left = 6
 
-[sub_resource type="Image" id=3]
+[sub_resource type="Image" id=2]
 data = {
 "data": PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ),
 "format": "LumAlpha8",
@@ -30,10 +30,10 @@ data = {
 "width": 16
 }
 
-[sub_resource type="ImageTexture" id=2]
+[sub_resource type="ImageTexture" id=3]
 flags = 4
 flags = 4
-image = SubResource( 3 )
+image = SubResource( 2 )
 size = Vector2( 16, 16 )
 
 [node name="EventTemplate" type="HBoxContainer"]
@@ -99,7 +99,7 @@ and [End branch] events.
     [Choice]
     [...]
 [End branch]"
-icon = SubResource( 2 )
+icon = SubResource( 3 )
 
 [node name="IconMarginContainer" type="MarginContainer" parent="PanelContainer/MarginContainer/VBoxContainer/Header"]
 margin_right = 31.0
