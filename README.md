@@ -57,10 +57,10 @@ It is experimental! So if you want to try it out and you find issues, let us kno
 Usage:
 ```cs
 public override void _Ready()
-  {
-    var dialog = DialogicSharp.Start("Greeting", false);
-    AddChild(dialog);
-  }
+	{
+		var dialog = DialogicSharp.Start("Greeting", false);
+		AddChild(dialog);
+	}
 ```
 This is the PR that added this feature: https://github.com/coppolaemilio/dialogic/pull/217
 
@@ -105,13 +105,13 @@ Yes! it is a bit harder since you will have to create each event yourself, and t
 
 ```gdscript
 func _ready():
-  var gdscript_dialog = Dialogic.start('')
-  gdscript_dialog.dialog_script = {
-    "events":[
-      { 'event_id':'dialogic_001', "character": "", "portrait":"", "text": "This dialog was created using GDScript!"}
-    ]
-  }
-  add_child(gdscript_dialog)
+	var gdscript_dialog = Dialogic.start('')
+	gdscript_dialog.dialog_script = {
+		"events":[
+			{ 'event_id':'dialogic_001', "character": "", "portrait":"", "text": "This dialog was created using GDScript!"}
+		]
+	}
+	add_child(gdscript_dialog)
 ```
 
 This will add a simple timeline with a text event. 
