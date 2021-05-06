@@ -192,8 +192,11 @@ func _input(event):
 			and event.scancode == KEY_D
 			and event.echo == false
 		):
-			copy_selected_events()
-			paste_events()
+			
+			if len(selected_items) > 0:
+				copy_selected_events()
+				select_item(selected_items[-1], false)
+				paste_events()
 			get_tree().set_input_as_handled()
 
 func delete_selected_events():
@@ -260,9 +263,14 @@ func paste_events():
 			var event_list = clipboard_parse['events']
 			if len(selected_items) > 0:
 				event_list.invert()
+			
+			var new_items = []
 			for item in event_list:
 				if typeof(item) == TYPE_DICTIONARY and item.has('event_id'):
-					add_event_by_id(item['event_id'], item)
+					new_items.append(add_event_by_id(item['event_id'], item))
+			selected_items = new_items
+			sort_selection()
+			visual_update_selection()
 			indent_events()
 
 func _unhandled_key_input(event):
@@ -576,66 +584,66 @@ func add_event_by_id(event_id, event_data):
 		# MAIN EVENTS
 		# Text event
 		'dialogic_001':
-			create_event('TextEvent', event_data)
+			return create_event('TextEvent', event_data)
 		# Join event
 		'dialogic_002':
-			create_event("CharacterJoin", event_data)
+			return create_event("CharacterJoin", event_data)
 		# Character Leave event 
 		'dialogic_003':
-			create_event('CharacterLeave', event_data)
+			return create_event('CharacterLeave', event_data)
 		
 		# LOGIC EVENTS
 		# Question event
 		'dialogic_010':
-			create_event('Question', event_data)
+			return create_event('Question', event_data)
 		# Choice event
 		'dialogic_011':
-			create_event('Choice', event_data)
+			return create_event('Choice', event_data)
 		# Condition event
 		'dialogic_012':
-			create_event('Condition', event_data)
+			return create_event('Condition', event_data)
 		# End Branch event
 		'dialogic_013':
-			create_event('EndBranch', event_data)
+			return create_event('EndBranch', event_data)
 		# Set Value event
 		'dialogic_014':
-			create_event('SetValue', event_data)
+			return create_event('SetValue', event_data)
 		
 		# TIMELINE EVENTS
 		# Change Timeline event
 		'dialogic_020':
-			create_event('ChangeTimeline', event_data)
+			return create_event('ChangeTimeline', event_data)
 		# Change Backround event
 		'dialogic_021':
-			create_event('ChangeBackground', event_data)
+			return create_event('ChangeBackground', event_data)
 		# Close Dialog event
 		'dialogic_022':
-			create_event('CloseDialog', event_data)
+			return create_event('CloseDialog', event_data)
 		# Wait seconds event
 		'dialogic_023':
-			create_event('WaitSeconds', event_data)
+			return create_event('WaitSeconds', event_data)
 		# Set Theme event
 		'dialogic_024':
-			create_event('SetTheme', event_data)
+			return create_event('SetTheme', event_data)
 		
 		# AUDIO EVENTS
 		# Audio event
 		'dialogic_030':
-			create_event('AudioEvent', event_data)
+			return create_event('AudioEvent', event_data)
 		# Background Music event
 		'dialogic_031':
-			create_event('BackgroundMusic', event_data)
+			return create_event('BackgroundMusic', event_data)
 		
 		# GODOT EVENTS
 		# Emit signal event
 		'dialogic_040':
-			create_event('EmitSignal', event_data)
+			return create_event('EmitSignal', event_data)
 		# Change Scene event
 		'dialogic_041':
-			create_event('ChangeScene', event_data)
+			return create_event('ChangeScene', event_data)
 		# Call Node event
 		'dialogic_042':
-			create_event('CallNode', event_data)
+			return create_event('CallNode', event_data)
 
 func clear_timeline():
 	deselect_all_items()
