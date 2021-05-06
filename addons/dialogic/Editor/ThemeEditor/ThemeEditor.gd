@@ -73,6 +73,9 @@ onready var n : Dictionary = {
 	'name_bottom_gap': $"VBoxContainer/TabContainer/Name Label/Column3/GridContainer/HBoxContainer5/BottomGap",
 	'name_background_modulation': $"VBoxContainer/TabContainer/Name Label/Column2/GridContainer/HBoxContainer6/CheckBox",
 	'name_background_modulation_color': $"VBoxContainer/TabContainer/Name Label/Column2/GridContainer/HBoxContainer6/ColorPickerButton",
+	'name_padding_x': $"VBoxContainer/TabContainer/Name Label/Column2/GridContainer/HBoxContainer/NamePaddingX",
+	'name_padding_y': $"VBoxContainer/TabContainer/Name Label/Column2/GridContainer/HBoxContainer/NamePaddingY",
+	
 	
 	# Choice Buttons
 	'button_text_color_enabled': $"VBoxContainer/TabContainer/Choice Buttons/Column/GridContainer/HBoxContainer4/CheckBox2",
@@ -234,7 +237,8 @@ func load_theme(filename):
 	n['name_background_modulation'].pressed = theme.get_value('name', 'modulation', false)
 	n['name_background_modulation_color'].color = Color(theme.get_value('name', 'modulation_color', '#ffffffff'))
 
-	
+	n['name_padding_x'].value = theme.get_value('name', 'name_padding', Vector2(10,0)).x
+	n['name_padding_y'].value = theme.get_value('name', 'name_padding', Vector2(10,0)).y
 	
 	n['name_shadow'].color = Color(theme.get_value('name', 'shadow', "#9e000000"))
 	n['name_shadow_visible'].pressed = theme.get_value('name', 'shadow_visible', true)
@@ -633,17 +637,27 @@ func _on_shadow_visible_toggled(button_pressed) -> void:
 	DialogicResources.set_theme_value(current_theme, 'name', 'shadow_visible', button_pressed)
 	_on_PreviewButton_pressed() # Refreshing the preview
 
+
 func _on_name_shadow_color_changed(color) -> void:
 	if loading:
 		return
 	DialogicResources.set_theme_value(current_theme, 'name', 'shadow', '#' + color.to_html())
 	$DelayPreviewTimer.start(0.5) # Calling a timer so the update doesn't get triggered many times
 
+
 func _on_name_ShadowOffset_value_changed(_value) -> void:
 	if loading:
 		return
 	DialogicResources.set_theme_value(current_theme, 'name','shadow_offset', 
-			Vector2(n['name_shadow_offset_x'].value,n['name_shadow_offset_y'].value))
+			Vector2(n['name_shadow_offset_x'].value, n['name_shadow_offset_y'].value))
+	_on_PreviewButton_pressed() # Refreshing the preview
+
+
+func _on_name_padding_value_changed(_value) -> void:
+	if loading:
+		return
+	DialogicResources.set_theme_value(current_theme, 'name','name_padding', 
+			Vector2(n['name_padding_x'].value, n['name_padding_y'].value))
 	_on_PreviewButton_pressed() # Refreshing the preview
 
 

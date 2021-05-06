@@ -125,12 +125,19 @@ func load_theme(theme: ConfigFile):
 	$NameLabel/ColorRect.color = Color(theme.get_value('name', 'background', '#282828'))
 	$NameLabel/TextureRect.visible = theme.get_value('name', 'image_visible', false)
 	$NameLabel/TextureRect.texture = DialogicUtil.path_fixer_load(theme.get_value('name','image', "res://addons/dialogic/Example Assets/backgrounds/background-2.png"))
+	
+	var name_padding = theme.get_value('name', 'name_padding', Vector2( 10, 0 ))
+	var name_style = name_label.get('custom_styles/normal')
+	name_style.set('content_margin_left', name_padding.x)
+	name_style.set('content_margin_right', name_padding.x)
+	name_style.set('content_margin_bottom', name_padding.y)
+	
 	var name_shadow_offset = theme.get_value('name', 'shadow_offset', Vector2(2,2))
 	if theme.get_value('name', 'shadow_visible', true):
 		name_label.set('custom_colors/font_color_shadow', Color(theme.get_value('name', 'shadow', '#9e000000')))
 		name_label.set('custom_constants/shadow_offset_x', name_shadow_offset.x)
 		name_label.set('custom_constants/shadow_offset_y', name_shadow_offset.y)
-	name_label.rect_position.y = theme.get_value('name', 'bottom_gap', 48) * -1
+	name_label.rect_position.y = theme.get_value('name', 'bottom_gap', 48) * -1 - (name_padding.y)
 	if theme.get_value('name', 'modulation', false) == true:
 		$NameLabel/TextureRect.modulate = Color(theme.get_value('name', 'modulation_color', '#ffffffff'))
 	else:
