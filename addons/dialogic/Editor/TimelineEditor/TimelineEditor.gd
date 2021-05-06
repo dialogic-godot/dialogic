@@ -235,22 +235,35 @@ func cut_selected_events():
 func copy_selected_events():
 	if len(selected_items) == 0:
 		return
-	var copy_array = []
+	var event_copy_array = []
 	for item in selected_items:
-		copy_array.append(item.event_data)
+		event_copy_array.append(item.event_data)
 	
-	OS.clipboard = JSON.print(copy_array)
+	OS.clipboard = JSON.print(
+		{
+			"events":event_copy_array,
+			"dialogic_version": editor_reference.version_string,
+			"project_name": ProjectSettings.get_setting("application/config/name")
+		})
 
 func paste_events():
 	var clipboard_parse = JSON.parse(OS.clipboard).result
 	
-	if typeof(clipboard_parse) == TYPE_ARRAY:
-		if len(selected_items) > 0:
-			clipboard_parse.invert()
-		for item in clipboard_parse:
-			if typeof(item) == TYPE_DICTIONARY and item.has('event_id'):
-				add_event_by_id(item['event_id'], item)
-		indent_events()
+	if typeof(clipboard_parse) == TYPE_DICTIONARY:
+		if clipboard_parse.has("dialogic_version"):
+			if clipboard_parse['dialogic_version'] != editor_reference.version_string:
+				print("[D] Be careful when copying from older versions!")
+		if clipboard_parse.has("project_name"):
+			if clipboard_parse['project_name'] != ProjectSettings.get_setting("application/config/name"):
+				print("[D] Be careful when copying from another project!")
+		if clipboard_parse.has('events'):
+			var event_list = clipboard_parse['events']
+			if len(selected_items) > 0:
+				event_list.invert()
+			for item in event_list:
+				if typeof(item) == TYPE_DICTIONARY and item.has('event_id'):
+					add_event_by_id(item['event_id'], item)
+			indent_events()
 
 func _unhandled_key_input(event):
 	if (event is InputEventWithModifiers):
