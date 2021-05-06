@@ -104,13 +104,14 @@ func after_dialog(timeline_name):
 Yes! it is a bit harder since you will have to create each event yourself, and to do that they have to be **valid**. You can check already created timelines with a text editor and see how an event should look like, but after you know how, you can do something like this:
 
 ```gdscript
-var gdscript_dialog = Dialogic.start('')
-gdscript_dialog.dialog_script = {
-	"events":[
-		{ 'event_id':'dialogic_001', "character": "", "portrait":"", "text": "This dialog was created using GDScript!"}
-	]
-}
-add_child(gdscript_dialog)
+func _ready():
+  var gdscript_dialog = Dialogic.start('')
+  gdscript_dialog.dialog_script = {
+    "events":[
+      { 'event_id':'dialogic_001', "character": "", "portrait":"", "text": "This dialog was created using GDScript!"}
+    ]
+  }
+  add_child(gdscript_dialog)
 ```
 
 This will add a simple timeline with a text event. 
