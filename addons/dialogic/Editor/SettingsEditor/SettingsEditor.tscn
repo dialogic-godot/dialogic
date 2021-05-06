@@ -89,23 +89,6 @@ margin_top = 26.0
 margin_right = 356.0
 margin_bottom = 50.0
 
-[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2/HBoxContainer6"]
-margin_top = 5.0
-margin_right = 137.0
-margin_bottom = 19.0
-text = "Uses translation keys"
-
-[node name="Translations" type="CheckBox" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2/HBoxContainer6"]
-margin_left = 141.0
-margin_right = 165.0
-margin_bottom = 24.0
-hint_tooltip = "If enabled, inputs for text events will be treated as keys for tr()"
-
-[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2"]
-margin_top = 54.0
-margin_right = 304.0
-margin_bottom = 78.0
-
 [node name="Label" type="Label" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2/HBoxContainer2"]
 margin_top = 5.0
 margin_right = 237.0
