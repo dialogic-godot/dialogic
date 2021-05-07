@@ -625,6 +625,9 @@ func add_event_by_id(event_id, event_data):
 		# Set Theme event
 		'dialogic_024':
 			return create_event('SetTheme', event_data)
+		# Set Glossary event
+		'dialogic_025':
+			return create_event('SetGlossary', event_data)
 		
 		# AUDIO EVENTS
 		# Audio event

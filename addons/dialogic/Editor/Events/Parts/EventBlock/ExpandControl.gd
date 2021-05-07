@@ -7,6 +7,8 @@ onready var preview = $MarginContainer/Preview
 var enabled : bool
 var expanded: bool
 
+var max_preview_characters = 50
+
 signal state_changed(expanded)
 
 func _ready():
@@ -15,6 +17,9 @@ func _ready():
 
 
 func set_preview(text: String):
+	if len(text) > 50:
+		text = text.substr(0, 50)
+		text += "..."
 	preview.text = text
 
 

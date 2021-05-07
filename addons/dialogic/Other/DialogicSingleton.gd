@@ -114,6 +114,22 @@ func set_glossary(name: String, title: String, text: String, extra: String) -> v
 			d['extra'] = extra
 
 
+func set_glossary_from_id(id: String, title: String, text: String, extra:String) -> void:
+	var target_def: Dictionary;
+	for d in current_definitions['glossary']:
+		if d['id'] == id:
+			target_def = d;
+	if target_def != null:
+		if title and title != "[No Change]":
+			target_def['title'] = title
+		if text and text != "[No Change]":
+			target_def['text'] = text
+		if extra and extra != "[No Change]":
+			target_def['extra'] = extra
+		
+
+
+
 func set_current_timeline(timeline: String):
 	current_timeline = timeline
 	set_saved_state_general_key('timeline', timeline)
