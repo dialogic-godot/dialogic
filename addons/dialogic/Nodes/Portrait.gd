@@ -67,7 +67,7 @@ func set_portrait(expression: String) -> void:
 			if ResourceLoader.exists(p['path']):
 				$TextureRect.texture = load(p['path'])
 			else:
-				$TextureRect.texture = Texture.new()
+				$TextureRect.texture = ImageTexture.new()
 	
 
 # Tween stuff
