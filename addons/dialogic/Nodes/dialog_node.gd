@@ -280,6 +280,7 @@ func _should_show_glossary():
 
 func parse_definitions(text: String, variables: bool = true, glossary: bool = true):
 	var final_text: String = text
+	definitions = DialogicSingleton.get_definitions()
 	if variables:
 		final_text = _insert_variable_definitions(text)
 	if glossary and _should_show_glossary():
@@ -603,6 +604,13 @@ func event_handler(event: Dictionary):
 				current_theme = load_theme(event['set_theme'])
 			_load_next_event()
 		
+		# Set Glossary event
+		'dialogic_025':
+			emit_signal("event_start", "set_glossary", event)
+			if event['glossary_id']:
+				print("set glossary")
+				DialogicSingleton.set_glossary_from_id(event['glossary_id'], event['title'], event['text'],event['extra'])
+			_load_next_event()
 		# AUDIO EVENTS
 		# Audio event
 		'dialogic_030':
@@ -873,7 +881,7 @@ func _on_RichTextLabel_meta_hover_started(meta):
 		if d['id'] == meta:
 			$DefinitionInfo.load_preview({
 				'title': d['title'],
-				'body': d['text'],
+				'body': parse_definitions(d['text'], true, false), # inserts variables but not other glossary items!
 				'extra': d['extra'],
 				'color': current_theme.get_value('definitions', 'color', '#ffbebebe'),
 			})
