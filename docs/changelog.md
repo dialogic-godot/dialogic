@@ -2,6 +2,13 @@
 - Added new fonts selector for italics, bold, and names [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
 - Added extra options to allow the user to disable/enable saving of definitions and current timeline [[Arnaud](https://github.com/arnaudvergnet)]
 - Modified the label on the emit signal event so it is easier to understand [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
+- Timeline Editor
+  - You can now select multiple events (CRTL for adding/removing an event, SHIFT for range select) [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
+  - You can now use CRTL+C, CRTL+X and CRTL+V to copy, cut and paste events. [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
+  - You can use CRTL+D to duplicate the selection. [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
+  - You can use CRTL+A and CRTL+SHIFT+A to select/deselect all events. [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
+  - Some shortcuts where redone: Remove events with DEL, move selection up/down with the UP and DOWN arrow keys. [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
+  - A SetGlossary event was added that allows to change the info of a glossary item during the game. [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
 - Theme Editor
   - Added new Box Padding settings to the name label.
 - Character Editor
