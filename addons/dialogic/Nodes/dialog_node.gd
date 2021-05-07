@@ -280,7 +280,8 @@ func _should_show_glossary():
 
 func parse_definitions(text: String, variables: bool = true, glossary: bool = true):
 	var final_text: String = text
-	definitions = DialogicSingleton.get_definitions()
+	if not preview:
+		definitions = DialogicSingleton.get_definitions()
 	if variables:
 		final_text = _insert_variable_definitions(text)
 	if glossary and _should_show_glossary():
