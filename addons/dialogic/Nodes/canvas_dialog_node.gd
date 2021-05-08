@@ -26,6 +26,11 @@ func set_dialog_node_scene(scene) -> void:
 func _enter_tree() -> void:  
 	if dialog_node:
 		add_child(dialog_node)
+		dialog_node.connect('tree_exited', self, 'dialog_finished')
+
+
+func dialog_finished():
+	queue_free()
 
 
 func _ready() -> void:
