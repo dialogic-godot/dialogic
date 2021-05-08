@@ -255,6 +255,8 @@ func _on_item_selected():
 	elif metadata['editor'] == 'Settings':
 		settings_editor.update_data()
 		show_settings_editor()
+	else:
+		hide_all_editors()
 
 func show_character_editor():
 	emit_signal("editor_selected", 'character')
@@ -342,6 +344,7 @@ func _on_item_rmb_selected(position):
 	if item['editor'] == 'Definition Root':
 		editor_reference.get_node("DefinitionRootPopupMenu").rect_position = get_viewport().get_mouse_position()
 		editor_reference.get_node("DefinitionRootPopupMenu").popup()
+
 
 func remove_selected():
 	var item = get_selected()

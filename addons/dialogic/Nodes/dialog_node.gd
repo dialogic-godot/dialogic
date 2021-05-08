@@ -72,8 +72,13 @@ func _ready():
 
 	if Engine.is_editor_hint():
 		if preview:
+			get_parent().connect("resized", self, "resize_main")
 			_init_dialog()
 	else:
+		# Copied
+		if not(get_parent() is CanvasLayer) and debug_mode:
+			push_warning("[Dialogic] You didn't add this node to a CanvasLayer. If this was intentional, you can ignore this warning.")
+		
 		_init_dialog()
 
 
@@ -106,6 +111,20 @@ func resize_main():
 	if current_theme != null:
 		$TextBubble.rect_position.y = (reference.y) - ($TextBubble.rect_size.y) - current_theme.get_value('box', 'bottom_gap', 40)
 	
+	
+	var pos_x = 0
+	if current_theme.get_value('background', 'full_width', false):
+		if preview:
+			pos_x = get_parent().rect_global_position.x
+		$TextBubble/TextureRect.rect_global_position.x = pos_x
+		$TextBubble/ColorRect.rect_global_position.x = pos_x
+		$TextBubble/TextureRect.rect_size.x = reference.x
+		$TextBubble/ColorRect.rect_size.x = reference.x
+	else:
+		$TextBubble/TextureRect.rect_global_position.x = $TextBubble.rect_global_position.x
+		$TextBubble/ColorRect.rect_global_position.x = $TextBubble.rect_global_position.x
+		$TextBubble/TextureRect.rect_size.x = $TextBubble.rect_size.x
+		$TextBubble/ColorRect.rect_size.x = $TextBubble.rect_size.x
 	
 	var background = get_node_or_null('Background')
 	if background != null:
@@ -280,6 +299,8 @@ func _should_show_glossary():
 
 func parse_definitions(text: String, variables: bool = true, glossary: bool = true):
 	var final_text: String = text
+	if not preview:
+		definitions = DialogicSingleton.get_definitions()
 	if variables:
 		final_text = _insert_variable_definitions(text)
 	if glossary and _should_show_glossary():
@@ -612,6 +633,13 @@ func event_handler(event: Dictionary):
 				current_theme = load_theme(event['set_theme'])
 			_load_next_event()
 		
+		# Set Glossary event
+		'dialogic_025':
+			emit_signal("event_start", "set_glossary", event)
+			if event['glossary_id']:
+				print("set glossary")
+				DialogicSingleton.set_glossary_from_id(event['glossary_id'], event['title'], event['text'],event['extra'])
+			_load_next_event()
 		# AUDIO EVENTS
 		# Audio event
 		'dialogic_030':
@@ -882,7 +910,7 @@ func _on_RichTextLabel_meta_hover_started(meta):
 		if d['id'] == meta:
 			$DefinitionInfo.load_preview({
 				'title': d['title'],
-				'body': d['text'],
+				'body': parse_definitions(d['text'], true, false), # inserts variables but not other glossary items!
 				'extra': d['extra'],
 				'color': current_theme.get_value('definitions', 'color', '#ffbebebe'),
 			})
