@@ -27,6 +27,7 @@ class_name Dialogic
 ## @param reset_saves			True to reset dialogic saved data such as definitions.
 ## @param dialog_scene_path		If you made a custom Dialog scene or moved it from its default path, you can specify its new path here.
 ## @param debug_mode			Debug is disabled by default but can be enabled if needed.
+## @param use_canvas_instead	Create the Dialog inside a canvas layer to make it show up regardless of the camera 2D/3D situation.
 ## @returns						A Dialog node to be added into the scene tree.
 static func start(timeline: String, reset_saves: bool=true, dialog_scene_path: String="res://addons/dialogic/Dialog.tscn", debug_mode: bool=false, use_canvas_instead=true):
 	var dialog_scene = load(dialog_scene_path)
@@ -37,7 +38,7 @@ static func start(timeline: String, reset_saves: bool=true, dialog_scene_path: S
 	if use_canvas_instead:
 		var canvas_dialog_script = load("res://addons/dialogic/Nodes/canvas_dialog_node.gd")
 		canvas_dialog_node = canvas_dialog_script.new()
-		canvas_dialog_node.set_dialog_scene(dialog_scene)
+		canvas_dialog_node.set_dialog_node_scene(dialog_scene)
 		dialog_node = canvas_dialog_node.dialog_node
 	else:
 		dialog_node = dialog_scene.instance()
