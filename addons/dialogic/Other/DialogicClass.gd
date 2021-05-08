@@ -28,7 +28,7 @@ class_name Dialogic
 ## @param dialog_scene_path		If you made a custom Dialog scene or moved it from its default path, you can specify its new path here.
 ## @param debug_mode			Debug is disabled by default but can be enabled if needed.
 ## @returns						A Dialog node to be added into the scene tree.
-static func start(timeline: String, reset_saves: bool=true, dialog_scene_path: String="res://addons/dialogic/Dialog.tscn", debug_mode: bool=false, use_canvas_instead=false):
+static func start(timeline: String, reset_saves: bool=true, dialog_scene_path: String="res://addons/dialogic/Dialog.tscn", debug_mode: bool=false, use_canvas_instead=true):
 	var dialog_scene = load(dialog_scene_path)
 	var dialog_node = null
 	var canvas_dialog_node = null
@@ -52,7 +52,7 @@ static func start(timeline: String, reset_saves: bool=true, dialog_scene_path: S
 			if t['name'] == timeline or t['file'] == timeline:
 				dialog_node.timeline = t['file']
 				return returned_dialog_node
-		d.dialog_script = {
+		dialog_node.dialog_script = {
 			"events":[
 				{"event_id":'dialogic_001',
 				"character":"",

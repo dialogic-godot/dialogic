@@ -17,29 +17,29 @@ signal dialogic_signal(value)
 var _dialog_node_scene = load("res://addons/dialogic/Dialog.tscn")
 var dialog_node = null
 
-func set_dialog_node_scene(scene) -> void
-  _dialog_node_scene = scene
-  dialog_node = _dialog_node_scene.instance()
+func set_dialog_node_scene(scene) -> void:
+	_dialog_node_scene = scene
+	dialog_node = _dialog_node_scene.instance()
   
 
 func _enter_tree() -> void:  
-  if dialog_node:
-    add_child(dialog_node)
+	if dialog_node:
+		add_child(dialog_node)
 
 
 func _ready() -> void:
-  var _err:int
-  if dialog_node:
-    _err = dialog_node.connect("event_start", self, "_on_event_start")
-    assert(_err == OK)
-    _err = dialog_node.connect("event_end", self, "_on_event_end")
-    assert(_err == OK)
-    _err = dialog_node.connect("timeline_start", self, "_on_timeline_start")
-    assert(_err == OK)
-    _err = dialog_node.connect("timeline_end", self, "_on_timeline_end")
-    assert(_err == OK)
-    _err = dialog_node.connect("dialogic_signal", self, "_on_dialogic_signal")
-    assert(_err == OK)
+	var _err:int
+	if dialog_node:
+		_err = dialog_node.connect("event_start", self, "_on_event_start")
+		assert(_err == OK)
+		_err = dialog_node.connect("event_end", self, "_on_event_end")
+		assert(_err == OK)
+		_err = dialog_node.connect("timeline_start", self, "_on_timeline_start")
+		assert(_err == OK)
+		_err = dialog_node.connect("timeline_end", self, "_on_timeline_end")
+		assert(_err == OK)
+		_err = dialog_node.connect("dialogic_signal", self, "_on_dialogic_signal")
+		assert(_err == OK)
 
 
 func _on_event_start(type, event) -> void:
