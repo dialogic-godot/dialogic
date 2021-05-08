@@ -17,12 +17,14 @@ signal dialogic_signal(value)
 var _dialog_node_scene = load("res://addons/dialogic/Dialog.tscn")
 var dialog_node = null
 
-func _enter_tree() -> void:
-  if dialog_node:
-    dialog_node.free()
-  
+func set_dialog_node_scene(scene) -> void
+  _dialog_node_scene = scene
   dialog_node = _dialog_node_scene.instance()
-  add_child(dialog_node)
+  
+
+func _enter_tree() -> void:  
+  if dialog_node:
+    add_child(dialog_node)
 
 
 func _ready() -> void:
