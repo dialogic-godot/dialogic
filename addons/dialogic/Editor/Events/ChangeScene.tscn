@@ -1,0 +1,51 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://addons/dialogic/Editor/Events/Templates/EventTemplate.tscn" type="PackedScene" id=1]
+[ext_resource path="res://addons/dialogic/Editor/Events/styles/ChangeScene.tres" type="StyleBox" id=2]
+[ext_resource path="res://addons/dialogic/Images/Event Icons/Main Icons/change-scene.svg" type="Texture" id=3]
+[ext_resource path="res://addons/dialogic/Editor/Events/Parts/ResourcePickers/Scenes/ScenePicker.tscn" type="PackedScene" id=4]
+
+[node name="ChangeScene" instance=ExtResource( 1 )]
+event_data = {
+"change_scene": "",
+"event_id": "dialogic_041"
+}
+event_style = ExtResource( 2 )
+event_icon = ExtResource( 3 )
+event_name = "Change Scene"
+header_scene = ExtResource( 4 )
+
+[node name="PanelContainer" parent="." index="1"]
+custom_styles/panel = ExtResource( 2 )
+
+[node name="IconMarginContainer" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="0"]
+margin_right = 37.0
+
+[node name="IconTexture" parent="PanelContainer/MarginContainer/VBoxContainer/Header/IconMarginContainer" index="0"]
+margin_right = 32.0
+texture = ExtResource( 3 )
+
+[node name="TitleHBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="1"]
+margin_left = 41.0
+margin_right = 155.0
+
+[node name="TitleMarginContainer" parent="PanelContainer/MarginContainer/VBoxContainer/Header/TitleHBoxContainer" index="1"]
+margin_right = 106.0
+
+[node name="TitleLabel" parent="PanelContainer/MarginContainer/VBoxContainer/Header/TitleHBoxContainer/TitleMarginContainer" index="0"]
+margin_right = 93.0
+text = "Change Scene"
+
+[node name="VSeparator2" parent="PanelContainer/MarginContainer/VBoxContainer/Header/TitleHBoxContainer" index="2"]
+margin_left = 110.0
+margin_right = 114.0
+
+[node name="Content" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="2"]
+margin_left = 159.0
+margin_right = 169.0
+
+[node name="Spacer" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="4"]
+margin_left = 173.0
+
+[node name="OptionsControl" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="6"]
+items = [ "Move Up", null, 0, false, false, 0, 0, null, "", false, "Move Down", null, 0, false, false, 1, 0, null, "", false, "", null, 0, false, false, 2, 0, null, "", false, "Remove", null, 0, false, false, 3, 0, null, "", false ]

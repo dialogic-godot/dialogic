@@ -1,0 +1,47 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://addons/dialogic/Editor/Events/Templates/EventTemplate.tscn" type="PackedScene" id=1]
+[ext_resource path="res://addons/dialogic/Editor/Events/styles/Logic.tres" type="StyleBox" id=2]
+[ext_resource path="res://addons/dialogic/Images/Event Icons/Main Icons/end-branch.svg" type="Texture" id=5]
+
+[node name="EndBranch" instance=ExtResource( 1 )]
+event_data = {
+"event_id": "dialogic_013"
+}
+event_style = ExtResource( 2 )
+event_icon = ExtResource( 5 )
+event_name = "End Branch"
+expand_on_default = true
+
+[node name="PanelContainer" parent="." index="1"]
+custom_styles/panel = ExtResource( 2 )
+
+[node name="IconMarginContainer" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="1"]
+margin_right = 37.0
+
+[node name="IconTexture" parent="PanelContainer/MarginContainer/VBoxContainer/Header/IconMarginContainer" index="0"]
+margin_right = 32.0
+texture = ExtResource( 5 )
+
+[node name="TitleHBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="2"]
+visible = true
+margin_left = 41.0
+margin_right = 138.0
+
+[node name="TitleMarginContainer" parent="PanelContainer/MarginContainer/VBoxContainer/Header/TitleHBoxContainer" index="1"]
+margin_right = 89.0
+
+[node name="TitleLabel" parent="PanelContainer/MarginContainer/VBoxContainer/Header/TitleHBoxContainer/TitleMarginContainer" index="0"]
+margin_right = 76.0
+text = "End Branch"
+
+[node name="VSeparator2" parent="PanelContainer/MarginContainer/VBoxContainer/Header/TitleHBoxContainer" index="2"]
+margin_left = 93.0
+margin_right = 97.0
+
+[node name="Content" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="3"]
+margin_left = 142.0
+margin_right = 152.0
+
+[node name="Spacer" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="5"]
+margin_left = 156.0

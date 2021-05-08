@@ -58,27 +58,26 @@ func _ready():
 	
 	# Creating the parents
 	timelines_tree = tree.create_item(root)
-	timelines_tree.set_selectable(0, false)
 	timelines_tree.set_text(0, "Timelines")
 	timelines_tree.set_icon(0, get_icon("Folder", "EditorIcons"))
+	timelines_tree.set_metadata(0, {'editor': 'Timeline Root'})
 	
 	characters_tree = tree.create_item(root)
-	characters_tree.set_selectable(0, false)
 	characters_tree.set_text(0, "Characters")
 	characters_tree.set_icon(0, get_icon("Folder", "EditorIcons"))
+	characters_tree.set_metadata(0, {'editor': 'Character Root'})
 
 	definitions_tree = tree.create_item(root)
-	definitions_tree.set_selectable(0, false)
 	definitions_tree.set_text(0, "Definitions")
 	definitions_tree.set_icon(0, get_icon("Folder", "EditorIcons"))
+	definitions_tree.set_metadata(0, {'editor': 'Definition Root'})
 	
 	themes_tree = tree.create_item(root)
-	themes_tree.set_selectable(0, false)
 	themes_tree.set_text(0, "Themes")
 	themes_tree.set_icon(0, get_icon("Folder", "EditorIcons"))
+	themes_tree.set_metadata(0, {'editor': 'Theme Root'})
 	
 	settings_tree = tree.create_item(root)
-	settings_tree.set_selectable(0, true)
 	settings_tree.set_text(0, "Settings")
 	settings_tree.set_icon(0, get_icon("GDScript", "EditorIcons"))
 	settings_tree.set_metadata(0, {'editor': 'Settings'})
@@ -140,6 +139,7 @@ func _add_timeline(timeline, select = false):
 	else:
 		item.set_text(0, timeline['file'])
 	timeline['editor'] = 'Timeline'
+	timeline['editable'] = true
 	item.set_metadata(0, timeline)
 	if not get_constant("dark_theme", "Editor"):
 		item.set_icon_modulate(0, get_color("property_color", "Editor"))
@@ -165,6 +165,7 @@ func _add_theme(theme_item, select = false):
 	item.set_icon(0, theme_icon)
 	item.set_text(0, theme_item['name'])
 	theme_item['editor'] = 'Theme'
+	theme_item['editable'] = true
 	item.set_metadata(0, theme_item)
 	if not get_constant("dark_theme", "Editor"):
 		item.set_icon_modulate(0, get_color("property_color", "Editor"))
@@ -192,6 +193,7 @@ func _add_character(character, select = false):
 	else:
 		item.set_text(0, character['file'])
 	character['editor'] = 'Character'
+	character['editable'] = true
 	item.set_metadata(0, character)
 	#item.set_editable(0, true)
 	if character.has('color'):
@@ -220,6 +222,7 @@ func _add_definition(definition, select = false):
 	if definition['type'] == 1:
 		item.set_icon(0, glossary_icon)
 	definition['editor'] = 'Definition'
+	definition['editable'] = true
 	item.set_metadata(0, definition)
 	if not get_constant("dark_theme", "Editor"):
 		item.set_icon_modulate(0, get_color("property_color", "Editor"))
@@ -237,22 +240,23 @@ func _on_item_selected():
 	if metadata['editor'] == 'Timeline':
 		timeline_editor.load_timeline(metadata['file'])
 		show_timeline_editor()
-	if metadata['editor'] == 'Character':
+	elif metadata['editor'] == 'Character':
 		if not character_editor.is_selected(metadata['file']):
 			character_editor.load_character(metadata['file'])
 		show_character_editor()
-	if metadata['editor'] == 'Definition':
+	elif metadata['editor'] == 'Definition':
 		if not definition_editor.is_selected(metadata['id']):
 			definition_editor.visible = true
 			definition_editor.load_definition(metadata['id'])
 		show_definition_editor()
-	if metadata['editor'] == 'Theme':
+	elif metadata['editor'] == 'Theme':
 		theme_editor.load_theme(metadata['file'])
 		show_theme_editor()
-	if metadata['editor'] == 'Settings':
+	elif metadata['editor'] == 'Settings':
 		settings_editor.update_data()
 		show_settings_editor()
-
+	else:
+		hide_all_editors()
 
 func show_character_editor():
 	emit_signal("editor_selected", 'character')
@@ -328,6 +332,18 @@ func _on_item_rmb_selected(position):
 	if item['editor'] == 'Definition':
 		editor_reference.get_node("DefinitionPopupMenu").rect_position = get_viewport().get_mouse_position()
 		editor_reference.get_node("DefinitionPopupMenu").popup()
+	if item['editor'] == 'Timeline Root':
+		editor_reference.get_node('TimelineRootPopupMenu').rect_position = get_viewport().get_mouse_position()
+		editor_reference.get_node('TimelineRootPopupMenu').popup()
+	if item['editor'] == 'Character Root':
+		editor_reference.get_node("CharacterRootPopupMenu").rect_position = get_viewport().get_mouse_position()
+		editor_reference.get_node("CharacterRootPopupMenu").popup()
+	if item['editor'] == 'Theme Root':
+		editor_reference.get_node("ThemeRootPopupMenu").rect_position = get_viewport().get_mouse_position()
+		editor_reference.get_node("ThemeRootPopupMenu").popup()
+	if item['editor'] == 'Definition Root':
+		editor_reference.get_node("DefinitionRootPopupMenu").rect_position = get_viewport().get_mouse_position()
+		editor_reference.get_node("DefinitionRootPopupMenu").popup()
 
 
 func remove_selected():
@@ -351,8 +367,9 @@ func _on_gui_input(event):
 		if event.is_pressed() and event.doubleclick:
 			var item = get_selected()
 			var metadata = item.get_metadata(0)
-			item.set_editable(0, true)
-			$RenamerReset.start(0.5)
+			if metadata.has("editable") and metadata["editable"]:
+				item.set_editable(0, true)
+				$RenamerReset.start(0.5)
 
 
 func _on_item_edited():

@@ -1,0 +1,77 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://addons/dialogic/Editor/Events/Parts/Images/BackgroundPreview.tscn" type="PackedScene" id=1]
+[ext_resource path="res://addons/dialogic/Editor/Events/styles/ChangeBackground.tres" type="StyleBox" id=3]
+[ext_resource path="res://addons/dialogic/Editor/Events/Templates/EventTemplate.tscn" type="PackedScene" id=4]
+[ext_resource path="res://addons/dialogic/Images/Event Icons/Main Icons/change-background.svg" type="Texture" id=6]
+[ext_resource path="res://addons/dialogic/Editor/Events/Parts/Images/BackgroundPicker.tscn" type="PackedScene" id=7]
+
+[node name="ChangeBackground" instance=ExtResource( 4 )]
+event_data = {
+"background": "",
+"event_id": "dialogic_021"
+}
+event_style = ExtResource( 3 )
+event_icon = ExtResource( 6 )
+event_name = "Change Background"
+header_scene = ExtResource( 7 )
+body_scene = ExtResource( 1 )
+expand_on_default = false
+
+[node name="PanelContainer" parent="." index="1"]
+margin_bottom = 54.0
+custom_styles/panel = ExtResource( 3 )
+
+[node name="MarginContainer" parent="PanelContainer" index="0"]
+margin_bottom = 54.0
+
+[node name="VBoxContainer" parent="PanelContainer/MarginContainer" index="0"]
+margin_bottom = 48.0
+
+[node name="IconMarginContainer" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="1"]
+margin_right = 37.0
+
+[node name="IconTexture" parent="PanelContainer/MarginContainer/VBoxContainer/Header/IconMarginContainer" index="0"]
+margin_right = 32.0
+texture = ExtResource( 6 )
+
+[node name="TitleHBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="2"]
+visible = true
+margin_left = 41.0
+margin_right = 191.0
+
+[node name="TitleMarginContainer" parent="PanelContainer/MarginContainer/VBoxContainer/Header/TitleHBoxContainer" index="1"]
+margin_right = 142.0
+
+[node name="TitleLabel" parent="PanelContainer/MarginContainer/VBoxContainer/Header/TitleHBoxContainer/TitleMarginContainer" index="0"]
+margin_right = 129.0
+text = "Change Background"
+
+[node name="VSeparator2" parent="PanelContainer/MarginContainer/VBoxContainer/Header/TitleHBoxContainer" index="2"]
+margin_left = 146.0
+margin_right = 150.0
+
+[node name="Content" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="3"]
+margin_left = 195.0
+margin_right = 531.0
+
+[node name="ExpandControl" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="4"]
+visible = true
+margin_left = 535.0
+margin_right = 587.0
+
+[node name="Spacer" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="5"]
+margin_left = 591.0
+
+[node name="Body" parent="PanelContainer/MarginContainer/VBoxContainer" index="1"]
+visible = true
+margin_right = 1012.0
+margin_bottom = 42.0
+
+[node name="HSeparator" parent="PanelContainer/MarginContainer/VBoxContainer/Body" index="0"]
+margin_right = 1012.0
+
+[node name="Content" parent="PanelContainer/MarginContainer/VBoxContainer/Body" index="1"]
+margin_top = 4.0
+margin_right = 1012.0
+margin_bottom = 8.0

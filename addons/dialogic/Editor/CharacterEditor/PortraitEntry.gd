@@ -34,10 +34,11 @@ func _on_focus_entered():
 
 
 func update_preview(path):
+	var l_path = path.to_lower()
 	if path == '':
 		image_node.texture = null
 	else:
-		if '.png' in path or '.svg' in path:
+		if '.png' in l_path or '.svg' in l_path:
 			image_node.texture = load(path)
 			return true
 	return false

@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://addons/dialogic/Editor/EditorView.gd" type="Script" id=1]
 [ext_resource path="res://addons/dialogic/Editor/TimelineEditor/TimelineEditor.tscn" type="PackedScene" id=2]
@@ -8,14 +8,11 @@
 [ext_resource path="res://addons/dialogic/Editor/SettingsEditor/SettingsEditor.tscn" type="PackedScene" id=6]
 [ext_resource path="res://addons/dialogic/Editor/CharacterEditor/CharacterEditor.tscn" type="PackedScene" id=7]
 [ext_resource path="res://addons/dialogic/Editor/ThemeEditor/ThemeEditor.tscn" type="PackedScene" id=8]
-[ext_resource path="res://addons/dialogic/Images/Context Menus/ActionCopy.svg" type="Texture" id=11]
 [ext_resource path="res://addons/dialogic/Editor/DefinitionEditor/DefinitionEditor.tscn" type="PackedScene" id=12]
 [ext_resource path="res://addons/dialogic/Images/Toolbar/add-theme.svg" type="Texture" id=13]
-[ext_resource path="res://addons/dialogic/Images/Context Menus/Remove.svg" type="Texture" id=22]
-[ext_resource path="res://addons/dialogic/Images/Context Menus/Filesystem.svg" type="Texture" id=26]
 [ext_resource path="res://addons/dialogic/Editor/MasterTree/MasterTree.tscn" type="PackedScene" id=35]
 
-[sub_resource type="Image" id=1]
+[sub_resource type="Image" id=3]
 data = {
 "data": PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ),
 "format": "LumAlpha8",
@@ -27,7 +24,7 @@ data = {
 [sub_resource type="ImageTexture" id=2]
 flags = 4
 flags = 4
-image = SubResource( 1 )
+image = SubResource( 3 )
 size = Vector2( 16, 16 )
 
 [node name="EditorView" type="Control"]
@@ -50,7 +47,6 @@ __meta__ = {
 }
 
 [node name="NewTimelineButton" type="Button" parent="ToolBar"]
-self_modulate = Color( 0.870588, 0.870588, 0.870588, 1 )
 margin_right = 28.0
 margin_bottom = 32.0
 hint_tooltip = "New Timeline"
@@ -68,7 +64,6 @@ focus_mode = 0
 icon = ExtResource( 3 )
 
 [node name="NewDefinitionButton" type="Button" parent="ToolBar"]
-self_modulate = Color( 0.870588, 0.870588, 0.870588, 1 )
 margin_left = 56.0
 margin_right = 84.0
 margin_bottom = 32.0
@@ -78,7 +73,6 @@ icon = ExtResource( 5 )
 flat = true
 
 [node name="NewThemeButton" type="Button" parent="ToolBar"]
-self_modulate = Color( 0.870588, 0.870588, 0.870588, 1 )
 margin_left = 84.0
 margin_right = 112.0
 margin_bottom = 32.0
@@ -135,7 +129,7 @@ margin_left = 942.0
 margin_top = 9.0
 margin_right = 1024.0
 margin_bottom = 23.0
-text = "Dialogic v1.1"
+text = "Dialogic v1.2"
 
 [node name="MainPanel" type="HSplitContainer" parent="."]
 anchor_right = 1.0
@@ -206,7 +200,6 @@ margin_left = 151.0
 margin_top = 276.0
 margin_right = 325.0
 margin_bottom = 332.0
-items = [ "Show in File Manager", ExtResource( 26 ), 0, false, false, 0, 0, null, "", false, "Copy Timeline Name", ExtResource( 11 ), 0, false, false, 1, 0, null, "", false, "Remove", ExtResource( 22 ), 0, false, false, 2, 0, null, "", false ]
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -216,17 +209,6 @@ margin_left = 171.799
 margin_top = 209.0
 margin_right = 267.799
 margin_bottom = 229.0
-items = [ "Show in File Manager", ExtResource( 26 ), 0, false, false, 0, 0, null, "", false, "Remove Character", ExtResource( 22 ), 0, false, false, 1, 0, null, "", false ]
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="ThemePopupMenu" type="PopupMenu" parent="."]
-margin_left = 171.799
-margin_top = 209.0
-margin_right = 267.799
-margin_bottom = 229.0
-items = [ "Show in File Manager", ExtResource( 26 ), 0, false, false, 0, 0, null, "", false, "Remove Theme", ExtResource( 22 ), 0, false, false, 1, 0, null, "", false, "Duplicate Theme", ExtResource( 11 ), 0, false, false, 2, 0, null, "", false ]
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -236,7 +218,51 @@ margin_left = 171.799
 margin_top = 209.0
 margin_right = 267.799
 margin_bottom = 229.0
-items = [ "Edit definitions file", ExtResource( 26 ), 0, false, false, 0, 0, null, "", false, "Remove Definition", ExtResource( 22 ), 0, false, false, 1, 0, null, "", false ]
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ThemePopupMenu" type="PopupMenu" parent="."]
+margin_left = 171.799
+margin_top = 209.0
+margin_right = 267.799
+margin_bottom = 229.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TimelineRootPopupMenu" type="PopupMenu" parent="."]
+margin_left = 159.0
+margin_top = 283.0
+margin_right = 227.0
+margin_bottom = 319.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CharacterRootPopupMenu" type="PopupMenu" parent="."]
+margin_left = 159.0
+margin_top = 283.0
+margin_right = 227.0
+margin_bottom = 319.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ThemeRootPopupMenu" type="PopupMenu" parent="."]
+margin_left = 159.0
+margin_top = 283.0
+margin_right = 227.0
+margin_bottom = 319.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="DefinitionRootPopupMenu" type="PopupMenu" parent="."]
+margin_left = 159.0
+margin_top = 283.0
+margin_right = 227.0
+margin_bottom = 319.0
 __meta__ = {
 "_edit_use_anchors_": false
 }

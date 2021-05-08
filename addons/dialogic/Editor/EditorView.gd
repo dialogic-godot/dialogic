@@ -13,9 +13,11 @@ onready var definition_editor = $MainPanel/DefinitionEditor
 onready var theme_editor = $MainPanel/ThemeEditor
 onready var settings_editor = $MainPanel/SettingsEditor
 
+# this is set when the plugins main-view is instanced in dialogic.gd
+var editor_interface = null
 
 func _ready():
-	# Adding file dialog to get used by pieces
+	# Adding file dialog to get used by Events
 	editor_file_dialog = EditorFileDialog.new()
 	add_child(editor_file_dialog)
 
@@ -57,7 +59,12 @@ func _ready():
 	$ToolBar/NewCharactersButton.icon = load("res://addons/dialogic/Images/Toolbar/add-character" + modifier + ".svg")
 	$ToolBar/NewDefinitionButton.icon = load("res://addons/dialogic/Images/Toolbar/add-definition" + modifier + ".svg")
 	$ToolBar/NewThemeButton.icon = load("res://addons/dialogic/Images/Toolbar/add-theme" + modifier + ".svg")
-	$ToolBar/NewThemeButton.icon = load("res://addons/dialogic/Images/Toolbar/add-theme" + modifier + ".svg")
+	
+	if not get_constant("dark_theme", "Editor"):
+		$ToolBar/NewTimelineButton.modulate = get_color("property_color", "Editor")
+		$ToolBar/NewCharactersButton.modulate = get_color("property_color", "Editor")
+		$ToolBar/NewDefinitionButton.modulate = get_color("property_color", "Editor")
+		$ToolBar/NewThemeButton.modulate = get_color("property_color", "Editor")
 	
 	$ToolBar/FoldTools/ButtonFold.icon = get_icon("GuiTreeArrowRight", "EditorIcons")
 	$ToolBar/FoldTools/ButtonUnfold.icon = get_icon("GuiTreeArrowDown", "EditorIcons")
@@ -72,11 +79,35 @@ func _ready():
 	$ToolBar/FoldTools/ButtonUnfold.connect('pressed', timeline_editor, 'unfold_all_nodes')
 	
 	
+	# Adding items to context menus
+	$TimelinePopupMenu.add_icon_item(get_icon("Filesystem", "EditorIcons"), 'Show in File Manager')
+	$TimelinePopupMenu.add_icon_item(get_icon("ActionCopy", "EditorIcons"), 'Copy Timeline Name')
+	$TimelinePopupMenu.add_icon_item(get_icon("Remove", "EditorIcons"), 'Remove Timeline')
+	
+	$CharacterPopupMenu.add_icon_item(get_icon("Filesystem", "EditorIcons"), 'Show in File Manager')
+	$CharacterPopupMenu.add_icon_item(get_icon("Remove", "EditorIcons"), 'Remove Character')
+	
+	$ThemePopupMenu.add_icon_item(get_icon("Filesystem", "EditorIcons"), 'Show in File Manager')
+	$ThemePopupMenu.add_icon_item(get_icon("Duplicate", "EditorIcons"), 'Duplicate Theme')
+	$ThemePopupMenu.add_icon_item(get_icon("Remove", "EditorIcons"), 'Remove Theme')
+	
+	$DefinitionPopupMenu.add_icon_item(get_icon("Edit", "EditorIcons"), 'Edit Definitions File')
+	$DefinitionPopupMenu.add_icon_item(get_icon("Remove", "EditorIcons"), 'Remove Definition')
+	
+	$TimelineRootPopupMenu.add_icon_item(get_icon("Add", "EditorIcons") ,'Add Timeline')
+	$CharacterRootPopupMenu.add_icon_item(get_icon("Add", "EditorIcons") ,'Add Character')
+	$ThemeRootPopupMenu.add_icon_item(get_icon("Add", "EditorIcons") ,'Add Theme')
+	$DefinitionRootPopupMenu.add_icon_item(get_icon("Add", "EditorIcons") ,'Add Definition')
+	
 	# Connecting context menus
 	$TimelinePopupMenu.connect('id_pressed', self, '_on_TimelinePopupMenu_id_pressed')
 	$CharacterPopupMenu.connect('id_pressed', self, '_on_CharacterPopupMenu_id_pressed')
 	$ThemePopupMenu.connect('id_pressed', self, '_on_ThemePopupMenu_id_pressed')
 	$DefinitionPopupMenu.connect('id_pressed', self, '_on_DefinitionPopupMenu_id_pressed')
+	$TimelineRootPopupMenu.connect('id_pressed', self, '_on_TimelineRootPopupMenu_id_pressed')
+	$CharacterRootPopupMenu.connect('id_pressed', self, '_on_CharacterRootPopupMenu_id_pressed')
+	$ThemeRootPopupMenu.connect('id_pressed', self, '_on_ThemeRootPopupMenu_id_pressed')
+	$DefinitionRootPopupMenu.connect('id_pressed', self, '_on_DefinitionRootPopupMenu_id_pressed')
 	
 	#Connecting confirmation menus
 	$RemoveTimelineConfirmation.connect('confirmed', self, '_on_RemoveTimelineConfirmation_confirmed')
@@ -92,7 +123,7 @@ func _ready():
 		$ToolBar/Version.text = 'Dialogic v' + version_string
 		
 	$MainPanel/MasterTreeContainer/FilterMasterTreeEdit.right_icon = get_icon("Search", "EditorIcons")
-
+	
 
 func on_master_tree_editor_selected(editor: String):
 	$ToolBar/FoldTools.visible = editor == 'timeline'
@@ -130,20 +161,41 @@ func _on_ThemePopupMenu_id_pressed(id):
 	if id == 0:
 		OS.shell_open(ProjectSettings.globalize_path(DialogicResources.get_path('THEME_DIR')))
 	if id == 1:
-		$RemoveThemeConfirmation.popup_centered()
-	if id == 2:
 		var filename = $MainPanel/MasterTreeContainer/MasterTree.get_selected().get_metadata(0)['file']
 		if (filename.begins_with('theme-')):
 			theme_editor.duplicate_theme(filename)
+	if id == 2:
+		$RemoveThemeConfirmation.popup_centered()
 
 
 # Definition context menu
 func _on_DefinitionPopupMenu_id_pressed(id):
 	if id == 0:
-		OS.shell_open(ProjectSettings.globalize_path(DialogicResources.get_path('DEFAULT_DEFINITIONS_FILE')))
+		var paths = DialogicResources.get_config_files_paths()
+		OS.shell_open(ProjectSettings.globalize_path(paths['DEFAULT_DEFINITIONS_FILE']))
 	if id == 1:
 		$RemoveDefinitionConfirmation.popup_centered()
 
+
+# Timeline Root context menu
+func _on_TimelineRootPopupMenu_id_pressed(id):
+	if id == 0: # Add Timeline
+		$MainPanel/TimelineEditor.new_timeline()
+
+# Character Root context menu
+func _on_CharacterRootPopupMenu_id_pressed(id):
+	if id == 0: # Add Character
+		$MainPanel/CharacterEditor.new_character()
+
+# Theme Root context menu
+func _on_ThemeRootPopupMenu_id_pressed(id):
+	if id == 0: # Add Theme
+		$MainPanel/ThemeEditor.new_theme()
+
+# Definition Root context menu
+func _on_DefinitionRootPopupMenu_id_pressed(id):
+	if id == 0: # Add Definition
+		$MainPanel/DefinitionEditor.new_definition()
 
 func _on_RemoveDefinitionConfirmation_confirmed():
 	var target = $MainPanel/DefinitionEditor.current_definition['id']
@@ -194,7 +246,7 @@ func godot_dialog_connect(who, method_name):
 
 
 func _on_file_selected(path):
-	dprint(path)
+	dprint('[D] Selected '+str(path))
 
 
 func dprint(what) -> void:

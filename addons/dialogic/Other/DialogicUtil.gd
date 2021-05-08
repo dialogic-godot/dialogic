@@ -12,6 +12,7 @@ static func get_character_list() -> Array:
 			var default_speaker      = false
 			var portraits: Array     = []
 			var display_name: String = ''
+			var nickname: String = ''
 			
 			if data.has('color'):
 				color = Color(data['color'])
@@ -25,6 +26,10 @@ static func get_character_list() -> Array:
 				if data['display_name_bool']:
 					if data.has('display_name'):
 						display_name = data['display_name']
+			if data.has('nickname'):
+				if data['nickname_bool']:
+					if data.has('nickname'):
+						nickname = data['nickname']
 						
 			characters.append({
 				'name': c_name,
@@ -33,6 +38,7 @@ static func get_character_list() -> Array:
 				'default_speaker' : default_speaker,
 				'portraits': portraits,
 				'display_name': display_name,
+				'nickname': nickname,
 				'data': data # This should be the only thing passed... not sure what I was thinking
 			})
 
@@ -130,7 +136,88 @@ static func path_fixer_load(path):
 
 	return load(path)
 
-
+# This function contains necessary updates.
+# This should be deleted in 2.0
+static func resource_fixer():
+	var update_index = DialogicResources.get_settings_config().get_value("updates", "updatenumber", 0)
+	
+	if update_index < 1:
+		print("[D] Update NR. "+str(update_index)+" | Adds event ids. Don't worry about this.")
+		for timeline_info in get_timeline_list():
+			var timeline = DialogicResources.get_timeline_json(timeline_info['file'])
+			
+			var events = timeline["events"]
+			for i in events:
+				if not i.has("event_id"):
+					match i:
+						# MAIN EVENTS
+						# Text event
+						{'text', 'character', 'portrait'}:
+							i['event_id'] = 'dialogic_001'
+						# Join event
+						{'character', 'action', 'position', 'portrait',..}:
+							i['event_id'] = 'dialogic_002'
+						# Character Leave event 
+						{'character', 'action'}:
+							i['event_id'] = 'dialogic_003'
+						
+						# LOGIC EVENTS
+						# Question event
+						{'question', 'options', ..}:
+							i['event_id'] = 'dialogic_010'
+						# Choice event
+						{'choice', ..}:
+							i['event_id'] = 'dialogic_011'
+						# Condition event
+						{'condition', 'definition', 'value'}:
+							i['event_id'] = 'dialogic_012'
+						# End Branch event
+						{'endbranch'}:
+							i['event_id'] = 'dialogic_013'
+						# Set Value event
+						{'set_value', 'definition', ..}:
+							i['event_id'] = 'dialogic_014'
+						
+						# TIMELINE EVENTS
+						# Change Timeline event
+						{'change_timeline'}:
+							i['event_id'] = 'dialogic_020'
+						# Change Backround event
+						{'background'}:
+							i['event_id'] = 'dialogic_021'
+						# Close Dialog event
+						{'close_dialog', ..}:
+							i['event_id'] = 'dialogic_022'
+						# Wait seconds event
+						{'wait_seconds'}:
+							i['event_id'] = 'dialogic_023'
+						# Set Theme event
+						{'set_theme'}:
+							i['event_id'] = 'dialogic_024'
+						
+						# AUDIO EVENTS
+						# Audio event
+						{'audio', 'file', ..}:
+							i['event_id'] = 'dialogic_030'
+						# Background Music event
+						{'background-music', 'file', ..}:
+							i['event_id'] = 'dialogic_031'
+						
+						# GODOT EVENTS
+						# Emit signal event
+						{'emit_signal'}:
+							i['event_id'] = 'dialogic_040'
+						# Change Scene event
+						{'change_scene'}:
+							i['event_id'] = 'dialogic_041'
+						# Call Node event
+						{'call_node'}:
+							i['event_id'] = 'dialogic_042'
+			timeline['events'] = events
+			DialogicResources.set_timeline(timeline)
+	
+	DialogicResources.set_settings_value("updates", "updatenumber", 1)
+	
 
 class DialgicSorter:
 

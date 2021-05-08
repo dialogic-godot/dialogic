@@ -8,7 +8,7 @@ content_margin_left = 5.0
 content_margin_right = 5.0
 content_margin_top = 5.0
 content_margin_bottom = 5.0
-bg_color = Color( 0.2, 0.23, 0.31, 1 )
+bg_color = Color( 0.160784, 0.160784, 0.160784, 1 )
 
 [node name="CharacterEditor" type="ScrollContainer"]
 margin_left = 192.0
@@ -23,21 +23,21 @@ __meta__ = {
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
 margin_left = 5.0
 margin_top = 5.0
-margin_right = 1056.0
-margin_bottom = 656.0
+margin_right = 1132.0
+margin_bottom = 644.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="Container" type="VBoxContainer" parent="HBoxContainer"]
-margin_right = 523.0
-margin_bottom = 651.0
+margin_right = 600.0
+margin_bottom = 639.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 9
 
 [node name="Name" type="HBoxContainer" parent="HBoxContainer/Container"]
-margin_right = 523.0
+margin_right = 600.0
 margin_bottom = 24.0
 
 [node name="Label" type="Label" parent="HBoxContainer/Container/Name"]
@@ -58,6 +58,15 @@ margin_left = 278.0
 margin_right = 451.0
 margin_bottom = 24.0
 text = "Different display name"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CheckBox2" type="CheckBox" parent="HBoxContainer/Container/Name"]
+margin_left = 455.0
+margin_right = 600.0
+margin_bottom = 24.0
+text = "Enable Nicknames"
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -85,9 +94,32 @@ margin_right = 274.0
 margin_bottom = 24.0
 rect_min_size = Vector2( 140, 0 )
 
+[node name="DisplayNickname" type="HBoxContainer" parent="HBoxContainer/Container"]
+visible = false
+margin_top = 28.0
+margin_right = 491.0
+margin_bottom = 52.0
+__meta__ = {
+"_editor_description_": "Display name is the name that will
+show up on the dialogs in game."
+}
+
+[node name="Label" type="Label" parent="HBoxContainer/Container/DisplayNickname"]
+margin_top = 5.0
+margin_right = 130.0
+margin_bottom = 19.0
+rect_min_size = Vector2( 130, 0 )
+text = "Nicknames: "
+
+[node name="LineEdit" type="LineEdit" parent="HBoxContainer/Container/DisplayNickname"]
+margin_left = 134.0
+margin_right = 274.0
+margin_bottom = 24.0
+rect_min_size = Vector2( 140, 0 )
+
 [node name="Color" type="HBoxContainer" parent="HBoxContainer/Container"]
 margin_top = 28.0
-margin_right = 523.0
+margin_right = 600.0
 margin_bottom = 48.0
 
 [node name="Label" type="Label" parent="HBoxContainer/Container/Color"]
@@ -107,7 +139,7 @@ edit_alpha = false
 
 [node name="Description" type="HBoxContainer" parent="HBoxContainer/Container"]
 margin_top = 52.0
-margin_right = 523.0
+margin_right = 600.0
 margin_bottom = 152.0
 
 [node name="Label" type="Label" parent="HBoxContainer/Container/Description"]
@@ -119,20 +151,20 @@ text = "Description: "
 
 [node name="TextEdit" type="TextEdit" parent="HBoxContainer/Container/Description"]
 margin_left = 134.0
-margin_right = 523.0
+margin_right = 600.0
 margin_bottom = 100.0
 rect_min_size = Vector2( 100, 100 )
 size_flags_horizontal = 3
 
 [node name="Separator" type="Control" parent="HBoxContainer/Container"]
 margin_top = 156.0
-margin_right = 523.0
+margin_right = 600.0
 margin_bottom = 166.0
 rect_min_size = Vector2( 0, 10 )
 
 [node name="Portraits" type="HBoxContainer" parent="HBoxContainer/Container"]
 margin_top = 170.0
-margin_right = 523.0
+margin_right = 600.0
 margin_bottom = 184.0
 
 [node name="Label" type="Label" parent="HBoxContainer/Container/Portraits"]
@@ -142,7 +174,7 @@ text = "Portraits / Expressions"
 
 [node name="Labels" type="HBoxContainer" parent="HBoxContainer/Container"]
 margin_top = 188.0
-margin_right = 523.0
+margin_right = 600.0
 margin_bottom = 202.0
 
 [node name="LineEdit" type="Label" parent="HBoxContainer/Container/Labels"]
@@ -160,28 +192,28 @@ text = "Path"
 
 [node name="ScrollContainer" type="ScrollContainer" parent="HBoxContainer/Container"]
 margin_top = 206.0
-margin_right = 523.0
-margin_bottom = 623.0
+margin_right = 600.0
+margin_bottom = 611.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/Container/ScrollContainer"]
-margin_right = 523.0
-margin_bottom = 417.0
+margin_right = 600.0
+margin_bottom = 405.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="PortraitList" type="VBoxContainer" parent="HBoxContainer/Container/ScrollContainer/VBoxContainer"]
-margin_right = 523.0
+margin_right = 600.0
 margin_bottom = 24.0
 size_flags_horizontal = 3
 
 [node name="PortraitEntry" parent="HBoxContainer/Container/ScrollContainer/VBoxContainer/PortraitList" instance=ExtResource( 1 )]
-margin_right = 523.0
+margin_right = 600.0
 
 [node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/Container/ScrollContainer/VBoxContainer"]
 margin_top = 28.0
-margin_right = 523.0
+margin_right = 600.0
 margin_bottom = 48.0
 
 [node name="Button" type="Button" parent="HBoxContainer/Container/ScrollContainer/VBoxContainer/HBoxContainer"]
@@ -212,9 +244,9 @@ size_flags_horizontal = 3
 editable = false
 
 [node name="Actions" type="HBoxContainer" parent="HBoxContainer/Container"]
-margin_top = 627.0
-margin_right = 523.0
-margin_bottom = 651.0
+margin_top = 615.0
+margin_right = 600.0
+margin_bottom = 639.0
 
 [node name="DefaultSpeaker" type="CheckBox" parent="HBoxContainer/Container/Actions"]
 margin_right = 128.0
@@ -228,20 +260,20 @@ text = "Default Speaker"
 
 [node name="Control" type="Control" parent="HBoxContainer/Container/Actions"]
 margin_left = 132.0
-margin_right = 523.0
+margin_right = 600.0
 margin_bottom = 24.0
 size_flags_horizontal = 3
 
 [node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer"]
-margin_left = 527.0
-margin_right = 1051.0
-margin_bottom = 651.0
+margin_left = 604.0
+margin_right = 1127.0
+margin_bottom = 639.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="Control" type="Panel" parent="HBoxContainer/VBoxContainer"]
-margin_right = 524.0
-margin_bottom = 623.0
+margin_right = 523.0
+margin_bottom = 611.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
@@ -271,9 +303,9 @@ __meta__ = {
 }
 
 [node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/VBoxContainer"]
-margin_top = 627.0
-margin_right = 524.0
-margin_bottom = 651.0
+margin_top = 615.0
+margin_right = 523.0
+margin_bottom = 639.0
 
 [node name="Label" type="Label" parent="HBoxContainer/VBoxContainer/HBoxContainer"]
 margin_top = 5.0
@@ -314,3 +346,14 @@ rect_min_size = Vector2( 100, 0 )
 allow_greater = true
 allow_lesser = true
 suffix = "Y"
+
+[node name="MirrorOption" type="HBoxContainer" parent="HBoxContainer/VBoxContainer/HBoxContainer"]
+margin_left = 398.0
+margin_right = 523.0
+margin_bottom = 24.0
+
+[node name="MirrorPortraitsCheckBox" type="CheckBox" parent="HBoxContainer/VBoxContainer/HBoxContainer/MirrorOption"]
+margin_right = 125.0
+margin_bottom = 24.0
+text = "Mirror portraits"
+[connection signal="toggled" from="HBoxContainer/VBoxContainer/HBoxContainer/MirrorOption/MirrorPortraitsCheckBox" to="." method="_on_MirrorPortraitsCheckBox_toggled"]

@@ -1,29 +1,43 @@
 extends Control
 class_name DialogicBackgroundMusic
 
-onready var _anim_player := $AnimationPlayer
 onready var _track1 := $Track1
 onready var _track2 := $Track2
 
 var current_path = ""
 
-func crossfade_to(path: String) -> void:
-	if current_path != path:
-		current_path = path
-		var stream: AudioStream = load(current_path)
-		if _track1.playing and _track2.playing:
-			return
-		
-		if _track2.playing:
-			_track1.stream = stream
-			_track1.play()
-			_anim_player.play("FadeToTrack1")
-		else:
-			_track2.stream = stream
-			_track2.play()
-			_anim_player.play("FadeToTrack2")
+func crossfade_to(path: String, audio_bus:String, volume:float, fade_length: float) -> void:
+	if _track1.playing and _track2.playing:
+		return
+	
+	var stream: AudioStream = load(path)
+	var fade_out_track = _track1
+	var fade_in_track = _track2
+	
+	if _track2.playing:
+		fade_out_track = _track2
+		fade_in_track = _track1
+	
+	# setup the new track
+	fade_in_track.stream = stream
+	fade_in_track.bus = audio_bus
+	fade_in_track.volume_db = -60
+	
+	
+	$Tween.interpolate_property(fade_out_track, "volume_db", null, -60, fade_length, Tween.TRANS_LINEAR)
+	$Tween.interpolate_property(fade_in_track, "volume_db", -60, volume, fade_length, Tween.TRANS_LINEAR)
+	$Tween.start()
+	
+	# in case the audio is already playing we will attempt a fade into the new one from the current position
+	if current_path == path:
+		fade_in_track.play(fade_out_track.get_playback_position())
+	# else just play it from the beginning
+	else:
+		fade_in_track.play()
+	current_path = path
 
-
-func fade_out() -> void:
+func fade_out(fade_length:float = 1) -> void:
 	current_path = ""
-	_anim_player.play("FadeOut")
+	$Tween.interpolate_property(_track1, "volume_db", null, -60, fade_length, Tween.TRANS_LINEAR)
+	$Tween.interpolate_property(_track2, "volume_db", null, -60, fade_length, Tween.TRANS_LINEAR)
+	$Tween.start()

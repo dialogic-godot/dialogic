@@ -11,9 +11,12 @@ onready var nodes = {
 	'description': $HBoxContainer/Container/Description/TextEdit,
 	'file': $HBoxContainer/Container/FileName/LineEdit,
 	'color': $HBoxContainer/Container/Color/ColorPickerButton,
+	'mirror_portraits_checkbox' : $HBoxContainer/VBoxContainer/HBoxContainer/MirrorOption/MirrorPortraitsCheckBox,
 	'default_speaker': $HBoxContainer/Container/Actions/DefaultSpeaker,
 	'display_name_checkbox': $HBoxContainer/Container/Name/CheckBox,
 	'display_name': $HBoxContainer/Container/DisplayName/LineEdit,
+	'nickname_checkbox': $HBoxContainer/Container/Name/CheckBox2,
+	'nickname': $HBoxContainer/Container/DisplayNickname/LineEdit,
 	'new_portrait_button': $HBoxContainer/Container/ScrollContainer/VBoxContainer/HBoxContainer/Button,
 	'portrait_preview': $HBoxContainer/VBoxContainer/Control/TextureRect,
 	'scale': $HBoxContainer/VBoxContainer/HBoxContainer/Scale,
@@ -25,6 +28,7 @@ onready var nodes = {
 func _ready():
 	nodes['new_portrait_button'].connect('pressed', self, '_on_New_Portrait_Button_pressed')
 	nodes['display_name_checkbox'].connect('toggled', self, '_on_display_name_toggled')
+	nodes['nickname_checkbox'].connect('toggled', self, '_on_nickname_toggled')
 	nodes['name'].connect('text_changed', self, '_on_name_changed')
 	nodes['color'].connect('color_changed', self, '_on_color_changed')
 	var style = get('custom_styles/bg')
@@ -36,6 +40,10 @@ func is_selected(file: String):
 
 func _on_display_name_toggled(button_pressed):
 	$HBoxContainer/Container/DisplayName.visible = button_pressed
+
+
+func _on_nickname_toggled(button_pressed):
+	$HBoxContainer/Container/DisplayNickname.visible = button_pressed
 
 
 func _on_name_changed(value):
@@ -55,9 +63,12 @@ func clear_character_editor():
 	nodes['name'].text = ''
 	nodes['description'].text = ''
 	nodes['color'].color = Color('#ffffff')
+	nodes['mirror_portraits_checkbox'].pressed = false
 	nodes['default_speaker'].pressed = false
 	nodes['display_name_checkbox'].pressed = false
+	nodes['nickname_checkbox'].pressed = false
 	nodes['display_name'].text = ''
+	nodes['nickname'].text = ''
 	nodes['portraits'] = []
 	nodes['scale'].value = 100
 	nodes['offset_x'].value = 0
@@ -76,7 +87,8 @@ func create_character():
 		'color': '#ffffff',
 		'id': character_file,
 		'default_speaker': false,
-		'portraits': []
+		'portraits': [],
+		'mirror_portraits' :false
 	}
 	DialogicResources.set_character(character)
 	character['metadata'] = {'file': character_file}
@@ -101,10 +113,13 @@ func generate_character_data_to_save():
 		'id': nodes['file'].text,
 		'description': nodes['description'].text,
 		'color': '#' + nodes['color'].color.to_html(),
+		'mirror_portraits': nodes["mirror_portraits_checkbox"].pressed,
 		'default_speaker': default_speaker,
 		'portraits': portraits,
 		'display_name_bool': nodes['display_name_checkbox'].pressed,
 		'display_name': nodes['display_name'].text,
+		'nickname_bool': nodes['nickname_checkbox'].pressed,
+		'nickname': nodes['nickname'].text,
 		'scale': nodes['scale'].value,
 		'offset_x': nodes['offset_x'].value,
 		'offset_y': nodes['offset_y'].value,
@@ -147,10 +162,22 @@ func load_character(filename: String):
 	if data.has('scale'):
 		nodes['scale'].value = float(data['scale'])
 	
+	if data.has('nickname_bool'):
+		nodes['nickname_checkbox'].pressed = data['nickname_bool']
+	if data.has('nickname'):
+		nodes['nickname'].text = data['nickname']
+	
 	if data.has('offset_x'):
 		nodes['offset_x'].value = data['offset_x']
 		nodes['offset_y'].value = data['offset_y']
-
+	
+	if data.has('mirror_portraits'):
+		nodes['mirror_portraits_checkbox'].pressed = data['mirror_portraits']
+		nodes['portrait_preview'].flip_h = data['mirror_portraits']
+	else:
+		nodes['mirror_portraits_checkbox'].pressed = false
+		nodes['portrait_preview'].flip_h = false
+	
 	# Portraits
 	var default_portrait = create_portrait_entry()
 	default_portrait.get_node('NameEdit').text = 'Default'
@@ -183,3 +210,7 @@ func create_portrait_entry(p_name = '', path = '', grab_focus = false):
 		p.get_node("NameEdit").grab_focus()
 		p._on_ButtonSelect_pressed()
 	return p
+
+
+func _on_MirrorPortraitsCheckBox_toggled(button_pressed):
+	nodes['portrait_preview'].flip_h = button_pressed

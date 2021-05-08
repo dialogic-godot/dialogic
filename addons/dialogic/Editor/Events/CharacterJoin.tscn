@@ -1,0 +1,42 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://addons/dialogic/Editor/Events/Templates/EventTemplate.tscn" type="PackedScene" id=1]
+[ext_resource path="res://addons/dialogic/Editor/Events/styles/CharacterJoin.tres" type="StyleBox" id=2]
+[ext_resource path="res://addons/dialogic/Editor/Events/Parts/ResourcePickers/Characters/CharacterJoining.tscn" type="PackedScene" id=3]
+[ext_resource path="res://addons/dialogic/Images/Event Icons/Main Icons/character-join.svg" type="Texture" id=4]
+
+[node name="CharacterJoin" instance=ExtResource( 1 )]
+event_data = {
+"action": "join",
+"character": "",
+"event_id": "dialogic_002",
+"mirror": false,
+"portrait": "",
+"position": {
+"0": false,
+"1": false,
+"2": false,
+"3": false,
+"4": false
+}
+}
+event_style = ExtResource( 2 )
+event_icon = ExtResource( 4 )
+event_name = "Character Join"
+header_scene = ExtResource( 3 )
+
+[node name="TitleHBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="1"]
+visible = false
+
+[node name="TitleLabel" parent="PanelContainer/MarginContainer/VBoxContainer/Header/TitleHBoxContainer/TitleMarginContainer" index="0"]
+text = ""
+
+[node name="Content" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="2"]
+margin_left = 35.0
+margin_right = 45.0
+
+[node name="Spacer" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="4"]
+margin_left = 49.0
+
+[node name="OptionsControl" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="6"]
+items = [ "Move Up", null, 0, false, false, 0, 0, null, "", false, "Move Down", null, 0, false, false, 1, 0, null, "", false, "", null, 0, false, false, 2, 0, null, "", false, "Remove", null, 0, false, false, 3, 0, null, "", false ]

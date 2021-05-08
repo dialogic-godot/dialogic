@@ -9,6 +9,11 @@ func _init():
 		# Make sure the core files exist 
 		DialogicResources.init_dialogic_files()
 	add_autoload_singleton('DialogicSingleton', "res://addons/dialogic/Other/DialogicSingleton.gd")
+	
+	## Remove after 2.0
+	if Engine.editor_hint:
+		DialogicUtil.resource_fixer()
+	
 
 
 func _enter_tree() -> void:
@@ -16,6 +21,7 @@ func _enter_tree() -> void:
 	add_inspector_plugin(_parts_inspector)
 	_add_custom_editor_view()
 	get_editor_interface().get_editor_viewport().add_child(_editor_view)
+	_editor_view.editor_interface = get_editor_interface()
 	make_visible(false)
 	_parts_inspector.dialogic_editor_plugin = self
 	_parts_inspector.dialogic_editor_view = _editor_view

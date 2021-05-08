@@ -1,61 +1,17 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=8 format=2]
 
-[ext_resource path="res://addons/dialogic/Example Assets/next-indicator/next-indicator.png" type="Texture" id=1]
-[ext_resource path="res://addons/dialogic/Example Assets/backgrounds/background-2.png" type="Texture" id=2]
-[ext_resource path="res://addons/dialogic/Example Assets/Fonts/DefaultFont.tres" type="DynamicFont" id=3]
+[ext_resource path="res://addons/dialogic/Nodes/TextBubble.tscn" type="PackedScene" id=1]
 [ext_resource path="res://addons/dialogic/Example Assets/Fonts/GlossaryFont.tres" type="DynamicFont" id=4]
 [ext_resource path="res://addons/dialogic/Nodes/glossary_info.gd" type="Script" id=5]
 [ext_resource path="res://addons/dialogic/Nodes/dialog_node.gd" type="Script" id=6]
 [ext_resource path="res://addons/dialogic/Nodes/BackgroundMusic.tscn" type="PackedScene" id=7]
 
-
-
 [sub_resource type="StyleBoxFlat" id=1]
-bg_color = Color( 1, 1, 1, 0 )
-expand_margin_left = 10.0
-
-[sub_resource type="Animation" id=2]
-resource_name = "Pulse"
-loop = true
-tracks/0/type = "value"
-tracks/0/path = NodePath(".:self_modulate")
-tracks/0/interp = 2
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0, 0.5 ),
-"transitions": PoolRealArray( 1, 1 ),
-"update": 0,
-"values": [ Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
-}
-
-[sub_resource type="Animation" id=3]
-resource_name = "Static"
-
-[sub_resource type="Animation" id=4]
-loop = true
-tracks/0/type = "value"
-tracks/0/path = NodePath(".:margin_bottom")
-tracks/0/interp = 2
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0, 0.5 ),
-"transitions": PoolRealArray( 1, 1 ),
-"update": 0,
-"values": [ 12.0, 55.0 ]
-}
-
-[sub_resource type="StyleBoxFlat" id=5]
-content_margin_left = 10.0
-content_margin_right = 10.0
-bg_color = Color( 1, 1, 1, 0 )
-expand_margin_left = 10.0
-
-[sub_resource type="StyleBoxFlat" id=6]
 bg_color = Color( 0.196078, 0.196078, 0.196078, 0 )
+
+[sub_resource type="StyleBoxFlat" id=2]
+bg_color = Color( 1, 1, 1, 0 )
+expand_margin_left = 10.0
 
 [node name="DialogNode" type="Control"]
 anchor_right = 1.0
@@ -65,181 +21,34 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Background" type="TextureRect" parent="."]
-visible = false
-anchor_right = 1.0
-anchor_bottom = 1.0
-expand = true
-stretch_mode = 1
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
 [node name="Portraits" type="Control" parent="."]
 anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
+margin_left = 512.0
+margin_top = 600.0
+margin_right = 512.0
+margin_bottom = 600.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="TextBubble" type="Control" parent="."]
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-margin_left = -250.0
-margin_top = -207.0
-margin_right = 250.0
-margin_bottom = -40.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="ColorRect" type="ColorRect" parent="TextBubble"]
-visible = false
-anchor_right = 1.0
-anchor_bottom = 1.0
-color = Color( 0, 0, 0, 1 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="TextureRect" type="TextureRect" parent="TextBubble"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-texture = ExtResource( 2 )
-expand = true
-stretch_mode = 1
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="RichTextLabel" type="RichTextLabel" parent="TextBubble"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_left = 20.0
-margin_top = 10.0
-margin_right = -20.0
-margin_bottom = -10.0
-rect_clip_content = false
-custom_styles/normal = SubResource( 1 )
-custom_fonts/normal_font = ExtResource( 3 )
-custom_colors/default_color = Color( 1, 1, 1, 1 )
-custom_colors/font_color_shadow = Color( 1, 1, 1, 0 )
-custom_constants/shadow_offset_x = 2
-custom_constants/shadow_offset_y = 2
-bbcode_enabled = true
-bbcode_text = "Placeholder text for testing and formatting."
-meta_underlined = false
-text = "Placeholder text for testing and formatting."
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="NextIndicator" type="TextureRect" parent="TextBubble"]
-visible = false
-anchor_left = 1.0
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_left = -36.4279
-margin_top = -35.9016
-margin_right = 14.5721
-margin_bottom = 29.4015
-rect_scale = Vector2( 0.4, 0.4 )
-texture = ExtResource( 1 )
-stretch_mode = 4
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="TextBubble/NextIndicator"]
-autoplay = "Up and down"
-anims/Pulse = SubResource( 2 )
-anims/Static = SubResource( 3 )
-"anims/Up and down" = SubResource( 4 )
-
-[node name="NameLabel" type="Label" parent="TextBubble"]
-margin_top = -48.0
-margin_right = 58.0
-margin_bottom = -8.0
-size_flags_vertical = 1
-custom_styles/normal = SubResource( 5 )
-custom_fonts/font = ExtResource( 3 )
-custom_colors/font_color = Color( 1, 1, 1, 1 )
-custom_colors/font_color_shadow = Color( 0, 0, 0, 0.619608 )
-custom_constants/shadow_offset_x = 2
-custom_constants/shadow_offset_y = 2
-align = 1
-valign = 1
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="ColorRect" type="ColorRect" parent="TextBubble/NameLabel"]
-visible = false
-show_behind_parent = true
-anchor_right = 1.0
-anchor_bottom = 1.0
-size_flags_horizontal = 15
-size_flags_vertical = 15
-color = Color( 0.156863, 0.156863, 0.156863, 1 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="TextureRect" type="TextureRect" parent="TextBubble/NameLabel"]
-show_behind_parent = true
-anchor_right = 1.0
-anchor_bottom = 1.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-texture = ExtResource( 2 )
-expand = true
-stretch_mode = 1
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Tween" type="Tween" parent="TextBubble"]
+[node name="TextBubble" parent="." instance=ExtResource( 1 )]
+margin_left = 57.0
+margin_right = 967.0
 
 [node name="Options" type="VBoxContainer" parent="."]
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = -20.0
-margin_top = -19.9999
-margin_right = 20.0
-margin_bottom = 19.9999
+margin_left = 512.0
+margin_top = 300.0
+margin_right = 512.0
+margin_bottom = 300.0
 grow_horizontal = 2
 grow_vertical = 2
+alignment = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
-
-[node name="TextInputDialog" type="AcceptDialog" parent="."]
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = -192.0
-margin_top = -57.0
-margin_right = 192.0
-margin_bottom = 57.0
-popup_exclusive = true
-dialog_hide_on_ok = false
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="LineEdit" type="LineEdit" parent="TextInputDialog"]
-margin_left = 8.0
-margin_top = 8.0
-margin_right = 376.0
-margin_bottom = 78.0
 
 [node name="FX" type="Control" parent="."]
 anchor_right = 1.0
@@ -251,20 +60,6 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="FadeInNode" type="ColorRect" parent="FX"]
-modulate = Color( 1, 1, 1, 0 )
-anchor_right = 1.0
-anchor_bottom = 1.0
-mouse_filter = 2
-color = Color( 0, 0, 0, 1 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Tween" type="Tween" parent="FX/FadeInNode"]
-
-[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="FX"]
-
 [node name="BackgroundMusic" parent="FX" instance=ExtResource( 7 )]
 
 [node name="DefinitionInfo" type="PanelContainer" parent="."]
@@ -273,7 +68,7 @@ margin_right = 208.0
 mouse_filter = 1
 size_flags_horizontal = 3
 size_flags_vertical = 3
-custom_styles/panel = SubResource( 6 )
+custom_styles/panel = SubResource( 1 )
 script = ExtResource( 5 )
 __meta__ = {
 "_edit_group_": true,
@@ -303,7 +98,7 @@ margin_right = 208.0
 margin_bottom = 27.0
 size_flags_horizontal = 3
 size_flags_vertical = 4
-custom_styles/normal = SubResource( 1 )
+custom_styles/normal = SubResource( 2 )
 custom_fonts/normal_font = ExtResource( 4 )
 bbcode_text = "This is the title"
 text = "This is the title"
@@ -315,7 +110,7 @@ margin_top = 31.0
 margin_right = 208.0
 margin_bottom = 112.0
 size_flags_horizontal = 3
-custom_styles/normal = SubResource( 1 )
+custom_styles/normal = SubResource( 2 )
 custom_fonts/normal_font = ExtResource( 4 )
 text = "This is the main copy. Here you write the relevant"
 fit_content_height = true
@@ -330,7 +125,7 @@ margin_top = 116.0
 margin_right = 208.0
 margin_bottom = 143.0
 size_flags_horizontal = 3
-custom_styles/normal = SubResource( 1 )
+custom_styles/normal = SubResource( 2 )
 custom_fonts/normal_font = ExtResource( 4 )
 text = "Una linea extra"
 fit_content_height = true
@@ -341,9 +136,4 @@ __meta__ = {
 
 [node name="Timer" type="Timer" parent="DefinitionInfo"]
 
-[node name="WaitSeconds" type="Timer" parent="."]
-
-[connection signal="meta_hover_ended" from="TextBubble/RichTextLabel" to="." method="_on_RichTextLabel_meta_hover_ended"]
-[connection signal="meta_hover_started" from="TextBubble/RichTextLabel" to="." method="_on_RichTextLabel_meta_hover_started"]
 [connection signal="timeout" from="DefinitionInfo/Timer" to="." method="_on_Definition_Timer_timeout"]
-[connection signal="timeout" from="WaitSeconds" to="." method="_on_WaitSeconds_timeout"]
