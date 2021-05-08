@@ -74,6 +74,10 @@ func _ready():
 		if preview:
 			_init_dialog()
 	else:
+		# Copied
+		if not(get_parent() is CanvasLayer):
+			push_warning("[Dialogic] You didn't add this node to a CanvasLayer. If this was intentional, you can ignore this warning."))
+		
 		_init_dialog()
 
 
