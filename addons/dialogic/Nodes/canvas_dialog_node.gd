@@ -17,6 +17,7 @@ signal dialogic_signal(value)
 var _dialog_node_scene = load("res://addons/dialogic/Dialog.tscn")
 var dialog_node = null
 
+
 func set_dialog_node_scene(scene) -> void:
 	_dialog_node_scene = scene
 	dialog_node = _dialog_node_scene.instance()
@@ -52,6 +53,7 @@ func _on_event_end(type) -> void:
 
 func _on_timeline_start(timeline_name) -> void:
   emit_signal("timeline_start", timeline_name)
+
 
 func _on_timeline_end(timeline_name) -> void:
   emit_signal("timeline_end", timeline_name)

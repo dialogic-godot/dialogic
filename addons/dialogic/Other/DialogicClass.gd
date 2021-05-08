@@ -12,6 +12,8 @@ extends Node
 class_name Dialogic
 
 
+## Refactor the start function for 2.0 there should be a cleaner way to do it :)
+
 ## Starts the dialog for the given timeline and returns a Dialog node.
 ## You must then add it manually to the scene to display the dialog.
 ##
