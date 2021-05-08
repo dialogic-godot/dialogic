@@ -339,7 +339,6 @@ items = [ "Left", null, false, 0, null, "Center", null, false, 1, null, "Right",
 selected = 0
 
 [node name="Dialog Box" type="HBoxContainer" parent="VBoxContainer/TabContainer"]
-visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 4.0
@@ -363,7 +362,7 @@ margin_right = 288.0
 [node name="GridContainer" type="GridContainer" parent="VBoxContainer/TabContainer/Dialog Box/Column"]
 margin_top = 26.0
 margin_right = 288.0
-margin_bottom = 190.0
+margin_bottom = 218.0
 size_flags_horizontal = 3
 custom_constants/hseparation = 10
 columns = 2
@@ -436,18 +435,34 @@ margin_right = 152.0
 margin_bottom = 24.0
 size_flags_horizontal = 3
 
-[node name="Label6" type="Label" parent="VBoxContainer/TabContainer/Dialog Box/Column/GridContainer"]
+[node name="Label2" type="Label" parent="VBoxContainer/TabContainer/Dialog Box/Column/GridContainer"]
 margin_top = 89.0
 margin_right = 126.0
 margin_bottom = 103.0
+text = "Full width"
+
+[node name="HBoxContainer7" type="HBoxContainer" parent="VBoxContainer/TabContainer/Dialog Box/Column/GridContainer"]
+margin_left = 136.0
+margin_top = 84.0
+margin_right = 288.0
+margin_bottom = 108.0
+
+[node name="CheckBox" type="CheckBox" parent="VBoxContainer/TabContainer/Dialog Box/Column/GridContainer/HBoxContainer7"]
+margin_right = 24.0
+margin_bottom = 24.0
+
+[node name="Label6" type="Label" parent="VBoxContainer/TabContainer/Dialog Box/Column/GridContainer"]
+margin_top = 117.0
+margin_right = 126.0
+margin_bottom = 131.0
 size_flags_horizontal = 3
 text = "Box padding"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/TabContainer/Dialog Box/Column/GridContainer"]
 margin_left = 136.0
-margin_top = 84.0
+margin_top = 112.0
 margin_right = 288.0
-margin_bottom = 108.0
+margin_bottom = 136.0
 
 [node name="TextOffsetV" type="SpinBox" parent="VBoxContainer/TabContainer/Dialog Box/Column/GridContainer/HBoxContainer"]
 margin_right = 74.0
@@ -469,16 +484,16 @@ allow_greater = true
 allow_lesser = true
 
 [node name="Label7" type="Label" parent="VBoxContainer/TabContainer/Dialog Box/Column/GridContainer"]
-margin_top = 117.0
+margin_top = 145.0
 margin_right = 126.0
-margin_bottom = 131.0
+margin_bottom = 159.0
 text = "Box size (pixels)"
 
 [node name="HBoxContainer4" type="HBoxContainer" parent="VBoxContainer/TabContainer/Dialog Box/Column/GridContainer"]
 margin_left = 136.0
-margin_top = 112.0
+margin_top = 140.0
 margin_right = 288.0
-margin_bottom = 136.0
+margin_bottom = 164.0
 
 [node name="BoxSizeW" type="SpinBox" parent="VBoxContainer/TabContainer/Dialog Box/Column/GridContainer/HBoxContainer4"]
 margin_right = 74.0
@@ -499,16 +514,16 @@ allow_greater = true
 allow_lesser = true
 
 [node name="Label8" type="Label" parent="VBoxContainer/TabContainer/Dialog Box/Column/GridContainer"]
-margin_top = 145.0
+margin_top = 173.0
 margin_right = 126.0
-margin_bottom = 159.0
+margin_bottom = 187.0
 text = "Bottom gap"
 
 [node name="HBoxContainer5" type="HBoxContainer" parent="VBoxContainer/TabContainer/Dialog Box/Column/GridContainer"]
 margin_left = 136.0
-margin_top = 140.0
+margin_top = 168.0
 margin_right = 288.0
-margin_bottom = 164.0
+margin_bottom = 192.0
 
 [node name="BottomGap" type="SpinBox" parent="VBoxContainer/TabContainer/Dialog Box/Column/GridContainer/HBoxContainer5"]
 margin_right = 74.0
@@ -673,6 +688,7 @@ items = [ "[Select Action]", null, false, 0, null, "ui_accept", null, false, 1, 
 selected = 0
 
 [node name="Name Label" type="HBoxContainer" parent="VBoxContainer/TabContainer"]
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 4.0
@@ -1129,6 +1145,7 @@ __meta__ = {
 }
 
 [node name="SectionTitle" parent="VBoxContainer/TabContainer/Choice Buttons/Column2" instance=ExtResource( 3 )]
+margin_right = 309.0
 text = "Placement"
 
 [node name="GridContainer" type="GridContainer" parent="VBoxContainer/TabContainer/Choice Buttons/Column2"]
@@ -1231,8 +1248,7 @@ __meta__ = {
 }
 
 [node name="SectionTitle" parent="VBoxContainer/TabContainer/Choice Buttons/Column3" instance=ExtResource( 3 )]
-text = "Advanced
-"
+text = "Advanced"
 
 [node name="Label" type="Label" parent="VBoxContainer/TabContainer/Choice Buttons/Column3"]
 margin_top = 26.0
@@ -1407,6 +1423,9 @@ prefix = "Y"
 [node name="DelayPreviewTimer" type="Timer" parent="."]
 one_shot = true
 
+[node name="FirstTimeLoadingFullSizeBug" type="Timer" parent="."]
+one_shot = true
+
 [connection signal="text_changed" from="VBoxContainer/HBoxContainer3/TextEdit" to="." method="_on_Preview_text_changed"]
 [connection signal="pressed" from="VBoxContainer/HBoxContainer3/PreviewButton" to="." method="_on_PreviewButton_pressed"]
 [connection signal="pressed" from="VBoxContainer/TabContainer/Dialog Text/Column/GridContainer/RegularFont/RegularFontButton" to="." method="_on_FontButton_pressed"]
@@ -1428,6 +1447,7 @@ one_shot = true
 [connection signal="pressed" from="VBoxContainer/TabContainer/Dialog Box/Column/GridContainer/HBoxContainer3/BackgroundTextureButton" to="." method="_on_BackgroundTextureButton_pressed"]
 [connection signal="toggled" from="VBoxContainer/TabContainer/Dialog Box/Column/GridContainer/HBoxContainer6/CheckBox" to="." method="_on_BackgroundTexture_Modulation_toggled"]
 [connection signal="color_changed" from="VBoxContainer/TabContainer/Dialog Box/Column/GridContainer/HBoxContainer6/ColorPickerButton" to="." method="_on_ColorPicker_Background_texture_modulation_color_changed"]
+[connection signal="toggled" from="VBoxContainer/TabContainer/Dialog Box/Column/GridContainer/HBoxContainer7/CheckBox" to="." method="_on_BackgroundFullWidth_toggled"]
 [connection signal="value_changed" from="VBoxContainer/TabContainer/Dialog Box/Column/GridContainer/HBoxContainer/TextOffsetV" to="." method="_on_TextMargin_value_changed"]
 [connection signal="value_changed" from="VBoxContainer/TabContainer/Dialog Box/Column/GridContainer/HBoxContainer/TextOffsetH" to="." method="_on_TextMargin_value_changed"]
 [connection signal="value_changed" from="VBoxContainer/TabContainer/Dialog Box/Column/GridContainer/HBoxContainer4/BoxSizeW" to="." method="_on_BoxSize_value_changed"]
@@ -1480,3 +1500,4 @@ one_shot = true
 [connection signal="color_changed" from="VBoxContainer/TabContainer/Glossary/Column/GridContainer/HBoxContainer2/ColorPickerButtonShadow" to="." method="_on_ColorPickerButtonShadow_color_changed"]
 [connection signal="value_changed" from="VBoxContainer/TabContainer/Glossary/Column/GridContainer/HBoxContainer/ShadowOffsetX" to="." method="_on_ShadowOffset_value_changed"]
 [connection signal="value_changed" from="VBoxContainer/TabContainer/Glossary/Column/GridContainer/HBoxContainer/ShadowOffsetY" to="." method="_on_ShadowOffset_value_changed"]
+[connection signal="timeout" from="FirstTimeLoadingFullSizeBug" to="." method="_on_FirstTimeLoadingFullSizeBug_timeout"]

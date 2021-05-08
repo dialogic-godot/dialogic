@@ -72,6 +72,7 @@ func _ready():
 
 	if Engine.is_editor_hint():
 		if preview:
+			get_parent().connect("resized", self, "resize_main")
 			_init_dialog()
 	else:
 		_init_dialog()
@@ -106,6 +107,20 @@ func resize_main():
 	if current_theme != null:
 		$TextBubble.rect_position.y = (reference.y) - ($TextBubble.rect_size.y) - current_theme.get_value('box', 'bottom_gap', 40)
 	
+	
+	var pos_x = 0
+	if current_theme.get_value('background', 'full_width', false):
+		if preview:
+			pos_x = get_parent().rect_global_position.x
+		$TextBubble/TextureRect.rect_global_position.x = pos_x
+		$TextBubble/ColorRect.rect_global_position.x = pos_x
+		$TextBubble/TextureRect.rect_size.x = reference.x
+		$TextBubble/ColorRect.rect_size.x = reference.x
+	else:
+		$TextBubble/TextureRect.rect_global_position.x = $TextBubble.rect_global_position.x
+		$TextBubble/ColorRect.rect_global_position.x = $TextBubble.rect_global_position.x
+		$TextBubble/TextureRect.rect_size.x = $TextBubble.rect_size.x
+		$TextBubble/ColorRect.rect_size.x = $TextBubble.rect_size.x
 	
 	var background = get_node_or_null('Background')
 	if background != null:

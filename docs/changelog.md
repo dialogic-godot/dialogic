@@ -4,6 +4,7 @@
 - Modified the label on the emit signal event so it is easier to understand [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
 - Theme Editor
   - Added new Box Padding settings to the name label.
+  - Added a new option to make the dialog backgrounds full width
 - Character Editor
   - You can set nicknames to characters [[zakary93](https://github.com/zakary93)]
   - Fixed a bug when coloring the names of characters in text [[zakary93](https://github.com/zakary93)]

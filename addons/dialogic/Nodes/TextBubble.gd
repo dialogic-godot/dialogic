@@ -96,7 +96,7 @@ func load_theme(theme: ConfigFile):
 	$TextureRect.texture = DialogicUtil.path_fixer_load(theme.get_value('background','image', "res://addons/dialogic/Example Assets/backgrounds/background-2.png"))
 	$ColorRect.color = Color(theme.get_value('background','color', "#ff000000"))
 
-	if theme.get_value('background', 'modulation', false) == true:
+	if theme.get_value('background', 'modulation', false):
 		$TextureRect.modulate = Color(theme.get_value('background', 'modulation_color', '#ffffffff'))
 	else:
 		$TextureRect.modulate = Color('#ffffffff')
