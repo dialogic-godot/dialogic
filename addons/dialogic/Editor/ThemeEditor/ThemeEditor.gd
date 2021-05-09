@@ -326,7 +326,7 @@ func _on_PreviewButton_pressed() -> void:
 		i.free()
 	var characters : Array = DialogicUtil.get_character_list()
 	var character_file : String = ''
-	var preview_dialog = Dialogic.start('')
+	var preview_dialog = Dialogic.start('', true, "res://addons/dialogic/Dialog.tscn", true, false)
 	preview_dialog.preview = true
 	if characters.size():
 		characters.shuffle()

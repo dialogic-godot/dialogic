@@ -21,7 +21,6 @@ func _ready():
 	use_condition_button.visible = allow_disable_condition
 	use_condition_button.pressed = !allow_disable_condition
 
-
 # called by the event block
 func load_data(data:Dictionary):
 	# First set the event_data
@@ -35,6 +34,11 @@ func load_data(data:Dictionary):
 	if data.has('definition'):
 		if data['definition'] != '':
 			use_condition_button.pressed = true
+	
+	if data['event_id'] == 'dialogic_012': # If Condition event
+		condition_type_picker.visible = true
+		definition_picker.visible = true
+		input_field.visible = true
 
 
 # has to return the wanted preview, only useful for body parts
