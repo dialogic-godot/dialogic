@@ -87,7 +87,7 @@ rect_min_size = Vector2( 180, 0 )
 
 [node name="EventContainer" type="VBoxContainer" parent="ScrollContainer"]
 margin_right = 168.0
-margin_bottom = 754.0
+margin_bottom = 760.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 __meta__ = {
@@ -239,10 +239,20 @@ align = 0
 script = ExtResource( 21 )
 EventName = "SetValue"
 
-[node name="HBoxContainer3" type="HBoxContainer" parent="ScrollContainer/EventContainer"]
+[node name="SetGlossary" type="Button" parent="ScrollContainer/EventContainer"]
 margin_top = 358.0
 margin_right = 168.0
-margin_bottom = 372.0
+margin_bottom = 386.0
+text = "  Set Glossary"
+icon = ExtResource( 23 )
+align = 0
+script = ExtResource( 21 )
+EventName = "SetGlossary"
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="ScrollContainer/EventContainer"]
+margin_top = 390.0
+margin_right = 168.0
+margin_bottom = 404.0
 
 [node name="Label" type="Label" parent="ScrollContainer/EventContainer/HBoxContainer3"]
 margin_right = 56.0
@@ -256,9 +266,9 @@ margin_bottom = 14.0
 size_flags_horizontal = 3
 
 [node name="ChangeTimeline" type="Button" parent="ScrollContainer/EventContainer"]
-margin_top = 376.0
+margin_top = 408.0
 margin_right = 168.0
-margin_bottom = 404.0
+margin_bottom = 436.0
 hint_tooltip = "This will instantly teleport you to the start of the desired timeline."
 text = "  Change Timeline"
 icon = ExtResource( 10 )
@@ -267,19 +277,19 @@ script = ExtResource( 21 )
 EventName = "ChangeTimeline"
 
 [node name="ChangeBackground" type="Button" parent="ScrollContainer/EventContainer"]
-margin_top = 408.0
+margin_top = 440.0
 margin_right = 168.0
-margin_bottom = 436.0
-text = "  Change Background"
+margin_bottom = 468.0
+text = "  Set Background"
 icon = ExtResource( 4 )
 align = 0
 script = ExtResource( 21 )
 EventName = "ChangeBackground"
 
 [node name="CloseDialog" type="Button" parent="ScrollContainer/EventContainer"]
-margin_top = 440.0
+margin_top = 472.0
 margin_right = 168.0
-margin_bottom = 468.0
+margin_bottom = 500.0
 text = "  Close Dialog"
 icon = ExtResource( 6 )
 align = 0
@@ -287,9 +297,9 @@ script = ExtResource( 21 )
 EventName = "CloseDialog"
 
 [node name="WaitSeconds" type="Button" parent="ScrollContainer/EventContainer"]
-margin_top = 472.0
+margin_top = 504.0
 margin_right = 168.0
-margin_bottom = 500.0
+margin_bottom = 532.0
 text = "  Wait Seconds"
 icon = ExtResource( 14 )
 align = 0
@@ -297,29 +307,19 @@ script = ExtResource( 21 )
 EventName = "WaitSeconds"
 
 [node name="SetTheme" type="Button" parent="ScrollContainer/EventContainer"]
-margin_top = 504.0
+margin_top = 536.0
 margin_right = 168.0
-margin_bottom = 532.0
+margin_bottom = 564.0
 text = "  Set Theme"
 icon = ExtResource( 18 )
 align = 0
 script = ExtResource( 21 )
 EventName = "SetTheme"
 
-[node name="SetGlossary" type="Button" parent="ScrollContainer/EventContainer"]
-margin_top = 536.0
-margin_right = 168.0
-margin_bottom = 558.0
-text = "  Set Glossary"
-icon = ExtResource( 23 )
-align = 0
-script = ExtResource( 21 )
-EventName = "SetGlossary"
-
 [node name="HBoxContainer4" type="HBoxContainer" parent="ScrollContainer/EventContainer"]
-margin_top = 562.0
+margin_top = 568.0
 margin_right = 168.0
-margin_bottom = 576.0
+margin_bottom = 582.0
 
 [node name="Label" type="Label" parent="ScrollContainer/EventContainer/HBoxContainer4"]
 margin_right = 37.0
@@ -333,9 +333,9 @@ margin_bottom = 14.0
 size_flags_horizontal = 3
 
 [node name="AudioEvent" type="Button" parent="ScrollContainer/EventContainer"]
-margin_top = 580.0
+margin_top = 586.0
 margin_right = 168.0
-margin_bottom = 608.0
+margin_bottom = 614.0
 text = "  Audio Event"
 icon = ExtResource( 3 )
 align = 0
@@ -343,9 +343,9 @@ script = ExtResource( 21 )
 EventName = "AudioEvent"
 
 [node name="BackgroundMusic" type="Button" parent="ScrollContainer/EventContainer"]
-margin_top = 612.0
+margin_top = 618.0
 margin_right = 168.0
-margin_bottom = 640.0
+margin_bottom = 646.0
 text = "  Background Music"
 icon = ExtResource( 19 )
 align = 0
@@ -353,9 +353,9 @@ script = ExtResource( 21 )
 EventName = "BackgroundMusic"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="ScrollContainer/EventContainer"]
-margin_top = 644.0
+margin_top = 650.0
 margin_right = 168.0
-margin_bottom = 658.0
+margin_bottom = 664.0
 
 [node name="Label" type="Label" parent="ScrollContainer/EventContainer/HBoxContainer"]
 margin_right = 39.0
@@ -369,9 +369,9 @@ margin_bottom = 14.0
 size_flags_horizontal = 3
 
 [node name="EmitSignal" type="Button" parent="ScrollContainer/EventContainer"]
-margin_top = 662.0
+margin_top = 668.0
 margin_right = 168.0
-margin_bottom = 690.0
+margin_bottom = 696.0
 text = "  Emit Signal"
 icon = ExtResource( 16 )
 align = 0
@@ -379,9 +379,9 @@ script = ExtResource( 21 )
 EventName = "EmitSignal"
 
 [node name="ChangeScene" type="Button" parent="ScrollContainer/EventContainer"]
-margin_top = 694.0
+margin_top = 700.0
 margin_right = 168.0
-margin_bottom = 722.0
+margin_bottom = 728.0
 hint_tooltip = "This will instantly change
 the current scene."
 text = "  Change Scene"
@@ -391,9 +391,9 @@ script = ExtResource( 21 )
 EventName = "ChangeScene"
 
 [node name="CallNode" type="Button" parent="ScrollContainer/EventContainer"]
-margin_top = 726.0
+margin_top = 732.0
 margin_right = 168.0
-margin_bottom = 754.0
+margin_bottom = 760.0
 text = "  Call Node"
 icon = ExtResource( 20 )
 align = 0
