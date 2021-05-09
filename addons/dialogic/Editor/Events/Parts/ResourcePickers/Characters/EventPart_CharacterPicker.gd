@@ -42,7 +42,7 @@ func update_to_character():
 		if allow_no_character:
 			picker_menu.text = '[No Character]'
 		else:
-			picker_menu.text = '[Select Character!]'
+			picker_menu.text = '[Select Character]'
 		icon.modulate = Color.white
 
 func _on_PickerMenu_selected(index):
