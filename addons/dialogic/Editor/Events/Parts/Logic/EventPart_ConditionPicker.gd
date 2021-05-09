@@ -21,6 +21,7 @@ func _ready():
 	use_condition_button.visible = allow_disable_condition
 	use_condition_button.pressed = !allow_disable_condition
 
+
 # called by the event block
 func load_data(data:Dictionary):
 	# First set the event_data
@@ -30,11 +31,16 @@ func load_data(data:Dictionary):
 	input_field.text = event_data['value']
 	definition_picker.load_data(event_data)
 	condition_type_picker.load_data(event_data)
-	use_condition_button.pressed = data.has('condition') and data['condition'] != ''
+	use_condition_button.pressed = false
+	if data.has('definition'):
+		if data['definition'] != '':
+			use_condition_button.pressed = true
+
 
 # has to return the wanted preview, only useful for body parts
 func get_preview():
 	return ''
+
 
 func _on_DefinitionPicker_data_changed(data):
 	event_data = data
@@ -45,6 +51,7 @@ func _on_DefinitionPicker_data_changed(data):
 	# informs the parent about the changes!
 	data_changed()
 
+
 func _on_ConditionPicker_data_changed(data):
 	event_data = data
 	
@@ -54,11 +61,13 @@ func _on_ConditionPicker_data_changed(data):
 	# informs the parent about the changes!
 	data_changed()
 
+
 func _on_InputField_text_changed(text):
 	event_data['value'] = text
 	
 	# informs the parent about the changes!
 	data_changed()
+
 
 func _on_UseConditonButton_toggled(toggled):
 	definition_picker.visible = toggled
