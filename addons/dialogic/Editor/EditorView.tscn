@@ -47,7 +47,6 @@ __meta__ = {
 }
 
 [node name="NewTimelineButton" type="Button" parent="ToolBar"]
-modulate = Color( 0, 0, 0, 1 )
 margin_right = 28.0
 margin_bottom = 32.0
 hint_tooltip = "New Timeline"
@@ -56,7 +55,6 @@ icon = ExtResource( 4 )
 flat = true
 
 [node name="NewCharactersButton" type="ToolButton" parent="ToolBar"]
-modulate = Color( 0, 0, 0, 1 )
 self_modulate = Color( 0.870588, 0.870588, 0.870588, 1 )
 margin_left = 28.0
 margin_right = 56.0
@@ -66,7 +64,6 @@ focus_mode = 0
 icon = ExtResource( 3 )
 
 [node name="NewDefinitionButton" type="Button" parent="ToolBar"]
-modulate = Color( 0, 0, 0, 1 )
 margin_left = 56.0
 margin_right = 84.0
 margin_bottom = 32.0
@@ -76,7 +73,6 @@ icon = ExtResource( 5 )
 flat = true
 
 [node name="NewThemeButton" type="Button" parent="ToolBar"]
-modulate = Color( 0, 0, 0, 1 )
 margin_left = 84.0
 margin_right = 112.0
 margin_bottom = 32.0
