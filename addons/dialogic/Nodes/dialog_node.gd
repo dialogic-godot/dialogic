@@ -963,6 +963,8 @@ func _compare_definitions(def_value: String, event_value: String, condition: Str
 		if def_value.is_valid_float() and event_value.is_valid_float():
 			converted_def_value = float(def_value)
 			converted_event_value = float(event_value)
+		if condition == '':
+			condition = '==' # The default condition is Equal to
 		match condition:
 			"==":
 				condition_met = converted_def_value == converted_event_value

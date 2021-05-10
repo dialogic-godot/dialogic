@@ -21,6 +21,7 @@ func _ready():
 	use_condition_button.visible = allow_disable_condition
 	use_condition_button.pressed = !allow_disable_condition
 
+
 # called by the event block
 func load_data(data:Dictionary):
 	# First set the event_data

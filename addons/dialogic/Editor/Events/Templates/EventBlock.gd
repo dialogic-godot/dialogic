@@ -50,12 +50,14 @@ var ignore_save = false
 func visual_select():
 	set_event_style(selected_style)
 
+
 func visual_deselect():
 	set_event_style(event_style)
 
 
 func set_event_style(style: StyleBoxFlat):
 	panel.set('custom_styles/panel', style)
+
 
 func get_event_style():
 	return panel.get('custom_styles/panel')
