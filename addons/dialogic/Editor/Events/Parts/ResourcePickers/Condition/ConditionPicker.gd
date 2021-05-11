@@ -3,6 +3,8 @@ extends HBoxContainer
 
 export (bool) var optional := false
 
+var default_definition_text = 'Select Definition'
+var default_condition_text = 'equal to'
 onready var Definition = $Values/Definition
 onready var Condition = $Values/Condition
 onready var Value = $Values/Value
@@ -49,6 +51,9 @@ func _ready():
 func _on_toggle_visibility(checkbox_value):
 	$Values.visible = checkbox_value
 	if checkbox_value == false:
+		Definition.text = default_definition_text
+		Condition.text = default_condition_text
+		Value.text = ''
 		get_parent().event_data['definition'] = ''
 		get_parent().event_data['condition'] = ''
 		get_parent().event_data['value'] = ''
@@ -61,7 +66,7 @@ func set_definition(definition):
 			if d['id'] == definition:
 				Definition.text = d['name']
 	else:
-		Definition.text = 'Select Definition'
+		Definition.text = default_definition_text
 
 
 func _on_definition_selected(index):

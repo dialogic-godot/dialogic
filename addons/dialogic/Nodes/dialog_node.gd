@@ -715,7 +715,7 @@ func reset_options():
 
 
 func _should_add_choice_button(option: Dictionary):
-	if not option['definition'].empty() and not option['value'].empty():
+	if not option['definition'].empty():
 		var def_value = null
 		for d in definitions['variables']:
 			if d['id'] == option['definition']:
