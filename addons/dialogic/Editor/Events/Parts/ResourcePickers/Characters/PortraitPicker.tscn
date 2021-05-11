@@ -6,8 +6,9 @@
 [ext_resource path="res://addons/dialogic/Editor/Events/styles/MenuButtonHover.tres" type="StyleBox" id=4]
 
 [node name="PortraitPicker" type="VBoxContainer"]
-margin_right = 40.0
-margin_bottom = 40.0
+margin_right = 100.0
+margin_bottom = 30.0
+rect_min_size = Vector2( 0, 30 )
 script = ExtResource( 2 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -16,6 +17,8 @@ __meta__ = {
 [node name="HBox" type="HBoxContainer" parent="."]
 margin_right = 100.0
 margin_bottom = 30.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
 
 [node name="MenuButton" type="MenuButton" parent="HBox"]
 margin_right = 100.0
