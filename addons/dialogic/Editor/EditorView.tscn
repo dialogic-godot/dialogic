@@ -47,6 +47,7 @@ __meta__ = {
 }
 
 [node name="NewTimelineButton" type="Button" parent="ToolBar"]
+self_modulate = Color( 0.870588, 0.870588, 0.870588, 1 )
 margin_right = 28.0
 margin_bottom = 32.0
 hint_tooltip = "New Timeline"
@@ -64,6 +65,7 @@ focus_mode = 0
 icon = ExtResource( 3 )
 
 [node name="NewDefinitionButton" type="Button" parent="ToolBar"]
+self_modulate = Color( 0.870588, 0.870588, 0.870588, 1 )
 margin_left = 56.0
 margin_right = 84.0
 margin_bottom = 32.0
@@ -73,6 +75,7 @@ icon = ExtResource( 5 )
 flat = true
 
 [node name="NewThemeButton" type="Button" parent="ToolBar"]
+self_modulate = Color( 0.870588, 0.870588, 0.870588, 1 )
 margin_left = 84.0
 margin_right = 112.0
 margin_bottom = 32.0
@@ -129,7 +132,7 @@ margin_left = 942.0
 margin_top = 9.0
 margin_right = 1024.0
 margin_bottom = 23.0
-text = "Dialogic v1.2"
+text = "Dialogic v1.1"
 
 [node name="MainPanel" type="HSplitContainer" parent="."]
 anchor_right = 1.0
@@ -200,7 +203,6 @@ margin_left = 151.0
 margin_top = 276.0
 margin_right = 325.0
 margin_bottom = 332.0
-items = [ "Show in File Manager", SubResource( 2 ), 0, false, false, 0, 0, null, "", false, "Copy Timeline Name", SubResource( 2 ), 0, false, false, 1, 0, null, "", false, "Remove Timeline", SubResource( 2 ), 0, false, false, 2, 0, null, "", false, "Show in File Manager", SubResource( 2 ), 0, false, false, 3, 0, null, "", false, "Copy Timeline Name", SubResource( 2 ), 0, false, false, 4, 0, null, "", false, "Remove Timeline", SubResource( 2 ), 0, false, false, 5, 0, null, "", false ]
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -210,7 +212,6 @@ margin_left = 171.799
 margin_top = 209.0
 margin_right = 267.799
 margin_bottom = 229.0
-items = [ "Show in File Manager", SubResource( 2 ), 0, false, false, 0, 0, null, "", false, "Remove Character", SubResource( 2 ), 0, false, false, 1, 0, null, "", false, "Show in File Manager", SubResource( 2 ), 0, false, false, 2, 0, null, "", false, "Remove Character", SubResource( 2 ), 0, false, false, 3, 0, null, "", false ]
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -220,7 +221,6 @@ margin_left = 171.799
 margin_top = 209.0
 margin_right = 267.799
 margin_bottom = 229.0
-items = [ "Edit Definitions File", SubResource( 2 ), 0, false, false, 0, 0, null, "", false, "Remove Definition", SubResource( 2 ), 0, false, false, 1, 0, null, "", false, "Edit Definitions File", SubResource( 2 ), 0, false, false, 2, 0, null, "", false, "Remove Definition", SubResource( 2 ), 0, false, false, 3, 0, null, "", false ]
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -230,7 +230,6 @@ margin_left = 171.799
 margin_top = 209.0
 margin_right = 267.799
 margin_bottom = 229.0
-items = [ "Show in File Manager", SubResource( 2 ), 0, false, false, 0, 0, null, "", false, "Duplicate Theme", SubResource( 2 ), 0, false, false, 1, 0, null, "", false, "Remove Theme", SubResource( 2 ), 0, false, false, 2, 0, null, "", false, "Show in File Manager", SubResource( 2 ), 0, false, false, 3, 0, null, "", false, "Duplicate Theme", SubResource( 2 ), 0, false, false, 4, 0, null, "", false, "Remove Theme", SubResource( 2 ), 0, false, false, 5, 0, null, "", false ]
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -240,7 +239,6 @@ margin_left = 159.0
 margin_top = 283.0
 margin_right = 227.0
 margin_bottom = 319.0
-items = [ "Add Timeline", SubResource( 2 ), 0, false, false, 0, 0, null, "", false, "Add Timeline", SubResource( 2 ), 0, false, false, 1, 0, null, "", false ]
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -250,7 +248,6 @@ margin_left = 159.0
 margin_top = 283.0
 margin_right = 227.0
 margin_bottom = 319.0
-items = [ "Add Character", SubResource( 2 ), 0, false, false, 0, 0, null, "", false, "Add Character", SubResource( 2 ), 0, false, false, 1, 0, null, "", false ]
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -260,7 +257,6 @@ margin_left = 159.0
 margin_top = 283.0
 margin_right = 227.0
 margin_bottom = 319.0
-items = [ "Add Theme", SubResource( 2 ), 0, false, false, 0, 0, null, "", false, "Add Theme", SubResource( 2 ), 0, false, false, 1, 0, null, "", false ]
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -270,7 +266,6 @@ margin_left = 159.0
 margin_top = 283.0
 margin_right = 227.0
 margin_bottom = 319.0
-items = [ "Add Definition", SubResource( 2 ), 0, false, false, 0, 0, null, "", false, "Add Definition", SubResource( 2 ), 0, false, false, 1, 0, null, "", false ]
 __meta__ = {
 "_edit_use_anchors_": false
 }

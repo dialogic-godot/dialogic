@@ -1,0 +1,8 @@
+[gd_scene format=2]
+
+[node name="Spacer" type="Control"]
+mouse_filter = 1
+size_flags_horizontal = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}

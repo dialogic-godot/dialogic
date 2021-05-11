@@ -1,54 +1,153 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://addons/dialogic/Images/Event Icons/Main Icons/choice.svg" type="Texture" id=1]
-[ext_resource path="res://addons/dialogic/Editor/Events/Templates/EventTemplate.tscn" type="PackedScene" id=2]
-[ext_resource path="res://addons/dialogic/Editor/Events/styles/Logic.tres" type="StyleBox" id=3]
-[ext_resource path="res://addons/dialogic/Editor/Events/Parts/Logic/ChoicePicker.tscn" type="PackedScene" id=4]
+[ext_resource path="res://addons/dialogic/Editor/Events/Choice.gd" type="Script" id=2]
+[ext_resource path="res://addons/dialogic/Editor/Events/Common/Spacer.tscn" type="PackedScene" id=3]
+[ext_resource path="res://addons/dialogic/Editor/Events/Common/PieceExtraSettings.tscn" type="PackedScene" id=4]
+[ext_resource path="res://addons/dialogic/Editor/Events/Common/ConditionPicker.tscn" type="PackedScene" id=5]
+[ext_resource path="res://addons/dialogic/Images/Event Icons/warning.svg" type="Texture" id=6]
+[ext_resource path="res://addons/dialogic/Editor/Events/Common/CustomLineEdit.tscn" type="PackedScene" id=7]
+[ext_resource path="res://addons/dialogic/Editor/Events/Common/DefinitionPicker.tscn" type="PackedScene" id=8]
 
-[node name="Choice" instance=ExtResource( 2 )]
-event_data = {
-"choice": "",
-"condition": "",
-"definition": "",
-"event_id": "dialogic_011",
-"value": ""
+[sub_resource type="StyleBoxFlat" id=1]
+content_margin_left = 16.0
+content_margin_right = 6.0
+content_margin_top = 6.0
+content_margin_bottom = 6.0
+bg_color = Color( 0.243137, 0.231373, 0.396078, 0.772549 )
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color( 0.12549, 0.12549, 0.12549, 1 )
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[node name="Choice" type="HBoxContainer"]
+margin_right = 1004.0
+margin_bottom = 42.0
+size_flags_horizontal = 3
+size_flags_vertical = 9
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
 }
-event_style = ExtResource( 3 )
-event_icon = ExtResource( 1 )
-event_name = "Choice"
-header_scene = ExtResource( 4 )
-expand_on_default = false
-needs_indentation = true
 
-[node name="PanelContainer" parent="." index="1"]
-custom_styles/panel = ExtResource( 3 )
+[node name="Indent" type="Control" parent="."]
+visible = false
+margin_bottom = 42.0
 
-[node name="IconMarginContainer" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="1"]
-margin_right = 37.0
+[node name="PanelContainer" type="PanelContainer" parent="."]
+margin_right = 1004.0
+margin_bottom = 42.0
+mouse_filter = 1
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_styles/panel = SubResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
-[node name="IconTexture" parent="PanelContainer/MarginContainer/VBoxContainer/Header/IconMarginContainer" index="0"]
-margin_right = 32.0
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer"]
+margin_left = 16.0
+margin_top = 6.0
+margin_right = 998.0
+margin_bottom = 36.0
+size_flags_horizontal = 3
+
+[node name="Header" type="HBoxContainer" parent="PanelContainer/VBoxContainer"]
+margin_right = 982.0
+margin_bottom = 28.0
+
+[node name="Warning" type="ToolButton" parent="PanelContainer/VBoxContainer/Header"]
+visible = false
+margin_right = 34.0
+margin_bottom = 30.0
+hint_tooltip = "Choice events should go 
+between a [Question]
+and [End branch] events.
+
+[Question]
+    [Choice]
+    [...]
+[End branch]"
+icon = ExtResource( 6 )
+
+[node name="TextureRect" type="TextureRect" parent="PanelContainer/VBoxContainer/Header"]
+margin_right = 22.0
+margin_bottom = 28.0
 texture = ExtResource( 1 )
+stretch_mode = 6
 
-[node name="TitleHBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="2"]
-visible = true
-margin_left = 41.0
-margin_right = 110.0
+[node name="Title" type="Label" parent="PanelContainer/VBoxContainer/Header"]
+margin_left = 26.0
+margin_top = 7.0
+margin_right = 46.0
+margin_bottom = 21.0
+text = "     "
 
-[node name="TitleMarginContainer" parent="PanelContainer/MarginContainer/VBoxContainer/Header/TitleHBoxContainer" index="1"]
-margin_right = 61.0
+[node name="CustomLineEdit" parent="PanelContainer/VBoxContainer/Header" instance=ExtResource( 7 )]
+margin_left = 50.0
+margin_right = 98.0
+margin_bottom = 28.0
 
-[node name="TitleLabel" parent="PanelContainer/MarginContainer/VBoxContainer/Header/TitleHBoxContainer/TitleMarginContainer" index="0"]
-margin_right = 48.0
-text = "Choice"
+[node name="Spacer2" type="Control" parent="PanelContainer/VBoxContainer/Header"]
+margin_left = 102.0
+margin_right = 112.0
+margin_bottom = 28.0
+rect_min_size = Vector2( 10, 0 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
-[node name="VSeparator2" parent="PanelContainer/MarginContainer/VBoxContainer/Header/TitleHBoxContainer" index="2"]
-margin_left = 65.0
-margin_right = 69.0
+[node name="ConditionCheckBox" type="CheckBox" parent="PanelContainer/VBoxContainer/Header"]
+margin_left = 116.0
+margin_right = 238.0
+margin_bottom = 28.0
+text = "Has condition?"
 
-[node name="Content" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="3"]
-margin_left = 114.0
-margin_right = 326.0
+[node name="Condition" type="HBoxContainer" parent="PanelContainer/VBoxContainer/Header"]
+visible = false
+margin_left = 228.0
+margin_right = 506.0
+margin_bottom = 28.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
-[node name="Spacer" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="5"]
-margin_left = 330.0
+[node name="DefinitionPicker" parent="PanelContainer/VBoxContainer/Header/Condition" instance=ExtResource( 8 )]
+margin_right = 143.0
+margin_bottom = 28.0
+
+[node name="ConditionPicker" parent="PanelContainer/VBoxContainer/Header/Condition" instance=ExtResource( 5 )]
+margin_left = 147.0
+margin_right = 226.0
+
+[node name="CustomLineEdit2" parent="PanelContainer/VBoxContainer/Header/Condition" instance=ExtResource( 7 )]
+margin_left = 230.0
+margin_right = 278.0
+margin_bottom = 28.0
+
+[node name="Preview" type="Label" parent="PanelContainer/VBoxContainer/Header"]
+margin_left = 242.0
+margin_top = 7.0
+margin_right = 242.0
+margin_bottom = 21.0
+custom_colors/font_color = Color( 1, 1, 1, 0.513726 )
+
+[node name="Spacer" parent="PanelContainer/VBoxContainer/Header" instance=ExtResource( 3 )]
+margin_left = 246.0
+margin_right = 941.0
+margin_bottom = 28.0
+
+[node name="OptionButton" parent="PanelContainer/VBoxContainer/Header" instance=ExtResource( 4 )]
+margin_left = 945.0
+margin_right = 982.0
+margin_bottom = 28.0
+items = [ "Move Up", null, 0, false, false, 0, 0, null, "", false, "Move Down", null, 0, false, false, 1, 0, null, "", false, "", null, 0, false, false, 2, 0, null, "", true, "Remove", null, 0, false, false, 3, 0, null, "", false ]
+
+[connection signal="visibility_changed" from="Indent" to="." method="_on_Indent_visibility_changed"]
+[connection signal="toggled" from="PanelContainer/VBoxContainer/Header/ConditionCheckBox" to="." method="_on_ConditionCheckBox_toggled"]
+[connection signal="text_changed" from="PanelContainer/VBoxContainer/Header/Condition/CustomLineEdit2" to="." method="_on_CustomLineEdit2_text_changed"]

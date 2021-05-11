@@ -57,13 +57,12 @@ static func get_timeline_list() -> Array:
 		if '.json' in file:
 			var data = DialogicResources.get_timeline_json(file)
 			if data.has('error') == false:
-				if data.has('metadata'):
-					var metadata = data['metadata']
-					var color = Color("#ffffff")
-					if metadata.has('name'):
-						timelines.append({'name':metadata['name'], 'color': color, 'file': file })
-					else:
-						timelines.append({'name':file.split('.')[0], 'color': color, 'file': file })
+				var metadata = data['metadata']
+				var color = Color("#ffffff")
+				if metadata.has('name'):
+					timelines.append({'name':metadata['name'], 'color': color, 'file': file })
+				else:
+					timelines.append({'name':file.split('.')[0], 'color': color, 'file': file })
 	return timelines
 
 
