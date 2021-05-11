@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://addons/dialogic/Editor/Events/Parts/EventBlock/OptionsControl.gd" type="Script" id=1]
+[ext_resource path="res://addons/dialogic/Images/Pieces/expand-icon.svg" type="Texture" id=2]
+
+
+[node name="OptionsControl" type="MenuButton"]
+margin_right = 29.0
+margin_bottom = 20.0
+icon = ExtResource( 2 )
+clip_text = true
+align = 2
+items = [ "Move Up", null, 0, false, false, 0, 0, null, "", false, "Move Down", null, 0, false, false, 1, 0, null, "", false, "", null, 0, false, false, 2, 0, null, "", true, "Remove", null, 0, false, false, 3, 0, null, "", false ]
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}

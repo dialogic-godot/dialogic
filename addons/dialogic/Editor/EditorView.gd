@@ -60,11 +60,13 @@ func _ready():
 	$ToolBar/NewDefinitionButton.icon = load("res://addons/dialogic/Images/Toolbar/add-definition" + modifier + ".svg")
 	$ToolBar/NewThemeButton.icon = load("res://addons/dialogic/Images/Toolbar/add-theme" + modifier + ".svg")
 	
+	var modulate_color = Color.white
 	if not get_constant("dark_theme", "Editor"):
-		$ToolBar/NewTimelineButton.modulate = get_color("property_color", "Editor")
-		$ToolBar/NewCharactersButton.modulate = get_color("property_color", "Editor")
-		$ToolBar/NewDefinitionButton.modulate = get_color("property_color", "Editor")
-		$ToolBar/NewThemeButton.modulate = get_color("property_color", "Editor")
+		modulate_color = get_color("property_color", "Editor")
+	$ToolBar/NewTimelineButton.modulate = modulate_color
+	$ToolBar/NewCharactersButton.modulate = modulate_color
+	$ToolBar/NewDefinitionButton.modulate = modulate_color
+	$ToolBar/NewThemeButton.modulate = modulate_color
 	
 	$ToolBar/FoldTools/ButtonFold.icon = get_icon("GuiTreeArrowRight", "EditorIcons")
 	$ToolBar/FoldTools/ButtonUnfold.icon = get_icon("GuiTreeArrowDown", "EditorIcons")

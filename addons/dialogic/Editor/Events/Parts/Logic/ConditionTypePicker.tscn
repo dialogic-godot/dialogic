@@ -1,0 +1,23 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://addons/dialogic/Editor/Events/Parts/Logic/EventPart_ConditionTypePicker.gd" type="Script" id=1]
+[ext_resource path="res://addons/dialogic/Editor/Events/Parts/Logic/ConditionPickerOld.gd" type="Script" id=2]
+
+[node name="ConditionTypePicker" type="VBoxContainer"]
+margin_right = 40.0
+margin_bottom = 40.0
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MenuButton" type="MenuButton" parent="."]
+margin_top = 10.0
+margin_right = 79.0
+margin_bottom = 30.0
+size_flags_vertical = 6
+text = "[ Equal to ]"
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}

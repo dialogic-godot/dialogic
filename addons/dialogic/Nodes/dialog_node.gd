@@ -204,6 +204,7 @@ func parse_text_lines(unparsed_dialog_script: Dictionary) -> Dictionary:
 				for line in lines:
 					if not line.empty():
 						new_events.append({
+							'event_id':'dialogic_001',
 							'text': line,
 							'character': event['character'],
 							'portrait': event['portrait']
@@ -239,7 +240,7 @@ func parse_branches(dialog_script: Dictionary) -> Dictionary:
 	var event_idx: int = 0 # The current id for jumping later on
 	var question_idx: int = 0 # identifying the questions to assign options to it
 	for event in dialog_script['events']:
-		if event.has('choice'):
+		if event['event_id'] == 'dialogic_011':
 			var opened_branch = parser_queue.back()
 			var option = {
 				'question_idx': opened_branch['question_idx'],
@@ -266,21 +267,21 @@ func parse_branches(dialog_script: Dictionary) -> Dictionary:
 					}
 			dialog_script['events'][opened_branch['event_idx']]['options'].append(option)
 			event['question_idx'] = opened_branch['question_idx']
-		elif event.has('question'):
+		elif event['event_id'] == 'dialogic_010':
 			event['event_idx'] = event_idx
 			event['question_idx'] = question_idx
 			event['answered'] = false
 			question_idx += 1
 			questions.append(event)
 			parser_queue.append(event)
-		elif event.has('condition'):
+		elif event['event_id'] == 'dialogic_012':
 			event['event_idx'] = event_idx
 			event['question_idx'] = question_idx
 			event['answered'] = false
 			question_idx += 1
 			questions.append(event)
 			parser_queue.append(event)
-		elif event.has('endbranch'):
+		elif event['event_id'] == 'dialogic_013':
 			event['event_idx'] = event_idx
 			var opened_branch = parser_queue.pop_back()
 			event['end_branch_of'] = opened_branch['question_idx']
@@ -298,6 +299,8 @@ func _should_show_glossary():
 
 func parse_definitions(text: String, variables: bool = true, glossary: bool = true):
 	var final_text: String = text
+	if not preview:
+		definitions = DialogicSingleton.get_definitions()
 	if variables:
 		final_text = _insert_variable_definitions(text)
 	if glossary and _should_show_glossary():
@@ -621,6 +624,13 @@ func event_handler(event: Dictionary):
 				current_theme = load_theme(event['set_theme'])
 			_load_next_event()
 		
+		# Set Glossary event
+		'dialogic_025':
+			emit_signal("event_start", "set_glossary", event)
+			if event['glossary_id']:
+				print("set glossary")
+				DialogicSingleton.set_glossary_from_id(event['glossary_id'], event['title'], event['text'],event['extra'])
+			_load_next_event()
 		# AUDIO EVENTS
 		# Audio event
 		'dialogic_030':
@@ -705,7 +715,7 @@ func reset_options():
 
 
 func _should_add_choice_button(option: Dictionary):
-	if not option['condition'].empty() and not option['definition'].empty() and not option['value'].empty():
+	if not option['definition'].empty() and not option['value'].empty():
 		var def_value = null
 		for d in definitions['variables']:
 			if d['id'] == option['definition']:
@@ -891,7 +901,7 @@ func _on_RichTextLabel_meta_hover_started(meta):
 		if d['id'] == meta:
 			$DefinitionInfo.load_preview({
 				'title': d['title'],
-				'body': d['text'],
+				'body': parse_definitions(d['text'], true, false), # inserts variables but not other glossary items!
 				'extra': d['extra'],
 				'color': current_theme.get_value('definitions', 'color', '#ffbebebe'),
 			})
@@ -953,6 +963,8 @@ func _compare_definitions(def_value: String, event_value: String, condition: Str
 		if def_value.is_valid_float() and event_value.is_valid_float():
 			converted_def_value = float(def_value)
 			converted_event_value = float(event_value)
+		if condition == '':
+			condition = '==' # The default condition is Equal to
 		match condition:
 			"==":
 				condition_met = converted_def_value == converted_event_value
@@ -966,6 +978,7 @@ func _compare_definitions(def_value: String, event_value: String, condition: Str
 				condition_met = converted_def_value < converted_event_value
 			"<=":
 				condition_met = converted_def_value <= converted_event_value
+	#print('comparing definition: ', def_value, ',', event_value, ',', condition, ' - ', condition_met)
 	return condition_met
 
 
