@@ -82,20 +82,28 @@ func _ready():
 	
 	
 	# Adding items to context menus
+	reset_menu($TimelinePopupMenu)
 	$TimelinePopupMenu.add_icon_item(get_icon("Filesystem", "EditorIcons"), 'Show in File Manager')
 	$TimelinePopupMenu.add_icon_item(get_icon("ActionCopy", "EditorIcons"), 'Copy Timeline Name')
 	$TimelinePopupMenu.add_icon_item(get_icon("Remove", "EditorIcons"), 'Remove Timeline')
 	
+	reset_menu($CharacterPopupMenu)
 	$CharacterPopupMenu.add_icon_item(get_icon("Filesystem", "EditorIcons"), 'Show in File Manager')
 	$CharacterPopupMenu.add_icon_item(get_icon("Remove", "EditorIcons"), 'Remove Character')
 	
+	reset_menu($ThemePopupMenu)
 	$ThemePopupMenu.add_icon_item(get_icon("Filesystem", "EditorIcons"), 'Show in File Manager')
 	$ThemePopupMenu.add_icon_item(get_icon("Duplicate", "EditorIcons"), 'Duplicate Theme')
 	$ThemePopupMenu.add_icon_item(get_icon("Remove", "EditorIcons"), 'Remove Theme')
 	
+	reset_menu($DefinitionPopupMenu)
 	$DefinitionPopupMenu.add_icon_item(get_icon("Edit", "EditorIcons"), 'Edit Definitions File')
 	$DefinitionPopupMenu.add_icon_item(get_icon("Remove", "EditorIcons"), 'Remove Definition')
 	
+	reset_menu($TimelineRootPopupMenu)
+	reset_menu($CharacterRootPopupMenu)
+	reset_menu($ThemeRootPopupMenu)
+	reset_menu($DefinitionRootPopupMenu)
 	$TimelineRootPopupMenu.add_icon_item(get_icon("Add", "EditorIcons") ,'Add Timeline')
 	$CharacterRootPopupMenu.add_icon_item(get_icon("Add", "EditorIcons") ,'Add Character')
 	$ThemeRootPopupMenu.add_icon_item(get_icon("Add", "EditorIcons") ,'Add Theme')
@@ -126,6 +134,11 @@ func _ready():
 		
 	$MainPanel/MasterTreeContainer/FilterMasterTreeEdit.right_icon = get_icon("Search", "EditorIcons")
 	
+
+func reset_menu(menu):
+	menu.clear()
+	menu.rect_size = Vector2(0, 0)
+
 
 func on_master_tree_editor_selected(editor: String):
 	$ToolBar/FoldTools.visible = editor == 'timeline'
