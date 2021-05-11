@@ -39,6 +39,7 @@ func _ready():
 
 	$HasCondition.visible = false
 	$Values.visible = true
+
 	if optional:
 		$HasCondition.visible = true
 		$HasCondition/CheckBox.connect('toggled', self, '_on_toggle_visibility')
@@ -47,6 +48,10 @@ func _ready():
 
 func _on_toggle_visibility(checkbox_value):
 	$Values.visible = checkbox_value
+	if checkbox_value == false:
+		get_parent().event_data['definition'] = ''
+		get_parent().event_data['condition'] = ''
+		get_parent().event_data['value'] = ''
 
 
 # Definition picker ------------------------------------------------------------
@@ -56,7 +61,7 @@ func set_definition(definition):
 			if d['id'] == definition:
 				Definition.text = d['name']
 	else:
-		Definition.text = 'Select Defintion'
+		Definition.text = 'Select Definition'
 
 
 func _on_definition_selected(index):
