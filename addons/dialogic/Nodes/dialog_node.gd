@@ -715,7 +715,7 @@ func reset_options():
 
 
 func _should_add_choice_button(option: Dictionary):
-	if not option['condition'].empty() and not option['definition'].empty() and not option['value'].empty():
+	if not option['definition'].empty() and not option['value'].empty():
 		var def_value = null
 		for d in definitions['variables']:
 			if d['id'] == option['definition']:
@@ -978,6 +978,7 @@ func _compare_definitions(def_value: String, event_value: String, condition: Str
 				condition_met = converted_def_value < converted_event_value
 			"<=":
 				condition_met = converted_def_value <= converted_event_value
+	#print('comparing definition: ', def_value, ',', event_value, ',', condition, ' - ', condition_met)
 	return condition_met
 
 
