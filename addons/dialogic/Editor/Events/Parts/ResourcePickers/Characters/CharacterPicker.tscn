@@ -1,11 +1,13 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://addons/dialogic/Images/Event Icons/character.svg" type="Texture" id=1]
 [ext_resource path="res://addons/dialogic/Editor/Events/Parts/ResourcePickers/Characters/EventPart_CharacterPicker.gd" type="Script" id=2]
+[ext_resource path="res://addons/dialogic/Editor/Events/styles/MenuButtonNormal.tres" type="StyleBox" id=3]
+[ext_resource path="res://addons/dialogic/Editor/Events/styles/MenuButtonHover.tres" type="StyleBox" id=4]
 
 [node name="CharacterPicker" type="VBoxContainer"]
-margin_right = 106.0
-margin_bottom = 60.0
+margin_right = 114.0
+margin_bottom = 22.0
 size_flags_vertical = 3
 script = ExtResource( 2 )
 __meta__ = {
@@ -13,14 +15,13 @@ __meta__ = {
 }
 
 [node name="HBox" type="HBoxContainer" parent="."]
-margin_right = 106.0
-margin_bottom = 60.0
+margin_right = 114.0
+margin_bottom = 22.0
 size_flags_vertical = 3
 
 [node name="Icon" type="TextureRect" parent="HBox"]
-margin_top = 19.0
 margin_right = 22.0
-margin_bottom = 41.0
+margin_bottom = 22.0
 size_flags_vertical = 4
 texture = ExtResource( 1 )
 stretch_mode = 6
@@ -30,9 +31,11 @@ __meta__ = {
 
 [node name="MenuButton" type="MenuButton" parent="HBox"]
 margin_left = 26.0
-margin_right = 106.0
-margin_bottom = 60.0
+margin_right = 114.0
+margin_bottom = 22.0
 focus_mode = 2
 size_flags_vertical = 3
+custom_styles/hover = ExtResource( 4 )
+custom_styles/normal = ExtResource( 3 )
 text = "[Character]"
 flat = false

@@ -31,7 +31,7 @@ func get_preview():
 func update_to_character():
 	if event_data['character'] != '':
 		if event_data['character'] == '[All]':
-			picker_menu.text = "[All characters]"
+			picker_menu.text = "All characters"
 			icon.modulate = Color.white
 		else:
 			for ch in DialogicUtil.get_character_list():
@@ -40,9 +40,9 @@ func update_to_character():
 					icon.modulate = ch['color']
 	else:
 		if allow_no_character:
-			picker_menu.text = '[No Character]'
+			picker_menu.text = 'No Character'
 		else:
-			picker_menu.text = '[Select Character]'
+			picker_menu.text = 'Select Character'
 		icon.modulate = Color.white
 
 func _on_PickerMenu_selected(index):
@@ -58,13 +58,13 @@ func _on_PickerMenu_about_to_show():
 	picker_menu.get_popup().clear()
 	var index = 0
 	if allow_no_character:
-		picker_menu.get_popup().add_item('[No character]')
+		picker_menu.get_popup().add_item('No character')
 		picker_menu.get_popup().set_item_metadata(index, {'file':''})
 		index += 1
 	
 	# in case this is a leave event
 	if event_data['event_id'] == 'dialogic_003':
-		picker_menu.get_popup().add_item('[All characters]')
+		picker_menu.get_popup().add_item('All characters')
 		picker_menu.get_popup().set_item_metadata(index, {'file': '[All]'})
 		index += 1
 
