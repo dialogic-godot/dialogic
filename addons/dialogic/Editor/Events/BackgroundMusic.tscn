@@ -51,10 +51,6 @@ margin_right = 134.0
 margin_right = 121.0
 text = "Background Music"
 
-[node name="VSeparator2" parent="PanelContainer/MarginContainer/VBoxContainer/Header/TitleHBoxContainer" index="2"]
-margin_left = 138.0
-margin_right = 142.0
-
 [node name="Content" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="3"]
 margin_left = 187.0
 margin_right = 197.0

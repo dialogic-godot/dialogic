@@ -48,10 +48,6 @@ margin_right = 84.0
 margin_right = 71.0
 text = "Text Event"
 
-[node name="VSeparator2" parent="PanelContainer/MarginContainer/VBoxContainer/Header/TitleHBoxContainer" index="2"]
-margin_left = 88.0
-margin_right = 92.0
-
 [node name="Content" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="3"]
 margin_left = 137.0
 margin_right = 300.0

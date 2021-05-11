@@ -55,10 +55,6 @@ margin_right = 104.0
 margin_right = 91.0
 text = "Wait Seconds"
 
-[node name="VSeparator2" parent="PanelContainer/MarginContainer/VBoxContainer/Header/TitleHBoxContainer" index="2"]
-margin_left = 108.0
-margin_right = 112.0
-
 [node name="Content" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="3"]
 margin_left = 157.0
 margin_right = 306.0

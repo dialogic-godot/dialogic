@@ -56,10 +56,6 @@ margin_right = 79.0
 margin_right = 66.0
 text = "Condition"
 
-[node name="VSeparator2" parent="PanelContainer/MarginContainer/VBoxContainer/Header/TitleHBoxContainer" index="2"]
-margin_left = 83.0
-margin_right = 87.0
-
 [node name="Content" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="3"]
 margin_left = 132.0
 margin_right = 421.0
