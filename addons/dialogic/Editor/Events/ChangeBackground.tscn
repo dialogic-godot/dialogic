@@ -68,9 +68,6 @@ visible = true
 margin_right = 1012.0
 margin_bottom = 42.0
 
-[node name="HSeparator" parent="PanelContainer/MarginContainer/VBoxContainer/Body" index="0"]
-margin_right = 1012.0
-
 [node name="Content" parent="PanelContainer/MarginContainer/VBoxContainer/Body" index="1"]
 margin_top = 4.0
 margin_right = 1012.0
