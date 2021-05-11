@@ -1,8 +1,6 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=3 format=2]
 
-[ext_resource path="res://addons/dialogic/Editor/Events/Parts/ResourcePickers/Definitions/DefinitionPicker.tscn" type="PackedScene" id=1]
-[ext_resource path="res://addons/dialogic/Editor/Events/Parts/Logic/ConditionTypePicker.tscn" type="PackedScene" id=2]
-[ext_resource path="res://addons/dialogic/Editor/Events/Parts/Text/CustomLineEdit.tscn" type="PackedScene" id=3]
+[ext_resource path="res://addons/dialogic/Editor/Events/Parts/ResourcePickers/Condition/ConditionPicker.tscn" type="PackedScene" id=1]
 [ext_resource path="res://addons/dialogic/Editor/Events/Parts/Logic/EventPart_ConditionPicker.gd" type="Script" id=4]
 
 [node name="ConditionPicker" type="VBoxContainer"]
@@ -14,27 +12,6 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="HBox" type="HBoxContainer" parent="."]
+[node name="ConditionPicker" parent="." instance=ExtResource( 1 )]
 margin_right = 431.0
-margin_bottom = 27.0
-size_flags_vertical = 3
-
-[node name="UseConditionButton" type="CheckBox" parent="HBox"]
-visible = false
-margin_right = 122.0
-margin_bottom = 24.0
-pressed = true
-text = "Has condition?"
-
-[node name="DefinitionPicker" parent="HBox" instance=ExtResource( 1 )]
-margin_bottom = 27.0
-
-[node name="ConditionTypePicker" parent="HBox" instance=ExtResource( 2 )]
-margin_left = 128.0
-margin_right = 207.0
-margin_bottom = 27.0
-
-[node name="LineEdit" parent="HBox" instance=ExtResource( 3 )]
-margin_left = 211.0
-margin_right = 259.0
 margin_bottom = 27.0
