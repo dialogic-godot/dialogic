@@ -8,6 +8,7 @@
 [node name="ConditionPicker" type="HBoxContainer"]
 margin_right = 24.0
 margin_bottom = 24.0
+rect_min_size = Vector2( 0, 30 )
 script = ExtResource( 2 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -25,11 +26,11 @@ text = "Has condition?"
 
 [node name="Values" type="HBoxContainer" parent="."]
 margin_right = 283.0
-margin_bottom = 27.0
+margin_bottom = 30.0
 
 [node name="Definition" type="MenuButton" parent="Values"]
 margin_right = 126.0
-margin_bottom = 27.0
+margin_bottom = 30.0
 custom_styles/hover = ExtResource( 3 )
 custom_styles/normal = ExtResource( 4 )
 text = "Select Definition"
@@ -37,15 +38,15 @@ flat = false
 
 [node name="Label" type="Label" parent="Values"]
 margin_left = 130.0
-margin_top = 6.0
+margin_top = 8.0
 margin_right = 141.0
-margin_bottom = 20.0
+margin_bottom = 22.0
 text = "is"
 
 [node name="Condition" type="MenuButton" parent="Values"]
 margin_left = 145.0
 margin_right = 217.0
-margin_bottom = 27.0
+margin_bottom = 30.0
 custom_styles/hover = ExtResource( 3 )
 custom_styles/normal = ExtResource( 4 )
 text = "equal to"
@@ -54,10 +55,11 @@ flat = false
 [node name="Control" type="Control" parent="Values"]
 margin_left = 221.0
 margin_right = 231.0
-margin_bottom = 27.0
+margin_bottom = 30.0
 rect_min_size = Vector2( 10, 0 )
 
 [node name="Value" parent="Values" instance=ExtResource( 1 )]
 margin_left = 235.0
+margin_top = 1.0
 margin_right = 283.0
-margin_bottom = 27.0
+margin_bottom = 28.0
