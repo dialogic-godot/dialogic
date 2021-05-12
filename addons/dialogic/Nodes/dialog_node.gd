@@ -497,6 +497,15 @@ func event_handler(event: Dictionary):
 					var char_portrait = event['portrait']
 					if char_portrait == '':
 						char_portrait = 'Default'
+					
+					if char_portrait == '[Definition]' and event.has('port_defn'):
+						var portrait_definition = event['port_defn']
+						if portrait_definition != '':
+							for d in DialogicResources.get_default_definitions()['variables']:
+								if d['id'] == portrait_definition:
+									char_portrait = d['value']
+									break
+					
 					p.character_data = character_data
 					p.init(char_portrait, get_character_position(event['position']), event.get('mirror', false))
 					$Portraits.add_child(p)

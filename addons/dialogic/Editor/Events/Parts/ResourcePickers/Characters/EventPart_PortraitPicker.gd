@@ -4,6 +4,7 @@ extends "res://addons/dialogic/Editor/Events/Parts/EventPart.gd"
 # has an event_data variable that stores the current data!!!
 
 export (bool) var allow_dont_change := true
+export (bool) var allow_definition := true
 
 ## node references
 onready var picker_menu = $HBox/MenuButton
@@ -28,6 +29,8 @@ func get_preview():
 func _on_PickerMenu_selected(index):
 	if index == 0 and allow_dont_change:
 		event_data['portrait'] = "(Don't change)"
+	elif allow_definition and ((allow_dont_change and index == 1) or index == 0):
+		event_data['portrait'] = "[Definition]"
 	else:
 		event_data['portrait'] = picker_menu.get_popup().get_item_text(index)
 	
@@ -46,6 +49,9 @@ func _on_PickerMenu_about_to_show():
 	var index = 0
 	if allow_dont_change:
 		picker_menu.get_popup().add_item("(Don't change)")
+		index += 1
+	if allow_definition:
+		picker_menu.get_popup().add_item("[Definition]")
 		index += 1
 	if event_data['character']:
 		var character = get_character_data()
