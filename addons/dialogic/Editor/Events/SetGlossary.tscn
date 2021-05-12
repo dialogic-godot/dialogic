@@ -1,10 +1,11 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://addons/dialogic/Images/Event Icons/Main Icons/set-theme.svg" type="Texture" id=1]
 [ext_resource path="res://addons/dialogic/Editor/Events/styles/SetGlossary.tres" type="StyleBox" id=2]
 [ext_resource path="res://addons/dialogic/Editor/Events/Templates/EventTemplate.tscn" type="PackedScene" id=3]
 [ext_resource path="res://addons/dialogic/Editor/Events/Parts/ResourcePickers/Definitions/SetGlossary.tscn" type="PackedScene" id=4]
 [ext_resource path="res://addons/dialogic/Editor/Events/Parts/ResourcePickers/Definitions/GlossaryPicker.tscn" type="PackedScene" id=5]
+[ext_resource path="res://addons/dialogic/Images/Event Icons/Main Icons/set-glossary.svg" type="Texture" id=6]
 
 [sub_resource type="Image" id=3]
 data = {
@@ -30,7 +31,7 @@ event_data = {
 "title": ""
 }
 event_style = ExtResource( 2 )
-event_icon = ExtResource( 1 )
+event_icon = ExtResource( 6 )
 event_name = "Set Glossary"
 header_scene = ExtResource( 5 )
 body_scene = ExtResource( 4 )
@@ -60,10 +61,6 @@ margin_right = 97.0
 [node name="TitleLabel" parent="PanelContainer/MarginContainer/VBoxContainer/Header/TitleHBoxContainer/TitleMarginContainer" index="0"]
 margin_right = 84.0
 text = "Set Glossary"
-
-[node name="VSeparator2" parent="PanelContainer/MarginContainer/VBoxContainer/Header/TitleHBoxContainer" index="2"]
-margin_left = 101.0
-margin_right = 105.0
 
 [node name="Content" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="3"]
 margin_left = 150.0

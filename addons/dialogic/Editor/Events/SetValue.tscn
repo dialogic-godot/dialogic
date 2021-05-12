@@ -37,10 +37,6 @@ margin_right = 77.0
 margin_right = 64.0
 text = "Set Value"
 
-[node name="VSeparator2" parent="PanelContainer/MarginContainer/VBoxContainer/Header/TitleHBoxContainer" index="2"]
-margin_left = 81.0
-margin_right = 85.0
-
 [node name="Content" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="3"]
 margin_left = 124.0
 margin_right = 438.0

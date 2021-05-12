@@ -20,17 +20,21 @@ signal request_selection
 signal set_warning(text)
 signal remove_warning()
 
+
 # when the node is ready
 func _ready():
 	pass
+
 
 # to be overwritten by the subclasses
 func load_data(data:Dictionary):
 	event_data = data
 
+
 # to be overwritten by body-parts that provide a preview
 func get_preview_text():
 	return ''
+
 
 # has to be called everytime the data got changed
 func data_changed():

@@ -54,7 +54,7 @@ func _ready():
 	character_icon = load("res://addons/dialogic/Images/Resources/character" + modifier + ".svg")
 	theme_icon = load("res://addons/dialogic/Images/Resources/theme" + modifier + ".svg")
 	definition_icon = load("res://addons/dialogic/Images/Resources/definition" + modifier + ".svg")
-	glossary_icon = load("res://addons/dialogic/Images/Resources/glossary" + modifier + ".svg")
+	glossary_icon = get_icon("ListSelect", "EditorIcons")
 	
 	# Creating the parents
 	timelines_tree = tree.create_item(root)

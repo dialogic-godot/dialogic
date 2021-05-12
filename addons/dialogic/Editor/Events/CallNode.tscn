@@ -49,10 +49,6 @@ margin_right = 79.0
 margin_right = 66.0
 text = "Call Node"
 
-[node name="VSeparator2" parent="PanelContainer/MarginContainer/VBoxContainer/Header/TitleHBoxContainer" index="2"]
-margin_left = 83.0
-margin_right = 87.0
-
 [node name="Content" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="3"]
 margin_left = 132.0
 margin_right = 142.0
@@ -69,9 +65,6 @@ margin_left = 202.0
 visible = true
 margin_right = 1012.0
 margin_bottom = 88.0
-
-[node name="HSeparator" parent="PanelContainer/MarginContainer/VBoxContainer/Body" index="0"]
-margin_right = 1012.0
 
 [node name="Content" parent="PanelContainer/MarginContainer/VBoxContainer/Body" index="1"]
 margin_top = 4.0

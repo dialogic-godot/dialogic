@@ -60,11 +60,13 @@ func _ready():
 	$ToolBar/NewDefinitionButton.icon = load("res://addons/dialogic/Images/Toolbar/add-definition" + modifier + ".svg")
 	$ToolBar/NewThemeButton.icon = load("res://addons/dialogic/Images/Toolbar/add-theme" + modifier + ".svg")
 	
+	var modulate_color = Color.white
 	if not get_constant("dark_theme", "Editor"):
-		$ToolBar/NewTimelineButton.modulate = get_color("property_color", "Editor")
-		$ToolBar/NewCharactersButton.modulate = get_color("property_color", "Editor")
-		$ToolBar/NewDefinitionButton.modulate = get_color("property_color", "Editor")
-		$ToolBar/NewThemeButton.modulate = get_color("property_color", "Editor")
+		modulate_color = get_color("property_color", "Editor")
+	$ToolBar/NewTimelineButton.modulate = modulate_color
+	$ToolBar/NewCharactersButton.modulate = modulate_color
+	$ToolBar/NewDefinitionButton.modulate = modulate_color
+	$ToolBar/NewThemeButton.modulate = modulate_color
 	
 	$ToolBar/FoldTools/ButtonFold.icon = get_icon("GuiTreeArrowRight", "EditorIcons")
 	$ToolBar/FoldTools/ButtonUnfold.icon = get_icon("GuiTreeArrowDown", "EditorIcons")
@@ -79,7 +81,16 @@ func _ready():
 	$ToolBar/FoldTools/ButtonUnfold.connect('pressed', timeline_editor, 'unfold_all_nodes')
 	
 	
+	# Resetting the context menu items and size
+	var context_menus = [
+		$TimelinePopupMenu, $CharacterPopupMenu, $ThemePopupMenu,
+		$DefinitionPopupMenu, $TimelineRootPopupMenu, $CharacterRootPopupMenu,
+		$ThemeRootPopupMenu, $DefinitionRootPopupMenu]
+	for menu in context_menus:
+		menu.clear()
+		menu.rect_size = Vector2(0, 0)
 	# Adding items to context menus
+	
 	$TimelinePopupMenu.add_icon_item(get_icon("Filesystem", "EditorIcons"), 'Show in File Manager')
 	$TimelinePopupMenu.add_icon_item(get_icon("ActionCopy", "EditorIcons"), 'Copy Timeline Name')
 	$TimelinePopupMenu.add_icon_item(get_icon("Remove", "EditorIcons"), 'Remove Timeline')
@@ -123,7 +134,7 @@ func _ready():
 		$ToolBar/Version.text = 'Dialogic v' + version_string
 		
 	$MainPanel/MasterTreeContainer/FilterMasterTreeEdit.right_icon = get_icon("Search", "EditorIcons")
-	
+
 
 func on_master_tree_editor_selected(editor: String):
 	$ToolBar/FoldTools.visible = editor == 'timeline'

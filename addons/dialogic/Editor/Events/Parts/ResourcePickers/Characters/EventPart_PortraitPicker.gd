@@ -28,7 +28,7 @@ func get_preview():
 
 func _on_PickerMenu_selected(index):
 	if index == 0 and allow_dont_change:
-		event_data['portrait'] = "[Don't change]"
+		event_data['portrait'] = "(Don't change)"
 	elif allow_definition and ((allow_dont_change and index == 1) or index == 0):
 		event_data['portrait'] = "[Definition]"
 	else:
@@ -48,7 +48,7 @@ func _on_PickerMenu_about_to_show():
 	picker_menu.get_popup().clear()
 	var index = 0
 	if allow_dont_change:
-		picker_menu.get_popup().add_item("[Don't change]")
+		picker_menu.get_popup().add_item("(Don't change)")
 		index += 1
 	if allow_definition:
 		picker_menu.get_popup().add_item("[Definition]")

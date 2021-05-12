@@ -35,10 +35,6 @@ margin_right = 89.0
 margin_right = 76.0
 text = "End Branch"
 
-[node name="VSeparator2" parent="PanelContainer/MarginContainer/VBoxContainer/Header/TitleHBoxContainer" index="2"]
-margin_left = 93.0
-margin_right = 97.0
-
 [node name="Content" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="3"]
 margin_left = 142.0
 margin_right = 152.0
