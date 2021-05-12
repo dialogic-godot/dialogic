@@ -10,6 +10,13 @@
 - Character Editor
   - You can set nicknames to characters [[zakary93](https://github.com/zakary93)]
   - Fixed a bug when coloring the names of characters in text [[zakary93](https://github.com/zakary93)]
+- Timeline Editor
+  - You can now select multiple events (`CRTL` for adding/removing an event, `SHIFT` for range select) [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
+  - You can now use `CRTL+C`, `CRTL+X` and `CRTL+V` to copy, cut and paste events. [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
+  - You can use `CRTL+D` to duplicate the selection. [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
+  - You can use `CRTL+A` and `CRTL+SHIFT+A` to select/deselect all events. [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
+  - Some shortcuts where redone: Remove events with `DEL`, move selection up/down with the `UP` and `DOWN` arrow keys. [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
+  - A SetGlossary event was added that allows to change the info of a glossary item during the game. [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
 - Events have id's now. Nothing should change for the user, but it will be easier to manage the inclusion of new events or modifying existing ones. [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
 - Experimental translation added! (This change simply adds a new setting to always treat text as a translation key, instead of displaying it directly. When on, text is sent through tr() before any additional checks are performed on it) [[bojjenclon]](https://github.com/bojjenclon)
 - Fixed a non-breaking bug that printed some errors on the terminal.
