@@ -308,7 +308,9 @@ func _on_visibility_changed() -> void:
 		# Refreshing the dialog 
 		_on_PreviewButton_pressed()
 		if first_time_loading_theme_full_size_bug == 0:
-			$FirstTimeLoadingFullSizeBug.start(0.01)
+			yield(get_tree().create_timer(0.01), "timeout")
+			for i in $VBoxContainer/Panel.get_children():
+				i.resize_main()
 			first_time_loading_theme_full_size_bug += 1
 	else:
 		# Erasing all previews since them keeps working on background
@@ -879,8 +881,3 @@ func _on_BackgroundFullWidth_toggled(button_pressed):
 		return
 	DialogicResources.set_theme_value(current_theme, 'background','full_width', button_pressed)
 	_on_PreviewButton_pressed() # Refreshing the preview
-
-
-func _on_FirstTimeLoadingFullSizeBug_timeout() -> void:
-	for i in $VBoxContainer/Panel.get_children():
-		i.resize_main()
