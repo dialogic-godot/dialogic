@@ -65,10 +65,6 @@ margin_right = 105.0
 margin_right = 92.0
 text = "Character Join"
 
-[node name="VSeparator2" parent="PanelContainer/MarginContainer/VBoxContainer/Header/TitleHBoxContainer" index="2"]
-margin_left = 109.0
-margin_right = 113.0
-
 [node name="Content" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="3"]
 margin_left = 158.0
 margin_right = 611.0
