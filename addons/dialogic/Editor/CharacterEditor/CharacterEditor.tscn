@@ -217,9 +217,15 @@ margin_right = 600.0
 margin_bottom = 48.0
 
 [node name="Button" type="Button" parent="HBoxContainer/Container/ScrollContainer/VBoxContainer/HBoxContainer"]
-margin_right = 87.0
+margin_right = 75.0
 margin_bottom = 20.0
-text = " Add new + "
+text = "  Add new"
+
+[node name="ImportFromFolder" type="Button" parent="HBoxContainer/Container/ScrollContainer/VBoxContainer/HBoxContainer"]
+margin_left = 79.0
+margin_right = 218.0
+margin_bottom = 20.0
+text = "  Import from folder"
 
 [node name="FileName" type="HBoxContainer" parent="HBoxContainer/Container"]
 visible = false

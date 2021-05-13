@@ -230,16 +230,15 @@ func _on_RemoveThemeConfirmation_confirmed():
 
 
 # Godot dialog
-func godot_dialog(filter):
-	editor_file_dialog.mode = EditorFileDialog.MODE_OPEN_FILE
+func godot_dialog(filter, mode = EditorFileDialog.MODE_OPEN_FILE):
+	editor_file_dialog.mode = mode
 	editor_file_dialog.clear_filters()
 	editor_file_dialog.popup_centered_ratio(0.75)
 	editor_file_dialog.add_filter(filter)
 	return editor_file_dialog
 
 
-func godot_dialog_connect(who, method_name):
-	var signal_name = "file_selected"
+func godot_dialog_connect(who, method_name, signal_name = "file_selected"):
 	# Checking if previous connection exists, if it does, disconnect it.
 	if editor_file_dialog.is_connected(
 		signal_name,
