@@ -19,6 +19,7 @@ onready var nodes = {
 	'nickname': $HBoxContainer/Container/DisplayNickname/LineEdit,
 	'new_portrait_button': $HBoxContainer/Container/ScrollContainer/VBoxContainer/HBoxContainer/Button,
 	'portrait_preview': $HBoxContainer/VBoxContainer/Control/TextureRect,
+	'image_label': $"HBoxContainer/VBoxContainer/Control/Label",
 	'scale': $HBoxContainer/VBoxContainer/HBoxContainer/Scale,
 	'offset_x': $HBoxContainer/VBoxContainer/HBoxContainer/OffsetX,
 	'offset_y': $HBoxContainer/VBoxContainer/HBoxContainer/OffsetY,
@@ -37,6 +38,7 @@ func _ready():
 
 func is_selected(file: String):
 	return nodes['file'].text == file
+
 
 func _on_display_name_toggled(button_pressed):
 	$HBoxContainer/Container/DisplayName.visible = button_pressed
@@ -200,6 +202,7 @@ func create_portrait_entry(p_name = '', path = '', grab_focus = false):
 	var p = portrait_entry.instance()
 	p.editor_reference = editor_reference
 	p.image_node = nodes['portrait_preview']
+	p.image_label = nodes['image_label']
 	var p_list = $HBoxContainer/Container/ScrollContainer/VBoxContainer/PortraitList
 	p_list.add_child(p)
 	if p_name != '':

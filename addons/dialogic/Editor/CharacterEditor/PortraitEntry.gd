@@ -3,6 +3,7 @@ extends HBoxContainer
 
 var editor_reference
 var image_node
+var image_label
 
 func _ready():
 	$ButtonDelete.icon = get_icon("Remove", "EditorIcons")
@@ -34,11 +35,13 @@ func _on_focus_entered():
 
 
 func update_preview(path):
+	image_label.text = 'Preview'
 	var l_path = path.to_lower()
 	if path == '':
 		image_node.texture = null
 	else:
 		if '.png' in l_path or '.svg' in l_path:
 			image_node.texture = load(path)
+			image_label.text = 'Preview - ' + str(image_node.texture.get_width()) + 'x' + str(image_node.texture.get_height())
 			return true
 	return false

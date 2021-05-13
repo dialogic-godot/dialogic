@@ -68,7 +68,7 @@ func set_portrait(expression: String) -> void:
 				$TextureRect.texture = load(p['path'])
 			else:
 				$TextureRect.texture = ImageTexture.new()
-	
+
 
 # Tween stuff
 func fade_in(node = self, time = 0.5):

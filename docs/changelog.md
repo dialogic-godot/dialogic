@@ -10,6 +10,7 @@
 - Character Editor
   - You can set nicknames to characters [[zakary93](https://github.com/zakary93)]
   - Fixed a bug when coloring the names of characters in text [[zakary93](https://github.com/zakary93)]
+  - Added the resolution of the selected portrait image on the preview box
 - Timeline Editor
   - You can now select multiple events (`CRTL` for adding/removing an event, `SHIFT` for range select) [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
   - You can now use `CRTL+C`, `CRTL+X` and `CRTL+V` to copy, cut and paste events [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
