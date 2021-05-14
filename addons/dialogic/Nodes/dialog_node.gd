@@ -374,7 +374,7 @@ func update_text(text: String) -> String:
 		text = tr(text)
 	var final_text = parse_definitions(parse_alignment(text))
 	final_text = final_text.replace('[br]', '\n')
-	
+
 	$TextBubble.update_text(final_text)
 	return final_text
 
