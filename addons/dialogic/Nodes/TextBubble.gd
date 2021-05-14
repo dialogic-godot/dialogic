@@ -33,10 +33,15 @@ func update_name(name: String, color: Color = Color.white, autocolor: bool=false
 
 
 func update_text(text):
+	# Removing commands from the text
+	text = text.replace('[p]', '')
+	text = text.replace('[nw]', '')
+	
 	# Updating the text and starting the animation from 0
 	text_label.bbcode_text = text
 	text_label.percent_visible = 0
 
+	
 	# The call to this function needs to be deferred.
 	# More info: https://github.com/godotengine/godot/issues/36381
 	call_deferred("_start_text_tween")

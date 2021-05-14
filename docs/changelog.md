@@ -4,6 +4,8 @@
 - Modified the label on the emit signal event so it is easier to understand [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
 - `Dialogic.start()` will add a CanvasLayer by default to avoid the confusion of not seeing Dialogic when using a camera. [[AnidemDex](https://github.com/AnidemDex)]
 - Adding a warning if the dialog is not a child of a CanvasLayer [[AnidemDex](https://github.com/AnidemDex)]
+- Dialog
+  - Adding [p] and [nw] commands to pause (2 seconds) and no wait (will automatically skip the text)
 - Theme Editor
   - Added new Box Padding settings to the name label.
   - Added a new option to make the dialog backgrounds full width

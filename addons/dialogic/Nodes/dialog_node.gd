@@ -374,11 +374,17 @@ func update_text(text: String) -> String:
 		text = tr(text)
 	var final_text = parse_definitions(parse_alignment(text))
 	final_text = final_text.replace('[br]', '\n')
+	
 	$TextBubble.update_text(final_text)
 	return final_text
 
 
 func _on_text_completed():
+	if current_event.has('text'):
+		if '[p]' in current_event['text']:
+			yield(get_tree().create_timer(2), "timeout")
+		if '[nw]' in current_event['text']:
+			_load_next_event()
 	finished = true
 	if current_event.has('options'):
 		for o in current_event['options']:
