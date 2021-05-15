@@ -178,8 +178,10 @@ func _on_Indent_visibility_changed():
 
 
 func _on_gui_input(event):
-	if event is InputEventMouseButton and event.is_pressed() and event.doubleclick and event.button_index == 1 and expand_control.enabled:
-		expand_control.set_expanded(not expand_control.expanded)
+	if event is InputEventMouseButton and event.is_pressed() and event.button_index == 1:
+		grab_focus() # Grab focus to avoid copy pasting text or events
+		if event.doubleclick and expand_control.enabled:
+			expand_control.set_expanded(not expand_control.expanded)
 
 
 # called when the data of the header is changed
@@ -213,6 +215,8 @@ func _request_selection():
 
 func _ready():
 	_setup_event()
+	
+	set_focus_mode(1) # Allowing this node to grab focus
 	
 	# icons
 	warning.icon = get_icon("NodeWarning", "EditorIcons")
