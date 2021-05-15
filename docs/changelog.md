@@ -10,6 +10,7 @@
   - Added new Box Padding settings to the name label.
   - Added a new option to make the dialog backgrounds full width
 - Character Editor
+  - You can now add a scene as a portrait, so you can now use AnimatedSprite or whatever you might need
   - You can set nicknames to characters [[zakary93](https://github.com/zakary93)]
   - Fixed a bug when coloring the names of characters in text [[zakary93](https://github.com/zakary93)]
   - Added the resolution of the selected portrait image on the preview box
