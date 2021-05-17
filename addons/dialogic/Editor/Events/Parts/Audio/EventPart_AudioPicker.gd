@@ -130,6 +130,7 @@ func show_options():
 	clear_button.show()
 	preview_play_button.show()
 	bus_selector.show()
+	$HBox/AudioBusLabel.show()
 	$HBox/VolumeLabel.show()
 	volume_input.show()
 
@@ -137,5 +138,6 @@ func hide_options():
 	clear_button.hide()
 	preview_play_button.hide()
 	bus_selector.hide()
+	$HBox/AudioBusLabel.hide()
 	$HBox/VolumeLabel.hide()
 	volume_input.hide()
