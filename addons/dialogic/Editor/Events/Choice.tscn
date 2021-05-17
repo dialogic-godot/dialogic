@@ -42,10 +42,6 @@ margin_right = 61.0
 margin_right = 48.0
 text = "Choice"
 
-[node name="VSeparator2" parent="PanelContainer/MarginContainer/VBoxContainer/Header/TitleHBoxContainer" index="2"]
-margin_left = 65.0
-margin_right = 69.0
-
 [node name="Content" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="3"]
 margin_left = 114.0
 margin_right = 326.0

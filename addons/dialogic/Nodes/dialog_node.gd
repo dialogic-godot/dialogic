@@ -72,8 +72,13 @@ func _ready():
 
 	if Engine.is_editor_hint():
 		if preview:
+			get_parent().connect("resized", self, "resize_main")
 			_init_dialog()
 	else:
+		# Copied
+		if not(get_parent() is CanvasLayer) and debug_mode:
+			push_warning("[Dialogic] You didn't add this node to a CanvasLayer. If this was intentional, you can ignore this warning.")
+		
 		_init_dialog()
 
 
@@ -106,6 +111,20 @@ func resize_main():
 	if current_theme != null:
 		$TextBubble.rect_position.y = (reference.y) - ($TextBubble.rect_size.y) - current_theme.get_value('box', 'bottom_gap', 40)
 	
+	
+	var pos_x = 0
+	if current_theme.get_value('background', 'full_width', false):
+		if preview:
+			pos_x = get_parent().rect_global_position.x
+		$TextBubble/TextureRect.rect_global_position.x = pos_x
+		$TextBubble/ColorRect.rect_global_position.x = pos_x
+		$TextBubble/TextureRect.rect_size.x = reference.x
+		$TextBubble/ColorRect.rect_size.x = reference.x
+	else:
+		$TextBubble/TextureRect.rect_global_position.x = $TextBubble.rect_global_position.x
+		$TextBubble/ColorRect.rect_global_position.x = $TextBubble.rect_global_position.x
+		$TextBubble/TextureRect.rect_size.x = $TextBubble.rect_size.x
+		$TextBubble/ColorRect.rect_size.x = $TextBubble.rect_size.x
 	
 	var background = get_node_or_null('Background')
 	if background != null:
@@ -355,11 +374,17 @@ func update_text(text: String) -> String:
 		text = tr(text)
 	var final_text = parse_definitions(parse_alignment(text))
 	final_text = final_text.replace('[br]', '\n')
+
 	$TextBubble.update_text(final_text)
 	return final_text
 
 
 func _on_text_completed():
+	if current_event.has('text'):
+		if '[p]' in current_event['text']:
+			yield(get_tree().create_timer(2), "timeout")
+		if '[nw]' in current_event['text']:
+			_load_next_event()
 	finished = true
 	if current_event.has('options'):
 		for o in current_event['options']:
@@ -478,6 +503,15 @@ func event_handler(event: Dictionary):
 					var char_portrait = event['portrait']
 					if char_portrait == '':
 						char_portrait = 'Default'
+					
+					if char_portrait == '[Definition]' and event.has('port_defn'):
+						var portrait_definition = event['port_defn']
+						if portrait_definition != '':
+							for d in DialogicResources.get_default_definitions()['variables']:
+								if d['id'] == portrait_definition:
+									char_portrait = d['value']
+									break
+					
 					p.character_data = character_data
 					p.init(char_portrait, get_character_position(event['position']), event.get('mirror', false))
 					$Portraits.add_child(p)
@@ -696,7 +730,7 @@ func reset_options():
 
 
 func _should_add_choice_button(option: Dictionary):
-	if not option['condition'].empty() and not option['definition'].empty() and not option['value'].empty():
+	if not option['definition'].empty():
 		var def_value = null
 		for d in definitions['variables']:
 			if d['id'] == option['definition']:
@@ -944,6 +978,8 @@ func _compare_definitions(def_value: String, event_value: String, condition: Str
 		if def_value.is_valid_float() and event_value.is_valid_float():
 			converted_def_value = float(def_value)
 			converted_event_value = float(event_value)
+		if condition == '':
+			condition = '==' # The default condition is Equal to
 		match condition:
 			"==":
 				condition_met = converted_def_value == converted_event_value
@@ -957,6 +993,7 @@ func _compare_definitions(def_value: String, event_value: String, condition: Str
 				condition_met = converted_def_value < converted_event_value
 			"<=":
 				condition_met = converted_def_value <= converted_event_value
+	#print('comparing definition: ', def_value, ',', event_value, ',', condition, ' - ', condition_met)
 	return condition_met
 
 

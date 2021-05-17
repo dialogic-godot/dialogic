@@ -38,10 +38,6 @@ margin_right = 119.0
 margin_right = 106.0
 text = "Character Leave"
 
-[node name="VSeparator2" parent="PanelContainer/MarginContainer/VBoxContainer/Header/TitleHBoxContainer" index="2"]
-margin_left = 123.0
-margin_right = 127.0
-
 [node name="Content" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="3"]
 margin_left = 172.0
 margin_right = 288.0

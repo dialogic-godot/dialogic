@@ -51,10 +51,6 @@ margin_right = 134.0
 margin_right = 121.0
 text = "Background Music"
 
-[node name="VSeparator2" parent="PanelContainer/MarginContainer/VBoxContainer/Header/TitleHBoxContainer" index="2"]
-margin_left = 138.0
-margin_right = 142.0
-
 [node name="Content" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="3"]
 margin_left = 187.0
 margin_right = 197.0
@@ -71,9 +67,6 @@ margin_left = 257.0
 visible = true
 margin_right = 1012.0
 margin_bottom = 66.0
-
-[node name="HSeparator" parent="PanelContainer/MarginContainer/VBoxContainer/Body" index="0"]
-margin_right = 1012.0
 
 [node name="Content" parent="PanelContainer/MarginContainer/VBoxContainer/Body" index="1"]
 margin_top = 4.0

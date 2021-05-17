@@ -50,12 +50,14 @@ var ignore_save = false
 func visual_select():
 	set_event_style(selected_style)
 
+
 func visual_deselect():
 	set_event_style(event_style)
 
 
 func set_event_style(style: StyleBoxFlat):
 	panel.set('custom_styles/panel', style)
+
 
 func get_event_style():
 	return panel.get('custom_styles/panel')
@@ -65,26 +67,33 @@ func get_event_style():
 func load_data(data):
 	event_data = data
 
+
 func get_body():
 	return body_node
 
+
 func get_header():
 	return header_node
+
 
 func set_warning(text):
 	warning.show()
 	warning.hint_tooltip = text
 
+
 func remove_warning(text = ''):
 	if warning.hint_tooltip == text or text == '':
 		warning.hide()
 
+
 func set_preview(text: String):
 	expand_control.set_preview(text)
+
 
 func set_indent(indent: int):
 	indent_node.rect_min_size = Vector2(indent_size * indent, 0)
 	indent_node.visible = indent != 0
+
 
 func set_expanded(expanded: bool):
 	expand_control.set_expanded(expanded)
@@ -96,6 +105,7 @@ func set_expanded(expanded: bool):
 
 func _set_event_icon(icon: Texture):
 	icon_texture.texture = icon
+
 
 func _set_event_name(text: String):
 	title_label.text = text
@@ -109,11 +119,13 @@ func _set_header(scene: PackedScene):
 	header_node = _set_content(header_content_container, scene)
 	header_node.editor_reference = editor_reference
 
+
 func _set_body(scene: PackedScene):
 	body_node = _set_content(body_content_container, scene)
 	body_node.editor_reference = editor_reference
 	# show the expand toggle
 	expand_control.set_enabled(body_node != null)
+
 
 func _setup_event():
 	if event_style != null:
@@ -126,6 +138,7 @@ func _setup_event():
 		_set_header(header_scene)
 	if body_scene != null:
 		_set_body(body_scene)
+
 
 func _set_content(container: Control, scene: PackedScene):
 	for c in container.get_children():
@@ -153,6 +166,7 @@ func _on_OptionsControl_action(action_name: String):
 	# Simply transmit the signal to the timeline editor
 	emit_signal("option_action", action_name)
 
+
 func _on_Indent_visibility_changed():
 	if not indent_node:
 		return
@@ -162,9 +176,13 @@ func _on_Indent_visibility_changed():
 		else:
 			set_warning("This event needs a question event around it!")
 
+
 func _on_gui_input(event):
-	if event is InputEventMouseButton and event.is_pressed() and event.doubleclick and event.button_index == 1 and expand_control.enabled:
-		expand_control.set_expanded(not expand_control.expanded)
+	if event is InputEventMouseButton and event.is_pressed() and event.button_index == 1:
+		grab_focus() # Grab focus to avoid copy pasting text or events
+		if event.doubleclick and expand_control.enabled:
+			expand_control.set_expanded(not expand_control.expanded)
+
 
 # called when the data of the header is changed
 func _on_Header_data_changed(new_event_data):
@@ -174,6 +192,7 @@ func _on_Header_data_changed(new_event_data):
 	if get_body():
 		get_body().load_data(event_data)
 
+
 # called when the data of the body is changed
 func _on_Body_data_changed(new_event_data):
 	event_data = new_event_data
@@ -181,6 +200,7 @@ func _on_Body_data_changed(new_event_data):
 	# update the header in case it has to
 	if get_header():
 		get_header().load_data(event_data)
+
 
 func _request_selection():
 	var timeline_editor = editor_reference.get_node_or_null('MainPanel/TimelineEditor')
@@ -195,6 +215,8 @@ func _request_selection():
 
 func _ready():
 	_setup_event()
+	
+	set_focus_mode(1) # Allowing this node to grab focus
 	
 	# icons
 	warning.icon = get_icon("NodeWarning", "EditorIcons")

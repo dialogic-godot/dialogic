@@ -2,21 +2,30 @@
 - Added new fonts selector for italics, bold, and names [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
 - Added extra options to allow the user to disable/enable saving of definitions and current timeline [[Arnaud](https://github.com/arnaudvergnet)]
 - Modified the label on the emit signal event so it is easier to understand [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
-- Timeline Editor
-  - You can now select multiple events (CRTL for adding/removing an event, SHIFT for range select) [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
-  - You can now use CRTL+C, CRTL+X and CRTL+V to copy, cut and paste events. [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
-  - You can use CRTL+D to duplicate the selection. [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
-  - You can use CRTL+A and CRTL+SHIFT+A to select/deselect all events. [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
-  - Some shortcuts where redone: Remove events with DEL, move selection up/down with the UP and DOWN arrow keys. [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
-  - A SetGlossary event was added that allows to change the info of a glossary item during the game. [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
+- `Dialogic.start()` will add a CanvasLayer by default to avoid the confusion of not seeing Dialogic when using a camera. [[AnidemDex](https://github.com/AnidemDex)]
+- Adding a warning if the dialog is not a child of a CanvasLayer [[AnidemDex](https://github.com/AnidemDex)]
+- Dialog
+  - Adding [p] and [nw] commands to pause (2 seconds) and no wait (will automatically skip the text)
 - Theme Editor
   - Added new Box Padding settings to the name label.
+  - Added a new option to make the dialog backgrounds full width
 - Character Editor
+  - You can now add a scene as a portrait, so you can now use AnimatedSprite or whatever you might need
   - You can set nicknames to characters [[zakary93](https://github.com/zakary93)]
   - Fixed a bug when coloring the names of characters in text [[zakary93](https://github.com/zakary93)]
-- Events have id's now. Nothing should change for the user, but it will be easier to manage the inclusion of new events or modifying existing ones. [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
+  - Added the resolution of the selected portrait image on the preview box
+  - You can now import a folder to automatically add all the images inside as portraits
+- Timeline Editor
+  - You can now select multiple events (`CRTL` for adding/removing an event, `SHIFT` for range select) [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
+  - You can now use `CRTL+C`, `CRTL+X` and `CRTL+V` to copy, cut and paste events [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
+  - You can use `CRTL+D` to duplicate the selection [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
+  - You can use `CRTL+A` and `CRTL+SHIFT+A` to select/deselect all events [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
+  - Some shortcuts where redone: Remove events with `DEL`, move selection up/down with the `UP` and `DOWN` arrow keys [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
+  - A SetGlossary event was added that allows to change the info of a glossary item during the game [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
+  - You can now set the portrait of a character based on a definition [[bojjenclon]](https://github.com/bojjenclon)
+- Events have id's now. Nothing should change for the user, but it will be easier to manage the inclusion of new events or modifying existing ones [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
 - Experimental translation added! (This change simply adds a new setting to always treat text as a translation key, instead of displaying it directly. When on, text is sent through tr() before any additional checks are performed on it) [[bojjenclon]](https://github.com/bojjenclon)
-- Fixed a non-breaking bug that printed some errors on the terminal.
+- Fixed a non-breaking bug that printed some errors on the terminal
 
 ## v1.1 - With a little help from my friends
 - Improved event dragging and selection [[Arnaud Vergnet](https://github.com/arnaudvergnet)]

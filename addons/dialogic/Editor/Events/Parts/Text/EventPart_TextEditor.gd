@@ -80,3 +80,9 @@ func _on_TextEditor_text_changed():
 func _on_TextEditor_focus_entered() -> void:
 	if (Input.is_mouse_button_pressed(BUTTON_LEFT)):
 		emit_signal("request_selection")
+
+
+func _on_TextEdit_focus_exited():
+	# Remove text selection to visually notify the user that the text will not 
+	# be copied if they use a hotkey like CTRL + C 
+	$TextEdit.deselect()

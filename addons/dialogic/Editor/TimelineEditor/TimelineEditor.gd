@@ -61,6 +61,9 @@ func _input(event):
 	# because certain godot controls swallow events (like textedit)
 	# we protect this with is_visible_in_tree to not 
 	# invoke a shortcut by accident
+	if get_focus_owner() is TextEdit:
+		return
+		
 	if (event is InputEventKey and event is InputEventWithModifiers and is_visible_in_tree()):
 		# CTRL UP
 		if (event.pressed
@@ -227,13 +230,16 @@ func delete_selected_events():
 	
 	indent_events()
 
+
 func delete_event(event):
 	event.get_parent().remove_child(event)
 	event.queue_free()
 
+
 func cut_selected_events():
 	copy_selected_events()
 	delete_selected_events()
+
 
 func copy_selected_events():
 	if len(selected_items) == 0:
@@ -248,6 +254,7 @@ func copy_selected_events():
 			"dialogic_version": editor_reference.version_string,
 			"project_name": ProjectSettings.get_setting("application/config/name")
 		})
+
 
 func paste_events():
 	var clipboard_parse = JSON.parse(OS.clipboard).result
@@ -272,6 +279,7 @@ func paste_events():
 			sort_selection()
 			visual_update_selection()
 			indent_events()
+
 
 func _unhandled_key_input(event):
 	if (event is InputEventWithModifiers):
@@ -308,7 +316,8 @@ func _unhandled_key_input(event):
 			pass
 			
 	pass
-	
+
+
 func _process(delta):
 	if moving_piece != null:
 		var current_position = get_global_mouse_position()
@@ -332,9 +341,11 @@ func _process(delta):
 func _is_item_selected(item: Node):
 	return item in selected_items
 
+
 func select_item(item: Node, multi_possible:bool = true):
 	if item == null:
 		return
+
 	if Input.is_key_pressed(KEY_CONTROL) and multi_possible:
 		# deselect the item if it is selected
 		if _is_item_selected(item):
@@ -368,6 +379,7 @@ func select_item(item: Node, multi_possible:bool = true):
 	sort_selection()
 	
 	visual_update_selection()
+
 
 func sort_selection():
 	selected_items.sort_custom(self, 'custom_sort_selection')

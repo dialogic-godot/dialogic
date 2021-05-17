@@ -16,6 +16,7 @@ var positions = {
 
 var direction = 'left'
 var debug = false
+onready var tween_node = $Tween
 
 func init(expression: String = '', position_offset = 'left', mirror = false) -> void:
 	rect_position += positions[position_offset]
@@ -38,7 +39,8 @@ func init(expression: String = '', position_offset = 'left', mirror = false) -> 
 			)
 
 	set_portrait(expression)
-	if $TextureRect.texture:
+	
+	if $TextureRect.get('texture'):
 		rect_position -= Vector2(
 			$TextureRect.texture.get_width() * 0.5,
 			$TextureRect.texture.get_height()
@@ -61,14 +63,28 @@ func _ready():
 func set_portrait(expression: String) -> void:
 	if expression == '':
 		expression = 'Default'
+	
+	# Clearing old custom scenes
+	for n in get_children():
+		if n.name == 'CustomPortraitScene':
+			n.queue_free()
+						
 	var portraits = character_data['portraits']
 	for p in portraits:
 		if p['name'] == expression:
-			if ResourceLoader.exists(p['path']):
-				$TextureRect.texture = load(p['path'])
-			else:
+			if is_scene(p['path']):
+				var custom_node = load(p['path'])
+				var instance = custom_node.instance()
+				instance.name = 'CustomPortraitScene'
+				add_child(instance)
+				
 				$TextureRect.texture = ImageTexture.new()
-	
+			else:
+				if ResourceLoader.exists(p['path']):
+					$TextureRect.texture = load(p['path'])
+				else:
+					$TextureRect.texture = ImageTexture.new()
+
 
 # Tween stuff
 func fade_in(node = self, time = 0.5):
@@ -92,7 +108,7 @@ func fade_in(node = self, time = 0.5):
 
 func fade_out(node = self, time = 0.5):
 	tween_modulate(modulate, Color(1,1,1,0), time)
-	$Tween.connect("tween_all_completed", self, "queue_free")
+	tween_node.connect("tween_all_completed", self, "queue_free")
 
 
 func focus():
@@ -112,10 +128,15 @@ func focusout():
 
 
 func tween_modulate(from_value, to_value, time = 0.5):
-	var tween_node = $Tween
 	tween_node.interpolate_property(
 		self, "modulate", from_value, to_value, time,
 		Tween.TRANS_LINEAR, Tween.EASE_IN_OUT
 	)
 	tween_node.start()
 	return tween_node
+
+
+func is_scene(path) -> bool:
+	if '.tscn' in path.to_lower():
+		return true
+	return false
