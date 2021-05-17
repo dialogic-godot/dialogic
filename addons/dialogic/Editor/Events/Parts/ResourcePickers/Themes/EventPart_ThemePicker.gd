@@ -2,7 +2,7 @@ tool
 extends "res://addons/dialogic/Editor/Events/Parts/EventPart.gd"
 
 # has an event_data variable that stores the current data!!!
-export (String) var default_text = "[Select Theme]"
+export (String) var default_text = "Select Theme"
 
 ## node references
 onready var picker_menu = $MenuButton

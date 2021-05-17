@@ -22,7 +22,7 @@ func load_data(data:Dictionary):
 			if c['file'] == event_data['change_timeline']:
 				picker_menu.text = c['name']
 	else:
-		picker_menu.text = '[Select Timeline]'
+		picker_menu.text = 'Select Timeline'
 
 # has to return the wanted preview, only useful for body parts
 func get_preview():

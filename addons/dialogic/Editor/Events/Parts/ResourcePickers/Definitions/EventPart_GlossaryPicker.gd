@@ -2,7 +2,7 @@ tool
 extends "res://addons/dialogic/Editor/Events/Parts/EventPart.gd"
 
 # has an event_data variable that stores the current data!!!
-export (String) var default_text = "[Select Glossary Item]"
+export (String) var default_text = "Select Glossary Item"
 
 ## node references
 onready var picker_menu = $MenuButton
@@ -28,7 +28,7 @@ func select_glossary_by_id(id):
 	if id != '':
 		for d in DialogicResources.get_default_definitions()['glossary']:
 			if d['id'] == id:
-				picker_menu.text = '['+d['name']+']'
+				picker_menu.text = d['name']
 	else:
 		picker_menu.text = default_text
 
