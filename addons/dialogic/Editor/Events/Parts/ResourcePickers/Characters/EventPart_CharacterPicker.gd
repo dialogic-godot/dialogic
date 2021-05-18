@@ -9,12 +9,20 @@ export (bool) var allow_no_character := false
 onready var picker_menu = $HBox/MenuButton
 onready var icon = $HBox/Icon
 
-# used to connect the signals
+
 func _ready():
+	# So... not having real events makes me do this kind of hacks
+	# I hope to improve how events work, but in the mean time
+	# this is what I have to do to get by :') 
+	var event_node = get_node('../../../../../../../..')
+	if event_node.get_node_or_null('AllowNoCharacter'):
+		allow_no_character = true
+	
+	# Connections
 	picker_menu.get_popup().connect("index_pressed", self, '_on_PickerMenu_selected')
 	picker_menu.connect("about_to_show", self, "_on_PickerMenu_about_to_show")
-	
-	
+
+
 # called by the event block
 func load_data(data:Dictionary):
 	# First set the event_data
@@ -23,9 +31,11 @@ func load_data(data:Dictionary):
 	# Now update the ui nodes to display the data. 
 	update_to_character()
 
+
 # has to return the wanted preview, only useful for body parts
 func get_preview():
 	return ''
+
 
 # helper to not have the same code everywhere
 func update_to_character():
@@ -44,6 +54,7 @@ func update_to_character():
 		else:
 			picker_menu.text = 'Select Character'
 		icon.modulate = Color.white
+
 
 func _on_PickerMenu_selected(index):
 	event_data['character'] = picker_menu.get_popup().get_item_metadata(index).get('file', '')

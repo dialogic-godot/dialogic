@@ -16,7 +16,7 @@ var positions = {
 
 var direction = 'left'
 var debug = false
-onready var tween_node = $Tween
+var fading_out = false
 
 func init(expression: String = '', position_offset = 'left', mirror = false) -> void:
 	rect_position += positions[position_offset]
@@ -54,6 +54,7 @@ func init(expression: String = '', position_offset = 'left', mirror = false) -> 
 	if mirror:
 		$TextureRect.flip_h = !$TextureRect.flip_h
 
+
 func _ready():
 	if debug:
 		print('Character data loaded: ', character_data)
@@ -66,16 +67,16 @@ func set_portrait(expression: String) -> void:
 	
 	# Clearing old custom scenes
 	for n in get_children():
-		if n.name == 'CustomPortraitScene':
+		if 'DialogicCustomPortraitScene' in n.name:
 			n.queue_free()
-						
+	
 	var portraits = character_data['portraits']
 	for p in portraits:
 		if p['name'] == expression:
 			if is_scene(p['path']):
 				var custom_node = load(p['path'])
 				var instance = custom_node.instance()
-				instance.name = 'CustomPortraitScene'
+				instance.name = 'DialogicCustomPortraitScene'
 				add_child(instance)
 				
 				$TextureRect.texture = ImageTexture.new()
@@ -87,8 +88,8 @@ func set_portrait(expression: String) -> void:
 
 
 # Tween stuff
-func fade_in(node = self, time = 0.5):
-	tween_modulate(Color(1,1,1,0), Color(1,1,1,1), time)
+func fade_in(time = 0.5):
+	tween_modulate(modulate, Color(1,1,1, 1), time)
 	
 	var end_pos = Vector2(0, -40) # starting at center
 	if direction == 'right':
@@ -96,44 +97,48 @@ func fade_in(node = self, time = 0.5):
 	elif direction == 'left':
 		end_pos = Vector2(-40, 0)
 	else:
-		node.rect_position += Vector2(0, 40)
+		rect_position += Vector2(0, 40)
 	
-	var tween_node = node.get_node('Tween')
-	tween_node.interpolate_property(
-		node, "rect_position", node.rect_position, node.rect_position + end_pos, time,
+	$TweenPosition.interpolate_property(
+		self, "rect_position", rect_position, rect_position + end_pos, time,
 		Tween.TRANS_LINEAR, Tween.EASE_IN_OUT
 	)
-	tween_node.start()
+	$TweenPosition.start()
 
 
-func fade_out(node = self, time = 0.5):
-	tween_modulate(modulate, Color(1,1,1,0), time)
-	tween_node.connect("tween_all_completed", self, "queue_free")
+func fade_out(time = 0.5):
+	fading_out = true
+	var end = modulate
+	end.a = 0
+	tween_modulate(modulate, end, time)
+	$Tween.connect("tween_all_completed", self, "queue_free")
 
 
 func focus():
-	tween_modulate(modulate, Color(1,1,1,1))
-	var _parent = get_parent()
-	if _parent:
-		# Make sure that this portrait is the last to be _draw -ed
-		_parent.move_child(self, _parent.get_child_count())
+	if not fading_out:
+		tween_modulate(modulate, Color(1,1,1, 1))
+		var _parent = get_parent()
+		if _parent:
+			# Make sure that this portrait is the last to be _draw -ed
+			_parent.move_child(self, _parent.get_child_count())
 
 
 func focusout():
-	tween_modulate(modulate, Color(0.5,0.5,0.5,1))
-	var _parent = get_parent()
-	if _parent:
-		# Render this portrait first
-		_parent.move_child(self, 0)
+	if not fading_out:
+		tween_modulate(modulate, Color(0.5,0.5,0.5, 1))
+		var _parent = get_parent()
+		if _parent:
+			# Render this portrait first
+			_parent.move_child(self, 0)
 
 
 func tween_modulate(from_value, to_value, time = 0.5):
-	tween_node.interpolate_property(
+	$Tween.interpolate_property(
 		self, "modulate", from_value, to_value, time,
 		Tween.TRANS_LINEAR, Tween.EASE_IN_OUT
 	)
-	tween_node.start()
-	return tween_node
+	$Tween.start()
+	return $Tween
 
 
 func is_scene(path) -> bool:

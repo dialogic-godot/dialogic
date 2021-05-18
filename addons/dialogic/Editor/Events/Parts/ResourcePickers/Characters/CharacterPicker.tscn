@@ -33,11 +33,11 @@ __meta__ = {
 
 [node name="MenuButton" type="MenuButton" parent="HBox"]
 margin_left = 26.0
-margin_right = 114.0
+margin_right = 106.0
 margin_bottom = 30.0
 focus_mode = 2
 size_flags_vertical = 3
 custom_styles/hover = ExtResource( 4 )
 custom_styles/normal = ExtResource( 3 )
-text = "[Character]"
+text = "Character"
 flat = false
