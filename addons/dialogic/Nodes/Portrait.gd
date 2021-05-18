@@ -66,7 +66,7 @@ func set_portrait(expression: String) -> void:
 	
 	# Clearing old custom scenes
 	for n in get_children():
-		if n.name == 'CustomPortraitScene':
+		if 'DialogicCustomPortraitScene' in n.name:
 			n.queue_free()
 						
 	var portraits = character_data['portraits']
@@ -75,7 +75,7 @@ func set_portrait(expression: String) -> void:
 			if is_scene(p['path']):
 				var custom_node = load(p['path'])
 				var instance = custom_node.instance()
-				instance.name = 'CustomPortraitScene'
+				instance.name = 'DialogicCustomPortraitScene'
 				add_child(instance)
 				
 				$TextureRect.texture = ImageTexture.new()
@@ -107,8 +107,8 @@ func fade_in(node = self, time = 0.5):
 
 
 func fade_out(node = self, time = 0.5):
-	tween_modulate(modulate, Color(1,1,1,0), time)
-	tween_node.connect("tween_all_completed", self, "queue_free")
+	tween_modulate(modulate, Color(1,1,1,-1), time)
+	tween_node.connect("tween_all_completed", self, "free")
 
 
 func focus():
