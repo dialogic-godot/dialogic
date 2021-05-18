@@ -15,3 +15,5 @@ __meta__ = {
 }
 
 [node name="Tween" type="Tween" parent="."]
+
+[node name="TweenPosition" type="Tween" parent="."]
