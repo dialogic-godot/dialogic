@@ -1,6 +1,13 @@
 tool
 class_name DialogicUtil
 
+## This class is used by the DialogicEditor
+## For example by the Editors (Timeline, Character, Theme), the MasterTree and the EventParts
+
+
+## *****************************************************************************
+##								CHARACTERS
+## *****************************************************************************
 
 static func get_character_list() -> Array:
 	var characters: Array = []
@@ -51,6 +58,11 @@ static func get_sorted_character_list():
 	return array
 
 
+## *****************************************************************************
+##								TIMELINES
+## *****************************************************************************
+
+
 static func get_timeline_list() -> Array:
 	var timelines: Array = []
 	for file in DialogicResources.listdir(DialogicResources.get_path('TIMELINE_DIR')):
@@ -73,6 +85,10 @@ static func get_sorted_timeline_list():
 	return array
 
 
+## *****************************************************************************
+##								THEMES
+## *****************************************************************************
+
 static func get_theme_list() -> Array:
 	var themes: Array = []
 	for file in DialogicResources.listdir(DialogicResources.get_path('THEME_DIR')):
@@ -92,6 +108,10 @@ static func get_sorted_theme_list():
 	return array
 
 
+## *****************************************************************************
+##								DEFINITIONS
+## *****************************************************************************
+
 static func get_default_definitions_list() -> Array:
 	return DialogicDefinitionsUtil.definitions_json_to_array(DialogicResources.get_default_definitions())
 
@@ -100,6 +120,11 @@ static func get_sorted_default_definitions_list():
 	var array = get_default_definitions_list()
 	array.sort_custom(DialgicSorter, 'sort_resources')
 	return array
+
+
+## *****************************************************************************
+##								HANDY FUNCTIONS
+## *****************************************************************************
 
 
 static func generate_random_id() -> String:
@@ -220,6 +245,11 @@ static func resource_fixer():
 	DialogicResources.set_settings_value("updates", "updatenumber", 1)
 	
 
+## *****************************************************************************
+##							DIALOGIC_SORTER CLASS
+## *****************************************************************************
+
+# This class is only used by this script to sort the resource lists
 class DialgicSorter:
 
 	static func key_available(key, a: Dictionary) -> bool:
