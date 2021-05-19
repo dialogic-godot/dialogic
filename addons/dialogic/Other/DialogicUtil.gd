@@ -155,7 +155,9 @@ static func get_folder_at_path(path):
 	for folder in path.split("/"):
 		if folder:
 			folder_data = folder_data['folders'][folder]
-		
+	
+	if folder_data == null:
+		folder_data = {"folders":{}, "files":[]}
 	return folder_data
 
 static func set_folder_content_recursive(path_array: Array, orig_data: Dictionary, new_data: Dictionary) -> Dictionary:
@@ -179,11 +181,16 @@ static func set_folder_at_path(path: String, data:Dictionary):
 # removes the last thing from a path
 static func get_parent_path(path: String):
 	return path.replace("/"+path.split("/")[-1], "")
-	
+
+## ~~~~~
+
 static func add_folder(path, folder_name):
 	var folder_data = get_folder_at_path(path)
 	folder_data['folders'][folder_name] = {"folders":{}, "files":[]}
 	set_folder_at_path(path, folder_data)
+
+static func remove_folder(folder_path):
+	set_folder_at_path(folder_path, {})
 
 static func rename_folder(path, new_folder_name):
 	# save the content
@@ -196,17 +203,25 @@ static func rename_folder(path, new_folder_name):
 	add_folder(get_parent_path(path), new_folder_name)
 	var new_path = get_parent_path(path)+ "/"+new_folder_name
 	set_folder_at_path(new_path, folder_content)
-	
 
-static func remove_folder(folder_path):
-	set_folder_at_path(folder_path, {})
 
 static func move_file_to_folder(file_name, orig_folder, target_folder):
 	remove_file_from_folder(orig_folder, file_name)
 	add_file_to_folder(target_folder, file_name)
 
-static func move_files_to_folder(file_names, target_folder):
-	pass
+static func move_folder_to_folder(orig_path, target_folder):
+	# save the content
+	var folder_content = get_folder_at_path(orig_path)
+	
+	# remove the old folder
+	remove_folder(orig_path)
+	
+	# add the new folder
+	var folder_name = orig_path.split("/")[-1]
+	add_folder(target_folder, folder_name)
+	var new_path = target_folder+ "/"+folder_name
+	print(new_path)
+	set_folder_at_path(new_path, folder_content)
 
 static func add_file_to_folder(folder_path, file_name):
 	var folder_data = get_folder_at_path(folder_path)
@@ -220,17 +235,39 @@ static func remove_file_from_folder(folder_path, file_name):
 
 # checks if all the files still exist
 static func update_resource_folder_structure():
-	DialogicResources.save_resource_folder_structure(check_folders_recursive(DialogicResources.get_resource_folder_structure()))
-
-static func check_folders_recursive(folder_data: Dictionary):
-	for folder in folder_data['folders'].keys():
-		folder_data['folders'][folder] = check_folders_recursive(folder_data["folders"][folder])
-	for file in folder_data['files']:
-		if not file in get_timeline_dict().keys():
-			folder_data["files"].erase(file)
-			print("HUH? The file ", file, " was deleted!")
+	var character_files = DialogicResources.listdir(DialogicResources.get_path('CHAR_DIR'))
+	var timeline_files = DialogicResources.listdir(DialogicResources.get_path('TIMELINE_DIR')) 
+	var theme_files = DialogicResources.listdir(DialogicResources.get_path('THEME_DIR'))
+	var definition_files = DialogicDefinitionsUtil.definitions_json_to_array(DialogicResources.get_default_definitions())
 	
-	return folder_data
+	var folder_structure = DialogicResources.get_resource_folder_structure()
+	
+	folder_structure['folders']['Timelines'] = check_folders_section(folder_structure['folders']['Timelines'], timeline_files)
+	folder_structure['folders']['Characters'] = check_folders_section(folder_structure['folders']['Characters'], character_files)
+	folder_structure['folders']['Themes'] = check_folders_section(folder_structure['folders']['Themes'], theme_files)
+	## WORK TODO DEFINITIONS
+	
+	DialogicResources.save_resource_folder_structure(folder_structure)
+
+static func check_folders_section(section_structure: Dictionary, section_files:Array):
+	var result = check_folders_recursive(section_structure, section_files)
+	section_structure = result[0]
+	section_structure['files'] += result[1]
+	return section_structure
+	
+
+static func check_folders_recursive(folder_data: Dictionary, file_names:Array):
+	for folder in folder_data['folders'].keys():
+		var result = check_folders_recursive(folder_data["folders"][folder], file_names)
+		folder_data['folders'][folder] = result[0]
+		file_names = result[1]
+	for file in folder_data['files']:
+		if not file in file_names:
+			folder_data["files"].erase(file)
+			print("[D] The file ", file, " was deleted!")
+		else:
+			file_names.erase(file)
+	return [folder_data, file_names]
 
 ## *****************************************************************************
 ##								USEFUL FUNCTIONS
