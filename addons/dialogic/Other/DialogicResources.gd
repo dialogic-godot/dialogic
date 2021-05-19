@@ -82,6 +82,7 @@ static func get_config_files_paths() -> Dictionary:
 	return {
 		'SETTINGS_FILE': RESOURCES_DIR + "/settings.cfg",
 		'DEFAULT_DEFINITIONS_FILE': RESOURCES_DIR + "/definitions.json",
+		'FOLDER_STRUCTURE_FILE': RESOURCES_DIR + "/folder_structure.json",
 		'SAVED_DEFINITIONS_FILE': WORKING_DIR + "/definitions.json",
 		'SAVED_STATE_FILE': WORKING_DIR + "/state.json",
 	}
@@ -255,7 +256,7 @@ static func set_timeline(timeline: Dictionary):
 static func delete_timeline(filename: String):
 	# WARNING: For use in the editor only
 	remove_file(get_path('TIMELINE_DIR', filename))
-
+	
 
 ## *****************************************************************************
 ##							CHARACTERS
@@ -394,3 +395,40 @@ static func get_saved_definitions(default: Dictionary = {'variables': [], 'gloss
 static func save_saved_definitions(data: Dictionary):
 	init_working_dir()
 	return set_json(get_config_files_paths()['SAVED_DEFINITIONS_FILE'], data)
+
+## *****************************************************************************
+##						FOLDER STRUCTURE
+## *****************************************************************************
+# The DialogicEditor uses a fake folder structure
+# Can only be edited in the editor
+
+static func get_resource_folder_structure() -> Dictionary:
+	return load_json(get_config_files_paths()['FOLDER_STRUCTURE_FILE'], 
+		{"folders":
+			{"Timelines":
+				{
+					"folders":{},
+					"files":[]
+				},
+			"Characters":
+				{
+					"folders":{},
+					"files":[]
+				},
+			"Definitions":
+				{
+					"folders":{},
+					"files":[]
+				},
+			"Themes":
+				{
+					"folders":{},
+					"files":[]
+				},
+			}, 
+		"files":[]
+		})
+
+static func save_resource_folder_structure(data):
+	set_json(get_config_files_paths()['FOLDER_STRUCTURE_FILE'], data)
+	

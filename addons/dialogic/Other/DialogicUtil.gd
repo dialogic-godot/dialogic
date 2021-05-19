@@ -78,6 +78,13 @@ static func get_timeline_list() -> Array:
 						timelines.append({'name':file.split('.')[0], 'color': color, 'file': file })
 	return timelines
 
+# returns a dictionary with file_names as keys and metadata as values
+static func get_timeline_dict() -> Dictionary:
+	var dict := {}
+	for val in get_timeline_list():
+		dict[val["file"]] = val
+	return dict
+
 
 static func get_sorted_timeline_list():
 	var array = get_timeline_list()
@@ -123,7 +130,110 @@ static func get_sorted_default_definitions_list():
 
 
 ## *****************************************************************************
-##								HANDY FUNCTIONS
+##							RESOURCE FOLDER MANAGEMENT
+## *****************************************************************************
+# The DialogicEditor uses a fake folder structure
+
+static func get_full_resource_folder_structure():
+	return DialogicResources.get_resource_folder_structure()
+
+static func get_timelines_folder_structure():
+	return get_folder_at_path("Timelines")
+
+static func get_characters_folder_structure():
+	return get_folder_at_path("Characters")
+	
+static func get_definitions_folder_structure():
+	return get_folder_at_path("Definitions")
+	
+static func get_theme_folder_structure():
+	return get_folder_at_path("Themes")
+
+static func get_folder_at_path(path):
+	var folder_data = get_full_resource_folder_structure()
+	
+	for folder in path.split("/"):
+		if folder:
+			folder_data = folder_data['folders'][folder]
+		
+	return folder_data
+
+static func set_folder_content_recursive(path_array: Array, orig_data: Dictionary, new_data: Dictionary) -> Dictionary:
+	if len(path_array) == 1:
+		if path_array[0] in orig_data['folders'].keys():
+			if new_data.empty():
+				orig_data['folders'].erase(path_array[0])
+			else:
+				orig_data["folders"][path_array[0]] = new_data
+	else:
+		var current_folder = path_array.pop_front()
+		orig_data["folders"][current_folder] = set_folder_content_recursive(path_array, orig_data["folders"][current_folder], new_data)
+	return orig_data
+
+static func set_folder_at_path(path: String, data:Dictionary):
+	var orig_structure = get_full_resource_folder_structure()
+	
+	var new_data = set_folder_content_recursive(path.split("/"), orig_structure, data)
+	DialogicResources.save_resource_folder_structure(new_data)
+
+# removes the last thing from a path
+static func get_parent_path(path: String):
+	return path.replace("/"+path.split("/")[-1], "")
+	
+static func add_folder(path, folder_name):
+	var folder_data = get_folder_at_path(path)
+	folder_data['folders'][folder_name] = {"folders":{}, "files":[]}
+	set_folder_at_path(path, folder_data)
+
+static func rename_folder(path, new_folder_name):
+	# save the content
+	var folder_content = get_folder_at_path(path)
+	
+	# remove the old folder
+	remove_folder(path)
+	
+	# add the new folder
+	add_folder(get_parent_path(path), new_folder_name)
+	var new_path = get_parent_path(path)+ "/"+new_folder_name
+	set_folder_at_path(new_path, folder_content)
+	
+
+static func remove_folder(folder_path):
+	set_folder_at_path(folder_path, {})
+
+static func move_file_to_folder(file_name, orig_folder, target_folder):
+	remove_file_from_folder(orig_folder, file_name)
+	add_file_to_folder(target_folder, file_name)
+
+static func move_files_to_folder(file_names, target_folder):
+	pass
+
+static func add_file_to_folder(folder_path, file_name):
+	var folder_data = get_folder_at_path(folder_path)
+	folder_data["files"].append(file_name)
+	set_folder_at_path(folder_path, folder_data)
+
+static func remove_file_from_folder(folder_path, file_name):
+	var folder_data = get_folder_at_path(folder_path)
+	folder_data["files"].erase(file_name)
+	set_folder_at_path(folder_path, folder_data)
+
+# checks if all the files still exist
+static func update_resource_folder_structure():
+	DialogicResources.save_resource_folder_structure(check_folders_recursive(DialogicResources.get_resource_folder_structure()))
+
+static func check_folders_recursive(folder_data: Dictionary):
+	for folder in folder_data['folders'].keys():
+		folder_data['folders'][folder] = check_folders_recursive(folder_data["folders"][folder])
+	for file in folder_data['files']:
+		if not file in get_timeline_dict().keys():
+			folder_data["files"].erase(file)
+			print("HUH? The file ", file, " was deleted!")
+	
+	return folder_data
+
+## *****************************************************************************
+##								USEFUL FUNCTIONS
 ## *****************************************************************************
 
 

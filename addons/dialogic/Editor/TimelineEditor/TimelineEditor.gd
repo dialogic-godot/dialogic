@@ -724,12 +724,6 @@ func create_timeline():
 	DialogicResources.set_timeline(timeline)
 	return timeline
 
-
-func new_timeline():
-	# This event creates and selects the new timeline
-	master_tree.build_timelines(create_timeline()['metadata']['file'])
-
-
 # Saving
 func generate_save_data():
 	var info_to_save = {
