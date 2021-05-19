@@ -761,6 +761,9 @@ func get_classic_choice_button(label: String):
 	var theme = current_theme
 	var button : Button = ChoiceButton.instance()
 	button.text = label
+	
+	# Removing the blue selected border
+	button.set('custom_styles/focus', StyleBoxEmpty.new())
 	# Text
 	button.set('custom_fonts/font', DialogicUtil.path_fixer_load(theme.get_value('text', 'font', "res://addons/dialogic/Example Assets/Fonts/DefaultFont.tres")))
 
