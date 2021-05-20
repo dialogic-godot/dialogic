@@ -250,8 +250,8 @@ static func rename_folder(path:String, new_folder_name:String):
 	# save the content
 	var folder_content = get_folder_at_path(path)
 	
-	# remove the old folder
-	remove_folder(path)
+	# remove the old folder BUT NOT THE FILES !!!!!
+	remove_folder(path, false)
 	
 	# add the new folder
 	add_folder(get_parent_path(path), new_folder_name)
