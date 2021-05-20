@@ -142,7 +142,6 @@ func _add_folder_item(parent_item: TreeItem, folder_name: String, editor:String,
 
 ## TIMELINES
 func build_resource_folder(parent_folder_item:TreeItem, folder_data:Dictionary, selected_item:String, folder_editor:String, resource_type: String):
-	
 	for folder in folder_data["folders"].keys():
 		build_resource_folder(_add_folder_item(parent_folder_item, folder, folder_editor, folder_data["folders"][folder]['metadata']), folder_data["folders"][folder], selected_item, folder_editor, resource_type)
 	
@@ -617,11 +616,10 @@ func drop_data(position, data):
 	
 	build_full_tree()
 
-
 func get_drag_data(position):
 	var item = get_item_at_position(position)
 	# if it is a folder and it's not one of the root folders
-	if 'Root' in item.get_metadata(0)['editor']:
+	if 'Root' in item.get_metadata(0)['editor'] and item.get_parent().get_parent():
 		return {'item_type': 'folder', 'orig_path': get_item_folder(item, "")}
 	else:
 		if item.get_metadata(0).has('file'):
@@ -671,6 +669,8 @@ func _on_item_edited():
 		build_definitions(metadata['id'])
 	
 	if "Root" in metadata['editor']:
+		if item.get_text(0) == item_path_before_edit.split("/")[-1]:
+			return 
 		var result = DialogicUtil.rename_folder(item_path_before_edit, item.get_text(0))
 		if result != OK:
 			item.set_text(0, item_path_before_edit.split("/")[-1])

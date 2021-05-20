@@ -195,9 +195,9 @@ static func set_folder_content_recursive(path_array: Array, orig_data: Dictionar
 
 static func set_folder_at_path(path: String, data:Dictionary):
 	var orig_structure = get_full_resource_folder_structure()
-	
 	var new_data = set_folder_content_recursive(path.split("/"), orig_structure, data)
 	DialogicResources.save_resource_folder_structure(new_data)
+	return OK
 
 ## FOLDER METADATA
 static func set_folder_meta(folder_path: String, key:String, value):
@@ -213,7 +213,7 @@ static func get_folder_meta(folder_path: String, key:String):
 static func add_folder(path:String, folder_name:String):
 	# check if the name is allowed
 	if folder_name in get_folder_at_path(path)['folders'].keys():
-		print("[D] A folder with the name '"+folder_name+"' already exists in the target folder '"+path)
+		print("[D] A folder with the name '"+folder_name+"' already exists in the target folder '"+path+"'.")
 		return ERR_ALREADY_EXISTS
 	
 	var folder_data = get_folder_at_path(path)
@@ -222,27 +222,29 @@ static func add_folder(path:String, folder_name:String):
 	
 	return OK
 
-static func remove_folder(folder_path:String):
+static func remove_folder(folder_path:String, delete_files:bool = true):
 	#print("[D] Removing 'Folder' "+folder_path)
 	for folder in get_folder_at_path(folder_path)['folders']:
 		remove_folder(folder_path+"/"+folder)
-	for file in get_folder_at_path(folder_path)['files']:
-		#print("[D] Removing file ", file)
-		match folder_path.split("/")[0]:
-			'Timelines':
-				DialogicResources.delete_timeline(file)
-			'Characters':
-				DialogicResources.delete_character(file)
-			'Definitions':
-				DialogicResources.delete_default_definition(file)
-			'Themes':
-				DialogicResources.delete_theme(file)
+	
+	if delete_files:
+		for file in get_folder_at_path(folder_path)['files']:
+			#print("[D] Removing file ", file)
+			match folder_path.split("/")[0]:
+				'Timelines':
+					DialogicResources.delete_timeline(file)
+				'Characters':
+					DialogicResources.delete_character(file)
+				'Definitions':
+					DialogicResources.delete_default_definition(file)
+				'Themes':
+					DialogicResources.delete_theme(file)
 	set_folder_at_path(folder_path, {})
 
 static func rename_folder(path:String, new_folder_name:String):
 	# check if the name is allowed
 	if new_folder_name in get_folder_at_path(get_parent_path(path))['folders'].keys():
-		print("[D] A folder with the name '"+new_folder_name+"' already exists in the target folder '"+get_parent_path(path))
+		print("[D] A folder with the name '"+new_folder_name+"' already exists in the target folder '"+get_parent_path(path)+"'.")
 		return ERR_ALREADY_EXISTS
 	
 	# save the content
@@ -261,20 +263,20 @@ static func rename_folder(path:String, new_folder_name:String):
 static func move_folder_to_folder(orig_path, target_folder):
 	# check if the name is allowed
 	if orig_path.split("/")[-1] in get_folder_at_path(target_folder)['folders'].keys():
-		print("[D] A folder with the name '"+orig_path.split("/")[-1]+"' already exists in the target folder.")
+		print("[D] A folder with the name '"+orig_path.split("/")[-1]+"' already exists in the target folder '"+target_folder+"'.")
 		return ERR_ALREADY_EXISTS
 	
 	# save the content
 	var folder_content = get_folder_at_path(orig_path)
 	
-	# remove the old folder
-	remove_folder(orig_path)
+	# remove the old folder BUT DON'T DELETE THE FILES!!!!!!!!!!!
+	# took me ages to find this when I forgot it..
+	remove_folder(orig_path, false)
 	
 	# add the new folder
 	var folder_name = orig_path.split("/")[-1]
 	add_folder(target_folder, folder_name)
 	var new_path = target_folder+ "/"+folder_name
-	print(new_path)
 	set_folder_at_path(new_path, folder_content)
 	
 	return OK
