@@ -29,6 +29,8 @@ func _ready():
 
 	master_tree.connect("editor_selected", self, 'on_master_tree_editor_selected')
 
+	# Updating the folder structure
+	DialogicUtil.update_resource_folder_structure()
 	
 	# Sizes
 	# This part of the code is a bit terrible. But there is no better way
@@ -72,9 +74,9 @@ func _ready():
 	$ToolBar/FoldTools/ButtonUnfold.icon = get_icon("GuiTreeArrowDown", "EditorIcons")
 	# Toolbar
 	$ToolBar/NewTimelineButton.connect('pressed', $MainPanel/MasterTreeContainer/MasterTree, 'new_timeline')
-	$ToolBar/NewCharactersButton.connect('pressed', $MainPanel/CharacterEditor, 'new_character')
-	$ToolBar/NewThemeButton.connect('pressed', $MainPanel/ThemeEditor, 'new_theme')
-	$ToolBar/NewDefinitionButton.connect('pressed', $MainPanel/DefinitionEditor, 'new_definition')
+	$ToolBar/NewCharactersButton.connect('pressed', $MainPanel/MasterTreeContainer/MasterTree, 'new_character')
+	$ToolBar/NewThemeButton.connect('pressed', $MainPanel/MasterTreeContainer/MasterTree, 'new_theme')
+	$ToolBar/NewDefinitionButton.connect('pressed', $MainPanel/MasterTreeContainer/MasterTree, 'new_definition')
 	$ToolBar/Docs.icon = get_icon("Instance", "EditorIcons")
 	$ToolBar/Docs.connect('pressed', OS, "shell_open", ["https://dialogic.coppolaemilio.com"])
 	$ToolBar/FoldTools/ButtonFold.connect('pressed', timeline_editor, 'fold_all_nodes')
@@ -161,7 +163,7 @@ func _on_RemoveDefinitionConfirmation_confirmed():
 func _on_RemoveFolderConfirmation_confirmed():
 	var item_path = $MainPanel/MasterTreeContainer/MasterTree.get_item_path($MainPanel/MasterTreeContainer/MasterTree.get_selected())
 	DialogicUtil.remove_folder(item_path)
-	$MainPanel/MasterTreeContainer/MasterTree.build_timelines()
+	$MainPanel/MasterTreeContainer/MasterTree.build_full_tree()
 
 func _on_RemoveCharacterConfirmation_confirmed():
 	var filename = $MainPanel/CharacterEditor.opened_character_data['id']

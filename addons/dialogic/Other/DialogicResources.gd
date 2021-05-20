@@ -408,22 +408,26 @@ static func get_resource_folder_structure() -> Dictionary:
 			{"Timelines":
 				{
 					"folders":{},
-					"files":[]
+					"files":[],
+					'metadata':{'color':null, 'folded':false}
 				},
 			"Characters":
 				{
 					"folders":{},
-					"files":[]
+					"files":[],
+					'metadata':{'color':null, 'folded':false}
 				},
 			"Definitions":
 				{
 					"folders":{},
-					"files":[]
+					"files":[],
+					'metadata':{'color':null, 'folded':false}
 				},
 			"Themes":
 				{
 					"folders":{},
-					"files":[]
+					"files":[],
+					'metadata':{'color':null, 'folded':false}
 				},
 			}, 
 		"files":[]

@@ -27,6 +27,7 @@ onready var nodes = {
 }
 
 
+
 func _ready():
 	nodes['new_portrait_button'].connect('pressed', self, '_on_New_Portrait_Button_pressed')
 	nodes['import_from_folder_button'].connect('pressed', self, '_on_Import_Portrait_Folder_Button_pressed')
@@ -57,6 +58,7 @@ func _on_name_changed(value):
 	item.set_text(0, value)
 	save_character()
 	master_tree.build_characters(nodes['file'].text)
+	nodes['name'].grab_focus()
 
 
 func _on_color_changed(color):
@@ -99,11 +101,6 @@ func create_character():
 	DialogicResources.set_character(character)
 	character['metadata'] = {'file': character_file}
 	return character
-
-
-func new_character():
-	# This event creates and selects the new character
-	master_tree.build_characters(create_character()['metadata']['file'])
 
 
 # Saving and Loading

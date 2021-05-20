@@ -59,6 +59,7 @@ func _on_name_changed(text):
 	if current_definition != null:
 		save_definition()
 		master_tree.build_definitions(current_definition['id'])
+	nodes['name'].grab_focus()
 
 
 func _on_type_selected(index):
@@ -79,10 +80,10 @@ func show_sub_editor(type):
 		nodes['extra_editor'].visible = true
 
 
-func new_definition():
+func create_definition() -> String:
 	var id = DialogicUtil.generate_random_id()
 	DialogicResources.set_default_definition_variable(id, 'New definition', '')
-	master_tree.build_definitions(id)
+	return id
 
 
 func save_definition():

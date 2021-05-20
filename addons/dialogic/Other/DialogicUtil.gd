@@ -4,6 +4,11 @@ class_name DialogicUtil
 ## This class is used by the DialogicEditor
 ## For example by the Editors (Timeline, Character, Theme), the MasterTree and the EventParts
 
+static func list_to_dict(list):
+	var dict := {}
+	for val in list:
+		dict[val["file"]] = val
+	return dict
 
 ## *****************************************************************************
 ##								CHARACTERS
@@ -51,12 +56,13 @@ static func get_character_list() -> Array:
 
 	return characters
 
+static func get_characters_dict():
+	return list_to_dict(get_character_list())
 
 static func get_sorted_character_list():
 	var array = get_character_list()
 	array.sort_custom(DialgicSorter, 'sort_resources')
 	return array
-
 
 ## *****************************************************************************
 ##								TIMELINES
@@ -80,11 +86,7 @@ static func get_timeline_list() -> Array:
 
 # returns a dictionary with file_names as keys and metadata as values
 static func get_timeline_dict() -> Dictionary:
-	var dict := {}
-	for val in get_timeline_list():
-		dict[val["file"]] = val
-	return dict
-
+	return list_to_dict(get_timeline_list())
 
 static func get_sorted_timeline_list():
 	var array = get_timeline_list()
@@ -108,6 +110,9 @@ static func get_theme_list() -> Array:
 			})
 	return themes
 
+# returns a dictionary with file_names as keys and metadata as values
+static func get_theme_dict() -> Dictionary:
+	return list_to_dict(get_theme_list())
 
 static func get_sorted_theme_list():
 	var array = get_theme_list()
@@ -122,18 +127,30 @@ static func get_sorted_theme_list():
 static func get_default_definitions_list() -> Array:
 	return DialogicDefinitionsUtil.definitions_json_to_array(DialogicResources.get_default_definitions())
 
+static func get_default_definitions_dict():
+	var dict = {}
+	for val in get_default_definitions_list():
+		dict[val['id']] = val
+	return dict
 
 static func get_sorted_default_definitions_list():
 	var array = get_default_definitions_list()
 	array.sort_custom(DialgicSorter, 'sort_resources')
 	return array
 
-
 ## *****************************************************************************
 ##							RESOURCE FOLDER MANAGEMENT
 ## *****************************************************************************
-# The DialogicEditor uses a fake folder structure
+# The MasterTree uses a "fake" folder structure
 
+## PATH FUNCTIONS
+# removes the last thing from a path
+static func get_parent_path(path: String):
+	return path.replace("/"+path.split("/")[-1], "")
+
+
+## GETTERS
+# returns the full resource structure
 static func get_full_resource_folder_structure():
 	return DialogicResources.get_resource_folder_structure()
 
@@ -149,6 +166,8 @@ static func get_definitions_folder_structure():
 static func get_theme_folder_structure():
 	return get_folder_at_path("Themes")
 
+# this gets the content of the folder at a path
+# a path consists of the foldernames divided by '/'
 static func get_folder_at_path(path):
 	var folder_data = get_full_resource_folder_structure()
 	
@@ -160,6 +179,8 @@ static func get_folder_at_path(path):
 		folder_data = {"folders":{}, "files":[]}
 	return folder_data
 
+
+## SETTERS
 static func set_folder_content_recursive(path_array: Array, orig_data: Dictionary, new_data: Dictionary) -> Dictionary:
 	if len(path_array) == 1:
 		if path_array[0] in orig_data['folders'].keys():
@@ -178,21 +199,52 @@ static func set_folder_at_path(path: String, data:Dictionary):
 	var new_data = set_folder_content_recursive(path.split("/"), orig_structure, data)
 	DialogicResources.save_resource_folder_structure(new_data)
 
-# removes the last thing from a path
-static func get_parent_path(path: String):
-	return path.replace("/"+path.split("/")[-1], "")
+## FOLDER METADATA
+static func set_folder_meta(folder_path: String, key:String, value):
+	var data = get_folder_at_path(folder_path)
+	data['metadata'][key] = value
+	set_folder_at_path(folder_path, data)
 
-## ~~~~~
+static func get_folder_meta(folder_path: String, key:String):
+	return get_folder_at_path(folder_path)['metadata'][key]
 
-static func add_folder(path, folder_name):
+
+## FOLDER FUNCTIONS
+static func add_folder(path:String, folder_name:String):
+	# check if the name is allowed
+	if folder_name in get_folder_at_path(path)['folders'].keys():
+		print("[D] A folder with the name '"+folder_name+"' already exists in the target folder '"+path)
+		return ERR_ALREADY_EXISTS
+	
 	var folder_data = get_folder_at_path(path)
-	folder_data['folders'][folder_name] = {"folders":{}, "files":[]}
+	folder_data['folders'][folder_name] = {"folders":{}, "files":[], 'metadata':{'color':null, 'folded':false}}
 	set_folder_at_path(path, folder_data)
+	
+	return OK
 
-static func remove_folder(folder_path):
+static func remove_folder(folder_path:String):
+	#print("[D] Removing 'Folder' "+folder_path)
+	for folder in get_folder_at_path(folder_path)['folders']:
+		remove_folder(folder_path+"/"+folder)
+	for file in get_folder_at_path(folder_path)['files']:
+		#print("[D] Removing file ", file)
+		match folder_path.split("/")[0]:
+			'Timelines':
+				DialogicResources.delete_timeline(file)
+			'Characters':
+				DialogicResources.delete_character(file)
+			'Definitions':
+				DialogicResources.delete_default_definition(file)
+			'Themes':
+				DialogicResources.delete_theme(file)
 	set_folder_at_path(folder_path, {})
 
-static func rename_folder(path, new_folder_name):
+static func rename_folder(path:String, new_folder_name:String):
+	# check if the name is allowed
+	if new_folder_name in get_folder_at_path(get_parent_path(path))['folders'].keys():
+		print("[D] A folder with the name '"+new_folder_name+"' already exists in the target folder '"+get_parent_path(path))
+		return ERR_ALREADY_EXISTS
+	
 	# save the content
 	var folder_content = get_folder_at_path(path)
 	
@@ -204,12 +256,14 @@ static func rename_folder(path, new_folder_name):
 	var new_path = get_parent_path(path)+ "/"+new_folder_name
 	set_folder_at_path(new_path, folder_content)
 
-
-static func move_file_to_folder(file_name, orig_folder, target_folder):
-	remove_file_from_folder(orig_folder, file_name)
-	add_file_to_folder(target_folder, file_name)
+	return OK
 
 static func move_folder_to_folder(orig_path, target_folder):
+	# check if the name is allowed
+	if orig_path.split("/")[-1] in get_folder_at_path(target_folder)['folders'].keys():
+		print("[D] A folder with the name '"+orig_path.split("/")[-1]+"' already exists in the target folder.")
+		return ERR_ALREADY_EXISTS
+	
 	# save the content
 	var folder_content = get_folder_at_path(orig_path)
 	
@@ -222,6 +276,13 @@ static func move_folder_to_folder(orig_path, target_folder):
 	var new_path = target_folder+ "/"+folder_name
 	print(new_path)
 	set_folder_at_path(new_path, folder_content)
+	
+	return OK
+
+## FILE FUNCTIONS
+static func move_file_to_folder(file_name, orig_folder, target_folder):
+	remove_file_from_folder(orig_folder, file_name)
+	add_file_to_folder(target_folder, file_name)
 
 static func add_file_to_folder(folder_path, file_name):
 	var folder_data = get_folder_at_path(folder_path)
@@ -233,30 +294,34 @@ static func remove_file_from_folder(folder_path, file_name):
 	folder_data["files"].erase(file_name)
 	set_folder_at_path(folder_path, folder_data)
 
-# checks if all the files still exist
+
+## STRUCTURE UPDATES
+#should be called when files got deleted and on program start
 static func update_resource_folder_structure():
 	var character_files = DialogicResources.listdir(DialogicResources.get_path('CHAR_DIR'))
 	var timeline_files = DialogicResources.listdir(DialogicResources.get_path('TIMELINE_DIR')) 
 	var theme_files = DialogicResources.listdir(DialogicResources.get_path('THEME_DIR'))
-	var definition_files = DialogicDefinitionsUtil.definitions_json_to_array(DialogicResources.get_default_definitions())
+	var definition_files = get_default_definitions_dict().keys()
 	
 	var folder_structure = DialogicResources.get_resource_folder_structure()
 	
 	folder_structure['folders']['Timelines'] = check_folders_section(folder_structure['folders']['Timelines'], timeline_files)
 	folder_structure['folders']['Characters'] = check_folders_section(folder_structure['folders']['Characters'], character_files)
 	folder_structure['folders']['Themes'] = check_folders_section(folder_structure['folders']['Themes'], theme_files)
-	## WORK TODO DEFINITIONS
+	folder_structure['folders']['Definitions'] = check_folders_section(folder_structure['folders']['Definitions'], definition_files)
 	
 	DialogicResources.save_resource_folder_structure(folder_structure)
 
+# calls the check_folders_recursive
 static func check_folders_section(section_structure: Dictionary, section_files:Array):
 	var result = check_folders_recursive(section_structure, section_files)
 	section_structure = result[0]
 	section_structure['files'] += result[1]
 	return section_structure
-	
 
 static func check_folders_recursive(folder_data: Dictionary, file_names:Array):
+	if not folder_data.has('metadata'):
+		folder_data['metadata'] = {'color':null, 'folded':false}
 	for folder in folder_data['folders'].keys():
 		var result = check_folders_recursive(folder_data["folders"][folder], file_names)
 		folder_data['folders'][folder] = result[0]
@@ -264,15 +329,15 @@ static func check_folders_recursive(folder_data: Dictionary, file_names:Array):
 	for file in folder_data['files']:
 		if not file in file_names:
 			folder_data["files"].erase(file)
-			print("[D] The file ", file, " was deleted!")
+			#print("[D] The file ", file, " was deleted!")
 		else:
 			file_names.erase(file)
 	return [folder_data, file_names]
 
+
 ## *****************************************************************************
 ##								USEFUL FUNCTIONS
 ## *****************************************************************************
-
 
 static func generate_random_id() -> String:
 	return str(OS.get_unix_time()) + '-' + str(100 + randi()%899+1)
