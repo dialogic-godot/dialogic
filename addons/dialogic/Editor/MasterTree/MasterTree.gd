@@ -587,7 +587,7 @@ func can_drop_data(position, data) -> bool:
 			# if it's the same type of folder as before
 			if get_item_folder(item, '').split("/")[0] == data['orig_path'].split("/")[0]:
 				# make sure the folder/item is not a subfolder of the original folder
-				if not get_item_folder(item, '').begins_with(data['orig_path']):
+				if data['item_type'] == "file" or (not get_item_folder(item, '').begins_with(data['orig_path'])):
 					return true
 	return false
 
