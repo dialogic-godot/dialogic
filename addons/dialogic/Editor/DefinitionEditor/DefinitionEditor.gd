@@ -65,9 +65,9 @@ func _on_name_changed(text):
 func _on_type_selected(index):
 	nodes['type'].select(index)
 	var item = master_tree.get_selected()
-	item.set_icon(0, get_icon("Variant", "EditorIcons"))
+	item.set_icon(0, master_tree.definition_icon)
 	if index == 1:
-		item.set_icon(0, get_icon("ScriptCreateDialog", "EditorIcons"))
+		item.set_icon(0, master_tree.glossary_icon)
 	show_sub_editor(index)
 
 
