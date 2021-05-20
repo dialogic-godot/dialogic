@@ -369,28 +369,28 @@ func create_rmb_context_menus():
 	## FOLDER / ROOT ITEMS
 	var timeline_folder_popup = PopupMenu.new()
 	timeline_folder_popup.add_icon_item(get_icon("Add", "EditorIcons") ,'Add Timeline')
-	timeline_folder_popup.add_icon_item(get_icon("ToolAddNode", "EditorIcons") ,'Create Subfolder')
+	timeline_folder_popup.add_icon_item(get_icon("Folder", "EditorIcons") ,'Create Subfolder')
 	timeline_folder_popup.add_icon_item(get_icon("Remove", "EditorIcons") ,'Delete Folder')
 	add_child(timeline_folder_popup)
 	rmb_popup_menus['Timeline Root'] = timeline_folder_popup
 	
 	var character_folder_popup = PopupMenu.new()
 	character_folder_popup.add_icon_item(get_icon("Add", "EditorIcons") ,'Add Character')
-	character_folder_popup.add_icon_item(get_icon("ToolAddNode", "EditorIcons") ,'Create Subfolder')
+	character_folder_popup.add_icon_item(get_icon("Folder", "EditorIcons") ,'Create Subfolder')
 	character_folder_popup.add_icon_item(get_icon("Remove", "EditorIcons") ,'Delete Folder')
 	add_child(character_folder_popup)
 	rmb_popup_menus['Character Root'] = character_folder_popup
 	
 	var theme_folder_popup = PopupMenu.new()
 	theme_folder_popup.add_icon_item(get_icon("Add", "EditorIcons") ,'Add Theme')
-	theme_folder_popup.add_icon_item(get_icon("ToolAddNode", "EditorIcons") ,'Create Subfolder')
+	theme_folder_popup.add_icon_item(get_icon("Folder", "EditorIcons") ,'Create Subfolder')
 	theme_folder_popup.add_icon_item(get_icon("Remove", "EditorIcons") ,'Delete Folder')
 	add_child(theme_folder_popup)
 	rmb_popup_menus["Theme Root"] = theme_folder_popup
 	
 	var definition_folder_popup = PopupMenu.new()
 	definition_folder_popup.add_icon_item(get_icon("Add", "EditorIcons") ,'Add Definition')
-	definition_folder_popup.add_icon_item(get_icon("ToolAddNode", "EditorIcons") ,'Create Subfolder')
+	definition_folder_popup.add_icon_item(get_icon("Folder", "EditorIcons") ,'Create Subfolder')
 	definition_folder_popup.add_icon_item(get_icon("Remove", "EditorIcons") ,'Delete Folder')
 	add_child(definition_folder_popup)
 	rmb_popup_menus["Definition Root"] = definition_folder_popup
