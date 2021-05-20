@@ -586,7 +586,9 @@ func can_drop_data(position, data) -> bool:
 		if not (data['item_type'] == "folder" and not 'Root' in item.get_metadata(0)["editor"]):
 			# if it's the same type of folder as before
 			if get_item_folder(item, '').split("/")[0] == data['orig_path'].split("/")[0]:
-				return true
+				# make sure the folder/item is not a subfolder of the original folder
+				if not get_item_folder(item, '').begins_with(data['orig_path']):
+					return true
 	return false
 
 func drop_data(position, data):

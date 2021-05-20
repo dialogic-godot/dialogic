@@ -287,7 +287,6 @@ func load_theme(filename):
 func create_theme() -> String:
 	var theme_file : String = 'theme-' + str(OS.get_unix_time()) + '.cfg'
 	DialogicResources.add_theme(theme_file)
-	master_tree.build_themes(theme_file)
 	load_theme(theme_file)
 	# Check if it is the only theme to set as default
 	if DialogicUtil.get_theme_list().size() == 1:
