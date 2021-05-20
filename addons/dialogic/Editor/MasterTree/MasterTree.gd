@@ -118,15 +118,15 @@ func _ready():
 ##						BUILDING THE TREE
 ## *****************************************************************************
 
-func build_full_tree():
+func build_full_tree(selected_item: String = ''):
 	# Adding timelines
-	build_timelines()
+	build_timelines(selected_item)
 	# Adding characters
-	build_characters()
+	build_characters(selected_item)
 	# Adding Definitions
-	build_definitions()
+	build_definitions(selected_item)
 	# Adding Themes
-	build_themes()
+	build_themes(selected_item)
 
 func _clear_tree_children(parent: TreeItem):
 	while parent.get_children() != null:
@@ -137,14 +137,17 @@ func _add_folder_item(parent_item: TreeItem, folder_name: String, editor:String,
 	folder_item.set_text(0, folder_name)
 	folder_item.set_icon(0, get_icon("Folder", "EditorIcons"))
 	folder_item.set_metadata(0, {'editor': editor, 'editable': true})
-	folder_item.collapsed = meta_folder_info['folded']
+	if filter_tree_term.empty():
+		folder_item.collapsed = meta_folder_info['folded']
 	return folder_item
 
 ## TIMELINES
 func build_resource_folder(parent_folder_item:TreeItem, folder_data:Dictionary, selected_item:String, folder_editor:String, resource_type: String):
 	for folder in folder_data["folders"].keys():
-		build_resource_folder(_add_folder_item(parent_folder_item, folder, folder_editor, folder_data["folders"][folder]['metadata']), folder_data["folders"][folder], selected_item, folder_editor, resource_type)
-	
+		var folder_item = _add_folder_item(parent_folder_item, folder, folder_editor, folder_data["folders"][folder]['metadata'])
+		var contains_something = build_resource_folder(folder_item, folder_data["folders"][folder], selected_item, folder_editor, resource_type)
+		if (not filter_tree_term.empty()) and (not contains_something):
+			folder_item.free()
 	for file in folder_data["files"]:
 		match resource_type:
 			"Timeline":
@@ -166,6 +169,8 @@ func build_resource_folder(parent_folder_item:TreeItem, folder_data:Dictionary, 
 	
 	# force redraw control
 	update()
+	
+	return true if (parent_folder_item.get_children() != null) else false
 
 func build_timelines(selected_item: String=''):
 	_clear_tree_children(timelines_tree)
@@ -262,7 +267,7 @@ func _add_theme(parent_folder_item, theme_data, select = false):
 		item.select(0)
 
 func _on_item_collapsed(item: TreeItem):
-	if item != null and 'Root' in item.get_metadata(0)['editor']:
+	if filter_tree_term.empty() and item != null and 'Root' in item.get_metadata(0)['editor']:
 		DialogicUtil.set_folder_meta(get_item_folder(item, ''), 'folded', item.collapsed)
 
 ## *****************************************************************************
@@ -707,7 +712,21 @@ func save_current_resource():
 
 func _on_filter_tree_edit_changed(value):
 	filter_tree_term = value
-	build_full_tree()
+	if not filter_tree_term.empty():
+		timelines_tree.collapsed = false
+		characters_tree.collapsed = false
+		definitions_tree.collapsed = false
+		themes_tree.collapsed = false
+	else:
+		timelines_tree.collapsed = DialogicUtil.get_folder_meta('Timelines', 'folded')
+		characters_tree.collapsed = DialogicUtil.get_folder_meta('Timelines', 'folded')
+		definitions_tree.collapsed = DialogicUtil.get_folder_meta('Timelines', 'folded')
+		themes_tree.collapsed = DialogicUtil.get_folder_meta('Timelines', 'folded')
+	
+	if get_selected():
+		build_full_tree(get_selected().get_metadata(0).get('file', ''))
+	else:
+		build_full_tree()
 
 
 ## *****************************************************************************
