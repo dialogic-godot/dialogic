@@ -244,13 +244,13 @@ func parse_branches(dialog_script: Dictionary) -> Dictionary:
 			var opened_branch = parser_queue.back()
 			var option = {
 				'question_idx': opened_branch['question_idx'],
-				'label': event['choice'],
+				'label': parse_definitions(event['choice'], true, false),
 				'event_idx': event_idx,
 				}
 			if event.has('condition') and event.has('definition') and event.has('value'):
 				option = {
 					'question_idx': opened_branch['question_idx'],
-					'label': event['choice'],
+					'label': parse_definitions(event['choice'], true, false),
 					'event_idx': event_idx,
 					'condition': event['condition'],
 					'definition': event['definition'],
@@ -259,7 +259,7 @@ func parse_branches(dialog_script: Dictionary) -> Dictionary:
 			else:
 				option = {
 					'question_idx': opened_branch['question_idx'],
-					'label': event['choice'],
+					'label': parse_definitions(event['choice'], true, false),
 					'event_idx': event_idx,
 					'condition': '',
 					'definition': '',
@@ -761,6 +761,9 @@ func get_classic_choice_button(label: String):
 	var theme = current_theme
 	var button : Button = ChoiceButton.instance()
 	button.text = label
+	
+	# Removing the blue selected border
+	button.set('custom_styles/focus', StyleBoxEmpty.new())
 	# Text
 	button.set('custom_fonts/font', DialogicUtil.path_fixer_load(theme.get_value('text', 'font', "res://addons/dialogic/Example Assets/Fonts/DefaultFont.tres")))
 

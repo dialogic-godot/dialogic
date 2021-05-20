@@ -7,6 +7,7 @@
 - Fixed many issues with portraits fading in and out
 - Dialog
   - Adding [p] and [nw] commands to pause (2 seconds) and no wait (will automatically skip the text)
+  - Choices can now print the definition values usgin the regular `[definition]` syntax
 - Theme Editor
   - Added new Box Padding settings to the name label.
   - Added a new option to make the dialog backgrounds full width
