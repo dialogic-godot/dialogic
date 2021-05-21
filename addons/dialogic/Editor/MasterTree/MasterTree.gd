@@ -64,24 +64,28 @@ func _ready():
 	timelines_tree = tree.create_item(root)
 	timelines_tree.set_text(0, "Timelines")
 	timelines_tree.set_icon(0, get_icon("Folder", "EditorIcons"))
+	timelines_tree.set_icon_modulate(0, get_color("folder_icon_modulate", "FileDialog"))
 	timelines_tree.collapsed = DialogicUtil.get_folder_meta('Timelines', 'folded')
 	timelines_tree.set_metadata(0, {'editor': 'Timeline Root'})
 	
 	characters_tree = tree.create_item(root)
 	characters_tree.set_text(0, "Characters")
 	characters_tree.set_icon(0, get_icon("Folder", "EditorIcons"))
+	characters_tree.set_icon_modulate(0, get_color("folder_icon_modulate", "FileDialog"))
 	characters_tree.collapsed = DialogicUtil.get_folder_meta('Characters', 'folded')
 	characters_tree.set_metadata(0, {'editor': 'Character Root'})
 
 	definitions_tree = tree.create_item(root)
 	definitions_tree.set_text(0, "Definitions")
 	definitions_tree.set_icon(0, get_icon("Folder", "EditorIcons"))
+	definitions_tree.set_icon_modulate(0, get_color("folder_icon_modulate", "FileDialog"))
 	definitions_tree.collapsed = DialogicUtil.get_folder_meta('Definitions', 'folded')
 	definitions_tree.set_metadata(0, {'editor': 'Definition Root'})
 	
 	themes_tree = tree.create_item(root)
 	themes_tree.set_text(0, "Themes")
 	themes_tree.set_icon(0, get_icon("Folder", "EditorIcons"))
+	themes_tree.set_icon_modulate(0, get_color("folder_icon_modulate", "FileDialog"))
 	themes_tree.collapsed = DialogicUtil.get_folder_meta('Themes', 'folded')
 	themes_tree.set_metadata(0, {'editor': 'Theme Root'})
 	
@@ -136,6 +140,7 @@ func _add_folder_item(parent_item: TreeItem, folder_name: String, editor:String,
 	var folder_item:TreeItem= tree.create_item(parent_item)
 	folder_item.set_text(0, folder_name)
 	folder_item.set_icon(0, get_icon("Folder", "EditorIcons"))
+	folder_item.set_icon_modulate(0, get_color("folder_icon_modulate", "FileDialog"))
 	folder_item.set_metadata(0, {'editor': editor, 'editable': true})
 	if filter_tree_term.empty():
 		folder_item.collapsed = meta_folder_info['folded']
