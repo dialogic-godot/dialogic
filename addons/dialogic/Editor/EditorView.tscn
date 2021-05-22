@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://addons/dialogic/Editor/EditorView.gd" type="Script" id=1]
 [ext_resource path="res://addons/dialogic/Editor/TimelineEditor/TimelineEditor.tscn" type="PackedScene" id=2]
@@ -12,7 +12,7 @@
 [ext_resource path="res://addons/dialogic/Images/Toolbar/add-theme.svg" type="Texture" id=13]
 [ext_resource path="res://addons/dialogic/Editor/MasterTree/MasterTree.tscn" type="PackedScene" id=35]
 
-[sub_resource type="Image" id=5]
+[sub_resource type="Image" id=3]
 data = {
 "data": PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ),
 "format": "LumAlpha8",
@@ -24,22 +24,7 @@ data = {
 [sub_resource type="ImageTexture" id=2]
 flags = 4
 flags = 4
-image = SubResource( 5 )
-size = Vector2( 16, 16 )
-
-[sub_resource type="Image" id=6]
-data = {
-"data": PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ),
-"format": "LumAlpha8",
-"height": 16,
-"mipmaps": false,
-"width": 16
-}
-
-[sub_resource type="ImageTexture" id=4]
-flags = 4
-flags = 4
-image = SubResource( 6 )
+image = SubResource( 3 )
 size = Vector2( 16, 16 )
 
 [node name="EditorView" type="Control"]
@@ -175,7 +160,6 @@ anchor_bottom = 0.0
 margin_top = 30.0
 margin_right = 150.0
 margin_bottom = 562.0
-rect_min_size = Vector2( 150, 0 )
 size_flags_vertical = 3
 
 [node name="TimelineEditor" parent="MainPanel" instance=ExtResource( 2 )]
@@ -214,91 +198,21 @@ margin_right = 280.0
 margin_bottom = 14.0
 text = "Select or create an element to start working"
 
-[node name="TimelinePopupMenu" type="PopupMenu" parent="."]
-margin_left = 151.0
-margin_top = 276.0
-margin_right = 325.0
-margin_bottom = 332.0
-items = [ "Show in File Manager", SubResource( 4 ), 0, false, false, 0, 0, null, "", false, "Copy Timeline Name", SubResource( 4 ), 0, false, false, 1, 0, null, "", false, "Remove Timeline", SubResource( 4 ), 0, false, false, 2, 0, null, "", false, "Show in File Manager", SubResource( 4 ), 0, false, false, 3, 0, null, "", false, "Copy Timeline Name", SubResource( 4 ), 0, false, false, 4, 0, null, "", false, "Remove Timeline", SubResource( 4 ), 0, false, false, 5, 0, null, "", false, "Show in File Manager", SubResource( 2 ), 0, false, false, 6, 0, null, "", false, "Copy Timeline Name", SubResource( 2 ), 0, false, false, 7, 0, null, "", false, "Remove Timeline", SubResource( 2 ), 0, false, false, 8, 0, null, "", false ]
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="CharacterPopupMenu" type="PopupMenu" parent="."]
-margin_left = 171.799
-margin_top = 209.0
-margin_right = 267.799
-margin_bottom = 229.0
-items = [ "Show in File Manager", SubResource( 4 ), 0, false, false, 0, 0, null, "", false, "Remove Character", SubResource( 4 ), 0, false, false, 1, 0, null, "", false, "Show in File Manager", SubResource( 4 ), 0, false, false, 2, 0, null, "", false, "Remove Character", SubResource( 4 ), 0, false, false, 3, 0, null, "", false, "Show in File Manager", SubResource( 2 ), 0, false, false, 4, 0, null, "", false, "Remove Character", SubResource( 2 ), 0, false, false, 5, 0, null, "", false ]
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="DefinitionPopupMenu" type="PopupMenu" parent="."]
-margin_left = 171.799
-margin_top = 209.0
-margin_right = 267.799
-margin_bottom = 229.0
-items = [ "Edit Definitions File", SubResource( 4 ), 0, false, false, 0, 0, null, "", false, "Remove Definition", SubResource( 4 ), 0, false, false, 1, 0, null, "", false, "Edit Definitions File", SubResource( 4 ), 0, false, false, 2, 0, null, "", false, "Remove Definition", SubResource( 4 ), 0, false, false, 3, 0, null, "", false, "Edit Definitions File", SubResource( 2 ), 0, false, false, 4, 0, null, "", false, "Remove Definition", SubResource( 2 ), 0, false, false, 5, 0, null, "", false ]
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="ThemePopupMenu" type="PopupMenu" parent="."]
-margin_left = 171.799
-margin_top = 209.0
-margin_right = 267.799
-margin_bottom = 229.0
-items = [ "Show in File Manager", SubResource( 4 ), 0, false, false, 0, 0, null, "", false, "Duplicate Theme", SubResource( 4 ), 0, false, false, 1, 0, null, "", false, "Remove Theme", SubResource( 4 ), 0, false, false, 2, 0, null, "", false, "Show in File Manager", SubResource( 4 ), 0, false, false, 3, 0, null, "", false, "Duplicate Theme", SubResource( 4 ), 0, false, false, 4, 0, null, "", false, "Remove Theme", SubResource( 4 ), 0, false, false, 5, 0, null, "", false, "Show in File Manager", SubResource( 2 ), 0, false, false, 6, 0, null, "", false, "Duplicate Theme", SubResource( 2 ), 0, false, false, 7, 0, null, "", false, "Remove Theme", SubResource( 2 ), 0, false, false, 8, 0, null, "", false ]
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="TimelineRootPopupMenu" type="PopupMenu" parent="."]
-margin_left = 159.0
-margin_top = 283.0
-margin_right = 227.0
-margin_bottom = 319.0
-items = [ "Add Timeline", SubResource( 4 ), 0, false, false, 0, 0, null, "", false, "Add Timeline", SubResource( 4 ), 0, false, false, 1, 0, null, "", false, "Add Timeline", SubResource( 2 ), 0, false, false, 2, 0, null, "", false ]
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="CharacterRootPopupMenu" type="PopupMenu" parent="."]
-margin_left = 159.0
-margin_top = 283.0
-margin_right = 227.0
-margin_bottom = 319.0
-items = [ "Add Character", SubResource( 4 ), 0, false, false, 0, 0, null, "", false, "Add Character", SubResource( 4 ), 0, false, false, 1, 0, null, "", false, "Add Character", SubResource( 2 ), 0, false, false, 2, 0, null, "", false ]
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="ThemeRootPopupMenu" type="PopupMenu" parent="."]
-margin_left = 159.0
-margin_top = 283.0
-margin_right = 227.0
-margin_bottom = 319.0
-items = [ "Add Theme", SubResource( 4 ), 0, false, false, 0, 0, null, "", false, "Add Theme", SubResource( 4 ), 0, false, false, 1, 0, null, "", false, "Add Theme", SubResource( 2 ), 0, false, false, 2, 0, null, "", false ]
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="DefinitionRootPopupMenu" type="PopupMenu" parent="."]
-margin_left = 159.0
-margin_top = 283.0
-margin_right = 227.0
-margin_bottom = 319.0
-items = [ "Add Definition", SubResource( 4 ), 0, false, false, 0, 0, null, "", false, "Add Definition", SubResource( 4 ), 0, false, false, 1, 0, null, "", false, "Add Definition", SubResource( 2 ), 0, false, false, 2, 0, null, "", false ]
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
 [node name="RemoveCharacterConfirmation" type="ConfirmationDialog" parent="."]
 margin_right = 325.0
 margin_bottom = 88.0
 rect_min_size = Vector2( 250, 87.5 )
 dialog_text = "Are you sure you want to remove this character?
+(Can't be restored)"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="RemoveFolderConfirmation" type="ConfirmationDialog" parent="."]
+margin_right = 325.0
+margin_bottom = 88.0
+rect_min_size = Vector2( 250, 87.5 )
+dialog_text = "Are you sure you want to remove this folder and all the items contained in it?
 (Can't be restored)"
 __meta__ = {
 "_edit_use_anchors_": false

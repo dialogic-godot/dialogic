@@ -284,16 +284,15 @@ func load_theme(filename):
 	_on_PreviewButton_pressed()
 
 
-func new_theme() -> void:
+func create_theme() -> String:
 	var theme_file : String = 'theme-' + str(OS.get_unix_time()) + '.cfg'
 	DialogicResources.add_theme(theme_file)
-	master_tree.build_themes(theme_file)
 	load_theme(theme_file)
 	# Check if it is the only theme to set as default
 	if DialogicUtil.get_theme_list().size() == 1:
 		#print('only theme, setting as default')
 		settings_editor.set_value('theme', 'default', theme_file)
-
+	return theme_file
 
 func duplicate_theme(from_filename) -> void:
 	var duplicate_theme : String = 'theme-' + str(OS.get_unix_time()) + '.cfg'
