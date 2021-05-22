@@ -29,6 +29,8 @@ func _ready():
 
 	master_tree.connect("editor_selected", self, 'on_master_tree_editor_selected')
 
+	# Updating the folder structure
+	DialogicUtil.update_resource_folder_structure()
 	
 	# Sizes
 	# This part of the code is a bit terrible. But there is no better way
@@ -71,57 +73,58 @@ func _ready():
 	$ToolBar/FoldTools/ButtonFold.icon = get_icon("GuiTreeArrowRight", "EditorIcons")
 	$ToolBar/FoldTools/ButtonUnfold.icon = get_icon("GuiTreeArrowDown", "EditorIcons")
 	# Toolbar
-	$ToolBar/NewTimelineButton.connect('pressed', $MainPanel/TimelineEditor, 'new_timeline')
-	$ToolBar/NewCharactersButton.connect('pressed', $MainPanel/CharacterEditor, 'new_character')
-	$ToolBar/NewThemeButton.connect('pressed', $MainPanel/ThemeEditor, 'new_theme')
-	$ToolBar/NewDefinitionButton.connect('pressed', $MainPanel/DefinitionEditor, 'new_definition')
+	$ToolBar/NewTimelineButton.connect('pressed', $MainPanel/MasterTreeContainer/MasterTree, 'new_timeline')
+	$ToolBar/NewCharactersButton.connect('pressed', $MainPanel/MasterTreeContainer/MasterTree, 'new_character')
+	$ToolBar/NewThemeButton.connect('pressed', $MainPanel/MasterTreeContainer/MasterTree, 'new_theme')
+	$ToolBar/NewDefinitionButton.connect('pressed', $MainPanel/MasterTreeContainer/MasterTree, 'new_definition')
 	$ToolBar/Docs.icon = get_icon("Instance", "EditorIcons")
 	$ToolBar/Docs.connect('pressed', OS, "shell_open", ["https://dialogic.coppolaemilio.com"])
 	$ToolBar/FoldTools/ButtonFold.connect('pressed', timeline_editor, 'fold_all_nodes')
 	$ToolBar/FoldTools/ButtonUnfold.connect('pressed', timeline_editor, 'unfold_all_nodes')
 	
 	
-	# Resetting the context menu items and size
-	var context_menus = [
-		$TimelinePopupMenu, $CharacterPopupMenu, $ThemePopupMenu,
-		$DefinitionPopupMenu, $TimelineRootPopupMenu, $CharacterRootPopupMenu,
-		$ThemeRootPopupMenu, $DefinitionRootPopupMenu]
-	for menu in context_menus:
-		menu.clear()
-		menu.rect_size = Vector2(0, 0)
+#	# Resetting the context menu items and size
+#	var context_menus = [
+#		$TimelinePopupMenu, $CharacterPopupMenu, $ThemePopupMenu,
+#		$DefinitionPopupMenu, $TimelineRootPopupMenu, $CharacterRootPopupMenu,
+#		$ThemeRootPopupMenu, $DefinitionRootPopupMenu]
+#	for menu in context_menus:
+#		menu.clear()
+#		menu.rect_size = Vector2(0, 0)
 	# Adding items to context menus
-	
-	$TimelinePopupMenu.add_icon_item(get_icon("Filesystem", "EditorIcons"), 'Show in File Manager')
-	$TimelinePopupMenu.add_icon_item(get_icon("ActionCopy", "EditorIcons"), 'Copy Timeline Name')
-	$TimelinePopupMenu.add_icon_item(get_icon("Remove", "EditorIcons"), 'Remove Timeline')
-	
-	$CharacterPopupMenu.add_icon_item(get_icon("Filesystem", "EditorIcons"), 'Show in File Manager')
-	$CharacterPopupMenu.add_icon_item(get_icon("Remove", "EditorIcons"), 'Remove Character')
-	
-	$ThemePopupMenu.add_icon_item(get_icon("Filesystem", "EditorIcons"), 'Show in File Manager')
-	$ThemePopupMenu.add_icon_item(get_icon("Duplicate", "EditorIcons"), 'Duplicate Theme')
-	$ThemePopupMenu.add_icon_item(get_icon("Remove", "EditorIcons"), 'Remove Theme')
-	
-	$DefinitionPopupMenu.add_icon_item(get_icon("Edit", "EditorIcons"), 'Edit Definitions File')
-	$DefinitionPopupMenu.add_icon_item(get_icon("Remove", "EditorIcons"), 'Remove Definition')
-	
-	$TimelineRootPopupMenu.add_icon_item(get_icon("Add", "EditorIcons") ,'Add Timeline')
-	$CharacterRootPopupMenu.add_icon_item(get_icon("Add", "EditorIcons") ,'Add Character')
-	$ThemeRootPopupMenu.add_icon_item(get_icon("Add", "EditorIcons") ,'Add Theme')
-	$DefinitionRootPopupMenu.add_icon_item(get_icon("Add", "EditorIcons") ,'Add Definition')
-	
-	# Connecting context menus
-	$TimelinePopupMenu.connect('id_pressed', self, '_on_TimelinePopupMenu_id_pressed')
-	$CharacterPopupMenu.connect('id_pressed', self, '_on_CharacterPopupMenu_id_pressed')
-	$ThemePopupMenu.connect('id_pressed', self, '_on_ThemePopupMenu_id_pressed')
-	$DefinitionPopupMenu.connect('id_pressed', self, '_on_DefinitionPopupMenu_id_pressed')
-	$TimelineRootPopupMenu.connect('id_pressed', self, '_on_TimelineRootPopupMenu_id_pressed')
-	$CharacterRootPopupMenu.connect('id_pressed', self, '_on_CharacterRootPopupMenu_id_pressed')
-	$ThemeRootPopupMenu.connect('id_pressed', self, '_on_ThemeRootPopupMenu_id_pressed')
-	$DefinitionRootPopupMenu.connect('id_pressed', self, '_on_DefinitionRootPopupMenu_id_pressed')
-	
+#
+#	$TimelinePopupMenu.add_icon_item(get_icon("Filesystem", "EditorIcons"), 'Show in File Manager')
+#	$TimelinePopupMenu.add_icon_item(get_icon("ActionCopy", "EditorIcons"), 'Copy Timeline Name')
+#	$TimelinePopupMenu.add_icon_item(get_icon("Remove", "EditorIcons"), 'Remove Timeline')
+#
+#	$CharacterPopupMenu.add_icon_item(get_icon("Filesystem", "EditorIcons"), 'Show in File Manager')
+#	$CharacterPopupMenu.add_icon_item(get_icon("Remove", "EditorIcons"), 'Remove Character')
+#
+#	$ThemePopupMenu.add_icon_item(get_icon("Filesystem", "EditorIcons"), 'Show in File Manager')
+#	$ThemePopupMenu.add_icon_item(get_icon("Duplicate", "EditorIcons"), 'Duplicate Theme')
+#	$ThemePopupMenu.add_icon_item(get_icon("Remove", "EditorIcons"), 'Remove Theme')
+#
+#	$DefinitionPopupMenu.add_icon_item(get_icon("Edit", "EditorIcons"), 'Edit Definitions File')
+#	$DefinitionPopupMenu.add_icon_item(get_icon("Remove", "EditorIcons"), 'Remove Definition')
+#
+#	$TimelineRootPopupMenu.add_icon_item(get_icon("Add", "EditorIcons") ,'Add Timeline')
+#	$CharacterRootPopupMenu.add_icon_item(get_icon("Add", "EditorIcons") ,'Add Character')
+#	$ThemeRootPopupMenu.add_icon_item(get_icon("Add", "EditorIcons") ,'Add Theme')
+#	$DefinitionRootPopupMenu.add_icon_item(get_icon("Add", "EditorIcons") ,'Add Definition')
+#
+#	# Connecting context menus
+#	$TimelinePopupMenu.connect('id_pressed', self, '_on_TimelinePopupMenu_id_pressed')
+#	$CharacterPopupMenu.connect('id_pressed', self, '_on_CharacterPopupMenu_id_pressed')
+#	$ThemePopupMenu.connect('id_pressed', self, '_on_ThemePopupMenu_id_pressed')
+#	$DefinitionPopupMenu.connect('id_pressed', self, '_on_DefinitionPopupMenu_id_pressed')
+#	$TimelineRootPopupMenu.connect('id_pressed', self, '_on_TimelineRootPopupMenu_id_pressed')
+#	$CharacterRootPopupMenu.connect('id_pressed', self, '_on_CharacterRootPopupMenu_id_pressed')
+#	$ThemeRootPopupMenu.connect('id_pressed', self, '_on_ThemeRootPopupMenu_id_pressed')
+#	$DefinitionRootPopupMenu.connect('id_pressed', self, '_on_DefinitionRootPopupMenu_id_pressed')
+#
 	#Connecting confirmation menus
 	$RemoveTimelineConfirmation.connect('confirmed', self, '_on_RemoveTimelineConfirmation_confirmed')
+	$RemoveFolderConfirmation.connect('confirmed', self, '_on_RemoveFolderConfirmation_confirmed')
 	$RemoveCharacterConfirmation.connect('confirmed', self, '_on_RemoveCharacterConfirmation_confirmed')
 	$RemoveThemeConfirmation.connect('confirmed', self, '_on_RemoveThemeConfirmation_confirmed')
 	$RemoveDefinitionConfirmation.connect('confirmed', self, '_on_RemoveDefinitionConfirmation_confirmed')
@@ -140,73 +143,16 @@ func on_master_tree_editor_selected(editor: String):
 	$ToolBar/FoldTools.visible = editor == 'timeline'
 
 
-# Timeline context menu
-func _on_TimelinePopupMenu_id_pressed(id):
-	if id == 0: # View files
-		OS.shell_open(ProjectSettings.globalize_path(DialogicResources.get_path('TIMELINE_DIR')))
-	if id == 1: # Copy to clipboard
-		OS.set_clipboard($MainPanel/TimelineEditor.timeline_name)
-	if id == 2: # Remove
-		$RemoveTimelineConfirmation.popup_centered()
-
 
 func _on_RemoveTimelineConfirmation_confirmed():
 	var dir = Directory.new()
 	var target = $MainPanel/TimelineEditor.timeline_file
 	#'target: ', target)
 	DialogicResources.delete_timeline(target)
+	DialogicUtil.update_resource_folder_structure()
 	$MainPanel/MasterTreeContainer/MasterTree.remove_selected()
 	$MainPanel/MasterTreeContainer/MasterTree.hide_all_editors()
 
-
-# Character context menu
-func _on_CharacterPopupMenu_id_pressed(id):
-	if id == 0:
-		OS.shell_open(ProjectSettings.globalize_path(DialogicResources.get_path('CHAR_DIR')))
-	if id == 1:
-		$RemoveCharacterConfirmation.popup_centered()
-
-
-# Theme context menu
-func _on_ThemePopupMenu_id_pressed(id):
-	if id == 0:
-		OS.shell_open(ProjectSettings.globalize_path(DialogicResources.get_path('THEME_DIR')))
-	if id == 1:
-		var filename = $MainPanel/MasterTreeContainer/MasterTree.get_selected().get_metadata(0)['file']
-		if (filename.begins_with('theme-')):
-			theme_editor.duplicate_theme(filename)
-	if id == 2:
-		$RemoveThemeConfirmation.popup_centered()
-
-
-# Definition context menu
-func _on_DefinitionPopupMenu_id_pressed(id):
-	if id == 0:
-		var paths = DialogicResources.get_config_files_paths()
-		OS.shell_open(ProjectSettings.globalize_path(paths['DEFAULT_DEFINITIONS_FILE']))
-	if id == 1:
-		$RemoveDefinitionConfirmation.popup_centered()
-
-
-# Timeline Root context menu
-func _on_TimelineRootPopupMenu_id_pressed(id):
-	if id == 0: # Add Timeline
-		$MainPanel/TimelineEditor.new_timeline()
-
-# Character Root context menu
-func _on_CharacterRootPopupMenu_id_pressed(id):
-	if id == 0: # Add Character
-		$MainPanel/CharacterEditor.new_character()
-
-# Theme Root context menu
-func _on_ThemeRootPopupMenu_id_pressed(id):
-	if id == 0: # Add Theme
-		$MainPanel/ThemeEditor.new_theme()
-
-# Definition Root context menu
-func _on_DefinitionRootPopupMenu_id_pressed(id):
-	if id == 0: # Add Definition
-		$MainPanel/DefinitionEditor.new_definition()
 
 func _on_RemoveDefinitionConfirmation_confirmed():
 	var target = $MainPanel/DefinitionEditor.current_definition['id']
@@ -214,6 +160,10 @@ func _on_RemoveDefinitionConfirmation_confirmed():
 	$MainPanel/MasterTreeContainer/MasterTree.remove_selected()
 	$MainPanel/MasterTreeContainer/MasterTree.hide_all_editors()
 
+func _on_RemoveFolderConfirmation_confirmed():
+	var item_path = $MainPanel/MasterTreeContainer/MasterTree.get_item_path($MainPanel/MasterTreeContainer/MasterTree.get_selected())
+	DialogicUtil.remove_folder(item_path)
+	$MainPanel/MasterTreeContainer/MasterTree.build_full_tree()
 
 func _on_RemoveCharacterConfirmation_confirmed():
 	var filename = $MainPanel/CharacterEditor.opened_character_data['id']
