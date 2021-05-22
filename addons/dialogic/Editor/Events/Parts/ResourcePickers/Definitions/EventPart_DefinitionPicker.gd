@@ -9,7 +9,6 @@ onready var picker_menu = $MenuButton
 
 # used to connect the signals
 func _ready():
-	picker_menu.get_popup().connect("index_pressed", self, '_on_PickerMenu_selected')
 	picker_menu.connect("about_to_show", self, "_on_PickerMenu_about_to_show")
 
 # called by the event block
@@ -32,20 +31,45 @@ func select_definition_by_id(id):
 	else:
 		picker_menu.text = default_text
 
-func _on_PickerMenu_selected(index):
-	event_data['definition'] = picker_menu.get_popup().get_item_metadata(index).get('id', '')
+# when an index is selected on one of the menus.
+func _on_PickerMenu_selected(index, menu):
+	var text = menu.get_item_text(index)
+	var metadata = menu.get_item_metadata(index)
+	picker_menu.text = text
 	
-	select_definition_by_id(event_data['definition'])
-	
+	event_data['change_timeline'] = metadata['file']
 	# informs the parent about the changes!
 	data_changed()
 
 func _on_PickerMenu_about_to_show():
+	build_PickerMenu()
+
+func build_PickerMenu():
 	picker_menu.get_popup().clear()
-	
+	var folder_structure = DialogicUtil.get_definitions_folder_structure()
+
+	## building the root level
+	build_PickerMenuFolder(picker_menu.get_popup(), folder_structure, "MenuButton")
+
+# is called recursively to build all levels of the folder structure
+func build_PickerMenuFolder(menu:PopupMenu, folder_structure:Dictionary, current_folder_name:String):
 	var index = 0
-	for d in DialogicUtil.get_default_definitions_list():
-		if d['type'] == 0:
-			picker_menu.get_popup().add_item(d['name'])
-			picker_menu.get_popup().set_item_metadata(index, d)
+	for folder_name in folder_structure['folders'].keys():
+		var submenu = PopupMenu.new()
+		menu.add_submenu_item(folder_name, build_PickerMenuFolder(submenu, folder_structure['folders'][folder_name], folder_name))
+		menu.set_item_icon(index, get_icon("Folder", "EditorIcons"))
+		menu.add_child(submenu)
+		index += 1
+	
+	var files_info = DialogicUtil.get_default_definitions_dict()
+	for file in folder_structure['files']:
+		if files_info[file]["type"] == 0:
+			menu.add_item(files_info[file]['name'])
+			#menu.set_item_icon(index, editor_reference.get_node("MainPanel/MasterTreeContainer/MasterTree").definitions_icon)
+			menu.set_item_metadata(index, {'file':file})
 			index += 1
+	
+	menu.connect("index_pressed", self, '_on_PickerMenu_selected', [menu])
+	
+	menu.name = current_folder_name
+	return current_folder_name
