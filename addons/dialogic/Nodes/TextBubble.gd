@@ -169,8 +169,13 @@ func _process(_delta):
 
 
 func start_text_timer():
-	$WritingTimer.start(text_speed)
-	_finished = false
+	if text_speed == 0:
+		_finished = true
+		$RichTextLabel.visible_characters = -1
+		emit_signal("text_completed")
+	else:
+		$WritingTimer.start(text_speed)
+		_finished = false
 
 
 ## *****************************************************************************
