@@ -171,4 +171,4 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Tween" type="Tween" parent="."]
+[node name="WritingTimer" type="Timer" parent="."]
