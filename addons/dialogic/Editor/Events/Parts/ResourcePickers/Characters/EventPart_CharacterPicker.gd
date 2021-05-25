@@ -19,7 +19,6 @@ func _ready():
 		allow_no_character = true
 	
 	# Connections
-	picker_menu.get_popup().connect("index_pressed", self, '_on_PickerMenu_selected')
 	picker_menu.connect("about_to_show", self, "_on_PickerMenu_about_to_show")
 
 
@@ -56,30 +55,67 @@ func update_to_character():
 		icon.modulate = Color.white
 
 
-func _on_PickerMenu_selected(index):
-	event_data['character'] = picker_menu.get_popup().get_item_metadata(index).get('file', '')
+# when an index is selected on one of the menus.
+func _on_PickerMenu_selected(index, menu):
+	var metadata = menu.get_item_metadata(index)
+	
+	event_data['character'] = metadata.get('file','')
 	
 	update_to_character()
 	
 	# informs the parent about the changes!
 	data_changed()
 
-
 func _on_PickerMenu_about_to_show():
+	build_PickerMenu()
+
+func build_PickerMenu():
 	picker_menu.get_popup().clear()
+	var folder_structure = DialogicUtil.get_characters_folder_structure()
+
+	## building the root level
+	build_PickerMenuFolder(picker_menu.get_popup(), folder_structure, "MenuButton")
+
+# is called recursively to build all levels of the folder structure
+func build_PickerMenuFolder(menu:PopupMenu, folder_structure:Dictionary, current_folder_name:String):
 	var index = 0
-	if allow_no_character:
-		picker_menu.get_popup().add_item('No character')
-		picker_menu.get_popup().set_item_metadata(index, {'file':''})
+	
+	## THIS IS JUST FOR THE ROOT FOLDER
+	if menu == picker_menu.get_popup():
+		if allow_no_character:
+			menu.add_item('No character')
+			menu.set_item_metadata(index, {'file':''})
+			menu.set_item_icon(index, get_icon("GuiRadioUnchecked", "EditorIcons"))
+			index += 1
+
+		# in case this is a leave event
+		if event_data['event_id'] == 'dialogic_003':
+			menu.add_item('All characters')
+			menu.set_item_metadata(index, {'file': '[All]'})
+			menu.set_item_icon(index, get_icon("GuiEllipsis", "EditorIcons"))
+			index += 1
+		
+	
+	
+	
+	for folder_name in folder_structure['folders'].keys():
+		var submenu = PopupMenu.new()
+		menu.add_submenu_item(folder_name, build_PickerMenuFolder(submenu, folder_structure['folders'][folder_name], folder_name))
+		menu.set_item_icon(index, get_icon("Folder", "EditorIcons"))
+		menu.add_child(submenu)
 		index += 1
 	
-	# in case this is a leave event
-	if event_data['event_id'] == 'dialogic_003':
-		picker_menu.get_popup().add_item('All characters')
-		picker_menu.get_popup().set_item_metadata(index, {'file': '[All]'})
+	var files_info = DialogicUtil.get_characters_dict()
+	for file in folder_structure['files']:
+		menu.add_item(files_info[file]['name'])
+		# this doesn't work right now, because it doesn't have the editor_reference. Would be nice though
+		#menu.set_item_icon(index, editor_reference.get_node("MainPanel/MasterTreeContainer/MasterTree").character_icon)
+		menu.set_item_icon(index, load("res://addons/dialogic/Images/Resources/character.svg"))
+		menu.set_item_metadata(index, {'file':file})
 		index += 1
-
-	for c in DialogicUtil.get_sorted_character_list():
-		picker_menu.get_popup().add_item(c['name'])
-		picker_menu.get_popup().set_item_metadata(index, c)
-		index += 1
+	
+	if not menu.is_connected("index_pressed", self, "_on_PickerMenu_selected"):
+		menu.connect("index_pressed", self, '_on_PickerMenu_selected', [menu])
+	
+	menu.name = current_folder_name
+	return current_folder_name

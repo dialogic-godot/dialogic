@@ -25,7 +25,6 @@ signal remove_warning()
 func _ready():
 	pass
 
-
 # to be overwritten by the subclasses
 func load_data(data:Dictionary):
 	event_data = data
