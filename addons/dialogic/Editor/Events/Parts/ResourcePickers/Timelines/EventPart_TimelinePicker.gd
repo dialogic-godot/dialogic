@@ -66,7 +66,8 @@ func build_PickerMenuFolder(menu:PopupMenu, folder_structure:Dictionary, current
 		menu.set_item_metadata(index, {'file':file})
 		index += 1
 	
-	menu.connect("index_pressed", self, '_on_PickerMenu_selected', [menu])
+	if not menu.is_connected("index_pressed", menu, "_on_PickerMenu_selected"):
+		menu.connect("index_pressed", self, '_on_PickerMenu_selected', [menu])
 	
 	menu.name = current_folder_name
 	return current_folder_name

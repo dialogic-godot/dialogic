@@ -65,11 +65,12 @@ func build_PickerMenuFolder(menu:PopupMenu, folder_structure:Dictionary, current
 	for file in folder_structure['files']:
 		if files_info[file]["type"] == 0:
 			menu.add_item(files_info[file]['name'])
-			#menu.set_item_icon(index, editor_reference.get_node("MainPanel/MasterTreeContainer/MasterTree").definitions_icon)
+			#menu.set_item_icon(index, editor_reference.get_node("MainPanel/MasterTreeContainer/MasterTree").definition_icon)
 			menu.set_item_metadata(index, {'file':file})
 			index += 1
 	
-	menu.connect("index_pressed", self, '_on_PickerMenu_selected', [menu])
+	if not menu.is_connected("index_pressed", menu, "_on_PickerMenu_selected"):
+		menu.connect("index_pressed", self, '_on_PickerMenu_selected', [menu])
 	
 	menu.name = current_folder_name
 	return current_folder_name
