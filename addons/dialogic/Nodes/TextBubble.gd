@@ -5,7 +5,6 @@ var text_speed := 0.02 # Higher = lower speed
 
 onready var text_label = $RichTextLabel
 onready var name_label = $NameLabel
-onready var tween = $Tween
 onready var next_indicator = $NextIndicatorContainer/NextIndicator
 
 var _finished := false
@@ -39,12 +38,9 @@ func update_text(text):
 	
 	# Updating the text and starting the animation from 0
 	text_label.bbcode_text = text
-	text_label.percent_visible = 0
-
+	text_label.visible_characters = 0
 	
-	# The call to this function needs to be deferred.
-	# More info: https://github.com/godotengine/godot/issues/36381
-	call_deferred("_start_text_tween")
+	start_text_timer()
 	return true
 
 
@@ -53,8 +49,10 @@ func is_finished():
 
 
 func skip():
-	tween.seek(999)
-	_on_Tween_tween_completed(null, null)
+	$WritingTimer.stop()
+	$RichTextLabel.visible_characters = -1
+	_finished = true
+	emit_signal("text_completed")
 
 
 func reset():
@@ -159,20 +157,25 @@ func load_theme(theme: ConfigFile):
 ## *****************************************************************************
 
 
-func _on_Tween_tween_completed(object, key):
-	_finished = true
-	emit_signal("text_completed")
+func _on_writing_timer_timeout():
+	$RichTextLabel.visible_characters += 1
 
 
-func _start_text_tween():
-	# This will start the animation that makes the text appear letter by letter
-	var tween_duration = text_speed * text_label.get_total_character_count()
-	tween.interpolate_property(
-		text_label, "percent_visible", 0, 1, tween_duration,
-		Tween.TRANS_LINEAR, Tween.EASE_IN_OUT
-	)
-	_finished = false
-	tween.start()
+func _process(_delta):
+	if _finished == false:
+		if $RichTextLabel.visible_characters >= $RichTextLabel.get_total_character_count():
+			_finished = true
+			emit_signal("text_completed")
+
+
+func start_text_timer():
+	if text_speed == 0:
+		_finished = true
+		$RichTextLabel.visible_characters = -1
+		emit_signal("text_completed")
+	else:
+		$WritingTimer.start(text_speed)
+		_finished = false
 
 
 ## *****************************************************************************
@@ -182,5 +185,5 @@ func _start_text_tween():
 
 func _ready():
 	reset()
-	tween.connect("tween_completed", self, '_on_Tween_tween_completed')
+	$WritingTimer.connect("timeout", self, "_on_writing_timer_timeout")
 	text_label.meta_underlined = false

@@ -32,19 +32,45 @@ func select_theme():
 	else:
 		picker_menu.text = default_text
 
-func _on_PickerMenu_selected(index):
-	event_data['set_theme'] = picker_menu.get_popup().get_item_metadata(index).get('file', '')
+# when an index is selected on one of the menus.
+func _on_PickerMenu_selected(index, menu):
+	event_data['set_theme'] = menu.get_item_metadata(index).get('file', '')
 	
 	select_theme()
 	
 	# informs the parent about the changes!
 	data_changed()
 
+
 func _on_PickerMenu_about_to_show():
+	build_PickerMenu()
+
+func build_PickerMenu():
 	picker_menu.get_popup().clear()
-	
+	var folder_structure = DialogicUtil.get_theme_folder_structure()
+
+	## building the root level
+	build_PickerMenuFolder(picker_menu.get_popup(), folder_structure, "MenuButton")
+
+# is called recursively to build all levels of the folder structure
+func build_PickerMenuFolder(menu:PopupMenu, folder_structure:Dictionary, current_folder_name:String):
 	var index = 0
-	for t in DialogicUtil.get_sorted_theme_list():
-		picker_menu.get_popup().add_item(t['name'])
-		picker_menu.get_popup().set_item_metadata(index, t)
+	for folder_name in folder_structure['folders'].keys():
+		var submenu = PopupMenu.new()
+		menu.add_submenu_item(folder_name, build_PickerMenuFolder(submenu, folder_structure['folders'][folder_name], folder_name))
+		menu.set_item_icon(index, get_icon("Folder", "EditorIcons"))
+		menu.add_child(submenu)
 		index += 1
+	
+	var files_info = DialogicUtil.get_theme_dict()
+	for file in folder_structure['files']:
+		menu.add_item(files_info[file]['name'])
+		menu.set_item_icon(index, editor_reference.get_node("MainPanel/MasterTreeContainer/MasterTree").theme_icon)
+		menu.set_item_metadata(index, {'file':file})
+		index += 1
+	
+	if not menu.is_connected("index_pressed", self, "_on_PickerMenu_selected"):
+		menu.connect("index_pressed", self, '_on_PickerMenu_selected', [menu])
+	
+	menu.name = current_folder_name
+	return current_folder_name
