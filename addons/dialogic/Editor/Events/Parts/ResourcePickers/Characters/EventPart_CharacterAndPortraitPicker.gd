@@ -17,7 +17,7 @@ func _ready():
 	portrait_picker.allow_dont_change = allow_portrait_dont_change
 	portrait_picker.allow_definition = allow_portrait_defintion
 	definition_picker.connect("data_changed", self, "_on_DefinitionPicker_data_changed")
-
+	
 # called by the event block
 func load_data(data:Dictionary):
 	# First set the event_data

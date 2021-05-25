@@ -37,7 +37,7 @@ func _on_PickerMenu_selected(index, menu):
 	var metadata = menu.get_item_metadata(index)
 	picker_menu.text = text
 	
-	event_data['change_timeline'] = metadata['file']
+	event_data['definition'] = metadata['file']
 	# informs the parent about the changes!
 	data_changed()
 
@@ -66,10 +66,12 @@ func build_PickerMenuFolder(menu:PopupMenu, folder_structure:Dictionary, current
 		if files_info[file]["type"] == 0:
 			menu.add_item(files_info[file]['name'])
 			#menu.set_item_icon(index, editor_reference.get_node("MainPanel/MasterTreeContainer/MasterTree").definition_icon)
+			menu.set_item_icon(index, load("res://addons/dialogic/Images/Resources/definition.svg"))
+			
 			menu.set_item_metadata(index, {'file':file})
 			index += 1
 	
-	if not menu.is_connected("index_pressed", menu, "_on_PickerMenu_selected"):
+	if not menu.is_connected("index_pressed", self, "_on_PickerMenu_selected"):
 		menu.connect("index_pressed", self, '_on_PickerMenu_selected', [menu])
 	
 	menu.name = current_folder_name

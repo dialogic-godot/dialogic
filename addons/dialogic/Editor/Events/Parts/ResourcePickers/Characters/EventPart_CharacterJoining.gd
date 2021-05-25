@@ -14,6 +14,7 @@ func _ready():
 	mirror_button.connect("toggled", self, "_on_MirrorButton_toggled")
 	character_portrait_picker.connect('data_changed', self, '_on_CharacterPortraitPicker_data_changed')
 	position_picker.connect('data_changed', self, '_on_PositionPicker_data_changed')
+	
 	# icons
 	mirror_button.icon = get_icon("MirrorX", "EditorIcons")
 

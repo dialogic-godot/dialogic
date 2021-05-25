@@ -66,26 +66,6 @@ func _on_PickerMenu_selected(index, menu):
 	# informs the parent about the changes!
 	data_changed()
 
-#
-#func _on_PickerMenu_about_to_show():
-#	picker_menu.get_popup().clear()
-#	var index = 0
-#	if allow_no_character:
-#		picker_menu.get_popup().add_item('No character')
-#		picker_menu.get_popup().set_item_metadata(index, {'file':''})
-#		index += 1
-#
-#	# in case this is a leave event
-#	if event_data['event_id'] == 'dialogic_003':
-#		picker_menu.get_popup().add_item('All characters')
-#		picker_menu.get_popup().set_item_metadata(index, {'file': '[All]'})
-#		index += 1
-#
-#	for c in DialogicUtil.get_sorted_character_list():
-#		picker_menu.get_popup().add_item(c['name'])
-#		picker_menu.get_popup().set_item_metadata(index, c)
-#		index += 1
-
 func _on_PickerMenu_about_to_show():
 	build_PickerMenu()
 
@@ -128,7 +108,9 @@ func build_PickerMenuFolder(menu:PopupMenu, folder_structure:Dictionary, current
 	var files_info = DialogicUtil.get_characters_dict()
 	for file in folder_structure['files']:
 		menu.add_item(files_info[file]['name'])
-		menu.set_item_icon(index, editor_reference.get_node("MainPanel/MasterTreeContainer/MasterTree").character_icon)
+		# this doesn't work right now, because it doesn't have the editor_reference. Would be nice though
+		#menu.set_item_icon(index, editor_reference.get_node("MainPanel/MasterTreeContainer/MasterTree").character_icon)
+		menu.set_item_icon(index, load("res://addons/dialogic/Images/Resources/character.svg"))
 		menu.set_item_metadata(index, {'file':file})
 		index += 1
 	
