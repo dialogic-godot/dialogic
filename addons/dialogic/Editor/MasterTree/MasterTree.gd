@@ -24,7 +24,12 @@ var definitions_tree
 var themes_tree
 var settings_tree
 
+
 var item_path_before_edit = ""
+
+# dragging items
+var dragging_item = null
+var drag_preview = load("res://addons/dialogic/Editor/MasterTree/DragPreview.tscn")
 
 var rmb_popup_menus = {}
 
@@ -117,6 +122,13 @@ func _ready():
 	$AutoSave.connect("timeout", self, '_on_autosave_timeout')
 	$AutoSave.start(0.5)
 
+func _process(delta):
+	if dragging_item != null:
+		if Input.is_mouse_button_pressed(1):
+			dragging_item.rect_global_position = get_global_mouse_position()+Vector2(10,10)
+		else:
+			dragging_item.queue_free()
+			dragging_item = null
 
 ## *****************************************************************************
 ##						BUILDING THE TREE
@@ -625,22 +637,32 @@ func drop_data(position, data):
 		# on a file
 		else:
 			DialogicUtil.move_file_to_folder(data['file_name'], data['orig_path'], get_item_folder(item, data['orig_path'].split('/')[0]))
-	
+	dragging_item.queue_free()
+	dragging_item = null
 	build_full_tree()
 
 func get_drag_data(position):
 	var item = get_item_at_position(position)
 	# if it is a folder and it's not one of the root folders
 	if 'Root' in item.get_metadata(0)['editor'] and item.get_parent().get_parent():
+		instance_drag_preview(item.get_icon(0), item.get_text(0))
 		return {'item_type': 'folder', 'orig_path': get_item_folder(item, "")}
 	else:
 		if item.get_metadata(0).has('file'):
+			instance_drag_preview(item.get_icon(0), item.get_text(0))
 			return {'item_type': 'file', 'orig_path': get_item_folder(item, ""), 'file_name':item.get_metadata(0)['file']}
 		elif item.get_metadata(0).has('id'):
+			instance_drag_preview(item.get_icon(0), item.get_text(0))
 			return {'item_type': 'file', 'orig_path': get_item_folder(item, ""), 'resource_id':item.get_metadata(0)['id']}
 	return null
 
-
+func instance_drag_preview(icon, text):
+	dragging_item = drag_preview.instance()
+	dragging_item.get_node("Panel").self_modulate = get_color("base_color", "Editor")
+	dragging_item.get_node("Panel/HBox/Icon").texture = icon
+	dragging_item.get_node("Panel/HBox/Label").text = text
+	editor_reference.add_child(dragging_item)
+	
 
 ## *****************************************************************************
 ##						 ITEM EDITING (RENAMING)
