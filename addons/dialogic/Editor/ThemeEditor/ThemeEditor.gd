@@ -5,7 +5,8 @@ var editor_reference
 onready var master_tree = get_node('../MasterTreeContainer/MasterTree')
 onready var settings_editor = get_node('../SettingsEditor')
 var current_theme : String = ''
-var use_advanced_themes := false
+var use_advanced_themes : bool = false
+var preview_character_selected : String = 'random'
 
 # When loading the variables to the input fields in the 
 # load_theme function, every element thinks the value was updated
@@ -119,6 +120,7 @@ onready var n : Dictionary = {
 	
 	# Text preview
 	'text_preview': $VBoxContainer/HBoxContainer3/TextEdit,
+	'character_picker': $VBoxContainer/HBoxContainer3/CharacterPicker,
 	
 }
 
@@ -147,9 +149,34 @@ func _ready() -> void:
 	$"VBoxContainer/TabContainer/Dialog Text/Column/GridContainer/ItalicFont/ItalicFontOpen".icon = get_icon("Edit", "EditorIcons")
 	$"VBoxContainer/TabContainer/Dialog Text/Column/GridContainer/RegularFont/RegularFontOpen".icon = get_icon("Edit", "EditorIcons")
 	
+	n['text_preview'].syntax_highlighting = true
+	n['text_preview'].add_color_region('[', ']', get_color("axis_z_color", "Editor"))
+	
+	# Character Picker
+	n['character_picker'].connect('about_to_show', self, 'character_picker_about_to_show')
+	n['character_picker'].get_popup().connect('index_pressed', self, 'character_picker_selected')
 	
 	# Force preview update
 	_on_visibility_changed()
+
+
+
+func character_picker_about_to_show():
+	var characters : Array = DialogicUtil.get_character_list()
+	n['character_picker'].get_popup().clear()
+	n['character_picker'].get_popup().add_item('Random Character')
+	n['character_picker'].get_popup().set_item_metadata(0, 'random')
+	var index = 1
+	for c in characters:
+		n['character_picker'].get_popup().add_item(c['name'])
+		n['character_picker'].get_popup().set_item_metadata(index, c['file'])
+		index += 1
+
+
+func character_picker_selected(index):
+	preview_character_selected = n['character_picker'].get_popup().get_item_metadata(index)
+	n['character_picker'].text = n['character_picker'].get_popup().get_item_text(index)
+	_on_PreviewButton_pressed()
 
 
 func setup_advanced_containers():
@@ -294,13 +321,14 @@ func create_theme() -> String:
 		settings_editor.set_value('theme', 'default', theme_file)
 	return theme_file
 
+
 func duplicate_theme(from_filename) -> void:
 	var duplicate_theme : String = 'theme-' + str(OS.get_unix_time()) + '.cfg'
 	DialogicResources.duplicate_theme(from_filename, duplicate_theme)
 	DialogicResources.set_theme_value(duplicate_theme, 'settings', 'name', duplicate_theme)
 	master_tree.build_themes(duplicate_theme)
 	load_theme(duplicate_theme)
-	
+
 
 func _on_visibility_changed() -> void:
 	if visible:
@@ -325,17 +353,19 @@ func _on_DelayPreview_timer_timeout() -> void:
 func _on_PreviewButton_pressed() -> void:
 	for i in $VBoxContainer/Panel.get_children():
 		i.free()
-	var characters : Array = DialogicUtil.get_character_list()
-	var character_file : String = ''
 	var preview_dialog = Dialogic.start('', true, "res://addons/dialogic/Dialog.tscn", false, false)
 	preview_dialog.preview = true
-	if characters.size():
-		characters.shuffle()
-		character_file = characters[0]['file']
+	
+	if n['character_picker'].text == 'Random Character':
+		var characters : Array = DialogicUtil.get_character_list()
+		if characters.size():
+			characters.shuffle()
+			preview_character_selected = characters[0]['file']
+
 	preview_dialog.dialog_script = {
 			"events":[
 				{ 'event_id':'dialogic_024', "set_theme": current_theme },
-				{ 'event_id':'dialogic_001', "character": character_file, "portrait":"", "text":n['text_preview'].text }
+				{ 'event_id':'dialogic_001', "character": preview_character_selected, "portrait":"", "text":n['text_preview'].text }
 			]
 		}
 	preview_dialog.parse_characters(preview_dialog.dialog_script)
