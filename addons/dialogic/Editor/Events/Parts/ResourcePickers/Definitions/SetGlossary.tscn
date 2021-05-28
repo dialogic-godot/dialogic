@@ -18,13 +18,13 @@ custom_constants/separation = 20
 
 [node name="Label" type="Label" parent="Title"]
 margin_top = 6.0
-margin_right = 100.0
+margin_right = 50.0
 margin_bottom = 20.0
-rect_min_size = Vector2( 100, 0 )
-text = "New title:"
+rect_min_size = Vector2( 50, 0 )
+text = "Title:"
 
 [node name="Input" parent="Title" instance=ExtResource( 1 )]
-margin_left = 120.0
+margin_left = 70.0
 margin_right = 168.0
 margin_bottom = 27.0
 size_flags_horizontal = 3
@@ -43,13 +43,13 @@ custom_constants/separation = 20
 
 [node name="Label" type="Label" parent="Text"]
 margin_top = 6.0
-margin_right = 100.0
+margin_right = 50.0
 margin_bottom = 20.0
-rect_min_size = Vector2( 100, 0 )
-text = "New text:"
+rect_min_size = Vector2( 50, 0 )
+text = "Text:"
 
 [node name="Input" parent="Text" instance=ExtResource( 1 )]
-margin_left = 120.0
+margin_left = 70.0
 margin_right = 168.0
 margin_bottom = 27.0
 size_flags_horizontal = 3
@@ -68,13 +68,13 @@ custom_constants/separation = 20
 
 [node name="Label" type="Label" parent="Extra"]
 margin_top = 6.0
-margin_right = 100.0
+margin_right = 50.0
 margin_bottom = 20.0
-rect_min_size = Vector2( 100, 0 )
-text = "New extra:"
+rect_min_size = Vector2( 50, 0 )
+text = "Extra:"
 
 [node name="Input" parent="Extra" instance=ExtResource( 1 )]
-margin_left = 120.0
+margin_left = 70.0
 margin_right = 168.0
 margin_bottom = 27.0
 size_flags_horizontal = 3
