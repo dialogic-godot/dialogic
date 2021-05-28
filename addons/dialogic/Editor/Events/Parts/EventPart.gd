@@ -9,6 +9,9 @@ var event_data = {}
 
 signal data_changed
 
+# emit this to set the enabling of the body
+signal request_set_body_enabled(enabled)
+
 # emit these if you want the body to be closed/opened
 signal request_open_body
 signal request_close_body

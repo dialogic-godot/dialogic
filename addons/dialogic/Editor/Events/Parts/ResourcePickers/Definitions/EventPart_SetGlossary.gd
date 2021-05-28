@@ -27,6 +27,8 @@ func load_data(data:Dictionary):
 	# First set the event_data
 	.load_data(data)
 	
+	emit_signal("request_set_body_enabled", event_data['glossary_id'] != '')
+	
 	$Title.visible = event_data['glossary_id'] != ''
 	$Text.visible = event_data['glossary_id'] != ''
 	$Extra.visible = event_data['glossary_id'] != ''

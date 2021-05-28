@@ -18,12 +18,12 @@ func load_data(data:Dictionary):
 	# Now update the ui nodes to display the data. 
 	if event_data['background']:
 		if not event_data['background'].ends_with('.tscn'):
-			$Box.show()
+			emit_signal("request_set_body_enabled", true)
 			texture_rect.texture = load(event_data['background'])
 		else:
-			$Box.hide()
+			emit_signal("request_set_body_enabled", false)
 	else:
-		$Box.hide()
+		emit_signal("request_set_body_enabled", false)
 
 # has to return the wanted preview, only useful for body parts
 func get_preview():

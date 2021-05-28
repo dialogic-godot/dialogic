@@ -154,7 +154,6 @@ func _set_content(container: Control, scene: PackedScene):
 func _on_ExpandControl_state_changed(expanded: bool):
 	if expanded:
 		if body_node:
-			body_node.load_data(event_data)
 			body_container.show()
 	else:
 		if body_node:
@@ -201,7 +200,12 @@ func _on_Body_data_changed(new_event_data):
 	if get_header():
 		get_header().load_data(event_data)
 
-
+func _request_set_body_enabled(enabled:bool):
+	expand_control.set_enabled(enabled)
+	
+	if get_body():
+		get_body().visible = enabled
+	
 func _request_selection():
 	var timeline_editor = editor_reference.get_node_or_null('MainPanel/TimelineEditor')
 	if (timeline_editor != null):
@@ -231,22 +235,24 @@ func _ready():
 	# If there is any external data, it will be set already BEFORE the event is added to tree
 	# if you have a header
 	if get_header():
-		get_header().load_data(event_data)
 		get_header().connect("data_changed", self, "_on_Header_data_changed")
 		get_header().connect("request_open_body", expand_control, "set_expanded", [true])
 		get_header().connect("request_close_body", expand_control, "set_expanded", [false])
 		get_header().connect("request_selection", self, "_request_selection")
+		get_header().connect("request_set_body_enabled", self, "_request_set_body_enabled")
 		get_header().connect("set_warning", self, "set_warning")
 		get_header().connect("remove_warning", self, "remove_warning")
+		get_header().load_data(event_data)
 	# if you have a body
 	if get_body():
-		get_body().load_data(event_data)
 		get_body().connect("data_changed", self, "_on_Body_data_changed")
 		get_body().connect("request_open_body", expand_control, "set_expanded", [true])
 		get_body().connect("request_close_body", expand_control, "set_expanded", [false])
+		get_body().connect("request_set_body_enabled", self, "_request_set_body_enabled")
 		get_body().connect("request_selection", self, "_request_selection")
 		get_body().connect("set_warning", self, "set_warning")
 		get_body().connect("remove_warning", self, "remove_warning")
+		get_body().load_data(event_data)
 	
 	if get_body():
 		set_expanded(expand_on_default)
