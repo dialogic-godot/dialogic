@@ -768,49 +768,70 @@ func get_classic_choice_button(label: String):
 	button.set('custom_fonts/font', DialogicUtil.path_fixer_load(theme.get_value('text', 'font', "res://addons/dialogic/Example Assets/Fonts/DefaultFont.tres")))
 
 	if not use_native_choice_button():
-		var text_color = Color(theme.get_value('text', 'color', "#ffffffff"))
-		button.set('custom_colors/font_color', text_color)
-		button.set('custom_colors/font_color_hover', text_color)
-		button.set('custom_colors/font_color_pressed', text_color)
-		
 		if theme.get_value('buttons', 'fixed', false):
 			var size = theme.get_value('buttons', 'fixed_size', Vector2(130,40))
 			button.rect_min_size = size
 			button.rect_size = size
-
-		if theme.get_value('buttons', 'text_color_enabled', true):
-			var button_text_color = Color(theme.get_value('buttons', 'text_color', "#ffffffff"))
-			button.set('custom_colors/font_color', button_text_color)
-			button.set('custom_colors/font_color_hover', button_text_color)
-			button.set('custom_colors/font_color_pressed', button_text_color)
-
-		# Background
-		button.get_node('ColorRect').color = Color(theme.get_value('buttons', 'background_color', '#ff000000'))
-		button.get_node('ColorRect').visible = theme.get_value('buttons', 'use_background_color', false)
-
-		button.get_node('TextureRect').visible = theme.get_value('buttons', 'use_image', true)
-		if theme.get_value('buttons', 'use_image', true):
-			button.get_node('TextureRect').texture = DialogicUtil.path_fixer_load(theme.get_value('buttons', 'image', "res://addons/dialogic/Example Assets/backgrounds/background-2.png"))
-			if theme.get_value('buttons', 'modulation', false):
-				button.get_node('TextureRect').modulate = Color(theme.get_value('buttons', 'modulation_color', "#ffffffff"))
-
-		var padding = theme.get_value('buttons', 'padding', Vector2(5,5))
-		button.get_node('ColorRect').set('margin_left', -1 * padding.x)
-		button.get_node('ColorRect').set('margin_right',  padding.x)
-		button.get_node('ColorRect').set('margin_top', -1 * padding.y)
-		button.get_node('ColorRect').set('margin_bottom', padding.y)
-
-		button.get_node('TextureRect').set('margin_left', -1 * padding.x)
-		button.get_node('TextureRect').set('margin_right',  padding.x)
-		button.get_node('TextureRect').set('margin_top', -1 * padding.y)
-		button.get_node('TextureRect').set('margin_bottom', padding.y)
 		
-		$Options.set('custom_constants/separation', theme.get_value('buttons', 'gap', 20) + (padding.y*2))
-	else:
-		button.get_node('ColorRect').visible = false
-		button.get_node('TextureRect').visible = false
-		button.set_flat(false)
+		$Options.set('custom_constants/separation', theme.get_value('buttons', 'gap', 20))
+		
+		# Different styles
+		var default_background = 'res://addons/dialogic/Example Assets/backgrounds/background-2.png'
+		var default_style = [
+			false,               # 0 $TextColor/CheckBox
+			Color.white,         # 1 $TextColor/ColorPickerButton
+			false,               # 2 $FlatBackground/CheckBox
+			Color.black,         # 3 $FlatBackground/ColorPickerButton
+			true,               # 4 $BackgroundTexture/CheckBox
+			default_background,  # 5 $BackgroundTexture/Button
+			false,               # 6 $TextureModulation/CheckBox
+			Color.white,         # 7 $TextureModulation/ColorPickerButton
+		]
+		
+		var style_normal = theme.get_value('buttons', 'normal', default_style)
+		var style_hover = theme.get_value('buttons', 'hover', default_style)
+		var style_pressed = theme.get_value('buttons', 'pressed', default_style)
+		var style_disabled = theme.get_value('buttons', 'disabled', default_style)
+		
+		# Text color
+		if style_normal[0]:
+			button.set('custom_colors/font_color', style_normal[1])
+		if style_hover[0]:
+			button.set('custom_colors/font_color_hover', style_hover[1])
+		if style_pressed[0]:
+			button.set('custom_colors/font_color_pressed', style_pressed[1])
+		if style_disabled[0]:
+			button.set('custom_colors/font_color_disabled', style_disabled[1])
+		
+
+		# Style normal
+		button_style_setter('normal', style_normal, button, theme)
+		button_style_setter('hover', style_hover, button, theme)
+		button_style_setter('pressed', style_pressed, button, theme)
+		button_style_setter('disabled', style_disabled, button, theme)
 	return button
+
+
+func button_style_setter(section, data, button, theme):
+	var style_box = StyleBoxTexture.new()
+	if data[2]:
+		# I'm using a white texture to do the flat style because otherwise the padding doesn't work.
+		style_box.set('texture', DialogicUtil.path_fixer_load("res://addons/dialogic/Images/Plugin/white-texture.png"))
+		style_box.set('modulate_color', data[3])
+	else:
+		if data[4]:
+			style_box.set('texture', DialogicUtil.path_fixer_load(data[5]))
+		if data[6]:
+			style_box.set('modulate_color', data[7])
+	
+	# Padding
+	var padding = theme.get_value('buttons', 'padding', Vector2(5,5))
+	style_box.set('margin_left', padding.x)
+	style_box.set('margin_right',  padding.x)
+	style_box.set('margin_top', padding.y)
+	style_box.set('margin_bottom', padding.y)
+	button.set('custom_styles/' + section, style_box)
+
 
 
 func add_choice_button(option: Dictionary):
@@ -827,6 +848,10 @@ func add_choice_button(option: Dictionary):
 	if use_native_choice_button() or use_custom_choice_button():
 		$Options.set('custom_constants/separation', current_theme.get_value('buttons', 'gap', 20))
 	$Options.add_child(button)
+	
+	# Selecting the first button added
+	if $Options.get_child_count() == 1:
+		button.grab_focus()
 
 	if Input.get_mouse_mode() != Input.MOUSE_MODE_VISIBLE:
 		last_mouse_mode = Input.get_mouse_mode()

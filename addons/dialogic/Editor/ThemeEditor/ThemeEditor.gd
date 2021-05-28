@@ -7,6 +7,7 @@ onready var settings_editor = get_node('../SettingsEditor')
 var current_theme : String = ''
 var use_advanced_themes : bool = false
 var preview_character_selected : String = 'random'
+var current_choice_modifier_selected = 'hover'
 
 # When loading the variables to the input fields in the 
 # load_theme function, every element thinks the value was updated
@@ -94,24 +95,23 @@ onready var n : Dictionary = {
 	
 	
 	# Choice Buttons
-	'button_text_color_enabled': $"VBoxContainer/TabContainer/Choice Buttons/Column/GridContainer/HBoxContainer4/CheckBox2",
-	'button_text_color': $"VBoxContainer/TabContainer/Choice Buttons/Column/GridContainer/HBoxContainer4/ButtonTextColor",
-	'button_background': $"VBoxContainer/TabContainer/Choice Buttons/Column/GridContainer/HBoxContainer2/ColorPickerButton",
-	'button_background_visible': $"VBoxContainer/TabContainer/Choice Buttons/Column/GridContainer/HBoxContainer2/CheckBox",
-	'button_image': $"VBoxContainer/TabContainer/Choice Buttons/Column/GridContainer/HBoxContainer3/BackgroundTextureButton",
-	'button_image_visible': $"VBoxContainer/TabContainer/Choice Buttons/Column/GridContainer/HBoxContainer3/CheckBox",
-	'button_modulation': $"VBoxContainer/TabContainer/Choice Buttons/Column/GridContainer/HBoxContainer6/CheckBox",
-	'button_modulation_color': $"VBoxContainer/TabContainer/Choice Buttons/Column/GridContainer/HBoxContainer6/ColorPickerButton",
-	'button_use_native': $"VBoxContainer/TabContainer/Choice Buttons/Column/GridContainer/CheckBox",
+	
+	'button_fixed': $"VBoxContainer/TabContainer/Choice Buttons/Column2/GridContainer/HBoxContainer2/FixedSize",
+	'button_fixed_x': $"VBoxContainer/TabContainer/Choice Buttons/Column2/GridContainer/HBoxContainer2/ButtonSizeX",
+	'button_fixed_y': $"VBoxContainer/TabContainer/Choice Buttons/Column2/GridContainer/HBoxContainer2/ButtonSizeY",
+
+	'button_use_native': $"VBoxContainer/TabContainer/Choice Buttons/Column3/GridContainer/CheckBox",
 	'button_use_custom': $"VBoxContainer/TabContainer/Choice Buttons/Column3/GridContainer/HBoxContainer5/CustomButtonsCheckBox",
 	'button_custom_path': $"VBoxContainer/TabContainer/Choice Buttons/Column3/GridContainer/HBoxContainer5/CustomButtonsButton",
 	'button_offset_x': $"VBoxContainer/TabContainer/Choice Buttons/Column2/GridContainer/HBoxContainer/TextOffsetH",
 	'button_offset_y': $"VBoxContainer/TabContainer/Choice Buttons/Column2/GridContainer/HBoxContainer/TextOffsetV",
 	'button_separation': $"VBoxContainer/TabContainer/Choice Buttons/Column2/GridContainer/VerticalSeparation",
 	
-	'button_fixed': $"VBoxContainer/TabContainer/Choice Buttons/Column2/GridContainer/HBoxContainer2/FixedSize",
-	'button_fixed_x': $"VBoxContainer/TabContainer/Choice Buttons/Column2/GridContainer/HBoxContainer2/ButtonSizeX",
-	'button_fixed_y': $"VBoxContainer/TabContainer/Choice Buttons/Column2/GridContainer/HBoxContainer2/ButtonSizeY",
+	# Button modifiers (Inherited scenes)
+	'button_normal': $"VBoxContainer/TabContainer/Choice Buttons/Column/TabContainer/Normal",
+	'button_hover': $"VBoxContainer/TabContainer/Choice Buttons/Column/TabContainer/Hover",
+	'button_pressed': $"VBoxContainer/TabContainer/Choice Buttons/Column/TabContainer/Pressed",
+	'button_disabled': $"VBoxContainer/TabContainer/Choice Buttons/Column/TabContainer/Disabled",
 	
 	# Glossary
 	'glossary_font': $VBoxContainer/TabContainer/Glossary/Column/GridContainer/FontButton,
@@ -151,6 +151,18 @@ func _ready() -> void:
 	
 	n['text_preview'].syntax_highlighting = true
 	n['text_preview'].add_color_region('[', ']', get_color("axis_z_color", "Editor"))
+	
+	# Choice button style modifiers
+	n['button_normal'].connect('picking_background', self, '_on_ButtonTextureButton_pressed')
+	n['button_hover'].connect('picking_background', self, '_on_ButtonTextureButton_pressed')
+	n['button_pressed'].connect('picking_background', self, '_on_ButtonTextureButton_pressed')
+	n['button_disabled'].connect('picking_background', self, '_on_ButtonTextureButton_pressed')
+	
+	n['button_normal'].connect('style_modified', self, '_on_choice_style_modified')
+	n['button_hover'].connect('style_modified', self, '_on_choice_style_modified')
+	n['button_pressed'].connect('style_modified', self, '_on_choice_style_modified')
+	n['button_disabled'].connect('style_modified', self, '_on_choice_style_modified')
+	
 	
 	# Character Picker
 	n['character_picker'].connect('about_to_show', self, 'character_picker_about_to_show')
@@ -196,12 +208,13 @@ func load_theme(filename):
 	loading = true
 	current_theme = filename
 	var theme = DialogicResources.get_theme_config(filename)
+	var default_background = 'res://addons/dialogic/Example Assets/backgrounds/background-2.png'
 	setup_advanced_containers()
 	# Settings
 	n['theme_action_key'].text = theme.get_value('settings', 'action_key', 'ui_accept')
 	
 	# Background
-	n['theme_background_image'].text = DialogicResources.get_filename_from_path(theme.get_value('background', 'image', 'res://addons/dialogic/Example Assets/backgrounds/background-2.png'))
+	n['theme_background_image'].text = DialogicResources.get_filename_from_path(theme.get_value('background', 'image', default_background))
 	n['background_texture_button_visible'].pressed = theme.get_value('background', 'use_image', true)
 	n['theme_background_color'].color = Color(theme.get_value('background', 'color', '#ff000000'))
 	n['theme_background_color_visible'].pressed = theme.get_value('background', 'use_color', false)
@@ -223,23 +236,23 @@ func load_theme(filename):
 	n['bottom_gap'].value = theme.get_value('box', 'bottom_gap', 40)
 	
 	# Buttons
-	n['button_text_color_enabled'].pressed = theme.get_value('buttons', 'text_color_enabled', true)
-	n['button_text_color'].color = Color(theme.get_value('buttons', 'text_color', "#ffffffff"))
-	n['button_background'].color = Color(theme.get_value('buttons', 'background_color', "#ff000000"))
-	n['button_background_visible'].pressed = theme.get_value('buttons', 'use_background_color', false)
-	n['button_image'].text = DialogicResources.get_filename_from_path(theme.get_value('buttons', 'image', 'res://addons/dialogic/Example Assets/backgrounds/background-2.png'))
-	n['button_image_visible'].pressed = theme.get_value('buttons', 'use_image', true)
 	n['button_use_native'].pressed = theme.get_value('buttons', 'use_native', false)
 	n['button_use_custom'].pressed = theme.get_value('buttons', 'use_custom', false)
 	n['button_custom_path'].text = DialogicResources.get_filename_from_path(theme.get_value('buttons', 'custom_path', ""))
 	n['button_offset_x'].value = theme.get_value('buttons', 'padding', Vector2(5,5)).x
 	n['button_offset_y'].value = theme.get_value('buttons', 'padding', Vector2(5,5)).y
 	n['button_separation'].value = theme.get_value('buttons', 'gap', 5)
-	n['button_modulation'].pressed = theme.get_value('buttons', 'modulation', false)
-	n['button_modulation_color'].color = Color(theme.get_value('buttons', 'modulation_color', '#ffffffff'))
 	n['button_fixed'].pressed = theme.get_value('buttons', 'fixed', false)
 	n['button_fixed_x'].value = theme.get_value('buttons', 'fixed_size', Vector2(130,40)).x
 	n['button_fixed_y'].value = theme.get_value('buttons', 'fixed_size', Vector2(130,40)).y
+	
+	
+	
+	var default_style = [false, Color.white, false, Color.black, true, default_background, false, Color.white]
+	n['button_normal'].load_style(theme.get_value('buttons', 'normal', default_style))
+	n['button_hover'].load_style(theme.get_value('buttons', 'hover', default_style))
+	n['button_pressed'].load_style(theme.get_value('buttons', 'pressed', default_style))
+	n['button_disabled'].load_style(theme.get_value('buttons', 'disabled', default_style))
 	
 	toggle_button_customization_fields(theme.get_value('buttons', 'use_native', false), theme.get_value('buttons', 'use_custom', false))
 	
@@ -780,59 +793,25 @@ func _on_button_texture_toggled(button_pressed) -> void:
 	DialogicResources.set_theme_value(current_theme, 'buttons', 'use_image', button_pressed)
 
 
-func _on_ButtonTextureButton_pressed() -> void:
+func _on_ButtonTextureButton_pressed(section = '') -> void:
 	editor_reference.godot_dialog("*.png")
-	editor_reference.godot_dialog_connect(self, "_on_button_texture_selected")
+	if section != '':
+		# Special modifier
+		current_choice_modifier_selected = section
+		editor_reference.godot_dialog_connect(self, "_on_modifier_button_image_selected")
 
 
-func _on_button_texture_selected(path, target) -> void:
+func _on_modifier_button_image_selected(path, _target):
 	if loading:
 		return
-	DialogicResources.set_theme_value(current_theme, 'buttons', 'image', path)
-	n['button_image'].text = DialogicResources.get_filename_from_path(path)
+	n['button_' + current_choice_modifier_selected].set_path(path)
+	n['button_' + current_choice_modifier_selected].real_file_path = path
+	n['button_' + current_choice_modifier_selected].get_node('BackgroundTexture/Button').text = DialogicResources.get_filename_from_path(path)
+	_on_choice_style_modified(current_choice_modifier_selected)
+	
 
-
-func _on_ChoiceButtons_texture_modulate_toggled(button_pressed) -> void:
-	if loading:
-		return
-	DialogicResources.set_theme_value(current_theme, 'buttons', 'modulation', button_pressed)
-	_on_PreviewButton_pressed() # Refreshing the preview
-
-
-func _on_ColorPicker_ChoiceButtons_modulation_color_changed(color) -> void:
-	if loading:
-		return
-	DialogicResources.set_theme_value(current_theme, 'buttons', 'modulation_color', '#' + color.to_html())
-	$DelayPreviewTimer.start(0.5) # Calling a timer so the update doesn't get triggered many times
-
-
-# Background Color
-func _on_button_background_visible_toggled(button_pressed) -> void:
-	if loading:
-		return
-	DialogicResources.set_theme_value(current_theme, 'buttons', 'use_background_color', button_pressed)
-
-
-func _on_button_background_color_color_changed(color) -> void:
-	if loading:
-		return
-	DialogicResources.set_theme_value(current_theme, 'buttons', 'background_color', '#' + color.to_html())
-	$DelayPreviewTimer.start(0.5) # Calling a timer so the update doesn't get triggered many times
-
-
-# Text Color
-func _on_Custom_Button_Color_toggled(button_pressed) -> void:
-	if loading:
-		return
-	DialogicResources.set_theme_value(current_theme, 'buttons', 'text_color_enabled', button_pressed)
-
-
-func _on_ButtonTextColor_color_changed(color) -> void:
-	if loading:
-		return
-	DialogicResources.set_theme_value(current_theme, 'buttons', 'text_color', '#' + color.to_html())
-	$DelayPreviewTimer.start(0.5) # Calling a timer so the update doesn't get triggered many times
-
+func _on_choice_style_modified(section):
+	DialogicResources.set_theme_value(current_theme, 'buttons', section, n['button_' + section].get_style_array())
 
 func _on_native_button_toggled(button_pressed) -> void:
 	if loading:
@@ -843,14 +822,6 @@ func _on_native_button_toggled(button_pressed) -> void:
 
 func toggle_button_customization_fields(native_enabled: bool, custom_enabled: bool) -> void:
 	var customization_disabled = native_enabled or custom_enabled
-	n['button_text_color_enabled'].disabled = customization_disabled
-	n['button_text_color'].disabled = customization_disabled
-	n['button_background'].disabled = customization_disabled
-	n['button_background_visible'].disabled = customization_disabled
-	n['button_image'].disabled = customization_disabled
-	n['button_image_visible'].disabled = customization_disabled
-	n['button_modulation'].disabled = customization_disabled
-	n['button_modulation_color'].disabled = customization_disabled
 	n['button_use_native'].disabled = custom_enabled
 	n['button_use_custom'].disabled = native_enabled
 	n['button_custom_path'].disabled = native_enabled

@@ -1,12 +1,13 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://addons/dialogic/Images/Plugin/plugin-editor-icon-light-theme.svg" type="Texture" id=1]
 [ext_resource path="res://addons/dialogic/Editor/ThemeEditor/ThemeEditor.gd" type="Script" id=2]
 [ext_resource path="res://addons/dialogic/Editor/Common/SectionTitle.tscn" type="PackedScene" id=3]
 [ext_resource path="res://addons/dialogic/Editor/Events/styles/MenuButtonHover.tres" type="StyleBox" id=4]
 [ext_resource path="res://addons/dialogic/Editor/Events/styles/MenuButtonNormal.tres" type="StyleBox" id=5]
+[ext_resource path="res://addons/dialogic/Editor/ThemeEditor/ButtonStylePicker.tscn" type="PackedScene" id=6]
 
-[sub_resource type="Image" id=3]
+[sub_resource type="Image" id=1]
 data = {
 "data": PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ),
 "format": "LumAlpha8",
@@ -18,7 +19,7 @@ data = {
 [sub_resource type="ImageTexture" id=2]
 flags = 4
 flags = 4
-image = SubResource( 3 )
+image = SubResource( 1 )
 size = Vector2( 16, 16 )
 
 [node name="ThemeEditor" type="ScrollContainer"]
@@ -56,6 +57,7 @@ rect_min_size = Vector2( 400, 60 )
 size_flags_horizontal = 3
 text = "This is [i]preview[/i] text. You can use  [color=#A5EFAC]BBCode[/color] to [b]style[/b] it. 
 [wave amp=50 freq=2]You can even use effects![/wave]"
+syntax_highlighting = true
 wrap_enabled = true
 
 [node name="CharacterPicker" type="MenuButton" parent="VBoxContainer/HBoxContainer3"]
@@ -83,6 +85,7 @@ size_flags_vertical = 3
 tab_align = 0
 
 [node name="Dialog Text" type="HBoxContainer" parent="VBoxContainer/TabContainer"]
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 4.0
@@ -988,7 +991,6 @@ allow_greater = true
 allow_lesser = true
 
 [node name="Choice Buttons" type="HBoxContainer" parent="VBoxContainer/TabContainer"]
-visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 4.0
@@ -998,158 +1000,68 @@ margin_bottom = -4.0
 custom_constants/separation = 10
 
 [node name="Column" type="VBoxContainer" parent="VBoxContainer/TabContainer/Choice Buttons"]
-margin_right = 270.0
+margin_right = 380.0
 margin_bottom = 488.0
-rect_min_size = Vector2( 270, 0 )
+rect_min_size = Vector2( 380, 0 )
 size_flags_vertical = 3
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="SectionTitle" parent="VBoxContainer/TabContainer/Choice Buttons/Column" instance=ExtResource( 3 )]
+margin_right = 380.0
+text = "Button Style"
 
-[node name="GridContainer" type="GridContainer" parent="VBoxContainer/TabContainer/Choice Buttons/Column"]
+[node name="TabContainer" type="TabContainer" parent="VBoxContainer/TabContainer/Choice Buttons/Column"]
 margin_top = 26.0
-margin_right = 270.0
+margin_right = 380.0
 margin_bottom = 170.0
-size_flags_horizontal = 3
-custom_constants/hseparation = 10
-columns = 2
+tab_align = 0
 
-[node name="Label5" type="Label" parent="VBoxContainer/TabContainer/Choice Buttons/Column/GridContainer"]
-margin_top = 5.0
-margin_right = 134.0
-margin_bottom = 19.0
-size_flags_horizontal = 3
-text = "Text Color "
+[node name="Normal" parent="VBoxContainer/TabContainer/Choice Buttons/Column/TabContainer" instance=ExtResource( 6 )]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = 32.0
+margin_right = -4.0
+margin_bottom = -4.0
 
-[node name="HBoxContainer4" type="HBoxContainer" parent="VBoxContainer/TabContainer/Choice Buttons/Column/GridContainer"]
-margin_left = 144.0
-margin_right = 270.0
-margin_bottom = 24.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
+[node name="Hover" parent="VBoxContainer/TabContainer/Choice Buttons/Column/TabContainer" instance=ExtResource( 6 )]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = 32.0
+margin_right = -4.0
+margin_bottom = -4.0
 
-[node name="CheckBox2" type="CheckBox" parent="VBoxContainer/TabContainer/Choice Buttons/Column/GridContainer/HBoxContainer4"]
-margin_right = 24.0
-margin_bottom = 24.0
-pressed = true
+[node name="Pressed" parent="VBoxContainer/TabContainer/Choice Buttons/Column/TabContainer" instance=ExtResource( 6 )]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = 32.0
+margin_right = -4.0
+margin_bottom = -4.0
 
-[node name="ButtonTextColor" type="ColorPickerButton" parent="VBoxContainer/TabContainer/Choice Buttons/Column/GridContainer/HBoxContainer4"]
-margin_left = 28.0
-margin_right = 126.0
-margin_bottom = 24.0
-size_flags_horizontal = 3
-color = Color( 1, 1, 1, 1 )
-
-[node name="Label7" type="Label" parent="VBoxContainer/TabContainer/Choice Buttons/Column/GridContainer"]
-margin_top = 33.0
-margin_right = 134.0
-margin_bottom = 47.0
-text = "Background Color"
-
-[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer/TabContainer/Choice Buttons/Column/GridContainer"]
-margin_left = 144.0
-margin_top = 28.0
-margin_right = 270.0
-margin_bottom = 52.0
-
-[node name="CheckBox" type="CheckBox" parent="VBoxContainer/TabContainer/Choice Buttons/Column/GridContainer/HBoxContainer2"]
-margin_right = 24.0
-margin_bottom = 24.0
-
-[node name="ColorPickerButton" type="ColorPickerButton" parent="VBoxContainer/TabContainer/Choice Buttons/Column/GridContainer/HBoxContainer2"]
-margin_left = 28.0
-margin_right = 126.0
-margin_bottom = 24.0
-size_flags_horizontal = 3
-
-[node name="Label" type="Label" parent="VBoxContainer/TabContainer/Choice Buttons/Column/GridContainer"]
-margin_top = 61.0
-margin_right = 134.0
-margin_bottom = 75.0
-text = "Background Texture"
-
-[node name="HBoxContainer3" type="HBoxContainer" parent="VBoxContainer/TabContainer/Choice Buttons/Column/GridContainer"]
-margin_left = 144.0
-margin_top = 56.0
-margin_right = 270.0
-margin_bottom = 80.0
-
-[node name="CheckBox" type="CheckBox" parent="VBoxContainer/TabContainer/Choice Buttons/Column/GridContainer/HBoxContainer3"]
-margin_right = 24.0
-margin_bottom = 24.0
-pressed = true
-
-[node name="BackgroundTextureButton" type="Button" parent="VBoxContainer/TabContainer/Choice Buttons/Column/GridContainer/HBoxContainer3"]
-margin_left = 28.0
-margin_right = 126.0
-margin_bottom = 24.0
-size_flags_horizontal = 3
-text = "background-2"
-
-[node name="Label9" type="Label" parent="VBoxContainer/TabContainer/Choice Buttons/Column/GridContainer"]
-margin_top = 89.0
-margin_right = 134.0
-margin_bottom = 103.0
-text = "Texture Modulation"
-
-[node name="HBoxContainer6" type="HBoxContainer" parent="VBoxContainer/TabContainer/Choice Buttons/Column/GridContainer"]
-margin_left = 144.0
-margin_top = 84.0
-margin_right = 270.0
-margin_bottom = 108.0
-
-[node name="CheckBox" type="CheckBox" parent="VBoxContainer/TabContainer/Choice Buttons/Column/GridContainer/HBoxContainer6"]
-margin_right = 24.0
-margin_bottom = 24.0
-
-[node name="ColorPickerButton" type="ColorPickerButton" parent="VBoxContainer/TabContainer/Choice Buttons/Column/GridContainer/HBoxContainer6"]
-margin_left = 28.0
-margin_right = 126.0
-margin_bottom = 24.0
-size_flags_horizontal = 3
-
-[node name="HSeparator" type="HSeparator" parent="VBoxContainer/TabContainer/Choice Buttons/Column/GridContainer"]
-margin_top = 112.0
-margin_right = 134.0
-margin_bottom = 116.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="HSeparator2" type="HSeparator" parent="VBoxContainer/TabContainer/Choice Buttons/Column/GridContainer"]
-margin_left = 144.0
-margin_top = 112.0
-margin_right = 270.0
-margin_bottom = 116.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Label2" type="Label" parent="VBoxContainer/TabContainer/Choice Buttons/Column/GridContainer"]
-margin_top = 125.0
-margin_right = 134.0
-margin_bottom = 139.0
-text = "Use Native Buttons"
-
-[node name="CheckBox" type="CheckBox" parent="VBoxContainer/TabContainer/Choice Buttons/Column/GridContainer"]
-margin_left = 144.0
-margin_top = 120.0
-margin_right = 270.0
-margin_bottom = 144.0
+[node name="Disabled" parent="VBoxContainer/TabContainer/Choice Buttons/Column/TabContainer" instance=ExtResource( 6 )]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = 32.0
+margin_right = -4.0
+margin_bottom = -4.0
 
 [node name="VSeparator" type="VSeparator" parent="VBoxContainer/TabContainer/Choice Buttons"]
-margin_left = 280.0
-margin_right = 284.0
+margin_left = 390.0
+margin_right = 394.0
 margin_bottom = 488.0
 
 [node name="Column2" type="VBoxContainer" parent="VBoxContainer/TabContainer/Choice Buttons"]
-margin_left = 294.0
-margin_right = 603.0
+margin_left = 404.0
+margin_right = 713.0
 margin_bottom = 488.0
-rect_min_size = Vector2( 270, 0 )
 size_flags_vertical = 3
 __meta__ = {
 "_edit_use_anchors_": false
@@ -1196,32 +1108,17 @@ rounded = true
 allow_lesser = true
 prefix = "H"
 
-[node name="Label2" type="Label" parent="VBoxContainer/TabContainer/Choice Buttons/Column2/GridContainer"]
+[node name="Label" type="Label" parent="VBoxContainer/TabContainer/Choice Buttons/Column2/GridContainer"]
 margin_top = 33.0
 margin_right = 119.0
 margin_bottom = 47.0
-text = "Vertical separation"
+text = "Fixed button size"
 
-[node name="VerticalSeparation" type="SpinBox" parent="VBoxContainer/TabContainer/Choice Buttons/Column2/GridContainer"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer/TabContainer/Choice Buttons/Column2/GridContainer"]
 margin_left = 129.0
 margin_top = 28.0
 margin_right = 309.0
 margin_bottom = 52.0
-value = 5.0
-rounded = true
-allow_lesser = true
-
-[node name="Label" type="Label" parent="VBoxContainer/TabContainer/Choice Buttons/Column2/GridContainer"]
-margin_top = 61.0
-margin_right = 119.0
-margin_bottom = 75.0
-text = "Fixed size"
-
-[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer/TabContainer/Choice Buttons/Column2/GridContainer"]
-margin_left = 129.0
-margin_top = 56.0
-margin_right = 309.0
-margin_bottom = 80.0
 
 [node name="FixedSize" type="CheckBox" parent="VBoxContainer/TabContainer/Choice Buttons/Column2/GridContainer/HBoxContainer2"]
 margin_right = 24.0
@@ -1243,14 +1140,29 @@ rounded = true
 allow_greater = true
 allow_lesser = true
 
+[node name="Label2" type="Label" parent="VBoxContainer/TabContainer/Choice Buttons/Column2/GridContainer"]
+margin_top = 61.0
+margin_right = 119.0
+margin_bottom = 75.0
+text = "Vertical separation"
+
+[node name="VerticalSeparation" type="SpinBox" parent="VBoxContainer/TabContainer/Choice Buttons/Column2/GridContainer"]
+margin_left = 129.0
+margin_top = 56.0
+margin_right = 309.0
+margin_bottom = 80.0
+value = 5.0
+rounded = true
+allow_lesser = true
+
 [node name="VSeparator2" type="VSeparator" parent="VBoxContainer/TabContainer/Choice Buttons"]
-margin_left = 613.0
-margin_right = 617.0
+margin_left = 723.0
+margin_right = 727.0
 margin_bottom = 488.0
 
 [node name="Column3" type="VBoxContainer" parent="VBoxContainer/TabContainer/Choice Buttons"]
-margin_left = 627.0
-margin_right = 897.0
+margin_left = 737.0
+margin_right = 1007.0
 margin_bottom = 488.0
 rect_min_size = Vector2( 270, 0 )
 size_flags_vertical = 3
@@ -1264,13 +1176,14 @@ text = "Advanced"
 [node name="Label" type="Label" parent="VBoxContainer/TabContainer/Choice Buttons/Column3"]
 margin_top = 26.0
 margin_right = 270.0
-margin_bottom = 40.0
-text = "Go to settings to enable those options"
+margin_bottom = 57.0
+text = "Go to settings to enable those
+options. Procede at your own risk."
 
 [node name="GridContainer" type="GridContainer" parent="VBoxContainer/TabContainer/Choice Buttons/Column3"]
-margin_top = 44.0
+margin_top = 61.0
 margin_right = 270.0
-margin_bottom = 68.0
+margin_bottom = 113.0
 size_flags_horizontal = 3
 custom_constants/hseparation = 10
 columns = 2
@@ -1302,6 +1215,18 @@ margin_bottom = 24.0
 hint_tooltip = "The selected scene must have the 'pressed' signal and the 'text' property'"
 size_flags_horizontal = 3
 text = "custom"
+
+[node name="Label2" type="Label" parent="VBoxContainer/TabContainer/Choice Buttons/Column3/GridContainer"]
+margin_top = 33.0
+margin_right = 132.0
+margin_bottom = 47.0
+text = "Use Native Buttons"
+
+[node name="CheckBox" type="CheckBox" parent="VBoxContainer/TabContainer/Choice Buttons/Column3/GridContainer"]
+margin_left = 142.0
+margin_top = 28.0
+margin_right = 230.0
+margin_bottom = 52.0
 
 [node name="Glossary" type="HBoxContainer" parent="VBoxContainer/TabContainer"]
 visible = false
@@ -1484,23 +1409,15 @@ one_shot = true
 [connection signal="value_changed" from="VBoxContainer/TabContainer/Name Label/Column2/GridContainer/HBoxContainer/NamePaddingX" to="." method="_on_name_padding_value_changed"]
 [connection signal="value_changed" from="VBoxContainer/TabContainer/Name Label/Column2/GridContainer/HBoxContainer/NamePaddingY" to="." method="_on_name_padding_value_changed"]
 [connection signal="value_changed" from="VBoxContainer/TabContainer/Name Label/Column3/GridContainer/HBoxContainer5/BottomGap" to="." method="_on_name_BottomGap_value_changed"]
-[connection signal="toggled" from="VBoxContainer/TabContainer/Choice Buttons/Column/GridContainer/HBoxContainer4/CheckBox2" to="." method="_on_Custom_Button_Color_toggled"]
-[connection signal="color_changed" from="VBoxContainer/TabContainer/Choice Buttons/Column/GridContainer/HBoxContainer4/ButtonTextColor" to="." method="_on_ButtonTextColor_color_changed"]
-[connection signal="toggled" from="VBoxContainer/TabContainer/Choice Buttons/Column/GridContainer/HBoxContainer2/CheckBox" to="." method="_on_button_background_visible_toggled"]
-[connection signal="color_changed" from="VBoxContainer/TabContainer/Choice Buttons/Column/GridContainer/HBoxContainer2/ColorPickerButton" to="." method="_on_button_background_color_color_changed"]
-[connection signal="toggled" from="VBoxContainer/TabContainer/Choice Buttons/Column/GridContainer/HBoxContainer3/CheckBox" to="." method="_on_button_texture_toggled"]
-[connection signal="pressed" from="VBoxContainer/TabContainer/Choice Buttons/Column/GridContainer/HBoxContainer3/BackgroundTextureButton" to="." method="_on_ButtonTextureButton_pressed"]
-[connection signal="toggled" from="VBoxContainer/TabContainer/Choice Buttons/Column/GridContainer/HBoxContainer6/CheckBox" to="." method="_on_ChoiceButtons_texture_modulate_toggled"]
-[connection signal="color_changed" from="VBoxContainer/TabContainer/Choice Buttons/Column/GridContainer/HBoxContainer6/ColorPickerButton" to="." method="_on_ColorPicker_ChoiceButtons_modulation_color_changed"]
-[connection signal="toggled" from="VBoxContainer/TabContainer/Choice Buttons/Column/GridContainer/CheckBox" to="." method="_on_native_button_toggled"]
 [connection signal="value_changed" from="VBoxContainer/TabContainer/Choice Buttons/Column2/GridContainer/HBoxContainer/TextOffsetV" to="." method="_on_ButtonOffset_value_changed"]
 [connection signal="value_changed" from="VBoxContainer/TabContainer/Choice Buttons/Column2/GridContainer/HBoxContainer/TextOffsetH" to="." method="_on_ButtonOffset_value_changed"]
-[connection signal="value_changed" from="VBoxContainer/TabContainer/Choice Buttons/Column2/GridContainer/VerticalSeparation" to="." method="_on_VerticalSeparation_value_changed"]
 [connection signal="toggled" from="VBoxContainer/TabContainer/Choice Buttons/Column2/GridContainer/HBoxContainer2/FixedSize" to="." method="_on_FixedSize_toggled"]
 [connection signal="value_changed" from="VBoxContainer/TabContainer/Choice Buttons/Column2/GridContainer/HBoxContainer2/ButtonSizeX" to="." method="_on_ButtonSize_value_changed"]
 [connection signal="value_changed" from="VBoxContainer/TabContainer/Choice Buttons/Column2/GridContainer/HBoxContainer2/ButtonSizeY" to="." method="_on_ButtonSize_value_changed"]
+[connection signal="value_changed" from="VBoxContainer/TabContainer/Choice Buttons/Column2/GridContainer/VerticalSeparation" to="." method="_on_VerticalSeparation_value_changed"]
 [connection signal="toggled" from="VBoxContainer/TabContainer/Choice Buttons/Column3/GridContainer/HBoxContainer5/CustomButtonsCheckBox" to="." method="_on_CustomButtonsCheckBox_toggled"]
 [connection signal="pressed" from="VBoxContainer/TabContainer/Choice Buttons/Column3/GridContainer/HBoxContainer5/CustomButtonsButton" to="." method="_on_CustomButtonsButton_pressed"]
+[connection signal="toggled" from="VBoxContainer/TabContainer/Choice Buttons/Column3/GridContainer/CheckBox" to="." method="_on_native_button_toggled"]
 [connection signal="pressed" from="VBoxContainer/TabContainer/Glossary/Column/GridContainer/FontButton" to="." method="_on_GlossaryFontButton_pressed"]
 [connection signal="color_changed" from="VBoxContainer/TabContainer/Glossary/Column/GridContainer/ColorPickerButton" to="." method="_on_GlossaryColorPicker_color_changed"]
 [connection signal="toggled" from="VBoxContainer/TabContainer/Glossary/Column/GridContainer/ShowGlossaryCheckBox" to="." method="_on_ShowGlossaryCheckBox_toggled"]
