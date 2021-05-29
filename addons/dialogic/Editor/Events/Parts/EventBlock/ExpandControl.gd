@@ -33,6 +33,8 @@ func set_enabled(enabled: bool):
 
 
 func set_expanded(expanded: bool):
+	if not enabled:
+		return 
 	self.expanded = expanded
 	visible_toggle.pressed = expanded
 	if expanded:
