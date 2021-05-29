@@ -794,6 +794,12 @@ func get_classic_choice_button(label: String):
 		var style_disabled = theme.get_value('buttons', 'disabled', default_style)
 		
 		# Text color
+		var default_color = Color(theme.get_value('text', 'color', '#ffffff'))
+		button.set('custom_colors/font_color', default_color)
+		button.set('custom_colors/font_color_hover', default_color.lightened(0.2))
+		button.set('custom_colors/font_color_pressed', default_color.darkened(0.2))
+		button.set('custom_colors/font_color_disabled', default_color.darkened(0.8))
+		
 		if style_normal[0]:
 			button.set('custom_colors/font_color', style_normal[1])
 		if style_hover[0]:

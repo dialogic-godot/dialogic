@@ -74,3 +74,8 @@ func _on_Button_pressed():
 
 func _on_button_texture_selected(path, target) -> void:
 	emit_signal("style_modified", name.to_lower())
+
+
+func _on_TextColor_ColorPickerButton_color_changed(color):
+	$TextColor/CheckBox.pressed = true
+	emit_signal("style_modified", name.to_lower())
