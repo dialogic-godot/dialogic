@@ -18,41 +18,8 @@ var direction = 'left'
 var debug = false
 var fading_out = false
 
-func init(expression: String = '', position_offset = 'left', mirror = false) -> void:
-	rect_position += positions[position_offset]
-	direction = position_offset
-	modulate = Color(1,1,1,0)
-	
-	# Setting the scale of the portrait
-	var custom_scale = Vector2(1, 1)
-	if character_data.has('data'):
-		if character_data['data'].has('scale'):
-			custom_scale = Vector2(
-				float(character_data['data']['scale']) / 100,
-				float(character_data['data']['scale']) / 100
-			)
-			rect_scale = custom_scale
-		if character_data['data'].has('offset_x'):
-			rect_position += Vector2(
-				character_data['data']['offset_x'],
-				character_data['data']['offset_y']
-			)
-
+func init(expression: String = '') -> void:
 	set_portrait(expression)
-	
-	if $TextureRect.get('texture'):
-		rect_position -= Vector2(
-			$TextureRect.texture.get_width() * 0.5,
-			$TextureRect.texture.get_height()
-		) * custom_scale
-	
-	# the mirror setting of the character
-	if character_data["data"].has('mirror_portraits'):
-		if character_data["data"]['mirror_portraits']:
-			$TextureRect.flip_h = true
-	# the mirror setting of the join event
-	if mirror:
-		$TextureRect.flip_h = !$TextureRect.flip_h
 
 
 func _ready():
@@ -85,6 +52,46 @@ func set_portrait(expression: String) -> void:
 					$TextureRect.texture = load(p['path'])
 				else:
 					$TextureRect.texture = ImageTexture.new()
+
+
+func set_mirror(value):
+	if character_data["data"].has('mirror_portraits'):
+		if character_data["data"]['mirror_portraits']:
+			$TextureRect.flip_h = !value
+		else:
+			$TextureRect.flip_h = value
+	else:
+		$TextureRect.flip_h = value
+
+
+func move_to_position(position_offset, time = 0.5):
+	direction = position_offset
+	modulate = Color(1,1,1,0)
+	tween_modulate(modulate, Color(1,1,1, 1), time)
+	rect_position = positions[position_offset]
+	
+	# Setting the scale of the portrait
+	var custom_scale = Vector2(1, 1)
+	if character_data.has('data'):
+		if character_data['data'].has('scale'):
+			custom_scale = Vector2(
+				float(character_data['data']['scale']) / 100,
+				float(character_data['data']['scale']) / 100
+			)
+			rect_scale = custom_scale
+		if character_data['data'].has('offset_x'):
+			rect_position += Vector2(
+				character_data['data']['offset_x'],
+				character_data['data']['offset_y']
+			)
+			
+	if $TextureRect.get('texture'):
+		rect_position -= Vector2(
+			$TextureRect.texture.get_width() * 0.5,
+			$TextureRect.texture.get_height()
+		) * custom_scale
+		
+	fade_in()
 
 
 # Tween stuff

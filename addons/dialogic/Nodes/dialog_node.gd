@@ -498,7 +498,12 @@ func event_handler(event: Dictionary):
 			else:
 				var character_data = get_character(event['character'])
 				var exists = grab_portrait_focus(character_data)
-				if exists == false:
+				if exists:
+					for portrait in $Portraits.get_children():
+						if portrait.character_data == character_data:
+							portrait.move_to_position(get_character_position(event['position']))
+							portrait.set_mirror(event.get('mirror', false))
+				else:
 					var p = Portrait.instance()
 					var char_portrait = event['portrait']
 					if char_portrait == '':
@@ -513,9 +518,10 @@ func event_handler(event: Dictionary):
 									break
 					
 					p.character_data = character_data
-					p.init(char_portrait, get_character_position(event['position']), event.get('mirror', false))
+					p.init(char_portrait)
+					p.set_mirror(event.get('mirror', false))
 					$Portraits.add_child(p)
-					p.fade_in()
+					p.move_to_position(get_character_position(event['position']))
 			_load_next_event()
 		# Character Leave event 
 		'dialogic_003':
@@ -743,9 +749,9 @@ func _should_add_choice_button(option: Dictionary):
 func use_custom_choice_button():
 	return current_theme.get_value('buttons', 'use_custom', false) and not current_theme.get_value('buttons', 'custom_path', "").empty()
 
+
 func use_native_choice_button():
 	return current_theme.get_value('buttons', 'use_native', false)
-
 
 
 func get_custom_choice_button(label: String):
@@ -837,7 +843,6 @@ func button_style_setter(section, data, button, theme):
 	style_box.set('margin_top', padding.y)
 	style_box.set('margin_bottom', padding.y)
 	button.set('custom_styles/' + section, style_box)
-
 
 
 func add_choice_button(option: Dictionary):
