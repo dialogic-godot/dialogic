@@ -55,6 +55,49 @@ func _ready():
 	var style = $TimelineArea.get('custom_styles/bg')
 	style.set('bg_color', get_color("dark_color_1", "Editor"))
 
+# handles dragging/moving of events
+func _process(delta):
+	if moving_piece != null:
+		var current_position = get_global_mouse_position()
+		var node_position = moving_piece.rect_global_position.y
+		var height = get_block_height(moving_piece)
+		var up_offset = get_block_height(get_block_above(moving_piece))
+		var down_offset = get_block_height(get_block_below(moving_piece))
+		if up_offset != null:
+			up_offset = (up_offset / 2) + 5
+			if current_position.y < node_position - up_offset:
+				move_block(moving_piece, 'up')
+				piece_was_dragged = true
+		if down_offset != null:
+			down_offset = height + (down_offset / 2) + 5
+			if current_position.y > node_position + down_offset:
+				move_block(moving_piece, 'down')
+				piece_was_dragged = true
+
+# SIGNAL handles input on the events mainly for selection and moving events
+func _on_event_block_gui_input(event, item: Node):
+	if event is InputEventMouseButton and event.button_index == 1:
+		if (not event.is_pressed()):
+			if (not piece_was_dragged and moving_piece != null):
+				pass
+			if (moving_piece != null):
+				indent_events()
+			moving_piece = null
+		elif event.is_pressed():
+			moving_piece = item
+			if not _is_item_selected(item):
+				
+				piece_was_dragged = true
+			else:
+				piece_was_dragged = false
+			select_item(item)
+
+
+## *****************************************************************************
+##					 	SHORTCUTS
+## *****************************************************************************
+
+
 func _input(event):
 	# some shortcuts need to get handled in the common input event
 	# especially CTRL-based
@@ -81,8 +124,7 @@ func _input(event):
 					selected_items = []
 					select_item(prev_node)
 				get_tree().set_input_as_handled()
-				
-			pass
+
 			
 		# CTRL DOWN
 		if (event.pressed
@@ -100,8 +142,6 @@ func _input(event):
 					selected_items = []
 					select_item(next_node)
 				get_tree().set_input_as_handled()
-				
-			pass
 			
 		# CTRL DELETE
 		if (event.pressed
@@ -114,7 +154,6 @@ func _input(event):
 			if (len(selected_items) != 0):
 				delete_selected_events()
 				get_tree().set_input_as_handled()
-			pass
 			
 		# CTRL T
 		if (event.pressed
@@ -125,10 +164,9 @@ func _input(event):
 			and event.echo == false
 		):
 			var new_text = create_event("TextEvent")
-			select_item(new_text)
+			select_item(new_text, false)
 			indent_events()
 			get_tree().set_input_as_handled()
-			pass
 			
 		# CTRL A
 		if (event.pressed
@@ -198,9 +236,43 @@ func _input(event):
 			
 			if len(selected_items) > 0:
 				copy_selected_events()
-				select_item(selected_items[-1], false)
+				selected_items = [selected_items[-1]]
 				paste_events()
 			get_tree().set_input_as_handled()
+
+func _unhandled_key_input(event):
+	if (event is InputEventWithModifiers):
+		# ALT UP
+		if (event.pressed
+			and event.alt == true 
+			and event.shift == false 
+			and event.control == false 
+			and event.scancode == KEY_UP
+			and event.echo == false
+		):
+			# move selected up
+			if (len(selected_items) == 1):
+				move_block(selected_items[0], "up")
+				indent_events()
+				get_tree().set_input_as_handled()
+			
+		# ALT DOWN
+		if (event.pressed
+			and event.alt == true 
+			and event.shift == false 
+			and event.control == false 
+			and event.scancode == KEY_DOWN
+			and event.echo == false
+		):
+			# move selected down
+			if (len(selected_items) == 1):
+				move_block(selected_items[0], "down")
+				indent_events()
+				get_tree().set_input_as_handled()
+
+## *****************************************************************************
+##					 	DELETING, COPY, PASTE
+## *****************************************************************************
 
 func delete_selected_events():
 	
@@ -230,16 +302,9 @@ func delete_selected_events():
 	
 	indent_events()
 
-
-func delete_event(event):
-	event.get_parent().remove_child(event)
-	event.queue_free()
-
-
 func cut_selected_events():
 	copy_selected_events()
 	delete_selected_events()
-
 
 func copy_selected_events():
 	if len(selected_items) == 0:
@@ -254,7 +319,6 @@ func copy_selected_events():
 			"dialogic_version": editor_reference.version_string,
 			"project_name": ProjectSettings.get_setting("application/config/name")
 		})
-
 
 func paste_events():
 	var clipboard_parse = JSON.parse(OS.clipboard).result
@@ -281,66 +345,12 @@ func paste_events():
 			indent_events()
 
 
-func _unhandled_key_input(event):
-	if (event is InputEventWithModifiers):
-		# ALT UP
-		if (event.pressed
-			and event.alt == true 
-			and event.shift == false 
-			and event.control == false 
-			and event.scancode == KEY_UP
-			and event.echo == false
-		):
-			# move selected up
-			if (len(selected_items) == 1):
-				move_block(selected_items[0], "up")
-				indent_events()
-				get_tree().set_input_as_handled()
-				
-			pass
-			
-		# ALT DOWN
-		if (event.pressed
-			and event.alt == true 
-			and event.shift == false 
-			and event.control == false 
-			and event.scancode == KEY_DOWN
-			and event.echo == false
-		):
-			# move selected down
-			if (len(selected_items) == 1):
-				move_block(selected_items[0], "down")
-				indent_events()
-				get_tree().set_input_as_handled()
-				
-			pass
-			
-	pass
-
-
-func _process(delta):
-	if moving_piece != null:
-		var current_position = get_global_mouse_position()
-		var node_position = moving_piece.rect_global_position.y
-		var height = get_block_height(moving_piece)
-		var up_offset = get_block_height(get_block_above(moving_piece))
-		var down_offset = get_block_height(get_block_below(moving_piece))
-		if up_offset != null:
-			up_offset = (up_offset / 2) + 5
-			if current_position.y < node_position - up_offset:
-				move_block(moving_piece, 'up')
-				piece_was_dragged = true
-		if down_offset != null:
-			down_offset = height + (down_offset / 2) + 5
-			if current_position.y > node_position + down_offset:
-				move_block(moving_piece, 'down')
-				piece_was_dragged = true
-
-
+## *****************************************************************************
+##					 	BLOCK SELECTION
+## *****************************************************************************
 
 func _is_item_selected(item: Node):
 	return item in selected_items
-
 
 func select_item(item: Node, multi_possible:bool = true):
 	if item == null:
@@ -380,13 +390,22 @@ func select_item(item: Node, multi_possible:bool = true):
 	
 	visual_update_selection()
 
+# checks all the events and sets their styles (selected/deselected)
+func visual_update_selection():
+	for item in timeline.get_children():
+		item.visual_deselect()
+	for item in selected_items:
+		item.visual_select()
 
+## Sorts the selection using 'custom_sort_selection'
 func sort_selection():
 	selected_items.sort_custom(self, 'custom_sort_selection')
 
+## Compares two event blocks based on their position in the timeline
 func custom_sort_selection(item1, item2):
 	return item1.get_index() < item2.get_index()
 
+## Helpers
 func select_all_items():
 	selected_items = []
 	for event in timeline.get_children():
@@ -397,33 +416,11 @@ func deselect_all_items():
 	selected_items = []
 	visual_update_selection()
 
-func visual_update_selection():
-	for item in timeline.get_children():
-		item.visual_deselect()
-	for item in selected_items:
-		item.visual_select()
-	
+## *****************************************************************************
+##				SPECIAL BLOCK OPERATIONS
+## *****************************************************************************
 
-func _on_event_block_gui_input(event, item: Node):
-	if event is InputEventMouseButton and event.button_index == 1:
-		if (not event.is_pressed()):
-			if (not piece_was_dragged and moving_piece != null):
-				pass
-			if (moving_piece != null):
-				indent_events()
-			moving_piece = null
-		elif event.is_pressed():
-			moving_piece = item
-			if not _is_item_selected(item):
-				
-				piece_was_dragged = true
-			else:
-				piece_was_dragged = false
-			select_item(item)
-
-
-
-
+# SIGNAL handles the actions of the small menu on the right
 func _on_event_options_action(action: String, item: Node):
 	### WORK TODO
 	if action == "remove":
@@ -434,13 +431,20 @@ func _on_event_options_action(action: String, item: Node):
 		move_block(item, action)
 	indent_events()
 
+func delete_event(event):
+	event.get_parent().remove_child(event)
+	event.queue_free()
+
+## *****************************************************************************
+##				CREATING NEW EVENTS USING THE BUTTONS
+## *****************************************************************************
 
 # Event Creation signal for buttons
 func _create_event_button_pressed(button_name):
 	select_item(create_event(button_name))
 	indent_events()
 
-
+# the Question button adds multiple blocks 
 func _on_ButtonQuestion_pressed() -> void:
 	if len(selected_items) != 0:
 		# Events are added bellow the selected node
@@ -455,7 +459,7 @@ func _on_ButtonQuestion_pressed() -> void:
 		create_event("Choice", {'no-data': true}, true)
 		create_event("EndBranch", {'no-data': true}, true)
 
-
+# the Condition button adds multiple blocks 
 func _on_ButtonCondition_pressed() -> void:
 	if len(selected_items) != 0:
 		# Events are added bellow the selected node
@@ -466,6 +470,9 @@ func _on_ButtonCondition_pressed() -> void:
 		create_event("Condition", {'no-data': true}, true)
 		create_event("EndBranch", {'no-data': true}, true)
 
+## *****************************************************************************
+##					 	DRAG AND DROP
+## *****************************************************************************
 
 # Creates a ghost event for drag and drop
 func create_drag_and_drop_event(scene: String):
@@ -478,14 +485,12 @@ func create_drag_and_drop_event(scene: String):
 	select_item(piece)
 	return piece
 
-
 func drop_event():
 	if moving_piece != null:
 		set_event_ignore_save(moving_piece, false)
 		moving_piece = null
 		piece_was_dragged = false
 		indent_events()
-
 
 func cancel_drop_event():
 	if moving_piece != null:
@@ -494,6 +499,10 @@ func cancel_drop_event():
 		delete_selected_events()
 		deselect_all_items()
 
+
+## *****************************************************************************
+##					 	CREATING THE TIMELINE
+## *****************************************************************************
 
 # Adding an event to the timeline
 func create_event(scene: String, data: Dictionary = {'no-data': true} , indent: bool = false):
@@ -516,56 +525,6 @@ func create_event(scene: String, data: Dictionary = {'no-data': true} , indent: 
 	if indent:
 		indent_events()
 	return piece
-
-
-# Event Indenting
-func indent_events() -> void:
-	var indent: int = 0
-	var starter: bool = false
-	var event_list: Array = timeline.get_children()
-	var question_index: int = 0
-	var question_indent = {}
-	if event_list.size() < 2:
-		return
-	# Resetting all the indents
-	for event in event_list:
-		var indent_node
-		
-		event.set_indent(0)
-		
-	# Adding new indents
-	for event in event_list:
-		# since there are indicators now, not all elements
-		# in this list have an event_data property
-		if (not "event_data" in event):
-			continue
-		
-		
-		if event.event_data['event_id'] == 'dialogic_011':
-			if question_index > 0:
-				indent = question_indent[question_index] + 1
-				starter = true
-		elif event.event_data['event_id'] == 'dialogic_010' or event.event_data['event_id'] == 'dialogic_012':
-			indent += 1
-			starter = true
-			question_index += 1
-			question_indent[question_index] = indent
-		elif event.event_data['event_id'] == 'dialogic_013':
-			if question_indent.has(question_index):
-				indent = question_indent[question_index]
-				indent -= 1
-				question_index -= 1
-				if indent < 0:
-					indent = 0
-
-		if indent > 0:
-			# Keep old behavior for items without template
-			if starter:
-				event.set_indent(indent - 1)
-			else:
-				event.set_indent(indent)
-		starter = false
-
 
 func load_timeline(filename: String):
 	clear_timeline()
@@ -666,13 +625,16 @@ func clear_timeline():
 		event.free()
 
 
+## *****************************************************************************
+##					 	BLOCK GETTERS
+## *****************************************************************************
+
 func get_block_above(block):
 	var block_index = block.get_index()
 	var item = null
 	if block_index > 0:
 		item = timeline.get_child(block_index - 1)
 	return item
-
 
 func get_block_below(block):
 	var block_index = block.get_index()
@@ -681,13 +643,11 @@ func get_block_below(block):
 		item = timeline.get_child(block_index + 1)
 	return item
 
-
 func get_block_height(block):
 	if block != null:
 		return block.rect_size.y
 	else:
 		return null
-
 
 func get_index_under_cursor():
 	var current_position = get_global_mouse_position()
@@ -710,6 +670,11 @@ func move_block(block, direction):
 		timeline.move_child(block, block_index + 1)
 		return true
 	return false
+
+
+## *****************************************************************************
+##					 TIMELINE CREATION AND SAVING
+## *****************************************************************************
 
 
 func create_timeline():
@@ -757,12 +722,64 @@ func save_timeline() -> void:
 		#print('[+] Saving: ' , timeline_file)
 
 
-# Utilities
+## *****************************************************************************
+##					 UTILITIES/HELPERS
+## *****************************************************************************
+
+# Event Indenting
+func indent_events() -> void:
+	var indent: int = 0
+	var starter: bool = false
+	var event_list: Array = timeline.get_children()
+	var question_index: int = 0
+	var question_indent = {}
+	if event_list.size() < 2:
+		return
+	# Resetting all the indents
+	for event in event_list:
+		var indent_node
+		
+		event.set_indent(0)
+		
+	# Adding new indents
+	for event in event_list:
+		# since there are indicators now, not all elements
+		# in this list have an event_data property
+		if (not "event_data" in event):
+			continue
+		
+		
+		if event.event_data['event_id'] == 'dialogic_011':
+			if question_index > 0:
+				indent = question_indent[question_index] + 1
+				starter = true
+		elif event.event_data['event_id'] == 'dialogic_010' or event.event_data['event_id'] == 'dialogic_012':
+			indent += 1
+			starter = true
+			question_index += 1
+			question_indent[question_index] = indent
+		elif event.event_data['event_id'] == 'dialogic_013':
+			if question_indent.has(question_index):
+				indent = question_indent[question_index]
+				indent -= 1
+				question_index -= 1
+				if indent < 0:
+					indent = 0
+
+		if indent > 0:
+			# Keep old behavior for items without template
+			if starter:
+				event.set_indent(indent - 1)
+			else:
+				event.set_indent(indent)
+		starter = false
+
+# called from the toolbar
 func fold_all_nodes():
 	for event in timeline.get_children():
 		event.set_expanded(false)
 
-
+# called from the toolbar
 func unfold_all_nodes():
 	for event in timeline.get_children():
 		event.set_expanded(true)
