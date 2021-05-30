@@ -1,0 +1,122 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://addons/dialogic/Editor/ThemeEditor/ButtonStylePicker.gd" type="Script" id=1]
+
+[node name="ButtonStylePicker" type="GridContainer"]
+margin_right = 380.0
+margin_bottom = 112.0
+size_flags_horizontal = 3
+custom_constants/hseparation = 10
+columns = 2
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="."]
+margin_top = 5.0
+margin_right = 210.0
+margin_bottom = 19.0
+size_flags_horizontal = 3
+text = "Text Color "
+
+[node name="TextColor" type="HBoxContainer" parent="."]
+margin_left = 220.0
+margin_right = 380.0
+margin_bottom = 24.0
+rect_min_size = Vector2( 160, 0 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CheckBox" type="CheckBox" parent="TextColor"]
+margin_right = 24.0
+margin_bottom = 24.0
+
+[node name="ColorPickerButton" type="ColorPickerButton" parent="TextColor"]
+margin_left = 28.0
+margin_right = 160.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+color = Color( 1, 1, 1, 1 )
+
+[node name="Label5" type="Label" parent="."]
+margin_top = 33.0
+margin_right = 210.0
+margin_bottom = 47.0
+size_flags_horizontal = 3
+text = "Flat background"
+
+[node name="FlatBackground" type="HBoxContainer" parent="."]
+margin_left = 220.0
+margin_top = 28.0
+margin_right = 380.0
+margin_bottom = 52.0
+
+[node name="CheckBox" type="CheckBox" parent="FlatBackground"]
+margin_right = 24.0
+margin_bottom = 24.0
+
+[node name="ColorPickerButton" type="ColorPickerButton" parent="FlatBackground"]
+visible = false
+margin_left = 28.0
+margin_right = 160.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+
+[node name="BackgroundTextureLabel" type="Label" parent="."]
+margin_top = 61.0
+margin_right = 210.0
+margin_bottom = 75.0
+text = "Background Texture"
+
+[node name="BackgroundTexture" type="HBoxContainer" parent="."]
+margin_left = 220.0
+margin_top = 56.0
+margin_right = 380.0
+margin_bottom = 80.0
+rect_min_size = Vector2( 123, 0 )
+
+[node name="CheckBox" type="CheckBox" parent="BackgroundTexture"]
+margin_right = 24.0
+margin_bottom = 24.0
+
+[node name="Button" type="Button" parent="BackgroundTexture"]
+margin_left = 28.0
+margin_right = 160.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+text = "Don't change"
+
+[node name="TextureModulationLabel" type="Label" parent="."]
+margin_top = 89.0
+margin_right = 210.0
+margin_bottom = 103.0
+text = "Texture Modulation"
+
+[node name="TextureModulation" type="HBoxContainer" parent="."]
+margin_left = 220.0
+margin_top = 84.0
+margin_right = 380.0
+margin_bottom = 108.0
+rect_min_size = Vector2( 123, 0 )
+
+[node name="CheckBox" type="CheckBox" parent="TextureModulation"]
+margin_right = 24.0
+margin_bottom = 24.0
+
+[node name="ColorPickerButton" type="ColorPickerButton" parent="TextureModulation"]
+margin_left = 28.0
+margin_right = 160.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+color = Color( 1, 1, 1, 1 )
+
+[connection signal="toggled" from="TextColor/CheckBox" to="." method="_on_CheckBox_toggled"]
+[connection signal="color_changed" from="TextColor/ColorPickerButton" to="." method="_on_TextColor_ColorPickerButton_color_changed"]
+[connection signal="toggled" from="FlatBackground/CheckBox" to="." method="_on_CheckBox_toggled"]
+[connection signal="color_changed" from="FlatBackground/ColorPickerButton" to="." method="_on_ColorPickerButton_color_changed"]
+[connection signal="toggled" from="BackgroundTexture/CheckBox" to="." method="_on_CheckBox_toggled"]
+[connection signal="pressed" from="BackgroundTexture/Button" to="." method="_on_Button_pressed"]
+[connection signal="toggled" from="TextureModulation/CheckBox" to="." method="_on_CheckBox_toggled"]
+[connection signal="color_changed" from="TextureModulation/ColorPickerButton" to="." method="_on_ColorPickerButton_color_changed"]
