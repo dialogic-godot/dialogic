@@ -331,8 +331,9 @@ func _insert_glossary_definitions(text: String):
 
 func _process(delta):
 	$TextBubble/NextIndicatorContainer/NextIndicator.visible = finished
-	if waiting_for_answer and Input.is_action_just_released(input_next):
-		if $Options.get_child_count() > 0:
+	if $Options.get_child_count() > 0:
+		$TextBubble/NextIndicatorContainer/NextIndicator.visible = false # Hide if question 
+		if waiting_for_answer and Input.is_action_just_released(input_next):
 			$Options.get_child(0).grab_focus()
 
 
@@ -507,6 +508,7 @@ func event_handler(event: Dictionary):
 					var p = Portrait.instance()
 					var char_portrait = event['portrait']
 					if char_portrait == '':
+						char_portrait = 'Default'
 						char_portrait = 'Default'
 					
 					if char_portrait == '[Definition]' and event.has('port_defn'):
