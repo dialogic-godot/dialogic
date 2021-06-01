@@ -4,21 +4,21 @@ Create dialogs, characters and scenes to display conversations in your Godot gam
 # Version 1.2 (beta) ![Godot v3.3](https://img.shields.io/badge/godot-v3.3-%23478cbf)
 
 [Changelog](https://github.com/coppolaemilio/dialogic/blob/main/docs/changelog.md) — 
-[Installation](#-installation) — 
+[Installation](#installation) — 
 [Basic Usage](https://github.com/coppolaemilio/dialogic/blob/main/docs/usage.md) — 
-[FAQ](#-faq) — 
+[FAQ](#faq) — 
 [Source structure](https://github.com/coppolaemilio/dialogic/blob/main/docs/source.md) — 
-[Credits](#-credits)
+[Credits](#credits)
 
 ---
 
 ## Getting started
 
-This video will teach you everything you need to know to get started with Dialogic: https://www.youtube.com/watch?v=sYjgDIgD7AY
+This video will teach you everything you need to know to get started with Dialogic: [https://www.youtube.com/watch?v=sYjgDIgD7AY](https://www.youtube.com/watch?v=sYjgDIgD7AY)
 
 ## Installation
 
-To install a Dialogic, download it as a ZIP archive. All releases are listed here: https://github.com/coppolaemilio/dialogic/releases. Then extract the ZIP archive and move the `addons/` folder it contains into your project folder. Then, enable the plugin in project settings.
+To install a Dialogic, download it as a ZIP archive. All releases are listed here: [releases](https://github.com/coppolaemilio/dialogic/releases). Then extract the ZIP archive and move the `addons/` folder it contains into your project folder. Then, enable the plugin in project settings.
 
 If you want to know more about installing plugins you can read the [official documentation page](https://docs.godotengine.org/en/stable/tutorials/plugins/editor/installing_plugins.html).
 
@@ -124,7 +124,7 @@ When you export a project using Dialogic, you need to add `*.json, *.cfg` on the
 
 ---
 
-## ❤ Credits
+## Credits
 Made by [Emilio Coppola](https://github.com/coppolaemilio).
 
 Contributors:  [Arnaud](https://github.com/arnaudvergnet), [ellogwen](https://github.com/ellogwen), [Jowan-Spooner](https://github.com/Jowan-Spooner), [Tim Krief](https://github.com/timkrief),  [and more!](https://github.com/coppolaemilio/dialogic/graphs/contributors). Special thanks: [Toen](https://twitter.com/ToenAndreMC), Òscar, [Francisco Presencia](https://francisco.io/). Placeholder images are from [Toen's](https://toen.world/) [YouTube DF series](https://www.youtube.com/watch?v=B1ggwiat7PM)
