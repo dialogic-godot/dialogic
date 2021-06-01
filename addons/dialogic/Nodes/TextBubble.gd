@@ -8,6 +8,7 @@ onready var name_label = $NameLabel
 onready var next_indicator = $NextIndicatorContainer/NextIndicator
 
 var _finished := false
+var _theme
 
 signal text_completed()
 
@@ -25,6 +26,8 @@ func update_name(name: String, color: Color = Color.white, autocolor: bool=false
 		name_label.rect_size = Vector2(-1, 40)
 		# Setting the color and text
 		name_label.text = name
+		# Alignment
+		call_deferred('align_name_label')
 		if autocolor:
 			name_label.set('custom_colors/font_color', color)
 	else:
@@ -146,10 +149,14 @@ func load_theme(theme: ConfigFile):
 	else:
 		$NameLabel/TextureRect.modulate = Color('#ffffffff')
 	
+	
 	# Setting next indicator animation
 	next_indicator.self_modulate = Color('#ffffff')
 	var animation = theme.get_value('next_indicator', 'animation', 'Up and down')
 	next_indicator.get_node('AnimationPlayer').play(animation)
+	
+	# Saving reference to the current theme
+	_theme = theme
 
 
 ## *****************************************************************************
@@ -177,6 +184,18 @@ func start_text_timer():
 		$WritingTimer.start(text_speed)
 		_finished = false
 
+
+func align_name_label():
+	var name_padding = _theme.get_value('name', 'name_padding', Vector2( 10, 0 ))
+	var horizontal_offset = _theme.get_value('name', 'horizontal_offset', 0)
+	var name_label_position = _theme.get_value('name', 'position', 0)
+	var label_size = name_label.rect_size.x
+	if name_label_position == 0:
+		name_label.rect_global_position.x = rect_global_position.x + horizontal_offset
+	elif name_label_position == 1: # Center
+		name_label.rect_global_position.x = rect_global_position.x + (rect_size.x / 2) - (label_size / 2) + horizontal_offset
+	elif name_label_position == 2: # Right
+		name_label.rect_global_position.x = rect_global_position.x + rect_size.x - label_size + horizontal_offset
 
 ## *****************************************************************************
 ##								OVERRIDES

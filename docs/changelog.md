@@ -14,6 +14,8 @@
   - Added new Box Padding settings to the name label.
   - Added a new option to make the dialog backgrounds full width
   - You can now set a character for the preview message
+  - Three positions for the name label: Left, Center and Right
+  - You can set the verticall and horizontal offset of the name label
 - Character Editor
   - You can now add a scene as a portrait, so you can now use AnimatedSprite or whatever you might need
   - You can set nicknames to characters [[zakary93](https://github.com/zakary93)]
@@ -32,6 +34,7 @@
 - Events have id's now. Nothing should change for the user, but it will be easier to manage the inclusion of new events or modifying existing ones [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
 - Experimental translation added! (This change simply adds a new setting to always treat text as a translation key, instead of displaying it directly. When on, text is sent through tr() before any additional checks are performed on it) [[bojjenclon]](https://github.com/bojjenclon)
 - Fixed a non-breaking bug that printed some errors on the terminal
+- And many more! (kinda hate not listing all the changes, but don't remember all of them)
 
 ## v1.1 - With a little help from my friends
 - Improved event dragging and selection [[Arnaud Vergnet](https://github.com/arnaudvergnet)]

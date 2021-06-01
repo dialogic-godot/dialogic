@@ -121,7 +121,7 @@ static func init_definitions_saves():
 	var sink := File.new()
 	var paths := get_config_files_paths()
 	var err = sink.open(paths["SAVED_DEFINITIONS_FILE"], File.WRITE)
-	print('[Dialogic] Saved definitions not present, creating file: ' + str(err))
+	print('[Dialogic] Initializing save file: ' + str(err))
 	if err == OK:
 		sink.store_string('')
 		sink.close()
