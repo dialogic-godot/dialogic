@@ -1,27 +1,34 @@
 ## v1.2 - WIP
-- Added new fonts selector for italics, bold, and names [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
-- Added extra options to allow the user to disable/enable saving of definitions and current timeline [[Arnaud](https://github.com/arnaudvergnet)]
-- Modified the label on the emit signal event so it is easier to understand [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
-- `Dialogic.start()` will add a CanvasLayer by default to avoid the confusion of not seeing Dialogic when using a camera. [[AnidemDex](https://github.com/AnidemDex)]
-- Adding a warning if the dialog is not a child of a CanvasLayer [[AnidemDex](https://github.com/AnidemDex)]
-- Fixed many issues with portraits fading in and out
-- Added sub-folders to all the resources to better organize your project [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
-- Improved resource picker aware of sub-folders [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
+- Functionality
+  - Added extra options to allow the user to disable/enable saving of definitions and current timeline [[Arnaud](https://github.com/arnaudvergnet)]
+  - `Dialogic.start()` will add a CanvasLayer by default to avoid the confusion of not seeing Dialogic when using a camera. [[AnidemDex](https://github.com/AnidemDex)]
+  - Fixed many issues with portraits fading in and out
+  - Fixed a bug that prevented the BackgroundMusic event to work correctly [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
+  - Experimental translation added! (This change simply adds a new setting to always treat text as a translation key, instead of displaying it directly. When on, text is sent through tr() before any additional checks are performed on it) [[bojjenclon]](https://github.com/bojjenclon)
+
+- Editor
+  - Added sub-folders to all the resources to better organize your project [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
+  - Improved resource picker aware of sub-folders [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
+
 - Dialog
   - Adding [p] and [nw] commands to pause (2 seconds) and no wait (will automatically skip the text)
   - Choices can now print the definition values usgin the regular `[definition]` syntax
+
 - Theme Editor
+  - Added new fonts selector for italics, bold, and names [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
   - Added new Box Padding settings to the name label.
   - Added a new option to make the dialog backgrounds full width
   - You can now set a character for the preview message
   - Three positions for the name label: Left, Center and Right
   - You can set the verticall and horizontal offset of the name label
+
 - Character Editor
   - You can now add a scene as a portrait, so you can now use AnimatedSprite or whatever you might need
   - You can set nicknames to characters [[zakary93](https://github.com/zakary93)]
   - Fixed a bug when coloring the names of characters in text [[zakary93](https://github.com/zakary93)]
   - Added the resolution of the selected portrait image on the preview box
   - You can now import a folder to automatically add all the images inside as portraits
+
 - Timeline Editor
   - You can now select multiple events (`CRTL` for adding/removing an event, `SHIFT` for range select) [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
   - You can now use `CRTL+C`, `CRTL+X` and `CRTL+V` to copy, cut and paste events [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
@@ -31,9 +38,13 @@
   - A SetGlossary event was added that allows to change the info of a glossary item during the game [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
   - You can now set the portrait of a character based on a definition [[bojjenclon]](https://github.com/bojjenclon)
   - New resource picker styles
-- Events have id's now. Nothing should change for the user, but it will be easier to manage the inclusion of new events or modifying existing ones [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
-- Experimental translation added! (This change simply adds a new setting to always treat text as a translation key, instead of displaying it directly. When on, text is sent through tr() before any additional checks are performed on it) [[bojjenclon]](https://github.com/bojjenclon)
-- Fixed a non-breaking bug that printed some errors on the terminal
+  - Modified the label on the emit signal event so it is easier to understand [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
+  - Updated the look of some events and added some useful event warnings
+
+- Other stuff
+  - Events have id's now. Nothing should change for the user, but it will be easier to manage the inclusion of new events or modifying existing ones [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
+  - Fixed a non-breaking bug that printed some errors on the terminal
+
 - And many more! (kinda hate not listing all the changes, but don't remember all of them)
 
 ## v1.1 - With a little help from my friends
