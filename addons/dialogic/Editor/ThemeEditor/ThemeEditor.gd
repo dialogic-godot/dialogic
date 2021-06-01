@@ -763,7 +763,8 @@ func _on_name_padding_value_changed(_value) -> void:
 
 func _on_name_BottomGap_value_changed(value) -> void:
 	if loading:
-		return	
+		return
+	# Todo in 2.0: Replace for a single Vector2 instead of two variables
 	DialogicResources.set_theme_value(current_theme, 'name', 'bottom_gap', n['name_bottom_gap'].value)
 	DialogicResources.set_theme_value(current_theme, 'name', 'horizontal_offset', n['name_horizontal_offset'].value)
 	_on_PreviewButton_pressed() # Refreshing the preview
