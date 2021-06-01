@@ -37,10 +37,12 @@ func load_data(data:Dictionary):
 func get_preview():
 	return ''
 
+
 func get_character_data():
 	for ch in DialogicUtil.get_character_list():
 		if ch['file'] == event_data['character']:
 			return ch
+
 
 func _on_CharacterPicker_data_changed(data):
 	event_data = data
@@ -62,6 +64,7 @@ func _on_PortraitPicker_data_changed(data):
 	
 	# informs the parent about the changes!
 	data_changed()
+
 
 func _on_DefinitionPicker_data_changed(data):
 	event_data['port_defn'] = data['definition']

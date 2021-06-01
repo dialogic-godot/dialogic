@@ -66,8 +66,10 @@ func _on_PickerMenu_selected(index, menu):
 	# informs the parent about the changes!
 	data_changed()
 
+
 func _on_PickerMenu_about_to_show():
 	build_PickerMenu()
+
 
 func build_PickerMenu():
 	picker_menu.get_popup().clear()

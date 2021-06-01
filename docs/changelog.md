@@ -14,6 +14,7 @@
   - Added new Box Padding settings to the name label.
   - Added a new option to make the dialog backgrounds full width
   - You can now set a character for the preview message
+  - Three positions for the name label: Left, Center and Right
 - Character Editor
   - You can now add a scene as a portrait, so you can now use AnimatedSprite or whatever you might need
   - You can set nicknames to characters [[zakary93](https://github.com/zakary93)]

@@ -92,6 +92,7 @@ onready var n : Dictionary = {
 	'name_background_modulation_color': $"VBoxContainer/TabContainer/Name Label/Column2/GridContainer/HBoxContainer6/ColorPickerButton",
 	'name_padding_x': $"VBoxContainer/TabContainer/Name Label/Column2/GridContainer/HBoxContainer/NamePaddingX",
 	'name_padding_y': $"VBoxContainer/TabContainer/Name Label/Column2/GridContainer/HBoxContainer/NamePaddingY",
+	'name_position': $"VBoxContainer/TabContainer/Name Label/Column3/GridContainer/HBoxContainer/Positions",
 	
 	
 	# Choice Buttons
@@ -162,6 +163,15 @@ func _ready() -> void:
 	n['button_hover'].connect('style_modified', self, '_on_choice_style_modified')
 	n['button_pressed'].connect('style_modified', self, '_on_choice_style_modified')
 	n['button_disabled'].connect('style_modified', self, '_on_choice_style_modified')
+	
+	n['name_position'].text = 'Left'
+	n['name_position'].connect('item_selected', self, '_on_name_position_selected')
+	var name_positions_popup = n['name_position'].get_popup()
+	name_positions_popup.clear()
+	name_positions_popup.add_radio_check_item('Left')
+	name_positions_popup.add_radio_check_item('Center')
+	name_positions_popup.add_radio_check_item('Right')
+	n['name_position'].select(0)
 	
 	
 	# Character Picker
@@ -302,6 +312,8 @@ func load_theme(filename):
 	n['name_shadow_offset_x'].value = theme.get_value('name', 'shadow_offset', Vector2(2,2)).x
 	n['name_shadow_offset_y'].value = theme.get_value('name', 'shadow_offset', Vector2(2,2)).y
 	n['name_bottom_gap'].value = theme.get_value('name', 'bottom_gap', 48)
+	
+	n['name_position'].select(theme.get_value('name', 'position', 0))
 	
 	
 	# Next indicator animations
@@ -753,6 +765,12 @@ func _on_name_BottomGap_value_changed(value) -> void:
 	DialogicResources.set_theme_value(current_theme, 'name', 'bottom_gap', value)
 	_on_PreviewButton_pressed() # Refreshing the preview
 
+
+func _on_name_position_selected(index):
+	if loading:
+		return
+	DialogicResources.set_theme_value(current_theme, 'name', 'position', index)
+	_on_PreviewButton_pressed() # Refreshing the preview
 
 ## ------------ 		CHOICE BUTTON TAB	 	--------------------------------
 

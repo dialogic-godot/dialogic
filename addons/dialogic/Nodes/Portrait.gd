@@ -7,16 +7,11 @@ var character_data = {
 	'file': '',
 	'mirror_portraits': false
 }
-var positions = {
-	'left': Vector2(-400, 0),
-	'right': Vector2(+400, 0),
-	'center': Vector2(0, 0),
-	'center_right': Vector2(200, 0),
-	'center_left': Vector2(-200, 0)}
 
 var direction = 'left'
 var debug = false
 var fading_out = false
+
 
 func init(expression: String = '') -> void:
 	set_portrait(expression)
@@ -52,6 +47,9 @@ func set_portrait(expression: String) -> void:
 					$TextureRect.texture = load(p['path'])
 				else:
 					$TextureRect.texture = ImageTexture.new()
+		else:
+			# go with the default one
+			set_portrait('Default')
 
 
 func set_mirror(value):
@@ -65,6 +63,13 @@ func set_mirror(value):
 
 
 func move_to_position(position_offset, time = 0.5):
+	var positions = {
+		'left': Vector2(-400, 0),
+		'right': Vector2(+400, 0),
+		'center': Vector2(0, 0),
+		'center_right': Vector2(200, 0),
+		'center_left': Vector2(-200, 0)}
+	
 	direction = position_offset
 	modulate = Color(1,1,1,0)
 	tween_modulate(modulate, Color(1,1,1, 1), time)
