@@ -383,11 +383,12 @@ func _on_PreviewButton_pressed() -> void:
 	var preview_dialog = Dialogic.start('', true, "res://addons/dialogic/Dialog.tscn", false, false)
 	preview_dialog.preview = true
 	
-	if n['character_picker'].text == 'Random Character':
-		var characters : Array = DialogicUtil.get_character_list()
-		if characters.size():
-			characters.shuffle()
-			preview_character_selected = characters[0]['file']
+	if n['character_picker']: # Sometimes it can't find the node
+		if n['character_picker'].text == 'Random Character':
+			var characters : Array = DialogicUtil.get_character_list()
+			if characters.size():
+				characters.shuffle()
+				preview_character_selected = characters[0]['file']
 
 	preview_dialog.dialog_script = {
 			"events":[
