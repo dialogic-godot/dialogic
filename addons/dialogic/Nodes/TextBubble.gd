@@ -189,7 +189,6 @@ func align_name_label():
 	var name_padding = _theme.get_value('name', 'name_padding', Vector2( 10, 0 ))
 	var name_label_position = _theme.get_value('name', 'position', 0)
 	var label_size = name_label.rect_size.x
-	print(label_size,', name_padding: ', name_padding.x)
 	if name_label_position == 1: # Center
 		name_label.rect_global_position.x = rect_global_position.x + (rect_size.x / 2) - (label_size / 2)
 	elif name_label_position == 2: # Right

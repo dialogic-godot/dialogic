@@ -44,8 +44,8 @@ tracks/0/keys = {
 }
 
 [sub_resource type="StyleBoxFlat" id=5]
-content_margin_left = 40.0
-content_margin_right = 40.0
+content_margin_left = 20.0
+content_margin_right = 20.0
 content_margin_bottom = 0.0
 bg_color = Color( 1, 1, 1, 0 )
 expand_margin_left = 10.0
@@ -128,6 +128,7 @@ anims/Static = SubResource( 3 )
 "anims/Up and down" = SubResource( 4 )
 
 [node name="NameLabel" type="Label" parent="."]
+visible = false
 margin_top = -48.0
 margin_right = 58.0
 margin_bottom = -8.0
@@ -138,7 +139,6 @@ custom_colors/font_color = Color( 0.423529, 0.580392, 0.74902, 1 )
 custom_colors/font_color_shadow = Color( 0, 0, 0, 0.619608 )
 custom_constants/shadow_offset_x = 2
 custom_constants/shadow_offset_y = 2
-text = "Name"
 align = 1
 valign = 1
 __meta__ = {

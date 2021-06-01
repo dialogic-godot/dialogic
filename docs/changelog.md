@@ -33,6 +33,7 @@
 - Events have id's now. Nothing should change for the user, but it will be easier to manage the inclusion of new events or modifying existing ones [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
 - Experimental translation added! (This change simply adds a new setting to always treat text as a translation key, instead of displaying it directly. When on, text is sent through tr() before any additional checks are performed on it) [[bojjenclon]](https://github.com/bojjenclon)
 - Fixed a non-breaking bug that printed some errors on the terminal
+- And many more! (kinda hate not listing all the changes, but don't remember all of them)
 
 ## v1.1 - With a little help from my friends
 - Improved event dragging and selection [[Arnaud Vergnet](https://github.com/arnaudvergnet)]
