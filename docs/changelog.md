@@ -13,6 +13,7 @@
 - Dialog
   - Adding [p] and [nw] commands to pause (2 seconds) and no wait (will automatically skip the text)
   - Choices can now print the definition values usgin the regular `[definition]` syntax
+  - Next indicator is no longer visible when there are options to select
 
 - Theme Editor
   - Added new fonts selector for italics, bold, and names [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
