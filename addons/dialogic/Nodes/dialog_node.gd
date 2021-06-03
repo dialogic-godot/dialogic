@@ -983,19 +983,11 @@ func _on_Definition_Timer_timeout():
 
 
 func wait_seconds(seconds):
-	var timer = Timer.new()
-	add_child(timer)
-	timer.connect("timeout", self, '_on_WaitSeconds_timeout', [timer])
-	timer.start(seconds)
 	$TextBubble.visible = false
-
-
-func _on_WaitSeconds_timeout(timer):
-	emit_signal("event_end", "wait")
+	yield(get_tree().create_timer(seconds), "timeout")
 	waiting = false
-	timer.stop()
-	timer.queue_free()
 	$TextBubble.visible = true
+	emit_signal("event_end", "wait")
 	_load_next_event()
 
 
