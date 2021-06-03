@@ -494,7 +494,7 @@ func event_handler(event: Dictionary):
 		'dialogic_002':
 			## PLEASE UPDATE THIS! BUT HOW? 
 			emit_signal("event_start", "action", event)
-			if event['character'] == '':
+			if event['character'] == '':# No character found on the event. Skip.
 				_load_next_event()
 			else:
 				var character_data = get_character(event['character'])
@@ -509,7 +509,6 @@ func event_handler(event: Dictionary):
 					var char_portrait = event['portrait']
 					if char_portrait == '':
 						char_portrait = 'Default'
-						char_portrait = 'Default'
 					
 					if char_portrait == '[Definition]' and event.has('port_defn'):
 						var portrait_definition = event['port_defn']
@@ -519,6 +518,8 @@ func event_handler(event: Dictionary):
 									char_portrait = d['value']
 									break
 					
+					if current_theme.get_value('settings', 'single_portrait_mode', false):
+						p.single_portrait_mode = true
 					p.character_data = character_data
 					p.init(char_portrait)
 					p.set_mirror(event.get('mirror', false))

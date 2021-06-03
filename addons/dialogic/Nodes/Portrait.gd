@@ -8,6 +8,7 @@ var character_data = {
 	'mirror_portraits': false
 }
 
+var single_portrait_mode = false
 var direction = 'left'
 var debug = false
 var fading_out = false
@@ -24,6 +25,7 @@ func _ready():
 
 
 func set_portrait(expression: String) -> void:
+	print(single_portrait_mode)
 	if expression == '':
 		expression = 'Default'
 	
@@ -111,19 +113,20 @@ func move_to_position(position_offset, time = 0.5):
 func fade_in(time = 0.5):
 	tween_modulate(modulate, Color(1,1,1, 1), time)
 	
-	var end_pos = Vector2(0, -40) # starting at center
-	if direction == 'right':
-		end_pos = Vector2(+40, 0)
-	elif direction == 'left':
-		end_pos = Vector2(-40, 0)
-	else:
-		rect_position += Vector2(0, 40)
-	
-	$TweenPosition.interpolate_property(
-		self, "rect_position", rect_position, rect_position + end_pos, time,
-		Tween.TRANS_LINEAR, Tween.EASE_IN_OUT
-	)
-	$TweenPosition.start()
+	if single_portrait_mode == false:
+		var end_pos = Vector2(0, -40) # starting at center
+		if direction == 'right':
+			end_pos = Vector2(+40, 0)
+		elif direction == 'left':
+			end_pos = Vector2(-40, 0)
+		else:
+			rect_position += Vector2(0, 40)
+
+		$TweenPosition.interpolate_property(
+			self, "rect_position", rect_position, rect_position + end_pos, time,
+			Tween.TRANS_LINEAR, Tween.EASE_IN_OUT
+		)
+		$TweenPosition.start()
 
 
 func fade_out(time = 0.5):
@@ -144,8 +147,11 @@ func focus():
 
 
 func focusout():
+	var alpha = 1
+	if single_portrait_mode:
+		alpha = 0
 	if not fading_out:
-		tween_modulate(modulate, Color(0.5,0.5,0.5, 1))
+		tween_modulate(modulate, Color(0.5,0.5,0.5, alpha))
 		var _parent = get_parent()
 		if _parent:
 			# Render this portrait first

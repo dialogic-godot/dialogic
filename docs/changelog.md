@@ -22,6 +22,7 @@
   - You can now set a character for the preview message
   - Three positions for the name label: Left, Center and Right
   - You can set the verticall and horizontal offset of the name label
+  - Added a new option to enable single portrait mode. In this mode, once the characters join the dialog, only one of them will be visible without the need of making them join and leave every time
 
 - Character Editor
   - You can now add a scene as a portrait, so you can now use AnimatedSprite or whatever you might need
