@@ -331,8 +331,9 @@ func _insert_glossary_definitions(text: String):
 
 func _process(delta):
 	$TextBubble/NextIndicatorContainer/NextIndicator.visible = finished
-	if waiting_for_answer and Input.is_action_just_released(input_next):
-		if $Options.get_child_count() > 0:
+	if $Options.get_child_count() > 0:
+		$TextBubble/NextIndicatorContainer/NextIndicator.visible = false # Hide if question 
+		if waiting_for_answer and Input.is_action_just_released(input_next):
 			$Options.get_child(0).grab_focus()
 
 
@@ -493,7 +494,7 @@ func event_handler(event: Dictionary):
 		'dialogic_002':
 			## PLEASE UPDATE THIS! BUT HOW? 
 			emit_signal("event_start", "action", event)
-			if event['character'] == '':
+			if event['character'] == '':# No character found on the event. Skip.
 				_load_next_event()
 			else:
 				var character_data = get_character(event['character'])
@@ -517,6 +518,8 @@ func event_handler(event: Dictionary):
 									char_portrait = d['value']
 									break
 					
+					if current_theme.get_value('settings', 'single_portrait_mode', false):
+						p.single_portrait_mode = true
 					p.character_data = character_data
 					p.init(char_portrait)
 					p.set_mirror(event.get('mirror', false))
@@ -636,8 +639,13 @@ func event_handler(event: Dictionary):
 		# Wait seconds event
 		'dialogic_023':
 			emit_signal("event_start", "wait", event)
-			wait_seconds(event['wait_seconds'])
+			$TextBubble.visible = false
 			waiting = true
+			yield(get_tree().create_timer(event['wait_seconds']), "timeout")
+			waiting = false
+			$TextBubble.visible = true
+			emit_signal("event_end", "wait")
+			_load_next_event()
 		# Set Theme event
 		'dialogic_024':
 			emit_signal("event_start", "set_theme", event)
@@ -978,23 +986,6 @@ func _on_Definition_Timer_timeout():
 	# Adding a timer to avoid a graphical glitch
 	definition_visible = false
 	$DefinitionInfo.visible = definition_visible
-
-
-func wait_seconds(seconds):
-	var timer = Timer.new()
-	add_child(timer)
-	timer.connect("timeout", self, '_on_WaitSeconds_timeout', [timer])
-	timer.start(seconds)
-	$TextBubble.visible = false
-
-
-func _on_WaitSeconds_timeout(timer):
-	emit_signal("event_end", "wait")
-	waiting = false
-	timer.stop()
-	timer.queue_free()
-	$TextBubble.visible = true
-	_load_next_event()
 
 
 func dprint(string, arg1='', arg2='', arg3='', arg4='' ):
