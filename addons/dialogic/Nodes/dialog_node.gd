@@ -638,8 +638,13 @@ func event_handler(event: Dictionary):
 		# Wait seconds event
 		'dialogic_023':
 			emit_signal("event_start", "wait", event)
-			wait_seconds(event['wait_seconds'])
+			$TextBubble.visible = false
 			waiting = true
+			yield(get_tree().create_timer(event['wait_seconds']), "timeout")
+			waiting = false
+			$TextBubble.visible = true
+			emit_signal("event_end", "wait")
+			_load_next_event()
 		# Set Theme event
 		'dialogic_024':
 			emit_signal("event_start", "set_theme", event)
@@ -980,15 +985,6 @@ func _on_Definition_Timer_timeout():
 	# Adding a timer to avoid a graphical glitch
 	definition_visible = false
 	$DefinitionInfo.visible = definition_visible
-
-
-func wait_seconds(seconds):
-	$TextBubble.visible = false
-	yield(get_tree().create_timer(seconds), "timeout")
-	waiting = false
-	$TextBubble.visible = true
-	emit_signal("event_end", "wait")
-	_load_next_event()
 
 
 func dprint(string, arg1='', arg2='', arg3='', arg4='' ):
