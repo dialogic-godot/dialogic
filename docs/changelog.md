@@ -11,7 +11,7 @@
   - Improved resource picker aware of sub-folders [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
 
 - Dialog
-  - Adding [p] and [nw] commands to pause (2 seconds) and no wait (will automatically skip the text)
+  - Adding [nw] commands to automatically skip the text after 2 seconds without user input (Will be improved in future versions)
   - Choices can now print the definition values usgin the regular `[definition]` syntax
   - Next indicator is no longer visible when there are options to select
 
