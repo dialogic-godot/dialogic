@@ -55,6 +55,7 @@ onready var n : Dictionary = {
 	'theme_shadow_offset_y': $"VBoxContainer/TabContainer/Dialog Text/Column2/GridContainer/HBoxContainer/ShadowOffsetY",
 	'theme_text_speed': $"VBoxContainer/TabContainer/Dialog Text/Column3/GridContainer/TextSpeed",
 	'alignment': $"VBoxContainer/TabContainer/Dialog Text/Column3/GridContainer/HBoxContainer3/Alignment",
+	'single_portrait_mode': $"VBoxContainer/TabContainer/Dialog Text/Column3/GridContainer/SinglePortraitModeCheckBox",
 	
 	# Dialog box
 	'background_texture_button_visible': $"VBoxContainer/TabContainer/Dialog Box/Column/GridContainer/HBoxContainer3/CheckBox",
@@ -154,6 +155,9 @@ func _ready() -> void:
 	n['text_preview'].syntax_highlighting = true
 	n['text_preview'].add_color_region('[', ']', get_color("axis_z_color", "Editor"))
 	
+	# Dialog Text tab
+	n['single_portrait_mode'].connect('toggled', self, '_on_generic_checkbox', ['settings', 'single_portrait_mode'])
+	
 	# Choice button style modifiers
 	n['button_normal'].connect('picking_background', self, '_on_ButtonTextureButton_pressed')
 	n['button_hover'].connect('picking_background', self, '_on_ButtonTextureButton_pressed')
@@ -223,6 +227,7 @@ func load_theme(filename):
 	setup_advanced_containers()
 	# Settings
 	n['theme_action_key'].text = theme.get_value('settings', 'action_key', 'ui_accept')
+	n['single_portrait_mode'].pressed = theme.get_value('settings', 'single_portrait_mode', false) # Currently in Dialog Text tab
 	
 	# Background
 	n['theme_background_image'].text = DialogicResources.get_filename_from_path(theme.get_value('background', 'image', default_background))
@@ -416,6 +421,17 @@ func _on_Preview_text_changed() -> void:
 ## ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ## 							THEME OPTIONS
 ## ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+## ------------ 		GENERICS
+
+func _on_generic_checkbox(button_pressed, section, key) -> void:
+	# Many methods here are the same, so I want to replace all those instances
+	# with this generic checkbox logic. TODO
+	if loading:
+		return
+	DialogicResources.set_theme_value(current_theme, section, key, button_pressed)
+	_on_PreviewButton_pressed() # Refreshing the preview
+	
 
 ## ------------ 		DIALOG TEXT TAB 	------------------------------------
 

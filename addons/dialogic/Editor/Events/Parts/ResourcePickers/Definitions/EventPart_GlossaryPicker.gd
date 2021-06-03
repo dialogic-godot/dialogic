@@ -9,7 +9,6 @@ onready var picker_menu = $MenuButton
 
 # used to connect the signals
 func _ready():
-	picker_menu.get_popup().connect("index_pressed", self, '_on_PickerMenu_selected')
 	picker_menu.connect("about_to_show", self, "_on_PickerMenu_about_to_show")
 
 # called by the event block
