@@ -25,7 +25,6 @@ func _ready():
 
 
 func set_portrait(expression: String) -> void:
-	print(single_portrait_mode)
 	if expression == '':
 		expression = 'Default'
 	

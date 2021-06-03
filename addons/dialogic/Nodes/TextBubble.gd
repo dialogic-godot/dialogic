@@ -36,7 +36,7 @@ func update_name(name: String, color: Color = Color.white, autocolor: bool=false
 
 func update_text(text):
 	# Removing commands from the text
-	text = text.replace('[p]', '')
+	#text = text.replace('[p]', '')
 	text = text.replace('[nw]', '')
 	
 	# Updating the text and starting the animation from 0
