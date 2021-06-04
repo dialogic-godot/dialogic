@@ -74,6 +74,7 @@ func _ready():
 		if preview:
 			get_parent().connect("resized", self, "resize_main")
 			_init_dialog()
+			$DefinitionInfo.in_theme_editor = true
 	else:
 		# Copied
 		if not(get_parent() is CanvasLayer) and debug_mode:
