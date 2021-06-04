@@ -117,9 +117,17 @@ onready var n : Dictionary = {
 	'button_disabled': $"VBoxContainer/TabContainer/Choice Buttons/Column/TabContainer/Disabled",
 	
 	# Glossary
-	'glossary_font': $VBoxContainer/TabContainer/Glossary/Column/GridContainer/FontButton,
-	'glossary_color': $VBoxContainer/TabContainer/Glossary/Column/GridContainer/ColorPickerButton,
-	'glossary_enabled': $VBoxContainer/TabContainer/Glossary/Column/GridContainer/ShowGlossaryCheckBox,
+	'glossary_title_font': $VBoxContainer/TabContainer/Glossary/Column3/GridContainer/TitleFont/TitleFontButton,
+	'glossary_text_font': $VBoxContainer/TabContainer/Glossary/Column3/GridContainer/TextFont/TextFontButton,
+	'glossary_extra_font': $VBoxContainer/TabContainer/Glossary/Column3/GridContainer/ExtraFont/ExtraFontButton,
+	'glossary_highlight_color': $VBoxContainer/TabContainer/Glossary/Column/GridContainer/HighlightColorPicker,
+	'glossary_title_color': $VBoxContainer/TabContainer/Glossary/Column3/GridContainer/TitleColorPicker,
+	'glossary_text_color': $VBoxContainer/TabContainer/Glossary/Column3/GridContainer/TextColorPicker,
+	'glossary_extra_color': $VBoxContainer/TabContainer/Glossary/Column3/GridContainer/ExtraColorPicker,
+	
+	'glossary_background_panel': $VBoxContainer/TabContainer/Glossary/Column/GridContainer/BackgroundPanel/BgPanelButton,
+	
+	'glossary_enabled': $VBoxContainer/TabContainer/Glossary/Column2/GridContainer/ShowGlossaryCheckBox,
 	
 	# Text preview
 	'text_preview': $VBoxContainer/HBoxContainer3/TextEdit,
@@ -151,6 +159,10 @@ func _ready() -> void:
 	$"VBoxContainer/TabContainer/Dialog Text/Column/GridContainer/BoldFont/BoldFontOpen".icon = get_icon("Edit", "EditorIcons")
 	$"VBoxContainer/TabContainer/Dialog Text/Column/GridContainer/ItalicFont/ItalicFontOpen".icon = get_icon("Edit", "EditorIcons")
 	$"VBoxContainer/TabContainer/Dialog Text/Column/GridContainer/RegularFont/RegularFontOpen".icon = get_icon("Edit", "EditorIcons")
+	$"VBoxContainer/TabContainer/Glossary/Column3/GridContainer/TitleFont/TitleFontOpen".icon = get_icon("Edit", "EditorIcons")
+	$"VBoxContainer/TabContainer/Glossary/Column3/GridContainer/TextFont/TextFontOpen".icon = get_icon("Edit", "EditorIcons")
+	$"VBoxContainer/TabContainer/Glossary/Column3/GridContainer/ExtraFont/ExtraFontOpen".icon = get_icon("Edit", "EditorIcons")
+	$"VBoxContainer/TabContainer/Glossary/Column/GridContainer/BackgroundPanel/BGPanelOpen".icon = get_icon("Edit", "EditorIcons")
 	
 	n['text_preview'].syntax_highlighting = true
 	n['text_preview'].add_color_region('[', ']', get_color("axis_z_color", "Editor"))
@@ -273,8 +285,19 @@ func load_theme(filename):
 	toggle_button_customization_fields(theme.get_value('buttons', 'use_native', false), theme.get_value('buttons', 'use_custom', false))
 	
 	# Definitions
-	n['glossary_color'].color = Color(theme.get_value('definitions', 'color', "#ffffffff"))
-	n['glossary_font'].text = DialogicResources.get_filename_from_path(theme.get_value('definitions', 'font', "res://addons/dialogic/Example Assets/Fonts/GlossaryFont.tres"))
+	n['glossary_highlight_color'].color = Color(theme.get_value('definitions', 'color', "#ffffffff"))
+	
+	n['glossary_title_font'].text = DialogicResources.get_filename_from_path(theme.get_value('definitions', 'font', "res://addons/dialogic/Example Assets/Fonts/GlossaryFont.tres"))
+	n['glossary_title_color'].color = Color(theme.get_value('definitions', 'title_color', "#ffffffff"))
+	
+	n['glossary_text_font'].text = DialogicResources.get_filename_from_path(theme.get_value('definitions', 'text_font', "res://addons/dialogic/Example Assets/Fonts/GlossaryFont.tres"))
+	n['glossary_text_color'].color = Color(theme.get_value('definitions', 'text_color', "#ffffffff"))
+	
+	n['glossary_extra_font'].text = DialogicResources.get_filename_from_path(theme.get_value('definitions', 'extra_font', "res://addons/dialogic/Example Assets/Fonts/GlossaryFont.tres"))
+	n['glossary_extra_color'].color = Color(theme.get_value('definitions', 'extra_color', "#ffffffff"))
+	
+	n['glossary_background_panel'].text = DialogicResources.get_filename_from_path(theme.get_value('definitions', 'background_panel', "res://addons/dialogic/Example Assets/backgrounds/GlossaryBackground.tres"))
+	
 	n['glossary_enabled'].pressed = theme.get_value('definitions', 'show_glossary', true)
 	
 	# Text
@@ -631,6 +654,14 @@ func _on_BackgroundColor_ColorPickerButton_color_changed(color) -> void:
 	DialogicResources.set_theme_value(current_theme, 'background', 'color', '#' + color.to_html())
 	$DelayPreviewTimer.start(0.5) # Calling a timer so the update doesn't get triggered many times
 
+# Full Width
+func _on_BackgroundFullWidth_toggled(button_pressed):
+	if loading:
+		return
+	DialogicResources.set_theme_value(current_theme, 'background','full_width', button_pressed)
+	_on_PreviewButton_pressed() # Refreshing the preview
+
+
 
 # Next indicator
 func _on_NextIndicatorButton_pressed() -> void:
@@ -888,26 +919,113 @@ func _on_custom_button_selected(path, target) -> void:
 
 
 ## ------------ 		GLOSSARY  TAB	 	------------------------------------
-func _on_GlossaryColorPicker_color_changed(color) -> void:
+
+## TITLE FONT
+func _on_Glossary_TitleFontButton_pressed():
+	editor_reference.godot_dialog("*.tres")
+	editor_reference.godot_dialog_connect(self, "_on_Glossary_TitleFont_selected")
+
+
+func _on_Glossary_TitleFontOpen_pressed():
+	var theme = DialogicResources.get_theme_config(current_theme)
+	editor_reference.editor_interface.inspect_object(load(theme.get_value('definitions', 'font', 'res://addons/dialogic/Example Assets/Fonts/GlossaryFont.tres')))
+
+
+func _on_Glossary_TitleFont_selected(path, target) -> void:
+	if loading:
+		return
+	DialogicResources.set_theme_value(current_theme, 'definitions', 'font', path)
+	n['glossary_title_font'].text = DialogicResources.get_filename_from_path(path)
+	_on_PreviewButton_pressed() # Refreshing the preview
+
+
+func _on_Glossary_TitleColorPicker_color_changed(color):
+	if loading:
+		return
+	DialogicResources.set_theme_value(current_theme, 'definitions', 'title_color', '#' + color.to_html())
+	$DelayPreviewTimer.start(0.5) # Calling a timer so the update doesn't get triggered many times
+
+
+## TEXT
+func _on_Glossary_TextFontButton_pressed():
+	editor_reference.godot_dialog("*.tres")
+	editor_reference.godot_dialog_connect(self, "_on_Glossary_TextFont_selected")
+
+
+func _on_Glossary_TextFont_selected(path, target):
+	if loading:
+		return
+	DialogicResources.set_theme_value(current_theme, 'definitions', 'text_font', path)
+	n['glossary_text_font'].text = DialogicResources.get_filename_from_path(path)
+	_on_PreviewButton_pressed() # Refreshing the preview
+
+
+func _on_Glossary_TextFontOpen_pressed():
+	var theme = DialogicResources.get_theme_config(current_theme)
+	editor_reference.editor_interface.inspect_object(load(theme.get_value('definitions', 'text_font', 'res://addons/dialogic/Example Assets/Fonts/GlossaryFont.tres')))
+
+
+func _on_Glossary_TextColorPicker_color_changed(color):
+	if loading:
+		return
+	DialogicResources.set_theme_value(current_theme, 'definitions', 'text_color', '#' + color.to_html())
+	$DelayPreviewTimer.start(0.5) # Calling a timer so the update doesn't get triggered many times
+
+
+## EXTRA FONT
+func _on_Glossary_ExtraFontButton_pressed():
+	editor_reference.godot_dialog("*.tres")
+	editor_reference.godot_dialog_connect(self, "_on_Glossary_ExtraFont_selected")
+
+
+func _on_Glossary_ExtraFont_selected(path, target):
+	if loading:
+		return
+	DialogicResources.set_theme_value(current_theme, 'definitions', 'extra_font', path)
+	n['glossary_extra_font'].text = DialogicResources.get_filename_from_path(path)
+	_on_PreviewButton_pressed() # Refreshing the preview
+
+
+func _on_Glossary_ExtraFontOpen_pressed():
+	var theme = DialogicResources.get_theme_config(current_theme)
+	editor_reference.editor_interface.inspect_object(load(theme.get_value('definitions', 'extra_font', 'res://addons/dialogic/Example Assets/Fonts/GlossaryFont.tres')))
+
+
+func _on_Glossary_ExtraColorPicker_color_changed(color):
+	if loading:
+		return
+	DialogicResources.set_theme_value(current_theme, 'definitions', 'extra_color', '#' + color.to_html())
+	$DelayPreviewTimer.start(0.5) # Calling a timer so the update doesn't get triggered many times
+
+
+## HIGHLIGHT COLOR
+func _on_Glossary_HighlightColorPicker_color_changed(color):
 	if loading:
 		return
 	DialogicResources.set_theme_value(current_theme, 'definitions', 'color', '#' + color.to_html())
 	$DelayPreviewTimer.start(0.5) # Calling a timer so the update doesn't get triggered many times
 
+## BACKGROUNDPANEL
 
-func _on_GlossaryFontButton_pressed() -> void:
+
+func _on_BgPanelSelection_pressed():
 	editor_reference.godot_dialog("*.tres")
-	editor_reference.godot_dialog_connect(self, "_on_Glossary_Font_selected")
+	editor_reference.godot_dialog_connect(self, "_on_Glossary_BackgroundPanel_selected")
 
 
-func _on_Glossary_Font_selected(path, target) -> void:
+func _on_BGPanelOpen_pressed():
+	var theme = DialogicResources.get_theme_config(current_theme)
+	editor_reference.editor_interface.inspect_object(load(theme.get_value('definitions', 'background_panel', 'res://addons/dialogic/Example Assets/backgrounds/GlossaryBackground.tres')))
+
+
+func _on_Glossary_BackgroundPanel_selected(path, target):
 	if loading:
 		return
-	DialogicResources.set_theme_value(current_theme, 'definitions', 'font', path)
-	n['glossary_font'].text = DialogicResources.get_filename_from_path(path)
+	DialogicResources.set_theme_value(current_theme, 'definitions', 'background_panel', path)
+	n['glossary_background_panel'].text = DialogicResources.get_filename_from_path(path)
 	_on_PreviewButton_pressed() # Refreshing the preview
 
-
+## SHOW GLOSSARY
 func _on_ShowGlossaryCheckBox_toggled(button_pressed):
 	if loading:
 		return
@@ -915,8 +1033,5 @@ func _on_ShowGlossaryCheckBox_toggled(button_pressed):
 	_on_PreviewButton_pressed() # Refreshing the preview
 
 
-func _on_BackgroundFullWidth_toggled(button_pressed):
-	if loading:
-		return
-	DialogicResources.set_theme_value(current_theme, 'background','full_width', button_pressed)
-	_on_PreviewButton_pressed() # Refreshing the preview
+
+

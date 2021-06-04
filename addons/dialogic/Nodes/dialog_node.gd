@@ -74,6 +74,7 @@ func _ready():
 		if preview:
 			get_parent().connect("resized", self, "resize_main")
 			_init_dialog()
+			$DefinitionInfo.in_theme_editor = true
 	else:
 		# Copied
 		if not(get_parent() is CanvasLayer) and debug_mode:
@@ -952,14 +953,10 @@ func load_theme(filename):
 
 	input_next = theme.get_value('settings', 'action_key', 'ui_accept')
 
-	# Definitions
-	var definitions_font = DialogicUtil.path_fixer_load(theme.get_value('definitions', 'font', "res://addons/dialogic/Example Assets/Fonts/GlossaryFont.tres"))
-	$DefinitionInfo/VBoxContainer/Title.set('custom_fonts/normal_font', definitions_font)
-	$DefinitionInfo/VBoxContainer/Content.set('custom_fonts/normal_font', definitions_font)
-	$DefinitionInfo/VBoxContainer/Extra.set('custom_fonts/normal_font', definitions_font)
 	
 	$TextBubble.load_theme(theme)
 	
+	$DefinitionInfo.load_theme(theme)
 	return theme
 
 
@@ -971,7 +968,6 @@ func _on_RichTextLabel_meta_hover_started(meta):
 				'title': d['title'],
 				'body': parse_definitions(d['text'], true, false), # inserts variables but not other glossary items!
 				'extra': d['extra'],
-				'color': current_theme.get_value('definitions', 'color', '#ffbebebe'),
 			})
 			correct_type = true
 			dprint('[D] Hovered over glossary entry: ', d)
