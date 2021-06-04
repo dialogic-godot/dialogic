@@ -125,6 +125,8 @@ onready var n : Dictionary = {
 	'glossary_text_color': $VBoxContainer/TabContainer/Glossary/Column3/GridContainer/TextColorPicker,
 	'glossary_extra_color': $VBoxContainer/TabContainer/Glossary/Column3/GridContainer/ExtraColorPicker,
 	
+	'glossary_background_panel': $VBoxContainer/TabContainer/Glossary/Column/GridContainer/BackgroundPanel/BgPanelButton,
+	
 	'glossary_enabled': $VBoxContainer/TabContainer/Glossary/Column2/GridContainer/ShowGlossaryCheckBox,
 	
 	# Text preview
@@ -160,6 +162,7 @@ func _ready() -> void:
 	$"VBoxContainer/TabContainer/Glossary/Column3/GridContainer/TitleFont/TitleFontOpen".icon = get_icon("Edit", "EditorIcons")
 	$"VBoxContainer/TabContainer/Glossary/Column3/GridContainer/TextFont/TextFontOpen".icon = get_icon("Edit", "EditorIcons")
 	$"VBoxContainer/TabContainer/Glossary/Column3/GridContainer/ExtraFont/ExtraFontOpen".icon = get_icon("Edit", "EditorIcons")
+	$"VBoxContainer/TabContainer/Glossary/Column/GridContainer/BackgroundPanel/BGPanelOpen".icon = get_icon("Edit", "EditorIcons")
 	
 	n['text_preview'].syntax_highlighting = true
 	n['text_preview'].add_color_region('[', ']', get_color("axis_z_color", "Editor"))
@@ -292,6 +295,8 @@ func load_theme(filename):
 	
 	n['glossary_extra_font'].text = DialogicResources.get_filename_from_path(theme.get_value('definitions', 'extra_font', "res://addons/dialogic/Example Assets/Fonts/GlossaryFont.tres"))
 	n['glossary_extra_color'].color = Color(theme.get_value('definitions', 'extra_color', "#ffffffff"))
+	
+	n['glossary_background_panel'].text = DialogicResources.get_filename_from_path(theme.get_value('definitions', 'background_panel', "res://addons/dialogic/Example Assets/backgrounds/GlossaryBackground.tres"))
 	
 	n['glossary_enabled'].pressed = theme.get_value('definitions', 'show_glossary', true)
 	
@@ -1000,6 +1005,25 @@ func _on_Glossary_HighlightColorPicker_color_changed(color):
 	DialogicResources.set_theme_value(current_theme, 'definitions', 'color', '#' + color.to_html())
 	$DelayPreviewTimer.start(0.5) # Calling a timer so the update doesn't get triggered many times
 
+## BACKGROUNDPANEL
+
+
+func _on_BgPanelSelection_pressed():
+	editor_reference.godot_dialog("*.tres")
+	editor_reference.godot_dialog_connect(self, "_on_Glossary_BackgroundPanel_selected")
+
+
+func _on_BGPanelOpen_pressed():
+	var theme = DialogicResources.get_theme_config(current_theme)
+	editor_reference.editor_interface.inspect_object(load(theme.get_value('definitions', 'background_panel', 'res://addons/dialogic/Example Assets/backgrounds/GlossaryBackground.tres')))
+
+
+func _on_Glossary_BackgroundPanel_selected(path, target):
+	if loading:
+		return
+	DialogicResources.set_theme_value(current_theme, 'definitions', 'background_panel', path)
+	n['glossary_background_panel'].text = DialogicResources.get_filename_from_path(path)
+	_on_PreviewButton_pressed() # Refreshing the preview
 
 ## SHOW GLOSSARY
 func _on_ShowGlossaryCheckBox_toggled(button_pressed):

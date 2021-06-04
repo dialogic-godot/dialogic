@@ -1284,29 +1284,56 @@ margin_bottom = 488.0
 rect_min_size = Vector2( 270, 0 )
 
 [node name="SectionTitle" parent="VBoxContainer/TabContainer/Glossary/Column" instance=ExtResource( 3 )]
-text = "Word"
 
 [node name="GridContainer" type="GridContainer" parent="VBoxContainer/TabContainer/Glossary/Column"]
 margin_top = 26.0
 margin_right = 270.0
-margin_bottom = 56.0
+margin_bottom = 82.0
 size_flags_horizontal = 3
 custom_constants/hseparation = 10
 columns = 2
 
 [node name="Label3" type="Label" parent="VBoxContainer/TabContainer/Glossary/Column/GridContainer"]
 margin_top = 8.0
-margin_right = 210.0
+margin_right = 142.0
 margin_bottom = 22.0
 size_flags_horizontal = 3
 text = "Word color"
 
 [node name="HighlightColorPicker" type="ColorPickerButton" parent="VBoxContainer/TabContainer/Glossary/Column/GridContainer"]
-margin_left = 220.0
+margin_left = 152.0
 margin_right = 270.0
 margin_bottom = 30.0
 rect_min_size = Vector2( 50, 30 )
 color = Color( 0.215686, 0.654902, 0.67451, 1 )
+
+[node name="Label4" type="Label" parent="VBoxContainer/TabContainer/Glossary/Column/GridContainer"]
+margin_top = 38.0
+margin_right = 142.0
+margin_bottom = 52.0
+size_flags_horizontal = 3
+text = "Background Panel"
+
+[node name="BackgroundPanel" type="HBoxContainer" parent="VBoxContainer/TabContainer/Glossary/Column/GridContainer"]
+margin_left = 152.0
+margin_top = 34.0
+margin_right = 270.0
+margin_bottom = 56.0
+
+[node name="BgPanelButton" type="Button" parent="VBoxContainer/TabContainer/Glossary/Column/GridContainer/BackgroundPanel"]
+margin_top = 1.0
+margin_right = 86.0
+margin_bottom = 21.0
+size_flags_horizontal = 3
+size_flags_vertical = 4
+text = "DefaultFont"
+
+[node name="BGPanelOpen" type="Button" parent="VBoxContainer/TabContainer/Glossary/Column/GridContainer/BackgroundPanel"]
+margin_left = 90.0
+margin_right = 118.0
+margin_bottom = 22.0
+size_flags_vertical = 4
+icon = SubResource( 2 )
 
 [node name="VSeparator" type="VSeparator" parent="VBoxContainer/TabContainer/Glossary"]
 margin_left = 280.0
@@ -1558,6 +1585,8 @@ one_shot = true
 [connection signal="pressed" from="VBoxContainer/TabContainer/Choice Buttons/Column3/GridContainer/HBoxContainer5/CustomButtonsButton" to="." method="_on_CustomButtonsButton_pressed"]
 [connection signal="toggled" from="VBoxContainer/TabContainer/Choice Buttons/Column3/GridContainer/CheckBox" to="." method="_on_native_button_toggled"]
 [connection signal="color_changed" from="VBoxContainer/TabContainer/Glossary/Column/GridContainer/HighlightColorPicker" to="." method="_on_Glossary_HighlightColorPicker_color_changed"]
+[connection signal="pressed" from="VBoxContainer/TabContainer/Glossary/Column/GridContainer/BackgroundPanel/BgPanelButton" to="." method="_on_BgPanelSelection_pressed"]
+[connection signal="pressed" from="VBoxContainer/TabContainer/Glossary/Column/GridContainer/BackgroundPanel/BGPanelOpen" to="." method="_on_BGPanelOpen_pressed"]
 [connection signal="pressed" from="VBoxContainer/TabContainer/Glossary/Column3/GridContainer/TitleFont/TitleFontButton" to="." method="_on_Glossary_TitleFontButton_pressed"]
 [connection signal="pressed" from="VBoxContainer/TabContainer/Glossary/Column3/GridContainer/TitleFont/TitleFontOpen" to="." method="_on_Glossary_TitleFontOpen_pressed"]
 [connection signal="color_changed" from="VBoxContainer/TabContainer/Glossary/Column3/GridContainer/TitleColorPicker" to="." method="_on_Glossary_TitleColorPicker_color_changed"]
