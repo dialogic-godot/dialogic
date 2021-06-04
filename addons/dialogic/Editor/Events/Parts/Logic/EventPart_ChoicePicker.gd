@@ -5,13 +5,16 @@ extends "res://addons/dialogic/Editor/Events/Parts/EventPart.gd"
 
 ## node references
 onready var input_field = $HBox/ChoiceText
+onready var condition_picker = $ConditionPicker
 
 # used to connect the signals
 func _ready():
 	# e.g. 
 	input_field.connect("text_changed", self, "_on_ChoiceText_text_changed")
-	$ConditionPicker.optional = true
-
+	condition_picker.optional = true
+	condition_picker.connect("data_changed", self, "_on_ConditionPicker_data_changed")
+	condition_picker.connect("remove_warning", self, "emit_signal", ["remove_warning"])
+	condition_picker.connect("set_warning", self, "set_warning")
 # called by the event block
 func load_data(data:Dictionary):
 	# First set the event_data
@@ -21,11 +24,8 @@ func load_data(data:Dictionary):
 	input_field.text = event_data['choice']
 	
 	# Loading the data on the selectors
-	$ConditionPicker.set_definition(data['definition'])
-	$ConditionPicker.set_condition(data['condition'])
-	$ConditionPicker.Value.text = data['value']
-	if data['definition'] != '': # Checking if definition is selected
-		$ConditionPicker/HasCondition/CheckBox.pressed = true
+	condition_picker.load_data(event_data)
+	
 
 # has to return the wanted preview, only useful for body parts
 func get_preview():
@@ -37,3 +37,11 @@ func _on_ChoiceText_text_changed(text):
 	
 	# informs the parent about the changes!
 	data_changed()
+
+func _on_ConditionPicker_data_changed(data):
+	event_data = data
+	
+	data_changed()
+
+func set_warning(text):
+	emit_signal("set_warning", text)

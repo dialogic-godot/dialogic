@@ -1,12 +1,27 @@
 tool
 extends "res://addons/dialogic/Editor/Events/Parts/EventPart.gd"
 
+export (bool) var optional:= false
+
 # has an event_data variable that stores the current data!!!
+
+onready var enabled_view = $HBox/Values
+onready var definition_picker = $HBox/Values/DefinitionPicker
+onready var condition_type_picker = $HBox/Values/ConditionTypePicker
+onready var value_input = $HBox/Values/Value
+
+onready var disbaled_view = $HBox/HasCondition
+onready var use_condition_check = $HBox/HasCondition/UseCondition
 
 # used to connect the signals
 func _ready():
-	pass
+	definition_picker.connect("data_changed", self, '_on_DefinitionPicker_data_changed')
+	
+	condition_type_picker.connect("data_changed", self, '_on_ConditionTypePicker_data_changed')
+	
+	value_input.connect("text_changed", self, "_on_Value_text_changed")
 
+	use_condition_check.connect("toggled", self, "_on_UseCondition_toggled")
 
 # called by the event block
 func load_data(data:Dictionary):
@@ -14,12 +29,48 @@ func load_data(data:Dictionary):
 	.load_data(data)
 	
 	# Loading the data on the selectors
-	$ConditionPicker.set_definition(data['definition'])
-	$ConditionPicker.set_condition(data['condition'])
-	$ConditionPicker.Value.text = data['value']
-
-
+	definition_picker.load_data(data)
+	condition_type_picker.load_data(data)
+	value_input.text = data['value']
+	
+	if data['definition'] != '' and optional: # Checking if definition is selected
+		use_condition_check.pressed = true
 
 # has to return the wanted preview, only useful for body parts
 func get_preview():
 	return ''
+
+
+func _on_UseCondition_toggled(checkbox_value):
+	enabled_view.visible = checkbox_value
+	if checkbox_value == false:
+		event_data['definition'] = ''
+		event_data['condition'] = ''
+		event_data['value'] = ''
+	
+	data_changed()
+
+func _on_DefinitionPicker_data_changed(data):
+	event_data = data
+	
+	data_changed()
+
+func _on_ConditionTypePicker_data_changed(data):
+	event_data = data
+	check_data()
+	
+	data_changed()
+
+func _on_Value_text_changed(text):
+	event_data['value'] = text
+	check_data()
+	
+	data_changed()
+
+func check_data():
+	if event_data['condition'] != '==' and event_data['condition'] != '!=':
+		if not event_data['value'].is_valid_float():
+			emit_signal("set_warning", "The selected operator requiers a number!")
+			return
+	
+	emit_signal("remove_warning")

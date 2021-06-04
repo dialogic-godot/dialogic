@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=2]
 
-[ext_resource path="res://addons/dialogic/Editor/Events/Parts/ResourcePickers/Condition/ConditionPicker.tscn" type="PackedScene" id=1]
+[ext_resource path="res://addons/dialogic/Editor/Events/Parts/Logic/ConditionPicker.tscn" type="PackedScene" id=1]
 [ext_resource path="res://addons/dialogic/Editor/Events/Parts/Text/CustomLineEdit.tscn" type="PackedScene" id=2]
 [ext_resource path="res://addons/dialogic/Editor/Events/Parts/Logic/EventPart_ChoicePicker.gd" type="Script" id=3]
 
@@ -38,6 +38,5 @@ rect_min_size = Vector2( 10, 0 )
 
 [node name="ConditionPicker" parent="." instance=ExtResource( 1 )]
 margin_left = 80.0
-margin_right = 363.0
+margin_right = 202.0
 margin_bottom = 27.0
-optional = true
