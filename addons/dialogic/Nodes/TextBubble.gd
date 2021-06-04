@@ -153,6 +153,20 @@ func load_theme(theme: ConfigFile):
 	var animation = theme.get_value('next_indicator', 'animation', 'Up and down')
 	next_indicator.get_node('AnimationPlayer').play(animation)
 	
+	# Setting typing SFX
+	var sound_effect_path = theme.get_value('typing_sfx', 'path', "res://addons/dialogic/Example Assets/Sound Effects/Keyboard Noises/")
+	
+	var file_system = Directory.new()
+	if file_system.dir_exists(sound_effect_path):
+		$TypingSFX.load_samples_from_folder(sound_effect_path)
+	elif file_system.file_exists(sound_effect_path):
+		$TypingSFX.samples.append(load(sound_effect_path))
+	
+	$TypingSFX.set_volume_db(theme.get_value('typing_sfx', 'volume', -10))
+	$TypingSFX.random_volume_range = theme.get_value('typing_sfx', 'random_volume_range', 5)
+	$TypingSFX.random_pitch_range = theme.get_value('typing_sfx', 'random_pitch_range', 0.2)
+	
+	
 	# Saving reference to the current theme
 	_theme = theme
 
@@ -168,6 +182,12 @@ func _on_writing_timer_timeout():
 		
 		if text_label.visible_characters > text_label.get_total_character_count():
 			_handle_text_completed()
+		elif (
+			_theme.get_value('typing_sfx', 'enable', true) and
+			text_label.visible_characters > 0 and
+			text_label.text[text_label.visible_characters-1] != " "
+		):
+				$TypingSFX.play()
 
 func start_text_timer():
 	if text_speed == 0:
