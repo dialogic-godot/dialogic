@@ -11,10 +11,10 @@ onready var condition_picker = $ConditionPicker
 func _ready():
 	# e.g. 
 	input_field.connect("text_changed", self, "_on_ChoiceText_text_changed")
-	condition_picker.optional = true
 	condition_picker.connect("data_changed", self, "_on_ConditionPicker_data_changed")
 	condition_picker.connect("remove_warning", self, "emit_signal", ["remove_warning"])
 	condition_picker.connect("set_warning", self, "set_warning")
+
 # called by the event block
 func load_data(data:Dictionary):
 	# First set the event_data

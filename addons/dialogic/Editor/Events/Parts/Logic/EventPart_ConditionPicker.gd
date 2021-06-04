@@ -1,8 +1,6 @@
 tool
 extends "res://addons/dialogic/Editor/Events/Parts/EventPart.gd"
 
-export (bool) var optional:= false
-
 # has an event_data variable that stores the current data!!!
 
 onready var enabled_view = $HBox/Values
@@ -10,7 +8,7 @@ onready var definition_picker = $HBox/Values/DefinitionPicker
 onready var condition_type_picker = $HBox/Values/ConditionTypePicker
 onready var value_input = $HBox/Values/Value
 
-onready var disbaled_view = $HBox/HasCondition
+onready var optional_view = $HBox/HasCondition
 onready var use_condition_check = $HBox/HasCondition/UseCondition
 
 # used to connect the signals
@@ -22,6 +20,7 @@ func _ready():
 	value_input.connect("text_changed", self, "_on_Value_text_changed")
 
 	use_condition_check.connect("toggled", self, "_on_UseCondition_toggled")
+	
 
 # called by the event block
 func load_data(data:Dictionary):
@@ -33,9 +32,17 @@ func load_data(data:Dictionary):
 	condition_type_picker.load_data(data)
 	value_input.text = data['value']
 	
-	if data['definition'] != '' and optional: # Checking if definition is selected
-		use_condition_check.pressed = true
-
+	if data['event_id'] == 'dialogic_011':
+		optional_view.show()
+		if data['definition'] == '': # Checking if definition is selected
+			use_condition_check.pressed = false
+			enabled_view.hide()
+		else:
+			use_condition_check.pressed = true
+			enabled_view.show()
+	else:
+		optional_view.hide()
+	
 # has to return the wanted preview, only useful for body parts
 func get_preview():
 	return ''

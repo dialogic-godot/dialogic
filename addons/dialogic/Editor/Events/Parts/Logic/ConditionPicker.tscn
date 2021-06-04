@@ -22,23 +22,24 @@ script = ExtResource( 4 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
-optional = true
 
 [node name="HBox" type="HBoxContainer" parent="."]
 margin_right = 431.0
-margin_bottom = 24.0
+margin_bottom = 30.0
+size_flags_vertical = 3
 
 [node name="HasCondition" type="HBoxContainer" parent="HBox"]
 margin_right = 122.0
-margin_bottom = 24.0
+margin_bottom = 30.0
+size_flags_vertical = 3
 
 [node name="UseCondition" type="CheckBox" parent="HBox/HasCondition"]
 margin_right = 122.0
-margin_bottom = 24.0
+margin_bottom = 30.0
+size_flags_vertical = 7
 text = "Has condition?"
 
 [node name="Values" type="HBoxContainer" parent="HBox"]
-visible = false
 margin_left = 126.0
 margin_right = 422.0
 margin_bottom = 30.0
@@ -63,26 +64,11 @@ margin_right = 244.0
 margin_bottom = 30.0
 rect_min_size = Vector2( 10, 0 )
 
-[node name="Value" type="LineEdit" parent="HBox/Values" instance=ExtResource( 3 )]
+[node name="Value" parent="HBox/Values" instance=ExtResource( 3 )]
 margin_left = 248.0
 margin_top = 1.0
 margin_right = 296.0
 margin_bottom = 28.0
-rect_min_size = Vector2( 0, 27 )
-size_flags_vertical = 6
 custom_styles/read_only = SubResource( 1 )
 custom_styles/focus = SubResource( 1 )
 custom_styles/normal = SubResource( 1 )
-custom_colors/selection_color = Color( 0.345098, 0.345098, 0.345098, 1 )
-custom_colors/cursor_color = Color( 0, 0, 0, 1 )
-custom_colors/clear_button_color_pressed = Color( 0, 0, 0, 1 )
-custom_colors/font_color_selected = Color( 0, 0, 0, 1 )
-custom_colors/font_color = Color( 0, 0, 0, 1 )
-custom_colors/clear_button_color = Color( 0, 0, 0, 1 )
-custom_colors/font_color_uneditable = Color( 0, 0, 0, 1 )
-expand_to_text_length = true
-caret_blink = true
-caret_blink_speed = 0.5
-__meta__ = {
-"_edit_use_anchors_": false
-}
