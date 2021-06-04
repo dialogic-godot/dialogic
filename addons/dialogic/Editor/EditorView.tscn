@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://addons/dialogic/Editor/EditorView.gd" type="Script" id=1]
 [ext_resource path="res://addons/dialogic/Editor/TimelineEditor/TimelineEditor.tscn" type="PackedScene" id=2]
@@ -8,7 +8,9 @@
 [ext_resource path="res://addons/dialogic/Editor/SettingsEditor/SettingsEditor.tscn" type="PackedScene" id=6]
 [ext_resource path="res://addons/dialogic/Editor/CharacterEditor/CharacterEditor.tscn" type="PackedScene" id=7]
 [ext_resource path="res://addons/dialogic/Editor/ThemeEditor/ThemeEditor.tscn" type="PackedScene" id=8]
-[ext_resource path="res://addons/dialogic/Editor/DefinitionEditor/DefinitionEditor.tscn" type="PackedScene" id=12]
+[ext_resource path="res://addons/dialogic/Editor/GlossaryEntryEditor/GlossaryEntryEditor.tscn" type="PackedScene" id=9]
+[ext_resource path="res://addons/dialogic/Images/Toolbar/add-glossary.svg" type="Texture" id=10]
+[ext_resource path="res://addons/dialogic/Editor/ValueEditor/ValueEditor.tscn" type="PackedScene" id=12]
 [ext_resource path="res://addons/dialogic/Images/Toolbar/add-theme.svg" type="Texture" id=13]
 [ext_resource path="res://addons/dialogic/Editor/MasterTree/MasterTree.tscn" type="PackedScene" id=35]
 
@@ -65,7 +67,7 @@ hint_tooltip = "New Character"
 focus_mode = 0
 icon = ExtResource( 3 )
 
-[node name="NewDefinitionButton" type="Button" parent="ToolBar"]
+[node name="NewValueButton" type="Button" parent="ToolBar"]
 modulate = Color( 0, 0, 0, 1 )
 margin_left = 56.0
 margin_right = 84.0
@@ -75,10 +77,23 @@ focus_mode = 0
 icon = ExtResource( 5 )
 flat = true
 
-[node name="NewThemeButton" type="Button" parent="ToolBar"]
+[node name="NewGlossaryEntryButton" type="Button" parent="ToolBar"]
 modulate = Color( 0, 0, 0, 1 )
 margin_left = 84.0
 margin_right = 112.0
+margin_bottom = 32.0
+hint_tooltip = "New Definition"
+focus_mode = 0
+icon = ExtResource( 10 )
+flat = true
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="NewThemeButton" type="Button" parent="ToolBar"]
+modulate = Color( 0, 0, 0, 1 )
+margin_left = 112.0
+margin_right = 140.0
 margin_bottom = 32.0
 hint_tooltip = "New Theme"
 focus_mode = 0
@@ -112,7 +127,7 @@ icon = SubResource( 2 )
 align = 0
 
 [node name="Spacer" type="Control" parent="ToolBar"]
-margin_left = 112.0
+margin_left = 140.0
 margin_right = 832.0
 margin_bottom = 32.0
 size_flags_horizontal = 3
@@ -168,7 +183,15 @@ visible = false
 [node name="CharacterEditor" parent="MainPanel" instance=ExtResource( 7 )]
 visible = false
 
-[node name="DefinitionEditor" parent="MainPanel" instance=ExtResource( 12 )]
+[node name="GlossaryEntryEditor" parent="MainPanel" instance=ExtResource( 9 )]
+visible = false
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 162.0
+margin_right = 1024.0
+margin_bottom = 562.0
+
+[node name="ValueEditor" parent="MainPanel" instance=ExtResource( 12 )]
 visible = false
 
 [node name="ThemeEditor" parent="MainPanel" instance=ExtResource( 8 )]
@@ -218,11 +241,11 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="RemoveDefinitionConfirmation" type="ConfirmationDialog" parent="."]
+[node name="RemoveValueConfirmation" type="ConfirmationDialog" parent="."]
 margin_right = 325.0
 margin_bottom = 88.0
 rect_min_size = Vector2( 250, 87.5 )
-dialog_text = "Are you sure you want to remove this definition?
+dialog_text = "Are you sure you want to remove this value?
 (Can't be restored)"
 __meta__ = {
 "_edit_use_anchors_": false

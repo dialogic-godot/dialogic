@@ -4,7 +4,8 @@ extends Tree
 onready var editor_reference = get_node('../../../')
 onready var timeline_editor = get_node('../../TimelineEditor')
 onready var character_editor = get_node('../../CharacterEditor')
-onready var definition_editor = get_node('../../DefinitionEditor')
+onready var value_editor = get_node('../../ValueEditor')
+onready var glossary_entry_editor = get_node('../../GlossaryEntryEditor')
 onready var settings_editor = get_node('../../SettingsEditor')
 onready var theme_editor = get_node('../../ThemeEditor')
 onready var empty_editor = get_node('../../Empty')
@@ -252,9 +253,10 @@ func _add_definition(parent_folder_item, definition_data, select = false):
 	var item = tree.create_item(parent_folder_item)
 	item.set_text(0, definition_data['name'])
 	item.set_icon(0, definition_icon)
+	definition_data['editor'] = 'Value'
 	if definition_data['type'] == 1:
 		item.set_icon(0, glossary_icon)
-	definition_data['editor'] = 'Definition'
+		definition_data['editor'] = 'GlossaryEntry'
 	definition_data['editable'] = true
 	item.set_metadata(0, definition_data)
 	if not get_constant("dark_theme", "Editor"):
@@ -305,11 +307,16 @@ func _on_item_selected():
 		if not character_editor.is_selected(metadata['file']):
 			character_editor.load_character(metadata['file'])
 		show_character_editor()
-	elif metadata['editor'] == 'Definition':
-		if not definition_editor.is_selected(metadata['id']):
-			definition_editor.visible = true
-			definition_editor.load_definition(metadata['id'])
-		show_definition_editor()
+	elif metadata['editor'] == 'Value':
+		if not value_editor.is_selected(metadata['id']):
+			value_editor.visible = true
+			value_editor.load_definition(metadata['id'])
+		show_value_editor()
+	elif metadata['editor'] == 'GlossaryEntry':
+		if not glossary_entry_editor.is_selected(metadata['id']):
+			glossary_entry_editor.visible = true
+			glossary_entry_editor.load_definition(metadata['id'])
+		show_glossary_entry_editor()
 	elif metadata['editor'] == 'Theme':
 		theme_editor.load_theme(metadata['file'])
 		show_theme_editor()
@@ -329,10 +336,15 @@ func show_character_editor():
 	hide_editors()
 	character_editor.visible = true
 
-func show_definition_editor():
+func show_value_editor():
 	emit_signal("editor_selected", 'definition')
 	hide_editors()
-	definition_editor.visible = true
+	value_editor.visible = true
+
+func show_glossary_entry_editor():
+	emit_signal("editor_selected", 'glossary_entry')
+	hide_editors()
+	glossary_entry_editor.visible = true
 
 func show_theme_editor():
 	emit_signal("editor_selected", 'theme')
@@ -352,7 +364,8 @@ func hide_all_editors():
 func hide_editors():
 	character_editor.visible = false
 	timeline_editor.visible = false
-	definition_editor.visible = false
+	value_editor.visible = false
+	glossary_entry_editor.visible = false
 	theme_editor.visible = false
 	settings_editor.visible = false
 	empty_editor.visible = false
@@ -384,9 +397,10 @@ func create_rmb_context_menus():
 	
 	var definition_popup = PopupMenu.new()
 	definition_popup.add_icon_item(get_icon("Edit", "EditorIcons"), 'Edit Definitions File')
-	definition_popup.add_icon_item(get_icon("Remove", "EditorIcons"), 'Remove Definition')
+	definition_popup.add_icon_item(get_icon("Remove", "EditorIcons"), 'Remove Definition entry')
 	add_child(definition_popup)
-	rmb_popup_menus["Definition"] = definition_popup
+	rmb_popup_menus["Value"] = definition_popup
+	rmb_popup_menus["GlossaryEntry"] = definition_popup
 	
 	## FOLDER / ROOT ITEMS
 	var timeline_folder_popup = PopupMenu.new()
@@ -411,7 +425,8 @@ func create_rmb_context_menus():
 	rmb_popup_menus["Theme Root"] = theme_folder_popup
 	
 	var definition_folder_popup = PopupMenu.new()
-	definition_folder_popup.add_icon_item(get_icon("Add", "EditorIcons") ,'Add Definition')
+	definition_folder_popup.add_icon_item(get_icon("Add", "EditorIcons") ,'Add Value')
+	definition_folder_popup.add_icon_item(get_icon("Add", "EditorIcons") ,'Add Glossary Entry')
 	definition_folder_popup.add_icon_item(get_icon("Folder", "EditorIcons") ,'Create Subfolder')
 	definition_folder_popup.add_icon_item(get_icon("Remove", "EditorIcons") ,'Delete Folder')
 	add_child(definition_folder_popup)
@@ -498,8 +513,11 @@ func _on_DefinitionPopupMenu_id_pressed(id):
 		var paths = DialogicResources.get_config_files_paths()
 		OS.shell_open(ProjectSettings.globalize_path(paths['DEFAULT_DEFINITIONS_FILE']))
 	if id == 1:
-		editor_reference.get_node('RemoveDefinitionConfirmation').popup_centered()
-
+		if value_editor.visible:
+			editor_reference.get_node('RemoveValueConfirmation').popup_centered()
+		elif glossary_entry_editor.visible:
+			editor_reference.get_node('RemoveGlossaryConfirmation').popup_centered()
+			
 ## FOLDER POPUPS
 
 # Timeline Folder context menu
@@ -529,12 +547,14 @@ func _on_CharacterRootPopupMenu_id_pressed(id):
 
 # Definition Folder context menu
 func _on_DefinitionRootPopupMenu_id_pressed(id):
-	if id == 0: # Add Definition
-		new_definition()
-	if id == 1: # add subfolder
+	if id == 0: # Add Value Definition
+		new_value_definition()
+	if id == 1: # Add Glossary Definition
+		new_glossary_entry()
+	if id == 2: # add subfolder
 		DialogicUtil.add_folder(get_item_path(get_selected()), "New Folder "+str(OS.get_unix_time()))
 		build_definitions()
-	if id == 2: # remove folder and substuff
+	if id == 3: # remove folder and substuff
 		if get_selected().get_parent() == get_root():
 			return
 		editor_reference.get_node('RemoveFolderConfirmation').popup_centered()
@@ -579,13 +599,22 @@ func new_theme():
 	DialogicUtil.add_file_to_folder(folder, theme_file)
 	build_themes(theme_file)
 
-# creates a new definition and opens it
+# creates a new value and opens it
 # it will be added to the selected folder (if it's a definition folder) or the Definition root folder
-func new_definition():
-	var definition_id = editor_reference.get_node("MainPanel/DefinitionEditor").create_definition()
+func new_value_definition():
+	var definition_id = editor_reference.get_node("MainPanel/ValueEditor").create_value()
 	var folder = get_item_folder(get_selected(), "Definitions")
 	DialogicUtil.add_file_to_folder(folder, definition_id)
 	build_definitions(definition_id)
+
+# creates a new glossary entry and opens it
+# it will be added to the selected folder (if it's a definition folder) or the Definition root folder
+func new_glossary_entry():
+	var definition_id = editor_reference.get_node("MainPanel/GlossaryEntryEditor").create_glossary_entry()
+	var folder = get_item_folder(get_selected(), "Definitions")
+	DialogicUtil.add_file_to_folder(folder, definition_id)
+	build_definitions(definition_id)
+	
 
 func remove_selected():
 	var item = get_selected()
@@ -695,13 +724,19 @@ func _on_item_edited():
 		character_editor.nodes['name'].text = item.get_text(0)
 		save_current_resource()
 		build_characters(metadata['file'])
-	if metadata['editor'] == 'Definition':
-		definition_editor.nodes['name'].text = item.get_text(0)
+	if metadata['editor'] == 'Value':
+		value_editor.nodes['name'].text = item.get_text(0)
 		# Not sure why this signal doesn't triggers
-		definition_editor._on_name_changed(item.get_text(0))
+		value_editor._on_name_changed(item.get_text(0))
 		save_current_resource()
 		build_definitions(metadata['id'])
-	
+	if metadata['editor'] == 'GlossaryEntry':
+		glossary_entry_editor.nodes['name'].text = item.get_text(0)
+		# Not sure why this signal doesn't triggers
+		glossary_entry_editor._on_name_changed(item.get_text(0))
+		save_current_resource()
+		build_definitions(metadata['id'])
+
 	if "Root" in metadata['editor']:
 		if item.get_text(0) == item_path_before_edit.split("/")[-1]:
 			return 
@@ -727,8 +762,10 @@ func save_current_resource():
 				timeline_editor.save_timeline()
 			if metadata['editor'] == 'Character':
 				character_editor.save_character()
-			if metadata['editor'] == 'Definition':
-				definition_editor.save_definition()
+			if metadata['editor'] == 'Value':
+				value_editor.save_definition()
+			if metadata['editor'] == 'GlossaryEntry':
+				glossary_entry_editor.save_definition()
 			# Note: Theme files auto saves on change
 
 
