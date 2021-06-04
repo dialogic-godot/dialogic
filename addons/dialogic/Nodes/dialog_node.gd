@@ -335,6 +335,11 @@ func _process(delta):
 		$TextBubble/NextIndicatorContainer/NextIndicator.visible = false # Hide if question 
 		if waiting_for_answer and Input.is_action_just_released(input_next):
 			$Options.get_child(0).grab_focus()
+	
+	# Hide if no input is required
+	if current_event.has('text'):
+		if '[nw]' in current_event['text']:
+			$TextBubble/NextIndicatorContainer/NextIndicator.visible = false
 
 
 func _input(event: InputEvent) -> void:
@@ -381,12 +386,14 @@ func update_text(text: String) -> String:
 
 
 func _on_text_completed():
-	if current_event.has('text'):
-		if '[p]' in current_event['text']:
-			yield(get_tree().create_timer(2), "timeout")
-		if '[nw]' in current_event['text']:
-			_load_next_event()
 	finished = true
+	if current_event.has('text'):
+		# [p] needs more work
+		#if '[p]' in current_event['text']: 
+		#	yield(get_tree().create_timer(2), "timeout")
+		if '[nw]' in current_event['text']:
+			yield(get_tree().create_timer(2), "timeout")
+			_load_next_event()
 	if current_event.has('options'):
 		for o in current_event['options']:
 			add_choice_button(o)
@@ -657,7 +664,6 @@ func event_handler(event: Dictionary):
 		'dialogic_025':
 			emit_signal("event_start", "set_glossary", event)
 			if event['glossary_id']:
-				print("set glossary")
 				DialogicSingleton.set_glossary_from_id(event['glossary_id'], event['title'], event['text'],event['extra'])
 			_load_next_event()
 		# AUDIO EVENTS
