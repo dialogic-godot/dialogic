@@ -23,11 +23,7 @@ func _process(_delta):
 			else:
 				rect_global_position = get_global_mouse_position() - rect_size - Vector2(0, (margin * 2))
 			rect_size.y = 0
-#			$ColorRect.margin_top = - margin
-#			$ColorRect.margin_left = - margin * 1.25
-#			$ColorRect.margin_right = rect_size.x + margin * 1.25
-#			$ColorRect.margin_bottom = rect_size.y + margin
-
+#			
 
 func load_preview(info):
 	nodes['title'].visible = false
