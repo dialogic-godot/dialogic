@@ -37,8 +37,7 @@ func load_preview(info):
 	if info['title'] != '':
 		nodes['title'].text = info['title']
 		nodes['title'].visible = true
-		nodes['title'].set('custom_colors/default_color', info['color'])
-	
+
 	if info['body'] != '':
 		nodes['body'].text = info['body']
 		nodes['body'].visible = true
@@ -46,3 +45,21 @@ func load_preview(info):
 	if info['extra'] != '':
 		nodes['extra'].text = info['extra']
 		nodes['extra'].visible = true
+
+func load_theme(theme):
+	# Fonts
+	$VBoxContainer/Title.set(
+		'custom_fonts/normal_font', 
+		DialogicUtil.path_fixer_load(theme.get_value('definitions', 'font', "res://addons/dialogic/Example Assets/Fonts/GlossaryFont.tres")))
+	$VBoxContainer/Title.modulate = theme.get_value('definitions', 'title_color', "#ffffffff")
+	
+	$VBoxContainer/Content.set(
+		'custom_fonts/normal_font', 
+		DialogicUtil.path_fixer_load(theme.get_value('definitions', 'text_font', "res://addons/dialogic/Example Assets/Fonts/GlossaryFont.tres")))
+	$VBoxContainer/Content.modulate = theme.get_value('definitions', 'text_color', "#ffffffff")
+	
+	$VBoxContainer/Extra.set(
+		'custom_fonts/normal_font', 
+		DialogicUtil.path_fixer_load(theme.get_value('definitions', 'extra_font', "res://addons/dialogic/Example Assets/Fonts/GlossaryFont.tres")))
+	$VBoxContainer/Extra.modulate = theme.get_value('definitions', 'extra_color', "#ffffffff")
+	
