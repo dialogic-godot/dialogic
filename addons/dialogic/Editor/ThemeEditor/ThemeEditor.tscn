@@ -85,7 +85,6 @@ size_flags_vertical = 3
 tab_align = 0
 
 [node name="Dialog Text" type="HBoxContainer" parent="VBoxContainer/TabContainer"]
-visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 4.0
@@ -1270,6 +1269,7 @@ margin_right = 230.0
 margin_bottom = 52.0
 
 [node name="Glossary" type="HBoxContainer" parent="VBoxContainer/TabContainer"]
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 4.0
@@ -1521,6 +1521,131 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="Audio" type="HBoxContainer" parent="VBoxContainer/TabContainer"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = 32.0
+margin_right = -4.0
+margin_bottom = -4.0
+custom_constants/separation = 10
+
+[node name="Column" type="VBoxContainer" parent="VBoxContainer/TabContainer/Audio"]
+margin_right = 280.0
+margin_bottom = 488.0
+rect_min_size = Vector2( 270, 0 )
+
+[node name="SectionTitle" parent="VBoxContainer/TabContainer/Audio/Column" instance=ExtResource( 3 )]
+margin_right = 280.0
+text = "Typing Sound Effects"
+
+[node name="GridContainer" type="GridContainer" parent="VBoxContainer/TabContainer/Audio/Column"]
+margin_top = 26.0
+margin_right = 280.0
+margin_bottom = 165.0
+size_flags_horizontal = 3
+custom_constants/hseparation = 10
+columns = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/TabContainer/Audio/Column/GridContainer"]
+margin_top = 5.0
+margin_right = 141.0
+margin_bottom = 19.0
+text = "Enable"
+
+[node name="TypingCheckBox" type="CheckBox" parent="VBoxContainer/TabContainer/Audio/Column/GridContainer"]
+margin_left = 151.0
+margin_right = 280.0
+margin_bottom = 24.0
+
+[node name="Label2" type="Label" parent="VBoxContainer/TabContainer/Audio/Column/GridContainer"]
+margin_top = 31.0
+margin_right = 141.0
+margin_bottom = 45.0
+hint_tooltip = "Either select an audio file or a folder full of audio files."
+mouse_filter = 1
+text = "File or folder path"
+
+[node name="TypingPathButton" type="Button" parent="VBoxContainer/TabContainer/Audio/Column/GridContainer"]
+margin_left = 151.0
+margin_top = 28.0
+margin_right = 280.0
+margin_bottom = 48.0
+size_flags_horizontal = 3
+text = "audio file or folder"
+
+[node name="Label3" type="Label" parent="VBoxContainer/TabContainer/Audio/Column/GridContainer"]
+margin_top = 57.0
+margin_right = 141.0
+margin_bottom = 71.0
+text = "Volume"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/TabContainer/Audio/Column/GridContainer"]
+margin_left = 151.0
+margin_top = 52.0
+margin_right = 280.0
+margin_bottom = 76.0
+
+[node name="TypingVolume" type="SpinBox" parent="VBoxContainer/TabContainer/Audio/Column/GridContainer/HBoxContainer"]
+margin_right = 74.0
+margin_bottom = 24.0
+min_value = -80.0
+step = 0.1
+allow_greater = true
+allow_lesser = true
+
+[node name="Label4" type="Label" parent="VBoxContainer/TabContainer/Audio/Column/GridContainer"]
+margin_top = 85.0
+margin_right = 141.0
+margin_bottom = 99.0
+text = "Volume random range"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer/TabContainer/Audio/Column/GridContainer"]
+margin_left = 151.0
+margin_top = 80.0
+margin_right = 280.0
+margin_bottom = 104.0
+
+[node name="TypingVolumeRandRange" type="SpinBox" parent="VBoxContainer/TabContainer/Audio/Column/GridContainer/HBoxContainer2"]
+margin_right = 74.0
+margin_bottom = 24.0
+min_value = -80.0
+step = 0.1
+allow_greater = true
+allow_lesser = true
+
+[node name="Label5" type="Label" parent="VBoxContainer/TabContainer/Audio/Column/GridContainer"]
+margin_top = 108.0
+margin_right = 141.0
+margin_bottom = 139.0
+text = "Pitch random range"
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="VBoxContainer/TabContainer/Audio/Column/GridContainer"]
+margin_left = 151.0
+margin_top = 108.0
+margin_right = 280.0
+margin_bottom = 139.0
+
+[node name="TypingPitchRandRange" type="SpinBox" parent="VBoxContainer/TabContainer/Audio/Column/GridContainer/HBoxContainer3"]
+margin_right = 74.0
+margin_bottom = 31.0
+min_value = -80.0
+step = 0.1
+allow_greater = true
+allow_lesser = true
+
+[node name="Label6" type="Label" parent="VBoxContainer/TabContainer/Audio/Column/GridContainer"]
+margin_top = 108.0
+margin_right = 141.0
+margin_bottom = 139.0
+text = "Allow interrupt"
+
+[node name="TypingInterruptCheckBox" type="CheckBox" parent="VBoxContainer/TabContainer/Audio/Column/GridContainer"]
+margin_left = 151.0
+margin_right = 280.0
+margin_bottom = 24.0
+
 [node name="DelayPreviewTimer" type="Timer" parent="."]
 one_shot = true
 
@@ -1597,3 +1722,9 @@ one_shot = true
 [connection signal="pressed" from="VBoxContainer/TabContainer/Glossary/Column3/GridContainer/ExtraFont/ExtraFontOpen" to="." method="_on_Glossary_ExtraFontOpen_pressed"]
 [connection signal="color_changed" from="VBoxContainer/TabContainer/Glossary/Column3/GridContainer/ExtraColorPicker" to="." method="_on_Glossary_ExtraColorPicker_color_changed"]
 [connection signal="toggled" from="VBoxContainer/TabContainer/Glossary/Column2/GridContainer/ShowGlossaryCheckBox" to="." method="_on_ShowGlossaryCheckBox_toggled"]
+[connection signal="toggled" from="VBoxContainer/TabContainer/Audio/Column/GridContainer/TypingCheckBox" to="." method="_on_TypingCheckBox_toggled"]
+[connection signal="pressed" from="VBoxContainer/TabContainer/Audio/Column/GridContainer/TypingPathButton" to="." method="_on_TypingPathButton_pressed"]
+[connection signal="value_changed" from="VBoxContainer/TabContainer/Audio/Column/GridContainer/HBoxContainer/TypingVolume" to="." method="_on_TypingVolume_value_changed"]
+[connection signal="value_changed" from="VBoxContainer/TabContainer/Audio/Column/GridContainer/HBoxContainer2/TypingVolumeRandRange" to="." method="_on_TypingVolumeRandRange_value_changed"]
+[connection signal="value_changed" from="VBoxContainer/TabContainer/Audio/Column/GridContainer/HBoxContainer3/TypingPitchRandRange" to="." method="_on_TypingPitchRandRange_value_changed"]
+[connection signal="toggled" from="VBoxContainer/TabContainer/Audio/Column/GridContainer/TypingInterruptCheckBox" to="." method="_on_TypingInterruptCheckBox_toggled"]

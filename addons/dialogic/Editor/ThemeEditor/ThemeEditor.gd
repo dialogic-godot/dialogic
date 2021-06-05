@@ -129,6 +129,14 @@ onready var n : Dictionary = {
 	
 	'glossary_enabled': $VBoxContainer/TabContainer/Glossary/Column2/GridContainer/ShowGlossaryCheckBox,
 	
+	# Audio
+	'typing_sfx_enabled': $"VBoxContainer/TabContainer/Audio/Column/GridContainer/TypingCheckBox",
+	'typing_sfx_path': $"VBoxContainer/TabContainer/Audio/Column/GridContainer/TypingPathButton",
+	'typing_sfx_volume': $"VBoxContainer/TabContainer/Audio/Column/GridContainer/HBoxContainer/TypingVolume",
+	'typing_sfx_volume_range': $"VBoxContainer/TabContainer/Audio/Column/GridContainer/HBoxContainer2/TypingVolumeRandRange",
+	'typing_sfx_pitch_range': $"VBoxContainer/TabContainer/Audio/Column/GridContainer/HBoxContainer3/TypingPitchRandRange",
+	'typing_sfx_allow_interrupt': $"VBoxContainer/TabContainer/Audio/Column/GridContainer/TypingInterruptCheckBox",
+	
 	# Text preview
 	'text_preview': $VBoxContainer/HBoxContainer3/TextEdit,
 	'character_picker': $VBoxContainer/HBoxContainer3/CharacterPicker,
@@ -345,6 +353,13 @@ func load_theme(filename):
 	
 	n['name_position'].select(theme.get_value('name', 'position', 0))
 	
+	# Audio
+	n['typing_sfx_enabled'].pressed = theme.get_value('typing_sfx', 'enable', false)
+	n['typing_sfx_path'].text = DialogicResources.get_filename_from_path(theme.get_value('typing_sfx', 'path', "res://addons/dialogic/Example Assets/Sound Effects/Keyboard Noises"))
+	n['typing_sfx_volume'].value = theme.get_value('typing_sfx', 'volume', -10)
+	n['typing_sfx_volume_range'].value = theme.get_value('typing_sfx', 'random_volume_range', 5)
+	n['typing_sfx_pitch_range'].value = theme.get_value('typing_sfx', 'random_pitch_range', 0.2)
+	n['typing_sfx_allow_interrupt'].pressed = theme.get_value('typing_sfx', 'allow_interrupt', true)
 	
 	# Next indicator animations
 	var animations = ['Up and down', 'Pulse', 'Static'] # TODO: dynamically get all the animations from the Dialog.tscn NextIndicator
@@ -1033,5 +1048,50 @@ func _on_ShowGlossaryCheckBox_toggled(button_pressed):
 	_on_PreviewButton_pressed() # Refreshing the preview
 
 
+## ------------ 		AUDIO  TAB	 	------------------------------------
 
 
+func _on_TypingCheckBox_toggled(button_pressed):
+	if loading:
+		return
+	DialogicResources.set_theme_value(current_theme, 'typing_sfx','enable', button_pressed)
+	_on_PreviewButton_pressed() # Refreshing the preview
+
+
+
+func _on_TypingPathButton_pressed() -> void:
+	editor_reference.godot_dialog("*.ogg, *.wav", EditorFileDialog.MODE_OPEN_ANY)
+	editor_reference.godot_dialog_connect(self, "_on_typingPath_selected", "dir_selected")
+	editor_reference.godot_dialog_connect(self, "_on_typingPath_selected", "file_selected")
+
+func _on_typingPath_selected(path, target) -> void:
+	if loading:
+		return
+	DialogicResources.set_theme_value(current_theme, 'typing_sfx', 'path', path)
+	n['typing_sfx_path'].text = DialogicResources.get_filename_from_path(path)
+	_on_PreviewButton_pressed() # Refreshing the preview
+
+
+func _on_TypingVolume_value_changed(value):
+	if loading:
+		return
+	DialogicResources.set_theme_value(current_theme, 'typing_sfx', 'volume', value)
+
+
+func _on_TypingVolumeRandRange_value_changed(value):
+	if loading:
+		return
+	DialogicResources.set_theme_value(current_theme, 'typing_sfx', 'random_volume_range', value)
+
+
+func _on_TypingPitchRandRange_value_changed(value):
+	if loading:
+		return
+	DialogicResources.set_theme_value(current_theme, 'typing_sfx', 'random_pitch_range', value)
+
+
+func _on_TypingInterruptCheckBox_toggled(button_pressed):
+	if loading:
+		return
+	DialogicResources.set_theme_value(current_theme, 'typing_sfx','allow_interrupt', button_pressed)
+	_on_PreviewButton_pressed() # Refreshing the preview
