@@ -183,7 +183,7 @@ func _on_writing_timer_timeout():
 		if text_label.visible_characters > text_label.get_total_character_count():
 			_handle_text_completed()
 		elif (
-			_theme.get_value('typing_sfx', 'enable', true) and
+			_theme.get_value('typing_sfx', 'enable', false) and
 			text_label.visible_characters > 0 and
 			text_label.text[text_label.visible_characters-1] != " "
 		):

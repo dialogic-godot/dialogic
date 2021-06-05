@@ -354,8 +354,8 @@ func load_theme(filename):
 	n['name_position'].select(theme.get_value('name', 'position', 0))
 	
 	# Audio
-	n['typing_sfx_enabled'].pressed = theme.get_value('typing_sfx', 'enable', true)
-	n['typing_sfx_path'].text = DialogicResources.get_filename_from_path(theme.get_value('typing_sfx', 'path', "res://addons/dialogic/Example Assets/Sound Effects/Keyboard Noises/"))
+	n['typing_sfx_enabled'].pressed = theme.get_value('typing_sfx', 'enable', false)
+	n['typing_sfx_path'].text = DialogicResources.get_filename_from_path(theme.get_value('typing_sfx', 'path', "res://addons/dialogic/Example Assets/Sound Effects/Keyboard Noises"))
 	n['typing_sfx_volume'].value = theme.get_value('typing_sfx', 'volume', -10)
 	n['typing_sfx_volume_range'].value = theme.get_value('typing_sfx', 'random_volume_range', 5)
 	n['typing_sfx_pitch_range'].value = theme.get_value('typing_sfx', 'random_pitch_range', 0.2)
