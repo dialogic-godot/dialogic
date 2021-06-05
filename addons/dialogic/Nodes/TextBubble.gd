@@ -52,10 +52,8 @@ func is_finished():
 
 
 func skip():
-	$WritingTimer.stop()
-	$RichTextLabel.visible_characters = -1
-	_finished = true
-	emit_signal("text_completed")
+	text_label.visible_characters = -1
+	_handle_text_completed()
 
 
 func reset():
@@ -165,26 +163,25 @@ func load_theme(theme: ConfigFile):
 
 
 func _on_writing_timer_timeout():
-	$RichTextLabel.visible_characters += 1
-
-
-func _process(_delta):
 	if _finished == false:
-		if $RichTextLabel.visible_characters >= $RichTextLabel.get_total_character_count():
-			_finished = true
-			emit_signal("text_completed")
-
+		text_label.visible_characters += 1
+		
+		if text_label.visible_characters > text_label.get_total_character_count():
+			_handle_text_completed()
 
 func start_text_timer():
 	if text_speed == 0:
-		_finished = true
-		$RichTextLabel.visible_characters = -1
-		emit_signal("text_completed")
+		text_label.visible_characters = -1
+		_handle_text_completed()
 	else:
 		$WritingTimer.start(text_speed)
 		_finished = false
 
-
+func _handle_text_completed():
+	$WritingTimer.stop()
+	_finished = true
+	emit_signal("text_completed")
+	
 func align_name_label():
 	var name_padding = _theme.get_value('name', 'name_padding', Vector2( 10, 0 ))
 	var horizontal_offset = _theme.get_value('name', 'horizontal_offset', 0)
