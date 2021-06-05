@@ -160,7 +160,7 @@ func load_theme(theme: ConfigFile):
 	if file_system.dir_exists(sound_effect_path):
 		$TypingSFX.load_samples_from_folder(sound_effect_path)
 	elif file_system.file_exists(sound_effect_path):
-		$TypingSFX.samples.append(load(sound_effect_path))
+		$TypingSFX.samples = [load(sound_effect_path)]
 	
 	$TypingSFX.set_volume_db(theme.get_value('typing_sfx', 'volume', -10))
 	$TypingSFX.random_volume_range = theme.get_value('typing_sfx', 'random_volume_range', 5)
@@ -187,6 +187,7 @@ func _on_writing_timer_timeout():
 			text_label.visible_characters > 0 and
 			text_label.text[text_label.visible_characters-1] != " "
 		):
+			if _theme.get_value('typing_sfx', 'allow_interrupt', true) or not $TypingSFX.is_playing():
 				$TypingSFX.play()
 
 func start_text_timer():
