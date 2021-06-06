@@ -52,10 +52,8 @@ func is_finished():
 
 
 func skip():
-	$WritingTimer.stop()
-	$RichTextLabel.visible_characters = -1
-	_finished = true
-	emit_signal("text_completed")
+	text_label.visible_characters = -1
+	_handle_text_completed()
 
 
 func reset():
@@ -155,6 +153,20 @@ func load_theme(theme: ConfigFile):
 	var animation = theme.get_value('next_indicator', 'animation', 'Up and down')
 	next_indicator.get_node('AnimationPlayer').play(animation)
 	
+	# Setting typing SFX
+	var sound_effect_path = theme.get_value('typing_sfx', 'path', "res://addons/dialogic/Example Assets/Sound Effects/Keyboard Noises")
+	
+	var file_system = Directory.new()
+	if file_system.dir_exists(sound_effect_path):
+		$TypingSFX.load_samples_from_folder(sound_effect_path)
+	elif file_system.file_exists(sound_effect_path):
+		$TypingSFX.samples = [load(sound_effect_path)]
+	
+	$TypingSFX.set_volume_db(theme.get_value('typing_sfx', 'volume', -10))
+	$TypingSFX.random_volume_range = theme.get_value('typing_sfx', 'random_volume_range', 5)
+	$TypingSFX.random_pitch_range = theme.get_value('typing_sfx', 'random_pitch_range', 0.2)
+	
+	
 	# Saving reference to the current theme
 	_theme = theme
 
@@ -165,26 +177,32 @@ func load_theme(theme: ConfigFile):
 
 
 func _on_writing_timer_timeout():
-	$RichTextLabel.visible_characters += 1
-
-
-func _process(_delta):
 	if _finished == false:
-		if $RichTextLabel.visible_characters >= $RichTextLabel.get_total_character_count():
-			_finished = true
-			emit_signal("text_completed")
-
+		text_label.visible_characters += 1
+		
+		if text_label.visible_characters > text_label.get_total_character_count():
+			_handle_text_completed()
+		elif (
+			text_label.visible_characters > 0 and
+			text_label.text[text_label.visible_characters-1] != " "
+		):
+			if _theme.get_value('typing_sfx', 'enable', false):
+				if _theme.get_value('typing_sfx', 'allow_interrupt', true) or not $TypingSFX.is_playing():
+					$TypingSFX.play()
 
 func start_text_timer():
 	if text_speed == 0:
-		_finished = true
-		$RichTextLabel.visible_characters = -1
-		emit_signal("text_completed")
+		text_label.visible_characters = -1
+		_handle_text_completed()
 	else:
 		$WritingTimer.start(text_speed)
 		_finished = false
 
-
+func _handle_text_completed():
+	$WritingTimer.stop()
+	_finished = true
+	emit_signal("text_completed")
+	
 func align_name_label():
 	var name_padding = _theme.get_value('name', 'name_padding', Vector2( 10, 0 ))
 	var horizontal_offset = _theme.get_value('name', 'horizontal_offset', 0)

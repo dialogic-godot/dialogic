@@ -9,7 +9,8 @@ var version_string: String
 onready var master_tree = $MainPanel/MasterTreeContainer/MasterTree
 onready var timeline_editor = $MainPanel/TimelineEditor
 onready var character_editor = $MainPanel/CharacterEditor
-onready var definition_editor = $MainPanel/DefinitionEditor
+onready var value_editor = $MainPanel/ValueEditor
+onready var glossary_entry_editor = $MainPanel/GlossaryEntryEditor
 onready var theme_editor = $MainPanel/ThemeEditor
 onready var settings_editor = $MainPanel/SettingsEditor
 
@@ -24,7 +25,8 @@ func _ready():
 	# Setting references to this node
 	timeline_editor.editor_reference = self
 	character_editor.editor_reference = self
-	definition_editor.editor_reference = self
+	value_editor.editor_reference = self
+	glossary_entry_editor.editor_reference = self
 	theme_editor.editor_reference = self
 
 	master_tree.connect("editor_selected", self, 'on_master_tree_editor_selected')
@@ -59,7 +61,8 @@ func _ready():
 		modifier = '-2'
 	$ToolBar/NewTimelineButton.icon = load("res://addons/dialogic/Images/Toolbar/add-timeline" + modifier + ".svg")
 	$ToolBar/NewCharactersButton.icon = load("res://addons/dialogic/Images/Toolbar/add-character" + modifier + ".svg")
-	$ToolBar/NewDefinitionButton.icon = load("res://addons/dialogic/Images/Toolbar/add-definition" + modifier + ".svg")
+	$ToolBar/NewValueButton.icon = load("res://addons/dialogic/Images/Toolbar/add-definition" + modifier + ".svg")
+	$ToolBar/NewGlossaryEntryButton.icon = load("res://addons/dialogic/Images/Toolbar/add-glossary" + modifier + ".svg")
 	$ToolBar/NewThemeButton.icon = load("res://addons/dialogic/Images/Toolbar/add-theme" + modifier + ".svg")
 	
 	var modulate_color = Color.white
@@ -67,7 +70,8 @@ func _ready():
 		modulate_color = get_color("property_color", "Editor")
 	$ToolBar/NewTimelineButton.modulate = modulate_color
 	$ToolBar/NewCharactersButton.modulate = modulate_color
-	$ToolBar/NewDefinitionButton.modulate = modulate_color
+	$ToolBar/NewValueButton.modulate = modulate_color
+	$ToolBar/NewGlossaryEntryButton.modulate = modulate_color
 	$ToolBar/NewThemeButton.modulate = modulate_color
 	
 	$ToolBar/FoldTools/ButtonFold.icon = get_icon("GuiTreeArrowRight", "EditorIcons")
@@ -76,58 +80,21 @@ func _ready():
 	$ToolBar/NewTimelineButton.connect('pressed', $MainPanel/MasterTreeContainer/MasterTree, 'new_timeline')
 	$ToolBar/NewCharactersButton.connect('pressed', $MainPanel/MasterTreeContainer/MasterTree, 'new_character')
 	$ToolBar/NewThemeButton.connect('pressed', $MainPanel/MasterTreeContainer/MasterTree, 'new_theme')
-	$ToolBar/NewDefinitionButton.connect('pressed', $MainPanel/MasterTreeContainer/MasterTree, 'new_definition')
+	$ToolBar/NewValueButton.connect('pressed', $MainPanel/MasterTreeContainer/MasterTree, 'new_value_definition')
+	$ToolBar/NewGlossaryEntryButton.connect('pressed', $MainPanel/MasterTreeContainer/MasterTree, 'new_glossary_entry')
 	$ToolBar/Docs.icon = get_icon("Instance", "EditorIcons")
 	$ToolBar/Docs.connect('pressed', OS, "shell_open", ["https://dialogic.coppolaemilio.com"])
 	$ToolBar/FoldTools/ButtonFold.connect('pressed', timeline_editor, 'fold_all_nodes')
 	$ToolBar/FoldTools/ButtonUnfold.connect('pressed', timeline_editor, 'unfold_all_nodes')
 	
 	
-#	# Resetting the context menu items and size
-#	var context_menus = [
-#		$TimelinePopupMenu, $CharacterPopupMenu, $ThemePopupMenu,
-#		$DefinitionPopupMenu, $TimelineRootPopupMenu, $CharacterRootPopupMenu,
-#		$ThemeRootPopupMenu, $DefinitionRootPopupMenu]
-#	for menu in context_menus:
-#		menu.clear()
-#		menu.rect_size = Vector2(0, 0)
-	# Adding items to context menus
-#
-#	$TimelinePopupMenu.add_icon_item(get_icon("Filesystem", "EditorIcons"), 'Show in File Manager')
-#	$TimelinePopupMenu.add_icon_item(get_icon("ActionCopy", "EditorIcons"), 'Copy Timeline Name')
-#	$TimelinePopupMenu.add_icon_item(get_icon("Remove", "EditorIcons"), 'Remove Timeline')
-#
-#	$CharacterPopupMenu.add_icon_item(get_icon("Filesystem", "EditorIcons"), 'Show in File Manager')
-#	$CharacterPopupMenu.add_icon_item(get_icon("Remove", "EditorIcons"), 'Remove Character')
-#
-#	$ThemePopupMenu.add_icon_item(get_icon("Filesystem", "EditorIcons"), 'Show in File Manager')
-#	$ThemePopupMenu.add_icon_item(get_icon("Duplicate", "EditorIcons"), 'Duplicate Theme')
-#	$ThemePopupMenu.add_icon_item(get_icon("Remove", "EditorIcons"), 'Remove Theme')
-#
-#	$DefinitionPopupMenu.add_icon_item(get_icon("Edit", "EditorIcons"), 'Edit Definitions File')
-#	$DefinitionPopupMenu.add_icon_item(get_icon("Remove", "EditorIcons"), 'Remove Definition')
-#
-#	$TimelineRootPopupMenu.add_icon_item(get_icon("Add", "EditorIcons") ,'Add Timeline')
-#	$CharacterRootPopupMenu.add_icon_item(get_icon("Add", "EditorIcons") ,'Add Character')
-#	$ThemeRootPopupMenu.add_icon_item(get_icon("Add", "EditorIcons") ,'Add Theme')
-#	$DefinitionRootPopupMenu.add_icon_item(get_icon("Add", "EditorIcons") ,'Add Definition')
-#
-#	# Connecting context menus
-#	$TimelinePopupMenu.connect('id_pressed', self, '_on_TimelinePopupMenu_id_pressed')
-#	$CharacterPopupMenu.connect('id_pressed', self, '_on_CharacterPopupMenu_id_pressed')
-#	$ThemePopupMenu.connect('id_pressed', self, '_on_ThemePopupMenu_id_pressed')
-#	$DefinitionPopupMenu.connect('id_pressed', self, '_on_DefinitionPopupMenu_id_pressed')
-#	$TimelineRootPopupMenu.connect('id_pressed', self, '_on_TimelineRootPopupMenu_id_pressed')
-#	$CharacterRootPopupMenu.connect('id_pressed', self, '_on_CharacterRootPopupMenu_id_pressed')
-#	$ThemeRootPopupMenu.connect('id_pressed', self, '_on_ThemeRootPopupMenu_id_pressed')
-#	$DefinitionRootPopupMenu.connect('id_pressed', self, '_on_DefinitionRootPopupMenu_id_pressed')
-#
 	#Connecting confirmation menus
 	$RemoveTimelineConfirmation.connect('confirmed', self, '_on_RemoveTimelineConfirmation_confirmed')
 	$RemoveFolderConfirmation.connect('confirmed', self, '_on_RemoveFolderConfirmation_confirmed')
 	$RemoveCharacterConfirmation.connect('confirmed', self, '_on_RemoveCharacterConfirmation_confirmed')
 	$RemoveThemeConfirmation.connect('confirmed', self, '_on_RemoveThemeConfirmation_confirmed')
-	$RemoveDefinitionConfirmation.connect('confirmed', self, '_on_RemoveDefinitionConfirmation_confirmed')
+	$RemoveValueConfirmation.connect('confirmed', self, '_on_RemoveValueConfirmation_confirmed')
+	$RemoveGlossaryConfirmation.connect('confirmed', self, '_on_RemoveGlossaryEntryConfirmation_confirmed')
 	
 	# Loading the version number
 	var config = ConfigFile.new()
@@ -154,8 +121,14 @@ func _on_RemoveTimelineConfirmation_confirmed():
 	$MainPanel/MasterTreeContainer/MasterTree.hide_all_editors()
 
 
-func _on_RemoveDefinitionConfirmation_confirmed():
-	var target = $MainPanel/DefinitionEditor.current_definition['id']
+func _on_RemoveGlossaryEntryConfirmation_confirmed():
+	var target = $MainPanel/GlossaryEntryEditor.current_definition['id']
+	DialogicResources.delete_default_definition(target)
+	$MainPanel/MasterTreeContainer/MasterTree.remove_selected()
+	$MainPanel/MasterTreeContainer/MasterTree.hide_all_editors()
+
+func _on_RemoveValueConfirmation_confirmed():
+	var target = $MainPanel/ValueEditor.current_definition['id']
 	DialogicResources.delete_default_definition(target)
 	$MainPanel/MasterTreeContainer/MasterTree.remove_selected()
 	$MainPanel/MasterTreeContainer/MasterTree.hide_all_editors()
