@@ -182,6 +182,10 @@ func _on_writing_timer_timeout():
 		
 		if text_label.visible_characters > text_label.get_total_character_count():
 			_handle_text_completed()
+			
+			if $TypingSFX.is_playing():
+				var sfx_time_left = $TypingSFX.stream.get_length() - $TypingSFX.get_playback_position()
+				$WritingTimer.start(sfx_time_left)
 		elif (
 			text_label.visible_characters > 0 and
 			text_label.text[text_label.visible_characters-1] != " "
@@ -189,6 +193,9 @@ func _on_writing_timer_timeout():
 			if _theme.get_value('typing_sfx', 'enable', false):
 				if _theme.get_value('typing_sfx', 'allow_interrupt', true) or not $TypingSFX.is_playing():
 					$TypingSFX.play()
+	else:
+		$WritingTimer.stop()
+		$TypingSFX.stop()
 
 func start_text_timer():
 	if text_speed == 0:
