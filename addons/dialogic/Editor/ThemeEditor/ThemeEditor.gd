@@ -1110,9 +1110,10 @@ func _on_bus_layout_changed():
 
 func update_audio_bus_option_buttons():
 	var theme = DialogicResources.get_theme_config(current_theme)
-	n['typing_sfx_audio_bus'].clear()
-	for i in range(AudioServer.bus_count):
-		var bus_name = AudioServer.get_bus_name(i)
-		n['typing_sfx_audio_bus'].add_item(bus_name)
-		if bus_name == theme.get_value('typing_sfx', 'audio_bus', "Master"):
-			n['typing_sfx_audio_bus'].select(i)
+	if theme != null:
+		n['typing_sfx_audio_bus'].clear()
+		for i in range(AudioServer.bus_count):
+			var bus_name = AudioServer.get_bus_name(i)
+			n['typing_sfx_audio_bus'].add_item(bus_name)
+			if bus_name == theme.get_value('typing_sfx', 'audio_bus', "Master"):
+				n['typing_sfx_audio_bus'].select(i)
