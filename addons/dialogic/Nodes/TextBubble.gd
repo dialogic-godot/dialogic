@@ -165,6 +165,7 @@ func load_theme(theme: ConfigFile):
 	$TypingSFX.set_volume_db(theme.get_value('typing_sfx', 'volume', -10))
 	$TypingSFX.random_volume_range = theme.get_value('typing_sfx', 'random_volume_range', 5)
 	$TypingSFX.random_pitch_range = theme.get_value('typing_sfx', 'random_pitch_range', 0.2)
+	$TypingSFX.set_bus(theme.get_value('typing_sfx', 'audio_bus', "Master"))
 	
 	
 	# Saving reference to the current theme
