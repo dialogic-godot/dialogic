@@ -136,6 +136,7 @@ onready var n : Dictionary = {
 	'typing_sfx_volume_range': $"VBoxContainer/TabContainer/Audio/Column/GridContainer/HBoxContainer2/TypingVolumeRandRange",
 	'typing_sfx_pitch_range': $"VBoxContainer/TabContainer/Audio/Column/GridContainer/HBoxContainer3/TypingPitchRandRange",
 	'typing_sfx_allow_interrupt': $"VBoxContainer/TabContainer/Audio/Column/GridContainer/TypingInterruptCheckBox",
+	'typing_sfx_audio_bus': $"VBoxContainer/TabContainer/Audio/Column/GridContainer/AudioBusButton",
 	
 	# Text preview
 	'text_preview': $VBoxContainer/HBoxContainer3/TextEdit,
@@ -148,8 +149,8 @@ onready var n : Dictionary = {
 ## 						GENERAL EDITOR STUFF
 ## ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-
 func _ready() -> void:
+	AudioServer.connect("bus_layout_changed", self, "_on_bus_layout_changed")
 	# Signal connection to free up some memory
 	connect("visibility_changed", self, "_on_visibility_changed")
 	if get_constant("dark_theme", "Editor"):
@@ -360,6 +361,8 @@ func load_theme(filename):
 	n['typing_sfx_volume_range'].value = theme.get_value('typing_sfx', 'random_volume_range', 5)
 	n['typing_sfx_pitch_range'].value = theme.get_value('typing_sfx', 'random_pitch_range', 0.2)
 	n['typing_sfx_allow_interrupt'].pressed = theme.get_value('typing_sfx', 'allow_interrupt', true)
+	
+	update_audio_bus_option_buttons()
 	
 	# Next indicator animations
 	var animations = ['Up and down', 'Pulse', 'Static'] # TODO: dynamically get all the animations from the Dialog.tscn NextIndicator
@@ -1093,5 +1096,24 @@ func _on_TypingPitchRandRange_value_changed(value):
 func _on_TypingInterruptCheckBox_toggled(button_pressed):
 	if loading:
 		return
-	DialogicResources.set_theme_value(current_theme, 'typing_sfx','allow_interrupt', button_pressed)
+	DialogicResources.set_theme_value(current_theme, 'typing_sfx', 'allow_interrupt', button_pressed)
 	_on_PreviewButton_pressed() # Refreshing the preview
+
+
+func _on_TypingAudioBusButton_item_selected(index):
+	if loading:
+		return
+	DialogicResources.set_theme_value(current_theme, 'typing_sfx', 'audio_bus', AudioServer.get_bus_name(index))
+
+func _on_bus_layout_changed():
+	update_audio_bus_option_buttons()
+
+func update_audio_bus_option_buttons():
+	var theme = DialogicResources.get_theme_config(current_theme)
+	if theme != null:
+		n['typing_sfx_audio_bus'].clear()
+		for i in range(AudioServer.bus_count):
+			var bus_name = AudioServer.get_bus_name(i)
+			n['typing_sfx_audio_bus'].add_item(bus_name)
+			if bus_name == theme.get_value('typing_sfx', 'audio_bus', "Master"):
+				n['typing_sfx_audio_bus'].select(i)

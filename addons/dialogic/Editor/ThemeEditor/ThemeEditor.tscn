@@ -85,6 +85,7 @@ size_flags_vertical = 3
 tab_align = 0
 
 [node name="Dialog Text" type="HBoxContainer" parent="VBoxContainer/TabContainer"]
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 4.0
@@ -1522,7 +1523,6 @@ __meta__ = {
 }
 
 [node name="Audio" type="HBoxContainer" parent="VBoxContainer/TabContainer"]
-visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 4.0
@@ -1543,7 +1543,7 @@ text = "Typing Sound Effects"
 [node name="GridContainer" type="GridContainer" parent="VBoxContainer/TabContainer/Audio/Column"]
 margin_top = 26.0
 margin_right = 280.0
-margin_bottom = 165.0
+margin_bottom = 210.0
 size_flags_horizontal = 3
 custom_constants/hseparation = 10
 columns = 2
@@ -1616,35 +1616,48 @@ allow_greater = true
 allow_lesser = true
 
 [node name="Label5" type="Label" parent="VBoxContainer/TabContainer/Audio/Column/GridContainer"]
-margin_top = 108.0
+margin_top = 113.0
 margin_right = 141.0
-margin_bottom = 139.0
+margin_bottom = 127.0
 text = "Pitch random range"
 
 [node name="HBoxContainer3" type="HBoxContainer" parent="VBoxContainer/TabContainer/Audio/Column/GridContainer"]
 margin_left = 151.0
 margin_top = 108.0
 margin_right = 280.0
-margin_bottom = 139.0
+margin_bottom = 132.0
 
 [node name="TypingPitchRandRange" type="SpinBox" parent="VBoxContainer/TabContainer/Audio/Column/GridContainer/HBoxContainer3"]
 margin_right = 74.0
-margin_bottom = 31.0
+margin_bottom = 24.0
 min_value = -80.0
 step = 0.1
 allow_greater = true
 allow_lesser = true
 
 [node name="Label6" type="Label" parent="VBoxContainer/TabContainer/Audio/Column/GridContainer"]
-margin_top = 108.0
+margin_top = 141.0
 margin_right = 141.0
-margin_bottom = 139.0
+margin_bottom = 155.0
 text = "Allow interrupt"
 
 [node name="TypingInterruptCheckBox" type="CheckBox" parent="VBoxContainer/TabContainer/Audio/Column/GridContainer"]
 margin_left = 151.0
+margin_top = 136.0
 margin_right = 280.0
-margin_bottom = 24.0
+margin_bottom = 160.0
+
+[node name="Label7" type="Label" parent="VBoxContainer/TabContainer/Audio/Column/GridContainer"]
+margin_top = 167.0
+margin_right = 141.0
+margin_bottom = 181.0
+text = "Audio Bus"
+
+[node name="AudioBusButton" type="OptionButton" parent="VBoxContainer/TabContainer/Audio/Column/GridContainer"]
+margin_left = 151.0
+margin_top = 164.0
+margin_right = 280.0
+margin_bottom = 184.0
 
 [node name="DelayPreviewTimer" type="Timer" parent="."]
 one_shot = true
@@ -1728,3 +1741,4 @@ one_shot = true
 [connection signal="value_changed" from="VBoxContainer/TabContainer/Audio/Column/GridContainer/HBoxContainer2/TypingVolumeRandRange" to="." method="_on_TypingVolumeRandRange_value_changed"]
 [connection signal="value_changed" from="VBoxContainer/TabContainer/Audio/Column/GridContainer/HBoxContainer3/TypingPitchRandRange" to="." method="_on_TypingPitchRandRange_value_changed"]
 [connection signal="toggled" from="VBoxContainer/TabContainer/Audio/Column/GridContainer/TypingInterruptCheckBox" to="." method="_on_TypingInterruptCheckBox_toggled"]
+[connection signal="item_selected" from="VBoxContainer/TabContainer/Audio/Column/GridContainer/AudioBusButton" to="." method="_on_TypingAudioBusButton_item_selected"]
