@@ -19,11 +19,11 @@ size_flags_vertical = 3
 
 [node name="HBoxContainer3" type="HBoxContainer" parent="VBoxContainer"]
 margin_right = 1024.0
-margin_bottom = 452.0
+margin_bottom = 514.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer3"]
 margin_right = 356.0
-margin_bottom = 452.0
+margin_bottom = 514.0
 custom_constants/separation = 16
 
 [node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer"]
@@ -47,16 +47,16 @@ text = "Default"
 
 [node name="ThemeOptionButton" type="OptionButton" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer/HBoxContainer"]
 margin_left = 50.0
-margin_right = 228.0
+margin_right = 190.0
 margin_bottom = 20.0
 rect_min_size = Vector2( 140, 0 )
-text = "theme-1619305742.cfg"
-items = [ "theme-1619305742.cfg", null, false, 0, {
-"file": "theme-1619305742.cfg"
-}, "theme-1620071267.cfg", null, false, 1, {
-"file": "theme-1620071267.cfg"
+text = "NightTheme"
+items = [ "DayTheme", null, false, 0, {
+"file": "theme-1621517790.cfg"
+}, "NightTheme", null, false, 1, {
+"file": "theme-1621517668.cfg"
 } ]
-selected = 0
+selected = 1
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer"]
 margin_top = 50.0
@@ -277,3 +277,38 @@ margin_left = 211.0
 margin_right = 235.0
 margin_bottom = 24.0
 pressed = true
+
+[node name="VBoxContainer4" type="VBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer"]
+margin_top = 468.0
+margin_right = 356.0
+margin_bottom = 514.0
+
+[node name="SectionTitle" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer4" instance=ExtResource( 2 )]
+margin_right = 356.0
+text = "Timeline editor"
+
+[node name="CustomEvents" type="HBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer4"]
+margin_top = 26.0
+margin_right = 356.0
+margin_bottom = 46.0
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer4/CustomEvents"]
+margin_top = 3.0
+margin_right = 228.0
+margin_bottom = 17.0
+size_flags_horizontal = 3
+text = "Folder for custom events"
+
+[node name="CustomEventsFolder" type="Button" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer4/CustomEvents"]
+margin_left = 232.0
+margin_right = 340.0
+margin_bottom = 20.0
+text = "custom-events"
+
+[node name="RefreshCustomEvents" type="Button" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer4/CustomEvents"]
+margin_left = 344.0
+margin_right = 356.0
+margin_bottom = 20.0
+
+[connection signal="pressed" from="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer4/CustomEvents/CustomEventsFolder" to="." method="_on_CustomEventsFolder_pressed"]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer4/CustomEvents/RefreshCustomEvents" to="." method="_on_RefreshCustomEvents_pressed"]

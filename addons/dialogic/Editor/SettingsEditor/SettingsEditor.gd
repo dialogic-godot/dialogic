@@ -1,6 +1,8 @@
 tool
 extends ScrollContainer
 
+var editor_reference
+
 onready var nodes = {
 	'themes': $VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer/HBoxContainer/ThemeOptionButton,
 	'advanced_themes': $VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer/HBoxContainer2/AdvancedThemes,
@@ -14,7 +16,10 @@ onready var nodes = {
 	'clear_current_timeline': $VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer3/HBoxContainer2/ClearCurrentTimeline,
 	'save_definitions_on_start': $VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer3/HBoxContainer3/SaveDefinitionsOnStart,
 	'save_definitions_on_end': $VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer3/HBoxContainer4/SaveDefinitionsOnEnd,
-}
+
+	'custom_events_folder_button':$VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer4/CustomEvents/CustomEventsFolder,
+	'custom_events_refresh':$VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer4/CustomEvents/RefreshCustomEvents,
+	}
 
 var THEME_KEYS := [
 	'advanced_themes',
@@ -44,6 +49,8 @@ func _ready():
 	# TODO move to theme section later
 	nodes['advanced_themes'].connect('toggled', self, '_on_item_toggled', ['dialog', 'advanced_themes'])
 	
+	nodes['custom_events_refresh'].icon = get_icon("Loop", "EditorIcons")
+	
 	for k in DIALOG_KEYS:
 		nodes[k].connect('toggled', self, '_on_item_toggled', ['dialog', k])
 	
@@ -56,6 +63,7 @@ func update_data():
 	refresh_themes(settings)
 	load_values(settings, "dialog")
 	load_values(settings, "saving")
+	nodes['custom_events_folder_button'].text = settings.get_value('editor', 'custom_events_path', '').get_file()
 
 
 func load_values(settings: ConfigFile, section: String):
@@ -103,3 +111,19 @@ func _on_item_toggled(value: bool, section: String, key: String):
 # Reading and saving data to the settings file
 func set_value(section, key, value):
 	DialogicResources.set_settings_value(section, key, value)
+
+
+func _on_CustomEventsFolder_pressed():
+	editor_reference.godot_dialog("*.ogg, *.wav", EditorFileDialog.MODE_OPEN_ANY)
+	editor_reference.godot_dialog_connect(self, "_on_CustomEventsFolder_selected", "dir_selected")
+	editor_reference.godot_dialog_connect(self, "_on_CustomEventsFolder_selected", "file_selected")
+
+func _on_CustomEventsFolder_selected(path, target):
+	DialogicResources.set_settings_value("editor", 'custom_events_path', path)
+	nodes['custom_events_folder_button'].text = DialogicResources.get_filename_from_path(path)
+	editor_reference.timeline_editor.update_custom_events()
+
+
+
+func _on_RefreshCustomEvents_pressed():
+	editor_reference.timeline_editor.update_custom_events()

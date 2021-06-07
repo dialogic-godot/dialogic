@@ -28,7 +28,8 @@ func _ready():
 	value_editor.editor_reference = self
 	glossary_entry_editor.editor_reference = self
 	theme_editor.editor_reference = self
-
+	settings_editor.editor_reference = self
+	
 	master_tree.connect("editor_selected", self, 'on_master_tree_editor_selected')
 
 	# Updating the folder structure

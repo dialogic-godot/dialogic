@@ -87,7 +87,7 @@ rect_min_size = Vector2( 180, 0 )
 
 [node name="EventContainer" type="VBoxContainer" parent="ScrollContainer"]
 margin_right = 168.0
-margin_bottom = 760.0
+margin_bottom = 782.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 __meta__ = {
@@ -399,3 +399,24 @@ icon = ExtResource( 20 )
 align = 0
 script = ExtResource( 21 )
 EventName = "CallNode"
+
+[node name="CustomEventsHeadline" type="HBoxContainer" parent="ScrollContainer/EventContainer"]
+margin_top = 764.0
+margin_right = 168.0
+margin_bottom = 778.0
+
+[node name="Label" type="Label" parent="ScrollContainer/EventContainer/CustomEventsHeadline"]
+margin_right = 95.0
+margin_bottom = 14.0
+text = "Custom Events"
+
+[node name="HSeparator2" type="HSeparator" parent="ScrollContainer/EventContainer/CustomEventsHeadline"]
+margin_left = 99.0
+margin_right = 168.0
+margin_bottom = 14.0
+size_flags_horizontal = 3
+
+[node name="CustomEventsContainer" type="VBoxContainer" parent="ScrollContainer/EventContainer"]
+margin_top = 782.0
+margin_right = 168.0
+margin_bottom = 782.0
