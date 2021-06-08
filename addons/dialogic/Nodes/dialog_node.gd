@@ -11,6 +11,7 @@ var waiting: bool = false
 var preview: bool = false
 var definitions: Dictionary = {}
 var definition_visible: bool = false
+var while_show_up_animation: bool = false
 
 var settings: ConfigFile
 var current_theme: ConfigFile
@@ -66,7 +67,7 @@ func _ready():
 	$TextBubble.connect("text_completed", self, "_on_text_completed")
 	$TextBubble/RichTextLabel.connect('meta_hover_started', self, '_on_RichTextLabel_meta_hover_started')
 	$TextBubble/RichTextLabel.connect('meta_hover_ended', self, '_on_RichTextLabel_meta_hover_ended')
-
+	
 	# Getting the character information
 	characters = DialogicUtil.get_character_list()
 
@@ -76,11 +77,8 @@ func _ready():
 			_init_dialog()
 			$DefinitionInfo.in_theme_editor = true
 	else:
-		# Copied
-		if not(get_parent() is CanvasLayer) and debug_mode:
-			push_warning("[Dialogic] You didn't add this node to a CanvasLayer. If this was intentional, you can ignore this warning.")
-		
-		_init_dialog()
+		# Calls _init_dialog() after animation is over
+		open_dialog_animation(current_theme.get_value('animation', 'show_time', 0.5)) 
 
 
 func load_config_files():
@@ -341,6 +339,10 @@ func _process(delta):
 	if current_event.has('text'):
 		if '[nw]' in current_event['text']:
 			$TextBubble/NextIndicatorContainer/NextIndicator.visible = false
+	
+	# Hide if fading in
+	if while_show_up_animation:
+		$TextBubble/NextIndicatorContainer/NextIndicator.visible = false
 
 
 func _input(event: InputEvent) -> void:
@@ -1034,6 +1036,28 @@ func characters_leave_all():
 	if portraits != null:
 		for p in portraits.get_children():
 			p.fade_out()
+
+
+func open_dialog_animation(transition_duration):
+	if transition_duration > 0:
+		$TextBubble.update_text('') # Clearing the text
+		$TextBubble.modulate = Color(1,1,1,0)
+		while_show_up_animation = true
+		var tween = Tween.new()
+		add_child(tween)
+		tween.interpolate_property($TextBubble, "modulate",
+			$TextBubble.modulate, Color(1,1,1,1), transition_duration,
+			Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
+		tween.start()
+		tween.connect("tween_completed", self, "clean_fade_in_tween", [tween])
+	else:
+		_init_dialog()
+
+
+func clean_fade_in_tween(object, key, node):
+	node.queue_free()
+	while_show_up_animation = false
+	_init_dialog()
 
 
 func close_dialog_event(transition_duration):
