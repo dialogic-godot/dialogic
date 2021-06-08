@@ -520,10 +520,11 @@ func update_custom_events() -> void:
 	# adding new ones
 	for custom_event_id in custom_events.keys():
 		var button = Button.new()
-		button.text = custom_events[custom_event_id]['event_name']
+		button.text = "  "+custom_events[custom_event_id]['event_name']
 		if custom_events[custom_event_id]['event_icon']:
 			button.icon = custom_events[custom_event_id]['event_icon']
 		button.connect("pressed", self, "_create_event_button_pressed", [custom_event_id])
+		button.align = Button.ALIGN_LEFT
 		custom_events_container.add_child(button)
 
 ## *****************************************************************************
