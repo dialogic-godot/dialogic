@@ -1064,8 +1064,7 @@ func _on_TypingCheckBox_toggled(button_pressed):
 
 func _on_TypingPathButton_pressed() -> void:
 	editor_reference.godot_dialog("*.ogg, *.wav", EditorFileDialog.MODE_OPEN_ANY)
-	editor_reference.godot_dialog_connect(self, "_on_typingPath_selected", "dir_selected")
-	editor_reference.godot_dialog_connect(self, "_on_typingPath_selected", "file_selected")
+	editor_reference.godot_dialog_connect(self, "_on_typingPath_selected", ["dir_selected", "file_selected"])
 
 func _on_typingPath_selected(path, target) -> void:
 	if loading:
