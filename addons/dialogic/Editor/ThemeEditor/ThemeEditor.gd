@@ -76,6 +76,7 @@ onready var n : Dictionary = {
 	'background_modulation': $"VBoxContainer/TabContainer/Dialog Box/Column/GridContainer/HBoxContainer6/CheckBox",
 	'background_modulation_color': $"VBoxContainer/TabContainer/Dialog Box/Column/GridContainer/HBoxContainer6/ColorPickerButton",
 	'background_full_width': $"VBoxContainer/TabContainer/Dialog Box/Column/GridContainer/HBoxContainer7/CheckBox",
+	'animation_show_time': $"VBoxContainer/TabContainer/Dialog Box/Column3/GridContainer/ShowTime/SpinBox",
 	
 	# Character Names
 	'name_font': $"VBoxContainer/TabContainer/Name Label/Column/GridContainer/RegularFont/NameFontButton",
@@ -178,6 +179,9 @@ func _ready() -> void:
 	
 	# Dialog Text tab
 	n['single_portrait_mode'].connect('toggled', self, '_on_generic_checkbox', ['settings', 'single_portrait_mode'])
+	
+	# Dialog Box tab
+	n['animation_show_time'].connect('value_changed', self, '_on_generic_value_change', ['animation', 'show_time'])
 	
 	# Choice button style modifiers
 	n['button_normal'].connect('picking_background', self, '_on_ButtonTextureButton_pressed')
@@ -472,7 +476,14 @@ func _on_generic_checkbox(button_pressed, section, key) -> void:
 		return
 	DialogicResources.set_theme_value(current_theme, section, key, button_pressed)
 	_on_PreviewButton_pressed() # Refreshing the preview
-	
+
+
+func _on_generic_value_change(value, section, key) -> void:
+	if loading:
+		return
+	DialogicResources.set_theme_value(current_theme, section, key, value)
+	_on_PreviewButton_pressed() # Refreshing the preview
+
 
 ## ------------ 		DIALOG TEXT TAB 	------------------------------------
 

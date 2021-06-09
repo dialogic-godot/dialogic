@@ -364,7 +364,6 @@ margin_right = 270.0
 margin_bottom = 76.0
 
 [node name="Dialog Box" type="HBoxContainer" parent="VBoxContainer/TabContainer"]
-visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 4.0
@@ -687,7 +686,7 @@ text = "Behaviour"
 [node name="GridContainer" type="GridContainer" parent="VBoxContainer/TabContainer/Dialog Box/Column3"]
 margin_top = 26.0
 margin_right = 270.0
-margin_bottom = 46.0
+margin_bottom = 74.0
 size_flags_horizontal = 3
 custom_constants/hseparation = 10
 columns = 2
@@ -712,6 +711,28 @@ size_flags_horizontal = 3
 text = "[Select Action]"
 items = [ "[Select Action]", null, false, 0, null, "ui_accept", null, false, 1, null, "ui_select", null, false, 2, null, "ui_cancel", null, false, 3, null, "ui_focus_next", null, false, 4, null, "ui_focus_prev", null, false, 5, null, "ui_left", null, false, 6, null, "ui_right", null, false, 7, null, "ui_up", null, false, 8, null, "ui_down", null, false, 9, null, "ui_page_up", null, false, 10, null, "ui_page_down", null, false, 11, null, "ui_home", null, false, 12, null, "ui_end", null, false, 13, null ]
 selected = 0
+
+[node name="Label4" type="Label" parent="VBoxContainer/TabContainer/Dialog Box/Column3/GridContainer"]
+margin_top = 24.0
+margin_right = 139.0
+margin_bottom = 48.0
+size_flags_horizontal = 3
+size_flags_vertical = 5
+text = "Fade in time:"
+
+[node name="ShowTime" type="HBoxContainer" parent="VBoxContainer/TabContainer/Dialog Box/Column3/GridContainer"]
+margin_left = 149.0
+margin_top = 24.0
+margin_right = 270.0
+margin_bottom = 48.0
+
+[node name="SpinBox" type="SpinBox" parent="VBoxContainer/TabContainer/Dialog Box/Column3/GridContainer/ShowTime"]
+margin_right = 74.0
+margin_bottom = 24.0
+max_value = 999.0
+step = 0.1
+value = 0.5
+allow_greater = true
 
 [node name="Name Label" type="HBoxContainer" parent="VBoxContainer/TabContainer"]
 visible = false
@@ -1523,6 +1544,7 @@ __meta__ = {
 }
 
 [node name="Audio" type="HBoxContainer" parent="VBoxContainer/TabContainer"]
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 4.0
