@@ -180,6 +180,7 @@ func _ready() -> void:
 	# Dialog Text tab
 	n['theme_text_shadow'].connect('toggled', self, '_on_generic_checkbox', ['text', 'shadow'])
 	n['single_portrait_mode'].connect('toggled', self, '_on_generic_checkbox', ['settings', 'single_portrait_mode'])
+	n['theme_text_speed'].connect('value_changed', self, '_on_generic_value_change', ['text','speed'])
 	
 	# Dialog Box tab
 	n['theme_background_color_visible'].connect('toggled', self, '_on_generic_checkbox', ['background', 'use_color'])
@@ -187,6 +188,8 @@ func _ready() -> void:
 	n['background_modulation'].connect('toggled', self, '_on_generic_checkbox', ['background', 'modulation'])
 	n['background_full_width'].connect('toggled', self, '_on_generic_checkbox', ['background', 'full_width'])
 	n['animation_show_time'].connect('value_changed', self, '_on_generic_value_change', ['animation', 'show_time'])
+	n['bottom_gap'].connect('value_changed', self, '_on_generic_value_change', ['box', 'bottom_gap'])
+	n['next_indicator_scale'].connect('value_changed', self, '_on_generic_value_change', ['next_indicator', 'scale'])
 
 	# Name tab
 	n['name_shadow_visible'].connect('toggled', self, '_on_generic_checkbox', ['name', 'shadow_visible'])
@@ -222,6 +225,9 @@ func _ready() -> void:
 
 	# Audio tab
 	n['typing_sfx_enabled'].connect('toggled', self, '_on_generic_checkbox', ['typing_sfx','enable'])
+	n['typing_sfx_volume'].connect('value_changed', self, '_on_generic_value_change', ['typing_sfx', 'volume'])
+	n['typing_sfx_volume_range'].connect('value_changed', self, '_on_generic_value_change', ['typing_sfx', 'random_volume_range'])
+	n['typing_sfx_pitch_range'].connect('value_changed', self, '_on_generic_value_change', ['typing_sfx', 'random_pitch_range'])
 
 	# Character Picker
 	n['character_picker'].connect('about_to_show', self, 'character_picker_about_to_show')
@@ -488,20 +494,22 @@ func _on_Preview_text_changed() -> void:
 
 ## ------------ 		GENERICS
 
-func _on_generic_checkbox(button_pressed, section, key) -> void:
+func _on_generic_checkbox(button_pressed, section, key, update_preview = true) -> void:
 	# Many methods here are the same, so I want to replace all those instances
 	# with this generic checkbox logic. TODO
 	if loading:
 		return
 	DialogicResources.set_theme_value(current_theme, section, key, button_pressed)
-	_on_PreviewButton_pressed() # Refreshing the preview
+	if update_preview:
+		_on_PreviewButton_pressed() # Refreshing the preview
 
 
-func _on_generic_value_change(value, section, key) -> void:
+func _on_generic_value_change(value, section, key, update_preview = true) -> void:
 	if loading:
 		return
 	DialogicResources.set_theme_value(current_theme, section, key, value)
-	_on_PreviewButton_pressed() # Refreshing the preview
+	if update_preview:
+		_on_PreviewButton_pressed() # Refreshing the preview
 
 
 ## ------------ 		DIALOG TEXT TAB 	------------------------------------
@@ -591,13 +599,6 @@ func _on_Alignment_item_selected(index) -> void:
 	_on_PreviewButton_pressed() # Refreshing the preview
 
 
-func _on_textSpeed_value_changed(value) -> void:
-	if loading:
-		return
-	DialogicResources.set_theme_value(current_theme, 'text','speed', value)
-	_on_PreviewButton_pressed() # Refreshing the preview
-
-
 func _on_ColorPickerButton_color_changed(color) -> void:
 	if loading:
 		return
@@ -637,13 +638,6 @@ func _on_BoxSize_value_changed(value) -> void:
 		return
 	var size_value = Vector2(n['size_w'].value, n['size_h'].value)
 	DialogicResources.set_theme_value(current_theme, 'box', 'size', size_value)
-	_on_PreviewButton_pressed() # Refreshing the preview
-
-
-func _on_BottomGap_value_changed(value) -> void:
-	if loading:
-		return
-	DialogicResources.set_theme_value(current_theme, 'box', 'bottom_gap', value)
 	_on_PreviewButton_pressed() # Refreshing the preview
 
 
@@ -698,13 +692,6 @@ func _on_indicator_selected(path, target) -> void:
 
 func _on_NextAnimation_item_selected(index) -> void:
 	DialogicResources.set_theme_value(current_theme, 'next_indicator', 'animation', n['next_animation'].get_item_text(index))
-	_on_PreviewButton_pressed() # Refreshing the preview
-
-
-func _on_IndicatorScale_value_changed(value) -> void:
-	if loading:
-		return
-	DialogicResources.set_theme_value(current_theme, 'next_indicator', 'scale', value)
 	_on_PreviewButton_pressed() # Refreshing the preview
 
 
@@ -1011,24 +998,6 @@ func _on_typingPath_selected(path, target) -> void:
 	DialogicResources.set_theme_value(current_theme, 'typing_sfx', 'path', path)
 	n['typing_sfx_path'].text = DialogicResources.get_filename_from_path(path)
 	_on_PreviewButton_pressed() # Refreshing the preview
-
-
-func _on_TypingVolume_value_changed(value):
-	if loading:
-		return
-	DialogicResources.set_theme_value(current_theme, 'typing_sfx', 'volume', value)
-
-
-func _on_TypingVolumeRandRange_value_changed(value):
-	if loading:
-		return
-	DialogicResources.set_theme_value(current_theme, 'typing_sfx', 'random_volume_range', value)
-
-
-func _on_TypingPitchRandRange_value_changed(value):
-	if loading:
-		return
-	DialogicResources.set_theme_value(current_theme, 'typing_sfx', 'random_pitch_range', value)
 
 
 func _on_TypingInterruptCheckBox_toggled(button_pressed):
