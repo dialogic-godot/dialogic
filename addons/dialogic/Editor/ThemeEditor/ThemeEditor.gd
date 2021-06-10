@@ -178,10 +178,24 @@ func _ready() -> void:
 	n['text_preview'].add_color_region('[', ']', get_color("axis_z_color", "Editor"))
 	
 	# Dialog Text tab
+	n['theme_text_shadow'].connect('toggled', self, '_on_generic_checkbox', ['text', 'shadow'])
 	n['single_portrait_mode'].connect('toggled', self, '_on_generic_checkbox', ['settings', 'single_portrait_mode'])
 	
 	# Dialog Box tab
+	n['theme_background_color_visible'].connect('toggled', self, '_on_generic_checkbox', ['background', 'use_color'])
+	n['background_texture_button_visible'].connect('toggled', self, '_on_generic_checkbox', ['background', 'use_image'])
+	n['background_modulation'].connect('toggled', self, '_on_generic_checkbox', ['background', 'modulation'])
+	n['background_full_width'].connect('toggled', self, '_on_generic_checkbox', ['background', 'full_width'])
 	n['animation_show_time'].connect('value_changed', self, '_on_generic_value_change', ['animation', 'show_time'])
+
+	# Name tab
+	n['name_shadow_visible'].connect('toggled', self, '_on_generic_checkbox', ['name', 'shadow_visible'])
+	n['name_background_visible'].connect('toggled', self, '_on_generic_checkbox', ['name', 'background_visible'])
+	n['name_image_visible'].connect('toggled', self, '_on_generic_checkbox', ['name', 'image_visible'])
+	n['name_background_modulation'].connect('toggled', self, '_on_generic_checkbox', ['name', 'modulation'])
+
+	# Buttons tab
+	n['button_fixed'].connect('toggled', self, '_on_generic_checkbox', ['buttons', 'fixed'])
 	
 	# Choice button style modifiers
 	n['button_normal'].connect('picking_background', self, '_on_ButtonTextureButton_pressed')
@@ -203,7 +217,12 @@ func _ready() -> void:
 	name_positions_popup.add_radio_check_item('Right')
 	n['name_position'].select(0)
 	
-	
+	# Glossary tab
+	n['glossary_enabled'].connect('toggled', self, '_on_generic_checkbox', ['definitions','show_glossary'])
+
+	# Audio tab
+	n['typing_sfx_enabled'].connect('toggled', self, '_on_generic_checkbox', ['typing_sfx','enable'])
+
 	# Character Picker
 	n['character_picker'].connect('about_to_show', self, 'character_picker_about_to_show')
 	n['character_picker'].get_popup().connect('index_pressed', self, 'character_picker_selected')
@@ -593,13 +612,6 @@ func _on_ColorPickerButtonShadow_color_changed(color) -> void:
 	$DelayPreviewTimer.start(0.5) # Calling a timer so the update doesn't get triggered many times
 
 
-func _on_CheckBoxShadow_toggled(button_pressed) -> void:
-	if loading:
-		return
-	DialogicResources.set_theme_value(current_theme, 'text','shadow', button_pressed)
-	_on_PreviewButton_pressed() # Refreshing the preview
-
-
 func _on_ShadowOffset_value_changed(_value) -> void:
 	if loading:
 		return
@@ -636,13 +648,6 @@ func _on_BottomGap_value_changed(value) -> void:
 
 
 # Background Texture
-func _on_BackgroundTexture_CheckBox_toggled(button_pressed) -> void:
-	if loading:
-		return
-	DialogicResources.set_theme_value(current_theme, 'background', 'use_image', button_pressed)
-	_on_PreviewButton_pressed() # Refreshing the preview
-
-
 func _on_BackgroundTextureButton_pressed() -> void:
 	editor_reference.godot_dialog("*.png")
 	editor_reference.godot_dialog_connect(self, "_on_background_selected")
@@ -656,13 +661,6 @@ func _on_background_selected(path, target) -> void:
 	_on_PreviewButton_pressed() # Refreshing the preview
 
 
-func _on_BackgroundTexture_Modulation_toggled(button_pressed) -> void:
-	if loading:
-		return
-	DialogicResources.set_theme_value(current_theme, 'background', 'modulation', button_pressed)
-	_on_PreviewButton_pressed() # Refreshing the preview
-
-
 func _on_ColorPicker_Background_texture_modulation_color_changed(color) -> void:
 	if loading:
 		return
@@ -670,27 +668,11 @@ func _on_ColorPicker_Background_texture_modulation_color_changed(color) -> void:
 	$DelayPreviewTimer.start(0.5) # Calling a timer so the update doesn't get triggered many times
 
 # Background Color
-func _on_BackgroundColor_CheckBox_toggled(button_pressed) -> void:
-	if loading:
-		return
-	DialogicResources.set_theme_value(current_theme, 'background', 'use_color', button_pressed)
-	_on_PreviewButton_pressed() # Refreshing the preview
-
-
 func _on_BackgroundColor_ColorPickerButton_color_changed(color) -> void:
 	if loading:
 		return
 	DialogicResources.set_theme_value(current_theme, 'background', 'color', '#' + color.to_html())
 	$DelayPreviewTimer.start(0.5) # Calling a timer so the update doesn't get triggered many times
-
-# Full Width
-func _on_BackgroundFullWidth_toggled(button_pressed):
-	if loading:
-		return
-	DialogicResources.set_theme_value(current_theme, 'background','full_width', button_pressed)
-	_on_PreviewButton_pressed() # Refreshing the preview
-
-
 
 # Next indicator
 func _on_NextIndicatorButton_pressed() -> void:
@@ -767,20 +749,6 @@ func _on_name_background_color_changed(color) -> void:
 
 
 # Background Texture
-func _on_name_background_visible_toggled(button_pressed) -> void:
-	if loading:
-		return
-	DialogicResources.set_theme_value(current_theme, 'name', 'background_visible', button_pressed)
-	_on_PreviewButton_pressed() # Refreshing the preview
-
-
-func _on_name_image_visible_toggled(button_pressed) -> void:
-	if loading:
-		return
-	DialogicResources.set_theme_value(current_theme, 'name', 'image_visible', button_pressed)
-	_on_PreviewButton_pressed() # Refreshing the preview
-
-
 func _on_name_image_pressed() -> void:
 	editor_reference.godot_dialog("*.png")
 	editor_reference.godot_dialog_connect(self, "_on_name_texture_selected")
@@ -799,20 +767,6 @@ func _on_ColorPicker_NameLabel_modulation_color_changed(color) -> void:
 		return
 	DialogicResources.set_theme_value(current_theme, 'name', 'modulation_color', '#' + color.to_html())
 	$DelayPreviewTimer.start(0.5) # Calling a timer so the update doesn't get triggered many times
-
-
-func _on_NameLabel_texture_modulation_toggled(button_pressed) -> void:
-	if loading:
-		return
-	DialogicResources.set_theme_value(current_theme, 'name', 'modulation', button_pressed)
-	_on_PreviewButton_pressed() # Refreshing the preview
-
-
-func _on_shadow_visible_toggled(button_pressed) -> void:
-	if loading:
-		return
-	DialogicResources.set_theme_value(current_theme, 'name', 'shadow_visible', button_pressed)
-	_on_PreviewButton_pressed() # Refreshing the preview
 
 
 func _on_name_shadow_color_changed(color) -> void:
@@ -854,14 +808,6 @@ func _on_name_position_selected(index):
 	_on_PreviewButton_pressed() # Refreshing the preview
 
 ## ------------ 		CHOICE BUTTON TAB	 	--------------------------------
-
-func _on_FixedSize_toggled(button_pressed):
-	if loading:
-		return
-	DialogicResources.set_theme_value(current_theme, 'buttons', 'fixed', button_pressed)
-	_on_PreviewButton_pressed() # Refreshing the preview
-
-
 func _on_ButtonSize_value_changed(value):
 	if loading:
 		return
@@ -1054,25 +1000,7 @@ func _on_Glossary_BackgroundPanel_selected(path, target):
 	n['glossary_background_panel'].text = DialogicResources.get_filename_from_path(path)
 	_on_PreviewButton_pressed() # Refreshing the preview
 
-## SHOW GLOSSARY
-func _on_ShowGlossaryCheckBox_toggled(button_pressed):
-	if loading:
-		return
-	DialogicResources.set_theme_value(current_theme, 'definitions','show_glossary', button_pressed)
-	_on_PreviewButton_pressed() # Refreshing the preview
-
-
 ## ------------ 		AUDIO  TAB	 	------------------------------------
-
-
-func _on_TypingCheckBox_toggled(button_pressed):
-	if loading:
-		return
-	DialogicResources.set_theme_value(current_theme, 'typing_sfx','enable', button_pressed)
-	_on_PreviewButton_pressed() # Refreshing the preview
-
-
-
 func _on_TypingPathButton_pressed() -> void:
 	editor_reference.godot_dialog("*.ogg, *.wav", EditorFileDialog.MODE_OPEN_ANY)
 	editor_reference.godot_dialog_connect(self, "_on_typingPath_selected", ["dir_selected", "file_selected"])
