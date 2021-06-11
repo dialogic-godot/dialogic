@@ -599,7 +599,7 @@ func event_handler(event: Dictionary):
 				operation = event["operation"]
 			var value = event['set_value']
 			if event.get('set_random', false):
-				value = str(randi()%int(event.get("random_upper_limit"))+event.get('random_lower_limit'))
+				value = str(randi()%int(event.get("random_upper_limit", 100))+event.get('random_lower_limit', 0))
 			DialogicSingleton.set_variable_from_id(event['definition'], value, operation)
 			_load_next_event()
 		
