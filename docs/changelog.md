@@ -1,3 +1,6 @@
+## WIP
+
+
 ## v1.2 - Organize it!
 - Functionality
   - Added extra options to allow the user to disable/enable saving of definitions and current timeline [[Arnaud](https://github.com/arnaudvergnet)]

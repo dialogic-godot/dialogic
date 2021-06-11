@@ -367,6 +367,10 @@ func show_dialog():
 	visible = true
 
 
+func set_dialog_script(value):
+	dialog_script = value
+
+
 func update_name(character) -> void:
 	if character.has('name'):
 		var parsed_name = character['name']
