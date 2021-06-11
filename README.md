@@ -109,7 +109,7 @@ func _ready():
 	var gdscript_dialog = Dialogic.start('')
 	gdscript_dialog.set_dialog_script( {
 		"events":[
-			{ 'event_id':'dialogic_001', "character": "", "portrait":"", "text": "This dialog was created using GDScript!"}
+			{ 'event_id':'dialogic_001', "text": "This dialog was created using GDScript!"}
 		]
 	})
 	add_child(gdscript_dialog)

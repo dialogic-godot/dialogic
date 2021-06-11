@@ -504,9 +504,10 @@ func event_handler(event: Dictionary):
 			emit_signal("event_start", "text", event)
 			show_dialog()
 			finished = false
-			var character_data = get_character(event['character'])
-			update_name(character_data)
-			grab_portrait_focus(character_data, event)
+			if event.has('character'):
+				var character_data = get_character(event['character'])
+				update_name(character_data)
+				grab_portrait_focus(character_data, event)
 			update_text(event['text'])
 		# Join event
 		'dialogic_002':
