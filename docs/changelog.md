@@ -11,9 +11,10 @@
   - Improved resource picker aware of sub-folders [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
 
 - Dialog
-  - Adding [nw] commands to automatically skip the text after 2 seconds without user input (Will be improved in future versions)
+  - Adding `[nw]` commands to automatically skip the text after 2 seconds without user input (Will be improved in future versions)
   - Choices can now print the definition values using the regular `[definition]` syntax
   - Next indicator is no longer visible when there are options to select
+  - You can now use `[speed=3]` or any number to change the speed of an individual event text speed
 
 - Theme Editor
   - Added new fonts selector for italics, bold, and names [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
