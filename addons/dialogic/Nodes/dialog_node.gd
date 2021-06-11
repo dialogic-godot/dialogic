@@ -49,7 +49,7 @@ func _ready():
 	
 	# Checking if the dialog should read the code from a external file
 	if not timeline.empty():
-		dialog_script = set_current_dialog(timeline)
+		set_current_dialog(timeline)
 	elif dialog_script.keys().size() == 0:
 		dialog_script = {
 			"events":[
@@ -57,6 +57,9 @@ func _ready():
 				"character":"","portrait":"",
 				"text":"[Dialogic Error] No timeline specified."}]
 		}
+	# Load the dialog directly from GDscript
+	else:
+		load_dialog()
 	
 	# Connecting resize signal
 	get_viewport().connect("size_changed", self, "resize_main")
@@ -137,7 +140,10 @@ func resize_main():
 
 func set_current_dialog(dialog_path: String):
 	current_timeline = dialog_path
-	var dialog_script = DialogicResources.get_timeline_json(dialog_path)
+	dialog_script = DialogicResources.get_timeline_json(dialog_path)
+	load_dialog()
+	
+func load_dialog():
 	# All this parse events should be happening in the same loop ideally
 	# But until performance is not an issue I will probably stay lazy
 	# And keep adding different functions for each parsing operation.
@@ -149,8 +155,6 @@ func set_current_dialog(dialog_path: String):
 	
 	dialog_script = parse_text_lines(dialog_script)
 	dialog_script = parse_branches(dialog_script)
-	return dialog_script
-
 
 func parse_characters(dialog_script):
 	var names = DialogicUtil.get_character_list()
