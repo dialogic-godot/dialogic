@@ -2,6 +2,7 @@ tool
 extends Control
 
 var text_speed := 0.02 # Higher = lower speed
+var theme_text_speed = text_speed
 
 onready var text_label = $RichTextLabel
 onready var name_label = $NameLabel
@@ -38,6 +39,18 @@ func update_text(text):
 	# Removing commands from the text
 	#text = text.replace('[p]', '')
 	text = text.replace('[nw]', '')
+	
+	# Speed
+	text_speed = theme_text_speed # Resetting the speed to the default
+	# Regexing the speed tag
+	var regex = RegEx.new()
+	regex.compile("\\[speed=(.+?)\\](.*?)")
+	var result = regex.search(text)
+	if result:
+		var speed_settings = result.get_string()
+		var value = float(speed_settings.split('=')[1]) * 0.01
+		text_speed = value
+		text = text.replace(speed_settings, '')
 	
 	# Updating the text and starting the animation from 0
 	text_label.bbcode_text = text
@@ -88,6 +101,7 @@ func load_theme(theme: ConfigFile):
 
 	# Text speed
 	text_speed = theme.get_value('text','speed', 2) * 0.01
+	theme_text_speed = text_speed
 
 	# Margin
 	var text_margin = theme.get_value('text', 'margin', Vector2(20, 10))
