@@ -1,4 +1,7 @@
-## v1.2 - WIP
+## WIP
+
+
+## v1.2 - Organize it!
 - Functionality
   - Added extra options to allow the user to disable/enable saving of definitions and current timeline [[Arnaud](https://github.com/arnaudvergnet)]
   - `Dialogic.start()` will add a CanvasLayer by default to avoid the confusion of not seeing Dialogic when using a camera. [[AnidemDex](https://github.com/AnidemDex)]
@@ -11,9 +14,10 @@
   - Improved resource picker aware of sub-folders [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
 
 - Dialog
-  - Adding [nw] commands to automatically skip the text after 2 seconds without user input (Will be improved in future versions)
-  - Choices can now print the definition values usgin the regular `[definition]` syntax
+  - Adding `[nw]` commands to automatically skip the text after 2 seconds without user input (Will be improved in future versions)
+  - Choices can now print the definition values using the regular `[definition]` syntax
   - Next indicator is no longer visible when there are options to select
+  - You can now use `[speed=3]` or any number to change the speed of an individual event text speed
 
 - Theme Editor
   - Added new fonts selector for italics, bold, and names [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
@@ -21,8 +25,9 @@
   - Added a new option to make the dialog backgrounds full width
   - You can now set a character for the preview message
   - Three positions for the name label: Left, Center and Right
-  - You can set the verticall and horizontal offset of the name label
+  - You can set the vertical and horizontal offset of the name label
   - Added a new option to enable single portrait mode. In this mode, once the characters join the dialog, only one of them will be visible without the need of making them join and leave every time
+  - Added a simple fade in animation for dialogs. You can change how long it takes in the `Dialog Box` tab
   - New tab added: Audio
     - In the audio tab, you can select a sound or set of sounds to play while the text is being typed in the dialog. [[Tim Krief](https://github.com/timkrief)]
 
@@ -32,6 +37,7 @@
   - Fixed a bug when coloring the names of characters in text [[zakary93](https://github.com/zakary93)]
   - Added the resolution of the selected portrait image on the preview box
   - You can now import a folder to automatically add all the images inside as portraits
+  - Removed the legacy "Default Speaker" option. I might revisit something like this in the future
 
 - Timeline Editor
   - You can now select multiple events (`CRTL` for adding/removing an event, `SHIFT` for range select) [[Jowan-Spooner](https://github.com/Jowan-Spooner)]

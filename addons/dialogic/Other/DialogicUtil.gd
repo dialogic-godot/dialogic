@@ -21,7 +21,6 @@ static func get_character_list() -> Array:
 			var data: Dictionary     = DialogicResources.get_character_json(file)
 			var color: Color         = Color("#ffffff")
 			var c_name: String       = data['id']
-			var default_speaker      = false
 			var portraits: Array     = []
 			var display_name: String = ''
 			var nickname: String = ''
@@ -30,8 +29,6 @@ static func get_character_list() -> Array:
 				color = Color(data['color'])
 			if data.has('name'):
 				c_name = data['name']
-			if data.has('default_speaker'):
-				default_speaker = data['default_speaker']
 			if data.has('portraits'):
 				portraits = data['portraits']
 			if data.has('display_name'):
@@ -47,7 +44,6 @@ static func get_character_list() -> Array:
 				'name': c_name,
 				'color': color,
 				'file': file,
-				'default_speaker' : default_speaker,
 				'portraits': portraits,
 				'display_name': display_name,
 				'nickname': nickname,

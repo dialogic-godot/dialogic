@@ -12,7 +12,6 @@ onready var nodes = {
 	'file': $HBoxContainer/Container/FileName/LineEdit,
 	'color': $HBoxContainer/Container/Color/ColorPickerButton,
 	'mirror_portraits_checkbox' : $HBoxContainer/VBoxContainer/HBoxContainer/MirrorOption/MirrorPortraitsCheckBox,
-	'default_speaker': $HBoxContainer/Container/Actions/DefaultSpeaker,
 	'display_name_checkbox': $HBoxContainer/Container/Name/CheckBox,
 	'display_name': $HBoxContainer/Container/DisplayName/LineEdit,
 	'nickname_checkbox': $HBoxContainer/Container/Name/CheckBox2,
@@ -72,7 +71,6 @@ func clear_character_editor():
 	nodes['description'].text = ''
 	nodes['color'].color = Color('#ffffff')
 	nodes['mirror_portraits_checkbox'].pressed = false
-	nodes['default_speaker'].pressed = false
 	nodes['display_name_checkbox'].pressed = false
 	nodes['nickname_checkbox'].pressed = false
 	nodes['display_name'].text = ''
@@ -94,7 +92,6 @@ func create_character():
 	var character = {
 		'color': '#ffffff',
 		'id': character_file,
-		'default_speaker': false,
 		'portraits': [],
 		'mirror_portraits' :false
 	}
@@ -105,7 +102,6 @@ func create_character():
 
 # Saving and Loading
 func generate_character_data_to_save():
-	var default_speaker: bool = nodes['default_speaker'].pressed
 	var portraits = []
 	for p in $HBoxContainer/Container/ScrollContainer/VBoxContainer/PortraitList.get_children():
 		var entry = {}
@@ -117,7 +113,6 @@ func generate_character_data_to_save():
 		'description': nodes['description'].text,
 		'color': '#' + nodes['color'].color.to_html(),
 		'mirror_portraits': nodes["mirror_portraits_checkbox"].pressed,
-		'default_speaker': default_speaker,
 		'portraits': portraits,
 		'display_name_bool': nodes['display_name_checkbox'].pressed,
 		'display_name': nodes['display_name'].text,
@@ -147,16 +142,12 @@ func load_character(filename: String):
 	var data = DialogicResources.get_character_json(filename)
 	opened_character_data = data
 	nodes['file'].text = data['id']
-	nodes['default_speaker'].pressed = false
 	if data.has('name'):
 		nodes['name'].text = data['name']
 	if data.has('description'):
 		nodes['description'].text = data['description']
 	if data.has('color'):
 		nodes['color'].color = Color(data['color'])
-	if data.has('default_speaker'):
-		if data['default_speaker']:
-			nodes['default_speaker'].pressed = true
 	
 	if data.has('display_name_bool'):
 		nodes['display_name_checkbox'].pressed = data['display_name_bool']

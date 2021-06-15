@@ -2,6 +2,7 @@ tool
 extends Control
 
 var text_speed := 0.02 # Higher = lower speed
+var theme_text_speed = text_speed
 
 onready var text_label = $RichTextLabel
 onready var name_label = $NameLabel
@@ -38,6 +39,18 @@ func update_text(text):
 	# Removing commands from the text
 	#text = text.replace('[p]', '')
 	text = text.replace('[nw]', '')
+	
+	# Speed
+	text_speed = theme_text_speed # Resetting the speed to the default
+	# Regexing the speed tag
+	var regex = RegEx.new()
+	regex.compile("\\[speed=(.+?)\\](.*?)")
+	var result = regex.search(text)
+	if result:
+		var speed_settings = result.get_string()
+		var value = float(speed_settings.split('=')[1]) * 0.01
+		text_speed = value
+		text = text.replace(speed_settings, '')
 	
 	# Updating the text and starting the animation from 0
 	text_label.bbcode_text = text
@@ -88,6 +101,7 @@ func load_theme(theme: ConfigFile):
 
 	# Text speed
 	text_speed = theme.get_value('text','speed', 2) * 0.01
+	theme_text_speed = text_speed
 
 	# Margin
 	var text_margin = theme.get_value('text', 'margin', Vector2(20, 10))
@@ -165,6 +179,7 @@ func load_theme(theme: ConfigFile):
 	$TypingSFX.set_volume_db(theme.get_value('typing_sfx', 'volume', -10))
 	$TypingSFX.random_volume_range = theme.get_value('typing_sfx', 'random_volume_range', 5)
 	$TypingSFX.random_pitch_range = theme.get_value('typing_sfx', 'random_pitch_range', 0.2)
+	$TypingSFX.set_bus(theme.get_value('typing_sfx', 'audio_bus', "Master"))
 	
 	
 	# Saving reference to the current theme
@@ -182,6 +197,10 @@ func _on_writing_timer_timeout():
 		
 		if text_label.visible_characters > text_label.get_total_character_count():
 			_handle_text_completed()
+			
+			if $TypingSFX.is_playing():
+				var sfx_time_left = $TypingSFX.stream.get_length() - $TypingSFX.get_playback_position()
+				$WritingTimer.start(sfx_time_left)
 		elif (
 			text_label.visible_characters > 0 and
 			text_label.text[text_label.visible_characters-1] != " "
@@ -189,6 +208,9 @@ func _on_writing_timer_timeout():
 			if _theme.get_value('typing_sfx', 'enable', false):
 				if _theme.get_value('typing_sfx', 'allow_interrupt', true) or not $TypingSFX.is_playing():
 					$TypingSFX.play()
+	else:
+		$WritingTimer.stop()
+		$TypingSFX.stop()
 
 func start_text_timer():
 	if text_speed == 0:

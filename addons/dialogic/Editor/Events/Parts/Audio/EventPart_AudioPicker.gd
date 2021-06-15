@@ -114,9 +114,16 @@ func _on_ButtonClear_pressed():
 	load_audio('')
 
 func update_bus_selector():
-	bus_selector.clear()
-	for i in range(AudioServer.bus_count):
-		bus_selector.add_item(AudioServer.get_bus_name(i))
+	if bus_selector != null:
+		var previous_selected_bus_name = bus_selector.get_item_text(max(0, bus_selector.selected))
+		
+		bus_selector.clear()
+		for i in range(AudioServer.bus_count):
+			var bus_name = AudioServer.get_bus_name(i)
+			bus_selector.add_item(bus_name)
+			
+			if previous_selected_bus_name == bus_name:
+				bus_selector.select(i)
 
 func _on_BusSelector_item_selected(index):
 	event_data['audio_bus'] = bus_selector.get_item_text(index)

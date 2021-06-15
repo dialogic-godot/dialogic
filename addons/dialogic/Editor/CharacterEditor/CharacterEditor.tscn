@@ -8,9 +8,9 @@ content_margin_left = 5.0
 content_margin_right = 5.0
 content_margin_top = 5.0
 content_margin_bottom = 5.0
-bg_color = Color( 0.2, 0.23, 0.31, 1 )
+bg_color = Color( 0, 0, 0, 1 )
 
-[sub_resource type="Image" id=3]
+[sub_resource type="Image" id=4]
 data = {
 "data": PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ),
 "format": "LumAlpha8",
@@ -19,10 +19,10 @@ data = {
 "width": 16
 }
 
-[sub_resource type="ImageTexture" id=2]
+[sub_resource type="ImageTexture" id=3]
 flags = 4
 flags = 4
-image = SubResource( 3 )
+image = SubResource( 4 )
 size = Vector2( 16, 16 )
 
 [node name="CharacterEditor" type="ScrollContainer"]
@@ -208,13 +208,13 @@ text = "Path"
 [node name="ScrollContainer" type="ScrollContainer" parent="HBoxContainer/Container"]
 margin_top = 206.0
 margin_right = 600.0
-margin_bottom = 611.0
+margin_bottom = 639.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/Container/ScrollContainer"]
 margin_right = 600.0
-margin_bottom = 405.0
+margin_bottom = 433.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
@@ -235,14 +235,14 @@ margin_bottom = 50.0
 margin_right = 144.0
 margin_bottom = 22.0
 text = "  Add new portrait"
-icon = SubResource( 2 )
+icon = SubResource( 3 )
 
 [node name="ImportFromFolder" type="Button" parent="HBoxContainer/Container/ScrollContainer/VBoxContainer/HBoxContainer"]
 margin_left = 148.0
 margin_right = 355.0
 margin_bottom = 22.0
 text = "  Import images from folder"
-icon = SubResource( 2 )
+icon = SubResource( 3 )
 
 [node name="FileName" type="HBoxContainer" parent="HBoxContainer/Container"]
 visible = false
@@ -265,27 +265,6 @@ rect_min_size = Vector2( 140, 0 )
 focus_mode = 0
 size_flags_horizontal = 3
 editable = false
-
-[node name="Actions" type="HBoxContainer" parent="HBoxContainer/Container"]
-margin_top = 615.0
-margin_right = 600.0
-margin_bottom = 639.0
-
-[node name="DefaultSpeaker" type="CheckBox" parent="HBoxContainer/Container/Actions"]
-margin_right = 128.0
-margin_bottom = 24.0
-hint_tooltip = "By selecting \"Default Speaker\" all the new
-Text Events created will automatically
-select this character by default.
-You can only have 1 Default Speaker
-per project."
-text = "Default Speaker"
-
-[node name="Control" type="Control" parent="HBoxContainer/Container/Actions"]
-margin_left = 132.0
-margin_right = 600.0
-margin_bottom = 24.0
-size_flags_horizontal = 3
 
 [node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer"]
 margin_left = 604.0
