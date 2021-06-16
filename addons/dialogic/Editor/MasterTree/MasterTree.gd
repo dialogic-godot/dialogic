@@ -690,6 +690,7 @@ func _process(delta):
 func _on_renamer_reset_timeout():
 	get_selected().set_editable(0, false)
 
+
 func _on_gui_input(event):
 	if event is InputEventMouseButton and event.button_index == 1:
 		if event.is_pressed() and event.doubleclick:
@@ -699,6 +700,7 @@ func _on_gui_input(event):
 				item_path_before_edit = get_item_path(item)
 				item.set_editable(0, true)
 				$RenamerReset.start(0.5)
+
 
 func _on_item_edited():
 	var item = get_selected()
@@ -740,6 +742,7 @@ func _on_item_edited():
 
 func _on_autosave_timeout():
 	save_current_resource()
+
 
 func save_current_resource():
 	if editor_reference.visible: #Only save if the editor is open

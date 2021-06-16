@@ -1,7 +1,7 @@
 ![Screenshot](https://coppolaemilio.com/images/dialogic/dialogic-hero-1.0.png?v)
 Create dialogs, characters and scenes to display conversations in your Godot games. 
 
-# Version 1.2 ![Godot v3.3](https://img.shields.io/badge/godot-v3.3-%23478cbf)
+# Version 1.3 (WIP) ![Godot v3.3](https://img.shields.io/badge/godot-v3.3-%23478cbf)
 
 [Changelog](https://github.com/coppolaemilio/dialogic/blob/main/docs/changelog.md) — 
 [Installation](#installation) — 

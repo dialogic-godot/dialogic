@@ -26,22 +26,18 @@ onready var nodes = {
 }
 
 
-
 func _ready():
 	nodes['new_portrait_button'].connect('pressed', self, '_on_New_Portrait_Button_pressed')
 	nodes['import_from_folder_button'].connect('pressed', self, '_on_Import_Portrait_Folder_Button_pressed')
 	nodes['display_name_checkbox'].connect('toggled', self, '_on_display_name_toggled')
 	nodes['nickname_checkbox'].connect('toggled', self, '_on_nickname_toggled')
 	nodes['name'].connect('text_changed', self, '_on_name_changed')
+	nodes['name'].connect('focus_exited', self, '_update_name_on_tree')
 	nodes['color'].connect('color_changed', self, '_on_color_changed')
 	var style = get('custom_styles/bg')
 	style.set('bg_color', get_color("base_color", "Editor"))
 	nodes['new_portrait_button'].icon = get_icon("Add", "EditorIcons")
 	nodes['import_from_folder_button'].icon = get_icon("Folder", "EditorIcons")
-
-
-func is_selected(file: String):
-	return nodes['file'].text == file
 
 
 func _on_display_name_toggled(button_pressed):
@@ -52,12 +48,25 @@ func _on_nickname_toggled(button_pressed):
 	$HBoxContainer/Container/DisplayNickname.visible = button_pressed
 
 
+func is_selected(file: String):
+	return nodes['file'].text == file
+
+
 func _on_name_changed(value):
-	var item = master_tree.get_selected()
-	item.set_text(0, value)
 	save_character()
+
+
+func _update_name_on_tree():
+	var item = master_tree.get_selected()
+	item.set_text(0, nodes['name'].text)
 	master_tree.build_characters(nodes['file'].text)
-	nodes['name'].grab_focus()
+	
+
+func _input(event):
+	if event is InputEventKey and event.pressed:
+		if nodes['name'].has_focus():
+			if event.scancode == KEY_ENTER:
+				nodes['name'].release_focus()
 
 
 func _on_color_changed(color):
@@ -136,42 +145,24 @@ func save_character():
 		opened_character_data = info_to_save
 
 
-
 func load_character(filename: String):
 	clear_character_editor()
 	var data = DialogicResources.get_character_json(filename)
 	opened_character_data = data
 	nodes['file'].text = data['id']
-	if data.has('name'):
-		nodes['name'].text = data['name']
-	if data.has('description'):
-		nodes['description'].text = data['description']
-	if data.has('color'):
-		nodes['color'].color = Color(data['color'])
-	
-	if data.has('display_name_bool'):
-		nodes['display_name_checkbox'].pressed = data['display_name_bool']
-	if data.has('display_name'):
-		nodes['display_name'].text = data['display_name']
-	if data.has('scale'):
-		nodes['scale'].value = float(data['scale'])
-	
-	if data.has('nickname_bool'):
-		nodes['nickname_checkbox'].pressed = data['nickname_bool']
-	if data.has('nickname'):
-		nodes['nickname'].text = data['nickname']
-	
-	if data.has('offset_x'):
-		nodes['offset_x'].value = data['offset_x']
-		nodes['offset_y'].value = data['offset_y']
-	
-	if data.has('mirror_portraits'):
-		nodes['mirror_portraits_checkbox'].pressed = data['mirror_portraits']
-		nodes['portrait_preview'].flip_h = data['mirror_portraits']
-	else:
-		nodes['mirror_portraits_checkbox'].pressed = false
-		nodes['portrait_preview'].flip_h = false
-	
+	nodes['name'].text = data.get('name', '')
+	nodes['description'].text = data.get('description', '')
+	nodes['color'].color = Color(data.get('color','#ffffffff'))
+	nodes['display_name_checkbox'].pressed = data.get('display_name_bool', false)
+	nodes['display_name'].text = data.get('display_name', '')
+	nodes['scale'].value = float(data.get('scale', 1))
+	nodes['nickname_checkbox'].pressed = data.get('nickname_bool', false)
+	nodes['nickname'].text = data.get('nickname', '')
+	nodes['offset_x'].value = data.get('offset_x', 0)
+	nodes['offset_y'].value = data.get('offset_y', 0)
+	nodes['mirror_portraits_checkbox'].pressed = data.get('mirror_portraits', false)
+	nodes['portrait_preview'].flip_h = data.get('mirror_portraits', false)
+
 	# Portraits
 	var default_portrait = create_portrait_entry()
 	default_portrait.get_node('NameEdit').text = 'Default'
