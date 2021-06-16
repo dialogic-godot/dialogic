@@ -48,6 +48,10 @@ func _on_nickname_toggled(button_pressed):
 	$HBoxContainer/Container/DisplayNickname.visible = button_pressed
 
 
+func is_selected(file: String):
+	return nodes['file'].text == file
+
+
 func _on_name_changed(value):
 	save_character()
 

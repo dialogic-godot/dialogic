@@ -18,6 +18,10 @@ func _ready():
 	nodes['name'].connect('text_changed', self, '_on_name_changed')
 
 
+func is_selected(id: String):
+	return current_definition != null and current_definition['id'] == id
+
+
 func load_definition(id):
 	current_definition = DialogicResources.get_default_definition_item(id)
 	reset_editor()
