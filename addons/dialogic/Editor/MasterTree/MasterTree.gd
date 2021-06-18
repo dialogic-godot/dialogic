@@ -75,9 +75,9 @@ func _ready():
 		# variable		 name		  editor
 		["Timelines", "Timeline Root"],
 		["Characters", "Character Root"],
-		["Definitions", "Definitio Root"],
+		["Definitions", "Definition Root"],
 		["Themes", "Theme Root"],
-	]:
+			]:
 		# create tree item
 		var sub_tree = tree.create_item(root)
 		# set the item
@@ -195,7 +195,6 @@ func _add_folder_item(parent_item: TreeItem, folder_name: String, editor:String,
 func _add_resource_item(resource_type, parent_item, resource_data, select):
 	# create item
 	var item = tree.create_item(parent_item)
-	
 	# set the text
 	if resource_data.has('name'):
 		item.set_text(0, resource_data['name'])
@@ -203,10 +202,8 @@ func _add_resource_item(resource_type, parent_item, resource_data, select):
 		item.set_text(0, resource_data['file'])
 	if not get_constant("dark_theme", "Editor"):
 		item.set_icon_modulate(0, get_color("property_color", "Editor"))
-	
 	# set it as editable
 	resource_data['editable'] = true
-	
 	# resource specific changes
 	match resource_type:
 		"Timeline":
@@ -690,7 +687,6 @@ func _process(delta):
 func _on_renamer_reset_timeout():
 	get_selected().set_editable(0, false)
 
-
 func _on_gui_input(event):
 	if event is InputEventMouseButton and event.button_index == 1:
 		if event.is_pressed() and event.doubleclick:
@@ -700,7 +696,6 @@ func _on_gui_input(event):
 				item_path_before_edit = get_item_path(item)
 				item.set_editable(0, true)
 				$RenamerReset.start(0.5)
-
 
 func _on_item_edited():
 	var item = get_selected()
@@ -742,7 +737,6 @@ func _on_item_edited():
 
 func _on_autosave_timeout():
 	save_current_resource()
-
 
 func save_current_resource():
 	if editor_reference.visible: #Only save if the editor is open
