@@ -17,6 +17,7 @@ var selected_style_template : StyleBoxFlat = load("res://addons/dialogic/Editor/
 var saved_style : StyleBoxFlat
 var selected_items : Array = []
 
+var event_scenes : Dictionary = {}
 
 var moving_piece = null
 var piece_was_dragged = false
@@ -506,7 +507,11 @@ func cancel_drop_event():
 
 # Adding an event to the timeline
 func create_event(scene: String, data: Dictionary = {'no-data': true} , indent: bool = false):
-	var piece = load("res://addons/dialogic/Editor/Events/" + scene + ".tscn").instance()
+	var key = "res://addons/dialogic/Editor/Events/" + scene + ".tscn"
+	var event_scene = event_scenes.get(key)
+	if event_scene == null:
+		event_scenes[key] = load(key)
+	var piece = event_scenes[key].instance()
 	piece.editor_reference = editor_reference
 	if data.has('no-data') == false:
 		#piece.load_data(data)
@@ -528,7 +533,6 @@ func create_event(scene: String, data: Dictionary = {'no-data': true} , indent: 
 
 func load_timeline(filename: String):
 	clear_timeline()
-	var start_time = OS.get_system_time_msecs()
 	timeline_file = filename
 	
 	var data = DialogicResources.get_timeline_json(filename)
@@ -546,9 +550,7 @@ func load_timeline(filename: String):
 		events_warning.visible = false
 		indent_events()
 		#fold_all_nodes()
-	
-	var elapsed_time = (OS.get_system_time_msecs() - start_time) * 0.001
-	#editor_reference.dprint("Loading time: " + str(elapsed_time))
+
 
 func add_event_by_id(event_id, event_data):
 	match event_id:
