@@ -398,16 +398,19 @@ func update_text(text: String) -> String:
 
 func _on_text_completed():
 	finished = true
+
+	if current_event.has('options'):
+		for o in current_event['options']:
+			add_choice_button(o)
 	if current_event.has('text'):
 		# [p] needs more work
 		#if '[p]' in current_event['text']: 
 		#	yield(get_tree().create_timer(2), "timeout")
 		if '[nw]' in current_event['text']:
+			var current_index = dialog_index
 			yield(get_tree().create_timer(2), "timeout")
-			_load_next_event()
-	if current_event.has('options'):
-		for o in current_event['options']:
-			add_choice_button(o)
+			if dialog_index == current_index:
+				_load_next_event()
 
 
 func on_timeline_start():
