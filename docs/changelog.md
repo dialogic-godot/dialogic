@@ -1,5 +1,8 @@
 ## v1.2.1 - WIP
-- 
+- Fixed some issues with the CanvasLayer
+- Fixed some issues when creating dialogs using GDScript
+- Improved the internals of `MasterTree.gd` [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
+- Fixed some issues with the `[nw]` command [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
 
 
 ## v1.2 - Organize it!
