@@ -3,6 +3,8 @@
 - Fixed some issues when creating dialogs using GDScript
 - Improved the internals of `MasterTree.gd` [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
 - Fixed some issues with the `[nw]` command [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
+- Improved the Timeline Editor performance when loading timelines
+- Removed the `focus_mode` warning
 
 
 ## v1.2 - Organize it!
