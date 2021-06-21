@@ -148,7 +148,7 @@ margin_left = 942.0
 margin_top = 9.0
 margin_right = 1024.0
 margin_bottom = 23.0
-text = "Dialogic v1.2"
+text = "Dialogic v1.2.1"
 
 [node name="MainPanel" type="HSplitContainer" parent="."]
 anchor_right = 1.0
