@@ -6,6 +6,7 @@
 - Fixed some issues with the `[nw]` command [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
 - Improved the Timeline Editor performance when loading timelines
 - Removed the `focus_mode` warning
+- Added a new page to the docs about the [Text Events](https://github.com/coppolaemilio/dialogic/blob/main/docs/events/TextEvent.md)
 
 
 ## v1.2 - Organize it!
