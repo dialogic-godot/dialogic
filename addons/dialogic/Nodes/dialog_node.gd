@@ -341,7 +341,7 @@ func _process(delta):
 	
 	# Hide if no input is required
 	if current_event.has('text'):
-		if '[nw]' in current_event['text']:
+		if '[nw]' in current_event['text'] or '[nw=' in current_event['text']:
 			$TextBubble/NextIndicatorContainer/NextIndicator.visible = false
 	
 	# Hide if fading in
@@ -406,11 +406,22 @@ func _on_text_completed():
 		# [p] needs more work
 		#if '[p]' in current_event['text']: 
 		#	yield(get_tree().create_timer(2), "timeout")
-		if '[nw]' in current_event['text']:
+		
+		# Setting the timer for how long to wait in the [nw] events
+		if '[nw]' in current_event['text'] or '[nw=' in current_event['text']:
+			var waiting_time = 2
 			var current_index = dialog_index
-			yield(get_tree().create_timer(2), "timeout")
+			if '[nw=' in current_event['text']: # Regex stuff
+				var regex = RegEx.new()
+				regex.compile("\\[nw=(.+?)\\](.*?)")
+				var result = regex.search(current_event['text'])
+				var wait_settings = result.get_string()
+				waiting_time = float(wait_settings.split('=')[1])
+			
+			yield(get_tree().create_timer(waiting_time), "timeout")
 			if dialog_index == current_index:
 				_load_next_event()
+
 
 
 func on_timeline_start():

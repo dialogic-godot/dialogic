@@ -1,4 +1,5 @@
 ## v1.2.1 - WIP
+- You can now specify for how long to wait in `[nw]` events. `[nw=3]` or whatever number of seconds you want it to wait
 - Fixed some issues with the CanvasLayer
 - Fixed some issues when creating dialogs using GDScript
 - Improved the internals of `MasterTree.gd` [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
