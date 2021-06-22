@@ -1,8 +1,11 @@
 # Text Event
+![image](https://user-images.githubusercontent.com/2206700/122922829-51f2f780-d364-11eb-8943-0a2ae32f4a3c.png)
 
 The text event is one of the most important ones since this will be containing most of your text.
 
 ## The header
+![image](https://user-images.githubusercontent.com/2206700/122923118-9ed6ce00-d364-11eb-87f3-4c1a15a03432.png)
+
 You have up to tree different types of options here:
 - **Character** - This is who will be saying the text written inside the text editor. 
 - **Portrait** - If you picked a **Character** the different portraits will show up here. If that **Character** doesn't have any special portraits the default one will be used. If you pick the `(Don't change)` option, it will continue using the previous text event portrait set. If you pick the `[Definition]` option, a new picker will show up.
