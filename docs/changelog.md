@@ -1,3 +1,6 @@
+## v1.3 - WIP
+- 
+
 ## v1.2.1 - Get them while they're hot!
 - You can now specify for how long to wait in `[nw]` events. `[nw=3]` or whatever number of seconds you want it to wait
 - Fixed some issues with the CanvasLayer
