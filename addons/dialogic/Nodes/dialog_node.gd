@@ -158,6 +158,7 @@ func load_dialog():
 	dialog_script = parse_branches(dialog_script)
 	return dialog_script
 
+
 func parse_characters(dialog_script):
 	var names = DialogicUtil.get_character_list()
 	# I should use regex here, but this is way easier :)
@@ -357,7 +358,7 @@ func _input(event: InputEvent) -> void:
 			# Skip to end if key is pressed during the text animation
 			$TextBubble.skip()
 		else:
-			if waiting_for_answer == false and waiting_for_input == false:
+			if waiting_for_answer == false and waiting_for_input == false and while_show_up_animation == false:
 				_load_next_event()
 		if settings.has_section_key('dialog', 'propagate_input'):
 			var propagate_input: bool = settings.get_value('dialog', 'propagate_input')
