@@ -182,7 +182,7 @@ func load_theme(theme: ConfigFile):
 	var file_system = Directory.new()
 	if file_system.dir_exists(sound_effect_path):
 		$TypingSFX.load_samples_from_folder(sound_effect_path)
-	elif file_system.file_exists(sound_effect_path):
+	elif file_system.file_exists(sound_effect_path) or file_system.file_exists(sound_effect_path + '.import'):
 		$TypingSFX.samples = [load(sound_effect_path)]
 	
 	$TypingSFX.set_volume_db(theme.get_value('typing_sfx', 'volume', -10))
