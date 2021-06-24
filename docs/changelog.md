@@ -10,6 +10,7 @@
 - Added a new page to the docs about the [Text Events](https://github.com/coppolaemilio/dialogic/blob/main/docs/events/TextEvent.md)
 - Fixed a bug when trying to skip fade-in dialog animations [[idontkillcoyotes](https://github.com/idontkillcoyotes)]
 - Fixed an issue with typing sounds in exported projects
+- Fixed an issue when selecting folders for typing sounds in exporting projects; Thank you [AnidemDex](https://github.com/AnidemDex)!
 
 
 ## v1.2 - Organize it!
