@@ -141,7 +141,8 @@ func resize_main():
 func set_current_dialog(dialog_path: String):
 	current_timeline = dialog_path
 	dialog_script = DialogicResources.get_timeline_json(dialog_path)
-	load_dialog()
+	return load_dialog()
+	
 	
 func load_dialog():
 	# All this parse events should be happening in the same loop ideally
@@ -155,6 +156,7 @@ func load_dialog():
 	
 	dialog_script = parse_text_lines(dialog_script)
 	dialog_script = parse_branches(dialog_script)
+	return dialog_script
 
 func parse_characters(dialog_script):
 	var names = DialogicUtil.get_character_list()
