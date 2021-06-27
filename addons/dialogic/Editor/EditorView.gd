@@ -162,18 +162,25 @@ func godot_dialog(filter, mode = EditorFileDialog.MODE_OPEN_FILE):
 
 
 func godot_dialog_connect(who, method_name, signal_name = "file_selected"):
-	# Checking if previous connection exists, if it does, disconnect it.
-	if editor_file_dialog.is_connected(
-		signal_name,
-		file_picker_data['node'],
-		file_picker_data['method']):
-			editor_file_dialog.disconnect(
-				signal_name,
-				file_picker_data['node'],
-				file_picker_data['method']
-			)
-	# Connect new signal
-	editor_file_dialog.connect(signal_name, who, method_name, [who])
+	# You can pass multiple signal_name using an array
+	
+	# Checking if previous connections exist, if they do, disconnect them.
+	for test_signal in editor_file_dialog.get_signal_list():
+		if editor_file_dialog.is_connected(
+			test_signal.name,
+			file_picker_data['node'],
+			file_picker_data['method']
+		):
+				editor_file_dialog.disconnect(
+					test_signal.name,
+					file_picker_data['node'],
+					file_picker_data['method']
+				)
+	
+	# Connect new signals
+	for new_signal_name in signal_name if typeof(signal_name) == TYPE_ARRAY else [signal_name]:
+		editor_file_dialog.connect(new_signal_name, who, method_name, [who])
+	
 	file_picker_data['method'] = method_name
 	file_picker_data['node'] = who
 

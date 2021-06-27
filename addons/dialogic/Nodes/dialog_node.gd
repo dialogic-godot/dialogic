@@ -11,6 +11,7 @@ var waiting: bool = false
 var preview: bool = false
 var definitions: Dictionary = {}
 var definition_visible: bool = false
+var while_show_up_animation: bool = false
 
 var settings: ConfigFile
 var current_theme: ConfigFile
@@ -48,7 +49,7 @@ func _ready():
 	
 	# Checking if the dialog should read the code from a external file
 	if not timeline.empty():
-		dialog_script = set_current_dialog(timeline)
+		set_current_dialog(timeline)
 	elif dialog_script.keys().size() == 0:
 		dialog_script = {
 			"events":[
@@ -56,6 +57,9 @@ func _ready():
 				"character":"","portrait":"",
 				"text":"[Dialogic Error] No timeline specified."}]
 		}
+	# Load the dialog directly from GDscript
+	else:
+		load_dialog()
 	
 	# Connecting resize signal
 	get_viewport().connect("size_changed", self, "resize_main")
@@ -66,7 +70,7 @@ func _ready():
 	$TextBubble.connect("text_completed", self, "_on_text_completed")
 	$TextBubble/RichTextLabel.connect('meta_hover_started', self, '_on_RichTextLabel_meta_hover_started')
 	$TextBubble/RichTextLabel.connect('meta_hover_ended', self, '_on_RichTextLabel_meta_hover_ended')
-
+	
 	# Getting the character information
 	characters = DialogicUtil.get_character_list()
 
@@ -76,11 +80,8 @@ func _ready():
 			_init_dialog()
 			$DefinitionInfo.in_theme_editor = true
 	else:
-		# Copied
-		if not(get_parent() is CanvasLayer) and debug_mode:
-			push_warning("[Dialogic] You didn't add this node to a CanvasLayer. If this was intentional, you can ignore this warning.")
-		
-		_init_dialog()
+		# Calls _init_dialog() after animation is over
+		open_dialog_animation(current_theme.get_value('animation', 'show_time', 0.5)) 
 
 
 func load_config_files():
@@ -139,7 +140,11 @@ func resize_main():
 
 func set_current_dialog(dialog_path: String):
 	current_timeline = dialog_path
-	var dialog_script = DialogicResources.get_timeline_json(dialog_path)
+	dialog_script = DialogicResources.get_timeline_json(dialog_path)
+	return load_dialog()
+	
+	
+func load_dialog():
 	# All this parse events should be happening in the same loop ideally
 	# But until performance is not an issue I will probably stay lazy
 	# And keep adding different functions for each parsing operation.
@@ -339,8 +344,12 @@ func _process(delta):
 	
 	# Hide if no input is required
 	if current_event.has('text'):
-		if '[nw]' in current_event['text']:
+		if '[nw]' in current_event['text'] or '[nw=' in current_event['text']:
 			$TextBubble/NextIndicatorContainer/NextIndicator.visible = false
+	
+	# Hide if fading in
+	if while_show_up_animation:
+		$TextBubble/NextIndicatorContainer/NextIndicator.visible = false
 
 
 func _input(event: InputEvent) -> void:
@@ -349,7 +358,7 @@ func _input(event: InputEvent) -> void:
 			# Skip to end if key is pressed during the text animation
 			$TextBubble.skip()
 		else:
-			if waiting_for_answer == false and waiting_for_input == false:
+			if waiting_for_answer == false and waiting_for_input == false and while_show_up_animation == false:
 				_load_next_event()
 		if settings.has_section_key('dialog', 'propagate_input'):
 			var propagate_input: bool = settings.get_value('dialog', 'propagate_input')
@@ -359,6 +368,10 @@ func _input(event: InputEvent) -> void:
 
 func show_dialog():
 	visible = true
+
+
+func set_dialog_script(value):
+	dialog_script = value
 
 
 func update_name(character) -> void:
@@ -388,16 +401,30 @@ func update_text(text: String) -> String:
 
 func _on_text_completed():
 	finished = true
+
+	if current_event.has('options'):
+		for o in current_event['options']:
+			add_choice_button(o)
 	if current_event.has('text'):
 		# [p] needs more work
 		#if '[p]' in current_event['text']: 
 		#	yield(get_tree().create_timer(2), "timeout")
-		if '[nw]' in current_event['text']:
-			yield(get_tree().create_timer(2), "timeout")
-			_load_next_event()
-	if current_event.has('options'):
-		for o in current_event['options']:
-			add_choice_button(o)
+		
+		# Setting the timer for how long to wait in the [nw] events
+		if '[nw]' in current_event['text'] or '[nw=' in current_event['text']:
+			var waiting_time = 2
+			var current_index = dialog_index
+			if '[nw=' in current_event['text']: # Regex stuff
+				var regex = RegEx.new()
+				regex.compile("\\[nw=(.+?)\\](.*?)")
+				var result = regex.search(current_event['text'])
+				var wait_settings = result.get_string()
+				waiting_time = float(wait_settings.split('=')[1])
+			
+			yield(get_tree().create_timer(waiting_time), "timeout")
+			if dialog_index == current_index:
+				_load_next_event()
+
 
 
 func on_timeline_start():
@@ -494,9 +521,10 @@ func event_handler(event: Dictionary):
 			emit_signal("event_start", "text", event)
 			show_dialog()
 			finished = false
-			var character_data = get_character(event['character'])
-			update_name(character_data)
-			grab_portrait_focus(character_data, event)
+			if event.has('character'):
+				var character_data = get_character(event['character'])
+				update_name(character_data)
+				grab_portrait_focus(character_data, event)
 			update_text(event['text'])
 		# Join event
 		'dialogic_002':
@@ -1037,6 +1065,28 @@ func characters_leave_all():
 	if portraits != null:
 		for p in portraits.get_children():
 			p.fade_out()
+
+
+func open_dialog_animation(transition_duration):
+	if transition_duration > 0:
+		$TextBubble.update_text('') # Clearing the text
+		$TextBubble.modulate = Color(1,1,1,0)
+		while_show_up_animation = true
+		var tween = Tween.new()
+		add_child(tween)
+		tween.interpolate_property($TextBubble, "modulate",
+			$TextBubble.modulate, Color(1,1,1,1), transition_duration,
+			Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
+		tween.start()
+		tween.connect("tween_completed", self, "clean_fade_in_tween", [tween])
+	else:
+		_init_dialog()
+
+
+func clean_fade_in_tween(object, key, node):
+	node.queue_free()
+	while_show_up_animation = false
+	_init_dialog()
 
 
 func close_dialog_event(transition_duration):
