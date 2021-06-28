@@ -79,10 +79,11 @@ func load_samples_from_folder(path):
 			dir.list_dir_begin(true)
 			var file_name = dir.get_next()
 			while file_name != "":
-				if not dir.current_is_dir():
-					var f = file_name.replace('.import', '')
-					if f.to_lower().ends_with(".wav") or f.to_lower().ends_with(".ogg"):
-						var resource = ResourceLoader.load(dir.get_current_dir() + "/" + f)
-						samples.append(resource)
+				if not dir.current_is_dir() and file_name.ends_with(".import"):
+					var resource_path = dir.get_current_dir() + "/" + file_name.replace('.import', '')
+					if resource_path.get_extension().to_lower() in ["wav", "ogg"]:
+						var resource = load(resource_path)
+						if resource != null:
+							samples.append(resource)
 				file_name = dir.get_next()
 		select_samples_from_folder = ""
