@@ -36,16 +36,25 @@ func update_name(name: String, color: Color = Color.white, autocolor: bool=false
 
 
 func update_text(text):
+	var regex = RegEx.new()
+	var result = null
 	# Removing commands from the text
 	#text = text.replace('[p]', '')
+	
 	text = text.replace('[nw]', '')
+	if '[nw=' in text:
+		regex.compile("\\[nw=(.+?)\\](.*?)")
+		result = regex.search(text)
+		if result:
+			var wait_settings = result.get_string()
+			text = text.replace(wait_settings, '')
+			result = null
 	
 	# Speed
 	text_speed = theme_text_speed # Resetting the speed to the default
 	# Regexing the speed tag
-	var regex = RegEx.new()
 	regex.compile("\\[speed=(.+?)\\](.*?)")
-	var result = regex.search(text)
+	result = regex.search(text)
 	if result:
 		var speed_settings = result.get_string()
 		var value = float(speed_settings.split('=')[1]) * 0.01
@@ -173,7 +182,7 @@ func load_theme(theme: ConfigFile):
 	var file_system = Directory.new()
 	if file_system.dir_exists(sound_effect_path):
 		$TypingSFX.load_samples_from_folder(sound_effect_path)
-	elif file_system.file_exists(sound_effect_path):
+	elif file_system.file_exists(sound_effect_path) or file_system.file_exists(sound_effect_path + '.import'):
 		$TypingSFX.samples = [load(sound_effect_path)]
 	
 	$TypingSFX.set_volume_db(theme.get_value('typing_sfx', 'volume', -10))

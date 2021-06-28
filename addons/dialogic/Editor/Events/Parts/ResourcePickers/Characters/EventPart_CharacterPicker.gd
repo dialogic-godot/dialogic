@@ -78,6 +78,7 @@ func build_PickerMenu():
 	## building the root level
 	build_PickerMenuFolder(picker_menu.get_popup(), folder_structure, "MenuButton")
 
+
 # is called recursively to build all levels of the folder structure
 func build_PickerMenuFolder(menu:PopupMenu, folder_structure:Dictionary, current_folder_name:String):
 	var index = 0
@@ -96,8 +97,6 @@ func build_PickerMenuFolder(menu:PopupMenu, folder_structure:Dictionary, current
 			menu.set_item_metadata(index, {'file': '[All]'})
 			menu.set_item_icon(index, get_icon("GuiEllipsis", "EditorIcons"))
 			index += 1
-		
-	
 	
 	
 	for folder_name in folder_structure['folders'].keys():

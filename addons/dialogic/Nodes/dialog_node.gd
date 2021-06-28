@@ -64,6 +64,9 @@ func _ready():
 	# Connecting resize signal
 	get_viewport().connect("size_changed", self, "resize_main")
 	resize_main()
+	
+	# Connecting some other timers
+	$OptionsDelayedInput.connect("timeout", self, '_on_OptionsDelayedInput_timeout')
 
 	# Setting everything up for the node to be default
 	$DefinitionInfo.visible = false
@@ -141,7 +144,8 @@ func resize_main():
 func set_current_dialog(dialog_path: String):
 	current_timeline = dialog_path
 	dialog_script = DialogicResources.get_timeline_json(dialog_path)
-	load_dialog()
+	return load_dialog()
+	
 	
 func load_dialog():
 	# All this parse events should be happening in the same loop ideally
@@ -155,6 +159,8 @@ func load_dialog():
 	
 	dialog_script = parse_text_lines(dialog_script)
 	dialog_script = parse_branches(dialog_script)
+	return dialog_script
+
 
 func parse_characters(dialog_script):
 	var names = DialogicUtil.get_character_list()
@@ -341,7 +347,7 @@ func _process(delta):
 	
 	# Hide if no input is required
 	if current_event.has('text'):
-		if '[nw]' in current_event['text']:
+		if '[nw]' in current_event['text'] or '[nw=' in current_event['text']:
 			$TextBubble/NextIndicatorContainer/NextIndicator.visible = false
 	
 	# Hide if fading in
@@ -355,7 +361,7 @@ func _input(event: InputEvent) -> void:
 			# Skip to end if key is pressed during the text animation
 			$TextBubble.skip()
 		else:
-			if waiting_for_answer == false and waiting_for_input == false:
+			if waiting_for_answer == false and waiting_for_input == false and while_show_up_animation == false:
 				_load_next_event()
 		if settings.has_section_key('dialog', 'propagate_input'):
 			var propagate_input: bool = settings.get_value('dialog', 'propagate_input')
@@ -398,7 +404,10 @@ func update_text(text: String) -> String:
 
 func _on_text_completed():
 	finished = true
-
+	
+	var waiting_until_options_enabled = float(settings.get_value('input', 'delay_after_options', 0.1))
+	$OptionsDelayedInput.start(waiting_until_options_enabled)
+		
 	if current_event.has('options'):
 		for o in current_event['options']:
 			add_choice_button(o)
@@ -406,11 +415,22 @@ func _on_text_completed():
 		# [p] needs more work
 		#if '[p]' in current_event['text']: 
 		#	yield(get_tree().create_timer(2), "timeout")
-		if '[nw]' in current_event['text']:
+		
+		# Setting the timer for how long to wait in the [nw] events
+		if '[nw]' in current_event['text'] or '[nw=' in current_event['text']:
+			var waiting_time = 2
 			var current_index = dialog_index
-			yield(get_tree().create_timer(2), "timeout")
+			if '[nw=' in current_event['text']: # Regex stuff
+				var regex = RegEx.new()
+				regex.compile("\\[nw=(.+?)\\](.*?)")
+				var result = regex.search(current_event['text'])
+				var wait_settings = result.get_string()
+				waiting_time = float(wait_settings.split('=')[1])
+			
+			yield(get_tree().create_timer(waiting_time), "timeout")
 			if dialog_index == current_index:
 				_load_next_event()
+
 
 
 func on_timeline_start():
@@ -611,7 +631,10 @@ func event_handler(event: Dictionary):
 			var operation = '='
 			if 'operation' in event and not event['operation'].empty():
 				operation = event["operation"]
-			DialogicSingleton.set_variable_from_id(event['definition'], event['set_value'], operation)
+			var value = event['set_value']
+			if event.get('set_random', false):
+				value = str(randi()%int(event.get("random_upper_limit", 100))+event.get('random_lower_limit', 0))
+			DialogicSingleton.set_variable_from_id(event['definition'], value, operation)
 			_load_next_event()
 		
 		# TIMELINE EVENTS
@@ -883,8 +906,7 @@ func add_choice_button(option: Dictionary):
 		button = get_custom_choice_button(option['label'])
 	else:
 		button = get_classic_choice_button(option['label'])
-	button.connect("pressed", self, "answer_question", [button, option['event_idx'], option['question_idx']])
-
+	
 	if use_native_choice_button() or use_custom_choice_button():
 		$Options.set('custom_constants/separation', current_theme.get_value('buttons', 'gap', 20))
 	$Options.add_child(button)
@@ -892,6 +914,9 @@ func add_choice_button(option: Dictionary):
 	# Selecting the first button added
 	if $Options.get_child_count() == 1:
 		button.grab_focus()
+	
+	button.set_meta('event_idx', option['event_idx'])
+	button.set_meta('question_idx', option['question_idx'])
 
 	if Input.get_mouse_mode() != Input.MOUSE_MODE_VISIBLE:
 		last_mouse_mode = Input.get_mouse_mode()
@@ -899,14 +924,15 @@ func add_choice_button(option: Dictionary):
 
 
 func answer_question(i, event_idx, question_idx):
-	dprint('[!] Going to ', event_idx + 1, i, 'question_idx:', question_idx)
-	waiting_for_answer = false
-	questions[question_idx]['answered'] = true
-	reset_options()
-	_load_event_at_index(event_idx + 1)
-	if last_mouse_mode != null:
-		Input.set_mouse_mode(last_mouse_mode) # Revert to last mouse mode when selection is done
-		last_mouse_mode = null
+	if $TextBubble.is_finished():
+		dprint('[!] Going to ', event_idx + 1, i, 'question_idx:', question_idx)
+		waiting_for_answer = false
+		questions[question_idx]['answered'] = true
+		reset_options()
+		_load_event_at_index(event_idx + 1)
+		if last_mouse_mode != null:
+			Input.set_mouse_mode(last_mouse_mode) # Revert to last mouse mode when selection is done
+			last_mouse_mode = null
 
 
 func _on_option_selected(option, variable, value):
@@ -1092,3 +1118,9 @@ func close_dialog_event(transition_duration):
 func _on_close_dialog_timeout():
 	on_timeline_end()
 	queue_free()
+
+
+func _on_OptionsDelayedInput_timeout():
+	for button in $Options.get_children():
+		if button.is_connected("pressed", self, "answer_question") == false:
+			button.connect("pressed", self, "answer_question", [button, button.get_meta('event_idx'), button.get_meta('question_idx')])

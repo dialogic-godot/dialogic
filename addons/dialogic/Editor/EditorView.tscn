@@ -53,7 +53,6 @@ modulate = Color( 0, 0, 0, 1 )
 margin_right = 28.0
 margin_bottom = 32.0
 hint_tooltip = "New Timeline"
-focus_mode = 0
 icon = ExtResource( 4 )
 flat = true
 
@@ -64,7 +63,6 @@ margin_left = 28.0
 margin_right = 56.0
 margin_bottom = 32.0
 hint_tooltip = "New Character"
-focus_mode = 0
 icon = ExtResource( 3 )
 
 [node name="NewValueButton" type="Button" parent="ToolBar"]
@@ -73,7 +71,6 @@ margin_left = 56.0
 margin_right = 84.0
 margin_bottom = 32.0
 hint_tooltip = "New Value"
-focus_mode = 0
 icon = ExtResource( 5 )
 flat = true
 
@@ -83,7 +80,6 @@ margin_left = 84.0
 margin_right = 112.0
 margin_bottom = 32.0
 hint_tooltip = "New Definition"
-focus_mode = 0
 icon = ExtResource( 10 )
 flat = true
 __meta__ = {
@@ -96,7 +92,6 @@ margin_left = 112.0
 margin_right = 140.0
 margin_bottom = 32.0
 hint_tooltip = "New Theme"
-focus_mode = 0
 icon = ExtResource( 13 )
 flat = true
 

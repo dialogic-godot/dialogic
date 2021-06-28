@@ -1,5 +1,20 @@
-## v1.2.1 - WIP
-- 
+## v1.3 - WIP
+- Set Value Event: There is now a dice symbol that (when toggled) will reveal to boxes for a minimum and a maximum random number to choose from [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
+- Making a small delay on choices to prevent the people that spam "next" to accidentally select the first option
+
+## v1.2.1 - Get them while they're hot!
+- You can now specify for how long to wait in `[nw]` events. `[nw=3]` or whatever number of seconds you want it to wait
+- Fixed some issues with the CanvasLayer
+- Fixed some issues when creating dialogs using GDScript
+- Fixed an issue when changing the current timeline
+- Improved the internals of `MasterTree.gd` [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
+- Fixed some issues with the `[nw]` command [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
+- Improved the Timeline Editor performance when loading timelines
+- Removed the `focus_mode` warning
+- Added a new page to the docs about the [Text Events](https://github.com/coppolaemilio/dialogic/blob/main/docs/events/TextEvent.md)
+- Fixed a bug when trying to skip fade-in dialog animations [[idontkillcoyotes](https://github.com/idontkillcoyotes)]
+- Fixed an issue with typing sounds in exported projects
+- Fixed an issue when selecting folders for typing sounds in exporting projects; Thank you [AnidemDex](https://github.com/AnidemDex)!
 
 
 ## v1.2 - Organize it!

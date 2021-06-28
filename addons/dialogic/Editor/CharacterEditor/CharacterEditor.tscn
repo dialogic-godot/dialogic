@@ -262,7 +262,6 @@ margin_left = 134.0
 margin_right = 523.0
 margin_bottom = 24.0
 rect_min_size = Vector2( 140, 0 )
-focus_mode = 0
 size_flags_horizontal = 3
 editable = false
 
