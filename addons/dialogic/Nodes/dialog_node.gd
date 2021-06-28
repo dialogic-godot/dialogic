@@ -64,6 +64,9 @@ func _ready():
 	# Connecting resize signal
 	get_viewport().connect("size_changed", self, "resize_main")
 	resize_main()
+	
+	# Connecting some other timers
+	$OptionsDelayedInput.connect("timeout", self, '_on_OptionsDelayedInput_timeout')
 
 	# Setting everything up for the node to be default
 	$DefinitionInfo.visible = false
@@ -401,7 +404,10 @@ func update_text(text: String) -> String:
 
 func _on_text_completed():
 	finished = true
-
+	
+	var waiting_until_options_enabled = float(settings.get_value('input', 'delay_after_options', 0.1))
+	$OptionsDelayedInput.start(waiting_until_options_enabled)
+		
 	if current_event.has('options'):
 		for o in current_event['options']:
 			add_choice_button(o)
@@ -900,8 +906,7 @@ func add_choice_button(option: Dictionary):
 		button = get_custom_choice_button(option['label'])
 	else:
 		button = get_classic_choice_button(option['label'])
-	button.connect("pressed", self, "answer_question", [button, option['event_idx'], option['question_idx']])
-
+	
 	if use_native_choice_button() or use_custom_choice_button():
 		$Options.set('custom_constants/separation', current_theme.get_value('buttons', 'gap', 20))
 	$Options.add_child(button)
@@ -909,6 +914,9 @@ func add_choice_button(option: Dictionary):
 	# Selecting the first button added
 	if $Options.get_child_count() == 1:
 		button.grab_focus()
+	
+	button.set_meta('event_idx', option['event_idx'])
+	button.set_meta('question_idx', option['question_idx'])
 
 	if Input.get_mouse_mode() != Input.MOUSE_MODE_VISIBLE:
 		last_mouse_mode = Input.get_mouse_mode()
@@ -916,14 +924,15 @@ func add_choice_button(option: Dictionary):
 
 
 func answer_question(i, event_idx, question_idx):
-	dprint('[!] Going to ', event_idx + 1, i, 'question_idx:', question_idx)
-	waiting_for_answer = false
-	questions[question_idx]['answered'] = true
-	reset_options()
-	_load_event_at_index(event_idx + 1)
-	if last_mouse_mode != null:
-		Input.set_mouse_mode(last_mouse_mode) # Revert to last mouse mode when selection is done
-		last_mouse_mode = null
+	if $TextBubble.is_finished():
+		dprint('[!] Going to ', event_idx + 1, i, 'question_idx:', question_idx)
+		waiting_for_answer = false
+		questions[question_idx]['answered'] = true
+		reset_options()
+		_load_event_at_index(event_idx + 1)
+		if last_mouse_mode != null:
+			Input.set_mouse_mode(last_mouse_mode) # Revert to last mouse mode when selection is done
+			last_mouse_mode = null
 
 
 func _on_option_selected(option, variable, value):
@@ -1109,3 +1118,9 @@ func close_dialog_event(transition_duration):
 func _on_close_dialog_timeout():
 	on_timeline_end()
 	queue_free()
+
+
+func _on_OptionsDelayedInput_timeout():
+	for button in $Options.get_children():
+		if button.is_connected("pressed", self, "answer_question") == false:
+			button.connect("pressed", self, "answer_question", [button, button.get_meta('event_idx'), button.get_meta('question_idx')])

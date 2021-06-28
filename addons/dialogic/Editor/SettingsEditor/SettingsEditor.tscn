@@ -47,16 +47,22 @@ text = "Default"
 
 [node name="ThemeOptionButton" type="OptionButton" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer/HBoxContainer"]
 margin_left = 50.0
-margin_right = 228.0
+margin_right = 190.0
 margin_bottom = 20.0
 rect_min_size = Vector2( 140, 0 )
-text = "theme-1619305742.cfg"
-items = [ "theme-1619305742.cfg", null, false, 0, {
-"file": "theme-1619305742.cfg"
-}, "theme-1620071267.cfg", null, false, 1, {
-"file": "theme-1620071267.cfg"
+text = "Long-fade-in"
+items = [ "another", null, false, 0, {
+"file": "theme-1622727938.cfg"
+}, "Long-fade-in", null, false, 1, {
+"file": "theme-1624535517.cfg"
+}, "test", null, false, 2, {
+"file": "theme-1622237713.cfg"
+}, "theme-1622916617.cfg", null, false, 3, {
+"file": "theme-1622916617.cfg"
+}, "theme-1622916814.cfg", null, false, 4, {
+"file": "theme-1622916814.cfg"
 } ]
-selected = 0
+selected = 1
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer"]
 margin_top = 50.0
@@ -195,6 +201,7 @@ margin_left = 332.0
 margin_right = 356.0
 margin_bottom = 24.0
 hint_tooltip = "If enabled, inputs for text events will be treated as keys for tr()"
+pressed = true
 
 [node name="VBoxContainer3" type="VBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer"]
 margin_top = 318.0
@@ -277,3 +284,40 @@ margin_left = 211.0
 margin_right = 235.0
 margin_bottom = 24.0
 pressed = true
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="VBoxContainer/HBoxContainer3"]
+margin_left = 360.0
+margin_right = 664.0
+margin_bottom = 452.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer2"]
+margin_right = 304.0
+margin_bottom = 50.0
+
+[node name="SectionTitle2" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer" instance=ExtResource( 2 )]
+margin_right = 304.0
+text = "Input settings"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer"]
+margin_top = 26.0
+margin_right = 304.0
+margin_bottom = 50.0
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer/HBoxContainer"]
+margin_top = 5.0
+margin_right = 181.0
+margin_bottom = 19.0
+text = "Enable choice options after  "
+
+[node name="LineEdit" type="LineEdit" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer/HBoxContainer"]
+margin_left = 185.0
+margin_right = 243.0
+margin_bottom = 24.0
+text = "0.1"
+
+[node name="Label2" type="Label" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer/HBoxContainer"]
+margin_left = 247.0
+margin_top = 5.0
+margin_right = 304.0
+margin_bottom = 19.0
+text = " seconds"
