@@ -433,11 +433,9 @@ func _on_item_rmb_selected(position):
 func get_item_folder(item: TreeItem, root : String):
 	if not item:
 		return root
-	var current_path:String = ""
+	var current_path:String = get_item_path(item)
 	if not "Root" in item.get_metadata(0)['editor']:
 		current_path = DialogicUtil.get_parent_path(current_path)
-	else:
-		current_path = get_item_path(item)
 	if not current_path.begins_with(root):
 		return root
 	return current_path
