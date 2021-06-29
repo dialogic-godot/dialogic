@@ -1,6 +1,7 @@
-## v1.3 - WIP
+## v1.2.2 - Here we go again :')
 - Set Value Event: There is now a dice symbol that (when toggled) will reveal to boxes for a minimum and a maximum random number to choose from [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
 - Making a small delay on choices to prevent the people that spam "next" to accidentally select the first option
+- Fixed some issues when creating new events in the timeline
 
 ## v1.2.1 - Get them while they're hot!
 - You can now specify for how long to wait in `[nw]` events. `[nw=3]` or whatever number of seconds you want it to wait
