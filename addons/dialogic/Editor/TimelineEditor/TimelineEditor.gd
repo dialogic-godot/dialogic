@@ -511,7 +511,7 @@ func create_event(scene: String, data: Dictionary = {'no-data': true} , indent: 
 	var event_scene = event_scenes.get(key)
 	if event_scene == null:
 		event_scenes[key] = load(key)
-	var piece = event_scenes[key].instance()
+	var piece = event_scenes[key].instance(PackedScene.GEN_EDIT_STATE_INSTANCE)
 	piece.editor_reference = editor_reference
 	if data.has('no-data') == false:
 		#piece.load_data(data)
