@@ -507,15 +507,12 @@ func cancel_drop_event():
 
 # Adding an event to the timeline
 func create_event(scene: String, data: Dictionary = {'no-data': true} , indent: bool = false):
-	var key = "res://addons/dialogic/Editor/Events/" + scene + ".tscn"
-	var event_scene = event_scenes.get(key)
-	if event_scene == null:
-		event_scenes[key] = load(key)
-	var piece = event_scenes[key].instance(PackedScene.GEN_EDIT_STATE_INSTANCE)
+	var piece = load("res://addons/dialogic/Editor/Events/" + scene + ".tscn").instance()
 	piece.editor_reference = editor_reference
+	
 	if data.has('no-data') == false:
-		#piece.load_data(data)
 		piece.event_data = data
+	
 	if len(selected_items) != 0:
 		timeline.add_child_below_node(selected_items[0], piece)
 	else:
