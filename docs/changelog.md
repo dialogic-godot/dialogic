@@ -1,3 +1,6 @@
+## v1.2.3 - Two releases in one day?
+- Hopefully, final attempt to fix the weird event creation bug [[Jowan-Spooner](https://github.com/Jowan-Spooner)] Thanks [[Drawsi](https://github.com/Drawsi)] for the report and testing!
+
 ## v1.2.2 - Here we go again :')
 - Set Value Event: There is now a dice symbol that (when toggled) will reveal to boxes for a minimum and a maximum random number to choose from [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
 - Making a small delay on choices to prevent the people that spam "next" to accidentally select the first option
