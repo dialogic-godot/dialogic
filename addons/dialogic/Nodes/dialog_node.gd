@@ -9,6 +9,7 @@ var waiting_for_answer: bool = false
 var waiting_for_input: bool = false
 var waiting: bool = false
 var preview: bool = false
+var skipped_text: bool = false
 var definitions: Dictionary = {}
 var definition_visible: bool = false
 var while_show_up_animation: bool = false
@@ -344,6 +345,7 @@ func _process(delta):
 		$TextBubble/NextIndicatorContainer/NextIndicator.visible = false # Hide if question 
 		if waiting_for_answer and Input.is_action_just_released(input_next):
 			$Options.get_child(0).grab_focus()
+			skipped_text = false
 	
 	# Hide if no input is required
 	if current_event.has('text'):
@@ -360,6 +362,7 @@ func _input(event: InputEvent) -> void:
 		if not $TextBubble.is_finished():
 			# Skip to end if key is pressed during the text animation
 			$TextBubble.skip()
+			skipped_text = true
 		else:
 			if waiting_for_answer == false and waiting_for_input == false and while_show_up_animation == false:
 				_load_next_event()
@@ -924,7 +927,7 @@ func add_choice_button(option: Dictionary):
 
 
 func answer_question(i, event_idx, question_idx):
-	if $TextBubble.is_finished():
+	if not skipped_text:
 		dprint('[!] Going to ', event_idx + 1, i, 'question_idx:', question_idx)
 		waiting_for_answer = false
 		questions[question_idx]['answered'] = true
