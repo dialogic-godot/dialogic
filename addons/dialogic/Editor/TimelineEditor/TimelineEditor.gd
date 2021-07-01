@@ -520,7 +520,6 @@ func create_event(scene: String, data: Dictionary = {'no-data': true} , indent: 
 	
 
 	piece.connect("option_action", self, '_on_event_options_action', [piece])
-	
 	piece.connect("gui_input", self, '_on_event_block_gui_input', [piece])
 	events_warning.visible = false
 	# Indent on create

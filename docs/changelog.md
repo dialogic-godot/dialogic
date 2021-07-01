@@ -1,4 +1,5 @@
 ## v1.2.4 - WIP
+- Fixed an issue with the default scale of the portraits
 - Trying to simplify and remove legacy code:
   - EditorView.gd
     - Unified the remove resource confirmation dialogs
