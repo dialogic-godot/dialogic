@@ -1,3 +1,6 @@
+## v1.2.5 - WIP (Again)
+
+
 ## v1.2.4 - Gotta go fast
 - Fixed an issue with the default scale of the portraits
 - Trying to simplify and remove legacy code:
