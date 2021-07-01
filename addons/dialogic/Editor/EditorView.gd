@@ -1,18 +1,9 @@
 tool
 extends Control
 
-var debug_mode: bool = true # For printing info
 var editor_file_dialog # EditorFileDialog
 var file_picker_data: Dictionary = {'method': '', 'node': self}
-var current_editor_view: String = 'Master'
 var version_string: String 
-onready var master_tree = $MainPanel/MasterTreeContainer/MasterTree
-onready var timeline_editor = $MainPanel/TimelineEditor
-onready var character_editor = $MainPanel/CharacterEditor
-onready var value_editor = $MainPanel/ValueEditor
-onready var glossary_entry_editor = $MainPanel/GlossaryEntryEditor
-onready var theme_editor = $MainPanel/ThemeEditor
-onready var settings_editor = $MainPanel/SettingsEditor
 
 # this is set when the plugins main-view is instanced in dialogic.gd
 var editor_interface = null
@@ -23,13 +14,13 @@ func _ready():
 	add_child(editor_file_dialog)
 
 	# Setting references to this node
-	timeline_editor.editor_reference = self
-	character_editor.editor_reference = self
-	value_editor.editor_reference = self
-	glossary_entry_editor.editor_reference = self
-	theme_editor.editor_reference = self
+	$MainPanel/TimelineEditor.editor_reference = self
+	$MainPanel/CharacterEditor.editor_reference = self
+	$MainPanel/ValueEditor.editor_reference = self
+	$MainPanel/GlossaryEntryEditor.editor_reference = self
+	$MainPanel/ThemeEditor.editor_reference = self
 
-	master_tree.connect("editor_selected", self, 'on_master_tree_editor_selected')
+	$MainPanel/MasterTreeContainer/MasterTree.connect("editor_selected", self, 'on_master_tree_editor_selected')
 
 	# Updating the folder structure
 	DialogicUtil.update_resource_folder_structure()
@@ -84,8 +75,8 @@ func _ready():
 	$ToolBar/NewGlossaryEntryButton.connect('pressed', $MainPanel/MasterTreeContainer/MasterTree, 'new_glossary_entry')
 	$ToolBar/Docs.icon = get_icon("Instance", "EditorIcons")
 	$ToolBar/Docs.connect('pressed', OS, "shell_open", ["https://dialogic.coppolaemilio.com"])
-	$ToolBar/FoldTools/ButtonFold.connect('pressed', timeline_editor, 'fold_all_nodes')
-	$ToolBar/FoldTools/ButtonUnfold.connect('pressed', timeline_editor, 'unfold_all_nodes')
+	$ToolBar/FoldTools/ButtonFold.connect('pressed', $MainPanel/TimelineEditor, 'fold_all_nodes')
+	$ToolBar/FoldTools/ButtonUnfold.connect('pressed', $MainPanel/TimelineEditor, 'unfold_all_nodes')
 	
 	
 	#Connecting confirmation
