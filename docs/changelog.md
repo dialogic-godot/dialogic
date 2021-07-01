@@ -1,3 +1,6 @@
+## v1.2.4 - WIP
+- Unified the remove resource confirmation dialogs
+
 ## v1.2.3 - Two releases in one day?
 - Hopefully, final attempt to fix the weird event creation bug [[Jowan-Spooner](https://github.com/Jowan-Spooner)] Thanks [[Drawsi](https://github.com/Drawsi)] for the report and testing!
 

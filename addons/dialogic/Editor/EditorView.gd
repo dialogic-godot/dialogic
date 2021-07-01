@@ -88,14 +88,9 @@ func _ready():
 	$ToolBar/FoldTools/ButtonUnfold.connect('pressed', timeline_editor, 'unfold_all_nodes')
 	
 	
-	#Connecting confirmation menus
-	$RemoveTimelineConfirmation.connect('confirmed', self, '_on_RemoveTimelineConfirmation_confirmed')
+	#Connecting confirmation
 	$RemoveFolderConfirmation.connect('confirmed', self, '_on_RemoveFolderConfirmation_confirmed')
-	$RemoveCharacterConfirmation.connect('confirmed', self, '_on_RemoveCharacterConfirmation_confirmed')
-	$RemoveThemeConfirmation.connect('confirmed', self, '_on_RemoveThemeConfirmation_confirmed')
-	$RemoveValueConfirmation.connect('confirmed', self, '_on_RemoveValueConfirmation_confirmed')
-	$RemoveGlossaryConfirmation.connect('confirmed', self, '_on_RemoveGlossaryEntryConfirmation_confirmed')
-	
+
 	# Loading the version number
 	var config = ConfigFile.new()
 	var err = config.load("res://addons/dialogic/plugin.cfg")
@@ -110,44 +105,40 @@ func on_master_tree_editor_selected(editor: String):
 	$ToolBar/FoldTools.visible = editor == 'timeline'
 
 
+func popup_remove_confirmation(what):
+	var remove_text = "Are you sure you want to remove this [resource]? \n (Can't be restored)"
+	$RemoveConfirmation.dialog_text = remove_text.replace('[resource]', what)
+	if $RemoveConfirmation.is_connected( 
+		'confirmed', self, '_on_RemoveConfirmation_confirmed'):
+				$RemoveConfirmation.disconnect(
+					'confirmed', self, '_on_RemoveConfirmation_confirmed')
+	$RemoveConfirmation.connect('confirmed', self, '_on_RemoveConfirmation_confirmed', [what])
+	$RemoveConfirmation.popup_centered()
 
-func _on_RemoveTimelineConfirmation_confirmed():
-	var dir = Directory.new()
-	var target = $MainPanel/TimelineEditor.timeline_file
-	#'target: ', target)
-	DialogicResources.delete_timeline(target)
-	DialogicUtil.update_resource_folder_structure()
-	$MainPanel/MasterTreeContainer/MasterTree.remove_selected()
-	$MainPanel/MasterTreeContainer/MasterTree.hide_all_editors()
-
-
-func _on_RemoveGlossaryEntryConfirmation_confirmed():
-	var target = $MainPanel/GlossaryEntryEditor.current_definition['id']
-	DialogicResources.delete_default_definition(target)
-	$MainPanel/MasterTreeContainer/MasterTree.remove_selected()
-	$MainPanel/MasterTreeContainer/MasterTree.hide_all_editors()
-
-func _on_RemoveValueConfirmation_confirmed():
-	var target = $MainPanel/ValueEditor.current_definition['id']
-	DialogicResources.delete_default_definition(target)
-	$MainPanel/MasterTreeContainer/MasterTree.remove_selected()
-	$MainPanel/MasterTreeContainer/MasterTree.hide_all_editors()
 
 func _on_RemoveFolderConfirmation_confirmed():
 	var item_path = $MainPanel/MasterTreeContainer/MasterTree.get_item_path($MainPanel/MasterTreeContainer/MasterTree.get_selected())
 	DialogicUtil.remove_folder(item_path)
 	$MainPanel/MasterTreeContainer/MasterTree.build_full_tree()
 
-func _on_RemoveCharacterConfirmation_confirmed():
-	var filename = $MainPanel/CharacterEditor.opened_character_data['id']
-	DialogicResources.delete_character(filename)
-	$MainPanel/MasterTreeContainer/MasterTree.remove_selected()
-	$MainPanel/MasterTreeContainer/MasterTree.hide_all_editors()
 
-
-func _on_RemoveThemeConfirmation_confirmed():
-	var filename = $MainPanel/MasterTreeContainer/MasterTree.get_selected().get_metadata(0)['file']
-	DialogicResources.delete_theme(filename)
+func _on_RemoveConfirmation_confirmed(what: String = ''):
+	if what == 'Timeline':
+		var target = $MainPanel/TimelineEditor.timeline_file
+		DialogicResources.delete_timeline(target)
+		DialogicUtil.update_resource_folder_structure()
+	elif what == 'GlossaryEntry':
+		var target = $MainPanel/GlossaryEntryEditor.current_definition['id']
+		DialogicResources.delete_default_definition(target)
+	elif what == 'Value':
+		var target = $MainPanel/ValueEditor.current_definition['id']
+		DialogicResources.delete_default_definition(target)
+	elif what == 'Theme':
+		var filename = $MainPanel/MasterTreeContainer/MasterTree.get_selected().get_metadata(0)['file']
+		DialogicResources.delete_theme(filename)
+	elif what == 'Character':
+		var filename = $MainPanel/CharacterEditor.opened_character_data['id']
+		DialogicResources.delete_character(filename)
 	$MainPanel/MasterTreeContainer/MasterTree.remove_selected()
 	$MainPanel/MasterTreeContainer/MasterTree.hide_all_editors()
 
@@ -183,12 +174,3 @@ func godot_dialog_connect(who, method_name, signal_name = "file_selected"):
 	
 	file_picker_data['method'] = method_name
 	file_picker_data['node'] = who
-
-
-func _on_file_selected(path):
-	dprint('[D] Selected '+str(path))
-
-
-func dprint(what) -> void:
-	if debug_mode:
-		print(what)
