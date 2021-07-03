@@ -24,6 +24,11 @@ If you want to know more about installing plugins you can read the [official doc
 
 You can also install Dialogic using the **AssetLib** tab in the editor, but the version here will not be the latest one available since it takes some time for it to be approved.
 
+
+### 📦 Preparing the export
+
+When you export a project using Dialogic, you need to add `*.json, *.cfg` on the Resources tab `Filters to export...` input field ([see image](https://coppolaemilio.com/images/dialogic/exporting-2.png?v2)). This allows Godot to pack the files from the `/dialogic` folder.
+
 ---
 
 ## FAQ 
@@ -114,12 +119,6 @@ func _ready():
 	})
 	add_child(gdscript_dialog)
 ```
-
----
-
-### 📦 Preparing the export
-
-When you export a project using Dialogic, you need to add `*.json, *.cfg` on the Resources tab `Filters to export...` input field ([see image](https://coppolaemilio.com/images/dialogic/exporting-2.png?v2)). This allows Godot to pack the files from the `/dialogic` folder.
 
 ---
 
