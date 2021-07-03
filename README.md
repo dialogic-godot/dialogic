@@ -24,6 +24,9 @@ If you want to know more about installing plugins you can read the [official doc
 
 You can also install Dialogic using the **AssetLib** tab in the editor, but the version here will not be the latest one available since it takes some time for it to be approved.
 
+## ⚠ IMPORTANT
+The Godot editor needs a reboot after enabling Dialogic for the first time. So make sure to reboot after activating it for the first time before submitting a bug request. Hope to fix this one soon, but for now you will have to do this. 
+
 
 ### 📦 Preparing the export
 
