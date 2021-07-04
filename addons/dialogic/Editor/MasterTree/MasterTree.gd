@@ -283,6 +283,7 @@ func _on_item_selected():
 	var metadata = get_selected().get_metadata(0)
 	match metadata['editor']:
 		'Timeline':
+			timeline_editor.batches.clear()
 			timeline_editor.load_timeline(metadata['file'])
 			show_timeline_editor()
 		'Character':

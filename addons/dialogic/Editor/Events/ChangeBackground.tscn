@@ -28,22 +28,11 @@ margin_bottom = 54.0
 [node name="VBoxContainer" parent="PanelContainer/MarginContainer" index="0"]
 margin_bottom = 48.0
 
-[node name="IconMarginContainer" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="1"]
-margin_right = 37.0
-
-[node name="IconTexture" parent="PanelContainer/MarginContainer/VBoxContainer/Header/IconMarginContainer" index="0"]
+[node name="IconTexture" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="0"]
 margin_right = 32.0
 texture = ExtResource( 6 )
 
-[node name="TitleHBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="2"]
-visible = true
-margin_left = 41.0
-margin_right = 191.0
-
-[node name="TitleMarginContainer" parent="PanelContainer/MarginContainer/VBoxContainer/Header/TitleHBoxContainer" index="1"]
-margin_right = 142.0
-
-[node name="TitleLabel" parent="PanelContainer/MarginContainer/VBoxContainer/Header/TitleHBoxContainer/TitleMarginContainer" index="0"]
+[node name="TitleLabel" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="0"]
 margin_right = 129.0
 text = "Change Background"
 
