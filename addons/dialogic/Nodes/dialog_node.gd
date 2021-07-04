@@ -90,8 +90,8 @@ func _ready():
 func load_config_files():
 	if not Engine.is_editor_hint():
 		if reset_saves:
-			DialogicSingleton.init(reset_saves)
-		definitions = DialogicSingleton.get_definitions()
+			Engine.get_singleton('DialogicSingleton').init(reset_saves)
+		definitions = Engine.get_singleton('DialogicSingleton').get_definitions()
 	else:
 		definitions = DialogicResources.get_default_definitions()
 	settings = DialogicResources.get_settings_config()
@@ -309,7 +309,7 @@ func _should_show_glossary():
 func parse_definitions(text: String, variables: bool = true, glossary: bool = true):
 	var final_text: String = text
 	if not preview:
-		definitions = DialogicSingleton.get_definitions()
+		definitions = Engine.get_singleton('DialogicSingleton').get_definitions()
 	if variables:
 		final_text = _insert_variable_definitions(text)
 	if glossary and _should_show_glossary():
@@ -436,9 +436,9 @@ func _on_text_completed():
 func on_timeline_start():
 	if not Engine.is_editor_hint():
 		if settings.get_value('saving', 'save_definitions_on_start', true):
-			DialogicSingleton.save_definitions()
+			Engine.get_singleton('DialogicSingleton').save_definitions()
 		if settings.get_value('saving', 'save_current_timeline', true):
-			DialogicSingleton.set_current_timeline(current_timeline)
+			Engine.get_singleton('DialogicSingleton').set_current_timeline(current_timeline)
 	# TODO remove event_start in 2.0
 	emit_signal("event_start", "timeline", current_timeline)
 	emit_signal("timeline_start", current_timeline)
@@ -447,9 +447,9 @@ func on_timeline_start():
 func on_timeline_end():
 	if not Engine.is_editor_hint():
 		if settings.get_value('saving', 'save_definitions_on_end', true):
-			DialogicSingleton.save_definitions()
+			Engine.get_singleton('DialogicSingleton').save_definitions()
 		if settings.get_value('saving', 'clear_current_timeline', true):
-			DialogicSingleton.set_current_timeline('')
+			Engine.get_singleton('DialogicSingleton').set_current_timeline('')
 	# TODO remove event_end in 2.0
 	emit_signal("event_end", "timeline")
 	emit_signal("timeline_end", current_timeline)
@@ -634,7 +634,7 @@ func event_handler(event: Dictionary):
 			var value = event['set_value']
 			if event.get('set_random', false):
 				value = str(randi()%int(event.get("random_upper_limit", 100))+event.get('random_lower_limit', 0))
-			DialogicSingleton.set_variable_from_id(event['definition'], value, operation)
+			Engine.get_singleton('DialogicSingleton').set_variable_from_id(event['definition'], value, operation)
 			_load_next_event()
 		
 		# TIMELINE EVENTS
@@ -702,7 +702,7 @@ func event_handler(event: Dictionary):
 		'dialogic_025':
 			emit_signal("event_start", "set_glossary", event)
 			if event['glossary_id']:
-				DialogicSingleton.set_glossary_from_id(event['glossary_id'], event['title'], event['text'],event['extra'])
+				Engine.get_singleton('DialogicSingleton').set_glossary_from_id(event['glossary_id'], event['title'], event['text'],event['extra'])
 			_load_next_event()
 		# AUDIO EVENTS
 		# Audio event
