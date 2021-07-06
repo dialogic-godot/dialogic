@@ -1,7 +1,7 @@
 ![Screenshot](https://coppolaemilio.com/images/dialogic/dialogic-hero-1.0.png?v)
 Create dialogs, characters and scenes to display conversations in your Godot games. 
 
-# Version 1.3 (WIP)  ![Godot v3.3](https://img.shields.io/badge/godot-v3.3-%23478cbf)
+# Version 1.2.5 (WIP)  ![Godot v3.3](https://img.shields.io/badge/godot-v3.3-%23478cbf)
 
 [Changelog](https://github.com/coppolaemilio/dialogic/blob/main/docs/changelog.md) — 
 [Installation](#installation) — 
@@ -23,6 +23,14 @@ To install a Dialogic, download it as a ZIP archive. All releases are listed her
 If you want to know more about installing plugins you can read the [official documentation page](https://docs.godotengine.org/en/stable/tutorials/plugins/editor/installing_plugins.html).
 
 You can also install Dialogic using the **AssetLib** tab in the editor, but the version here will not be the latest one available since it takes some time for it to be approved.
+
+## ⚠ IMPORTANT
+The Godot editor needs a reboot after enabling Dialogic for the first time. So make sure to reboot after activating it for the first time before submitting a bug request. A fix is present in the 1.2.5 version, but still being tested.
+
+
+### 📦 Preparing the export
+
+When you export a project using Dialogic, you need to add `*.json, *.cfg` on the Resources tab `Filters to export...` input field ([see image](https://coppolaemilio.com/images/dialogic/exporting-2.png?v2)). This allows Godot to pack the files from the `/dialogic` folder.
 
 ---
 
@@ -114,12 +122,6 @@ func _ready():
 	})
 	add_child(gdscript_dialog)
 ```
-
----
-
-### 📦 Preparing the export
-
-When you export a project using Dialogic, you need to add `*.json, *.cfg` on the Resources tab `Filters to export...` input field ([see image](https://coppolaemilio.com/images/dialogic/exporting-2.png?v2)). This allows Godot to pack the files from the `/dialogic` folder.
 
 ---
 

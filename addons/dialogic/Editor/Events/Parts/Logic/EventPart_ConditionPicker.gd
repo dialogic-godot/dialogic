@@ -77,7 +77,7 @@ func _on_Value_text_changed(text):
 func check_data():
 	if event_data['condition'] != '==' and event_data['condition'] != '!=':
 		if not event_data['value'].is_valid_float():
-			emit_signal("set_warning", "The selected operator requiers a number!")
+			emit_signal("set_warning", "The selected operator requires a number!")
 			return
 	
 	emit_signal("remove_warning")

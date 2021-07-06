@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://addons/dialogic/Editor/Events/Templates/EventBlock.gd" type="Script" id=1]
 [ext_resource path="res://addons/dialogic/Editor/Events/Parts/EventBlock/ExpandControl.tscn" type="PackedScene" id=2]
@@ -6,7 +6,7 @@
 [ext_resource path="res://addons/dialogic/Editor/Events/Parts/EventBlock/OptionsControl.tscn" type="PackedScene" id=5]
 [ext_resource path="res://addons/dialogic/Images/Plugin/plugin-editor-icon-dark-theme.svg" type="Texture" id=6]
 
-[sub_resource type="StyleBoxFlat" id=3]
+[sub_resource type="StyleBoxFlat" id=1]
 content_margin_left = 0.0
 content_margin_right = 0.0
 content_margin_top = 0.0
@@ -21,25 +21,11 @@ corner_radius_top_right = 6
 corner_radius_bottom_right = 6
 corner_radius_bottom_left = 6
 
-[sub_resource type="Image" id=4]
-data = {
-"data": PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ),
-"format": "LumAlpha8",
-"height": 16,
-"mipmaps": false,
-"width": 16
-}
-
-[sub_resource type="ImageTexture" id=2]
-flags = 4
-flags = 4
-image = SubResource( 4 )
-size = Vector2( 16, 16 )
-
 [node name="EventTemplate" type="HBoxContainer"]
 anchor_right = 1.0
 margin_bottom = 42.0
 rect_min_size = Vector2( 0, 42 )
+focus_mode = 1
 size_flags_horizontal = 3
 size_flags_vertical = 9
 script = ExtResource( 1 )
@@ -62,7 +48,7 @@ mouse_filter = 1
 mouse_default_cursor_shape = 6
 size_flags_horizontal = 3
 size_flags_vertical = 3
-custom_styles/panel = SubResource( 3 )
+custom_styles/panel = SubResource( 1 )
 
 [node name="MarginContainer" type="MarginContainer" parent="PanelContainer"]
 margin_right = 1024.0
@@ -86,10 +72,9 @@ margin_right = 1012.0
 margin_bottom = 30.0
 rect_min_size = Vector2( 0, 30 )
 size_flags_horizontal = 3
+custom_constants/separation = 10
 
-[node name="Warning" type="ToolButton" parent="PanelContainer/MarginContainer/VBoxContainer/Header"]
-visible = false
-margin_right = 34.0
+[node name="Warning" type="TextureRect" parent="PanelContainer/MarginContainer/VBoxContainer/Header"]
 margin_bottom = 30.0
 hint_tooltip = "Choice events should go 
 between a [Question]
@@ -99,53 +84,25 @@ and [End branch] events.
     [Choice]
     [...]
 [End branch]"
-icon = SubResource( 2 )
+stretch_mode = 4
 
-[node name="IconMarginContainer" type="MarginContainer" parent="PanelContainer/MarginContainer/VBoxContainer/Header"]
-margin_right = 31.0
-margin_bottom = 30.0
-mouse_filter = 1
-custom_constants/margin_right = 5
-custom_constants/margin_left = 10
-
-[node name="IconTexture" type="TextureRect" parent="PanelContainer/MarginContainer/VBoxContainer/Header/IconMarginContainer"]
+[node name="IconTexture" type="TextureRect" parent="PanelContainer/MarginContainer/VBoxContainer/Header"]
 margin_left = 10.0
 margin_right = 26.0
 margin_bottom = 30.0
+grow_horizontal = 0
 texture = ExtResource( 6 )
-stretch_mode = 6
+stretch_mode = 4
 
-[node name="TitleHBoxContainer" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer/Header"]
-visible = false
-margin_left = 35.0
-margin_right = 61.0
-margin_bottom = 30.0
-
-[node name="VSeparator" type="VSeparator" parent="PanelContainer/MarginContainer/VBoxContainer/Header/TitleHBoxContainer"]
-margin_right = 4.0
-margin_bottom = 30.0
-mouse_filter = 1
-
-[node name="TitleMarginContainer" type="MarginContainer" parent="PanelContainer/MarginContainer/VBoxContainer/Header/TitleHBoxContainer"]
-margin_left = 8.0
-margin_right = 18.0
-margin_bottom = 30.0
-mouse_filter = 1
-custom_constants/margin_right = 5
-custom_constants/margin_left = 5
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="TitleLabel" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/Header/TitleHBoxContainer/TitleMarginContainer"]
-margin_left = 5.0
+[node name="TitleLabel" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/Header"]
+margin_left = 36.0
 margin_top = 8.0
-margin_right = 5.0
+margin_right = 36.0
 margin_bottom = 22.0
 
 [node name="Content" type="MarginContainer" parent="PanelContainer/MarginContainer/VBoxContainer/Header"]
-margin_left = 35.0
-margin_right = 45.0
+margin_left = 46.0
+margin_right = 56.0
 margin_bottom = 30.0
 mouse_filter = 1
 custom_constants/margin_right = 5
@@ -156,8 +113,8 @@ margin_left = 178.0
 margin_right = 242.0
 
 [node name="Spacer" parent="PanelContainer/MarginContainer/VBoxContainer/Header" instance=ExtResource( 4 )]
-margin_left = 49.0
-margin_right = 974.0
+margin_left = 66.0
+margin_right = 968.0
 margin_bottom = 30.0
 
 [node name="OptionsControl" parent="PanelContainer/MarginContainer/VBoxContainer/Header" instance=ExtResource( 5 )]

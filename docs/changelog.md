@@ -1,3 +1,19 @@
+## v1.2.5 - Possibly breaking eveything. We will never know.
+- Loading timeline events on batches to speedup big timelines
+- Reduced the amount of nodes inside events to improve loading times
+- Fixing the "first time running" bug where you had to reboot dialogic after enabling it for the first time
+- Fixing a bug where if you had a node selected in the editor you couldn't open any resource picker
+
+## v1.2.4 - Gotta go fast
+- Fixed an issue with the default scale of the portraits
+- Trying to simplify and remove legacy code:
+  - EditorView.gd
+    - Unified the remove resource confirmation dialogs
+    - Removed pointless variable definitions
+
+## v1.2.3 - Two releases in one day?
+- Hopefully, final attempt to fix the weird event creation bug [[Jowan-Spooner](https://github.com/Jowan-Spooner)] Thanks [[Drawsi](https://github.com/Drawsi)] for the report and testing!
+
 ## v1.2.2 - Here we go again :')
 - Set Value Event: There is now a dice symbol that (when toggled) will reveal to boxes for a minimum and a maximum random number to choose from [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
 - Making a small delay on choices to prevent the people that spam "next" to accidentally select the first option

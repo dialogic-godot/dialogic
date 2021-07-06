@@ -18,21 +18,11 @@ header_scene = ExtResource( 4 )
 [node name="PanelContainer" parent="." index="1"]
 custom_styles/panel = ExtResource( 2 )
 
-[node name="IconMarginContainer" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="0"]
-margin_right = 37.0
-
-[node name="IconTexture" parent="PanelContainer/MarginContainer/VBoxContainer/Header/IconMarginContainer" index="0"]
+[node name="IconTexture" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="0"]
 margin_right = 32.0
 texture = ExtResource( 3 )
 
-[node name="TitleHBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="1"]
-margin_left = 41.0
-margin_right = 155.0
-
-[node name="TitleMarginContainer" parent="PanelContainer/MarginContainer/VBoxContainer/Header/TitleHBoxContainer" index="1"]
-margin_right = 106.0
-
-[node name="TitleLabel" parent="PanelContainer/MarginContainer/VBoxContainer/Header/TitleHBoxContainer/TitleMarginContainer" index="0"]
+[node name="TitleLabel" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="0"]
 margin_right = 93.0
 text = "Change Scene"
 

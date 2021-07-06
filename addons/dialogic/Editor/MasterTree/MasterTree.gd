@@ -283,6 +283,7 @@ func _on_item_selected():
 	var metadata = get_selected().get_metadata(0)
 	match metadata['editor']:
 		'Timeline':
+			timeline_editor.batches.clear()
 			timeline_editor.load_timeline(metadata['file'])
 			show_timeline_editor()
 		'Character':
@@ -464,14 +465,14 @@ func _on_TimelinePopupMenu_id_pressed(id):
 	if id == 1: # Copy to clipboard
 		OS.set_clipboard(editor_reference.get_node("MainPanel/TimelineEditor").timeline_name)
 	if id == 2: # Remove
-		editor_reference.get_node('RemoveTimelineConfirmation').popup_centered()
+		editor_reference.popup_remove_confirmation('Timeline')
 
 # Character context menu
 func _on_CharacterPopupMenu_id_pressed(id):
 	if id == 0:
 		OS.shell_open(ProjectSettings.globalize_path(DialogicResources.get_path('CHAR_DIR')))
 	if id == 1:
-		editor_reference.get_node('RemoveCharacterConfirmation').popup_centered()
+		editor_reference.popup_remove_confirmation('Character')
 
 # Theme context menu
 func _on_ThemePopupMenu_id_pressed(id):
@@ -482,7 +483,7 @@ func _on_ThemePopupMenu_id_pressed(id):
 		if (filename.begins_with('theme-')):
 			editor_reference.theme_editor.duplicate_theme(filename)
 	if id == 2:
-		editor_reference.get_node('RemoveThemeConfirmation').popup_centered()
+		editor_reference.popup_remove_confirmation('Theme')
 
 # Definition context menu
 func _on_DefinitionPopupMenu_id_pressed(id):
@@ -491,9 +492,9 @@ func _on_DefinitionPopupMenu_id_pressed(id):
 		OS.shell_open(ProjectSettings.globalize_path(paths['DEFAULT_DEFINITIONS_FILE']))
 	if id == 1:
 		if value_editor.visible:
-			editor_reference.get_node('RemoveValueConfirmation').popup_centered()
+			editor_reference.popup_remove_confirmation('Value')
 		elif glossary_entry_editor.visible:
-			editor_reference.get_node('RemoveGlossaryConfirmation').popup_centered()
+			editor_reference.popup_remove_confirmation('GlossaryEntry')
 			
 ## FOLDER POPUPS
 

@@ -36,22 +36,11 @@ custom_styles/panel = ExtResource( 5 )
 [node name="Warning" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="0"]
 icon = SubResource( 2 )
 
-[node name="IconMarginContainer" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="1"]
-margin_right = 37.0
-
-[node name="IconTexture" parent="PanelContainer/MarginContainer/VBoxContainer/Header/IconMarginContainer" index="0"]
+[node name="IconTexture" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="0"]
 margin_right = 32.0
 texture = ExtResource( 1 )
 
-[node name="TitleHBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="2"]
-visible = true
-margin_left = 41.0
-margin_right = 153.0
-
-[node name="TitleMarginContainer" parent="PanelContainer/MarginContainer/VBoxContainer/Header/TitleHBoxContainer" index="1"]
-margin_right = 104.0
-
-[node name="TitleLabel" parent="PanelContainer/MarginContainer/VBoxContainer/Header/TitleHBoxContainer/TitleMarginContainer" index="0"]
+[node name="TitleLabel" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="0"]
 margin_right = 91.0
 text = "Wait Seconds"
 

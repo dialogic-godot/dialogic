@@ -155,7 +155,7 @@ func load_character(filename: String):
 	nodes['color'].color = Color(data.get('color','#ffffffff'))
 	nodes['display_name_checkbox'].pressed = data.get('display_name_bool', false)
 	nodes['display_name'].text = data.get('display_name', '')
-	nodes['scale'].value = float(data.get('scale', 1))
+	nodes['scale'].value = float(data.get('scale', 100))
 	nodes['nickname_checkbox'].pressed = data.get('nickname_bool', false)
 	nodes['nickname'].text = data.get('nickname', '')
 	nodes['offset_x'].value = data.get('offset_x', 0)
