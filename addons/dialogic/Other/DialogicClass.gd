@@ -129,7 +129,10 @@ static func reset_saves():
 ## @param name					The name of the variable to find.
 ## @returns						The variable's value as string, or an empty string if not found.
 static func get_variable(name: String) -> String:
-	return Engine.get_singleton('DialogicSingleton').get_variable(name)
+	if Engine.is_editor_hint():
+		return Engine.get_singleton('DialogicSingleton').get_variable(name)
+	else:
+		return DialogicSingleton.get_variable(name)
 
 
 ## Sets the value for the variable with the given name.
@@ -139,7 +142,10 @@ static func get_variable(name: String) -> String:
 ## @param name					The name of the variable to edit.
 ## @param value					The value to set the variable to.
 static func set_variable(name: String, value) -> void:
-	Engine.get_singleton('DialogicSingleton').set_variable(name, value)
+	if Engine.is_editor_hint():
+		Engine.get_singleton('DialogicSingleton').set_variable(name, value)
+	else:
+		DialogicSingleton.set_variable(name, value)
 
 
 ## Gets the glossary data for the definition with the given name.
@@ -150,7 +156,10 @@ static func set_variable(name: String, value) -> void:
 ## @returns						The glossary data as a Dictionary.
 ## 								A structure with empty strings is returned if the glossary was not found. 
 static func get_glossary(name: String) -> Dictionary:
-	return Engine.get_singleton('DialogicSingleton').get_glossary(name)
+	if Engine.is_editor_hint():
+		return Engine.get_singleton('DialogicSingleton').get_glossary(name)
+	else:
+		return DialogicSingleton.get_glossary(name)
 
 
 ## Sets the data for the glossary of the given name.
@@ -160,7 +169,10 @@ static func get_glossary(name: String) -> Dictionary:
 ## @param text					The text to show in the information box.
 ## @param extra					The extra information at the bottom of the box.
 static func set_glossary(name: String, title: String, text: String, extra: String) -> void:
-	Engine.get_singleton('DialogicSingleton').set_glossary(name, title, text, extra)
+	if Engine.is_editor_hint():
+		Engine.get_singleton('DialogicSingleton').set_glossary(name, title, text, extra)
+	else:
+		DialogicSingleton.set_glossary(name, title, text, extra)
 
 
 ## Gets the currently saved timeline.
@@ -169,7 +181,10 @@ static func set_glossary(name: String, title: String, text: String, extra: Strin
 ##
 ## @returns						The current timeline filename, or an empty string if none was saved.
 static func get_current_timeline() -> String:
-	return Engine.get_singleton('DialogicSingleton').get_current_timeline()
+	if Engine.is_editor_hint():
+		return Engine.get_singleton('DialogicSingleton').get_current_timeline()
+	else:
+		return DialogicSingleton.get_current_timeline()
 
 
 ## Sets the currently saved timeline.
@@ -177,7 +192,10 @@ static func get_current_timeline() -> String:
 ##
 ## @param timelinie						The new timeline to save.
 static func set_current_timeline(new_timeline: String) -> String:
-	return Engine.get_singleton('DialogicSingleton').set_current_timeline(new_timeline)
+	if Engine.is_editor_hint():
+		return Engine.get_singleton('DialogicSingleton').set_current_timeline(new_timeline)
+	else:
+		return DialogicSingleton.set_current_timeline(new_timeline)
 
 
 ## Export the current Dialogic state.
@@ -186,7 +204,10 @@ static func set_current_timeline(new_timeline: String) -> String:
 ##
 ## @return						A dictionary of data that can be later provided to import().
 static func export() -> Dictionary:
-	return Engine.get_singleton('DialogicSingleton').export()
+	if Engine.is_editor_hint():
+		return Engine.get_singleton('DialogicSingleton').export()
+	else:
+		return DialogicSingleton.export()
 
 
 ## Import a Dialogic state.
@@ -195,4 +216,7 @@ static func export() -> Dictionary:
 ##
 ## @param data				A dictionary of data as created by export().
 static func import(data: Dictionary) -> void:
-	Engine.get_singleton('DialogicSingleton').import(data)
+	if Engine.is_editor_hint():
+		Engine.get_singleton('DialogicSingleton').import(data)
+	else:
+		DialogicSingleton.import(data)

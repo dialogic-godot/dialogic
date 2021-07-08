@@ -337,7 +337,7 @@ static func check_folders_recursive(folder_data: Dictionary, file_names:Array):
 ##								USEFUL FUNCTIONS
 ## *****************************************************************************
 
-static func get_singleton(name, caller = Node):
+static func get_singleton(name, caller = null):
 	if Engine.is_editor_hint():
 		return Engine.get_singleton(name)
 	else:
