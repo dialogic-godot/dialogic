@@ -987,7 +987,15 @@ func load_theme(filename):
 	# Box size
 	call_deferred('deferred_resize', $TextBubble.rect_size, theme.get_value('box', 'size', Vector2(910, 167)))
 
-	input_next = theme.get_value('settings', 'action_key', 'ui_accept')
+	# HERE
+	var settings_input = settings.get_value('input', 'default_action_key', '[Default]')
+	var theme_input = theme.get_value('settings', 'action_key', '[Default]')
+	
+	input_next = 'ui_accept'
+	if settings_input != '[Default]':
+		input_next = settings_input
+	if theme_input != '[Default]':
+		input_next = theme_input
 
 	
 	$TextBubble.load_theme(theme)

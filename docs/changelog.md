@@ -5,6 +5,8 @@
 - Fixing a bug where if you had a node selected in the editor you couldn't open any resource picker
 - Fixed a bug when trying to add a new resource after removing one
 - Simplified some internal code
+- Settings Editor
+  - Added a default action key selector so you don't have to set it per theme. The theme action key settings will overwrite the one set in settings. 
 
 ## v1.2.4 - Gotta go fast
 - Fixed an issue with the default scale of the portraits
