@@ -256,7 +256,7 @@ static func set_timeline(timeline: Dictionary):
 static func delete_timeline(filename: String):
 	# WARNING: For use in the editor only
 	remove_file(get_path('TIMELINE_DIR', filename))
-	
+
 
 ## *****************************************************************************
 ##							CHARACTERS

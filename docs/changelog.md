@@ -3,6 +3,8 @@
 - Reduced the amount of nodes inside events to improve loading times
 - Fixing the "first time running" bug where you had to reboot dialogic after enabling it for the first time
 - Fixing a bug where if you had a node selected in the editor you couldn't open any resource picker
+- Fixed a bug when trying to add a new resource after removing one
+- Simplified some internal code
 
 ## v1.2.4 - Gotta go fast
 - Fixed an issue with the default scale of the portraits
