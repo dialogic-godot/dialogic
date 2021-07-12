@@ -1,9 +1,10 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://addons/dialogic/Example Assets/Fonts/DefaultFont.tres" type="DynamicFont" id=1]
 [ext_resource path="res://addons/dialogic/Example Assets/backgrounds/background-2.png" type="Texture" id=2]
 [ext_resource path="res://addons/dialogic/Example Assets/next-indicator/next-indicator.png" type="Texture" id=3]
 [ext_resource path="res://addons/dialogic/Nodes/TextBubble.gd" type="Script" id=4]
+[ext_resource path="res://addons/dialogic/Nodes/random_audio_stream_player.gd" type="Script" id=5]
 
 [sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 1, 1, 1, 0 )
@@ -46,6 +47,7 @@ tracks/0/keys = {
 [sub_resource type="StyleBoxFlat" id=5]
 content_margin_left = 10.0
 content_margin_right = 10.0
+content_margin_bottom = 0.0
 bg_color = Color( 1, 1, 1, 0 )
 expand_margin_left = 10.0
 
@@ -89,7 +91,6 @@ margin_left = 20.0
 margin_top = 10.0
 margin_right = -20.0
 margin_bottom = -10.0
-rect_clip_content = false
 custom_styles/normal = SubResource( 1 )
 custom_fonts/normal_font = ExtResource( 1 )
 custom_colors/default_color = Color( 1, 1, 1, 1 )
@@ -171,4 +172,14 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="WritingTimer" type="Timer" parent="."]
+
 [node name="Tween" type="Tween" parent="."]
+
+[node name="TypingSFX" type="AudioStreamPlayer" parent="."]
+script = ExtResource( 5 )
+samples = [  ]
+select_samples_from_folder = ""
+random_strategy = 2
+random_volume_range = 0.0
+random_pitch_range = 0.0

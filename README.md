@@ -1,28 +1,36 @@
 ![Screenshot](https://coppolaemilio.com/images/dialogic/dialogic-hero-1.0.png?v)
 Create dialogs, characters and scenes to display conversations in your Godot games. 
 
-# Version 1.1 ![Godot v3.3](https://img.shields.io/badge/godot-v3.3-%23478cbf)
+# Version 1.2.5 (WIP)  ![Godot v3.3](https://img.shields.io/badge/godot-v3.3-%23478cbf)
 
 [Changelog](https://github.com/coppolaemilio/dialogic/blob/main/docs/changelog.md) — 
-[Installation](#-installation) — 
+[Installation](#installation) — 
 [Basic Usage](https://github.com/coppolaemilio/dialogic/blob/main/docs/usage.md) — 
-[FAQ](#-faq) — 
+[FAQ](#faq) — 
 [Source structure](https://github.com/coppolaemilio/dialogic/blob/main/docs/source.md) — 
-[Credits](#-credits)
+[Credits](#credits)
 
 ---
 
 ## Getting started
 
-This video will teach you everything you need to know to get started with Dialogic: https://www.youtube.com/watch?v=sYjgDIgD7AY
+This video will teach you everything you need to know to get started with Dialogic: [https://www.youtube.com/watch?v=sYjgDIgD7AY](https://www.youtube.com/watch?v=sYjgDIgD7AY)
 
 ## Installation
 
-To install a Dialogic, download it as a ZIP archive. All releases are listed here: https://github.com/coppolaemilio/dialogic/releases. Then extract the ZIP archive and move the `addons/` folder it contains into your project folder. Then, enable the plugin in project settings.
+To install a Dialogic, download it as a ZIP archive. All releases are listed here: [releases](https://github.com/coppolaemilio/dialogic/releases). Then extract the ZIP archive and move the `addons/` folder it contains into your project folder. Then, enable the plugin in project settings.
 
 If you want to know more about installing plugins you can read the [official documentation page](https://docs.godotengine.org/en/stable/tutorials/plugins/editor/installing_plugins.html).
 
 You can also install Dialogic using the **AssetLib** tab in the editor, but the version here will not be the latest one available since it takes some time for it to be approved.
+
+## ⚠ IMPORTANT
+The Godot editor needs a reboot after enabling Dialogic for the first time. So make sure to reboot after activating it for the first time before submitting a bug request. A fix is present in the 1.2.5 version, but still being tested.
+
+
+### 📦 Preparing the export
+
+When you export a project using Dialogic, you need to add `*.json, *.cfg` on the Resources tab `Filters to export...` input field ([see image](https://coppolaemilio.com/images/dialogic/exporting-2.png?v2)). This allows Godot to pack the files from the `/dialogic` folder.
 
 ---
 
@@ -57,10 +65,10 @@ It is experimental! So if you want to try it out and you find issues, let us kno
 Usage:
 ```cs
 public override void _Ready()
-  {
-    var dialog = DialogicSharp.Start("Greeting", false);
-    AddChild(dialog);
-  }
+	{
+		var dialog = DialogicSharp.Start("Greeting", false);
+		AddChild(dialog);
+	}
 ```
 This is the PR that added this feature: https://github.com/coppolaemilio/dialogic/pull/217
 
@@ -100,15 +108,24 @@ func after_dialog(timeline_name):
 	print('Now you can resume with the game :)')
 ```
 
+### 🔷 Can I create a dialog using GDScript?
+Yes! it is a bit harder since you will have to create each event yourself, and to do that they have to be **valid**. You can check already created timelines with a text editor and see how an event should look like. A better tutorial and improvements will come soon.
+
+A simple example:
+```gdscript
+func _ready():
+	var gdscript_dialog = Dialogic.start('')
+	gdscript_dialog.set_dialog_script( {
+		"events":[
+			{ 'event_id':'dialogic_001', "text": "This dialog was created using GDScript!"}
+		]
+	})
+	add_child(gdscript_dialog)
+```
+
 ---
 
-### 📦 Preparing the export
-
-When you export a project using Dialogic, you need to add `*.json, *.cfg` on the Resources tab `Filters to export...` input field ([see image](https://coppolaemilio.com/images/dialogic/exporting-2.png?v2)). This allows Godot to pack the files from the `/dialogic` folder.
-
----
-
-## ❤ Credits
+## Credits
 Made by [Emilio Coppola](https://github.com/coppolaemilio).
 
 Contributors:  [Arnaud](https://github.com/arnaudvergnet), [ellogwen](https://github.com/ellogwen), [Jowan-Spooner](https://github.com/Jowan-Spooner), [Tim Krief](https://github.com/timkrief),  [and more!](https://github.com/coppolaemilio/dialogic/graphs/contributors). Special thanks: [Toen](https://twitter.com/ToenAndreMC), Òscar, [Francisco Presencia](https://francisco.io/). Placeholder images are from [Toen's](https://toen.world/) [YouTube DF series](https://www.youtube.com/watch?v=B1ggwiat7PM)
@@ -146,7 +163,20 @@ Flaming Potato,
 Joseph Catrambone,
 AzulCrescent,
 Hector Na Em,
-Furroy
+Furroy,
+Sergey,
+Container7,
+BasicIncomePlz,
+p sis,
+Justin,
+Guy Dadon,
+Sukh Atwal,
+Patrick Hogan,
+Jesse Priest,
+Lunos,
+Ceah Sharp
+
+
 
 Support me on [Patreon https://www.patreon.com/coppolaemilio](https://www.patreon.com/coppolaemilio)
 

@@ -1,0 +1,32 @@
+[gd_scene load_steps=2 format=2]
+
+[sub_resource type="StyleBoxFlat" id=1]
+bg_color = Color( 0.745098, 0.745098, 0.745098, 1 )
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+expand_margin_left = 5.0
+expand_margin_right = 5.0
+
+[node name="CustomLineEdit" type="LineEdit"]
+margin_right = 48.0
+margin_bottom = 30.0
+rect_min_size = Vector2( 0, 27 )
+size_flags_vertical = 6
+custom_styles/read_only = SubResource( 1 )
+custom_styles/focus = SubResource( 1 )
+custom_styles/normal = SubResource( 1 )
+custom_colors/selection_color = Color( 0.345098, 0.345098, 0.345098, 1 )
+custom_colors/cursor_color = Color( 0, 0, 0, 1 )
+custom_colors/clear_button_color_pressed = Color( 0, 0, 0, 1 )
+custom_colors/font_color_selected = Color( 0, 0, 0, 1 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_colors/clear_button_color = Color( 0, 0, 0, 1 )
+custom_colors/font_color_uneditable = Color( 0, 0, 0, 1 )
+expand_to_text_length = true
+caret_blink = true
+caret_blink_speed = 0.5
+__meta__ = {
+"_edit_use_anchors_": false
+}

@@ -1,0 +1,23 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://addons/dialogic/Editor/Events/Parts/Text/EventPart_TextEditor.gd" type="Script" id=1]
+
+[node name="TextEditor" type="VBoxContainer"]
+margin_right = 40.0
+margin_bottom = 40.0
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextEdit" type="TextEdit" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+syntax_highlighting = true
+show_line_numbers = true
+smooth_scrolling = true
+wrap_enabled = true
+
+[connection signal="focus_exited" from="TextEdit" to="." method="_on_TextEdit_focus_exited"]

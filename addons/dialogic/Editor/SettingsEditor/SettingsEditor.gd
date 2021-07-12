@@ -4,6 +4,7 @@ extends ScrollContainer
 onready var nodes = {
 	'themes': $VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer/HBoxContainer/ThemeOptionButton,
 	'advanced_themes': $VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer/HBoxContainer2/AdvancedThemes,
+	'translations': $VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2/HBoxContainer6/Translations,
 	'new_lines': $VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2/HBoxContainer2/NewLines,
 	'remove_empty_messages': $VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2/HBoxContainer/RemoveEmptyMessages,
 	'auto_color_names': $VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2/HBoxContainer3/AutoColorNames,
@@ -13,13 +14,19 @@ onready var nodes = {
 	'clear_current_timeline': $VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer3/HBoxContainer2/ClearCurrentTimeline,
 	'save_definitions_on_start': $VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer3/HBoxContainer3/SaveDefinitionsOnStart,
 	'save_definitions_on_end': $VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer3/HBoxContainer4/SaveDefinitionsOnEnd,
+	'delay_after_options': $VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer/HBoxContainer/LineEdit,
 }
 
 var THEME_KEYS := [
 	'advanced_themes',
 	]
 
+var INPUT_KEYS := [
+	'delay_after_options',
+	]
+
 var DIALOG_KEYS := [
+	'translations',
 	'new_lines', 
 	'remove_empty_messages',
 	'auto_color_names',
@@ -39,6 +46,7 @@ func _ready():
 	
 	# Themes
 	nodes['themes'].connect('item_selected', self, '_on_default_theme_selected')
+	nodes['delay_after_options'].connect('text_changed', self, '_on_delay_options_text_changed')
 	# TODO move to theme section later
 	nodes['advanced_themes'].connect('toggled', self, '_on_item_toggled', ['dialog', 'advanced_themes'])
 	
@@ -52,14 +60,17 @@ func _ready():
 func update_data():
 	var settings = DialogicResources.get_settings_config()
 	refresh_themes(settings)
-	load_values(settings, "dialog")
-	load_values(settings, "saving")
+	load_values(settings, "dialog", DIALOG_KEYS)
+	load_values(settings, "saving", SAVING_KEYS)
+	load_values(settings, "input", INPUT_KEYS)
 
-
-func load_values(settings: ConfigFile, section: String):
-	for k in DIALOG_KEYS:
+func load_values(settings: ConfigFile, section: String, key: Array):
+	for k in key:
 		if settings.has_section_key(section, k):
-			nodes[k].pressed = settings.get_value(section, k)
+			if nodes[k] is LineEdit:
+				nodes[k].text = settings.get_value(section, k)
+			else:
+				nodes[k].pressed = settings.get_value(section, k)
 
 
 func refresh_themes(settings: ConfigFile):
@@ -92,6 +103,10 @@ func refresh_themes(settings: ConfigFile):
 
 func _on_default_theme_selected(index):
 	set_value('theme', 'default', nodes['themes'].get_item_metadata(index)['file'])
+
+
+func _on_delay_options_text_changed(text):
+	set_value('input', 'delay_after_options', text)
 
 
 func _on_item_toggled(value: bool, section: String, key: String):

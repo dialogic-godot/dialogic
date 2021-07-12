@@ -1,0 +1,22 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://addons/dialogic/Editor/Events/Parts/ResourcePickers/Definitions/EventPart_GlossaryPicker.gd" type="Script" id=1]
+[ext_resource path="res://addons/dialogic/Editor/Events/styles/MenuButtonNormal.tres" type="StyleBox" id=2]
+[ext_resource path="res://addons/dialogic/Editor/Events/styles/MenuButtonHover.tres" type="StyleBox" id=3]
+
+[node name="GlossaryPicker" type="VBoxContainer"]
+margin_right = 40.0
+margin_bottom = 40.0
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MenuButton" type="MenuButton" parent="."]
+margin_right = 161.0
+margin_bottom = 40.0
+size_flags_vertical = 3
+custom_styles/hover = ExtResource( 3 )
+custom_styles/normal = ExtResource( 2 )
+text = "Select Glossary Item"
+flat = false

@@ -1,0 +1,124 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://addons/dialogic/Editor/Events/Parts/Logic/OperationPicker.tscn" type="PackedScene" id=1]
+[ext_resource path="res://addons/dialogic/Editor/Events/Parts/Text/CustomLineEdit.tscn" type="PackedScene" id=2]
+[ext_resource path="res://addons/dialogic/Editor/Events/Parts/ResourcePickers/Definitions/DefinitionPicker.tscn" type="PackedScene" id=3]
+[ext_resource path="res://addons/dialogic/Editor/Events/Parts/Logic/EventPart_SetValuePicker.gd" type="Script" id=4]
+
+[sub_resource type="Image" id=3]
+data = {
+"data": PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ),
+"format": "LumAlpha8",
+"height": 16,
+"mipmaps": false,
+"width": 16
+}
+
+[sub_resource type="ImageTexture" id=2]
+flags = 4
+flags = 4
+image = SubResource( 3 )
+size = Vector2( 16, 16 )
+
+[node name="SetValuePicker" type="VBoxContainer"]
+margin_right = 40.0
+margin_bottom = 40.0
+script = ExtResource( 4 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HBox" type="HBoxContainer" parent="."]
+margin_right = 671.0
+margin_bottom = 30.0
+
+[node name="Label" type="Label" parent="HBox"]
+margin_top = 8.0
+margin_right = 20.0
+margin_bottom = 22.0
+text = "Set"
+
+[node name="DefinitionPicker" parent="HBox" instance=ExtResource( 3 )]
+margin_left = 24.0
+margin_right = 156.0
+
+[node name="OperationPicker" parent="HBox" instance=ExtResource( 1 )]
+margin_left = 160.0
+margin_right = 231.0
+margin_bottom = 30.0
+
+[node name="InputValue" type="HBoxContainer" parent="HBox"]
+margin_left = 235.0
+margin_right = 297.0
+margin_bottom = 30.0
+
+[node name="Spacer" type="Control" parent="HBox/InputValue"]
+margin_right = 10.0
+margin_bottom = 30.0
+rect_min_size = Vector2( 10, 0 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="InputField" parent="HBox/InputValue" instance=ExtResource( 2 )]
+margin_left = 14.0
+margin_top = 1.0
+margin_right = 62.0
+margin_bottom = 28.0
+
+[node name="RandomValue" type="HBoxContainer" parent="HBox"]
+margin_left = 301.0
+margin_right = 625.0
+margin_bottom = 30.0
+custom_constants/separation = 5
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="HBox/RandomValue"]
+margin_top = 8.0
+margin_right = 148.0
+margin_bottom = 22.0
+text = "a random number from"
+
+[node name="LowerLimit" type="SpinBox" parent="HBox/RandomValue"]
+margin_left = 153.0
+margin_right = 227.0
+margin_bottom = 30.0
+allow_greater = true
+allow_lesser = true
+
+[node name="Label2" type="Label" parent="HBox/RandomValue"]
+margin_left = 232.0
+margin_top = 8.0
+margin_right = 245.0
+margin_bottom = 22.0
+text = "to"
+
+[node name="UpperLimit" type="SpinBox" parent="HBox/RandomValue"]
+margin_left = 250.0
+margin_right = 324.0
+margin_bottom = 30.0
+allow_greater = true
+allow_lesser = true
+
+[node name="Spacer" type="Control" parent="HBox"]
+margin_left = 629.0
+margin_right = 639.0
+margin_bottom = 30.0
+rect_min_size = Vector2( 10, 0 )
+
+[node name="RandomEnabled" type="Button" parent="HBox"]
+self_modulate = Color( 1, 1, 1, 0.501961 )
+margin_left = 643.0
+margin_right = 671.0
+margin_bottom = 30.0
+hint_tooltip = "Set to a random integer"
+focus_mode = 0
+toggle_mode = true
+icon = SubResource( 2 )
+flat = true
+
+[connection signal="value_changed" from="HBox/RandomValue/LowerLimit" to="." method="_on_LowerLimit_value_changed"]
+[connection signal="value_changed" from="HBox/RandomValue/UpperLimit" to="." method="_on_UpperLimit_value_changed"]
+[connection signal="toggled" from="HBox/RandomEnabled" to="." method="_on_RandomEnabled_toggled"]

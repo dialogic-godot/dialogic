@@ -1,9 +1,18 @@
 tool
 class_name DialogicResources
 
+## This class is used by the DialogicEditor to access the resources files
+## For example by the Editors (Timeline, Character, Theme), the MasterTree and the EventParts
+
+## It is also used by the DialogicUtil class and the DialogicSingleton
 
 const RESOURCES_DIR: String = "res://dialogic" # Readonly, used for static data
 const WORKING_DIR: String = "user://dialogic" # Readwrite, used for saves
+
+
+## *****************************************************************************
+##							BASIC JSON FUNCTION
+## *****************************************************************************
 
 
 static func load_json(path: String, default: Dictionary={}) -> Dictionary:
@@ -26,6 +35,19 @@ static func load_json(path: String, default: Dictionary={}) -> Dictionary:
 	
 	# If everything else fails
 	return default
+
+
+static func set_json(path: String, data: Dictionary):
+	var file = File.new()
+	var err = file.open(path, File.WRITE)
+	if err == OK:
+		file.store_line(JSON.print(data, '\t', true))
+		file.close()
+	return err
+
+## *****************************************************************************
+##							INITIALIZATION
+## *****************************************************************************
 
 
 static func init_dialogic_files() -> void:
@@ -60,6 +82,7 @@ static func get_config_files_paths() -> Dictionary:
 	return {
 		'SETTINGS_FILE': RESOURCES_DIR + "/settings.cfg",
 		'DEFAULT_DEFINITIONS_FILE': RESOURCES_DIR + "/definitions.json",
+		'FOLDER_STRUCTURE_FILE': RESOURCES_DIR + "/folder_structure.json",
 		'SAVED_DEFINITIONS_FILE': WORKING_DIR + "/definitions.json",
 		'SAVED_STATE_FILE': WORKING_DIR + "/state.json",
 	}
@@ -98,7 +121,7 @@ static func init_definitions_saves():
 	var sink := File.new()
 	var paths := get_config_files_paths()
 	var err = sink.open(paths["SAVED_DEFINITIONS_FILE"], File.WRITE)
-	print('[Dialogic] Saved definitions not present, creating file: ' + str(err))
+	print('[Dialogic] Initializing save file: ' + str(err))
 	if err == OK:
 		sink.store_string('')
 		sink.close()
@@ -118,6 +141,10 @@ static func init_definitions_saves():
 	source.close()
 	sink.close()
 
+
+## *****************************************************************************
+##							BASIC FILE FUNCTION
+## *****************************************************************************
 
 static func get_path(name: String, extra: String ='') -> String:
 	var paths: Dictionary = get_working_directories()
@@ -157,8 +184,18 @@ static func create_empty_file(path):
 	file.open(path, File.WRITE)
 	file.store_string('')
 	file.close()
+
+
+static func remove_file(path: String):
+	var dir = Directory.new()
+	var _err = dir.remove(path)
 	
-	
+	if _err != OK:
+		print("[D] There was an error when deleting file at {filepath}. Error: {error}".format(
+			{"filepath":path,"error":_err}
+		))
+
+
 static func copy_file(path_from, path_to):
 	if (path_from == ''):
 		push_error("[Dialogic] Could not copy empty filename")
@@ -186,7 +223,9 @@ static func copy_file(path_from, path_to):
 	return OK
 	pass
 
-# CONFIG UTIL
+## *****************************************************************************
+##							CONFIG
+## *****************************************************************************
 
 
 static func get_config(id: String) -> ConfigFile:
@@ -199,34 +238,11 @@ static func get_config(id: String) -> ConfigFile:
 	return config
 
 
-# FILE UTIL
 
-
-static func remove_file(path: String):
-	var dir = Directory.new()
-	var _err = dir.remove(path)
-	
-	if _err != OK:
-		print("[D] There was an error when deleting file at {filepath}. Error: {error}".format(
-			{"filepath":path,"error":_err}
-		))
-
-
-# JSON UTIL
-
-
-static func set_json(path: String, data: Dictionary):
-	var file = File.new()
-	var err = file.open(path, File.WRITE)
-	if err == OK:
-		file.store_line(to_json(data))
-		file.close()
-	return err
-
-
-# TIMELINE
+## *****************************************************************************
+##							TIMELINES
+## *****************************************************************************
 # Can only be edited in the editor
-
 
 static func get_timeline_json(path: String):
 	return load_json(get_path('TIMELINE_DIR', path))
@@ -242,9 +258,10 @@ static func delete_timeline(filename: String):
 	remove_file(get_path('TIMELINE_DIR', filename))
 
 
-# CHARACTER
+## *****************************************************************************
+##							CHARACTERS
+## *****************************************************************************
 # Can only be edited in the editor
-
 
 static func get_character_json(path: String):
 	return load_json(get_path('CHAR_DIR', path))
@@ -260,9 +277,10 @@ static func delete_character(filename: String):
 	remove_file(get_path('CHAR_DIR', filename))
 
 
-# THEME
+## *****************************************************************************
+##							THEMES
+## *****************************************************************************
 # Can only be edited in the editor
-
 
 static func get_theme_config(filename: String):
 	var config = ConfigFile.new()
@@ -294,7 +312,9 @@ static func delete_theme(filename: String):
 static func duplicate_theme(from_filename: String, to_filename: String):
 	copy_file(get_path('THEME_DIR', from_filename), get_path('THEME_DIR', to_filename))
 
-# SETTINGS
+## *****************************************************************************
+##							SETTINGS
+## *****************************************************************************
 # Can only be edited in the editor
 
 
@@ -308,7 +328,10 @@ static func set_settings_value(section: String, key: String, value):
 	config.save(get_config_files_paths()['SETTINGS_FILE'])
 
 
-# STATE
+## *****************************************************************************
+##							STATE
+## *****************************************************************************
+# Can only be edited in the editor
 
 
 static func get_saved_state() -> Dictionary:
@@ -320,7 +343,9 @@ static func save_saved_state_config(data: Dictionary):
 	set_json(get_config_files_paths()['SAVED_STATE_FILE'], data)
 
 
-# DEFAULT DEFINITIONS
+## *****************************************************************************
+##						DEFAULT DEFINITIONS
+## *****************************************************************************
 # Can only be edited in the editor
 
 
@@ -358,9 +383,10 @@ static func delete_default_definition(id: String):
 	save_default_definitions(data)
 
 
-# SAVED DEFINITIONS
-# Can be edited at runtime, and will persist across runs
-
+## *****************************************************************************
+##						SAVED DEFINITIONS
+## *****************************************************************************
+# Can only be edited in the editor
 
 static func get_saved_definitions(default: Dictionary = {'variables': [], 'glossary': []}) -> Dictionary:
 	return load_json(get_config_files_paths()['SAVED_DEFINITIONS_FILE'], default)
@@ -369,3 +395,44 @@ static func get_saved_definitions(default: Dictionary = {'variables': [], 'gloss
 static func save_saved_definitions(data: Dictionary):
 	init_working_dir()
 	return set_json(get_config_files_paths()['SAVED_DEFINITIONS_FILE'], data)
+
+## *****************************************************************************
+##						FOLDER STRUCTURE
+## *****************************************************************************
+# The DialogicEditor uses a fake folder structure
+# Can only be edited in the editor
+
+static func get_resource_folder_structure() -> Dictionary:
+	return load_json(get_config_files_paths()['FOLDER_STRUCTURE_FILE'], 
+		{"folders":
+			{"Timelines":
+				{
+					"folders":{},
+					"files":[],
+					'metadata':{'color':null, 'folded':false}
+				},
+			"Characters":
+				{
+					"folders":{},
+					"files":[],
+					'metadata':{'color':null, 'folded':false}
+				},
+			"Definitions":
+				{
+					"folders":{},
+					"files":[],
+					'metadata':{'color':null, 'folded':false}
+				},
+			"Themes":
+				{
+					"folders":{},
+					"files":[],
+					'metadata':{'color':null, 'folded':false}
+				},
+			}, 
+		"files":[]
+		})
+
+static func save_resource_folder_structure(data):
+	set_json(get_config_files_paths()['FOLDER_STRUCTURE_FILE'], data)
+	

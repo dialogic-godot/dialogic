@@ -1,0 +1,54 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://addons/dialogic/Editor/Events/Templates/EventTemplate.tscn" type="PackedScene" id=1]
+[ext_resource path="res://addons/dialogic/Editor/Events/Parts/Audio/AudioPicker.tscn" type="PackedScene" id=3]
+[ext_resource path="res://addons/dialogic/Editor/Events/styles/AudioEvent.tres" type="StyleBox" id=4]
+[ext_resource path="res://addons/dialogic/Images/Event Icons/Main Icons/audio-event.svg" type="Texture" id=5]
+
+[node name="AudioEvent" instance=ExtResource( 1 )]
+event_data = {
+"audio": "stop",
+"audio_bus": "Master",
+"event_id": "dialogic_030",
+"event_name": "AudioEvent",
+"file": "",
+"volume": 0.0
+}
+event_style = ExtResource( 4 )
+event_icon = ExtResource( 5 )
+event_name = "Audio Event"
+body_scene = ExtResource( 3 )
+expand_on_default = false
+
+[node name="PanelContainer" parent="." index="1"]
+custom_styles/panel = ExtResource( 4 )
+
+[node name="IconTexture" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="1"]
+margin_right = 32.0
+texture = ExtResource( 5 )
+
+[node name="TitleLabel" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="2"]
+margin_left = 42.0
+margin_right = 118.0
+text = "Audio Event"
+
+[node name="Content" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="3"]
+margin_left = 128.0
+margin_right = 138.0
+
+[node name="ExpandControl" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="4"]
+visible = true
+margin_left = 148.0
+margin_right = 373.0
+
+[node name="Spacer" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="5"]
+margin_left = 383.0
+
+[node name="OptionsControl" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="6"]
+items = [ "Move Up", null, 0, false, false, 0, 0, null, "", false, "Move Down", null, 0, false, false, 1, 0, null, "", false, "", null, 0, false, false, 2, 0, null, "", false, "Remove", null, 0, false, false, 3, 0, null, "", false ]
+
+[node name="Body" parent="PanelContainer/MarginContainer/VBoxContainer" index="1"]
+margin_bottom = 62.0
+
+[node name="Content" parent="PanelContainer/MarginContainer/VBoxContainer/Body" index="0"]
+margin_bottom = 28.0

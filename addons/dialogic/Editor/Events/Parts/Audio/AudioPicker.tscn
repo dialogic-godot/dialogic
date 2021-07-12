@@ -1,0 +1,117 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://addons/dialogic/Editor/Events/Parts/Audio/EventPart_AudioPicker.gd" type="Script" id=1]
+
+[sub_resource type="Image" id=3]
+data = {
+"data": PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ),
+"format": "LumAlpha8",
+"height": 16,
+"mipmaps": false,
+"width": 16
+}
+
+[sub_resource type="ImageTexture" id=2]
+flags = 4
+flags = 4
+image = SubResource( 3 )
+size = Vector2( 16, 16 )
+
+[node name="AudioPicker" type="VBoxContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_right = -718.0
+margin_bottom = -580.0
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+event_name = "AudioEvent"
+
+[node name="HBox" type="HBoxContainer" parent="."]
+margin_right = 675.0
+margin_bottom = 22.0
+size_flags_horizontal = 3
+
+[node name="Name" type="Label" parent="HBox"]
+margin_top = 4.0
+margin_right = 266.0
+margin_bottom = 18.0
+mouse_filter = 1
+text = "No sound (will stop previous Audio Event)"
+
+[node name="ButtonAudio" type="Button" parent="HBox"]
+margin_left = 270.0
+margin_right = 294.0
+margin_bottom = 22.0
+text = "..."
+
+[node name="ButtonClear" type="Button" parent="HBox"]
+margin_left = 298.0
+margin_right = 326.0
+margin_bottom = 22.0
+disabled = true
+icon = SubResource( 2 )
+
+[node name="ButtonPreviewPlay" type="Button" parent="HBox"]
+margin_left = 330.0
+margin_right = 358.0
+margin_bottom = 22.0
+disabled = true
+icon = SubResource( 2 )
+
+[node name="AudioBusLabel" type="Label" parent="HBox"]
+visible = false
+margin_left = 362.0
+margin_top = 5.0
+margin_right = 398.0
+margin_bottom = 19.0
+text = "  Bus:"
+
+[node name="BusSelector" type="OptionButton" parent="HBox"]
+visible = false
+margin_left = 362.0
+margin_right = 435.0
+margin_bottom = 24.0
+text = "Master"
+items = [ "Master", null, false, 0, null ]
+selected = 0
+
+[node name="VolumeLabel" type="Label" parent="HBox"]
+visible = false
+margin_left = 362.0
+margin_top = 5.0
+margin_right = 423.0
+margin_bottom = 19.0
+text = "  Volume:"
+
+[node name="Volume" type="SpinBox" parent="HBox"]
+visible = false
+margin_left = 362.0
+margin_right = 436.0
+margin_bottom = 24.0
+min_value = -80.0
+max_value = 24.0
+step = 0.01
+suffix = "dB"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Preview" type="Label" parent="HBox"]
+visible = false
+margin_left = 362.0
+margin_top = 4.0
+margin_right = 390.0
+margin_bottom = 18.0
+custom_colors/font_color = Color( 1, 1, 1, 0.513726 )
+text = "    ..."
+
+[node name="AudioPreview" type="AudioStreamPlayer" parent="HBox"]
+
+[connection signal="pressed" from="HBox/ButtonAudio" to="HBox" method="_on_ButtonAudio_pressed"]
+[connection signal="pressed" from="HBox/ButtonClear" to="HBox" method="_on_ButtonClear_pressed"]
+[connection signal="pressed" from="HBox/ButtonPreviewPlay" to="HBox" method="_on_ButtonPreviewPlay_pressed"]
+[connection signal="item_selected" from="HBox/BusSelector" to="HBox" method="_on_BusSelector_item_selected"]
+[connection signal="value_changed" from="HBox/Volume" to="HBox" method="_on_Volume_value_changed"]
+[connection signal="finished" from="HBox/AudioPreview" to="HBox" method="_on_AudioPreview_finished"]

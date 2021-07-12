@@ -1,0 +1,47 @@
+[gd_scene load_steps=2 format=2]
+
+[sub_resource type="StyleBoxFlat" id=1]
+bg_color = Color( 1, 1, 1, 1 )
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color( 0.568627, 0.568627, 0.568627, 1 )
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[node name="DragPreview" type="CenterContainer"]
+margin_right = 38.0
+margin_bottom = 34.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Panel" type="PanelContainer" parent="."]
+margin_left = 3.0
+margin_top = 3.0
+margin_right = 35.0
+margin_bottom = 31.0
+custom_styles/panel = SubResource( 1 )
+
+[node name="HBox" type="HBoxContainer" parent="Panel"]
+margin_left = 4.0
+margin_top = 4.0
+margin_right = 28.0
+margin_bottom = 24.0
+
+[node name="Icon" type="TextureRect" parent="Panel/HBox"]
+margin_right = 20.0
+margin_bottom = 20.0
+rect_min_size = Vector2( 20, 20 )
+expand = true
+stretch_mode = 4
+
+[node name="Label" type="Label" parent="Panel/HBox"]
+margin_left = 24.0
+margin_top = 3.0
+margin_right = 24.0
+margin_bottom = 17.0
+size_flags_horizontal = 3
