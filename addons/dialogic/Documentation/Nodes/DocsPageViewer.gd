@@ -44,7 +44,7 @@ func load_page(page_path: String, section : String=''):
 	if page_path.count("#") > 0:
 		var result = page_path.split('#')
 		page_path = result[0]
-		section = result[1]
+		section = '#'+result[1]
 	
 	# add necessary parts to the path
 	if not page_path.begins_with("res://"):

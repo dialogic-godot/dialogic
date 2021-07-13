@@ -109,7 +109,7 @@ func _ready():
 	documentation_tree = tree.create_item(root)
 	documentation_tree.set_text(0, "Documentation")
 	documentation_tree.set_icon(0, get_icon("Help", "EditorIcons"))
-	documentation_tree.set_metadata(0, {'editor': 'Documentation', 'name':'Start', 'path':'Welcome.md'})
+	documentation_tree.set_metadata(0, {'editor': 'Documentation Root', 'name':'Start', 'path':'Welcome.md'})
 
 	
 	# creates the context menus
@@ -280,7 +280,7 @@ func build_themes(selected_item: String=''):
 
 
 func _on_item_collapsed(item: TreeItem):
-	if filter_tree_term.empty() and item != null and 'Root' in item.get_metadata(0)['editor']:
+	if filter_tree_term.empty() and item != null and 'Root' in item.get_metadata(0)['editor'] and not 'Documentation' in item.get_metadata(0)['editor']:
 		DialogicUtil.set_folder_meta(get_item_folder(item, ''), 'folded', item.collapsed)
 
 func build_documentation(selected_item: String=''):
@@ -288,7 +288,7 @@ func build_documentation(selected_item: String=''):
 	while child:
 		child.call_recursive("call_deferred", "free")
 		child = child.get_next()
-	$DocsTreeHelper.build_documentation_tree(self, documentation_tree, {'editor':'Documentation', 'editable':'false'}, {'editor':'Documentation', 'editable':'false'}, filter_tree_term)
+	$DocsTreeHelper.build_documentation_tree(self, documentation_tree, {'editor':'Documentation Root', 'editable':'false'}, {'editor':'Documentation', 'editable':'false'}, filter_tree_term)
 	call_deferred("update")
 	
 ## *****************************************************************************
@@ -321,7 +321,7 @@ func _on_item_selected():
 		'Settings':
 			settings_editor.update_data()
 			show_settings_editor()
-		'Documentation':
+		'Documentation', 'Documentation Root':
 			documentation_viewer.load_page(metadata['path'])
 			show_documentatio_editor()
 		_:
@@ -443,17 +443,28 @@ func create_rmb_context_menus():
 	add_child(definition_folder_popup)
 	rmb_popup_menus["Definition Root"] = definition_folder_popup
 	
+	var documentation_folder_popup = PopupMenu.new()
+	documentation_folder_popup.add_icon_item(get_icon("Edit", "EditorIcons") ,'Edit Page')
+	add_child(documentation_folder_popup)
+	rmb_popup_menus["Documentation Root"] = documentation_folder_popup
+	
+	var documentation_popup = PopupMenu.new()
+	documentation_popup.add_icon_item(get_icon("Edit", "EditorIcons") ,'Edit Page')
+	add_child(documentation_popup)
+	rmb_popup_menus["Documentation"] = documentation_popup
 	
 	# Connecting context menus
 	timeline_popup.connect('id_pressed', self, '_on_TimelinePopupMenu_id_pressed')
 	character_popup.connect('id_pressed', self, '_on_CharacterPopupMenu_id_pressed')
 	theme_popup.connect('id_pressed', self, '_on_ThemePopupMenu_id_pressed')
 	definition_popup.connect('id_pressed', self, '_on_DefinitionPopupMenu_id_pressed')
-	
+	documentation_popup.connect('id_pressed', self, '_on_DocumentationPopupMenu_id_pressed')
+		
 	timeline_folder_popup.connect('id_pressed', self, '_on_TimelineRootPopupMenu_id_pressed')
 	character_folder_popup.connect('id_pressed', self, '_on_CharacterRootPopupMenu_id_pressed')
 	theme_folder_popup.connect('id_pressed', self, '_on_ThemeRootPopupMenu_id_pressed')
 	definition_folder_popup.connect('id_pressed', self, '_on_DefinitionRootPopupMenu_id_pressed')
+	documentation_folder_popup.connect('id_pressed', self, '_on_DocumentationPopupMenu_id_pressed')
 
 func _on_item_rmb_selected(position):
 	var item = get_selected().get_metadata(0)
@@ -528,7 +539,7 @@ func _on_DefinitionPopupMenu_id_pressed(id):
 			editor_reference.popup_remove_confirmation('Value')
 		elif glossary_entry_editor.visible:
 			editor_reference.popup_remove_confirmation('GlossaryEntry')
-			
+	
 ## FOLDER POPUPS
 
 # Timeline Folder context menu
@@ -582,6 +593,11 @@ func _on_ThemeRootPopupMenu_id_pressed(id):
 			return
 		editor_reference.get_node('RemoveFolderConfirmation').popup_centered()
 
+func _on_DocumentationPopupMenu_id_pressed(id):
+	if id == 0: # edit text
+		var x = File.new()
+		x.open(tree.get_selected().get_metadata(0)["path"], File.READ)
+		OS.shell_open(x.get_path_absolute())
 ## *****************************************************************************
 ##						 CREATING AND REMOVING
 ## *****************************************************************************
