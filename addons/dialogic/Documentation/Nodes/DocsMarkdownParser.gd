@@ -130,6 +130,7 @@ func parse(content : String,  file_path:String = '', docs_path:String = ''):
 	if result:
 		for res in result:
 			var heading = res.get_string("heading")
+			heading1s.append(heading)
 			paresed_text = paresed_text.replace("#"+heading, "[font="+heading1_font+"]"+heading.strip_edges()+"[/font]")
 	
 	## Find all heading2s
@@ -138,6 +139,7 @@ func parse(content : String,  file_path:String = '', docs_path:String = ''):
 	if result:
 		for res in result:
 			var heading = res.get_string("heading")
+			heading2s.append(heading)
 			paresed_text = paresed_text.replace("##"+heading, "[font="+heading2_font+"]"+heading.strip_edges()+"[/font]")
 	
 	## Find all heading3s

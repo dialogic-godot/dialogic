@@ -58,6 +58,7 @@ __meta__ = {
 }
 
 [node name="Editing" type="HBoxContainer" parent="."]
+visible = false
 anchor_left = 1.0
 anchor_right = 1.0
 margin_left = -202.807
@@ -73,13 +74,13 @@ __meta__ = {
 [node name="RefreshPage" type="Button" parent="Editing"]
 margin_left = 94.0
 margin_right = 154.0
-margin_bottom = 24.0
+margin_bottom = 25.0
 text = "Refresh"
 
 [node name="EditPage" type="Button" parent="Editing"]
 margin_left = 158.0
 margin_right = 194.0
-margin_bottom = 24.0
+margin_bottom = 25.0
 text = "Edit"
 
 [node name="Up" type="Button" parent="."]
@@ -92,6 +93,7 @@ margin_top = -41.6541
 margin_right = -10.5946
 margin_bottom = -11.6541
 rect_min_size = Vector2( 30, 30 )
+hint_tooltip = "Back to top"
 icon = SubResource( 7 )
 expand_icon = true
 __meta__ = {
