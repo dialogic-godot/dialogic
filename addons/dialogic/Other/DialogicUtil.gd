@@ -18,38 +18,17 @@ static func get_character_list() -> Array:
 	var characters: Array = []
 	for file in DialogicResources.listdir(DialogicResources.get_path('CHAR_DIR')):
 		if '.json' in file:
-			var data: Dictionary     = DialogicResources.get_character_json(file)
-			var color: Color         = Color("#ffffff")
-			var c_name: String       = data['id']
-			var portraits: Array     = []
-			var display_name: String = ''
-			var nickname: String = ''
+			var data: Dictionary = DialogicResources.get_character_json(file)
 			
-			if data.has('color'):
-				color = Color(data['color'])
-			if data.has('name'):
-				c_name = data['name']
-			if data.has('portraits'):
-				portraits = data['portraits']
-			if data.has('display_name'):
-				if data['display_name_bool']:
-					if data.has('display_name'):
-						display_name = data['display_name']
-			if data.has('nickname'):
-				if data['nickname_bool']:
-					if data.has('nickname'):
-						nickname = data['nickname']
-						
 			characters.append({
-				'name': c_name,
-				'color': color,
+				'name': data.get('name', data['id']),
+				'color': Color(data.get('color', "#ffffff")),
 				'file': file,
-				'portraits': portraits,
-				'display_name': display_name,
-				'nickname': nickname,
+				'portraits': data.get('portraits', []),
+				'display_name': data.get('display_name', ''),
+				'nickname': data.get('nickname', ''),
 				'data': data # This should be the only thing passed... not sure what I was thinking
 			})
-
 	return characters
 
 static func get_characters_dict():

@@ -15,6 +15,7 @@ onready var nodes = {
 	'save_definitions_on_start': $VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer3/HBoxContainer3/SaveDefinitionsOnStart,
 	'save_definitions_on_end': $VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer3/HBoxContainer4/SaveDefinitionsOnEnd,
 	'delay_after_options': $VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer/HBoxContainer/LineEdit,
+	'default_action_key': $VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer/HBoxContainer2/DefaultActionKey,
 }
 
 var THEME_KEYS := [
@@ -23,6 +24,7 @@ var THEME_KEYS := [
 
 var INPUT_KEYS := [
 	'delay_after_options',
+	'default_action_key'
 	]
 
 var DIALOG_KEYS := [
@@ -49,7 +51,10 @@ func _ready():
 	nodes['delay_after_options'].connect('text_changed', self, '_on_delay_options_text_changed')
 	# TODO move to theme section later
 	nodes['advanced_themes'].connect('toggled', self, '_on_item_toggled', ['dialog', 'advanced_themes'])
-	
+
+	nodes['default_action_key'].connect('pressed', self, '_on_default_action_key_presssed')
+	nodes['default_action_key'].connect('item_selected', self, '_on_default_action_key_item_selected')
+		
 	for k in DIALOG_KEYS:
 		nodes[k].connect('toggled', self, '_on_item_toggled', ['dialog', k])
 	
@@ -64,13 +69,17 @@ func update_data():
 	load_values(settings, "saving", SAVING_KEYS)
 	load_values(settings, "input", INPUT_KEYS)
 
+
 func load_values(settings: ConfigFile, section: String, key: Array):
 	for k in key:
 		if settings.has_section_key(section, k):
 			if nodes[k] is LineEdit:
 				nodes[k].text = settings.get_value(section, k)
 			else:
-				nodes[k].pressed = settings.get_value(section, k)
+				if k == 'default_action_key':
+					nodes['default_action_key'].text = settings.get_value(section, k)
+				else:
+					nodes[k].pressed = settings.get_value(section, k)
 
 
 func refresh_themes(settings: ConfigFile):
@@ -111,6 +120,23 @@ func _on_delay_options_text_changed(text):
 
 func _on_item_toggled(value: bool, section: String, key: String):
 	set_value(section, key, value)
+
+
+func _on_default_action_key_presssed() -> void:
+	var settings = DialogicResources.get_settings_config()
+	nodes['default_action_key'].clear()
+	nodes['default_action_key'].add_item(settings.get_value('input', 'default_action_key', '[Default]'))
+	nodes['default_action_key'].add_item('[Default]')
+	InputMap.load_from_globals()
+	for a in InputMap.get_actions():
+		nodes['default_action_key'].add_item(a)
+
+
+func _on_default_action_key_item_selected(index) -> void:
+	print(index)
+	if index == 0:
+		print('here')
+	set_value('input', 'default_action_key', nodes['default_action_key'].text)
 
 
 # Reading and saving data to the settings file

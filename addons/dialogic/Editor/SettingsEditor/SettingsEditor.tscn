@@ -47,22 +47,22 @@ text = "Default"
 
 [node name="ThemeOptionButton" type="OptionButton" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer/HBoxContainer"]
 margin_left = 50.0
-margin_right = 190.0
+margin_right = 228.0
 margin_bottom = 20.0
 rect_min_size = Vector2( 140, 0 )
-text = "Long-fade-in"
+text = "theme-1622916617.cfg"
 items = [ "another", null, false, 0, {
 "file": "theme-1622727938.cfg"
-}, "Long-fade-in", null, false, 1, {
-"file": "theme-1624535517.cfg"
-}, "test", null, false, 2, {
-"file": "theme-1622237713.cfg"
-}, "theme-1622916617.cfg", null, false, 3, {
+}, "test", null, false, 1, {
+"file": "theme-1625139864.cfg"
+}, "theme-1622916617.cfg", null, false, 2, {
 "file": "theme-1622916617.cfg"
-}, "theme-1622916814.cfg", null, false, 4, {
+}, "theme-1622916814.cfg", null, false, 3, {
 "file": "theme-1622916814.cfg"
+}, "theme-1625138420.cfg", null, false, 4, {
+"file": "theme-1625138420.cfg"
 } ]
-selected = 1
+selected = 2
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer"]
 margin_top = 50.0
@@ -292,7 +292,7 @@ margin_bottom = 452.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer2"]
 margin_right = 304.0
-margin_bottom = 50.0
+margin_bottom = 74.0
 
 [node name="SectionTitle2" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer" instance=ExtResource( 2 )]
 margin_right = 304.0
@@ -321,3 +321,21 @@ margin_top = 5.0
 margin_right = 304.0
 margin_bottom = 19.0
 text = " seconds"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer"]
+margin_top = 54.0
+margin_right = 304.0
+margin_bottom = 74.0
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer/HBoxContainer2"]
+margin_top = 3.0
+margin_right = 115.0
+margin_bottom = 17.0
+text = "Default action key"
+
+[node name="DefaultActionKey" type="OptionButton" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer/HBoxContainer2"]
+margin_left = 119.0
+margin_right = 240.0
+margin_bottom = 20.0
+hint_tooltip = "The default value is \"ui_accept\""
+text = "[Select Action]"

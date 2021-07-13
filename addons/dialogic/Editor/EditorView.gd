@@ -117,7 +117,6 @@ func _on_RemoveConfirmation_confirmed(what: String = ''):
 	if what == 'Timeline':
 		var target = $MainPanel/TimelineEditor.timeline_file
 		DialogicResources.delete_timeline(target)
-		DialogicUtil.update_resource_folder_structure()
 	elif what == 'GlossaryEntry':
 		var target = $MainPanel/GlossaryEntryEditor.current_definition['id']
 		DialogicResources.delete_default_definition(target)
@@ -130,6 +129,7 @@ func _on_RemoveConfirmation_confirmed(what: String = ''):
 	elif what == 'Character':
 		var filename = $MainPanel/CharacterEditor.opened_character_data['id']
 		DialogicResources.delete_character(filename)
+	DialogicUtil.update_resource_folder_structure()
 	$MainPanel/MasterTreeContainer/MasterTree.remove_selected()
 	$MainPanel/MasterTreeContainer/MasterTree.hide_all_editors()
 

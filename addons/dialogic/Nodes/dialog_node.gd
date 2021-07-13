@@ -380,14 +380,11 @@ func set_dialog_script(value):
 func update_name(character) -> void:
 	if character.has('name'):
 		var parsed_name = character['name']
-		var color = Color.white
 		if character.has('display_name'):
 			if character['display_name'] != '':
 				parsed_name = character['display_name']
-		if character.has('color'):
-			color = character['color']
 		parsed_name = parse_definitions(parsed_name, true, false)
-		$TextBubble.update_name(parsed_name, color, current_theme.get_value('name', 'auto_color', true))
+		$TextBubble.update_name(parsed_name, character.get('color', Color.white), current_theme.get_value('name', 'auto_color', true))
 	else:
 		$TextBubble.update_name('')
 
@@ -677,9 +674,8 @@ func event_handler(event: Dictionary):
 		# Close Dialog event
 		'dialogic_022':
 			emit_signal("event_start", "close_dialog", event)
-			var transition_duration = 1.0
-			if event.has('transition_duration'):
-				transition_duration = event['transition_duration']
+			var transition_duration = event.get('transition_duration', 1.0)
+			transition_duration = transition_duration
 			close_dialog_event(transition_duration)
 		# Wait seconds event
 		'dialogic_023':
@@ -991,7 +987,15 @@ func load_theme(filename):
 	# Box size
 	call_deferred('deferred_resize', $TextBubble.rect_size, theme.get_value('box', 'size', Vector2(910, 167)))
 
-	input_next = theme.get_value('settings', 'action_key', 'ui_accept')
+	# HERE
+	var settings_input = settings.get_value('input', 'default_action_key', '[Default]')
+	var theme_input = theme.get_value('settings', 'action_key', '[Default]')
+	
+	input_next = 'ui_accept'
+	if settings_input != '[Default]':
+		input_next = settings_input
+	if theme_input != '[Default]':
+		input_next = theme_input
 
 	
 	$TextBubble.load_theme(theme)
