@@ -1,13 +1,3 @@
-<style>
-  .markdown-body img:first-of-type {
-  max-width: none !important;
-  width: calc(100% + 64px);
-  position: relative;
-  left: -32px;
-  top: -16px;
-}
-</style>
-
 ![Hero Image](https://coppolaemilio.com/images/dialogic/dialogic-hero-1.3.png?v1)
 Create dialogs, characters and scenes to display conversations in your Godot games. 
 
