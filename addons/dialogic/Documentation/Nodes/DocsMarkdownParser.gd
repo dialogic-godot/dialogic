@@ -24,10 +24,17 @@ var imagelinks = []
 var lists = []
 var underlined = []
 
+var accent_color := Color()
+var sub_accent_color := Color()
+
 ################################################################################
 ##							PUBLIC FUNCTIONS 								  ##
 ################################################################################
 
+func set_accent_colors(new_accent_color : Color, new_sub_accent_color : Color) -> void:
+	accent_color = new_accent_color
+	sub_accent_color = new_sub_accent_color
+	
 ### Takes a markdown string and returns it as BBCode
 func parse(content : String,  file_path:String = '', docs_path:String = ''):
 	
@@ -88,7 +95,7 @@ func parse(content : String,  file_path:String = '', docs_path:String = ''):
 	result = regex.search_all(content)
 	if result:
 		for res in result:
-			paresed_text = paresed_text.replace("`"+res.get_string("coded")+"`","[code]"+res.get_string("coded")+"[/code]")
+			paresed_text = paresed_text.replace("`"+res.get_string("coded")+"`","[color=#"+accent_color.lightened(0.6).to_html()+"][code]"+res.get_string("coded")+"[/code][/color]")
 
 	## Find all occurences of list items
 	regex.compile("\\n\\s*[-+*](?<element>\\s.*)")
@@ -131,7 +138,7 @@ func parse(content : String,  file_path:String = '', docs_path:String = ''):
 		for res in result:
 			var heading = res.get_string("heading")
 			heading1s.append(heading)
-			paresed_text = paresed_text.replace("#"+heading, "[font="+heading1_font+"]"+heading.strip_edges()+"[/font]")
+			paresed_text = paresed_text.replace("#"+heading, "[color=#"+accent_color.lightened(0.2).to_html()+"][font="+heading1_font+"]"+heading.strip_edges()+"[/font][/color]")
 	
 	## Find all heading2s
 	regex.compile("(?:\\n|^)##(?<heading>[^#\\n]+)")
@@ -140,7 +147,7 @@ func parse(content : String,  file_path:String = '', docs_path:String = ''):
 		for res in result:
 			var heading = res.get_string("heading")
 			heading2s.append(heading)
-			paresed_text = paresed_text.replace("##"+heading, "[font="+heading2_font+"]"+heading.strip_edges()+"[/font]")
+			paresed_text = paresed_text.replace("##"+heading, "[color=#"+accent_color.lightened(0.5).to_html()+"][font="+heading2_font+"]"+heading.strip_edges()+"[/font][/color]")
 	
 	## Find all heading3s
 	regex.compile("(?:\\n|^)###(?<heading>[^#\\n]+)")
@@ -148,7 +155,7 @@ func parse(content : String,  file_path:String = '', docs_path:String = ''):
 	if result:
 		for res in result:
 			var heading = res.get_string("heading")
-			paresed_text = paresed_text.replace("###"+heading, "[font="+heading3_font+"]"+heading.strip_edges()+"[/font]")
+			paresed_text = paresed_text.replace("###"+heading, "[color=#"+accent_color.lightened(0.7).to_html()+"][font="+heading3_font+"]"+heading.strip_edges()+"[/font][/color]")
 	
 	## Find all heading4s
 	regex.compile("(?:\\n|^)####(?<heading>[^#\\n]+)")
@@ -156,7 +163,7 @@ func parse(content : String,  file_path:String = '', docs_path:String = ''):
 	if result:
 		for res in result:
 			var heading = res.get_string("heading")
-			paresed_text = paresed_text.replace("####"+heading, "[font="+heading4_font+"]"+heading.strip_edges()+"[/font]")
+			paresed_text = paresed_text.replace("####"+heading, "[color=#"+accent_color.lightened(0.85).to_html()+"][font="+heading4_font+"]"+heading.strip_edges()+"[/font][/color]")
 	
 	
 	## Find all heading5s
@@ -165,10 +172,10 @@ func parse(content : String,  file_path:String = '', docs_path:String = ''):
 	if result:
 		for res in result:
 			var heading = res.get_string("heading")
-			paresed_text = paresed_text.replace("#####"+heading, "[font="+heading5_font+"]"+heading.strip_edges()+"[/font]")
+			paresed_text = paresed_text.replace("#####"+heading, "[color=#"+accent_color.lightened(0.85).to_html()+"][font="+heading5_font+"]"+heading.strip_edges()+"[/font][/color]")
 
 	for i in links.size():
-		paresed_text = paresed_text.replace("["+linknames[i]+"]("+links[i]+")","[url="+links[i]+"]"+linknames[i]+"[/url]")
+		paresed_text = paresed_text.replace("["+linknames[i]+"]("+links[i]+")","[color=#"+accent_color.lightened(0.7).to_html()+"][url="+links[i]+"]"+linknames[i]+"[/url][/color]")
 	
 	for i in imagenames.size():
 		var imagelink_to_use = imagelinks[i]

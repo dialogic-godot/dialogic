@@ -17,5 +17,5 @@ func _on_FilterEntry_text_changed(new_text):
 	while child:
 		child.call_recursive("call_deferred", "free")
 		child = child.get_next()
-	DocsHelper.build_documentation_tree(DocTree, DocTree.documentation_tree,{},{}, new_text)
+	#DocsHelper.build_documentation_tree(DocTree, DocTree.documentation_tree,{},{}, new_text)
 	DocTree.call_deferred("update")

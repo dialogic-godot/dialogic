@@ -1,31 +1,34 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=13 format=2]
 
-[ext_resource path="res://addons/dialogic/Documentation/Theme/Roboto/Roboto-Regular.ttf" type="DynamicFontData" id=1]
-[ext_resource path="res://addons/dialogic/Documentation/Theme/Roboto/Roboto-Italic.ttf" type="DynamicFontData" id=2]
-[ext_resource path="res://addons/dialogic/Documentation/Theme/Roboto/Roboto-Bold.ttf" type="DynamicFontData" id=3]
-[ext_resource path="res://addons/dialogic/Documentation/Theme/Roboto/Roboto-LightItalic.ttf" type="DynamicFontData" id=4]
-[ext_resource path="res://addons/dialogic/Documentation/Theme/Roboto/Roboto-BoldItalic.ttf" type="DynamicFontData" id=5]
+[ext_resource path="res://addons/dialogic/Documentation/Theme/Font/NotoSans-Regular.ttf" type="DynamicFontData" id=1]
+[ext_resource path="res://addons/dialogic/Documentation/Theme/Font/NotoSans-Bold.ttf" type="DynamicFontData" id=2]
+[ext_resource path="res://addons/dialogic/Documentation/Theme/Font/NotoSans-Italic.ttf" type="DynamicFontData" id=3]
 [ext_resource path="res://addons/dialogic/Documentation/Nodes/DocsPageViewer.gd" type="Script" id=6]
 
-[sub_resource type="DynamicFont" id=1]
-use_filter = true
-font_data = ExtResource( 4 )
+[sub_resource type="StyleBoxEmpty" id=1]
 
 [sub_resource type="DynamicFont" id=2]
+size = 14
 use_filter = true
-font_data = ExtResource( 5 )
+extra_spacing_char = 2
+extra_spacing_space = 2
+font_data = ExtResource( 1 )
 
 [sub_resource type="DynamicFont" id=3]
+use_filter = true
 font_data = ExtResource( 2 )
 
 [sub_resource type="DynamicFont" id=4]
 font_data = ExtResource( 3 )
 
 [sub_resource type="DynamicFont" id=5]
+font_data = ExtResource( 2 )
+
+[sub_resource type="DynamicFont" id=6]
 use_filter = true
 font_data = ExtResource( 1 )
 
-[sub_resource type="Image" id=8]
+[sub_resource type="Image" id=9]
 data = {
 "data": PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ),
 "format": "LumAlpha8",
@@ -34,28 +37,79 @@ data = {
 "width": 16
 }
 
-[sub_resource type="ImageTexture" id=7]
+[sub_resource type="ImageTexture" id=8]
 flags = 4
 flags = 4
-image = SubResource( 8 )
+image = SubResource( 9 )
 size = Vector2( 16, 16 )
 
-[node name="DocsPageViewer" type="RichTextLabel"]
+[node name="DocsPageViewer" type="Control"]
 margin_right = 1024.0
 margin_bottom = 600.0
 focus_mode = 2
+size_flags_horizontal = 3
 size_flags_vertical = 3
-custom_fonts/mono_font = SubResource( 1 )
-custom_fonts/bold_italics_font = SubResource( 2 )
-custom_fonts/italics_font = SubResource( 3 )
-custom_fonts/bold_font = SubResource( 4 )
-custom_fonts/normal_font = SubResource( 5 )
-bbcode_enabled = true
-selection_enabled = true
 script = ExtResource( 6 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="ScrollContainer" type="ScrollContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+scroll_horizontal_enabled = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Spacer" type="HBoxContainer" parent="ScrollContainer"]
+margin_right = 1024.0
+margin_bottom = 600.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Spacer" type="Control" parent="ScrollContainer/Spacer"]
+margin_right = 145.0
+margin_bottom = 600.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.2
+
+[node name="Content" type="RichTextLabel" parent="ScrollContainer/Spacer"]
+margin_left = 149.0
+margin_right = 874.0
+margin_bottom = 600.0
+rect_min_size = Vector2( 300, 0 )
+focus_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_styles/normal = SubResource( 1 )
+custom_fonts/mono_font = SubResource( 2 )
+custom_fonts/bold_italics_font = SubResource( 3 )
+custom_fonts/italics_font = SubResource( 4 )
+custom_fonts/bold_font = SubResource( 5 )
+custom_fonts/normal_font = SubResource( 6 )
+custom_colors/selection_color = Color( 0.45098, 0.45098, 0.45098, 0.45098 )
+bbcode_enabled = true
+bbcode_text = "asdasd ads asda [color=#ffe89569]asda adsd asdasd [/color] [code] This is some text[/code]"
+text = "asdasd ads asda asda adsd asdasd   This is some text"
+fit_content_height = true
+scroll_active = false
+selection_enabled = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Spacer2" type="Control" parent="ScrollContainer/Spacer"]
+margin_left = 878.0
+margin_right = 1024.0
+margin_bottom = 600.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.2
 
 [node name="Editing" type="HBoxContainer" parent="."]
 visible = false
@@ -94,7 +148,7 @@ margin_right = -10.5946
 margin_bottom = -11.6541
 rect_min_size = Vector2( 30, 30 )
 hint_tooltip = "Back to top"
-icon = SubResource( 7 )
+icon = SubResource( 8 )
 expand_icon = true
 __meta__ = {
 "_edit_use_anchors_": false
@@ -145,7 +199,11 @@ margin_bottom = 577.0
 toggle_mode = true
 text = "Contents"
 
-[connection signal="meta_clicked" from="." to="." method="_on_meta_clicked"]
+[node name="Control" type="Control" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0
+
+[connection signal="meta_clicked" from="ScrollContainer/Spacer/Content" to="." method="_on_meta_clicked"]
 [connection signal="pressed" from="Editing/RefreshPage" to="." method="_on_RefreshPage_pressed"]
 [connection signal="pressed" from="Editing/EditPage" to="." method="_on_EditPage_pressed"]
 [connection signal="pressed" from="Up" to="." method="_on_Up_pressed"]

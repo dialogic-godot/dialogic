@@ -1,5 +1,5 @@
 tool
-extends RichTextLabel
+extends Control
 
 export (bool) var enable_editing = false
 # needs to be corrected, if you use this on a diffrent plugin!!!
@@ -8,6 +8,8 @@ var MarkdownParser = load("res://addons/dialogic/Documentation/Nodes/DocsMarkdow
 
 var current_path: String = ""
 var current_headings = []
+
+onready var Content = $ScrollContainer/Spacer/Content
 
 signal open_non_html_link(link, section)
 
@@ -23,16 +25,13 @@ signal open_non_html_link(link, section)
 ## The section can either be passed as a second argument or in the PAGE_PATH with #
 ## E.g.: "Tuts/welcome#how-to-use-the-plugin" == "Tuts/welcome", "#how-to-use-the-plugin"
 func load_page(page_path: String, section : String=''):
-	set("custom_styles/normal", get_stylebox("Background", "EditorStyles"))
-	get('custom_styles/normal').content_margin_left = 15
-	get('custom_styles/normal').content_margin_top = 15
-	get('custom_styles/normal').content_margin_right = 15
-	get('custom_styles/normal').content_margin_bottom = 15
-	get('custom_styles/normal').border_width_left = 2
-	get('custom_styles/normal').border_width_top = 2
-	get('custom_styles/normal').border_width_right = 2
-	get('custom_styles/normal').border_width_bottom = 2
-	
+	Content.set('custom_styles/normal', StyleBoxEmpty.new())
+	Content.get('custom_styles/normal').content_margin_left = 15
+	Content.get('custom_styles/normal').content_margin_top = 15
+	Content.get('custom_styles/normal').content_margin_right = 15
+	Content.get('custom_styles/normal').content_margin_bottom = 15
+
+	MarkdownParser.set_accent_colors(get_color("accent_color", "Editor"),get_color("disabled_font_color", "Editor"))
 	# return if no path is given
 	if page_path == '' and not section:
 		return
@@ -58,7 +57,7 @@ func load_page(page_path: String, section : String=''):
 	current_path = page_path
 	
 	# parsing the file
-	bbcode_text = MarkdownParser.parse(f.get_as_text(), current_path, documentation_path)
+	Content.bbcode_text = MarkdownParser.parse(f.get_as_text(), current_path, documentation_path)
 	f.close()
 	
 	# saving the headings for going to sections
@@ -67,7 +66,7 @@ func load_page(page_path: String, section : String=''):
 
 	# scroll to the given section
 	if not scroll_to_section(section):
-		scroll_to_line(0)
+		Content.scroll_to_line(0)
 
 # looks if there is a heading similar to the given TITLE and then scrolls there
 func scroll_to_section(title):
@@ -78,9 +77,9 @@ func scroll_to_section(title):
 	for heading in current_headings:
 		if (heading.to_lower().strip_edges().replace(' ', '-') == title.replace('#', '')) or \
 			(heading.to_lower().strip_edges() == title.to_lower().strip_edges()):
-			var x = bbcode_text.find(heading.replace('#', '').strip_edges()+"[/font]")
-			x = bbcode_text.count("\n", 0, x)
-			scroll_to_line(x)
+			var x = Content.bbcode_text.find(heading.replace('#', '').strip_edges()+"[/font]")
+			x = Content.bbcode_text.count("\n", 0, x)
+			Content.scroll_to_line(x)
 			
 			$ContentMenu/Panel.hide()
 			
@@ -115,6 +114,7 @@ func create_content_menu(headings):
 
 func content_button_pressed(heading):
 	scroll_to_section(heading)
+	$ContentMenu/ToggleContents.pressed = false
 
 ## When one of the links is clicked
 func _on_meta_clicked(meta):
@@ -165,8 +165,7 @@ func _on_RefreshPage_pressed():
 
 
 func _on_Up_pressed():
-	scroll_to_line(0)
-
+	Content.scroll_to_line(0)
 
 
 func _on_ToggleContents_toggled(button_pressed):

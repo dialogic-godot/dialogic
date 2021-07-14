@@ -46,5 +46,4 @@ margin_left = 242.0
 size_flags_horizontal = 3
 
 [connection signal="text_changed" from="HSplit/VBoxContainer/FilterEntry" to="." method="_on_FilterEntry_text_changed"]
-[connection signal="_page_selected" from="HSplit/VBoxContainer/DocumentationTree" to="." method="_on_DocumentationTree_page_selected"]
 [connection signal="open_non_html_link" from="HSplit/DocsPageViewer" to="." method="_on_DocsPageViewer_open_non_html_link"]
