@@ -148,7 +148,7 @@ func merge_dir(target: Dictionary, patch: Dictionary):
 func _add_documentation_folder(tree, parent_item, folder_info, default_info):
 	var item = tree.create_item(parent_item)
 	item.set_text(0, folder_info['name'])
-	item.set_icon(0, tree.get_icon("Help", "EditorIcons"))
+	item.set_icon(0, tree.get_icon("HelpSearch", "EditorIcons"))
 	item.set_editable(0, false)
 	if use_folder_files:
 		var x = File.new()
@@ -169,7 +169,7 @@ func _add_documentation_page(tree, parent, page_info, default_info):
 	item.set_text(0, get_title(page_info['path'], page_info['name']))
 	item.set_tooltip(0,page_info['path'])
 	item.set_editable(0, false)
-	item.set_icon(0, tree.get_icon("File", "EditorIcons"))
+	item.set_icon(0, tree.get_icon("Help", "EditorIcons"))
 	var new_dir =  merge_dir(default_info, page_info)
 	#print(new_dir)
 	item.set_metadata(0,new_dir)

@@ -9,7 +9,7 @@ var MarkdownParser = load("res://addons/dialogic/Documentation/Nodes/DocsMarkdow
 var current_path: String = ""
 var current_headings = []
 
-onready var Content = $ScrollContainer/Spacer/Content
+onready var Content = $Content
 
 signal open_non_html_link(link, section)
 
@@ -37,6 +37,7 @@ func load_page(page_path: String, section : String=''):
 		return
 	
 	show()
+	_on_Content_resized()
 	
 	#print("load page ", page_path)
 	# find a section specifier at the end of the path
@@ -67,10 +68,11 @@ func load_page(page_path: String, section : String=''):
 	# scroll to the given section
 	if not scroll_to_section(section):
 		Content.scroll_to_line(0)
+		
+	
 
 # looks if there is a heading similar to the given TITLE and then scrolls there
 func scroll_to_section(title):
-	#print("load section ", title)
 	if not title:
 		return
 	# this is not really nicely done...
@@ -170,3 +172,17 @@ func _on_Up_pressed():
 
 func _on_ToggleContents_toggled(button_pressed):
 	$ContentMenu/Panel.visible = button_pressed
+
+func toggle_editing():
+	enable_editing = !enable_editing
+	$Editing.visible = enable_editing
+
+func _on_Content_resized():
+	if not Content: return 
+	if Content.rect_size.x < 500:
+		Content.get('custom_styles/normal').content_margin_left = 15
+		Content.get('custom_styles/normal').content_margin_right = 15
+	else:
+		Content.get('custom_styles/normal').content_margin_left = (Content.rect_size.x-500)/4
+		Content.get('custom_styles/normal').content_margin_right = (Content.rect_size.x-500)/3
+	Content.update()

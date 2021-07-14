@@ -6,6 +6,8 @@
 [ext_resource path="res://addons/dialogic/Documentation/Nodes/DocsPageViewer.gd" type="Script" id=6]
 
 [sub_resource type="StyleBoxEmpty" id=1]
+content_margin_left = 89.5
+content_margin_right = 119.333
 
 [sub_resource type="DynamicFont" id=2]
 size = 14
@@ -54,35 +56,10 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="ScrollContainer" type="ScrollContainer" parent="."]
+[node name="Content" type="RichTextLabel" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
-scroll_horizontal_enabled = false
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Spacer" type="HBoxContainer" parent="ScrollContainer"]
-margin_right = 1024.0
-margin_bottom = 600.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Spacer" type="Control" parent="ScrollContainer/Spacer"]
-margin_right = 145.0
-margin_bottom = 600.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-size_flags_stretch_ratio = 0.2
-
-[node name="Content" type="RichTextLabel" parent="ScrollContainer/Spacer"]
-margin_left = 149.0
-margin_right = 874.0
-margin_bottom = 600.0
-rect_min_size = Vector2( 300, 0 )
+rect_min_size = Vector2( 50, 0 )
 focus_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -96,20 +73,11 @@ custom_colors/selection_color = Color( 0.45098, 0.45098, 0.45098, 0.45098 )
 bbcode_enabled = true
 bbcode_text = "asdasd ads asda [color=#ffe89569]asda adsd asdasd [/color] [code] This is some text[/code]"
 text = "asdasd ads asda asda adsd asdasd   This is some text"
-fit_content_height = true
-scroll_active = false
+scroll_following = true
 selection_enabled = true
 __meta__ = {
 "_edit_use_anchors_": false
 }
-
-[node name="Spacer2" type="Control" parent="ScrollContainer/Spacer"]
-margin_left = 878.0
-margin_right = 1024.0
-margin_bottom = 600.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-size_flags_stretch_ratio = 0.2
 
 [node name="Editing" type="HBoxContainer" parent="."]
 visible = false
@@ -203,7 +171,8 @@ text = "Contents"
 margin_right = 40.0
 margin_bottom = 40.0
 
-[connection signal="meta_clicked" from="ScrollContainer/Spacer/Content" to="." method="_on_meta_clicked"]
+[connection signal="meta_clicked" from="Content" to="." method="_on_meta_clicked"]
+[connection signal="resized" from="Content" to="." method="_on_Content_resized"]
 [connection signal="pressed" from="Editing/RefreshPage" to="." method="_on_RefreshPage_pressed"]
 [connection signal="pressed" from="Editing/EditPage" to="." method="_on_EditPage_pressed"]
 [connection signal="pressed" from="Up" to="." method="_on_Up_pressed"]

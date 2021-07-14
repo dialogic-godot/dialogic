@@ -21,6 +21,9 @@ func load_page(page):
 	current_page = page
 	nodes['DocsViewer'].load_page(current_page)
 
+func toggle_editing():
+	nodes['DocsViewer'].toggle_editing()
+
 func _on_DocsViewer_open_non_html_link(link, section):
 	#print(link, " ", section)
 	master_tree.select_documentation_item(link)

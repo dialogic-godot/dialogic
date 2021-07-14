@@ -22,6 +22,7 @@ size = Vector2( 16, 16 )
 content_margin_left = 0.0
 texture = SubResource( 2 )
 region_rect = Rect2( 0, 0, 16, 16 )
+margin_left = 2.0
 margin_right = 2.0
 margin_top = 2.0
 margin_bottom = 2.0
@@ -41,6 +42,6 @@ __meta__ = {
 margin_top = 2.0
 margin_right = 1017.0
 margin_bottom = 598.0
-rect_min_size = Vector2( 500, 0 )
+rect_min_size = Vector2( 50, 0 )
 
 [connection signal="open_non_html_link" from="DocsViewer" to="." method="_on_DocsViewer_open_non_html_link"]

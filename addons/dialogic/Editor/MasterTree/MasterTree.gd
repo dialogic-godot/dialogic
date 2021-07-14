@@ -108,7 +108,7 @@ func _ready():
 	
 	documentation_tree = tree.create_item(root)
 	documentation_tree.set_text(0, "Help")
-	documentation_tree.set_icon(0, get_icon("Help", "EditorIcons"))
+	documentation_tree.set_icon(0, get_icon("HelpSearch", "EditorIcons"))
 	documentation_tree.set_metadata(0, {'editor': 'Documentation Root', 'name':'Start', 'path':'Welcome.md'})
 	
 	
@@ -444,12 +444,12 @@ func create_rmb_context_menus():
 	rmb_popup_menus["Definition Root"] = definition_folder_popup
 	
 	var documentation_folder_popup = PopupMenu.new()
-	documentation_folder_popup.add_icon_item(get_icon("Edit", "EditorIcons") ,'Edit Page')
+	documentation_folder_popup.add_icon_item(get_icon("Edit", "EditorIcons") ,'Toggle Editing Tools')
 	add_child(documentation_folder_popup)
 	rmb_popup_menus["Documentation Root"] = documentation_folder_popup
 	
 	var documentation_popup = PopupMenu.new()
-	documentation_popup.add_icon_item(get_icon("Edit", "EditorIcons") ,'Edit Page')
+	documentation_popup.add_icon_item(get_icon("Edit", "EditorIcons") ,'Toggle Editing Tools')
 	add_child(documentation_popup)
 	rmb_popup_menus["Documentation"] = documentation_popup
 	
@@ -594,10 +594,8 @@ func _on_ThemeRootPopupMenu_id_pressed(id):
 		editor_reference.get_node('RemoveFolderConfirmation').popup_centered()
 
 func _on_DocumentationPopupMenu_id_pressed(id):
-	if id == 0: # edit text
-		var x = File.new()
-		x.open(tree.get_selected().get_metadata(0)["path"], File.READ)
-		OS.shell_open(x.get_path_absolute())
+	if id == 0: # edit text toggled
+		documentation_viewer.toggle_editing()
 ## *****************************************************************************
 ##						 CREATING AND REMOVING
 ## *****************************************************************************
@@ -787,7 +785,7 @@ func _on_autosave_timeout():
 	save_current_resource()
 
 func save_current_resource():
-	if editor_reference.visible: #Only save if the editor is open
+	if editor_reference and editor_reference.visible: #Only save if the editor is open
 		var item: TreeItem = get_selected()
 		var metadata: Dictionary
 		if item != null:
