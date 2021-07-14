@@ -47,7 +47,7 @@ static func get_sorted_character_list():
 static func get_timeline_list() -> Array:
 	var timelines: Array = []
 	for file in DialogicResources.listdir(DialogicResources.get_path('TIMELINE_DIR')):
-		if '.json' in file:
+		if '.json' in file: # TODO check for real .json because if .json is in the middle of the sentence it still thinks it is a timeline
 			var data = DialogicResources.get_timeline_json(file)
 			if data.has('error') == false:
 				if data.has('metadata'):
