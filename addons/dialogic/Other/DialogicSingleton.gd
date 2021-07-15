@@ -7,17 +7,18 @@ extends Node
 ## In your game you should consider using the methods of the DialogicClass!
 
 var current_definitions := {}
-var default_definitions := {}
-var current_state := {}
+
+#var current_state := {}
 var autosave := true
 
 var current_timeline := ''
+var latest_dialog_node = null
 
+var current_save_name := ""
 
 ## *****************************************************************************
 ##								INITIALIZATION
 ## *****************************************************************************
-
 
 func _init() -> void:
 	# Load saves on script init
@@ -27,36 +28,57 @@ func _init() -> void:
 func init(reset: bool=false) -> void:
 	if reset and autosave:
 		# Loads saved definitions into memory
-		DialogicResources.init_saves()
-	default_definitions = DialogicResources.get_default_definitions()
-	current_definitions = DialogicResources.get_saved_definitions(default_definitions)
-	current_state = DialogicResources.get_saved_state()
-	current_timeline = get_saved_state_general_key('timeline')
+		current_definitions = DialogicResources.get_default_definitions()
+	else:
+		# loads the default save slot first
+		current_definitions = DialogicResources.get_saved_definitions()
+	#current_state = DialogicResources.get_saved_state_info()
 
+
+## *****************************************************************************
+##							SAVING AND RESUMING
+## *****************************************************************************
+
+# this loads the saves definitions and returns the saves state_info ditionary
+func resume_from_save(save_name: String) -> Dictionary:
+	current_definitions = DialogicResources.get_saved_definitions(save_name)
+	return DialogicResources.get_saved_state_info(save_name)
+
+
+# this saves the current definitions and the given state info into the save folder "save_name"
+func save_state_and_definitions(save_name: String, state_info: Dictionary) -> void:
+	DialogicResources.save_definitions(save_name, current_definitions)
+	DialogicResources.save_state_info(save_name, state_info)
+
+
+func get_save_names_array() -> Array:
+	return DialogicResources.get_saves_folders()
 
 ## *****************************************************************************
 ##						DEFINITIONS: VARIABLES/GLOSSARY
 ## *****************************************************************************
 
-func get_definitions_list() -> Array:
-	return DialogicDefinitionsUtil.definitions_json_to_array(current_definitions)
-
-
 func get_definitions() -> Dictionary:
 	return current_definitions
 
 
+func get_definitions_list() -> Array:
+	return DialogicDefinitionsUtil.definitions_json_to_array(current_definitions)
+
+
 func get_default_definitions() -> Dictionary:
-	return default_definitions
+	return DialogicResources.get_default_definitions()
 
 
 func get_default_definitions_list() -> Array:
-	return DialogicDefinitionsUtil.definitions_json_to_array(default_definitions)
+	return DialogicDefinitionsUtil.definitions_json_to_array(get_default_definitions())
 
 
 func save_definitions():
 	if autosave:
-		return DialogicResources.save_saved_definitions(current_definitions)
+		if latest_dialog_node:
+			save_state_and_definitions(current_save_name, latest_dialog_node.get_current_state_info())
+			
 	else:
 		return OK
 
@@ -144,7 +166,6 @@ func set_glossary_from_id(id: String, title: String, text: String, extra:String)
 
 func set_current_timeline(timeline: String):
 	current_timeline = timeline
-	set_saved_state_general_key('timeline', timeline)
 
 
 func get_current_timeline() -> String:
@@ -155,22 +176,8 @@ func get_current_timeline() -> String:
 ##								SAVE STATE
 ## *****************************************************************************
 
-func get_saved_state_general_key(key: String) -> String:
-	if key in current_state['general'].keys():
-		return current_state['general'][key]
-	else:
-		return ''
-
-
-func set_saved_state_general_key(key: String, value) -> void:
-	current_state['general'][key] = str(value)
-	save_state()
-
-func save_state():
-	if autosave:
-		return DialogicResources.save_saved_state_config(current_state)
-	else:
-		return OK
+func save_state(save_name):
+	pass
 
 ## *****************************************************************************
 ##								AUTOSAVE
@@ -187,15 +194,15 @@ func set_autosave(save: bool):
 ## *****************************************************************************
 ##								IMPORT/EXPORT
 ## *****************************************************************************
-
-func export() -> Dictionary:
-	return {
-		'definitions': current_definitions,
-		'state': current_state,
-	}
-
-func import(data: Dictionary) -> void:
-	init(false);
-	current_definitions = data['definitions'];
-	current_state = data['state'];
-	current_timeline = get_saved_state_general_key('timeline')
+#
+#func export() -> Dictionary:
+#	return {
+#		'definitions': current_definitions,
+#		'state': current_state,
+#	}
+#
+#func import(data: Dictionary) -> void:
+#	init(false);
+#	current_definitions = data['definitions'];
+#	current_state = data['state'];
+#	current_timeline = get_saved_state_general_key('timeline')

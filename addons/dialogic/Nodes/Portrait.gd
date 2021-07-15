@@ -13,6 +13,10 @@ var direction = 'left'
 var debug = false
 var fading_out = false
 
+var current_character = ""
+var current_portrait = ""
+var current_position = ""
+var currently_mirrored = false
 
 func init(expression: String = '') -> void:
 	set_portrait(expression)
@@ -25,6 +29,7 @@ func _ready():
 
 
 func set_portrait(expression: String) -> void:
+	current_portrait = expression
 	if expression == '':
 		expression = 'Default'
 	
@@ -62,6 +67,7 @@ func set_portrait(expression: String) -> void:
 
 
 func set_mirror(value):
+	currently_mirrored = value
 	if character_data["data"].has('mirror_portraits'):
 		if character_data["data"]['mirror_portraits']:
 			$TextureRect.flip_h = !value
@@ -104,7 +110,7 @@ func move_to_position(position_offset, time = 0.5):
 			$TextureRect.texture.get_width() * 0.5,
 			$TextureRect.texture.get_height()
 		) * custom_scale
-		
+	
 	fade_in()
 
 

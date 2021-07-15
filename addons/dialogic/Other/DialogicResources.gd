@@ -28,7 +28,7 @@ static func load_json(path: String, default: Dictionary={}) -> Dictionary:
 	var data_parse: JSONParseResult = JSON.parse(data_text)
 	if data_parse.error != OK:
 		return default
-
+	
 	var final_data = data_parse.result
 	if typeof(final_data) == TYPE_DICTIONARY:
 		return final_data
@@ -83,63 +83,68 @@ static func get_config_files_paths() -> Dictionary:
 		'SETTINGS_FILE': RESOURCES_DIR + "/settings.cfg",
 		'DEFAULT_DEFINITIONS_FILE': RESOURCES_DIR + "/definitions.json",
 		'FOLDER_STRUCTURE_FILE': RESOURCES_DIR + "/folder_structure.json",
-		'SAVED_DEFINITIONS_FILE': WORKING_DIR + "/definitions.json",
-		'SAVED_STATE_FILE': WORKING_DIR + "/state.json",
+		'DEFINITIONS_DEFAULT_SAVE': WORKING_DIR + "/definitions_default_save.json",
+		'STATE_DEFAULT_SAVE': WORKING_DIR + "/state_default_save.json"
 	}
 
+#
+#static func init_saves():
+#	if init_working_dir() == OK:
+#		init_state_saves()
+#		init_definitions_saves()
+#	else:
+#		print('[Dialogic] Error creating working directory.')
+#
+#
+#static func init_working_dir():
+#	var directory := Directory.new()
+#	return directory.make_dir_recursive(get_working_directories()['WORKING_DIR'])
+#
+#
+#static func init_state_saves():
+#	var file := File.new()
+#	var err = file.open(get_config_files_paths()["WORKING_DIR"]+"/state_default_save.json", File.WRITE)
+#	if err == OK:
+#		file.store_string('')
+#		file.close()
+#	else:
+#		print('[Dialogic] Error creating saved state file: ' + str(err))
 
-static func init_saves():
-	var err = init_working_dir()
-	var paths := get_config_files_paths()
-
-	if err == OK:
-		init_state_saves()
-		init_definitions_saves()
-	else:
-		print('[Dialogic] Error creating working directory: ' + str(err))
-
-
-static func init_working_dir():
-	var directory := Directory.new()
-	return directory.make_dir_recursive(get_working_directories()['WORKING_DIR'])
-
-
-static func init_state_saves():
-	var file := File.new()
-	var paths := get_config_files_paths()
-	var err = file.open(paths["SAVED_STATE_FILE"], File.WRITE)
-	if err == OK:
-		file.store_string('')
-		file.close()
-	else:
-		print('[Dialogic] Error opening saved state file: ' + str(err))
-
-
-static func init_definitions_saves():
-	var directory := Directory.new()
-	var source := File.new()
-	var sink := File.new()
-	var paths := get_config_files_paths()
-	var err = sink.open(paths["SAVED_DEFINITIONS_FILE"], File.WRITE)
-	print('[Dialogic] Initializing save file: ' + str(err))
-	if err == OK:
-		sink.store_string('')
-		sink.close()
-	else:
-		print('[Dialogic] Error opening saved definitions file: ' + str(err))
-
-	err = sink.open(paths["SAVED_DEFINITIONS_FILE"], File.READ_WRITE)
-	if err == OK:
-		err = source.open(paths["DEFAULT_DEFINITIONS_FILE"], File.READ)
-		if err == OK:
-			sink.store_string(source.get_as_text())
-		else:
-			print('[Dialogic] Error opening default definitions file: ' + str(err))
-	else:
-		print('[Dialogic] Error opening saved definitions file: ' + str(err))
+#
+#static func init_definitions_saves():
+#	var file := File.new()
+#	var err = file.open(get_config_files_paths()["WORKING_DIR"]+"/definitions_default_save.json", File.WRITE)
+#	if err == OK:
+#		file.store_string('')
+#		file.close()
+#	else:
+#		print('[Dialogic] Error c saved state file: ' + str(err))
+#
 	
-	source.close()
-	sink.close()
+#	var directory := Directory.new()
+#	var source := File.new()
+#	var sink := File.new()
+#	var paths := get_config_files_paths()
+#	var err = sink.open(get_config_files_paths()["WORKING_DIR"]+"/definition_default_save.json", File.WRITE)
+#	#print('[Dialogic] Initializing save file: ' + str(err))
+#	if err == OK:
+#		sink.store_string('')
+#		sink.close()
+#	else:
+#		print('[Dialogic] Error opening saved definitions file: ' + str(err))
+#
+#	err = sink.open(paths["SAVED_DEFINITIONS_FILE"], File.READ_WRITE)
+#	if err == OK:
+#		err = source.open(paths["DEFAULT_DEFINITIONS_FILE"], File.READ)
+#		if err == OK:
+#			sink.store_string(source.get_as_text())
+#		else:
+#			print('[Dialogic] Error opening default definitions file: ' + str(err))
+#	else:
+#		print('[Dialogic] Error opening saved definitions file: ' + str(err))
+#
+#	source.close()
+#	sink.close()
 
 
 ## *****************************************************************************
@@ -329,18 +334,91 @@ static func set_settings_value(section: String, key: String, value):
 
 
 ## *****************************************************************************
-##							STATE
+##							SAVES
 ## *****************************************************************************
-# Can only be edited in the editor
+# Folders in the user://dialogic directory function as save_slots.
 
+# retruns a list of all save folders. 
+# -> this returns a list of the save_slot-names
+static func get_saves_folders() -> Array:
+	var save_folders = []
+	var directory := Directory.new()
+	if directory.open(WORKING_DIR) != OK:
+		print("[D] Error: Failed to access working directory.")
+		return []
+	
+	directory.list_dir_begin()
+	var file_name = directory.get_next()
+	while file_name != "":
+		if directory.current_is_dir() and not file_name.begins_with("."):
+			save_folders.append(file_name)
+		file_name = directory.get_next()
 
-static func get_saved_state() -> Dictionary:
-	return load_json(get_config_files_paths()['SAVED_STATE_FILE'], {'general': {}})
+	return save_folders
 
+# this adds a new save folder with the given name
+static func add_save_folder(save_name: String) -> void:
+	var directory := Directory.new()
+	if directory.open(WORKING_DIR) != OK:
+		print("[D] Error: Failed to access working directory.")
+		return 
+	directory.make_dir(save_name)
+	
+	var file := File.new()
+	if file.open(WORKING_DIR+"/"+save_name+"/definitions.json", File.WRITE) == OK:
+		file.store_string('')
+		file.close()
+	if file.open(WORKING_DIR+"/"+save_name+"/state.json", File.WRITE) == OK:
+		file.store_string('')
+		file.close()
 
-static func save_saved_state_config(data: Dictionary):
-	init_working_dir()
-	set_json(get_config_files_paths()['SAVED_STATE_FILE'], data)
+# this removes the given  folder
+static func remove_save_folder(save_name: String) -> void:
+	var directory := Directory.new()
+	if directory.open(WORKING_DIR+"/"+save_name) != OK:
+		print("[D] Error: Failed to access save folder '"+save_name+"'.")
+		return
+	
+	directory.list_dir_begin()
+	var file_name = directory.get_next()
+	while file_name != "":
+		directory.remove(file_name)
+		file_name = directory.get_next()
+	directory.remove(WORKING_DIR+"/"+save_name)
+
+# saves the state_info into the state.json file in the save folder "save_name"
+static func save_state_info(save_name: String, state_info: Dictionary) -> void:
+	if not save_name in get_saves_folders():
+		add_save_folder(save_name)
+	
+	set_json(WORKING_DIR+"/"+save_name+"/state.json", state_info)
+
+# return the state_info from the state.json file in the save folder "save_name"
+static func get_saved_state_info(save_name: String) -> Dictionary:
+	if save_name == '':
+		return load_json(get_config_files_paths()['STATE_DEFAULT_SAVE'], {})
+	
+	if not save_name in get_saves_folders():
+		return {}
+	
+	return load_json(WORKING_DIR+"/"+save_name+"/state.json", {})
+
+# saves the given definitions into the definitions.json file in the save folder "save name"
+static func save_definitions(save_name: String, definitions_info: Dictionary) -> void:
+	if not save_name in get_saves_folders():
+		add_save_folder(save_name)
+	
+	set_json(WORKING_DIR+"/"+save_name+"/definitions.json", definitions_info)
+
+# return the definition info from the definiiotn.json in the save folder "save name"
+static func get_saved_definitions(save_name: String = '') -> Dictionary:
+	if save_name == '':
+		return load_json(get_config_files_paths()['DEFINITIONS_DEFAULT_SAVE'], {})
+	
+	if not save_name in get_saves_folders():
+		return {}
+	
+	return load_json(WORKING_DIR+"/"+save_name+"/definitions.json", {})
 
 
 ## *****************************************************************************
@@ -387,14 +465,14 @@ static func delete_default_definition(id: String):
 ##						SAVED DEFINITIONS
 ## *****************************************************************************
 # Can only be edited in the editor
-
-static func get_saved_definitions(default: Dictionary = {'variables': [], 'glossary': []}) -> Dictionary:
-	return load_json(get_config_files_paths()['SAVED_DEFINITIONS_FILE'], default)
-
-
-static func save_saved_definitions(data: Dictionary):
-	init_working_dir()
-	return set_json(get_config_files_paths()['SAVED_DEFINITIONS_FILE'], data)
+#
+#static func get_saved_definitions(default: Dictionary = {'variables': [], 'glossary': []}) -> Dictionary:
+#	return load_json(get_config_files_paths()['SAVED_DEFINITIONS_FILE'], default)
+#
+#
+#static func save_saved_definitions(data: Dictionary):
+#	init_working_dir()
+#	return set_json(get_config_files_paths()['SAVED_DEFINITIONS_FILE'], data)
 
 ## *****************************************************************************
 ##						FOLDER STRUCTURE

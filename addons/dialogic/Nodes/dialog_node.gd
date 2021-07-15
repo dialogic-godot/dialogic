@@ -1,6 +1,8 @@
 tool
 extends Control
 
+var do_fade_in := true
+
 var last_mouse_mode = null
 var input_next: String = 'ui_accept'
 var dialog_index: int = 0
@@ -42,8 +44,13 @@ onready var Portrait = load("res://addons/dialogic/Nodes/Portrait.tscn")
 var dialog_script: Dictionary = {}
 var questions #for keeping track of the questions answered
 
+var current_background = ""
 
 func _ready():
+	print("ready")
+	# set this dialog as a the latest
+	DialogicUtil.get_singleton('DialogicSingleton', self).latest_dialog_node = self
+	
 	# Loading the config files
 	load_config_files()
 	
@@ -82,7 +89,7 @@ func _ready():
 			get_parent().connect("resized", self, "resize_main")
 			_init_dialog()
 			$DefinitionInfo.in_theme_editor = true
-	else:
+	elif do_fade_in:
 		# Calls _init_dialog() after animation is over
 		open_dialog_animation(current_theme.get_value('animation', 'show_time', 0.5)) 
 
@@ -91,7 +98,7 @@ func load_config_files():
 	if not Engine.is_editor_hint():
 		if reset_saves:
 			DialogicUtil.get_singleton('DialogicSingleton', self).init(reset_saves)
-		definitions = DialogicUtil.get_singleton('DialogicSingleton', self).get_definitions()
+		definitions = DialogicSingleton.get_definitions()
 	else:
 		definitions = DialogicResources.get_default_definitions()
 	settings = DialogicResources.get_settings_config()
@@ -323,8 +330,8 @@ func _insert_variable_definitions(text: String):
 		var name : String = d['name'];
 		final_text = final_text.replace('[' + name + ']', d['value'])
 	return final_text;
-	
-	
+
+
 func _insert_glossary_definitions(text: String):
 	var color = current_theme.get_value('definitions', 'color', '#ffbebebe')
 	var final_text := text;
@@ -543,6 +550,7 @@ func event_handler(event: Dictionary):
 						if portrait.character_data == character_data:
 							portrait.move_to_position(get_character_position(event['position']))
 							portrait.set_mirror(event.get('mirror', false))
+							portrait.current_position = event['position']
 				else:
 					var p = Portrait.instance()
 					var char_portrait = event['portrait']
@@ -561,9 +569,13 @@ func event_handler(event: Dictionary):
 						p.single_portrait_mode = true
 					p.character_data = character_data
 					p.init(char_portrait)
+					
 					p.set_mirror(event.get('mirror', false))
 					$Portraits.add_child(p)
 					p.move_to_position(get_character_position(event['position']))
+					# this info is only used to save the state later
+					p.current_character = event['character']
+					p.current_position = event['position']
 			_load_next_event()
 		# Character Leave event 
 		'dialogic_003':
@@ -643,6 +655,7 @@ func event_handler(event: Dictionary):
 		'dialogic_021':
 			emit_signal("event_start", "background", event)
 			var background = get_node_or_null('Background')
+			current_background = event['background']
 			if event['background'] == '' and background != null:
 				background.queue_free()
 			else:
@@ -1128,3 +1141,113 @@ func _on_OptionsDelayedInput_timeout():
 	for button in $Options.get_children():
 		if button.is_connected("pressed", self, "answer_question") == false:
 			button.connect("pressed", self, "answer_question", [button, button.get_meta('event_idx'), button.get_meta('question_idx')])
+
+# returns all important data in a dictionary
+func get_current_state_info():
+	var state = {}
+	
+	# visible characters:
+	state["portraits"] = []
+	for portrait in $Portraits.get_children():
+		state['portraits'].append({"position": portrait.current_position, "character":portrait.current_character, "portrait":portrait.current_portrait, "mirror": portrait.currently_mirrored})
+	
+	# background music:
+	state['background_music'] = $FX/BackgroundMusic.get_current_info()
+	
+	# current_timeline and event
+	state["timeline"] = current_timeline
+	state['event_idx'] = dialog_index
+	
+	# current background
+	state['background'] = current_background
+	
+	return state
+	
+func resume_state_from_info(state_info):
+	
+	# wait until the dialog node was added to the tree
+	do_fade_in = false
+	yield(self, "ready")
+	print(state_info)
+	
+
+	
+	# load the characters
+	for saved_portrait in state_info['portraits']:
+		var event = saved_portrait
+		
+		# this code is ALL copied from the event_handler. So I should probably outsource it to a function...
+		var character_data = get_character(event['character'])
+		var exists = grab_portrait_focus(character_data)
+		if exists:
+			for portrait in $Portraits.get_children():
+				if portrait.character_data == character_data:
+					portrait.move_to_position(get_character_position(event['position']))
+					portrait.set_mirror(event.get('mirror', false))
+		else:
+			var p = Portrait.instance()
+			var char_portrait = event['portrait']
+			if char_portrait == '':
+				char_portrait = 'Default'
+			
+			if char_portrait == '[Definition]' and event.has('port_defn'):
+				var portrait_definition = event['port_defn']
+				if portrait_definition != '':
+					for d in DialogicResources.get_default_definitions()['variables']:
+						if d['id'] == portrait_definition:
+							char_portrait = d['value']
+							break
+			
+			if current_theme.get_value('settings', 'single_portrait_mode', false):
+				p.single_portrait_mode = true
+			p.character_data = character_data
+			p.init(char_portrait)
+			
+			p.set_mirror(event.get('mirror', false))
+			$Portraits.add_child(p)
+			p.move_to_position(get_character_position(event['position']), 0)
+			# this info is only used to save the state later
+			p.current_character = event['character']
+			p.current_position = event['position']
+	
+	# load the background music
+	if state_info['background_music'] != null:
+		$FX/BackgroundMusic.crossfade_to(state_info['background_music']['file'], state_info['background_music']['audio_bus'], state_info['background_music']['volume'], 1)
+	
+	# load the background image
+	if state_info['background']:
+		current_background = state_info['background']
+
+		var background = TextureRect.new()
+		background.expand = true
+		background.name = 'Background'
+		background.anchor_right = 1
+		background.anchor_bottom = 1
+		background.stretch_mode = TextureRect.STRETCH_SCALE
+		background.show_behind_parent = true
+		background.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		call_deferred('resize_main') # Executing the resize main to update the background size
+		
+		add_child(background)
+		background.texture = null
+		if (background.get_child_count() > 0):
+			for c in background.get_children():
+				c.get_parent().remove_child(c)
+				c.queue_free()
+		if (current_background.ends_with('.tscn')):
+			var bg_scene = load(current_background)
+			if (bg_scene):
+				bg_scene = bg_scene.instance()
+				background.add_child(bg_scene)
+		elif (current_background != ''):
+			background.texture = load(current_background)
+	
+	# load the timeline and event
+	set_current_dialog(state_info['timeline'])
+	
+	# mark all previous question events as "answered"
+	for event_index in range(0, state_info['event_idx']):
+		if dialog_script['events'][event_index]['event_id'] == 'dialogic_010':
+			dialog_script['events'][event_index]['answered'] = true
+	
+	_load_event_at_index(state_info['event_idx'])

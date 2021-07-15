@@ -78,11 +78,53 @@ static func start_from_save(initial_timeline: String, dialog_scene_path: String=
 		current = initial_timeline
 	return start(current, false, dialog_scene_path, debug_mode)
 
+## Saves the current definitions and the latest added dialog nodes state info.
+## 
+## @param save_name		The name of the save folder. To load this save you have to specify the same
+##						If the save folder doesn't exist it will be created. 
+##						Leaving this empty will overwrite the default files.
+static func save_current_state(save_name: String = '') -> void:
+	if DialogicSingleton.latest_dialog_node:
+		var save_data = DialogicSingleton.latest_dialog_node.get_current_state_info()
+		DialogicSingleton.save_state_and_definitions(save_name, save_data)
+
+## Similar to the start function, but loads state info and definitions from a given save folder..
+## 
+## @param save_name		The name of the save folder.
+##						Leaving this empty load from the default files.
+## The other @params work like the ones in start()
+static func resume_from_save(save_name: String, dialog_scene_path: String="res://addons/dialogic/Dialog.tscn", debug_mode: bool=false, use_canvas_instead=true):
+	var dialog_scene = load(dialog_scene_path)
+	var dialog_node = null
+	var canvas_dialog_node = null
+	var returned_dialog_node = null
+	
+	if use_canvas_instead:
+		var canvas_dialog_script = load("res://addons/dialogic/Nodes/canvas_dialog_node.gd")
+		canvas_dialog_node = canvas_dialog_script.new()
+		canvas_dialog_node.set_dialog_node_scene(dialog_scene)
+		dialog_node = canvas_dialog_node.dialog_node
+	else:
+		dialog_node = dialog_scene.instance()
+	
+	dialog_node.reset_saves = false
+	dialog_node.debug_mode = debug_mode
+	
+	returned_dialog_node = dialog_node if not canvas_dialog_node else canvas_dialog_node
+	
+	dialog_node.resume_state_from_info(DialogicSingleton.resume_from_save(save_name))
+	print("resumed")
+	return returned_dialog_node
+
+
+static func get_save_names_array() -> Array:
+	return DialogicSingleton.get_save_names_array()
+
 ## Gets default values for definitions.
 ## 
 ## @returns						Dictionary in the format {'variables': [], 'glossary': []}
 static func get_default_definitions() -> Dictionary:
-	return Engine.get_singleton('DialogicSingleton').get_default_definitions()
+	return DialogicSingleton.get_default_definitions()
 
 
 ## Gets currently saved values for definitions.
