@@ -51,9 +51,6 @@ func save_state_and_definitions(save_name: String, state_info: Dictionary) -> vo
 	DialogicResources.save_state_info(save_name, state_info)
 
 
-func get_save_names_array() -> Array:
-	return DialogicResources.get_saves_folders()
-
 ## *****************************************************************************
 ##						DEFINITIONS: VARIABLES/GLOSSARY
 ## *****************************************************************************

@@ -78,6 +78,7 @@ static func start_from_save(initial_timeline: String, dialog_scene_path: String=
 		current = initial_timeline
 	return start(current, false, dialog_scene_path, debug_mode)
 
+
 ## Saves the current definitions and the latest added dialog nodes state info.
 ## 
 ## @param save_name		The name of the save folder. To load this save you have to specify the same
@@ -87,6 +88,7 @@ static func save_current_state(save_name: String = '') -> void:
 	if DialogicSingleton.latest_dialog_node:
 		var save_data = DialogicSingleton.latest_dialog_node.get_current_state_info()
 		DialogicSingleton.save_state_and_definitions(save_name, save_data)
+
 
 ## Similar to the start function, but loads state info and definitions from a given save folder..
 ## 
@@ -117,8 +119,18 @@ static func resume_from_save(save_name: String, dialog_scene_path: String="res:/
 	return returned_dialog_node
 
 
+## Returns an array with the names of all available saves.
+## 
+## @param save_name		The name of the save folder.
 static func get_save_names_array() -> Array:
-	return DialogicSingleton.get_save_names_array()
+	return DialogicResources.get_saves_folders()
+
+
+## Will permanently erase the save data with the given name.
+## 
+static func erase_save(save_name: String):
+	DialogicResources.remove_save_folder(save_name)
+
 
 ## Gets default values for definitions.
 ## 

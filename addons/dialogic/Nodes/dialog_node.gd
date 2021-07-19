@@ -47,9 +47,8 @@ var questions #for keeping track of the questions answered
 var current_background = ""
 
 func _ready():
-	print("ready")
 	# set this dialog as a the latest
-	DialogicUtil.get_singleton('DialogicSingleton', self).latest_dialog_node = self
+	DialogicSingleton.latest_dialog_node = self
 	
 	# Loading the config files
 	load_config_files()
