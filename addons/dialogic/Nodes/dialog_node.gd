@@ -11,7 +11,7 @@ var waiting: bool = false
 var preview: bool = false
 var definitions: Dictionary = {}
 var definition_visible: bool = false
-var while_show_up_animation: bool = false
+var while_dialog_animation: bool = false
 
 var settings: ConfigFile
 var current_theme: ConfigFile
@@ -351,7 +351,7 @@ func _process(delta):
 			$TextBubble/NextIndicatorContainer/NextIndicator.visible = false
 	
 	# Hide if fading in
-	if while_show_up_animation:
+	if while_dialog_animation:
 		$TextBubble/NextIndicatorContainer/NextIndicator.visible = false
 
 
@@ -361,7 +361,7 @@ func _input(event: InputEvent) -> void:
 			# Skip to end if key is pressed during the text animation
 			$TextBubble.skip()
 		else:
-			if waiting_for_answer == false and waiting_for_input == false and while_show_up_animation == false:
+			if waiting_for_answer == false and waiting_for_input == false and while_dialog_animation == false:
 				_load_next_event()
 		if settings.has_section_key('dialog', 'propagate_input'):
 			var propagate_input: bool = settings.get_value('dialog', 'propagate_input')
@@ -677,6 +677,7 @@ func event_handler(event: Dictionary):
 			var transition_duration = event.get('transition_duration', 1.0)
 			transition_duration = transition_duration
 			close_dialog_event(transition_duration)
+			while_dialog_animation = true
 		# Wait seconds event
 		'dialogic_023':
 			emit_signal("event_start", "wait", event)
@@ -1084,7 +1085,7 @@ func open_dialog_animation(transition_duration):
 	if transition_duration > 0:
 		$TextBubble.update_text('') # Clearing the text
 		$TextBubble.modulate = Color(1,1,1,0)
-		while_show_up_animation = true
+		while_dialog_animation = true
 		var tween = Tween.new()
 		add_child(tween)
 		tween.interpolate_property($TextBubble, "modulate",
@@ -1098,7 +1099,7 @@ func open_dialog_animation(transition_duration):
 
 func clean_fade_in_tween(object, key, node):
 	node.queue_free()
-	while_show_up_animation = false
+	while_dialog_animation = false
 	_init_dialog()
 
 

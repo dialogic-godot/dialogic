@@ -4,6 +4,7 @@
 - Fixing the "first time running" bug where you had to reboot dialogic after enabling it for the first time
 - Fixing a bug where if you had a node selected in the editor you couldn't open any resource picker
 - Fixed a bug when trying to add a new resource after removing one
+- Fixed the issue that allowed you to keep loading messages after a dialog close event
 - Simplified some internal code
 - Settings Editor
   - Added a default action key selector so you don't have to set it per theme. The theme action key settings will overwrite the one set in settings. 
