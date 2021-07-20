@@ -1,0 +1,53 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://addons/dialogic/Editor/Events/Parts/ResourcePickers/Characters/EventPart_VoicePicker.gd" type="Script" id=1]
+[ext_resource path="res://addons/dialogic/Images/Event Icons/Main Icons/audio-event.svg" type="Texture" id=2]
+[ext_resource path="res://addons/dialogic/Images/Context Menus/Remove.svg" type="Texture" id=3]
+
+[node name="VoicePicker" type="VBoxContainer"]
+margin_right = 40.0
+margin_bottom = 40.0
+alignment = 1
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+margin_top = 9.0
+margin_right = 162.0
+margin_bottom = 31.0
+
+[node name="Icon" type="TextureRect" parent="HBoxContainer"]
+visible = false
+margin_right = 22.0
+margin_bottom = 22.0
+texture = ExtResource( 2 )
+
+[node name="AudioName" type="Label" parent="HBoxContainer"]
+margin_top = 4.0
+margin_right = 102.0
+margin_bottom = 18.0
+text = "Voice :No Audio"
+
+[node name="SelectorButton" type="Button" parent="HBoxContainer"]
+margin_left = 106.0
+margin_right = 130.0
+margin_bottom = 22.0
+text = "..."
+
+[node name="Clear" type="Button" parent="HBoxContainer"]
+margin_left = 134.0
+margin_right = 162.0
+margin_bottom = 22.0
+icon = ExtResource( 3 )
+
+[node name="Listen" type="Button" parent="HBoxContainer"]
+visible = false
+margin_left = 149.0
+margin_right = 200.0
+margin_bottom = 22.0
+text = "Listen"
+
+[connection signal="pressed" from="HBoxContainer/SelectorButton" to="." method="_on_SelectorButton_pressed"]
+[connection signal="pressed" from="HBoxContainer/Clear" to="." method="_on_Clear_pressed"]

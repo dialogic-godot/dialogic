@@ -13,9 +13,6 @@ var margin = 10
 
 func _ready():
 	set_deferred('rect_size.y', 0)
-	nodes['title'].bbcode_enabled = true
-	nodes['body'].bbcode_enabled = true
-	nodes['extra'].bbcode_enabled = true
 
 
 func _process(_delta):
@@ -34,15 +31,15 @@ func load_preview(info):
 	nodes['extra'].visible = false
 	
 	if info['title'] != '':
-		nodes['title'].bbcode_text = info['title']
+		nodes['title'].text = info['title']
 		nodes['title'].visible = true
 
 	if info['body'] != '':
-		nodes['body'].bbcode_text = info['body']
+		nodes['body'].text = info['body']
 		nodes['body'].visible = true
 	
 	if info['extra'] != '':
-		nodes['extra'].bbcode_text = info['extra']
+		nodes['extra'].text = info['extra']
 		nodes['extra'].visible = true
 
 

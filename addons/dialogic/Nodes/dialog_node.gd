@@ -210,14 +210,18 @@ func parse_text_lines(unparsed_dialog_script: Dictionary) -> Dictionary:
 				pass
 			elif '\n' in event['text'] and preview == false and split_new_lines == true:
 				var lines = event['text'].split('\n')
+				var voice_array = [''] if not (event.has('voice_path')) else event['voice_path']
+				var _c = 0 #counter for the arrays 
 				for line in lines:
 					if not line.empty():
 						new_events.append({
 							'event_id':'dialogic_001',
 							'text': line,
 							'character': event['character'],
-							'portrait': event['portrait']
+							'portrait': event['portrait'],
+							'voice_path' : [voice_array[_c]] if _c < voice_array.size() else [''],
 						})
+					_c += 1 
 			else:
 				new_events.append(event)
 		else:
@@ -360,6 +364,8 @@ func _input(event: InputEvent) -> void:
 		if not $TextBubble.is_finished():
 			# Skip to end if key is pressed during the text animation
 			$TextBubble.skip()
+			#Interrup the voice lines
+			$FX/CharacterVoice.stop_voice()
 		else:
 			if waiting_for_answer == false and waiting_for_input == false and while_dialog_animation == false:
 				_load_next_event()
@@ -509,6 +515,17 @@ func get_character(character_id):
 			return c
 	return {}
 
+	
+func handle_voice_lines(event):
+	if Engine.is_editor_hint():
+		return
+	#play voice line if it is enabled 
+	if DialogicResources.get_settings_config().get_value("dialog", "enable_voices", false) :
+		if event.has('voice_path'):
+			$FX/CharacterVoice.play_voice(event["voice_path"][0])
+		else:
+			$FX/CharacterVoice.stop_voice()
+
 
 func event_handler(event: Dictionary):
 	# Handling an event and updating the available nodes accordingly.
@@ -528,6 +545,8 @@ func event_handler(event: Dictionary):
 				var character_data = get_character(event['character'])
 				update_name(character_data)
 				grab_portrait_focus(character_data, event)
+			#handle voice lines 
+			handle_voice_lines(event)
 			update_text(event['text'])
 		# Join event
 		'dialogic_002':
@@ -590,6 +609,8 @@ func event_handler(event: Dictionary):
 				var character_data = get_character(event['character'])
 				update_name(character_data)
 				grab_portrait_focus(character_data, event)
+			#handle voice lines 
+			handle_voice_lines(event)
 			update_text(event['question'])
 		# Choice event
 		'dialogic_011':

@@ -9,6 +9,7 @@ export (bool) var allow_portrait_defintion := true
 onready var character_picker = $HBox/CharacterPicker
 onready var portrait_picker = $HBox/PortraitPicker
 onready var definition_picker = $HBox/DefinitionPicker
+onready var voice_picker = $HBox/VoicePicker
 
 
 # used to connect the signals
@@ -18,6 +19,8 @@ func _ready():
 	portrait_picker.allow_dont_change = allow_portrait_dont_change
 	portrait_picker.allow_definition = allow_portrait_defintion
 	definition_picker.connect("data_changed", self, "_on_DefinitionPicker_data_changed")
+	voice_picker.connect("data_changed", self, "_on_VoicePicker_data_changed")
+	voice_picker.editor_reference = editor_reference
 	
 # called by the event block
 func load_data(data:Dictionary):
@@ -28,6 +31,8 @@ func load_data(data:Dictionary):
 	portrait_picker.load_data(data)
 	character_picker.load_data(data)
 	portrait_picker.visible = get_character_data() and len(get_character_data()['portraits']) > 1
+	voice_picker.load_data(data)
+	voice_picker.visible = get_voice_status()
 	
 	
 	var has_port_defn = data['portrait'] == '[Definition]'
@@ -44,6 +49,11 @@ func get_character_data():
 	for ch in DialogicUtil.get_character_list():
 		if ch['file'] == event_data['character']:
 			return ch
+
+
+func get_voice_status():
+	var config = DialogicResources.get_settings_config()
+	return config.get_value("dialog", "enable_voices", false)
 
 
 func _on_CharacterPicker_data_changed(data):
@@ -72,4 +82,13 @@ func _on_DefinitionPicker_data_changed(data):
 	event_data['port_defn'] = data['definition']
 
 	# informs the parent about the changes!
+	data_changed()
+
+
+func _on_VoicePicker_data_changed(data):
+	voice_picker.visible = get_voice_status()
+	event_data["voice_path"] = data["voice_path"]
+	
+	voice_picker.load_data(data)
+	# infroms the parent about the changes 
 	data_changed()
