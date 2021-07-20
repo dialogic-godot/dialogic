@@ -7,6 +7,7 @@
 - Simplified some internal code
 - Settings Editor
   - Added a default action key selector so you don't have to set it per theme. The theme action key settings will overwrite the one set in settings. 
+  - Added new setting to select Dialogic's Canvas Layer [[RedXGames]](https://github.com/RedXGames)
 
 ## v1.2.4 - Gotta go fast
 - Fixed an issue with the default scale of the portraits
