@@ -200,7 +200,7 @@ static func add_folder(path:String, folder_name:String):
 static func remove_folder(folder_path:String, delete_files:bool = true):
 	#print("[D] Removing 'Folder' "+folder_path)
 	for folder in get_folder_at_path(folder_path)['folders']:
-		remove_folder(folder_path+"/"+folder)
+		remove_folder(folder_path+"/"+folder, delete_files)
 	
 	if delete_files:
 		for file in get_folder_at_path(folder_path)['files']:
