@@ -39,6 +39,7 @@ var characters
 
 onready var ChoiceButton = load("res://addons/dialogic/Nodes/ChoiceButton.tscn")
 onready var Portrait = load("res://addons/dialogic/Nodes/Portrait.tscn")
+onready var Background = load("res://addons/dialogic/Nodes/Background.tscn")
 var dialog_script: Dictionary = {}
 var questions #for keeping track of the questions answered
 
@@ -642,34 +643,32 @@ func event_handler(event: Dictionary):
 		# Change Backround event
 		'dialogic_021':
 			emit_signal("event_start", "background", event)
+			var fade_time = event.get('fade_duration', 1)
+			var value = event.get('background', '')
 			var background = get_node_or_null('Background')
-			if event['background'] == '' and background != null:
-				background.queue_free()
-			else:
-				if background == null:
-					background = TextureRect.new()
-					background.expand = true
-					background.name = 'Background'
-					background.anchor_right = 1
-					background.anchor_bottom = 1
-					background.stretch_mode = TextureRect.STRETCH_SCALE
-					background.show_behind_parent = true
-					background.mouse_filter = Control.MOUSE_FILTER_IGNORE
-					call_deferred('resize_main') # Executing the resize main to update the background size
-					
-					add_child(background)
-				background.texture = null
-				if (background.get_child_count() > 0):
-					for c in background.get_children():
-						c.get_parent().remove_child(c)
-						c.queue_free()
-				if (event['background'].ends_with('.tscn')):
+			
+			if background != null:
+				background.name = 'BackgroundFadingOut'
+				background.fade_out(fade_time)
+			
+			background = Background.instance()
+			background.name = 'Background'
+			
+			if value != '':
+				add_child(background)
+				background.create_tween()
+				if value.ends_with('.tscn'):
 					var bg_scene = load(event['background'])
-					if (bg_scene):
-						bg_scene = bg_scene.instance()
-						background.add_child(bg_scene)
-				elif (event['background'] != ''):
-					background.texture = load(event['background'])
+					bg_scene = bg_scene.instance()
+					background.modulate = Color(1,1,1,0)
+					background.fade_in(fade_time)
+					background.add_child(bg_scene)
+				else:
+					background.texture = load(value)
+					background.create_tween()
+					background.fade_in(fade_time)
+				call_deferred('resize_main') # Executing the resize main to update the background size
+
 			_load_next_event()
 		# Close Dialog event
 		'dialogic_022':
@@ -678,6 +677,10 @@ func event_handler(event: Dictionary):
 			transition_duration = transition_duration
 			close_dialog_event(transition_duration)
 			while_dialog_animation = true
+			var background = get_node_or_null('Background')
+			if background != null:
+				background.name = 'BackgroundFadingOut'
+				background.fade_out(transition_duration)
 		# Wait seconds event
 		'dialogic_023':
 			emit_signal("event_start", "wait", event)

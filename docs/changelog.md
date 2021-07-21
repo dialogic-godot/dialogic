@@ -7,6 +7,7 @@
 - Fixed the issue that allowed you to keep loading messages after a dialog close event
 - Enabling bbcode to glossary entries
 - Simplified some internal code
+- Adding new setting to the Set Background event to add fade-in time
 - Settings Editor
   - Added a default action key selector so you don't have to set it per theme. The theme action key settings will overwrite the one set in settings. 
   - Added new setting to select Dialogic's Canvas Layer [[RedXGames]](https://github.com/RedXGames)
