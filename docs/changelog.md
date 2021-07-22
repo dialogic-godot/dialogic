@@ -4,9 +4,14 @@
 - Fixing the "first time running" bug where you had to reboot dialogic after enabling it for the first time
 - Fixing a bug where if you had a node selected in the editor you couldn't open any resource picker
 - Fixed a bug when trying to add a new resource after removing one
+- Fixed the issue that allowed you to keep loading messages after a dialog close event
+- Enabling bbcode to glossary entries
 - Simplified some internal code
+- Adding new setting to the Set Background event to add fade-in time
+- Fixed an issue that caused nested timelines to be deleted whem moving directories [[zaknafean]](https://github.com/zaknafean)
 - Settings Editor
   - Added a default action key selector so you don't have to set it per theme. The theme action key settings will overwrite the one set in settings. 
+  - Added new setting to select Dialogic's Canvas Layer [[RedXGames]](https://github.com/RedXGames)
 
 ## v1.2.4 - Gotta go fast
 - Fixed an issue with the default scale of the portraits

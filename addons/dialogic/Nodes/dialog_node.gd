@@ -11,7 +11,7 @@ var waiting: bool = false
 var preview: bool = false
 var definitions: Dictionary = {}
 var definition_visible: bool = false
-var while_show_up_animation: bool = false
+var while_dialog_animation: bool = false
 
 var settings: ConfigFile
 var current_theme: ConfigFile
@@ -39,6 +39,7 @@ var characters
 
 onready var ChoiceButton = load("res://addons/dialogic/Nodes/ChoiceButton.tscn")
 onready var Portrait = load("res://addons/dialogic/Nodes/Portrait.tscn")
+onready var Background = load("res://addons/dialogic/Nodes/Background.tscn")
 var dialog_script: Dictionary = {}
 var questions #for keeping track of the questions answered
 
@@ -351,7 +352,7 @@ func _process(delta):
 			$TextBubble/NextIndicatorContainer/NextIndicator.visible = false
 	
 	# Hide if fading in
-	if while_show_up_animation:
+	if while_dialog_animation:
 		$TextBubble/NextIndicatorContainer/NextIndicator.visible = false
 
 
@@ -361,7 +362,7 @@ func _input(event: InputEvent) -> void:
 			# Skip to end if key is pressed during the text animation
 			$TextBubble.skip()
 		else:
-			if waiting_for_answer == false and waiting_for_input == false and while_show_up_animation == false:
+			if waiting_for_answer == false and waiting_for_input == false and while_dialog_animation == false:
 				_load_next_event()
 		if settings.has_section_key('dialog', 'propagate_input'):
 			var propagate_input: bool = settings.get_value('dialog', 'propagate_input')
@@ -630,7 +631,7 @@ func event_handler(event: Dictionary):
 				operation = event["operation"]
 			var value = event['set_value']
 			if event.get('set_random', false):
-				value = str(randi()%int(event.get("random_upper_limit", 100))+event.get('random_lower_limit', 0))
+				value = str(randi()%int(event.get("random_upper_limit", 100)-event.get('random_lower_limit', 0))+event.get('random_lower_limit', 0))
 			DialogicUtil.get_singleton('DialogicSingleton', self).set_variable_from_id(event['definition'], value, operation)
 			_load_next_event()
 		
@@ -642,34 +643,32 @@ func event_handler(event: Dictionary):
 		# Change Backround event
 		'dialogic_021':
 			emit_signal("event_start", "background", event)
+			var fade_time = event.get('fade_duration', 1)
+			var value = event.get('background', '')
 			var background = get_node_or_null('Background')
-			if event['background'] == '' and background != null:
-				background.queue_free()
-			else:
-				if background == null:
-					background = TextureRect.new()
-					background.expand = true
-					background.name = 'Background'
-					background.anchor_right = 1
-					background.anchor_bottom = 1
-					background.stretch_mode = TextureRect.STRETCH_SCALE
-					background.show_behind_parent = true
-					background.mouse_filter = Control.MOUSE_FILTER_IGNORE
-					call_deferred('resize_main') # Executing the resize main to update the background size
-					
-					add_child(background)
-				background.texture = null
-				if (background.get_child_count() > 0):
-					for c in background.get_children():
-						c.get_parent().remove_child(c)
-						c.queue_free()
-				if (event['background'].ends_with('.tscn')):
+			
+			if background != null:
+				background.name = 'BackgroundFadingOut'
+				background.fade_out(fade_time)
+			
+			background = Background.instance()
+			background.name = 'Background'
+			
+			if value != '':
+				add_child(background)
+				background.create_tween()
+				if value.ends_with('.tscn'):
 					var bg_scene = load(event['background'])
-					if (bg_scene):
-						bg_scene = bg_scene.instance()
-						background.add_child(bg_scene)
-				elif (event['background'] != ''):
-					background.texture = load(event['background'])
+					bg_scene = bg_scene.instance()
+					background.modulate = Color(1,1,1,0)
+					background.fade_in(fade_time)
+					background.add_child(bg_scene)
+				else:
+					background.texture = load(value)
+					background.create_tween()
+					background.fade_in(fade_time)
+				call_deferred('resize_main') # Executing the resize main to update the background size
+
 			_load_next_event()
 		# Close Dialog event
 		'dialogic_022':
@@ -677,6 +676,11 @@ func event_handler(event: Dictionary):
 			var transition_duration = event.get('transition_duration', 1.0)
 			transition_duration = transition_duration
 			close_dialog_event(transition_duration)
+			while_dialog_animation = true
+			var background = get_node_or_null('Background')
+			if background != null:
+				background.name = 'BackgroundFadingOut'
+				background.fade_out(transition_duration)
 		# Wait seconds event
 		'dialogic_023':
 			emit_signal("event_start", "wait", event)
@@ -1084,7 +1088,7 @@ func open_dialog_animation(transition_duration):
 	if transition_duration > 0:
 		$TextBubble.update_text('') # Clearing the text
 		$TextBubble.modulate = Color(1,1,1,0)
-		while_show_up_animation = true
+		while_dialog_animation = true
 		var tween = Tween.new()
 		add_child(tween)
 		tween.interpolate_property($TextBubble, "modulate",
@@ -1098,7 +1102,7 @@ func open_dialog_animation(transition_duration):
 
 func clean_fade_in_tween(object, key, node):
 	node.queue_free()
-	while_show_up_animation = false
+	while_dialog_animation = false
 	_init_dialog()
 
 

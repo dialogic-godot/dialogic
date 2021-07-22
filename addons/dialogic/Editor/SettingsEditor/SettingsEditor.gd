@@ -16,10 +16,12 @@ onready var nodes = {
 	'save_definitions_on_end': $VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer3/HBoxContainer4/SaveDefinitionsOnEnd,
 	'delay_after_options': $VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer/HBoxContainer/LineEdit,
 	'default_action_key': $VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer/HBoxContainer2/DefaultActionKey,
+	'canvas_layer' : $VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer/HBoxContainer3/CanvasLayer,
 }
 
 var THEME_KEYS := [
 	'advanced_themes',
+	'canvas_layer',
 	]
 
 var INPUT_KEYS := [
@@ -51,6 +53,7 @@ func _ready():
 	nodes['delay_after_options'].connect('text_changed', self, '_on_delay_options_text_changed')
 	# TODO move to theme section later
 	nodes['advanced_themes'].connect('toggled', self, '_on_item_toggled', ['dialog', 'advanced_themes'])
+	nodes['canvas_layer'].connect('text_changed', self, '_on_canvas_layer_text_changed')
 
 	nodes['default_action_key'].connect('pressed', self, '_on_default_action_key_presssed')
 	nodes['default_action_key'].connect('item_selected', self, '_on_default_action_key_item_selected')
@@ -137,6 +140,10 @@ func _on_default_action_key_item_selected(index) -> void:
 	if index == 0:
 		print('here')
 	set_value('input', 'default_action_key', nodes['default_action_key'].text)
+
+
+func _on_canvas_layer_text_changed(text) -> void:
+	set_value('theme', 'canvas_layer', text)
 
 
 # Reading and saving data to the settings file
