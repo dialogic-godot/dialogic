@@ -2,7 +2,6 @@ extends AudioStreamPlayer
 
 
 func play_voice(data:Dictionary) -> void:
-	print(data)
 	if data == {}:
 		stop_voice()
 		return 
@@ -14,7 +13,7 @@ func play_voice(data:Dictionary) -> void:
 		bus	 = data['audio_bus']
 	
 	if data.has('file'):
-		if data['file'] == null:
+		if data['file'] == '':
 			stop_voice()
 			return 
 		var s = load(data['file'])
