@@ -12,18 +12,18 @@ __meta__ = {
 }
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
-margin_right = 1920.0
-margin_bottom = 1080.0
+margin_right = 1024.0
+margin_bottom = 600.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="HBoxContainer3" type="HBoxContainer" parent="VBoxContainer"]
-margin_right = 1920.0
-margin_bottom = 480.0
+margin_right = 1024.0
+margin_bottom = 508.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer3"]
 margin_right = 356.0
-margin_bottom = 480.0
+margin_bottom = 508.0
 custom_constants/separation = 16
 
 [node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer"]
@@ -50,11 +50,6 @@ margin_left = 50.0
 margin_right = 190.0
 margin_bottom = 20.0
 rect_min_size = Vector2( 140, 0 )
-text = "main_theme"
-items = [ "main_theme", null, false, 0, {
-"file": "theme-1626129237.cfg"
-} ]
-selected = 0
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer"]
 margin_top = 50.0
@@ -94,7 +89,7 @@ text = "1"
 [node name="VBoxContainer2" type="VBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer"]
 margin_top = 118.0
 margin_right = 356.0
-margin_bottom = 330.0
+margin_bottom = 358.0
 
 [node name="SectionTitle" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2" instance=ExtResource( 2 )]
 margin_right = 356.0
@@ -191,16 +186,32 @@ margin_right = 304.0
 margin_bottom = 24.0
 pressed = true
 
-[node name="Label2" type="Label" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2"]
+[node name="HBoxContainer7" type="HBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2"]
 margin_top = 170.0
 margin_right = 356.0
-margin_bottom = 184.0
+margin_bottom = 194.0
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2/HBoxContainer7"]
+margin_top = 5.0
+margin_right = 95.0
+margin_bottom = 19.0
+text = "Enable voices :"
+
+[node name="EnableVoices" type="CheckBox" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2/HBoxContainer7"]
+margin_left = 99.0
+margin_right = 123.0
+margin_bottom = 24.0
+
+[node name="Label2" type="Label" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2"]
+margin_top = 198.0
+margin_right = 356.0
+margin_bottom = 212.0
 text = "Experimental Translations:"
 
 [node name="HBoxContainer6" type="HBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2"]
-margin_top = 188.0
+margin_top = 216.0
 margin_right = 356.0
-margin_bottom = 212.0
+margin_bottom = 240.0
 
 [node name="Label" type="Label" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2/HBoxContainer6"]
 margin_top = 5.0
@@ -215,9 +226,9 @@ margin_bottom = 24.0
 hint_tooltip = "If enabled, inputs for text events will be treated as keys for tr()"
 
 [node name="VBoxContainer3" type="VBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer"]
-margin_top = 346.0
+margin_top = 374.0
 margin_right = 356.0
-margin_bottom = 480.0
+margin_bottom = 508.0
 
 [node name="SectionTitle" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer3" instance=ExtResource( 2 )]
 margin_right = 356.0
@@ -299,7 +310,7 @@ pressed = true
 [node name="VBoxContainer2" type="VBoxContainer" parent="VBoxContainer/HBoxContainer3"]
 margin_left = 360.0
 margin_right = 664.0
-margin_bottom = 480.0
+margin_bottom = 508.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer2"]
 margin_right = 304.0

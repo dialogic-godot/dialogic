@@ -2,6 +2,7 @@ tool
 extends "res://addons/dialogic/Editor/Events/Parts/EventPart.gd"
 
 # has an event_data variable that stores the current data!!!
+signal audio_loaded
 
 export (String) var event_name = "Audio Event"
 
@@ -47,6 +48,7 @@ func load_data(data:Dictionary):
 	if data.has('volume'):
 		volume_input.value = data['volume']
 	load_audio(data['file'])
+	
 
 # has to return the wanted preview, only useful for body parts
 func get_preview():
@@ -65,7 +67,7 @@ func _on_ButtonAudio_pressed():
 
 func _on_file_selected(path, target):
 	target.load_audio(path) # why is the targer needed? Couldn't it just call itself?
-
+	emit_signal("audio_loaded")
 
 ### Loading the audio
 func load_audio(path: String):
@@ -76,7 +78,9 @@ func load_audio(path: String):
 		clear_button.disabled = false
 		preview_play_button.disabled = false
 		event_data['file'] = path
-		
+		#update the bus and the volume too so it works with voices
+		event_data['audio_bus'] = bus_selector.get_item_text(max(0, bus_selector.selected))
+		event_data['volume'] = volume_input.value
 		
 		if event_data.has('audio'): event_data['audio'] = 'play'
 		if event_data.has('background-music'): event_data['background-music'] = 'play'
@@ -95,7 +99,8 @@ func load_audio(path: String):
 		data_changed()
 
 		hide_options()
-
+	
+	
 
 func _on_ButtonPreviewPlay_pressed():
 	if audio_preview.is_playing():

@@ -211,14 +211,21 @@ func parse_text_lines(unparsed_dialog_script: Dictionary) -> Dictionary:
 				pass
 			elif '\n' in event['text'] and preview == false and split_new_lines == true:
 				var lines = event['text'].split('\n')
+				var counter = 0 
 				for line in lines:
 					if not line.empty():
-						new_events.append({
+						var n_event = {
 							'event_id':'dialogic_001',
 							'text': line,
 							'character': event['character'],
-							'portrait': event['portrait']
-						})
+							'portrait': event['portrait'],
+						}
+						#assigning voices to the new events 
+						if event.has('voice_data'):
+							if event['voice_data'].has(str(counter)):
+								n_event['voice_data'] = {'0':event['voice_data'][str(counter)]}
+						new_events.append(n_event)
+					counter += 1 
 			else:
 				new_events.append(event)
 		else:
@@ -361,6 +368,8 @@ func _input(event: InputEvent) -> void:
 		if not $TextBubble.is_finished():
 			# Skip to end if key is pressed during the text animation
 			$TextBubble.skip()
+			# Cut the voice 
+			$FX/CharacterVoice.stop_voice()
 		else:
 			if waiting_for_answer == false and waiting_for_input == false and while_dialog_animation == false:
 				_load_next_event()
@@ -511,6 +520,20 @@ func get_character(character_id):
 	return {}
 
 
+func handle_voice(event):
+	var settings_file = DialogicResources.get_settings_config()
+	if not settings_file.get_value('dialog', 'enable_voices', false):
+		return
+	# In game only 
+	if Engine.is_editor_hint():
+		return
+	
+	if event.has('voice_data'):
+		var voice_data = event['voice_data']
+		if voice_data.has('0'):
+			$FX/CharacterVoice.play_voice(voice_data['0'])
+
+
 func event_handler(event: Dictionary):
 	# Handling an event and updating the available nodes accordingly.
 	$TextBubble.reset()
@@ -529,6 +552,8 @@ func event_handler(event: Dictionary):
 				var character_data = get_character(event['character'])
 				update_name(character_data)
 				grab_portrait_focus(character_data, event)
+			#voice 
+			handle_voice(event)
 			update_text(event['text'])
 		# Join event
 		'dialogic_002':
@@ -591,6 +616,8 @@ func event_handler(event: Dictionary):
 				var character_data = get_character(event['character'])
 				update_name(character_data)
 				grab_portrait_focus(character_data, event)
+			#voice 
+			handle_voice(event)
 			update_text(event['question'])
 		# Choice event
 		'dialogic_011':
