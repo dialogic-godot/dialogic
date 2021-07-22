@@ -10,7 +10,6 @@ content_margin_left = 89.5
 content_margin_right = 119.333
 
 [sub_resource type="DynamicFont" id=2]
-size = 14
 use_filter = true
 extra_spacing_char = 2
 extra_spacing_space = 2
