@@ -112,12 +112,10 @@ func _set_event_name(text: String):
 
 func _set_header(scene: PackedScene):
 	header_node = _set_content(header_content_container, scene)
-	header_node.editor_reference = editor_reference
 
 
 func _set_body(scene: PackedScene):
 	body_node = _set_content(body_content_container, scene)
-	body_node.editor_reference = editor_reference
 	# show the expand toggle
 	expand_control.set_enabled(body_node != null)
 
@@ -140,6 +138,7 @@ func _set_content(container: Control, scene: PackedScene):
 		container.remove_child(c)
 	if scene != null:
 		var node = scene.instance()
+		node.editor_reference = editor_reference
 		container.add_child(node)
 #		node.set_owner(get_tree().get_edited_scene_root())
 		return node
