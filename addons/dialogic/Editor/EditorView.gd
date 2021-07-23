@@ -19,6 +19,7 @@ func _ready():
 	$MainPanel/ValueEditor.editor_reference = self
 	$MainPanel/GlossaryEntryEditor.editor_reference = self
 	$MainPanel/ThemeEditor.editor_reference = self
+	$MainPanel/SettingsEditor.editor_reference = self
 
 	$MainPanel/MasterTreeContainer/MasterTree.connect("editor_selected", self, 'on_master_tree_editor_selected')
 

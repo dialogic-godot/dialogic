@@ -20,8 +20,8 @@ onready var nodes = {
 	'default_action_key': $VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer/HBoxContainer2/DefaultActionKey,
 	'canvas_layer' : $VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer/HBoxContainer3/CanvasLayer,
 
-	'custom_events_folder_button':$VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer4/CustomEvents/CustomEventsFolder,
-	'custom_events_refresh':$VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer4/CustomEvents/RefreshCustomEvents,
+	'custom_events_folder_button':$VBoxContainer/HBoxContainer3/VBoxContainer2/TimelineSection/CustomEvents/CustomEventsFolder,
+	'custom_events_refresh':$VBoxContainer/HBoxContainer3/VBoxContainer2/TimelineSection/CustomEvents/RefreshCustomEvents,
 	}
 
 var THEME_KEYS := [
@@ -59,7 +59,9 @@ func _ready():
 	# TODO move to theme section later
 	nodes['advanced_themes'].connect('toggled', self, '_on_item_toggled', ['dialog', 'advanced_themes'])
 	nodes['canvas_layer'].connect('text_changed', self, '_on_canvas_layer_text_changed')
-
+	
+	nodes['custom_events_refresh'].icon = get_icon("Loop", "EditorIcons")
+	
 	nodes['default_action_key'].connect('pressed', self, '_on_default_action_key_presssed')
 	nodes['default_action_key'].connect('item_selected', self, '_on_default_action_key_item_selected')
 		
@@ -164,9 +166,9 @@ func _on_CustomEventsFolder_pressed():
 func _on_CustomEventsFolder_selected(path, target):
 	DialogicResources.set_settings_value("editor", 'custom_events_path', path)
 	nodes['custom_events_folder_button'].text = DialogicResources.get_filename_from_path(path)
-	editor_reference.timeline_editor.update_custom_events()
+	editor_reference.get_node("MainPanel/TimelineEditor").update_custom_events()
 
 
 
 func _on_RefreshCustomEvents_pressed():
-	editor_reference.timeline_editor.update_custom_events()
+	editor_reference.get_node("MainPanel/TimelineEditor").update_custom_events()
