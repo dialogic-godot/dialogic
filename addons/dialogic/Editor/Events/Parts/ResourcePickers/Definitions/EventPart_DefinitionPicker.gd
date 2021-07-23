@@ -42,21 +42,19 @@ func _on_PickerMenu_selected(index, menu):
 	data_changed()
 
 func _on_PickerMenu_about_to_show():
-	build_PickerMenu()
-
-func build_PickerMenu():
+	# Building the picker menu()
 	picker_menu.get_popup().clear()
-	var folder_structure = DialogicUtil.get_definitions_folder_structure()
-
 	## building the root level
-	build_PickerMenuFolder(picker_menu.get_popup(), folder_structure, "MenuButton")
+	build_PickerMenuFolder(picker_menu.get_popup(), DialogicUtil.get_definitions_folder_structure(), "MenuButton")
 
 # is called recursively to build all levels of the folder structure
 func build_PickerMenuFolder(menu:PopupMenu, folder_structure:Dictionary, current_folder_name:String):
 	var index = 0
 	for folder_name in folder_structure['folders'].keys():
 		var submenu = PopupMenu.new()
-		menu.add_submenu_item(folder_name, build_PickerMenuFolder(submenu, folder_structure['folders'][folder_name], folder_name))
+		var submenu_name = build_PickerMenuFolder(submenu, folder_structure['folders'][folder_name], folder_name)
+		submenu.name = submenu_name
+		menu.add_submenu_item(folder_name, submenu_name)
 		menu.set_item_icon(index, get_icon("Folder", "EditorIcons"))
 		menu.add_child(submenu)
 		index += 1
@@ -65,14 +63,11 @@ func build_PickerMenuFolder(menu:PopupMenu, folder_structure:Dictionary, current
 	for file in folder_structure['files']:
 		if files_info[file]["type"] == 0:
 			menu.add_item(files_info[file]['name'])
-			#menu.set_item_icon(index, editor_reference.get_node("MainPanel/MasterTreeContainer/MasterTree").definition_icon)
 			menu.set_item_icon(index, load("res://addons/dialogic/Images/Resources/definition.svg"))
-			
 			menu.set_item_metadata(index, {'file':file})
 			index += 1
 	
 	if not menu.is_connected("index_pressed", self, "_on_PickerMenu_selected"):
 		menu.connect("index_pressed", self, '_on_PickerMenu_selected', [menu])
 	
-	menu.name = current_folder_name
 	return current_folder_name

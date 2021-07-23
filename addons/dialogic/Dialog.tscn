@@ -123,4 +123,6 @@ __meta__ = {
 
 [node name="Timer" type="Timer" parent="DefinitionInfo"]
 
+[node name="OptionsDelayedInput" type="Timer" parent="."]
+
 [connection signal="timeout" from="DefinitionInfo/Timer" to="." method="_on_Definition_Timer_timeout"]

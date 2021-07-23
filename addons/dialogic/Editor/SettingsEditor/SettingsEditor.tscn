@@ -12,23 +12,23 @@ __meta__ = {
 }
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
-margin_right = 1024.0
-margin_bottom = 600.0
+margin_right = 1920.0
+margin_bottom = 1080.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="HBoxContainer3" type="HBoxContainer" parent="VBoxContainer"]
-margin_right = 1024.0
-margin_bottom = 514.0
+margin_right = 1920.0
+margin_bottom = 480.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer3"]
 margin_right = 356.0
-margin_bottom = 514.0
+margin_bottom = 480.0
 custom_constants/separation = 16
 
 [node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer"]
 margin_right = 356.0
-margin_bottom = 74.0
+margin_bottom = 102.0
 
 [node name="SectionTitle" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer" instance=ExtResource( 2 )]
 margin_right = 356.0
@@ -50,11 +50,9 @@ margin_left = 50.0
 margin_right = 190.0
 margin_bottom = 20.0
 rect_min_size = Vector2( 140, 0 )
-text = "NightTheme"
-items = [ "DayTheme", null, false, 0, {
-"file": "theme-1621517790.cfg"
-}, "NightTheme", null, false, 1, {
-"file": "theme-1621517668.cfg"
+text = "main_theme"
+items = [ "main_theme", null, false, 0, {
+"file": "theme-1626129237.cfg"
 } ]
 selected = 1
 
@@ -74,11 +72,29 @@ text = "Advanced theme options"
 margin_left = 164.0
 margin_right = 188.0
 margin_bottom = 24.0
+pressed = true
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer"]
+margin_top = 78.0
+margin_right = 356.0
+margin_bottom = 102.0
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer/HBoxContainer3"]
+margin_top = 5.0
+margin_right = 87.0
+margin_bottom = 19.0
+text = "Canvas layer :"
+
+[node name="CanvasLayer" type="LineEdit" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer/HBoxContainer3"]
+margin_left = 91.0
+margin_right = 149.0
+margin_bottom = 24.0
+text = "1"
 
 [node name="VBoxContainer2" type="VBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer"]
-margin_top = 90.0
+margin_top = 118.0
 margin_right = 356.0
-margin_bottom = 302.0
+margin_bottom = 330.0
 
 [node name="SectionTitle" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2" instance=ExtResource( 2 )]
 margin_right = 356.0
@@ -140,6 +156,7 @@ text = "Auto color character names in messages"
 margin_left = 264.0
 margin_right = 288.0
 margin_bottom = 24.0
+pressed = true
 
 [node name="HBoxContainer4" type="HBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2"]
 margin_top = 114.0
@@ -172,6 +189,7 @@ text = "Dim characters when they are not speaking"
 margin_left = 280.0
 margin_right = 304.0
 margin_bottom = 24.0
+pressed = true
 
 [node name="Label2" type="Label" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2"]
 margin_top = 170.0
@@ -197,9 +215,9 @@ margin_bottom = 24.0
 hint_tooltip = "If enabled, inputs for text events will be treated as keys for tr()"
 
 [node name="VBoxContainer3" type="VBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer"]
-margin_top = 318.0
+margin_top = 346.0
 margin_right = 356.0
-margin_bottom = 452.0
+margin_bottom = 480.0
 
 [node name="SectionTitle" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer3" instance=ExtResource( 2 )]
 margin_right = 356.0
@@ -278,37 +296,57 @@ margin_right = 235.0
 margin_bottom = 24.0
 pressed = true
 
-[node name="VBoxContainer4" type="VBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer"]
-margin_top = 468.0
-margin_right = 356.0
-margin_bottom = 514.0
+[node name="VBoxContainer2" type="VBoxContainer" parent="VBoxContainer/HBoxContainer3"]
+margin_left = 360.0
+margin_right = 664.0
+margin_bottom = 480.0
 
-[node name="SectionTitle" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer4" instance=ExtResource( 2 )]
-margin_right = 356.0
-text = "Timeline editor"
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer2"]
+margin_right = 304.0
+margin_bottom = 74.0
 
-[node name="CustomEvents" type="HBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer4"]
+[node name="SectionTitle2" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer" instance=ExtResource( 2 )]
+margin_right = 304.0
+text = "Input settings"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer"]
 margin_top = 26.0
-margin_right = 356.0
-margin_bottom = 46.0
+margin_right = 304.0
+margin_bottom = 50.0
 
-[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer4/CustomEvents"]
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer/HBoxContainer"]
+margin_top = 5.0
+margin_right = 181.0
+margin_bottom = 19.0
+text = "Enable choice options after  "
+
+[node name="LineEdit" type="LineEdit" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer/HBoxContainer"]
+margin_left = 185.0
+margin_right = 243.0
+margin_bottom = 24.0
+text = "0.1"
+
+[node name="Label2" type="Label" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer/HBoxContainer"]
+margin_left = 247.0
+margin_top = 5.0
+margin_right = 304.0
+margin_bottom = 19.0
+text = " seconds"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer"]
+margin_top = 54.0
+margin_right = 304.0
+margin_bottom = 74.0
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer/HBoxContainer2"]
 margin_top = 3.0
-margin_right = 228.0
+margin_right = 115.0
 margin_bottom = 17.0
-size_flags_horizontal = 3
-text = "Folder for custom events"
+text = "Default action key"
 
-[node name="CustomEventsFolder" type="Button" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer4/CustomEvents"]
-margin_left = 232.0
-margin_right = 340.0
+[node name="DefaultActionKey" type="OptionButton" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer/HBoxContainer2"]
+margin_left = 119.0
+margin_right = 240.0
 margin_bottom = 20.0
-text = "custom-events"
-
-[node name="RefreshCustomEvents" type="Button" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer4/CustomEvents"]
-margin_left = 344.0
-margin_right = 356.0
-margin_bottom = 20.0
-
-[connection signal="pressed" from="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer4/CustomEvents/CustomEventsFolder" to="." method="_on_CustomEventsFolder_pressed"]
-[connection signal="pressed" from="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer4/CustomEvents/RefreshCustomEvents" to="." method="_on_RefreshCustomEvents_pressed"]
+hint_tooltip = "The default value is \"ui_accept\""
+text = "[Select Action]"

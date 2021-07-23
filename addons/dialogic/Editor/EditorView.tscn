@@ -53,7 +53,6 @@ modulate = Color( 0, 0, 0, 1 )
 margin_right = 28.0
 margin_bottom = 32.0
 hint_tooltip = "New Timeline"
-focus_mode = 0
 icon = ExtResource( 4 )
 flat = true
 
@@ -64,7 +63,6 @@ margin_left = 28.0
 margin_right = 56.0
 margin_bottom = 32.0
 hint_tooltip = "New Character"
-focus_mode = 0
 icon = ExtResource( 3 )
 
 [node name="NewValueButton" type="Button" parent="ToolBar"]
@@ -73,7 +71,6 @@ margin_left = 56.0
 margin_right = 84.0
 margin_bottom = 32.0
 hint_tooltip = "New Value"
-focus_mode = 0
 icon = ExtResource( 5 )
 flat = true
 
@@ -83,7 +80,6 @@ margin_left = 84.0
 margin_right = 112.0
 margin_bottom = 32.0
 hint_tooltip = "New Definition"
-focus_mode = 0
 icon = ExtResource( 10 )
 flat = true
 __meta__ = {
@@ -96,7 +92,6 @@ margin_left = 112.0
 margin_right = 140.0
 margin_bottom = 32.0
 hint_tooltip = "New Theme"
-focus_mode = 0
 icon = ExtResource( 13 )
 flat = true
 
@@ -128,14 +123,14 @@ align = 0
 
 [node name="Spacer" type="Control" parent="ToolBar"]
 margin_left = 140.0
-margin_right = 832.0
+margin_right = 820.0
 margin_bottom = 32.0
 size_flags_horizontal = 3
 
 [node name="Docs" type="ToolButton" parent="ToolBar"]
 self_modulate = Color( 0.870588, 0.870588, 0.870588, 1 )
-margin_left = 832.0
-margin_right = 942.0
+margin_left = 820.0
+margin_right = 930.0
 margin_bottom = 32.0
 hint_tooltip = "Theme Editor"
 mouse_default_cursor_shape = 2
@@ -144,11 +139,11 @@ icon = SubResource( 2 )
 
 [node name="Version" type="Label" parent="ToolBar"]
 self_modulate = Color( 1, 1, 1, 0.631373 )
-margin_left = 942.0
+margin_left = 930.0
 margin_top = 9.0
 margin_right = 1024.0
 margin_bottom = 23.0
-text = "Dialogic v1.2"
+text = "Dialogic v1.2.4"
 
 [node name="MainPanel" type="HSplitContainer" parent="."]
 anchor_right = 1.0
@@ -221,11 +216,11 @@ margin_right = 280.0
 margin_bottom = 14.0
 text = "Select or create an element to start working"
 
-[node name="RemoveCharacterConfirmation" type="ConfirmationDialog" parent="."]
+[node name="RemoveConfirmation" type="ConfirmationDialog" parent="."]
 margin_right = 325.0
 margin_bottom = 88.0
 rect_min_size = Vector2( 250, 87.5 )
-dialog_text = "Are you sure you want to remove this character?
+dialog_text = "Are you sure you want to remove this [resource]?
 (Can't be restored)"
 __meta__ = {
 "_edit_use_anchors_": false
@@ -236,46 +231,6 @@ margin_right = 325.0
 margin_bottom = 88.0
 rect_min_size = Vector2( 250, 87.5 )
 dialog_text = "Are you sure you want to remove this folder and all the items contained in it?
-(Can't be restored)"
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="RemoveValueConfirmation" type="ConfirmationDialog" parent="."]
-margin_right = 325.0
-margin_bottom = 88.0
-rect_min_size = Vector2( 250, 87.5 )
-dialog_text = "Are you sure you want to remove this value?
-(Can't be restored)"
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="RemoveThemeConfirmation" type="ConfirmationDialog" parent="."]
-margin_right = 325.0
-margin_bottom = 88.0
-rect_min_size = Vector2( 250, 87.5 )
-dialog_text = "Are you sure you want to remove this theme?
-(Can't be restored)"
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="RemoveGlossaryConfirmation" type="ConfirmationDialog" parent="."]
-margin_right = 325.0
-margin_bottom = 88.0
-rect_min_size = Vector2( 250, 87.5 )
-dialog_text = "Are you sure you want to remove this entry?
-(Can't be restored)"
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="RemoveTimelineConfirmation" type="ConfirmationDialog" parent="."]
-margin_right = 325.0
-margin_bottom = 88.0
-rect_min_size = Vector2( 250, 87.5 )
-dialog_text = "Are you sure you want to remove this timeline?
 (Can't be restored)"
 __meta__ = {
 "_edit_use_anchors_": false

@@ -1,7 +1,7 @@
-![Screenshot](https://coppolaemilio.com/images/dialogic/dialogic-hero-1.0.png?v)
+![Hero Image](https://coppolaemilio.com/images/dialogic/dialogic-hero-1.3.png?v1)
 Create dialogs, characters and scenes to display conversations in your Godot games. 
 
-# Version 1.2 (beta) ![Godot v3.3](https://img.shields.io/badge/godot-v3.3-%23478cbf)
+# Version 1.2.5 (WIP)  ![Godot v3.3](https://img.shields.io/badge/godot-v3.3-%23478cbf)
 
 [Changelog](https://github.com/coppolaemilio/dialogic/blob/main/docs/changelog.md) — 
 [Installation](#installation) — 
@@ -23,6 +23,14 @@ To install a Dialogic, download it as a ZIP archive. All releases are listed her
 If you want to know more about installing plugins you can read the [official documentation page](https://docs.godotengine.org/en/stable/tutorials/plugins/editor/installing_plugins.html).
 
 You can also install Dialogic using the **AssetLib** tab in the editor, but the version here will not be the latest one available since it takes some time for it to be approved.
+
+## ⚠ IMPORTANT
+The Godot editor needs a reboot after enabling Dialogic for the first time. So make sure to reboot after activating it for the first time before submitting a bug request. A fix is present in the 1.2.5 version, but still being tested.
+
+
+### 📦 Preparing the export
+
+When you export a project using Dialogic, you need to add `*.json, *.cfg` on the Resources tab `Filters to export...` input field ([see image](https://coppolaemilio.com/images/dialogic/exporting-2.png?v2)). This allows Godot to pack the files from the `/dialogic` folder.
 
 ---
 
@@ -101,26 +109,19 @@ func after_dialog(timeline_name):
 ```
 
 ### 🔷 Can I create a dialog using GDScript?
-Yes! it is a bit harder since you will have to create each event yourself, and to do that they have to be **valid**. You can check already created timelines with a text editor and see how an event should look like, but after you know how, you can do something like this:
+Yes! it is a bit harder since you will have to create each event yourself, and to do that they have to be **valid**. You can check already created timelines with a text editor and see how an event should look like. A better tutorial and improvements will come soon.
 
+A simple example:
 ```gdscript
 func _ready():
 	var gdscript_dialog = Dialogic.start('')
-	gdscript_dialog.dialog_script = {
+	gdscript_dialog.set_dialog_script( {
 		"events":[
-			{ 'event_id':'dialogic_001', "character": "", "portrait":"", "text": "This dialog was created using GDScript!"}
+			{ 'event_id':'dialogic_001', "text": "This dialog was created using GDScript!"}
 		]
-	}
+	})
 	add_child(gdscript_dialog)
 ```
-
-This will add a simple timeline with a text event. 
-
----
-
-### 📦 Preparing the export
-
-When you export a project using Dialogic, you need to add `*.json, *.cfg` on the Resources tab `Filters to export...` input field ([see image](https://coppolaemilio.com/images/dialogic/exporting-2.png?v2)). This allows Godot to pack the files from the `/dialogic` folder.
 
 ---
 
@@ -162,7 +163,20 @@ Flaming Potato,
 Joseph Catrambone,
 AzulCrescent,
 Hector Na Em,
-Furroy
+Furroy,
+Sergey,
+Container7,
+BasicIncomePlz,
+p sis,
+Justin,
+Guy Dadon,
+Sukh Atwal,
+Patrick Hogan,
+Jesse Priest,
+Lunos,
+Ceah Sharp
+
+
 
 Support me on [Patreon https://www.patreon.com/coppolaemilio](https://www.patreon.com/coppolaemilio)
 

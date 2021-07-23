@@ -18,42 +18,17 @@ static func get_character_list() -> Array:
 	var characters: Array = []
 	for file in DialogicResources.listdir(DialogicResources.get_path('CHAR_DIR')):
 		if '.json' in file:
-			var data: Dictionary     = DialogicResources.get_character_json(file)
-			var color: Color         = Color("#ffffff")
-			var c_name: String       = data['id']
-			var default_speaker      = false
-			var portraits: Array     = []
-			var display_name: String = ''
-			var nickname: String = ''
+			var data: Dictionary = DialogicResources.get_character_json(file)
 			
-			if data.has('color'):
-				color = Color(data['color'])
-			if data.has('name'):
-				c_name = data['name']
-			if data.has('default_speaker'):
-				default_speaker = data['default_speaker']
-			if data.has('portraits'):
-				portraits = data['portraits']
-			if data.has('display_name'):
-				if data['display_name_bool']:
-					if data.has('display_name'):
-						display_name = data['display_name']
-			if data.has('nickname'):
-				if data['nickname_bool']:
-					if data.has('nickname'):
-						nickname = data['nickname']
-						
 			characters.append({
-				'name': c_name,
-				'color': color,
+				'name': data.get('name', data['id']),
+				'color': Color(data.get('color', "#ffffff")),
 				'file': file,
-				'default_speaker' : default_speaker,
-				'portraits': portraits,
-				'display_name': display_name,
-				'nickname': nickname,
+				'portraits': data.get('portraits', []),
+				'display_name': data.get('display_name', ''),
+				'nickname': data.get('nickname', ''),
 				'data': data # This should be the only thing passed... not sure what I was thinking
 			})
-
 	return characters
 
 static func get_characters_dict():
@@ -72,7 +47,7 @@ static func get_sorted_character_list():
 static func get_timeline_list() -> Array:
 	var timelines: Array = []
 	for file in DialogicResources.listdir(DialogicResources.get_path('TIMELINE_DIR')):
-		if '.json' in file:
+		if '.json' in file: # TODO check for real .json because if .json is in the middle of the sentence it still thinks it is a timeline
 			var data = DialogicResources.get_timeline_json(file)
 			if data.has('error') == false:
 				if data.has('metadata'):
@@ -225,7 +200,7 @@ static func add_folder(path:String, folder_name:String):
 static func remove_folder(folder_path:String, delete_files:bool = true):
 	#print("[D] Removing 'Folder' "+folder_path)
 	for folder in get_folder_at_path(folder_path)['folders']:
-		remove_folder(folder_path+"/"+folder)
+		remove_folder(folder_path+"/"+folder, delete_files)
 	
 	if delete_files:
 		for file in get_folder_at_path(folder_path)['files']:
@@ -340,6 +315,13 @@ static func check_folders_recursive(folder_data: Dictionary, file_names:Array):
 ## *****************************************************************************
 ##								USEFUL FUNCTIONS
 ## *****************************************************************************
+
+static func get_singleton(name, caller = null):
+	if Engine.is_editor_hint():
+		return Engine.get_singleton(name)
+	else:
+		return caller.get_node('/root/' + name)
+
 
 static func generate_random_id() -> String:
 	return str(OS.get_unix_time()) + '-' + str(100 + randi()%899+1)

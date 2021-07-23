@@ -16,6 +16,9 @@ onready var nodes = {
 	'clear_current_timeline': $VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer3/HBoxContainer2/ClearCurrentTimeline,
 	'save_definitions_on_start': $VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer3/HBoxContainer3/SaveDefinitionsOnStart,
 	'save_definitions_on_end': $VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer3/HBoxContainer4/SaveDefinitionsOnEnd,
+	'delay_after_options': $VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer/HBoxContainer/LineEdit,
+	'default_action_key': $VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer/HBoxContainer2/DefaultActionKey,
+	'canvas_layer' : $VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer/HBoxContainer3/CanvasLayer,
 
 	'custom_events_folder_button':$VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer4/CustomEvents/CustomEventsFolder,
 	'custom_events_refresh':$VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer4/CustomEvents/RefreshCustomEvents,
@@ -23,6 +26,12 @@ onready var nodes = {
 
 var THEME_KEYS := [
 	'advanced_themes',
+	'canvas_layer',
+	]
+
+var INPUT_KEYS := [
+	'delay_after_options',
+	'default_action_key'
 	]
 
 var DIALOG_KEYS := [
@@ -46,11 +55,14 @@ func _ready():
 	
 	# Themes
 	nodes['themes'].connect('item_selected', self, '_on_default_theme_selected')
+	nodes['delay_after_options'].connect('text_changed', self, '_on_delay_options_text_changed')
 	# TODO move to theme section later
 	nodes['advanced_themes'].connect('toggled', self, '_on_item_toggled', ['dialog', 'advanced_themes'])
-	
-	nodes['custom_events_refresh'].icon = get_icon("Loop", "EditorIcons")
-	
+	nodes['canvas_layer'].connect('text_changed', self, '_on_canvas_layer_text_changed')
+
+	nodes['default_action_key'].connect('pressed', self, '_on_default_action_key_presssed')
+	nodes['default_action_key'].connect('item_selected', self, '_on_default_action_key_item_selected')
+		
 	for k in DIALOG_KEYS:
 		nodes[k].connect('toggled', self, '_on_item_toggled', ['dialog', k])
 	
@@ -61,15 +73,21 @@ func _ready():
 func update_data():
 	var settings = DialogicResources.get_settings_config()
 	refresh_themes(settings)
-	load_values(settings, "dialog")
-	load_values(settings, "saving")
-	nodes['custom_events_folder_button'].text = settings.get_value('editor', 'custom_events_path', '').get_file()
+	load_values(settings, "dialog", DIALOG_KEYS)
+	load_values(settings, "saving", SAVING_KEYS)
+	load_values(settings, "input", INPUT_KEYS)
 
 
-func load_values(settings: ConfigFile, section: String):
-	for k in DIALOG_KEYS:
+func load_values(settings: ConfigFile, section: String, key: Array):
+	for k in key:
 		if settings.has_section_key(section, k):
-			nodes[k].pressed = settings.get_value(section, k)
+			if nodes[k] is LineEdit:
+				nodes[k].text = settings.get_value(section, k)
+			else:
+				if k == 'default_action_key':
+					nodes['default_action_key'].text = settings.get_value(section, k)
+				else:
+					nodes[k].pressed = settings.get_value(section, k)
 
 
 func refresh_themes(settings: ConfigFile):
@@ -104,8 +122,33 @@ func _on_default_theme_selected(index):
 	set_value('theme', 'default', nodes['themes'].get_item_metadata(index)['file'])
 
 
+func _on_delay_options_text_changed(text):
+	set_value('input', 'delay_after_options', text)
+
+
 func _on_item_toggled(value: bool, section: String, key: String):
 	set_value(section, key, value)
+
+
+func _on_default_action_key_presssed() -> void:
+	var settings = DialogicResources.get_settings_config()
+	nodes['default_action_key'].clear()
+	nodes['default_action_key'].add_item(settings.get_value('input', 'default_action_key', '[Default]'))
+	nodes['default_action_key'].add_item('[Default]')
+	InputMap.load_from_globals()
+	for a in InputMap.get_actions():
+		nodes['default_action_key'].add_item(a)
+
+
+func _on_default_action_key_item_selected(index) -> void:
+	print(index)
+	if index == 0:
+		print('here')
+	set_value('input', 'default_action_key', nodes['default_action_key'].text)
+
+
+func _on_canvas_layer_text_changed(text) -> void:
+	set_value('theme', 'canvas_layer', text)
 
 
 # Reading and saving data to the settings file

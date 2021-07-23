@@ -18,16 +18,20 @@ var selected_style_template : StyleBoxFlat = load("res://addons/dialogic/Editor/
 var saved_style : StyleBoxFlat
 var selected_items : Array = []
 
+var event_scenes : Dictionary = {}
 
 var moving_piece = null
 var piece_was_dragged = false
 
 var custom_events = {}
 
-
+var batches = []
+var building_timeline = true
 signal selection_updated
+signal batch_loaded
 
 func _ready():
+	connect("batch_loaded", self, '_on_batch_loaded')
 	var modifier = ''
 	var _scale = get_constant("inspector_margin", "Editor")
 	_scale = _scale * 0.125
@@ -574,9 +578,10 @@ func create_event(scene: String, data: Dictionary = {'no-data': true} , indent: 
 	
 	# load the piece with data
 	piece.editor_reference = editor_reference
+	
 	if data.has('no-data') == false:
-		#piece.load_data(data)
 		piece.event_data = data
+	
 	if len(selected_items) != 0:
 		timeline.add_child_below_node(selected_items[0], piece)
 	else:
@@ -584,17 +589,18 @@ func create_event(scene: String, data: Dictionary = {'no-data': true} , indent: 
 	
 
 	piece.connect("option_action", self, '_on_event_options_action', [piece])
-	
 	piece.connect("gui_input", self, '_on_event_block_gui_input', [piece])
 	events_warning.visible = false
+
 	# Indent on create
 	if indent:
 		indent_events()
 	return piece
 
+
 func load_timeline(filename: String):
 	clear_timeline()
-	var start_time = OS.get_system_time_msecs()
+	building_timeline = true
 	timeline_file = filename
 	
 	var data = DialogicResources.get_timeline_json(filename)
@@ -603,18 +609,37 @@ func load_timeline(filename: String):
 	else:
 		timeline_name = data['metadata']['file']
 	data = data['events']
-	for i in data:
-		add_event_by_id(i['event_id'], i)
 	
-	if data.size() < 1:
-		events_warning.visible = true
+	var page = 1
+	var batch_size = 12
+	while batch_events(data, batch_size, page).size() != 0:
+		batches.append(batch_events(data, batch_size, page))
+		page += 1
+	load_batch(batches)
+
+
+func batch_events(array, size, batch_number):
+	return array.slice((batch_number - 1) * size, batch_number * size - 1)
+
+
+func load_batch(data):
+	#print('[D] Loading batch')
+	var current_batch = batches.pop_front()
+	if current_batch:
+		for i in current_batch:
+			add_event_by_id(i['event_id'], i)
+	emit_signal("batch_loaded")
+
+
+func _on_batch_loaded():
+	if batches.size() > 0:
+		yield(get_tree().create_timer(0.01), "timeout")
+		load_batch(batches)
 	else:
 		events_warning.visible = false
 		indent_events()
-		#fold_all_nodes()
-	
-	var elapsed_time = (OS.get_system_time_msecs() - start_time) * 0.001
-	#editor_reference.dprint("Loading time: " + str(elapsed_time))
+		building_timeline = false
+
 
 func add_event_by_id(event_id, event_data):
 	match event_id:
@@ -785,7 +810,7 @@ func get_event_ignore_save(event: Node) -> bool:
 
 
 func save_timeline() -> void:
-	if timeline_file != '':
+	if timeline_file != '' and building_timeline == false:
 		var info_to_save = generate_save_data()
 		DialogicResources.set_timeline(info_to_save)
 		#print('[+] Saving: ' , timeline_file)

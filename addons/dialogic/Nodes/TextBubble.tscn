@@ -178,4 +178,8 @@ __meta__ = {
 
 [node name="TypingSFX" type="AudioStreamPlayer" parent="."]
 script = ExtResource( 5 )
+samples = [  ]
+select_samples_from_folder = ""
 random_strategy = 2
+random_volume_range = 0.0
+random_pitch_range = 0.0

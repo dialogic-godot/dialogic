@@ -56,7 +56,9 @@ func build_PickerMenuFolder(menu:PopupMenu, folder_structure:Dictionary, current
 	var index = 0
 	for folder_name in folder_structure['folders'].keys():
 		var submenu = PopupMenu.new()
-		menu.add_submenu_item(folder_name, build_PickerMenuFolder(submenu, folder_structure['folders'][folder_name], folder_name))
+		var submenu_name = build_PickerMenuFolder(submenu, folder_structure['folders'][folder_name], folder_name)
+		submenu.name = submenu_name
+		menu.add_submenu_item(folder_name, submenu_name)
 		menu.set_item_icon(index, get_icon("Folder", "EditorIcons"))
 		menu.add_child(submenu)
 		index += 1
@@ -71,5 +73,4 @@ func build_PickerMenuFolder(menu:PopupMenu, folder_structure:Dictionary, current
 	if not menu.is_connected("index_pressed", self, "_on_PickerMenu_selected"):
 		menu.connect("index_pressed", self, '_on_PickerMenu_selected', [menu])
 	
-	menu.name = current_folder_name
 	return current_folder_name

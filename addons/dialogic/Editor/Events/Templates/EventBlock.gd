@@ -20,9 +20,8 @@ signal option_action(action_name)
 ### internal node eferences
 onready var panel = $PanelContainer
 onready var warning = $PanelContainer/MarginContainer/VBoxContainer/Header/Warning
-onready var title_container = $PanelContainer/MarginContainer/VBoxContainer/Header/TitleHBoxContainer
-onready var title_label = $PanelContainer/MarginContainer/VBoxContainer/Header/TitleHBoxContainer/TitleMarginContainer/TitleLabel
-onready var icon_texture  = $PanelContainer/MarginContainer/VBoxContainer/Header/IconMarginContainer/IconTexture
+onready var title_label = $PanelContainer/MarginContainer/VBoxContainer/Header/TitleLabel
+onready var icon_texture  = $PanelContainer/MarginContainer/VBoxContainer/Header/IconTexture
 onready var expand_control = $PanelContainer/MarginContainer/VBoxContainer/Header/ExpandControl
 onready var options_control = $PanelContainer/MarginContainer/VBoxContainer/Header/OptionsControl
 onready var header_content_container = $PanelContainer/MarginContainer/VBoxContainer/Header/Content
@@ -77,13 +76,13 @@ func get_header():
 
 
 func set_warning(text):
-	warning.show()
+	warning.texture = get_icon("NodeWarning", "EditorIcons")
 	warning.hint_tooltip = text
 
 
 func remove_warning(text = ''):
 	if warning.hint_tooltip == text or text == '':
-		warning.hide()
+		warning.texture = null
 
 
 func set_preview(text: String):
@@ -109,10 +108,6 @@ func _set_event_icon(icon: Texture):
 
 func _set_event_name(text: String):
 	title_label.text = text
-	if text.empty():
-		title_container.hide()
-	else:
-		title_container.show()
 
 
 func _set_header(scene: PackedScene):
@@ -221,9 +216,6 @@ func _ready():
 	_setup_event()
 	
 	set_focus_mode(1) # Allowing this node to grab focus
-	
-	# icons
-	warning.icon = get_icon("NodeWarning", "EditorIcons")
 	
 	# signals
 	panel.connect("gui_input", self, '_on_gui_input')

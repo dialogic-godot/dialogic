@@ -30,22 +30,11 @@ margin_bottom = 100.0
 [node name="VBoxContainer" parent="PanelContainer/MarginContainer" index="0"]
 margin_bottom = 94.0
 
-[node name="IconMarginContainer" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="1"]
-margin_right = 37.0
-
-[node name="IconTexture" parent="PanelContainer/MarginContainer/VBoxContainer/Header/IconMarginContainer" index="0"]
+[node name="IconTexture" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="0"]
 margin_right = 32.0
-texture = ExtResource( 1 )
+texture = ExtResource( 3 )
 
-[node name="TitleHBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="2"]
-visible = true
-margin_left = 41.0
-margin_right = 128.0
-
-[node name="TitleMarginContainer" parent="PanelContainer/MarginContainer/VBoxContainer/Header/TitleHBoxContainer" index="1"]
-margin_right = 79.0
-
-[node name="TitleLabel" parent="PanelContainer/MarginContainer/VBoxContainer/Header/TitleHBoxContainer/TitleMarginContainer" index="0"]
+[node name="TitleLabel" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="0"]
 margin_right = 66.0
 text = "Call Node"
 

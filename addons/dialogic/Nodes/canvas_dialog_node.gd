@@ -33,7 +33,15 @@ func dialog_finished():
 	queue_free()
 
 
+func set_dialog_script(value):
+	dialog_node.set_dialog_script(value)
+
+
 func _ready() -> void:
+	# change the canvas layer
+	var config = DialogicResources.get_settings_config()	
+	layer = int(config.get_value("theme", "canvas_layer", 1))
+	
 	var _err:int
 	if dialog_node:
 		_err = dialog_node.connect("event_start", self, "_on_event_start")

@@ -9,8 +9,7 @@ onready var picker_menu = $MenuButton
 # used to connect the signals
 func _ready():
 	picker_menu.connect("about_to_show", self, "_on_PickerMenu_about_to_show")
-	
-	
+
 
 # called by the event block
 func load_data(data:Dictionary):
@@ -25,22 +24,26 @@ func load_data(data:Dictionary):
 	else:
 		picker_menu.text = 'Select Timeline'
 
+
 # has to return the wanted preview, only useful for body parts
 func get_preview():
 	return ''
+
 
 # when an index is selected on one of the menus.
 func _on_PickerMenu_selected(index, menu):
 	var text = menu.get_item_text(index)
 	var metadata = menu.get_item_metadata(index)
 	picker_menu.text = text
-	
 	event_data['change_timeline'] = metadata['file']
+	
 	# informs the parent about the changes!
 	data_changed()
 
+
 func _on_PickerMenu_about_to_show():
 	build_PickerMenu()
+
 
 func build_PickerMenu():
 	picker_menu.get_popup().clear()
@@ -49,12 +52,15 @@ func build_PickerMenu():
 	## building the root level
 	build_PickerMenuFolder(picker_menu.get_popup(), folder_structure, "MenuButton")
 
+
 # is called recursively to build all levels of the folder structure
 func build_PickerMenuFolder(menu:PopupMenu, folder_structure:Dictionary, current_folder_name:String):
 	var index = 0
 	for folder_name in folder_structure['folders'].keys():
 		var submenu = PopupMenu.new()
-		menu.add_submenu_item(folder_name, build_PickerMenuFolder(submenu, folder_structure['folders'][folder_name], folder_name))
+		var submenu_name = build_PickerMenuFolder(submenu, folder_structure['folders'][folder_name], folder_name)
+		submenu.name = submenu_name
+		menu.add_submenu_item(folder_name, submenu_name)
 		menu.set_item_icon(index, get_icon("Folder", "EditorIcons"))
 		menu.add_child(submenu)
 		index += 1
@@ -69,5 +75,4 @@ func build_PickerMenuFolder(menu:PopupMenu, folder_structure:Dictionary, current
 	if not menu.is_connected("index_pressed", self, "_on_PickerMenu_selected"):
 		menu.connect("index_pressed", self, '_on_PickerMenu_selected', [menu])
 	
-	menu.name = current_folder_name
 	return current_folder_name

@@ -85,6 +85,7 @@ size_flags_vertical = 3
 tab_align = 0
 
 [node name="Dialog Text" type="HBoxContainer" parent="VBoxContainer/TabContainer"]
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 4.0
@@ -686,7 +687,7 @@ text = "Behaviour"
 [node name="GridContainer" type="GridContainer" parent="VBoxContainer/TabContainer/Dialog Box/Column3"]
 margin_top = 26.0
 margin_right = 270.0
-margin_bottom = 46.0
+margin_bottom = 74.0
 size_flags_horizontal = 3
 custom_constants/hseparation = 10
 columns = 2
@@ -711,6 +712,28 @@ size_flags_horizontal = 3
 text = "[Select Action]"
 items = [ "[Select Action]", null, false, 0, null, "ui_accept", null, false, 1, null, "ui_select", null, false, 2, null, "ui_cancel", null, false, 3, null, "ui_focus_next", null, false, 4, null, "ui_focus_prev", null, false, 5, null, "ui_left", null, false, 6, null, "ui_right", null, false, 7, null, "ui_up", null, false, 8, null, "ui_down", null, false, 9, null, "ui_page_up", null, false, 10, null, "ui_page_down", null, false, 11, null, "ui_home", null, false, 12, null, "ui_end", null, false, 13, null ]
 selected = 0
+
+[node name="Label4" type="Label" parent="VBoxContainer/TabContainer/Dialog Box/Column3/GridContainer"]
+margin_top = 24.0
+margin_right = 139.0
+margin_bottom = 48.0
+size_flags_horizontal = 3
+size_flags_vertical = 5
+text = "Fade in time:"
+
+[node name="ShowTime" type="HBoxContainer" parent="VBoxContainer/TabContainer/Dialog Box/Column3/GridContainer"]
+margin_left = 149.0
+margin_top = 24.0
+margin_right = 270.0
+margin_bottom = 48.0
+
+[node name="SpinBox" type="SpinBox" parent="VBoxContainer/TabContainer/Dialog Box/Column3/GridContainer/ShowTime"]
+margin_right = 74.0
+margin_bottom = 24.0
+max_value = 999.0
+step = 0.1
+value = 0.5
+allow_greater = true
 
 [node name="Name Label" type="HBoxContainer" parent="VBoxContainer/TabContainer"]
 visible = false
@@ -1522,7 +1545,6 @@ __meta__ = {
 }
 
 [node name="Audio" type="HBoxContainer" parent="VBoxContainer/TabContainer"]
-visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 4.0
@@ -1543,7 +1565,7 @@ text = "Typing Sound Effects"
 [node name="GridContainer" type="GridContainer" parent="VBoxContainer/TabContainer/Audio/Column"]
 margin_top = 26.0
 margin_right = 280.0
-margin_bottom = 165.0
+margin_bottom = 210.0
 size_flags_horizontal = 3
 custom_constants/hseparation = 10
 columns = 2
@@ -1616,35 +1638,48 @@ allow_greater = true
 allow_lesser = true
 
 [node name="Label5" type="Label" parent="VBoxContainer/TabContainer/Audio/Column/GridContainer"]
-margin_top = 108.0
+margin_top = 113.0
 margin_right = 141.0
-margin_bottom = 139.0
+margin_bottom = 127.0
 text = "Pitch random range"
 
 [node name="HBoxContainer3" type="HBoxContainer" parent="VBoxContainer/TabContainer/Audio/Column/GridContainer"]
 margin_left = 151.0
 margin_top = 108.0
 margin_right = 280.0
-margin_bottom = 139.0
+margin_bottom = 132.0
 
 [node name="TypingPitchRandRange" type="SpinBox" parent="VBoxContainer/TabContainer/Audio/Column/GridContainer/HBoxContainer3"]
 margin_right = 74.0
-margin_bottom = 31.0
+margin_bottom = 24.0
 min_value = -80.0
 step = 0.1
 allow_greater = true
 allow_lesser = true
 
 [node name="Label6" type="Label" parent="VBoxContainer/TabContainer/Audio/Column/GridContainer"]
-margin_top = 108.0
+margin_top = 141.0
 margin_right = 141.0
-margin_bottom = 139.0
+margin_bottom = 155.0
 text = "Allow interrupt"
 
 [node name="TypingInterruptCheckBox" type="CheckBox" parent="VBoxContainer/TabContainer/Audio/Column/GridContainer"]
 margin_left = 151.0
+margin_top = 136.0
 margin_right = 280.0
-margin_bottom = 24.0
+margin_bottom = 160.0
+
+[node name="Label7" type="Label" parent="VBoxContainer/TabContainer/Audio/Column/GridContainer"]
+margin_top = 167.0
+margin_right = 141.0
+margin_bottom = 181.0
+text = "Audio Bus"
+
+[node name="AudioBusButton" type="OptionButton" parent="VBoxContainer/TabContainer/Audio/Column/GridContainer"]
+margin_left = 151.0
+margin_top = 164.0
+margin_right = 280.0
+margin_bottom = 184.0
 
 [node name="DelayPreviewTimer" type="Timer" parent="."]
 one_shot = true
@@ -1658,27 +1693,19 @@ one_shot = true
 [connection signal="pressed" from="VBoxContainer/TabContainer/Dialog Text/Column/GridContainer/ItalicFont/ItalicFontButton" to="." method="_on_ItalicFontButton_pressed"]
 [connection signal="pressed" from="VBoxContainer/TabContainer/Dialog Text/Column/GridContainer/ItalicFont/ItalicFontOpen" to="." method="_on_ItalicFontOpen_pressed"]
 [connection signal="color_changed" from="VBoxContainer/TabContainer/Dialog Text/Column2/GridContainer/ColorPickerButton" to="." method="_on_ColorPickerButton_color_changed"]
-[connection signal="toggled" from="VBoxContainer/TabContainer/Dialog Text/Column2/GridContainer/HBoxContainer2/CheckBoxShadow" to="." method="_on_CheckBoxShadow_toggled"]
 [connection signal="color_changed" from="VBoxContainer/TabContainer/Dialog Text/Column2/GridContainer/HBoxContainer2/ColorPickerButtonShadow" to="." method="_on_ColorPickerButtonShadow_color_changed"]
 [connection signal="value_changed" from="VBoxContainer/TabContainer/Dialog Text/Column2/GridContainer/HBoxContainer/ShadowOffsetX" to="." method="_on_ShadowOffset_value_changed"]
 [connection signal="value_changed" from="VBoxContainer/TabContainer/Dialog Text/Column2/GridContainer/HBoxContainer/ShadowOffsetY" to="." method="_on_ShadowOffset_value_changed"]
-[connection signal="value_changed" from="VBoxContainer/TabContainer/Dialog Text/Column3/GridContainer/TextSpeed" to="." method="_on_textSpeed_value_changed"]
 [connection signal="item_selected" from="VBoxContainer/TabContainer/Dialog Text/Column3/GridContainer/HBoxContainer3/Alignment" to="." method="_on_Alignment_item_selected"]
-[connection signal="toggled" from="VBoxContainer/TabContainer/Dialog Box/Column/GridContainer/HBoxContainer2/CheckBox" to="." method="_on_BackgroundColor_CheckBox_toggled"]
 [connection signal="color_changed" from="VBoxContainer/TabContainer/Dialog Box/Column/GridContainer/HBoxContainer2/ColorPickerButton" to="." method="_on_BackgroundColor_ColorPickerButton_color_changed"]
-[connection signal="toggled" from="VBoxContainer/TabContainer/Dialog Box/Column/GridContainer/HBoxContainer3/CheckBox" to="." method="_on_BackgroundTexture_CheckBox_toggled"]
 [connection signal="pressed" from="VBoxContainer/TabContainer/Dialog Box/Column/GridContainer/HBoxContainer3/BackgroundTextureButton" to="." method="_on_BackgroundTextureButton_pressed"]
-[connection signal="toggled" from="VBoxContainer/TabContainer/Dialog Box/Column/GridContainer/HBoxContainer6/CheckBox" to="." method="_on_BackgroundTexture_Modulation_toggled"]
 [connection signal="color_changed" from="VBoxContainer/TabContainer/Dialog Box/Column/GridContainer/HBoxContainer6/ColorPickerButton" to="." method="_on_ColorPicker_Background_texture_modulation_color_changed"]
-[connection signal="toggled" from="VBoxContainer/TabContainer/Dialog Box/Column/GridContainer/HBoxContainer7/CheckBox" to="." method="_on_BackgroundFullWidth_toggled"]
 [connection signal="value_changed" from="VBoxContainer/TabContainer/Dialog Box/Column/GridContainer/HBoxContainer/TextOffsetV" to="." method="_on_TextMargin_value_changed"]
 [connection signal="value_changed" from="VBoxContainer/TabContainer/Dialog Box/Column/GridContainer/HBoxContainer/TextOffsetH" to="." method="_on_TextMargin_value_changed"]
 [connection signal="value_changed" from="VBoxContainer/TabContainer/Dialog Box/Column/GridContainer/HBoxContainer4/BoxSizeW" to="." method="_on_BoxSize_value_changed"]
 [connection signal="value_changed" from="VBoxContainer/TabContainer/Dialog Box/Column/GridContainer/HBoxContainer4/BoxSizeH" to="." method="_on_BoxSize_value_changed"]
-[connection signal="value_changed" from="VBoxContainer/TabContainer/Dialog Box/Column/GridContainer/HBoxContainer5/BottomGap" to="." method="_on_BottomGap_value_changed"]
 [connection signal="pressed" from="VBoxContainer/TabContainer/Dialog Box/Column2/GridContainer/NextIndicatorButton" to="." method="_on_NextIndicatorButton_pressed"]
 [connection signal="item_selected" from="VBoxContainer/TabContainer/Dialog Box/Column2/GridContainer/NextAnimation" to="." method="_on_NextAnimation_item_selected"]
-[connection signal="value_changed" from="VBoxContainer/TabContainer/Dialog Box/Column2/GridContainer/HBoxContainer7/IndicatorScale" to="." method="_on_IndicatorScale_value_changed"]
 [connection signal="value_changed" from="VBoxContainer/TabContainer/Dialog Box/Column2/GridContainer/HBoxContainer2/NextOffsetX" to="." method="_on_NextOffset_value_changed"]
 [connection signal="value_changed" from="VBoxContainer/TabContainer/Dialog Box/Column2/GridContainer/HBoxContainer2/NextOffsetY" to="." method="_on_NextOffset_value_changed"]
 [connection signal="item_selected" from="VBoxContainer/TabContainer/Dialog Box/Column3/GridContainer/BoxContainer/ActionOptionButton" to="." method="_on_ActionOptionButton_item_selected"]
@@ -1686,15 +1713,11 @@ one_shot = true
 [connection signal="pressed" from="VBoxContainer/TabContainer/Name Label/Column/GridContainer/RegularFont/NameFontButton" to="." method="_on_NameFont_pressed"]
 [connection signal="pressed" from="VBoxContainer/TabContainer/Name Label/Column/GridContainer/RegularFont/NameFontOpen" to="." method="_on_NameFontOpen_pressed"]
 [connection signal="toggled" from="VBoxContainer/TabContainer/Name Label/Column/GridContainer/CharacterColor" to="." method="_on_name_auto_color_toggled"]
-[connection signal="toggled" from="VBoxContainer/TabContainer/Name Label/Column/GridContainer/HBoxContainer4/CheckBoxShadow" to="." method="_on_shadow_visible_toggled"]
 [connection signal="color_changed" from="VBoxContainer/TabContainer/Name Label/Column/GridContainer/HBoxContainer4/ColorPickerButtonShadow" to="." method="_on_name_shadow_color_changed"]
 [connection signal="value_changed" from="VBoxContainer/TabContainer/Name Label/Column/GridContainer/HBoxContainer/ShadowOffsetX" to="." method="_on_name_ShadowOffset_value_changed"]
 [connection signal="value_changed" from="VBoxContainer/TabContainer/Name Label/Column/GridContainer/HBoxContainer/ShadowOffsetY" to="." method="_on_name_ShadowOffset_value_changed"]
-[connection signal="toggled" from="VBoxContainer/TabContainer/Name Label/Column2/GridContainer/HBoxContainer2/CheckBox" to="." method="_on_name_background_visible_toggled"]
 [connection signal="color_changed" from="VBoxContainer/TabContainer/Name Label/Column2/GridContainer/HBoxContainer2/ColorPickerButton" to="." method="_on_name_background_color_changed"]
-[connection signal="toggled" from="VBoxContainer/TabContainer/Name Label/Column2/GridContainer/HBoxContainer3/CheckBox" to="." method="_on_name_image_visible_toggled"]
 [connection signal="pressed" from="VBoxContainer/TabContainer/Name Label/Column2/GridContainer/HBoxContainer3/BackgroundTextureButton" to="." method="_on_name_image_pressed"]
-[connection signal="toggled" from="VBoxContainer/TabContainer/Name Label/Column2/GridContainer/HBoxContainer6/CheckBox" to="." method="_on_NameLabel_texture_modulation_toggled"]
 [connection signal="color_changed" from="VBoxContainer/TabContainer/Name Label/Column2/GridContainer/HBoxContainer6/ColorPickerButton" to="." method="_on_ColorPicker_NameLabel_modulation_color_changed"]
 [connection signal="value_changed" from="VBoxContainer/TabContainer/Name Label/Column2/GridContainer/HBoxContainer/NamePaddingX" to="." method="_on_name_padding_value_changed"]
 [connection signal="value_changed" from="VBoxContainer/TabContainer/Name Label/Column2/GridContainer/HBoxContainer/NamePaddingY" to="." method="_on_name_padding_value_changed"]
@@ -1702,7 +1725,6 @@ one_shot = true
 [connection signal="value_changed" from="VBoxContainer/TabContainer/Name Label/Column3/GridContainer/HBoxContainer5/BottomGap" to="." method="_on_name_BottomGap_value_changed"]
 [connection signal="value_changed" from="VBoxContainer/TabContainer/Choice Buttons/Column2/GridContainer/HBoxContainer/TextOffsetV" to="." method="_on_ButtonOffset_value_changed"]
 [connection signal="value_changed" from="VBoxContainer/TabContainer/Choice Buttons/Column2/GridContainer/HBoxContainer/TextOffsetH" to="." method="_on_ButtonOffset_value_changed"]
-[connection signal="toggled" from="VBoxContainer/TabContainer/Choice Buttons/Column2/GridContainer/HBoxContainer2/FixedSize" to="." method="_on_FixedSize_toggled"]
 [connection signal="value_changed" from="VBoxContainer/TabContainer/Choice Buttons/Column2/GridContainer/HBoxContainer2/ButtonSizeX" to="." method="_on_ButtonSize_value_changed"]
 [connection signal="value_changed" from="VBoxContainer/TabContainer/Choice Buttons/Column2/GridContainer/HBoxContainer2/ButtonSizeY" to="." method="_on_ButtonSize_value_changed"]
 [connection signal="value_changed" from="VBoxContainer/TabContainer/Choice Buttons/Column2/GridContainer/VerticalSeparation" to="." method="_on_VerticalSeparation_value_changed"]
@@ -1721,10 +1743,6 @@ one_shot = true
 [connection signal="pressed" from="VBoxContainer/TabContainer/Glossary/Column3/GridContainer/ExtraFont/ExtraFontButton" to="." method="_on_Glossary_ExtraFontButton_pressed"]
 [connection signal="pressed" from="VBoxContainer/TabContainer/Glossary/Column3/GridContainer/ExtraFont/ExtraFontOpen" to="." method="_on_Glossary_ExtraFontOpen_pressed"]
 [connection signal="color_changed" from="VBoxContainer/TabContainer/Glossary/Column3/GridContainer/ExtraColorPicker" to="." method="_on_Glossary_ExtraColorPicker_color_changed"]
-[connection signal="toggled" from="VBoxContainer/TabContainer/Glossary/Column2/GridContainer/ShowGlossaryCheckBox" to="." method="_on_ShowGlossaryCheckBox_toggled"]
-[connection signal="toggled" from="VBoxContainer/TabContainer/Audio/Column/GridContainer/TypingCheckBox" to="." method="_on_TypingCheckBox_toggled"]
 [connection signal="pressed" from="VBoxContainer/TabContainer/Audio/Column/GridContainer/TypingPathButton" to="." method="_on_TypingPathButton_pressed"]
-[connection signal="value_changed" from="VBoxContainer/TabContainer/Audio/Column/GridContainer/HBoxContainer/TypingVolume" to="." method="_on_TypingVolume_value_changed"]
-[connection signal="value_changed" from="VBoxContainer/TabContainer/Audio/Column/GridContainer/HBoxContainer2/TypingVolumeRandRange" to="." method="_on_TypingVolumeRandRange_value_changed"]
-[connection signal="value_changed" from="VBoxContainer/TabContainer/Audio/Column/GridContainer/HBoxContainer3/TypingPitchRandRange" to="." method="_on_TypingPitchRandRange_value_changed"]
 [connection signal="toggled" from="VBoxContainer/TabContainer/Audio/Column/GridContainer/TypingInterruptCheckBox" to="." method="_on_TypingInterruptCheckBox_toggled"]
+[connection signal="item_selected" from="VBoxContainer/TabContainer/Audio/Column/GridContainer/AudioBusButton" to="." method="_on_TypingAudioBusButton_item_selected"]
