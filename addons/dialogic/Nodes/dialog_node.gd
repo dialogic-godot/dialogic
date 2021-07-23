@@ -133,7 +133,7 @@ func update_custom_events() -> void:
 				var event = load(path.plus_file(file_name).plus_file('EventBlock.tscn')).instance()
 				if event:
 					custom_events[event.event_data['event_id']] = {
-						'event_scene' :path.plus_file(file_name).plus_file('event_'+event.event_data['event_id']+'.tscn'),
+						'event_script' :path.plus_file(file_name).plus_file('event_'+event.event_data['event_id']+'.gd'),
 						'event_name' : event.event_name,
 					}
 				
@@ -824,7 +824,9 @@ func event_handler(event: Dictionary):
 			if event['event_id'] in custom_events.keys():
 				dprint("[D] Custom event '"+custom_events[event['event_id']]['event_name']+"'")
 				
-				var handler = load(custom_events[event['event_id']]['event_scene']).instance()
+				var handler = Node.new()
+				handler.set_script(load(custom_events[event['event_id']]['event_script']))
+				
 				handler.handle_event(event, self)
 				
 			else:

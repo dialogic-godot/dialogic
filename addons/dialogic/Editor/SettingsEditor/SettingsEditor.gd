@@ -78,6 +78,7 @@ func update_data():
 	load_values(settings, "dialog", DIALOG_KEYS)
 	load_values(settings, "saving", SAVING_KEYS)
 	load_values(settings, "input", INPUT_KEYS)
+	nodes['custom_events_folder_button'].text = settings.get_value("editor", "custom_events_path", "Custom Events").get_file()
 
 
 func load_values(settings: ConfigFile, section: String, key: Array):
@@ -159,11 +160,12 @@ func set_value(section, key, value):
 
 
 func _on_CustomEventsFolder_pressed():
-	editor_reference.godot_dialog("*.ogg, *.wav", EditorFileDialog.MODE_OPEN_ANY)
+	editor_reference.godot_dialog("", EditorFileDialog.MODE_OPEN_DIR)
 	editor_reference.godot_dialog_connect(self, "_on_CustomEventsFolder_selected", "dir_selected")
-	editor_reference.godot_dialog_connect(self, "_on_CustomEventsFolder_selected", "file_selected")
+	#editor_reference.godot_dialog_connect(self, "_on_CustomEventsFolder_selected", "file_selected")
 
 func _on_CustomEventsFolder_selected(path, target):
+	print("set path", path)
 	DialogicResources.set_settings_value("editor", 'custom_events_path', path)
 	nodes['custom_events_folder_button'].text = DialogicResources.get_filename_from_path(path)
 	editor_reference.get_node("MainPanel/TimelineEditor").update_custom_events()
