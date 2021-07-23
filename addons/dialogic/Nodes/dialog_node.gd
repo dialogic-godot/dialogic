@@ -533,6 +533,9 @@ func handle_voice(event):
 		var voice_data = event['voice_data']
 		if voice_data.has('0'):
 			$FX/CharacterVoice.play_voice(voice_data['0'])
+			return
+	
+	$FX/CharacterVoice.stop_voice()
 
 
 func event_handler(event: Dictionary):
