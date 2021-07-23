@@ -372,6 +372,7 @@ func _input(event: InputEvent) -> void:
 			$FX/CharacterVoice.stop_voice()
 		else:
 			if waiting_for_answer == false and waiting_for_input == false and while_dialog_animation == false:
+				$FX/CharacterVoice.stop_voice() # stop the current voice as well 
 				_load_next_event()
 		if settings.has_section_key('dialog', 'propagate_input'):
 			var propagate_input: bool = settings.get_value('dialog', 'propagate_input')
