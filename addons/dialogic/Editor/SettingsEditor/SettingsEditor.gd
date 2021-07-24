@@ -20,9 +20,7 @@ onready var nodes = {
 	'default_action_key': $VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer/HBoxContainer2/DefaultActionKey,
 	'canvas_layer' : $VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer/HBoxContainer3/CanvasLayer,
 
-	'custom_events_folder_button':$VBoxContainer/HBoxContainer3/VBoxContainer2/TimelineSection/CustomEvents/CustomEventsFolder,
-	'custom_events_refresh':$VBoxContainer/HBoxContainer3/VBoxContainer2/TimelineSection/CustomEvents/RefreshCustomEvents,
-	}
+	'use_custom_events':$VBoxContainer/HBoxContainer3/VBoxContainer2/TimelineSection/CustomEvents/CustomEvents}
 
 var THEME_KEYS := [
 	'advanced_themes',
@@ -50,6 +48,10 @@ var SAVING_KEYS := [
 	'save_definitions_on_end',
 	]
 
+var EDITOR_KEYS := [
+	'use_custom_events'
+]
+
 func _ready():
 	update_data()
 	
@@ -60,8 +62,6 @@ func _ready():
 	nodes['advanced_themes'].connect('toggled', self, '_on_item_toggled', ['dialog', 'advanced_themes'])
 	nodes['canvas_layer'].connect('text_changed', self, '_on_canvas_layer_text_changed')
 	
-	nodes['custom_events_refresh'].icon = get_icon("Loop", "EditorIcons")
-	
 	nodes['default_action_key'].connect('pressed', self, '_on_default_action_key_presssed')
 	nodes['default_action_key'].connect('item_selected', self, '_on_default_action_key_item_selected')
 		
@@ -71,6 +71,8 @@ func _ready():
 	for k in SAVING_KEYS:
 		nodes[k].connect('toggled', self, '_on_item_toggled', ['saving', k])
 
+	for k in EDITOR_KEYS:
+		nodes[k].connect('toggled', self, '_on_item_toggled', ['editor', k])
 
 func update_data():
 	var settings = DialogicResources.get_settings_config()
@@ -78,8 +80,7 @@ func update_data():
 	load_values(settings, "dialog", DIALOG_KEYS)
 	load_values(settings, "saving", SAVING_KEYS)
 	load_values(settings, "input", INPUT_KEYS)
-	nodes['custom_events_folder_button'].text = settings.get_value("editor", "custom_events_path", "Custom Events").get_file()
-
+	load_values(settings, 'editor', EDITOR_KEYS)
 
 func load_values(settings: ConfigFile, section: String, key: Array):
 	for k in key:
@@ -90,7 +91,7 @@ func load_values(settings: ConfigFile, section: String, key: Array):
 				if k == 'default_action_key':
 					nodes['default_action_key'].text = settings.get_value(section, k)
 				else:
-					nodes[k].pressed = settings.get_value(section, k)
+					nodes[k].pressed = settings.get_value(section, k, false)
 
 
 func refresh_themes(settings: ConfigFile):
@@ -130,6 +131,7 @@ func _on_delay_options_text_changed(text):
 
 
 func _on_item_toggled(value: bool, section: String, key: String):
+	print("set")
 	set_value(section, key, value)
 
 

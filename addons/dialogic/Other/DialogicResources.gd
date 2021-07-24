@@ -75,6 +75,7 @@ static func get_working_directories() -> Dictionary:
 		'TIMELINE_DIR': RESOURCES_DIR + "/timelines",
 		'THEME_DIR': RESOURCES_DIR + "/themes",
 		'CHAR_DIR': RESOURCES_DIR + "/characters",
+		'CUSTOM_EVENTS_DIR': RESOURCES_DIR + "/custom-events"
 	}
 
 

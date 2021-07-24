@@ -1,22 +1,7 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://addons/dialogic/Editor/SettingsEditor/SettingsEditor.gd" type="Script" id=1]
 [ext_resource path="res://addons/dialogic/Editor/Common/SectionTitle.tscn" type="PackedScene" id=2]
-
-[sub_resource type="Image" id=3]
-data = {
-"data": PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ),
-"format": "LumAlpha8",
-"height": 16,
-"mipmaps": false,
-"width": 16
-}
-
-[sub_resource type="ImageTexture" id=2]
-flags = 4
-flags = 4
-image = SubResource( 3 )
-size = Vector2( 16, 16 )
 
 [node name="SettingsEditor" type="ScrollContainer"]
 anchor_right = 1.0
@@ -372,7 +357,7 @@ text = "[Select Action]"
 [node name="TimelineSection" type="VBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer2"]
 margin_top = 78.0
 margin_right = 304.0
-margin_bottom = 126.0
+margin_bottom = 128.0
 
 [node name="SectionTitle" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/TimelineSection" instance=ExtResource( 2 )]
 margin_right = 304.0
@@ -381,26 +366,17 @@ text = "Timeline editor"
 [node name="CustomEvents" type="HBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/TimelineSection"]
 margin_top = 26.0
 margin_right = 304.0
-margin_bottom = 48.0
+margin_bottom = 50.0
 
 [node name="Label" type="Label" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/TimelineSection/CustomEvents"]
-margin_top = 4.0
-margin_right = 161.0
-margin_bottom = 18.0
+margin_top = 5.0
+margin_right = 276.0
+margin_bottom = 19.0
 size_flags_horizontal = 3
-text = "Custom events folder"
+text = "Use custom events"
 
-[node name="CustomEventsFolder" type="Button" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/TimelineSection/CustomEvents"]
-margin_left = 165.0
-margin_right = 272.0
-margin_bottom = 22.0
-text = "Custom Events"
-
-[node name="RefreshCustomEvents" type="Button" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/TimelineSection/CustomEvents"]
-margin_left = 276.0
+[node name="CustomEvents" type="CheckBox" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/TimelineSection/CustomEvents"]
+margin_left = 280.0
 margin_right = 304.0
-margin_bottom = 22.0
-icon = SubResource( 2 )
-
-[connection signal="pressed" from="VBoxContainer/HBoxContainer3/VBoxContainer2/TimelineSection/CustomEvents/CustomEventsFolder" to="." method="_on_CustomEventsFolder_pressed"]
-[connection signal="pressed" from="VBoxContainer/HBoxContainer3/VBoxContainer2/TimelineSection/CustomEvents/RefreshCustomEvents" to="." method="_on_RefreshCustomEvents_pressed"]
+margin_bottom = 24.0
+hint_tooltip = "Will enable you to use custom events in your timelines"

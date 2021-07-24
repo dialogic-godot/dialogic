@@ -62,6 +62,8 @@ func _ready():
 	var style = $TimelineArea.get('custom_styles/bg')
 	style.set('bg_color', get_color("dark_color_1", "Editor"))
 	
+	$ScrollContainer/EventContainer/CustomEventsHeadline/RefreshButton.icon = get_icon("Loop", "EditorIcons")
+	
 	update_custom_events()
 
 # handles dragging/moving of events
@@ -481,12 +483,18 @@ func _on_ButtonCondition_pressed() -> void:
 
 
 func update_custom_events() -> void:
-	var path:String = DialogicResources.get_settings_config().get_value('editor', 'custom_events_path', "")
-	
-	if path == "": return
-	
+	## CLEANUP
 	custom_events = {}
 	
+	# cleaning the 'old' buttons
+	for child in custom_events_container.get_children():
+		child.queue_free()
+	
+	if not DialogicResources.get_settings_config().get_value('editor', 'use_custom_events', false):
+		return 
+	
+	var path:String = "res://dialogic/custom-events"
+
 	var dir = Directory.new()
 	if dir.open(path) == OK:
 		dir.list_dir_begin()
@@ -517,13 +525,13 @@ func update_custom_events() -> void:
 		print("[D] An error occurred when trying to access the custom events folder.")
 	
 	## VISUAL UPDATE
-	# cleaning the 'old' buttons
-	for child in custom_events_container.get_children():
-		child.queue_free()
+	
 	
 	# adding new ones
 	for custom_event_id in custom_events.keys():
 		var button = Button.new()
+		button.set_script(preload("EventButton.gd"))
+		button.EventName = custom_event_id
 		button.text = "  "+custom_events[custom_event_id]['event_name']
 		if custom_events[custom_event_id]['event_icon']:
 			button.icon = custom_events[custom_event_id]['event_icon']

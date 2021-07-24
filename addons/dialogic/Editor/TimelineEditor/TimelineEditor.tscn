@@ -87,7 +87,7 @@ rect_min_size = Vector2( 180, 0 )
 
 [node name="EventContainer" type="VBoxContainer" parent="ScrollContainer"]
 margin_right = 168.0
-margin_bottom = 782.0
+margin_bottom = 848.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 __meta__ = {
@@ -403,20 +403,28 @@ EventName = "CallNode"
 [node name="CustomEventsHeadline" type="HBoxContainer" parent="ScrollContainer/EventContainer"]
 margin_top = 764.0
 margin_right = 168.0
-margin_bottom = 778.0
+margin_bottom = 784.0
 
 [node name="Label" type="Label" parent="ScrollContainer/EventContainer/CustomEventsHeadline"]
+margin_top = 3.0
 margin_right = 95.0
-margin_bottom = 14.0
+margin_bottom = 17.0
 text = "Custom Events"
 
 [node name="HSeparator2" type="HSeparator" parent="ScrollContainer/EventContainer/CustomEventsHeadline"]
 margin_left = 99.0
-margin_right = 168.0
-margin_bottom = 14.0
+margin_right = 152.0
+margin_bottom = 20.0
 size_flags_horizontal = 3
 
-[node name="CustomEventsContainer" type="VBoxContainer" parent="ScrollContainer/EventContainer"]
-margin_top = 782.0
+[node name="RefreshButton" type="Button" parent="ScrollContainer/EventContainer/CustomEventsHeadline"]
+margin_left = 156.0
 margin_right = 168.0
-margin_bottom = 782.0
+margin_bottom = 20.0
+
+[node name="CustomEventsContainer" type="VBoxContainer" parent="ScrollContainer/EventContainer"]
+margin_top = 788.0
+margin_right = 168.0
+margin_bottom = 848.0
+
+[connection signal="pressed" from="ScrollContainer/EventContainer/CustomEventsHeadline/RefreshButton" to="." method="update_custom_events"]
