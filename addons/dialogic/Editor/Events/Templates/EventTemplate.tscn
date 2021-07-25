@@ -114,8 +114,21 @@ margin_right = 242.0
 
 [node name="Spacer" parent="PanelContainer/MarginContainer/VBoxContainer/Header" instance=ExtResource( 4 )]
 margin_left = 66.0
+margin_right = 928.0
+margin_bottom = 30.0
+
+[node name="HelpButton" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer/Header"]
+margin_left = 938.0
 margin_right = 968.0
 margin_bottom = 30.0
+rect_min_size = Vector2( 30, 30 )
+hint_tooltip = "Open the documentation of this event"
+flat = true
+clip_text = true
+expand_icon = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="OptionsControl" parent="PanelContainer/MarginContainer/VBoxContainer/Header" instance=ExtResource( 5 )]
 margin_left = 978.0
@@ -141,3 +154,4 @@ custom_constants/margin_top = 2
 custom_constants/margin_bottom = 2
 
 [connection signal="visibility_changed" from="Indent" to="." method="_on_Indent_visibility_changed"]
+[connection signal="pressed" from="PanelContainer/MarginContainer/VBoxContainer/Header/HelpButton" to="." method="_on_HelpButton_pressed"]

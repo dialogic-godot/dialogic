@@ -1,0 +1,49 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://addons/dialogic/Editor/DocumentationViewer/DocumentationViewer.gd" type="Script" id=1]
+[ext_resource path="res://addons/dialogic/Documentation/Nodes/DocsPageViewer.tscn" type="PackedScene" id=2]
+
+[node name="DocumentationViewer" type="Panel"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 1 )
+
+[node name="DocsViewer" parent="." instance=ExtResource( 2 )]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_right = 0.0
+margin_bottom = 0.0
+rect_min_size = Vector2( 50, 0 )
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+margin_left = 5.0
+margin_top = 4.0
+margin_right = 69.0
+margin_bottom = 24.0
+custom_constants/separation = 0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Previous" type="Button" parent="HBoxContainer"]
+margin_right = 22.0
+margin_bottom = 22.0
+rect_min_size = Vector2( 22, 22 )
+focus_mode = 0
+disabled = true
+flat = true
+expand_icon = true
+
+[node name="Next" type="Button" parent="HBoxContainer"]
+margin_left = 22.0
+margin_right = 44.0
+margin_bottom = 22.0
+rect_min_size = Vector2( 22, 22 )
+focus_mode = 0
+disabled = true
+flat = true
+expand_icon = true
+
+[connection signal="open_non_html_link" from="DocsViewer" to="." method="_on_DocsViewer_open_non_html_link"]
+[connection signal="pressed" from="HBoxContainer/Previous" to="." method="open_previous_page"]
+[connection signal="pressed" from="HBoxContainer/Next" to="." method="open_next_page"]
