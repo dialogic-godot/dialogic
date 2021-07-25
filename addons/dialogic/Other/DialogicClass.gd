@@ -132,7 +132,10 @@ static func get_variable(name: String) -> String:
 	if Engine.is_editor_hint():
 		return Engine.get_singleton('DialogicSingleton').get_variable(name)
 	else:
-		return DialogicSingleton.get_variable(name)
+		if DialogicSingleton:
+			return DialogicSingleton.get_variable(name)
+		else:
+			return ''
 
 
 ## Sets the value for the variable with the given name.
