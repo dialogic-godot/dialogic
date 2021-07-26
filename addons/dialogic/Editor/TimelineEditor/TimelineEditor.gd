@@ -608,6 +608,7 @@ func create_event(scene: String, data: Dictionary = {'no-data': true} , indent: 
 
 func load_timeline(filename: String):
 	clear_timeline()
+	update_custom_events()
 	building_timeline = true
 	timeline_file = filename
 	
@@ -720,6 +721,8 @@ func add_event_by_id(event_id, event_data):
 	
 	if event_id in custom_events.keys():
 		return create_event(event_id, event_data)
+	
+	return create_event('DummyEvent', event_data)
 
 func clear_timeline():
 	deselect_all_items()
