@@ -819,6 +819,7 @@ func get_classic_choice_button(label: String):
 	var theme = current_theme
 	var button : Button = ChoiceButton.instance()
 	button.text = label
+	button.set_meta('input_next', input_next)
 	
 	# Removing the blue selected border
 	button.set('custom_styles/focus', StyleBoxEmpty.new())
