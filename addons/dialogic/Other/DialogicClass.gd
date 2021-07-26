@@ -82,14 +82,14 @@ static func start_from_save(initial_timeline: String, dialog_scene_path: String=
 ## 
 ## @returns						Dictionary in the format {'variables': [], 'glossary': []}
 static func get_default_definitions() -> Dictionary:
-	return Engine.get_singleton('DialogicSingleton').get_default_definitions()
+	return DialogicSingleton.get_default_definitions()
 
 
 ## Gets currently saved values for definitions.
 ## 
 ## @returns						Dictionary in the format {'variables': [], 'glossary': []}
 static func get_definitions() -> Dictionary:
-	return Engine.get_singleton('DialogicSingleton').get_definitions()
+	return DialogicSingleton.get_definitions()
 
 
 ## Save current definitions to the filesystem.
@@ -98,8 +98,8 @@ static func get_definitions() -> Dictionary:
 ## @returns						Error status, OK if all went well
 static func save_definitions():
 	# Always try to save as much as possible.
-	var err1 = Engine.get_singleton('DialogicSingleton').save_definitions()
-	var err2 = Engine.get_singleton('DialogicSingleton').save_state()
+	var err1 = DialogicSingleton.save_definitions()
+	var err2 = DialogicSingleton.save_state()
 
 	# Try to combine the two error states in a way that makes sense.
 	return err1 if err1 != OK else err2
@@ -107,17 +107,17 @@ static func save_definitions():
 
 ## Sets whether to use Dialogic's built-in autosave functionality.
 static func set_autosave(save: bool) -> void:
-	Engine.get_singleton('DialogicSingleton').set_autosave(save);
+	DialogicSingleton.set_autosave(save);
 
 
 ## Gets whether to use Dialogic's built-in autosave functionality.
 static func get_autosave() -> bool:
-	return Engine.get_singleton('DialogicSingleton').get_autosave();
+	return DialogicSingleton.get_autosave();
 
 
 ## Resets data to default values. This is the same as calling start with reset_saves to true
 static func reset_saves():
-	Engine.get_singleton('DialogicSingleton').init(true)
+	DialogicSingleton.init(true)
 
 
 ## Gets the value for the variable with the given name.
