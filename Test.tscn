@@ -1,0 +1,26 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Test.gd" type="Script" id=1]
+[ext_resource path="res://addons/dialogic/Example Assets/Fonts/DefaultFont.tres" type="DynamicFont" id=2]
+
+[node name="Test" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MyText" type="RichTextLabel" parent="."]
+margin_right = 718.0
+margin_bottom = 461.0
+custom_fonts/bold_font = ExtResource( 2 )
+bbcode_text = "true
+# Docs
+"
+text = "true
+# Docs
+"
+__meta__ = {
+"_edit_use_anchors_": false
+}

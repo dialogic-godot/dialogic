@@ -14,6 +14,7 @@ export(PackedScene) var header_scene : PackedScene
 export(PackedScene) var body_scene : PackedScene
 export (bool) var expand_on_default := false
 export (bool) var needs_indentation := false
+export (String) var help_page_path := ""
 signal option_action(action_name)
 
 
@@ -28,7 +29,7 @@ onready var header_content_container = $PanelContainer/MarginContainer/VBoxConta
 onready var body_container = $PanelContainer/MarginContainer/VBoxContainer/Body
 onready var body_content_container = $PanelContainer/MarginContainer/VBoxContainer/Body/Content
 onready var indent_node = $Indent
-
+onready var help_button = $PanelContainer/MarginContainer/VBoxContainer/Header/HelpButton
 var header_node
 var body_node
 
@@ -221,7 +222,11 @@ func _ready():
 	panel.connect("gui_input", self, '_on_gui_input')
 	expand_control.connect("state_changed", self, "_on_ExpandControl_state_changed")
 	options_control.connect("action", self, "_on_OptionsControl_action")
-
+	
+	# load icons
+	if help_page_path != "":
+		help_button.icon = get_icon("HelpSearch", "EditorIcons")
+		help_button.show()
 	
 	# when it enters the tree, load the data into the header/body
 	# If there is any external data, it will be set already BEFORE the event is added to tree
@@ -251,3 +256,8 @@ func _ready():
 	
 	_on_Indent_visibility_changed()
 
+
+func _on_HelpButton_pressed():
+	if help_page_path:
+		var master_tree = editor_reference.get_node_or_null('MainPanel/MasterTreeContainer/MasterTree')
+		master_tree.select_documentation_item(help_page_path)

@@ -1,3 +1,7 @@
+## v1.3 - (WIP)
+- ⭐ Builtin Documentation [[Jowan-Spooner]](https://github.com/Jowan-Spooner)
+
+
 ## v1.2.5 - Possibly breaking eveything. We will never know.
 - Loading timeline events on batches to speedup big timelines
 - Reduced the amount of nodes inside events to improve loading times
