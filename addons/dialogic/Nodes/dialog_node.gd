@@ -755,6 +755,8 @@ func event_handler(event: Dictionary):
 			$TextBubble.visible = false
 			waiting = true
 			var target = get_node_or_null(event['call_node']['target_node_path'])
+			if not target:
+				target = get_tree().root.get_node_or_null(event['call_node']['target_node_path'])
 			var method_name = event['call_node']['method_name']
 			var args = event['call_node']['arguments']
 			if (not args is Array):
