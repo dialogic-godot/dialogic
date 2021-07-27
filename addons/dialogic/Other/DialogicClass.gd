@@ -163,6 +163,14 @@ static func set_glossary(name: String, title: String, text: String, extra: Strin
 	DialogicSingleton.set_glossary(name, title, text, extra)
 
 
+static func set_text_speed_multiplier(multiplier:float) -> void:
+	DialogicSingleton.current_speed_multiplier = multiplier
+
+
+static func get_text_speed_multiplier() -> float:
+	return DialogicSingleton.current_speed_multiplier
+
+
 ## Gets the currently saved timeline.
 ## Timeline saves are set on timeline start, and cleared on end.
 ## This means you can keep track of timeline changes and detect when the dialog ends.

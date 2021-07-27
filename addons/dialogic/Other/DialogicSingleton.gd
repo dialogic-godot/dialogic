@@ -13,6 +13,7 @@ var autosave := true
 
 var current_timeline := ''
 
+var current_speed_multiplier := 1.0
 
 ## *****************************************************************************
 ##								INITIALIZATION

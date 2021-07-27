@@ -222,11 +222,11 @@ func _on_writing_timer_timeout():
 		$TypingSFX.stop()
 
 func start_text_timer():
-	if text_speed == 0:
+	if text_speed == 0 or DialogicSingleton.current_speed_multiplier == 0:
 		text_label.visible_characters = -1
 		_handle_text_completed()
 	else:
-		$WritingTimer.start(text_speed)
+		$WritingTimer.start(text_speed/DialogicSingleton.current_speed_multiplier)
 		_finished = false
 
 func _handle_text_completed():
