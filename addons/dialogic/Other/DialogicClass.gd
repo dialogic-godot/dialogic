@@ -163,10 +163,16 @@ static func set_glossary(name: String, title: String, text: String, extra: Strin
 	DialogicSingleton.set_glossary(name, title, text, extra)
 
 
+## Sets the current text speed multiplier.
+## 
+## @param multiplier			Higher values -> text get's shown quicker; 0 = instant shown.
 static func set_text_speed_multiplier(multiplier:float) -> void:
 	DialogicSingleton.current_speed_multiplier = multiplier
 
 
+## Gets the currently saved timeline.
+##
+## @returns						The current text speed multiplier.
 static func get_text_speed_multiplier() -> float:
 	return DialogicSingleton.current_speed_multiplier
 
