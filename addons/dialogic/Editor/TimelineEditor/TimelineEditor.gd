@@ -513,7 +513,7 @@ func update_custom_events() -> void:
 						'event_name' : event.event_name,
 						'event_icon' : event.event_icon
 					}
-				
+					event.queue_free()
 				else:
 					print("[D] An error occurred when trying to access a custom event.")
 

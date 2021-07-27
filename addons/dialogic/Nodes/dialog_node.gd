@@ -136,7 +136,7 @@ func update_custom_events() -> void:
 						'event_script' :path.plus_file(file_name).plus_file('event_'+event.event_data['event_id']+'.gd'),
 						'event_name' : event.event_name,
 					}
-				
+					event.queue_free()
 				else:
 					print("[D] An error occurred when trying to access a custom event.")
 
