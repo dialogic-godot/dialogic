@@ -23,3 +23,6 @@ one_shot = true
 [node name="AutoSave" type="Timer" parent="."]
 
 [node name="DocsTreeHelper" parent="." instance=ExtResource( 2 )]
+margin_right = 47.0
+margin_bottom = 45.0
+mouse_filter = 2
