@@ -7,7 +7,7 @@ class_name DialogicResources
 ## It is also used by the DialogicUtil class and the DialogicSingleton
 
 const RESOURCES_DIR: String = "res://dialogic" # Readonly, used for static data
-const WORKING_DIR: String = "user://dialogic" # Readwrite, used for saves
+const USER_DIR: String = "user://dialogic" # Readwrite, used for saves
 
 
 ## *****************************************************************************
@@ -49,20 +49,23 @@ static func set_json(path: String, data: Dictionary):
 ##							INITIALIZATION
 ## *****************************************************************************
 
-
+# This functions makes sure that the needed files and folders
+# exists when the plugin is loaded. If they don't, we create 
+# them.
+# WARNING: only call while in the editor
 static func init_dialogic_files() -> void:
-	# This functions makes sure that the needed files and folders
-	# exists when the plugin is loaded. If they don't, we create 
-	# them.
-	# WARNING: only call while in the editor
 	var directory = Directory.new()
-	var paths = get_working_directories()
-	var files = get_config_files_paths()
+	
 	# Create directories
+	var paths = get_working_directories()
+	
 	for dir in paths:
 		if not directory.dir_exists(paths[dir]):
 			directory.make_dir_recursive(paths[dir])
+	
 	# Create empty files
+	var files = get_config_files_paths()
+	
 	for f in files:
 		if not directory.file_exists(files[f]):
 			create_empty_file(files[f])
@@ -71,7 +74,7 @@ static func init_dialogic_files() -> void:
 static func get_working_directories() -> Dictionary:
 	return {
 		'RESOURCES_DIR': RESOURCES_DIR,
-		'WORKING_DIR': WORKING_DIR,
+		'USER_DIR': USER_DIR,
 		'TIMELINE_DIR': RESOURCES_DIR + "/timelines",
 		'THEME_DIR': RESOURCES_DIR + "/themes",
 		'CHAR_DIR': RESOURCES_DIR + "/characters",
@@ -82,9 +85,10 @@ static func get_config_files_paths() -> Dictionary:
 	return {
 		'SETTINGS_FILE': RESOURCES_DIR + "/settings.cfg",
 		'DEFAULT_DEFINITIONS_FILE': RESOURCES_DIR + "/definitions.json",
+		'RES_VARIABLES_FILE' : RESOURCES_DIR + "/variables.json",
 		'FOLDER_STRUCTURE_FILE': RESOURCES_DIR + "/folder_structure.json",
-		'SAVED_DEFINITIONS_FILE': WORKING_DIR + "/definitions.json",
-		'SAVED_STATE_FILE': WORKING_DIR + "/state.json",
+		'SAVED_DEFINITIONS_FILE': USER_DIR + "/definitions.json",
+		'SAVED_STATE_FILE': USER_DIR + "/state.json",
 	}
 
 
@@ -101,7 +105,7 @@ static func init_saves():
 
 static func init_working_dir():
 	var directory := Directory.new()
-	return directory.make_dir_recursive(get_working_directories()['WORKING_DIR'])
+	return directory.make_dir_recursive(get_working_directories()['USER_DIR'])
 
 
 static func init_state_saves():
