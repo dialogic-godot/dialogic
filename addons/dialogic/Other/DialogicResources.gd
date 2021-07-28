@@ -416,7 +416,8 @@ static func get_saved_definitions(save_name: String = '') -> Dictionary:
 		return load_json(get_config_files_paths()['DEFINITIONS_DEFAULT_SAVE'], {})
 	
 	if not save_name in get_saves_folders():
-		return {}
+		print("[D] Wasn't able to find save '"+save_name+"'. Loaded the default definitions.")
+		return get_default_definitions()
 	
 	return load_json(WORKING_DIR+"/"+save_name+"/definitions.json", {})
 

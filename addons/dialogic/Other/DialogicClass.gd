@@ -31,7 +31,7 @@ class_name Dialogic
 ## @param debug_mode			Debug is disabled by default but can be enabled if needed.
 ## @param use_canvas_instead	Create the Dialog inside a canvas layer to make it show up regardless of the camera 2D/3D situation.
 ## @returns						A Dialog node to be added into the scene tree.
-static func start(timeline: String, reset_saves: bool=true, dialog_scene_path: String="res://addons/dialogic/Dialog.tscn", debug_mode: bool=false, use_canvas_instead=true):
+static func start(timeline: String, reset_saves: bool=true, dialog_scene_path: String="res://addons/dialogic/Dialog.tscn", debug_mode: bool=false, use_canvas_instead=true) -> Node:
 	var dialog_scene = load(dialog_scene_path)
 	var dialog_node = null
 	var canvas_dialog_node = null
@@ -72,22 +72,11 @@ static func start(timeline: String, reset_saves: bool=true, dialog_scene_path: S
 ## @param dialog_scene_path		If you made a custom Dialog scene or moved it from its default path, you can specify its new path here.
 ## @param debug_mode			Debug is disabled by default but can be enabled if needed.
 ## @returns						A Dialog node to be added into the scene tree.
-static func start_from_save(initial_timeline: String, dialog_scene_path: String="res://addons/dialogic/Dialog.tscn", debug_mode: bool=false):
+static func start_from_save(initial_timeline: String, dialog_scene_path: String="res://addons/dialogic/Dialog.tscn", debug_mode: bool=false) -> Node:
 	var current := get_current_timeline()
 	if current.empty():
 		current = initial_timeline
 	return start(current, false, dialog_scene_path, debug_mode)
-
-
-## Saves the current definitions and the latest added dialog nodes state info.
-## 
-## @param save_name		The name of the save folder. To load this save you have to specify the same
-##						If the save folder doesn't exist it will be created. 
-##						Leaving this empty will overwrite the default files.
-static func save_current_state(save_name: String = '') -> void:
-	if DialogicSingleton.latest_dialog_node:
-		var save_data = DialogicSingleton.latest_dialog_node.get_current_state_info()
-		DialogicSingleton.save_state_and_definitions(save_name, save_data)
 
 
 ## Similar to the start function, but loads state info and definitions from a given save folder..
@@ -95,7 +84,7 @@ static func save_current_state(save_name: String = '') -> void:
 ## @param save_name		The name of the save folder.
 ##						Leaving this empty load from the default files.
 ## The other @params work like the ones in start()
-static func resume_from_save(save_name: String, dialog_scene_path: String="res://addons/dialogic/Dialog.tscn", debug_mode: bool=false, use_canvas_instead=true):
+static func resume_from_save(save_name: String, dialog_scene_path: String="res://addons/dialogic/Dialog.tscn", debug_mode: bool=false, use_canvas_instead=true) -> Node:
 	var dialog_scene = load(dialog_scene_path)
 	var dialog_node = null
 	var canvas_dialog_node = null
@@ -119,6 +108,17 @@ static func resume_from_save(save_name: String, dialog_scene_path: String="res:/
 	return returned_dialog_node
 
 
+## Saves the current definitions and the latest added dialog nodes state info.
+## 
+## @param save_name		The name of the save folder. To load this save you have to specify the same
+##						If the save folder doesn't exist it will be created. 
+##						Leaving this empty will overwrite the default files.
+static func save_current_state(save_name: String = '') -> void:
+	if DialogicSingleton.latest_dialog_node:
+		var save_data = DialogicSingleton.latest_dialog_node.get_current_state_info()
+		DialogicSingleton.save_state_and_definitions(save_name, save_data)
+
+
 ## Returns an array with the names of all available saves.
 ## 
 ## @param save_name		The name of the save folder.
@@ -128,8 +128,23 @@ static func get_save_names_array() -> Array:
 
 ## Will permanently erase the save data with the given name.
 ## 
-static func erase_save(save_name: String):
+## @param save_name		The name of the save folder.
+static func erase_save(save_name: String) -> void:
 	DialogicResources.remove_save_folder(save_name)
+
+
+## Will save the current definition and glossary values into the save folder with the given name.
+## 
+## @param save_name		The name of the save folder.
+static func save_defintions_and_glossary(save_name:String) -> void:
+	DialogicSingleton.save_definitions_and_glossary(save_name)
+
+
+## Will load the defintiion and glossary values saved in the save folder @save_name.
+## 
+## @param save_name		The name of the save folder.
+static func load_definitions_and_glossary(save_name:String) -> void:
+	DialogicSingleton.load_definitions_and_glossary(save_name)
 
 
 ## Gets default values for definitions.
@@ -158,7 +173,6 @@ static func save_definitions():
 	# Try to combine the two error states in a way that makes sense.
 	return err1 if err1 != OK else err2
 
-
 ## Sets whether to use Dialogic's built-in autosave functionality.
 static func set_autosave(save: bool) -> void:
 	Engine.get_singleton('DialogicSingleton').set_autosave(save);
@@ -171,7 +185,7 @@ static func get_autosave() -> bool:
 
 ## Resets data to default values. This is the same as calling start with reset_saves to true
 static func reset_saves():
-	Engine.get_singleton('DialogicSingleton').init(true)
+	DialogicSingleton.init(true)
 
 
 ## Gets the value for the variable with the given name.

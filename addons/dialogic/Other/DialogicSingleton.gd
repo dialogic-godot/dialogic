@@ -39,17 +39,26 @@ func init(reset: bool=false) -> void:
 ##							SAVING AND RESUMING
 ## *****************************************************************************
 
+# this saves the current definitions and the given state info into the save folder @save_name
+func save_state_and_definitions(save_name: String, state_info: Dictionary) -> void:
+	DialogicResources.save_definitions(save_name, current_definitions)
+	DialogicResources.save_state_info(save_name, state_info)
+
+
 # this loads the saves definitions and returns the saves state_info ditionary
 func resume_from_save(save_name: String) -> Dictionary:
 	current_definitions = DialogicResources.get_saved_definitions(save_name)
 	return DialogicResources.get_saved_state_info(save_name)
 
 
-# this saves the current definitions and the given state info into the save folder "save_name"
-func save_state_and_definitions(save_name: String, state_info: Dictionary) -> void:
+# this saves the current definitions to the given save folder @save_name 
+func save_definitions_and_glossary(save_name:String) -> void:
 	DialogicResources.save_definitions(save_name, current_definitions)
-	DialogicResources.save_state_info(save_name, state_info)
 
+
+# this loads the saved defintiions from the folder @save_name into the current definitions
+func load_definitions_and_glossary(save_name:String) -> void:
+	current_definitions = DialogicResources.get_saved_definitions(save_name)
 
 ## *****************************************************************************
 ##						DEFINITIONS: VARIABLES/GLOSSARY
