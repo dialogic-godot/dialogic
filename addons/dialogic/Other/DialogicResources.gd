@@ -20,7 +20,7 @@ const working_dirs = {
 const cfg_files = {
 		'SETTINGS_FILE': RESOURCES_DIR + "/settings.cfg",
 		'DEFAULT_DEFINITIONS_FILE': RESOURCES_DIR + "/definitions.json",
-		'RES_VARIABLES_FILE' : RESOURCES_DIR + "/variables.json",
+		'RES_VALUES_FILE' : RESOURCES_DIR + "/values.json",
 		'FOLDER_STRUCTURE_FILE': RESOURCES_DIR + "/folder_structure.json",
 		'SAVED_DEFINITIONS_FILE': USER_DIR + "/definitions.json",
 		'SAVED_STATE_FILE': USER_DIR + "/state.json",
@@ -410,6 +410,12 @@ static func get_resource_folder_structure() -> Dictionary:
 					'metadata':{'color':null, 'folded':false}
 				},
 			"Characters":
+				{
+					"folders":{},
+					"files":[],
+					'metadata':{'color':null, 'folded':false}
+				},
+			"Values":
 				{
 					"folders":{},
 					"files":[],

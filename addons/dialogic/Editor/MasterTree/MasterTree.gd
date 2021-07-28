@@ -23,6 +23,7 @@ var documentation_icon
 
 var timelines_tree
 var characters_tree
+var values_tree
 var definitions_tree
 var themes_tree
 var settings_tree
@@ -40,6 +41,20 @@ var rmb_popup_menus = {}
 var filter_tree_term = ''
 
 signal editor_selected(selected)
+
+func create_subtree(root:TreeItem, treeName:String, treeMeta:String) -> TreeItem:
+	var sub_tree = tree.create_item(root)
+	
+	# set the item
+	sub_tree.set_icon(0, get_icon("Folder", "EditorIcons"))
+	sub_tree.set_icon_modulate(0, get_color("folder_icon_modulate", "FileDialog"))
+	
+	# set info
+	sub_tree.set_text(0, treeName)
+	sub_tree.collapsed = DialogicUtil.get_folder_meta(treeName, 'folded')
+	sub_tree.set_metadata(0, {'editor': treeMeta})
+	
+	return sub_tree
 
 func _ready():
 	# Tree Settings
@@ -73,33 +88,15 @@ func _ready():
 	definition_icon = load("res://addons/dialogic/Images/Resources/definition" + modifier + ".svg")
 	glossary_icon = get_icon("ListSelect", "EditorIcons")
 	
-	# Creating the root items
-	for tree_info in [
-		# variable		 name		  editor
-		["Timelines", "Timeline Root"],
-		["Characters", "Character Root"],
-		["Definitions", "Definition Root"],
-		["Themes", "Theme Root"],
-			]:
-		# create tree item
-		var sub_tree = tree.create_item(root)
-		# set the item
-		sub_tree.set_icon(0, get_icon("Folder", "EditorIcons"))
-		sub_tree.set_icon_modulate(0, get_color("folder_icon_modulate", "FileDialog"))
-		# set info
-		sub_tree.set_text(0, tree_info[0])
-		sub_tree.collapsed = DialogicUtil.get_folder_meta(tree_info[0], 'folded')
-		sub_tree.set_metadata(0, {'editor': tree_info[1]})
-		# set the correct tree variable
-		match tree_info[0]:
-			"Timelines":
-				timelines_tree = sub_tree
-			"Characters":
-				characters_tree = sub_tree
-			"Definitions":
-				definitions_tree = sub_tree
-			"Themes":
-				themes_tree = sub_tree
+	timelines_tree = create_subtree(root, "Timelines", "Timeline Root")
+	
+	characters_tree = create_subtree(root, "Characters", "Character Root")
+	
+	values_tree = create_subtree(root, "Values", "Values Root")
+	
+	definitions_tree = create_subtree(root, "Definitions", "Definition Root")
+	
+	themes_tree = create_subtree(root, "Themes", "Theme Root")
 	
 	settings_tree = tree.create_item(root)
 	settings_tree.set_text(0, "Settings")
@@ -110,7 +107,6 @@ func _ready():
 	documentation_tree.set_text(0, "Help")
 	documentation_tree.set_icon(0, get_icon("HelpSearch", "EditorIcons"))
 	documentation_tree.set_metadata(0, {'editor': 'Documentation Root', 'name':'Start', 'path':'Welcome.md'})
-	
 	
 	# creates the context menus
 	create_rmb_context_menus()
@@ -386,18 +382,21 @@ func hide_editors():
 ## *****************************************************************************
 
 func create_rmb_context_menus():
+	#items
 	var timeline_popup = PopupMenu.new()
 	timeline_popup.add_icon_item(get_icon("Filesystem", "EditorIcons"), 'Show in File Manager')
 	timeline_popup.add_icon_item(get_icon("ActionCopy", "EditorIcons"), 'Copy Timeline Name')
 	timeline_popup.add_icon_item(get_icon("Remove", "EditorIcons"), 'Remove Timeline')
 	add_child(timeline_popup)
 	rmb_popup_menus["Timeline"] = timeline_popup
+	timeline_popup.connect('id_pressed', self, '_on_TimelinePopupMenu_id_pressed')
 	
 	var character_popup = PopupMenu.new()
 	character_popup.add_icon_item(get_icon("Filesystem", "EditorIcons"), 'Show in File Manager')
 	character_popup.add_icon_item(get_icon("Remove", "EditorIcons"), 'Remove Character')
 	add_child(character_popup)
 	rmb_popup_menus["Character"] = character_popup
+	character_popup.connect('id_pressed', self, '_on_CharacterPopupMenu_id_pressed')
 	
 	var theme_popup = PopupMenu.new()
 	theme_popup.add_icon_item(get_icon("Filesystem", "EditorIcons"), 'Show in File Manager')
@@ -405,6 +404,7 @@ func create_rmb_context_menus():
 	theme_popup.add_icon_item(get_icon("Remove", "EditorIcons"), 'Remove Theme')
 	add_child(theme_popup)
 	rmb_popup_menus["Theme"] = theme_popup
+	theme_popup.connect('id_pressed', self, '_on_ThemePopupMenu_id_pressed')
 	
 	var definition_popup = PopupMenu.new()
 	definition_popup.add_icon_item(get_icon("Edit", "EditorIcons"), 'Edit Definitions File')
@@ -412,6 +412,7 @@ func create_rmb_context_menus():
 	add_child(definition_popup)
 	rmb_popup_menus["Value"] = definition_popup
 	rmb_popup_menus["GlossaryEntry"] = definition_popup
+	definition_popup.connect('id_pressed', self, '_on_DefinitionPopupMenu_id_pressed')
 	
 	## FOLDER / ROOT ITEMS
 	var timeline_folder_popup = PopupMenu.new()
@@ -420,6 +421,7 @@ func create_rmb_context_menus():
 	timeline_folder_popup.add_icon_item(get_icon("Remove", "EditorIcons") ,'Delete Folder')
 	add_child(timeline_folder_popup)
 	rmb_popup_menus['Timeline Root'] = timeline_folder_popup
+	timeline_folder_popup.connect('id_pressed', self, '_on_TimelineRootPopupMenu_id_pressed')
 	
 	var character_folder_popup = PopupMenu.new()
 	character_folder_popup.add_icon_item(get_icon("Add", "EditorIcons") ,'Add Character')
@@ -427,6 +429,7 @@ func create_rmb_context_menus():
 	character_folder_popup.add_icon_item(get_icon("Remove", "EditorIcons") ,'Delete Folder')
 	add_child(character_folder_popup)
 	rmb_popup_menus['Character Root'] = character_folder_popup
+	character_folder_popup.connect('id_pressed', self, '_on_CharacterRootPopupMenu_id_pressed')
 	
 	var theme_folder_popup = PopupMenu.new()
 	theme_folder_popup.add_icon_item(get_icon("Add", "EditorIcons") ,'Add Theme')
@@ -434,6 +437,14 @@ func create_rmb_context_menus():
 	theme_folder_popup.add_icon_item(get_icon("Remove", "EditorIcons") ,'Delete Folder')
 	add_child(theme_folder_popup)
 	rmb_popup_menus["Theme Root"] = theme_folder_popup
+	theme_folder_popup.connect('id_pressed', self, '_on_ThemeRootPopupMenu_id_pressed')
+	
+	var values_folder_popup = PopupMenu.new()
+	values_folder_popup.add_icon_item(get_icon("Add", "EditorIcons") ,'Add Value')
+	values_folder_popup.add_icon_item(get_icon("Folder", "EditorIcons") ,'Create Subfolder')
+	values_folder_popup.add_icon_item(get_icon("Remove", "EditorIcons") ,'Delete Folder')
+	add_child(values_folder_popup)
+	rmb_popup_menus["Values Root"] = values_folder_popup
 	
 	var definition_folder_popup = PopupMenu.new()
 	definition_folder_popup.add_icon_item(get_icon("Add", "EditorIcons") ,'Add Value')
@@ -442,29 +453,20 @@ func create_rmb_context_menus():
 	definition_folder_popup.add_icon_item(get_icon("Remove", "EditorIcons") ,'Delete Folder')
 	add_child(definition_folder_popup)
 	rmb_popup_menus["Definition Root"] = definition_folder_popup
+	definition_folder_popup.connect('id_pressed', self, '_on_DefinitionRootPopupMenu_id_pressed')
 	
+	#documentation
 	var documentation_folder_popup = PopupMenu.new()
 	documentation_folder_popup.add_icon_item(get_icon("Edit", "EditorIcons") ,'Toggle Editing Tools')
 	add_child(documentation_folder_popup)
 	rmb_popup_menus["Documentation Root"] = documentation_folder_popup
+	documentation_folder_popup.connect('id_pressed', self, '_on_DocumentationPopupMenu_id_pressed')
 	
 	var documentation_popup = PopupMenu.new()
 	documentation_popup.add_icon_item(get_icon("Edit", "EditorIcons") ,'Toggle Editing Tools')
 	add_child(documentation_popup)
 	rmb_popup_menus["Documentation"] = documentation_popup
-	
-	# Connecting context menus
-	timeline_popup.connect('id_pressed', self, '_on_TimelinePopupMenu_id_pressed')
-	character_popup.connect('id_pressed', self, '_on_CharacterPopupMenu_id_pressed')
-	theme_popup.connect('id_pressed', self, '_on_ThemePopupMenu_id_pressed')
-	definition_popup.connect('id_pressed', self, '_on_DefinitionPopupMenu_id_pressed')
 	documentation_popup.connect('id_pressed', self, '_on_DocumentationPopupMenu_id_pressed')
-		
-	timeline_folder_popup.connect('id_pressed', self, '_on_TimelineRootPopupMenu_id_pressed')
-	character_folder_popup.connect('id_pressed', self, '_on_CharacterRootPopupMenu_id_pressed')
-	theme_folder_popup.connect('id_pressed', self, '_on_ThemeRootPopupMenu_id_pressed')
-	definition_folder_popup.connect('id_pressed', self, '_on_DefinitionRootPopupMenu_id_pressed')
-	documentation_folder_popup.connect('id_pressed', self, '_on_DocumentationPopupMenu_id_pressed')
 
 func _on_item_rmb_selected(position):
 	var item = get_selected().get_metadata(0)
