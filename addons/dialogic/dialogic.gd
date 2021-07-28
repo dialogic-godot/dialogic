@@ -5,16 +5,30 @@ var _editor_view
 var _parts_inspector
 
 func _init():
-	if Engine.editor_hint:
-		# Make sure the core files exist 
-		DialogicResources.init_dialogic_files()
+	# This functions makes sure that the needed files and folders
+	# exists when the plugin is loaded. If they don't, we create 
+	# them.
+	var directory = Directory.new()
+	
+	# Create directories
+	var paths = DialogicResources.working_dirs
+	
+	for dir in paths:
+		if not directory.dir_exists(paths[dir]):
+			directory.make_dir_recursive(paths[dir])
+	
+	# Create empty files
+	var files = DialogicResources.cfg_files
+	
+	for f in files:
+		if not directory.file_exists(files[f]):
+			DialogicResources.create_empty_file(files[f])
 		
 	add_autoload_singleton('DialogicSingleton', "res://addons/dialogic/Other/DialogicSingleton.gd")
 	
 	## Remove after 2.0
 	if Engine.editor_hint:
 		DialogicUtil.resource_fixer()
-	
 
 
 func _enter_tree() -> void:

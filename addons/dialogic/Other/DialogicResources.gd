@@ -9,6 +9,22 @@ class_name DialogicResources
 const RESOURCES_DIR: String = "res://dialogic" # Readonly, used for static data
 const USER_DIR: String = "user://dialogic" # Readwrite, used for saves
 
+const working_dirs = {
+		'RESOURCES_DIR': RESOURCES_DIR,
+		'USER_DIR': USER_DIR,
+		'TIMELINE_DIR': RESOURCES_DIR + "/timelines",
+		'THEME_DIR': RESOURCES_DIR + "/themes",
+		'CHAR_DIR': RESOURCES_DIR + "/characters",
+	}
+	
+const cfg_files = {
+		'SETTINGS_FILE': RESOURCES_DIR + "/settings.cfg",
+		'DEFAULT_DEFINITIONS_FILE': RESOURCES_DIR + "/definitions.json",
+		'RES_VARIABLES_FILE' : RESOURCES_DIR + "/variables.json",
+		'FOLDER_STRUCTURE_FILE': RESOURCES_DIR + "/folder_structure.json",
+		'SAVED_DEFINITIONS_FILE': USER_DIR + "/definitions.json",
+		'SAVED_STATE_FILE': USER_DIR + "/state.json",
+	}
 
 ## *****************************************************************************
 ##							BASIC JSON FUNCTION
@@ -49,52 +65,30 @@ static func set_json(path: String, data: Dictionary):
 ##							INITIALIZATION
 ## *****************************************************************************
 
-# This functions makes sure that the needed files and folders
-# exists when the plugin is loaded. If they don't, we create 
-# them.
-# WARNING: only call while in the editor
-static func init_dialogic_files() -> void:
-	var directory = Directory.new()
-	
-	# Create directories
-	var paths = get_working_directories()
-	
-	for dir in paths:
-		if not directory.dir_exists(paths[dir]):
-			directory.make_dir_recursive(paths[dir])
-	
-	# Create empty files
-	var files = get_config_files_paths()
-	
-	for f in files:
-		if not directory.file_exists(files[f]):
-			create_empty_file(files[f])
+#static func get_working_directories() -> Dictionary:
+#	return {
+#		'RESOURCES_DIR': RESOURCES_DIR,
+#		'USER_DIR': USER_DIR,
+#		'TIMELINE_DIR': RESOURCES_DIR + "/timelines",
+#		'THEME_DIR': RESOURCES_DIR + "/themes",
+#		'CHAR_DIR': RESOURCES_DIR + "/characters",
+#	}
 
 
-static func get_working_directories() -> Dictionary:
-	return {
-		'RESOURCES_DIR': RESOURCES_DIR,
-		'USER_DIR': USER_DIR,
-		'TIMELINE_DIR': RESOURCES_DIR + "/timelines",
-		'THEME_DIR': RESOURCES_DIR + "/themes",
-		'CHAR_DIR': RESOURCES_DIR + "/characters",
-	}
-
-
-static func get_config_files_paths() -> Dictionary:
-	return {
-		'SETTINGS_FILE': RESOURCES_DIR + "/settings.cfg",
-		'DEFAULT_DEFINITIONS_FILE': RESOURCES_DIR + "/definitions.json",
-		'RES_VARIABLES_FILE' : RESOURCES_DIR + "/variables.json",
-		'FOLDER_STRUCTURE_FILE': RESOURCES_DIR + "/folder_structure.json",
-		'SAVED_DEFINITIONS_FILE': USER_DIR + "/definitions.json",
-		'SAVED_STATE_FILE': USER_DIR + "/state.json",
-	}
+#static func get_config_files_paths() -> Dictionary:
+#	return {
+#		'SETTINGS_FILE': RESOURCES_DIR + "/settings.cfg",
+#		'DEFAULT_DEFINITIONS_FILE': RESOURCES_DIR + "/definitions.json",
+#		'RES_VARIABLES_FILE' : RESOURCES_DIR + "/variables.json",
+#		'FOLDER_STRUCTURE_FILE': RESOURCES_DIR + "/folder_structure.json",
+#		'SAVED_DEFINITIONS_FILE': USER_DIR + "/definitions.json",
+#		'SAVED_STATE_FILE': USER_DIR + "/state.json",
+#	}
 
 
 static func init_saves():
 	var err = init_working_dir()
-	var paths := get_config_files_paths()
+	var paths := cfg_files
 
 	if err == OK:
 		init_state_saves()
@@ -105,12 +99,12 @@ static func init_saves():
 
 static func init_working_dir():
 	var directory := Directory.new()
-	return directory.make_dir_recursive(get_working_directories()['USER_DIR'])
+	return directory.make_dir_recursive(working_dirs['USER_DIR'])
 
 
 static func init_state_saves():
 	var file := File.new()
-	var paths := get_config_files_paths()
+	var paths := cfg_files
 	var err = file.open(paths["SAVED_STATE_FILE"], File.WRITE)
 	if err == OK:
 		file.store_string('')
@@ -123,7 +117,7 @@ static func init_definitions_saves():
 	var directory := Directory.new()
 	var source := File.new()
 	var sink := File.new()
-	var paths := get_config_files_paths()
+	var paths := cfg_files
 	var err = sink.open(paths["SAVED_DEFINITIONS_FILE"], File.WRITE)
 	print('[Dialogic] Initializing save file: ' + str(err))
 	if err == OK:
@@ -151,7 +145,7 @@ static func init_definitions_saves():
 ## *****************************************************************************
 
 static func get_path(name: String, extra: String ='') -> String:
-	var paths: Dictionary = get_working_directories()
+	var paths: Dictionary = working_dirs
 	if extra != '':
 		return paths[name] + '/' + extra
 	else:
@@ -233,7 +227,7 @@ static func copy_file(path_from, path_to):
 
 
 static func get_config(id: String) -> ConfigFile:
-	var paths := get_config_files_paths()
+	var paths := cfg_files
 	var config := ConfigFile.new()
 	if id in paths.keys():
 		var err = config.load(paths[id])
@@ -329,7 +323,7 @@ static func get_settings_config() -> ConfigFile:
 static func set_settings_value(section: String, key: String, value):
 	var config = get_settings_config()
 	config.set_value(section, key, value)
-	config.save(get_config_files_paths()['SETTINGS_FILE'])
+	config.save(cfg_files['SETTINGS_FILE'])
 
 
 ## *****************************************************************************
@@ -339,12 +333,12 @@ static func set_settings_value(section: String, key: String, value):
 
 
 static func get_saved_state() -> Dictionary:
-	return load_json(get_config_files_paths()['SAVED_STATE_FILE'], {'general': {}})
+	return load_json(cfg_files['SAVED_STATE_FILE'], {'general': {}})
 
 
 static func save_saved_state_config(data: Dictionary):
 	init_working_dir()
-	set_json(get_config_files_paths()['SAVED_STATE_FILE'], data)
+	set_json(cfg_files['SAVED_STATE_FILE'], data)
 
 
 ## *****************************************************************************
@@ -354,11 +348,11 @@ static func save_saved_state_config(data: Dictionary):
 
 
 static func get_default_definitions() -> Dictionary:
-	return load_json(get_config_files_paths()['DEFAULT_DEFINITIONS_FILE'], {'variables': [], 'glossary': []})
+	return load_json(cfg_files['DEFAULT_DEFINITIONS_FILE'], {'variables': [], 'glossary': []})
 
 
 static func save_default_definitions(data: Dictionary):
-	set_json(get_config_files_paths()['DEFAULT_DEFINITIONS_FILE'], data)
+	set_json(cfg_files['DEFAULT_DEFINITIONS_FILE'], data)
 
 
 static func get_default_definition_item(id: String):
@@ -393,12 +387,12 @@ static func delete_default_definition(id: String):
 # Can only be edited in the editor
 
 static func get_saved_definitions(default: Dictionary = {'variables': [], 'glossary': []}) -> Dictionary:
-	return load_json(get_config_files_paths()['SAVED_DEFINITIONS_FILE'], default)
+	return load_json(cfg_files['SAVED_DEFINITIONS_FILE'], default)
 
 
 static func save_saved_definitions(data: Dictionary):
 	init_working_dir()
-	return set_json(get_config_files_paths()['SAVED_DEFINITIONS_FILE'], data)
+	return set_json(cfg_files['SAVED_DEFINITIONS_FILE'], data)
 
 ## *****************************************************************************
 ##						FOLDER STRUCTURE
@@ -407,7 +401,7 @@ static func save_saved_definitions(data: Dictionary):
 # Can only be edited in the editor
 
 static func get_resource_folder_structure() -> Dictionary:
-	return load_json(get_config_files_paths()['FOLDER_STRUCTURE_FILE'], 
+	return load_json(cfg_files['FOLDER_STRUCTURE_FILE'], 
 		{"folders":
 			{"Timelines":
 				{
@@ -438,5 +432,5 @@ static func get_resource_folder_structure() -> Dictionary:
 		})
 
 static func save_resource_folder_structure(data):
-	set_json(get_config_files_paths()['FOLDER_STRUCTURE_FILE'], data)
+	set_json(cfg_files['FOLDER_STRUCTURE_FILE'], data)
 	

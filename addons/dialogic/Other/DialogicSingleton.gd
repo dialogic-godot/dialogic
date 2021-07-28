@@ -25,13 +25,14 @@ func _init() -> void:
 
 
 func init(reset: bool=false) -> void:
-	if reset and autosave:
-		# Loads saved definitions into memory
-		DialogicResources.init_saves()
-	default_definitions = DialogicResources.get_default_definitions()
-	current_definitions = DialogicResources.get_saved_definitions(default_definitions)
-	current_state = DialogicResources.get_saved_state()
-	current_timeline = get_saved_state_general_key('timeline')
+	pass
+#	if reset and autosave:
+#		# Loads saved definitions into memory
+#		DialogicResources.init_saves()
+#	default_definitions = DialogicResources.get_default_definitions()
+#	current_definitions = DialogicResources.get_saved_definitions(default_definitions)
+#	current_state = DialogicResources.get_saved_state()
+#	current_timeline = get_saved_state_general_key('timeline')
 
 
 ## *****************************************************************************
