@@ -50,19 +50,46 @@ static func start(timeline: String, reset_saves: bool=true, dialog_scene_path: S
 	
 	returned_dialog_node = dialog_node if not canvas_dialog_node else canvas_dialog_node
 	
-	if not timeline.empty():
+	var timelines = DialogicUtil.get_full_resource_folder_structure()['folders']['Timelines']
+	var parts = timeline.split('/', false)
+	if parts.size() > 1:
+		var current_data
+		var current_depth = 0
+		for p in parts:
+			if current_depth == 0:
+				# Starting the crawl
+				current_data = timelines['folders'][p]
+			elif current_depth == parts.size() - 1:
+				# The final destination
+				for t in DialogicUtil.get_timeline_list():
+					for f in current_data['files']:
+						if t['file'] == f:
+							dialog_node.timeline = t['file']
+							return returned_dialog_node
+			else:
+				# Still going deeper
+				current_data = current_data['folders'][p]
+			current_depth += 1
+	else:
+		# Searching for any timeline that could match that name
 		for t in DialogicUtil.get_timeline_list():
-			if t['name'] == timeline or t['file'] == timeline:
-				dialog_node.timeline = t['file']
-				return returned_dialog_node
+			if parts.size():
+				if t['name'] == parts[0]:
+					dialog_node.timeline = t['file']
+					return returned_dialog_node
+
+		# No file found. Show error
 		dialog_node.dialog_script = {
 			"events":[
 				{"event_id":'dialogic_001',
 				"character":"",
 				"portrait":"",
 				"text":"[Dialogic Error] Loading dialog [color=red]" + timeline + "[/color]. It seems like the timeline doesn't exists. Maybe the name is wrong?"
-				}]
+			}]
 		}
+		return returned_dialog_node
+
+	# Just in case everything else fails.
 	return returned_dialog_node
 
 
