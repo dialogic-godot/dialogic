@@ -31,7 +31,7 @@ func _ready():
 	$MainPanel/MasterTreeContainer/MasterTree.connect("editor_selected", self, 'on_master_tree_editor_selected')
 
 	# Updating the folder structure
-	DialogicUtil.update_resource_folder_structure()
+	#DialogicUtil.update_resource_folder_structure()
 	
 	# Sizes
 	# This part of the code is a bit terrible. But there is no better way
@@ -100,7 +100,7 @@ func _ready():
 	$MainPanel/MasterTreeContainer/FilterMasterTreeEdit.right_icon = get_icon("Search", "EditorIcons")
 
 	#Loading values
-	#res_values = DialogicResources.load_res_values()
+	res_values = DialogicResources.load_res_values()
 
 	#Save
 	save_button.connect("pressed", self, "on_save_button_pressed")
@@ -215,3 +215,7 @@ func need_save():
 func on_save_button_pressed():
 	if !res_values.empty():
 		DialogicResources.save_res_values(res_values)
+		
+	save_button.text = "Save"
+		
+	need_save = false

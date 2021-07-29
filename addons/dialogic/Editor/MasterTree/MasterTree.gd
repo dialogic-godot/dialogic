@@ -139,15 +139,15 @@ func _ready():
 
 func build_full_tree(selected_item: String = ''):
 	# Adding timelines
-	build_timelines(selected_item)
+	#build_timelines(selected_item)
 	# Adding characters
-	build_characters(selected_item)
+	#build_characters(selected_item)
 	# Adding Values
 	build_values(selected_item)
 	# Adding Definitions
-	build_definitions(selected_item)
+	#build_definitions(selected_item)
 	# Adding Themes
-	build_themes(selected_item)
+	#build_themes(selected_item)
 
 
 func _clear_tree_children(parent: TreeItem):

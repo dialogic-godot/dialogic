@@ -16,7 +16,6 @@ onready var nodes = {
 func _ready():
 	reset_editor()
 	nodes['name'].connect('text_entered', self, '_on_text_entered')
-	nodes['name'].connect('focus_exited', self, '_on_focus_exited')
 
 
 func is_selected(id: String):
@@ -41,11 +40,6 @@ func reset_editor():
 	nodes['name'].text = ''
 	nodes['value'].text = ''
 
-	tmp_value_name = ""
-
-func popup(what):
-	editor_reference.show_popup_accept(what)
-
 func _on_text_entered(text):
 	if text == "":
 		nodes['name'].text = tmp_value_name
@@ -60,9 +54,6 @@ func _on_text_entered(text):
 		tmp_value_name = text
 	else:
 		nodes['name'].text = tmp_value_name
-
-func _on_focus_exited():
-	_on_text_entered(nodes['name'].text)
 
 #func _input(event):
 #	if event is InputEventKey and event.pressed:

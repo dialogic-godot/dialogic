@@ -57,7 +57,7 @@ static func set_json(path: String, data: Dictionary):
 	var file = File.new()
 	var err = file.open(path, File.WRITE)
 	if err == OK:
-		file.store_line(JSON.print(data))
+		file.store_line(JSON.print(data, "\t", true))
 		file.close()
 	return err
 
@@ -346,7 +346,7 @@ static func save_saved_state_config(data: Dictionary):
 # Can only be edited in the editor
 
 static func load_res_values() -> Dictionary:
-	return load_json(cfg_files['RES_VALUES_FILE'], {'values': []})
+	return load_json(cfg_files['RES_VALUES_FILE'])
 	
 static func save_res_values(data: Dictionary):
 	set_json(cfg_files['RES_VALUES_FILE'], data)
@@ -358,7 +358,7 @@ static func save_res_values(data: Dictionary):
 
 
 static func get_default_definitions() -> Dictionary:
-	return load_json(cfg_files['DEFAULT_DEFINITIONS_FILE'], {'variables': [], 'glossary': []})
+	return load_json(cfg_files['DEFAULT_DEFINITIONS_FILE'])
 
 
 static func save_default_definitions(data: Dictionary):
