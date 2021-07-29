@@ -1,7 +1,7 @@
 ## v1.3 - (WIP)
 - ⭐ Builtin Documentation [[Jowan-Spooner]](https://github.com/Jowan-Spooner)
 - Fixed a bug that prevented to use the global input setting when selecting option buttons
-
+- The TimelineEditor now paritially supports undo and redo functionality. [[Jowan-Spooner]](https://github.com/Jowan-Spooner)
 
 ## v1.2.5 - Possibly breaking eveything. We will never know.
 - Loading timeline events on batches to speedup big timelines
