@@ -5,7 +5,7 @@ var editor_reference:EditorView
 onready var master_tree = get_node('../MasterTreeContainer/MasterTree')
 var current_definition = null
 
-var current_value = ""
+var tmp_value_name = ""
 
 onready var nodes = {
 	'name' : $VBoxContainer/HBoxContainer/VBoxContainer/Name,
@@ -15,8 +15,8 @@ onready var nodes = {
 
 func _ready():
 	reset_editor()
-	nodes['name'].connect('text_entered', self, '_on_name_changed')
-	nodes['name'].connect('focus_exited', self, '_update_name_on_tree')
+	nodes['name'].connect('text_entered', self, '_on_text_entered')
+	nodes['name'].connect('focus_exited', self, '_on_focus_exited')
 
 
 func is_selected(id: String):
@@ -28,7 +28,7 @@ func load_value(name):
 	
 	nodes["value"].text = editor_reference.res_values[name]
 	
-	current_value = name
+	tmp_value_name = name
 
 func load_definition(id):
 	current_definition = DialogicResources.get_default_definition_item(id)
@@ -41,12 +41,17 @@ func reset_editor():
 	nodes['name'].text = ''
 	nodes['value'].text = ''
 
+	tmp_value_name = ""
 
-func _on_name_changed(text):
-	if text != null:
-		if editor_reference.change_value_name(current_definition, text):
-			current_definition = text
+func _on_text_entered(text):
+	if text != null and text != tmp_value_name:
+		if editor_reference.change_value_name(tmp_value_name, text):
+			master_tree.set_selected_item_name(text)
+			
+			tmp_value_name = text
 
+func _on_focus_exited():
+	_on_text_entered(nodes['name'].text)
 
 #func _input(event):
 #	if event is InputEventKey and event.pressed:

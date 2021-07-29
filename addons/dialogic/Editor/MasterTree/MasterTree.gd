@@ -115,9 +115,9 @@ func _ready():
 	connect('item_selected', self, '_on_item_selected')
 	connect('item_rmb_selected', self, '_on_item_rmb_selected')
 	connect('item_collapsed', self, '_on_item_collapsed')
-	connect('gui_input', self, '_on_gui_input')
-	connect('item_edited', self, '_on_item_edited')
-	$RenamerReset.connect("timeout", self, '_on_renamer_reset_timeout')
+	#connect('gui_input', self, '_on_gui_input')
+	#connect('item_edited', self, '_on_item_edited')
+	#$RenamerReset.connect("timeout", self, '_on_renamer_reset_timeout')
 	filter_tree_edit.connect("text_changed", self, '_on_filter_tree_edit_changed')
 	
 	# build all tree parts
@@ -209,8 +209,8 @@ func create_res_item(parent_item:TreeItem, resource_data:Dictionary, select = fa
 	
 	if not get_constant("dark_theme", "Editor"):
 		item.set_icon_modulate(0, get_color("property_color", "Editor"))
-		
-	# set it as editable
+	
+	# set res as editable
 	resource_data['editable'] = true
 	
 	item.set_metadata(0, resource_data)
@@ -769,18 +769,22 @@ func _process(delta):
 ##						 ITEM EDITING (RENAMING)
 ## *****************************************************************************
 
-func _on_renamer_reset_timeout():
-	get_selected().set_editable(0, false)
+func set_selected_item_name(name:String):
+	get_selected().set_text(0, name)
 
-func _on_gui_input(event):
-	if event is InputEventMouseButton and event.button_index == 1:
-		if event.is_pressed() and event.doubleclick:
-			var item = get_selected()
-			var metadata = item.get_metadata(0)
-			if metadata.has("editable") and metadata["editable"]:
-				item_path_before_edit = get_item_path(item)
-				item.set_editable(0, true)
-				$RenamerReset.start(0.5)
+func _on_renamer_reset_timeout():
+	pass
+#	get_selected().set_editable(0, false)
+
+#func _on_gui_input(event):
+#	if event is InputEventMouseButton and event.button_index == 1:
+#		if event.is_pressed() and event.doubleclick:
+#			var item = get_selected()
+#			var metadata = item.get_metadata(0)
+#			if metadata.has("editable") and metadata["editable"]:
+#				item_path_before_edit = get_item_path(item)
+#				item.set_editable(0, true)
+#				$RenamerReset.start(0.5)
 
 func _on_item_edited():
 	var item = get_selected()
