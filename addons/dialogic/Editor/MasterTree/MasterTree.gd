@@ -215,7 +215,10 @@ func create_res_item(parent_item:TreeItem, resource_data:Dictionary, select = fa
 	
 	item.set_metadata(0, resource_data)
 	
+	#if item is selected at creation, is new
 	if select:
+		editor_reference.need_save()
+		
 		item.select(0)
 		
 	return item;

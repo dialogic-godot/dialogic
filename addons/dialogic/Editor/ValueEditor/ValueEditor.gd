@@ -43,12 +43,23 @@ func reset_editor():
 
 	tmp_value_name = ""
 
+func popup(what):
+	editor_reference.show_popup_accept(what)
+
 func _on_text_entered(text):
-	if text != null and text != tmp_value_name:
-		if editor_reference.change_value_name(tmp_value_name, text):
-			master_tree.set_selected_item_name(text)
+	if text == "":
+		nodes['name'].text = tmp_value_name
+		return
+	
+	if text == tmp_value_name:
+		return
+	
+	if editor_reference.change_value_name(tmp_value_name, text):
+		master_tree.set_selected_item_name(text)
 			
-			tmp_value_name = text
+		tmp_value_name = text
+	else:
+		nodes['name'].text = tmp_value_name
 
 func _on_focus_exited():
 	_on_text_entered(nodes['name'].text)

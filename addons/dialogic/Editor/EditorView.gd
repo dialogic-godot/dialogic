@@ -11,6 +11,9 @@ var editor_interface = null
 
 var res_values:Dictionary
 
+onready var save_button = $ToolBar/SaveButton
+var need_save = false
+
 func _ready():
 	# Adding file dialog to get used by Events
 	editor_file_dialog = EditorFileDialog.new()
@@ -97,12 +100,13 @@ func _ready():
 	$MainPanel/MasterTreeContainer/FilterMasterTreeEdit.right_icon = get_icon("Search", "EditorIcons")
 
 	#Loading values
-	res_values = DialogicResources.load_res_values()
+	#res_values = DialogicResources.load_res_values()
 
+	#Save
+	save_button.connect("pressed", self, "on_save_button_pressed")
 
 func on_master_tree_editor_selected(editor: String):
 	$ToolBar/FoldTools.visible = editor == 'timeline'
-
 
 func popup_remove_confirmation(what):
 	var remove_text = "Are you sure you want to remove this [resource]? \n (Can't be restored)"
@@ -122,21 +126,27 @@ func _on_RemoveFolderConfirmation_confirmed():
 
 
 func _on_RemoveConfirmation_confirmed(what: String = ''):
-	if what == 'Timeline':
-		var target = $MainPanel/TimelineEditor.timeline_file
-		DialogicResources.delete_timeline(target)
-	elif what == 'GlossaryEntry':
-		var target = $MainPanel/GlossaryEntryEditor.current_definition['id']
-		DialogicResources.delete_default_definition(target)
-	elif what == 'Value':
-		var target = $MainPanel/ValueEditor.current_definition['id']
-		DialogicResources.delete_default_definition(target)
-	elif what == 'Theme':
-		var filename = $MainPanel/MasterTreeContainer/MasterTree.get_selected().get_metadata(0)['file']
-		DialogicResources.delete_theme(filename)
-	elif what == 'Character':
-		var filename = $MainPanel/CharacterEditor.opened_character_data['id']
-		DialogicResources.delete_character(filename)
+	match what:
+		'Timeline':
+			var target = $MainPanel/TimelineEditor.timeline_file
+			DialogicResources.delete_timeline(target)
+			
+		'GlossaryEntry':
+			var target = $MainPanel/GlossaryEntryEditor.current_definition['id']
+			DialogicResources.delete_default_definition(target)
+			
+		'Value':
+			var target = $MainPanel/ValueEditor.current_definition['id']
+			DialogicResources.delete_default_definition(target)
+			
+		'Theme':
+			var filename = $MainPanel/MasterTreeContainer/MasterTree.get_selected().get_metadata(0)['file']
+			DialogicResources.delete_theme(filename)
+			
+		'Character':
+			var filename = $MainPanel/CharacterEditor.opened_character_data['id']
+			DialogicResources.delete_character(filename)
+
 	DialogicUtil.update_resource_folder_structure()
 	$MainPanel/MasterTreeContainer/MasterTree.remove_selected()
 	$MainPanel/MasterTreeContainer/MasterTree.hide_all_editors()
@@ -195,3 +205,13 @@ func change_value_name(oldName:String, newName:String) -> bool:
 	res_values.erase(oldName)
 	
 	return true
+
+func need_save():
+	if !need_save:
+		save_button.text = "Save(*)"
+		
+		need_save = true
+
+func on_save_button_pressed():
+	if !res_values.empty():
+		DialogicResources.save_res_values(res_values)
