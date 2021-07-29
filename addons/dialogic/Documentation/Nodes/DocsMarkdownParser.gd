@@ -59,6 +59,10 @@ func parse(content : String,  file_path:String = '', docs_path:String = ''):
 	
 	var regex = RegEx.new()
 	
+	## Remove all comments
+	# TODO: remove comments <!-- -->
+	
+	
 	## Find all occurences of bold text
 	regex.compile('\\*\\*(?<boldtext>(\\.|[^(\\*\\*)])*)\\*\\*')
 	result = regex.search_all(content)
@@ -175,7 +179,7 @@ func parse(content : String,  file_path:String = '', docs_path:String = ''):
 			paresed_text = paresed_text.replace("#####"+heading, "[color=#"+accent_color.lightened(0.85).to_html()+"][font="+heading5_font+"]"+heading.strip_edges()+"[/font][/color]")
 
 	for i in links.size():
-		paresed_text = paresed_text.replace("["+linknames[i]+"]("+links[i]+")","[color=#"+accent_color.lightened(0.7).to_html()+"][url="+links[i]+"]"+linknames[i]+"[/url][/color]")
+		paresed_text = paresed_text.replace("["+linknames[i]+"]("+links[i]+")","[color=#"+accent_color.to_html()+"][url="+links[i]+"]"+linknames[i]+"[/url][/color]")
 	
 	for i in imagenames.size():
 		var imagelink_to_use = imagelinks[i]
@@ -187,6 +191,6 @@ func parse(content : String,  file_path:String = '', docs_path:String = ''):
 				imagelink_to_use = "icon.png"
 		if imagelink_to_use.begins_with(".") and file_path:
 			imagelink_to_use = file_path.trim_suffix(file_path.get_file()).trim_suffix("/") + imagelink_to_use.trim_prefix(".")
-		paresed_text = paresed_text.replace("!["+imagenames[i]+"]("+imagelinks[i]+")","[img=700]"+imagelink_to_use+"[/img]")
+		paresed_text = paresed_text.replace("!["+imagenames[i]+"]("+imagelinks[i]+")","[img]"+imagelink_to_use+"[/img]")
 	
 	return paresed_text

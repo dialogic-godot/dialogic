@@ -1,6 +1,7 @@
 ## v1.3 - (WIP)
 - ⭐ Builtin Documentation [[Jowan-Spooner]](https://github.com/Jowan-Spooner)
 - Fixed a bug that prevented to use the global input setting when selecting option buttons
+- `Dialogic.start()` will now use paths for specific timelines. A fallback is in place, but specificity is preferred. For instance: `Dialogic.start('my-timeline')` will search any timeline with that name; `Dialogic.start('/chapter-1/my-timeline')` will open the timeline namde `my-timeline` inside the folder `chapter-1`.
 
 
 ## v1.2.5 - Possibly breaking eveything. We will never know.

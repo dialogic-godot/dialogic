@@ -54,7 +54,6 @@ func _ready():
 	# TODO move to theme section later
 	nodes['advanced_themes'].connect('toggled', self, '_on_item_toggled', ['dialog', 'advanced_themes'])
 	nodes['canvas_layer'].connect('text_changed', self, '_on_canvas_layer_text_changed')
-
 	nodes['default_action_key'].connect('pressed', self, '_on_default_action_key_presssed')
 	nodes['default_action_key'].connect('item_selected', self, '_on_default_action_key_item_selected')
 		
@@ -67,6 +66,7 @@ func _ready():
 
 func update_data():
 	var settings = DialogicResources.get_settings_config()
+	nodes['canvas_layer'].text = settings.get_value("theme", "canvas_layer")
 	refresh_themes(settings)
 	load_values(settings, "dialog", DIALOG_KEYS)
 	load_values(settings, "saving", SAVING_KEYS)
@@ -136,9 +136,6 @@ func _on_default_action_key_presssed() -> void:
 
 
 func _on_default_action_key_item_selected(index) -> void:
-	print(index)
-	if index == 0:
-		print('here')
 	set_value('input', 'default_action_key', nodes['default_action_key'].text)
 
 
