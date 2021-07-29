@@ -135,7 +135,7 @@ margin_right = 930.0
 margin_bottom = 32.0
 hint_tooltip = "Theme Editor"
 mouse_default_cursor_shape = 2
-text = "Online Docs"
+text = "Website"
 icon = SubResource( 2 )
 
 [node name="Version" type="Label" parent="ToolBar"]
@@ -144,7 +144,7 @@ margin_left = 930.0
 margin_top = 9.0
 margin_right = 1024.0
 margin_bottom = 23.0
-text = "Dialogic v1.2.4"
+text = "Dialogic v1.3"
 
 [node name="MainPanel" type="HSplitContainer" parent="."]
 anchor_right = 1.0
