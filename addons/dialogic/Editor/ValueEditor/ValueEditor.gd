@@ -1,9 +1,11 @@
 tool
 extends ScrollContainer
 
-var editor_reference
+var editor_reference:EditorView
 onready var master_tree = get_node('../MasterTreeContainer/MasterTree')
 var current_definition = null
+
+var current_value = ""
 
 onready var nodes = {
 	'name' : $VBoxContainer/HBoxContainer/VBoxContainer/Name,
@@ -13,7 +15,7 @@ onready var nodes = {
 
 func _ready():
 	reset_editor()
-	nodes['name'].connect('text_changed', self, '_on_name_changed')
+	nodes['name'].connect('text_entered', self, '_on_name_changed')
 	nodes['name'].connect('focus_exited', self, '_update_name_on_tree')
 
 
@@ -25,6 +27,8 @@ func load_value(name):
 	nodes["name"].text = name
 	
 	nodes["value"].text = editor_reference.res_values[name]
+	
+	current_value = name
 
 func load_definition(id):
 	current_definition = DialogicResources.get_default_definition_item(id)
@@ -39,15 +43,16 @@ func reset_editor():
 
 
 func _on_name_changed(text):
-	if current_definition != null:
-		save_definition()
+	if text != null:
+		if editor_reference.change_value_name(current_definition, text):
+			current_definition = text
 
 
-func _input(event):
-	if event is InputEventKey and event.pressed:
-		if nodes['name'].has_focus():
-			if event.scancode == KEY_ENTER:
-				nodes['name'].release_focus()
+#func _input(event):
+#	if event is InputEventKey and event.pressed:
+#		if nodes['name'].has_focus():
+#			if event.scancode == KEY_ENTER:
+#				nodes['name'].release_focus()
 
 
 func _update_name_on_tree():

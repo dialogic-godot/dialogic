@@ -1,5 +1,6 @@
 tool
 extends Control
+class_name EditorView
 
 var editor_file_dialog # EditorFileDialog
 var file_picker_data: Dictionary = {'method': '', 'node': self}
@@ -184,3 +185,13 @@ func create_new_value() -> String:
 	res_values[key] = "0"
 	
 	return key
+	
+func change_value_name(oldName:String, newName:String) -> bool:
+	if res_values.has(newName):
+		return false
+		
+	res_values[newName] = res_values[oldName]
+	
+	res_values.erase(oldName)
+	
+	return true
