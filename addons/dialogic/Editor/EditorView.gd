@@ -8,6 +8,8 @@ var version_string: String
 # this is set when the plugins main-view is instanced in dialogic.gd
 var editor_interface = null
 
+var res_values:Dictionary
+
 func _ready():
 	# Adding file dialog to get used by Events
 	editor_file_dialog = EditorFileDialog.new()
@@ -93,6 +95,9 @@ func _ready():
 		
 	$MainPanel/MasterTreeContainer/FilterMasterTreeEdit.right_icon = get_icon("Search", "EditorIcons")
 
+	#Loading values
+	res_values = DialogicResources.load_res_values()
+
 
 func on_master_tree_editor_selected(editor: String):
 	$ToolBar/FoldTools.visible = editor == 'timeline'
@@ -167,3 +172,15 @@ func godot_dialog_connect(who, method_name, signal_name = "file_selected"):
 	
 	file_picker_data['method'] = method_name
 	file_picker_data['node'] = who
+
+func create_new_value() -> String:
+	var values_id = 0
+	
+	while res_values.has("NewValue" + str(values_id)):
+		values_id += 1
+	
+	var key = "NewValue" + str(values_id)
+	
+	res_values[key] = "0"
+	
+	return key

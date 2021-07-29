@@ -340,6 +340,13 @@ static func save_saved_state_config(data: Dictionary):
 	init_working_dir()
 	set_json(cfg_files['SAVED_STATE_FILE'], data)
 
+## *****************************************************************************
+##						RES VALUES
+## *****************************************************************************
+# Can only be edited in the editor
+
+static func load_res_values() -> Dictionary:
+	return load_json(cfg_files['RES_VALUES_FILE'], {'values': []})
 
 ## *****************************************************************************
 ##						DEFAULT DEFINITIONS

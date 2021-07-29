@@ -142,6 +142,8 @@ func build_full_tree(selected_item: String = ''):
 	build_timelines(selected_item)
 	# Adding characters
 	build_characters(selected_item)
+	# Adding Values
+	build_values(selected_item)
 	# Adding Definitions
 	build_definitions(selected_item)
 	# Adding Themes
@@ -200,6 +202,32 @@ func _add_folder_item(parent_item: TreeItem, folder_name: String, editor:String,
 	return folder_item
 
 
+func create_res_item(parent_item:TreeItem, resource_data:Dictionary, select = false) -> TreeItem:
+	var item = tree.create_item(parent_item)
+	
+	item.set_text(0, resource_data["name"])
+	
+	if not get_constant("dark_theme", "Editor"):
+		item.set_icon_modulate(0, get_color("property_color", "Editor"))
+		
+	# set it as editable
+	resource_data['editable'] = true
+	
+	item.set_metadata(0, resource_data)
+	
+	if select:
+		item.select(0)
+		
+	return item;
+
+func create_value_item0(parent:TreeItem, resource_data:Dictionary, select = false):
+	var item = create_res_item(parent, resource_data, select)
+	
+	item.set_icon(0, definition_icon)
+
+func create_value_item1(parent:TreeItem, name:String, select = false):
+	create_value_item0(parent, {"editor":"Value", "name":name}, select)
+
 func _add_resource_item(resource_type, parent_item, resource_data, select):
 	# create item
 	var item = tree.create_item(parent_item)
@@ -222,6 +250,9 @@ func _add_resource_item(resource_type, parent_item, resource_data, select):
 			resource_data['editor'] = 'Character'
 			if resource_data.has('color'):
 				item.set_icon_modulate(0, resource_data['color'])
+		"Value":
+			item.set_icon(0, definition_icon)
+			resource_data['editor'] = 'Value'
 		"Definition":
 			if resource_data['type'] == 0:
 				item.set_icon(0, definition_icon)
@@ -256,6 +287,9 @@ func build_characters(selected_item: String=''):
 	var structure = DialogicUtil.get_characters_folder_structure()
 	build_resource_folder(characters_tree, structure, selected_item, "Character Root", "Character")
 
+#VALUES
+func build_values(selected_item: String=''):
+	_clear_tree_children(values_tree)
 
 ## DEFINTIONS
 func build_definitions(selected_item: String=''):
@@ -306,7 +340,7 @@ func _on_item_selected():
 			character_editor.load_character(metadata['file'])
 			show_character_editor()
 		'Value':
-			value_editor.load_definition(metadata['id'])
+			value_editor.load_value(metadata["name"])
 			show_value_editor()
 		'GlossaryEntry':
 			glossary_entry_editor.load_definition(metadata['id'])
@@ -445,6 +479,7 @@ func create_rmb_context_menus():
 	values_folder_popup.add_icon_item(get_icon("Remove", "EditorIcons") ,'Delete Folder')
 	add_child(values_folder_popup)
 	rmb_popup_menus["Values Root"] = values_folder_popup
+	values_folder_popup.connect('id_pressed', self, '_on_ValuesRootPopupMenu_id_pressed')
 	
 	var definition_folder_popup = PopupMenu.new()
 	definition_folder_popup.add_icon_item(get_icon("Add", "EditorIcons") ,'Add Value')
@@ -569,10 +604,14 @@ func _on_CharacterRootPopupMenu_id_pressed(id):
 			return
 		editor_reference.get_node('RemoveFolderConfirmation').popup_centered()
 
+func _on_ValuesRootPopupMenu_id_pressed(id):
+	if id == 0: # Add Value Definition
+		new_value()
+
 # Definition Folder context menu
 func _on_DefinitionRootPopupMenu_id_pressed(id):
 	if id == 0: # Add Value Definition
-		new_value_definition()
+		new_value()
 	if id == 1: # Add Glossary Definition
 		new_glossary_entry()
 	if id == 2: # add subfolder
@@ -628,11 +667,9 @@ func new_theme():
 
 # creates a new value and opens it
 # it will be added to the selected folder (if it's a definition folder) or the Definition root folder
-func new_value_definition():
-	var definition_id = editor_reference.get_node("MainPanel/ValueEditor").create_value()
-	var folder = get_item_folder(get_selected(), "Definitions")
-	DialogicUtil.add_file_to_folder(folder, definition_id)
-	build_definitions(definition_id)
+func new_value():
+	#DialogicUtil.add_file_to_folder(folder, definition_id)
+	create_value_item1(values_tree, editor_reference.create_new_value(), true)
 
 # creates a new glossary entry and opens it
 # it will be added to the selected folder (if it's a definition folder) or the Definition root folder

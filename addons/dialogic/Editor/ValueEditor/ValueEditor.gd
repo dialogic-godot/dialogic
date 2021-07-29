@@ -19,7 +19,12 @@ func _ready():
 
 func is_selected(id: String):
 	return current_definition != null and current_definition['id'] == id
-
+	
+func load_value(name):
+	nodes["name"].editable = true
+	nodes["name"].text = name
+	
+	nodes["value"].text = editor_reference.res_values[name]
 
 func load_definition(id):
 	current_definition = DialogicResources.get_default_definition_item(id)
