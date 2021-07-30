@@ -202,18 +202,18 @@ func _add_folder_item(parent_item: TreeItem, folder_name: String, editor:String,
 	return folder_item
 
 
-func create_res_item(parent_item:TreeItem, resource_data:Dictionary, select = false) -> TreeItem:
+func create_res_item(parent_item:TreeItem, name:String, metadata:Dictionary, select = false) -> TreeItem:
 	var item = tree.create_item(parent_item)
 	
-	item.set_text(0, resource_data["name"])
+	item.set_text(0, name)
 	
 	if not get_constant("dark_theme", "Editor"):
 		item.set_icon_modulate(0, get_color("property_color", "Editor"))
 	
 	# set res as editable
-	resource_data['editable'] = true
+	metadata['editable'] = true
 	
-	item.set_metadata(0, resource_data)
+	item.set_metadata(0, metadata)
 	
 	#if item is selected at creation, is new
 	if select:
@@ -223,13 +223,10 @@ func create_res_item(parent_item:TreeItem, resource_data:Dictionary, select = fa
 		
 	return item;
 
-func create_value_item0(parent:TreeItem, resource_data:Dictionary, select = false):
-	var item = create_res_item(parent, resource_data, select)
+func create_value_item(parent:TreeItem, name:String, select = false):
+	var item = create_res_item(parent, name, {"editor":"Value"}, select)
 	
 	item.set_icon(0, definition_icon)
-
-func create_value_item1(parent:TreeItem, name:String, select = false):
-	create_value_item0(parent, {"editor":"Value", "name":name}, select)
 
 func _add_resource_item(resource_type, parent_item, resource_data, select):
 	# create item
@@ -293,6 +290,8 @@ func build_characters(selected_item: String=''):
 #VALUES
 func build_values(selected_item: String=''):
 	_clear_tree_children(values_tree)
+	
+	#todo
 
 ## DEFINTIONS
 func build_definitions(selected_item: String=''):
@@ -333,7 +332,10 @@ func _on_item_selected():
 	#       resource. Unfortunately there has been so many bugs doing that 
 	#       that I'll revisit it in the future. 
 	#       save_current_resource()
-	var metadata = get_selected().get_metadata(0)
+	var item = get_selected()
+	
+	var metadata = item.get_metadata(0)
+	
 	match metadata['editor']:
 		'Timeline':
 			timeline_editor.batches.clear()
@@ -343,7 +345,7 @@ func _on_item_selected():
 			character_editor.load_character(metadata['file'])
 			show_character_editor()
 		'Value':
-			value_editor.load_value(metadata["name"])
+			value_editor.load_value(item.get_text(0))
 			show_value_editor()
 		'GlossaryEntry':
 			glossary_entry_editor.load_definition(metadata['id'])
@@ -672,7 +674,7 @@ func new_theme():
 # it will be added to the selected folder (if it's a definition folder) or the Definition root folder
 func new_value():
 	#DialogicUtil.add_file_to_folder(folder, definition_id)
-	create_value_item1(values_tree, editor_reference.create_new_value(), true)
+	create_value_item(values_tree, editor_reference.create_new_value(), true)
 
 # creates a new glossary entry and opens it
 # it will be added to the selected folder (if it's a definition folder) or the Definition root folder
@@ -773,7 +775,16 @@ func _process(delta):
 ## *****************************************************************************
 
 func set_selected_item_name(name:String):
-	get_selected().set_text(0, name)
+	var item = get_selected()
+	
+	var metadata = item.get_metadata(0)
+	
+	if metadata.has("name"):
+		metadata["name"] = name
+	
+		item.set_metadata(0, metadata)
+	
+	item.set_text(0, name)
 
 func _on_renamer_reset_timeout():
 	pass
