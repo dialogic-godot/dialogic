@@ -20,6 +20,7 @@ var selected_items : Array = []
 
 var event_scenes : Dictionary = {}
 
+var currently_draged_event_type = null
 var move_start_position = null
 var moving_piece = null
 var piece_was_dragged = false
@@ -621,6 +622,7 @@ func create_condition(at_position):
 func create_drag_and_drop_event(scene: String):
 	var index = get_index_under_cursor()
 	var piece = create_event(scene)
+	currently_draged_event_type = scene
 	timeline.move_child(piece, index)
 	moving_piece = piece
 	piece_was_dragged = true
@@ -630,11 +632,14 @@ func create_drag_and_drop_event(scene: String):
 
 func drop_event():
 	if moving_piece != null:
-		
-		set_event_ignore_save(moving_piece, false)
+		var at_index = moving_piece.get_index()
+		moving_piece.queue_free()
+		TimelineUndoRedo.create_action("[D] Add event.")
+		TimelineUndoRedo.add_do_method(self, "create_event", currently_draged_event_type, {'no-data': true}, true, at_index, true)
+		TimelineUndoRedo.add_undo_method(self, "remove_events_at_index", at_index, 1)
+		TimelineUndoRedo.commit_action()
 		moving_piece = null
 		piece_was_dragged = false
-		indent_events()
 
 func cancel_drop_event():
 	if moving_piece != null:
