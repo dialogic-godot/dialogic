@@ -140,7 +140,12 @@ func _input(event):
 			and event.control == true
 			and event.scancode == KEY_Z
 			and event.echo == false
-		):
+		) or (event.pressed
+			and event.alt == false
+			and event.shift == false
+			and event.control == true
+			and event.scancode == KEY_Y
+			and event.echo == false):
 			TimelineUndoRedo.redo()
 			get_tree().set_input_as_handled()
 	if (event is InputEventKey and event is InputEventWithModifiers and is_visible_in_tree()):
