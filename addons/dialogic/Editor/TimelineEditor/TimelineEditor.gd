@@ -131,6 +131,7 @@ func _input(event):
 			and event.echo == false
 		):
 			TimelineUndoRedo.undo()
+			indent_events()
 			get_tree().set_input_as_handled()
 	if (event is InputEventKey and event is InputEventWithModifiers and is_visible_in_tree()):
 		# CTRL +SHIFT+ Z # REDO
@@ -147,6 +148,7 @@ func _input(event):
 			and event.scancode == KEY_Y
 			and event.echo == false):
 			TimelineUndoRedo.redo()
+			indent_events()
 			get_tree().set_input_as_handled()
 	if (event is InputEventKey and event is InputEventWithModifiers and is_visible_in_tree()):
 		# CTRL UP
@@ -293,9 +295,12 @@ func _input(event):
 		):
 			
 			if len(selected_items) > 0:
-				copy_selected_events()
-				selected_items = [selected_items[-1]]
-				#paste_events()
+				var events = get_events_indexed(selected_items).values()
+				var at_index = selected_items[-1].get_index()
+				TimelineUndoRedo.create_action("[D] Duplicate "+str(len(events))+" event(s).")
+				TimelineUndoRedo.add_do_method(self, "add_events_at_index", events, at_index)
+				TimelineUndoRedo.add_undo_method(self, "remove_events_at_index", at_index, len(events))
+				TimelineUndoRedo.commit_action()
 			get_tree().set_input_as_handled()
 
 func _unhandled_key_input(event):
@@ -545,11 +550,32 @@ func delete_event(event):
 
 # Event Creation signal for buttons
 func _create_event_button_pressed(button_name):
-	select_item(create_event(button_name))
+	var at_index = -1
+	if selected_items:
+		at_index = selected_items[-1].get_index()+1
+	else:
+		at_index = timeline.get_child_count()
+	TimelineUndoRedo.create_action("[D] Add event.")
+	TimelineUndoRedo.add_do_method(self, "create_event", button_name, {'no-data': true}, true, at_index, true)
+	TimelineUndoRedo.add_undo_method(self, "remove_events_at_index", at_index, 1)
+	TimelineUndoRedo.commit_action()
 	indent_events()
 
 # the Question button adds multiple blocks 
 func _on_ButtonQuestion_pressed() -> void:
+	var at_index = -1
+	if selected_items:
+		at_index = selected_items[-1].get_index()+1
+	else:
+		at_index = timeline.get_child_count()
+	TimelineUndoRedo.create_action("[D] Add question events.")
+	TimelineUndoRedo.add_do_method(self, "create_question", at_index)
+	TimelineUndoRedo.add_undo_method(self, "remove_events_at_index", at_index, 4)
+	TimelineUndoRedo.commit_action()
+
+func create_question(at_position):
+	if at_position == 0: selected_items = []
+	else: selected_items = [timeline.get_child(at_position-1)]
 	if len(selected_items) != 0:
 		# Events are added bellow the selected node
 		# So we must reverse the adding order
@@ -565,6 +591,19 @@ func _on_ButtonQuestion_pressed() -> void:
 
 # the Condition button adds multiple blocks 
 func _on_ButtonCondition_pressed() -> void:
+	var at_index = -1
+	if selected_items:
+		at_index = selected_items[-1].get_index()+1
+	else:
+		at_index = timeline.get_child_count()
+	TimelineUndoRedo.create_action("[D] Add condition events.")
+	TimelineUndoRedo.add_do_method(self, "create_condition", at_index)
+	TimelineUndoRedo.add_undo_method(self, "remove_events_at_index", at_index, 2)
+	TimelineUndoRedo.commit_action()
+	
+func create_condition(at_position):
+	if at_position == 0: selected_items = []
+	else: selected_items = [timeline.get_child(at_position-1)]
 	if len(selected_items) != 0:
 		# Events are added bellow the selected node
 		# So we must reverse the adding order
@@ -591,6 +630,7 @@ func create_drag_and_drop_event(scene: String):
 
 func drop_event():
 	if moving_piece != null:
+		
 		set_event_ignore_save(moving_piece, false)
 		moving_piece = null
 		piece_was_dragged = false
@@ -609,23 +649,29 @@ func cancel_drop_event():
 ## *****************************************************************************
 
 # Adding an event to the timeline
-func create_event(scene: String, data: Dictionary = {'no-data': true} , indent: bool = false):
+func create_event(scene: String, data: Dictionary = {'no-data': true} , indent: bool = false, at_index: int = -1, auto_select:bool = false):
 	var piece = load("res://addons/dialogic/Editor/Events/" + scene + ".tscn").instance()
 	piece.editor_reference = editor_reference
 	
 	if data.has('no-data') == false:
 		piece.event_data = data
 	
-	if len(selected_items) != 0:
-		timeline.add_child_below_node(selected_items[0], piece)
+	if at_index == -1:
+		if len(selected_items) != 0:
+			timeline.add_child_below_node(selected_items[0], piece)
+		else:
+			timeline.add_child(piece)
 	else:
 		timeline.add_child(piece)
-	
+		timeline.move_child(piece, at_index)
 
 	piece.connect("option_action", self, '_on_event_options_action', [piece])
 	piece.connect("gui_input", self, '_on_event_block_gui_input', [piece])
 	events_warning.visible = false
-
+	
+	if auto_select:
+		select_item(piece, false)
+	
 	# Indent on create
 	if indent:
 		indent_events()
