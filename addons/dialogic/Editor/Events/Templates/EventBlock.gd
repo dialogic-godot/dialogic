@@ -6,7 +6,6 @@ extends HBoxContainer
 # This is the default data that is going to be saved to json
 export (Dictionary) var event_data: Dictionary = {'event_id':'dialogic_000'}
 export(StyleBoxFlat) var event_style : StyleBoxFlat
-var selected_style = preload("../styles/selected_styleboxflat_template.tres")
 
 export(Texture) var event_icon : Texture
 export(String) var event_name : String
@@ -20,6 +19,7 @@ signal option_action(action_name)
 
 ### internal node eferences
 onready var panel = $PanelContainer
+onready var selected_style = $PanelContainer/SelectedStyle
 onready var warning = $PanelContainer/MarginContainer/VBoxContainer/Header/Warning
 onready var title_label = $PanelContainer/MarginContainer/VBoxContainer/Header/TitleLabel
 onready var icon_texture  = $PanelContainer/MarginContainer/VBoxContainer/Header/IconTexture
@@ -48,11 +48,11 @@ var ignore_save = false
 ## *****************************************************************************
 
 func visual_select():
-	set_event_style(selected_style)
+	selected_style.show()
 
 
 func visual_deselect():
-	set_event_style(event_style)
+	selected_style.hide()
 
 
 func set_event_style(style: StyleBoxFlat):
