@@ -288,10 +288,18 @@ func build_characters(selected_item: String=''):
 	build_resource_folder(characters_tree, structure, selected_item, "Character Root", "Character")
 
 #VALUES
-func build_values(selected_item: String=''):
+func build_values(selected_item: String = ""):
 	_clear_tree_children(values_tree)
 	
-	#todo
+	printt("masterTree", editor_reference.res_values)
+	
+	if selected_item.empty():
+		for value_name in editor_reference.res_values:
+			print(value_name)
+			
+			create_value_item(values_tree, value_name)
+	else:
+		pass
 
 ## DEFINTIONS
 func build_definitions(selected_item: String=''):

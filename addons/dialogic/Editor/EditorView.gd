@@ -15,6 +15,10 @@ onready var save_button = $ToolBar/SaveButton
 var need_save = false
 
 func _ready():
+	#Loading values
+	res_values = DialogicResources.load_res_values()
+	printt("EditorView", res_values)
+	
 	# Adding file dialog to get used by Events
 	editor_file_dialog = EditorFileDialog.new()
 	add_child(editor_file_dialog)
@@ -26,7 +30,6 @@ func _ready():
 	$MainPanel/GlossaryEntryEditor.editor_reference = self
 	$MainPanel/ThemeEditor.editor_reference = self
 	$MainPanel/DocumentationViewer.editor_reference = self
-
 
 	$MainPanel/MasterTreeContainer/MasterTree.connect("editor_selected", self, 'on_master_tree_editor_selected')
 
@@ -86,7 +89,6 @@ func _ready():
 	$ToolBar/FoldTools/ButtonFold.connect('pressed', $MainPanel/TimelineEditor, 'fold_all_nodes')
 	$ToolBar/FoldTools/ButtonUnfold.connect('pressed', $MainPanel/TimelineEditor, 'unfold_all_nodes')
 	
-	
 	#Connecting confirmation
 	$RemoveFolderConfirmation.connect('confirmed', self, '_on_RemoveFolderConfirmation_confirmed')
 
@@ -98,9 +100,6 @@ func _ready():
 		$ToolBar/Version.text = 'Dialogic v' + version_string
 		
 	$MainPanel/MasterTreeContainer/FilterMasterTreeEdit.right_icon = get_icon("Search", "EditorIcons")
-
-	#Loading values
-	res_values = DialogicResources.load_res_values()
 
 	#Save
 	save_button.connect("pressed", self, "on_save_button_pressed")
