@@ -120,9 +120,6 @@ func _ready():
 	#$RenamerReset.connect("timeout", self, '_on_renamer_reset_timeout')
 	filter_tree_edit.connect("text_changed", self, '_on_filter_tree_edit_changed')
 	
-	# build all tree parts
-	build_full_tree()
-	
 	# Adding docs
 	build_documentation()
 	

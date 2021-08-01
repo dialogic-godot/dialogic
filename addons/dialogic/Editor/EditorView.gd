@@ -15,10 +15,6 @@ onready var save_button = $ToolBar/SaveButton
 var need_save = false
 
 func _ready():
-	#Loading values
-	res_values = DialogicResources.load_res_values()
-	printt("EditorView", res_values)
-	
 	# Adding file dialog to get used by Events
 	editor_file_dialog = EditorFileDialog.new()
 	add_child(editor_file_dialog)
@@ -100,6 +96,12 @@ func _ready():
 		$ToolBar/Version.text = 'Dialogic v' + version_string
 		
 	$MainPanel/MasterTreeContainer/FilterMasterTreeEdit.right_icon = get_icon("Search", "EditorIcons")
+
+	#Loading values
+	res_values = DialogicResources.load_res_values()
+	
+	#needed because childNode's script loaded before parent -_-
+	$MainPanel/MasterTreeContainer/MasterTree.build_full_tree()
 
 	#Save
 	save_button.connect("pressed", self, "on_save_button_pressed")
