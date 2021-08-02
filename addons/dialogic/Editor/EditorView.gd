@@ -11,6 +11,8 @@ var editor_interface = null
 
 var res_values:Dictionary
 
+var timelines:Dictionary
+
 onready var save_button = $ToolBar/SaveButton
 var need_save = false
 
@@ -183,6 +185,9 @@ func godot_dialog_connect(who, method_name, signal_name = "file_selected"):
 	file_picker_data['method'] = method_name
 	file_picker_data['node'] = who
 
+## *****************************************************************************
+##						 VALUE
+## *****************************************************************************
 func create_new_value() -> String:
 	var values_id = 0
 	
@@ -193,13 +198,9 @@ func create_new_value() -> String:
 	
 	res_values[key] = "0"
 	
+	need_save()
+	
 	return key
-
-func need_save():
-	if !need_save:
-		save_button.text = "Save(*)"
-		
-		need_save = true
 
 func change_value_name(oldName:String, newName:String) -> bool:
 	if res_values.has(newName):
@@ -212,6 +213,35 @@ func change_value_name(oldName:String, newName:String) -> bool:
 	need_save()
 	
 	return true
+
+## *****************************************************************************
+##						 TIMELINE
+## *****************************************************************************
+func create_new_timeline() -> String:
+	var values_id = 0
+	
+	while timelines.has("NewTimeline" + str(values_id)):
+		values_id += 1
+	
+	var key = "NewValue" + str(values_id)
+	
+	timelines[key] = {
+		"events": []
+	}
+	
+	need_save()
+	
+	return key
+
+## *****************************************************************************
+##						 SAVE
+## *****************************************************************************
+
+func need_save():
+	if !need_save:
+		save_button.text = "Save(*)"
+		
+		need_save = true
 
 func on_save_button_pressed():
 	if !res_values.empty():
