@@ -327,26 +327,23 @@ func _insert_variable_definitions(text: String):
 	
 	var index_end = 0
 	
+	var dic:Dictionary
+	
 	while(true):
 		index_start = index_end
-		
-		printt(search_open)
 		
 		if search_open:
 			index_end = text.find("[", index_start)
 			
 			if index_end == -1:
-				var t = text.substr(index_start, text.length()-index_start)
-				
-				printt(index_start, index_end, t)
+				if(index_start != text.length()):
+					var t = text.substr(index_start, text.length()-index_start)
 		
-				split_text.append(t)
-				
+					split_text.append(t)
+					
 				break
 		
 			var t = text.substr(index_start, index_end-index_start)
-		
-			printt(index_start, index_end, t, split_text.size())
 		
 			split_text.append(t)
 			
@@ -354,23 +351,41 @@ func _insert_variable_definitions(text: String):
 		else:
 			index_end = text.find("]", index_start)
 		
-			var t = text.substr(index_start, index_end-index_start+1)
-		
-			printt(index_start, index_end, t)
+			var t = text.substr(index_start + 1, index_end-index_start - 1)
 		
 			split_text.append(t)
+			
+			if !dic.has(t):
+				dic[t] = []
+				
+			dic[t].append(split_text.size() - 1)
 			
 			index_end += 1
 			
 			search_open = true
 	
-	printt("bib", split_text)
+	#theLudovyc
+	#create variables dic beacause its an array
+	var variables = definitions['variables']
 	
-	var final_text := text
+	var var_dic:Dictionary
 	
-	for d in definitions['variables']:
-		var name : String = d['name'];
-		final_text = final_text.replace('[' + name + ']', d['value'])
+	for variable in variables:
+		var_dic[variable["name"]] = variable["value"]
+	#see my pr to use refactored values
+	
+	for name in dic:
+		if var_dic.has(name):
+			var value = var_dic[name]
+	
+			for i in dic[name]:
+				split_text[i] = value
+	
+	var final_text = ""
+	
+	for text in split_text:
+		final_text += text
+		
 	return final_text;
 	
 	
