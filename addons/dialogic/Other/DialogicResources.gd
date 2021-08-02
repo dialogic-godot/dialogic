@@ -252,6 +252,8 @@ static func get_config(id: String) -> ConfigFile:
 static func get_timeline_json(path: String):
 	return load_json(get_path('TIMELINE_DIR', path))
 
+static func save_timeline(name:String, data:Dictionary):
+	set_json(working_dirs["TIMELINE_DIR"] + "/" + name + ".json", data)
 
 static func set_timeline(timeline: Dictionary):
 	# WARNING: For use in the editor only

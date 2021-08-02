@@ -224,11 +224,7 @@ func change_value_name(oldName:String, newName:String) -> bool:
 ##						 TIMELINE
 ## *****************************************************************************
 func create_new_timeline() -> String:
-	var res = create_new_res(timelines, "NewTimeline", {"events": []})
-	
-	print(timelines)
-	
-	return res
+	return create_new_res(timelines, "NewTimeline", {"events": []})
 
 ## *****************************************************************************
 ##						 SAVE
@@ -243,7 +239,11 @@ func need_save():
 func on_save_button_pressed():
 	if !res_values.empty():
 		DialogicResources.save_res_values(res_values)
-		
+	
+	if !timelines.empty():
+		for timeline in timelines:
+			DialogicResources.save_timeline(timeline, timelines[timeline])
+	
 	save_button.text = "Save"
 		
 	need_save = false
