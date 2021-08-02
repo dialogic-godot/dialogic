@@ -433,8 +433,8 @@ func _on_text_completed():
 
 func on_timeline_start():
 	if not Engine.is_editor_hint():
-		if settings.get_value('saving', 'save_definitions_on_start', true):
-			DialogicUtil.get_singleton('DialogicSingleton', self).save_definitions()
+#		if settings.get_value('saving', 'save_definitions_on_start', true):
+#			DialogicUtil.get_singleton('DialogicSingleton', self).save_definitions()
 		if settings.get_value('saving', 'save_current_timeline', true):
 			DialogicUtil.get_singleton('DialogicSingleton', self).set_current_timeline(current_timeline)
 	# TODO remove event_start in 2.0

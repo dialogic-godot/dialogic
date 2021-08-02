@@ -18,11 +18,8 @@ func _init():
 			directory.make_dir_recursive(paths[dir])
 	
 	# Create empty files
-	var files = DialogicResources.cfg_files
-	
-	for f in files:
-		if not directory.file_exists(files[f]):
-			DialogicResources.create_empty_file(files[f])
+	DialogicResources.create_empty_files(directory, DialogicResources.cfg_files)
+	DialogicResources.create_empty_files(directory, DialogicResources.user_files)
 		
 	add_autoload_singleton('DialogicSingleton', "res://addons/dialogic/Other/DialogicSingleton.gd")
 	

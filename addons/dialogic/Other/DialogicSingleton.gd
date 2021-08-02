@@ -8,6 +8,9 @@ extends Node
 
 var current_definitions := {}
 var default_definitions := {}
+
+var values:Dictionary
+
 var current_state := {}
 var autosave := true
 
@@ -20,9 +23,34 @@ var current_timeline := ''
 
 
 func _init() -> void:
-	# Load saves on script init
-	init(false)
+	var directory = Directory.new()
+	
+	var user_dir = DialogicResources.working_dirs["USER_DIR"]
+	
+	if not directory.dir_exists(user_dir):
+		directory.make_dir_recursive(user_dir)
+		
+	DialogicResources.create_empty_files(directory, DialogicResources.user_files)
 
+	var res_values = DialogicResources.load_res_values()
+	
+	var user_values = DialogicResources.load_user_values()
+	
+	for value_name in res_values:
+		values[value_name] = {"default":res_values[value_name]}
+		
+		var current_value
+		
+		if user_values.has(value_name):
+			current_value = user_values[value_name]
+		else:
+			current_value = res_values[value_name]
+			
+		values[value_name]["current"] = current_value
+		
+	current_state = DialogicResources.get_saved_state()
+	
+	current_timeline = get_saved_state_general_key('timeline')
 
 func init(reset: bool=false) -> void:
 	pass

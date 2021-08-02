@@ -22,9 +22,13 @@ const cfg_files = {
 		'DEFAULT_DEFINITIONS_FILE': RESOURCES_DIR + "/definitions.json",
 		'RES_VALUES_FILE' : RESOURCES_DIR + "/values.json",
 		'FOLDER_STRUCTURE_FILE': RESOURCES_DIR + "/folder_structure.json",
-		'SAVED_DEFINITIONS_FILE': USER_DIR + "/definitions.json",
-		'SAVED_STATE_FILE': USER_DIR + "/state.json",
 	}
+	
+const user_files = {
+	"USER_VALUES" : USER_DIR + "/values.json",
+	'SAVED_DEFINITIONS_FILE': USER_DIR + "/definitions.json",
+	"STATE": USER_DIR + "/state.json"
+}
 
 ## *****************************************************************************
 ##							BASIC JSON FUNCTION
@@ -84,7 +88,6 @@ static func set_json(path: String, data: Dictionary):
 #		'SAVED_DEFINITIONS_FILE': USER_DIR + "/definitions.json",
 #		'SAVED_STATE_FILE': USER_DIR + "/state.json",
 #	}
-
 
 static func init_saves():
 	var err = init_working_dir()
@@ -183,6 +186,10 @@ static func create_empty_file(path):
 	file.store_string('')
 	file.close()
 
+static func create_empty_files(directory:Directory, files:Dictionary):
+	for f in files:
+		if not directory.file_exists(files[f]):
+			create_empty_file(files[f])
 
 static func remove_file(path: String):
 	var dir = Directory.new()
@@ -329,16 +336,11 @@ static func set_settings_value(section: String, key: String, value):
 ## *****************************************************************************
 ##							STATE
 ## *****************************************************************************
-# Can only be edited in the editor
-
-
 static func get_saved_state() -> Dictionary:
-	return load_json(cfg_files['SAVED_STATE_FILE'], {'general': {}})
-
+	return load_json(user_files["STATE"], {'general': {}})
 
 static func save_saved_state_config(data: Dictionary):
-	init_working_dir()
-	set_json(cfg_files['SAVED_STATE_FILE'], data)
+	set_json(user_files["STATE"], data)
 
 ## *****************************************************************************
 ##						RES VALUES
@@ -350,6 +352,15 @@ static func load_res_values() -> Dictionary:
 	
 static func save_res_values(data: Dictionary):
 	set_json(cfg_files['RES_VALUES_FILE'], data)
+
+## *****************************************************************************
+##						USER VALUES
+## *****************************************************************************
+static func load_user_values() -> Dictionary:
+	return load_json(user_files['USER_VALUES'])
+	
+static func save_user_values(data: Dictionary):
+	set_json(user_files['USER_VALUES'], data)
 
 ## *****************************************************************************
 ##						DEFAULT DEFINITIONS
