@@ -319,7 +319,55 @@ func parse_definitions(text: String, variables: bool = true, glossary: bool = tr
 
 
 func _insert_variable_definitions(text: String):
-	var final_text := text;
+	var split_text = []
+	
+	var search_open = true
+	
+	var index_start 
+	
+	var index_end = 0
+	
+	while(true):
+		index_start = index_end
+		
+		printt(search_open)
+		
+		if search_open:
+			index_end = text.find("[", index_start)
+			
+			if index_end == -1:
+				var t = text.substr(index_start, text.length()-index_start)
+				
+				printt(index_start, index_end, t)
+		
+				split_text.append(t)
+				
+				break
+		
+			var t = text.substr(index_start, index_end-index_start)
+		
+			printt(index_start, index_end, t, split_text.size())
+		
+			split_text.append(t)
+			
+			search_open = false
+		else:
+			index_end = text.find("]", index_start)
+		
+			var t = text.substr(index_start, index_end-index_start+1)
+		
+			printt(index_start, index_end, t)
+		
+			split_text.append(t)
+			
+			index_end += 1
+			
+			search_open = true
+	
+	printt("bib", split_text)
+	
+	var final_text := text
+	
 	for d in definitions['variables']:
 		var name : String = d['name'];
 		final_text = final_text.replace('[' + name + ']', d['value'])
