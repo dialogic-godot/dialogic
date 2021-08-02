@@ -312,31 +312,36 @@ func parse_definitions(text: String, variables: bool = true, glossary: bool = tr
 	if not preview:
 		definitions = DialogicUtil.get_singleton('DialogicSingleton', self).get_definitions()
 	if variables:
-		final_text = _insert_variable_definitions(text)
+		final_text = _insert_value(text)
 	if glossary and _should_show_glossary():
 		final_text = _insert_glossary_definitions(final_text)
 	return final_text
 
 
-func _insert_variable_definitions(text: String):
+func _insert_value(text: String):
 	var final_text := text;
-	for d in definitions['variables']:
-		var name : String = d['name'];
-		final_text = final_text.replace('[' + name + ']', d['value'])
+	
+	var values = DialogicSingleton.values
+	
+	for value_name in values:
+		final_text = final_text.replace('[' + value_name + ']', values[value_name]["current"])
 	return final_text;
 	
 	
 func _insert_glossary_definitions(text: String):
-	var color = current_theme.get_value('definitions', 'color', '#ffbebebe')
-	var final_text := text;
-	# I should use regex here, but this is way easier :)
-	for d in definitions['glossary']:
-		final_text = final_text.replace(d['name'],
-			'[url=' + d['id'] + ']' +
-			'[color=' + color + ']' + d['name'] + '[/color]' +
-			'[/url]'
-		)
-	return final_text;
+#	var color = current_theme.get_value('definitions', 'color', '#ffbebebe')
+#	var final_text := text;
+#	# I should use regex here, but this is way easier :)
+#	for d in definitions['glossary']:
+#		final_text = final_text.replace(d['name'],
+#			'[url=' + d['id'] + ']' +
+#			'[color=' + color + ']' + d['name'] + '[/color]' +
+#			'[/url]'
+#		)
+#	return final_text;
+	
+	#todo
+	return text;
 
 
 func _process(delta):
