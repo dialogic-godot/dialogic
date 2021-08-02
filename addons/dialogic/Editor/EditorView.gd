@@ -186,21 +186,27 @@ func godot_dialog_connect(who, method_name, signal_name = "file_selected"):
 	file_picker_data['node'] = who
 
 ## *****************************************************************************
-##						 VALUE
+##						 RES
 ## *****************************************************************************
-func create_new_value() -> String:
+func create_new_res(dic:Dictionary, name:String, data) -> String:
 	var values_id = 0
 	
-	while res_values.has("NewValue" + str(values_id)):
+	while dic.has(name + str(values_id)):
 		values_id += 1
 	
-	var key = "NewValue" + str(values_id)
+	var key = name + str(values_id)
 	
-	res_values[key] = "0"
+	dic[key] = data
 	
 	need_save()
 	
 	return key
+
+## *****************************************************************************
+##						 VALUE
+## *****************************************************************************
+func create_new_value() -> String:
+	return create_new_res(res_values, "NewValue", "0")
 
 func change_value_name(oldName:String, newName:String) -> bool:
 	if res_values.has(newName):
@@ -218,20 +224,11 @@ func change_value_name(oldName:String, newName:String) -> bool:
 ##						 TIMELINE
 ## *****************************************************************************
 func create_new_timeline() -> String:
-	var values_id = 0
+	var res = create_new_res(timelines, "NewTimeline", {"events": []})
 	
-	while timelines.has("NewTimeline" + str(values_id)):
-		values_id += 1
+	print(timelines)
 	
-	var key = "NewValue" + str(values_id)
-	
-	timelines[key] = {
-		"events": []
-	}
-	
-	need_save()
-	
-	return key
+	return res
 
 ## *****************************************************************************
 ##						 SAVE

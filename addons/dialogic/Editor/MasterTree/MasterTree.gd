@@ -224,6 +224,11 @@ func create_value_item(parent:TreeItem, name:String, select = false):
 	var item = create_res_item(parent, name, {"editor":"Value"}, select)
 	
 	item.set_icon(0, definition_icon)
+	
+func create_timeline_item(parent:TreeItem, name:String, select = false):
+	var item = create_res_item(parent, name, {"editor":"Timeline"}, select)
+	
+	item.set_icon(0, timeline_icon)
 
 func _add_resource_item(resource_type, parent_item, resource_data, select):
 	# create item
@@ -335,18 +340,20 @@ func _on_item_selected():
 	#       save_current_resource()
 	var item = get_selected()
 	
+	var item_name = item.get_text(0)
+	
 	var metadata = item.get_metadata(0)
 	
 	match metadata['editor']:
 		'Timeline':
 			timeline_editor.batches.clear()
-			timeline_editor.load_timeline(metadata['file'])
+			timeline_editor.load_timeline(item_name)
 			show_timeline_editor()
 		'Character':
 			character_editor.load_character(metadata['file'])
 			show_character_editor()
 		'Value':
-			value_editor.load_value(item.get_text(0))
+			value_editor.load_value(item_name)
 			show_value_editor()
 		'GlossaryEntry':
 			glossary_entry_editor.load_definition(metadata['id'])
@@ -650,10 +657,7 @@ func _on_DocumentationPopupMenu_id_pressed(id):
 # creates a new timeline and opens it
 # it will be added to the selected folder (if it's a timeline folder) or the Timeline root folder
 func new_timeline():
-	var timeline = editor_reference.get_node('MainPanel/TimelineEditor').create_timeline()
-	var folder = get_item_folder(get_selected(), "Timelines")
-	DialogicUtil.add_file_to_folder(folder, timeline['metadata']['file'])
-	build_timelines(timeline['metadata']['file'])
+	create_timeline_item(timelines_tree, editor_reference.create_new_timeline(), true)
 
 # creates a new character and opens it
 # it will be added to the selected folder (if it's a character folder) or the Character root folder

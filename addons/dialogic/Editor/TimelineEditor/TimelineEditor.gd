@@ -533,23 +533,24 @@ func create_event(scene: String, data: Dictionary = {'no-data': true} , indent: 
 	return piece
 
 
-func load_timeline(filename: String):
+func load_timeline(name:String):
 	clear_timeline()
-	building_timeline = true
-	timeline_file = filename
 	
-	var data = DialogicResources.get_timeline_json(filename)
-	if data['metadata'].has('name'):
-		timeline_name = data['metadata']['name']
-	else:
-		timeline_name = data['metadata']['file']
-	data = data['events']
+	building_timeline = true
+	
+	timeline_file = name
+	
+	var data = editor_reference.timelines[name]["events"]
 	
 	var page = 1
+	
 	var batch_size = 12
+	
 	while batch_events(data, batch_size, page).size() != 0:
 		batches.append(batch_events(data, batch_size, page))
+		
 		page += 1
+		
 	load_batch(batches)
 
 
