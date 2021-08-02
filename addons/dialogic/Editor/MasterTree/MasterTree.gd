@@ -57,8 +57,6 @@ func create_subtree(root:TreeItem, treeName:String, treeMeta:String) -> TreeItem
 	return sub_tree
 
 func _ready():
-	print("hello MasterTree")
-	
 	# Tree Settings
 	allow_rmb_select = true
 	var root = tree.create_item()
@@ -293,12 +291,8 @@ func build_characters(selected_item: String=''):
 func build_values(selected_item: String = ""):
 	_clear_tree_children(values_tree)
 	
-	printt("masterTree", editor_reference.res_values)
-	
 	if selected_item.empty():
 		for value_name in editor_reference.res_values:
-			print(value_name)
-			
 			create_value_item(values_tree, value_name)
 	else:
 		pass
