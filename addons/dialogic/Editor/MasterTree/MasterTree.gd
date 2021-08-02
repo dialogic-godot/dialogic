@@ -57,6 +57,8 @@ func create_subtree(root:TreeItem, treeName:String, treeMeta:String) -> TreeItem
 	return sub_tree
 
 func _ready():
+	print("hello MasterTree")
+	
 	# Tree Settings
 	allow_rmb_select = true
 	var root = tree.create_item()
@@ -119,6 +121,9 @@ func _ready():
 	#connect('item_edited', self, '_on_item_edited')
 	#$RenamerReset.connect("timeout", self, '_on_renamer_reset_timeout')
 	filter_tree_edit.connect("text_changed", self, '_on_filter_tree_edit_changed')
+	
+	# build all tree parts
+	build_full_tree()
 	
 	# Adding docs
 	build_documentation()
