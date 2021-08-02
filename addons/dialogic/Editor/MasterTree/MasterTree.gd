@@ -51,7 +51,7 @@ func create_subtree(root:TreeItem, treeName:String, treeMeta:String) -> TreeItem
 	
 	# set info
 	sub_tree.set_text(0, treeName)
-	sub_tree.collapsed = DialogicUtil.get_folder_meta(treeName, 'folded')
+	#sub_tree.collapsed = DialogicUtil.get_folder_meta(treeName, 'folded')
 	sub_tree.set_metadata(0, {'editor': treeMeta})
 	
 	return sub_tree

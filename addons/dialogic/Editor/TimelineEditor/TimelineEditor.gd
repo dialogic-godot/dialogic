@@ -4,10 +4,11 @@ extends HSplitContainer
 var editor_reference
 var timeline_name: String = ''
 var timeline_file: String = ''
-var current_timeline: Dictionary = {}
+var current_timeline:Dictionary
+var current_events
 
 onready var master_tree = get_node('../MasterTreeContainer/MasterTree')
-onready var timeline = $TimelineArea/TimeLine
+onready var timeline_node = $TimelineArea/TimeLine
 onready var events_warning = $ScrollContainer/EventContainer/EventsWarning
 
 var hovered_item = null
@@ -124,7 +125,7 @@ func _input(event):
 			# select previous
 			if (len(selected_items) == 1):
 				var prev = max(0, selected_items[0].get_index() - 1)
-				var prev_node = timeline.get_child(prev)
+				var prev_node = timeline_node.get_child(prev)
 				if (prev_node != selected_items[0]):
 					selected_items = []
 					select_item(prev_node)
@@ -141,8 +142,8 @@ func _input(event):
 		):
 			# select next
 			if (len(selected_items) == 1):
-				var next = min(timeline.get_child_count() - 1, selected_items[0].get_index() + 1)
-				var next_node = timeline.get_child(next)
+				var next = min(timeline_node.get_child_count() - 1, selected_items[0].get_index() + 1)
+				var next_node = timeline_node.get_child(next)
 				if (next_node != selected_items[0]):
 					selected_items = []
 					select_item(next_node)
@@ -285,8 +286,8 @@ func delete_selected_events():
 		return
 	
 	# get next element
-	var next = min(timeline.get_child_count() - 1, selected_items[-1].get_index() + 1)
-	var next_node = timeline.get_child(next)
+	var next = min(timeline_node.get_child_count() - 1, selected_items[-1].get_index() + 1)
+	var next_node = timeline_node.get_child(next)
 	if _is_item_selected(next_node):
 		next_node = null
 	
@@ -298,8 +299,8 @@ func delete_selected_events():
 	if (next_node != null):
 		select_item(next_node, false)
 	else:
-		if (timeline.get_child_count() > 0):
-			next_node = timeline.get_child(max(0, timeline.get_child_count() - 1))
+		if (timeline_node.get_child_count() > 0):
+			next_node = timeline_node.get_child(max(0, timeline_node.get_child_count() - 1))
 			if (next_node != null):
 				select_item(next_node, false)
 		else:
@@ -377,8 +378,8 @@ func select_item(item: Node, multi_possible:bool = true):
 			while true:
 				if index < goal_idx: index += 1
 				else: index -= 1
-				if not timeline.get_child(index) in selected_items:
-					selected_items.append(timeline.get_child(index))
+				if not timeline_node.get_child(index) in selected_items:
+					selected_items.append(timeline_node.get_child(index))
 				
 				if index == goal_idx:
 					break
@@ -397,7 +398,7 @@ func select_item(item: Node, multi_possible:bool = true):
 
 # checks all the events and sets their styles (selected/deselected)
 func visual_update_selection():
-	for item in timeline.get_children():
+	for item in timeline_node.get_children():
 		item.visual_deselect()
 	for item in selected_items:
 		item.visual_select()
@@ -406,14 +407,14 @@ func visual_update_selection():
 func sort_selection():
 	selected_items.sort_custom(self, 'custom_sort_selection')
 
-## Compares two event blocks based on their position in the timeline
+## Compares two event blocks based on their position in the timeline_node
 func custom_sort_selection(item1, item2):
 	return item1.get_index() < item2.get_index()
 
 ## Helpers
 func select_all_items():
 	selected_items = []
-	for event in timeline.get_children():
+	for event in timeline_node.get_children():
 		selected_items.append(event)
 	visual_update_selection()
 
@@ -454,26 +455,30 @@ func _on_ButtonQuestion_pressed() -> void:
 	if len(selected_items) != 0:
 		# Events are added bellow the selected node
 		# So we must reverse the adding order
-		create_event("EndBranch", {'no-data': true}, true)
-		create_event("Choice", {'no-data': true}, true)
-		create_event("Choice", {'no-data': true}, true)
-		create_event("Question", {'no-data': true}, true)
+		create_event("EndBranch")
+		create_event("Choice")
+		create_event("Choice")
+		create_event("Question")
 	else:
-		create_event("Question", {'no-data': true}, true)
-		create_event("Choice", {'no-data': true}, true)
-		create_event("Choice", {'no-data': true}, true)
-		create_event("EndBranch", {'no-data': true}, true)
+		create_event("Question")
+		create_event("Choice")
+		create_event("Choice")
+		create_event("EndBranch")
+		
+	indent_events()
 
 # the Condition button adds multiple blocks 
 func _on_ButtonCondition_pressed() -> void:
 	if len(selected_items) != 0:
 		# Events are added bellow the selected node
 		# So we must reverse the adding order
-		create_event("EndBranch", {'no-data': true}, true)
-		create_event("Condition", {'no-data': true}, true)
+		create_event("EndBranch")
+		create_event("Condition")
 	else:
-		create_event("Condition", {'no-data': true}, true)
-		create_event("EndBranch", {'no-data': true}, true)
+		create_event("Condition")
+		create_event("EndBranch")
+		
+	indent_events()
 
 ## *****************************************************************************
 ##					 	DRAG AND DROP
@@ -483,7 +488,7 @@ func _on_ButtonCondition_pressed() -> void:
 func create_drag_and_drop_event(scene: String):
 	var index = get_index_under_cursor()
 	var piece = create_event(scene)
-	timeline.move_child(piece, index)
+	timeline_node.move_child(piece, index)
 	moving_piece = piece
 	piece_was_dragged = true
 	set_event_ignore_save(piece, true)
@@ -509,45 +514,40 @@ func cancel_drop_event():
 ##					 	CREATING THE TIMELINE
 ## *****************************************************************************
 
-# Adding an event to the timeline
-func create_event(scene: String, data: Dictionary = {'no-data': true} , indent: bool = false):
+# Adding an event to the timeline_node
+func create_event(scene: String, data: Dictionary = {}):
 	var piece = load("res://addons/dialogic/Editor/Events/" + scene + ".tscn").instance()
-	piece.editor_reference = editor_reference
 	
-	if data.has('no-data') == false:
-		piece.event_data = data
+	piece.editor_reference = editor_reference
+		
+	current_timeline["events"].append(data if !data.empty() else piece.event_data)
+	
+	piece.event_reference = current_events.back()
 	
 	if len(selected_items) != 0:
-		timeline.add_child_below_node(selected_items[0], piece)
+		timeline_node.add_child_below_node(selected_items[0], piece)
 	else:
-		timeline.add_child(piece)
-	
+		timeline_node.add_child(piece)
 
 	piece.connect("option_action", self, '_on_event_options_action', [piece])
 	piece.connect("gui_input", self, '_on_event_block_gui_input', [piece])
 	events_warning.visible = false
 
-	# Indent on create
-	if indent:
-		indent_events()
 	return piece
-
 
 func load_timeline(name:String):
 	clear_timeline()
 	
-	building_timeline = true
+	current_timeline = editor_reference.timelines[name]
 	
-	timeline_file = name
-	
-	var data = editor_reference.timelines[name]["events"]
+	current_events = current_timeline["events"]
 	
 	var page = 1
 	
 	var batch_size = 12
 	
-	while batch_events(data, batch_size, page).size() != 0:
-		batches.append(batch_events(data, batch_size, page))
+	while batch_events(current_events, batch_size, page).size() != 0:
+		batches.append(batch_events(current_events, batch_size, page))
 		
 		page += 1
 		
@@ -648,7 +648,7 @@ func add_event_by_id(event_id, event_data):
 
 func clear_timeline():
 	deselect_all_items()
-	for event in timeline.get_children():
+	for event in timeline_node.get_children():
 		event.free()
 
 
@@ -660,14 +660,14 @@ func get_block_above(block):
 	var block_index = block.get_index()
 	var item = null
 	if block_index > 0:
-		item = timeline.get_child(block_index - 1)
+		item = timeline_node.get_child(block_index - 1)
 	return item
 
 func get_block_below(block):
 	var block_index = block.get_index()
 	var item = null
-	if block_index < timeline.get_child_count() - 1:
-		item = timeline.get_child(block_index + 1)
+	if block_index < timeline_node.get_child_count() - 1:
+		item = timeline_node.get_child(block_index + 1)
 	return item
 
 func get_block_height(block):
@@ -679,22 +679,22 @@ func get_block_height(block):
 func get_index_under_cursor():
 	var current_position = get_global_mouse_position()
 	var top_pos = 0
-	for i in range(timeline.get_child_count()):
-		var c = timeline.get_child(i)
+	for i in range(timeline_node.get_child_count()):
+		var c = timeline_node.get_child(i)
 		if c.rect_global_position.y < current_position.y:
 			top_pos = i
 	return top_pos
 
 
-# ordering blocks in timeline
+# ordering blocks in timeline_node
 func move_block(block, direction):
 	var block_index = block.get_index()
 	if direction == 'up':
 		if block_index > 0:
-			timeline.move_child(block, block_index - 1)
+			timeline_node.move_child(block, block_index - 1)
 			return true
 	if direction == 'down':
-		timeline.move_child(block, block_index + 1)
+		timeline_node.move_child(block, block_index + 1)
 		return true
 	return false
 
@@ -705,16 +705,16 @@ func move_block(block, direction):
 
 
 func create_timeline():
-	timeline_file = 'timeline-' + str(OS.get_unix_time()) + '.json'
-	var timeline = {
+	timeline_file = 'timeline_node-' + str(OS.get_unix_time()) + '.json'
+	var timeline_node = {
 		"events": [],
 		"metadata":{
 			"dialogic-version": editor_reference.version_string,
 			"file": timeline_file
 		}
 	}
-	DialogicResources.set_timeline(timeline)
-	return timeline
+	DialogicResources.set_timeline(timeline_node)
+	return timeline_node
 
 # Saving
 func generate_save_data():
@@ -726,7 +726,7 @@ func generate_save_data():
 		},
 		'events': []
 	}
-	for event in timeline.get_children():
+	for event in timeline_node.get_children():
 		# Checking that the event is not waiting to be removed
 		# or that it is not a drag and drop placeholder
 		if not get_event_ignore_save(event) and event.is_queued_for_deletion() == false:
@@ -757,7 +757,7 @@ func save_timeline() -> void:
 func indent_events() -> void:
 	var indent: int = 0
 	var starter: bool = false
-	var event_list: Array = timeline.get_children()
+	var event_list: Array = timeline_node.get_children()
 	var question_index: int = 0
 	var question_indent = {}
 	if event_list.size() < 2:
@@ -803,10 +803,10 @@ func indent_events() -> void:
 
 # called from the toolbar
 func fold_all_nodes():
-	for event in timeline.get_children():
+	for event in timeline_node.get_children():
 		event.set_expanded(false)
 
 # called from the toolbar
 func unfold_all_nodes():
-	for event in timeline.get_children():
+	for event in timeline_node.get_children():
 		event.set_expanded(true)

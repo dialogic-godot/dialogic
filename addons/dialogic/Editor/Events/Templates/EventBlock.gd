@@ -36,6 +36,8 @@ var body_node
 ### extarnal node references
 var editor_reference
 
+var event_reference:Dictionary
+
 ### the indent size
 const indent_size = 25
 
@@ -190,6 +192,8 @@ func _on_Header_data_changed(new_event_data):
 
 # called when the data of the body is changed
 func _on_Body_data_changed(new_event_data):
+	event_reference = new_event_data
+	
 	event_data = new_event_data
 	
 	# update the header in case it has to

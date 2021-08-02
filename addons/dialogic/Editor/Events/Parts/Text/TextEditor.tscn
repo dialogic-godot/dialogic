@@ -15,9 +15,9 @@ margin_right = 40.0
 margin_bottom = 40.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
+custom_colors/number_color = Color( 0, 0, 0, 1 )
 syntax_highlighting = true
 show_line_numbers = true
 smooth_scrolling = true
 wrap_enabled = true
-
 [connection signal="focus_exited" from="TextEdit" to="." method="_on_TextEdit_focus_exited"]
