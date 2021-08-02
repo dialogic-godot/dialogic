@@ -196,7 +196,13 @@ func create_new_value() -> String:
 	res_values[key] = "0"
 	
 	return key
-	
+
+func need_save():
+	if !need_save:
+		save_button.text = "Save(*)"
+		
+		need_save = true
+
 func change_value_name(oldName:String, newName:String) -> bool:
 	if res_values.has(newName):
 		return false
@@ -205,13 +211,9 @@ func change_value_name(oldName:String, newName:String) -> bool:
 	
 	res_values.erase(oldName)
 	
+	need_save()
+	
 	return true
-
-func need_save():
-	if !need_save:
-		save_button.text = "Save(*)"
-		
-		need_save = true
 
 func on_save_button_pressed():
 	if !res_values.empty():
