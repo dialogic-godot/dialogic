@@ -520,9 +520,11 @@ func create_event(scene: String, data: Dictionary = {}):
 	
 	piece.editor_reference = editor_reference
 		
-	current_timeline["events"].append(data if !data.empty() else piece.event_data)
+	current_events.append(data if !data.empty() else piece.event_data)
 	
-	piece.event_reference = current_events.back()
+	piece.events = current_events
+	
+	piece.event_id = current_events.size() - 1
 	
 	if len(selected_items) != 0:
 		timeline_node.add_child_below_node(selected_items[0], piece)
@@ -648,8 +650,9 @@ func add_event_by_id(event_id, event_data):
 
 func clear_timeline():
 	deselect_all_items()
+	
 	for event in timeline_node.get_children():
-		event.free()
+		event.queue_free()
 
 
 ## *****************************************************************************

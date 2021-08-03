@@ -34,9 +34,11 @@ var header_node
 var body_node
 
 ### extarnal node references
-var editor_reference
+var editor_reference:EditorView
 
-var event_reference:Dictionary
+var events:Array
+
+var event_id
 
 ### the indent size
 const indent_size = 25
@@ -115,12 +117,11 @@ func _set_event_name(text: String):
 
 func _set_header(scene: PackedScene):
 	header_node = _set_content(header_content_container, scene)
-	header_node.editor_reference = editor_reference
 
 
 func _set_body(scene: PackedScene):
 	body_node = _set_content(body_content_container, scene)
-	body_node.editor_reference = editor_reference
+
 	# show the expand toggle
 	expand_control.set_enabled(body_node != null)
 
@@ -141,11 +142,16 @@ func _setup_event():
 func _set_content(container: Control, scene: PackedScene):
 	for c in container.get_children():
 		container.remove_child(c)
+		
 	if scene != null:
 		var node = scene.instance()
+		
+		node.editor_reference = editor_reference
+		
 		container.add_child(node)
 #		node.set_owner(get_tree().get_edited_scene_root())
 		return node
+		
 	return null
 
 
@@ -183,6 +189,10 @@ func _on_gui_input(event):
 
 # called when the data of the header is changed
 func _on_Header_data_changed(new_event_data):
+	events[event_id] = new_event_data
+	
+	printt("_on_Header_data_changed", new_event_data, events[event_id], editor_reference.timelines["NewTimeline0"]["events"][event_id])
+	
 	event_data = new_event_data
 	
 	# update the body in case it has to
@@ -192,7 +202,7 @@ func _on_Header_data_changed(new_event_data):
 
 # called when the data of the body is changed
 func _on_Body_data_changed(new_event_data):
-	event_reference = new_event_data
+	#event_reference = new_event_data
 	
 	event_data = new_event_data
 	

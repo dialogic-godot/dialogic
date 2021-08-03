@@ -2,7 +2,7 @@ tool
 extends Control
 
 # has to be set by the parent before adding it to the tree
-var editor_reference
+var editor_reference:EditorView
 #var editorPopup
 
 var event_data = {}

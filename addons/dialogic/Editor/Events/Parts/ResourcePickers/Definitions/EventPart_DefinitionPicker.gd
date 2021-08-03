@@ -7,6 +7,8 @@ export (String) var default_text = "Select Definition"
 ## node references
 onready var picker_menu = $MenuButton
 
+var current_popup_menu
+
 # used to connect the signals
 func _ready():
 	picker_menu.connect("about_to_show", self, "_on_PickerMenu_about_to_show")
@@ -32,20 +34,31 @@ func select_definition_by_id(id):
 		picker_menu.text = default_text
 
 # when an index is selected on one of the menus.
-func _on_PickerMenu_selected(index, menu):
-	var text = menu.get_item_text(index)
-	var metadata = menu.get_item_metadata(index)
+func _on_PickerMenu_selected(index):
+	var text = current_popup_menu.get_item_text(index)
+	
 	picker_menu.text = text
 	
-	event_data['definition'] = metadata['file']
+	event_data['definition'] = text
+	
+	printt("_on_PickerMenu_selected", index, event_data)
+	
 	# informs the parent about the changes!
 	data_changed()
 
 func _on_PickerMenu_about_to_show():
+	current_popup_menu = picker_menu.get_popup()
+	
 	# Building the picker menu()
-	picker_menu.get_popup().clear()
+	current_popup_menu.clear()
+	
 	## building the root level
-	build_PickerMenuFolder(picker_menu.get_popup(), DialogicUtil.get_definitions_folder_structure(), "MenuButton")
+	#build_PickerMenuFolder(picker_menu.get_popup(), DialogicUtil.get_definitions_folder_structure(), "MenuButton")
+	for value in editor_reference.res_values:
+		current_popup_menu.add_icon_item(load("res://addons/dialogic/Images/Resources/definition.svg"), value)
+
+	if not current_popup_menu.is_connected("index_pressed", self, "_on_PickerMenu_selected"):
+		current_popup_menu.connect("index_pressed", self, "_on_PickerMenu_selected")
 
 # is called recursively to build all levels of the folder structure
 func build_PickerMenuFolder(menu:PopupMenu, folder_structure:Dictionary, current_folder_name:String):
@@ -68,6 +81,6 @@ func build_PickerMenuFolder(menu:PopupMenu, folder_structure:Dictionary, current
 			index += 1
 	
 	if not menu.is_connected("index_pressed", self, "_on_PickerMenu_selected"):
-		menu.connect("index_pressed", self, '_on_PickerMenu_selected', [menu])
+		menu
 	
 	return current_folder_name

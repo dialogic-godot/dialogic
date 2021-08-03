@@ -13,6 +13,10 @@ onready var use_condition_check = $HBox/HasCondition/UseCondition
 
 # used to connect the signals
 func _ready():
+	definition_picker.editor_reference = editor_reference
+	
+	condition_type_picker.editor_reference = editor_reference
+	
 	definition_picker.connect("data_changed", self, '_on_DefinitionPicker_data_changed')
 	
 	condition_type_picker.connect("data_changed", self, '_on_ConditionTypePicker_data_changed')
@@ -58,6 +62,8 @@ func _on_UseCondition_toggled(checkbox_value):
 	data_changed()
 
 func _on_DefinitionPicker_data_changed(data):
+	printt("_on_DefinitionPicker_data_changed", data)
+	
 	event_data = data
 	
 	data_changed()
