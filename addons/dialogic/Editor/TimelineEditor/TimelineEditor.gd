@@ -59,6 +59,8 @@ func _ready():
 	
 	var style = $TimelineArea.get('custom_styles/bg')
 	style.set('bg_color', get_color("dark_color_1", "Editor"))
+	$TimelineArea.connect('resized', self, 'add_extra_scroll_area_to_timeline', [])
+
 
 # handles dragging/moving of events
 func _process(delta):
@@ -78,6 +80,7 @@ func _process(delta):
 			if current_position.y > node_position + down_offset:
 				move_block(moving_piece, 'down')
 				piece_was_dragged = true
+
 
 # SIGNAL handles input on the events mainly for selection and moving events
 func _on_event_block_gui_input(event, item: Node):
@@ -280,7 +283,6 @@ func _unhandled_key_input(event):
 ## *****************************************************************************
 
 func delete_selected_events():
-	
 	if len(selected_items) == 0:
 		return
 	
@@ -307,9 +309,11 @@ func delete_selected_events():
 	
 	indent_events()
 
+
 func cut_selected_events():
 	copy_selected_events()
 	delete_selected_events()
+
 
 func copy_selected_events():
 	if len(selected_items) == 0:
@@ -324,6 +328,7 @@ func copy_selected_events():
 			"dialogic_version": editor_reference.version_string,
 			"project_name": ProjectSettings.get_setting("application/config/name")
 		})
+
 
 func paste_events():
 	var clipboard_parse = JSON.parse(OS.clipboard).result
@@ -348,6 +353,7 @@ func paste_events():
 			sort_selection()
 			visual_update_selection()
 			indent_events()
+			add_extra_scroll_area_to_timeline()
 
 
 ## *****************************************************************************
@@ -356,6 +362,7 @@ func paste_events():
 
 func _is_item_selected(item: Node):
 	return item in selected_items
+
 
 func select_item(item: Node, multi_possible:bool = true):
 	if item == null:
@@ -395,6 +402,7 @@ func select_item(item: Node, multi_possible:bool = true):
 	
 	visual_update_selection()
 
+
 # checks all the events and sets their styles (selected/deselected)
 func visual_update_selection():
 	for item in timeline.get_children():
@@ -402,13 +410,16 @@ func visual_update_selection():
 	for item in selected_items:
 		item.visual_select()
 
+
 ## Sorts the selection using 'custom_sort_selection'
 func sort_selection():
 	selected_items.sort_custom(self, 'custom_sort_selection')
 
+
 ## Compares two event blocks based on their position in the timeline
 func custom_sort_selection(item1, item2):
 	return item1.get_index() < item2.get_index()
+
 
 ## Helpers
 func select_all_items():
@@ -416,6 +427,7 @@ func select_all_items():
 	for event in timeline.get_children():
 		selected_items.append(event)
 	visual_update_selection()
+
 
 func deselect_all_items():
 	selected_items = []
@@ -436,9 +448,11 @@ func _on_event_options_action(action: String, item: Node):
 		move_block(item, action)
 	indent_events()
 
+
 func delete_event(event):
 	event.get_parent().remove_child(event)
 	event.queue_free()
+
 
 ## *****************************************************************************
 ##				CREATING NEW EVENTS USING THE BUTTONS
@@ -448,6 +462,7 @@ func delete_event(event):
 func _create_event_button_pressed(button_name):
 	select_item(create_event(button_name))
 	indent_events()
+
 
 # the Question button adds multiple blocks 
 func _on_ButtonQuestion_pressed() -> void:
@@ -464,6 +479,7 @@ func _on_ButtonQuestion_pressed() -> void:
 		create_event("Choice", {'no-data': true}, true)
 		create_event("EndBranch", {'no-data': true}, true)
 
+
 # the Condition button adds multiple blocks 
 func _on_ButtonCondition_pressed() -> void:
 	if len(selected_items) != 0:
@@ -474,6 +490,7 @@ func _on_ButtonCondition_pressed() -> void:
 	else:
 		create_event("Condition", {'no-data': true}, true)
 		create_event("EndBranch", {'no-data': true}, true)
+
 
 ## *****************************************************************************
 ##					 	DRAG AND DROP
@@ -490,12 +507,15 @@ func create_drag_and_drop_event(scene: String):
 	select_item(piece)
 	return piece
 
+
 func drop_event():
 	if moving_piece != null:
 		set_event_ignore_save(moving_piece, false)
 		moving_piece = null
 		piece_was_dragged = false
 		indent_events()
+		add_extra_scroll_area_to_timeline()
+
 
 func cancel_drop_event():
 	if moving_piece != null:
@@ -527,6 +547,8 @@ func create_event(scene: String, data: Dictionary = {'no-data': true} , indent: 
 	piece.connect("gui_input", self, '_on_event_block_gui_input', [piece])
 	events_warning.visible = false
 
+	# Spacing
+	add_extra_scroll_area_to_timeline()
 	# Indent on create
 	if indent:
 		indent_events()
@@ -551,6 +573,8 @@ func load_timeline(filename: String):
 		batches.append(batch_events(data, batch_size, page))
 		page += 1
 	load_batch(batches)
+	# Reset the scroll position
+	$TimelineArea.scroll_vertical = 0
 
 
 func batch_events(array, size, batch_number):
@@ -574,6 +598,7 @@ func _on_batch_loaded():
 		events_warning.visible = false
 		indent_events()
 		building_timeline = false
+	add_extra_scroll_area_to_timeline()
 
 
 func add_event_by_id(event_id, event_data):
@@ -645,6 +670,7 @@ func add_event_by_id(event_id, event_data):
 		'dialogic_042':
 			return create_event('CallNode', event_data)
 
+
 func clear_timeline():
 	deselect_all_items()
 	for event in timeline.get_children():
@@ -662,6 +688,7 @@ func get_block_above(block):
 		item = timeline.get_child(block_index - 1)
 	return item
 
+
 func get_block_below(block):
 	var block_index = block.get_index()
 	var item = null
@@ -669,11 +696,13 @@ func get_block_below(block):
 		item = timeline.get_child(block_index + 1)
 	return item
 
+
 func get_block_height(block):
 	if block != null:
 		return block.rect_size.y
 	else:
 		return null
+
 
 func get_index_under_cursor():
 	var current_position = get_global_mouse_position()
@@ -754,6 +783,7 @@ func save_timeline() -> void:
 
 # Event Indenting
 func indent_events() -> void:
+	# Now indenting
 	var indent: int = 0
 	var starter: bool = false
 	var event_list: Array = timeline.get_children()
@@ -800,12 +830,24 @@ func indent_events() -> void:
 				event.set_indent(indent)
 		starter = false
 
+
 # called from the toolbar
 func fold_all_nodes():
 	for event in timeline.get_children():
 		event.set_expanded(false)
+	add_extra_scroll_area_to_timeline()
+
 
 # called from the toolbar
 func unfold_all_nodes():
 	for event in timeline.get_children():
 		event.set_expanded(true)
+	add_extra_scroll_area_to_timeline()
+
+
+func add_extra_scroll_area_to_timeline():
+	if timeline.get_children().size() > 4:
+		timeline.rect_min_size.y = 0
+		timeline.rect_size.y = 0
+		if timeline.rect_size.y + 200 > $TimelineArea.rect_size.y:
+			timeline.rect_min_size = Vector2(0, timeline.rect_size.y + 200)
