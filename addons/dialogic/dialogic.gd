@@ -59,9 +59,8 @@ func get_plugin_icon():
 
 func _add_custom_editor_view():
 	_editor_view = preload("res://addons/dialogic/Editor/EditorView.tscn").instance()
-	get_editor_interface().get_editor_viewport().add_child(_editor_view)
 	_editor_view.editor_interface = get_editor_interface()
-	#_editor_view.plugin_reference = self
+	get_editor_interface().get_editor_viewport().add_child(_editor_view)
 
 
 func _remove_custom_editor_view():
