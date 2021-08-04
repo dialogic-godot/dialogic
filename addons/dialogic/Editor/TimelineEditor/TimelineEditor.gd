@@ -211,9 +211,15 @@ func _input(event):
 			and event.scancode == KEY_T
 			and event.echo == false
 		):
-			var new_text = create_event("TextEvent")
-			select_item(new_text, false)
-			indent_events()
+			var at_index = -1
+			if selected_items:
+				at_index = selected_items[-1].get_index()+1
+			else:
+				at_index = timeline.get_child_count()
+			TimelineUndoRedo.create_action("[D] Add Text event.")
+			TimelineUndoRedo.add_do_method(self, "create_event", "TextEvent", {'no-data': true}, true, at_index, true)
+			TimelineUndoRedo.add_undo_method(self, "remove_events_at_index", at_index, 1)
+			TimelineUndoRedo.commit_action()
 			get_tree().set_input_as_handled()
 			
 		# CTRL A
@@ -685,7 +691,8 @@ func create_event(scene: String, data: Dictionary = {'no-data': true} , indent: 
 
 func load_timeline(filename: String):
 	clear_timeline()
-	TimelineUndoRedo.clear_history()
+	if timeline_file != filename:
+		TimelineUndoRedo.clear_history()
 	building_timeline = true
 	timeline_file = filename
 	
