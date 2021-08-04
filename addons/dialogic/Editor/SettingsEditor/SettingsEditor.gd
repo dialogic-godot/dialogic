@@ -66,7 +66,7 @@ func _ready():
 
 func update_data():
 	var settings = DialogicResources.get_settings_config()
-	nodes['canvas_layer'].text = settings.get_value("theme", "canvas_layer")
+	nodes['canvas_layer'].text = settings.get_value("theme", "canvas_layer", '1')
 	refresh_themes(settings)
 	load_values(settings, "dialog", DIALOG_KEYS)
 	load_values(settings, "saving", SAVING_KEYS)
