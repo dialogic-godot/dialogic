@@ -426,46 +426,46 @@ func copy_selected_events():
 			"project_name": ProjectSettings.get_setting("application/config/name")
 		})
 
-		func paste_check():
-			var clipboard_parse = JSON.parse(OS.clipboard).result
-			
-			if typeof(clipboard_parse) == TYPE_DICTIONARY:
-				if clipboard_parse.has("dialogic_version"):
-					if clipboard_parse['dialogic_version'] != editor_reference.version_string:
-						print("[D] Be careful when copying from older versions!")
-				if clipboard_parse.has("project_name"):
-					if clipboard_parse['project_name'] != ProjectSettings.get_setting("application/config/name"):
-						print("[D] Be careful when copying from another project!")
-				if clipboard_parse.has('events'):
-					return clipboard_parse['events']
-		
-		func remove_events_at_index(at_index:int, amount:int = 1)-> void:
-			selected_items = []
-			for i in range(0, amount):
-				selected_items.append(timeline.get_child(at_index + i))
-			delete_selected_events()
-		
-		func add_events_at_index(event_list:Array, at_index:int) -> void:
-			if at_index != -1:
-				event_list.invert()
-				selected_items = [timeline.get_child(at_index)]
-			else:
-				selected_items = []
-			
-			var new_items = []
-			for item in event_list:
-				if typeof(item) == TYPE_DICTIONARY and item.has('event_id'):
-					new_items.append(add_event_by_id(item['event_id'], item))
-			selected_items = new_items
-			sort_selection()
-			visual_update_selection()
-			indent_events()
-		
-		func paste_events_indexed(indexed_events):
-			pass
-		
-		func duplicate_events_indexed(indexed_events):
-			pass
+func paste_check():
+	var clipboard_parse = JSON.parse(OS.clipboard).result
+	
+	if typeof(clipboard_parse) == TYPE_DICTIONARY:
+		if clipboard_parse.has("dialogic_version"):
+			if clipboard_parse['dialogic_version'] != editor_reference.version_string:
+				print("[D] Be careful when copying from older versions!")
+		if clipboard_parse.has("project_name"):
+			if clipboard_parse['project_name'] != ProjectSettings.get_setting("application/config/name"):
+				print("[D] Be careful when copying from another project!")
+		if clipboard_parse.has('events'):
+			return clipboard_parse['events']
+
+func remove_events_at_index(at_index:int, amount:int = 1)-> void:
+	selected_items = []
+	for i in range(0, amount):
+		selected_items.append(timeline.get_child(at_index + i))
+	delete_selected_events()
+
+func add_events_at_index(event_list:Array, at_index:int) -> void:
+	if at_index != -1:
+		event_list.invert()
+		selected_items = [timeline.get_child(at_index)]
+	else:
+		selected_items = []
+	
+	var new_items = []
+	for item in event_list:
+		if typeof(item) == TYPE_DICTIONARY and item.has('event_id'):
+			new_items.append(add_event_by_id(item['event_id'], item))
+	selected_items = new_items
+	sort_selection()
+	visual_update_selection()
+	indent_events()
+
+func paste_events_indexed(indexed_events):
+	pass
+
+func duplicate_events_indexed(indexed_events):
+	pass
 
 ## *****************************************************************************
 ##					 	BLOCK SELECTION
