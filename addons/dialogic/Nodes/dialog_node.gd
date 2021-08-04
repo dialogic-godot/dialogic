@@ -203,34 +203,43 @@ func load_dialog():
 			dialog_script = parse_characters(dialog_script)
 	else:
 		dialog_script = parse_characters(dialog_script)
-	
 	dialog_script = parse_text_lines(dialog_script)
 	dialog_script = parse_branches(dialog_script)
 	return dialog_script
 
 
 func parse_characters(dialog_script):
-	var names = DialogicUtil.get_character_list()
-	# I should use regex here, but this is way easier :)
-	if names.size() > 0:
-		var index = 0
-		for t in dialog_script['events']:
-			if t.has('text'):
-				for n in names:
-					var name_end_check = [' ', ',', '.', '?', '!', "'"]
-					if n.has('name'):
-						for c in name_end_check:
-							dialog_script['events'][index]['text'] = t['text'].replace(n['name'] + c,
-								'[color=#' + n['color'].to_html() + ']' + n['name'] + '[/color]' + c
-							)
-						if n.has('nickname') and n['nickname'] != '':
-							var nicknames_array = n['nickname'].split(",", true, 0)
-							for c in name_end_check:
-								for nn in nicknames_array:
-									dialog_script['events'][index]['text'] = t['text'].replace(nn + c,
-										'[color=#' + n['color'].to_html() + ']' + nn + '[/color]' + c
-									)
-			index += 1
+	var characters = DialogicUtil.get_character_list()
+
+	var event_index := 0
+	for event in dialog_script['events']:
+		# if this is a text or question event
+		if event.get('event_id') in ['dialogic_001', 'dialogic_010']:
+			var text :String = event.get({'dialogic_001':'text', 'dialogic_010':'question'}[event.get('event_id')], '')
+			
+			for character in characters:
+				# check whether to use the name or the display name
+				var char_names = [character.get('name')]
+				if character.get('data', {}).get('display_name_bool', false):
+					char_names.append(character.get('display_name'))
+				if character.get('data', {}).get('nickname_bool', false):
+					for nickname in character.get('data').get('nickname', '').split(',', true, 0):
+						char_names.append(nickname.strip_edges())
+				
+				var regex_thing = str(char_names).replace("[", "(").replace("]", ")").replace(", ", "|")+'\\b'
+				var regex = RegEx.new()
+				regex.compile(regex_thing)
+				
+				var counter = 0
+				for result in regex.search_all(text):
+					text = text.insert(result.get_start()+((9+8+8)*counter), '[color=#' + character['color'].to_html() + ']')
+					text = text.insert(result.get_end()+9+8+((9+8+8)*counter), '[/color]')
+					result = regex.search(text)
+					counter += 1
+				dialog_script['events'][event_index][{'dialogic_001':'text', 'dialogic_010':'question'}[event.get('event_id')]] = text
+		
+		event_index += 1
+
 	return dialog_script
 
 
@@ -801,6 +810,8 @@ func event_handler(event: Dictionary):
 			$TextBubble.visible = false
 			waiting = true
 			var target = get_node_or_null(event['call_node']['target_node_path'])
+			if not target:
+				target = get_tree().root.get_node_or_null(event['call_node']['target_node_path'])
 			var method_name = event['call_node']['method_name']
 			var args = event['call_node']['arguments']
 			if (not args is Array):
@@ -874,6 +885,7 @@ func get_classic_choice_button(label: String):
 	var theme = current_theme
 	var button : Button = ChoiceButton.instance()
 	button.text = label
+	button.set_meta('input_next', input_next)
 	
 	# Removing the blue selected border
 	button.set('custom_styles/focus', StyleBoxEmpty.new())
