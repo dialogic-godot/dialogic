@@ -13,6 +13,8 @@ var res_values:Dictionary
 
 var timelines:Dictionary
 
+onready var timeline_editor = $MainPanel/TimelineEditor
+
 onready var save_button = $ToolBar/SaveButton
 var need_save = false
 
@@ -26,7 +28,7 @@ func _ready():
 	add_child(editor_file_dialog)
 
 	# Setting references to this node
-	$MainPanel/TimelineEditor.editor_reference = self
+	timeline_editor.editor_reference = self
 	$MainPanel/CharacterEditor.editor_reference = self
 	$MainPanel/ValueEditor.editor_reference = self
 	$MainPanel/GlossaryEntryEditor.editor_reference = self
@@ -241,6 +243,8 @@ func on_save_button_pressed():
 		DialogicResources.save_res_values(res_values)
 	
 	if !timelines.empty():
+		timeline_editor.save_timeline()
+		
 		for timeline in timelines:
 			DialogicResources.save_timeline(timeline, timelines[timeline])
 	

@@ -116,7 +116,7 @@ func _ready():
 	connect('item_rmb_selected', self, '_on_item_rmb_selected')
 	connect('item_collapsed', self, '_on_item_collapsed')
 	#connect('gui_input', self, '_on_gui_input')
-	#connect('item_edited', self, '_on_item_edited')
+	connect('item_edited', self, '_on_item_edited')
 	#$RenamerReset.connect("timeout", self, '_on_renamer_reset_timeout')
 	filter_tree_edit.connect("text_changed", self, '_on_filter_tree_edit_changed')
 	

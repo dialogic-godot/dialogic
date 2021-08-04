@@ -36,10 +36,6 @@ var body_node
 ### extarnal node references
 var editor_reference:EditorView
 
-var events:Array
-
-var event_id
-
 ### the indent size
 const indent_size = 25
 
@@ -188,12 +184,9 @@ func _on_gui_input(event):
 
 
 # called when the data of the header is changed
-func _on_Header_data_changed(new_event_data):
-	events[event_id] = new_event_data
-	
-	printt("_on_Header_data_changed", new_event_data, events[event_id], editor_reference.timelines["NewTimeline0"]["events"][event_id])
-	
-	event_data = new_event_data
+func _on_Header_data_changed(metadata:Dictionary):
+	for key in metadata.keys():
+		event_data[key] = metadata[key]
 	
 	# update the body in case it has to
 	if get_body():
@@ -202,8 +195,6 @@ func _on_Header_data_changed(new_event_data):
 
 # called when the data of the body is changed
 func _on_Body_data_changed(new_event_data):
-	#event_reference = new_event_data
-	
 	event_data = new_event_data
 	
 	# update the header in case it has to

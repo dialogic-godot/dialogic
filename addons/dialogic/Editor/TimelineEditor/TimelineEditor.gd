@@ -5,7 +5,7 @@ var editor_reference
 var timeline_name: String = ''
 var timeline_file: String = ''
 var current_timeline:Dictionary
-var current_events
+var current_events:Array
 
 onready var master_tree = get_node('../MasterTreeContainer/MasterTree')
 onready var timeline_node = $TimelineArea/TimeLine
@@ -519,12 +519,9 @@ func create_event(scene: String, data: Dictionary = {}):
 	var piece = load("res://addons/dialogic/Editor/Events/" + scene + ".tscn").instance()
 	
 	piece.editor_reference = editor_reference
-		
-	current_events.append(data if !data.empty() else piece.event_data)
 	
-	piece.events = current_events
-	
-	piece.event_id = current_events.size() - 1
+	if !data.empty():
+		piece.event_data = data
 	
 	if len(selected_items) != 0:
 		timeline_node.add_child_below_node(selected_items[0], piece)
@@ -538,8 +535,13 @@ func create_event(scene: String, data: Dictionary = {}):
 	return piece
 
 func load_timeline(name:String):
-	clear_timeline()
+	#clear timeline
+	deselect_all_items()
 	
+	for event in timeline_node.get_children():
+		event.queue_free()
+	
+	#load it
 	current_timeline = editor_reference.timelines[name]
 	
 	current_events = current_timeline["events"]
@@ -746,10 +748,13 @@ func get_event_ignore_save(event: Node) -> bool:
 
 
 func save_timeline() -> void:
-	if timeline_file != '' and building_timeline == false:
-		var info_to_save = generate_save_data()
-		DialogicResources.set_timeline(info_to_save)
-		#print('[+] Saving: ' , timeline_file)
+	current_events.clear()
+	
+	for event_node in timeline_node.get_children():
+		# Checking that the event is not waiting to be removed
+		# or that it is not a drag and drop placeholder
+		if not get_event_ignore_save(event_node) and event_node.is_queued_for_deletion() == false:
+			current_events.append(event_node.event_data)
 
 
 ## *****************************************************************************

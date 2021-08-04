@@ -62,20 +62,20 @@ func _on_UseCondition_toggled(checkbox_value):
 	data_changed()
 
 func _on_DefinitionPicker_data_changed(data):
-	printt("_on_DefinitionPicker_data_changed", data)
-	
-	event_data = data
+	event_data['definition'] = data['definition']
 	
 	data_changed()
 
 func _on_ConditionTypePicker_data_changed(data):
-	event_data = data
+	event_data['condition'] = data['condition']
+	
 	check_data()
 	
 	data_changed()
 
 func _on_Value_text_changed(text):
 	event_data['value'] = text
+	
 	check_data()
 	
 	data_changed()
