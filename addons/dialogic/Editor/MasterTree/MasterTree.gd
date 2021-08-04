@@ -805,6 +805,16 @@ func _on_gui_input(event):
 			if metadata.has("editable") and metadata["editable"]:
 				item.set_editable(0, true)
 
+#start code usefull function
+func check_change_value_name(type:String, oldName:String, newName:String) -> bool:
+	if type == 'Timeline' and editor_reference.change_timeline_name(oldName, newName):
+		return true
+	
+	if type == 'Value' and editor_reference.change_value_name(oldName, newName):
+		return true
+		
+	return false
+
 func _on_item_edited():
 	var item = get_selected()
 	
@@ -814,10 +824,15 @@ func _on_item_edited():
 	
 	var metadata = item.get_metadata(0)
 	
-	if metadata['editor'] == 'Timeline':
-		timeline_editor.timeline_name = item.get_text(0)
-		save_current_resource()
-		build_timelines(metadata['file'])
+	if item_name == metadata["name"]:
+		return
+	
+	var change = false
+	
+	#can't use check_change_value_name for now
+	
+	if metadata['editor'] == 'Timeline' and editor_reference.change_timeline_name(metadata["name"], item_name):
+		change = true
 		
 	if metadata['editor'] == 'Theme':
 		DialogicResources.set_theme_value(metadata['file'], 'settings', 'name', item.get_text(0))
@@ -828,11 +843,8 @@ func _on_item_edited():
 		save_current_resource()
 		build_characters(metadata['file'])
 		
-	if metadata['editor'] == 'Value':
-		if editor_reference.change_value_name(metadata["name"], item_name):
-			metadata["name"] = item_name
-		else:
-			item.set_text(0, metadata["name"])
+	if metadata['editor'] == 'Value' and editor_reference.change_value_name(metadata["name"], item_name):
+		change = true
 		
 	if metadata['editor'] == 'GlossaryEntry':
 		glossary_entry_editor.nodes['name'].text = item.get_text(0)
@@ -847,6 +859,11 @@ func _on_item_edited():
 		var result = DialogicUtil.rename_folder(item_path_before_edit, item.get_text(0))
 		if result != OK:
 			item.set_text(0, item_path_before_edit.split("/")[-1])
+	
+	if change:
+		metadata["name"] = item_name
+	else:
+		item.set_text(0, metadata["name"])
 			
 ## *****************************************************************************
 ##					 		AUTO SAVING

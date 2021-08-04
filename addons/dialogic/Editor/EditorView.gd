@@ -204,6 +204,18 @@ func create_new_res(dic:Dictionary, name:String, data) -> String:
 	
 	return key
 
+func change_res_name(dic:Dictionary, oldName:String, newName:String) -> bool:
+	if dic.has(newName):
+		return false
+		
+	dic[newName] = dic[oldName]
+	
+	dic.erase(oldName)
+	
+	need_save()
+	
+	return true
+
 ## *****************************************************************************
 ##						 VALUE
 ## *****************************************************************************
@@ -211,22 +223,19 @@ func create_new_value() -> String:
 	return create_new_res(res_values, "NewValue", "0")
 
 func change_value_name(oldName:String, newName:String) -> bool:
-	if res_values.has(newName):
-		return false
-		
-	res_values[newName] = res_values[oldName]
-	
-	res_values.erase(oldName)
-	
-	need_save()
-	
-	return true
+	return change_res_name(res_values, oldName, newName)
 
 ## *****************************************************************************
 ##						 TIMELINE
 ## *****************************************************************************
 func create_new_timeline() -> String:
 	return create_new_res(timelines, "NewTimeline", {"events": []})
+	
+func change_timeline_name(oldName:String, newName:String) -> bool:
+	if change_res_name(timelines, oldName, newName):
+		DialogicResources.rename_timeline(oldName, newName)
+		return true
+	return false
 
 ## *****************************************************************************
 ##						 SAVE

@@ -264,6 +264,10 @@ static func delete_timeline(filename: String):
 	# WARNING: For use in the editor only
 	remove_file(get_path('TIMELINE_DIR', filename))
 
+static func rename_timeline(oldName:String, newName:String):
+	var dir := Directory.new()
+	
+	dir.rename(get_path("TIMELINE_DIR", oldName + ".json"), get_path("TIMELINE_DIR", newName + ".json"))
 
 ## *****************************************************************************
 ##							CHARACTERS
