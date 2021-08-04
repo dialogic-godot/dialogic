@@ -21,6 +21,8 @@ var need_save = false
 func _init():
 	#Loading values
 	res_values = DialogicResources.load_res_values()
+	
+	timelines = DialogicResources.load_timelines()
 
 func _ready():
 	# Adding file dialog to get used by Events

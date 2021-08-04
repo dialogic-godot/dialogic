@@ -138,12 +138,13 @@ func _ready():
 ## *****************************************************************************
 
 func build_full_tree(selected_item: String = ''):
-	# Adding timelines
-	#build_timelines(selected_item)
-	# Adding characters
-	#build_characters(selected_item)
 	# Adding Values
 	build_values(selected_item)
+	# Adding timelines
+	build_timelines(selected_item)
+	# Adding characters
+	#build_characters(selected_item)
+	
 	# Adding Definitions
 	#build_definitions(selected_item)
 	# Adding Themes
@@ -271,24 +272,6 @@ func _add_resource_item(resource_type, parent_item, resource_data, select):
 	if select:
 		item.select(0)
 
-
-## TIMELINES
-func build_timelines(selected_item: String=''):
-	_clear_tree_children(timelines_tree)
-	
-	DialogicUtil.update_resource_folder_structure()
-	var structure = DialogicUtil.get_timelines_folder_structure()
-	build_resource_folder(timelines_tree, structure, selected_item, "Timeline Root", "Timeline")
-
-
-## CHARACTERS
-func build_characters(selected_item: String=''):
-	_clear_tree_children(characters_tree)
-	
-	DialogicUtil.update_resource_folder_structure()
-	var structure = DialogicUtil.get_characters_folder_structure()
-	build_resource_folder(characters_tree, structure, selected_item, "Character Root", "Character")
-
 #VALUES
 func build_values(selected_item: String = ""):
 	_clear_tree_children(values_tree)
@@ -298,6 +281,26 @@ func build_values(selected_item: String = ""):
 			create_value_item(values_tree, value_name)
 	else:
 		pass
+
+
+## TIMELINES
+func build_timelines(selected_item: String=''):
+	_clear_tree_children(timelines_tree)
+	
+	if selected_item.empty():
+		for timeline_name in editor_reference.timelines:
+			create_timeline_item(timelines_tree, timeline_name)
+	else:
+		pass
+
+
+## CHARACTERS
+func build_characters(selected_item: String=''):
+	_clear_tree_children(characters_tree)
+	
+	DialogicUtil.update_resource_folder_structure()
+	var structure = DialogicUtil.get_characters_folder_structure()
+	build_resource_folder(characters_tree, structure, selected_item, "Character Root", "Character")
 
 ## DEFINTIONS
 func build_definitions(selected_item: String=''):

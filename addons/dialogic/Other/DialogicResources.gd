@@ -252,6 +252,26 @@ static func get_config(id: String) -> ConfigFile:
 static func get_timeline_json(path: String):
 	return load_json(get_path('TIMELINE_DIR', path))
 
+static func load_timelines() -> Dictionary:
+	var dic:Dictionary
+	
+	var dir := Directory.new()
+	
+	if dir.open(working_dirs["TIMELINE_DIR"]) == OK:
+		dir.list_dir_begin()
+		
+		var file_name = dir.get_next()
+		
+		while file_name != "":
+			if !dir.current_is_dir():
+				var timeline_name = file_name.rstrip(".json")
+				
+				dic[timeline_name] = load_json(get_path('TIMELINE_DIR', file_name))
+				
+			file_name = dir.get_next()
+
+	return dic
+
 static func save_timeline(name:String, data:Dictionary):
 	set_json(working_dirs["TIMELINE_DIR"] + "/" + name + ".json", data)
 
