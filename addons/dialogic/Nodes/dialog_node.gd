@@ -15,12 +15,12 @@ var while_dialog_animation: bool = false
 
 var settings: ConfigFile
 var current_theme: ConfigFile
-var current_timeline: String = ''
+var current_timeline_name: String = ''
 var current_event: Dictionary
 
-## The timeline to load when starting the scene
-export(String, "TimelineDropdown") var timeline: String
-## Should we clear saved data (definitions and timeline progress) on start?
+## The timeline_name to load when starting the scene
+export(String, "TimelineDropdown") var timeline_name: String
+## Should we clear saved data (definitions and timeline_name progress) on start?
 export(bool) var reset_saves = true
 ## Should we show debug information when running?
 export(bool) var debug_mode = true
@@ -49,14 +49,14 @@ func _ready():
 	load_config_files()
 	
 	# Checking if the dialog should read the code from a external file
-	if not timeline.empty():
-		set_current_dialog(timeline)
+	if not timeline_name.empty():
+		set_current_dialog(timeline_name)
 	elif dialog_script.keys().size() == 0:
 		dialog_script = {
 			"events":[
 				{'event_id':'dialogic_001',
 				"character":"","portrait":"",
-				"text":"[Dialogic Error] No timeline specified."}]
+				"text":"[Dialogic Error] No timeline_name specified."}]
 		}
 	# Load the dialog directly from GDscript
 	else:
@@ -142,9 +142,11 @@ func resize_main():
 		portraits.rect_position.y = reference.y
 
 
-func set_current_dialog(dialog_path: String):
-	current_timeline = dialog_path
-	dialog_script = DialogicResources.get_timeline_json(dialog_path)
+func set_current_dialog(timeline_name:String):
+	current_timeline_name = timeline_name
+	
+	dialog_script = DialogicSingleton.timelines[timeline_name]
+	
 	return load_dialog()
 	
 	
@@ -441,10 +443,10 @@ func on_timeline_start():
 #		if settings.get_value('saving', 'save_definitions_on_start', true):
 #			DialogicUtil.get_singleton('DialogicSingleton', self).save_definitions()
 		if settings.get_value('saving', 'save_current_timeline', true):
-			DialogicUtil.get_singleton('DialogicSingleton', self).set_current_timeline(current_timeline)
+			DialogicUtil.get_singleton('DialogicSingleton', self).set_current_timeline(current_timeline_name)
 	# TODO remove event_start in 2.0
-	emit_signal("event_start", "timeline", current_timeline)
-	emit_signal("timeline_start", current_timeline)
+	emit_signal("event_start", "timeline_name", current_timeline_name)
+	emit_signal("timeline_start", current_timeline_name)
 
 
 func on_timeline_end():
@@ -454,8 +456,8 @@ func on_timeline_end():
 		if settings.get_value('saving', 'clear_current_timeline', true):
 			DialogicUtil.get_singleton('DialogicSingleton', self).set_current_timeline('')
 	# TODO remove event_end in 2.0
-	emit_signal("event_end", "timeline")
-	emit_signal("timeline_end", current_timeline)
+	emit_signal("event_end", "timeline_name")
+	emit_signal("timeline_end", current_timeline_name)
 	dprint('[D] Timeline End')
 
 

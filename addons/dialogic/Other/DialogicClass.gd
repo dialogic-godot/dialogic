@@ -31,7 +31,7 @@ class_name Dialogic
 ## @param debug_mode			Debug is disabled by default but can be enabled if needed.
 ## @param use_canvas_instead	Create the Dialog inside a canvas layer to make it show up regardless of the camera 2D/3D situation.
 ## @returns						A Dialog node to be added into the scene tree.
-static func start(timeline: String, reset_saves: bool=true, dialog_scene_path: String="res://addons/dialogic/Dialog.tscn", debug_mode: bool=false, use_canvas_instead=true):
+static func start(timeline_name: String, reset_saves: bool=true, dialog_scene_path: String="res://addons/dialogic/Dialog.tscn", debug_mode: bool=false, use_canvas_instead=true):
 	var dialog_scene = load(dialog_scene_path)
 	var dialog_node = null
 	var canvas_dialog_node = null
@@ -50,19 +50,19 @@ static func start(timeline: String, reset_saves: bool=true, dialog_scene_path: S
 	
 	returned_dialog_node = dialog_node if not canvas_dialog_node else canvas_dialog_node
 	
-	if not timeline.empty():
-		for t in DialogicUtil.get_timeline_list():
-			if t['name'] == timeline or t['file'] == timeline:
-				dialog_node.timeline = t['file']
-				return returned_dialog_node
-		dialog_node.dialog_script = {
-			"events":[
-				{"event_id":'dialogic_001',
-				"character":"",
-				"portrait":"",
-				"text":"[Dialogic Error] Loading dialog [color=red]" + timeline + "[/color]. It seems like the timeline doesn't exists. Maybe the name is wrong?"
-				}]
-		}
+	if !timeline_name.empty() and DialogicSingleton.timelines.has(timeline_name):
+		dialog_node.timeline_name = timeline_name
+		
+		return returned_dialog_node
+	
+	dialog_node.dialog_script = {
+		"events":[
+			{"event_id":'dialogic_001',
+			"character":"",
+			"portrait":"",
+			"text":"[Dialogic Error] Loading dialog [color=red]" + timeline_name + "[/color]. It seems like the timeline doesn't exists. Maybe the name is wrong?"
+		}]}
+		
 	return returned_dialog_node
 
 

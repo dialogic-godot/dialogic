@@ -11,6 +11,8 @@ var default_definitions := {}
 
 var values:Dictionary
 
+var timelines:Dictionary
+
 var current_state := {}
 var autosave := true
 
@@ -47,10 +49,12 @@ func _init() -> void:
 			current_value = res_values[value_name]
 			
 		values[value_name]["current"] = current_value
-		
+	
+	timelines = DialogicResources.load_timelines()
+	
 	current_state = DialogicResources.get_saved_state()
 	
-	current_timeline = get_saved_state_general_key('timeline')
+	#current_timeline = get_saved_state_general_key('timeline')
 
 func init(reset: bool=false) -> void:
 	pass
