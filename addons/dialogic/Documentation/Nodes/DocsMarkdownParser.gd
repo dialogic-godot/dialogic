@@ -27,6 +27,8 @@ var underlined = []
 var accent_color := Color()
 var sub_accent_color := Color()
 
+var editor_scale := 1.0
+
 ################################################################################
 ##							PUBLIC FUNCTIONS 								  ##
 ################################################################################
@@ -191,6 +193,6 @@ func parse(content : String,  file_path:String = '', docs_path:String = ''):
 				imagelink_to_use = "icon.png"
 		if imagelink_to_use.begins_with(".") and file_path:
 			imagelink_to_use = file_path.trim_suffix(file_path.get_file()).trim_suffix("/") + imagelink_to_use.trim_prefix(".")
-		paresed_text = paresed_text.replace("!["+imagenames[i]+"]("+imagelinks[i]+")","[img]"+imagelink_to_use+"[/img]")
+		paresed_text = paresed_text.replace("!["+imagenames[i]+"]("+imagelinks[i]+")","[img="+str(int(700*editor_scale))+"]"+imagelink_to_use+"[/img]")
 	
 	return paresed_text
