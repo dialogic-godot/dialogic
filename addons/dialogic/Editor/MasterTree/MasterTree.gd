@@ -1,7 +1,7 @@
 tool
 extends Tree
 
-onready var editor_reference = get_node('../../../')
+onready var editor_reference:EditorView = get_node('../../../')
 onready var timeline_editor = get_node('../../TimelineEditor')
 onready var character_editor = get_node('../../CharacterEditor')
 onready var value_editor = get_node('../../ValueEditor')
@@ -115,7 +115,7 @@ func _ready():
 	connect('item_selected', self, '_on_item_selected')
 	connect('item_rmb_selected', self, '_on_item_rmb_selected')
 	connect('item_collapsed', self, '_on_item_collapsed')
-	#connect('gui_input', self, '_on_gui_input')
+	connect('gui_input', self, '_on_gui_input')
 	connect('item_edited', self, '_on_item_edited')
 	#$RenamerReset.connect("timeout", self, '_on_renamer_reset_timeout')
 	filter_tree_edit.connect("text_changed", self, '_on_filter_tree_edit_changed')
@@ -202,10 +202,10 @@ func _add_folder_item(parent_item: TreeItem, folder_name: String, editor:String,
 	return folder_item
 
 
-func create_res_item(parent_item:TreeItem, name:String, metadata:Dictionary, select = false) -> TreeItem:
+func create_res_item(parent_item:TreeItem, metadata:Dictionary, select = false) -> TreeItem:
 	var item = tree.create_item(parent_item)
 	
-	item.set_text(0, name)
+	item.set_text(0, metadata["name"])
 	
 	if not get_constant("dark_theme", "Editor"):
 		item.set_icon_modulate(0, get_color("property_color", "Editor"))
@@ -221,12 +221,12 @@ func create_res_item(parent_item:TreeItem, name:String, metadata:Dictionary, sel
 	return item;
 
 func create_value_item(parent:TreeItem, name:String, select = false):
-	var item = create_res_item(parent, name, {"editor":"Value"}, select)
+	var item = create_res_item(parent, {"editor":"Value", "name":name}, select)
 	
 	item.set_icon(0, definition_icon)
 	
 func create_timeline_item(parent:TreeItem, name:String, select = false):
-	var item = create_res_item(parent, name, {"editor":"Timeline"}, select)
+	var item = create_res_item(parent, {"editor":"Timeline", "name":name}, select)
 	
 	item.set_icon(0, timeline_icon)
 
@@ -795,36 +795,45 @@ func _on_renamer_reset_timeout():
 	pass
 #	get_selected().set_editable(0, false)
 
-#func _on_gui_input(event):
-#	if event is InputEventMouseButton and event.button_index == 1:
-#		if event.is_pressed() and event.doubleclick:
-#			var item = get_selected()
-#			var metadata = item.get_metadata(0)
-#			if metadata.has("editable") and metadata["editable"]:
-#				item_path_before_edit = get_item_path(item)
-#				item.set_editable(0, true)
-#				$RenamerReset.start(0.5)
+func _on_gui_input(event):
+	if event is InputEventMouseButton and event.button_index == 1:
+		if event.is_pressed() and event.doubleclick:
+			var item = get_selected()
+			
+			var metadata = item.get_metadata(0)
+			
+			if metadata.has("editable") and metadata["editable"]:
+				item.set_editable(0, true)
 
 func _on_item_edited():
 	var item = get_selected()
+	
+	item.set_editable(0, false)
+	
+	var item_name = item.get_text(0)
+	
 	var metadata = item.get_metadata(0)
+	
 	if metadata['editor'] == 'Timeline':
 		timeline_editor.timeline_name = item.get_text(0)
 		save_current_resource()
 		build_timelines(metadata['file'])
+		
 	if metadata['editor'] == 'Theme':
 		DialogicResources.set_theme_value(metadata['file'], 'settings', 'name', item.get_text(0))
 		build_themes(metadata['file'])
+		
 	if metadata['editor'] == 'Character':
 		character_editor.nodes['name'].text = item.get_text(0)
 		save_current_resource()
 		build_characters(metadata['file'])
+		
 	if metadata['editor'] == 'Value':
-		value_editor.nodes['name'].text = item.get_text(0)
-		# Not sure why this signal doesn't triggers
-		value_editor._on_name_changed(item.get_text(0))
-		save_current_resource()
-		build_definitions(metadata['id'])
+		if editor_reference.change_value_name(metadata["name"], item_name):
+			metadata["name"] = item_name
+		else:
+			item.set_text(0, metadata["name"])
+		
 	if metadata['editor'] == 'GlossaryEntry':
 		glossary_entry_editor.nodes['name'].text = item.get_text(0)
 		# Not sure why this signal doesn't triggers

@@ -24,6 +24,7 @@ margin_bottom = 48.0
 custom_constants/separation = 16
 
 [node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer"]
+visible = false
 margin_right = 300.0
 margin_bottom = 48.0
 rect_min_size = Vector2( 300, 0 )
@@ -40,8 +41,7 @@ margin_right = 300.0
 margin_bottom = 48.0
 
 [node name="Value" type="VBoxContainer" parent="VBoxContainer/HBoxContainer"]
-margin_left = 316.0
-margin_right = 616.0
+margin_right = 300.0
 margin_bottom = 48.0
 rect_min_size = Vector2( 300, 0 )
 custom_constants/separation = 10
