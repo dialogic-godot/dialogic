@@ -321,13 +321,69 @@ func parse_definitions(text: String, variables: bool = true, glossary: bool = tr
 
 
 func _insert_value(text: String):
-	var final_text := text;
-	
+	var split_text = []
+
+	var search_open = true
+
+	var index_start 
+
+	var index_end = 0
+
 	var values = DialogicSingleton.values
 	
-	for value_name in values:
-		final_text = final_text.replace('[' + value_name + ']', values[value_name]["current"])
-	return final_text;
+	if values.empty():
+		return
+
+	var dic:Dictionary
+
+	while(true):
+		index_start = index_end
+
+		if search_open:
+			index_end = text.find("[", index_start)
+
+			if index_end == -1:
+				if(index_start != text.length()):
+					var t = text.substr(index_start, text.length()-index_start)
+
+					split_text.append(t)
+
+				break
+
+			var t = text.substr(index_start, index_end-index_start)
+
+			split_text.append(t)
+
+			search_open = false
+		else:
+			index_end = text.find("]", index_start)
+
+			var t = text.substr(index_start + 1, index_end-index_start - 1)
+
+			split_text.append(t)
+
+			if !dic.has(t):
+				dic[t] = []
+
+			dic[t].append(split_text.size() - 1)
+
+			index_end += 1
+
+			search_open = true
+
+	for value_name in dic:
+		if values.has(value_name):
+			var value = values[value_name]["current"]
+
+			for i in dic[value_name]:
+				split_text[i] = value
+
+	var final_text = ""
+
+	for text in split_text:
+		final_text += text
+	
+	return final_text
 	
 	
 func _insert_glossary_definitions(text: String):
