@@ -507,8 +507,8 @@ func on_timeline_start():
 
 func on_timeline_end():
 	if not Engine.is_editor_hint():
-		if settings.get_value('saving', 'save_definitions_on_end', true):
-			DialogicUtil.get_singleton('DialogicSingleton', self).save_definitions()
+#		if settings.get_value('saving', 'save_definitions_on_end', true):
+#			DialogicUtil.get_singleton('DialogicSingleton', self).save_definitions()
 		if settings.get_value('saving', 'clear_current_timeline', true):
 			DialogicUtil.get_singleton('DialogicSingleton', self).set_current_timeline('')
 	# TODO remove event_end in 2.0
