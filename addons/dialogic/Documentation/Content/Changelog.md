@@ -8,6 +8,7 @@
 - Rework of the character name coloring (using Regex now) [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
 - Change the Selected Event Style to only have blue borders and not change event color [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
 - Adding an extra space at the end of the timelines so it is easier to drag and drop new events
+- Fixed a reference bug that prevent the duplication of Themes.
 
 
 ## v1.2.5 - Possibly breaking eveything. We will never know.
