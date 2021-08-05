@@ -448,7 +448,10 @@ func delete_event(event):
 # Event Creation signal for buttons
 func _create_event_button_pressed(button_name):
 	select_item(create_event(button_name))
+	
 	indent_events()
+	
+	editor_reference.need_save()
 
 # the Question button adds multiple blocks 
 func _on_ButtonQuestion_pressed() -> void:
@@ -464,8 +467,10 @@ func _on_ButtonQuestion_pressed() -> void:
 		create_event("Choice")
 		create_event("Choice")
 		create_event("EndBranch")
-		
+	
 	indent_events()
+	
+	editor_reference.need_save()
 
 # the Condition button adds multiple blocks 
 func _on_ButtonCondition_pressed() -> void:
@@ -477,8 +482,10 @@ func _on_ButtonCondition_pressed() -> void:
 	else:
 		create_event("Condition")
 		create_event("EndBranch")
-		
+	
 	indent_events()
+	
+	editor_reference.need_save()
 
 ## *****************************************************************************
 ##					 	DRAG AND DROP
@@ -530,6 +537,7 @@ func create_event(scene: String, data: Dictionary = {}):
 
 	piece.connect("option_action", self, '_on_event_options_action', [piece])
 	piece.connect("gui_input", self, '_on_event_block_gui_input', [piece])
+	
 	events_warning.visible = false
 
 	return piece

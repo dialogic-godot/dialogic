@@ -191,6 +191,8 @@ func _on_Header_data_changed(metadata:Dictionary):
 	# update the body in case it has to
 	if get_body():
 		get_body().load_data(event_data)
+		
+	editor_reference.need_save()
 
 
 # called when the data of the body is changed
@@ -200,6 +202,8 @@ func _on_Body_data_changed(new_event_data):
 	# update the header in case it has to
 	if get_header():
 		get_header().load_data(event_data)
+		
+	editor_reference.need_save()
 
 func _request_set_body_enabled(enabled:bool):
 	expand_control.set_enabled(enabled)
