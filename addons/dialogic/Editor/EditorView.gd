@@ -227,6 +227,11 @@ func create_new_value() -> String:
 func change_value_name(oldName:String, newName:String) -> bool:
 	return change_res_name(res_values, oldName, newName)
 
+func set_value(name:String, value:String):
+	res_values[name] = value
+	
+	need_save()
+
 ## *****************************************************************************
 ##						 TIMELINE
 ## *****************************************************************************
