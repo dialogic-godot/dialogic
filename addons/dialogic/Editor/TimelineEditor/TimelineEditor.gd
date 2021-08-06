@@ -30,7 +30,6 @@ signal batch_loaded
 
 
 func _ready():
-	connect("batch_loaded", self, '_on_batch_loaded')
 	var modifier = ''
 	var _scale = get_constant("inspector_margin", "Editor")
 	_scale = _scale * 0.125
@@ -344,7 +343,7 @@ func paste_events():
 			var new_items = []
 			for item in event_list:
 				if typeof(item) == TYPE_DICTIONARY and item.has('event_id'):
-					new_items.append(add_event_by_id(item['event_id'], item))
+					new_items.append(load_event(item))
 			selected_items = new_items
 			sort_selection()
 			visual_update_selection()
@@ -542,55 +541,8 @@ func create_event(scene: String, data: Dictionary = {}):
 
 	return piece
 
-func load_timeline(name:String):
-	#clear timeline
-	deselect_all_items()
-	
-	for event in timeline_node.get_children():
-		event.queue_free()
-	
-	#load it
-	current_timeline = editor_reference.timelines[name]
-	
-	current_events = current_timeline["events"]
-	
-	var page = 1
-	
-	var batch_size = 12
-	
-	while batch_events(current_events, batch_size, page).size() != 0:
-		batches.append(batch_events(current_events, batch_size, page))
-		
-		page += 1
-		
-	load_batch(batches)
-
-
-func batch_events(array, size, batch_number):
-	return array.slice((batch_number - 1) * size, batch_number * size - 1)
-
-
-func load_batch(data):
-	#print('[D] Loading batch')
-	var current_batch = batches.pop_front()
-	if current_batch:
-		for i in current_batch:
-			add_event_by_id(i['event_id'], i)
-	emit_signal("batch_loaded")
-
-
-func _on_batch_loaded():
-	if batches.size() > 0:
-		yield(get_tree().create_timer(0.01), "timeout")
-		load_batch(batches)
-	else:
-		events_warning.visible = false
-		indent_events()
-		building_timeline = false
-
-
-func add_event_by_id(event_id, event_data):
-	match event_id:
+func load_event(event_data):
+	match event_data["event_id"]:
 		# MAIN EVENTS
 		# Text event
 		'dialogic_001':
@@ -658,12 +610,28 @@ func add_event_by_id(event_id, event_data):
 		'dialogic_042':
 			return create_event('CallNode', event_data)
 
-func clear_timeline():
+func load_timeline(name:String):
+	#clear timeline
 	deselect_all_items()
 	
 	for event in timeline_node.get_children():
 		event.queue_free()
-
+	
+	#load it
+	current_timeline = editor_reference.timelines[name]
+	
+	current_events = current_timeline["events"]
+	
+	var page = 1
+	
+	var batch_size = 12
+	
+	printt("load_timeline", current_events)
+	
+	for event in current_events:
+		load_event(event)
+	
+	indent_events()
 
 ## *****************************************************************************
 ##					 	BLOCK GETTERS
@@ -715,19 +683,6 @@ func move_block(block, direction):
 ## *****************************************************************************
 ##					 TIMELINE CREATION AND SAVING
 ## *****************************************************************************
-
-
-func create_timeline():
-	timeline_file = 'timeline_node-' + str(OS.get_unix_time()) + '.json'
-	var timeline_node = {
-		"events": [],
-		"metadata":{
-			"dialogic-version": editor_reference.version_string,
-			"file": timeline_file
-		}
-	}
-	DialogicResources.set_timeline(timeline_node)
-	return timeline_node
 
 # Saving
 func generate_save_data():
