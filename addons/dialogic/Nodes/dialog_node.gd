@@ -666,12 +666,11 @@ func event_handler(event: Dictionary):
 		# Condition event
 		'dialogic_012':
 			# Treating this conditional as an option on a regular question event
-			var def_value = null
 			var current_question = questions[event['question_idx']]
 			
-			for d in definitions['variables']:
-				if d['id'] == event['definition']:
-					def_value = d['value']
+			var def_value = DialogicSingleton.values[event['definition']]["current"]
+			
+			printt("event_handler", current_question, event, def_value)
 			
 			var condition_met = def_value != null and _compare_definitions(def_value, event['value'], event['condition']);
 			
@@ -1113,33 +1112,38 @@ func dprint(string, arg1='', arg2='', arg3='', arg4='' ):
 
 func _compare_definitions(def_value: String, event_value: String, condition: String):
 	var condition_met = false;
-	if def_value != null and event_value != null:
-		# check if event_value equals a definition name and use that instead
-		for d in definitions['variables']:
-			if (d['name'] != '' and d['name'] == event_value):
-				event_value = d['value']
-				break;
-		var converted_def_value = def_value
-		var converted_event_value = event_value
-		if def_value.is_valid_float() and event_value.is_valid_float():
-			converted_def_value = float(def_value)
-			converted_event_value = float(event_value)
-		if condition == '':
-			condition = '==' # The default condition is Equal to
-		match condition:
-			"==":
-				condition_met = converted_def_value == converted_event_value
-			"!=":
-				condition_met = converted_def_value != converted_event_value
-			">":
-				condition_met = converted_def_value > converted_event_value
-			">=":
-				condition_met = converted_def_value >= converted_event_value
-			"<":
-				condition_met = converted_def_value < converted_event_value
-			"<=":
-				condition_met = converted_def_value <= converted_event_value
+	
+	#todo
+	# check if event_value equals a definition name and use that instead
+#	for d in definitions['variables']:
+#		if (d['name'] != '' and d['name'] == event_value):
+#			event_value = d['value']
+#			break;
+	
+	#todo
+#	if def_value.is_valid_float() and event_value.is_valid_float():
+#		converted_def_value = float(def_value)
+#		converted_event_value = float(event_value)
+		
+	if condition.empty():
+		condition = "==" # The default condition is Equal to
+		
+	match condition:
+		"==":
+			condition_met = def_value == event_value
+		"!=":
+			condition_met = def_value != event_value
+		">":
+			condition_met = def_value > event_value
+		">=":
+			condition_met = def_value >= event_value
+		"<":
+			condition_met = def_value < event_value
+		"<=":
+			condition_met = def_value <= event_value
+				
 	#print('comparing definition: ', def_value, ',', event_value, ',', condition, ' - ', condition_met)
+	
 	return condition_met
 
 
