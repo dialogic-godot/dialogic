@@ -25,13 +25,8 @@ func load_data(data:Dictionary):
 func get_preview():
 	return ''
 
-func select_definition_by_id(id):
-	if id != '':
-		for d in DialogicResources.get_default_definitions()['variables']:
-			if d['id'] == id:
-				picker_menu.text = d['name']
-	else:
-		picker_menu.text = default_text
+func select_definition_by_id(value_name:String):
+	picker_menu.text = value_name if editor_reference.res_values.has(value_name) else default_text
 
 # when an index is selected on one of the menus.
 func _on_PickerMenu_selected(index):

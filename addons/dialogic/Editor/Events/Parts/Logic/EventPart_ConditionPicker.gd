@@ -27,7 +27,7 @@ func _ready():
 	
 
 # called by the event block
-func load_data0(data:Dictionary):
+func load_data(data:Dictionary):
 	# First set the event_data
 	.load_data(data)
 	
