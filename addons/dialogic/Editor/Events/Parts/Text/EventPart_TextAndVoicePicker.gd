@@ -28,7 +28,7 @@ func get_preview():
 
 func use_voices():
 	var config = DialogicResources.get_settings_config()
-	return config.get_value('dialog', 'enable_voices', false)
+	return config.get_value('dialog', 'text_event_audio_enable', false)
 
 
 func _on_text_editor_data_changed(data) -> void:

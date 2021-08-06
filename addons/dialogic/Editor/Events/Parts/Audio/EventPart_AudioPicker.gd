@@ -47,7 +47,8 @@ func load_data(data:Dictionary):
 		
 	if data.has('volume'):
 		volume_input.value = data['volume']
-	load_audio(data['file'])
+	if data.has('file'):
+		load_audio(data['file'])
 	
 
 # has to return the wanted preview, only useful for body parts
