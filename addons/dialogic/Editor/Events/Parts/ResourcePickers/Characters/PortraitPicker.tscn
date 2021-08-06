@@ -1,9 +1,36 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://addons/dialogic/Images/Event Icons/Portrait.svg" type="Texture" id=1]
 [ext_resource path="res://addons/dialogic/Editor/Events/Parts/ResourcePickers/Characters/EventPart_PortraitPicker.gd" type="Script" id=2]
 [ext_resource path="res://addons/dialogic/Editor/Events/styles/MenuButtonNormal.tres" type="StyleBox" id=3]
 [ext_resource path="res://addons/dialogic/Editor/Events/styles/MenuButtonHover.tres" type="StyleBox" id=4]
+
+[sub_resource type="Image" id=4]
+data = {
+"data": PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 3, 0, 0, 0, 5, 0, 0, 0, 8, 0, 0, 0, 10, 0, 0, 0, 11, 0, 0, 0, 11, 0, 0, 0, 11, 0, 0, 0, 11, 0, 0, 0, 10, 0, 0, 0, 8, 0, 0, 0, 5, 0, 0, 0, 3, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 4, 0, 0, 0, 10, 0, 0, 0, 19, 0, 0, 0, 25, 0, 0, 0, 31, 0, 0, 0, 34, 0, 0, 0, 35, 0, 0, 0, 35, 0, 0, 0, 34, 0, 0, 0, 31, 0, 0, 0, 25, 0, 0, 0, 19, 0, 0, 0, 10, 0, 0, 0, 4, 0, 0, 0, 1, 0, 0, 0, 3, 0, 0, 0, 10, 0, 0, 0, 22, 0, 0, 0, 39, 0, 0, 0, 53, 0, 0, 0, 63, 0, 0, 0, 69, 0, 0, 0, 70, 0, 0, 0, 70, 0, 0, 0, 69, 0, 0, 0, 63, 0, 0, 0, 53, 0, 0, 0, 39, 0, 0, 0, 22, 0, 0, 0, 10, 0, 0, 0, 3, 0, 0, 0, 5, 0, 0, 0, 19, 0, 0, 0, 39, 59, 59, 67, 148, 66, 66, 75, 245, 62, 62, 71, 250, 62, 62, 70, 251, 62, 62, 70, 251, 62, 62, 70, 251, 62, 62, 70, 251, 62, 62, 71, 250, 66, 66, 75, 245, 59, 59, 67, 148, 0, 0, 0, 39, 0, 0, 0, 19, 0, 0, 0, 5, 0, 0, 0, 8, 0, 0, 0, 25, 0, 0, 0, 53, 65, 65, 74, 245, 47, 47, 54, 255, 45, 45, 51, 255, 45, 45, 51, 255, 45, 45, 51, 255, 45, 45, 51, 255, 45, 45, 51, 255, 45, 45, 51, 255, 47, 47, 54, 255, 65, 65, 74, 245, 0, 0, 0, 53, 0, 0, 0, 25, 0, 0, 0, 8, 0, 0, 0, 10, 0, 0, 0, 31, 0, 0, 0, 64, 61, 61, 69, 252, 45, 45, 51, 255, 44, 44, 50, 255, 44, 44, 50, 255, 44, 44, 50, 255, 44, 44, 50, 255, 44, 44, 50, 255, 44, 44, 50, 255, 45, 45, 51, 255, 61, 61, 69, 252, 0, 0, 0, 64, 0, 0, 0, 31, 0, 0, 0, 10, 0, 0, 0, 11, 0, 0, 0, 34, 0, 0, 0, 69, 59, 59, 67, 251, 44, 44, 50, 255, 43, 43, 49, 255, 43, 43, 49, 255, 43, 43, 49, 255, 43, 43, 49, 255, 43, 43, 49, 255, 43, 43, 49, 255, 44, 44, 50, 255, 59, 59, 67, 251, 0, 0, 0, 69, 0, 0, 0, 34, 0, 0, 0, 11, 0, 0, 0, 11, 0, 0, 0, 35, 0, 0, 0, 70, 58, 58, 66, 251, 42, 42, 49, 255, 42, 42, 48, 255, 42, 42, 48, 255, 42, 42, 48, 255, 42, 42, 48, 255, 42, 42, 48, 255, 42, 42, 48, 255, 42, 42, 49, 255, 58, 58, 66, 251, 0, 0, 0, 70, 0, 0, 0, 35, 0, 0, 0, 11, 0, 0, 0, 11, 0, 0, 0, 35, 0, 0, 0, 70, 56, 56, 65, 251, 41, 41, 48, 255, 41, 41, 47, 255, 41, 41, 47, 255, 41, 41, 47, 255, 41, 41, 47, 255, 41, 41, 47, 255, 41, 41, 47, 255, 41, 41, 48, 255, 56, 56, 65, 251, 0, 0, 0, 70, 0, 0, 0, 35, 0, 0, 0, 11, 0, 0, 0, 11, 0, 0, 0, 34, 0, 0, 0, 69, 55, 55, 62, 251, 40, 40, 46, 255, 40, 40, 45, 255, 40, 40, 45, 255, 40, 40, 45, 255, 40, 40, 45, 255, 40, 40, 45, 255, 40, 40, 45, 255, 40, 40, 46, 255, 55, 55, 62, 251, 0, 0, 0, 69, 0, 0, 0, 34, 0, 0, 0, 11, 0, 0, 0, 10, 0, 0, 0, 31, 0, 0, 0, 64, 54, 54, 61, 252, 39, 39, 45, 255, 39, 39, 44, 255, 39, 39, 44, 255, 39, 39, 44, 255, 39, 39, 44, 255, 39, 39, 44, 255, 39, 39, 44, 255, 39, 39, 45, 255, 53, 53, 60, 252, 0, 0, 0, 64, 0, 0, 0, 31, 0, 0, 0, 10, 0, 0, 0, 8, 0, 0, 0, 26, 0, 0, 0, 53, 56, 56, 64, 245, 41, 41, 46, 255, 39, 39, 44, 255, 38, 38, 44, 255, 38, 38, 44, 255, 38, 38, 44, 255, 38, 38, 44, 255, 39, 39, 44, 255, 41, 41, 46, 255, 56, 56, 64, 246, 0, 0, 0, 53, 0, 0, 0, 26, 0, 0, 0, 8, 0, 0, 0, 5, 0, 0, 0, 19, 0, 0, 0, 39, 49, 49, 56, 149, 56, 56, 64, 245, 52, 52, 59, 250, 52, 52, 59, 251, 52, 52, 59, 251, 52, 52, 59, 251, 52, 52, 59, 251, 52, 52, 59, 250, 57, 57, 63, 244, 49, 49, 56, 148, 0, 0, 0, 39, 0, 0, 0, 19, 0, 0, 0, 5, 0, 0, 0, 3, 0, 0, 0, 10, 0, 0, 0, 22, 0, 0, 0, 39, 0, 0, 0, 53, 0, 0, 0, 64, 0, 0, 0, 69, 0, 0, 0, 70, 0, 0, 0, 70, 0, 0, 0, 69, 0, 0, 0, 63, 0, 0, 0, 53, 0, 0, 0, 39, 0, 0, 0, 22, 0, 0, 0, 10, 0, 0, 0, 3, 0, 0, 0, 1, 0, 0, 0, 4, 0, 0, 0, 10, 0, 0, 0, 19, 0, 0, 0, 25, 0, 0, 0, 31, 0, 0, 0, 34, 0, 0, 0, 35, 0, 0, 0, 35, 0, 0, 0, 34, 0, 0, 0, 31, 0, 0, 0, 25, 0, 0, 0, 19, 0, 0, 0, 10, 0, 0, 0, 4, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 3, 0, 0, 0, 5, 0, 0, 0, 8, 0, 0, 0, 10, 0, 0, 0, 11, 0, 0, 0, 11, 0, 0, 0, 11, 0, 0, 0, 11, 0, 0, 0, 10, 0, 0, 0, 8, 0, 0, 0, 5, 0, 0, 0, 3, 0, 0, 0, 1, 0, 0, 0, 0 ),
+"format": "RGBA8",
+"height": 16,
+"mipmaps": false,
+"width": 16
+}
+
+[sub_resource type="ImageTexture" id=2]
+flags = 4
+flags = 4
+image = SubResource( 4 )
+size = Vector2( 16, 16 )
+
+[sub_resource type="StyleBoxTexture" id=3]
+content_margin_left = 10.0
+content_margin_right = 10.0
+content_margin_top = 10.0
+content_margin_bottom = 10.0
+texture = SubResource( 2 )
+region_rect = Rect2( 0, 0, 16, 16 )
+margin_left = 4.0
+margin_right = 4.0
+margin_top = 4.0
+margin_bottom = 4.0
 
 [node name="PortraitPicker" type="VBoxContainer"]
 margin_right = 100.0
@@ -13,6 +40,44 @@ script = ExtResource( 2 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="Node2D" type="Node2D" parent="."]
+z_index = 1
+
+[node name="PreviewContainer" type="PanelContainer" parent="Node2D"]
+visible = false
+margin_left = 3.0
+margin_top = 3.0
+margin_right = 254.0
+margin_bottom = 334.0
+grow_horizontal = 0
+custom_styles/panel = SubResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBox" type="VBoxContainer" parent="Node2D/PreviewContainer"]
+margin_left = 10.0
+margin_top = 10.0
+margin_right = 241.0
+margin_bottom = 321.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Title" type="Label" parent="Node2D/PreviewContainer/VBox"]
+margin_right = 231.0
+margin_bottom = 14.0
+text = "Preview"
+align = 1
+
+[node name="TextureRect" type="TextureRect" parent="Node2D/PreviewContainer/VBox"]
+margin_top = 18.0
+margin_right = 231.0
+margin_bottom = 311.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+expand = true
+stretch_mode = 6
 
 [node name="HBox" type="HBoxContainer" parent="."]
 margin_right = 100.0
