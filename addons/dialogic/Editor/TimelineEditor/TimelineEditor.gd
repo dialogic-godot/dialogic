@@ -743,7 +743,7 @@ func cancel_drop_event():
 ## *****************************************************************************
 
 # Adding an event to the timeline
-func create_event(scene: String, data: Dictionary = {'no-data': true} , indent: bool = false):
+func create_event(scene: String, data: Dictionary = {'no-data': true} , indent: bool = false, at_index: int = -1, auto_select: bool = false):
 	var piece = null
 	
 	## Find out whether this is a custom event:
