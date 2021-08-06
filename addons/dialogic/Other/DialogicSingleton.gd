@@ -18,6 +18,36 @@ var autosave := true
 
 var current_timeline := ''
 
+enum Event_Type{
+	#Main Events
+	Text=0,
+	CharacterJoin,
+	CharacterLeave,
+	
+	#Logic Events
+	Question,
+	Choice,
+	Condition,
+	EndBranch,
+	SetValue,
+	
+	#Timeline Events
+	ChangeTimeline,
+	ChangeBackground,
+	CloseDialog,
+	Wait,
+	SetTheme,
+	SetGlossary,
+	
+	#Audio Events
+	Audio,
+	BackgroundMusic,
+	
+	#Godot Events
+	EmitSignal,
+	ChangeScene,
+	CallNode
+}
 
 ## *****************************************************************************
 ##								INITIALIZATION
