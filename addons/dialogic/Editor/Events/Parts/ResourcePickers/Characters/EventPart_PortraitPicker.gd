@@ -72,18 +72,17 @@ func _on_PickerMenu_about_to_show():
 			for p in character_data['portraits']:
 				picker_menu.get_popup().add_item(p['name'])
 				index += 1
-	
 
 func popup_gui_input(event):
 	if event is InputEventMouseMotion:
 		if current_hovered != picker_menu.get_popup().get_current_index():
 			current_hovered = picker_menu.get_popup().get_current_index()
-			print("hovered changed ", current_hovered)
+			
+			# hide if this is not a previewable portrait
+			# this isn't even an item
 			if current_hovered == -1:
 				preview.hide()
 				return
-			preview.rect_position.x = picker_menu.get_popup().rect_size.x + 20
-			print(preview.rect_position.x)
 			var idx_add = 0
 			if allow_dont_change:
 				idx_add -= 1
@@ -98,7 +97,9 @@ func popup_gui_input(event):
 				if not allow_dont_change and current_hovered == 0:
 					preview.hide()
 					return
-
+			
+			## show the preview
+			preview.rect_position.x = picker_menu.get_popup().rect_size.x + 20
 			preview_title.text = character_data['portraits'][current_hovered + idx_add]['name']
 			preview_texture.texture = load(character_data['portraits'][current_hovered + idx_add]['path'])
 			preview.show()
