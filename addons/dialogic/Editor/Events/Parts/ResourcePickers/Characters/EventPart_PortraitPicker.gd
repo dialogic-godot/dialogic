@@ -101,7 +101,10 @@ func popup_gui_input(event):
 			## show the preview
 			preview.rect_position.x = picker_menu.get_popup().rect_size.x + 20
 			preview_title.text = character_data['portraits'][current_hovered + idx_add]['name']
-			preview_texture.texture = load(character_data['portraits'][current_hovered + idx_add]['path'])
+			if character_data['portraits'][current_hovered + idx_add]['path']:
+				preview_texture.texture = load(character_data['portraits'][current_hovered + idx_add]['path'])
+			else:
+				preview_texture.texture = null
 			preview.show()
 
 func mouse_exited_popup():
