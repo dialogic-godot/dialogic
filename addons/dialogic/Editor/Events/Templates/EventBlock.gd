@@ -188,8 +188,9 @@ func _on_Header_data_changed(metadata:Dictionary):
 
 
 # called when the data of the body is changed
-func _on_Body_data_changed(new_event_data):
-	event_data = new_event_data
+func _on_Body_data_changed(metadata:Dictionary):
+	for key in metadata.keys():
+		event_data[key] = metadata[key]
 	
 	# update the header in case it has to
 	if header_node:
