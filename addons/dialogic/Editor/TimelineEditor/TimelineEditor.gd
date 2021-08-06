@@ -622,12 +622,6 @@ func load_timeline(name:String):
 	
 	current_events = current_timeline["events"]
 	
-	var page = 1
-	
-	var batch_size = 12
-	
-	printt("load_timeline", current_events)
-	
 	for event in current_events:
 		load_event(event)
 	
