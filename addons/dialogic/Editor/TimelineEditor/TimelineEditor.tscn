@@ -29,7 +29,7 @@ content_margin_left = 5.0
 content_margin_right = 5.0
 content_margin_top = 5.0
 content_margin_bottom = 5.0
-bg_color = Color( 0.15, 0.1725, 0.2325, 1 )
+bg_color = Color( 0, 0, 0, 1 )
 border_width_left = 1
 border_width_top = 1
 border_width_right = 1
@@ -143,11 +143,11 @@ margin_right = 168.0
 margin_bottom = 14.0
 size_flags_horizontal = 3
 
-[node name="TextEvent" type="Button" parent="ScrollContainer/EventContainer"]
+[node name="Text" type="Button" parent="ScrollContainer/EventContainer"]
 margin_top = 90.0
 margin_right = 168.0
 margin_bottom = 118.0
-text = "  Text Event"
+text = "  Text"
 icon = ExtResource( 2 )
 align = 0
 script = ExtResource( 21 )

@@ -541,74 +541,8 @@ func create_event(scene: String, data: Dictionary = {}):
 
 	return piece
 
-func load_event(event_data):
-	match event_data["event_id"]:
-		# MAIN EVENTS
-		# Text event
-		'dialogic_001':
-			return create_event('TextEvent', event_data)
-		# Join event
-		'dialogic_002':
-			return create_event("CharacterJoin", event_data)
-		# Character Leave event 
-		'dialogic_003':
-			return create_event('CharacterLeave', event_data)
-		
-		# LOGIC EVENTS
-		# Question event
-		'dialogic_010':
-			return create_event('Question', event_data)
-		# Choice event
-		'dialogic_011':
-			return create_event('Choice', event_data)
-		# Condition event
-		'dialogic_012':
-			return create_event('Condition', event_data)
-		# End Branch event
-		'dialogic_013':
-			return create_event('EndBranch', event_data)
-		# Set Value event
-		'dialogic_014':
-			return create_event('SetValue', event_data)
-		
-		# TIMELINE EVENTS
-		# Change Timeline event
-		'dialogic_020':
-			return create_event('ChangeTimeline', event_data)
-		# Change Backround event
-		'dialogic_021':
-			return create_event('ChangeBackground', event_data)
-		# Close Dialog event
-		'dialogic_022':
-			return create_event('CloseDialog', event_data)
-		# Wait seconds event
-		'dialogic_023':
-			return create_event('WaitSeconds', event_data)
-		# Set Theme event
-		'dialogic_024':
-			return create_event('SetTheme', event_data)
-		# Set Glossary event
-		'dialogic_025':
-			return create_event('SetGlossary', event_data)
-		
-		# AUDIO EVENTS
-		# Audio event
-		'dialogic_030':
-			return create_event('AudioEvent', event_data)
-		# Background Music event
-		'dialogic_031':
-			return create_event('BackgroundMusic', event_data)
-		
-		# GODOT EVENTS
-		# Emit signal event
-		'dialogic_040':
-			return create_event('EmitSignal', event_data)
-		# Change Scene event
-		'dialogic_041':
-			return create_event('ChangeScene', event_data)
-		# Call Node event
-		'dialogic_042':
-			return create_event('CallNode', event_data)
+func load_event(event):
+	return create_event(DialogicSingleton.Event_Type.keys()[event["type"]], event)
 
 func load_timeline(name:String):
 	#clear timeline

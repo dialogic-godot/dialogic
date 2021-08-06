@@ -4,6 +4,7 @@ extends HBoxContainer
 # customization options for the event 
 
 # This is the default data that is going to be saved to json
+export (DialogicSingleton.Event_Type) var type
 export (Dictionary) var event_data: Dictionary = {'event_id':'dialogic_000'}
 export(StyleBoxFlat) var event_style : StyleBoxFlat
 var selected_style = preload("../styles/selected_styleboxflat_template.tres")
@@ -216,6 +217,8 @@ func _request_selection():
 ## *****************************************************************************
 
 func _ready():
+	event_data["type"] = type
+	
 	_setup_event()
 	
 	set_focus_mode(1) # Allowing this node to grab focus

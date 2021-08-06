@@ -6,6 +6,7 @@
 [ext_resource path="res://addons/dialogic/Editor/Events/Parts/Logic/ConditionPicker.tscn" type="PackedScene" id=4]
 
 [node name="Condition" instance=ExtResource( 2 )]
+type = 5
 event_data = {
 "condition": "",
 "definition": "",
