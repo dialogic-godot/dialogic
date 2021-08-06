@@ -68,14 +68,6 @@ func load_data(data):
 	event_data = data
 
 
-func get_body():
-	return body_node
-
-
-func get_header():
-	return header_node
-
-
 func set_warning(text):
 	warning.texture = get_icon("NodeWarning", "EditorIcons")
 	warning.hint_tooltip = text
@@ -189,8 +181,8 @@ func _on_Header_data_changed(metadata:Dictionary):
 		event_data[key] = metadata[key]
 	
 	# update the body in case it has to
-	if get_body():
-		get_body().load_data(event_data)
+	if body_node:
+		body_node.load_data(event_data)
 		
 	editor_reference.need_save()
 
@@ -200,16 +192,16 @@ func _on_Body_data_changed(new_event_data):
 	event_data = new_event_data
 	
 	# update the header in case it has to
-	if get_header():
-		get_header().load_data(event_data)
+	if header_node:
+		header_node.load_data(event_data)
 		
 	editor_reference.need_save()
 
 func _request_set_body_enabled(enabled:bool):
 	expand_control.set_enabled(enabled)
 	
-	if get_body():
-		get_body().visible = enabled
+	if body_node:
+		body_node.visible = enabled
 	
 func _request_selection():
 	var timeline_editor = editor_reference.get_node_or_null('MainPanel/TimelineEditor')
@@ -239,29 +231,31 @@ func _ready():
 	
 	# when it enters the tree, load the data into the header/body
 	# If there is any external data, it will be set already BEFORE the event is added to tree
-	# if you have a header
-	if get_header():
-		get_header().connect("data_changed", self, "_on_Header_data_changed")
-		get_header().connect("request_open_body", expand_control, "set_expanded", [true])
-		get_header().connect("request_close_body", expand_control, "set_expanded", [false])
-		get_header().connect("request_selection", self, "_request_selection")
-		get_header().connect("request_set_body_enabled", self, "_request_set_body_enabled")
-		get_header().connect("set_warning", self, "set_warning")
-		get_header().connect("remove_warning", self, "remove_warning")
-		get_header().load_data(event_data)
-	# if you have a body
-	if get_body():
-		get_body().connect("data_changed", self, "_on_Body_data_changed")
-		get_body().connect("request_open_body", expand_control, "set_expanded", [true])
-		get_body().connect("request_close_body", expand_control, "set_expanded", [false])
-		get_body().connect("request_set_body_enabled", self, "_request_set_body_enabled")
-		get_body().connect("request_selection", self, "_request_selection")
-		get_body().connect("set_warning", self, "set_warning")
-		get_body().connect("remove_warning", self, "remove_warning")
-		get_body().load_data(event_data)
-	
-	if get_body():
+	# if have a header
+	if header_node:
+		header_node.connect("data_changed", self, "_on_Header_data_changed")
+		header_node.connect("request_open_body", expand_control, "set_expanded", [true])
+		header_node.connect("request_close_body", expand_control, "set_expanded", [false])
+		header_node.connect("request_selection", self, "_request_selection")
+		header_node.connect("request_set_body_enabled", self, "_request_set_body_enabled")
+		header_node.connect("set_warning", self, "set_warning")
+		header_node.connect("remove_warning", self, "remove_warning")
+		
+		header_node.load_data(event_data)
+		
+	# if have a body
+	if body_node:
+		body_node.connect("data_changed", self, "_on_Body_data_changed")
+		body_node.connect("request_open_body", expand_control, "set_expanded", [true])
+		body_node.connect("request_close_body", expand_control, "set_expanded", [false])
+		body_node.connect("request_set_body_enabled", self, "_request_set_body_enabled")
+		body_node.connect("request_selection", self, "_request_selection")
+		body_node.connect("set_warning", self, "set_warning")
+		body_node.connect("remove_warning", self, "remove_warning")
+		
 		set_expanded(expand_on_default)
+		
+		body_node.load_data(event_data)
 	
 	_on_Indent_visibility_changed()
 
