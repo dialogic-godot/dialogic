@@ -1,7 +1,7 @@
 tool
 extends Control
 
-var editor_reference 
+var editor_reference setget set_editor_reference
 onready var master_tree = get_node('../MasterTreeContainer/MasterTree')
 var current_page : String = ""
 
@@ -20,6 +20,10 @@ func _ready():
 	
 	set("custom_styles/panel", get_stylebox("Background", "EditorStyles"))
 	#get('custom_styles/panel').content_margin_left = 0
+
+func set_editor_reference(the_editor_reference):
+	editor_reference = the_editor_reference
+	nodes['DocsViewer'].MarkdownParser.editor_scale = editor_reference.editor_interface.get_editor_scale()
 
 func load_page(page):
 	if current_page: 

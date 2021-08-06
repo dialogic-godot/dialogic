@@ -525,7 +525,7 @@ func _on_ThemePopupMenu_id_pressed(id):
 	if id == 1:
 		var filename = editor_reference.get_node('MainPanel/MasterTreeContainer/MasterTree').get_selected().get_metadata(0)['file']
 		if (filename.begins_with('theme-')):
-			editor_reference.theme_editor.duplicate_theme(filename)
+			theme_editor.duplicate_theme(filename)
 	if id == 2:
 		editor_reference.popup_remove_confirmation('Theme')
 
