@@ -106,7 +106,7 @@ func popup_gui_input(event):
 			if current['path']:
 				if current['path'].ends_with('.tscn'):
 					preview_texture.expand = false
-					var editor_reference = get_node('../../../..').editor_reference
+					var editor_reference = find_parent('EditorView')
 					if editor_reference and editor_reference.editor_interface:
 						editor_reference.editor_interface.get_resource_previewer().queue_resource_preview(current['path'], self, "show_scene_preview", null)
 					preview_title.icon = get_icon("PackedScene", "EditorIcons")
