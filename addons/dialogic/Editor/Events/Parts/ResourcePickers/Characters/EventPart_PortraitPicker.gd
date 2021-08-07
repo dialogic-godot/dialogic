@@ -100,13 +100,31 @@ func popup_gui_input(event):
 			
 			## show the preview
 			preview.rect_position.x = picker_menu.get_popup().rect_size.x + 20
-			preview_title.text = character_data['portraits'][current_hovered + idx_add]['name']
-			if character_data['portraits'][current_hovered + idx_add]['path']:
-				preview_texture.texture = load(character_data['portraits'][current_hovered + idx_add]['path'])
+			var current = character_data['portraits'][current_hovered + idx_add]
+			preview_title.text = '  ' + current['name']
+			preview_title.icon = null
+			if current['path']:
+				if current['path'].ends_with('.tscn'):
+					preview_texture.expand = false
+					var editor_reference = get_node('../../../../').editor_reference
+					if editor_reference and editor_reference.editor_interface:
+						editor_reference.editor_interface.get_resource_previewer().queue_resource_preview(current['path'], self, "show_scene_preview", null)
+					preview_title.icon = get_icon("PackedScene", "EditorIcons")
+					return
+				else:
+					preview_title.icon = get_icon("Sprite", "EditorIcons")
+					preview_texture.expand = true
+					preview_texture.texture = load(current['path'])
 			else:
 				preview_texture.texture = null
 			preview.show()
 
+
 func mouse_exited_popup():
 	preview.hide()
 	current_hovered = null
+
+
+func show_scene_preview(path:String, preview:Texture, user_data):
+	if preview:
+		preview_texture.texture = preview
