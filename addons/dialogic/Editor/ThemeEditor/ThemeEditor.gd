@@ -276,7 +276,7 @@ func load_theme(filename):
 	var default_background = 'res://addons/dialogic/Example Assets/backgrounds/background-2.png'
 	setup_advanced_containers()
 	# Settings
-	n['theme_action_key'].text = theme.get_value('settings', 'action_key', 'ui_accept')
+	n['theme_action_key'].text = theme.get_value('settings', 'action_key', '[Default]')
 	n['single_portrait_mode'].pressed = theme.get_value('settings', 'single_portrait_mode', false) # Currently in Dialog Text tab
 	
 	# Background
@@ -710,8 +710,10 @@ func _on_ActionOptionButton_item_selected(index) -> void:
 
 
 func _on_ActionOptionButton_pressed() -> void:
+	var theme = DialogicResources.get_theme_config(current_theme)
 	n['theme_action_key'].clear()
-	n['theme_action_key'].add_item('[Select Action]')
+	n['theme_action_key'].add_item(theme.get_value('settings', 'action_key', '[Default]'))
+	n['theme_action_key'].add_item('[Default]')
 	InputMap.load_from_globals()
 	for a in InputMap.get_actions():
 		n['theme_action_key'].add_item(a)

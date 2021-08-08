@@ -5,6 +5,7 @@ var editor_reference
 var timeline_name: String = ''
 var timeline_file: String = ''
 var current_timeline: Dictionary = {}
+var TimelineUndoRedo := UndoRedo.new()
 
 onready var master_tree = get_node('../MasterTreeContainer/MasterTree')
 onready var timeline = $TimelineArea/TimeLine
@@ -19,6 +20,8 @@ var selected_items : Array = []
 
 var event_scenes : Dictionary = {}
 
+var currently_draged_event_type = null
+var move_start_position = null
 var moving_piece = null
 var piece_was_dragged = false
 
@@ -59,6 +62,8 @@ func _ready():
 	
 	var style = $TimelineArea.get('custom_styles/bg')
 	style.set('bg_color', get_color("dark_color_1", "Editor"))
+	$TimelineArea.connect('resized', self, 'add_extra_scroll_area_to_timeline', [])
+
 
 # handles dragging/moving of events
 func _process(delta):
@@ -79,20 +84,30 @@ func _process(delta):
 				move_block(moving_piece, 'down')
 				piece_was_dragged = true
 
+
 # SIGNAL handles input on the events mainly for selection and moving events
 func _on_event_block_gui_input(event, item: Node):
 	if event is InputEventMouseButton and event.button_index == 1:
 		if (not event.is_pressed()):
-			if (not piece_was_dragged and moving_piece != null):
-				pass
+			if (piece_was_dragged and moving_piece != null and move_start_position):
+				var to_position = moving_piece.get_index()
+				if move_start_position != to_position:
+					# move it back so the DO action works. (Kinda stupid but whatever)
+					move_block_to_index(to_position, move_start_position)
+					TimelineUndoRedo.create_action("[D] Moved event (type '"+moving_piece.event_data.event_id+"').")
+					TimelineUndoRedo.add_do_method(self, "move_block_to_index", move_start_position, to_position)
+					TimelineUndoRedo.add_undo_method(self, "move_block_to_index", to_position, move_start_position)
+					TimelineUndoRedo.commit_action()
+				move_start_position = null
 			if (moving_piece != null):
+				
 				indent_events()
 			moving_piece = null
 		elif event.is_pressed():
 			moving_piece = item
+			move_start_position = moving_piece.get_index()
 			if not _is_item_selected(item):
-				
-				piece_was_dragged = true
+				pass#piece_was_dragged = true
 			else:
 				piece_was_dragged = false
 			select_item(item)
@@ -102,7 +117,6 @@ func _on_event_block_gui_input(event, item: Node):
 ##					 	SHORTCUTS
 ## *****************************************************************************
 
-
 func _input(event):
 	# some shortcuts need to get handled in the common input event
 	# especially CTRL-based
@@ -111,7 +125,35 @@ func _input(event):
 	# invoke a shortcut by accident
 	if get_focus_owner() is TextEdit:
 		return
-		
+	if (event is InputEventKey and event is InputEventWithModifiers and is_visible_in_tree()):
+		# CTRL Z # UNDO
+		if (event.pressed
+			and event.alt == false
+			and event.shift == false
+			and event.control == true
+			and event.scancode == KEY_Z
+			and event.echo == false
+		):
+			TimelineUndoRedo.undo()
+			indent_events()
+			get_tree().set_input_as_handled()
+	if (event is InputEventKey and event is InputEventWithModifiers and is_visible_in_tree()):
+		# CTRL +SHIFT+ Z # REDO
+		if (event.pressed
+			and event.alt == false
+			and event.shift == true
+			and event.control == true
+			and event.scancode == KEY_Z
+			and event.echo == false
+		) or (event.pressed
+			and event.alt == false
+			and event.shift == false
+			and event.control == true
+			and event.scancode == KEY_Y
+			and event.echo == false):
+			TimelineUndoRedo.redo()
+			indent_events()
+			get_tree().set_input_as_handled()
 	if (event is InputEventKey and event is InputEventWithModifiers and is_visible_in_tree()):
 		# CTRL UP
 		if (event.pressed
@@ -157,7 +199,11 @@ func _input(event):
 			and event.echo == false
 		):
 			if (len(selected_items) != 0):
-				delete_selected_events()
+				var events_indexed = get_events_indexed(selected_items)
+				TimelineUndoRedo.create_action("[D] Deleting "+str(len(selected_items))+" event(s).")
+				TimelineUndoRedo.add_do_method(self, "delete_events_indexed", events_indexed)
+				TimelineUndoRedo.add_undo_method(self, "add_events_indexed", events_indexed)
+				TimelineUndoRedo.commit_action()
 				get_tree().set_input_as_handled()
 			
 		# CTRL T
@@ -168,9 +214,15 @@ func _input(event):
 			and event.scancode == KEY_T
 			and event.echo == false
 		):
-			var new_text = create_event("TextEvent")
-			select_item(new_text, false)
-			indent_events()
+			var at_index = -1
+			if selected_items:
+				at_index = selected_items[-1].get_index()+1
+			else:
+				at_index = timeline.get_child_count()
+			TimelineUndoRedo.create_action("[D] Add Text event.")
+			TimelineUndoRedo.add_do_method(self, "create_event", "TextEvent", {'no-data': true}, true, at_index, true)
+			TimelineUndoRedo.add_undo_method(self, "remove_events_at_index", at_index, 1)
+			TimelineUndoRedo.commit_action()
 			get_tree().set_input_as_handled()
 			
 		# CTRL A
@@ -216,7 +268,16 @@ func _input(event):
 			and event.scancode == KEY_V
 			and event.echo == false
 		):
-			paste_events()
+			var events_list = paste_check()
+			var paste_position = -1
+			if selected_items:
+				paste_position = selected_items[-1].get_index()
+			else:
+				paste_position = timeline.get_child_count()-1
+			TimelineUndoRedo.create_action("[D] Pasting "+str(len(events_list))+" event(s).")
+			TimelineUndoRedo.add_do_method(self, "add_events_at_index", events_list, paste_position)
+			TimelineUndoRedo.add_undo_method(self, "remove_events_at_index", paste_position+1, len(events_list))
+			TimelineUndoRedo.commit_action()
 			get_tree().set_input_as_handled()
 		
 		# CTRL X
@@ -227,7 +288,11 @@ func _input(event):
 			and event.scancode == KEY_X
 			and event.echo == false
 		):
-			cut_selected_events()
+			var events_indexed = get_events_indexed(selected_items)
+			TimelineUndoRedo.create_action("[D] Cut "+str(len(selected_items))+" event(s).")
+			TimelineUndoRedo.add_do_method(self, "cut_events_indexed", events_indexed)
+			TimelineUndoRedo.add_undo_method(self, "add_events_indexed", events_indexed)
+			TimelineUndoRedo.commit_action()
 			get_tree().set_input_as_handled()
 
 		# CTRL D
@@ -240,9 +305,12 @@ func _input(event):
 		):
 			
 			if len(selected_items) > 0:
-				copy_selected_events()
-				selected_items = [selected_items[-1]]
-				paste_events()
+				var events = get_events_indexed(selected_items).values()
+				var at_index = selected_items[-1].get_index()
+				TimelineUndoRedo.create_action("[D] Duplicate "+str(len(events))+" event(s).")
+				TimelineUndoRedo.add_do_method(self, "add_events_at_index", events, at_index)
+				TimelineUndoRedo.add_undo_method(self, "remove_events_at_index", at_index, len(events))
+				TimelineUndoRedo.commit_action()
 			get_tree().set_input_as_handled()
 
 func _unhandled_key_input(event):
@@ -279,8 +347,34 @@ func _unhandled_key_input(event):
 ##					 	DELETING, COPY, PASTE
 ## *****************************************************************************
 
+func get_events_indexed(events:Array) -> Dictionary:
+	var indexed_dict = {}
+	for event in events:
+		indexed_dict[event.get_index()] = event.event_data
+	return indexed_dict
+
+func select_indexed_events(indexed_events:Dictionary) -> void:
+	selected_items = []
+	for event_index in indexed_events.keys():
+		selected_items.append(timeline.get_child(event_index))
+
+func add_events_indexed(indexed_events:Dictionary) -> void:
+	var indexes = indexed_events.keys()
+	indexes.sort()
+	var events = []
+	for event_idx in indexes:
+		deselect_all_items()
+		events.append(add_event_by_id(indexed_events[event_idx].event_id, indexed_events[event_idx]))
+		timeline.move_child(events[-1], event_idx)
+		
+	selected_items = events
+	visual_update_selection()
+
+func delete_events_indexed(indexed_events:Dictionary) -> void:
+	select_indexed_events(indexed_events)
+	delete_selected_events()
+
 func delete_selected_events():
-	
 	if len(selected_items) == 0:
 		return
 	
@@ -307,9 +401,16 @@ func delete_selected_events():
 	
 	indent_events()
 
+
 func cut_selected_events():
 	copy_selected_events()
 	delete_selected_events()
+
+
+func cut_events_indexed(indexed_events:Dictionary) -> void:
+	select_indexed_events(indexed_events)
+	cut_selected_events()
+
 
 func copy_selected_events():
 	if len(selected_items) == 0:
@@ -325,7 +426,7 @@ func copy_selected_events():
 			"project_name": ProjectSettings.get_setting("application/config/name")
 		})
 
-func paste_events():
+func paste_check():
 	var clipboard_parse = JSON.parse(OS.clipboard).result
 	
 	if typeof(clipboard_parse) == TYPE_DICTIONARY:
@@ -336,19 +437,35 @@ func paste_events():
 			if clipboard_parse['project_name'] != ProjectSettings.get_setting("application/config/name"):
 				print("[D] Be careful when copying from another project!")
 		if clipboard_parse.has('events'):
-			var event_list = clipboard_parse['events']
-			if len(selected_items) > 0:
-				event_list.invert()
-			
-			var new_items = []
-			for item in event_list:
-				if typeof(item) == TYPE_DICTIONARY and item.has('event_id'):
-					new_items.append(add_event_by_id(item['event_id'], item))
-			selected_items = new_items
-			sort_selection()
-			visual_update_selection()
-			indent_events()
+			return clipboard_parse['events']
 
+func remove_events_at_index(at_index:int, amount:int = 1)-> void:
+	selected_items = []
+	for i in range(0, amount):
+		selected_items.append(timeline.get_child(at_index + i))
+	delete_selected_events()
+
+func add_events_at_index(event_list:Array, at_index:int) -> void:
+	if at_index != -1:
+		event_list.invert()
+		selected_items = [timeline.get_child(at_index)]
+	else:
+		selected_items = []
+	
+	var new_items = []
+	for item in event_list:
+		if typeof(item) == TYPE_DICTIONARY and item.has('event_id'):
+			new_items.append(add_event_by_id(item['event_id'], item))
+	selected_items = new_items
+	sort_selection()
+	visual_update_selection()
+	indent_events()
+
+func paste_events_indexed(indexed_events):
+	pass
+
+func duplicate_events_indexed(indexed_events):
+	pass
 
 ## *****************************************************************************
 ##					 	BLOCK SELECTION
@@ -356,6 +473,7 @@ func paste_events():
 
 func _is_item_selected(item: Node):
 	return item in selected_items
+
 
 func select_item(item: Node, multi_possible:bool = true):
 	if item == null:
@@ -395,6 +513,7 @@ func select_item(item: Node, multi_possible:bool = true):
 	
 	visual_update_selection()
 
+
 # checks all the events and sets their styles (selected/deselected)
 func visual_update_selection():
 	for item in timeline.get_children():
@@ -402,13 +521,16 @@ func visual_update_selection():
 	for item in selected_items:
 		item.visual_select()
 
+
 ## Sorts the selection using 'custom_sort_selection'
 func sort_selection():
 	selected_items.sort_custom(self, 'custom_sort_selection')
 
+
 ## Compares two event blocks based on their position in the timeline
 func custom_sort_selection(item1, item2):
 	return item1.get_index() < item2.get_index()
+
 
 ## Helpers
 func select_all_items():
@@ -416,6 +538,7 @@ func select_all_items():
 	for event in timeline.get_children():
 		selected_items.append(event)
 	visual_update_selection()
+
 
 func deselect_all_items():
 	selected_items = []
@@ -436,9 +559,11 @@ func _on_event_options_action(action: String, item: Node):
 		move_block(item, action)
 	indent_events()
 
+
 func delete_event(event):
 	event.get_parent().remove_child(event)
 	event.queue_free()
+
 
 ## *****************************************************************************
 ##				CREATING NEW EVENTS USING THE BUTTONS
@@ -446,11 +571,33 @@ func delete_event(event):
 
 # Event Creation signal for buttons
 func _create_event_button_pressed(button_name):
-	select_item(create_event(button_name))
+	var at_index = -1
+	if selected_items:
+		at_index = selected_items[-1].get_index()+1
+	else:
+		at_index = timeline.get_child_count()
+	TimelineUndoRedo.create_action("[D] Add event.")
+	TimelineUndoRedo.add_do_method(self, "create_event", button_name, {'no-data': true}, true, at_index, true)
+	TimelineUndoRedo.add_undo_method(self, "remove_events_at_index", at_index, 1)
+	TimelineUndoRedo.commit_action()
 	indent_events()
+
 
 # the Question button adds multiple blocks 
 func _on_ButtonQuestion_pressed() -> void:
+	var at_index = -1
+	if selected_items:
+		at_index = selected_items[-1].get_index()+1
+	else:
+		at_index = timeline.get_child_count()
+	TimelineUndoRedo.create_action("[D] Add question events.")
+	TimelineUndoRedo.add_do_method(self, "create_question", at_index)
+	TimelineUndoRedo.add_undo_method(self, "remove_events_at_index", at_index, 4)
+	TimelineUndoRedo.commit_action()
+
+func create_question(at_position):
+	if at_position == 0: selected_items = []
+	else: selected_items = [timeline.get_child(at_position-1)]
 	if len(selected_items) != 0:
 		# Events are added bellow the selected node
 		# So we must reverse the adding order
@@ -464,8 +611,22 @@ func _on_ButtonQuestion_pressed() -> void:
 		create_event("Choice", {'no-data': true}, true)
 		create_event("EndBranch", {'no-data': true}, true)
 
+
 # the Condition button adds multiple blocks 
 func _on_ButtonCondition_pressed() -> void:
+	var at_index = -1
+	if selected_items:
+		at_index = selected_items[-1].get_index()+1
+	else:
+		at_index = timeline.get_child_count()
+	TimelineUndoRedo.create_action("[D] Add condition events.")
+	TimelineUndoRedo.add_do_method(self, "create_condition", at_index)
+	TimelineUndoRedo.add_undo_method(self, "remove_events_at_index", at_index, 2)
+	TimelineUndoRedo.commit_action()
+	
+func create_condition(at_position):
+	if at_position == 0: selected_items = []
+	else: selected_items = [timeline.get_child(at_position-1)]
 	if len(selected_items) != 0:
 		# Events are added bellow the selected node
 		# So we must reverse the adding order
@@ -474,6 +635,7 @@ func _on_ButtonCondition_pressed() -> void:
 	else:
 		create_event("Condition", {'no-data': true}, true)
 		create_event("EndBranch", {'no-data': true}, true)
+
 
 ## *****************************************************************************
 ##					 	DRAG AND DROP
@@ -483,6 +645,7 @@ func _on_ButtonCondition_pressed() -> void:
 func create_drag_and_drop_event(scene: String):
 	var index = get_index_under_cursor()
 	var piece = create_event(scene)
+	currently_draged_event_type = scene
 	timeline.move_child(piece, index)
 	moving_piece = piece
 	piece_was_dragged = true
@@ -490,12 +653,20 @@ func create_drag_and_drop_event(scene: String):
 	select_item(piece)
 	return piece
 
+
 func drop_event():
 	if moving_piece != null:
-		set_event_ignore_save(moving_piece, false)
+		var at_index = moving_piece.get_index()
+		moving_piece.queue_free()
+		TimelineUndoRedo.create_action("[D] Add event.")
+		TimelineUndoRedo.add_do_method(self, "create_event", currently_draged_event_type, {'no-data': true}, true, at_index, true)
+		TimelineUndoRedo.add_undo_method(self, "remove_events_at_index", at_index, 1)
+		TimelineUndoRedo.commit_action()
 		moving_piece = null
 		piece_was_dragged = false
 		indent_events()
+		add_extra_scroll_area_to_timeline()
+
 
 func cancel_drop_event():
 	if moving_piece != null:
@@ -510,23 +681,29 @@ func cancel_drop_event():
 ## *****************************************************************************
 
 # Adding an event to the timeline
-func create_event(scene: String, data: Dictionary = {'no-data': true} , indent: bool = false):
+func create_event(scene: String, data: Dictionary = {'no-data': true} , indent: bool = false, at_index: int = -1, auto_select:bool = false):
 	var piece = load("res://addons/dialogic/Editor/Events/" + scene + ".tscn").instance()
 	piece.editor_reference = editor_reference
 	
 	if data.has('no-data') == false:
 		piece.event_data = data
 	
-	if len(selected_items) != 0:
-		timeline.add_child_below_node(selected_items[0], piece)
+	if at_index == -1:
+		if len(selected_items) != 0:
+			timeline.add_child_below_node(selected_items[0], piece)
+		else:
+			timeline.add_child(piece)
 	else:
 		timeline.add_child(piece)
-	
+		timeline.move_child(piece, at_index)
 
 	piece.connect("option_action", self, '_on_event_options_action', [piece])
 	piece.connect("gui_input", self, '_on_event_block_gui_input', [piece])
 	events_warning.visible = false
-
+	if auto_select:
+		select_item(piece, false)
+	# Spacing
+	add_extra_scroll_area_to_timeline()
 	# Indent on create
 	if indent:
 		indent_events()
@@ -535,6 +712,8 @@ func create_event(scene: String, data: Dictionary = {'no-data': true} , indent: 
 
 func load_timeline(filename: String):
 	clear_timeline()
+	if timeline_file != filename:
+		TimelineUndoRedo.clear_history()
 	building_timeline = true
 	timeline_file = filename
 	
@@ -551,6 +730,8 @@ func load_timeline(filename: String):
 		batches.append(batch_events(data, batch_size, page))
 		page += 1
 	load_batch(batches)
+	# Reset the scroll position
+	$TimelineArea.scroll_vertical = 0
 
 
 func batch_events(array, size, batch_number):
@@ -574,6 +755,7 @@ func _on_batch_loaded():
 		events_warning.visible = false
 		indent_events()
 		building_timeline = false
+	add_extra_scroll_area_to_timeline()
 
 
 func add_event_by_id(event_id, event_data):
@@ -645,6 +827,7 @@ func add_event_by_id(event_id, event_data):
 		'dialogic_042':
 			return create_event('CallNode', event_data)
 
+
 func clear_timeline():
 	deselect_all_items()
 	for event in timeline.get_children():
@@ -662,6 +845,7 @@ func get_block_above(block):
 		item = timeline.get_child(block_index - 1)
 	return item
 
+
 func get_block_below(block):
 	var block_index = block.get_index()
 	var item = null
@@ -669,11 +853,13 @@ func get_block_below(block):
 		item = timeline.get_child(block_index + 1)
 	return item
 
+
 func get_block_height(block):
 	if block != null:
 		return block.rect_size.y
 	else:
 		return null
+
 
 func get_index_under_cursor():
 	var current_position = get_global_mouse_position()
@@ -697,6 +883,8 @@ func move_block(block, direction):
 		return true
 	return false
 
+func move_block_to_index(block_index, index):
+	timeline.move_child(timeline.get_child(block_index), index)
 
 ## *****************************************************************************
 ##					 TIMELINE CREATION AND SAVING
@@ -754,6 +942,7 @@ func save_timeline() -> void:
 
 # Event Indenting
 func indent_events() -> void:
+	# Now indenting
 	var indent: int = 0
 	var starter: bool = false
 	var event_list: Array = timeline.get_children()
@@ -800,12 +989,24 @@ func indent_events() -> void:
 				event.set_indent(indent)
 		starter = false
 
+
 # called from the toolbar
 func fold_all_nodes():
 	for event in timeline.get_children():
 		event.set_expanded(false)
+	add_extra_scroll_area_to_timeline()
+
 
 # called from the toolbar
 func unfold_all_nodes():
 	for event in timeline.get_children():
 		event.set_expanded(true)
+	add_extra_scroll_area_to_timeline()
+
+
+func add_extra_scroll_area_to_timeline():
+	if timeline.get_children().size() > 4:
+		timeline.rect_min_size.y = 0
+		timeline.rect_size.y = 0
+		if timeline.rect_size.y + 200 > $TimelineArea.rect_size.y:
+			timeline.rect_min_size = Vector2(0, timeline.rect_size.y + 200)

@@ -1,7 +1,8 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://addons/dialogic/Editor/Events/Templates/EventBlock.gd" type="Script" id=1]
 [ext_resource path="res://addons/dialogic/Editor/Events/Parts/EventBlock/ExpandControl.tscn" type="PackedScene" id=2]
+[ext_resource path="res://addons/dialogic/Editor/Events/styles/selected_styleboxflat.tres" type="StyleBox" id=3]
 [ext_resource path="res://addons/dialogic/Editor/Events/Parts/EventBlock/Spacer.tscn" type="PackedScene" id=4]
 [ext_resource path="res://addons/dialogic/Editor/Events/Parts/EventBlock/OptionsControl.tscn" type="PackedScene" id=5]
 [ext_resource path="res://addons/dialogic/Images/Plugin/plugin-editor-icon-dark-theme.svg" type="Texture" id=6]
@@ -49,6 +50,12 @@ mouse_default_cursor_shape = 6
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_styles/panel = SubResource( 1 )
+
+[node name="SelectedStyle" type="Panel" parent="PanelContainer"]
+visible = false
+margin_right = 1024.0
+margin_bottom = 42.0
+custom_styles/panel = ExtResource( 3 )
 
 [node name="MarginContainer" type="MarginContainer" parent="PanelContainer"]
 margin_right = 1024.0
@@ -114,8 +121,21 @@ margin_right = 242.0
 
 [node name="Spacer" parent="PanelContainer/MarginContainer/VBoxContainer/Header" instance=ExtResource( 4 )]
 margin_left = 66.0
+margin_right = 928.0
+margin_bottom = 30.0
+
+[node name="HelpButton" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer/Header"]
+margin_left = 938.0
 margin_right = 968.0
 margin_bottom = 30.0
+rect_min_size = Vector2( 30, 30 )
+hint_tooltip = "Open the documentation of this event"
+flat = true
+clip_text = true
+expand_icon = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="OptionsControl" parent="PanelContainer/MarginContainer/VBoxContainer/Header" instance=ExtResource( 5 )]
 margin_left = 978.0
@@ -141,3 +161,4 @@ custom_constants/margin_top = 2
 custom_constants/margin_bottom = 2
 
 [connection signal="visibility_changed" from="Indent" to="." method="_on_Indent_visibility_changed"]
+[connection signal="pressed" from="PanelContainer/MarginContainer/VBoxContainer/Header/HelpButton" to="." method="_on_HelpButton_pressed"]

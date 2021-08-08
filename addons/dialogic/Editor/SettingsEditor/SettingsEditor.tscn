@@ -12,23 +12,23 @@ __meta__ = {
 }
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
-margin_right = 1024.0
-margin_bottom = 600.0
+margin_right = 1920.0
+margin_bottom = 1080.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="HBoxContainer3" type="HBoxContainer" parent="VBoxContainer"]
-margin_right = 1024.0
-margin_bottom = 452.0
+margin_right = 1920.0
+margin_bottom = 480.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer3"]
 margin_right = 356.0
-margin_bottom = 452.0
+margin_bottom = 480.0
 custom_constants/separation = 16
 
 [node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer"]
 margin_right = 356.0
-margin_bottom = 74.0
+margin_bottom = 102.0
 
 [node name="SectionTitle" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer" instance=ExtResource( 2 )]
 margin_right = 356.0
@@ -50,19 +50,11 @@ margin_left = 50.0
 margin_right = 190.0
 margin_bottom = 20.0
 rect_min_size = Vector2( 140, 0 )
-text = "Long-fade-in"
-items = [ "another", null, false, 0, {
-"file": "theme-1622727938.cfg"
-}, "Long-fade-in", null, false, 1, {
-"file": "theme-1624535517.cfg"
-}, "test", null, false, 2, {
-"file": "theme-1622237713.cfg"
-}, "theme-1622916617.cfg", null, false, 3, {
-"file": "theme-1622916617.cfg"
-}, "theme-1622916814.cfg", null, false, 4, {
-"file": "theme-1622916814.cfg"
+text = "main_theme"
+items = [ "main_theme", null, false, 0, {
+"file": "theme-1626129237.cfg"
 } ]
-selected = 1
+selected = 0
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer"]
 margin_top = 50.0
@@ -80,11 +72,29 @@ text = "Advanced theme options"
 margin_left = 164.0
 margin_right = 188.0
 margin_bottom = 24.0
+pressed = true
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer"]
+margin_top = 78.0
+margin_right = 356.0
+margin_bottom = 102.0
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer/HBoxContainer3"]
+margin_top = 5.0
+margin_right = 87.0
+margin_bottom = 19.0
+text = "Canvas layer :"
+
+[node name="CanvasLayer" type="LineEdit" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer/HBoxContainer3"]
+margin_left = 91.0
+margin_right = 149.0
+margin_bottom = 24.0
+text = "1"
 
 [node name="VBoxContainer2" type="VBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer"]
-margin_top = 90.0
+margin_top = 118.0
 margin_right = 356.0
-margin_bottom = 302.0
+margin_bottom = 330.0
 
 [node name="SectionTitle" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2" instance=ExtResource( 2 )]
 margin_right = 356.0
@@ -146,6 +156,7 @@ text = "Auto color character names in messages"
 margin_left = 264.0
 margin_right = 288.0
 margin_bottom = 24.0
+pressed = true
 
 [node name="HBoxContainer4" type="HBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2"]
 margin_top = 114.0
@@ -178,6 +189,7 @@ text = "Dim characters when they are not speaking"
 margin_left = 280.0
 margin_right = 304.0
 margin_bottom = 24.0
+pressed = true
 
 [node name="Label2" type="Label" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2"]
 margin_top = 170.0
@@ -201,12 +213,11 @@ margin_left = 332.0
 margin_right = 356.0
 margin_bottom = 24.0
 hint_tooltip = "If enabled, inputs for text events will be treated as keys for tr()"
-pressed = true
 
 [node name="VBoxContainer3" type="VBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer"]
-margin_top = 318.0
+margin_top = 346.0
 margin_right = 356.0
-margin_bottom = 452.0
+margin_bottom = 480.0
 
 [node name="SectionTitle" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer3" instance=ExtResource( 2 )]
 margin_right = 356.0
@@ -288,11 +299,11 @@ pressed = true
 [node name="VBoxContainer2" type="VBoxContainer" parent="VBoxContainer/HBoxContainer3"]
 margin_left = 360.0
 margin_right = 664.0
-margin_bottom = 452.0
+margin_bottom = 480.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer2"]
 margin_right = 304.0
-margin_bottom = 50.0
+margin_bottom = 74.0
 
 [node name="SectionTitle2" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer" instance=ExtResource( 2 )]
 margin_right = 304.0
@@ -321,3 +332,21 @@ margin_top = 5.0
 margin_right = 304.0
 margin_bottom = 19.0
 text = " seconds"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer"]
+margin_top = 54.0
+margin_right = 304.0
+margin_bottom = 74.0
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer/HBoxContainer2"]
+margin_top = 3.0
+margin_right = 115.0
+margin_bottom = 17.0
+text = "Default action key"
+
+[node name="DefaultActionKey" type="OptionButton" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer/HBoxContainer2"]
+margin_left = 119.0
+margin_right = 240.0
+margin_bottom = 20.0
+hint_tooltip = "The default value is \"ui_accept\""
+text = "[Select Action]"
