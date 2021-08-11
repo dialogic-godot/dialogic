@@ -61,11 +61,18 @@ static func start(timeline: String, reset_saves: bool=true, dialog_scene_path: S
 				current_data = timelines['folders'][p]
 			elif current_depth == parts.size() - 1:
 				# The final destination
+				# Filter this folder's timeline from all timelines
+				var timelinesInFolder: Array= []
 				for t in DialogicUtil.get_timeline_list():
 					for f in current_data['files']:
 						if t['file'] == f:
-							dialog_node.timeline = t['file']
-							return returned_dialog_node
+							timelinesInFolder.append(t)
+				
+				# Find timeline that matches final part
+				for t in timelinesInFolder:
+					if t['name'] == p:
+						dialog_node.timeline = t['file']
+						return returned_dialog_node
 			else:
 				# Still going deeper
 				current_data = current_data['folders'][p]
