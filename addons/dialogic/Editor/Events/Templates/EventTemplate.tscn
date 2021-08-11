@@ -46,7 +46,6 @@ margin_bottom = 64.0
 margin_right = 1024.0
 margin_bottom = 42.0
 mouse_filter = 1
-mouse_default_cursor_shape = 6
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_styles/panel = SubResource( 1 )
