@@ -63,7 +63,7 @@ static func start(timeline: String, reset_saves: bool=true, dialog_scene_path: S
 				# The final destination
 				for t in DialogicUtil.get_timeline_list():
 					for f in current_data['files']:
-						if t['file'] == f:
+						if t['file'] == f && t['name'] == p:
 							dialog_node.timeline = t['file']
 							return returned_dialog_node
 			else:
