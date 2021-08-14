@@ -110,13 +110,9 @@ func resize_main():
 		set_global_position(Vector2(0,0))
 		reference = get_viewport().get_visible_rect().size
 
-	$Options.rect_position.x = (reference.x / 2) - ($Options.rect_size.x / 2)
-	$Options.rect_position.y = (reference.y / 2) - ($Options.rect_size.y / 2)
-	
 	$TextBubble.rect_position.x = (reference.x / 2) - ($TextBubble.rect_size.x / 2)
 	if current_theme != null:
 		$TextBubble.rect_position.y = (reference.y) - ($TextBubble.rect_size.y) - current_theme.get_value('box', 'bottom_gap', 40)
-	
 	
 	var pos_x = 0
 	if current_theme.get_value('background', 'full_width', false):
@@ -350,10 +346,10 @@ func _insert_glossary_definitions(text: String):
 
 func _process(delta):
 	$TextBubble/NextIndicatorContainer/NextIndicator.visible = finished
-	if $Options.get_child_count() > 0:
+	if $Options/ButtonContainer.get_child_count() > 0:
 		$TextBubble/NextIndicatorContainer/NextIndicator.visible = false # Hide if question 
 		if waiting_for_answer and Input.is_action_just_released(input_next):
-			$Options.get_child(0).grab_focus()
+			$Options/ButtonContainer.get_child(0).grab_focus()
 	
 	# Hide if no input is required
 	if current_event.has('text'):
@@ -794,7 +790,7 @@ func event_handler(event: Dictionary):
 
 func reset_options():
 	# Clearing out the options after one was selected.
-	for option in $Options.get_children():
+	for option in $Options/ButtonContainer.get_children():
 		option.queue_free()
 
 
@@ -843,7 +839,7 @@ func get_classic_choice_button(label: String):
 			button.rect_min_size = size
 			button.rect_size = size
 		
-		$Options.set('custom_constants/separation', theme.get_value('buttons', 'gap', 20))
+		$Options/ButtonContainer.set('custom_constants/separation', theme.get_value('buttons', 'gap', 20))
 		
 		# Different styles
 		var default_background = 'res://addons/dialogic/Example Assets/backgrounds/background-2.png'
@@ -920,11 +916,11 @@ func add_choice_button(option: Dictionary):
 		button = get_classic_choice_button(option['label'])
 	
 	if use_native_choice_button() or use_custom_choice_button():
-		$Options.set('custom_constants/separation', current_theme.get_value('buttons', 'gap', 20))
-	$Options.add_child(button)
+		$Options/ButtonContainer.set('custom_constants/separation', current_theme.get_value('buttons', 'gap', 20))
+	$Options/ButtonContainer.add_child(button)
 	
 	# Selecting the first button added
-	if $Options.get_child_count() == 1:
+	if $Options/ButtonContainer.get_child_count() == 1:
 		button.grab_focus()
 	
 	button.set_meta('event_idx', option['event_idx'])
@@ -991,7 +987,6 @@ func get_character_position(positions) -> String:
 
 
 func deferred_resize(current_size, result):
-	#var result = theme.get_value('box', 'size', Vector2(910, 167))
 	$TextBubble.rect_size = result
 	if current_size != $TextBubble.rect_size:
 		resize_main()
@@ -1000,6 +995,7 @@ func deferred_resize(current_size, result):
 func load_theme(filename):
 	var theme = DialogicResources.get_theme_config(filename)
 
+	
 	# Box size
 	call_deferred('deferred_resize', $TextBubble.rect_size, theme.get_value('box', 'size', Vector2(910, 167)))
 
@@ -1017,6 +1013,18 @@ func load_theme(filename):
 	$TextBubble.load_theme(theme)
 	
 	$DefinitionInfo.load_theme(theme)
+	
+	var button_container
+	if theme.get_value('buttons', 'layout', 0) == 0:
+		button_container = VBoxContainer.new()
+	else:
+		button_container = HBoxContainer.new()
+	button_container.name = 'ButtonContainer'
+	button_container.alignment = 1
+	for n in $Options.get_children():
+		n.free()
+	$Options.add_child(button_container)
+
 	return theme
 
 
@@ -1141,6 +1149,6 @@ func _on_close_dialog_timeout():
 
 
 func _on_OptionsDelayedInput_timeout():
-	for button in $Options.get_children():
+	for button in $Options/ButtonContainer.get_children():
 		if button.is_connected("pressed", self, "answer_question") == false:
 			button.connect("pressed", self, "answer_question", [button, button.get_meta('event_idx'), button.get_meta('question_idx')])
