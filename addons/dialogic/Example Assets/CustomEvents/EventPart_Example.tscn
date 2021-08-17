@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://addons/dialogic/Editor/Events/Parts/Text/CustomLineEdit.tscn" type="PackedScene" id=1]
+[ext_resource path="res://addons/dialogic/Example Assets/CustomEvents/EventPart_Example.gd" type="Script" id=2]
+
+[node name="EventPart_Example" type="HBoxContainer"]
+margin_right = 40.0
+margin_bottom = 40.0
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="InputField" parent="." instance=ExtResource( 1 )]
+margin_top = 6.0
+margin_bottom = 33.0
