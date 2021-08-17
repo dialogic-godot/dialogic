@@ -37,6 +37,8 @@ signal dialogic_signal(value)
 var dialog_resource
 var characters
 
+var custom_events = {}
+
 onready var ChoiceButton = load("res://addons/dialogic/Nodes/ChoiceButton.tscn")
 onready var Portrait = load("res://addons/dialogic/Nodes/Portrait.tscn")
 onready var Background = load("res://addons/dialogic/Nodes/Background.tscn")
@@ -47,6 +49,7 @@ var questions #for keeping track of the questions answered
 func _ready():
 	# Loading the config files
 	load_config_files()
+	update_custom_events()
 	
 	# Checking if the dialog should read the code from a external file
 	if not timeline.empty():
@@ -89,17 +92,60 @@ func _ready():
 
 
 func load_config_files():
+	# loads the definitions, themes and settings
+	
+	# defintiions
 	if not Engine.is_editor_hint():
 		if reset_saves:
 			DialogicUtil.get_singleton('DialogicSingleton', self).init(reset_saves)
 		definitions = DialogicUtil.get_singleton('DialogicSingleton', self).get_definitions()
 	else:
 		definitions = DialogicResources.get_default_definitions()
+	
+	# settings
 	settings = DialogicResources.get_settings_config()
+	
+	# theme
 	var theme_file = 'res://addons/dialogic/Editor/ThemeEditor/default-theme.cfg'
 	if settings.has_section('theme'):
 		theme_file = settings.get_value('theme', 'default')
 	current_theme = load_theme(theme_file)
+
+
+func update_custom_events() -> void:
+	custom_events = {}
+	if not DialogicResources.get_settings_config().get_value('editor', 'use_custom_events', false):
+		return 
+	
+	var path:String = DialogicResources.get_working_directories()["CUSTOM_EVENTS_DIR"]
+	
+	var dir = Directory.new()
+	if dir.open(path) == OK:
+		dir.list_dir_begin()
+		var file_name = dir.get_next()
+		# goes through all the folders in the custom events folder
+		while file_name != "":
+			# if it found a folder
+			if dir.current_is_dir() and not file_name in ['.', '..']:
+				
+				# look through that folder
+				#print("Found custom event folder: " + file_name)
+				var event = load(path.plus_file(file_name).plus_file('EventBlock.tscn')).instance()
+				if event:
+					custom_events[event.event_data['event_id']] = {
+						'event_script' :path.plus_file(file_name).plus_file('event_'+event.event_data['event_id']+'.gd'),
+						'event_name' : event.event_name,
+					}
+					event.queue_free()
+				else:
+					print("[D] An error occurred when trying to access a custom event.")
+
+				
+			else:
+				pass # files in the directory are ignored
+			file_name = dir.get_next()
+	else:
+		print("[D] An error occurred when trying to access the custom event folder.")
 
 
 func resize_main():
@@ -782,8 +828,17 @@ func event_handler(event: Dictionary):
 			$TextBubble.visible = true
 			_load_next_event()
 		_:
-			visible = false
-			dprint('[D] Other event. ', event)
+			if event['event_id'] in custom_events.keys():
+				dprint("[D] Custom event '"+custom_events[event['event_id']]['event_name']+"'")
+				
+				var handler = Node.new()
+				handler.set_script(load(custom_events[event['event_id']]['event_script']))
+				
+				handler.handle_event(event, self)
+				
+			else:
+				visible = false
+				dprint('[D] No event found. Recevied data: ', event)
 	
 	$Options.visible = waiting_for_answer
 
