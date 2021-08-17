@@ -29,7 +29,7 @@ __meta__ = {
 event_name = "AudioEvent"
 
 [node name="HBox" type="HBoxContainer" parent="."]
-margin_right = 675.0
+margin_right = 358.0
 margin_bottom = 22.0
 size_flags_horizontal = 3
 
@@ -72,7 +72,7 @@ text = "  Bus:"
 visible = false
 margin_left = 362.0
 margin_right = 435.0
-margin_bottom = 24.0
+margin_bottom = 22.0
 text = "Master"
 items = [ "Master", null, false, 0, null ]
 selected = 0

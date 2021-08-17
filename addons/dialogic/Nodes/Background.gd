@@ -37,5 +37,4 @@ func fade_in(time = 1):
 
 
 func _on_tween_over():
-	print('here')
 	queue_free()
