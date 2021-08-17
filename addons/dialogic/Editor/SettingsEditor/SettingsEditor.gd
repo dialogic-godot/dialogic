@@ -12,6 +12,8 @@ onready var nodes = {
 	'auto_color_names': $VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2/HBoxContainer3/AutoColorNames,
 	'propagate_input': $VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2/HBoxContainer4/PropagateInput,
 	'dim_characters': $VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2/HBoxContainer5/DimCharacters,
+	'text_event_audio_enable': $VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2/HBoxContainer7/EnableVoices,
+	'text_event_audio_default_bus' : $VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2/TextAudioDefaultBus/AudioBus,
 	'save_current_timeline': $VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer3/HBoxContainer/SaveCurrentTimeline,
 	'clear_current_timeline': $VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer3/HBoxContainer2/ClearCurrentTimeline,
 	'save_definitions_on_start': $VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer3/HBoxContainer3/SaveDefinitionsOnStart,
@@ -39,6 +41,7 @@ var DIALOG_KEYS := [
 	'auto_color_names',
 	'propagate_input',
 	'dim_characters',
+	'text_event_audio_enable',
 	]
 
 var SAVING_KEYS := [
@@ -53,6 +56,8 @@ var EDITOR_KEYS := [
 ]
 
 func _ready():
+	update_bus_selector()
+	
 	update_data()
 	
 	# Themes
@@ -64,7 +69,10 @@ func _ready():
 
 	nodes['default_action_key'].connect('pressed', self, '_on_default_action_key_presssed')
 	nodes['default_action_key'].connect('item_selected', self, '_on_default_action_key_item_selected')
-		
+	
+	AudioServer.connect("bus_layout_changed", self, "update_bus_selector")
+	nodes['text_event_audio_default_bus'].connect('item_selected', self, '_on_text_audio_default_bus_item_selected')
+	
 	for k in DIALOG_KEYS:
 		nodes[k].connect('toggled', self, '_on_item_toggled', ['dialog', k])
 	
@@ -82,6 +90,7 @@ func update_data():
 	load_values(settings, "saving", SAVING_KEYS)
 	load_values(settings, "input", INPUT_KEYS)
 	load_values(settings, 'editor', EDITOR_KEYS)
+	select_bus(settings.get_value("dialog", 'text_event_audio_default_bus', "Master"))
 
 func load_values(settings: ConfigFile, section: String, key: Array):
 	for k in key:
@@ -132,7 +141,6 @@ func _on_delay_options_text_changed(text):
 
 
 func _on_item_toggled(value: bool, section: String, key: String):
-	print("set")
 	set_value(section, key, value)
 
 
@@ -158,6 +166,33 @@ func _on_canvas_layer_text_changed(text) -> void:
 func set_value(section, key, value):
 	DialogicResources.set_settings_value(section, key, value)
 
+func update_bus_selector():
+	if nodes["text_event_audio_default_bus"] != null:
+		var previous_selected_bus_name = ""
+		if nodes["text_event_audio_default_bus"].get_item_count():
+			previous_selected_bus_name = nodes["text_event_audio_default_bus"].get_item_text(max(0, nodes["text_event_audio_default_bus"].selected))
+
+		nodes["text_event_audio_default_bus"].clear()
+		for i in range(AudioServer.bus_count):
+			var bus_name = AudioServer.get_bus_name(i)
+			nodes["text_event_audio_default_bus"].add_item(bus_name)
+
+			if previous_selected_bus_name == bus_name:
+				nodes["text_event_audio_default_bus"].select(i)
+
+
+func select_bus(text):
+	for item_idx in range(nodes["text_event_audio_default_bus"].get_item_count()):
+		if nodes["text_event_audio_default_bus"].get_item_text(item_idx) == text:
+			nodes["text_event_audio_default_bus"].select(item_idx)
+			return
+	nodes["text_event_audio_default_bus"].select(0)
+
+
+func _on_text_audio_default_bus_item_selected(index):
+	var text = nodes['text_event_audio_default_bus'].get_item_text(index)
+	set_value('dialog', 'text_event_audio_default_bus', text)
+
 
 func _on_CustomEventsFolder_pressed():
 	editor_reference.godot_dialog("", EditorFileDialog.MODE_OPEN_DIR)
@@ -165,7 +200,6 @@ func _on_CustomEventsFolder_pressed():
 	#editor_reference.godot_dialog_connect(self, "_on_CustomEventsFolder_selected", "file_selected")
 
 func _on_CustomEventsFolder_selected(path, target):
-	print("set path", path)
 	DialogicResources.set_settings_value("editor", 'custom_events_path', path)
 	nodes['custom_events_folder_button'].text = DialogicResources.get_filename_from_path(path)
 	editor_reference.get_node("MainPanel/TimelineEditor").update_custom_events()
