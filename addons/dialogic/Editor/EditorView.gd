@@ -138,7 +138,6 @@ func _on_RemoveConfirmation_confirmed(what: String = ''):
 
 # Godot dialog
 func godot_dialog(filter, mode = EditorFileDialog.MODE_OPEN_FILE):
-	print("hi")
 	editor_file_dialog.mode = mode
 	editor_file_dialog.clear_filters()
 	editor_file_dialog.popup_centered_ratio(0.75)
@@ -147,30 +146,26 @@ func godot_dialog(filter, mode = EditorFileDialog.MODE_OPEN_FILE):
 
 
 func godot_dialog_connect(who, method_name, signal_name = "file_selected"):
-	print("ho")
 	# You can pass multiple signal_name using an array
 	
 	# Checking if previous connections exist, if they do, disconnect them.
 	for test_signal in editor_file_dialog.get_signal_list():
-		print("di")
+		if not file_picker_data['node'] or not is_instance_valid(file_picker_data['node']):
+			continue
+		
 		if editor_file_dialog.is_connected(
 			test_signal.name,
 			file_picker_data['node'],
 			file_picker_data['method']
 		):
-				print("zu")
 				editor_file_dialog.disconnect(
 					test_signal.name,
 					file_picker_data['node'],
 					file_picker_data['method']
 				)
-		else:
-			print("lo")
-	print("bo")
 	# Connect new signals
 	for new_signal_name in signal_name if typeof(signal_name) == TYPE_ARRAY else [signal_name]:
 		editor_file_dialog.connect(new_signal_name, who, method_name, [who])
 	
 	file_picker_data['method'] = method_name
 	file_picker_data['node'] = who
-	print("lu")

@@ -67,7 +67,7 @@ func _on_audio_picker_audio_loaded(index:int) -> void:
 		event_data['voice_data'] = {}
 	
 	event_data['voice_data'][str(index)] = data_loaded
-	print(event_data)
+	
 	#load the data
 	load_data(event_data)
 	

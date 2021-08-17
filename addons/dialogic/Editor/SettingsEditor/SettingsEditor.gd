@@ -141,7 +141,6 @@ func _on_delay_options_text_changed(text):
 
 
 func _on_item_toggled(value: bool, section: String, key: String):
-	print("set")
 	set_value(section, key, value)
 
 
@@ -201,7 +200,6 @@ func _on_CustomEventsFolder_pressed():
 	#editor_reference.godot_dialog_connect(self, "_on_CustomEventsFolder_selected", "file_selected")
 
 func _on_CustomEventsFolder_selected(path, target):
-	print("set path", path)
 	DialogicResources.set_settings_value("editor", 'custom_events_path', path)
 	nodes['custom_events_folder_button'].text = DialogicResources.get_filename_from_path(path)
 	editor_reference.get_node("MainPanel/TimelineEditor").update_custom_events()
