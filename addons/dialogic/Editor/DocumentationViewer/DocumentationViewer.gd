@@ -1,7 +1,6 @@
 tool
 extends Control
 
-var editor_reference setget set_editor_reference
 onready var master_tree = get_node('../MasterTreeContainer/MasterTree')
 var current_page : String = ""
 
@@ -19,11 +18,11 @@ func _ready():
 	$HBoxContainer/Next.icon = get_icon("Forward", "EditorIcons")
 	
 	set("custom_styles/panel", get_stylebox("Background", "EditorStyles"))
-	#get('custom_styles/panel').content_margin_left = 0
+	
+	var _scale = get_constant("inspector_margin", "Editor")
+	_scale = _scale * 0.125
+	nodes['DocsViewer'].MarkdownParser.editor_scale = _scale
 
-func set_editor_reference(the_editor_reference):
-	editor_reference = the_editor_reference
-	nodes['DocsViewer'].MarkdownParser.editor_scale = editor_reference.editor_interface.get_editor_scale()
 
 func load_page(page):
 	if current_page: 
@@ -34,6 +33,7 @@ func load_page(page):
 	nodes['DocsViewer'].load_page(current_page)
 	$HBoxContainer/Next.disabled = true
 
+
 func open_previous_page():
 	if len(previous_pages):
 		next_pages.push_front(current_page)
@@ -41,7 +41,8 @@ func open_previous_page():
 		nodes['DocsViewer'].load_page(current_page)
 		$HBoxContainer/Previous.disabled = len(previous_pages) == 0
 		$HBoxContainer/Next.disabled = false
-	
+
+
 func open_next_page():
 	if len(next_pages):
 		previous_pages.push_back(current_page)
@@ -49,9 +50,11 @@ func open_next_page():
 		nodes['DocsViewer'].load_page(current_page)
 		$HBoxContainer/Next.disabled = len(next_pages) == 0
 		$HBoxContainer/Previous.disabled = false
-	
+
+
 func toggle_editing():
 	nodes['DocsViewer'].toggle_editing()
+
 
 func _on_DocsViewer_open_non_html_link(link, section):
 	#print(link, " ", section)

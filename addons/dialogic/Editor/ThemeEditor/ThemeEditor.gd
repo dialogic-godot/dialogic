@@ -111,6 +111,9 @@ onready var n : Dictionary = {
 	'button_offset_y': $"VBoxContainer/TabContainer/Choice Buttons/Column2/GridContainer/HBoxContainer/TextOffsetV",
 	'button_separation': $"VBoxContainer/TabContainer/Choice Buttons/Column2/GridContainer/VerticalSeparation",
 	
+	'button_layout': $"VBoxContainer/TabContainer/Choice Buttons/Column2/GridContainer/Layout",
+	
+	
 	# Button modifiers (Inherited scenes)
 	'button_normal': $"VBoxContainer/TabContainer/Choice Buttons/Column/TabContainer/Normal",
 	'button_hover': $"VBoxContainer/TabContainer/Choice Buttons/Column/TabContainer/Hover",
@@ -210,6 +213,8 @@ func _ready() -> void:
 	n['button_hover'].connect('style_modified', self, '_on_choice_style_modified')
 	n['button_pressed'].connect('style_modified', self, '_on_choice_style_modified')
 	n['button_disabled'].connect('style_modified', self, '_on_choice_style_modified')
+	
+	n['button_layout'].connect('item_selected', self, '_on_button_layout_selected')
 	
 	n['name_position'].text = 'Left'
 	n['name_position'].connect('item_selected', self, '_on_name_position_selected')
@@ -311,6 +316,8 @@ func load_theme(filename):
 	n['button_fixed'].pressed = theme.get_value('buttons', 'fixed', false)
 	n['button_fixed_x'].value = theme.get_value('buttons', 'fixed_size', Vector2(130,40)).x
 	n['button_fixed_y'].value = theme.get_value('buttons', 'fixed_size', Vector2(130,40)).y
+	
+	n['button_layout'].selected = theme.get_value('buttons', 'layout', 0) 
 	
 	
 	
@@ -1014,6 +1021,7 @@ func _on_TypingAudioBusButton_item_selected(index):
 		return
 	DialogicResources.set_theme_value(current_theme, 'typing_sfx', 'audio_bus', AudioServer.get_bus_name(index))
 
+
 func _on_bus_layout_changed():
 	update_audio_bus_option_buttons()
 
@@ -1026,3 +1034,10 @@ func update_audio_bus_option_buttons():
 			n['typing_sfx_audio_bus'].add_item(bus_name)
 			if bus_name == theme.get_value('typing_sfx', 'audio_bus', "Master"):
 				n['typing_sfx_audio_bus'].select(i)
+
+
+func _on_button_layout_selected(index):
+	if loading:
+		return
+	DialogicResources.set_theme_value(current_theme, 'buttons', 'layout', index)
+	_on_PreviewButton_pressed() # Refreshing the preview

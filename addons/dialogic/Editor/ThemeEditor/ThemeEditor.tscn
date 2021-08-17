@@ -1053,7 +1053,6 @@ allow_greater = true
 allow_lesser = true
 
 [node name="Choice Buttons" type="HBoxContainer" parent="VBoxContainer/TabContainer"]
-visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 4.0
@@ -1123,7 +1122,7 @@ margin_bottom = 488.0
 
 [node name="Column2" type="VBoxContainer" parent="VBoxContainer/TabContainer/Choice Buttons"]
 margin_left = 404.0
-margin_right = 713.0
+margin_right = 704.0
 margin_bottom = 488.0
 size_flags_vertical = 3
 __meta__ = {
@@ -1131,27 +1130,27 @@ __meta__ = {
 }
 
 [node name="SectionTitle" parent="VBoxContainer/TabContainer/Choice Buttons/Column2" instance=ExtResource( 3 )]
-margin_right = 309.0
+margin_right = 300.0
 text = "Placement"
 
 [node name="GridContainer" type="GridContainer" parent="VBoxContainer/TabContainer/Choice Buttons/Column2"]
 margin_top = 26.0
-margin_right = 309.0
-margin_bottom = 106.0
+margin_right = 300.0
+margin_bottom = 130.0
 size_flags_horizontal = 3
 custom_constants/hseparation = 10
 columns = 2
 
 [node name="Label6" type="Label" parent="VBoxContainer/TabContainer/Choice Buttons/Column2/GridContainer"]
 margin_top = 5.0
-margin_right = 119.0
+margin_right = 110.0
 margin_bottom = 19.0
 size_flags_horizontal = 3
 text = "Box padding"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/TabContainer/Choice Buttons/Column2/GridContainer"]
-margin_left = 129.0
-margin_right = 309.0
+margin_left = 120.0
+margin_right = 300.0
 margin_bottom = 24.0
 
 [node name="TextOffsetV" type="SpinBox" parent="VBoxContainer/TabContainer/Choice Buttons/Column2/GridContainer/HBoxContainer"]
@@ -1173,14 +1172,14 @@ prefix = "H"
 
 [node name="Label" type="Label" parent="VBoxContainer/TabContainer/Choice Buttons/Column2/GridContainer"]
 margin_top = 33.0
-margin_right = 119.0
+margin_right = 110.0
 margin_bottom = 47.0
 text = "Fixed button size"
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer/TabContainer/Choice Buttons/Column2/GridContainer"]
-margin_left = 129.0
+margin_left = 120.0
 margin_top = 28.0
-margin_right = 309.0
+margin_right = 300.0
 margin_bottom = 52.0
 
 [node name="FixedSize" type="CheckBox" parent="VBoxContainer/TabContainer/Choice Buttons/Column2/GridContainer/HBoxContainer2"]
@@ -1205,27 +1204,43 @@ allow_lesser = true
 
 [node name="Label2" type="Label" parent="VBoxContainer/TabContainer/Choice Buttons/Column2/GridContainer"]
 margin_top = 61.0
-margin_right = 119.0
+margin_right = 110.0
 margin_bottom = 75.0
-text = "Vertical separation"
+text = "Separation"
 
 [node name="VerticalSeparation" type="SpinBox" parent="VBoxContainer/TabContainer/Choice Buttons/Column2/GridContainer"]
-margin_left = 129.0
+margin_left = 120.0
 margin_top = 56.0
-margin_right = 309.0
+margin_right = 300.0
 margin_bottom = 80.0
 value = 5.0
 rounded = true
 allow_lesser = true
 
+[node name="Label3" type="Label" parent="VBoxContainer/TabContainer/Choice Buttons/Column2/GridContainer"]
+margin_top = 87.0
+margin_right = 110.0
+margin_bottom = 101.0
+text = "Layout"
+
+[node name="Layout" type="OptionButton" parent="VBoxContainer/TabContainer/Choice Buttons/Column2/GridContainer"]
+margin_left = 120.0
+margin_top = 84.0
+margin_right = 300.0
+margin_bottom = 104.0
+size_flags_horizontal = 3
+text = "Vertical"
+items = [ "Vertical", null, false, 0, null, "Horizontal", null, false, 1, null ]
+selected = 0
+
 [node name="VSeparator2" type="VSeparator" parent="VBoxContainer/TabContainer/Choice Buttons"]
-margin_left = 723.0
-margin_right = 727.0
+margin_left = 714.0
+margin_right = 718.0
 margin_bottom = 488.0
 
 [node name="Column3" type="VBoxContainer" parent="VBoxContainer/TabContainer/Choice Buttons"]
-margin_left = 737.0
-margin_right = 1007.0
+margin_left = 728.0
+margin_right = 998.0
 margin_bottom = 488.0
 rect_min_size = Vector2( 270, 0 )
 size_flags_vertical = 3
@@ -1545,6 +1560,7 @@ __meta__ = {
 }
 
 [node name="Audio" type="HBoxContainer" parent="VBoxContainer/TabContainer"]
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 4.0
