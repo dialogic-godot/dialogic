@@ -8,6 +8,7 @@ onready var value_editor = get_node('../../ValueEditor')
 onready var glossary_entry_editor = get_node('../../GlossaryEntryEditor')
 onready var settings_editor = get_node('../../SettingsEditor')
 onready var theme_editor = get_node('../../ThemeEditor')
+onready var documentation_viewer = get_node('../../DocumentationViewer')
 onready var empty_editor = get_node('../../Empty')
 onready var filter_tree_edit = get_node('../FilterMasterTreeEdit')
 
@@ -18,12 +19,14 @@ var character_icon
 var theme_icon
 var definition_icon
 var glossary_icon
+var documentation_icon
 
 var timelines_tree
 var characters_tree
 var definitions_tree
 var themes_tree
 var settings_tree
+var documentation_tree
 
 
 var item_path_before_edit = ""
@@ -103,6 +106,12 @@ func _ready():
 	settings_tree.set_icon(0, get_icon("GDScript", "EditorIcons"))
 	settings_tree.set_metadata(0, {'editor': 'Settings'})
 	
+	documentation_tree = tree.create_item(root)
+	documentation_tree.set_text(0, "Help")
+	documentation_tree.set_icon(0, get_icon("HelpSearch", "EditorIcons"))
+	documentation_tree.set_metadata(0, {'editor': 'Documentation Root', 'name':'Start', 'path':'Welcome.md'})
+	
+	
 	# creates the context menus
 	create_rmb_context_menus()
 	
@@ -117,6 +126,9 @@ func _ready():
 	
 	# build all tree parts
 	build_full_tree()
+	
+	# Adding docs
+	build_documentation()
 	
 	# Default empty screen.
 	hide_all_editors() 
@@ -268,9 +280,17 @@ func build_themes(selected_item: String=''):
 
 
 func _on_item_collapsed(item: TreeItem):
-	if filter_tree_term.empty() and item != null and 'Root' in item.get_metadata(0)['editor']:
+	if filter_tree_term.empty() and item != null and 'Root' in item.get_metadata(0)['editor'] and not 'Documentation' in item.get_metadata(0)['editor']:
 		DialogicUtil.set_folder_meta(get_item_folder(item, ''), 'folded', item.collapsed)
 
+func build_documentation(selected_item: String=''):
+	var child = documentation_tree.get_children()
+	while child:
+		child.call_recursive("call_deferred", "free")
+		child = child.get_next()
+	$DocsTreeHelper.build_documentation_tree(self, documentation_tree, {'editor':'Documentation Root', 'editable':'false'}, {'editor':'Documentation', 'editable':'false'}, filter_tree_term)
+	call_deferred("update")
+	
 ## *****************************************************************************
 ##						 OPENING EDITORS
 ## *****************************************************************************
@@ -301,6 +321,9 @@ func _on_item_selected():
 		'Settings':
 			settings_editor.update_data()
 			show_settings_editor()
+		'Documentation', 'Documentation Root':
+			documentation_viewer.load_page(metadata['path'])
+			show_documentatio_editor()
 		_:
 			hide_all_editors()
 
@@ -329,15 +352,24 @@ func show_theme_editor():
 	hide_editors()
 	theme_editor.visible = true
 
+
 func show_settings_editor():
 	emit_signal("editor_selected", 'theme')
 	hide_editors()
 	settings_editor.visible = true
 
+
+func show_documentatio_editor():
+	emit_signal("editor_selected", "documentation")
+	hide_editors()
+	documentation_viewer.visible = true
+
+
 func hide_all_editors():
 	emit_signal("editor_selected", 'none')
 	hide_editors()
 	empty_editor.visible = true
+
 
 func hide_editors():
 	character_editor.visible = false
@@ -346,6 +378,7 @@ func hide_editors():
 	glossary_entry_editor.visible = false
 	theme_editor.visible = false
 	settings_editor.visible = false
+	documentation_viewer.visible = false
 	empty_editor.visible = false
 
 ## *****************************************************************************
@@ -410,17 +443,28 @@ func create_rmb_context_menus():
 	add_child(definition_folder_popup)
 	rmb_popup_menus["Definition Root"] = definition_folder_popup
 	
+	var documentation_folder_popup = PopupMenu.new()
+	documentation_folder_popup.add_icon_item(get_icon("Edit", "EditorIcons") ,'Toggle Editing Tools')
+	add_child(documentation_folder_popup)
+	rmb_popup_menus["Documentation Root"] = documentation_folder_popup
+	
+	var documentation_popup = PopupMenu.new()
+	documentation_popup.add_icon_item(get_icon("Edit", "EditorIcons") ,'Toggle Editing Tools')
+	add_child(documentation_popup)
+	rmb_popup_menus["Documentation"] = documentation_popup
 	
 	# Connecting context menus
 	timeline_popup.connect('id_pressed', self, '_on_TimelinePopupMenu_id_pressed')
 	character_popup.connect('id_pressed', self, '_on_CharacterPopupMenu_id_pressed')
 	theme_popup.connect('id_pressed', self, '_on_ThemePopupMenu_id_pressed')
 	definition_popup.connect('id_pressed', self, '_on_DefinitionPopupMenu_id_pressed')
-	
+	documentation_popup.connect('id_pressed', self, '_on_DocumentationPopupMenu_id_pressed')
+		
 	timeline_folder_popup.connect('id_pressed', self, '_on_TimelineRootPopupMenu_id_pressed')
 	character_folder_popup.connect('id_pressed', self, '_on_CharacterRootPopupMenu_id_pressed')
 	theme_folder_popup.connect('id_pressed', self, '_on_ThemeRootPopupMenu_id_pressed')
 	definition_folder_popup.connect('id_pressed', self, '_on_DefinitionRootPopupMenu_id_pressed')
+	documentation_folder_popup.connect('id_pressed', self, '_on_DocumentationPopupMenu_id_pressed')
 
 func _on_item_rmb_selected(position):
 	var item = get_selected().get_metadata(0)
@@ -481,7 +525,7 @@ func _on_ThemePopupMenu_id_pressed(id):
 	if id == 1:
 		var filename = editor_reference.get_node('MainPanel/MasterTreeContainer/MasterTree').get_selected().get_metadata(0)['file']
 		if (filename.begins_with('theme-')):
-			editor_reference.theme_editor.duplicate_theme(filename)
+			theme_editor.duplicate_theme(filename)
 	if id == 2:
 		editor_reference.popup_remove_confirmation('Theme')
 
@@ -495,7 +539,7 @@ func _on_DefinitionPopupMenu_id_pressed(id):
 			editor_reference.popup_remove_confirmation('Value')
 		elif glossary_entry_editor.visible:
 			editor_reference.popup_remove_confirmation('GlossaryEntry')
-			
+	
 ## FOLDER POPUPS
 
 # Timeline Folder context menu
@@ -549,6 +593,9 @@ func _on_ThemeRootPopupMenu_id_pressed(id):
 			return
 		editor_reference.get_node('RemoveFolderConfirmation').popup_centered()
 
+func _on_DocumentationPopupMenu_id_pressed(id):
+	if id == 0: # edit text toggled
+		documentation_viewer.toggle_editing()
 ## *****************************************************************************
 ##						 CREATING AND REMOVING
 ## *****************************************************************************
@@ -738,7 +785,7 @@ func _on_autosave_timeout():
 	save_current_resource()
 
 func save_current_resource():
-	if editor_reference.visible: #Only save if the editor is open
+	if editor_reference and editor_reference.visible: #Only save if the editor is open
 		var item: TreeItem = get_selected()
 		var metadata: Dictionary
 		if item != null:
@@ -776,6 +823,9 @@ func _on_filter_tree_edit_changed(value):
 		build_full_tree(get_selected().get_metadata(0).get('file', ''))
 	else:
 		build_full_tree()
+	
+	# This was merged, not sure if it is properly placed
+	build_documentation()
 
 
 ## *****************************************************************************
@@ -833,3 +883,7 @@ func select_timeline_item(timeline_name):
 	hide_all_editors()
 	pass
 
+
+func select_documentation_item(docs_page_path):
+	if not $DocsTreeHelper.search_and_select_docs(documentation_tree, docs_page_path):
+		hide_all_editors()

@@ -1,6 +1,8 @@
 tool
 extends ScrollContainer
 
+var editor_reference
+
 onready var nodes = {
 	'themes': $VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer/HBoxContainer/ThemeOptionButton,
 	'advanced_themes': $VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer/HBoxContainer2/AdvancedThemes,
@@ -19,7 +21,8 @@ onready var nodes = {
 	'delay_after_options': $VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer/HBoxContainer/LineEdit,
 	'default_action_key': $VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer/HBoxContainer2/DefaultActionKey,
 	'canvas_layer' : $VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer/HBoxContainer3/CanvasLayer,
-}
+
+	'use_custom_events':$VBoxContainer/HBoxContainer3/VBoxContainer2/TimelineSection/CustomEvents/CustomEvents}
 
 var THEME_KEYS := [
 	'advanced_themes',
@@ -48,6 +51,10 @@ var SAVING_KEYS := [
 	'save_definitions_on_end',
 	]
 
+var EDITOR_KEYS := [
+	'use_custom_events'
+]
+
 func _ready():
 	update_bus_selector()
 	
@@ -72,13 +79,17 @@ func _ready():
 	for k in SAVING_KEYS:
 		nodes[k].connect('toggled', self, '_on_item_toggled', ['saving', k])
 
+	for k in EDITOR_KEYS:
+		nodes[k].connect('toggled', self, '_on_item_toggled', ['editor', k])
 
 func update_data():
 	var settings = DialogicResources.get_settings_config()
+	nodes['canvas_layer'].text = settings.get_value("theme", "canvas_layer", '1')
 	refresh_themes(settings)
 	load_values(settings, "dialog", DIALOG_KEYS)
 	load_values(settings, "saving", SAVING_KEYS)
 	load_values(settings, "input", INPUT_KEYS)
+	load_values(settings, 'editor', EDITOR_KEYS)
 	select_bus(settings.get_value("dialog", 'text_event_audio_default_bus', "Master"))
 
 func load_values(settings: ConfigFile, section: String, key: Array):
@@ -90,7 +101,7 @@ func load_values(settings: ConfigFile, section: String, key: Array):
 				if k == 'default_action_key':
 					nodes['default_action_key'].text = settings.get_value(section, k)
 				else:
-					nodes[k].pressed = settings.get_value(section, k)
+					nodes[k].pressed = settings.get_value(section, k, false)
 
 
 func refresh_themes(settings: ConfigFile):
@@ -130,6 +141,7 @@ func _on_delay_options_text_changed(text):
 
 
 func _on_item_toggled(value: bool, section: String, key: String):
+	print("set")
 	set_value(section, key, value)
 
 
@@ -181,3 +193,20 @@ func select_bus(text):
 func _on_text_audio_default_bus_item_selected(index):
 	var text = nodes['text_event_audio_default_bus'].get_item_text(index)
 	set_value('dialog', 'text_event_audio_default_bus', text)
+
+
+func _on_CustomEventsFolder_pressed():
+	editor_reference.godot_dialog("", EditorFileDialog.MODE_OPEN_DIR)
+	editor_reference.godot_dialog_connect(self, "_on_CustomEventsFolder_selected", "dir_selected")
+	#editor_reference.godot_dialog_connect(self, "_on_CustomEventsFolder_selected", "file_selected")
+
+func _on_CustomEventsFolder_selected(path, target):
+	print("set path", path)
+	DialogicResources.set_settings_value("editor", 'custom_events_path', path)
+	nodes['custom_events_folder_button'].text = DialogicResources.get_filename_from_path(path)
+	editor_reference.get_node("MainPanel/TimelineEditor").update_custom_events()
+
+
+
+func _on_RefreshCustomEvents_pressed():
+	editor_reference.get_node("MainPanel/TimelineEditor").update_custom_events()
