@@ -13,7 +13,7 @@ var waiting: bool = false
 var preview: bool = false
 var definitions: Dictionary = {}
 var definition_visible: bool = false
-var while_show_up_animation: bool = false
+var while_dialog_animation: bool = false
 
 var settings: ConfigFile
 var current_theme: ConfigFile
@@ -39,8 +39,11 @@ signal dialogic_signal(value)
 var dialog_resource
 var characters
 
+var custom_events = {}
+
 onready var ChoiceButton = load("res://addons/dialogic/Nodes/ChoiceButton.tscn")
 onready var Portrait = load("res://addons/dialogic/Nodes/Portrait.tscn")
+onready var Background = load("res://addons/dialogic/Nodes/Background.tscn")
 var dialog_script: Dictionary = {}
 var questions #for keeping track of the questions answered
 
@@ -52,6 +55,7 @@ func _ready():
 	
 	# Loading the config files
 	load_config_files()
+	update_custom_events()
 	
 	# Checking if the dialog should read the code from a external file
 	if not timeline.empty():
@@ -94,17 +98,60 @@ func _ready():
 
 
 func load_config_files():
+	# loads the definitions, themes and settings
+	
+	# defintiions
 	if not Engine.is_editor_hint():
 		if reset_saves:
 			DialogicUtil.get_singleton('DialogicSingleton', self).init(reset_saves)
 		definitions = DialogicSingleton.get_definitions()
 	else:
 		definitions = DialogicResources.get_default_definitions()
+	
+	# settings
 	settings = DialogicResources.get_settings_config()
+	
+	# theme
 	var theme_file = 'res://addons/dialogic/Editor/ThemeEditor/default-theme.cfg'
 	if settings.has_section('theme'):
 		theme_file = settings.get_value('theme', 'default')
 	current_theme = load_theme(theme_file)
+
+
+func update_custom_events() -> void:
+	custom_events = {}
+	if not DialogicResources.get_settings_config().get_value('editor', 'use_custom_events', false):
+		return 
+	
+	var path:String = DialogicResources.get_working_directories()["CUSTOM_EVENTS_DIR"]
+	
+	var dir = Directory.new()
+	if dir.open(path) == OK:
+		dir.list_dir_begin()
+		var file_name = dir.get_next()
+		# goes through all the folders in the custom events folder
+		while file_name != "":
+			# if it found a folder
+			if dir.current_is_dir() and not file_name in ['.', '..']:
+				
+				# look through that folder
+				#print("Found custom event folder: " + file_name)
+				var event = load(path.plus_file(file_name).plus_file('EventBlock.tscn')).instance()
+				if event:
+					custom_events[event.event_data['event_id']] = {
+						'event_script' :path.plus_file(file_name).plus_file('event_'+event.event_data['event_id']+'.gd'),
+						'event_name' : event.event_name,
+					}
+					event.queue_free()
+				else:
+					print("[D] An error occurred when trying to access a custom event.")
+
+				
+			else:
+				pass # files in the directory are ignored
+			file_name = dir.get_next()
+	else:
+		print("[D] An error occurred when trying to access the custom event folder.")
 
 
 func resize_main():
@@ -115,13 +162,9 @@ func resize_main():
 		set_global_position(Vector2(0,0))
 		reference = get_viewport().get_visible_rect().size
 
-	$Options.rect_position.x = (reference.x / 2) - ($Options.rect_size.x / 2)
-	$Options.rect_position.y = (reference.y / 2) - ($Options.rect_size.y / 2)
-	
 	$TextBubble.rect_position.x = (reference.x / 2) - ($TextBubble.rect_size.x / 2)
 	if current_theme != null:
 		$TextBubble.rect_position.y = (reference.y) - ($TextBubble.rect_size.y) - current_theme.get_value('box', 'bottom_gap', 40)
-	
 	
 	var pos_x = 0
 	if current_theme.get_value('background', 'full_width', false):
@@ -162,34 +205,43 @@ func load_dialog():
 			dialog_script = parse_characters(dialog_script)
 	else:
 		dialog_script = parse_characters(dialog_script)
-	
 	dialog_script = parse_text_lines(dialog_script)
 	dialog_script = parse_branches(dialog_script)
 	return dialog_script
 
 
 func parse_characters(dialog_script):
-	var names = DialogicUtil.get_character_list()
-	# I should use regex here, but this is way easier :)
-	if names.size() > 0:
-		var index = 0
-		for t in dialog_script['events']:
-			if t.has('text'):
-				for n in names:
-					var name_end_check = [' ', ',', '.', '?', '!', "'"]
-					if n.has('name'):
-						for c in name_end_check:
-							dialog_script['events'][index]['text'] = t['text'].replace(n['name'] + c,
-								'[color=#' + n['color'].to_html() + ']' + n['name'] + '[/color]' + c
-							)
-						if n.has('nickname') and n['nickname'] != '':
-							var nicknames_array = n['nickname'].split(",", true, 0)
-							for c in name_end_check:
-								for nn in nicknames_array:
-									dialog_script['events'][index]['text'] = t['text'].replace(nn + c,
-										'[color=#' + n['color'].to_html() + ']' + nn + '[/color]' + c
-									)
-			index += 1
+	var characters = DialogicUtil.get_character_list()
+
+	var event_index := 0
+	for event in dialog_script['events']:
+		# if this is a text or question event
+		if event.get('event_id') in ['dialogic_001', 'dialogic_010']:
+			var text :String = event.get({'dialogic_001':'text', 'dialogic_010':'question'}[event.get('event_id')], '')
+			
+			for character in characters:
+				# check whether to use the name or the display name
+				var char_names = [character.get('name')]
+				if character.get('data', {}).get('display_name_bool', false):
+					char_names.append(character.get('display_name'))
+				if character.get('data', {}).get('nickname_bool', false):
+					for nickname in character.get('data').get('nickname', '').split(',', true, 0):
+						char_names.append(nickname.strip_edges())
+				
+				var regex_thing = str(char_names).replace("[", "(").replace("]", ")").replace(", ", "|")+'\\b'
+				var regex = RegEx.new()
+				regex.compile(regex_thing)
+				
+				var counter = 0
+				for result in regex.search_all(text):
+					text = text.insert(result.get_start()+((9+8+8)*counter), '[color=#' + character['color'].to_html() + ']')
+					text = text.insert(result.get_end()+9+8+((9+8+8)*counter), '[/color]')
+					result = regex.search(text)
+					counter += 1
+				dialog_script['events'][event_index][{'dialogic_001':'text', 'dialogic_010':'question'}[event.get('event_id')]] = text
+		
+		event_index += 1
+
 	return dialog_script
 
 
@@ -216,14 +268,21 @@ func parse_text_lines(unparsed_dialog_script: Dictionary) -> Dictionary:
 				pass
 			elif '\n' in event['text'] and preview == false and split_new_lines == true:
 				var lines = event['text'].split('\n')
+				var counter = 0 
 				for line in lines:
 					if not line.empty():
-						new_events.append({
+						var n_event = {
 							'event_id':'dialogic_001',
 							'text': line,
 							'character': event['character'],
-							'portrait': event['portrait']
-						})
+							'portrait': event['portrait'],
+						}
+						#assigning voices to the new events 
+						if event.has('voice_data'):
+							if event['voice_data'].has(str(counter)):
+								n_event['voice_data'] = {'0':event['voice_data'][str(counter)]}
+						new_events.append(n_event)
+					counter += 1 
 			else:
 				new_events.append(event)
 		else:
@@ -346,10 +405,10 @@ func _insert_glossary_definitions(text: String):
 
 func _process(delta):
 	$TextBubble/NextIndicatorContainer/NextIndicator.visible = finished
-	if $Options.get_child_count() > 0:
+	if $Options/ButtonContainer.get_child_count() > 0:
 		$TextBubble/NextIndicatorContainer/NextIndicator.visible = false # Hide if question 
 		if waiting_for_answer and Input.is_action_just_released(input_next):
-			$Options.get_child(0).grab_focus()
+			$Options/ButtonContainer.get_child(0).grab_focus()
 	
 	# Hide if no input is required
 	if current_event.has('text'):
@@ -357,7 +416,7 @@ func _process(delta):
 			$TextBubble/NextIndicatorContainer/NextIndicator.visible = false
 	
 	# Hide if fading in
-	if while_show_up_animation:
+	if while_dialog_animation:
 		$TextBubble/NextIndicatorContainer/NextIndicator.visible = false
 
 
@@ -366,8 +425,11 @@ func _input(event: InputEvent) -> void:
 		if not $TextBubble.is_finished():
 			# Skip to end if key is pressed during the text animation
 			$TextBubble.skip()
+			# Cut the voice 
+			$FX/CharacterVoice.stop_voice()
 		else:
-			if waiting_for_answer == false and waiting_for_input == false and while_show_up_animation == false:
+			if waiting_for_answer == false and waiting_for_input == false and while_dialog_animation == false:
+				$FX/CharacterVoice.stop_voice() # stop the current voice as well 
 				_load_next_event()
 		if settings.has_section_key('dialog', 'propagate_input'):
 			var propagate_input: bool = settings.get_value('dialog', 'propagate_input')
@@ -516,6 +578,23 @@ func get_character(character_id):
 	return {}
 
 
+func handle_voice(event):
+	var settings_file = DialogicResources.get_settings_config()
+	if not settings_file.get_value('dialog', 'enable_voices', false):
+		return
+	# In game only 
+	if Engine.is_editor_hint():
+		return
+	
+	if event.has('voice_data'):
+		var voice_data = event['voice_data']
+		if voice_data.has('0'):
+			$FX/CharacterVoice.play_voice(voice_data['0'])
+			return
+	
+	$FX/CharacterVoice.stop_voice()
+
+
 func event_handler(event: Dictionary):
 	# Handling an event and updating the available nodes accordingly.
 	$TextBubble.reset()
@@ -534,6 +613,8 @@ func event_handler(event: Dictionary):
 				var character_data = get_character(event['character'])
 				update_name(character_data)
 				grab_portrait_focus(character_data, event)
+			#voice 
+			handle_voice(event)
 			update_text(event['text'])
 		# Join event
 		'dialogic_002':
@@ -601,6 +682,8 @@ func event_handler(event: Dictionary):
 				var character_data = get_character(event['character'])
 				update_name(character_data)
 				grab_portrait_focus(character_data, event)
+			#voice 
+			handle_voice(event)
 			update_text(event['question'])
 		# Choice event
 		'dialogic_011':
@@ -641,7 +724,7 @@ func event_handler(event: Dictionary):
 				operation = event["operation"]
 			var value = event['set_value']
 			if event.get('set_random', false):
-				value = str(randi()%int(event.get("random_upper_limit", 100))+event.get('random_lower_limit', 0))
+				value = str(randi()%int(event.get("random_upper_limit", 100)-event.get('random_lower_limit', 0))+event.get('random_lower_limit', 0))
 			DialogicUtil.get_singleton('DialogicSingleton', self).set_variable_from_id(event['definition'], value, operation)
 			_load_next_event()
 		
@@ -653,6 +736,8 @@ func event_handler(event: Dictionary):
 		# Change Backround event
 		'dialogic_021':
 			emit_signal("event_start", "background", event)
+			var fade_time = event.get('fade_duration', 1)
+			var value = event.get('background', '')
 			var background = get_node_or_null('Background')
 			current_background = event['background']
 			if event['background'] == '' and background != null:
@@ -677,11 +762,16 @@ func event_handler(event: Dictionary):
 						c.queue_free()
 				if (event['background'].ends_with('.tscn')):
 					var bg_scene = load(event['background'])
-					if (bg_scene):
-						bg_scene = bg_scene.instance()
-						background.add_child(bg_scene)
-				elif (event['background'] != ''):
-					background.texture = load(event['background'])
+					bg_scene = bg_scene.instance()
+					background.modulate = Color(1,1,1,0)
+					background.fade_in(fade_time)
+					background.add_child(bg_scene)
+				else:
+					background.texture = load(value)
+					background.create_tween()
+					background.fade_in(fade_time)
+				call_deferred('resize_main') # Executing the resize main to update the background size
+
 			_load_next_event()
 		# Close Dialog event
 		'dialogic_022':
@@ -689,6 +779,11 @@ func event_handler(event: Dictionary):
 			var transition_duration = event.get('transition_duration', 1.0)
 			transition_duration = transition_duration
 			close_dialog_event(transition_duration)
+			while_dialog_animation = true
+			var background = get_node_or_null('Background')
+			if background != null:
+				background.name = 'BackgroundFadingOut'
+				background.fade_out(transition_duration)
 		# Wait seconds event
 		'dialogic_023':
 			emit_signal("event_start", "wait", event)
@@ -763,6 +858,8 @@ func event_handler(event: Dictionary):
 			$TextBubble.visible = false
 			waiting = true
 			var target = get_node_or_null(event['call_node']['target_node_path'])
+			if not target:
+				target = get_tree().root.get_node_or_null(event['call_node']['target_node_path'])
 			var method_name = event['call_node']['method_name']
 			var args = event['call_node']['arguments']
 			if (not args is Array):
@@ -783,15 +880,24 @@ func event_handler(event: Dictionary):
 			$TextBubble.visible = true
 			_load_next_event()
 		_:
-			visible = false
-			dprint('[D] Other event. ', event)
+			if event['event_id'] in custom_events.keys():
+				dprint("[D] Custom event '"+custom_events[event['event_id']]['event_name']+"'")
+				
+				var handler = Node.new()
+				handler.set_script(load(custom_events[event['event_id']]['event_script']))
+				
+				handler.handle_event(event, self)
+				
+			else:
+				visible = false
+				dprint('[D] No event found. Recevied data: ', event)
 	
 	$Options.visible = waiting_for_answer
 
 
 func reset_options():
 	# Clearing out the options after one was selected.
-	for option in $Options.get_children():
+	for option in $Options/ButtonContainer.get_children():
 		option.queue_free()
 
 
@@ -827,6 +933,7 @@ func get_classic_choice_button(label: String):
 	var theme = current_theme
 	var button : Button = ChoiceButton.instance()
 	button.text = label
+	button.set_meta('input_next', input_next)
 	
 	# Removing the blue selected border
 	button.set('custom_styles/focus', StyleBoxEmpty.new())
@@ -839,7 +946,7 @@ func get_classic_choice_button(label: String):
 			button.rect_min_size = size
 			button.rect_size = size
 		
-		$Options.set('custom_constants/separation', theme.get_value('buttons', 'gap', 20))
+		$Options/ButtonContainer.set('custom_constants/separation', theme.get_value('buttons', 'gap', 20))
 		
 		# Different styles
 		var default_background = 'res://addons/dialogic/Example Assets/backgrounds/background-2.png'
@@ -916,11 +1023,11 @@ func add_choice_button(option: Dictionary):
 		button = get_classic_choice_button(option['label'])
 	
 	if use_native_choice_button() or use_custom_choice_button():
-		$Options.set('custom_constants/separation', current_theme.get_value('buttons', 'gap', 20))
-	$Options.add_child(button)
+		$Options/ButtonContainer.set('custom_constants/separation', current_theme.get_value('buttons', 'gap', 20))
+	$Options/ButtonContainer.add_child(button)
 	
 	# Selecting the first button added
-	if $Options.get_child_count() == 1:
+	if $Options/ButtonContainer.get_child_count() == 1:
 		button.grab_focus()
 	
 	button.set_meta('event_idx', option['event_idx'])
@@ -987,7 +1094,6 @@ func get_character_position(positions) -> String:
 
 
 func deferred_resize(current_size, result):
-	#var result = theme.get_value('box', 'size', Vector2(910, 167))
 	$TextBubble.rect_size = result
 	if current_size != $TextBubble.rect_size:
 		resize_main()
@@ -996,6 +1102,7 @@ func deferred_resize(current_size, result):
 func load_theme(filename):
 	var theme = DialogicResources.get_theme_config(filename)
 
+	
 	# Box size
 	call_deferred('deferred_resize', $TextBubble.rect_size, theme.get_value('box', 'size', Vector2(910, 167)))
 
@@ -1013,6 +1120,18 @@ func load_theme(filename):
 	$TextBubble.load_theme(theme)
 	
 	$DefinitionInfo.load_theme(theme)
+	
+	var button_container
+	if theme.get_value('buttons', 'layout', 0) == 0:
+		button_container = VBoxContainer.new()
+	else:
+		button_container = HBoxContainer.new()
+	button_container.name = 'ButtonContainer'
+	button_container.alignment = 1
+	for n in $Options.get_children():
+		n.free()
+	$Options.add_child(button_container)
+
 	return theme
 
 
@@ -1096,7 +1215,7 @@ func open_dialog_animation(transition_duration):
 	if transition_duration > 0:
 		$TextBubble.update_text('') # Clearing the text
 		$TextBubble.modulate = Color(1,1,1,0)
-		while_show_up_animation = true
+		while_dialog_animation = true
 		var tween = Tween.new()
 		add_child(tween)
 		tween.interpolate_property($TextBubble, "modulate",
@@ -1110,7 +1229,7 @@ func open_dialog_animation(transition_duration):
 
 func clean_fade_in_tween(object, key, node):
 	node.queue_free()
-	while_show_up_animation = false
+	while_dialog_animation = false
 	_init_dialog()
 
 
@@ -1137,7 +1256,7 @@ func _on_close_dialog_timeout():
 
 
 func _on_OptionsDelayedInput_timeout():
-	for button in $Options.get_children():
+	for button in $Options/ButtonContainer.get_children():
 		if button.is_connected("pressed", self, "answer_question") == false:
 			button.connect("pressed", self, "answer_question", [button, button.get_meta('event_idx'), button.get_meta('question_idx')])
 

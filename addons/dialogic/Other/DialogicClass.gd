@@ -50,19 +50,46 @@ static func start(timeline: String, reset_saves: bool=true, dialog_scene_path: S
 	
 	returned_dialog_node = dialog_node if not canvas_dialog_node else canvas_dialog_node
 	
-	if not timeline.empty():
+	var timelines = DialogicUtil.get_full_resource_folder_structure()['folders']['Timelines']
+	var parts = timeline.split('/', false)
+	if parts.size() > 1:
+		var current_data
+		var current_depth = 0
+		for p in parts:
+			if current_depth == 0:
+				# Starting the crawl
+				current_data = timelines['folders'][p]
+			elif current_depth == parts.size() - 1:
+				# The final destination
+				for t in DialogicUtil.get_timeline_list():
+					for f in current_data['files']:
+						if t['file'] == f && t['name'] == p:
+							dialog_node.timeline = t['file']
+							return returned_dialog_node
+			else:
+				# Still going deeper
+				current_data = current_data['folders'][p]
+			current_depth += 1
+	else:
+		# Searching for any timeline that could match that name
 		for t in DialogicUtil.get_timeline_list():
-			if t['name'] == timeline or t['file'] == timeline:
-				dialog_node.timeline = t['file']
-				return returned_dialog_node
+			if parts.size():
+				if t['name'] == parts[0]:
+					dialog_node.timeline = t['file']
+					return returned_dialog_node
+
+		# No file found. Show error
 		dialog_node.dialog_script = {
 			"events":[
 				{"event_id":'dialogic_001',
 				"character":"",
 				"portrait":"",
 				"text":"[Dialogic Error] Loading dialog [color=red]" + timeline + "[/color]. It seems like the timeline doesn't exists. Maybe the name is wrong?"
-				}]
+			}]
 		}
+		return returned_dialog_node
+
+	# Just in case everything else fails.
 	return returned_dialog_node
 
 
@@ -158,7 +185,7 @@ static func get_default_definitions() -> Dictionary:
 ## 
 ## @returns						Dictionary in the format {'variables': [], 'glossary': []}
 static func get_definitions() -> Dictionary:
-	return Engine.get_singleton('DialogicSingleton').get_definitions()
+	return DialogicSingleton.get_definitions()
 
 
 ## Save current definitions to the filesystem.
@@ -167,20 +194,20 @@ static func get_definitions() -> Dictionary:
 ## @returns						Error status, OK if all went well
 static func save_definitions():
 	# Always try to save as much as possible.
-	var err1 = Engine.get_singleton('DialogicSingleton').save_definitions()
-	var err2 = Engine.get_singleton('DialogicSingleton').save_state()
+	var err1 = DialogicSingleton.save_definitions()
+	var err2 = DialogicSingleton.save_state()
 
 	# Try to combine the two error states in a way that makes sense.
 	return err1 if err1 != OK else err2
 
 ## Sets whether to use Dialogic's built-in autosave functionality.
 static func set_autosave(save: bool) -> void:
-	Engine.get_singleton('DialogicSingleton').set_autosave(save);
+	DialogicSingleton.set_autosave(save);
 
 
 ## Gets whether to use Dialogic's built-in autosave functionality.
 static func get_autosave() -> bool:
-	return Engine.get_singleton('DialogicSingleton').get_autosave();
+	return DialogicSingleton.get_autosave();
 
 
 ## Resets data to default values. This is the same as calling start with reset_saves to true
@@ -197,10 +224,7 @@ static func reset_saves():
 ## @param name					The name of the variable to find.
 ## @returns						The variable's value as string, or an empty string if not found.
 static func get_variable(name: String) -> String:
-	if Engine.is_editor_hint():
-		return Engine.get_singleton('DialogicSingleton').get_variable(name)
-	else:
-		return DialogicSingleton.get_variable(name)
+	return DialogicSingleton.get_variable(name)
 
 
 ## Sets the value for the variable with the given name.
@@ -210,10 +234,7 @@ static func get_variable(name: String) -> String:
 ## @param name					The name of the variable to edit.
 ## @param value					The value to set the variable to.
 static func set_variable(name: String, value) -> void:
-	if Engine.is_editor_hint():
-		Engine.get_singleton('DialogicSingleton').set_variable(name, value)
-	else:
-		DialogicSingleton.set_variable(name, value)
+	DialogicSingleton.set_variable(name, value)
 
 
 ## Gets the glossary data for the definition with the given name.
@@ -224,10 +245,7 @@ static func set_variable(name: String, value) -> void:
 ## @returns						The glossary data as a Dictionary.
 ## 								A structure with empty strings is returned if the glossary was not found. 
 static func get_glossary(name: String) -> Dictionary:
-	if Engine.is_editor_hint():
-		return Engine.get_singleton('DialogicSingleton').get_glossary(name)
-	else:
-		return DialogicSingleton.get_glossary(name)
+	return DialogicSingleton.get_glossary(name)
 
 
 ## Sets the data for the glossary of the given name.
@@ -237,10 +255,7 @@ static func get_glossary(name: String) -> Dictionary:
 ## @param text					The text to show in the information box.
 ## @param extra					The extra information at the bottom of the box.
 static func set_glossary(name: String, title: String, text: String, extra: String) -> void:
-	if Engine.is_editor_hint():
-		Engine.get_singleton('DialogicSingleton').set_glossary(name, title, text, extra)
-	else:
-		DialogicSingleton.set_glossary(name, title, text, extra)
+	DialogicSingleton.set_glossary(name, title, text, extra)
 
 
 ## Gets the currently saved timeline.
@@ -249,10 +264,7 @@ static func set_glossary(name: String, title: String, text: String, extra: Strin
 ##
 ## @returns						The current timeline filename, or an empty string if none was saved.
 static func get_current_timeline() -> String:
-	if Engine.is_editor_hint():
-		return Engine.get_singleton('DialogicSingleton').get_current_timeline()
-	else:
-		return DialogicSingleton.get_current_timeline()
+	return DialogicSingleton.get_current_timeline()
 
 
 ## Sets the currently saved timeline.
@@ -260,9 +272,6 @@ static func get_current_timeline() -> String:
 ##
 ## @param timelinie						The new timeline to save.
 static func set_current_timeline(new_timeline: String) -> String:
-	if Engine.is_editor_hint():
-		return Engine.get_singleton('DialogicSingleton').set_current_timeline(new_timeline)
-	else:
 		return DialogicSingleton.set_current_timeline(new_timeline)
 
 
@@ -275,7 +284,12 @@ static func export() -> Dictionary:
 	if Engine.is_editor_hint():
 		return Engine.get_singleton('DialogicSingleton').export()
 	else:
-		return DialogicSingleton.export()
+		var cursed_singleton
+		if Engine.has_singleton('DialogicSingleton'):
+			cursed_singleton = Engine.get_singleton('DialogicSingleton')
+			return cursed_singleton.export()
+		else:
+			return {}
 
 
 ## Import a Dialogic state.
@@ -287,4 +301,7 @@ static func import(data: Dictionary) -> void:
 	if Engine.is_editor_hint():
 		Engine.get_singleton('DialogicSingleton').import(data)
 	else:
-		DialogicSingleton.import(data)
+		var cursed_singleton
+		if Engine.has_singleton('DialogicSingleton'):
+			cursed_singleton = Engine.get_singleton('DialogicSingleton')
+			cursed_singleton.import(data)

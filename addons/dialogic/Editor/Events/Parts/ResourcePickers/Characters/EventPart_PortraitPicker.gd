@@ -8,11 +8,24 @@ export (bool) var allow_definition := true
 
 ## node references
 onready var picker_menu = $HBox/MenuButton
+onready var preview = $Node2D/PreviewContainer
+onready var preview_title = preview.get_node("VBox/Title")
+onready var preview_texture = preview.get_node("VBox/TextureRect")
+
+var current_hovered = null
+
+var character_data = null
 
 # used to connect the signals
 func _ready():
 	picker_menu.get_popup().connect("index_pressed", self, '_on_PickerMenu_selected')
+	picker_menu.get_popup().connect("gui_input", self, "popup_gui_input")
+	picker_menu.get_popup().connect("mouse_exited", self, "mouse_exited_popup")
+	picker_menu.get_popup().connect("popup_hide", self, "mouse_exited_popup")
+	
 	picker_menu.connect("about_to_show", self, "_on_PickerMenu_about_to_show")
+	preview_title.set('custom_fonts/font', get_font("title", "EditorFonts"))
+	preview.set('custom_styles/panel', get_stylebox("panel", "PopupMenu"))
 
 # called by the event block
 func load_data(data:Dictionary):
@@ -45,6 +58,7 @@ func get_character_data():
 			return ch
 
 func _on_PickerMenu_about_to_show():
+	character_data = get_character_data()
 	picker_menu.get_popup().clear()
 	var index = 0
 	if allow_dont_change:
@@ -54,8 +68,63 @@ func _on_PickerMenu_about_to_show():
 		picker_menu.get_popup().add_item("[Definition]")
 		index += 1
 	if event_data['character']:
-		var character = get_character_data()
-		if character.has('portraits'):
-			for p in character['portraits']:
+		if character_data.has('portraits'):
+			for p in character_data['portraits']:
 				picker_menu.get_popup().add_item(p['name'])
 				index += 1
+
+func popup_gui_input(event):
+	if event is InputEventMouseMotion:
+		if current_hovered != picker_menu.get_popup().get_current_index():
+			current_hovered = picker_menu.get_popup().get_current_index()
+			
+			# hide if this is not a previewable portrait
+			# this isn't even an item
+			if current_hovered == -1:
+				preview.hide()
+				return
+			var idx_add = 0
+			if allow_dont_change:
+				idx_add -= 1
+				if current_hovered == 0:
+					preview.hide()
+					return
+				if allow_definition and current_hovered == 1:
+					preview.hide()
+					return
+			if allow_definition:
+				idx_add -= 1
+				if not allow_dont_change and current_hovered == 0:
+					preview.hide()
+					return
+			
+			## show the preview
+			preview.rect_position.x = picker_menu.get_popup().rect_size.x + 20
+			var current = character_data['portraits'][current_hovered + idx_add]
+			preview_title.text = '  ' + current['name']
+			preview_title.icon = null
+			if current['path']:
+				if current['path'].ends_with('.tscn'):
+					preview_texture.expand = false
+					var editor_reference = find_parent('EditorView')
+					if editor_reference and editor_reference.editor_interface:
+						editor_reference.editor_interface.get_resource_previewer().queue_resource_preview(current['path'], self, "show_scene_preview", null)
+					preview_title.icon = get_icon("PackedScene", "EditorIcons")
+					return
+				else:
+					preview_title.icon = get_icon("Sprite", "EditorIcons")
+					preview_texture.expand = true
+					preview_texture.texture = load(current['path'])
+			else:
+				preview_texture.texture = null
+			preview.show()
+
+
+func mouse_exited_popup():
+	preview.hide()
+	current_hovered = null
+
+
+func show_scene_preview(path:String, preview:Texture, user_data):
+	if preview:
+		preview_texture.texture = preview

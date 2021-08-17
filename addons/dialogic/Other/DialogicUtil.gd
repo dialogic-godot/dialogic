@@ -47,7 +47,7 @@ static func get_sorted_character_list():
 static func get_timeline_list() -> Array:
 	var timelines: Array = []
 	for file in DialogicResources.listdir(DialogicResources.get_path('TIMELINE_DIR')):
-		if '.json' in file:
+		if '.json' in file: # TODO check for real .json because if .json is in the middle of the sentence it still thinks it is a timeline
 			var data = DialogicResources.get_timeline_json(file)
 			if data.has('error') == false:
 				if data.has('metadata'):
@@ -200,7 +200,7 @@ static func add_folder(path:String, folder_name:String):
 static func remove_folder(folder_path:String, delete_files:bool = true):
 	#print("[D] Removing 'Folder' "+folder_path)
 	for folder in get_folder_at_path(folder_path)['folders']:
-		remove_folder(folder_path+"/"+folder)
+		remove_folder(folder_path+"/"+folder, delete_files)
 	
 	if delete_files:
 		for file in get_folder_at_path(folder_path)['files']:

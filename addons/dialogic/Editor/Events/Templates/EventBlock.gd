@@ -4,21 +4,23 @@ extends HBoxContainer
 # customization options for the event 
 
 # This is the default data that is going to be saved to json
-export (Dictionary) var event_data: Dictionary = {'event_id':'dialogic_000'}
-export(StyleBoxFlat) var event_style : StyleBoxFlat
-var selected_style = preload("../styles/selected_styleboxflat_template.tres")
-
-export(Texture) var event_icon : Texture
 export(String) var event_name : String
+export (Dictionary) var event_data: Dictionary = {'event_id':'dialogic_000'}
+export(Texture) var event_icon : Texture
+export(StyleBoxFlat) var event_style : StyleBoxFlat
+
 export(PackedScene) var header_scene : PackedScene
 export(PackedScene) var body_scene : PackedScene
+
 export (bool) var expand_on_default := false
 export (bool) var needs_indentation := false
+export (String) var help_page_path := ""
 signal option_action(action_name)
 
 
 ### internal node eferences
 onready var panel = $PanelContainer
+onready var selected_style = $PanelContainer/SelectedStyle
 onready var warning = $PanelContainer/MarginContainer/VBoxContainer/Header/Warning
 onready var title_label = $PanelContainer/MarginContainer/VBoxContainer/Header/TitleLabel
 onready var icon_texture  = $PanelContainer/MarginContainer/VBoxContainer/Header/IconTexture
@@ -28,7 +30,7 @@ onready var header_content_container = $PanelContainer/MarginContainer/VBoxConta
 onready var body_container = $PanelContainer/MarginContainer/VBoxContainer/Body
 onready var body_content_container = $PanelContainer/MarginContainer/VBoxContainer/Body/Content
 onready var indent_node = $Indent
-
+onready var help_button = $PanelContainer/MarginContainer/VBoxContainer/Header/HelpButton
 var header_node
 var body_node
 
@@ -47,11 +49,11 @@ var ignore_save = false
 ## *****************************************************************************
 
 func visual_select():
-	set_event_style(selected_style)
+	selected_style.show()
 
 
 func visual_deselect():
-	set_event_style(event_style)
+	selected_style.hide()
 
 
 func set_event_style(style: StyleBoxFlat):
@@ -112,12 +114,10 @@ func _set_event_name(text: String):
 
 func _set_header(scene: PackedScene):
 	header_node = _set_content(header_content_container, scene)
-	header_node.editor_reference = editor_reference
 
 
 func _set_body(scene: PackedScene):
 	body_node = _set_content(body_content_container, scene)
-	body_node.editor_reference = editor_reference
 	# show the expand toggle
 	expand_control.set_enabled(body_node != null)
 
@@ -140,6 +140,7 @@ func _set_content(container: Control, scene: PackedScene):
 		container.remove_child(c)
 	if scene != null:
 		var node = scene.instance()
+		node.editor_reference = editor_reference
 		container.add_child(node)
 #		node.set_owner(get_tree().get_edited_scene_root())
 		return node
@@ -221,7 +222,11 @@ func _ready():
 	panel.connect("gui_input", self, '_on_gui_input')
 	expand_control.connect("state_changed", self, "_on_ExpandControl_state_changed")
 	options_control.connect("action", self, "_on_OptionsControl_action")
-
+	
+	# load icons
+	if help_page_path != "":
+		help_button.icon = get_icon("HelpSearch", "EditorIcons")
+		help_button.show()
 	
 	# when it enters the tree, load the data into the header/body
 	# If there is any external data, it will be set already BEFORE the event is added to tree
@@ -251,3 +256,8 @@ func _ready():
 	
 	_on_Indent_visibility_changed()
 
+
+func _on_HelpButton_pressed():
+	if help_page_path:
+		var master_tree = editor_reference.get_node_or_null('MainPanel/MasterTreeContainer/MasterTree')
+		master_tree.select_documentation_item(help_page_path)

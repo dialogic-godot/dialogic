@@ -19,6 +19,8 @@ func _ready():
 	$MainPanel/ValueEditor.editor_reference = self
 	$MainPanel/GlossaryEntryEditor.editor_reference = self
 	$MainPanel/ThemeEditor.editor_reference = self
+	$MainPanel/SettingsEditor.editor_reference = self
+
 
 	$MainPanel/MasterTreeContainer/MasterTree.connect("editor_selected", self, 'on_master_tree_editor_selected')
 
@@ -148,6 +150,9 @@ func godot_dialog_connect(who, method_name, signal_name = "file_selected"):
 	
 	# Checking if previous connections exist, if they do, disconnect them.
 	for test_signal in editor_file_dialog.get_signal_list():
+		if not file_picker_data['node'] or not is_instance_valid(file_picker_data['node']):
+			continue
+		
 		if editor_file_dialog.is_connected(
 			test_signal.name,
 			file_picker_data['node'],
@@ -158,7 +163,6 @@ func godot_dialog_connect(who, method_name, signal_name = "file_selected"):
 					file_picker_data['node'],
 					file_picker_data['method']
 				)
-	
 	# Connect new signals
 	for new_signal_name in signal_name if typeof(signal_name) == TYPE_ARRAY else [signal_name]:
 		editor_file_dialog.connect(new_signal_name, who, method_name, [who])
