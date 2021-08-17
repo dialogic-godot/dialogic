@@ -39,8 +39,7 @@ func repopulate() -> void:
 					a_picker.load_data(_d)
 					continue
 		
-		a_picker.load_data({'audio_bus':settings.get_value("dialog", "text_event_audio_default_bus")})
-	
+		a_picker.load_data({'audio_bus':settings.get_value("dialog", "text_event_audio_default_bus", "Master")})
 
 
 func _on_text_changed(text:String) -> void:
