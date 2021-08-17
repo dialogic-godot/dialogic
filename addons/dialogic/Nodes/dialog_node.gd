@@ -37,6 +37,8 @@ signal dialogic_signal(value)
 var dialog_resource
 var characters
 
+var custom_events = {}
+
 onready var ChoiceButton = load("res://addons/dialogic/Nodes/ChoiceButton.tscn")
 onready var Portrait = load("res://addons/dialogic/Nodes/Portrait.tscn")
 onready var Background = load("res://addons/dialogic/Nodes/Background.tscn")
@@ -47,6 +49,7 @@ var questions #for keeping track of the questions answered
 func _ready():
 	# Loading the config files
 	load_config_files()
+	update_custom_events()
 	
 	# Checking if the dialog should read the code from a external file
 	if not timeline.empty():
@@ -89,17 +92,60 @@ func _ready():
 
 
 func load_config_files():
+	# loads the definitions, themes and settings
+	
+	# defintiions
 	if not Engine.is_editor_hint():
 		if reset_saves:
 			DialogicUtil.get_singleton('DialogicSingleton', self).init(reset_saves)
 		definitions = DialogicUtil.get_singleton('DialogicSingleton', self).get_definitions()
 	else:
 		definitions = DialogicResources.get_default_definitions()
+	
+	# settings
 	settings = DialogicResources.get_settings_config()
+	
+	# theme
 	var theme_file = 'res://addons/dialogic/Editor/ThemeEditor/default-theme.cfg'
 	if settings.has_section('theme'):
 		theme_file = settings.get_value('theme', 'default')
 	current_theme = load_theme(theme_file)
+
+
+func update_custom_events() -> void:
+	custom_events = {}
+	if not DialogicResources.get_settings_config().get_value('editor', 'use_custom_events', false):
+		return 
+	
+	var path:String = DialogicResources.get_working_directories()["CUSTOM_EVENTS_DIR"]
+	
+	var dir = Directory.new()
+	if dir.open(path) == OK:
+		dir.list_dir_begin()
+		var file_name = dir.get_next()
+		# goes through all the folders in the custom events folder
+		while file_name != "":
+			# if it found a folder
+			if dir.current_is_dir() and not file_name in ['.', '..']:
+				
+				# look through that folder
+				#print("Found custom event folder: " + file_name)
+				var event = load(path.plus_file(file_name).plus_file('EventBlock.tscn')).instance()
+				if event:
+					custom_events[event.event_data['event_id']] = {
+						'event_script' :path.plus_file(file_name).plus_file('event_'+event.event_data['event_id']+'.gd'),
+						'event_name' : event.event_name,
+					}
+					event.queue_free()
+				else:
+					print("[D] An error occurred when trying to access a custom event.")
+
+				
+			else:
+				pass # files in the directory are ignored
+			file_name = dir.get_next()
+	else:
+		print("[D] An error occurred when trying to access the custom event folder.")
 
 
 func resize_main():
@@ -110,13 +156,9 @@ func resize_main():
 		set_global_position(Vector2(0,0))
 		reference = get_viewport().get_visible_rect().size
 
-	$Options.rect_position.x = (reference.x / 2) - ($Options.rect_size.x / 2)
-	$Options.rect_position.y = (reference.y / 2) - ($Options.rect_size.y / 2)
-	
 	$TextBubble.rect_position.x = (reference.x / 2) - ($TextBubble.rect_size.x / 2)
 	if current_theme != null:
 		$TextBubble.rect_position.y = (reference.y) - ($TextBubble.rect_size.y) - current_theme.get_value('box', 'bottom_gap', 40)
-	
 	
 	var pos_x = 0
 	if current_theme.get_value('background', 'full_width', false):
@@ -350,10 +392,10 @@ func _insert_glossary_definitions(text: String):
 
 func _process(delta):
 	$TextBubble/NextIndicatorContainer/NextIndicator.visible = finished
-	if $Options.get_child_count() > 0:
+	if $Options/ButtonContainer.get_child_count() > 0:
 		$TextBubble/NextIndicatorContainer/NextIndicator.visible = false # Hide if question 
 		if waiting_for_answer and Input.is_action_just_released(input_next):
-			$Options.get_child(0).grab_focus()
+			$Options/ButtonContainer.get_child(0).grab_focus()
 	
 	# Hide if no input is required
 	if current_event.has('text'):
@@ -786,15 +828,24 @@ func event_handler(event: Dictionary):
 			$TextBubble.visible = true
 			_load_next_event()
 		_:
-			visible = false
-			dprint('[D] Other event. ', event)
+			if event['event_id'] in custom_events.keys():
+				dprint("[D] Custom event '"+custom_events[event['event_id']]['event_name']+"'")
+				
+				var handler = Node.new()
+				handler.set_script(load(custom_events[event['event_id']]['event_script']))
+				
+				handler.handle_event(event, self)
+				
+			else:
+				visible = false
+				dprint('[D] No event found. Recevied data: ', event)
 	
 	$Options.visible = waiting_for_answer
 
 
 func reset_options():
 	# Clearing out the options after one was selected.
-	for option in $Options.get_children():
+	for option in $Options/ButtonContainer.get_children():
 		option.queue_free()
 
 
@@ -843,7 +894,7 @@ func get_classic_choice_button(label: String):
 			button.rect_min_size = size
 			button.rect_size = size
 		
-		$Options.set('custom_constants/separation', theme.get_value('buttons', 'gap', 20))
+		$Options/ButtonContainer.set('custom_constants/separation', theme.get_value('buttons', 'gap', 20))
 		
 		# Different styles
 		var default_background = 'res://addons/dialogic/Example Assets/backgrounds/background-2.png'
@@ -920,11 +971,11 @@ func add_choice_button(option: Dictionary):
 		button = get_classic_choice_button(option['label'])
 	
 	if use_native_choice_button() or use_custom_choice_button():
-		$Options.set('custom_constants/separation', current_theme.get_value('buttons', 'gap', 20))
-	$Options.add_child(button)
+		$Options/ButtonContainer.set('custom_constants/separation', current_theme.get_value('buttons', 'gap', 20))
+	$Options/ButtonContainer.add_child(button)
 	
 	# Selecting the first button added
-	if $Options.get_child_count() == 1:
+	if $Options/ButtonContainer.get_child_count() == 1:
 		button.grab_focus()
 	
 	button.set_meta('event_idx', option['event_idx'])
@@ -991,7 +1042,6 @@ func get_character_position(positions) -> String:
 
 
 func deferred_resize(current_size, result):
-	#var result = theme.get_value('box', 'size', Vector2(910, 167))
 	$TextBubble.rect_size = result
 	if current_size != $TextBubble.rect_size:
 		resize_main()
@@ -1000,6 +1050,7 @@ func deferred_resize(current_size, result):
 func load_theme(filename):
 	var theme = DialogicResources.get_theme_config(filename)
 
+	
 	# Box size
 	call_deferred('deferred_resize', $TextBubble.rect_size, theme.get_value('box', 'size', Vector2(910, 167)))
 
@@ -1017,6 +1068,18 @@ func load_theme(filename):
 	$TextBubble.load_theme(theme)
 	
 	$DefinitionInfo.load_theme(theme)
+	
+	var button_container
+	if theme.get_value('buttons', 'layout', 0) == 0:
+		button_container = VBoxContainer.new()
+	else:
+		button_container = HBoxContainer.new()
+	button_container.name = 'ButtonContainer'
+	button_container.alignment = 1
+	for n in $Options.get_children():
+		n.free()
+	$Options.add_child(button_container)
+
 	return theme
 
 
@@ -1141,6 +1204,6 @@ func _on_close_dialog_timeout():
 
 
 func _on_OptionsDelayedInput_timeout():
-	for button in $Options.get_children():
+	for button in $Options/ButtonContainer.get_children():
 		if button.is_connected("pressed", self, "answer_question") == false:
 			button.connect("pressed", self, "answer_question", [button, button.get_meta('event_idx'), button.get_meta('question_idx')])

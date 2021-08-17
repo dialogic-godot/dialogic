@@ -4,13 +4,14 @@ extends HBoxContainer
 # customization options for the event 
 
 # This is the default data that is going to be saved to json
+export(String) var event_name : String
 export (Dictionary) var event_data: Dictionary = {'event_id':'dialogic_000'}
+export(Texture) var event_icon : Texture
 export(StyleBoxFlat) var event_style : StyleBoxFlat
 
-export(Texture) var event_icon : Texture
-export(String) var event_name : String
 export(PackedScene) var header_scene : PackedScene
 export(PackedScene) var body_scene : PackedScene
+
 export (bool) var expand_on_default := false
 export (bool) var needs_indentation := false
 export (String) var help_page_path := ""

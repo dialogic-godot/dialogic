@@ -8,7 +8,12 @@
 - Rework of the character name coloring (using Regex now) [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
 - Change the Selected Event Style to only have blue borders and not change event color [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
 - Adding an extra space at the end of the timelines so it is easier to drag and drop new events
-- Fixed a reference bug that prevent the duplication of Themes.
+- Fixed a reference bug that prevent the duplication of Themes
+- Added a preview image on the portrait picker, so it is easy to know what sprite or scene you are selecting. Thanks to [[EmmaH]](https://www.youtube.com/channel/UC4y59CMiLxWQQVqVFBYLa3Q) for the idea and [[Jowan-Spooner](https://github.com/Jowan-Spooner)] for the implementation
+- Fixing requirement to manually configure export dialog [[LuRomao]](https://github.com/LuRomao)
+- Changed the default cursor shape that was weird in IOS
+- Theme Editor:
+  - You can now set make the buttons be aligned horizontally or vertically
 
 
 ## v1.2.5 - Possibly breaking eveything. We will never know.
