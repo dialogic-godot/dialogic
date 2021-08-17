@@ -34,7 +34,7 @@ func load_page(page_path: String, section : String=''):
 	var base_size = 16
 	Content.set('custom_fonts/normal_font/size', int(base_size * get_constant("scale", "Editor")))
 	Content.set('custom_fonts/bold_font/size', int(base_size * get_constant("scale", "Editor")))
-	Content.set('custom_fonts/italics_font/size', int(base_size * get_constant("scale", "Editor")))
+	#Content.set('custom_fonts/italics_font/size', int(base_size * get_constant("scale", "Editor")))
 	Content.set('custom_fonts/mono_font/size', int(base_size * get_constant("scale", "Editor")))
 	Content.set('custom_fonts/bold_italics_font/size', int(base_size * get_constant("scale", "Editor")))
 	
@@ -43,7 +43,6 @@ func load_page(page_path: String, section : String=''):
 	Content.set('custom_fonts/mono_font', get_font("doc_source", "EditorFonts"))
 	Content.set('custom_fonts/bold_font', Content.get_font("doc_bold", "EditorFonts"))
 	
-
 	MarkdownParser.set_accent_colors(get_color("accent_color", "Editor"),get_color("disabled_font_color", "Editor"))
 	# return if no path is given
 	if page_path == '' and not section:

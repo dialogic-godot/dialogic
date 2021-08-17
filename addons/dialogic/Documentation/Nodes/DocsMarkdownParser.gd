@@ -79,15 +79,16 @@ func parse(content : String,  file_path:String = '', docs_path:String = ''):
 		for res in result:
 			paresed_text = paresed_text.replace("__"+res.get_string("underlinetext")+"__","[u]"+res.get_string("underlinetext")+"[/u]")
 	
-#	## Find all occurences of italic text
-#	regex.compile("[^\\]*\\*(?<italictext>.*)\\*")
-#	result = regex.search_all(content)
-#	if result:
-#		for res in result:
+	## Find all occurences of italic text
+	regex.compile("\\*(?<italictext>[^\\*]*)\\*")
+	result = regex.search_all(content)
+	if result:
+		for res in result:
+			paresed_text = paresed_text.replace("*"+res.get_string('italictext')+'*', "[i]"+res.get_string('italictext')+"[/i]")
 #			italics.append(res.get_string("italictext"))
 #	for italic in italics:
-#		content = content.replace("*"+italic+"*","[i]"+italic+"[/i]")
-	
+#		content = content.replace("*"+italic+"*",)
+
 	
 	## Find all occurences of underlined text
 	regex.compile("~~(?<strikedtext>.*)~~")
