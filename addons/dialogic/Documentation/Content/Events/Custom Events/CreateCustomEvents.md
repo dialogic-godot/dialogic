@@ -1,49 +1,41 @@
 # Creating custom events
 ![HeaderImage](./Images/CustomEventsShowOff.PNG)
 
-While Dialogic offers many useful events out of the box, it can be very useful to create custom events for your project.
 
+# Introduction
 ### What are Dialogic events?
 Events are visual representation of data. Whenever you create one event in your timeline, you are modifying a dictionary with a lot of keys and values. Each pair will contain all the information needed to perform an action during the game.
 
+### What makes a custom event?
+A custom event is made up of a two main parts: the **Event Block** and the **Event Handling Script**.
 
-## 1. Introduction
-A custom event is made up of a couple of parts:
+The **Event Block** is the scene that will be shown in the timeline editor. It needs to inherit Dialogic's `EventTemplate.tscn` scene.
 
-**The event block** is the scene that will be shown in the timeline editor. It needs to inherit Dialogic's `EventTemplate.tscn` scene (more on that later).
-
-In most cases you will additionally need scenes that have all the setting controls in them. These will be the "content" of your event block.
-These scenes will have to extend the `EventPart.gd` script (more on that later too).
+In most cases you will additionally need scenes that have all the setting controls in them. These will be the "content" of your event block. This kind of scenes will have to extend the `EventPart.gd` script.
 
 Here is a very simple example of an `EventBlock`:
 ![EventBlock](./Images/EventBlock.png)
-It contains two EventParts, a header and a body.
+It contains two **EventParts**, a **header** and a **body**.
 
+The **Event Handling Script** is what contains the logic and what will happen when your event happens in the game. This script will need the `handle_event()` function that will be called if the event is reached.
 
-### The event handling script
-... is what contains the logic: what will happen when your event happens in the game?
-This script will need one function the `handle_event()` function that will be called if the event is reached.
-
-### The folder
-All of the files that are used for the event block and when the event is handled should be in one folder. This folder needs to be in `res://dialogic/custom-events`, so dialogic can recognize it as a custom event.
+All of the files that are used for creating a custom Event Block and Handling Script should be in this directory: `res://dialogic/custom-events`. That way Dialogic can recognize it and show it in your timeline editor.
 
 
 
-## 2. Make your first custom event
-In this walkthrough I will create a print event that takes an input and prints it into the console. You can try to do whatever you want or follow the steps.
 
 
+# Making your first custom event
+Let's now create a simple event that will print some text to the Output panel in Godot.
 
 ## 2.1 Create the folder
 First you should create a new folder in `res://dialogic/custom-events` and give it a name that is descriptive and unique.
 
-I will name mine `PrintEvent`.
-
+For this print event let's call it `print-event`.
 
 
 ## 2.2 The folders content
 Now you should go to `res://addons/dialogic/Example Assets/CustomEvents` and copy all the files from there into your folder. We will go through them one at a time.
-
 
 
 ## 2.2.1 The EventBlock (EventBlock.tscn)

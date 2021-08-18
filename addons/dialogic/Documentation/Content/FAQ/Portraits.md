@@ -1,5 +1,5 @@
-# Portraits don't show up?
+# Portraits not showing in game?
 
-Make sure you use the [Character Join](../Events/001) event! Otherwise they wont show up.
+Before the characters show up on screen, you need to make them join your current scene using the [Character Join](../Events/001.md). 
 
-Sometimes you will have to play around with the offset and scale options in the character editor!
+If you used the join event and you still don't see them, you should try modifying the offset and scale values in your character's portrait.
