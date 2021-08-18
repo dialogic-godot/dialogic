@@ -13,7 +13,12 @@ A custom event is made up of a couple of parts:
 **The event block** is the scene that will be shown in the timeline editor. It needs to inherit Dialogic's `EventTemplate.tscn` scene (more on that later).
 
 In most cases you will additionally need scenes that have all the setting controls in them. These will be the "content" of your event block.
-These scenes will have to extend the `EventPart.gd` script. You can use an easy script template. 
+These scenes will have to extend the `EventPart.gd` script (more on that later too).
+
+Here is a very simple example of an `EventBlock`:
+![EventBlock](./Images/EventBlock.png)
+It contains two EventParts, a header and a body.
+
 
 ### The event handling script
 ... is what contains the logic: what will happen when your event happens in the game?
@@ -74,10 +79,7 @@ The content of an EventBlock is seperated as `EventParts`. This allows for some 
 There are two places EventParts can be in an EventBlock: The Header (always visible) and the Body (can be hidden).
 *EventParts can also contain other EventParts, but it wont be necessary for most custom events.*
 
-Here is a very simple example of an `EventBlock`:
-![EventBlock](./Images/EventBlock.png)
 *An EventBlock does not have to have a body nor a header EventPart.*
-
 
 There is already a simple example `EventPart` (Script and Scene) included. You can change it as much as you want.
 
