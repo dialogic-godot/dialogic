@@ -12,6 +12,7 @@
 - Added a preview image on the portrait picker, so it is easy to know what sprite or scene you are selecting. Thanks to [[EmmaH]](https://www.youtube.com/channel/UC4y59CMiLxWQQVqVFBYLa3Q) for the idea and [[Jowan-Spooner](https://github.com/Jowan-Spooner)] for the implementation
 - Fixing requirement to manually configure export dialog [[LuRomao]](https://github.com/LuRomao)
 - Changed the default cursor shape that was weird in IOS
+- A modular Custom events implementation [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
 - Theme Editor:
   - You can now set make the buttons be aligned horizontally or vertically
 

@@ -19,3 +19,5 @@ export_presets.cfg
 /dialogic
 # Place test project files here
 /test-project
+# Excluding obsidian generated files
+/addons/dialogic/Documentation/.obsidian
