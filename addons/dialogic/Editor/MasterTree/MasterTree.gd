@@ -304,6 +304,7 @@ func _on_item_selected():
 	var metadata = get_selected().get_metadata(0)
 	match metadata['editor']:
 		'Timeline':
+			# Remember to also update this on the `inspector_timeline_picker.gd`
 			timeline_editor.batches.clear()
 			timeline_editor.load_timeline(metadata['file'])
 			show_timeline_editor()
