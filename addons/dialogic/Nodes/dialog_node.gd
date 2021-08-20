@@ -172,6 +172,9 @@ func resize_main():
 		$TextBubble/TextureRect.rect_size.x = $TextBubble.rect_size.x
 		$TextBubble/ColorRect.rect_size.x = $TextBubble.rect_size.x
 	
+	$Options.rect_global_position = Vector2(0,0)
+	$Options.rect_size = reference
+	
 	var background = get_node_or_null('Background')
 	if background != null:
 		background.rect_size = reference
