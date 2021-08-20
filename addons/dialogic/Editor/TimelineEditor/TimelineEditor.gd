@@ -34,6 +34,26 @@ signal selection_updated
 signal batch_loaded
 
 func _ready():
+	$"ScrollContainer/EventContainer/TextEvent".hint_tooltip = TS.translate("  Text Event")
+	$"ScrollContainer/EventContainer/CharacterJoin".hint_tooltip = TS.translate("  Character Join")
+	$"ScrollContainer/EventContainer/CharacterLeave".hint_tooltip = TS.translate("  Character Leave")
+	$"ScrollContainer/EventContainer/Question".hint_tooltip = TS.translate("  Question")
+	$"ScrollContainer/EventContainer/Choice".hint_tooltip = TS.translate("  Choice")
+	$"ScrollContainer/EventContainer/Condition".hint_tooltip = TS.translate(" Condition")
+	$"ScrollContainer/EventContainer/EndBranch".hint_tooltip = TS.translate("  End Branch")
+	$"ScrollContainer/EventContainer/SetValue".hint_tooltip = TS.translate("  Set Value")
+	$"ScrollContainer/EventContainer/SetGlossary".hint_tooltip = TS.translate("  Set Glossary")
+	$"ScrollContainer/EventContainer/ChangeTimeline".hint_tooltip = TS.translate("  Change Timeline")
+	$"ScrollContainer/EventContainer/ChangeBackground".hint_tooltip = TS.translate("  Set Background")
+	$"ScrollContainer/EventContainer/CloseDialog".hint_tooltip = TS.translate("  Close Dialog")
+	$"ScrollContainer/EventContainer/WaitSeconds".hint_tooltip = TS.translate("  Wait Seconds")
+	$"ScrollContainer/EventContainer/SetTheme".hint_tooltip = TS.translate("  Set Theme")
+	$"ScrollContainer/EventContainer/AudioEvent".hint_tooltip = TS.translate("  Audio Event")
+	$"ScrollContainer/EventContainer/BackgroundMusic".hint_tooltip = TS.translate("  Background Music")
+	$"ScrollContainer/EventContainer/EmitSignal".hint_tooltip = TS.translate("  Emit Signal")
+	$"ScrollContainer/EventContainer/ChangeScene".hint_tooltip = TS.translate("  Change Scene")
+	$"ScrollContainer/EventContainer/CallNode".hint_tooltip = TS.translate("  Call Node")
+	
 	connect("batch_loaded", self, '_on_batch_loaded')
 	var modifier = ''
 	var _scale = get_constant("inspector_margin", "Editor")

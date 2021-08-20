@@ -56,6 +56,28 @@ var EDITOR_KEYS := [
 ]
 
 func _ready():
+	$"VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer/HBoxContainer/Label".text = TS.translate("Default")
+	$"VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer/HBoxContainer2/Label".text = TS.translate("Advanced theme options")
+	$"VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer/HBoxContainer3/Label".text = TS.translate("Canvas layer :")
+	$"VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2/HBoxContainer2/Label".text = TS.translate("New lines will create extra messages")
+	$"VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2/HBoxContainer/Label".text = TS.translate("Remove empty messages")
+	$"VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2/HBoxContainer3/Label".text = TS.translate("Auto color character names in messages")
+	$"VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2/HBoxContainer4/Label".text = TS.translate("Propagate input to rest of the Tree")
+	$"VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2/HBoxContainer5/Label".text = TS.translate("Dim characters when they are not speaking")
+	$"VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2/Label3".text = TS.translate("Audio for Text events:")
+	$"VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2/HBoxContainer7/Label".text = TS.translate("Enable audio for Text events")
+	$"VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2/TextAudioDefaultBus/Label".text = TS.translate("Default bus for Text event audio")
+	$"VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2/Label2".text = TS.translate("Experimental Translations:")
+	$"VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2/HBoxContainer6/Label".text = TS.translate("Inputs for text events will be treated as keys for tr()")
+	$"VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer3/HBoxContainer/Label".text = TS.translate("Save current timeline on timeline start")
+	$"VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer3/HBoxContainer2/Label".text = TS.translate("Clear saved timeline on timeline end")
+	$"VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer3/HBoxContainer3/Label".text = TS.translate("Save definitions on timeline start")
+	$"VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer3/HBoxContainer4/Label".text = TS.translate("Save definitions on timeline end")
+	$"VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer/HBoxContainer/Label".text = TS.translate("Enable choice options after  ")
+	$"VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer/HBoxContainer/Label2".text = TS.translate(" seconds")
+	$"VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer/HBoxContainer2/Label".text = TS.translate("Default action key")
+	$"VBoxContainer/HBoxContainer3/VBoxContainer2/TimelineSection/CustomEvents/Label".text = TS.translate("Use custom events")
+	
 	update_bus_selector()
 	
 	update_data()

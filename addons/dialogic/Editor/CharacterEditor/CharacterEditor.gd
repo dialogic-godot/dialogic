@@ -27,6 +27,18 @@ onready var nodes = {
 
 
 func _ready():
+	$"HBoxContainer/Container/Name/Label".text = TS.translate("Name: ")
+	$"HBoxContainer/Container/Name/CheckBox".text = TS.translate("Different display name")
+	$"HBoxContainer/Container/Name/CheckBox2".text = TS.translate("Enable Nicknames")
+	$"HBoxContainer/Container/DisplayName/Label".text = TS.translate("Display Name: ")
+	$"HBoxContainer/Container/DisplayNickname/Label".text = TS.translate("Nicknames: ")
+	$"HBoxContainer/Container/Color/Label".text = TS.translate("Color: ")
+	$"HBoxContainer/Container/Description/Label".text = TS.translate("Description: ")
+	$"HBoxContainer/Container/Portraits/Label".text = TS.translate("Portraits / Expressions")
+	$"HBoxContainer/Container/FileName/Label".text = TS.translate("File:")
+	$"HBoxContainer/Container/ScrollContainer/VBoxContainer/HBoxContainer/Button".text = TS.translate("  Add new portrait")
+	$"HBoxContainer/Container/ScrollContainer/VBoxContainer/HBoxContainer/ImportFromFolder".text = TS.translate("  Import images from folder")
+	
 	nodes['new_portrait_button'].connect('pressed', self, '_on_New_Portrait_Button_pressed')
 	nodes['import_from_folder_button'].connect('pressed', self, '_on_Import_Portrait_Folder_Button_pressed')
 	nodes['display_name_checkbox'].connect('toggled', self, '_on_display_name_toggled')
