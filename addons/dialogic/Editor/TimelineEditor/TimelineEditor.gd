@@ -34,6 +34,7 @@ signal selection_updated
 signal batch_loaded
 
 func _ready():
+	editor_reference = find_parent('EditorView')
 	connect("batch_loaded", self, '_on_batch_loaded')
 	var modifier = ''
 	var _scale = get_constant("inspector_margin", "Editor")

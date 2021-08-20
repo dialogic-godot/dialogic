@@ -154,6 +154,7 @@ onready var n : Dictionary = {
 ## ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 func _ready() -> void:
+	editor_reference = find_parent('EditorView')
 	AudioServer.connect("bus_layout_changed", self, "_on_bus_layout_changed")
 	# Signal connection to free up some memory
 	connect("visibility_changed", self, "_on_visibility_changed")

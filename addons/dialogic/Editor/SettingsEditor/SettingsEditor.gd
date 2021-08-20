@@ -56,6 +56,7 @@ var EDITOR_KEYS := [
 ]
 
 func _ready():
+	editor_reference = find_parent('EditorView')
 	update_bus_selector()
 	
 	update_data()
