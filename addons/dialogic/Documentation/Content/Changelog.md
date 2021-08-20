@@ -14,6 +14,8 @@ Changes:
   - Fixing requirement to manually configure export dialog [[LuRomao]](https://github.com/LuRomao)
   - Changed the default cursor shape that was weird in IOS
   - A modular Custom events implementation [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
+  - Removed the need to use a DialogicSingleton. Hope this doesn't do any harm in existing projects
+  - Deleted some legacy documentation files
   - Theme Editor:
     - You can now set make the buttons be aligned horizontally or vertically
 

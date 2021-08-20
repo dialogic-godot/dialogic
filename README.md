@@ -25,12 +25,7 @@ If you want to know more about installing plugins you can read the [official doc
 You can also install Dialogic using the **AssetLib** tab in the editor, but the version here will not be the latest one available since it takes some time for it to be approved.
 
 ## ⚠ IMPORTANT
-The Godot editor needs a reboot after enabling Dialogic for the first time. So make sure to reboot after activating it for the first time before submitting a bug request. A fix is present in the 1.2.5 version, but still being tested.
-
-
-### 📦 Preparing the export
-
-When you export a project using Dialogic, you need to add `*.json, *.cfg` on the Resources tab `Filters to export...` input field ([see image](https://coppolaemilio.com/images/dialogic/exporting-2.png?v2)). This allows Godot to pack the files from the `/dialogic` folder.
+If you want to export the game and you get an error, try having at least 1 theme in your project.
 
 ---
 
