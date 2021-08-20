@@ -10,6 +10,7 @@ var TimelineUndoRedo := UndoRedo.new()
 onready var master_tree = get_node('../MasterTreeContainer/MasterTree')
 onready var timeline = $TimelineArea/TimeLine
 onready var events_warning = $ScrollContainer/EventContainer/EventsWarning
+onready var custom_events_container = $ScrollContainer/EventContainer/CustomEventsContainer
 
 var hovered_item = null
 var selected_style : StyleBoxFlat = load("res://addons/dialogic/Editor/Events/styles/selected_styleboxflat.tres")
@@ -25,13 +26,15 @@ var move_start_position = null
 var moving_piece = null
 var piece_was_dragged = false
 
+var custom_events = {}
+
 var batches = []
 var building_timeline = true
 signal selection_updated
 signal batch_loaded
 
-
 func _ready():
+	editor_reference = find_parent('EditorView')
 	connect("batch_loaded", self, '_on_batch_loaded')
 	var modifier = ''
 	var _scale = get_constant("inspector_margin", "Editor")
@@ -62,6 +65,9 @@ func _ready():
 	
 	var style = $TimelineArea.get('custom_styles/bg')
 	style.set('bg_color', get_color("dark_color_1", "Editor"))
+	$ScrollContainer/EventContainer/CustomEventsHeadline/RefreshButton.icon = get_icon("Loop", "EditorIcons")
+	
+	update_custom_events()
 	$TimelineArea.connect('resized', self, 'add_extra_scroll_area_to_timeline', [])
 
 
@@ -637,6 +643,63 @@ func create_condition(at_position):
 		create_event("EndBranch", {'no-data': true}, true)
 
 
+func update_custom_events() -> void:
+	## CLEANUP
+	custom_events = {}
+	
+	# cleaning the 'old' buttons
+	for child in custom_events_container.get_children():
+		child.queue_free()
+	
+	if not DialogicResources.get_settings_config().get_value('editor', 'use_custom_events', false):
+		return 
+	
+	var path:String = "res://dialogic/custom-events"
+
+	var dir = Directory.new()
+	if dir.open(path) == OK:
+		dir.list_dir_begin()
+		var file_name = dir.get_next()
+		# goes through all the folders in the custom events folder
+		while file_name != "":
+			# if it found a folder
+			if dir.current_is_dir() and not file_name in ['.', '..']:
+				
+				# look through that folder
+				#print("Found custom event folder: " + file_name)
+				var event = load(path.plus_file(file_name).plus_file('EventBlock.tscn')).instance()
+				if event:
+					custom_events[event.event_data['event_id']] = {
+						'event_block_scene' :path.plus_file(file_name).plus_file('EventBlock.tscn'),
+						'event_name' : event.event_name,
+						'event_icon' : event.event_icon
+					}
+					event.queue_free()
+				else:
+					print("[D] An error occurred when trying to access a custom event.")
+
+				
+			else:
+				pass # files in the directory are ignored
+			file_name = dir.get_next()
+	else:
+		print("[D] An error occurred when trying to access the custom events folder.")
+	
+	## VISUAL UPDATE
+	
+	
+	# adding new ones
+	for custom_event_id in custom_events.keys():
+		var button = Button.new()
+		button.set_script(preload("EventButton.gd"))
+		button.EventName = custom_event_id
+		button.text = "  "+custom_events[custom_event_id]['event_name']
+		if custom_events[custom_event_id]['event_icon']:
+			button.icon = custom_events[custom_event_id]['event_icon']
+		button.connect("pressed", self, "_create_event_button_pressed", [custom_event_id])
+		button.align = Button.ALIGN_LEFT
+		custom_events_container.add_child(button)
+
 ## *****************************************************************************
 ##					 	DRAG AND DROP
 ## *****************************************************************************
@@ -681,8 +744,16 @@ func cancel_drop_event():
 ## *****************************************************************************
 
 # Adding an event to the timeline
-func create_event(scene: String, data: Dictionary = {'no-data': true} , indent: bool = false, at_index: int = -1, auto_select:bool = false):
-	var piece = load("res://addons/dialogic/Editor/Events/" + scene + ".tscn").instance()
+func create_event(scene: String, data: Dictionary = {'no-data': true} , indent: bool = false, at_index: int = -1, auto_select: bool = false):
+	var piece = null
+	
+	## Find out whether this is a custom event:
+	if scene in custom_events.keys():
+		piece = load(custom_events[scene]['event_block_scene']).instance()
+	else:
+		piece = load("res://addons/dialogic/Editor/Events/" + scene + ".tscn").instance()
+	
+	# load the piece with data
 	piece.editor_reference = editor_reference
 	
 	if data.has('no-data') == false:
@@ -712,6 +783,7 @@ func create_event(scene: String, data: Dictionary = {'no-data': true} , indent: 
 
 func load_timeline(filename: String):
 	clear_timeline()
+	update_custom_events()
 	if timeline_file != filename:
 		TimelineUndoRedo.clear_history()
 	building_timeline = true
@@ -826,6 +898,11 @@ func add_event_by_id(event_id, event_data):
 		# Call Node event
 		'dialogic_042':
 			return create_event('CallNode', event_data)
+	
+	if event_id in custom_events.keys():
+		return create_event(event_id, event_data)
+	
+	return create_event('DummyEvent', event_data)
 
 
 func clear_timeline():

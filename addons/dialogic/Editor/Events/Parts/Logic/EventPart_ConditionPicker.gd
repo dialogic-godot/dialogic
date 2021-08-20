@@ -65,8 +65,10 @@ func _on_DefinitionPicker_data_changed(data):
 func _on_ConditionTypePicker_data_changed(data):
 	event_data = data
 	check_data()
-	
 	data_changed()
+	
+	# Focusing the value input
+	value_input.call_deferred('grab_focus')
 
 func _on_Value_text_changed(text):
 	event_data['value'] = text

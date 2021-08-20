@@ -10,8 +10,7 @@ func _init():
 	if Engine.editor_hint:
 		# Make sure the core files exist 
 		DialogicResources.init_dialogic_files()
-	add_autoload_singleton('DialogicSingleton', "res://addons/dialogic/Other/DialogicSingleton.gd")
-	
+
 	## Remove after 2.0
 	if Engine.editor_hint:
 		DialogicUtil.resource_fixer()

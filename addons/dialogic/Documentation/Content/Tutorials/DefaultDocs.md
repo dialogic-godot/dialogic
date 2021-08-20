@@ -407,20 +407,6 @@ Returned format: `{ title': '', 'text' : '', 'extra': '' }`
 - **@param** `text` The text to show in the information box.
 - **@param** `extra` The extra information at the bottom of the box.
 
-
-### 🔶 get_current_timeline
-
-```gdscript
-get_current_timeline()
-```
-
-Gets the currently saved timeline.
-
-Timeline saves are set on timeline start, and cleared on end. This means you can keep track of timeline changes and detect when the dialog ends.
-
-- **@returns** The current timeline filename, or an empty string if none was saved.
-mments but this will remain a plugin :)
-
 - - -
 - - -
 

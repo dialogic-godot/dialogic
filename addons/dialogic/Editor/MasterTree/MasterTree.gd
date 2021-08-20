@@ -1,7 +1,7 @@
 tool
 extends Tree
 
-onready var editor_reference = get_node('../../../')
+onready var editor_reference
 onready var timeline_editor = get_node('../../TimelineEditor')
 onready var character_editor = get_node('../../CharacterEditor')
 onready var value_editor = get_node('../../ValueEditor')
@@ -42,6 +42,7 @@ var filter_tree_term = ''
 signal editor_selected(selected)
 
 func _ready():
+	editor_reference = find_parent('EditorView')
 	# Tree Settings
 	allow_rmb_select = true
 	var root = tree.create_item()
@@ -303,6 +304,7 @@ func _on_item_selected():
 	var metadata = get_selected().get_metadata(0)
 	match metadata['editor']:
 		'Timeline':
+			# Remember to also update this on the `inspector_timeline_picker.gd`
 			timeline_editor.batches.clear()
 			timeline_editor.load_timeline(metadata['file'])
 			show_timeline_editor()

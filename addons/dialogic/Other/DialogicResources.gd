@@ -4,8 +4,6 @@ class_name DialogicResources
 ## This class is used by the DialogicEditor to access the resources files
 ## For example by the Editors (Timeline, Character, Theme), the MasterTree and the EventParts
 
-## It is also used by the DialogicUtil class and the DialogicSingleton
-
 const RESOURCES_DIR: String = "res://dialogic" # Readonly, used for static data
 const WORKING_DIR: String = "user://dialogic" # Readwrite, used for saves
 
@@ -75,6 +73,7 @@ static func get_working_directories() -> Dictionary:
 		'TIMELINE_DIR': RESOURCES_DIR + "/timelines",
 		'THEME_DIR': RESOURCES_DIR + "/themes",
 		'CHAR_DIR': RESOURCES_DIR + "/characters",
+		'CUSTOM_EVENTS_DIR': RESOURCES_DIR + "/custom-events"
 	}
 
 

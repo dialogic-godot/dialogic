@@ -1,0 +1,46 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://addons/dialogic/Editor/Events/Templates/EventTemplate.tscn" type="PackedScene" id=1]
+[ext_resource path="res://addons/dialogic/Editor/Events/Parts/DummyEventDataShower.tscn" type="PackedScene" id=2]
+
+[sub_resource type="StyleBoxFlat" id=1]
+content_margin_left = 0.0
+content_margin_right = 0.0
+content_margin_top = 0.0
+content_margin_bottom = 0.0
+bg_color = Color( 0.615686, 0.615686, 0.615686, 0.639216 )
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color( 0.12549, 0.12549, 0.12549, 1 )
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[node name="DummyEvent" instance=ExtResource( 1 )]
+event_data = {
+"event_id": ""
+}
+event_style = SubResource( 1 )
+event_name = "Event couldn't be found. The data will be preserved in this dummy."
+body_scene = ExtResource( 2 )
+expand_on_default = false
+
+[node name="PanelContainer" parent="." index="1"]
+custom_styles/panel = SubResource( 1 )
+
+[node name="TitleLabel" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="2"]
+margin_right = 463.0
+text = "Event couldn't be found. The data will be preserved in this dummy."
+
+[node name="Content" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="3"]
+margin_left = 473.0
+margin_right = 483.0
+
+[node name="Spacer" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="5"]
+margin_left = 493.0
+
+[node name="OptionsControl" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="6"]
+items = [ "Move Up", null, 0, false, false, 0, 0, null, "", false, "Move Down", null, 0, false, false, 1, 0, null, "", false, "", null, 0, false, false, 2, 0, null, "", false, "Remove", null, 0, false, false, 3, 0, null, "", false ]
