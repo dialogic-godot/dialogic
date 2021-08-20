@@ -223,8 +223,14 @@ func parse_characters(dialog_script):
 					for nickname in character.get('data').get('nickname', '').split(',', true, 0):
 						char_names.append(nickname.strip_edges())
 				
-				var regex_thing = str(char_names).replace("[", "(").replace("]", ")").replace(", ", "|")+'\\b'
+				#Regex purposefully excludes [] as replacing those interferes with the second regex
+				var escapeRegExp = "(?=[+&|!(){}^\"~*.?:\\\\-])" 
+				
 				var regex = RegEx.new()
+				regex.compile(escapeRegExp)
+				char_names = regex.sub(str(char_names), "\\", true)
+				
+				var regex_thing = str(char_names).replace("[", "(").replace("]", ")").replace(", ", "|")+'\\b'
 				regex.compile(regex_thing)
 				
 				var counter = 0
