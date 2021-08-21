@@ -13,15 +13,6 @@ func _ready():
 	editor_file_dialog = EditorFileDialog.new()
 	add_child(editor_file_dialog)
 
-	# Setting references to this node
-	$MainPanel/TimelineEditor.editor_reference = self
-	$MainPanel/CharacterEditor.editor_reference = self
-	$MainPanel/ValueEditor.editor_reference = self
-	$MainPanel/GlossaryEntryEditor.editor_reference = self
-	$MainPanel/ThemeEditor.editor_reference = self
-	$MainPanel/SettingsEditor.editor_reference = self
-
-
 	$MainPanel/MasterTreeContainer/MasterTree.connect("editor_selected", self, 'on_master_tree_editor_selected')
 
 	# Updating the folder structure

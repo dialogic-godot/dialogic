@@ -54,6 +54,7 @@ func _ready():
 	$"ScrollContainer/EventContainer/ChangeScene".hint_tooltip = TS.translate("  Change Scene")
 	$"ScrollContainer/EventContainer/CallNode".hint_tooltip = TS.translate("  Call Node")
 	
+	editor_reference = find_parent('EditorView')
 	connect("batch_loaded", self, '_on_batch_loaded')
 	var modifier = ''
 	var _scale = get_constant("inspector_margin", "Editor")

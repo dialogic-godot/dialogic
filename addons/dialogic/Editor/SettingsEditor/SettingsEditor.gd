@@ -78,6 +78,7 @@ func _ready():
 	$"VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer/HBoxContainer2/Label".text = TS.translate("Default action key")
 	$"VBoxContainer/HBoxContainer3/VBoxContainer2/TimelineSection/CustomEvents/Label".text = TS.translate("Use custom events")
 	
+	editor_reference = find_parent('EditorView')
 	update_bus_selector()
 	
 	update_data()

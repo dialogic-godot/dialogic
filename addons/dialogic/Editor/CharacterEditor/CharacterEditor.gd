@@ -39,6 +39,7 @@ func _ready():
 	$"HBoxContainer/Container/ScrollContainer/VBoxContainer/HBoxContainer/Button".text = TS.translate("  Add new portrait")
 	$"HBoxContainer/Container/ScrollContainer/VBoxContainer/HBoxContainer/ImportFromFolder".text = TS.translate("  Import images from folder")
 	
+	editor_reference = find_parent('EditorView')
 	nodes['new_portrait_button'].connect('pressed', self, '_on_New_Portrait_Button_pressed')
 	nodes['import_from_folder_button'].connect('pressed', self, '_on_Import_Portrait_Folder_Button_pressed')
 	nodes['display_name_checkbox'].connect('toggled', self, '_on_display_name_toggled')

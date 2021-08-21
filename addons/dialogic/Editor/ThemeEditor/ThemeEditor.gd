@@ -225,6 +225,7 @@ func _ready() -> void:
 	$"VBoxContainer/TabContainer/Audio/Column/GridContainer/Label6".text = TS.translate("Allow interrupt")
 	$"VBoxContainer/TabContainer/Audio/Column/GridContainer/Label7".text = TS.translate("Audio Bus")
 	
+	editor_reference = find_parent('EditorView')
 	AudioServer.connect("bus_layout_changed", self, "_on_bus_layout_changed")
 	# Signal connection to free up some memory
 	connect("visibility_changed", self, "_on_visibility_changed")

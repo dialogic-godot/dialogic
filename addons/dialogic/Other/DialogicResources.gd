@@ -4,8 +4,6 @@ class_name DialogicResources
 ## This class is used by the DialogicEditor to access the resources files
 ## For example by the Editors (Timeline, Character, Theme), the MasterTree and the EventParts
 
-## It is also used by the DialogicUtil class and the DialogicSingleton
-
 const RESOURCES_DIR: String = "res://dialogic" # Readonly, used for static data
 const WORKING_DIR: String = "user://dialogic" # Readwrite, used for saves
 
