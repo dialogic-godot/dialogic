@@ -167,9 +167,9 @@ func _on_Indent_visibility_changed():
 		return
 	if needs_indentation:
 		if indent_node.visible:
-			remove_warning(TS.translate("This event needs a question event around it!"))
+			remove_warning(DTS.translate("This event needs a question event around it!"))
 		else:
-			set_warning(TS.translate("This event needs a question event around it!"))
+			set_warning(DTS.translate("This event needs a question event around it!"))
 
 
 func _on_gui_input(event):

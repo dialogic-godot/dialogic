@@ -1,30 +1,27 @@
-tool
-class_name TranslationService
 # Alternative to [TranslationServer] that works inside the editor
+# This is a modified version of AnidemDex's TranslationService 
+# https://github.com/AnidemDex/Godot-TranslationService
+
+tool
+class_name DTS
 
 
-# Translates a message using translation catalogs configured in the Project Settings.
+# Translates a message using translation catalogs configured in the Editor Settings.
 static func translate(message:String)->String:
 	var translation
-
-	if Engine.editor_hint:
-		translation = _get_translation(message)
-		
-	else:
-		translation = TranslationServer.translate(message)
+	
+	translation = _get_translation(message)
 	
 	return translation
 
 
-# Returns a dictionary using translation catalogs configured in the Project Settings.
-# Each key correspond to [locale](https://docs.godotengine.org/en/stable/tutorials/i18n/locales.html).
 # Each value is an Array of [PHashTranslation].
 static func get_translations() -> Dictionary:
-	var translations_resources:PoolStringArray = ProjectSettings.get_setting("locale/translations")
+	var translations_resources = ['en', 'zh_CN', 'es']
 	var translations = {}
 	
 	for resource in translations_resources:
-		var t:PHashTranslation = load(resource)
+		var t:PHashTranslation = load('res://addons/dialogic/Localization/dialogic.' + resource + '.translation')
 		if translations.has(t.locale):
 			translations[t.locale].append(t)
 		else:
@@ -32,32 +29,26 @@ static func get_translations() -> Dictionary:
 	return translations
 
 
-static func _get_translation(_msg:String)->String:
-	var _returned_translation:String = _msg
-	var _translations:Dictionary = get_translations()
-	var _default_fallback:String = ProjectSettings.get_setting("locale/fallback")
-	var _test_locale:String = ProjectSettings.get_setting("locale/test")
-	var _locale = TranslationServer.get_locale()
+static func _get_translation(message)->String:
+	var returned_translation = message
+	var translations = get_translations()
+	var default_fallback = 'en'
 	
-	if _test_locale:
-		# There's a test locale property defined, use that instead editor locale
-		_locale = _test_locale
-
-	var cases = _translations.get(
-		_locale, 
-		_translations.get(_default_fallback, [PHashTranslation.new()])
+	var editor_plugin = EditorPlugin.new()
+	var editor_settings = editor_plugin.get_editor_interface().get_editor_settings()
+	var locale = editor_settings.get('interface/editor/editor_language')
+	
+	var cases = translations.get(
+		locale, 
+		translations.get(default_fallback, [PHashTranslation.new()])
 		)
 	for case in cases:
-		_returned_translation = (case as PHashTranslation).get_message(_msg)
-		if _returned_translation:
+		returned_translation = (case as PHashTranslation).get_message(message)
+		if returned_translation:
 			break
 		else:
 			# If there's no translation, returns the original string
-			_returned_translation = _msg
-	return _returned_translation
-
+			returned_translation = message
 	
-# Unused, since i can't override Object methods
-#static func tr(message:String)->String:
-#    return translate(message)
-
+	#print('Message: ', message, ' - locale: ', locale, ' - ', returned_translation)
+	return returned_translation
