@@ -14,6 +14,7 @@ onready var nodes = {
 }
 
 func _ready():
+	editor_reference = find_parent('EditorView')
 	reset_editor()
 	nodes['name'].connect('text_changed', self, '_on_name_changed')
 	nodes['name'].connect('focus_exited', self, '_update_name_on_tree')

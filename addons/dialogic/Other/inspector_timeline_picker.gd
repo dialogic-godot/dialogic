@@ -27,11 +27,10 @@ func parse_property(object, type, path, hint, hint_text, usage):
 
 
 func switch_to_dialogic_timeline(timeline: String):
-	prints("switchting", timeline, dialogic_editor_plugin, dialogic_editor_view)
 	if (dialogic_editor_plugin != null):
+		var master_tree = dialogic_editor_view.get_node('MainPanel/MasterTreeContainer/MasterTree')
 		dialogic_editor_plugin.get_editor_interface().set_main_screen_editor("Dialogic")
-		
-	if (dialogic_editor_view != null and dialogic_editor_view.master_tree != null):
-		dialogic_editor_view.master_tree.show_timeline_editor()
-		dialogic_editor_view.master_tree.select_timeline_item(timeline)
-	pass
+
+		master_tree.timeline_editor.batches.clear()
+		master_tree.timeline_editor.load_timeline(timeline)
+		master_tree.show_timeline_editor()

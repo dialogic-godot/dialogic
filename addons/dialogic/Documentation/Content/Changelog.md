@@ -1,20 +1,29 @@
 # Changelog
 
 ## v1.3 - (WIP)
-- ⭐ Builtin Documentation [[Jowan-Spooner]](https://github.com/Jowan-Spooner)
-- Fixed a bug that prevented to use the global input setting when selecting option buttons
-- The TimelineEditor now paritially supports undo and redo functionality. [[Jowan-Spooner]](https://github.com/Jowan-Spooner)
-- `Dialogic.start()` will now use paths for specific timelines. A fallback is in place, but specificity is preferred. For instance: `Dialogic.start('my-timeline')` will search any timeline with that name; `Dialogic.start('/chapter-1/my-timeline')` will open the timeline namde `my-timeline` inside the folder `chapter-1`.
-- Rework of the character name coloring (using Regex now) [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
-- Change the Selected Event Style to only have blue borders and not change event color [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
-- Adding an extra space at the end of the timelines so it is easier to drag and drop new events
-- Fixed a reference bug that prevent the duplication of Themes
-- Added a preview image on the portrait picker, so it is easy to know what sprite or scene you are selecting. Thanks to [[EmmaH]](https://www.youtube.com/channel/UC4y59CMiLxWQQVqVFBYLa3Q) for the idea and [[Jowan-Spooner](https://github.com/Jowan-Spooner)] for the implementation
-- Fixing requirement to manually configure export dialog [[LuRomao]](https://github.com/LuRomao)
-- Changed the default cursor shape that was weird in IOS
-- A modular Custom events implementation [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
-- Theme Editor:
-  - You can now set make the buttons be aligned horizontally or vertically
+Changes:
+  - ⭐ Builtin Documentation [[Jowan-Spooner]](https://github.com/Jowan-Spooner)
+  - Editor plugin has translation support and some labels are translated to Chinese [[magian1127]][https://github.com/magian1127)]
+  - Added some Spanish translations
+  - Fixed a bug that prevented to use the global input setting when selecting option buttons
+  - `Dialogic.start()` will now use paths for specific timelines. A fallback is in place, but specificity is preferred. For instance: `Dialogic.start('my-timeline')` will search any timeline with that name; `Dialogic.start('/chapter-1/my-timeline')` will open the timeline namde `my-timeline` inside the folder `chapter-1`.
+  - Rework of the character name coloring (using Regex now) [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
+  - Fixed a reference bug that prevent the duplication of Themes
+  - Fixing requirement to manually configure export dialog [[LuRomao]](https://github.com/LuRomao)
+  - Changed the default cursor shape that was weird in IOS
+  - A modular Custom events implementation [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
+  - Removed the need to use a DialogicSingleton. Hope this doesn't do any harm in existing projects
+  - Deleted some legacy documentation files
+  - Fixed the DialogNode Inspector Timeline Open button issue
+  - Regex name compiler now properly escapes special characters [[zaknafean]](https://github.com/zaknafean)
+  - Timeline Editor:
+    - Added a preview image on the portrait picker, so it is easy to know what sprite or scene you are selecting. Thanks to [[EmmaH]](https://www.youtube.com/channel/UC4y59CMiLxWQQVqVFBYLa3Q) for the idea and [[Jowan-Spooner](https://github.com/Jowan-Spooner)] for the implementation
+    - Adding an extra space at the end of the timelines so it is easier to drag and drop new events
+    - Change the Selected Event Style to only have blue borders and not change event color [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
+    - Partial support for undo and redo [[Jowan-Spooner]](https://github.com/Jowan-Spooner)
+    - After selecting a conditional, the input field of that event will be selected
+  - Theme Editor:
+    - You can now set make the buttons be aligned horizontally or vertically
 
 
 ## v1.2.5 - Possibly breaking eveything. We will never know.

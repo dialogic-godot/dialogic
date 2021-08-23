@@ -65,8 +65,10 @@ func _on_DefinitionPicker_data_changed(data):
 func _on_ConditionTypePicker_data_changed(data):
 	event_data = data
 	check_data()
-	
 	data_changed()
+	
+	# Focusing the value input
+	value_input.call_deferred('grab_focus')
 
 func _on_Value_text_changed(text):
 	event_data['value'] = text
@@ -77,7 +79,7 @@ func _on_Value_text_changed(text):
 func check_data():
 	if event_data['condition'] != '==' and event_data['condition'] != '!=':
 		if not event_data['value'].is_valid_float():
-			emit_signal("set_warning", "The selected operator requires a number!")
+			emit_signal("set_warning", DTS.translate("The selected operator requires a number!"))
 			return
 	
 	emit_signal("remove_warning")
