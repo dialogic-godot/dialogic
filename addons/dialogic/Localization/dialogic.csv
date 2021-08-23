@@ -1,0 +1,117 @@
+id,zh_CN,en,es
+Default,默认,Default,Predeterminado
+Advanced theme options,高级主题选项,Advanced theme options,Opciones avanzadas
+Canvas layer :,帆布层:,Canvas layer :,Canvas layer :
+New lines will create extra messages,新的线条会产生额外的信息,New lines will create extra messages,Nuevas líneas crearan nuevos mensajes
+Remove empty messages,删除空信息,Remove empty messages,Borrar mensajes vacíos
+Auto color character names in messages,信息中的字符名称自动着色,Auto color character names in messages,Colorear nombres automáticamente
+Propagate input to rest of the Tree,传播输入到树的其他部分,Propagate input to rest of the Tree,Propagar input al resto del Tree
+Dim characters when they are not speaking,角色不说话的时候会变暗,Dim characters when they are not speaking,Oscurecer personajes no activos
+Audio for Text events:,文本事件的音频:,Audio for Text events:,Audio para los eventos de texto:
+Enable audio for Text events,启用文本事件的音频,Enable audio for Text events,Habilitar audio para eventos de texto
+Default bus for Text event audio,文本事件音频的默认总线,Default bus for Text event audio,Audio bus predeterminado para eventos de texto
+Experimental Translations:,实验性翻译:,Experimental Translations:,Traducción experimental:
+Inputs for text events will be treated as keys for tr(),文本事件的输入将被视为tr()的按键,Inputs for text events will be treated as keys for tr(),Inputs for text events will be treated as keys for tr()
+Save current timeline on timeline start,在时间轴开始时保存当前的时间轴,Save current timeline on timeline start,Save current timeline on timeline start
+Clear saved timeline on timeline end,在时间线结束时清除保存的时间线,Clear saved timeline on timeline end,Clear saved timeline on timeline end
+Save definitions on timeline start,在时间线开始时保存定义,Save definitions on timeline start,Save definitions on timeline start
+Save definitions on timeline end,在时间线结束时保存定义,Save definitions on timeline end,Save definitions on timeline end
+Enable choice options after  ,启用选择选项后  ,Enable choice options after  ,Habilitar las opciones después de  
+ seconds, 秒, seconds, segundos
+Default action key,默认动作按键,Default action key,Tecla de acción predeterminada
+Use custom events,使用自定义事件,Use custom events,Use custom events
+  Text Event,  文本事件,  Text Event,  Text Event
+  Character Join,  角色加入,  Character Join,  Character Join
+  Character Leave,  角色离开,  Character Leave,  Character Leave
+  Question,  问题,  Question,  Question
+  Choice,  选择,  Choice,  Choice
+ Condition, 条件, Condition, Condition
+  End Branch,  结束分支,  End Branch,  End Branch
+  Set Value,  设定值,  Set Value,  Set Value
+  Set Glossary,  设置术语,  Set Glossary,  Set Glossary
+  Change Timeline,  改变时间线,  Change Timeline,  Change Timeline
+  Set Background,  设置背景,  Set Background,  Set Background
+  Close Dialog,  关闭对话框,  Close Dialog,  Close Dialog
+  Wait Seconds,  等待秒数,  Wait Seconds,  Wait Seconds
+  Set Theme,  设置主题,  Set Theme,  Set Theme
+  Audio Event,  音频事件,  Audio Event,  Audio Event
+  Background Music,  背景音乐,  Background Music,  Background Music
+  Emit Signal,  发出信号,  Emit Signal,  Emit Signal
+  Change Scene,  改变场景,  Change Scene,  Change Scene
+  Call Node,  呼叫节点,  Call Node,  Call Node
+Name: ,名称,Name: ,Nombre: 
+Different display name,不同的显示名称,Different display name,Different display name
+Enable Nicknames,启用昵称,Enable Nicknames,Habilitar Apodos
+Display Name: ,显示名称:,Display Name: ,Display Name: 
+Nicknames: ,昵称:,Nicknames: ,Apodos: 
+Color: ,颜色:,Color: ,Color: 
+Colors,颜色,Colors,Colores
+Description: ,描述:,Description: ,Descripción: 
+Portraits / Expressions,肖像 / 表情,Portraits / Expressions,Retratos / Expresiones
+File:,文件:,File:,Archivo:
+  Add new portrait,  添加新的肖像,  Add new portrait,  Agregar nuevo retrato
+  Import images from folder,  从文件夹中导入图片,  Import images from folder,  Importar imágenes de una carpeta
+The selected operator requires a number!,所选的操作需要一个数字!,The selected operator requires a number!,El operador seleccionado requiere un número
+This event needs a question event around it!,这个事件需要一个围绕它的问题事件!,This event needs a question event around it!,Este evento necesita estar dentro de una pregunta
+Text Color ,文字颜色 ,Text Color ,Color de texto 
+Flat background,扁平背景,Flat background,Fondo plano
+Background Texture,背景纹理,Background Texture,Textura de fondo
+Texture Modulation,纹理调制,Texture Modulation,Modulación de textura
+Fonts,字体,Fonts,Fuentes
+Regular Font,普通字体,Regular Font,Normal
+Bold Font,粗体字,Bold Font,Negrita
+Italic Font,斜体字,Italic Font,Cursiva
+Text Color,文字颜色,Text Color,Color de texto
+Shadow,阴影,Shadow,Sombra
+Shadow Offset,阴影偏移,Shadow Offset,Sombra Offset
+Behaviour,行为,Behaviour,Comportamiento
+Speed (bigger = slower),速度 (更大=更慢),Speed (bigger = slower),Velocidad (a mayor número más lento)
+Alignment,对齐,Alignment,Alineación
+Single Portrait Mode,单一肖像模式,Single Portrait Mode,Modo retrato único
+Visuals,视觉效果,Visuals,Visuales
+Background Color,背景颜色,Background Color,Color de fondo
+Full width,全宽,Full width,Ancho completo
+Box padding,箱体填充,Box padding,Box padding
+Box size (pixels),盒子大小 (像素),Box size (pixels),Box size (pixels)
+Bottom gap,底部间隙,Bottom gap,Bottom gap
+Next Indicator,下一个指示器,Next Indicator,Indicador de siguiente
+Image,图片,Image,Imágen
+Animation,动画,Animation,Animación
+Scale,尺度,Scale,Escala
+Offset,偏移,Offset,Offset
+Behaviour,行为方式,Behaviour,Comportamiento
+Action key,动作按键,Action key,Tecla de acción
+Fade in time:,淡入时间:,Fade in time:,Tiempo de aparición:
+Text,文本,Text,Texto
+Name label Font,名称标签字体,Name label Font,Fuente del nombre
+Use character Color,使用角色颜色,Use character Color,Usar el color del personaje
+Shadow,阴影,Shadow,Sombra
+Box,盒子,Box,Box
+Background Color,背景颜色,Background Color,Color de fondo
+Placement,摆放位置,Placement,Colocación
+Position,位置,Position,Posicion
+Button Style,按钮样式,Button Style,Estilo de botones
+Fixed button size,固定按钮尺寸,Fixed button size,Tamaño fijo
+Separation,分离,Separation,Separación
+Layout,布局,Layout,Ordenar
+Advanced,高级,Advanced,Avanzado
+Use Custom Buttons,使用自定义按钮,Use Custom Buttons,Usar botones propios
+Use Native Buttons,使用本地按钮,Use Native Buttons,Usar botones nativos
+Word color,文字颜色,Word color,Color de palabra
+Background Panel,背景板,Background Panel,Panel de fondo
+Title Font,标题字体,Title Font,Título Fuente
+Title color,标题颜色,Title color,Título Color
+Text Font,文本字体,Text Font,Texto Font
+Text color,文本颜色,Text color,Texto Color
+Extra Font,额外字体,Extra Font,Extra Fuente
+Extra color,额外颜色,Extra color,Extra Color
+Behaviour,行为,Behaviour,Comportamiento
+Show,显示,Show,Mostrar
+Typing Sound Effects,打字音效,Typing Sound Effects,Sonido Del Texto
+Enable,启用,Enable,Habilitar
+File or folder path,文件或文件夹路径,File or folder path,Archivo o carpeta
+Volume,音量,Volume,Volumen
+Volume random range,音量随机范围,Volume random range,Rango de volumen
+Pitch random range,音高随机范围,Pitch random range,Rango de tono
+Allow interrupt,允许中断,Allow interrupt,Permitir interrumpir
+Audio Bus,音频总线,Audio Bus,Audio Bus

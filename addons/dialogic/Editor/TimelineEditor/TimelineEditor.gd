@@ -34,6 +34,27 @@ signal selection_updated
 signal batch_loaded
 
 func _ready():
+	var p = EditorPlugin.new()
+	$"ScrollContainer/EventContainer/TextEvent".hint_tooltip = DTS.translate("  Text Event")
+	$"ScrollContainer/EventContainer/CharacterJoin".hint_tooltip = DTS.translate("  Character Join")
+	$"ScrollContainer/EventContainer/CharacterLeave".hint_tooltip = DTS.translate("  Character Leave")
+	$"ScrollContainer/EventContainer/Question".hint_tooltip = DTS.translate("  Question")
+	$"ScrollContainer/EventContainer/Choice".hint_tooltip = DTS.translate("  Choice")
+	$"ScrollContainer/EventContainer/Condition".hint_tooltip = DTS.translate(" Condition")
+	$"ScrollContainer/EventContainer/EndBranch".hint_tooltip = DTS.translate("  End Branch")
+	$"ScrollContainer/EventContainer/SetValue".hint_tooltip = DTS.translate("  Set Value")
+	$"ScrollContainer/EventContainer/SetGlossary".hint_tooltip = DTS.translate("  Set Glossary")
+	$"ScrollContainer/EventContainer/ChangeTimeline".hint_tooltip = DTS.translate("  Change Timeline")
+	$"ScrollContainer/EventContainer/ChangeBackground".hint_tooltip = DTS.translate("  Set Background")
+	$"ScrollContainer/EventContainer/CloseDialog".hint_tooltip = DTS.translate("  Close Dialog")
+	$"ScrollContainer/EventContainer/WaitSeconds".hint_tooltip = DTS.translate("  Wait Seconds")
+	$"ScrollContainer/EventContainer/SetTheme".hint_tooltip = DTS.translate("  Set Theme")
+	$"ScrollContainer/EventContainer/AudioEvent".hint_tooltip = DTS.translate("  Audio Event")
+	$"ScrollContainer/EventContainer/BackgroundMusic".hint_tooltip = DTS.translate("  Background Music")
+	$"ScrollContainer/EventContainer/EmitSignal".hint_tooltip = DTS.translate("  Emit Signal")
+	$"ScrollContainer/EventContainer/ChangeScene".hint_tooltip = DTS.translate("  Change Scene")
+	$"ScrollContainer/EventContainer/CallNode".hint_tooltip = DTS.translate("  Call Node")
+	
 	editor_reference = find_parent('EditorView')
 	connect("batch_loaded", self, '_on_batch_loaded')
 	var modifier = ''

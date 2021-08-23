@@ -6,6 +6,11 @@ signal picking_background(section)
 
 var real_file_path = 'res://addons/dialogic/Example Assets/backgrounds/background-2.png'
 
+func _ready():
+	$"Label".text = DTS.translate("Text Color ")
+	$"Label5".text = DTS.translate("Flat background")
+	$"BackgroundTextureLabel".text = DTS.translate("Background Texture")
+	$"TextureModulationLabel".text = DTS.translate("Texture Modulation")
 
 func load_style(data):
 	$TextColor/CheckBox.pressed = data[0]
