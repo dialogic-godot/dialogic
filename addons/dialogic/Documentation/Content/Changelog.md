@@ -3,6 +3,8 @@
 ## v1.3 - (WIP)
 Changes:
   - ⭐ Builtin Documentation [[Jowan-Spooner]](https://github.com/Jowan-Spooner)
+  - Editor plugin has translation support and some labels are translated to Chinese [[magian1127]][https://github.com/magian1127)]
+  - Added some Spanish translations
   - Fixed a bug that prevented to use the global input setting when selecting option buttons
   - `Dialogic.start()` will now use paths for specific timelines. A fallback is in place, but specificity is preferred. For instance: `Dialogic.start('my-timeline')` will search any timeline with that name; `Dialogic.start('/chapter-1/my-timeline')` will open the timeline namde `my-timeline` inside the folder `chapter-1`.
   - Rework of the character name coloring (using Regex now) [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
