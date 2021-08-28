@@ -378,7 +378,7 @@ func parse_definitions(text: String, variables: bool = true, glossary: bool = tr
 		definitions = get_tree().get_meta('definitions')
 		if definitions == null:
 			definitions = {}
-		definitions = get_definitions()
+		definitions = Dialogic.get_definitions()
 	if variables:
 		final_text = _insert_variable_definitions(text)
 	if glossary and _should_show_glossary():
@@ -505,10 +505,10 @@ func _on_text_completed():
 func on_timeline_start():
 	if not Engine.is_editor_hint():
 		if settings.get_value('saving', 'save_definitions_on_start', true):
-			save_definitions()
+			Dialogic.save_definitions()
 			pass
 		if settings.get_value('saving', 'save_current_timeline', true):
-			set_current_timeline(current_timeline)
+			Dialogic.set_current_timeline(current_timeline)
 	# TODO remove event_start in 2.0
 	emit_signal("event_start", "timeline", current_timeline)
 	emit_signal("timeline_start", current_timeline)
@@ -517,10 +517,10 @@ func on_timeline_start():
 func on_timeline_end():
 	if not Engine.is_editor_hint():
 		if settings.get_value('saving', 'save_definitions_on_end', true):
-			save_definitions()
+			Dialogic.save_definitions()
 			pass
 		if settings.get_value('saving', 'clear_current_timeline', true):
-			set_current_timeline('')
+			Dialogic.set_current_timeline('')
 	# TODO remove event_end in 2.0
 	emit_signal("event_end", "timeline")
 	emit_signal("timeline_end", current_timeline)
@@ -726,7 +726,7 @@ func event_handler(event: Dictionary):
 			var value = event['set_value']
 			if event.get('set_random', false):
 				value = str(randi()%int(event.get("random_upper_limit", 100)-event.get('random_lower_limit', 0))+event.get('random_lower_limit', 0))
-			set_variable_from_id(event['definition'], value, operation)
+			Dialogic.set_variable_from_id(event['definition'], value, operation)
 			_load_next_event()
 		
 		# TIMELINE EVENTS
@@ -796,7 +796,7 @@ func event_handler(event: Dictionary):
 		'dialogic_025':
 			emit_signal("event_start", "set_glossary", event)
 			if event['glossary_id']:
-				set_glossary_from_id(event['glossary_id'], event['title'], event['text'],event['extra'])
+				Dialogic.set_glossary_from_id(event['glossary_id'], event['title'], event['text'],event['extra'])
 			_load_next_event()
 		# AUDIO EVENTS
 		# Audio event
@@ -1249,99 +1249,3 @@ func _on_OptionsDelayedInput_timeout():
 	for button in $Options/ButtonContainer.get_children():
 		if button.is_connected("pressed", self, "answer_question") == false:
 			button.connect("pressed", self, "answer_question", [button, button.get_meta('event_idx'), button.get_meta('question_idx')])
-
-
-# The following functions existed previously on the DialogicSingleton.gd singleton.
-# I removed that one and moved the functions here.
-func absolute_root():
-	var main_loop = Engine.get_main_loop()
-	return main_loop
-
-
-func set_current_timeline(timeline):
-	absolute_root().set_meta('current_timeline', timeline)
-	return timeline
-
-
-func get_current_timeline():
-	var timeline
-	timeline = absolute_root().get_meta('current_timeline')
-	if timeline == null:
-		timeline = ''
-	return timeline
-
-
-func get_definitions() -> Dictionary:
-	var metalist = absolute_root().get_meta_list()
-	var definitions
-	if 'definitions' in metalist:
-		definitions = absolute_root().get_meta('definitions')
-	else:
-		definitions = DialogicResources.get_default_definitions()
-		absolute_root().set_meta('definitions', definitions)
-	return definitions
-
-
-func set_variable(name: String, value):
-	for d in get_definitions()['variables']:
-		if d['name'] == name:
-			d['value'] = str(value)
-
-
-func get_variable(name: String, default = null):
-	for d in get_definitions()['variables']:
-		if d['name'] == name:
-			return d['value']
-	return default
-
-
-func set_variable_from_id(id: String, value: String, operation: String) -> void:
-	var target_def: Dictionary;
-	for d in get_definitions()['variables']:
-		if d['id'] == id:
-			target_def = d;
-	if target_def != null:
-		var converted_set_value = value
-		var converted_target_value = target_def['value']
-		var is_number = converted_set_value.is_valid_float() and converted_target_value.is_valid_float()
-		if is_number:
-			converted_set_value = float(value)
-			converted_target_value = float(target_def['value'])
-		var result = target_def['value']
-		# Do nothing for -, * and / operations on string
-		match operation:
-			'=':
-				result = converted_set_value
-			'+':
-				result = converted_target_value + converted_set_value
-			'-':
-				if is_number:
-					result = converted_target_value - converted_set_value
-			'*':
-				if is_number:
-					result = converted_target_value * converted_set_value
-			'/':
-				if is_number:
-					result = converted_target_value / converted_set_value
-		target_def['value'] = str(result)
-
-
-func set_glossary_from_id(id: String, title: String, text: String, extra:String) -> void:
-	var target_def: Dictionary;
-	for d in get_definitions()['glossary']:
-		if d['id'] == id:
-			target_def = d;
-	if target_def != null:
-		if title and title != "[No Change]":
-			target_def['title'] = title
-		if text and text != "[No Change]":
-			target_def['text'] = text
-		if extra and extra != "[No Change]":
-			target_def['extra'] = extra
-
-
-func save_definitions(autosave = true):
-	if autosave:
-		return DialogicResources.save_saved_definitions(get_definitions())
-	else:
-		return OK
