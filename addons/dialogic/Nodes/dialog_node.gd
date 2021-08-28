@@ -1253,28 +1253,32 @@ func _on_OptionsDelayedInput_timeout():
 
 # The following functions existed previously on the DialogicSingleton.gd singleton.
 # I removed that one and moved the functions here.
+func absolute_root():
+	var main_loop = Engine.get_main_loop()
+	return main_loop
+
 
 func set_current_timeline(timeline):
-	get_tree().set_meta('current_timeline', timeline)
+	absolute_root().set_meta('current_timeline', timeline)
 	return timeline
 
 
 func get_current_timeline():
 	var timeline
-	timeline = get_tree().get_meta('current_timeline')
+	timeline = absolute_root().get_meta('current_timeline')
 	if timeline == null:
 		timeline = ''
 	return timeline
 
 
 func get_definitions() -> Dictionary:
-	var metalist = get_tree().get_meta_list()
+	var metalist = absolute_root().get_meta_list()
 	var definitions
 	if 'definitions' in metalist:
-		definitions = get_tree().get_meta('definitions')
+		definitions = absolute_root().get_meta('definitions')
 	else:
 		definitions = DialogicResources.get_default_definitions()
-		get_tree().set_meta('definitions', definitions)
+		absolute_root().set_meta('definitions', definitions)
 	return definitions
 
 
@@ -1282,6 +1286,13 @@ func set_variable(name: String, value):
 	for d in get_definitions()['variables']:
 		if d['name'] == name:
 			d['value'] = str(value)
+
+
+func get_variable(name: String, default = null):
+	for d in get_definitions()['variables']:
+		if d['name'] == name:
+			return d['value']
+	return default
 
 
 func set_variable_from_id(id: String, value: String, operation: String) -> void:

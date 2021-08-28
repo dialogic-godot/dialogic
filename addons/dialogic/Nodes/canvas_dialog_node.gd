@@ -37,6 +37,14 @@ func set_dialog_script(value):
 	dialog_node.set_dialog_script(value)
 
 
+func set_variable(name: String, value):
+	dialog_node.set_variable(name, value)
+
+
+func get_variable(name: String, default = null):
+	return dialog_node.get_variable(name, default)
+
+
 func _ready() -> void:
 	# change the canvas layer
 	var config = DialogicResources.get_settings_config()	
