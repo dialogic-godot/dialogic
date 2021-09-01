@@ -105,3 +105,102 @@ static func start_from_save(timeline: String, initial_timeline: String, dialog_s
 	if current.empty():
 		current = initial_timeline
 	return start(current, false, dialog_scene_path, debug_mode)
+
+
+# --------------------------------------------------------------------------------------------------
+# The following functions existed previously on the DialogicSingleton.gd singleton.
+# I removed that one and moved the functions here.
+
+
+static func absolute_root():
+	var main_loop = Engine.get_main_loop()
+	return main_loop
+
+
+static func set_current_timeline(timeline):
+	absolute_root().set_meta('current_timeline', timeline)
+	return timeline
+
+
+static func get_current_timeline():
+	var timeline
+	timeline = absolute_root().get_meta('current_timeline')
+	if timeline == null:
+		timeline = ''
+	return timeline
+
+
+static func get_definitions() -> Dictionary:
+	var metalist = absolute_root().get_meta_list()
+	var definitions
+	if 'definitions' in metalist:
+		definitions = absolute_root().get_meta('definitions')
+	else:
+		definitions = DialogicResources.get_default_definitions()
+		absolute_root().set_meta('definitions', definitions)
+	return definitions
+
+
+static func set_variable(name: String, value):
+	for d in get_definitions()['variables']:
+		if d['name'] == name:
+			d['value'] = str(value)
+
+
+static func get_variable(name: String, default = null):
+	for d in get_definitions()['variables']:
+		if d['name'] == name:
+			return d['value']
+	return default
+
+
+static func set_glossary_from_id(id: String, title: String, text: String, extra:String) -> void:
+	var target_def: Dictionary;
+	for d in get_definitions()['glossary']:
+		if d['id'] == id:
+			target_def = d;
+	if target_def != null:
+		if title and title != "[No Change]":
+			target_def['title'] = title
+		if text and text != "[No Change]":
+			target_def['text'] = text
+		if extra and extra != "[No Change]":
+			target_def['extra'] = extra
+
+
+static func set_variable_from_id(id: String, value: String, operation: String) -> void:
+	var target_def: Dictionary;
+	for d in get_definitions()['variables']:
+		if d['id'] == id:
+			target_def = d;
+	if target_def != null:
+		var converted_set_value = value
+		var converted_target_value = target_def['value']
+		var is_number = converted_set_value.is_valid_float() and converted_target_value.is_valid_float()
+		if is_number:
+			converted_set_value = float(value)
+			converted_target_value = float(target_def['value'])
+		var result = target_def['value']
+		# Do nothing for -, * and / operations on string
+		match operation:
+			'=':
+				result = converted_set_value
+			'+':
+				result = converted_target_value + converted_set_value
+			'-':
+				if is_number:
+					result = converted_target_value - converted_set_value
+			'*':
+				if is_number:
+					result = converted_target_value * converted_set_value
+			'/':
+				if is_number:
+					result = converted_target_value / converted_set_value
+		target_def['value'] = str(result)
+
+
+static func save_definitions(autosave = true):
+	if autosave:
+		return DialogicResources.save_saved_definitions(get_definitions())
+	else:
+		return OK
