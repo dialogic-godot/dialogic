@@ -7,15 +7,17 @@ signal audio_loaded
 export (String) var event_name = "Audio Event"
 
 ## node references
-onready var name_label := $HBox/Name
-onready var volume_input := $HBox/Volume
-onready var start_at_input := $HBox/StartAt
-onready var stop_at_input := $HBox/StopAt
-onready var bus_selector := $HBox/BusSelector
-onready var clear_button := $HBox/ButtonClear
-onready var audio_button := $HBox/ButtonAudio
-onready var audio_preview := $HBox/AudioPreview
-onready var preview_play_button := $HBox/ButtonPreviewPlay
+onready var name_label := $prime_settings/Name
+onready var volume_input := $prime_settings/Volume
+onready var start_at_input := $adv_settings/StartAt
+onready var stop_at_input := $adv_settings/StopAt
+onready var bus_selector := $adv_settings/BusSelector
+onready var clear_button := $prime_settings/ButtonClear
+onready var audio_button := $prime_settings/ButtonAudio
+onready var audio_preview := $prime_settings/AudioPreview
+onready var preview_play_button := $prime_settings/ButtonPreviewPlay
+onready var show_advanced_button := $prime_settings/show_adv
+onready var advanced_options_group := $adv_settings
 
 # used to connect the signals
 func _ready():
@@ -29,6 +31,7 @@ func _ready():
 	volume_input.connect("value_changed", self, "_on_Volume_value_changed")
 	start_at_input.connect("value_changed", self, "_on_StartAt_value_changed")
 	stop_at_input.connect("value_changed", self, "_on_StopAt_value_changed")
+	show_advanced_button.connect("toggled", self, "_on_advanced_toggled")
 	
 	# icons
 	clear_button.icon = get_icon("Remove", "EditorIcons")
@@ -159,29 +162,39 @@ func _on_StartAt_value_changed(value):
 	event_data['start_time'] = value
 	data_changed()
 	
+func _on_advanced_toggled(show:bool):
+	if show:
+		advanced_options_group.show()
+	else:
+		advanced_options_group.hide()
 func show_options():
 	clear_button.show()
 	preview_play_button.show()
-	bus_selector.show()
-	$HBox/AudioBusLabel.show()
-	$HBox/VolumeLabel.show()
+	#bus_selector.show()
+	#$adv_settings/AudioBusLabel.show()
+	$prime_settings/VolumeLabel.show()
 	volume_input.show()
 	start_at_input.show()
 	stop_at_input.show()
-	$HBox/StopAtLabel.show()
-	$HBox/StartAtLabel.show()
+	#$adv_settings/StopAtLabel.show()
+	#$adv_settings/StartAtLabel.show()
+	show_advanced_button.show()
+	if show_advanced_button.pressed:
+		advanced_options_group.show()
 
 func hide_options():
 	clear_button.hide()
 	preview_play_button.hide()
-	bus_selector.hide()
-	$HBox/AudioBusLabel.hide()
-	$HBox/VolumeLabel.hide()
+	#bus_selector.hide()
+	#$adv_settings/AudioBusLabel.hide()
+	$prime_settings/VolumeLabel.hide()
 	volume_input.hide()
-	start_at_input.hide()
-	stop_at_input.hide()
-	$HBox/StopAtLabel.hide()
-	$HBox/StartAtLabel.hide()
+	#start_at_input.hide()
+	#stop_at_input.hide()
+	#$adv_settings/StopAtLabel.hide()
+	#$adv_settings/StartAtLabel.hide()
+	advanced_options_group.hide()
+	show_advanced_button.hide()
 
 func _process(_delta):
 	#Will automatically stop playing when reaching stop_time
