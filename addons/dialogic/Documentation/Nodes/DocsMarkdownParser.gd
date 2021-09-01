@@ -129,7 +129,7 @@ func parse(content : String,  file_path:String = '', docs_path:String = ''):
 				imagenames.append(res.get_string("imgname"))
 
 	## Find all occurences of links (that are not images)
-	regex.compile("[^!]\\[(?<linkname>.*?)\\]\\((?<link>[^\\)]*\\S*?)\\)")
+	regex.compile("[^!]\\[(?<linkname>[^[]+)\\]\\((?<link>[^\\)]*\\S*?)\\)")
 	result = regex.search_all(content)
 	if result:
 		for res in result:
