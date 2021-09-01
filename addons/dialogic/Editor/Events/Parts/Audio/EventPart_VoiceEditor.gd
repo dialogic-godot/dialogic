@@ -30,7 +30,7 @@ func repopulate() -> void:
 		label.text = "Line "+str(i+1)+":"
 		label_container.add_child(label)
 		
-		#loaded daata 
+		#loaded data 
 		if event_data.has('voice_data'):
 			var voice_data = event_data['voice_data']
 			if voice_data.has(str(i)):

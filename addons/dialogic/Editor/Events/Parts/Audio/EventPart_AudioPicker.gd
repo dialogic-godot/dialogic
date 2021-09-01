@@ -9,6 +9,8 @@ export (String) var event_name = "Audio Event"
 ## node references
 onready var name_label := $HBox/Name
 onready var volume_input := $HBox/Volume
+onready var start_at_input := $HBox/StartAt
+onready var stop_at_input := $HBox/StopAt
 onready var bus_selector := $HBox/BusSelector
 onready var clear_button := $HBox/ButtonClear
 onready var audio_button := $HBox/ButtonAudio
@@ -25,6 +27,8 @@ func _ready():
 	clear_button.connect('pressed', self, "_on_ButtonClear_pressed")
 	bus_selector.connect("item_selected", self, "_on_BusSelector_item_selected")
 	volume_input.connect("value_changed", self, "_on_Volume_value_changed")
+	start_at_input.connect("value_changed", self, "_on_StartAt_value_changed")
+	stop_at_input.connect("value_changed", self, "_on_StopAt_value_changed")
 	
 	# icons
 	clear_button.icon = get_icon("Remove", "EditorIcons")
@@ -47,6 +51,10 @@ func load_data(data:Dictionary):
 		
 	if data.has('volume'):
 		volume_input.value = data['volume']
+	if data.has('start_time'):
+		start_at_input.value = data["start_time"]
+	if data.has('stop_time'):
+		start_at_input.value = data["stop_time"]
 	if data.has('file'):
 		load_audio(data['file'])
 	
@@ -110,7 +118,10 @@ func _on_ButtonPreviewPlay_pressed():
 		audio_preview.stream = load(event_data['file'])
 		audio_preview.bus = event_data['audio_bus']
 		audio_preview.volume_db =  event_data['volume']
-		audio_preview.play()
+		if event_data.has('start_time'):
+			audio_preview.play(event_data['start_time'])
+		else:
+			audio_preview.play()
 		preview_play_button.icon = get_icon("Stop", "EditorIcons")
 
 func _on_AudioPreview_finished():
@@ -139,6 +150,15 @@ func _on_Volume_value_changed(value):
 	event_data['volume'] = value
 	data_changed()
 
+func _on_StopAt_value_changed(value):
+	event_data['stop_time'] = value
+	data_changed()
+
+
+func _on_StartAt_value_changed(value):
+	event_data['start_time'] = value
+	data_changed()
+	
 func show_options():
 	clear_button.show()
 	preview_play_button.show()
@@ -146,6 +166,10 @@ func show_options():
 	$HBox/AudioBusLabel.show()
 	$HBox/VolumeLabel.show()
 	volume_input.show()
+	start_at_input.show()
+	stop_at_input.show()
+	$HBox/StopAtLabel.show()
+	$HBox/StartAtLabel.show()
 
 func hide_options():
 	clear_button.hide()
@@ -154,3 +178,12 @@ func hide_options():
 	$HBox/AudioBusLabel.hide()
 	$HBox/VolumeLabel.hide()
 	volume_input.hide()
+	start_at_input.hide()
+	stop_at_input.hide()
+	$HBox/StopAtLabel.hide()
+	$HBox/StartAtLabel.hide()
+
+func _process(_delta):
+	#Will automatically stop playing when reaching stop_time
+	if(audio_preview.playing && event_data.has('stop_time') && audio_preview.get_playback_position() >= event_data['stop_time']):
+		audio_preview.stop()
