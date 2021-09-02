@@ -23,6 +23,7 @@ func repopulate() -> void:
 	for i in range(audio_lines):
 		var label = Label.new()
 		label.text = "Line "+str(i+1)+":"
+		label.size_flags_vertical = 0
 		$List.add_child(label)
 		
 		var a_picker = audio_picker.instance()

@@ -7,10 +7,9 @@ signal audio_loaded
 export (String) var event_name = "Audio Event"
 
 ## node references
-onready var name_label := $prime_settings/Name
 onready var volume_input := $prime_settings/Volume
-onready var start_at_input := $adv_settings/StartAt
-onready var stop_at_input := $adv_settings/StopAt
+onready var start_at_input := $adv_settings/Panel/HBox/StartAt
+onready var stop_at_input := $adv_settings/Panel/HBox/StopAt
 onready var bus_selector := $adv_settings/BusSelector
 onready var clear_button := $prime_settings/ButtonClear
 onready var audio_button := $prime_settings/ButtonAudio
@@ -33,8 +32,10 @@ func _ready():
 	stop_at_input.connect("value_changed", self, "_on_StopAt_value_changed")
 	show_advanced_button.connect("toggled", self, "_on_advanced_toggled")
 	
+	advanced_options_group.hide()
+	
 	# icons
-	clear_button.icon = get_icon("Remove", "EditorIcons")
+	clear_button.icon = get_icon("Reload", "EditorIcons")
 	preview_play_button.icon = get_icon("Play", "EditorIcons")
 	
 	# AudioBusPicker update
@@ -84,8 +85,7 @@ func _on_file_selected(path, target):
 ### Loading the audio
 func load_audio(path: String):
 	if not path.empty():
-		name_label.text = path.get_file()
-		name_label.hint_tooltip = path
+		audio_button.text = path.get_file()
 		audio_button.hint_tooltip = path
 		clear_button.disabled = false
 		preview_play_button.disabled = false
@@ -102,7 +102,7 @@ func load_audio(path: String):
 		show_options()
 	
 	else:
-		name_label.text = 'No sound (will stop previous '+event_name+')'
+		audio_button.text = 'No sound (will stop previous '+event_name+')'
 		event_data['file'] = ''
 		
 		if event_data.has('audio'): event_data['audio'] = 'stop'
