@@ -7,10 +7,11 @@ signal audio_loaded
 export (String) var event_name = "Audio Event"
 
 ## node references
-onready var volume_input := $prime_settings/Volume
-onready var start_at_input := $adv_settings/Panel/HBox/StartAt
-onready var stop_at_input := $adv_settings/Panel/HBox/StopAt
-onready var bus_selector := $adv_settings/BusSelector
+onready var volume_input := $adv_settings/AudioVolume/VBox/Volume
+onready var region_group := $adv_settings/AudioRegion
+onready var start_at_input := $adv_settings/AudioRegion/VBox/HBox/StartAt
+onready var stop_at_input := $adv_settings/AudioRegion/VBox/HBox/StopAt
+onready var bus_selector := $adv_settings/AudioBus/VBox/BusSelector
 onready var clear_button := $prime_settings/ButtonClear
 onready var audio_button := $prime_settings/ButtonAudio
 onready var audio_preview := $prime_settings/AudioPreview
@@ -61,6 +62,9 @@ func load_data(data:Dictionary):
 		start_at_input.value = data["stop_time"]
 	if data.has('file'):
 		load_audio(data['file'])
+	
+	if not data.has("event_id"):
+		region_group.show()
 	
 
 # has to return the wanted preview, only useful for body parts
@@ -167,17 +171,13 @@ func _on_advanced_toggled(show:bool):
 		advanced_options_group.show()
 	else:
 		advanced_options_group.hide()
+
 func show_options():
 	clear_button.show()
 	preview_play_button.show()
-	#bus_selector.show()
-	#$adv_settings/AudioBusLabel.show()
-	$prime_settings/VolumeLabel.show()
+	
 	volume_input.show()
-	start_at_input.show()
-	stop_at_input.show()
-	#$adv_settings/StopAtLabel.show()
-	#$adv_settings/StartAtLabel.show()
+
 	show_advanced_button.show()
 	if show_advanced_button.pressed:
 		advanced_options_group.show()
@@ -185,14 +185,7 @@ func show_options():
 func hide_options():
 	clear_button.hide()
 	preview_play_button.hide()
-	#bus_selector.hide()
-	#$adv_settings/AudioBusLabel.hide()
-	$prime_settings/VolumeLabel.hide()
 	volume_input.hide()
-	#start_at_input.hide()
-	#stop_at_input.hide()
-	#$adv_settings/StopAtLabel.hide()
-	#$adv_settings/StartAtLabel.hide()
 	advanced_options_group.hide()
 	show_advanced_button.hide()
 
