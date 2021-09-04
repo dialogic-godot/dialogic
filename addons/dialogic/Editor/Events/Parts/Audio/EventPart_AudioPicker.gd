@@ -7,17 +7,17 @@ signal audio_loaded
 export (String) var event_name = "Audio Event"
 
 ## node references
-onready var volume_input := $adv_settings/AudioVolume/VBox/Volume
-onready var region_group := $adv_settings/AudioRegion
-onready var start_at_input := $adv_settings/AudioRegion/VBox/HBox/StartAt
-onready var stop_at_input := $adv_settings/AudioRegion/VBox/HBox/StopAt
-onready var bus_selector := $adv_settings/AudioBus/VBox/BusSelector
-onready var clear_button := $prime_settings/ButtonClear
-onready var audio_button := $prime_settings/ButtonAudio
-onready var audio_preview := $prime_settings/AudioPreview
-onready var preview_play_button := $prime_settings/ButtonPreviewPlay
-onready var show_advanced_button := $prime_settings/show_adv
-onready var advanced_options_group := $adv_settings
+onready var volume_input := $VBox/adv_settings/AudioVolume/VBox/Volume
+onready var region_group := $VBox/adv_settings/AudioRegion
+onready var start_at_input := $VBox/adv_settings/AudioRegion/VBox/HBox/StartAt
+onready var stop_at_input := $VBox/adv_settings/AudioRegion/VBox/HBox/StopAt
+onready var bus_selector := $VBox/adv_settings/AudioBus/VBox/BusSelector
+onready var clear_button := $VBox/prime_settings/ButtonClear
+onready var audio_button := $VBox/prime_settings/ButtonAudio
+onready var audio_preview := $VBox/prime_settings/AudioPreview
+onready var preview_play_button := $VBox/prime_settings/ButtonPreviewPlay
+onready var show_advanced_button := $VBox/prime_settings/show_adv
+onready var advanced_options_group := $VBox/adv_settings
 
 # used to connect the signals
 func _ready():
@@ -34,6 +34,8 @@ func _ready():
 	show_advanced_button.connect("toggled", self, "_on_advanced_toggled")
 	
 	advanced_options_group.hide()
+	
+	audio_button.text = 'No sound (will stop previous '+event_name+')'
 	
 	# icons
 	clear_button.icon = get_icon("Reload", "EditorIcons")

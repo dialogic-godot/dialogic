@@ -28,6 +28,7 @@ func repopulate() -> void:
 		
 		var a_picker = audio_picker.instance()
 		a_picker.editor_reference = editor_reference
+		a_picker.event_name = "voice line"
 		a_picker.connect("audio_loaded", self, "_on_audio_picker_audio_loaded", [i])
 		$List.add_child(a_picker)
 		

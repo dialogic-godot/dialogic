@@ -1,10 +1,11 @@
 [gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://addons/dialogic/Editor/Events/Parts/Audio/EventPart_AudioPicker.gd" type="Script" id=1]
+[ext_resource path="res://addons/dialogic/Editor/Events/styles/SectionPanel.tres" type="StyleBox" id=2]
 [ext_resource path="res://addons/dialogic/Images/Pieces/closed-icon.svg" type="Texture" id=3]
 [ext_resource path="res://addons/dialogic/Images/Pieces/open-icon.svg" type="Texture" id=4]
 
-[sub_resource type="Image" id=5]
+[sub_resource type="Image" id=3]
 data = {
 "data": PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ),
 "format": "LumAlpha8",
@@ -16,48 +17,42 @@ data = {
 [sub_resource type="ImageTexture" id=2]
 flags = 4
 flags = 4
-image = SubResource( 5 )
+image = SubResource( 3 )
 size = Vector2( 16, 16 )
 
-[sub_resource type="StyleBoxFlat" id=4]
-content_margin_left = 6.0
-content_margin_right = 6.0
-content_margin_top = 5.0
-content_margin_bottom = 4.0
-bg_color = Color( 0.6, 0.6, 0.6, 0 )
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
-corner_radius_top_left = 3
-corner_radius_top_right = 3
-corner_radius_bottom_right = 3
-corner_radius_bottom_left = 3
-
-[node name="AudioPicker" type="VBoxContainer"]
+[node name="AudioPicker" type="PanelContainer"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_right = -718.0
 margin_bottom = -580.0
+custom_styles/panel = ExtResource( 2 )
 script = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 event_name = "AudioEvent"
 
-[node name="Preview" type="Label" parent="."]
+[node name="VBox" type="VBoxContainer" parent="."]
+margin_left = 6.0
+margin_top = 5.0
+margin_right = 316.0
+margin_bottom = 40.0
+
+[node name="Preview" type="Label" parent="VBox"]
 visible = false
-margin_right = 378.0
-margin_bottom = 14.0
+margin_left = -6.0
+margin_top = -5.0
+margin_right = 372.0
+margin_bottom = 9.0
 custom_colors/font_color = Color( 1, 1, 1, 0.513726 )
 text = "    ..."
 
-[node name="prime_settings" type="HBoxContainer" parent="."]
-margin_right = 306.0
+[node name="prime_settings" type="HBoxContainer" parent="VBox"]
+margin_right = 310.0
 margin_bottom = 30.0
 size_flags_horizontal = 3
 
-[node name="ButtonClear" type="Button" parent="prime_settings"]
+[node name="ButtonClear" type="Button" parent="VBox/prime_settings"]
 visible = false
 margin_left = 87.0
 margin_right = 115.0
@@ -67,23 +62,24 @@ disabled = true
 icon = SubResource( 2 )
 flat = true
 
-[node name="ButtonAudio" type="Button" parent="prime_settings"]
-margin_right = 83.0
+[node name="ButtonAudio" type="Button" parent="VBox/prime_settings"]
+margin_right = 274.0
 margin_bottom = 30.0
-text = "[Select file]"
+text = "No sound (will stop previous AudioEvent)"
 
-[node name="ButtonPreviewPlay" type="Button" parent="prime_settings"]
+[node name="ButtonPreviewPlay" type="Button" parent="VBox/prime_settings"]
+visible = false
 margin_left = 87.0
 margin_right = 115.0
 margin_bottom = 30.0
 disabled = true
 icon = SubResource( 2 )
 
-[node name="AudioPreview" type="AudioStreamPlayer" parent="prime_settings"]
+[node name="AudioPreview" type="AudioStreamPlayer" parent="VBox/prime_settings"]
 
-[node name="show_adv" type="CheckBox" parent="prime_settings"]
-margin_left = 119.0
-margin_right = 149.0
+[node name="show_adv" type="CheckBox" parent="VBox/prime_settings"]
+margin_left = 278.0
+margin_right = 308.0
 margin_bottom = 30.0
 custom_icons/checked = ExtResource( 4 )
 custom_icons/unchecked = ExtResource( 3 )
@@ -92,30 +88,31 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="adv_settings" type="HBoxContainer" parent="."]
+[node name="adv_settings" type="HBoxContainer" parent="VBox"]
 visible = false
-margin_top = 34.0
-margin_right = 514.0
-margin_bottom = 85.0
+margin_left = -6.0
+margin_top = 29.0
+margin_right = 508.0
+margin_bottom = 80.0
 custom_constants/separation = 8
 
-[node name="AudioVolume" type="PanelContainer" parent="adv_settings"]
+[node name="AudioVolume" type="PanelContainer" parent="VBox/adv_settings"]
 margin_right = 86.0
 margin_bottom = 51.0
-custom_styles/panel = SubResource( 4 )
+custom_styles/panel = ExtResource( 2 )
 
-[node name="VBox" type="VBoxContainer" parent="adv_settings/AudioVolume"]
+[node name="VBox" type="VBoxContainer" parent="VBox/adv_settings/AudioVolume"]
 margin_left = 6.0
 margin_top = 5.0
 margin_right = 80.0
 margin_bottom = 47.0
 
-[node name="Label" type="Label" parent="adv_settings/AudioVolume/VBox"]
+[node name="Label" type="Label" parent="VBox/adv_settings/AudioVolume/VBox"]
 margin_right = 74.0
 margin_bottom = 14.0
 text = "Volume:"
 
-[node name="Volume" type="SpinBox" parent="adv_settings/AudioVolume/VBox"]
+[node name="Volume" type="SpinBox" parent="VBox/adv_settings/AudioVolume/VBox"]
 margin_top = 18.0
 margin_right = 74.0
 margin_bottom = 42.0
@@ -127,51 +124,51 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="AudioBus" type="PanelContainer" parent="adv_settings"]
+[node name="AudioBus" type="PanelContainer" parent="VBox/adv_settings"]
 margin_left = 94.0
 margin_right = 179.0
 margin_bottom = 51.0
-custom_styles/panel = SubResource( 4 )
+custom_styles/panel = ExtResource( 2 )
 
-[node name="VBox" type="VBoxContainer" parent="adv_settings/AudioBus"]
+[node name="VBox" type="VBoxContainer" parent="VBox/adv_settings/AudioBus"]
 margin_left = 6.0
 margin_top = 5.0
 margin_right = 79.0
 margin_bottom = 47.0
 
-[node name="Label" type="Label" parent="adv_settings/AudioBus/VBox"]
+[node name="Label" type="Label" parent="VBox/adv_settings/AudioBus/VBox"]
 margin_right = 73.0
 margin_bottom = 14.0
 text = "AudioBus:"
 
-[node name="BusSelector" type="OptionButton" parent="adv_settings/AudioBus/VBox"]
+[node name="BusSelector" type="OptionButton" parent="VBox/adv_settings/AudioBus/VBox"]
 margin_top = 18.0
 margin_right = 73.0
 margin_bottom = 38.0
 size_flags_vertical = 5
 text = "Master"
-items = [ "Master", null, false, 0, null ]
+items = [ "Master", null, false, 0, null, "Voice Lines", null, false, 1, null ]
 selected = 0
 
-[node name="AudioRegion" type="PanelContainer" parent="adv_settings"]
+[node name="AudioRegion" type="PanelContainer" parent="VBox/adv_settings"]
 visible = false
 margin_left = 187.0
 margin_right = 419.0
 margin_bottom = 51.0
-custom_styles/panel = SubResource( 4 )
+custom_styles/panel = ExtResource( 2 )
 
-[node name="VBox" type="VBoxContainer" parent="adv_settings/AudioRegion"]
+[node name="VBox" type="VBoxContainer" parent="VBox/adv_settings/AudioRegion"]
 margin_left = 6.0
 margin_top = 5.0
 margin_right = 226.0
 margin_bottom = 47.0
 
-[node name="Label" type="Label" parent="adv_settings/AudioRegion/VBox"]
+[node name="Label" type="Label" parent="VBox/adv_settings/AudioRegion/VBox"]
 margin_right = 220.0
 margin_bottom = 14.0
 text = "Audio-region:"
 
-[node name="HBox" type="HBoxContainer" parent="adv_settings/AudioRegion/VBox"]
+[node name="HBox" type="HBoxContainer" parent="VBox/adv_settings/AudioRegion/VBox"]
 margin_top = 18.0
 margin_right = 220.0
 margin_bottom = 42.0
@@ -179,16 +176,17 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="StartAtLabel" type="Label" parent="adv_settings/AudioRegion/VBox/HBox"]
+[node name="StartAtLabel" type="Label" parent="VBox/adv_settings/AudioRegion/VBox/HBox"]
 margin_top = 5.0
 margin_right = 33.0
 margin_bottom = 19.0
 text = "Start:"
 
-[node name="StartAt" type="SpinBox" parent="adv_settings/AudioRegion/VBox/HBox"]
+[node name="StartAt" type="SpinBox" parent="VBox/adv_settings/AudioRegion/VBox/HBox"]
 margin_left = 37.0
 margin_right = 111.0
 margin_bottom = 24.0
+hint_tooltip = "Leave both at 0 to use the whole file."
 max_value = 9999.0
 step = 0.1
 suffix = "sec"
@@ -196,17 +194,18 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="StopAtLabel" type="Label" parent="adv_settings/AudioRegion/VBox/HBox"]
+[node name="StopAtLabel" type="Label" parent="VBox/adv_settings/AudioRegion/VBox/HBox"]
 margin_left = 115.0
 margin_top = 5.0
 margin_right = 142.0
 margin_bottom = 19.0
 text = "End:"
 
-[node name="StopAt" type="SpinBox" parent="adv_settings/AudioRegion/VBox/HBox"]
+[node name="StopAt" type="SpinBox" parent="VBox/adv_settings/AudioRegion/VBox/HBox"]
 margin_left = 146.0
 margin_right = 220.0
 margin_bottom = 24.0
+hint_tooltip = "Leave both at 0 to use the whole file."
 max_value = 9999.0
 step = 0.1
 suffix = "sec"
