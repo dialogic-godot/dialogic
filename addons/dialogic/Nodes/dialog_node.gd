@@ -45,6 +45,8 @@ onready var Background = load("res://addons/dialogic/Nodes/Background.tscn")
 var dialog_script: Dictionary = {}
 var questions #for keeping track of the questions answered
 
+var dialog_faded_in_already = false
+
 
 func _ready():
 	# Loading the config files
@@ -87,8 +89,8 @@ func _ready():
 			_init_dialog()
 			$DefinitionInfo.in_theme_editor = true
 	else:
-		# Calls _init_dialog() after animation is over
-		open_dialog_animation(current_theme.get_value('animation', 'show_time', 0.5)) 
+		_hide_dialog()
+		_init_dialog()
 
 
 func load_config_files():
@@ -441,10 +443,6 @@ func _input(event: InputEvent) -> void:
 				get_tree().set_input_as_handled()
 
 
-func show_dialog():
-	visible = true
-
-
 func set_dialog_script(value):
 	dialog_script = value
 
@@ -613,7 +611,7 @@ func event_handler(event: Dictionary):
 		# Text Event
 		'dialogic_001':
 			emit_signal("event_start", "text", event)
-			show_dialog()
+			fade_in_dialog()
 			finished = false
 			if event.has('character'):
 				var character_data = get_character(event['character'])
@@ -674,7 +672,7 @@ func event_handler(event: Dictionary):
 		# Question event
 		'dialogic_010':
 			emit_signal("event_start", "question", event)
-			show_dialog()
+			fade_in_dialog()
 			finished = false
 			waiting_for_answer = true
 			if event.has('name'):
@@ -884,6 +882,7 @@ func event_handler(event: Dictionary):
 				dprint('[D] No event found. Recevied data: ', event)
 	
 	$Options.visible = waiting_for_answer
+	
 
 
 func reset_options():
@@ -1201,26 +1200,43 @@ func characters_leave_all():
 			p.fade_out()
 
 
-func open_dialog_animation(transition_duration):
-	if transition_duration > 0:
-		$TextBubble.update_text('') # Clearing the text
-		$TextBubble.modulate = Color(1,1,1,0)
-		while_dialog_animation = true
-		var tween = Tween.new()
-		add_child(tween)
-		tween.interpolate_property($TextBubble, "modulate",
-			$TextBubble.modulate, Color(1,1,1,1), transition_duration,
-			Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
-		tween.start()
-		tween.connect("tween_completed", self, "clean_fade_in_tween", [tween])
-	else:
-		_init_dialog()
+# Start Dialog Fade In functions
+func _hide_dialog():
+	$TextBubble.update_text('') # Clearing the text
+	$TextBubble.modulate = Color(1,1,1,0)
+	while_dialog_animation = true
+	dialog_faded_in_already = false
 
 
-func clean_fade_in_tween(object, key, node):
+func fade_in_dialog(default = 0.5):
+	visible = true
+	var transition_time = current_theme.get_value('animation', 'show_time', default)
+	var has_tween = false
+	
+	if dialog_faded_in_already == false:
+		if transition_time > 0:
+			var tween = Tween.new()
+			add_child(tween)
+			tween.interpolate_property($TextBubble, "modulate",
+				$TextBubble.modulate, Color(1,1,1,1), transition_time,
+				Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
+			tween.start()
+			tween.connect("tween_completed", self, "finished_fade_in_dialog", [tween])
+			has_tween = true
+		else:
+			_init_dialog()
+	
+	if has_tween:
+		while_dialog_animation = false
+		dialog_faded_in_already = true
+
+
+func finished_fade_in_dialog(object, key, node):
 	node.queue_free()
 	while_dialog_animation = false
-	_init_dialog()
+	dialog_faded_in_already = true
+# End Dialog Fade In functions
+
 
 
 func close_dialog_event(transition_duration):
