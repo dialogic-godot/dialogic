@@ -16,6 +16,7 @@ Changes:
   - Deleted some legacy documentation files
   - Fixed the DialogNode Inspector Timeline Open button issue
   - Regex name compiler now properly escapes special characters [[zaknafean]](https://github.com/zaknafean)
+  - Fixed a bug that performed the fade-in animation before setting the proper theme
   - Timeline Editor:
     - Added a preview image on the portrait picker, so it is easy to know what sprite or scene you are selecting. Thanks to [EmmaH](https://www.youtube.com/channel/UC4y59CMiLxWQQVqVFBYLa3Q) for the idea and [Jowan-Spooner](https://github.com/Jowan-Spooner) for the implementation
     - Adding an extra space at the end of the timelines so it is easier to drag and drop new events
