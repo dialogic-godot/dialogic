@@ -4,8 +4,8 @@ extends "res://addons/dialogic/Editor/Events/Parts/EventPart.gd"
 
 export(PackedScene) var audio_picker
 
-onready var voices_container = $List/VoicesList
-onready var label_container = $List/Label
+#onready var voices_container = $List/VoicesList
+#onready var label_container = $List/Label
 var audio_lines = 1 # how many lines does the text event has
 
 
@@ -15,22 +15,24 @@ func load_data(data):
 	update_data()
 
 func repopulate() -> void:
-	for child in voices_container.get_children() + label_container.get_children():
+	for child in $List.get_children():
 		child.queue_free()
 	
 	var settings = DialogicResources.get_settings_config()
 	#recraete audio pickers
 	for i in range(audio_lines):
-		var a_picker = audio_picker.instance()
-		a_picker.editor_reference = editor_reference
-		a_picker.connect("audio_loaded", self, "_on_audio_picker_audio_loaded", [i])
-		voices_container.add_child(a_picker)
-		
 		var label = Label.new()
 		label.text = "Line "+str(i+1)+":"
-		label_container.add_child(label)
+		label.size_flags_vertical = 0
+		$List.add_child(label)
 		
-		#loaded daata 
+		var a_picker = audio_picker.instance()
+		a_picker.editor_reference = editor_reference
+		a_picker.event_name = "voice line"
+		a_picker.connect("audio_loaded", self, "_on_audio_picker_audio_loaded", [i])
+		$List.add_child(a_picker)
+		
+		#loaded data 
 		if event_data.has('voice_data'):
 			var voice_data = event_data['voice_data']
 			if voice_data.has(str(i)):
@@ -58,10 +60,16 @@ func _on_text_changed(text:String) -> void:
 	if prev_lines != audio_lines:
 		repopulate()
 
+#Since the nodes are now in a grid sharing indicies with lables, index must
+#be multiplied by 2, then added an offset of 1 to get the requested node
+func _get_audio_picker(index:int):
+	var data = $List.get_child(index * 2 + 1)
+	return data
 
 func _on_audio_picker_audio_loaded(index:int) -> void:
 	# update the data 
-	var data_loaded = voices_container.get_child(index).event_data
+	#var data_loaded = voices_container.get_child(index).event_data
+	var data_loaded = _get_audio_picker(index).event_data
 	if not event_data.has('voice_data'):
 		event_data['voice_data'] = {}
 	
@@ -78,7 +86,12 @@ func update_data():
 	if not event_data.has('voice_data'):
 		return
 	var keys = event_data['voice_data'].keys()
-	for i in range(voices_container.get_child_count()):
+	# This subroutine was already a hack before I got to it, so don't blame me.
+	# divide by two, again becouse the two merged nodes.
+	# reused _get_audio_picker wherein we multiply by two again :D
+	# - KvaGram
+	for i in range($List.get_child_count() / 2):
 		if keys.has(str(i)):
 			var data = event_data['voice_data'][str(i)]
-			voices_container.get_child(i).load_data(data)
+			#voices_container.get_child(i).load_data(data)
+			_get_audio_picker(i).load_data(data)

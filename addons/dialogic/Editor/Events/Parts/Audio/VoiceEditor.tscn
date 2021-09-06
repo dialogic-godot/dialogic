@@ -17,14 +17,8 @@ margin_right = 86.0
 margin_bottom = 14.0
 text = "Voice Picker :"
 
-[node name="List" type="HBoxContainer" parent="."]
+[node name="List" type="GridContainer" parent="."]
 margin_top = 18.0
 margin_right = 86.0
 margin_bottom = 18.0
-
-[node name="Label" type="VBoxContainer" parent="List"]
-
-[node name="VoicesList" type="VBoxContainer" parent="List"]
-margin_left = 4.0
-margin_right = 86.0
-size_flags_horizontal = 3
+columns = 2
