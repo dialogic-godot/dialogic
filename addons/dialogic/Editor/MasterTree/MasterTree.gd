@@ -324,8 +324,10 @@ func _on_item_selected():
 			settings_editor.update_data()
 			show_settings_editor()
 		'Documentation', 'Documentation Root':
-			documentation_viewer.load_page(metadata['path'])
-			show_documentatio_editor()
+			if metadata['path']:
+				documentation_viewer.load_page(metadata['path'])
+				show_documentatio_editor()
+			get_selected().collapsed = false
 		_:
 			hide_all_editors()
 
