@@ -61,7 +61,7 @@ func load_data(data:Dictionary):
 	if data.has('start_time'):
 		start_at_input.value = data["start_time"]
 	if data.has('stop_time'):
-		start_at_input.value = data["stop_time"]
+		stop_at_input.value = data["stop_time"]
 	if data.has('file'):
 		load_audio(data['file'])
 	
