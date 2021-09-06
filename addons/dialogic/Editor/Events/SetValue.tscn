@@ -1,59 +1,41 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://addons/dialogic/Editor/Events/Templates/EventTemplate.tscn" type="PackedScene" id=1]
 [ext_resource path="res://addons/dialogic/Images/Event Icons/Main Icons/set-value.svg" type="Texture" id=2]
 [ext_resource path="res://addons/dialogic/Editor/Events/styles/Logic.tres" type="StyleBox" id=3]
 [ext_resource path="res://addons/dialogic/Editor/Events/Parts/Logic/SetValuePicker.tscn" type="PackedScene" id=4]
 
-[sub_resource type="Image" id=3]
-data = {
-"data": PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ),
-"format": "LumAlpha8",
-"height": 16,
-"mipmaps": false,
-"width": 16
-}
-
-[sub_resource type="ImageTexture" id=2]
-flags = 4
-flags = 4
-image = SubResource( 3 )
-size = Vector2( 16, 16 )
-
 [node name="SetValue" instance=ExtResource( 1 )]
-focus_mode = 1
+event_name = "Set Value"
 event_data = {
 "definition": "",
 "event_id": "dialogic_014",
 "operation": "=",
+"random_upper_limit": 100.0,
 "set_random": false,
 "set_value": ""
 }
-event_style = ExtResource( 3 )
 event_icon = ExtResource( 2 )
-event_name = "Set Value"
+event_style = ExtResource( 3 )
 header_scene = ExtResource( 4 )
+help_page_path = "res://addons/dialogic/Documentation/Content/Events/014.md"
 
 [node name="PanelContainer" parent="." index="1"]
 custom_styles/panel = ExtResource( 3 )
 
-[node name="Warning" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="0"]
-margin_right = 28.0
-icon = SubResource( 2 )
-
-[node name="IconTexture" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="0"]
+[node name="IconTexture" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="1"]
 texture = ExtResource( 2 )
 
-[node name="TitleLabel" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="0"]
-margin_right = 64.0
+[node name="TitleLabel" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="2"]
+margin_right = 95.0
 text = "Set Value"
 
 [node name="Content" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="3"]
-margin_left = 116.0
-margin_right = 439.0
+margin_left = 105.0
+margin_right = 458.0
 
 [node name="Spacer" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="5"]
-margin_left = 443.0
+margin_left = 468.0
 
-[node name="OptionsControl" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="6"]
+[node name="OptionsControl" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="7"]
 items = [ "Move Up", null, 0, false, false, 0, 0, null, "", false, "Move Down", null, 0, false, false, 1, 0, null, "", false, "", null, 0, false, false, 2, 0, null, "", false, "Remove", null, 0, false, false, 3, 0, null, "", false ]
