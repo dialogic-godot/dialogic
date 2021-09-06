@@ -7,13 +7,17 @@ signal audio_loaded
 export (String) var event_name = "Audio Event"
 
 ## node references
-onready var name_label := $HBox/Name
-onready var volume_input := $HBox/Volume
-onready var bus_selector := $HBox/BusSelector
-onready var clear_button := $HBox/ButtonClear
-onready var audio_button := $HBox/ButtonAudio
-onready var audio_preview := $HBox/AudioPreview
-onready var preview_play_button := $HBox/ButtonPreviewPlay
+onready var volume_input := $VBox/adv_settings/AudioVolume/VBox/Volume
+onready var region_group := $VBox/adv_settings/AudioRegion
+onready var start_at_input := $VBox/adv_settings/AudioRegion/VBox/HBox/StartAt
+onready var stop_at_input := $VBox/adv_settings/AudioRegion/VBox/HBox/StopAt
+onready var bus_selector := $VBox/adv_settings/AudioBus/VBox/BusSelector
+onready var clear_button := $VBox/prime_settings/ButtonClear
+onready var audio_button := $VBox/prime_settings/ButtonAudio
+onready var audio_preview := $VBox/prime_settings/AudioPreview
+onready var preview_play_button := $VBox/prime_settings/ButtonPreviewPlay
+onready var show_advanced_button := $VBox/prime_settings/show_adv
+onready var advanced_options_group := $VBox/adv_settings
 
 # used to connect the signals
 func _ready():
@@ -25,9 +29,16 @@ func _ready():
 	clear_button.connect('pressed', self, "_on_ButtonClear_pressed")
 	bus_selector.connect("item_selected", self, "_on_BusSelector_item_selected")
 	volume_input.connect("value_changed", self, "_on_Volume_value_changed")
+	start_at_input.connect("value_changed", self, "_on_StartAt_value_changed")
+	stop_at_input.connect("value_changed", self, "_on_StopAt_value_changed")
+	show_advanced_button.connect("toggled", self, "_on_advanced_toggled")
+	
+	advanced_options_group.hide()
+	
+	audio_button.text = 'No sound (will stop previous '+event_name+')'
 	
 	# icons
-	clear_button.icon = get_icon("Remove", "EditorIcons")
+	clear_button.icon = get_icon("Reload", "EditorIcons")
 	preview_play_button.icon = get_icon("Play", "EditorIcons")
 	
 	# AudioBusPicker update
@@ -47,8 +58,15 @@ func load_data(data:Dictionary):
 		
 	if data.has('volume'):
 		volume_input.value = data['volume']
+	if data.has('start_time'):
+		start_at_input.value = data["start_time"]
+	if data.has('stop_time'):
+		stop_at_input.value = data["stop_time"]
 	if data.has('file'):
 		load_audio(data['file'])
+	
+	if not data.has("event_id"):
+		region_group.show()
 	
 
 # has to return the wanted preview, only useful for body parts
@@ -73,8 +91,7 @@ func _on_file_selected(path, target):
 ### Loading the audio
 func load_audio(path: String):
 	if not path.empty():
-		name_label.text = path.get_file()
-		name_label.hint_tooltip = path
+		audio_button.text = path.get_file()
 		audio_button.hint_tooltip = path
 		clear_button.disabled = false
 		preview_play_button.disabled = false
@@ -91,7 +108,7 @@ func load_audio(path: String):
 		show_options()
 	
 	else:
-		name_label.text = 'No sound (will stop previous '+event_name+')'
+		audio_button.text = 'No sound (will stop previous '+event_name+')'
 		event_data['file'] = ''
 		
 		if event_data.has('audio'): event_data['audio'] = 'stop'
@@ -110,7 +127,10 @@ func _on_ButtonPreviewPlay_pressed():
 		audio_preview.stream = load(event_data['file'])
 		audio_preview.bus = event_data['audio_bus']
 		audio_preview.volume_db =  event_data['volume']
-		audio_preview.play()
+		if event_data.has('start_time'):
+			audio_preview.play(event_data['start_time'])
+		else:
+			audio_preview.play()
 		preview_play_button.icon = get_icon("Stop", "EditorIcons")
 
 func _on_AudioPreview_finished():
@@ -139,18 +159,39 @@ func _on_Volume_value_changed(value):
 	event_data['volume'] = value
 	data_changed()
 
+func _on_StopAt_value_changed(value):
+	event_data['stop_time'] = value
+	data_changed()
+
+
+func _on_StartAt_value_changed(value):
+	event_data['start_time'] = value
+	data_changed()
+	
+func _on_advanced_toggled(show:bool):
+	if show:
+		advanced_options_group.show()
+	else:
+		advanced_options_group.hide()
+
 func show_options():
 	clear_button.show()
 	preview_play_button.show()
-	bus_selector.show()
-	$HBox/AudioBusLabel.show()
-	$HBox/VolumeLabel.show()
+	
 	volume_input.show()
+
+	show_advanced_button.show()
+	if show_advanced_button.pressed:
+		advanced_options_group.show()
 
 func hide_options():
 	clear_button.hide()
 	preview_play_button.hide()
-	bus_selector.hide()
-	$HBox/AudioBusLabel.hide()
-	$HBox/VolumeLabel.hide()
 	volume_input.hide()
+	advanced_options_group.hide()
+	show_advanced_button.hide()
+
+func _process(_delta):
+	#Will automatically stop playing when reaching stop_time
+	if(audio_preview.playing && event_data.has('stop_time') && audio_preview.get_playback_position() >= event_data['stop_time']):
+		audio_preview.stop()

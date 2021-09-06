@@ -584,7 +584,7 @@ func get_character(character_id):
 
 func handle_voice(event):
 	var settings_file = DialogicResources.get_settings_config()
-	if not settings_file.get_value('dialog', 'enable_voices', false):
+	if not settings_file.get_value('dialog', 'text_event_audio_enable', false):
 		return
 	# In game only 
 	if Engine.is_editor_hint():
