@@ -90,7 +90,7 @@ func _ready():
 	
 	update_custom_events()
 	$TimelineArea.connect('resized', self, 'add_extra_scroll_area_to_timeline', [])
-
+	
 
 # handles dragging/moving of events
 func _process(delta):
@@ -791,6 +791,9 @@ func create_event(scene: String, data: Dictionary = {'no-data': true} , indent: 
 
 	piece.connect("option_action", self, '_on_event_options_action', [piece])
 	piece.connect("gui_input", self, '_on_event_block_gui_input', [piece])
+
+	scroll_to_piece(piece)
+	
 	events_warning.visible = false
 	if auto_select:
 		select_item(piece, false)
@@ -1037,6 +1040,13 @@ func save_timeline() -> void:
 ## *****************************************************************************
 ##					 UTILITIES/HELPERS
 ## *****************************************************************************
+
+# Scrolling
+func scroll_to_piece(piece) -> void:
+	var height = 0
+	for i in range(0, piece.get_index()):
+		height += $TimelineArea/TimeLine.get_child(i).rect_size.y
+	$TimelineArea.scroll_vertical = height
 
 # Event Indenting
 func indent_events() -> void:
