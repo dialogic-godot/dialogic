@@ -22,6 +22,9 @@ Changes:
     - Change the Selected Event Style to only have blue borders and not change event color [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
     - Partial support for undo and redo [[Jowan-Spooner]](https://github.com/Jowan-Spooner)
     - After selecting a conditional, the input field of that event will be selected
+    - Added Voice Line support for Text and Question Events [[RedXGames](https://github.com/RedXGames)]
+    	- Added option to use a certain region of the audio files [[KvaGram](https://github.com/KvaGram)]
+    - Updated UI of the AudioPickers [[Jowan-Spooner]](https://github.com/Jowan-Spooner)
   - Theme Editor:
     - You can now set the choice buttons to be aligned horizontally or vertically
 
