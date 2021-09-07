@@ -65,6 +65,7 @@ func update_text(text):
 	text_label.bbcode_text = text
 	text_label.visible_characters = 0
 	
+	text_label.grab_focus()
 	start_text_timer()
 	return true
 

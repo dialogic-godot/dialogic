@@ -91,6 +91,7 @@ margin_left = 20.0
 margin_top = 10.0
 margin_right = -20.0
 margin_bottom = -10.0
+focus_mode = 2
 custom_styles/normal = SubResource( 1 )
 custom_fonts/normal_font = ExtResource( 1 )
 custom_colors/default_color = Color( 1, 1, 1, 1 )
@@ -101,6 +102,14 @@ bbcode_enabled = true
 bbcode_text = "Placeholder text for testing and formatting."
 meta_underlined = false
 text = "Placeholder text for testing and formatting."
+selection_enabled = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MouseBlocker" type="Control" parent="RichTextLabel"]
+anchor_right = 1.0
+anchor_bottom = 1.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -178,8 +187,4 @@ __meta__ = {
 
 [node name="TypingSFX" type="AudioStreamPlayer" parent="."]
 script = ExtResource( 5 )
-samples = [  ]
-select_samples_from_folder = ""
 random_strategy = 2
-random_volume_range = 0.0
-random_pitch_range = 0.0
