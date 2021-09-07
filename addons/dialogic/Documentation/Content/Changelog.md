@@ -26,6 +26,7 @@ Changes:
     - Added Voice Line support for Text and Question Events [[RedXGames](https://github.com/RedXGames)]
     	- Added option to use a certain region of the audio files [[KvaGram](https://github.com/KvaGram)]
     - Updated UI of the AudioPickers [[Jowan-Spooner]](https://github.com/Jowan-Spooner)
+    - Automatically scrolling to newly created events when you click on a create event button [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
   - Theme Editor:
     - You can now set the choice buttons to be aligned horizontally or vertically
 
