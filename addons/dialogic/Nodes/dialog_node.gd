@@ -44,6 +44,7 @@ onready var Portrait = load("res://addons/dialogic/Nodes/Portrait.tscn")
 onready var Background = load("res://addons/dialogic/Nodes/Background.tscn")
 var dialog_script: Dictionary = {}
 var questions #for keeping track of the questions answered
+var anchors = {}
 
 var dialog_faded_in_already = false
 
@@ -204,6 +205,7 @@ func load_dialog():
 		dialog_script = parse_characters(dialog_script)
 	dialog_script = parse_text_lines(dialog_script)
 	dialog_script = parse_branches(dialog_script)
+	parse_anchors()
 	return dialog_script
 
 
@@ -306,6 +308,7 @@ func parse_alignment(text):
 	return text
 
 
+
 func parse_branches(dialog_script: Dictionary) -> Dictionary:
 	questions = [] # Resetting the questions
 
@@ -367,6 +370,14 @@ func parse_branches(dialog_script: Dictionary) -> Dictionary:
 
 	return dialog_script
 
+func parse_anchors():
+	anchors = {}
+	var idx = 0
+	for event in dialog_script['events']:
+		if event['event_id'] == 'dialogic_015':
+			anchors[event['id']] = idx
+		idx += 1
+	
 
 func _should_show_glossary():
 	if current_theme != null:
@@ -725,6 +736,15 @@ func event_handler(event: Dictionary):
 			if event.get('set_random', false):
 				value = str(randi()%int(event.get("random_upper_limit", 100)-event.get('random_lower_limit', 0))+event.get('random_lower_limit', 0))
 			Dialogic.set_variable_from_id(event['definition'], value, operation)
+			_load_next_event()
+		# Anchor event
+		'dialogic_015':
+			emit_signal("event_start", "anchor", event)
+			_load_next_event()
+		# GoTo event
+		'dialogic_016':
+			emit_signal("event_start", "goto", event)
+			dialog_index = anchors[event.get('anchor_id')]
 			_load_next_event()
 		
 		# TIMELINE EVENTS

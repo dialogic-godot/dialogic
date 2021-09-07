@@ -32,6 +32,7 @@ var batches = []
 var building_timeline = true
 signal selection_updated
 signal batch_loaded
+signal timeline_loaded
 
 func _ready():
 	var p = EditorPlugin.new()
@@ -848,6 +849,7 @@ func _on_batch_loaded():
 		events_warning.visible = false
 		indent_events()
 		building_timeline = false
+		emit_signal("timeline_loaded")
 	add_extra_scroll_area_to_timeline()
 
 
@@ -880,6 +882,11 @@ func add_event_by_id(event_id, event_data):
 		# Set Value event
 		'dialogic_014':
 			return create_event('SetValue', event_data)
+		'dialogic_015':
+			return create_event('AnchorEvent', event_data)
+		'dialogic_016':
+			return create_event('GoTo Event', event_data)
+		
 		
 		# TIMELINE EVENTS
 		# Change Timeline event
@@ -1101,6 +1108,13 @@ func unfold_all_nodes():
 		event.set_expanded(true)
 	add_extra_scroll_area_to_timeline()
 
+func get_current_events_anchors():
+	var anchors = {}
+	for event in timeline.get_children():
+		if "event_data" in event:
+			if event.event_data['event_id'] == 'dialogic_015':
+				anchors[event.event_data['id']] = event.event_data['name']
+	return anchors
 
 func add_extra_scroll_area_to_timeline():
 	if timeline.get_children().size() > 4:

@@ -1,0 +1,39 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://addons/dialogic/Editor/Events/Templates/EventTemplate.tscn" type="PackedScene" id=1]
+[ext_resource path="res://addons/dialogic/Images/Event Icons/Main Icons/anchor.svg" type="Texture" id=2]
+[ext_resource path="res://addons/dialogic/Editor/Events/styles/Logic.tres" type="StyleBox" id=3]
+[ext_resource path="res://addons/dialogic/Editor/Events/Parts/Logic/GoTo Selector.tscn" type="PackedScene" id=4]
+
+[node name="GoTo Event" instance=ExtResource( 1 )]
+event_name = "Go to"
+event_data = {
+"anchor_id": "",
+"event_id": "dialogic_016"
+}
+event_icon = ExtResource( 2 )
+event_style = ExtResource( 3 )
+header_scene = ExtResource( 4 )
+expand_on_default = false
+
+[node name="PanelContainer" parent="." index="1"]
+custom_styles/panel = ExtResource( 3 )
+
+[node name="IconTexture" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="1"]
+margin_right = 39.0
+texture = ExtResource( 2 )
+
+[node name="TitleLabel" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="2"]
+margin_left = 49.0
+margin_right = 84.0
+text = "Go to"
+
+[node name="Content" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="3"]
+margin_left = 94.0
+margin_right = 218.0
+
+[node name="Spacer" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="5"]
+margin_left = 228.0
+
+[node name="OptionsControl" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="7"]
+items = [ "Move Up", null, 0, false, false, 0, 0, null, "", false, "Move Down", null, 0, false, false, 1, 0, null, "", false, "", null, 0, false, false, 2, 0, null, "", false, "Remove", null, 0, false, false, 3, 0, null, "", false ]
