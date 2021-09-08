@@ -81,9 +81,11 @@ func _ready():
 	if err == OK:
 		version_string = config.get_value("plugin", "version", "?")
 		$ToolBar/Version.text = 'Dialogic v' + version_string
-		
+	
 	$MainPanel/MasterTreeContainer/FilterMasterTreeEdit.right_icon = get_icon("Search", "EditorIcons")
-
+	
+	if OS.get_name() in ["Windows", "OSX"]:
+		$WindowMacBlocker.show()
 
 func on_master_tree_editor_selected(editor: String):
 	$ToolBar/FoldTools.visible = editor == 'timeline'
