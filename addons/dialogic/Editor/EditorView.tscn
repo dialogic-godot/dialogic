@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=2]
+[gd_scene load_steps=21 format=2]
 
 [ext_resource path="res://addons/dialogic/Editor/EditorView.gd" type="Script" id=1]
 [ext_resource path="res://addons/dialogic/Editor/TimelineEditor/TimelineEditor.tscn" type="PackedScene" id=2]
@@ -13,6 +13,7 @@
 [ext_resource path="res://addons/dialogic/Editor/DocumentationViewer/DocumentationViewer.tscn" type="PackedScene" id=11]
 [ext_resource path="res://addons/dialogic/Editor/ValueEditor/ValueEditor.tscn" type="PackedScene" id=12]
 [ext_resource path="res://addons/dialogic/Images/Toolbar/add-theme.svg" type="Texture" id=13]
+[ext_resource path="res://addons/dialogic/Documentation/Theme/DocumentationH3.tres" type="DynamicFont" id=14]
 [ext_resource path="res://addons/dialogic/Editor/MasterTree/MasterTree.tscn" type="PackedScene" id=35]
 
 [sub_resource type="Image" id=6]
@@ -270,7 +271,6 @@ __meta__ = {
 }
 
 [node name="WindowMacBlocker" type="Control" parent="."]
-visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 __meta__ = {
@@ -280,7 +280,10 @@ __meta__ = {
 [node name="ColorRect" type="ColorRect" parent="WindowMacBlocker"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-color = Color( 0.164706, 0.309804, 0.694118, 0.843137 )
+color = Color( 0, 0.266667, 0.780392, 0.843137 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Label" type="Label" parent="WindowMacBlocker"]
 anchor_right = 1.0
@@ -289,7 +292,8 @@ margin_left = 282.0
 margin_top = 52.0
 margin_right = -281.0
 margin_bottom = -53.0
-text = "Your OS is not supported by dialogic. Consider using a FREE AND OPEN SOURCE operating system like one of the many linux distributions. Thanks, and have a nice day"
+custom_fonts/font = ExtResource( 14 )
+text = "Your OS is not supported by dialogic. Consider using a FREE AND OPEN SOURCE operating system like one of the many linux distributions. Thanks and have a nice day"
 align = 1
 valign = 1
 autowrap = true
