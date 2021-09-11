@@ -1,23 +1,7 @@
 # Using signals?
 
-## The Emit Signal event
-First of all: The **Emit Signal** event does NOT create a signal. 
-It emits the `dialogic_signal` of the current **Dialog node** with the given string as an argument.
-
-If you instance your dialog via script, use a code similar to this:
-`func start_dialog():
-	var dialog = Dialogic.start("my_timeline")
-	dialog.connect("dialogic_signal", self, "dialog_listener")
-	add_node(dialog)
-
-func dialog_listener(string):
-	match string:
-		"TomEntered":
-			# do something
-			pass
-`
-
-If you instanced the scene using the editor you can connect the signal like you would always do in Godot from the NODE tab > Signals.
+## Emit Signal event
+You can learn more about how to use this event in it's own documentation page (in the Events folder).
 
 ## Other signals
 You can also listen to Dialogic using the four other signals:
