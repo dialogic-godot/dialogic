@@ -115,9 +115,8 @@ func load_config_files():
 		theme_file = settings.get_value('theme', 'default')
 	current_theme = load_theme(theme_file)
 
-	load_audio()
 
-func load_audio():
+func load_audio(theme):
 	# Audio
 	var default_audio_file = "res://addons/dialogic/Example Assets/Sound Effects/Beep.wav"
 	var default_audio_data = {
@@ -133,7 +132,7 @@ func load_audio():
 
 	for audio_node in $FX/Audio.get_children():
 		var name = audio_node.name.to_lower()
-		audio_data[name] = current_theme.get_value('audio', name, default_audio_data)
+		audio_data[name] = theme.get_value('audio', name, default_audio_data)
 	
 		var file_system = Directory.new()
 		if file_system.dir_exists(audio_data[name].path):
@@ -1177,7 +1176,9 @@ func load_theme(filename):
 	for n in $Options.get_children():
 		n.free()
 	$Options.add_child(button_container)
-
+	
+	load_audio(theme)
+	
 	return theme
 
 
