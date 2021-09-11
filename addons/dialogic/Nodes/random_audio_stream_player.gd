@@ -66,9 +66,11 @@ func play(from_position=0.0, playing_sample_nb=-1):
 		.play(from_position)
 
 func set_volume_db(new_volume_db):
+	.set_volume_db(new_volume_db)
 	base_volume = new_volume_db
 
 func set_pitch_scale(new_pitch):
+	.set_pitch_scale(new_pitch)
 	base_pitch = new_pitch
 
 func load_samples_from_folder(path):

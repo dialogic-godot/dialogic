@@ -17,6 +17,7 @@ Changes:
   - Fixed the DialogNode Inspector Timeline Open button issue
   - Regex name compiler now properly escapes special characters [[zaknafean]](https://github.com/zaknafean)
   - Fixed a bug that performed the fade-in animation before setting the proper theme
+  - If the text is too big for your dialog and you see a scrolling bar, you can use the `up` and `down` keys to scroll [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
   - Timeline Editor:
     - Added a preview image on the portrait picker, so it is easy to know what sprite or scene you are selecting. Thanks to [EmmaH](https://www.youtube.com/channel/UC4y59CMiLxWQQVqVFBYLa3Q) for the idea and [Jowan-Spooner](https://github.com/Jowan-Spooner) for the implementation
     - Adding an extra space at the end of the timelines so it is easier to drag and drop new events
@@ -26,6 +27,7 @@ Changes:
     - Added Voice Line support for Text and Question Events [[RedXGames](https://github.com/RedXGames)]
     	- Added option to use a certain region of the audio files [[KvaGram](https://github.com/KvaGram)]
     - Updated UI of the AudioPickers [[Jowan-Spooner]](https://github.com/Jowan-Spooner)
+    - Automatically scrolling to newly created events when you click on a create event button [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
   - Theme Editor:
     - You can now set the choice buttons to be aligned horizontally or vertically
 
