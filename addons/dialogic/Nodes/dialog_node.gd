@@ -39,6 +39,9 @@ var characters
 
 var custom_events = {}
 
+# Audio
+var audio_data = {}
+
 onready var ChoiceButton = load("res://addons/dialogic/Nodes/ChoiceButton.tscn")
 onready var Portrait = load("res://addons/dialogic/Nodes/Portrait.tscn")
 onready var Background = load("res://addons/dialogic/Nodes/Background.tscn")
@@ -77,6 +80,7 @@ func _ready():
 	# Setting everything up for the node to be default
 	$DefinitionInfo.visible = false
 	$TextBubble.connect("text_completed", self, "_on_text_completed")
+	$TextBubble.connect("letter_written", self, "_on_letter_written")
 	$TextBubble/RichTextLabel.connect('meta_hover_started', self, '_on_RichTextLabel_meta_hover_started')
 	$TextBubble/RichTextLabel.connect('meta_hover_ended', self, '_on_RichTextLabel_meta_hover_ended')
 	
@@ -111,6 +115,43 @@ func load_config_files():
 		theme_file = settings.get_value('theme', 'default')
 	current_theme = load_theme(theme_file)
 
+
+func load_audio(theme):
+	# Audio
+	var default_audio_file = "res://addons/dialogic/Example Assets/Sound Effects/Beep.wav"
+	var default_audio_data = {
+		'enable': false,
+		'path': default_audio_file,
+		'volume': 0.0,
+		'volume_rand_range': 0.0,
+		'pitch': 1.0,
+		'pitch_rand_range': 0.0,
+		'allow_interrupt': true,
+		'audio_bus': AudioServer.get_bus_name(0)
+	}
+
+	for audio_node in $FX/Audio.get_children():
+		var name = audio_node.name.to_lower()
+		audio_data[name] = theme.get_value('audio', name, default_audio_data)
+	
+		var file_system = Directory.new()
+		if file_system.dir_exists(audio_data[name].path):
+			audio_node.load_samples_from_folder(audio_data[name].path)
+		elif file_system.file_exists(audio_data[name].path) or file_system.file_exists(audio_data[name].path + '.import'):
+			audio_node.samples = [load(audio_data[name].path)]
+		
+		audio_node.set_volume_db(audio_data[name].volume)
+		audio_node.random_volume_range = audio_data[name].volume_rand_range
+		audio_node.set_pitch_scale(audio_data[name].pitch)
+		audio_node.random_pitch_range = audio_data[name].pitch_rand_range
+		audio_node.set_bus(audio_data[name].audio_bus)
+
+func play_audio(name):
+	var node = $FX/Audio.get_node(name.capitalize())
+	name = name.to_lower()
+	if audio_data[name].enable:
+		if audio_data[name].allow_interrupt or not node.is_playing():
+			node.play()
 
 func update_custom_events() -> void:
 	custom_events = {}
@@ -377,7 +418,8 @@ func _should_show_glossary():
 func parse_definitions(text: String, variables: bool = true, glossary: bool = true):
 	var final_text: String = text
 	if not preview:
-		definitions = get_tree().get_meta('definitions')
+		if get_tree().has_meta('definitions'):
+			definitions = get_tree().get_meta('definitions')
 		if definitions == null:
 			definitions = {}
 		definitions = Dialogic.get_definitions()
@@ -436,6 +478,7 @@ func _input(event: InputEvent) -> void:
 		else:
 			if waiting_for_answer == false and waiting_for_input == false and while_dialog_animation == false:
 				$FX/CharacterVoice.stop_voice() # stop the current voice as well 
+				play_audio("passing")
 				_load_next_event()
 		if settings.has_section_key('dialog', 'propagate_input'):
 			var propagate_input: bool = settings.get_value('dialog', 'propagate_input')
@@ -470,6 +513,8 @@ func update_text(text: String) -> String:
 
 
 func _on_text_completed():
+	play_audio('waiting')
+	
 	finished = true
 	
 	var waiting_until_options_enabled = float(settings.get_value('input', 'delay_after_options', 0.1))
@@ -498,7 +543,8 @@ func _on_text_completed():
 			if dialog_index == current_index:
 				_load_next_event()
 
-
+func _on_letter_written():
+	play_audio('typing')
 
 func on_timeline_start():
 	if not Engine.is_editor_hint():
@@ -1020,6 +1066,10 @@ func add_choice_button(option: Dictionary):
 	if $Options/ButtonContainer.get_child_count() == 1:
 		button.grab_focus()
 	
+	# Adding audio when focused or hovered
+	button.connect('focus_entered', self, '_on_option_hovered', [button])
+	button.connect('mouse_entered', self, '_on_option_focused')
+	
 	button.set_meta('event_idx', option['event_idx'])
 	button.set_meta('question_idx', option['question_idx'])
 
@@ -1030,6 +1080,7 @@ func add_choice_button(option: Dictionary):
 
 func answer_question(i, event_idx, question_idx):
 	if $TextBubble.is_finished():
+		play_audio("selecting")
 		dprint('[!] Going to ', event_idx + 1, i, 'question_idx:', question_idx)
 		waiting_for_answer = false
 		questions[question_idx]['answered'] = true
@@ -1039,7 +1090,12 @@ func answer_question(i, event_idx, question_idx):
 			Input.set_mouse_mode(last_mouse_mode) # Revert to last mouse mode when selection is done
 			last_mouse_mode = null
 
+func _on_option_hovered(button):
+	button.grab_focus()
 
+func _on_option_focused():
+	play_audio("hovering")
+	
 func _on_option_selected(option, variable, value):
 	dialog_resource.custom_variables[variable] = value
 	waiting_for_answer = false
@@ -1120,7 +1176,9 @@ func load_theme(filename):
 	for n in $Options.get_children():
 		n.free()
 	$Options.add_child(button_container)
-
+	
+	load_audio(theme)
+	
 	return theme
 
 

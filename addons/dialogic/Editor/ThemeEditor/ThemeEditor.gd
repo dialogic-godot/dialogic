@@ -134,20 +134,18 @@ onready var n : Dictionary = {
 	'glossary_enabled': $VBoxContainer/TabContainer/Glossary/Column2/GridContainer/ShowGlossaryCheckBox,
 	
 	# Audio
-	'typing_sfx_enabled': $"VBoxContainer/TabContainer/Audio/Column/GridContainer/TypingCheckBox",
-	'typing_sfx_path': $"VBoxContainer/TabContainer/Audio/Column/GridContainer/TypingPathButton",
-	'typing_sfx_volume': $"VBoxContainer/TabContainer/Audio/Column/GridContainer/HBoxContainer/TypingVolume",
-	'typing_sfx_volume_range': $"VBoxContainer/TabContainer/Audio/Column/GridContainer/HBoxContainer2/TypingVolumeRandRange",
-	'typing_sfx_pitch_range': $"VBoxContainer/TabContainer/Audio/Column/GridContainer/HBoxContainer3/TypingPitchRandRange",
-	'typing_sfx_allow_interrupt': $"VBoxContainer/TabContainer/Audio/Column/GridContainer/TypingInterruptCheckBox",
-	'typing_sfx_audio_bus': $"VBoxContainer/TabContainer/Audio/Column/GridContainer/AudioBusButton",
+	'audio_pickers': {
+		'typing': $"VBoxContainer/TabContainer/Audio/Column/Typing",
+		'waiting': $"VBoxContainer/TabContainer/Audio/Column2/Waiting",
+		'passing': $"VBoxContainer/TabContainer/Audio/Column2/Passing",
+		'hovering': $"VBoxContainer/TabContainer/Audio/Column3/Hovering",
+		'selecting': $"VBoxContainer/TabContainer/Audio/Column3/Selecting"
+	},
 	
 	# Text preview
 	'text_preview': $VBoxContainer/HBoxContainer3/TextEdit,
 	'character_picker': $VBoxContainer/HBoxContainer3/CharacterPicker,
-	
 }
-
 
 ## ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ## 						GENERAL EDITOR STUFF
@@ -217,13 +215,6 @@ func _ready() -> void:
 	$"VBoxContainer/TabContainer/Glossary/Column2/SectionTitle".text = DTS.translate("Behaviour")
 	$"VBoxContainer/TabContainer/Glossary/Column2/GridContainer/Label2".text = DTS.translate("Show")
 	$"VBoxContainer/TabContainer/Audio/Column/SectionTitle".text = DTS.translate("Typing Sound Effects")
-	$"VBoxContainer/TabContainer/Audio/Column/GridContainer/Label".text = DTS.translate("Enable")
-	$"VBoxContainer/TabContainer/Audio/Column/GridContainer/Label2".text = DTS.translate("File or folder path")
-	$"VBoxContainer/TabContainer/Audio/Column/GridContainer/Label3".text = DTS.translate("Volume")
-	$"VBoxContainer/TabContainer/Audio/Column/GridContainer/Label4".text = DTS.translate("Volume random range")
-	$"VBoxContainer/TabContainer/Audio/Column/GridContainer/Label5".text = DTS.translate("Pitch random range")
-	$"VBoxContainer/TabContainer/Audio/Column/GridContainer/Label6".text = DTS.translate("Allow interrupt")
-	$"VBoxContainer/TabContainer/Audio/Column/GridContainer/Label7".text = DTS.translate("Audio Bus")
 	
 	editor_reference = find_parent('EditorView')
 	AudioServer.connect("bus_layout_changed", self, "_on_bus_layout_changed")
@@ -301,11 +292,9 @@ func _ready() -> void:
 	n['glossary_enabled'].connect('toggled', self, '_on_generic_checkbox', ['definitions','show_glossary'])
 
 	# Audio tab
-	n['typing_sfx_enabled'].connect('toggled', self, '_on_generic_checkbox', ['typing_sfx','enable'])
-	n['typing_sfx_volume'].connect('value_changed', self, '_on_generic_value_change', ['typing_sfx', 'volume'])
-	n['typing_sfx_volume_range'].connect('value_changed', self, '_on_generic_value_change', ['typing_sfx', 'random_volume_range'])
-	n['typing_sfx_pitch_range'].connect('value_changed', self, '_on_generic_value_change', ['typing_sfx', 'random_pitch_range'])
-
+	for name in n['audio_pickers']:
+		n['audio_pickers'][name].connect('data_updated', self, '_on_audio_data_updated')
+	
 	# Character Picker
 	n['character_picker'].connect('about_to_show', self, 'character_picker_about_to_show')
 	n['character_picker'].get_popup().connect('index_pressed', self, 'character_picker_selected')
@@ -463,14 +452,20 @@ func load_theme(filename):
 	n['name_position'].select(theme.get_value('name', 'position', 0))
 	
 	# Audio
-	n['typing_sfx_enabled'].pressed = theme.get_value('typing_sfx', 'enable', false)
-	n['typing_sfx_path'].text = DialogicResources.get_filename_from_path(theme.get_value('typing_sfx', 'path', "res://addons/dialogic/Example Assets/Sound Effects/Keyboard Noises"))
-	n['typing_sfx_volume'].value = theme.get_value('typing_sfx', 'volume', -10)
-	n['typing_sfx_volume_range'].value = theme.get_value('typing_sfx', 'random_volume_range', 5)
-	n['typing_sfx_pitch_range'].value = theme.get_value('typing_sfx', 'random_pitch_range', 0.2)
-	n['typing_sfx_allow_interrupt'].pressed = theme.get_value('typing_sfx', 'allow_interrupt', true)
+	var default_audio_file = "res://addons/dialogic/Example Assets/Sound Effects/Beep.wav"
+	var default_audio_data = {
+		'enable': false,
+		'path': default_audio_file,
+		'volume': 0.0,
+		'volume_rand_range': 0.0,
+		'pitch': 1.0,
+		'pitch_rand_range': 0.0,
+		'allow_interrupt': true,
+		'audio_bus': AudioServer.get_bus_name(0)
+	}
 	
-	update_audio_bus_option_buttons()
+	for name in n['audio_pickers']:
+		n['audio_pickers'][name].set_data(theme.get_value('audio', name, default_audio_data))
 	
 	# Next indicator animations
 	var animations = ['Up and down', 'Pulse', 'Static'] # TODO: dynamically get all the animations from the Dialog.tscn NextIndicator
@@ -1069,44 +1064,9 @@ func _on_Glossary_BackgroundPanel_selected(path, target):
 	_on_PreviewButton_pressed() # Refreshing the preview
 
 ## ------------ 		AUDIO  TAB	 	------------------------------------
-func _on_TypingPathButton_pressed() -> void:
-	editor_reference.godot_dialog("*.ogg, *.wav", EditorFileDialog.MODE_OPEN_ANY)
-	editor_reference.godot_dialog_connect(self, "_on_typingPath_selected", ["dir_selected", "file_selected"])
-
-func _on_typingPath_selected(path, target) -> void:
-	if loading:
-		return
-	DialogicResources.set_theme_value(current_theme, 'typing_sfx', 'path', path)
-	n['typing_sfx_path'].text = DialogicResources.get_filename_from_path(path)
-	_on_PreviewButton_pressed() # Refreshing the preview
-
-
-func _on_TypingInterruptCheckBox_toggled(button_pressed):
-	if loading:
-		return
-	DialogicResources.set_theme_value(current_theme, 'typing_sfx', 'allow_interrupt', button_pressed)
-	_on_PreviewButton_pressed() # Refreshing the preview
-
-
-func _on_TypingAudioBusButton_item_selected(index):
-	if loading:
-		return
-	DialogicResources.set_theme_value(current_theme, 'typing_sfx', 'audio_bus', AudioServer.get_bus_name(index))
-
-
-func _on_bus_layout_changed():
-	update_audio_bus_option_buttons()
-
-func update_audio_bus_option_buttons():
-	var theme = DialogicResources.get_theme_config(current_theme)
-	if theme != null:
-		n['typing_sfx_audio_bus'].clear()
-		for i in range(AudioServer.bus_count):
-			var bus_name = AudioServer.get_bus_name(i)
-			n['typing_sfx_audio_bus'].add_item(bus_name)
-			if bus_name == theme.get_value('typing_sfx', 'audio_bus', "Master"):
-				n['typing_sfx_audio_bus'].select(i)
-
+func _on_audio_data_updated(section):
+	DialogicResources.set_theme_value(current_theme, 'audio', section, n['audio_pickers'][section].get_data())
+	_on_PreviewButton_pressed()
 
 func _on_button_layout_selected(index):
 	if loading:
