@@ -2,12 +2,13 @@
 
 ## v1.3 - (WIP)
 #### General Editor Stuff
-- ⭐ Builtin Documentation [[Jowan-Spooner]](https://github.com/Jowan-Spooner)
-  - Much more Documentation in general
-- Editor plugin has translation support and some labels are translated to Chinese [[magian1127]][https://github.com/magian1127)]
- - Added some Spanish translations
+- Builtin Documentation [[Jowan-Spooner]](https://github.com/Jowan-Spooner)
+- Much more Documentation in general
+- Editor plugin has translation support and some labels are translated to Chinese [[magian1127]](https://github.com/magian1127)
+- Added some Spanish translations
 - Fixed a reference bug that prevent the duplication of Themes
 - Fixed the DialogNode Inspector Timeline Open button issue
+- Better light/custom theme support for the Dialogic editor tab [[Jowan-Spooner]](https://github.com/Jowan-Spooner)
   
 #### Timeline Editor:
 - A modular Custom events implementation [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
@@ -31,7 +32,7 @@
 - Fixed a bug that performed the fade-in animation before setting the proper theme
 - If the text is too big for your dialog and you see a scrolling bar, you can use the `up` and `down` keys to scroll [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
 - Rework of the character name coloring (using Regex now) [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
- - Regex name compiler now properly escapes special characters [[zaknafean]](https://github.com/zaknafean)
+- Regex name compiler now properly escapes special characters [[zaknafean]](https://github.com/zaknafean)
 - Changed the default cursor shape that was weird in MacOS
 - Fixed a bug that prevented to use the global input setting when selecting option buttons
 - `Dialogic.start()` will now use paths for specific timelines. A fallback is in place, but specificity is preferred. For instance: `Dialogic.start('my-timeline')` will search any timeline with that name; `Dialogic.start('/chapter-1/my-timeline')` will open the timeline namde `my-timeline` inside the folder `chapter-1`.
@@ -61,9 +62,7 @@
 ## v1.2.4 - Gotta go fast
 - Fixed an issue with the default scale of the portraits
 - Trying to simplify and remove legacy code:
-  - EditorView.gd
-    - Unified the remove resource confirmation dialogs
-    - Removed pointless variable definitions
+- EditorView.gd: Unified the remove resource confirmation dialogs and removed pointless variable definitions
 
 ## v1.2.3 - Two releases in one day?
 - Hopefully, final attempt to fix the weird event creation bug [[Jowan-Spooner](https://github.com/Jowan-Spooner)] Thanks [[Drawsi](https://github.com/Drawsi)] for the report and testing!
