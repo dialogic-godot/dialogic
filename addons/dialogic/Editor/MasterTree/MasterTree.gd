@@ -289,7 +289,7 @@ func build_documentation(selected_item: String=''):
 	while child:
 		child.call_recursive("call_deferred", "free")
 		child = child.get_next()
-	$DocsTreeHelper.build_documentation_tree(self, documentation_tree, {'editor':'Documentation Root', 'editable':'false'}, {'editor':'Documentation', 'editable':'false'}, filter_tree_term)
+	$DocsTreeHelper.build_documentation_tree(self, documentation_tree, {'editor':'Documentation Root', 'editable':false}, {'editor':'Documentation', 'editable':false}, filter_tree_term)
 	call_deferred("update")
 	
 ## *****************************************************************************
