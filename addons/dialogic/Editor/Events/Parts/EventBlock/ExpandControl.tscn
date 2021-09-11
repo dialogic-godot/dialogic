@@ -34,5 +34,5 @@ margin_left = 10.0
 margin_top = 8.0
 margin_right = 22.0
 margin_bottom = 22.0
-custom_colors/font_color = Color( 1, 1, 1, 0.513726 )
+custom_colors/font_color = Color( 1, 1, 1, 0.52549 )
 text = "..."
