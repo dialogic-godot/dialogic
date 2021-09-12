@@ -107,6 +107,87 @@ static func start_from_save(timeline: String, initial_timeline: String, dialog_s
 	return start(current, false, dialog_scene_path, debug_mode)
 
 
+## Similar to the start function, but loads state info and definitions from a given save folder..
+## 
+## @param save_name		The name of the save folder.
+##						Leaving this empty load from the default files.
+## The other @params work like the ones in start()
+static func resume_from_save(save_name: String, dialog_scene_path: String="res://addons/dialogic/Dialog.tscn", debug_mode: bool=false, use_canvas_instead=true) -> Node:
+	var dialog_scene = load(dialog_scene_path)
+	var dialog_node = null
+	var canvas_dialog_node = null
+	var returned_dialog_node = null
+
+	if use_canvas_instead:
+		var canvas_dialog_script = load("res://addons/dialogic/Nodes/canvas_dialog_node.gd")
+		canvas_dialog_node = canvas_dialog_script.new()
+		canvas_dialog_node.set_dialog_node_scene(dialog_scene)
+		dialog_node = canvas_dialog_node.dialog_node
+	else:
+		dialog_node = dialog_scene.instance()
+
+	dialog_node.reset_saves = false
+	dialog_node.debug_mode = debug_mode
+
+	returned_dialog_node = dialog_node if not canvas_dialog_node else canvas_dialog_node
+
+	dialog_node.resume_state_from_info(load_from_save(save_name))
+	return returned_dialog_node
+
+
+## Saves the current definitions and the latest added dialog nodes state info.
+## 
+## @param save_name		The name of the save folder. To load this save you have to specify the same
+##						If the save folder doesn't exist it will be created. 
+##						Leaving this empty will overwrite the default files.
+static func save_current_state(save_name: String = '') -> void:
+	if Engine.get_main_loop().has_meta('latest_dialogic_node') and is_instance_valid(Engine.get_main_loop().get_meta('latest_dialogic_node')):
+		var save_data = Engine.get_main_loop().get_meta('latest_dialogic_node').get_current_state_info()
+		save_state_and_definitions(save_name, save_data)
+
+
+## Returns an array with the names of all available saves.
+## 
+## @param save_name		The name of the save folder.
+static func get_save_names_array() -> Array:
+	return DialogicResources.get_saves_folders()
+
+
+## Will permanently erase the save data with the given name.
+## 
+## @param save_name		The name of the save folder.
+static func erase_save(save_name: String) -> void:
+	DialogicResources.remove_save_folder(save_name)
+
+
+## this saves the current definitions and the given state info into the save folder @save_name
+static func save_state_and_definitions(save_name: String, state_info: Dictionary) -> void:
+	DialogicResources.save_definitions(save_name, get_definitions())
+	DialogicResources.save_state_info(save_name, state_info)
+
+#
+## this loads the saves definitions and returns the saves state_info ditionary
+static func load_from_save(save_name: String) -> Dictionary:
+	Engine.get_main_loop().set_meta('definitions', DialogicResources.get_saved_definitions(save_name))
+	return DialogicResources.get_saved_state_info(save_name)
+
+## Will save the current definition and glossary values into the save folder with the given name.
+## 
+## @param save_name		The name of the save folder.
+static func save_defintions_and_glossary(save_name:String) -> void:
+	DialogicResources.save_definitions(save_name, Engine.get_main_loop().get_meta('definitions'))
+
+
+## Will load the defintiion and glossary values saved in the save folder @save_name.
+## 
+## @param save_name		The name of the save folder.
+static func load_definitions_and_glossary(save_name:String) -> void:
+	Engine.get_main_loop().set_meta('definitions', DialogicResources.get_saved_definitions(save_name))
+
+static func has_current_dialog_node() -> bool:
+	return Engine.get_main_loop().has_meta('latest_dialog_node') and is_instance_valid(Engine.get_main_loop().get_meta('latest_dialog_node'))
+
+
 # --------------------------------------------------------------------------------------------------
 # The following functions existed previously on the DialogicSingleton.gd singleton.
 # I removed that one and moved the functions here.
