@@ -1,13 +1,12 @@
 extends Node
 
 ## Exposed and safe to use methods for Dialogic
-## See documentation here:
-## https://github.com/coppolaemilio/dialogic
+## See documentation under 'https://github.com/coppolaemilio/dialogic' or in the editor:
 
 ## ### /!\ ###
 ## Do not use methods from other classes as it could break the plugin's integrity
 ## ### /!\ ###
-##
+
 ## Trying to follow this documentation convention: https://github.com/godotengine/godot/pull/41095
 class_name Dialogic
 
@@ -21,7 +20,7 @@ class_name Dialogic
 ## var new_dialog = Dialogic.start('Your Timeline Name Here')
 ## add_child(new_dialog)
 ##
-## This is exactly the same as using the editor:
+## This is similar to using the editor:
 ## you can drag and drop the scene located at /addons/dialogic/Dialog.tscn 
 ## and set the current timeline via the inspector.
 ##
@@ -93,6 +92,7 @@ static func start(timeline: String, reset_saves: bool=true, dialog_scene_path: S
 	return returned_dialog_node
 
 
+
 ## Same as the start method above, but using the last timeline saved.
 ## 
 ## @param timeline              The current timeline to load
@@ -105,6 +105,10 @@ static func start_from_save(timeline: String, initial_timeline: String, dialog_s
 	if current.empty():
 		current = initial_timeline
 	return start(current, false, dialog_scene_path, debug_mode)
+
+################################################################################
+## 						BUILT-IN SAVING/LOADING
+################################################################################
 
 
 ## Similar to the start function, but loads state info and definitions from a given save folder..
@@ -165,6 +169,46 @@ static func save_state_and_definitions(save_name: String, state_info: Dictionary
 	DialogicResources.save_definitions(save_name, get_definitions())
 	DialogicResources.save_state_info(save_name, state_info)
 
+
+## +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+## 						EXPORT / IMPORT
+## +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+func get_saved_state_general_key(key: String) -> String:
+	if key in current_state['general'].keys():
+		return current_state['general'][key]
+	else:
+		return ''
+
+
+func set_saved_state_general_key(key: String, value) -> void:
+	current_state['general'][key] = str(value)
+	save_state()
+
+func save_state():
+	if autosave:
+		return DialogicResources.save_saved_state_config(current_state)
+	else:
+		return OK
+
+static func export(dialog_node = null):
+#	if dialog_node == null and has_current_dialog_node():
+#		dialog_node = Engine.get_main_loop().get_meta('latest_dialogic_node')
+#
+#	return {
+#		'definitions': get_definitions(),
+#		'state': current_state,
+#	}
+	pass
+
+static func import():
+	pass
+
+
+################################################################################
+## 					NOT TO BE USED FROM OUTSIDE
+################################################################################
+
 #
 ## this loads the saves definitions and returns the saves state_info ditionary
 static func load_from_save(save_name: String) -> Dictionary:
@@ -184,8 +228,9 @@ static func save_defintions_and_glossary(save_name:String) -> void:
 static func load_definitions_and_glossary(save_name:String) -> void:
 	Engine.get_main_loop().set_meta('definitions', DialogicResources.get_saved_definitions(save_name))
 
+
 static func has_current_dialog_node() -> bool:
-	return Engine.get_main_loop().has_meta('latest_dialog_node') and is_instance_valid(Engine.get_main_loop().get_meta('latest_dialog_node'))
+	return Engine.get_main_loop().has_meta('latest_dialogic_node') and is_instance_valid(Engine.get_main_loop().get_meta('latest_dialog_node'))
 
 
 # --------------------------------------------------------------------------------------------------
@@ -285,3 +330,8 @@ static func save_definitions(autosave = true):
 		return DialogicResources.save_saved_definitions(get_definitions())
 	else:
 		return OK
+
+	init(false);
+	current_definitions = data['definitions'];
+	current_state = data['state'];
+	current_timeline = get_saved_state_general_key('timeline')

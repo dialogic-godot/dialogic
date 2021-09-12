@@ -3,7 +3,7 @@
 Dialogic can be used in many different ways, but for simplicities sake, there are two main ways of handeling saving and loading:
 
 A) For games that consist of mainly dialog and little else (e.g. `Visual Novels`), there are many functions that do pretty much everything for you. 
-B) For games that use Dialogic just for the dialog, functions are provided to save and load the current data so you can handle saving in your own game.
+B) For games that use Dialogic just for the dialog, functions are provided to save and load the current data so you can handle saving your own way.
 
 
 ## The Visual Novel way
