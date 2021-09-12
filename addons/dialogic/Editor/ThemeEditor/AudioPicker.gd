@@ -78,12 +78,15 @@ func _on_VolumeSpinBox_value_changed(value):
 	emit_signal("data_updated", name.to_lower())
 
 func _on_VolumeRandRangeSpinBox_value_changed(value):
+	n['volume_rand_range'].set_value(abs(value))
 	emit_signal("data_updated", name.to_lower())
 
 func _on_PitchSpinBox_value_changed(value):
+	n['pitch'].set_value(max(0.01, value))
 	emit_signal("data_updated", name.to_lower())
 
 func _on_PitchRandRangeSpinBox_value_changed(value):
+	n['pitch_rand_range'].set_value(abs(value))
 	emit_signal("data_updated", name.to_lower())
 
 func _on_AllowInterruptCheckBox_toggled(button_pressed):
