@@ -174,22 +174,22 @@ static func save_state_and_definitions(save_name: String, state_info: Dictionary
 ## 						EXPORT / IMPORT
 ## +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-func get_saved_state_general_key(key: String) -> String:
-	if key in current_state['general'].keys():
-		return current_state['general'][key]
-	else:
-		return ''
-
-
-func set_saved_state_general_key(key: String, value) -> void:
-	current_state['general'][key] = str(value)
-	save_state()
-
-func save_state():
-	if autosave:
-		return DialogicResources.save_saved_state_config(current_state)
-	else:
-		return OK
+#func get_saved_state_general_key(key: String) -> String:
+#	if key in current_state['general'].keys():
+#		return current_state['general'][key]
+#	else:
+#		return ''
+#
+#
+#func set_saved_state_general_key(key: String, value) -> void:
+#	current_state['general'][key] = str(value)
+#	save_state()
+#
+#func save_state():
+#	if autosave:
+#		return DialogicResources.save_saved_state_config(current_state)
+#	else:
+#		return OK
 
 static func export(dialog_node = null):
 #	if dialog_node == null and has_current_dialog_node():
@@ -202,6 +202,10 @@ static func export(dialog_node = null):
 	pass
 
 static func import():
+#	init(false);
+#	current_definitions = data['definitions'];
+#	current_state = data['state'];
+#	current_timeline = get_saved_state_general_key('timeline')
 	pass
 
 
@@ -230,7 +234,7 @@ static func load_definitions_and_glossary(save_name:String) -> void:
 
 
 static func has_current_dialog_node() -> bool:
-	return Engine.get_main_loop().has_meta('latest_dialogic_node') and is_instance_valid(Engine.get_main_loop().get_meta('latest_dialog_node'))
+	return Engine.get_main_loop().has_meta('latest_dialogic_node') and is_instance_valid(Engine.get_main_loop().get_meta('latest_dialogic_node'))
 
 
 # --------------------------------------------------------------------------------------------------
@@ -331,7 +335,4 @@ static func save_definitions(autosave = true):
 	else:
 		return OK
 
-	init(false);
-	current_definitions = data['definitions'];
-	current_state = data['state'];
-	current_timeline = get_saved_state_general_key('timeline')
+	
