@@ -23,6 +23,7 @@
 - Automatically scrolling to newly created events when you click on a create event button [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
     
 #### Theme Editor:
+- You can now set the position of the buttons relative to the screen (Top, Bottom, Center, Left, Right)
 - You can now set the choice buttons to be aligned horizontally or vertically
 - Updated Audio Settings [[Tim Krief](https://github.com/timkrief)]: 
  - you can now select audio for typing, text completed, next event, button hover and button selecting
