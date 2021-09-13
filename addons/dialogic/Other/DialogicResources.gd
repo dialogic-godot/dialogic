@@ -13,8 +13,6 @@ const WORKING_DIR: String = "user://dialogic" # Readwrite, used for saves
 ## *****************************************************************************
 ##							BASIC JSON FUNCTION
 ## *****************************************************************************
-
-
 static func load_json(path: String, default: Dictionary={}) -> Dictionary:
 	# An easy function to load json files and handle common errors.
 	var file := File.new()
@@ -45,11 +43,10 @@ static func set_json(path: String, data: Dictionary):
 		file.close()
 	return err
 
+
 ## *****************************************************************************
 ##							INITIALIZATION
 ## *****************************************************************************
-
-
 static func init_dialogic_files() -> void:
 	# This functions makes sure that the needed files and folders
 	# exists when the plugin is loaded. If they don't, we create 
@@ -151,7 +148,6 @@ static func get_config_files_paths() -> Dictionary:
 ## *****************************************************************************
 ##							BASIC FILE FUNCTION
 ## *****************************************************************************
-
 static func get_path(name: String, extra: String ='') -> String:
 	var paths: Dictionary = get_working_directories()
 	if extra != '':
@@ -229,11 +225,10 @@ static func copy_file(path_from, path_to):
 	return OK
 	pass
 
+
 ## *****************************************************************************
 ##							CONFIG
 ## *****************************************************************************
-
-
 static func get_config(id: String) -> ConfigFile:
 	var paths := get_config_files_paths()
 	var config := ConfigFile.new()
@@ -242,7 +237,6 @@ static func get_config(id: String) -> ConfigFile:
 		if err != OK:
 			print("[Dialogic] Error while opening config file " + paths[id] + ". Error: " + str(err))
 	return config
-
 
 
 ## *****************************************************************************

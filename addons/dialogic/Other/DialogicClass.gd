@@ -95,16 +95,16 @@ static func start(timeline: String, reset_saves: bool=true, dialog_scene_path: S
 
 ## Same as the start method above, but using the last timeline saved.
 ## 
-## @param timeline              The current timeline to load
 ## @param initial_timeline		The timeline to load in case no save is found.
 ## @param dialog_scene_path		If you made a custom Dialog scene or moved it from its default path, you can specify its new path here.
 ## @param debug_mode			Debug is disabled by default but can be enabled if needed.
 ## @returns						A Dialog node to be added into the scene tree.
-static func start_from_save(timeline: String, initial_timeline: String, dialog_scene_path: String="res://addons/dialogic/Dialog.tscn", debug_mode: bool=false):
-	var current = timeline
+static func start_from_state(initial_timeline: String, dialog_scene_path: String="res://addons/dialogic/Dialog.tscn", debug_mode: bool=false):
+	var current = get_current_timeline()
 	if current.empty():
 		current = initial_timeline
 	return start(current, false, dialog_scene_path, debug_mode)
+
 
 ################################################################################
 ## 						BUILT-IN SAVING/LOADING
@@ -116,6 +116,7 @@ static func start_from_save(timeline: String, initial_timeline: String, dialog_s
 ## @param save_name		The name of the save folder.
 ##						Leaving this empty load from the default files.
 ## The other @params work like the ones in start()
+## @returns 			A Dialog node to be added into the scene tree.
 static func resume_from_save(save_name: String, dialog_scene_path: String="res://addons/dialogic/Dialog.tscn", debug_mode: bool=false, use_canvas_instead=true) -> Node:
 	var dialog_scene = load(dialog_scene_path)
 	var dialog_node = null
@@ -163,6 +164,12 @@ static func get_save_names_array() -> Array:
 static func erase_save(save_name: String) -> void:
 	DialogicResources.remove_save_folder(save_name)
 
+## Whether a save can be performed
+##
+## @returns				True if a save can be performed; otherwise False
+static func has_current_dialog_node() -> bool:
+	return Engine.get_main_loop().has_meta('latest_dialogic_node') and is_instance_valid(Engine.get_main_loop().get_meta('latest_dialogic_node'))
+
 
 ## this saves the current definitions and the given state info into the save folder @save_name
 static func save_state_and_definitions(save_name: String, state_info: Dictionary) -> void:
@@ -174,40 +181,46 @@ static func save_state_and_definitions(save_name: String, state_info: Dictionary
 ## 						EXPORT / IMPORT
 ## +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-#func get_saved_state_general_key(key: String) -> String:
-#	if key in current_state['general'].keys():
-#		return current_state['general'][key]
-#	else:
-#		return ''
-#
-#
-#func set_saved_state_general_key(key: String, value) -> void:
-#	current_state['general'][key] = str(value)
-#	save_state()
-#
-#func save_state():
-#	if autosave:
-#		return DialogicResources.save_saved_state_config(current_state)
-#	else:
-#		return OK
+static func get_saved_state_general_key(key: String, default = '') -> String:
+	if not Engine.get_main_loop().has_meta('current_state'):
+		return default
+	if key in Engine.get_main_loop().get_meta('current_state').keys():
+		return Engine.get_main_loop().get_meta('current_state')[key]
+	else:
+		return default
 
-static func export(dialog_node = null):
-#	if dialog_node == null and has_current_dialog_node():
-#		dialog_node = Engine.get_main_loop().get_meta('latest_dialogic_node')
-#
-#	return {
-#		'definitions': get_definitions(),
-#		'state': current_state,
-#	}
-	pass
 
-static func import():
-#	init(false);
-#	current_definitions = data['definitions'];
-#	current_state = data['state'];
-#	current_timeline = get_saved_state_general_key('timeline')
-	pass
+static func set_saved_state_general_key(key: String, value) -> void:
+	if not Engine.get_main_loop().has_meta('current_state'):
+		Engine.get_main_loop().set_meta('current_state', {})
+	Engine.get_main_loop().get_meta('current_state')[key] = str(value)
+	save_state()
 
+
+static func save_state():
+	if Engine.get_main_loop().get_meta('autosave'):
+		return DialogicResources.save_saved_state_config(Engine.get_main_loop().get_meta('current_state'))
+	else:
+		return OK
+
+
+static func export(dialog_node = null) -> Dictionary:
+	var current_dialog_info = {}
+	if dialog_node == null and has_current_dialog_node():
+		dialog_node = Engine.get_main_loop().get_meta('latest_dialogic_node')
+	if dialog_node:
+		current_dialog_info = dialog_node.get_current_state_info()
+	return {
+		'definitions': get_definitions(),
+		'state': Engine.get_main_loop().get_meta('current_state'),
+		'dialog_state': current_dialog_info
+	}
+
+
+static func import(data: Dictionary) -> void:
+	Engine.get_main_loop().set_meta('definitions', data['definitions'])
+	Engine.get_main_loop().set_meta('current_state', data['state'])
+	set_current_timeline(get_saved_state_general_key('timeline'))
 
 ################################################################################
 ## 					NOT TO BE USED FROM OUTSIDE
@@ -218,23 +231,19 @@ static func import():
 static func load_from_save(save_name: String) -> Dictionary:
 	Engine.get_main_loop().set_meta('definitions', DialogicResources.get_saved_definitions(save_name))
 	return DialogicResources.get_saved_state_info(save_name)
-
-## Will save the current definition and glossary values into the save folder with the given name.
-## 
-## @param save_name		The name of the save folder.
-static func save_defintions_and_glossary(save_name:String) -> void:
-	DialogicResources.save_definitions(save_name, Engine.get_main_loop().get_meta('definitions'))
-
-
-## Will load the defintiion and glossary values saved in the save folder @save_name.
-## 
-## @param save_name		The name of the save folder.
-static func load_definitions_and_glossary(save_name:String) -> void:
-	Engine.get_main_loop().set_meta('definitions', DialogicResources.get_saved_definitions(save_name))
-
-
-static func has_current_dialog_node() -> bool:
-	return Engine.get_main_loop().has_meta('latest_dialogic_node') and is_instance_valid(Engine.get_main_loop().get_meta('latest_dialogic_node'))
+#
+### Will save the current definition and glossary values into the save folder with the given name.
+### 
+### @param save_name		The name of the save folder.
+#static func save_defintions_and_glossary(save_name:String) -> void:
+#	DialogicResources.save_definitions(save_name, Engine.get_main_loop().get_meta('definitions'))
+#
+#
+### Will load the defintiion and glossary values saved in the save folder @save_name.
+### 
+### @param save_name		The name of the save folder.
+#static func load_definitions_and_glossary(save_name:String) -> void:
+#	Engine.get_main_loop().set_meta('definitions', DialogicResources.get_saved_definitions(save_name))
 
 
 # --------------------------------------------------------------------------------------------------
@@ -335,4 +344,3 @@ static func save_definitions(autosave = true):
 	else:
 		return OK
 
-	
