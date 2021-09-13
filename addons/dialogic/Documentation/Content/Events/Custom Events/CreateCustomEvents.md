@@ -75,14 +75,17 @@ There are two places EventParts can be in an EventBlock: The Header (always visi
 
 There is already a simple example `EventPart` (Script and Scene) included. You can change it as much as you want.
 
+### Loading the data
 In `load_data()` you will need to set the values of your control nodes.
-When they get changed (listen to it via signals) set the according value in the `event_data` dictionary and call `data_changed()`.
+
+### Saving changes to the data
+When the values get changed (listen to it via signals) set the according value in the `event_data` dictionary and call `data_changed()`.
 
 This is pretty much all you need to know.
 *If you want to find more examples you can go to `res://addons/dialogic/Editor/Events/Parts/` and look at the EventParts that shape dialogics default blocks.*
 
 ### Using the EventPart
-Once you finished everything in your EventPart(s) you need to go into the `EventBlock` scene and set the header/body variable in the inspector to the new scene(s).
+Once you finished everything in your EventPart(s) you need to go into the `EventBlock` scene and set the `header`/`body` variable in the inspector to the new scene(s).
 
 Here is how the EventBlock's settings look for me now:
 ![EventPartAdded](./Images/EventBlockSettingsFilled.PNG)
@@ -90,7 +93,7 @@ Here is how the EventBlock's settings look for me now:
 
 
 ## 2.2.3 The event handler script (event_yourname_000.gd)
-Once you have your EventBlock finished, you need to add the event handling logic. 
+Once you have your `EventBlock` finished, you need to add the event handling logic. 
 
 ### The correct name
 This scripts name (named `event_yourname_000.gd` by default) needs to contain **exactly** your events `event_id` instead of `yourname_000`. This means for me I'll rename the script to `'event_rabloe_000.gd'`.
@@ -104,13 +107,14 @@ For me I'll just add
 `print(event_data['print_text']` 
 there. But of course you can do a lot more.
 
+
 Some more stuff is already explained in the script:
 #### Continue
 Use `dialog_node.load_next_event()` to continue with the next event.
 
 #### Waiting
-If you don't want the player to interrupt your event, set `dialog_node.waiting` to true while your event is handled.
-Don't forget to set it back.
+If you don't want the player to interrupt your event, set `dialog_node.waiting` to `true` while your event is handled.
+Don't forget to set it back to `false`.
 
 
 

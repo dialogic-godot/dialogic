@@ -5,12 +5,9 @@ Create dialogs, characters and scenes to display conversations in your Godot gam
 
 [Changelog](https://github.com/coppolaemilio/dialogic/blob/main/addons/dialogic/Documentation/Content/Changelog.md) — 
 [Installation](#installation) — 
-[Basic Usage](https://github.com/coppolaemilio/dialogic/blob/main/docs/usage.md) — 
 [FAQ](#faq) — 
-[Source structure](https://github.com/coppolaemilio/dialogic/blob/main/docs/source.md) — 
 [Credits](#credits)
 
----
 
 ## Getting started
 
@@ -25,7 +22,7 @@ If you want to know more about installing plugins you can read the [official doc
 You can also install Dialogic using the **AssetLib** tab in the editor, but the version here will not be the latest one available since it takes some time for it to be approved.
 
 ## ⚠ IMPORTANT
-If you want to export the game and you get an error, try having at least 1 theme in your project.
+If you encounter any issue when exporting your game, try having at least 1 theme in your project.
 
 ---
 
@@ -123,7 +120,7 @@ func _ready():
 ## Credits
 Made by [Emilio Coppola](https://github.com/coppolaemilio).
 
-Contributors:  [Arnaud](https://github.com/arnaudvergnet), [ellogwen](https://github.com/ellogwen), [Jowan-Spooner](https://github.com/Jowan-Spooner), [Tim Krief](https://github.com/timkrief),  [and more!](https://github.com/coppolaemilio/dialogic/graphs/contributors). Special thanks: [Toen](https://twitter.com/ToenAndreMC), Òscar, [Francisco Presencia](https://francisco.io/). Placeholder images are from [Toen's](https://toen.world/) [YouTube DF series](https://www.youtube.com/watch?v=B1ggwiat7PM)
+Contributors: [Jowan-Spooner](https://github.com/Jowan-Spooner), [Arnaud](https://github.com/arnaudvergnet), [ellogwen](https://github.com/ellogwen), [Tim Krief](https://github.com/timkrief),  [and more!](https://github.com/coppolaemilio/dialogic/graphs/contributors). Special thanks: [Toen](https://twitter.com/ToenAndreMC), Òscar, [Francisco Presencia](https://francisco.io/). Placeholder images are from [Toen's](https://toen.world/) [YouTube DF series](https://www.youtube.com/watch?v=B1ggwiat7PM)
 
 ### Thank you to all my [Patreons](https://www.patreon.com/coppolaemilio) for making this possible!
 

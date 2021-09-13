@@ -1,27 +1,49 @@
 # Changelog
 
 ## v1.3 - (WIP)
-Changes:
-  - ⭐ Builtin Documentation [[Jowan-Spooner]](https://github.com/Jowan-Spooner)
-  - Fixed a bug that prevented to use the global input setting when selecting option buttons
-  - `Dialogic.start()` will now use paths for specific timelines. A fallback is in place, but specificity is preferred. For instance: `Dialogic.start('my-timeline')` will search any timeline with that name; `Dialogic.start('/chapter-1/my-timeline')` will open the timeline namde `my-timeline` inside the folder `chapter-1`.
-  - Rework of the character name coloring (using Regex now) [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
-  - Fixed a reference bug that prevent the duplication of Themes
-  - Fixing requirement to manually configure export dialog [[LuRomao]](https://github.com/LuRomao)
-  - Changed the default cursor shape that was weird in IOS
-  - A modular Custom events implementation [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
-  - Removed the need to use a DialogicSingleton. Hope this doesn't do any harm in existing projects
-  - Deleted some legacy documentation files
-  - Fixed the DialogNode Inspector Timeline Open button issue
-  - Timeline Editor:
-    - Added a preview image on the portrait picker, so it is easy to know what sprite or scene you are selecting. Thanks to [[EmmaH]](https://www.youtube.com/channel/UC4y59CMiLxWQQVqVFBYLa3Q) for the idea and [[Jowan-Spooner](https://github.com/Jowan-Spooner)] for the implementation
-    - Adding an extra space at the end of the timelines so it is easier to drag and drop new events
-    - Change the Selected Event Style to only have blue borders and not change event color [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
-    - Partial support for undo and redo [[Jowan-Spooner]](https://github.com/Jowan-Spooner)
-    - After selecting a conditional, the input field of that event will be selected
-  - Theme Editor:
-    - You can now set make the buttons be aligned horizontally or vertically
+#### General Editor Stuff
+- Builtin Documentation [[Jowan-Spooner]](https://github.com/Jowan-Spooner)
+- Much more Documentation in general
+- Editor plugin has translation support and some labels are translated to Chinese [[magian1127]](https://github.com/magian1127)
+- Added some Spanish translations
+- Fixed a reference bug that prevent the duplication of Themes
+- Fixed the DialogNode Inspector Timeline Open button issue
+- Better light/custom theme support for the Dialogic editor tab [[Jowan-Spooner]](https://github.com/Jowan-Spooner)
+  
+#### Timeline Editor:
+- A modular Custom events implementation [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
+- Added a preview image on the portrait picker, so it is easy to know what sprite or scene you are selecting. Thanks to [EmmaH](https://www.youtube.com/channel/UC4y59CMiLxWQQVqVFBYLa3Q) for the idea and [Jowan-Spooner](https://github.com/Jowan-Spooner) for the implementation
+- Added Voice Line support for Text and Question Events [[RedXGames](https://github.com/RedXGames)]
+ - Added option to use a certain region of the audio files [[KvaGram](https://github.com/KvaGram)]
+- Change the Selected Event Style to only have blue borders and not change event color [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
+- Adding an extra space at the end of the timelines so it is easier to drag and drop new events
+- Partial support for undo and redo [[Jowan-Spooner]](https://github.com/Jowan-Spooner)
+- After selecting a conditional, the input field of that event will be selected
+- Updated UI of the AudioPickers [[Jowan-Spooner]](https://github.com/Jowan-Spooner)
+- Automatically scrolling to newly created events when you click on a create event button [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
+    
+#### Theme Editor:
+- You can now set the position of the buttons relative to the screen (Top, Bottom, Center, Left, Right)
+- You can now set the choice buttons to be aligned horizontally or vertically
+- Updated Audio Settings [[Tim Krief](https://github.com/timkrief)]: 
+ - you can now select audio for typing, text completed, next event, button hover and button selecting
+ - Attention: Old typing audio will have to be redone!
 
+#### Ingame Behaviour
+- Fixed a bug that performed the fade-in animation before setting the proper theme
+- If the text is too big for your dialog and you see a scrolling bar, you can use the `up` and `down` keys to scroll [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
+- Rework of the character name coloring (using Regex now) [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
+- Regex name compiler now properly escapes special characters [[zaknafean]](https://github.com/zaknafean)
+- Changed the default cursor shape that was weird in MacOS
+- Fixed a bug that prevented to use the global input setting when selecting option buttons
+- `Dialogic.start()` will now use paths for specific timelines. A fallback is in place, but specificity is preferred. For instance: `Dialogic.start('my-timeline')` will search any timeline with that name; `Dialogic.start('/chapter-1/my-timeline')` will open the timeline namde `my-timeline` inside the folder `chapter-1`.
+  
+#### Export
+- Fixing requirement to manually configure export dialog [[LuRomao]](https://github.com/LuRomao)
+
+#### Other Stuff:
+- Removed the need to use a DialogicSingleton. Hope this doesn't do any harm in existing projects
+- Deleted some legacy documentation files
 
 ## v1.2.5 - Possibly breaking eveything. We will never know.
 - Loading timeline events on batches to speedup big timelines
@@ -41,9 +63,7 @@ Changes:
 ## v1.2.4 - Gotta go fast
 - Fixed an issue with the default scale of the portraits
 - Trying to simplify and remove legacy code:
-  - EditorView.gd
-    - Unified the remove resource confirmation dialogs
-    - Removed pointless variable definitions
+- EditorView.gd: Unified the remove resource confirmation dialogs and removed pointless variable definitions
 
 ## v1.2.3 - Two releases in one day?
 - Hopefully, final attempt to fix the weird event creation bug [[Jowan-Spooner](https://github.com/Jowan-Spooner)] Thanks [[Drawsi](https://github.com/Drawsi)] for the report and testing!

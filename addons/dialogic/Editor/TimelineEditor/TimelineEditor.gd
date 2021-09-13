@@ -34,6 +34,27 @@ signal selection_updated
 signal batch_loaded
 
 func _ready():
+	var p = EditorPlugin.new()
+	$"ScrollContainer/EventContainer/TextEvent".hint_tooltip = DTS.translate("  Text Event")
+	$"ScrollContainer/EventContainer/CharacterJoin".hint_tooltip = DTS.translate("  Character Join")
+	$"ScrollContainer/EventContainer/CharacterLeave".hint_tooltip = DTS.translate("  Character Leave")
+	$"ScrollContainer/EventContainer/Question".hint_tooltip = DTS.translate("  Question")
+	$"ScrollContainer/EventContainer/Choice".hint_tooltip = DTS.translate("  Choice")
+	$"ScrollContainer/EventContainer/Condition".hint_tooltip = DTS.translate(" Condition")
+	$"ScrollContainer/EventContainer/EndBranch".hint_tooltip = DTS.translate("  End Branch")
+	$"ScrollContainer/EventContainer/SetValue".hint_tooltip = DTS.translate("  Set Value")
+	$"ScrollContainer/EventContainer/SetGlossary".hint_tooltip = DTS.translate("  Set Glossary")
+	$"ScrollContainer/EventContainer/ChangeTimeline".hint_tooltip = DTS.translate("  Change Timeline")
+	$"ScrollContainer/EventContainer/ChangeBackground".hint_tooltip = DTS.translate("  Set Background")
+	$"ScrollContainer/EventContainer/CloseDialog".hint_tooltip = DTS.translate("  Close Dialog")
+	$"ScrollContainer/EventContainer/WaitSeconds".hint_tooltip = DTS.translate("  Wait Seconds")
+	$"ScrollContainer/EventContainer/SetTheme".hint_tooltip = DTS.translate("  Set Theme")
+	$"ScrollContainer/EventContainer/AudioEvent".hint_tooltip = DTS.translate("  Audio Event")
+	$"ScrollContainer/EventContainer/BackgroundMusic".hint_tooltip = DTS.translate("  Background Music")
+	$"ScrollContainer/EventContainer/EmitSignal".hint_tooltip = DTS.translate("  Emit Signal")
+	$"ScrollContainer/EventContainer/ChangeScene".hint_tooltip = DTS.translate("  Change Scene")
+	$"ScrollContainer/EventContainer/CallNode".hint_tooltip = DTS.translate("  Call Node")
+	
 	editor_reference = find_parent('EditorView')
 	connect("batch_loaded", self, '_on_batch_loaded')
 	var modifier = ''
@@ -69,7 +90,7 @@ func _ready():
 	
 	update_custom_events()
 	$TimelineArea.connect('resized', self, 'add_extra_scroll_area_to_timeline', [])
-
+	
 
 # handles dragging/moving of events
 func _process(delta):
@@ -356,7 +377,7 @@ func _unhandled_key_input(event):
 func get_events_indexed(events:Array) -> Dictionary:
 	var indexed_dict = {}
 	for event in events:
-		indexed_dict[event.get_index()] = event.event_data
+		indexed_dict[event.get_index()] = event.event_data.duplicate()
 	return indexed_dict
 
 func select_indexed_events(indexed_events:Dictionary) -> void:
@@ -586,6 +607,7 @@ func _create_event_button_pressed(button_name):
 	TimelineUndoRedo.add_do_method(self, "create_event", button_name, {'no-data': true}, true, at_index, true)
 	TimelineUndoRedo.add_undo_method(self, "remove_events_at_index", at_index, 1)
 	TimelineUndoRedo.commit_action()
+	scroll_to_piece(at_index)
 	indent_events()
 
 
@@ -770,6 +792,7 @@ func create_event(scene: String, data: Dictionary = {'no-data': true} , indent: 
 
 	piece.connect("option_action", self, '_on_event_options_action', [piece])
 	piece.connect("gui_input", self, '_on_event_block_gui_input', [piece])
+	
 	events_warning.visible = false
 	if auto_select:
 		select_item(piece, false)
@@ -1016,6 +1039,13 @@ func save_timeline() -> void:
 ## *****************************************************************************
 ##					 UTILITIES/HELPERS
 ## *****************************************************************************
+
+# Scrolling
+func scroll_to_piece(piece_index) -> void:
+	var height = 0
+	for i in range(0, piece_index):
+		height += $TimelineArea/TimeLine.get_child(i).rect_size.y
+	$TimelineArea.scroll_vertical = height
 
 # Event Indenting
 func indent_events() -> void:

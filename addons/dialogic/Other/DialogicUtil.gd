@@ -31,8 +31,10 @@ static func get_character_list() -> Array:
 			})
 	return characters
 
+
 static func get_characters_dict():
 	return list_to_dict(get_character_list())
+
 
 static func get_sorted_character_list():
 	var array = get_character_list()
@@ -62,6 +64,7 @@ static func get_timeline_list() -> Array:
 # returns a dictionary with file_names as keys and metadata as values
 static func get_timeline_dict() -> Dictionary:
 	return list_to_dict(get_timeline_list())
+
 
 static func get_sorted_timeline_list():
 	var array = get_timeline_list()

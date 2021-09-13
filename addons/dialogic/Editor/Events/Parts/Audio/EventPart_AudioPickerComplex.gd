@@ -4,8 +4,8 @@ extends "res://addons/dialogic/Editor/Events/Parts/EventPart.gd"
 # has an event_data variable that stores the current data!!!
 
 ## node references
-onready var audio_picker = $HBox/AudioPicker
-onready var fade_length_input = $HBox/FadeLength
+onready var audio_picker = $VBox/AudioPicker
+onready var fade_length_input = $VBox/Fade/FadeLength
 
 # used to connect the signals
 func _ready():
