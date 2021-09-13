@@ -19,7 +19,7 @@ size_flags_vertical = 3
 
 [node name="HBoxContainer3" type="HBoxContainer" parent="VBoxContainer"]
 margin_right = 1024.0
-margin_bottom = 480.0
+margin_bottom = 566.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer3"]
 margin_right = 356.0
@@ -50,13 +50,6 @@ margin_left = 50.0
 margin_right = 190.0
 margin_bottom = 20.0
 rect_min_size = Vector2( 140, 0 )
-text = "NightTheme"
-items = [ "DayTheme", null, false, 0, {
-"file": "theme-1621517790.cfg"
-}, "NightTheme", null, false, 1, {
-"file": "theme-1621517668.cfg"
-} ]
-selected = 1
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer"]
 margin_top = 50.0
@@ -238,6 +231,8 @@ margin_left = 208.0
 margin_right = 281.0
 margin_bottom = 20.0
 text = "Master"
+items = [ "Master", null, false, 0, null, "Voice Lines", null, false, 1, null ]
+selected = 0
 
 [node name="HSeparator" type="HSeparator" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2"]
 margin_top = 248.0
@@ -403,30 +398,3 @@ margin_right = 164.0
 margin_bottom = 20.0
 hint_tooltip = "The default value is \"ui_accept\""
 text = "up"
-
-[node name="TimelineSection" type="VBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer2"]
-margin_top = 78.0
-margin_right = 304.0
-margin_bottom = 128.0
-
-[node name="SectionTitle" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/TimelineSection" instance=ExtResource( 2 )]
-margin_right = 304.0
-text = "Timeline editor"
-
-[node name="CustomEvents" type="HBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/TimelineSection"]
-margin_top = 26.0
-margin_right = 304.0
-margin_bottom = 50.0
-
-[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/TimelineSection/CustomEvents"]
-margin_top = 5.0
-margin_right = 276.0
-margin_bottom = 19.0
-size_flags_horizontal = 3
-text = "Use custom events"
-
-[node name="CustomEvents" type="CheckBox" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/TimelineSection/CustomEvents"]
-margin_left = 280.0
-margin_right = 304.0
-margin_bottom = 24.0
-hint_tooltip = "Will enable you to use custom events in your timelines"
