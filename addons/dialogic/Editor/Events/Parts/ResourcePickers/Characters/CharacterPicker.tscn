@@ -16,11 +16,12 @@ __meta__ = {
 }
 
 [node name="HBox" type="HBoxContainer" parent="."]
-margin_right = 114.0
-margin_bottom = 30.0
+margin_right = 399.0
+margin_bottom = 6.0
 size_flags_vertical = 3
 
 [node name="Icon" type="TextureRect" parent="HBox"]
+visible = false
 margin_top = 4.0
 margin_right = 22.0
 margin_bottom = 26.0
@@ -32,6 +33,7 @@ __meta__ = {
 }
 
 [node name="MenuButton" type="MenuButton" parent="HBox"]
+visible = false
 margin_left = 26.0
 margin_right = 106.0
 margin_bottom = 30.0
@@ -41,3 +43,27 @@ custom_styles/pressed = ExtResource( 3 )
 custom_styles/normal = ExtResource( 3 )
 text = "Character"
 flat = false
+
+[node name="NoCharacterContainer" type="HBoxContainer" parent="."]
+margin_top = 10.0
+margin_right = 399.0
+margin_bottom = 30.0
+
+[node name="NoCharacterLabel1" type="Label" parent="NoCharacterContainer"]
+margin_top = 3.0
+margin_right = 261.0
+margin_bottom = 17.0
+text = "You haven't created a character yet. Click"
+
+[node name="NoCharacterButton" type="Button" parent="NoCharacterContainer"]
+margin_left = 265.0
+margin_right = 306.0
+margin_bottom = 20.0
+text = "here"
+
+[node name="NoCharacterLabel2" type="Label" parent="NoCharacterContainer"]
+margin_left = 310.0
+margin_top = 3.0
+margin_right = 399.0
+margin_bottom = 17.0
+text = "to create one."

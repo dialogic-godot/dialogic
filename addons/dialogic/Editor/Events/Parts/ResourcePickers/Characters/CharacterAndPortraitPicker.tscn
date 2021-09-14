@@ -14,17 +14,17 @@ __meta__ = {
 }
 
 [node name="HBox" type="HBoxContainer" parent="."]
-margin_right = 210.0
+margin_right = 219.0
 margin_bottom = 30.0
 size_flags_vertical = 3
 
 [node name="CharacterPicker" parent="HBox" instance=ExtResource( 2 )]
-margin_right = 106.0
+margin_right = 115.0
 margin_bottom = 30.0
 
 [node name="PortraitPicker" parent="HBox" instance=ExtResource( 1 )]
-margin_left = 110.0
-margin_right = 210.0
+margin_left = 119.0
+margin_right = 219.0
 
 [node name="DefinitionPicker" parent="HBox" instance=ExtResource( 4 )]
 visible = false
