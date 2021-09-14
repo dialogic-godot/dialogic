@@ -21,9 +21,10 @@
 - After selecting a conditional, the input field of that event will be selected
 - Updated UI of the AudioPickers [[Jowan-Spooner]](https://github.com/Jowan-Spooner)
 - Automatically scrolling to newly created events when you click on a create event button [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
-- If no characters are present in the current project the character picker is hidden [[zaknafean]](https://github.com/zaknafean)
+- If no characters are present in the current project the character picker is hidden and a prompt was added in the Character join and Character leave events to create one [[zaknafean]](https://github.com/zaknafean)
    
 #### Theme Editor:
+- A default theme is created on new projects [[zaknafean]](https://github.com/zaknafean)
 - You can now set the position of the buttons relative to the screen (Top, Bottom, Center, Left, Right)
 - You can now set the choice buttons to be aligned horizontally or vertically
 - Updated Audio Settings [[Tim Krief](https://github.com/timkrief)]: 
