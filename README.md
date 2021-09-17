@@ -1,5 +1,5 @@
 ![Hero Image](https://coppolaemilio.com/images/dialogic/dialogic-hero-1.3.png?v1)
-![image](https://user-images.githubusercontent.com/2206700/133773887-3baa9cda-1ede-41b2-8ac0-71f53fa89522.png)
+![image](https://user-images.githubusercontent.com/2206700/133774754-8ab47c3a-ae94-414d-b5c7-84ea878cd55b.png)
 
 Create dialogs, characters and scenes to display conversations in your Godot games. 
 
