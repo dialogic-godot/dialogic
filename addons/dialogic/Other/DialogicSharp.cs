@@ -5,7 +5,7 @@ using System;
 public static class DialogicSharp
 {
   private static Script _dialogic = GD.Load<Script>("res://addons/dialogic/Other/DialogicClass.gd");
-  private const String DEFAULT_DIALOG_RESOURCE = "res://addons/dialogic/Dialog.tscn";
+  private const String DEFAULT_DIALOG_RESOURCE = "res://addons/dialogic/Nodes/DialogNode.tscn";
 
   public static String CurrentTimeline
   {

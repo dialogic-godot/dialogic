@@ -1,9 +1,9 @@
 ![WelcomeImage](./Images/dialogic-hero-1.3.png)
-Welcome to the Help pages. You can find all the information available on how to use the plugin and its parts.  
+Welcome to the help pages. Here you can find all the information available on how to use the plugin and its parts.  
 
 If you are looking for something specific, you can use the filter in the upper left. If you need extra help you can join [Emilio's Discord server](https://discord.gg/v4zhZNh)!
 
-# Support the project on [Patreon](https://www.patreon.com/coppolaemilio)
+This project is made possible by the support of our [Patreons](https://www.patreon.com/coppolaemilio)
 
 # Index
 ## Events
@@ -43,14 +43,14 @@ If you are looking for something specific, you can use the filter in the upper l
 
 
 # Dialogic is made by:
-## [Emilio Coppola](https://github.com/coppolaemilio)
-## [Jowan-Spooner](https://github.com/Jowan-Spooner)
-### [Arnaud Vergnet](https://github.com/arnaudvergnet)
-### [ellogwen](https://github.com/ellogwen)
-### [Tim Krief](https://github.com/timkrief)
-### [AnidemDex](https://github.com/AnidemDex)
-### [zaknafean](https://github.com/zaknafean)
-#### And many [more](https://github.com/coppolaemilio/dialogic/graphs/contributors)!
+**[Emilio Coppola](https://github.com/coppolaemilio)**
+[Jowan-Spooner](https://github.com/Jowan-Spooner)
+[Arnaud Vergnet](https://github.com/arnaudvergnet)
+[ellogwen](https://github.com/ellogwen)
+[Tim Krief](https://github.com/timkrief)
+[AnidemDex](https://github.com/AnidemDex)
+[zaknafean](https://github.com/zaknafean)
+And many [more](https://github.com/coppolaemilio/dialogic/graphs/contributors)!
 
 
 # License
