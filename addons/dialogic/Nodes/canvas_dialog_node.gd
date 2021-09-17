@@ -14,7 +14,7 @@ signal timeline_end(timeline_name)
 signal dialogic_signal(value)
 
 
-var _dialog_node_scene = load("res://addons/dialogic/Dialog.tscn")
+var _dialog_node_scene = load("res://addons/dialogic/Nodes/DialogNode.tscn")
 var dialog_node = null
 
 

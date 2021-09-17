@@ -3,12 +3,14 @@
 ## v1.3 - (WIP)
 #### General Editor Stuff
 - Builtin Documentation [[Jowan-Spooner]](https://github.com/Jowan-Spooner)
-- Much more Documentation in general
 - Editor plugin has translation support and some labels are translated to Chinese [[magian1127]](https://github.com/magian1127)
-- Added some Spanish translations
+- Added some initial Spanish translations
 - Fixed a reference bug that prevent the duplication of Themes
-- Fixed the DialogNode Inspector Timeline Open button issue
+- Fixed the `DialogNode` Inspector Timeline Open button issue
 - Better light/custom theme support for the Dialogic editor tab [[Jowan-Spooner]](https://github.com/Jowan-Spooner)
+- Replaced the default `/addons/dialogic/Dialog.tscn` node with a proxy that creates a dialog using the `Dialogic.start` function instead of the raw node. This will make it easier to update from version to version since the instantiated node will not be changing a lot from version to version. This also moved and renamed the previous `/addons/dialogic/Dialog.tscn` to `/addons/dialogic/Nodes/DialogNode.tscn` and the `dialog_node.gd` is now called `DialogNode.gd` to be more in line with the rest of the project
+- Renamed the plugin entry point script from `dialogic.gd` to `plugin.gd` so it better describes what that file does
+- CanvasLayer Argument (Dialogic.start()) added to the CSharp Class
   
 #### Timeline Editor:
 - A modular Custom events implementation [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
@@ -218,7 +220,7 @@ To view previous changes [click here](https://github.com/coppolaemilio/dialogic/
     - Glossary variables will be lost
     - Glossary related events will not be loaded (`If condition Event` and `Set Value Event`)
     - The theme you made in the 0.9 theme editor will be lost. You will have to remake it.
-  - Video https://youtu.be/MeaS3zZxpbA
+  - Video [https://youtu.be/MeaS3zZxpbA](https://youtu.be/MeaS3zZxpbA)
   - New layout:
     - All editors in the same screen. Say goodbye to tabs!
     - You can now rename resources by double clicking them
@@ -257,7 +259,7 @@ To view previous changes [click here](https://github.com/coppolaemilio/dialogic/
   - Special thanks to [Arnaud Vergnet](https://github.com/arnaudvergnet) for all your work in improving Definitions, conditional events and many more! 🙇‍♂️
 
 ## v0.9 - House keeping
-  - Video: https://youtu.be/pL0RWVmlM6g
+  - Video: [https://youtu.be/pL0RWVmlM6g](https://youtu.be/pL0RWVmlM6g)
   - Moved `Dialog.tscn` to the root of the addon so it is easier to find.
   - Added a link to the documentation from the editor
   - Refactored a lot of the code and continued splitting the main plugin code into smaller pieces.
@@ -308,7 +310,7 @@ To view previous changes [click here](https://github.com/coppolaemilio/dialogic/
     ```
 
 ## v0.8 - Dialog enters the game
- - Video: https://youtu.be/NfTyRrsdB1I
+ - Video: [https://youtu.be/NfTyRrsdB1I](https://youtu.be/NfTyRrsdB1I)
  - Moved the theme editor tool icon to the left
  - Theme Editor:
     - Added a color background as an option
@@ -335,7 +337,7 @@ To view previous changes [click here](https://github.com/coppolaemilio/dialogic/
     - Button styles
 
 ## v0.7 - Looking good
- - Video: https://youtu.be/wREIVj55eBM
+ - Video: [https://youtu.be/wREIVj55eBM](https://youtu.be/wREIVj55eBM)
  - New plugin tab icon
  - Removed legacy files
  - From the theme tab you can now:
@@ -359,7 +361,7 @@ To view previous changes [click here](https://github.com/coppolaemilio/dialogic/
    - You can copy the timeline ID
 
 ## v0.6 - Character portraits
- - Video: https://youtu.be/okWYt_yGKNI
+ - Video: [https://youtu.be/okWYt_yGKNI](https://youtu.be/okWYt_yGKNI)
  - Splitting the main script into smaller pieces
  - Characters
    - Characters welcome screen when there are 0
@@ -371,7 +373,7 @@ To view previous changes [click here](https://github.com/coppolaemilio/dialogic/
    - Text block now has a portrait dropdown
 
 ## v0.5 - Indentation Magic
- - Video: https://youtu.be/mrTyWy2TJOM
+ - Video: [https://youtu.be/mrTyWy2TJOM](https://youtu.be/mrTyWy2TJOM)
  - Added new events:
    - Choice
    - End branch
@@ -383,14 +385,14 @@ To view previous changes [click here](https://github.com/coppolaemilio/dialogic/
  - Changed event default colors
 
 ## v0.4 - Dialogic
- - Video: https://youtu.be/Hf_gywa6vZE
+ - Video: [https://youtu.be/Hf_gywa6vZE](https://youtu.be/Hf_gywa6vZE)
  - Changed how the main editor works, instead of being a graphedit it is now an event timeline.
  - Renamed the plugin to Dialogic. Thanks to Òscar for always knowing how to name things. 
  - Moved all data to .json files
  - Broke the addon for working. Nice :)
 
 ## v0.3 - Using Resources
- - Video: https://youtu.be/PzzOE4LbGAo
+ - Video: [https://youtu.be/PzzOE4LbGAo](https://youtu.be/PzzOE4LbGAo)
  - Removed requirement for `global.gd` and `characters.gd` autoload scripts.
  - Added `DialogResource` and `DialogCharacterResource` resources to create a cleaner way of specifying dialog content
  - Added icon to the existing dialog node.
@@ -403,4 +405,4 @@ To view previous changes [click here](https://github.com/coppolaemilio/dialogic/
  - Curly brackets introduced for character names.
 
 ## v0.1 - Release
- - You can watch the presentation video here https://youtu.be/TXmf4FP8OCA
+ - You can watch the presentation video here [https://youtu.be/TXmf4FP8OCA](https://youtu.be/TXmf4FP8OCA)
