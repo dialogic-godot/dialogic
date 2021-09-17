@@ -47,9 +47,9 @@ public static class DialogicSharp
     }
   }
 
-  public static Node Start(String timeline, bool resetSaves = true, bool debugMode = false)
+  public static Node Start(String timeline, bool resetSaves = true, bool debugMode = false, bool useCanvasInstead = true)
   {
-    return Start<Node>(timeline, DEFAULT_DIALOG_RESOURCE, resetSaves, debugMode);
+    return Start<Node>(timeline, DEFAULT_DIALOG_RESOURCE, resetSaves, debugMode, useCanvasInstead);
   }
 
   public static T Start<T>(String timeline, String dialogScenePath, bool resetSaves = true, bool debugMode = false) where T : class
