@@ -21,9 +21,15 @@ If you are looking for something specific, you can use the filter in the upper l
 - [Call Node](./Events/042)
 
 ## FAQ
+- [Can I use Dialogic in one of my projects?](./FAQ/can-i-use-dialogic-in-my-project.md)
+- [Can I create a timeline using GDScript?](./FAQ/create-timeline-using-gdscript.md)
 - [Can I use C# with Dialogic?](./FAQ/CSharp.md)
+- [How can I make a dialog show up in game?](./FAQ/how-to-make-dialog-show-up-in-game.md)
+- [The plugin is cool! Why is it not shipped with Godot?](./FAQ/plugin-shipped-godot.md)
 - [Portraits not showing in game?](./FAQ/Portraits.md)
+- [My resolution is too small and the dialog is too big.](./FAQ/resolution-small-dialog-big.md)
 - [Using signals?](./FAQ/Signals.md)
+- [Why are you not using graph nodes?](./FAQ/why-not-graph-nodes.md)
 
 ## Reference
 - [Dialog node](./Reference/000.md)
