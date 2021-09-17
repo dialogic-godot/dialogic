@@ -25,6 +25,8 @@ You can also install Dialogic using the **AssetLib** tab in the editor, but the 
 If you encounter any issue when exporting your game, try having at least 1 theme in your project.
 
 ---
+## Documentation
+You can check the documentation from inside the plugin or [here](https://github.com/coppolaemilio/dialogic/blob/main/addons/dialogic/Documentation/Content/Welcome.md)
 
 ## FAQ 
 
