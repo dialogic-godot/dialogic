@@ -9,6 +9,7 @@ var waiting_for_answer: bool = false
 var waiting_for_input: bool = false
 var waiting: bool = false
 var preview: bool = false
+var record_history: bool = true
 var definitions = {}
 var definition_visible: bool = false
 var while_dialog_animation: bool = false
@@ -45,6 +46,7 @@ var audio_data = {}
 onready var ChoiceButton = load("res://addons/dialogic/Nodes/ChoiceButton.tscn")
 onready var Portrait = load("res://addons/dialogic/Nodes/Portrait.tscn")
 onready var Background = load("res://addons/dialogic/Nodes/Background.tscn")
+onready var historyLabel = $HistoryPopup/MarginContainer/RichTextLabel
 var dialog_script: Dictionary = {}
 var questions #for keeping track of the questions answered
 
@@ -561,6 +563,20 @@ func update_text(text: String) -> String:
 
 func _on_text_completed():
 	play_audio('waiting')
+	
+	if record_history:
+		var characterData = get_character(current_event.character)
+		if characterData.has('name'):
+			var parsed_name = characterData['name']
+			if characterData.has('display_name'):
+				if characterData['display_name'] != '':
+					parsed_name = characterData['display_name']
+			var characterColor = characterData.data.get('color', Color.white)
+			historyLabel.append_bbcode(str("[color=",characterColor,"]",parsed_name, "[/color]: "))
+		if current_event.event_id == 'dialogic_001':
+			historyLabel.append_bbcode(str(current_event.text, '\n\n\n'))
+		elif  current_event.event_id == 'dialogic_010':
+			historyLabel.append_bbcode(str(current_event.question, '\n'))
 	
 	finished = true
 	
@@ -1133,6 +1149,10 @@ func answer_question(i, event_idx, question_idx):
 		questions[question_idx]['answered'] = true
 		reset_options()
 		_load_event_at_index(event_idx + 1)
+	
+		if record_history:
+			historyLabel.append_bbcode(str('    ',i.text, '\n\n\n'))
+		
 		if last_mouse_mode != null:
 			Input.set_mouse_mode(last_mouse_mode) # Revert to last mouse mode when selection is done
 			last_mouse_mode = null
@@ -1370,3 +1390,7 @@ func _on_OptionsDelayedInput_timeout():
 	for button in $Options/ButtonContainer.get_children():
 		if button.is_connected("pressed", self, "answer_question") == false:
 			button.connect("pressed", self, "answer_question", [button, button.get_meta('event_idx'), button.get_meta('question_idx')])
+
+
+func _on_HistoryButton_pressed():
+	$HistoryPopup.popup()
