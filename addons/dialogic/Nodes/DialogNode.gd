@@ -28,6 +28,8 @@ export(bool) var debug_mode = true
 # Event end/start
 signal event_start(type, event)
 signal event_end(type)
+# Text Signals
+signal text_complete(text_data)
 # Timeline end/start
 signal timeline_start(timeline_name)
 signal timeline_end(timeline_name)
@@ -561,6 +563,7 @@ func update_text(text: String) -> String:
 
 func _on_text_completed():
 	play_audio('waiting')
+	emit_signal('text_complete', current_event)
 	
 	finished = true
 	
