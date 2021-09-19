@@ -1325,6 +1325,9 @@ func fade_in_dialog(default = 0.5):
 		if transition_time > 0:
 			var tween = Tween.new()
 			add_child(tween)
+			# The tween created ('fade_in_tween_show_time') is also reference for the $TextBubble
+			# node to know if it should start showing up the letters of the dialog or not.
+			tween.name = 'fade_in_tween_show_time'
 			tween.interpolate_property($TextBubble, "modulate",
 				$TextBubble.modulate, Color(1,1,1,1), transition_time,
 				Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)

@@ -36,6 +36,7 @@
 
 #### Ingame Behaviour
 - Fixed a bug that performed the fade-in animation before setting the proper theme
+- Dialogs only start typing after the fade-in animation happened
 - If the text is too big for your dialog and you see a scrolling bar, you can use the `up` and `down` keys to scroll [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
 - Rework of the character name coloring (using Regex now) [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
 - Regex name compiler now properly escapes special characters [[zaknafean]](https://github.com/zaknafean)

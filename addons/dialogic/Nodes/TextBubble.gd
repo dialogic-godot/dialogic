@@ -187,18 +187,22 @@ func load_theme(theme: ConfigFile):
 
 
 func _on_writing_timer_timeout():
-	if _finished == false:
-		text_label.visible_characters += 1
-		
-		if text_label.visible_characters > text_label.get_total_character_count():
-			_handle_text_completed()
-		elif (
-			text_label.visible_characters > 0 and
-			text_label.text[text_label.visible_characters-1] != " "
-		):
-			emit_signal('letter_written')
-	else:
-		$WritingTimer.stop()
+	# Checks for the 'fade_in_tween_show_time' which only exists during the fade in animation
+	# if that node doesn't exists, it won't start the letter by letter animation.
+	if get_parent().has_node('fade_in_tween_show_time') == false:
+		if _finished == false:
+			text_label.visible_characters += 1
+			
+			if text_label.visible_characters > text_label.get_total_character_count():
+				_handle_text_completed()
+			elif (
+				text_label.visible_characters > 0 and
+				text_label.text[text_label.visible_characters-1] != " "
+			):
+				emit_signal('letter_written')
+		else:
+			$WritingTimer.stop()
+
 
 func start_text_timer():
 	if text_speed == 0:
@@ -207,6 +211,7 @@ func start_text_timer():
 	else:
 		$WritingTimer.start(text_speed)
 		_finished = false
+
 
 func _handle_text_completed():
 	$WritingTimer.stop()
