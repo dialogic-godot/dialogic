@@ -46,7 +46,7 @@ var audio_data = {}
 onready var ChoiceButton = load("res://addons/dialogic/Nodes/ChoiceButton.tscn")
 onready var Portrait = load("res://addons/dialogic/Nodes/Portrait.tscn")
 onready var Background = load("res://addons/dialogic/Nodes/Background.tscn")
-onready var historyLabel = $HistoryPopup/MarginContainer/RichTextLabel
+onready var HistoryLabel = $HistoryPopup/MarginContainer/RichTextLabel
 var dialog_script: Dictionary = {}
 var questions #for keeping track of the questions answered
 
@@ -281,8 +281,8 @@ func set_current_dialog(dialog_path: String):
 	current_timeline = dialog_path
 	dialog_script = DialogicResources.get_timeline_json(dialog_path)
 	return load_dialog()
-	
-	
+
+
 func load_dialog():
 	# All this parse events should be happening in the same loop ideally
 	# But until performance is not an issue I will probably stay lazy
@@ -564,19 +564,17 @@ func update_text(text: String) -> String:
 func _on_text_completed():
 	play_audio('waiting')
 	
-	if record_history:
+	# Anything that uses text bubble should be written to the history log
+	if record_history and current_event.event_id != 'dialogic_023':
 		var characterData = get_character(current_event.character)
-		if characterData.has('name'):
-			var parsed_name = characterData['name']
-			if characterData.has('display_name'):
-				if characterData['display_name'] != '':
-					parsed_name = characterData['display_name']
+		var characterName = get_character_name(current_event.character)
+		if characterName != '':
 			var characterColor = characterData.data.get('color', Color.white)
-			historyLabel.append_bbcode(str("[color=",characterColor,"]",parsed_name, "[/color]: "))
+			HistoryLabel.append_bbcode(str("[color=",characterColor,"]",characterName, "[/color]: "))
 		if current_event.event_id == 'dialogic_001':
-			historyLabel.append_bbcode(str(current_event.text, '\n\n\n'))
+			HistoryLabel.append_bbcode(str(current_event.text, '\n\n'))
 		elif  current_event.event_id == 'dialogic_010':
-			historyLabel.append_bbcode(str(current_event.question, '\n'))
+			HistoryLabel.append_bbcode(str(current_event.question, '\n'))
 	
 	finished = true
 	
@@ -691,6 +689,18 @@ func get_character(character_id):
 	return {}
 
 
+func get_character_name(character_id) -> String:
+	var characterName = '';
+	var characterData = get_character(character_id)
+	if characterData.has('name'):
+		var parsed_name = characterData['name']
+		if characterData.has('display_name'):
+			if characterData['display_name'] != '':
+				parsed_name = characterData['display_name']
+		characterName = parsed_name;
+	return characterName;
+
+
 func handle_voice(event):
 	var settings_file = DialogicResources.get_settings_config()
 	if not settings_file.get_value('dialog', 'text_event_audio_enable', false):
@@ -764,6 +774,8 @@ func event_handler(event: Dictionary):
 					p.set_mirror(event.get('mirror', false))
 					$Portraits.add_child(p)
 					p.move_to_position(get_character_position(event['position']))
+			#if record_history:
+			#	HistoryLabel.append_bbcode(str('\t',i.text, '\n\n'))
 			_load_next_event()
 		# Character Leave event 
 		'dialogic_003':
@@ -1151,7 +1163,7 @@ func answer_question(i, event_idx, question_idx):
 		_load_event_at_index(event_idx + 1)
 	
 		if record_history:
-			historyLabel.append_bbcode(str('    ',i.text, '\n\n\n'))
+			HistoryLabel.append_bbcode(str('\t',i.text, '\n\n'))
 		
 		if last_mouse_mode != null:
 			Input.set_mouse_mode(last_mouse_mode) # Revert to last mouse mode when selection is done
