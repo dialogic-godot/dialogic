@@ -29,6 +29,7 @@
 - A default theme is created on new projects [[zaknafean]](https://github.com/zaknafean)
 - You can now set the position of the buttons relative to the screen (Top, Bottom, Center, Left, Right)
 - You can now set the choice buttons to be aligned horizontally or vertically
+- More range for dialog text speed [[zaknafean]](https://github.com/zaknafean)
 - Updated Audio Settings [[Tim Krief](https://github.com/timkrief)]: 
  - you can now select audio for typing, text completed, next event, button hover and button selecting
  - Attention: Old typing audio will have to be redone!
