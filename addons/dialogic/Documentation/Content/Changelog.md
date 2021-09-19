@@ -49,6 +49,7 @@
 #### Other Stuff:
 - Removed the need to use a DialogicSingleton. Hope this doesn't do any harm in existing projects
 - Deleted some legacy documentation files
+- Adding a warning if you are trying to set or get a variable that wasn't defined
 
 ## v1.2.5 - Possibly breaking eveything. We will never know.
 - Loading timeline events on batches to speedup big timelines

@@ -147,15 +147,23 @@ static func get_definitions() -> Dictionary:
 
 
 static func set_variable(name: String, value):
+	var exists = false
 	for d in get_definitions()['variables']:
 		if d['name'] == name:
 			d['value'] = str(value)
+			exists = true
+	if exists == false:
+		# TODO it would be great to automatically generate that missing variable here so they don't
+		# have to create it from the editor. 
+		print('[Dialogic] Warning! the variable [' + name + '] doesn\'t exists. Create it from the Dialogic editor.')
+	return value
 
 
 static func get_variable(name: String, default = null):
 	for d in get_definitions()['variables']:
 		if d['name'] == name:
 			return d['value']
+	print('[Dialogic] Warning! the variable [' + name + '] doesn\'t exists.')
 	return default
 
 
