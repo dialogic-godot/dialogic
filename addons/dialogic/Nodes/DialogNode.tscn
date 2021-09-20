@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://addons/dialogic/Nodes/TextBubble.tscn" type="PackedScene" id=1]
 [ext_resource path="res://addons/dialogic/Example Assets/backgrounds/GlossaryBackground.tres" type="StyleBox" id=2]
@@ -9,6 +9,7 @@
 [ext_resource path="res://addons/dialogic/Nodes/BackgroundMusic.tscn" type="PackedScene" id=7]
 [ext_resource path="res://addons/dialogic/Nodes/random_audio_stream_player.gd" type="Script" id=8]
 [ext_resource path="res://addons/dialogic/Example Assets/Sound Effects/Beep.wav" type="AudioStream" id=9]
+[ext_resource path="res://addons/dialogic/Nodes/HistoryPopup.gd" type="Script" id=10]
 
 [sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 1, 1, 1, 0 )
@@ -27,10 +28,6 @@ anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-margin_left = 512.0
-margin_top = 600.0
-margin_right = 512.0
-margin_bottom = 600.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -67,7 +64,6 @@ script = ExtResource( 3 )
 [node name="Audio" type="Node" parent="FX"]
 
 [node name="Typing" type="AudioStreamPlayer" parent="FX/Audio"]
-volume_db = -0.5
 script = ExtResource( 8 )
 samples = [ ExtResource( 9 ) ]
 random_strategy = 2
@@ -163,7 +159,6 @@ __meta__ = {
 [node name="OptionsDelayedInput" type="Timer" parent="."]
 
 [node name="HistoryPopup" type="PopupPanel" parent="."]
-visible = true
 anchor_top = 0.5
 anchor_right = 1.0
 anchor_bottom = 0.5
@@ -171,6 +166,7 @@ margin_left = 76.0
 margin_top = -227.0
 margin_right = -66.0
 margin_bottom = 255.0
+script = ExtResource( 10 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -178,6 +174,10 @@ __meta__ = {
 [node name="MarginContainer" type="MarginContainer" parent="HistoryPopup"]
 anchor_right = 1.0
 anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = 4.0
+margin_right = -4.0
+margin_bottom = -4.0
 custom_constants/margin_right = 5
 custom_constants/margin_top = 5
 custom_constants/margin_left = 5
@@ -186,16 +186,13 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="RichTextLabel" type="RichTextLabel" parent="HistoryPopup/MarginContainer"]
+[node name="HistoryTimeline" type="VBoxContainer" parent="HistoryPopup/MarginContainer"]
 margin_left = 5.0
 margin_top = 5.0
-margin_right = 877.0
-margin_bottom = 477.0
-bbcode_enabled = true
-scroll_following = true
-__meta__ = {
-"_edit_use_anchors_": false
-}
+margin_right = 869.0
+margin_bottom = 469.0
+
+[node name="HistoryAudio" type="AudioStreamPlayer" parent="HistoryPopup"]
 
 [node name="HistoryButton" type="Button" parent="."]
 anchor_left = 1.0
@@ -208,4 +205,5 @@ __meta__ = {
 }
 
 [connection signal="timeout" from="DefinitionInfo/Timer" to="." method="_on_Definition_Timer_timeout"]
+[connection signal="popup_hide" from="HistoryPopup" to="HistoryPopup" method="_on_HistoryPopup_popup_hide"]
 [connection signal="pressed" from="HistoryButton" to="." method="_on_HistoryButton_pressed"]

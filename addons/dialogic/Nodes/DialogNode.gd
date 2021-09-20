@@ -46,7 +46,8 @@ var audio_data = {}
 onready var ChoiceButton = load("res://addons/dialogic/Nodes/ChoiceButton.tscn")
 onready var Portrait = load("res://addons/dialogic/Nodes/Portrait.tscn")
 onready var Background = load("res://addons/dialogic/Nodes/Background.tscn")
-onready var HistoryLabel = $HistoryPopup/MarginContainer/RichTextLabel
+onready var HistoryTimeline = $HistoryPopup
+
 var dialog_script: Dictionary = {}
 var questions #for keeping track of the questions answered
 
@@ -564,17 +565,9 @@ func update_text(text: String) -> String:
 func _on_text_completed():
 	play_audio('waiting')
 	
-	# Anything that uses text bubble should be written to the history log
+	# Anything that uses text bubble should be written to the history log, but exclude waits
 	if record_history and current_event.event_id != 'dialogic_023':
-		var characterData = get_character(current_event.character)
-		var characterName = get_character_name(current_event.character)
-		if characterName != '':
-			var characterColor = characterData.data.get('color', Color.white)
-			HistoryLabel.append_bbcode(str("[color=",characterColor,"]",characterName, "[/color]: "))
-		if current_event.event_id == 'dialogic_001':
-			HistoryLabel.append_bbcode(str(current_event.text, '\n\n'))
-		elif  current_event.event_id == 'dialogic_010':
-			HistoryLabel.append_bbcode(str(current_event.question, '\n'))
+		HistoryTimeline.add_history_row_event(current_event)
 	
 	finished = true
 	
@@ -725,6 +718,7 @@ func event_handler(event: Dictionary):
 	
 	dprint('[D] Current Event: ', event)
 	current_event = event
+	
 	match event['event_id']:
 		# MAIN EVENTS
 		# Text Event
@@ -774,8 +768,8 @@ func event_handler(event: Dictionary):
 					p.set_mirror(event.get('mirror', false))
 					$Portraits.add_child(p)
 					p.move_to_position(get_character_position(event['position']))
-			#if record_history:
-			#	HistoryLabel.append_bbcode(str('\t',i.text, '\n\n'))
+					if record_history:
+						HistoryTimeline.add_history_row_string(str(get_character_name(event['character']), ' has arrived.'))
 			_load_next_event()
 		# Character Leave event 
 		'dialogic_003':
@@ -783,10 +777,14 @@ func event_handler(event: Dictionary):
 			emit_signal("event_start", "action", event)
 			if event['character'] == '[All]':
 				characters_leave_all()
+				if record_history:
+					HistoryTimeline.add_history_row_string(str('Everyone has left.'))
 			else:
 				for p in $Portraits.get_children():
 					if p.character_data['file'] == event['character']:
 						p.fade_out()
+				if record_history:
+					HistoryTimeline.add_history_row_string(str(get_character_name(event['character']), ' has left.'))
 			_load_next_event()
 		
 		# LOGIC EVENTS
@@ -881,7 +879,7 @@ func event_handler(event: Dictionary):
 					background.create_tween()
 					background.fade_in(fade_time)
 				call_deferred('resize_main') # Executing the resize main to update the background size
-
+			
 			_load_next_event()
 		# Close Dialog event
 		'dialogic_022':
@@ -934,6 +932,8 @@ func event_handler(event: Dictionary):
 					audio.volume_db = event['volume']
 				audio.stream = load(event['file'])
 				audio.play()
+				if record_history:
+					HistoryTimeline.add_history_row_string(str('Sound Played: ',event['file']), event['file'])
 			else:
 				var audio = get_node_or_null('AudioEvent')
 				if audio != null:
@@ -945,10 +945,11 @@ func event_handler(event: Dictionary):
 			emit_signal("event_start", "background-music", event)
 			if event['background-music'] == 'play' and 'file' in event.keys() and not event['file'].empty():
 				$FX/BackgroundMusic.crossfade_to(event['file'], event.get('audio_bus', 'Master'), event.get('volume', 0), event.get('fade_length', 1))
+				if record_history:
+					HistoryTimeline.add_history_row_string(str('Music Played: ',event['file']), event['file'])
 			else:
 				$FX/BackgroundMusic.fade_out(event.get('fade_length', 1))
 			_load_next_event()
-		
 		# GODOT EVENTS
 		# Emit signal event
 		'dialogic_040':
@@ -1161,9 +1162,9 @@ func answer_question(i, event_idx, question_idx):
 		questions[question_idx]['answered'] = true
 		reset_options()
 		_load_event_at_index(event_idx + 1)
-	
+		
 		if record_history:
-			HistoryLabel.append_bbcode(str('\t',i.text, '\n\n'))
+			HistoryTimeline.add_history_row_string(str('Choice Selected: ',i.text))
 		
 		if last_mouse_mode != null:
 			Input.set_mouse_mode(last_mouse_mode) # Revert to last mouse mode when selection is done
