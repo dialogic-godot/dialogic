@@ -107,12 +107,16 @@ onready var n : Dictionary = {
 	'button_use_native': $"VBoxContainer/TabContainer/Choice Buttons/Column3/GridContainer/CheckBox",
 	'button_use_custom': $"VBoxContainer/TabContainer/Choice Buttons/Column3/GridContainer/HBoxContainer5/CustomButtonsCheckBox",
 	'button_custom_path': $"VBoxContainer/TabContainer/Choice Buttons/Column3/GridContainer/HBoxContainer5/CustomButtonsButton",
-	'button_offset_x': $"VBoxContainer/TabContainer/Choice Buttons/Column2/GridContainer/HBoxContainer/TextOffsetH",
-	'button_offset_y': $"VBoxContainer/TabContainer/Choice Buttons/Column2/GridContainer/HBoxContainer/TextOffsetV",
+	'button_padding_x': $"VBoxContainer/TabContainer/Choice Buttons/Column2/GridContainer/HBoxContainer/TextOffsetH",
+	'button_padding_y': $"VBoxContainer/TabContainer/Choice Buttons/Column2/GridContainer/HBoxContainer/TextOffsetV",
 	'button_separation': $"VBoxContainer/TabContainer/Choice Buttons/Column2/GridContainer/VerticalSeparation",
 	
 	'button_layout': $"VBoxContainer/TabContainer/Choice Buttons/Column2/GridContainer/Layout",
 	
+	'button_position_on_screen': $"VBoxContainer/TabContainer/Choice Buttons/Column2/GridContainer/PositionOnScreenOptionButton",
+	
+	'button_offset_x': $"VBoxContainer/TabContainer/Choice Buttons/Column2/GridContainer/HBoxContainer3/ButtonOffsetX",
+	'button_offset_y': $"VBoxContainer/TabContainer/Choice Buttons/Column2/GridContainer/HBoxContainer3/ButtonOffsetY",
 	
 	# Button modifiers (Inherited scenes)
 	'button_normal': $"VBoxContainer/TabContainer/Choice Buttons/Column/TabContainer/Normal",
@@ -153,7 +157,6 @@ onready var n : Dictionary = {
 
 func _ready() -> void:
 	$"VBoxContainer/TabContainer/Dialog Text/Column/SectionTitle".text = DTS.translate("Fonts")
-	$"VBoxContainer/TabContainer/Dialog Text/Column/GridContainer/Label5".text = DTS.translate("Regular Font")
 	$"VBoxContainer/TabContainer/Dialog Text/Column/GridContainer/Label6".text = DTS.translate("Bold Font")
 	$"VBoxContainer/TabContainer/Dialog Text/Column/GridContainer/Label7".text = DTS.translate("Italic Font")
 	$"VBoxContainer/TabContainer/Dialog Text/Column2/SectionTitle".text = DTS.translate("Colors")
@@ -198,10 +201,11 @@ func _ready() -> void:
 	$"VBoxContainer/TabContainer/Choice Buttons/Column2/GridContainer/Label6".text = DTS.translate("Box padding")
 	$"VBoxContainer/TabContainer/Choice Buttons/Column2/GridContainer/Label".text = DTS.translate("Fixed button size")
 	$"VBoxContainer/TabContainer/Choice Buttons/Column2/GridContainer/Label2".text = DTS.translate("Separation")
-	$"VBoxContainer/TabContainer/Choice Buttons/Column2/GridContainer/Label3".text = DTS.translate("Layout")
+	$"VBoxContainer/TabContainer/Choice Buttons/Column2/GridContainer/Label3".text = DTS.translate("Button layout")
 	$"VBoxContainer/TabContainer/Choice Buttons/Column3/SectionTitle".text = DTS.translate("Advanced")
 	$"VBoxContainer/TabContainer/Choice Buttons/Column3/GridContainer/CustomButtonsLabel".text = DTS.translate("Use Custom Buttons")
 	$"VBoxContainer/TabContainer/Choice Buttons/Column3/GridContainer/Label2".text = DTS.translate("Use Native Buttons")
+	$"VBoxContainer/TabContainer/Choice Buttons/Column2/GridContainer/Label5".text = DTS.translate("Position on screen")
 	$"VBoxContainer/TabContainer/Glossary/Column/SectionTitle".text = DTS.translate("Visuals")
 	$"VBoxContainer/TabContainer/Glossary/Column/GridContainer/Label3".text = DTS.translate("Word color")
 	$"VBoxContainer/TabContainer/Glossary/Column/GridContainer/Label4".text = DTS.translate("Background Panel")
@@ -215,7 +219,7 @@ func _ready() -> void:
 	$"VBoxContainer/TabContainer/Glossary/Column2/SectionTitle".text = DTS.translate("Behaviour")
 	$"VBoxContainer/TabContainer/Glossary/Column2/GridContainer/Label2".text = DTS.translate("Show")
 	$"VBoxContainer/TabContainer/Audio/Column/SectionTitle".text = DTS.translate("Typing Sound Effects")
-	
+	$"VBoxContainer/TabContainer/Choice Buttons/Column2/GridContainer/Label7".text = DTS.translate("Offset x-y")
 	editor_reference = find_parent('EditorView')
 	AudioServer.connect("bus_layout_changed", self, "_on_bus_layout_changed")
 	# Signal connection to free up some memory
@@ -278,6 +282,36 @@ func _ready() -> void:
 	n['button_disabled'].connect('style_modified', self, '_on_choice_style_modified')
 	
 	n['button_layout'].connect('item_selected', self, '_on_button_layout_selected')
+	
+	var button_positions_popup = n['button_position_on_screen'].get_popup()
+	button_positions_popup.clear()
+	button_positions_popup.add_icon_item(
+		get_icon("ControlAlignTopLeft", "EditorIcons"), "Top Left", 0)
+	button_positions_popup.add_icon_item(
+		get_icon("ControlAlignTopCenter", "EditorIcons"), "Top Center", 1)
+	button_positions_popup.add_icon_item(
+		get_icon("ControlAlignTopRight", "EditorIcons"), "Top Right", 2)
+	button_positions_popup.add_separator()
+	button_positions_popup.add_icon_item(
+		get_icon("ControlAlignLeftCenter", "EditorIcons"), "Center Left", 3)
+	button_positions_popup.add_icon_item(
+		get_icon("ControlAlignCenter", "EditorIcons"), "Center", 4)
+	button_positions_popup.add_icon_item(
+		get_icon("ControlAlignRightCenter", "EditorIcons"), "Center Right", 5)
+	button_positions_popup.add_separator()
+	button_positions_popup.add_icon_item(
+		get_icon("ControlAlignBottomLeft", "EditorIcons"), "Bottom Left", 6)
+	button_positions_popup.add_icon_item(
+		get_icon("ControlAlignBottomCenter", "EditorIcons"), "Bottom Center", 7)
+	button_positions_popup.add_icon_item(
+		get_icon("ControlAlignBottomRight", "EditorIcons"), "Bottom Right", 8)
+	
+	n['button_position_on_screen'].connect('item_selected', self, '_on_button_anchor_selected')
+	
+	n['button_offset_x'].connect('value_changed', self, '_on_button_offset_changed')
+	n['button_offset_y'].connect('value_changed', self, '_on_button_offset_changed')
+	
+	
 	
 	n['name_position'].text = 'Left'
 	n['name_position'].connect('item_selected', self, '_on_name_position_selected')
@@ -371,15 +405,18 @@ func load_theme(filename):
 	n['button_use_native'].pressed = theme.get_value('buttons', 'use_native', false)
 	n['button_use_custom'].pressed = theme.get_value('buttons', 'use_custom', false)
 	n['button_custom_path'].text = DialogicResources.get_filename_from_path(theme.get_value('buttons', 'custom_path', ""))
-	n['button_offset_x'].value = theme.get_value('buttons', 'padding', Vector2(5,5)).x
-	n['button_offset_y'].value = theme.get_value('buttons', 'padding', Vector2(5,5)).y
+	n['button_padding_x'].value = theme.get_value('buttons', 'padding', Vector2(5,5)).x
+	n['button_padding_y'].value = theme.get_value('buttons', 'padding', Vector2(5,5)).y
 	n['button_separation'].value = theme.get_value('buttons', 'gap', 5)
 	n['button_fixed'].pressed = theme.get_value('buttons', 'fixed', false)
 	n['button_fixed_x'].value = theme.get_value('buttons', 'fixed_size', Vector2(130,40)).x
 	n['button_fixed_y'].value = theme.get_value('buttons', 'fixed_size', Vector2(130,40)).y
 	
 	n['button_layout'].selected = theme.get_value('buttons', 'layout', 0) 
+	n['button_position_on_screen'].selected = theme.get_value('buttons', 'anchor', 5)
 	
+	n['button_offset_x'].value = theme.get_value('buttons', 'offset', Vector2(0,0)).x
+	n['button_offset_y'].value = theme.get_value('buttons', 'offset', Vector2(0,0)).y
 	
 	
 	var default_style = [false, Color.white, false, Color.black, true, default_background, false, Color.white]
@@ -529,7 +566,7 @@ func _on_DelayPreview_timer_timeout() -> void:
 func _on_PreviewButton_pressed() -> void:
 	for i in $VBoxContainer/Panel.get_children():
 		i.free()
-	var preview_dialog = Dialogic.start('', true, "res://addons/dialogic/Dialog.tscn", false, false)
+	var preview_dialog = Dialogic.start('', true, "res://addons/dialogic/Nodes/DialogNode.tscn", false, false)
 	preview_dialog.preview = true
 	
 	if n['character_picker']: # Sometimes it can't find the node
@@ -882,8 +919,8 @@ func _on_ButtonOffset_value_changed(value) -> void:
 	if loading:
 		return
 	var final_vector = Vector2(
-		n['button_offset_x'].value,
-		n['button_offset_y'].value
+		n['button_padding_x'].value,
+		n['button_padding_y'].value
 	)
 	DialogicResources.set_theme_value(current_theme, 'buttons', 'padding', final_vector)
 
@@ -933,8 +970,8 @@ func toggle_button_customization_fields(native_enabled: bool, custom_enabled: bo
 	n['button_use_native'].disabled = custom_enabled
 	n['button_use_custom'].disabled = native_enabled
 	n['button_custom_path'].disabled = native_enabled
-	n['button_offset_x'].editable = not customization_disabled
-	n['button_offset_y'].editable = not customization_disabled
+	n['button_padding_x'].editable = not customization_disabled
+	n['button_padding_y'].editable = not customization_disabled
 
 
 func _on_CustomButtonsCheckBox_toggled(button_pressed):
@@ -1068,8 +1105,25 @@ func _on_audio_data_updated(section):
 	DialogicResources.set_theme_value(current_theme, 'audio', section, n['audio_pickers'][section].get_data())
 	_on_PreviewButton_pressed()
 
+
+## -----------  Choice buttons -----------------------
 func _on_button_layout_selected(index):
 	if loading:
 		return
 	DialogicResources.set_theme_value(current_theme, 'buttons', 'layout', index)
+	_on_PreviewButton_pressed() # Refreshing the preview
+
+
+func _on_button_anchor_selected(index):
+	if loading:
+		return
+	DialogicResources.set_theme_value(current_theme, 'buttons', 'anchor', index)
+	_on_PreviewButton_pressed() # Refreshing the preview
+
+
+func _on_button_offset_changed(_value):
+	if loading:
+		return
+	var offset_vector = Vector2(n['button_offset_x'].value, n['button_offset_y'].value)
+	DialogicResources.set_theme_value(current_theme, 'buttons', 'offset', offset_vector)
 	_on_PreviewButton_pressed() # Refreshing the preview

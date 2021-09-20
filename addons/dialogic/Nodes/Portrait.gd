@@ -28,6 +28,9 @@ func _ready():
 
 func set_portrait(expression: String) -> void:
 	current_state['portrait'] = expression
+	if expression == "(Don't change)":
+		return
+
 	if expression == '':
 		expression = 'Default'
 	

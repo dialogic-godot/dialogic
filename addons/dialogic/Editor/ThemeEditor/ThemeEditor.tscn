@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://addons/dialogic/Images/Plugin/plugin-editor-icon-light-theme.svg" type="Texture" id=1]
 [ext_resource path="res://addons/dialogic/Editor/ThemeEditor/ThemeEditor.gd" type="Script" id=2]
@@ -7,8 +7,9 @@
 [ext_resource path="res://addons/dialogic/Editor/Events/styles/MenuButtonNormal.tres" type="StyleBox" id=5]
 [ext_resource path="res://addons/dialogic/Editor/ThemeEditor/ButtonStylePicker.tscn" type="PackedScene" id=6]
 [ext_resource path="res://addons/dialogic/Editor/ThemeEditor/AudioPicker.tscn" type="PackedScene" id=7]
+[ext_resource path="res://addons/dialogic/Editor/Common/TLabel.tscn" type="PackedScene" id=8]
 
-[sub_resource type="Image" id=3]
+[sub_resource type="Image" id=15]
 data = {
 "data": PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ),
 "format": "LumAlpha8",
@@ -17,10 +18,25 @@ data = {
 "width": 16
 }
 
-[sub_resource type="ImageTexture" id=2]
+[sub_resource type="ImageTexture" id=14]
 flags = 4
 flags = 4
-image = SubResource( 3 )
+image = SubResource( 15 )
+size = Vector2( 16, 16 )
+
+[sub_resource type="Image" id=16]
+data = {
+"data": PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ),
+"format": "LumAlpha8",
+"height": 16,
+"mipmaps": false,
+"width": 16
+}
+
+[sub_resource type="ImageTexture" id=12]
+flags = 4
+flags = 4
+image = SubResource( 16 )
 size = Vector2( 16, 16 )
 
 [node name="ThemeEditor" type="ScrollContainer"]
@@ -114,12 +130,14 @@ size_flags_horizontal = 3
 custom_constants/hseparation = 10
 columns = 2
 
-[node name="Label5" type="Label" parent="VBoxContainer/TabContainer/Dialog Text/Column/GridContainer"]
+[node name="TLabel" parent="VBoxContainer/TabContainer/Dialog Text/Column/GridContainer" instance=ExtResource( 8 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
 margin_top = 4.0
 margin_right = 110.0
 margin_bottom = 18.0
-size_flags_horizontal = 3
 text = "Regular Font"
+text_key = "Regular Font"
 
 [node name="RegularFont" type="HBoxContainer" parent="VBoxContainer/TabContainer/Dialog Text/Column/GridContainer"]
 margin_left = 120.0
@@ -139,7 +157,7 @@ margin_left = 122.0
 margin_right = 150.0
 margin_bottom = 22.0
 size_flags_vertical = 4
-icon = SubResource( 2 )
+icon = SubResource( 14 )
 
 [node name="Label6" type="Label" parent="VBoxContainer/TabContainer/Dialog Text/Column/GridContainer"]
 margin_top = 30.0
@@ -167,7 +185,7 @@ margin_left = 122.0
 margin_right = 150.0
 margin_bottom = 22.0
 size_flags_vertical = 4
-icon = SubResource( 2 )
+icon = SubResource( 14 )
 
 [node name="Label7" type="Label" parent="VBoxContainer/TabContainer/Dialog Text/Column/GridContainer"]
 margin_top = 56.0
@@ -195,7 +213,7 @@ margin_left = 122.0
 margin_right = 150.0
 margin_bottom = 22.0
 size_flags_vertical = 4
-icon = SubResource( 2 )
+icon = SubResource( 14 )
 
 [node name="VSeparator" type="VSeparator" parent="VBoxContainer/TabContainer/Dialog Text"]
 margin_left = 280.0
@@ -328,8 +346,8 @@ margin_left = 196.0
 margin_right = 270.0
 margin_bottom = 24.0
 max_value = 10.0
+step = 0.01
 value = 2.0
-rounded = true
 
 [node name="Label2" type="Label" parent="VBoxContainer/TabContainer/Dialog Text/Column3/GridContainer"]
 margin_top = 31.0
@@ -789,7 +807,7 @@ margin_left = 130.0
 margin_right = 158.0
 margin_bottom = 22.0
 size_flags_vertical = 4
-icon = SubResource( 2 )
+icon = SubResource( 14 )
 
 [node name="Label" type="Label" parent="VBoxContainer/TabContainer/Name Label/Column/GridContainer"]
 margin_top = 31.0
@@ -1123,7 +1141,7 @@ margin_bottom = 488.0
 
 [node name="Column2" type="VBoxContainer" parent="VBoxContainer/TabContainer/Choice Buttons"]
 margin_left = 404.0
-margin_right = 704.0
+margin_right = 713.0
 margin_bottom = 488.0
 size_flags_vertical = 3
 __meta__ = {
@@ -1131,27 +1149,27 @@ __meta__ = {
 }
 
 [node name="SectionTitle" parent="VBoxContainer/TabContainer/Choice Buttons/Column2" instance=ExtResource( 3 )]
-margin_right = 300.0
+margin_right = 309.0
 text = "Placement"
 
 [node name="GridContainer" type="GridContainer" parent="VBoxContainer/TabContainer/Choice Buttons/Column2"]
 margin_top = 26.0
-margin_right = 300.0
-margin_bottom = 130.0
+margin_right = 309.0
+margin_bottom = 182.0
 size_flags_horizontal = 3
 custom_constants/hseparation = 10
 columns = 2
 
 [node name="Label6" type="Label" parent="VBoxContainer/TabContainer/Choice Buttons/Column2/GridContainer"]
 margin_top = 5.0
-margin_right = 110.0
+margin_right = 119.0
 margin_bottom = 19.0
 size_flags_horizontal = 3
 text = "Box padding"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/TabContainer/Choice Buttons/Column2/GridContainer"]
-margin_left = 120.0
-margin_right = 300.0
+margin_left = 129.0
+margin_right = 309.0
 margin_bottom = 24.0
 
 [node name="TextOffsetV" type="SpinBox" parent="VBoxContainer/TabContainer/Choice Buttons/Column2/GridContainer/HBoxContainer"]
@@ -1159,8 +1177,8 @@ margin_right = 74.0
 margin_bottom = 24.0
 value = 5.0
 rounded = true
+allow_greater = true
 allow_lesser = true
-prefix = "V"
 
 [node name="TextOffsetH" type="SpinBox" parent="VBoxContainer/TabContainer/Choice Buttons/Column2/GridContainer/HBoxContainer"]
 margin_left = 78.0
@@ -1168,19 +1186,19 @@ margin_right = 152.0
 margin_bottom = 24.0
 value = 5.0
 rounded = true
+allow_greater = true
 allow_lesser = true
-prefix = "H"
 
 [node name="Label" type="Label" parent="VBoxContainer/TabContainer/Choice Buttons/Column2/GridContainer"]
 margin_top = 33.0
-margin_right = 110.0
+margin_right = 119.0
 margin_bottom = 47.0
 text = "Fixed button size"
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer/TabContainer/Choice Buttons/Column2/GridContainer"]
-margin_left = 120.0
+margin_left = 129.0
 margin_top = 28.0
-margin_right = 300.0
+margin_right = 309.0
 margin_bottom = 52.0
 
 [node name="FixedSize" type="CheckBox" parent="VBoxContainer/TabContainer/Choice Buttons/Column2/GridContainer/HBoxContainer2"]
@@ -1205,14 +1223,14 @@ allow_lesser = true
 
 [node name="Label2" type="Label" parent="VBoxContainer/TabContainer/Choice Buttons/Column2/GridContainer"]
 margin_top = 61.0
-margin_right = 110.0
+margin_right = 119.0
 margin_bottom = 75.0
 text = "Separation"
 
 [node name="VerticalSeparation" type="SpinBox" parent="VBoxContainer/TabContainer/Choice Buttons/Column2/GridContainer"]
-margin_left = 120.0
+margin_left = 129.0
 margin_top = 56.0
-margin_right = 300.0
+margin_right = 309.0
 margin_bottom = 80.0
 value = 5.0
 rounded = true
@@ -1220,28 +1238,71 @@ allow_lesser = true
 
 [node name="Label3" type="Label" parent="VBoxContainer/TabContainer/Choice Buttons/Column2/GridContainer"]
 margin_top = 87.0
-margin_right = 110.0
+margin_right = 119.0
 margin_bottom = 101.0
-text = "Layout"
+text = "Button layout"
 
 [node name="Layout" type="OptionButton" parent="VBoxContainer/TabContainer/Choice Buttons/Column2/GridContainer"]
-margin_left = 120.0
+margin_left = 129.0
 margin_top = 84.0
-margin_right = 300.0
+margin_right = 309.0
 margin_bottom = 104.0
 size_flags_horizontal = 3
 text = "Vertical"
 items = [ "Vertical", null, false, 0, null, "Horizontal", null, false, 1, null ]
 selected = 0
 
+[node name="Label5" type="Label" parent="VBoxContainer/TabContainer/Choice Buttons/Column2/GridContainer"]
+margin_top = 111.0
+margin_right = 119.0
+margin_bottom = 125.0
+text = "Position on screen"
+
+[node name="PositionOnScreenOptionButton" type="OptionButton" parent="VBoxContainer/TabContainer/Choice Buttons/Column2/GridContainer"]
+margin_left = 129.0
+margin_top = 108.0
+margin_right = 309.0
+margin_bottom = 128.0
+size_flags_horizontal = 3
+text = "Top Left"
+icon = SubResource( 12 )
+items = [ "Top Left", SubResource( 14 ), false, 0, null, "Top Center", SubResource( 14 ), false, 1, null, "Top Right", SubResource( 14 ), false, 2, null, "", null, false, -1, null, "Center Left", SubResource( 14 ), false, 3, null, "Center", SubResource( 14 ), false, 4, null, "Center Right", SubResource( 14 ), false, 5, null, "", null, false, -1, null, "Bottom Left", SubResource( 14 ), false, 6, null, "Bottom Center", SubResource( 14 ), false, 7, null, "Bottom Right", SubResource( 14 ), false, 8, null ]
+selected = 0
+
+[node name="Label7" type="Label" parent="VBoxContainer/TabContainer/Choice Buttons/Column2/GridContainer"]
+margin_top = 137.0
+margin_right = 119.0
+margin_bottom = 151.0
+size_flags_horizontal = 3
+text = "Offset x-y"
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="VBoxContainer/TabContainer/Choice Buttons/Column2/GridContainer"]
+margin_left = 129.0
+margin_top = 132.0
+margin_right = 309.0
+margin_bottom = 156.0
+
+[node name="ButtonOffsetX" type="SpinBox" parent="VBoxContainer/TabContainer/Choice Buttons/Column2/GridContainer/HBoxContainer3"]
+margin_right = 74.0
+margin_bottom = 24.0
+rounded = true
+allow_lesser = true
+
+[node name="ButtonOffsetY" type="SpinBox" parent="VBoxContainer/TabContainer/Choice Buttons/Column2/GridContainer/HBoxContainer3"]
+margin_left = 78.0
+margin_right = 152.0
+margin_bottom = 24.0
+rounded = true
+allow_lesser = true
+
 [node name="VSeparator2" type="VSeparator" parent="VBoxContainer/TabContainer/Choice Buttons"]
-margin_left = 714.0
-margin_right = 718.0
+margin_left = 723.0
+margin_right = 727.0
 margin_bottom = 488.0
 
 [node name="Column3" type="VBoxContainer" parent="VBoxContainer/TabContainer/Choice Buttons"]
-margin_left = 728.0
-margin_right = 998.0
+margin_left = 737.0
+margin_right = 1007.0
 margin_bottom = 488.0
 rect_min_size = Vector2( 270, 0 )
 size_flags_vertical = 3
@@ -1372,7 +1433,7 @@ margin_left = 90.0
 margin_right = 118.0
 margin_bottom = 22.0
 size_flags_vertical = 4
-icon = SubResource( 2 )
+icon = SubResource( 14 )
 
 [node name="VSeparator" type="VSeparator" parent="VBoxContainer/TabContainer/Glossary"]
 margin_left = 280.0
@@ -1421,7 +1482,7 @@ margin_left = 90.0
 margin_right = 118.0
 margin_bottom = 22.0
 size_flags_vertical = 4
-icon = SubResource( 2 )
+icon = SubResource( 14 )
 
 [node name="Label8" type="Label" parent="VBoxContainer/TabContainer/Glossary/Column3/GridContainer"]
 margin_top = 34.0
@@ -1463,7 +1524,7 @@ margin_left = 90.0
 margin_right = 118.0
 margin_bottom = 22.0
 size_flags_vertical = 4
-icon = SubResource( 2 )
+icon = SubResource( 14 )
 
 [node name="Label9" type="Label" parent="VBoxContainer/TabContainer/Glossary/Column3/GridContainer"]
 margin_top = 94.0
@@ -1505,7 +1566,7 @@ margin_left = 90.0
 margin_right = 118.0
 margin_bottom = 22.0
 size_flags_vertical = 4
-icon = SubResource( 2 )
+icon = SubResource( 14 )
 
 [node name="Label10" type="Label" parent="VBoxContainer/TabContainer/Glossary/Column3/GridContainer"]
 margin_top = 154.0

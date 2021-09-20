@@ -31,6 +31,8 @@ export(bool) var debug_mode = true
 # Event end/start
 signal event_start(type, event)
 signal event_end(type)
+# Text Signals
+signal text_complete(text_data)
 # Timeline end/start
 signal timeline_start(timeline_name)
 signal timeline_end(timeline_name)
@@ -221,9 +223,56 @@ func resize_main():
 		$TextBubble/TextureRect.rect_size.x = $TextBubble.rect_size.x
 		$TextBubble/ColorRect.rect_size.x = $TextBubble.rect_size.x
 	
-	$Options.rect_global_position = Vector2(0,0)
-	$Options.rect_size = reference
+	# Button positioning
+	var button_anchor = current_theme.get_value('buttons', 'anchor', 5)
+	var anchor_vertical = 1
+	var anchor_horizontal = 1
+	# OMG WHY IS TIHS NOT A MATCH I CAN'T BELIEVE YOU, WHY YOU DOING THIS TO ME
+	if button_anchor == 0:
+		anchor_vertical = 0
+		anchor_horizontal = 0
+	elif button_anchor == 1:
+		anchor_vertical = 0
+	elif button_anchor == 2:
+		anchor_vertical = 0
+		anchor_horizontal = 2
+	# Number skip because of the separator
+	elif button_anchor == 4:
+		anchor_horizontal = 0
+	elif button_anchor == 6:
+		anchor_horizontal = 2
+	# Number skip because of the separator
+	elif button_anchor == 8:
+		anchor_vertical = 2
+		anchor_horizontal = 0
+	elif button_anchor == 9:
+		anchor_vertical = 2
+	elif button_anchor == 10:
+		anchor_vertical = 2
+		anchor_horizontal = 2
 	
+	var theme_choice_offset = current_theme.get_value('buttons', 'offset', Vector2(0,0))
+	var position_offset = Vector2(0,0)
+	
+	if anchor_horizontal == 0:
+		position_offset.x = (reference.x / 2) * -1
+	elif anchor_horizontal == 1:
+		position_offset.x = 0
+	elif anchor_horizontal == 2:
+		position_offset.x = (reference.x / 2)
+
+	if anchor_vertical == 0:
+		position_offset.y -= (reference.y / 2)
+	elif anchor_vertical == 1:
+		position_offset.y += 0
+	elif anchor_vertical == 2:
+		position_offset.y += (reference.y / 2)
+	
+	$Options.rect_global_position = Vector2(0,0) + theme_choice_offset + position_offset
+	$Options.rect_size = reference
+
+	
+	# Background positioning
 	var background = get_node_or_null('Background')
 	if background != null:
 		background.rect_size = reference
@@ -520,6 +569,7 @@ func update_text(text: String) -> String:
 
 func _on_text_completed():
 	play_audio('waiting')
+	emit_signal('text_complete', current_event)
 	
 	finished = true
 	
@@ -1286,6 +1336,9 @@ func fade_in_dialog(default = 0.5):
 		if transition_time > 0:
 			var tween = Tween.new()
 			add_child(tween)
+			# The tween created ('fade_in_tween_show_time') is also reference for the $TextBubble
+			# node to know if it should start showing up the letters of the dialog or not.
+			tween.name = 'fade_in_tween_show_time'
 			tween.interpolate_property($TextBubble, "modulate",
 				$TextBubble.modulate, Color(1,1,1,1), transition_time,
 				Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
