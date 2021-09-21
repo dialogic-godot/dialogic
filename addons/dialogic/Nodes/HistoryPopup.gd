@@ -1,8 +1,16 @@
 extends PopupPanel
 
 
-onready var HistoryRow = preload("res://addons/dialogic/Nodes/HistoryRow.tscn")
-onready var HistoryTimeline = $MarginContainer/HistoryTimeline
+export(PackedScene) var HistoryRow = load("res://addons/dialogic/Example Assets/HistoryRows/HistoryRow.tscn")
+onready var HistoryTimeline = $ScrollContainer/MarginContainer/HistoryTimeline
+
+var lastQuestionNode = null
+
+
+func _ready():
+	var testHistoryRow = HistoryRow.instance()
+	assert(testHistoryRow.has_method('add_history'), 'HistoryRow Scene must implement add_history(string, string) method.')
+	testHistoryRow.queue_free()
 
 
 # Add history based on the passed event, using some logic to get it right
@@ -28,7 +36,20 @@ func add_history_row_event(eventData):
 	if eventData.event_id == 'dialogic_001':
 		newHistoryRow.add_history(str(characterPrefix, eventData.text), audioData)
 	elif eventData.event_id == 'dialogic_010':
-		newHistoryRow.add_history(str(characterPrefix, eventData.question))
+		print(eventData)
+		newHistoryRow.add_history(str(characterPrefix, eventData.question), audioData)
+		if eventData.has('options'):
+			var choiceString = "\n\t"
+			for choice in eventData['options']:
+				choiceString = str(choiceString, '[', choice.label, ']\t')
+			newHistoryRow.add_history(choiceString, audioData)
+		lastQuestionNode = newHistoryRow
+
+
+func add_answer_to_question(stringData):
+	if lastQuestionNode != null:
+		lastQuestionNode.add_history(str('\n\t\t', stringData), lastQuestionNode.audioPath)
+		lastQuestionNode = null
 
 
 # Add a history row blindly based on passed strings

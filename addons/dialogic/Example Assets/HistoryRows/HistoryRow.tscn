@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=2]
 
-[ext_resource path="res://addons/dialogic/Nodes/HistoryRow.gd" type="Script" id=1]
+[ext_resource path="res://addons/dialogic/Example Assets/HistoryRows/HistoryRow.gd" type="Script" id=1]
 [ext_resource path="res://addons/dialogic/Images/Event Icons/Main Icons/audio-event.svg" type="Texture" id=2]
 
 [sub_resource type="StyleBoxFlat" id=1]
