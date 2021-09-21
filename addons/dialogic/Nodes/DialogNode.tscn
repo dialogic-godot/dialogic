@@ -34,7 +34,9 @@ __meta__ = {
 
 [node name="TextBubble" parent="." instance=ExtResource( 1 )]
 margin_left = 57.0
+margin_top = 2193.0
 margin_right = 967.0
+margin_bottom = 2360.0
 
 [node name="Options" type="VBoxContainer" parent="."]
 margin_right = 1024.0
@@ -191,6 +193,7 @@ margin_left = 5.0
 margin_top = 5.0
 margin_right = 869.0
 margin_bottom = 469.0
+custom_constants/separation = 16
 
 [node name="HistoryAudio" type="AudioStreamPlayer" parent="HistoryPopup"]
 

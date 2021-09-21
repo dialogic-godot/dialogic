@@ -694,6 +694,20 @@ func get_character_name(character_id) -> String:
 	return characterName;
 
 
+func get_character_name_with_color(character_id) -> String:
+	var characterName = '';
+	var characterData = get_character(character_id)
+	if characterData.has('name'):
+		var parsed_name = characterData['name']
+		if characterData.has('display_name'):
+			if characterData['display_name'] != '':
+				parsed_name = characterData['display_name']
+		var characterColor = characterData.data.get('color', Color.white)
+		characterName = parsed_name;
+		characterName = str("[color=",characterColor,"]",characterName, "[/color]: ")
+	return characterName;
+	
+
 func handle_voice(event):
 	var settings_file = DialogicResources.get_settings_config()
 	if not settings_file.get_value('dialog', 'text_event_audio_enable', false):
@@ -769,7 +783,7 @@ func event_handler(event: Dictionary):
 					$Portraits.add_child(p)
 					p.move_to_position(get_character_position(event['position']))
 					if record_history:
-						HistoryTimeline.add_history_row_string(str(get_character_name(event['character']), ' has arrived.'))
+						HistoryTimeline.add_history_row_string(str(get_character_name_with_color(event['character']), ' has arrived.'))
 			_load_next_event()
 		# Character Leave event 
 		'dialogic_003':
@@ -784,7 +798,7 @@ func event_handler(event: Dictionary):
 					if p.character_data['file'] == event['character']:
 						p.fade_out()
 				if record_history:
-					HistoryTimeline.add_history_row_string(str(get_character_name(event['character']), ' has left.'))
+					HistoryTimeline.add_history_row_string(str(get_character_name_with_color(event['character']), ' has left.'))
 			_load_next_event()
 		
 		# LOGIC EVENTS

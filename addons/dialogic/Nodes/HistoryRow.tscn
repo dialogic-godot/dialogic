@@ -1,38 +1,71 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://addons/dialogic/Nodes/HistoryRow.gd" type="Script" id=1]
 [ext_resource path="res://addons/dialogic/Images/Event Icons/Main Icons/audio-event.svg" type="Texture" id=2]
 
-[node name="HistoryRow" type="HBoxContainer"]
+[sub_resource type="StyleBoxFlat" id=1]
+content_margin_bottom = 10.0
+bg_color = Color( 0.129412, 0.129412, 0.129412, 1 )
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color( 0, 0, 0, 1 )
+border_blend = true
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+expand_margin_left = 4.0
+expand_margin_top = 5.0
+expand_margin_bottom = 5.0
+
+[sub_resource type="Theme" id=2]
+Panel/styles/panel = SubResource( 1 )
+
+[node name="HistoryRow" type="Panel"]
 margin_right = 864.0
 margin_bottom = 28.0
+rect_min_size = Vector2( 0, 28 )
 size_flags_horizontal = 3
-size_flags_vertical = 0
+size_flags_vertical = 5
+theme = SubResource( 2 )
 script = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Button" type="Button" parent="."]
-margin_right = 34.0
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+margin_right = 864.0
 margin_bottom = 28.0
-icon = ExtResource( 2 )
-align = 0
+size_flags_horizontal = 11
+size_flags_vertical = 3
+custom_constants/separation = 8
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="RichTextLabel" type="RichTextLabel" parent="."]
-margin_left = 38.0
+[node name="Button" type="Button" parent="HBoxContainer"]
+margin_right = 34.0
+margin_bottom = 28.0
+size_flags_vertical = 4
+icon = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="RichTextLabel" type="RichTextLabel" parent="HBoxContainer"]
+margin_left = 42.0
 margin_right = 864.0
 margin_bottom = 28.0
 size_flags_horizontal = 3
-size_flags_vertical = 5
+size_flags_vertical = 3
 bbcode_enabled = true
+meta_underlined = false
 fit_content_height = true
-scroll_following = true
+scroll_active = false
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+[connection signal="minimum_size_changed" from="HBoxContainer/RichTextLabel" to="." method="_on_RichTextLabel_minimum_size_changed"]
