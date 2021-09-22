@@ -1,27 +1,7 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://addons/dialogic/Example Assets/HistoryRows/HistoryRow.gd" type="Script" id=1]
 [ext_resource path="res://addons/dialogic/Images/Event Icons/Main Icons/audio-event.svg" type="Texture" id=2]
-
-[sub_resource type="StyleBoxFlat" id=1]
-content_margin_bottom = 10.0
-bg_color = Color( 0.129412, 0.129412, 0.129412, 1 )
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color( 0, 0, 0, 1 )
-border_blend = true
-corner_radius_top_left = 5
-corner_radius_top_right = 5
-corner_radius_bottom_right = 5
-corner_radius_bottom_left = 5
-expand_margin_left = 4.0
-expand_margin_top = 5.0
-expand_margin_bottom = 5.0
-
-[sub_resource type="Theme" id=2]
-Panel/styles/panel = SubResource( 1 )
 
 [node name="HistoryRow" type="Panel"]
 margin_right = 864.0
@@ -29,13 +9,32 @@ margin_bottom = 28.0
 rect_min_size = Vector2( 0, 28 )
 size_flags_horizontal = 3
 size_flags_vertical = 5
-theme = SubResource( 2 )
 script = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
+Audio_Button_Path = NodePath("TextureRect/HBoxContainer/Button")
+Text_Label_Path = NodePath("TextureRect/HBoxContainer/RichTextLabel")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="."]
+[node name="ColorRect" type="ColorRect" parent="."]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextureRect" type="TextureRect" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_horizontal = 5
+size_flags_vertical = 0
+expand = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HBoxContainer" type="HBoxContainer" parent="TextureRect"]
 margin_right = 864.0
 margin_bottom = 28.0
 size_flags_horizontal = 11
@@ -45,7 +44,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Button" type="Button" parent="HBoxContainer"]
+[node name="Button" type="Button" parent="TextureRect/HBoxContainer"]
 margin_right = 34.0
 margin_bottom = 28.0
 size_flags_vertical = 4
@@ -54,7 +53,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="RichTextLabel" type="RichTextLabel" parent="HBoxContainer"]
+[node name="RichTextLabel" type="RichTextLabel" parent="TextureRect/HBoxContainer"]
 margin_left = 42.0
 margin_right = 864.0
 margin_bottom = 28.0
@@ -67,5 +66,3 @@ scroll_active = false
 __meta__ = {
 "_edit_use_anchors_": false
 }
-
-[connection signal="minimum_size_changed" from="HBoxContainer/RichTextLabel" to="." method="_on_RichTextLabel_minimum_size_changed"]

@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://addons/dialogic/Nodes/HistoryPopup.gd" type="Script" id=1]
+[ext_resource path="res://addons/dialogic/Example Assets/HistoryRows/HistoryRow.tscn" type="PackedScene" id=2]
 
 [node name="HistoryPopup" type="PopupPanel"]
 anchor_top = 0.5
@@ -14,16 +15,17 @@ script = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
+HistoryRow = ExtResource( 2 )
 
 [node name="ScrollContainer" type="ScrollContainer" parent="."]
-margin_left = 9.0
-margin_top = 9.0
-margin_right = 873.0
-margin_bottom = 473.0
+margin_left = 4.0
+margin_top = 4.0
+margin_right = 878.0
+margin_bottom = 478.0
 size_flags_horizontal = 3
 
 [node name="MarginContainer" type="MarginContainer" parent="ScrollContainer"]
-margin_right = 864.0
+margin_right = 874.0
 margin_bottom = 10.0
 size_flags_horizontal = 3
 custom_constants/margin_right = 5
@@ -37,10 +39,11 @@ __meta__ = {
 [node name="HistoryTimeline" type="VBoxContainer" parent="ScrollContainer/MarginContainer"]
 margin_left = 5.0
 margin_top = 5.0
-margin_right = 859.0
+margin_right = 869.0
 margin_bottom = 5.0
 custom_constants/separation = 16
 
 [node name="HistoryAudio" type="AudioStreamPlayer" parent="."]
 
+[connection signal="about_to_show" from="." to="." method="_on_HistoryPopup_about_to_show"]
 [connection signal="popup_hide" from="." to="." method="_on_HistoryPopup_popup_hide"]
