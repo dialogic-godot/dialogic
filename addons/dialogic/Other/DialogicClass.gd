@@ -31,7 +31,7 @@ class_name Dialogic
 ## @param debug_mode			Debug is disabled by default but can be enabled if needed.
 ## @param use_canvas_instead	Create the Dialog inside a canvas layer to make it show up regardless of the camera 2D/3D situation.
 ## @returns						A Dialog node to be added into the scene tree.
-static func start(timeline: String, reset_saves: bool=true, dialog_scene_path: String="res://addons/dialogic/Dialog.tscn", debug_mode: bool=false, use_canvas_instead=true):
+static func start(timeline: String, reset_saves: bool=true, dialog_scene_path: String="res://addons/dialogic/Nodes/DialogNode.tscn", debug_mode: bool=false, use_canvas_instead=true):
 	var dialog_scene = load(dialog_scene_path)
 	var dialog_node = null
 	var canvas_dialog_node = null
@@ -77,7 +77,12 @@ static func start(timeline: String, reset_saves: bool=true, dialog_scene_path: S
 				if t['name'] == parts[0]:
 					dialog_node.timeline = t['file']
 					return returned_dialog_node
-
+	
+	if timeline.ends_with('.json'):
+		for t in DialogicUtil.get_timeline_list():
+			if t['file'] == timeline:
+				dialog_node.timeline = t['file']
+				return returned_dialog_node
 		# No file found. Show error
 		dialog_node.dialog_script = {
 			"events":[
@@ -100,7 +105,7 @@ static func start(timeline: String, reset_saves: bool=true, dialog_scene_path: S
 ## @param dialog_scene_path		If you made a custom Dialog scene or moved it from its default path, you can specify its new path here.
 ## @param debug_mode			Debug is disabled by default but can be enabled if needed.
 ## @returns						A Dialog node to be added into the scene tree.
-static func start_from_save(timeline: String, initial_timeline: String, dialog_scene_path: String="res://addons/dialogic/Dialog.tscn", debug_mode: bool=false):
+static func start_from_save(timeline: String, initial_timeline: String, dialog_scene_path: String="res://addons/dialogic/Nodes/DialogNode.tscn", debug_mode: bool=false):
 	var current = timeline
 	if current.empty():
 		current = initial_timeline
@@ -142,15 +147,23 @@ static func get_definitions() -> Dictionary:
 
 
 static func set_variable(name: String, value):
+	var exists = false
 	for d in get_definitions()['variables']:
 		if d['name'] == name:
 			d['value'] = str(value)
+			exists = true
+	if exists == false:
+		# TODO it would be great to automatically generate that missing variable here so they don't
+		# have to create it from the editor. 
+		print('[Dialogic] Warning! the variable [' + name + '] doesn\'t exists. Create it from the Dialogic editor.')
+	return value
 
 
 static func get_variable(name: String, default = null):
 	for d in get_definitions()['variables']:
 		if d['name'] == name:
 			return d['value']
+	print('[Dialogic] Warning! the variable [' + name + '] doesn\'t exists.')
 	return default
 
 

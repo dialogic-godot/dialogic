@@ -60,6 +60,8 @@ static func init_dialogic_files() -> void:
 	for dir in paths:
 		if not directory.dir_exists(paths[dir]):
 			directory.make_dir_recursive(paths[dir])
+			if dir == 'THEME_DIR':
+				directory.copy('res://addons/dialogic/Editor/ThemeEditor/default-theme.cfg', str(paths[dir], '/default-theme.cfg'))
 	# Create empty files
 	for f in files:
 		if not directory.file_exists(files[f]):

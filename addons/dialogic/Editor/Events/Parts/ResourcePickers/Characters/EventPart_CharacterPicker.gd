@@ -8,15 +8,30 @@ export (bool) var allow_no_character := false
 ## node references
 onready var picker_menu = $HBox/MenuButton
 onready var icon = $HBox/Icon
+onready var no_character_button = $NoCharacterContainer/NoCharacterButton
+onready var no_character_container = $NoCharacterContainer
+
 
 
 func _ready():
+	if DialogicUtil.get_character_list().size() > 0:
+		picker_menu.show()
+		icon.show()
+		no_character_container.hide()
+	else:
+		picker_menu.hide()
+		icon.hide()
+		no_character_container.show()
+		var editor_reference = find_parent('EditorView')
+		no_character_button.connect('pressed', editor_reference.get_node('MainPanel/MasterTreeContainer/MasterTree'), 'new_character')
+	
 	# So... not having real events makes me do this kind of hacks
 	# I hope to improve how events work, but in the mean time
 	# this is what I have to do to get by :') 
 	var event_node = get_node('../../../../../../../..')
 	if event_node.get_node_or_null('AllowNoCharacter'):
 		allow_no_character = true
+		no_character_container.hide()#We dont want the button on text events
 	
 	# Connections
 	picker_menu.connect("about_to_show", self, "_on_PickerMenu_about_to_show")

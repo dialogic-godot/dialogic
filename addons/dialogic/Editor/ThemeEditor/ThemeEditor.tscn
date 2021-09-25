@@ -9,7 +9,7 @@
 [ext_resource path="res://addons/dialogic/Editor/ThemeEditor/AudioPicker.tscn" type="PackedScene" id=7]
 [ext_resource path="res://addons/dialogic/Editor/Common/TLabel.tscn" type="PackedScene" id=8]
 
-[sub_resource type="Image" id=7]
+[sub_resource type="Image" id=15]
 data = {
 "data": PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ),
 "format": "LumAlpha8",
@@ -18,13 +18,13 @@ data = {
 "width": 16
 }
 
-[sub_resource type="ImageTexture" id=8]
+[sub_resource type="ImageTexture" id=14]
 flags = 4
 flags = 4
-image = SubResource( 7 )
+image = SubResource( 15 )
 size = Vector2( 16, 16 )
 
-[sub_resource type="Image" id=9]
+[sub_resource type="Image" id=16]
 data = {
 "data": PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ),
 "format": "LumAlpha8",
@@ -33,10 +33,10 @@ data = {
 "width": 16
 }
 
-[sub_resource type="ImageTexture" id=6]
+[sub_resource type="ImageTexture" id=12]
 flags = 4
 flags = 4
-image = SubResource( 9 )
+image = SubResource( 16 )
 size = Vector2( 16, 16 )
 
 [node name="ThemeEditor" type="ScrollContainer"]
@@ -157,7 +157,7 @@ margin_left = 122.0
 margin_right = 150.0
 margin_bottom = 22.0
 size_flags_vertical = 4
-icon = SubResource( 8 )
+icon = SubResource( 14 )
 
 [node name="Label6" type="Label" parent="VBoxContainer/TabContainer/Dialog Text/Column/GridContainer"]
 margin_top = 30.0
@@ -185,7 +185,7 @@ margin_left = 122.0
 margin_right = 150.0
 margin_bottom = 22.0
 size_flags_vertical = 4
-icon = SubResource( 8 )
+icon = SubResource( 14 )
 
 [node name="Label7" type="Label" parent="VBoxContainer/TabContainer/Dialog Text/Column/GridContainer"]
 margin_top = 56.0
@@ -213,7 +213,7 @@ margin_left = 122.0
 margin_right = 150.0
 margin_bottom = 22.0
 size_flags_vertical = 4
-icon = SubResource( 8 )
+icon = SubResource( 14 )
 
 [node name="VSeparator" type="VSeparator" parent="VBoxContainer/TabContainer/Dialog Text"]
 margin_left = 280.0
@@ -346,8 +346,8 @@ margin_left = 196.0
 margin_right = 270.0
 margin_bottom = 24.0
 max_value = 10.0
+step = 0.01
 value = 2.0
-rounded = true
 
 [node name="Label2" type="Label" parent="VBoxContainer/TabContainer/Dialog Text/Column3/GridContainer"]
 margin_top = 31.0
@@ -807,7 +807,7 @@ margin_left = 130.0
 margin_right = 158.0
 margin_bottom = 22.0
 size_flags_vertical = 4
-icon = SubResource( 8 )
+icon = SubResource( 14 )
 
 [node name="Label" type="Label" parent="VBoxContainer/TabContainer/Name Label/Column/GridContainer"]
 margin_top = 31.0
@@ -1265,8 +1265,8 @@ margin_right = 309.0
 margin_bottom = 128.0
 size_flags_horizontal = 3
 text = "Top Left"
-icon = SubResource( 6 )
-items = [ "Top Left", SubResource( 8 ), false, 0, null, "Top Center", SubResource( 8 ), false, 1, null, "Top Right", SubResource( 8 ), false, 2, null, "", null, false, -1, null, "Center Left", SubResource( 8 ), false, 3, null, "Center", SubResource( 8 ), false, 4, null, "Center Right", SubResource( 8 ), false, 5, null, "", null, false, -1, null, "Bottom Left", SubResource( 8 ), false, 6, null, "Bottom Center", SubResource( 8 ), false, 7, null, "Bottom Right", SubResource( 8 ), false, 8, null ]
+icon = SubResource( 12 )
+items = [ "Top Left", SubResource( 14 ), false, 0, null, "Top Center", SubResource( 14 ), false, 1, null, "Top Right", SubResource( 14 ), false, 2, null, "", null, false, -1, null, "Center Left", SubResource( 14 ), false, 3, null, "Center", SubResource( 14 ), false, 4, null, "Center Right", SubResource( 14 ), false, 5, null, "", null, false, -1, null, "Bottom Left", SubResource( 14 ), false, 6, null, "Bottom Center", SubResource( 14 ), false, 7, null, "Bottom Right", SubResource( 14 ), false, 8, null ]
 selected = 0
 
 [node name="Label7" type="Label" parent="VBoxContainer/TabContainer/Choice Buttons/Column2/GridContainer"]
@@ -1433,7 +1433,7 @@ margin_left = 90.0
 margin_right = 118.0
 margin_bottom = 22.0
 size_flags_vertical = 4
-icon = SubResource( 8 )
+icon = SubResource( 14 )
 
 [node name="VSeparator" type="VSeparator" parent="VBoxContainer/TabContainer/Glossary"]
 margin_left = 280.0
@@ -1482,7 +1482,7 @@ margin_left = 90.0
 margin_right = 118.0
 margin_bottom = 22.0
 size_flags_vertical = 4
-icon = SubResource( 8 )
+icon = SubResource( 14 )
 
 [node name="Label8" type="Label" parent="VBoxContainer/TabContainer/Glossary/Column3/GridContainer"]
 margin_top = 34.0
@@ -1524,7 +1524,7 @@ margin_left = 90.0
 margin_right = 118.0
 margin_bottom = 22.0
 size_flags_vertical = 4
-icon = SubResource( 8 )
+icon = SubResource( 14 )
 
 [node name="Label9" type="Label" parent="VBoxContainer/TabContainer/Glossary/Column3/GridContainer"]
 margin_top = 94.0
@@ -1566,7 +1566,7 @@ margin_left = 90.0
 margin_right = 118.0
 margin_bottom = 22.0
 size_flags_vertical = 4
-icon = SubResource( 8 )
+icon = SubResource( 14 )
 
 [node name="Label10" type="Label" parent="VBoxContainer/TabContainer/Glossary/Column3/GridContainer"]
 margin_top = 154.0
