@@ -60,8 +60,8 @@ As said before it has to contain an `event_id`. These ids mostly consist of your
 For the rest of the data I just want to store a string to print. Create the default data as a dictionary in the `event_data` in the inspector.
 
 #### Style and Icon
-Now there is also already a stlyebox. You can edit it (mainly the bg color) to give it a unique style.
-You can also select an icon for your event. The default Dialogic icon size and format is: 22x22 svg. You can find the icons used for the built-in events here: `res://addons/dialogic/Images/Event Icons/Main Icons`
+Now there is also already a stylebox. You can edit it (mainly the background color) to give it a unique style.
+You can also select an icon for your event. The default Dialogic icon size and format is: 22x22 `svg`. You can find the icons used for the built-in events here: `res://addons/dialogic/Images/Event Icons/Main Icons`
 
 
 
@@ -97,7 +97,8 @@ Here is how the EventBlock's settings look for me now:
 Once you have your `EventBlock` finished, you need to add the event handling logic. 
 
 ### The correct name
-This scripts name (named `event_yourname_000.gd` by default) needs to contain **exactly** your events `event_id` instead of `yourname_000`. This means for me I'll rename the script to `'event_rabloe_000.gd'`.
+Dialogic will search your handler script following the format `event_` + your event id.
+So in our case, since the `event_id` is `rabloe_000` the handler scripts needs to be called **exactly** `event_rabloe_000.gd`
 
 ### The handle_event() function
 If you open the script you will see, that there is only one function by default, the `handle_event()` function.
