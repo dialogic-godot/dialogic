@@ -82,10 +82,12 @@ static func start(timeline: String, reset_saves: bool=false, dialog_scene_path: 
 ## Similar to the start function, but loads state info and definitions
 ## If you leave save_name empty it will try to load from the current state
 ## 
-## @param save_name		The name of the save folder.
-##						Leaving this empty load from the default files.
+## @param save_name			The name of the save folder.
+##							Leaving this empty load from the default files.
+## @param default_timeline	Will load if no save name is given AND nothing was imported
+##
 ## The other @params work like the ones in start()
-## @returns 			A Dialog node to be added into the scene tree.
+## @returns 				A Dialog node to be added into the scene tree.
 static func start_from_save(save_name: String = '', default_timeline : String = '', dialog_scene_path: String="res://addons/dialogic/Nodes/DialogNode.tscn", debug_mode: bool=false, use_canvas_instead=true) -> Node:
 	var dialog_scene = load(dialog_scene_path)
 	var dialog_node = null
@@ -142,6 +144,7 @@ static func save_current_info(save_name: String = '', check_autosave = false) ->
 		}
 	save_state_and_definitions(save_name, save_data)
 
+
 ## Returns an array with the names of all available saves.
 ## 
 ## @param save_name		The name of the save folder.
@@ -155,17 +158,13 @@ static func get_save_names_array() -> Array:
 static func erase_save(save_name: String) -> void:
 	DialogicResources.remove_save_folder(save_name)
 
+
 ## Whether a save can be performed
 ##
 ## @returns				True if a save can be performed; otherwise False
 static func has_current_dialog_node() -> bool:
 	return Engine.get_main_loop().has_meta('latest_dialogic_node') and is_instance_valid(Engine.get_main_loop().get_meta('latest_dialogic_node'))
 
-
-## this saves the current definitions and the given state info into the save folder @save_name
-static func save_state_and_definitions(save_name: String, state_info: Dictionary) -> void:
-	DialogicResources.save_definitions(save_name, get_definitions())
-	DialogicResources.save_state_info(save_name, state_info)
 
 ## Resets the state and definitions of the given save slot
 ##
@@ -188,6 +187,7 @@ static func get_saved_state_general_key(key: String, default = '') -> String:
 		return Engine.get_main_loop().get_meta('game_state')[key]
 	else:
 		return default
+
 
 # this gets a value from the GAME STATE dictionary
 static func set_saved_state_general_key(key: String, value) -> void:
@@ -214,6 +214,7 @@ static func export(dialog_node = null) -> Dictionary:
 		'dialog_state': current_dialog_info
 	}
 
+
 # this loads a dictionary with GAME STATE, DEFINITIONS and DIALOG_STATE 
 static func import(data: Dictionary) -> void:
 	Engine.get_main_loop().set_meta('definitions', data['definitions'])
@@ -234,19 +235,6 @@ static func load_from_save(save_name: String = '') -> Dictionary:
 	Engine.get_main_loop().set_meta('game_state', state_info.get('game_state', null))
 	
 	return state_info.get('dialog_state', {})
-#
-### Will save the current definition and glossary values into the save folder with the given name.
-### 
-### @param save_name		The name of the save folder.
-#static func save_defintions_and_glossary(save_name:String) -> void:
-#	DialogicResources.save_definitions(save_name, Engine.get_main_loop().get_meta('definitions'))
-#
-#
-### Will load the defintiion and glossary values saved in the save folder @save_name.
-### 
-### @param save_name		The name of the save folder.
-#static func load_definitions_and_glossary(save_name:String) -> void:
-#	Engine.get_main_loop().set_meta('definitions', DialogicResources.get_saved_definitions(save_name))
 
 
 # --------------------------------------------------------------------------------------------------
@@ -254,9 +242,10 @@ static func load_from_save(save_name: String = '') -> Dictionary:
 # I removed that one and moved the functions here.
 
 
-static func absolute_root():
-	var main_loop = Engine.get_main_loop()
-	return main_loop
+## this saves the current definitions and the given state info into the save folder @save_name
+static func save_state_and_definitions(save_name: String, state_info: Dictionary) -> void:
+	DialogicResources.save_definitions(save_name, get_definitions())
+	DialogicResources.save_state_info(save_name, state_info)
 
 
 static func get_autosave() -> bool:
@@ -264,18 +253,19 @@ static func get_autosave() -> bool:
 		return Engine.get_main_loop().get_meta('autoload')
 	return true
 
+
 static func set_autosave(autoload):
 	Engine.get_main_loop().set_meta('autoload', autoload)
 
 
 static func set_current_timeline(timeline):
-	absolute_root().set_meta('current_timeline', timeline)
+	Engine.get_main_loop().set_meta('current_timeline', timeline)
 	return timeline
 
 
 static func get_current_timeline():
 	var timeline
-	timeline = absolute_root().get_meta('current_timeline')
+	timeline = Engine.get_main_loop().get_meta('current_timeline')
 	if timeline == null:
 		timeline = ''
 	return timeline
@@ -284,10 +274,10 @@ static func get_current_timeline():
 static func get_definitions() -> Dictionary:
 	var definitions
 	if Engine.get_main_loop().has_meta('definitions'):
-		definitions = absolute_root().get_meta('definitions')
+		definitions = Engine.get_main_loop().get_meta('definitions')
 	else:
 		definitions = DialogicResources.get_default_definitions()
-		absolute_root().set_meta('definitions', definitions)
+		Engine.get_main_loop().set_meta('definitions', definitions)
 	return definitions
 
 
@@ -302,6 +292,7 @@ static func set_variable(name: String, value):
 		# have to create it from the editor. 
 		print('[Dialogic] Warning! the variable [' + name + '] doesn\'t exists. Create it from the Dialogic editor.')
 	return value
+
 
 static func get_variable(name: String, default = null):
 	for d in get_definitions()['variables']:
@@ -323,6 +314,7 @@ static func set_glossary_from_id(id: String, title: String, text: String, extra:
 			target_def['text'] = text
 		if extra and extra != "[No Change]":
 			target_def['extra'] = extra
+
 
 static func set_variable_from_id(id: String, value: String, operation: String) -> void:
 	var target_def: Dictionary;
@@ -353,6 +345,7 @@ static func set_variable_from_id(id: String, value: String, operation: String) -
 				if is_number:
 					result = converted_target_value / converted_set_value
 		target_def['value'] = str(result)
+
 
 static func get_timeline_file_from_name(timeline_name_path: String) -> String:
 	var timelines = DialogicUtil.get_full_resource_folder_structure()['folders']['Timelines']
