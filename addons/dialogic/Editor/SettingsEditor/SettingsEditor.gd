@@ -52,27 +52,6 @@ var SAVING_KEYS := [
 	]
 
 func _ready():
-	$"VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer/HBoxContainer/Label".text = DTS.translate("Default")
-	$"VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer/HBoxContainer2/Label".text = DTS.translate("Advanced theme options")
-	$"VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer/HBoxContainer3/Label".text = DTS.translate("Canvas layer :")
-	$"VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2/HBoxContainer2/Label".text = DTS.translate("New lines will create extra messages")
-	$"VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2/HBoxContainer/Label".text = DTS.translate("Remove empty messages")
-	$"VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2/HBoxContainer3/Label".text = DTS.translate("Auto color character names in messages")
-	$"VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2/HBoxContainer4/Label".text = DTS.translate("Propagate input to rest of the Tree")
-	$"VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2/HBoxContainer5/Label".text = DTS.translate("Dim characters when they are not speaking")
-	$"VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2/Label3".text = DTS.translate("Audio for Text events:")
-	$"VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2/HBoxContainer7/Label".text = DTS.translate("Enable audio for Text events")
-	$"VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2/TextAudioDefaultBus/Label".text = DTS.translate("Default bus for Text event audio")
-	$"VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2/Label2".text = DTS.translate("Experimental Translations:")
-	$"VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2/HBoxContainer6/Label".text = DTS.translate("Inputs for text events will be treated as keys for tr()")
-	$"VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer3/HBoxContainer/Label".text = DTS.translate("Save current timeline on timeline start")
-	$"VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer3/HBoxContainer2/Label".text = DTS.translate("Clear saved timeline on timeline end")
-	$"VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer3/HBoxContainer3/Label".text = DTS.translate("Save definitions on timeline start")
-	$"VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer3/HBoxContainer4/Label".text = DTS.translate("Save definitions on timeline end")
-	$"VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer/HBoxContainer/Label".text = DTS.translate("Enable choice options after  ")
-	$"VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer/HBoxContainer/Label2".text = DTS.translate(" seconds")
-	$"VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer/HBoxContainer2/Label".text = DTS.translate("Default action key")
-	
 	editor_reference = find_parent('EditorView')
 	update_bus_selector()
 	
