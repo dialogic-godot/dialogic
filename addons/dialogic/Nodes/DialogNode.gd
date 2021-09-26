@@ -24,7 +24,7 @@ var do_fade_in := true
 ## The timeline to load when starting the scene
 export(String, "TimelineDropdown") var timeline: String
 ## Should we clear saved data (definitions and timeline progress) on start?
-export(bool) var reset_saves = true
+export(bool) var reset_saves = false
 ## Should we show debug information when running?
 export(bool) var debug_mode = true
 

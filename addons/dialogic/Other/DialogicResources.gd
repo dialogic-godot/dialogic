@@ -87,65 +87,6 @@ static func get_config_files_paths() -> Dictionary:
 		'STATE_DEFAULT_SAVE': WORKING_DIR + "/state_default_save.json"
 	}
 
-#
-#static func init_saves():
-#	if init_working_dir() == OK:
-#		init_state_saves()
-#		init_definitions_saves()
-#	else:
-#		print('[Dialogic] Error creating working directory.')
-#
-#
-#static func init_working_dir():
-#	var directory := Directory.new()
-#	return directory.make_dir_recursive(get_working_directories()['WORKING_DIR'])
-#
-#
-#static func init_state_saves():
-#	var file := File.new()
-#	var err = file.open(get_config_files_paths()["WORKING_DIR"]+"/state_default_save.json", File.WRITE)
-#	if err == OK:
-#		file.store_string('')
-#		file.close()
-#	else:
-#		print('[Dialogic] Error creating saved state file: ' + str(err))
-
-#
-#static func init_definitions_saves():
-#	var file := File.new()
-#	var err = file.open(get_config_files_paths()["WORKING_DIR"]+"/definitions_default_save.json", File.WRITE)
-#	if err == OK:
-#		file.store_string('')
-#		file.close()
-#	else:
-#		print('[Dialogic] Error c saved state file: ' + str(err))
-#
-	
-#	var directory := Directory.new()
-#	var source := File.new()
-#	var sink := File.new()
-#	var paths := get_config_files_paths()
-#	var err = sink.open(get_config_files_paths()["WORKING_DIR"]+"/definition_default_save.json", File.WRITE)
-#	#print('[Dialogic] Initializing save file: ' + str(err))
-#	if err == OK:
-#		sink.store_string('')
-#		sink.close()
-#	else:
-#		print('[Dialogic] Error opening saved definitions file: ' + str(err))
-#
-#	err = sink.open(paths["SAVED_DEFINITIONS_FILE"], File.READ_WRITE)
-#	if err == OK:
-#		err = source.open(paths["DEFAULT_DEFINITIONS_FILE"], File.READ)
-#		if err == OK:
-#			sink.store_string(source.get_as_text())
-#		else:
-#			print('[Dialogic] Error opening default definitions file: ' + str(err))
-#	else:
-#		print('[Dialogic] Error opening saved definitions file: ' + str(err))
-#
-#	source.close()
-#	sink.close()
-
 
 ## *****************************************************************************
 ##							BASIC FILE FUNCTION
@@ -423,7 +364,7 @@ static func remove_save_folder(save_name: String) -> void:
 		file_name = directory.get_next()
 	directory.remove(WORKING_DIR+"/"+save_name)
 
-# reset the default save files
+# reset the definitions and state of the given save folder (or default)
 static func reset_save(save_name: String = '') -> void:
 	save_state_info(save_name, {})
 	save_definitions(save_name, get_default_definitions())
