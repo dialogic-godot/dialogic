@@ -20,7 +20,7 @@ size_flags_vertical = 3
 
 [node name="HBoxContainer3" type="HBoxContainer" parent="VBoxContainer"]
 margin_right = 1024.0
-margin_bottom = 566.0
+margin_bottom = 510.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer3"]
 margin_right = 356.0
@@ -55,15 +55,13 @@ margin_left = 50.0
 margin_right = 190.0
 margin_bottom = 20.0
 rect_min_size = Vector2( 140, 0 )
-text = "Default Theme"
-items = [ "Default Theme", null, false, 0, {
-"file": "theme-1629489731.cfg"
-}, "Intro", null, false, 1, {
-"file": "theme-1630866904.cfg"
-}, "Thinking", null, false, 2, {
-"file": "theme-1629290871.cfg"
+text = "NightTheme"
+items = [ "DayTheme", null, false, 0, {
+"file": "theme-1621517790.cfg"
+}, "NightTheme", null, false, 1, {
+"file": "theme-1621517668.cfg"
 } ]
-selected = 0
+selected = 1
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer"]
 margin_top = 50.0
@@ -84,6 +82,7 @@ text_key = "Advanced theme options"
 margin_left = 164.0
 margin_right = 188.0
 margin_bottom = 24.0
+pressed = true
 
 [node name="HBoxContainer3" type="HBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer"]
 margin_top = 78.0
@@ -273,9 +272,9 @@ text_key = "Default bus for Text event audio"
 margin_left = 208.0
 margin_right = 310.0
 margin_bottom = 20.0
-text = "Master"
+text = "Voice Lines"
 items = [ "Master", null, false, 0, null, "Voice Lines", null, false, 1, null ]
-selected = 0
+selected = 1
 
 [node name="HSeparator" type="HSeparator" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2"]
 margin_top = 248.0
@@ -334,8 +333,8 @@ anchor_bottom = 0.0
 margin_top = 5.0
 margin_right = 170.0
 margin_bottom = 19.0
-text = "Save current timeline on timeline start"
-text_key = "Save current timeline on timeline start"
+text = "Autosave on timeline start"
+text_key = "Autosave on timeline start"
 
 [node name="AutosaveTimelineStart" type="CheckBox" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer3/HBoxContainer"]
 margin_left = 174.0
@@ -356,54 +355,12 @@ anchor_bottom = 0.0
 margin_top = 5.0
 margin_right = 165.0
 margin_bottom = 19.0
-text = "Clear saved timeline on timeline end"
-text_key = "Clear saved timeline on timeline end"
+text = "Autosave on timeline end"
+text_key = "Autosave on timeline end"
 
 [node name="AutosaveTimelineEnd" type="CheckBox" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer3/HBoxContainer2"]
 margin_left = 169.0
 margin_right = 193.0
-margin_bottom = 24.0
-pressed = true
-
-[node name="HBoxContainer3" type="HBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer3"]
-margin_top = 82.0
-margin_right = 356.0
-margin_bottom = 106.0
-hint_tooltip = "Saving definitions and timeline start helps maintaining a coherent save state when jumping from timeline to timeline"
-
-[node name="TLabel12" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer3/HBoxContainer3" instance=ExtResource( 3 )]
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_top = 5.0
-margin_right = 212.0
-margin_bottom = 19.0
-text = "Save definitions on timeline start"
-text_key = "Save definitions on timeline start"
-
-[node name="SaveDefinitionsOnStart" type="CheckBox" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer3/HBoxContainer3"]
-margin_left = 216.0
-margin_right = 240.0
-margin_bottom = 24.0
-pressed = true
-
-[node name="HBoxContainer4" type="HBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer3"]
-margin_top = 110.0
-margin_right = 356.0
-margin_bottom = 134.0
-hint_tooltip = "Saving definitions on timeline end makes sure everything is saved when your dialog ends"
-
-[node name="TLabel13" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer3/HBoxContainer4" instance=ExtResource( 3 )]
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_top = 5.0
-margin_right = 207.0
-margin_bottom = 19.0
-text = "Save definitions on timeline end"
-text_key = "Save definitions on timeline end"
-
-[node name="SaveDefinitionsOnEnd" type="CheckBox" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer3/HBoxContainer4"]
-margin_left = 211.0
-margin_right = 235.0
 margin_bottom = 24.0
 pressed = true
 
@@ -467,7 +424,7 @@ text_key = "Default action key"
 
 [node name="DefaultActionKey" type="OptionButton" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer/HBoxContainer2"]
 margin_left = 119.0
-margin_right = 202.0
+margin_right = 208.0
 margin_bottom = 20.0
 hint_tooltip = "The default value is \"ui_accept\""
-text = "[Default]"
+text = "ui_accept"
