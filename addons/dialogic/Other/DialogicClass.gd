@@ -98,31 +98,19 @@ static func start(timeline: String, reset_saves: bool=true, dialog_scene_path: S
 
 
 
-## Same as the start method above, but using the last timeline saved.
-## 
-## @param initial_timeline		The timeline to load in case no save is found.
-## @param dialog_scene_path		If you made a custom Dialog scene or moved it from its default path, you can specify its new path here.
-## @param debug_mode			Debug is disabled by default but can be enabled if needed.
-## @returns						A Dialog node to be added into the scene tree.
-static func start_from_state(initial_timeline: String, dialog_scene_path: String="res://addons/dialogic/Dialog.tscn", debug_mode: bool=false):
-	var current = get_current_timeline()
-	if current.empty():
-		current = initial_timeline
-	return start(current, false, dialog_scene_path, debug_mode)
-
-
 ################################################################################
 ## 						BUILT-IN SAVING/LOADING
 ################################################################################
 
 
-## Similar to the start function, but loads state info and definitions from a given save folder..
+## Similar to the start function, but loads state info and definitions
+## If you leave save_name empty it will try to load from the current state
 ## 
 ## @param save_name		The name of the save folder.
 ##						Leaving this empty load from the default files.
 ## The other @params work like the ones in start()
 ## @returns 			A Dialog node to be added into the scene tree.
-static func resume_from_save(save_name: String, dialog_scene_path: String="res://addons/dialogic/Dialog.tscn", debug_mode: bool=false, use_canvas_instead=true) -> Node:
+static func start_from_save(save_name: String = '', dialog_scene_path: String="res://addons/dialogic/Nodes/DialogNode.tscn", debug_mode: bool=false, use_canvas_instead=true) -> Node:
 	var dialog_scene = load(dialog_scene_path)
 	var dialog_node = null
 	var canvas_dialog_node = null
@@ -140,8 +128,19 @@ static func resume_from_save(save_name: String, dialog_scene_path: String="res:/
 	dialog_node.debug_mode = debug_mode
 
 	returned_dialog_node = dialog_node if not canvas_dialog_node else canvas_dialog_node
-
-	dialog_node.resume_state_from_info(load_from_save(save_name))
+	
+	if save_name == '':
+		# this will load from current state (default save or imported data)
+		if Engine.get_main_loop().has_meta('last_dialog_state'):
+			dialog_node.resume_state_from_info(Engine.get_main_loop().get_meta('last_dialog_state'))
+		else:
+			load_from_save()
+			if Engine.get_main_loop().has_meta('last_dialog_state'):
+				dialog_node.resume_state_from_info(Engine.get_main_loop().get_meta('last_dialog_state'))
+			print('[D] Attempt to load from current state without current state!')
+	else:
+		# this if a save_name was specified
+		dialog_node.resume_state_from_info(load_from_save(save_name))
 	return returned_dialog_node
 
 
@@ -150,10 +149,17 @@ static func resume_from_save(save_name: String, dialog_scene_path: String="res:/
 ## @param save_name		The name of the save folder. To load this save you have to specify the same
 ##						If the save folder doesn't exist it will be created. 
 ##						Leaving this empty will overwrite the default files.
-static func save_current_state(save_name: String = '') -> void:
-	if Engine.get_main_loop().has_meta('latest_dialogic_node') and is_instance_valid(Engine.get_main_loop().get_meta('latest_dialogic_node')):
-		var save_data = Engine.get_main_loop().get_meta('latest_dialogic_node').get_current_state_info()
-		save_state_and_definitions(save_name, save_data)
+static func save_current_info(save_name: String = '', check_autosave = false) -> void:
+	if check_autosave and not Engine.get_main_loop().get_meta('autosave'):
+		return
+	var current_dialog_info = {}
+	if has_current_dialog_node():
+		current_dialog_info = Engine.get_main_loop().get_meta('latest_dialogic_node').get_current_state_info()
+	var save_data = {
+		'game_state': Engine.get_main_loop().get_meta('game_state'),
+		'dialog_state': current_dialog_info
+		}
+	save_state_and_definitions(save_name, save_data)
 
 
 ## Returns an array with the names of all available saves.
@@ -183,32 +189,33 @@ static func save_state_and_definitions(save_name: String, state_info: Dictionary
 
 
 ## +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+## 						GAME STATE
+## +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+# the game state is a global dictionary that can be used to store custom data
+# these functions should be renamed in 2.0! These names are outdated.
+
+# this sets a value in the GAME STATE dictionary
+static func get_saved_state_general_key(key: String, default = '') -> String:
+	if not Engine.get_main_loop().has_meta('game_state'):
+		return default
+	if key in Engine.get_main_loop().get_meta('game_state').keys():
+		return Engine.get_main_loop().get_meta('game_state')[key]
+	else:
+		return default
+
+# this gets a value from the GAME STATE dictionary
+static func set_saved_state_general_key(key: String, value) -> void:
+	if not Engine.get_main_loop().has_meta('game_state'):
+		Engine.get_main_loop().set_meta('game_state', {})
+	Engine.get_main_loop().get_meta('game_state')[key] = str(value)
+	save_current_info('', true)
+
+
+## +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 ## 						EXPORT / IMPORT
 ## +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-static func get_saved_state_general_key(key: String, default = '') -> String:
-	if not Engine.get_main_loop().has_meta('current_state'):
-		return default
-	if key in Engine.get_main_loop().get_meta('current_state').keys():
-		return Engine.get_main_loop().get_meta('current_state')[key]
-	else:
-		return default
-
-
-static func set_saved_state_general_key(key: String, value) -> void:
-	if not Engine.get_main_loop().has_meta('current_state'):
-		Engine.get_main_loop().set_meta('current_state', {})
-	Engine.get_main_loop().get_meta('current_state')[key] = str(value)
-	save_state()
-
-
-static func save_state():
-	if Engine.get_main_loop().get_meta('autosave'):
-		return DialogicResources.save_saved_state_config(Engine.get_main_loop().get_meta('current_state'))
-	else:
-		return OK
-
-
+# this returns a dictionary with the DEFINITIONS, the GAME STATE and the DIALOG STATE
 static func export(dialog_node = null) -> Dictionary:
 	var current_dialog_info = {}
 	if dialog_node == null and has_current_dialog_node():
@@ -217,14 +224,15 @@ static func export(dialog_node = null) -> Dictionary:
 		current_dialog_info = dialog_node.get_current_state_info()
 	return {
 		'definitions': get_definitions(),
-		'state': Engine.get_main_loop().get_meta('current_state'),
+		'state': Engine.get_main_loop().get_meta('game_state'),
 		'dialog_state': current_dialog_info
 	}
 
-
+# this loads a dictionary with GAME STATE, DEFINITIONS and DIALOG_STATE 
 static func import(data: Dictionary) -> void:
 	Engine.get_main_loop().set_meta('definitions', data['definitions'])
-	Engine.get_main_loop().set_meta('current_state', data['state'])
+	Engine.get_main_loop().set_meta('game_state', data['state'])
+	Engine.get_main_loop().set_meta('last_dialog_state', data.get('dialog_state', null))
 	set_current_timeline(get_saved_state_general_key('timeline'))
 
 ################################################################################
@@ -233,9 +241,13 @@ static func import(data: Dictionary) -> void:
 
 #
 ## this loads the saves definitions and returns the saves state_info ditionary
-static func load_from_save(save_name: String) -> Dictionary:
+static func load_from_save(save_name: String = '') -> Dictionary:
 	Engine.get_main_loop().set_meta('definitions', DialogicResources.get_saved_definitions(save_name))
-	return DialogicResources.get_saved_state_info(save_name)
+	var state_info = DialogicResources.get_saved_state_info(save_name)
+	Engine.get_main_loop().set_meta('last_dialog_state', state_info.get('dialog_state', null))
+	Engine.get_main_loop().set_meta('game_state', state_info.get('game_state', null))
+	
+	return state_info['dialog_state']
 #
 ### Will save the current definition and glossary values into the save folder with the given name.
 ### 
@@ -350,10 +362,4 @@ static func set_variable_from_id(id: String, value: String, operation: String) -
 					result = converted_target_value / converted_set_value
 		target_def['value'] = str(result)
 
-
-static func save_definitions(autosave = true):
-	if autosave:
-		return DialogicResources.save_saved_definitions(get_definitions())
-	else:
-		return OK
 

@@ -14,10 +14,8 @@ onready var nodes = {
 	'dim_characters': $VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2/HBoxContainer5/DimCharacters,
 	'text_event_audio_enable': $VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2/HBoxContainer7/EnableVoices,
 	'text_event_audio_default_bus' : $VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2/TextAudioDefaultBus/AudioBus,
-	'save_current_timeline': $VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer3/HBoxContainer/SaveCurrentTimeline,
-	'clear_current_timeline': $VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer3/HBoxContainer2/ClearCurrentTimeline,
-	'save_definitions_on_start': $VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer3/HBoxContainer3/SaveDefinitionsOnStart,
-	'save_definitions_on_end': $VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer3/HBoxContainer4/SaveDefinitionsOnEnd,
+	'autosave_on_timeline_start': $VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer3/HBoxContainer/AutosaveTimelineStart,
+	'autosave_on_timeline_end':$VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer3/HBoxContainer2/AutosaveTimelineEnd,
 	'delay_after_options': $VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer/HBoxContainer/LineEdit,
 	'default_action_key': $VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer/HBoxContainer2/DefaultActionKey,
 	'canvas_layer' : $VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer/HBoxContainer3/CanvasLayer,
@@ -45,10 +43,8 @@ var DIALOG_KEYS := [
 	]
 
 var SAVING_KEYS := [
-	'save_current_timeline', 
-	'clear_current_timeline',
-	'save_definitions_on_start',
-	'save_definitions_on_end',
+	'autosave_on_timeline_start', 
+	'autosave_on_timeline_end',
 	]
 
 var EDITOR_KEYS := [
@@ -69,10 +65,8 @@ func _ready():
 	$"VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2/TextAudioDefaultBus/Label".text = DTS.translate("Default bus for Text event audio")
 	$"VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2/Label2".text = DTS.translate("Experimental Translations:")
 	$"VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2/HBoxContainer6/Label".text = DTS.translate("Inputs for text events will be treated as keys for tr()")
-	$"VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer3/HBoxContainer/Label".text = DTS.translate("Save current timeline on timeline start")
-	$"VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer3/HBoxContainer2/Label".text = DTS.translate("Clear saved timeline on timeline end")
-	$"VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer3/HBoxContainer3/Label".text = DTS.translate("Save definitions on timeline start")
-	$"VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer3/HBoxContainer4/Label".text = DTS.translate("Save definitions on timeline end")
+	$"VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer3/HBoxContainer/Label".text = DTS.translate("Autosave on timeline start")
+	$"VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer3/HBoxContainer2/Label".text = DTS.translate("Autosave on timeline end")
 	$"VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer/HBoxContainer/Label".text = DTS.translate("Enable choice options after  ")
 	$"VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer/HBoxContainer/Label2".text = DTS.translate(" seconds")
 	$"VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer/HBoxContainer2/Label".text = DTS.translate("Default action key")

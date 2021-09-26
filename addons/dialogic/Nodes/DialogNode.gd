@@ -604,11 +604,8 @@ func _on_letter_written():
 
 func on_timeline_start():
 	if not Engine.is_editor_hint():
-		if settings.get_value('saving', 'save_definitions_on_start', true):
-			Dialogic.save_definitions()
-			pass
-		if settings.get_value('saving', 'save_current_timeline', true):
-			Dialogic.set_current_timeline(current_timeline)
+		if settings.get_value('saving', 'autosave_on_timeline_start', true):
+			Dialogic.save_current_info()
 	# TODO remove event_start in 2.0
 	emit_signal("event_start", "timeline", current_timeline)
 	emit_signal("timeline_start", current_timeline)
@@ -616,11 +613,8 @@ func on_timeline_start():
 
 func on_timeline_end():
 	if not Engine.is_editor_hint():
-		if settings.get_value('saving', 'save_definitions_on_end', true):
-			Dialogic.save_definitions()
-			pass
-		if settings.get_value('saving', 'clear_current_timeline', true):
-			Dialogic.set_current_timeline('')
+		if settings.get_value('saving', 'autosave_on_timeline_end', true):
+			Dialogic.save_current_info()
 	# TODO remove event_end in 2.0
 	emit_signal("event_end", "timeline")
 	emit_signal("timeline_end", current_timeline)
@@ -853,9 +847,6 @@ func event_handler(event: Dictionary):
 			if value != '':
 				background = Background.instance()
 				add_child(background)
-				call_deferred('resize_main') # Executing the resize main to update the background size
-			else:
-				background.texture = null
 				if (event['background'].ends_with('.tscn')):
 					var bg_scene = load(event['background'])
 					bg_scene = bg_scene.instance()
@@ -867,7 +858,7 @@ func event_handler(event: Dictionary):
 					background.create_tween()
 					background.fade_in(fade_time)
 				call_deferred('resize_main') # Executing the resize main to update the background size
-
+			
 			_load_next_event()
 		# Close Dialog event
 		'dialogic_022':
@@ -1396,7 +1387,7 @@ func get_current_state_info():
 	# visible characters:
 	state["portraits"] = []
 	for portrait in $Portraits.get_children():
-		state['portraits'].append({"position": portrait.current_position, "character":portrait.current_character, "portrait":portrait.current_portrait, "mirror": portrait.currently_mirrored})
+		state['portraits'].append(portrait.current_state)
 
 	# background music:
 	state['background_music'] = $FX/BackgroundMusic.get_current_info()

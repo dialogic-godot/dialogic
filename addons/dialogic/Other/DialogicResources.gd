@@ -329,9 +329,49 @@ static func set_settings_value(section: String, key: String, value):
 	config.set_value(section, key, value)
 	config.save(get_config_files_paths()['SETTINGS_FILE'])
 
+## *****************************************************************************
+##						DEFAULT DEFINITIONS
+## *****************************************************************************
+# Can only be edited in the editor
+
+
+static func get_default_definitions() -> Dictionary:
+	return load_json(get_config_files_paths()['DEFAULT_DEFINITIONS_FILE'], {'variables': [], 'glossary': []})
+
+
+static func save_default_definitions(data: Dictionary):
+	set_json(get_config_files_paths()['DEFAULT_DEFINITIONS_FILE'], data)
+
+
+static func get_default_definition_item(id: String):
+	var data = get_default_definitions()
+	return DialogicDefinitionsUtil.get_definition_by_id(data, id)
+
+
+static func set_default_definition_variable(id: String, name: String, value):
+	# WARNING: For use in the editor only
+	var data = get_default_definitions()
+	DialogicDefinitionsUtil.set_definition_variable(data, id, name, value)
+	save_default_definitions(data)
+
+
+static func set_default_definition_glossary(id: String, name: String, extra_title: String,  extra_text: String,  extra_extra: String):
+	# WARNING: For use in the editor only
+	var data = get_default_definitions()
+	DialogicDefinitionsUtil.set_definition_glossary(data, id, name, extra_title, extra_text, extra_extra)
+	save_default_definitions(data)
+
+
+static func delete_default_definition(id: String):
+	# WARNING: For use in the editor only
+	var data = get_default_definitions()
+	DialogicDefinitionsUtil.delete_definition(data, id)
+	save_default_definitions(data)
+
+
 
 ## *****************************************************************************
-##							SAVES
+##						SAVES DURING GAME
 ## *****************************************************************************
 # Folders in the user://dialogic directory function as save_slots.
 
@@ -385,6 +425,9 @@ static func remove_save_folder(save_name: String) -> void:
 
 # saves the state_info into the state.json file in the save folder "save_name"
 static func save_state_info(save_name: String, state_info: Dictionary) -> void:
+	if save_name == '':
+		set_json(get_config_files_paths()['STATE_DEFAULT_SAVE'], state_info)
+	
 	if not save_name in get_saves_folders():
 		add_save_folder(save_name)
 	
@@ -402,15 +445,20 @@ static func get_saved_state_info(save_name: String) -> Dictionary:
 
 # saves the given definitions into the definitions.json file in the save folder "save name"
 static func save_definitions(save_name: String, definitions_info: Dictionary) -> void:
+	if save_name == "":
+		set_json(get_config_files_paths()['DEFINITIONS_DEFAULT_SAVE'], definitions_info)
+		
+	
 	if not save_name in get_saves_folders():
 		add_save_folder(save_name)
+	
 	
 	set_json(WORKING_DIR+"/"+save_name+"/definitions.json", definitions_info)
 
 # return the definition info from the definiiotn.json in the save folder "save name"
 static func get_saved_definitions(save_name: String = '') -> Dictionary:
 	if save_name == '':
-		return load_json(get_config_files_paths()['DEFINITIONS_DEFAULT_SAVE'], {})
+		return load_json(get_config_files_paths()['DEFINITIONS_DEFAULT_SAVE'], get_default_definitions())
 	
 	if not save_name in get_saves_folders():
 		print("[D] Wasn't able to find save '"+save_name+"'. Loaded the default definitions.")
@@ -419,58 +467,6 @@ static func get_saved_definitions(save_name: String = '') -> Dictionary:
 	return load_json(WORKING_DIR+"/"+save_name+"/definitions.json", {})
 
 
-## *****************************************************************************
-##						DEFAULT DEFINITIONS
-## *****************************************************************************
-# Can only be edited in the editor
-
-
-static func get_default_definitions() -> Dictionary:
-	return load_json(get_config_files_paths()['DEFAULT_DEFINITIONS_FILE'], {'variables': [], 'glossary': []})
-
-
-static func save_default_definitions(data: Dictionary):
-	set_json(get_config_files_paths()['DEFAULT_DEFINITIONS_FILE'], data)
-
-
-static func get_default_definition_item(id: String):
-	var data = get_default_definitions()
-	return DialogicDefinitionsUtil.get_definition_by_id(data, id)
-
-
-static func set_default_definition_variable(id: String, name: String, value):
-	# WARNING: For use in the editor only
-	var data = get_default_definitions()
-	DialogicDefinitionsUtil.set_definition_variable(data, id, name, value)
-	save_default_definitions(data)
-
-
-static func set_default_definition_glossary(id: String, name: String, extra_title: String,  extra_text: String,  extra_extra: String):
-	# WARNING: For use in the editor only
-	var data = get_default_definitions()
-	DialogicDefinitionsUtil.set_definition_glossary(data, id, name, extra_title, extra_text, extra_extra)
-	save_default_definitions(data)
-
-
-static func delete_default_definition(id: String):
-	# WARNING: For use in the editor only
-	var data = get_default_definitions()
-	DialogicDefinitionsUtil.delete_definition(data, id)
-	save_default_definitions(data)
-
-
-## *****************************************************************************
-##						SAVED DEFINITIONS
-## *****************************************************************************
-# Can only be edited in the editor
-#
-#static func get_saved_definitions(default: Dictionary = {'variables': [], 'glossary': []}) -> Dictionary:
-#	return load_json(get_config_files_paths()['SAVED_DEFINITIONS_FILE'], default)
-#
-#
-#static func save_saved_definitions(data: Dictionary):
-#	init_working_dir()
-#	return set_json(get_config_files_paths()['SAVED_DEFINITIONS_FILE'], data)
 
 ## *****************************************************************************
 ##						FOLDER STRUCTURE
