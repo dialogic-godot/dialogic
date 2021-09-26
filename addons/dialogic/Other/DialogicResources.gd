@@ -423,10 +423,16 @@ static func remove_save_folder(save_name: String) -> void:
 		file_name = directory.get_next()
 	directory.remove(WORKING_DIR+"/"+save_name)
 
+# reset the default save files
+static func reset_save(save_name: String = '') -> void:
+	save_state_info(save_name, {})
+	save_definitions(save_name, get_default_definitions())
+
 # saves the state_info into the state.json file in the save folder "save_name"
 static func save_state_info(save_name: String, state_info: Dictionary) -> void:
 	if save_name == '':
 		set_json(get_config_files_paths()['STATE_DEFAULT_SAVE'], state_info)
+		return
 	
 	if not save_name in get_saves_folders():
 		add_save_folder(save_name)
@@ -447,11 +453,10 @@ static func get_saved_state_info(save_name: String) -> Dictionary:
 static func save_definitions(save_name: String, definitions_info: Dictionary) -> void:
 	if save_name == "":
 		set_json(get_config_files_paths()['DEFINITIONS_DEFAULT_SAVE'], definitions_info)
-		
+		return
 	
 	if not save_name in get_saves_folders():
 		add_save_folder(save_name)
-	
 	
 	set_json(WORKING_DIR+"/"+save_name+"/definitions.json", definitions_info)
 
