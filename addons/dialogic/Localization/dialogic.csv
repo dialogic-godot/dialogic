@@ -1,7 +1,7 @@
 id,zh_CN,en,es
 Default,默认,Default,Predeterminado
 Advanced theme options,高级主题选项,Advanced theme options,Opciones avanzadas
-Canvas layer :,帆布层:,Canvas layer :,Canvas layer :
+Canvas layer:,帆布层:,Canvas layer:,Canvas layer:
 New lines will create extra messages,新的线条会产生额外的信息,New lines will create extra messages,Nuevas líneas crearan nuevos mensajes
 Remove empty messages,删除空信息,Remove empty messages,Borrar mensajes vacíos
 Auto color character names in messages,信息中的字符名称自动着色,Auto color character names in messages,Colorear nombres automáticamente
@@ -53,7 +53,6 @@ File:,文件:,File:,Archivo:
   Import images from folder,  从文件夹中导入图片,  Import images from folder,  Importar imágenes de una carpeta
 The selected operator requires a number!,所选的操作需要一个数字!,The selected operator requires a number!,El operador seleccionado requiere un número
 This event needs a question event around it!,这个事件需要一个围绕它的问题事件!,This event needs a question event around it!,Este evento necesita estar dentro de una pregunta
-Text Color ,文字颜色 ,Text Color ,Color de texto 
 Flat background,扁平背景,Flat background,Fondo plano
 Background Texture,背景纹理,Background Texture,Textura de fondo
 Texture Modulation,纹理调制,Texture Modulation,Modulación de textura
@@ -63,7 +62,7 @@ Bold Font,粗体字,Bold Font,Negrita
 Italic Font,斜体字,Italic Font,Cursiva
 Text Color,文字颜色,Text Color,Color de texto
 Shadow,阴影,Shadow,Sombra
-Shadow Offset,阴影偏移,Shadow Offset,Sombra Offset
+Shadow Offset,阴影偏移,Shadow Offset,Compensación
 Behaviour,行为,Behaviour,Comportamiento
 Speed (bigger = slower),速度 (更大=更慢),Speed (bigger = slower),Velocidad (a mayor número más lento)
 Alignment,对齐,Alignment,Alineación
@@ -78,7 +77,7 @@ Next Indicator,下一个指示器,Next Indicator,Indicador de siguiente
 Image,图片,Image,Imágen
 Animation,动画,Animation,Animación
 Scale,尺度,Scale,Escala
-Offset,偏移,Offset,Offset
+Offset,偏移,Offset,Compensación
 Behaviour,行为方式,Behaviour,Comportamiento
 Action key,动作按键,Action key,Tecla de acción
 Fade in time:,淡入时间:,Fade in time:,Tiempo de aparición:
@@ -116,5 +115,6 @@ Pitch random range,音高随机范围,Pitch random range,Rango de tono
 Allow interrupt,允许中断,Allow interrupt,Permitir interrumpir
 Audio Bus,音频总线,Audio Bus,Audio Bus
 Button layout,,Button layout,Orden de botones
-Offset x-y,偏移 x-y,Offset x-y,Offset x-y
+Offset x-y,偏移 x-y,Offset x-y,Compensación x-y
 Position on screen,,Position on screen,Posición en la pantalla
+Mirror portraits,镜像肖像,Mirror portraits,Espejar imágen

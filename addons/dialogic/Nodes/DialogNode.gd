@@ -165,8 +165,6 @@ func play_audio(name):
 
 func update_custom_events() -> void:
 	custom_events = {}
-	if not DialogicResources.get_settings_config().get_value('editor', 'use_custom_events', false):
-		return 
 	
 	var path:String = DialogicResources.get_working_directories()["CUSTOM_EVENTS_DIR"]
 	

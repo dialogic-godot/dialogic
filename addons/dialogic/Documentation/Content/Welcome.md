@@ -38,6 +38,7 @@ This project is made possible by the support of our [Patreons](https://www.patre
 - [Theme Editor](./Reference/Theme.md)
 
 ## Tutorials
+- [Creating Custom Events](./Events/Custom Events/CreateCustomEvents)
 - [Beginners Guide](./Tutorials/BeginnersGuideStepByStep.md)
 - [Full Documentation (old)](./Tutorials/DefaultDocs.md)
 

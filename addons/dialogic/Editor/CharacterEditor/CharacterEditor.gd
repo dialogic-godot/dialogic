@@ -19,7 +19,7 @@ onready var nodes = {
 	'new_portrait_button': $HBoxContainer/Container/ScrollContainer/VBoxContainer/HBoxContainer/Button,
 	'import_from_folder_button': $HBoxContainer/Container/ScrollContainer/VBoxContainer/HBoxContainer/ImportFromFolder,
 	'portrait_preview': $HBoxContainer/VBoxContainer/Control/TextureRect,
-	'image_label': $"HBoxContainer/VBoxContainer/Control/Label",
+	'image_label': $"HBoxContainer/VBoxContainer/Control/TLabel10",
 	'scale': $HBoxContainer/VBoxContainer/HBoxContainer/Scale,
 	'offset_x': $HBoxContainer/VBoxContainer/HBoxContainer/OffsetX,
 	'offset_y': $HBoxContainer/VBoxContainer/HBoxContainer/OffsetY,
@@ -27,15 +27,6 @@ onready var nodes = {
 
 
 func _ready():
-	$"HBoxContainer/Container/Name/Label".text = DTS.translate("Name: ")
-	$"HBoxContainer/Container/Name/CheckBox".text = DTS.translate("Different display name")
-	$"HBoxContainer/Container/Name/CheckBox2".text = DTS.translate("Enable Nicknames")
-	$"HBoxContainer/Container/DisplayName/Label".text = DTS.translate("Display Name: ")
-	$"HBoxContainer/Container/DisplayNickname/Label".text = DTS.translate("Nicknames: ")
-	$"HBoxContainer/Container/Color/Label".text = DTS.translate("Color: ")
-	$"HBoxContainer/Container/Description/Label".text = DTS.translate("Description: ")
-	$"HBoxContainer/Container/Portraits/Label".text = DTS.translate("Portraits / Expressions")
-	$"HBoxContainer/Container/FileName/Label".text = DTS.translate("File:")
 	$"HBoxContainer/Container/ScrollContainer/VBoxContainer/HBoxContainer/Button".text = DTS.translate("  Add new portrait")
 	$"HBoxContainer/Container/ScrollContainer/VBoxContainer/HBoxContainer/ImportFromFolder".text = DTS.translate("  Import images from folder")
 	

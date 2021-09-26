@@ -18,9 +18,9 @@ onready var nodes = {
 	'autosave_on_timeline_end':$VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer3/HBoxContainer2/AutosaveTimelineEnd,
 	'delay_after_options': $VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer/HBoxContainer/LineEdit,
 	'default_action_key': $VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer/HBoxContainer2/DefaultActionKey,
-	'canvas_layer' : $VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer/HBoxContainer3/CanvasLayer,
+	'canvas_layer' : $VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer/HBoxContainer3/CanvasLayer}
 
-	'use_custom_events':$VBoxContainer/HBoxContainer3/VBoxContainer2/TimelineSection/CustomEvents/CustomEvents}
+	#'use_custom_events':$VBoxContainer/HBoxContainer3/VBoxContainer2/TimelineSection/CustomEvents/CustomEvents}
 
 var THEME_KEYS := [
 	'advanced_themes',
@@ -47,31 +47,7 @@ var SAVING_KEYS := [
 	'autosave_on_timeline_end',
 	]
 
-var EDITOR_KEYS := [
-	'use_custom_events'
-]
-
 func _ready():
-	$"VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer/HBoxContainer/Label".text = DTS.translate("Default")
-	$"VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer/HBoxContainer2/Label".text = DTS.translate("Advanced theme options")
-	$"VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer/HBoxContainer3/Label".text = DTS.translate("Canvas layer :")
-	$"VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2/HBoxContainer2/Label".text = DTS.translate("New lines will create extra messages")
-	$"VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2/HBoxContainer/Label".text = DTS.translate("Remove empty messages")
-	$"VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2/HBoxContainer3/Label".text = DTS.translate("Auto color character names in messages")
-	$"VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2/HBoxContainer4/Label".text = DTS.translate("Propagate input to rest of the Tree")
-	$"VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2/HBoxContainer5/Label".text = DTS.translate("Dim characters when they are not speaking")
-	$"VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2/Label3".text = DTS.translate("Audio for Text events:")
-	$"VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2/HBoxContainer7/Label".text = DTS.translate("Enable audio for Text events")
-	$"VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2/TextAudioDefaultBus/Label".text = DTS.translate("Default bus for Text event audio")
-	$"VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2/Label2".text = DTS.translate("Experimental Translations:")
-	$"VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2/HBoxContainer6/Label".text = DTS.translate("Inputs for text events will be treated as keys for tr()")
-	$"VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer3/HBoxContainer/Label".text = DTS.translate("Autosave on timeline start")
-	$"VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer3/HBoxContainer2/Label".text = DTS.translate("Autosave on timeline end")
-	$"VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer/HBoxContainer/Label".text = DTS.translate("Enable choice options after  ")
-	$"VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer/HBoxContainer/Label2".text = DTS.translate(" seconds")
-	$"VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer/HBoxContainer2/Label".text = DTS.translate("Default action key")
-	$"VBoxContainer/HBoxContainer3/VBoxContainer2/TimelineSection/CustomEvents/Label".text = DTS.translate("Use custom events")
-	
 	editor_reference = find_parent('EditorView')
 	update_bus_selector()
 	
@@ -96,9 +72,6 @@ func _ready():
 	for k in SAVING_KEYS:
 		nodes[k].connect('toggled', self, '_on_item_toggled', ['saving', k])
 
-	for k in EDITOR_KEYS:
-		nodes[k].connect('toggled', self, '_on_item_toggled', ['editor', k])
-
 func update_data():
 	var settings = DialogicResources.get_settings_config()
 	nodes['canvas_layer'].text = settings.get_value("theme", "canvas_layer", '1')
@@ -106,7 +79,6 @@ func update_data():
 	load_values(settings, "dialog", DIALOG_KEYS)
 	load_values(settings, "saving", SAVING_KEYS)
 	load_values(settings, "input", INPUT_KEYS)
-	load_values(settings, 'editor', EDITOR_KEYS)
 	select_bus(settings.get_value("dialog", 'text_event_audio_default_bus', "Master"))
 
 func load_values(settings: ConfigFile, section: String, key: Array):
