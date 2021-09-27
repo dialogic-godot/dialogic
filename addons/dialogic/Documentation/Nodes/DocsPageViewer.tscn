@@ -70,8 +70,8 @@ custom_fonts/bold_font = SubResource( 5 )
 custom_fonts/normal_font = SubResource( 6 )
 custom_colors/selection_color = Color( 0.45098, 0.45098, 0.45098, 0.45098 )
 bbcode_enabled = true
-bbcode_text = "asdasd ads asda [color=#ffe89569]asda adsd asdasd [/color] [code] This is some text[/code]"
-text = "asdasd ads asda asda adsd asdasd   This is some text"
+bbcode_text = "Can't find the specified file."
+text = "Can't find the specified file."
 scroll_following = true
 selection_enabled = true
 __meta__ = {

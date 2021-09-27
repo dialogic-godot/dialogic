@@ -11,6 +11,7 @@
 - Replaced the default `/addons/dialogic/Dialog.tscn` node with a proxy that creates a dialog using the `Dialogic.start` function instead of the raw node. This will make it easier to update from version to version since the instantiated node will not be changing a lot from version to version. This also moved and renamed the previous `/addons/dialogic/Dialog.tscn` to `/addons/dialogic/Nodes/DialogNode.tscn` and the `dialog_node.gd` is now called `DialogNode.gd` to be more in line with the rest of the project
 - Renamed the plugin entry point script from `dialogic.gd` to `plugin.gd` so it better describes what that file does
 - CanvasLayer Argument (Dialogic.start()) added to the CSharp Class
+- Added a button to open the documentation from the nav bar
   
 #### Timeline Editor:
 - A modular Custom events implementation [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
