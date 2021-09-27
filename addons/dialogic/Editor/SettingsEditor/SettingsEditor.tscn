@@ -341,7 +341,6 @@ margin_left = 174.0
 margin_right = 356.0
 margin_bottom = 24.0
 size_flags_horizontal = 3
-pressed = true
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer3"]
 margin_top = 54.0
@@ -362,7 +361,6 @@ text_key = "Autosave on timeline end"
 margin_left = 169.0
 margin_right = 193.0
 margin_bottom = 24.0
-pressed = true
 
 [node name="VBoxContainer2" type="VBoxContainer" parent="VBoxContainer/HBoxContainer3"]
 margin_left = 360.0
@@ -428,3 +426,107 @@ margin_right = 208.0
 margin_bottom = 20.0
 hint_tooltip = "The default value is \"ui_accept\""
 text = "ui_accept"
+
+[node name="CustomEvents" type="VBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer2"]
+margin_top = 78.0
+margin_right = 304.0
+margin_bottom = 126.0
+
+[node name="SectionTitle" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/CustomEvents" instance=ExtResource( 2 )]
+margin_right = 304.0
+text = "Custom events"
+text_key = "Custom events"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/CustomEvents"]
+margin_top = 26.0
+margin_right = 304.0
+margin_bottom = 48.0
+
+[node name="NewCustomEvent" type="Button" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/CustomEvents/HBoxContainer"]
+margin_right = 40.0
+margin_bottom = 22.0
+text = "New"
+
+[node name="CustomEventsDocs" type="ToolButton" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/CustomEvents/HBoxContainer"]
+margin_left = 44.0
+margin_right = 56.0
+margin_bottom = 22.0
+
+[node name="CreateCustomEventSection" type="GridContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/CustomEvents"]
+visible = false
+margin_top = 52.0
+margin_right = 304.0
+margin_bottom = 156.0
+columns = 2
+
+[node name="TLabel" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/CustomEvents/CreateCustomEventSection" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 5.0
+margin_right = 105.0
+margin_bottom = 19.0
+text = "Event Name:"
+text_key = "Event Name:"
+
+[node name="CeName" type="LineEdit" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/CustomEvents/CreateCustomEventSection"]
+margin_left = 109.0
+margin_right = 304.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+
+[node name="TLabel2" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/CustomEvents/CreateCustomEventSection" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 33.0
+margin_right = 105.0
+margin_bottom = 47.0
+text = "Directory Name:"
+text_key = "Directory Name:"
+
+[node name="CeDirectory" type="LineEdit" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/CustomEvents/CreateCustomEventSection"]
+margin_left = 109.0
+margin_top = 28.0
+margin_right = 304.0
+margin_bottom = 52.0
+size_flags_horizontal = 3
+
+[node name="TLabel3" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/CustomEvents/CreateCustomEventSection" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 61.0
+margin_right = 105.0
+margin_bottom = 75.0
+text = "Event id:"
+text_key = "Event id:"
+
+[node name="CeEventId" type="LineEdit" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/CustomEvents/CreateCustomEventSection"]
+margin_left = 109.0
+margin_top = 56.0
+margin_right = 304.0
+margin_bottom = 80.0
+size_flags_horizontal = 3
+placeholder_text = "myname_001"
+
+[node name="Control" type="Control" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/CustomEvents/CreateCustomEventSection"]
+margin_top = 84.0
+margin_right = 105.0
+margin_bottom = 104.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/CustomEvents/CreateCustomEventSection"]
+margin_left = 109.0
+margin_top = 84.0
+margin_right = 304.0
+margin_bottom = 104.0
+alignment = 2
+
+[node name="CreateCustomEvent" type="Button" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/CustomEvents/CreateCustomEventSection/HBoxContainer"]
+margin_left = 84.0
+margin_right = 137.0
+margin_bottom = 20.0
+text = "Create"
+
+[node name="CancelCustomEvent" type="Button" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/CustomEvents/CreateCustomEventSection/HBoxContainer"]
+margin_left = 141.0
+margin_right = 195.0
+margin_bottom = 20.0
+text = "Cancel"
