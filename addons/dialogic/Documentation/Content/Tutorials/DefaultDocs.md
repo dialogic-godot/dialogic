@@ -274,7 +274,7 @@ The `Dialogic` class exposes methods allowing you to control the plugin:
     start(
     timeline: String, 
     reset_saves: bool=true, 
-    dialog_scene_path: String="res://addons/dialogic/Dialog.tscn", 
+    dialog_scene_path: String="res://addons/dialogic/Nodes/DialogNode.tscn", 
     debug_mode: bool=false
     )
   ```
@@ -300,7 +300,7 @@ This is exactly the same as using the editor: you can drag and drop the scene lo
 ```gdscript
 start_from_save(
   initial_timeline: String, 
-  dialog_scene_path: String="res://addons/dialogic/Dialog.tscn", 
+  dialog_scene_path: String="res://addons/dialogic/Nodes/DialogNode.tscn", 
   debug_mode: bool=false
   )
 ```

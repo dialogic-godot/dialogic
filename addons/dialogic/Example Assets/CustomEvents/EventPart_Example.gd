@@ -4,7 +4,7 @@ extends "res://addons/dialogic/Editor/Events/Parts/EventPart.gd"
 
  ## node references
  # e.g. 
-onready var input_field = $Box/InputField
+onready var input_field = $InputField
 
  # used to connect the signals
 func _ready():

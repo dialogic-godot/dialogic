@@ -673,11 +673,8 @@ func update_custom_events() -> void:
 	for child in custom_events_container.get_children():
 		child.queue_free()
 	
-	if not DialogicResources.get_settings_config().get_value('editor', 'use_custom_events', false):
-		return 
-	
 	var path:String = "res://dialogic/custom-events"
-
+	
 	var dir = Directory.new()
 	if dir.open(path) == OK:
 		dir.list_dir_begin()
@@ -686,7 +683,6 @@ func update_custom_events() -> void:
 		while file_name != "":
 			# if it found a folder
 			if dir.current_is_dir() and not file_name in ['.', '..']:
-				
 				# look through that folder
 				#print("Found custom event folder: " + file_name)
 				var event = load(path.plus_file(file_name).plus_file('EventBlock.tscn')).instance()
@@ -699,11 +695,19 @@ func update_custom_events() -> void:
 					event.queue_free()
 				else:
 					print("[D] An error occurred when trying to access a custom event.")
-
+				
 				
 			else:
 				pass # files in the directory are ignored
 			file_name = dir.get_next()
+			
+		# After we finishing checking, if any events exist, show the panel
+		if custom_events.size() == 0:
+			custom_events_container.hide()
+			$ScrollContainer/EventContainer/CustomEventsHeadline.hide()
+		else:
+			custom_events_container.show()
+			$ScrollContainer/EventContainer/CustomEventsHeadline.show()
 	else:
 		print("[D] An error occurred when trying to access the custom events folder.")
 	

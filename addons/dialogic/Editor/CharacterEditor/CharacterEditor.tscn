@@ -1,16 +1,17 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://addons/dialogic/Editor/CharacterEditor/PortraitEntry.tscn" type="PackedScene" id=1]
 [ext_resource path="res://addons/dialogic/Editor/CharacterEditor/CharacterEditor.gd" type="Script" id=2]
+[ext_resource path="res://addons/dialogic/Editor/Common/TLabel.tscn" type="PackedScene" id=3]
 
 [sub_resource type="StyleBoxFlat" id=1]
 content_margin_left = 5.0
 content_margin_right = 5.0
 content_margin_top = 5.0
 content_margin_bottom = 5.0
-bg_color = Color( 0.2, 0.23, 0.31, 1 )
+bg_color = Color( 0, 0, 0, 1 )
 
-[sub_resource type="Image" id=4]
+[sub_resource type="Image" id=2]
 data = {
 "data": PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ),
 "format": "LumAlpha8",
@@ -22,7 +23,7 @@ data = {
 [sub_resource type="ImageTexture" id=3]
 flags = 4
 flags = 4
-image = SubResource( 4 )
+image = SubResource( 2 )
 size = Vector2( 16, 16 )
 
 [node name="CharacterEditor" type="ScrollContainer"]
@@ -38,13 +39,13 @@ __meta__ = {
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
 margin_left = 5.0
 margin_top = 5.0
-margin_right = 1132.0
+margin_right = 1149.0
 margin_bottom = 644.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="Container" type="VBoxContainer" parent="HBoxContainer"]
-margin_right = 600.0
+margin_right = 613.0
 margin_bottom = 639.0
 grow_horizontal = 2
 grow_vertical = 2
@@ -52,15 +53,18 @@ size_flags_horizontal = 3
 size_flags_vertical = 9
 
 [node name="Name" type="HBoxContainer" parent="HBoxContainer/Container"]
-margin_right = 600.0
+margin_right = 613.0
 margin_bottom = 24.0
 
-[node name="Label" type="Label" parent="HBoxContainer/Container/Name"]
+[node name="TLabel" parent="HBoxContainer/Container/Name" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
 margin_top = 5.0
 margin_right = 130.0
 margin_bottom = 19.0
 rect_min_size = Vector2( 130, 0 )
 text = "Name: "
+text_key = "Name: "
 
 [node name="LineEdit" type="LineEdit" parent="HBoxContainer/Container/Name"]
 margin_left = 134.0
@@ -70,79 +74,108 @@ rect_min_size = Vector2( 140, 0 )
 
 [node name="CheckBox" type="CheckBox" parent="HBoxContainer/Container/Name"]
 margin_left = 278.0
-margin_right = 451.0
+margin_right = 302.0
 margin_bottom = 24.0
-text = "Different display name"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="TLabel2" parent="HBoxContainer/Container/Name" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 306.0
+margin_top = 5.0
+margin_right = 451.0
+margin_bottom = 19.0
+rect_min_size = Vector2( 130, 0 )
+text = "Different display name"
+text_key = "Different display name"
+
 [node name="CheckBox2" type="CheckBox" parent="HBoxContainer/Container/Name"]
 margin_left = 455.0
-margin_right = 600.0
+margin_right = 479.0
 margin_bottom = 24.0
-text = "Enable Nicknames"
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="TLabel3" parent="HBoxContainer/Container/Name" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 483.0
+margin_top = 5.0
+margin_right = 613.0
+margin_bottom = 19.0
+rect_min_size = Vector2( 130, 0 )
+text = "Enable Nicknames"
+text_key = "Enable Nicknames"
 
 [node name="DisplayName" type="HBoxContainer" parent="HBoxContainer/Container"]
 visible = false
 margin_top = 28.0
-margin_right = 491.0
+margin_right = 604.0
 margin_bottom = 52.0
 __meta__ = {
 "_editor_description_": "Display name is the name that will
 show up on the dialogs in game."
 }
 
-[node name="Label" type="Label" parent="HBoxContainer/Container/DisplayName"]
+[node name="TLabel2" parent="HBoxContainer/Container/DisplayName" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
 margin_top = 5.0
-margin_right = 130.0
+margin_right = 97.0
 margin_bottom = 19.0
 rect_min_size = Vector2( 130, 0 )
 text = "Display Name: "
+text_key = "Display Name: "
 
 [node name="LineEdit" type="LineEdit" parent="HBoxContainer/Container/DisplayName"]
-margin_left = 134.0
-margin_right = 274.0
+margin_left = 101.0
+margin_right = 241.0
 margin_bottom = 24.0
 rect_min_size = Vector2( 140, 0 )
 
 [node name="DisplayNickname" type="HBoxContainer" parent="HBoxContainer/Container"]
 visible = false
 margin_top = 28.0
-margin_right = 491.0
+margin_right = 604.0
 margin_bottom = 52.0
 __meta__ = {
 "_editor_description_": "Display name is the name that will
 show up on the dialogs in game."
 }
 
-[node name="Label" type="Label" parent="HBoxContainer/Container/DisplayNickname"]
+[node name="TLabel3" parent="HBoxContainer/Container/DisplayNickname" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
 margin_top = 5.0
-margin_right = 130.0
+margin_right = 79.0
 margin_bottom = 19.0
 rect_min_size = Vector2( 130, 0 )
 text = "Nicknames: "
+text_key = "Nicknames: "
 
 [node name="LineEdit" type="LineEdit" parent="HBoxContainer/Container/DisplayNickname"]
-margin_left = 134.0
-margin_right = 274.0
+margin_left = 83.0
+margin_right = 223.0
 margin_bottom = 24.0
 rect_min_size = Vector2( 140, 0 )
 
 [node name="Color" type="HBoxContainer" parent="HBoxContainer/Container"]
 margin_top = 28.0
-margin_right = 600.0
+margin_right = 613.0
 margin_bottom = 48.0
 
-[node name="Label" type="Label" parent="HBoxContainer/Container/Color"]
+[node name="TLabel4" parent="HBoxContainer/Container/Color" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
 margin_top = 3.0
 margin_right = 130.0
 margin_bottom = 17.0
 rect_min_size = Vector2( 130, 0 )
 text = "Color: "
+text_key = "Color: "
 
 [node name="ColorPickerButton" type="ColorPickerButton" parent="HBoxContainer/Container/Color"]
 margin_left = 134.0
@@ -154,81 +187,92 @@ edit_alpha = false
 
 [node name="Description" type="HBoxContainer" parent="HBoxContainer/Container"]
 margin_top = 52.0
-margin_right = 600.0
+margin_right = 613.0
 margin_bottom = 152.0
 
-[node name="Label" type="Label" parent="HBoxContainer/Container/Description"]
+[node name="TLabel5" parent="HBoxContainer/Container/Description" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
 margin_top = 43.0
 margin_right = 130.0
 margin_bottom = 57.0
 rect_min_size = Vector2( 130, 0 )
 text = "Description: "
+text_key = "Description: "
 
 [node name="TextEdit" type="TextEdit" parent="HBoxContainer/Container/Description"]
 margin_left = 134.0
-margin_right = 600.0
+margin_right = 613.0
 margin_bottom = 100.0
 rect_min_size = Vector2( 100, 100 )
 size_flags_horizontal = 3
 
 [node name="Separator" type="Control" parent="HBoxContainer/Container"]
 margin_top = 156.0
-margin_right = 600.0
+margin_right = 613.0
 margin_bottom = 166.0
 rect_min_size = Vector2( 0, 10 )
 
 [node name="Portraits" type="HBoxContainer" parent="HBoxContainer/Container"]
 margin_top = 170.0
-margin_right = 600.0
+margin_right = 613.0
 margin_bottom = 184.0
 
-[node name="Label" type="Label" parent="HBoxContainer/Container/Portraits"]
+[node name="TLabel6" parent="HBoxContainer/Container/Portraits" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
 margin_right = 143.0
 margin_bottom = 14.0
 text = "Portraits / Expressions"
+text_key = "Portraits / Expressions"
 
 [node name="Labels" type="HBoxContainer" parent="HBoxContainer/Container"]
 margin_top = 188.0
-margin_right = 600.0
+margin_right = 613.0
 margin_bottom = 202.0
 
-[node name="LineEdit" type="Label" parent="HBoxContainer/Container/Labels"]
+[node name="TLabel7" parent="HBoxContainer/Container/Labels" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
 margin_right = 100.0
 margin_bottom = 14.0
 rect_min_size = Vector2( 100, 0 )
 text = "Name"
+text_key = "Name"
 
-[node name="LineEdit2" type="Label" parent="HBoxContainer/Container/Labels"]
+[node name="TLabel8" parent="HBoxContainer/Container/Labels" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
 margin_left = 104.0
-margin_right = 254.0
+margin_right = 132.0
 margin_bottom = 14.0
-rect_min_size = Vector2( 150, 0 )
 text = "Path"
+text_key = "Path"
 
 [node name="ScrollContainer" type="ScrollContainer" parent="HBoxContainer/Container"]
 margin_top = 206.0
-margin_right = 600.0
+margin_right = 613.0
 margin_bottom = 639.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/Container/ScrollContainer"]
-margin_right = 600.0
+margin_right = 613.0
 margin_bottom = 433.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="PortraitList" type="VBoxContainer" parent="HBoxContainer/Container/ScrollContainer/VBoxContainer"]
-margin_right = 600.0
+margin_right = 613.0
 margin_bottom = 24.0
 size_flags_horizontal = 3
 
 [node name="PortraitEntry" parent="HBoxContainer/Container/ScrollContainer/VBoxContainer/PortraitList" instance=ExtResource( 1 )]
-margin_right = 600.0
+margin_right = 613.0
 
 [node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/Container/ScrollContainer/VBoxContainer"]
 margin_top = 28.0
-margin_right = 600.0
+margin_right = 613.0
 margin_bottom = 50.0
 
 [node name="Button" type="Button" parent="HBoxContainer/Container/ScrollContainer/VBoxContainer/HBoxContainer"]
@@ -250,12 +294,15 @@ margin_top = 599.0
 margin_right = 523.0
 margin_bottom = 623.0
 
-[node name="Label" type="Label" parent="HBoxContainer/Container/FileName"]
-margin_top = 5.0
-margin_right = 130.0
-margin_bottom = 19.0
-rect_min_size = Vector2( 130, 0 )
+[node name="TLabel9" parent="HBoxContainer/Container/FileName" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 112.0
+margin_top = -411.0
+margin_right = 112.0
+margin_bottom = -397.0
 text = "File:"
+text_key = "File:"
 
 [node name="LineEdit" type="LineEdit" parent="HBoxContainer/Container/FileName"]
 margin_left = 134.0
@@ -266,14 +313,14 @@ size_flags_horizontal = 3
 editable = false
 
 [node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer"]
-margin_left = 604.0
-margin_right = 1127.0
+margin_left = 617.0
+margin_right = 1144.0
 margin_bottom = 639.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="Control" type="Panel" parent="HBoxContainer/VBoxContainer"]
-margin_right = 523.0
+margin_right = 527.0
 margin_bottom = 611.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -294,25 +341,27 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Label" type="Label" parent="HBoxContainer/VBoxContainer/Control"]
-self_modulate = Color( 1, 1, 1, 0.396078 )
-margin_right = 340.0
+[node name="TLabel10" parent="HBoxContainer/VBoxContainer/Control" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 50.0
 margin_bottom = 14.0
 text = "Preview"
-__meta__ = {
-"_edit_use_anchors_": false
-}
+text_key = "Preview"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/VBoxContainer"]
 margin_top = 615.0
-margin_right = 523.0
+margin_right = 527.0
 margin_bottom = 639.0
 
-[node name="Label" type="Label" parent="HBoxContainer/VBoxContainer/HBoxContainer"]
+[node name="TLabel11" parent="HBoxContainer/VBoxContainer/HBoxContainer" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
 margin_top = 5.0
 margin_right = 33.0
 margin_bottom = 19.0
 text = "Scale"
+text_key = "Scale"
 
 [node name="Scale" type="SpinBox" parent="HBoxContainer/VBoxContainer/HBoxContainer"]
 margin_left = 37.0
@@ -323,16 +372,26 @@ allow_greater = true
 align = 2
 suffix = "%"
 
-[node name="Label2" type="Label" parent="HBoxContainer/VBoxContainer/HBoxContainer"]
+[node name="Spacer" type="Label" parent="HBoxContainer/VBoxContainer/HBoxContainer"]
 margin_left = 115.0
 margin_top = 5.0
-margin_right = 186.0
+margin_right = 147.0
 margin_bottom = 19.0
-text = "        Offset"
+text = "        "
+
+[node name="TLabel12" parent="HBoxContainer/VBoxContainer/HBoxContainer" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 151.0
+margin_top = 5.0
+margin_right = 190.0
+margin_bottom = 19.0
+text = "Offset"
+text_key = "Offset"
 
 [node name="OffsetX" type="SpinBox" parent="HBoxContainer/VBoxContainer/HBoxContainer"]
-margin_left = 190.0
-margin_right = 290.0
+margin_left = 194.0
+margin_right = 294.0
 margin_bottom = 24.0
 rect_min_size = Vector2( 100, 0 )
 allow_greater = true
@@ -340,8 +399,8 @@ allow_lesser = true
 suffix = "X"
 
 [node name="OffsetY" type="SpinBox" parent="HBoxContainer/VBoxContainer/HBoxContainer"]
-margin_left = 294.0
-margin_right = 394.0
+margin_left = 298.0
+margin_right = 398.0
 margin_bottom = 24.0
 rect_min_size = Vector2( 100, 0 )
 allow_greater = true
@@ -349,13 +408,22 @@ allow_lesser = true
 suffix = "Y"
 
 [node name="MirrorOption" type="HBoxContainer" parent="HBoxContainer/VBoxContainer/HBoxContainer"]
-margin_left = 398.0
-margin_right = 523.0
+margin_left = 402.0
+margin_right = 527.0
 margin_bottom = 24.0
 
 [node name="MirrorPortraitsCheckBox" type="CheckBox" parent="HBoxContainer/VBoxContainer/HBoxContainer/MirrorOption"]
-margin_right = 125.0
+margin_right = 24.0
 margin_bottom = 24.0
+
+[node name="TLabel11" parent="HBoxContainer/VBoxContainer/HBoxContainer/MirrorOption" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 28.0
+margin_top = 5.0
+margin_right = 125.0
+margin_bottom = 19.0
 text = "Mirror portraits"
+text_key = "Mirror portraits"
 
 [connection signal="toggled" from="HBoxContainer/VBoxContainer/HBoxContainer/MirrorOption/MirrorPortraitsCheckBox" to="." method="_on_MirrorPortraitsCheckBox_toggled"]

@@ -12,6 +12,8 @@ onready var definition_picker = $HBox/DefinitionPicker
 
 # used to connect the signals
 func _ready():
+	if DialogicUtil.get_character_list().size() == 0:
+		hide()
 	character_picker.connect("data_changed", self, "_on_CharacterPicker_data_changed")
 	portrait_picker.connect("data_changed", self, "_on_PortraitPicker_data_changed")
 	portrait_picker.allow_dont_change = allow_portrait_dont_change

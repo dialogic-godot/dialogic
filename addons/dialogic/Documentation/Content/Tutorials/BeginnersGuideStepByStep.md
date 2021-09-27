@@ -1,15 +1,15 @@
 # Beginners Guide
 Let's begin creating your first dialog with dialogic!
 
-## 1. Meeting the dialogic tab
-All the things related to your dialogue will be done in the dialogic tab. You can access it like the 2D and 3D tab on the very top of the editor. You can access all the things you create with dialogic here.  
+## 1. Meeting the Dialogic tab
+All the things related to your dialogue will be done in the Dialogic tab. You can access it like the 2D and 3D tab on the very top of the editor. You can access all the things you create with Dialogic here.  
 ![Dialogic Tab](https://github.com/Jowan-Spooner/dialogic/blob/plugin-docs/addons/dialogic/Documentation/Content/Tutorials/Images/Dialogic_Tab.PNG)
 
 Let's have a look into the toolbar at the top.
 
 ![Toolbar](https://github.com/Jowan-Spooner/dialogic/blob/plugin-docs/addons/dialogic/Documentation/Content/Tutorials/Images/Toolbar.PNG)
 
-Here you can create dialogics four **ressources**: 
+Here you can create Dialogic's four **resources**: 
 ### Timelines
 that represent a list of events. Control characters, make them talk, change the background, ask questions, emit signals and more!
 
@@ -17,14 +17,14 @@ that represent a list of events. Control characters, make them talk, change the 
 that represent your characters. You can set a name, a description, a color, and set different images for expressions.
 
 ### Definitions
-that can be used as variables (to branch your story or be used inside the texts) or as information for the player (a name and description are shwon when the player hovers over the word).
+that can be used as variables (to branch your story or be used inside the texts) or as information for the player (a name and description are shown when the player hovers over the word).
 
 ### Themes
 that specify how your dialogue is looking. There are many settings you can tweak to suit your need.
 
 You will hear more on each of them later.
 
-All your ressources are shown in the big master tree on the left. You can select on which you want to work there.
+All your resources are shown in the big master tree on the left. You can select on which you want to work there.
 
 Let's continue! What is the most important thing for a dialogue? Someone to talk to. So we will create our first character.
 
@@ -38,29 +38,29 @@ Go on and give your character a name and a color. You can ignore the rest of the
 Next let's add a default look for them. You can select a file by clicking the tree dots.
 ![grafik](./Images/Character_Editor_With_Portrait.PNG)
 
-If you do not have a image to use right now, you can use the default dwarf from the Example Assets folder inside the dialogic folder.
+If you do not have a image to use right now, you can use the default dwarf from the Example Assets folder inside the Dialogic folder.
 
 This is all for now. You can create a second character just like this.
 
 When you are ready let's create our first ever dialogue!
 
 ## 3. Creating your first timeline
-Timelines specify what events happen in which order. Create a new timline with the icon in the toolbar.
+Timelines specify what events happen in which order. Create a new timeline with the icon in the toolbar.
 You can now see the timeline editor. You can find all possible events on the right.
 ![Empty Timeline](./Images/Empty_Timeline_Editor.PNG)
 
 
 ### | Give it a name
-Let's first give our timeline a proper name. To do so doubleclick the ressource on the right. Give it a name of your liking.
+Let's first give our timeline a proper name. To do so double-click the resource on the right. Give it a name of your liking.
 ![Timeline Name](./Images/Timeline_Change_Name.PNG)
 
 ### | Now let's talk about the EVENTS!
 
-You can click each of the buttons on the rigth to add the event to the timeline. Or you can drag and drop it to the position you want. 
+You can click each of the buttons on the right to add the event to the timeline. Or you can drag and drop it to the position you want. 
 
 You can select events by left clicking them. When you click one of the event buttons on the right, new events will be added below the selected one.
 
-You can select events and delte them with CRTL + DEL.
+You can select events and delete them with CRTL + DEL.
 
 In the timeline you can reorder the events by dragging and dropping them. You can also move the selected event up/down with ALT+UP/ALT+DOWN.
 
@@ -73,7 +73,7 @@ All of the events have settings to customize them. For the `Character Join` even
 
 When you have done that, add a `Text` event the same way.
 
-For this event we can specify which character talks, the portrait they have while saying it (if they have more then one) and what they say. On default, linebreaks split the message and empty lines are just ignored.
+For this event we can specify which character talks, the portrait they have while saying it (if they have more then one) and what they say. On default, line-breaks split the message and empty lines are just ignored.
 
 Let your character say something!
 
@@ -106,12 +106,12 @@ Before you start to make your own dialog, let us introduce some more cool things
 
 
 ## 5. Making your first definition
-This is already pretty cool, but let's make things more complex. We mentioned them earlier but here they are: Definitons.
+This is already pretty cool, but let's make things more complex. We mentioned them earlier but here they are: Definitions.
 
 ### | Make one?
 Create a new definition by clicking the X-icon in the toolbar. You will now see the definition editor.
 
-Here you can give your definition a name and a default value, but behold. Do you see that `Type` button? It's very important because it differentiates to types of definitions that are very diffrent:
+Here you can give your definition a name and a default value, but behold. Do you see that `Type` button? It's very important because it differentiates to types of definitions that are very different:
 
 A `Variable` just has a name and a value. These definitions can be used to store information (that can be inserted into text events) and to use that information in condition events.
 
@@ -122,7 +122,7 @@ Let's first create a `variable`, so make sure that type is selected. We will cal
 ![Your first variable](./Images/Definition_Editor.PNG)
 
 ### | And... another one!
-Now let's create another defintion, this time of type `Extra Information`. Select the type.
+Now let's create another definition, this time of type `Extra Information`. Select the type.
 
 I will call mine "Hogwarts" and use the same as the title. I will enter some usefull information and some lore to be displayed at the bottom.
 ![Extra Information](./Images/Definition_Extra_Informaton_Editor.PNG)
@@ -150,14 +150,9 @@ Run the game and hover over the word. Cool, right?
 ## 6. Create your first dialog theme
 This section is in the work... Please stay tuned!
 
-## 7. How to export the game
-When you export a project using Dialogic, you need to add `*.json, *.cfg` on the Resources tab (see the image below). This allows Godot to pack the files from the `/dialogic` folder.
-
-![Exporting](./Images/ExportResources.PNG)
-
 ## Behind the scenes
 If you wonder how all of this works, here is some (very) short explantaion.
 
-All the ressources are saved as jsons in a dialogic folder in your games root directory.
+All the resources are saved as jsons in a Dialogic folder in your games root directory.
 
 Boom. There you go :). I'm to lazy to explain more.
