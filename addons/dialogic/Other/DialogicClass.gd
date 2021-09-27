@@ -138,8 +138,11 @@ static func save_current_info(save_name: String = '', check_autosave = false) ->
 	var current_dialog_info = {}
 	if has_current_dialog_node():
 		current_dialog_info = Engine.get_main_loop().get_meta('latest_dialogic_node').get_current_state_info()
+	var game_state = {}
+	if Engine.get_main_loop().has_meta('game_state'):
+		game_state = Engine.get_main_loop().get_meta('game_state')
 	var save_data = {
-		'game_state': Engine.get_main_loop().get_meta('game_state'),
+		'game_state': game_state,
 		'dialog_state': current_dialog_info
 		}
 	save_state_and_definitions(save_name, save_data)
