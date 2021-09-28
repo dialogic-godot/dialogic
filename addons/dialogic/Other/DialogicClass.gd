@@ -113,7 +113,9 @@ static func start_from_save(save_name: String = '', default_timeline : String = 
 			dialog_node.resume_state_from_info(Engine.get_main_loop().get_meta('last_dialog_state'))
 		else:
 			load_from_save()
-			if Engine.get_main_loop().has_meta('last_dialog_state'):
+			if (Engine.get_main_loop().has_meta('last_dialog_state') 
+				and not Engine.get_main_loop().get_meta('last_dialog_state').empty()
+				and not Engine.get_main_loop().get_meta('last_dialog_state').get('timeline', '').empty()):
 				dialog_node.resume_state_from_info(Engine.get_main_loop().get_meta('last_dialog_state'))
 			else:
 				var timeline_file = get_timeline_file_from_name(default_timeline)
