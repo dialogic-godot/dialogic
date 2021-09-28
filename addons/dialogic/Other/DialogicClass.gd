@@ -107,25 +107,32 @@ static func start_from_save(save_name: String = '', default_timeline : String = 
 
 	returned_dialog_node = dialog_node if not canvas_dialog_node else canvas_dialog_node
 	
-	if save_name == '':
+	if save_name == '/':
 		# this will load from current state (default save or imported data)
-		if Engine.get_main_loop().has_meta('last_dialog_state'):
+		if (Engine.get_main_loop().has_meta('last_dialog_state') 
+		  and not Engine.get_main_loop().get_meta('last_dialog_state').empty()
+		  and not Engine.get_main_loop().get_meta('last_dialog_state').get('timeline', '').empty()):
 			dialog_node.resume_state_from_info(Engine.get_main_loop().get_meta('last_dialog_state'))
-		else:
-			load_from_save()
-			if (Engine.get_main_loop().has_meta('last_dialog_state') 
-				and not Engine.get_main_loop().get_meta('last_dialog_state').empty()
-				and not Engine.get_main_loop().get_meta('last_dialog_state').get('timeline', '').empty()):
-				dialog_node.resume_state_from_info(Engine.get_main_loop().get_meta('last_dialog_state'))
-			else:
-				var timeline_file = get_timeline_file_from_name(default_timeline)
-				if timeline_file:
-					dialog_node.timeline = timeline_file
-				else:
-					print('[D] Attempt to load from current state without current state! You should provide a default timeline for these cases!')
+			return returned_dialog_node
 	else:
-		# this if a save_name was specified
-		dialog_node.resume_state_from_info(load_from_save(save_name))
+		# this if a save_name was specified or it will load the default save
+		load_from_save(save_name)
+	
+	## now check if the loaded data is usable
+	if (Engine.get_main_loop().has_meta('last_dialog_state') 
+	  and not Engine.get_main_loop().get_meta('last_dialog_state').empty()
+	  and not Engine.get_main_loop().get_meta('last_dialog_state').get('timeline', '').empty()):
+		dialog_node.resume_state_from_info(Engine.get_main_loop().get_meta('last_dialog_state'))
+	# otherwise load the default_timeline
+	else:
+		if default_timeline == '':
+			print('[D] Saved/imported data not found. You should provide a default timeline for these cases!')
+			return Node.new()
+		var timeline_file = get_timeline_file_from_name(default_timeline)
+		if timeline_file:
+			dialog_node.timeline = timeline_file
+		else:
+			print("[D] Unable to find timeline '"+default_timeline+"'.")
 	return returned_dialog_node
 
 
