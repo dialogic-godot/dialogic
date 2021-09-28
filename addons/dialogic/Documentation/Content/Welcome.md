@@ -38,9 +38,11 @@ This project is made possible by the support of our [Patreons](https://www.patre
 - [Theme Editor](./Reference/Theme.md)
 
 ## Tutorials
+- [Getting started (video)](https://www.youtube.com/watch?v=sYjgDIgD7AY)
+- [Saving and Loading](./Tutorials/Saving.md)
 - [Creating Custom Events](./Events/Custom Events/CreateCustomEvents)
 - [Beginners Guide](./Tutorials/BeginnersGuideStepByStep.md)
-- [Full Documentation (old)](./Tutorials/DefaultDocs.md)
+
 
 
 # Dialogic is made by:
