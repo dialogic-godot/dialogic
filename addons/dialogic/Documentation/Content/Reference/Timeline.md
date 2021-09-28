@@ -14,18 +14,18 @@ You move events by clicking and dragging them.
 Select multiple events by holding CRTL. Range select with SHIFT.
 
 The editor supports the following short-cuts: 
-
+`
 CRTL+C 					copy selected events
 CRTL+P 					paste selected events 
 CRTL+X 					cut selected events
 DEL						delete selected events
 DOWN/UP					select the next/previous event
 ALT+UP/DOWN				move the selected event up or down (only works with one event)
-CRTL+A					select all events
-CRTL+SHIFT+A 			deselect all events
-CRTL+Z					undo the last event action
+CRTL+A					 select all events
+CRTL+SHIFT+A 			  deselect all events
+CRTL+Z					 undo the last event action
 CRTL+Y or CRTL+SHIFT+Z 	redo the last undone action
 
 CRTL+T 					add a new Text event
-
+`
 

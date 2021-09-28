@@ -34,6 +34,7 @@ This project is made possible by the support of our [Patreons](https://www.patre
 ## Reference
 - [Dialog node](./Reference/000.md)
 - [Dialog Class](./Reference/001.md)
+- [Timeline Editor](./Reference/Timeline.md)
 - [Character Editor](./Reference/Character.md)
 - [Theme Editor](./Reference/Theme.md)
 
