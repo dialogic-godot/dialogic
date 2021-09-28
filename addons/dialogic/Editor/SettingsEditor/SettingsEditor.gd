@@ -254,4 +254,11 @@ func create_custom_event():
 	
 	dir.rename(dir_name+'/event_yourname_000.gd', dir_name+'/event_'+nodes['new_custom_event_id'].text+'.gd')
 	
+	
+	var event_block_scene = load(dir_name+'/EventBlock.tscn').instance()
+	event_block_scene.event_name = nodes['new_custom_event_name'].text
+	var packed = PackedScene.new()
+	packed.pack(event_block_scene)
+	ResourceSaver.save(dir_name+'/EventBlock.tscn', packed)
+
 	nodes['new_custom_event_section'].hide()
