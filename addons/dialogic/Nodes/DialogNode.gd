@@ -589,7 +589,18 @@ func _on_text_completed():
 				regex.compile("\\[nw=(.+?)\\](.*?)")
 				var result = regex.search(current_event['text'])
 				var wait_settings = result.get_string()
-				waiting_time = float(wait_settings.split('=')[1])
+				#Kva-hack. if the waiting time is set to 'v'
+				#It will fetch waiting time from CharacterVoice.
+				waiting_time = wait_settings.split('=')[1]
+				if(waiting_time.begins_with('v')):
+					waiting_time = $"FX/CharacterVoice".remaining_time()
+				else:
+					waiting_time = float(waiting_time)
+				print("Waiting time: " + String(waiting_time))
+				#Remove these comments once replaced with proper code.				
+				# - KvaGram
+				#original line
+				#waiting_time = float(wait_settings.split('=')[1])
 			
 			yield(get_tree().create_timer(waiting_time), "timeout")
 			if dialog_index == current_index:
