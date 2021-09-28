@@ -5,28 +5,32 @@
 [ext_resource path="res://addons/dialogic/Images/Event Icons/Main Icons/end-branch.svg" type="Texture" id=5]
 
 [node name="EndBranch" instance=ExtResource( 1 )]
+event_name = "End Branch"
 event_data = {
 "event_id": "dialogic_013"
 }
-event_style = ExtResource( 2 )
 event_icon = ExtResource( 5 )
-event_name = "End Branch"
-expand_on_default = true
+event_style = ExtResource( 2 )
+help_page_path = "res://addons/dialogic/Documentation/Content/Events/013.md"
 
 [node name="PanelContainer" parent="." index="1"]
 custom_styles/panel = ExtResource( 2 )
 
-[node name="IconTexture" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="0"]
+[node name="IconTexture" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="1"]
 margin_right = 32.0
 texture = ExtResource( 5 )
 
-[node name="TitleLabel" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="0"]
-margin_right = 76.0
+[node name="TitleLabel" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="2"]
+margin_left = 42.0
+margin_right = 113.0
 text = "End Branch"
 
 [node name="Content" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="3"]
-margin_left = 142.0
-margin_right = 152.0
+margin_left = 123.0
+margin_right = 133.0
 
 [node name="Spacer" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="5"]
-margin_left = 156.0
+margin_left = 143.0
+
+[node name="OptionsControl" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="7"]
+items = [ "Move Up", null, 0, false, false, 0, 0, null, "", false, "Move Down", null, 0, false, false, 1, 0, null, "", false, "", null, 0, false, false, 2, 0, null, "", false, "Remove", null, 0, false, false, 3, 0, null, "", false ]

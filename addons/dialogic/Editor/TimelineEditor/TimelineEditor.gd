@@ -90,7 +90,7 @@ func _ready():
 	
 	update_custom_events()
 	$TimelineArea.connect('resized', self, 'add_extra_scroll_area_to_timeline', [])
-
+	
 
 # handles dragging/moving of events
 func _process(delta):
@@ -377,7 +377,7 @@ func _unhandled_key_input(event):
 func get_events_indexed(events:Array) -> Dictionary:
 	var indexed_dict = {}
 	for event in events:
-		indexed_dict[event.get_index()] = event.event_data
+		indexed_dict[event.get_index()] = event.event_data.duplicate()
 	return indexed_dict
 
 func select_indexed_events(indexed_events:Dictionary) -> void:
@@ -607,6 +607,7 @@ func _create_event_button_pressed(button_name):
 	TimelineUndoRedo.add_do_method(self, "create_event", button_name, {'no-data': true}, true, at_index, true)
 	TimelineUndoRedo.add_undo_method(self, "remove_events_at_index", at_index, 1)
 	TimelineUndoRedo.commit_action()
+	scroll_to_piece(at_index)
 	indent_events()
 
 
@@ -672,11 +673,8 @@ func update_custom_events() -> void:
 	for child in custom_events_container.get_children():
 		child.queue_free()
 	
-	if not DialogicResources.get_settings_config().get_value('editor', 'use_custom_events', false):
-		return 
-	
 	var path:String = "res://dialogic/custom-events"
-
+	
 	var dir = Directory.new()
 	if dir.open(path) == OK:
 		dir.list_dir_begin()
@@ -685,7 +683,6 @@ func update_custom_events() -> void:
 		while file_name != "":
 			# if it found a folder
 			if dir.current_is_dir() and not file_name in ['.', '..']:
-				
 				# look through that folder
 				#print("Found custom event folder: " + file_name)
 				var event = load(path.plus_file(file_name).plus_file('EventBlock.tscn')).instance()
@@ -698,11 +695,19 @@ func update_custom_events() -> void:
 					event.queue_free()
 				else:
 					print("[D] An error occurred when trying to access a custom event.")
-
+				
 				
 			else:
 				pass # files in the directory are ignored
 			file_name = dir.get_next()
+			
+		# After we finishing checking, if any events exist, show the panel
+		if custom_events.size() == 0:
+			custom_events_container.hide()
+			$ScrollContainer/EventContainer/CustomEventsHeadline.hide()
+		else:
+			custom_events_container.show()
+			$ScrollContainer/EventContainer/CustomEventsHeadline.show()
 	else:
 		print("[D] An error occurred when trying to access the custom events folder.")
 	
@@ -791,6 +796,7 @@ func create_event(scene: String, data: Dictionary = {'no-data': true} , indent: 
 
 	piece.connect("option_action", self, '_on_event_options_action', [piece])
 	piece.connect("gui_input", self, '_on_event_block_gui_input', [piece])
+	
 	events_warning.visible = false
 	if auto_select:
 		select_item(piece, false)
@@ -1037,6 +1043,13 @@ func save_timeline() -> void:
 ## *****************************************************************************
 ##					 UTILITIES/HELPERS
 ## *****************************************************************************
+
+# Scrolling
+func scroll_to_piece(piece_index) -> void:
+	var height = 0
+	for i in range(0, piece_index):
+		height += $TimelineArea/TimeLine.get_child(i).rect_size.y
+	$TimelineArea.scroll_vertical = height
 
 # Event Indenting
 func indent_events() -> void:

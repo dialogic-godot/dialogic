@@ -1,32 +1,57 @@
 # Changelog
 
 ## v1.3 - (WIP)
-Changes:
-  - ⭐ Builtin Documentation [[Jowan-Spooner]](https://github.com/Jowan-Spooner)
-  - Editor plugin has translation support and some labels are translated to Chinese [[magian1127]][https://github.com/magian1127)]
-  - Added some Spanish translations
-  - Fixed a bug that prevented to use the global input setting when selecting option buttons
-  - `Dialogic.start()` will now use paths for specific timelines. A fallback is in place, but specificity is preferred. For instance: `Dialogic.start('my-timeline')` will search any timeline with that name; `Dialogic.start('/chapter-1/my-timeline')` will open the timeline namde `my-timeline` inside the folder `chapter-1`.
-  - Rework of the character name coloring (using Regex now) [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
-  - Fixed a reference bug that prevent the duplication of Themes
-  - Fixing requirement to manually configure export dialog [[LuRomao]](https://github.com/LuRomao)
-  - Changed the default cursor shape that was weird in MacOS
-  - A modular Custom events implementation [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
-  - Removed the need to use a DialogicSingleton. Hope this doesn't do any harm in existing projects
-  - Deleted some legacy documentation files
-  - Fixed the DialogNode Inspector Timeline Open button issue
-  - Regex name compiler now properly escapes special characters [[zaknafean]](https://github.com/zaknafean)
-  - Timeline Editor:
-    - Added a preview image on the portrait picker, so it is easy to know what sprite or scene you are selecting. Thanks to [EmmaH](https://www.youtube.com/channel/UC4y59CMiLxWQQVqVFBYLa3Q) for the idea and [Jowan-Spooner](https://github.com/Jowan-Spooner) for the implementation
-    - Adding an extra space at the end of the timelines so it is easier to drag and drop new events
-    - Change the Selected Event Style to only have blue borders and not change event color [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
-    - Partial support for undo and redo [[Jowan-Spooner]](https://github.com/Jowan-Spooner)
-    - After selecting a conditional, the input field of that event will be selected
-    - Added Voice Line support for Text and Question Events [[RedXGames](https://github.com/RedXGames)]
-    	- Added option to use a certain region of the audio files [[KvaGram](https://github.com/KvaGram)]
-    - Updated UI of the AudioPickers [[Jowan-Spooner]](https://github.com/Jowan-Spooner)
-  - Theme Editor:
-    - You can now set the choice buttons to be aligned horizontally or vertically
+#### General Editor Stuff
+- Builtin Documentation [[Jowan-Spooner]](https://github.com/Jowan-Spooner)
+- Editor plugin has translation support and some labels are translated to Chinese [[magian1127]](https://github.com/magian1127)
+- Added some initial Spanish translations
+- Fixed a reference bug that prevent the duplication of Themes
+- Fixed the `DialogNode` Inspector Timeline Open button issue
+- Better light/custom theme support for the Dialogic editor tab [[Jowan-Spooner]](https://github.com/Jowan-Spooner)
+- Replaced the default `/addons/dialogic/Dialog.tscn` node with a proxy that creates a dialog using the `Dialogic.start` function instead of the raw node. This will make it easier to update from version to version since the instantiated node will not be changing a lot from version to version. This also moved and renamed the previous `/addons/dialogic/Dialog.tscn` to `/addons/dialogic/Nodes/DialogNode.tscn` and the `dialog_node.gd` is now called `DialogNode.gd` to be more in line with the rest of the project
+- Renamed the plugin entry point script from `dialogic.gd` to `plugin.gd` so it better describes what that file does
+- CanvasLayer Argument (Dialogic.start()) added to the CSharp Class
+- Added a button to open the documentation from the nav bar
+  
+#### Timeline Editor:
+- A modular Custom events implementation [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
+- Added a preview image on the portrait picker, so it is easy to know what sprite or scene you are selecting. Thanks to [EmmaH](https://www.youtube.com/channel/UC4y59CMiLxWQQVqVFBYLa3Q) for the idea and [Jowan-Spooner](https://github.com/Jowan-Spooner) for the implementation
+- Added Voice Line support for Text and Question Events [[RedXGames](https://github.com/RedXGames)]
+ - Added option to use a certain region of the audio files [[KvaGram](https://github.com/KvaGram)]
+- Change the Selected Event Style to only have blue borders and not change event color [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
+- Adding an extra space at the end of the timelines so it is easier to drag and drop new events
+- Partial support for undo and redo [[Jowan-Spooner]](https://github.com/Jowan-Spooner)
+- After selecting a conditional, the input field of that event will be selected
+- Updated UI of the AudioPickers [[Jowan-Spooner]](https://github.com/Jowan-Spooner)
+- Automatically scrolling to newly created events when you click on a create event button [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
+- If no characters are present in the current project the character picker is hidden and a prompt was added in the Character join and Character leave events to create one [[zaknafean]](https://github.com/zaknafean)
+   
+#### Theme Editor:
+- A default theme is created on new projects [[zaknafean]](https://github.com/zaknafean)
+- You can now set the position of the buttons relative to the screen (Top, Bottom, Center, Left, Right)
+- You can now set the choice buttons to be aligned horizontally or vertically
+- More range for dialog text speed [[zaknafean]](https://github.com/zaknafean)
+- Updated Audio Settings [[Tim Krief](https://github.com/timkrief)]: 
+ - you can now select audio for typing, text completed, next event, button hover and button selecting
+ - Attention: Old typing audio will have to be redone!
+
+#### Ingame Behaviour
+- Fixed a bug that performed the fade-in animation before setting the proper theme
+- Dialogs only start typing after the fade-in animation happened
+- If the text is too big for your dialog and you see a scrolling bar, you can use the `up` and `down` keys to scroll [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
+- Rework of the character name coloring (using Regex now) [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
+- Regex name compiler now properly escapes special characters [[zaknafean]](https://github.com/zaknafean)
+- Changed the default cursor shape that was weird in MacOS
+- Fixed a bug that prevented to use the global input setting when selecting option buttons
+- `Dialogic.start()` will now use paths for specific timelines. A fallback is in place, but specificity is preferred. For instance: `Dialogic.start('my-timeline')` will search any timeline with that name; `Dialogic.start('/chapter-1/my-timeline')` will open the timeline namde `my-timeline` inside the folder `chapter-1`.
+
+#### Export
+- Fixing requirement to manually configure export dialog [[LuRomao]](https://github.com/LuRomao)
+
+#### Other Stuff:
+- Removed the need to use a DialogicSingleton. Hope this doesn't do any harm in existing projects
+- Deleted some legacy documentation files
+- Adding a warning if you are trying to set or get a variable that wasn't defined
 
 
 ## v1.2.5 - Possibly breaking eveything. We will never know.
@@ -44,20 +69,22 @@ Changes:
   - Added a default action key selector so you don't have to set it per theme. The theme action key settings will overwrite the one set in settings. 
   - Added new setting to select Dialogic's Canvas Layer [[RedXGames]](https://github.com/RedXGames)
 
+
 ## v1.2.4 - Gotta go fast
 - Fixed an issue with the default scale of the portraits
 - Trying to simplify and remove legacy code:
-  - EditorView.gd
-    - Unified the remove resource confirmation dialogs
-    - Removed pointless variable definitions
+- EditorView.gd: Unified the remove resource confirmation dialogs and removed pointless variable definitions
+
 
 ## v1.2.3 - Two releases in one day?
 - Hopefully, final attempt to fix the weird event creation bug [[Jowan-Spooner](https://github.com/Jowan-Spooner)] Thanks [[Drawsi](https://github.com/Drawsi)] for the report and testing!
+
 
 ## v1.2.2 - Here we go again :')
 - Set Value Event: There is now a dice symbol that (when toggled) will reveal to boxes for a minimum and a maximum random number to choose from [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
 - Making a small delay on choices to prevent the people that spam "next" to accidentally select the first option
 - Fixed some issues when creating new events in the timeline
+
 
 ## v1.2.1 - Get them while they're hot!
 - You can now specify for how long to wait in `[nw]` events. `[nw=3]` or whatever number of seconds you want it to wait
@@ -130,6 +157,7 @@ Changes:
 
 - And many more! (kinda hate not listing all the changes, but don't remember all of them)
 
+
 ## v1.1 - With a little help from my friends
 - Improved event dragging and selection [[Arnaud Vergnet](https://github.com/arnaudvergnet)]
 - Fixed a bug that prevented the deletion of Characters [[AnidemDex](https://github.com/AnidemDex)]
@@ -196,13 +224,14 @@ Changes:
 
 To view previous changes [click here](https://github.com/coppolaemilio/dialogic/blob/main/CHANGELOG.md). 
 
+
 ## v1.0 - We made it! 🎉
   - When upgrading from 0.9 to the current version things might not work as expected:
     - ⚠ **PLEASE MAKE A BACKUP OF YOUR PROJECT BEFORE UPGRADING** ⚠
     - Glossary variables will be lost
     - Glossary related events will not be loaded (`If condition Event` and `Set Value Event`)
     - The theme you made in the 0.9 theme editor will be lost. You will have to remake it.
-  - Video https://youtu.be/MeaS3zZxpbA
+  - Video [https://youtu.be/MeaS3zZxpbA](https://youtu.be/MeaS3zZxpbA)
   - New layout:
     - All editors in the same screen. Say goodbye to tabs!
     - You can now rename resources by double clicking them
@@ -240,8 +269,9 @@ To view previous changes [click here](https://github.com/coppolaemilio/dialogic/
   - The events now emit signals. Thank you [Jesse Lieberg](https://github.com/GammaGames) for your first contribution!
   - Special thanks to [Arnaud Vergnet](https://github.com/arnaudvergnet) for all your work in improving Definitions, conditional events and many more! 🙇‍♂️
 
+
 ## v0.9 - House keeping
-  - Video: https://youtu.be/pL0RWVmlM6g
+  - Video: [https://youtu.be/pL0RWVmlM6g](https://youtu.be/pL0RWVmlM6g)
   - Moved `Dialog.tscn` to the root of the addon so it is easier to find.
   - Added a link to the documentation from the editor
   - Refactored a lot of the code and continued splitting the main plugin code into smaller pieces.
@@ -291,8 +321,9 @@ To view previous changes [click here](https://github.com/coppolaemilio/dialogic/
         print(value)
     ```
 
+
 ## v0.8 - Dialog enters the game
- - Video: https://youtu.be/NfTyRrsdB1I
+ - Video: [https://youtu.be/NfTyRrsdB1I](https://youtu.be/NfTyRrsdB1I)
  - Moved the theme editor tool icon to the left
  - Theme Editor:
     - Added a color background as an option
@@ -318,8 +349,9 @@ To view previous changes [click here](https://github.com/coppolaemilio/dialogic/
     - Better scene resizing and position
     - Button styles
 
+
 ## v0.7 - Looking good
- - Video: https://youtu.be/wREIVj55eBM
+ - Video: [https://youtu.be/wREIVj55eBM](https://youtu.be/wREIVj55eBM)
  - New plugin tab icon
  - Removed legacy files
  - From the theme tab you can now:
@@ -342,8 +374,9 @@ To view previous changes [click here](https://github.com/coppolaemilio/dialogic/
    - You can open the working directory
    - You can copy the timeline ID
 
+
 ## v0.6 - Character portraits
- - Video: https://youtu.be/okWYt_yGKNI
+ - Video: [https://youtu.be/okWYt_yGKNI](https://youtu.be/okWYt_yGKNI)
  - Splitting the main script into smaller pieces
  - Characters
    - Characters welcome screen when there are 0
@@ -354,8 +387,9 @@ To view previous changes [click here](https://github.com/coppolaemilio/dialogic/
  - Events:
    - Text block now has a portrait dropdown
 
+
 ## v0.5 - Indentation Magic
- - Video: https://youtu.be/mrTyWy2TJOM
+ - Video: [https://youtu.be/mrTyWy2TJOM](https://youtu.be/mrTyWy2TJOM)
  - Added new events:
    - Choice
    - End branch
@@ -366,18 +400,21 @@ To view previous changes [click here](https://github.com/coppolaemilio/dialogic/
  - Restructured the events node structure to add indentation
  - Changed event default colors
 
+
 ## v0.4 - Dialogic
- - Video: https://youtu.be/Hf_gywa6vZE
+ - Video: [https://youtu.be/Hf_gywa6vZE](https://youtu.be/Hf_gywa6vZE)
  - Changed how the main editor works, instead of being a graphedit it is now an event timeline.
  - Renamed the plugin to Dialogic. Thanks to Òscar for always knowing how to name things. 
  - Moved all data to .json files
  - Broke the addon for working. Nice :)
 
+
 ## v0.3 - Using Resources
- - Video: https://youtu.be/PzzOE4LbGAo
+ - Video: [https://youtu.be/PzzOE4LbGAo](https://youtu.be/PzzOE4LbGAo)
  - Removed requirement for `global.gd` and `characters.gd` autoload scripts.
  - Added `DialogResource` and `DialogCharacterResource` resources to create a cleaner way of specifying dialog content
  - Added icon to the existing dialog node.
+
 
 ## v0.2 - Adding Characters:
  - Changed text speed to fixed per character instead of total time span
@@ -386,5 +423,6 @@ To view previous changes [click here](https://github.com/coppolaemilio/dialogic/
  - Created the `fade-in` effect
  - Curly brackets introduced for character names.
 
+
 ## v0.1 - Release
- - You can watch the presentation video here https://youtu.be/TXmf4FP8OCA
+ - You can watch the presentation video here [https://youtu.be/TXmf4FP8OCA](https://youtu.be/TXmf4FP8OCA)

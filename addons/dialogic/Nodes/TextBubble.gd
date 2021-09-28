@@ -12,7 +12,7 @@ var _finished := false
 var _theme
 
 signal text_completed()
-
+signal letter_written()
 
 ## *****************************************************************************
 ##								PUBLIC METHODS
@@ -65,6 +65,7 @@ func update_text(text):
 	text_label.bbcode_text = text
 	text_label.visible_characters = 0
 	
+	text_label.grab_focus()
 	start_text_timer()
 	return true
 
@@ -176,24 +177,9 @@ func load_theme(theme: ConfigFile):
 	var animation = theme.get_value('next_indicator', 'animation', 'Up and down')
 	next_indicator.get_node('AnimationPlayer').play(animation)
 	
-	# Setting typing SFX
-	var sound_effect_path = theme.get_value('typing_sfx', 'path', "res://addons/dialogic/Example Assets/Sound Effects/Keyboard Noises")
-	
-	var file_system = Directory.new()
-	if file_system.dir_exists(sound_effect_path):
-		$TypingSFX.load_samples_from_folder(sound_effect_path)
-	elif file_system.file_exists(sound_effect_path) or file_system.file_exists(sound_effect_path + '.import'):
-		$TypingSFX.samples = [load(sound_effect_path)]
-	
-	$TypingSFX.set_volume_db(theme.get_value('typing_sfx', 'volume', -10))
-	$TypingSFX.random_volume_range = theme.get_value('typing_sfx', 'random_volume_range', 5)
-	$TypingSFX.random_pitch_range = theme.get_value('typing_sfx', 'random_pitch_range', 0.2)
-	$TypingSFX.set_bus(theme.get_value('typing_sfx', 'audio_bus', "Master"))
-	
 	
 	# Saving reference to the current theme
 	_theme = theme
-
 
 ## *****************************************************************************
 ##								PRIVATE METHODS
@@ -201,25 +187,22 @@ func load_theme(theme: ConfigFile):
 
 
 func _on_writing_timer_timeout():
-	if _finished == false:
-		text_label.visible_characters += 1
-		
-		if text_label.visible_characters > text_label.get_total_character_count():
-			_handle_text_completed()
+	# Checks for the 'fade_in_tween_show_time' which only exists during the fade in animation
+	# if that node doesn't exists, it won't start the letter by letter animation.
+	if get_parent().has_node('fade_in_tween_show_time') == false:
+		if _finished == false:
+			text_label.visible_characters += 1
 			
-			if $TypingSFX.is_playing():
-				var sfx_time_left = $TypingSFX.stream.get_length() - $TypingSFX.get_playback_position()
-				$WritingTimer.start(sfx_time_left)
-		elif (
-			text_label.visible_characters > 0 and
-			text_label.text[text_label.visible_characters-1] != " "
-		):
-			if _theme.get_value('typing_sfx', 'enable', false):
-				if _theme.get_value('typing_sfx', 'allow_interrupt', true) or not $TypingSFX.is_playing():
-					$TypingSFX.play()
-	else:
-		$WritingTimer.stop()
-		$TypingSFX.stop()
+			if text_label.visible_characters > text_label.get_total_character_count():
+				_handle_text_completed()
+			elif (
+				text_label.visible_characters > 0 and
+				text_label.text[text_label.visible_characters-1] != " "
+			):
+				emit_signal('letter_written')
+		else:
+			$WritingTimer.stop()
+
 
 func start_text_timer():
 	if text_speed == 0:
@@ -228,6 +211,7 @@ func start_text_timer():
 	else:
 		$WritingTimer.start(text_speed)
 		_finished = false
+
 
 func _handle_text_completed():
 	$WritingTimer.stop()
@@ -255,3 +239,4 @@ func _ready():
 	reset()
 	$WritingTimer.connect("timeout", self, "_on_writing_timer_timeout")
 	text_label.meta_underlined = false
+

@@ -289,7 +289,7 @@ func build_documentation(selected_item: String=''):
 	while child:
 		child.call_recursive("call_deferred", "free")
 		child = child.get_next()
-	$DocsTreeHelper.build_documentation_tree(self, documentation_tree, {'editor':'Documentation Root', 'editable':'false'}, {'editor':'Documentation', 'editable':'false'}, filter_tree_term)
+	$DocsTreeHelper.build_documentation_tree(self, documentation_tree, {'editor':'Documentation Root', 'editable':false}, {'editor':'Documentation', 'editable':false}, filter_tree_term)
 	call_deferred("update")
 	
 ## *****************************************************************************
@@ -324,8 +324,10 @@ func _on_item_selected():
 			settings_editor.update_data()
 			show_settings_editor()
 		'Documentation', 'Documentation Root':
-			documentation_viewer.load_page(metadata['path'])
-			show_documentatio_editor()
+			if metadata['path']:
+				documentation_viewer.load_page(metadata['path'])
+				show_documentatio_editor()
+			get_selected().collapsed = false
 		_:
 			hide_all_editors()
 
