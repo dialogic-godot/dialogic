@@ -12,6 +12,7 @@ var max_preview_characters = 50
 signal state_changed(expanded)
 
 func _ready():
+	$MarginContainer/Preview.set("custom_colors/font_color", get_color("disabled_font_color", "Editor"))
 	set_enabled(false)
 	visible_toggle.connect("toggled", self, "_on_VisibleToggle_toggled")
 

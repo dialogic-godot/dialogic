@@ -7,6 +7,7 @@
 [ext_resource path="res://addons/dialogic/Editor/Events/styles/Logic.tres" type="StyleBox" id=5]
 
 [node name="Question" instance=ExtResource( 3 )]
+event_name = "Question"
 event_data = {
 "character": "",
 "event_id": "dialogic_010",
@@ -14,17 +15,17 @@ event_data = {
 "portrait": "",
 "question": ""
 }
-event_style = ExtResource( 5 )
 event_icon = ExtResource( 1 )
-event_name = "Question"
+event_style = ExtResource( 5 )
 header_scene = ExtResource( 2 )
 body_scene = ExtResource( 4 )
+help_page_path = "res://addons/dialogic/Documentation/Content/Events/010.md"
 
 [node name="PanelContainer" parent="." index="1"]
 margin_bottom = 50.0
 custom_styles/panel = ExtResource( 5 )
 
-[node name="MarginContainer" parent="PanelContainer" index="0"]
+[node name="MarginContainer" parent="PanelContainer" index="1"]
 margin_bottom = 50.0
 
 [node name="VBoxContainer" parent="PanelContainer/MarginContainer" index="0"]
@@ -51,7 +52,7 @@ margin_right = 311.0
 [node name="Spacer" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="5"]
 margin_left = 321.0
 
-[node name="OptionsControl" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="6"]
+[node name="OptionsControl" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="7"]
 items = [ "Move Up", null, 0, false, false, 0, 0, null, "", false, "Move Down", null, 0, false, false, 1, 0, null, "", false, "", null, 0, false, false, 2, 0, null, "", false, "Remove", null, 0, false, false, 3, 0, null, "", false ]
 
 [node name="Body" parent="PanelContainer/MarginContainer/VBoxContainer" index="1"]

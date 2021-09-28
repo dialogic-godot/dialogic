@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://addons/dialogic/Editor/ThemeEditor/ButtonStylePicker.gd" type="Script" id=1]
+[ext_resource path="res://addons/dialogic/Editor/Common/TLabel.tscn" type="PackedScene" id=2]
 
 [node name="ButtonStylePicker" type="GridContainer"]
 margin_right = 380.0
@@ -13,16 +14,18 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Label" type="Label" parent="."]
+[node name="TLabel" parent="." instance=ExtResource( 2 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
 margin_top = 5.0
-margin_right = 210.0
+margin_right = 126.0
 margin_bottom = 19.0
-size_flags_horizontal = 3
-text = "Text Color "
+text = "Text Color"
+text_key = "Text Color"
 
 [node name="TextColor" type="HBoxContainer" parent="."]
-margin_left = 220.0
-margin_right = 380.0
+margin_left = 136.0
+margin_right = 296.0
 margin_bottom = 24.0
 rect_min_size = Vector2( 160, 0 )
 __meta__ = {
@@ -40,17 +43,19 @@ margin_bottom = 24.0
 size_flags_horizontal = 3
 color = Color( 1, 1, 1, 1 )
 
-[node name="Label5" type="Label" parent="."]
+[node name="TLabel2" parent="." instance=ExtResource( 2 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
 margin_top = 33.0
-margin_right = 210.0
+margin_right = 126.0
 margin_bottom = 47.0
-size_flags_horizontal = 3
 text = "Flat background"
+text_key = "Flat background"
 
 [node name="FlatBackground" type="HBoxContainer" parent="."]
-margin_left = 220.0
+margin_left = 136.0
 margin_top = 28.0
-margin_right = 380.0
+margin_right = 296.0
 margin_bottom = 52.0
 
 [node name="CheckBox" type="CheckBox" parent="FlatBackground"]
@@ -64,16 +69,19 @@ margin_right = 160.0
 margin_bottom = 24.0
 size_flags_horizontal = 3
 
-[node name="BackgroundTextureLabel" type="Label" parent="."]
+[node name="BackgroundTextureLabel" parent="." instance=ExtResource( 2 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
 margin_top = 61.0
-margin_right = 210.0
+margin_right = 126.0
 margin_bottom = 75.0
 text = "Background Texture"
+text_key = "Background Texture"
 
 [node name="BackgroundTexture" type="HBoxContainer" parent="."]
-margin_left = 220.0
+margin_left = 136.0
 margin_top = 56.0
-margin_right = 380.0
+margin_right = 296.0
 margin_bottom = 80.0
 rect_min_size = Vector2( 123, 0 )
 
@@ -88,16 +96,19 @@ margin_bottom = 24.0
 size_flags_horizontal = 3
 text = "Don't change"
 
-[node name="TextureModulationLabel" type="Label" parent="."]
+[node name="TextureModulationLabel" parent="." instance=ExtResource( 2 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
 margin_top = 89.0
-margin_right = 210.0
+margin_right = 126.0
 margin_bottom = 103.0
 text = "Texture Modulation"
+text_key = "Texture Modulation"
 
 [node name="TextureModulation" type="HBoxContainer" parent="."]
-margin_left = 220.0
+margin_left = 136.0
 margin_top = 84.0
-margin_right = 380.0
+margin_right = 296.0
 margin_bottom = 108.0
 rect_min_size = Vector2( 123, 0 )
 

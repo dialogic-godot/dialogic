@@ -18,6 +18,9 @@ func _ready():
 	text_editor.syntax_highlighting = true
 	text_editor.add_color_region('[', ']', get_color("axis_z_color", "Editor"))
 	text_editor.set('custom_colors/number_color', get_color("font_color", "Editor"))
+	text_editor.set('custom_colors/function_color', get_color("font_color", "Editor"))
+	text_editor.set('custom_colors/member_variable_color', get_color("font_color", "Editor"))
+	text_editor.set('custom_colors/symbol_color', get_color("font_color", "Editor"))
 	
 	var _scale = get_constant("inspector_margin", "Editor")
 	_scale = _scale * 0.125

@@ -129,7 +129,7 @@ func parse(content : String,  file_path:String = '', docs_path:String = ''):
 				imagenames.append(res.get_string("imgname"))
 
 	## Find all occurences of links (that are not images)
-	regex.compile("[^!]\\[(?<linkname>.*?)\\]\\((?<link>[^\\)]*\\S*?)\\)")
+	regex.compile("[^!]\\[(?<linkname>[^[]+)\\]\\((?<link>[^\\)]*\\S*?)\\)")
 	result = regex.search_all(content)
 	if result:
 		for res in result:
@@ -139,7 +139,7 @@ func parse(content : String,  file_path:String = '', docs_path:String = ''):
 				linknames.append(res.get_string("linkname"))
 	
 	## Find all heading1s
-	regex.compile("(?:\\n|^)#(?<heading>[^#\\n]+)")
+	regex.compile("(?:\\n|^)#(?<heading>[^#\\n]+[^\\n]+)")
 	result = regex.search_all(content)
 	if result:
 		for res in result:
@@ -148,7 +148,7 @@ func parse(content : String,  file_path:String = '', docs_path:String = ''):
 			paresed_text = paresed_text.replace("#"+heading, "[color=#"+accent_color.lightened(0.2).to_html()+"][font="+heading1_font+"]"+heading.strip_edges()+"[/font][/color]")
 	
 	## Find all heading2s
-	regex.compile("(?:\\n|^)##(?<heading>[^#\\n]+)")
+	regex.compile("(?:\\n|^)##(?<heading>[^#\\n]+[^\\n]+)")
 	result = regex.search_all(content)
 	if result:
 		for res in result:
@@ -157,7 +157,7 @@ func parse(content : String,  file_path:String = '', docs_path:String = ''):
 			paresed_text = paresed_text.replace("##"+heading, "[color=#"+accent_color.lightened(0.5).to_html()+"][font="+heading2_font+"]"+heading.strip_edges()+"[/font][/color]")
 	
 	## Find all heading3s
-	regex.compile("(?:\\n|^)###(?<heading>[^#\\n]+)")
+	regex.compile("(?:\\n|^)###(?<heading>[^#\\n]+[^\\n]+)")
 	result = regex.search_all(content)
 	if result:
 		for res in result:
@@ -165,7 +165,7 @@ func parse(content : String,  file_path:String = '', docs_path:String = ''):
 			paresed_text = paresed_text.replace("###"+heading, "[color=#"+accent_color.lightened(0.7).to_html()+"][font="+heading3_font+"]"+heading.strip_edges()+"[/font][/color]")
 	
 	## Find all heading4s
-	regex.compile("(?:\\n|^)####(?<heading>[^#\\n]+)")
+	regex.compile("(?:\\n|^)####(?<heading>[^#\\n]+[^\\n]+)")
 	result = regex.search_all(content)
 	if result:
 		for res in result:
@@ -174,7 +174,7 @@ func parse(content : String,  file_path:String = '', docs_path:String = ''):
 	
 	
 	## Find all heading5s
-	regex.compile("(?:\\n|^)#####(?<heading>[^#\\n]+)")
+	regex.compile("(?:\\n|^)#####(?<heading>[^#\\n]+[^\\n]+)")
 	result = regex.search_all(content)
 	if result:
 		for res in result:

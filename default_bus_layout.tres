@@ -1,0 +1,9 @@
+[gd_resource type="AudioBusLayout" format=2]
+
+[resource]
+bus/1/name = "Voice Lines"
+bus/1/solo = false
+bus/1/mute = false
+bus/1/bypass_fx = false
+bus/1/volume_db = -4.5012
+bus/1/send = "Master"
