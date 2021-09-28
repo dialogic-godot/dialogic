@@ -12,7 +12,7 @@
 - Renamed the plugin entry point script from `dialogic.gd` to `plugin.gd` so it better describes what that file does
 - CanvasLayer Argument (Dialogic.start()) added to the CSharp Class
 - Added a button to open the documentation from the nav bar
-  
+
 #### Timeline Editor:
 - A modular Custom events implementation [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
 - Added a preview image on the portrait picker, so it is easy to know what sprite or scene you are selecting. Thanks to [EmmaH](https://www.youtube.com/channel/UC4y59CMiLxWQQVqVFBYLa3Q) for the idea and [Jowan-Spooner](https://github.com/Jowan-Spooner) for the implementation
@@ -25,7 +25,7 @@
 - Updated UI of the AudioPickers [[Jowan-Spooner]](https://github.com/Jowan-Spooner)
 - Automatically scrolling to newly created events when you click on a create event button [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
 - If no characters are present in the current project the character picker is hidden and a prompt was added in the Character join and Character leave events to create one [[zaknafean]](https://github.com/zaknafean)
-   
+
 #### Theme Editor:
 - A default theme is created on new projects [[zaknafean]](https://github.com/zaknafean)
 - You can now set the position of the buttons relative to the screen (Top, Bottom, Center, Left, Right)
