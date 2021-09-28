@@ -123,7 +123,8 @@ static func start_from_save(save_name: String = '', default_timeline : String = 
 	  and not Engine.get_main_loop().get_meta('last_dialog_state').empty()
 	  and not Engine.get_main_loop().get_meta('last_dialog_state').get('timeline', '').empty()):
 		dialog_node.resume_state_from_info(Engine.get_main_loop().get_meta('last_dialog_state'))
-	# otherwise load the default_timeline
+	
+  ## otherwise load the default_timeline
 	else:
 		if default_timeline == '':
 			print('[D] Saved/imported data not found. You should provide a default timeline for these cases!')
