@@ -42,6 +42,7 @@ This project is made possible by the support of our [Patreons](https://www.patre
 - [Saving and Loading](./Tutorials/Saving.md)
 - [Creating Custom Events](./Events/Custom Events/CreateCustomEvents)
 - [Beginners Guide](./Tutorials/BeginnersGuideStepByStep.md)
+- [Voice Line Support](./Tutorials/VoiceLines.md)
 
 
 
