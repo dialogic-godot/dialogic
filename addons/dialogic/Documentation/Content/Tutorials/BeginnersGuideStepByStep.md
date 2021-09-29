@@ -1,5 +1,5 @@
 # Beginners Guide
-Let's begin creating your first dialog with dialogic!
+Let's begin creating your first dialog with Dialogic!
 
 ## 1. Meeting the Dialogic tab
 All the things related to your dialogue will be done in the Dialogic tab. You can access it like the 2D and 3D tab on the very top of the editor. You can access all the things you create with Dialogic here.  
@@ -151,8 +151,8 @@ Run the game and hover over the word. Cool, right?
 This section is in the work... Please stay tuned!
 
 ## Behind the scenes
-If you wonder how all of this works, here is some (very) short explantaion.
+If you wonder how all of this works, here is some (very) short explanation.
 
-All the resources are saved as jsons in a Dialogic folder in your games root directory.
+All the resources are saved as `.json` or `.cfg` in a Dialogic folder in your games root directory `res://dialogic/`.
 
 Boom. There you go :). I'm to lazy to explain more.

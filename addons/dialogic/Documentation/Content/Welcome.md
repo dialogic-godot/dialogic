@@ -34,12 +34,17 @@ This project is made possible by the support of our [Patreons](https://www.patre
 ## Reference
 - [Dialog node](./Reference/000.md)
 - [Dialog Class](./Reference/001.md)
+- [Timeline Editor](./Reference/Timeline.md)
 - [Character Editor](./Reference/Character.md)
 - [Theme Editor](./Reference/Theme.md)
 
 ## Tutorials
+- [Getting started (video)](https://www.youtube.com/watch?v=sYjgDIgD7AY)
+- [Saving and Loading](./Tutorials/Saving.md)
+- [Creating Custom Events](./Events/Custom Events/CreateCustomEvents)
 - [Beginners Guide](./Tutorials/BeginnersGuideStepByStep.md)
-- [Full Documentation (old)](./Tutorials/DefaultDocs.md)
+- [Voice Line Support](./Tutorials/VoiceLines.md)
+
 
 
 # Dialogic is made by:

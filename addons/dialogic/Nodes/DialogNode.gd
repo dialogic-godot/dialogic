@@ -19,16 +19,21 @@ var current_theme: ConfigFile
 var current_timeline: String = ''
 var current_event: Dictionary
 
+var current_background = ""
+var do_fade_in := true
+
 ## The timeline to load when starting the scene
 export(String, "TimelineDropdown") var timeline: String
 ## Should we clear saved data (definitions and timeline progress) on start?
-export(bool) var reset_saves = true
+export(bool) var reset_saves = false
 ## Should we show debug information when running?
 export(bool) var debug_mode = true
 
 # Event end/start
 signal event_start(type, event)
 signal event_end(type)
+# Text Signals
+signal text_complete(text_data)
 # Timeline end/start
 signal timeline_start(timeline_name)
 signal timeline_end(timeline_name)
@@ -55,6 +60,9 @@ var dialog_faded_in_already = false
 
 
 func _ready():
+	# Set this dialog as the latest (used for quick saving)
+	Engine.get_main_loop().set_meta('latest_dialogic_node', self)
+	
 	# Loading the config files
 	load_config_files()
 	update_custom_events()
@@ -96,7 +104,7 @@ func _ready():
 			_init_dialog()
 			$DefinitionInfo.in_theme_editor = true
 	else:
-		_hide_dialog()
+		if do_fade_in: _hide_dialog()
 		_init_dialog()
 
 
@@ -105,7 +113,9 @@ func load_config_files():
 	
 	# defintiions
 	if not Engine.is_editor_hint():
-		pass
+		if reset_saves:
+			Dialogic.reset_saves()
+		definitions = Dialogic.get_definitions()
 	else:
 		definitions = DialogicResources.get_default_definitions()
 	
@@ -158,8 +168,6 @@ func play_audio(name):
 
 func update_custom_events() -> void:
 	custom_events = {}
-	if not DialogicResources.get_settings_config().get_value('editor', 'use_custom_events', false):
-		return 
 	
 	var path:String = DialogicResources.get_working_directories()["CUSTOM_EVENTS_DIR"]
 	
@@ -468,10 +476,6 @@ func _should_show_glossary():
 func parse_definitions(text: String, variables: bool = true, glossary: bool = true):
 	var final_text: String = text
 	if not preview:
-		if get_tree().has_meta('definitions'):
-			definitions = get_tree().get_meta('definitions')
-		if definitions == null:
-			definitions = {}
 		definitions = Dialogic.get_definitions()
 	if variables:
 		final_text = _insert_variable_definitions(text)
@@ -564,6 +568,7 @@ func update_text(text: String) -> String:
 
 func _on_text_completed():
 	play_audio('waiting')
+	emit_signal('text_complete', current_event)
 	
 	# Anything that uses text bubble should be written to the history log, but exclude waits
 	if record_history and current_event.event_id != 'dialogic_023':
@@ -602,11 +607,8 @@ func _on_letter_written():
 
 func on_timeline_start():
 	if not Engine.is_editor_hint():
-		if settings.get_value('saving', 'save_definitions_on_start', true):
-			Dialogic.save_definitions()
-			pass
-		if settings.get_value('saving', 'save_current_timeline', true):
-			Dialogic.set_current_timeline(current_timeline)
+		if settings.get_value('saving', 'autosave_on_timeline_start', true):
+			Dialogic.save_current_info('', true)
 	# TODO remove event_start in 2.0
 	emit_signal("event_start", "timeline", current_timeline)
 	emit_signal("timeline_start", current_timeline)
@@ -614,11 +616,8 @@ func on_timeline_start():
 
 func on_timeline_end():
 	if not Engine.is_editor_hint():
-		if settings.get_value('saving', 'save_definitions_on_end', true):
-			Dialogic.save_definitions()
-			pass
-		if settings.get_value('saving', 'clear_current_timeline', true):
-			Dialogic.set_current_timeline('')
+		if settings.get_value('saving', 'autosave_on_timeline_end', true):
+			Dialogic.save_current_info('', true)
 	# TODO remove event_end in 2.0
 	emit_signal("event_end", "timeline")
 	emit_signal("timeline_end", current_timeline)
@@ -761,6 +760,7 @@ func event_handler(event: Dictionary):
 						if portrait.character_data == character_data:
 							portrait.move_to_position(get_character_position(event['position']))
 							portrait.set_mirror(event.get('mirror', false))
+							portrait.current_state['position'] = event['position']
 				else:
 					var p = Portrait.instance()
 					var char_portrait = event['portrait']
@@ -782,6 +782,8 @@ func event_handler(event: Dictionary):
 					p.set_mirror(event.get('mirror', false))
 					$Portraits.add_child(p)
 					p.move_to_position(get_character_position(event['position']))
+					p.current_state['character'] = event['character']
+					p.current_state['position'] = event['position']
 					if record_history:
 						HistoryTimeline.add_history_row_string(str(get_character_name_with_color(event['character']), ' has arrived.'))
 			_load_next_event()
@@ -872,17 +874,16 @@ func event_handler(event: Dictionary):
 			var value = event.get('background', '')
 			var background = get_node_or_null('Background')
 			
+			current_background = event['background']
 			if background != null:
-				background.name = 'BackgroundFadingOut'
+				background.name = "BackgroundFadingOut"
 				background.fade_out(fade_time)
-			
-			background = Background.instance()
-			background.name = 'Background'
+				background = null
 			
 			if value != '':
+				background = Background.instance()
 				add_child(background)
-				background.create_tween()
-				if value.ends_with('.tscn'):
+				if (event['background'].ends_with('.tscn')):
 					var bg_scene = load(event['background'])
 					bg_scene = bg_scene.instance()
 					background.modulate = Color(1,1,1,0)
@@ -1360,27 +1361,32 @@ func _hide_dialog():
 	dialog_faded_in_already = false
 
 
-func fade_in_dialog(default = 0.5):
+func fade_in_dialog(time = 0.5):
 	visible = true
-	var transition_time = current_theme.get_value('animation', 'show_time', default)
+	time = current_theme.get_value('animation', 'show_time', 0.5)
 	var has_tween = false
 	
-	if dialog_faded_in_already == false:
-		if transition_time > 0:
-			var tween = Tween.new()
-			add_child(tween)
-			tween.interpolate_property($TextBubble, "modulate",
-				$TextBubble.modulate, Color(1,1,1,1), transition_time,
-				Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
-			tween.start()
-			tween.connect("tween_completed", self, "finished_fade_in_dialog", [tween])
-			has_tween = true
-		else:
-			_init_dialog()
-	
-	if has_tween:
-		while_dialog_animation = false
-		dialog_faded_in_already = true
+	if Engine.is_editor_hint() == false:
+		if dialog_faded_in_already == false:
+			if time > 0:
+				var tween = Tween.new()
+				add_child(tween)
+				# The tween created ('fade_in_tween_show_time') is also reference for the $TextBubble
+				# node to know if it should start showing up the letters of the dialog or not.
+				tween.name = 'fade_in_tween_show_time'
+				$TextBubble.modulate.a = 0
+				tween.interpolate_property($TextBubble, "modulate",
+					$TextBubble.modulate, Color(1,1,1,1), time,
+					Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
+				tween.start()
+				tween.connect("tween_completed", self, "finished_fade_in_dialog", [tween])
+				has_tween = true
+			else:
+				_init_dialog()
+		
+		if has_tween:
+			while_dialog_animation = false
+			dialog_faded_in_already = true
 
 
 func finished_fade_in_dialog(object, key, node):
@@ -1421,3 +1427,105 @@ func _on_OptionsDelayedInput_timeout():
 
 func _on_HistoryButton_pressed():
 	$HistoryPopup.popup()
+
+
+#### LOADING AND SAVING
+# returns all important data in a dictionary
+func get_current_state_info():
+	var state = {}
+
+	# visible characters:
+	state["portraits"] = []
+	for portrait in $Portraits.get_children():
+		state['portraits'].append(portrait.current_state)
+
+	# background music:
+	state['background_music'] = $FX/BackgroundMusic.get_current_info()
+
+	# current_timeline and event
+	state["timeline"] = current_timeline
+	state['event_idx'] = dialog_index
+
+	# current background
+	state['background'] = current_background
+
+	return state
+
+func resume_state_from_info(state_info):
+
+	# wait until the dialog node was added to the tree
+	do_fade_in = false
+	yield(self, "ready")
+	#print(state_info)
+
+
+
+	# load the characters
+	for saved_portrait in state_info['portraits']:
+		var event = saved_portrait
+
+		# this code is ALL copied from the event_handler. So I should probably outsource it to a function...
+		var character_data = get_character(event['character'])
+		var exists = grab_portrait_focus(character_data)
+		if exists:
+			for portrait in $Portraits.get_children():
+				if portrait.character_data == character_data:
+					portrait.move_to_position(get_character_position(event['position']))
+					portrait.set_mirror(event.get('mirror', false))
+		else:
+			var p = Portrait.instance()
+			var char_portrait = event['portrait']
+			if char_portrait == '':
+				char_portrait = 'Default'
+
+			if char_portrait == '[Definition]' and event.has('port_defn'):
+				var portrait_definition = event['port_defn']
+				if portrait_definition != '':
+					for d in DialogicResources.get_default_definitions()['variables']:
+						if d['id'] == portrait_definition:
+							char_portrait = d['value']
+							break
+
+			if current_theme.get_value('settings', 'single_portrait_mode', false):
+				p.single_portrait_mode = true
+			p.character_data = character_data
+			p.init(char_portrait)
+
+			p.set_mirror(event.get('mirror', false))
+			$Portraits.add_child(p)
+			p.move_to_position(get_character_position(event['position']), 0)
+			# this info is only used to save the state later
+			p.current_state['character'] = event['character']
+			p.current_state['position'] = event['position']
+
+	# load the background music
+	if state_info['background_music'] != null:
+		$FX/BackgroundMusic.crossfade_to(state_info['background_music']['file'], state_info['background_music']['audio_bus'], state_info['background_music']['volume'], 1)
+
+	# load the background image
+	if state_info['background']:
+		current_background = state_info['background']
+
+		var background = Background.instance()
+		call_deferred('resize_main') # Executing the resize main to update the background size
+
+		add_child(background)
+
+		if (current_background.ends_with('.tscn')):
+			var bg_scene = load(current_background)
+			if (bg_scene):
+				bg_scene = bg_scene.instance()
+				background.add_child(bg_scene)
+		elif (current_background != ''):
+			background.texture = load(current_background)
+
+	# load the timeline and event
+	set_current_dialog(state_info['timeline'])
+
+	# mark all previous question events as "answered"
+	for event_index in range(0, state_info['event_idx']):
+		if dialog_script['events'][event_index]['event_id'] == 'dialogic_010':
+			dialog_script['events'][event_index]['answered'] = true
+
+	_load_event_at_index(state_info['event_idx'])
+
