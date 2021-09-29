@@ -146,7 +146,7 @@ static func save(slot_name: String = '', check_autosave = false) -> void:
 
 
 ## Returns an array with the names of all available slots.
-static func get_save_names_array() -> Array:
+static func get_slot_names() -> Array:
 	return DialogicResources.get_saves_folders()
 
 
