@@ -1314,21 +1314,22 @@ func _hide_dialog():
 	dialog_faded_in_already = false
 
 
-func fade_in_dialog(default = 0.5):
+func fade_in_dialog(time = 0.5):
 	visible = true
-	var transition_time = current_theme.get_value('animation', 'show_time', default)
+	time = current_theme.get_value('animation', 'show_time', 0.5)
 	var has_tween = false
 	
 	if Engine.is_editor_hint() == false:
 		if dialog_faded_in_already == false:
-			if transition_time > 0:
+			if time > 0:
 				var tween = Tween.new()
 				add_child(tween)
 				# The tween created ('fade_in_tween_show_time') is also reference for the $TextBubble
 				# node to know if it should start showing up the letters of the dialog or not.
 				tween.name = 'fade_in_tween_show_time'
+				$TextBubble.modulate.a = 0
 				tween.interpolate_property($TextBubble, "modulate",
-					$TextBubble.modulate, Color(1,1,1,1), transition_time,
+					$TextBubble.modulate, Color(1,1,1,1), time,
 					Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
 				tween.start()
 				tween.connect("tween_completed", self, "finished_fade_in_dialog", [tween])
