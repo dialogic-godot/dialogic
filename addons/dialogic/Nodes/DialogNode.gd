@@ -720,8 +720,7 @@ func event_handler(event: Dictionary):
 				_load_next_event()
 			else:
 				var character_data = get_character(event['character'])
-				var exists = grab_portrait_focus(character_data)
-				if exists:
+				if portrait_exists(character_data):
 					for portrait in $Portraits.get_children():
 						if portrait.character_data == character_data:
 							portrait.move_to_position(get_character_position(event['position']))
@@ -1173,6 +1172,15 @@ func grab_portrait_focus(character_data, event: Dictionary = {}) -> bool:
 	return exists
 
 
+func portrait_exists(character_data) -> bool:
+	var exists = false
+	for portrait in $Portraits.get_children():
+		if portrait.character_data == character_data:
+			exists = true
+	return exists
+	
+
+
 func get_character_position(positions) -> String:
 	if positions['0']:
 		return 'left'
@@ -1314,30 +1322,29 @@ func _hide_dialog():
 	dialog_faded_in_already = false
 
 
-func fade_in_dialog(default = 0.5):
+func fade_in_dialog(time = 0.5):
 	visible = true
-	var transition_time = current_theme.get_value('animation', 'show_time', default)
+	time = current_theme.get_value('animation', 'show_time', 0.5)
 	var has_tween = false
 	
-	if dialog_faded_in_already == false:
-		if transition_time > 0:
+	if Engine.is_editor_hint() == false:
+		if dialog_faded_in_already == false:
 			var tween = Tween.new()
 			add_child(tween)
 			# The tween created ('fade_in_tween_show_time') is also reference for the $TextBubble
 			# node to know if it should start showing up the letters of the dialog or not.
 			tween.name = 'fade_in_tween_show_time'
+			$TextBubble.modulate.a = 0
 			tween.interpolate_property($TextBubble, "modulate",
-				$TextBubble.modulate, Color(1,1,1,1), transition_time,
+				$TextBubble.modulate, Color(1,1,1,1), time,
 				Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
 			tween.start()
 			tween.connect("tween_completed", self, "finished_fade_in_dialog", [tween])
 			has_tween = true
-		else:
-			_init_dialog()
-	
-	if has_tween:
-		while_dialog_animation = false
-		dialog_faded_in_already = true
+		
+		if has_tween:
+			while_dialog_animation = false
+			dialog_faded_in_already = true
 
 
 func finished_fade_in_dialog(object, key, node):
@@ -1412,8 +1419,7 @@ func resume_state_from_info(state_info):
 
 		# this code is ALL copied from the event_handler. So I should probably outsource it to a function...
 		var character_data = get_character(event['character'])
-		var exists = grab_portrait_focus(character_data)
-		if exists:
+		if portrait_exists(character_data):
 			for portrait in $Portraits.get_children():
 				if portrait.character_data == character_data:
 					portrait.move_to_position(get_character_position(event['position']))
