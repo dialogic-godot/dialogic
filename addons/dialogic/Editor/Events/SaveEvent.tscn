@@ -1,35 +1,34 @@
 [gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://addons/dialogic/Editor/Events/Templates/EventTemplate.tscn" type="PackedScene" id=1]
-[ext_resource path="res://addons/dialogic/Editor/Events/styles/Logic.tres" type="StyleBox" id=2]
+[ext_resource path="res://addons/dialogic/Images/Event Icons/Main Icons/save-icon.svg" type="Texture" id=2]
 [ext_resource path="res://addons/dialogic/Editor/Events/styles/Save.tres" type="StyleBox" id=3]
 
 [node name="SaveEvent" instance=ExtResource( 1 )]
-event_name = "Savepoint"
+event_name = "Save"
 event_data = {
-"event_id": "dialogic_015",
-"only_if_autosave": false,
-"slot": ""
+"event_id": "dialogic_026"
 }
+event_icon = ExtResource( 2 )
 event_style = ExtResource( 3 )
 expand_on_default = false
 
 [node name="PanelContainer" parent="." index="1"]
-custom_styles/panel = ExtResource( 2 )
+custom_styles/panel = ExtResource( 3 )
 
 [node name="SelectedStyle" parent="PanelContainer" index="0"]
 modulate = Color( 0, 0, 0, 1 )
 
 [node name="TitleLabel" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="2"]
-margin_right = 65.0
-text = "Save"
+margin_right = 98.0
+text = "Savepoint"
 
 [node name="Content" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="3"]
-margin_left = 75.0
-margin_right = 85.0
+margin_left = 108.0
+margin_right = 118.0
 
 [node name="Spacer" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="5"]
-margin_left = 95.0
+margin_left = 128.0
 
 [node name="OptionsControl" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="7"]
 items = [ "Move Up", null, 0, false, false, 0, 0, null, "", false, "Move Down", null, 0, false, false, 1, 0, null, "", false, "", null, 0, false, false, 2, 0, null, "", false, "Remove", null, 0, false, false, 3, 0, null, "", false ]
