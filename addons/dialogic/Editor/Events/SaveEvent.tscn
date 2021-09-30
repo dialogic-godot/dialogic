@@ -12,6 +12,7 @@ event_data = {
 event_icon = ExtResource( 2 )
 event_style = ExtResource( 3 )
 expand_on_default = false
+help_page_path = "res://addons/dialogic/Documentation/Content/Tutorials/Saving.md"
 
 [node name="PanelContainer" parent="." index="1"]
 custom_styles/panel = ExtResource( 3 )
