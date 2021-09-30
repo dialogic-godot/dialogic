@@ -129,8 +129,6 @@ static func save(slot_name: String = '', check_autosave = false) -> void:
 	var current_dialog_info = {}
 	if has_current_dialog_node():
 		current_dialog_info = Engine.get_main_loop().get_meta('latest_dialogic_node').get_current_state_info()
-	else:
-		print('[D] You called Dialogic.save() but no dialog node was instanced!')
 	
 	var game_state = {}
 	if Engine.get_main_loop().has_meta('game_state'):
