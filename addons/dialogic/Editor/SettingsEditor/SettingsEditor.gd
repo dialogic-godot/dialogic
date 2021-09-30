@@ -4,9 +4,12 @@ extends ScrollContainer
 var editor_reference
 
 onready var nodes = {
+	# Theme
 	'themes': $VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer/HBoxContainer/ThemeOptionButton,
 	'advanced_themes': $VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer/HBoxContainer2/AdvancedThemes,
-	'translations': $VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2/HBoxContainer6/Translations,
+	'canvas_layer' : $VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer/HBoxContainer3/CanvasLayer,
+	
+	# Dialog
 	'new_lines': $VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2/HBoxContainer2/NewLines,
 	'remove_empty_messages': $VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2/HBoxContainer/RemoveEmptyMessages,
 	'auto_color_names': $VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2/HBoxContainer3/AutoColorNames,
@@ -14,13 +17,17 @@ onready var nodes = {
 	'dim_characters': $VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2/HBoxContainer5/DimCharacters,
 	'text_event_audio_enable': $VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2/HBoxContainer7/EnableVoices,
 	'text_event_audio_default_bus' : $VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2/TextAudioDefaultBus/AudioBus,
-	'autosave_on_timeline_start': $VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer3/HBoxContainer/AutosaveTimelineStart,
-	'autosave_on_timeline_end':$VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer3/HBoxContainer2/AutosaveTimelineEnd,
+	'translations': $VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2/HBoxContainer6/Translations,
+	
+	# Save
+	'autosave': $VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer3/HBoxContainer/Autosave,
+	'save_event_only_if_autosave':$VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer3/HBoxContainer2/SaveOnlyAutosave,
+	
+	# Input Settings
 	'delay_after_options': $VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer/HBoxContainer/LineEdit,
 	'default_action_key': $VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer/HBoxContainer2/DefaultActionKey,
-	'canvas_layer' : $VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer/HBoxContainer3/CanvasLayer}
+	}
 
-	#'use_custom_events':$VBoxContainer/HBoxContainer3/VBoxContainer2/TimelineSection/CustomEvents/CustomEvents}
 
 var THEME_KEYS := [
 	'advanced_themes',
@@ -43,8 +50,8 @@ var DIALOG_KEYS := [
 	]
 
 var SAVING_KEYS := [
-	'autosave_on_timeline_start', 
-	'autosave_on_timeline_end',
+	'autosave', 
+	'save_event_only_if_autosave',
 	]
 
 func _ready():
