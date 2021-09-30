@@ -822,6 +822,11 @@ func event_handler(event: Dictionary):
 				value = str(randi()%int(event.get("random_upper_limit", 100)-event.get('random_lower_limit', 0))+event.get('random_lower_limit', 0))
 			Dialogic.set_variable_from_id(event['definition'], value, operation)
 			_load_next_event()
+		# Save event
+		'dialogic_015':
+			emit_signal('event_start', 'save', event)
+			Dialogic.save()
+			_load_next_event()
 		
 		# TIMELINE EVENTS
 		# Change Timeline event
