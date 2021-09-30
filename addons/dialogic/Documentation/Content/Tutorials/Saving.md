@@ -5,13 +5,70 @@ Dialogic save system can be used in two ways:
 With **save slots** on timeline start and end. 
 Or the **manual** way. This lets you handle the import and export of data manually.
 
-## Loading
-To load the data you can use this function: 
-`Dialogic.start_from_save(save_name = '', default_timeline = '', ...)`
 
-If you provide a **save_name**, it will load from that save slot.
-If you do **not** provide a **save_name** , it will first try to use the currently loaded info (e.g. imported info). And if that fails, it will try to get the data from the default `save_slot`. 
-If everything fails, it will load the given `default_timeline` instead.
+## Examples
+
+### Very simple
+
+`     # when starting your game
+     Dialogic.load()
+
+     # when you want to start your dialog
+     var dialog = Dialogic.start('', 'my_first_timeline')
+     add_child(dialog)
+
+     # to save the dialog
+     Dialogic.save()
+     
+     # if you want to restart
+     Dialogic.reset_saves()`
+
+### Save slots
+`     # when deciding on a save slot
+     Dialogic.load('my_slot')
+
+     # when you want to start your dialog
+     var dialog = Dialogic.start('', 'my_first_timeline')
+     add_child(dialog)
+
+     # to save the dialog
+     Dialogic.save() # you can specify what slot, but you don't need to
+     
+     # if you want to clear that slot
+     Dialogic.reset_saves('my_slot')
+
+     # if you want to remove that slot
+     Dialogic.erase_slot('my_slot')
+
+     # to know what slots exist
+     Dialogic.get_slot_names()
+
+     # if you need to know if you can save
+     Dialogic.has_current_dialog_node()
+
+     # if you need to know, what slot is currently used
+     Dialogic.get_current_slot()
+`
+
+### Manual saving (export/import)
+
+`
+    # when you loaded the data
+    Dialogic.import(data)
+
+    # when you want to start your dialog
+    Dialogic.start('', 'my_first_timeline')
+
+    # when you want to save the data
+    var data = Dialogic.export()
+
+    # if you need to know if you can save
+    Dialogic.has_current_dialog_node()
+`
+
+## Loading
+To load the data you can use Dialogic.load() or Dialogic.import()
+
 
 ## Saving
 By default Dialogic saves the current state and definitions each time a timeline starts or ends (you can disable this in the settings menu).

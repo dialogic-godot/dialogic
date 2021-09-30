@@ -112,7 +112,7 @@ func load_config_files():
 	if not Engine.is_editor_hint():
 		if reset_saves:
 			Dialogic.reset_saves()
-		definitions = Dialogic.get_definitions()
+		definitions = Dialogic._get_definitions()
 	else:
 		definitions = DialogicResources.get_default_definitions()
 	
@@ -473,7 +473,7 @@ func _should_show_glossary():
 func parse_definitions(text: String, variables: bool = true, glossary: bool = true):
 	var final_text: String = text
 	if not preview:
-		definitions = Dialogic.get_definitions()
+		definitions = Dialogic._get_definitions()
 	if variables:
 		final_text = _insert_variable_definitions(text)
 	if glossary and _should_show_glossary():
@@ -601,7 +601,8 @@ func _on_letter_written():
 func on_timeline_start():
 	if not Engine.is_editor_hint():
 		if settings.get_value('saving', 'autosave_on_timeline_start', true):
-			Dialogic.save_current_info('', true)
+			# save to the current slot (or default)
+			Dialogic.save('', true)
 	# TODO remove event_start in 2.0
 	emit_signal("event_start", "timeline", current_timeline)
 	emit_signal("timeline_start", current_timeline)
@@ -610,7 +611,8 @@ func on_timeline_start():
 func on_timeline_end():
 	if not Engine.is_editor_hint():
 		if settings.get_value('saving', 'autosave_on_timeline_end', true):
-			Dialogic.save_current_info('', true)
+			# save to the current slot (or default)
+			Dialogic.save('', true)
 	# TODO remove event_end in 2.0
 	emit_signal("event_end", "timeline")
 	emit_signal("timeline_end", current_timeline)
