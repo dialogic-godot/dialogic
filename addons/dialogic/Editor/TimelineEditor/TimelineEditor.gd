@@ -887,6 +887,7 @@ func add_event_by_id(event_id, event_data):
 		'dialogic_014':
 			return create_event('SetValue', event_data)
 		
+		
 		# TIMELINE EVENTS
 		# Change Timeline event
 		'dialogic_020':
@@ -906,6 +907,9 @@ func add_event_by_id(event_id, event_data):
 		# Set Glossary event
 		'dialogic_025':
 			return create_event('SetGlossary', event_data)
+		# Save event
+		'dialogic_026':
+			return create_event('SaveEvent', event_data)
 		
 		# AUDIO EVENTS
 		# Audio event

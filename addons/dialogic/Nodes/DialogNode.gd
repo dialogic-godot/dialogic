@@ -115,7 +115,7 @@ func load_config_files():
 	if not Engine.is_editor_hint():
 		if reset_saves:
 			Dialogic.reset_saves()
-		definitions = Dialogic.get_definitions()
+		definitions = Dialogic._get_definitions()
 	else:
 		definitions = DialogicResources.get_default_definitions()
 	
@@ -476,7 +476,7 @@ func _should_show_glossary():
 func parse_definitions(text: String, variables: bool = true, glossary: bool = true):
 	var final_text: String = text
 	if not preview:
-		definitions = Dialogic.get_definitions()
+		definitions = Dialogic._get_definitions()
 	if variables:
 		final_text = _insert_variable_definitions(text)
 	if glossary and _should_show_glossary():
@@ -607,8 +607,9 @@ func _on_letter_written():
 
 func on_timeline_start():
 	if not Engine.is_editor_hint():
-		if settings.get_value('saving', 'autosave_on_timeline_start', true):
-			Dialogic.save_current_info('', true)
+		if settings.get_value('saving', 'autosave', true):
+			# save to the current slot (or default)
+			Dialogic.save('', true)
 	# TODO remove event_start in 2.0
 	emit_signal("event_start", "timeline", current_timeline)
 	emit_signal("timeline_start", current_timeline)
@@ -616,8 +617,9 @@ func on_timeline_start():
 
 func on_timeline_end():
 	if not Engine.is_editor_hint():
-		if settings.get_value('saving', 'autosave_on_timeline_end', true):
-			Dialogic.save_current_info('', true)
+		if settings.get_value('saving', 'autosave', true):
+			# save to the current slot (or default)
+			Dialogic.save('', true)
 	# TODO remove event_end in 2.0
 	emit_signal("event_end", "timeline")
 	emit_signal("timeline_end", current_timeline)
@@ -754,8 +756,7 @@ func event_handler(event: Dictionary):
 				_load_next_event()
 			else:
 				var character_data = get_character(event['character'])
-				var exists = grab_portrait_focus(character_data)
-				if exists:
+				if portrait_exists(character_data):
 					for portrait in $Portraits.get_children():
 						if portrait.character_data == character_data:
 							portrait.move_to_position(get_character_position(event['position']))
@@ -862,6 +863,7 @@ func event_handler(event: Dictionary):
 			Dialogic.set_variable_from_id(event['definition'], value, operation)
 			_load_next_event()
 		
+		
 		# TIMELINE EVENTS
 		# Change Timeline event
 		'dialogic_020':
@@ -923,13 +925,19 @@ func event_handler(event: Dictionary):
 			if event['set_theme'] != '':
 				current_theme = load_theme(event['set_theme'])
 			_load_next_event()
-		
 		# Set Glossary event
 		'dialogic_025':
 			emit_signal("event_start", "set_glossary", event)
 			if event['glossary_id']:
 				Dialogic.set_glossary_from_id(event['glossary_id'], event['title'], event['text'],event['extra'])
 			_load_next_event()
+		# Save event
+		'dialogic_026':
+			emit_signal('event_start', 'save', event)
+			Dialogic.save()
+			_load_next_event()
+		
+		
 		# AUDIO EVENTS
 		# Audio event
 		'dialogic_030':
@@ -1220,6 +1228,15 @@ func grab_portrait_focus(character_data, event: Dictionary = {}) -> bool:
 	return exists
 
 
+func portrait_exists(character_data) -> bool:
+	var exists = false
+	for portrait in $Portraits.get_children():
+		if portrait.character_data == character_data:
+			exists = true
+	return exists
+	
+
+
 func get_character_position(positions) -> String:
 	if positions['0']:
 		return 'left'
@@ -1368,21 +1385,18 @@ func fade_in_dialog(time = 0.5):
 	
 	if Engine.is_editor_hint() == false:
 		if dialog_faded_in_already == false:
-			if time > 0:
-				var tween = Tween.new()
-				add_child(tween)
-				# The tween created ('fade_in_tween_show_time') is also reference for the $TextBubble
-				# node to know if it should start showing up the letters of the dialog or not.
-				tween.name = 'fade_in_tween_show_time'
-				$TextBubble.modulate.a = 0
-				tween.interpolate_property($TextBubble, "modulate",
-					$TextBubble.modulate, Color(1,1,1,1), time,
-					Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
-				tween.start()
-				tween.connect("tween_completed", self, "finished_fade_in_dialog", [tween])
-				has_tween = true
-			else:
-				_init_dialog()
+			var tween = Tween.new()
+			add_child(tween)
+			# The tween created ('fade_in_tween_show_time') is also reference for the $TextBubble
+			# node to know if it should start showing up the letters of the dialog or not.
+			tween.name = 'fade_in_tween_show_time'
+			$TextBubble.modulate.a = 0
+			tween.interpolate_property($TextBubble, "modulate",
+				$TextBubble.modulate, Color(1,1,1,1), time,
+				Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
+			tween.start()
+			tween.connect("tween_completed", self, "finished_fade_in_dialog", [tween])
+			has_tween = true
 		
 		if has_tween:
 			while_dialog_animation = false
@@ -1466,8 +1480,7 @@ func resume_state_from_info(state_info):
 
 		# this code is ALL copied from the event_handler. So I should probably outsource it to a function...
 		var character_data = get_character(event['character'])
-		var exists = grab_portrait_focus(character_data)
-		if exists:
+		if portrait_exists(character_data):
 			for portrait in $Portraits.get_children():
 				if portrait.character_data == character_data:
 					portrait.move_to_position(get_character_position(event['position']))

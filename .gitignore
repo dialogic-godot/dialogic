@@ -5,6 +5,7 @@ project.godot
 test-scenes
 /.import
 /default_env.tres
+/default_bus_layout.tres
 /icon.png
 *.import
 /.vscode

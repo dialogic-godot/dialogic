@@ -38,7 +38,7 @@ You can check the documentation from inside the plugin or [here](https://github.
 ## 📃 Credits
 Made by [Emilio Coppola](https://github.com/coppolaemilio).
 
-Contributors: [Jowan-Spooner](https://github.com/Jowan-Spooner), [Arnaud](https://github.com/arnaudvergnet), [ellogwen](https://github.com/ellogwen), [Tim Krief](https://github.com/timkrief),  [and more!](https://github.com/coppolaemilio/dialogic/graphs/contributors). Special thanks: [Toen](https://twitter.com/ToenAndreMC), Òscar, [Francisco Presencia](https://francisco.io/). Placeholder images are from [Toen's](https://toen.world/) [YouTube DF series](https://www.youtube.com/watch?v=B1ggwiat7PM)
+Contributors: [Jowan-Spooner](https://github.com/Jowan-Spooner), [Arnaud](https://github.com/arnaudvergnet), [ellogwen](https://github.com/ellogwen), [Tim Krief](https://github.com/timkrief), [zaknafean](https://github.com/zaknafean), [and more!](https://github.com/coppolaemilio/dialogic/graphs/contributors). Special thanks: [Toen](https://twitter.com/ToenAndreMC), Òscar, [Francisco Presencia](https://francisco.io/). Placeholder images are from [Toen's](https://toen.world/) [YouTube DF series](https://www.youtube.com/watch?v=B1ggwiat7PM)
 
 ### Thank you to all my [Patreons](https://www.patreon.com/coppolaemilio) for making this possible!
 
@@ -84,7 +84,8 @@ Sukh Atwal,
 Patrick Hogan,
 Jesse Priest,
 Lunos,
-Ceah Sharp
+Ceah Sharp,
+Mark Charnock
 
 
 
