@@ -600,7 +600,7 @@ func _on_letter_written():
 
 func on_timeline_start():
 	if not Engine.is_editor_hint():
-		if settings.get_value('saving', 'autosave_on_timeline_start', true):
+		if settings.get_value('saving', 'autosave', true):
 			# save to the current slot (or default)
 			Dialogic.save('', true)
 	# TODO remove event_start in 2.0
@@ -610,7 +610,7 @@ func on_timeline_start():
 
 func on_timeline_end():
 	if not Engine.is_editor_hint():
-		if settings.get_value('saving', 'autosave_on_timeline_end', true):
+		if settings.get_value('saving', 'autosave', true):
 			# save to the current slot (or default)
 			Dialogic.save('', true)
 	# TODO remove event_end in 2.0
@@ -823,6 +823,7 @@ func event_handler(event: Dictionary):
 			Dialogic.set_variable_from_id(event['definition'], value, operation)
 			_load_next_event()
 		
+		
 		# TIMELINE EVENTS
 		# Change Timeline event
 		'dialogic_020':
@@ -884,13 +885,19 @@ func event_handler(event: Dictionary):
 			if event['set_theme'] != '':
 				current_theme = load_theme(event['set_theme'])
 			_load_next_event()
-		
 		# Set Glossary event
 		'dialogic_025':
 			emit_signal("event_start", "set_glossary", event)
 			if event['glossary_id']:
 				Dialogic.set_glossary_from_id(event['glossary_id'], event['title'], event['text'],event['extra'])
 			_load_next_event()
+		# Save event
+		'dialogic_026':
+			emit_signal('event_start', 'save', event)
+			Dialogic.save()
+			_load_next_event()
+		
+		
 		# AUDIO EVENTS
 		# Audio event
 		'dialogic_030':

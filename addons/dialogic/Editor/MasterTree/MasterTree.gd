@@ -511,9 +511,10 @@ func _on_TimelinePopupMenu_id_pressed(id):
 	if id == 0: # View files
 		OS.shell_open(ProjectSettings.globalize_path(DialogicResources.get_path('TIMELINE_DIR')))
 	if id == 1: # Copy to clipboard
-		OS.set_clipboard(editor_reference.get_node("MainPanel/TimelineEditor").timeline_name)
+		OS.set_clipboard(get_item_path(get_selected()).replace('Timelines', ''))
 	if id == 2: # Remove
 		editor_reference.popup_remove_confirmation('Timeline')
+
 
 # Character context menu
 func _on_CharacterPopupMenu_id_pressed(id):
@@ -521,6 +522,7 @@ func _on_CharacterPopupMenu_id_pressed(id):
 		OS.shell_open(ProjectSettings.globalize_path(DialogicResources.get_path('CHAR_DIR')))
 	if id == 1:
 		editor_reference.popup_remove_confirmation('Character')
+
 
 # Theme context menu
 func _on_ThemePopupMenu_id_pressed(id):
@@ -532,6 +534,7 @@ func _on_ThemePopupMenu_id_pressed(id):
 			theme_editor.duplicate_theme(filename)
 	if id == 2:
 		editor_reference.popup_remove_confirmation('Theme')
+
 
 # Definition context menu
 func _on_DefinitionPopupMenu_id_pressed(id):
@@ -558,6 +561,7 @@ func _on_TimelineRootPopupMenu_id_pressed(id):
 			return
 		editor_reference.get_node('RemoveFolderConfirmation').popup_centered()
 
+
 # Character Folder context menu
 func _on_CharacterRootPopupMenu_id_pressed(id):
 	if id == 0: # Add Character
@@ -570,6 +574,7 @@ func _on_CharacterRootPopupMenu_id_pressed(id):
 		if get_selected().get_parent() == get_root():
 			return
 		editor_reference.get_node('RemoveFolderConfirmation').popup_centered()
+
 
 # Definition Folder context menu
 func _on_DefinitionRootPopupMenu_id_pressed(id):
@@ -585,6 +590,7 @@ func _on_DefinitionRootPopupMenu_id_pressed(id):
 			return
 		editor_reference.get_node('RemoveFolderConfirmation').popup_centered()
 
+
 # Theme Folder context menu
 func _on_ThemeRootPopupMenu_id_pressed(id):
 	if id == 0: # Add Theme
@@ -596,6 +602,7 @@ func _on_ThemeRootPopupMenu_id_pressed(id):
 		if get_selected().get_parent() == get_root():
 			return
 		editor_reference.get_node('RemoveFolderConfirmation').popup_centered()
+
 
 func _on_DocumentationPopupMenu_id_pressed(id):
 	if id == 0: # edit text toggled

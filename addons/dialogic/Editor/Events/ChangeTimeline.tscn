@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://addons/dialogic/Editor/Events/Templates/EventTemplate.tscn" type="PackedScene" id=1]
-[ext_resource path="res://addons/dialogic/Editor/Events/styles/ChangeTimeline.tres" type="StyleBox" id=2]
+[ext_resource path="res://addons/dialogic/Editor/Events/styles/Timeline.tres" type="StyleBox" id=2]
 [ext_resource path="res://addons/dialogic/Images/Event Icons/Main Icons/change-timeline.svg" type="Texture" id=3]
 [ext_resource path="res://addons/dialogic/Editor/Events/Parts/ResourcePickers/Timelines/TimelinePicker.tscn" type="PackedScene" id=4]
 
