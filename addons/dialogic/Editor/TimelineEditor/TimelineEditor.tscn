@@ -31,7 +31,7 @@ content_margin_left = 5.0
 content_margin_right = 5.0
 content_margin_top = 5.0
 content_margin_bottom = 5.0
-bg_color = Color( 0.15, 0.1725, 0.2325, 1 )
+bg_color = Color( 0, 0, 0, 1 )
 border_width_left = 1
 border_width_top = 1
 border_width_right = 1
@@ -62,7 +62,7 @@ data = {
 "width": 16
 }
 
-[sub_resource type="ImageTexture" id=4]
+[sub_resource type="ImageTexture" id=7]
 flags = 4
 flags = 4
 image = SubResource( 6 )
@@ -487,7 +487,7 @@ size_flags_horizontal = 3
 margin_left = 150.0
 margin_right = 178.0
 margin_bottom = 24.0
-icon = SubResource( 4 )
+icon = SubResource( 7 )
 
 [node name="CustomEventsContainer" type="GridContainer" parent="ScrollContainer/EventContainer"]
 margin_top = 492.0
