@@ -7,9 +7,13 @@ export(int) var Vertical_Separation = 16
 
 onready var HistoryTimeline = $ScrollContainer/MarginContainer/HistoryTimeline
 onready var scrollbar = $ScrollContainer.get_v_scrollbar()
+onready var ScrollContainer = $ScrollContainer
 
 var lastQuestionNode = null
 var curTheme = null
+
+var styleIndividualBoxes = true
+
 
 func _ready():
 	var testHistoryRow = HistoryRow.instance()
@@ -67,8 +71,26 @@ func add_history_row_string(stringData, audioData=''):
 		newHistoryRow.AudioButton.connect('pressed', self, '_on_audio_trigger', [audioData])
 
 
+func change_theme(newTheme: ConfigFile):
+	if get_parent().settings.get_value('history', 'enable_dynamic_theme', false):
+		curTheme = newTheme
+
+
 func load_theme(theme: ConfigFile):
 	curTheme = theme
+	
+	# Backgrounds
+	$TextureRect.texture = DialogicUtil.path_fixer_load(theme.get_value('background','image', "res://addons/dialogic/Example Assets/backgrounds/background-2.png"))
+	$TextureRect.expand = true
+	$ColorRect.color = Color(theme.get_value('background','color', "#ff000000"))
+
+	if theme.get_value('background', 'modulation', false):
+		$TextureRect.modulate = Color(theme.get_value('background', 'modulation_color', '#ffffffff'))
+	else:
+		$TextureRect.modulate = Color('#ffffffff')
+
+	$ColorRect.visible = theme.get_value('background', 'use_color', false)
+	$TextureRect.visible = theme.get_value('background', 'use_image', true)
 
 
 func _on_audio_trigger(audioFilepath):
@@ -81,5 +103,5 @@ func _on_HistoryPopup_popup_hide():
 
 
 func _on_HistoryPopup_about_to_show():
-	$ScrollContainer.scroll_vertical = scrollbar.max_value
+	ScrollContainer.scroll_vertical = scrollbar.max_value
 

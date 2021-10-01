@@ -19,6 +19,8 @@ var current_theme: ConfigFile
 var current_timeline: String = ''
 var current_event: Dictionary
 
+var history_theme: ConfigFile
+
 var current_background = ""
 var do_fade_in := true
 
@@ -127,6 +129,19 @@ func load_config_files():
 	if settings.has_section('theme'):
 		theme_file = settings.get_value('theme', 'default')
 	current_theme = load_theme(theme_file)
+	
+	$HistoryButton.disabled = true
+	$HistoryButton.hide()
+	
+	if settings.has_section('history'):
+		if settings.has_section_key('history', 'enable_history_logging'):
+			if settings.get_value('history', 'enable_history_logging'):
+				$HistoryButton.disabled = false
+				$HistoryButton.show()
+		if settings.has_section_key('history', 'history_theme'):
+			theme_file = settings.get_value('history', 'history_theme')
+		history_theme = load_theme(theme_file)
+		HistoryTimeline.load_theme(history_theme)
 
 
 func load_audio(theme):
@@ -1273,10 +1288,9 @@ func load_theme(filename):
 	if theme_input != '[Default]':
 		input_next = theme_input
 	
-	
 	$TextBubble.load_theme(theme)
-	$HistoryPopup.load_theme(theme)
 	$DefinitionInfo.load_theme(theme)
+	HistoryTimeline.change_theme(theme)
 	
 	var button_container
 	if theme.get_value('buttons', 'layout', 0) == 0:
@@ -1440,7 +1454,7 @@ func _on_OptionsDelayedInput_timeout():
 
 
 func _on_HistoryButton_pressed():
-	$HistoryPopup.popup()
+	HistoryTimeline.popup()
 
 
 #### LOADING AND SAVING

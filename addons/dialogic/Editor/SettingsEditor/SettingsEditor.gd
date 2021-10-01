@@ -25,6 +25,11 @@ onready var nodes = {
 	# Input Settings
 	'delay_after_options': $VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer/HBoxContainer/LineEdit,
 	'default_action_key': $VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer/HBoxContainer2/DefaultActionKey,
+	
+	# History Settings
+	'enable_history_logging': $VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer/HBoxContainer3/EnableHistoryLogging,
+	'history_theme': $VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer/HBoxContainer4/HistoryThemeOptionButton,
+	'enable_dynamic_theme': $VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer/HBoxContainer5/EnableDynamicTheme,
 	}
 
 var THEME_KEYS := [
@@ -51,6 +56,13 @@ var SAVING_KEYS := [
 	'autosave', 
 	]
 
+var HISTORY_KEYS := [
+	'enable_history_logging',
+	'history_theme',
+	'enable_dynamic_theme',
+]
+
+
 func _ready():
 	editor_reference = find_parent('EditorView')
 	update_bus_selector()
@@ -75,6 +87,11 @@ func _ready():
 	
 	for k in SAVING_KEYS:
 		nodes[k].connect('toggled', self, '_on_item_toggled', ['saving', k])
+	
+	nodes['history_theme'].connect('item_selected', self, '_on_default_history_theme_selected')
+	nodes['enable_history_logging'].connect('toggled', self, '_on_item_toggled', ['history', 'enable_history_logging'])
+	nodes['enable_dynamic_theme'].connect('toggled', self, '_on_item_toggled', ['history', 'enable_dynamic_theme'])
+
 
 func update_data():
 	var settings = DialogicResources.get_settings_config()
@@ -83,6 +100,7 @@ func update_data():
 	load_values(settings, "dialog", DIALOG_KEYS)
 	load_values(settings, "saving", SAVING_KEYS)
 	load_values(settings, "input", INPUT_KEYS)
+	load_values(settings, "history", HISTORY_KEYS)
 	select_bus(settings.get_value("dialog", 'text_event_audio_default_bus', "Master"))
 
 func load_values(settings: ConfigFile, section: String, key: Array):
@@ -103,30 +121,40 @@ func refresh_themes(settings: ConfigFile):
 		nodes['advanced_themes'].pressed = settings.get_value('dialog', 'advanced_themes')
 	
 	nodes['themes'].clear()
+	nodes['history_theme'].clear()
 	var theme_list = DialogicUtil.get_sorted_theme_list()
 	var theme_indexes = {}
 	var index = 0
 	for theme in theme_list:
 		nodes['themes'].add_item(theme['name'])
+		nodes['history_theme'].add_item(theme['name'])
 		nodes['themes'].set_item_metadata(index, {'file': theme['file']})
+		nodes['history_theme'].set_item_metadata(index, {'file': theme['file']})
 		theme_indexes[theme['file']] = index
 		index += 1
 	
 	# Only one item added, then save as default
 	if index == 1: 
 		set_value('theme', 'default', theme_list[0]['file'])
+		set_value('history', 'history_theme', theme_list[0]['file'])
 	
 	# More than one theme? Select which the default one is
 	if index > 1:
 		if settings.has_section_key('theme', 'default'):
 			nodes['themes'].select(theme_indexes[settings.get_value('theme', 'default', null)])
+			nodes['history_theme'].select(theme_indexes[settings.get_value('history', 'history_theme', null)])
 		else:
 			# Fallback
 			set_value('theme', 'default', theme_list[0]['file'])
+			set_value('history', 'history_theme', theme_list[0]['file'])
 
 
 func _on_default_theme_selected(index):
 	set_value('theme', 'default', nodes['themes'].get_item_metadata(index)['file'])
+
+
+func _on_default_history_theme_selected(index):
+	set_value('history', 'history_theme', nodes['history_theme'].get_item_metadata(index)['file'])
 
 
 func _on_delay_options_text_changed(text):
@@ -187,6 +215,7 @@ func _on_text_audio_default_bus_item_selected(index):
 	set_value('dialog', 'text_event_audio_default_bus', text)
 
 
+# These are likely deprecated as of PR#515
 func _on_CustomEventsFolder_pressed():
 	editor_reference.godot_dialog("", EditorFileDialog.MODE_OPEN_DIR)
 	editor_reference.godot_dialog_connect(self, "_on_CustomEventsFolder_selected", "dir_selected")

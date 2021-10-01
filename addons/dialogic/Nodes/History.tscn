@@ -17,6 +17,26 @@ __meta__ = {
 }
 HistoryRow = ExtResource( 2 )
 
+[node name="ColorRect" type="ColorRect" parent="."]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextureRect" type="TextureRect" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_horizontal = 5
+size_flags_vertical = 0
+expand = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HistoryAudio" type="AudioStreamPlayer" parent="."]
+
 [node name="ScrollContainer" type="ScrollContainer" parent="."]
 margin_left = 4.0
 margin_top = 4.0
@@ -42,8 +62,6 @@ margin_top = 5.0
 margin_right = 869.0
 margin_bottom = 5.0
 custom_constants/separation = 16
-
-[node name="HistoryAudio" type="AudioStreamPlayer" parent="."]
 
 [connection signal="about_to_show" from="." to="." method="_on_HistoryPopup_about_to_show"]
 [connection signal="popup_hide" from="." to="." method="_on_HistoryPopup_popup_hide"]

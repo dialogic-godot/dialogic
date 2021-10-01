@@ -13,8 +13,6 @@ script = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
-Audio_Button_Path = NodePath("TextureRect/HBoxContainer/Button")
-Text_Label_Path = NodePath("TextureRect/HBoxContainer/RichTextLabel")
 
 [node name="ColorRect" type="ColorRect" parent="."]
 visible = false
@@ -34,7 +32,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="HBoxContainer" type="HBoxContainer" parent="TextureRect"]
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
 margin_right = 864.0
 margin_bottom = 28.0
 size_flags_horizontal = 11
@@ -44,7 +42,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Button" type="Button" parent="TextureRect/HBoxContainer"]
+[node name="Button" type="Button" parent="HBoxContainer"]
 margin_right = 34.0
 margin_bottom = 28.0
 size_flags_vertical = 4
@@ -53,7 +51,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="RichTextLabel" type="RichTextLabel" parent="TextureRect/HBoxContainer"]
+[node name="RichTextLabel" type="RichTextLabel" parent="HBoxContainer"]
 margin_left = 42.0
 margin_right = 864.0
 margin_bottom = 28.0
