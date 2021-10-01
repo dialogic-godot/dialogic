@@ -12,7 +12,10 @@ func _ready():
 	# Adding file dialog to get used by Events
 	editor_file_dialog = EditorFileDialog.new()
 	add_child(editor_file_dialog)
-
+	
+	$ToolBar/Docs.text = DTS.translate('Help')
+	$ToolBar/Web.text = DTS.translate('Website')
+	
 	$MainPanel/MasterTreeContainer/MasterTree.connect("editor_selected", self, 'on_master_tree_editor_selected')
 
 	# Updating the folder structure

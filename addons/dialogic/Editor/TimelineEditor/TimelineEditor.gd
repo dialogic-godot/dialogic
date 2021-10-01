@@ -28,33 +28,40 @@ var piece_was_dragged = false
 
 var custom_events = {}
 
+var id_to_scene_name = {
+	#Main events
+	'dialogic_001':'TextEvent',
+	'dialogic_002':'CharacterJoin',
+	'dialogic_003':'CharacterLeave',
+	#Logic
+	'dialogic_010':'Question',
+	'dialogic_011':'Choice',
+	'dialogic_012':'Condition',
+	'dialogic_013':'EndBranch',
+	'dialogic_014':'SetValue',
+	#Timeline
+	'dialogic_020':'ChangeTimeline',
+	'dialogic_021':'ChangeBackground',
+	'dialogic_022':'CloseDialog',
+	'dialogic_023':'WaitSeconds',
+	'dialogic_024':'SetTheme',
+	'dialogic_025':'SetGlossary',
+	'dialogic_026':'SaveEvent',
+	#Audio
+	'dialogic_030':'AudioEvent',
+	'dialogic_031':'BackgroundMusic',
+	#Godot
+	'dialogic_040':'EmitSignal',
+	'dialogic_041':'ChangeScene',
+	'dialogic_042':'CallNode',
+	}
+
 var batches = []
 var building_timeline = true
 signal selection_updated
 signal batch_loaded
 
 func _ready():
-	var p = EditorPlugin.new()
-	$"ScrollContainer/EventContainer/TextEvent".hint_tooltip = DTS.translate("  Text Event")
-	$"ScrollContainer/EventContainer/CharacterJoin".hint_tooltip = DTS.translate("  Character Join")
-	$"ScrollContainer/EventContainer/CharacterLeave".hint_tooltip = DTS.translate("  Character Leave")
-	$"ScrollContainer/EventContainer/Question".hint_tooltip = DTS.translate("  Question")
-	$"ScrollContainer/EventContainer/Choice".hint_tooltip = DTS.translate("  Choice")
-	$"ScrollContainer/EventContainer/Condition".hint_tooltip = DTS.translate(" Condition")
-	$"ScrollContainer/EventContainer/EndBranch".hint_tooltip = DTS.translate("  End Branch")
-	$"ScrollContainer/EventContainer/SetValue".hint_tooltip = DTS.translate("  Set Value")
-	$"ScrollContainer/EventContainer/SetGlossary".hint_tooltip = DTS.translate("  Set Glossary")
-	$"ScrollContainer/EventContainer/ChangeTimeline".hint_tooltip = DTS.translate("  Change Timeline")
-	$"ScrollContainer/EventContainer/ChangeBackground".hint_tooltip = DTS.translate("  Set Background")
-	$"ScrollContainer/EventContainer/CloseDialog".hint_tooltip = DTS.translate("  Close Dialog")
-	$"ScrollContainer/EventContainer/WaitSeconds".hint_tooltip = DTS.translate("  Wait Seconds")
-	$"ScrollContainer/EventContainer/SetTheme".hint_tooltip = DTS.translate("  Set Theme")
-	$"ScrollContainer/EventContainer/AudioEvent".hint_tooltip = DTS.translate("  Audio Event")
-	$"ScrollContainer/EventContainer/BackgroundMusic".hint_tooltip = DTS.translate("  Background Music")
-	$"ScrollContainer/EventContainer/EmitSignal".hint_tooltip = DTS.translate("  Emit Signal")
-	$"ScrollContainer/EventContainer/ChangeScene".hint_tooltip = DTS.translate("  Change Scene")
-	$"ScrollContainer/EventContainer/CallNode".hint_tooltip = DTS.translate("  Call Node")
-	
 	editor_reference = find_parent('EditorView')
 	connect("batch_loaded", self, '_on_batch_loaded')
 	var modifier = ''
@@ -75,14 +82,17 @@ func _ready():
 		$ScrollContainer.rect_min_size.x = 390
 	
 	# We connect all the event buttons to the event creation functions
-	for b in $ScrollContainer/EventContainer.get_children():
-		if b is Button:
-			if b.name == 'Question':
-				b.connect('pressed', self, "_on_ButtonQuestion_pressed", [])
-			elif b.name == 'Condition':
-				b.connect('pressed', self, "_on_ButtonCondition_pressed", [])
+	
+	for c in range(0, 5):
+		for button in get_node("ScrollContainer/EventContainer/Grid"+str(c+1)).get_children():
+			# Question
+			if button.event_id == 'dialogic_010':
+				button.connect('pressed', self, "_on_ButtonQuestion_pressed", [])
+			# Condition
+			elif button.event_id == 'dialogic_012':
+				button.connect('pressed', self, "_on_ButtonCondition_pressed", [])
 			else:
-				b.connect('pressed', self, "_create_event_button_pressed", [b.name])
+				button.connect('pressed', self, "_create_event_button_pressed", [button.event_id])
 	
 	var style = $TimelineArea.get('custom_styles/bg')
 	style.set('bg_color', get_color("dark_color_1", "Editor"))
@@ -247,7 +257,7 @@ func _input(event):
 			else:
 				at_index = timeline.get_child_count()
 			TimelineUndoRedo.create_action("[D] Add Text event.")
-			TimelineUndoRedo.add_do_method(self, "create_event", "TextEvent", {'no-data': true}, true, at_index, true)
+			TimelineUndoRedo.add_do_method(self, "create_event", "dialogic_000", {'no-data': true}, true, at_index, true)
 			TimelineUndoRedo.add_undo_method(self, "remove_events_at_index", at_index, 1)
 			TimelineUndoRedo.commit_action()
 			get_tree().set_input_as_handled()
@@ -391,7 +401,7 @@ func add_events_indexed(indexed_events:Dictionary) -> void:
 	var events = []
 	for event_idx in indexes:
 		deselect_all_items()
-		events.append(add_event_by_id(indexed_events[event_idx].event_id, indexed_events[event_idx]))
+		events.append(create_event(indexed_events[event_idx].event_id, indexed_events[event_idx]))
 		timeline.move_child(events[-1], event_idx)
 		
 	selected_items = events
@@ -482,7 +492,7 @@ func add_events_at_index(event_list:Array, at_index:int) -> void:
 	var new_items = []
 	for item in event_list:
 		if typeof(item) == TYPE_DICTIONARY and item.has('event_id'):
-			new_items.append(add_event_by_id(item['event_id'], item))
+			new_items.append(create_event(item['event_id'], item))
 	selected_items = new_items
 	sort_selection()
 	visual_update_selection()
@@ -597,14 +607,14 @@ func delete_event(event):
 ## *****************************************************************************
 
 # Event Creation signal for buttons
-func _create_event_button_pressed(button_name):
+func _create_event_button_pressed(event_id):
 	var at_index = -1
 	if selected_items:
 		at_index = selected_items[-1].get_index()+1
 	else:
 		at_index = timeline.get_child_count()
 	TimelineUndoRedo.create_action("[D] Add event.")
-	TimelineUndoRedo.add_do_method(self, "create_event", button_name, {'no-data': true}, true, at_index, true)
+	TimelineUndoRedo.add_do_method(self, "create_event", event_id, {'no-data': true}, true, at_index, true)
 	TimelineUndoRedo.add_undo_method(self, "remove_events_at_index", at_index, 1)
 	TimelineUndoRedo.commit_action()
 	scroll_to_piece(at_index)
@@ -629,15 +639,15 @@ func create_question(at_position):
 	if len(selected_items) != 0:
 		# Events are added bellow the selected node
 		# So we must reverse the adding order
-		create_event("EndBranch", {'no-data': true}, true)
-		create_event("Choice", {'no-data': true}, true)
-		create_event("Choice", {'no-data': true}, true)
-		create_event("Question", {'no-data': true}, true)
+		create_event("dialogic_013", {'no-data': true}, true)
+		create_event("dialogic_011", {'no-data': true}, true)
+		create_event("dialogic_011", {'no-data': true}, true)
+		create_event("dialogic_010", {'no-data': true}, true)
 	else:
-		create_event("Question", {'no-data': true}, true)
-		create_event("Choice", {'no-data': true}, true)
-		create_event("Choice", {'no-data': true}, true)
-		create_event("EndBranch", {'no-data': true}, true)
+		create_event("dialogic_010", {'no-data': true}, true)
+		create_event("dialogic_011", {'no-data': true}, true)
+		create_event("dialogic_011", {'no-data': true}, true)
+		create_event("dialogic_013", {'no-data': true}, true)
 
 
 # the Condition button adds multiple blocks 
@@ -658,11 +668,11 @@ func create_condition(at_position):
 	if len(selected_items) != 0:
 		# Events are added bellow the selected node
 		# So we must reverse the adding order
-		create_event("EndBranch", {'no-data': true}, true)
-		create_event("Condition", {'no-data': true}, true)
+		create_event("dialogic_013", {'no-data': true}, true)
+		create_event("dialogic_012", {'no-data': true}, true)
 	else:
-		create_event("Condition", {'no-data': true}, true)
-		create_event("EndBranch", {'no-data': true}, true)
+		create_event("dialogic_012", {'no-data': true}, true)
+		create_event("dialogic_013", {'no-data': true}, true)
 
 
 func update_custom_events() -> void:
@@ -716,14 +726,14 @@ func update_custom_events() -> void:
 	
 	# adding new ones
 	for custom_event_id in custom_events.keys():
-		var button = Button.new()
-		button.set_script(preload("EventButton.gd"))
-		button.EventName = custom_event_id
-		button.text = "  "+custom_events[custom_event_id]['event_name']
+		var button = load('res://addons/dialogic/Editor/TimelineEditor/SmallEventButton.tscn').instance()
+		#button.set_script(preload("EventButton.gd"))
+		button.event_id = custom_event_id
+		button.self_modulate = Color('#494d58')
+		button.hint_tooltip = custom_events[custom_event_id]['event_name']
 		if custom_events[custom_event_id]['event_icon']:
-			button.icon = custom_events[custom_event_id]['event_icon']
+			button.event_icon = custom_events[custom_event_id]['event_icon']
 		button.connect("pressed", self, "_create_event_button_pressed", [custom_event_id])
-		button.align = Button.ALIGN_LEFT
 		custom_events_container.add_child(button)
 
 ## *****************************************************************************
@@ -731,10 +741,10 @@ func update_custom_events() -> void:
 ## *****************************************************************************
 
 # Creates a ghost event for drag and drop
-func create_drag_and_drop_event(scene: String):
+func create_drag_and_drop_event(event_id: String):
 	var index = get_index_under_cursor()
-	var piece = create_event(scene)
-	currently_draged_event_type = scene
+	var piece = create_event(event_id)
+	currently_draged_event_type = event_id
 	timeline.move_child(piece, index)
 	moving_piece = piece
 	piece_was_dragged = true
@@ -770,14 +780,18 @@ func cancel_drop_event():
 ## *****************************************************************************
 
 # Adding an event to the timeline
-func create_event(scene: String, data: Dictionary = {'no-data': true} , indent: bool = false, at_index: int = -1, auto_select: bool = false):
+func create_event(event_id: String, data: Dictionary = {'no-data': true} , indent: bool = false, at_index: int = -1, auto_select: bool = false):
 	var piece = null
 	
-	## Find out whether this is a custom event:
-	if scene in custom_events.keys():
-		piece = load(custom_events[scene]['event_block_scene']).instance()
+	# check if it's a custom event
+	if event_id in custom_events.keys():
+		piece = load(custom_events[event_id]['event_block_scene']).instance()
+	# check if it's a builtin event
+	elif event_id in id_to_scene_name.keys():
+		piece = load("res://addons/dialogic/Editor/Events/" + id_to_scene_name[event_id] + ".tscn").instance()
+	# else use dummy event
 	else:
-		piece = load("res://addons/dialogic/Editor/Events/" + scene + ".tscn").instance()
+		piece = load("res://addons/dialogic/Editor/Events/DummyEvent.tscn").instance()
 	
 	# load the piece with data
 	piece.editor_reference = editor_reference
@@ -842,7 +856,7 @@ func load_batch(data):
 	var current_batch = batches.pop_front()
 	if current_batch:
 		for i in current_batch:
-			add_event_by_id(i['event_id'], i)
+			create_event(i['event_id'], i)
 	emit_signal("batch_loaded")
 
 
@@ -855,85 +869,6 @@ func _on_batch_loaded():
 		indent_events()
 		building_timeline = false
 	add_extra_scroll_area_to_timeline()
-
-
-func add_event_by_id(event_id, event_data):
-	match event_id:
-		# MAIN EVENTS
-		# Text event
-		'dialogic_001':
-			return create_event('TextEvent', event_data)
-		# Join event
-		'dialogic_002':
-			return create_event("CharacterJoin", event_data)
-		# Character Leave event 
-		'dialogic_003':
-			return create_event('CharacterLeave', event_data)
-		
-		# LOGIC EVENTS
-		# Question event
-		'dialogic_010':
-			return create_event('Question', event_data)
-		# Choice event
-		'dialogic_011':
-			return create_event('Choice', event_data)
-		# Condition event
-		'dialogic_012':
-			return create_event('Condition', event_data)
-		# End Branch event
-		'dialogic_013':
-			return create_event('EndBranch', event_data)
-		# Set Value event
-		'dialogic_014':
-			return create_event('SetValue', event_data)
-		
-		
-		# TIMELINE EVENTS
-		# Change Timeline event
-		'dialogic_020':
-			return create_event('ChangeTimeline', event_data)
-		# Change Backround event
-		'dialogic_021':
-			return create_event('ChangeBackground', event_data)
-		# Close Dialog event
-		'dialogic_022':
-			return create_event('CloseDialog', event_data)
-		# Wait seconds event
-		'dialogic_023':
-			return create_event('WaitSeconds', event_data)
-		# Set Theme event
-		'dialogic_024':
-			return create_event('SetTheme', event_data)
-		# Set Glossary event
-		'dialogic_025':
-			return create_event('SetGlossary', event_data)
-		# Save event
-		'dialogic_026':
-			return create_event('SaveEvent', event_data)
-		
-		# AUDIO EVENTS
-		# Audio event
-		'dialogic_030':
-			return create_event('AudioEvent', event_data)
-		# Background Music event
-		'dialogic_031':
-			return create_event('BackgroundMusic', event_data)
-		
-		# GODOT EVENTS
-		# Emit signal event
-		'dialogic_040':
-			return create_event('EmitSignal', event_data)
-		# Change Scene event
-		'dialogic_041':
-			return create_event('ChangeScene', event_data)
-		# Call Node event
-		'dialogic_042':
-			return create_event('CallNode', event_data)
-	
-	if event_id in custom_events.keys():
-		return create_event(event_id, event_data)
-	
-	return create_event('DummyEvent', event_data)
 
 
 func clear_timeline():
