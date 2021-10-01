@@ -600,7 +600,7 @@ func _on_letter_written():
 
 func on_timeline_start():
 	if not Engine.is_editor_hint():
-		if settings.get_value('saving', 'autosave_on_timeline_start', true):
+		if settings.get_value('saving', 'autosave', true):
 			# save to the current slot (or default)
 			Dialogic.save('', true)
 	# TODO remove event_start in 2.0
@@ -610,7 +610,7 @@ func on_timeline_start():
 
 func on_timeline_end():
 	if not Engine.is_editor_hint():
-		if settings.get_value('saving', 'autosave_on_timeline_end', true):
+		if settings.get_value('saving', 'autosave', true):
 			# save to the current slot (or default)
 			Dialogic.save('', true)
 	# TODO remove event_end in 2.0
