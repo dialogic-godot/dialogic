@@ -1,7 +1,7 @@
 tool
 extends Control
 
-var editor_file_dialog # EditorFileDialog
+var editor_file_dialog: EditorFileDialog
 var file_picker_data: Dictionary = {'method': '', 'node': self}
 var version_string: String 
 
@@ -76,6 +76,9 @@ func _ready():
 	$ToolBar/FoldTools/ButtonFold.connect('pressed', $MainPanel/TimelineEditor, 'fold_all_nodes')
 	$ToolBar/FoldTools/ButtonUnfold.connect('pressed', $MainPanel/TimelineEditor, 'unfold_all_nodes')
 	
+	#audacity label importer connections
+	$AudacityLabels/VBoxContainer/toolbar/load.connect("pressed", self, "load_audacity_label")
+	$AudacityLabels/VBoxContainer/scrollbox/items.connect("item_selected", self, "on_send_label_data")
 	
 	#Connecting confirmation
 	$RemoveFolderConfirmation.connect('confirmed', self, '_on_RemoveFolderConfirmation_confirmed')
@@ -88,8 +91,55 @@ func _ready():
 		$ToolBar/Version.text = 'Dialogic v' + version_string
 		
 	$MainPanel/MasterTreeContainer/FilterMasterTreeEdit.right_icon = get_icon("Search", "EditorIcons")
+	
+# Audacity label importer - KvaGram
+var labeltrack_target #AudioPicker
+var loaded_label_track:Array
 
-
+func request_audacity_label(target, location):
+	if loaded_label_track.size() > 0:
+		$AudacityLabels.popup_centered_minsize()
+		$AudacityLabels.set_position(location)
+		labeltrack_target = target
+	else:
+		load_audacity_label()
+	
+func load_audacity_label():
+	godot_dialog("*.txt", EditorFileDialog.MODE_OPEN_FILE, EditorFileDialog.ACCESS_FILESYSTEM)
+	godot_dialog_connect(self, "read_audacity_label")
+func read_audacity_label(path, target):
+	var fileLoader:= File.new()
+	fileLoader.open(path, File.READ)
+	var line:String = fileLoader.get_line()
+	#running the parser to check if the file is in the correct format.
+	var first_data = parse_audacity_label(line)
+	if not (first_data["start_time"] is float && first_data["stop_time"] is float):
+		return #this is the failiure state.
+	loaded_label_track = []
+	$AudacityLabels/VBoxContainer/scrollbox/items.clear()
+	$AudacityLabels/VBoxContainer/toolbar/filename.text = path.get_file()
+	while not line.empty():
+		var data = parse_audacity_label(line)
+		$AudacityLabels/VBoxContainer/scrollbox/items.add_item("start: " + String(data["start_time"]) + " - stop: " + String(data["stop_time"]) + " " + data["comment"])
+		loaded_label_track.push_back(data)
+		line = fileLoader.get_line()
+	#print(loaded_label_track)#testing for now
+	fileLoader.close()
+func parse_audacity_label(line:String):
+	var data = {}
+	data["start_time"] = stepify(float(line), 0.1)
+	data["stop_time"] = stepify(float(line.substr(line.find('\t'))), 0.1)
+	data["comment"] = line.substr(line.find_last('\t')+1)
+	return data
+func on_send_label_data(index):
+	if labeltrack_target == null || not "event_data" in labeltrack_target:
+		return #target is invalid (log error?)
+	var event_data = labeltrack_target.event_data
+	event_data["start_time"] = loaded_label_track[index]["start_time"]
+	event_data["stop_time"] = loaded_label_track[index]["stop_time"]
+	labeltrack_target.load_data(event_data)
+	
+# end of audacity label importer
 func on_master_tree_editor_selected(editor: String):
 	$ToolBar/FoldTools.visible = editor == 'timeline'
 
@@ -133,8 +183,10 @@ func _on_RemoveConfirmation_confirmed(what: String = ''):
 
 
 # Godot dialog
-func godot_dialog(filter, mode = EditorFileDialog.MODE_OPEN_FILE):
+# edit by KvaGram: Added access argument. This is for the audacity label, as it may not be a project file, just a temporary resorce.
+func godot_dialog(filter, mode = EditorFileDialog.MODE_OPEN_FILE, access = EditorFileDialog.ACCESS_RESOURCES):
 	editor_file_dialog.mode = mode
+	editor_file_dialog.access = access
 	editor_file_dialog.clear_filters()
 	editor_file_dialog.popup_centered_ratio(0.75)
 	editor_file_dialog.add_filter(filter)

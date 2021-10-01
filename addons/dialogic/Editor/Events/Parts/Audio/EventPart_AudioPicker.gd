@@ -21,7 +21,6 @@ onready var advanced_options_group := $VBox/adv_settings
 
 # used to connect the signals
 func _ready():
-	
 	# signals
 	audio_button.connect("pressed", self, '_on_ButtonAudio_pressed')
 	preview_play_button.connect("pressed", self, '_on_ButtonPreviewPlay_pressed')
@@ -195,3 +194,7 @@ func _process(_delta):
 	#Will automatically stop playing when reaching stop_time
 	if(audio_preview.playing && event_data.has('stop_time') && audio_preview.get_playback_position() >= event_data['stop_time']):
 		audio_preview.stop()
+
+func _on_Audacity_button_pressed():
+	var pos = $"VBox/adv_settings/AudioRegion/VBox/HBox2/Audacity_button".get_position()
+	editor_reference.request_audacity_label(self, pos) 

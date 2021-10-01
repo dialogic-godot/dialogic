@@ -35,8 +35,8 @@ event_name = "AudioEvent"
 [node name="VBox" type="VBoxContainer" parent="."]
 margin_left = 6.0
 margin_top = 5.0
-margin_right = 316.0
-margin_bottom = 40.0
+margin_right = 314.0
+margin_bottom = 35.0
 
 [node name="Preview" type="Label" parent="VBox"]
 visible = false
@@ -48,7 +48,7 @@ custom_colors/font_color = Color( 1, 1, 1, 0.513726 )
 text = "    ..."
 
 [node name="prime_settings" type="HBoxContainer" parent="VBox"]
-margin_right = 310.0
+margin_right = 308.0
 margin_bottom = 30.0
 size_flags_horizontal = 3
 
@@ -90,10 +90,9 @@ __meta__ = {
 
 [node name="adv_settings" type="HBoxContainer" parent="VBox"]
 visible = false
-margin_left = -6.0
-margin_top = 29.0
-margin_right = 508.0
-margin_bottom = 80.0
+margin_top = 34.0
+margin_right = 419.0
+margin_bottom = 85.0
 custom_constants/separation = 8
 
 [node name="AudioVolume" type="PanelContainer" parent="VBox/adv_settings"]
@@ -154,24 +153,40 @@ selected = 0
 visible = false
 margin_left = 187.0
 margin_right = 419.0
-margin_bottom = 51.0
+margin_bottom = 57.0
 custom_styles/panel = ExtResource( 2 )
 
 [node name="VBox" type="VBoxContainer" parent="VBox/adv_settings/AudioRegion"]
 margin_left = 6.0
 margin_top = 5.0
 margin_right = 226.0
-margin_bottom = 47.0
+margin_bottom = 53.0
 
-[node name="Label" type="Label" parent="VBox/adv_settings/AudioRegion/VBox"]
+[node name="HBox2" type="HBoxContainer" parent="VBox/adv_settings/AudioRegion/VBox"]
 margin_right = 220.0
-margin_bottom = 14.0
+margin_bottom = 20.0
+
+[node name="Label" type="Label" parent="VBox/adv_settings/AudioRegion/VBox/HBox2"]
+margin_top = 3.0
+margin_right = 86.0
+margin_bottom = 17.0
 text = "Audio-region:"
 
+[node name="VSeparator" type="VSeparator" parent="VBox/adv_settings/AudioRegion/VBox/HBox2"]
+margin_left = 90.0
+margin_right = 94.0
+margin_bottom = 20.0
+
+[node name="Audacity_button" type="Button" parent="VBox/adv_settings/AudioRegion/VBox/HBox2"]
+margin_left = 98.0
+margin_right = 119.0
+margin_bottom = 20.0
+text = "Aud"
+
 [node name="HBox" type="HBoxContainer" parent="VBox/adv_settings/AudioRegion/VBox"]
-margin_top = 18.0
+margin_top = 24.0
 margin_right = 220.0
-margin_bottom = 42.0
+margin_bottom = 48.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -212,3 +227,5 @@ suffix = "sec"
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[connection signal="pressed" from="VBox/adv_settings/AudioRegion/VBox/HBox2/Audacity_button" to="." method="_on_Audacity_button_pressed"]

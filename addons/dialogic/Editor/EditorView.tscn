@@ -121,8 +121,8 @@ flat = true
 
 [node name="FoldTools" type="HBoxContainer" parent="ToolBar"]
 visible = false
-margin_left = 112.0
-margin_right = 203.0
+margin_left = 140.0
+margin_right = 288.0
 margin_bottom = 32.0
 
 [node name="Label" type="Label" parent="ToolBar/FoldTools"]
@@ -133,14 +133,14 @@ text = "      Fold  "
 
 [node name="ButtonFold" type="ToolButton" parent="ToolBar/FoldTools"]
 margin_left = 63.0
-margin_right = 75.0
+margin_right = 91.0
 margin_bottom = 32.0
 icon = SubResource( 2 )
 align = 0
 
 [node name="ButtonUnfold" type="ToolButton" parent="ToolBar/FoldTools"]
-margin_left = 79.0
-margin_right = 91.0
+margin_left = 95.0
+margin_right = 123.0
 margin_bottom = 32.0
 icon = SubResource( 2 )
 align = 0
@@ -258,6 +258,80 @@ margin_bottom = 288.0
 margin_right = 280.0
 margin_bottom = 14.0
 text = "Select or create an element to start working"
+
+[node name="AudacityLabels" type="Popup" parent="."]
+margin_left = 1043.06
+margin_top = 26.0271
+margin_right = 1403.06
+margin_bottom = 409.027
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Panel" type="Panel" parent="AudacityLabels"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="AudacityLabels"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_horizontal = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="scrollbox" type="ScrollContainer" parent="AudacityLabels/VBoxContainer"]
+margin_right = 360.0
+margin_bottom = 358.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+follow_focus = true
+scroll_horizontal_enabled = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="items" type="ItemList" parent="AudacityLabels/VBoxContainer/scrollbox"]
+margin_right = 360.0
+margin_bottom = 358.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+max_text_lines = 3
+auto_height = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="toolbar" type="HBoxContainer" parent="AudacityLabels/VBoxContainer"]
+margin_top = 362.0
+margin_right = 360.0
+margin_bottom = 382.0
+size_flags_horizontal = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="load" type="Button" parent="AudacityLabels/VBoxContainer/toolbar"]
+margin_right = 170.0
+margin_bottom = 20.0
+text = "LOAD NEW LABEL TRACK"
+
+[node name="VSeparator" type="VSeparator" parent="AudacityLabels/VBoxContainer/toolbar"]
+margin_left = 174.0
+margin_right = 206.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="filename" type="Label" parent="AudacityLabels/VBoxContainer/toolbar"]
+margin_left = 210.0
+margin_top = 3.0
+margin_right = 360.0
+margin_bottom = 17.0
+text = "example_label_track.txt"
 
 [node name="RemoveConfirmation" type="ConfirmationDialog" parent="."]
 margin_right = 325.0
