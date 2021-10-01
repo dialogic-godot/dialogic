@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=2]
+[gd_scene load_steps=30 format=2]
 
 [ext_resource path="res://addons/dialogic/Images/Event Icons/Main Icons/character-join.svg" type="Texture" id=1]
 [ext_resource path="res://addons/dialogic/Images/Event Icons/Main Icons/text-event.svg" type="Texture" id=2]
@@ -20,6 +20,7 @@
 [ext_resource path="res://addons/dialogic/Images/Event Icons/Main Icons/set-theme.svg" type="Texture" id=18]
 [ext_resource path="res://addons/dialogic/Images/Event Icons/Main Icons/background-music.svg" type="Texture" id=19]
 [ext_resource path="res://addons/dialogic/Images/Event Icons/Main Icons/call-node.svg" type="Texture" id=20]
+[ext_resource path="res://addons/dialogic/Editor/Common/TLabel.tscn" type="PackedScene" id=21]
 [ext_resource path="res://addons/dialogic/Editor/TimelineEditor/TimelineArea.gd" type="Script" id=22]
 [ext_resource path="res://addons/dialogic/Images/Event Icons/Main Icons/set-glossary.svg" type="Texture" id=23]
 [ext_resource path="res://addons/dialogic/Images/Event Icons/Main Icons/save-icon.svg" type="Texture" id=24]
@@ -30,7 +31,7 @@ content_margin_left = 5.0
 content_margin_right = 5.0
 content_margin_top = 5.0
 content_margin_bottom = 5.0
-bg_color = Color( 0.15, 0.1725, 0.2325, 1 )
+bg_color = Color( 0, 0, 0, 1 )
 border_width_left = 1
 border_width_top = 1
 border_width_right = 1
@@ -47,7 +48,7 @@ corner_radius_top_right = 5
 corner_radius_bottom_right = 5
 corner_radius_bottom_left = 5
 
-[sub_resource type="Image" id=5]
+[sub_resource type="Image" id=3]
 data = {
 "data": PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ),
 "format": "LumAlpha8",
@@ -59,7 +60,7 @@ data = {
 [sub_resource type="ImageTexture" id=4]
 flags = 4
 flags = 4
-image = SubResource( 5 )
+image = SubResource( 3 )
 size = Vector2( 16, 16 )
 
 [node name="TimelineEditor" type="HSplitContainer"]
@@ -148,10 +149,13 @@ margin_top = 72.0
 margin_right = 180.0
 margin_bottom = 86.0
 
-[node name="Label" type="Label" parent="ScrollContainer/EventContainer/HBoxContainer6"]
+[node name="TLabel" parent="ScrollContainer/EventContainer/HBoxContainer6" instance=ExtResource( 21 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
 margin_right = 77.0
 margin_bottom = 14.0
 text = "Main Events"
+text_key = "Main Events"
 
 [node name="HSeparator2" type="HSeparator" parent="ScrollContainer/EventContainer/HBoxContainer6"]
 margin_left = 81.0
@@ -195,10 +199,13 @@ margin_top = 124.0
 margin_right = 180.0
 margin_bottom = 138.0
 
-[node name="Label" type="Label" parent="ScrollContainer/EventContainer/HBoxContainer5"]
+[node name="TLabel2" parent="ScrollContainer/EventContainer/HBoxContainer5" instance=ExtResource( 21 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
 margin_right = 33.0
 margin_bottom = 14.0
 text = "Logic"
+text_key = "Logic"
 
 [node name="HSeparator2" type="HSeparator" parent="ScrollContainer/EventContainer/HBoxContainer5"]
 margin_left = 37.0
@@ -270,10 +277,13 @@ margin_top = 210.0
 margin_right = 180.0
 margin_bottom = 224.0
 
-[node name="Label" type="Label" parent="ScrollContainer/EventContainer/HBoxContainer3"]
+[node name="TLabel3" parent="ScrollContainer/EventContainer/HBoxContainer3" instance=ExtResource( 21 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
 margin_right = 56.0
 margin_bottom = 14.0
 text = "Timeline"
+text_key = "Timeline"
 
 [node name="HSeparator2" type="HSeparator" parent="ScrollContainer/EventContainer/HBoxContainer3"]
 margin_left = 60.0
@@ -345,10 +355,13 @@ margin_top = 296.0
 margin_right = 180.0
 margin_bottom = 310.0
 
-[node name="Label" type="Label" parent="ScrollContainer/EventContainer/HBoxContainer4"]
+[node name="TLabel4" parent="ScrollContainer/EventContainer/HBoxContainer4" instance=ExtResource( 21 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
 margin_right = 37.0
 margin_bottom = 14.0
 text = "Audio"
+text_key = "Audio"
 
 [node name="HSeparator2" type="HSeparator" parent="ScrollContainer/EventContainer/HBoxContainer4"]
 margin_left = 41.0
@@ -384,10 +397,13 @@ margin_top = 348.0
 margin_right = 180.0
 margin_bottom = 362.0
 
-[node name="Label" type="Label" parent="ScrollContainer/EventContainer/HBoxContainer"]
+[node name="TLabel5" parent="ScrollContainer/EventContainer/HBoxContainer" instance=ExtResource( 21 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
 margin_right = 39.0
 margin_bottom = 14.0
 text = "Godot"
+text_key = "Godot"
 
 [node name="HSeparator2" type="HSeparator" parent="ScrollContainer/EventContainer/HBoxContainer"]
 margin_left = 43.0
@@ -432,11 +448,14 @@ margin_top = 400.0
 margin_right = 180.0
 margin_bottom = 424.0
 
-[node name="Label" type="Label" parent="ScrollContainer/EventContainer/CustomEventsHeadline"]
+[node name="TLabel6" parent="ScrollContainer/EventContainer/CustomEventsHeadline" instance=ExtResource( 21 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
 margin_top = 5.0
 margin_right = 95.0
 margin_bottom = 19.0
 text = "Custom Events"
+text_key = "Custom Events"
 
 [node name="HSeparator2" type="HSeparator" parent="ScrollContainer/EventContainer/CustomEventsHeadline"]
 margin_left = 99.0
