@@ -823,6 +823,7 @@ func event_handler(event: Dictionary):
 			Dialogic.set_variable_from_id(event['definition'], value, operation)
 			_load_next_event()
 		
+		
 		# TIMELINE EVENTS
 		# Change Timeline event
 		'dialogic_020':
@@ -884,13 +885,19 @@ func event_handler(event: Dictionary):
 			if event['set_theme'] != '':
 				current_theme = load_theme(event['set_theme'])
 			_load_next_event()
-		
 		# Set Glossary event
 		'dialogic_025':
 			emit_signal("event_start", "set_glossary", event)
 			if event['glossary_id']:
 				Dialogic.set_glossary_from_id(event['glossary_id'], event['title'], event['text'],event['extra'])
 			_load_next_event()
+		# Save event
+		'dialogic_026':
+			emit_signal('event_start', 'save', event)
+			Dialogic.save()
+			_load_next_event()
+		
+		
 		# AUDIO EVENTS
 		# Audio event
 		'dialogic_030':
