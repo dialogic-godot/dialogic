@@ -62,28 +62,6 @@ signal selection_updated
 signal batch_loaded
 
 func _ready():
-	var p = EditorPlugin.new()
-	$ScrollContainer/EventContainer/Grid1/TextEvent.hint_tooltip = DTS.translate("Text Event")
-	$ScrollContainer/EventContainer/Grid1/CharacterJoin.hint_tooltip = DTS.translate("Character Join")
-	$ScrollContainer/EventContainer/Grid1/CharacterLeave.hint_tooltip = DTS.translate("Character Leave")
-	$ScrollContainer/EventContainer/Grid2/Question.hint_tooltip = DTS.translate("Question")
-	$ScrollContainer/EventContainer/Grid2/Choice.hint_tooltip = DTS.translate("Choice")
-	$ScrollContainer/EventContainer/Grid2/Condition.hint_tooltip = DTS.translate("Condition")
-	$ScrollContainer/EventContainer/Grid2/EndBranch.hint_tooltip = DTS.translate("End Branch")
-	$ScrollContainer/EventContainer/Grid2/SetValue.hint_tooltip = DTS.translate("Set Value")
-	$ScrollContainer/EventContainer/Grid2/SetGlossary.hint_tooltip = DTS.translate("Set Glossary")
-	$ScrollContainer/EventContainer/Grid3/ChangeTimeline.hint_tooltip = DTS.translate("Change Timeline")
-	$ScrollContainer/EventContainer/Grid3/ChangeBackground.hint_tooltip = DTS.translate("Set Background")
-	$ScrollContainer/EventContainer/Grid3/CloseDialog.hint_tooltip = DTS.translate("Close Dialog")
-	$ScrollContainer/EventContainer/Grid3/WaitSeconds.hint_tooltip = DTS.translate("Wait Seconds")
-	$ScrollContainer/EventContainer/Grid3/SetTheme.hint_tooltip = DTS.translate("Set Theme")
-	$ScrollContainer/EventContainer/Grid3/SaveEvent.hint_tooltip = DTS.translate("Save")
-	$ScrollContainer/EventContainer/Grid4/AudioEvent.hint_tooltip = DTS.translate("Audio Event")
-	$ScrollContainer/EventContainer/Grid4/BackgroundMusic.hint_tooltip = DTS.translate("Background Music")
-	$ScrollContainer/EventContainer/Grid5/EmitSignal.hint_tooltip = DTS.translate("Emit Signal")
-	$ScrollContainer/EventContainer/Grid5/ChangeScene.hint_tooltip = DTS.translate("Change Scene")
-	$ScrollContainer/EventContainer/Grid5/CallNode.hint_tooltip = DTS.translate("Call Node")
-	
 	editor_reference = find_parent('EditorView')
 	connect("batch_loaded", self, '_on_batch_loaded')
 	var modifier = ''

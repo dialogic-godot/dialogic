@@ -20,25 +20,26 @@ Enable choice options after  ,启用选择选项后  ,Enable choice options afte
  seconds, 秒, seconds, segundos
 Default action key,默认动作按键,Default action key,Tecla de acción predeterminada
 Use custom events,使用自定义事件,Use custom events,Use custom events
-  Text Event,  文本事件,  Text Event,  Text Event
-  Character Join,  角色加入,  Character Join,  Character Join
-  Character Leave,  角色离开,  Character Leave,  Character Leave
-  Question,  问题,  Question,  Question
-  Choice,  选择,  Choice,  Choice
- Condition, 条件, Condition, Condition
-  End Branch,  结束分支,  End Branch,  End Branch
-  Set Value,  设定值,  Set Value,  Set Value
-  Set Glossary,  设置术语,  Set Glossary,  Set Glossary
-  Change Timeline,  改变时间线,  Change Timeline,  Change Timeline
-  Set Background,  设置背景,  Set Background,  Set Background
-  Close Dialog,  关闭对话框,  Close Dialog,  Close Dialog
-  Wait Seconds,  等待秒数,  Wait Seconds,  Wait Seconds
-  Set Theme,  设置主题,  Set Theme,  Set Theme
-  Audio Event,  音频事件,  Audio Event,  Audio Event
-  Background Music,  背景音乐,  Background Music,  Background Music
-  Emit Signal,  发出信号,  Emit Signal,  Emit Signal
-  Change Scene,  改变场景,  Change Scene,  Change Scene
-  Call Node,  呼叫节点,  Call Node,  Call Node
+Text Event,文本事件,Text Event,Texto
+Character Join,角色加入,Character Join,Personaje Entra
+Character Leave,角色离开,Character Leave,Personaje Sale
+Question,问题,Question,Pregunta
+Choice,选择,Choice,Opcion
+Condition,条件,Condition,Condicion
+End Branch,结束分支,End Branch,Cerrar rama
+Set Value,设定值,Set Value,Actualizar Valor
+Set Glossary,设置术语,Set Glossary,Actualizar Glosario
+Change Timeline,改变时间线,Change Timeline,Cambiar Secuencia
+Set Background,设置背景,Set Background,Cambiar Fondo
+Close Dialog,关闭对话框,Close Dialog,Cerrar Dialogo
+Wait Seconds,等待秒数,Wait Seconds,Esperar Segundos
+Set Theme,设置主题,Set Theme,Cambiar Tema
+Audio Event,音频事件,Audio Event,Evento de Audio
+Background Music,背景音乐,Background Music,Evento de Musica
+Emit Signal,发出信号,Emit Signal,Emitir Señal
+Change Scene,改变场景,Change Scene,Cambiar Escena
+Call Node,呼叫节点,Call Node,Llamar Nodo
+Save,保存,Save,Guardar
 Name: ,名称,Name: ,Nombre: 
 Different display name,不同的显示名称,Different display name,Different display name
 Enable Nicknames,启用昵称,Enable Nicknames,Habilitar Apodos
