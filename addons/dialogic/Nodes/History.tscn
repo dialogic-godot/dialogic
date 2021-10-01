@@ -1,24 +1,14 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=2 format=2]
 
 [ext_resource path="res://addons/dialogic/Nodes/HistoryPopup.gd" type="Script" id=1]
-[ext_resource path="res://addons/dialogic/Example Assets/HistoryRows/HistoryRow.tscn" type="PackedScene" id=2]
 
-[node name="HistoryPopup" type="PopupPanel"]
-anchor_top = 0.5
+[node name="HistoryPopup" type="Popup"]
+visible = true
 anchor_right = 1.0
-anchor_bottom = 0.5
-margin_left = 76.0
-margin_top = -227.0
-margin_right = -66.0
-margin_bottom = 255.0
+anchor_bottom = 1.0
 script = ExtResource( 1 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-HistoryRow = ExtResource( 2 )
 
 [node name="ColorRect" type="ColorRect" parent="."]
-visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 __meta__ = {
@@ -63,5 +53,16 @@ margin_right = 869.0
 margin_bottom = 5.0
 custom_constants/separation = 16
 
+[node name="CloseButton" type="Button" parent="."]
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -54.0
+margin_bottom = 20.0
+text = "Return"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [connection signal="about_to_show" from="." to="." method="_on_HistoryPopup_about_to_show"]
 [connection signal="popup_hide" from="." to="." method="_on_HistoryPopup_popup_hide"]
+[connection signal="pressed" from="CloseButton" to="." method="_on_CloseButton_pressed"]

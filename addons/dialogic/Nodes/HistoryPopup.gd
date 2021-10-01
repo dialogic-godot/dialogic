@@ -1,5 +1,5 @@
 tool
-extends PopupPanel
+extends Popup
 
 
 export(PackedScene) var HistoryRow = load("res://addons/dialogic/Example Assets/HistoryRows/HistoryRow.tscn")
@@ -105,3 +105,6 @@ func _on_HistoryPopup_popup_hide():
 func _on_HistoryPopup_about_to_show():
 	ScrollContainer.scroll_vertical = scrollbar.max_value
 
+
+func _on_CloseButton_pressed():
+	hide()

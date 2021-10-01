@@ -1454,8 +1454,15 @@ func _on_OptionsDelayedInput_timeout():
 
 
 func _on_HistoryButton_pressed():
-	HistoryTimeline.popup()
+	if HistoryTimeline.visible == false:
+		HistoryTimeline.popup()
+		#$HistoryButton.hide()
 
+
+
+func _on_HistoryPopup_hide():
+	#$HistoryButton.show()
+	pass
 
 #### LOADING AND SAVING
 # returns all important data in a dictionary
