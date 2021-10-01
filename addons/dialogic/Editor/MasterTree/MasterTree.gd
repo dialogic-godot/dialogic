@@ -1,7 +1,7 @@
 tool
 extends Tree
 
-onready var editor_reference
+var editor_reference
 onready var timeline_editor = get_node('../../TimelineEditor')
 onready var character_editor = get_node('../../CharacterEditor')
 onready var value_editor = get_node('../../ValueEditor')
@@ -470,6 +470,7 @@ func create_rmb_context_menus():
 	definition_folder_popup.connect('id_pressed', self, '_on_DefinitionRootPopupMenu_id_pressed')
 	documentation_folder_popup.connect('id_pressed', self, '_on_DocumentationPopupMenu_id_pressed')
 
+
 func _on_item_rmb_selected(position):
 	var item = get_selected().get_metadata(0)
 	if item.has('editor'):
@@ -488,11 +489,13 @@ func get_item_folder(item: TreeItem, root : String):
 	if not current_path.begins_with(root):
 		return root
 	return current_path
-	
+
+
 func get_item_path(item: TreeItem) -> String:
 	if item == null:
 		return ''
 	return create_item_path_recursive(item, "").trim_suffix("/")
+
 
 func create_item_path_recursive(item:TreeItem, path:String) -> String:
 	# don't use this function directly
@@ -618,6 +621,8 @@ func new_timeline():
 	var folder = get_item_folder(get_selected(), "Timelines")
 	DialogicUtil.add_file_to_folder(folder, timeline['metadata']['file'])
 	build_timelines(timeline['metadata']['file'])
+	rename_selected()
+
 
 # creates a new character and opens it
 # it will be added to the selected folder (if it's a character folder) or the Character root folder
@@ -626,6 +631,7 @@ func new_character():
 	var folder = get_item_folder(get_selected(), "Characters")
 	DialogicUtil.add_file_to_folder(folder, character['metadata']['file'])
 	build_characters(character['metadata']['file'])
+	rename_selected()
 
 # creates a new theme and opens it
 # it will be added to the selected folder (if it's a theme folder) or the Theme root folder
@@ -634,6 +640,7 @@ func new_theme():
 	var folder = get_item_folder(get_selected(), "Themes")
 	DialogicUtil.add_file_to_folder(folder, theme_file)
 	build_themes(theme_file)
+	rename_selected()
 
 # creates a new value and opens it
 # it will be added to the selected folder (if it's a definition folder) or the Definition root folder
@@ -642,6 +649,7 @@ func new_value_definition():
 	var folder = get_item_folder(get_selected(), "Definitions")
 	DialogicUtil.add_file_to_folder(folder, definition_id)
 	build_definitions(definition_id)
+	rename_selected()
 
 # creates a new glossary entry and opens it
 # it will be added to the selected folder (if it's a definition folder) or the Definition root folder
@@ -650,6 +658,7 @@ func new_glossary_entry():
 	var folder = get_item_folder(get_selected(), "Definitions")
 	DialogicUtil.add_file_to_folder(folder, definition_id)
 	build_definitions(definition_id)
+	rename_selected()
 	
 
 func remove_selected():
@@ -658,6 +667,11 @@ func remove_selected():
 	timelines_tree.select(0)
 	settings_editor.update_data()
 
+
+func rename_selected():
+	yield(get_tree(), "idle_frame")
+	_start_rename()
+	edit_selected()
 
 ## *****************************************************************************
 ##					 		DRAGGING ITEMS
@@ -744,15 +758,22 @@ func _process(delta):
 func _on_renamer_reset_timeout():
 	get_selected().set_editable(0, false)
 
+
 func _on_gui_input(event):
 	if event is InputEventMouseButton and event.button_index == 1:
 		if event.is_pressed() and event.doubleclick:
-			var item = get_selected()
-			var metadata = item.get_metadata(0)
-			if metadata.has("editable") and metadata["editable"]:
-				item_path_before_edit = get_item_path(item)
-				item.set_editable(0, true)
-				$RenamerReset.start(0.5)
+			_start_rename()
+
+
+func _start_rename():
+	print('rename start')
+	var item = get_selected()
+	var metadata = item.get_metadata(0)
+	if metadata.has("editable") and metadata["editable"]:
+		item_path_before_edit = get_item_path(item)
+		item.set_editable(0, true)
+		$RenamerReset.start(0.5)
+
 
 func _on_item_edited():
 	var item = get_selected()

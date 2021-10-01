@@ -8,6 +8,7 @@
     - Added some initial Spanish translations
 - Replaced the default `/addons/dialogic/Dialog.tscn` node with a proxy that creates a dialog using the `Dialogic.start` function instead of the raw node. This will make it easier to update from version to version since the instantiated node will not be changing a lot from version to version. This also moved and renamed the previous `/addons/dialogic/Dialog.tscn` to `/addons/dialogic/Nodes/DialogNode.tscn` and the `dialog_node.gd` is now called `DialogNode.gd` to be more in line with the rest of the project
 - CanvasLayer Argument (Dialogic.start()) added to the CSharp Class
+- Creating new resources will automatically start the renaming of it
 
 #### Timeline Editor:
 - A modular **Custom events** implementation [[Jowan-Spooner](https://github.com/Jowan-Spooner)]. Learn about them [here](./Events/Custom Events/CreateCustomEvents.md).
