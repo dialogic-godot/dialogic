@@ -344,27 +344,6 @@ hint_tooltip = "Will save to the default slot on timeline end and timeline start
 size_flags_horizontal = 3
 pressed = true
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer3"]
-visible = false
-margin_top = 54.0
-margin_right = 356.0
-margin_bottom = 78.0
-hint_tooltip = "Clearing the saved timeline can help automatically restarting the game when the timeline end is reached"
-
-[node name="TLabel11" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer3/HBoxContainer2" instance=ExtResource( 3 )]
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_top = 5.0
-margin_right = 266.0
-margin_bottom = 19.0
-text = "Only perform Save event if autosave is on"
-text_key = "Only perform Save event if autosave is on"
-
-[node name="SaveOnlyAutosave" type="CheckBox" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer3/HBoxContainer2"]
-margin_left = 270.0
-margin_right = 294.0
-margin_bottom = 24.0
-
 [node name="VBoxContainer2" type="VBoxContainer" parent="VBoxContainer/HBoxContainer3"]
 margin_left = 360.0
 margin_right = 664.0

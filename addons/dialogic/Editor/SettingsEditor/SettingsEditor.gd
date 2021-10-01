@@ -21,13 +21,11 @@ onready var nodes = {
 	
 	# Save
 	'autosave': $VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer3/HBoxContainer/Autosave,
-	'save_event_only_if_autosave':$VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer3/HBoxContainer2/SaveOnlyAutosave,
 	
 	# Input Settings
 	'delay_after_options': $VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer/HBoxContainer/LineEdit,
 	'default_action_key': $VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer/HBoxContainer2/DefaultActionKey,
 	}
-
 
 var THEME_KEYS := [
 	'advanced_themes',
@@ -51,7 +49,6 @@ var DIALOG_KEYS := [
 
 var SAVING_KEYS := [
 	'autosave', 
-	'save_event_only_if_autosave',
 	]
 
 func _ready():
