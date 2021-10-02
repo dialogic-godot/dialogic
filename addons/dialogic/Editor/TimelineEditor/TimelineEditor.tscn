@@ -1,4 +1,4 @@
-[gd_scene load_steps=31 format=2]
+[gd_scene load_steps=29 format=2]
 
 [ext_resource path="res://addons/dialogic/Images/Event Icons/Main Icons/character-join.svg" type="Texture" id=1]
 [ext_resource path="res://addons/dialogic/Images/Event Icons/Main Icons/text-event.svg" type="Texture" id=2]
@@ -38,12 +38,12 @@ border_width_right = 1
 border_width_bottom = 1
 border_color = Color( 0.0980392, 0.113725, 0.152941, 1 )
 
-[sub_resource type="StyleBoxFlat" id=5]
+[sub_resource type="StyleBoxFlat" id=2]
 draw_center = false
 border_width_left = 2
 border_color = Color( 0.8, 0.8, 0.8, 0 )
 
-[sub_resource type="StyleBoxFlat" id=2]
+[sub_resource type="StyleBoxFlat" id=3]
 content_margin_right = 6.0
 content_margin_top = 10.0
 content_margin_bottom = 10.0
@@ -52,21 +52,6 @@ corner_radius_top_left = 5
 corner_radius_top_right = 5
 corner_radius_bottom_right = 5
 corner_radius_bottom_left = 5
-
-[sub_resource type="Image" id=6]
-data = {
-"data": PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ),
-"format": "LumAlpha8",
-"height": 16,
-"mipmaps": false,
-"width": 16
-}
-
-[sub_resource type="ImageTexture" id=7]
-flags = 4
-flags = 4
-image = SubResource( 6 )
-size = Vector2( 16, 16 )
 
 [node name="TimelineEditor" type="HSplitContainer"]
 anchor_right = 1.0
@@ -106,7 +91,7 @@ margin_left = 844.0
 margin_right = 1024.0
 margin_bottom = 738.0
 rect_min_size = Vector2( 180, 0 )
-custom_styles/bg = SubResource( 5 )
+custom_styles/bg = SubResource( 2 )
 
 [node name="EventContainer" type="VBoxContainer" parent="ScrollContainer"]
 margin_left = 2.0
@@ -122,7 +107,7 @@ __meta__ = {
 [node name="EventsWarning" type="PanelContainer" parent="ScrollContainer/EventContainer"]
 margin_right = 178.0
 margin_bottom = 68.0
-custom_styles/panel = SubResource( 2 )
+custom_styles/panel = SubResource( 3 )
 
 [node name="HBoxContainer" type="HBoxContainer" parent="ScrollContainer/EventContainer/EventsWarning"]
 margin_top = 10.0
@@ -466,41 +451,32 @@ event_icon = ExtResource( 20 )
 [node name="CustomEventsHeadline" type="HBoxContainer" parent="ScrollContainer/EventContainer"]
 margin_top = 459.0
 margin_right = 178.0
-margin_bottom = 483.0
+margin_bottom = 473.0
 
 [node name="TLabel6" parent="ScrollContainer/EventContainer/CustomEventsHeadline" instance=ExtResource( 21 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_top = 5.0
 margin_right = 95.0
-margin_bottom = 19.0
+margin_bottom = 14.0
 text = "Custom Events"
 text_key = "Custom Events"
 
 [node name="HSeparator2" type="HSeparator" parent="ScrollContainer/EventContainer/CustomEventsHeadline"]
 margin_left = 99.0
-margin_right = 146.0
-margin_bottom = 24.0
+margin_right = 178.0
+margin_bottom = 14.0
 size_flags_horizontal = 3
 
-[node name="RefreshButton" type="ToolButton" parent="ScrollContainer/EventContainer/CustomEventsHeadline"]
-margin_left = 150.0
-margin_right = 178.0
-margin_bottom = 24.0
-icon = SubResource( 7 )
-
 [node name="CustomEventsContainer" type="GridContainer" parent="ScrollContainer/EventContainer"]
-margin_top = 492.0
+margin_top = 482.0
 margin_right = 178.0
-margin_bottom = 522.0
+margin_bottom = 512.0
 custom_constants/vseparation = 6
 custom_constants/hseparation = 6
 columns = 5
 
 [node name="Spacer" type="Control" parent="ScrollContainer/EventContainer"]
-margin_top = 531.0
+margin_top = 521.0
 margin_right = 178.0
-margin_bottom = 631.0
+margin_bottom = 621.0
 rect_min_size = Vector2( 0, 100 )
-
-[connection signal="pressed" from="ScrollContainer/EventContainer/CustomEventsHeadline/RefreshButton" to="." method="update_custom_events"]
