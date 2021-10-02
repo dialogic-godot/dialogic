@@ -2,56 +2,66 @@
 
 ## v1.3 - (WIP)
 #### General Editor Stuff
-- Builtin Documentation [[Jowan-Spooner]](https://github.com/Jowan-Spooner)
-- Editor plugin has translation support and some labels are translated to Chinese [[magian1127]](https://github.com/magian1127)
-- Added some initial Spanish translations
-- Fixed a reference bug that prevent the duplication of Themes
-- Fixed the `DialogNode` Inspector Timeline Open button issue
-- Better light/custom theme support for the Dialogic editor tab [[Jowan-Spooner]](https://github.com/Jowan-Spooner)
+- **Builtin documentation** [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
+    - Added a button to open the documentation from the nav bar
+- The plugin has now **Editor-translation support** and some labels are translated to Chinese [[magian1127](https://github.com/magian1127)]
+    - Added some initial Spanish translations
 - Replaced the default `/addons/dialogic/Dialog.tscn` node with a proxy that creates a dialog using the `Dialogic.start` function instead of the raw node. This will make it easier to update from version to version since the instantiated node will not be changing a lot from version to version. This also moved and renamed the previous `/addons/dialogic/Dialog.tscn` to `/addons/dialogic/Nodes/DialogNode.tscn` and the `dialog_node.gd` is now called `DialogNode.gd` to be more in line with the rest of the project
-- Renamed the plugin entry point script from `dialogic.gd` to `plugin.gd` so it better describes what that file does
 - CanvasLayer Argument (Dialogic.start()) added to the CSharp Class
-- Added a button to open the documentation from the nav bar
-  
+- Creating new resources will automatically start the renaming of it
+
 #### Timeline Editor:
-- A modular Custom events implementation [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
-- Added a preview image on the portrait picker, so it is easy to know what sprite or scene you are selecting. Thanks to [EmmaH](https://www.youtube.com/channel/UC4y59CMiLxWQQVqVFBYLa3Q) for the idea and [Jowan-Spooner](https://github.com/Jowan-Spooner) for the implementation
-- Added Voice Line support for Text and Question Events [[RedXGames](https://github.com/RedXGames)]
- - Added option to use a certain region of the audio files [[KvaGram](https://github.com/KvaGram)]
-- Change the Selected Event Style to only have blue borders and not change event color [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
+- A modular **Custom events** implementation [[Jowan-Spooner](https://github.com/Jowan-Spooner)]. Learn about them [here](./Events/Custom Events/CreateCustomEvents.md).
+- Added a **preview image on the portrait picker**, so it is easy to know what sprite or scene you are selecting. Thanks to [EmmaH](https://www.youtube.com/channel/UC4y59CMiLxWQQVqVFBYLa3Q) for the idea and [Jowan-Spooner](https://github.com/Jowan-Spooner) for the implementation
+- Added **Voice Line support** for Text and Question Events [[RedXGames](https://github.com/RedXGames)]. Learn how to use it [here](./Tutorials/VoiceLines.md).
+    - Added option to use a certain region of the audio files [[KvaGram](https://github.com/KvaGram)]
+- Partial support for **undo and redo** [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
+- Better **light/custom theme support** for the timeline editor [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
+    - Changed the Selected Event Style to only have blue borders and not change event color [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
 - Adding an extra space at the end of the timelines so it is easier to drag and drop new events
-- Partial support for undo and redo [[Jowan-Spooner]](https://github.com/Jowan-Spooner)
 - After selecting a conditional, the input field of that event will be selected
 - Updated UI of the AudioPickers [[Jowan-Spooner]](https://github.com/Jowan-Spooner)
 - Automatically scrolling to newly created events when you click on a create event button [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
-- If no characters are present in the current project the character picker is hidden and a prompt was added in the Character join and Character leave events to create one [[zaknafean]](https://github.com/zaknafean)
-   
+- If no characters are present in the current project the character picker is hidden and a prompt was added in the Character join and Character leave events to create one [[zaknafean](https://github.com/zaknafean)]
+- Copy Timeline Name will now return the full path to that timeline
+
 #### Theme Editor:
-- A default theme is created on new projects [[zaknafean]](https://github.com/zaknafean)
-- You can now set the position of the buttons relative to the screen (Top, Bottom, Center, Left, Right)
-- You can now set the choice buttons to be aligned horizontally or vertically
-- More range for dialog text speed [[zaknafean]](https://github.com/zaknafean)
-- Updated Audio Settings [[Tim Krief](https://github.com/timkrief)]: 
- - you can now select audio for typing, text completed, next event, button hover and button selecting
- - Attention: Old typing audio will have to be redone!
+- **Updated Audio Settings** [[Tim Krief](https://github.com/timkrief)]: 
+   - you can now select audio for typing, text completed, next event, button hover and button selecting
+   - Attention: Old typing audio will have to be redone!
+- You can now set the **position of the buttons relative to the screen** (Top, Bottom, Center, Left, Right)
+- You can now set the choice buttons to be **aligned horizontally or vertically**
+- More range for dialog text speed [[zaknafean](https://github.com/zaknafean)]
+- A default theme is created on new projects [[zaknafean](https://github.com/zaknafean)]
 
 #### Ingame Behaviour
-- Fixed a bug that performed the fade-in animation before setting the proper theme
-- Dialogs only start typing after the fade-in animation happened
+- `ATTENTION`: Rework and improvement of the **saving system**. 
+    This includes some breaking changes. Learn all about the new system and how to transition [here](./Tutorials/Saving.md).
+    - A **visual novel template** with a working menu is being made. You can find it [here](https://github.com/Dialogic-Godot/visual-novel-template).
+- `Dialogic.start()` will now use paths for specific timelines. A fallback is in place, but specificity is preferred. For instance: `Dialogic.start('my-timeline')` will search any timeline with that name; `Dialogic.start('/chapter-1/my-timeline')` will open the timeline namde `my-timeline` inside the folder `chapter-1`.
 - If the text is too big for your dialog and you see a scrolling bar, you can use the `up` and `down` keys to scroll [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
 - Rework of the character name coloring (using Regex now) [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
-- Regex name compiler now properly escapes special characters [[zaknafean]](https://github.com/zaknafean)
-- Changed the default cursor shape that was weird in MacOS
-- Fixed a bug that prevented to use the global input setting when selecting option buttons
-- `Dialogic.start()` will now use paths for specific timelines. A fallback is in place, but specificity is preferred. For instance: `Dialogic.start('my-timeline')` will search any timeline with that name; `Dialogic.start('/chapter-1/my-timeline')` will open the timeline namde `my-timeline` inside the folder `chapter-1`.
+    - Regex name compiler now properly escapes special characters [[zaknafean](https://github.com/zaknafean)]
 
 #### Export
-- Fixing requirement to manually configure export dialog [[LuRomao]](https://github.com/LuRomao)
+- Removing requirement to manually configure resource export (No need to add `.cfg`, `.json` to your export settings anymore) [[LuRomao](https://github.com/LuRomao)]
 
 #### Other Stuff:
-- Removed the need to use a DialogicSingleton. Hope this doesn't do any harm in existing projects
+- Renamed the plugin entry point script from `dialogic.gd` to `plugin.gd` so it better describes what that file does
+- Removed the need to use a DialogicSingleton. This causes some slight changes to saving and loading. Learn all about the new system and how to transition [here](./Tutorials/Saving.md).
 - Deleted some legacy documentation files
 - Adding a warning if you are trying to set or get a variable that wasn't defined
+
+#### Bug-fixes
+##### Editor
+- Fixed the `DialogNode` Inspector Timeline Open button issue
+- Fixed a reference bug that prevent the duplication of Themes
+##### Game
+- Changed the default cursor shape that was weird in MacOS
+- Dialogs only start typing after the fade-in animation happened
+- Fixed a bug that performed the fade-in animation before setting the proper theme
+- Fixed a bug that prevented to use the global input setting when selecting option buttons
+
 
 
 ## v1.2.5 - Possibly breaking eveything. We will never know.

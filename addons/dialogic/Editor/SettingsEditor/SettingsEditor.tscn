@@ -20,11 +20,11 @@ size_flags_vertical = 3
 
 [node name="HBoxContainer3" type="HBoxContainer" parent="VBoxContainer"]
 margin_right = 1024.0
-margin_bottom = 510.0
+margin_bottom = 482.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer3"]
 margin_right = 356.0
-margin_bottom = 510.0
+margin_bottom = 482.0
 custom_constants/separation = 16
 
 [node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer"]
@@ -270,11 +270,11 @@ text_key = "Default bus for Text event audio"
 
 [node name="AudioBus" type="OptionButton" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2/TextAudioDefaultBus"]
 margin_left = 208.0
-margin_right = 310.0
+margin_right = 281.0
 margin_bottom = 20.0
-text = "Voice Lines"
-items = [ "Master", null, false, 0, null, "Voice Lines", null, false, 1, null ]
-selected = 1
+text = "Master"
+items = [ "Master", null, false, 0, null ]
+selected = 0
 
 [node name="HSeparator" type="HSeparator" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2"]
 margin_top = 248.0
@@ -314,7 +314,7 @@ pressed = true
 [node name="VBoxContainer3" type="VBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer"]
 margin_top = 432.0
 margin_right = 356.0
-margin_bottom = 510.0
+margin_bottom = 482.0
 
 [node name="SectionTitle" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer3" instance=ExtResource( 2 )]
 margin_right = 356.0
@@ -331,41 +331,22 @@ hint_tooltip = "The saved timeline can then be used to automatically start the d
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_top = 5.0
-margin_right = 170.0
+margin_right = 59.0
 margin_bottom = 19.0
-text = "Autosave on timeline start"
-text_key = "Autosave on timeline start"
+text = "Autosave"
+text_key = "Autosave"
 
-[node name="AutosaveTimelineStart" type="CheckBox" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer3/HBoxContainer"]
-margin_left = 174.0
+[node name="Autosave" type="CheckBox" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer3/HBoxContainer"]
+margin_left = 63.0
 margin_right = 356.0
 margin_bottom = 24.0
+hint_tooltip = "Will save to the default slot on timeline end and timeline start."
 size_flags_horizontal = 3
-
-[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer3"]
-margin_top = 54.0
-margin_right = 356.0
-margin_bottom = 78.0
-hint_tooltip = "Clearing the saved timeline can help automatically restarting the game when the timeline end is reached"
-
-[node name="TLabel11" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer3/HBoxContainer2" instance=ExtResource( 3 )]
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_top = 5.0
-margin_right = 165.0
-margin_bottom = 19.0
-text = "Autosave on timeline end"
-text_key = "Autosave on timeline end"
-
-[node name="AutosaveTimelineEnd" type="CheckBox" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer3/HBoxContainer2"]
-margin_left = 169.0
-margin_right = 193.0
-margin_bottom = 24.0
 
 [node name="VBoxContainer2" type="VBoxContainer" parent="VBoxContainer/HBoxContainer3"]
 margin_left = 360.0
 margin_right = 664.0
-margin_bottom = 510.0
+margin_bottom = 482.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer2"]
 margin_right = 304.0
