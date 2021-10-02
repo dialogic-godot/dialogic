@@ -31,7 +31,7 @@ content_margin_left = 5.0
 content_margin_right = 5.0
 content_margin_top = 5.0
 content_margin_bottom = 5.0
-bg_color = Color( 0.15, 0.1725, 0.2325, 1 )
+bg_color = Color( 0, 0, 0, 1 )
 border_width_left = 1
 border_width_top = 1
 border_width_right = 1
@@ -442,16 +442,13 @@ margin_right = 178.0
 margin_bottom = 14.0
 size_flags_horizontal = 3
 
-[node name="CustomEventsContainer" type="GridContainer" parent="ScrollContainer/EventContainer"]
+[node name="CustomEventsContainer" type="VBoxContainer" parent="ScrollContainer/EventContainer"]
 margin_top = 482.0
 margin_right = 178.0
-margin_bottom = 512.0
-custom_constants/vseparation = 6
-custom_constants/hseparation = 6
-columns = 5
+margin_bottom = 580.0
 
 [node name="Spacer" type="Control" parent="ScrollContainer/EventContainer"]
-margin_top = 521.0
+margin_top = 589.0
 margin_right = 178.0
-margin_bottom = 621.0
+margin_bottom = 689.0
 rect_min_size = Vector2( 0, 100 )
