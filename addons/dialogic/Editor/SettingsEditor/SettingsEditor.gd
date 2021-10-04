@@ -25,12 +25,20 @@ onready var nodes = {
 	# Input Settings
 	'delay_after_options': $VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer/HBoxContainer/LineEdit,
 	'default_action_key': $VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer/HBoxContainer2/DefaultActionKey,
-	
+	'new_custom_event_open':$VBoxContainer/HBoxContainer3/VBoxContainer2/CustomEvents/HBoxContainer/NewCustomEvent, 
+	'new_custom_event_section': $VBoxContainer/HBoxContainer3/VBoxContainer2/CustomEvents/CreateCustomEventSection, 
+	'new_custom_event_name': $VBoxContainer/HBoxContainer3/VBoxContainer2/CustomEvents/CreateCustomEventSection/CeName,
+	'new_custom_event_directory': $VBoxContainer/HBoxContainer3/VBoxContainer2/CustomEvents/CreateCustomEventSection/CeDirectory,
+	'new_custom_event_id': $VBoxContainer/HBoxContainer3/VBoxContainer2/CustomEvents/CreateCustomEventSection/CeEventId,
+	'new_custom_event_create':$VBoxContainer/HBoxContainer3/VBoxContainer2/CustomEvents/CreateCustomEventSection/HBoxContainer/CreateCustomEvent,
+	'new_custom_event_cancel':$VBoxContainer/HBoxContainer3/VBoxContainer2/CustomEvents/CreateCustomEventSection/HBoxContainer/CancelCustomEvent,
+
 	# History Settings
 	'enable_history_logging': $VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer/HBoxContainer3/EnableHistoryLogging,
 	'history_theme': $VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer/HBoxContainer4/HistoryThemeOptionButton,
 	'enable_dynamic_theme': $VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer/HBoxContainer5/EnableDynamicTheme,
-	}
+
+}
 
 var THEME_KEYS := [
 	'advanced_themes',
@@ -88,10 +96,22 @@ func _ready():
 	for k in SAVING_KEYS:
 		nodes[k].connect('toggled', self, '_on_item_toggled', ['saving', k])
 	
+	## History timeline connections
 	nodes['history_theme'].connect('item_selected', self, '_on_default_history_theme_selected')
 	nodes['enable_history_logging'].connect('toggled', self, '_on_item_toggled', ['history', 'enable_history_logging'])
 	nodes['enable_dynamic_theme'].connect('toggled', self, '_on_item_toggled', ['history', 'enable_dynamic_theme'])
 
+	## The custom event section
+	nodes['new_custom_event_open'].connect("pressed", self, "new_custom_event_pressed")
+	nodes['new_custom_event_section'].hide()
+	nodes['new_custom_event_name'].connect("text_changed", self, "custom_event_name_entered")
+	nodes['new_custom_event_id'].connect("text_changed", self, "custom_event_id_entered")
+	nodes['new_custom_event_cancel'].connect("pressed", self, "cancel_custom_event")
+	nodes['new_custom_event_create'].connect("pressed", self, "create_custom_event")
+	$VBoxContainer/HBoxContainer3/VBoxContainer2/CustomEvents/HBoxContainer/Message.set('custom_colors/font_color', get_color("error_color", "Editor"))
+	$VBoxContainer/HBoxContainer3/VBoxContainer2/CustomEvents/HBoxContainer/CustomEventsDocs.icon = get_icon("HelpSearch", "EditorIcons")
+	$VBoxContainer/HBoxContainer3/VBoxContainer2/CustomEvents/HBoxContainer/CustomEventsDocs.connect("pressed", self, 'open_custom_event_docs')
+	
 
 func update_data():
 	var settings = DialogicResources.get_settings_config()
@@ -215,18 +235,82 @@ func _on_text_audio_default_bus_item_selected(index):
 	set_value('dialog', 'text_event_audio_default_bus', text)
 
 
-# These are likely deprecated as of PR#515
-func _on_CustomEventsFolder_pressed():
-	editor_reference.godot_dialog("", EditorFileDialog.MODE_OPEN_DIR)
-	editor_reference.godot_dialog_connect(self, "_on_CustomEventsFolder_selected", "dir_selected")
-	#editor_reference.godot_dialog_connect(self, "_on_CustomEventsFolder_selected", "file_selected")
+################################################################################
+##						CUSTOM EVENT SECTION
+################################################################################
 
-func _on_CustomEventsFolder_selected(path, target):
-	DialogicResources.set_settings_value("editor", 'custom_events_path', path)
-	nodes['custom_events_folder_button'].text = DialogicResources.get_filename_from_path(path)
-	editor_reference.get_node("MainPanel/TimelineEditor").update_custom_events()
+func open_custom_event_docs():
+	editor_reference.get_node("MainPanel/MasterTreeContainer/MasterTree").select_documentation_item("res://addons/dialogic/Documentation/Content/Events/Custom Events/CreateCustomEvents.md")
+
+func new_custom_event_pressed():
+	nodes['new_custom_event_section'].show()
+	nodes['new_custom_event_name'].text = ''
+	nodes['new_custom_event_directory'].text = ''
+	nodes['new_custom_event_id'].text = ''
+	
+	nodes['new_custom_event_create'].disabled = true
+	$VBoxContainer/HBoxContainer3/VBoxContainer2/CustomEvents/HBoxContainer/Message.text = ""
+
+func custom_event_name_entered(text:String):
+	nodes['new_custom_event_directory'].text = text
+	
+	nodes['new_custom_event_create'].disabled = nodes['new_custom_event_id'].text != ''
+	$VBoxContainer/HBoxContainer3/VBoxContainer2/CustomEvents/HBoxContainer/Message.text = ""
 
 
+func custom_event_id_entered(text):
+	if nodes['new_custom_event_name'].text != '':
+		nodes['new_custom_event_create'].disabled = false
+	$VBoxContainer/HBoxContainer3/VBoxContainer2/CustomEvents/HBoxContainer/Message.text = ""
 
-func _on_RefreshCustomEvents_pressed():
-	editor_reference.get_node("MainPanel/TimelineEditor").update_custom_events()
+func cancel_custom_event():
+	nodes['new_custom_event_section'].hide()
+	$VBoxContainer/HBoxContainer3/VBoxContainer2/CustomEvents/HBoxContainer/Message.text = ""
+
+func create_custom_event():
+	# do checks for incomplete input
+	if nodes['new_custom_event_directory'].text.empty():
+		print('[D] No directory specified!')
+		$VBoxContainer/HBoxContainer3/VBoxContainer2/CustomEvents/HBoxContainer/Message.text = "Enter a directory name!"
+		return
+	if nodes['new_custom_event_name'].text.empty():
+		print('[D] No name specified!')
+		$VBoxContainer/HBoxContainer3/VBoxContainer2/CustomEvents/HBoxContainer/Message.text = "Enter a event name!"
+		return
+	if nodes['new_custom_event_id'].text.empty():
+		print('[D] No id specified!')
+		$VBoxContainer/HBoxContainer3/VBoxContainer2/CustomEvents/HBoxContainer/Message.text = "Enter an id!"
+		return
+	
+	# create new directory
+	var dir_name = 'res://dialogic/custom-events/'+nodes['new_custom_event_directory'].text
+	var dir = Directory.new()
+	if dir.dir_exists(dir_name):
+		$VBoxContainer/HBoxContainer3/VBoxContainer2/CustomEvents/HBoxContainer/Message.text = "The folder already exists!"
+		print("[D] Custom Events folder '"+nodes['new_custom_event_directory'].text+"' already exists!")
+		return
+	dir.make_dir(dir_name)
+	
+	# copy all necessary files
+	for file in ['EventBlock.tscn', 'Stylebox.tres', 'EventPart_Example.gd', 'EventPart_Example.tscn', 'event_yourname_000.gd']:
+		dir.copy("res://addons/dialogic/Example Assets/CustomEvents/"+file, dir_name+"/"+file)
+	
+	# rename the event handler script
+	dir.rename(dir_name+'/event_yourname_000.gd', dir_name+'/event_'+nodes['new_custom_event_id'].text+'.gd')
+	
+	# edit the EventBlock scene
+	var event_block_scene = load(dir_name+'/EventBlock.tscn').instance(PackedScene.GEN_EDIT_STATE_INSTANCE)
+	event_block_scene.event_name = nodes['new_custom_event_name'].text
+	event_block_scene.event_data = {'event_id':nodes['new_custom_event_id'].text}
+	event_block_scene.event_style = load(dir_name+"/Stylebox.tres")
+	event_block_scene.event_icon = load("res://addons/dialogic/Images/Event Icons/Main Icons/custom-event.svg")
+	var packed = PackedScene.new()
+	packed.pack(event_block_scene)
+	ResourceSaver.save(dir_name+'/EventBlock.tscn', packed)
+	
+	# close the section
+	nodes['new_custom_event_section'].hide()
+	
+	# force godot to show the folder
+	editor_reference.editor_interface.get_resource_filesystem().scan()
+	$VBoxContainer/HBoxContainer3/VBoxContainer2/CustomEvents/HBoxContainer/Message.text = ""
