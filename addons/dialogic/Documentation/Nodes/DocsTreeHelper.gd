@@ -195,6 +195,9 @@ func get_title(path, default_name):
 ## the paren_item parameter is only used so this can call itself recursivly 
 func search_and_select_docs(docs_tree_item:TreeItem, info:String, key:String = 'path'):
 	if info == "": return
+	if info == "/":
+		docs_tree_item.select(0)
+		return true
 	#print("Asearch ", key, " ", info)
 	#print("Asearchin on item: ", docs_tree_item.get_text(0))
 	var item = docs_tree_item.get_children()

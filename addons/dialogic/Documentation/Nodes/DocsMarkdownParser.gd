@@ -57,7 +57,7 @@ func parse(content : String,  file_path:String = '', docs_path:String = ''):
 	lists = []
 	underlined = []
 	
-	var paresed_text = content
+	var parsed_text = content
 	
 	var regex = RegEx.new()
 	
@@ -70,21 +70,21 @@ func parse(content : String,  file_path:String = '', docs_path:String = ''):
 	result = regex.search_all(content)
 	if result:
 		for res in result:
-			paresed_text = paresed_text.replace("**"+res.get_string("boldtext")+"**","[b]"+res.get_string("boldtext")+"[/b]")
+			parsed_text = parsed_text.replace("**"+res.get_string("boldtext")+"**","[b]"+res.get_string("boldtext")+"[/b]")
 
 	## Find all occurences of underlined text
 	regex.compile('\\_\\_(?<underlinetext>.*)\\_\\_')
 	result = regex.search_all(content)
 	if result:
 		for res in result:
-			paresed_text = paresed_text.replace("__"+res.get_string("underlinetext")+"__","[u]"+res.get_string("underlinetext")+"[/u]")
+			parsed_text = parsed_text.replace("__"+res.get_string("underlinetext")+"__","[u]"+res.get_string("underlinetext")+"[/u]")
 	
 	## Find all occurences of italic text
 	regex.compile("\\*(?<italictext>[^\\*]*)\\*")
 	result = regex.search_all(content)
 	if result:
 		for res in result:
-			paresed_text = paresed_text.replace("*"+res.get_string('italictext')+'*', "[i]"+res.get_string('italictext')+"[/i]")
+			parsed_text = parsed_text.replace("*"+res.get_string('italictext')+'*', "[i]"+res.get_string('italictext')+"[/i]")
 #			italics.append(res.get_string("italictext"))
 #	for italic in italics:
 #		content = content.replace("*"+italic+"*",)
@@ -95,28 +95,25 @@ func parse(content : String,  file_path:String = '', docs_path:String = ''):
 	result = regex.search_all(content)
 	if result:
 		for res in result:
-			paresed_text = paresed_text.replace("~~"+res.get_string("strikedtext")+"~~","[s]"+res.get_string("strikedtext")+"[/s]")
+			parsed_text = parsed_text.replace("~~"+res.get_string("strikedtext")+"~~","[s]"+res.get_string("strikedtext")+"[/s]")
 	
 	## Find all occurences of code snippets
 	regex.compile("\\`(?<coded>(?:[^\\`]|\\n)*)\\`")
 	result = regex.search_all(content)
 	if result:
 		for res in result:
-			paresed_text = paresed_text.replace("`"+res.get_string("coded")+"`","[color=#"+accent_color.lightened(0.6).to_html()+"][code]"+res.get_string("coded")+"[/code][/color]")
-
+			parsed_text = parsed_text.replace("`"+res.get_string("coded")+"`","[color=#"+accent_color.lightened(0.6).to_html()+"][code]"+res.get_string("coded")+"[/code][/color]")
+	
+	
 	## Find all occurences of list items
-	regex.compile("\\n\\s*[-+*](?<element>\\s.*)")
-	result = regex.search_all(content)
+	regex.compile("\\n\\s*(?<symbol>[-+*])(?<element>\\s.*)")
+	result = regex.search_all(parsed_text)
 	if result:
 		for res in result:
+			var symbol = res.get_string('symbol')
 			var element = res.get_string("element")
-			if paresed_text.find("- "+element):
-				paresed_text = paresed_text.replace("-"+element,"[indent]-"+element+"[/indent]")
-			if paresed_text.find("+ "+element):
-				paresed_text = paresed_text.replace("+"+element,"[indent]-"+element+"[/indent]")
-			if paresed_text.find("* "+element):
-				paresed_text = paresed_text.replace("+"+element,"[indent]-"+element+"[/indent]")
-	
+			if parsed_text.find(symbol+" "+element):
+				parsed_text = parsed_text.replace(symbol+" "+element,"[indent]"+symbol+" "+element+"[/indent]")
 
 	## Find all occurences of images
 	regex.compile("!\\[(?<imgname>.*)\\]\\((?<imglink>.*)\\)")
@@ -129,7 +126,7 @@ func parse(content : String,  file_path:String = '', docs_path:String = ''):
 				imagenames.append(res.get_string("imgname"))
 
 	## Find all occurences of links (that are not images)
-	regex.compile("[^!]\\[(?<linkname>[^[]+)\\]\\((?<link>[^\\)]*\\S*?)\\)")
+	regex.compile("[^!]\\[(?<linkname>[^\\[]+)\\]\\((?<link>[^\\)]*\\S*?)\\)")
 	result = regex.search_all(content)
 	if result:
 		for res in result:
@@ -145,7 +142,7 @@ func parse(content : String,  file_path:String = '', docs_path:String = ''):
 		for res in result:
 			var heading = res.get_string("heading")
 			heading1s.append(heading)
-			paresed_text = paresed_text.replace("#"+heading, "[color=#"+accent_color.lightened(0.2).to_html()+"][font="+heading1_font+"]"+heading.strip_edges()+"[/font][/color]")
+			parsed_text = parsed_text.replace("#"+heading, "[color=#"+accent_color.lightened(0.2).to_html()+"][font="+heading1_font+"]"+heading.strip_edges()+"[/font][/color]")
 	
 	## Find all heading2s
 	regex.compile("(?:\\n|^)##(?<heading>[^#\\n]+[^\\n]+)")
@@ -154,7 +151,7 @@ func parse(content : String,  file_path:String = '', docs_path:String = ''):
 		for res in result:
 			var heading = res.get_string("heading")
 			heading2s.append(heading)
-			paresed_text = paresed_text.replace("##"+heading, "[color=#"+accent_color.lightened(0.5).to_html()+"][font="+heading2_font+"]"+heading.strip_edges()+"[/font][/color]")
+			parsed_text = parsed_text.replace("##"+heading, "[color=#"+accent_color.lightened(0.5).to_html()+"][font="+heading2_font+"]"+heading.strip_edges()+"[/font][/color]")
 	
 	## Find all heading3s
 	regex.compile("(?:\\n|^)###(?<heading>[^#\\n]+[^\\n]+)")
@@ -162,7 +159,7 @@ func parse(content : String,  file_path:String = '', docs_path:String = ''):
 	if result:
 		for res in result:
 			var heading = res.get_string("heading")
-			paresed_text = paresed_text.replace("###"+heading, "[color=#"+accent_color.lightened(0.7).to_html()+"][font="+heading3_font+"]"+heading.strip_edges()+"[/font][/color]")
+			parsed_text = parsed_text.replace("###"+heading, "[color=#"+accent_color.lightened(0.7).to_html()+"][font="+heading3_font+"]"+heading.strip_edges()+"[/font][/color]")
 	
 	## Find all heading4s
 	regex.compile("(?:\\n|^)####(?<heading>[^#\\n]+[^\\n]+)")
@@ -170,7 +167,7 @@ func parse(content : String,  file_path:String = '', docs_path:String = ''):
 	if result:
 		for res in result:
 			var heading = res.get_string("heading")
-			paresed_text = paresed_text.replace("####"+heading, "[color=#"+accent_color.lightened(0.85).to_html()+"][font="+heading4_font+"]"+heading.strip_edges()+"[/font][/color]")
+			parsed_text = parsed_text.replace("####"+heading, "[color=#"+accent_color.lightened(0.85).to_html()+"][font="+heading4_font+"]"+heading.strip_edges()+"[/font][/color]")
 	
 	
 	## Find all heading5s
@@ -179,10 +176,10 @@ func parse(content : String,  file_path:String = '', docs_path:String = ''):
 	if result:
 		for res in result:
 			var heading = res.get_string("heading")
-			paresed_text = paresed_text.replace("#####"+heading, "[color=#"+accent_color.lightened(0.85).to_html()+"][font="+heading5_font+"]"+heading.strip_edges()+"[/font][/color]")
+			parsed_text = parsed_text.replace("#####"+heading, "[color=#"+accent_color.lightened(0.85).to_html()+"][font="+heading5_font+"]"+heading.strip_edges()+"[/font][/color]")
 
 	for i in links.size():
-		paresed_text = paresed_text.replace("["+linknames[i]+"]("+links[i]+")","[color=#"+accent_color.to_html()+"][url="+links[i]+"]"+linknames[i]+"[/url][/color]")
+		parsed_text = parsed_text.replace("["+linknames[i]+"]("+links[i]+")","[color=#"+accent_color.to_html()+"][url="+links[i]+"]"+linknames[i]+"[/url][/color]")
 	
 	for i in imagenames.size():
 		var imagelink_to_use = imagelinks[i]
@@ -194,6 +191,8 @@ func parse(content : String,  file_path:String = '', docs_path:String = ''):
 				imagelink_to_use = "icon.png"
 		if imagelink_to_use.begins_with(".") and file_path:
 			imagelink_to_use = file_path.trim_suffix(file_path.get_file()).trim_suffix("/") + imagelink_to_use.trim_prefix(".")
-		paresed_text = paresed_text.replace("!["+imagenames[i]+"]("+imagelinks[i]+")","[img="+str(int(700*editor_scale))+"]"+imagelink_to_use+"[/img]")
+		parsed_text = parsed_text.replace("!["+imagenames[i]+"]("+imagelinks[i]+")","[img="+str(int(700*editor_scale))+"]"+imagelink_to_use+"[/img]")
 	
-	return paresed_text
+	parsed_text += "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
+	
+	return parsed_text

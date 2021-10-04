@@ -12,7 +12,10 @@ func _ready():
 	# Adding file dialog to get used by Events
 	editor_file_dialog = EditorFileDialog.new()
 	add_child(editor_file_dialog)
-
+	
+	$ToolBar/Docs.text = DTS.translate('Help')
+	$ToolBar/Web.text = DTS.translate('Website')
+	
 	$MainPanel/MasterTreeContainer/MasterTree.connect("editor_selected", self, 'on_master_tree_editor_selected')
 
 	# Updating the folder structure
@@ -66,8 +69,13 @@ func _ready():
 	$ToolBar/NewThemeButton.connect('pressed', $MainPanel/MasterTreeContainer/MasterTree, 'new_theme')
 	$ToolBar/NewValueButton.connect('pressed', $MainPanel/MasterTreeContainer/MasterTree, 'new_value_definition')
 	$ToolBar/NewGlossaryEntryButton.connect('pressed', $MainPanel/MasterTreeContainer/MasterTree, 'new_glossary_entry')
-	$ToolBar/Docs.icon = get_icon("Instance", "EditorIcons")
-	$ToolBar/Docs.connect('pressed', OS, "shell_open", ["https://dialogic.coppolaemilio.com"])
+	$ToolBar/Web.icon = get_icon("Instance", "EditorIcons")
+	$ToolBar/Web.connect('pressed', OS, "shell_open", ["https://dialogic.coppolaemilio.com"])
+	$ToolBar/Docs.icon = get_icon("HelpSearch", "EditorIcons")
+	$ToolBar/Docs.connect('pressed',
+		$MainPanel/MasterTreeContainer/MasterTree,
+		"select_documentation_item",
+		['/'])
 	$ToolBar/FoldTools/ButtonFold.connect('pressed', $MainPanel/TimelineEditor, 'fold_all_nodes')
 	$ToolBar/FoldTools/ButtonUnfold.connect('pressed', $MainPanel/TimelineEditor, 'unfold_all_nodes')
 	
