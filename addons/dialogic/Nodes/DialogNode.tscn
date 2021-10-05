@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://addons/dialogic/Nodes/TextBubble.tscn" type="PackedScene" id=1]
 [ext_resource path="res://addons/dialogic/Example Assets/backgrounds/GlossaryBackground.tres" type="StyleBox" id=2]
@@ -9,6 +9,7 @@
 [ext_resource path="res://addons/dialogic/Nodes/BackgroundMusic.tscn" type="PackedScene" id=7]
 [ext_resource path="res://addons/dialogic/Nodes/random_audio_stream_player.gd" type="Script" id=8]
 [ext_resource path="res://addons/dialogic/Example Assets/Sound Effects/Beep.wav" type="AudioStream" id=9]
+[ext_resource path="res://addons/dialogic/Nodes/History.tscn" type="PackedScene" id=11]
 
 [sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 1, 1, 1, 0 )
@@ -27,13 +28,17 @@ anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
+margin_left = 512.0
+margin_top = 600.0
+margin_right = 512.0
+margin_bottom = 600.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="TextBubble" parent="." instance=ExtResource( 1 )]
-margin_top = -207.0
-margin_bottom = -40.0
+margin_left = 57.0
+margin_right = 967.0
 
 [node name="Options" type="VBoxContainer" parent="."]
 margin_right = 1024.0
@@ -157,8 +162,9 @@ __meta__ = {
 
 [node name="OptionsDelayedInput" type="Timer" parent="."]
 
+[node name="History" parent="." instance=ExtResource( 11 )]
+
 [node name="DialogicTimer" type="Timer" parent="."]
 one_shot = true
 
 [connection signal="timeout" from="DefinitionInfo/Timer" to="." method="_on_Definition_Timer_timeout"]
-[connection signal="pressed" from="HistoryButton" to="." method="_on_HistoryButton_pressed"]

@@ -53,7 +53,7 @@ var audio_data = {}
 onready var ChoiceButton = load("res://addons/dialogic/Nodes/ChoiceButton.tscn")
 onready var Portrait = load("res://addons/dialogic/Nodes/Portrait.tscn")
 onready var Background = load("res://addons/dialogic/Nodes/Background.tscn")
-onready var HistoryTimeline = $HistoryPopup
+onready var HistoryTimeline = $History
 
 var dialog_script: Dictionary = {}
 var questions #for keeping track of the questions answered
@@ -130,14 +130,10 @@ func load_config_files():
 		theme_file = settings.get_value('theme', 'default')
 	current_theme = load_theme(theme_file)
 	
-	$HistoryButton.disabled = true
-	$HistoryButton.hide()
-	
 	if settings.has_section('history'):
 		if settings.has_section_key('history', 'enable_history_logging'):
 			if settings.get_value('history', 'enable_history_logging'):
-				$HistoryButton.disabled = false
-				$HistoryButton.show()
+				HistoryTimeline.initalize_history()
 		if settings.has_section_key('history', 'history_theme'):
 			theme_file = settings.get_value('history', 'history_theme')
 		history_theme = load_theme(theme_file)
@@ -586,7 +582,7 @@ func _on_text_completed():
 	emit_signal('text_complete', current_event)
 	
 	# Anything that uses text bubble should be written to the history log, but exclude waits
-	if record_history and current_event.event_id != 'dialogic_023':
+	if record_history and current_event.event_id != 'dialogic_023' and current_event.event_id != 'dialogic_024':
 		HistoryTimeline.add_history_row_event(current_event)
 	
 	finished = true
@@ -1458,17 +1454,6 @@ func _on_OptionsDelayedInput_timeout():
 		if button.is_connected("pressed", self, "answer_question") == false:
 			button.connect("pressed", self, "answer_question", [button, button.get_meta('event_idx'), button.get_meta('question_idx')])
 
-
-func _on_HistoryButton_pressed():
-	if HistoryTimeline.visible == false:
-		HistoryTimeline.popup()
-		#$HistoryButton.hide()
-
-
-
-func _on_HistoryPopup_hide():
-	#$HistoryButton.show()
-	pass
 
 #### LOADING AND SAVING
 # returns all important data in a dictionary
