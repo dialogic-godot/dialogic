@@ -39,6 +39,8 @@ var id_to_scene_name = {
 	'dialogic_012':'Condition',
 	'dialogic_013':'EndBranch',
 	'dialogic_014':'SetValue',
+	'dialogic_015':'AnchorEvent',
+	'dialogic_016':'GoTo Event',
 	#Timeline
 	'dialogic_020':'ChangeTimeline',
 	'dialogic_021':'ChangeBackground',
