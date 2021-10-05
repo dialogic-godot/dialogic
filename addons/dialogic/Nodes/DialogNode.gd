@@ -885,15 +885,7 @@ func event_handler(event: Dictionary):
 			# TODO:
 			$DialogicTimer.start(0.1); yield($DialogicTimer, "timeout")
 			# This yield fix is a hack. I should investigate why the change theme fails when you 
-			# don't have this wait statement. The error on the terminal looks like this:
-			# ---------------------------------------------
-			# ERROR: Object [Object:1838] was freed or unreferenced while a signal is being emitted 
-			# from it. Try connecting to the signal using 'CONNECT_DEFERRED' flag, or use
-			# queue_free() to free the object (if this object is a Node) to avoid this error and 
-			# potential crashes.
-			# ---------------------------------------------
-			# But I don't know exactly what is the signal that could not be happening. 
-			# It might be related with the option buttons
+			# don't have this wait statement.
 
 			emit_signal("event_start", "set_theme", event)
 			if event['set_theme'] != '':
