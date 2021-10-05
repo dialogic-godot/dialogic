@@ -4,14 +4,14 @@
 [ext_resource path="res://addons/dialogic/Example Assets/backgrounds/background-2.png" type="Texture" id=2]
 [ext_resource path="res://addons/dialogic/Example Assets/next-indicator/next-indicator.png" type="Texture" id=3]
 [ext_resource path="res://addons/dialogic/Nodes/TextBubble.gd" type="Script" id=4]
-[ext_resource path="res://addons/dialogic/Nodes/random_audio_stream_player.gd" type="Script" id=5]
 
-[sub_resource type="StyleBoxFlat" id=1]
+[sub_resource type="StyleBoxEmpty" id=1]
+
+[sub_resource type="StyleBoxFlat" id=2]
 bg_color = Color( 1, 1, 1, 0 )
 expand_margin_left = 10.0
 
-[sub_resource type="Animation" id=2]
-resource_name = "Pulse"
+[sub_resource type="Animation" id=3]
 loop = true
 tracks/0/type = "value"
 tracks/0/path = NodePath(".:self_modulate")
@@ -26,10 +26,9 @@ tracks/0/keys = {
 "values": [ Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
 }
 
-[sub_resource type="Animation" id=3]
-resource_name = "Static"
-
 [sub_resource type="Animation" id=4]
+
+[sub_resource type="Animation" id=5]
 loop = true
 tracks/0/type = "value"
 tracks/0/path = NodePath("..:rect_position")
@@ -44,10 +43,10 @@ tracks/0/keys = {
 "values": [ Vector2( 0, 0 ), Vector2( 0, -10 ) ]
 }
 
-[sub_resource type="StyleBoxFlat" id=5]
-content_margin_left = 10.0
-content_margin_right = 10.0
-content_margin_bottom = 0.0
+[sub_resource type="StyleBoxFlat" id=6]
+content_margin_left = 20.0
+content_margin_right = 20.0
+content_margin_bottom = 5.0
 bg_color = Color( 1, 1, 1, 0 )
 expand_margin_left = 10.0
 
@@ -91,9 +90,12 @@ margin_left = 20.0
 margin_top = 10.0
 margin_right = -20.0
 margin_bottom = -10.0
-custom_styles/normal = SubResource( 1 )
+focus_mode = 2
+custom_styles/focus = SubResource( 1 )
+custom_styles/normal = SubResource( 2 )
 custom_fonts/normal_font = ExtResource( 1 )
 custom_colors/default_color = Color( 1, 1, 1, 1 )
+custom_colors/selection_color = Color( 0, 0, 0, 0 )
 custom_colors/font_color_shadow = Color( 1, 1, 1, 0 )
 custom_constants/shadow_offset_x = 2
 custom_constants/shadow_offset_y = 2
@@ -101,6 +103,7 @@ bbcode_enabled = true
 bbcode_text = "Placeholder text for testing and formatting."
 meta_underlined = false
 text = "Placeholder text for testing and formatting."
+selection_enabled = true
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -124,9 +127,9 @@ __meta__ = {
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="NextIndicatorContainer/NextIndicator"]
 autoplay = "Up and down"
-anims/Pulse = SubResource( 2 )
-anims/Static = SubResource( 3 )
-"anims/Up and down" = SubResource( 4 )
+anims/Pulse = SubResource( 3 )
+anims/Static = SubResource( 4 )
+"anims/Up and down" = SubResource( 5 )
 
 [node name="NameLabel" type="Label" parent="."]
 visible = false
@@ -134,7 +137,7 @@ margin_top = -48.0
 margin_right = 58.0
 margin_bottom = -8.0
 size_flags_vertical = 1
-custom_styles/normal = SubResource( 5 )
+custom_styles/normal = SubResource( 6 )
 custom_fonts/font = ExtResource( 1 )
 custom_colors/font_color = Color( 0.423529, 0.580392, 0.74902, 1 )
 custom_colors/font_color_shadow = Color( 0, 0, 0, 0.619608 )
@@ -175,11 +178,3 @@ __meta__ = {
 [node name="WritingTimer" type="Timer" parent="."]
 
 [node name="Tween" type="Tween" parent="."]
-
-[node name="TypingSFX" type="AudioStreamPlayer" parent="."]
-script = ExtResource( 5 )
-samples = [  ]
-select_samples_from_folder = ""
-random_strategy = 2
-random_volume_range = 0.0
-random_pitch_range = 0.0

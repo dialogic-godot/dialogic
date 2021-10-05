@@ -5,6 +5,7 @@ onready var _track1 := $Track1
 onready var _track2 := $Track2
 
 var current_path = ""
+var current_track = null
 
 func _ready():
 	$Tween.connect("tween_completed", self, "_on_Tween_tween_completed")
@@ -38,10 +39,13 @@ func crossfade_to(path: String, audio_bus:String, volume:float, fade_length: flo
 	# else just play it from the beginning
 	else:
 		fade_in_track.play()
+	current_track = fade_in_track
+	
 	current_path = path
 
 func fade_out(fade_length:float = 1) -> void:
 	current_path = ""
+	current_track = null
 	$Tween.interpolate_property(_track1, "volume_db", null, -60, fade_length, Tween.TRANS_EXPO)
 	$Tween.interpolate_property(_track2, "volume_db", null, -60, fade_length, Tween.TRANS_EXPO)
 	$Tween.start()
@@ -51,3 +55,8 @@ func _on_Tween_tween_completed(object, key):
 	if object.volume_db == -60:
 		object.playing = false
 		object.stream = null
+
+func get_current_info():
+	if current_track != null:
+		return {"file":current_path, "volume": current_track.volume_db, "audio_bus": current_track.bus}
+	return null

@@ -1,7 +1,7 @@
 [gd_scene load_steps=2 format=2]
 
 [sub_resource type="StyleBoxFlat" id=1]
-bg_color = Color( 0.745098, 0.745098, 0.745098, 1 )
+bg_color = Color( 0.823529, 0.823529, 0.823529, 1 )
 corner_radius_top_left = 4
 corner_radius_top_right = 4
 corner_radius_bottom_right = 4

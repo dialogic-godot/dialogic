@@ -13,6 +13,8 @@ var direction = 'left'
 var debug = false
 var fading_out = false
 
+var current_state := {'character':'', 'portrait':'', 'position':'', 'mirrored':false}
+
 
 func init(expression: String = '') -> void:
 	set_portrait(expression)
@@ -25,6 +27,10 @@ func _ready():
 
 
 func set_portrait(expression: String) -> void:
+	current_state['portrait'] = expression
+	if expression == "(Don't change)":
+		return
+
 	if expression == '':
 		expression = 'Default'
 	
@@ -62,6 +68,7 @@ func set_portrait(expression: String) -> void:
 
 
 func set_mirror(value):
+	current_state['mirrored'] = value
 	if character_data["data"].has('mirror_portraits'):
 		if character_data["data"]['mirror_portraits']:
 			$TextureRect.flip_h = !value

@@ -214,6 +214,12 @@ func _request_selection():
 ## *****************************************************************************
 
 func _ready():
+	event_name = DTS.translate(event_name)
+	
+	## DO SOME STYLING
+	$PanelContainer/SelectedStyle.modulate = get_color("accent_color", "Editor")
+	
+	
 	_setup_event()
 	
 	set_focus_mode(1) # Allowing this node to grab focus
