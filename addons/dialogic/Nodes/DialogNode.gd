@@ -204,10 +204,25 @@ func resize_main():
 	if not Engine.is_editor_hint():
 		set_global_position(Vector2(0,0))
 		reference = get_viewport().get_visible_rect().size
-
-	$TextBubble.rect_position.x = (reference.x / 2) - ($TextBubble.rect_size.x / 2)
-	if current_theme != null:
-		$TextBubble.rect_position.y = (reference.y) - ($TextBubble.rect_size.y) - current_theme.get_value('box', 'bottom_gap', 40)
+	
+	
+	var anchor = current_theme.get_value('box', 'anchor', 9)
+	var gap = current_theme.get_value('box', 'bottom_gap', 40)
+	# first the y position
+	if anchor in [0,1,2]: # TOP
+		$TextBubble.rect_position.y = gap
+	elif anchor in [4,5,6]: # CENTER
+		$TextBubble.rect_position.y = (reference.y/2)-($TextBubble.rect_size.y/2)
+	else:
+		$TextBubble.rect_position.y = (reference.y) - ($TextBubble.rect_size.y)-gap
+	
+	# now x position
+	if anchor in [0,4,8]: # LEFT
+		$TextBubble.rect_position.x = gap
+	elif anchor in [1,5,9]: # CENTER
+		$TextBubble.rect_position.x = (reference.x / 2) - ($TextBubble.rect_size.x / 2)
+	else:
+		$TextBubble.rect_position.x = reference.x - ($TextBubble.rect_size.x) - gap
 	
 	var pos_x = 0
 	if current_theme.get_value('background', 'full_width', false):
