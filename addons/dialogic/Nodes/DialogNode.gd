@@ -649,8 +649,9 @@ func _load_event():
 	if dialog_script.has('events'):
 		if not _is_dialog_finished():
 			var func_state = event_handler(dialog_script['events'][dialog_index])
-			if (func_state is GDScriptFunctionState):
-				yield(func_state, "completed")
+			#if (func_state is GDScriptFunctionState):
+			#	print(func_state)
+			#	yield(func_state, "completed")
 		elif not Engine.is_editor_hint():
 			# Do not free the dialog if we are in the preview
 			queue_free()
@@ -881,6 +882,11 @@ func event_handler(event: Dictionary):
 			_load_next_event()
 		# Set Theme event
 		'dialogic_024':
+			# TODO:
+			$DialogicTimer.start(0.1); yield($DialogicTimer, "timeout")
+			# This yield fix is a hack. I should investigate why the change theme fails when you 
+			# don't have this wait statement.
+
 			emit_signal("event_start", "set_theme", event)
 			if event['set_theme'] != '':
 				current_theme = load_theme(event['set_theme'])

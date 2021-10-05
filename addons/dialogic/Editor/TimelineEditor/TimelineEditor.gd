@@ -96,7 +96,6 @@ func _ready():
 	
 	var style = $TimelineArea.get('custom_styles/bg')
 	style.set('bg_color', get_color("dark_color_1", "Editor"))
-	$ScrollContainer/EventContainer/CustomEventsHeadline/RefreshButton.icon = get_icon("Loop", "EditorIcons")
 	
 	update_custom_events()
 	$TimelineArea.connect('resized', self, 'add_extra_scroll_area_to_timeline', [])
