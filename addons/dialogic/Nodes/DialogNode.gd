@@ -671,8 +671,9 @@ func _load_event():
 	if dialog_script.has('events'):
 		if not _is_dialog_finished():
 			var func_state = event_handler(dialog_script['events'][dialog_index])
-			if (func_state is GDScriptFunctionState):
-				yield(func_state, "completed")
+			#if (func_state is GDScriptFunctionState):
+			#	print(func_state)
+			#	yield(func_state, "completed")
 		elif not Engine.is_editor_hint():
 			# Do not free the dialog if we are in the preview
 			queue_free()
@@ -937,17 +938,9 @@ func event_handler(event: Dictionary):
 		# Set Theme event
 		'dialogic_024':
 			# TODO:
-			yield(get_tree().create_timer(0.1), "timeout") 
+			$DialogicTimer.start(0.1); yield($DialogicTimer, "timeout")
 			# This yield fix is a hack. I should investigate why the change theme fails when you 
-			# don't have this wait statement. The error on the terminal looks like this:
-			# ---------------------------------------------
-			# ERROR: Object [Object:1838] was freed or unreferenced while a signal is being emitted 
-			# from it. Try connecting to the signal using 'CONNECT_DEFERRED' flag, or use
-			# queue_free() to free the object (if this object is a Node) to avoid this error and 
-			# potential crashes.
-			# ---------------------------------------------
-			# But I don't know exactly what is the signal that could not be happening. 
-			# It might be related with the option buttons
+			# don't have this wait statement.
 
 			emit_signal("event_start", "set_theme", event)
 			if event['set_theme'] != '':
