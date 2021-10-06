@@ -80,7 +80,7 @@ func _on_definition_about_to_show():
 	Definition.get_popup().clear()
 	var index = 0
 	for d in DialogicUtil.get_default_definitions_list():
-		if d['type'] == Dialogic.DefinitionType.VARIABLE:
+		if d['type'] == 0:
 			Definition.get_popup().add_item(d['name'])
 			Definition.get_popup().set_item_metadata(index, d)
 			index += 1

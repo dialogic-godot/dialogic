@@ -13,7 +13,7 @@ func _on_MenuButton_about_to_show():
 	get_popup().clear()
 	var index = 0
 	for d in DialogicUtil.get_sorted_default_definitions_list():
-		if d['type'] == Dialogic.DefinitionType.VARIABLE:
+		if d['type'] == 0:
 			get_popup().add_item(d['name'])
 			get_popup().set_item_metadata(index, {
 				'id': d['id'],
