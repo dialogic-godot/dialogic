@@ -66,11 +66,12 @@ onready var n : Dictionary = {
 	'background_full_width': $"VBoxContainer/TabContainer/Dialog Box/Column/GridContainer2/HBoxContainer7/CheckBox",
 	
 	'dialog_box_anchor':$"VBoxContainer/TabContainer/Dialog Box/Column/GridContainer2/PositionSelector",
-	'theme_text_margin': $"VBoxContainer/TabContainer/Dialog Box/Column/GridContainer2/HBoxContainer/TextOffsetV",
-	'theme_text_margin_h': $"VBoxContainer/TabContainer/Dialog Box/Column/GridContainer2/HBoxContainer/TextOffsetH",
+	'theme_text_margin': $"VBoxContainer/TabContainer/Dialog Box/Column/GridContainer2/HBoxContainer/BoxPaddingV",
+	'theme_text_margin_h': $"VBoxContainer/TabContainer/Dialog Box/Column/GridContainer2/HBoxContainer/BoxPaddingH",
 	'size_w': $"VBoxContainer/TabContainer/Dialog Box/Column/GridContainer2/HBoxContainer4/BoxSizeW",
 	'size_h': $"VBoxContainer/TabContainer/Dialog Box/Column/GridContainer2/HBoxContainer4/BoxSizeH", 
-	'bottom_gap': $"VBoxContainer/TabContainer/Dialog Box/Column/GridContainer2/HBoxContainer5/BottomGap",
+	'box_margin_v': $"VBoxContainer/TabContainer/Dialog Box/Column/GridContainer2/BoxMargin/MarginV",
+	'box_margin_h': $"VBoxContainer/TabContainer/Dialog Box/Column/GridContainer2/BoxMargin/MarginH",
 	
 	
 	'theme_next_image': $"VBoxContainer/TabContainer/Dialog Box/Column2/GridContainer/NextIndicatorButton",
@@ -199,7 +200,9 @@ func _ready() -> void:
 	n['background_modulation'].connect('toggled', self, '_on_generic_checkbox', ['background', 'modulation'])
 	n['background_full_width'].connect('toggled', self, '_on_generic_checkbox', ['background', 'full_width'])
 	n['animation_show_time'].connect('value_changed', self, '_on_generic_value_change', ['animation', 'show_time'])
-	n['bottom_gap'].connect('value_changed', self, '_on_generic_value_change', ['box', 'bottom_gap'])
+	n['box_margin_v'].connect('value_changed', self, '_on_generic_value_change', ['box', 'box_margin_v'])
+	n['box_margin_h'].connect('value_changed', self, '_on_generic_value_change', ['box', 'box_margin_h'])
+	
 	n['next_indicator_scale'].connect('value_changed', self, '_on_generic_value_change', ['next_indicator', 'scale'])
 
 	# Name tab
@@ -342,7 +345,9 @@ func load_theme(filename):
 	n['size_w'].value = size_value.x
 	n['size_h'].value = size_value.y
 	n['dialog_box_anchor'].select(theme.get_value('box', 'anchor', 9))
-	n['bottom_gap'].value = theme.get_value('box', 'bottom_gap', 40)
+	# TODO: remove backups in 2.0
+	n['box_margin_v'].value = theme.get_value('box', 'box_margin_v', theme.get_value('box', 'bottom_gap', 40))
+	n['box_margin_h'].value = theme.get_value('box', 'box_margin_h', theme.get_value('box', 'bottom_gap', 40))
 	
 	# Buttons
 	n['button_use_native'].pressed = theme.get_value('buttons', 'use_native', false)

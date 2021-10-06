@@ -207,22 +207,25 @@ func resize_main():
 	
 	
 	var anchor = current_theme.get_value('box', 'anchor', 9)
-	var gap = current_theme.get_value('box', 'bottom_gap', 40)
+	
+	# TODO: remove backups in 2.0
+	var gap_v = current_theme.get_value('box', 'box_margin_v', current_theme.get_value('box', 'bottom_gap', 40))
+	var gap_h = current_theme.get_value('box', 'box_margin_h', current_theme.get_value('box', 'bottom_gap', 40))
 	# first the y position
 	if anchor in [0,1,2]: # TOP
-		$TextBubble.rect_position.y = gap
+		$TextBubble.rect_position.y = gap_h
 	elif anchor in [4,5,6]: # CENTER
 		$TextBubble.rect_position.y = (reference.y/2)-($TextBubble.rect_size.y/2)
 	else:
-		$TextBubble.rect_position.y = (reference.y) - ($TextBubble.rect_size.y)-gap
+		$TextBubble.rect_position.y = (reference.y) - ($TextBubble.rect_size.y)-gap_h
 	
 	# now x position
 	if anchor in [0,4,8]: # LEFT
-		$TextBubble.rect_position.x = gap
+		$TextBubble.rect_position.x = gap_v
 	elif anchor in [1,5,9]: # CENTER
 		$TextBubble.rect_position.x = (reference.x / 2) - ($TextBubble.rect_size.x / 2)
 	else:
-		$TextBubble.rect_position.x = reference.x - ($TextBubble.rect_size.x) - gap
+		$TextBubble.rect_position.x = reference.x - ($TextBubble.rect_size.x) - gap_v
 	
 	var pos_x = 0
 	if current_theme.get_value('background', 'full_width', false):
