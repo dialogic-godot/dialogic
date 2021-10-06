@@ -49,10 +49,7 @@ var dialog_script: Dictionary = {}
 var current_event: Dictionary
 var dialog_index: int = 0
 
-# Theme and Audio
-var current_theme: ConfigFile
-var audio_data = {}
-
+var button_container = null
 var current_background = ""
 
 
@@ -615,10 +612,10 @@ func _insert_glossary_definitions(text: String):
 # checks if NextIndicator and ChoiceButtons should be visible
 func _process(delta):
 	$TextBubble/NextIndicatorContainer/NextIndicator.visible = finished
-	if $Options/ButtonContainer.get_child_count() > 0:
+	if button_container.get_child_count() > 0:
 		$TextBubble/NextIndicatorContainer/NextIndicator.visible = false # Hide if question 
 		if waiting_for_answer and Input.is_action_just_released(input_next):
-			$Options/ButtonContainer.get_child(0).grab_focus()
+			button_container.get_child(0).grab_focus()
 	
 	# Hide if no input is required
 	if current_event.has('text'):
@@ -951,11 +948,6 @@ func event_handler(event: Dictionary):
 			_load_next_event()
 		# Set Theme event
 		'dialogic_024':
-			# TODO:
-			$DialogicTimer.start(0.1); yield($DialogicTimer, "timeout")
-			# This yield fix is a hack. I should investigate why the change theme fails when you 
-			# don't have this wait statement.
-
 			emit_signal("event_start", "set_theme", event)
 			if event['set_theme'] != '':
 				current_theme = load_theme(event['set_theme'])
@@ -1119,7 +1111,7 @@ func answer_question(i, event_idx, question_idx):
 # deletest the choice buttons
 func reset_options():
 	# Clearing out the options after one was selected.
-	for option in $Options/ButtonContainer.get_children():
+	for option in button_container.get_children():
 		option.queue_free()
 
 # adds a button for the given choice
@@ -1198,7 +1190,7 @@ func get_classic_choice_button(label: String):
 			button.rect_min_size = size
 			button.rect_size = size
 		
-		$Options/ButtonContainer.set('custom_constants/separation', theme.get_value('buttons', 'gap', 20))
+		button_container.set('custom_constants/separation', theme.get_value('buttons', 'gap', 20))
 		
 		# Different styles
 		var default_background = 'res://addons/dialogic/Example Assets/backgrounds/background-2.png'
