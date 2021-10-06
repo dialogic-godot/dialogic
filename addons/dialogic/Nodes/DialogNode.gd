@@ -905,6 +905,7 @@ func event_handler(event: Dictionary):
 			emit_signal("event_start", "set_theme", event)
 			if event['set_theme'] != '':
 				current_theme = load_theme(event['set_theme'])
+			resize_main()
 			_load_next_event()
 		# Set Glossary event
 		'dialogic_025':
