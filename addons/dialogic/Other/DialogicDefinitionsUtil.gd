@@ -63,8 +63,10 @@ static func delete_definition(data: Dictionary, id: String):
 	var variables : Array = data['variables']
 	var glossary : Array = data['glossary']
 	var item = get_definition_by_id(data, id);
+	var _Dialogic = load("res://addons/dialogic/Other/DialogicClass.gd")
+	
 	if item != null:
-		if (item['type'] == Dialogic.DefinitionType.VARIABLE):
+		if (item['type'] == _Dialogic.DefinitionType.VARIABLE):
 			variables.erase(item)
 		else:
 			glossary.erase(item)
