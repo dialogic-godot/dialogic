@@ -18,6 +18,7 @@ var current_theme: ConfigFile
 var current_timeline: String = ''
 var current_event: Dictionary
 
+var button_container = null
 var current_background = ""
 var do_fade_in := true
 
@@ -522,10 +523,10 @@ func _insert_glossary_definitions(text: String):
 
 func _process(delta):
 	$TextBubble/NextIndicatorContainer/NextIndicator.visible = finished
-	if $Options/ButtonContainer.get_child_count() > 0:
+	if button_container.get_child_count() > 0:
 		$TextBubble/NextIndicatorContainer/NextIndicator.visible = false # Hide if question 
 		if waiting_for_answer and Input.is_action_just_released(input_next):
-			$Options/ButtonContainer.get_child(0).grab_focus()
+			button_container.get_child(0).grab_focus()
 	
 	# Hide if no input is required
 	if current_event.has('text'):
@@ -589,7 +590,7 @@ func _on_text_completed():
 	
 	var waiting_until_options_enabled = float(settings.get_value('input', 'delay_after_options', 0.1))
 	$OptionsDelayedInput.start(waiting_until_options_enabled)
-		
+	
 	if current_event.has('options'):
 		for o in current_event['options']:
 			add_choice_button(o)
@@ -900,11 +901,6 @@ func event_handler(event: Dictionary):
 			_load_next_event()
 		# Set Theme event
 		'dialogic_024':
-			# TODO:
-			$DialogicTimer.start(0.1); yield($DialogicTimer, "timeout")
-			# This yield fix is a hack. I should investigate why the change theme fails when you 
-			# don't have this wait statement.
-
 			emit_signal("event_start", "set_theme", event)
 			if event['set_theme'] != '':
 				current_theme = load_theme(event['set_theme'])
@@ -1014,7 +1010,7 @@ func event_handler(event: Dictionary):
 
 func reset_options():
 	# Clearing out the options after one was selected.
-	for option in $Options/ButtonContainer.get_children():
+	for option in button_container.get_children():
 		option.queue_free()
 
 
@@ -1063,7 +1059,7 @@ func get_classic_choice_button(label: String):
 			button.rect_min_size = size
 			button.rect_size = size
 		
-		$Options/ButtonContainer.set('custom_constants/separation', theme.get_value('buttons', 'gap', 20))
+		button_container.set('custom_constants/separation', theme.get_value('buttons', 'gap', 20))
 		
 		# Different styles
 		var default_background = 'res://addons/dialogic/Example Assets/backgrounds/background-2.png'
@@ -1140,11 +1136,11 @@ func add_choice_button(option: Dictionary):
 		button = get_classic_choice_button(option['label'])
 	
 	if use_native_choice_button() or use_custom_choice_button():
-		$Options/ButtonContainer.set('custom_constants/separation', current_theme.get_value('buttons', 'gap', 20))
-	$Options/ButtonContainer.add_child(button)
+		button_container.set('custom_constants/separation', current_theme.get_value('buttons', 'gap', 20))
+	button_container.add_child(button)
 	
 	# Selecting the first button added
-	if $Options/ButtonContainer.get_child_count() == 1:
+	if button_container.get_child_count() == 1:
 		button.grab_focus()
 	
 	# Adding audio when focused or hovered
@@ -1251,24 +1247,25 @@ func load_theme(filename):
 	if theme_input != '[Default]':
 		input_next = theme_input
 
-	
+
 	$TextBubble.load_theme(theme)
 	
 	$DefinitionInfo.load_theme(theme)
 	
-	var button_container
+	
 	if theme.get_value('buttons', 'layout', 0) == 0:
 		button_container = VBoxContainer.new()
 	else:
 		button_container = HBoxContainer.new()
 	button_container.name = 'ButtonContainer'
 	button_container.alignment = 1
+
 	for n in $Options.get_children():
-		n.free()
+		n.queue_free()
 	$Options.add_child(button_container)
-	
+
 	load_audio(theme)
-	
+
 	return theme
 
 
@@ -1412,7 +1409,7 @@ func _on_close_dialog_timeout():
 
 
 func _on_OptionsDelayedInput_timeout():
-	for button in $Options/ButtonContainer.get_children():
+	for button in button_container.get_children():
 		if button.is_connected("pressed", self, "answer_question") == false:
 			button.connect("pressed", self, "answer_question", [button, button.get_meta('event_idx'), button.get_meta('question_idx')])
 
