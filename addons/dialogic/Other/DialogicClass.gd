@@ -11,6 +11,12 @@ extends Node
 class_name Dialogic
 
 
+enum DefinitionType {
+	VARIABLE,
+	GLOSSARY
+}
+
+
 ## Refactor the start function for 2.0 there should be a cleaner way to do it :)
 
 ## Starts the dialog for the given timeline and returns a Dialog node.

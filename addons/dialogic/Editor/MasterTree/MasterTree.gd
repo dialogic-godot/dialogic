@@ -228,7 +228,7 @@ func _add_resource_item(resource_type, parent_item, resource_data, select):
 			if resource_data.has('color'):
 				item.set_icon_modulate(0, resource_data['color'])
 		"Definition":
-			if resource_data['type'] == 0:
+			if resource_data['type'] == Dialogic.DefinitionType.VARIABLE:
 				item.set_icon(0, definition_icon)
 				resource_data['editor'] = 'Value'
 			else:

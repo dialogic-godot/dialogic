@@ -42,7 +42,7 @@ static func set_definition_variable(data: Dictionary, id: String, name: String, 
 		'id': id,
 		'name': name,
 		'value': value,
-		'type': 0
+		'type': Dialogic.DefinitionType.VARIABLE
 	})
 
 
@@ -53,7 +53,7 @@ static func set_definition_glossary(data: Dictionary, id: String, name: String, 
 		'title': title,
 		'text': text,
 		'extra': extra,
-		'type': 1
+		'type': Dialogic.DefinitionType.GLOSSARY
 	})
 
 
@@ -62,7 +62,7 @@ static func delete_definition(data: Dictionary, id: String):
 	var glossary : Array = data['glossary']
 	var item = get_definition_by_id(data, id);
 	if item != null:
-		if (item['type'] == 0):
+		if (item['type'] == Dialogic.DefinitionType.VARIABLE):
 			variables.erase(item)
 		else:
 			glossary.erase(item)
