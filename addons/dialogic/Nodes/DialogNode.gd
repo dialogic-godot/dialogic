@@ -49,10 +49,14 @@ var dialog_script: Dictionary = {}
 var current_event: Dictionary
 var dialog_index: int = 0
 
-var button_container = null
 var current_background = ""
 
+# Theme and Audio
+var current_theme: ConfigFile
+var audio_data = {}
 
+# References
+var button_container = null
 
 ## -----------------------------------------------------------------------------
 ## 						SCENES
@@ -327,15 +331,15 @@ func load_theme(filename):
 	
 	$DefinitionInfo.load_theme(theme)
 	
-	var button_container
 	if theme.get_value('buttons', 'layout', 0) == 0:
 		button_container = VBoxContainer.new()
 	else:
 		button_container = HBoxContainer.new()
 	button_container.name = 'ButtonContainer'
 	button_container.alignment = 1
+	
 	for n in $Options.get_children():
-		n.free()
+		n.queue_free()
 	$Options.add_child(button_container)
 	
 	load_audio(theme)
@@ -1126,11 +1130,11 @@ func add_choice_button(option: Dictionary):
 		button = get_classic_choice_button(option['label'])
 	
 	if use_native_choice_button() or use_custom_choice_button():
-		$Options/ButtonContainer.set('custom_constants/separation', current_theme.get_value('buttons', 'gap', 20))
-	$Options/ButtonContainer.add_child(button)
+		button_container.set('custom_constants/separation', current_theme.get_value('buttons', 'gap', 20))
+	button_container.add_child(button)
 	
 	# Selecting the first button added
-	if $Options/ButtonContainer.get_child_count() == 1:
+	if button_container.get_child_count() == 1:
 		button.grab_focus()
 	
 	# Adding audio when focused or hovered
@@ -1265,7 +1269,7 @@ func _on_option_focused():
 
 # connects the signals after a short delay to make accidental clicking less likely
 func _on_OptionsDelayedInput_timeout():
-	for button in $Options/ButtonContainer.get_children():
+	for button in button_container.get_children():
 		if button.is_connected("pressed", self, "answer_question") == false:
 			button.connect("pressed", self, "answer_question", [button, button.get_meta('event_idx'), button.get_meta('question_idx')])
 
