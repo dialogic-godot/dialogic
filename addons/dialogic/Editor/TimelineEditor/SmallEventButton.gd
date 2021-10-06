@@ -20,6 +20,8 @@ func _ready():
 		rect_min_size = Vector2(60,60)
 	if _scale == 2:
 		rect_min_size = Vector2(60,60)
+	
+	$HBox/TextureRect.rect_min_size = rect_min_size -Vector2(2,2)
 
 
 func set_icon(texture):

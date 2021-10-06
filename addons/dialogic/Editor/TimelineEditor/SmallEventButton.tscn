@@ -50,17 +50,17 @@ __meta__ = {
 [node name="HBox" type="HBoxContainer" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = 3.0
+margin_left = 2.0
 margin_top = 2.0
 margin_right = 1.0
-margin_bottom = -3.0
+margin_bottom = -2.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="TextureRect" type="TextureRect" parent="HBox"]
 margin_right = 24.0
-margin_bottom = 25.0
+margin_bottom = 26.0
 rect_min_size = Vector2( 24, 24 )
 stretch_mode = 6
 __meta__ = {
@@ -69,6 +69,6 @@ __meta__ = {
 
 [node name="Label" type="Label" parent="HBox"]
 margin_left = 28.0
-margin_top = 5.0
+margin_top = 6.0
 margin_right = 28.0
-margin_bottom = 19.0
+margin_bottom = 20.0
