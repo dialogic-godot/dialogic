@@ -60,22 +60,28 @@ onready var n : Dictionary = {
 	# Dialog box
 	'background_texture_button_visible': $"VBoxContainer/TabContainer/Dialog Box/Column/GridContainer/HBoxContainer3/CheckBox",
 	'theme_background_image': $"VBoxContainer/TabContainer/Dialog Box/Column/GridContainer/HBoxContainer3/BackgroundTextureButton",
-	'theme_next_image': $"VBoxContainer/TabContainer/Dialog Box/Column2/GridContainer/NextIndicatorButton",
-	'next_indicator_scale': $"VBoxContainer/TabContainer/Dialog Box/Column2/GridContainer/HBoxContainer7/IndicatorScale",
-	'next_indicator_offset_x': $"VBoxContainer/TabContainer/Dialog Box/Column2/GridContainer/HBoxContainer2/NextOffsetX",
-	'next_indicator_offset_y': $"VBoxContainer/TabContainer/Dialog Box/Column2/GridContainer/HBoxContainer2/NextOffsetY",
-	'next_animation': $"VBoxContainer/TabContainer/Dialog Box/Column2/GridContainer/NextAnimation",
-	'theme_action_key': $"VBoxContainer/TabContainer/Dialog Box/Column3/GridContainer/BoxContainer/ActionOptionButton",
-	'theme_background_color_visible': $"VBoxContainer/TabContainer/Dialog Box/Column/GridContainer/HBoxContainer2/CheckBox",
 	'theme_background_color': $"VBoxContainer/TabContainer/Dialog Box/Column/GridContainer/HBoxContainer2/ColorPickerButton",
-	'theme_text_margin': $"VBoxContainer/TabContainer/Dialog Box/Column/GridContainer/HBoxContainer/TextOffsetV",
-	'theme_text_margin_h': $"VBoxContainer/TabContainer/Dialog Box/Column/GridContainer/HBoxContainer/TextOffsetH",
-	'size_w': $"VBoxContainer/TabContainer/Dialog Box/Column/GridContainer/HBoxContainer4/BoxSizeW",
-	'size_h': $"VBoxContainer/TabContainer/Dialog Box/Column/GridContainer/HBoxContainer4/BoxSizeH", 
-	'bottom_gap': $"VBoxContainer/TabContainer/Dialog Box/Column/GridContainer/HBoxContainer5/BottomGap",
 	'background_modulation': $"VBoxContainer/TabContainer/Dialog Box/Column/GridContainer/HBoxContainer6/CheckBox",
 	'background_modulation_color': $"VBoxContainer/TabContainer/Dialog Box/Column/GridContainer/HBoxContainer6/ColorPickerButton",
-	'background_full_width': $"VBoxContainer/TabContainer/Dialog Box/Column/GridContainer/HBoxContainer7/CheckBox",
+	'background_full_width': $"VBoxContainer/TabContainer/Dialog Box/Column/GridContainer2/HBoxContainer7/CheckBox",
+	
+	'dialog_box_anchor':$"VBoxContainer/TabContainer/Dialog Box/Column/GridContainer2/PositionSelector",
+	'theme_text_margin': $"VBoxContainer/TabContainer/Dialog Box/Column/GridContainer2/HBoxContainer/BoxPaddingV",
+	'theme_text_margin_h': $"VBoxContainer/TabContainer/Dialog Box/Column/GridContainer2/HBoxContainer/BoxPaddingH",
+	'size_w': $"VBoxContainer/TabContainer/Dialog Box/Column/GridContainer2/HBoxContainer4/BoxSizeW",
+	'size_h': $"VBoxContainer/TabContainer/Dialog Box/Column/GridContainer2/HBoxContainer4/BoxSizeH", 
+	'box_margin_v': $"VBoxContainer/TabContainer/Dialog Box/Column/GridContainer2/BoxMargin/MarginV",
+	'box_margin_h': $"VBoxContainer/TabContainer/Dialog Box/Column/GridContainer2/BoxMargin/MarginH",
+	
+	
+	'theme_next_image': $"VBoxContainer/TabContainer/Dialog Box/Column2/GridContainer/NextIndicatorButton",
+	'next_indicator_offset_x': $"VBoxContainer/TabContainer/Dialog Box/Column2/GridContainer/HBoxContainer2/NextOffsetX",
+	'next_indicator_offset_y': $"VBoxContainer/TabContainer/Dialog Box/Column2/GridContainer/HBoxContainer2/NextOffsetY",
+	'theme_background_color_visible': $"VBoxContainer/TabContainer/Dialog Box/Column/GridContainer/HBoxContainer2/CheckBox",
+	'next_animation': $"VBoxContainer/TabContainer/Dialog Box/Column2/GridContainer/NextAnimation",
+	'next_indicator_scale': $"VBoxContainer/TabContainer/Dialog Box/Column2/GridContainer/HBoxContainer7/IndicatorScale",
+	
+	'theme_action_key': $"VBoxContainer/TabContainer/Dialog Box/Column3/GridContainer/BoxContainer/ActionOptionButton",
 	'animation_show_time': $"VBoxContainer/TabContainer/Dialog Box/Column3/GridContainer/ShowTime/SpinBox",
 	
 	# Character Names
@@ -194,7 +200,9 @@ func _ready() -> void:
 	n['background_modulation'].connect('toggled', self, '_on_generic_checkbox', ['background', 'modulation'])
 	n['background_full_width'].connect('toggled', self, '_on_generic_checkbox', ['background', 'full_width'])
 	n['animation_show_time'].connect('value_changed', self, '_on_generic_value_change', ['animation', 'show_time'])
-	n['bottom_gap'].connect('value_changed', self, '_on_generic_value_change', ['box', 'bottom_gap'])
+	n['box_margin_v'].connect('value_changed', self, '_on_generic_value_change', ['box', 'box_margin_v'])
+	n['box_margin_h'].connect('value_changed', self, '_on_generic_value_change', ['box', 'box_margin_h'])
+	
 	n['next_indicator_scale'].connect('value_changed', self, '_on_generic_value_change', ['next_indicator', 'scale'])
 
 	# Name tab
@@ -219,30 +227,32 @@ func _ready() -> void:
 	
 	n['button_layout'].connect('item_selected', self, '_on_button_layout_selected')
 	
-	var button_positions_popup = n['button_position_on_screen'].get_popup()
-	button_positions_popup.clear()
-	button_positions_popup.add_icon_item(
-		get_icon("ControlAlignTopLeft", "EditorIcons"), "Top Left", 0)
-	button_positions_popup.add_icon_item(
-		get_icon("ControlAlignTopCenter", "EditorIcons"), "Top Center", 1)
-	button_positions_popup.add_icon_item(
-		get_icon("ControlAlignTopRight", "EditorIcons"), "Top Right", 2)
-	button_positions_popup.add_separator()
-	button_positions_popup.add_icon_item(
-		get_icon("ControlAlignLeftCenter", "EditorIcons"), "Center Left", 3)
-	button_positions_popup.add_icon_item(
-		get_icon("ControlAlignCenter", "EditorIcons"), "Center", 4)
-	button_positions_popup.add_icon_item(
-		get_icon("ControlAlignRightCenter", "EditorIcons"), "Center Right", 5)
-	button_positions_popup.add_separator()
-	button_positions_popup.add_icon_item(
-		get_icon("ControlAlignBottomLeft", "EditorIcons"), "Bottom Left", 6)
-	button_positions_popup.add_icon_item(
-		get_icon("ControlAlignBottomCenter", "EditorIcons"), "Bottom Center", 7)
-	button_positions_popup.add_icon_item(
-		get_icon("ControlAlignBottomRight", "EditorIcons"), "Bottom Right", 8)
+	for button in ['dialog_box_anchor', 'button_position_on_screen']:
+		var button_positions_popup = n[button].get_popup()
+		button_positions_popup.clear()
+		button_positions_popup.add_icon_item(
+			get_icon("ControlAlignTopLeft", "EditorIcons"), "Top Left", 0)
+		button_positions_popup.add_icon_item(
+			get_icon("ControlAlignTopCenter", "EditorIcons"), "Top Center", 1)
+		button_positions_popup.add_icon_item(
+			get_icon("ControlAlignTopRight", "EditorIcons"), "Top Right", 2)
+		button_positions_popup.add_separator()
+		button_positions_popup.add_icon_item(
+			get_icon("ControlAlignLeftCenter", "EditorIcons"), "Center Left", 3)
+		button_positions_popup.add_icon_item(
+			get_icon("ControlAlignCenter", "EditorIcons"), "Center", 4)
+		button_positions_popup.add_icon_item(
+			get_icon("ControlAlignRightCenter", "EditorIcons"), "Center Right", 5)
+		button_positions_popup.add_separator()
+		button_positions_popup.add_icon_item(
+			get_icon("ControlAlignBottomLeft", "EditorIcons"), "Bottom Left", 6)
+		button_positions_popup.add_icon_item(
+			get_icon("ControlAlignBottomCenter", "EditorIcons"), "Bottom Center", 7)
+		button_positions_popup.add_icon_item(
+			get_icon("ControlAlignBottomRight", "EditorIcons"), "Bottom Right", 8)
 	
 	n['button_position_on_screen'].connect('item_selected', self, '_on_button_anchor_selected')
+	n['dialog_box_anchor'].connect('item_selected', self, '_on_button_dialogbox_anchor_selected')
 	
 	n['button_offset_x'].connect('value_changed', self, '_on_button_offset_changed')
 	n['button_offset_y'].connect('value_changed', self, '_on_button_offset_changed')
@@ -334,8 +344,10 @@ func load_theme(filename):
 	var size_value = theme.get_value('box', 'size', Vector2(910, 167))
 	n['size_w'].value = size_value.x
 	n['size_h'].value = size_value.y
-	
-	n['bottom_gap'].value = theme.get_value('box', 'bottom_gap', 40)
+	n['dialog_box_anchor'].select(theme.get_value('box', 'anchor', 9))
+	# TODO: remove backups in 2.0
+	n['box_margin_v'].value = theme.get_value('box', 'box_margin_v', theme.get_value('box', 'bottom_gap', 40))
+	n['box_margin_h'].value = theme.get_value('box', 'box_margin_h', theme.get_value('box', 'bottom_gap', 40))
 	
 	# Buttons
 	n['button_use_native'].pressed = theme.get_value('buttons', 'use_native', false)
@@ -687,6 +699,12 @@ func _on_BoxSize_value_changed(value) -> void:
 	DialogicResources.set_theme_value(current_theme, 'box', 'size', size_value)
 	_on_PreviewButton_pressed() # Refreshing the preview
 
+func _on_button_dialogbox_anchor_selected(index):
+	if loading:
+		return
+	DialogicResources.set_theme_value(current_theme, 'box', 'anchor', index)
+	_on_PreviewButton_pressed() # Refreshing the preview
+
 
 # Background Texture
 func _on_BackgroundTextureButton_pressed() -> void:
@@ -859,6 +877,28 @@ func _on_ButtonOffset_value_changed(value) -> void:
 		n['button_padding_y'].value
 	)
 	DialogicResources.set_theme_value(current_theme, 'buttons', 'padding', final_vector)
+
+
+func _on_button_layout_selected(index):
+	if loading:
+		return
+	DialogicResources.set_theme_value(current_theme, 'buttons', 'layout', index)
+	_on_PreviewButton_pressed() # Refreshing the preview
+
+
+func _on_button_anchor_selected(index):
+	if loading:
+		return
+	DialogicResources.set_theme_value(current_theme, 'buttons', 'anchor', index)
+	_on_PreviewButton_pressed() # Refreshing the preview
+
+
+func _on_button_offset_changed(_value):
+	if loading:
+		return
+	var offset_vector = Vector2(n['button_offset_x'].value, n['button_offset_y'].value)
+	DialogicResources.set_theme_value(current_theme, 'buttons', 'offset', offset_vector)
+	_on_PreviewButton_pressed() # Refreshing the preview
 
 
 func _on_VerticalSeparation_value_changed(value) -> void:
@@ -1042,24 +1082,3 @@ func _on_audio_data_updated(section):
 	_on_PreviewButton_pressed()
 
 
-## -----------  Choice buttons -----------------------
-func _on_button_layout_selected(index):
-	if loading:
-		return
-	DialogicResources.set_theme_value(current_theme, 'buttons', 'layout', index)
-	_on_PreviewButton_pressed() # Refreshing the preview
-
-
-func _on_button_anchor_selected(index):
-	if loading:
-		return
-	DialogicResources.set_theme_value(current_theme, 'buttons', 'anchor', index)
-	_on_PreviewButton_pressed() # Refreshing the preview
-
-
-func _on_button_offset_changed(_value):
-	if loading:
-		return
-	var offset_vector = Vector2(n['button_offset_x'].value, n['button_offset_y'].value)
-	DialogicResources.set_theme_value(current_theme, 'buttons', 'offset', offset_vector)
-	_on_PreviewButton_pressed() # Refreshing the preview
