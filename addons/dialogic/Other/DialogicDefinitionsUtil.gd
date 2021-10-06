@@ -38,22 +38,24 @@ static func set_definition(section: String, data: Dictionary, elem: Dictionary):
 
 
 static func set_definition_variable(data: Dictionary, id: String, name: String, value):
+	var _Dialogic = load("res://addons/dialogic/Other/DialogicClass.gd")
 	set_definition('variables', data, {
 		'id': id,
 		'name': name,
 		'value': value,
-		'type': Dialogic.DefinitionType.VARIABLE
+		'type': _Dialogic.DefinitionType.VARIABLE
 	})
 
 
 static func set_definition_glossary(data: Dictionary, id: String, name: String,  title: String,  text: String,  extra: String):
+	var _Dialogic = load("res://addons/dialogic/Other/DialogicClass.gd")
 	set_definition('glossary', data, {
 		'id': id,
 		'name': name,
 		'title': title,
 		'text': text,
 		'extra': extra,
-		'type': Dialogic.DefinitionType.GLOSSARY
+		'type': _Dialogic.DefinitionType.GLOSSARY
 	})
 
 
