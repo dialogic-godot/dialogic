@@ -728,6 +728,7 @@ func update_custom_events() -> void:
 		var button = load('res://addons/dialogic/Editor/TimelineEditor/SmallEventButton.tscn').instance()
 		#button.set_script(preload("EventButton.gd"))
 		button.event_id = custom_event_id
+		button.visible_name = custom_events[custom_event_id]['event_name']
 		button.self_modulate = Color('#494d58')
 		button.hint_tooltip = custom_events[custom_event_id]['event_name']
 		if custom_events[custom_event_id]['event_icon']:
