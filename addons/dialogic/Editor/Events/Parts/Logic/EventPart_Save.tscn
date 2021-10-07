@@ -1,0 +1,36 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://addons/dialogic/Editor/Events/Parts/Text/CustomLineEdit.tscn" type="PackedScene" id=1]
+[ext_resource path="res://addons/dialogic/Editor/Events/Parts/Logic/EventPart_Save.gd" type="Script" id=2]
+
+[node name="EventPart_Save" type="HBoxContainer"]
+margin_right = 40.0
+margin_bottom = 40.0
+custom_constants/separation = 9
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="DefaultSlot" type="CheckBox" parent="."]
+margin_right = 129.0
+margin_bottom = 40.0
+pressed = true
+text = "Use default slot"
+
+[node name="Label" type="Label" parent="."]
+margin_left = 138.0
+margin_top = 13.0
+margin_right = 219.0
+margin_bottom = 27.0
+text = "Custom slot:"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CustomSlot" parent="." instance=ExtResource( 1 )]
+margin_left = 228.0
+margin_top = 6.0
+margin_right = 276.0
+margin_bottom = 33.0
+hint_tooltip = "Also allows for value definitions like this: [my_value_name]"
