@@ -131,6 +131,7 @@ func load_config_files():
 		theme_file = settings.get_value('theme', 'default')
 	current_theme = load_theme(theme_file)
 	
+	# history
 	if settings.has_section('history'):
 		if settings.has_section_key('history', 'enable_history_logging'):
 			if settings.get_value('history', 'enable_history_logging'):
