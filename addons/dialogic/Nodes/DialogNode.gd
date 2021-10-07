@@ -1,33 +1,75 @@
 tool
 extends Control
 
-var last_mouse_mode = null
-var input_next: String = 'ui_accept'
-var dialog_index: int = 0
+## -----------------------------------------------------------------------------
+## 						VARIABLES
+## -----------------------------------------------------------------------------
+
+### STARTING
+## The timeline to load when starting the scene
+var timeline: String
+
+### MODE
+var preview: bool = false
+# Should we show debug information when running:
+var debug_mode := true
+
+
+### STATE FLAGS
 var finished: bool = false
 var waiting_for_answer: bool = false
 var waiting_for_input: bool = false
+# used in events to disable continuing:
 var waiting: bool = false
-var preview: bool = false
-var definitions = {}
-var definition_visible: bool = false
 var while_dialog_animation: bool = false
-
-var settings: ConfigFile
-var current_theme: ConfigFile
-var current_timeline: String = ''
-var current_event: Dictionary
-
-var button_container = null
-var current_background = ""
 var do_fade_in := true
+var dialog_faded_in_already = false
+# true if the glossary popup is visible: # TODO rename
+var definition_visible: bool = false
+# used to reset the mouse mode after questions:
+var last_mouse_mode = null
 
-## The timeline to load when starting the scene
-export(String, "TimelineDropdown") var timeline: String
-## Should we clear saved data (definitions and timeline progress) on start?
-export(bool) var reset_saves = false
-## Should we show debug information when running?
-export(bool) var debug_mode = true
+
+### SETTINGS
+var input_next: String = 'ui_accept'
+var settings: ConfigFile
+var custom_events = {}
+
+
+### DATA
+var definitions = {}
+var characters
+
+# Parsing results
+var questions #for keeping track of the questions answered
+
+### CURRENT STATE
+var current_timeline: String = ''
+var dialog_script: Dictionary = {}
+var current_event: Dictionary
+var dialog_index: int = 0
+
+var current_background = ""
+
+# Theme and Audio
+var current_theme: ConfigFile
+var audio_data = {}
+
+# References
+var button_container = null
+
+## -----------------------------------------------------------------------------
+## 						SCENES
+## -----------------------------------------------------------------------------
+
+onready var ChoiceButton = load("res://addons/dialogic/Nodes/ChoiceButton.tscn")
+onready var Portrait = load("res://addons/dialogic/Nodes/Portrait.tscn")
+onready var Background = load("res://addons/dialogic/Nodes/Background.tscn")
+
+
+## -----------------------------------------------------------------------------
+## 						SIGNALS
+## -----------------------------------------------------------------------------
 
 # Event end/start
 signal event_start(type, event)
@@ -40,25 +82,16 @@ signal timeline_end(timeline_name)
 # Custom user signal
 signal dialogic_signal(value)
 
-var dialog_resource
-var characters
 
-var custom_events = {}
 
-# Audio
-var audio_data = {}
-
-onready var ChoiceButton = load("res://addons/dialogic/Nodes/ChoiceButton.tscn")
-onready var Portrait = load("res://addons/dialogic/Nodes/Portrait.tscn")
-onready var Background = load("res://addons/dialogic/Nodes/Background.tscn")
-var dialog_script: Dictionary = {}
-var questions #for keeping track of the questions answered
-
-var dialog_faded_in_already = false
-
+## -----------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
+## 						SCRIPT
+## -----------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 
 func _ready():
-	# Set this dialog as the latest (used for quick saving)
+	# Set this dialog as the latest (used for saving)
 	Engine.get_main_loop().set_meta('latest_dialogic_node', self)
 	
 	# Loading the config files
@@ -106,13 +139,11 @@ func _ready():
 		_init_dialog()
 
 
+# loads the definitions, themes and settings
 func load_config_files():
-	# loads the definitions, themes and settings
 	
 	# defintiions
 	if not Engine.is_editor_hint():
-		if reset_saves:
-			Dialogic.reset_saves()
 		definitions = Dialogic._get_definitions()
 	else:
 		definitions = DialogicResources.get_default_definitions()
@@ -127,43 +158,10 @@ func load_config_files():
 	current_theme = load_theme(theme_file)
 
 
-func load_audio(theme):
-	# Audio
-	var default_audio_file = "res://addons/dialogic/Example Assets/Sound Effects/Beep.wav"
-	var default_audio_data = {
-		'enable': false,
-		'path': default_audio_file,
-		'volume': 0.0,
-		'volume_rand_range': 0.0,
-		'pitch': 1.0,
-		'pitch_rand_range': 0.0,
-		'allow_interrupt': true,
-		'audio_bus': AudioServer.get_bus_name(0)
-	}
 
-	for audio_node in $FX/Audio.get_children():
-		var name = audio_node.name.to_lower()
-		audio_data[name] = theme.get_value('audio', name, default_audio_data)
-	
-		var file_system = Directory.new()
-		if file_system.dir_exists(audio_data[name].path):
-			audio_node.load_samples_from_folder(audio_data[name].path)
-		elif file_system.file_exists(audio_data[name].path) or file_system.file_exists(audio_data[name].path + '.import'):
-			audio_node.samples = [load(audio_data[name].path)]
-		
-		audio_node.set_volume_db(audio_data[name].volume)
-		audio_node.random_volume_range = audio_data[name].volume_rand_range
-		audio_node.set_pitch_scale(audio_data[name].pitch)
-		audio_node.random_pitch_range = audio_data[name].pitch_rand_range
-		audio_node.set_bus(audio_data[name].audio_bus)
-
-func play_audio(name):
-	var node = $FX/Audio.get_node(name.capitalize())
-	name = name.to_lower()
-	if audio_data[name].enable:
-		if audio_data[name].allow_interrupt or not node.is_playing():
-			node.play()
-
+## -----------------------------------------------------------------------------
+## 						CUSTOM EVENTS
+## -----------------------------------------------------------------------------
 func update_custom_events() -> void:
 	custom_events = {}
 	
@@ -198,17 +196,20 @@ func update_custom_events() -> void:
 		print("[D] An error occurred when trying to access the custom event folder.")
 
 
+## -----------------------------------------------------------------------------
+## 						VISUALS
+## -----------------------------------------------------------------------------
+
+# This function makes sure that the dialog is displayed at the correct
+# size and position in the screen.
 func resize_main():
-	# This function makes sure that the dialog is displayed at the correct
-	# size and position in the screen.
 	var reference = rect_size
 	if not Engine.is_editor_hint():
 		set_global_position(Vector2(0,0))
 		reference = get_viewport().get_visible_rect().size
 	
-	
+	# Update box position
 	var anchor = current_theme.get_value('box', 'anchor', 9)
-	
 	# TODO: remove backups in 2.0
 	var gap_v = current_theme.get_value('box', 'box_margin_v', current_theme.get_value('box', 'bottom_gap', 40))
 	var gap_h = current_theme.get_value('box', 'box_margin_h', current_theme.get_value('box', 'bottom_gap', 40))
@@ -228,6 +229,7 @@ func resize_main():
 	else:
 		$TextBubble.rect_position.x = reference.x - ($TextBubble.rect_size.x) - gap_v
 	
+	# Update TextBubble background size
 	var pos_x = 0
 	if current_theme.get_value('background', 'full_width', false):
 		if preview:
@@ -301,13 +303,106 @@ func resize_main():
 		portraits.rect_position.x = reference.x / 2
 		portraits.rect_position.y = reference.y
 
+# calls resize_main
+func deferred_resize(current_size, result):
+	$TextBubble.rect_size = result
+	if current_size != $TextBubble.rect_size:
+		resize_main()
 
+# loads the given theme file
+func load_theme(filename):
+	var theme = DialogicResources.get_theme_config(filename)
+	
+	# Box size
+	call_deferred('deferred_resize', $TextBubble.rect_size, theme.get_value('box', 'size', Vector2(910, 167)))
+
+	# HERE
+	var settings_input = settings.get_value('input', 'default_action_key', '[Default]')
+	var theme_input = theme.get_value('settings', 'action_key', '[Default]')
+	
+	input_next = 'ui_accept'
+	if settings_input != '[Default]':
+		input_next = settings_input
+	if theme_input != '[Default]':
+		input_next = theme_input
+
+	
+	$TextBubble.load_theme(theme)
+	
+	$DefinitionInfo.load_theme(theme)
+	
+	if theme.get_value('buttons', 'layout', 0) == 0:
+		button_container = VBoxContainer.new()
+	else:
+		button_container = HBoxContainer.new()
+	button_container.name = 'ButtonContainer'
+	button_container.alignment = 1
+	
+	for n in $Options.get_children():
+		n.queue_free()
+	$Options.add_child(button_container)
+	
+	load_audio(theme)
+	
+	return theme
+
+
+## -----------------------------------------------------------------------------
+## 						AUDIO
+## -----------------------------------------------------------------------------
+
+func load_audio(theme):
+	# Audio
+	var default_audio_file = "res://addons/dialogic/Example Assets/Sound Effects/Beep.wav"
+	var default_audio_data = {
+		'enable': false,
+		'path': default_audio_file,
+		'volume': 0.0,
+		'volume_rand_range': 0.0,
+		'pitch': 1.0,
+		'pitch_rand_range': 0.0,
+		'allow_interrupt': true,
+		'audio_bus': AudioServer.get_bus_name(0)
+	}
+
+	for audio_node in $FX/Audio.get_children():
+		var name = audio_node.name.to_lower()
+		audio_data[name] = theme.get_value('audio', name, default_audio_data)
+	
+		var file_system = Directory.new()
+		if file_system.dir_exists(audio_data[name].path):
+			audio_node.load_samples_from_folder(audio_data[name].path)
+		elif file_system.file_exists(audio_data[name].path) or file_system.file_exists(audio_data[name].path + '.import'):
+			audio_node.samples = [load(audio_data[name].path)]
+		
+		audio_node.set_volume_db(audio_data[name].volume)
+		audio_node.random_volume_range = audio_data[name].volume_rand_range
+		audio_node.set_pitch_scale(audio_data[name].pitch)
+		audio_node.random_pitch_range = audio_data[name].pitch_rand_range
+		audio_node.set_bus(audio_data[name].audio_bus)
+
+func play_audio(name):
+	var node = $FX/Audio.get_node(name.capitalize())
+	name = name.to_lower()
+	if audio_data[name].enable:
+		if audio_data[name].allow_interrupt or not node.is_playing():
+			node.play()
+
+
+## -----------------------------------------------------------------------------
+## 					LOADING/PARSING DIALOG
+## -----------------------------------------------------------------------------
+# load a timeline file and start parsing
 func set_current_dialog(dialog_path: String):
 	current_timeline = dialog_path
 	dialog_script = DialogicResources.get_timeline_json(dialog_path)
 	return load_dialog()
-	
-	
+
+# set the dialog script directly
+func set_dialog_script(value):
+	dialog_script = value
+
+# starts all necessary parsing
 func load_dialog():
 	# All this parse events should be happening in the same loop ideally
 	# But until performance is not an issue I will probably stay lazy
@@ -321,7 +416,7 @@ func load_dialog():
 	dialog_script = parse_branches(dialog_script)
 	return dialog_script
 
-
+# adds name coloring to the dialog texts
 func parse_characters(dialog_script):
 	var characters = DialogicUtil.get_character_list()
 
@@ -362,7 +457,7 @@ func parse_characters(dialog_script):
 
 	return dialog_script
 
-
+# removes empty lines, splits message at new lines
 func parse_text_lines(unparsed_dialog_script: Dictionary) -> Dictionary:
 	var parsed_dialog: Dictionary = unparsed_dialog_script
 	var new_events: Array = []
@@ -410,7 +505,7 @@ func parse_text_lines(unparsed_dialog_script: Dictionary) -> Dictionary:
 
 	return parsed_dialog
 
-
+# adds the alignment BBCode to text events
 func parse_alignment(text):
 	var alignment = current_theme.get_value('text', 'alignment', 'Left')
 	var fname = current_theme.get_value('settings', 'name', 'none')
@@ -420,7 +515,7 @@ func parse_alignment(text):
 		text = '[right]' + text + '[/right]'
 	return text
 
-
+# creates a list of questions to be used at the end of choices
 func parse_branches(dialog_script: Dictionary) -> Dictionary:
 	questions = [] # Resetting the questions
 
@@ -482,13 +577,7 @@ func parse_branches(dialog_script: Dictionary) -> Dictionary:
 
 	return dialog_script
 
-
-func _should_show_glossary():
-	if current_theme != null:
-		return current_theme.get_value('definitions', 'show_glossary', true)
-	return true
-
-
+# returns the text but with BBcode for glossary and the values of the variables
 func parse_definitions(text: String, variables: bool = true, glossary: bool = true):
 	var final_text: String = text
 	if not preview:
@@ -499,15 +588,15 @@ func parse_definitions(text: String, variables: bool = true, glossary: bool = tr
 		final_text = _insert_glossary_definitions(final_text)
 	return final_text
 
-
+# adds the values of the variables
 func _insert_variable_definitions(text: String):
 	var final_text := text;
 	for d in definitions['variables']:
 		var name : String = d['name'];
 		final_text = final_text.replace('[' + name + ']', d['value'])
 	return final_text;
-	
-	
+
+# adds the BBCode for the glossary words
 func _insert_glossary_definitions(text: String):
 	var color = current_theme.get_value('definitions', 'color', '#ffbebebe')
 	var final_text := text;
@@ -521,6 +610,10 @@ func _insert_glossary_definitions(text: String):
 	return final_text;
 
 
+## -----------------------------------------------------------------------------
+## 					MAIN GAME-LOGIC 
+## -----------------------------------------------------------------------------
+# checks if NextIndicator and ChoiceButtons should be visible
 func _process(delta):
 	$TextBubble/NextIndicatorContainer/NextIndicator.visible = finished
 	if button_container.get_child_count() > 0:
@@ -537,7 +630,7 @@ func _process(delta):
 	if while_dialog_animation:
 		$TextBubble/NextIndicatorContainer/NextIndicator.visible = false
 
-
+# checks for the "input_next" action
 func _input(event: InputEvent) -> void:
 	if not Engine.is_editor_hint() and event.is_action_pressed(input_next) and not waiting:
 		if not $TextBubble.is_finished():
@@ -555,50 +648,25 @@ func _input(event: InputEvent) -> void:
 			if not propagate_input:
 				get_tree().set_input_as_handled()
 
-
-func set_dialog_script(value):
-	dialog_script = value
-
-
-func update_name(character) -> void:
-	if character.has('name'):
-		var parsed_name = character['name']
-		if character.has('display_name'):
-			if character['display_name'] != '':
-				parsed_name = character['display_name']
-		parsed_name = parse_definitions(parsed_name, true, false)
-		$TextBubble.update_name(parsed_name, character.get('color', Color.white), current_theme.get_value('name', 'auto_color', true))
-	else:
-		$TextBubble.update_name('')
-
-
-func update_text(text: String) -> String:
-	if settings.has_section_key('dialog', 'translations') and settings.get_value('dialog', 'translations'):
-		text = tr(text)
-	var final_text = parse_definitions(parse_alignment(text))
-	final_text = final_text.replace('[br]', '\n')
-
-	$TextBubble.update_text(final_text)
-	return final_text
-
-
+# when the text finished showing
+# plays audio, adds buttons, handles [nw]
 func _on_text_completed():
-	play_audio('waiting')
 	emit_signal('text_complete', current_event)
+	
+	play_audio('waiting')
 	
 	finished = true
 	
-	var waiting_until_options_enabled = float(settings.get_value('input', 'delay_after_options', 0.1))
-	$OptionsDelayedInput.start(waiting_until_options_enabled)
-	
+	# Add the choice buttons for questions
 	if current_event.has('options'):
+		var waiting_until_options_enabled = float(settings.get_value('input', 'delay_after_options', 0.1))
+		$OptionsDelayedInput.start(waiting_until_options_enabled)
+
 		for o in current_event['options']:
 			add_choice_button(o)
+	
 	if current_event.has('text'):
 		# [p] needs more work
-		#if '[p]' in current_event['text']: 
-		#	yield(get_tree().create_timer(2), "timeout")
-		
 		# Setting the timer for how long to wait in the [nw] events
 		if '[nw]' in current_event['text'] or '[nw=' in current_event['text']:
 			var waiting_time = 2
@@ -614,59 +682,64 @@ func _on_text_completed():
 			if dialog_index == current_index:
 				_load_next_event()
 
-func _on_letter_written():
-	play_audio('typing')
 
+# emits timeline_start and handles autosaving
 func on_timeline_start():
 	if not Engine.is_editor_hint():
 		if settings.get_value('saving', 'autosave', true):
-			# save to the current slot (or default)
+			# save to the default slot
 			Dialogic.save('', true)
 	# TODO remove event_start in 2.0
 	emit_signal("event_start", "timeline", current_timeline)
 	emit_signal("timeline_start", current_timeline)
 
-
+# emits timeline_end and handles autosaving
 func on_timeline_end():
 	if not Engine.is_editor_hint():
 		if settings.get_value('saving', 'autosave', true):
-			# save to the current slot (or default)
+			# save to the default slot
 			Dialogic.save('', true)
 	# TODO remove event_end in 2.0
 	emit_signal("event_end", "timeline")
 	emit_signal("timeline_end", current_timeline)
 	dprint('[D] Timeline End')
 
+# does checks and calls the above functions
+func _emit_timeline_signals():
+	if dialog_script.has('events'):
+		if dialog_index == 0:
+			on_timeline_start()
+		elif _is_dialog_finished():
+			on_timeline_end()
 
+
+# resets dialog_index and starts first event
 func _init_dialog():
 	dialog_index = 0
 	_load_event()
 
-
+# jumps to the event at the given index
 func _load_event_at_index(index: int):
 	dialog_index = index
 	_load_event()
 
-
+# loads the next event
 func _load_next_event():
 	dialog_index += 1
 	_load_event()
 
-
-func _is_dialog_starting():
-	return dialog_index == 0
-
-
+# returns true if dialog_index is outside of the events indexes
 func _is_dialog_finished():
 	return dialog_index >= dialog_script['events'].size()
 
-
+# calls the event_handler 
 func _load_event():
 	_emit_timeline_signals()
 	_hide_definition_popup()
 	
 	if dialog_script.has('events'):
 		if not _is_dialog_finished():
+			# CHECK IF NECESSARY!
 			var func_state = event_handler(dialog_script['events'][dialog_index])
 			#if (func_state is GDScriptFunctionState):
 			#	print(func_state)
@@ -675,46 +748,8 @@ func _load_event():
 			# Do not free the dialog if we are in the preview
 			queue_free()
 
-
-func _emit_timeline_signals():
-	if dialog_script.has('events'):
-		if _is_dialog_starting():
-			on_timeline_start()
-		elif _is_dialog_finished():
-			on_timeline_end()
-
-
-func _hide_definition_popup():
-	definition_visible = false
-	$DefinitionInfo.visible = definition_visible
-
-
-func get_character(character_id):
-	for c in characters:
-		if c['file'] == character_id:
-			return c
-	return {}
-
-
-func handle_voice(event):
-	var settings_file = DialogicResources.get_settings_config()
-	if not settings_file.get_value('dialog', 'text_event_audio_enable', false):
-		return
-	# In game only 
-	if Engine.is_editor_hint():
-		return
-	
-	if event.has('voice_data'):
-		var voice_data = event['voice_data']
-		if voice_data.has('0'):
-			$FX/CharacterVoice.play_voice(voice_data['0'])
-			return
-	
-	$FX/CharacterVoice.stop_voice()
-
-
+# Handling an event and updating the available nodes accordingly.
 func event_handler(event: Dictionary):
-	# Handling an event and updating the available nodes accordingly.
 	$TextBubble.reset()
 	reset_options()
 	
@@ -881,14 +916,30 @@ func event_handler(event: Dictionary):
 		# Close Dialog event
 		'dialogic_022':
 			emit_signal("event_start", "close_dialog", event)
-			var transition_duration = event.get('transition_duration', 1.0)
-			transition_duration = transition_duration
-			close_dialog_event(transition_duration)
+			
 			while_dialog_animation = true
+			var transition_duration = event.get('transition_duration', 1.0)
+			
+			# fade out characters
+			characters_leave_all()
+			
+			# fade out background
 			var background = get_node_or_null('Background')
 			if background != null:
 				background.name = 'BackgroundFadingOut'
 				background.fade_out(transition_duration)
+			
+			if transition_duration != 0:
+				var tween = Tween.new()
+				add_child(tween)
+				tween.interpolate_property($TextBubble, "modulate",
+					$TextBubble.modulate, Color('#00ffffff'), transition_duration,
+					Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
+				tween.start()
+				yield(tween, "tween_all_completed")
+			
+			on_timeline_end()
+			queue_free()
 		# Wait seconds event
 		'dialogic_023':
 			emit_signal("event_start", "wait", event)
@@ -1005,15 +1056,99 @@ func event_handler(event: Dictionary):
 				dprint('[D] No event found. Recevied data: ', event)
 	
 	$Options.visible = waiting_for_answer
-	
+
+## -----------------------------------------------------------------------------
+## 					TEXTBOX-FUNCTIONALITY
+## -----------------------------------------------------------------------------
+# updates the Name Label
+func update_name(character) -> void:
+	if character.has('name'):
+		var parsed_name = character['name']
+		if character.has('display_name'):
+			if character['display_name'] != '':
+				parsed_name = character['display_name']
+		parsed_name = parse_definitions(parsed_name, true, false)
+		$TextBubble.update_name(parsed_name, character.get('color', Color.white), current_theme.get_value('name', 'auto_color', true))
+	else:
+		$TextBubble.update_name('')
+
+# shows the given text in the Text Bubble
+# handles the simple translation feature
+func update_text(text: String) -> String:
+	if settings.has_section_key('dialog', 'translations') and settings.get_value('dialog', 'translations'):
+		text = tr(text)
+	var final_text = parse_definitions(parse_alignment(text))
+	final_text = final_text.replace('[br]', '\n')
+
+	$TextBubble.update_text(final_text)
+	return final_text
+
+# plays a sound
+func _on_letter_written():
+	play_audio('typing')
 
 
+## -----------------------------------------------------------------------------
+## 						CHOICE/OPTION BUTTONS
+## -----------------------------------------------------------------------------
+
+# called when a choice is selected
+# hides choices, sets question as answered and jumps to the appropriate event
+func answer_question(i, event_idx, question_idx):
+	if $TextBubble.is_finished(): # CHECK IF NECESSARY!
+		dprint('[!] Going to ', event_idx + 1, i, 'question_idx:', question_idx)
+		
+		play_audio("selecting")
+		
+		reset_options()
+		
+		# set flags and continue dialog
+		waiting_for_answer = false
+		questions[question_idx]['answered'] = true
+		_load_event_at_index(event_idx + 1)
+		
+		# Revert to last mouse mode when selection is done
+		if last_mouse_mode != null:
+			Input.set_mouse_mode(last_mouse_mode) 
+			last_mouse_mode = null
+
+# deletest the choice buttons
 func reset_options():
 	# Clearing out the options after one was selected.
 	for option in button_container.get_children():
 		option.queue_free()
 
+# adds a button for the given choice
+func add_choice_button(option: Dictionary):
+	if not _should_add_choice_button(option):
+		return
+	
+	var button
+	if use_custom_choice_button():
+		button = get_custom_choice_button(option['label'])
+	else:
+		button = get_classic_choice_button(option['label'])
+	
+	if use_native_choice_button() or use_custom_choice_button():
+		button_container.set('custom_constants/separation', current_theme.get_value('buttons', 'gap', 20))
+	button_container.add_child(button)
+	
+	# Selecting the first button added
+	if button_container.get_child_count() == 1:
+		button.grab_focus()
+	
+	# Adding audio when focused or hovered
+	button.connect('focus_entered', self, '_on_option_hovered', [button])
+	button.connect('mouse_entered', self, '_on_option_focused')
+	
+	button.set_meta('event_idx', option['event_idx'])
+	button.set_meta('question_idx', option['question_idx'])
 
+	if Input.get_mouse_mode() != Input.MOUSE_MODE_VISIBLE:
+		last_mouse_mode = Input.get_mouse_mode()
+		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE) # Make sure the cursor is visible for the options selection
+
+# checks the condition of the given option
 func _should_add_choice_button(option: Dictionary):
 	if not option['definition'].empty():
 		var def_value = null
@@ -1024,15 +1159,15 @@ func _should_add_choice_button(option: Dictionary):
 	else:
 		return true
 
-
+# checks the 'custom_choice_button' setting
 func use_custom_choice_button():
 	return current_theme.get_value('buttons', 'use_custom', false) and not current_theme.get_value('buttons', 'custom_path', "").empty()
 
-
+# checks the 'native_choice_button' setting
 func use_native_choice_button():
 	return current_theme.get_value('buttons', 'use_native', false)
 
-
+# instances a custom choice
 func get_custom_choice_button(label: String):
 	var theme = current_theme
 	var custom_path = current_theme.get_value('buttons', 'custom_path', "")
@@ -1041,7 +1176,7 @@ func get_custom_choice_button(label: String):
 	button.text = label
 	return button
 
-
+# instances a normal dialogic button
 func get_classic_choice_button(label: String):
 	var theme = current_theme
 	var button : Button = ChoiceButton.instance()
@@ -1103,7 +1238,7 @@ func get_classic_choice_button(label: String):
 		button_style_setter('disabled', style_disabled, button, theme)
 	return button
 
-
+# adds parts of a style to the given button
 func button_style_setter(section, data, button, theme):
 	var style_box = StyleBoxTexture.new()
 	if data[2]:
@@ -1124,63 +1259,44 @@ func button_style_setter(section, data, button, theme):
 	style_box.set('margin_bottom', padding.y)
 	button.set('custom_styles/' + section, style_box)
 
-
-func add_choice_button(option: Dictionary):
-	if not _should_add_choice_button(option):
-		return
-	
-	var button
-	if use_custom_choice_button():
-		button = get_custom_choice_button(option['label'])
-	else:
-		button = get_classic_choice_button(option['label'])
-	
-	if use_native_choice_button() or use_custom_choice_button():
-		button_container.set('custom_constants/separation', current_theme.get_value('buttons', 'gap', 20))
-	button_container.add_child(button)
-	
-	# Selecting the first button added
-	if button_container.get_child_count() == 1:
-		button.grab_focus()
-	
-	# Adding audio when focused or hovered
-	button.connect('focus_entered', self, '_on_option_hovered', [button])
-	button.connect('mouse_entered', self, '_on_option_focused')
-	
-	button.set_meta('event_idx', option['event_idx'])
-	button.set_meta('question_idx', option['question_idx'])
-
-	if Input.get_mouse_mode() != Input.MOUSE_MODE_VISIBLE:
-		last_mouse_mode = Input.get_mouse_mode()
-		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE) # Make sure the cursor is visible for the options selection
-
-
-func answer_question(i, event_idx, question_idx):
-	if $TextBubble.is_finished():
-		play_audio("selecting")
-		dprint('[!] Going to ', event_idx + 1, i, 'question_idx:', question_idx)
-		waiting_for_answer = false
-		questions[question_idx]['answered'] = true
-		reset_options()
-		_load_event_at_index(event_idx + 1)
-		if last_mouse_mode != null:
-			Input.set_mouse_mode(last_mouse_mode) # Revert to last mouse mode when selection is done
-			last_mouse_mode = null
-
+# focuses button on hover
 func _on_option_hovered(button):
 	button.grab_focus()
 
+# plays the sound
 func _on_option_focused():
 	play_audio("hovering")
+
+# connects the signals after a short delay to make accidental clicking less likely
+func _on_OptionsDelayedInput_timeout():
+	for button in button_container.get_children():
+		if button.is_connected("pressed", self, "answer_question") == false:
+			button.connect("pressed", self, "answer_question", [button, button.get_meta('event_idx'), button.get_meta('question_idx')])
+
+## -----------------------------------------------------------------------------
+## 					VOICE LINE FEATURE
+## -----------------------------------------------------------------------------
+# plays the voice line of the event
+func handle_voice(event):
+	var settings_file = DialogicResources.get_settings_config()
+	if not settings_file.get_value('dialog', 'text_event_audio_enable', false):
+		return
+	# In game only 
+	if Engine.is_editor_hint():
+		return
 	
-func _on_option_selected(option, variable, value):
-	dialog_resource.custom_variables[variable] = value
-	waiting_for_answer = false
-	reset_options()
-	_load_next_event()
-	dprint('[!] Option selected: ', option.text, ' value= ' , value)
+	if event.has('voice_data'):
+		var voice_data = event['voice_data']
+		if voice_data.has('0'):
+			$FX/CharacterVoice.play_voice(voice_data['0'])
+			return
+	
+	$FX/CharacterVoice.stop_voice()
 
-
+## -----------------------------------------------------------------------------
+## 						PORTRAITS
+## -----------------------------------------------------------------------------
+# defocuses all characters except the given one
 func grab_portrait_focus(character_data, event: Dictionary = {}) -> bool:
 	var exists = false
 	var visually_focus = true
@@ -1201,16 +1317,15 @@ func grab_portrait_focus(character_data, event: Dictionary = {}) -> bool:
 				portrait.focusout()
 	return exists
 
-
+# returns true if the a portrait for that character already exists
 func portrait_exists(character_data) -> bool:
 	var exists = false
 	for portrait in $Portraits.get_children():
 		if portrait.character_data == character_data:
 			exists = true
 	return exists
-	
 
-
+# converts PORTRAIT-WEIRDNESS to a word
 func get_character_position(positions) -> String:
 	if positions['0']:
 		return 'left'
@@ -1224,51 +1339,23 @@ func get_character_position(positions) -> String:
 		return 'right'
 	return 'left'
 
+# moves out all portraits
+func characters_leave_all():
+	var portraits = get_node_or_null('Portraits')
+	if portraits != null:
+		for p in portraits.get_children():
+			p.fade_out()
 
-func deferred_resize(current_size, result):
-	$TextBubble.rect_size = result
-	if current_size != $TextBubble.rect_size:
-		resize_main()
+## -----------------------------------------------------------------------------
+## 						GLOSSARY POPUP
+## -----------------------------------------------------------------------------
+# cheks the 'show_glossary' setting
+func _should_show_glossary():
+	if current_theme != null:
+		return current_theme.get_value('definitions', 'show_glossary', true)
+	return true
 
-
-func load_theme(filename):
-	var theme = DialogicResources.get_theme_config(filename)
-	
-	# Box size
-	call_deferred('deferred_resize', $TextBubble.rect_size, theme.get_value('box', 'size', Vector2(910, 167)))
-
-	# HERE
-	var settings_input = settings.get_value('input', 'default_action_key', '[Default]')
-	var theme_input = theme.get_value('settings', 'action_key', '[Default]')
-	
-	input_next = 'ui_accept'
-	if settings_input != '[Default]':
-		input_next = settings_input
-	if theme_input != '[Default]':
-		input_next = theme_input
-
-
-	$TextBubble.load_theme(theme)
-	
-	$DefinitionInfo.load_theme(theme)
-	
-	
-	if theme.get_value('buttons', 'layout', 0) == 0:
-		button_container = VBoxContainer.new()
-	else:
-		button_container = HBoxContainer.new()
-	button_container.name = 'ButtonContainer'
-	button_container.alignment = 1
-
-	for n in $Options.get_children():
-		n.queue_free()
-	$Options.add_child(button_container)
-
-	load_audio(theme)
-
-	return theme
-
-
+# shows the glossary popup
 func _on_RichTextLabel_meta_hover_started(meta):
 	var correct_type = false
 	for d in definitions['glossary']:
@@ -1287,18 +1374,27 @@ func _on_RichTextLabel_meta_hover_started(meta):
 		# Adding a timer to avoid a graphical glitch
 		$DefinitionInfo/Timer.stop()
 
-
+# hides the glossary popup
 func _on_RichTextLabel_meta_hover_ended(meta):
 	# Adding a timer to avoid a graphical glitch
 	$DefinitionInfo/Timer.start(0.1)
 
+# hides the glossary popup
+func _hide_definition_popup():
+	definition_visible = false
+	$DefinitionInfo.visible = definition_visible
 
+# (actually) hides the glossary popup
 func _on_Definition_Timer_timeout():
 	# Adding a timer to avoid a graphical glitch
 	definition_visible = false
 	$DefinitionInfo.visible = definition_visible
 
 
+## -----------------------------------------------------------------------------
+## 						HELPERS
+## -----------------------------------------------------------------------------
+# prints multiple strings if debug_mode is true
 func dprint(string, arg1='', arg2='', arg3='', arg4='' ):
 	# HAHAHA if you are here wondering what this is...
 	# I ask myself the same question :')
@@ -1306,6 +1402,14 @@ func dprint(string, arg1='', arg2='', arg3='', arg4='' ):
 		print(str(string) + str(arg1) + str(arg2) + str(arg3) + str(arg4))
 
 
+# helper that allows to get a character by file
+func get_character(character_id):
+	for c in characters:
+		if c['file'] == character_id:
+			return c
+	return {}
+
+# returns the result of the given dialogic comparison
 func _compare_definitions(def_value: String, event_value: String, condition: String):
 	var condition_met = false;
 	if def_value != null and event_value != null:
@@ -1338,21 +1442,19 @@ func _compare_definitions(def_value: String, event_value: String, condition: Str
 	return condition_met
 
 
-func characters_leave_all():
-	var portraits = get_node_or_null('Portraits')
-	if portraits != null:
-		for p in portraits.get_children():
-			p.fade_out()
 
-
-# Start Dialog Fade In functions
+## -----------------------------------------------------------------------------
+## 					DIALOG FADING
+## -----------------------------------------------------------------------------
+# ähm... no clue. What is this @emilio?
+# TODO wtf is this name?
 func _hide_dialog():
 	$TextBubble.update_text('') # Clearing the text
 	$TextBubble.modulate = Color(1,1,1,0)
 	while_dialog_animation = true
 	dialog_faded_in_already = false
 
-
+# start a fade in animation
 func fade_in_dialog(time = 0.5):
 	visible = true
 	time = current_theme.get_value('animation', 'show_time', 0.5)
@@ -1377,44 +1479,16 @@ func fade_in_dialog(time = 0.5):
 			while_dialog_animation = false
 			dialog_faded_in_already = true
 
-
+# at the end of fade animation, reset flags
 func finished_fade_in_dialog(object, key, node):
 	node.queue_free()
 	while_dialog_animation = false
 	dialog_faded_in_already = true
-# End Dialog Fade In functions
 
-
-
-func close_dialog_event(transition_duration):
-	characters_leave_all()
-	if transition_duration == 0:
-		_on_close_dialog_timeout()
-	else:
-		var tween = Tween.new()
-		add_child(tween)
-		tween.interpolate_property($TextBubble, "modulate",
-			$TextBubble.modulate, Color('#00ffffff'), transition_duration,
-			Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
-		tween.start()
-		var close_dialog_timer = Timer.new()
-		close_dialog_timer.connect("timeout", self, '_on_close_dialog_timeout')
-		add_child(close_dialog_timer)
-		close_dialog_timer.start(transition_duration)
-
-
-func _on_close_dialog_timeout():
-	on_timeline_end()
-	queue_free()
-
-
-func _on_OptionsDelayedInput_timeout():
-	for button in button_container.get_children():
-		if button.is_connected("pressed", self, "answer_question") == false:
-			button.connect("pressed", self, "answer_question", [button, button.get_meta('event_idx'), button.get_meta('question_idx')])
-
-#### LOADING AND SAVING
-# returns all important data in a dictionary
+## -----------------------------------------------------------------------------
+## 					LOADING AND SAVING
+## -----------------------------------------------------------------------------
+# returns all important data in a dictionary to be saved
 func get_current_state_info():
 	var state = {}
 
@@ -1435,6 +1509,7 @@ func get_current_state_info():
 
 	return state
 
+# loads all important data from a dictionary
 func resume_state_from_info(state_info):
 
 	# wait until the dialog node was added to the tree
@@ -1511,4 +1586,3 @@ func resume_state_from_info(state_info):
 			dialog_script['events'][event_index]['answered'] = true
 
 	_load_event_at_index(state_info['event_idx'])
-
