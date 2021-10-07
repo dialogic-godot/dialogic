@@ -79,6 +79,7 @@ __meta__ = {
 }
 
 [node name="HistoryButton" type="Button" parent="."]
+visible = false
 anchor_top = 1.0
 anchor_bottom = 1.0
 margin_top = -20.0

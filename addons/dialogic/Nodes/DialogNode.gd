@@ -67,7 +67,7 @@ var button_container = null
 onready var ChoiceButton = load("res://addons/dialogic/Nodes/ChoiceButton.tscn")
 onready var Portrait = load("res://addons/dialogic/Nodes/Portrait.tscn")
 onready var Background = load("res://addons/dialogic/Nodes/Background.tscn")
-
+onready var HistoryTimeline = $History
 
 ## -----------------------------------------------------------------------------
 ## 						SIGNALS
@@ -1437,6 +1437,33 @@ func get_character(character_id):
 		if c['file'] == character_id:
 			return c
 	return {}
+
+# helper to get character name string by id
+func get_character_name(character_id) -> String:
+	var characterName = '';
+	var characterData = get_character(character_id)
+	if characterData.has('name'):
+		var parsed_name = characterData['name']
+		if characterData.has('display_name'):
+			if characterData['display_name'] != '':
+				parsed_name = characterData['display_name']
+		characterName = parsed_name;
+	return characterName;
+
+
+# helper to get character name string with color tags by id
+func get_character_name_with_color(character_id) -> String:
+	var characterName = '';
+	var characterData = get_character(character_id)
+	if characterData.has('name'):
+		var parsed_name = characterData['name']
+		if characterData.has('display_name'):
+			if characterData['display_name'] != '':
+				parsed_name = characterData['display_name']
+		var characterColor = characterData.data.get('color', Color.white)
+		characterName = parsed_name;
+		characterName = str("[color=",characterColor,"]",characterName, "[/color]: ")
+	return characterName;
 
 # returns the result of the given dialogic comparison
 func _compare_definitions(def_value: String, event_value: String, condition: String):
