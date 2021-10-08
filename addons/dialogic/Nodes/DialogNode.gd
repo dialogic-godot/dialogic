@@ -966,9 +966,23 @@ func event_handler(event: Dictionary):
 		# Save event
 		'dialogic_026':
 			emit_signal('event_start', 'save', event)
-			Dialogic.save()
+			var custom_slot :String = event.get('custom_slot', '').strip_edges()
+			if event.get('use_default_slot', true) or custom_slot == '':
+				Dialogic.save()
+			else:
+				if custom_slot.begins_with("[") and custom_slot.ends_with("]"):
+					custom_slot = custom_slot.trim_prefix("[").trim_suffix("]")
+					var saved = false
+					for definition in definitions['variables']:
+						if definition['name'] == custom_slot:
+							Dialogic.save(definition['value'])
+							saved = true
+					if not saved:
+						print("[D] Tried to access value definition '"+custom_slot+"' for saving, but it didn't exist.")
+				else:
+					Dialogic.save(custom_slot)
+			
 			_load_next_event()
-		
 		
 		# AUDIO EVENTS
 		# Audio event
