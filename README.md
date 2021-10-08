@@ -13,7 +13,7 @@ Create dialogs, characters and scenes to display conversations in your Godot gam
 
 
 
-# Version 1.3 - Work in progress 🛠️  ![Godot v3.3](https://img.shields.io/badge/godot-v3.3-%23478cbf)
+# Version 1.3 - BETA  ![Godot v3.3](https://img.shields.io/badge/godot-v3.3-%23478cbf)
 
 ## Getting started
 
