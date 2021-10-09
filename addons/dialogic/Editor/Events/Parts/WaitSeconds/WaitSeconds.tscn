@@ -1,0 +1,20 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://addons/dialogic/Editor/Events/Parts/WaitSeconds/EventPart_WaitSeconds.gd" type="Script" id=1]
+[ext_resource path="res://addons/dialogic/Editor/Events/Parts/Numbers/SecondsSelector.tscn" type="PackedScene" id=2]
+[ext_resource path="res://addons/dialogic/Editor/Events/Parts/Logic/Skippable.tscn" type="PackedScene" id=3]
+
+[node name="HBoxContainer" type="HBoxContainer"]
+margin_right = 40.0
+margin_bottom = 40.0
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="SecondsSelector" parent="." instance=ExtResource( 2 )]
+margin_right = 139.0
+
+[node name="Skippable" parent="." instance=ExtResource( 3 )]
+margin_left = 143.0
+margin_right = 238.0
