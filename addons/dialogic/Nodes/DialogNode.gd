@@ -533,6 +533,7 @@ func parse_branches(dialog_script: Dictionary) -> Dictionary:
 				'question_idx': opened_branch['question_idx'],
 				'label': parse_definitions(event['choice'], true, false),
 				'event_idx': event_idx,
+				'shortcut': event['shortcut'],
 				}
 			if event.has('condition') and event.has('definition') and event.has('value'):
 				option = {
@@ -542,6 +543,7 @@ func parse_branches(dialog_script: Dictionary) -> Dictionary:
 					'condition': event['condition'],
 					'definition': event['definition'],
 					'value': event['value'],
+					'shortcut': event['shortcut'],
 					}
 			else:
 				option = {
@@ -551,6 +553,7 @@ func parse_branches(dialog_script: Dictionary) -> Dictionary:
 					'condition': '',
 					'definition': '',
 					'value': '',
+					'shortcut': event['shortcut'],
 					}
 			dialog_script['events'][opened_branch['event_idx']]['options'].append(option)
 			event['question_idx'] = opened_branch['question_idx']
@@ -1146,6 +1149,20 @@ func add_choice_button(option: Dictionary):
 	if use_native_choice_button() or use_custom_choice_button():
 		button_container.set('custom_constants/separation', current_theme.get_value('buttons', 'gap', 20))
 	button_container.add_child(button)
+	
+	var hotkey = InputEventKey.new()
+	
+	# If there is a hotkey, use that key
+	if option['shortcut'] != '':
+		hotkey.scancode = OS.find_scancode_from_string(str(option['shortcut']))
+	# otherwise default hotkeys are 1-9
+	elif button_container.get_child_count() < 10:
+		hotkey.scancode = OS.find_scancode_from_string(str(button_container.get_child_count()))
+	
+	var shortcut = ShortCut.new()
+	shortcut.set_shortcut(hotkey)
+	
+	button.set_shortcut(shortcut)
 	
 	# Selecting the first button added
 	if button_container.get_child_count() == 1:
