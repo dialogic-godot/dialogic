@@ -24,9 +24,10 @@ All of the files that are used for creating a custom Event Block and Handling Sc
 
 
 
-
 # Making your first custom event in 6 steps
 Let's now create a simple event that will print some text to the Output panel in Godot.
+
+### You can avoid the manual copy-pasting part. Go to Dialogic's settings and use the Custom events section [new] button to create and rename an event for you. Make sure to read the guide so you know what is happening in the process.
 
 ## 1. Create the folder
 First you should create a new folder in `res://dialogic/custom-events` and give it a name that is descriptive and unique.
