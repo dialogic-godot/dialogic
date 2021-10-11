@@ -25,6 +25,7 @@ onready var nodes = {
 	# Input Settings
 	'delay_after_options': $VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer/HBoxContainer/LineEdit,
 	'default_action_key': $VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer/HBoxContainer2/DefaultActionKey,
+	'enable_default_shortcut': $'VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer/HBoxContainer3/HotKeys',
 	'new_custom_event_open':$VBoxContainer/HBoxContainer3/VBoxContainer2/CustomEvents/HBoxContainer/NewCustomEvent, 
 	'new_custom_event_section': $VBoxContainer/HBoxContainer3/VBoxContainer2/CustomEvents/CreateCustomEventSection, 
 	'new_custom_event_name': $VBoxContainer/HBoxContainer3/VBoxContainer2/CustomEvents/CreateCustomEventSection/CeName,
@@ -41,7 +42,8 @@ var THEME_KEYS := [
 
 var INPUT_KEYS := [
 	'delay_after_options',
-	'default_action_key'
+	'default_action_key',
+	'enable_default_shortcut'
 	]
 
 var DIALOG_KEYS := [
@@ -73,6 +75,7 @@ func _ready():
 
 	nodes['default_action_key'].connect('pressed', self, '_on_default_action_key_presssed')
 	nodes['default_action_key'].connect('item_selected', self, '_on_default_action_key_item_selected')
+	nodes['enable_default_shortcut'].connect('toggled', self, '_on_item_toggled', ['input', 'enable_default_shortcut'])
 	
 	AudioServer.connect("bus_layout_changed", self, "update_bus_selector")
 	nodes['text_event_audio_default_bus'].connect('item_selected', self, '_on_text_audio_default_bus_item_selected')

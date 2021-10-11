@@ -1156,7 +1156,7 @@ func add_choice_button(option: Dictionary):
 	if option['shortcut'] != '':
 		hotkey.scancode = OS.find_scancode_from_string(str(option['shortcut']))
 	# otherwise default hotkeys are 1-9
-	elif button_container.get_child_count() < 10:
+	elif button_container.get_child_count() < 10 and settings.get_value('input', 'enable_default_shortcut', false):
 		hotkey.scancode = OS.find_scancode_from_string(str(button_container.get_child_count()))
 	
 	var shortcut = ShortCut.new()
