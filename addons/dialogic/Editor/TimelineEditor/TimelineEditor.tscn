@@ -160,41 +160,43 @@ size_flags_horizontal = 3
 [node name="Grid1" type="GridContainer" parent="ScrollContainer/EventContainer"]
 margin_top = 100.0
 margin_right = 178.0
-margin_bottom = 130.0
+margin_bottom = 120.0
 custom_constants/vseparation = 6
 custom_constants/hseparation = 6
 columns = 3
 
 [node name="TextEvent" parent="ScrollContainer/EventContainer/Grid1" instance=ExtResource( 25 )]
-self_modulate = Color( 0.286275, 0.301961, 0.345098, 1 )
-margin_right = 30.0
-margin_bottom = 30.0
+margin_right = 12.0
+margin_bottom = 20.0
 hint_tooltip = "Text Event"
+icon = ExtResource( 2 )
 event_id = "dialogic_001"
+event_color = Color( 0.635294, 0.635294, 0.635294, 0.282353 )
 event_icon = ExtResource( 2 )
 
 [node name="CharacterJoin" parent="ScrollContainer/EventContainer/Grid1" instance=ExtResource( 25 )]
-self_modulate = Color( 0.14902, 0.266667, 0.25098, 1 )
-margin_left = 36.0
-margin_right = 66.0
-margin_bottom = 30.0
+margin_left = 18.0
+margin_bottom = 20.0
 hint_tooltip = "Character Join"
+icon = ExtResource( 1 )
 event_id = "dialogic_002"
+event_color = Color( 0.14902, 0.521569, 0.298039, 0.266667 )
 event_icon = ExtResource( 1 )
 
 [node name="CharacterLeave" parent="ScrollContainer/EventContainer/Grid1" instance=ExtResource( 25 )]
-self_modulate = Color( 0.207843, 0.168627, 0.239216, 1 )
-margin_left = 72.0
-margin_right = 102.0
-margin_bottom = 30.0
+margin_left = 36.0
+margin_right = 48.0
+margin_bottom = 20.0
 hint_tooltip = "Character Leave"
+icon = ExtResource( 7 )
 event_id = "dialogic_003"
+event_color = Color( 0.419608, 0.14902, 0.262745, 0.219608 )
 event_icon = ExtResource( 7 )
 
 [node name="HBoxContainer5" type="HBoxContainer" parent="ScrollContainer/EventContainer"]
-margin_top = 139.0
+margin_top = 129.0
 margin_right = 178.0
-margin_bottom = 153.0
+margin_bottom = 143.0
 
 [node name="TLabel2" parent="ScrollContainer/EventContainer/HBoxContainer5" instance=ExtResource( 21 )]
 anchor_right = 0.0
@@ -211,70 +213,75 @@ margin_bottom = 14.0
 size_flags_horizontal = 3
 
 [node name="Grid2" type="GridContainer" parent="ScrollContainer/EventContainer"]
-margin_top = 162.0
+margin_top = 152.0
 margin_right = 178.0
-margin_bottom = 228.0
+margin_bottom = 198.0
 custom_constants/vseparation = 6
 custom_constants/hseparation = 6
 columns = 5
 
 [node name="Question" parent="ScrollContainer/EventContainer/Grid2" instance=ExtResource( 25 )]
-self_modulate = Color( 0.2, 0.2, 0.372549, 1 )
-margin_right = 30.0
-margin_bottom = 30.0
+margin_right = 12.0
+margin_bottom = 20.0
 hint_tooltip = "Question"
+icon = ExtResource( 8 )
 event_id = "dialogic_010"
+event_color = Color( 0.270588, 0.243137, 0.572549, 0.407843 )
 event_icon = ExtResource( 8 )
 
 [node name="Choice" parent="ScrollContainer/EventContainer/Grid2" instance=ExtResource( 25 )]
-self_modulate = Color( 0.2, 0.2, 0.372549, 1 )
-margin_left = 36.0
-margin_right = 66.0
-margin_bottom = 30.0
+margin_left = 18.0
+margin_bottom = 20.0
 hint_tooltip = "Choice"
+icon = ExtResource( 12 )
 event_id = "dialogic_011"
+event_color = Color( 0.270588, 0.243137, 0.572549, 0.407843 )
 event_icon = ExtResource( 12 )
 
 [node name="Condition" parent="ScrollContainer/EventContainer/Grid2" instance=ExtResource( 25 )]
-self_modulate = Color( 0.2, 0.2, 0.372549, 1 )
-margin_left = 72.0
-margin_right = 102.0
-margin_bottom = 30.0
+margin_left = 36.0
+margin_right = 48.0
+margin_bottom = 20.0
 hint_tooltip = "Condition"
+icon = ExtResource( 5 )
 event_id = "dialogic_012"
+event_color = Color( 0.270588, 0.243137, 0.572549, 0.407843 )
 event_icon = ExtResource( 5 )
 
 [node name="EndBranch" parent="ScrollContainer/EventContainer/Grid2" instance=ExtResource( 25 )]
-self_modulate = Color( 0.2, 0.2, 0.372549, 1 )
-margin_left = 108.0
-margin_right = 138.0
-margin_bottom = 30.0
+margin_left = 54.0
+margin_right = 66.0
+margin_bottom = 20.0
 hint_tooltip = "End Branch"
+icon = ExtResource( 9 )
 event_id = "dialogic_013"
+event_color = Color( 0.160784, 0.423529, 0.309804, 0.447059 )
 event_icon = ExtResource( 9 )
 
 [node name="SetValue" parent="ScrollContainer/EventContainer/Grid2" instance=ExtResource( 25 )]
-self_modulate = Color( 0.2, 0.2, 0.372549, 1 )
-margin_left = 144.0
-margin_right = 174.0
-margin_bottom = 30.0
+margin_left = 72.0
+margin_right = 84.0
+margin_bottom = 20.0
 hint_tooltip = "Set Value"
+icon = ExtResource( 11 )
 event_id = "dialogic_014"
+event_color = Color( 0.270588, 0.243137, 0.572549, 0.407843 )
 event_icon = ExtResource( 11 )
 
 [node name="SetGlossary" parent="ScrollContainer/EventContainer/Grid2" instance=ExtResource( 25 )]
-self_modulate = Color( 0.129412, 0.247059, 0.313726, 1 )
-margin_top = 36.0
-margin_right = 30.0
-margin_bottom = 66.0
+margin_top = 26.0
+margin_right = 12.0
+margin_bottom = 46.0
 hint_tooltip = "Set Glossary"
+icon = ExtResource( 23 )
 event_id = "dialogic_025"
+event_color = Color( 0.270588, 0.243137, 0.572549, 0.407843 )
 event_icon = ExtResource( 23 )
 
 [node name="HBoxContainer3" type="HBoxContainer" parent="ScrollContainer/EventContainer"]
-margin_top = 237.0
+margin_top = 207.0
 margin_right = 178.0
-margin_bottom = 251.0
+margin_bottom = 221.0
 
 [node name="TLabel3" parent="ScrollContainer/EventContainer/HBoxContainer3" instance=ExtResource( 21 )]
 anchor_right = 0.0
@@ -291,29 +298,30 @@ margin_bottom = 14.0
 size_flags_horizontal = 3
 
 [node name="Grid3" type="GridContainer" parent="ScrollContainer/EventContainer"]
-margin_top = 260.0
+margin_top = 230.0
 margin_right = 178.0
-margin_bottom = 326.0
+margin_bottom = 276.0
 custom_constants/vseparation = 6
 custom_constants/hseparation = 6
 columns = 5
 
 [node name="SaveEvent" parent="ScrollContainer/EventContainer/Grid3" instance=ExtResource( 25 )]
-self_modulate = Color( 0.203922, 0.196078, 0.305882, 1 )
-margin_right = 30.0
-margin_bottom = 30.0
+margin_right = 12.0
+margin_bottom = 20.0
 hint_tooltip = "Save"
 custom_constants/hseparation = 0
+icon = ExtResource( 24 )
 event_id = "dialogic_026"
+event_color = Color( 0.435294, 0.301961, 0.603922, 0.192157 )
 event_icon = ExtResource( 24 )
 
 [node name="ChangeTimeline" parent="ScrollContainer/EventContainer/Grid3" instance=ExtResource( 25 )]
-self_modulate = Color( 0.203922, 0.196078, 0.305882, 1 )
-margin_left = 36.0
-margin_right = 66.0
-margin_bottom = 30.0
+margin_left = 18.0
+margin_bottom = 20.0
 hint_tooltip = "Change Timeline"
+icon = ExtResource( 10 )
 event_id = "dialogic_020"
+event_color = Color( 0.435294, 0.301961, 0.603922, 0.192157 )
 event_icon = ExtResource( 10 )
 
 [node name="GoToEvent" parent="ScrollContainer/EventContainer/Grid3" instance=ExtResource( 25 )]
@@ -340,7 +348,9 @@ margin_left = 144.0
 margin_right = 174.0
 margin_bottom = 30.0
 hint_tooltip = "Set Background"
+icon = ExtResource( 4 )
 event_id = "dialogic_021"
+event_color = Color( 0.219608, 0.34902, 0.701961, 0.443137 )
 event_icon = ExtResource( 4 )
 
 [node name="CloseDialog" parent="ScrollContainer/EventContainer/Grid3" instance=ExtResource( 25 )]
@@ -349,7 +359,9 @@ margin_top = 36.0
 margin_right = 30.0
 margin_bottom = 66.0
 hint_tooltip = "Close Dialog"
+icon = ExtResource( 6 )
 event_id = "dialogic_022"
+event_color = Color( 0.419608, 0.14902, 0.262745, 0.219608 )
 event_icon = ExtResource( 6 )
 
 [node name="WaitSeconds" parent="ScrollContainer/EventContainer/Grid3" instance=ExtResource( 25 )]
@@ -359,7 +371,9 @@ margin_top = 36.0
 margin_right = 66.0
 margin_bottom = 66.0
 hint_tooltip = "Wait Seconds"
+icon = ExtResource( 14 )
 event_id = "dialogic_023"
+event_color = Color( 0.435294, 0.301961, 0.603922, 0.192157 )
 event_icon = ExtResource( 14 )
 
 [node name="SetTheme" parent="ScrollContainer/EventContainer/Grid3" instance=ExtResource( 25 )]
@@ -369,13 +383,15 @@ margin_top = 36.0
 margin_right = 102.0
 margin_bottom = 66.0
 hint_tooltip = "Set Theme"
+icon = ExtResource( 18 )
 event_id = "dialogic_024"
+event_color = Color( 0.219608, 0.34902, 0.701961, 0.443137 )
 event_icon = ExtResource( 18 )
 
 [node name="HBoxContainer4" type="HBoxContainer" parent="ScrollContainer/EventContainer"]
-margin_top = 335.0
+margin_top = 285.0
 margin_right = 178.0
-margin_bottom = 349.0
+margin_bottom = 299.0
 
 [node name="TLabel4" parent="ScrollContainer/EventContainer/HBoxContainer4" instance=ExtResource( 21 )]
 anchor_right = 0.0
@@ -392,34 +408,35 @@ margin_bottom = 14.0
 size_flags_horizontal = 3
 
 [node name="Grid4" type="GridContainer" parent="ScrollContainer/EventContainer"]
-margin_top = 358.0
+margin_top = 308.0
 margin_right = 178.0
-margin_bottom = 388.0
+margin_bottom = 328.0
 custom_constants/vseparation = 6
 custom_constants/hseparation = 6
 columns = 5
 
 [node name="AudioEvent" parent="ScrollContainer/EventContainer/Grid4" instance=ExtResource( 25 )]
-self_modulate = Color( 0.152941, 0.286275, 0.266667, 1 )
-margin_right = 30.0
-margin_bottom = 30.0
+margin_right = 12.0
+margin_bottom = 20.0
 hint_tooltip = "Audio Event"
+icon = ExtResource( 3 )
 event_id = "dialogic_030"
+event_color = Color( 0.160784, 0.423529, 0.309804, 0.447059 )
 event_icon = ExtResource( 3 )
 
 [node name="BackgroundMusic" parent="ScrollContainer/EventContainer/Grid4" instance=ExtResource( 25 )]
-self_modulate = Color( 0.152941, 0.286275, 0.266667, 1 )
-margin_left = 36.0
-margin_right = 66.0
-margin_bottom = 30.0
+margin_left = 18.0
+margin_bottom = 20.0
 hint_tooltip = "Background Music"
+icon = ExtResource( 19 )
 event_id = "dialogic_031"
+event_color = Color( 0.160784, 0.423529, 0.309804, 0.447059 )
 event_icon = ExtResource( 19 )
 
 [node name="HBoxContainer" type="HBoxContainer" parent="ScrollContainer/EventContainer"]
-margin_top = 397.0
+margin_top = 337.0
 margin_right = 178.0
-margin_bottom = 411.0
+margin_bottom = 351.0
 
 [node name="TLabel5" parent="ScrollContainer/EventContainer/HBoxContainer" instance=ExtResource( 21 )]
 anchor_right = 0.0
@@ -436,43 +453,45 @@ margin_bottom = 14.0
 size_flags_horizontal = 3
 
 [node name="Grid5" type="GridContainer" parent="ScrollContainer/EventContainer"]
-margin_top = 420.0
+margin_top = 360.0
 margin_right = 178.0
-margin_bottom = 450.0
+margin_bottom = 380.0
 custom_constants/vseparation = 6
 custom_constants/hseparation = 6
 columns = 5
 
 [node name="EmitSignal" parent="ScrollContainer/EventContainer/Grid5" instance=ExtResource( 25 )]
-self_modulate = Color( 0.14902, 0.235294, 0.341176, 1 )
-margin_right = 30.0
-margin_bottom = 30.0
+margin_right = 12.0
+margin_bottom = 20.0
 hint_tooltip = "Emit Signal"
+icon = ExtResource( 16 )
 event_id = "dialogic_040"
+event_color = Color( 0.14902, 0.333333, 0.509804, 0.4 )
 event_icon = ExtResource( 16 )
 
 [node name="ChangeScene" parent="ScrollContainer/EventContainer/Grid5" instance=ExtResource( 25 )]
-self_modulate = Color( 0.14902, 0.235294, 0.341176, 1 )
-margin_left = 36.0
-margin_right = 66.0
-margin_bottom = 30.0
+margin_left = 18.0
+margin_bottom = 20.0
 hint_tooltip = "Change Scene"
+icon = ExtResource( 15 )
 event_id = "dialogic_041"
+event_color = Color( 0.14902, 0.333333, 0.509804, 0.4 )
 event_icon = ExtResource( 15 )
 
 [node name="CallNode" parent="ScrollContainer/EventContainer/Grid5" instance=ExtResource( 25 )]
-self_modulate = Color( 0.14902, 0.235294, 0.341176, 1 )
-margin_left = 72.0
-margin_right = 102.0
-margin_bottom = 30.0
+margin_left = 36.0
+margin_right = 48.0
+margin_bottom = 20.0
 hint_tooltip = "Call Node"
+icon = ExtResource( 20 )
 event_id = "dialogic_042"
+event_color = Color( 0.14902, 0.333333, 0.509804, 0.4 )
 event_icon = ExtResource( 20 )
 
 [node name="CustomEventsHeadline" type="HBoxContainer" parent="ScrollContainer/EventContainer"]
-margin_top = 459.0
+margin_top = 389.0
 margin_right = 178.0
-margin_bottom = 473.0
+margin_bottom = 403.0
 
 [node name="TLabel6" parent="ScrollContainer/EventContainer/CustomEventsHeadline" instance=ExtResource( 21 )]
 anchor_right = 0.0
@@ -488,16 +507,13 @@ margin_right = 178.0
 margin_bottom = 14.0
 size_flags_horizontal = 3
 
-[node name="CustomEventsContainer" type="GridContainer" parent="ScrollContainer/EventContainer"]
-margin_top = 482.0
+[node name="CustomEventsContainer" type="VBoxContainer" parent="ScrollContainer/EventContainer"]
+margin_top = 412.0
 margin_right = 178.0
-margin_bottom = 512.0
-custom_constants/vseparation = 6
-custom_constants/hseparation = 6
-columns = 5
+margin_bottom = 456.0
 
 [node name="Spacer" type="Control" parent="ScrollContainer/EventContainer"]
-margin_top = 521.0
+margin_top = 465.0
 margin_right = 178.0
-margin_bottom = 621.0
+margin_bottom = 565.0
 rect_min_size = Vector2( 0, 100 )
