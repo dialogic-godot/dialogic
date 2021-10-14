@@ -42,6 +42,7 @@ var characters
 
 # Parsing results
 var questions #for keeping track of the questions answered
+var anchors = {} # for listing the indexes of the anchors
 
 ### CURRENT STATE
 var current_timeline: String = ''
@@ -610,6 +611,13 @@ func _insert_glossary_definitions(text: String):
 		)
 	return final_text;
 
+func parse_anchors():
+	anchors = {}
+	var idx = 0
+	for event in dialog_script['events']:
+		if event['event_id'] == 'dialogic_015':
+			anchors[event['id']] = idx
+		idx += 1
 
 ## -----------------------------------------------------------------------------
 ## 					MAIN GAME-LOGIC 
