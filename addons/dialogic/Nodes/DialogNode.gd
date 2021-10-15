@@ -1151,7 +1151,6 @@ func add_choice_button(option: Dictionary):
 	var buttonCount = button_container.get_child_count()
 	var hotkeyOption = settings.get_value('input', str('choice_hotkey_', buttonCount), '')
 	
-	print(hotkeyOption) 
 	# If there is a hotkey, use that key
 	if hotkeyOption != '' and hotkeyOption != '[Default]':
 		hotkey = InputEventAction.new()
