@@ -17,4 +17,4 @@ margin_bottom = 24.0
 [node name="SkippableCheckbox" type="CheckBox" parent="HBoxContainer"]
 margin_right = 95.0
 margin_bottom = 24.0
-text = "Skippable?"
+text = "Skippable"
