@@ -31,7 +31,7 @@ content_margin_left = 5.0
 content_margin_right = 5.0
 content_margin_top = 5.0
 content_margin_bottom = 5.0
-bg_color = Color( 0.15, 0.1725, 0.2325, 1 )
+bg_color = Color( 0, 0, 0, 1 )
 border_width_left = 1
 border_width_top = 1
 border_width_right = 1
@@ -254,7 +254,7 @@ margin_bottom = 20.0
 hint_tooltip = "End Branch"
 icon = ExtResource( 9 )
 event_id = "dialogic_013"
-event_color = Color( 0.160784, 0.423529, 0.309804, 0.447059 )
+event_color = Color( 0.270588, 0.243137, 0.572549, 0.407843 )
 event_icon = ExtResource( 9 )
 
 [node name="SetValue" parent="ScrollContainer/EventContainer/Grid2" instance=ExtResource( 25 )]
