@@ -9,29 +9,25 @@ Create dialogs, characters and scenes to display conversations in your Godot gam
 
 
 
-
-
-
-
-# Version 1.3 - BETA  ![Godot v3.3](https://img.shields.io/badge/godot-v3.3-%23478cbf)
+# Version 1.3 [Godot v3.3](https://img.shields.io/badge/godot-v3.3-%23478cbf)
 
 ## Getting started
 
-This video will teach you everything you need to know to get started with Dialogic: [https://www.youtube.com/watch?v=sYjgDIgD7AY](https://www.youtube.com/watch?v=sYjgDIgD7AY)
+You can read a step by step guide on how to use [Dialogic here](https://github.com/coppolaemilio/dialogic/blob/main/addons/dialogic/Documentation/Content/Tutorials/BeginnersGuideStepByStep.md)
+
+## 📚 Documentation
+You can check the documentation from inside the plugin or [here](https://github.com/coppolaemilio/dialogic/blob/main/addons/dialogic/Documentation/Content/Welcome.md)
 
 ## Installation
 
 To install a Dialogic, download it as a ZIP archive. All releases are listed here: [releases](https://github.com/coppolaemilio/dialogic/releases). Then extract the ZIP archive and move the `addons/` folder it contains into your project folder. Then, enable the plugin in project settings.
 
-If you want to know more about installing plugins you can read the [official documentation page](https://docs.godotengine.org/en/stable/tutorials/plugins/editor/installing_plugins.html).
+If you want to know more about installing plugins you can read the [Godot docs page](https://docs.godotengine.org/en/stable/tutorials/plugins/editor/installing_plugins.html).
 
 You can also install Dialogic using the **AssetLib** tab in the editor, but the version here will not be the latest one available since it takes some time for it to be approved.
 
 ## ⚠ IMPORTANT
 If you encounter any issue when exporting your game, try having at least 1 theme in your project.
-
-## 📚 Documentation
-You can check the documentation from inside the plugin or [here](https://github.com/coppolaemilio/dialogic/blob/main/addons/dialogic/Documentation/Content/Welcome.md)
 
 ---
 
