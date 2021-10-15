@@ -1,6 +1,6 @@
 # Changelog
 
-## v1.3 - (WIP)
+## v1.3 - Save me some time
 #### General Editor Stuff
 - **Builtin documentation** [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
     - Added a button to open the documentation from the nav bar
