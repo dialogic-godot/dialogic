@@ -533,7 +533,6 @@ func parse_branches(dialog_script: Dictionary) -> Dictionary:
 				'question_idx': opened_branch['question_idx'],
 				'label': parse_definitions(event['choice'], true, false),
 				'event_idx': event_idx,
-				'shortcut': event['shortcut'],
 				}
 			if event.has('condition') and event.has('definition') and event.has('value'):
 				option = {
@@ -543,7 +542,6 @@ func parse_branches(dialog_script: Dictionary) -> Dictionary:
 					'condition': event['condition'],
 					'definition': event['definition'],
 					'value': event['value'],
-					'shortcut': event['shortcut'],
 					}
 			else:
 				option = {
@@ -553,7 +551,6 @@ func parse_branches(dialog_script: Dictionary) -> Dictionary:
 					'condition': '',
 					'definition': '',
 					'value': '',
-					'shortcut': event['shortcut'],
 					}
 			dialog_script['events'][opened_branch['event_idx']]['options'].append(option)
 			event['question_idx'] = opened_branch['question_idx']
@@ -1150,14 +1147,21 @@ func add_choice_button(option: Dictionary):
 		button_container.set('custom_constants/separation', current_theme.get_value('buttons', 'gap', 20))
 	button_container.add_child(button)
 	
-	var hotkey = InputEventKey.new()
+	var hotkey
+	var buttonCount = button_container.get_child_count()
+	var hotkeyOption = settings.get_value('input', str('choice_hotkey_', buttonCount), '')
 	
+	print(hotkeyOption) 
 	# If there is a hotkey, use that key
-	if option['shortcut'] != '':
-		hotkey.scancode = OS.find_scancode_from_string(str(option['shortcut']))
-	# otherwise default hotkeys are 1-9
-	elif button_container.get_child_count() < 10 and settings.get_value('input', 'enable_default_shortcut', false):
+	if hotkeyOption != '' and hotkeyOption != '[Default]':
+		hotkey = InputEventAction.new()
+		hotkey.action = hotkeyOption
+	# otherwise default hotkeys are 1-9 for the first 10 buttons
+	elif buttonCount < 10 and settings.get_value('input', 'enable_default_shortcut', false):
+		hotkey = InputEventKey.new()
 		hotkey.scancode = OS.find_scancode_from_string(str(button_container.get_child_count()))
+	else:
+		hotkey = InputEventKey.new()
 	
 	var shortcut = ShortCut.new()
 	shortcut.set_shortcut(hotkey)

@@ -370,7 +370,7 @@ margin_bottom = 482.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer2"]
 margin_right = 304.0
-margin_bottom = 102.0
+margin_bottom = 198.0
 
 [node name="SectionTitle2" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer" instance=ExtResource( 2 )]
 margin_right = 304.0
@@ -433,7 +433,7 @@ margin_top = 78.0
 margin_right = 304.0
 margin_bottom = 102.0
 
-[node name="TLabel15" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer/HBoxContainer3" instance=ExtResource( 3 )]
+[node name="TLabel17" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer/HBoxContainer3" instance=ExtResource( 3 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_top = 5.0
@@ -449,10 +449,92 @@ margin_bottom = 24.0
 hint_tooltip = "If enabled, choices default to hotkeys 1-9 if none are provided."
 pressed = true
 
-[node name="CustomEvents" type="VBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer2"]
+[node name="HBoxContainer4" type="HBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer"]
 margin_top = 106.0
 margin_right = 304.0
-margin_bottom = 156.0
+margin_bottom = 126.0
+
+[node name="TLabel18" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer/HBoxContainer4" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 3.0
+margin_right = 102.0
+margin_bottom = 17.0
+text = "Choice 1 hotkey"
+text_key = "Choice 1 hotkey"
+
+[node name="Choice1Hotkey" type="OptionButton" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer/HBoxContainer4"]
+margin_left = 106.0
+margin_right = 185.0
+margin_bottom = 20.0
+hint_tooltip = "The default value is \"ui_accept\""
+text = "choice1"
+
+[node name="HBoxContainer5" type="HBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer"]
+margin_top = 130.0
+margin_right = 304.0
+margin_bottom = 150.0
+
+[node name="TLabel19" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer/HBoxContainer5" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 3.0
+margin_right = 102.0
+margin_bottom = 17.0
+text = "Choice 2 hotkey"
+text_key = "Choice 2 hotkey"
+
+[node name="Choice2Hotkey" type="OptionButton" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer/HBoxContainer5"]
+margin_left = 106.0
+margin_right = 185.0
+margin_bottom = 20.0
+hint_tooltip = "The default value is \"ui_accept\""
+text = "choice2"
+
+[node name="HBoxContainer6" type="HBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer"]
+margin_top = 154.0
+margin_right = 304.0
+margin_bottom = 174.0
+
+[node name="TLabel20" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer/HBoxContainer6" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 3.0
+margin_right = 102.0
+margin_bottom = 17.0
+text = "Choice 3 hotkey"
+text_key = "Choice 3 hotkey"
+
+[node name="Choice3Hotkey" type="OptionButton" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer/HBoxContainer6"]
+margin_left = 106.0
+margin_right = 135.0
+margin_bottom = 20.0
+hint_tooltip = "The default value is \"ui_accept\""
+
+[node name="HBoxContainer7" type="HBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer"]
+margin_top = 178.0
+margin_right = 304.0
+margin_bottom = 198.0
+
+[node name="TLabel21" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer/HBoxContainer7" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 3.0
+margin_right = 102.0
+margin_bottom = 17.0
+text = "Choice 4 hotkey"
+text_key = "Choice 4 hotkey"
+
+[node name="Choice4Hotkey" type="OptionButton" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer/HBoxContainer7"]
+margin_left = 106.0
+margin_right = 135.0
+margin_bottom = 20.0
+hint_tooltip = "The default value is \"ui_accept\""
+
+[node name="CustomEvents" type="VBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer2"]
+margin_top = 202.0
+margin_right = 304.0
+margin_bottom = 252.0
 
 [node name="SectionTitle" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/CustomEvents" instance=ExtResource( 2 )]
 margin_right = 304.0
