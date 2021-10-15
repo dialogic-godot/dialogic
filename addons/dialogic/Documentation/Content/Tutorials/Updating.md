@@ -3,10 +3,14 @@
 1.3 has brought some big changes, and a few changed the behaviour in a way that might break some older code of yours. 
 This was mainly due to the removal of the DialogicSingleton as well of the implementation of a new saving system.
 
-Here are known things you need to do, if your game used a previous dialogic version:
+Here is everything you need to do to succesfully updated (as far as we know):
 
-## 1. Remove the singleton
-Go into the project settings and under Autoloads remove the singleton.
+## 1. Updating and removing the Dialogic Singleton
+- Disable the current installed Dialogic plugin (Project Settings/Plugins)
+- Remove the `/addons/dialogic` folder from your project
+- Disable the singleton (Project Settings/Autoloads)
+- Paste the new Dialogic 1.3 into the addons folder
+- Enable the new Dialogic from the plugin menu (Project Settings/Plugins)
 
 ## 2. Remove the reset_saves argument in Dialogic.start()
 The Dialogic.start() function no longer has a reset_saves argument, so you will have to get rid of that, whereever you used it.
