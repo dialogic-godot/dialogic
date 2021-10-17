@@ -1,7 +1,8 @@
 # Changelog
 
-## v1.3.1
-- Wait seconds event can now be set to be skipped with the user's action [SimonLammer](https://github.com/SimonLammer)
+## v1.4
+- Wait seconds event can now be set to be skipped with the user's action [[SimonLammer](https://github.com/SimonLammer)]
+- Added: `Autofocus choices` in the settings [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
 
 ## v1.3 - Save me some time
 #### General Editor Stuff
