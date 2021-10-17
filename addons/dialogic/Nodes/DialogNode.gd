@@ -632,21 +632,28 @@ func _process(delta):
 
 # checks for the "input_next" action
 func _input(event: InputEvent) -> void:
-	if not Engine.is_editor_hint() and event.is_action_pressed(input_next) and not waiting:
-		if not $TextBubble.is_finished():
-			# Skip to end if key is pressed during the text animation
-			$TextBubble.skip()
-			# Cut the voice 
-			$FX/CharacterVoice.stop_voice()
+	if not Engine.is_editor_hint() and event.is_action_pressed(input_next):
+		if waiting:
+			if not current_event:
+				return
+			var timer = current_event.get('waiting_timer_skippable')
+			if timer:
+				timer.time_left = 0
 		else:
-			if waiting_for_answer == false and waiting_for_input == false and while_dialog_animation == false:
-				$FX/CharacterVoice.stop_voice() # stop the current voice as well 
-				play_audio("passing")
-				_load_next_event()
-		if settings.has_section_key('dialog', 'propagate_input'):
-			var propagate_input: bool = settings.get_value('dialog', 'propagate_input')
-			if not propagate_input:
-				get_tree().set_input_as_handled()
+			if not $TextBubble.is_finished():
+				# Skip to end if key is pressed during the text animation
+				$TextBubble.skip()
+				# Cut the voice
+				$FX/CharacterVoice.stop_voice()
+			else:
+				if waiting_for_answer == false and waiting_for_input == false and while_dialog_animation == false:
+					$FX/CharacterVoice.stop_voice() # stop the current voice as well
+					play_audio("passing")
+					_load_next_event()
+			if settings.has_section_key('dialog', 'propagate_input'):
+				var propagate_input: bool = settings.get_value('dialog', 'propagate_input')
+				if not propagate_input:
+					get_tree().set_input_as_handled()
 
 # when the text finished showing
 # plays audio, adds buttons, handles [nw]
@@ -945,7 +952,11 @@ func event_handler(event: Dictionary):
 			emit_signal("event_start", "wait", event)
 			$TextBubble.visible = false
 			waiting = true
-			yield(get_tree().create_timer(event['wait_seconds']), "timeout")
+			var timer = get_tree().create_timer(event['wait_seconds'])
+			if event.get('waiting_skippable', false):
+				event['waiting_timer_skippable'] = timer
+			yield(timer, "timeout")
+			event.erase('waiting_timer_skippable')
 			waiting = false
 			$TextBubble.visible = true
 			emit_signal("event_end", "wait")
