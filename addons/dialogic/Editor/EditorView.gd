@@ -77,8 +77,8 @@ func _ready():
 	$ToolBar/FoldTools/ButtonUnfold.connect('pressed', $MainPanel/TimelineEditor, 'unfold_all_nodes')
 	
 	#audacity label importer connections
-	$AudacityLabels/VBoxContainer/toolbar/load.connect("pressed", self, "load_audacity_label")
-	$AudacityLabels/VBoxContainer/scrollbox/items.connect("item_selected", self, "on_send_label_data")
+	$Timecodes/request_new_timecodes.connect("pressed", self, "load_timecode_data")
+	$Timecodes/scrollbox/items.connect("item_selected", self, "on_send_timecodes")
 	
 	#Connecting confirmation
 	$RemoveFolderConfirmation.connect('confirmed', self, '_on_RemoveFolderConfirmation_confirmed')
@@ -93,51 +93,58 @@ func _ready():
 	$MainPanel/MasterTreeContainer/FilterMasterTreeEdit.right_icon = get_icon("Search", "EditorIcons")
 	
 # Audacity label importer - KvaGram
-var labeltrack_target #AudioPicker
-var loaded_label_track:Array
+var timecode_target #AudioPicker
+var loaded_timecodes:Array
 
-func request_audacity_label(target, location):
-	if loaded_label_track.size() > 0:
-		$AudacityLabels.popup_centered_minsize()
-		$AudacityLabels.set_position(location)
-		labeltrack_target = target
-	else:
-		load_audacity_label()
+func open_timecode_menu(target):
+	timecode_target = target
+	$Timecodes.popup()
+	$Timecodes.rect_global_position = get_viewport().get_mouse_position()
 	
-func load_audacity_label():
+	#if timecode list is empty, hide scrollbox containing menu
+	$Timecodes/scrollbox.visible = loaded_timecodes.size() > 0
+	#and show a button to request new timecodes instead
+	$Timecodes/request_new_timecodes.visible = loaded_timecodes.size() <= 0	
+	
+func load_timecode_data():
+	$Timecodes.hide()
 	godot_dialog("*.txt", EditorFileDialog.MODE_OPEN_FILE, EditorFileDialog.ACCESS_FILESYSTEM)
-	godot_dialog_connect(self, "read_audacity_label")
-func read_audacity_label(path, target):
+	godot_dialog_connect(self, "read_timecode_data")
+	
+func read_timecode_data(path, target):
 	var fileLoader:= File.new()
 	fileLoader.open(path, File.READ)
 	var line:String = fileLoader.get_line()
-	#running the parser to check if the file is in the correct format.
+	#NOTE: other audio editors may have a simular feature,
+	# possebly with their own format. If so, support should be added here.
+	#testing the audacity parser to check if the file is in the audacity label format.
 	var first_data = parse_audacity_label(line)
 	if not (first_data["start_time"] is float && first_data["stop_time"] is float):
 		return #this is the failiure state.
-	loaded_label_track = []
-	$AudacityLabels/VBoxContainer/scrollbox/items.clear()
-	$AudacityLabels/VBoxContainer/toolbar/filename.text = path.get_file()
+	loaded_timecodes = []
+	$Timecodes/scrollbox/items.clear()
+	$Timecodes.window_title = path.get_file()
 	while not line.empty():
 		var data = parse_audacity_label(line)
-		$AudacityLabels/VBoxContainer/scrollbox/items.add_item("start: " + String(data["start_time"]) + " - stop: " + String(data["stop_time"]) + " " + data["comment"])
-		loaded_label_track.push_back(data)
+		$Timecodes/scrollbox/items.add_item("start: " + String(data["start_time"]) + " - stop: " + String(data["stop_time"]) + " " + data["comment"])
+		loaded_timecodes.push_back(data)
 		line = fileLoader.get_line()
-	#print(loaded_label_track)#testing for now
+	#print(loaded_timecodes)#testing for now
 	fileLoader.close()
 func parse_audacity_label(line:String):
 	var data = {}
 	data["start_time"] = stepify(float(line), 0.1)
 	data["stop_time"] = stepify(float(line.substr(line.find('\t'))), 0.1)
+	#comment, aka label name, is only used to display a context hint. It will NOT be saved in Event Data
 	data["comment"] = line.substr(line.find_last('\t')+1)
 	return data
-func on_send_label_data(index):
-	if labeltrack_target == null || not "event_data" in labeltrack_target:
+func on_send_timecodes(index):
+	if timecode_target == null || not "event_data" in timecode_target:
 		return #target is invalid (log error?)
-	var event_data = labeltrack_target.event_data
-	event_data["start_time"] = loaded_label_track[index]["start_time"]
-	event_data["stop_time"] = loaded_label_track[index]["stop_time"]
-	labeltrack_target.load_data(event_data)
+	var event_data = timecode_target.event_data
+	event_data["start_time"] = loaded_timecodes[index]["start_time"]
+	event_data["stop_time"] = loaded_timecodes[index]["stop_time"]
+	timecode_target.load_data(event_data)
 	
 # end of audacity label importer
 func on_master_tree_editor_selected(editor: String):

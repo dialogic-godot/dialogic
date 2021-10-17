@@ -5,7 +5,7 @@
 [ext_resource path="res://addons/dialogic/Images/Pieces/closed-icon.svg" type="Texture" id=3]
 [ext_resource path="res://addons/dialogic/Images/Pieces/open-icon.svg" type="Texture" id=4]
 
-[sub_resource type="Image" id=3]
+[sub_resource type="Image" id=1]
 data = {
 "data": PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ),
 "format": "LumAlpha8",
@@ -17,7 +17,7 @@ data = {
 [sub_resource type="ImageTexture" id=2]
 flags = 4
 flags = 4
-image = SubResource( 3 )
+image = SubResource( 1 )
 size = Vector2( 16, 16 )
 
 [node name="AudioPicker" type="PanelContainer"]
@@ -92,19 +92,19 @@ __meta__ = {
 visible = false
 margin_top = 34.0
 margin_right = 419.0
-margin_bottom = 85.0
+margin_bottom = 91.0
 custom_constants/separation = 8
 
 [node name="AudioVolume" type="PanelContainer" parent="VBox/adv_settings"]
 margin_right = 86.0
-margin_bottom = 51.0
+margin_bottom = 57.0
 custom_styles/panel = ExtResource( 2 )
 
 [node name="VBox" type="VBoxContainer" parent="VBox/adv_settings/AudioVolume"]
 margin_left = 6.0
 margin_top = 5.0
 margin_right = 80.0
-margin_bottom = 47.0
+margin_bottom = 53.0
 
 [node name="Label" type="Label" parent="VBox/adv_settings/AudioVolume/VBox"]
 margin_right = 74.0
@@ -126,14 +126,14 @@ __meta__ = {
 [node name="AudioBus" type="PanelContainer" parent="VBox/adv_settings"]
 margin_left = 94.0
 margin_right = 179.0
-margin_bottom = 51.0
+margin_bottom = 57.0
 custom_styles/panel = ExtResource( 2 )
 
 [node name="VBox" type="VBoxContainer" parent="VBox/adv_settings/AudioBus"]
 margin_left = 6.0
 margin_top = 5.0
 margin_right = 79.0
-margin_bottom = 47.0
+margin_bottom = 53.0
 
 [node name="Label" type="Label" parent="VBox/adv_settings/AudioBus/VBox"]
 margin_right = 73.0
@@ -150,7 +150,6 @@ items = [ "Master", null, false, 0, null, "Voice Lines", null, false, 1, null ]
 selected = 0
 
 [node name="AudioRegion" type="PanelContainer" parent="VBox/adv_settings"]
-visible = false
 margin_left = 187.0
 margin_right = 419.0
 margin_bottom = 57.0
@@ -177,10 +176,15 @@ margin_left = 90.0
 margin_right = 94.0
 margin_bottom = 20.0
 
-[node name="Audacity_button" type="Button" parent="VBox/adv_settings/AudioRegion/VBox/HBox2"]
+[node name="Timecode_button" type="Button" parent="VBox/adv_settings/AudioRegion/VBox/HBox2"]
 margin_left = 98.0
-margin_right = 119.0
+margin_right = 135.0
 margin_bottom = 20.0
+hint_tooltip = "Opens a menu of timecodes to select from.
+This allows you to use a tool like Audacity to set start and end regions of your voice track.
+Right-click to load a new timecode file."
+action_mode = 0
+button_mask = 3
 text = "Aud"
 
 [node name="HBox" type="HBoxContainer" parent="VBox/adv_settings/AudioRegion/VBox"]
@@ -228,4 +232,4 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[connection signal="pressed" from="VBox/adv_settings/AudioRegion/VBox/HBox2/Audacity_button" to="." method="_on_Audacity_button_pressed"]
+[connection signal="pressed" from="VBox/adv_settings/AudioRegion/VBox/HBox2/Timecode_button" to="." method="on_Timecode_button_pressed"]

@@ -192,9 +192,18 @@ func hide_options():
 
 func _process(_delta):
 	#Will automatically stop playing when reaching stop_time
+	if not audio_preview:
+		return
 	if(audio_preview.playing && event_data.has('stop_time') && audio_preview.get_playback_position() >= event_data['stop_time']):
 		audio_preview.stop()
 
-func _on_Audacity_button_pressed():
-	var pos = $"VBox/adv_settings/AudioRegion/VBox/HBox2/Audacity_button".get_position()
-	editor_reference.request_audacity_label(self, pos) 
+func on_Timecode_button_pressed():
+	if Input.is_mouse_button_pressed(2):
+		on_request_timecodes()
+		#print("TEST requesting new file")
+	else:
+		var tc = editor_reference.open_timecode_menu(self)
+		#print("TEST timecode meny generated")
+func on_request_timecodes():
+	editor_reference.load_timecode_data()
+	$"VBox/adv_settings/AudioRegion/VBox/HBox2/Timecode_button/Timecode_list".hide()
