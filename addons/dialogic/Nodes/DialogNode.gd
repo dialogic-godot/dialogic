@@ -685,7 +685,7 @@ func _on_text_completed():
 				var wait_settings = result.get_string()
 				waiting_time = float(wait_settings.split('=')[1])
 			
-			yield(get_tree().create_timer(waiting_time), "timeout")
+			$DialogicTimer.start(waiting_time); yield($DialogicTimer, "timeout")
 			if dialog_index == current_index:
 				_load_next_event()
 
