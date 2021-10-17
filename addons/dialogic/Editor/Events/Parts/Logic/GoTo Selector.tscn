@@ -12,13 +12,20 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="Label" type="Label" parent="."]
+margin_top = 13.0
+margin_right = 34.0
+margin_bottom = 27.0
+text = "Label"
+
 [node name="MenuButton" type="MenuButton" parent="."]
+margin_left = 38.0
 margin_top = 5.0
-margin_right = 114.0
+margin_right = 140.0
 margin_bottom = 35.0
 rect_min_size = Vector2( 0, 30 )
 size_flags_vertical = 6
 custom_styles/hover = ExtResource( 2 )
 custom_styles/normal = ExtResource( 3 )
-text = "[Select anchor]"
+text = "[Select label]"
 flat = false

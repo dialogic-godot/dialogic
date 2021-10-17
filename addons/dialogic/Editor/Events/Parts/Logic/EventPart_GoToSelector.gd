@@ -22,13 +22,13 @@ func load_data(data:Dictionary):
 
 func update():
 	if event_data['anchor_id'] == "":
-		picker_menu.text = "[Select anchor]"
+		picker_menu.text = "[Select label]"
 	else:
 		var anchors = find_parent('TimelineEditor').get_current_events_anchors()
 		if event_data['anchor_id'] in anchors.keys():
 			picker_menu.text = anchors[event_data['anchor_id']]
 		else:
-			picker_menu.text = "[Anchor not found]"
+			picker_menu.text = "[Label not found]"
 
 # has to return the wanted preview, only useful for body parts
 func get_preview():
