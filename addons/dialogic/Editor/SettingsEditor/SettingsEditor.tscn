@@ -447,7 +447,6 @@ margin_left = 194.0
 margin_right = 218.0
 margin_bottom = 24.0
 hint_tooltip = "If enabled, choices default to hotkeys 1-9 if none are provided."
-pressed = true
 
 [node name="HBoxContainer4" type="HBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer"]
 margin_top = 106.0
@@ -465,10 +464,10 @@ text_key = "Choice 1 hotkey"
 
 [node name="Choice1Hotkey" type="OptionButton" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer/HBoxContainer4"]
 margin_left = 106.0
-margin_right = 185.0
+margin_right = 169.0
 margin_bottom = 20.0
-hint_tooltip = "The default value is \"ui_accept\""
-text = "choice1"
+hint_tooltip = "The default value is No Hotkey"
+text = "None"
 
 [node name="HBoxContainer5" type="HBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer"]
 margin_top = 130.0
@@ -486,10 +485,10 @@ text_key = "Choice 2 hotkey"
 
 [node name="Choice2Hotkey" type="OptionButton" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer/HBoxContainer5"]
 margin_left = 106.0
-margin_right = 185.0
+margin_right = 169.0
 margin_bottom = 20.0
-hint_tooltip = "The default value is \"ui_accept\""
-text = "choice2"
+hint_tooltip = "The default value is No Hotkey"
+text = "None"
 
 [node name="HBoxContainer6" type="HBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer"]
 margin_top = 154.0
@@ -507,9 +506,10 @@ text_key = "Choice 3 hotkey"
 
 [node name="Choice3Hotkey" type="OptionButton" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer/HBoxContainer6"]
 margin_left = 106.0
-margin_right = 135.0
+margin_right = 169.0
 margin_bottom = 20.0
-hint_tooltip = "The default value is \"ui_accept\""
+hint_tooltip = "The default value is No Hotkey"
+text = "None"
 
 [node name="HBoxContainer7" type="HBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer"]
 margin_top = 178.0
@@ -527,9 +527,10 @@ text_key = "Choice 4 hotkey"
 
 [node name="Choice4Hotkey" type="OptionButton" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer/HBoxContainer7"]
 margin_left = 106.0
-margin_right = 135.0
+margin_right = 169.0
 margin_bottom = 20.0
-hint_tooltip = "The default value is \"ui_accept\""
+hint_tooltip = "The default value is No Hotkey"
+text = "None"
 
 [node name="CustomEvents" type="VBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer2"]
 margin_top = 202.0
