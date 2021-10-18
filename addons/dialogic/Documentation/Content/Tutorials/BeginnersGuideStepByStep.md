@@ -5,12 +5,12 @@ Let's begin creating your first dialog with Dialogic!
 
 ## 1. Meeting the Dialogic tab
 All the things related to your dialogue will be done in the Dialogic tab. You can access it like the 2D and 3D tab on the very top of the editor. 
-![Dialogic Tab](https://github.com/Jowan-Spooner/dialogic/blob/plugin-docs/addons/dialogic/Documentation/Content/Tutorials/Images/Dialogic_Tab.PNG)
+![Dialogic Tab](./Images/Dialogic_Tab.PNG)
 
 
 Let's have a look into the `toolbar` at the top.
 
-![Toolbar](https://github.com/Jowan-Spooner/dialogic/blob/plugin-docs/addons/dialogic/Documentation/Content/Tutorials/Images/Toolbar.PNG)
+![Toolbar](./Images/Toolbar.PNG)
 
 
 ### | The resources
