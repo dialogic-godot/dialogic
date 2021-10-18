@@ -23,6 +23,7 @@ onready var nodes = {
 	'autosave': $VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer3/HBoxContainer/Autosave,
 	
 	# Input Settings
+	'autofocus_choices':$VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer/AutoFocus/CheckBox,
 	'delay_after_options': $VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer/HBoxContainer/LineEdit,
 	'default_action_key': $VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer/HBoxContainer2/DefaultActionKey,
 	'enable_default_shortcut': $'VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer/HBoxContainer3/HotKeys',
@@ -30,6 +31,8 @@ onready var nodes = {
 	'choice_hotkey_2': $'VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer/HBoxContainer5/Choice2Hotkey',
 	'choice_hotkey_3': $'VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer/HBoxContainer6/Choice3Hotkey',
 	'choice_hotkey_4': $'VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer/HBoxContainer7/Choice4Hotkey',
+	
+	# Custom Events
 	'new_custom_event_open':$VBoxContainer/HBoxContainer3/VBoxContainer2/CustomEvents/HBoxContainer/NewCustomEvent, 
 	'new_custom_event_section': $VBoxContainer/HBoxContainer3/VBoxContainer2/CustomEvents/CreateCustomEventSection, 
 	'new_custom_event_name': $VBoxContainer/HBoxContainer3/VBoxContainer2/CustomEvents/CreateCustomEventSection/CeName,
@@ -45,6 +48,7 @@ var THEME_KEYS := [
 	]
 
 var INPUT_KEYS := [
+	'autofocus_choices',
 	'delay_after_options',
 	'default_action_key',
 	'enable_default_shortcut',
@@ -76,13 +80,15 @@ func _ready():
 	
 	# Themes
 	nodes['themes'].connect('item_selected', self, '_on_default_theme_selected')
-	nodes['delay_after_options'].connect('text_changed', self, '_on_delay_options_text_changed')
 	# TODO move to theme section later
 	nodes['advanced_themes'].connect('toggled', self, '_on_item_toggled', ['dialog', 'advanced_themes'])
 	nodes['canvas_layer'].connect('text_changed', self, '_on_canvas_layer_text_changed')
 
+	# Input
+	nodes['delay_after_options'].connect('text_changed', self, '_on_delay_options_text_changed')
 	nodes['default_action_key'].connect('pressed', self, '_on_default_action_key_presssed')
 	nodes['default_action_key'].connect('item_selected', self, '_on_default_action_key_item_selected')
+	nodes['autofocus_choices'].connect('toggled', self, '_on_item_toggled', ['input', 'autofocus_choices'])
 	
 	# Connect hotkey settings 1-4
 	for i in range(1, 5):

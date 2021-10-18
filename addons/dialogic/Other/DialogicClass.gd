@@ -281,6 +281,12 @@ static func get_current_timeline():
 		timeline = ''
 	return timeline
 
+
+static func get_action_button():
+	var settings = DialogicResources.get_settings_config()
+	var settings_input = settings.get_value('input', 'default_action_key', 'ui_accept')
+	return settings_input
+
 ################################################################################
 ## 					NOT TO BE USED FROM OUTSIDE
 ################################################################################
