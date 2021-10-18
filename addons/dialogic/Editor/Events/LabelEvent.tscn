@@ -1,0 +1,44 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://addons/dialogic/Editor/Events/Templates/EventTemplate.tscn" type="PackedScene" id=2]
+[ext_resource path="res://addons/dialogic/Editor/Events/Parts/Logic/LabelSetter.tscn" type="PackedScene" id=3]
+[ext_resource path="res://addons/dialogic/Editor/Events/styles/Logic.tres" type="StyleBox" id=4]
+[ext_resource path="res://addons/dialogic/Images/Event Icons/Main Icons/label.svg" type="Texture" id=5]
+
+[node name="LabelEvent" instance=ExtResource( 2 )]
+event_name = "Label"
+event_data = {
+"event_id": "dialogic_015",
+"id": "anchor-1634488067",
+"index": 0,
+"name": ""
+}
+event_icon = ExtResource( 5 )
+event_style = ExtResource( 4 )
+header_scene = ExtResource( 3 )
+expand_on_default = false
+
+[node name="PanelContainer" parent="." index="1"]
+custom_styles/panel = ExtResource( 4 )
+
+[node name="SelectedStyle" parent="PanelContainer" index="0"]
+modulate = Color( 0, 0, 0, 1 )
+
+[node name="IconTexture" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="1"]
+margin_right = 32.0
+texture = ExtResource( 5 )
+
+[node name="TitleLabel" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="2"]
+margin_left = 42.0
+margin_right = 76.0
+text = "Label"
+
+[node name="Content" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="3"]
+margin_left = 86.0
+margin_right = 389.0
+
+[node name="Spacer" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="5"]
+margin_left = 399.0
+
+[node name="OptionsControl" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="7"]
+items = [ "Move Up", null, 0, false, false, 0, 0, null, "", false, "Move Down", null, 0, false, false, 1, 0, null, "", false, "", null, 0, false, false, 2, 0, null, "", false, "Remove", null, 0, false, false, 3, 0, null, "", false ]
