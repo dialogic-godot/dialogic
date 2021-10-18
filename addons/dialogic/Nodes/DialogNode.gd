@@ -1489,8 +1489,9 @@ func _compare_definitions(def_value: String, event_value: String, condition: Str
 ## -----------------------------------------------------------------------------
 ## 					DIALOG FADING
 ## -----------------------------------------------------------------------------
-# ähm... no clue. What is this @emilio?
-# TODO wtf is this name?
+# Since Dialogic has some placeholder text in case something goes wrong
+# This will reset the text, reset any modulation it might have, and
+# set the variables that handle the fade in to the start position
 func _hide_dialog():
 	$TextBubble.update_text('') # Clearing the text
 	$TextBubble.modulate = Color(1,1,1,0)
