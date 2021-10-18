@@ -312,7 +312,6 @@ func load_theme(filename):
 	
 	# Box size
 	call_deferred('deferred_resize', $TextBubble.rect_size, theme.get_value('box', 'size', Vector2(910, 167)))
-
 	
 	$TextBubble.load_theme(theme)
 	$DefinitionInfo.load_theme(theme)
@@ -384,9 +383,6 @@ func set_current_dialog(dialog_path: String):
 	dialog_script = DialogicResources.get_timeline_json(dialog_path)
 	return load_dialog()
 
-# set the dialog script directly
-func set_dialog_script(value):
-	dialog_script = value
 
 # starts all necessary parsing
 func load_dialog():
