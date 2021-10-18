@@ -39,7 +39,6 @@ var record_history: bool = true
 
 ### DATA
 var definitions = {}
-var characters
 
 # Parsing results
 var questions #for keeping track of the questions answered
@@ -129,9 +128,7 @@ func _ready():
 	$TextBubble/RichTextLabel.connect('meta_hover_started', self, '_on_RichTextLabel_meta_hover_started')
 	$TextBubble/RichTextLabel.connect('meta_hover_ended', self, '_on_RichTextLabel_meta_hover_ended')
 	
-	# Getting the character information
-	characters = DialogicUtil.get_character_list()
-
+	
 	if Engine.is_editor_hint():
 		if preview:
 			get_parent().connect("resized", self, "resize_main")
@@ -1476,6 +1473,7 @@ func dprint(string, arg1='', arg2='', arg3='', arg4='' ):
 
 # helper that allows to get a character by file
 func get_character(character_id):
+	var characters = DialogicUtil.get_character_list()
 	for c in characters:
 		if c['file'] == character_id:
 			return c
@@ -1545,8 +1543,9 @@ func _compare_definitions(def_value: String, event_value: String, condition: Str
 ## -----------------------------------------------------------------------------
 ## 					DIALOG FADING
 ## -----------------------------------------------------------------------------
-# ähm... no clue. What is this @emilio?
-# TODO wtf is this name?
+# Since Dialogic has some placeholder text in case something goes wrong
+# This will reset the text, reset any modulation it might have, and
+# set the variables that handle the fade in to the start position
 func _hide_dialog():
 	$TextBubble.update_text('') # Clearing the text
 	$TextBubble.modulate = Color(1,1,1,0)
