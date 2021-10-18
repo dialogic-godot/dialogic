@@ -73,10 +73,12 @@ rect_min_size = Vector2( 140, 0 )
 text = "NightTheme"
 items = [ "DayTheme", null, false, 0, {
 "file": "theme-1621517790.cfg"
-}, "NightTheme", null, false, 1, {
+}, "MyTheme", null, false, 1, {
+"file": "theme-1633536092.cfg"
+}, "NightTheme", null, false, 2, {
 "file": "theme-1621517668.cfg"
 } ]
-selected = 1
+selected = 2
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer"]
 margin_top = 50.0
@@ -365,17 +367,37 @@ margin_bottom = 482.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer2"]
 margin_right = 304.0
-margin_bottom = 74.0
+margin_bottom = 102.0
 
 [node name="SectionTitle2" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer" instance=ExtResource( 2 )]
 margin_right = 304.0
 text = "Input settings"
 text_key = "Input settings"
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer"]
+[node name="AutoFocus" type="HBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer"]
 margin_top = 26.0
 margin_right = 304.0
 margin_bottom = 50.0
+
+[node name="TLabel14" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer/AutoFocus" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 5.0
+margin_right = 163.0
+margin_bottom = 19.0
+text = "Autofocus choice buttons"
+text_key = "Autofocus choice buttons"
+
+[node name="CheckBox" type="CheckBox" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer/AutoFocus"]
+margin_left = 167.0
+margin_right = 191.0
+margin_bottom = 24.0
+pressed = true
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer"]
+margin_top = 54.0
+margin_right = 304.0
+margin_bottom = 78.0
 
 [node name="TLabel14" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer/HBoxContainer" instance=ExtResource( 3 )]
 anchor_right = 0.0
@@ -403,9 +425,9 @@ text = " seconds"
 text_key = " seconds"
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer"]
-margin_top = 54.0
+margin_top = 82.0
 margin_right = 304.0
-margin_bottom = 74.0
+margin_bottom = 102.0
 
 [node name="TLabel16" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer/HBoxContainer2" instance=ExtResource( 3 )]
 anchor_right = 0.0
@@ -424,9 +446,9 @@ hint_tooltip = "The default value is \"ui_accept\""
 text = "ui_accept"
 
 [node name="CustomEvents" type="VBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer2"]
-margin_top = 78.0
+margin_top = 106.0
 margin_right = 304.0
-margin_bottom = 236.0
+margin_bottom = 156.0
 
 [node name="SectionTitle" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/CustomEvents" instance=ExtResource( 2 )]
 margin_right = 304.0
@@ -443,6 +465,7 @@ margin_top = 5.0
 margin_right = 228.0
 margin_bottom = 19.0
 size_flags_horizontal = 3
+custom_colors/font_color = Color( 0, 0, 0, 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -460,6 +483,7 @@ margin_bottom = 24.0
 icon = SubResource( 2 )
 
 [node name="CreateCustomEventSection" type="GridContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/CustomEvents"]
+visible = false
 margin_top = 54.0
 margin_right = 304.0
 margin_bottom = 158.0

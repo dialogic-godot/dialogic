@@ -31,7 +31,6 @@ var last_mouse_mode = null
 
 
 ### SETTINGS
-var input_next: String = 'ui_accept'
 var settings: ConfigFile
 var custom_events = {}
 
@@ -314,19 +313,8 @@ func load_theme(filename):
 	# Box size
 	call_deferred('deferred_resize', $TextBubble.rect_size, theme.get_value('box', 'size', Vector2(910, 167)))
 
-	# HERE
-	var settings_input = settings.get_value('input', 'default_action_key', '[Default]')
-	var theme_input = theme.get_value('settings', 'action_key', '[Default]')
-	
-	input_next = 'ui_accept'
-	if settings_input != '[Default]':
-		input_next = settings_input
-	if theme_input != '[Default]':
-		input_next = theme_input
-
 	
 	$TextBubble.load_theme(theme)
-	
 	$DefinitionInfo.load_theme(theme)
 	
 	if theme.get_value('buttons', 'layout', 0) == 0:
@@ -623,9 +611,10 @@ func parse_anchors():
 func _process(delta):
 	$TextBubble/NextIndicatorContainer/NextIndicator.visible = finished
 	if button_container.get_child_count() > 0:
-		$TextBubble/NextIndicatorContainer/NextIndicator.visible = false # Hide if question 
-		if waiting_for_answer and Input.is_action_just_released(input_next):
-			button_container.get_child(0).grab_focus()
+		$TextBubble/NextIndicatorContainer/NextIndicator.visible = false # Hide if question
+		if settings.get_value('input', 'autofocus_choices', true):
+			if waiting_for_answer and Input.is_action_just_released(Dialogic.get_action_button()):
+				button_container.get_child(0).grab_focus()
 	
 	# Hide if no input is required
 	if current_event.has('text'):
@@ -638,7 +627,7 @@ func _process(delta):
 
 # checks for the "input_next" action
 func _input(event: InputEvent) -> void:
-	if not Engine.is_editor_hint() and event.is_action_pressed(input_next):
+	if not Engine.is_editor_hint() and event.is_action_pressed(Dialogic.get_action_button()):
 		if waiting:
 			if not current_event:
 				return
@@ -1174,8 +1163,11 @@ func add_choice_button(option: Dictionary):
 	button_container.add_child(button)
 	
 	# Selecting the first button added
-	if button_container.get_child_count() == 1:
-		button.grab_focus()
+	if settings.get_value('input', 'autofocus_choices', true):
+		if button_container.get_child_count() == 1:
+			button.grab_focus()
+	else:
+		button.focus_mode = FOCUS_NONE
 	
 	# Adding audio when focused or hovered
 	button.connect('focus_entered', self, '_on_option_hovered', [button])
@@ -1221,7 +1213,7 @@ func get_classic_choice_button(label: String):
 	var theme = current_theme
 	var button : Button = ChoiceButton.instance()
 	button.text = label
-	button.set_meta('input_next', input_next)
+	button.set_meta('input_next', Dialogic.get_action_button())
 	
 	# Removing the blue selected border
 	button.set('custom_styles/focus', StyleBoxEmpty.new())

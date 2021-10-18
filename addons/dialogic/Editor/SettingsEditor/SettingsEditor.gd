@@ -23,8 +23,11 @@ onready var nodes = {
 	'autosave': $VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer3/HBoxContainer/Autosave,
 	
 	# Input Settings
+	'autofocus_choices':$VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer/AutoFocus/CheckBox,
 	'delay_after_options': $VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer/HBoxContainer/LineEdit,
 	'default_action_key': $VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer/HBoxContainer2/DefaultActionKey,
+	
+	# Custom Events
 	'new_custom_event_open':$VBoxContainer/HBoxContainer3/VBoxContainer2/CustomEvents/HBoxContainer/NewCustomEvent, 
 	'new_custom_event_section': $VBoxContainer/HBoxContainer3/VBoxContainer2/CustomEvents/CreateCustomEventSection, 
 	'new_custom_event_name': $VBoxContainer/HBoxContainer3/VBoxContainer2/CustomEvents/CreateCustomEventSection/CeName,
@@ -40,6 +43,7 @@ var THEME_KEYS := [
 	]
 
 var INPUT_KEYS := [
+	'autofocus_choices',
 	'delay_after_options',
 	'default_action_key'
 	]
@@ -66,13 +70,15 @@ func _ready():
 	
 	# Themes
 	nodes['themes'].connect('item_selected', self, '_on_default_theme_selected')
-	nodes['delay_after_options'].connect('text_changed', self, '_on_delay_options_text_changed')
 	# TODO move to theme section later
 	nodes['advanced_themes'].connect('toggled', self, '_on_item_toggled', ['dialog', 'advanced_themes'])
 	nodes['canvas_layer'].connect('text_changed', self, '_on_canvas_layer_text_changed')
 
+	# Input
+	nodes['delay_after_options'].connect('text_changed', self, '_on_delay_options_text_changed')
 	nodes['default_action_key'].connect('pressed', self, '_on_default_action_key_presssed')
 	nodes['default_action_key'].connect('item_selected', self, '_on_default_action_key_item_selected')
+	nodes['autofocus_choices'].connect('toggled', self, '_on_item_toggled', ['input', 'autofocus_choices'])
 	
 	AudioServer.connect("bus_layout_changed", self, "update_bus_selector")
 	nodes['text_event_audio_default_bus'].connect('item_selected', self, '_on_text_audio_default_bus_item_selected')
