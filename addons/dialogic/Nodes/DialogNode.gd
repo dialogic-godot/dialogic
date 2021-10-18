@@ -16,9 +16,15 @@ var debug_mode := true
 
 
 ### STATE FLAGS
-var finished: bool = false
-var waiting_for_answer: bool = false
-var waiting_for_input: bool = false
+enum state {
+	IDLE, # Whenever nothing is happening
+	READY, # When Dialogic already displayed the text on the screen
+	TYPING, # While the editor is typing text
+	WAITING, # Waiting a timer to continue with the process
+	WAITING_INPUT,
+}
+var _state = state.IDLE
+
 # used in events to disable continuing:
 var waiting: bool = false
 var while_dialog_animation: bool = false
@@ -605,12 +611,17 @@ func parse_anchors():
 ## -----------------------------------------------------------------------------
 # checks if NextIndicator and ChoiceButtons should be visible
 func _process(delta):
-	$TextBubble/NextIndicatorContainer/NextIndicator.visible = finished
-	if button_container.get_child_count() > 0:
-		$TextBubble/NextIndicatorContainer/NextIndicator.visible = false # Hide if question
-		if settings.get_value('input', 'autofocus_choices', true):
-			if waiting_for_answer and Input.is_action_just_released(Dialogic.get_action_button()):
-				button_container.get_child(0).grab_focus()
+	# Showing or hiding the ▼ next indicator
+	if _state == state.READY:
+		$TextBubble/NextIndicatorContainer/NextIndicator.visible = true
+	else:
+		$TextBubble/NextIndicatorContainer/NextIndicator.visible = false
+	
+	
+	if _state == state.WAITING_INPUT:
+		$Options.visible = true
+	else:
+		$Options.visible = false
 	
 	# Hide if no input is required
 	if current_event.has('text'):
@@ -631,13 +642,15 @@ func _input(event: InputEvent) -> void:
 			if timer:
 				timer.time_left = 0
 		else:
-			if not $TextBubble.is_finished():
+			if _state == state.TYPING:
 				# Skip to end if key is pressed during the text animation
 				$TextBubble.skip()
 				# Cut the voice
 				$FX/CharacterVoice.stop_voice()
 			else:
-				if waiting_for_answer == false and waiting_for_input == false and while_dialog_animation == false:
+				if _state == state.WAITING_INPUT:
+					pass
+				else:
 					$FX/CharacterVoice.stop_voice() # stop the current voice as well
 					play_audio("passing")
 					_load_next_event()
@@ -653,17 +666,28 @@ func _on_text_completed():
 	
 	play_audio('waiting')
 	
-	finished = true
-	
 	# Add the choice buttons for questions
 	if current_event.has('options'):
+		# Already showed the text, ready to show the option buttons
+		_state = state.WAITING_INPUT
+		
 		var waiting_until_options_enabled = float(settings.get_value('input', 'delay_after_options', 0.1))
 		$OptionsDelayedInput.start(waiting_until_options_enabled)
 
 		for o in current_event['options']:
-			add_choice_button(o)
+			if _should_add_choice_button(o):
+				add_choice_button(o)
+		
+		# Auto focus
+		$DialogicTimer.start(0.1); yield($DialogicTimer, "timeout")
+		if settings.get_value('input', 'autofocus_choices', true):
+			button_container.get_child(0).grab_focus()
+		
 	
 	if current_event.has('text'):
+		# Already showed the text, ready to show the ▼ next indicator button
+		_state = state.READY
+		
 		# [p] needs more work
 		# Setting the timer for how long to wait in the [nw] events
 		if '[nw]' in current_event['text'] or '[nw=' in current_event['text']:
@@ -749,7 +773,7 @@ func _load_event():
 # Handling an event and updating the available nodes accordingly.
 func event_handler(event: Dictionary):
 	$TextBubble.reset()
-	reset_options()
+	clear_options()
 	
 	dprint('[D] Current Event: ', event)
 	current_event = event
@@ -759,7 +783,7 @@ func event_handler(event: Dictionary):
 		'dialogic_001':
 			emit_signal("event_start", "text", event)
 			fade_in_dialog()
-			finished = false
+			_state = state.TYPING
 			if event.has('character'):
 				var character_data = DialogicUtil.get_character(event['character'])
 				update_name(character_data)
@@ -822,8 +846,7 @@ func event_handler(event: Dictionary):
 		'dialogic_010':
 			emit_signal("event_start", "question", event)
 			fade_in_dialog()
-			finished = false
-			waiting_for_answer = true
+			_state = state.TYPING
 			if event.has('name'):
 				update_name(event['name'])
 			elif event.has('character'):
@@ -1079,8 +1102,6 @@ func event_handler(event: Dictionary):
 			else:
 				visible = false
 				dprint('[D] No event found. Recevied data: ', event)
-	
-	$Options.visible = waiting_for_answer
 
 ## -----------------------------------------------------------------------------
 ## 					TEXTBOX-FUNCTIONALITY
@@ -1120,34 +1141,29 @@ func _on_letter_written():
 # called when a choice is selected
 # hides choices, sets question as answered and jumps to the appropriate event
 func answer_question(i, event_idx, question_idx):
-	if $TextBubble.is_finished(): # CHECK IF NECESSARY!
-		dprint('[!] Going to ', event_idx + 1, i, 'question_idx:', question_idx)
-		
-		play_audio("selecting")
-		
-		reset_options()
-		
-		# set flags and continue dialog
-		waiting_for_answer = false
-		questions[question_idx]['answered'] = true
-		_load_event_at_index(event_idx + 1)
-		
-		# Revert to last mouse mode when selection is done
-		if last_mouse_mode != null:
-			Input.set_mouse_mode(last_mouse_mode) 
-			last_mouse_mode = null
+	dprint('[!] Going to ', event_idx + 1, i, 'question_idx:', question_idx)
+
+	play_audio("selecting")
+	
+	clear_options()
+	
+	# set flags and continue dialog
+	questions[question_idx]['answered'] = true
+	_load_event_at_index(event_idx + 1)
+	
+	# Revert to last mouse mode when selection is done
+	if last_mouse_mode != null:
+		Input.set_mouse_mode(last_mouse_mode) 
+		last_mouse_mode = null
 
 # deletest the choice buttons
-func reset_options():
+func clear_options():
 	# Clearing out the options after one was selected.
 	for option in button_container.get_children():
 		option.queue_free()
 
 # adds a button for the given choice
-func add_choice_button(option: Dictionary):
-	if not _should_add_choice_button(option):
-		return
-	
+func add_choice_button(option: Dictionary) -> Button:
 	var button
 	if use_custom_choice_button():
 		button = get_custom_choice_button(option['label'])
@@ -1157,13 +1173,6 @@ func add_choice_button(option: Dictionary):
 	if use_native_choice_button() or use_custom_choice_button():
 		button_container.set('custom_constants/separation', current_theme.get_value('buttons', 'gap', 20))
 	button_container.add_child(button)
-	
-	# Selecting the first button added
-	if settings.get_value('input', 'autofocus_choices', true):
-		if button_container.get_child_count() == 1:
-			button.grab_focus()
-	else:
-		button.focus_mode = FOCUS_NONE
 	
 	# Adding audio when focused or hovered
 	button.connect('focus_entered', self, '_on_option_hovered', [button])
@@ -1175,6 +1184,8 @@ func add_choice_button(option: Dictionary):
 	if Input.get_mouse_mode() != Input.MOUSE_MODE_VISIBLE:
 		last_mouse_mode = Input.get_mouse_mode()
 		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE) # Make sure the cursor is visible for the options selection
+	
+	return button
 
 # checks the condition of the given option
 func _should_add_choice_button(option: Dictionary):
