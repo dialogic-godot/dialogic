@@ -38,7 +38,6 @@ var custom_events = {}
 
 ### DATA
 var definitions = {}
-var characters
 
 # Parsing results
 var questions #for keeping track of the questions answered
@@ -127,9 +126,7 @@ func _ready():
 	$TextBubble/RichTextLabel.connect('meta_hover_started', self, '_on_RichTextLabel_meta_hover_started')
 	$TextBubble/RichTextLabel.connect('meta_hover_ended', self, '_on_RichTextLabel_meta_hover_ended')
 	
-	# Getting the character information
-	characters = DialogicUtil.get_character_list()
-
+	
 	if Engine.is_editor_hint():
 		if preview:
 			get_parent().connect("resized", self, "resize_main")
@@ -1447,6 +1444,7 @@ func dprint(string, arg1='', arg2='', arg3='', arg4='' ):
 
 # helper that allows to get a character by file
 func get_character(character_id):
+	var characters = DialogicUtil.get_character_list()
 	for c in characters:
 		if c['file'] == character_id:
 			return c
