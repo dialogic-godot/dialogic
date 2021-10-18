@@ -43,6 +43,7 @@ var characters
 
 # Parsing results
 var questions #for keeping track of the questions answered
+var anchors = {} # for listing the indexes of the anchors
 
 ### CURRENT STATE
 var current_timeline: String = ''
@@ -426,6 +427,7 @@ func load_dialog():
 		dialog_script = parse_characters(dialog_script)
 	dialog_script = parse_text_lines(dialog_script)
 	dialog_script = parse_branches(dialog_script)
+	parse_anchors()
 	return dialog_script
 
 # adds name coloring to the dialog texts
@@ -621,6 +623,13 @@ func _insert_glossary_definitions(text: String):
 		)
 	return final_text;
 
+func parse_anchors():
+	anchors = {}
+	var idx = 0
+	for event in dialog_script['events']:
+		if event['event_id'] == 'dialogic_015':
+			anchors[event['id']] = idx
+		idx += 1
 
 ## -----------------------------------------------------------------------------
 ## 					MAIN GAME-LOGIC 
@@ -644,21 +653,28 @@ func _process(delta):
 
 # checks for the "input_next" action
 func _input(event: InputEvent) -> void:
-	if not Engine.is_editor_hint() and event.is_action_pressed(input_next) and not waiting:
-		if not $TextBubble.is_finished():
-			# Skip to end if key is pressed during the text animation
-			$TextBubble.skip()
-			# Cut the voice 
-			$FX/CharacterVoice.stop_voice()
+	if not Engine.is_editor_hint() and event.is_action_pressed(input_next):
+		if waiting:
+			if not current_event:
+				return
+			var timer = current_event.get('waiting_timer_skippable')
+			if timer:
+				timer.time_left = 0
 		else:
-			if waiting_for_answer == false and waiting_for_input == false and while_dialog_animation == false:
-				$FX/CharacterVoice.stop_voice() # stop the current voice as well 
-				play_audio("passing")
-				_load_next_event()
-		if settings.has_section_key('dialog', 'propagate_input'):
-			var propagate_input: bool = settings.get_value('dialog', 'propagate_input')
-			if not propagate_input:
-				get_tree().set_input_as_handled()
+			if not $TextBubble.is_finished():
+				# Skip to end if key is pressed during the text animation
+				$TextBubble.skip()
+				# Cut the voice
+				$FX/CharacterVoice.stop_voice()
+			else:
+				if waiting_for_answer == false and waiting_for_input == false and while_dialog_animation == false:
+					$FX/CharacterVoice.stop_voice() # stop the current voice as well
+					play_audio("passing")
+					_load_next_event()
+			if settings.has_section_key('dialog', 'propagate_input'):
+				var propagate_input: bool = settings.get_value('dialog', 'propagate_input')
+				if not propagate_input:
+					get_tree().set_input_as_handled()
 
 # when the text finished showing
 # plays audio, adds buttons, handles [nw]
@@ -694,7 +710,7 @@ func _on_text_completed():
 				var wait_settings = result.get_string()
 				waiting_time = float(wait_settings.split('=')[1])
 			
-			yield(get_tree().create_timer(waiting_time), "timeout")
+			$DialogicTimer.start(waiting_time); yield($DialogicTimer, "timeout")
 			if dialog_index == current_index:
 				_load_next_event()
 
@@ -900,6 +916,15 @@ func event_handler(event: Dictionary):
 				value = str(randi()%int(event.get("random_upper_limit", 100)-event.get('random_lower_limit', 0))+event.get('random_lower_limit', 0))
 			Dialogic.set_variable_from_id(event['definition'], value, operation)
 			_load_next_event()
+		# Anchor event
+		'dialogic_015':
+			emit_signal("event_start", "anchor", event)
+			_load_next_event()
+		# GoTo event
+		'dialogic_016':
+			emit_signal("event_start", "goto", event)
+			dialog_index = anchors[event.get('anchor_id')]
+			_load_next_event()
 		
 		
 		# TIMELINE EVENTS
@@ -968,7 +993,11 @@ func event_handler(event: Dictionary):
 			emit_signal("event_start", "wait", event)
 			$TextBubble.visible = false
 			waiting = true
-			yield(get_tree().create_timer(event['wait_seconds']), "timeout")
+			var timer = get_tree().create_timer(event['wait_seconds'])
+			if event.get('waiting_skippable', false):
+				event['waiting_timer_skippable'] = timer
+			yield(timer, "timeout")
+			event.erase('waiting_timer_skippable')
 			waiting = false
 			$TextBubble.visible = true
 			emit_signal("event_end", "wait")

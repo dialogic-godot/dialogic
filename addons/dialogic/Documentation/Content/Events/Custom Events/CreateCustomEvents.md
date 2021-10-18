@@ -27,6 +27,7 @@ All of the files that are used for creating a custom Event Block and Handling Sc
 # Making your first custom event in 6 steps
 Let's now create a simple event that will print some text to the Output panel in Godot.
 
+
 ## Create the event
 Go to the `settings page` and in the `custom events section` hit the `New` button. 
 Fill in a name for your event, a folder name and an id. For the id's I recommend using your name or a string unique to you followed by a number. 
@@ -66,7 +67,6 @@ I want to be able to set a text that will be printed, when my event is activated
 You can also change your events icon in the inspector. Just drag an image into the `Event Icon`.
 
 Below that, you can open the Stylebox and change its background color, to give your event a unique look.
-
 
 
 ### | The Event Blocks Content (EventParts)
