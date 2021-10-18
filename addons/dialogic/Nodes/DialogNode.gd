@@ -761,7 +761,7 @@ func event_handler(event: Dictionary):
 			fade_in_dialog()
 			finished = false
 			if event.has('character'):
-				var character_data = get_character(event['character'])
+				var character_data = DialogicUtil.get_character(event['character'])
 				update_name(character_data)
 				grab_portrait_focus(character_data, event)
 			#voice 
@@ -774,7 +774,7 @@ func event_handler(event: Dictionary):
 			if event['character'] == '':# No character found on the event. Skip.
 				_load_next_event()
 			else:
-				var character_data = get_character(event['character'])
+				var character_data = DialogicUtil.get_character(event['character'])
 				if portrait_exists(character_data):
 					for portrait in $Portraits.get_children():
 						if portrait.character_data == character_data:
@@ -827,7 +827,7 @@ func event_handler(event: Dictionary):
 			if event.has('name'):
 				update_name(event['name'])
 			elif event.has('character'):
-				var character_data = get_character(event['character'])
+				var character_data = DialogicUtil.get_character(event['character'])
 				update_name(character_data)
 				grab_portrait_focus(character_data, event)
 			#voice 
@@ -851,7 +851,7 @@ func event_handler(event: Dictionary):
 				if d['id'] == event['definition']:
 					def_value = d['value']
 			
-			var condition_met = def_value != null and _compare_definitions(def_value, event['value'], event['condition']);
+			var condition_met = def_value != null and DialogicUtil.compare_definitions(def_value, event['value'], event['condition']);
 			
 			current_question['answered'] = !condition_met
 			if !condition_met:
@@ -1183,7 +1183,7 @@ func _should_add_choice_button(option: Dictionary):
 		for d in definitions['variables']:
 			if d['id'] == option['definition']:
 				def_value = d['value']
-		return def_value != null and _compare_definitions(def_value, option['value'], option['condition']);
+		return def_value != null and DialogicUtil.compare_definitions(def_value, option['value'], option['condition']);
 	else:
 		return true
 
@@ -1430,48 +1430,6 @@ func dprint(string, arg1='', arg2='', arg3='', arg4='' ):
 		print(str(string) + str(arg1) + str(arg2) + str(arg3) + str(arg4))
 
 
-# helper that allows to get a character by file
-func get_character(character_id):
-	var characters = DialogicUtil.get_character_list()
-	for c in characters:
-		if c['file'] == character_id:
-			return c
-	return {}
-
-# returns the result of the given dialogic comparison
-func _compare_definitions(def_value: String, event_value: String, condition: String):
-	var condition_met = false;
-	if def_value != null and event_value != null:
-		# check if event_value equals a definition name and use that instead
-		for d in definitions['variables']:
-			if (d['name'] != '' and d['name'] == event_value):
-				event_value = d['value']
-				break;
-		var converted_def_value = def_value
-		var converted_event_value = event_value
-		if def_value.is_valid_float() and event_value.is_valid_float():
-			converted_def_value = float(def_value)
-			converted_event_value = float(event_value)
-		if condition == '':
-			condition = '==' # The default condition is Equal to
-		match condition:
-			"==":
-				condition_met = converted_def_value == converted_event_value
-			"!=":
-				condition_met = converted_def_value != converted_event_value
-			">":
-				condition_met = converted_def_value > converted_event_value
-			">=":
-				condition_met = converted_def_value >= converted_event_value
-			"<":
-				condition_met = converted_def_value < converted_event_value
-			"<=":
-				condition_met = converted_def_value <= converted_event_value
-	#print('comparing definition: ', def_value, ',', event_value, ',', condition, ' - ', condition_met)
-	return condition_met
-
-
-
 ## -----------------------------------------------------------------------------
 ## 					DIALOG FADING
 ## -----------------------------------------------------------------------------
@@ -1554,7 +1512,7 @@ func resume_state_from_info(state_info):
 		var event = saved_portrait
 
 		# this code is ALL copied from the event_handler. So I should probably outsource it to a function...
-		var character_data = get_character(event['character'])
+		var character_data = DialogicUtil.get_character(event['character'])
 		if portrait_exists(character_data):
 			for portrait in $Portraits.get_children():
 				if portrait.character_data == character_data:

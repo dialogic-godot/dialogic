@@ -32,6 +32,7 @@ static func get_character_list() -> Array:
 	return characters
 
 
+
 static func get_characters_dict():
 	return list_to_dict(get_character_list())
 
@@ -40,6 +41,15 @@ static func get_sorted_character_list():
 	var array = get_character_list()
 	array.sort_custom(DialgicSorter, 'sort_resources')
 	return array
+
+
+# helper that allows to get a character by file
+static func get_character(character_id):
+	var characters = get_character_list()
+	for c in characters:
+		if c['file'] == character_id:
+			return c
+	return {}
 
 ## *****************************************************************************
 ##								TIMELINES
@@ -92,6 +102,7 @@ static func get_theme_list() -> Array:
 static func get_theme_dict() -> Dictionary:
 	return list_to_dict(get_theme_list())
 
+
 static func get_sorted_theme_list():
 	var array = get_theme_list()
 	array.sort_custom(DialgicSorter, 'sort_resources')
@@ -105,16 +116,59 @@ static func get_sorted_theme_list():
 static func get_default_definitions_list() -> Array:
 	return DialogicDefinitionsUtil.definitions_json_to_array(DialogicResources.get_default_definitions())
 
+
 static func get_default_definitions_dict():
 	var dict = {}
 	for val in get_default_definitions_list():
 		dict[val['id']] = val
 	return dict
 
+
 static func get_sorted_default_definitions_list():
 	var array = get_default_definitions_list()
 	array.sort_custom(DialgicSorter, 'sort_resources')
 	return array
+
+# returns the result of the given dialogic comparison
+static func compare_definitions(def_value: String, event_value: String, condition: String):
+	var definitions
+	if not Engine.is_editor_hint():
+		if Engine.get_main_loop().has_meta('definitions'):
+			definitions = Engine.get_main_loop().get_meta('definitions')
+		else:
+			definitions = DialogicResources.get_default_definitions()
+			Engine.get_main_loop().set_meta('definitions', definitions)
+	else:
+		definitions = DialogicResources.get_default_definitions()
+	var condition_met = false
+	if def_value != null and event_value != null:
+		# check if event_value equals a definition name and use that instead
+		for d in definitions['variables']:
+			if (d['name'] != '' and d['name'] == event_value):
+				event_value = d['value']
+				break;
+		var converted_def_value = def_value
+		var converted_event_value = event_value
+		if def_value.is_valid_float() and event_value.is_valid_float():
+			converted_def_value = float(def_value)
+			converted_event_value = float(event_value)
+		if condition == '':
+			condition = '==' # The default condition is Equal to
+		match condition:
+			"==":
+				condition_met = converted_def_value == converted_event_value
+			"!=":
+				condition_met = converted_def_value != converted_event_value
+			">":
+				condition_met = converted_def_value > converted_event_value
+			">=":
+				condition_met = converted_def_value >= converted_event_value
+			"<":
+				condition_met = converted_def_value < converted_event_value
+			"<=":
+				condition_met = converted_def_value <= converted_event_value
+	return condition_met
+
 
 ## *****************************************************************************
 ##							RESOURCE FOLDER MANAGEMENT
