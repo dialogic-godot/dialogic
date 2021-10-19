@@ -12,18 +12,17 @@ var timeline: String
 ### MODE
 var preview: bool = false
 
-### STATE FLAGS
+
 enum state {
-	IDLE, # Whenever nothing is happening
+	IDLE, # When nothing is happening
 	READY, # When Dialogic already displayed the text on the screen
 	TYPING, # While the editor is typing text
-	WAITING, # Waiting a timer to continue with the process
+	WAITING, # Waiting a timer or something to finish
 	WAITING_INPUT, # Waiting for player to answer a question
 }
-var _state = state.IDLE
+var _state : int = state.IDLE
 
 # used in events to disable continuing:
-var waiting: bool = false
 var while_dialog_animation: bool = false
 var do_fade_in := true
 var dialog_faded_in_already = false
@@ -87,9 +86,7 @@ signal dialogic_signal(value)
 
 
 ## -----------------------------------------------------------------------------
-## -----------------------------------------------------------------------------
 ## 						SCRIPT
-## -----------------------------------------------------------------------------
 ## -----------------------------------------------------------------------------
 
 func _ready():
@@ -625,7 +622,7 @@ func _process(delta):
 # checks for the "input_next" action
 func _input(event: InputEvent) -> void:
 	if not Engine.is_editor_hint() and event.is_action_pressed(Dialogic.get_action_button()):
-		if waiting:
+		if is_state(state.WAITING):
 			if not current_event:
 				return
 			var timer = current_event.get('waiting_timer_skippable')
@@ -659,7 +656,7 @@ func _on_text_completed():
 	# Add the choice buttons for questions
 	if current_event.has('options'):
 		# Already showed the text, ready to show the option buttons
-		_state = state.WAITING_INPUT
+		set_state(state.WAITING_INPUT)
 		
 		var waiting_until_options_enabled = float(settings.get_value('input', 'delay_after_options', 0.1))
 		$OptionsDelayedInput.start(waiting_until_options_enabled)
@@ -676,7 +673,7 @@ func _on_text_completed():
 	
 	if current_event.has('text'):
 		# Already showed the text, ready to show the ▼ next indicator button
-		_state = state.READY
+		set_state(state.READY)
 		
 		# [p] needs more work
 		# Setting the timer for how long to wait in the [nw] events
@@ -771,7 +768,7 @@ func event_handler(event: Dictionary):
 		'dialogic_001':
 			emit_signal("event_start", "text", event)
 			fade_in_dialog()
-			_state = state.TYPING
+			set_state(state.TYPING)
 			if event.has('character'):
 				var character_data = DialogicUtil.get_character(event['character'])
 				update_name(character_data)
@@ -834,7 +831,7 @@ func event_handler(event: Dictionary):
 		'dialogic_010':
 			emit_signal("event_start", "question", event)
 			fade_in_dialog()
-			_state = state.TYPING
+			set_state(state.TYPING)
 			if event.has('name'):
 				update_name(event['name'])
 			elif event.has('character'):
@@ -962,13 +959,13 @@ func event_handler(event: Dictionary):
 		'dialogic_023':
 			emit_signal("event_start", "wait", event)
 			$TextBubble.visible = false
-			waiting = true
+			set_state(state.WAITING)
 			var timer = get_tree().create_timer(event['wait_seconds'])
 			if event.get('waiting_skippable', false):
 				event['waiting_timer_skippable'] = timer
 			yield(timer, "timeout")
 			event.erase('waiting_timer_skippable')
-			waiting = false
+			set_state(state.IDLE)
 			$TextBubble.visible = true
 			emit_signal("event_end", "wait")
 			_load_next_event()
@@ -1053,7 +1050,7 @@ func event_handler(event: Dictionary):
 		'dialogic_042':
 			emit_signal("event_start", "call_node", event)
 			$TextBubble.visible = false
-			waiting = true
+			set_state(state.WAITING)
 			var target = get_node_or_null(event['call_node']['target_node_path'])
 			if not target:
 				target = get_tree().root.get_node_or_null(event['call_node']['target_node_path'])
@@ -1073,7 +1070,7 @@ func event_handler(event: Dictionary):
 						if (func_result is GDScriptFunctionState):
 							yield(func_result, "completed")
 
-			waiting = false
+			set_state(state.IDLE)
 			$TextBubble.visible = true
 			_load_next_event()
 		_:
@@ -1555,6 +1552,15 @@ func resume_state_from_info(state_info):
 ## -----------------------------------------------------------------------------
 ##                  Finite State Machine
 ## -----------------------------------------------------------------------------
+# At the moment both functions are helpers only, but the goal of making them
+# as functions and not a simple `_state = whatever` is to also perform certain
+# actions when changing from state to state. If needed in the future, we can
+# also emit signals and stuff like that without having to go back to every state
+# change in the code.
+
+func set_state(new_state):
+	_state = new_state
+	return _state
 
 func is_state(check_state):
 	if _state == check_state:
