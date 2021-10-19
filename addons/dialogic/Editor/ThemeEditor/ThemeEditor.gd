@@ -512,7 +512,7 @@ func _on_DelayPreview_timer_timeout() -> void:
 func _on_PreviewButton_pressed() -> void:
 	for i in $VBoxContainer/Panel.get_children():
 		i.free()
-	var preview_dialog = Dialogic.start('', '', "res://addons/dialogic/Nodes/DialogNode.tscn", false, false)
+	var preview_dialog = Dialogic.start('', '', "res://addons/dialogic/Nodes/DialogNode.tscn", false)
 	preview_dialog.preview = true
 	
 	if n['character_picker']: # Sometimes it can't find the node
@@ -528,7 +528,7 @@ func _on_PreviewButton_pressed() -> void:
 				{ 'event_id':'dialogic_001', "character": preview_character_selected, "portrait":"", "text":n['text_preview'].text }
 			]
 		}
-	preview_dialog.parse_characters(preview_dialog.dialog_script)
+	preview_dialog.dialog_script = DialogicParser.parse_characters(preview_dialog.dialog_script)
 	$VBoxContainer/Panel.add_child(preview_dialog)
 	
 	# maintaining the preview panel big enough for the dialog box

@@ -8,14 +8,14 @@ public static class DialogicSharp
   private const String DEFAULT_DIALOG_RESOURCE = "res://addons/dialogic/Nodes/DialogNode.tscn";
 
   // Check the documentation of the DialogicClass for more information on how to use these functions!
-  public static Node Start(String timeline = "", String default_timeline = "", bool debugMode = false, bool useCanvasInstead = true)
+  public static Node Start(String timeline = "", String default_timeline = "", bool useCanvasInstead = true)
   {
-    return Start<Node>(timeline, default_timeline, DEFAULT_DIALOG_RESOURCE, debugMode, useCanvasInstead);
+    return Start<Node>(timeline, default_timeline, DEFAULT_DIALOG_RESOURCE, useCanvasInstead);
   }
 
-  public static T Start<T>(String timeline = "", String default_timeline = "", String dialogScenePath, bool debugMode = false, bool useCanvasInstead = true) where T : class
+  public static T Start<T>(String timeline = "", String default_timeline = "", String dialogScenePath, bool useCanvasInstead = true) where T : class
   {
-    return (T)_dialogic.Call("start", timeline, default_timeline, dialogScenePath, debugMode, useCanvasInstead);
+    return (T)_dialogic.Call("start", timeline, default_timeline, dialogScenePath, useCanvasInstead);
   }
   
   // ------------------------------------------------------------------------------------------
