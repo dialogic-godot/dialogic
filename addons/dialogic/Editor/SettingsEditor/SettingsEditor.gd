@@ -26,6 +26,11 @@ onready var nodes = {
 	'autofocus_choices':$VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer/AutoFocus/CheckBox,
 	'delay_after_options': $VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer/HBoxContainer/LineEdit,
 	'default_action_key': $VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer/HBoxContainer2/DefaultActionKey,
+	'enable_default_shortcut': $'VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer/HBoxContainer3/HotKeys',
+	'choice_hotkey_1': $'VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer/HBoxContainer4/Choice1Hotkey',
+	'choice_hotkey_2': $'VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer/HBoxContainer5/Choice2Hotkey',
+	'choice_hotkey_3': $'VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer/HBoxContainer6/Choice3Hotkey',
+	'choice_hotkey_4': $'VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer/HBoxContainer7/Choice4Hotkey',
 	
 	# Custom Events
 	'new_custom_event_open':$VBoxContainer/HBoxContainer3/VBoxContainer2/CustomEvents/HBoxContainer/NewCustomEvent, 
@@ -45,7 +50,12 @@ var THEME_KEYS := [
 var INPUT_KEYS := [
 	'autofocus_choices',
 	'delay_after_options',
-	'default_action_key'
+	'default_action_key',
+	'enable_default_shortcut',
+	'choice_hotkey_1',
+	'choice_hotkey_2',
+	'choice_hotkey_3',
+	'choice_hotkey_4',
 	]
 
 var DIALOG_KEYS := [
@@ -80,6 +90,13 @@ func _ready():
 	nodes['default_action_key'].connect('item_selected', self, '_on_default_action_key_item_selected')
 	nodes['autofocus_choices'].connect('toggled', self, '_on_item_toggled', ['input', 'autofocus_choices'])
 	
+	# Connect hotkey settings 1-4
+	for i in range(1, 5):
+		var key = str('choice_hotkey_', i)
+		nodes[key].connect('pressed', self, '_on_default_action_key_presssed', [key])
+		nodes[key].connect('item_selected', self, '_on_default_action_key_item_selected', [key])
+	nodes['enable_default_shortcut'].connect('toggled', self, '_on_item_toggled', ['input', 'enable_default_shortcut'])
+	
 	AudioServer.connect("bus_layout_changed", self, "update_bus_selector")
 	nodes['text_event_audio_default_bus'].connect('item_selected', self, '_on_text_audio_default_bus_item_selected')
 	
@@ -110,16 +127,16 @@ func update_data():
 	load_values(settings, "input", INPUT_KEYS)
 	select_bus(settings.get_value("dialog", 'text_event_audio_default_bus', "Master"))
 
+
 func load_values(settings: ConfigFile, section: String, key: Array):
 	for k in key:
 		if settings.has_section_key(section, k):
 			if nodes[k] is LineEdit:
 				nodes[k].text = settings.get_value(section, k)
+			elif nodes[k] is OptionButton:
+				nodes[k].text = settings.get_value(section, k)
 			else:
-				if k == 'default_action_key':
-					nodes['default_action_key'].text = settings.get_value(section, k)
-				else:
-					nodes[k].pressed = settings.get_value(section, k, false)
+				nodes[k].pressed = settings.get_value(section, k, false)
 
 
 func refresh_themes(settings: ConfigFile):
@@ -162,18 +179,18 @@ func _on_item_toggled(value: bool, section: String, key: String):
 	set_value(section, key, value)
 
 
-func _on_default_action_key_presssed() -> void:
+func _on_default_action_key_presssed(nodeName = 'default_action_key') -> void:
 	var settings = DialogicResources.get_settings_config()
-	nodes['default_action_key'].clear()
-	nodes['default_action_key'].add_item(settings.get_value('input', 'default_action_key', '[Default]'))
-	nodes['default_action_key'].add_item('[Default]')
+	nodes[nodeName].clear()
+	nodes[nodeName].add_item(settings.get_value('input', nodeName, '[Default]'))
+	nodes[nodeName].add_item('[Default]')
 	InputMap.load_from_globals()
 	for a in InputMap.get_actions():
-		nodes['default_action_key'].add_item(a)
+		nodes[nodeName].add_item(a)
 
 
-func _on_default_action_key_item_selected(index) -> void:
-	set_value('input', 'default_action_key', nodes['default_action_key'].text)
+func _on_default_action_key_item_selected(index, nodeName = 'default_action_key') -> void:
+	set_value('input', nodeName, nodes[nodeName].text)
 
 
 func _on_canvas_layer_text_changed(text) -> void:

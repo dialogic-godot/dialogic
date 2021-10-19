@@ -929,6 +929,33 @@ func add_choice_button(option: Dictionary) -> Button:
 		button_container.set('custom_constants/separation', current_theme.get_value('buttons', 'gap', 20))
 	button_container.add_child(button)
 	
+	var hotkey
+	var buttonCount = button_container.get_child_count()
+	var hotkeyOption = settings.get_value('input', str('choice_hotkey_', buttonCount), '')
+	
+	# If there is a hotkey, use that key
+	if hotkeyOption != '' and hotkeyOption != '[Default]':
+		hotkey = InputEventAction.new()
+		hotkey.action = hotkeyOption
+	# otherwise default hotkeys are 1-9 for the first 10 buttons
+	elif buttonCount < 10 and settings.get_value('input', 'enable_default_shortcut', false):
+		hotkey = InputEventKey.new()
+		hotkey.scancode = OS.find_scancode_from_string(str(button_container.get_child_count()))
+	else:
+		hotkey = InputEventKey.new()
+	
+	var shortcut = ShortCut.new()
+	shortcut.set_shortcut(hotkey)
+	
+	button.set_shortcut(shortcut)
+	
+	# Selecting the first button added
+	if settings.get_value('input', 'autofocus_choices', true):
+		if button_container.get_child_count() == 1:
+			button.grab_focus()
+	else:
+		button.focus_mode = FOCUS_NONE
+	
 	# Adding audio when focused or hovered
 	button.connect('focus_entered', self, '_on_option_hovered', [button])
 	button.connect('mouse_entered', self, '_on_option_focused')
