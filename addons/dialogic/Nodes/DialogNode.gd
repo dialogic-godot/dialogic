@@ -84,7 +84,10 @@ func _ready():
 	Engine.get_main_loop().set_meta('latest_dialogic_node', self)
 	# Loading the config files
 	load_config_files()
-	update_custom_events()
+	
+	#update_custom_events()
+	$CustomEvents.update_custom_events()
+		
 	# Checking if the dialog should read the code from a external file
 	if not timeline.empty():
 		set_current_dialog(timeline)
@@ -139,6 +142,7 @@ func load_config_files():
 ## -----------------------------------------------------------------------------
 ## 						CUSTOM EVENTS
 ## -----------------------------------------------------------------------------
+## not used anymore. use $CustomEvents.update()
 func update_custom_events() -> void:
 	custom_events = {}
 	var path : String = DialogicResources.get_working_directories()["CUSTOM_EVENTS_DIR"]
@@ -848,12 +852,10 @@ func event_handler(event: Dictionary):
 			$TextBubble.visible = true
 			_load_next_event()
 		_:
-			if event['event_id'] in custom_events.keys():
-				var handler = Node.new()
-				handler.set_script(load(custom_events[event['event_id']]['event_script']))
-				
+			if event['event_id'] in $CustomEvents.handlers.keys():
+				# get the handler node
+				var handler = $CustomEvents.handlers[event['event_id']]
 				handler.handle_event(event, self)
-				
 			else:
 				visible = false
 
