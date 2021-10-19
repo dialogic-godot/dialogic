@@ -11,9 +11,6 @@ var timeline: String
 
 ### MODE
 var preview: bool = false
-# Should we show debug information when running:
-var debug_mode := true
-
 
 ### STATE FLAGS
 enum state {
@@ -21,7 +18,7 @@ enum state {
 	READY, # When Dialogic already displayed the text on the screen
 	TYPING, # While the editor is typing text
 	WAITING, # Waiting a timer to continue with the process
-	WAITING_INPUT,
+	WAITING_INPUT, # Waiting for player to answer a question
 }
 var _state = state.IDLE
 
@@ -724,7 +721,6 @@ func on_timeline_end():
 	# TODO remove event_end in 2.0
 	emit_signal("event_end", "timeline")
 	emit_signal("timeline_end", current_timeline)
-	dprint('[D] Timeline End')
 
 # does checks and calls the above functions
 func _emit_timeline_signals():
@@ -775,7 +771,6 @@ func event_handler(event: Dictionary):
 	$TextBubble.reset()
 	clear_options()
 	
-	dprint('[D] Current Event: ', event)
 	current_event = event
 	match event['event_id']:
 		# MAIN EVENTS
@@ -1053,7 +1048,6 @@ func event_handler(event: Dictionary):
 		# GODOT EVENTS
 		# Emit signal event
 		'dialogic_040':
-			dprint('[!] Emitting signal: dialogic_signal(', event['emit_signal'], ')')
 			emit_signal("dialogic_signal", event['emit_signal'])
 			_load_next_event()
 		# Change Scene event
@@ -1064,7 +1058,6 @@ func event_handler(event: Dictionary):
 				get_tree().change_scene(event['change_scene'])
 		# Call Node event
 		'dialogic_042':
-			dprint('[!] Call Node signal: dialogic_signal(call_node) ', var2str(event['call_node']))
 			emit_signal("event_start", "call_node", event)
 			$TextBubble.visible = false
 			waiting = true
@@ -1092,8 +1085,6 @@ func event_handler(event: Dictionary):
 			_load_next_event()
 		_:
 			if event['event_id'] in custom_events.keys():
-				dprint("[D] Custom event '"+custom_events[event['event_id']]['event_name']+"'")
-				
 				var handler = Node.new()
 				handler.set_script(load(custom_events[event['event_id']]['event_script']))
 				
@@ -1101,7 +1092,6 @@ func event_handler(event: Dictionary):
 				
 			else:
 				visible = false
-				dprint('[D] No event found. Recevied data: ', event)
 
 ## -----------------------------------------------------------------------------
 ## 					TEXTBOX-FUNCTIONALITY
@@ -1141,8 +1131,6 @@ func _on_letter_written():
 # called when a choice is selected
 # hides choices, sets question as answered and jumps to the appropriate event
 func answer_question(i, event_idx, question_idx):
-	dprint('[!] Going to ', event_idx + 1, i, 'question_idx:', question_idx)
-
 	play_audio("selecting")
 	
 	clear_options()
@@ -1405,7 +1393,6 @@ func _on_RichTextLabel_meta_hover_started(meta):
 				'extra': d['extra'],
 			})
 			correct_type = true
-			dprint('[D] Hovered over glossary entry: ', d)
 
 	if correct_type:
 		definition_visible = true
@@ -1428,17 +1415,6 @@ func _on_Definition_Timer_timeout():
 	# Adding a timer to avoid a graphical glitch
 	definition_visible = false
 	$DefinitionInfo.visible = definition_visible
-
-
-## -----------------------------------------------------------------------------
-## 						HELPERS
-## -----------------------------------------------------------------------------
-# prints multiple strings if debug_mode is true
-func dprint(string, arg1='', arg2='', arg3='', arg4='' ):
-	# HAHAHA if you are here wondering what this is...
-	# I ask myself the same question :')
-	if debug_mode:
-		print(str(string) + str(arg1) + str(arg2) + str(arg3) + str(arg4))
 
 
 ## -----------------------------------------------------------------------------
