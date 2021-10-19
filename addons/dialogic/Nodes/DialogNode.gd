@@ -4,14 +4,11 @@ extends Control
 ## -----------------------------------------------------------------------------
 ## 						VARIABLES
 ## -----------------------------------------------------------------------------
-
-### STARTING
 ## The timeline to load when starting the scene
 var timeline: String
 
 ### MODE
 var preview: bool = false
-
 
 enum state {
 	IDLE, # When nothing is happening
@@ -19,11 +16,10 @@ enum state {
 	TYPING, # While the editor is typing text
 	WAITING, # Waiting a timer or something to finish
 	WAITING_INPUT, # Waiting for player to answer a question
+	ANIMATING # While performing a dialog animation
 }
 var _state : int = state.IDLE
 
-# used in events to disable continuing:
-var while_dialog_animation: bool = false
 var do_fade_in := true
 var dialog_faded_in_already = false
 # true if the glossary popup is visible: # TODO rename
@@ -31,11 +27,9 @@ var definition_visible: bool = false
 # used to reset the mouse mode after questions:
 var last_mouse_mode = null
 
-
 ### SETTINGS
 var settings: ConfigFile
 var custom_events = {}
-
 
 ### DATA
 var definitions = {}
@@ -62,7 +56,6 @@ var button_container = null
 ## -----------------------------------------------------------------------------
 ## 						SCENES
 ## -----------------------------------------------------------------------------
-
 onready var ChoiceButton = load("res://addons/dialogic/Nodes/ChoiceButton.tscn")
 onready var Portrait = load("res://addons/dialogic/Nodes/Portrait.tscn")
 onready var Background = load("res://addons/dialogic/Nodes/Background.tscn")
@@ -71,7 +64,6 @@ onready var Background = load("res://addons/dialogic/Nodes/Background.tscn")
 ## -----------------------------------------------------------------------------
 ## 						SIGNALS
 ## -----------------------------------------------------------------------------
-
 # Event end/start
 signal event_start(type, event)
 signal event_end(type)
@@ -84,19 +76,15 @@ signal timeline_end(timeline_name)
 signal dialogic_signal(value)
 
 
-
 ## -----------------------------------------------------------------------------
 ## 						SCRIPT
 ## -----------------------------------------------------------------------------
-
 func _ready():
 	# Set this dialog as the latest (used for saving)
 	Engine.get_main_loop().set_meta('latest_dialogic_node', self)
-	
 	# Loading the config files
 	load_config_files()
 	update_custom_events()
-	
 	# Checking if the dialog should read the code from a external file
 	if not timeline.empty():
 		set_current_dialog(timeline)
@@ -110,21 +98,17 @@ func _ready():
 	# Load the dialog directly from GDscript
 	else:
 		load_dialog()
-	
 	# Connecting resize signal
 	get_viewport().connect("size_changed", self, "resize_main")
 	resize_main()
-	
 	# Connecting some other timers
 	$OptionsDelayedInput.connect("timeout", self, '_on_OptionsDelayedInput_timeout')
-
 	# Setting everything up for the node to be default
 	$DefinitionInfo.visible = false
 	$TextBubble.connect("text_completed", self, "_on_text_completed")
 	$TextBubble.connect("letter_written", self, "_on_letter_written")
 	$TextBubble/RichTextLabel.connect('meta_hover_started', self, '_on_RichTextLabel_meta_hover_started')
 	$TextBubble/RichTextLabel.connect('meta_hover_ended', self, '_on_RichTextLabel_meta_hover_ended')
-	
 	
 	if Engine.is_editor_hint():
 		if preview:
@@ -138,16 +122,13 @@ func _ready():
 
 # loads the definitions, themes and settings
 func load_config_files():
-	
 	# defintiions
 	if not Engine.is_editor_hint():
 		definitions = Dialogic._get_definitions()
 	else:
 		definitions = DialogicResources.get_default_definitions()
-	
 	# settings
 	settings = DialogicResources.get_settings_config()
-	
 	# theme
 	var theme_file = 'res://addons/dialogic/Editor/ThemeEditor/default-theme.cfg'
 	if settings.has_section('theme'):
@@ -155,15 +136,12 @@ func load_config_files():
 	current_theme = load_theme(theme_file)
 
 
-
 ## -----------------------------------------------------------------------------
 ## 						CUSTOM EVENTS
 ## -----------------------------------------------------------------------------
 func update_custom_events() -> void:
 	custom_events = {}
-	
-	var path:String = DialogicResources.get_working_directories()["CUSTOM_EVENTS_DIR"]
-	
+	var path : String = DialogicResources.get_working_directories()["CUSTOM_EVENTS_DIR"]
 	var dir = Directory.new()
 	if dir.open(path) == OK:
 		dir.list_dir_begin()
@@ -184,8 +162,8 @@ func update_custom_events() -> void:
 					event.queue_free()
 				else:
 					print("[D] An error occurred when trying to access a custom event.")
-
-				
+			
+			
 			else:
 				pass # files in the directory are ignored
 			file_name = dir.get_next()
@@ -196,7 +174,6 @@ func update_custom_events() -> void:
 ## -----------------------------------------------------------------------------
 ## 						VISUALS
 ## -----------------------------------------------------------------------------
-
 # This function makes sure that the dialog is displayed at the correct
 # size and position in the screen.
 func resize_main():
@@ -383,7 +360,6 @@ func set_current_dialog(dialog_path: String):
 	dialog_script = DialogicResources.get_timeline_json(dialog_path)
 	return load_dialog()
 
-
 # starts all necessary parsing
 func load_dialog():
 	# All this parse events should be happening in the same loop ideally
@@ -391,214 +367,13 @@ func load_dialog():
 	# And keep adding different functions for each parsing operation.
 	if settings.has_section_key('dialog', 'auto_color_names'):
 		if settings.get_value('dialog', 'auto_color_names'):
-			dialog_script = parse_characters(dialog_script)
+			dialog_script = DialogicParser.parse_characters(dialog_script)
 	else:
-		dialog_script = parse_characters(dialog_script)
-	dialog_script = parse_text_lines(dialog_script)
-	dialog_script = parse_branches(dialog_script)
-	parse_anchors()
+		dialog_script = DialogicParser.parse_characters(dialog_script)
+	dialog_script = DialogicParser.parse_text_lines(dialog_script, preview)
+	dialog_script = DialogicParser.parse_branches(self, dialog_script)
+	DialogicParser.parse_anchors(self)
 	return dialog_script
-
-# adds name coloring to the dialog texts
-func parse_characters(dialog_script):
-	var characters = DialogicUtil.get_character_list()
-
-	var event_index := 0
-	for event in dialog_script['events']:
-		# if this is a text or question event
-		if event.get('event_id') in ['dialogic_001', 'dialogic_010']:
-			var text :String = event.get({'dialogic_001':'text', 'dialogic_010':'question'}[event.get('event_id')], '')
-			
-			for character in characters:
-				# check whether to use the name or the display name
-				var char_names = [character.get('name')]
-				if character.get('data', {}).get('display_name_bool', false):
-					char_names.append(character.get('display_name'))
-				if character.get('data', {}).get('nickname_bool', false):
-					for nickname in character.get('data').get('nickname', '').split(',', true, 0):
-						char_names.append(nickname.strip_edges())
-				
-				#Regex purposefully excludes [] as replacing those interferes with the second regex
-				var escapeRegExp = "(?=[+&|!(){}^\"~*.?:\\\\-])" 
-				
-				var regex = RegEx.new()
-				regex.compile(escapeRegExp)
-				char_names = regex.sub(str(char_names), "\\", true)
-				
-				var regex_thing = str(char_names).replace("[", "(").replace("]", ")").replace(", ", "|")+'\\b'
-				regex.compile(regex_thing)
-				
-				var counter = 0
-				for result in regex.search_all(text):
-					text = text.insert(result.get_start()+((9+8+8)*counter), '[color=#' + character['color'].to_html() + ']')
-					text = text.insert(result.get_end()+9+8+((9+8+8)*counter), '[/color]')
-					result = regex.search(text)
-					counter += 1
-				dialog_script['events'][event_index][{'dialogic_001':'text', 'dialogic_010':'question'}[event.get('event_id')]] = text
-		
-		event_index += 1
-
-	return dialog_script
-
-# removes empty lines, splits message at new lines
-func parse_text_lines(unparsed_dialog_script: Dictionary) -> Dictionary:
-	var parsed_dialog: Dictionary = unparsed_dialog_script
-	var new_events: Array = []
-	var split_new_lines = true
-	var remove_empty_messages = true
-
-	# Return the same thing if it doesn't have events
-	if unparsed_dialog_script.has('events') == false:
-		return unparsed_dialog_script
-
-	# Getting extra settings
-	if settings.has_section_key('dialog', 'remove_empty_messages'):
-		remove_empty_messages = settings.get_value('dialog', 'remove_empty_messages')
-	if settings.has_section_key('dialog', 'new_lines'):
-		split_new_lines = settings.get_value('dialog', 'new_lines')
-
-	# Parsing
-	for event in unparsed_dialog_script['events']:
-		if event.has('text') and event.has('character') and event.has('portrait'):
-			if event['text'].empty() and remove_empty_messages == true:
-				pass
-			elif '\n' in event['text'] and preview == false and split_new_lines == true:
-				var lines = event['text'].split('\n')
-				var counter = 0 
-				for line in lines:
-					if not line.empty():
-						var n_event = {
-							'event_id':'dialogic_001',
-							'text': line,
-							'character': event['character'],
-							'portrait': event['portrait'],
-						}
-						#assigning voices to the new events 
-						if event.has('voice_data'):
-							if event['voice_data'].has(str(counter)):
-								n_event['voice_data'] = {'0':event['voice_data'][str(counter)]}
-						new_events.append(n_event)
-					counter += 1 
-			else:
-				new_events.append(event)
-		else:
-			new_events.append(event)
-
-	parsed_dialog['events'] = new_events
-
-	return parsed_dialog
-
-# adds the alignment BBCode to text events
-func parse_alignment(text):
-	var alignment = current_theme.get_value('text', 'alignment', 'Left')
-	var fname = current_theme.get_value('settings', 'name', 'none')
-	if alignment == 'Center':
-		text = '[center]' + text + '[/center]'
-	elif alignment == 'Right':
-		text = '[right]' + text + '[/right]'
-	return text
-
-# creates a list of questions to be used at the end of choices
-func parse_branches(dialog_script: Dictionary) -> Dictionary:
-	questions = [] # Resetting the questions
-
-	# Return the same thing if it doesn't have events
-	if dialog_script.has('events') == false:
-		return dialog_script
-
-	var parser_queue = [] # This saves the last question opened, and it gets removed once it was consumed by a endbranch event
-	var event_idx: int = 0 # The current id for jumping later on
-	var question_idx: int = 0 # identifying the questions to assign options to it
-	for event in dialog_script['events']:
-		if event['event_id'] == 'dialogic_011':
-			var opened_branch = parser_queue.back()
-			var option = {
-				'question_idx': opened_branch['question_idx'],
-				'label': parse_definitions(event['choice'], true, false),
-				'event_idx': event_idx,
-				}
-			if event.has('condition') and event.has('definition') and event.has('value'):
-				option = {
-					'question_idx': opened_branch['question_idx'],
-					'label': parse_definitions(event['choice'], true, false),
-					'event_idx': event_idx,
-					'condition': event['condition'],
-					'definition': event['definition'],
-					'value': event['value'],
-					}
-			else:
-				option = {
-					'question_idx': opened_branch['question_idx'],
-					'label': parse_definitions(event['choice'], true, false),
-					'event_idx': event_idx,
-					'condition': '',
-					'definition': '',
-					'value': '',
-					}
-			dialog_script['events'][opened_branch['event_idx']]['options'].append(option)
-			event['question_idx'] = opened_branch['question_idx']
-		elif event['event_id'] == 'dialogic_010':
-			event['event_idx'] = event_idx
-			event['question_idx'] = question_idx
-			event['answered'] = false
-			question_idx += 1
-			questions.append(event)
-			parser_queue.append(event)
-		elif event['event_id'] == 'dialogic_012':
-			event['event_idx'] = event_idx
-			event['question_idx'] = question_idx
-			event['answered'] = false
-			question_idx += 1
-			questions.append(event)
-			parser_queue.append(event)
-		elif event['event_id'] == 'dialogic_013':
-			event['event_idx'] = event_idx
-			var opened_branch = parser_queue.pop_back()
-			event['end_branch_of'] = opened_branch['question_idx']
-			dialog_script['events'][opened_branch['event_idx']]['end_idx'] = event_idx
-		event_idx += 1
-
-	return dialog_script
-
-# returns the text but with BBcode for glossary and the values of the variables
-func parse_definitions(text: String, variables: bool = true, glossary: bool = true):
-	var final_text: String = text
-	if not preview:
-		definitions = Dialogic._get_definitions()
-	if variables:
-		final_text = _insert_variable_definitions(text)
-	if glossary and _should_show_glossary():
-		final_text = _insert_glossary_definitions(final_text)
-	return final_text
-
-# adds the values of the variables
-func _insert_variable_definitions(text: String):
-	var final_text := text;
-	for d in definitions['variables']:
-		var name : String = d['name'];
-		final_text = final_text.replace('[' + name + ']', d['value'])
-	return final_text;
-
-# adds the BBCode for the glossary words
-func _insert_glossary_definitions(text: String):
-	var color = current_theme.get_value('definitions', 'color', '#ffbebebe')
-	var final_text := text;
-	# I should use regex here, but this is way easier :)
-	for d in definitions['glossary']:
-		final_text = final_text.replace(d['name'],
-			'[url=' + d['id'] + ']' +
-			'[color=' + color + ']' + d['name'] + '[/color]' +
-			'[/url]'
-		)
-	return final_text;
-
-func parse_anchors():
-	anchors = {}
-	var idx = 0
-	for event in dialog_script['events']:
-		if event['event_id'] == 'dialogic_015':
-			anchors[event['id']] = idx
-		idx += 1
 
 ## -----------------------------------------------------------------------------
 ## 					MAIN GAME-LOGIC 
@@ -616,7 +391,7 @@ func _process(delta):
 			$TextBubble/NextIndicatorContainer/NextIndicator.visible = false
 	
 	# Hide if fading in
-	if while_dialog_animation:
+	if is_state(state.ANIMATING):
 		$TextBubble/NextIndicatorContainer/NextIndicator.visible = false
 
 # checks for the "input_next" action
@@ -931,8 +706,7 @@ func event_handler(event: Dictionary):
 		# Close Dialog event
 		'dialogic_022':
 			emit_signal("event_start", "close_dialog", event)
-			
-			while_dialog_animation = true
+			set_state(state.ANIMATING)
 			var transition_duration = event.get('transition_duration', 1.0)
 			
 			# fade out characters
@@ -1093,7 +867,7 @@ func update_name(character) -> void:
 		if character.has('display_name'):
 			if character['display_name'] != '':
 				parsed_name = character['display_name']
-		parsed_name = parse_definitions(parsed_name, true, false)
+		parsed_name = DialogicParser.parse_definitions(self, parsed_name, true, false)
 		$TextBubble.update_name(parsed_name, character.get('color', Color.white), current_theme.get_value('name', 'auto_color', true))
 	else:
 		$TextBubble.update_name('')
@@ -1103,7 +877,7 @@ func update_name(character) -> void:
 func update_text(text: String) -> String:
 	if settings.has_section_key('dialog', 'translations') and settings.get_value('dialog', 'translations'):
 		text = tr(text)
-	var final_text = parse_definitions(parse_alignment(text))
+	var final_text = DialogicParser.parse_definitions(self, DialogicParser.parse_alignment(self, text))
 	final_text = final_text.replace('[br]', '\n')
 
 	$TextBubble.update_text(final_text)
@@ -1375,7 +1149,7 @@ func _on_RichTextLabel_meta_hover_started(meta):
 		if d['id'] == meta:
 			$DefinitionInfo.load_preview({
 				'title': d['title'],
-				'body': parse_definitions(d['text'], true, false), # inserts variables but not other glossary items!
+				'body': DialogicParser.parse_definitions(self, d['text'], true, false), # inserts variables but not other glossary items!
 				'extra': d['extra'],
 			})
 			correct_type = true
@@ -1412,7 +1186,6 @@ func _on_Definition_Timer_timeout():
 func _hide_dialog():
 	$TextBubble.update_text('') # Clearing the text
 	$TextBubble.modulate = Color(1,1,1,0)
-	while_dialog_animation = true
 	dialog_faded_in_already = false
 
 # start a fade in animation
@@ -1437,13 +1210,13 @@ func fade_in_dialog(time = 0.5):
 			has_tween = true
 		
 		if has_tween:
-			while_dialog_animation = false
+			set_state(state.ANIMATING)
 			dialog_faded_in_already = true
 
 # at the end of fade animation, reset flags
 func finished_fade_in_dialog(object, key, node):
 	node.queue_free()
-	while_dialog_animation = false
+	set_state(state.IDLE)
 	dialog_faded_in_already = true
 
 ## -----------------------------------------------------------------------------
@@ -1548,17 +1321,19 @@ func resume_state_from_info(state_info):
 
 	_load_event_at_index(state_info['event_idx'])
 
-					
+
 ## -----------------------------------------------------------------------------
 ##                  Finite State Machine
 ## -----------------------------------------------------------------------------
-# At the moment both functions are helpers only, but the goal of making them
-# as functions and not a simple `_state = whatever` is to also perform certain
-# actions when changing from state to state. If needed in the future, we can
-# also emit signals and stuff like that without having to go back to every state
-# change in the code.
+#  At the moment both functions are helpers only, but the goal of making them
+#  as functions and not a simple `_state = whatever` is to also perform certain
+#  actions when changing from state to state. If needed in the future, we can
+#  also emit signals and stuff like that without having to go back to every 
+#  state change in the code.
 
 func set_state(new_state):
+	var state_string = [ "IDLE", "READY", "TYPING", "WAITING", "WAITING_INPUT", "ANIMATING", ]
+	#print(state_string[new_state])
 	_state = new_state
 	return _state
 

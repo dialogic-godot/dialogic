@@ -528,7 +528,7 @@ func _on_PreviewButton_pressed() -> void:
 				{ 'event_id':'dialogic_001', "character": preview_character_selected, "portrait":"", "text":n['text_preview'].text }
 			]
 		}
-	preview_dialog.parse_characters(preview_dialog.dialog_script)
+	preview_dialog.dialog_script = DialogicParser.parse_characters(preview_dialog.dialog_script)
 	$VBoxContainer/Panel.add_child(preview_dialog)
 	
 	# maintaining the preview panel big enough for the dialog box
