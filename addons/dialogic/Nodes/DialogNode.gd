@@ -86,7 +86,7 @@ func _ready():
 	load_config_files()
 	
 	#update_custom_events()
-	$CustomEvents.update_custom_events()
+	$CustomEvents.update()
 		
 	# Checking if the dialog should read the code from a external file
 	if not timeline.empty():
