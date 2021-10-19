@@ -609,16 +609,9 @@ func parse_anchors():
 # checks if NextIndicator and ChoiceButtons should be visible
 func _process(delta):
 	# Showing or hiding the ▼ next indicator
-	if _state == state.READY:
-		$TextBubble/NextIndicatorContainer/NextIndicator.visible = true
-	else:
-		$TextBubble/NextIndicatorContainer/NextIndicator.visible = false
-	
-	
-	if _state == state.WAITING_INPUT:
-		$Options.visible = true
-	else:
-		$Options.visible = false
+	$TextBubble/NextIndicatorContainer/NextIndicator.visible = is_state(state.READY)
+	# Showing or hiding the container where the option buttons show up in questions
+	$Options.visible = is_state(state.WAITING_INPUT)
 	
 	# Hide if no input is required
 	if current_event.has('text'):
@@ -639,13 +632,13 @@ func _input(event: InputEvent) -> void:
 			if timer:
 				timer.time_left = 0
 		else:
-			if _state == state.TYPING:
+			if is_state(state.TYPING):
 				# Skip to end if key is pressed during the text animation
 				$TextBubble.skip()
 				# Cut the voice
 				$FX/CharacterVoice.stop_voice()
 			else:
-				if _state == state.WAITING_INPUT:
+				if is_state(state.WAITING_INPUT):
 					pass
 				else:
 					$FX/CharacterVoice.stop_voice() # stop the current voice as well
@@ -1557,3 +1550,13 @@ func resume_state_from_info(state_info):
 			dialog_script['events'][event_index]['answered'] = true
 
 	_load_event_at_index(state_info['event_idx'])
+
+					
+## -----------------------------------------------------------------------------
+##                  Finite State Machine
+## -----------------------------------------------------------------------------
+
+func is_state(check_state):
+	if _state == check_state:
+		return true
+	return false
