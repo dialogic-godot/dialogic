@@ -1153,12 +1153,15 @@ func clear_options():
 # adds a button for the given choice
 func add_choice_button(option: Dictionary) -> Button:
 	var button
-	if use_custom_choice_button():
+	var use_custom_choice_button = current_theme.get_value('buttons', 'use_custom', false) and not current_theme.get_value('buttons', 'custom_path', "").empty()
+	var use_native_choice_button = current_theme.get_value('buttons', 'use_native', false)
+	
+	if use_custom_choice_button:
 		button = get_custom_choice_button(option['label'])
 	else:
 		button = get_classic_choice_button(option['label'])
 	
-	if use_native_choice_button() or use_custom_choice_button():
+	if use_native_choice_button or use_custom_choice_button:
 		button_container.set('custom_constants/separation', current_theme.get_value('buttons', 'gap', 20))
 	button_container.add_child(button)
 	
@@ -1186,14 +1189,6 @@ func _should_add_choice_button(option: Dictionary):
 	else:
 		return true
 
-# checks the 'custom_choice_button' setting
-func use_custom_choice_button():
-	return current_theme.get_value('buttons', 'use_custom', false) and not current_theme.get_value('buttons', 'custom_path', "").empty()
-
-# checks the 'native_choice_button' setting
-func use_native_choice_button():
-	return current_theme.get_value('buttons', 'use_native', false)
-
 # instances a custom choice
 func get_custom_choice_button(label: String):
 	var theme = current_theme
@@ -1215,7 +1210,8 @@ func get_classic_choice_button(label: String):
 	# Text
 	button.set('custom_fonts/font', DialogicUtil.path_fixer_load(theme.get_value('text', 'font', "res://addons/dialogic/Example Assets/Fonts/DefaultFont.tres")))
 
-	if not use_native_choice_button():
+	var use_native_choice_button = current_theme.get_value('buttons', 'use_native', false)
+	if not use_native_choice_button:
 		if theme.get_value('buttons', 'fixed', false):
 			var size = theme.get_value('buttons', 'fixed_size', Vector2(130,40))
 			button.rect_min_size = size
