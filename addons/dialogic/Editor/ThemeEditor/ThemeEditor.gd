@@ -81,7 +81,6 @@ onready var n : Dictionary = {
 	'next_animation': $"VBoxContainer/TabContainer/Dialog Box/Column2/GridContainer/NextAnimation",
 	'next_indicator_scale': $"VBoxContainer/TabContainer/Dialog Box/Column2/GridContainer/HBoxContainer7/IndicatorScale",
 	
-	'theme_action_key': $"VBoxContainer/TabContainer/Dialog Box/Column3/GridContainer/BoxContainer/ActionOptionButton",
 	'animation_show_time': $"VBoxContainer/TabContainer/Dialog Box/Column3/GridContainer/ShowTime/SpinBox",
 	
 	# Character Names
@@ -322,7 +321,6 @@ func load_theme(filename):
 	var default_background = 'res://addons/dialogic/Example Assets/backgrounds/background-2.png'
 	setup_advanced_containers()
 	# Settings
-	n['theme_action_key'].text = theme.get_value('settings', 'action_key', '[Default]')
 	n['single_portrait_mode'].pressed = theme.get_value('settings', 'single_portrait_mode', false) # Currently in Dialog Text tab
 	
 	# Background
@@ -514,7 +512,7 @@ func _on_DelayPreview_timer_timeout() -> void:
 func _on_PreviewButton_pressed() -> void:
 	for i in $VBoxContainer/Panel.get_children():
 		i.free()
-	var preview_dialog = Dialogic.start('', '', "res://addons/dialogic/Nodes/DialogNode.tscn", false, false)
+	var preview_dialog = Dialogic.start('', '', "res://addons/dialogic/Nodes/DialogNode.tscn", false)
 	preview_dialog.preview = true
 	
 	if n['character_picker']: # Sometimes it can't find the node
@@ -530,7 +528,7 @@ func _on_PreviewButton_pressed() -> void:
 				{ 'event_id':'dialogic_001', "character": preview_character_selected, "portrait":"", "text":n['text_preview'].text }
 			]
 		}
-	preview_dialog.parse_characters(preview_dialog.dialog_script)
+	preview_dialog.dialog_script = DialogicParser.parse_characters(preview_dialog.dialog_script)
 	$VBoxContainer/Panel.add_child(preview_dialog)
 	
 	# maintaining the preview panel big enough for the dialog box
@@ -766,22 +764,6 @@ func _on_NextOffset_value_changed(value):
 	var offset_value = Vector2(n['next_indicator_offset_x'].value, n['next_indicator_offset_y'].value)
 	DialogicResources.set_theme_value(current_theme, 'next_indicator', 'offset', offset_value)
 	_on_PreviewButton_pressed() # Refreshing the preview
-
-
-func _on_ActionOptionButton_item_selected(index) -> void:
-	if loading:
-		return
-	DialogicResources.set_theme_value(current_theme, 'settings','action_key', n['theme_action_key'].text)
-
-
-func _on_ActionOptionButton_pressed() -> void:
-	var theme = DialogicResources.get_theme_config(current_theme)
-	n['theme_action_key'].clear()
-	n['theme_action_key'].add_item(theme.get_value('settings', 'action_key', '[Default]'))
-	n['theme_action_key'].add_item('[Default]')
-	InputMap.load_from_globals()
-	for a in InputMap.get_actions():
-		n['theme_action_key'].add_item(a)
 
 
 ## ------------ 		NAME LABEL TAB	 	------------------------------------

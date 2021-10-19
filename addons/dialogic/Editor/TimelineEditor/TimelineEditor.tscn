@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=2]
+[gd_scene load_steps=31 format=2]
 
 [ext_resource path="res://addons/dialogic/Images/Event Icons/Main Icons/character-join.svg" type="Texture" id=1]
 [ext_resource path="res://addons/dialogic/Images/Event Icons/Main Icons/text-event.svg" type="Texture" id=2]
@@ -25,13 +25,15 @@
 [ext_resource path="res://addons/dialogic/Images/Event Icons/Main Icons/set-glossary.svg" type="Texture" id=23]
 [ext_resource path="res://addons/dialogic/Images/Event Icons/Main Icons/save-icon.svg" type="Texture" id=24]
 [ext_resource path="res://addons/dialogic/Editor/TimelineEditor/SmallEventButton.tscn" type="PackedScene" id=25]
+[ext_resource path="res://addons/dialogic/Images/Event Icons/Main Icons/label.svg" type="Texture" id=26]
+[ext_resource path="res://addons/dialogic/Images/Event Icons/Main Icons/go-to.svg" type="Texture" id=27]
 
 [sub_resource type="StyleBoxFlat" id=1]
 content_margin_left = 5.0
 content_margin_right = 5.0
 content_margin_top = 5.0
 content_margin_bottom = 5.0
-bg_color = Color( 0.15, 0.1725, 0.2325, 1 )
+bg_color = Color( 0, 0, 0, 1 )
 border_width_left = 1
 border_width_top = 1
 border_width_right = 1
@@ -254,7 +256,7 @@ margin_bottom = 20.0
 hint_tooltip = "End Branch"
 icon = ExtResource( 9 )
 event_id = "dialogic_013"
-event_color = Color( 0.160784, 0.423529, 0.309804, 0.447059 )
+event_color = Color( 0.270588, 0.243137, 0.572549, 0.407843 )
 event_icon = ExtResource( 9 )
 
 [node name="SetValue" parent="ScrollContainer/EventContainer/Grid2" instance=ExtResource( 25 )]
@@ -276,6 +278,27 @@ icon = ExtResource( 23 )
 event_id = "dialogic_025"
 event_color = Color( 0.270588, 0.243137, 0.572549, 0.407843 )
 event_icon = ExtResource( 23 )
+
+[node name="LabelEvent" parent="ScrollContainer/EventContainer/Grid2" instance=ExtResource( 25 )]
+margin_left = 18.0
+margin_top = 26.0
+margin_bottom = 46.0
+hint_tooltip = "Label Event"
+icon = ExtResource( 26 )
+event_id = "dialogic_015"
+event_color = Color( 0.270588, 0.243137, 0.572549, 0.407843 )
+event_icon = ExtResource( 26 )
+
+[node name="GoToEvent" parent="ScrollContainer/EventContainer/Grid2" instance=ExtResource( 25 )]
+margin_left = 36.0
+margin_top = 26.0
+margin_right = 48.0
+margin_bottom = 46.0
+hint_tooltip = "Go to Event"
+icon = ExtResource( 27 )
+event_id = "dialogic_016"
+event_color = Color( 0.270588, 0.243137, 0.572549, 0.407843 )
+event_icon = ExtResource( 27 )
 
 [node name="HBoxContainer3" type="HBoxContainer" parent="ScrollContainer/EventContainer"]
 margin_top = 207.0
@@ -464,6 +487,7 @@ event_color = Color( 0.14902, 0.333333, 0.509804, 0.4 )
 event_icon = ExtResource( 20 )
 
 [node name="CustomEventsHeadline" type="HBoxContainer" parent="ScrollContainer/EventContainer"]
+visible = false
 margin_top = 389.0
 margin_right = 178.0
 margin_bottom = 403.0
@@ -483,12 +507,13 @@ margin_bottom = 14.0
 size_flags_horizontal = 3
 
 [node name="CustomEventsContainer" type="VBoxContainer" parent="ScrollContainer/EventContainer"]
+visible = false
 margin_top = 412.0
 margin_right = 178.0
 margin_bottom = 456.0
 
 [node name="Spacer" type="Control" parent="ScrollContainer/EventContainer"]
-margin_top = 465.0
+margin_top = 389.0
 margin_right = 178.0
-margin_bottom = 565.0
+margin_bottom = 489.0
 rect_min_size = Vector2( 0, 100 )

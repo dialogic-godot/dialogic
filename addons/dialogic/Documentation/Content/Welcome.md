@@ -39,10 +39,11 @@ This project is made possible by the support of our [Patreons](https://www.patre
 - [Theme Editor](./Reference/Theme.md)
 
 ## Tutorials
-- [Getting started (video)](https://www.youtube.com/watch?v=sYjgDIgD7AY)
-- [Saving and Loading](./Tutorials/Saving.md)
-- [Creating Custom Events](./Events/Custom Events/CreateCustomEvents)
 - [Beginners Guide](./Tutorials/BeginnersGuideStepByStep.md)
+- [Getting started (video)](https://www.youtube.com/watch?v=sYjgDIgD7AY)
+- [Updating to 1.3](./Tutorials/Updating.md)
+- [Saving and Loading](./Tutorials/Saving.md)
+- [Creating Custom Events](./Events/Custom%20Events/CreateCustomEvents.md)
 - [Voice Line Support](./Tutorials/VoiceLines.md)
 
 

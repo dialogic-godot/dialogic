@@ -70,10 +70,6 @@ func update_text(text):
 	return true
 
 
-func is_finished():
-	return _finished
-
-
 func skip():
 	text_label.visible_characters = -1
 	_handle_text_completed()

@@ -766,7 +766,6 @@ func _on_gui_input(event):
 
 
 func _start_rename():
-	print('rename start')
 	var item = get_selected()
 	var metadata = item.get_metadata(0)
 	if metadata.has("editable") and metadata["editable"]:

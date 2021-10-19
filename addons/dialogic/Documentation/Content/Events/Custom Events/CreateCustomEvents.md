@@ -24,83 +24,79 @@ All of the files that are used for creating a custom Event Block and Handling Sc
 
 
 
-
 # Making your first custom event in 6 steps
 Let's now create a simple event that will print some text to the Output panel in Godot.
 
-## 1. Create the folder
-First you should create a new folder in `res://dialogic/custom-events` and give it a name that is descriptive and unique.
 
-For this print event let's call it `print-event`.
+## Create the event
+Go to the `settings page` and in the `custom events section` hit the `New` button. 
+Fill in a name for your event, a folder name and an id. For the id's I recommend using your name or a string unique to you followed by a number. 
+**The id has to be different for every event!!!**
+This is why I recommend the unique string, because it will enable you to share the event with others without breaking their games.
+![Creating](./Images/CreationProcess.PNG)
 
+When you are ready, hit `Create`. You will see the folder appear in the `FileSystem` under `res://dialogic/custom-events/`. 
 
-## 2. The folders content
-Now you should go to `res://addons/dialogic/Example Assets/CustomEvents` and copy all the files from there and paste them into your new folder (In this case: `res://dialogic/custom-events/print-event`)
+If you go to the `timeline editor` now, you should already be able to see your event in the event list.
 
-
-## 3. The EventBlock (EventBlock.tscn)
-This is a scene that inherits `res://addongs/dialogic/Editor/Events/Templates/EventTemplate.tscn`.
-When you open the scene you can see that all except the root node are grayed out.
-
-**IMPORTANT!!! This file needs to be named `EventBlock.tscn`!!! DO NOT RENAME**
-
-### Setting the EventBlock values
-Now select the the root node of that scene. In the inspector you will see a couple of variables to set. 
-
-#### EventName and icon
-For now let's set the `Event Name`. I will set mine to `Print Event`.
-
-#### The Event Data
-Next you also need to think about the data that your event should save/handle. 
-
-As said before it has to contain an `event_id`. These ids mostly consist of your "name" and a number. My event_id will be `rabloe_000`.
-*We decided to move away from the actual names so that renaming wouldn't cause lots of rework.*
-*Make sure your "name" is as unique as possible, so you can share custom events with others without trouble.*
-
-For the rest of the data I just want to store a string to print. Create the default data as a dictionary in the `event_data` in the inspector.
-
-#### Style and Icon
-Now there is also already a stylebox. You can edit it (mainly the background color) to give it a unique style.
-You can also select an icon for your event. The default Dialogic icon size and format is: 22x22 `svg`. You can find the icons used for the built-in events here: `res://addons/dialogic/Images/Event Icons/Main Icons`
+### What happened
+This little menu already created a number of things for you:
+- The `EventBlock` (EventBlock.tscn)
+- An example `EventPart` (EventPart_Example.gd/.tscn)
+- The `event handling script` (event_+EVENTID+.gd)
+- A `stylebox` for your event (Stylebox.tres)
 
 
 
-## 4. The Event Blocks Content (EventParts)
+## What next
+The automatic process already setup a lot. But it didn't know the purpose of our event.
+So we will have to add that.
+
+### | Adding the data
+First we want to open the `EventBlock.tscn` scene. (Do not rename this scene!)
+
+Select its root node and look at it's exported variables in the inspector.
+
+We will need to add all the data, that our event can have to the `event_data`.
+You can see, that it alread contains your event id. This needs to be there, do not delete it!
+
+I want to be able to set a text that will be printed, when my event is activated, so I'll add an information slot for that:
+![EventData](./Images/EventBlock_EventData.PNG)
+
+### | Icon and Stylebox
+You can also change your events icon in the inspector. Just drag an image into the `Event Icon`.
+
+Below that, you can open the Stylebox and change its background color, to give your event a unique look.
+
+
+### | The Event Blocks Content (EventParts)
 Right now your event block will be empty so let's change that (if you want to).
 
 The content of an EventBlock is separated as `EventParts`. This allows for some reuse.
 There are two places EventParts can be in an EventBlock: The Header (always visible) and the Body (can be hidden).
-*EventParts can also contain other EventParts, but it wont be necessary for most custom events.*
 
-*An EventBlock does not have to have a body nor a header EventPart.*
+*An EventBlock does not have to have a body nor a header EventPart. For example the End Branch event has none.*
 
 There is already a simple example `EventPart` (Script and Scene) included. You can change it as much as you want.
 
-### Loading the data
-In `load_data()` you will need to set the values of your control nodes.
+#### | Loading the data
+In `load_data()` you will need to set the values of your control nodes. This function is called when the event is added to the timeline editor.
 
-### Saving changes to the data
+#### | Saving changes to the data
 When the values get changed (listen to it via signals) set the according value in the `event_data` dictionary and call `data_changed()`.
 
 This is pretty much all you need to know.
 *If you want to find more examples you can go to `res://addons/dialogic/Editor/Events/Parts/` and look at the EventParts that shape Dialogic's default blocks.*
 
-### Using the EventPart
+### | Using the EventPart
 Once you finished everything in your EventPart(s) you need to go into the `EventBlock` scene and set the `header`/`body` variable in the inspector to the new scene(s).
 
-Here is how the EventBlock's settings look for me now:
-![EventPartAdded](./Images/EventBlockSettingsFilled.PNG)
 
 
-
-## 5. The event handler script (event_yourname_000.gd)
+### | The event handler script (event_yourname_000.gd)
 Once you have your `EventBlock` finished, you need to add the event handling logic. 
 
-### The correct name
-Dialogic will search your handler script following the format `event_` + your event id.
-So in our case, since the `event_id` is `rabloe_000` the handler scripts needs to be called **exactly** `event_rabloe_000.gd`
-
-### The handle_event() function
+#### | The handle_event() function
 If you open the script you will see, that there is only one function by default, the `handle_event()` function.
 
 It comes with two usefull pieces of information: the `event_data` and a reference to the `dialog_node`.
@@ -111,21 +107,16 @@ there. But of course you can do a lot more.
 
 
 Some more stuff is already explained in the script:
-#### Continue
+##### Continue
 Use `dialog_node.load_next_event()` to continue with the next event.
 
-#### Waiting
+##### Waiting
 If you don't want the player to interrupt your event, set `dialog_node.waiting` to `true` while your event is handled.
 Don't forget to set it back to `false`.
 
 
 
-## 6. Using your event
-You are as good as done. Just enable custom events in dialogics settings menu.
-Then go into a timeline. Scroll down to the custom events section. There it should be, otherwise you should hit the refresh button.
-
-*Go ahead and try it out!*
-
-
+## And done!
+Great, you've created your first custom event for dialogic. 
 
 *Make sure to check Emilio's Discord server just in case someone has already created the custom event that you need. They are super easy to [import](./ImportCustomEvents.md)!*

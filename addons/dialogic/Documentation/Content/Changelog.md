@@ -1,6 +1,12 @@
 # Changelog
 
-## v1.3 - (WIP)
+## v1.4
+- Wait seconds event can now be set to be skipped with the user's action [[SimonLammer](https://github.com/SimonLammer)]
+- Added: `Autofocus choices` in the settings [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
+- New events:
+  - `Label Event` and `Go to Event`. This will help you creating an anchor position to go back to.
+
+## v1.3 - Save me some time
 #### General Editor Stuff
 - **Builtin documentation** [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
     - Added a button to open the documentation from the nav bar
