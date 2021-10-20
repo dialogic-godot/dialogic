@@ -234,7 +234,7 @@ func _on_text_audio_default_bus_item_selected(index):
 ################################################################################
 
 func open_custom_event_docs():
-	editor_reference.get_node("MainPanel/MasterTreeContainer/MasterTree").select_documentation_item("res://addons/dialogic/Documentation/Content/Events/Custom Events/CreateCustomEvents.md")
+	editor_reference.get_node("MainPanel/MasterTreeContainer/MasterTree").select_documentation_item("res://addons/dialogic/Documentation/Content/Events/CustomEvents/CreateCustomEvents.md")
 
 func new_custom_event_pressed():
 	nodes['new_custom_event_section'].show()
