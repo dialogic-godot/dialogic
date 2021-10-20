@@ -422,7 +422,7 @@ func _input(event: InputEvent) -> void:
 					_load_next_event()
 			if settings.has_section_key('dialog', 'propagate_input'):
 				var propagate_input: bool = settings.get_value('dialog', 'propagate_input')
-				if not propagate_input:
+				if not propagate_input  and not is_state(state.WAITING_INPUT):
 					get_tree().set_input_as_handled()
 
 # when the text finished showing
@@ -918,17 +918,8 @@ func clear_options():
 
 # adds a button for the given choice
 func add_choice_button(option: Dictionary) -> Button:
-	var button
-	var use_custom_choice_button = current_theme.get_value('buttons', 'use_custom', false) and not current_theme.get_value('buttons', 'custom_path', "").empty()
-	var use_native_choice_button = current_theme.get_value('buttons', 'use_native', false)
-	
-	if use_custom_choice_button:
-		button = get_custom_choice_button(option['label'])
-	else:
-		button = get_classic_choice_button(option['label'])
-	
-	if use_native_choice_button or use_custom_choice_button:
-		button_container.set('custom_constants/separation', current_theme.get_value('buttons', 'gap', 20))
+	var button = get_classic_choice_button(option['label'])
+	button_container.set('custom_constants/separation', current_theme.get_value('buttons', 'gap', 20))
 	button_container.add_child(button)
 	
 	var hotkey
@@ -1024,9 +1015,11 @@ func get_classic_choice_button(label: String):
 			false,               # 6 $TextureModulation/CheckBox
 			Color.white,         # 7 $TextureModulation/ColorPickerButton
 		]
+		# Default hover style
+		var hover_style = [true, Color( 0.698039, 0.698039, 0.698039, 1 ), false, Color.black, true, default_background, false, Color.white]
 		
 		var style_normal = theme.get_value('buttons', 'normal', default_style)
-		var style_hover = theme.get_value('buttons', 'hover', default_style)
+		var style_hover = theme.get_value('buttons', 'hover', hover_style)
 		var style_pressed = theme.get_value('buttons', 'pressed', default_style)
 		var style_disabled = theme.get_value('buttons', 'disabled', default_style)
 		

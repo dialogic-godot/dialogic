@@ -366,8 +366,9 @@ func load_theme(filename):
 	
 	
 	var default_style = [false, Color.white, false, Color.black, true, default_background, false, Color.white]
+	var hover_style = [true, Color( 0.698039, 0.698039, 0.698039, 1 ), false, Color.black, true, default_background, false, Color.white]
 	n['button_normal'].load_style(theme.get_value('buttons', 'normal', default_style))
-	n['button_hover'].load_style(theme.get_value('buttons', 'hover', default_style))
+	n['button_hover'].load_style(theme.get_value('buttons', 'hover', hover_style))
 	n['button_pressed'].load_style(theme.get_value('buttons', 'pressed', default_style))
 	n['button_disabled'].load_style(theme.get_value('buttons', 'disabled', default_style))
 	
