@@ -1013,9 +1013,11 @@ func get_classic_choice_button(label: String):
 			false,               # 6 $TextureModulation/CheckBox
 			Color.white,         # 7 $TextureModulation/ColorPickerButton
 		]
+		# Default hover style
+		var hover_style = [true, Color( 0.698039, 0.698039, 0.698039, 1 ), false, Color.black, true, default_background, false, Color.white]
 		
 		var style_normal = theme.get_value('buttons', 'normal', default_style)
-		var style_hover = theme.get_value('buttons', 'hover', default_style)
+		var style_hover = theme.get_value('buttons', 'hover', hover_style)
 		var style_pressed = theme.get_value('buttons', 'pressed', default_style)
 		var style_disabled = theme.get_value('buttons', 'disabled', default_style)
 		
