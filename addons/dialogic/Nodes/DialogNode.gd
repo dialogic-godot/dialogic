@@ -916,17 +916,8 @@ func clear_options():
 
 # adds a button for the given choice
 func add_choice_button(option: Dictionary) -> Button:
-	var button
-	var use_custom_choice_button = current_theme.get_value('buttons', 'use_custom', false) and not current_theme.get_value('buttons', 'custom_path', "").empty()
-	var use_native_choice_button = current_theme.get_value('buttons', 'use_native', false)
-	
-	if use_custom_choice_button:
-		button = get_custom_choice_button(option['label'])
-	else:
-		button = get_classic_choice_button(option['label'])
-	
-	if use_native_choice_button or use_custom_choice_button:
-		button_container.set('custom_constants/separation', current_theme.get_value('buttons', 'gap', 20))
+	var button = get_classic_choice_button(option['label'])
+	button_container.set('custom_constants/separation', current_theme.get_value('buttons', 'gap', 20))
 	button_container.add_child(button)
 	
 	var hotkey
