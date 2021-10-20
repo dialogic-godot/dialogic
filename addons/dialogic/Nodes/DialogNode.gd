@@ -418,7 +418,7 @@ func _input(event: InputEvent) -> void:
 					_load_next_event()
 			if settings.has_section_key('dialog', 'propagate_input'):
 				var propagate_input: bool = settings.get_value('dialog', 'propagate_input')
-				if not propagate_input:
+				if not propagate_input  and not is_state(state.WAITING_INPUT):
 					get_tree().set_input_as_handled()
 
 # when the text finished showing
