@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://addons/dialogic/Nodes/TextBubble.tscn" type="PackedScene" id=1]
 [ext_resource path="res://addons/dialogic/Example Assets/backgrounds/GlossaryBackground.tres" type="StyleBox" id=2]
@@ -9,6 +9,7 @@
 [ext_resource path="res://addons/dialogic/Nodes/BackgroundMusic.tscn" type="PackedScene" id=7]
 [ext_resource path="res://addons/dialogic/Nodes/random_audio_stream_player.gd" type="Script" id=8]
 [ext_resource path="res://addons/dialogic/Example Assets/Sound Effects/Beep.wav" type="AudioStream" id=9]
+[ext_resource path="res://addons/dialogic/Nodes/DialogicCustomEvents.gd" type="Script" id=10]
 
 [sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 1, 1, 1, 0 )
@@ -36,6 +37,7 @@ margin_top = -207.0
 margin_bottom = -40.0
 
 [node name="Options" type="VBoxContainer" parent="."]
+visible = false
 margin_right = 1024.0
 margin_bottom = 600.0
 grow_horizontal = 2
@@ -114,9 +116,9 @@ margin_right = 208.0
 margin_bottom = 27.0
 size_flags_horizontal = 3
 size_flags_vertical = 4
-custom_colors/default_color = Color( 1, 1, 1, 1 )
-custom_fonts/normal_font = ExtResource( 4 )
 custom_styles/normal = SubResource( 1 )
+custom_fonts/normal_font = ExtResource( 4 )
+custom_colors/default_color = Color( 1, 1, 1, 1 )
 bbcode_enabled = true
 bbcode_text = "This is the title"
 text = "This is the title"
@@ -128,9 +130,9 @@ margin_top = 31.0
 margin_right = 208.0
 margin_bottom = 112.0
 size_flags_horizontal = 3
-custom_colors/default_color = Color( 0.756863, 0.756863, 0.756863, 1 )
-custom_fonts/normal_font = ExtResource( 4 )
 custom_styles/normal = SubResource( 1 )
+custom_fonts/normal_font = ExtResource( 4 )
+custom_colors/default_color = Color( 0.756863, 0.756863, 0.756863, 1 )
 bbcode_enabled = true
 fit_content_height = true
 scroll_active = false
@@ -143,9 +145,9 @@ margin_top = 116.0
 margin_right = 208.0
 margin_bottom = 143.0
 size_flags_horizontal = 3
-custom_colors/default_color = Color( 0.756863, 0.756863, 0.756863, 1 )
-custom_fonts/normal_font = ExtResource( 4 )
 custom_styles/normal = SubResource( 1 )
+custom_fonts/normal_font = ExtResource( 4 )
+custom_colors/default_color = Color( 0.756863, 0.756863, 0.756863, 1 )
 bbcode_enabled = true
 fit_content_height = true
 scroll_active = false
@@ -159,5 +161,8 @@ __meta__ = {
 
 [node name="DialogicTimer" type="Timer" parent="."]
 one_shot = true
+
+[node name="CustomEvents" type="Node" parent="."]
+script = ExtResource( 10 )
 
 [connection signal="timeout" from="DefinitionInfo/Timer" to="." method="_on_Definition_Timer_timeout"]
