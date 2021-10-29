@@ -199,7 +199,6 @@ static func _insert_variable_definitions(current_dialog, text: String):
 	if result:
 		for res in result:
 			var r_string = res.get_string()
-			print(r_string)
 			# Choosing a random word if there is a list like [word1,word2,word3,word4]
 			if ',' in r_string:
 				var r_string_array = r_string.replace('[', '').replace(']', '').split(',')
