@@ -45,6 +45,7 @@ func update() -> void:
 					if handlers.has(event_id):
 						print("Custom event ",event_id," already loaded")
 						print("Continuing...")
+						file_name = dir.get_next()
 						continue
 					else:
 						print("No handler node for event ",event_id," found.")
