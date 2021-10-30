@@ -369,10 +369,7 @@ func load_dialog():
 	# All this parse events should be happening in the same loop ideally
 	# But until performance is not an issue I will probably stay lazy
 	# And keep adding different functions for each parsing operation.
-	if settings.has_section_key('dialog', 'auto_color_names'):
-		if settings.get_value('dialog', 'auto_color_names'):
-			dialog_script = DialogicParser.parse_characters(dialog_script)
-	else:
+	if settings.get_value('dialog', 'auto_color_names', true):
 		dialog_script = DialogicParser.parse_characters(dialog_script)
 	dialog_script = DialogicParser.parse_text_lines(dialog_script, preview)
 	dialog_script = DialogicParser.parse_branches(self, dialog_script)
@@ -877,7 +874,7 @@ func update_name(character) -> void:
 # shows the given text in the Text Bubble
 # handles the simple translation feature
 func update_text(text: String) -> String:
-	if settings.has_section_key('dialog', 'translations') and settings.get_value('dialog', 'translations'):
+	if settings.get_value('dialog', 'translations', false):
 		text = tr(text)
 	var final_text = DialogicParser.parse_definitions(self, DialogicParser.parse_alignment(self, text))
 	final_text = final_text.replace('[br]', '\n')
@@ -994,57 +991,56 @@ func get_classic_choice_button(label: String):
 	# Text
 	button.set('custom_fonts/font', DialogicUtil.path_fixer_load(theme.get_value('text', 'font', "res://addons/dialogic/Example Assets/Fonts/DefaultFont.tres")))
 
-	var use_native_choice_button = current_theme.get_value('buttons', 'use_native', false)
-	if not use_native_choice_button:
-		if theme.get_value('buttons', 'fixed', false):
-			var size = theme.get_value('buttons', 'fixed_size', Vector2(130,40))
-			button.rect_min_size = size
-			button.rect_size = size
-		
-		button_container.set('custom_constants/separation', theme.get_value('buttons', 'gap', 20))
-		
-		# Different styles
-		var default_background = 'res://addons/dialogic/Example Assets/backgrounds/background-2.png'
-		var default_style = [
-			false,               # 0 $TextColor/CheckBox
-			Color.white,         # 1 $TextColor/ColorPickerButton
-			false,               # 2 $FlatBackground/CheckBox
-			Color.black,         # 3 $FlatBackground/ColorPickerButton
-			true,               # 4 $BackgroundTexture/CheckBox
-			default_background,  # 5 $BackgroundTexture/Button
-			false,               # 6 $TextureModulation/CheckBox
-			Color.white,         # 7 $TextureModulation/ColorPickerButton
-		]
-		# Default hover style
-		var hover_style = [true, Color( 0.698039, 0.698039, 0.698039, 1 ), false, Color.black, true, default_background, false, Color.white]
-		
-		var style_normal = theme.get_value('buttons', 'normal', default_style)
-		var style_hover = theme.get_value('buttons', 'hover', hover_style)
-		var style_pressed = theme.get_value('buttons', 'pressed', default_style)
-		var style_disabled = theme.get_value('buttons', 'disabled', default_style)
-		
-		# Text color
-		var default_color = Color(theme.get_value('text', 'color', '#ffffff'))
-		button.set('custom_colors/font_color', default_color)
-		button.set('custom_colors/font_color_hover', default_color.lightened(0.2))
-		button.set('custom_colors/font_color_pressed', default_color.darkened(0.2))
-		button.set('custom_colors/font_color_disabled', default_color.darkened(0.8))
-		
-		if style_normal[0]:
-			button.set('custom_colors/font_color', style_normal[1])
-		if style_hover[0]:
-			button.set('custom_colors/font_color_hover', style_hover[1])
-		if style_pressed[0]:
-			button.set('custom_colors/font_color_pressed', style_pressed[1])
-		if style_disabled[0]:
-			button.set('custom_colors/font_color_disabled', style_disabled[1])
-		
 
-		# Style normal
-		button_style_setter('normal', style_normal, button, theme)
-		button_style_setter('hover', style_hover, button, theme)
-		button_style_setter('pressed', style_pressed, button, theme)
-		button_style_setter('disabled', style_disabled, button, theme)
+	if theme.get_value('buttons', 'fixed', false):
+		var size = theme.get_value('buttons', 'fixed_size', Vector2(130,40))
+		button.rect_min_size = size
+		button.rect_size = size
+	
+	button_container.set('custom_constants/separation', theme.get_value('buttons', 'gap', 20))
+	
+	# Different styles
+	var default_background = 'res://addons/dialogic/Example Assets/backgrounds/background-2.png'
+	var default_style = [
+		false,               # 0 $TextColor/CheckBox
+		Color.white,         # 1 $TextColor/ColorPickerButton
+		false,               # 2 $FlatBackground/CheckBox
+		Color.black,         # 3 $FlatBackground/ColorPickerButton
+		true,               # 4 $BackgroundTexture/CheckBox
+		default_background,  # 5 $BackgroundTexture/Button
+		false,               # 6 $TextureModulation/CheckBox
+		Color.white,         # 7 $TextureModulation/ColorPickerButton
+	]
+	# Default hover style
+	var hover_style = [true, Color( 0.698039, 0.698039, 0.698039, 1 ), false, Color.black, true, default_background, false, Color.white]
+	
+	var style_normal = theme.get_value('buttons', 'normal', default_style)
+	var style_hover = theme.get_value('buttons', 'hover', hover_style)
+	var style_pressed = theme.get_value('buttons', 'pressed', default_style)
+	var style_disabled = theme.get_value('buttons', 'disabled', default_style)
+	
+	# Text color
+	var default_color = Color(theme.get_value('text', 'color', '#ffffff'))
+	button.set('custom_colors/font_color', default_color)
+	button.set('custom_colors/font_color_hover', default_color.lightened(0.2))
+	button.set('custom_colors/font_color_pressed', default_color.darkened(0.2))
+	button.set('custom_colors/font_color_disabled', default_color.darkened(0.8))
+	
+	if style_normal[0]:
+		button.set('custom_colors/font_color', style_normal[1])
+	if style_hover[0]:
+		button.set('custom_colors/font_color_hover', style_hover[1])
+	if style_pressed[0]:
+		button.set('custom_colors/font_color_pressed', style_pressed[1])
+	if style_disabled[0]:
+		button.set('custom_colors/font_color_disabled', style_disabled[1])
+	
+
+	# Style normal
+	button_style_setter('normal', style_normal, button, theme)
+	button_style_setter('hover', style_hover, button, theme)
+	button_style_setter('pressed', style_pressed, button, theme)
+	button_style_setter('disabled', style_disabled, button, theme)
 	return button
 
 # adds parts of a style to the given button
@@ -1108,9 +1104,7 @@ func handle_voice(event):
 # defocuses all characters except the given one
 func grab_portrait_focus(character_data, event: Dictionary = {}) -> bool:
 	var exists = false
-	var visually_focus = true
-	if settings.has_section_key('dialog', 'dim_characters'):
-		visually_focus = settings.get_value('dialog', 'dim_characters')
+	var visually_focus = settings.get_value('dialog', 'dim_characters', true)
 
 	for portrait in $Portraits.get_children():
 		if portrait.character_data == character_data:
