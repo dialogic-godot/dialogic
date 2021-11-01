@@ -7,18 +7,18 @@ This project is made possible by the support of our [Patreons](https://www.patre
 
 # Index
 ## Events
-- [Text event](./Events/000)
-- [Character Join](./Events/001)
-- [Character Leave](./Events/002)
-- [Question Event](./Events/010)
-- [Choice Event](./Events/011)
-- [Condition Event](./Events/012)
-- [End Event](./Events/013)
-- [Set Value](./Events/014)
-- [Audio Events](./Events/030)
-- [Emit Signal](./Events/040)
-- [Change Scene](./Events/041)
-- [Call Node](./Events/042)
+- [Text event](./Events/000.md)
+- [Character Join](./Events/001.md)
+- [Character Leave](./Events/002.md)
+- [Question Event](./Events/010.md)
+- [Choice Event](./Events/011.md)
+- [Condition Event](./Events/012.md)
+- [End Event](./Events/013.md)
+- [Set Value](./Events/014.md)
+- [Audio Events](./Events/030.md)
+- [Emit Signal](./Events/040.md)
+- [Change Scene](./Events/041.md)
+- [Call Node](./Events/042.md)
 
 ## FAQ
 - [Can I use Dialogic in one of my projects?](./FAQ/can-i-use-dialogic-in-my-project.md)
@@ -34,13 +34,18 @@ This project is made possible by the support of our [Patreons](https://www.patre
 ## Reference
 - [Dialog node](./Reference/000.md)
 - [Dialog Class](./Reference/001.md)
+- [Timeline Editor](./Reference/Timeline.md)
 - [Character Editor](./Reference/Character.md)
 - [Theme Editor](./Reference/Theme.md)
 
 ## Tutorials
-- [Creating Custom Events](./Events/Custom Events/CreateCustomEvents)
 - [Beginners Guide](./Tutorials/BeginnersGuideStepByStep.md)
-- [Full Documentation (old)](./Tutorials/DefaultDocs.md)
+- [Getting started (video)](https://www.youtube.com/watch?v=sYjgDIgD7AY)
+- [Updating to 1.3](./Tutorials/Updating.md)
+- [Saving and Loading](./Tutorials/Saving.md)
+- [Creating Custom Events](./Events/CustomEvents/CreateCustomEvents.md)
+- [Voice Line Support](./Tutorials/VoiceLines.md)
+
 
 
 # Dialogic is made by:
