@@ -47,26 +47,20 @@ static func parse_characters(dialog_script):
 static func parse_text_lines(unparsed_dialog_script: Dictionary, preview:bool = false) -> Dictionary:
 	var parsed_dialog: Dictionary = unparsed_dialog_script
 	var new_events: Array = []
-	var split_new_lines = true
-	var remove_empty_messages = true
 	var settings = DialogicResources.get_settings_config()
+	var split_new_lines = settings.get_value('dialog', 'new_lines', true)
+	var remove_empty_messages = settings.get_value('dialog', 'remove_empty_messages', true)
 
 	# Return the same thing if it doesn't have events
 	if unparsed_dialog_script.has('events') == false:
 		return unparsed_dialog_script
 
-	# Getting extra settings
-	if settings.has_section_key('dialog', 'remove_empty_messages'):
-		remove_empty_messages = settings.get_value('dialog', 'remove_empty_messages')
-	if settings.has_section_key('dialog', 'new_lines'):
-		split_new_lines = settings.get_value('dialog', 'new_lines')
-
 	# Parsing
 	for event in unparsed_dialog_script['events']:
 		if event.has('text') and event.has('character') and event.has('portrait'):
-			if event['text'].empty() and remove_empty_messages == true:
+			if event['text'].empty() and remove_empty_messages:
 				pass
-			elif '\n' in event['text'] and preview == false and split_new_lines == true:
+			elif '\n' in event['text'] and preview == false and split_new_lines:
 				var lines = event['text'].split('\n')
 				var counter = 0 
 				for line in lines:
@@ -191,9 +185,32 @@ static func parse_alignment(current_dialog, text):
 # adds the values of the variables
 static func _insert_variable_definitions(current_dialog, text: String):
 	var final_text := text;
-	for d in current_dialog.definitions['variables']:
-		var name : String = d['name']
-		final_text = final_text.replace('[' + name + ']', d['value'])
+	
+	# Regex for searching text inside brackets []
+	var regex = RegEx.new()
+	regex.compile('\\[(.*?)\\]')
+	var result = regex.search_all(final_text)
+	if result:
+		for res in result:
+			var r_string = res.get_string()
+			# Choosing a random word if there is a list like [word1,word2,word3,word4]
+			if ',' in r_string:
+				var r_string_array = r_string.replace('[', '').replace(']', '').split(',')
+				var new_word = r_string_array[randi() % r_string_array.size()]
+				# Check if the random selected word is a variable that exists and get the value
+				for d in current_dialog.definitions['variables']:
+					var name : String = d['name']
+					if new_word == d['name']:
+						new_word = str(d['value'])
+				# Replace the old string with the new word
+				final_text = final_text.replace(r_string, new_word)
+			else:
+				# Replace the name of a value [whatever] with the result
+				var r_string_array = r_string.replace('[', '').replace(']', '')
+				for d in current_dialog.definitions['variables']:
+					if d['name'] == r_string_array:
+						final_text = final_text.replace(r_string, d['value'])
+	
 	return final_text
 
 # adds the BBCode for the glossary words

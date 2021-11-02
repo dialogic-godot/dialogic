@@ -6,27 +6,14 @@ var editor_reference
 onready var nodes = {
 	# Theme
 	'themes': $VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer/HBoxContainer/ThemeOptionButton,
-	'advanced_themes': $VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer/HBoxContainer2/AdvancedThemes,
 	'canvas_layer' : $VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer/HBoxContainer3/CanvasLayer,
 	
 	# Dialog
-	'new_lines': $VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2/HBoxContainer2/NewLines,
-	'remove_empty_messages': $VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2/HBoxContainer/RemoveEmptyMessages,
-	'auto_color_names': $VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2/HBoxContainer3/AutoColorNames,
-	'propagate_input': $VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2/HBoxContainer4/PropagateInput,
-	'dim_characters': $VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2/HBoxContainer5/DimCharacters,
-	'text_event_audio_enable': $VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2/HBoxContainer7/EnableVoices,
 	'text_event_audio_default_bus' : $VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2/TextAudioDefaultBus/AudioBus,
-	'translations': $VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2/HBoxContainer6/Translations,
-	
-	# Save
-	'autosave': $VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer3/HBoxContainer/Autosave,
-	
+
 	# Input Settings
-	'autofocus_choices':$VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer/AutoFocus/CheckBox,
 	'delay_after_options': $VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer/HBoxContainer/LineEdit,
 	'default_action_key': $VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer/HBoxContainer2/DefaultActionKey,
-	'enable_default_shortcut': $'VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer/HBoxContainer3/HotKeys',
 	'choice_hotkey_1': $'VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer/HBoxContainer4/Choice1Hotkey',
 	'choice_hotkey_2': $'VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer/HBoxContainer5/Choice2Hotkey',
 	'choice_hotkey_3': $'VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer/HBoxContainer6/Choice3Hotkey',
@@ -43,33 +30,16 @@ onready var nodes = {
 	}
 
 var THEME_KEYS := [
-	'advanced_themes',
 	'canvas_layer',
 	]
 
 var INPUT_KEYS := [
-	'autofocus_choices',
 	'delay_after_options',
 	'default_action_key',
-	'enable_default_shortcut',
 	'choice_hotkey_1',
 	'choice_hotkey_2',
 	'choice_hotkey_3',
 	'choice_hotkey_4',
-	]
-
-var DIALOG_KEYS := [
-	'translations',
-	'new_lines', 
-	'remove_empty_messages',
-	'auto_color_names',
-	'propagate_input',
-	'dim_characters',
-	'text_event_audio_enable',
-	]
-
-var SAVING_KEYS := [
-	'autosave', 
 	]
 
 func _ready():
@@ -81,31 +51,22 @@ func _ready():
 	# Themes
 	nodes['themes'].connect('item_selected', self, '_on_default_theme_selected')
 	# TODO move to theme section later
-	nodes['advanced_themes'].connect('toggled', self, '_on_item_toggled', ['dialog', 'advanced_themes'])
 	nodes['canvas_layer'].connect('text_changed', self, '_on_canvas_layer_text_changed')
 
 	# Input
 	nodes['delay_after_options'].connect('text_changed', self, '_on_delay_options_text_changed')
 	nodes['default_action_key'].connect('pressed', self, '_on_default_action_key_presssed')
 	nodes['default_action_key'].connect('item_selected', self, '_on_default_action_key_item_selected')
-	nodes['autofocus_choices'].connect('toggled', self, '_on_item_toggled', ['input', 'autofocus_choices'])
 	
 	# Connect hotkey settings 1-4
 	for i in range(1, 5):
 		var key = str('choice_hotkey_', i)
 		nodes[key].connect('pressed', self, '_on_default_action_key_presssed', [key])
 		nodes[key].connect('item_selected', self, '_on_default_action_key_item_selected', [key])
-	nodes['enable_default_shortcut'].connect('toggled', self, '_on_item_toggled', ['input', 'enable_default_shortcut'])
 	
 	AudioServer.connect("bus_layout_changed", self, "update_bus_selector")
 	nodes['text_event_audio_default_bus'].connect('item_selected', self, '_on_text_audio_default_bus_item_selected')
 	
-	for k in DIALOG_KEYS:
-		nodes[k].connect('toggled', self, '_on_item_toggled', ['dialog', k])
-	
-	for k in SAVING_KEYS:
-		nodes[k].connect('toggled', self, '_on_item_toggled', ['saving', k])
-		
 	## The custom event section
 	nodes['new_custom_event_open'].connect("pressed", self, "new_custom_event_pressed")
 	nodes['new_custom_event_section'].hide()
@@ -119,11 +80,11 @@ func _ready():
 	
 
 func update_data():
+	# Reloading the settings
 	var settings = DialogicResources.get_settings_config()
+	
 	nodes['canvas_layer'].text = settings.get_value("theme", "canvas_layer", '1')
 	refresh_themes(settings)
-	load_values(settings, "dialog", DIALOG_KEYS)
-	load_values(settings, "saving", SAVING_KEYS)
 	load_values(settings, "input", INPUT_KEYS)
 	select_bus(settings.get_value("dialog", 'text_event_audio_default_bus', "Master"))
 
@@ -141,9 +102,6 @@ func load_values(settings: ConfigFile, section: String, key: Array):
 
 func refresh_themes(settings: ConfigFile):
 	# TODO move to theme section later
-	if settings.has_section_key('dialog', 'advanced_themes'):
-		nodes['advanced_themes'].pressed = settings.get_value('dialog', 'advanced_themes')
-	
 	nodes['themes'].clear()
 	var theme_list = DialogicUtil.get_sorted_theme_list()
 	var theme_indexes = {}
