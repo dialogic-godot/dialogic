@@ -1105,9 +1105,10 @@ func handle_voice(event):
 func grab_portrait_focus(character_data, event: Dictionary = {}) -> bool:
 	var exists = false
 	var visually_focus = settings.get_value('dialog', 'dim_characters', true)
-
+	
 	for portrait in $Portraits.get_children():
-		if portrait.character_data == character_data:
+		# check if it's the same character
+		if portrait.character_data.get("file", "something") == character_data.get("file", "none"):
 			exists = true
 			
 			if visually_focus:
