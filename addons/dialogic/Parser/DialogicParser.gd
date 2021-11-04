@@ -15,7 +15,7 @@ static func parse_characters(dialog_script):
 				# check whether to use the name or the display name
 				var char_names = [character.get('name')]
 				if character.get('data', {}).get('display_name_bool', false):
-					char_names.append(character.get('display_name'))
+					if character.get('display_name'): char_names.append(character.get('display_name'))
 				if character.get('data', {}).get('nickname_bool', false):
 					for nickname in character.get('data').get('nickname', '').split(',', true, 0):
 						char_names.append(nickname.strip_edges())
