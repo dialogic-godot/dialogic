@@ -4,6 +4,9 @@ extends Control
 var text_speed := 0.02 # Higher = lower speed
 var theme_text_speed = text_speed
 
+var char_step = 1   # the number of characters to display at once. Higher = faster apparent speed
+var theme_char_step = char_step
+
 onready var text_label = $RichTextLabel
 onready var name_label = $NameLabel
 onready var next_indicator = $NextIndicatorContainer/NextIndicator
@@ -56,9 +59,12 @@ func update_text(text):
 	regex.compile("\\[speed=(.+?)\\](.*?)")
 	result = regex.search(text)
 	if result:
+		# the entire string is placed into the "speed setting" variable before being
+		# parsed and saved as a float (in milliseconds) representing the time between two characters being typed
 		var speed_settings = result.get_string()
-		var value = float(speed_settings.split('=')[1]) * 0.01
-		text_speed = value
+		var temp_speed = float(speed_settings.split('=')[1]) * 0.01
+		text_speed = temp_speed
+		# removes the command from the text before it's displayed
 		text = text.replace(speed_settings, '')
 	
 	# Updating the text and starting the animation from 0
@@ -68,6 +74,10 @@ func update_text(text):
 	text_label.grab_focus()
 	start_text_timer()
 	return true
+
+
+func is_finished():
+	return _finished
 
 
 func skip():
@@ -108,6 +118,10 @@ func load_theme(theme: ConfigFile):
 	# Text speed
 	text_speed = theme.get_value('text','speed', 2) * 0.01
 	theme_text_speed = text_speed
+	
+	# Number of Characters to display at once
+	char_step = theme.get_value('text','character_step', 1)
+	theme_char_step = char_step
 
 	# Margin
 	var text_margin = theme.get_value('text', 'margin', Vector2(20, 10))
@@ -181,13 +195,14 @@ func load_theme(theme: ConfigFile):
 ##								PRIVATE METHODS
 ## *****************************************************************************
 
-
+#### this function is actually responsible for incrementing the visible character index,
+#### causing the text to visibly scroll. Very important.
 func _on_writing_timer_timeout():
 	# Checks for the 'fade_in_tween_show_time' which only exists during the fade in animation
 	# if that node doesn't exists, it won't start the letter by letter animation.
 	if get_parent().has_node('fade_in_tween_show_time') == false:
 		if _finished == false:
-			text_label.visible_characters += 1
+			text_label.visible_characters += char_step #actually advances the text by the number of characters defined in the theme
 			
 			if text_label.visible_characters > text_label.get_total_character_count():
 				_handle_text_completed()
@@ -213,8 +228,7 @@ func _handle_text_completed():
 	$WritingTimer.stop()
 	_finished = true
 	emit_signal("text_completed")
-
-
+	
 func align_name_label():
 	var name_padding = _theme.get_value('name', 'name_padding', Vector2( 10, 0 ))
 	var horizontal_offset = _theme.get_value('name', 'horizontal_offset', 0)
