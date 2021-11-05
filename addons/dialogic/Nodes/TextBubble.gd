@@ -3,6 +3,8 @@ extends Control
 
 var text_speed := 0.02 # Higher = lower speed
 var theme_text_speed = text_speed
+#proof of concept test
+var thing = -1
 
 onready var text_label = $RichTextLabel
 onready var name_label = $NameLabel
@@ -40,7 +42,10 @@ func update_text(text):
 	var result = null
 	# Removing commands from the text
 	#text = text.replace('[p]', '')
-	
+	#edit proof of concept test
+	thing = text.find("[thing]")
+	text = text.replace("[thing]", "")
+	#end of edit
 	text = text.replace('[nw]', '')
 	if '[nw=' in text:
 		regex.compile("\\[nw=(.+?)\\](.*?)")
@@ -188,7 +193,10 @@ func _on_writing_timer_timeout():
 	if get_parent().has_node('fade_in_tween_show_time') == false:
 		if _finished == false:
 			text_label.visible_characters += 1
-			
+			#edit proof of concept test
+			if thing == text_label.visible_characters:
+				print("Hello thing")
+			#end of edit
 			if text_label.visible_characters > text_label.get_total_character_count():
 				_handle_text_completed()
 			elif (
