@@ -110,6 +110,8 @@ func _ready():
 	$DefinitionInfo.visible = false
 	$TextBubble.connect("text_completed", self, "_on_text_completed")
 	$TextBubble.connect("letter_written", self, "_on_letter_written")
+	$TextBubble.connect("signal_request", self, "_on_signal_request")
+	$TextBubble.connect("play_request",   self, "_on_play_request")
 	$TextBubble/RichTextLabel.connect('meta_hover_started', self, '_on_RichTextLabel_meta_hover_started')
 	$TextBubble/RichTextLabel.connect('meta_hover_ended', self, '_on_RichTextLabel_meta_hover_ended')
 	
@@ -478,6 +480,20 @@ func _on_text_completed():
 			if dialog_index == current_index:
 				_load_next_event()
 
+# When text reaches a [signal] command
+# emits the dialogic signal with the argument
+func _on_signal_request(name):
+	emit_signal("dialogic_signal", name)
+
+# When text reaches a [play] command
+# plays the requested audio argument
+func _on_play_request(name):
+	#hardcoded for now to bypass some error in settings-code.
+	var node = $FX/Audio.get_node(name.capitalize())
+	name = name.to_lower()
+	if audio_data[name].allow_interrupt or not node.is_playing():
+		node.play()
+	#play_audio(name)
 
 # emits timeline_start and handles autosaving
 func on_timeline_start():

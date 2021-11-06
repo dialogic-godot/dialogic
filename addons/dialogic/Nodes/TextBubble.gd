@@ -19,6 +19,7 @@ var _theme
 signal text_completed()
 signal letter_written()
 signal signal_request(arg)
+signal play_request(arg)
 
 ## *****************************************************************************
 ##								PUBLIC METHODS
@@ -41,7 +42,7 @@ func update_name(name: String, color: Color = Color.white, autocolor: bool=false
 		name_label.visible = false
 
 
-func update_text(text):
+func update_text(text:String):
 	#regex moved from func scope to class scope
 	#regex compilation moved to _ready
 	#  - KvaGram
@@ -52,7 +53,7 @@ func update_text(text):
 	
 	### remove commands from text, and store where and what they are
 	
-	#current regex: \[(nw|(nw|speed|signal|sound)=(.+?))\](.*?)
+	#current regex: \[(nw|(nw|speed|signal|play)=(.+?))\](.*?)
 	#remeber regex101.com is your friend. Do not shoot it.
 	#The capture groups
 	# 0 everything ex [speed=5]
@@ -70,8 +71,8 @@ func update_text(text):
 			pass
 		else:
 			#Store an assigned varible command as an array by 0 index in text, 1 command-name, 2 argument
-			commands.append([result.get_start(0), result.get_string(2), result.get_string(3)])
-		text = text.replace(result.get_string(0), "")
+			commands.append([result.get_start(), result.get_string(2), result.get_string(3)])
+		text = text.substr(0, result.get_start()) + text.substr(result.get_end())
 		result = regex.search(text)
 	
 	# Updating the text and starting the animation from 0
@@ -86,12 +87,12 @@ func update_text(text):
 func handle_command(command:Array):
 	if(command[1] == "speed"):
 		text_speed = float(command[2]) * 0.01
-		# then restart the text timer?
+		$WritingTimer.stop()
+		start_text_timer()
 	elif(command[1] == "signal"):
 		emit_signal("signal_request", command[2])
-	elif(command[1] == "sound"):
-		#TODO: add a sound player to text bubble and a ready list of sounds to play
-		# a hardcoded sound will do for tests
+	elif(command[1] == "play"):
+		emit_signal("play_request", command[2])
 		pass
 
 func skip():
@@ -261,5 +262,5 @@ func _ready():
 	reset()
 	$WritingTimer.connect("timeout", self, "_on_writing_timer_timeout")
 	text_label.meta_underlined = false
-	regex.compile("\\[(nw|(nw|speed|signal|sound)=(.+?))\\](.*?)")
+	regex.compile("\\[(nw|(nw|speed|signal|play)=(.+?))\\](.*?)")
 
