@@ -70,10 +70,6 @@ func update_text(text):
 	return true
 
 
-func is_finished():
-	return _finished
-
-
 func skip():
 	text_label.visible_characters = -1
 	_handle_text_completed()
@@ -217,7 +213,8 @@ func _handle_text_completed():
 	$WritingTimer.stop()
 	_finished = true
 	emit_signal("text_completed")
-	
+
+
 func align_name_label():
 	var name_padding = _theme.get_value('name', 'name_padding', Vector2( 10, 0 ))
 	var horizontal_offset = _theme.get_value('name', 'horizontal_offset', 0)
