@@ -92,8 +92,10 @@ func initalize_history():
 	#var theme_choice_offset = theme.get_value('buttons', 'offset', Vector2(0,0))
 	HistoryButton.rect_global_position = position_offset
 
+
 # Add history based on the passed event, using some logic to get it right
 func add_history_row_event(eventData):
+	print(eventData.event_id)
 	var newHistoryRow = HistoryRow.instance()
 	HistoryTimeline.add_child(newHistoryRow)
 	newHistoryRow.load_theme(curTheme)
@@ -101,7 +103,7 @@ func add_history_row_event(eventData):
 	var characterPrefix = ''
 	if eventData.has('character'):
 		var characterData = get_parent().get_character(eventData.character)
-		var characterName = get_parent().get_character_name(eventData.character)
+		var characterName = get_character_name(eventData.character)
 		
 		if characterName != '':
 			var characterColor = characterData.data.get('color', Color.white)
@@ -145,6 +147,34 @@ func add_history_row_string(stringData, audioData=''):
 func change_theme(newTheme: ConfigFile):
 	if get_parent().settings.get_value('history', 'enable_dynamic_theme', false):
 		curTheme = newTheme
+
+
+# helper to get character name string by id
+func get_character_name(character_id) -> String:
+	var characterName = '';
+	var characterData =  get_parent().get_character(character_id)
+	if characterData.has('name'):
+		var parsed_name = characterData['name']
+		if characterData.has('display_name'):
+			if characterData['display_name'] != '':
+				parsed_name = characterData['d	isplay_name']
+		characterName = parsed_name;
+	return characterName;
+
+
+# helper to get character name string with color tags by id
+func get_character_name_with_color(character_id) -> String:
+	var characterName = '';
+	var characterData = get_parent().get_character(character_id)
+	if characterData.has('name'):
+		var parsed_name = characterData['name']
+		if characterData.has('display_name'):
+			if characterData['display_name'] != '':
+				parsed_name = characterData['display_name']
+		var characterColor = characterData.data.get('color', Color.white)
+		characterName = parsed_name;
+		characterName = str("[color=",characterColor,"]",characterName, "[/color]: ")
+	return characterName;
 
 
 func load_theme(theme: ConfigFile):

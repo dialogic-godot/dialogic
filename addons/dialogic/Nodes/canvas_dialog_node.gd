@@ -34,6 +34,10 @@ func dialog_finished():
 	queue_free()
 
 
+func set_dialog_script(value):
+	dialog_node.set_dialog_script(value)
+
+
 func _ready() -> void:
 	# change the canvas layer
 	var config = DialogicResources.get_settings_config()	

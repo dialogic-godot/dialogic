@@ -98,15 +98,11 @@ func parse(content : String,  file_path:String = '', docs_path:String = ''):
 			parsed_text = parsed_text.replace("~~"+res.get_string("strikedtext")+"~~","[s]"+res.get_string("strikedtext")+"[/s]")
 	
 	## Find all occurences of code snippets
-	regex.compile("(([^`]`)|(```))(?<coded>[^`]+)(?(2)(`)|(```))")
+	regex.compile("\\`(?<coded>(?:[^\\`]|\\n)*)\\`")
 	result = regex.search_all(content)
 	if result:
 		for res in result:
-			if res.get_string().begins_with("```"):
-				parsed_text = parsed_text.replace("```"+res.get_string("coded")+"```","[indent][color=#"+accent_color.lightened(0.6).to_html()+"][code]"+res.get_string("coded")+"[/code][/color][/indent]")
-			else:
-				parsed_text = parsed_text.replace("`"+res.get_string("coded")+"`","[color=#"+accent_color.lightened(0.6).to_html()+"][code]"+res.get_string("coded")+"[/code][/color]")
-				
+			parsed_text = parsed_text.replace("`"+res.get_string("coded")+"`","[color=#"+accent_color.lightened(0.6).to_html()+"][code]"+res.get_string("coded")+"[/code][/color]")
 	
 	
 	## Find all occurences of list items

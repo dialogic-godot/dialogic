@@ -259,7 +259,7 @@ func _input(event):
 			else:
 				at_index = timeline.get_child_count()
 			TimelineUndoRedo.create_action("[D] Add Text event.")
-			TimelineUndoRedo.add_do_method(self, "create_event", "dialogic_001", {'no-data': true}, true, at_index, true)
+			TimelineUndoRedo.add_do_method(self, "create_event", "dialogic_000", {'no-data': true}, true, at_index, true)
 			TimelineUndoRedo.add_undo_method(self, "remove_events_at_index", at_index, 1)
 			TimelineUndoRedo.commit_action()
 			get_tree().set_input_as_handled()
