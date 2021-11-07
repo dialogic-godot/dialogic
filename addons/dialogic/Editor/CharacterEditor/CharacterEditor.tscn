@@ -6,7 +6,7 @@
 [ext_resource path="res://addons/dialogic/Example Assets/portraits/df-3.png" type="Texture" id=4]
 
 [sub_resource type="StyleBoxFlat" id=1]
-bg_color = Color( 0.2, 0.23, 0.31, 1 )
+bg_color = Color( 0, 0, 0, 1 )
 
 [sub_resource type="Image" id=10]
 data = {
@@ -251,9 +251,9 @@ margin_right = 581.0
 margin_bottom = 14.0
 size_flags_horizontal = 3
 custom_fonts/font = SubResource( 4 )
-text = "Portraits / Expressions"
+text = "Portraits"
 valign = 1
-text_key = "Portraits / Expressions"
+text_key = "Portraits"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Split/EditorScroll/Editor"]
 margin_top = 178.0
