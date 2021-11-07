@@ -95,7 +95,8 @@ func initalize_history():
 
 # Add history based on the passed event, using some logic to get it right
 func add_history_row_event(eventData):
-	print(eventData.event_id)
+	#if eventData.event_id == 
+	
 	var newHistoryRow = HistoryRow.instance()
 	HistoryTimeline.add_child(newHistoryRow)
 	newHistoryRow.load_theme(curTheme)
