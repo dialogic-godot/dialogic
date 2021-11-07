@@ -309,19 +309,19 @@ margin_left = 314.0
 margin_right = 439.0
 margin_bottom = 24.0
 
-[node name="MirrorPortraitsCheckBox" type="CheckBox" parent="Split/EditorScroll/Editor/HBoxContainer/MirrorOption"]
-margin_right = 24.0
-margin_bottom = 24.0
-
 [node name="TLabel11" parent="Split/EditorScroll/Editor/HBoxContainer/MirrorOption" instance=ExtResource( 3 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_left = 28.0
 margin_top = 5.0
-margin_right = 125.0
+margin_right = 97.0
 margin_bottom = 19.0
 text = "Mirror portraits"
 text_key = "Mirror portraits"
+
+[node name="MirrorPortraitsCheckBox" type="CheckBox" parent="Split/EditorScroll/Editor/HBoxContainer/MirrorOption"]
+margin_left = 101.0
+margin_right = 125.0
+margin_bottom = 24.0
 
 [node name="PortraitPanel" type="PanelContainer" parent="Split/EditorScroll/Editor"]
 margin_top = 206.0
