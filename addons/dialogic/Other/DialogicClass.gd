@@ -281,9 +281,7 @@ static func get_current_timeline():
 
 # Returns a string with the action button set on the project settings
 static func get_action_button():
-	var settings = DialogicResources.get_settings_config()
-	var settings_input = settings.get_value('input', 'default_action_key', 'ui_accept')
-	return settings_input
+	return DialogicResources.get_settings_value('input', 'default_action_key', 'ui_accept')
 
 ################################################################################
 ## 					NOT TO BE USED FROM OUTSIDE
