@@ -1,34 +1,39 @@
 tool
-extends ScrollContainer
+extends Control
 
 var editor_reference
 onready var master_tree = get_node('../MasterTreeContainer/MasterTree')
 var opened_character_data
 var portrait_entry = load("res://addons/dialogic/Editor/CharacterEditor/PortraitEntry.tscn")
 onready var nodes = {
-	'editor': $HBoxContainer/Container,
-	'name': $HBoxContainer/Container/Name/LineEdit,
-	'description': $HBoxContainer/Container/Description/TextEdit,
-	'file': $HBoxContainer/Container/FileName/LineEdit,
-	'color': $HBoxContainer/Container/Color/ColorPickerButton,
-	'mirror_portraits_checkbox' : $HBoxContainer/VBoxContainer/HBoxContainer/MirrorOption/MirrorPortraitsCheckBox,
-	'display_name_checkbox': $HBoxContainer/Container/Name/CheckBox,
-	'display_name': $HBoxContainer/Container/DisplayName/LineEdit,
-	'nickname_checkbox': $HBoxContainer/Container/Name/CheckBox2,
-	'nickname': $HBoxContainer/Container/DisplayNickname/LineEdit,
-	'new_portrait_button': $HBoxContainer/Container/ScrollContainer/VBoxContainer/HBoxContainer/Button,
-	'import_from_folder_button': $HBoxContainer/Container/ScrollContainer/VBoxContainer/HBoxContainer/ImportFromFolder,
-	'portrait_preview': $HBoxContainer/VBoxContainer/Control/TextureRect,
-	'image_label': $"HBoxContainer/VBoxContainer/Control/TLabel10",
-	'scale': $HBoxContainer/VBoxContainer/HBoxContainer/Scale,
-	'offset_x': $HBoxContainer/VBoxContainer/HBoxContainer/OffsetX,
-	'offset_y': $HBoxContainer/VBoxContainer/HBoxContainer/OffsetY,
+	'editor': $Split/EditorScroll/Editor,
+	'name': $Split/EditorScroll/Editor/Name/LineEdit,
+	'display_name_checkbox': $Split/EditorScroll/Editor/DisplayName/CheckBox,
+	'display_name': $Split/EditorScroll/Editor/DisplayName/LineEdit,
+	'nickname_checkbox': $Split/EditorScroll/Editor/DisplayNickname/CheckBox,
+	'nickname': $Split/EditorScroll/Editor/DisplayNickname/LineEdit,
+	'color': $Split/EditorScroll/Editor/Color/ColorPickerButton,
+	'description': $Split/EditorScroll/Editor/Description/TextEdit,
+	
+	'file': $Split/EditorScroll/Editor/FileName/LineEdit,
+	
+	'mirror_portraits_checkbox' : $Split/EditorScroll/Editor/HBoxContainer/MirrorOption/MirrorPortraitsCheckBox,
+	'scale': $Split/EditorScroll/Editor/HBoxContainer/Scale,
+	'offset_x': $Split/EditorScroll/Editor/HBoxContainer/OffsetX,
+	'offset_y': $Split/EditorScroll/Editor/HBoxContainer/OffsetY,
+	
+	'new_portrait_button': $Split/EditorScroll/Editor/ScrollContainer/VBoxContainer/HBoxContainer/NewPortrait,
+	'import_from_folder_button': $Split/EditorScroll/Editor/ScrollContainer/VBoxContainer/HBoxContainer/ImportFromFolder,
+	
+	'portrait_preview_full': $Split/Preview/Background/FullTextureRect,
+	'portrait_preview_real': $Split/Preview/Background/RealSizedRect,
+	'image_label': $Split/Preview/Background/TLabel10,
 }
 
 
 func _ready():
-	$"HBoxContainer/Container/ScrollContainer/VBoxContainer/HBoxContainer/Button".text = DTS.translate("  Add new portrait")
-	$"HBoxContainer/Container/ScrollContainer/VBoxContainer/HBoxContainer/ImportFromFolder".text = DTS.translate("  Import images from folder")
+	nodes['new_portrait_button'].text = DTS.translate("  Add new portrait")
+	nodes['import_from_folder_button'].text = DTS.translate("  Import images from folder")
 	
 	editor_reference = find_parent('EditorView')
 	nodes['new_portrait_button'].connect('pressed', self, '_on_New_Portrait_Button_pressed')
@@ -38,19 +43,20 @@ func _ready():
 	nodes['name'].connect('text_changed', self, '_on_name_changed')
 	nodes['name'].connect('focus_exited', self, '_update_name_on_tree')
 	nodes['color'].connect('color_changed', self, '_on_color_changed')
-	var style = get('custom_styles/bg')
+	var style = $Split/EditorScroll.get('custom_styles/bg')
 	style.set('bg_color', get_color("base_color", "Editor"))
 	nodes['new_portrait_button'].icon = get_icon("Add", "EditorIcons")
 	nodes['import_from_folder_button'].icon = get_icon("Folder", "EditorIcons")
-
+	#$HBoxContainer/Container/Portraits/Title.set('custom_font/font', get_font("title", "EditorFonts"))
 
 func _on_display_name_toggled(button_pressed):
-	$HBoxContainer/Container/DisplayName.visible = button_pressed
+	nodes['display_name'].visible = button_pressed
+	if button_pressed: nodes['display_name'].grab_focus()
 
 
 func _on_nickname_toggled(button_pressed):
-	$HBoxContainer/Container/DisplayNickname.visible = button_pressed
-
+	nodes['nickname'].visible = button_pressed
+	if button_pressed: nodes['nickname'].grab_focus()
 
 func is_selected(file: String):
 	return nodes['file'].text == file
@@ -94,7 +100,7 @@ func clear_character_editor():
 	nodes['offset_y'].value = 0
 
 	# Clearing portraits
-	for p in $HBoxContainer/Container/ScrollContainer/VBoxContainer/PortraitList.get_children():
+	for p in $Split/EditorScroll/Editor/ScrollContainer/VBoxContainer/PortraitList.get_children():
 		p.queue_free()
 	nodes['portrait_preview'].texture = null
 
@@ -116,7 +122,7 @@ func create_character():
 # Saving and Loading
 func generate_character_data_to_save():
 	var portraits = []
-	for p in $HBoxContainer/Container/ScrollContainer/VBoxContainer/PortraitList.get_children():
+	for p in $Split/EditorScroll/Editor/ScrollContainer/VBoxContainer/PortraitList.get_children():
 		var entry = {}
 		entry['name'] = p.get_node("NameEdit").text
 		entry['path'] = p.get_node("PathEdit").text
@@ -162,6 +168,7 @@ func load_character(filename: String):
 	nodes['scale'].value = float(data.get('scale', 100))
 	nodes['nickname_checkbox'].pressed = data.get('nickname_bool', false)
 	nodes['nickname'].text = data.get('nickname', '')
+	#nodes['nickname'].visible
 	nodes['offset_x'].value = data.get('offset_x', 0)
 	nodes['offset_y'].value = data.get('offset_y', 0)
 	nodes['mirror_portraits_checkbox'].pressed = data.get('mirror_portraits', false)
@@ -190,7 +197,7 @@ func create_portrait_entry(p_name = '', path = '', grab_focus = false):
 	p.editor_reference = editor_reference
 	p.image_node = nodes['portrait_preview']
 	p.image_label = nodes['image_label']
-	var p_list = $HBoxContainer/Container/ScrollContainer/VBoxContainer/PortraitList
+	var p_list = $Split/EditorScroll/Editor/ScrollContainer/VBoxContainer/PortraitList
 	p_list.add_child(p)
 	if p_name != '':
 		p.get_node("NameEdit").text = p_name
@@ -226,3 +233,10 @@ func _on_dir_selected(path, target):
 
 func _on_MirrorPortraitsCheckBox_toggled(button_pressed):
 	nodes['portrait_preview'].flip_h = button_pressed
+
+
+func _on_OptionButton_item_selected(index):
+	if index == 0:
+		nodes['portrait_preview'].rect_size
+	if index == 1:
+		pass
