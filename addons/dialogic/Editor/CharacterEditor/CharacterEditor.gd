@@ -7,12 +7,12 @@ var opened_character_data
 var portrait_entry = load("res://addons/dialogic/Editor/CharacterEditor/PortraitEntry.tscn")
 onready var nodes = {
 	'editor': $Split/EditorScroll/Editor,
-	'name': $Split/EditorScroll/Editor/Name/LineEdit,
+	'name': $Split/EditorScroll/Editor/NameAndColor/NameLineEdit,
+	'color': $Split/EditorScroll/Editor/NameAndColor/ColorPickerButton,
 	'display_name_checkbox': $Split/EditorScroll/Editor/DisplayName/CheckBox,
 	'display_name': $Split/EditorScroll/Editor/DisplayName/LineEdit,
 	'nickname_checkbox': $Split/EditorScroll/Editor/DisplayNickname/CheckBox,
 	'nickname': $Split/EditorScroll/Editor/DisplayNickname/LineEdit,
-	'color': $Split/EditorScroll/Editor/Color/ColorPickerButton,
 	'description': $Split/EditorScroll/Editor/Description/TextEdit,
 	
 	'file': $Split/EditorScroll/Editor/FileName/LineEdit,
@@ -50,6 +50,8 @@ func _ready():
 	nodes['import_from_folder_button'].icon = get_icon("Folder", "EditorIcons")
 	$Split/EditorScroll/Editor/Portraits/Title.set('custom_fonts/font', get_font("doc_title", "EditorFonts"))
 	$Split/EditorScroll/Editor/PortraitPanel.set('custom_styles/panel', get_stylebox("Background", "EditorStyles"))
+	_on_PreviewMode_item_selected(DialogicResources.get_settings_value('editor', 'character_preview_mode', 1))
+	$Split/Preview/Background/PreviewMode.select(DialogicResources.get_settings_value('editor', 'character_preview_mode', 1))
 
 func _on_display_name_toggled(button_pressed):
 	nodes['display_name'].visible = button_pressed
@@ -242,17 +244,18 @@ func _on_MirrorPortraitsCheckBox_toggled(button_pressed):
 	nodes['portrait_preview_full'].flip_h = button_pressed
 
 
-func _on_OptionButton_item_selected(index):
+func _on_Scale_value_changed(value):
+	#nodes['portrait_preview_real'].rect_position = ($Split/Preview/Background/Positioner.rect_position-nodes['portrait_preview_real'].rect_size*Vector2(0.5,1))
+	nodes['portrait_preview_real'].rect_size = Vector2()
+	nodes['portrait_preview_real'].rect_scale = Vector2(
+					float(value)/100, float(value)/100)
+
+func _on_PreviewMode_item_selected(index):
 	if index == 0:
 		nodes['portrait_preview_real'].hide()
 		nodes['portrait_preview_full'].show()
 	if index == 1:
 		nodes['portrait_preview_real'].show()
 		nodes['portrait_preview_full'].hide()
+	DialogicResources.set_settings_value('editor', 'character_preview_mode', index)
 
-
-func _on_Scale_value_changed(value):
-	#nodes['portrait_preview_real'].rect_position = ($Split/Preview/Background/Positioner.rect_position-nodes['portrait_preview_real'].rect_size*Vector2(0.5,1))
-	nodes['portrait_preview_real'].rect_size = Vector2()
-	nodes['portrait_preview_real'].rect_scale = Vector2(
-					float(value)/100, float(value)/100)
