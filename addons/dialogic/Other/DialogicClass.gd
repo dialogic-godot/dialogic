@@ -109,7 +109,6 @@ static func load(slot_name: String = ''):
 ## 
 ## @param slot_name		The name of the save slot. To load this save you have to specify the same
 ##						If the slot folder doesn't exist it will be created. 
-##						Leaving this empty will use the last loaded save slot.
 static func save(slot_name: String = '', is_autosave = false) -> void:
 	# check if to save (if this is a autosave)
 	if is_autosave and not get_autosave():
