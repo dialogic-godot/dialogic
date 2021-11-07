@@ -22,18 +22,19 @@ onready var nodes = {
 	'offset_x': $Split/EditorScroll/Editor/HBoxContainer/OffsetX,
 	'offset_y': $Split/EditorScroll/Editor/HBoxContainer/OffsetY,
 	
-	'new_portrait_button': $Split/EditorScroll/Editor/ScrollContainer/VBoxContainer/HBoxContainer/NewPortrait,
-	'import_from_folder_button': $Split/EditorScroll/Editor/ScrollContainer/VBoxContainer/HBoxContainer/ImportFromFolder,
+	'portrait_list': $Split/EditorScroll/Editor/PortraitPanel/VBoxContainer/ScrollContainer/VBoxContainer/PortraitList,
+	'new_portrait_button': $Split/EditorScroll/Editor/PortraitPanel/VBoxContainer/Labels/HBoxContainer/NewPortrait,
+	'import_from_folder_button': $Split/EditorScroll/Editor/PortraitPanel/VBoxContainer/Labels/HBoxContainer/ImportFromFolder,
 	
 	'portrait_preview_full': $Split/Preview/Background/FullTextureRect,
-	'portrait_preview_real': $Split/Preview/Background/RealSizedRect,
+	'portrait_preview_real': $Split/Preview/Background/Positioner/RealSizedRect,
 	'image_label': $Split/Preview/Background/TLabel10,
 }
 
 
 func _ready():
-	nodes['new_portrait_button'].text = DTS.translate("  Add new portrait")
-	nodes['import_from_folder_button'].text = DTS.translate("  Import images from folder")
+	nodes['new_portrait_button'].text = DTS.translate("  New portrait")
+	nodes['import_from_folder_button'].text = DTS.translate("  Import folder")
 	
 	editor_reference = find_parent('EditorView')
 	nodes['new_portrait_button'].connect('pressed', self, '_on_New_Portrait_Button_pressed')
@@ -47,7 +48,8 @@ func _ready():
 	style.set('bg_color', get_color("base_color", "Editor"))
 	nodes['new_portrait_button'].icon = get_icon("Add", "EditorIcons")
 	nodes['import_from_folder_button'].icon = get_icon("Folder", "EditorIcons")
-	#$HBoxContainer/Container/Portraits/Title.set('custom_font/font', get_font("title", "EditorFonts"))
+	$Split/EditorScroll/Editor/Portraits/Title.set('custom_fonts/font', get_font("doc_title", "EditorFonts"))
+	$Split/EditorScroll/Editor/PortraitPanel.set('custom_styles/panel', get_stylebox("Background", "EditorStyles"))
 
 func _on_display_name_toggled(button_pressed):
 	nodes['display_name'].visible = button_pressed
@@ -100,9 +102,11 @@ func clear_character_editor():
 	nodes['offset_y'].value = 0
 
 	# Clearing portraits
-	for p in $Split/EditorScroll/Editor/ScrollContainer/VBoxContainer/PortraitList.get_children():
+	for p in nodes['portrait_list'].get_children():
 		p.queue_free()
-	nodes['portrait_preview'].texture = null
+	nodes['portrait_preview_full'].texture = null
+	nodes['portrait_preview_real'].texture = null
+	nodes['portrait_preview_real'].rect_scale = Vector2(1, 1)
 
 
 # Character Creation
@@ -122,7 +126,7 @@ func create_character():
 # Saving and Loading
 func generate_character_data_to_save():
 	var portraits = []
-	for p in $Split/EditorScroll/Editor/ScrollContainer/VBoxContainer/PortraitList.get_children():
+	for p in nodes['portrait_list'].get_children():
 		var entry = {}
 		entry['name'] = p.get_node("NameEdit").text
 		entry['path'] = p.get_node("PathEdit").text
@@ -172,8 +176,10 @@ func load_character(filename: String):
 	nodes['offset_x'].value = data.get('offset_x', 0)
 	nodes['offset_y'].value = data.get('offset_y', 0)
 	nodes['mirror_portraits_checkbox'].pressed = data.get('mirror_portraits', false)
-	nodes['portrait_preview'].flip_h = data.get('mirror_portraits', false)
-
+	nodes['portrait_preview_full'].flip_h = data.get('mirror_portraits', false)
+	nodes['portrait_preview_real'].flip_h = data.get('mirror_portraits', false)
+	nodes['portrait_preview_real'].rect_scale = Vector2(
+					float(data.get('scale', 100))/100, float(data.get('scale', 100))/100)
 	# Portraits
 	var default_portrait = create_portrait_entry()
 	default_portrait.get_node('NameEdit').text = 'Default'
@@ -195,9 +201,10 @@ func _on_New_Portrait_Button_pressed():
 func create_portrait_entry(p_name = '', path = '', grab_focus = false):
 	var p = portrait_entry.instance()
 	p.editor_reference = editor_reference
-	p.image_node = nodes['portrait_preview']
+	p.image_node = nodes['portrait_preview_full']
+	p.image_node2 = nodes['portrait_preview_real']
 	p.image_label = nodes['image_label']
-	var p_list = $Split/EditorScroll/Editor/ScrollContainer/VBoxContainer/PortraitList
+	var p_list = nodes['portrait_list']
 	p_list.add_child(p)
 	if p_name != '':
 		p.get_node("NameEdit").text = p_name
@@ -232,11 +239,20 @@ func _on_dir_selected(path, target):
 
 
 func _on_MirrorPortraitsCheckBox_toggled(button_pressed):
-	nodes['portrait_preview'].flip_h = button_pressed
+	nodes['portrait_preview_full'].flip_h = button_pressed
 
 
 func _on_OptionButton_item_selected(index):
 	if index == 0:
-		nodes['portrait_preview'].rect_size
+		nodes['portrait_preview_real'].hide()
+		nodes['portrait_preview_full'].show()
 	if index == 1:
-		pass
+		nodes['portrait_preview_real'].show()
+		nodes['portrait_preview_full'].hide()
+
+
+func _on_Scale_value_changed(value):
+	#nodes['portrait_preview_real'].rect_position = ($Split/Preview/Background/Positioner.rect_position-nodes['portrait_preview_real'].rect_size*Vector2(0.5,1))
+	nodes['portrait_preview_real'].rect_size = Vector2()
+	nodes['portrait_preview_real'].rect_scale = Vector2(
+					float(value)/100, float(value)/100)
