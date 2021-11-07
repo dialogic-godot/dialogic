@@ -29,10 +29,10 @@ onready var nodes = {
 	'new_custom_event_cancel':$VBoxContainer/HBoxContainer3/VBoxContainer2/CustomEvents/CreateCustomEventSection/HBoxContainer/CancelCustomEvent,
 
 	# History Settings
-	'enable_history_logging': $VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer/HBoxContainer3/EnableHistoryLogging,
-	'history_theme': $VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer/HBoxContainer4/HistoryThemeOptionButton,
-	'enable_dynamic_theme': $VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer/HBoxContainer5/EnableDynamicTheme,
-	'history_button_position': $VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer/HBoxContainer6/PositionSelector,
+	'enable_history_logging': $"VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer/HBoxContainer3/EnableHistoryLogging",
+	'history_theme': $"VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer/HBoxContainer8/HistoryThemeOptionButton",
+	'enable_dynamic_theme': $"VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer/HBoxContainer9/EnableDynamicTheme",
+	'history_button_position': $"VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer/HBoxContainer10/PositionSelector",
 
 }
 

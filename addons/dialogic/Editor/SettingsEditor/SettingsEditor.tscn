@@ -1,11 +1,11 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://addons/dialogic/Editor/SettingsEditor/SettingsEditor.gd" type="Script" id=1]
 [ext_resource path="res://addons/dialogic/Editor/Common/SectionTitle.tscn" type="PackedScene" id=2]
 [ext_resource path="res://addons/dialogic/Editor/Common/TLabel.tscn" type="PackedScene" id=3]
 [ext_resource path="res://addons/dialogic/Editor/SettingsEditor/Scenes/SettingsCheckbox.tscn" type="PackedScene" id=4]
 
-[sub_resource type="Image" id=23]
+[sub_resource type="Image" id=29]
 data = {
 "data": PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ),
 "format": "LumAlpha8",
@@ -14,25 +14,10 @@ data = {
 "width": 16
 }
 
-[sub_resource type="ImageTexture" id=22]
+[sub_resource type="ImageTexture" id=28]
 flags = 4
 flags = 4
-image = SubResource( 23 )
-size = Vector2( 16, 16 )
-
-[sub_resource type="Image" id=24]
-data = {
-"data": PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ),
-"format": "LumAlpha8",
-"height": 16,
-"mipmaps": false,
-"width": 16
-}
-
-[sub_resource type="ImageTexture" id=25]
-flags = 4
-flags = 4
-image = SubResource( 24 )
+image = SubResource( 29 )
 size = Vector2( 16, 16 )
 
 [node name="SettingsEditor" type="ScrollContainer"]
@@ -434,25 +419,13 @@ margin_bottom = 280.0
 text = "History settings"
 text_key = "History settings"
 
-[node name="HBoxContainer3" type="HBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer"]
+[node name="SettingsCheckbox4" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer" instance=ExtResource( 4 )]
 margin_top = 284.0
 margin_right = 313.0
 margin_bottom = 308.0
-
-[node name="TLabel16" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer/HBoxContainer3" instance=ExtResource( 3 )]
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_top = 5.0
-margin_right = 90.0
-margin_bottom = 19.0
-text = "Enable history"
-text_key = "Enable history"
-
-[node name="EnableHistoryLogging" type="CheckBox" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer/HBoxContainer3"]
-margin_left = 94.0
-margin_right = 313.0
-margin_bottom = 24.0
-size_flags_horizontal = 3
+text = "Enable history logging"
+settings_section = "history"
+settings_key = "enable_history_logging"
 
 [node name="HBoxContainer8" type="HBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer"]
 margin_top = 312.0
@@ -510,19 +483,19 @@ margin_bottom = 386.0
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_top = 4.0
-margin_right = 254.0
+margin_right = 203.0
 margin_bottom = 18.0
 size_flags_horizontal = 3
 text = "History button position"
 text_key = "History button position"
 
 [node name="PositionSelector" type="OptionButton" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer/HBoxContainer10"]
-margin_left = 258.0
+margin_left = 207.0
 margin_right = 313.0
 margin_bottom = 22.0
-text = "1"
-icon = SubResource( 22 )
-items = [ "Top Left", SubResource( 25 ), false, 0, null, "Top Center", SubResource( 25 ), false, 1, null, "Top Right", SubResource( 25 ), false, 2, null, "", null, false, -1, null, "Center Left", SubResource( 25 ), false, 3, null, "Center", SubResource( 25 ), false, 4, null, "Center Right", SubResource( 25 ), false, 5, null, "", null, false, -1, null, "Bottom Left", SubResource( 25 ), false, 6, null, "Bottom Center", SubResource( 25 ), false, 7, null, "Bottom Right", SubResource( 25 ), false, 8, null ]
+text = "Top Right"
+icon = SubResource( 28 )
+items = [ "Top Left", SubResource( 28 ), false, 0, null, "Top Center", SubResource( 28 ), false, 1, null, "Top Right", SubResource( 28 ), false, 2, null, "", null, false, 3, null, "Center Left", SubResource( 28 ), false, 3, null, "Center", SubResource( 28 ), false, 4, null, "Center Right", SubResource( 28 ), false, 5, null, "", null, false, 7, null, "Bottom Left", SubResource( 28 ), false, 6, null, "Bottom Center", SubResource( 28 ), false, 7, null, "Bottom Right", SubResource( 28 ), false, 8, null ]
 selected = 2
 __meta__ = {
 "_edit_use_anchors_": false
@@ -581,7 +554,7 @@ text = "New"
 margin_left = 285.0
 margin_right = 313.0
 margin_bottom = 24.0
-icon = SubResource( 25 )
+icon = SubResource( 28 )
 
 [node name="CreateCustomEventSection" type="GridContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/CustomEvents"]
 visible = false

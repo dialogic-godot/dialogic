@@ -608,7 +608,8 @@ func event_handler(event: Dictionary):
 					p.current_state['character'] = event['character']
 					p.current_state['position'] = event['position']
 					if record_history:
-						HistoryTimeline.add_history_row_string(str(get_character_name_with_color(event['character']), ' has arrived.'))
+						#HistoryTimeline.add_history_row_string(str(get_character_name_with_color(event['character']), ' has arrived.'))
+						HistoryTimeline.add_history_row_string('Character join ' + str(event['character']))
 			_load_next_event()
 		# Character Leave event 
 		'dialogic_003':
@@ -623,7 +624,8 @@ func event_handler(event: Dictionary):
 					if p.character_data['file'] == event['character']:
 						p.fade_out()
 				if record_history:
-					HistoryTimeline.add_history_row_string(str(get_character_name_with_color(event['character']), ' has left.'))
+					HistoryTimeline.add_history_row_string('Character leave ' + str(event['character']))
+					#HistoryTimeline.add_history_row_string(str(get_character_name_with_color(event['character']), ' has left.'))
 			_load_next_event()
 		
 		# LOGIC EVENTS
