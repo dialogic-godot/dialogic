@@ -201,6 +201,10 @@ func _on_New_Portrait_Button_pressed():
 
 
 func create_portrait_entry(p_name = '', path = '', grab_focus = false):
+	if grab_focus and nodes['portrait_list'].get_child_count() == 1 and nodes['portrait_list'].get_child(0).get_node("PathEdit").text == '':
+		nodes['portrait_list'].get_child(0)._on_ButtonSelect_pressed()
+		return
+	
 	var p = portrait_entry.instance()
 	p.editor_reference = editor_reference
 	p.image_node = nodes['portrait_preview_full']
