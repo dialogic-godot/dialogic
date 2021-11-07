@@ -18,7 +18,7 @@ var lastQuestionNode = null
 var curTheme = null
 
 var styleIndividualBoxes = true
-
+var eventsToLog = ['dialogic_001', 'dialogic_002', 'dialogic_003', 'dialogic_010'] 
 
 func _ready():
 	var testHistoryRow = HistoryRow.instance()
@@ -95,7 +95,8 @@ func initalize_history():
 
 # Add history based on the passed event, using some logic to get it right
 func add_history_row_event(eventData):
-	#if eventData.event_id == 
+	if !eventsToLog.has(eventData.event_id):
+		return
 	
 	var newHistoryRow = HistoryRow.instance()
 	HistoryTimeline.add_child(newHistoryRow)
@@ -118,6 +119,10 @@ func add_history_row_event(eventData):
 	
 	if eventData.event_id == 'dialogic_001':
 		newHistoryRow.add_history(str(characterPrefix, eventData.text), audioData)
+	elif eventData.event_id == 'dialogic_002':
+		newHistoryRow.add_history(str(characterPrefix, ' has arrived.'), audioData)
+	elif eventData.event_id == 'dialogic_003':
+		newHistoryRow.add_history(str(characterPrefix, ' has left.'), audioData)
 	elif eventData.event_id == 'dialogic_010':
 		newHistoryRow.add_history(str(characterPrefix, eventData.question), audioData)
 		if eventData.has('options'):
@@ -132,17 +137,6 @@ func add_answer_to_question(stringData):
 	if lastQuestionNode != null:
 		lastQuestionNode.add_history(str('\n\t\t', stringData), lastQuestionNode.audioPath)
 		lastQuestionNode = null
-
-
-# Add a history row blindly based on passed strings
-func add_history_row_string(stringData, audioData=''):
-	var newHistoryRow = HistoryRow.instance()
-	HistoryTimeline.add_child(newHistoryRow)
-	newHistoryRow.load_theme(curTheme)
-	
-	newHistoryRow.add_history(str(stringData), audioData)
-	if audioData != '':
-		newHistoryRow.AudioButton.connect('pressed', self, '_on_audio_trigger', [audioData])
 
 
 func change_theme(newTheme: ConfigFile):
