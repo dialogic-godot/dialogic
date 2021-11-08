@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://addons/dialogic/Editor/Events/Parts/Text/EventPart_TextEditor.gd" type="Script" id=1]
+[ext_resource path="res://addons/dialogic/Editor/Events/styles/TextEditNormal.tres" type="StyleBox" id=2]
 
 [node name="TextEditor" type="VBoxContainer"]
 margin_right = 40.0
@@ -15,6 +16,12 @@ margin_right = 40.0
 margin_bottom = 40.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
+custom_colors/member_variable_color = Color( 0, 0, 0, 1 )
+custom_colors/function_color = Color( 0, 0, 0, 1 )
+custom_colors/symbol_color = Color( 0, 0, 0, 1 )
+custom_colors/number_color = Color( 0, 0, 0, 1 )
+custom_styles/focus = ExtResource( 2 )
+custom_styles/normal = ExtResource( 2 )
 syntax_highlighting = true
 show_line_numbers = true
 smooth_scrolling = true

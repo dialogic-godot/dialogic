@@ -24,7 +24,7 @@ corner_radius_bottom_left = 6
 
 [node name="EventTemplate" type="HBoxContainer"]
 anchor_right = 1.0
-margin_bottom = 42.0
+margin_bottom = 36.0
 rect_min_size = Vector2( 0, 30 )
 focus_mode = 1
 size_flags_horizontal = 3
@@ -44,7 +44,7 @@ margin_bottom = 64.0
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
 margin_right = 266.0
-margin_bottom = 42.0
+margin_bottom = 36.0
 mouse_filter = 1
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -59,27 +59,27 @@ custom_styles/panel = ExtResource( 3 )
 
 [node name="MarginContainer" type="MarginContainer" parent="PanelContainer"]
 margin_right = 266.0
-margin_bottom = 42.0
+margin_bottom = 36.0
 mouse_filter = 1
-custom_constants/margin_right = 6
-custom_constants/margin_top = 6
-custom_constants/margin_left = 6
-custom_constants/margin_bottom = 6
+custom_constants/margin_right = 10
+custom_constants/margin_top = 3
+custom_constants/margin_left = 10
+custom_constants/margin_bottom = 3
 
 [node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/MarginContainer"]
-margin_left = 6.0
-margin_top = 6.0
-margin_right = 260.0
-margin_bottom = 36.0
+margin_left = 10.0
+margin_top = 3.0
+margin_right = 256.0
+margin_bottom = 33.0
 rect_min_size = Vector2( 0, 30 )
 size_flags_horizontal = 3
 
 [node name="Header" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer"]
-margin_right = 254.0
+margin_right = 246.0
 margin_bottom = 30.0
 rect_min_size = Vector2( 0, 30 )
 size_flags_horizontal = 3
-custom_constants/separation = 10
+custom_constants/separation = 0
 
 [node name="Warning" type="TextureRect" parent="PanelContainer/MarginContainer/VBoxContainer/Header"]
 margin_bottom = 30.0
@@ -94,8 +94,7 @@ and [End branch] events.
 stretch_mode = 4
 
 [node name="IconTexture" type="TextureRect" parent="PanelContainer/MarginContainer/VBoxContainer/Header"]
-margin_left = 10.0
-margin_right = 26.0
+margin_right = 16.0
 margin_bottom = 30.0
 grow_horizontal = 0
 texture = ExtResource( 6 )
@@ -109,21 +108,26 @@ margin_right = 36.0
 margin_bottom = 22.0
 
 [node name="Content" type="MarginContainer" parent="PanelContainer/MarginContainer/VBoxContainer/Header"]
-margin_left = 36.0
-margin_right = 46.0
+margin_left = 16.0
+margin_right = 26.0
 margin_bottom = 30.0
 mouse_filter = 1
 custom_constants/margin_right = 5
 custom_constants/margin_left = 5
 
 [node name="Spacer" parent="PanelContainer/MarginContainer/VBoxContainer/Header" instance=ExtResource( 4 )]
-margin_left = 56.0
-margin_right = 214.0
+margin_left = 26.0
+margin_right = 216.0
 margin_bottom = 30.0
 
+[node name="ExpandControl" parent="PanelContainer/MarginContainer/VBoxContainer/Header" instance=ExtResource( 2 )]
+visible = false
+margin_left = 185.0
+margin_right = 223.0
+
 [node name="HelpButton" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer/Header"]
-margin_left = 224.0
-margin_right = 254.0
+margin_left = 216.0
+margin_right = 246.0
 margin_bottom = 30.0
 rect_min_size = Vector2( 30, 30 )
 hint_tooltip = "Open the documentation of this event"
@@ -133,10 +137,6 @@ expand_icon = true
 __meta__ = {
 "_edit_use_anchors_": false
 }
-
-[node name="ExpandControl" parent="PanelContainer/MarginContainer/VBoxContainer/Header" instance=ExtResource( 2 )]
-margin_left = 190.0
-margin_right = 254.0
 
 [node name="OptionsControl" parent="PanelContainer/MarginContainer/VBoxContainer/Header" instance=ExtResource( 5 )]
 visible = false

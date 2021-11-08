@@ -87,7 +87,7 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-custom_constants/separation = 0
+custom_constants/separation = 2
 
 [node name="ScrollContainer" type="ScrollContainer" parent="."]
 margin_left = 86.0
