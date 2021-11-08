@@ -15,47 +15,31 @@ __meta__ = {
 }
 
 [node name="HBox" type="HBoxContainer" parent="."]
-margin_right = 460.0
+margin_right = 431.0
 margin_bottom = 30.0
 size_flags_vertical = 3
 
-[node name="HasCondition" type="HBoxContainer" parent="HBox"]
-margin_right = 122.0
-margin_bottom = 30.0
-size_flags_vertical = 3
+[node name="DefinitionPicker" parent="HBox" instance=ExtResource( 1 )]
 
-[node name="UseCondition" type="CheckBox" parent="HBox/HasCondition"]
-margin_right = 122.0
-margin_bottom = 30.0
-size_flags_vertical = 7
-text = "Has condition?"
-
-[node name="Values" type="HBoxContainer" parent="HBox"]
-margin_left = 126.0
-margin_right = 460.0
-margin_bottom = 30.0
-
-[node name="DefinitionPicker" parent="HBox/Values" instance=ExtResource( 1 )]
-
-[node name="Label" type="Label" parent="HBox/Values"]
+[node name="Label" type="Label" parent="HBox"]
 margin_left = 154.0
 margin_top = 8.0
 margin_right = 165.0
 margin_bottom = 22.0
 text = "is"
 
-[node name="ConditionTypePicker" parent="HBox/Values" instance=ExtResource( 2 )]
+[node name="ConditionTypePicker" parent="HBox" instance=ExtResource( 2 )]
 margin_left = 169.0
 margin_right = 248.0
 margin_bottom = 30.0
 
-[node name="Control" type="Control" parent="HBox/Values"]
+[node name="Control" type="Control" parent="HBox"]
 margin_left = 252.0
 margin_right = 262.0
 margin_bottom = 30.0
 rect_min_size = Vector2( 10, 0 )
 
-[node name="Value" parent="HBox/Values" instance=ExtResource( 3 )]
+[node name="Value" parent="HBox" instance=ExtResource( 3 )]
 margin_left = 266.0
 margin_top = 1.0
 margin_right = 334.0

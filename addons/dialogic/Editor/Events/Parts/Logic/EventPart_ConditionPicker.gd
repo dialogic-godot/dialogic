@@ -3,13 +3,9 @@ extends "res://addons/dialogic/Editor/Events/Parts/EventPart.gd"
 
 # has an event_data variable that stores the current data!!!
 
-onready var enabled_view = $HBox/Values
-onready var definition_picker = $HBox/Values/DefinitionPicker
-onready var condition_type_picker = $HBox/Values/ConditionTypePicker
-onready var value_input = $HBox/Values/Value
-
-onready var optional_view = $HBox/HasCondition
-onready var use_condition_check = $HBox/HasCondition/UseCondition
+onready var definition_picker = $HBox/DefinitionPicker
+onready var condition_type_picker = $HBox/ConditionTypePicker
+onready var value_input = $HBox/Value
 
 # used to connect the signals
 func _ready():
@@ -19,8 +15,7 @@ func _ready():
 	
 	value_input.connect("text_changed", self, "_on_Value_text_changed")
 
-	use_condition_check.connect("toggled", self, "_on_UseCondition_toggled")
-	
+
 
 # called by the event block
 func load_data(data:Dictionary):
@@ -32,30 +27,11 @@ func load_data(data:Dictionary):
 	condition_type_picker.load_data(data)
 	value_input.text = data['value']
 	
-	if data['event_id'] == 'dialogic_011':
-		optional_view.show()
-		if data['definition'] == '': # Checking if definition is selected
-			use_condition_check.pressed = false
-			enabled_view.hide()
-		else:
-			use_condition_check.pressed = true
-			enabled_view.show()
-	else:
-		optional_view.hide()
 	
 # has to return the wanted preview, only useful for body parts
 func get_preview():
 	return ''
 
-
-func _on_UseCondition_toggled(checkbox_value):
-	enabled_view.visible = checkbox_value
-	if checkbox_value == false:
-		event_data['definition'] = ''
-		event_data['condition'] = ''
-		event_data['value'] = ''
-	
-	data_changed()
 
 func _on_DefinitionPicker_data_changed(data):
 	event_data = data
@@ -77,7 +53,7 @@ func _on_Value_text_changed(text):
 	data_changed()
 
 func check_data():
-	if event_data['condition'] != '==' and event_data['condition'] != '!=':
+	if event_data['condition'] != '==' and event_data['condition'] != '!=' and event_data['condition'] != '':
 		if not event_data['value'].is_valid_float():
 			emit_signal("set_warning", DTS.translate("The selected operator requires a number!"))
 			return
