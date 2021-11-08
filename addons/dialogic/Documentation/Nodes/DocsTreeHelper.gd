@@ -184,7 +184,7 @@ func get_title(path, default_name):
 	f.open(path, File.READ)
 	var arr = f.get_as_text().split('\n', false, 1)
 	if not arr.empty():
-		return arr[0].replace('#', '').strip_edges()
+		return arr[0].trim_prefix('#').strip_edges()
 	else:
 		return default_name
 ## ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

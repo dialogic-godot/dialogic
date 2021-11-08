@@ -10,8 +10,9 @@ You can also listen to Dialogic using the four other signals:
 - **timeline_end** and **timeline_start** are emitted when a timeline starts and ends.
 
 You can connect signals using the editor or via code:
-`func start_dialog():
+```gdscript
+func start_dialog():
 	var dialog = Dialogic.start("my_timeline")
 	dialog.connect("timeline_end", self, "dialog_ended")
 	add_node(dialog)
-`
+```
