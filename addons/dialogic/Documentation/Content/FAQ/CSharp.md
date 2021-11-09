@@ -1,9 +1,10 @@
 # Can I use C# with Dialogic?
+
 It is experimental! So if you want to try it out and you find issues, let us know. Usage:
 
 `public override void _Ready()
 	{
-		var dialog = DialogicSharp.Start("Greeting", false);
+		var dialog = DialogicSharp.Start("Greeting");
 		AddChild(dialog);
 	}
 `

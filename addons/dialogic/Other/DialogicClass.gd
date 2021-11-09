@@ -112,7 +112,6 @@ static func load(slot_name: String = ''):
 ## 
 ## @param slot_name		The name of the save slot. To load this save you have to specify the same
 ##						If the slot folder doesn't exist it will be created. 
-##						Leaving this empty will use the last loaded save slot.
 static func save(slot_name: String = '', is_autosave = false) -> void:
 	# check if to save (if this is a autosave)
 	if is_autosave and not get_autosave():
@@ -280,6 +279,11 @@ static func get_current_timeline():
 	if timeline == null:
 		timeline = ''
 	return timeline
+
+
+# Returns a string with the action button set on the project settings
+static func get_action_button():
+	return DialogicResources.get_settings_value('input', 'default_action_key', 'ui_accept')
 
 ################################################################################
 ## 					NOT TO BE USED FROM OUTSIDE
