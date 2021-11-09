@@ -27,6 +27,10 @@ func load_data(data:Dictionary):
 	condition_type_picker.load_data(data)
 	value_input.text = data['value']
 	
+	if data['event_id'] == 'dialogic_011':
+		if data['definition'] == '':
+			emit_signal("request_set_body_enabled", false)
+	
 	
 # has to return the wanted preview, only useful for body parts
 func get_preview():

@@ -50,5 +50,7 @@ func _on_UseCondition_toggled(toggle):
 		event_data['condition'] = ''
 		condition_preview.hide()
 		emit_signal("request_close_body")
+		emit_signal("request_set_body_enabled", false)
 	else:
+		emit_signal("request_set_body_enabled", true)
 		emit_signal("request_open_body")

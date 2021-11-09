@@ -15,6 +15,7 @@ export(PackedScene) var body_scene : PackedScene
 export (bool) var expand_on_default := false
 export (bool) var needs_indentation := false
 export (String) var help_page_path := ""
+export (bool) var indent_connection := false
 signal option_action(action_name)
 
 
@@ -92,8 +93,24 @@ func set_preview(text: String):
 
 
 func set_indent(indent: int):
-	indent_node.rect_min_size = Vector2(indent_size * indent, 0)
-	indent_node.visible = indent != 0
+	indent = max(0, indent)
+	if indent != indent_node.get_child_count():
+		if indent > indent_node.get_child_count():
+			if indent_node.get_child_count(): indent_node.get_child(indent_node.get_child_count()-1).get_node("Side").hide()
+			for i in range(indent-indent_node.get_child_count()):
+				indent_node.add_child(load("res://addons/dialogic/Editor/Events/Parts/EventBlock/Indent.tscn").instance())
+				indent_node.get_child(indent_node.get_child_count()-1).get_node("Side").color = get_color("prop_subsection", "Editor")
+				indent_node.get_child(indent_node.get_child_count()-1).get_node("Down").color = get_color("prop_subsection", "Editor")
+		elif indent < indent_node.get_child_count():
+			for i in range(indent_node.get_child_count()-indent):
+				indent_node.get_child(0).queue_free() 
+		
+	if indent:
+		if indent_connection:
+			indent_node.get_child(indent_node.get_child_count()-1).get_node("Side").show()
+	
+	#indent_node.rect_min_size = Vector2(indent_size * indent, 0)
+	#indent_node.visible = indent != 0
 
 
 func set_expanded(expanded: bool):
@@ -179,6 +196,7 @@ func _on_gui_input(event):
 			expand_control.set_expanded(not expand_control.expanded)
 
 
+
 # called when the data of the header is changed
 func _on_Header_data_changed(new_event_data):
 	event_data = new_event_data
@@ -215,6 +233,7 @@ func _request_selection():
 
 func _ready():
 	event_name = DTS.translate(event_name)
+	icon_texture.hint_tooltip = event_name
 	
 	## DO SOME STYLING
 	$PanelContainer/SelectedStyle.modulate = get_color("accent_color", "Editor")

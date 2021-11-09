@@ -68,8 +68,8 @@ __meta__ = {
 }
 
 [node name="TimelineArea" type="ScrollContainer" parent="."]
-margin_right = 74.0
-margin_bottom = 264.0
+margin_right = 832.0
+margin_bottom = 738.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_styles/bg = SubResource( 1 )
@@ -81,25 +81,25 @@ __meta__ = {
 [node name="TimeLine" type="VBoxContainer" parent="TimelineArea"]
 margin_left = 5.0
 margin_top = 5.0
-margin_right = 69.0
-margin_bottom = 259.0
+margin_right = 827.0
+margin_bottom = 733.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-custom_constants/separation = 2
+custom_constants/separation = 0
 
 [node name="ScrollContainer" type="ScrollContainer" parent="."]
-margin_left = 86.0
-margin_right = 266.0
-margin_bottom = 264.0
+margin_left = 844.0
+margin_right = 1024.0
+margin_bottom = 738.0
 rect_min_size = Vector2( 180, 0 )
 custom_styles/bg = SubResource( 2 )
 
 [node name="EventContainer" type="VBoxContainer" parent="ScrollContainer"]
 margin_left = 2.0
-margin_right = 168.0
-margin_bottom = 589.0
+margin_right = 180.0
+margin_bottom = 738.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_constants/separation = 9
@@ -108,13 +108,13 @@ __meta__ = {
 }
 
 [node name="EventsWarning" type="PanelContainer" parent="ScrollContainer/EventContainer"]
-margin_right = 166.0
+margin_right = 178.0
 margin_bottom = 68.0
 custom_styles/panel = SubResource( 3 )
 
 [node name="HBoxContainer" type="HBoxContainer" parent="ScrollContainer/EventContainer/EventsWarning"]
 margin_top = 10.0
-margin_right = 160.0
+margin_right = 172.0
 margin_bottom = 58.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -131,7 +131,7 @@ stretch_mode = 4
 
 [node name="Label" type="Label" parent="ScrollContainer/EventContainer/EventsWarning/HBoxContainer"]
 margin_left = 44.0
-margin_right = 160.0
+margin_right = 172.0
 margin_bottom = 48.0
 rect_min_size = Vector2( 100, 0 )
 size_flags_horizontal = 3
@@ -142,7 +142,7 @@ autowrap = true
 
 [node name="HBoxContainer6" type="HBoxContainer" parent="ScrollContainer/EventContainer"]
 margin_top = 77.0
-margin_right = 166.0
+margin_right = 178.0
 margin_bottom = 91.0
 
 [node name="TLabel" parent="ScrollContainer/EventContainer/HBoxContainer6" instance=ExtResource( 21 )]
@@ -155,13 +155,13 @@ text_key = "Main Events"
 
 [node name="HSeparator2" type="HSeparator" parent="ScrollContainer/EventContainer/HBoxContainer6"]
 margin_left = 81.0
-margin_right = 166.0
+margin_right = 178.0
 margin_bottom = 14.0
 size_flags_horizontal = 3
 
 [node name="Grid1" type="GridContainer" parent="ScrollContainer/EventContainer"]
 margin_top = 100.0
-margin_right = 166.0
+margin_right = 178.0
 margin_bottom = 120.0
 custom_constants/vseparation = 6
 custom_constants/hseparation = 6
@@ -197,7 +197,7 @@ event_icon = ExtResource( 7 )
 
 [node name="HBoxContainer5" type="HBoxContainer" parent="ScrollContainer/EventContainer"]
 margin_top = 129.0
-margin_right = 166.0
+margin_right = 178.0
 margin_bottom = 143.0
 
 [node name="TLabel2" parent="ScrollContainer/EventContainer/HBoxContainer5" instance=ExtResource( 21 )]
@@ -210,13 +210,13 @@ text_key = "Logic"
 
 [node name="HSeparator2" type="HSeparator" parent="ScrollContainer/EventContainer/HBoxContainer5"]
 margin_left = 37.0
-margin_right = 166.0
+margin_right = 178.0
 margin_bottom = 14.0
 size_flags_horizontal = 3
 
 [node name="Grid2" type="GridContainer" parent="ScrollContainer/EventContainer"]
 margin_top = 152.0
-margin_right = 166.0
+margin_right = 178.0
 margin_bottom = 198.0
 custom_constants/vseparation = 6
 custom_constants/hseparation = 6
@@ -303,7 +303,7 @@ event_icon = ExtResource( 27 )
 
 [node name="HBoxContainer3" type="HBoxContainer" parent="ScrollContainer/EventContainer"]
 margin_top = 207.0
-margin_right = 166.0
+margin_right = 178.0
 margin_bottom = 221.0
 
 [node name="TLabel3" parent="ScrollContainer/EventContainer/HBoxContainer3" instance=ExtResource( 21 )]
@@ -316,13 +316,13 @@ text_key = "Timeline"
 
 [node name="HSeparator2" type="HSeparator" parent="ScrollContainer/EventContainer/HBoxContainer3"]
 margin_left = 60.0
-margin_right = 166.0
+margin_right = 178.0
 margin_bottom = 14.0
 size_flags_horizontal = 3
 
 [node name="Grid3" type="GridContainer" parent="ScrollContainer/EventContainer"]
 margin_top = 230.0
-margin_right = 166.0
+margin_right = 178.0
 margin_bottom = 276.0
 custom_constants/vseparation = 6
 custom_constants/hseparation = 6
@@ -389,7 +389,7 @@ event_icon = ExtResource( 18 )
 
 [node name="HBoxContainer4" type="HBoxContainer" parent="ScrollContainer/EventContainer"]
 margin_top = 285.0
-margin_right = 166.0
+margin_right = 178.0
 margin_bottom = 299.0
 
 [node name="TLabel4" parent="ScrollContainer/EventContainer/HBoxContainer4" instance=ExtResource( 21 )]
@@ -402,13 +402,13 @@ text_key = "Audio"
 
 [node name="HSeparator2" type="HSeparator" parent="ScrollContainer/EventContainer/HBoxContainer4"]
 margin_left = 41.0
-margin_right = 166.0
+margin_right = 178.0
 margin_bottom = 14.0
 size_flags_horizontal = 3
 
 [node name="Grid4" type="GridContainer" parent="ScrollContainer/EventContainer"]
 margin_top = 308.0
-margin_right = 166.0
+margin_right = 178.0
 margin_bottom = 328.0
 custom_constants/vseparation = 6
 custom_constants/hseparation = 6
@@ -434,7 +434,7 @@ event_icon = ExtResource( 19 )
 
 [node name="HBoxContainer" type="HBoxContainer" parent="ScrollContainer/EventContainer"]
 margin_top = 337.0
-margin_right = 166.0
+margin_right = 178.0
 margin_bottom = 351.0
 
 [node name="TLabel5" parent="ScrollContainer/EventContainer/HBoxContainer" instance=ExtResource( 21 )]
@@ -447,13 +447,13 @@ text_key = "Godot"
 
 [node name="HSeparator2" type="HSeparator" parent="ScrollContainer/EventContainer/HBoxContainer"]
 margin_left = 43.0
-margin_right = 166.0
+margin_right = 178.0
 margin_bottom = 14.0
 size_flags_horizontal = 3
 
 [node name="Grid5" type="GridContainer" parent="ScrollContainer/EventContainer"]
 margin_top = 360.0
-margin_right = 166.0
+margin_right = 178.0
 margin_bottom = 380.0
 custom_constants/vseparation = 6
 custom_constants/hseparation = 6
@@ -489,7 +489,7 @@ event_icon = ExtResource( 20 )
 
 [node name="CustomEventsHeadline" type="HBoxContainer" parent="ScrollContainer/EventContainer"]
 margin_top = 389.0
-margin_right = 166.0
+margin_right = 178.0
 margin_bottom = 403.0
 
 [node name="TLabel6" parent="ScrollContainer/EventContainer/CustomEventsHeadline" instance=ExtResource( 21 )]
@@ -502,17 +502,17 @@ text_key = "Custom Events"
 
 [node name="HSeparator2" type="HSeparator" parent="ScrollContainer/EventContainer/CustomEventsHeadline"]
 margin_left = 99.0
-margin_right = 166.0
+margin_right = 178.0
 margin_bottom = 14.0
 size_flags_horizontal = 3
 
 [node name="CustomEventsContainer" type="VBoxContainer" parent="ScrollContainer/EventContainer"]
 margin_top = 412.0
-margin_right = 166.0
+margin_right = 178.0
 margin_bottom = 480.0
 
 [node name="Spacer" type="Control" parent="ScrollContainer/EventContainer"]
 margin_top = 489.0
-margin_right = 166.0
+margin_right = 178.0
 margin_bottom = 589.0
 rect_min_size = Vector2( 0, 100 )

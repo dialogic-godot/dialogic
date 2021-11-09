@@ -67,6 +67,7 @@ signal timeline_loaded
 func _ready():
 	editor_reference = find_parent('EditorView')
 	connect("batch_loaded", self, '_on_batch_loaded')
+	
 	var modifier = ''
 	var _scale = get_constant("inspector_margin", "Editor")
 	_scale = _scale * 0.125
@@ -102,6 +103,7 @@ func _ready():
 	
 	update_custom_events()
 	$TimelineArea.connect('resized', self, 'add_extra_scroll_area_to_timeline', [])
+	create_rmb_context_menu()
 	
 
 # handles dragging/moving of events
@@ -150,6 +152,11 @@ func _on_event_block_gui_input(event, item: Node):
 			else:
 				piece_was_dragged = false
 			select_item(item)
+	elif event is InputEventMouseButton and event.is_pressed() and event.button_index == 2:
+		editor_reference.get_node("EventRMBMenu").popup()
+		editor_reference.get_node("EventRMBMenu").rect_global_position = get_global_mouse_position()
+		selected_items = [item]
+		visual_update_selection()
 
 
 ## *****************************************************************************
@@ -587,6 +594,32 @@ func deselect_all_items():
 ##				SPECIAL BLOCK OPERATIONS
 ## *****************************************************************************
 
+func create_rmb_context_menu():
+	var event_popup := PopupMenu.new()
+	event_popup.add_icon_item(get_icon("ArrowUp", "EditorIcons"), 'Move up')
+	event_popup.add_icon_item(get_icon("ArrowDown", "EditorIcons"), 'Move down')
+	event_popup.add_icon_item(get_icon("Remove", "EditorIcons"), 'Delete')
+	event_popup.name = "EventRMBMenu"
+	editor_reference.call_deferred("add_child", event_popup, true)
+	
+	event_popup.connect("index_pressed", self, "_on_eventRMBmenu_index_pressed")
+
+func _on_eventRMBmenu_index_pressed(index):
+	var item = selected_items[0]
+	if index == 0:
+		move_block(item, "up")
+		indent_events()
+	elif index == 1:
+		move_block(item, "down")
+		indent_events()
+	elif index == 2:
+		var events_indexed = get_events_indexed(selected_items)
+		TimelineUndoRedo.create_action("[D] Deleting "+str(len(selected_items))+" event(s).")
+		TimelineUndoRedo.add_do_method(self, "delete_events_indexed", events_indexed)
+		TimelineUndoRedo.add_undo_method(self, "add_events_indexed", events_indexed)
+		TimelineUndoRedo.commit_action()
+		indent_events()
+
 # SIGNAL handles the actions of the small menu on the right
 func _on_event_options_action(action: String, item: Node):
 	### WORK TODO
@@ -602,6 +635,7 @@ func _on_event_options_action(action: String, item: Node):
 func delete_event(event):
 	event.get_parent().remove_child(event)
 	event.queue_free()
+
 
 
 ## *****************************************************************************
@@ -992,24 +1026,23 @@ func scroll_to_piece(piece_index) -> void:
 	var height = 0
 	for i in range(0, piece_index):
 		height += $TimelineArea/TimeLine.get_child(i).rect_size.y
-	$TimelineArea.scroll_vertical = height
+	var tween = Tween.new()
+	add_child(tween)
+	tween.interpolate_property($TimelineArea, "scroll_vertical", null, max(0,height - 200), 0.1, Tween.TRANS_LINEAR, Tween.EASE_OUT)
+	tween.start()
+	yield(tween, "tween_all_completed")
+	tween.queue_free()
 
 # Event Indenting
 func indent_events() -> void:
 	# Now indenting
 	var indent: int = 0
-	var starter: bool = false
 	var event_list: Array = timeline.get_children()
-	var question_index: int = 0
-	var question_indent = {}
+	var question_or_condition = false
+	
 	if event_list.size() < 2:
 		return
-	# Resetting all the indents
-	for event in event_list:
-		var indent_node
-		
-		event.set_indent(0)
-		
+
 	# Adding new indents
 	for event in event_list:
 		# since there are indicators now, not all elements
@@ -1017,31 +1050,33 @@ func indent_events() -> void:
 		if (not "event_data" in event):
 			continue
 		
-		
-		if event.event_data['event_id'] == 'dialogic_011':
-			if question_index > 0:
-				indent = question_indent[question_index] + 1
-				starter = true
-		elif event.event_data['event_id'] == 'dialogic_010' or event.event_data['event_id'] == 'dialogic_012':
+		# Question
+		if event.event_data['event_id'] == 'dialogic_010':
+			event.set_indent(indent)
+			indent += 2
+			question_or_condition = false
+		# Choice
+		elif event.event_data['event_id'] == 'dialogic_011':
+			indent -= 1
+			event.set_indent(indent)
 			indent += 1
-			starter = true
-			question_index += 1
-			question_indent[question_index] = indent
+		# Condition
+		elif event.event_data['event_id'] == 'dialogic_012':
+			event.set_indent(indent)
+			indent += 1
+			question_or_condition = true
+		# End Branch
 		elif event.event_data['event_id'] == 'dialogic_013':
-			if question_indent.has(question_index):
-				indent = question_indent[question_index]
-				indent -= 1
-				question_index -= 1
-				if indent < 0:
-					indent = 0
-
-		if indent > 0:
-			# Keep old behavior for items without template
-			if starter:
-				event.set_indent(indent - 1)
-			else:
+			if indent > 0:
+				if question_or_condition: 	# this ends a condition
+					indent -= 1
+				else:						# this ends a question
+					indent -= 2
 				event.set_indent(indent)
-		starter = false
+		
+		else:
+			event.set_indent(indent)
+		
 
 
 # called from the toolbar

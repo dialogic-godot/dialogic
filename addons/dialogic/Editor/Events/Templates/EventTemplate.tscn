@@ -24,11 +24,12 @@ corner_radius_bottom_left = 6
 
 [node name="EventTemplate" type="HBoxContainer"]
 anchor_right = 1.0
-margin_bottom = 36.0
-rect_min_size = Vector2( 0, 42 )
+margin_bottom = 44.0
+rect_min_size = Vector2( 0, 44 )
 focus_mode = 1
 size_flags_horizontal = 3
 size_flags_vertical = 9
+custom_constants/separation = 0
 script = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -38,27 +39,28 @@ event_data = {
 }
 expand_on_default = true
 
-[node name="Indent" type="Control" parent="."]
-visible = false
-margin_bottom = 64.0
+[node name="Indent" type="HBoxContainer" parent="."]
+margin_bottom = 44.0
+custom_constants/separation = 0
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
-margin_right = 266.0
-margin_bottom = 42.0
+margin_top = 1.0
+margin_right = 1024.0
+margin_bottom = 43.0
 mouse_filter = 1
 size_flags_horizontal = 3
-size_flags_vertical = 3
+size_flags_vertical = 4
 custom_styles/panel = SubResource( 1 )
 
 [node name="SelectedStyle" type="Panel" parent="PanelContainer"]
 visible = false
 modulate = Color( 0, 0, 0, 1 )
-margin_right = 1024.0
+margin_right = 266.0
 margin_bottom = 42.0
 custom_styles/panel = ExtResource( 3 )
 
 [node name="MarginContainer" type="MarginContainer" parent="PanelContainer"]
-margin_right = 266.0
+margin_right = 1024.0
 margin_bottom = 42.0
 mouse_filter = 1
 custom_constants/margin_right = 6
@@ -69,13 +71,13 @@ custom_constants/margin_bottom = 6
 [node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/MarginContainer"]
 margin_left = 6.0
 margin_top = 6.0
-margin_right = 260.0
+margin_right = 1018.0
 margin_bottom = 36.0
 rect_min_size = Vector2( 0, 30 )
 size_flags_horizontal = 3
 
 [node name="Header" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer"]
-margin_right = 254.0
+margin_right = 1012.0
 margin_bottom = 30.0
 rect_min_size = Vector2( 0, 30 )
 size_flags_horizontal = 3
@@ -106,7 +108,7 @@ custom_constants/margin_left = 5
 
 [node name="Spacer" parent="PanelContainer/MarginContainer/VBoxContainer/Header" instance=ExtResource( 4 )]
 margin_left = 26.0
-margin_right = 224.0
+margin_right = 982.0
 margin_bottom = 30.0
 rect_min_size = Vector2( 100, 0 )
 
@@ -116,8 +118,8 @@ margin_left = 185.0
 margin_right = 223.0
 
 [node name="HelpButton" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer/Header"]
-margin_left = 224.0
-margin_right = 254.0
+margin_left = 982.0
+margin_right = 1012.0
 margin_bottom = 30.0
 rect_min_size = Vector2( 30, 30 )
 hint_tooltip = "Open the documentation of this event"
@@ -136,8 +138,8 @@ margin_bottom = 30.0
 items = [ "Move Up", null, 0, false, false, 0, 0, null, "", false, "Move Down", null, 0, false, false, 1, 0, null, "", false, "", null, 0, false, false, 2, 0, null, "", false, "Remove", null, 0, false, false, 3, 0, null, "", false ]
 
 [node name="Warning" type="TextureRect" parent="PanelContainer/MarginContainer/VBoxContainer/Header"]
-margin_left = 254.0
-margin_right = 254.0
+margin_left = 1012.0
+margin_right = 1012.0
 margin_bottom = 30.0
 hint_tooltip = "Choice events should go 
 between a [Question]

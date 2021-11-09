@@ -8,7 +8,7 @@
 [node name="CharacterPicker" type="VBoxContainer"]
 margin_right = 114.0
 margin_bottom = 22.0
-rect_min_size = Vector2( 150, 30 )
+rect_min_size = Vector2( 160, 30 )
 size_flags_vertical = 3
 script = ExtResource( 2 )
 __meta__ = {
@@ -16,24 +16,12 @@ __meta__ = {
 }
 
 [node name="HBox" type="HBoxContainer" parent="."]
-margin_right = 150.0
+margin_right = 160.0
 margin_bottom = 30.0
 size_flags_vertical = 3
 
-[node name="Icon" type="TextureRect" parent="HBox"]
-margin_top = 4.0
-margin_right = 22.0
-margin_bottom = 26.0
-size_flags_vertical = 4
-texture = ExtResource( 1 )
-stretch_mode = 6
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
 [node name="MenuButton" type="MenuButton" parent="HBox"]
-margin_left = 26.0
-margin_right = 150.0
+margin_right = 134.0
 margin_bottom = 30.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -42,6 +30,18 @@ custom_styles/pressed = ExtResource( 3 )
 custom_styles/normal = ExtResource( 3 )
 text = "Character"
 flat = false
+
+[node name="Icon" type="TextureRect" parent="HBox"]
+margin_left = 138.0
+margin_top = 4.0
+margin_right = 160.0
+margin_bottom = 26.0
+size_flags_vertical = 4
+texture = ExtResource( 1 )
+stretch_mode = 6
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="NoCharacterContainer" type="HBoxContainer" parent="."]
 visible = false

@@ -64,9 +64,9 @@ func update_to_character():
 					icon.modulate = ch['color']
 	else:
 		if allow_no_character:
-			picker_menu.text = 'No Character'
+			picker_menu.text = 'No character'
 		else:
-			picker_menu.text = 'Select Character'
+			picker_menu.text = 'Select character'
 		icon.modulate = Color.white
 
 
