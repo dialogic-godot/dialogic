@@ -159,13 +159,13 @@ func load_config_files():
 	
 	# history
 	if settings.has_section('history'):
-		if settings.has_section_key('history', 'enable_history_logging'):
-			if settings.get_value('history', 'enable_history_logging'):
-				HistoryTimeline.initalize_history()
 		if settings.has_section_key('history', 'history_theme'):
 			theme_file = settings.get_value('history', 'history_theme')
 		history_theme = load_theme(theme_file)
 		HistoryTimeline.load_theme(history_theme)
+		if settings.has_section_key('history', 'enable_history_logging'):
+			if settings.get_value('history', 'enable_history_logging'):
+				HistoryTimeline.initalize_history()
 
 
 
