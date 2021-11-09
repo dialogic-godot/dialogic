@@ -6,6 +6,8 @@
 - New events:
   - `Label Event` and `Go to Event`. This will help you creating an anchor position to go back to.
 - You can now make a list of words like this: `[word1,word2,word3]` and Dialogic will pick a random word from the list. If the word is a Dialogic variable name and it gets picked it will show the value of that variable.
+- Character Editor improvements [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
+- Many minor bugs fixed
 
 ## v1.3 - Save me some time
 #### General Editor Stuff
