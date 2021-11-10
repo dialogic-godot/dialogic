@@ -1,0 +1,98 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://addons/dialogic/Example Assets/HistoryRows/HistoryRow.tscn" type="PackedScene" id=2]
+[ext_resource path="res://addons/dialogic/Nodes/History.gd" type="Script" id=3]
+
+[node name="History" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+script = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+HistoryRow = ExtResource( 2 )
+
+[node name="HistoryPopup" type="Popup" parent="."]
+visible = true
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 20.0
+margin_top = 20.0
+margin_right = -20.0
+margin_bottom = -20.0
+popup_exclusive = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ColorRect" type="ColorRect" parent="HistoryPopup"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextureRect" type="TextureRect" parent="HistoryPopup"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_horizontal = 5
+size_flags_vertical = 0
+expand = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HistoryAudio" type="AudioStreamPlayer" parent="HistoryPopup"]
+
+[node name="ScrollHistoryContainer" type="ScrollContainer" parent="HistoryPopup"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_horizontal = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="HistoryPopup/ScrollHistoryContainer"]
+margin_right = 984.0
+margin_bottom = 10.0
+size_flags_horizontal = 3
+custom_constants/margin_right = 5
+custom_constants/margin_top = 5
+custom_constants/margin_left = 5
+custom_constants/margin_bottom = 5
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HistoryTimeline" type="VBoxContainer" parent="HistoryPopup/ScrollHistoryContainer/MarginContainer"]
+margin_left = 5.0
+margin_top = 5.0
+margin_right = 979.0
+margin_bottom = 5.0
+custom_constants/separation = 16
+
+[node name="CloseButton" type="Button" parent="HistoryPopup"]
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -54.0
+margin_bottom = 20.0
+text = "Return"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HistoryButton" type="Button" parent="."]
+visible = false
+anchor_top = 1.0
+anchor_bottom = 1.0
+margin_top = -20.0
+margin_right = 58.0
+disabled = true
+text = "History"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[connection signal="item_rect_changed" from="." to="." method="_on_History_item_rect_changed"]
+[connection signal="about_to_show" from="HistoryPopup" to="." method="_on_HistoryPopup_about_to_show"]
+[connection signal="popup_hide" from="HistoryPopup" to="." method="_on_HistoryPopup_popup_hide"]
+[connection signal="pressed" from="HistoryPopup/CloseButton" to="." method="_on_CloseButton_pressed"]
+[connection signal="pressed" from="HistoryButton" to="." method="_on_HistoryButton_pressed"]

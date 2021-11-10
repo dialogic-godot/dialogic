@@ -27,6 +27,12 @@ onready var nodes = {
 	'new_custom_event_id': $VBoxContainer/HBoxContainer3/VBoxContainer2/CustomEvents/CreateCustomEventSection/CeEventId,
 	'new_custom_event_create':$VBoxContainer/HBoxContainer3/VBoxContainer2/CustomEvents/CreateCustomEventSection/HBoxContainer/CreateCustomEvent,
 	'new_custom_event_cancel':$VBoxContainer/HBoxContainer3/VBoxContainer2/CustomEvents/CreateCustomEventSection/HBoxContainer/CancelCustomEvent,
+	
+	# History Settings
+	'enable_history_logging': $VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer/HBoxContainer8/EnableHistoryLogging,
+	'history_theme': $VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer/HBoxContainer9/HistoryThemeOptionButton,
+	'enable_dynamic_theme': $VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer/HBoxContainer10/EnableDynamicTheme,
+	'history_button_position': $VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer/HBoxContainer11/PositionSelector,
 	}
 
 var THEME_KEYS := [
@@ -41,6 +47,13 @@ var INPUT_KEYS := [
 	'choice_hotkey_3',
 	'choice_hotkey_4',
 	]
+
+var HISTORY_KEYS := [
+	'enable_history_logging',
+	'history_theme',
+	'enable_dynamic_theme',
+	'history_button_position',
+]
 
 func _ready():
 	editor_reference = find_parent('EditorView')
@@ -67,6 +80,36 @@ func _ready():
 	AudioServer.connect("bus_layout_changed", self, "update_bus_selector")
 	nodes['text_event_audio_default_bus'].connect('item_selected', self, '_on_text_audio_default_bus_item_selected')
 	
+	## History timeline connections
+	nodes['history_theme'].connect('item_selected', self, '_on_default_history_theme_selected')
+	nodes['enable_history_logging'].connect('toggled', self, '_on_item_toggled', ['history', 'enable_history_logging'])
+	nodes['enable_dynamic_theme'].connect('toggled', self, '_on_item_toggled', ['history', 'enable_dynamic_theme'])
+	nodes['history_button_position'].connect('item_selected', self, '_on_button_history_button_position_selected')
+	
+	for button in ['history_button_position']:
+		var button_positions_popup = nodes[button].get_popup()
+		button_positions_popup.clear()
+		button_positions_popup.add_icon_item(
+			get_icon("ControlAlignTopLeft", "EditorIcons"), "Top Left", 0)
+		button_positions_popup.add_icon_item(
+			get_icon("ControlAlignTopCenter", "EditorIcons"), "Top Center", 1)
+		button_positions_popup.add_icon_item(
+			get_icon("ControlAlignTopRight", "EditorIcons"), "Top Right", 2)
+		button_positions_popup.add_separator()
+		button_positions_popup.add_icon_item(
+			get_icon("ControlAlignLeftCenter", "EditorIcons"), "Center Left", 3)
+		button_positions_popup.add_icon_item(
+			get_icon("ControlAlignCenter", "EditorIcons"), "Center", 4)
+		button_positions_popup.add_icon_item(
+			get_icon("ControlAlignRightCenter", "EditorIcons"), "Center Right", 5)
+		button_positions_popup.add_separator()
+		button_positions_popup.add_icon_item(
+			get_icon("ControlAlignBottomLeft", "EditorIcons"), "Bottom Left", 6)
+		button_positions_popup.add_icon_item(
+			get_icon("ControlAlignBottomCenter", "EditorIcons"), "Bottom Center", 7)
+		button_positions_popup.add_icon_item(
+			get_icon("ControlAlignBottomRight", "EditorIcons"), "Bottom Right", 8)
+			
 	## The custom event section
 	nodes['new_custom_event_open'].connect("pressed", self, "new_custom_event_pressed")
 	nodes['new_custom_event_section'].hide()
@@ -86,6 +129,7 @@ func update_data():
 	nodes['canvas_layer'].text = settings.get_value("theme", "canvas_layer", '1')
 	refresh_themes(settings)
 	load_values(settings, "input", INPUT_KEYS)
+	load_values(settings, "history", HISTORY_KEYS)
 	select_bus(settings.get_value("dialog", 'text_event_audio_default_bus', "Master"))
 
 
@@ -108,25 +152,34 @@ func refresh_themes(settings: ConfigFile):
 	var index = 0
 	for theme in theme_list:
 		nodes['themes'].add_item(theme['name'])
+		nodes['history_theme'].add_item(theme['name'])
 		nodes['themes'].set_item_metadata(index, {'file': theme['file']})
+		nodes['history_theme'].set_item_metadata(index, {'file': theme['file']})
 		theme_indexes[theme['file']] = index
 		index += 1
 	
 	# Only one item added, then save as default
 	if index == 1: 
 		set_value('theme', 'default', theme_list[0]['file'])
+		set_value('history', 'history_theme', theme_list[0]['file'])
 	
 	# More than one theme? Select which the default one is
 	if index > 1:
 		if settings.has_section_key('theme', 'default'):
 			nodes['themes'].select(theme_indexes[settings.get_value('theme', 'default', null)])
+			nodes['history_theme'].select(theme_indexes[settings.get_value('history', 'history_theme', null)])
 		else:
 			# Fallback
 			set_value('theme', 'default', theme_list[0]['file'])
+			set_value('history', 'history_theme', theme_list[0]['file'])
 
 
 func _on_default_theme_selected(index):
 	set_value('theme', 'default', nodes['themes'].get_item_metadata(index)['file'])
+
+
+func _on_default_history_theme_selected(index):
+	set_value('history', 'history_theme', nodes['history_theme'].get_item_metadata(index)['file'])
 
 
 func _on_delay_options_text_changed(text):
@@ -135,6 +188,10 @@ func _on_delay_options_text_changed(text):
 
 func _on_item_toggled(value: bool, section: String, key: String):
 	set_value(section, key, value)
+
+
+func _on_button_history_button_position_selected(index):
+	set_value('history', 'history_button_position', index)
 
 
 func _on_default_action_key_presssed(nodeName = 'default_action_key') -> void:
