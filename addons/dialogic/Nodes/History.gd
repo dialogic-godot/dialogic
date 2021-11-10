@@ -271,14 +271,14 @@ func _on_CloseButton_pressed():
 	$HistoryPopup.hide()
 	$HistoryButton.show()
 	#get_parent().waiting = false
-	get_parent().set_state(prevState)
+	#get_parent().set_state(prevState)
 
 func _on_HistoryButton_pressed():
-	if !get_parent().is_state(get_parent().state.HISTORY):
+	if $HistoryPopup.visible == false:
 		$HistoryPopup.popup()
 		$HistoryButton.hide()
-		prevState = get_parent().get_state()
-		get_parent().set_state(get_parent().state.HISTORY)
+		#prevState = get_parent().get_state()
+		#get_parent().set_state(get_parent().state.HISTORY)
 
 
 func _on_History_item_rect_changed():
