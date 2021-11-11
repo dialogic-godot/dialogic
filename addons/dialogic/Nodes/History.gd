@@ -117,10 +117,12 @@ func add_history_row_event(eventData):
 	newHistoryRow.load_theme(curTheme)
 	
 	var characterPrefix = ''
-	if eventData.has('character'):
-		print(eventData)
+	if eventData.has('character') and eventData.character != '':
 		var characterData = DialogicUtil.get_character(eventData.character)
-		var characterName = get_character_name(eventData.character)
+		var characterName = characterData.get('name', '')
+		
+		if characterData.data.get('display_name_bool', false)  == true:
+			characterName = characterData.data.get('display_name', '')
 		
 		if characterName != '':
 			var characterColor = characterData.data.get('color', Color.white)
@@ -158,34 +160,6 @@ func add_answer_to_question(stringData):
 func change_theme(newTheme: ConfigFile):
 	if get_parent().settings.get_value('history', 'enable_dynamic_theme', false):
 		curTheme = newTheme
-
-
-# helper to get character name string by id
-func get_character_name(character_id) -> String:
-	var characterName = '';
-	var characterData =  DialogicUtil.get_character(character_id)
-	if characterData.has('name'):
-		var parsed_name = characterData['name']
-		if characterData.has('display_name'):
-			if characterData['display_name'] != '':
-				parsed_name = characterData['display_name']
-		characterName = parsed_name;
-	return characterName;
-
-
-# helper to get character name string with color tags by id
-func get_character_name_with_color(character_id) -> String:
-	var characterName = '';
-	var characterData = get_parent().get_character(character_id)
-	if characterData.has('name'):
-		var parsed_name = characterData['name']
-		if characterData.has('display_name'):
-			if characterData['display_name'] != '':
-				parsed_name = characterData['display_name']
-		var characterColor = characterData.data.get('color', Color.white)
-		characterName = parsed_name;
-		characterName = str("[color=",characterColor,"]",characterName, "[/color]: ")
-	return characterName;
 
 
 func load_theme(theme: ConfigFile):
@@ -277,16 +251,13 @@ func _on_CloseButton_pressed():
 	$HistoryPopup.hide()
 	$HistoryButton.show()
 	is_history_open = false
-	#get_parent().waiting = false
-	#get_parent().set_state(prevState)
+
 
 func _on_HistoryButton_pressed():
 	if $HistoryPopup.visible == false:
 		$HistoryPopup.popup()
 		$HistoryButton.hide()
 		is_history_open = true
-		#prevState = get_parent().get_state()
-		#get_parent().set_state(get_parent().state.HISTORY)
 
 
 func _on_History_item_rect_changed():
