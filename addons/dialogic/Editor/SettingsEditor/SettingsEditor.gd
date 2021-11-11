@@ -139,7 +139,7 @@ func load_values(settings: ConfigFile, section: String, key: Array):
 			if nodes[k] is LineEdit:
 				nodes[k].text = settings.get_value(section, k)
 			elif nodes[k] is OptionButton:
-				nodes[k].text = settings.get_value(section, k)
+				nodes[k].text = str(settings.get_value(section, k))
 			else:
 				nodes[k].pressed = settings.get_value(section, k, false)
 

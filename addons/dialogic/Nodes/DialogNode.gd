@@ -419,6 +419,8 @@ func _process(delta):
 # checks for the "input_next" action
 func _input(event: InputEvent) -> void:
 	if not Engine.is_editor_hint() and event.is_action_pressed(Dialogic.get_action_button()):
+		if HistoryTimeline.block_dialog_advance:
+			return
 		if is_state(state.WAITING):
 			if not current_event:
 				return

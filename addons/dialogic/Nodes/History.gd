@@ -15,6 +15,10 @@ onready var HistoryColorRect = $HistoryPopup/ColorRect
 onready var HistoryAudio = $HistoryPopup/HistoryAudio
 onready var CloseButton = $HistoryPopup/CloseButton
 
+var is_history_open = false
+var is_mouse_on_button = false
+var block_dialog_advance = false setget , history_advance_block
+
 var lastQuestionNode = null
 var curTheme = null
 var prevState
@@ -114,6 +118,7 @@ func add_history_row_event(eventData):
 	
 	var characterPrefix = ''
 	if eventData.has('character'):
+		print(eventData)
 		var characterData = DialogicUtil.get_character(eventData.character)
 		var characterName = get_character_name(eventData.character)
 		
@@ -127,6 +132,7 @@ func add_history_row_event(eventData):
 			audioData = eventData['voice_data']['0'].file
 			newHistoryRow.AudioButton.connect('pressed', self, '_on_audio_trigger', [audioData])
 	
+	# event logging handled here
 	if eventData.event_id == 'dialogic_001':
 		newHistoryRow.add_history(str(characterPrefix, eventData.text), audioData)
 	elif eventData.event_id == 'dialogic_002':
@@ -162,7 +168,7 @@ func get_character_name(character_id) -> String:
 		var parsed_name = characterData['name']
 		if characterData.has('display_name'):
 			if characterData['display_name'] != '':
-				parsed_name = characterData['d	isplay_name']
+				parsed_name = characterData['display_name']
 		characterName = parsed_name;
 	return characterName;
 
@@ -270,6 +276,7 @@ func _on_HistoryPopup_about_to_show():
 func _on_CloseButton_pressed():
 	$HistoryPopup.hide()
 	$HistoryButton.show()
+	is_history_open = false
 	#get_parent().waiting = false
 	#get_parent().set_state(prevState)
 
@@ -277,6 +284,7 @@ func _on_HistoryButton_pressed():
 	if $HistoryPopup.visible == false:
 		$HistoryPopup.popup()
 		$HistoryButton.hide()
+		is_history_open = true
 		#prevState = get_parent().get_state()
 		#get_parent().set_state(get_parent().state.HISTORY)
 
@@ -289,3 +297,14 @@ func _on_History_item_rect_changed():
 		HistoryPopup.margin_right = -20
 		HistoryPopup.margin_top = 20
 
+
+func _on_HistoryButton_mouse_entered():
+	is_mouse_on_button = true
+
+
+func _on_HistoryButton_mouse_exited():
+	is_mouse_on_button = false
+
+
+func history_advance_block() -> bool:
+	return is_mouse_on_button or is_history_open 

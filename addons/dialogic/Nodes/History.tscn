@@ -95,4 +95,6 @@ __meta__ = {
 [connection signal="about_to_show" from="HistoryPopup" to="." method="_on_HistoryPopup_about_to_show"]
 [connection signal="popup_hide" from="HistoryPopup" to="." method="_on_HistoryPopup_popup_hide"]
 [connection signal="pressed" from="HistoryPopup/CloseButton" to="." method="_on_CloseButton_pressed"]
+[connection signal="mouse_entered" from="HistoryButton" to="." method="_on_HistoryButton_mouse_entered"]
+[connection signal="mouse_exited" from="HistoryButton" to="." method="_on_HistoryButton_mouse_exited"]
 [connection signal="pressed" from="HistoryButton" to="." method="_on_HistoryButton_pressed"]
