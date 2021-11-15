@@ -52,9 +52,10 @@ func update_text(text:String):
 	commands = []
 	
 	### remove commands from text, and store where and what they are
-	
-	#current regex: \[(nw|(nw|speed|signal|play)=(.+?))\](.*?)
-	#remeber regex101.com is your friend. Do not shoot it.
+	#current regex: \[(nw|(nw|speed|signal|play|pause)=(.+?))\](.*?)
+	#Note: The version defined in _ready will have aditional escape characers.
+	#      DO NOT JUST COPY/PASTE
+	#remeber regex101.com is your friend. Do not shoot it. You may ask it to verify the code.
 	#The capture groups
 	# 0 everything ex [speed=5]
 	# 1 the "nw" single command or one of the variable commands ex "nw" or "speed=5"
