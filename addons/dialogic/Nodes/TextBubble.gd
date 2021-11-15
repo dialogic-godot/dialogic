@@ -19,7 +19,6 @@ var _theme
 signal text_completed()
 signal letter_written()
 signal signal_request(arg)
-signal play_request(arg)
 
 ## *****************************************************************************
 ##								PUBLIC METHODS
@@ -56,7 +55,7 @@ func update_text(text:String):
 	#Note: The version defined in _ready will have aditional escape characers.
 	#      DO NOT JUST COPY/PASTE
 	#remeber regex101.com is your friend. Do not shoot it. You may ask it to verify the code.
-	#The capture groups
+	#The capture groups, and what they do:
 	# 0 everything ex [speed=5]
 	# 1 the "nw" single command or one of the variable commands ex "nw" or "speed=5"
 	# 2 the command, assuming it is an variable command ex "speed"
@@ -93,7 +92,13 @@ func handle_command(command:Array):
 	elif(command[1] == "signal"):
 		emit_signal("signal_request", command[2])
 	elif(command[1] == "play"):
-		emit_signal("play_request", command[2])
+		var path = "res://dialogic/sounds/" + command[2]
+		if ResourceLoader.exists(path, "AudioStream"):
+			var audio:AudioStream = ResourceLoader.load(path, "AudioStream")
+			$sounds.stream = audio
+			$sounds.play()
+			#yield(get_tree().create_timer(audio.get_length()), "timeout")
+			#$sounds.stop()
 	elif(command[1] == "pause"):
 		$WritingTimer.stop()
 		yield(get_tree().create_timer(float(command[2])), "timeout")
