@@ -695,11 +695,10 @@ func event_handler(event: Dictionary):
 					var bg_scene = load(event['background'])
 					bg_scene = bg_scene.instance()
 					background.modulate = Color(1,1,1,0)
-					background.fade_in(fade_time)
 					background.add_child(bg_scene)
+					background.fade_in(fade_time)
 				else:
 					background.texture = load(value)
-					background.create_tween()
 					background.fade_in(fade_time)
 				call_deferred('resize_main') # Executing the resize main to update the background size
 			
