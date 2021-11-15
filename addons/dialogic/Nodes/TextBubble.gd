@@ -93,7 +93,11 @@ func handle_command(command:Array):
 		emit_signal("signal_request", command[2])
 	elif(command[1] == "play"):
 		emit_signal("play_request", command[2])
-		pass
+	elif(command[1] == "pause"):
+		$WritingTimer.stop()
+		yield(get_tree().create_timer(float(command[2])), "timeout")
+		start_text_timer()
+		
 
 func skip():
 	text_label.visible_characters = -1
@@ -262,5 +266,5 @@ func _ready():
 	reset()
 	$WritingTimer.connect("timeout", self, "_on_writing_timer_timeout")
 	text_label.meta_underlined = false
-	regex.compile("\\[(nw|(nw|speed|signal|play)=(.+?))\\](.*?)")
+	regex.compile("\\[(nw|(nw|speed|signal|play|pause)=(.+?))\\](.*?)")
 
