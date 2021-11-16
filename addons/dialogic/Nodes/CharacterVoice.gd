@@ -38,6 +38,12 @@ func play_voice(data:Dictionary) -> void:
 			stop_voice()
 func stop_voice():
 	stop()
+#this is part of a hack, and could be replaced with something more elegant. - KvaGram	
+func remaining_time():
+	if !playing:
+		return 0
+	return stop_time - get_playback_position()
+
 	
 func _process(_delta):
 	#Will automatically stop playing when reaching stop_time

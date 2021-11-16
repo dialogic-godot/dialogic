@@ -110,6 +110,7 @@ func _ready():
 	$DefinitionInfo.visible = false
 	$TextBubble.connect("text_completed", self, "_on_text_completed")
 	$TextBubble.connect("letter_written", self, "_on_letter_written")
+	$TextBubble.connect("signal_request", self, "_on_signal_request")
 	$TextBubble/RichTextLabel.connect('meta_hover_started', self, '_on_RichTextLabel_meta_hover_started')
 	$TextBubble/RichTextLabel.connect('meta_hover_ended', self, '_on_RichTextLabel_meta_hover_ended')
 	
@@ -461,12 +462,27 @@ func _on_text_completed():
 				regex.compile("\\[nw=(.+?)\\](.*?)")
 				var result = regex.search(current_event['text'])
 				var wait_settings = result.get_string()
-				waiting_time = float(wait_settings.split('=')[1])
+				#Kva-hack. if the waiting time is set to 'v'
+				#It will fetch waiting time from CharacterVoice.
+				waiting_time = wait_settings.split('=')[1]
+				if(waiting_time.begins_with('v')):
+					waiting_time = $"FX/CharacterVoice".remaining_time()
+				else:
+					waiting_time = float(waiting_time)
+				print("Waiting time: " + String(waiting_time))
+				#Remove these comments once replaced with proper code.				
+				# - KvaGram
+				#original line
+				#waiting_time = float(wait_settings.split('=')[1])
 			
 			$DialogicTimer.start(waiting_time); yield($DialogicTimer, "timeout")
 			if dialog_index == current_index:
 				_load_next_event()
 
+# When text reaches a [signal] command
+# emits the dialogic signal with the argument
+func _on_signal_request(name):
+	emit_signal("dialogic_signal", name)
 
 # emits timeline_start and handles autosaving
 func on_timeline_start():
