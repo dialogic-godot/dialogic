@@ -271,6 +271,11 @@ static func set_settings_value(section: String, key: String, value):
 	config.set_value(section, key, value)
 	config.save(get_config_files_paths()['SETTINGS_FILE'])
 
+static func get_settings_value(section:String, key: String, default):
+	var config = get_settings_config()
+	return config.get_value(section, key, default)
+
+
 ## *****************************************************************************
 ##						DEFAULT DEFINITIONS
 ## *****************************************************************************

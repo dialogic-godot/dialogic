@@ -12,10 +12,16 @@ func _ready():
 	show_behind_parent = true
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
 
-
-func create_tween():
+func _init():
 	tween = Tween.new()
 	add_child(tween)
+
+
+func fade_in(time = 1):
+	tween.interpolate_property(self, "modulate",
+		Color(1,1,1,0), Color(1,1,1,1), time,
+		Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
+	tween.start()
 
 
 func fade_out(time = 1):
@@ -27,13 +33,6 @@ func fade_out(time = 1):
 		tween.start()
 	else:
 		_on_tween_over()
-
-
-func fade_in(time = 1):
-	tween.interpolate_property(self, "modulate",
-		Color(1,1,1,0), Color(1,1,1,1), time,
-		Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
-	tween.start()
 
 
 func _on_tween_over():
