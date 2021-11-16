@@ -3,6 +3,7 @@ extends Control
 
 var text_speed := 0.02 # Higher = lower speed
 var theme_text_speed = text_speed
+var autopauses
 
 #experimental database of current commands
 var commands = []
@@ -42,6 +43,14 @@ func update_name(name: String, color: Color = Color.white, autocolor: bool=false
 
 
 func update_text(text:String):
+	#### INSERTING AUTO-PAUSES
+	print(autopauses)
+	for i in autopauses:
+		if i[0]:
+			for character in i[0]:
+				print(character)
+				text = text.replace(character, character+'[pause='+str(i[1])+']')
+	print(text)
 	#regex moved from func scope to class scope
 	#regex compilation moved to _ready
 	#  - KvaGram
@@ -143,6 +152,8 @@ func load_theme(theme: ConfigFile):
 	# Text speed
 	text_speed = theme.get_value('text','speed', 2) * 0.01
 	theme_text_speed = text_speed
+	
+	autopauses = theme.get_value('text', 'autopauses', [])
 
 	# Margin
 	var text_margin = theme.get_value('text', 'margin', Vector2(20, 10))

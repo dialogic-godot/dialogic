@@ -1,0 +1,38 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://addons/dialogic/Editor/ThemeEditor/AutoPauseContainer.gd" type="Script" id=1]
+
+[node name="AutoPauseContainer" type="HBoxContainer"]
+margin_right = 252.0
+margin_bottom = 24.0
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Symbol" type="LineEdit" parent="."]
+margin_right = 160.0
+margin_bottom = 24.0
+rect_min_size = Vector2( 160, 0 )
+
+[node name="Duration" type="SpinBox" parent="."]
+margin_left = 164.0
+margin_right = 238.0
+margin_bottom = 24.0
+rect_min_size = Vector2( 60, 0 )
+size_flags_horizontal = 3
+min_value = 0.001
+max_value = 5.0
+step = 0.001
+value = 0.01
+align = 2
+suffix = "s"
+
+[node name="DeleteButton" type="Button" parent="."]
+margin_left = 242.0
+margin_right = 254.0
+margin_bottom = 24.0
+flat = true
+
+[connection signal="text_changed" from="Symbol" to="." method="change"]
+[connection signal="value_changed" from="Duration" to="." method="change"]

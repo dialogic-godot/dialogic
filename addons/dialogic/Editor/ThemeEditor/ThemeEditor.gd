@@ -45,9 +45,15 @@ onready var n : Dictionary = {
 	'theme_font_italic':$"VBoxContainer/TabContainer/Dialog Text/Column/GridContainer/ItalicFont/ItalicFontButton",
 	'theme_shadow_offset_x': $"VBoxContainer/TabContainer/Dialog Text/Column2/GridContainer/HBoxContainer/ShadowOffsetX",
 	'theme_shadow_offset_y': $"VBoxContainer/TabContainer/Dialog Text/Column2/GridContainer/HBoxContainer/ShadowOffsetY",
-	'theme_text_speed': $"VBoxContainer/TabContainer/Dialog Text/Column3/GridContainer/TextSpeed",
+	
 	'alignment': $"VBoxContainer/TabContainer/Dialog Text/Column3/GridContainer/HBoxContainer3/Alignment",
 	'single_portrait_mode': $"VBoxContainer/TabContainer/Dialog Text/Column3/GridContainer/SinglePortraitModeCheckBox",
+	
+	'theme_text_speed': $"VBoxContainer/TabContainer/Dialog Text/Column3/GridContainer/TextSpeed",
+	'theme_auto_pause_section' :$"VBoxContainer/TabContainer/Dialog Text/Column3/AutoPauses",
+	'theme_auto_pause_add':$"VBoxContainer/TabContainer/Dialog Text/Column3/AutoPauses/Labels/NewButton",
+	
+	
 	
 	# Dialog box
 	'background_texture_button_visible': $"VBoxContainer/TabContainer/Dialog Box/Column/GridContainer/HBoxContainer3/CheckBox",
@@ -181,6 +187,8 @@ func _ready() -> void:
 	n['theme_text_shadow'].connect('toggled', self, '_on_generic_checkbox', ['text', 'shadow'])
 	n['single_portrait_mode'].connect('toggled', self, '_on_generic_checkbox', ['settings', 'single_portrait_mode'])
 	n['theme_text_speed'].connect('value_changed', self, '_on_generic_value_change', ['text','speed'])
+	
+	n['theme_auto_pause_add'].icon = get_icon("Add", "EditorIcons")
 	
 	# Dialog Box tab
 	n['theme_background_color_visible'].connect('toggled', self, '_on_generic_checkbox', ['background', 'use_color'])
@@ -363,7 +371,6 @@ func load_theme(filename):
 	n['glossary_enabled'].pressed = theme.get_value('definitions', 'show_glossary', true)
 	
 	# Text
-	n['theme_text_speed'].value = theme.get_value('text','speed', 2)
 	n['theme_font'].text = DialogicResources.get_filename_from_path(theme.get_value('text', 'font', 'res://addons/dialogic/Example Assets/Fonts/DefaultFont.tres'))
 	n['theme_font_bold'].text = DialogicResources.get_filename_from_path(theme.get_value('text', 'bold_font', 'res://addons/dialogic/Example Assets/Fonts/DefaultBoldFont.tres'))
 	n['theme_font_italic'].text = DialogicResources.get_filename_from_path(theme.get_value('text', 'italic_font', 'res://addons/dialogic/Example Assets/Fonts/DefaultItalicFont.tres'))
@@ -383,6 +390,23 @@ func load_theme(filename):
 		'Right':
 			n['alignment'].select(2)
 	
+	# clear autopauses
+	for i in range(1, n['theme_auto_pause_section'].get_child_count()):
+		n['theme_auto_pause_section'].get_child(i).queue_free()
+	# load autopauses
+	var autopauses = theme.get_value('text', 'autopauses', [])
+	for item in autopauses:
+		var autopausenode = load("res://addons/dialogic/Editor/ThemeEditor/AutoPauseContainer.tscn").instance()
+		n['theme_auto_pause_section'].add_child(autopausenode)
+		autopausenode.set_data(item)
+		autopausenode.connect('data_changed', self, '_on_Autopause_data_changed')
+	if autopauses.empty():
+		var autopausenode = load("res://addons/dialogic/Editor/ThemeEditor/AutoPauseContainer.tscn").instance()
+		n['theme_auto_pause_section'].add_child(autopausenode)
+		autopausenode.connect('data_changed', self, '_on_Autopause_data_changed')
+	
+	
+	n['theme_text_speed'].value = theme.get_value('text','speed', 2)
 	
 	# Name
 	n['name_font'].text = DialogicResources.get_filename_from_path(theme.get_value('name', 'font', 'res://addons/dialogic/Example Assets/Fonts/NameFont.tres'))
@@ -649,6 +673,15 @@ func _on_ShadowOffset_value_changed(_value) -> void:
 	DialogicResources.set_theme_value(current_theme, 'text','shadow_offset', Vector2(n['theme_shadow_offset_x'].value,n['theme_shadow_offset_y'].value))
 	_on_PreviewButton_pressed() # Refreshing the preview
 
+func _on_Autopause_data_changed():
+	if loading:
+		return
+	var autopause_data = []
+	for child in  n["theme_auto_pause_section"].get_children():
+		if not child.get_index() == 0:
+			autopause_data.append([child.get_node("Symbol").text, child.get_node("Duration").value])
+	DialogicResources.set_theme_value(current_theme, 'text', 'autopauses', autopause_data)
+	$DelayPreviewTimer.start(0.5)
 
 ## ------------ 		DIALOG BOX TAB	 	------------------------------------
 
