@@ -301,7 +301,6 @@ func _on_item_selected():
 	#       resource. Unfortunately there has been so many bugs doing that 
 	#       that I'll revisit it in the future. 
 	#       save_current_resource()
-	print("LOLI")
 	var metadata = get_selected().get_metadata(0)
 	match metadata['editor']:
 		'Timeline':
@@ -319,9 +318,8 @@ func _on_item_selected():
 			glossary_entry_editor.load_definition(metadata['id'])
 			show_glossary_entry_editor()
 		'Theme':
-			print("HOWDI")
-			theme_editor.load_theme(metadata['file'])
 			show_theme_editor()
+			theme_editor.load_theme(metadata['file'])
 		'Settings':
 			settings_editor.update_data()
 			show_settings_editor()
