@@ -433,7 +433,7 @@ func load_theme(filename):
 		if a == next_animation_selected:
 			n['next_animation'].select(nix)
 		nix += 1
-	
+
 	# Preview text
 	n['text_preview'].text = theme.get_value('text', 'preview', 'This is preview text. You can use  [color=#A5EFAC]BBCode[/color] to style it.\n[wave amp=50 freq=2]You can even use effects![/wave]')
 	
@@ -465,7 +465,7 @@ func duplicate_theme(from_filename) -> void:
 func _on_visibility_changed() -> void:
 	if visible:
 		# Refreshing the dialog 
-		_on_PreviewButton_pressed()
+		if not loading: _on_PreviewButton_pressed()
 		if first_time_loading_theme_full_size_bug == 0:
 			yield(get_tree().create_timer(0.01), "timeout")
 			for i in $VBoxContainer/Panel.get_children():
