@@ -291,6 +291,7 @@ func character_picker_selected(index):
 
 
 func load_theme(filename):
+	print("LOAD THEME")
 	loading = true
 	current_theme = filename
 	var theme = DialogicResources.get_theme_config(filename)
@@ -361,7 +362,7 @@ func load_theme(filename):
 	n['glossary_background_panel'].text = DialogicResources.get_filename_from_path(theme.get_value('definitions', 'background_panel', "res://addons/dialogic/Example Assets/backgrounds/GlossaryBackground.tres"))
 	
 	n['glossary_enabled'].pressed = theme.get_value('definitions', 'show_glossary', true)
-	
+	print("LOAD THEME 2 ")
 	# Text
 	n['theme_text_speed'].value = theme.get_value('text','speed', 2)
 	n['theme_font'].text = DialogicResources.get_filename_from_path(theme.get_value('text', 'font', 'res://addons/dialogic/Example Assets/Fonts/DefaultFont.tres'))
@@ -406,7 +407,7 @@ func load_theme(filename):
 	n['name_horizontal_offset'].value = theme.get_value('name', 'horizontal_offset', 0)
 	
 	n['name_position'].select(theme.get_value('name', 'position', 0))
-	
+	print("LOAD THEME 3 ")
 	# Audio
 	var default_audio_file = "res://addons/dialogic/Example Assets/Sound Effects/Beep.wav"
 	var default_audio_data = {
@@ -433,7 +434,7 @@ func load_theme(filename):
 		if a == next_animation_selected:
 			n['next_animation'].select(nix)
 		nix += 1
-	
+	print("LOAD THEME 4 ")
 	# Preview text
 	n['text_preview'].text = theme.get_value('text', 'preview', 'This is preview text. You can use  [color=#A5EFAC]BBCode[/color] to style it.\n[wave amp=50 freq=2]You can even use effects![/wave]')
 	
