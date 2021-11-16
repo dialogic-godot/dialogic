@@ -55,10 +55,8 @@ func update_text(text:String):
 	print(autopauses)
 	for i in autopauses:
 		if i[0]:
-			for character in i[0]:
-				print(character)
-				text = text.replace(character, character+'[pause='+str(i[1])+']')
-	print(text)
+			text_bbcodefree = text_bbcodefree.replace(i[0], i[0]+'[pause='+str(i[1])+']')
+	print(text_bbcodefree)
 	#regex moved from func scope to class scope
 	#regex compilation moved to _ready
 	#  - KvaGram
