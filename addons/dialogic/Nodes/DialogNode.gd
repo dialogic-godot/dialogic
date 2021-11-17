@@ -110,6 +110,7 @@ func _ready():
 	$DefinitionInfo.visible = false
 	$TextBubble.connect("text_completed", self, "_on_text_completed")
 	$TextBubble.connect("letter_written", self, "_on_letter_written")
+	$TextBubble.connect("signal_request", self, "_on_signal_request")
 	$TextBubble/RichTextLabel.connect('meta_hover_started', self, '_on_RichTextLabel_meta_hover_started')
 	$TextBubble/RichTextLabel.connect('meta_hover_ended', self, '_on_RichTextLabel_meta_hover_ended')
 	
@@ -478,6 +479,10 @@ func _on_text_completed():
 			if dialog_index == current_index:
 				_load_next_event()
 
+# When text reaches a [signal] command
+# emits the dialogic signal with the argument
+func _on_signal_request(name):
+	emit_signal("dialogic_signal", name)
 
 # emits timeline_start and handles autosaving
 func on_timeline_start():
@@ -706,11 +711,10 @@ func event_handler(event: Dictionary):
 					var bg_scene = load(event['background'])
 					bg_scene = bg_scene.instance()
 					background.modulate = Color(1,1,1,0)
-					background.fade_in(fade_time)
 					background.add_child(bg_scene)
+					background.fade_in(fade_time)
 				else:
 					background.texture = load(value)
-					background.create_tween()
 					background.fade_in(fade_time)
 				call_deferred('resize_main') # Executing the resize main to update the background size
 			

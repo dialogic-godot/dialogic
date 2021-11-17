@@ -4,6 +4,12 @@ extends Control
 var text_speed := 0.02 # Higher = lower speed
 var theme_text_speed = text_speed
 
+#experimental database of current commands
+var commands = []
+#the regex matching object
+var regex = RegEx.new()
+var bbcoderemoverregex = RegEx.new()
+
 onready var text_label = $RichTextLabel
 onready var name_label = $NameLabel
 onready var next_indicator = $NextIndicatorContainer/NextIndicator
@@ -13,6 +19,7 @@ var _theme
 
 signal text_completed()
 signal letter_written()
+signal signal_request(arg)
 
 ## *****************************************************************************
 ##								PUBLIC METHODS
@@ -35,32 +42,50 @@ func update_name(name: String, color: Color = Color.white, autocolor: bool=false
 		name_label.visible = false
 
 
-func update_text(text):
-	var regex = RegEx.new()
-	var result = null
-	# Removing commands from the text
-	#text = text.replace('[p]', '')
+func update_text(text:String):
 	
-	text = text.replace('[nw]', '')
-	if '[nw=' in text:
-		regex.compile("\\[nw=(.+?)\\](.*?)")
-		result = regex.search(text)
-		if result:
-			var wait_settings = result.get_string()
-			text = text.replace(wait_settings, '')
-			result = null
+	var orig_text = text
+	var text_bbcodefree = text
 	
-	# Speed
+	for result in bbcoderemoverregex.search_all(text_bbcodefree):
+		text_bbcodefree = text_bbcodefree.replace(result.get_string(), "")
+	
+	#regex moved from func scope to class scope
+	#regex compilation moved to _ready
+	#  - KvaGram
+	#var regex = RegEx.new()
+	var result:RegExMatch = null
 	text_speed = theme_text_speed # Resetting the speed to the default
-	# Regexing the speed tag
-	regex.compile("\\[speed=(.+?)\\](.*?)")
-	result = regex.search(text)
-	if result:
-		var speed_settings = result.get_string()
-		var value = float(speed_settings.split('=')[1]) * 0.01
-		text_speed = value
-		text = text.replace(speed_settings, '')
+	commands = []
 	
+	### remove commands from text, and store where and what they are
+	#current regex: \[(nw|(nw|speed|signal|play|pause)=(.+?))\](.*?)
+	#Note: The version defined in _ready will have aditional escape characers.
+	#      DO NOT JUST COPY/PASTE
+	#remeber regex101.com is your friend. Do not shoot it. You may ask it to verify the code.
+	#The capture groups, and what they do:
+	# 0 everything ex [speed=5]
+	# 1 the "nw" single command or one of the variable commands ex "nw" or "speed=5"
+	# 2 the command, assuming it is an variable command ex "speed"
+	# 3 the argument, again assuming a variable command ex "5"
+	# 4 nothing (ignore it)
+	#keep this up to date whenever the regex string is updated! - KvaGram
+	
+	result = regex.search(text_bbcodefree)
+	#loops until all commands are cleared from the text
+	while result:
+		if result.get_string(1) == "nw" || result.get_string(2) == "nw":
+			#The no wait command is handled elsewhere. Ignore it.
+			pass
+		else:
+			#Store an assigned varible command as an array by 0 index in text, 1 command-name, 2 argument
+			commands.append([result.get_start()-1, result.get_string(2), result.get_string(3)])
+		text_bbcodefree = text_bbcodefree.substr(0, result.get_start()) + text_bbcodefree.substr(result.get_end())
+		text = text.replace(result.get_string(), "")
+		
+		result = regex.search(text_bbcodefree)
+	
+
 	# Updating the text and starting the animation from 0
 	text_label.bbcode_text = text
 	text_label.visible_characters = 0
@@ -69,6 +94,27 @@ func update_text(text):
 	start_text_timer()
 	return true
 
+#handle an activated command.
+func handle_command(command:Array):
+	if(command[1] == "speed"):
+		text_speed = float(command[2]) * 0.01
+		$WritingTimer.stop()
+		start_text_timer()
+	elif(command[1] == "signal"):
+		emit_signal("signal_request", command[2])
+	elif(command[1] == "play"):
+		var path = "res://dialogic/sounds/" + command[2]
+		if ResourceLoader.exists(path, "AudioStream"):
+			var audio:AudioStream = ResourceLoader.load(path, "AudioStream")
+			$sounds.stream = audio
+			$sounds.play()
+			#yield(get_tree().create_timer(audio.get_length()), "timeout")
+			#$sounds.stop()
+	elif(command[1] == "pause"):
+		$WritingTimer.stop()
+		yield(get_tree().create_timer(float(command[2])), "timeout")
+		start_text_timer()
+		
 
 func skip():
 	text_label.visible_characters = -1
@@ -188,7 +234,8 @@ func _on_writing_timer_timeout():
 	if get_parent().has_node('fade_in_tween_show_time') == false:
 		if _finished == false:
 			text_label.visible_characters += 1
-			
+			if(commands.size()>0 && commands[0][0] <= text_label.visible_characters):
+				handle_command(commands.pop_front()) #handles the command, and removes it from the queue
 			if text_label.visible_characters > text_label.get_total_character_count():
 				_handle_text_completed()
 			elif (
@@ -236,4 +283,7 @@ func _ready():
 	reset()
 	$WritingTimer.connect("timeout", self, "_on_writing_timer_timeout")
 	text_label.meta_underlined = false
+	regex.compile("\\[(nw|(nw|speed|signal|play|pause)=(.+?))\\](.*?)")
+	
+	bbcoderemoverregex.compile("\\[\\/*(b|i|u|s|code|center|right|fill|indent|url|img|font|color|table|cell|wave|tornado|shake|fade|rainbow)[^]]*\\]")
 

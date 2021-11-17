@@ -3,6 +3,7 @@ extends GridContainer
 
 signal data_updated(section)
 
+var loading = false
 var editor_reference
 var path = ""
 
@@ -24,6 +25,7 @@ func _ready():
 	update_audio_bus_option_buttons()
 
 func set_data(data):
+	loading = true
 	n['enable'].set_pressed(data['enable'])
 	
 	path = data['path']
@@ -38,6 +40,7 @@ func set_data(data):
 	update_audio_bus_option_buttons(data['audio_bus'])
 	
 	_set_disabled(!data['enable'])
+	loading = false
 
 func get_data():
 	return {
@@ -52,7 +55,7 @@ func get_data():
 	}
 
 func _on_EnableCheckBox_toggled(button_pressed):
-	emit_signal("data_updated", name.to_lower())
+	if not loading: emit_signal("data_updated", name.to_lower())
 	_set_disabled(!button_pressed)
 
 func _set_disabled(disabled):
@@ -72,28 +75,28 @@ func _on_Path_selected(selected_path, target = ""):
 	if typeof(selected_path) == TYPE_STRING and path != "":
 		path = selected_path
 		n['path'].text = DialogicResources.get_filename_from_path(path)
-	emit_signal("data_updated", name.to_lower())
+	if not loading: emit_signal("data_updated", name.to_lower())
 
 func _on_VolumeSpinBox_value_changed(value):
-	emit_signal("data_updated", name.to_lower())
+	if not loading: emit_signal("data_updated", name.to_lower())
 
 func _on_VolumeRandRangeSpinBox_value_changed(value):
 	n['volume_rand_range'].set_value(abs(value))
-	emit_signal("data_updated", name.to_lower())
+	if not loading: emit_signal("data_updated", name.to_lower())
 
 func _on_PitchSpinBox_value_changed(value):
 	n['pitch'].set_value(max(0.01, value))
-	emit_signal("data_updated", name.to_lower())
+	if not loading: emit_signal("data_updated", name.to_lower())
 
 func _on_PitchRandRangeSpinBox_value_changed(value):
 	n['pitch_rand_range'].set_value(abs(value))
-	emit_signal("data_updated", name.to_lower())
+	if not loading: emit_signal("data_updated", name.to_lower())
 
 func _on_AllowInterruptCheckBox_toggled(button_pressed):
-	emit_signal("data_updated", name.to_lower())
+	if not loading: emit_signal("data_updated", name.to_lower())
 
 func _on_AudioBusOptionButton_item_selected(index):
-	emit_signal("data_updated", name.to_lower())
+	if not loading: emit_signal("data_updated", name.to_lower())
 
 func _on_bus_layout_changed():
 	var selected_id = n['audio_bus'].get_selected_id()
