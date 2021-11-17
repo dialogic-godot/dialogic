@@ -52,11 +52,12 @@ func update_text(text:String):
 		text_bbcodefree = text_bbcodefree.replace(result.get_string(), "")
 	
 	#### INSERTING AUTO-PAUSES
-	print(autopauses)
 	for i in autopauses:
 		if i[0]:
-			text_bbcodefree = text_bbcodefree.replace(i[0], i[0]+'[pause='+str(i[1])+']')
-	print(text_bbcodefree)
+			for character in i[0]:
+				text_bbcodefree = text_bbcodefree.replace(character, character+'[pause='+str(i[1])+']')
+	
+	
 	#regex moved from func scope to class scope
 	#regex compilation moved to _ready
 	#  - KvaGram
@@ -86,12 +87,11 @@ func update_text(text:String):
 			pass
 		else:
 			#Store an assigned varible command as an array by 0 index in text, 1 command-name, 2 argument
-			commands.append([result.get_start()-1, result.get_string(2), result.get_string(3)])
+			commands.append([result.get_start(), result.get_string(2), result.get_string(3)])
 		text_bbcodefree = text_bbcodefree.substr(0, result.get_start()) + text_bbcodefree.substr(result.get_end())
 		text = text.replace(result.get_string(), "")
 		
 		result = regex.search(text_bbcodefree)
-	
 
 	# Updating the text and starting the animation from 0
 	text_label.bbcode_text = text

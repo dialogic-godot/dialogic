@@ -189,6 +189,7 @@ func _ready() -> void:
 	n['theme_text_speed'].connect('value_changed', self, '_on_generic_value_change', ['text','speed'])
 	
 	n['theme_auto_pause_add'].icon = get_icon("Add", "EditorIcons")
+	n['theme_auto_pause_add'].connect('pressed', self, 'on_AddAutopause_pressed')
 	
 	# Dialog Box tab
 	n['theme_background_color_visible'].connect('toggled', self, '_on_generic_checkbox', ['background', 'use_color'])
@@ -672,6 +673,11 @@ func _on_ShadowOffset_value_changed(_value) -> void:
 		return
 	DialogicResources.set_theme_value(current_theme, 'text','shadow_offset', Vector2(n['theme_shadow_offset_x'].value,n['theme_shadow_offset_y'].value))
 	_on_PreviewButton_pressed() # Refreshing the preview
+
+func on_AddAutopause_pressed():
+	var autopausenode = load("res://addons/dialogic/Editor/ThemeEditor/AutoPauseContainer.tscn").instance()
+	n['theme_auto_pause_section'].add_child(autopausenode)
+	autopausenode.connect('data_changed', self, '_on_Autopause_data_changed')
 
 func _on_Autopause_data_changed():
 	if loading:

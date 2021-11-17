@@ -12,3 +12,8 @@ func set_data(data):
 
 func change(value):
 	emit_signal("data_changed")
+
+
+func _on_DeleteButton_pressed():
+	queue_free()
+	emit_signal("data_changed")
