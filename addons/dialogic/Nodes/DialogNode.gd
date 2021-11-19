@@ -1133,7 +1133,7 @@ func grab_portrait_focus(character_data, event: Dictionary = {}) -> bool:
 					portrait.set_portrait(event['portrait'])
 		else:
 			if visually_focus:
-				portrait.focusout()
+				portrait.focusout(Color(current_theme.get_value('animation', 'dim_color', '#ff808080')))
 	return exists
 
 # returns true if the a portrait for that character already exists
