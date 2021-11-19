@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=2]
 
-[ext_resource path="res://addons/dialogic/Example Assets/HistoryRows/HistoryRow.gd" type="Script" id=1]
+[ext_resource path="res://addons/dialogic/Example Assets/History/HistoryRow.gd" type="Script" id=1]
 [ext_resource path="res://addons/dialogic/Images/Event Icons/Main Icons/audio-event.svg" type="Texture" id=2]
 
 [node name="HistoryRow" type="Panel"]
@@ -13,6 +13,7 @@ script = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
+Audio_Button_Path = NodePath("HBoxContainer/PlayAudioButton")
 
 [node name="ColorRect" type="ColorRect" parent="."]
 visible = false
@@ -42,7 +43,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Button" type="Button" parent="HBoxContainer"]
+[node name="PlayAudioButton" type="Button" parent="HBoxContainer"]
 margin_right = 34.0
 margin_bottom = 28.0
 size_flags_vertical = 4

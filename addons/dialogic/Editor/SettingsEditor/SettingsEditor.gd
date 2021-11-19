@@ -30,9 +30,8 @@ onready var nodes = {
 	
 	# History Settings
 	'enable_history_logging': $VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer/HBoxContainer8/EnableHistoryLogging,
-	'history_theme': $VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer/HBoxContainer9/HistoryThemeOptionButton,
-	'enable_dynamic_theme': $VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer/HBoxContainer10/EnableDynamicTheme,
-	'history_button_position': $VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer/HBoxContainer11/PositionSelector,
+	'enable_dynamic_theme': $VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer/HBoxContainer9/EnableDynamicTheme,
+	'history_button_position': $VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer/HBoxContainer10/PositionSelector,
 	}
 
 var THEME_KEYS := [
@@ -50,7 +49,6 @@ var INPUT_KEYS := [
 
 var HISTORY_KEYS := [
 	'enable_history_logging',
-	'history_theme',
 	'enable_dynamic_theme',
 	'history_button_position',
 ]
@@ -81,7 +79,6 @@ func _ready():
 	nodes['text_event_audio_default_bus'].connect('item_selected', self, '_on_text_audio_default_bus_item_selected')
 	
 	## History timeline connections
-	nodes['history_theme'].connect('item_selected', self, '_on_default_history_theme_selected')
 	nodes['enable_history_logging'].connect('toggled', self, '_on_item_toggled', ['history', 'enable_history_logging'])
 	nodes['enable_dynamic_theme'].connect('toggled', self, '_on_item_toggled', ['history', 'enable_dynamic_theme'])
 	nodes['history_button_position'].connect('item_selected', self, '_on_button_history_button_position_selected')
@@ -141,6 +138,7 @@ func load_values(settings: ConfigFile, section: String, key: Array):
 			elif nodes[k] is OptionButton:
 				nodes[k].text = str(settings.get_value(section, k))
 			else:
+				print(section)
 				nodes[k].pressed = settings.get_value(section, k, false)
 
 
@@ -152,34 +150,28 @@ func refresh_themes(settings: ConfigFile):
 	var index = 0
 	for theme in theme_list:
 		nodes['themes'].add_item(theme['name'])
-		nodes['history_theme'].add_item(theme['name'])
 		nodes['themes'].set_item_metadata(index, {'file': theme['file']})
-		nodes['history_theme'].set_item_metadata(index, {'file': theme['file']})
 		theme_indexes[theme['file']] = index
 		index += 1
 	
 	# Only one item added, then save as default
 	if index == 1: 
 		set_value('theme', 'default', theme_list[0]['file'])
-		set_value('history', 'history_theme', theme_list[0]['file'])
 	
 	# More than one theme? Select which the default one is
 	if index > 1:
 		if settings.has_section_key('theme', 'default'):
 			nodes['themes'].select(theme_indexes[settings.get_value('theme', 'default', null)])
-			nodes['history_theme'].select(theme_indexes[settings.get_value('history', 'history_theme', null)])
 		else:
 			# Fallback
 			set_value('theme', 'default', theme_list[0]['file'])
-			set_value('history', 'history_theme', theme_list[0]['file'])
 
 
 func _on_default_theme_selected(index):
 	set_value('theme', 'default', nodes['themes'].get_item_metadata(index)['file'])
 
 
-func _on_default_history_theme_selected(index):
-	set_value('history', 'history_theme', nodes['history_theme'].get_item_metadata(index)['file'])
+
 
 
 func _on_delay_options_text_changed(text):

@@ -8,6 +8,13 @@ var audioPath = ''
 var AudioButton
 var TextLabel
 
+"""
+	Example of a HistoryRow. Every time dialog is logged, a new row is created.
+	You can extend this class to customize the logging experience as you see fit.
+"""
+
+class_name HistoryRow
+
 func _ready():
 	TextLabel = get_node(Text_Label_Path)
 	AudioButton = get_node(Audio_Button_Path)
@@ -16,7 +23,6 @@ func _ready():
 	assert(AudioButton is Button, 'Audio_Button must be a button.')
 	
 	TextLabel.connect('minimum_size_changed', self, '_on_RichTextLabel_minimum_size_changed')
-	
 
 
 # This class can be edited or replaced as long as add_history is implemented
@@ -30,6 +36,7 @@ func add_history(historyString, newAudio=''):
 		AudioButton.icon = load("res://addons/dialogic/Images/Event Icons/character.svg")
 
 
+# Makes the row to look like the dialog box associated with the Theme
 func load_theme(theme: ConfigFile):
 	# Text
 	var theme_font = DialogicUtil.path_fixer_load(theme.get_value('text', 'font', 'res://addons/dialogic/Example Assets/Fonts/DefaultFont.tres'))
@@ -73,7 +80,8 @@ func load_theme(theme: ConfigFile):
 
 	$ColorRect.visible = theme.get_value('background', 'use_color', false)
 	$TextureRect.visible = theme.get_value('background', 'use_image', true)
-	
+
+
 
 func _on_RichTextLabel_minimum_size_changed():
 	rect_min_size.y = TextLabel.rect_size.y

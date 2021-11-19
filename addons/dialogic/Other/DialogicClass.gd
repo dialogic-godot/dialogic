@@ -114,6 +114,12 @@ static func change_timeline(timeline: String) -> void:
 		print("[D] Tried to change timeline, but no DialogNode exists!")
 
 
+static func toggle_history():
+	if has_current_dialog_node():
+		var dialog_node = Engine.get_main_loop().get_meta('latest_dialogic_node')
+		dialog_node.HistoryTimeline._on_toggle_history()
+	else:
+		print('No dialog node yet')
 
 ################################################################################
 ## 						BUILT-IN SAVING/LOADING
