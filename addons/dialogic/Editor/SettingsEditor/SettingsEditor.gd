@@ -29,9 +29,13 @@ onready var nodes = {
 	'new_custom_event_cancel':$VBoxContainer/HBoxContainer3/VBoxContainer2/CustomEvents/CreateCustomEventSection/HBoxContainer/CancelCustomEvent,
 	
 	# History Settings
-	'enable_history_logging': $VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer/HBoxContainer8/EnableHistoryLogging,
-	'enable_dynamic_theme': $VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer/HBoxContainer9/EnableDynamicTheme,
-	'history_button_position': $VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer/HBoxContainer10/PositionSelector,
+	'enable_history_logging': $VBoxContainer/HBoxContainer3/VBoxContainer2/HistorySettings/GridContainer/HBoxContainer2/EnableHistoryLogging,
+	'enable_dynamic_theme': $VBoxContainer/HBoxContainer3/VBoxContainer2/HistorySettings/GridContainer/HBoxContainer3/EnableDynamicTheme,
+	'history_button_position': $VBoxContainer/HBoxContainer3/VBoxContainer2/HistorySettings/GridContainer/PositionSelector,
+	'history_screen_margin_x': $VBoxContainer/HBoxContainer3/VBoxContainer2/HistorySettings/GridContainer/BoxMargin/MarginX,
+	'history_screen_margin_y': $VBoxContainer/HBoxContainer3/VBoxContainer2/HistorySettings/GridContainer/BoxMargin/MarginY,
+	'history_container_margin_x': $VBoxContainer/HBoxContainer3/VBoxContainer2/HistorySettings/GridContainer/ContainerMargin/MarginX,
+	'history_container_margin_y': $VBoxContainer/HBoxContainer3/VBoxContainer2/HistorySettings/GridContainer/ContainerMargin/MarginY,
 	}
 
 var THEME_KEYS := [
@@ -51,6 +55,10 @@ var HISTORY_KEYS := [
 	'enable_history_logging',
 	'enable_dynamic_theme',
 	'history_button_position',
+	'history_screen_margin_x',
+	'history_screen_margin_y',
+	'history_container_margin_x',
+	'history_container_margin_y',
 ]
 
 func _ready():
@@ -107,6 +115,11 @@ func _ready():
 		button_positions_popup.add_icon_item(
 			get_icon("ControlAlignBottomRight", "EditorIcons"), "Bottom Right", 8)
 			
+	nodes['history_screen_margin_x'].connect("value_changed", self, '_spinbox_val_changed', ['history_screen_margin_x'])
+	nodes['history_screen_margin_y'].connect("value_changed", self, '_spinbox_val_changed', ['history_screen_margin_y'])
+	nodes['history_container_margin_x'].connect("value_changed", self, '_spinbox_val_changed', ['history_container_margin_x'])
+	nodes['history_container_margin_y'].connect("value_changed", self, '_spinbox_val_changed', ['history_container_margin_y'])
+	
 	## The custom event section
 	nodes['new_custom_event_open'].connect("pressed", self, "new_custom_event_pressed")
 	nodes['new_custom_event_section'].hide()
@@ -137,8 +150,10 @@ func load_values(settings: ConfigFile, section: String, key: Array):
 				nodes[k].text = settings.get_value(section, k)
 			elif nodes[k] is OptionButton:
 				nodes[k].text = str(settings.get_value(section, k))
+			elif nodes[k] is SpinBox:
+				print(settings.get_value(section, k))
+				nodes[k].value = int(settings.get_value(section, k))
 			else:
-				print(section)
 				nodes[k].pressed = settings.get_value(section, k, false)
 
 
@@ -184,6 +199,11 @@ func _on_item_toggled(value: bool, section: String, key: String):
 
 func _on_button_history_button_position_selected(index):
 	set_value('history', 'history_button_position', index)
+
+
+func _spinbox_val_changed(newValue :float, spinbox_name):
+	print('test, ', spinbox_name)
+	set_value('history', spinbox_name, newValue)
 
 
 func _on_default_action_key_presssed(nodeName = 'default_action_key') -> void:
