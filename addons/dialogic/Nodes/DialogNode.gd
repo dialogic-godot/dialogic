@@ -1082,6 +1082,7 @@ func button_style_setter(section, data, button, theme):
 # focuses button on hover
 func _on_option_hovered(button):
 	button.grab_focus()
+	_on_option_focused()
 
 # plays the sound
 func _on_option_focused():
