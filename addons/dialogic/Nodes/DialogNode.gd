@@ -1119,21 +1119,17 @@ func handle_voice(event):
 # defocuses all characters except the given one
 func grab_portrait_focus(character_data, event: Dictionary = {}) -> bool:
 	var exists = false
-	var visually_focus = settings.get_value('dialog', 'dim_characters', true)
-	
 	for portrait in $Portraits.get_children():
 		# check if it's the same character
 		if portrait.character_data.get("file", "something") == character_data.get("file", "none"):
 			exists = true
 			
-			if visually_focus:
-				portrait.focus()
+			portrait.focus()
 			if event.has('portrait'):
 				if event['portrait'] != '':
 					portrait.set_portrait(event['portrait'])
 		else:
-			if visually_focus:
-				portrait.focusout()
+			portrait.focusout(Color(current_theme.get_value('animation', 'dim_color', '#ff808080')))
 	return exists
 
 # returns true if the a portrait for that character already exists
