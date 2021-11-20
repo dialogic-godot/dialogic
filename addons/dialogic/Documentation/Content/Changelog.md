@@ -9,7 +9,8 @@
 - New commands [signal=argument], [pause=wait_time], [play=soundname], [nv=v] (for waiting until the audio finishes) added to the Text Event [[KvaGram](https://github.com/KvaGram)]
 - Character Editor improvements [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
 - Many minor bugs fixed
-
+- You can now set the character dim color from the theme settings [[Tim Krief](https://github.com/timkrief)]
+- Removed the setting to dim character portraits from the global settings
 
 ## v1.3 - Save me some time
 #### General Editor Stuff
