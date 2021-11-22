@@ -8,6 +8,7 @@ var theme_text_speed = text_speed
 var commands = []
 #the regex matching object
 var regex = RegEx.new()
+var bbcoderemoverregex = RegEx.new()
 
 onready var text_label = $RichTextLabel
 onready var name_label = $NameLabel
@@ -42,6 +43,13 @@ func update_name(name: String, color: Color = Color.white, autocolor: bool=false
 
 
 func update_text(text:String):
+	
+	var orig_text = text
+	var text_bbcodefree = text
+	
+	for result in bbcoderemoverregex.search_all(text_bbcodefree):
+		text_bbcodefree = text_bbcodefree.replace(result.get_string(), "")
+	
 	#regex moved from func scope to class scope
 	#regex compilation moved to _ready
 	#  - KvaGram
@@ -63,7 +71,7 @@ func update_text(text:String):
 	# 4 nothing (ignore it)
 	#keep this up to date whenever the regex string is updated! - KvaGram
 	
-	result = regex.search(text)
+	result = regex.search(text_bbcodefree)
 	#loops until all commands are cleared from the text
 	while result:
 		if result.get_string(1) == "nw" || result.get_string(2) == "nw":
@@ -71,10 +79,13 @@ func update_text(text:String):
 			pass
 		else:
 			#Store an assigned varible command as an array by 0 index in text, 1 command-name, 2 argument
-			commands.append([result.get_start(), result.get_string(2), result.get_string(3)])
-		text = text.substr(0, result.get_start()) + text.substr(result.get_end())
-		result = regex.search(text)
+			commands.append([result.get_start()-1, result.get_string(2), result.get_string(3)])
+		text_bbcodefree = text_bbcodefree.substr(0, result.get_start()) + text_bbcodefree.substr(result.get_end())
+		text = text.replace(result.get_string(), "")
+		
+		result = regex.search(text_bbcodefree)
 	
+
 	# Updating the text and starting the animation from 0
 	text_label.bbcode_text = text
 	text_label.visible_characters = 0
@@ -273,4 +284,6 @@ func _ready():
 	$WritingTimer.connect("timeout", self, "_on_writing_timer_timeout")
 	text_label.meta_underlined = false
 	regex.compile("\\[(nw|(nw|speed|signal|play|pause)=(.+?))\\](.*?)")
+	
+	bbcoderemoverregex.compile("\\[\\/*(b|i|u|s|code|center|right|fill|indent|url|img|font|color|table|cell|wave|tornado|shake|fade|rainbow)[^]]*\\]")
 

@@ -152,12 +152,11 @@ func focus():
 			_parent.move_child(self, _parent.get_child_count())
 
 
-func focusout():
-	var alpha = 1
+func focusout(dim_color = Color(0.5, 0.5, 0.5, 1.0)):
 	if single_portrait_mode:
-		alpha = 0
+		dim_color.a = 0
 	if not fading_out:
-		tween_modulate(modulate, Color(0.5,0.5,0.5, alpha))
+		tween_modulate(modulate, dim_color)
 		var _parent = get_parent()
 		if _parent:
 			# Render this portrait first

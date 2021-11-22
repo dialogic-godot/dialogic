@@ -12,7 +12,7 @@ func _ready():
 
  var gdscript_dialog = Dialogic.start('')
 
- gdscript_dialog.set_dialog_script( {
+ gdscript_dialog.dialog_node.dialog_script = {
 
  "events":[
 
@@ -20,7 +20,7 @@ func _ready():
 
  ]
 
- })
+ }
 
  add_child(gdscript_dialog)
 
