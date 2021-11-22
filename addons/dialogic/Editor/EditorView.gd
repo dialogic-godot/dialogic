@@ -8,6 +8,8 @@ var version_string: String
 # this is set when the plugins main-view is instanced in dialogic.gd
 var editor_interface = null
 
+var plugins = {}
+
 func _ready():
 	# Adding file dialog to get used by Events
 	editor_file_dialog = EditorFileDialog.new()
@@ -168,3 +170,59 @@ func godot_dialog_connect(who, method_name, signal_name = "file_selected"):
 	
 	file_picker_data['method'] = method_name
 	file_picker_data['node'] = who
+
+#Plugins (work in progress, everything subject to change - KvaGram)
+#plugins reside in Dialogic/plugins.
+#Two types of plugins exist. Runtime and Editor.
+#A plugin made for both runtime and editor will technically be two plugins,
+#but may exist in the same folder and may share resorces.
+func update_editor_plugins():
+	#clearing list of plugins
+	plugins = {}
+	# cleaning plugin container
+	for child in $plugin_container.get_children():
+		child.queue_free()
+	# clearing plugin buttons
+	for child in $ToolBar/Plugin_buttons.get_children():
+		child.queue_free()
+
+	var plugin_path := "res://dialogic/plugins/"
+
+	var dir = Directory.new()
+	if dir.open(plugin_path) == OK:
+		dir.list_dir_begin()
+		var file_name = dir.get_next()
+		# goes through all the folders in the plugins folder
+		while file_name != "":
+			# if it found a folder
+			if dir.current_is_dir() and not file_name in ['.', '..']:
+				# look through that folder
+				print("Found plugin folder: " + file_name)
+				#loading both editor and runtime.
+				#If editor is not found, but runtime is, no error will be printed.
+				var plugin_editor = load(path.plus_file(file_name).plus_file('Editor.tscn')).instance()
+				var plugin_runtime = load(path.plus_file(file_name).plus_file('Runtime.tscn')).instance()
+				if plugin_editor:
+					plugins["placeholder_name"] = {
+						'plugin_editor' :path.plus_file(file_name).plus_file('Editor.tscn'),
+						'plugin_name' : plugin_editor.event_name,
+						'plugin_icon' : plugin_editor.event_icon
+					}
+					$plugin_container.add_child(plugin_editor)
+				elif(not plugin_runtime):
+					print("[D] An error occurred when trying to load an editor plugin.")
+#WIP - TODO rewite from custom event code below
+				
+			else:
+				pass # files in the directory are ignored
+			file_name = dir.get_next()
+			
+		# After we finishing checking, if any events exist, show the panel
+		if custom_events.size() == 0:
+			custom_events_container.hide()
+			$ScrollContainer/EventContainer/CustomEventsHeadline.hide()
+		else:
+			custom_events_container.show()
+			$ScrollContainer/EventContainer/CustomEventsHeadline.show()
+	else:
+		print("[D] An error occurred when trying to access the custom events folder.")

@@ -145,6 +145,11 @@ margin_bottom = 32.0
 icon = SubResource( 2 )
 align = 0
 
+[node name="Plugin_buttons" type="HBoxContainer" parent="ToolBar"]
+margin_left = 140.0
+margin_right = 140.0
+margin_bottom = 32.0
+
 [node name="Spacer" type="Control" parent="ToolBar"]
 margin_left = 140.0
 margin_right = 759.0
@@ -208,6 +213,11 @@ size_flags_vertical = 3
 
 [node name="TimelineEditor" parent="MainPanel" instance=ExtResource( 2 )]
 visible = false
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 162.0
+margin_right = 1024.0
+margin_bottom = 562.0
 
 [node name="CharacterEditor" parent="MainPanel" instance=ExtResource( 7 )]
 visible = false
@@ -230,9 +240,9 @@ visible = false
 visible = false
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_left = 192.0
-margin_right = 1253.0
-margin_bottom = 661.0
+margin_left = 162.0
+margin_right = 1024.0
+margin_bottom = 562.0
 
 [node name="DocumentationViewer" parent="MainPanel" instance=ExtResource( 11 )]
 visible = false
@@ -279,4 +289,13 @@ dialog_text = "Are you sure you want to remove this folder and all the items con
 (Can't be restored)"
 __meta__ = {
 "_edit_use_anchors_": false
+}
+
+[node name="plugin_container" type="Control" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": "contains loaded plugins.
+Visable elements should all be popups."
 }
