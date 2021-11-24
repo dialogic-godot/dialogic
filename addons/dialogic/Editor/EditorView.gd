@@ -93,6 +93,7 @@ func _ready():
 		$ToolBar/Version.text = 'Dialogic v' + version_string
 		
 	$MainPanel/MasterTreeContainer/FilterMasterTreeEdit.right_icon = get_icon("Search", "EditorIcons")
+	update_editor_plugins()
 
 
 func on_master_tree_editor_selected(editor: String):
@@ -193,24 +194,26 @@ func update_editor_plugins():
 	var dir = Directory.new()
 	if dir.open(path) == OK:
 		dir.list_dir_begin()
-		var file_name = dir.get_next()
+		var file_name:String = dir.get_next()
 		# goes through all the folders in the plugins folder
 		while file_name != "":
 			# if it found a folder
-			if dir.current_is_dir() and not file_name in ['.', '..']:
+			if dir.current_is_dir() and not file_name.begins_with(".") and not file_name in ['.', '..']:
 				# look through that folder
 				print("Found plugin folder: " + file_name)
 				#loading both editor and runtime.
 				#If editor is not found, but runtime is, no error will be printed.
-				var plugin_editor = load(path.plus_file(file_name).plus_file('Editor.tscn')).instance()
-				var plugin_runtime = load(path.plus_file(file_name).plus_file('Runtime.tscn')).instance()
+				var plugin_editor = load(path.plus_file(file_name).plus_file('Editor.tscn'))
+				var plugin_runtime = load(path.plus_file(file_name).plus_file('Runtime.tscn'))
 				if plugin_editor:
+					plugin_editor = plugin_editor.instance()
 					plugins["placeholder_name"] = {
 						'plugin_editor' :path.plus_file(file_name).plus_file('Editor.tscn'),
 						'plugin_name' : plugin_editor.plugin_name,
 						'plugin_icon' : plugin_editor.plugin_icon
 					}
 					$plugin_container.add_child(plugin_editor)
+					plugin_editor.setup()
 					var btn = Button.new()
 					$ToolBar/Plugin_buttons.add_child(btn)
 					btn.icon = plugins["placeholder_name"]["plugin_icon"]
