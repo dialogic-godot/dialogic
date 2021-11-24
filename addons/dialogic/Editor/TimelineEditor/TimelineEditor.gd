@@ -559,6 +559,7 @@ func visual_update_selection():
 		item.visual_deselect()
 	for item in selected_items:
 		item.visual_select()
+	emit_signal("selection_updated")
 
 
 ## Sorts the selection using 'custom_sort_selection'

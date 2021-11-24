@@ -138,7 +138,9 @@ func _on_RemoveConfirmation_confirmed(what: String = ''):
 
 
 # Godot dialog
-func godot_dialog(filter, mode = EditorFileDialog.MODE_OPEN_FILE):
+# edit by KvaGram: Added access argument. This is in case an external resource outside the project files are needed.
+func godot_dialog(filter, mode = EditorFileDialog.MODE_OPEN_FILE, access = EditorFileDialog.ACCESS_RESOURCES):
+#func godot_dialog(filter, mode = EditorFileDialog.MODE_OPEN_FILE):
 	editor_file_dialog.mode = mode
 	editor_file_dialog.clear_filters()
 	editor_file_dialog.popup_centered_ratio(0.75)
@@ -205,10 +207,15 @@ func update_editor_plugins():
 				if plugin_editor:
 					plugins["placeholder_name"] = {
 						'plugin_editor' :path.plus_file(file_name).plus_file('Editor.tscn'),
-						'plugin_name' : plugin_editor.event_name,
-						'plugin_icon' : plugin_editor.event_icon
+						'plugin_name' : plugin_editor.plugin_name,
+						'plugin_icon' : plugin_editor.plugin_icon
 					}
 					$plugin_container.add_child(plugin_editor)
+					var btn = Button.new()
+					$ToolBar/Plugin_buttons.add_child(btn)
+					btn.icon = plugins["placeholder_name"]["plugin_icon"]
+					btn.hint_tooltip = plugins["placeholder_name"]["plugin_name"]
+					btn.connect("pressed", plugin_editor, "on_plugin_button_pressed")
 				elif(not plugin_runtime):
 					print("[D] An error occurred when trying to load an editor plugin.")		
 			else:
