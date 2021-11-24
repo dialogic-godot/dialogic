@@ -186,10 +186,10 @@ func update_editor_plugins():
 	for child in $ToolBar/Plugin_buttons.get_children():
 		child.queue_free()
 
-	var plugin_path := "res://dialogic/plugins/"
+	var path := "res://dialogic/plugins/"
 
 	var dir = Directory.new()
-	if dir.open(plugin_path) == OK:
+	if dir.open(path) == OK:
 		dir.list_dir_begin()
 		var file_name = dir.get_next()
 		# goes through all the folders in the plugins folder
@@ -210,19 +210,9 @@ func update_editor_plugins():
 					}
 					$plugin_container.add_child(plugin_editor)
 				elif(not plugin_runtime):
-					print("[D] An error occurred when trying to load an editor plugin.")
-#WIP - TODO rewite from custom event code below
-				
+					print("[D] An error occurred when trying to load an editor plugin.")		
 			else:
 				pass # files in the directory are ignored
 			file_name = dir.get_next()
-			
-		# After we finishing checking, if any events exist, show the panel
-		if custom_events.size() == 0:
-			custom_events_container.hide()
-			$ScrollContainer/EventContainer/CustomEventsHeadline.hide()
-		else:
-			custom_events_container.show()
-			$ScrollContainer/EventContainer/CustomEventsHeadline.show()
 	else:
-		print("[D] An error occurred when trying to access the custom events folder.")
+		print("[D] An error occurred when trying to access the plugins folder.")
