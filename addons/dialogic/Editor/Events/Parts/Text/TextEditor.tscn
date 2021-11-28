@@ -34,7 +34,7 @@ corner_radius_top_right = 8
 corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
 
-[node name="TextEditor" type="VBoxContainer"]
+[node name="TextEditor" type="HBoxContainer"]
 margin_right = 40.0
 margin_bottom = 40.0
 script = ExtResource( 1 )
@@ -42,8 +42,14 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="Control" type="Control" parent="."]
+margin_right = 46.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 46, 0 )
+
 [node name="TextEdit" type="TextEdit" parent="."]
-margin_right = 40.0
+margin_left = 50.0
+margin_right = 59.0
 margin_bottom = 40.0
 size_flags_vertical = 3
 custom_colors/member_variable_color = Color( 0, 0, 0, 1 )

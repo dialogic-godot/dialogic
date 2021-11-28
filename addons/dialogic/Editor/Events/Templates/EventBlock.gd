@@ -38,7 +38,7 @@ var body_node
 var editor_reference
 
 ### the indent size
-const indent_size = 25
+const indent_size = 45
 var current_indent_size = 1
 
 # Setting this to true will ignore the event while saving
@@ -267,5 +267,5 @@ func _on_HelpButton_pressed():
 func _draw():
 #	draw_rect(rect: Rect2, color: Color, filled: bool = true, width: float = 1.0, antialiased: bool = false)
 	if current_indent_size > 0:
-		draw_rect(Rect2(Vector2(30 + (27 * current_indent_size), 20), Vector2(2, rect_size.y + 10)), Color("#4D4D4D"), true)
+		draw_rect(Rect2(Vector2(30 + ((indent_size + 2.2) * current_indent_size), 20), Vector2(2, rect_size.y + 10)), Color("#4D4D4D"), true)
 	draw_rect(Rect2(Vector2(30, 20), Vector2(2, rect_size.y + 10)), Color("#4D4D4D"), true)
