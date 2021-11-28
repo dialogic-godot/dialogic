@@ -10,3 +10,9 @@ script = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="NextTimer" type="Timer" parent="."]
+
+[connection signal="mouse_entered" from="." to="." method="_on_ChoiceButton_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_ChoiceButton_mouse_exited"]
+[connection signal="timeout" from="NextTimer" to="." method="_on_NextTimer_timeout"]

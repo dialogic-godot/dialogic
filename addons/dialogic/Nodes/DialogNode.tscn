@@ -33,8 +33,8 @@ __meta__ = {
 }
 
 [node name="TextBubble" parent="." instance=ExtResource( 1 )]
-margin_left = 57.0
-margin_right = 967.0
+margin_top = -207.0
+margin_bottom = -40.0
 
 [node name="Options" type="VBoxContainer" parent="."]
 visible = false
@@ -116,9 +116,9 @@ margin_right = 208.0
 margin_bottom = 27.0
 size_flags_horizontal = 3
 size_flags_vertical = 4
-custom_styles/normal = SubResource( 1 )
-custom_fonts/normal_font = ExtResource( 4 )
 custom_colors/default_color = Color( 1, 1, 1, 1 )
+custom_fonts/normal_font = ExtResource( 4 )
+custom_styles/normal = SubResource( 1 )
 bbcode_enabled = true
 bbcode_text = "This is the title"
 text = "This is the title"
@@ -130,9 +130,9 @@ margin_top = 31.0
 margin_right = 208.0
 margin_bottom = 112.0
 size_flags_horizontal = 3
-custom_styles/normal = SubResource( 1 )
-custom_fonts/normal_font = ExtResource( 4 )
 custom_colors/default_color = Color( 0.756863, 0.756863, 0.756863, 1 )
+custom_fonts/normal_font = ExtResource( 4 )
+custom_styles/normal = SubResource( 1 )
 bbcode_enabled = true
 fit_content_height = true
 scroll_active = false
@@ -145,9 +145,9 @@ margin_top = 116.0
 margin_right = 208.0
 margin_bottom = 143.0
 size_flags_horizontal = 3
-custom_styles/normal = SubResource( 1 )
-custom_fonts/normal_font = ExtResource( 4 )
 custom_colors/default_color = Color( 0.756863, 0.756863, 0.756863, 1 )
+custom_fonts/normal_font = ExtResource( 4 )
+custom_styles/normal = SubResource( 1 )
 bbcode_enabled = true
 fit_content_height = true
 scroll_active = false

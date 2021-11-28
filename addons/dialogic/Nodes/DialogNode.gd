@@ -31,6 +31,8 @@ var last_mouse_mode = null
 var settings: ConfigFile
 var custom_events = {}
 
+var hovering_action_mode: bool = false
+
 ### DATA
 var definitions = {}
 
@@ -138,6 +140,10 @@ func load_config_files():
 	if settings.has_section('theme'):
 		theme_file = settings.get_value('theme', 'default')
 	current_theme = load_theme(theme_file)
+	
+	# setup hovering mode
+	hovering_action_mode = settings.get_value('input', 'enable_hovering_mode')
+	$TextBubble/NextIndicatorContainer/NextIndicator.set_hovering_mode(hovering_action_mode)
 
 
 ## -----------------------------------------------------------------------------
@@ -937,6 +943,8 @@ func add_choice_button(option: Dictionary) -> Button:
 	var hotkey
 	var buttonCount = button_container.get_child_count()
 	var hotkeyOption = settings.get_value('input', str('choice_hotkey_', buttonCount), '')
+	
+	button.set_hovering_mode(hovering_action_mode)
 	
 	# If there is a hotkey, use that key
 	if hotkeyOption != '' and hotkeyOption != '[Default]':

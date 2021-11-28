@@ -5,7 +5,7 @@
 [ext_resource path="res://addons/dialogic/Editor/Common/TLabel.tscn" type="PackedScene" id=3]
 [ext_resource path="res://addons/dialogic/Editor/SettingsEditor/Scenes/SettingsCheckbox.tscn" type="PackedScene" id=4]
 
-[sub_resource type="Image" id=11]
+[sub_resource type="Image" id=1]
 data = {
 "data": PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ),
 "format": "LumAlpha8",
@@ -14,10 +14,10 @@ data = {
 "width": 16
 }
 
-[sub_resource type="ImageTexture" id=10]
+[sub_resource type="ImageTexture" id=2]
 flags = 4
 flags = 4
-image = SubResource( 11 )
+image = SubResource( 1 )
 size = Vector2( 16, 16 )
 
 [node name="SettingsEditor" type="ScrollContainer"]
@@ -68,12 +68,12 @@ text_key = "Default"
 
 [node name="ThemeOptionButton" type="OptionButton" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer/HBoxContainer"]
 margin_left = 50.0
-margin_right = 228.0
+margin_right = 190.0
 margin_bottom = 20.0
 rect_min_size = Vector2( 140, 0 )
-text = "theme-1621423794.cfg"
-items = [ "theme-1621423794.cfg", null, false, 0, {
-"file": "theme-1621423794.cfg"
+text = "Default Theme"
+items = [ "Default Theme", null, false, 0, {
+"file": "default-theme.cfg"
 } ]
 selected = 0
 
@@ -95,7 +95,7 @@ text_key = "Canvas layer:"
 margin_left = 87.0
 margin_right = 145.0
 margin_bottom = 24.0
-text = "21"
+text = "1"
 
 [node name="VBoxContainer2" type="VBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer"]
 margin_top = 90.0
@@ -230,21 +230,21 @@ settings_key = "autosave"
 
 [node name="VBoxContainer2" type="VBoxContainer" parent="VBoxContainer/HBoxContainer3"]
 margin_left = 360.0
-margin_right = 664.0
+margin_right = 667.0
 margin_bottom = 422.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer2"]
-margin_right = 304.0
-margin_bottom = 254.0
+margin_right = 307.0
+margin_bottom = 282.0
 
 [node name="SectionTitle2" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer" instance=ExtResource( 2 )]
-margin_right = 304.0
+margin_right = 307.0
 text = "Input settings"
 text_key = "Input settings"
 
 [node name="SettingsCheckbox2" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer" instance=ExtResource( 4 )]
 margin_top = 26.0
-margin_right = 304.0
+margin_right = 307.0
 margin_bottom = 50.0
 text = "Autofocus choice buttons"
 default = true
@@ -253,7 +253,7 @@ settings_key = "autofocus_choices"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer"]
 margin_top = 54.0
-margin_right = 304.0
+margin_right = 307.0
 margin_bottom = 78.0
 
 [node name="TLabel14" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer/HBoxContainer" instance=ExtResource( 3 )]
@@ -283,7 +283,7 @@ text_key = " seconds"
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer"]
 margin_top = 82.0
-margin_right = 304.0
+margin_right = 307.0
 margin_bottom = 102.0
 
 [node name="TLabel16" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer/HBoxContainer2" instance=ExtResource( 3 )]
@@ -304,7 +304,7 @@ text = "dialogic_next"
 
 [node name="SettingsCheckbox" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer" instance=ExtResource( 4 )]
 margin_top = 106.0
-margin_right = 304.0
+margin_right = 307.0
 margin_bottom = 130.0
 text = "Tapping on the dialog to continue"
 default = true
@@ -313,7 +313,7 @@ settings_key = "clicking_dialog_action"
 
 [node name="SettingsCheckbox3" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer" instance=ExtResource( 4 )]
 margin_top = 134.0
-margin_right = 304.0
+margin_right = 307.0
 margin_bottom = 158.0
 text = "Enable default choice hotkeys"
 settings_section = "input"
@@ -321,7 +321,7 @@ settings_key = "enable_default_shortcut"
 
 [node name="HBoxContainer4" type="HBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer"]
 margin_top = 162.0
-margin_right = 304.0
+margin_right = 307.0
 margin_bottom = 182.0
 
 [node name="TLabel18" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer/HBoxContainer4" instance=ExtResource( 3 )]
@@ -342,7 +342,7 @@ text = "[Default]"
 
 [node name="HBoxContainer5" type="HBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer"]
 margin_top = 186.0
-margin_right = 304.0
+margin_right = 307.0
 margin_bottom = 206.0
 
 [node name="TLabel19" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer/HBoxContainer5" instance=ExtResource( 3 )]
@@ -363,7 +363,7 @@ text = "[Default]"
 
 [node name="HBoxContainer6" type="HBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer"]
 margin_top = 210.0
-margin_right = 304.0
+margin_right = 307.0
 margin_bottom = 230.0
 
 [node name="TLabel20" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer/HBoxContainer6" instance=ExtResource( 3 )]
@@ -384,7 +384,7 @@ text = "[Default]"
 
 [node name="HBoxContainer7" type="HBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer"]
 margin_top = 234.0
-margin_right = 304.0
+margin_right = 307.0
 margin_bottom = 254.0
 
 [node name="TLabel21" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer/HBoxContainer7" instance=ExtResource( 3 )]
@@ -403,24 +403,32 @@ margin_bottom = 20.0
 hint_tooltip = "The default value is No Hotkey"
 text = "[Default]"
 
-[node name="CustomEvents" type="VBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer2"]
+[node name="SettingsCheckbox4" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer" instance=ExtResource( 4 )]
 margin_top = 258.0
-margin_right = 304.0
-margin_bottom = 308.0
+margin_right = 307.0
+margin_bottom = 282.0
+text = "Enable action by hovering over UI elements"
+settings_section = "input"
+settings_key = "enable_hovering_mode"
+
+[node name="CustomEvents" type="VBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer2"]
+margin_top = 286.0
+margin_right = 307.0
+margin_bottom = 336.0
 
 [node name="SectionTitle" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/CustomEvents" instance=ExtResource( 2 )]
-margin_right = 304.0
+margin_right = 307.0
 text = "Custom events"
 text_key = "Custom events"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/CustomEvents"]
 margin_top = 26.0
-margin_right = 304.0
+margin_right = 307.0
 margin_bottom = 50.0
 
 [node name="Message" type="Label" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/CustomEvents/HBoxContainer"]
 margin_top = 5.0
-margin_right = 228.0
+margin_right = 231.0
 margin_bottom = 19.0
 size_flags_horizontal = 3
 custom_colors/font_color = Color( 0, 0, 0, 1 )
@@ -429,16 +437,16 @@ __meta__ = {
 }
 
 [node name="NewCustomEvent" type="Button" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/CustomEvents/HBoxContainer"]
-margin_left = 232.0
-margin_right = 272.0
+margin_left = 235.0
+margin_right = 275.0
 margin_bottom = 24.0
 text = "New"
 
 [node name="CustomEventsDocs" type="ToolButton" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/CustomEvents/HBoxContainer"]
-margin_left = 276.0
-margin_right = 304.0
+margin_left = 279.0
+margin_right = 307.0
 margin_bottom = 24.0
-icon = SubResource( 10 )
+icon = SubResource( 2 )
 
 [node name="CreateCustomEventSection" type="GridContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/CustomEvents"]
 visible = false
@@ -520,6 +528,6 @@ margin_bottom = 20.0
 text = "Cancel"
 
 [node name="CustomEvents" type="VBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer2"]
-margin_top = 312.0
-margin_right = 304.0
-margin_bottom = 312.0
+margin_top = 340.0
+margin_right = 307.0
+margin_bottom = 340.0
