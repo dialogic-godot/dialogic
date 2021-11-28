@@ -154,6 +154,7 @@ items = [ "Move Up", null, 0, false, false, 0, 0, null, "", false, "Move Down", 
 
 [node name="Body" type="VBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer"]
 visible = false
+margin_left = 202.0
 margin_top = 34.0
 margin_right = 1012.0
 margin_bottom = 42.0

@@ -259,3 +259,9 @@ func _on_HelpButton_pressed():
 	if help_page_path:
 		var master_tree = editor_reference.get_node_or_null('MainPanel/MasterTreeContainer/MasterTree')
 		master_tree.select_documentation_item(help_page_path)
+
+
+func _draw():
+#	draw_rect(rect: Rect2, color: Color, filled: bool = true, width: float = 1.0, antialiased: bool = false)
+
+	draw_rect(Rect2(Vector2(30, 20), Vector2(2, rect_size.y + 10)), Color("#4D4D4D"), true)
