@@ -80,6 +80,7 @@ onready var n : Dictionary = {
 	'next_indicator_scale': $"VBoxContainer/TabContainer/Dialog Box/Column2/GridContainer/HBoxContainer7/IndicatorScale",
 	
 	'animation_show_time': $"VBoxContainer/TabContainer/Dialog Box/Column3/GridContainer/ShowTime/SpinBox",
+	'animation_dim_color': $"VBoxContainer/TabContainer/Dialog Box/Column3/GridContainer/DimColor/ColorPickerButton",
 	
 	# Character Names
 	'name_font': $"VBoxContainer/TabContainer/Name Label/Column/GridContainer/RegularFont/NameFontButton",
@@ -306,6 +307,8 @@ func load_theme(filename):
 	var default_background = 'res://addons/dialogic/Example Assets/backgrounds/background-2.png'
 	# Settings
 	n['single_portrait_mode'].pressed = theme.get_value('settings', 'single_portrait_mode', false) # Currently in Dialog Text tab
+	
+	n['animation_dim_color'].color = Color(theme.get_value('animation', 'dim_color', '#ff808080'))
 	
 	# Background
 	n['theme_background_image'].text = DialogicResources.get_filename_from_path(theme.get_value('background', 'image', default_background))
@@ -742,6 +745,12 @@ func _on_BackgroundColor_ColorPickerButton_color_changed(color) -> void:
 		return
 	DialogicResources.set_theme_value(current_theme, 'background', 'color', '#' + color.to_html())
 	$DelayPreviewTimer.start(0.5) # Calling a timer so the update doesn't get triggered many times
+
+# Dim Color
+func _on_DimColor_ColorPickerButton_color_changed(color) -> void:
+	if loading:
+		return
+	DialogicResources.set_theme_value(current_theme, 'animation', 'dim_color', '#' + color.to_html())
 
 # Next indicator
 func _on_NextIndicatorButton_pressed() -> void:

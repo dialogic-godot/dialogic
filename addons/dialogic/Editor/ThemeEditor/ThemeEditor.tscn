@@ -102,6 +102,7 @@ size_flags_vertical = 3
 tab_align = 0
 
 [node name="Dialog Text" type="HBoxContainer" parent="VBoxContainer/TabContainer"]
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 4.0
@@ -447,7 +448,6 @@ icon = SubResource( 2 )
 flat = true
 
 [node name="Dialog Box" type="HBoxContainer" parent="VBoxContainer/TabContainer"]
-visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 4.0
@@ -458,7 +458,7 @@ custom_constants/separation = 10
 
 [node name="Column" type="VBoxContainer" parent="VBoxContainer/TabContainer/Dialog Box"]
 margin_right = 270.0
-margin_bottom = 488.0
+margin_bottom = 495.0
 rect_min_size = Vector2( 270, 0 )
 size_flags_vertical = 3
 __meta__ = {
@@ -710,12 +710,12 @@ allow_lesser = true
 [node name="VSeparator" type="VSeparator" parent="VBoxContainer/TabContainer/Dialog Box"]
 margin_left = 280.0
 margin_right = 284.0
-margin_bottom = 488.0
+margin_bottom = 495.0
 
 [node name="Column2" type="VBoxContainer" parent="VBoxContainer/TabContainer/Dialog Box"]
 margin_left = 294.0
 margin_right = 564.0
-margin_bottom = 488.0
+margin_bottom = 495.0
 rect_min_size = Vector2( 270, 0 )
 size_flags_vertical = 3
 __meta__ = {
@@ -828,12 +828,12 @@ allow_lesser = true
 [node name="VSeparator2" type="VSeparator" parent="VBoxContainer/TabContainer/Dialog Box"]
 margin_left = 574.0
 margin_right = 578.0
-margin_bottom = 488.0
+margin_bottom = 495.0
 
 [node name="Column3" type="VBoxContainer" parent="VBoxContainer/TabContainer/Dialog Box"]
 margin_left = 588.0
 margin_right = 858.0
-margin_bottom = 488.0
+margin_bottom = 495.0
 rect_min_size = Vector2( 270, 0 )
 size_flags_vertical = 3
 __meta__ = {
@@ -847,7 +847,7 @@ text_key = "Behaviour"
 [node name="GridContainer" type="GridContainer" parent="VBoxContainer/TabContainer/Dialog Box/Column3"]
 margin_top = 26.0
 margin_right = 270.0
-margin_bottom = 50.0
+margin_bottom = 74.0
 size_flags_horizontal = 3
 custom_constants/hseparation = 10
 columns = 2
@@ -856,14 +856,14 @@ columns = 2
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_top = 5.0
-margin_right = 84.0
+margin_right = 122.0
 margin_bottom = 19.0
 text = "Fade in time:"
 text_key = "Fade in time:"
 
 [node name="ShowTime" type="HBoxContainer" parent="VBoxContainer/TabContainer/Dialog Box/Column3/GridContainer"]
-margin_left = 94.0
-margin_right = 168.0
+margin_left = 132.0
+margin_right = 206.0
 margin_bottom = 24.0
 
 [node name="SpinBox" type="SpinBox" parent="VBoxContainer/TabContainer/Dialog Box/Column3/GridContainer/ShowTime"]
@@ -873,6 +873,27 @@ max_value = 999.0
 step = 0.1
 value = 0.5
 allow_greater = true
+
+[node name="TLabel3" parent="VBoxContainer/TabContainer/Dialog Box/Column3/GridContainer" instance=ExtResource( 8 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 31.0
+margin_right = 122.0
+margin_bottom = 45.0
+text = "Portraits Dim Color"
+text_key = "Portraits Dim Color"
+
+[node name="DimColor" type="HBoxContainer" parent="VBoxContainer/TabContainer/Dialog Box/Column3/GridContainer"]
+margin_left = 132.0
+margin_top = 28.0
+margin_right = 206.0
+margin_bottom = 48.0
+
+[node name="ColorPickerButton" type="ColorPickerButton" parent="VBoxContainer/TabContainer/Dialog Box/Column3/GridContainer/DimColor"]
+margin_right = 74.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+color = Color( 0.501961, 0.501961, 0.501961, 1 )
 
 [node name="Name Label" type="HBoxContainer" parent="VBoxContainer/TabContainer"]
 visible = false
@@ -1890,6 +1911,7 @@ one_shot = true
 [connection signal="item_selected" from="VBoxContainer/TabContainer/Dialog Box/Column2/GridContainer/NextAnimation" to="." method="_on_NextAnimation_item_selected"]
 [connection signal="value_changed" from="VBoxContainer/TabContainer/Dialog Box/Column2/GridContainer/HBoxContainer2/NextOffsetX" to="." method="_on_NextOffset_value_changed"]
 [connection signal="value_changed" from="VBoxContainer/TabContainer/Dialog Box/Column2/GridContainer/HBoxContainer2/NextOffsetY" to="." method="_on_NextOffset_value_changed"]
+[connection signal="color_changed" from="VBoxContainer/TabContainer/Dialog Box/Column3/GridContainer/DimColor/ColorPickerButton" to="." method="_on_DimColor_ColorPickerButton_color_changed"]
 [connection signal="pressed" from="VBoxContainer/TabContainer/Name Label/Column/GridContainer/RegularFont/NameFontButton" to="." method="_on_NameFont_pressed"]
 [connection signal="pressed" from="VBoxContainer/TabContainer/Name Label/Column/GridContainer/RegularFont/NameFontOpen" to="." method="_on_NameFontOpen_pressed"]
 [connection signal="toggled" from="VBoxContainer/TabContainer/Name Label/Column/GridContainer/CharacterColor" to="." method="_on_name_auto_color_toggled"]
