@@ -39,6 +39,7 @@ var editor_reference
 
 ### the indent size
 const indent_size = 25
+var current_indent_size = 1
 
 # Setting this to true will ignore the event while saving
 # Useful for making placeholder events in drag and drop
@@ -86,6 +87,8 @@ func set_preview(text: String):
 func set_indent(indent: int):
 	indent_node.rect_min_size = Vector2(indent_size * indent, 0)
 	indent_node.visible = indent != 0
+	current_indent_size = indent
+	update()
 
 
 func set_expanded(expanded: bool):
@@ -263,5 +266,6 @@ func _on_HelpButton_pressed():
 
 func _draw():
 #	draw_rect(rect: Rect2, color: Color, filled: bool = true, width: float = 1.0, antialiased: bool = false)
-
+	if current_indent_size > 0:
+		draw_rect(Rect2(Vector2(30 + (27 * current_indent_size), 20), Vector2(2, rect_size.y + 10)), Color("#4D4D4D"), true)
 	draw_rect(Rect2(Vector2(30, 20), Vector2(2, rect_size.y + 10)), Color("#4D4D4D"), true)
