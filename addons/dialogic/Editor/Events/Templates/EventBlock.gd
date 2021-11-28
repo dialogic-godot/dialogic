@@ -4,7 +4,7 @@ extends HBoxContainer
 # customization options for the event 
 
 # This is the default data that is going to be saved to json
-export(String) var event_name : String
+export(String) var event_name : String = 'Event name'
 export (Dictionary) var event_data: Dictionary = {'event_id':'dialogic_000'}
 export(Color) var event_color: Color = Color(0.6,0.6,0.6,1)
 export(Texture) var event_icon : Texture
@@ -104,7 +104,8 @@ func _set_event_icon(icon: Texture):
 
 
 func _set_event_name(text: String):
-	title_label.text = text
+	if event_name != "":
+		title_label.text = text
 
 
 func _set_header(scene: PackedScene):
@@ -255,8 +256,10 @@ func _ready():
 	if get_body():
 		set_expanded(expand_on_default)
 	
-	if $PanelContainer/MarginContainer/VBoxContainer/Header/TitleLabel.text == "":
-		$PanelContainer/MarginContainer/VBoxContainer/Header/TitleLabel.queue_free()
+	if event_name == "Text Event":
+		var t_label = get_node_or_null("PanelContainer/MarginContainer/VBoxContainer/Header/TitleLabel")
+		if t_label:
+			t_label.queue_free()
 
 	_on_Indent_visibility_changed()
 

@@ -30,6 +30,7 @@ script = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
+event_name = ""
 event_data = {
 "event_id": "dialogic_000"
 }
@@ -40,7 +41,7 @@ visible = false
 margin_bottom = 64.0
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
-margin_right = 76.0
+margin_right = 84.0
 margin_bottom = 50.0
 mouse_filter = 1
 size_flags_vertical = 3
@@ -54,7 +55,7 @@ margin_bottom = 50.0
 custom_styles/panel = ExtResource( 3 )
 
 [node name="MarginContainer" type="MarginContainer" parent="PanelContainer"]
-margin_right = 76.0
+margin_right = 84.0
 margin_bottom = 50.0
 mouse_filter = 1
 custom_constants/margin_right = 6
@@ -65,13 +66,13 @@ custom_constants/margin_bottom = 6
 [node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/MarginContainer"]
 margin_left = 6.0
 margin_top = 6.0
-margin_right = 70.0
+margin_right = 78.0
 margin_bottom = 44.0
 rect_min_size = Vector2( 0, 30 )
 size_flags_horizontal = 3
 
 [node name="Header" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer"]
-margin_right = 64.0
+margin_right = 72.0
 margin_bottom = 30.0
 rect_min_size = Vector2( 0, 30 )
 size_flags_horizontal = 3
@@ -109,9 +110,15 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Content" type="MarginContainer" parent="PanelContainer/MarginContainer/VBoxContainer/Header"]
+[node name="TitleLabel" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/Header"]
 margin_left = 46.0
-margin_right = 56.0
+margin_top = 8.0
+margin_right = 46.0
+margin_bottom = 22.0
+
+[node name="Content" type="MarginContainer" parent="PanelContainer/MarginContainer/VBoxContainer/Header"]
+margin_left = 54.0
+margin_right = 64.0
 margin_bottom = 30.0
 mouse_filter = 1
 custom_constants/margin_right = 5
@@ -122,8 +129,8 @@ margin_left = 178.0
 margin_right = 242.0
 
 [node name="Spacer" parent="PanelContainer/MarginContainer/VBoxContainer/Header" instance=ExtResource( 4 )]
-margin_left = 64.0
-margin_right = 64.0
+margin_left = 72.0
+margin_right = 72.0
 margin_bottom = 30.0
 
 [node name="HelpButton" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer/Header"]
