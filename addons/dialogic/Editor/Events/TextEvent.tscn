@@ -1,7 +1,6 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://addons/dialogic/Editor/Events/Parts/ResourcePickers/Characters/CharacterAndPortraitPicker.tscn" type="PackedScene" id=1]
-[ext_resource path="res://addons/dialogic/Editor/Events/styles/TextEvent.tres" type="StyleBox" id=2]
 [ext_resource path="res://addons/dialogic/Editor/Events/Templates/EventTemplate.tscn" type="PackedScene" id=3]
 [ext_resource path="res://addons/dialogic/Editor/Events/Parts/Text/TextAndVoiceEditor.tscn" type="PackedScene" id=4]
 [ext_resource path="res://addons/dialogic/Images/Event Icons/Main Icons/text-event.svg" type="Texture" id=5]
@@ -30,17 +29,12 @@ event_data = {
 "text": ""
 }
 event_icon = ExtResource( 5 )
-event_style = ExtResource( 2 )
 header_scene = ExtResource( 1 )
 body_scene = ExtResource( 4 )
 help_page_path = "res://addons/dialogic/Documentation/Content/Events/000.md"
 
 [node name="PanelContainer" parent="." index="1"]
 margin_bottom = 50.0
-custom_styles/panel = ExtResource( 2 )
-
-[node name="SelectedStyle" parent="PanelContainer" index="0"]
-modulate = Color( 0, 0, 0, 1 )
 
 [node name="MarginContainer" parent="PanelContainer" index="1"]
 margin_bottom = 50.0
@@ -48,26 +42,24 @@ margin_bottom = 50.0
 [node name="VBoxContainer" parent="PanelContainer/MarginContainer" index="0"]
 margin_bottom = 44.0
 
-[node name="IconTexture" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="1"]
-margin_right = 32.0
+[node name="IconTexture" parent="PanelContainer/MarginContainer/VBoxContainer/Header/IconPanel" index="0"]
 texture = ExtResource( 5 )
 
 [node name="TitleLabel" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="2"]
-margin_left = 42.0
-margin_right = 108.0
+margin_right = 116.0
 text = "Text Event"
 
 [node name="Content" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="3"]
-margin_left = 118.0
-margin_right = 256.0
+margin_left = 126.0
+margin_right = 264.0
 
 [node name="ExpandControl" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="4"]
 visible = true
-margin_left = 266.0
-margin_right = 318.0
+margin_left = 274.0
+margin_right = 326.0
 
 [node name="Spacer" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="5"]
-margin_left = 328.0
+margin_left = 336.0
 
 [node name="HelpButton" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="6"]
 icon = SubResource( 2 )

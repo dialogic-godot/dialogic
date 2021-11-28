@@ -6,8 +6,8 @@ extends HBoxContainer
 # This is the default data that is going to be saved to json
 export(String) var event_name : String
 export (Dictionary) var event_data: Dictionary = {'event_id':'dialogic_000'}
+export(Color) var event_color: Color = Color(0.6,0.6,0.6,1)
 export(Texture) var event_icon : Texture
-export(StyleBoxFlat) var event_style : StyleBoxFlat
 
 export(PackedScene) var header_scene : PackedScene
 export(PackedScene) var body_scene : PackedScene
@@ -23,7 +23,7 @@ onready var panel = $PanelContainer
 onready var selected_style = $PanelContainer/SelectedStyle
 onready var warning = $PanelContainer/MarginContainer/VBoxContainer/Header/Warning
 onready var title_label = $PanelContainer/MarginContainer/VBoxContainer/Header/TitleLabel
-onready var icon_texture  = $PanelContainer/MarginContainer/VBoxContainer/Header/IconTexture
+onready var icon_texture  = $PanelContainer/MarginContainer/VBoxContainer/Header/IconPanel/IconTexture
 onready var expand_control = $PanelContainer/MarginContainer/VBoxContainer/Header/ExpandControl
 onready var options_control = $PanelContainer/MarginContainer/VBoxContainer/Header/OptionsControl
 onready var header_content_container = $PanelContainer/MarginContainer/VBoxContainer/Header/Content
@@ -55,14 +55,6 @@ func visual_select():
 func visual_deselect():
 	selected_style.hide()
 
-
-func set_event_style(style: StyleBoxFlat):
-	panel.set('custom_styles/panel', style)
-
-
-func get_event_style():
-	return panel.get('custom_styles/panel')
-	
 
 # called by the timeline before adding it to the tree
 func load_data(data):
@@ -123,8 +115,6 @@ func _set_body(scene: PackedScene):
 
 
 func _setup_event():
-	if event_style != null:
-		set_event_style(event_style)
 	if event_icon != null:
 		_set_event_icon(event_icon)
 	if event_name != null:
@@ -133,6 +123,8 @@ func _setup_event():
 		_set_header(header_scene)
 	if body_scene != null:
 		_set_body(body_scene)
+	if event_color != null:
+		$PanelContainer/MarginContainer/VBoxContainer/Header/IconPanel.set("self_modulate", event_color)
 
 
 func _set_content(container: Control, scene: PackedScene):

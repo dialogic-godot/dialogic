@@ -1,38 +1,32 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://addons/dialogic/Editor/Events/Templates/EventTemplate.tscn" type="PackedScene" id=1]
-[ext_resource path="res://addons/dialogic/Editor/Events/styles/Timeline.tres" type="StyleBox" id=2]
 [ext_resource path="res://addons/dialogic/Images/Event Icons/Main Icons/change-timeline.svg" type="Texture" id=3]
 [ext_resource path="res://addons/dialogic/Editor/Events/Parts/ResourcePickers/Timelines/TimelinePicker.tscn" type="PackedScene" id=4]
 
 [node name="ChangeTimeline" instance=ExtResource( 1 )]
+event_name = "Change Timeline"
 event_data = {
 "change_timeline": "",
 "event_id": "dialogic_020"
 }
-event_style = ExtResource( 2 )
+event_color = Color( 0.462745, 0.133333, 1, 1 )
 event_icon = ExtResource( 3 )
-event_name = "Change Timeline"
 header_scene = ExtResource( 4 )
 
-[node name="PanelContainer" parent="." index="1"]
-custom_styles/panel = ExtResource( 2 )
-
-[node name="IconTexture" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="0"]
-margin_right = 32.0
+[node name="IconTexture" parent="PanelContainer/MarginContainer/VBoxContainer/Header/IconPanel" index="0"]
 texture = ExtResource( 3 )
 
-[node name="TitleLabel" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="0"]
-margin_right = 111.0
+[node name="TitleLabel" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="2"]
+margin_right = 156.0
 text = "Change Timeline"
 
+[node name="Content" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="3"]
+margin_left = 166.0
+margin_right = 295.0
 
-[node name="Content" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="2"]
-margin_left = 177.0
-margin_right = 306.0
+[node name="Spacer" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="5"]
+margin_left = 305.0
 
-[node name="Spacer" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="4"]
-margin_left = 310.0
-
-[node name="OptionsControl" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="6"]
+[node name="OptionsControl" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="7"]
 items = [ "Move Up", null, 0, false, false, 0, 0, null, "", false, "Move Down", null, 0, false, false, 1, 0, null, "", false, "", null, 0, false, false, 2, 0, null, "", false, "Remove", null, 0, false, false, 3, 0, null, "", false ]
