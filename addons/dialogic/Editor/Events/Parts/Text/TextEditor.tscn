@@ -45,7 +45,6 @@ __meta__ = {
 [node name="TextEdit" type="TextEdit" parent="."]
 margin_right = 40.0
 margin_bottom = 40.0
-size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_colors/member_variable_color = Color( 0, 0, 0, 1 )
 custom_colors/function_color = Color( 0, 0, 0, 1 )
