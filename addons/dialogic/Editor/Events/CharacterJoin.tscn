@@ -20,7 +20,7 @@ image = SubResource( 3 )
 size = Vector2( 16, 16 )
 
 [node name="CharacterJoin" instance=ExtResource( 1 )]
-event_name = "Character Join"
+event_name = "Character "
 event_data = {
 "action": "join",
 "character": "",
@@ -35,24 +35,27 @@ event_data = {
 "4": false
 }
 }
-event_color = Color( 0.137255, 0.792157, 0.498039, 1 )
+event_color = Color( 0.333333, 0.65098, 0.592157, 1 )
 event_icon = ExtResource( 4 )
 header_scene = ExtResource( 3 )
 help_page_path = "res://addons/dialogic/Documentation/Content/Events/001.md"
+
+[node name="IconPanel" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="1"]
+self_modulate = Color( 0.333333, 0.65098, 0.592157, 1 )
 
 [node name="IconTexture" parent="PanelContainer/MarginContainer/VBoxContainer/Header/IconPanel" index="0"]
 texture = ExtResource( 4 )
 
 [node name="TitleLabel" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="2"]
-margin_right = 137.0
-text = "Character Join"
+margin_right = 114.0
+text = "Character "
 
 [node name="Content" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="3"]
-margin_left = 147.0
-margin_right = 596.0
+margin_left = 124.0
+margin_right = 573.0
 
 [node name="Spacer" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="5"]
-margin_left = 606.0
+margin_left = 583.0
 
 [node name="HelpButton" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="6"]
 icon = SubResource( 2 )

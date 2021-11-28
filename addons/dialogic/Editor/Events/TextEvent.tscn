@@ -21,7 +21,6 @@ image = SubResource( 3 )
 size = Vector2( 16, 16 )
 
 [node name="TextEvent" instance=ExtResource( 3 )]
-event_name = "Text Event"
 event_data = {
 "character": "",
 "event_id": "dialogic_001",
