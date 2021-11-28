@@ -10,7 +10,8 @@ var commands = []
 var regex = RegEx.new()
 var bbcoderemoverregex = RegEx.new()
 
-onready var text_label = $RichTextLabel
+onready var text_container = $TextContainer
+onready var text_label = $TextContainer/RichTextLabel
 onready var name_label = $NameLabel
 onready var next_indicator = $NextIndicatorContainer/NextIndicator
 
@@ -134,6 +135,14 @@ func load_theme(theme: ConfigFile):
 	text_label.set('custom_fonts/italics_font', DialogicUtil.path_fixer_load(theme.get_value('text', 'italic_font', 'res://addons/dialogic/Example Assets/Fonts/DefaultItalicFont.tres')))
 	name_label.set('custom_fonts/font', DialogicUtil.path_fixer_load(theme.get_value('name', 'font', 'res://addons/dialogic/Example Assets/Fonts/NameFont.tres')))
 	
+	# setting the vertical alignment
+	var alignment = theme.get_value('text', 'alignment',0)
+	if alignment <= 2: # top
+		text_container.alignment = BoxContainer.ALIGN_BEGIN
+	elif alignment <= 5: # center
+		text_container.alignment = BoxContainer.ALIGN_CENTER
+	elif alignment <= 8: # bottom
+		text_container.alignment = BoxContainer.ALIGN_END
 	
 	var text_color = Color(theme.get_value('text', 'color', '#ffffffff'))
 	text_label.set('custom_colors/default_color', text_color)
@@ -157,10 +166,10 @@ func load_theme(theme: ConfigFile):
 
 	# Margin
 	var text_margin = theme.get_value('text', 'margin', Vector2(20, 10))
-	text_label.set('margin_left', text_margin.x)
-	text_label.set('margin_right', text_margin.x * -1)
-	text_label.set('margin_top', text_margin.y)
-	text_label.set('margin_bottom', text_margin.y * -1)
+	text_container.set('margin_left', text_margin.x)
+	text_container.set('margin_right', text_margin.x * -1)
+	text_container.set('margin_top', text_margin.y)
+	text_container.set('margin_bottom', text_margin.y * -1)
 
 	# Backgrounds
 	$TextureRect.texture = DialogicUtil.path_fixer_load(theme.get_value('background','image', "res://addons/dialogic/Example Assets/backgrounds/background-2.png"))

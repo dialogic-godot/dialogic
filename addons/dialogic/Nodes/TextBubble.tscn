@@ -83,13 +83,22 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="RichTextLabel" type="RichTextLabel" parent="."]
+[node name="TextContainer" type="VBoxContainer" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = 20.0
-margin_top = 10.0
-margin_right = -20.0
-margin_bottom = -10.0
+margin_left = 10.0
+margin_top = 12.0
+margin_right = -10.0
+margin_bottom = -12.0
+alignment = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="RichTextLabel" type="RichTextLabel" parent="TextContainer"]
+margin_top = 52.0
+margin_right = 890.0
+margin_bottom = 90.0
 focus_mode = 2
 custom_colors/default_color = Color( 1, 1, 1, 1 )
 custom_colors/selection_color = Color( 0, 0, 0, 0 )
@@ -100,9 +109,10 @@ custom_fonts/normal_font = ExtResource( 1 )
 custom_styles/focus = SubResource( 1 )
 custom_styles/normal = SubResource( 2 )
 bbcode_enabled = true
-bbcode_text = "Placeholder text for testing and formatting."
+bbcode_text = "[center]Placeholder text for testing an formatting.[/center]"
 meta_underlined = false
-text = "Placeholder text for testing and formatting."
+text = "Placeholder text for testing an formatting."
+fit_content_height = true
 selection_enabled = true
 __meta__ = {
 "_edit_use_anchors_": false
