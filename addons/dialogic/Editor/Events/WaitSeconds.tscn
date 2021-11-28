@@ -10,9 +10,21 @@ event_data = {
 "event_id": "dialogic_023",
 "wait_seconds": 1.0
 }
-event_color = Color( 0.137255, 0.792157, 0.498039, 1 )
+event_color = Color( 0.333333, 0.65098, 0.592157, 1 )
 event_icon = ExtResource( 1 )
 header_scene = ExtResource( 2 )
+
+[node name="PanelContainer" parent="." index="1"]
+margin_right = 486.0
+
+[node name="MarginContainer" parent="PanelContainer" index="1"]
+margin_right = 486.0
+
+[node name="VBoxContainer" parent="PanelContainer/MarginContainer" index="0"]
+margin_right = 480.0
+
+[node name="Header" parent="PanelContainer/MarginContainer/VBoxContainer" index="0"]
+margin_right = 474.0
 
 [node name="IconPanel" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="1"]
 self_modulate = Color( 0.137255, 0.792157, 0.498039, 1 )
@@ -30,6 +42,13 @@ margin_right = 380.0
 
 [node name="Spacer" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="5"]
 margin_left = 390.0
+margin_right = 390.0
+
+[node name="HelpButton" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="6"]
+margin_left = 400.0
+margin_right = 430.0
 
 [node name="OptionsControl" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="7"]
+margin_left = 440.0
+margin_right = 474.0
 items = [ "Move Up", null, 0, false, false, 0, 0, null, "", false, "Move Down", null, 0, false, false, 1, 0, null, "", false, "", null, 0, false, false, 2, 0, null, "", false, "Remove", null, 0, false, false, 3, 0, null, "", false ]

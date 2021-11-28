@@ -41,7 +41,7 @@ visible = false
 margin_bottom = 64.0
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
-margin_right = 176.0
+margin_right = 92.0
 margin_bottom = 42.0
 mouse_filter = 1
 size_flags_vertical = 3
@@ -50,12 +50,12 @@ custom_styles/panel = SubResource( 1 )
 [node name="SelectedStyle" type="Panel" parent="PanelContainer"]
 visible = false
 modulate = Color( 0, 0, 0, 1 )
-margin_right = 1024.0
+margin_right = 92.0
 margin_bottom = 42.0
 custom_styles/panel = ExtResource( 3 )
 
 [node name="MarginContainer" type="MarginContainer" parent="PanelContainer"]
-margin_right = 176.0
+margin_right = 92.0
 margin_bottom = 42.0
 mouse_filter = 1
 custom_constants/margin_right = 6
@@ -66,13 +66,13 @@ custom_constants/margin_bottom = 6
 [node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/MarginContainer"]
 margin_left = 6.0
 margin_top = 6.0
-margin_right = 170.0
+margin_right = 86.0
 margin_bottom = 36.0
 rect_min_size = Vector2( 0, 30 )
 size_flags_horizontal = 3
 
 [node name="Header" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer"]
-margin_right = 164.0
+margin_right = 80.0
 margin_bottom = 30.0
 rect_min_size = Vector2( 0, 30 )
 size_flags_horizontal = 3
@@ -134,6 +134,7 @@ margin_right = 80.0
 margin_bottom = 30.0
 
 [node name="HelpButton" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer/Header"]
+visible = false
 margin_left = 90.0
 margin_right = 120.0
 margin_bottom = 30.0
@@ -147,6 +148,7 @@ __meta__ = {
 }
 
 [node name="OptionsControl" parent="PanelContainer/MarginContainer/VBoxContainer/Header" instance=ExtResource( 5 )]
+visible = false
 margin_left = 130.0
 margin_right = 164.0
 margin_bottom = 30.0

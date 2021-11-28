@@ -225,9 +225,9 @@ func _ready():
 	options_control.connect("action", self, "_on_OptionsControl_action")
 	
 	# load icons
-	if help_page_path != "":
-		help_button.icon = get_icon("HelpSearch", "EditorIcons")
-		help_button.show()
+	#if help_page_path != "":
+	#	help_button.icon = get_icon("HelpSearch", "EditorIcons")
+	#	help_button.show()
 	
 	# when it enters the tree, load the data into the header/body
 	# If there is any external data, it will be set already BEFORE the event is added to tree
@@ -255,6 +255,9 @@ func _ready():
 	if get_body():
 		set_expanded(expand_on_default)
 	
+	if $PanelContainer/MarginContainer/VBoxContainer/Header/TitleLabel.text == "":
+		$PanelContainer/MarginContainer/VBoxContainer/Header/TitleLabel.queue_free()
+
 	_on_Indent_visibility_changed()
 
 
