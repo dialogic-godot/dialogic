@@ -5,7 +5,7 @@
 [ext_resource path="res://addons/dialogic/Editor/Common/TLabel.tscn" type="PackedScene" id=3]
 [ext_resource path="res://addons/dialogic/Editor/SettingsEditor/Scenes/SettingsCheckbox.tscn" type="PackedScene" id=4]
 
-[sub_resource type="Image" id=11]
+[sub_resource type="Image" id=3]
 data = {
 "data": PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ),
 "format": "LumAlpha8",
@@ -14,10 +14,10 @@ data = {
 "width": 16
 }
 
-[sub_resource type="ImageTexture" id=10]
+[sub_resource type="ImageTexture" id=2]
 flags = 4
 flags = 4
-image = SubResource( 11 )
+image = SubResource( 3 )
 size = Vector2( 16, 16 )
 
 [node name="SettingsEditor" type="ScrollContainer"]
@@ -36,11 +36,11 @@ size_flags_vertical = 3
 
 [node name="HBoxContainer3" type="HBoxContainer" parent="VBoxContainer"]
 margin_right = 1024.0
-margin_bottom = 422.0
+margin_bottom = 446.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer3"]
 margin_right = 356.0
-margin_bottom = 422.0
+margin_bottom = 446.0
 custom_constants/separation = 16
 
 [node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer"]
@@ -68,12 +68,12 @@ text_key = "Default"
 
 [node name="ThemeOptionButton" type="OptionButton" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer/HBoxContainer"]
 margin_left = 50.0
-margin_right = 228.0
+margin_right = 190.0
 margin_bottom = 20.0
 rect_min_size = Vector2( 140, 0 )
-text = "theme-1621423794.cfg"
-items = [ "theme-1621423794.cfg", null, false, 0, {
-"file": "theme-1621423794.cfg"
+text = "Default Theme"
+items = [ "Default Theme", null, false, 0, {
+"file": "default-theme.cfg"
 } ]
 selected = 0
 
@@ -95,7 +95,7 @@ text_key = "Canvas layer:"
 margin_left = 87.0
 margin_right = 145.0
 margin_bottom = 24.0
-text = "21"
+text = "1"
 
 [node name="VBoxContainer2" type="VBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer"]
 margin_top = 90.0
@@ -231,7 +231,7 @@ settings_key = "autosave"
 [node name="VBoxContainer2" type="VBoxContainer" parent="VBoxContainer/HBoxContainer3"]
 margin_left = 360.0
 margin_right = 664.0
-margin_bottom = 422.0
+margin_bottom = 446.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer2"]
 margin_right = 304.0
@@ -438,7 +438,7 @@ text = "New"
 margin_left = 276.0
 margin_right = 304.0
 margin_bottom = 24.0
-icon = SubResource( 10 )
+icon = SubResource( 2 )
 
 [node name="CreateCustomEventSection" type="GridContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/CustomEvents"]
 visible = false
@@ -523,3 +523,100 @@ text = "Cancel"
 margin_top = 312.0
 margin_right = 304.0
 margin_bottom = 312.0
+
+[node name="plugins" type="VBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer2"]
+margin_top = 316.0
+margin_right = 304.0
+margin_bottom = 446.0
+
+[node name="TLabel" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/plugins" instance=ExtResource( 2 )]
+margin_right = 304.0
+text = "Plugins"
+
+[node name="GeneratePlugin" type="HBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/plugins"]
+margin_top = 26.0
+margin_right = 304.0
+margin_bottom = 50.0
+
+[node name="Message" type="Label" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/plugins/GeneratePlugin"]
+margin_top = 5.0
+margin_right = 228.0
+margin_bottom = 19.0
+size_flags_horizontal = 3
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="NewNewPlugin" type="Button" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/plugins/GeneratePlugin"]
+margin_left = 232.0
+margin_right = 272.0
+margin_bottom = 24.0
+text = "New"
+
+[node name="pluginsDocs" type="ToolButton" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/plugins/GeneratePlugin"]
+margin_left = 276.0
+margin_right = 304.0
+margin_bottom = 24.0
+icon = SubResource( 2 )
+
+[node name="GeneratePlugin2" type="GridContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/plugins"]
+margin_top = 54.0
+margin_right = 304.0
+margin_bottom = 130.0
+columns = 2
+
+[node name="TLabel" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/plugins/GeneratePlugin2" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 5.0
+margin_right = 105.0
+margin_bottom = 19.0
+text = "Plugin Name:"
+text_key = "Event Name:"
+
+[node name="PName" type="LineEdit" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/plugins/GeneratePlugin2"]
+margin_left = 109.0
+margin_right = 304.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+
+[node name="TLabel2" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/plugins/GeneratePlugin2" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 33.0
+margin_right = 105.0
+margin_bottom = 47.0
+text = "Directory Name:"
+text_key = "Directory Name:"
+
+[node name="PDirectory" type="LineEdit" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/plugins/GeneratePlugin2"]
+margin_left = 109.0
+margin_top = 28.0
+margin_right = 304.0
+margin_bottom = 52.0
+size_flags_horizontal = 3
+
+[node name="Control" type="Control" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/plugins/GeneratePlugin2"]
+margin_top = 56.0
+margin_right = 105.0
+margin_bottom = 76.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/plugins/GeneratePlugin2"]
+margin_left = 109.0
+margin_top = 56.0
+margin_right = 304.0
+margin_bottom = 76.0
+alignment = 2
+
+[node name="DoGeneratePlugin" type="Button" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/plugins/GeneratePlugin2/HBoxContainer"]
+margin_left = 84.0
+margin_right = 137.0
+margin_bottom = 20.0
+text = "Create"
+
+[node name="CancelPlugin" type="Button" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/plugins/GeneratePlugin2/HBoxContainer"]
+margin_left = 141.0
+margin_right = 195.0
+margin_bottom = 20.0
+text = "Cancel"

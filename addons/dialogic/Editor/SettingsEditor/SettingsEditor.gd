@@ -27,7 +27,17 @@ onready var nodes = {
 	'new_custom_event_id': $VBoxContainer/HBoxContainer3/VBoxContainer2/CustomEvents/CreateCustomEventSection/CeEventId,
 	'new_custom_event_create':$VBoxContainer/HBoxContainer3/VBoxContainer2/CustomEvents/CreateCustomEventSection/HBoxContainer/CreateCustomEvent,
 	'new_custom_event_cancel':$VBoxContainer/HBoxContainer3/VBoxContainer2/CustomEvents/CreateCustomEventSection/HBoxContainer/CancelCustomEvent,
-	}
+	
+	# plugins
+	'new_plugin_open':$VBoxContainer/HBoxContainer3/VBoxContainer2/plugins/GeneratePlugin/NewNewPlugin,
+	'new_plugin_section':$VBoxContainer/HBoxContainer3/VBoxContainer2/plugins/GeneratePlugin/NewNewPlugin,
+	'new_plugin_name':$VBoxContainer/HBoxContainer3/VBoxContainer2/plugins/GeneratePlugin2/PName,
+	'new_plugin_directory':$VBoxContainer/HBoxContainer3/VBoxContainer2/plugins/GeneratePlugin2/PDirectory,
+	'new_plugin_do_create':$VBoxContainer/HBoxContainer3/VBoxContainer2/plugins/GeneratePlugin2/HBoxContainer/DoGeneratePlugin,
+	'new_plugin_cancel':$VBoxContainer/HBoxContainer3/VBoxContainer2/plugins/GeneratePlugin2/HBoxContainer/DoGeneratePlugin,
+	'new_plugin_help':$VBoxContainer/HBoxContainer3/VBoxContainer2/plugins/GeneratePlugin/pluginsDocs,
+	'new_plugin_message'$VBoxContainer/HBoxContainer3/VBoxContainer2/plugins/GeneratePlugin/Message
+}
 
 var THEME_KEYS := [
 	'canvas_layer',
@@ -78,6 +88,16 @@ func _ready():
 	$VBoxContainer/HBoxContainer3/VBoxContainer2/CustomEvents/HBoxContainer/CustomEventsDocs.icon = get_icon("HelpSearch", "EditorIcons")
 	$VBoxContainer/HBoxContainer3/VBoxContainer2/CustomEvents/HBoxContainer/CustomEventsDocs.connect("pressed", self, 'open_custom_event_docs')
 	
+	## The plugin section
+	nodes['new_plugin_open'].connect("pressed", self, "open_new_plugins")
+	nodes['new_plugin_section'].hide()
+	nodes['new_plugin_name'].connect("text_changed", self, "plugin_name_entered")
+	nodes['new_plugin_do_create'].connect("pressed", self, "create_plugin")
+	nodes['new_plugin_cancel'].connect("pressed", self, "cancel_plugin")
+	nodes['new_plugin_help'].icon = get_icon("HelpSearch", "EditorIcons")
+	nodes['new_plugin_help'].connect("pressed", self, "open_plugin_docs")
+	nodes['new_plugin_message'].set('custom_colors/font_color', get_color("error_color", "Editor"))
+
 
 func update_data():
 	# Reloading the settings
@@ -266,3 +286,17 @@ func create_custom_event():
 	# force godot to show the folder
 	editor_reference.editor_interface.get_resource_filesystem().scan()
 	$VBoxContainer/HBoxContainer3/VBoxContainer2/CustomEvents/HBoxContainer/Message.text = ""
+
+################################################################################
+##						PLUGIN SECTION
+################################################################################
+func open_new_plugins():
+	pass
+func plugin_name_entered():
+	pass
+func create_plugin():
+	pass
+func cancel_plugin():
+	pass
+func open_plugin_docs():
+	editor_reference.get_node("MainPanel/MasterTreeContainer/MasterTree").select_documentation_item("res://addons/dialogic/Documentation/Content/Tutorials/CreateYourOwnPlugin.md")
