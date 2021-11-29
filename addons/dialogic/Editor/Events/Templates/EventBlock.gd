@@ -104,7 +104,11 @@ func _set_event_icon(icon: Texture):
 
 
 func _set_event_name(text: String):
-	if event_name != "":
+	if event_name == "Text Event":
+		var t_label = get_node_or_null("PanelContainer/MarginContainer/VBoxContainer/Header/TitleLabel")
+		if t_label:
+			t_label.queue_free()
+	else:
 		title_label.text = text
 
 
@@ -256,11 +260,6 @@ func _ready():
 	if get_body():
 		set_expanded(expand_on_default)
 	
-	if event_name == "Text Event":
-		var t_label = get_node_or_null("PanelContainer/MarginContainer/VBoxContainer/Header/TitleLabel")
-		if t_label:
-			t_label.queue_free()
-
 	_on_Indent_visibility_changed()
 
 

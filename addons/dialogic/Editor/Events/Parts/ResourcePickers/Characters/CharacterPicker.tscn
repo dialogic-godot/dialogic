@@ -19,23 +19,24 @@ __meta__ = {
 margin_right = 114.0
 margin_bottom = 30.0
 size_flags_vertical = 3
+custom_constants/separation = -5
 
 [node name="Icon" type="TextureRect" parent="HBox"]
-margin_top = 7.0
-margin_right = 18.0
-margin_bottom = 25.0
-rect_min_size = Vector2( 16, 16 )
+margin_top = 8.0
+margin_right = 16.0
+margin_bottom = 22.0
+rect_min_size = Vector2( 16, 14 )
 size_flags_vertical = 4
 texture = ExtResource( 1 )
 expand = true
-stretch_mode = 1
+stretch_mode = 5
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="MenuButton" type="MenuButton" parent="HBox"]
-margin_left = 20.0
-margin_right = 103.0
+margin_left = 11.0
+margin_right = 94.0
 margin_bottom = 30.0
 size_flags_vertical = 3
 text = "Character"
