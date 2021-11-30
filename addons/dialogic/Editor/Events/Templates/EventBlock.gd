@@ -4,10 +4,10 @@ extends HBoxContainer
 # customization options for the event 
 
 # This is the default data that is going to be saved to json
-export(String) var event_name : String
+export(String) var event_name : String = 'Event name'
 export (Dictionary) var event_data: Dictionary = {'event_id':'dialogic_000'}
+export(Color) var event_color: Color = Color(0.6,0.6,0.6,1)
 export(Texture) var event_icon : Texture
-export(StyleBoxFlat) var event_style : StyleBoxFlat
 
 export(PackedScene) var header_scene : PackedScene
 export(PackedScene) var body_scene : PackedScene
@@ -23,7 +23,7 @@ onready var panel = $PanelContainer
 onready var selected_style = $PanelContainer/SelectedStyle
 onready var warning = $PanelContainer/MarginContainer/VBoxContainer/Header/Warning
 onready var title_label = $PanelContainer/MarginContainer/VBoxContainer/Header/TitleLabel
-onready var icon_texture  = $PanelContainer/MarginContainer/VBoxContainer/Header/IconTexture
+onready var icon_texture  = $PanelContainer/MarginContainer/VBoxContainer/Header/IconPanel/IconTexture
 onready var expand_control = $PanelContainer/MarginContainer/VBoxContainer/Header/ExpandControl
 onready var options_control = $PanelContainer/MarginContainer/VBoxContainer/Header/OptionsControl
 onready var header_content_container = $PanelContainer/MarginContainer/VBoxContainer/Header/Content
@@ -38,7 +38,8 @@ var body_node
 var editor_reference
 
 ### the indent size
-const indent_size = 25
+const indent_size = 45
+var current_indent_size = 1
 
 # Setting this to true will ignore the event while saving
 # Useful for making placeholder events in drag and drop
@@ -55,14 +56,6 @@ func visual_select():
 func visual_deselect():
 	selected_style.hide()
 
-
-func set_event_style(style: StyleBoxFlat):
-	panel.set('custom_styles/panel', style)
-
-
-func get_event_style():
-	return panel.get('custom_styles/panel')
-	
 
 # called by the timeline before adding it to the tree
 func load_data(data):
@@ -94,6 +87,8 @@ func set_preview(text: String):
 func set_indent(indent: int):
 	indent_node.rect_min_size = Vector2(indent_size * indent, 0)
 	indent_node.visible = indent != 0
+	current_indent_size = indent
+	update()
 
 
 func set_expanded(expanded: bool):
@@ -109,7 +104,12 @@ func _set_event_icon(icon: Texture):
 
 
 func _set_event_name(text: String):
-	title_label.text = text
+	if event_name == "Text Event":
+		var t_label = get_node_or_null("PanelContainer/MarginContainer/VBoxContainer/Header/TitleLabel")
+		if t_label:
+			t_label.queue_free()
+	else:
+		title_label.text = text
 
 
 func _set_header(scene: PackedScene):
@@ -123,8 +123,6 @@ func _set_body(scene: PackedScene):
 
 
 func _setup_event():
-	if event_style != null:
-		set_event_style(event_style)
 	if event_icon != null:
 		_set_event_icon(event_icon)
 	if event_name != null:
@@ -133,6 +131,8 @@ func _setup_event():
 		_set_header(header_scene)
 	if body_scene != null:
 		_set_body(body_scene)
+	if event_color != null:
+		$PanelContainer/MarginContainer/VBoxContainer/Header/IconPanel.set("self_modulate", event_color)
 
 
 func _set_content(container: Control, scene: PackedScene):
@@ -230,9 +230,9 @@ func _ready():
 	options_control.connect("action", self, "_on_OptionsControl_action")
 	
 	# load icons
-	if help_page_path != "":
-		help_button.icon = get_icon("HelpSearch", "EditorIcons")
-		help_button.show()
+	#if help_page_path != "":
+	#	help_button.icon = get_icon("HelpSearch", "EditorIcons")
+	#	help_button.show()
 	
 	# when it enters the tree, load the data into the header/body
 	# If there is any external data, it will be set already BEFORE the event is added to tree
@@ -267,3 +267,10 @@ func _on_HelpButton_pressed():
 	if help_page_path:
 		var master_tree = editor_reference.get_node_or_null('MainPanel/MasterTreeContainer/MasterTree')
 		master_tree.select_documentation_item(help_page_path)
+
+
+func _draw():
+#	draw_rect(rect: Rect2, color: Color, filled: bool = true, width: float = 1.0, antialiased: bool = false)
+	if current_indent_size > 0:
+		draw_rect(Rect2(Vector2(30 + ((indent_size + 2.2) * current_indent_size), 20), Vector2(1, rect_size.y + 10)), Color("#4D4D4D"), true)
+	draw_rect(Rect2(Vector2(30, 20), Vector2(1, rect_size.y + 10)), Color("#4D4D4D"), true)
