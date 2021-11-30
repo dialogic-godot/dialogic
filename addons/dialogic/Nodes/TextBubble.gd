@@ -3,6 +3,7 @@ extends Control
 
 var text_speed := 0.02 # Higher = lower speed
 var theme_text_speed = text_speed
+var theme_text_max_height = 0
 
 #experimental database of current commands
 var commands = []
@@ -86,14 +87,37 @@ func update_text(text:String):
 		
 		result = regex.search(text_bbcodefree)
 	
-
-	# Updating the text and starting the animation from 0
 	text_label.bbcode_text = text
 	text_label.visible_characters = 0
+
+	## SIZING THE RICHTEXTLABEL
+	# The sizing is done in a very terrible way because the RichtTextLabel has 
+	# a hard time knowing what size it will be and how to display this.
+	# for this reason the RichTextLabel ist first set to just go for the size it needs,
+	# even if this might be more than available.
+	text_label.size_flags_vertical = 0
+	text_label.fit_content_height = true
+	# a frame later, when the sizes have been updated, it will check if there 
+	# is enough space or the scrollbar should be activated.
+	call_deferred("update_sizing")
 	
+	
+	# updating the size alignment stuff
 	text_label.grab_focus()
 	start_text_timer()
 	return true
+
+func update_sizing():
+	# this will enable/disable the scrollbar based on the size of the text
+	theme_text_max_height = text_container.rect_size.y
+
+	if text_label.rect_size.y >= theme_text_max_height:
+		text_label.fit_content_height = false
+		text_label.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	else:
+		text_label.fit_content_height = true
+		text_label.size_flags_vertical = 0
+
 
 #handle an activated command.
 func handle_command(command:Array):
@@ -227,7 +251,6 @@ func load_theme(theme: ConfigFile):
 	next_indicator.self_modulate = Color('#ffffff')
 	var animation = theme.get_value('next_indicator', 'animation', 'Up and down')
 	next_indicator.get_node('AnimationPlayer').play(animation)
-	
 	
 	# Saving reference to the current theme
 	_theme = theme
