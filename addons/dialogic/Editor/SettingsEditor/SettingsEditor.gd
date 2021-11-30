@@ -247,6 +247,14 @@ func create_custom_event():
 	for file in ['EventBlock.tscn', 'Stylebox.tres', 'EventPart_Example.gd', 'EventPart_Example.tscn', 'event_yourname_000.gd']:
 		dir.copy("res://addons/dialogic/Example Assets/CustomEvents/"+file, dir_name+"/"+file)
 	
+	# Updating the script location of the example
+	var scene = load(dir_name+"/EventPart_Example.tscn")
+	var scene_instance = scene.instance()
+	scene_instance.set_script(load(dir_name+"/EventPart_Example.gd"))
+	var packed_scene = PackedScene.new()
+	packed_scene.pack(scene_instance)
+	ResourceSaver.save(dir_name+"/EventPart_Example.tscn", packed_scene)
+	
 	# rename the event handler script
 	dir.rename(dir_name+'/event_yourname_000.gd', dir_name+'/event_'+nodes['new_custom_event_id'].text+'.gd')
 	
