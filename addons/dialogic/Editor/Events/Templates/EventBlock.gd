@@ -271,7 +271,59 @@ func _on_HelpButton_pressed():
 
 func _draw():
 	var pos_x = 26
+	var pos_y = 20
+	var line_color = Color("#4D4D4D")
+	var test_color = Color(0,1,0,1)
+	# Drawing arc
+	if event_name == 'Choice':
+		# Connecting with the question 
+		var arc_start_x = ((indent_size + 2) * current_indent_size) + 4
+		draw_arc(
+			Vector2(arc_start_x, - 5),
+			25, # radius
+			deg2rad(90), # Start angle
+			deg2rad(180),  # End angle
+			12, #point count
+			line_color,
+			1.0,
+			true
+		)
+		draw_rect(Rect2(
+			Vector2(arc_start_x, pos_y),
+			Vector2(10, 1)),
+		line_color, true)
+		
+		# Connecting with the next event
+		draw_arc(
+			Vector2( 52 +  ((indent_size + 2) * current_indent_size), pos_y + pos_y + 10),
+			25, # radius
+			deg2rad(90), # Start angle
+			deg2rad(180),  # End angle
+			12, #point count
+			line_color,
+			1.0,
+			true
+		)
+	#draw_circle(Vector2(0, 0), 100, Color(0,1,0,1))
+		
 #	draw_rect(rect: Rect2, color: Color, filled: bool = true, width: float = 1.0, antialiased: bool = false)
 	if current_indent_size > 0:
-		draw_rect(Rect2(Vector2(pos_x + ((indent_size + 2.2) * current_indent_size), 20), Vector2(1, rect_size.y + 10)), Color("#4D4D4D"), true)
-	draw_rect(Rect2(Vector2(pos_x, 20), Vector2(1, rect_size.y + 10)), Color("#4D4D4D"), true)
+		var line_size = ((indent_size + 2.2) * current_indent_size)
+		# Horizontal Line
+		#draw_rect(Rect2(
+		#	Vector2(pos_x + pos_x - 1, pos_y),
+		#	Vector2(line_size - pos_x, 1)),
+		#line_color, true)
+
+		# Vertical Line
+		if event_name != 'Choice':
+			draw_rect(Rect2(
+				Vector2(pos_x + line_size, pos_y),
+				Vector2(1, rect_size.y + 5)),
+			line_color, true)
+	
+	# Vertical Line
+	draw_rect(Rect2(
+		Vector2(pos_x, pos_y),
+		Vector2(1, rect_size.y + 10)),
+		line_color, true)
