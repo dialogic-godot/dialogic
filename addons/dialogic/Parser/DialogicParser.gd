@@ -1,6 +1,7 @@
 extends Node
 class_name DialogicParser
 
+
 # adds name coloring to the dialog texts
 static func parse_characters(dialog_script):
 	var characters = DialogicUtil.get_character_list()
@@ -173,11 +174,11 @@ static func parse_anchors(current_dialog):
 
 # adds the alignment BBCode to text events
 static func parse_alignment(current_dialog, text):
-	var alignment = current_dialog.current_theme.get_value('text', 'alignment', 'Left')
+	var alignment = current_dialog.current_theme.get_value('text', 'alignment', 0)
 	var fname = current_dialog.current_theme.get_value('settings', 'name', 'none')
-	if alignment == 'Center':
+	if alignment in [1,4,7]:
 		text = '[center]' + text + '[/center]'
-	elif alignment == 'Right':
+	elif alignment in [2,5,8]:
 		text = '[right]' + text + '[/right]'
 	return text
 
