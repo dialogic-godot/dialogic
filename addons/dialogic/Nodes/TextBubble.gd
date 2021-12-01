@@ -3,6 +3,7 @@ extends Control
 
 var text_speed := 0.02 # Higher = lower speed
 var theme_text_speed = text_speed
+var theme_text_max_height = 0
 
 #experimental database of current commands
 var commands = []
@@ -10,7 +11,8 @@ var commands = []
 var regex = RegEx.new()
 var bbcoderemoverregex = RegEx.new()
 
-onready var text_label = $RichTextLabel
+onready var text_container = $TextContainer
+onready var text_label = $TextContainer/RichTextLabel
 onready var name_label = $NameLabel
 onready var next_indicator = $NextIndicatorContainer/NextIndicator
 
@@ -85,14 +87,37 @@ func update_text(text:String):
 		
 		result = regex.search(text_bbcodefree)
 	
-
-	# Updating the text and starting the animation from 0
 	text_label.bbcode_text = text
 	text_label.visible_characters = 0
+
+	## SIZING THE RICHTEXTLABEL
+	# The sizing is done in a very terrible way because the RichtTextLabel has 
+	# a hard time knowing what size it will be and how to display this.
+	# for this reason the RichTextLabel ist first set to just go for the size it needs,
+	# even if this might be more than available.
+	text_label.size_flags_vertical = 0
+	text_label.fit_content_height = true
+	# a frame later, when the sizes have been updated, it will check if there 
+	# is enough space or the scrollbar should be activated.
+	call_deferred("update_sizing")
 	
+	
+	# updating the size alignment stuff
 	text_label.grab_focus()
 	start_text_timer()
 	return true
+
+func update_sizing():
+	# this will enable/disable the scrollbar based on the size of the text
+	theme_text_max_height = text_container.rect_size.y
+
+	if text_label.rect_size.y >= theme_text_max_height:
+		text_label.fit_content_height = false
+		text_label.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	else:
+		text_label.fit_content_height = true
+		text_label.size_flags_vertical = 0
+
 
 #handle an activated command.
 func handle_command(command:Array):
@@ -134,6 +159,14 @@ func load_theme(theme: ConfigFile):
 	text_label.set('custom_fonts/italics_font', DialogicUtil.path_fixer_load(theme.get_value('text', 'italic_font', 'res://addons/dialogic/Example Assets/Fonts/DefaultItalicFont.tres')))
 	name_label.set('custom_fonts/font', DialogicUtil.path_fixer_load(theme.get_value('name', 'font', 'res://addons/dialogic/Example Assets/Fonts/NameFont.tres')))
 	
+	# setting the vertical alignment
+	var alignment = theme.get_value('text', 'alignment',0)
+	if alignment <= 2: # top
+		text_container.alignment = BoxContainer.ALIGN_BEGIN
+	elif alignment <= 5: # center
+		text_container.alignment = BoxContainer.ALIGN_CENTER
+	elif alignment <= 8: # bottom
+		text_container.alignment = BoxContainer.ALIGN_END
 	
 	var text_color = Color(theme.get_value('text', 'color', '#ffffffff'))
 	text_label.set('custom_colors/default_color', text_color)
@@ -157,10 +190,10 @@ func load_theme(theme: ConfigFile):
 
 	# Margin
 	var text_margin = theme.get_value('text', 'margin', Vector2(20, 10))
-	text_label.set('margin_left', text_margin.x)
-	text_label.set('margin_right', text_margin.x * -1)
-	text_label.set('margin_top', text_margin.y)
-	text_label.set('margin_bottom', text_margin.y * -1)
+	text_container.set('margin_left', text_margin.x)
+	text_container.set('margin_right', text_margin.x * -1)
+	text_container.set('margin_top', text_margin.y)
+	text_container.set('margin_bottom', text_margin.y * -1)
 
 	# Backgrounds
 	$TextureRect.texture = DialogicUtil.path_fixer_load(theme.get_value('background','image', "res://addons/dialogic/Example Assets/backgrounds/background-2.png"))
@@ -218,7 +251,6 @@ func load_theme(theme: ConfigFile):
 	next_indicator.self_modulate = Color('#ffffff')
 	var animation = theme.get_value('next_indicator', 'animation', 'Up and down')
 	next_indicator.get_node('AnimationPlayer').play(animation)
-	
 	
 	# Saving reference to the current theme
 	_theme = theme

@@ -1,38 +1,32 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://addons/dialogic/Editor/Events/Templates/EventTemplate.tscn" type="PackedScene" id=1]
 [ext_resource path="res://addons/dialogic/Images/Event Icons/Main Icons/close-dialog.svg" type="Texture" id=2]
-[ext_resource path="res://addons/dialogic/Editor/Events/styles/CloseDialog.tres" type="StyleBox" id=3]
 [ext_resource path="res://addons/dialogic/Editor/Events/Parts/Numbers/TransitonLengthPicker.tscn" type="PackedScene" id=4]
 
 [node name="CloseDialog" instance=ExtResource( 1 )]
+event_name = "Close Dialog"
 event_data = {
 "event_id": "dialogic_022",
 "transition_duration": 1.0
 }
-event_style = ExtResource( 3 )
+event_color = Color( 1, 0.278431, 0.447059, 1 )
 event_icon = ExtResource( 2 )
-event_name = "Close Dialog"
 header_scene = ExtResource( 4 )
 
-[node name="PanelContainer" parent="." index="1"]
-custom_styles/panel = ExtResource( 3 )
-
-[node name="IconTexture" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="1"]
-margin_right = 32.0
+[node name="IconTexture" parent="PanelContainer/MarginContainer/VBoxContainer/Header/IconPanel" index="0"]
 texture = ExtResource( 2 )
 
 [node name="TitleLabel" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="2"]
-margin_left = 42.0
-margin_right = 121.0
+margin_right = 129.0
 text = "Close Dialog"
 
 [node name="Content" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="3"]
-margin_left = 131.0
-margin_right = 336.0
+margin_left = 139.0
+margin_right = 344.0
 
 [node name="Spacer" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="5"]
-margin_left = 346.0
+margin_left = 354.0
 
-[node name="OptionsControl" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="6"]
+[node name="OptionsControl" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="7"]
 items = [ "Move Up", null, 0, false, false, 0, 0, null, "", false, "Move Down", null, 0, false, false, 1, 0, null, "", false, "", null, 0, false, false, 2, 0, null, "", false, "Remove", null, 0, false, false, 3, 0, null, "", false ]

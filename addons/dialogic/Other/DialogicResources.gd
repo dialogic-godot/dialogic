@@ -238,7 +238,7 @@ static func get_theme_config(filename: String):
 		return config
 
 
-static func set_theme_value(filename, section, key, value):
+static func set_theme_value(filename:String, section:String, key:String, value):
 	# WARNING: For use in the editor only
 	var config = get_theme_config(filename)
 	config.set_value(section, key, value)

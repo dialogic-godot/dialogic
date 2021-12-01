@@ -487,8 +487,21 @@ static func resource_fixer():
 							i['event_id'] = 'dialogic_042'
 			timeline['events'] = events
 			DialogicResources.set_timeline(timeline)
+	if update_index < 2:
+		# Updates the text alignment to be saved as int like all anchors
+		print("[D] Update NR. "+str(update_index)+" | Changes how some theme values are saved. No need to worry about this.")
+		for theme_info in get_theme_list():
+			var theme = DialogicResources.get_theme_config(theme_info['file'])
+
+			match theme.get_value('text', 'alignment', 'Left'):
+				'Left':
+					DialogicResources.set_theme_value(theme_info['file'], 'text', 'alignment', 0)
+				'Center':
+					DialogicResources.set_theme_value(theme_info['file'], 'text', 'alignment', 1)
+				'Right':
+					DialogicResources.set_theme_value(theme_info['file'], 'text', 'alignment', 2)
 	
-	DialogicResources.set_settings_value("updates", "updatenumber", 1)
+	DialogicResources.set_settings_value("updates", "updatenumber", 2)
 	
 
 ## *****************************************************************************
