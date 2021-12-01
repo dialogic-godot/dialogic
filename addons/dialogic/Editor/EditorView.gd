@@ -211,7 +211,11 @@ func update_editor_plugins():
 				var plugin_editor = load(path.plus_file(file_name).plus_file('Editor.tscn'))
 				if plugin_editor:
 					plugin_editor = plugin_editor.instance()
-					plugins["placeholder_name"] = {
+					var name = plugin_editor.plugin_name
+					if plugins.has(name):
+						printerr("Duplicate plugin-name detected. Ignoring current plugin.")
+						continue
+					plugins[name] = {
 						'plugin_editor' :path.plus_file(file_name).plus_file('Editor.tscn'),
 						'plugin_name' : plugin_editor.plugin_name,
 						'plugin_icon' : plugin_editor.plugin_icon
@@ -220,8 +224,8 @@ func update_editor_plugins():
 					plugin_editor.setup()
 					var btn = Button.new()
 					$ToolBar/Plugin_buttons.add_child(btn)
-					btn.icon = plugins["placeholder_name"]["plugin_icon"]
-					btn.hint_tooltip = plugins["placeholder_name"]["plugin_name"]
+					btn.icon = plugin_editor.plugin_icon
+					btn.hint_tooltip = plugin_editor.plugin_name
 					btn.connect("pressed", plugin_editor, "on_plugin_button_pressed")	
 			else:
 				pass # files in the directory are ignored

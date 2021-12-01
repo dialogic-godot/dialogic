@@ -12,3 +12,10 @@ export(Texture) var plugin_icon : Texture
 func setup():
 	editor_reference = find_parent('EditorView')
 	timeline_reference = editor_reference.get_node("MainPanel/TimelineEditor")
+
+
+func on_plugin_button_pressed():
+	if visible:
+		hide()
+	else:
+		popup()
