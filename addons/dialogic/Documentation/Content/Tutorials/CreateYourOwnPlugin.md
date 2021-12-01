@@ -6,14 +6,14 @@ This is just waaaay too informal to be on official documentation.
 
 Let me just explain what a dialogic plugin is, and let some ~~poor sucker~~... err, I mean proud developer of Dialogic clean this up into a proper tutorial.
 
-The plugins are based on the code structure of the Custom events.
-All plugns must have a scene called PluginContainer, with a script inheriting from *(NOT-CREATED-YET)*, just like the custom events.
+There are two types of plugins for Dialogic.
+There are Editor plugins and Runtime plugins. Both function in a simular way.
 
-Just like custom events, you can create a new plugin based on a template by pressing a button in settings *(NOT-IMPLEMENTED_YET)*
+Editor plugins runs in the dialogic editor, and may alter the way the dialogic editor function.
+WARNING: A plugin may break Dialogic and even Godot itself. Only make an editor plugin when you know what you are doing.
+Editorplugins' scene must be a DialogWindow node. This is so it can be hidden in the editor.
+Editor plugins must must have a scene node that inherits the class DialogicEditorPlugin or res://addons/dialogic/Editor/plugins/templates/EditorPlugin.gd
 
-All plugins are to be located in Dialogic/plugins, within their own folders.
-The editor will browse though these to find all of them.
-
-Plugins may insert a node into the following:
-- EditorView/plugin_container *(must be a type of Popup)*
-- EditorView/ToolBar/Plugin_buttons *(must be a type of BaseButton)*
+Runtime plugins runs in the Dialog node, and may alter how events run, and how they appear.
+Runtimeplugins's scene must be a Control node. Beware that this node will overlay the dialog node.
+Runtimeplugins must inherit the class DialogicRuntimePlugin or res://addons/dialogic/Editor/plugins/templates/RuntimePlugin.gd

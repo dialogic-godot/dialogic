@@ -203,8 +203,12 @@ func update_editor_plugins():
 				print("Found plugin folder: " + file_name)
 				#loading both editor and runtime.
 				#If editor is not found, but runtime is, no error will be printed.
+				if not dir.file_exists(path.plus_file(file_name).plus_file('Editor.tscn')):
+					if not dir.file_exists(path.plus_file(file_name).plus_file('Runtime.tscn')):
+						printerr("Unable to load plugin at directory " + dir.get_current_dir())
+					continue
+
 				var plugin_editor = load(path.plus_file(file_name).plus_file('Editor.tscn'))
-				var plugin_runtime = load(path.plus_file(file_name).plus_file('Runtime.tscn'))
 				if plugin_editor:
 					plugin_editor = plugin_editor.instance()
 					plugins["placeholder_name"] = {
@@ -218,9 +222,7 @@ func update_editor_plugins():
 					$ToolBar/Plugin_buttons.add_child(btn)
 					btn.icon = plugins["placeholder_name"]["plugin_icon"]
 					btn.hint_tooltip = plugins["placeholder_name"]["plugin_name"]
-					btn.connect("pressed", plugin_editor, "on_plugin_button_pressed")
-				elif(not plugin_runtime):
-					print("[D] An error occurred when trying to load an editor plugin.")		
+					btn.connect("pressed", plugin_editor, "on_plugin_button_pressed")	
 			else:
 				pass # files in the directory are ignored
 			file_name = dir.get_next()
