@@ -26,8 +26,7 @@ func _on_ChoiceButton_mouse_exited():
 func _on_NextTimer_timeout():
 	if success:
 		success = false
-		if has_focus():
-			simulate_input()
+		simulate_input()
 
 func simulate_input():
 	emit_signal("button_down")

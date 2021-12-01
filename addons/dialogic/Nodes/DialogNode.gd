@@ -123,6 +123,9 @@ func _ready():
 			$DefinitionInfo.in_theme_editor = true
 	else:
 		if do_fade_in: _hide_dialog()
+		# setup hovering mode
+		hovering_action_mode = settings.get_value('input', 'enable_hovering_mode')
+		$TextBubble/NextIndicatorContainer/NextIndicator.set_hovering_mode(hovering_action_mode)
 		_init_dialog()
 
 
@@ -140,10 +143,6 @@ func load_config_files():
 	if settings.has_section('theme'):
 		theme_file = settings.get_value('theme', 'default')
 	current_theme = load_theme(theme_file)
-	
-	# setup hovering mode
-	hovering_action_mode = settings.get_value('input', 'enable_hovering_mode')
-	$TextBubble/NextIndicatorContainer/NextIndicator.set_hovering_mode(hovering_action_mode)
 
 
 ## -----------------------------------------------------------------------------
