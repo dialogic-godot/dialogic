@@ -74,6 +74,7 @@ onready var n : Dictionary = {
 	'next_indicator_scale': $"VBoxContainer/TabContainer/Dialog Box/Column2/GridContainer/HBoxContainer7/IndicatorScale",
 	
 	'animation_show_time': $"VBoxContainer/TabContainer/Dialog Box/Column3/GridContainer/ShowTime/SpinBox",
+	'animation_dim_color': $"VBoxContainer/TabContainer/Dialog Box/Column3/GridContainer/DimColor/ColorPickerButton",
 	
 	# Character Names
 	'name_font': $"VBoxContainer/TabContainer/Name Label/Column/GridContainer/RegularFont/NameFontButton",
@@ -215,7 +216,7 @@ func _ready() -> void:
 	
 	n['button_layout'].connect('item_selected', self, '_on_button_layout_selected')
 	
-	for button in ['dialog_box_anchor', 'button_position_on_screen']:
+	for button in ['dialog_box_anchor', 'button_position_on_screen', 'alignment']:
 		var button_positions_popup = n[button].get_popup()
 		button_positions_popup.clear()
 		button_positions_popup.add_icon_item(
@@ -239,8 +240,10 @@ func _ready() -> void:
 		button_positions_popup.add_icon_item(
 			get_icon("ControlAlignBottomRight", "EditorIcons"), "Bottom Right", 8)
 	
+	
 	n['button_position_on_screen'].connect('item_selected', self, '_on_button_anchor_selected')
 	n['dialog_box_anchor'].connect('item_selected', self, '_on_button_dialogbox_anchor_selected')
+	n['alignment'].connect('item_selected', self, '_on_Alignment_item_selected')
 	
 	n['button_offset_x'].connect('value_changed', self, '_on_button_offset_changed')
 	n['button_offset_y'].connect('value_changed', self, '_on_button_offset_changed')
@@ -297,6 +300,8 @@ func load_theme(filename):
 	var default_background = 'res://addons/dialogic/Example Assets/backgrounds/background-2.png'
 	# Settings
 	n['single_portrait_mode'].pressed = theme.get_value('settings', 'single_portrait_mode', false) # Currently in Dialog Text tab
+	
+	n['animation_dim_color'].color = Color(theme.get_value('animation', 'dim_color', '#ff808080'))
 	
 	# Background
 	n['theme_background_image'].text = DialogicResources.get_filename_from_path(theme.get_value('background', 'image', default_background))
@@ -374,15 +379,8 @@ func load_theme(filename):
 	n['theme_shadow_offset_y'].value = theme.get_value('text', 'shadow_offset', Vector2(2,2)).y
 	n['theme_text_margin'].value = theme.get_value('text', 'margin', Vector2(20, 10)).x
 	n['theme_text_margin_h'].value = theme.get_value('text', 'margin', Vector2(20, 10)).y
-	n['alignment'].text = theme.get_value('text', 'alignment', 'Left')
-	match n['alignment'].text:
-		'Left':
-			n['alignment'].select(0)
-		'Center':
-			n['alignment'].select(1)
-		'Right':
-			n['alignment'].select(2)
-	
+	n['alignment'].select(n['alignment'].get_item_index(theme.get_value('text', 'alignment', 0)))
+
 	
 	# Name
 	n['name_font'].text = DialogicResources.get_filename_from_path(theme.get_value('name', 'font', 'res://addons/dialogic/Example Assets/Fonts/NameFont.tres'))
@@ -433,7 +431,7 @@ func load_theme(filename):
 		if a == next_animation_selected:
 			n['next_animation'].select(nix)
 		nix += 1
-	
+
 	# Preview text
 	n['text_preview'].text = theme.get_value('text', 'preview', 'This is preview text. You can use  [color=#A5EFAC]BBCode[/color] to style it.\n[wave amp=50 freq=2]You can even use effects![/wave]')
 	
@@ -465,7 +463,7 @@ func duplicate_theme(from_filename) -> void:
 func _on_visibility_changed() -> void:
 	if visible:
 		# Refreshing the dialog 
-		_on_PreviewButton_pressed()
+		if not loading: _on_PreviewButton_pressed()
 		if first_time_loading_theme_full_size_bug == 0:
 			yield(get_tree().create_timer(0.01), "timeout")
 			for i in $VBoxContainer/Panel.get_children():
@@ -620,12 +618,7 @@ func _on_NameFontOpen_pressed():
 func _on_Alignment_item_selected(index) -> void:
 	if loading:
 		return
-	if index == 0:
-		DialogicResources.set_theme_value(current_theme, 'text', 'alignment', 'Left')
-	elif index == 1:
-		DialogicResources.set_theme_value(current_theme, 'text', 'alignment', 'Center')
-	elif index == 2:
-		DialogicResources.set_theme_value(current_theme, 'text', 'alignment', 'Right')
+	DialogicResources.set_theme_value(current_theme, 'text', 'alignment', n['alignment'].get_item_id(index))
 	_on_PreviewButton_pressed() # Refreshing the preview
 
 
@@ -703,6 +696,12 @@ func _on_BackgroundColor_ColorPickerButton_color_changed(color) -> void:
 		return
 	DialogicResources.set_theme_value(current_theme, 'background', 'color', '#' + color.to_html())
 	$DelayPreviewTimer.start(0.5) # Calling a timer so the update doesn't get triggered many times
+
+# Dim Color
+func _on_DimColor_ColorPickerButton_color_changed(color) -> void:
+	if loading:
+		return
+	DialogicResources.set_theme_value(current_theme, 'animation', 'dim_color', '#' + color.to_html())
 
 # Next indicator
 func _on_NextIndicatorButton_pressed() -> void:

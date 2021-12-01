@@ -318,8 +318,8 @@ func _on_item_selected():
 			glossary_entry_editor.load_definition(metadata['id'])
 			show_glossary_entry_editor()
 		'Theme':
-			theme_editor.load_theme(metadata['file'])
 			show_theme_editor()
+			theme_editor.load_theme(metadata['file'])
 		'Settings':
 			settings_editor.update_data()
 			show_settings_editor()

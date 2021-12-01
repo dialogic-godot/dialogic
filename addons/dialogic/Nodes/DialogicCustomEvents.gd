@@ -43,13 +43,13 @@ func update() -> void:
 					
 					# Check if we already have a handler node for this event.
 					if handlers.has(event_id):
-						print("Custom event ",event_id," already loaded")
-						print("Continuing...")
+						#print("Custom event ",event_id," already loaded")
+						#print("Continuing...")
 						file_name = dir.get_next()
 						continue
 					else:
-						print("No handler node for event ",event_id," found.")
-						print("Creating...")
+						#print("No handler node for event ",event_id," found.")
+						#print("Creating...")
 						# create a node for the custom event an attach the script
 						var handler = Node.new()
 						handler.set_script(load(handler_script_path))

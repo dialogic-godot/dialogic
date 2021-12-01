@@ -110,8 +110,9 @@ func _ready():
 	$DefinitionInfo.visible = false
 	$TextBubble.connect("text_completed", self, "_on_text_completed")
 	$TextBubble.connect("letter_written", self, "_on_letter_written")
-	$TextBubble/RichTextLabel.connect('meta_hover_started', self, '_on_RichTextLabel_meta_hover_started')
-	$TextBubble/RichTextLabel.connect('meta_hover_ended', self, '_on_RichTextLabel_meta_hover_ended')
+	$TextBubble.connect("signal_request", self, "_on_signal_request")
+	$TextBubble.text_label.connect('meta_hover_started', self, '_on_RichTextLabel_meta_hover_started')
+	$TextBubble.text_label.connect('meta_hover_ended', self, '_on_RichTextLabel_meta_hover_ended')
 	
 	if Engine.is_editor_hint():
 		if preview:
@@ -461,12 +462,27 @@ func _on_text_completed():
 				regex.compile("\\[nw=(.+?)\\](.*?)")
 				var result = regex.search(current_event['text'])
 				var wait_settings = result.get_string()
-				waiting_time = float(wait_settings.split('=')[1])
+				#Kva-hack. if the waiting time is set to 'v'
+				#It will fetch waiting time from CharacterVoice.
+				waiting_time = wait_settings.split('=')[1]
+				if(waiting_time.begins_with('v')):
+					waiting_time = $"FX/CharacterVoice".remaining_time()
+				else:
+					waiting_time = float(waiting_time)
+				print("Waiting time: " + String(waiting_time))
+				#Remove these comments once replaced with proper code.				
+				# - KvaGram
+				#original line
+				#waiting_time = float(wait_settings.split('=')[1])
 			
 			$DialogicTimer.start(waiting_time); yield($DialogicTimer, "timeout")
 			if dialog_index == current_index:
 				_load_next_event()
 
+# When text reaches a [signal] command
+# emits the dialogic signal with the argument
+func _on_signal_request(name):
+	emit_signal("dialogic_signal", name)
 
 # emits timeline_start and handles autosaving
 func on_timeline_start():
@@ -695,11 +711,10 @@ func event_handler(event: Dictionary):
 					var bg_scene = load(event['background'])
 					bg_scene = bg_scene.instance()
 					background.modulate = Color(1,1,1,0)
-					background.fade_in(fade_time)
 					background.add_child(bg_scene)
+					background.fade_in(fade_time)
 				else:
 					background.texture = load(value)
-					background.create_tween()
 					background.fade_in(fade_time)
 				call_deferred('resize_main') # Executing the resize main to update the background size
 			
@@ -1104,21 +1119,17 @@ func handle_voice(event):
 # defocuses all characters except the given one
 func grab_portrait_focus(character_data, event: Dictionary = {}) -> bool:
 	var exists = false
-	var visually_focus = settings.get_value('dialog', 'dim_characters', true)
-	
 	for portrait in $Portraits.get_children():
 		# check if it's the same character
 		if portrait.character_data.get("file", "something") == character_data.get("file", "none"):
 			exists = true
 			
-			if visually_focus:
-				portrait.focus()
+			portrait.focus()
 			if event.has('portrait'):
 				if event['portrait'] != '':
 					portrait.set_portrait(event['portrait'])
 		else:
-			if visually_focus:
-				portrait.focusout()
+			portrait.focusout(Color(current_theme.get_value('animation', 'dim_color', '#ff808080')))
 	return exists
 
 # returns true if the a portrait for that character already exists
