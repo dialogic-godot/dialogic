@@ -36,7 +36,7 @@ onready var nodes = {
 	'new_plugin_do_create':$VBoxContainer/HBoxContainer3/VBoxContainer2/plugins/GeneratePlugin2/HBoxContainer/DoGeneratePlugin,
 	'new_plugin_cancel':$VBoxContainer/HBoxContainer3/VBoxContainer2/plugins/GeneratePlugin2/HBoxContainer/DoGeneratePlugin,
 	'new_plugin_help':$VBoxContainer/HBoxContainer3/VBoxContainer2/plugins/GeneratePlugin/pluginsDocs,
-	'new_plugin_message'$VBoxContainer/HBoxContainer3/VBoxContainer2/plugins/GeneratePlugin/Message
+	'new_plugin_message':$VBoxContainer/HBoxContainer3/VBoxContainer2/plugins/GeneratePlugin/Message
 }
 
 var THEME_KEYS := [
