@@ -29,8 +29,8 @@ onready var nodes = {
 	'new_custom_event_cancel':$VBoxContainer/HBoxContainer3/VBoxContainer2/CustomEvents/CreateCustomEventSection/HBoxContainer/CancelCustomEvent,
 	
 	# plugins
-	'new_plugin_open':$VBoxContainer/HBoxContainer3/VBoxContainer2/plugins/GeneratePlugin/NewNewPlugin,
-	'new_plugin_section':$VBoxContainer/HBoxContainer3/VBoxContainer2/plugins/GeneratePlugin/NewNewPlugin,
+	'new_plugin_open':$VBoxContainer/HBoxContainer3/VBoxContainer2/plugins/GeneratePlugin/BtnNewPlugin,
+	'new_plugin_section':$VBoxContainer/HBoxContainer3/VBoxContainer2/plugins/GeneratePlugin2,
 	'new_plugin_name':$VBoxContainer/HBoxContainer3/VBoxContainer2/plugins/GeneratePlugin2/PName,
 	'new_plugin_directory':$VBoxContainer/HBoxContainer3/VBoxContainer2/plugins/GeneratePlugin2/PDirectory,
 	'new_plugin_do_create':$VBoxContainer/HBoxContainer3/VBoxContainer2/plugins/GeneratePlugin2/HBoxContainer/DoGeneratePlugin,
@@ -290,13 +290,52 @@ func create_custom_event():
 ################################################################################
 ##						PLUGIN SECTION
 ################################################################################
-func open_new_plugins():
-	pass
-func plugin_name_entered():
-	pass
 func create_plugin():
-	pass
+	# do checks for incomplete input
+	if nodes['new_plugin_directory'].text.empty():
+		nodes['new_plugin_message'].text = "Enter a directory name for the plugin!"
+		return
+	if nodes['new_custom_event_name'].text.empty():
+		nodes['new_plugin_message'].text = "Enter a name for the plugin!"
+		return
+	#TODO: check for plugin icon
+	
+	var name = nodes['new_plugin_name'].text
+	var dir_name = 'res://dialogic/plugins/' + nodes['new_plugin_directory'].text
+	var dir = Directory.new()
+	if dir.dir_exists(dir_name):
+		nodes['new_plugin_message'] = "The folder already exists!"
+		return
+	dir.make_dir(dir_name)
+	var files = ['Editor.tscn', 'NAME_Editor.gd', 'Runtime.tscn', 'NAME_Runtime.gd']
+	for file in files:
+		dir.copy("res://addons/dialogic/Example Assets/plugins/"+file, dir_name+"/"+file)
+		var f:File = File.new()
+		f.open(dir_name+"/"+file, 1) #read
+		var data = f.get_as_text()
+		f.close()
+		data = data.replace("NAME",name)
+		f.open(dir_name+"/"+file, 2) #write
+		dir.rename(file, file.replace("NAME", name))
+	#TODO. out of time, continue later
+	
+
+func open_new_plugins():
+	nodes['new_plugin_section'].show()
+	nodes['new_plugin_message'].text = ''
+	nodes['new_plugin_directory'].text = ''
+	nodes['new_plugin_do_create'].disabled = true
+func plugin_name_entered(text:String):
+	nodes['new_plugin_directory'].text = text
 func cancel_plugin():
-	pass
+	nodes['new_plugin_section'].hide()
+	nodes['new_plugin_message'].text = ''
 func open_plugin_docs():
 	editor_reference.get_node("MainPanel/MasterTreeContainer/MasterTree").select_documentation_item("res://addons/dialogic/Documentation/Content/Tutorials/CreateYourOwnPlugin.md")
+func validate_new_plugin():
+	if len(nodes['new_plugin_message'].text) <= 0:
+		nodes['new_plugin_message'].text = 'name too short'
+		nodes['new_plugin_do_create'].disabled = true
+	nodes['new_plugin_message'].text = ''
+	nodes['new_plugin_do_create'].disabled = false
+	

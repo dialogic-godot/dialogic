@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://addons/dialogic/Editor/SettingsEditor/SettingsEditor.gd" type="Script" id=1]
 [ext_resource path="res://addons/dialogic/Editor/Common/SectionTitle.tscn" type="PackedScene" id=2]
@@ -14,10 +14,25 @@ data = {
 "width": 16
 }
 
-[sub_resource type="ImageTexture" id=2]
+[sub_resource type="ImageTexture" id=4]
 flags = 4
 flags = 4
 image = SubResource( 3 )
+size = Vector2( 16, 16 )
+
+[sub_resource type="Image" id=5]
+data = {
+"data": PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ),
+"format": "LumAlpha8",
+"height": 16,
+"mipmaps": false,
+"width": 16
+}
+
+[sub_resource type="ImageTexture" id=2]
+flags = 4
+flags = 4
+image = SubResource( 5 )
 size = Vector2( 16, 16 )
 
 [node name="SettingsEditor" type="ScrollContainer"]
@@ -36,11 +51,11 @@ size_flags_vertical = 3
 
 [node name="HBoxContainer3" type="HBoxContainer" parent="VBoxContainer"]
 margin_right = 1024.0
-margin_bottom = 446.0
+margin_bottom = 422.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer3"]
 margin_right = 356.0
-margin_bottom = 446.0
+margin_bottom = 422.0
 custom_constants/separation = 16
 
 [node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer"]
@@ -231,7 +246,7 @@ settings_key = "autosave"
 [node name="VBoxContainer2" type="VBoxContainer" parent="VBoxContainer/HBoxContainer3"]
 margin_left = 360.0
 margin_right = 664.0
-margin_bottom = 446.0
+margin_bottom = 422.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer2"]
 margin_right = 304.0
@@ -438,7 +453,7 @@ text = "New"
 margin_left = 276.0
 margin_right = 304.0
 margin_bottom = 24.0
-icon = SubResource( 2 )
+icon = SubResource( 4 )
 
 [node name="CreateCustomEventSection" type="GridContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/CustomEvents"]
 visible = false
@@ -527,7 +542,7 @@ margin_bottom = 312.0
 [node name="plugins" type="VBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer2"]
 margin_top = 316.0
 margin_right = 304.0
-margin_bottom = 446.0
+margin_bottom = 366.0
 
 [node name="TLabel" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/plugins" instance=ExtResource( 2 )]
 margin_right = 304.0
@@ -548,7 +563,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="NewNewPlugin" type="Button" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/plugins/GeneratePlugin"]
+[node name="BtnNewPlugin" type="Button" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/plugins/GeneratePlugin"]
 margin_left = 232.0
 margin_right = 272.0
 margin_bottom = 24.0
@@ -561,6 +576,7 @@ margin_bottom = 24.0
 icon = SubResource( 2 )
 
 [node name="GeneratePlugin2" type="GridContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/plugins"]
+visible = false
 margin_top = 54.0
 margin_right = 304.0
 margin_bottom = 130.0
@@ -572,7 +588,7 @@ anchor_bottom = 0.0
 margin_top = 5.0
 margin_right = 105.0
 margin_bottom = 19.0
-text = "Plugin Name:"
+text = "Event Name:"
 text_key = "Event Name:"
 
 [node name="PName" type="LineEdit" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/plugins/GeneratePlugin2"]
