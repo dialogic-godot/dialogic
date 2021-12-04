@@ -80,11 +80,11 @@ func _set_new_min_size():
 	# Reset
 	text_editor.rect_min_size = Vector2(0,0)
 	# Getting new sizes
-	var extra_vertical = 1
+	var extra_vertical = 1.1
 	var longest_string = ''
 	
 	if text_editor.get_line_count() > 1:
-		extra_vertical = 1.2
+		extra_vertical = 1.22
 	
 	text_editor.rect_min_size.y = get_font("normal_font").get_height() * ((text_editor.get_line_count() + 1) * extra_vertical)
 	
