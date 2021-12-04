@@ -1,0 +1,192 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://addons/dialogic/Editor/Common/SectionTitle.tscn" type="PackedScene" id=1]
+[ext_resource path="res://addons/dialogic/Editor/Common/TLabel.tscn" type="PackedScene" id=2]
+[ext_resource path="res://addons/dialogic/Editor/Common/SectionTitle.gd" type="Script" id=3]
+[ext_resource path="res://addons/dialogic/Editor/Common/TLabel.gd" type="Script" id=4]
+
+[sub_resource type="StyleBoxFlat" id=1]
+content_margin_left = 4.0
+content_margin_right = 4.0
+content_margin_top = 4.0
+content_margin_bottom = 4.0
+bg_color = Color( 0.252, 0.2718, 0.3246, 1 )
+
+[sub_resource type="Image" id=2]
+data = {
+"data": PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ),
+"format": "LumAlpha8",
+"height": 16,
+"mipmaps": false,
+"width": 16
+}
+
+[sub_resource type="ImageTexture" id=3]
+flags = 4
+flags = 4
+image = SubResource( 2 )
+size = Vector2( 16, 16 )
+
+[node name="HistorySettings" type="VBoxContainer"]
+margin_top = 258.0
+margin_right = 304.0
+margin_bottom = 390.0
+
+[node name="SectionTitle2" type="Label" parent="." instance=ExtResource( 1 )]
+margin_right = 304.0
+margin_bottom = 22.0
+custom_styles/normal = SubResource( 1 )
+text = "History settings"
+script = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+text_key = "History settings"
+
+[node name="GridContainer" type="GridContainer" parent="."]
+margin_top = 26.0
+margin_right = 304.0
+margin_bottom = 132.0
+columns = 2
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="GridContainer"]
+margin_right = 148.0
+margin_bottom = 24.0
+
+[node name="EnableHistoryLogging" type="CheckBox" parent="GridContainer/HBoxContainer2"]
+margin_right = 54.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+pressed = true
+
+[node name="TLabel16" type="Label" parent="GridContainer/HBoxContainer2" instance=ExtResource( 2 )]
+margin_left = 58.0
+margin_top = 5.0
+margin_right = 148.0
+margin_bottom = 19.0
+text = "Enable history"
+script = ExtResource( 4 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+text_key = "Enable history"
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="GridContainer"]
+margin_left = 152.0
+margin_right = 304.0
+margin_bottom = 24.0
+
+[node name="EnableDynamicTheme" type="CheckBox" parent="GridContainer/HBoxContainer3"]
+margin_right = 31.0
+margin_bottom = 24.0
+hint_tooltip = "Dialog box theme changes based on theme at the time of logging"
+size_flags_horizontal = 3
+pressed = true
+
+[node name="TLabel18" type="Label" parent="GridContainer/HBoxContainer3" instance=ExtResource( 2 )]
+margin_left = 35.0
+margin_top = 5.0
+margin_right = 152.0
+margin_bottom = 19.0
+text = "Use Dialog Theme"
+script = ExtResource( 4 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+text_key = "Use Dialog Theme"
+
+[node name="TLabel8" type="Label" parent="GridContainer" instance=ExtResource( 2 )]
+margin_top = 32.0
+margin_right = 148.0
+margin_bottom = 46.0
+size_flags_horizontal = 3
+text = "History button position"
+script = ExtResource( 4 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+text_key = "History button position"
+
+[node name="PositionSelector" type="OptionButton" parent="GridContainer"]
+margin_left = 152.0
+margin_top = 28.0
+margin_right = 304.0
+margin_bottom = 50.0
+text = "Top Right"
+icon = SubResource( 3 )
+items = [ "Top Left", SubResource( 3 ), false, 0, null, "Top Center", SubResource( 3 ), false, 1, null, "Top Right", SubResource( 3 ), false, 2, null, "", null, false, 3, null, "Center Left", SubResource( 3 ), false, 3, null, "Center", SubResource( 3 ), false, 4, null, "Center Right", SubResource( 3 ), false, 5, null, "", null, false, 7, null, "Bottom Left", SubResource( 3 ), false, 6, null, "Bottom Center", SubResource( 3 ), false, 7, null, "Bottom Right", SubResource( 3 ), false, 8, null ]
+selected = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TLabel7" type="Label" parent="GridContainer" instance=ExtResource( 2 )]
+margin_top = 59.0
+margin_right = 148.0
+margin_bottom = 73.0
+text = "Screen margin"
+script = ExtResource( 4 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+text_key = "Screen margin"
+
+[node name="BoxMargin" type="HBoxContainer" parent="GridContainer"]
+margin_left = 152.0
+margin_top = 54.0
+margin_right = 304.0
+margin_bottom = 78.0
+
+[node name="MarginX" type="SpinBox" parent="GridContainer/BoxMargin"]
+margin_right = 74.0
+margin_bottom = 24.0
+max_value = 999.0
+value = 20.0
+rounded = true
+allow_greater = true
+allow_lesser = true
+
+[node name="MarginY" type="SpinBox" parent="GridContainer/BoxMargin"]
+margin_left = 78.0
+margin_right = 152.0
+margin_bottom = 24.0
+max_value = 999.0
+rounded = true
+allow_greater = true
+allow_lesser = true
+
+[node name="TLabel5" type="Label" parent="GridContainer" instance=ExtResource( 2 )]
+margin_top = 87.0
+margin_right = 148.0
+margin_bottom = 101.0
+text = "Log margin"
+script = ExtResource( 4 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+text_key = "Log margin"
+
+[node name="ContainerMargin" type="HBoxContainer" parent="GridContainer"]
+margin_left = 152.0
+margin_top = 82.0
+margin_right = 304.0
+margin_bottom = 106.0
+
+[node name="MarginX" type="SpinBox" parent="GridContainer/ContainerMargin"]
+margin_right = 74.0
+margin_bottom = 24.0
+max_value = 1e+07
+value = 10.0
+rounded = true
+allow_greater = true
+allow_lesser = true
+
+[node name="MarginY" type="SpinBox" parent="GridContainer/ContainerMargin"]
+margin_left = 78.0
+margin_right = 152.0
+margin_bottom = 24.0
+max_value = 1e+07
+value = 50.0
+rounded = true
+allow_greater = true
+allow_lesser = true
