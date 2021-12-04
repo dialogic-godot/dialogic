@@ -1,10 +1,6 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://addons/dialogic/Editor/Events/Parts/Text/EventPart_TextEditor.gd" type="Script" id=1]
-[ext_resource path="res://addons/dialogic/Editor/Fonts/Roboto-Regular.ttf" type="DynamicFontData" id=2]
-
-[sub_resource type="DynamicFont" id=1]
-font_data = ExtResource( 2 )
 
 [sub_resource type="StyleBoxFlat" id=3]
 content_margin_left = 16.0
@@ -57,7 +53,6 @@ custom_colors/function_color = Color( 0, 0, 0, 1 )
 custom_colors/symbol_color = Color( 0, 0, 0, 1 )
 custom_colors/font_color = Color( 1, 1, 1, 1 )
 custom_colors/number_color = Color( 0, 0, 0, 1 )
-custom_fonts/font = SubResource( 1 )
 custom_styles/focus = SubResource( 3 )
 custom_styles/normal = SubResource( 2 )
 syntax_highlighting = true
