@@ -270,10 +270,21 @@ func _on_HelpButton_pressed():
 
 
 func _draw():
+	#print(get_parent().get_children().size())
+	var timeline_children = get_parent().get_children()
+	var timeline_lenght = timeline_children.size()
 	var pos_x = 26
-	var pos_y = 20
+	var pos_y = 22
 	var line_color = Color("#4D4D4D")
 	var test_color = Color(0,1,0,1)
+
+	# If the event is the last one, don't draw a line aftwards
+	if timeline_children[timeline_lenght-1] == self:
+		return
+
+	# Drawing Event Circle
+	#draw_circle(Vector2(pos_x, pos_y), 20, Color(1,1,0,1))
+
 	# Drawing arc
 	if event_name == 'Choice':
 		# Connecting with the question 
@@ -304,10 +315,8 @@ func _draw():
 			1.0,
 			true
 		)
-	#draw_circle(Vector2(0, 0), 100, Color(0,1,0,1))
-		
-#	draw_rect(rect: Rect2, color: Color, filled: bool = true, width: float = 1.0, antialiased: bool = false)
-	if current_indent_size > 0:
+
+	if current_indent_size > 1:
 		var line_size = ((indent_size + 2.2) * current_indent_size)
 		# Horizontal Line
 		#draw_rect(Rect2(
@@ -320,7 +329,7 @@ func _draw():
 			draw_rect(Rect2(
 				Vector2(pos_x + line_size, pos_y),
 				Vector2(1, rect_size.y + 5)),
-			line_color, true)
+		line_color, true)
 	
 	# Vertical Line
 	draw_rect(Rect2(
