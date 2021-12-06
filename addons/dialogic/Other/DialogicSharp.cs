@@ -13,7 +13,7 @@ public static class DialogicSharp
     return Start<Node>(timeline, default_timeline, DEFAULT_DIALOG_RESOURCE, useCanvasInstead);
   }
 
-  public static T Start<T>(String timeline = "", String default_timeline = "", String dialogScenePath, bool useCanvasInstead = true) where T : class
+  public static T Start<T>(String timeline = "", String default_timeline = "", String dialogScenePath = "", bool useCanvasInstead = true) where T : class
   {
     return (T)_dialogic.Call("start", timeline, default_timeline, dialogScenePath, useCanvasInstead);
   }
