@@ -29,9 +29,18 @@ onready var nodes = {
 	'new_custom_event_cancel':$VBoxContainer/HBoxContainer3/VBoxContainer2/CustomEvents/CreateCustomEventSection/HBoxContainer/CancelCustomEvent,
 	
 	# History Settings
-	'enable_history_logging': $VBoxContainer/HBoxContainer3/VBoxContainer2/HistorySettings/GridContainer/HBoxContainer2/EnableHistoryLogging,
-	'enable_dynamic_theme': $VBoxContainer/HBoxContainer3/VBoxContainer2/HistorySettings/GridContainer/HBoxContainer3/EnableDynamicTheme,
+	'enable_history_logging': $VBoxContainer/HBoxContainer3/VBoxContainer2/HistorySettings/GridContainer/HistoryBox/EnableHistoryLogging,
+	'enable_dynamic_theme': $VBoxContainer/HBoxContainer3/VBoxContainer2/HistorySettings/GridContainer/ThemeBox/EnableDynamicTheme,
+	'enable_open_button': $VBoxContainer/HBoxContainer3/VBoxContainer2/HistorySettings/GridContainer/OpenBox/EnableDefaultOpenButton,
+	'enable_close_button': $VBoxContainer/HBoxContainer3/VBoxContainer2/HistorySettings/GridContainer/CloseBox/EnableDefaultCloseButton,
+	'log_choices': $VBoxContainer/HBoxContainer3/VBoxContainer2/HistorySettings/GridContainer/ChoiceBox/LogChoices,
+	'log_answers': $VBoxContainer/HBoxContainer3/VBoxContainer2/HistorySettings/GridContainer/ChoiceBox2/LogAnswers,
+	'log_arrivals': $VBoxContainer/HBoxContainer3/VBoxContainer2/HistorySettings/GridContainer/ChoiceBox3/LogArrivals,
+	'log_exits': $VBoxContainer/HBoxContainer3/VBoxContainer2/HistorySettings/GridContainer/ChoiceBox4/LogExits,
+	'text_arrivals': $VBoxContainer/HBoxContainer3/VBoxContainer2/HistorySettings/GridContainer/LogBox/LineEdit,
+	'text_exits': $VBoxContainer/HBoxContainer3/VBoxContainer2/HistorySettings/GridContainer/LogBox2/LineEdit,
 	'history_button_position': $VBoxContainer/HBoxContainer3/VBoxContainer2/HistorySettings/GridContainer/PositionSelector,
+	'history_character_delimiter': $VBoxContainer/HBoxContainer3/VBoxContainer2/HistorySettings/GridContainer/CharacterDelimiter,
 	'history_screen_margin_x': $VBoxContainer/HBoxContainer3/VBoxContainer2/HistorySettings/GridContainer/BoxMargin/MarginX,
 	'history_screen_margin_y': $VBoxContainer/HBoxContainer3/VBoxContainer2/HistorySettings/GridContainer/BoxMargin/MarginY,
 	'history_container_margin_x': $VBoxContainer/HBoxContainer3/VBoxContainer2/HistorySettings/GridContainer/ContainerMargin/MarginX,
@@ -54,7 +63,16 @@ var INPUT_KEYS := [
 var HISTORY_KEYS := [
 	'enable_history_logging',
 	'enable_dynamic_theme',
+	'enable_open_button',
+	'enable_close_button',
+	'log_choices',
+	'log_answers',
+	'log_arrivals',
+	'log_exits',
+	'text_arrivals',
+	'text_exits',
 	'history_button_position',
+	'history_character_delimiter',
 	'history_screen_margin_x',
 	'history_screen_margin_y',
 	'history_container_margin_x',
@@ -89,7 +107,14 @@ func _ready():
 	## History timeline connections
 	nodes['enable_history_logging'].connect('toggled', self, '_on_item_toggled', ['history', 'enable_history_logging'])
 	nodes['enable_dynamic_theme'].connect('toggled', self, '_on_item_toggled', ['history', 'enable_dynamic_theme'])
+	nodes['enable_open_button'].connect('toggled', self, '_on_item_toggled', ['history', 'enable_open_button'])
+	nodes['enable_close_button'].connect('toggled', self, '_on_item_toggled', ['history', 'enable_close_button'])
+	nodes['log_choices'].connect('toggled', self, '_on_item_toggled', ['history', 'log_choices'])
+	nodes['log_answers'].connect('toggled', self, '_on_item_toggled', ['history', 'log_answers'])
+	nodes['log_arrivals'].connect('toggled', self, '_on_item_toggled', ['history', 'log_arrivals'])
+	nodes['log_exits'].connect('toggled', self, '_on_item_toggled', ['history', 'log_exits'])
 	nodes['history_button_position'].connect('item_selected', self, '_on_button_history_button_position_selected')
+	nodes['history_character_delimiter'].connect('text_changed', self, '_on_delimiter_text_changed')
 	
 	for button in ['history_button_position']:
 		var button_positions_popup = nodes[button].get_popup()
@@ -202,7 +227,6 @@ func _on_button_history_button_position_selected(index):
 
 
 func _spinbox_val_changed(newValue :float, spinbox_name):
-	print('test, ', spinbox_name)
 	set_value('history', spinbox_name, newValue)
 
 
@@ -222,6 +246,10 @@ func _on_default_action_key_item_selected(index, nodeName = 'default_action_key'
 
 func _on_canvas_layer_text_changed(text) -> void:
 	set_value('theme', 'canvas_layer', text)
+
+
+func _on_delimiter_text_changed(text) -> void:
+	set_value('history', 'history_character_delimiter', text)
 
 
 # Reading and saving data to the settings file

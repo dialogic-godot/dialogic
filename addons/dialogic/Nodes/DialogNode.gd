@@ -961,7 +961,7 @@ func answer_question(i, event_idx, question_idx):
 	_load_event_at_index(event_idx + 1)
 	
 	if record_history:
-			HistoryTimeline.add_answer_to_question(str(i.text))
+		HistoryTimeline.add_answer_to_question(str(i.text))
 	
 	# Revert to last mouse mode when selection is done
 	if last_mouse_mode != null:

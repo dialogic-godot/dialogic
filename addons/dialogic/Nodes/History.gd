@@ -26,7 +26,7 @@ var lastQuestionNode = null
 var curTheme = null
 var prevState
 
-var eventsToLog = ['dialogic_001', 'dialogic_002', 'dialogic_003', 'dialogic_010'] 
+var eventsToLog = ['dialogic_001', 'dialogic_010'] 
 
 
 func _ready():
@@ -38,24 +38,31 @@ func _ready():
 	HistoryPopup.add_child(HistoryBackground)
 	HistoryPopup.move_child(HistoryBackground, 0)
 	
-	HistoryButton = HistoryOpenButton.instance()
-	add_child(HistoryButton)
-	HistoryButton.connect("pressed", self, '_on_toggle_history')
-	HistoryButton.connect("mouse_entered", self, '_on_HistoryButton_mouse_entered')
-	HistoryButton.connect("mouse_exited", self, '_on_HistoryButton_mouse_exited')
-	HistoryButton.disabled = false
-	HistoryButton.show()
 	
-	CloseButton = HistoryCloseButton.instance()
-	HistoryPopup.add_child(CloseButton)
-	CloseButton.connect("pressed", self, '_on_toggle_history')
-
-	CloseButton.text = 'Test'
-	CloseButton.disabled = true
-	CloseButton.hide()
 
 
 func initalize_history():
+	if get_parent().settings.get_value('history', 'enable_open_button', true):
+		HistoryButton = HistoryOpenButton.instance()
+		add_child(HistoryButton)
+		HistoryButton.connect("pressed", self, '_on_toggle_history')
+		HistoryButton.connect("mouse_entered", self, '_on_HistoryButton_mouse_entered')
+		HistoryButton.connect("mouse_exited", self, '_on_HistoryButton_mouse_exited')
+		HistoryButton.disabled = false
+		HistoryButton.show()
+	
+	if get_parent().settings.get_value('history', 'enable_close_button', true):
+		CloseButton = HistoryCloseButton.instance()
+		HistoryPopup.add_child(CloseButton)
+		CloseButton.connect("pressed", self, '_on_toggle_history')
+		CloseButton.disabled = true
+		CloseButton.hide()
+	
+	# See if we're logging arrivals and exits
+	if get_parent().settings.get_value('history', 'log_arrivals', true):
+		eventsToLog.push_back('dialogic_002')
+	if get_parent().settings.get_value('history', 'log_exits', true):
+		eventsToLog.push_back('dialogic_003')
 	
 	# Grab some settings and make the boxes up right
 	var button_anchor = get_parent().settings.get_value('history', 'history_button_position', 2)
@@ -75,6 +82,9 @@ func initalize_history():
 	ScrollHistoryContainer.margin_bottom = -container_margin_y
 	
 	for button in [HistoryButton, CloseButton]:
+		if button == null:
+			continue
+		
 		var reference = button.get_parent().rect_size
 		
 		# Adding audio when focused or hovered
@@ -147,6 +157,7 @@ func add_history_row_event(eventData):
 	HistoryTimeline.add_child(newHistoryRow)
 	newHistoryRow.load_theme(curTheme)
 	
+	var charDelimiter = get_parent().settings.get_value('history', 'history_character_delimiter', ':')
 	var characterPrefix = ''
 	if eventData.has('character') and eventData.character != '':
 		var characterData = DialogicUtil.get_character(eventData.character)
@@ -156,8 +167,9 @@ func add_history_row_event(eventData):
 			characterName = characterData.data.get('display_name', '')
 		
 		if characterName != '':
+			var parsed_name = DialogicParser.parse_definitions(get_parent(), characterName, true, false)
 			var characterColor = characterData.data.get('color', Color.white)
-			characterPrefix = str("[color=",characterColor,"]",characterName, "[/color]: ")
+			characterPrefix = str("[color=",characterColor,"]",parsed_name, "[/color]", charDelimiter, ' ')
 	
 	var audioData = ''
 	if eventData.has('voice_data'):
@@ -165,16 +177,24 @@ func add_history_row_event(eventData):
 			audioData = eventData['voice_data']['0'].file
 			newHistoryRow.AudioButton.connect('pressed', self, '_on_audio_trigger', [audioData])
 	
+	
+	
 	# event logging handled here
+	# Text Events
 	if eventData.event_id == 'dialogic_001':
 		newHistoryRow.add_history(str(characterPrefix, eventData.text), audioData)
+	# Character Arrivals
 	elif eventData.event_id == 'dialogic_002':
-		newHistoryRow.add_history(str(characterPrefix, ' has arrived.'), audioData)
+		var logText = get_parent().settings.get_value('history', 'text_arrivals', 'has arrived')
+		newHistoryRow.add_history(str(characterPrefix, ' ', logText), audioData)
+	# Character Exits
 	elif eventData.event_id == 'dialogic_003':
-		newHistoryRow.add_history(str(characterPrefix, ' has left.'), audioData)
+		var logText = get_parent().settings.get_value('history', 'text_exits', 'has left')
+		newHistoryRow.add_history(str(characterPrefix, ' ', logText), audioData)
+	# List Choices
 	elif eventData.event_id == 'dialogic_010':
 		newHistoryRow.add_history(str(characterPrefix, eventData.question), audioData)
-		if eventData.has('options'):
+		if eventData.has('options') and get_parent().settings.get_value('history', 'log_choices', true):
 			var choiceString = "\n\t"
 			for choice in eventData['options']:
 				choiceString = str(choiceString, '[', choice.label, ']\t')
@@ -214,18 +234,22 @@ func _on_HistoryPopup_about_to_show():
 func _on_toggle_history():
 	if $HistoryPopup.visible == false:
 		$HistoryPopup.popup()
-		HistoryButton.hide()
-		HistoryButton.disabled = true
-		CloseButton.disabled = false
-		CloseButton.show()
+		if HistoryButton != null:
+			HistoryButton.hide()
+			HistoryButton.disabled = true
+		if CloseButton != null:
+			CloseButton.disabled = false
+			CloseButton.show()
 		is_history_open = true
 		is_mouse_on_button = false
 	else:
 		$HistoryPopup.hide()
-		HistoryButton.show()
-		HistoryButton.disabled = false
-		CloseButton.disabled = true
-		CloseButton.hide()
+		if HistoryButton != null:
+			HistoryButton.show()
+			HistoryButton.disabled = false
+		if CloseButton != null:
+			CloseButton.disabled = true
+			CloseButton.hide()
 		is_history_open = false
 		is_mouse_on_button = false
 

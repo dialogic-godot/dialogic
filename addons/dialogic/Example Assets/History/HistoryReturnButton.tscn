@@ -1,0 +1,13 @@
+[gd_scene format=2]
+
+[node name="HistoryButton" type="Button"]
+visible = false
+anchor_top = 1.0
+anchor_bottom = 1.0
+margin_top = -20.0
+margin_right = 58.0
+disabled = true
+text = "Return"
+__meta__ = {
+"_edit_use_anchors_": false
+}
