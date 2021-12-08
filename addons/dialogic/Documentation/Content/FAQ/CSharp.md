@@ -11,4 +11,4 @@ Usage:
 	}
 `
 
-This is the pull request that added this feature: [https://github.com/coppolaemilio/dialogic/pull/217](https://github.com/coppolaemilio/dialogic/pull/217)
+This is the PR that added this feature: [https://github.com/coppolaemilio/dialogic/pull/217](https://github.com/coppolaemilio/dialogic/pull/217)
