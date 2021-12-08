@@ -1,6 +1,8 @@
 # Can I use C# with Dialogic?
 
-It is experimental! So if you want to try it out and you find issues, let us know. Usage:
+Yes, but it's experimental at the present time. If you want to try it out, and you find issues with the implementation, please let us know.
+
+Usage:
 
 `public override void _Ready()
 	{
@@ -9,4 +11,4 @@ It is experimental! So if you want to try it out and you find issues, let us kno
 	}
 `
 
-This is the PR that added this feature: [https://github.com/coppolaemilio/dialogic/pull/217](https://github.com/coppolaemilio/dialogic/pull/217)
+This is the pull request that added this feature: [https://github.com/coppolaemilio/dialogic/pull/217](https://github.com/coppolaemilio/dialogic/pull/217)
