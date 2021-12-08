@@ -1,17 +1,17 @@
 # Timeline Editor
 
-The `timeline editor` is one of the central parts of Dialogic: here you can create your story using the Events.
+The `timeline editor` is one of the central parts of Dialogic, allowing you create your dialogue tree using the Events system.
 
-This editor consists of two parts, the main area and the event bar on the side, where you can find all events.
+This editor consists of two parts: the main area, and the event bar on the side. The event bar allows you to add events to the main area, and the main area is where you write your text and arrange the events to create your timeline tree.
 
 ## Building a timeline
-You can press one of the event buttons to add the event below the selected one, or you can drag and drop them to where you want.
+Begin by pressing an event button or dragging it onto the main area in a desired location.
 
-You move events by clicking and dragging them. 
+Once in the timeline tree, you can move events by dragging and dropping them.
 
 
 ## Shortcuts
-Select multiple events by holding CRTL. Range select with SHIFT.
+By holding CTRL, you can select multiple events by clicking on them. By holding SHIFT, you can select a range of events from the one initially selected to the one you click on.
 
 The editor supports the following short-cuts: 
 `
