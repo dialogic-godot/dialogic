@@ -92,6 +92,7 @@ func _ready():
 	nodes['new_plugin_open'].connect("pressed", self, "open_new_plugins")
 	nodes['new_plugin_section'].hide()
 	nodes['new_plugin_name'].connect("text_changed", self, "plugin_name_entered")
+	nodes['new_plugin_directory'].connect("text_changed", self, "plugin_dir_entered")
 	nodes['new_plugin_do_create'].connect("pressed", self, "create_plugin")
 	nodes['new_plugin_cancel'].connect("pressed", self, "cancel_plugin")
 	nodes['new_plugin_help'].icon = get_icon("HelpSearch", "EditorIcons")
@@ -291,34 +292,34 @@ func create_custom_event():
 ##						PLUGIN SECTION
 ################################################################################
 func create_plugin():
-	# do checks for incomplete input
-	if nodes['new_plugin_directory'].text.empty():
-		nodes['new_plugin_message'].text = "Enter a directory name for the plugin!"
-		return
-	if nodes['new_custom_event_name'].text.empty():
-		nodes['new_plugin_message'].text = "Enter a name for the plugin!"
-		return
-	#TODO: check for plugin icon
+	var TEMPLATE_PATH:String = "res://addons/dialogic/Example Assets/plugins/"
 	
-	var name = nodes['new_plugin_name'].text
-	var dir_name = 'res://dialogic/plugins/' + nodes['new_plugin_directory'].text
-	var dir = Directory.new()
-	if dir.dir_exists(dir_name):
-		nodes['new_plugin_message'] = "The folder already exists!"
+	if not validate_new_plugin():
 		return
-	dir.make_dir(dir_name)
+	
+	var name = nodes['new_plugin_name'].text.replace(" ", "_")
+	var dir_path = 'res://dialogic/plugins/' + nodes['new_plugin_directory'].text + "/"
+	var dir = Directory.new()
+	if dir.dir_exists(dir_path):
+		nodes['new_plugin_message'] = "The directory already exists!"
+		return
+	dir.make_dir(dir_path)
 	var files = ['Editor.tscn', 'NAME_Editor.gd', 'Runtime.tscn', 'NAME_Runtime.gd']
 	for file in files:
-		dir.copy("res://addons/dialogic/Example Assets/plugins/"+file, dir_name+"/"+file)
+		print("reading " + file)
 		var f:File = File.new()
-		f.open(dir_name+"/"+file, 1) #read
+		f.open(TEMPLATE_PATH+file, File.READ) #read
 		var data = f.get_as_text()
 		f.close()
-		data = data.replace("NAME",name)
-		f.open(dir_name+"/"+file, 2) #write
-		dir.rename(file, file.replace("NAME", name))
-	#TODO. out of time, continue later
-	
+		f = File.new()
+		data = data.replace("NAME",name) #rename refrences, sets plugin name
+		data = data.replace(TEMPLATE_PATH, dir_path)
+		file = file.replace("NAME", name)
+		print("writing " + file)
+		f.open(dir_path+file, File.WRITE)
+		f.store_string(data)
+		f.close()
+	editor_reference.editor_interface.get_resource_filesystem().scan()
 
 func open_new_plugins():
 	nodes['new_plugin_section'].show()
@@ -326,16 +327,30 @@ func open_new_plugins():
 	nodes['new_plugin_directory'].text = ''
 	nodes['new_plugin_do_create'].disabled = true
 func plugin_name_entered(text:String):
+	var c = nodes['new_plugin_name'].caret_position #saving the cursor location
+	nodes['new_plugin_name'].text = text.replace(" ", "_")#becouse I replace text
+	nodes['new_plugin_name'].caret_position = c#so it can be restored here.
 	nodes['new_plugin_directory'].text = text
+	validate_new_plugin()
+func plugin_dir_entered(_text:String):
+	validate_new_plugin()
 func cancel_plugin():
 	nodes['new_plugin_section'].hide()
 	nodes['new_plugin_message'].text = ''
 func open_plugin_docs():
 	editor_reference.get_node("MainPanel/MasterTreeContainer/MasterTree").select_documentation_item("res://addons/dialogic/Documentation/Content/Tutorials/CreateYourOwnPlugin.md")
 func validate_new_plugin():
-	if len(nodes['new_plugin_message'].text) <= 0:
-		nodes['new_plugin_message'].text = 'name too short'
+	if len(nodes['new_plugin_name'].text) <= 0:
+		nodes['new_plugin_message'].text = 'plugin name too short'
 		nodes['new_plugin_do_create'].disabled = true
+		return false
+	if len(nodes['new_plugin_directory'].text) <= 0:
+		nodes['new_plugin_message'].text = 'directory name too short'
+		nodes['new_plugin_do_create'].disabled = true
+		return false	
+	#TODO: check for plugin icon
+	
 	nodes['new_plugin_message'].text = ''
 	nodes['new_plugin_do_create'].disabled = false
+	return true
 	
