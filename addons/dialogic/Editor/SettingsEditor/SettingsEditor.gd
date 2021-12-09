@@ -36,7 +36,10 @@ onready var nodes = {
 	'new_plugin_do_create':$VBoxContainer/HBoxContainer3/VBoxContainer2/plugins/GeneratePlugin2/HBoxContainer/DoGeneratePlugin,
 	'new_plugin_cancel':$VBoxContainer/HBoxContainer3/VBoxContainer2/plugins/GeneratePlugin2/HBoxContainer/DoGeneratePlugin,
 	'new_plugin_help':$VBoxContainer/HBoxContainer3/VBoxContainer2/plugins/GeneratePlugin/pluginsDocs,
-	'new_plugin_message':$VBoxContainer/HBoxContainer3/VBoxContainer2/plugins/GeneratePlugin/Message
+	'new_plugin_message':$VBoxContainer/HBoxContainer3/VBoxContainer2/plugins/GeneratePlugin/Message,
+	'new_plugin_create_runtime': $VBoxContainer/HBoxContainer3/VBoxContainer2/plugins/GeneratePlugin2/create_runtime,
+	'new_plugin_create_editor': $VBoxContainer/HBoxContainer3/VBoxContainer2/plugins/GeneratePlugin2/create_editor
+	
 }
 
 var THEME_KEYS := [
@@ -97,6 +100,8 @@ func _ready():
 	nodes['new_plugin_cancel'].connect("pressed", self, "cancel_plugin")
 	nodes['new_plugin_help'].icon = get_icon("HelpSearch", "EditorIcons")
 	nodes['new_plugin_help'].connect("pressed", self, "open_plugin_docs")
+	nodes['new_plugin_create_runtime'].connect("toggled", self, "plugin_btn_toggle_Runtime")
+	nodes['new_plugin_create_editor'].connect("toggled", self, "plugin_btn_toggle_Editor")
 	nodes['new_plugin_message'].set('custom_colors/font_color', get_color("error_color", "Editor"))
 
 
@@ -304,7 +309,11 @@ func create_plugin():
 		nodes['new_plugin_message'] = "The directory already exists!"
 		return
 	dir.make_dir(dir_path)
-	var files = ['Editor.tscn', 'NAME_Editor.gd', 'Runtime.tscn', 'NAME_Runtime.gd']
+	var files = []#['Editor.tscn', 'NAME_Editor.gd', 'Runtime.tscn', 'NAME_Runtime.gd']
+	if nodes["new_plugin_create_editor"].pressed:
+		files.append_array(['Editor.tscn', 'NAME_Editor.gd'])
+	if nodes["new_plugin_create_runtime"].pressed:
+		files.append_array(['Runtime.tscn', 'NAME_Runtime.gd'])
 	for file in files:
 		print("reading " + file)
 		var f:File = File.new()
@@ -339,6 +348,10 @@ func cancel_plugin():
 	nodes['new_plugin_message'].text = ''
 func open_plugin_docs():
 	editor_reference.get_node("MainPanel/MasterTreeContainer/MasterTree").select_documentation_item("res://addons/dialogic/Documentation/Content/Tutorials/CreateYourOwnPlugin.md")
+func plugin_btn_toggle_Runtime(_val):
+	validate_new_plugin()
+func plugin_btn_toggle_Editor(_val):
+	validate_new_plugin()
 func validate_new_plugin():
 	if len(nodes['new_plugin_name'].text) <= 0:
 		nodes['new_plugin_message'].text = 'plugin name too short'
@@ -347,7 +360,11 @@ func validate_new_plugin():
 	if len(nodes['new_plugin_directory'].text) <= 0:
 		nodes['new_plugin_message'].text = 'directory name too short'
 		nodes['new_plugin_do_create'].disabled = true
-		return false	
+		return false
+	if not (nodes["new_plugin_create_runtime"].pressed or nodes['new_plugin_create_editor'].pressed):
+		nodes['new_plugin_message'].text = 'No template(s) selected to create.'
+		nodes['new_plugin_do_create'].disabled = true
+		return false
 	#TODO: check for plugin icon
 	
 	nodes['new_plugin_message'].text = ''

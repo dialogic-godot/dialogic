@@ -427,6 +427,7 @@ __meta__ = {
 margin_left = 232.0
 margin_right = 272.0
 margin_bottom = 24.0
+hint_tooltip = "Press to show options to create a new Custom event from template."
 text = "New"
 
 [node name="CustomEventsDocs" type="ToolButton" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/CustomEvents/HBoxContainer"]
@@ -547,6 +548,7 @@ __meta__ = {
 margin_left = 232.0
 margin_right = 272.0
 margin_bottom = 24.0
+hint_tooltip = "Press to show options to create a new Dialogic plugin from template."
 text = "New"
 
 [node name="pluginsDocs" type="ToolButton" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/plugins/GeneratePlugin"]
@@ -559,20 +561,20 @@ icon = SubResource( 2 )
 visible = false
 margin_top = 54.0
 margin_right = 304.0
-margin_bottom = 130.0
+margin_bottom = 174.0
 columns = 2
 
 [node name="TLabel" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/plugins/GeneratePlugin2" instance=ExtResource( 3 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_top = 5.0
-margin_right = 105.0
+margin_right = 134.0
 margin_bottom = 19.0
 text = "Plugin Name:"
 text_key = "Plugin Name:"
 
 [node name="PName" type="LineEdit" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/plugins/GeneratePlugin2"]
-margin_left = 109.0
+margin_left = 138.0
 margin_right = 304.0
 margin_bottom = 24.0
 size_flags_horizontal = 3
@@ -581,38 +583,59 @@ size_flags_horizontal = 3
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_top = 33.0
-margin_right = 105.0
+margin_right = 134.0
 margin_bottom = 47.0
 text = "Directory Name:"
 text_key = "Directory Name:"
 
 [node name="PDirectory" type="LineEdit" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/plugins/GeneratePlugin2"]
-margin_left = 109.0
+margin_left = 138.0
 margin_top = 28.0
 margin_right = 304.0
 margin_bottom = 52.0
 size_flags_horizontal = 3
 
-[node name="Control" type="Control" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/plugins/GeneratePlugin2"]
+[node name="create_runtime" type="CheckButton" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/plugins/GeneratePlugin2"]
 margin_top = 56.0
-margin_right = 105.0
-margin_bottom = 76.0
+margin_right = 134.0
+margin_bottom = 96.0
+hint_tooltip = "Tick this to generate a template for a plugin that runs in the game.
+ Can be combined with a Editor plugin."
+pressed = true
+text = "Runtime"
+align = 1
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/plugins/GeneratePlugin2"]
-margin_left = 109.0
+[node name="create_editor" type="CheckButton" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/plugins/GeneratePlugin2"]
+margin_left = 138.0
 margin_top = 56.0
 margin_right = 304.0
-margin_bottom = 76.0
+margin_bottom = 96.0
+hint_tooltip = "Tick this to generate a template for a plugin that runs in the editor.
+ Can be combined with a Runtime plugin."
+pressed = true
+text = "Editor"
+align = 2
+
+[node name="spacer" type="Control" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/plugins/GeneratePlugin2"]
+margin_top = 100.0
+margin_right = 134.0
+margin_bottom = 120.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/plugins/GeneratePlugin2"]
+margin_left = 138.0
+margin_top = 100.0
+margin_right = 304.0
+margin_bottom = 120.0
 alignment = 2
 
 [node name="DoGeneratePlugin" type="Button" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/plugins/GeneratePlugin2/HBoxContainer"]
-margin_left = 84.0
-margin_right = 137.0
+margin_left = 55.0
+margin_right = 108.0
 margin_bottom = 20.0
 text = "Create"
 
 [node name="CancelPlugin" type="Button" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/plugins/GeneratePlugin2/HBoxContainer"]
-margin_left = 141.0
-margin_right = 195.0
+margin_left = 112.0
+margin_right = 166.0
 margin_bottom = 20.0
 text = "Cancel"
