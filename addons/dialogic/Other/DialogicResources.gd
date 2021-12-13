@@ -271,9 +271,81 @@ static func set_settings_value(section: String, key: String, value):
 	config.set_value(section, key, value)
 	config.save(get_config_files_paths()['SETTINGS_FILE'])
 
+
 static func get_settings_value(section:String, key: String, default):
 	var config = get_settings_config()
 	return config.get_value(section, key, default)
+
+
+## *****************************************************************************
+##						TRANSLATION INITIALISATION
+## *****************************************************************************
+
+# Creates a serialised version of the translation file for a more optimised access
+static func serialize_translations():
+	# Get translation file
+	var config = get_settings_config()
+	var csv_path = config.get_value('dialog', 'translations_preview_file', "")
+	
+	# Parse translation file
+	var csv_file := File.new()
+	var err = csv_file.open(csv_path, File.READ)
+	if err == OK:
+		# Store all lines of the CSV as a 2D array (each line is an array)
+		var csv_lines := []
+		while not csv_file.eof_reached():
+			csv_lines.append(csv_file.get_csv_line())
+		csv_file.close()
+		
+		# Retrieve the locales from the first line
+		var locales = csv_lines[0]
+		locales.remove(0) # The first column is not a locale
+		csv_lines.remove(0)
+		
+		# Build the dictionary with this format:
+		# translations = {
+		# 	"GREET":{
+		# 		"en":"Hello, friend!",
+		# 		"es":"Hola, amigo!",
+		# 		"ja":"こんにちは"
+		# 	},
+		# 	...
+		# }
+		var translations := {}
+		for line in csv_lines:
+			# Get the key
+			var key = line[0]
+			translations[key] = {}
+			line.remove(0)
+			
+			# Parse all the translations for that key
+			for i in range(line.size()):
+				translations[key][locales[i]] = line[i]
+		
+		# Save the dictionary as a JSON file
+		var dir = Directory.new()
+		var path = WORKING_DIR + "/translations.json"
+		if dir.file_exists(path):
+			dir.remove(path)
+		set_json(path, translations)
+	else:
+		print("[Dialogic] Error while opening translation file " + csv_path + ". Error: " + str(err))
+
+# Translates a message inside the editor based on the translation file provided in the settings
+static func translate(key: String):
+	# Retrieve the reference dictionary
+	var translations := load_json(WORKING_DIR + "/translations.json")
+	
+	# Check the test locale currently set in the project settings
+	var locale = ProjectSettings.get_setting("locale/test")
+	if locale == "":
+		locale = ProjectSettings.get_setting("locale/fallback")
+	
+	# Return the translation for that locale if it exists, otherwise simply return the input
+	if translations.has(key):
+		return translations[key][locale]
+	else:
+		return key
 
 
 ## *****************************************************************************

@@ -43,10 +43,14 @@ margin_right = 46.0
 margin_bottom = 40.0
 rect_min_size = Vector2( 46, 0 )
 
-[node name="TextEdit" type="TextEdit" parent="."]
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
 margin_left = 50.0
 margin_right = 67.0
-margin_bottom = 40.0
+margin_bottom = 80.0
+
+[node name="TextEdit" type="TextEdit" parent="VBoxContainer"]
+margin_right = 17.0
+margin_bottom = 38.0
 size_flags_vertical = 3
 custom_colors/member_variable_color = Color( 0, 0, 0, 1 )
 custom_colors/function_color = Color( 0, 0, 0, 1 )
@@ -59,4 +63,20 @@ syntax_highlighting = true
 smooth_scrolling = true
 wrap_enabled = true
 
-[connection signal="focus_exited" from="TextEdit" to="." method="_on_TextEdit_focus_exited"]
+[node name="Preview" type="TextEdit" parent="VBoxContainer"]
+margin_top = 42.0
+margin_right = 17.0
+margin_bottom = 80.0
+size_flags_vertical = 3
+custom_styles/focus = SubResource( 3 )
+custom_styles/normal = SubResource( 2 )
+custom_colors/member_variable_color = Color( 0, 0, 0, 1 )
+custom_colors/function_color = Color( 0, 0, 0, 1 )
+custom_colors/symbol_color = Color( 0, 0, 0, 1 )
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+custom_colors/number_color = Color( 0, 0, 0, 1 )
+readonly = true
+smooth_scrolling = true
+wrap_enabled = true
+
+[connection signal="focus_exited" from="VBoxContainer/TextEdit" to="." method="_on_TextEdit_focus_exited"]

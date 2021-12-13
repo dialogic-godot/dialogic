@@ -74,3 +74,49 @@ margin_top = 206.0
 margin_right = 300.0
 margin_bottom = 230.0
 placeholder_text = "Extra"
+
+[node name="ExtraInfoPreview" type="VBoxContainer" parent="VBoxContainer/HBoxContainer"]
+margin_left = 632.0
+margin_right = 932.0
+margin_bottom = 230.0
+rect_min_size = Vector2( 300, 0 )
+
+[node name="RichTextLabel2" type="Label" parent="VBoxContainer/HBoxContainer/ExtraInfoPreview"]
+margin_right = 300.0
+margin_bottom = 31.0
+text = "Preview:
+"
+autowrap = true
+
+[node name="Control" type="Control" parent="VBoxContainer/HBoxContainer/ExtraInfoPreview"]
+margin_top = 35.0
+margin_right = 300.0
+margin_bottom = 70.0
+rect_min_size = Vector2( 0, 35 )
+
+[node name="Title" type="LineEdit" parent="VBoxContainer/HBoxContainer/ExtraInfoPreview"]
+margin_top = 74.0
+margin_right = 300.0
+margin_bottom = 98.0
+editable = false
+placeholder_text = "Title"
+
+[node name="Text" type="TextEdit" parent="VBoxContainer/HBoxContainer/ExtraInfoPreview"]
+margin_top = 102.0
+margin_right = 300.0
+margin_bottom = 202.0
+rect_min_size = Vector2( 0, 100 )
+size_flags_vertical = 3
+readonly = true
+wrap_enabled = true
+
+[node name="Extra" type="LineEdit" parent="VBoxContainer/HBoxContainer/ExtraInfoPreview"]
+margin_top = 206.0
+margin_right = 300.0
+margin_bottom = 230.0
+editable = false
+placeholder_text = "Extra"
+
+[connection signal="text_changed" from="VBoxContainer/HBoxContainer/ExtraInfo/Title" to="." method="_on_Title_text_changed"]
+[connection signal="text_changed" from="VBoxContainer/HBoxContainer/ExtraInfo/Text" to="." method="_on_Text_text_changed"]
+[connection signal="text_changed" from="VBoxContainer/HBoxContainer/ExtraInfo/Extra" to="." method="_on_Extra_text_changed"]

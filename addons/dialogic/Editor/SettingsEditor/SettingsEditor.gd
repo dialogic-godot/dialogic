@@ -10,6 +10,12 @@ onready var nodes = {
 	
 	# Dialog
 	'text_event_audio_default_bus' : $VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2/TextAudioDefaultBus/AudioBus,
+	'translations': $VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2/SettingsCheckbox7/CheckBox,
+	'translations_preview': $VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2/HBoxContainer8/PreviewTranslations/CheckBox,
+	'translations_preview_file': $VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2/HBoxContainer8/TranslationFileButton,
+	
+	# Save
+	'autosave': $VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer3/SettingsCheckbox8/CheckBox,
 
 	# Input Settings
 	'delay_after_options': $VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer/HBoxContainer/LineEdit,
@@ -42,6 +48,22 @@ var INPUT_KEYS := [
 	'choice_hotkey_4',
 	]
 
+var DIALOG_KEYS := [
+	'translations',
+	'translations_preview',
+	'translations_preview_file',
+	'new_lines', 
+	'remove_empty_messages',
+	'auto_color_names',
+	'propagate_input',
+	'dim_characters',
+	'text_event_audio_enable',
+	]
+
+var SAVING_KEYS := [
+	'autosave', 
+	]
+
 func _ready():
 	editor_reference = find_parent('EditorView')
 	update_bus_selector()
@@ -52,7 +74,10 @@ func _ready():
 	nodes['themes'].connect('item_selected', self, '_on_default_theme_selected')
 	# TODO move to theme section later
 	nodes['canvas_layer'].connect('text_changed', self, '_on_canvas_layer_text_changed')
-
+	
+	# Dialog
+	nodes['translations_preview'].connect('pressed', self, '_on_PreviewTranslations_pressed')
+	
 	# Input
 	nodes['delay_after_options'].connect('text_changed', self, '_on_delay_options_text_changed')
 	nodes['default_action_key'].connect('pressed', self, '_on_default_action_key_presssed')
@@ -87,6 +112,7 @@ func update_data():
 	refresh_themes(settings)
 	load_values(settings, "input", INPUT_KEYS)
 	select_bus(settings.get_value("dialog", 'text_event_audio_default_bus', "Master"))
+	nodes["translations_preview_file"].disabled = not nodes["translations_preview"].pressed
 
 
 func load_values(settings: ConfigFile, section: String, key: Array):
@@ -95,6 +121,8 @@ func load_values(settings: ConfigFile, section: String, key: Array):
 			if nodes[k] is LineEdit:
 				nodes[k].text = settings.get_value(section, k)
 			elif nodes[k] is OptionButton:
+				nodes[k].text = settings.get_value(section, k)
+			elif k in ['translations_preview_file']:
 				nodes[k].text = settings.get_value(section, k)
 			else:
 				nodes[k].pressed = settings.get_value(section, k, false)
@@ -185,6 +213,22 @@ func select_bus(text):
 func _on_text_audio_default_bus_item_selected(index):
 	var text = nodes['text_event_audio_default_bus'].get_item_text(index)
 	set_value('dialog', 'text_event_audio_default_bus', text)
+
+func _on_PreviewTranslations_pressed() -> void:
+	nodes["translations_preview_file"].disabled = not nodes["translations_preview"].pressed
+
+
+func _on_TranslationFileButton_pressed() -> void:
+	editor_reference.godot_dialog("*.csv")
+	editor_reference.godot_dialog_connect(self, "_on_translation_file_selected")
+
+
+func _on_translation_file_selected(path, target) -> void:
+	nodes["translations_preview_file"].text = path
+	
+	set_value('dialog', 'translations_preview_file', path)
+	
+	DialogicResources.serialize_translations()
 
 
 ################################################################################

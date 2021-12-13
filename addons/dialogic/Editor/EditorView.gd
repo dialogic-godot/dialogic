@@ -91,6 +91,10 @@ func _ready():
 		$ToolBar/Version.text = 'Dialogic v' + version_string
 		
 	$MainPanel/MasterTreeContainer/FilterMasterTreeEdit.right_icon = get_icon("Search", "EditorIcons")
+	
+	# Serialize the translations file if translation preview is enabled
+	if DialogicResources.get_settings_config().get_value('dialog', 'translations_preview'):
+		DialogicResources.serialize_translations()
 
 
 func on_master_tree_editor_selected(editor: String):

@@ -4,7 +4,8 @@ extends "res://addons/dialogic/Editor/Events/Parts/EventPart.gd"
 # has an event_data variable that stores the current data!!!
 
 ## node references
-onready var text_editor = $TextEdit
+onready var text_editor = $VBoxContainer/TextEdit
+onready var preview = $VBoxContainer/Preview
 
 
 # used to connect the signals
@@ -39,7 +40,13 @@ func load_data(data:Dictionary):
 		text_editor.text = event_data['text']
 	
 	# resize the text_editor to the correct size 
-	_set_new_min_size()
+	_set_new_min_size(text_editor)
+	
+	# Show the preview field if the option is enabled
+	var config = DialogicResources.get_settings_config()
+	preview.visible = config.get_value('dialog', 'translations_preview')
+	update_preview(text_editor.text)
+	_set_new_min_size(preview)
 
 # has to return the wanted preview, only useful for body parts
 func get_preview():
@@ -60,6 +67,9 @@ func get_preview():
 	
 	return preview
 
+func update_preview(text:String):
+	preview.text = DialogicResources.translate(text)
+
 func _on_TextEditor_text_changed():
 	# in case this is a text event
 	if event_data['event_id'] == 'dialogic_001':
@@ -70,27 +80,37 @@ func _on_TextEditor_text_changed():
 	# otherwise
 	else:
 		event_data['text'] = text_editor.text
-	_set_new_min_size()
+	_set_new_min_size(text_editor)
+	
+	# Update the preview field if the option is enabled
+	var config = DialogicResources.get_settings_config()
+	if config.get_value('dialog', 'translations_preview'):
+		update_preview(text_editor.text)
+		_set_new_min_size(preview)
 	
 	# informs the parent about the changes!
 	data_changed()
 
 
-func _set_new_min_size():
+func _set_new_min_size(node: Node):
 	# Reset
-	text_editor.rect_min_size = Vector2(0,0)
+	node.rect_min_size = Vector2(0,0)
 	# Getting new sizes
 	var extra_vertical = 1.1
 	var longest_string = ''
 	
-	if text_editor.get_line_count() > 1:
+	if node.get_line_count() > 1:
 		extra_vertical = 1.22
 	
-	text_editor.rect_min_size.y = get_font("normal_font").get_height() * ((text_editor.get_line_count() + 1) * extra_vertical)
+	node.rect_min_size.y = get_font("normal_font").get_height() * ((node.get_line_count() + 1) * extra_vertical)
 	
-	#for line in text_editor.get_line()
-	text_editor.rect_min_size.x = get_font("normal_font").get_string_size(text_editor.get_line(0)).x + 50
-
+	var min_horizontal = 0
+	for line in range(node.get_line_count()):
+		var width = get_font("normal_font").get_string_size(node.get_line(line)).x + 50
+		if width > min_horizontal:
+			min_horizontal = width
+	
+	node.rect_min_size.x = min_horizontal
 
 func _on_TextEditor_focus_entered() -> void:
 	if (Input.is_mouse_button_pressed(BUTTON_LEFT)):
@@ -100,4 +120,4 @@ func _on_TextEditor_focus_entered() -> void:
 func _on_TextEdit_focus_exited():
 	# Remove text selection to visually notify the user that the text will not 
 	# be copied if they use a hotkey like CTRL + C 
-	$TextEdit.deselect()
+	text_editor.deselect()

@@ -223,6 +223,27 @@ text = "Inputs for text events will be treated as keys for tr()"
 settings_section = "dialog"
 settings_key = "translations"
 
+[node name="HBoxContainer8" type="HBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2"]
+margin_top = 302.0
+margin_right = 356.0
+margin_bottom = 326.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="PreviewTranslations" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2/HBoxContainer8" instance=ExtResource( 4 )]
+margin_right = 215.0
+margin_bottom = 24.0
+text = "Preview translations in editor"
+settings_section = "dialog"
+settings_key = "translations_preview"
+
+[node name="TranslationFileButton" type="Button" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2/HBoxContainer8"]
+margin_left = 219.0
+margin_right = 300.0
+margin_bottom = 24.0
+text = "Choose translation file..."
+
 [node name="VBoxContainer3" type="VBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer"]
 margin_top = 400.0
 margin_right = 356.0
@@ -537,3 +558,5 @@ text = "Cancel"
 margin_top = 312.0
 margin_right = 304.0
 margin_bottom = 312.0
+
+[connection signal="pressed" from="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2/HBoxContainer8/TranslationFileButton" to="." method="_on_TranslationFileButton_pressed"]

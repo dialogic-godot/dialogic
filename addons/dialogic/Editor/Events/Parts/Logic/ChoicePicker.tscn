@@ -36,7 +36,14 @@ margin_right = 76.0
 margin_bottom = 27.0
 rect_min_size = Vector2( 10, 0 )
 
-[node name="ConditionPicker" parent="." instance=ExtResource( 1 )]
+[node name="Preview" type="LineEdit" parent="HBox"]
 margin_left = 80.0
-margin_right = 202.0
-margin_bottom = 27.0
+margin_right = 138.0
+margin_bottom = 30.0
+editable = false
+expand_to_text_length = true
+
+[node name="ConditionPicker" parent="." instance=ExtResource( 1 )]
+margin_left = 142.0
+margin_right = 564.0
+margin_bottom = 30.0

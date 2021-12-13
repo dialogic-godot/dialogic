@@ -5,6 +5,7 @@ extends "res://addons/dialogic/Editor/Events/Parts/EventPart.gd"
 
 ## node references
 onready var input_field = $HBox/ChoiceText
+onready var preview_field = $HBox/Preview
 onready var condition_picker = $ConditionPicker
 
 # used to connect the signals
@@ -26,17 +27,32 @@ func load_data(data:Dictionary):
 	# Loading the data on the selectors
 	condition_picker.load_data(event_data)
 	
+	# Show the preview field if the option is enabled
+	var config = DialogicResources.get_settings_config()
+	preview_field.visible = config.get_value('dialog', 'translations_preview')
+	update_preview(input_field.text)
+	
 
 # has to return the wanted preview, only useful for body parts
 func get_preview():
 	return ''
 
 
+func update_preview(text: String):
+	preview_field.text = DialogicResources.translate(text)
+
+
 func _on_ChoiceText_text_changed(text):
 	event_data['choice'] = text
 	
+	# Update the preview field if the option is enabled
+	var config = DialogicResources.get_settings_config()
+	if config.get_value('dialog', 'translations_preview'):
+		update_preview(text)
+	
 	# informs the parent about the changes!
 	data_changed()
+	
 
 func _on_ConditionPicker_data_changed(data):
 	event_data = data
