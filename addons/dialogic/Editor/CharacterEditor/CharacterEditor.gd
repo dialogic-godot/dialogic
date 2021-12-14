@@ -37,6 +37,7 @@ onready var nodes = {
 
 # data
 var opened_character_data
+var selected_theme_file = ''
 
 ####################################################################################################
 ##							SCRIPT
@@ -83,7 +84,8 @@ func clear_character_editor():
 	nodes['nickname_checkbox'].pressed = false
 	nodes['nickname'].text = ''
 	nodes['description'].text = ''
-	nodes['theme'].select(0)
+	nodes['theme'].text = 'No custom theme'
+	selected_theme_file = ''
 	
 	nodes['portraits'] = []
 	nodes['scale'].value = 100
@@ -131,7 +133,7 @@ func generate_character_data_to_save():
 		'nickname_bool': nodes['nickname_checkbox'].pressed,
 		'nickname': nodes['nickname'].text,
 		'description': nodes['description'].text,
-		'theme': nodes['theme'].get_item_metadata(nodes['theme'].selected)['file'], 
+		'theme': selected_theme_file, 
 		
 		'portraits': portraits,
 		'scale': nodes['scale'].value,
@@ -194,21 +196,62 @@ func load_character(filename: String):
 ####################################################################################################
 
 func refresh_themes_and_select(file):
-	nodes['theme'].clear()
-	var theme_list = DialogicUtil.get_sorted_theme_list()
-	var theme_indexes = {}
+	selected_theme_file = file
+	var picker_menu = nodes['theme']
+	picker_menu.get_popup().clear()
+	var folder_structure = DialogicUtil.get_theme_folder_structure()
+
+	## building the root level
+	build_PickerMenuFolder(picker_menu.get_popup(), folder_structure, "MenuButton")
+	if file == '':
+		picker_menu.text = "No custom theme"
+	else:
+		picker_menu.text = DialogicUtil.get_theme_dict()[file]['name']
+
+# is called recursively to build all levels of the folder structure
+func build_PickerMenuFolder(menu:PopupMenu, folder_structure:Dictionary, current_folder_name:String):
 	var index = 0
-	nodes['theme'].add_item("No custom theme")
-	nodes['theme'].set_item_metadata(index, {'file': ''})
-	theme_indexes[''] = index
-	index += 1
-	for theme in theme_list:
-		nodes['theme'].add_item(theme['name'])
-		nodes['theme'].set_item_metadata(index, {'file': theme['file']})
-		theme_indexes[theme['file']] = index
+	for folder_name in folder_structure['folders'].keys():
+		var submenu = PopupMenu.new()
+		var submenu_name = build_PickerMenuFolder(submenu, folder_structure['folders'][folder_name], folder_name)
+		submenu.name = submenu_name
+		menu.add_submenu_item(folder_name, submenu_name)
+		menu.set_item_icon(index, get_icon("Folder", "EditorIcons"))
+		menu.add_child(submenu)
 		index += 1
 	
-	nodes['theme'].select(theme_indexes[file])
+	var files_info = DialogicUtil.get_theme_dict()
+	for file in folder_structure['files']:
+		menu.add_item(files_info[file]['name'])
+		menu.set_item_icon(index, editor_reference.get_node("MainPanel/MasterTreeContainer/MasterTree").theme_icon)
+		menu.set_item_metadata(index, {'file':file})
+		index += 1
+	
+	if not menu.is_connected("index_pressed", self, "_on_theme_selected"):
+		menu.connect("index_pressed", self, '_on_theme_selected', [menu])
+	
+	return current_folder_name
+#
+#
+#	nodes['theme'].clear()
+#	var theme_list = DialogicUtil.get_sorted_theme_list()
+#	var theme_indexes = {}
+#	var index = 0
+#	nodes['theme'].add_item("No custom theme")
+#	nodes['theme'].set_item_metadata(index, {'file': ''})
+#	theme_indexes[''] = index
+#	index += 1
+#	for theme in theme_list:
+#		nodes['theme'].add_item(theme['name'])
+#		nodes['theme'].set_item_metadata(index, {'file': theme['file']})
+#		theme_indexes[theme['file']] = index
+#		index += 1
+#
+#	nodes['theme'].select(theme_indexes[file])
+
+func _on_theme_selected(index, menu):
+	selected_theme_file = menu.get_item_metadata(index).get('file', '')
+	nodes['theme'].text = menu.get_item_text(index)
 
 func _on_display_name_toggled(button_pressed):
 	nodes['display_name'].visible = button_pressed
