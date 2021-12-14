@@ -72,6 +72,8 @@ func _ready():
 	$ToolBar/Web.icon = get_icon("Instance", "EditorIcons")
 	$ToolBar/Web.connect('pressed', OS, "shell_open", ["https://dialogic.coppolaemilio.com"])
 	$ToolBar/Docs.icon = get_icon("HelpSearch", "EditorIcons")
+	$ToolBar/DocumentationNavigation/Previous.icon = get_icon("Back", "EditorIcons")
+	$ToolBar/DocumentationNavigation/Next.icon = get_icon("Forward", "EditorIcons")
 	$ToolBar/Docs.connect('pressed',
 		$MainPanel/MasterTreeContainer/MasterTree,
 		"select_documentation_item",
@@ -95,6 +97,7 @@ func _ready():
 
 func on_master_tree_editor_selected(editor: String):
 	$ToolBar/FoldTools.visible = editor == 'timeline'
+	$ToolBar/DocumentationNavigation.visible = editor == 'documentation'
 
 
 func popup_remove_confirmation(what):
