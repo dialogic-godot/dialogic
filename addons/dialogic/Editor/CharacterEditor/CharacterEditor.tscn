@@ -6,7 +6,7 @@
 [ext_resource path="res://addons/dialogic/Example Assets/portraits/df-3.png" type="Texture" id=4]
 
 [sub_resource type="StyleBoxFlat" id=1]
-bg_color = Color( 0, 0, 0, 1 )
+bg_color = Color( 0.2, 0.23, 0.31, 1 )
 
 [sub_resource type="Image" id=10]
 data = {
@@ -232,17 +232,47 @@ margin_bottom = 50.0
 rect_min_size = Vector2( 100, 50 )
 size_flags_horizontal = 3
 
-[node name="Separator" type="HSeparator" parent="Split/EditorScroll/Editor"]
+[node name="Theme" type="HBoxContainer" parent="Split/EditorScroll/Editor"]
 margin_top = 138.0
 margin_right = 581.0
-margin_bottom = 156.0
+margin_bottom = 158.0
+
+[node name="TLabel5" parent="Split/EditorScroll/Editor/Theme" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 130.0
+margin_bottom = 14.0
+rect_min_size = Vector2( 130, 0 )
+size_flags_vertical = 0
+text = "Theme: "
+text_key = "Theme: "
+
+[node name="ThemeButton" type="OptionButton" parent="Split/EditorScroll/Editor/Theme"]
+margin_left = 134.0
+margin_right = 274.0
+margin_bottom = 20.0
+rect_min_size = Vector2( 140, 0 )
+text = "NightTheme"
+items = [ "DayTheme", null, false, 0, {
+"file": "theme-1621517790.cfg"
+}, "MyTheme", null, false, 1, {
+"file": "theme-1633536092.cfg"
+}, "NightTheme", null, false, 2, {
+"file": "theme-1621517668.cfg"
+} ]
+selected = 2
+
+[node name="Separator" type="HSeparator" parent="Split/EditorScroll/Editor"]
+margin_top = 162.0
+margin_right = 581.0
+margin_bottom = 180.0
 rect_min_size = Vector2( 0, 10 )
 custom_constants/separation = 18
 
 [node name="Portraits" type="HBoxContainer" parent="Split/EditorScroll/Editor"]
-margin_top = 160.0
+margin_top = 184.0
 margin_right = 581.0
-margin_bottom = 174.0
+margin_bottom = 198.0
 
 [node name="Title" parent="Split/EditorScroll/Editor/Portraits" instance=ExtResource( 3 )]
 anchor_right = 0.0
@@ -256,9 +286,9 @@ valign = 1
 text_key = "Portraits"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Split/EditorScroll/Editor"]
-margin_top = 178.0
+margin_top = 202.0
 margin_right = 581.0
-margin_bottom = 202.0
+margin_bottom = 226.0
 
 [node name="TLabel11" parent="Split/EditorScroll/Editor/HBoxContainer" instance=ExtResource( 3 )]
 anchor_right = 0.0
@@ -324,7 +354,7 @@ margin_right = 125.0
 margin_bottom = 24.0
 
 [node name="PortraitPanel" type="PanelContainer" parent="Split/EditorScroll/Editor"]
-margin_top = 206.0
+margin_top = 230.0
 margin_right = 581.0
 margin_bottom = 600.0
 size_flags_vertical = 3
@@ -334,7 +364,7 @@ custom_styles/panel = SubResource( 7 )
 margin_left = 2.0
 margin_top = 2.0
 margin_right = 579.0
-margin_bottom = 392.0
+margin_bottom = 368.0
 
 [node name="Labels" type="HBoxContainer" parent="Split/EditorScroll/Editor/PortraitPanel/VBoxContainer"]
 margin_right = 577.0
@@ -382,13 +412,13 @@ icon = SubResource( 9 )
 [node name="ScrollContainer" type="ScrollContainer" parent="Split/EditorScroll/Editor/PortraitPanel/VBoxContainer"]
 margin_top = 26.0
 margin_right = 577.0
-margin_bottom = 390.0
+margin_bottom = 366.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Split/EditorScroll/Editor/PortraitPanel/VBoxContainer/ScrollContainer"]
 margin_right = 577.0
-margin_bottom = 364.0
+margin_bottom = 340.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
@@ -505,5 +535,5 @@ __meta__ = {
 
 [connection signal="value_changed" from="Split/EditorScroll/Editor/HBoxContainer/Scale" to="." method="_on_Scale_value_changed"]
 [connection signal="toggled" from="Split/EditorScroll/Editor/HBoxContainer/MirrorOption/MirrorPortraitsCheckBox" to="." method="_on_MirrorPortraitsCheckBox_toggled"]
-[connection signal="item_selected" from="Split/Preview/Background/PreviewMode" to="." method="_on_OptionButton_item_selected"]
 [connection signal="item_selected" from="Split/Preview/Background/PreviewMode" to="." method="_on_PreviewMode_item_selected"]
+[connection signal="item_selected" from="Split/Preview/Background/PreviewMode" to="." method="_on_OptionButton_item_selected"]
