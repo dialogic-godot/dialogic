@@ -10,28 +10,32 @@ var next_pages = []
 signal open_link(link)
 
 onready var nodes = {
-	'DocsViewer': $DocsViewer
+	'DocsViewer': $DocsViewer,
+	'Next': null,
+	'Previous':null,
 }
 
 func _ready():
-	$HBoxContainer/Previous.icon = get_icon("Back", "EditorIcons")
-	$HBoxContainer/Next.icon = get_icon("Forward", "EditorIcons")
-	
 	set("custom_styles/panel", get_stylebox("Background", "EditorStyles"))
 	
 	var _scale = get_constant("inspector_margin", "Editor")
 	_scale = _scale * 0.125
 	nodes['DocsViewer'].MarkdownParser.editor_scale = _scale
+	nodes['Next'] = find_parent("EditorView").get_node("ToolBar/DocumentationNavigation/Next")
+	nodes['Next'].connect('pressed',self, 'open_next_page')
+	nodes['Previous'] = find_parent("EditorView").get_node("ToolBar/DocumentationNavigation/Previous")
+	nodes['Previous'].connect('pressed',self, 'open_previous_page')
+	
 
 
 func load_page(page):
 	if current_page: 
 		previous_pages.push_back(current_page)
-		$HBoxContainer/Previous.disabled = false
+		nodes['Previous'].disabled = false
 	next_pages = []
 	current_page = page
 	nodes['DocsViewer'].load_page(current_page)
-	$HBoxContainer/Next.disabled = true
+	nodes['Next'].disabled = true
 
 
 func open_previous_page():
@@ -39,8 +43,8 @@ func open_previous_page():
 		next_pages.push_front(current_page)
 		current_page = previous_pages.pop_back()
 		nodes['DocsViewer'].load_page(current_page)
-		$HBoxContainer/Previous.disabled = len(previous_pages) == 0
-		$HBoxContainer/Next.disabled = false
+		nodes['Previous'].disabled = len(previous_pages) == 0
+		nodes['Next'].disabled = false
 
 
 func open_next_page():
@@ -48,8 +52,8 @@ func open_next_page():
 		previous_pages.push_back(current_page)
 		current_page = next_pages.pop_front()
 		nodes['DocsViewer'].load_page(current_page)
-		$HBoxContainer/Next.disabled = len(next_pages) == 0
-		$HBoxContainer/Previous.disabled = false
+		nodes['Next'].disabled = len(next_pages) == 0
+		nodes['Previous'].disabled = false
 
 
 func toggle_editing():
