@@ -98,13 +98,23 @@ func on_master_tree_editor_selected(editor: String):
 
 
 func popup_remove_confirmation(what):
-	var remove_text = "Are you sure you want to remove this [resource]? \n (Can't be restored)"
-	$RemoveConfirmation.dialog_text = remove_text.replace('[resource]', what)
+	# disconnect previous signals
 	if $RemoveConfirmation.is_connected( 
 		'confirmed', self, '_on_RemoveConfirmation_confirmed'):
 				$RemoveConfirmation.disconnect(
 					'confirmed', self, '_on_RemoveConfirmation_confirmed')
-	$RemoveConfirmation.connect('confirmed', self, '_on_RemoveConfirmation_confirmed', [what])
+	
+	# the last theme should not be deleteded!!!
+	if what == "Theme" and len(DialogicUtil.get_theme_list()) == 1:
+		print("[D] You cannot delete the last theme!")
+		$RemoveConfirmation.dialog_text = "Dialogic always needs a theme. You cannot delete the last theme. Sorry!"
+	# otherwise we're ok
+	else:
+		var remove_text = "Are you sure you want to remove this [resource]? \n (Can't be restored)"
+		$RemoveConfirmation.dialog_text = remove_text.replace('[resource]', what)
+		$RemoveConfirmation.connect('confirmed', self, '_on_RemoveConfirmation_confirmed', [what])
+	
+	# popup time!
 	$RemoveConfirmation.popup_centered()
 
 
