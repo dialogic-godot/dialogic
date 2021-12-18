@@ -5,13 +5,11 @@ class_name DialogicParser
 # adds name coloring to the dialog texts
 static func parse_characters(dialog_script):
 	var characters = DialogicUtil.get_character_list()
-
 	var event_index := 0
 	for event in dialog_script['events']:
 		# if this is a text or question event
 		if event.get('event_id') in ['dialogic_001', 'dialogic_010']:
 			var text :String = event.get({'dialogic_001':'text', 'dialogic_010':'question'}[event.get('event_id')], '')
-			
 			for character in characters:
 				# check whether to use the name or the display name
 				var char_names = [character.get('name')]
@@ -19,7 +17,8 @@ static func parse_characters(dialog_script):
 					if character.get('display_name'): char_names.append(character.get('display_name'))
 				if character.get('data', {}).get('nickname_bool', false):
 					for nickname in character.get('data').get('nickname', '').split(',', true, 0):
-						char_names.append(nickname.strip_edges())
+						if nickname.strip_edges():
+							char_names.append(nickname.strip_edges())
 				
 				#Regex purposefully excludes [] as replacing those interferes with the second regex
 				var escapeRegExp = "(?=[+&|!(){}^\"~*.?:\\\\-])" 
@@ -28,15 +27,16 @@ static func parse_characters(dialog_script):
 				regex.compile(escapeRegExp)
 				char_names = regex.sub(str(char_names), "\\", true)
 				
-				var regex_thing = str(char_names).replace("[", "(").replace("]", ")").replace(", ", "|")+'\\b'
+				var regex_thing = "((\\]|^)[^\\[]*)(?<name>"+str(char_names).replace("[", "(").replace("]", ")").replace(", ", "|")+")"
 				regex.compile(regex_thing)
 				
 				var counter = 0
 				for result in regex.search_all(text):
-					text = text.insert(result.get_start()+((9+8+8)*counter), '[color=#' + character['color'].to_html() + ']')
-					text = text.insert(result.get_end()+9+8+((9+8+8)*counter), '[/color]')
+					text = text.insert(result.get_start("name")+((9+8+8)*counter), '[color=#' + character['color'].to_html() + ']')
+					text = text.insert(result.get_end("name")+9+8+((9+8+8)*counter), '[/color]')
 					result = regex.search(text)
 					counter += 1
+				
 				dialog_script['events'][event_index][{'dialogic_001':'text', 'dialogic_010':'question'}[event.get('event_id')]] = text
 		
 		event_index += 1
