@@ -284,44 +284,13 @@ func _draw():
 
 	# Drawing Event Circle
 	#draw_circle(Vector2(pos_x, pos_y), 20, Color(1,1,0,1))
-
-	# Drawing arc
-	if event_name == 'Choice':
-		# Vertical Line
-		draw_rect(Rect2(Vector2(pos_x, pos_y - 60),
-			Vector2(line_width, rect_size.y + 20)),
-			line_color, true)
-			
-		# Connecting with the question 
-		var arc_start_x = ((indent_size + 2) * current_indent_size) + 4.6
-		var start_angle = 90
-		var end_angle = 185
-		draw_arc(
-			Vector2(arc_start_x, - 5),
-			25, # radius
-			deg2rad(start_angle),
-			deg2rad(end_angle),
-			12, #point count
-			line_color,
-			2.0,
-			true
-		)
-		#draw_rect(Rect2(
-		#	Vector2(arc_start_x, pos_y),
-		#	Vector2(10, 1)),
-		#line_color, true)
-		
-		# Connecting with the next event
-		draw_arc(
-			Vector2( 52 +  ((indent_size + 2) * current_indent_size), pos_y + 5),
-			25, # radius
-			deg2rad(start_angle),
-			deg2rad(end_angle),
-			12, #point count
-			line_color,
-			2.0,
-			true
-		)
+	
+	var event_index = 0
+	var c = 0
+	for t in timeline_children:
+		if t == self:
+			event_index = c
+		c += 1
 
 	if current_indent_size > 1:
 			
@@ -346,4 +315,46 @@ func _draw():
 		draw_rect(Rect2(Vector2(pos_x, pos_y),
 			Vector2(line_width, rect_size.y - 40)),
 			line_color, true)
+			
+	# Drawing arc
+	if event_name == 'Choice':
+		# Vertical Line
+		draw_rect(Rect2(Vector2(pos_x, pos_y - 60),
+			Vector2(line_width, rect_size.y + 20)),
+			line_color, true)
+			
+			
+		# Connecting with the question 
+		var arc_start_x = ((indent_size + 2) * current_indent_size) + 4.6
+		var start_angle = 90
+		var end_angle = 185
+		draw_arc(
+			Vector2(arc_start_x, - 5),
+			25, # radius
+			deg2rad(start_angle),
+			deg2rad(end_angle),
+			12, #point count
+			line_color,
+			2.0,
+			true
+		)
+
+		# Don't draw arc if next event is another choice event
+		var next_event = timeline_children[event_index + 1]
+		if next_event.event_name == "Choice" or next_event.event_name == "End Branch":
+			return
+			
+		# Connecting with the next event
+		draw_arc(
+			Vector2( 52 +  ((indent_size + 2) * current_indent_size), pos_y + 5),
+			25, # radius
+			deg2rad(start_angle),
+			deg2rad(end_angle),
+			12, #point count
+			line_color,
+			2.0,
+			true
+		)
+
+
 		
