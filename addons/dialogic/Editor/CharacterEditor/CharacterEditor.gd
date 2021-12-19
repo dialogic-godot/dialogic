@@ -211,6 +211,13 @@ func refresh_themes_and_select(file):
 # is called recursively to build all levels of the folder structure
 func build_PickerMenuFolder(menu:PopupMenu, folder_structure:Dictionary, current_folder_name:String):
 	var index = 0
+	
+	if menu == nodes["theme"].get_popup():
+		menu.add_item('No custom theme')
+		menu.set_item_icon(index, get_icon("GuiRadioUnchecked", "EditorIcons"))
+		menu.set_item_metadata(index, {"file":""})
+		index += 1
+	
 	for folder_name in folder_structure['folders'].keys():
 		var submenu = PopupMenu.new()
 		var submenu_name = build_PickerMenuFolder(submenu, folder_structure['folders'][folder_name], folder_name)
