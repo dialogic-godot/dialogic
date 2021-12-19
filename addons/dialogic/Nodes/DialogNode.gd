@@ -294,7 +294,10 @@ func deferred_resize(current_size, result):
 
 # loads the given theme file
 func load_theme(filename):
-	var theme = DialogicResources.get_theme_config(filename)
+	var load_theme = DialogicResources.get_theme_config(filename)
+	if not load_theme:
+		return current_theme 
+	var theme = load_theme
 	current_theme_file_name = filename
 	# Box size
 	call_deferred('deferred_resize', $TextBubble.rect_size, theme.get_value('box', 'size', Vector2(910, 167)))
