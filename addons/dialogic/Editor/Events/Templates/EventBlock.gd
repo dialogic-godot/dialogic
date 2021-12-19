@@ -285,27 +285,23 @@ func _draw():
 	# Drawing Event Circle
 	#draw_circle(Vector2(pos_x, pos_y), 20, Color(1,1,0,1))
 	
+	# Figuring out the next event
 	var event_index = 0
 	var c = 0
 	for t in timeline_children:
 		if t == self:
 			event_index = c
 		c += 1
+	var next_event = timeline_children[event_index + 1]
 
 	if current_indent_size > 1:
-			
 		var line_size = ((indent_size + 2.2) * current_indent_size)
-		# Horizontal Line
-		#draw_rect(Rect2(
-		#	Vector2(pos_x + pos_x - 1, pos_y),
-		#	Vector2(line_size - pos_x, 1)),
-		#line_color, true)
-
-		# Vertical Line
+		# Line at 0
 		draw_rect(Rect2(Vector2(pos_x, pos_y - 60),
 			Vector2(line_width, rect_size.y + 60)),
 			line_color, true)
-		# First line
+		
+		# Line at current indent
 		draw_rect(Rect2(
 			Vector2(pos_x + line_size, pos_y),
 			Vector2(line_width, rect_size.y - 40)),
@@ -340,7 +336,6 @@ func _draw():
 		)
 
 		# Don't draw arc if next event is another choice event
-		var next_event = timeline_children[event_index + 1]
 		if next_event.event_name == "Choice" or next_event.event_name == "End Branch":
 			return
 			
