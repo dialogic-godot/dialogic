@@ -174,10 +174,10 @@ func load_values(settings: ConfigFile, section: String, key: Array):
 			if nodes[k] is LineEdit:
 				nodes[k].text = settings.get_value(section, k)
 			elif nodes[k] is OptionButton:
-				if typeof(settings.get_value(section, k)) == TYPE_STRING:
-					nodes[k].text = str(settings.get_value(section, k))
+				if settings.get_value(section, k) is int:
+					nodes[k].selected = int(settings.get_value(section, k))
 				else:
-					nodes[k].value = int(settings.get_value(section, k))
+					nodes[k].text = str(settings.get_value(section, k))
 			elif nodes[k] is SpinBox:
 				nodes[k].value = int(settings.get_value(section, k))
 			else:

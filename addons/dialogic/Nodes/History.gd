@@ -225,11 +225,9 @@ func _on_HistoryPopup_popup_hide():
 
 
 func _on_HistoryPopup_about_to_show():
-	HistoryButton.show()
+	if HistoryButton != null:
+		HistoryButton.show()
 	ScrollHistoryContainer.scroll_vertical = scrollbar.max_value
-
-
-
 
 
 func _on_History_item_rect_changed():
