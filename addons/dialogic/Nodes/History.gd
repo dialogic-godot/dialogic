@@ -37,8 +37,6 @@ func _ready():
 	HistoryBackground = HistoryDefaultBackground.instance()
 	HistoryPopup.add_child(HistoryBackground)
 	HistoryPopup.move_child(HistoryBackground, 0)
-	
-	
 
 
 func initalize_history():
@@ -231,27 +229,7 @@ func _on_HistoryPopup_about_to_show():
 	ScrollHistoryContainer.scroll_vertical = scrollbar.max_value
 
 
-func _on_toggle_history():
-	if $HistoryPopup.visible == false:
-		$HistoryPopup.popup()
-		if HistoryButton != null:
-			HistoryButton.hide()
-			HistoryButton.disabled = true
-		if CloseButton != null:
-			CloseButton.disabled = false
-			CloseButton.show()
-		is_history_open = true
-		is_mouse_on_button = false
-	else:
-		$HistoryPopup.hide()
-		if HistoryButton != null:
-			HistoryButton.show()
-			HistoryButton.disabled = false
-		if CloseButton != null:
-			CloseButton.disabled = true
-			CloseButton.hide()
-		is_history_open = false
-		is_mouse_on_button = false
+
 
 
 func _on_History_item_rect_changed():
@@ -286,3 +264,27 @@ func _on_HistoryButton_mouse_exited():
 
 func history_advance_block() -> bool:
 	return is_mouse_on_button or is_history_open 
+
+# Used to manually toggle the history visibility on or off
+# This is most useful when you wish to make your own custom controls
+func _on_toggle_history():
+	if $HistoryPopup.visible == false:
+		$HistoryPopup.popup()
+		if HistoryButton != null:
+			HistoryButton.hide()
+			HistoryButton.disabled = true
+		if CloseButton != null:
+			CloseButton.disabled = false
+			CloseButton.show()
+		is_history_open = true
+		is_mouse_on_button = false
+	else:
+		$HistoryPopup.hide()
+		if HistoryButton != null:
+			HistoryButton.show()
+			HistoryButton.disabled = false
+		if CloseButton != null:
+			CloseButton.disabled = true
+			CloseButton.hide()
+		is_history_open = false
+		is_mouse_on_button = false

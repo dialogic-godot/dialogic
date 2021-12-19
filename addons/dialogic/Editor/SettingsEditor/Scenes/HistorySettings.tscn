@@ -225,13 +225,13 @@ anchor_right = 0.0
 anchor_bottom = 0.0
 margin_left = 8.0
 margin_top = 5.0
-margin_right = 59.0
+margin_right = 35.0
 margin_bottom = 19.0
-text = "Log text"
-text_key = "Log text"
+text = "Text"
+text_key = "Text"
 
 [node name="LineEdit" type="LineEdit" parent="GridContainer/LogBox"]
-margin_left = 63.0
+margin_left = 39.0
 margin_right = 152.0
 margin_bottom = 24.0
 size_flags_horizontal = 3
@@ -274,13 +274,13 @@ anchor_right = 0.0
 anchor_bottom = 0.0
 margin_left = 8.0
 margin_top = 5.0
-margin_right = 59.0
+margin_right = 35.0
 margin_bottom = 19.0
-text = "Log text"
-text_key = "Log text"
+text = "Text"
+text_key = "Text"
 
 [node name="LineEdit" type="LineEdit" parent="GridContainer/LogBox2"]
-margin_left = 63.0
+margin_left = 39.0
 margin_right = 152.0
 margin_bottom = 24.0
 size_flags_horizontal = 3

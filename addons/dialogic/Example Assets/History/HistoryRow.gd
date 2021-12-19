@@ -1,7 +1,7 @@
 tool
-extends Panel
+extends PanelContainer
 
-export(NodePath) var Audio_Button_Path = @"HBoxContainer/Button"
+export(NodePath) var Audio_Button_Path = @"HBoxContainer/PlayAudioButton"
 export(NodePath) var Text_Label_Path = @"HBoxContainer/RichTextLabel"
 
 var audioPath = ''
@@ -11,6 +11,8 @@ var TextLabel
 """
 	Example of a HistoryRow. Every time dialog is logged, a new row is created.
 	You can extend this class to customize the logging experience as you see fit.
+	
+	This class can be edited or replaced as long as add_history is implemented
 """
 
 class_name HistoryRow
@@ -22,10 +24,9 @@ func _ready():
 	assert(TextLabel is RichTextLabel, 'Text_Label must be a rich text label.')
 	assert(AudioButton is Button, 'Audio_Button must be a button.')
 	
-	TextLabel.connect('minimum_size_changed', self, '_on_RichTextLabel_minimum_size_changed')
+	#TextLabel.connect('minimum_size_changed', self, '_on_RichTextLabel_minimum_size_changed')
 
 
-# This class can be edited or replaced as long as add_history is implemented
 func add_history(historyString, newAudio=''):
 	TextLabel.append_bbcode(historyString)
 	audioPath = newAudio
@@ -80,7 +81,6 @@ func load_theme(theme: ConfigFile):
 
 	$ColorRect.visible = theme.get_value('background', 'use_color', false)
 	$TextureRect.visible = theme.get_value('background', 'use_image', true)
-
 
 
 func _on_RichTextLabel_minimum_size_changed():

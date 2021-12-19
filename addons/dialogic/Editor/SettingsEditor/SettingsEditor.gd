@@ -139,7 +139,7 @@ func _ready():
 			get_icon("ControlAlignBottomCenter", "EditorIcons"), "Bottom Center", 7)
 		button_positions_popup.add_icon_item(
 			get_icon("ControlAlignBottomRight", "EditorIcons"), "Bottom Right", 8)
-			
+	
 	nodes['history_screen_margin_x'].connect("value_changed", self, '_spinbox_val_changed', ['history_screen_margin_x'])
 	nodes['history_screen_margin_y'].connect("value_changed", self, '_spinbox_val_changed', ['history_screen_margin_y'])
 	nodes['history_container_margin_x'].connect("value_changed", self, '_spinbox_val_changed', ['history_container_margin_x'])
@@ -174,9 +174,11 @@ func load_values(settings: ConfigFile, section: String, key: Array):
 			if nodes[k] is LineEdit:
 				nodes[k].text = settings.get_value(section, k)
 			elif nodes[k] is OptionButton:
-				nodes[k].text = str(settings.get_value(section, k))
+				if typeof(settings.get_value(section, k)) == TYPE_STRING:
+					nodes[k].text = str(settings.get_value(section, k))
+				else:
+					nodes[k].value = int(settings.get_value(section, k))
 			elif nodes[k] is SpinBox:
-				print(settings.get_value(section, k))
 				nodes[k].value = int(settings.get_value(section, k))
 			else:
 				nodes[k].pressed = settings.get_value(section, k, false)

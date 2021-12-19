@@ -114,6 +114,8 @@ static func change_timeline(timeline: String) -> void:
 		print("[D] Tried to change timeline, but no DialogNode exists!")
 
 
+# Used to toggle the history timeline display. Only useful if you do not wish to
+# use the provided buttons
 static func toggle_history():
 	if has_current_dialog_node():
 		var dialog_node = Engine.get_main_loop().get_meta('latest_dialogic_node')
