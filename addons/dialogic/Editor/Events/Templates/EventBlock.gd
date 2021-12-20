@@ -284,13 +284,41 @@ func _draw():
 
 	# Drawing Event Circle
 	#draw_circle(Vector2(pos_x, pos_y), 20, Color(1,1,0,1))
+	
+	# Figuring out the next event
+	var event_index = 0
+	var c = 0
+	for t in timeline_children:
+		if t == self:
+			event_index = c
+		c += 1
+	var next_event = timeline_children[event_index + 1]
 
+	if current_indent_size > 1:
+		var line_size = ((indent_size + 2.2) * current_indent_size)
+		# Line at 0
+		draw_rect(Rect2(Vector2(pos_x, pos_y - 60),
+			Vector2(line_width, rect_size.y + 60)),
+			line_color, true)
+		
+		# Line at current indent
+		draw_rect(Rect2(
+			Vector2(pos_x + line_size, pos_y),
+			Vector2(line_width, rect_size.y - 40)),
+			line_color, true)
+	else:
+		# Vertical Line
+		draw_rect(Rect2(Vector2(pos_x, pos_y),
+			Vector2(line_width, rect_size.y - 40)),
+			line_color, true)
+			
 	# Drawing arc
 	if event_name == 'Choice':
 		# Vertical Line
 		draw_rect(Rect2(Vector2(pos_x, pos_y - 60),
 			Vector2(line_width, rect_size.y + 20)),
 			line_color, true)
+			
 			
 		# Connecting with the question 
 		var arc_start_x = ((indent_size + 2) * current_indent_size) + 4.6
@@ -306,11 +334,11 @@ func _draw():
 			2.0,
 			true
 		)
-		#draw_rect(Rect2(
-		#	Vector2(arc_start_x, pos_y),
-		#	Vector2(10, 1)),
-		#line_color, true)
-		
+
+		# Don't draw arc if next event is another choice event
+		if next_event.event_name == "Choice" or next_event.event_name == "End Branch":
+			return
+			
 		# Connecting with the next event
 		draw_arc(
 			Vector2( 52 +  ((indent_size + 2) * current_indent_size), pos_y + 5),
@@ -323,27 +351,5 @@ func _draw():
 			true
 		)
 
-	if current_indent_size > 1:
-			
-		var line_size = ((indent_size + 2.2) * current_indent_size)
-		# Horizontal Line
-		#draw_rect(Rect2(
-		#	Vector2(pos_x + pos_x - 1, pos_y),
-		#	Vector2(line_size - pos_x, 1)),
-		#line_color, true)
 
-		# Vertical Line
-		draw_rect(Rect2(Vector2(pos_x, pos_y - 60),
-			Vector2(line_width, rect_size.y + 60)),
-			line_color, true)
-		# First line
-		draw_rect(Rect2(
-			Vector2(pos_x + line_size, pos_y),
-			Vector2(line_width, rect_size.y - 40)),
-			line_color, true)
-	else:
-		# Vertical Line
-		draw_rect(Rect2(Vector2(pos_x, pos_y),
-			Vector2(line_width, rect_size.y - 40)),
-			line_color, true)
 		
