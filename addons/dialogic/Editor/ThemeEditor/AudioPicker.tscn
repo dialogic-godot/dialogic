@@ -119,7 +119,7 @@ margin_top = 112.0
 margin_right = 265.0
 margin_bottom = 132.0
 text = "Master"
-items = [ "Master", null, false, 0, null, "Voice Lines", null, false, 1, null, "New Bus", null, false, 2, null ]
+items = [ "Master", null, false, 0, null ]
 selected = 0
 
 [connection signal="toggled" from="FileHBoxContainer/EnableCheckBox" to="." method="_on_EnableCheckBox_toggled"]

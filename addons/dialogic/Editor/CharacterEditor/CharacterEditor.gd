@@ -15,6 +15,8 @@ onready var nodes = {
 	'nickname': $Split/EditorScroll/Editor/DisplayNickname/LineEdit,
 	'description': $Split/EditorScroll/Editor/Description/TextEdit,
 	
+	'audio_picker': $Split/EditorScroll/Editor/AudioPicker,
+	
 	'file': $Split/EditorScroll/Editor/FileName/LineEdit,
 	
 	'mirror_portraits_checkbox' : $Split/EditorScroll/Editor/HBoxContainer/MirrorOption/MirrorPortraitsCheckBox,
@@ -44,6 +46,8 @@ func _ready():
 	nodes['name'].connect('text_changed', self, '_on_name_changed')
 	nodes['name'].connect('focus_exited', self, '_update_name_on_tree')
 	nodes['color'].connect('color_changed', self, '_on_color_changed')
+	nodes['audio_picker'].connect("data_updated", self, "_on_audio_changed")
+	nodes['audio_picker'].path = "res://addons/dialogic/Example Assets/Sound Effects/Beep.wav"
 	var style = $Split/EditorScroll.get('custom_styles/bg')
 	style.set('bg_color', get_color("base_color", "Editor"))
 	nodes['new_portrait_button'].icon = get_icon("Add", "EditorIcons")
@@ -69,6 +73,9 @@ func is_selected(file: String):
 func _on_name_changed(value):
 	save_character()
 
+func _on_audio_changed(value):
+	save_character()
+	pass
 
 func _update_name_on_tree():
 	var item = master_tree.get_selected()
@@ -102,7 +109,19 @@ func clear_character_editor():
 	nodes['scale'].value = 100
 	nodes['offset_x'].value = 0
 	nodes['offset_y'].value = 0
-
+	
+	var default_audio_file = "res://addons/dialogic/Example Assets/Sound Effects/Beep.wav"
+	nodes['audio_picker'].set_data({
+		'enable': false,
+		'path': default_audio_file,
+		'volume': 0.0,
+		'volume_rand_range': 0.0,
+		'pitch': 1.0,
+		'pitch_rand_range': 0.0,
+		'allow_interrupt': true,
+		'audio_bus': AudioServer.get_bus_name(0)
+	})
+	
 	# Clearing portraits
 	for p in nodes['portrait_list'].get_children():
 		p.queue_free()
@@ -146,10 +165,14 @@ func generate_character_data_to_save():
 		'scale': nodes['scale'].value,
 		'offset_x': nodes['offset_x'].value,
 		'offset_y': nodes['offset_y'].value,
+		'typing_audio_data': nodes['audio_picker'].get_data()
 	}
 	# Adding name later for cases when no name is provided
 	if nodes['name'].text != '':
 		info_to_save['name'] = nodes['name'].text
+	
+	# Add audio data
+	
 	
 	return info_to_save
 
@@ -177,6 +200,7 @@ func load_character(filename: String):
 	#nodes['nickname'].visible
 	nodes['offset_x'].value = data.get('offset_x', 0)
 	nodes['offset_y'].value = data.get('offset_y', 0)
+	nodes['audio_picker'].set_data(data.get('typing_audio_data', nodes['audio_picker'].get_data()))
 	nodes['mirror_portraits_checkbox'].pressed = data.get('mirror_portraits', false)
 	nodes['portrait_preview_full'].flip_h = data.get('mirror_portraits', false)
 	nodes['portrait_preview_real'].flip_h = data.get('mirror_portraits', false)

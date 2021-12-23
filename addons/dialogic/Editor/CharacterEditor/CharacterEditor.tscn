@@ -1,9 +1,10 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://addons/dialogic/Editor/CharacterEditor/PortraitEntry.tscn" type="PackedScene" id=1]
 [ext_resource path="res://addons/dialogic/Editor/CharacterEditor/CharacterEditor.gd" type="Script" id=2]
 [ext_resource path="res://addons/dialogic/Editor/Common/TLabel.tscn" type="PackedScene" id=3]
 [ext_resource path="res://addons/dialogic/Example Assets/portraits/df-3.png" type="Texture" id=4]
+[ext_resource path="res://addons/dialogic/Editor/ThemeEditor/AudioPicker.tscn" type="PackedScene" id=5]
 
 [sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 0, 0, 0, 1 )
@@ -239,10 +240,36 @@ margin_bottom = 156.0
 rect_min_size = Vector2( 0, 10 )
 custom_constants/separation = 18
 
-[node name="Portraits" type="HBoxContainer" parent="Split/EditorScroll/Editor"]
+[node name="Typing Audio" type="HBoxContainer" parent="Split/EditorScroll/Editor"]
 margin_top = 160.0
 margin_right = 581.0
 margin_bottom = 174.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Title" type="Label" parent="Split/EditorScroll/Editor/Typing Audio"]
+margin_right = 135.0
+margin_bottom = 14.0
+text = "Custom Typing Audio"
+
+[node name="AudioPicker" parent="Split/EditorScroll/Editor" instance=ExtResource( 5 )]
+margin_top = 178.0
+margin_bottom = 286.0
+size_flags_horizontal = 0
+character_typing_audio = true
+
+[node name="Separator2" type="HSeparator" parent="Split/EditorScroll/Editor"]
+margin_top = 290.0
+margin_right = 581.0
+margin_bottom = 308.0
+rect_min_size = Vector2( 0, 10 )
+custom_constants/separation = 18
+
+[node name="Portraits" type="HBoxContainer" parent="Split/EditorScroll/Editor"]
+margin_top = 312.0
+margin_right = 581.0
+margin_bottom = 326.0
 
 [node name="Title" parent="Split/EditorScroll/Editor/Portraits" instance=ExtResource( 3 )]
 anchor_right = 0.0
@@ -256,9 +283,9 @@ valign = 1
 text_key = "Portraits"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Split/EditorScroll/Editor"]
-margin_top = 178.0
+margin_top = 330.0
 margin_right = 581.0
-margin_bottom = 202.0
+margin_bottom = 354.0
 
 [node name="TLabel11" parent="Split/EditorScroll/Editor/HBoxContainer" instance=ExtResource( 3 )]
 anchor_right = 0.0
@@ -324,7 +351,7 @@ margin_right = 125.0
 margin_bottom = 24.0
 
 [node name="PortraitPanel" type="PanelContainer" parent="Split/EditorScroll/Editor"]
-margin_top = 206.0
+margin_top = 358.0
 margin_right = 581.0
 margin_bottom = 600.0
 size_flags_vertical = 3
@@ -334,7 +361,7 @@ custom_styles/panel = SubResource( 7 )
 margin_left = 2.0
 margin_top = 2.0
 margin_right = 579.0
-margin_bottom = 392.0
+margin_bottom = 240.0
 
 [node name="Labels" type="HBoxContainer" parent="Split/EditorScroll/Editor/PortraitPanel/VBoxContainer"]
 margin_right = 577.0
@@ -382,13 +409,13 @@ icon = SubResource( 9 )
 [node name="ScrollContainer" type="ScrollContainer" parent="Split/EditorScroll/Editor/PortraitPanel/VBoxContainer"]
 margin_top = 26.0
 margin_right = 577.0
-margin_bottom = 390.0
+margin_bottom = 238.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Split/EditorScroll/Editor/PortraitPanel/VBoxContainer/ScrollContainer"]
 margin_right = 577.0
-margin_bottom = 364.0
+margin_bottom = 212.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
@@ -402,9 +429,9 @@ margin_right = 577.0
 
 [node name="FileName" type="HBoxContainer" parent="Split/EditorScroll/Editor"]
 visible = false
-margin_top = 625.0
-margin_right = 527.0
-margin_bottom = 649.0
+margin_top = 576.0
+margin_right = 581.0
+margin_bottom = 600.0
 
 [node name="TLabel9" parent="Split/EditorScroll/Editor/FileName" instance=ExtResource( 3 )]
 anchor_right = 0.0
@@ -417,7 +444,7 @@ text_key = "File:"
 
 [node name="LineEdit" type="LineEdit" parent="Split/EditorScroll/Editor/FileName"]
 margin_left = 31.0
-margin_right = 527.0
+margin_right = 581.0
 margin_bottom = 24.0
 rect_min_size = Vector2( 140, 0 )
 size_flags_horizontal = 3
@@ -440,6 +467,7 @@ rect_clip_content = true
 size_flags_vertical = 3
 
 [node name="FullTextureRect" type="TextureRect" parent="Split/Preview/Background"]
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 30.0
@@ -469,7 +497,6 @@ __meta__ = {
 }
 
 [node name="RealSizedRect" type="TextureRect" parent="Split/Preview/Background/Positioner"]
-visible = false
 margin_left = 3.0
 margin_right = 402.0
 margin_bottom = 756.0
@@ -496,14 +523,14 @@ margin_left = -110.0
 margin_top = 6.0
 margin_right = -8.0
 margin_bottom = 26.0
-text = "Full View"
+text = "Actual Size"
 items = [ "Full View", null, false, 0, null, "Actual Size", null, false, 1, null ]
-selected = 0
+selected = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [connection signal="value_changed" from="Split/EditorScroll/Editor/HBoxContainer/Scale" to="." method="_on_Scale_value_changed"]
 [connection signal="toggled" from="Split/EditorScroll/Editor/HBoxContainer/MirrorOption/MirrorPortraitsCheckBox" to="." method="_on_MirrorPortraitsCheckBox_toggled"]
-[connection signal="item_selected" from="Split/Preview/Background/PreviewMode" to="." method="_on_OptionButton_item_selected"]
 [connection signal="item_selected" from="Split/Preview/Background/PreviewMode" to="." method="_on_PreviewMode_item_selected"]
+[connection signal="item_selected" from="Split/Preview/Background/PreviewMode" to="." method="_on_OptionButton_item_selected"]

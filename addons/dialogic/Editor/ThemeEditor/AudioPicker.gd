@@ -7,6 +7,8 @@ var loading = false
 var editor_reference
 var path = ""
 
+export var character_typing_audio = false
+
 onready var n : Dictionary = {
 	'enable': $"FileHBoxContainer/EnableCheckBox",
 	'path': $"FileHBoxContainer/PathButton",
@@ -20,9 +22,11 @@ onready var n : Dictionary = {
 
 func _ready():
 	editor_reference = find_parent('EditorView')
-	
 	AudioServer.connect("bus_layout_changed", self, "_on_bus_layout_changed")
 	update_audio_bus_option_buttons()
+	if character_typing_audio:
+		n['audio_bus'].hide()
+		$AudioBusLabel.hide()
 
 func set_data(data):
 	loading = true
@@ -37,13 +41,14 @@ func set_data(data):
 	n['pitch_rand_range'].set_value(data['pitch_rand_range'])
 	n['allow_interrupt'].set_pressed(data['allow_interrupt'])
 	
-	update_audio_bus_option_buttons(data['audio_bus'])
+	if !character_typing_audio:
+		update_audio_bus_option_buttons(data['audio_bus'])
 	
 	_set_disabled(!data['enable'])
 	loading = false
 
 func get_data():
-	return {
+	var data = {
 		'enable': n['enable'].is_pressed(),
 		'path': path,
 		'volume': n['volume'].get_value(),
@@ -51,8 +56,10 @@ func get_data():
 		'pitch': n['pitch'].get_value(),
 		'pitch_rand_range': n['pitch_rand_range'].get_value(),
 		'allow_interrupt': n['allow_interrupt'].is_pressed(),
-		'audio_bus': AudioServer.get_bus_name(n['audio_bus'].get_selected_id())
 	}
+	if !character_typing_audio:
+		data['audio_bus'] = AudioServer.get_bus_name(n['audio_bus'].get_selected_id())
+	return data
 
 func _on_EnableCheckBox_toggled(button_pressed):
 	if not loading: emit_signal("data_updated", name.to_lower())
@@ -72,6 +79,7 @@ func _on_PathButton_pressed():
 	editor_reference.godot_dialog_connect(self, "_on_Path_selected", ["dir_selected", "file_selected"])
 
 func _on_Path_selected(selected_path, target = ""):
+	print(path)
 	if typeof(selected_path) == TYPE_STRING and path != "":
 		path = selected_path
 		n['path'].text = DialogicResources.get_filename_from_path(path)
@@ -104,6 +112,8 @@ func _on_bus_layout_changed():
 	update_audio_bus_option_buttons(selected_text)
 
 func update_audio_bus_option_buttons(selected_text = ''):
+	if character_typing_audio:
+		return
 	n['audio_bus'].clear()
 	for i in range(AudioServer.bus_count):
 		var bus_name = AudioServer.get_bus_name(i)

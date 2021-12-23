@@ -43,6 +43,7 @@ var current_timeline: String = ''
 var dialog_script: Dictionary = {}
 var current_event: Dictionary
 var dialog_index: int = 0
+var character_typing = false
 
 var current_background = ""
 
@@ -318,10 +319,9 @@ func load_theme(filename):
 ## 						AUDIO
 ## -----------------------------------------------------------------------------
 
-func load_audio(theme):
-	# Audio
+func default_audio_data():
 	var default_audio_file = "res://addons/dialogic/Example Assets/Sound Effects/Beep.wav"
-	var default_audio_data = {
+	return {
 		'enable': false,
 		'path': default_audio_file,
 		'volume': 0.0,
@@ -332,10 +332,13 @@ func load_audio(theme):
 		'audio_bus': AudioServer.get_bus_name(0)
 	}
 
+func load_audio(theme):
 	for audio_node in $FX/Audio.get_children():
 		var name = audio_node.name.to_lower()
-		audio_data[name] = theme.get_value('audio', name, default_audio_data)
-	
+		if name == "charatyping":
+			continue
+		audio_data[name] = theme.get_value('audio', name, default_audio_data())
+		var TEST = audio_data[name].path
 		var file_system = Directory.new()
 		if file_system.dir_exists(audio_data[name].path):
 			audio_node.load_samples_from_folder(audio_data[name].path)
@@ -347,6 +350,30 @@ func load_audio(theme):
 		audio_node.set_pitch_scale(audio_data[name].pitch)
 		audio_node.random_pitch_range = audio_data[name].pitch_rand_range
 		audio_node.set_bus(audio_data[name].audio_bus)
+	audio_data["charatyping"] = {}
+	audio_data["charatyping"].audio_bus = audio_data["typing"].audio_bus
+
+func load_character_audio(character_data):
+	if character_data.empty():
+		return false
+	var character_typing_data = character_data["data"].typing_audio_data
+	audio_data["charatyping"] = character_typing_data
+	var audio_node = $FX/Audio/Charatyping
+	if !character_typing_data.enable:
+		return false
+	var TEST = load(character_typing_data.path)
+	var file_system = Directory.new()
+	if file_system.dir_exists(character_typing_data.path):
+		audio_node.load_samples_from_folder(character_typing_data.path)
+	elif file_system.file_exists(character_typing_data.path) or file_system.file_exists(character_typing_data.path + '.import'):
+		audio_node.samples = [load(character_typing_data.path)]
+	
+	audio_node.set_volume_db(character_typing_data.volume)
+	audio_node.random_volume_range = character_typing_data.volume_rand_range
+	audio_node.set_pitch_scale(character_typing_data.pitch)
+	audio_node.random_pitch_range = character_typing_data.pitch_rand_range
+	audio_node.set_bus(audio_data["typing"].audio_bus)
+	return true
 
 func play_audio(name):
 	var node = $FX/Audio.get_node(name.capitalize())
@@ -564,7 +591,10 @@ func event_handler(event: Dictionary):
 			if event.has('character'):
 				var character_data = DialogicUtil.get_character(event['character'])
 				update_name(character_data)
+				character_typing = load_character_audio(character_data)
 				grab_portrait_focus(character_data, event)
+			else:
+				character_typing = false
 			#voice 
 			handle_voice(event)
 			update_text(event['text'])
@@ -899,7 +929,10 @@ func update_text(text: String) -> String:
 
 # plays a sound
 func _on_letter_written():
-	play_audio('typing')
+	if character_typing:
+		play_audio('charatyping')
+	else:
+		play_audio('typing')
 
 
 ## -----------------------------------------------------------------------------
