@@ -104,7 +104,12 @@ func update_text(text:String):
 	# a frame later, when the sizes have been updated, it will check if there 
 	# is enough space or the scrollbar should be activated.
 	call_deferred("update_sizing")
-	
+
+	# if the RPG portrait is enabled, we want to (redundantly) do the same thing before 
+	# the frame is over, so the text box can adjust to the variable width.
+	# TODO: find a cleaner way of doing this?
+	if _theme.get_value("settings", "rpg_portrait_mode", false):
+		update_sizing()
 	
 	# updating the size alignment stuff
 	text_label.grab_focus()
@@ -114,7 +119,6 @@ func update_text(text:String):
 func update_sizing():
 	# this will enable/disable the scrollbar based on the size of the text
 	theme_text_max_height = text_container.rect_size.y
-
 	if text_label.rect_size.y >= theme_text_max_height:
 		text_label.fit_content_height = false
 		text_label.size_flags_vertical = Control.SIZE_EXPAND_FILL
@@ -262,7 +266,8 @@ func update_portrait(portrait, orientation: String):
 	portrait_container.visible = true
 	assert(orientation.to_lower() == "left" or orientation.to_lower() == "right")
 	var container = $TextContainer/HBoxContainer
-	var position = 0 if orientation=="left" else 1
+	var position = 0 if orientation=="left" else container.get_child_count()-1
+#	container.move_child($TextContainer/HBoxContainer/VSeparator, 1)
 	container.move_child(portrait_container, position)
 	portrait_image.texture = portrait.get_texture()
 
@@ -273,14 +278,14 @@ func update_portrait(portrait, orientation: String):
 			portrait_frame.texture = ImageTexture.new()
 		else:
 			portrait_frame.texture = load(frame_path)
-			
-	var text_margin = text_container.get("margin_left")
+	
+	var text_margin = _theme.get_value('text', 'margin', Vector2(20, 10))
 	if portrait_container.get_position_in_parent() > text_label.get_position_in_parent():
-		portrait_container.add_constant_override('margin_left', text_margin)
+		portrait_container.add_constant_override('margin_left', text_margin.x)
 		portrait_container.add_constant_override('margin_right', 0)
 	else:
 		portrait_container.add_constant_override('margin_left', 0)
-		portrait_container.add_constant_override('margin_right', text_margin)
+		portrait_container.add_constant_override('margin_right', text_margin.x)
 
 func disable_portrait():
 	portrait_container.visible = false

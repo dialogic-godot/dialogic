@@ -86,10 +86,6 @@ __meta__ = {
 [node name="TextContainer" type="VBoxContainer" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = 10.0
-margin_top = 12.0
-margin_right = -10.0
-margin_bottom = -12.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 alignment = 1
@@ -98,38 +94,37 @@ __meta__ = {
 }
 
 [node name="HBoxContainer" type="HBoxContainer" parent="TextContainer"]
-margin_right = 890.0
-margin_bottom = 137.0
+margin_right = 910.0
+margin_bottom = 161.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-alignment = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="PortraitContainer" type="MarginContainer" parent="TextContainer/HBoxContainer"]
-margin_bottom = 137.0
+margin_bottom = 161.0
 
 [node name="CenterContainer" type="CenterContainer" parent="TextContainer/HBoxContainer/PortraitContainer"]
-margin_bottom = 137.0
+margin_bottom = 161.0
+size_flags_vertical = 3
 
 [node name="Portrait" type="TextureRect" parent="TextContainer/HBoxContainer/PortraitContainer/CenterContainer"]
-margin_top = 68.0
-margin_bottom = 68.0
+margin_top = 80.0
+margin_bottom = 80.0
 stretch_mode = 4
 
 [node name="PortraitFrame" type="TextureRect" parent="TextContainer/HBoxContainer/PortraitContainer/CenterContainer"]
-margin_top = 68.0
-margin_bottom = 68.0
-size_flags_horizontal = 0
-size_flags_vertical = 0
+margin_top = 80.0
+margin_bottom = 80.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
 stretch_mode = 4
-flip_h = true
 
 [node name="RichTextLabel" type="RichTextLabel" parent="TextContainer/HBoxContainer"]
 margin_left = 4.0
-margin_right = 890.0
-margin_bottom = 137.0
+margin_right = 910.0
+margin_bottom = 161.0
 focus_mode = 2
 size_flags_horizontal = 3
 custom_colors/default_color = Color( 1, 1, 1, 1 )
@@ -141,16 +136,11 @@ custom_fonts/normal_font = ExtResource( 1 )
 custom_styles/focus = SubResource( 1 )
 custom_styles/normal = SubResource( 2 )
 bbcode_enabled = true
-bbcode_text = "Placeholder text for testing an formatting. 
-Placeholder text for testing an formatting. 
-adsd"
+bbcode_text = "Placeholder text for testing an formatting. "
 visible_characters = 0
 percent_visible = 0.0
 meta_underlined = false
-text = "Placeholder text for testing an formatting. 
-Placeholder text for testing an formatting. 
-adsd"
-fit_content_height = true
+text = "Placeholder text for testing an formatting. "
 selection_enabled = true
 __meta__ = {
 "_edit_use_anchors_": false
