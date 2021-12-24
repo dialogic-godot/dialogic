@@ -323,7 +323,9 @@ func update_rpg_portrait(character_data):
 	if rpg_portrait_mode and portrait_exists(character_data):
 		for portrait in $Portraits.get_children():
 			if portrait.character_data.hash() == character_data.hash():
-				$TextBubble.update_portrait(portrait, "left" if portrait.get_position() == 0 else "right")
+				var position = portrait.get_position()
+				var orientation = "left" if position == 0 or position == null else "right"
+				$TextBubble.update_portrait(portrait, orientation)
 				return
 	$TextBubble.disable_portrait()
 
