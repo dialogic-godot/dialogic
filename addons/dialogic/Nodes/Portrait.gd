@@ -65,7 +65,9 @@ func set_portrait(expression: String) -> void:
 		$TextureRect.texture = load(default)
 	else:
 		$TextureRect.texture = ImageTexture.new()
-
+		
+func get_texture():
+	return $TextureRect.texture
 
 func set_mirror(value):
 	current_state['mirrored'] = value
@@ -151,6 +153,10 @@ func focus():
 			# Make sure that this portrait is the last to be _draw -ed
 			_parent.move_child(self, _parent.get_child_count())
 
+func get_position():
+	for key in current_state['position'].keys():
+		if current_state['position'][key]:
+			return int(key)
 
 func focusout(dim_color = Color(0.5, 0.5, 0.5, 1.0)):
 	if single_portrait_mode:

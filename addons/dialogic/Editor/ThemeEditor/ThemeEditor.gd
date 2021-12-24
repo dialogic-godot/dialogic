@@ -48,7 +48,9 @@ onready var n : Dictionary = {
 	'theme_text_speed': $"VBoxContainer/TabContainer/Dialog Text/Column3/GridContainer/TextSpeed",
 	'alignment': $"VBoxContainer/TabContainer/Dialog Text/Column3/GridContainer/HBoxContainer3/Alignment",
 	'single_portrait_mode': $"VBoxContainer/TabContainer/Dialog Text/Column3/GridContainer/SinglePortraitModeCheckBox",
-	
+	'rpg_portrait_mode': $"VBoxContainer/TabContainer/Dialog Text/Column3/GridContainer/RPGPortraitModeCheckBox",
+	'rpg_portrait_frame_enabled': $"VBoxContainer/TabContainer/Dialog Text/Column3/GridContainer/HBoxContainer/RPGPortraitFrameCheckBox",
+	'rpg_portrait_frame': $"VBoxContainer/TabContainer/Dialog Text/Column3/GridContainer/HBoxContainer/RPGPortraitFrameButton",
 	# Dialog box
 	'background_texture_button_visible': $"VBoxContainer/TabContainer/Dialog Box/Column/GridContainer/HBoxContainer3/CheckBox",
 	'theme_background_image': $"VBoxContainer/TabContainer/Dialog Box/Column/GridContainer/HBoxContainer3/BackgroundTextureButton",
@@ -181,6 +183,8 @@ func _ready() -> void:
 	# Dialog Text tab
 	n['theme_text_shadow'].connect('toggled', self, '_on_generic_checkbox', ['text', 'shadow'])
 	n['single_portrait_mode'].connect('toggled', self, '_on_generic_checkbox', ['settings', 'single_portrait_mode'])
+	n['rpg_portrait_mode'].connect('toggled', self, '_on_generic_checkbox', ['settings', 'rpg_portrait_mode'])
+	n['rpg_portrait_frame_enabled'].connect('toggled', self, '_on_generic_checkbox', ['settings', 'rpg_portrait_frame_enabled'])
 	n['theme_text_speed'].connect('value_changed', self, '_on_generic_value_change', ['text','speed'])
 	
 	# Dialog Box tab
@@ -298,9 +302,12 @@ func load_theme(filename):
 	current_theme = filename
 	var theme = DialogicResources.get_theme_config(filename)
 	var default_background = 'res://addons/dialogic/Example Assets/backgrounds/background-2.png'
+	var default_rpg_portrait_frame = "res://addons/dialogic/Example Assets/Rpg Portrait Frame/rpg_portrait_frame.png"
 	# Settings
 	n['single_portrait_mode'].pressed = theme.get_value('settings', 'single_portrait_mode', false) # Currently in Dialog Text tab
-	
+	n['rpg_portrait_mode'].pressed = theme.get_value('settings', 'rpg_portrait_mode', false)
+	n['rpg_portrait_frame_enabled'].pressed = theme.get_value('settings', 'rpg_portrait_frame_enabled', false)
+	n['rpg_portrait_frame'].text =  DialogicResources.get_filename_from_path(theme.get_value('settings', 'rpg_portrait_frame', default_rpg_portrait_frame))
 	n['animation_dim_color'].color = Color(theme.get_value('animation', 'dim_color', '#ff808080'))
 	
 	# Background
@@ -642,6 +649,17 @@ func _on_ShadowOffset_value_changed(_value) -> void:
 	DialogicResources.set_theme_value(current_theme, 'text','shadow_offset', Vector2(n['theme_shadow_offset_x'].value,n['theme_shadow_offset_y'].value))
 	_on_PreviewButton_pressed() # Refreshing the preview
 
+func _on_RPGPortraitFrameButton_pressed():
+	editor_reference.godot_dialog("*.png")
+	editor_reference.godot_dialog_connect(self, "_on_RPG_portrait_frame_selected")
+
+func _on_RPG_portrait_frame_selected(path, target):
+	if loading:
+		return
+	DialogicResources.set_theme_value(current_theme, 'settings', 'rpg_portrait_frame', path)
+	n['rpg_portrait_frame'].text = DialogicResources.get_filename_from_path(path)
+	$DelayPreviewTimer.start(0.5) # Calling a timer so the update doesn't get triggered many times
+#	_on_PreviewButton_pressed() # Refreshing the preview
 
 ## ------------ 		DIALOG BOX TAB	 	------------------------------------
 
@@ -1024,5 +1042,3 @@ func _on_Glossary_BackgroundPanel_selected(path, target):
 func _on_audio_data_updated(section):
 	DialogicResources.set_theme_value(current_theme, 'audio', section, n['audio_pickers'][section].get_data())
 	_on_PreviewButton_pressed()
-
-

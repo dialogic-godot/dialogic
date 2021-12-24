@@ -44,9 +44,9 @@ tracks/0/keys = {
 }
 
 [sub_resource type="StyleBoxFlat" id=6]
-content_margin_left = 20.0
-content_margin_right = 20.0
-content_margin_bottom = -170.0
+content_margin_left = 10.0
+content_margin_right = 10.0
+content_margin_bottom = 0.0
 bg_color = Color( 1, 1, 1, 0 )
 expand_margin_left = 10.0
 
@@ -97,11 +97,41 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="RichTextLabel" type="RichTextLabel" parent="TextContainer"]
-margin_top = 11.0
+[node name="HBoxContainer" type="HBoxContainer" parent="TextContainer"]
 margin_right = 890.0
-margin_bottom = 125.0
+margin_bottom = 137.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+alignment = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="PortraitContainer" type="MarginContainer" parent="TextContainer/HBoxContainer"]
+margin_bottom = 137.0
+
+[node name="CenterContainer" type="CenterContainer" parent="TextContainer/HBoxContainer/PortraitContainer"]
+margin_bottom = 137.0
+
+[node name="Portrait" type="TextureRect" parent="TextContainer/HBoxContainer/PortraitContainer/CenterContainer"]
+margin_top = 68.0
+margin_bottom = 68.0
+stretch_mode = 4
+
+[node name="PortraitFrame" type="TextureRect" parent="TextContainer/HBoxContainer/PortraitContainer/CenterContainer"]
+margin_top = 68.0
+margin_bottom = 68.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+stretch_mode = 4
+flip_h = true
+
+[node name="RichTextLabel" type="RichTextLabel" parent="TextContainer/HBoxContainer"]
+margin_left = 4.0
+margin_right = 890.0
+margin_bottom = 137.0
 focus_mode = 2
+size_flags_horizontal = 3
 custom_colors/default_color = Color( 1, 1, 1, 1 )
 custom_colors/selection_color = Color( 0, 0, 0, 0 )
 custom_colors/font_color_shadow = Color( 1, 1, 1, 0 )

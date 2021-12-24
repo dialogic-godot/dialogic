@@ -12,9 +12,13 @@ var regex = RegEx.new()
 var bbcoderemoverregex = RegEx.new()
 
 onready var text_container = $TextContainer
-onready var text_label = $TextContainer/RichTextLabel
+onready var text_label = $TextContainer/HBoxContainer/RichTextLabel
 onready var name_label = $NameLabel
 onready var next_indicator = $NextIndicatorContainer/NextIndicator
+
+onready var portrait_frame = $TextContainer/HBoxContainer/PortraitContainer/CenterContainer/PortraitFrame
+onready var portrait_image = $TextContainer/HBoxContainer/PortraitContainer/CenterContainer/Portrait
+onready var portrait_container = $TextContainer/HBoxContainer/PortraitContainer
 
 var _finished := false
 var _theme
@@ -149,8 +153,7 @@ func skip():
 func reset():
 	name_label.text = ''
 	name_label.visible = false
-
-
+	
 func load_theme(theme: ConfigFile):
 	# Text
 	var theme_font = DialogicUtil.path_fixer_load(theme.get_value('text', 'font', 'res://addons/dialogic/Example Assets/Fonts/DefaultFont.tres'))
@@ -206,7 +209,7 @@ func load_theme(theme: ConfigFile):
 
 	$ColorRect.visible = theme.get_value('background', 'use_color', false)
 	$TextureRect.visible = theme.get_value('background', 'use_image', true)
-
+	
 	# Next image
 	$NextIndicatorContainer.rect_position = Vector2(0,0)
 	next_indicator.texture = DialogicUtil.path_fixer_load(theme.get_value('next_indicator', 'image', 'res://addons/dialogic/Example Assets/next-indicator/next-indicator.png'))
@@ -246,7 +249,6 @@ func load_theme(theme: ConfigFile):
 	else:
 		$NameLabel/TextureRect.modulate = Color('#ffffffff')
 	
-	
 	# Setting next indicator animation
 	next_indicator.self_modulate = Color('#ffffff')
 	var animation = theme.get_value('next_indicator', 'animation', 'Up and down')
@@ -254,11 +256,38 @@ func load_theme(theme: ConfigFile):
 	
 	# Saving reference to the current theme
 	_theme = theme
+	portrait_container.visible = theme.get_value("settings", "rpg_portrait_mode", false)
+
+func update_portrait(portrait, orientation: String):
+	portrait_container.visible = true
+	assert(orientation.to_lower() == "left" or orientation.to_lower() == "right")
+	var container = $TextContainer/HBoxContainer
+	var position = 0 if orientation=="left" else 1
+	container.move_child(portrait_container, position)
+	portrait_image.texture = portrait.get_texture()
+
+	# portrait frame
+	var frame_path = _theme.get_value('settings', 'rpg_portrait_frame', "")
+	if _theme.get_value('settings', 'rpg_portrait_frame_enabled', false):
+		if frame_path == "":
+			portrait_frame.texture = ImageTexture.new()
+		else:
+			portrait_frame.texture = load(frame_path)
+			
+	var text_margin = text_container.get("margin_left")
+	if portrait_container.get_position_in_parent() > text_label.get_position_in_parent():
+		portrait_container.add_constant_override('margin_left', text_margin)
+		portrait_container.add_constant_override('margin_right', 0)
+	else:
+		portrait_container.add_constant_override('margin_left', 0)
+		portrait_container.add_constant_override('margin_right', text_margin)
+
+func disable_portrait():
+	portrait_container.visible = false
 
 ## *****************************************************************************
 ##								PRIVATE METHODS
 ## *****************************************************************************
-
 
 func _on_writing_timer_timeout():
 	# Checks for the 'fade_in_tween_show_time' which only exists during the fade in animation
@@ -277,7 +306,6 @@ func _on_writing_timer_timeout():
 				emit_signal('letter_written')
 		else:
 			$WritingTimer.stop()
-
 
 func start_text_timer():
 	if text_speed == 0:
@@ -309,7 +337,6 @@ func align_name_label():
 ## *****************************************************************************
 ##								OVERRIDES
 ## *****************************************************************************
-
 
 func _ready():
 	reset()

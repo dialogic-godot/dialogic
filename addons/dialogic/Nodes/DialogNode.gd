@@ -46,8 +46,10 @@ var dialog_index: int = 0
 
 var current_background = ""
 
+
 # Theme and Audio
 var current_theme: ConfigFile
+var rpg_portrait_mode = false
 var audio_data = {}
 
 # References
@@ -271,7 +273,6 @@ func resize_main():
 	$Options.rect_global_position = Vector2(0,0) + theme_choice_offset + position_offset
 	$Options.rect_size = reference
 
-	
 	# Background positioning
 	var background = get_node_or_null('Background')
 	if background != null:
@@ -309,10 +310,22 @@ func load_theme(filename):
 		n.queue_free()
 	$Options.add_child(button_container)
 	
+	rpg_portrait_mode = theme.get_value("settings", "rpg_portrait_mode", false)
+	if rpg_portrait_mode:
+		$Portraits.hide()
+	else:
+		$Portraits.show()
 	load_audio(theme)
 	
 	return theme
 
+func update_rpg_portrait(character_data):
+	if rpg_portrait_mode and portrait_exists(character_data):
+		for portrait in $Portraits.get_children():
+			if portrait.character_data.hash() == character_data.hash():
+				$TextBubble.update_portrait(portrait, "left" if portrait.get_position() == 0 else "right")
+				return
+	$TextBubble.disable_portrait()
 
 ## -----------------------------------------------------------------------------
 ## 						AUDIO
@@ -565,7 +578,9 @@ func event_handler(event: Dictionary):
 				var character_data = DialogicUtil.get_character(event['character'])
 				update_name(character_data)
 				grab_portrait_focus(character_data, event)
-			#voice 
+				update_rpg_portrait(character_data)
+			else:
+				$TextBubble.disable_portrait()
 			handle_voice(event)
 			update_text(event['text'])
 		# Join event
@@ -1136,7 +1151,7 @@ func grab_portrait_focus(character_data, event: Dictionary = {}) -> bool:
 func portrait_exists(character_data) -> bool:
 	var exists = false
 	for portrait in $Portraits.get_children():
-		if portrait.character_data == character_data:
+		if portrait.character_data.hash() == character_data.hash():
 			exists = true
 	return exists
 
