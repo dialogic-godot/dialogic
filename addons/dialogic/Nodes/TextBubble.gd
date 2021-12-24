@@ -272,12 +272,17 @@ func update_portrait(portrait, orientation: String):
 	portrait_image.texture = portrait.get_texture()
 
 	# portrait frame
-	var frame_path = _theme.get_value('settings', 'rpg_portrait_frame', "")
+	var default_rpg_portrait_frame = "res://addons/dialogic/Example Assets/Rpg Portrait Frame/rpg_portrait_frame.png"
+	var frame_path = _theme.get_value('settings', 'rpg_portrait_frame', default_rpg_portrait_frame)
+
 	if _theme.get_value('settings', 'rpg_portrait_frame_enabled', false):
+		portrait_frame.show()
 		if frame_path == "":
 			portrait_frame.texture = ImageTexture.new()
 		else:
 			portrait_frame.texture = load(frame_path)
+	else:
+		portrait_frame.hide()
 	
 	var text_margin = _theme.get_value('text', 'margin', Vector2(20, 10))
 	if portrait_container.get_position_in_parent() > text_label.get_position_in_parent():

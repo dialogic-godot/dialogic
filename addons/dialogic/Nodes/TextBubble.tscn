@@ -1,9 +1,10 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://addons/dialogic/Example Assets/Fonts/DefaultFont.tres" type="DynamicFont" id=1]
 [ext_resource path="res://addons/dialogic/Example Assets/backgrounds/background-2.png" type="Texture" id=2]
 [ext_resource path="res://addons/dialogic/Example Assets/next-indicator/next-indicator.png" type="Texture" id=3]
 [ext_resource path="res://addons/dialogic/Nodes/TextBubble.gd" type="Script" id=4]
+[ext_resource path="res://addons/dialogic/Example Assets/Rpg Portrait Frame/rpg_portrait_frame.png" type="Texture" id=5]
 
 [sub_resource type="StyleBoxEmpty" id=1]
 
@@ -103,26 +104,32 @@ __meta__ = {
 }
 
 [node name="PortraitContainer" type="MarginContainer" parent="TextContainer/HBoxContainer"]
+margin_right = 128.0
 margin_bottom = 161.0
 
 [node name="CenterContainer" type="CenterContainer" parent="TextContainer/HBoxContainer/PortraitContainer"]
+margin_right = 128.0
 margin_bottom = 161.0
 size_flags_vertical = 3
 
 [node name="Portrait" type="TextureRect" parent="TextContainer/HBoxContainer/PortraitContainer/CenterContainer"]
+margin_left = 64.0
 margin_top = 80.0
+margin_right = 64.0
 margin_bottom = 80.0
 stretch_mode = 4
 
 [node name="PortraitFrame" type="TextureRect" parent="TextContainer/HBoxContainer/PortraitContainer/CenterContainer"]
-margin_top = 80.0
-margin_bottom = 80.0
+margin_top = 16.0
+margin_right = 128.0
+margin_bottom = 144.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
+texture = ExtResource( 5 )
 stretch_mode = 4
 
 [node name="RichTextLabel" type="RichTextLabel" parent="TextContainer/HBoxContainer"]
-margin_left = 4.0
+margin_left = 132.0
 margin_right = 910.0
 margin_bottom = 161.0
 focus_mode = 2
