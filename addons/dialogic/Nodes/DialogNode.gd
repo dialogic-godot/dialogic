@@ -563,11 +563,19 @@ func _load_event():
 			# Do not free the dialog if we are in the preview
 			queue_free()
 
+
+
 # Handling an event and updating the available nodes accordingly.
 func event_handler(event: Dictionary):
 	$TextBubble.reset()
 	clear_options()
 	
+	if event.has('character'):
+		var character_data = DialogicUtil.get_character(event['character'])
+		update_rpg_portrait(character_data)
+	else:
+		$TextBubble.disable_portrait()
+		
 	current_event = event
 	match event['event_id']:
 		# MAIN EVENTS
@@ -580,9 +588,6 @@ func event_handler(event: Dictionary):
 				var character_data = DialogicUtil.get_character(event['character'])
 				update_name(character_data)
 				grab_portrait_focus(character_data, event)
-				update_rpg_portrait(character_data)
-			else:
-				$TextBubble.disable_portrait()
 			handle_voice(event)
 			update_text(event['text'])
 		# Join event
