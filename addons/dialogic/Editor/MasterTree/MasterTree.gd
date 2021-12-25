@@ -50,8 +50,8 @@ func _ready():
 	
 	# Scaling
 	var modifier = ''
-	var _scale = get_constant("inspector_margin", "Editor")
-	_scale = _scale * 0.125
+	var _scale = DialogicUtil.get_editor_scale(self)
+	
 	rect_min_size.x = 150
 	if _scale == 1.25:
 		modifier = '-1.25'

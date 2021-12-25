@@ -101,7 +101,12 @@ func set_expanded(expanded: bool):
 
 func _set_event_icon(icon: Texture):
 	icon_texture.texture = icon
-
+	var _scale = DialogicUtil.get_editor_scale(self)
+	var ip = $PanelContainer/MarginContainer/VBoxContainer/Header/IconPanel
+	# Resizing the icon acording to the scale
+	ip.rect_min_size = ip.rect_min_size * _scale
+	icon_texture.rect_size = icon_texture.rect_size * _scale
+	
 
 func _set_event_name(text: String):
 	if event_name == "Text Event":
