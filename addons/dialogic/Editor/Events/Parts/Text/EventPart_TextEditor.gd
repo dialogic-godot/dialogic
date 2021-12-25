@@ -81,15 +81,21 @@ func _set_new_min_size():
 	text_editor.rect_min_size = Vector2(0,0)
 	# Getting new sizes
 	var extra_vertical = 1.1
-	var longest_string = ''
 	
 	if text_editor.get_line_count() > 1:
 		extra_vertical = 1.22
+		
+	
 	
 	text_editor.rect_min_size.y = get_font("normal_font").get_height() * ((text_editor.get_line_count() + 1) * extra_vertical)
 	
-	#for line in text_editor.get_line()
-	text_editor.rect_min_size.x = get_font("normal_font").get_string_size(text_editor.get_line(0)).x + 50
+	# Getting the longest string and making that the width of the dialog bubble
+	var longest_string = ''
+	for l in text_editor.text.split('\n'):
+		if l.length() > longest_string.length():
+			longest_string = l
+	
+	text_editor.rect_min_size.x = get_font("normal_font").get_string_size(longest_string).x + 50
 
 
 func _on_TextEditor_focus_entered() -> void:
