@@ -96,21 +96,14 @@ expand = true
 stretch_mode = 7
 
 [node name="IconTexture" type="TextureRect" parent="PanelContainer/MarginContainer/VBoxContainer/Header/IconPanel"]
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = -16.0
-margin_top = -16.0
-margin_right = 16.0
-margin_bottom = 16.0
+anchor_right = 1.0
+anchor_bottom = 1.0
 grow_horizontal = 0
-rect_min_size = Vector2( 32, 32 )
 size_flags_horizontal = 3
 size_flags_vertical = 3
 texture = ExtResource( 6 )
 expand = true
-stretch_mode = 7
+stretch_mode = 6
 __meta__ = {
 "_edit_use_anchors_": false
 }

@@ -105,7 +105,7 @@ func _set_event_icon(icon: Texture):
 	var ip = $PanelContainer/MarginContainer/VBoxContainer/Header/IconPanel
 	# Resizing the icon acording to the scale
 	ip.rect_min_size = ip.rect_min_size * _scale
-	icon_texture.rect_size = icon_texture.rect_size * _scale
+	#icon_texture.rect_size = icon_texture.rect_size * _scale
 	
 
 func _set_event_name(text: String):
@@ -277,11 +277,12 @@ func _on_HelpButton_pressed():
 func _draw():
 	var timeline_children = get_parent().get_children()
 	var timeline_lenght = timeline_children.size()
-	var pos_x = 25
-	var pos_y = 43#22
 	var line_color = Color("#4D4D4D")
 	var test_color = Color(0,1,0,1)
-	var line_width = 3
+	var _scale = DialogicUtil.get_editor_scale(self)
+	var line_width = 3 * _scale
+	var pos_x = (23 * _scale) + line_width
+	var pos_y = 43 * _scale
 
 	# If the event is the last one, don't draw a line aftwards
 	if timeline_children[timeline_lenght-1] == self:
