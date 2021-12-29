@@ -10,7 +10,7 @@ __meta__ = {
 }
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
-margin_right = 232.0
+margin_right = 354.0
 margin_bottom = 24.0
 __meta__ = {
 "_edit_use_anchors_": false
@@ -34,7 +34,13 @@ margin_bottom = 19.0
 text = "Seconds"
 
 [node name="SkippableCheckbox" type="CheckBox" parent="HBoxContainer"]
-margin_left = 145.0
+margin_left = 135.0
 margin_right = 224.0
 margin_bottom = 24.0
 text = "Skippable"
+
+[node name="HideDialogBoxCheckbox" type="CheckBox" parent="HBoxContainer"]
+margin_left = 228.0
+margin_right = 354.0
+margin_bottom = 24.0
+text = "Hide DialogBox"

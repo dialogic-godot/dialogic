@@ -45,12 +45,10 @@ var selected_theme_file = ''
 
 # connect functions; translate buttons; update styles, etc...
 func _ready():
-	# references
 	editor_reference = find_parent('EditorView')
-	
-	# translating
-	nodes['new_portrait_button'].text = DTS.translate("  New portrait")
-	nodes['import_from_folder_button'].text = DTS.translate("  Import folder")
+
+	nodes['new_portrait_button'].text = "  "+DTS.translate("New portrait")
+	nodes['import_from_folder_button'].text = "  "+DTS.translate("Import folder")
 	
 	# connecting signals
 	nodes['name'].connect('text_changed', self, '_on_name_changed')
@@ -73,6 +71,8 @@ func _ready():
 	# loading default setup
 	_on_PreviewMode_item_selected(DialogicResources.get_settings_value('editor', 'character_preview_mode', 1))
 	$Split/Preview/Background/PreviewMode.select(DialogicResources.get_settings_value('editor', 'character_preview_mode', 1))
+	$Split/Preview/Background/PreviewMode.set_item_text(0, DTS.translate("Full View"))
+	$Split/Preview/Background/PreviewMode.set_item_text(1, DTS.translate("Actual Size"))
 
 # removes all input for a new character
 func clear_character_editor():

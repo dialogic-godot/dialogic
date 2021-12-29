@@ -110,7 +110,7 @@ margin_top = 5.0
 margin_right = 130.0
 margin_bottom = 19.0
 rect_min_size = Vector2( 130, 0 )
-text = "Name: "
+text = "Name:"
 text_key = "Name: "
 
 [node name="ColorPickerButton" type="ColorPickerButton" parent="Split/EditorScroll/Editor/NameAndColor"]
@@ -151,7 +151,7 @@ margin_top = 5.0
 margin_right = 130.0
 margin_bottom = 19.0
 rect_min_size = Vector2( 130, 0 )
-text = "Display Name: "
+text = "Anzeigename:"
 text_key = "Display Name: "
 
 [node name="CheckBox" type="CheckBox" parent="Split/EditorScroll/Editor/DisplayName"]
@@ -188,7 +188,7 @@ margin_top = 5.0
 margin_right = 130.0
 margin_bottom = 19.0
 rect_min_size = Vector2( 130, 0 )
-text = "Nicknames: "
+text = "Spitznamen:"
 text_key = "Nicknames: "
 
 [node name="CheckBox" type="CheckBox" parent="Split/EditorScroll/Editor/DisplayNickname"]
@@ -222,7 +222,7 @@ margin_right = 130.0
 margin_bottom = 14.0
 rect_min_size = Vector2( 130, 0 )
 size_flags_vertical = 0
-text = "Description: "
+text = "Beschreibung:"
 text_key = "Description: "
 
 [node name="TextEdit" type="TextEdit" parent="Split/EditorScroll/Editor/Description"]
@@ -288,14 +288,14 @@ margin_bottom = 226.0
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_top = 5.0
-margin_right = 33.0
+margin_right = 39.0
 margin_bottom = 19.0
-text = "Scale"
+text = "Größe"
 text_key = "Scale"
 
 [node name="Scale" type="SpinBox" parent="Split/EditorScroll/Editor/HBoxContainer"]
-margin_left = 37.0
-margin_right = 111.0
+margin_left = 43.0
+margin_right = 117.0
 margin_bottom = 24.0
 value = 100.0
 allow_greater = true
@@ -305,46 +305,46 @@ suffix = "%"
 [node name="TLabel12" parent="Split/EditorScroll/Editor/HBoxContainer" instance=ExtResource( 3 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_left = 115.0
+margin_left = 121.0
 margin_top = 5.0
-margin_right = 154.0
+margin_right = 207.0
 margin_bottom = 19.0
-text = "Offset"
+text = "Verschiebung"
 text_key = "Offset"
 
 [node name="OffsetX" type="SpinBox" parent="Split/EditorScroll/Editor/HBoxContainer"]
-margin_left = 158.0
-margin_right = 232.0
+margin_left = 211.0
+margin_right = 285.0
 margin_bottom = 24.0
 allow_greater = true
 allow_lesser = true
 suffix = "X"
 
 [node name="OffsetY" type="SpinBox" parent="Split/EditorScroll/Editor/HBoxContainer"]
-margin_left = 236.0
-margin_right = 310.0
+margin_left = 289.0
+margin_right = 363.0
 margin_bottom = 24.0
 allow_greater = true
 allow_lesser = true
 suffix = "Y"
 
 [node name="MirrorOption" type="HBoxContainer" parent="Split/EditorScroll/Editor/HBoxContainer"]
-margin_left = 314.0
-margin_right = 439.0
+margin_left = 367.0
+margin_right = 507.0
 margin_bottom = 24.0
 
 [node name="TLabel11" parent="Split/EditorScroll/Editor/HBoxContainer/MirrorOption" instance=ExtResource( 3 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_top = 5.0
-margin_right = 97.0
+margin_right = 112.0
 margin_bottom = 19.0
-text = "Mirror portraits"
+text = "Portraits spiegeln"
 text_key = "Mirror portraits"
 
 [node name="MirrorPortraitsCheckBox" type="CheckBox" parent="Split/EditorScroll/Editor/HBoxContainer/MirrorOption"]
-margin_left = 101.0
-margin_right = 125.0
+margin_left = 116.0
+margin_right = 140.0
 margin_bottom = 24.0
 
 [node name="PortraitPanel" type="PanelContainer" parent="Split/EditorScroll/Editor"]
@@ -379,28 +379,28 @@ anchor_right = 0.0
 anchor_bottom = 0.0
 margin_left = 164.0
 margin_top = 4.0
-margin_right = 329.0
+margin_right = 276.0
 margin_bottom = 18.0
 size_flags_horizontal = 3
 text = "Path"
 text_key = "Path"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Split/EditorScroll/Editor/PortraitPanel/VBoxContainer/Labels"]
-margin_left = 333.0
+margin_left = 280.0
 margin_right = 577.0
 margin_bottom = 22.0
 
 [node name="NewPortrait" type="Button" parent="Split/EditorScroll/Editor/PortraitPanel/VBoxContainer/Labels/HBoxContainer"]
-margin_right = 117.0
+margin_right = 130.0
 margin_bottom = 22.0
-text = "  New portrait"
+text = "  Neues Portrait"
 icon = SubResource( 9 )
 
 [node name="ImportFromFolder" type="Button" parent="Split/EditorScroll/Editor/PortraitPanel/VBoxContainer/Labels/HBoxContainer"]
-margin_left = 121.0
-margin_right = 244.0
+margin_left = 134.0
+margin_right = 297.0
 margin_bottom = 22.0
-text = "  Import folder"
+text = "  Ordner importieren"
 icon = SubResource( 9 )
 
 [node name="ScrollContainer" type="ScrollContainer" parent="Split/EditorScroll/Editor/PortraitPanel/VBoxContainer"]
@@ -436,7 +436,7 @@ anchor_bottom = 0.0
 margin_top = 5.0
 margin_right = 27.0
 margin_bottom = 19.0
-text = "File:"
+text = "Datei"
 text_key = "File:"
 
 [node name="LineEdit" type="LineEdit" parent="Split/EditorScroll/Editor/FileName"]
@@ -520,6 +520,7 @@ margin_left = -110.0
 margin_top = 6.0
 margin_right = -8.0
 margin_bottom = 26.0
+grow_horizontal = 0
 text = "Full View"
 items = [ "Full View", null, false, 0, null, "Actual Size", null, false, 1, null ]
 selected = 0
