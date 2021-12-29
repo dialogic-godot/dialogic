@@ -249,7 +249,6 @@ func _ready() -> void:
 	n['button_offset_y'].connect('value_changed', self, '_on_button_offset_changed')
 	
 	
-	
 	n['name_position'].text = 'Left'
 	n['name_position'].connect('item_selected', self, '_on_name_position_selected')
 	var name_positions_popup = n['name_position'].get_popup()
@@ -269,6 +268,16 @@ func _ready() -> void:
 	# Character Picker
 	n['character_picker'].connect('about_to_show', self, 'character_picker_about_to_show')
 	n['character_picker'].get_popup().connect('index_pressed', self, 'character_picker_selected')
+	
+	## Translation
+	$VBoxContainer/HBoxContainer3/PreviewButton.text = "  "+DTS.translate('Preview changes')
+	$VBoxContainer/TabContainer.set_tab_title(0, DTS.translate('DialogTextTabTitle'))
+	$VBoxContainer/TabContainer.set_tab_title(1, DTS.translate('DialogBoxTabTitle'))
+	$VBoxContainer/TabContainer.set_tab_title(2, DTS.translate('NameLabelTabTitle'))
+	$VBoxContainer/TabContainer.set_tab_title(3, DTS.translate('ChoiceButtonTabTitle'))
+	$VBoxContainer/TabContainer.set_tab_title(4, DTS.translate('GlossaryTabTitle'))
+	$VBoxContainer/TabContainer.set_tab_title(5, DTS.translate('AudioTabTitle'))
+	
 	
 	# Force preview update
 	_on_visibility_changed()

@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://addons/dialogic/Editor/ValueEditor/ValueEditor.gd" type="Script" id=1]
+[ext_resource path="res://addons/dialogic/Editor/Common/TLabel.tscn" type="PackedScene" id=2]
 
 [node name="ValueEditor" type="ScrollContainer"]
 anchor_right = 1.0
@@ -27,10 +28,13 @@ margin_bottom = 48.0
 rect_min_size = Vector2( 300, 0 )
 custom_constants/separation = 10
 
-[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/VBoxContainer"]
+[node name="NameLabel" parent="VBoxContainer/HBoxContainer/VBoxContainer" instance=ExtResource( 2 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
 margin_right = 300.0
 margin_bottom = 14.0
-text = "Name"
+text = "Name:"
+text_key = "ValueName"
 
 [node name="Name" type="LineEdit" parent="VBoxContainer/HBoxContainer/VBoxContainer"]
 margin_top = 24.0
@@ -44,10 +48,13 @@ margin_bottom = 48.0
 rect_min_size = Vector2( 300, 0 )
 custom_constants/separation = 10
 
-[node name="Label5" type="Label" parent="VBoxContainer/HBoxContainer/Value"]
+[node name="ValueLabel" parent="VBoxContainer/HBoxContainer/Value" instance=ExtResource( 2 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
 margin_right = 300.0
 margin_bottom = 14.0
 text = "Value:"
+text_key = "Value"
 
 [node name="ValueInput" type="LineEdit" parent="VBoxContainer/HBoxContainer/Value"]
 margin_top = 24.0

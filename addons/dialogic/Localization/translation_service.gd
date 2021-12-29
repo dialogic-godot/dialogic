@@ -17,7 +17,7 @@ static func translate(message:String)->String:
 
 # Each value is an Array of [PHashTranslation].
 static func get_translations() -> Dictionary:
-	var translations_resources = ['en', 'zh_CN', 'es', 'fr']
+	var translations_resources = ['en', 'zh_CN', 'es', 'fr', 'de']
 	var translations = {}
 	
 	for resource in translations_resources:
