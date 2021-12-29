@@ -1,16 +1,28 @@
 # Changelog
 
 ## v1.4 WIP
+#### Events
 - Wait seconds event can now be set to be skipped with the user's action [[SimonLammer](https://github.com/SimonLammer)]
+- New events: `Label Event` and `Go to Event`. This will help you creating an anchor position to go back to.[[Jowan-Spooner](https://github.com/Jowan-Spooner)]
+- Text event improvements:
+  - You can now make a list of words like this: `[word1,word2,word3]` and Dialogic will pick a random word from the list. If the word is a Dialogic variable name and it gets picked it will show the value of that variable.
+  - New commands [signal=argument], [pause=wait_time], [play=soundname], [nv=v] (for waiting until the audio finishes) added to the Text Event [[KvaGram](https://github.com/KvaGram)]
+
+#### Settings/Themes
 - Added: `Autofocus choices` in the settings [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
-- New events:
-  - `Label Event` and `Go to Event`. This will help you creating an anchor position to go back to.
-- You can now make a list of words like this: `[word1,word2,word3]` and Dialogic will pick a random word from the list. If the word is a Dialogic variable name and it gets picked it will show the value of that variable.
-- New commands [signal=argument], [pause=wait_time], [play=soundname], [nv=v] (for waiting until the audio finishes) added to the Text Event [[KvaGram](https://github.com/KvaGram)]
-- Character Editor improvements [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
-- Many minor bugs fixed
 - You can now set the character dim color from the theme settings [[Tim Krief](https://github.com/timkrief)]
-- Removed the setting to dim character portraits from the global settings
+  - Removed the setting to dim character portraits from the global settings
+- New setting to use "Keep Aspect Centered" instead of stretch for the Background event [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
+- You can now verically align the text in the dialog box [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
+- You can now specify hotkeys for the choices or use default hot-keys (1-9) [[zaknafean](https://github.com/zaknafean)]
+
+#### Editors
+- Character Editor improvements [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
+- You can now connect signals to the DialogProxyNode (the one you drag and drop in) [[KvaGram](https://github.com/KvaGram)]
+
+#### Other
+- Many minor bugs fixed
+
 
 ## v1.3 - Save me some time
 #### General Editor Stuff
