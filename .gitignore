@@ -19,7 +19,7 @@ export_presets.cfg
 # Ignore dialogic resources
 /dialogic
 # Ignore Dialogic translations
-/addons/dialogic/Localization/*.translations
+*.translation
 /addons/dialogic/Localization/dialogic.csv.import
 # Place test project files here
 /test-project
