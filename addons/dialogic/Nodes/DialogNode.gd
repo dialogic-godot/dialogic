@@ -748,7 +748,8 @@ func event_handler(event: Dictionary):
 		# Wait seconds event
 		'dialogic_023':
 			emit_signal("event_start", "wait", event)
-			$TextBubble.visible = false
+			if event.get('hide_dialogbox', true):
+				$TextBubble.visible = false
 			set_state(state.WAITING)
 			var timer = get_tree().create_timer(event['wait_seconds'])
 			if event.get('waiting_skippable', false):
