@@ -33,8 +33,8 @@ onready var nodes = {
 
 
 func _ready():
-	nodes['new_portrait_button'].text = DTS.translate("  New portrait")
-	nodes['import_from_folder_button'].text = DTS.translate("  Import folder")
+	nodes['new_portrait_button'].text = "  "+DTS.translate("New portrait")
+	nodes['import_from_folder_button'].text = "  "+DTS.translate("Import folder")
 	
 	editor_reference = find_parent('EditorView')
 	nodes['new_portrait_button'].connect('pressed', self, '_on_New_Portrait_Button_pressed')
@@ -52,6 +52,8 @@ func _ready():
 	$Split/EditorScroll/Editor/PortraitPanel.set('custom_styles/panel', get_stylebox("Background", "EditorStyles"))
 	_on_PreviewMode_item_selected(DialogicResources.get_settings_value('editor', 'character_preview_mode', 1))
 	$Split/Preview/Background/PreviewMode.select(DialogicResources.get_settings_value('editor', 'character_preview_mode', 1))
+	$Split/Preview/Background/PreviewMode.set_item_text(0, DTS.translate("Full View"))
+	$Split/Preview/Background/PreviewMode.set_item_text(1, DTS.translate("Actual Size"))
 
 func _on_display_name_toggled(button_pressed):
 	nodes['display_name'].visible = button_pressed

@@ -30,7 +30,7 @@ func set_data(data):
 	
 	path = data['path']
 	_on_Path_selected(path)
-	
+	n['path'].text = DTS.translate('File or folder path')
 	n['volume'].set_value(data['volume'])
 	n['volume_rand_range'].set_value(data['volume_rand_range'])
 	n['pitch'].set_value(data['pitch'])

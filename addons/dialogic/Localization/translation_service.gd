@@ -17,7 +17,7 @@ static func translate(message:String)->String:
 
 # Each value is an Array of [PHashTranslation].
 static func get_translations() -> Dictionary:
-	var translations_resources = ['en', 'zh_CN', 'es', 'fr']
+	var translations_resources = ['en', 'zh_CN', 'es', 'fr', 'de']
 	var translations = {}
 	
 	for resource in translations_resources:
@@ -50,5 +50,5 @@ static func _get_translation(message)->String:
 			# If there's no translation, returns the original string
 			returned_translation = message
 	
-	#print('Message: ', message, ' - locale: ', locale, ' - ', returned_translation)
+	print('Message: ', message, ' - locale: ', locale, ' - ', returned_translation)
 	return returned_translation
