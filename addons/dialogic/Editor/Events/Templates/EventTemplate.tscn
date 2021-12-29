@@ -89,7 +89,6 @@ margin_right = 40.0
 margin_bottom = 38.0
 rect_min_size = Vector2( 36, 36 )
 mouse_default_cursor_shape = 6
-size_flags_horizontal = 3
 size_flags_vertical = 3
 texture = ExtResource( 7 )
 expand = true
