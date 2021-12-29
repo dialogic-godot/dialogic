@@ -9,7 +9,7 @@
 [ext_resource path="res://addons/dialogic/Editor/ThemeEditor/AudioPicker.tscn" type="PackedScene" id=7]
 [ext_resource path="res://addons/dialogic/Editor/Common/TLabel.tscn" type="PackedScene" id=8]
 
-[sub_resource type="Image" id=13]
+[sub_resource type="Image" id=3]
 data = {
 "data": PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ),
 "format": "LumAlpha8",
@@ -18,13 +18,13 @@ data = {
 "width": 16
 }
 
-[sub_resource type="ImageTexture" id=12]
+[sub_resource type="ImageTexture" id=4]
 flags = 4
 flags = 4
-image = SubResource( 13 )
+image = SubResource( 3 )
 size = Vector2( 16, 16 )
 
-[sub_resource type="Image" id=14]
+[sub_resource type="Image" id=5]
 data = {
 "data": PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ),
 "format": "LumAlpha8",
@@ -33,10 +33,10 @@ data = {
 "width": 16
 }
 
-[sub_resource type="ImageTexture" id=10]
+[sub_resource type="ImageTexture" id=2]
 flags = 4
 flags = 4
-image = SubResource( 14 )
+image = SubResource( 5 )
 size = Vector2( 16, 16 )
 
 [node name="ThemeEditor" type="ScrollContainer"]
@@ -68,7 +68,7 @@ margin_bottom = 365.0
 custom_constants/separation = 10
 
 [node name="TextEdit" type="TextEdit" parent="VBoxContainer/HBoxContainer3"]
-margin_right = 710.0
+margin_right = 718.0
 margin_bottom = 60.0
 rect_min_size = Vector2( 400, 60 )
 size_flags_horizontal = 3
@@ -78,8 +78,8 @@ syntax_highlighting = true
 wrap_enabled = true
 
 [node name="CharacterPicker" type="MenuButton" parent="VBoxContainer/HBoxContainer3"]
-margin_left = 720.0
-margin_right = 856.0
+margin_left = 728.0
+margin_right = 864.0
 margin_bottom = 60.0
 custom_styles/hover = ExtResource( 4 )
 custom_styles/normal = ExtResource( 5 )
@@ -87,10 +87,10 @@ text = "Random Character"
 flat = false
 
 [node name="PreviewButton" type="Button" parent="VBoxContainer/HBoxContainer3"]
-margin_left = 866.0
+margin_left = 874.0
 margin_right = 1018.0
 margin_bottom = 60.0
-text = "  Preview changes  "
+text = "  Preview changes"
 icon = ExtResource( 1 )
 
 [node name="TabContainer" type="TabContainer" parent="VBoxContainer"]
@@ -109,6 +109,9 @@ margin_top = 32.0
 margin_right = -4.0
 margin_bottom = -4.0
 custom_constants/separation = 10
+__meta__ = {
+"_tab_name": "DialogTextTabTitle"
+}
 
 [node name="Column" type="VBoxContainer" parent="VBoxContainer/TabContainer/Dialog Text"]
 margin_right = 270.0
@@ -120,7 +123,7 @@ __meta__ = {
 }
 
 [node name="SectionTitle" parent="VBoxContainer/TabContainer/Dialog Text/Column" instance=ExtResource( 3 )]
-text = "Fonts"
+text = "Fuentes"
 text_key = "Fonts"
 
 [node name="GridContainer" type="GridContainer" parent="VBoxContainer/TabContainer/Dialog Text/Column"]
@@ -135,14 +138,14 @@ columns = 2
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_top = 4.0
-margin_right = 79.0
+margin_right = 47.0
 margin_bottom = 18.0
-text = "Regular Font"
+text = "Normal"
 text_key = "Regular Font"
 
 [node name="RegularFont" type="HBoxContainer" parent="VBoxContainer/TabContainer/Dialog Text/Column/GridContainer"]
-margin_left = 89.0
-margin_right = 239.0
+margin_left = 57.0
+margin_right = 207.0
 margin_bottom = 22.0
 
 [node name="RegularFontButton" type="Button" parent="VBoxContainer/TabContainer/Dialog Text/Column/GridContainer/RegularFont"]
@@ -158,21 +161,21 @@ margin_left = 122.0
 margin_right = 150.0
 margin_bottom = 22.0
 size_flags_vertical = 4
-icon = SubResource( 12 )
+icon = SubResource( 4 )
 
 [node name="TLabel2" parent="VBoxContainer/TabContainer/Dialog Text/Column/GridContainer" instance=ExtResource( 8 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_top = 30.0
-margin_right = 79.0
+margin_right = 47.0
 margin_bottom = 44.0
-text = "Bold Font"
+text = "Negrita"
 text_key = "Bold Font"
 
 [node name="BoldFont" type="HBoxContainer" parent="VBoxContainer/TabContainer/Dialog Text/Column/GridContainer"]
-margin_left = 89.0
+margin_left = 57.0
 margin_top = 26.0
-margin_right = 239.0
+margin_right = 207.0
 margin_bottom = 48.0
 
 [node name="BoldFontButton" type="Button" parent="VBoxContainer/TabContainer/Dialog Text/Column/GridContainer/BoldFont"]
@@ -188,21 +191,21 @@ margin_left = 122.0
 margin_right = 150.0
 margin_bottom = 22.0
 size_flags_vertical = 4
-icon = SubResource( 12 )
+icon = SubResource( 4 )
 
 [node name="TLabel3" parent="VBoxContainer/TabContainer/Dialog Text/Column/GridContainer" instance=ExtResource( 8 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_top = 56.0
-margin_right = 79.0
+margin_right = 47.0
 margin_bottom = 70.0
-text = "Italic Font"
+text = "Cursiva"
 text_key = "Italic Font"
 
 [node name="ItalicFont" type="HBoxContainer" parent="VBoxContainer/TabContainer/Dialog Text/Column/GridContainer"]
-margin_left = 89.0
+margin_left = 57.0
 margin_top = 52.0
-margin_right = 239.0
+margin_right = 207.0
 margin_bottom = 74.0
 
 [node name="ItalicFontButton" type="Button" parent="VBoxContainer/TabContainer/Dialog Text/Column/GridContainer/ItalicFont"]
@@ -218,7 +221,7 @@ margin_left = 122.0
 margin_right = 150.0
 margin_bottom = 22.0
 size_flags_vertical = 4
-icon = SubResource( 12 )
+icon = SubResource( 4 )
 
 [node name="VSeparator" type="VSeparator" parent="VBoxContainer/TabContainer/Dialog Text"]
 margin_left = 280.0
@@ -236,7 +239,7 @@ __meta__ = {
 }
 
 [node name="SectionTitle" parent="VBoxContainer/TabContainer/Dialog Text/Column2" instance=ExtResource( 3 )]
-text = "Colors"
+text = "Colores"
 text_key = "Colors"
 
 [node name="GridContainer" type="GridContainer" parent="VBoxContainer/TabContainer/Dialog Text/Column2"]
@@ -251,14 +254,14 @@ columns = 2
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_top = 8.0
-margin_right = 91.0
+margin_right = 94.0
 margin_bottom = 22.0
-text = "Text Color"
+text = "Color de texto"
 text_key = "Text Color"
 
 [node name="ColorPickerButton" type="ColorPickerButton" parent="VBoxContainer/TabContainer/Dialog Text/Column2/GridContainer"]
-margin_left = 101.0
-margin_right = 259.0
+margin_left = 104.0
+margin_right = 262.0
 margin_bottom = 30.0
 rect_min_size = Vector2( 50, 30 )
 color = Color( 1, 1, 1, 1 )
@@ -267,15 +270,15 @@ color = Color( 1, 1, 1, 1 )
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_top = 42.0
-margin_right = 91.0
+margin_right = 94.0
 margin_bottom = 56.0
-text = "Shadow"
+text = "Sombra"
 text_key = "Shadow"
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer/TabContainer/Dialog Text/Column2/GridContainer"]
-margin_left = 101.0
+margin_left = 104.0
 margin_top = 34.0
-margin_right = 259.0
+margin_right = 262.0
 margin_bottom = 64.0
 
 [node name="CheckBoxShadow" type="CheckBox" parent="VBoxContainer/TabContainer/Dialog Text/Column2/GridContainer/HBoxContainer2"]
@@ -294,15 +297,15 @@ color = Color( 0, 0, 0, 0.619608 )
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_top = 73.0
-margin_right = 91.0
+margin_right = 94.0
 margin_bottom = 87.0
-text = "Shadow Offset"
+text = "Compensación"
 text_key = "Shadow Offset"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/TabContainer/Dialog Text/Column2/GridContainer"]
-margin_left = 101.0
+margin_left = 104.0
 margin_top = 68.0
-margin_right = 259.0
+margin_right = 262.0
 margin_bottom = 92.0
 custom_constants/separation = 10
 
@@ -330,7 +333,7 @@ margin_bottom = 495.0
 
 [node name="Column3" type="VBoxContainer" parent="VBoxContainer/TabContainer/Dialog Text"]
 margin_left = 588.0
-margin_right = 858.0
+margin_right = 943.0
 margin_bottom = 495.0
 rect_min_size = Vector2( 270, 0 )
 size_flags_vertical = 3
@@ -339,13 +342,14 @@ __meta__ = {
 }
 
 [node name="SectionTitle" parent="VBoxContainer/TabContainer/Dialog Text/Column3" instance=ExtResource( 3 )]
-text = "Behaviour"
+margin_right = 355.0
+text = "Comportamiento"
 text_key = "Behaviour"
 
 [node name="GridContainer" type="GridContainer" parent="VBoxContainer/TabContainer/Dialog Text/Column3"]
 margin_top = 26.0
-margin_right = 270.0
-margin_bottom = 102.0
+margin_right = 355.0
+margin_bottom = 104.0
 size_flags_horizontal = 3
 custom_constants/hseparation = 10
 columns = 2
@@ -354,14 +358,14 @@ columns = 2
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_top = 5.0
-margin_right = 148.0
+margin_right = 247.0
 margin_bottom = 19.0
-text = "Speed (bigger = slower)"
+text = "Velocidad (a mayor número más lento)"
 text_key = "Speed (bigger = slower)"
 
 [node name="TextSpeed" type="SpinBox" parent="VBoxContainer/TabContainer/Dialog Text/Column3/GridContainer"]
-margin_left = 158.0
-margin_right = 232.0
+margin_left = 257.0
+margin_right = 355.0
 margin_bottom = 24.0
 max_value = 10.0
 step = 0.01
@@ -370,40 +374,41 @@ value = 2.0
 [node name="TLabel2" parent="VBoxContainer/TabContainer/Dialog Text/Column3/GridContainer" instance=ExtResource( 8 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_top = 31.0
-margin_right = 148.0
-margin_bottom = 45.0
-text = "Alignment"
+margin_top = 32.0
+margin_right = 247.0
+margin_bottom = 46.0
+text = "Alineación"
 text_key = "Alignment"
 
 [node name="HBoxContainer3" type="HBoxContainer" parent="VBoxContainer/TabContainer/Dialog Text/Column3/GridContainer"]
-margin_left = 158.0
+margin_left = 257.0
 margin_top = 28.0
-margin_right = 232.0
-margin_bottom = 48.0
+margin_right = 355.0
+margin_bottom = 50.0
 
 [node name="Alignment" type="OptionButton" parent="VBoxContainer/TabContainer/Dialog Text/Column3/GridContainer/HBoxContainer3"]
-margin_right = 74.0
-margin_bottom = 20.0
+margin_right = 98.0
+margin_bottom = 22.0
 size_flags_horizontal = 3
-text = "Left"
-items = [ "Left", null, false, 0, null, "Center", null, false, 1, null, "Right", null, false, 2, null ]
+text = "Top Left"
+icon = SubResource( 2 )
+items = [ "Top Left", SubResource( 4 ), false, 0, null, "Top Center", SubResource( 4 ), false, 1, null, "Top Right", SubResource( 4 ), false, 2, null, "", null, false, -1, null, "Center Left", SubResource( 4 ), false, 3, null, "Center", SubResource( 4 ), false, 4, null, "Center Right", SubResource( 4 ), false, 5, null, "", null, false, -1, null, "Bottom Left", SubResource( 4 ), false, 6, null, "Bottom Center", SubResource( 4 ), false, 7, null, "Bottom Right", SubResource( 4 ), false, 8, null ]
 selected = 0
 
 [node name="TLabel3" parent="VBoxContainer/TabContainer/Dialog Text/Column3/GridContainer" instance=ExtResource( 8 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_top = 57.0
-margin_right = 148.0
-margin_bottom = 71.0
-text = "Single Portrait Mode"
+margin_top = 59.0
+margin_right = 247.0
+margin_bottom = 73.0
+text = "Modo retrato único"
 text_key = "Single Portrait Mode"
 
 [node name="SinglePortraitModeCheckBox" type="CheckBox" parent="VBoxContainer/TabContainer/Dialog Text/Column3/GridContainer"]
-margin_left = 158.0
-margin_top = 52.0
-margin_right = 232.0
-margin_bottom = 76.0
+margin_left = 257.0
+margin_top = 54.0
+margin_right = 355.0
+margin_bottom = 78.0
 
 [node name="Dialog Box" type="HBoxContainer" parent="VBoxContainer/TabContainer"]
 visible = false
@@ -414,6 +419,9 @@ margin_top = 32.0
 margin_right = -4.0
 margin_bottom = -4.0
 custom_constants/separation = 10
+__meta__ = {
+"_tab_name": "DialogBoxTabTitle"
+}
 
 [node name="Column" type="VBoxContainer" parent="VBoxContainer/TabContainer/Dialog Box"]
 margin_right = 270.0
@@ -425,6 +433,7 @@ __meta__ = {
 }
 
 [node name="SectionTitle" parent="VBoxContainer/TabContainer/Dialog Box/Column" instance=ExtResource( 3 )]
+text = "Visuales"
 text_key = "Visuals"
 
 [node name="GridContainer" type="GridContainer" parent="VBoxContainer/TabContainer/Dialog Box/Column"]
@@ -439,14 +448,14 @@ columns = 2
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_top = 5.0
-margin_right = 126.0
+margin_right = 108.0
 margin_bottom = 19.0
-text = "Background Color"
+text = "Color de fondo"
 text_key = "Background Color"
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer/TabContainer/Dialog Box/Column/GridContainer"]
-margin_left = 136.0
-margin_right = 262.0
+margin_left = 118.0
+margin_right = 244.0
 margin_bottom = 24.0
 
 [node name="CheckBox" type="CheckBox" parent="VBoxContainer/TabContainer/Dialog Box/Column/GridContainer/HBoxContainer2"]
@@ -463,15 +472,15 @@ size_flags_horizontal = 3
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_top = 33.0
-margin_right = 126.0
+margin_right = 108.0
 margin_bottom = 47.0
-text = "Background Texture"
+text = "Textura de fondo"
 text_key = "Background Texture"
 
 [node name="HBoxContainer3" type="HBoxContainer" parent="VBoxContainer/TabContainer/Dialog Box/Column/GridContainer"]
-margin_left = 136.0
+margin_left = 118.0
 margin_top = 28.0
-margin_right = 262.0
+margin_right = 244.0
 margin_bottom = 52.0
 
 [node name="CheckBox" type="CheckBox" parent="VBoxContainer/TabContainer/Dialog Box/Column/GridContainer/HBoxContainer3"]
@@ -490,15 +499,15 @@ text = "background-2"
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_top = 61.0
-margin_right = 126.0
+margin_right = 108.0
 margin_bottom = 75.0
-text = "Texture Modulation"
+text = "Modulación de textura"
 text_key = "Texture Modulation"
 
 [node name="HBoxContainer6" type="HBoxContainer" parent="VBoxContainer/TabContainer/Dialog Box/Column/GridContainer"]
-margin_left = 136.0
+margin_left = 118.0
 margin_top = 56.0
-margin_right = 262.0
+margin_right = 244.0
 margin_bottom = 80.0
 
 [node name="CheckBox" type="CheckBox" parent="VBoxContainer/TabContainer/Dialog Box/Column/GridContainer/HBoxContainer6"]
@@ -529,14 +538,14 @@ columns = 2
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_top = 5.0
-margin_right = 104.0
+margin_right = 87.0
 margin_bottom = 19.0
-text = "Full width"
+text = "Ancho completo"
 text_key = "Full width"
 
 [node name="HBoxContainer7" type="HBoxContainer" parent="VBoxContainer/TabContainer/Dialog Box/Column/GridContainer2"]
-margin_left = 114.0
-margin_right = 266.0
+margin_left = 97.0
+margin_right = 249.0
 margin_bottom = 24.0
 
 [node name="CheckBox" type="CheckBox" parent="VBoxContainer/TabContainer/Dialog Box/Column/GridContainer2/HBoxContainer7"]
@@ -547,15 +556,15 @@ margin_bottom = 24.0
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_top = 33.0
-margin_right = 104.0
+margin_right = 87.0
 margin_bottom = 47.0
 text = "Box size (pixels)"
 text_key = "Box size (pixels)"
 
 [node name="HBoxContainer4" type="HBoxContainer" parent="VBoxContainer/TabContainer/Dialog Box/Column/GridContainer2"]
-margin_left = 114.0
+margin_left = 97.0
 margin_top = 28.0
-margin_right = 266.0
+margin_right = 249.0
 margin_bottom = 52.0
 
 [node name="BoxSizeW" type="SpinBox" parent="VBoxContainer/TabContainer/Dialog Box/Column/GridContainer2/HBoxContainer4"]
@@ -580,19 +589,19 @@ allow_lesser = true
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_top = 60.0
-margin_right = 104.0
+margin_right = 87.0
 margin_bottom = 74.0
-text = "Position"
+text = "Posicion"
 text_key = "Position"
 
 [node name="PositionSelector" type="OptionButton" parent="VBoxContainer/TabContainer/Dialog Box/Column/GridContainer2"]
-margin_left = 114.0
+margin_left = 97.0
 margin_top = 56.0
-margin_right = 266.0
+margin_right = 249.0
 margin_bottom = 78.0
 text = "Top Left"
-icon = SubResource( 10 )
-items = [ "Top Left", SubResource( 12 ), false, 0, null, "Top Center", SubResource( 12 ), false, 1, null, "Top Right", SubResource( 12 ), false, 2, null, "", null, false, -1, null, "Center Left", SubResource( 12 ), false, 3, null, "Center", SubResource( 12 ), false, 4, null, "Center Right", SubResource( 12 ), false, 5, null, "", null, false, -1, null, "Bottom Left", SubResource( 12 ), false, 6, null, "Bottom Center", SubResource( 12 ), false, 7, null, "Bottom Right", SubResource( 12 ), false, 8, null ]
+icon = SubResource( 2 )
+items = [ "Top Left", SubResource( 4 ), false, 0, null, "Top Center", SubResource( 4 ), false, 1, null, "Top Right", SubResource( 4 ), false, 2, null, "", null, false, -1, null, "Center Left", SubResource( 4 ), false, 3, null, "Center", SubResource( 4 ), false, 4, null, "Center Right", SubResource( 4 ), false, 5, null, "", null, false, -1, null, "Bottom Left", SubResource( 4 ), false, 6, null, "Bottom Center", SubResource( 4 ), false, 7, null, "Bottom Right", SubResource( 4 ), false, 8, null ]
 selected = 0
 __meta__ = {
 "_edit_use_anchors_": false
@@ -602,15 +611,15 @@ __meta__ = {
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_top = 87.0
-margin_right = 104.0
+margin_right = 87.0
 margin_bottom = 101.0
 text = "Box margin"
 text_key = "Box margin"
 
 [node name="BoxMargin" type="HBoxContainer" parent="VBoxContainer/TabContainer/Dialog Box/Column/GridContainer2"]
-margin_left = 114.0
+margin_left = 97.0
 margin_top = 82.0
-margin_right = 266.0
+margin_right = 249.0
 margin_bottom = 106.0
 
 [node name="MarginV" type="SpinBox" parent="VBoxContainer/TabContainer/Dialog Box/Column/GridContainer2/BoxMargin"]
@@ -636,15 +645,15 @@ allow_lesser = true
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_top = 115.0
-margin_right = 104.0
+margin_right = 87.0
 margin_bottom = 129.0
 text = "Box padding"
 text_key = "Box padding"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/TabContainer/Dialog Box/Column/GridContainer2"]
-margin_left = 114.0
+margin_left = 97.0
 margin_top = 110.0
-margin_right = 266.0
+margin_right = 249.0
 margin_bottom = 134.0
 
 [node name="BoxPaddingV" type="SpinBox" parent="VBoxContainer/TabContainer/Dialog Box/Column/GridContainer2/HBoxContainer"]
@@ -682,7 +691,7 @@ __meta__ = {
 }
 
 [node name="SectionTitle" parent="VBoxContainer/TabContainer/Dialog Box/Column2" instance=ExtResource( 3 )]
-text = "Next Indicator"
+text = "Indicador de siguiente"
 text_key = "Next Indicator"
 
 [node name="GridContainer" type="GridContainer" parent="VBoxContainer/TabContainer/Dialog Box/Column2"]
@@ -697,14 +706,14 @@ columns = 2
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_top = 3.0
-margin_right = 66.0
+margin_right = 86.0
 margin_bottom = 17.0
-text = "Image"
+text = "Imágen"
 text_key = "Image"
 
 [node name="NextIndicatorButton" type="Button" parent="VBoxContainer/TabContainer/Dialog Box/Column2/GridContainer"]
-margin_left = 76.0
-margin_right = 228.0
+margin_left = 96.0
+margin_right = 248.0
 margin_bottom = 20.0
 text = "next-indicator"
 
@@ -712,15 +721,15 @@ text = "next-indicator"
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_top = 27.0
-margin_right = 66.0
+margin_right = 86.0
 margin_bottom = 41.0
-text = "Animation"
+text = "Animación"
 text_key = "Animation"
 
 [node name="NextAnimation" type="OptionButton" parent="VBoxContainer/TabContainer/Dialog Box/Column2/GridContainer"]
-margin_left = 76.0
+margin_left = 96.0
 margin_top = 24.0
-margin_right = 228.0
+margin_right = 248.0
 margin_bottom = 44.0
 __meta__ = {
 "_edit_use_anchors_": false
@@ -730,15 +739,15 @@ __meta__ = {
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_top = 53.0
-margin_right = 66.0
+margin_right = 86.0
 margin_bottom = 67.0
-text = "Scale"
+text = "Escala"
 text_key = "Scale"
 
 [node name="HBoxContainer7" type="HBoxContainer" parent="VBoxContainer/TabContainer/Dialog Box/Column2/GridContainer"]
-margin_left = 76.0
+margin_left = 96.0
 margin_top = 48.0
-margin_right = 228.0
+margin_right = 248.0
 margin_bottom = 72.0
 
 [node name="IndicatorScale" type="SpinBox" parent="VBoxContainer/TabContainer/Dialog Box/Column2/GridContainer/HBoxContainer7"]
@@ -754,15 +763,15 @@ allow_lesser = true
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_top = 81.0
-margin_right = 66.0
+margin_right = 86.0
 margin_bottom = 95.0
-text = "Offset"
+text = "Compensación"
 text_key = "Offset"
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer/TabContainer/Dialog Box/Column2/GridContainer"]
-margin_left = 76.0
+margin_left = 96.0
 margin_top = 76.0
-margin_right = 228.0
+margin_right = 248.0
 margin_bottom = 100.0
 
 [node name="NextOffsetX" type="SpinBox" parent="VBoxContainer/TabContainer/Dialog Box/Column2/GridContainer/HBoxContainer2"]
@@ -800,7 +809,7 @@ __meta__ = {
 }
 
 [node name="SectionTitle" parent="VBoxContainer/TabContainer/Dialog Box/Column3" instance=ExtResource( 3 )]
-text = "Behaviour"
+text = "Comportamiento"
 text_key = "Behaviour"
 
 [node name="GridContainer" type="GridContainer" parent="VBoxContainer/TabContainer/Dialog Box/Column3"]
@@ -817,7 +826,7 @@ anchor_bottom = 0.0
 margin_top = 5.0
 margin_right = 122.0
 margin_bottom = 19.0
-text = "Fade in time:"
+text = "Tiempo de aparición:"
 text_key = "Fade in time:"
 
 [node name="ShowTime" type="HBoxContainer" parent="VBoxContainer/TabContainer/Dialog Box/Column3/GridContainer"]
@@ -863,6 +872,9 @@ margin_top = 32.0
 margin_right = -4.0
 margin_bottom = -4.0
 custom_constants/separation = 10
+__meta__ = {
+"_tab_name": "NameLabelTabTitle"
+}
 
 [node name="Column" type="VBoxContainer" parent="VBoxContainer/TabContainer/Name Label"]
 margin_right = 287.0
@@ -875,7 +887,7 @@ __meta__ = {
 
 [node name="SectionTitle" parent="VBoxContainer/TabContainer/Name Label/Column" instance=ExtResource( 3 )]
 margin_right = 287.0
-text = "Text"
+text = "Texto"
 text_key = "Text"
 
 [node name="GridContainer" type="GridContainer" parent="VBoxContainer/TabContainer/Name Label/Column"]
@@ -890,7 +902,7 @@ anchor_bottom = 0.0
 margin_top = 4.0
 margin_right = 125.0
 margin_bottom = 18.0
-text = "Name label Font"
+text = "Fuente del nombre"
 text_key = "Name label Font"
 
 [node name="RegularFont" type="HBoxContainer" parent="VBoxContainer/TabContainer/Name Label/Column/GridContainer"]
@@ -911,7 +923,7 @@ margin_left = 130.0
 margin_right = 158.0
 margin_bottom = 22.0
 size_flags_vertical = 4
-icon = SubResource( 12 )
+icon = SubResource( 4 )
 
 [node name="TLabel2" parent="VBoxContainer/TabContainer/Name Label/Column/GridContainer" instance=ExtResource( 8 )]
 anchor_right = 0.0
@@ -919,7 +931,7 @@ anchor_bottom = 0.0
 margin_top = 31.0
 margin_right = 125.0
 margin_bottom = 45.0
-text = "Use character Color"
+text = "Usar el color del personaje"
 text_key = "Use character Color"
 
 [node name="CharacterColor" type="CheckBox" parent="VBoxContainer/TabContainer/Name Label/Column/GridContainer"]
@@ -934,7 +946,7 @@ anchor_bottom = 0.0
 margin_top = 62.0
 margin_right = 125.0
 margin_bottom = 76.0
-text = "Shadow"
+text = "Sombra"
 text_key = "Shadow"
 
 [node name="HBoxContainer4" type="HBoxContainer" parent="VBoxContainer/TabContainer/Name Label/Column/GridContainer"]
@@ -961,7 +973,7 @@ anchor_bottom = 0.0
 margin_top = 93.0
 margin_right = 125.0
 margin_bottom = 107.0
-text = "Shadow Offset"
+text = "Compensación"
 text_key = "Shadow Offset"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/TabContainer/Name Label/Column/GridContainer"]
@@ -1020,7 +1032,7 @@ anchor_bottom = 0.0
 margin_top = 5.0
 margin_right = 126.0
 margin_bottom = 19.0
-text = "Background Color"
+text = "Color de fondo"
 text_key = "Background Color"
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer/TabContainer/Name Label/Column2/GridContainer"]
@@ -1044,7 +1056,7 @@ anchor_bottom = 0.0
 margin_top = 33.0
 margin_right = 126.0
 margin_bottom = 47.0
-text = "Background Texture"
+text = "Textura de fondo"
 text_key = "Background Texture"
 
 [node name="HBoxContainer3" type="HBoxContainer" parent="VBoxContainer/TabContainer/Name Label/Column2/GridContainer"]
@@ -1071,7 +1083,7 @@ anchor_bottom = 0.0
 margin_top = 61.0
 margin_right = 126.0
 margin_bottom = 75.0
-text = "Texture Modulation"
+text = "Modulación de textura"
 text_key = "Texture Modulation"
 
 [node name="HBoxContainer6" type="HBoxContainer" parent="VBoxContainer/TabContainer/Name Label/Column2/GridContainer"]
@@ -1138,7 +1150,7 @@ __meta__ = {
 }
 
 [node name="SectionTitle" parent="VBoxContainer/TabContainer/Name Label/Column3" instance=ExtResource( 3 )]
-text = "Placement"
+text = "Colocación"
 text_key = "Placement"
 
 [node name="GridContainer" type="GridContainer" parent="VBoxContainer/TabContainer/Name Label/Column3"]
@@ -1153,7 +1165,7 @@ anchor_bottom = 0.0
 margin_top = 3.0
 margin_right = 52.0
 margin_bottom = 17.0
-text = "Position"
+text = "Posicion"
 text_key = "Position"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/TabContainer/Name Label/Column3/GridContainer"]
@@ -1175,7 +1187,7 @@ anchor_bottom = 0.0
 margin_top = 29.0
 margin_right = 52.0
 margin_bottom = 43.0
-text = "Offset"
+text = "Compensación"
 text_key = "Offset"
 
 [node name="HBoxContainer5" type="HBoxContainer" parent="VBoxContainer/TabContainer/Name Label/Column3/GridContainer"]
@@ -1209,6 +1221,9 @@ margin_top = 32.0
 margin_right = -4.0
 margin_bottom = -4.0
 custom_constants/separation = 10
+__meta__ = {
+"_tab_name": "ChoiceButtonTabTitle"
+}
 
 [node name="Column" type="VBoxContainer" parent="VBoxContainer/TabContainer/Choice Buttons"]
 margin_right = 380.0
@@ -1221,7 +1236,7 @@ __meta__ = {
 
 [node name="SectionTitle" parent="VBoxContainer/TabContainer/Choice Buttons/Column" instance=ExtResource( 3 )]
 margin_right = 380.0
-text = "Button Style"
+text = "Estilo de botones"
 text_key = "Button Style"
 
 [node name="TabContainer" type="TabContainer" parent="VBoxContainer/TabContainer/Choice Buttons/Column"]
@@ -1281,7 +1296,7 @@ __meta__ = {
 
 [node name="SectionTitle" parent="VBoxContainer/TabContainer/Choice Buttons/Column2" instance=ExtResource( 3 )]
 margin_right = 309.0
-text = "Placement"
+text = "Colocación"
 text_key = "Placement"
 
 [node name="GridContainer" type="GridContainer" parent="VBoxContainer/TabContainer/Choice Buttons/Column2"]
@@ -1329,7 +1344,7 @@ anchor_bottom = 0.0
 margin_top = 33.0
 margin_right = 119.0
 margin_bottom = 47.0
-text = "Fixed button size"
+text = "Tamaño fijo"
 text_key = "Fixed button size"
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer/TabContainer/Choice Buttons/Column2/GridContainer"]
@@ -1364,7 +1379,7 @@ anchor_bottom = 0.0
 margin_top = 61.0
 margin_right = 119.0
 margin_bottom = 75.0
-text = "Separation"
+text = "Separación"
 text_key = "Separation"
 
 [node name="VerticalSeparation" type="SpinBox" parent="VBoxContainer/TabContainer/Choice Buttons/Column2/GridContainer"]
@@ -1382,7 +1397,7 @@ anchor_bottom = 0.0
 margin_top = 87.0
 margin_right = 119.0
 margin_bottom = 101.0
-text = "Button layout"
+text = "Orden de botones"
 text_key = "Button layout"
 
 [node name="Layout" type="OptionButton" parent="VBoxContainer/TabContainer/Choice Buttons/Column2/GridContainer"]
@@ -1401,7 +1416,7 @@ anchor_bottom = 0.0
 margin_top = 112.0
 margin_right = 119.0
 margin_bottom = 126.0
-text = "Position on screen"
+text = "Posición en la pantalla"
 text_key = "Position on screen"
 
 [node name="PositionOnScreenOptionButton" type="OptionButton" parent="VBoxContainer/TabContainer/Choice Buttons/Column2/GridContainer"]
@@ -1411,8 +1426,8 @@ margin_right = 309.0
 margin_bottom = 130.0
 size_flags_horizontal = 3
 text = "Top Left"
-icon = SubResource( 10 )
-items = [ "Top Left", SubResource( 12 ), false, 0, null, "Top Center", SubResource( 12 ), false, 1, null, "Top Right", SubResource( 12 ), false, 2, null, "", null, false, -1, null, "Center Left", SubResource( 12 ), false, 3, null, "Center", SubResource( 12 ), false, 4, null, "Center Right", SubResource( 12 ), false, 5, null, "", null, false, -1, null, "Bottom Left", SubResource( 12 ), false, 6, null, "Bottom Center", SubResource( 12 ), false, 7, null, "Bottom Right", SubResource( 12 ), false, 8, null ]
+icon = SubResource( 2 )
+items = [ "Top Left", SubResource( 4 ), false, 0, null, "Top Center", SubResource( 4 ), false, 1, null, "Top Right", SubResource( 4 ), false, 2, null, "", null, false, -1, null, "Center Left", SubResource( 4 ), false, 3, null, "Center", SubResource( 4 ), false, 4, null, "Center Right", SubResource( 4 ), false, 5, null, "", null, false, -1, null, "Bottom Left", SubResource( 4 ), false, 6, null, "Bottom Center", SubResource( 4 ), false, 7, null, "Bottom Right", SubResource( 4 ), false, 8, null ]
 selected = 0
 
 [node name="TLabel6" parent="VBoxContainer/TabContainer/Choice Buttons/Column2/GridContainer" instance=ExtResource( 8 )]
@@ -1421,7 +1436,7 @@ anchor_bottom = 0.0
 margin_top = 139.0
 margin_right = 119.0
 margin_bottom = 153.0
-text = "Offset x-y"
+text = "Compensación x-y"
 text_key = "Offset x-y"
 
 [node name="HBoxContainer3" type="HBoxContainer" parent="VBoxContainer/TabContainer/Choice Buttons/Column2/GridContainer"]
@@ -1452,13 +1467,17 @@ margin_top = 32.0
 margin_right = -4.0
 margin_bottom = -4.0
 custom_constants/separation = 10
+__meta__ = {
+"_tab_name": "GlossaryTabTitle"
+}
 
 [node name="Column" type="VBoxContainer" parent="VBoxContainer/TabContainer/Glossary"]
 margin_right = 270.0
-margin_bottom = 488.0
+margin_bottom = 495.0
 rect_min_size = Vector2( 270, 0 )
 
 [node name="SectionTitle" parent="VBoxContainer/TabContainer/Glossary/Column" instance=ExtResource( 3 )]
+text = "Visuales"
 text_key = "Visuals"
 
 [node name="GridContainer" type="GridContainer" parent="VBoxContainer/TabContainer/Glossary/Column"]
@@ -1473,14 +1492,14 @@ columns = 2
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_top = 8.0
-margin_right = 113.0
+margin_right = 116.0
 margin_bottom = 22.0
-text = "Word color"
+text = "Color de palabra"
 text_key = "Word color"
 
 [node name="HighlightColorPicker" type="ColorPickerButton" parent="VBoxContainer/TabContainer/Glossary/Column/GridContainer"]
-margin_left = 123.0
-margin_right = 241.0
+margin_left = 126.0
+margin_right = 244.0
 margin_bottom = 30.0
 rect_min_size = Vector2( 50, 30 )
 color = Color( 0.215686, 0.654902, 0.67451, 1 )
@@ -1489,15 +1508,15 @@ color = Color( 0.215686, 0.654902, 0.67451, 1 )
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_top = 38.0
-margin_right = 113.0
+margin_right = 116.0
 margin_bottom = 52.0
-text = "Background Panel"
+text = "Panel de fondo"
 text_key = "Background Panel"
 
 [node name="BackgroundPanel" type="HBoxContainer" parent="VBoxContainer/TabContainer/Glossary/Column/GridContainer"]
-margin_left = 123.0
+margin_left = 126.0
 margin_top = 34.0
-margin_right = 241.0
+margin_right = 244.0
 margin_bottom = 56.0
 
 [node name="BgPanelButton" type="Button" parent="VBoxContainer/TabContainer/Glossary/Column/GridContainer/BackgroundPanel"]
@@ -1513,21 +1532,21 @@ margin_left = 90.0
 margin_right = 118.0
 margin_bottom = 22.0
 size_flags_vertical = 4
-icon = SubResource( 12 )
+icon = SubResource( 4 )
 
 [node name="VSeparator" type="VSeparator" parent="VBoxContainer/TabContainer/Glossary"]
 margin_left = 280.0
 margin_right = 284.0
-margin_bottom = 488.0
+margin_bottom = 495.0
 
 [node name="Column3" type="VBoxContainer" parent="VBoxContainer/TabContainer/Glossary"]
 margin_left = 294.0
 margin_right = 564.0
-margin_bottom = 488.0
+margin_bottom = 495.0
 rect_min_size = Vector2( 270, 0 )
 
 [node name="SectionTitle" parent="VBoxContainer/TabContainer/Glossary/Column3" instance=ExtResource( 3 )]
-text = "Text"
+text = "Texto"
 text_key = "Text"
 
 [node name="GridContainer" type="GridContainer" parent="VBoxContainer/TabContainer/Glossary/Column3"]
@@ -1542,14 +1561,14 @@ columns = 2
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_top = 4.0
-margin_right = 67.0
+margin_right = 89.0
 margin_bottom = 18.0
-text = "Title Font"
+text = "Título Fuente"
 text_key = "Title Font"
 
 [node name="TitleFont" type="HBoxContainer" parent="VBoxContainer/TabContainer/Glossary/Column3/GridContainer"]
-margin_left = 77.0
-margin_right = 195.0
+margin_left = 99.0
+margin_right = 217.0
 margin_bottom = 22.0
 
 [node name="TitleFontButton" type="Button" parent="VBoxContainer/TabContainer/Glossary/Column3/GridContainer/TitleFont"]
@@ -1565,21 +1584,21 @@ margin_left = 90.0
 margin_right = 118.0
 margin_bottom = 22.0
 size_flags_vertical = 4
-icon = SubResource( 12 )
+icon = SubResource( 4 )
 
 [node name="TLabel2" parent="VBoxContainer/TabContainer/Glossary/Column3/GridContainer" instance=ExtResource( 8 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_top = 34.0
-margin_right = 67.0
+margin_right = 89.0
 margin_bottom = 48.0
-text = "Title color"
+text = "Título Color"
 text_key = "Title color"
 
 [node name="TitleColorPicker" type="ColorPickerButton" parent="VBoxContainer/TabContainer/Glossary/Column3/GridContainer"]
-margin_left = 77.0
+margin_left = 99.0
 margin_top = 26.0
-margin_right = 195.0
+margin_right = 217.0
 margin_bottom = 56.0
 rect_min_size = Vector2( 50, 30 )
 color = Color( 0.215686, 0.654902, 0.67451, 1 )
@@ -1588,15 +1607,15 @@ color = Color( 0.215686, 0.654902, 0.67451, 1 )
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_top = 64.0
-margin_right = 67.0
+margin_right = 89.0
 margin_bottom = 78.0
-text = "Text Font"
+text = "Texto Font"
 text_key = "Text Font"
 
 [node name="TextFont" type="HBoxContainer" parent="VBoxContainer/TabContainer/Glossary/Column3/GridContainer"]
-margin_left = 77.0
+margin_left = 99.0
 margin_top = 60.0
-margin_right = 195.0
+margin_right = 217.0
 margin_bottom = 82.0
 
 [node name="TextFontButton" type="Button" parent="VBoxContainer/TabContainer/Glossary/Column3/GridContainer/TextFont"]
@@ -1612,21 +1631,21 @@ margin_left = 90.0
 margin_right = 118.0
 margin_bottom = 22.0
 size_flags_vertical = 4
-icon = SubResource( 12 )
+icon = SubResource( 4 )
 
 [node name="TLabel4" parent="VBoxContainer/TabContainer/Glossary/Column3/GridContainer" instance=ExtResource( 8 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_top = 94.0
-margin_right = 67.0
+margin_right = 89.0
 margin_bottom = 108.0
-text = "Text color"
+text = "Texto Color"
 text_key = "Text color"
 
 [node name="TextColorPicker" type="ColorPickerButton" parent="VBoxContainer/TabContainer/Glossary/Column3/GridContainer"]
-margin_left = 77.0
+margin_left = 99.0
 margin_top = 86.0
-margin_right = 195.0
+margin_right = 217.0
 margin_bottom = 116.0
 rect_min_size = Vector2( 50, 30 )
 color = Color( 0.215686, 0.654902, 0.67451, 1 )
@@ -1635,15 +1654,15 @@ color = Color( 0.215686, 0.654902, 0.67451, 1 )
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_top = 124.0
-margin_right = 67.0
+margin_right = 89.0
 margin_bottom = 138.0
-text = "Extra Font"
+text = "Extra Fuente"
 text_key = "Extra Font"
 
 [node name="ExtraFont" type="HBoxContainer" parent="VBoxContainer/TabContainer/Glossary/Column3/GridContainer"]
-margin_left = 77.0
+margin_left = 99.0
 margin_top = 120.0
-margin_right = 195.0
+margin_right = 217.0
 margin_bottom = 142.0
 
 [node name="ExtraFontButton" type="Button" parent="VBoxContainer/TabContainer/Glossary/Column3/GridContainer/ExtraFont"]
@@ -1659,21 +1678,21 @@ margin_left = 90.0
 margin_right = 118.0
 margin_bottom = 22.0
 size_flags_vertical = 4
-icon = SubResource( 12 )
+icon = SubResource( 4 )
 
 [node name="TLabel6" parent="VBoxContainer/TabContainer/Glossary/Column3/GridContainer" instance=ExtResource( 8 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_top = 154.0
-margin_right = 67.0
+margin_right = 89.0
 margin_bottom = 168.0
-text = "Extra color"
+text = "Extra Color"
 text_key = "Extra color"
 
 [node name="ExtraColorPicker" type="ColorPickerButton" parent="VBoxContainer/TabContainer/Glossary/Column3/GridContainer"]
-margin_left = 77.0
+margin_left = 99.0
 margin_top = 146.0
-margin_right = 195.0
+margin_right = 217.0
 margin_bottom = 176.0
 rect_min_size = Vector2( 50, 30 )
 color = Color( 0.215686, 0.654902, 0.67451, 1 )
@@ -1681,16 +1700,16 @@ color = Color( 0.215686, 0.654902, 0.67451, 1 )
 [node name="VSeparator2" type="VSeparator" parent="VBoxContainer/TabContainer/Glossary"]
 margin_left = 574.0
 margin_right = 578.0
-margin_bottom = 488.0
+margin_bottom = 495.0
 
 [node name="Column2" type="VBoxContainer" parent="VBoxContainer/TabContainer/Glossary"]
 margin_left = 588.0
 margin_right = 858.0
-margin_bottom = 488.0
+margin_bottom = 495.0
 rect_min_size = Vector2( 270, 0 )
 
 [node name="SectionTitle" parent="VBoxContainer/TabContainer/Glossary/Column2" instance=ExtResource( 3 )]
-text = "Behaviour"
+text = "Comportamiento"
 text_key = "Behaviour"
 
 [node name="GridContainer" type="GridContainer" parent="VBoxContainer/TabContainer/Glossary/Column2"]
@@ -1705,14 +1724,14 @@ columns = 2
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_top = 5.0
-margin_right = 33.0
+margin_right = 59.0
 margin_bottom = 19.0
-text = "Show"
+text = "Mostrar"
 text_key = "Show"
 
 [node name="ShowGlossaryCheckBox" type="CheckBox" parent="VBoxContainer/TabContainer/Glossary/Column2/GridContainer"]
-margin_left = 43.0
-margin_right = 67.0
+margin_left = 69.0
+margin_right = 93.0
 margin_bottom = 24.0
 __meta__ = {
 "_edit_use_anchors_": false
@@ -1727,14 +1746,17 @@ margin_top = 32.0
 margin_right = -4.0
 margin_bottom = -4.0
 custom_constants/separation = 10
+__meta__ = {
+"_tab_name": "AudioTabTitle"
+}
 
 [node name="Column" type="VBoxContainer" parent="VBoxContainer/TabContainer/Audio"]
 margin_right = 270.0
-margin_bottom = 488.0
+margin_bottom = 495.0
 rect_min_size = Vector2( 270, 0 )
 
 [node name="SectionTitle" parent="VBoxContainer/TabContainer/Audio/Column" instance=ExtResource( 3 )]
-text = "Typing Sound Effects"
+text = "Sonido Del Texto"
 text_key = "Typing Sound Effects"
 
 [node name="Typing" parent="VBoxContainer/TabContainer/Audio/Column" instance=ExtResource( 7 )]
@@ -1745,12 +1767,12 @@ margin_bottom = 158.0
 [node name="VSeparator" type="VSeparator" parent="VBoxContainer/TabContainer/Audio"]
 margin_left = 280.0
 margin_right = 284.0
-margin_bottom = 488.0
+margin_bottom = 495.0
 
 [node name="Column2" type="VBoxContainer" parent="VBoxContainer/TabContainer/Audio"]
 margin_left = 294.0
 margin_right = 564.0
-margin_bottom = 488.0
+margin_bottom = 495.0
 rect_min_size = Vector2( 270, 0 )
 
 [node name="SectionTitle" parent="VBoxContainer/TabContainer/Audio/Column2" instance=ExtResource( 3 )]
@@ -1795,12 +1817,12 @@ margin_bottom = 338.0
 [node name="VSeparator2" type="VSeparator" parent="VBoxContainer/TabContainer/Audio"]
 margin_left = 574.0
 margin_right = 578.0
-margin_bottom = 488.0
+margin_bottom = 495.0
 
 [node name="Column3" type="VBoxContainer" parent="VBoxContainer/TabContainer/Audio"]
 margin_left = 588.0
 margin_right = 858.0
-margin_bottom = 488.0
+margin_bottom = 495.0
 rect_min_size = Vector2( 270, 0 )
 
 [node name="SectionTitle" parent="VBoxContainer/TabContainer/Audio/Column3" instance=ExtResource( 3 )]

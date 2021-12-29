@@ -47,10 +47,15 @@ func _ready():
 		$MainPanel.margin_top = 59
 		modifier = '-2'
 	$ToolBar/NewTimelineButton.icon = load("res://addons/dialogic/Images/Toolbar/add-timeline" + modifier + ".svg")
+	$ToolBar/NewTimelineButton.hint_tooltip = DTS.translate('Add Timeline')
 	$ToolBar/NewCharactersButton.icon = load("res://addons/dialogic/Images/Toolbar/add-character" + modifier + ".svg")
+	$ToolBar/NewCharactersButton.hint_tooltip = DTS.translate('Add Character')
 	$ToolBar/NewValueButton.icon = load("res://addons/dialogic/Images/Toolbar/add-definition" + modifier + ".svg")
+	$ToolBar/NewValueButton.hint_tooltip = DTS.translate('Add Value')
 	$ToolBar/NewGlossaryEntryButton.icon = load("res://addons/dialogic/Images/Toolbar/add-glossary" + modifier + ".svg")
+	$ToolBar/NewGlossaryEntryButton.hint_tooltip = DTS.translate('Add Glossary Entry')
 	$ToolBar/NewThemeButton.icon = load("res://addons/dialogic/Images/Toolbar/add-theme" + modifier + ".svg")
+	$ToolBar/NewThemeButton.hint_tooltip = DTS.translate('Add Theme')
 	
 	var modulate_color = Color.white
 	if not get_constant("dark_theme", "Editor"):
@@ -84,7 +89,10 @@ func _ready():
 	
 	#Connecting confirmation
 	$RemoveFolderConfirmation.connect('confirmed', self, '_on_RemoveFolderConfirmation_confirmed')
-
+	$RemoveConfirmation.window_title = DTS.translate("RemoveResourcePopupTitle")
+	$RemoveFolderConfirmation.window_title = DTS.translate("RemoveFolderPopupTitle")
+	$RemoveFolderConfirmation.dialog_text = DTS.translate("RemoveFolderPopupText")
+	
 	# Loading the version number
 	var config = ConfigFile.new()
 	var err = config.load("res://addons/dialogic/plugin.cfg")
@@ -110,10 +118,10 @@ func popup_remove_confirmation(what):
 	# the last theme should not be deleteded!!!
 	if what == "Theme" and len(DialogicUtil.get_theme_list()) == 1:
 		print("[D] You cannot delete the last theme!")
-		$RemoveConfirmation.dialog_text = "Dialogic always needs a theme. You cannot delete the last theme. Sorry!"
+		$RemoveConfirmation.dialog_text = DTS.translate("CantDeleteLastTheme")
 	# otherwise we're ok
 	else:
-		var remove_text = "Are you sure you want to remove this [resource]? \n (Can't be restored)"
+		var remove_text = DTS.translate('DeleteResourceText')
 		$RemoveConfirmation.dialog_text = remove_text.replace('[resource]', what)
 		$RemoveConfirmation.connect('confirmed', self, '_on_RemoveConfirmation_confirmed', [what])
 	

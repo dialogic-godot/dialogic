@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=2]
+[gd_scene load_steps=20 format=2]
 
 [ext_resource path="res://addons/dialogic/Editor/EditorView.gd" type="Script" id=1]
 [ext_resource path="res://addons/dialogic/Editor/TimelineEditor/TimelineEditor.tscn" type="PackedScene" id=2]
@@ -15,7 +15,7 @@
 [ext_resource path="res://addons/dialogic/Images/Toolbar/add-theme.svg" type="Texture" id=13]
 [ext_resource path="res://addons/dialogic/Editor/MasterTree/MasterTree.tscn" type="PackedScene" id=35]
 
-[sub_resource type="Image" id=3]
+[sub_resource type="Image" id=6]
 data = {
 "data": PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ),
 "format": "LumAlpha8",
@@ -27,8 +27,31 @@ data = {
 [sub_resource type="ImageTexture" id=2]
 flags = 4
 flags = 4
-image = SubResource( 3 )
+image = SubResource( 6 )
 size = Vector2( 16, 16 )
+
+[sub_resource type="Image" id=7]
+data = {
+"data": PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ),
+"format": "LumAlpha8",
+"height": 16,
+"mipmaps": false,
+"width": 16
+}
+
+[sub_resource type="ImageTexture" id=4]
+flags = 4
+flags = 4
+image = SubResource( 7 )
+size = Vector2( 16, 16 )
+
+[sub_resource type="StyleBoxTexture" id=5]
+texture = SubResource( 4 )
+region_rect = Rect2( 0, 0, 16, 16 )
+margin_left = 2.0
+margin_right = 2.0
+margin_top = 2.0
+margin_bottom = 2.0
 
 [node name="EditorView" type="Control"]
 anchor_right = 1.0
@@ -52,7 +75,7 @@ __meta__ = {
 modulate = Color( 0, 0, 0, 1 )
 margin_right = 28.0
 margin_bottom = 24.0
-hint_tooltip = "New Timeline"
+hint_tooltip = "Neue Timeline"
 icon = ExtResource( 4 )
 flat = true
 
@@ -62,7 +85,7 @@ self_modulate = Color( 0.870588, 0.870588, 0.870588, 1 )
 margin_left = 32.0
 margin_right = 60.0
 margin_bottom = 24.0
-hint_tooltip = "New Character"
+hint_tooltip = "Neuer Character"
 icon = ExtResource( 3 )
 
 [node name="NewValueButton" type="Button" parent="ToolBar"]
@@ -70,7 +93,7 @@ modulate = Color( 0, 0, 0, 1 )
 margin_left = 64.0
 margin_right = 92.0
 margin_bottom = 24.0
-hint_tooltip = "New Value"
+hint_tooltip = "Neuer Wert"
 icon = ExtResource( 5 )
 flat = true
 
@@ -79,7 +102,7 @@ modulate = Color( 0, 0, 0, 1 )
 margin_left = 96.0
 margin_right = 124.0
 margin_bottom = 24.0
-hint_tooltip = "New Definition"
+hint_tooltip = "Neuer Glossar Eintrag"
 icon = ExtResource( 10 )
 flat = true
 __meta__ = {
@@ -91,7 +114,7 @@ modulate = Color( 0, 0, 0, 1 )
 margin_left = 128.0
 margin_right = 156.0
 margin_bottom = 24.0
-hint_tooltip = "New Theme"
+hint_tooltip = "Neues Theme"
 icon = ExtResource( 13 )
 flat = true
 
@@ -123,17 +146,17 @@ align = 0
 
 [node name="Spacer" type="Control" parent="ToolBar"]
 margin_left = 160.0
-margin_right = 747.0
+margin_right = 739.0
 margin_bottom = 24.0
 size_flags_horizontal = 3
 
 [node name="Web" type="ToolButton" parent="ToolBar"]
 self_modulate = Color( 0.870588, 0.870588, 0.870588, 1 )
-margin_left = 751.0
+margin_left = 743.0
 margin_right = 835.0
 margin_bottom = 24.0
 mouse_default_cursor_shape = 2
-text = "Website"
+text = "Webseite"
 icon = SubResource( 2 )
 
 [node name="Docs" type="ToolButton" parent="ToolBar"]
@@ -142,7 +165,7 @@ margin_left = 839.0
 margin_right = 900.0
 margin_bottom = 24.0
 mouse_default_cursor_shape = 2
-text = "Help"
+text = "Hilfe"
 icon = SubResource( 2 )
 
 [node name="Version" type="Label" parent="ToolBar"]
@@ -249,6 +272,7 @@ anchor_bottom = 0.0
 margin_left = 162.0
 margin_right = 1024.0
 margin_bottom = 562.0
+custom_styles/panel = SubResource( 5 )
 
 [node name="Empty" type="CenterContainer" parent="MainPanel"]
 margin_left = 162.0
