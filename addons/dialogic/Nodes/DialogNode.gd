@@ -591,7 +591,7 @@ func event_handler(event: Dictionary):
 					if char_portrait == '[Definition]' and event.has('port_defn'):
 						var portrait_definition = event['port_defn']
 						if portrait_definition != '':
-							for d in DialogicResources.get_default_definitions()['variables']:
+							for d in Dialogic._get_definitions()['variables']:
 								if d['id'] == portrait_definition:
 									char_portrait = d['value']
 									break
@@ -1126,8 +1126,16 @@ func grab_portrait_focus(character_data, event: Dictionary = {}) -> bool:
 			
 			portrait.focus()
 			if event.has('portrait'):
+				var current_portrait = event['portrait']
+				if current_portrait == '[Definition]' and event.has('port_defn'):
+					var portrait_definition = event['port_defn']
+					if portrait_definition != '':
+						for d in Dialogic._get_definitions()['variables']:
+							if d['id'] == portrait_definition:
+								current_portrait = d['value']
+								break
 				if event['portrait'] != '':
-					portrait.set_portrait(event['portrait'])
+					portrait.set_portrait(current_portrait)
 		else:
 			portrait.focusout(Color(current_theme.get_value('animation', 'dim_color', '#ff808080')))
 	return exists
