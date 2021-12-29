@@ -50,5 +50,5 @@ static func _get_translation(message)->String:
 			# If there's no translation, returns the original string
 			returned_translation = message
 	
-	print('Message: ', message, ' - locale: ', locale, ' - ', returned_translation)
+	#print('Message: ', message, ' - locale: ', locale, ' - ', returned_translation)
 	return returned_translation
