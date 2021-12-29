@@ -133,11 +133,10 @@ func handle_command(command:Array):
 			var audio:AudioStream = ResourceLoader.load(path, "AudioStream")
 			$sounds.stream = audio
 			$sounds.play()
-			#yield(get_tree().create_timer(audio.get_length()), "timeout")
-			#$sounds.stop()
 	elif(command[1] == "pause"):
 		$WritingTimer.stop()
-		yield(get_tree().create_timer(float(command[2])), "timeout")
+		get_parent().get_node("DialogicTimer").start(float(command[2]))
+		yield(get_parent().get_node("DialogicTimer"), "timeout")
 		start_text_timer()
 		
 
