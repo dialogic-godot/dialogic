@@ -101,7 +101,12 @@ func set_expanded(expanded: bool):
 
 func _set_event_icon(icon: Texture):
 	icon_texture.texture = icon
-
+	var _scale = DialogicUtil.get_editor_scale(self)
+	var ip = $PanelContainer/MarginContainer/VBoxContainer/Header/IconPanel
+	# Resizing the icon acording to the scale
+	ip.rect_min_size = ip.rect_min_size * _scale
+	#icon_texture.rect_size = icon_texture.rect_size * _scale
+	
 
 func _set_event_name(text: String):
 	if event_name == "Text Event":
@@ -272,11 +277,12 @@ func _on_HelpButton_pressed():
 func _draw():
 	var timeline_children = get_parent().get_children()
 	var timeline_lenght = timeline_children.size()
-	var pos_x = 25
-	var pos_y = 43#22
 	var line_color = Color("#4D4D4D")
 	var test_color = Color(0,1,0,1)
-	var line_width = 3
+	var _scale = DialogicUtil.get_editor_scale(self)
+	var line_width = 3 * _scale
+	var pos_x = (23 * _scale) + line_width
+	var pos_y = 43 * _scale
 
 	# If the event is the last one, don't draw a line aftwards
 	if timeline_children[timeline_lenght-1] == self:
@@ -284,13 +290,41 @@ func _draw():
 
 	# Drawing Event Circle
 	#draw_circle(Vector2(pos_x, pos_y), 20, Color(1,1,0,1))
+	
+	# Figuring out the next event
+	var event_index = 0
+	var c = 0
+	for t in timeline_children:
+		if t == self:
+			event_index = c
+		c += 1
+	var next_event = timeline_children[event_index + 1]
 
+	if current_indent_size > 1:
+		var line_size = ((indent_size + 2.2) * current_indent_size)
+		# Line at 0
+		draw_rect(Rect2(Vector2(pos_x, pos_y - 60),
+			Vector2(line_width, rect_size.y + 60)),
+			line_color, true)
+		
+		# Line at current indent
+		draw_rect(Rect2(
+			Vector2(pos_x + line_size, pos_y),
+			Vector2(line_width, rect_size.y - 40)),
+			line_color, true)
+	else:
+		# Vertical Line
+		draw_rect(Rect2(Vector2(pos_x, pos_y),
+			Vector2(line_width, rect_size.y - 40)),
+			line_color, true)
+			
 	# Drawing arc
 	if event_name == 'Choice':
 		# Vertical Line
 		draw_rect(Rect2(Vector2(pos_x, pos_y - 60),
 			Vector2(line_width, rect_size.y + 20)),
 			line_color, true)
+			
 			
 		# Connecting with the question 
 		var arc_start_x = ((indent_size + 2) * current_indent_size) + 4.6
@@ -306,11 +340,11 @@ func _draw():
 			2.0,
 			true
 		)
-		#draw_rect(Rect2(
-		#	Vector2(arc_start_x, pos_y),
-		#	Vector2(10, 1)),
-		#line_color, true)
-		
+
+		# Don't draw arc if next event is another choice event
+		if next_event.event_name == "Choice" or next_event.event_name == "End Branch":
+			return
+			
 		# Connecting with the next event
 		draw_arc(
 			Vector2( 52 +  ((indent_size + 2) * current_indent_size), pos_y + 5),
@@ -323,27 +357,5 @@ func _draw():
 			true
 		)
 
-	if current_indent_size > 1:
-			
-		var line_size = ((indent_size + 2.2) * current_indent_size)
-		# Horizontal Line
-		#draw_rect(Rect2(
-		#	Vector2(pos_x + pos_x - 1, pos_y),
-		#	Vector2(line_size - pos_x, 1)),
-		#line_color, true)
 
-		# Vertical Line
-		draw_rect(Rect2(Vector2(pos_x, pos_y - 60),
-			Vector2(line_width, rect_size.y + 60)),
-			line_color, true)
-		# First line
-		draw_rect(Rect2(
-			Vector2(pos_x + line_size, pos_y),
-			Vector2(line_width, rect_size.y - 40)),
-			line_color, true)
-	else:
-		# Vertical Line
-		draw_rect(Rect2(Vector2(pos_x, pos_y),
-			Vector2(line_width, rect_size.y - 40)),
-			line_color, true)
 		

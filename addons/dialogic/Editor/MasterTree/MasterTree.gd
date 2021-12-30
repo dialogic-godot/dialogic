@@ -50,8 +50,8 @@ func _ready():
 	
 	# Scaling
 	var modifier = ''
-	var _scale = get_constant("inspector_margin", "Editor")
-	_scale = _scale * 0.125
+	var _scale = DialogicUtil.get_editor_scale(self)
+	
 	rect_min_size.x = 150
 	if _scale == 1.25:
 		modifier = '-1.25'
@@ -103,12 +103,12 @@ func _ready():
 				themes_tree = sub_tree
 	
 	settings_tree = tree.create_item(root)
-	settings_tree.set_text(0, "Settings")
+	settings_tree.set_text(0, DTS.translate("Settings"))
 	settings_tree.set_icon(0, get_icon("GDScript", "EditorIcons"))
 	settings_tree.set_metadata(0, {'editor': 'Settings'})
 	
 	documentation_tree = tree.create_item(root)
-	documentation_tree.set_text(0, "Help")
+	documentation_tree.set_text(0, DTS.translate("Help"))
 	documentation_tree.set_icon(0, get_icon("HelpSearch", "EditorIcons"))
 	documentation_tree.set_metadata(0, {'editor': 'Documentation Root', 'name':'Start', 'path':'Welcome.md'})
 	
@@ -391,69 +391,69 @@ func hide_editors():
 
 func create_rmb_context_menus():
 	var timeline_popup = PopupMenu.new()
-	timeline_popup.add_icon_item(get_icon("Filesystem", "EditorIcons"), 'Show in File Manager')
-	timeline_popup.add_icon_item(get_icon("ActionCopy", "EditorIcons"), 'Copy Timeline Name')
-	timeline_popup.add_icon_item(get_icon("Remove", "EditorIcons"), 'Remove Timeline')
+	timeline_popup.add_icon_item(get_icon("Filesystem", "EditorIcons"), DTS.translate('Show in File Manager'))
+	timeline_popup.add_icon_item(get_icon("ActionCopy", "EditorIcons"), DTS.translate('Copy Timeline Name'))
+	timeline_popup.add_icon_item(get_icon("Remove", "EditorIcons"), DTS.translate('Remove Timeline'))
 	add_child(timeline_popup)
 	rmb_popup_menus["Timeline"] = timeline_popup
 	
 	var character_popup = PopupMenu.new()
-	character_popup.add_icon_item(get_icon("Filesystem", "EditorIcons"), 'Show in File Manager')
-	character_popup.add_icon_item(get_icon("Remove", "EditorIcons"), 'Remove Character')
+	character_popup.add_icon_item(get_icon("Filesystem", "EditorIcons"), DTS.translate('Show in File Manager'))
+	character_popup.add_icon_item(get_icon("Remove", "EditorIcons"), DTS.translate('Remove Character'))
 	add_child(character_popup)
 	rmb_popup_menus["Character"] = character_popup
 	
 	var theme_popup = PopupMenu.new()
-	theme_popup.add_icon_item(get_icon("Filesystem", "EditorIcons"), 'Show in File Manager')
-	theme_popup.add_icon_item(get_icon("Duplicate", "EditorIcons"), 'Duplicate Theme')
-	theme_popup.add_icon_item(get_icon("Remove", "EditorIcons"), 'Remove Theme')
+	theme_popup.add_icon_item(get_icon("Filesystem", "EditorIcons"), DTS.translate('Show in File Manager'))
+	theme_popup.add_icon_item(get_icon("Duplicate", "EditorIcons"), DTS.translate('Duplicate Theme'))
+	theme_popup.add_icon_item(get_icon("Remove", "EditorIcons"), DTS.translate('Remove Theme'))
 	add_child(theme_popup)
 	rmb_popup_menus["Theme"] = theme_popup
 	
 	var definition_popup = PopupMenu.new()
-	definition_popup.add_icon_item(get_icon("Edit", "EditorIcons"), 'Edit Definitions File')
-	definition_popup.add_icon_item(get_icon("Remove", "EditorIcons"), 'Remove Definition entry')
+	definition_popup.add_icon_item(get_icon("Edit", "EditorIcons"), DTS.translate('Edit Definitions File'))
+	definition_popup.add_icon_item(get_icon("Remove", "EditorIcons"), DTS.translate('Remove Definition entry'))
 	add_child(definition_popup)
 	rmb_popup_menus["Value"] = definition_popup
 	rmb_popup_menus["GlossaryEntry"] = definition_popup
 	
 	## FOLDER / ROOT ITEMS
 	var timeline_folder_popup = PopupMenu.new()
-	timeline_folder_popup.add_icon_item(get_icon("Add", "EditorIcons") ,'Add Timeline')
-	timeline_folder_popup.add_icon_item(get_icon("Folder", "EditorIcons") ,'Create Subfolder')
-	timeline_folder_popup.add_icon_item(get_icon("Remove", "EditorIcons") ,'Delete Folder')
+	timeline_folder_popup.add_icon_item(get_icon("Add", "EditorIcons") ,DTS.translate('Add Timeline'))
+	timeline_folder_popup.add_icon_item(get_icon("Folder", "EditorIcons") ,DTS.translate('Create Subfolder'))
+	timeline_folder_popup.add_icon_item(get_icon("Remove", "EditorIcons") ,DTS.translate('Delete Folder'))
 	add_child(timeline_folder_popup)
 	rmb_popup_menus['Timeline Root'] = timeline_folder_popup
 	
 	var character_folder_popup = PopupMenu.new()
-	character_folder_popup.add_icon_item(get_icon("Add", "EditorIcons") ,'Add Character')
-	character_folder_popup.add_icon_item(get_icon("Folder", "EditorIcons") ,'Create Subfolder')
-	character_folder_popup.add_icon_item(get_icon("Remove", "EditorIcons") ,'Delete Folder')
+	character_folder_popup.add_icon_item(get_icon("Add", "EditorIcons") ,DTS.translate('Add Character'))
+	character_folder_popup.add_icon_item(get_icon("Folder", "EditorIcons") ,DTS.translate('Create Subfolder'))
+	character_folder_popup.add_icon_item(get_icon("Remove", "EditorIcons") ,DTS.translate('Delete Folder'))
 	add_child(character_folder_popup)
 	rmb_popup_menus['Character Root'] = character_folder_popup
 	
 	var theme_folder_popup = PopupMenu.new()
-	theme_folder_popup.add_icon_item(get_icon("Add", "EditorIcons") ,'Add Theme')
-	theme_folder_popup.add_icon_item(get_icon("Folder", "EditorIcons") ,'Create Subfolder')
-	theme_folder_popup.add_icon_item(get_icon("Remove", "EditorIcons") ,'Delete Folder')
+	theme_folder_popup.add_icon_item(get_icon("Add", "EditorIcons") ,DTS.translate('Add Theme'))
+	theme_folder_popup.add_icon_item(get_icon("Folder", "EditorIcons") ,DTS.translate('Create Subfolder'))
+	theme_folder_popup.add_icon_item(get_icon("Remove", "EditorIcons") ,DTS.translate('Delete Folder'))
 	add_child(theme_folder_popup)
 	rmb_popup_menus["Theme Root"] = theme_folder_popup
 	
 	var definition_folder_popup = PopupMenu.new()
-	definition_folder_popup.add_icon_item(get_icon("Add", "EditorIcons") ,'Add Value')
-	definition_folder_popup.add_icon_item(get_icon("Add", "EditorIcons") ,'Add Glossary Entry')
-	definition_folder_popup.add_icon_item(get_icon("Folder", "EditorIcons") ,'Create Subfolder')
-	definition_folder_popup.add_icon_item(get_icon("Remove", "EditorIcons") ,'Delete Folder')
+	definition_folder_popup.add_icon_item(get_icon("Add", "EditorIcons") ,DTS.translate('Add Value'))
+	definition_folder_popup.add_icon_item(get_icon("Add", "EditorIcons") ,DTS.translate('Add Glossary Entry'))
+	definition_folder_popup.add_icon_item(get_icon("Folder", "EditorIcons") ,DTS.translate('Create Subfolder'))
+	definition_folder_popup.add_icon_item(get_icon("Remove", "EditorIcons") ,DTS.translate('Delete Folder'))
 	add_child(definition_folder_popup)
 	rmb_popup_menus["Definition Root"] = definition_folder_popup
 	
 	var documentation_folder_popup = PopupMenu.new()
-	documentation_folder_popup.add_icon_item(get_icon("Edit", "EditorIcons") ,'Toggle Editing Tools')
+	documentation_folder_popup.add_icon_item(get_icon("Edit", "EditorIcons") ,DTS.translate('Toggle Editing Tools'))
 	add_child(documentation_folder_popup)
 	rmb_popup_menus["Documentation Root"] = documentation_folder_popup
 	
 	var documentation_popup = PopupMenu.new()
-	documentation_popup.add_icon_item(get_icon("Edit", "EditorIcons") ,'Toggle Editing Tools')
+	documentation_popup.add_icon_item(get_icon("Edit", "EditorIcons") ,DTS.translate('Toggle Editing Tools'))
 	add_child(documentation_popup)
 	rmb_popup_menus["Documentation"] = documentation_popup
 	

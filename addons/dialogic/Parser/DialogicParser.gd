@@ -153,7 +153,7 @@ static func parse_branches(current_dialog, dialog_script: Dictionary) -> Diction
 			question_idx += 1
 			current_dialog.questions.append(event)
 			parser_queue.append(event)
-		elif event['event_id'] == 'dialogic_013':
+		elif event['event_id'] == 'dialogic_013' and parser_queue:
 			event['event_idx'] = event_idx
 			var opened_branch = parser_queue.pop_back()
 			event['end_branch_of'] = opened_branch['question_idx']
