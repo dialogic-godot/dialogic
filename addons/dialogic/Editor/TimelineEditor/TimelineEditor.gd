@@ -1034,6 +1034,10 @@ func indent_events() -> void:
 				question_index -= 1
 				if indent < 0:
 					indent = 0
+				else:
+					event.remove_warning('This event is not connected to any Question or Condition but it should!')
+			else:
+				event.set_warning('This event is not connected to any Question or Condition but it should!')
 
 		if indent > 0:
 			# Keep old behavior for items without template

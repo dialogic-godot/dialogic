@@ -6,7 +6,7 @@
 [ext_resource path="res://addons/dialogic/Example Assets/portraits/df-3.png" type="Texture" id=4]
 
 [sub_resource type="StyleBoxFlat" id=1]
-bg_color = Color( 0, 0, 0, 1 )
+bg_color = Color( 0.2, 0.23, 0.31, 1 )
 
 [sub_resource type="Image" id=10]
 data = {
@@ -110,7 +110,7 @@ margin_top = 5.0
 margin_right = 130.0
 margin_bottom = 19.0
 rect_min_size = Vector2( 130, 0 )
-text = "Name: "
+text = "Name:"
 text_key = "Name: "
 
 [node name="ColorPickerButton" type="ColorPickerButton" parent="Split/EditorScroll/Editor/NameAndColor"]
@@ -151,7 +151,7 @@ margin_top = 5.0
 margin_right = 130.0
 margin_bottom = 19.0
 rect_min_size = Vector2( 130, 0 )
-text = "Display Name: "
+text = "Anzeigename:"
 text_key = "Display Name: "
 
 [node name="CheckBox" type="CheckBox" parent="Split/EditorScroll/Editor/DisplayName"]
@@ -188,7 +188,7 @@ margin_top = 5.0
 margin_right = 130.0
 margin_bottom = 19.0
 rect_min_size = Vector2( 130, 0 )
-text = "Nicknames: "
+text = "Spitznamen:"
 text_key = "Nicknames: "
 
 [node name="CheckBox" type="CheckBox" parent="Split/EditorScroll/Editor/DisplayNickname"]
@@ -222,7 +222,7 @@ margin_right = 130.0
 margin_bottom = 14.0
 rect_min_size = Vector2( 130, 0 )
 size_flags_vertical = 0
-text = "Description: "
+text = "Beschreibung:"
 text_key = "Description: "
 
 [node name="TextEdit" type="TextEdit" parent="Split/EditorScroll/Editor/Description"]
@@ -232,17 +232,41 @@ margin_bottom = 50.0
 rect_min_size = Vector2( 100, 50 )
 size_flags_horizontal = 3
 
-[node name="Separator" type="HSeparator" parent="Split/EditorScroll/Editor"]
+[node name="Theme" type="HBoxContainer" parent="Split/EditorScroll/Editor"]
 margin_top = 138.0
 margin_right = 581.0
-margin_bottom = 156.0
+margin_bottom = 158.0
+
+[node name="TLabel5" parent="Split/EditorScroll/Editor/Theme" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 130.0
+margin_bottom = 14.0
+rect_min_size = Vector2( 130, 0 )
+size_flags_vertical = 0
+text = "Theme: "
+text_key = "Theme: "
+
+[node name="ThemeButton" type="MenuButton" parent="Split/EditorScroll/Editor/Theme"]
+margin_left = 134.0
+margin_right = 274.0
+margin_bottom = 20.0
+rect_min_size = Vector2( 140, 0 )
+text = "NightTheme"
+flat = false
+align = 0
+
+[node name="Separator" type="HSeparator" parent="Split/EditorScroll/Editor"]
+margin_top = 162.0
+margin_right = 581.0
+margin_bottom = 180.0
 rect_min_size = Vector2( 0, 10 )
 custom_constants/separation = 18
 
 [node name="Portraits" type="HBoxContainer" parent="Split/EditorScroll/Editor"]
-margin_top = 160.0
+margin_top = 184.0
 margin_right = 581.0
-margin_bottom = 174.0
+margin_bottom = 198.0
 
 [node name="Title" parent="Split/EditorScroll/Editor/Portraits" instance=ExtResource( 3 )]
 anchor_right = 0.0
@@ -256,22 +280,22 @@ valign = 1
 text_key = "Portraits"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Split/EditorScroll/Editor"]
-margin_top = 178.0
+margin_top = 202.0
 margin_right = 581.0
-margin_bottom = 202.0
+margin_bottom = 226.0
 
 [node name="TLabel11" parent="Split/EditorScroll/Editor/HBoxContainer" instance=ExtResource( 3 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_top = 5.0
-margin_right = 33.0
+margin_right = 39.0
 margin_bottom = 19.0
-text = "Scale"
+text = "Größe"
 text_key = "Scale"
 
 [node name="Scale" type="SpinBox" parent="Split/EditorScroll/Editor/HBoxContainer"]
-margin_left = 37.0
-margin_right = 111.0
+margin_left = 43.0
+margin_right = 117.0
 margin_bottom = 24.0
 value = 100.0
 allow_greater = true
@@ -281,50 +305,50 @@ suffix = "%"
 [node name="TLabel12" parent="Split/EditorScroll/Editor/HBoxContainer" instance=ExtResource( 3 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_left = 115.0
+margin_left = 121.0
 margin_top = 5.0
-margin_right = 154.0
+margin_right = 207.0
 margin_bottom = 19.0
-text = "Offset"
+text = "Verschiebung"
 text_key = "Offset"
 
 [node name="OffsetX" type="SpinBox" parent="Split/EditorScroll/Editor/HBoxContainer"]
-margin_left = 158.0
-margin_right = 232.0
+margin_left = 211.0
+margin_right = 285.0
 margin_bottom = 24.0
 allow_greater = true
 allow_lesser = true
 suffix = "X"
 
 [node name="OffsetY" type="SpinBox" parent="Split/EditorScroll/Editor/HBoxContainer"]
-margin_left = 236.0
-margin_right = 310.0
+margin_left = 289.0
+margin_right = 363.0
 margin_bottom = 24.0
 allow_greater = true
 allow_lesser = true
 suffix = "Y"
 
 [node name="MirrorOption" type="HBoxContainer" parent="Split/EditorScroll/Editor/HBoxContainer"]
-margin_left = 314.0
-margin_right = 439.0
+margin_left = 367.0
+margin_right = 507.0
 margin_bottom = 24.0
 
 [node name="TLabel11" parent="Split/EditorScroll/Editor/HBoxContainer/MirrorOption" instance=ExtResource( 3 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_top = 5.0
-margin_right = 97.0
+margin_right = 112.0
 margin_bottom = 19.0
-text = "Mirror portraits"
+text = "Portraits spiegeln"
 text_key = "Mirror portraits"
 
 [node name="MirrorPortraitsCheckBox" type="CheckBox" parent="Split/EditorScroll/Editor/HBoxContainer/MirrorOption"]
-margin_left = 101.0
-margin_right = 125.0
+margin_left = 116.0
+margin_right = 140.0
 margin_bottom = 24.0
 
 [node name="PortraitPanel" type="PanelContainer" parent="Split/EditorScroll/Editor"]
-margin_top = 206.0
+margin_top = 230.0
 margin_right = 581.0
 margin_bottom = 600.0
 size_flags_vertical = 3
@@ -334,7 +358,7 @@ custom_styles/panel = SubResource( 7 )
 margin_left = 2.0
 margin_top = 2.0
 margin_right = 579.0
-margin_bottom = 392.0
+margin_bottom = 368.0
 
 [node name="Labels" type="HBoxContainer" parent="Split/EditorScroll/Editor/PortraitPanel/VBoxContainer"]
 margin_right = 577.0
@@ -355,40 +379,40 @@ anchor_right = 0.0
 anchor_bottom = 0.0
 margin_left = 164.0
 margin_top = 4.0
-margin_right = 329.0
+margin_right = 276.0
 margin_bottom = 18.0
 size_flags_horizontal = 3
 text = "Path"
 text_key = "Path"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Split/EditorScroll/Editor/PortraitPanel/VBoxContainer/Labels"]
-margin_left = 333.0
+margin_left = 280.0
 margin_right = 577.0
 margin_bottom = 22.0
 
 [node name="NewPortrait" type="Button" parent="Split/EditorScroll/Editor/PortraitPanel/VBoxContainer/Labels/HBoxContainer"]
-margin_right = 117.0
+margin_right = 130.0
 margin_bottom = 22.0
-text = "  New portrait"
+text = "  Neues Portrait"
 icon = SubResource( 9 )
 
 [node name="ImportFromFolder" type="Button" parent="Split/EditorScroll/Editor/PortraitPanel/VBoxContainer/Labels/HBoxContainer"]
-margin_left = 121.0
-margin_right = 244.0
+margin_left = 134.0
+margin_right = 297.0
 margin_bottom = 22.0
-text = "  Import folder"
+text = "  Ordner importieren"
 icon = SubResource( 9 )
 
 [node name="ScrollContainer" type="ScrollContainer" parent="Split/EditorScroll/Editor/PortraitPanel/VBoxContainer"]
 margin_top = 26.0
 margin_right = 577.0
-margin_bottom = 390.0
+margin_bottom = 366.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Split/EditorScroll/Editor/PortraitPanel/VBoxContainer/ScrollContainer"]
 margin_right = 577.0
-margin_bottom = 364.0
+margin_bottom = 340.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
@@ -412,7 +436,7 @@ anchor_bottom = 0.0
 margin_top = 5.0
 margin_right = 27.0
 margin_bottom = 19.0
-text = "File:"
+text = "Datei"
 text_key = "File:"
 
 [node name="LineEdit" type="LineEdit" parent="Split/EditorScroll/Editor/FileName"]
@@ -496,6 +520,7 @@ margin_left = -110.0
 margin_top = 6.0
 margin_right = -8.0
 margin_bottom = 26.0
+grow_horizontal = 0
 text = "Full View"
 items = [ "Full View", null, false, 0, null, "Actual Size", null, false, 1, null ]
 selected = 0
@@ -505,5 +530,5 @@ __meta__ = {
 
 [connection signal="value_changed" from="Split/EditorScroll/Editor/HBoxContainer/Scale" to="." method="_on_Scale_value_changed"]
 [connection signal="toggled" from="Split/EditorScroll/Editor/HBoxContainer/MirrorOption/MirrorPortraitsCheckBox" to="." method="_on_MirrorPortraitsCheckBox_toggled"]
-[connection signal="item_selected" from="Split/Preview/Background/PreviewMode" to="." method="_on_OptionButton_item_selected"]
 [connection signal="item_selected" from="Split/Preview/Background/PreviewMode" to="." method="_on_PreviewMode_item_selected"]
+[connection signal="item_selected" from="Split/Preview/Background/PreviewMode" to="." method="_on_OptionButton_item_selected"]

@@ -26,6 +26,8 @@ var dialog_faded_in_already = false
 var definition_visible: bool = false
 # used to reset the mouse mode after questions:
 var last_mouse_mode = null
+# this is for switching back after a custom character theme was loaded
+var current_default_theme = null
 
 ### SETTINGS
 var settings: ConfigFile
@@ -48,6 +50,7 @@ var current_background = ""
 
 # Theme and Audio
 var current_theme: ConfigFile
+var current_theme_file_name = null
 var audio_data = {}
 
 # References
@@ -137,6 +140,7 @@ func load_config_files():
 	var theme_file = 'res://addons/dialogic/Editor/ThemeEditor/default-theme.cfg'
 	if settings.has_section('theme'):
 		theme_file = settings.get_value('theme', 'default')
+		current_default_theme = theme_file
 	current_theme = load_theme(theme_file)
 
 
@@ -290,8 +294,11 @@ func deferred_resize(current_size, result):
 
 # loads the given theme file
 func load_theme(filename):
-	var theme = DialogicResources.get_theme_config(filename)
-	
+	var load_theme = DialogicResources.get_theme_config(filename)
+	if not load_theme:
+		return current_theme 
+	var theme = load_theme
+	current_theme_file_name = filename
 	# Box size
 	call_deferred('deferred_resize', $TextBubble.rect_size, theme.get_value('box', 'size', Vector2(910, 167)))
 	
@@ -565,6 +572,11 @@ func event_handler(event: Dictionary):
 				var character_data = DialogicUtil.get_character(event['character'])
 				update_name(character_data)
 				grab_portrait_focus(character_data, event)
+				if character_data.get('data', {}).get('theme', '') and current_theme_file_name != character_data.get('data', {}).get('theme', ''):
+					current_theme = load_theme(character_data.get('data', {}).get('theme', ''))
+				elif current_default_theme and  current_theme_file_name != current_default_theme:
+					current_theme = load_theme(current_default_theme)
+
 			#voice 
 			handle_voice(event)
 			update_text(event['text'])
@@ -630,6 +642,11 @@ func event_handler(event: Dictionary):
 				var character_data = DialogicUtil.get_character(event['character'])
 				update_name(character_data)
 				grab_portrait_focus(character_data, event)
+				
+				if character_data.get('data', {}).get('theme', '') and current_theme_file_name != character_data.get('data', {}).get('theme', ''):
+					current_theme = load_theme(character_data.get('data', {}).get('theme', ''))
+				elif current_default_theme and  current_theme_file_name != current_default_theme:
+					current_theme = load_theme(current_default_theme)
 			#voice 
 			handle_voice(event)
 			update_text(event['question'])
@@ -748,7 +765,8 @@ func event_handler(event: Dictionary):
 		# Wait seconds event
 		'dialogic_023':
 			emit_signal("event_start", "wait", event)
-			$TextBubble.visible = false
+			if event.get('hide_dialogbox', true):
+				$TextBubble.visible = false
 			set_state(state.WAITING)
 			var timer = get_tree().create_timer(event['wait_seconds'])
 			if event.get('waiting_skippable', false):
@@ -764,6 +782,7 @@ func event_handler(event: Dictionary):
 			emit_signal("event_start", "set_theme", event)
 			if event['set_theme'] != '':
 				current_theme = load_theme(event['set_theme'])
+				current_default_theme = event['set_theme']
 			resize_main()
 			_load_next_event()
 		# Set Glossary event
