@@ -282,7 +282,7 @@ func _draw():
 	var _scale = DialogicUtil.get_editor_scale(self)
 	var line_width = 3 * _scale
 	var pos_x = (23 * _scale) + line_width
-	var pos_y = 43 * _scale
+	var pos_y = 46 * _scale
 
 	# If the event is the last one, don't draw a line aftwards
 	if timeline_children[timeline_lenght-1] == self:
@@ -304,7 +304,7 @@ func _draw():
 		var line_size = ((indent_size + 2.2) * current_indent_size)
 		# Line at 0
 		draw_rect(Rect2(Vector2(pos_x, pos_y - 60),
-			Vector2(line_width, rect_size.y + 60)),
+			Vector2(line_width, rect_size.y + (20 * _scale))),
 			line_color, true)
 		
 		# Line at current indent
@@ -321,13 +321,13 @@ func _draw():
 	# Drawing arc
 	if event_name == 'Choice':
 		# Vertical Line
-		draw_rect(Rect2(Vector2(pos_x, pos_y - 60),
+		draw_rect(Rect2(Vector2(pos_x, pos_y - (62 * _scale)),
 			Vector2(line_width, rect_size.y + 20)),
 			line_color, true)
 			
 			
 		# Connecting with the question 
-		var arc_start_x = ((indent_size + 2) * current_indent_size) + 4.6
+		var arc_start_x = (((indent_size + 2) * current_indent_size) + 5.2) * _scale
 		var start_angle = 90
 		var end_angle = 185
 		draw_arc(
