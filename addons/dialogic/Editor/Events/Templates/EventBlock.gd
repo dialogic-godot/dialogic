@@ -103,6 +103,9 @@ func _set_event_icon(icon: Texture):
 	icon_texture.texture = icon
 	var _scale = DialogicUtil.get_editor_scale(self)
 	var ip = $PanelContainer/MarginContainer/VBoxContainer/Header/IconPanel
+	# Change color if light theme
+	if not get_constant("dark_theme", "Editor"):
+		icon_texture.self_modulate = get_color("font_color", "Editor")
 	# Resizing the icon acording to the scale
 	ip.rect_min_size = ip.rect_min_size * _scale
 	#icon_texture.rect_size = icon_texture.rect_size * _scale
@@ -317,6 +320,7 @@ func _draw():
 		draw_rect(Rect2(Vector2(pos_x, pos_y),
 			Vector2(line_width, rect_size.y - 40)),
 			line_color, true)
+		pass
 			
 	# Drawing arc
 	if event_name == 'Choice':
