@@ -316,5 +316,4 @@ func _ready():
 	text_label.meta_underlined = false
 	regex.compile("\\[(nw|(nw|speed|signal|play|pause)=(.+?))\\](.*?)")
 	
-	bbcoderemoverregex.compile("\\[\\/*(b|i|u|s|code|center|right|fill|indent|url|img|font|color|table|cell|wave|tornado|shake|fade|rainbow)[^]]*\\]")
-
+	bbcoderemoverregex.compile("\\[\\/*((b|i|u|s)|(code|center|right|fill|indent|url|img|font|color|table|cell|wave|tornado|shake|fade|rainbow)[^]]*)\\]")
