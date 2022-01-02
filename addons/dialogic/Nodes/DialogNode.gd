@@ -398,10 +398,15 @@ func _process(delta):
 	if current_event.has('text'):
 		if '[nw]' in current_event['text'] or '[nw=' in current_event['text']:
 			$TextBubble/NextIndicatorContainer/NextIndicator.visible = false
+		
+	# Hide if current event is the last and "Don't Close After Last Event" is checked
+	if dialog_index + 1 >= dialog_script['events'].size() and current_theme.get_value('settings', 'dont_close_after_last_event', false):
+		$TextBubble/NextIndicatorContainer/NextIndicator.visible = false
 	
 	# Hide if fading in
 	if is_state(state.ANIMATING):
 		$TextBubble/NextIndicatorContainer/NextIndicator.visible = false
+	
 
 # checks for the "input_next" action
 func _input(event: InputEvent) -> void:
@@ -421,7 +426,7 @@ func _input(event: InputEvent) -> void:
 			else:
 				if is_state(state.WAITING_INPUT):
 					pass
-				else:
+				elif $TextBubble/NextIndicatorContainer/NextIndicator.is_visible():
 					$FX/CharacterVoice.stop_voice() # stop the current voice as well
 					play_audio("passing")
 					_load_next_event()
