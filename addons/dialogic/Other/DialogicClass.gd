@@ -203,6 +203,11 @@ static func import(data: Dictionary) -> void:
 ## 						DEFINITIONS
 ## +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+# clears all variables
+static func clear_all_variables():
+	for d in _get_definitions()['variables']:
+		d['value'] = ""
+
 # sets the value of the value definition with the given name
 static func set_variable(name: String, value):
 	var exists = false
