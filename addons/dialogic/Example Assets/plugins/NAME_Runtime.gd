@@ -1,6 +1,6 @@
 #Superclass.
 #currently a stub. This template will be updated.
-extends "res://addons/dialogic/Editor/plugins/templates/RuntimePlugin.gd"
+extends DialogicEditorPlugin
 
 #This is the editor script for the NAME plugin.
 #If this plugin does not need to run in the editor, you may freely delete this script and scene.

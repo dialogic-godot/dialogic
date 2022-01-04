@@ -1,6 +1,6 @@
 #Superclass.
 #Contains refrences to the editor (editor_reference) and the timeline ( timeline_reference )
-extends "res://addons/dialogic/Editor/plugins/templates/EditorPlugin.gd"
+extends DialogicEditorPlugin
 
 #This is the editor script for the NAME plugin.
 #If this plugin does not need to run in the editor, you may freely delete this script and scene.
