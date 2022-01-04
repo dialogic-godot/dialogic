@@ -1,4 +1,4 @@
-extends WindowDialog
+extends Control
 class_name DialogicRuntimePlugin
 
 var dialog_reference

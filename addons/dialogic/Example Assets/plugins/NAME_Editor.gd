@@ -1,3 +1,4 @@
+tool
 #Superclass.
 #Contains refrences to the editor (editor_reference) and the timeline ( timeline_reference )
 extends DialogicEditorPlugin
