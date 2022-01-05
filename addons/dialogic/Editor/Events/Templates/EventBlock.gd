@@ -349,6 +349,9 @@ func _draw():
 		var start_angle = 90
 		var end_angle = 185
 		
+		if _scale == 1:
+			arc_start_x = (indent_size * current_indent_size) + (8.9 * _scale)
+		
 		draw_arc(
 			Vector2(arc_start_x, arc_start_y),
 			arc_radius,
@@ -356,17 +359,21 @@ func _draw():
 			deg2rad(end_angle),
 			arc_point_count, #point count
 			line_color,
-			line_width,
+			line_width - (1 * _scale),
 			true
 		)
 
 		# Don't draw arc if next event is another choice event
 		if next_event.event_name == "Choice" or next_event.event_name == "End Branch":
 			return
-			
+		
 		# Connecting with the next event
 		arc_start_x = ((52* _scale) +  ((indent_size + 2) * current_indent_size))
-		arc_start_y = (pos_y - (22 * _scale)) * _scale 
+		if _scale == 1:
+			arc_start_y = (pos_y + (5 * _scale)) * _scale
+		else:
+			arc_start_y = (pos_y - (22 * _scale)) * _scale
+		
 		draw_arc(
 			Vector2(arc_start_x, arc_start_y),
 			arc_radius,
@@ -374,9 +381,6 @@ func _draw():
 			deg2rad(end_angle),
 			arc_point_count,
 			line_color,
-			line_width,
+			line_width - (1 * _scale),
 			true
 		)
-
-
-		
