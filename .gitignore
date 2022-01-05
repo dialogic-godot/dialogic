@@ -18,9 +18,6 @@ export_presets.cfg
 !/addons/dialogic
 # Ignore dialogic resources
 /dialogic
-# Ignore Dialogic translations
-*.translation
-/addons/dialogic/Localization/dialogic.csv.import
 # Place test project files here
 /test-project
 # Excluding obsidian generated files
