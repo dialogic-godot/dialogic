@@ -39,7 +39,7 @@ var editor_reference
 
 ### the indent size
 var indent_size = 45
-var current_indent_size = 1
+var current_indent_level = 1
 
 # Setting this to true will ignore the event while saving
 # Useful for making placeholder events in drag and drop
@@ -87,7 +87,7 @@ func set_preview(text: String):
 func set_indent(indent: int):
 	indent_node.rect_min_size = Vector2(indent_size * indent, 0)
 	indent_node.visible = indent != 0
-	current_indent_size = indent
+	current_indent_level = indent
 	update()
 
 
@@ -283,11 +283,12 @@ func _draw():
 	var timeline_children = get_parent().get_children()
 	var timeline_lenght = timeline_children.size()
 	var line_color = Color("#4D4D4D")
-	var test_color = Color(0,1,0,1)
+	var test_color = Color(1,0,0,0.5)
 	var _scale = DialogicUtil.get_editor_scale(self)
 	var line_width = 3 * _scale
 	var pos_x = (27 * _scale)
 	var pos_y = 46 * _scale
+	
 	
 	
 	# Adjusting the pos_x. Not sure why it is not consistent between render scales
@@ -302,9 +303,6 @@ func _draw():
 	if timeline_children[timeline_lenght-1] == self:
 		return
 
-	# Drawing Event Circle
-	#draw_circle(Vector2(pos_x, pos_y), 20, Color(1,1,0,1))
-	
 	# Figuring out the next event
 	var event_index = 0
 	var c = 0
@@ -314,44 +312,46 @@ func _draw():
 		c += 1
 	var next_event = timeline_children[event_index + 1]
 
-	if current_indent_size > 1:
-		var line_size = ((indent_size + 2.2) * current_indent_size)
-		# Line at 0
-		draw_rect(Rect2(Vector2(pos_x, pos_y - (60* _scale)),
-			Vector2(line_width, rect_size.y + (20 * _scale))),
+	if current_indent_level > 0:
+		# Root (level 0) Vertical Line 
+		draw_rect(Rect2(Vector2(pos_x, pos_y - (45 * _scale)),
+			Vector2(line_width, rect_size.y + (5 * _scale))),
 			line_color, true)
 		
+		# Todo: previous lines when needed
+		
 		# Line at current indent
-		draw_rect(Rect2(
-			Vector2(pos_x + line_size, pos_y),
-			Vector2(line_width, rect_size.y - (40 * _scale))),
-			line_color, true)
+		var line_size = (indent_size * current_indent_level) + (4 * _scale)
+		if next_event.event_name != 'End Branch' and event_name != 'Choice':
+			if event_name != 'Question' and next_event.event_name == 'Choice':
+				# Skip drawing lines before going to the next choice
+				pass
+			else:
+				draw_rect(Rect2(
+					Vector2(pos_x + line_size , pos_y),
+					Vector2(line_width, rect_size.y - (40 * _scale))),
+					line_color, true)
 	else:
-		# Vertical Line
+		# Root (level 0) Vertical Line
 		draw_rect(Rect2(Vector2(pos_x, pos_y),
 			Vector2(line_width, rect_size.y - (40 * _scale))),
 			line_color, true)
-		pass
 			
 	# Drawing arc
 	if event_name == 'Choice':
-		# Vertical Line
-		draw_rect(Rect2(Vector2(pos_x, pos_y - (62 * _scale)),
-			Vector2(line_width, rect_size.y + (20 * _scale))),
-			line_color, true)
-			
-			
 		# Connecting with the question 
-		var arc_start_x = (indent_size * current_indent_size) + (5.2 * _scale)
+		var arc_start_x = (indent_size * current_indent_level) + (5.2 * _scale)
 		var arc_start_y = -5 * _scale
 		var arc_point_count = 12 * _scale
 		var arc_radius = 25 * _scale
 		var start_angle = 90
 		var end_angle = 185
 		
-		if _scale == 1:
-			arc_start_x = (indent_size * current_indent_size) + (8.9 * _scale)
+		arc_start_x = ((52* _scale) +  ((indent_size + 1) * current_indent_level))
+		arc_radius = 24 * _scale
+		arc_start_x = (indent_size * (current_indent_level)) + (10 * _scale)
 		
+
 		draw_arc(
 			Vector2(arc_start_x, arc_start_y),
 			arc_radius,
@@ -368,11 +368,12 @@ func _draw():
 			return
 		
 		# Connecting with the next event
-		arc_start_x = ((52* _scale) +  ((indent_size + 2) * current_indent_size))
-		if _scale == 1:
-			arc_start_y = (pos_y + (5 * _scale)) * _scale
-		else:
 			arc_start_y = (pos_y - (22 * _scale)) * _scale
+		arc_start_x = ((52* _scale) +  ((indent_size + 2) * current_indent_level))
+		arc_radius = 24 * _scale
+		arc_start_x = (indent_size * (current_indent_level + 1)) + (10 * _scale)
+		arc_start_y = (pos_y + (8 * _scale))
+
 		
 		draw_arc(
 			Vector2(arc_start_x, arc_start_y),
