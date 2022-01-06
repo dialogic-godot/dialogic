@@ -93,6 +93,19 @@ static func start(timeline: String = '', default_timeline: String ='', dialog_sc
 	# Just in case everything else fails.
 	return returned_dialog_node
 
+static func change_timeline(timeline):
+	# Set Timeline
+	set_current_timeline(timeline)
+	
+	# If there is a dialog node
+	if has_current_dialog_node():
+		var dialog_node = Engine.get_main_loop().get_meta('latest_dialogic_node')
+		
+		# Get file name
+		var timeline_file = _get_timeline_file_from_name(timeline)
+		
+		dialog_node.change_timeline(timeline_file)
+
 
 
 ################################################################################
