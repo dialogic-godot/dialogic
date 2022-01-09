@@ -38,7 +38,7 @@ var body_node
 var editor_reference
 
 ### the indent size
-const indent_size = 45
+var indent_size = 45
 var current_indent_size = 1
 
 # Setting this to true will ignore the event while saving
@@ -103,8 +103,12 @@ func _set_event_icon(icon: Texture):
 	icon_texture.texture = icon
 	var _scale = DialogicUtil.get_editor_scale(self)
 	var ip = $PanelContainer/MarginContainer/VBoxContainer/Header/IconPanel
+	# Change color if light theme
+	if not get_constant("dark_theme", "Editor"):
+		icon_texture.self_modulate = get_color("font_color", "Editor")
 	# Resizing the icon acording to the scale
 	ip.rect_min_size = ip.rect_min_size * _scale
+	#rect_min_size.y = 50 * _scale
 	#icon_texture.rect_size = icon_texture.rect_size * _scale
 	
 
@@ -224,6 +228,7 @@ func _ready():
 	## DO SOME STYLING
 	$PanelContainer/SelectedStyle.modulate = get_color("accent_color", "Editor")
 	
+	indent_size = indent_size * DialogicUtil.get_editor_scale(self)
 	
 	_setup_event()
 	
@@ -281,8 +286,17 @@ func _draw():
 	var test_color = Color(0,1,0,1)
 	var _scale = DialogicUtil.get_editor_scale(self)
 	var line_width = 3 * _scale
-	var pos_x = (23 * _scale) + line_width
-	var pos_y = 43 * _scale
+	var pos_x = (27 * _scale)
+	var pos_y = 46 * _scale
+	
+	
+	# Adjusting the pos_x. Not sure why it is not consistent between render scales
+	if _scale == 1.5:
+		pos_x -= 3
+	if _scale == 1.75:
+		pos_x -= 4
+	if _scale == 2:
+		pos_x -= 6
 
 	# If the event is the last one, don't draw a line aftwards
 	if timeline_children[timeline_lenght-1] == self:
@@ -303,59 +317,70 @@ func _draw():
 	if current_indent_size > 1:
 		var line_size = ((indent_size + 2.2) * current_indent_size)
 		# Line at 0
-		draw_rect(Rect2(Vector2(pos_x, pos_y - 60),
-			Vector2(line_width, rect_size.y + 60)),
+		draw_rect(Rect2(Vector2(pos_x, pos_y - (60* _scale)),
+			Vector2(line_width, rect_size.y + (20 * _scale))),
 			line_color, true)
 		
 		# Line at current indent
 		draw_rect(Rect2(
 			Vector2(pos_x + line_size, pos_y),
-			Vector2(line_width, rect_size.y - 40)),
+			Vector2(line_width, rect_size.y - (40 * _scale))),
 			line_color, true)
 	else:
 		# Vertical Line
 		draw_rect(Rect2(Vector2(pos_x, pos_y),
-			Vector2(line_width, rect_size.y - 40)),
+			Vector2(line_width, rect_size.y - (40 * _scale))),
 			line_color, true)
+		pass
 			
 	# Drawing arc
 	if event_name == 'Choice':
 		# Vertical Line
-		draw_rect(Rect2(Vector2(pos_x, pos_y - 60),
-			Vector2(line_width, rect_size.y + 20)),
+		draw_rect(Rect2(Vector2(pos_x, pos_y - (62 * _scale)),
+			Vector2(line_width, rect_size.y + (20 * _scale))),
 			line_color, true)
 			
 			
 		# Connecting with the question 
-		var arc_start_x = ((indent_size + 2) * current_indent_size) + 4.6
+		var arc_start_x = (indent_size * current_indent_size) + (5.2 * _scale)
+		var arc_start_y = -5 * _scale
+		var arc_point_count = 12 * _scale
+		var arc_radius = 25 * _scale
 		var start_angle = 90
 		var end_angle = 185
+		
+		if _scale == 1:
+			arc_start_x = (indent_size * current_indent_size) + (8.9 * _scale)
+		
 		draw_arc(
-			Vector2(arc_start_x, - 5),
-			25, # radius
+			Vector2(arc_start_x, arc_start_y),
+			arc_radius,
 			deg2rad(start_angle),
 			deg2rad(end_angle),
-			12, #point count
+			arc_point_count, #point count
 			line_color,
-			2.0,
+			line_width - (1 * _scale),
 			true
 		)
 
 		# Don't draw arc if next event is another choice event
 		if next_event.event_name == "Choice" or next_event.event_name == "End Branch":
 			return
-			
+		
 		# Connecting with the next event
+		arc_start_x = ((52* _scale) +  ((indent_size + 2) * current_indent_size))
+		if _scale == 1:
+			arc_start_y = (pos_y + (5 * _scale)) * _scale
+		else:
+			arc_start_y = (pos_y - (22 * _scale)) * _scale
+		
 		draw_arc(
-			Vector2( 52 +  ((indent_size + 2) * current_indent_size), pos_y + 5),
-			25, # radius
+			Vector2(arc_start_x, arc_start_y),
+			arc_radius,
 			deg2rad(start_angle),
 			deg2rad(end_angle),
-			12, #point count
+			arc_point_count,
 			line_color,
-			2.0,
+			line_width - (1 * _scale),
 			true
 		)
-
-
-		
