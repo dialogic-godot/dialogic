@@ -23,9 +23,8 @@ onready var panel = $PanelContainer
 onready var selected_style = $PanelContainer/SelectedStyle
 onready var warning = $PanelContainer/MarginContainer/VBoxContainer/Header/Warning
 onready var title_label = $PanelContainer/MarginContainer/VBoxContainer/Header/TitleLabel
-onready var icon_texture  = $PanelContainer/MarginContainer/VBoxContainer/Header/IconPanel/IconTexture
+onready var icon_texture  = $PanelContainer/MarginContainer/VBoxContainer/Header/CenterContainer/IconPanel/IconTexture
 onready var expand_control = $PanelContainer/MarginContainer/VBoxContainer/Header/ExpandControl
-onready var options_control = $PanelContainer/MarginContainer/VBoxContainer/Header/OptionsControl
 onready var header_content_container = $PanelContainer/MarginContainer/VBoxContainer/Header/Content
 onready var body_container = $PanelContainer/MarginContainer/VBoxContainer/Body
 onready var body_content_container = $PanelContainer/MarginContainer/VBoxContainer/Body/Content
@@ -39,7 +38,7 @@ var editor_reference
 
 ### the indent size
 var indent_size = 45
-var current_indent_size = 1
+var current_indent_level = 1
 
 # Setting this to true will ignore the event while saving
 # Useful for making placeholder events in drag and drop
@@ -87,7 +86,7 @@ func set_preview(text: String):
 func set_indent(indent: int):
 	indent_node.rect_min_size = Vector2(indent_size * indent, 0)
 	indent_node.visible = indent != 0
-	current_indent_size = indent
+	current_indent_level = indent
 	update()
 
 
@@ -102,12 +101,18 @@ func set_expanded(expanded: bool):
 func _set_event_icon(icon: Texture):
 	icon_texture.texture = icon
 	var _scale = DialogicUtil.get_editor_scale(self)
-	var ip = $PanelContainer/MarginContainer/VBoxContainer/Header/IconPanel
+	var cpanel = $PanelContainer/MarginContainer/VBoxContainer/Header/CenterContainer
+	var ip = $PanelContainer/MarginContainer/VBoxContainer/Header/CenterContainer/IconPanel
+	var ipc = $PanelContainer/MarginContainer/VBoxContainer/Header/CenterContainer/IconPanel/IconTexture
 	# Change color if light theme
+	ipc.self_modulate = Color(1,1,1,1)
 	if not get_constant("dark_theme", "Editor"):
 		icon_texture.self_modulate = get_color("font_color", "Editor")
 	# Resizing the icon acording to the scale
-	ip.rect_min_size = ip.rect_min_size * _scale
+	var icon_size = 38
+	cpanel.rect_min_size = Vector2(icon_size, icon_size) * _scale
+	ip.rect_min_size = cpanel.rect_min_size
+	ipc.rect_min_size = ip.rect_min_size
 	#rect_min_size.y = 50 * _scale
 	#icon_texture.rect_size = icon_texture.rect_size * _scale
 	
@@ -141,7 +146,7 @@ func _setup_event():
 	if body_scene != null:
 		_set_body(body_scene)
 	if event_color != null:
-		$PanelContainer/MarginContainer/VBoxContainer/Header/IconPanel.set("self_modulate", event_color)
+		$PanelContainer/MarginContainer/VBoxContainer/Header/CenterContainer/IconPanel.set("self_modulate", event_color)
 
 
 func _set_content(container: Control, scene: PackedScene):
@@ -186,6 +191,11 @@ func _on_gui_input(event):
 		grab_focus() # Grab focus to avoid copy pasting text or events
 		if event.doubleclick and expand_control.enabled:
 			expand_control.set_expanded(not expand_control.expanded)
+	# For opening the context menu
+	if event is InputEventMouseButton:
+		if event.button_index == BUTTON_RIGHT and event.pressed:
+			$PopupMenu.rect_global_position = get_global_mouse_position()
+			var popup = $PopupMenu.popup()
 
 
 # called when the data of the header is changed
@@ -237,7 +247,7 @@ func _ready():
 	# signals
 	panel.connect("gui_input", self, '_on_gui_input')
 	expand_control.connect("state_changed", self, "_on_ExpandControl_state_changed")
-	options_control.connect("action", self, "_on_OptionsControl_action")
+	$PopupMenu.connect("action", self, "_on_OptionsControl_action")
 	
 	# load icons
 	#if help_page_path != "":
@@ -283,11 +293,12 @@ func _draw():
 	var timeline_children = get_parent().get_children()
 	var timeline_lenght = timeline_children.size()
 	var line_color = Color("#4D4D4D")
-	var test_color = Color(0,1,0,1)
+	var test_color = Color(1,0,0,0.5)
 	var _scale = DialogicUtil.get_editor_scale(self)
 	var line_width = 3 * _scale
 	var pos_x = (27 * _scale)
 	var pos_y = 46 * _scale
+	
 	
 	
 	# Adjusting the pos_x. Not sure why it is not consistent between render scales
@@ -302,9 +313,6 @@ func _draw():
 	if timeline_children[timeline_lenght-1] == self:
 		return
 
-	# Drawing Event Circle
-	#draw_circle(Vector2(pos_x, pos_y), 20, Color(1,1,0,1))
-	
 	# Figuring out the next event
 	var event_index = 0
 	var c = 0
@@ -314,43 +322,43 @@ func _draw():
 		c += 1
 	var next_event = timeline_children[event_index + 1]
 
-	if current_indent_size > 1:
-		var line_size = ((indent_size + 2.2) * current_indent_size)
-		# Line at 0
-		draw_rect(Rect2(Vector2(pos_x, pos_y - (60* _scale)),
-			Vector2(line_width, rect_size.y + (20 * _scale))),
+	if current_indent_level > 0:
+		# Root (level 0) Vertical Line 
+		draw_rect(Rect2(Vector2(pos_x, pos_y - (45 * _scale)),
+			Vector2(line_width, rect_size.y + (5 * _scale))),
 			line_color, true)
 		
+		# Todo: previous lines when needed
+		
 		# Line at current indent
-		draw_rect(Rect2(
-			Vector2(pos_x + line_size, pos_y),
-			Vector2(line_width, rect_size.y - (40 * _scale))),
-			line_color, true)
+		var line_size = (indent_size * current_indent_level) + (4 * _scale)
+		if next_event.event_name != 'End Branch' and event_name != 'Choice':
+			if event_name != 'Question' and next_event.event_name == 'Choice':
+				# Skip drawing lines before going to the next choice
+				pass
+			else:
+				draw_rect(Rect2(
+					Vector2(pos_x + line_size , pos_y),
+					Vector2(line_width, rect_size.y - (40 * _scale))),
+					line_color, true)
 	else:
-		# Vertical Line
+		# Root (level 0) Vertical Line
 		draw_rect(Rect2(Vector2(pos_x, pos_y),
 			Vector2(line_width, rect_size.y - (40 * _scale))),
 			line_color, true)
-		pass
 			
 	# Drawing arc
 	if event_name == 'Choice':
-		# Vertical Line
-		draw_rect(Rect2(Vector2(pos_x, pos_y - (62 * _scale)),
-			Vector2(line_width, rect_size.y + (20 * _scale))),
-			line_color, true)
-			
-			
 		# Connecting with the question 
-		var arc_start_x = (indent_size * current_indent_size) + (5.2 * _scale)
-		var arc_start_y = -5 * _scale
+		var arc_start_x = (indent_size * (current_indent_level)) + (11.2 * _scale)
+		var arc_start_y = 0
 		var arc_point_count = 12 * _scale
-		var arc_radius = 25 * _scale
+		var arc_radius = 24 * _scale
 		var start_angle = 90
 		var end_angle = 185
 		
-		if _scale == 1:
-			arc_start_x = (indent_size * current_indent_size) + (8.9 * _scale)
+		if current_indent_level == 1:
+			arc_start_x = (indent_size * (current_indent_level)) + (7.5 * _scale)
 		
 		draw_arc(
 			Vector2(arc_start_x, arc_start_y),
@@ -366,14 +374,12 @@ func _draw():
 		# Don't draw arc if next event is another choice event
 		if next_event.event_name == "Choice" or next_event.event_name == "End Branch":
 			return
-		
+
 		# Connecting with the next event
-		arc_start_x = ((52* _scale) +  ((indent_size + 2) * current_indent_size))
-		if _scale == 1:
-			arc_start_y = (pos_y + (5 * _scale)) * _scale
-		else:
-			arc_start_y = (pos_y - (22 * _scale)) * _scale
-		
+
+		arc_start_x = (indent_size * (current_indent_level + 1)) + (10 * _scale)
+		arc_start_y = (pos_y + (8 * _scale))
+
 		draw_arc(
 			Vector2(arc_start_x, arc_start_y),
 			arc_radius,
