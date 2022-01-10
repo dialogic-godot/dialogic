@@ -13,15 +13,18 @@ func _ready():
 	if visible_name != '':
 		text = '  ' + visible_name
 	hint_tooltip = DTS.translate(hint_tooltip)
-	var _scale = get_constant("inspector_margin", "Editor")
-	_scale = _scale * 0.125
-	rect_min_size = Vector2(30,30)
+	var _scale = DialogicUtil.get_editor_scale(self)
+	rect_min_size = Vector2(40,40)
 	rect_min_size = rect_min_size * _scale
+	icon = null
 
 
 func set_icon(texture):
-	icon = texture
+	#icon = texture
 	event_icon = texture
+	var _scale = DialogicUtil.get_editor_scale(self)
+	$TextureRect.texture = texture
+	$TextureRect.rect_scale = Vector2(0.6, 0.6)
 
 
 func get_drag_data(position):
