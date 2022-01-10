@@ -34,19 +34,36 @@ event_icon = ExtResource( 2 )
 header_scene = ExtResource( 4 )
 help_page_path = "res://addons/dialogic/Documentation/Content/Events/014.md"
 
-[node name="IconTexture" parent="PanelContainer/MarginContainer/VBoxContainer/Header/IconPanel" index="0"]
+[node name="PanelContainer" parent="." index="1"]
+margin_right = 440.0
+
+[node name="MarginContainer" parent="PanelContainer" index="1"]
+margin_right = 440.0
+
+[node name="VBoxContainer" parent="PanelContainer/MarginContainer" index="0"]
+margin_right = 434.0
+
+[node name="Header" parent="PanelContainer/MarginContainer/VBoxContainer" index="0"]
+margin_right = 428.0
+
+[node name="IconPanel" parent="PanelContainer/MarginContainer/VBoxContainer/Header/CenterContainer" index="0"]
+self_modulate = Color( 0.462745, 0.133333, 1, 1 )
+
+[node name="IconTexture" parent="PanelContainer/MarginContainer/VBoxContainer/Header/CenterContainer/IconPanel" index="0"]
+self_modulate = Color( 0, 0, 0, 1 )
 texture = ExtResource( 2 )
 
 [node name="TitleLabel" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="2"]
-margin_right = 109.0
+margin_right = 67.0
 text = "Set Value"
 
 [node name="Content" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="3"]
-margin_left = 119.0
-margin_right = 472.0
+margin_left = 71.0
+margin_right = 424.0
 
 [node name="Spacer" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="5"]
-margin_left = 482.0
+margin_left = 428.0
+margin_right = 428.0
 
 [node name="HelpButton" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="6"]
 icon = SubResource( 2 )

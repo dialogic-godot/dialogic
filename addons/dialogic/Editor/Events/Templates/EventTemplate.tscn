@@ -87,6 +87,7 @@ stretch_mode = 4
 margin_left = 4.0
 margin_right = 4.0
 margin_bottom = 64.0
+mouse_filter = 1
 
 [node name="IconPanel" type="TextureRect" parent="PanelContainer/MarginContainer/VBoxContainer/Header/CenterContainer"]
 self_modulate = Color( 0.6, 0.6, 0.6, 1 )
