@@ -23,7 +23,7 @@ onready var panel = $PanelContainer
 onready var selected_style = $PanelContainer/SelectedStyle
 onready var warning = $PanelContainer/MarginContainer/VBoxContainer/Header/Warning
 onready var title_label = $PanelContainer/MarginContainer/VBoxContainer/Header/TitleLabel
-onready var icon_texture  = $PanelContainer/MarginContainer/VBoxContainer/Header/IconPanel/IconTexture
+onready var icon_texture  = $PanelContainer/MarginContainer/VBoxContainer/Header/CenterContainer/IconPanel/IconTexture
 onready var expand_control = $PanelContainer/MarginContainer/VBoxContainer/Header/ExpandControl
 onready var options_control = $PanelContainer/MarginContainer/VBoxContainer/Header/OptionsControl
 onready var header_content_container = $PanelContainer/MarginContainer/VBoxContainer/Header/Content
@@ -102,12 +102,17 @@ func set_expanded(expanded: bool):
 func _set_event_icon(icon: Texture):
 	icon_texture.texture = icon
 	var _scale = DialogicUtil.get_editor_scale(self)
-	var ip = $PanelContainer/MarginContainer/VBoxContainer/Header/IconPanel
+	var cpanel = $PanelContainer/MarginContainer/VBoxContainer/Header/CenterContainer
+	var ip = $PanelContainer/MarginContainer/VBoxContainer/Header/CenterContainer/IconPanel
+	var ipc = $PanelContainer/MarginContainer/VBoxContainer/Header/CenterContainer/IconPanel/IconTexture
 	# Change color if light theme
 	if not get_constant("dark_theme", "Editor"):
 		icon_texture.self_modulate = get_color("font_color", "Editor")
 	# Resizing the icon acording to the scale
-	ip.rect_min_size = ip.rect_min_size * _scale
+	var icon_size = 38
+	cpanel.rect_min_size = Vector2(icon_size, icon_size) * _scale
+	ip.rect_min_size = cpanel.rect_min_size
+	ipc.rect_min_size = ip.rect_min_size
 	#rect_min_size.y = 50 * _scale
 	#icon_texture.rect_size = icon_texture.rect_size * _scale
 	
@@ -141,7 +146,7 @@ func _setup_event():
 	if body_scene != null:
 		_set_body(body_scene)
 	if event_color != null:
-		$PanelContainer/MarginContainer/VBoxContainer/Header/IconPanel.set("self_modulate", event_color)
+		$PanelContainer/MarginContainer/VBoxContainer/Header/CenterContainer/IconPanel.set("self_modulate", event_color)
 
 
 func _set_content(container: Control, scene: PackedScene):

@@ -14,7 +14,7 @@ func _ready():
 		text = '  ' + visible_name
 	hint_tooltip = DTS.translate(hint_tooltip)
 	var _scale = DialogicUtil.get_editor_scale(self)
-	rect_min_size = Vector2(40,40)
+	rect_min_size = Vector2(35,35)
 	rect_min_size = rect_min_size * _scale
 	icon = null
 
