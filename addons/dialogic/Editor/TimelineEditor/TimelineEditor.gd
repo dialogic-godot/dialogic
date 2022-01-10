@@ -87,7 +87,7 @@ func _ready():
 	# We connect all the event buttons to the event creation functions
 	
 	for c in range(0, 5):
-		for button in get_node("ScrollContainer/EventContainer/Grid"+str(c+1)).get_children():
+		for button in get_node("ScrollContainer/EventContainer/FlexContainer"+str(c+1)).get_children():
 			# Question
 			if button.event_id == 'dialogic_010':
 				button.connect('pressed', self, "_on_ButtonQuestion_pressed", [])

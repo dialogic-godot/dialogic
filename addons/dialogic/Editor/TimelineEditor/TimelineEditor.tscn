@@ -161,14 +161,14 @@ margin_right = 178.0
 margin_bottom = 14.0
 size_flags_horizontal = 3
 
-[node name="FlexContainer" type="Container" parent="ScrollContainer/EventContainer"]
+[node name="FlexContainer1" type="Container" parent="ScrollContainer/EventContainer"]
 margin_top = 100.0
 margin_right = 178.0
 margin_bottom = 120.0
 size_flags_horizontal = 3
 script = ExtResource( 29 )
 
-[node name="TextEvent" parent="ScrollContainer/EventContainer/FlexContainer" instance=ExtResource( 25 )]
+[node name="TextEvent" parent="ScrollContainer/EventContainer/FlexContainer1" instance=ExtResource( 25 )]
 margin_right = 12.0
 margin_bottom = 20.0
 hint_tooltip = "Text Event"
@@ -176,7 +176,7 @@ event_id = "dialogic_001"
 event_color = Color( 0.635294, 0.635294, 0.635294, 0.282353 )
 event_icon = ExtResource( 2 )
 
-[node name="CharacterJoin" parent="ScrollContainer/EventContainer/FlexContainer" instance=ExtResource( 25 )]
+[node name="CharacterJoin" parent="ScrollContainer/EventContainer/FlexContainer1" instance=ExtResource( 25 )]
 margin_left = 17.0
 margin_right = 29.0
 margin_bottom = 20.0
@@ -185,7 +185,7 @@ event_id = "dialogic_002"
 event_color = Color( 0.14902, 0.521569, 0.298039, 0.266667 )
 event_icon = ExtResource( 1 )
 
-[node name="CharacterLeave" parent="ScrollContainer/EventContainer/FlexContainer" instance=ExtResource( 25 )]
+[node name="CharacterLeave" parent="ScrollContainer/EventContainer/FlexContainer1" instance=ExtResource( 25 )]
 margin_left = 34.0
 margin_right = 46.0
 margin_bottom = 20.0
