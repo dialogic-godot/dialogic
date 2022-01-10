@@ -340,18 +340,16 @@ func _draw():
 	# Drawing arc
 	if event_name == 'Choice':
 		# Connecting with the question 
-		var arc_start_x = (indent_size * current_indent_level) + (5.2 * _scale)
-		var arc_start_y = -5 * _scale
+		var arc_start_x = (indent_size * (current_indent_level)) + (11.2 * _scale)
+		var arc_start_y = 0
 		var arc_point_count = 12 * _scale
-		var arc_radius = 25 * _scale
+		var arc_radius = 24 * _scale
 		var start_angle = 90
 		var end_angle = 185
 		
-		arc_start_x = ((52* _scale) +  ((indent_size + 1) * current_indent_level))
-		arc_radius = 24 * _scale
-		arc_start_x = (indent_size * (current_indent_level)) + (10 * _scale)
+		if current_indent_level == 1:
+			arc_start_x = (indent_size * (current_indent_level)) + (7.5 * _scale)
 		
-
 		draw_arc(
 			Vector2(arc_start_x, arc_start_y),
 			arc_radius,
@@ -366,15 +364,12 @@ func _draw():
 		# Don't draw arc if next event is another choice event
 		if next_event.event_name == "Choice" or next_event.event_name == "End Branch":
 			return
-		
+
 		# Connecting with the next event
-			arc_start_y = (pos_y - (22 * _scale)) * _scale
-		arc_start_x = ((52* _scale) +  ((indent_size + 2) * current_indent_level))
-		arc_radius = 24 * _scale
+
 		arc_start_x = (indent_size * (current_indent_level + 1)) + (10 * _scale)
 		arc_start_y = (pos_y + (8 * _scale))
 
-		
 		draw_arc(
 			Vector2(arc_start_x, arc_start_y),
 			arc_radius,
