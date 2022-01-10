@@ -25,7 +25,6 @@ onready var warning = $PanelContainer/MarginContainer/VBoxContainer/Header/Warni
 onready var title_label = $PanelContainer/MarginContainer/VBoxContainer/Header/TitleLabel
 onready var icon_texture  = $PanelContainer/MarginContainer/VBoxContainer/Header/CenterContainer/IconPanel/IconTexture
 onready var expand_control = $PanelContainer/MarginContainer/VBoxContainer/Header/ExpandControl
-onready var options_control = $PanelContainer/MarginContainer/VBoxContainer/Header/OptionsControl
 onready var header_content_container = $PanelContainer/MarginContainer/VBoxContainer/Header/Content
 onready var body_container = $PanelContainer/MarginContainer/VBoxContainer/Body
 onready var body_content_container = $PanelContainer/MarginContainer/VBoxContainer/Body/Content
@@ -192,6 +191,11 @@ func _on_gui_input(event):
 		grab_focus() # Grab focus to avoid copy pasting text or events
 		if event.doubleclick and expand_control.enabled:
 			expand_control.set_expanded(not expand_control.expanded)
+	# For opening the context menu
+	if event is InputEventMouseButton:
+		if event.button_index == BUTTON_RIGHT and event.pressed:
+			$PopupMenu.rect_global_position = get_global_mouse_position()
+			var popup = $PopupMenu.popup()
 
 
 # called when the data of the header is changed
@@ -243,7 +247,7 @@ func _ready():
 	# signals
 	panel.connect("gui_input", self, '_on_gui_input')
 	expand_control.connect("state_changed", self, "_on_ExpandControl_state_changed")
-	options_control.connect("action", self, "_on_OptionsControl_action")
+	$PopupMenu.connect("action", self, "_on_OptionsControl_action")
 	
 	# load icons
 	#if help_page_path != "":

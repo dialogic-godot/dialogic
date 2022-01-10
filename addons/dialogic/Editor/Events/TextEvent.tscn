@@ -84,9 +84,6 @@ margin_bottom = 32.0
 [node name="HelpButton" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="6"]
 icon = SubResource( 2 )
 
-[node name="OptionsControl" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="7"]
-items = [ "Move Up", null, 0, false, false, 0, 0, null, "", false, "Move Down", null, 0, false, false, 1, 0, null, "", false, "", null, 0, false, false, 2, 0, null, "", false, "Remove", null, 0, false, false, 3, 0, null, "", false ]
-
 [node name="Body" parent="PanelContainer/MarginContainer/VBoxContainer" index="1"]
 visible = true
 margin_left = 0.0
@@ -100,3 +97,6 @@ margin_right = 179.0
 margin_bottom = 34.0
 
 [node name="AllowNoCharacter" type="Node" parent="." index="2"]
+
+[node name="PopupMenu" parent="." index="3"]
+items = [ "Move Up", null, 0, false, false, 0, 0, null, "", false, "Move Down", null, 0, false, false, 1, 0, null, "", false, "", null, 0, false, false, 2, 0, null, "", true, "Remove", null, 0, false, false, 3, 0, null, "", false ]

@@ -1,11 +1,10 @@
 tool
-extends MenuButton
+extends PopupMenu
 
 signal action(action_name)
 
 func _ready():
-	var popup = get_popup()
-	popup.connect("index_pressed", self, "_on_OptionSelected")
+	connect("index_pressed", self, "_on_OptionSelected")
 
 
 func _on_OptionSelected(index):
