@@ -422,13 +422,17 @@ func _input(event: InputEvent) -> void:
 				if is_state(state.WAITING_INPUT):
 					pass
 				else:
-					$FX/CharacterVoice.stop_voice() # stop the current voice as well
-					play_audio("passing")
-					_load_next_event()
+					next_event(false)
 			if settings.has_section_key('dialog', 'propagate_input'):
 				var propagate_input: bool = settings.get_value('dialog', 'propagate_input')
 				if not propagate_input  and not is_state(state.WAITING_INPUT):
 					get_tree().set_input_as_handled()
+
+func next_event(discreetly: bool):
+	$FX/CharacterVoice.stop_voice() # stop the current voice as well
+	if !discreetly:
+		play_audio("passing")
+	_load_next_event()
 
 # when the text finished showing
 # plays audio, adds buttons, handles [nw]
