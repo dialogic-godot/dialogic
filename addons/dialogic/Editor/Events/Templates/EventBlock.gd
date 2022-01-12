@@ -314,14 +314,8 @@ func _draw():
 		return
 
 	# Figuring out the next event
-	var event_index = 0
-	var c = 0
-	for t in timeline_children:
-		if t == self:
-			event_index = c
-		c += 1
-	var next_event = timeline_children[event_index + 1]
-
+	var next_event = timeline_children[get_index() + 1]
+	
 	if current_indent_level > 0:
 		# Root (level 0) Vertical Line 
 		draw_rect(Rect2(Vector2(pos_x, pos_y - (45 * _scale)),
