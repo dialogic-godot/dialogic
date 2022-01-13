@@ -706,7 +706,8 @@ func event_handler(event: Dictionary):
 		# TIMELINE EVENTS
 		# Change Timeline event
 		'dialogic_020':
-			change_timeline(event['change_timeline'])
+			if !event['change_timeline'].empty():
+				change_timeline(event['change_timeline'])
 		# Change Backround event
 		'dialogic_021':
 			emit_signal("event_start", "background", event)
