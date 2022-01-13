@@ -859,7 +859,7 @@ func load_batch(data):
 	var current_batch = batches.pop_front()
 	if current_batch:
 		for i in current_batch:
-			create_event(i['event_id'], i)
+			create_event(i['event_id'], i, false, timeline.get_child_count())
 	emit_signal("batch_loaded")
 
 

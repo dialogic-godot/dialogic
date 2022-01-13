@@ -706,8 +706,8 @@ func event_handler(event: Dictionary):
 		# TIMELINE EVENTS
 		# Change Timeline event
 		'dialogic_020':
-			dialog_script = set_current_dialog(event['change_timeline'])
-			_init_dialog()
+			if !event['change_timeline'].empty():
+				change_timeline(event['change_timeline'])
 		# Change Backround event
 		'dialogic_021':
 			emit_signal("event_start", "background", event)
@@ -889,6 +889,11 @@ func event_handler(event: Dictionary):
 				handler.handle_event(event, self)
 			else:
 				visible = false
+				
+func change_timeline(timeline):
+	dialog_script = set_current_dialog(timeline)
+	_init_dialog()
+
 
 ## -----------------------------------------------------------------------------
 ## 					TEXTBOX-FUNCTIONALITY
