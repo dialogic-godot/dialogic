@@ -216,9 +216,9 @@ static func set_variable(name: String, value):
 			d['value'] = str(value)
 			exists = true
 	if exists == false:
-		# TODO it would be great to automatically generate that missing variable here so they don't
-		# have to create it from the editor. 
-		print("[Dialogic] Warning! the variable [" + name + "] doesn't exists. Create it from the Dialogic editor.")
+		var definitions := _get_definitions()
+		var id = DialogicUtil.generate_random_id()
+		DialogicDefinitionsUtil.set_definition_variable(definitions, id, name, value)		
 	return value
 
 # returns the value of the value definition with the given name
