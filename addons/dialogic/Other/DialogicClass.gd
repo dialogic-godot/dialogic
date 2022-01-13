@@ -93,7 +93,12 @@ static func start(timeline: String = '', default_timeline: String ='', dialog_sc
 	# Just in case everything else fails.
 	return returned_dialog_node
 
-static func change_timeline(timeline):
+
+# Loads the given timeline into the active DialogNode
+# This means it's state (theme, characters, background, music) is preserved.
+#
+# @param timeline				the name of the timeline to load
+static func change_timeline(timeline: String) -> void:
 	# Set Timeline
 	set_current_timeline(timeline)
 	
@@ -105,6 +110,8 @@ static func change_timeline(timeline):
 		var timeline_file = _get_timeline_file_from_name(timeline)
 		
 		dialog_node.change_timeline(timeline_file)
+	else:
+		print("[D] Tried to change timeline, but no DialogNode exists!")
 
 
 
