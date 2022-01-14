@@ -2,6 +2,8 @@ tool
 extends VBoxContainer
 
 
+func _ready():
+	_on_EnableHistoryLogging_toggled($GridContainer/HistoryBox/EnableHistoryLogging.pressed)
 
 func _on_EnableHistoryLogging_toggled(button_pressed):
 	$GridContainer/ThemeBox/EnableDynamicTheme.disabled = !button_pressed
