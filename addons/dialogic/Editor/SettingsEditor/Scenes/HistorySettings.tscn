@@ -52,6 +52,7 @@ margin_bottom = 24.0
 [node name="EnableHistoryLogging" type="CheckBox" parent="GridContainer/HistoryBox"]
 margin_right = 66.0
 margin_bottom = 24.0
+hint_tooltip = "Enables history logging"
 size_flags_horizontal = 3
 pressed = true
 
@@ -95,7 +96,7 @@ margin_bottom = 52.0
 [node name="EnableDefaultOpenButton" type="CheckBox" parent="GridContainer/OpenBox"]
 margin_right = 41.0
 margin_bottom = 24.0
-hint_tooltip = "Dialog box theme changes based on theme at the time of logging"
+hint_tooltip = "Toggles the default open button. Disable to use your own solution."
 size_flags_horizontal = 3
 pressed = true
 
@@ -118,7 +119,7 @@ margin_bottom = 52.0
 [node name="EnableDefaultCloseButton" type="CheckBox" parent="GridContainer/CloseBox"]
 margin_right = 31.0
 margin_bottom = 24.0
-hint_tooltip = "Dialog box theme changes based on theme at the time of logging"
+hint_tooltip = "Toggles the default close button. Disable to use your own solution."
 size_flags_horizontal = 3
 pressed = true
 
@@ -140,7 +141,7 @@ margin_bottom = 80.0
 [node name="LogChoices" type="CheckBox" parent="GridContainer/ChoiceBox"]
 margin_right = 62.0
 margin_bottom = 24.0
-hint_tooltip = "Dialog box theme changes based on theme at the time of logging"
+hint_tooltip = "Toggle logging all choice options in the timeline"
 size_flags_horizontal = 3
 pressed = true
 
@@ -168,7 +169,7 @@ margin_bottom = 108.0
 [node name="LogAnswers" type="CheckBox" parent="GridContainer/ChoiceBox2"]
 margin_right = 39.0
 margin_bottom = 24.0
-hint_tooltip = "Dialog box theme changes based on theme at the time of logging"
+hint_tooltip = "Toggle logging the choice that was picked"
 size_flags_horizontal = 3
 pressed = true
 
@@ -196,7 +197,7 @@ margin_bottom = 136.0
 [node name="LogArrivals" type="CheckBox" parent="GridContainer/ChoiceBox3"]
 margin_right = 24.0
 margin_bottom = 24.0
-hint_tooltip = "Dialog box theme changes based on theme at the time of logging"
+hint_tooltip = "Toggle logging of character join events"
 size_flags_horizontal = 3
 pressed = true
 
@@ -245,7 +246,7 @@ margin_bottom = 164.0
 [node name="LogExits" type="CheckBox" parent="GridContainer/ChoiceBox4"]
 margin_right = 36.0
 margin_bottom = 24.0
-hint_tooltip = "Dialog box theme changes based on theme at the time of logging"
+hint_tooltip = "Toggle logging of character leave events"
 size_flags_horizontal = 3
 pressed = true
 
@@ -315,6 +316,7 @@ anchor_bottom = 0.0
 margin_top = 199.0
 margin_right = 160.0
 margin_bottom = 213.0
+hint_tooltip = "Choose delimiter that appears after character name"
 size_flags_horizontal = 3
 text = "Name delimiter"
 text_key = "Name delimiter"
