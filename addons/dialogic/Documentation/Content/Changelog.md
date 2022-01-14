@@ -12,6 +12,7 @@
 - Added: `Autofocus choices` in the settings [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
 - You can now set the character dim color from the theme settings [[Tim Krief](https://github.com/timkrief)]
   - Removed the setting to dim character portraits from the global settings
+- Custom theme per character [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
 - New setting to use "Keep Aspect Centered" instead of stretch for the Background event [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
 - You can now verically align the text in the dialog box [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
 - You can now specify hotkeys for the choices or use default hot-keys (1-9) [[zaknafean](https://github.com/zaknafean)]
@@ -19,9 +20,14 @@
 #### Editors
 - Character Editor improvements [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
 - You can now connect signals to the DialogProxyNode (the one you drag and drop in) [[KvaGram](https://github.com/KvaGram)]
+- The Timeline Editor has been greatly redesigned resulting in a cleaner view
+- Improvement of the translations and introduction of german translation [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
+
+#### Script
+- You can now change the timeline of the active node with the `Dialogic.change_timeline()` function. This will preserve the previous state (characters, background, music, theme) [[mechPenSketch](https://github.com/mechPenSketch)]
 
 #### Other
-- Many minor bugs fixed
+- Many minor and major bugs fixed
 
 
 ## v1.3 - Save me some time
