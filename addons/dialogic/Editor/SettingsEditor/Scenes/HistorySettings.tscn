@@ -33,42 +33,42 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="SectionTitle2" parent="." instance=ExtResource( 1 )]
-margin_right = 316.0
+[node name="SectionTitle" parent="." instance=ExtResource( 1 )]
+margin_right = 314.0
 custom_styles/normal = SubResource( 1 )
 text = "History settings"
 text_key = "History settings"
 
 [node name="GridContainer" type="GridContainer" parent="."]
 margin_top = 26.0
-margin_right = 316.0
-margin_bottom = 300.0
+margin_right = 314.0
+margin_bottom = 272.0
 columns = 2
 
 [node name="HistoryBox" type="HBoxContainer" parent="GridContainer"]
-margin_right = 160.0
+margin_right = 158.0
 margin_bottom = 24.0
 
 [node name="EnableHistoryLogging" type="CheckBox" parent="GridContainer/HistoryBox"]
-margin_right = 66.0
+margin_right = 64.0
 margin_bottom = 24.0
 hint_tooltip = "Enables history logging"
 size_flags_horizontal = 3
 pressed = true
 
-[node name="TLabel16" parent="GridContainer/HistoryBox" instance=ExtResource( 2 )]
+[node name="EnableLabel" parent="GridContainer/HistoryBox" instance=ExtResource( 2 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_left = 70.0
+margin_left = 68.0
 margin_top = 5.0
-margin_right = 160.0
+margin_right = 158.0
 margin_bottom = 19.0
 text = "Enable history"
 text_key = "Enable history"
 
 [node name="ThemeBox" type="HBoxContainer" parent="GridContainer"]
-margin_left = 164.0
-margin_right = 316.0
+margin_left = 162.0
+margin_right = 314.0
 margin_bottom = 24.0
 
 [node name="EnableDynamicTheme" type="CheckBox" parent="GridContainer/ThemeBox"]
@@ -78,7 +78,7 @@ hint_tooltip = "Dialog box theme changes based on theme at the time of logging"
 size_flags_horizontal = 3
 pressed = true
 
-[node name="TLabel18" parent="GridContainer/ThemeBox" instance=ExtResource( 2 )]
+[node name="DynamicThemeLabel" parent="GridContainer/ThemeBox" instance=ExtResource( 2 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_left = 39.0
@@ -90,30 +90,30 @@ text_key = "Use dialog theme"
 
 [node name="OpenBox" type="HBoxContainer" parent="GridContainer"]
 margin_top = 28.0
-margin_right = 160.0
+margin_right = 158.0
 margin_bottom = 52.0
 
 [node name="EnableDefaultOpenButton" type="CheckBox" parent="GridContainer/OpenBox"]
-margin_right = 41.0
+margin_right = 39.0
 margin_bottom = 24.0
 hint_tooltip = "Toggles the default open button. Disable to use your own solution."
 size_flags_horizontal = 3
 pressed = true
 
-[node name="TLabel18" parent="GridContainer/OpenBox" instance=ExtResource( 2 )]
+[node name="EnableOpenLabel" parent="GridContainer/OpenBox" instance=ExtResource( 2 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_left = 45.0
+margin_left = 43.0
 margin_top = 5.0
-margin_right = 160.0
+margin_right = 158.0
 margin_bottom = 19.0
 text = "Show open button"
 text_key = "Show open button"
 
 [node name="CloseBox" type="HBoxContainer" parent="GridContainer"]
-margin_left = 164.0
+margin_left = 162.0
 margin_top = 28.0
-margin_right = 316.0
+margin_right = 314.0
 margin_bottom = 52.0
 
 [node name="EnableDefaultCloseButton" type="CheckBox" parent="GridContainer/CloseBox"]
@@ -123,7 +123,7 @@ hint_tooltip = "Toggles the default close button. Disable to use your own soluti
 size_flags_horizontal = 3
 pressed = true
 
-[node name="TLabel18" parent="GridContainer/CloseBox" instance=ExtResource( 2 )]
+[node name="EnableCloseLabel" parent="GridContainer/CloseBox" instance=ExtResource( 2 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_left = 35.0
@@ -135,93 +135,82 @@ text_key = "Show close button"
 
 [node name="ChoiceBox" type="HBoxContainer" parent="GridContainer"]
 margin_top = 56.0
-margin_right = 160.0
+margin_right = 158.0
 margin_bottom = 80.0
 
 [node name="LogChoices" type="CheckBox" parent="GridContainer/ChoiceBox"]
-margin_right = 62.0
+margin_right = 60.0
 margin_bottom = 24.0
 hint_tooltip = "Toggle logging all choice options in the timeline"
 size_flags_horizontal = 3
 pressed = true
 
-[node name="TLabel1" parent="GridContainer/ChoiceBox" instance=ExtResource( 2 )]
+[node name="LogChoicesLabel" parent="GridContainer/ChoiceBox" instance=ExtResource( 2 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_left = 66.0
+margin_left = 64.0
 margin_top = 5.0
-margin_right = 160.0
+margin_right = 158.0
 margin_bottom = 19.0
 text = "Log all choices"
 text_key = "Log all choices"
 
-[node name="BlankBox" type="HBoxContainer" parent="GridContainer"]
-margin_left = 164.0
+[node name="ChoiceBox2" type="HBoxContainer" parent="GridContainer"]
+margin_left = 162.0
 margin_top = 56.0
-margin_right = 316.0
+margin_right = 314.0
 margin_bottom = 80.0
 
-[node name="ChoiceBox2" type="HBoxContainer" parent="GridContainer"]
-margin_top = 84.0
-margin_right = 160.0
-margin_bottom = 108.0
-
 [node name="LogAnswers" type="CheckBox" parent="GridContainer/ChoiceBox2"]
-margin_right = 39.0
+margin_right = 31.0
 margin_bottom = 24.0
 hint_tooltip = "Toggle logging the choice that was picked"
 size_flags_horizontal = 3
 pressed = true
 
-[node name="TLabel1" parent="GridContainer/ChoiceBox2" instance=ExtResource( 2 )]
+[node name="LogAnswersLabel" parent="GridContainer/ChoiceBox2" instance=ExtResource( 2 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_left = 43.0
+margin_left = 35.0
 margin_top = 5.0
-margin_right = 160.0
+margin_right = 152.0
 margin_bottom = 19.0
 text = "Log choice answer"
 text_key = "Log choice answer"
 
-[node name="BlankBox2" type="HBoxContainer" parent="GridContainer"]
-margin_left = 164.0
+[node name="ChoiceBox3" type="HBoxContainer" parent="GridContainer"]
 margin_top = 84.0
-margin_right = 316.0
+margin_right = 158.0
 margin_bottom = 108.0
 
-[node name="ChoiceBox3" type="HBoxContainer" parent="GridContainer"]
-margin_top = 112.0
-margin_right = 160.0
-margin_bottom = 136.0
-
 [node name="LogArrivals" type="CheckBox" parent="GridContainer/ChoiceBox3"]
-margin_right = 24.0
+margin_right = 34.0
 margin_bottom = 24.0
 hint_tooltip = "Toggle logging of character join events"
 size_flags_horizontal = 3
 pressed = true
 
-[node name="TLabel1" parent="GridContainer/ChoiceBox3" instance=ExtResource( 2 )]
+[node name="LogJoinsLabel" parent="GridContainer/ChoiceBox3" instance=ExtResource( 2 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_left = 28.0
+margin_left = 38.0
 margin_top = 5.0
-margin_right = 160.0
+margin_right = 158.0
 margin_bottom = 19.0
-text = "Log character arrives"
-text_key = "Log character arrives"
+text = "Log character joins"
+text_key = "Log character joins"
 
 [node name="LogBox" type="HBoxContainer" parent="GridContainer"]
-margin_left = 164.0
-margin_top = 112.0
-margin_right = 316.0
-margin_bottom = 136.0
+margin_left = 162.0
+margin_top = 84.0
+margin_right = 314.0
+margin_bottom = 108.0
 
 [node name="HSeparator" type="VSeparator" parent="GridContainer/LogBox"]
 margin_right = 4.0
 margin_bottom = 24.0
 
-[node name="TLabel1" parent="GridContainer/LogBox" instance=ExtResource( 2 )]
+[node name="JoinTextLabel" parent="GridContainer/LogBox" instance=ExtResource( 2 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_left = 8.0
@@ -239,32 +228,32 @@ size_flags_horizontal = 3
 text = "has arrived"
 
 [node name="ChoiceBox4" type="HBoxContainer" parent="GridContainer"]
-margin_top = 140.0
-margin_right = 160.0
-margin_bottom = 164.0
+margin_top = 112.0
+margin_right = 158.0
+margin_bottom = 136.0
 
 [node name="LogExits" type="CheckBox" parent="GridContainer/ChoiceBox4"]
-margin_right = 36.0
+margin_right = 24.0
 margin_bottom = 24.0
 hint_tooltip = "Toggle logging of character leave events"
 size_flags_horizontal = 3
 pressed = true
 
-[node name="TLabel1" parent="GridContainer/ChoiceBox4" instance=ExtResource( 2 )]
+[node name="LeaveTextLabel" parent="GridContainer/ChoiceBox4" instance=ExtResource( 2 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_left = 40.0
+margin_left = 28.0
 margin_top = 5.0
-margin_right = 160.0
+margin_right = 158.0
 margin_bottom = 19.0
-text = "Log character exits"
-text_key = "Log character exits"
+text = "Log character leaves"
+text_key = "Log character leaves"
 
 [node name="LogBox2" type="HBoxContainer" parent="GridContainer"]
-margin_left = 164.0
-margin_top = 140.0
-margin_right = 316.0
-margin_bottom = 164.0
+margin_left = 162.0
+margin_top = 112.0
+margin_right = 314.0
+margin_bottom = 136.0
 
 [node name="HSeparator" type="VSeparator" parent="GridContainer/LogBox2"]
 margin_right = 4.0
@@ -290,18 +279,18 @@ text = "has left"
 [node name="TLabel8" parent="GridContainer" instance=ExtResource( 2 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_top = 172.0
-margin_right = 160.0
-margin_bottom = 186.0
+margin_top = 144.0
+margin_right = 158.0
+margin_bottom = 158.0
 size_flags_horizontal = 3
 text = "History button position"
 text_key = "History button position"
 
 [node name="PositionSelector" type="OptionButton" parent="GridContainer"]
-margin_left = 164.0
-margin_top = 168.0
-margin_right = 316.0
-margin_bottom = 190.0
+margin_left = 162.0
+margin_top = 140.0
+margin_right = 314.0
+margin_bottom = 162.0
 text = "Top Right"
 icon = SubResource( 3 )
 items = [ "Top Left", SubResource( 3 ), false, 0, null, "Top Center", SubResource( 3 ), false, 1, null, "Top Right", SubResource( 3 ), false, 2, null, "", null, false, 3, null, "Center Left", SubResource( 3 ), false, 3, null, "Center", SubResource( 3 ), false, 4, null, "Center Right", SubResource( 3 ), false, 5, null, "", null, false, 7, null, "Bottom Left", SubResource( 3 ), false, 6, null, "Bottom Center", SubResource( 3 ), false, 7, null, "Bottom Right", SubResource( 3 ), false, 8, null ]
@@ -313,35 +302,35 @@ __meta__ = {
 [node name="TLabel9" parent="GridContainer" instance=ExtResource( 2 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_top = 199.0
-margin_right = 160.0
-margin_bottom = 213.0
+margin_top = 171.0
+margin_right = 158.0
+margin_bottom = 185.0
 hint_tooltip = "Choose delimiter that appears after character name"
 size_flags_horizontal = 3
 text = "Name delimiter"
 text_key = "Name delimiter"
 
 [node name="CharacterDelimiter" type="LineEdit" parent="GridContainer"]
-margin_left = 164.0
-margin_top = 194.0
-margin_right = 316.0
-margin_bottom = 218.0
+margin_left = 162.0
+margin_top = 166.0
+margin_right = 314.0
+margin_bottom = 190.0
 text = ":"
 
 [node name="TLabel7" parent="GridContainer" instance=ExtResource( 2 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_top = 227.0
-margin_right = 160.0
-margin_bottom = 241.0
+margin_top = 199.0
+margin_right = 158.0
+margin_bottom = 213.0
 text = "Screen margin"
 text_key = "Screen margin"
 
 [node name="BoxMargin" type="HBoxContainer" parent="GridContainer"]
-margin_left = 164.0
-margin_top = 222.0
-margin_right = 316.0
-margin_bottom = 246.0
+margin_left = 162.0
+margin_top = 194.0
+margin_right = 314.0
+margin_bottom = 218.0
 
 [node name="MarginX" type="SpinBox" parent="GridContainer/BoxMargin"]
 margin_right = 74.0
@@ -364,17 +353,17 @@ allow_lesser = true
 [node name="TLabel5" parent="GridContainer" instance=ExtResource( 2 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_top = 255.0
-margin_right = 160.0
-margin_bottom = 269.0
+margin_top = 227.0
+margin_right = 158.0
+margin_bottom = 241.0
 text = "Log margin"
 text_key = "Log margin"
 
 [node name="ContainerMargin" type="HBoxContainer" parent="GridContainer"]
-margin_left = 164.0
-margin_top = 250.0
-margin_right = 316.0
-margin_bottom = 274.0
+margin_left = 162.0
+margin_top = 222.0
+margin_right = 314.0
+margin_bottom = 246.0
 
 [node name="MarginX" type="SpinBox" parent="GridContainer/ContainerMargin"]
 margin_right = 74.0
