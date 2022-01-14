@@ -23,10 +23,6 @@ HistoryCloseButton = ExtResource( 5 )
 visible = true
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = 20.0
-margin_top = 20.0
-margin_right = -20.0
-margin_bottom = -20.0
 popup_exclusive = true
 __meta__ = {
 "_edit_use_anchors_": false
@@ -43,7 +39,7 @@ __meta__ = {
 }
 
 [node name="MarginContainer" type="MarginContainer" parent="HistoryPopup/ScrollHistoryContainer"]
-margin_right = 984.0
+margin_right = 1024.0
 margin_bottom = 10.0
 size_flags_horizontal = 3
 custom_constants/margin_right = 5
@@ -57,7 +53,7 @@ __meta__ = {
 [node name="HistoryTimeline" type="VBoxContainer" parent="HistoryPopup/ScrollHistoryContainer/MarginContainer"]
 margin_left = 5.0
 margin_top = 5.0
-margin_right = 979.0
+margin_right = 1019.0
 margin_bottom = 5.0
 custom_constants/separation = 16
 
