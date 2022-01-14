@@ -13,15 +13,29 @@ func _ready():
 	if visible_name != '':
 		text = '  ' + visible_name
 	hint_tooltip = DTS.translate(hint_tooltip)
-	var _scale = get_constant("inspector_margin", "Editor")
-	_scale = _scale * 0.125
-	rect_min_size = Vector2(30,30)
+	var _scale = DialogicUtil.get_editor_scale(self)
+	rect_min_size = Vector2(35,35)
 	rect_min_size = rect_min_size * _scale
+	icon = null
+	# Another programming crime was commited
+	# a switch statement is missing
+	# what a horrible sight
+	# elif I have you on my mind
+	if _scale == 2 or _scale == 1.75:
+		$TextureRect.rect_scale = Vector2(1, 1)
+	elif _scale == 1.5:
+		$TextureRect.rect_scale = Vector2(0.8, 0.8)
+	elif _scale == 0.75:
+		$TextureRect.rect_scale = Vector2(0.4, 0.4)
+	else:
+		$TextureRect.rect_scale = Vector2(0.6, 0.6)
 
 
 func set_icon(texture):
-	icon = texture
+	#icon = texture
 	event_icon = texture
+	var _scale = DialogicUtil.get_editor_scale(self)
+	$TextureRect.texture = texture
 
 
 func get_drag_data(position):

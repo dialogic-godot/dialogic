@@ -94,6 +94,26 @@ static func start(timeline: String = '', default_timeline: String ='', dialog_sc
 	return returned_dialog_node
 
 
+# Loads the given timeline into the active DialogNode
+# This means it's state (theme, characters, background, music) is preserved.
+#
+# @param timeline				the name of the timeline to load
+static func change_timeline(timeline: String) -> void:
+	# Set Timeline
+	set_current_timeline(timeline)
+	
+	# If there is a dialog node
+	if has_current_dialog_node():
+		var dialog_node = Engine.get_main_loop().get_meta('latest_dialogic_node')
+		
+		# Get file name
+		var timeline_file = _get_timeline_file_from_name(timeline)
+		
+		dialog_node.change_timeline(timeline_file)
+	else:
+		print("[D] Tried to change timeline, but no DialogNode exists!")
+
+
 
 ################################################################################
 ## 						BUILT-IN SAVING/LOADING
@@ -202,6 +222,11 @@ static func import(data: Dictionary) -> void:
 ## +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 ## 						DEFINITIONS
 ## +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+# clears all variables
+static func clear_all_variables():
+	for d in _get_definitions()['variables']:
+		d['value'] = ""
 
 # sets the value of the value definition with the given name
 static func set_variable(name: String, value):

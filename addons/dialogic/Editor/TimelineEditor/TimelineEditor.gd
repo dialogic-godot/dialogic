@@ -87,7 +87,7 @@ func _ready():
 	# We connect all the event buttons to the event creation functions
 	
 	for c in range(0, 5):
-		for button in get_node("ScrollContainer/EventContainer/Grid"+str(c+1)).get_children():
+		for button in get_node("ScrollContainer/EventContainer/FlexContainer"+str(c+1)).get_children():
 			# Question
 			if button.event_id == 'dialogic_010':
 				button.connect('pressed', self, "_on_ButtonQuestion_pressed", [])
@@ -169,7 +169,7 @@ func _input(event):
 		if (event.pressed
 			and event.alt == false
 			and event.shift == false
-			and event.control == true
+			and (event.control == true or event.command == true)
 			and event.scancode == KEY_Z
 			and event.echo == false
 		):
@@ -181,24 +181,24 @@ func _input(event):
 		if (event.pressed
 			and event.alt == false
 			and event.shift == true
-			and event.control == true
+			and (event.control == true or event.command == true)
 			and event.scancode == KEY_Z
 			and event.echo == false
 		) or (event.pressed
 			and event.alt == false
 			and event.shift == false
-			and event.control == true
+			and (event.control == true or event.command == true)
 			and event.scancode == KEY_Y
 			and event.echo == false):
 			TimelineUndoRedo.redo()
 			indent_events()
 			get_tree().set_input_as_handled()
 	if (event is InputEventKey and event is InputEventWithModifiers and is_visible_in_tree()):
-		# CTRL UP
+		# UP
 		if (event.pressed
 			and event.alt == false
 			and event.shift == false
-			and event.control == false
+			and (event.control == false or event.command == false)
 			and event.scancode == KEY_UP
 			and event.echo == false
 		):
@@ -212,11 +212,11 @@ func _input(event):
 				get_tree().set_input_as_handled()
 
 			
-		# CTRL DOWN
+		# DOWN
 		if (event.pressed
 			and event.alt == false
 			and event.shift == false
-			and event.control == false
+			and (event.control == false or event.command == false)
 			and event.scancode == KEY_DOWN
 			and event.echo == false
 		):
@@ -229,11 +229,11 @@ func _input(event):
 					select_item(next_node)
 				get_tree().set_input_as_handled()
 			
-		# CTRL DELETE
+		# DELETE
 		if (event.pressed
 			and event.alt == false
 			and event.shift == false
-			and event.control == false
+			and (event.control == false or event.command == false)
 			and event.scancode == KEY_DELETE
 			and event.echo == false
 		):
@@ -249,7 +249,7 @@ func _input(event):
 		if (event.pressed
 			and event.alt == false
 			and event.shift == false
-			and event.control == true
+			and (event.control == true or event.command == true)
 			and event.scancode == KEY_T
 			and event.echo == false
 		):
@@ -268,7 +268,7 @@ func _input(event):
 		if (event.pressed
 			and event.alt == false
 			and event.shift == false
-			and event.control == true
+			and (event.control == true or event.command == true)
 			and event.scancode == KEY_A
 			and event.echo == false
 		):
@@ -280,7 +280,7 @@ func _input(event):
 		if (event.pressed
 			and event.alt == false
 			and event.shift == true
-			and event.control == true
+			and (event.control == true or event.command == true)
 			and event.scancode == KEY_A
 			and event.echo == false
 		):
@@ -292,7 +292,7 @@ func _input(event):
 		if (event.pressed
 			and event.alt == false
 			and event.shift == false
-			and event.control == true
+			and (event.control == true or event.command == true)
 			and event.scancode == KEY_C
 			and event.echo == false
 		):
@@ -303,7 +303,7 @@ func _input(event):
 		if (event.pressed
 			and event.alt == false
 			and event.shift == false
-			and event.control == true
+			and (event.control == true or event.command == true)
 			and event.scancode == KEY_V
 			and event.echo == false
 		):
@@ -323,7 +323,7 @@ func _input(event):
 		if (event.pressed
 			and event.alt == false
 			and event.shift == false
-			and event.control == true
+			and (event.control == true or event.command == true)
 			and event.scancode == KEY_X
 			and event.echo == false
 		):
@@ -338,7 +338,7 @@ func _input(event):
 		if (event.pressed
 			and event.alt == false
 			and event.shift == false
-			and event.control == true
+			and (event.control == true or event.command == true)
 			and event.scancode == KEY_D
 			and event.echo == false
 		):
@@ -358,7 +358,7 @@ func _unhandled_key_input(event):
 		if (event.pressed
 			and event.alt == true 
 			and event.shift == false 
-			and event.control == false 
+			and (event.control == false or event.command == false)
 			and event.scancode == KEY_UP
 			and event.echo == false
 		):
@@ -372,7 +372,7 @@ func _unhandled_key_input(event):
 		if (event.pressed
 			and event.alt == true 
 			and event.shift == false 
-			and event.control == false 
+			and (event.control == false or event.command == false)
 			and event.scancode == KEY_DOWN
 			and event.echo == false
 		):
@@ -859,7 +859,7 @@ func load_batch(data):
 	var current_batch = batches.pop_front()
 	if current_batch:
 		for i in current_batch:
-			create_event(i['event_id'], i)
+			create_event(i['event_id'], i, false, timeline.get_child_count())
 	emit_signal("batch_loaded")
 
 
