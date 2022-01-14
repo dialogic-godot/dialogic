@@ -101,6 +101,26 @@ static func next_event(discreetly: bool = false):
 		
 		dialog_node.next_event(discreetly)
 
+# Loads the given timeline into the active DialogNode
+# This means it's state (theme, characters, background, music) is preserved.
+#
+# @param timeline				the name of the timeline to load
+static func change_timeline(timeline: String) -> void:
+	# Set Timeline
+	set_current_timeline(timeline)
+	
+	# If there is a dialog node
+	if has_current_dialog_node():
+		var dialog_node = Engine.get_main_loop().get_meta('latest_dialogic_node')
+		
+		# Get file name
+		var timeline_file = _get_timeline_file_from_name(timeline)
+		
+		dialog_node.change_timeline(timeline_file)
+	else:
+		print("[D] Tried to change timeline, but no DialogNode exists!")
+
+
 
 ################################################################################
 ## 						BUILT-IN SAVING/LOADING

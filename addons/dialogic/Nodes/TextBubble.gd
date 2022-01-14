@@ -47,10 +47,8 @@ func update_name(name: String, color: Color = Color.white, autocolor: bool=false
 func update_text(text:String):
 	
 	var orig_text = text
-	var text_bbcodefree = text
-	
-	for result in bbcoderemoverregex.search_all(text_bbcodefree):
-		text_bbcodefree = text_bbcodefree.replace(result.get_string(), "")
+	text_label.bbcode_text = text
+	var text_bbcodefree = text_label.text
 	
 	#regex moved from func scope to class scope
 	#regex compilation moved to _ready
@@ -86,7 +84,7 @@ func update_text(text:String):
 		text = text.replace(result.get_string(), "")
 		
 		result = regex.search(text_bbcodefree)
-	
+
 	text_label.bbcode_text = text
 	text_label.visible_characters = 0
 
@@ -270,7 +268,8 @@ func _on_writing_timer_timeout():
 			if text_label.visible_characters > text_label.get_total_character_count():
 				_handle_text_completed()
 			elif (
-				text_label.visible_characters > 0 and
+				text_label.visible_characters > 0 and 
+				#text_label.text.length() > text_label.visible_characters-1 and 
 				text_label.text[text_label.visible_characters-1] != " "
 			):
 				emit_signal('letter_written')
@@ -316,4 +315,3 @@ func _ready():
 	text_label.meta_underlined = false
 	regex.compile("\\[(nw|(nw|speed|signal|play|pause)=(.+?))\\](.*?)")
 	
-	bbcoderemoverregex.compile("\\[\\/*((b|i|u|s)|(code|center|right|fill|indent|url|img|font|color|table|cell|wave|tornado|shake|fade|rainbow)[^]]*)\\]")

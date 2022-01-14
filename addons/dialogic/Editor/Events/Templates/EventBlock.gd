@@ -23,9 +23,8 @@ onready var panel = $PanelContainer
 onready var selected_style = $PanelContainer/SelectedStyle
 onready var warning = $PanelContainer/MarginContainer/VBoxContainer/Header/Warning
 onready var title_label = $PanelContainer/MarginContainer/VBoxContainer/Header/TitleLabel
-onready var icon_texture  = $PanelContainer/MarginContainer/VBoxContainer/Header/IconPanel/IconTexture
+onready var icon_texture  = $PanelContainer/MarginContainer/VBoxContainer/Header/CenterContainer/IconPanel/IconTexture
 onready var expand_control = $PanelContainer/MarginContainer/VBoxContainer/Header/ExpandControl
-onready var options_control = $PanelContainer/MarginContainer/VBoxContainer/Header/OptionsControl
 onready var header_content_container = $PanelContainer/MarginContainer/VBoxContainer/Header/Content
 onready var body_container = $PanelContainer/MarginContainer/VBoxContainer/Body
 onready var body_content_container = $PanelContainer/MarginContainer/VBoxContainer/Body/Content
@@ -102,12 +101,18 @@ func set_expanded(expanded: bool):
 func _set_event_icon(icon: Texture):
 	icon_texture.texture = icon
 	var _scale = DialogicUtil.get_editor_scale(self)
-	var ip = $PanelContainer/MarginContainer/VBoxContainer/Header/IconPanel
+	var cpanel = $PanelContainer/MarginContainer/VBoxContainer/Header/CenterContainer
+	var ip = $PanelContainer/MarginContainer/VBoxContainer/Header/CenterContainer/IconPanel
+	var ipc = $PanelContainer/MarginContainer/VBoxContainer/Header/CenterContainer/IconPanel/IconTexture
 	# Change color if light theme
+	ipc.self_modulate = Color(1,1,1,1)
 	if not get_constant("dark_theme", "Editor"):
 		icon_texture.self_modulate = get_color("font_color", "Editor")
 	# Resizing the icon acording to the scale
-	ip.rect_min_size = ip.rect_min_size * _scale
+	var icon_size = 38
+	cpanel.rect_min_size = Vector2(icon_size, icon_size) * _scale
+	ip.rect_min_size = cpanel.rect_min_size
+	ipc.rect_min_size = ip.rect_min_size
 	#rect_min_size.y = 50 * _scale
 	#icon_texture.rect_size = icon_texture.rect_size * _scale
 	
@@ -141,7 +146,7 @@ func _setup_event():
 	if body_scene != null:
 		_set_body(body_scene)
 	if event_color != null:
-		$PanelContainer/MarginContainer/VBoxContainer/Header/IconPanel.set("self_modulate", event_color)
+		$PanelContainer/MarginContainer/VBoxContainer/Header/CenterContainer/IconPanel.set("self_modulate", event_color)
 
 
 func _set_content(container: Control, scene: PackedScene):
@@ -186,6 +191,11 @@ func _on_gui_input(event):
 		grab_focus() # Grab focus to avoid copy pasting text or events
 		if event.doubleclick and expand_control.enabled:
 			expand_control.set_expanded(not expand_control.expanded)
+	# For opening the context menu
+	if event is InputEventMouseButton:
+		if event.button_index == BUTTON_RIGHT and event.pressed:
+			$PopupMenu.rect_global_position = get_global_mouse_position()
+			var popup = $PopupMenu.popup()
 
 
 # called when the data of the header is changed
@@ -237,7 +247,7 @@ func _ready():
 	# signals
 	panel.connect("gui_input", self, '_on_gui_input')
 	expand_control.connect("state_changed", self, "_on_ExpandControl_state_changed")
-	options_control.connect("action", self, "_on_OptionsControl_action")
+	$PopupMenu.connect("action", self, "_on_OptionsControl_action")
 	
 	# load icons
 	#if help_page_path != "":
@@ -304,14 +314,8 @@ func _draw():
 		return
 
 	# Figuring out the next event
-	var event_index = 0
-	var c = 0
-	for t in timeline_children:
-		if t == self:
-			event_index = c
-		c += 1
-	var next_event = timeline_children[event_index + 1]
-
+	var next_event = timeline_children[get_index() + 1]
+	
 	if current_indent_level > 0:
 		# Root (level 0) Vertical Line 
 		draw_rect(Rect2(Vector2(pos_x, pos_y - (45 * _scale)),
