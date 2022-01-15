@@ -146,7 +146,7 @@ func parse(content : String,  file_path:String = '', docs_path:String = ''):
 		for res in result:
 			var heading = res.get_string("heading")
 			heading1s.append(heading)
-			parsed_text = parsed_text.replace("\n#"+heading, "\n[color=#"+accent_color.lightened(0.2).to_html()+"][font="+heading1_font+"]"+heading.strip_edges()+"[/font][/color]")
+			parsed_text = parsed_text.replace("#"+heading, "[color=#"+accent_color.lightened(0.2).to_html()+"][font="+heading1_font+"]"+heading.strip_edges()+"[/font][/color]")
 	
 	## Find all heading2s
 	regex.compile("(?:\\n|^)##(?<heading>[^#\\n]+[^\\n]+)")
