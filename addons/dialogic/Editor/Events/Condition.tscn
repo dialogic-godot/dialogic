@@ -20,46 +20,53 @@ image = SubResource( 3 )
 size = Vector2( 16, 16 )
 
 [node name="Condition" instance=ExtResource( 2 )]
+event_name = "Condition"
 event_data = {
 "condition": "",
 "definition": "",
 "event_id": "dialogic_012",
 "value": ""
 }
-event_color = Color( 0.462745, 0.133333, 1, 1 )
+event_color = Color( 0.619608, 0.466667, 0.92549, 1 )
 event_icon = ExtResource( 1 )
 header_scene = ExtResource( 4 )
 help_page_path = "res://addons/dialogic/Documentation/Content/Events/012.md"
+event_category = 1
 
 [node name="PanelContainer" parent="." index="1"]
-margin_right = 336.0
+margin_right = 397.0
 
 [node name="MarginContainer" parent="PanelContainer" index="1"]
-margin_right = 336.0
+margin_right = 397.0
 
 [node name="VBoxContainer" parent="PanelContainer/MarginContainer" index="0"]
-margin_right = 330.0
+margin_right = 391.0
 
 [node name="Header" parent="PanelContainer/MarginContainer/VBoxContainer" index="0"]
-margin_right = 324.0
+margin_right = 385.0
 
 [node name="IconPanel" parent="PanelContainer/MarginContainer/VBoxContainer/Header/CenterContainer" index="0"]
-self_modulate = Color( 0.462745, 0.133333, 1, 1 )
+self_modulate = Color( 0.619608, 0.466667, 0.92549, 1 )
 
 [node name="IconTexture" parent="PanelContainer/MarginContainer/VBoxContainer/Header/CenterContainer/IconPanel" index="0"]
 self_modulate = Color( 0, 0, 0, 1 )
 texture = ExtResource( 1 )
 
+[node name="TitleLabel" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="2"]
+margin_right = 69.0
+text = "Condition"
+
 [node name="Content" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="3"]
-margin_right = 320.0
+margin_left = 73.0
+margin_right = 381.0
 
 [node name="ExpandControl" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="4"]
 margin_left = 146.0
 margin_right = 210.0
 
 [node name="Spacer" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="5"]
-margin_left = 324.0
-margin_right = 324.0
+margin_left = 385.0
+margin_right = 385.0
 
 [node name="HelpButton" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="6"]
 icon = SubResource( 2 )
