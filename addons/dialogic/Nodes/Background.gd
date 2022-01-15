@@ -21,8 +21,9 @@ func _init():
 
 
 func fade_in(time = 1):
+	modulate = Color(1, 1,1,0)
 	tween.interpolate_property(self, "modulate",
-		Color(1,1,1,0), Color(1,1,1,1), time,
+		null, Color(1,1,1,1), time,
 		Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
 	tween.start()
 

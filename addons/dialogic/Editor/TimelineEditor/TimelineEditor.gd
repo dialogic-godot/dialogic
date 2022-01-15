@@ -169,7 +169,7 @@ func _input(event):
 		if (event.pressed
 			and event.alt == false
 			and event.shift == false
-			and event.control == true
+			and (event.control == true or event.command == true)
 			and event.scancode == KEY_Z
 			and event.echo == false
 		):
@@ -181,24 +181,24 @@ func _input(event):
 		if (event.pressed
 			and event.alt == false
 			and event.shift == true
-			and event.control == true
+			and (event.control == true or event.command == true)
 			and event.scancode == KEY_Z
 			and event.echo == false
 		) or (event.pressed
 			and event.alt == false
 			and event.shift == false
-			and event.control == true
+			and (event.control == true or event.command == true)
 			and event.scancode == KEY_Y
 			and event.echo == false):
 			TimelineUndoRedo.redo()
 			indent_events()
 			get_tree().set_input_as_handled()
 	if (event is InputEventKey and event is InputEventWithModifiers and is_visible_in_tree()):
-		# CTRL UP
+		# UP
 		if (event.pressed
 			and event.alt == false
 			and event.shift == false
-			and event.control == false
+			and (event.control == false or event.command == false)
 			and event.scancode == KEY_UP
 			and event.echo == false
 		):
@@ -212,11 +212,11 @@ func _input(event):
 				get_tree().set_input_as_handled()
 
 			
-		# CTRL DOWN
+		# DOWN
 		if (event.pressed
 			and event.alt == false
 			and event.shift == false
-			and event.control == false
+			and (event.control == false or event.command == false)
 			and event.scancode == KEY_DOWN
 			and event.echo == false
 		):
@@ -229,11 +229,11 @@ func _input(event):
 					select_item(next_node)
 				get_tree().set_input_as_handled()
 			
-		# CTRL DELETE
+		# DELETE
 		if (event.pressed
 			and event.alt == false
 			and event.shift == false
-			and event.control == false
+			and (event.control == false or event.command == false)
 			and event.scancode == KEY_DELETE
 			and event.echo == false
 		):
@@ -249,7 +249,7 @@ func _input(event):
 		if (event.pressed
 			and event.alt == false
 			and event.shift == false
-			and event.control == true
+			and (event.control == true or event.command == true)
 			and event.scancode == KEY_T
 			and event.echo == false
 		):
@@ -268,7 +268,7 @@ func _input(event):
 		if (event.pressed
 			and event.alt == false
 			and event.shift == false
-			and event.control == true
+			and (event.control == true or event.command == true)
 			and event.scancode == KEY_A
 			and event.echo == false
 		):
@@ -280,7 +280,7 @@ func _input(event):
 		if (event.pressed
 			and event.alt == false
 			and event.shift == true
-			and event.control == true
+			and (event.control == true or event.command == true)
 			and event.scancode == KEY_A
 			and event.echo == false
 		):
@@ -292,7 +292,7 @@ func _input(event):
 		if (event.pressed
 			and event.alt == false
 			and event.shift == false
-			and event.control == true
+			and (event.control == true or event.command == true)
 			and event.scancode == KEY_C
 			and event.echo == false
 		):
@@ -303,7 +303,7 @@ func _input(event):
 		if (event.pressed
 			and event.alt == false
 			and event.shift == false
-			and event.control == true
+			and (event.control == true or event.command == true)
 			and event.scancode == KEY_V
 			and event.echo == false
 		):
@@ -323,7 +323,7 @@ func _input(event):
 		if (event.pressed
 			and event.alt == false
 			and event.shift == false
-			and event.control == true
+			and (event.control == true or event.command == true)
 			and event.scancode == KEY_X
 			and event.echo == false
 		):
@@ -338,7 +338,7 @@ func _input(event):
 		if (event.pressed
 			and event.alt == false
 			and event.shift == false
-			and event.control == true
+			and (event.control == true or event.command == true)
 			and event.scancode == KEY_D
 			and event.echo == false
 		):
@@ -358,7 +358,7 @@ func _unhandled_key_input(event):
 		if (event.pressed
 			and event.alt == true 
 			and event.shift == false 
-			and event.control == false 
+			and (event.control == false or event.command == false)
 			and event.scancode == KEY_UP
 			and event.echo == false
 		):
@@ -372,7 +372,7 @@ func _unhandled_key_input(event):
 		if (event.pressed
 			and event.alt == true 
 			and event.shift == false 
-			and event.control == false 
+			and (event.control == false or event.command == false)
 			and event.scancode == KEY_DOWN
 			and event.echo == false
 		):
