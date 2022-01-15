@@ -1,7 +1,6 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=2 format=2]
 
 [ext_resource path="res://addons/dialogic/Example Assets/History/HistoryRow.gd" type="Script" id=1]
-[ext_resource path="res://addons/dialogic/Images/Event Icons/Main Icons/audio-event.svg" type="Texture" id=2]
 
 [node name="HistoryRow" type="PanelContainer"]
 rect_min_size = Vector2( 0, 28 )
@@ -25,7 +24,7 @@ __meta__ = {
 [node name="TextureRect" type="TextureRect" parent="."]
 margin_left = 7.0
 margin_top = 7.0
-margin_right = 49.0
+margin_right = 51.0
 margin_bottom = 7.0
 size_flags_horizontal = 5
 size_flags_vertical = 0
@@ -37,8 +36,8 @@ __meta__ = {
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
 margin_left = 7.0
 margin_top = 7.0
-margin_right = 49.0
-margin_bottom = 35.0
+margin_right = 51.0
+margin_bottom = 43.0
 size_flags_horizontal = 11
 size_flags_vertical = 3
 custom_constants/separation = 8
@@ -47,18 +46,21 @@ __meta__ = {
 }
 
 [node name="PlayAudioButton" type="Button" parent="HBoxContainer"]
-margin_right = 34.0
-margin_bottom = 28.0
+margin_right = 36.0
+margin_bottom = 36.0
+rect_min_size = Vector2( 36, 36 )
+size_flags_horizontal = 4
 size_flags_vertical = 4
-icon = ExtResource( 2 )
+flat = true
+expand_icon = true
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="RichTextLabel" type="RichTextLabel" parent="HBoxContainer"]
-margin_left = 42.0
-margin_right = 42.0
-margin_bottom = 28.0
+margin_left = 44.0
+margin_right = 44.0
+margin_bottom = 36.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 bbcode_enabled = true
