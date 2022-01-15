@@ -155,7 +155,7 @@ func parse(content : String,  file_path:String = '', docs_path:String = ''):
 		for res in result:
 			var heading = res.get_string("heading")
 			heading2s.append(heading)
-			parsed_text = parsed_text.replace("##"+heading, "[color=#"+accent_color.lightened(0.5).to_html()+"][font="+heading2_font+"]"+heading.strip_edges()+"[/font][/color]")
+			parsed_text = parsed_text.replace("\n##"+heading, "\n[color=#"+accent_color.lightened(0.5).to_html()+"][font="+heading2_font+"]"+heading.strip_edges()+"[/font][/color]")
 	
 	## Find all heading3s
 	regex.compile("(?:\\n|^)###(?<heading>[^#\\n]+[^\\n]+)")
@@ -163,7 +163,7 @@ func parse(content : String,  file_path:String = '', docs_path:String = ''):
 	if result:
 		for res in result:
 			var heading = res.get_string("heading")
-			parsed_text = parsed_text.replace("###"+heading, "[color=#"+accent_color.lightened(0.7).to_html()+"][font="+heading3_font+"]"+heading.strip_edges()+"[/font][/color]")
+			parsed_text = parsed_text.replace("\n###"+heading,  "\n[color=#"+accent_color.lightened(0.7).to_html()+"][font="+heading3_font+"]"+heading.strip_edges()+"[/font][/color]")
 	
 	## Find all heading4s
 	regex.compile("(?:\\n|^)####(?<heading>[^#\\n]+[^\\n]+)")
@@ -171,7 +171,7 @@ func parse(content : String,  file_path:String = '', docs_path:String = ''):
 	if result:
 		for res in result:
 			var heading = res.get_string("heading")
-			parsed_text = parsed_text.replace("####"+heading, "[color=#"+accent_color.lightened(0.85).to_html()+"][font="+heading4_font+"]"+heading.strip_edges()+"[/font][/color]")
+			parsed_text = parsed_text.replace("\n####"+heading, "\n[color=#"+accent_color.lightened(0.85).to_html()+"][font="+heading4_font+"]"+heading.strip_edges()+"[/font][/color]")
 	
 	
 	## Find all heading5s
@@ -180,7 +180,7 @@ func parse(content : String,  file_path:String = '', docs_path:String = ''):
 	if result:
 		for res in result:
 			var heading = res.get_string("heading")
-			parsed_text = parsed_text.replace("#####"+heading, "[color=#"+accent_color.lightened(0.85).to_html()+"][font="+heading5_font+"]"+heading.strip_edges()+"[/font][/color]")
+			parsed_text = parsed_text.replace("\n#####"+heading, "\n[color=#"+accent_color.lightened(0.85).to_html()+"][font="+heading5_font+"]"+heading.strip_edges()+"[/font][/color]")
 
 	for i in links.size():
 		parsed_text = parsed_text.replace("["+linknames[i]+"]("+links[i]+")","[color=#"+accent_color.to_html()+"][url="+links[i]+"]"+linknames[i]+"[/url][/color]")
