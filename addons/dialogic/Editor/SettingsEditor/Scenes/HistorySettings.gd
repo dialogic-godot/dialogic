@@ -20,4 +20,23 @@ func _on_EnableHistoryLogging_toggled(button_pressed):
 	$GridContainer/BoxMargin/MarginX.editable = button_pressed
 	$GridContainer/BoxMargin/MarginY.editable = button_pressed
 	$GridContainer/ContainerMargin/MarginX.editable = button_pressed
-	$GridContainer/ContainerMargin/MarginY.editable = button_pressed
+	
+	$GridContainer/ThemeBox.visible = button_pressed
+	$GridContainer/OpenBox.visible = button_pressed
+	$GridContainer/CloseBox.visible = button_pressed
+	$GridContainer/ChoiceBox.visible = button_pressed
+	$GridContainer/ChoiceBox2.visible = button_pressed
+	$GridContainer/ChoiceBox3.visible = button_pressed
+	$GridContainer/LogBox.visible = button_pressed
+	$GridContainer/ChoiceBox4.visible = button_pressed
+	$GridContainer/TLabel8.visible = button_pressed
+	$GridContainer/PositionSelector.visible = button_pressed
+	$GridContainer/LogBox2.visible = button_pressed
+	$GridContainer/TLabel9.visible = button_pressed
+	$GridContainer/CharacterDelimiter.visible = button_pressed
+	$GridContainer/TLabel7.visible = button_pressed
+	$GridContainer/BoxMargin/MarginX.visible = button_pressed
+	$GridContainer/BoxMargin/MarginY.visible = button_pressed
+	$GridContainer/TLabel5.visible = button_pressed
+	$GridContainer/ContainerMargin/MarginX.visible = button_pressed
+	$GridContainer/ContainerMargin/MarginY.visible = button_pressed
