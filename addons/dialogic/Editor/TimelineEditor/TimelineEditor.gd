@@ -58,6 +58,8 @@ var id_to_scene_name = {
 	'dialogic_042':'CallNode',
 	}
 
+var event_data
+
 var batches = []
 var building_timeline = true
 signal selection_updated
@@ -84,25 +86,33 @@ func _ready():
 		modifier = '-2'
 		$ScrollContainer.rect_min_size.x = 390
 	
-	# We connect all the event buttons to the event creation functions
-	
-	for c in range(0, 5):
-		for button in get_node("ScrollContainer/EventContainer/FlexContainer"+str(c+1)).get_children():
-			# Question
-			if button.event_id == 'dialogic_010':
-				button.connect('pressed', self, "_on_ButtonQuestion_pressed", [])
-			# Condition
-			elif button.event_id == 'dialogic_012':
-				button.connect('pressed', self, "_on_ButtonCondition_pressed", [])
-			else:
-				button.connect('pressed', self, "_create_event_button_pressed", [button.event_id])
-	
 	var style = $TimelineArea.get('custom_styles/bg')
 	style.set('bg_color', get_color("dark_color_1", "Editor"))
 	
 	update_custom_events()
 	$TimelineArea.connect('resized', self, 'add_extra_scroll_area_to_timeline', [])
 	
+	# We create the event buttons
+	event_data = _read_event_data()
+	var buttonScene = load("res://addons/dialogic/Editor/TimelineEditor/SmallEventButton.tscn")
+	for b in event_data:
+		if typeof(b['event_data']) == TYPE_DICTIONARY:
+			var button = buttonScene.instance()
+			# Button properties
+			button.visible_name = '       ' + b['event_name']
+			button.event_id = b['event_data']['event_id']
+			button.set_icon(b['event_icon'])
+			button.event_color = b['event_color']
+			button.event_category = b.get('event_category', 0)
+			# Connecting the signal
+			if button.event_id == 'dialogic_010':
+				button.connect('pressed', self, "_on_ButtonQuestion_pressed", [])
+			elif button.event_id == 'dialogic_012': # Condition
+				button.connect('pressed', self, "_on_ButtonCondition_pressed", [])
+			else:
+				button.connect('pressed', self, "_create_event_button_pressed", [button.event_id])
+			# Adding it to its section
+			get_node("ScrollContainer/EventContainer/FlexContainer" + str(button.event_category + 1)).add_child(button)
 
 # handles dragging/moving of events
 func _process(delta):
@@ -731,11 +741,10 @@ func update_custom_events() -> void:
 		var button = load('res://addons/dialogic/Editor/TimelineEditor/SmallEventButton.tscn').instance()
 		#button.set_script(preload("EventButton.gd"))
 		button.event_id = custom_event_id
-		button.visible_name = custom_events[custom_event_id]['event_name']
-		button.self_modulate = Color('#494d58')
-		button.hint_tooltip = custom_events[custom_event_id]['event_name']
+		button.visible_name = '       ' + custom_events[custom_event_id]['event_name']
 		if custom_events[custom_event_id]['event_icon']:
-			button.event_icon = custom_events[custom_event_id]['event_icon']
+			button.set_icon(custom_events[custom_event_id]['event_icon'])
+		#button.event_color = TODO
 		button.connect("pressed", self, "_create_event_button_pressed", [custom_event_id])
 		custom_events_container.add_child(button)
 
@@ -1075,3 +1084,23 @@ func add_extra_scroll_area_to_timeline():
 		timeline.rect_size.y = 0
 		if timeline.rect_size.y + 200 > $TimelineArea.rect_size.y:
 			timeline.rect_min_size = Vector2(0, timeline.rect_size.y + 200)
+
+
+# Functions for reading the event data and coloring the buttons
+func _read_event_data():
+	var dir = 'res://addons/dialogic/Editor/Events/'
+	var file = File.new()
+	var config = ConfigFile.new()
+	var events_data = []
+	for f in DialogicUtil.list_dir(dir):
+		if '.tscn' in f:
+			if 'DummyEvent' in f:
+				# Need to figure out what to do with this one
+				pass
+			else:
+				var scene = load(dir + '/' + f).get_state()
+				var c = {}
+				for p in scene.get_node_property_count(0):
+					c[scene.get_node_property_name(0,p)] = scene.get_node_property_value(0, p)
+				events_data.append(c)
+	return events_data

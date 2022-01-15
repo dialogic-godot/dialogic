@@ -516,6 +516,19 @@ static func get_editor_scale(ref) -> float:
 	
 	return _scale
 
+
+static func list_dir(path: String) -> Array:
+	var files = []
+	var dir = Directory.new()
+	dir.open(path)
+	dir.list_dir_begin(true)
+
+	var file = dir.get_next()
+	while file != '':
+		files += [file]
+		file = dir.get_next()
+	return files
+
 ## *****************************************************************************
 ##							DIALOGIC_SORTER CLASS
 ## *****************************************************************************

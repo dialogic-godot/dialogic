@@ -15,6 +15,8 @@ export(PackedScene) var body_scene : PackedScene
 export (bool) var expand_on_default := false
 export (bool) var needs_indentation := false
 export (String) var help_page_path := ""
+export (bool) var show_name_in_timeline := true
+export(int, "Main", "Logic", "Timeline", "Audio/Visual", "Godot") var event_category = 0
 signal option_action(action_name)
 
 
@@ -118,12 +120,13 @@ func _set_event_icon(icon: Texture):
 	
 
 func _set_event_name(text: String):
-	if event_name == "Text Event":
+	if show_name_in_timeline:
+		title_label.text = text
+	else:
 		var t_label = get_node_or_null("PanelContainer/MarginContainer/VBoxContainer/Header/TitleLabel")
 		if t_label:
 			t_label.queue_free()
-	else:
-		title_label.text = text
+
 
 
 func _set_header(scene: PackedScene):

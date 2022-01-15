@@ -26,7 +26,7 @@ event_data = {
 "event_id": "dialogic_026",
 "use_default_slot": true
 }
-event_color = Color( 0.137255, 0.792157, 0.498039, 1 )
+event_color = Color( 0.0470588, 0.647059, 0.921569, 1 )
 event_icon = ExtResource( 2 )
 header_scene = ExtResource( 3 )
 expand_on_default = false
