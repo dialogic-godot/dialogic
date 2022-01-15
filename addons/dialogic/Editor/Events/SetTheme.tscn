@@ -5,7 +5,7 @@
 [ext_resource path="res://addons/dialogic/Editor/Events/Parts/ResourcePickers/Themes/ThemePicker.tscn" type="PackedScene" id=4]
 
 [node name="SetTheme" instance=ExtResource( 2 )]
-event_name = "Set Theme"
+event_name = "Change Theme"
 event_data = {
 "event_id": "dialogic_024",
 "set_theme": ""

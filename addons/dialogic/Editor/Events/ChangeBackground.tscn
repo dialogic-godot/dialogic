@@ -6,7 +6,7 @@
 [ext_resource path="res://addons/dialogic/Editor/Events/Parts/Images/BackgroundPicker.tscn" type="PackedScene" id=7]
 
 [node name="ChangeBackground" instance=ExtResource( 4 )]
-event_name = "Set Background"
+event_name = "Change Background"
 event_data = {
 "background": "",
 "event_id": "dialogic_021"
