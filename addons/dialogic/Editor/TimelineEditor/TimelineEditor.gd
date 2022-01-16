@@ -14,8 +14,6 @@ onready var custom_events_container = $ScrollContainer/EventContainer/CustomEven
 
 var hovered_item = null
 var selected_style : StyleBoxFlat = load("res://addons/dialogic/Editor/Events/styles/selected_styleboxflat.tres")
-var selected_style_text : StyleBoxFlat = load("res://addons/dialogic/Editor/Events/styles/selected_styleboxflat_text_event.tres")
-var selected_style_template : StyleBoxFlat = load("res://addons/dialogic/Editor/Events/styles/selected_styleboxflat_template.tres")
 var saved_style : StyleBoxFlat
 var selected_items : Array = []
 
@@ -148,9 +146,12 @@ func _on_event_block_gui_input(event, item: Node):
 					TimelineUndoRedo.add_undo_method(self, "move_block_to_index", to_position, move_start_position)
 					TimelineUndoRedo.commit_action()
 				move_start_position = null
+			else:
+				select_item(item)
 			if (moving_piece != null):
 				
 				indent_events()
+			piece_was_dragged = false
 			moving_piece = null
 		elif event.is_pressed():
 			moving_piece = item
@@ -159,7 +160,6 @@ func _on_event_block_gui_input(event, item: Node):
 				pass#piece_was_dragged = true
 			else:
 				piece_was_dragged = false
-			select_item(item)
 
 
 ## *****************************************************************************
