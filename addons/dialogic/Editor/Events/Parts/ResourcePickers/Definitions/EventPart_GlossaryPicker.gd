@@ -10,6 +10,7 @@ onready var picker_menu = $MenuButton
 # used to connect the signals
 func _ready():
 	picker_menu.connect("about_to_show", self, "_on_PickerMenu_about_to_show")
+	picker_menu.custom_icon = get_icon("ListSelect", "EditorIcons")
 
 # called by the event block
 func load_data(data:Dictionary):
@@ -61,6 +62,7 @@ func build_PickerMenuFolder(menu:PopupMenu, folder_structure:Dictionary, current
 		menu.add_submenu_item(folder_name, submenu_name)
 		menu.set_item_icon(index, get_icon("Folder", "EditorIcons"))
 		menu.add_child(submenu)
+		picker_menu.update_submenu_style(submenu)
 		index += 1
 	
 	var files_info = DialogicUtil.get_default_definitions_dict()

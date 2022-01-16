@@ -5,6 +5,7 @@
 [node name="BackgroundPreview" type="VBoxContainer"]
 margin_right = 40.0
 margin_bottom = 40.0
+size_flags_horizontal = 0
 script = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -24,7 +25,6 @@ __meta__ = {
 margin_right = 200.0
 margin_bottom = 200.0
 rect_min_size = Vector2( 200, 200 )
-size_flags_horizontal = 5
 size_flags_vertical = 5
 expand = true
 stretch_mode = 6
