@@ -5,13 +5,14 @@ export(String) var visible_name = ""
 export (String) var event_id = 'dialogic_099'
 export (Color) var event_color = Color('#48a2a2a2')
 export(Texture) var event_icon = null setget set_icon
+export (int) var event_category := 0
 
 
 func _ready():
 	$Panel.self_modulate = event_color
 	self_modulate = Color(1,1,1)
 	if visible_name != '':
-		text = '  ' + visible_name
+		text = visible_name
 	hint_tooltip = DTS.translate(hint_tooltip)
 	var _scale = DialogicUtil.get_editor_scale(self)
 	rect_min_size = Vector2(35,35)

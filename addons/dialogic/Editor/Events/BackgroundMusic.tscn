@@ -20,7 +20,6 @@ image = SubResource( 3 )
 size = Vector2( 16, 16 )
 
 [node name="BackgroundMusic" instance=ExtResource( 2 )]
-margin_bottom = 74.0
 event_name = "Background Music"
 event_data = {
 "audio_bus": "Master",
@@ -31,64 +30,49 @@ event_data = {
 "file": "",
 "volume": 0
 }
-event_color = Color( 0.137255, 0.792157, 0.498039, 1 )
+event_color = Color( 0.988235, 0.396078, 0.0784314, 1 )
 event_icon = ExtResource( 3 )
 body_scene = ExtResource( 1 )
 expand_on_default = false
 help_page_path = "res://addons/dialogic/Documentation/Content/Events/030.md"
+event_category = 3
 
 [node name="PanelContainer" parent="." index="1"]
 margin_right = 416.0
-margin_bottom = 74.0
 
 [node name="MarginContainer" parent="PanelContainer" index="1"]
 margin_right = 416.0
-margin_bottom = 74.0
 
 [node name="VBoxContainer" parent="PanelContainer/MarginContainer" index="0"]
 margin_right = 410.0
-margin_bottom = 68.0
 
 [node name="Header" parent="PanelContainer/MarginContainer/VBoxContainer" index="0"]
 margin_right = 404.0
-margin_bottom = 62.0
-
-[node name="Warning" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="0"]
-margin_bottom = 62.0
-
-[node name="CenterContainer" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="1"]
-margin_bottom = 62.0
 
 [node name="IconPanel" parent="PanelContainer/MarginContainer/VBoxContainer/Header/CenterContainer" index="0"]
-self_modulate = Color( 0.137255, 0.792157, 0.498039, 1 )
-margin_top = 31.0
-margin_bottom = 31.0
+self_modulate = Color( 0.988235, 0.396078, 0.0784314, 1 )
 
 [node name="IconTexture" parent="PanelContainer/MarginContainer/VBoxContainer/Header/CenterContainer/IconPanel" index="0"]
 self_modulate = Color( 0, 0, 0, 1 )
 texture = ExtResource( 3 )
 
 [node name="TitleLabel" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="2"]
-margin_top = 24.0
 margin_right = 124.0
-margin_bottom = 38.0
 text = "Background Music"
 
 [node name="Content" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="3"]
 margin_left = 128.0
 margin_right = 138.0
-margin_bottom = 62.0
 
 [node name="ExpandControl" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="4"]
 visible = true
 margin_left = 142.0
 margin_right = 400.0
-margin_bottom = 62.0
+margin_bottom = 64.0
 
 [node name="Spacer" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="5"]
 margin_left = 404.0
 margin_right = 404.0
-margin_bottom = 62.0
 
 [node name="HelpButton" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="6"]
 icon = SubResource( 2 )
