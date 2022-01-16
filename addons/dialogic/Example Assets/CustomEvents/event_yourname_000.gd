@@ -3,15 +3,11 @@ extends Node
 
 func handle_event(event_data, dialog_node):
 	""" 
-		if you want to stop the user from progressing while this even is handled
-		Valid states include:
-		## IDLE - When nothing is happening
-		## READY - When Dialogic already displayed the text on the screen
-		## TYPING - While the editor is typing text
-		## WAITING - Waiting a timer or something to finish
-		## WAITING_INPUT - Waiting for player to answer a question
-		## ANIMATING - While performing a dialog animation
+		If this event should wait for dialog advance to occur, uncomment the WAITING line
+		If this event should wait for the user to pick a choice, uncomment the WAITINT_INPUT line
+		While other states exist, they generally are not neccesary, but include IDLE, TYPING, and ANIMATING
 	"""
+	#dialog_node.set_state(state.WAITING)
 	#dialog_node.set_state(state.WAITING_INPUT)
 	
 	pass # fill with event action
