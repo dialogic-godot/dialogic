@@ -23,6 +23,7 @@ HistoryCloseButton = ExtResource( 5 )
 visible = true
 anchor_right = 1.0
 anchor_bottom = 1.0
+mouse_filter = 2
 popup_exclusive = true
 __meta__ = {
 "_edit_use_anchors_": false
