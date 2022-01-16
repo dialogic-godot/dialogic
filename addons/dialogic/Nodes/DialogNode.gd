@@ -419,7 +419,9 @@ func _input(event: InputEvent) -> void:
 				# Cut the voice
 				$FX/CharacterVoice.stop_voice()
 			else:
-				if is_state(state.WAITING_INPUT):
+				if current_event.has('options') and !is_state(state.WAITING_INPUT):
+					pass
+				elif is_state(state.WAITING_INPUT):
 					pass
 				else:
 					$FX/CharacterVoice.stop_voice() # stop the current voice as well
@@ -1276,7 +1278,8 @@ func fade_in_dialog(time = 0.5):
 # at the end of fade animation, reset flags
 func finished_fade_in_dialog(object, key, node):
 	node.queue_free()
-	set_state(state.IDLE)
+	if !current_event.has('options'):
+		set_state(state.IDLE)
 	dialog_faded_in_already = true
 
 ## -----------------------------------------------------------------------------
