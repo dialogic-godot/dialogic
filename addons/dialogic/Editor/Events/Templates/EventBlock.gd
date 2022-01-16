@@ -148,6 +148,7 @@ func _setup_event():
 		_set_header(header_scene)
 	if body_scene != null:
 		_set_body(body_scene)
+		body_content_container.add_constant_override('margin_left', 40*DialogicUtil.get_editor_scale(self))
 	if event_color != null:
 		$PanelContainer/MarginContainer/VBoxContainer/Header/CenterContainer/IconPanel.set("self_modulate", event_color)
 
