@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=2]
 
-[ext_resource path="res://addons/dialogic/Editor/Events/Parts/GreyLabel.tscn" type="PackedScene" id=1]
+[ext_resource path="res://addons/dialogic/Editor/Events/Parts/Text/GreyLabel.tscn" type="PackedScene" id=1]
 [ext_resource path="res://addons/dialogic/Editor/Events/Parts/ResourcePickers/Characters/EventPart_CharacterPicker.gd" type="Script" id=2]
 [ext_resource path="res://addons/dialogic/Editor/Theme/PickerTheme.tres" type="Theme" id=3]
 [ext_resource path="res://addons/dialogic/Editor/Events/Parts/ResourcePickers/ResourcePickerMenu.tscn" type="PackedScene" id=4]

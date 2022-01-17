@@ -2,7 +2,7 @@
 
 [ext_resource path="res://addons/dialogic/Editor/Events/Parts/ResourcePickers/Themes/EventPart_ThemePicker.gd" type="Script" id=1]
 [ext_resource path="res://addons/dialogic/Editor/Events/Parts/ResourcePickers/ResourcePickerMenu.tscn" type="PackedScene" id=2]
-[ext_resource path="res://addons/dialogic/Editor/Events/Parts/GreyLabel.tscn" type="PackedScene" id=3]
+[ext_resource path="res://addons/dialogic/Editor/Events/Parts/Text/GreyLabel.tscn" type="PackedScene" id=3]
 
 [node name="ThemePicker" type="HBoxContainer"]
 margin_right = 157.0

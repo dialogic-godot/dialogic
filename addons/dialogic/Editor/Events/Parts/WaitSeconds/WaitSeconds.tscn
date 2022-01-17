@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://addons/dialogic/Editor/Events/Parts/WaitSeconds/EventPart_WaitSeconds.gd" type="Script" id=1]
-[ext_resource path="res://addons/dialogic/Editor/Events/Parts/GreyLabel.tscn" type="PackedScene" id=2]
+[ext_resource path="res://addons/dialogic/Editor/Events/Parts/Text/GreyLabel.tscn" type="PackedScene" id=2]
 [ext_resource path="res://addons/dialogic/Editor/Events/Parts/SpinBoxPreventDnD.gd" type="Script" id=4]
 
 [node name="VBoxContainer" type="VBoxContainer"]
