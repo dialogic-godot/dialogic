@@ -582,8 +582,9 @@ func _load_event():
 			#	print(func_state)
 			#	yield(func_state, "completed")
 		elif not Engine.is_editor_hint():
-			# Do not free the dialog if we are in the preview
-			queue_free()
+			# If setting 'Don't Close After Last Event' is not checked, free it.
+			if not current_theme.get_value('settings', 'dont_close_after_last_event', false):
+				queue_free()
 
 # Handling an event and updating the available nodes accordingly.
 func event_handler(event: Dictionary):
