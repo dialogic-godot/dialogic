@@ -1,6 +1,8 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://addons/dialogic/Editor/TimelineEditor/SmallEventButton.gd" type="Script" id=1]
+
+[sub_resource type="StyleBoxEmpty" id=3]
 
 [sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 1, 1, 1, 1 )
@@ -29,8 +31,7 @@ corner_radius_bottom_left = 4
 [node name="SmallEventButton" type="Button"]
 margin_right = 40.0
 margin_bottom = 40.0
-custom_colors/font_color = Color( 1, 1, 1, 1 )
-custom_colors/font_color_hover = Color( 0.917647, 0.917647, 0.917647, 1 )
+custom_styles/focus = SubResource( 3 )
 flat = true
 script = ExtResource( 1 )
 __meta__ = {

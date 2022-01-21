@@ -1,6 +1,8 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://addons/dialogic/Editor/Events/Parts/CallNode/EventPart_CallNodePicker.gd" type="Script" id=1]
+[ext_resource path="res://addons/dialogic/Editor/Events/Parts/Text/GreyLabel.tscn" type="PackedScene" id=2]
+[ext_resource path="res://addons/dialogic/Editor/Events/Parts/Text/CustomLineEdit.tscn" type="PackedScene" id=3]
 
 [node name="CallNodePicker" type="VBoxContainer"]
 margin_right = 40.0
@@ -10,57 +12,59 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Label" type="Label" parent="."]
-margin_right = 820.0
+[node name="Label" parent="." instance=ExtResource( 2 )]
+margin_top = 0.0
+margin_right = 790.0
 margin_bottom = 14.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "This event calls the method [Method Name] on the node [Target Node]. It passes an array to the method."
 
 [node name="Properties" type="HBoxContainer" parent="."]
 margin_top = 18.0
-margin_right = 820.0
-margin_bottom = 42.0
+margin_right = 790.0
+margin_bottom = 45.0
 custom_constants/separation = 8
 
 [node name="TargetNodeLabel" type="Label" parent="Properties"]
-margin_top = 5.0
+margin_top = 6.0
 margin_right = 81.0
-margin_bottom = 19.0
+margin_bottom = 20.0
 text = "Target Node:"
 
-[node name="TargetNodeEdit" type="LineEdit" parent="Properties"]
+[node name="TargetNodeEdit" parent="Properties" instance=ExtResource( 3 )]
 margin_left = 89.0
-margin_right = 339.0
-margin_bottom = 24.0
-rect_min_size = Vector2( 250, 0 )
+margin_right = 329.0
+margin_bottom = 27.0
+rect_min_size = Vector2( 240, 27 )
 
 [node name="CallMethodLabel" type="Label" parent="Properties"]
-margin_left = 347.0
-margin_top = 5.0
-margin_right = 442.0
-margin_bottom = 19.0
+margin_left = 337.0
+margin_top = 6.0
+margin_right = 432.0
+margin_bottom = 20.0
 text = "Method Name:"
 
-[node name="CallMethodEdit" type="LineEdit" parent="Properties"]
-margin_left = 450.0
-margin_right = 650.0
-margin_bottom = 24.0
-rect_min_size = Vector2( 200, 0 )
+[node name="CallMethodEdit" parent="Properties" instance=ExtResource( 3 )]
+margin_left = 440.0
+margin_right = 620.0
+margin_bottom = 27.0
+rect_min_size = Vector2( 180, 27 )
 
 [node name="ArgumentsLabel" type="Label" parent="Properties"]
-margin_left = 658.0
-margin_top = 5.0
-margin_right = 738.0
-margin_bottom = 19.0
+margin_left = 628.0
+margin_top = 6.0
+margin_right = 708.0
+margin_bottom = 20.0
 text = "ArrayLength:"
 
 [node name="ArgumentsSpinBox" type="SpinBox" parent="Properties"]
-margin_left = 746.0
-margin_right = 820.0
-margin_bottom = 24.0
+margin_left = 716.0
+margin_right = 790.0
+margin_bottom = 27.0
 max_value = 99.0
 
 [node name="Arguments" type="VBoxContainer" parent="."]
-margin_top = 46.0
-margin_right = 820.0
-margin_bottom = 46.0
+margin_top = 49.0
+margin_right = 790.0
+margin_bottom = 49.0
 custom_constants/separation = 5

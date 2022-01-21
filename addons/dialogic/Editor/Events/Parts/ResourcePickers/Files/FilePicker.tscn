@@ -1,0 +1,73 @@
+[gd_scene load_steps=11 format=2]
+
+[ext_resource path="res://addons/dialogic/Editor/Events/styles/SimpleButtonHover.tres" type="StyleBox" id=1]
+[ext_resource path="res://addons/dialogic/Images/Context Menus/Remove.svg" type="Texture" id=2]
+[ext_resource path="res://addons/dialogic/Editor/Events/Parts/ResourcePickers/Files/EventPart_FilePicker.gd" type="Script" id=3]
+[ext_resource path="res://addons/dialogic/Editor/Events/Parts/Text/GreyLabel.tscn" type="PackedScene" id=4]
+[ext_resource path="res://addons/dialogic/Editor/Events/styles/ResourceMenuNormal.tres" type="StyleBox" id=5]
+[ext_resource path="res://addons/dialogic/Editor/Events/styles/ResourceMenuHover.tres" type="StyleBox" id=6]
+[ext_resource path="res://addons/dialogic/Editor/Events/styles/SimpleButtonNormal.tres" type="StyleBox" id=7]
+
+[sub_resource type="StyleBoxEmpty" id=1]
+
+[sub_resource type="Image" id=4]
+data = {
+"data": PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ),
+"format": "LumAlpha8",
+"height": 16,
+"mipmaps": false,
+"width": 16
+}
+
+[sub_resource type="ImageTexture" id=3]
+flags = 4
+flags = 4
+image = SubResource( 4 )
+size = Vector2( 16, 16 )
+
+[node name="FilePicker" type="HBoxContainer"]
+margin_top = 1.0
+margin_right = 331.0
+margin_bottom = 23.0
+size_flags_vertical = 4
+script = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" parent="." instance=ExtResource( 4 )]
+margin_right = 33.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Show"
+
+[node name="FileButton" type="Button" parent="."]
+margin_left = 37.0
+margin_right = 143.0
+margin_bottom = 22.0
+custom_styles/hover = ExtResource( 6 )
+custom_styles/pressed = ExtResource( 6 )
+custom_styles/focus = SubResource( 1 )
+custom_styles/normal = ExtResource( 5 )
+text = "none so far"
+
+[node name="icon" type="TextureRect" parent="FileButton"]
+margin_left = 4.0
+margin_top = 2.0
+margin_right = 22.0
+margin_bottom = 20.0
+texture = SubResource( 3 )
+expand = true
+stretch_mode = 6
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ClearButton" type="Button" parent="."]
+margin_left = 147.0
+margin_right = 169.0
+margin_bottom = 22.0
+rect_min_size = Vector2( 22, 22 )
+custom_styles/hover = ExtResource( 1 )
+custom_styles/pressed = ExtResource( 1 )
+custom_styles/normal = ExtResource( 7 )
+icon = ExtResource( 2 )

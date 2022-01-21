@@ -20,10 +20,6 @@ func _ready():
 	text_editor.set('custom_colors/function_color', get_color("font_color", "Editor"))
 	text_editor.set('custom_colors/member_variable_color', get_color("font_color", "Editor"))
 	text_editor.set('custom_colors/symbol_color', get_color("font_color", "Editor"))
-	
-	# Spacing
-	var _scale = DialogicUtil.get_editor_scale(self)
-	$Control.rect_min_size.x = $Control.rect_min_size.x * _scale
 
 
 # called by the event block

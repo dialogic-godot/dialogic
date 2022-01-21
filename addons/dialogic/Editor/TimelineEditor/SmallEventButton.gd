@@ -15,7 +15,7 @@ func _ready():
 		text = visible_name
 	hint_tooltip = DTS.translate(hint_tooltip)
 	var _scale = DialogicUtil.get_editor_scale(self)
-	rect_min_size = Vector2(35,35)
+	rect_min_size = Vector2(30,30)
 	rect_min_size = rect_min_size * _scale
 	icon = null
 	# Another programming crime was commited
@@ -30,6 +30,10 @@ func _ready():
 		$TextureRect.rect_scale = Vector2(0.4, 0.4)
 	else:
 		$TextureRect.rect_scale = Vector2(0.6, 0.6)
+	
+	add_color_override("font_color", get_color("font_color", "Editor"))
+	add_color_override("font_color_hover", get_color("accent_color", "Editor"))
+	$TextureRect.modulate = get_color("font_color", "Editor")
 
 
 func set_icon(texture):
