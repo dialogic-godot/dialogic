@@ -979,6 +979,7 @@ func add_choice_button(option: Dictionary) -> Button:
 	shortcut.set_shortcut(hotkey)
 	
 	button.set_shortcut(shortcut)
+	button.shortcut_in_tooltip = false
 	
 	# Selecting the first button added
 	if settings.get_value('input', 'autofocus_choices', true):
