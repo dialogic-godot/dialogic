@@ -14,51 +14,51 @@ event_data = {
 "text": "",
 "title": ""
 }
-event_color = Color( 0.462745, 0.133333, 1, 1 )
+event_color = Color( 0.396078, 0.439216, 0.517647, 1 )
 event_icon = ExtResource( 6 )
 header_scene = ExtResource( 5 )
 body_scene = ExtResource( 4 )
 expand_on_default = false
+event_category = 2
 
 [node name="PanelContainer" parent="." index="1"]
-margin_bottom = 56.0
+margin_right = 270.0
 
 [node name="MarginContainer" parent="PanelContainer" index="1"]
-margin_left = 7.0
-margin_top = 7.0
-margin_right = 1017.0
-margin_bottom = 49.0
+margin_right = 270.0
 
 [node name="VBoxContainer" parent="PanelContainer/MarginContainer" index="0"]
-margin_right = 1004.0
+margin_right = 264.0
 
 [node name="Header" parent="PanelContainer/MarginContainer/VBoxContainer" index="0"]
-margin_right = 998.0
+margin_right = 258.0
 
-[node name="IconTexture" parent="PanelContainer/MarginContainer/VBoxContainer/Header/IconPanel" index="0"]
+[node name="IconPanel" parent="PanelContainer/MarginContainer/VBoxContainer/Header/CenterContainer" index="0"]
+self_modulate = Color( 0.396078, 0.439216, 0.517647, 1 )
+
+[node name="IconTexture" parent="PanelContainer/MarginContainer/VBoxContainer/Header/CenterContainer/IconPanel" index="0"]
+self_modulate = Color( 0, 0, 0, 1 )
 texture = ExtResource( 6 )
 
 [node name="TitleLabel" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="2"]
-margin_right = 129.0
+margin_right = 87.0
 text = "Set Glossary"
 
 [node name="Content" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="3"]
-margin_left = 139.0
-margin_right = 302.0
+margin_left = 91.0
+margin_right = 254.0
 
 [node name="ExpandControl" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="4"]
 margin_left = 164.0
 margin_right = 216.0
 
 [node name="Spacer" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="5"]
-margin_left = 312.0
-margin_right = 914.0
+margin_left = 258.0
+margin_right = 258.0
 
 [node name="HelpButton" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="6"]
 margin_left = 924.0
 margin_right = 954.0
 
-[node name="OptionsControl" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="7"]
-margin_left = 964.0
-margin_right = 998.0
-items = [ "Move Up", null, 0, false, false, 0, 0, null, "", false, "Move Down", null, 0, false, false, 1, 0, null, "", false, "", null, 0, false, false, 2, 0, null, "", false, "Remove", null, 0, false, false, 3, 0, null, "", false ]
+[node name="PopupMenu" parent="." index="2"]
+items = [ "Move Up", null, 0, false, false, 0, 0, null, "", false, "Move Down", null, 0, false, false, 1, 0, null, "", false, "", null, 0, false, false, 2, 0, null, "", true, "Remove", null, 0, false, false, 3, 0, null, "", false ]

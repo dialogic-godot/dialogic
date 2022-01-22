@@ -1,6 +1,8 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://addons/dialogic/Editor/TimelineEditor/SmallEventButton.gd" type="Script" id=1]
+
+[sub_resource type="StyleBoxEmpty" id=3]
 
 [sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 1, 1, 1, 1 )
@@ -27,11 +29,10 @@ corner_radius_bottom_right = 4
 corner_radius_bottom_left = 4
 
 [node name="SmallEventButton" type="Button"]
-margin_right = 30.0
-margin_bottom = 30.0
+margin_right = 40.0
+margin_bottom = 40.0
+custom_styles/focus = SubResource( 3 )
 flat = true
-align = 0
-expand_icon = true
 script = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -40,8 +41,8 @@ __meta__ = {
 [node name="Panel" type="Panel" parent="."]
 self_modulate = Color( 0.635294, 0.635294, 0.635294, 0.282353 )
 show_behind_parent = true
-anchor_right = 1.0
 anchor_bottom = 1.0
+rect_min_size = Vector2( 5, 0 )
 mouse_filter = 2
 custom_styles/panel = SubResource( 1 )
 __meta__ = {
@@ -57,3 +58,13 @@ custom_styles/panel = SubResource( 2 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="TextureRect" type="TextureRect" parent="."]
+anchor_top = 0.5
+anchor_bottom = 0.5
+margin_left = 18.0
+rect_scale = Vector2( 0.6, 0.6 )
+size_flags_horizontal = 0
+size_flags_vertical = 0
+expand = true
+stretch_mode = 4

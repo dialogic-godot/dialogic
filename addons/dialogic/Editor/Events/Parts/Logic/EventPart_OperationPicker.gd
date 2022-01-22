@@ -5,23 +5,23 @@ extends "res://addons/dialogic/Editor/Events/Parts/EventPart.gd"
 
 var options = [
 	{
-		"text": "[ to be ]",
+		"text": "to be",
 		"operation": "="
 	},
 	{
-		"text": "[ to itself plus ]",
+		"text": "to itself plus",
 		"operation": "+"
 	},
 	{
-		"text": "[ to itself minus ]",
+		"text": "to itself minus",
 		"operation": "-"
 	},
 	{
-		"text": "[ to itself multiplied by ]",
+		"text": "to itself multiplied by",
 		"operation": "*"
 	},
 	{
-		"text": "[ to itself divided by ]",
+		"text": "to itself divided by",
 		"operation": "/"
 	},
 ]
@@ -33,6 +33,7 @@ onready var picker_menu = $MenuButton
 func _ready():
 	picker_menu.get_popup().connect("index_pressed", self, '_on_PickerMenu_selected')
 	picker_menu.connect("about_to_show", self, "_on_PickerMenu_about_to_show")
+	picker_menu.custom_icon = get_icon("GDScript", "EditorIcons")
 
 # called by the event block
 func load_data(data:Dictionary):

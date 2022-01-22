@@ -6,56 +6,56 @@
 [ext_resource path="res://addons/dialogic/Editor/Events/Parts/Images/BackgroundPicker.tscn" type="PackedScene" id=7]
 
 [node name="ChangeBackground" instance=ExtResource( 4 )]
-event_name = "Set Background"
+event_name = "Change Background"
 event_data = {
 "background": "",
 "event_id": "dialogic_021"
 }
-event_color = Color( 0.176471, 0.305882, 0.811765, 1 )
+event_color = Color( 0.964706, 0.239216, 0.403922, 1 )
 event_icon = ExtResource( 6 )
 header_scene = ExtResource( 7 )
 body_scene = ExtResource( 1 )
 expand_on_default = false
+event_category = 3
 
 [node name="PanelContainer" parent="." index="1"]
-margin_bottom = 56.0
+margin_right = 462.0
 
 [node name="MarginContainer" parent="PanelContainer" index="1"]
-margin_left = 7.0
-margin_top = 7.0
-margin_right = 1017.0
-margin_bottom = 49.0
+margin_right = 462.0
 
 [node name="VBoxContainer" parent="PanelContainer/MarginContainer" index="0"]
-margin_right = 1004.0
+margin_right = 456.0
 
 [node name="Header" parent="PanelContainer/MarginContainer/VBoxContainer" index="0"]
-margin_right = 998.0
+margin_right = 450.0
 
-[node name="IconTexture" parent="PanelContainer/MarginContainer/VBoxContainer/Header/IconPanel" index="0"]
+[node name="IconPanel" parent="PanelContainer/MarginContainer/VBoxContainer/Header/CenterContainer" index="0"]
+self_modulate = Color( 0.964706, 0.239216, 0.403922, 1 )
+
+[node name="IconTexture" parent="PanelContainer/MarginContainer/VBoxContainer/Header/CenterContainer/IconPanel" index="0"]
+self_modulate = Color( 0, 0, 0, 1 )
 texture = ExtResource( 6 )
 
 [node name="TitleLabel" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="2"]
-margin_right = 148.0
+margin_right = 106.0
 text = "Set Background"
 
 [node name="Content" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="3"]
-margin_left = 158.0
-margin_right = 494.0
+margin_left = 110.0
+margin_right = 446.0
 
 [node name="ExpandControl" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="4"]
 margin_left = 535.0
 margin_right = 587.0
 
 [node name="Spacer" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="5"]
-margin_left = 504.0
-margin_right = 914.0
+margin_left = 450.0
+margin_right = 450.0
 
 [node name="HelpButton" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="6"]
 margin_left = 924.0
 margin_right = 954.0
 
-[node name="OptionsControl" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="7"]
-margin_left = 964.0
-margin_right = 998.0
-items = [ "Move Up", null, 0, false, false, 0, 0, null, "", false, "Move Down", null, 0, false, false, 1, 0, null, "", false, "", null, 0, false, false, 2, 0, null, "", false, "Remove", null, 0, false, false, 3, 0, null, "", false ]
+[node name="PopupMenu" parent="." index="2"]
+items = [ "Move Up", null, 0, false, false, 0, 0, null, "", false, "Move Down", null, 0, false, false, 1, 0, null, "", false, "", null, 0, false, false, 2, 0, null, "", true, "Remove", null, 0, false, false, 3, 0, null, "", false ]

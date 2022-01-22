@@ -1,20 +1,39 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://addons/dialogic/Editor/Events/Templates/EventBlock.gd" type="Script" id=1]
 [ext_resource path="res://addons/dialogic/Editor/Events/Parts/EventBlock/ExpandControl.tscn" type="PackedScene" id=2]
 [ext_resource path="res://addons/dialogic/Editor/Events/styles/selected_styleboxflat.tres" type="StyleBox" id=3]
-[ext_resource path="res://addons/dialogic/Editor/Events/Parts/EventBlock/Spacer.tscn" type="PackedScene" id=4]
-[ext_resource path="res://addons/dialogic/Editor/Events/Parts/EventBlock/OptionsControl.tscn" type="PackedScene" id=5]
+[ext_resource path="res://addons/dialogic/Editor/Events/styles/ResourceMenuPanelBackground.tres" type="StyleBox" id=5]
 [ext_resource path="res://addons/dialogic/Images/Plugin/plugin-editor-icon-dark-theme.svg" type="Texture" id=6]
 [ext_resource path="res://addons/dialogic/Images/Event Icons/event-outline.svg" type="Texture" id=7]
+[ext_resource path="res://addons/dialogic/Editor/Events/Parts/EventBlock/PopupMenu.gd" type="Script" id=8]
 
 [sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 0.6, 0.6, 0.6, 0 )
 
+[sub_resource type="Image" id=6]
+data = {
+"data": PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ),
+"format": "LumAlpha8",
+"height": 16,
+"mipmaps": false,
+"width": 16
+}
+
+[sub_resource type="ImageTexture" id=3]
+flags = 4
+flags = 4
+image = SubResource( 6 )
+size = Vector2( 16, 16 )
+
+[sub_resource type="StyleBoxEmpty" id=5]
+
 [node name="EventTemplate" type="HBoxContainer"]
 anchor_right = 1.0
-rect_min_size = Vector2( 0, 50 )
+margin_right = -922.0
+margin_bottom = 76.0
 focus_mode = 1
+size_flags_horizontal = 3
 size_flags_vertical = 9
 script = ExtResource( 1 )
 __meta__ = {
@@ -31,9 +50,10 @@ visible = false
 margin_bottom = 64.0
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
-margin_right = 74.0
-margin_bottom = 50.0
+margin_right = 102.0
+margin_bottom = 76.0
 mouse_filter = 1
+size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_styles/panel = SubResource( 1 )
 
@@ -45,33 +65,64 @@ margin_bottom = 50.0
 custom_styles/panel = ExtResource( 3 )
 
 [node name="MarginContainer" type="MarginContainer" parent="PanelContainer"]
-margin_right = 74.0
-margin_bottom = 50.0
+margin_right = 102.0
+margin_bottom = 76.0
 mouse_filter = 1
 size_flags_vertical = 3
 custom_constants/margin_right = 6
 custom_constants/margin_top = 6
-custom_constants/margin_left = 6
+custom_constants/margin_left = 10
 custom_constants/margin_bottom = 6
 
 [node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/MarginContainer"]
-margin_left = 6.0
+margin_left = 10.0
 margin_top = 6.0
-margin_right = 68.0
-margin_bottom = 44.0
+margin_right = 96.0
+margin_bottom = 70.0
 rect_min_size = Vector2( 0, 30 )
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="Header" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer"]
-margin_right = 62.0
-margin_bottom = 38.0
+margin_right = 86.0
+margin_bottom = 64.0
 rect_min_size = Vector2( 0, 32 )
 size_flags_horizontal = 3
 size_flags_vertical = 3
+custom_constants/separation = 0
 
-[node name="Warning" type="TextureRect" parent="PanelContainer/MarginContainer/VBoxContainer/Header"]
-margin_bottom = 38.0
+[node name="CenterContainer" type="CenterContainer" parent="PanelContainer/MarginContainer/VBoxContainer/Header"]
+margin_bottom = 64.0
+mouse_filter = 1
+
+[node name="IconPanel" type="TextureRect" parent="PanelContainer/MarginContainer/VBoxContainer/Header/CenterContainer"]
+self_modulate = Color( 0.6, 0.6, 0.6, 1 )
+margin_top = 32.0
+margin_bottom = 32.0
+mouse_default_cursor_shape = 6
+texture = ExtResource( 7 )
+expand = true
+stretch_mode = 1
+
+[node name="IconTexture" type="TextureRect" parent="PanelContainer/MarginContainer/VBoxContainer/Header/CenterContainer/IconPanel"]
+anchor_left = 1.0
+anchor_right = 1.0
+grow_horizontal = 0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 6 )
+expand = true
+stretch_mode = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Warning" type="TextureRect" parent="PanelContainer/MarginContainer/VBoxContainer/Header/CenterContainer/IconPanel"]
+visible = false
+margin_left = -9.19241
+margin_top = -4.24266
+margin_right = 12.8076
+margin_bottom = 17.7573
 hint_tooltip = "Choice events should go 
 between a [Question]
 and [End branch] events.
@@ -80,43 +131,20 @@ and [End branch] events.
     [Choice]
     [...]
 [End branch]"
-stretch_mode = 4
-
-[node name="IconPanel" type="TextureRect" parent="PanelContainer/MarginContainer/VBoxContainer/Header"]
-self_modulate = Color( 0.6, 0.6, 0.6, 1 )
-margin_left = 4.0
-margin_right = 40.0
-margin_bottom = 38.0
-rect_min_size = Vector2( 36, 36 )
-mouse_default_cursor_shape = 6
-size_flags_vertical = 3
-texture = ExtResource( 7 )
-expand = true
-stretch_mode = 7
-
-[node name="IconTexture" type="TextureRect" parent="PanelContainer/MarginContainer/VBoxContainer/Header/IconPanel"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-texture = ExtResource( 6 )
-expand = true
-stretch_mode = 6
+texture = SubResource( 3 )
+stretch_mode = 5
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="TitleLabel" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/Header"]
-margin_left = 44.0
-margin_top = 12.0
-margin_right = 44.0
-margin_bottom = 26.0
+margin_top = 25.0
+margin_bottom = 39.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
 
 [node name="Content" type="MarginContainer" parent="PanelContainer/MarginContainer/VBoxContainer/Header"]
-margin_left = 48.0
-margin_right = 58.0
-margin_bottom = 38.0
+margin_right = 10.0
+margin_bottom = 64.0
 mouse_filter = 1
 custom_constants/margin_right = 5
 custom_constants/margin_left = 5
@@ -125,10 +153,15 @@ custom_constants/margin_left = 5
 margin_left = 178.0
 margin_right = 242.0
 
-[node name="Spacer" parent="PanelContainer/MarginContainer/VBoxContainer/Header" instance=ExtResource( 4 )]
-margin_left = 62.0
-margin_right = 62.0
-margin_bottom = 38.0
+[node name="Spacer" type="Control" parent="PanelContainer/MarginContainer/VBoxContainer/Header"]
+margin_left = 10.0
+margin_right = 86.0
+margin_bottom = 64.0
+mouse_filter = 1
+size_flags_horizontal = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="HelpButton" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer/Header"]
 visible = false
@@ -143,13 +176,6 @@ expand_icon = true
 __meta__ = {
 "_edit_use_anchors_": false
 }
-
-[node name="OptionsControl" parent="PanelContainer/MarginContainer/VBoxContainer/Header" instance=ExtResource( 5 )]
-visible = false
-margin_left = 130.0
-margin_right = 164.0
-margin_bottom = 30.0
-items = [ "Move Up", null, 0, false, false, 0, 0, null, "", false, "Move Down", null, 0, false, false, 1, 0, null, "", false, "", null, 0, false, false, 2, 0, null, "", false, "Remove", null, 0, false, false, 3, 0, null, "", false ]
 
 [node name="Body" type="VBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer"]
 visible = false
@@ -168,6 +194,17 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_constants/margin_top = 2
 custom_constants/margin_bottom = 2
+
+[node name="PopupMenu" type="PopupMenu" parent="."]
+margin_left = 38.0
+margin_right = 133.0
+margin_bottom = 88.0
+custom_colors/font_color_hover = Color( 0, 0, 0, 1 )
+custom_constants/vseparation = 0
+custom_styles/hover = SubResource( 5 )
+custom_styles/panel = ExtResource( 5 )
+items = [ "Documentation", SubResource( 3 ), 0, false, false, 0, 0, null, "", false, "", null, 0, false, false, -1, 0, null, "", true, "Move up", SubResource( 3 ), 0, false, false, 2, 0, null, "", false, "Move down", SubResource( 3 ), 0, false, false, 3, 0, null, "", false, "", null, 0, false, false, -1, 0, null, "", true, "Delete", SubResource( 3 ), 0, false, false, 5, 0, null, "", false ]
+script = ExtResource( 8 )
 
 [connection signal="visibility_changed" from="Indent" to="." method="_on_Indent_visibility_changed"]
 [connection signal="pressed" from="PanelContainer/MarginContainer/VBoxContainer/Header/HelpButton" to="." method="_on_HelpButton_pressed"]

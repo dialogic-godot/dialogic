@@ -29,7 +29,7 @@ func repopulate() -> void:
 		var a_picker = audio_picker.instance()
 		a_picker.editor_reference = editor_reference
 		a_picker.event_name = "voice line"
-		a_picker.connect("audio_loaded", self, "_on_audio_picker_audio_loaded", [i])
+		a_picker.connect("data_changed", self, "_on_audio_picker_audio_loaded", [i])
 		$List.add_child(a_picker)
 		
 		#loaded data 
@@ -41,7 +41,7 @@ func repopulate() -> void:
 					a_picker.load_data(_d)
 					continue
 		
-		a_picker.load_data({'audio_bus':settings.get_value("dialog", "text_event_audio_default_bus", "Master")})
+		a_picker.load_data({'file':'', 'audio_bus':settings.get_value("dialog", "text_event_audio_default_bus", "Master")})
 
 
 func _on_text_changed(text:String) -> void:
@@ -66,14 +66,12 @@ func _get_audio_picker(index:int):
 	var data = $List.get_child(index * 2 + 1)
 	return data
 
-func _on_audio_picker_audio_loaded(index:int) -> void:
+func _on_audio_picker_audio_loaded(data,index:int) -> void:
 	# update the data 
-	#var data_loaded = voices_container.get_child(index).event_data
-	var data_loaded = _get_audio_picker(index).event_data
 	if not event_data.has('voice_data'):
 		event_data['voice_data'] = {}
 	
-	event_data['voice_data'][str(index)] = data_loaded
+	event_data['voice_data'][str(index)] = data
 	
 	#load the data
 	load_data(event_data)

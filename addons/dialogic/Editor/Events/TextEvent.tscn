@@ -21,67 +21,89 @@ image = SubResource( 3 )
 size = Vector2( 16, 16 )
 
 [node name="TextEvent" instance=ExtResource( 3 )]
+event_name = "Text"
 event_data = {
 "character": "",
 "event_id": "dialogic_001",
 "portrait": "",
 "text": ""
 }
+event_color = Color( 1, 1, 1, 1 )
 event_icon = ExtResource( 5 )
 header_scene = ExtResource( 1 )
 body_scene = ExtResource( 4 )
 help_page_path = "res://addons/dialogic/Documentation/Content/Events/000.md"
+show_name_in_timeline = false
 
 [node name="PanelContainer" parent="." index="1"]
-margin_right = 320.0
-margin_bottom = 78.0
+margin_right = 218.0
+margin_bottom = 82.0
 
 [node name="MarginContainer" parent="PanelContainer" index="1"]
-margin_right = 320.0
-margin_bottom = 78.0
+margin_right = 218.0
+margin_bottom = 82.0
 
 [node name="VBoxContainer" parent="PanelContainer/MarginContainer" index="0"]
-margin_right = 314.0
-margin_bottom = 72.0
+margin_right = 212.0
+margin_bottom = 76.0
 
 [node name="Header" parent="PanelContainer/MarginContainer/VBoxContainer" index="0"]
-margin_right = 308.0
+margin_right = 206.0
+margin_bottom = 32.0
 
-[node name="IconTexture" parent="PanelContainer/MarginContainer/VBoxContainer/Header/IconPanel" index="0"]
+[node name="Warning" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="0"]
+margin_bottom = 32.0
+
+[node name="CenterContainer" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="1"]
+margin_bottom = 32.0
+
+[node name="IconPanel" parent="PanelContainer/MarginContainer/VBoxContainer/Header/CenterContainer" index="0"]
+self_modulate = Color( 1, 1, 1, 1 )
+margin_top = 16.0
+margin_bottom = 16.0
+
+[node name="IconTexture" parent="PanelContainer/MarginContainer/VBoxContainer/Header/CenterContainer/IconPanel" index="0"]
+self_modulate = Color( 0, 0, 0, 1 )
 texture = ExtResource( 5 )
 
 [node name="TitleLabel" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="2"]
-margin_right = 112.0
-text = "Text Event"
+margin_top = 9.0
+margin_right = 35.0
+margin_bottom = 23.0
+text = "Text"
 
 [node name="Content" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="3"]
-margin_left = 120.0
-margin_right = 248.0
+margin_left = 39.0
+margin_right = 154.0
+margin_bottom = 32.0
 
 [node name="ExpandControl" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="4"]
 visible = true
-margin_left = 256.0
-margin_right = 300.0
+margin_left = 158.0
+margin_right = 202.0
+margin_bottom = 32.0
 
 [node name="Spacer" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="5"]
-margin_left = 308.0
-margin_right = 308.0
+margin_left = 206.0
+margin_right = 206.0
+margin_bottom = 32.0
 
 [node name="HelpButton" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="6"]
 icon = SubResource( 2 )
 
-[node name="OptionsControl" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="7"]
-items = [ "Move Up", null, 0, false, false, 0, 0, null, "", false, "Move Down", null, 0, false, false, 1, 0, null, "", false, "", null, 0, false, false, 2, 0, null, "", false, "Remove", null, 0, false, false, 3, 0, null, "", false ]
-
 [node name="Body" parent="PanelContainer/MarginContainer/VBoxContainer" index="1"]
 visible = true
 margin_left = 0.0
-margin_right = 308.0
-margin_bottom = 66.0
+margin_top = 36.0
+margin_right = 206.0
+margin_bottom = 70.0
 
 [node name="Content" parent="PanelContainer/MarginContainer/VBoxContainer/Body" index="0"]
 margin_top = 0.0
-margin_right = 308.0
-margin_bottom = 32.0
+margin_right = 206.0
+margin_bottom = 34.0
 
 [node name="AllowNoCharacter" type="Node" parent="." index="2"]
+
+[node name="PopupMenu" parent="." index="3"]
+items = [ "Move Up", null, 0, false, false, 0, 0, null, "", false, "Move Down", null, 0, false, false, 1, 0, null, "", false, "", null, 0, false, false, 2, 0, null, "", true, "Remove", null, 0, false, false, 3, 0, null, "", false ]

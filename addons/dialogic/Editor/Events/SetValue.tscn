@@ -29,27 +29,45 @@ event_data = {
 "set_random": false,
 "set_value": ""
 }
-event_color = Color( 0.462745, 0.133333, 1, 1 )
+event_color = Color( 0.396078, 0.439216, 0.517647, 1 )
 event_icon = ExtResource( 2 )
 header_scene = ExtResource( 4 )
 help_page_path = "res://addons/dialogic/Documentation/Content/Events/014.md"
+event_category = 2
 
-[node name="IconTexture" parent="PanelContainer/MarginContainer/VBoxContainer/Header/IconPanel" index="0"]
+[node name="PanelContainer" parent="." index="1"]
+margin_right = 440.0
+
+[node name="MarginContainer" parent="PanelContainer" index="1"]
+margin_right = 440.0
+
+[node name="VBoxContainer" parent="PanelContainer/MarginContainer" index="0"]
+margin_right = 434.0
+
+[node name="Header" parent="PanelContainer/MarginContainer/VBoxContainer" index="0"]
+margin_right = 428.0
+
+[node name="IconPanel" parent="PanelContainer/MarginContainer/VBoxContainer/Header/CenterContainer" index="0"]
+self_modulate = Color( 0.396078, 0.439216, 0.517647, 1 )
+
+[node name="IconTexture" parent="PanelContainer/MarginContainer/VBoxContainer/Header/CenterContainer/IconPanel" index="0"]
+self_modulate = Color( 0, 0, 0, 1 )
 texture = ExtResource( 2 )
 
 [node name="TitleLabel" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="2"]
-margin_right = 109.0
+margin_right = 67.0
 text = "Set Value"
 
 [node name="Content" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="3"]
-margin_left = 119.0
-margin_right = 472.0
+margin_left = 71.0
+margin_right = 424.0
 
 [node name="Spacer" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="5"]
-margin_left = 482.0
+margin_left = 428.0
+margin_right = 428.0
 
 [node name="HelpButton" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="6"]
 icon = SubResource( 2 )
 
-[node name="OptionsControl" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="7"]
-items = [ "Move Up", null, 0, false, false, 0, 0, null, "", false, "Move Down", null, 0, false, false, 1, 0, null, "", false, "", null, 0, false, false, 2, 0, null, "", false, "Remove", null, 0, false, false, 3, 0, null, "", false ]
+[node name="PopupMenu" parent="." index="2"]
+items = [ "Move Up", null, 0, false, false, 0, 0, null, "", false, "Move Down", null, 0, false, false, 1, 0, null, "", false, "", null, 0, false, false, 2, 0, null, "", true, "Remove", null, 0, false, false, 3, 0, null, "", false ]

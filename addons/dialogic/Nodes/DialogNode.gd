@@ -425,7 +425,9 @@ func _input(event: InputEvent) -> void:
 				# Cut the voice
 				$FX/CharacterVoice.stop_voice()
 			else:
-				if is_state(state.WAITING_INPUT):
+				if current_event.has('options') and !is_state(state.WAITING_INPUT):
+					pass
+				elif is_state(state.WAITING_INPUT):
 					pass
 				elif $TextBubble/NextIndicatorContainer/NextIndicator.is_visible():
 					$FX/CharacterVoice.stop_voice() # stop the current voice as well
@@ -621,8 +623,9 @@ func event_handler(event: Dictionary):
 				var character_data = DialogicUtil.get_character(event['character'])
 				if portrait_exists(character_data):
 					for portrait in $Portraits.get_children():
-						if portrait.character_data == character_data:
-							portrait.move_to_position(get_character_position(event['position']))
+						if portrait.character_data.get('file', true) == character_data.get('file', false):
+							portrait.move_to_position(get_character_position(event['position']), event.get('animation', 0), event.get('animation_length', 1))
+							$Portraits.move_child(portrait, get_portrait_z_index_point(event.get('z_index', 0)))
 							portrait.set_mirror(event.get('mirror', false))
 							portrait.current_state['position'] = event['position']
 				else:
@@ -643,9 +646,11 @@ func event_handler(event: Dictionary):
 						p.single_portrait_mode = true
 					p.character_data = character_data
 					p.init(char_portrait)
+					p.z_index = event.get('z_index', 0)
 					p.set_mirror(event.get('mirror', false))
 					$Portraits.add_child(p)
-					p.move_to_position(get_character_position(event['position']))
+					$Portraits.move_child(p, get_portrait_z_index_point(event.get('z_index', 0)))
+					p.move_to_position(get_character_position(event['position']), event.get('animation', 0), event.get('animation_length', 1))
 					p.current_state['character'] = event['character']
 					p.current_state['position'] = event['position']
 			_load_next_event()
@@ -737,8 +742,8 @@ func event_handler(event: Dictionary):
 		# TIMELINE EVENTS
 		# Change Timeline event
 		'dialogic_020':
-			dialog_script = set_current_dialog(event['change_timeline'])
-			_init_dialog()
+			if !event['change_timeline'].empty():
+				change_timeline(event['change_timeline'])
 		# Change Backround event
 		'dialogic_021':
 			emit_signal("event_start", "background", event)
@@ -920,6 +925,11 @@ func event_handler(event: Dictionary):
 				handler.handle_event(event, self)
 			else:
 				visible = false
+				
+func change_timeline(timeline):
+	dialog_script = set_current_dialog(timeline)
+	_init_dialog()
+
 
 ## -----------------------------------------------------------------------------
 ## 					TEXTBOX-FUNCTIONALITY
@@ -1003,6 +1013,7 @@ func add_choice_button(option: Dictionary) -> Button:
 	shortcut.set_shortcut(hotkey)
 	
 	button.set_shortcut(shortcut)
+	button.shortcut_in_tooltip = false
 	
 	# Selecting the first button added
 	if settings.get_value('input', 'autofocus_choices', true):
@@ -1194,7 +1205,7 @@ func grab_portrait_focus(character_data, event: Dictionary = {}) -> bool:
 func portrait_exists(character_data) -> bool:
 	var exists = false
 	for portrait in $Portraits.get_children():
-		if portrait.character_data == character_data:
+		if portrait.character_data.get('file', true) == character_data.get('file', false):
 			exists = true
 	return exists
 
@@ -1219,6 +1230,12 @@ func characters_leave_all():
 		for p in portraits.get_children():
 			p.fade_out()
 
+# returns where to move the portrait, so the fake-z-index looks good 
+func get_portrait_z_index_point(z_index):
+	for i in range($Portraits.get_child_count()):
+		if $Portraits.get_child(i).z_index >= z_index:
+			return i
+	return $Portraits.get_child_count()
 ## -----------------------------------------------------------------------------
 ## 						GLOSSARY POPUP
 ## -----------------------------------------------------------------------------
@@ -1302,7 +1319,8 @@ func fade_in_dialog(time = 0.5):
 # at the end of fade animation, reset flags
 func finished_fade_in_dialog(object, key, node):
 	node.queue_free()
-	set_state(state.IDLE)
+	if !current_event.has('options'):
+		set_state(state.IDLE)
 	dialog_faded_in_already = true
 
 ## -----------------------------------------------------------------------------
@@ -1316,6 +1334,7 @@ func get_current_state_info():
 	state["portraits"] = []
 	for portrait in $Portraits.get_children():
 		state['portraits'].append(portrait.current_state)
+		state['portraits'][-1]['z_index'] = portrait.z_index
 
 	# background music:
 	state['background_music'] = $FX/BackgroundMusic.get_current_info()
@@ -1348,7 +1367,7 @@ func resume_state_from_info(state_info):
 		if portrait_exists(character_data):
 			for portrait in $Portraits.get_children():
 				if portrait.character_data == character_data:
-					portrait.move_to_position(get_character_position(event['position']))
+					portrait.move_to_position(get_character_position(event['position']), 0,0)
 					portrait.set_mirror(event.get('mirror', false))
 		else:
 			var p = Portrait.instance()
@@ -1371,7 +1390,8 @@ func resume_state_from_info(state_info):
 
 			p.set_mirror(event.get('mirror', false))
 			$Portraits.add_child(p)
-			p.move_to_position(get_character_position(event['position']), 0)
+			$Portraits.move_child(p, get_portrait_z_index_point(saved_portrait.get('z_index', 0)))
+			p.move_to_position(get_character_position(event['position']), 0, 0)
 			# this info is only used to save the state later
 			p.current_state['character'] = event['character']
 			p.current_state['position'] = event['position']

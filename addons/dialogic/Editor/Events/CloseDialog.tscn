@@ -10,23 +10,41 @@ event_data = {
 "event_id": "dialogic_022",
 "transition_duration": 1.0
 }
-event_color = Color( 1, 0.278431, 0.447059, 1 )
+event_color = Color( 0.941176, 0.266667, 0.219608, 1 )
 event_icon = ExtResource( 2 )
 header_scene = ExtResource( 4 )
+event_category = 2
 
-[node name="IconTexture" parent="PanelContainer/MarginContainer/VBoxContainer/Header/IconPanel" index="0"]
+[node name="PanelContainer" parent="." index="1"]
+margin_right = 312.0
+
+[node name="MarginContainer" parent="PanelContainer" index="1"]
+margin_right = 312.0
+
+[node name="VBoxContainer" parent="PanelContainer/MarginContainer" index="0"]
+margin_right = 306.0
+
+[node name="Header" parent="PanelContainer/MarginContainer/VBoxContainer" index="0"]
+margin_right = 300.0
+
+[node name="IconPanel" parent="PanelContainer/MarginContainer/VBoxContainer/Header/CenterContainer" index="0"]
+self_modulate = Color( 0.941176, 0.266667, 0.219608, 1 )
+
+[node name="IconTexture" parent="PanelContainer/MarginContainer/VBoxContainer/Header/CenterContainer/IconPanel" index="0"]
+self_modulate = Color( 0, 0, 0, 1 )
 texture = ExtResource( 2 )
 
 [node name="TitleLabel" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="2"]
-margin_right = 129.0
+margin_right = 87.0
 text = "Close Dialog"
 
 [node name="Content" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="3"]
-margin_left = 139.0
-margin_right = 344.0
+margin_left = 91.0
+margin_right = 296.0
 
 [node name="Spacer" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="5"]
-margin_left = 354.0
+margin_left = 300.0
+margin_right = 300.0
 
-[node name="OptionsControl" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="7"]
-items = [ "Move Up", null, 0, false, false, 0, 0, null, "", false, "Move Down", null, 0, false, false, 1, 0, null, "", false, "", null, 0, false, false, 2, 0, null, "", false, "Remove", null, 0, false, false, 3, 0, null, "", false ]
+[node name="PopupMenu" parent="." index="2"]
+items = [ "Move Up", null, 0, false, false, 0, 0, null, "", false, "Move Down", null, 0, false, false, 1, 0, null, "", false, "", null, 0, false, false, 2, 0, null, "", true, "Remove", null, 0, false, false, 3, 0, null, "", false ]
