@@ -4,27 +4,27 @@ extends "res://addons/dialogic/Editor/Events/Parts/EventPart.gd"
 # has an event_data variable that stores the current data!!!
 var options = [
 	{
-		"text": "[ Equal to ]",
+		"text": "Equal to",
 		"condition": "=="
 	},
 	{
-		"text": "[ Different from ]",
+		"text": "Different from",
 		"condition": "!="
 	},
 	{
-		"text": "[ Greater than ]",
+		"text": "Greater than",
 		"condition": ">"
 	},
 	{
-		"text": "[ Greater or equal to ]",
+		"text": "Greater or equal to",
 		"condition": ">="
 	},
 	{
-		"text": "[ Less than ]",
+		"text": "Less than",
 		"condition": "<"
 	},
 	{
-		"text": "[ Less or equal to ]",
+		"text": "Less or equal to",
 		"condition": "<="
 	}
 ]
@@ -36,6 +36,7 @@ func _ready():
 	# e.g. 
 	picker_menu.get_popup().connect("index_pressed", self, '_on_PickerMenu_selected')
 	picker_menu.connect("about_to_show", self, "_on_PickerMenu_about_to_show")
+	picker_menu.custom_icon = get_icon("GDScript", "EditorIcons")
 
 # called by the event block
 func load_data(data:Dictionary):

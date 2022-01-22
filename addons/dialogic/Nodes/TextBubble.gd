@@ -29,6 +29,11 @@ signal signal_request(arg)
 
 
 func update_name(name: String, color: Color = Color.white, autocolor: bool=false) -> void:
+	var name_is_hidden = _theme.get_value('name', 'is_hidden', false)
+	if name_is_hidden:
+		name_label.visible = false
+		return
+	
 	if not name.empty():
 		name_label.visible = true
 		# Hack to reset the size
