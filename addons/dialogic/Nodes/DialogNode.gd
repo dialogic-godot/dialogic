@@ -32,7 +32,7 @@ var current_default_theme = null
 ### SETTINGS
 var settings: ConfigFile
 var custom_events = {}
-var record_history: bool = true
+var record_history: bool = false
 
 ### DATA
 var definitions = {}
@@ -147,6 +147,7 @@ func load_config_files():
 	
 	# history
 	if settings.has_section('history'):
+		record_history = settings.get_value('history', 'enable_history_logging', false)
 		if settings.has_section_key('history', 'history_theme'):
 			theme_file = settings.get_value('history', 'history_theme')
 		history_theme = load_theme(theme_file)

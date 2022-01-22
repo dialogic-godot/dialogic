@@ -161,20 +161,21 @@ func add_history_row_event(eventData):
 		var characterData = DialogicUtil.get_character(eventData.character)
 		var characterName = characterData.get('name', '')
 		
-		if characterData.data.get('display_name_bool', false)  == true:
+		if eventData.has('action') and eventData.action == 'leaveall':
+			characterPrefix = str('Everyone')
+		elif characterData.data.get('display_name_bool', false)  == true:
 			characterName = characterData.data.get('display_name', '')
 		
-		if characterName != '':
-			var parsed_name = DialogicParser.parse_definitions(get_parent(), characterName, true, false)
-			var characterColor = characterData.data.get('color', Color.white)
-			characterPrefix = str("[color=",characterColor,"]",parsed_name, "[/color]", charDelimiter, ' ')
+			if characterName != '':
+				var parsed_name = DialogicParser.parse_definitions(get_parent(), characterName, true, false)
+				var characterColor = characterData.data.get('color', Color.white)
+				characterPrefix = str("[color=",characterColor,"]",parsed_name, "[/color]", charDelimiter, ' ')
 	
 	var audioData = ''
 	if eventData.has('voice_data'):
 		if eventData['voice_data'].has('0'):
 			audioData = eventData['voice_data']['0'].file
 			newHistoryRow.AudioButton.connect('pressed', self, '_on_audio_trigger', [audioData])
-	
 	
 	
 	# event logging handled here
