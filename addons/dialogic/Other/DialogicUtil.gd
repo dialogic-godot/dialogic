@@ -530,6 +530,30 @@ static func list_dir(path: String) -> Array:
 	return files
 
 ## *****************************************************************************
+##							ANIMATION-HELPERS
+## *****************************************************************************
+static func animations():
+	return {
+	0:{"name":"[Default]", "default_length":1},
+	1:{"name": "Instant Appear", "default_length": 0},
+	2:{"name": "Float Up", "default_length": 1},
+	3:{"name": "Fade", "default_length": 1},
+	4:{"name": "Pop", "default_length": 1},
+	}
+
+static func get_animation_names():
+	var dict = {}
+	for id in animations().keys():
+		dict[animations()[id]['name']] = id
+	return dict
+
+static func get_animation_data(id):
+	return animations()[int(id)]
+
+static func get_default_animation_id():
+	return 2
+
+## *****************************************************************************
 ##							DIALOGIC_SORTER CLASS
 ## *****************************************************************************
 
