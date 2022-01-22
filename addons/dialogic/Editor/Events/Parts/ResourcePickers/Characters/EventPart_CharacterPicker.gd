@@ -7,20 +7,21 @@ export (bool) var allow_no_character := false
 
 ## node references
 onready var picker_menu = $HBox/MenuButton
-onready var icon = $HBox/Icon
 onready var no_character_button = $NoCharacterContainer/NoCharacterButton
 onready var no_character_container = $NoCharacterContainer
 
+# theme
+var no_character_icon
+var all_characters_icon
+var single_character_icon
 
 
 func _ready():
 	if DialogicUtil.get_character_list().size() > 0:
 		picker_menu.show()
-		icon.show()
 		no_character_container.hide()
 	else:
 		picker_menu.hide()
-		icon.hide()
 		no_character_container.show()
 		var editor_reference = find_parent('EditorView')
 		no_character_button.connect('pressed', editor_reference.get_node('MainPanel/MasterTreeContainer/MasterTree'), 'new_character')
@@ -35,7 +36,12 @@ func _ready():
 	
 	# Connections
 	picker_menu.connect("about_to_show", self, "_on_PickerMenu_about_to_show")
-
+	
+	# Themeing
+	no_character_icon = get_icon("GuiRadioUnchecked", "EditorIcons")
+	all_characters_icon = get_icon("GuiEllipsis", "EditorIcons")
+	single_character_icon = load("res://addons/dialogic/Images/Resources/character.svg")
+	
 
 # called by the event block
 func load_data(data:Dictionary):
@@ -53,22 +59,28 @@ func get_preview():
 
 # helper to not have the same code everywhere
 func update_to_character():
+	$HBox/Label.text = "leaves"
 	if event_data['character'] != '':
 		if event_data['character'] == '[All]':
 			picker_menu.text = "All characters"
-			icon.modulate = Color.white
+			picker_menu.reset_modulation()
+			picker_menu.custom_icon = all_characters_icon
+			$HBox/Label.text = "leave"
 		else:
 			for ch in DialogicUtil.get_character_list():
 				if ch['file'] == event_data['character']:
 					picker_menu.text = ch['name']
-					icon.modulate = ch['color']
+					picker_menu.custom_icon_modulation = ch['color']
+					picker_menu.custom_icon = single_character_icon
 	else:
 		if allow_no_character:
 			picker_menu.text = 'No Character'
+			picker_menu.custom_icon = no_character_icon
 		else:
 			picker_menu.text = 'Select Character'
-		icon.modulate = Color.white
-
+			picker_menu.custom_icon = single_character_icon
+		picker_menu.reset_modulation()
+	$HBox/Label.visible = event_data['event_id'] == 'dialogic_003'
 
 # when an index is selected on one of the menus.
 func _on_PickerMenu_selected(index, menu):
@@ -103,14 +115,14 @@ func build_PickerMenuFolder(menu:PopupMenu, folder_structure:Dictionary, current
 		if allow_no_character:
 			menu.add_item('No character')
 			menu.set_item_metadata(index, {'file':''})
-			menu.set_item_icon(index, get_icon("GuiRadioUnchecked", "EditorIcons"))
+			menu.set_item_icon(index, no_character_icon)
 			index += 1
 
 		# in case this is a leave event
 		if event_data['event_id'] == 'dialogic_003':
 			menu.add_item('All characters')
 			menu.set_item_metadata(index, {'file': '[All]'})
-			menu.set_item_icon(index, get_icon("GuiEllipsis", "EditorIcons"))
+			menu.set_item_icon(index, all_characters_icon)
 			index += 1
 	
 	
@@ -122,13 +134,16 @@ func build_PickerMenuFolder(menu:PopupMenu, folder_structure:Dictionary, current
 		menu.set_item_icon(index, get_icon("Folder", "EditorIcons"))
 		menu.add_child(submenu)
 		index += 1
+		
+		# give it the right style
+		picker_menu.update_submenu_style(submenu)
 	
 	var files_info = DialogicUtil.get_characters_dict()
 	for file in folder_structure['files']:
 		menu.add_item(files_info[file]['name'])
 		# this doesn't work right now, because it doesn't have the editor_reference. Would be nice though
 		#menu.set_item_icon(index, editor_reference.get_node("MainPanel/MasterTreeContainer/MasterTree").character_icon)
-		menu.set_item_icon(index, load("res://addons/dialogic/Images/Resources/character.svg"))
+		menu.set_item_icon(index, single_character_icon)
 		menu.set_item_metadata(index, {'file':file})
 		index += 1
 	

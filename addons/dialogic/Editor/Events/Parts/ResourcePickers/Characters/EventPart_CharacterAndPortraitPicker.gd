@@ -31,7 +31,7 @@ func load_data(data:Dictionary):
 	portrait_picker.visible = get_character_data() and len(get_character_data()['portraits']) > 1
 	
 	var has_port_defn = data['portrait'] == '[Definition]'
-	if has_port_defn and data.has('port_defn'):
+	if portrait_picker.visible and has_port_defn and data.has('port_defn'):
 		definition_picker.load_data({ 'definition': data['port_defn'] })
 	definition_picker.visible = has_port_defn
 
@@ -52,6 +52,8 @@ func _on_CharacterPicker_data_changed(data):
 	# update the portrait picker data
 	portrait_picker.load_data(data)
 	portrait_picker.visible = get_character_data() and len(get_character_data()['portraits']) > 1
+	if !portrait_picker.visible:
+		definition_picker.hide()
 	
 	# informs the parent about the changes!
 	data_changed()

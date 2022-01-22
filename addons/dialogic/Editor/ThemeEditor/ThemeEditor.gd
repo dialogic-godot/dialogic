@@ -77,16 +77,17 @@ onready var n : Dictionary = {
 	'animation_dim_color': $"VBoxContainer/TabContainer/Dialog Box/Column3/GridContainer/DimColor/ColorPickerButton",
 	
 	# Character Names
-	'name_font': $"VBoxContainer/TabContainer/Name Label/Column/GridContainer/RegularFont/NameFontButton",
-	'name_auto_color': $"VBoxContainer/TabContainer/Name Label/Column/GridContainer/CharacterColor",
+	'name_hidden': $"VBoxContainer/TabContainer/Name Label/Column/VBoxContainer/GridContainer/NameHide",
+	'name_font': $"VBoxContainer/TabContainer/Name Label/Column/VBoxContainer2/GridContainer/RegularFont/NameFontButton",
+	'name_auto_color': $"VBoxContainer/TabContainer/Name Label/Column/VBoxContainer2/GridContainer/CharacterColor",
 	'name_background_visible': $"VBoxContainer/TabContainer/Name Label/Column2/GridContainer/HBoxContainer2/CheckBox",
 	'name_background': $"VBoxContainer/TabContainer/Name Label/Column2/GridContainer/HBoxContainer2/ColorPickerButton",
 	'name_image': $"VBoxContainer/TabContainer/Name Label/Column2/GridContainer/HBoxContainer3/BackgroundTextureButton",
 	'name_image_visible': $"VBoxContainer/TabContainer/Name Label/Column2/GridContainer/HBoxContainer3/CheckBox",
-	'name_shadow': $"VBoxContainer/TabContainer/Name Label/Column/GridContainer/HBoxContainer4/ColorPickerButtonShadow",
-	'name_shadow_visible': $"VBoxContainer/TabContainer/Name Label/Column/GridContainer/HBoxContainer4/CheckBoxShadow",
-	'name_shadow_offset_x': $"VBoxContainer/TabContainer/Name Label/Column/GridContainer/HBoxContainer/ShadowOffsetX",
-	'name_shadow_offset_y': $"VBoxContainer/TabContainer/Name Label/Column/GridContainer/HBoxContainer/ShadowOffsetY",
+	'name_shadow': $"VBoxContainer/TabContainer/Name Label/Column/VBoxContainer2/GridContainer/HBoxContainer4/ColorPickerButtonShadow",
+	'name_shadow_visible': $"VBoxContainer/TabContainer/Name Label/Column/VBoxContainer2/GridContainer/HBoxContainer4/CheckBoxShadow",
+	'name_shadow_offset_x': $"VBoxContainer/TabContainer/Name Label/Column/VBoxContainer2/GridContainer/HBoxContainer/ShadowOffsetX",
+	'name_shadow_offset_y': $"VBoxContainer/TabContainer/Name Label/Column/VBoxContainer2/GridContainer/HBoxContainer/ShadowOffsetY",
 	'name_bottom_gap': $"VBoxContainer/TabContainer/Name Label/Column3/GridContainer/HBoxContainer5/BottomGap",
 	'name_horizontal_offset': $"VBoxContainer/TabContainer/Name Label/Column3/GridContainer/HBoxContainer5/HorizontalOffset",
 	'name_background_modulation': $"VBoxContainer/TabContainer/Name Label/Column2/GridContainer/HBoxContainer6/CheckBox",
@@ -166,7 +167,7 @@ func _ready() -> void:
 	var title_style = $"VBoxContainer/TabContainer/Dialog Text/Column/SectionTitle".get('custom_styles/normal')
 	title_style.set('bg_color', get_color("prop_category", "Editor"))
 	
-	$"VBoxContainer/TabContainer/Name Label/Column/GridContainer/RegularFont/NameFontOpen".icon = get_icon("Edit", "EditorIcons")
+	$"VBoxContainer/TabContainer/Name Label/Column/VBoxContainer2/GridContainer/RegularFont/NameFontOpen".icon = get_icon("Edit", "EditorIcons")
 	$"VBoxContainer/TabContainer/Dialog Text/Column/GridContainer/BoldFont/BoldFontOpen".icon = get_icon("Edit", "EditorIcons")
 	$"VBoxContainer/TabContainer/Dialog Text/Column/GridContainer/ItalicFont/ItalicFontOpen".icon = get_icon("Edit", "EditorIcons")
 	$"VBoxContainer/TabContainer/Dialog Text/Column/GridContainer/RegularFont/RegularFontOpen".icon = get_icon("Edit", "EditorIcons")
@@ -392,6 +393,7 @@ func load_theme(filename):
 
 	
 	# Name
+	n['name_hidden'].pressed = theme.get_value('name', 'is_hidden', false)
 	n['name_font'].text = DialogicResources.get_filename_from_path(theme.get_value('name', 'font', 'res://addons/dialogic/Example Assets/Fonts/NameFont.tres'))
 	n['name_auto_color'].pressed = theme.get_value('name', 'auto_color', true)
 	n['name_background_visible'].pressed = theme.get_value('name', 'background_visible', false)
@@ -448,6 +450,8 @@ func load_theme(filename):
 	loading = false
 	# Updating the preview
 	_on_PreviewButton_pressed()
+	# Update name fields
+	_update_name_fields_editable()
 
 
 func create_theme() -> String:
@@ -482,6 +486,30 @@ func _on_visibility_changed() -> void:
 		# Erasing all previews since them keeps working on background
 		for i in $VBoxContainer/Panel.get_children():
 			i.queue_free()
+
+func _update_name_fields_editable() -> void:
+	var hide_name_labels = n['name_hidden'].pressed
+	
+	# Disable all other fieds if the 'name_hidden' field is enabled
+	n['name_font'].disabled = hide_name_labels
+	n['name_auto_color'].disabled = hide_name_labels
+	n['name_shadow'].disabled = hide_name_labels
+	n['name_shadow_visible'].disabled = hide_name_labels
+	n['name_shadow_offset_x'].editable = not hide_name_labels
+	n['name_shadow_offset_y'].editable = not hide_name_labels
+	n['name_background_visible'].disabled = hide_name_labels
+	n['name_background'].disabled = hide_name_labels
+	n['name_image_visible'].disabled = hide_name_labels
+	n['name_image'].disabled = hide_name_labels
+	n['name_background_modulation'].disabled = hide_name_labels
+	n['name_background_modulation_color'].disabled = hide_name_labels
+	n['name_padding_x'].editable = not hide_name_labels
+	n['name_padding_y'].editable = not hide_name_labels
+	n['name_position'].disabled = hide_name_labels
+	n['name_horizontal_offset'].editable = not hide_name_labels
+	n['name_bottom_gap'].editable = not hide_name_labels
+	
+	$"VBoxContainer/TabContainer/Name Label/Column/VBoxContainer2/GridContainer/RegularFont/NameFontOpen".disabled = hide_name_labels
 
 ## ------------ 			Preview 		------------------------------------
 
@@ -748,6 +776,15 @@ func _on_NextOffset_value_changed(value):
 
 
 ## ------------ 		NAME LABEL TAB	 	------------------------------------
+
+# Text Visibility
+func _on_name_hide_toggled(button_pressed) -> void:
+	if loading:
+		return
+	
+	DialogicResources.set_theme_value(current_theme, 'name', 'is_hidden', button_pressed)
+	_on_PreviewButton_pressed() # Refreshing the preview
+	_update_name_fields_editable()
 
 # Text Color
 func _on_name_auto_color_toggled(button_pressed) -> void:
