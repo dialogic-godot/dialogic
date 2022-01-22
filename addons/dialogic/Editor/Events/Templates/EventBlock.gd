@@ -15,13 +15,15 @@ export(PackedScene) var body_scene : PackedScene
 export (bool) var expand_on_default := false
 export (bool) var needs_indentation := false
 export (String) var help_page_path := ""
+export (bool) var show_name_in_timeline := true
+export(int, "Main", "Logic", "Timeline", "Audio/Visual", "Godot") var event_category = 0
 signal option_action(action_name)
 
 
 ### internal node eferences
 onready var panel = $PanelContainer
 onready var selected_style = $PanelContainer/SelectedStyle
-onready var warning = $PanelContainer/MarginContainer/VBoxContainer/Header/Warning
+onready var warning = $PanelContainer/MarginContainer/VBoxContainer/Header/CenterContainer/IconPanel/Warning
 onready var title_label = $PanelContainer/MarginContainer/VBoxContainer/Header/TitleLabel
 onready var icon_texture  = $PanelContainer/MarginContainer/VBoxContainer/Header/CenterContainer/IconPanel/IconTexture
 onready var expand_control = $PanelContainer/MarginContainer/VBoxContainer/Header/ExpandControl
@@ -70,13 +72,13 @@ func get_header():
 
 
 func set_warning(text):
-	warning.texture = get_icon("NodeWarning", "EditorIcons")
+	warning.show()
 	warning.hint_tooltip = text
 
 
 func remove_warning(text = ''):
 	if warning.hint_tooltip == text or text == '':
-		warning.texture = null
+		warning.hide()
 
 
 func set_preview(text: String):
@@ -118,12 +120,13 @@ func _set_event_icon(icon: Texture):
 	
 
 func _set_event_name(text: String):
-	if event_name == "Text Event":
+	if show_name_in_timeline:
+		title_label.text = text
+	else:
 		var t_label = get_node_or_null("PanelContainer/MarginContainer/VBoxContainer/Header/TitleLabel")
 		if t_label:
 			t_label.queue_free()
-	else:
-		title_label.text = text
+
 
 
 func _set_header(scene: PackedScene):
@@ -145,6 +148,7 @@ func _setup_event():
 		_set_header(header_scene)
 	if body_scene != null:
 		_set_body(body_scene)
+		body_content_container.add_constant_override('margin_left', 40*DialogicUtil.get_editor_scale(self))
 	if event_color != null:
 		$PanelContainer/MarginContainer/VBoxContainer/Header/CenterContainer/IconPanel.set("self_modulate", event_color)
 
@@ -171,9 +175,17 @@ func _on_ExpandControl_state_changed(expanded: bool):
 			expand_control.set_preview(body_node.get_preview())
 
 
-func _on_OptionsControl_action(action_name: String):
-	# Simply transmit the signal to the timeline editor
-	emit_signal("option_action", action_name)
+func _on_OptionsControl_action(index):
+	if index == 0:
+		if help_page_path:
+			var master_tree = editor_reference.get_node_or_null('MainPanel/MasterTreeContainer/MasterTree')
+			master_tree.select_documentation_item(help_page_path)
+	elif index == 2:
+		emit_signal("option_action", "up")
+	elif index == 3:
+		emit_signal("option_action", "down")
+	elif index == 5:
+		emit_signal("option_action", "remove")
 
 
 func _on_Indent_visibility_changed():
@@ -237,6 +249,10 @@ func _ready():
 	
 	## DO SOME STYLING
 	$PanelContainer/SelectedStyle.modulate = get_color("accent_color", "Editor")
+	warning.texture = get_icon("NodeWarning", "EditorIcons")
+	title_label.add_color_override("font_color", Color.white)
+	if not get_constant("dark_theme", "Editor"):
+		title_label.add_color_override("font_color", get_color("font_color", "Editor"))
 	
 	indent_size = indent_size * DialogicUtil.get_editor_scale(self)
 	
@@ -247,7 +263,7 @@ func _ready():
 	# signals
 	panel.connect("gui_input", self, '_on_gui_input')
 	expand_control.connect("state_changed", self, "_on_ExpandControl_state_changed")
-	$PopupMenu.connect("action", self, "_on_OptionsControl_action")
+	$PopupMenu.connect("index_pressed", self, "_on_OptionsControl_action")
 	
 	# load icons
 	#if help_page_path != "":
@@ -281,13 +297,6 @@ func _ready():
 		set_expanded(expand_on_default)
 	
 	_on_Indent_visibility_changed()
-
-
-func _on_HelpButton_pressed():
-	if help_page_path:
-		var master_tree = editor_reference.get_node_or_null('MainPanel/MasterTreeContainer/MasterTree')
-		master_tree.select_documentation_item(help_page_path)
-
 
 func _draw():
 	var timeline_children = get_parent().get_children()

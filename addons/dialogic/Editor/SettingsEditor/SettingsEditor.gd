@@ -361,7 +361,6 @@ func create_custom_event():
 	var event_block_scene = load(dir_name+'/EventBlock.tscn').instance(PackedScene.GEN_EDIT_STATE_INSTANCE)
 	event_block_scene.event_name = nodes['new_custom_event_name'].text
 	event_block_scene.event_data = {'event_id':nodes['new_custom_event_id'].text}
-	event_block_scene.event_style = load(dir_name+"/Stylebox.tres")
 	event_block_scene.event_icon = load("res://addons/dialogic/Images/Event Icons/Main Icons/custom-event.svg")
 	var packed = PackedScene.new()
 	packed.pack(event_block_scene)

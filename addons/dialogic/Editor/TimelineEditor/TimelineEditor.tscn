@@ -1,32 +1,9 @@
-[gd_scene load_steps=33 format=2]
+[gd_scene load_steps=10 format=2]
 
-[ext_resource path="res://addons/dialogic/Images/Event Icons/Main Icons/character-join.svg" type="Texture" id=1]
-[ext_resource path="res://addons/dialogic/Images/Event Icons/Main Icons/text-event.svg" type="Texture" id=2]
-[ext_resource path="res://addons/dialogic/Images/Event Icons/Main Icons/audio-event.svg" type="Texture" id=3]
-[ext_resource path="res://addons/dialogic/Images/Event Icons/Main Icons/change-background.svg" type="Texture" id=4]
-[ext_resource path="res://addons/dialogic/Images/Event Icons/Main Icons/condition.svg" type="Texture" id=5]
-[ext_resource path="res://addons/dialogic/Images/Event Icons/Main Icons/close-dialog.svg" type="Texture" id=6]
-[ext_resource path="res://addons/dialogic/Images/Event Icons/Main Icons/character-leave.svg" type="Texture" id=7]
-[ext_resource path="res://addons/dialogic/Images/Event Icons/Main Icons/question.svg" type="Texture" id=8]
-[ext_resource path="res://addons/dialogic/Images/Event Icons/Main Icons/end-branch.svg" type="Texture" id=9]
-[ext_resource path="res://addons/dialogic/Images/Event Icons/Main Icons/change-timeline.svg" type="Texture" id=10]
-[ext_resource path="res://addons/dialogic/Images/Event Icons/Main Icons/set-value.svg" type="Texture" id=11]
-[ext_resource path="res://addons/dialogic/Images/Event Icons/Main Icons/choice.svg" type="Texture" id=12]
 [ext_resource path="res://addons/dialogic/Images/Tutorials/arrow-down.svg" type="Texture" id=13]
-[ext_resource path="res://addons/dialogic/Images/Event Icons/Main Icons/wait-seconds.svg" type="Texture" id=14]
-[ext_resource path="res://addons/dialogic/Images/Event Icons/Main Icons/change-scene.svg" type="Texture" id=15]
-[ext_resource path="res://addons/dialogic/Images/Event Icons/Main Icons/emit-signal.svg" type="Texture" id=16]
 [ext_resource path="res://addons/dialogic/Editor/TimelineEditor/TimelineEditor.gd" type="Script" id=17]
-[ext_resource path="res://addons/dialogic/Images/Event Icons/Main Icons/set-theme.svg" type="Texture" id=18]
-[ext_resource path="res://addons/dialogic/Images/Event Icons/Main Icons/background-music.svg" type="Texture" id=19]
-[ext_resource path="res://addons/dialogic/Images/Event Icons/Main Icons/call-node.svg" type="Texture" id=20]
 [ext_resource path="res://addons/dialogic/Editor/Common/TLabel.tscn" type="PackedScene" id=21]
 [ext_resource path="res://addons/dialogic/Editor/TimelineEditor/TimelineArea.gd" type="Script" id=22]
-[ext_resource path="res://addons/dialogic/Images/Event Icons/Main Icons/set-glossary.svg" type="Texture" id=23]
-[ext_resource path="res://addons/dialogic/Images/Event Icons/Main Icons/save-icon.svg" type="Texture" id=24]
-[ext_resource path="res://addons/dialogic/Editor/TimelineEditor/SmallEventButton.tscn" type="PackedScene" id=25]
-[ext_resource path="res://addons/dialogic/Images/Event Icons/Main Icons/label.svg" type="Texture" id=26]
-[ext_resource path="res://addons/dialogic/Images/Event Icons/Main Icons/go-to.svg" type="Texture" id=27]
 [ext_resource path="res://addons/dialogic/Editor/Theme/MainTheme.tres" type="Theme" id=28]
 [ext_resource path="res://addons/dialogic/Editor/TimelineEditor/FlexContainer.gd" type="Script" id=29]
 
@@ -100,8 +77,8 @@ custom_styles/bg = SubResource( 2 )
 
 [node name="EventContainer" type="VBoxContainer" parent="ScrollContainer"]
 margin_left = 2.0
-margin_right = 180.0
-margin_bottom = 738.0
+margin_right = 168.0
+margin_bottom = 964.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_constants/separation = 9
@@ -110,13 +87,13 @@ __meta__ = {
 }
 
 [node name="EventsWarning" type="PanelContainer" parent="ScrollContainer/EventContainer"]
-margin_right = 178.0
+margin_right = 166.0
 margin_bottom = 68.0
 custom_styles/panel = SubResource( 3 )
 
 [node name="HBoxContainer" type="HBoxContainer" parent="ScrollContainer/EventContainer/EventsWarning"]
 margin_top = 10.0
-margin_right = 172.0
+margin_right = 160.0
 margin_bottom = 58.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -133,7 +110,7 @@ stretch_mode = 4
 
 [node name="Label" type="Label" parent="ScrollContainer/EventContainer/EventsWarning/HBoxContainer"]
 margin_left = 44.0
-margin_right = 172.0
+margin_right = 160.0
 margin_bottom = 48.0
 rect_min_size = Vector2( 100, 0 )
 size_flags_horizontal = 3
@@ -144,7 +121,7 @@ autowrap = true
 
 [node name="HBoxContainer6" type="HBoxContainer" parent="ScrollContainer/EventContainer"]
 margin_top = 77.0
-margin_right = 178.0
+margin_right = 166.0
 margin_bottom = 91.0
 
 [node name="TLabel" parent="ScrollContainer/EventContainer/HBoxContainer6" instance=ExtResource( 21 )]
@@ -157,47 +134,21 @@ text_key = "Main Events"
 
 [node name="HSeparator2" type="HSeparator" parent="ScrollContainer/EventContainer/HBoxContainer6"]
 margin_left = 81.0
-margin_right = 178.0
+margin_right = 166.0
 margin_bottom = 14.0
 size_flags_horizontal = 3
 
 [node name="FlexContainer1" type="Container" parent="ScrollContainer/EventContainer"]
 margin_top = 100.0
-margin_right = 178.0
-margin_bottom = 120.0
+margin_right = 166.0
+margin_bottom = 195.0
 size_flags_horizontal = 3
 script = ExtResource( 29 )
 
-[node name="TextEvent" parent="ScrollContainer/EventContainer/FlexContainer1" instance=ExtResource( 25 )]
-margin_right = 12.0
-margin_bottom = 20.0
-hint_tooltip = "Text Event"
-event_id = "dialogic_001"
-event_color = Color( 0.635294, 0.635294, 0.635294, 0.282353 )
-event_icon = ExtResource( 2 )
-
-[node name="CharacterJoin" parent="ScrollContainer/EventContainer/FlexContainer1" instance=ExtResource( 25 )]
-margin_left = 17.0
-margin_right = 29.0
-margin_bottom = 20.0
-hint_tooltip = "Character Join"
-event_id = "dialogic_002"
-event_color = Color( 0.14902, 0.521569, 0.298039, 0.266667 )
-event_icon = ExtResource( 1 )
-
-[node name="CharacterLeave" parent="ScrollContainer/EventContainer/FlexContainer1" instance=ExtResource( 25 )]
-margin_left = 34.0
-margin_right = 46.0
-margin_bottom = 20.0
-hint_tooltip = "Character Leave"
-event_id = "dialogic_003"
-event_color = Color( 0.419608, 0.14902, 0.262745, 0.219608 )
-event_icon = ExtResource( 7 )
-
 [node name="HBoxContainer5" type="HBoxContainer" parent="ScrollContainer/EventContainer"]
-margin_top = 129.0
-margin_right = 178.0
-margin_bottom = 143.0
+margin_top = 204.0
+margin_right = 166.0
+margin_bottom = 218.0
 
 [node name="TLabel2" parent="ScrollContainer/EventContainer/HBoxContainer5" instance=ExtResource( 21 )]
 anchor_right = 0.0
@@ -209,92 +160,21 @@ text_key = "Logic"
 
 [node name="HSeparator2" type="HSeparator" parent="ScrollContainer/EventContainer/HBoxContainer5"]
 margin_left = 37.0
-margin_right = 178.0
+margin_right = 166.0
 margin_bottom = 14.0
 size_flags_horizontal = 3
 
 [node name="FlexContainer2" type="Container" parent="ScrollContainer/EventContainer"]
-margin_top = 152.0
-margin_right = 178.0
-margin_bottom = 172.0
+margin_top = 227.0
+margin_right = 166.0
+margin_bottom = 322.0
 size_flags_horizontal = 3
 script = ExtResource( 29 )
 
-[node name="Question" parent="ScrollContainer/EventContainer/FlexContainer2" instance=ExtResource( 25 )]
-margin_right = 12.0
-margin_bottom = 20.0
-hint_tooltip = "Question"
-event_id = "dialogic_010"
-event_color = Color( 0.270588, 0.243137, 0.572549, 0.407843 )
-event_icon = ExtResource( 8 )
-
-[node name="Choice" parent="ScrollContainer/EventContainer/FlexContainer2" instance=ExtResource( 25 )]
-margin_left = 17.0
-margin_right = 29.0
-margin_bottom = 20.0
-hint_tooltip = "Choice"
-event_id = "dialogic_011"
-event_color = Color( 0.270588, 0.243137, 0.572549, 0.407843 )
-event_icon = ExtResource( 12 )
-
-[node name="Condition" parent="ScrollContainer/EventContainer/FlexContainer2" instance=ExtResource( 25 )]
-margin_left = 34.0
-margin_right = 46.0
-margin_bottom = 20.0
-hint_tooltip = "Condition"
-event_id = "dialogic_012"
-event_color = Color( 0.270588, 0.243137, 0.572549, 0.407843 )
-event_icon = ExtResource( 5 )
-
-[node name="EndBranch" parent="ScrollContainer/EventContainer/FlexContainer2" instance=ExtResource( 25 )]
-margin_left = 51.0
-margin_right = 63.0
-margin_bottom = 20.0
-hint_tooltip = "End Branch"
-event_id = "dialogic_013"
-event_color = Color( 0.270588, 0.243137, 0.572549, 0.407843 )
-event_icon = ExtResource( 9 )
-
-[node name="SetValue" parent="ScrollContainer/EventContainer/FlexContainer2" instance=ExtResource( 25 )]
-margin_left = 68.0
-margin_right = 80.0
-margin_bottom = 20.0
-hint_tooltip = "Set Value"
-event_id = "dialogic_014"
-event_color = Color( 0.270588, 0.243137, 0.572549, 0.407843 )
-event_icon = ExtResource( 11 )
-
-[node name="SetGlossary" parent="ScrollContainer/EventContainer/FlexContainer2" instance=ExtResource( 25 )]
-margin_left = 85.0
-margin_right = 97.0
-margin_bottom = 20.0
-hint_tooltip = "Set Glossary"
-event_id = "dialogic_025"
-event_color = Color( 0.270588, 0.243137, 0.572549, 0.407843 )
-event_icon = ExtResource( 23 )
-
-[node name="LabelEvent" parent="ScrollContainer/EventContainer/FlexContainer2" instance=ExtResource( 25 )]
-margin_left = 102.0
-margin_right = 114.0
-margin_bottom = 20.0
-hint_tooltip = "Label Event"
-event_id = "dialogic_015"
-event_color = Color( 0.270588, 0.243137, 0.572549, 0.407843 )
-event_icon = ExtResource( 26 )
-
-[node name="GoToEvent" parent="ScrollContainer/EventContainer/FlexContainer2" instance=ExtResource( 25 )]
-margin_left = 119.0
-margin_right = 131.0
-margin_bottom = 20.0
-hint_tooltip = "Go to Event"
-event_id = "dialogic_016"
-event_color = Color( 0.270588, 0.243137, 0.572549, 0.407843 )
-event_icon = ExtResource( 27 )
-
 [node name="HBoxContainer3" type="HBoxContainer" parent="ScrollContainer/EventContainer"]
-margin_top = 181.0
-margin_right = 178.0
-margin_bottom = 195.0
+margin_top = 331.0
+margin_right = 166.0
+margin_bottom = 345.0
 
 [node name="TLabel3" parent="ScrollContainer/EventContainer/HBoxContainer3" instance=ExtResource( 21 )]
 anchor_right = 0.0
@@ -306,75 +186,21 @@ text_key = "Timeline"
 
 [node name="HSeparator2" type="HSeparator" parent="ScrollContainer/EventContainer/HBoxContainer3"]
 margin_left = 60.0
-margin_right = 178.0
+margin_right = 166.0
 margin_bottom = 14.0
 size_flags_horizontal = 3
 
 [node name="FlexContainer3" type="Container" parent="ScrollContainer/EventContainer"]
-margin_top = 204.0
-margin_right = 178.0
-margin_bottom = 224.0
+margin_top = 354.0
+margin_right = 166.0
+margin_bottom = 524.0
 size_flags_horizontal = 3
 script = ExtResource( 29 )
 
-[node name="SaveEvent" parent="ScrollContainer/EventContainer/FlexContainer3" instance=ExtResource( 25 )]
-margin_right = 12.0
-margin_bottom = 20.0
-hint_tooltip = "Save"
-custom_constants/hseparation = 0
-event_id = "dialogic_026"
-event_color = Color( 0.435294, 0.301961, 0.603922, 0.192157 )
-event_icon = ExtResource( 24 )
-
-[node name="ChangeTimeline" parent="ScrollContainer/EventContainer/FlexContainer3" instance=ExtResource( 25 )]
-margin_left = 17.0
-margin_right = 29.0
-margin_bottom = 20.0
-hint_tooltip = "Change Timeline"
-event_id = "dialogic_020"
-event_color = Color( 0.435294, 0.301961, 0.603922, 0.192157 )
-event_icon = ExtResource( 10 )
-
-[node name="ChangeBackground" parent="ScrollContainer/EventContainer/FlexContainer3" instance=ExtResource( 25 )]
-margin_left = 34.0
-margin_right = 46.0
-margin_bottom = 20.0
-hint_tooltip = "Set Background"
-event_id = "dialogic_021"
-event_color = Color( 0.219608, 0.34902, 0.701961, 0.443137 )
-event_icon = ExtResource( 4 )
-
-[node name="CloseDialog" parent="ScrollContainer/EventContainer/FlexContainer3" instance=ExtResource( 25 )]
-margin_left = 51.0
-margin_right = 63.0
-margin_bottom = 20.0
-hint_tooltip = "Close Dialog"
-event_id = "dialogic_022"
-event_color = Color( 0.419608, 0.14902, 0.262745, 0.219608 )
-event_icon = ExtResource( 6 )
-
-[node name="WaitSeconds" parent="ScrollContainer/EventContainer/FlexContainer3" instance=ExtResource( 25 )]
-margin_left = 68.0
-margin_right = 80.0
-margin_bottom = 20.0
-hint_tooltip = "Wait Seconds"
-event_id = "dialogic_023"
-event_color = Color( 0.435294, 0.301961, 0.603922, 0.192157 )
-event_icon = ExtResource( 14 )
-
-[node name="SetTheme" parent="ScrollContainer/EventContainer/FlexContainer3" instance=ExtResource( 25 )]
-margin_left = 85.0
-margin_right = 97.0
-margin_bottom = 20.0
-hint_tooltip = "Set Theme"
-event_id = "dialogic_024"
-event_color = Color( 0.219608, 0.34902, 0.701961, 0.443137 )
-event_icon = ExtResource( 18 )
-
 [node name="HBoxContainer4" type="HBoxContainer" parent="ScrollContainer/EventContainer"]
-margin_top = 233.0
-margin_right = 178.0
-margin_bottom = 247.0
+margin_top = 533.0
+margin_right = 166.0
+margin_bottom = 547.0
 
 [node name="TLabel4" parent="ScrollContainer/EventContainer/HBoxContainer4" instance=ExtResource( 21 )]
 anchor_right = 0.0
@@ -386,38 +212,21 @@ text_key = "Audio"
 
 [node name="HSeparator2" type="HSeparator" parent="ScrollContainer/EventContainer/HBoxContainer4"]
 margin_left = 41.0
-margin_right = 178.0
+margin_right = 166.0
 margin_bottom = 14.0
 size_flags_horizontal = 3
 
 [node name="FlexContainer4" type="Container" parent="ScrollContainer/EventContainer"]
-margin_top = 256.0
-margin_right = 178.0
-margin_bottom = 276.0
+margin_top = 556.0
+margin_right = 166.0
+margin_bottom = 651.0
 size_flags_horizontal = 3
 script = ExtResource( 29 )
 
-[node name="AudioEvent" parent="ScrollContainer/EventContainer/FlexContainer4" instance=ExtResource( 25 )]
-margin_right = 12.0
-margin_bottom = 20.0
-hint_tooltip = "Audio Event"
-event_id = "dialogic_030"
-event_color = Color( 0.160784, 0.423529, 0.309804, 0.447059 )
-event_icon = ExtResource( 3 )
-
-[node name="BackgroundMusic" parent="ScrollContainer/EventContainer/FlexContainer4" instance=ExtResource( 25 )]
-margin_left = 17.0
-margin_right = 29.0
-margin_bottom = 20.0
-hint_tooltip = "Background Music"
-event_id = "dialogic_031"
-event_color = Color( 0.160784, 0.423529, 0.309804, 0.447059 )
-event_icon = ExtResource( 19 )
-
 [node name="HBoxContainer" type="HBoxContainer" parent="ScrollContainer/EventContainer"]
-margin_top = 285.0
-margin_right = 178.0
-margin_bottom = 299.0
+margin_top = 660.0
+margin_right = 166.0
+margin_bottom = 674.0
 
 [node name="TLabel5" parent="ScrollContainer/EventContainer/HBoxContainer" instance=ExtResource( 21 )]
 anchor_right = 0.0
@@ -429,48 +238,21 @@ text_key = "Godot"
 
 [node name="HSeparator2" type="HSeparator" parent="ScrollContainer/EventContainer/HBoxContainer"]
 margin_left = 43.0
-margin_right = 178.0
+margin_right = 166.0
 margin_bottom = 14.0
 size_flags_horizontal = 3
 
 [node name="FlexContainer5" type="Container" parent="ScrollContainer/EventContainer"]
-margin_top = 308.0
-margin_right = 178.0
-margin_bottom = 328.0
+margin_top = 683.0
+margin_right = 166.0
+margin_bottom = 753.0
 size_flags_horizontal = 3
 script = ExtResource( 29 )
 
-[node name="EmitSignal" parent="ScrollContainer/EventContainer/FlexContainer5" instance=ExtResource( 25 )]
-margin_right = 12.0
-margin_bottom = 20.0
-hint_tooltip = "Emit Signal"
-event_id = "dialogic_040"
-event_color = Color( 0.14902, 0.333333, 0.509804, 0.4 )
-event_icon = ExtResource( 16 )
-
-[node name="ChangeScene" parent="ScrollContainer/EventContainer/FlexContainer5" instance=ExtResource( 25 )]
-margin_left = 17.0
-margin_right = 29.0
-margin_bottom = 20.0
-hint_tooltip = "Change Scene"
-event_id = "dialogic_041"
-event_color = Color( 0.14902, 0.333333, 0.509804, 0.4 )
-event_icon = ExtResource( 15 )
-
-[node name="CallNode" parent="ScrollContainer/EventContainer/FlexContainer5" instance=ExtResource( 25 )]
-margin_left = 34.0
-margin_right = 46.0
-margin_bottom = 20.0
-hint_tooltip = "Call Node"
-event_id = "dialogic_042"
-event_color = Color( 0.14902, 0.333333, 0.509804, 0.4 )
-event_icon = ExtResource( 20 )
-
 [node name="CustomEventsHeadline" type="HBoxContainer" parent="ScrollContainer/EventContainer"]
-visible = false
-margin_top = 389.0
-margin_right = 178.0
-margin_bottom = 403.0
+margin_top = 762.0
+margin_right = 166.0
+margin_bottom = 776.0
 
 [node name="TLabel6" parent="ScrollContainer/EventContainer/CustomEventsHeadline" instance=ExtResource( 21 )]
 anchor_right = 0.0
@@ -482,18 +264,19 @@ text_key = "Custom Events"
 
 [node name="HSeparator2" type="HSeparator" parent="ScrollContainer/EventContainer/CustomEventsHeadline"]
 margin_left = 99.0
-margin_right = 178.0
+margin_right = 166.0
 margin_bottom = 14.0
 size_flags_horizontal = 3
 
-[node name="CustomEventsContainer" type="VBoxContainer" parent="ScrollContainer/EventContainer"]
-visible = false
-margin_top = 412.0
-margin_right = 178.0
-margin_bottom = 456.0
+[node name="CustomEventsContainer" type="Container" parent="ScrollContainer/EventContainer"]
+margin_top = 785.0
+margin_right = 166.0
+margin_bottom = 855.0
+size_flags_horizontal = 3
+script = ExtResource( 29 )
 
 [node name="Spacer" type="Control" parent="ScrollContainer/EventContainer"]
-margin_top = 337.0
-margin_right = 178.0
-margin_bottom = 437.0
+margin_top = 864.0
+margin_right = 166.0
+margin_bottom = 964.0
 rect_min_size = Vector2( 0, 100 )
