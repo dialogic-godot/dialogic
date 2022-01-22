@@ -592,8 +592,9 @@ func event_handler(event: Dictionary):
 				var character_data = DialogicUtil.get_character(event['character'])
 				if portrait_exists(character_data):
 					for portrait in $Portraits.get_children():
-						if portrait.character_data == character_data:
+						if portrait.character_data.get('file', true) == character_data.get('file', false):
 							portrait.move_to_position(get_character_position(event['position']), event.get('animation', 0), event.get('animation_length', 1))
+							$Portraits.move_child(portrait, get_portrait_z_index_point(event.get('z_index', 0)))
 							portrait.set_mirror(event.get('mirror', false))
 							portrait.current_state['position'] = event['position']
 				else:
@@ -1173,7 +1174,7 @@ func grab_portrait_focus(character_data, event: Dictionary = {}) -> bool:
 func portrait_exists(character_data) -> bool:
 	var exists = false
 	for portrait in $Portraits.get_children():
-		if portrait.character_data == character_data:
+		if portrait.character_data.get('file', true) == character_data.get('file', false):
 			exists = true
 	return exists
 
@@ -1203,6 +1204,7 @@ func get_portrait_z_index_point(z_index):
 	for i in range($Portraits.get_child_count()):
 		if $Portraits.get_child(i).z_index >= z_index:
 			return i
+	return $Portraits.get_child_count()
 ## -----------------------------------------------------------------------------
 ## 						GLOSSARY POPUP
 ## -----------------------------------------------------------------------------
