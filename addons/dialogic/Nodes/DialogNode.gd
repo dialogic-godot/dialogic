@@ -45,6 +45,7 @@ var current_timeline: String = ''
 var dialog_script: Dictionary = {}
 var current_event: Dictionary
 var dialog_index: int = 0
+var is_last_text: bool
 
 var current_background = ""
 
@@ -398,10 +399,15 @@ func _process(delta):
 	if current_event.has('text'):
 		if '[nw]' in current_event['text'] or '[nw=' in current_event['text']:
 			$TextBubble/NextIndicatorContainer/NextIndicator.visible = false
+		
+	# Hide if "Don't Close After Last Event" is checked and event is last text
+	if current_theme.get_value('settings', 'dont_close_after_last_event', false) and is_last_text:
+		$TextBubble/NextIndicatorContainer/NextIndicator.visible = false
 	
 	# Hide if fading in
 	if is_state(state.ANIMATING):
 		$TextBubble/NextIndicatorContainer/NextIndicator.visible = false
+	
 
 # checks for the "input_next" action
 func _input(event: InputEvent) -> void:
@@ -423,7 +429,7 @@ func _input(event: InputEvent) -> void:
 					pass
 				elif is_state(state.WAITING_INPUT):
 					pass
-				else:
+				elif $TextBubble/NextIndicatorContainer/NextIndicator.is_visible():
 					$FX/CharacterVoice.stop_voice() # stop the current voice as well
 					play_audio("passing")
 					_load_next_event()
@@ -543,6 +549,30 @@ func _is_dialog_finished():
 
 # calls the event_handler 
 func _load_event():
+	# Updates whether the event is the last text box
+	if dialog_index + 1 >= dialog_script['events'].size():
+		is_last_text = true
+	else:
+		# Get next event
+		var next_event = dialog_script['events'][dialog_index + 1]
+		
+		# If next event is Text Event, is_last_text is false
+		if next_event['event_id'] == "dialogic_001":
+			is_last_text = false
+		
+		# Else, if next event is End Branch, set is_last_text to whether the next after exceeds the size of events.
+		elif 'end_branch_of' in next_event:
+			is_last_text = dialog_index + 2 >= dialog_script['events'].size()
+			
+		# Else, if next event is Choice (and current event is not a Question)
+		elif 'choice' in next_event and not 'options' in dialog_script['events'][dialog_index]:
+			# Get Question
+			var index_in_questions = next_event['question_idx']
+			var question = questions[index_in_questions]
+			var index_in_events = dialog_script['events'].rfind(question, dialog_index)
+			var end_index = question['end_idx']
+			is_last_text = end_index + 1 >= dialog_script['events'].size()
+	
 	_emit_timeline_signals()
 	_hide_definition_popup()
 	
@@ -554,8 +584,9 @@ func _load_event():
 			#	print(func_state)
 			#	yield(func_state, "completed")
 		elif not Engine.is_editor_hint():
-			# Do not free the dialog if we are in the preview
-			queue_free()
+			# If setting 'Don't Close After Last Event' is not checked, free it.
+			if not current_theme.get_value('settings', 'dont_close_after_last_event', false):
+				queue_free()
 
 # Handling an event and updating the available nodes accordingly.
 func event_handler(event: Dictionary):

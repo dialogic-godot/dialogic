@@ -350,7 +350,7 @@ text_key = "Behaviour"
 [node name="GridContainer" type="GridContainer" parent="VBoxContainer/TabContainer/Dialog Text/Column3"]
 margin_top = 26.0
 margin_right = 270.0
-margin_bottom = 104.0
+margin_bottom = 132.0
 size_flags_horizontal = 3
 custom_constants/hseparation = 10
 columns = 2
@@ -393,7 +393,7 @@ margin_bottom = 22.0
 size_flags_horizontal = 3
 text = "Top Left"
 icon = SubResource( 4 )
-items = [ "Top Left", SubResource( 6 ), false, 0, null, "Top Center", SubResource( 6 ), false, 1, null, "Top Right", SubResource( 6 ), false, 2, null, "", null, false, -1, null, "Center Left", SubResource( 6 ), false, 3, null, "Center", SubResource( 6 ), false, 4, null, "Center Right", SubResource( 6 ), false, 5, null, "", null, false, -1, null, "Bottom Left", SubResource( 6 ), false, 6, null, "Bottom Center", SubResource( 6 ), false, 7, null, "Bottom Right", SubResource( 6 ), false, 8, null ]
+items = [ "Top Left", SubResource( 4 ), false, 0, null, "Top Center", SubResource( 4 ), false, 1, null, "Top Right", SubResource( 4 ), false, 2, null, "", null, false, 3, null, "Center Left", SubResource( 4 ), false, 3, null, "Center", SubResource( 4 ), false, 4, null, "Center Right", SubResource( 4 ), false, 5, null, "", null, false, 7, null, "Bottom Left", SubResource( 4 ), false, 6, null, "Bottom Center", SubResource( 4 ), false, 7, null, "Bottom Right", SubResource( 4 ), false, 8, null ]
 selected = 0
 
 [node name="TLabel3" parent="VBoxContainer/TabContainer/Dialog Text/Column3/GridContainer" instance=ExtResource( 8 )]
@@ -410,6 +410,21 @@ margin_left = 158.0
 margin_top = 54.0
 margin_right = 256.0
 margin_bottom = 78.0
+
+[node name="TLabel4" parent="VBoxContainer/TabContainer/Dialog Text/Column3/GridContainer" instance=ExtResource( 8 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 87.0
+margin_right = 148.0
+margin_bottom = 101.0
+text = "Single Portrait Mode"
+text_key = "Don't Close After Last Event"
+
+[node name="DontCloseAfterLastEventCheckBox" type="CheckBox" parent="VBoxContainer/TabContainer/Dialog Text/Column3/GridContainer"]
+margin_left = 158.0
+margin_top = 82.0
+margin_right = 256.0
+margin_bottom = 106.0
 
 [node name="Dialog Box" type="HBoxContainer" parent="VBoxContainer/TabContainer"]
 visible = false
@@ -601,7 +616,7 @@ margin_right = 266.0
 margin_bottom = 78.0
 text = "Top Left"
 icon = SubResource( 4 )
-items = [ "Top Left", SubResource( 6 ), false, 0, null, "Top Center", SubResource( 6 ), false, 1, null, "Top Right", SubResource( 6 ), false, 2, null, "", null, false, -1, null, "Center Left", SubResource( 6 ), false, 3, null, "Center", SubResource( 6 ), false, 4, null, "Center Right", SubResource( 6 ), false, 5, null, "", null, false, -1, null, "Bottom Left", SubResource( 6 ), false, 6, null, "Bottom Center", SubResource( 6 ), false, 7, null, "Bottom Right", SubResource( 6 ), false, 8, null ]
+items = [ "Top Left", SubResource( 4 ), false, 0, null, "Top Center", SubResource( 4 ), false, 1, null, "Top Right", SubResource( 4 ), false, 2, null, "", null, false, 3, null, "Center Left", SubResource( 4 ), false, 3, null, "Center", SubResource( 4 ), false, 4, null, "Center Right", SubResource( 4 ), false, 5, null, "", null, false, 7, null, "Bottom Left", SubResource( 4 ), false, 6, null, "Bottom Center", SubResource( 4 ), false, 7, null, "Bottom Right", SubResource( 4 ), false, 8, null ]
 selected = 0
 __meta__ = {
 "_edit_use_anchors_": false
@@ -886,42 +901,6 @@ __meta__ = {
 }
 
 [node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/TabContainer/Name Label/Column"]
-margin_right = 287.0
-margin_bottom = 50.0
-
-[node name="SectionTitle" parent="VBoxContainer/TabContainer/Name Label/Column/VBoxContainer" instance=ExtResource( 3 )]
-margin_right = 287.0
-text = "Behaviour"
-
-[node name="GridContainer" type="GridContainer" parent="VBoxContainer/TabContainer/Name Label/Column/VBoxContainer"]
-margin_top = 26.0
-margin_right = 287.0
-margin_bottom = 50.0
-columns = 2
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="TLabel" parent="VBoxContainer/TabContainer/Name Label/Column/VBoxContainer/GridContainer" instance=ExtResource( 8 )]
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_top = 5.0
-margin_right = 112.0
-margin_bottom = 19.0
-text = "Hide name labels"
-text_key = "Hide name labels"
-
-[node name="NameHide" type="CheckBox" parent="VBoxContainer/TabContainer/Name Label/Column/VBoxContainer/GridContainer"]
-margin_left = 116.0
-margin_right = 140.0
-margin_bottom = 24.0
-
-[node name="VBoxContainer2" type="VBoxContainer" parent="VBoxContainer/TabContainer/Name Label/Column"]
-margin_top = 54.0
-margin_right = 287.0
-margin_bottom = 192.0
-
-[node name="SectionTitle" parent="VBoxContainer/TabContainer/Name Label/Column/VBoxContainer2" instance=ExtResource( 3 )]
 margin_right = 287.0
 text = "Text"
 text_key = "Text"
@@ -1463,7 +1442,7 @@ margin_bottom = 130.0
 size_flags_horizontal = 3
 text = "Top Left"
 icon = SubResource( 4 )
-items = [ "Top Left", SubResource( 6 ), false, 0, null, "Top Center", SubResource( 6 ), false, 1, null, "Top Right", SubResource( 6 ), false, 2, null, "", null, false, -1, null, "Center Left", SubResource( 6 ), false, 3, null, "Center", SubResource( 6 ), false, 4, null, "Center Right", SubResource( 6 ), false, 5, null, "", null, false, -1, null, "Bottom Left", SubResource( 6 ), false, 6, null, "Bottom Center", SubResource( 6 ), false, 7, null, "Bottom Right", SubResource( 6 ), false, 8, null ]
+items = [ "Top Left", SubResource( 4 ), false, 0, null, "Top Center", SubResource( 4 ), false, 1, null, "Top Right", SubResource( 4 ), false, 2, null, "", null, false, 3, null, "Center Left", SubResource( 4 ), false, 3, null, "Center", SubResource( 4 ), false, 4, null, "Center Right", SubResource( 4 ), false, 5, null, "", null, false, 7, null, "Bottom Left", SubResource( 4 ), false, 6, null, "Bottom Center", SubResource( 4 ), false, 7, null, "Bottom Right", SubResource( 4 ), false, 8, null ]
 selected = 0
 
 [node name="TLabel6" parent="VBoxContainer/TabContainer/Choice Buttons/Column2/GridContainer" instance=ExtResource( 8 )]
