@@ -45,6 +45,7 @@ var current_timeline: String = ''
 var dialog_script: Dictionary = {}
 var current_event: Dictionary
 var dialog_index: int = 0
+var is_last_text: bool
 
 var current_background = ""
 
@@ -398,10 +399,15 @@ func _process(delta):
 	if current_event.has('text'):
 		if '[nw]' in current_event['text'] or '[nw=' in current_event['text']:
 			$TextBubble/NextIndicatorContainer/NextIndicator.visible = false
+		
+	# Hide if "Don't Close After Last Event" is checked and event is last text
+	if current_theme.get_value('settings', 'dont_close_after_last_event', false) and is_last_text:
+		$TextBubble/NextIndicatorContainer/NextIndicator.visible = false
 	
 	# Hide if fading in
 	if is_state(state.ANIMATING):
 		$TextBubble/NextIndicatorContainer/NextIndicator.visible = false
+	
 
 # checks for the "input_next" action
 func _input(event: InputEvent) -> void:
@@ -423,7 +429,7 @@ func _input(event: InputEvent) -> void:
 					pass
 				elif is_state(state.WAITING_INPUT):
 					pass
-				else:
+				elif $TextBubble/NextIndicatorContainer/NextIndicator.is_visible():
 					$FX/CharacterVoice.stop_voice() # stop the current voice as well
 					play_audio("passing")
 					_load_next_event()
@@ -543,6 +549,30 @@ func _is_dialog_finished():
 
 # calls the event_handler 
 func _load_event():
+	# Updates whether the event is the last text box
+	if dialog_index + 1 >= dialog_script['events'].size():
+		is_last_text = true
+	else:
+		# Get next event
+		var next_event = dialog_script['events'][dialog_index + 1]
+		
+		# If next event is Text Event, is_last_text is false
+		if next_event['event_id'] == "dialogic_001":
+			is_last_text = false
+		
+		# Else, if next event is End Branch, set is_last_text to whether the next after exceeds the size of events.
+		elif 'end_branch_of' in next_event:
+			is_last_text = dialog_index + 2 >= dialog_script['events'].size()
+			
+		# Else, if next event is Choice (and current event is not a Question)
+		elif 'choice' in next_event and not 'options' in dialog_script['events'][dialog_index]:
+			# Get Question
+			var index_in_questions = next_event['question_idx']
+			var question = questions[index_in_questions]
+			var index_in_events = dialog_script['events'].rfind(question, dialog_index)
+			var end_index = question['end_idx']
+			is_last_text = end_index + 1 >= dialog_script['events'].size()
+	
 	_emit_timeline_signals()
 	_hide_definition_popup()
 	
@@ -554,8 +584,9 @@ func _load_event():
 			#	print(func_state)
 			#	yield(func_state, "completed")
 		elif not Engine.is_editor_hint():
-			# Do not free the dialog if we are in the preview
-			queue_free()
+			# If setting 'Don't Close After Last Event' is not checked, free it.
+			if not current_theme.get_value('settings', 'dont_close_after_last_event', false):
+				queue_free()
 
 # Handling an event and updating the available nodes accordingly.
 func event_handler(event: Dictionary):
@@ -592,8 +623,9 @@ func event_handler(event: Dictionary):
 				var character_data = DialogicUtil.get_character(event['character'])
 				if portrait_exists(character_data):
 					for portrait in $Portraits.get_children():
-						if portrait.character_data == character_data:
-							portrait.move_to_position(get_character_position(event['position']))
+						if portrait.character_data.get('file', true) == character_data.get('file', false):
+							portrait.move_to_position(get_character_position(event['position']), event.get('animation', 0), event.get('animation_length', 1))
+							$Portraits.move_child(portrait, get_portrait_z_index_point(event.get('z_index', 0)))
 							portrait.set_mirror(event.get('mirror', false))
 							portrait.current_state['position'] = event['position']
 				else:
@@ -614,9 +646,11 @@ func event_handler(event: Dictionary):
 						p.single_portrait_mode = true
 					p.character_data = character_data
 					p.init(char_portrait)
+					p.z_index = event.get('z_index', 0)
 					p.set_mirror(event.get('mirror', false))
 					$Portraits.add_child(p)
-					p.move_to_position(get_character_position(event['position']))
+					$Portraits.move_child(p, get_portrait_z_index_point(event.get('z_index', 0)))
+					p.move_to_position(get_character_position(event['position']), event.get('animation', 0), event.get('animation_length', 1))
 					p.current_state['character'] = event['character']
 					p.current_state['position'] = event['position']
 			_load_next_event()
@@ -979,6 +1013,7 @@ func add_choice_button(option: Dictionary) -> Button:
 	shortcut.set_shortcut(hotkey)
 	
 	button.set_shortcut(shortcut)
+	button.shortcut_in_tooltip = false
 	
 	# Selecting the first button added
 	if settings.get_value('input', 'autofocus_choices', true):
@@ -1170,7 +1205,7 @@ func grab_portrait_focus(character_data, event: Dictionary = {}) -> bool:
 func portrait_exists(character_data) -> bool:
 	var exists = false
 	for portrait in $Portraits.get_children():
-		if portrait.character_data == character_data:
+		if portrait.character_data.get('file', true) == character_data.get('file', false):
 			exists = true
 	return exists
 
@@ -1195,6 +1230,12 @@ func characters_leave_all():
 		for p in portraits.get_children():
 			p.fade_out()
 
+# returns where to move the portrait, so the fake-z-index looks good 
+func get_portrait_z_index_point(z_index):
+	for i in range($Portraits.get_child_count()):
+		if $Portraits.get_child(i).z_index >= z_index:
+			return i
+	return $Portraits.get_child_count()
 ## -----------------------------------------------------------------------------
 ## 						GLOSSARY POPUP
 ## -----------------------------------------------------------------------------
@@ -1293,6 +1334,7 @@ func get_current_state_info():
 	state["portraits"] = []
 	for portrait in $Portraits.get_children():
 		state['portraits'].append(portrait.current_state)
+		state['portraits'][-1]['z_index'] = portrait.z_index
 
 	# background music:
 	state['background_music'] = $FX/BackgroundMusic.get_current_info()
@@ -1325,7 +1367,7 @@ func resume_state_from_info(state_info):
 		if portrait_exists(character_data):
 			for portrait in $Portraits.get_children():
 				if portrait.character_data == character_data:
-					portrait.move_to_position(get_character_position(event['position']))
+					portrait.move_to_position(get_character_position(event['position']), 0,0)
 					portrait.set_mirror(event.get('mirror', false))
 		else:
 			var p = Portrait.instance()
@@ -1348,7 +1390,8 @@ func resume_state_from_info(state_info):
 
 			p.set_mirror(event.get('mirror', false))
 			$Portraits.add_child(p)
-			p.move_to_position(get_character_position(event['position']), 0)
+			$Portraits.move_child(p, get_portrait_z_index_point(saved_portrait.get('z_index', 0)))
+			p.move_to_position(get_character_position(event['position']), 0, 0)
 			# this info is only used to save the state later
 			p.current_state['character'] = event['character']
 			p.current_state['position'] = event['position']

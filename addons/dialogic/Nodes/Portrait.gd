@@ -1,5 +1,7 @@
 extends Control
 
+var z_index = 0
+
 var character_data = {
 	'name': 'Default',
 	'image': "res://addons/dialogic/Example Assets/portraits/df-3.png",
@@ -78,7 +80,9 @@ func set_mirror(value):
 		$TextureRect.flip_h = value
 
 
-func move_to_position(position_offset, time = 0.5):
+func move_to_position(position_offset, animation= 0, time = 4):
+	modulate = Color.transparent
+	
 	var positions = {
 		'left': Vector2(-400, 0),
 		'right': Vector2(+400, 0),
@@ -87,8 +91,6 @@ func move_to_position(position_offset, time = 0.5):
 		'center_left': Vector2(-200, 0)}
 	
 	direction = position_offset
-	modulate = Color(1,1,1,0)
-	tween_modulate(modulate, Color(1,1,1, 1), time)
 	rect_position = positions[position_offset]
 	
 	# Setting the scale of the portrait
@@ -112,14 +114,23 @@ func move_to_position(position_offset, time = 0.5):
 			$TextureRect.texture.get_height()
 		) * custom_scale
 		
-	fade_in()
+	animate_in(animation, time)
 
-
-# Tween stuff
-func fade_in(time = 0.5):
-	tween_modulate(modulate, Color(1,1,1, 1), time)
+func animate_in(animation = 0, time = -1):
+	if animation == -1:
+		animation = DialogicUtil.get_default_animation_id()
+	var data = DialogicUtil.get_animation_data(animation)
+	print("animatew", data, time)
 	
-	if single_portrait_mode == false:
+	if time == -1:
+		time = data['default_length']
+	
+	# do custom animation
+	## INSTANT animation:
+	if animation == 1:
+		modulate = Color.white
+	## FLOAT_UP animation:
+	elif animation == 2:
 		var end_pos = Vector2(0, -40) # starting at center
 		if direction == 'right':
 			end_pos = Vector2(+40, 0)
@@ -133,6 +144,16 @@ func fade_in(time = 0.5):
 			Tween.TRANS_LINEAR, Tween.EASE_IN_OUT
 		)
 		$TweenPosition.start()
+	## FADE animation
+	elif animation == 3:
+		tween_modulate(Color.transparent, Color.white, time)
+	## POP animation
+	elif animation == 4:
+		$Tween.interpolate_property(self, 'modulate', Color.transparent, Color.white, time, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
+		$TextureRect.rect_pivot_offset = $TextureRect.rect_size/2
+		$Tween.interpolate_property($TextureRect, 'rect_scale', Vector2(0,0), Vector2(1,1), time, Tween.TRANS_BOUNCE, Tween.EASE_OUT)
+	
+	$Tween.start()
 
 
 func fade_out(time = 0.5):
@@ -144,12 +165,8 @@ func fade_out(time = 0.5):
 
 
 func focus():
-	if not fading_out:
+	if not ($Tween.is_active() or fading_out):
 		tween_modulate(modulate, Color(1,1,1, 1))
-		var _parent = get_parent()
-		if _parent:
-			# Make sure that this portrait is the last to be _draw -ed
-			_parent.move_child(self, _parent.get_child_count())
 
 
 func focusout(dim_color = Color(0.5, 0.5, 0.5, 1.0)):
@@ -157,13 +174,10 @@ func focusout(dim_color = Color(0.5, 0.5, 0.5, 1.0)):
 		dim_color.a = 0
 	if not fading_out:
 		tween_modulate(modulate, dim_color)
-		var _parent = get_parent()
-		if _parent:
-			# Render this portrait first
-			_parent.move_child(self, 0)
 
 
 func tween_modulate(from_value, to_value, time = 0.5):
+	$Tween.stop(self, 'modulation')
 	$Tween.interpolate_property(
 		self, "modulate", from_value, to_value, time,
 		Tween.TRANS_LINEAR, Tween.EASE_IN_OUT
