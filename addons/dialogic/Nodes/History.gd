@@ -64,10 +64,10 @@ func initalize_history():
 	
 	# Grab some settings and make the boxes up right
 	var button_anchor = get_parent().settings.get_value('history', 'history_button_position', 2)
-	var screen_margin_x = get_parent().settings.get_value('history', 'history_screen_margin_x', 20)
-	var screen_margin_y = get_parent().settings.get_value('history', 'history_screen_margin_y', 20)
-	var container_margin_X = get_parent().settings.get_value('history', 'history_container_margin_x', 10)
-	var container_margin_y = get_parent().settings.get_value('history', 'history_container_margin_y', 10)
+	var screen_margin_x = get_parent().settings.get_value('history', 'history_screen_margin_x', 0)
+	var screen_margin_y = get_parent().settings.get_value('history', 'history_screen_margin_y', 0)
+	var container_margin_X = get_parent().settings.get_value('history', 'history_container_margin_x', 0)
+	var container_margin_y = get_parent().settings.get_value('history', 'history_container_margin_y', 0)
 	
 	HistoryPopup.margin_left = screen_margin_x
 	HistoryPopup.margin_right = -screen_margin_x
@@ -203,7 +203,7 @@ func add_history_row_event(eventData):
 
 func add_answer_to_question(stringData):
 	if lastQuestionNode != null:
-		lastQuestionNode.add_history(str('\n\t\t', stringData), lastQuestionNode.audioPath)
+		lastQuestionNode.add_history(str('\n\t', stringData), lastQuestionNode.audioPath)
 		lastQuestionNode = null
 
 
@@ -237,11 +237,11 @@ func _on_History_item_rect_changed():
 		
 		if get_parent().settings:
 			var button_anchor = get_parent().settings.get_value('history', 'history_button_position', 2)
-			var screen_margin_x = get_parent().settings.get_value('history', 'history_screen_margin_x', 20)
-			var screen_margin_y = get_parent().settings.get_value('history', 'history_screen_margin_y', 20)
-			var container_margin_X = get_parent().settings.get_value('history', 'history_container_margin_x', 10)
-			var container_margin_y = get_parent().settings.get_value('history', 'history_container_margin_y', 10)
-			
+			var screen_margin_x = get_parent().settings.get_value('history', 'history_screen_margin_x', 0)
+			var screen_margin_y = get_parent().settings.get_value('history', 'history_screen_margin_y', 0)
+			var container_margin_X = get_parent().settings.get_value('history', 'history_container_margin_x', 0)
+			var container_margin_y = get_parent().settings.get_value('history', 'history_container_margin_y', 0)
+			print(screen_margin_y)
 			HistoryPopup.margin_left = screen_margin_x
 			HistoryPopup.margin_right = -screen_margin_x
 			HistoryPopup.margin_top = screen_margin_y

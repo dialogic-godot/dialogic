@@ -15,13 +15,14 @@ __meta__ = {
 visible = false
 margin_left = 7.0
 margin_top = 7.0
-margin_right = 49.0
-margin_bottom = 35.0
+margin_right = 51.0
+margin_bottom = 43.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="TextureRect" type="TextureRect" parent="."]
+visible = false
 margin_left = 7.0
 margin_top = 7.0
 margin_right = 51.0

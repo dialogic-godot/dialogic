@@ -34,10 +34,11 @@ func add_history(historyString, newAudio=''):
 		AudioButton.flat = false
 	else:
 		AudioButton.disabled = true
-		AudioButton.icon = load("res://addons/dialogic/Images/Event Icons/Main Icons/text-event.svg")
+		#AudioButton.icon = load("res://addons/dialogic/Images/Event Icons/Main Icons/text-event.svg")
+	AudioButton.focus_mode = FOCUS_NONE
 
 
-# Makes the row to look like the dialog box associated with the Theme
+# Uses the default theme to make the font and boxes looks a bit nicer
 func load_theme(theme: ConfigFile):
 	# Text
 	var theme_font = DialogicUtil.path_fixer_load(theme.get_value('text', 'font', 'res://addons/dialogic/Example Assets/Fonts/DefaultFont.tres'))
