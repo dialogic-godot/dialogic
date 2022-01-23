@@ -76,6 +76,7 @@ onready var n : Dictionary = {
 	
 	'animation_show_time': $"VBoxContainer/TabContainer/Dialog Box/Column3/GridContainer/ShowTime/SpinBox",
 	'animation_dim_color': $"VBoxContainer/TabContainer/Dialog Box/Column3/GridContainer/DimColor/ColorPickerButton",
+	'portraits_behind_dialog_box' :$"VBoxContainer/TabContainer/Dialog Box/Column3/GridContainer/PortraitsBehindDialogCheckBox",
 	
 	# Character Names
 	'name_hidden': $"VBoxContainer/TabContainer/Name Label/Column/VBoxContainer/GridContainer/NameHide",
@@ -196,6 +197,8 @@ func _ready() -> void:
 	n['box_margin_h'].connect('value_changed', self, '_on_generic_value_change', ['box', 'box_margin_h'])
 	
 	n['next_indicator_scale'].connect('value_changed', self, '_on_generic_value_change', ['next_indicator', 'scale'])
+
+	n['portraits_behind_dialog_box'].connect('toggled', self, '_on_generic_value_change', ['box', 'portraits_behind_dialog_box'])
 
 	# Name tab
 	n['name_shadow_visible'].connect('toggled', self, '_on_generic_checkbox', ['name', 'shadow_visible'])
@@ -330,7 +333,7 @@ func load_theme(filename):
 	n['background_modulation'].pressed = theme.get_value('background', 'modulation', false)
 	n['background_modulation_color'].color = Color(theme.get_value('background', 'modulation_color', '#ffffffff'))
 	n['background_full_width'].pressed = theme.get_value('background', 'full_width', false)
-	
+	n['portraits_behind_dialog_box'].pressed = theme.get_value('box', 'portraits_behind_dialog_box', true)
 	
 	var size_value = theme.get_value('box', 'size', Vector2(910, 167))
 	n['size_w'].value = size_value.x
