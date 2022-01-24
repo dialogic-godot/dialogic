@@ -613,58 +613,78 @@ func event_handler(event: Dictionary):
 			#voice 
 			handle_voice(event)
 			update_text(event['text'])
-		# Join event
+		# Character event
 		'dialogic_002':
 			## PLEASE UPDATE THIS! BUT HOW? 
 			emit_signal("event_start", "action", event)
+			
 			if event['character'] == '':# No character found on the event. Skip.
 				_load_next_event()
 			else:
 				var character_data = DialogicUtil.get_character(event['character'])
-				if portrait_exists(character_data):
-					for portrait in $Portraits.get_children():
-						if portrait.character_data.get('file', true) == character_data.get('file', false):
-							portrait.move_to_position(get_character_position(event['position']), event.get('animation', 0), event.get('animation_length', 1))
-							$Portraits.move_child(portrait, get_portrait_z_index_point(event.get('z_index', 0)))
-							portrait.set_mirror(event.get('mirror', false))
-							portrait.current_state['position'] = event['position']
-				else:
+				# JOIN MODE -------------------------------------------
+				if event.get('type', 0) == 0 and not portrait_exists(character_data):
+					# CREATE NEW PORTRAIT 
 					var p = Portrait.instance()
-					var char_portrait = event['portrait']
-					if char_portrait == '':
-						char_portrait = 'Default'
 					
-					if char_portrait == '[Definition]' and event.has('port_defn'):
-						var portrait_definition = event['port_defn']
-						if portrait_definition != '':
-							for d in Dialogic._get_definitions()['variables']:
-								if d['id'] == portrait_definition:
-									char_portrait = d['value']
-									break
-					
+					# SET DATA
 					if current_theme.get_value('settings', 'single_portrait_mode', false):
 						p.single_portrait_mode = true
 					p.character_data = character_data
+					
+					var char_portrait = get_portrait_name(event)
 					p.init(char_portrait)
-					p.z_index = event.get('z_index', 0)
-					p.set_mirror(event.get('mirror', false))
+					p.set_mirror(event.get('mirror_portrait', false))
+					
+					# ADD IT TO THE SCENE
 					$Portraits.add_child(p)
-					$Portraits.move_child(p, get_portrait_z_index_point(event.get('z_index', 0)))
 					p.move_to_position(get_character_position(event['position']), event.get('animation', 0), event.get('animation_length', 1))
 					p.current_state['character'] = event['character']
 					p.current_state['position'] = event['position']
-			_load_next_event()
-		# Character Leave event 
-		'dialogic_003':
-			## PLEASE UPDATE THIS! BUT HOW? 
-			emit_signal("event_start", "action", event)
-			if event['character'] == '[All]':
-				characters_leave_all()
-			else:
-				for p in $Portraits.get_children():
-					if p.character_data['file'] == event['character']:
-						p.fade_out()
-			_load_next_event()
+					
+					# z_index
+					$Portraits.move_child(p, get_portrait_z_index_point(event.get('z_index', 0)))
+					p.z_index = event.get('z_index', 0)
+			
+				# LEAVE MODE -------------------------------------------
+				elif event.get('type', 0) == 1:
+					if event['character'] == '[All]':
+						characters_leave_all(event.get('animation', 0), event.get('animation_length', -1))
+					else:
+						for p in $Portraits.get_children():
+							if p.character_data['file'] == event['character']:
+								p.animate_out(event.get('animation', 0), event.get('animation_length', -1))
+				
+				# UPDATE MODE -------------------------------------------
+				else:
+					if portrait_exists(character_data):
+						for portrait in $Portraits.get_children():
+							if portrait.character_data.get('file', true) == character_data.get('file', false):
+								print("DOIN UPDATE")
+								# UPDATE PORTRAIT
+								var portrait_name = get_portrait_name(event)
+								if portrait_name != portrait.current_state['portrait']:
+									print(portrait_name, " ",  portrait.current_state['portrait'])
+									portrait.set_portrait(portrait_name)
+									# recalculate the position of the portrait with an instant animation
+									portrait.move_to_position(get_character_position(portrait.current_state['position']), 1, 0)
+								
+								# UPDATE POSITION
+								if event.get('change_position', false):
+									if event['position'] != portrait.current_state['position']:
+										portrait.move_to_position(get_character_position(event['position']), event.get('animation', 5), event.get('animation_length', 0))
+										portrait.current_state['position'] = event['position']
+								
+								if event.get('change_mirror_portrait', false):
+									portrait.set_mirror(event.get('mirror_portrait', false))
+								
+								if event.get('change_z_index', false):
+									$Portraits.move_child(portrait, get_portrait_z_index_point(event.get('z_index', 0)))
+									portrait.z_index = event.get('z_index', 0)
+								
+								portrait.animate(event.get('animation', 0), event.get('animation_length', 1))
+
+				_load_next_event()
 		
 		# LOGIC EVENTS
 		# Question event
@@ -779,7 +799,7 @@ func event_handler(event: Dictionary):
 			var transition_duration = event.get('transition_duration', 1.0)
 			
 			# fade out characters
-			characters_leave_all()
+			characters_leave_all(DialogicUtil.get_default_animation_id(), -1)
 			
 			# fade out background
 			var background = get_node_or_null('Background')
@@ -1184,19 +1204,9 @@ func grab_portrait_focus(character_data, event: Dictionary = {}) -> bool:
 		# check if it's the same character
 		if portrait.character_data.get("file", "something") == character_data.get("file", "none"):
 			exists = true
-			
 			portrait.focus()
 			if event.has('portrait'):
-				var current_portrait = event['portrait']
-				if current_portrait == '[Definition]' and event.has('port_defn'):
-					var portrait_definition = event['port_defn']
-					if portrait_definition != '':
-						for d in Dialogic._get_definitions()['variables']:
-							if d['id'] == portrait_definition:
-								current_portrait = d['value']
-								break
-				if event['portrait'] != '':
-					portrait.set_portrait(current_portrait)
+				portrait.set_portrait(get_portrait_name(event))
 		else:
 			portrait.focusout(Color(current_theme.get_value('animation', 'dim_color', '#ff808080')))
 	return exists
@@ -1223,12 +1233,27 @@ func get_character_position(positions) -> String:
 		return 'right'
 	return 'left'
 
+# returns the portrait name or the definition value (id definition is enabled)
+func get_portrait_name(event_data):
+	var char_portrait = event_data['portrait']
+	if char_portrait == '':
+		char_portrait = 'Default'
+	
+	if char_portrait == '[Definition]' and event_data.has('port_defn'):
+		var portrait_definition = event_data['port_defn']
+		if portrait_definition != '':
+			for d in Dialogic._get_definitions()['variables']:
+				if d['id'] == portrait_definition:
+					char_portrait = d['value']
+					break
+	return char_portrait
+
 # moves out all portraits
-func characters_leave_all():
+func characters_leave_all(animation, time):
 	var portraits = get_node_or_null('Portraits')
 	if portraits != null:
 		for p in portraits.get_children():
-			p.fade_out()
+			p.animate_out(animation, time)
 
 # returns where to move the portrait, so the fake-z-index looks good 
 func get_portrait_z_index_point(z_index):

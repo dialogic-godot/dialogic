@@ -29,8 +29,7 @@ var custom_events = {}
 var id_to_scene_name = {
 	#Main events
 	'dialogic_001':'TextEvent',
-	'dialogic_002':'CharacterJoin',
-	'dialogic_003':'CharacterLeave',
+	'dialogic_002':'Character',
 	#Logic
 	'dialogic_010':'Question',
 	'dialogic_011':'Choice',

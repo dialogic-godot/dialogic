@@ -42,8 +42,16 @@ func load_data(data:Dictionary):
 	# First set the event_data
 	.load_data(data)
 	
+	allow_dont_change = event_data['event_id'] != 'dialogic_002' or (event_data['event_id'] == 'dialogic_002' and int(event_data.get('type', 0)) == 2)
+	
+	if event_data['event_id'] == 'dialogic_002' and event_data['type'] == 2:
+		$HBox/Label.text = "to portrait"
+	else:
+		$HBox/Label.text = "with portrait"
+	
 	# Now update the ui nodes to display the data. 
 	if event_data['portrait'].empty():
+		# if this is a text/question event or character event in update mode 
 		if allow_dont_change:
 			picker_menu.text = "(Don't change)"
 			picker_menu.custom_icon = no_change_icon

@@ -501,7 +501,41 @@ static func resource_fixer():
 				'Right':
 					DialogicResources.set_theme_value(theme_info['file'], 'text', 'alignment', 2)
 	
-	DialogicResources.set_settings_value("updates", "updatenumber", 2)
+	if update_index < 3:
+		# Character Join and Character Leave have been unified to a new Character event
+		print("[D] Update NR. "+str(update_index)+" | Removes Character Join and Character Leave events in favor of the new 'Character' event. No need to worry about this.")
+		for timeline_info in get_timeline_list():
+			var timeline = DialogicResources.get_timeline_json(timeline_info['file'])
+			
+			var events = timeline["events"]
+			for i in events:
+				if i['event_id'] == 'dialogic_002':
+					var new_event = {
+						'event_id':'dialogic_002',
+						'type':0,
+						'character':i.get('character', ''),
+						'portrait':i.get('portrait',''),
+						'position':i.get('position'),
+						'animation':i.get('animation', get_default_animation_id()),
+						'animation_length':i.get('character', 1),
+						'mirror_portrait':i.get('mirror', false),
+						'z_index':i.get('z_index', 0),
+						}
+					i = new_event
+				elif i['event_id'] == 'dialogic_003':
+					var new_event = {
+						'event_id':'dialogic_002',
+						'type':1,
+						'character':i.get('character', ''),
+						'animation':i.get('animation', get_default_animation_id()),
+						'animation_length':i.get('character', 1),
+						'mirror_portrait':i.get('mirror', false),
+						'z_index':i.get('z_index', 0),
+						}
+					i = new_event
+			timeline['events'] = events
+			DialogicResources.set_timeline(timeline)
+	DialogicResources.set_settings_value("updates", "updatenumber", 3)
 	
 
 static func get_editor_scale(ref) -> float:
@@ -534,11 +568,16 @@ static func list_dir(path: String) -> Array:
 ## *****************************************************************************
 static func animations():
 	return {
-	0:{"name":"[Default]", "default_length":1},
-	1:{"name": "Instant Appear", "default_length": 0},
-	2:{"name": "Float Up", "default_length": 1},
-	3:{"name": "Fade", "default_length": 1},
-	4:{"name": "Pop", "default_length": 1},
+	0:{'type':0, "name": "[Default]", "default_length":1},
+	1:{'type':0, "name": "Instant", "default_length": 0},
+	2:{'type':0, "name": "Float", "default_length": 0.5},
+	3:{'type':0, "name": "Fade", "default_length": 0.5},
+	4:{'type':0, "name": "Pop", "default_length": 1},
+	5:{'type':1, "name": "[No Animation]", "default_length": 0},
+	6:{'type':1, "name": "Horizontal Shake", "default_length": 3},
+	7:{'type':1, "name": "Vertical Shake", "default_length": 1},
+	8:{'type':1, "name": "Shake", "default_length": 1},
+	9:{'type':1, "name": "Pop", "default_length":1},
 	}
 
 static func get_animation_names():

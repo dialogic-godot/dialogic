@@ -48,6 +48,7 @@ func load_data(data:Dictionary):
 	# First set the event_data
 	.load_data(data)
 	
+	allow_no_character = data['event_id'] != 'dialogic_002'
 	# Now update the ui nodes to display the data. 
 	update_to_character()
 
@@ -59,13 +60,11 @@ func get_preview():
 
 # helper to not have the same code everywhere
 func update_to_character():
-	$HBox/Label.text = "leaves"
 	if event_data['character'] != '':
 		if event_data['character'] == '[All]':
 			picker_menu.text = "All characters"
 			picker_menu.reset_modulation()
 			picker_menu.custom_icon = all_characters_icon
-			$HBox/Label.text = "leave"
 		else:
 			for ch in DialogicUtil.get_character_list():
 				if ch['file'] == event_data['character']:
@@ -80,7 +79,6 @@ func update_to_character():
 			picker_menu.text = 'Select Character'
 			picker_menu.custom_icon = single_character_icon
 		picker_menu.reset_modulation()
-	$HBox/Label.visible = event_data['event_id'] == 'dialogic_003'
 
 # when an index is selected on one of the menus.
 func _on_PickerMenu_selected(index, menu):
@@ -112,14 +110,14 @@ func build_PickerMenuFolder(menu:PopupMenu, folder_structure:Dictionary, current
 	
 	## THIS IS JUST FOR THE ROOT FOLDER
 	if menu == picker_menu.get_popup():
-		if allow_no_character:
+		if event_data.get('event_id', 'dialogic_001') != 'dialogic_002':
 			menu.add_item('No character')
 			menu.set_item_metadata(index, {'file':''})
 			menu.set_item_icon(index, no_character_icon)
 			index += 1
 
 		# in case this is a leave event
-		if event_data['event_id'] == 'dialogic_003':
+		if event_data.get('type', 0) == 1:
 			menu.add_item('All characters')
 			menu.set_item_metadata(index, {'file': '[All]'})
 			menu.set_item_icon(index, all_characters_icon)

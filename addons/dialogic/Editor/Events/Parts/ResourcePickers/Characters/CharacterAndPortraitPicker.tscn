@@ -25,12 +25,15 @@ margin_right = 95.0
 margin_bottom = 39.0
 
 [node name="PortraitPicker" parent="HBox" instance=ExtResource( 1 )]
+visible = false
 margin_left = 100.0
 margin_top = 13.0
-margin_right = 284.0
+margin_right = 264.0
 margin_bottom = 35.0
 
 [node name="DefinitionPicker" parent="HBox" instance=ExtResource( 4 )]
 visible = false
-margin_left = 222.0
-margin_right = 354.0
+margin_left = 100.0
+margin_top = 13.0
+margin_right = 198.0
+margin_bottom = 35.0

@@ -29,18 +29,18 @@ func _ready():
 
 
 func set_portrait(expression: String) -> void:
-	current_state['portrait'] = expression
 	if expression == "(Don't change)":
 		return
 
 	if expression == '':
 		expression = 'Default'
 	
+	current_state['portrait'] = expression
 	# Clearing old custom scenes
 	for n in get_children():
 		if 'DialogicCustomPortraitScene' in n.name:
 			n.queue_free()
-
+	
 	var default
 	for p in character_data['portraits']:
 		if p['name'] == expression:
@@ -81,6 +81,7 @@ func set_mirror(value):
 
 
 func move_to_position(position_offset, animation= 0, time = 4):
+	print("position!!!", animation, " ", time)
 	modulate = Color.transparent
 	
 	var positions = {
@@ -120,15 +121,14 @@ func animate_in(animation = 0, time = -1):
 	if animation == -1:
 		animation = DialogicUtil.get_default_animation_id()
 	var data = DialogicUtil.get_animation_data(animation)
-	print("animatew", data, time)
 	
 	if time == -1:
 		time = data['default_length']
-	
-	# do custom animation
+
 	## INSTANT animation:
 	if animation == 1:
 		modulate = Color.white
+		return
 	## FLOAT_UP animation:
 	elif animation == 2:
 		var end_pos = Vector2(0, -40) # starting at center
@@ -144,6 +144,7 @@ func animate_in(animation = 0, time = -1):
 			Tween.TRANS_LINEAR, Tween.EASE_IN_OUT
 		)
 		$TweenPosition.start()
+		tween_modulate(Color.transparent, Color.white, time)
 	## FADE animation
 	elif animation == 3:
 		tween_modulate(Color.transparent, Color.white, time)
@@ -155,14 +156,56 @@ func animate_in(animation = 0, time = -1):
 	
 	$Tween.start()
 
-
-func fade_out(time = 0.5):
-	fading_out = true
-	var end = modulate
-	end.a = 0
-	tween_modulate(modulate, end, time)
+func animate_out(animation = 0, time = -1):
+	if animation == -1:
+		animation = DialogicUtil.get_default_animation_id()
+	var data = DialogicUtil.get_animation_data(animation)
+	
+	if time == -1:
+		time = data['default_length']
+	
+	## INSTANT animation:
+	if animation == 1:
+		modulate = Color.transparent
+	## FLOAT_UP animation:
+	elif animation == 2:
+		var end_pos = Vector2(0, -40) # starting at center
+		if direction == 'right':
+			end_pos = Vector2(+40, 0)
+		elif direction == 'left':
+			end_pos = Vector2(-40, 0)
+		else:
+			rect_position += Vector2(0, 40)
+		tween_modulate(modulate, Color.transparent, time)
+		$TweenPosition.interpolate_property(
+			self, "rect_position", rect_position, rect_position - end_pos, time,
+			Tween.TRANS_LINEAR, Tween.EASE_IN_OUT
+		)
+		$TweenPosition.start()
+	## FADE animation
+	elif animation == 3:
+		tween_modulate(modulate, Color.transparent, time)
+	## POP animation
+	elif animation == 4:
+		$Tween.interpolate_property(self, 'modulate', null, Color.transparent, time, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
+		$TextureRect.rect_pivot_offset = $TextureRect.rect_size/2
+		$Tween.interpolate_property($TextureRect, 'rect_scale', Vector2(1,1), Vector2(0,0), time, Tween.TRANS_BOUNCE, Tween.EASE_IN)
+	
+	$Tween.start()
 	$Tween.connect("tween_all_completed", self, "queue_free")
 
+func animate(animation = 5, time = 1):
+	if animation == 5: # the NO ANIMATION animation
+		return
+	
+	if animation == 6: # Horizontal Shake
+		pass
+	if animation == 7: # Vertical Shake
+		pass
+	if animation == 8: # Shake
+		pass
+	if animation == 9: # Pop
+		pass
 
 func focus():
 	if not ($Tween.is_active() or fading_out):
