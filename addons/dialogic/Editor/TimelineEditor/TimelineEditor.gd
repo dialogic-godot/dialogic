@@ -398,7 +398,7 @@ func _unhandled_key_input(event):
 func get_events_indexed(events:Array) -> Dictionary:
 	var indexed_dict = {}
 	for event in events:
-		indexed_dict[event.get_index()] = event.event_data.duplicate()
+		indexed_dict[event.get_index()] = event.event_data.duplicate(true)
 	return indexed_dict
 
 func select_indexed_events(indexed_events:Dictionary) -> void:
