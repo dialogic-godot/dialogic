@@ -3,8 +3,8 @@ extends "res://addons/dialogic/Editor/Events/Parts/EventPart.gd"
 
 ## has an event_data variable that stores the current data!!!
 
-var join_icon = load("res://addons/dialogic/Images/Event Icons/Main Icons/character-join.svg")
-var leave_icon = load("res://addons/dialogic/Images/Event Icons/Main Icons/character-leave.svg")
+var join_icon = load("res://addons/dialogic/Images/Event Icons/character-join.svg")
+var leave_icon = load("res://addons/dialogic/Images/Event Icons/character-leave.svg")
 var update_icon = load("res://addons/dialogic/Images/Event Icons/character.svg")
 
 ## node references

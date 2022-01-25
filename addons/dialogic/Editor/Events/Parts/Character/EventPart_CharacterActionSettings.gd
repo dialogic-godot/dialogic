@@ -13,6 +13,8 @@ onready var z_index_enable = $Positioning/EnableZIndex
 onready var z_index = $Positioning/Z_Index
 onready var mirrored_checkbox = $Positioning/Mirrored
 onready var mirrored_checkbox_enable = $Positioning/EnableMirrored
+onready var animation_repeat = $Animation/Repeat
+onready var animation_wait_checkbox = $Animation/WaitForAnimation
 
 # used to connect the signals
 func _ready():
@@ -23,8 +25,8 @@ func _ready():
 	z_index_enable.connect("toggled", self, "_on_ZIndexEnable_toggled")
 	mirrored_checkbox.connect('toggled', self, "_on_Mirrored_toggled")
 	mirrored_checkbox_enable.connect('toggled', self, "_on_MirroredEnabled_toggled")
-	animation_picker.custom_icon = get_icon("Animation", "EditorIcons")
-	
+	animation_repeat.connect("value_changed", self, '_on_Repeat_value_changed')
+	animation_wait_checkbox.connect('toggled', self, 'on_WaitForAnimation_toggled')
 	enable_icon = get_icon("Edit", "EditorIcons")
 	disable_icon = get_icon("Reload", "EditorIcons")
 
@@ -36,11 +38,23 @@ func load_data(data:Dictionary):
 	
 	# Now update the ui nodes to display the data. 
 	$Positioning.visible = event_data.get('type',0) != 1
-	if data['type'] != 2:
-		animation_picker.text = DialogicUtil.get_animation_data(event_data.get('animation', 0))['name']
+	if data['type'] == 0:
+		animation_picker.text = event_data.get('animation', '[Default]').trim_suffix('.gd').capitalize()
+	elif data['type'] == 1:
+		animation_picker.text = event_data.get('animation', '[Default]').trim_suffix('.gd').capitalize()
 	else:
-		animation_picker.text = DialogicUtil.get_animation_data(event_data.get('animation', 5))['name']
+		animation_picker.text = event_data.get('animation', '[No animation]').trim_suffix('.gd').capitalize()
+		
+	animation_picker.custom_icon = get_icon("Animation", "EditorIcons") if event_data['animation'] != "[No Animation]" else get_icon("GuiRadioUnchecked", "EditorIcons")
+	if event_data['animation'] == "[Default]": animation_picker.custom_icon = get_icon("Favorites", "EditorIcons")
 	animation_length.value = event_data.get('animation_length', 1)
+	animation_length.visible = event_data.get('animation', '') != "[Default]"
+	$Animation/Label2.visible = event_data.get('animation', '') != "[Default]"
+	animation_repeat.value = event_data.get('animation_repeat', 1)
+	animation_repeat.visible = int(data.get('type', 0)) == 2
+	$Animation/Label3.visible = int(data.get('type', 0)) == 2
+	animation_wait_checkbox.pressed = event_data.get('animation_wait', false)
+	
 	z_index.value = int(event_data.get('z_index', 0))
 	mirrored_checkbox.pressed = event_data.get('mirror_portrait', false)
 	
@@ -64,27 +78,54 @@ func get_preview():
 
 func _on_AnimationPicker_about_to_show():
 	animation_picker.get_popup().clear()
-	var animation_data = DialogicUtil.animations()
-	for key in animation_data.keys():
-		if (animation_data[key]['type'] == 0 and event_data['type'] != 2) or \
-			(animation_data[key]['type'] == 1 and event_data['type'] == 2):
-			animation_picker.get_popup().add_icon_item(get_icon("Animation", "EditorIcons"), animation_data[key]['name'], key)
+	var animations = DialogicAnimaResources.get_available_animations()
+	var idx = 0
+	if event_data['type'] == 2:
+		animation_picker.get_popup().add_icon_item(get_icon("GuiRadioUnchecked", "EditorIcons"), "[No Animation]")
+		animation_picker.get_popup().set_item_metadata(idx, {'file': "[No Animation]"})
+		idx += 1
+	else:
+		animation_picker.get_popup().add_icon_item(get_icon("Favorites", "EditorIcons"), "[Default]")
+		animation_picker.get_popup().set_item_metadata(idx, {'file': "[Default]"})
+		idx += 1
+	for animation_name in animations:
+		if (event_data['type'] == 0 and '_in' in animation_name) \
+		or (event_data['type'] == 1 and '_out' in animation_name) \
+		or (event_data['type'] == 2 and not '_in' in animation_name and not '_out' in animation_name):
+			animation_picker.get_popup().add_icon_item(get_icon("Animation", "EditorIcons"), animation_name.get_file().trim_suffix('.gd').capitalize())
+			animation_picker.get_popup().set_item_metadata(idx, {'file': animation_name.get_file()})
+			idx +=1
 	
 
 
 func _on_AnimationPicker_index_pressed(index):
-	event_data['animation'] = animation_picker.get_popup().get_item_id(index)
+	event_data['animation'] = animation_picker.get_popup().get_item_metadata(index)['file']
 	
-	var data = DialogicUtil.get_animation_data(event_data['animation'])
-	if animation_picker.text != data['name']:
-		animation_picker.text = data['name']
-		animation_length.value = data['default_length']
+	animation_picker.custom_icon = get_icon("Animation", "EditorIcons") if event_data['animation'] != "[No Animation]" else get_icon("GuiRadioUnchecked", "EditorIcons")
+	if event_data['animation'] == "[Default]": animation_picker.custom_icon = get_icon("Favorites", "EditorIcons")
+	animation_picker.text = animation_picker.get_popup().get_item_text(index)
+	
+	animation_length.visible = event_data.get('animation', '') != "[Default]"
+	$Animation/Label2.visible = event_data.get('animation', '') != "[Default]"
 	
 	# informs the parent about the changes!
 	data_changed()
 
 func _on_AnimationLength_value_changed(value):
 	event_data['animation_length'] = value
+	
+	# informs the parent about the changes!
+	data_changed()
+
+
+func _on_Repeat_value_changed(value):
+	event_data['animation_repeat'] = value
+	
+	# informs the parent about the changes!
+	data_changed()
+
+func on_WaitForAnimation_toggled(toggled):
+	event_data['animation_wait'] = toggled
 	
 	# informs the parent about the changes!
 	data_changed()

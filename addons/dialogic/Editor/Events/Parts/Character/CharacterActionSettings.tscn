@@ -28,7 +28,7 @@ __meta__ = {
 }
 
 [node name="Animation" type="HBoxContainer" parent="."]
-margin_right = 297.0
+margin_right = 581.0
 margin_bottom = 24.0
 
 [node name="Label" parent="Animation" instance=ExtResource( 2 )]
@@ -61,9 +61,41 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="Label3" parent="Animation" instance=ExtResource( 2 )]
+margin_left = 301.0
+margin_top = 5.0
+margin_right = 349.0
+margin_bottom = 19.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Repeat:"
+
+[node name="Repeat" type="SpinBox" parent="Animation"]
+margin_left = 353.0
+margin_right = 427.0
+margin_bottom = 24.0
+min_value = 1.0
+value = 1.0
+rounded = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label4" parent="Animation" instance=ExtResource( 2 )]
+margin_left = 431.0
+margin_top = 5.0
+margin_right = 553.0
+margin_bottom = 19.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Wait for animation:"
+
+[node name="WaitForAnimation" type="CheckBox" parent="Animation"]
+margin_left = 557.0
+margin_right = 581.0
+margin_bottom = 24.0
+
 [node name="Positioning" type="HBoxContainer" parent="."]
 margin_top = 28.0
-margin_right = 297.0
+margin_right = 581.0
 margin_bottom = 52.0
 
 [node name="Label" parent="Positioning" instance=ExtResource( 2 )]

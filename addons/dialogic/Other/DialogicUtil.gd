@@ -516,10 +516,10 @@ static func resource_fixer():
 						'character':i.get('character', ''),
 						'portrait':i.get('portrait',''),
 						'position':i.get('position'),
-						'animation':i.get('animation', get_default_animation_id()),
-						'animation_length':i.get('character', 1),
+						'animation':'[Default]',
+						'animation_length':0.5,
 						'mirror_portrait':i.get('mirror', false),
-						'z_index':i.get('z_index', 0),
+						'z_index': i.get('z_index', 0),
 						}
 					i = new_event
 				elif i['event_id'] == 'dialogic_003':
@@ -527,8 +527,8 @@ static func resource_fixer():
 						'event_id':'dialogic_002',
 						'type':1,
 						'character':i.get('character', ''),
-						'animation':i.get('animation', get_default_animation_id()),
-						'animation_length':i.get('character', 1),
+						'animation':'[Default]',
+						'animation_length':0.5,
 						'mirror_portrait':i.get('mirror', false),
 						'z_index':i.get('z_index', 0),
 						}
@@ -536,7 +536,6 @@ static func resource_fixer():
 			timeline['events'] = events
 			DialogicResources.set_timeline(timeline)
 	DialogicResources.set_settings_value("updates", "updatenumber", 3)
-	
 
 static func get_editor_scale(ref) -> float:
 	# There hasn't been a proper way of reliably getting the editor scale
@@ -563,34 +562,6 @@ static func list_dir(path: String) -> Array:
 		file = dir.get_next()
 	return files
 
-## *****************************************************************************
-##							ANIMATION-HELPERS
-## *****************************************************************************
-static func animations():
-	return {
-	0:{'type':0, "name": "[Default]", "default_length":1},
-	1:{'type':0, "name": "Instant", "default_length": 0},
-	2:{'type':0, "name": "Float", "default_length": 0.5},
-	3:{'type':0, "name": "Fade", "default_length": 0.5},
-	4:{'type':0, "name": "Pop", "default_length": 1},
-	5:{'type':1, "name": "[No Animation]", "default_length": 0},
-	6:{'type':1, "name": "Horizontal Shake", "default_length": 3},
-	7:{'type':1, "name": "Vertical Shake", "default_length": 1},
-	8:{'type':1, "name": "Shake", "default_length": 1},
-	9:{'type':1, "name": "Pop", "default_length":1},
-	}
-
-static func get_animation_names():
-	var dict = {}
-	for id in animations().keys():
-		dict[animations()[id]['name']] = id
-	return dict
-
-static func get_animation_data(id):
-	return animations()[int(id)]
-
-static func get_default_animation_id():
-	return 2
 
 ## *****************************************************************************
 ##							DIALOGIC_SORTER CLASS

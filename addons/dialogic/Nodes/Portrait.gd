@@ -17,6 +17,7 @@ var fading_out = false
 
 var current_state := {'character':'', 'portrait':'', 'position':'', 'mirrored':false}
 
+signal animation_finished
 
 func init(expression: String = '') -> void:
 	set_portrait(expression)
@@ -26,6 +27,8 @@ func _ready():
 	if debug:
 		print('Character data loaded: ', character_data)
 		print(rect_position, $TextureRect.rect_size)
+	
+	$AnimationTween.connect('finished_animation', self, 'emit_signal', ['animation_finished'])
 
 
 func set_portrait(expression: String) -> void:
@@ -80,10 +83,7 @@ func set_mirror(value):
 		$TextureRect.flip_h = value
 
 
-func move_to_position(position_offset, animation= 0, time = 4):
-	print("position!!!", animation, " ", time)
-	modulate = Color.transparent
-	
+func move_to_position(position_offset):
 	var positions = {
 		'left': Vector2(-400, 0),
 		'right': Vector2(+400, 0),
@@ -108,107 +108,27 @@ func move_to_position(position_offset, animation= 0, time = 4):
 				character_data['data']['offset_x'],
 				character_data['data']['offset_y']
 			)
-			
+	
 	if $TextureRect.get('texture'):
 		rect_position -= Vector2(
 			$TextureRect.texture.get_width() * 0.5,
 			$TextureRect.texture.get_height()
 		) * custom_scale
-		
-	animate_in(animation, time)
-
-func animate_in(animation = 0, time = -1):
-	if animation == -1:
-		animation = DialogicUtil.get_default_animation_id()
-	var data = DialogicUtil.get_animation_data(animation)
 	
-	if time == -1:
-		time = data['default_length']
 
-	## INSTANT animation:
-	if animation == 1:
-		modulate = Color.white
-		return
-	## FLOAT_UP animation:
-	elif animation == 2:
-		var end_pos = Vector2(0, -40) # starting at center
-		if direction == 'right':
-			end_pos = Vector2(+40, 0)
-		elif direction == 'left':
-			end_pos = Vector2(-40, 0)
-		else:
-			rect_position += Vector2(0, 40)
-
-		$TweenPosition.interpolate_property(
-			self, "rect_position", rect_position, rect_position + end_pos, time,
-			Tween.TRANS_LINEAR, Tween.EASE_IN_OUT
-		)
-		$TweenPosition.start()
-		tween_modulate(Color.transparent, Color.white, time)
-	## FADE animation
-	elif animation == 3:
-		tween_modulate(Color.transparent, Color.white, time)
-	## POP animation
-	elif animation == 4:
-		$Tween.interpolate_property(self, 'modulate', Color.transparent, Color.white, time, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
-		$TextureRect.rect_pivot_offset = $TextureRect.rect_size/2
-		$Tween.interpolate_property($TextureRect, 'rect_scale', Vector2(0,0), Vector2(1,1), time, Tween.TRANS_BOUNCE, Tween.EASE_OUT)
-	
-	$Tween.start()
-
-func animate_out(animation = 0, time = -1):
-	if animation == -1:
-		animation = DialogicUtil.get_default_animation_id()
-	var data = DialogicUtil.get_animation_data(animation)
-	
-	if time == -1:
-		time = data['default_length']
-	
-	## INSTANT animation:
-	if animation == 1:
-		modulate = Color.transparent
-	## FLOAT_UP animation:
-	elif animation == 2:
-		var end_pos = Vector2(0, -40) # starting at center
-		if direction == 'right':
-			end_pos = Vector2(+40, 0)
-		elif direction == 'left':
-			end_pos = Vector2(-40, 0)
-		else:
-			rect_position += Vector2(0, 40)
-		tween_modulate(modulate, Color.transparent, time)
-		$TweenPosition.interpolate_property(
-			self, "rect_position", rect_position, rect_position - end_pos, time,
-			Tween.TRANS_LINEAR, Tween.EASE_IN_OUT
-		)
-		$TweenPosition.start()
-	## FADE animation
-	elif animation == 3:
-		tween_modulate(modulate, Color.transparent, time)
-	## POP animation
-	elif animation == 4:
-		$Tween.interpolate_property(self, 'modulate', null, Color.transparent, time, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
-		$TextureRect.rect_pivot_offset = $TextureRect.rect_size/2
-		$Tween.interpolate_property($TextureRect, 'rect_scale', Vector2(1,1), Vector2(0,0), time, Tween.TRANS_BOUNCE, Tween.EASE_IN)
-	
-	$Tween.start()
-	$Tween.connect("tween_all_completed", self, "queue_free")
-
-func animate(animation = 5, time = 1):
-	if animation == 5: # the NO ANIMATION animation
+func animate(animation_name = '[No Animation]', time = 1, loop = 1, delete = false ):
+	if animation_name == "[No Animation]":
 		return
 	
-	if animation == 6: # Horizontal Shake
-		pass
-	if animation == 7: # Vertical Shake
-		pass
-	if animation == 8: # Shake
-		pass
-	if animation == 9: # Pop
-		pass
+	$AnimationTween.loop = loop
+	$AnimationTween.play($TextureRect, animation_name, time)
+	
+	if delete:
+		$AnimationTween.connect("tween_all_completed", self, "queue_free")
+
 
 func focus():
-	if not ($Tween.is_active() or fading_out):
+	if not ($ModulationTween.is_active() or fading_out):
 		tween_modulate(modulate, Color(1,1,1, 1))
 
 
@@ -220,13 +140,13 @@ func focusout(dim_color = Color(0.5, 0.5, 0.5, 1.0)):
 
 
 func tween_modulate(from_value, to_value, time = 0.5):
-	$Tween.stop(self, 'modulation')
-	$Tween.interpolate_property(
+	$ModulationTween.stop(self, 'modulation')
+	$ModulationTween.interpolate_property(
 		self, "modulate", from_value, to_value, time,
 		Tween.TRANS_LINEAR, Tween.EASE_IN_OUT
 	)
-	$Tween.start()
-	return $Tween
+	$ModulationTween.start()
+	return $ModulationTween
 
 
 func is_scene(path) -> bool:

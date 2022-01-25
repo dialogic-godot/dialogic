@@ -26,7 +26,7 @@ func load_data(data:Dictionary):
 		$HBox/Label.text = 'at position'
 	elif data.get('type', 0) == 2:
 		if not data.get('change_position', false):
-			$HBox/Label.text = '(no position change)'
+			$HBox/Label.text = '(same position)'
 		else:
 			$HBox/Label.text = 'to position'
 	
@@ -83,7 +83,7 @@ func on_EnablePosition_toggled(toggled):
 	enable_position.icon = enable_icon if not enable_position.pressed else disable_icon
 	
 	if !toggled:
-		$HBox/Label.text = '(no position change)'
+		$HBox/Label.text = '(same position)'
 	else:
 		$HBox/Label.text = 'to position'
 	
