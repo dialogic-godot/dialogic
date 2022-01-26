@@ -319,6 +319,11 @@ func load_theme(filename):
 	
 	load_audio(theme)
 	
+	if theme.get_value('box', 'portraits_behind_dialog_box', true):
+		move_child($Portraits, 0)
+	else:
+		move_child($Portraits, 1)
+	
 	return theme
 
 
