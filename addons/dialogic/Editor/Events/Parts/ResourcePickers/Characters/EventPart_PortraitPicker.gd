@@ -8,13 +8,18 @@ export (bool) var allow_definition := true
 
 ## node references
 onready var picker_menu = $HBox/MenuButton
-onready var preview = $Node2D/PreviewContainer
+onready var preview = $Preview/PreviewContainer
 onready var preview_title = preview.get_node("VBox/Title")
 onready var preview_texture = preview.get_node("VBox/TextureRect")
-
 var current_hovered = null
 
 var character_data = null
+
+# theme
+var no_change_icon
+var definition_icon
+var portrait_icon
+
 
 # used to connect the signals
 func _ready():
@@ -27,13 +32,31 @@ func _ready():
 	preview_title.set('custom_fonts/font', get_font("title", "EditorFonts"))
 	preview.set('custom_styles/panel', get_stylebox("panel", "PopupMenu"))
 
+	# Themeing
+	no_change_icon = get_icon("GuiRadioUnchecked", "EditorIcons")
+	definition_icon = load("res://addons/dialogic/Images/Resources/definition.svg")
+	portrait_icon = load("res://addons/dialogic/Images/Event Icons/Portrait.svg")
+
 # called by the event block
 func load_data(data:Dictionary):
 	# First set the event_data
 	.load_data(data)
 	
 	# Now update the ui nodes to display the data. 
-	picker_menu.text = event_data['portrait']
+	if event_data['portrait'].empty():
+		if allow_dont_change:
+			picker_menu.text = "(Don't change)"
+			picker_menu.custom_icon = no_change_icon
+		else:
+			picker_menu.text = "Default"
+			picker_menu.custom_icon = portrait_icon
+	else:
+		if event_data['portrait'] == "[Definition]":
+			picker_menu.text = "[Value]"
+			picker_menu.custom_icon = definition_icon
+		else:
+			picker_menu.text = event_data['portrait']
+			picker_menu.custom_icon = portrait_icon
 
 # has to return the wanted preview, only useful for body parts
 func get_preview():
@@ -42,12 +65,18 @@ func get_preview():
 func _on_PickerMenu_selected(index):
 	if index == 0 and allow_dont_change:
 		event_data['portrait'] = "(Don't change)"
+		picker_menu.custom_icon = no_change_icon
 	elif allow_definition and ((allow_dont_change and index == 1) or index == 0):
 		event_data['portrait'] = "[Definition]"
+		picker_menu.custom_icon = definition_icon
 	else:
 		event_data['portrait'] = picker_menu.get_popup().get_item_text(index)
-	
-	picker_menu.text = event_data['portrait']
+		picker_menu.custom_icon = portrait_icon
+	# TODO in 2.0
+	if event_data['portrait'] == "[Definition]":
+		picker_menu.text = "[Value]"
+	else:
+		picker_menu.text = event_data['portrait']
 	
 	# informs the parent about the changes!
 	data_changed()
@@ -63,14 +92,17 @@ func _on_PickerMenu_about_to_show():
 	var index = 0
 	if allow_dont_change:
 		picker_menu.get_popup().add_item("(Don't change)")
+		picker_menu.get_popup().set_item_icon(index, no_change_icon)
 		index += 1
 	if allow_definition:
-		picker_menu.get_popup().add_item("[Definition]")
+		picker_menu.get_popup().add_item("[Value]")
+		picker_menu.get_popup().set_item_icon(index, definition_icon)
 		index += 1
 	if event_data['character']:
 		if character_data.has('portraits'):
 			for p in character_data['portraits']:
 				picker_menu.get_popup().add_item(p['name'])
+				picker_menu.get_popup().set_item_icon(index, portrait_icon)
 				index += 1
 
 func popup_gui_input(event):
@@ -99,7 +131,7 @@ func popup_gui_input(event):
 					return
 			
 			## show the preview
-			preview.rect_position.x = picker_menu.get_popup().rect_size.x + 20
+			preview.rect_position.x = picker_menu.get_popup().rect_size.x + 130
 			var current = character_data['portraits'][current_hovered + idx_add]
 			preview_title.text = '  ' + current['name']
 			preview_title.icon = null

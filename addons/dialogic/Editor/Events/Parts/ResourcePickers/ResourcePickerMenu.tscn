@@ -1,0 +1,35 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://addons/dialogic/Editor/Events/styles/ResourceMenuNormal.tres" type="StyleBox" id=1]
+[ext_resource path="res://addons/dialogic/Editor/Events/styles/ResourceMenuHover.tres" type="StyleBox" id=2]
+[ext_resource path="res://addons/dialogic/Editor/Events/Parts/ResourcePickers/ResourcePickerMenu.gd" type="Script" id=3]
+
+[node name="MenuButton" type="MenuButton"]
+margin_right = 94.0
+margin_bottom = 22.0
+focus_mode = 2
+size_flags_vertical = 4
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_styles/hover = ExtResource( 2 )
+custom_styles/pressed = ExtResource( 2 )
+custom_styles/normal = ExtResource( 1 )
+text = "Resource"
+flat = false
+align = 0
+script = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Icon" type="TextureRect" parent="."]
+modulate = Color( 0, 0, 0, 1 )
+anchor_bottom = 1.0
+margin_left = 2.0
+margin_top = 2.0
+margin_right = 20.0
+margin_bottom = -2.0
+expand = true
+stretch_mode = 6
+__meta__ = {
+"_edit_use_anchors_": false
+}
