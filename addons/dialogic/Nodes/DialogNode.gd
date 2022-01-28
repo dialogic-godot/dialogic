@@ -1263,7 +1263,7 @@ func get_portrait_name(event_data):
 	return char_portrait
 
 
-func insert_animation_data(event_data, type = 'join', default = 'float_in_up'):
+func insert_animation_data(event_data, type = 'join', default = 'fade_in_up'):
 	var animation = event_data.get('animation', '[Default]')
 	var length = event_data.get('animation_length', 0.5)
 	if animation == '[Default]':

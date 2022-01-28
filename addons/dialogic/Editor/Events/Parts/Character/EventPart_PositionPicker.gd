@@ -68,6 +68,7 @@ func clear_all_positions():
 
 
 func check_active_position(active_color = Color("#ffffff")):
+	if not event_data.has('position'): return
 	var index = 0
 	for p in positions_container.get_children():
 		if event_data['position'][str(index)]:
