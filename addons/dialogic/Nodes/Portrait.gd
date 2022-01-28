@@ -120,6 +120,9 @@ func animate(animation_name = '[No Animation]', time = 1, loop = 1, delete = fal
 	if animation_name == "[No Animation]":
 		return
 	
+	if '_in' in animation_name:
+		$TextureRect.modulate = Color(1,1,1,0)
+	
 	$AnimationTween.loop = loop
 	$AnimationTween.play($TextureRect, animation_name, time)
 	
@@ -128,7 +131,7 @@ func animate(animation_name = '[No Animation]', time = 1, loop = 1, delete = fal
 
 
 func focus():
-	if not ($ModulationTween.is_active() or fading_out):
+	if not fading_out:
 		tween_modulate(modulate, Color(1,1,1, 1))
 
 
