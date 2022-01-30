@@ -759,7 +759,10 @@ func event_handler(event: Dictionary):
 			current_background = event['background']
 			if background != null:
 				background.name = "BackgroundFadingOut"
-				background.fade_out(fade_time)
+				if !value:
+					background.fade_out(fade_time)
+				else:
+					background.remove_with_delay(fade_time)
 				background = null
 			
 			if value != '':
