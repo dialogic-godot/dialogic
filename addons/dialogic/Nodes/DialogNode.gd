@@ -489,7 +489,7 @@ func _on_text_completed():
 					waiting_time = $"FX/CharacterVoice".remaining_time()
 				else:
 					waiting_time = float(waiting_time)
-				print("Waiting time: " + String(waiting_time))
+				#print("Waiting time: " + String(waiting_time))
 				#Remove these comments once replaced with proper code.				
 				# - KvaGram
 				#original line
