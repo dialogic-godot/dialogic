@@ -612,7 +612,7 @@ func event_handler(event: Dictionary):
 				grab_portrait_focus(character_data, event)
 				if character_data.get('data', {}).get('theme', '') and current_theme_file_name != character_data.get('data', {}).get('theme', ''):
 					current_theme = load_theme(character_data.get('data', {}).get('theme', ''))
-				elif current_default_theme and  current_theme_file_name != current_default_theme:
+				elif !character_data.get('data', {}).get('theme', '') and current_default_theme and  current_theme_file_name != current_default_theme:
 					current_theme = load_theme(current_default_theme)
 
 			#voice 
@@ -686,7 +686,7 @@ func event_handler(event: Dictionary):
 				
 				if character_data.get('data', {}).get('theme', '') and current_theme_file_name != character_data.get('data', {}).get('theme', ''):
 					current_theme = load_theme(character_data.get('data', {}).get('theme', ''))
-				elif current_default_theme and  current_theme_file_name != current_default_theme:
+				elif !character_data.get('data', {}).get('theme', '') and current_default_theme and  current_theme_file_name != current_default_theme:
 					current_theme = load_theme(current_default_theme)
 			#voice 
 			handle_voice(event)
