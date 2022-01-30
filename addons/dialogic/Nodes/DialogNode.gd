@@ -489,7 +489,7 @@ func _on_text_completed():
 					waiting_time = $"FX/CharacterVoice".remaining_time()
 				else:
 					waiting_time = float(waiting_time)
-				print("Waiting time: " + String(waiting_time))
+				#print("Waiting time: " + String(waiting_time))
 				#Remove these comments once replaced with proper code.				
 				# - KvaGram
 				#original line
@@ -612,7 +612,7 @@ func event_handler(event: Dictionary):
 				grab_portrait_focus(character_data, event)
 				if character_data.get('data', {}).get('theme', '') and current_theme_file_name != character_data.get('data', {}).get('theme', ''):
 					current_theme = load_theme(character_data.get('data', {}).get('theme', ''))
-				elif current_default_theme and  current_theme_file_name != current_default_theme:
+				elif !character_data.get('data', {}).get('theme', '') and current_default_theme and  current_theme_file_name != current_default_theme:
 					current_theme = load_theme(current_default_theme)
 
 			#voice 
@@ -686,7 +686,7 @@ func event_handler(event: Dictionary):
 				
 				if character_data.get('data', {}).get('theme', '') and current_theme_file_name != character_data.get('data', {}).get('theme', ''):
 					current_theme = load_theme(character_data.get('data', {}).get('theme', ''))
-				elif current_default_theme and  current_theme_file_name != current_default_theme:
+				elif !character_data.get('data', {}).get('theme', '') and current_default_theme and  current_theme_file_name != current_default_theme:
 					current_theme = load_theme(current_default_theme)
 			#voice 
 			handle_voice(event)
@@ -759,7 +759,10 @@ func event_handler(event: Dictionary):
 			current_background = event['background']
 			if background != null:
 				background.name = "BackgroundFadingOut"
-				background.fade_out(fade_time)
+				if !value:
+					background.fade_out(fade_time)
+				else:
+					background.remove_with_delay(fade_time)
 				background = null
 			
 			if value != '':

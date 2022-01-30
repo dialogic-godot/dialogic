@@ -236,6 +236,7 @@ func load_theme(theme: ConfigFile):
 	name_style.set('content_margin_left', name_padding.x)
 	name_style.set('content_margin_right', name_padding.x)
 	name_style.set('content_margin_bottom', name_padding.y)
+	name_style.set('content_margin_top', name_padding.y)
 	
 	var name_shadow_offset = theme.get_value('name', 'shadow_offset', Vector2(2,2))
 	if theme.get_value('name', 'shadow_visible', true):
