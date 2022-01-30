@@ -506,11 +506,9 @@ static func resource_fixer():
 		print("[D] Update NR. "+str(update_index)+" | Removes Character Join and Character Leave events in favor of the new 'Character' event. No need to worry about this.")
 		for timeline_info in get_timeline_list():
 			var timeline = DialogicResources.get_timeline_json(timeline_info['file'])
-			print('\n-----------------------------------------\n TIMELINE\n')
 			var events = timeline["events"]
 			for i in range(len(events)):
 				if events[i]['event_id'] == 'dialogic_002':
-					print("event_previous: ", events[i])
 					var new_event = {
 						'event_id':'dialogic_002',
 						'type':0,
@@ -523,9 +521,7 @@ static func resource_fixer():
 						'z_index': events[i].get('z_index', 0),
 						}
 					events[i] = new_event
-					print("event_updated: ", events[i])
 				elif events[i]['event_id'] == 'dialogic_003':
-					print("event_previous: ", events[i])
 					var new_event = {
 						'event_id':'dialogic_002',
 						'type':1,
@@ -536,9 +532,7 @@ static func resource_fixer():
 						'z_index':events[i].get('z_index', 0),
 						}
 					events[i] = new_event
-					print("event_updated: ", events[i])
 			timeline['events'] = events
-			print(timeline['events'])
 			DialogicResources.set_timeline(timeline)
 	DialogicResources.set_settings_value("updates", "updatenumber", 3)
 
