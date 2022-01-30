@@ -662,7 +662,7 @@ func event_handler(event: Dictionary):
 							yield($DialogicTimer, "timeout")
 					else:
 						for p in $Portraits.get_children():
-							if p.character_data['file'] == event['character']:
+							if is_instance_valid(p) and p.character_data['file'] == event['character']:
 								event = insert_animation_data(event, 'leave', 'fade_out_down.gd')
 								p.animate(event.get('animation', 'instant_out.gd'), event.get('animation_length', 1), 1, true)
 								if event.get('animation_wait', false):
