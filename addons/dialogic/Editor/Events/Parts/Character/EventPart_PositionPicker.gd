@@ -60,6 +60,8 @@ func position_button_pressed(name):
 	data_changed()
 
 func clear_all_positions():
+	if not event_data.get('position', false):
+		event_data['position'] = {}
 	for i in range(5):
 		event_data['position'][str(i)] = false
 	for p in positions_container.get_children():
@@ -68,7 +70,7 @@ func clear_all_positions():
 
 
 func check_active_position(active_color = Color("#ffffff")):
-	if not event_data.has('position'): return
+	if not event_data.get('position', false): return
 	var index = 0
 	for p in positions_container.get_children():
 		if event_data['position'][str(index)]:

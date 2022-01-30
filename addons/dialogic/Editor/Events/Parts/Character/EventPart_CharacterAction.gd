@@ -55,6 +55,14 @@ func _on_ActionTypePicker_about_to_show():
 
 
 func _on_ActionTypePicker_index_pressed(index):
+	if index != event_data['type']:
+		if index == 0:
+			event_data['portrait'] = 'Default'
+			event_data['animation'] = '[Default]'
+		elif index == 1:
+			event_data['animation'] = '[Default]'
+		elif index == 2:
+			event_data['portrait'] = "(Don't change)"
 	event_data['type'] = index
 	
 	load_data(event_data)

@@ -83,7 +83,12 @@ func update_to_character():
 # when an index is selected on one of the menus.
 func _on_PickerMenu_selected(index, menu):
 	var metadata = menu.get_item_metadata(index)
-	
+	if event_data['character'] != metadata.get('file',''):
+		if event_data.get('event_id') == 'dialogic_002':
+			if event_data.get('type') == 0:
+				event_data['portrait'] = 'Default'
+			elif event_data.get('type') == 2:
+				event_data['portrait'] = "(Don't change)"
 	event_data['character'] = metadata.get('file','')
 	
 	update_to_character()
