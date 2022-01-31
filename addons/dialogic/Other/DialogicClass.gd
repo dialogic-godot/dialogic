@@ -93,14 +93,6 @@ static func start(timeline: String = '', default_timeline: String ='', dialog_sc
 	# Just in case everything else fails.
 	return returned_dialog_node
 
-static func next_event(discreetly: bool = false):
-	
-	# If there is a dialog node
-	if has_current_dialog_node():
-		var dialog_node = Engine.get_main_loop().get_meta('latest_dialogic_node')
-		
-		dialog_node.next_event(discreetly)
-
 # Loads the given timeline into the active DialogNode
 # This means it's state (theme, characters, background, music) is preserved.
 #
@@ -120,6 +112,16 @@ static func change_timeline(timeline: String) -> void:
 	else:
 		print("[D] Tried to change timeline, but no DialogNode exists!")
 
+# Immediately plays the next event.
+#
+# @param discreetly				determines whether the Passing Audio will be played in the process
+static func next_event(discreetly: bool = false):
+	
+	# If there is a dialog node
+	if has_current_dialog_node():
+		var dialog_node = Engine.get_main_loop().get_meta('latest_dialogic_node')
+		
+		dialog_node.next_event(discreetly)
 
 
 ################################################################################
