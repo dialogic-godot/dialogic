@@ -43,12 +43,13 @@ event_data = {
 "event_id": "dialogic_011",
 "value": ""
 }
-event_color = Color( 0.462745, 0.133333, 1, 1 )
+event_color = Color( 0.619608, 0.466667, 0.92549, 1 )
 event_icon = ExtResource( 1 )
 header_scene = ExtResource( 4 )
 expand_on_default = false
 needs_indentation = true
 help_page_path = "res://addons/dialogic/Documentation/Content/Events/011.md"
+event_category = 1
 
 [node name="PanelContainer" parent="." index="1"]
 margin_right = 299.0
@@ -72,7 +73,7 @@ margin_left = 20.0
 margin_right = 20.0
 
 [node name="IconPanel" parent="PanelContainer/MarginContainer/VBoxContainer/Header/CenterContainer" index="0"]
-self_modulate = Color( 0.462745, 0.133333, 1, 1 )
+self_modulate = Color( 0.619608, 0.466667, 0.92549, 1 )
 
 [node name="IconTexture" parent="PanelContainer/MarginContainer/VBoxContainer/Header/CenterContainer/IconPanel" index="0"]
 self_modulate = Color( 0, 0, 0, 1 )

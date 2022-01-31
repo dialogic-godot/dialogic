@@ -14,11 +14,12 @@ event_data = {
 "text": "",
 "title": ""
 }
-event_color = Color( 0.462745, 0.133333, 1, 1 )
+event_color = Color( 0.396078, 0.439216, 0.517647, 1 )
 event_icon = ExtResource( 6 )
 header_scene = ExtResource( 5 )
 body_scene = ExtResource( 4 )
 expand_on_default = false
+event_category = 2
 
 [node name="PanelContainer" parent="." index="1"]
 margin_right = 270.0
@@ -33,7 +34,7 @@ margin_right = 264.0
 margin_right = 258.0
 
 [node name="IconPanel" parent="PanelContainer/MarginContainer/VBoxContainer/Header/CenterContainer" index="0"]
-self_modulate = Color( 0.462745, 0.133333, 1, 1 )
+self_modulate = Color( 0.396078, 0.439216, 0.517647, 1 )
 
 [node name="IconTexture" parent="PanelContainer/MarginContainer/VBoxContainer/Header/CenterContainer/IconPanel" index="0"]
 self_modulate = Color( 0, 0, 0, 1 )
