@@ -50,7 +50,7 @@ func load_data(data:Dictionary):
 		$HBox/Label.text = "with portrait"
 	
 	# Now update the ui nodes to display the data. 
-	if event_data['portrait'].empty():
+	if event_data.get('portrait', '').empty():
 		# if this is a text/question event or character event in update mode 
 		if allow_dont_change:
 			picker_menu.text = "(Don't change)"
