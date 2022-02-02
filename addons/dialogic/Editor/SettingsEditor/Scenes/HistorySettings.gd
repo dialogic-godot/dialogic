@@ -6,7 +6,7 @@ func _ready():
 	_on_EnableHistoryLogging_toggled($GridContainer/HistoryBox/EnableHistoryLogging.pressed)
 
 func _on_EnableHistoryLogging_toggled(button_pressed):
-	$GridContainer/ThemeBox/EnableDynamicTheme.disabled = !button_pressed
+	#$GridContainer/ThemeBox/EnableDynamicTheme.disabled = !button_pressed
 	$GridContainer/OpenBox/EnableDefaultOpenButton.disabled = !button_pressed
 	$GridContainer/CloseBox/EnableDefaultCloseButton.disabled = !button_pressed
 	$GridContainer/ChoiceBox/LogChoices.disabled = !button_pressed
@@ -22,7 +22,7 @@ func _on_EnableHistoryLogging_toggled(button_pressed):
 	$GridContainer/ContainerMargin/MarginX.editable = button_pressed
 	$GridContainer/ContainerMargin/MarginY.editable = button_pressed
 	
-	$GridContainer/ThemeBox.visible = button_pressed
+	#$GridContainer/ThemeBox.visible = button_pressed
 	$GridContainer/OpenBox.visible = button_pressed
 	$GridContainer/CloseBox.visible = button_pressed
 	$GridContainer/ChoiceBox.visible = button_pressed
