@@ -63,7 +63,7 @@ func initalize_history():
 		eventsToLog.push_back('dialogic_003')
 	
 	# Grab some settings and make the boxes up right
-	var button_anchor = get_parent().settings.get_value('history', 'history_button_position', 2)
+	var button_anchor = int(get_parent().settings.get_value('history', 'history_button_position', 2))
 	var screen_margin_x = get_parent().settings.get_value('history', 'history_screen_margin_x', 0)
 	var screen_margin_y = get_parent().settings.get_value('history', 'history_screen_margin_y', 0)
 	var container_margin_X = get_parent().settings.get_value('history', 'history_container_margin_x', 0)

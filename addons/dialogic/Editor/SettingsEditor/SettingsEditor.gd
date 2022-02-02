@@ -244,7 +244,7 @@ func _on_item_toggled(value: bool, section: String, key: String):
 
 
 func _on_button_history_button_position_selected(index):
-	set_value('history', 'history_button_position', index)
+	set_value('history', 'history_button_position', str(index))
 
 
 func _spinbox_val_changed(newValue :float, spinbox_name):
