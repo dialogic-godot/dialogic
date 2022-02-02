@@ -980,7 +980,7 @@ func change_timeline(timeline):
 func update_name(character) -> void:
 	if character.has('name'):
 		var parsed_name = character['name']
-		if character.has('display_name'):
+		if character['data'].get('display_name_bool', false):
 			if character['display_name'] != '':
 				parsed_name = character['display_name']
 		parsed_name = DialogicParser.parse_definitions(self, parsed_name, true, false)
