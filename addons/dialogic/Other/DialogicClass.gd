@@ -117,6 +117,10 @@ static func change_timeline(timeline: String) -> void:
 ## 						Test to see if a timeline exists
 ################################################################################
 
+## Check to see if a timeline with a given name/path exists. Useful for verifying
+## before calling a timeline, or for automated tests to make sure timeline calls 
+## are valid. Returns a boolean of true if the timeline exists, and false if it 
+## does not. 
 static func timeline_exists(timeline: String):
 	var timeline_file = _get_timeline_file_from_name(timeline)
 	if timeline_file:
