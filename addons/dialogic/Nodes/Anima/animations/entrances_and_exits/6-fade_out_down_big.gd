@@ -4,7 +4,7 @@ func generate_animation(anima_tween: Tween, data: Dictionary) -> void:
 	]
 
 	var position_frames = [
-		{ percentage = 0, from = 0 },
+		{ percentage = 0, from = 0},
 		{ percentage = 100, to = 2000 },
 	]
 
