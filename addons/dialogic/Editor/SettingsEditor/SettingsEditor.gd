@@ -309,7 +309,7 @@ func _on_AnimationDefault_about_to_show(picker, filter):
 	var idx = 0
 	for animation_name in animations:
 		if filter in animation_name:
-			picker.get_popup().add_icon_item(get_icon("Animation", "EditorIcons"), animation_name.get_file().trim_suffix('.gd').capitalize())
+			picker.get_popup().add_icon_item(get_icon("Animation", "EditorIcons"), DialogicUtil.beautify_filename(animation_name.get_file()))
 			picker.get_popup().set_item_metadata(idx, {'file': animation_name.get_file()})
 			idx +=1
 
