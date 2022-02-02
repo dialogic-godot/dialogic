@@ -155,7 +155,7 @@ func add_history_row_event(eventData):
 	HistoryTimeline.add_child(newHistoryRow)
 	newHistoryRow.load_theme(curTheme)
 	
-	var charDelimiter = get_parent().settings.get_value('history', 'history_character_delimiter', ':')
+	
 	var characterPrefix = ''
 	if eventData.has('character') and eventData.character != '':
 		var characterData = DialogicUtil.get_character(eventData.character)
@@ -166,10 +166,11 @@ func add_history_row_event(eventData):
 		elif characterData.data.get('display_name_bool', false)  == true:
 			characterName = characterData.data.get('display_name', '')
 		
-			if characterName != '':
-				var parsed_name = DialogicParser.parse_definitions(get_parent(), characterName, true, false)
-				var characterColor = characterData.data.get('color', Color.white)
-				characterPrefix = str("[color=",characterColor,"]",parsed_name, "[/color]", charDelimiter, ' ')
+		if characterName != '':
+			var charDelimiter = get_parent().settings.get_value('history', 'history_character_delimiter', '')
+			var parsed_name = DialogicParser.parse_definitions(get_parent(), characterName, true, false)
+			var characterColor = characterData.data.get('color', Color.white)
+			characterPrefix = str("[color=",characterColor,"]", parsed_name, "[/color]", charDelimiter, ' ')
 	
 	var audioData = ''
 	if eventData.has('voice_data'):
