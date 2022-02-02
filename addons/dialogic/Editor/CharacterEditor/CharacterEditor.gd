@@ -347,6 +347,7 @@ func _on_dir_selected(path, target):
 
 func _on_MirrorPortraitsCheckBox_toggled(button_pressed):
 	nodes['portrait_preview_full'].flip_h = button_pressed
+	nodes['portrait_preview_real'].flip_h = button_pressed
 
 
 func _on_Scale_value_changed(value):
