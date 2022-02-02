@@ -369,6 +369,16 @@ static func check_folders_recursive(folder_data: Dictionary, file_names:Array):
 	return [folder_data, file_names]
 
 
+static func beautify_filename(animation_name: String) -> String:
+	if animation_name == '[Default]' or animation_name == '[No Animation]':
+		return animation_name
+	var a_string = animation_name.get_file().trim_suffix('.gd')
+	if '-' in a_string:
+		a_string = a_string.split('-')[1].capitalize()
+	else:
+		a_string = a_string.capitalize()
+	return a_string
+
 ## *****************************************************************************
 ##								USEFUL FUNCTIONS
 ## *****************************************************************************

@@ -821,7 +821,8 @@ func event_handler(event: Dictionary):
 			var transition_duration = event.get('transition_duration', 1.0)
 			
 			# fade out characters
-			characters_leave_all(DialogicUtil.get_default_animation_id(), -1)
+			insert_animation_data(event, 'leave', 'fade_out_down')
+			characters_leave_all(event['animation'], event['animation_length'])
 			
 			# fade out background
 			var background = get_node_or_null('Background')
@@ -980,7 +981,7 @@ func change_timeline(timeline):
 func update_name(character) -> void:
 	if character.has('name'):
 		var parsed_name = character['name']
-		if character.has('display_name'):
+		if character['data'].get('display_name_bool', false):
 			if character['display_name'] != '':
 				parsed_name = character['display_name']
 		parsed_name = DialogicParser.parse_definitions(self, parsed_name, true, false)
