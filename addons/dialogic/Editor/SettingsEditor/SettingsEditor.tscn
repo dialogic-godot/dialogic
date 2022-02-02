@@ -1,11 +1,12 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://addons/dialogic/Editor/SettingsEditor/SettingsEditor.gd" type="Script" id=1]
 [ext_resource path="res://addons/dialogic/Editor/Common/SectionTitle.tscn" type="PackedScene" id=2]
 [ext_resource path="res://addons/dialogic/Editor/Common/TLabel.tscn" type="PackedScene" id=3]
 [ext_resource path="res://addons/dialogic/Editor/SettingsEditor/Scenes/SettingsCheckbox.tscn" type="PackedScene" id=4]
+[ext_resource path="res://addons/dialogic/Editor/Events/Parts/ResourcePickers/ResourcePickerMenu.tscn" type="PackedScene" id=5]
 
-[sub_resource type="Image" id=1]
+[sub_resource type="Image" id=3]
 data = {
 "data": PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ),
 "format": "LumAlpha8",
@@ -17,7 +18,7 @@ data = {
 [sub_resource type="ImageTexture" id=2]
 flags = 4
 flags = 4
-image = SubResource( 1 )
+image = SubResource( 3 )
 size = Vector2( 16, 16 )
 
 [node name="SettingsEditor" type="ScrollContainer"]
@@ -36,25 +37,25 @@ size_flags_vertical = 3
 
 [node name="HBoxContainer3" type="HBoxContainer" parent="VBoxContainer"]
 margin_right = 1024.0
-margin_bottom = 450.0
+margin_bottom = 516.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer3"]
-margin_right = 356.0
-margin_bottom = 450.0
+margin_right = 376.0
+margin_bottom = 516.0
 custom_constants/separation = 16
 
 [node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer"]
-margin_right = 356.0
+margin_right = 376.0
 margin_bottom = 74.0
 
 [node name="SectionTitle" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer" instance=ExtResource( 2 )]
-margin_right = 356.0
+margin_right = 376.0
 text = "Theme"
 text_key = "Theme"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer"]
 margin_top = 26.0
-margin_right = 356.0
+margin_right = 376.0
 margin_bottom = 46.0
 
 [node name="TLabel" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer/HBoxContainer" instance=ExtResource( 3 )]
@@ -71,21 +72,19 @@ margin_left = 102.0
 margin_right = 242.0
 margin_bottom = 20.0
 rect_min_size = Vector2( 140, 0 )
-text = "Default Theme"
-items = [ "Blue Box", null, false, 0, {
-"file": "theme-1639880832.cfg"
-}, "Default Theme", null, false, 1, {
-"file": "default-theme.cfg"
-}, "HistoryPanel", null, false, 2, {
-"file": "theme-1633099871.cfg"
-}, "theme-1633699445.cfg", null, false, 3, {
-"file": "theme-1633699445.cfg"
+text = "NightTheme"
+items = [ "NightTheme", null, false, 0, {
+"file": "theme-1621517668.cfg"
+}, "theme-1641891261.cfg", null, false, 1, {
+"file": "theme-1641891261.cfg"
+}, "theme-1642015751.cfg", null, false, 2, {
+"file": "theme-1642015751.cfg"
 } ]
-selected = 1
+selected = 0
 
 [node name="HBoxContainer3" type="HBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer"]
 margin_top = 50.0
-margin_right = 356.0
+margin_right = 376.0
 margin_bottom = 74.0
 
 [node name="TLabel3" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer/HBoxContainer3" instance=ExtResource( 3 )]
@@ -105,17 +104,17 @@ text = "1"
 
 [node name="VBoxContainer2" type="VBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer"]
 margin_top = 90.0
-margin_right = 356.0
-margin_bottom = 384.0
+margin_right = 376.0
+margin_bottom = 356.0
 
 [node name="SectionTitle" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2" instance=ExtResource( 2 )]
-margin_right = 356.0
+margin_right = 376.0
 text = "Dialog"
 text_key = "Dialog"
 
 [node name="SettingsCheckbox" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2" instance=ExtResource( 4 )]
 margin_top = 26.0
-margin_right = 356.0
+margin_right = 376.0
 margin_bottom = 50.0
 text = "New lines will create extra messages"
 default = true
@@ -124,7 +123,7 @@ settings_key = "new_lines"
 
 [node name="SettingsCheckbox2" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2" instance=ExtResource( 4 )]
 margin_top = 54.0
-margin_right = 356.0
+margin_right = 376.0
 margin_bottom = 78.0
 text = "Remove empty messages"
 default = true
@@ -133,26 +132,17 @@ settings_key = "remove_empty_messages"
 
 [node name="SettingsCheckbox3" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2" instance=ExtResource( 4 )]
 margin_top = 82.0
-margin_right = 356.0
+margin_right = 376.0
 margin_bottom = 106.0
 text = "Auto color character names in messages"
 default = true
 settings_section = "dialog"
 settings_key = "auto_color_names"
 
-[node name="SettingsCheckbox4" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2" instance=ExtResource( 4 )]
-margin_top = 110.0
-margin_right = 356.0
-margin_bottom = 134.0
-text = "Propagate input to rest of the Tree"
-default = true
-settings_section = "dialog"
-settings_key = "propagate_input"
-
 [node name="SettingsCheckbox5" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2" instance=ExtResource( 4 )]
-margin_top = 138.0
-margin_right = 356.0
-margin_bottom = 162.0
+margin_top = 110.0
+margin_right = 376.0
+margin_bottom = 134.0
 hint_tooltip = "If disabled, background images use \"Aspect covered\" mode."
 text = "Stretch background images "
 default = true
@@ -160,31 +150,31 @@ settings_section = "dialog"
 settings_key = "stretch_backgrounds"
 
 [node name="HSeparator2" type="HSeparator" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2"]
-margin_top = 166.0
-margin_right = 356.0
-margin_bottom = 170.0
+margin_top = 138.0
+margin_right = 376.0
+margin_bottom = 142.0
 
 [node name="TLabel6" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2" instance=ExtResource( 3 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_top = 174.0
-margin_right = 356.0
-margin_bottom = 188.0
+margin_top = 146.0
+margin_right = 376.0
+margin_bottom = 160.0
 text = "Audio for Text events:"
 text_key = "Audio for Text events:"
 
 [node name="SettingsCheckbox6" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2" instance=ExtResource( 4 )]
-margin_top = 192.0
-margin_right = 356.0
-margin_bottom = 216.0
+margin_top = 164.0
+margin_right = 376.0
+margin_bottom = 188.0
 text = "Enable audio for Text events"
 settings_section = "dialog"
 settings_key = "text_event_audio_enable"
 
 [node name="TextAudioDefaultBus" type="HBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2"]
-margin_top = 220.0
-margin_right = 356.0
-margin_bottom = 240.0
+margin_top = 192.0
+margin_right = 376.0
+margin_bottom = 212.0
 
 [node name="TLabel8" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2/TextAudioDefaultBus" instance=ExtResource( 3 )]
 anchor_right = 0.0
@@ -204,59 +194,127 @@ items = [ "Master", null, false, 0, null ]
 selected = 0
 
 [node name="HSeparator" type="HSeparator" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2"]
-margin_top = 244.0
-margin_right = 356.0
-margin_bottom = 248.0
+margin_top = 216.0
+margin_right = 376.0
+margin_bottom = 220.0
 
 [node name="TLabel9" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2" instance=ExtResource( 3 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_top = 252.0
-margin_right = 356.0
-margin_bottom = 266.0
+margin_top = 224.0
+margin_right = 376.0
+margin_bottom = 238.0
 text = "Experimental Translations:"
 text_key = "Experimental Translations:"
 
 [node name="SettingsCheckbox7" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer2" instance=ExtResource( 4 )]
-margin_top = 270.0
-margin_right = 356.0
-margin_bottom = 294.0
+margin_top = 242.0
+margin_right = 376.0
+margin_bottom = 266.0
 text = "Inputs for text events will be treated as keys for tr()"
 settings_section = "dialog"
 settings_key = "translations"
 
 [node name="VBoxContainer3" type="VBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer"]
-margin_top = 400.0
-margin_right = 356.0
-margin_bottom = 450.0
+margin_top = 372.0
+margin_right = 376.0
+margin_bottom = 422.0
 
 [node name="SectionTitle" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer3" instance=ExtResource( 2 )]
-margin_right = 356.0
+margin_right = 376.0
 text = "Game saving"
 text_key = "Saving"
 
 [node name="SettingsCheckbox8" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer3" instance=ExtResource( 4 )]
 margin_top = 26.0
-margin_right = 356.0
+margin_right = 376.0
 margin_bottom = 50.0
 text = "Autosave"
 default = true
 settings_section = "saving"
 settings_key = "autosave"
 
+[node name="VBoxContainer4" type="VBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer"]
+margin_top = 438.0
+margin_right = 376.0
+margin_bottom = 516.0
+
+[node name="SectionTitle2" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer4" instance=ExtResource( 2 )]
+margin_right = 376.0
+text = "Animation"
+text_key = "Animations"
+
+[node name="DefaultJoinAnimation" type="HBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer4"]
+margin_top = 26.0
+margin_right = 376.0
+margin_bottom = 50.0
+
+[node name="TLabel" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer4/DefaultJoinAnimation" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 5.0
+margin_right = 190.0
+margin_bottom = 19.0
+size_flags_horizontal = 3
+text = "Default Join Animation: "
+text_key = "Default Join Animation:"
+
+[node name="JoinAnimationPicker" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer4/DefaultJoinAnimation" instance=ExtResource( 5 )]
+margin_left = 194.0
+margin_top = 1.0
+margin_right = 298.0
+margin_bottom = 23.0
+text = "Fade In Up"
+
+[node name="AnimationLengthPicker" type="SpinBox" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer4/DefaultJoinAnimation"]
+margin_left = 302.0
+margin_right = 376.0
+margin_bottom = 24.0
+step = 0.01
+value = 0.5
+
+[node name="DefaultLeaveAnimation" type="HBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer4"]
+margin_top = 54.0
+margin_right = 376.0
+margin_bottom = 78.0
+
+[node name="TLabel" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer4/DefaultLeaveAnimation" instance=ExtResource( 3 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 5.0
+margin_right = 161.0
+margin_bottom = 19.0
+size_flags_horizontal = 3
+text = "Default Leave Animation:"
+text_key = "Default Leave Animation:"
+
+[node name="LeaveAnimationPicker" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer4/DefaultLeaveAnimation" instance=ExtResource( 5 )]
+margin_left = 165.0
+margin_top = 1.0
+margin_right = 298.0
+margin_bottom = 23.0
+text = "Fade Out Down"
+
+[node name="AnimationLengthPicker" type="SpinBox" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer4/DefaultLeaveAnimation"]
+margin_left = 302.0
+margin_right = 376.0
+margin_bottom = 24.0
+step = 0.01
+value = 0.5
+
 [node name="VBoxContainer2" type="VBoxContainer" parent="VBoxContainer/HBoxContainer3"]
-margin_left = 360.0
-margin_right = 664.0
-margin_bottom = 450.0
+margin_left = 380.0
+margin_right = 684.0
+margin_bottom = 516.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer2"]
 margin_right = 304.0
-margin_bottom = 254.0
+margin_bottom = 282.0
 
 [node name="SectionTitle2" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer" instance=ExtResource( 2 )]
 margin_right = 304.0
-text = "Input settings"
-text_key = "Input settings"
+text = "Input"
+text_key = "Input"
 
 [node name="SettingsCheckbox2" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer" instance=ExtResource( 4 )]
 margin_top = 26.0
@@ -285,7 +343,7 @@ text_key = "Enable choice options after  "
 margin_left = 185.0
 margin_right = 243.0
 margin_bottom = 24.0
-text = "0.1"
+text = "0.2"
 
 [node name="TLabel15" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer/HBoxContainer" instance=ExtResource( 3 )]
 anchor_right = 0.0
@@ -313,10 +371,10 @@ text_key = "Default action key"
 
 [node name="DefaultActionKey" type="OptionButton" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer/HBoxContainer2"]
 margin_left = 119.0
-margin_right = 177.0
+margin_right = 208.0
 margin_bottom = 20.0
 hint_tooltip = "The default value is \"ui_accept\""
-text = "click"
+text = "ui_accept"
 
 [node name="SettingsCheckbox" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer" instance=ExtResource( 4 )]
 margin_top = 106.0
@@ -339,61 +397,67 @@ settings_key = "enable_default_shortcut"
 margin_top = 162.0
 margin_right = 304.0
 margin_bottom = 182.0
+alignment = 2
 
 [node name="TLabel18" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer/HBoxContainer4" instance=ExtResource( 3 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
+margin_left = 115.0
 margin_top = 3.0
-margin_right = 102.0
+margin_right = 217.0
 margin_bottom = 17.0
 text = "Choice 1 hotkey"
 text_key = "Choice 1 hotkey"
 
 [node name="Choice1Hotkey" type="OptionButton" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer/HBoxContainer4"]
-margin_left = 106.0
-margin_right = 195.0
+margin_left = 221.0
+margin_right = 304.0
 margin_bottom = 20.0
 hint_tooltip = "The default value is No Hotkey"
-text = "ui_accept"
+text = "[Default]"
 
 [node name="HBoxContainer5" type="HBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer"]
 margin_top = 186.0
 margin_right = 304.0
 margin_bottom = 206.0
+alignment = 2
 
 [node name="TLabel19" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer/HBoxContainer5" instance=ExtResource( 3 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
+margin_left = 115.0
 margin_top = 3.0
-margin_right = 102.0
+margin_right = 217.0
 margin_bottom = 17.0
 text = "Choice 2 hotkey"
 text_key = "Choice 2 hotkey"
 
 [node name="Choice2Hotkey" type="OptionButton" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer/HBoxContainer5"]
-margin_left = 106.0
-margin_right = 164.0
+margin_left = 221.0
+margin_right = 304.0
 margin_bottom = 20.0
 hint_tooltip = "The default value is No Hotkey"
-text = "click"
+text = "[Default]"
 
 [node name="HBoxContainer6" type="HBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer"]
 margin_top = 210.0
 margin_right = 304.0
 margin_bottom = 230.0
+alignment = 2
 
 [node name="TLabel20" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer/HBoxContainer6" instance=ExtResource( 3 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
+margin_left = 115.0
 margin_top = 3.0
-margin_right = 102.0
+margin_right = 217.0
 margin_bottom = 17.0
 text = "Choice 3 hotkey"
 text_key = "Choice 3 hotkey"
 
 [node name="Choice3Hotkey" type="OptionButton" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer/HBoxContainer6"]
-margin_left = 106.0
-margin_right = 189.0
+margin_left = 221.0
+margin_right = 304.0
 margin_bottom = 20.0
 hint_tooltip = "The default value is No Hotkey"
 text = "[Default]"
@@ -402,27 +466,38 @@ text = "[Default]"
 margin_top = 234.0
 margin_right = 304.0
 margin_bottom = 254.0
+alignment = 2
 
 [node name="TLabel21" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer/HBoxContainer7" instance=ExtResource( 3 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
+margin_left = 115.0
 margin_top = 3.0
-margin_right = 102.0
+margin_right = 217.0
 margin_bottom = 17.0
 text = "Choice 4 hotkey"
 text_key = "Choice 4 hotkey"
 
 [node name="Choice4Hotkey" type="OptionButton" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer/HBoxContainer7"]
-margin_left = 106.0
-margin_right = 189.0
+margin_left = 221.0
+margin_right = 304.0
 margin_bottom = 20.0
 hint_tooltip = "The default value is No Hotkey"
 text = "[Default]"
 
-[node name="CustomEvents" type="VBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer2"]
+[node name="SettingsCheckbox4" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer" instance=ExtResource( 4 )]
 margin_top = 258.0
 margin_right = 304.0
-margin_bottom = 308.0
+margin_bottom = 282.0
+text = "Propagate input to rest of the Tree"
+default = true
+settings_section = "dialog"
+settings_key = "propagate_input"
+
+[node name="CustomEvents" type="VBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer2"]
+margin_top = 286.0
+margin_right = 304.0
+margin_bottom = 336.0
 
 [node name="SectionTitle" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/CustomEvents" instance=ExtResource( 2 )]
 margin_right = 304.0
@@ -536,6 +611,6 @@ margin_bottom = 20.0
 text = "Cancel"
 
 [node name="CustomEvents" type="VBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer2"]
-margin_top = 312.0
+margin_top = 340.0
 margin_right = 304.0
-margin_bottom = 312.0
+margin_bottom = 340.0

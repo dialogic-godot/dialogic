@@ -45,6 +45,11 @@ onready var nodes = {
 	'history_screen_margin_y': $VBoxContainer/HBoxContainer3/VBoxContainer2/HistorySettings/GridContainer/BoxMargin/MarginY,
 	'history_container_margin_x': $VBoxContainer/HBoxContainer3/VBoxContainer2/HistorySettings/GridContainer/ContainerMargin/MarginX,
 	'history_container_margin_y': $VBoxContainer/HBoxContainer3/VBoxContainer2/HistorySettings/GridContainer/ContainerMargin/MarginY,
+	# Animations
+	'default_join_animation':$VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer4/DefaultJoinAnimation/JoinAnimationPicker,
+	'default_join_animation_length':$VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer4/DefaultJoinAnimation/AnimationLengthPicker,
+	'default_leave_animation':$VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer4/DefaultLeaveAnimation/LeaveAnimationPicker,
+	'default_leave_animation_length':$VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer4/DefaultLeaveAnimation/AnimationLengthPicker,
 	}
 
 var THEME_KEYS := [
@@ -76,7 +81,14 @@ var HISTORY_KEYS := [
 	'history_screen_margin_x',
 	'history_screen_margin_y',
 	'history_container_margin_x',
-	'history_container_margin_y',
+	'history_container_margin_y'
+]
+
+var ANIMATION_KEYS := [
+	'default_join_animation', 
+	'default_join_animation_length',
+	'default_leave_animation',
+	'default_leave_animation_length'
 ]
 
 func _ready():
@@ -156,6 +168,15 @@ func _ready():
 	$VBoxContainer/HBoxContainer3/VBoxContainer2/CustomEvents/HBoxContainer/CustomEventsDocs.icon = get_icon("HelpSearch", "EditorIcons")
 	$VBoxContainer/HBoxContainer3/VBoxContainer2/CustomEvents/HBoxContainer/CustomEventsDocs.connect("pressed", self, 'open_custom_event_docs')
 	
+	## The Animation Section
+	nodes['default_join_animation'].connect('about_to_show', self, '_on_AnimationDefault_about_to_show', [nodes['default_join_animation'], '_in'])
+	nodes['default_leave_animation'].connect('about_to_show', self, '_on_AnimationDefault_about_to_show', [nodes['default_leave_animation'], 'out'])
+	nodes['default_join_animation'].get_popup().connect('index_pressed', self, '_on_AnimationDefault_index_pressed', [nodes['default_join_animation'], 'default_join_animation'])
+	nodes['default_leave_animation'].get_popup().connect('index_pressed', self, '_on_AnimationDefault_index_pressed', [nodes['default_leave_animation'], 'default_leave_animation'])
+	nodes['default_join_animation'].custom_icon = get_icon("Animation", "EditorIcons")
+	nodes['default_leave_animation'].custom_icon = get_icon("Animation", "EditorIcons")
+	nodes['default_join_animation_length'].connect('value_changed', self, '_on_AnimationDefaultLength_value_changed', ['default_join_animation_length'])
+	nodes['default_leave_animation_length'].connect('value_changed', self, '_on_AnimationDefaultLength_value_changed', ['default_leave_animation_length'])
 
 func update_data():
 	# Reloading the settings
@@ -165,6 +186,7 @@ func update_data():
 	refresh_themes(settings)
 	load_values(settings, "input", INPUT_KEYS)
 	load_values(settings, "history", HISTORY_KEYS)
+	load_values(settings, "animations", ANIMATION_KEYS)
 	select_bus(settings.get_value("dialog", 'text_event_audio_default_bus', "Master"))
 
 
@@ -173,13 +195,10 @@ func load_values(settings: ConfigFile, section: String, key: Array):
 		if settings.has_section_key(section, k):
 			if nodes[k] is LineEdit:
 				nodes[k].text = settings.get_value(section, k)
-			elif nodes[k] is OptionButton:
-				if settings.get_value(section, k) is int:
-					nodes[k].selected = int(settings.get_value(section, k))
-				else:
-					nodes[k].text = str(settings.get_value(section, k))
+			elif nodes[k] is OptionButton or nodes[k] is MenuButton:
+				nodes[k].text = settings.get_value(section, k)
 			elif nodes[k] is SpinBox:
-				nodes[k].value = int(settings.get_value(section, k))
+				nodes[k].value = settings.get_value(section, k)
 			else:
 				nodes[k].pressed = settings.get_value(section, k, false)
 
@@ -372,3 +391,24 @@ func create_custom_event():
 	# force godot to show the folder
 	editor_reference.editor_interface.get_resource_filesystem().scan()
 	$VBoxContainer/HBoxContainer3/VBoxContainer2/CustomEvents/HBoxContainer/Message.text = ""
+
+
+################
+## ANIMATION
+################
+func _on_AnimationDefault_about_to_show(picker, filter):
+	picker.get_popup().clear()
+	var animations = DialogicAnimaResources.get_available_animations()
+	var idx = 0
+	for animation_name in animations:
+		if filter in animation_name:
+			picker.get_popup().add_icon_item(get_icon("Animation", "EditorIcons"), animation_name.get_file().trim_suffix('.gd').capitalize())
+			picker.get_popup().set_item_metadata(idx, {'file': animation_name.get_file()})
+			idx +=1
+
+func _on_AnimationDefault_index_pressed(index, picker, key):
+	set_value('animations', key, picker.get_popup().get_item_metadata(index)['file'])
+	picker.text = picker.get_popup().get_item_text(index)
+
+func _on_AnimationDefaultLength_value_changed(value, key):
+	set_value('animations', key, value)

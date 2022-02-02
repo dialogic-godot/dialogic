@@ -64,7 +64,7 @@ func update_text(text:String):
 	commands = []
 	
 	### remove commands from text, and store where and what they are
-	#current regex: \[(nw|(nw|speed|signal|play|pause)=(.+?))\](.*?)
+	#current regex: \[\s*(nw|(nw|speed|signal|play|pause)\s*=\s*(.+?)\s*)\](.*?)
 	#Note: The version defined in _ready will have aditional escape characers.
 	#      DO NOT JUST COPY/PASTE
 	#remeber regex101.com is your friend. Do not shoot it. You may ask it to verify the code.
@@ -84,7 +84,7 @@ func update_text(text:String):
 			pass
 		else:
 			#Store an assigned varible command as an array by 0 index in text, 1 command-name, 2 argument
-			commands.append([result.get_start()-1, result.get_string(2), result.get_string(3)])
+			commands.append([result.get_start()-1, result.get_string(2).strip_edges(), result.get_string(3).strip_edges()])
 		text_bbcodefree = text_bbcodefree.substr(0, result.get_start()) + text_bbcodefree.substr(result.get_end())
 		text = text.replace(result.get_string(), "")
 		
@@ -236,6 +236,7 @@ func load_theme(theme: ConfigFile):
 	name_style.set('content_margin_left', name_padding.x)
 	name_style.set('content_margin_right', name_padding.x)
 	name_style.set('content_margin_bottom', name_padding.y)
+	name_style.set('content_margin_top', name_padding.y)
 	
 	var name_shadow_offset = theme.get_value('name', 'shadow_offset', Vector2(2,2))
 	if theme.get_value('name', 'shadow_visible', true):
@@ -318,5 +319,5 @@ func _ready():
 	reset()
 	$WritingTimer.connect("timeout", self, "_on_writing_timer_timeout")
 	text_label.meta_underlined = false
-	regex.compile("\\[(nw|(nw|speed|signal|play|pause)=(.+?))\\](.*?)")
+	regex.compile("\\[\\s*(nw|(nw|speed|signal|play|pause)\\s*=\\s*(.+?)\\s*)\\](.*?)")
 	

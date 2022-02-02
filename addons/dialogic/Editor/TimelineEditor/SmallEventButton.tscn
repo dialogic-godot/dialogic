@@ -12,8 +12,6 @@ border_width_right = 1
 border_width_bottom = 1
 border_color = Color( 1, 1, 1, 0 )
 corner_radius_top_left = 4
-corner_radius_top_right = 4
-corner_radius_bottom_right = 4
 corner_radius_bottom_left = 4
 
 [sub_resource type="StyleBoxFlat" id=2]
@@ -31,6 +29,8 @@ corner_radius_bottom_left = 4
 [node name="SmallEventButton" type="Button"]
 margin_right = 40.0
 margin_bottom = 40.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_colors/font_color_hover = Color( 0, 0, 0, 1 )
 custom_styles/focus = SubResource( 3 )
 flat = true
 script = ExtResource( 1 )
@@ -38,11 +38,10 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Panel" type="Panel" parent="."]
+[node name="ColorBorder" type="Panel" parent="."]
 self_modulate = Color( 0.635294, 0.635294, 0.635294, 0.282353 )
 show_behind_parent = true
 anchor_bottom = 1.0
-rect_min_size = Vector2( 5, 0 )
 mouse_filter = 2
 custom_styles/panel = SubResource( 1 )
 __meta__ = {
@@ -60,6 +59,7 @@ __meta__ = {
 }
 
 [node name="TextureRect" type="TextureRect" parent="."]
+modulate = Color( 0, 0, 0, 1 )
 anchor_top = 0.5
 anchor_bottom = 0.5
 margin_left = 18.0
