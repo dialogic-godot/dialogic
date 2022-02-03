@@ -1,0 +1,40 @@
+[gd_resource type="Theme" load_steps=7 format=2]
+
+[ext_resource path="res://addons/dialogic/Example Assets/backgrounds/background-2.png" type="Texture" id=1]
+[ext_resource path="res://addons/dialogic/Example Assets/Fonts/Overlock/Overlock-Black.ttf" type="DynamicFontData" id=2]
+
+[sub_resource type="DynamicFont" id=5]
+font_data = ExtResource( 2 )
+
+[sub_resource type="StyleBoxTexture" id=4]
+texture = ExtResource( 1 )
+region_rect = Rect2( 0, 0, 1175, 263 )
+margin_left = 5.0
+margin_right = 5.0
+margin_top = 5.0
+margin_bottom = 5.0
+modulate_color = Color( 1, 1, 1, 0.572549 )
+
+[sub_resource type="StyleBoxTexture" id=1]
+texture = ExtResource( 1 )
+region_rect = Rect2( 0, 0, 1175, 263 )
+margin_left = 5.0
+margin_right = 5.0
+margin_top = 5.0
+margin_bottom = 5.0
+
+[sub_resource type="StyleBoxTexture" id=3]
+texture = ExtResource( 1 )
+region_rect = Rect2( 0, 0, 1175, 263 )
+margin_left = 5.0
+margin_right = 5.0
+margin_top = 5.0
+margin_bottom = 5.0
+modulate_color = Color( 0.113725, 0.105882, 0.105882, 0.764706 )
+
+[resource]
+Button/colors/font_color = Color( 1, 1, 1, 1 )
+Button/fonts/font = SubResource( 5 )
+Button/styles/hover = SubResource( 4 )
+Button/styles/normal = SubResource( 1 )
+Button/styles/pressed = SubResource( 3 )
