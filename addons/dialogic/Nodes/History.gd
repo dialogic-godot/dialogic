@@ -51,7 +51,7 @@ func initalize_history():
 	
 	if get_parent().settings.get_value('history', 'enable_close_button', true):
 		CloseButton = HistoryCloseButton.instance()
-		HistoryPopup.add_child(CloseButton)
+		add_child(CloseButton)
 		CloseButton.connect("pressed", self, '_on_toggle_history')
 		CloseButton.disabled = true
 		CloseButton.hide()
@@ -155,7 +155,6 @@ func add_history_row_event(eventData):
 	HistoryTimeline.add_child(newHistoryRow)
 	newHistoryRow.load_theme(curTheme)
 	
-	
 	var characterPrefix = ''
 	if eventData.has('character') and eventData.character != '':
 		var characterData = DialogicUtil.get_character(eventData.character)
@@ -242,7 +241,7 @@ func _on_History_item_rect_changed():
 			var screen_margin_y = get_parent().settings.get_value('history', 'history_screen_margin_y', 0)
 			var container_margin_X = get_parent().settings.get_value('history', 'history_container_margin_x', 0)
 			var container_margin_y = get_parent().settings.get_value('history', 'history_container_margin_y', 0)
-			print(screen_margin_y)
+			
 			HistoryPopup.margin_left = screen_margin_x
 			HistoryPopup.margin_right = -screen_margin_x
 			HistoryPopup.margin_top = screen_margin_y
@@ -268,8 +267,9 @@ func history_advance_block() -> bool:
 # Used to manually toggle the history visibility on or off
 # This is most useful when you wish to make your own custom controls
 func _on_toggle_history():
-	if $HistoryPopup.visible == false:
-		$HistoryPopup.popup()
+	if HistoryPopup.visible == false:
+		_on_HistoryPopup_about_to_show()
+		HistoryPopup.show()
 		if HistoryButton != null:
 			HistoryButton.hide()
 			HistoryButton.disabled = true
@@ -279,7 +279,8 @@ func _on_toggle_history():
 		is_history_open = true
 		is_mouse_on_button = false
 	else:
-		$HistoryPopup.hide()
+		_on_HistoryPopup_popup_hide()
+		HistoryPopup.hide()
 		if HistoryButton != null:
 			HistoryButton.show()
 			HistoryButton.disabled = false

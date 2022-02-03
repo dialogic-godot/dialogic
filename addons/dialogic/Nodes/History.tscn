@@ -19,12 +19,10 @@ HistoryDefaultBackground = ExtResource( 1 )
 HistoryOpenButton = ExtResource( 4 )
 HistoryCloseButton = ExtResource( 5 )
 
-[node name="HistoryPopup" type="Popup" parent="."]
-visible = true
+[node name="HistoryPopup" type="MarginContainer" parent="."]
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
-mouse_filter = 2
-popup_exclusive = true
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -32,8 +30,8 @@ __meta__ = {
 [node name="HistoryAudio" type="AudioStreamPlayer" parent="HistoryPopup"]
 
 [node name="ScrollHistoryContainer" type="ScrollContainer" parent="HistoryPopup"]
-anchor_right = 1.0
-anchor_bottom = 1.0
+margin_right = 1024.0
+margin_bottom = 600.0
 size_flags_horizontal = 3
 __meta__ = {
 "_edit_use_anchors_": false
@@ -59,5 +57,3 @@ margin_bottom = 5.0
 custom_constants/separation = 16
 
 [connection signal="item_rect_changed" from="." to="." method="_on_History_item_rect_changed"]
-[connection signal="about_to_show" from="HistoryPopup" to="." method="_on_HistoryPopup_about_to_show"]
-[connection signal="popup_hide" from="HistoryPopup" to="." method="_on_HistoryPopup_popup_hide"]
