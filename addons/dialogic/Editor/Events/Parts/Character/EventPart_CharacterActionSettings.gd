@@ -39,11 +39,11 @@ func load_data(data:Dictionary):
 	# Now update the ui nodes to display the data. 
 	$Positioning.visible = event_data.get('type',0) != 1
 	if data['type'] == 0:
-		animation_picker.text = _get_animation_pretty_name(event_data.get('animation', '[Default]'))
+		animation_picker.text = DialogicUtil.beautify_filename(event_data.get('animation', '[Default]'))
 	elif data['type'] == 1:
-		animation_picker.text = _get_animation_pretty_name(event_data.get('animation', '[Default]'))
+		animation_picker.text = DialogicUtil.beautify_filename(event_data.get('animation', '[Default]'))
 	else:
-		animation_picker.text = _get_animation_pretty_name(event_data.get('animation', '[No Animation]'))
+		animation_picker.text = DialogicUtil.beautify_filename(event_data.get('animation', '[No Animation]'))
 		
 	animation_picker.custom_icon = get_icon("Animation", "EditorIcons") if event_data['animation'] != "[No Animation]" else get_icon("GuiRadioUnchecked", "EditorIcons")
 	if event_data['animation'] == "[Default]": animation_picker.custom_icon = get_icon("Favorites", "EditorIcons")
@@ -92,7 +92,7 @@ func _on_AnimationPicker_about_to_show():
 		if (event_data['type'] == 0 and '_in' in animation_name) \
 		or (event_data['type'] == 1 and '_out' in animation_name) \
 		or (event_data['type'] == 2 and not '_in' in animation_name and not '_out' in animation_name):
-			animation_picker.get_popup().add_icon_item(get_icon("Animation", "EditorIcons"), _get_animation_pretty_name(animation_name))
+			animation_picker.get_popup().add_icon_item(get_icon("Animation", "EditorIcons"), DialogicUtil.beautify_filename(animation_name))
 			animation_picker.get_popup().set_item_metadata(idx, {'file': animation_name.get_file()})
 			idx +=1
 	
@@ -161,15 +161,3 @@ func _on_Mirrored_toggled(toggled):
 	
 	# informs the parent about the changes!
 	data_changed()
-
-
-# Helpers
-func _get_animation_pretty_name(animation_name: String):
-	if animation_name == '[Default]' or animation_name == '[No Animation]':
-		return animation_name
-	var a_string = animation_name.get_file().trim_suffix('.gd')
-	if '-' in a_string:
-		a_string = a_string.split('-')[1].capitalize()
-	else:
-		a_string = a_string.capitalize()
-	return a_string
