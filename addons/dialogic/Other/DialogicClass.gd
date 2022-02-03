@@ -128,6 +128,7 @@ static func timeline_exists(timeline: String):
 	else:
 		return false
 
+
 ################################################################################
 ## 						BUILT-IN SAVING/LOADING
 ################################################################################
@@ -303,6 +304,19 @@ static func set_saved_state_general_key(key: String, value) -> void:
 	Engine.get_main_loop().get_meta('game_state')[key] = str(value)
 	save('', true)
 
+
+################################################################################
+## 					HISTORY
+################################################################################
+
+# Used to toggle the history timeline display. Only useful if you do not wish to
+# use the provided buttons
+static func toggle_history():
+	if has_current_dialog_node():
+		var dialog_node = Engine.get_main_loop().get_meta('latest_dialogic_node')
+		dialog_node.HistoryTimeline._on_toggle_history()
+	else:
+		print('No dialog node yet')
 
 
 ################################################################################
