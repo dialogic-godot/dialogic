@@ -187,7 +187,8 @@ func add_history_row_event(eventData):
 		var logText = get_parent().settings.get_value('history', 'text_arrivals', 'has arrived')
 		if eventData.get('type') == 1:
 			 logText = get_parent().settings.get_value('history', 'text_exits', 'has left')
-		newHistoryRow.add_history(str(characterPrefix, ' ', logText), audioData)
+		if eventData.get('type') != 2:	
+			newHistoryRow.add_history(str(characterPrefix, ' ', logText), audioData)
 	# List Choices
 	elif eventData.event_id == 'dialogic_010':
 		newHistoryRow.add_history(str(characterPrefix, eventData.question), audioData)
