@@ -27,7 +27,8 @@ var curTheme = null
 var prevState
 
 var eventsToLog = ['dialogic_001', 'dialogic_010'] 
-
+var logArrivals = false
+var logExits = false
 
 func _ready():
 	var testHistoryRow = HistoryRow.instance()
@@ -57,10 +58,10 @@ func initalize_history():
 		CloseButton.hide()
 	
 	# See if we're logging arrivals and exits
-	if get_parent().settings.get_value('history', 'log_arrivals', true):
+	logArrivals = get_parent().settings.get_value('history', 'log_arrivals', true)
+	logExits = get_parent().settings.get_value('history', 'log_exits', true)
+	if logExits or logArrivals:
 		eventsToLog.push_back('dialogic_002')
-	if get_parent().settings.get_value('history', 'log_exits', true):
-		eventsToLog.push_back('dialogic_003')
 	
 	# Grab some settings and make the boxes up right
 	var button_anchor = int(get_parent().settings.get_value('history', 'history_button_position', 2))
@@ -148,7 +149,14 @@ func initalize_history():
 
 # Add history based on the passed event, using some logic to get it right
 func add_history_row_event(eventData):
-	if !eventsToLog.has(eventData.event_id) or (eventData.event_id == 'dialogic_002' and eventData.get('type') == 2):
+	# Abort if we aren't logging the event, or if its a character event of type update
+	if !eventsToLog.has(eventData.event_id) or (eventData.event_id == 'dialogic_002' and eventData.get('type') == 2 ):
+		return
+	# Abort if we aren't logging arrivals and its a character event of type arrival
+	if eventData.event_id == 'dialogic_002' and eventData.get('type') == 0 and !logArrivals:
+		return
+	# Abort if we aren't logging exits and its a character event of type exit
+	if eventData.event_id == 'dialogic_002' and eventData.get('type') == 1 and !logExits:
 		return
 	
 	var newHistoryRow = HistoryRow.instance()
@@ -159,8 +167,8 @@ func add_history_row_event(eventData):
 	if eventData.has('character') and eventData.character != '':
 		var characterData = DialogicUtil.get_character(eventData.character)
 		var characterName = characterData.get('name', '')
-		
-		if eventData.has('action') and eventData.action == 'leaveall':
+		print(eventData)
+		if eventData.has('character') and eventData.character == '[All]':
 			characterPrefix = str('Everyone')
 		elif characterData.data.get('display_name_bool', false)  == true:
 			characterName = characterData.data.get('display_name', '')
