@@ -148,7 +148,7 @@ func initalize_history():
 
 # Add history based on the passed event, using some logic to get it right
 func add_history_row_event(eventData):
-	if !eventsToLog.has(eventData.event_id) or (eventData.event_id == 'dialogic_002' and eventData.get('type') != 2):
+	if !eventsToLog.has(eventData.event_id) or (eventData.event_id == 'dialogic_002' and eventData.get('type') == 2):
 		return
 	
 	var newHistoryRow = HistoryRow.instance()
@@ -229,7 +229,7 @@ func _on_HistoryPopup_about_to_show():
 	ScrollHistoryContainer.scroll_vertical = scrollbar.max_value
 
 
-func _on_History_item_rect_changed():
+func _on_HistoryPopup_item_rect_changed():
 	if not Engine.is_editor_hint():
 		HistoryPopup.rect_size =  get_tree().root.size;
 		
@@ -287,3 +287,5 @@ func _on_toggle_history():
 			CloseButton.hide()
 		is_history_open = false
 		is_mouse_on_button = false
+
+
