@@ -126,7 +126,9 @@ func _ready():
 	nodes['log_arrivals'].connect('toggled', self, '_on_item_toggled', ['history', 'log_arrivals'])
 	nodes['log_exits'].connect('toggled', self, '_on_item_toggled', ['history', 'log_exits'])
 	nodes['history_button_position'].connect('item_selected', self, '_on_button_history_button_position_selected')
-	nodes['history_character_delimiter'].connect('text_changed', self, '_on_delimiter_text_changed')
+	nodes['history_character_delimiter'].connect('text_changed', self, '_on_text_changed', ['history', 'history_character_delimiter'])
+	nodes['text_arrivals'].connect('text_changed', self, '_on_text_changed', ['history', 'text_arrivals'])
+	nodes['text_exits'].connect('text_changed', self, '_on_text_changed', ['history', 'text_exits'])
 	
 	for button in ['history_button_position']:
 		var button_positions_popup = nodes[button].get_popup()
@@ -269,8 +271,9 @@ func _on_canvas_layer_text_changed(text) -> void:
 	set_value('theme', 'canvas_layer', text)
 
 
-func _on_delimiter_text_changed(text) -> void:
-	set_value('history', 'history_character_delimiter', text)
+func _on_text_changed(text, section: String, key: String) -> void:
+	set_value(section, key, text)
+	#set_value('history', 'history_character_delimiter', text)
 
 
 # Reading and saving data to the settings file
