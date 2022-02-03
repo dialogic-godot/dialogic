@@ -148,7 +148,7 @@ func initalize_history():
 
 # Add history based on the passed event, using some logic to get it right
 func add_history_row_event(eventData):
-	if !eventsToLog.has(eventData.event_id):
+	if !eventsToLog.has(eventData.event_id) or (eventData.event_id == 'dialogic_002' and eventData.get('type') != 2):
 		return
 	
 	var newHistoryRow = HistoryRow.instance()
@@ -187,8 +187,7 @@ func add_history_row_event(eventData):
 		var logText = get_parent().settings.get_value('history', 'text_arrivals', 'has arrived')
 		if eventData.get('type') == 1:
 			 logText = get_parent().settings.get_value('history', 'text_exits', 'has left')
-		if eventData.get('type') != 2:	
-			newHistoryRow.add_history(str(characterPrefix, ' ', logText), audioData)
+		newHistoryRow.add_history(str(characterPrefix, ' ', logText), audioData)
 	# List Choices
 	elif eventData.event_id == 'dialogic_010':
 		newHistoryRow.add_history(str(characterPrefix, eventData.question), audioData)
