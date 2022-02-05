@@ -369,6 +369,16 @@ static func check_folders_recursive(folder_data: Dictionary, file_names:Array):
 	return [folder_data, file_names]
 
 
+static func beautify_filename(animation_name: String) -> String:
+	if animation_name == '[Default]' or animation_name == '[No Animation]':
+		return animation_name
+	var a_string = animation_name.get_file().trim_suffix('.gd')
+	if '-' in a_string:
+		a_string = a_string.split('-')[1].capitalize()
+	else:
+		a_string = a_string.capitalize()
+	return a_string
+
 ## *****************************************************************************
 ##								USEFUL FUNCTIONS
 ## *****************************************************************************
@@ -501,8 +511,40 @@ static func resource_fixer():
 				'Right':
 					DialogicResources.set_theme_value(theme_info['file'], 'text', 'alignment', 2)
 	
-	DialogicResources.set_settings_value("updates", "updatenumber", 2)
-	
+	if update_index < 3:
+		# Character Join and Character Leave have been unified to a new Character event
+		print("[D] Update NR. "+str(update_index)+" | Removes Character Join and Character Leave events in favor of the new 'Character' event. No need to worry about this.")
+		for timeline_info in get_timeline_list():
+			var timeline = DialogicResources.get_timeline_json(timeline_info['file'])
+			var events = timeline["events"]
+			for i in range(len(events)):
+				if events[i]['event_id'] == 'dialogic_002':
+					var new_event = {
+						'event_id':'dialogic_002',
+						'type':0,
+						'character':events[i].get('character', ''),
+						'portrait':events[i].get('portrait',''),
+						'position':events[i].get('position'),
+						'animation':'[Default]',
+						'animation_length':0.5,
+						'mirror_portrait':events[i].get('mirror', false),
+						'z_index': events[i].get('z_index', 0),
+						}
+					events[i] = new_event
+				elif events[i]['event_id'] == 'dialogic_003':
+					var new_event = {
+						'event_id':'dialogic_002',
+						'type':1,
+						'character':events[i].get('character', ''),
+						'animation':'[Default]',
+						'animation_length':0.5,
+						'mirror_portrait':events[i].get('mirror', false),
+						'z_index':events[i].get('z_index', 0),
+						}
+					events[i] = new_event
+			timeline['events'] = events
+			DialogicResources.set_timeline(timeline)
+	DialogicResources.set_settings_value("updates", "updatenumber", 3)
 
 static func get_editor_scale(ref) -> float:
 	# There hasn't been a proper way of reliably getting the editor scale
@@ -529,29 +571,6 @@ static func list_dir(path: String) -> Array:
 		file = dir.get_next()
 	return files
 
-## *****************************************************************************
-##							ANIMATION-HELPERS
-## *****************************************************************************
-static func animations():
-	return {
-	0:{"name":"[Default]", "default_length":1},
-	1:{"name": "Instant Appear", "default_length": 0},
-	2:{"name": "Float Up", "default_length": 1},
-	3:{"name": "Fade", "default_length": 1},
-	4:{"name": "Pop", "default_length": 1},
-	}
-
-static func get_animation_names():
-	var dict = {}
-	for id in animations().keys():
-		dict[animations()[id]['name']] = id
-	return dict
-
-static func get_animation_data(id):
-	return animations()[int(id)]
-
-static func get_default_animation_id():
-	return 2
 
 ## *****************************************************************************
 ##							DIALOGIC_SORTER CLASS

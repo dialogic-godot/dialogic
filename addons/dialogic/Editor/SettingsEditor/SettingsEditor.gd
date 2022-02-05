@@ -27,6 +27,29 @@ onready var nodes = {
 	'new_custom_event_id': $VBoxContainer/HBoxContainer3/VBoxContainer2/CustomEvents/CreateCustomEventSection/CeEventId,
 	'new_custom_event_create':$VBoxContainer/HBoxContainer3/VBoxContainer2/CustomEvents/CreateCustomEventSection/HBoxContainer/CreateCustomEvent,
 	'new_custom_event_cancel':$VBoxContainer/HBoxContainer3/VBoxContainer2/CustomEvents/CreateCustomEventSection/HBoxContainer/CancelCustomEvent,
+	
+	# History Settings
+	'enable_history_logging': $VBoxContainer/HBoxContainer3/VBoxContainer2/HistorySettings/GridContainer/HistoryBox/EnableHistoryLogging,
+	'enable_dynamic_theme': $VBoxContainer/HBoxContainer3/VBoxContainer2/HistorySettings/GridContainer/ThemeBox/EnableDynamicTheme,
+	'enable_open_button': $VBoxContainer/HBoxContainer3/VBoxContainer2/HistorySettings/GridContainer/OpenBox/EnableDefaultOpenButton,
+	'enable_close_button': $VBoxContainer/HBoxContainer3/VBoxContainer2/HistorySettings/GridContainer/CloseBox/EnableDefaultCloseButton,
+	'log_choices': $VBoxContainer/HBoxContainer3/VBoxContainer2/HistorySettings/GridContainer/ChoiceBox/LogChoices,
+	'log_answers': $VBoxContainer/HBoxContainer3/VBoxContainer2/HistorySettings/GridContainer/ChoiceBox2/LogAnswers,
+	'log_arrivals': $VBoxContainer/HBoxContainer3/VBoxContainer2/HistorySettings/GridContainer/ChoiceBox3/LogArrivals,
+	'log_exits': $VBoxContainer/HBoxContainer3/VBoxContainer2/HistorySettings/GridContainer/ChoiceBox4/LogExits,
+	'text_arrivals': $VBoxContainer/HBoxContainer3/VBoxContainer2/HistorySettings/GridContainer/LogBox/LineEdit,
+	'text_exits': $VBoxContainer/HBoxContainer3/VBoxContainer2/HistorySettings/GridContainer/LogBox2/LineEdit,
+	'history_button_position': $VBoxContainer/HBoxContainer3/VBoxContainer2/HistorySettings/GridContainer/PositionSelector,
+	'history_character_delimiter': $VBoxContainer/HBoxContainer3/VBoxContainer2/HistorySettings/GridContainer/CharacterDelimiter,
+	'history_screen_margin_x': $VBoxContainer/HBoxContainer3/VBoxContainer2/HistorySettings/GridContainer/BoxMargin/MarginX,
+	'history_screen_margin_y': $VBoxContainer/HBoxContainer3/VBoxContainer2/HistorySettings/GridContainer/BoxMargin/MarginY,
+	'history_container_margin_x': $VBoxContainer/HBoxContainer3/VBoxContainer2/HistorySettings/GridContainer/ContainerMargin/MarginX,
+	'history_container_margin_y': $VBoxContainer/HBoxContainer3/VBoxContainer2/HistorySettings/GridContainer/ContainerMargin/MarginY,
+	# Animations
+	'default_join_animation':$VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer4/DefaultJoinAnimation/JoinAnimationPicker,
+	'default_join_animation_length':$VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer4/DefaultJoinAnimation/AnimationLengthPicker,
+	'default_leave_animation':$VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer4/DefaultLeaveAnimation/LeaveAnimationPicker,
+	'default_leave_animation_length':$VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer4/DefaultLeaveAnimation/AnimationLengthPicker,
 	}
 
 var THEME_KEYS := [
@@ -41,6 +64,32 @@ var INPUT_KEYS := [
 	'choice_hotkey_3',
 	'choice_hotkey_4',
 	]
+
+var HISTORY_KEYS := [
+	'enable_history_logging',
+	'enable_dynamic_theme',
+	'enable_open_button',
+	'enable_close_button',
+	'log_choices',
+	'log_answers',
+	'log_arrivals',
+	'log_exits',
+	'text_arrivals',
+	'text_exits',
+	'history_button_position',
+	'history_character_delimiter',
+	'history_screen_margin_x',
+	'history_screen_margin_y',
+	'history_container_margin_x',
+	'history_container_margin_y'
+]
+
+var ANIMATION_KEYS := [
+	'default_join_animation', 
+	'default_join_animation_length',
+	'default_leave_animation',
+	'default_leave_animation_length'
+]
 
 func _ready():
 	editor_reference = find_parent('EditorView')
@@ -67,6 +116,49 @@ func _ready():
 	AudioServer.connect("bus_layout_changed", self, "update_bus_selector")
 	nodes['text_event_audio_default_bus'].connect('item_selected', self, '_on_text_audio_default_bus_item_selected')
 	
+	## History timeline connections
+	nodes['enable_history_logging'].connect('toggled', self, '_on_item_toggled', ['history', 'enable_history_logging'])
+	nodes['enable_dynamic_theme'].connect('toggled', self, '_on_item_toggled', ['history', 'enable_dynamic_theme'])
+	nodes['enable_open_button'].connect('toggled', self, '_on_item_toggled', ['history', 'enable_open_button'])
+	nodes['enable_close_button'].connect('toggled', self, '_on_item_toggled', ['history', 'enable_close_button'])
+	nodes['log_choices'].connect('toggled', self, '_on_item_toggled', ['history', 'log_choices'])
+	nodes['log_answers'].connect('toggled', self, '_on_item_toggled', ['history', 'log_answers'])
+	nodes['log_arrivals'].connect('toggled', self, '_on_item_toggled', ['history', 'log_arrivals'])
+	nodes['log_exits'].connect('toggled', self, '_on_item_toggled', ['history', 'log_exits'])
+	nodes['history_button_position'].connect('item_selected', self, '_on_button_history_button_position_selected')
+	nodes['history_character_delimiter'].connect('text_changed', self, '_on_text_changed', ['history', 'history_character_delimiter'])
+	nodes['text_arrivals'].connect('text_changed', self, '_on_text_changed', ['history', 'text_arrivals'])
+	nodes['text_exits'].connect('text_changed', self, '_on_text_changed', ['history', 'text_exits'])
+	
+	for button in ['history_button_position']:
+		var button_positions_popup = nodes[button].get_popup()
+		button_positions_popup.clear()
+		button_positions_popup.add_icon_item(
+			get_icon("ControlAlignTopLeft", "EditorIcons"), "Top Left", 0)
+		button_positions_popup.add_icon_item(
+			get_icon("ControlAlignTopCenter", "EditorIcons"), "Top Center", 1)
+		button_positions_popup.add_icon_item(
+			get_icon("ControlAlignTopRight", "EditorIcons"), "Top Right", 2)
+		button_positions_popup.add_separator()
+		button_positions_popup.add_icon_item(
+			get_icon("ControlAlignLeftCenter", "EditorIcons"), "Center Left", 3)
+		button_positions_popup.add_icon_item(
+			get_icon("ControlAlignCenter", "EditorIcons"), "Center", 4)
+		button_positions_popup.add_icon_item(
+			get_icon("ControlAlignRightCenter", "EditorIcons"), "Center Right", 5)
+		button_positions_popup.add_separator()
+		button_positions_popup.add_icon_item(
+			get_icon("ControlAlignBottomLeft", "EditorIcons"), "Bottom Left", 6)
+		button_positions_popup.add_icon_item(
+			get_icon("ControlAlignBottomCenter", "EditorIcons"), "Bottom Center", 7)
+		button_positions_popup.add_icon_item(
+			get_icon("ControlAlignBottomRight", "EditorIcons"), "Bottom Right", 8)
+	
+	nodes['history_screen_margin_x'].connect("value_changed", self, '_spinbox_val_changed', ['history_screen_margin_x'])
+	nodes['history_screen_margin_y'].connect("value_changed", self, '_spinbox_val_changed', ['history_screen_margin_y'])
+	nodes['history_container_margin_x'].connect("value_changed", self, '_spinbox_val_changed', ['history_container_margin_x'])
+	nodes['history_container_margin_y'].connect("value_changed", self, '_spinbox_val_changed', ['history_container_margin_y'])
+	
 	## The custom event section
 	nodes['new_custom_event_open'].connect("pressed", self, "new_custom_event_pressed")
 	nodes['new_custom_event_section'].hide()
@@ -78,6 +170,15 @@ func _ready():
 	$VBoxContainer/HBoxContainer3/VBoxContainer2/CustomEvents/HBoxContainer/CustomEventsDocs.icon = get_icon("HelpSearch", "EditorIcons")
 	$VBoxContainer/HBoxContainer3/VBoxContainer2/CustomEvents/HBoxContainer/CustomEventsDocs.connect("pressed", self, 'open_custom_event_docs')
 	
+	## The Animation Section
+	nodes['default_join_animation'].connect('about_to_show', self, '_on_AnimationDefault_about_to_show', [nodes['default_join_animation'], '_in'])
+	nodes['default_leave_animation'].connect('about_to_show', self, '_on_AnimationDefault_about_to_show', [nodes['default_leave_animation'], 'out'])
+	nodes['default_join_animation'].get_popup().connect('index_pressed', self, '_on_AnimationDefault_index_pressed', [nodes['default_join_animation'], 'default_join_animation'])
+	nodes['default_leave_animation'].get_popup().connect('index_pressed', self, '_on_AnimationDefault_index_pressed', [nodes['default_leave_animation'], 'default_leave_animation'])
+	nodes['default_join_animation'].custom_icon = get_icon("Animation", "EditorIcons")
+	nodes['default_leave_animation'].custom_icon = get_icon("Animation", "EditorIcons")
+	nodes['default_join_animation_length'].connect('value_changed', self, '_on_AnimationDefaultLength_value_changed', ['default_join_animation_length'])
+	nodes['default_leave_animation_length'].connect('value_changed', self, '_on_AnimationDefaultLength_value_changed', ['default_leave_animation_length'])
 
 func update_data():
 	# Reloading the settings
@@ -86,6 +187,8 @@ func update_data():
 	nodes['canvas_layer'].text = settings.get_value("theme", "canvas_layer", '1')
 	refresh_themes(settings)
 	load_values(settings, "input", INPUT_KEYS)
+	load_values(settings, "history", HISTORY_KEYS)
+	load_values(settings, "animations", ANIMATION_KEYS)
 	select_bus(settings.get_value("dialog", 'text_event_audio_default_bus', "Master"))
 
 
@@ -94,8 +197,10 @@ func load_values(settings: ConfigFile, section: String, key: Array):
 		if settings.has_section_key(section, k):
 			if nodes[k] is LineEdit:
 				nodes[k].text = settings.get_value(section, k)
-			elif nodes[k] is OptionButton:
+			elif nodes[k] is OptionButton or nodes[k] is MenuButton:
 				nodes[k].text = settings.get_value(section, k)
+			elif nodes[k] is SpinBox:
+				nodes[k].value = settings.get_value(section, k)
 			else:
 				nodes[k].pressed = settings.get_value(section, k, false)
 
@@ -129,12 +234,23 @@ func _on_default_theme_selected(index):
 	set_value('theme', 'default', nodes['themes'].get_item_metadata(index)['file'])
 
 
+
+
+
 func _on_delay_options_text_changed(text):
 	set_value('input', 'delay_after_options', text)
 
 
 func _on_item_toggled(value: bool, section: String, key: String):
 	set_value(section, key, value)
+
+
+func _on_button_history_button_position_selected(index):
+	set_value('history', 'history_button_position', str(index))
+
+
+func _spinbox_val_changed(newValue :float, spinbox_name):
+	set_value('history', spinbox_name, newValue)
 
 
 func _on_default_action_key_presssed(nodeName = 'default_action_key') -> void:
@@ -153,6 +269,11 @@ func _on_default_action_key_item_selected(index, nodeName = 'default_action_key'
 
 func _on_canvas_layer_text_changed(text) -> void:
 	set_value('theme', 'canvas_layer', text)
+
+
+func _on_text_changed(text, section: String, key: String) -> void:
+	set_value(section, key, text)
+	#set_value('history', 'history_character_delimiter', text)
 
 
 # Reading and saving data to the settings file
@@ -273,3 +394,24 @@ func create_custom_event():
 	# force godot to show the folder
 	editor_reference.editor_interface.get_resource_filesystem().scan()
 	$VBoxContainer/HBoxContainer3/VBoxContainer2/CustomEvents/HBoxContainer/Message.text = ""
+
+
+################
+## ANIMATION
+################
+func _on_AnimationDefault_about_to_show(picker, filter):
+	picker.get_popup().clear()
+	var animations = DialogicAnimaResources.get_available_animations()
+	var idx = 0
+	for animation_name in animations:
+		if filter in animation_name:
+			picker.get_popup().add_icon_item(get_icon("Animation", "EditorIcons"), DialogicUtil.beautify_filename(animation_name.get_file()))
+			picker.get_popup().set_item_metadata(idx, {'file': animation_name.get_file()})
+			idx +=1
+
+func _on_AnimationDefault_index_pressed(index, picker, key):
+	set_value('animations', key, picker.get_popup().get_item_metadata(index)['file'])
+	picker.text = picker.get_popup().get_item_text(index)
+
+func _on_AnimationDefaultLength_value_changed(value, key):
+	set_value('animations', key, value)

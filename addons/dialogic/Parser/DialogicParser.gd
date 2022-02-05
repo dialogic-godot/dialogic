@@ -208,9 +208,17 @@ static func _insert_variable_definitions(current_dialog, text: String):
 			else:
 				# Replace the name of a value [whatever] with the result
 				var r_string_array = r_string.replace('[', '').replace(']', '')
-				for d in current_dialog.definitions['variables']:
-					if d['name'] == r_string_array:
-						final_text = final_text.replace(r_string, d['value'])
+				
+				# Find the ID if it's got an absolute path
+				if '/' in r_string_array:
+					var variable_id=Dialogic._get_variable_from_file_name(r_string_array)
+					for d in current_dialog.definitions['variables']:
+						if d['id'] == variable_id:
+							final_text = final_text.replace(r_string, d['value'])
+				else:					
+					for d in current_dialog.definitions['variables']:
+						if d['name'] == r_string_array:
+							final_text = final_text.replace(r_string, d['value'])
 	
 	return final_text
 

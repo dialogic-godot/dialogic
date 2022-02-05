@@ -38,6 +38,11 @@ func fade_out(time = 1):
 	else:
 		_on_tween_over()
 
+func remove_with_delay(time =1):
+	var timer = Timer.new()
+	timer.connect("timeout", self, "queue_free")
+	add_child(timer)
+	timer.start(time+0.1)
 
 func _on_tween_over():
 	queue_free()
