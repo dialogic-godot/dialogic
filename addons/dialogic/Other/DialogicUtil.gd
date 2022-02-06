@@ -278,6 +278,9 @@ static func rename_folder(path:String, new_folder_name:String):
 	if new_folder_name in get_folder_at_path(get_parent_path(path))['folders'].keys():
 		print("[D] A folder with the name '"+new_folder_name+"' already exists in the target folder '"+get_parent_path(path)+"'.")
 		return ERR_ALREADY_EXISTS
+	elif new_folder_name.empty():
+		return ERR_PRINTER_ON_FIRE
+		
 	
 	# save the content
 	var folder_content = get_folder_at_path(path)
