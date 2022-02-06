@@ -463,7 +463,13 @@ static func _get_timeline_file_from_name(timeline_name_path: String) -> String:
 							
 				else:
 					# Still going deeper
-					current_data = current_data['folders'][p]
+					if (current_data['folders'].size() > 0):
+						if p in current_data['folders']:
+							current_data = current_data['folders'][p]
+						else:
+							return ''
+					else:
+						return ''
 				current_depth += 1
 		return ''
 	else:
@@ -508,6 +514,12 @@ static func _get_variable_from_file_name(variable_name_path: String) -> String:
 							
 			else:
 				# Still going deeper
-				current_data = current_data['folders'][p]
+				if (current_data['folders'].size() > 0):
+					if p in current_data['folders']:
+						current_data = current_data['folders'][p]
+					else:
+						return ''
+				else:
+					return ''
 			current_depth += 1
 	return ''
