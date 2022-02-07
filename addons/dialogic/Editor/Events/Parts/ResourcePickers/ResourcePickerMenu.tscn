@@ -38,10 +38,10 @@ __meta__ = {
 [node name="Icon" type="TextureRect" parent="."]
 modulate = Color( 0, 0, 0, 1 )
 anchor_bottom = 1.0
-margin_left = 5.0
-margin_top = 2.0
-margin_right = 25.0
-margin_bottom = -2.0
+margin_left = 8.0
+margin_top = 4.0
+margin_right = 23.0
+margin_bottom = -4.0
 expand = true
 stretch_mode = 6
 __meta__ = {
