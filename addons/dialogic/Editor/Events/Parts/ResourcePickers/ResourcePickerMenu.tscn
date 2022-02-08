@@ -1,8 +1,22 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=3 format=2]
 
-[ext_resource path="res://addons/dialogic/Editor/Events/styles/ResourceMenuNormal.tres" type="StyleBox" id=1]
-[ext_resource path="res://addons/dialogic/Editor/Events/styles/ResourceMenuHover.tres" type="StyleBox" id=2]
 [ext_resource path="res://addons/dialogic/Editor/Events/Parts/ResourcePickers/ResourcePickerMenu.gd" type="Script" id=3]
+
+[sub_resource type="StyleBoxFlat" id=2]
+content_margin_left = 30.0
+content_margin_right = 9.0
+content_margin_top = 5.0
+content_margin_bottom = 5.0
+bg_color = Color( 0.12549, 0.141176, 0.192157, 1 )
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color( 0.0980392, 0.113725, 0.152941, 1 )
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
 
 [node name="MenuButton" type="MenuButton"]
 margin_right = 94.0
@@ -10,9 +24,9 @@ margin_bottom = 22.0
 focus_mode = 2
 size_flags_vertical = 4
 custom_colors/font_color = Color( 0, 0, 0, 1 )
-custom_styles/hover = ExtResource( 2 )
-custom_styles/pressed = ExtResource( 2 )
-custom_styles/normal = ExtResource( 1 )
+custom_styles/hover = SubResource( 2 )
+custom_styles/pressed = SubResource( 2 )
+custom_styles/normal = SubResource( 2 )
 text = "Resource"
 flat = false
 align = 0
@@ -24,10 +38,10 @@ __meta__ = {
 [node name="Icon" type="TextureRect" parent="."]
 modulate = Color( 0, 0, 0, 1 )
 anchor_bottom = 1.0
-margin_left = 2.0
-margin_top = 2.0
-margin_right = 20.0
-margin_bottom = -2.0
+margin_left = 8.0
+margin_top = 4.0
+margin_right = 23.0
+margin_bottom = -4.0
 expand = true
 stretch_mode = 6
 __meta__ = {

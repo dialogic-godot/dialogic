@@ -25,5 +25,5 @@ size_flags_vertical = 4
 
 [node name="PositionPicker" parent="." instance=ExtResource( 4 )]
 margin_left = 197.0
-margin_right = 455.0
+margin_right = 471.0
 size_flags_vertical = 4

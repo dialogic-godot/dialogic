@@ -1,14 +1,16 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://addons/dialogic/Editor/Events/Parts/Audio/EventPart_AudioPicker.gd" type="Script" id=1]
 [ext_resource path="res://addons/dialogic/Editor/Events/styles/SectionPanel.tres" type="StyleBox" id=2]
 [ext_resource path="res://addons/dialogic/Editor/Events/Parts/Audio/AudioFilePicker.tscn" type="PackedScene" id=3]
+[ext_resource path="res://addons/dialogic/Editor/Events/styles/InputFieldsStyle.tres" type="Theme" id=4]
 
 [node name="AudioPicker" type="PanelContainer"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_right = -718.0
 margin_bottom = -580.0
+theme = ExtResource( 4 )
 custom_styles/panel = ExtResource( 2 )
 script = ExtResource( 1 )
 __meta__ = {
@@ -20,37 +22,37 @@ event_name = "AudioEvent"
 margin_left = 6.0
 margin_top = 5.0
 margin_right = 300.0
-margin_bottom = 82.0
+margin_bottom = 66.0
 
 [node name="AudioFilePicker" parent="VBox" instance=ExtResource( 3 )]
+visible = false
 margin_right = 294.0
 
 [node name="adv_settings" type="HBoxContainer" parent="VBox"]
-margin_top = 26.0
 margin_right = 294.0
-margin_bottom = 77.0
+margin_bottom = 61.0
 custom_constants/separation = 8
 
 [node name="AudioVolume" type="PanelContainer" parent="VBox/adv_settings"]
-margin_right = 86.0
-margin_bottom = 51.0
+margin_right = 88.0
+margin_bottom = 61.0
 custom_styles/panel = ExtResource( 2 )
 
 [node name="VBox" type="VBoxContainer" parent="VBox/adv_settings/AudioVolume"]
 margin_left = 6.0
 margin_top = 5.0
-margin_right = 80.0
-margin_bottom = 47.0
+margin_right = 82.0
+margin_bottom = 57.0
 
 [node name="Label" type="Label" parent="VBox/adv_settings/AudioVolume/VBox"]
-margin_right = 74.0
+margin_right = 76.0
 margin_bottom = 14.0
 text = "Volume:"
 
 [node name="Volume" type="SpinBox" parent="VBox/adv_settings/AudioVolume/VBox"]
 margin_top = 18.0
-margin_right = 74.0
-margin_bottom = 42.0
+margin_right = 76.0
+margin_bottom = 52.0
 min_value = -80.0
 max_value = 24.0
 step = 0.01
@@ -60,16 +62,16 @@ __meta__ = {
 }
 
 [node name="AudioBus" type="PanelContainer" parent="VBox/adv_settings"]
-margin_left = 94.0
-margin_right = 179.0
-margin_bottom = 51.0
+margin_left = 96.0
+margin_right = 181.0
+margin_bottom = 61.0
 custom_styles/panel = ExtResource( 2 )
 
 [node name="VBox" type="VBoxContainer" parent="VBox/adv_settings/AudioBus"]
 margin_left = 6.0
 margin_top = 5.0
 margin_right = 79.0
-margin_bottom = 47.0
+margin_bottom = 57.0
 
 [node name="Label" type="Label" parent="VBox/adv_settings/AudioBus/VBox"]
 margin_right = 73.0

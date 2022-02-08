@@ -278,6 +278,9 @@ static func rename_folder(path:String, new_folder_name:String):
 	if new_folder_name in get_folder_at_path(get_parent_path(path))['folders'].keys():
 		print("[D] A folder with the name '"+new_folder_name+"' already exists in the target folder '"+get_parent_path(path)+"'.")
 		return ERR_ALREADY_EXISTS
+	elif new_folder_name.empty():
+		return ERR_PRINTER_ON_FIRE
+		
 	
 	# save the content
 	var folder_content = get_folder_at_path(path)
@@ -368,6 +371,16 @@ static func check_folders_recursive(folder_data: Dictionary, file_names:Array):
 			file_names.erase(file)
 	return [folder_data, file_names]
 
+
+static func beautify_filename(animation_name: String) -> String:
+	if animation_name == '[Default]' or animation_name == '[No Animation]':
+		return animation_name
+	var a_string = animation_name.get_file().trim_suffix('.gd')
+	if '-' in a_string:
+		a_string = a_string.split('-')[1].capitalize()
+	else:
+		a_string = a_string.capitalize()
+	return a_string
 
 ## *****************************************************************************
 ##								USEFUL FUNCTIONS

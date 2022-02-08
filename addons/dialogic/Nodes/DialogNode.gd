@@ -32,6 +32,7 @@ var current_default_theme = null
 ### SETTINGS
 var settings: ConfigFile
 var custom_events = {}
+var record_history: bool = false
 
 ### DATA
 var definitions = {}
@@ -52,6 +53,7 @@ var current_background = ""
 # Theme and Audio
 var current_theme: ConfigFile
 var current_theme_file_name = null
+var history_theme: ConfigFile
 var audio_data = {}
 
 # References
@@ -63,7 +65,7 @@ var button_container = null
 onready var ChoiceButton = load("res://addons/dialogic/Nodes/ChoiceButton.tscn")
 onready var Portrait = load("res://addons/dialogic/Nodes/Portrait.tscn")
 onready var Background = load("res://addons/dialogic/Nodes/Background.tscn")
-
+onready var HistoryTimeline = $History
 
 ## -----------------------------------------------------------------------------
 ## 						SIGNALS
@@ -143,6 +145,17 @@ func load_config_files():
 		theme_file = settings.get_value('theme', 'default')
 		current_default_theme = theme_file
 	current_theme = load_theme(theme_file)
+	
+	# history
+	if settings.has_section('history'):
+		record_history = settings.get_value('history', 'enable_history_logging', false)
+		if settings.has_section_key('history', 'history_theme'):
+			theme_file = settings.get_value('history', 'history_theme')
+		history_theme = load_theme(theme_file)
+		HistoryTimeline.load_theme(history_theme)
+		if settings.has_section_key('history', 'enable_history_logging'):
+			if settings.get_value('history', 'enable_history_logging'):
+				HistoryTimeline.initalize_history()
 
 
 ## -----------------------------------------------------------------------------
@@ -304,6 +317,7 @@ func load_theme(filename):
 	call_deferred('deferred_resize', $TextBubble.rect_size, theme.get_value('box', 'size', Vector2(910, 167)))
 	
 	$TextBubble.load_theme(theme)
+	HistoryTimeline.change_theme(theme)
 	$DefinitionInfo.load_theme(theme)
 	
 	if theme.get_value('buttons', 'layout', 0) == 0:
@@ -417,6 +431,8 @@ func _process(delta):
 # checks for the "input_next" action
 func _input(event: InputEvent) -> void:
 	if not Engine.is_editor_hint() and event.is_action_pressed(Dialogic.get_action_button()):
+		if HistoryTimeline.block_dialog_advance:
+			return
 		if is_state(state.WAITING):
 			if not current_event:
 				return
@@ -599,6 +615,10 @@ func event_handler(event: Dictionary):
 	clear_options()
 	
 	current_event = event
+	
+	if record_history:
+		HistoryTimeline.add_history_row_event(current_event)
+	
 	match event['event_id']:
 		# MAIN EVENTS
 		# Text Event
@@ -821,7 +841,8 @@ func event_handler(event: Dictionary):
 			var transition_duration = event.get('transition_duration', 1.0)
 			
 			# fade out characters
-			characters_leave_all(DialogicUtil.get_default_animation_id(), -1)
+			insert_animation_data(event, 'leave', 'fade_out_down')
+			characters_leave_all(event['animation'], event['animation_length'])
 			
 			# fade out background
 			var background = get_node_or_null('Background')
@@ -980,7 +1001,7 @@ func change_timeline(timeline):
 func update_name(character) -> void:
 	if character.has('name'):
 		var parsed_name = character['name']
-		if character.has('display_name'):
+		if character['data'].get('display_name_bool', false):
 			if character['display_name'] != '':
 				parsed_name = character['display_name']
 		parsed_name = DialogicParser.parse_definitions(self, parsed_name, true, false)
@@ -1018,6 +1039,9 @@ func answer_question(i, event_idx, question_idx):
 	# set flags and continue dialog
 	questions[question_idx]['answered'] = true
 	_load_event_at_index(event_idx + 1)
+	
+	if record_history:
+		HistoryTimeline.add_answer_to_question(str(i.text))
 	
 	# Revert to last mouse mode when selection is done
 	if last_mouse_mode != null:

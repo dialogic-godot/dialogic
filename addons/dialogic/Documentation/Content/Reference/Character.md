@@ -31,7 +31,7 @@ Changing this allows you to scale the portraits down. If your portraits are far 
 Sets an offset that will adjust the position of your character in two dimensions, depending on the base location selected in the timeline.
 
 ### Mirror portraits
-This will mirror all of the portraits. You can use the mirror option of the `Character Join Event` if you just want to mirror it sometimes.
+This will mirror all of the portraits. You can use the mirror option of the `Character Event` if you just want to mirror it sometimes.
 
 
 ## Preview

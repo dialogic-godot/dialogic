@@ -600,8 +600,6 @@ func deselect_all_items():
 func _on_event_options_action(action: String, item: Node):
 	### WORK TODO
 	if action == "remove":
-		if len(selected_items) != 1 or (len(selected_items) == 1 and selected_items[0] != item):
-			select_item(item, false)
 		delete_selected_events()
 	else:
 		move_block(item, action)
