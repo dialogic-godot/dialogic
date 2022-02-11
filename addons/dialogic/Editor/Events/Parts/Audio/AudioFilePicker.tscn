@@ -32,13 +32,13 @@ __meta__ = {
 
 [node name="FilePicker" parent="." instance=ExtResource( 1 )]
 margin_top = 0.0
-margin_right = 149.0
+margin_right = 162.0
 margin_bottom = 22.0
 Mode = "Audio"
 
 [node name="ButtonPreviewPlay" type="Button" parent="."]
-margin_left = 153.0
-margin_right = 175.0
+margin_left = 166.0
+margin_right = 188.0
 margin_bottom = 22.0
 size_flags_vertical = 4
 custom_styles/hover = ExtResource( 3 )
