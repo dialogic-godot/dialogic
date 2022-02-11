@@ -7,9 +7,11 @@ export(bool) var add_canvas = true
 export(bool) var reset_saves = true
 
 func _ready():
+	if reset_saves:
+		Dialogic.reset_saves()
 	var d = Dialogic.start(timeline, '', "res://addons/dialogic/Nodes/DialogNode.tscn", add_canvas)
 	get_parent().call_deferred('add_child', d)
-	_copy_signals(d if not add_canvas else d.dialog_node)
+	_copy_signals(d if not add_canvas else d.dialog_node)	
 	queue_free()
 
 func _copy_signals(dialogic:Node):
