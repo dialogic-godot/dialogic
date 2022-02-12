@@ -5,7 +5,7 @@ var editor_reference
 
 onready var nodes = {
 	# Theme
-	'themes': $VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer/HBoxContainer/ThemeOptionButton,
+	'themes': $VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer/HBoxContainer/ThemePicker,
 	'canvas_layer' : $VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer/HBoxContainer3/CanvasLayer,
 	
 	# Dialog
@@ -98,9 +98,10 @@ func _ready():
 	update_data()
 	
 	# Themes
-	nodes['themes'].connect('item_selected', self, '_on_default_theme_selected')
+	nodes['themes'].connect('about_to_show', self, 'build_PickerMenu')
+	nodes['themes'].custom_icon = load("res://addons/dialogic/Images/Resources/theme.svg")
 	# TODO move to theme section later
-	nodes['canvas_layer'].connect('text_changed', self, '_on_canvas_layer_text_changed')
+	nodes['canvas_layer'].connect('value_changed', self, '_on_canvas_layer_text_changed')
 
 	# Input
 	nodes['delay_after_options'].connect('text_changed', self, '_on_delay_options_text_changed')
@@ -183,9 +184,8 @@ func _ready():
 func update_data():
 	# Reloading the settings
 	var settings = DialogicResources.get_settings_config()
-	
-	nodes['canvas_layer'].text = settings.get_value("theme", "canvas_layer", '1')
-	refresh_themes(settings)
+	nodes['themes'].text = DialogicUtil.get_theme_dict()[settings.get_value("theme", "default", null)].get('name')
+	nodes['canvas_layer'].value = int(settings.get_value("theme", "canvas_layer", '1'))
 	load_values(settings, "input", INPUT_KEYS)
 	load_values(settings, "history", HISTORY_KEYS)
 	load_values(settings, "animations", ANIMATION_KEYS)
@@ -230,8 +230,6 @@ func refresh_themes(settings: ConfigFile):
 			set_value('theme', 'default', theme_list[0]['file'])
 
 
-func _on_default_theme_selected(index):
-	set_value('theme', 'default', nodes['themes'].get_item_metadata(index)['file'])
 
 
 
@@ -415,3 +413,43 @@ func _on_AnimationDefault_index_pressed(index, picker, key):
 
 func _on_AnimationDefaultLength_value_changed(value, key):
 	set_value('animations', key, value)
+
+
+##########
+## THEME
+##########
+func build_PickerMenu():
+	nodes['themes'].get_popup().clear()
+	var folder_structure = DialogicUtil.get_theme_folder_structure()
+
+	## building the root level
+	build_PickerMenuFolder(nodes['themes'].get_popup(), folder_structure, "MenuButton")
+
+# is called recursively to build all levels of the folder structure
+func build_PickerMenuFolder(menu:PopupMenu, folder_structure:Dictionary, current_folder_name:String):
+	var index = 0
+	for folder_name in folder_structure['folders'].keys():
+		var submenu = PopupMenu.new()
+		var submenu_name = build_PickerMenuFolder(submenu, folder_structure['folders'][folder_name], folder_name)
+		submenu.name = submenu_name
+		menu.add_submenu_item(folder_name, submenu_name)
+		menu.set_item_icon(index, get_icon("Folder", "EditorIcons"))
+		menu.add_child(submenu)
+		nodes['themes'].update_submenu_style(submenu)
+		index += 1
+	
+	var files_info = DialogicUtil.get_theme_dict()
+	for file in folder_structure['files']:
+		menu.add_item(files_info[file]['name'])
+		menu.set_item_icon(index, editor_reference.get_node("MainPanel/MasterTreeContainer/MasterTree").theme_icon)
+		menu.set_item_metadata(index, {'file':file})
+		index += 1
+	
+	if not menu.is_connected("index_pressed", self, "_on_ThemePicker_index_pressed"):
+		menu.connect("index_pressed", self, '_on_ThemePicker_index_pressed', [menu])
+	
+	return current_folder_name
+
+func _on_ThemePicker_index_pressed(index, menu):
+	nodes['themes'].text = menu.get_item_text(index)
+	set_value('theme', 'default', menu.get_item_metadata(index)['file'])
