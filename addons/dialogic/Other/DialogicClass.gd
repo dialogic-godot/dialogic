@@ -360,7 +360,8 @@ static func get_current_timeline():
 
 # Returns a string with the action button set on the project settings
 static func get_action_button():
-	return DialogicResources.get_settings_value('input', 'default_action_key', 'ui_accept')
+	var action_button = DialogicResources.get_settings_value('input', 'default_action_key', 'ui_accept')
+	return action_button if action_button != "[Default]" else "ui_accept"
 
 ################################################################################
 ## 					NOT TO BE USED FROM OUTSIDE
