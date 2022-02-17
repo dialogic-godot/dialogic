@@ -17,6 +17,7 @@ export (bool) var needs_indentation := false
 export (String) var help_page_path := ""
 export (bool) var show_name_in_timeline := true
 export(int, "Main", "Logic", "Timeline", "Audio/Visual", "Godot") var event_category = 0
+export (int) var sorting_index = -1
 signal option_action(action_name)
 
 
