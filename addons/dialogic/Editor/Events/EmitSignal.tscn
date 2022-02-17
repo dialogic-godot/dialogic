@@ -32,6 +32,7 @@ event_icon = ExtResource( 1 )
 header_scene = ExtResource( 2 )
 help_page_path = "res://addons/dialogic/Documentation/Content/Events/040.md"
 event_category = 4
+sorting_index = 0
 
 [node name="PanelContainer" parent="." index="1"]
 margin_right = 457.0
