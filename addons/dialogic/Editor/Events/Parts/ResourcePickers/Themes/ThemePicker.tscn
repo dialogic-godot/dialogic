@@ -9,6 +9,10 @@ margin_right = 157.0
 margin_bottom = 27.0
 size_flags_vertical = 4
 script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+show_text = true
 
 [node name="Label" parent="." instance=ExtResource( 3 )]
 margin_top = 6.0
@@ -19,6 +23,7 @@ text = "to theme"
 
 [node name="MenuButton" parent="." instance=ExtResource( 2 )]
 margin_left = 63.0
-margin_top = 2.0
-margin_right = 157.0
-margin_bottom = 24.0
+margin_top = 1.0
+margin_right = 177.0
+margin_bottom = 25.0
+custom_colors/font_color = Color( 0.8, 0.807843, 0.827451, 1 )

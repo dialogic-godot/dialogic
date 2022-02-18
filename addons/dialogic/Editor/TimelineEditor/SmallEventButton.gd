@@ -6,7 +6,7 @@ export (String) var event_id = 'dialogic_099'
 export (Color) var event_color = Color('#48a2a2a2')
 export(Texture) var event_icon = null setget set_icon
 export (int) var event_category := 0
-
+export (int) var sorting_index := 0
 
 func _ready():
 	self_modulate = Color(1,1,1)
