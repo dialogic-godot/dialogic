@@ -390,30 +390,39 @@ func hide_editors():
 ## *****************************************************************************
 
 func create_rmb_context_menus():
+	
 	var timeline_popup = PopupMenu.new()
 	timeline_popup.add_icon_item(get_icon("Filesystem", "EditorIcons"), DTS.translate('Show in File Manager'))
 	timeline_popup.add_icon_item(get_icon("ActionCopy", "EditorIcons"), DTS.translate('Copy Timeline Name'))
+	timeline_popup.add_icon_item(get_icon("Rename", "EditorIcons"), DTS.translate('Copy File Name'))
 	timeline_popup.add_icon_item(get_icon("Remove", "EditorIcons"), DTS.translate('Remove Timeline'))
 	add_child(timeline_popup)
+	add_rmb_popup_style(timeline_popup)
 	rmb_popup_menus["Timeline"] = timeline_popup
 	
 	var character_popup = PopupMenu.new()
 	character_popup.add_icon_item(get_icon("Filesystem", "EditorIcons"), DTS.translate('Show in File Manager'))
+	character_popup.add_icon_item(get_icon("Rename", "EditorIcons"), DTS.translate('Copy File Name'))
 	character_popup.add_icon_item(get_icon("Remove", "EditorIcons"), DTS.translate('Remove Character'))
 	add_child(character_popup)
+	add_rmb_popup_style(character_popup)
 	rmb_popup_menus["Character"] = character_popup
 	
 	var theme_popup = PopupMenu.new()
 	theme_popup.add_icon_item(get_icon("Filesystem", "EditorIcons"), DTS.translate('Show in File Manager'))
+	theme_popup.add_icon_item(get_icon("Rename", "EditorIcons"), DTS.translate('Copy File Name'))
 	theme_popup.add_icon_item(get_icon("Duplicate", "EditorIcons"), DTS.translate('Duplicate Theme'))
 	theme_popup.add_icon_item(get_icon("Remove", "EditorIcons"), DTS.translate('Remove Theme'))
 	add_child(theme_popup)
+	add_rmb_popup_style(theme_popup)
 	rmb_popup_menus["Theme"] = theme_popup
 	
 	var definition_popup = PopupMenu.new()
 	definition_popup.add_icon_item(get_icon("Edit", "EditorIcons"), DTS.translate('Edit Definitions File'))
+	definition_popup.add_icon_item(get_icon("Rename", "EditorIcons"), DTS.translate('Copy Definition ID'))
 	definition_popup.add_icon_item(get_icon("Remove", "EditorIcons"), DTS.translate('Remove Definition entry'))
 	add_child(definition_popup)
+	add_rmb_popup_style(definition_popup)
 	rmb_popup_menus["Value"] = definition_popup
 	rmb_popup_menus["GlossaryEntry"] = definition_popup
 	
@@ -423,6 +432,7 @@ func create_rmb_context_menus():
 	timeline_folder_popup.add_icon_item(get_icon("Folder", "EditorIcons") ,DTS.translate('Create Subfolder'))
 	timeline_folder_popup.add_icon_item(get_icon("Remove", "EditorIcons") ,DTS.translate('Delete Folder'))
 	add_child(timeline_folder_popup)
+	add_rmb_popup_style(timeline_folder_popup)
 	rmb_popup_menus['Timeline Root'] = timeline_folder_popup
 	
 	var character_folder_popup = PopupMenu.new()
@@ -430,6 +440,7 @@ func create_rmb_context_menus():
 	character_folder_popup.add_icon_item(get_icon("Folder", "EditorIcons") ,DTS.translate('Create Subfolder'))
 	character_folder_popup.add_icon_item(get_icon("Remove", "EditorIcons") ,DTS.translate('Delete Folder'))
 	add_child(character_folder_popup)
+	add_rmb_popup_style(character_folder_popup)
 	rmb_popup_menus['Character Root'] = character_folder_popup
 	
 	var theme_folder_popup = PopupMenu.new()
@@ -437,6 +448,7 @@ func create_rmb_context_menus():
 	theme_folder_popup.add_icon_item(get_icon("Folder", "EditorIcons") ,DTS.translate('Create Subfolder'))
 	theme_folder_popup.add_icon_item(get_icon("Remove", "EditorIcons") ,DTS.translate('Delete Folder'))
 	add_child(theme_folder_popup)
+	add_rmb_popup_style(theme_folder_popup)
 	rmb_popup_menus["Theme Root"] = theme_folder_popup
 	
 	var definition_folder_popup = PopupMenu.new()
@@ -445,16 +457,19 @@ func create_rmb_context_menus():
 	definition_folder_popup.add_icon_item(get_icon("Folder", "EditorIcons") ,DTS.translate('Create Subfolder'))
 	definition_folder_popup.add_icon_item(get_icon("Remove", "EditorIcons") ,DTS.translate('Delete Folder'))
 	add_child(definition_folder_popup)
+	add_rmb_popup_style(definition_folder_popup)
 	rmb_popup_menus["Definition Root"] = definition_folder_popup
 	
 	var documentation_folder_popup = PopupMenu.new()
 	documentation_folder_popup.add_icon_item(get_icon("Edit", "EditorIcons") ,DTS.translate('Toggle Editing Tools'))
 	add_child(documentation_folder_popup)
+	add_rmb_popup_style(documentation_folder_popup)
 	rmb_popup_menus["Documentation Root"] = documentation_folder_popup
 	
 	var documentation_popup = PopupMenu.new()
 	documentation_popup.add_icon_item(get_icon("Edit", "EditorIcons") ,DTS.translate('Toggle Editing Tools'))
 	add_child(documentation_popup)
+	add_rmb_popup_style(documentation_popup)
 	rmb_popup_menus["Documentation"] = documentation_popup
 	
 	# Connecting context menus
@@ -470,6 +485,13 @@ func create_rmb_context_menus():
 	definition_folder_popup.connect('id_pressed', self, '_on_DefinitionRootPopupMenu_id_pressed')
 	documentation_folder_popup.connect('id_pressed', self, '_on_DocumentationPopupMenu_id_pressed')
 
+func add_rmb_popup_style(popup):
+	var menu_background = load("res://addons/dialogic/Editor/Events/styles/ResourceMenuPanelBackground.tres")
+	menu_background.bg_color = get_color("base_color", "Editor")
+	
+	popup.add_stylebox_override('panel', menu_background)
+	popup.add_stylebox_override('hover', StyleBoxEmpty.new())
+	popup.add_color_override('font_color_hover', get_color("accent_color", "Editor"))
 
 func _on_item_rmb_selected(position):
 	var item = get_selected().get_metadata(0)
@@ -513,9 +535,11 @@ func create_item_path_recursive(item:TreeItem, path:String) -> String:
 func _on_TimelinePopupMenu_id_pressed(id):
 	if id == 0: # View files
 		OS.shell_open(ProjectSettings.globalize_path(DialogicResources.get_path('TIMELINE_DIR')))
-	if id == 1: # Copy to clipboard
+	elif id == 1: # Copy to clipboard
 		OS.set_clipboard(get_item_path(get_selected()).replace('Timelines', ''))
-	if id == 2: # Remove
+	elif id == 2: # Copy File name
+		OS.set_clipboard(get_selected().get_metadata(0).get('file'))
+	elif id == 3: # Remove
 		editor_reference.popup_remove_confirmation('Timeline')
 
 
@@ -523,7 +547,9 @@ func _on_TimelinePopupMenu_id_pressed(id):
 func _on_CharacterPopupMenu_id_pressed(id):
 	if id == 0:
 		OS.shell_open(ProjectSettings.globalize_path(DialogicResources.get_path('CHAR_DIR')))
-	if id == 1:
+	elif id == 1: # Copy File name
+		OS.set_clipboard(get_selected().get_metadata(0).get('file'))
+	elif id == 2: # Remove
 		editor_reference.popup_remove_confirmation('Character')
 
 
@@ -531,10 +557,12 @@ func _on_CharacterPopupMenu_id_pressed(id):
 func _on_ThemePopupMenu_id_pressed(id):
 	if id == 0:
 		OS.shell_open(ProjectSettings.globalize_path(DialogicResources.get_path('THEME_DIR')))
-	if id == 1:
+	elif id == 1: # Copy File name
+		OS.set_clipboard(get_selected().get_metadata(0).get('file'))
+	elif id == 2:
 		var filename = editor_reference.get_node('MainPanel/MasterTreeContainer/MasterTree').get_selected().get_metadata(0)['file']
 		theme_editor.duplicate_theme(filename)
-	if id == 2:
+	elif id == 3:
 		editor_reference.popup_remove_confirmation('Theme')
 
 
@@ -543,7 +571,9 @@ func _on_DefinitionPopupMenu_id_pressed(id):
 	if id == 0:
 		var paths = DialogicResources.get_config_files_paths()
 		OS.shell_open(ProjectSettings.globalize_path(paths['DEFAULT_DEFINITIONS_FILE']))
-	if id == 1:
+	elif id == 1: # Copy File name
+		OS.set_clipboard(get_selected().get_metadata(0).get('id'))
+	if id == 2:
 		if value_editor.visible:
 			editor_reference.popup_remove_confirmation('Value')
 		elif glossary_entry_editor.visible:

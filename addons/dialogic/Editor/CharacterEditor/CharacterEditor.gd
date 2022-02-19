@@ -26,6 +26,7 @@ onready var nodes = {
 	'offset_x': $Split/EditorScroll/Editor/HBoxContainer/OffsetX,
 	'offset_y': $Split/EditorScroll/Editor/HBoxContainer/OffsetY,
 	
+	'portrait_search':$Split/EditorScroll/Editor/Portraits/Search,
 	'portrait_list': $Split/EditorScroll/Editor/PortraitPanel/VBoxContainer/ScrollContainer/VBoxContainer/PortraitList,
 	'new_portrait_button': $Split/EditorScroll/Editor/PortraitPanel/VBoxContainer/Labels/HBoxContainer/NewPortrait,
 	'import_from_folder_button': $Split/EditorScroll/Editor/PortraitPanel/VBoxContainer/Labels/HBoxContainer/ImportFromFolder,
@@ -57,6 +58,7 @@ func _ready():
 	nodes['display_name_checkbox'].connect('toggled', self, '_on_display_name_toggled')
 	nodes['nickname_checkbox'].connect('toggled', self, '_on_nickname_toggled')
 	
+	nodes['portrait_search'].connect('text_changed', self, '_on_PortraitSearch_text_changed')
 	nodes['import_from_folder_button'].connect('pressed', self, '_on_Import_Portrait_Folder_Button_pressed')
 	nodes['new_portrait_button'].connect('pressed', self, '_on_New_Portrait_Button_pressed')
 	
@@ -87,6 +89,7 @@ func clear_character_editor():
 	nodes['theme'].text = 'No custom theme'
 	selected_theme_file = ''
 	
+	nodes['portrait_search'].text = ''
 	nodes['portraits'] = []
 	nodes['scale'].value = 100
 	nodes['mirror_portraits_checkbox'].pressed = false
@@ -178,22 +181,33 @@ func load_character(filename: String):
 	nodes['portrait_preview_real'].flip_h = data.get('mirror_portraits', false)
 	nodes['portrait_preview_real'].rect_scale = Vector2(
 					float(data.get('scale', 100))/100, float(data.get('scale', 100))/100)
+	
 	# Portraits
 	var default_portrait = create_portrait_entry()
 	default_portrait.get_node('NameEdit').text = 'Default'
 	default_portrait.get_node('NameEdit').editable = false
-	if data.has('portraits'):
-		for p in data['portraits']:
+	if opened_character_data.has('portraits'):
+		for p in opened_character_data['portraits']:
+			var current_item
 			if p['name'] == 'Default':
 				default_portrait.get_node('PathEdit').text = p['path']
 				default_portrait.update_preview(p['path'])
+				current_item = default_portrait
 			else:
-				create_portrait_entry(p['name'], p['path'])
-
+				current_item = create_portrait_entry(p['name'], p['path'])
+			
 
 ####################################################################################################
 ##							UI FUNCTIONS
 ####################################################################################################
+
+
+func _on_PortraitSearch_text_changed(text):
+	for portrait_item in nodes['portrait_list'].get_children():
+		if text.empty() or text.to_lower() in portrait_item.get_node("NameEdit").text.to_lower() or text.to_lower() in portrait_item.get_node("PathEdit").text.to_lower():
+			portrait_item.show()
+		else:
+			portrait_item.hide()
 
 func refresh_themes_and_select(file):
 	selected_theme_file = file

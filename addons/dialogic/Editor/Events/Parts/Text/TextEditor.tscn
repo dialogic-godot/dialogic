@@ -37,6 +37,7 @@ custom_colors/number_color = Color( 0, 0, 0, 1 )
 custom_styles/focus = SubResource( 3 )
 custom_styles/normal = ExtResource( 2 )
 syntax_highlighting = true
+show_line_numbers = true
 smooth_scrolling = true
 wrap_enabled = true
 
