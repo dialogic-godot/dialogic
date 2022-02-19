@@ -1,9 +1,10 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://addons/dialogic/Editor/CharacterEditor/PortraitEntry.tscn" type="PackedScene" id=1]
 [ext_resource path="res://addons/dialogic/Editor/CharacterEditor/CharacterEditor.gd" type="Script" id=2]
 [ext_resource path="res://addons/dialogic/Editor/Common/TLabel.tscn" type="PackedScene" id=3]
 [ext_resource path="res://addons/dialogic/Example Assets/portraits/df-3.png" type="Texture" id=4]
+[ext_resource path="res://addons/dialogic/Editor/Events/styles/InputFieldsStyle.tres" type="Theme" id=5]
 
 [sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 0.2, 0.23, 0.31, 1 )
@@ -69,6 +70,7 @@ size = Vector2( 16, 16 )
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_right = -25.0
+theme = ExtResource( 5 )
 script = ExtResource( 2 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -110,7 +112,7 @@ margin_top = 5.0
 margin_right = 130.0
 margin_bottom = 19.0
 rect_min_size = Vector2( 130, 0 )
-text = "Name:"
+text = "Name: "
 text_key = "Name: "
 
 [node name="ColorPickerButton" type="ColorPickerButton" parent="Split/EditorScroll/Editor/NameAndColor"]
@@ -151,7 +153,7 @@ margin_top = 5.0
 margin_right = 130.0
 margin_bottom = 19.0
 rect_min_size = Vector2( 130, 0 )
-text = "Anzeigename:"
+text = "Display Name: "
 text_key = "Display Name: "
 
 [node name="CheckBox" type="CheckBox" parent="Split/EditorScroll/Editor/DisplayName"]
@@ -188,7 +190,7 @@ margin_top = 5.0
 margin_right = 130.0
 margin_bottom = 19.0
 rect_min_size = Vector2( 130, 0 )
-text = "Spitznamen:"
+text = "Nicknames: "
 text_key = "Nicknames: "
 
 [node name="CheckBox" type="CheckBox" parent="Split/EditorScroll/Editor/DisplayNickname"]
@@ -222,7 +224,7 @@ margin_right = 130.0
 margin_bottom = 14.0
 rect_min_size = Vector2( 130, 0 )
 size_flags_vertical = 0
-text = "Beschreibung:"
+text = "Description: "
 text_key = "Description: "
 
 [node name="TextEdit" type="TextEdit" parent="Split/EditorScroll/Editor/Description"]
@@ -266,36 +268,46 @@ custom_constants/separation = 18
 [node name="Portraits" type="HBoxContainer" parent="Split/EditorScroll/Editor"]
 margin_top = 184.0
 margin_right = 581.0
-margin_bottom = 198.0
+margin_bottom = 208.0
 
 [node name="Title" parent="Split/EditorScroll/Editor/Portraits" instance=ExtResource( 3 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_right = 581.0
-margin_bottom = 14.0
+margin_top = 5.0
+margin_right = 457.0
+margin_bottom = 19.0
 size_flags_horizontal = 3
 custom_fonts/font = SubResource( 4 )
 text = "Portraits"
 valign = 1
 text_key = "Portraits"
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Split/EditorScroll/Editor"]
-margin_top = 202.0
+[node name="Search" type="LineEdit" parent="Split/EditorScroll/Editor/Portraits"]
+margin_left = 461.0
 margin_right = 581.0
-margin_bottom = 226.0
+margin_bottom = 24.0
+rect_min_size = Vector2( 120, 0 )
+size_flags_vertical = 4
+expand_to_text_length = true
+placeholder_text = "Search"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Split/EditorScroll/Editor"]
+margin_top = 212.0
+margin_right = 581.0
+margin_bottom = 236.0
 
 [node name="TLabel11" parent="Split/EditorScroll/Editor/HBoxContainer" instance=ExtResource( 3 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_top = 5.0
-margin_right = 39.0
+margin_right = 33.0
 margin_bottom = 19.0
-text = "Größe"
+text = "Scale"
 text_key = "Scale"
 
 [node name="Scale" type="SpinBox" parent="Split/EditorScroll/Editor/HBoxContainer"]
-margin_left = 43.0
-margin_right = 117.0
+margin_left = 37.0
+margin_right = 113.0
 margin_bottom = 24.0
 value = 100.0
 allow_greater = true
@@ -305,50 +317,50 @@ suffix = "%"
 [node name="TLabel12" parent="Split/EditorScroll/Editor/HBoxContainer" instance=ExtResource( 3 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_left = 121.0
+margin_left = 117.0
 margin_top = 5.0
-margin_right = 207.0
+margin_right = 156.0
 margin_bottom = 19.0
-text = "Verschiebung"
+text = "Offset"
 text_key = "Offset"
 
 [node name="OffsetX" type="SpinBox" parent="Split/EditorScroll/Editor/HBoxContainer"]
-margin_left = 211.0
-margin_right = 285.0
+margin_left = 160.0
+margin_right = 236.0
 margin_bottom = 24.0
 allow_greater = true
 allow_lesser = true
 suffix = "X"
 
 [node name="OffsetY" type="SpinBox" parent="Split/EditorScroll/Editor/HBoxContainer"]
-margin_left = 289.0
-margin_right = 363.0
+margin_left = 240.0
+margin_right = 316.0
 margin_bottom = 24.0
 allow_greater = true
 allow_lesser = true
 suffix = "Y"
 
 [node name="MirrorOption" type="HBoxContainer" parent="Split/EditorScroll/Editor/HBoxContainer"]
-margin_left = 367.0
-margin_right = 507.0
+margin_left = 320.0
+margin_right = 445.0
 margin_bottom = 24.0
 
 [node name="TLabel11" parent="Split/EditorScroll/Editor/HBoxContainer/MirrorOption" instance=ExtResource( 3 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_top = 5.0
-margin_right = 112.0
+margin_right = 97.0
 margin_bottom = 19.0
-text = "Portraits spiegeln"
+text = "Mirror portraits"
 text_key = "Mirror portraits"
 
 [node name="MirrorPortraitsCheckBox" type="CheckBox" parent="Split/EditorScroll/Editor/HBoxContainer/MirrorOption"]
-margin_left = 116.0
-margin_right = 140.0
+margin_left = 101.0
+margin_right = 125.0
 margin_bottom = 24.0
 
 [node name="PortraitPanel" type="PanelContainer" parent="Split/EditorScroll/Editor"]
-margin_top = 230.0
+margin_top = 240.0
 margin_right = 581.0
 margin_bottom = 600.0
 size_flags_vertical = 3
@@ -358,7 +370,7 @@ custom_styles/panel = SubResource( 7 )
 margin_left = 2.0
 margin_top = 2.0
 margin_right = 579.0
-margin_bottom = 368.0
+margin_bottom = 358.0
 
 [node name="Labels" type="HBoxContainer" parent="Split/EditorScroll/Editor/PortraitPanel/VBoxContainer"]
 margin_right = 577.0
@@ -379,40 +391,40 @@ anchor_right = 0.0
 anchor_bottom = 0.0
 margin_left = 164.0
 margin_top = 4.0
-margin_right = 276.0
+margin_right = 329.0
 margin_bottom = 18.0
 size_flags_horizontal = 3
 text = "Path"
 text_key = "Path"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Split/EditorScroll/Editor/PortraitPanel/VBoxContainer/Labels"]
-margin_left = 280.0
+margin_left = 333.0
 margin_right = 577.0
 margin_bottom = 22.0
 
 [node name="NewPortrait" type="Button" parent="Split/EditorScroll/Editor/PortraitPanel/VBoxContainer/Labels/HBoxContainer"]
-margin_right = 130.0
+margin_right = 117.0
 margin_bottom = 22.0
-text = "  Neues Portrait"
+text = "  New portrait"
 icon = SubResource( 9 )
 
 [node name="ImportFromFolder" type="Button" parent="Split/EditorScroll/Editor/PortraitPanel/VBoxContainer/Labels/HBoxContainer"]
-margin_left = 134.0
-margin_right = 297.0
+margin_left = 121.0
+margin_right = 244.0
 margin_bottom = 22.0
-text = "  Ordner importieren"
+text = "  Import folder"
 icon = SubResource( 9 )
 
 [node name="ScrollContainer" type="ScrollContainer" parent="Split/EditorScroll/Editor/PortraitPanel/VBoxContainer"]
 margin_top = 26.0
 margin_right = 577.0
-margin_bottom = 366.0
+margin_bottom = 356.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Split/EditorScroll/Editor/PortraitPanel/VBoxContainer/ScrollContainer"]
 margin_right = 577.0
-margin_bottom = 340.0
+margin_bottom = 330.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
@@ -436,7 +448,7 @@ anchor_bottom = 0.0
 margin_top = 5.0
 margin_right = 27.0
 margin_bottom = 19.0
-text = "Datei"
+text = "File:"
 text_key = "File:"
 
 [node name="LineEdit" type="LineEdit" parent="Split/EditorScroll/Editor/FileName"]
