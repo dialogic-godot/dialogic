@@ -777,6 +777,7 @@ func drop_event():
 		piece_was_dragged = false
 		indent_events()
 		add_extra_scroll_area_to_timeline()
+		
 
 
 func cancel_drop_event():
@@ -933,9 +934,11 @@ func move_block(block, direction):
 	if direction == 'up':
 		if block_index > 0:
 			timeline.move_child(block, block_index - 1)
+			$TimelineArea.update()
 			return true
 	if direction == 'down':
 		timeline.move_child(block, block_index + 1)
+		$TimelineArea.update()
 		return true
 	return false
 
@@ -1055,6 +1058,7 @@ func indent_events() -> void:
 			else:
 				event.set_indent(indent)
 		starter = false
+	$TimelineArea.update()
 
 
 # called from the toolbar
