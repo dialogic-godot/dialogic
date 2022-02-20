@@ -56,7 +56,8 @@ func visual_select():
 
 
 func visual_deselect():
-	selected_style.hide()
+	if selected_style:
+		selected_style.hide()
 
 
 # called by the timeline before adding it to the tree
@@ -309,8 +310,6 @@ func _draw():
 	var pos_x = (27 * _scale)
 	var pos_y = 46 * _scale
 	
-	
-	
 	# Adjusting the pos_x. Not sure why it is not consistent between render scales
 	if _scale == 1.5:
 		pos_x -= 3
@@ -319,21 +318,42 @@ func _draw():
 	if _scale == 2:
 		pos_x -= 6
 
-	# If the event is the last one, don't draw a line aftwards
+	# If the event is the last one, don't draw anything aftwards
 	if timeline_children[timeline_lenght-1] == self:
 		return
-
-	# Figuring out the next event
-	var next_event = timeline_children[get_index() + 1]
 	
+	# Drawing long lines on questions and conditions
+	if event_name == 'Question' or event_name == 'Condition':
+		var keep_going = true
+		var end_reference
+		for e in timeline_children:
+			if keep_going:
+				if e.get_index() > get_index():
+					if e.current_indent_level == current_indent_level:
+						if e.event_name == 'End Branch':
+							end_reference = e
+							keep_going = false
+						if e.event_name == 'Question' or event_name == 'Condition':
+							keep_going = false
+		if keep_going == false:
+			if end_reference:
+				# This line_size thing should be fixed, not sure why it is different when
+				# the indent level is 0 and when it is bigger. 
+				var line_size = 0
+				if current_indent_level > 0:
+					line_size = (indent_size * current_indent_level) + (4 * _scale)
+				# end the line_size thingy
+				
+				# Drawing the line from the Question/Condition node to the End Branch one.
+				draw_rect(Rect2(
+							Vector2(pos_x + line_size , pos_y),
+							Vector2(line_width, (end_reference.rect_global_position.y - rect_global_position.y) - (43 * _scale))
+						),
+						line_color, true)
+
+	# Drawing other lines and archs
+	var next_event = timeline_children[get_index() + 1]
 	if current_indent_level > 0:
-		# Root (level 0) Vertical Line 
-		draw_rect(Rect2(Vector2(pos_x, pos_y - (45 * _scale)),
-			Vector2(line_width, rect_size.y + (5 * _scale))),
-			line_color, true)
-		
-		# Todo: previous lines when needed
-		
 		# Line at current indent
 		var line_size = (indent_size * current_indent_level) + (4 * _scale)
 		if next_event.event_name != 'End Branch' and event_name != 'Choice':
@@ -342,14 +362,17 @@ func _draw():
 				pass
 			else:
 				draw_rect(Rect2(
-					Vector2(pos_x + line_size , pos_y),
-					Vector2(line_width, rect_size.y - (40 * _scale))),
-					line_color, true)
+						Vector2(pos_x + line_size , pos_y),
+						Vector2(line_width, rect_size.y - (40 * _scale))
+					),
+					line_color,
+					true)
 	else:
 		# Root (level 0) Vertical Line
 		draw_rect(Rect2(Vector2(pos_x, pos_y),
 			Vector2(line_width, rect_size.y - (40 * _scale))),
-			line_color, true)
+			line_color,
+			true)
 			
 	# Drawing arc
 	if event_name == 'Choice':
