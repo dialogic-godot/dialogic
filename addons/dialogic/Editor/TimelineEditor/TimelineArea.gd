@@ -161,7 +161,7 @@ func _draw():
 			var end_angle = 185
 
 			if event.current_indent_level == 1:
-				arc_start_x = (event.indent_size * (event.current_indent_level)) + (7.5 * _scale)
+				arc_start_x = (event.indent_size * (event.current_indent_level)) + (12.5 * _scale)
 
 			draw_arc(
 				Vector2(arc_start_x, arc_start_y-scroll_vertical)+event.rect_position,
@@ -176,7 +176,7 @@ func _draw():
 
 			# Don't draw arc if next event is another choice event
 			if next_event.event_name == "Choice" or next_event.event_name == "End Branch":
-				return
+				continue
 
 			# Connecting with the next event
 
