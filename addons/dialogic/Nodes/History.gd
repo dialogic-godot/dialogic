@@ -167,7 +167,7 @@ func add_history_row_event(eventData):
 	if eventData.has('character') and eventData.character != '':
 		var characterData = DialogicUtil.get_character(eventData.character)
 		var characterName = characterData.get('name', '')
-		print(eventData)
+		#print(eventData)
 		if eventData.has('character') and eventData.character == '[All]':
 			characterPrefix = str('Everyone')
 		elif characterData.data.get('display_name_bool', false)  == true:
@@ -235,28 +235,6 @@ func _on_HistoryPopup_about_to_show():
 	if HistoryButton != null:
 		HistoryButton.show()
 	ScrollHistoryContainer.scroll_vertical = scrollbar.max_value
-
-
-func _on_HistoryPopup_item_rect_changed():
-	if not Engine.is_editor_hint():
-		HistoryPopup.rect_size =  get_tree().root.size;
-		
-		if get_parent().settings:
-			var button_anchor = get_parent().settings.get_value('history', 'history_button_position', 2)
-			var screen_margin_x = get_parent().settings.get_value('history', 'history_screen_margin_x', 0)
-			var screen_margin_y = get_parent().settings.get_value('history', 'history_screen_margin_y', 0)
-			var container_margin_X = get_parent().settings.get_value('history', 'history_container_margin_x', 0)
-			var container_margin_y = get_parent().settings.get_value('history', 'history_container_margin_y', 0)
-			
-			HistoryPopup.margin_left = screen_margin_x
-			HistoryPopup.margin_right = -screen_margin_x
-			HistoryPopup.margin_top = screen_margin_y
-			HistoryPopup.margin_bottom = -screen_margin_y
-			
-			ScrollHistoryContainer.margin_left = container_margin_X
-			ScrollHistoryContainer.margin_right = -container_margin_X
-			ScrollHistoryContainer.margin_top = container_margin_y
-			ScrollHistoryContainer.margin_bottom = -container_margin_y
 
 
 func _on_HistoryButton_mouse_entered():
