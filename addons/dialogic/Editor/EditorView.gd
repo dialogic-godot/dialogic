@@ -68,6 +68,8 @@ func _ready():
 	
 	$ToolBar/FoldTools/ButtonFold.icon = get_icon("GuiTreeArrowRight", "EditorIcons")
 	$ToolBar/FoldTools/ButtonUnfold.icon = get_icon("GuiTreeArrowDown", "EditorIcons")
+	$ToolBar/FoldTools/PlayTimeline.icon = get_icon("PlayScene", "EditorIcons")
+	
 	# Toolbar
 	$ToolBar/NewTimelineButton.connect('pressed', $MainPanel/MasterTreeContainer/MasterTree, 'new_timeline')
 	$ToolBar/NewCharactersButton.connect('pressed', $MainPanel/MasterTreeContainer/MasterTree, 'new_character')
@@ -85,6 +87,7 @@ func _ready():
 		['/'])
 	$ToolBar/FoldTools/ButtonFold.connect('pressed', $MainPanel/TimelineEditor, 'fold_all_nodes')
 	$ToolBar/FoldTools/ButtonUnfold.connect('pressed', $MainPanel/TimelineEditor, 'unfold_all_nodes')
+	$ToolBar/FoldTools/PlayTimeline.connect('pressed', $MainPanel/TimelineEditor, 'play_timeline')
 	
 	
 	#Connecting confirmation
