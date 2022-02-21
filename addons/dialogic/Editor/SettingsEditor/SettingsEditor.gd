@@ -38,7 +38,7 @@ onready var nodes = {
 	'new_plugin_help':$VBoxContainer/HBoxContainer3/VBoxContainer2/plugins/GeneratePlugin/pluginsDocs,
 	'new_plugin_message':$VBoxContainer/HBoxContainer3/VBoxContainer2/plugins/GeneratePlugin/Message,
 	'new_plugin_create_runtime': $VBoxContainer/HBoxContainer3/VBoxContainer2/plugins/GeneratePlugin2/create_runtime,
-	'new_plugin_create_editor': $VBoxContainer/HBoxContainer3/VBoxContainer2/plugins/GeneratePlugin2/create_editor
+	'new_plugin_create_editor': $VBoxContainer/HBoxContainer3/VBoxContainer2/plugins/GeneratePlugin2/create_editor,
 	
 	# History Settings
 	'enable_history_logging': $VBoxContainer/HBoxContainer3/VBoxContainer2/HistorySettings/GridContainer/HistoryBox/EnableHistoryLogging,
