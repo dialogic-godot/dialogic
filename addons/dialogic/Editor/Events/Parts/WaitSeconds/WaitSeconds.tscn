@@ -1,18 +1,20 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://addons/dialogic/Editor/Events/Parts/WaitSeconds/EventPart_WaitSeconds.gd" type="Script" id=1]
 [ext_resource path="res://addons/dialogic/Editor/Events/Parts/Text/GreyLabel.tscn" type="PackedScene" id=2]
+[ext_resource path="res://addons/dialogic/Editor/Events/styles/InputFieldsStyle.tres" type="Theme" id=3]
 [ext_resource path="res://addons/dialogic/Editor/Events/Parts/SpinBoxPreventDnD.gd" type="Script" id=4]
 
 [node name="VBoxContainer" type="VBoxContainer"]
 size_flags_vertical = 4
+theme = ExtResource( 3 )
 script = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
-margin_right = 375.0
+margin_right = 377.0
 margin_bottom = 24.0
 __meta__ = {
 "_edit_use_anchors_": false
@@ -27,7 +29,7 @@ text = "for"
 
 [node name="SecondsBox" type="SpinBox" parent="HBoxContainer"]
 margin_left = 21.0
-margin_right = 95.0
+margin_right = 97.0
 margin_bottom = 24.0
 min_value = 0.1
 step = 0.1
@@ -37,21 +39,21 @@ align = 1
 script = ExtResource( 4 )
 
 [node name="Label2" parent="HBoxContainer" instance=ExtResource( 2 )]
-margin_left = 99.0
+margin_left = 101.0
 margin_top = 5.0
-margin_right = 152.0
+margin_right = 154.0
 margin_bottom = 19.0
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "seconds"
 
 [node name="SkippableCheckbox" type="CheckBox" parent="HBoxContainer"]
-margin_left = 156.0
-margin_right = 245.0
+margin_left = 158.0
+margin_right = 247.0
 margin_bottom = 24.0
 text = "Skippable"
 
 [node name="HideDialogBoxCheckbox" type="CheckBox" parent="HBoxContainer"]
-margin_left = 249.0
-margin_right = 375.0
+margin_left = 251.0
+margin_right = 377.0
 margin_bottom = 24.0
 text = "Hide DialogBox"

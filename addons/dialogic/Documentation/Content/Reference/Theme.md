@@ -19,6 +19,10 @@ Use this to align the text inside the box.
 ##### Behaviour>Single Portrait Mode
 If you enable this mode, there will always only be one portrait visible. This will be the portrait of the character who is currently speaking.
 
+##### Behaviour>Don't Close After Last Event
+If enabled, the dialog box will not delete itself after the last event. Instead you will need to remove it manualy. Usefull if the box is intergrated into your design and should never vanish.
+
+
 ## Dialog Box
 ### Dialog Box>Visuals
 You may choose either a solid color or a texture for the background of the box. For the texture, you can also change its modulation.
@@ -42,8 +46,15 @@ Sets how long the theme takes to fade in. Fading only happens on dialog load and
 ##### Behaviour>Portraits Dim Color
 Use this to change the modulation of the active character. Set it to white if you do not want any changes. 
 
+##### Behaviour>Portraits Behind Dialog Box
+If you disable this, the portraits will instead be in front of the dialog box.
+
+
 ## Name Label
 The `Name Label` is the section above the text box that displays the name of the character who is currently speaking.
+
+##### Behaviour>Hide name labels
+If this is enabled, the name label will not be shown.
 
 ##### Text>Use character Color
 If you enable this, the name label will always use the color of the currently speaking character. The characters color can be edited in the [Character Editor](./Character.md).
@@ -57,8 +68,10 @@ The padding between the texture border and the text.
 ### Name Label>Placement
 Here you can set the alignment of the `Name label` as well as setting some additional offset.
 
+
 ## Choice Buttons
 You can change the look of the buttons four states, although "Disabled" currently does nothing.
+
 
 ## Glossary
 These setting lets you define the appearance of the box that appears when you hover over a glossary entry.
@@ -68,6 +81,7 @@ Sets the color of glossary word inside the dialog.
 
 ##### Behaviour>Show
 If this is disabled, the glossary info box won't be shown and glossary entries won't be colored.
+
 
 ## Audio
 This sections allows you to set audio for your dialogue. Dialogic uses the [RandomAudioPlayer by TimKrief](https://gitlab.com/timkrief/godot-random-audio-stream-player).

@@ -8,12 +8,17 @@ export(String, "Audio", "Background", "Scene") var Mode = "Background"
 onready var file_button = $FileButton
 onready var clear_button = $ClearButton
 
+# until we change the background color of the pickers, the color should ignore the theme
+var default_color = Color('ccced3')
+
 # used to connect the signals
 func _ready():
 	editor_reference = find_parent("EditorView")
 	file_button.connect("pressed", self, "_on_FileButton_pressed")
 	clear_button.connect('pressed', self, "_on_ClearButton_pressed")
+	file_button.add_color_override("font_color", default_color) #get_color("mono_color", "Editor"))
 	clear_button.icon = get_icon("Reload", "EditorIcons")
+	$FileButton/icon2.texture = get_icon("GuiSliderGrabber", "EditorIcons")
 	match Mode:
 		"Audio":
 			$Label.text = "Play"

@@ -17,6 +17,7 @@ export (bool) var needs_indentation := false
 export (String) var help_page_path := ""
 export (bool) var show_name_in_timeline := true
 export(int, "Main", "Logic", "Timeline", "Audio/Visual", "Godot") var event_category = 0
+export (int) var sorting_index = -1
 signal option_action(action_name)
 
 
@@ -55,7 +56,8 @@ func visual_select():
 
 
 func visual_deselect():
-	selected_style.hide()
+	if selected_style:
+		selected_style.hide()
 
 
 # called by the timeline before adding it to the tree
@@ -297,99 +299,3 @@ func _ready():
 		set_expanded(expand_on_default)
 	
 	_on_Indent_visibility_changed()
-
-func _draw():
-	var timeline_children = get_parent().get_children()
-	var timeline_lenght = timeline_children.size()
-	var line_color = Color("#4D4D4D")
-	var test_color = Color(1,0,0,0.5)
-	var _scale = DialogicUtil.get_editor_scale(self)
-	var line_width = 3 * _scale
-	var pos_x = (27 * _scale)
-	var pos_y = 46 * _scale
-	
-	
-	
-	# Adjusting the pos_x. Not sure why it is not consistent between render scales
-	if _scale == 1.5:
-		pos_x -= 3
-	if _scale == 1.75:
-		pos_x -= 4
-	if _scale == 2:
-		pos_x -= 6
-
-	# If the event is the last one, don't draw a line aftwards
-	if timeline_children[timeline_lenght-1] == self:
-		return
-
-	# Figuring out the next event
-	var next_event = timeline_children[get_index() + 1]
-	
-	if current_indent_level > 0:
-		# Root (level 0) Vertical Line 
-		draw_rect(Rect2(Vector2(pos_x, pos_y - (45 * _scale)),
-			Vector2(line_width, rect_size.y + (5 * _scale))),
-			line_color, true)
-		
-		# Todo: previous lines when needed
-		
-		# Line at current indent
-		var line_size = (indent_size * current_indent_level) + (4 * _scale)
-		if next_event.event_name != 'End Branch' and event_name != 'Choice':
-			if event_name != 'Question' and next_event.event_name == 'Choice':
-				# Skip drawing lines before going to the next choice
-				pass
-			else:
-				draw_rect(Rect2(
-					Vector2(pos_x + line_size , pos_y),
-					Vector2(line_width, rect_size.y - (40 * _scale))),
-					line_color, true)
-	else:
-		# Root (level 0) Vertical Line
-		draw_rect(Rect2(Vector2(pos_x, pos_y),
-			Vector2(line_width, rect_size.y - (40 * _scale))),
-			line_color, true)
-			
-	# Drawing arc
-	if event_name == 'Choice':
-		# Connecting with the question 
-		var arc_start_x = (indent_size * (current_indent_level)) + (11.2 * _scale)
-		var arc_start_y = 0
-		var arc_point_count = 12 * _scale
-		var arc_radius = 24 * _scale
-		var start_angle = 90
-		var end_angle = 185
-		
-		if current_indent_level == 1:
-			arc_start_x = (indent_size * (current_indent_level)) + (7.5 * _scale)
-		
-		draw_arc(
-			Vector2(arc_start_x, arc_start_y),
-			arc_radius,
-			deg2rad(start_angle),
-			deg2rad(end_angle),
-			arc_point_count, #point count
-			line_color,
-			line_width - (1 * _scale),
-			true
-		)
-
-		# Don't draw arc if next event is another choice event
-		if next_event.event_name == "Choice" or next_event.event_name == "End Branch":
-			return
-
-		# Connecting with the next event
-
-		arc_start_x = (indent_size * (current_indent_level + 1)) + (10 * _scale)
-		arc_start_y = (pos_y + (8 * _scale))
-
-		draw_arc(
-			Vector2(arc_start_x, arc_start_y),
-			arc_radius,
-			deg2rad(start_angle),
-			deg2rad(end_angle),
-			arc_point_count,
-			line_color,
-			line_width - (1 * _scale),
-			true
-		)

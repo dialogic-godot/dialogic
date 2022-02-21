@@ -101,6 +101,7 @@ func _ready():
 			button.set_icon(b['event_icon'])
 			button.event_color = b['event_color']
 			button.event_category = b.get('event_category', 0)
+			button.sorting_index = b.get('sorting_index', 9999)
 			# Connecting the signal
 			if button.event_id == 'dialogic_010':
 				button.connect('pressed', self, "_on_ButtonQuestion_pressed", [])
@@ -110,6 +111,8 @@ func _ready():
 				button.connect('pressed', self, "_create_event_button_pressed", [button.event_id])
 			# Adding it to its section
 			get_node("ScrollContainer/EventContainer/FlexContainer" + str(button.event_category + 1)).add_child(button)
+			while button.get_index() != 0 and button.sorting_index < get_node("ScrollContainer/EventContainer/FlexContainer" + str(button.event_category + 1)).get_child(button.get_index()-1).sorting_index:
+				get_node("ScrollContainer/EventContainer/FlexContainer" + str(button.event_category + 1)).move_child(button, button.get_index()-1)
 
 # handles dragging/moving of events
 func _process(delta):
@@ -774,6 +777,7 @@ func drop_event():
 		piece_was_dragged = false
 		indent_events()
 		add_extra_scroll_area_to_timeline()
+		
 
 
 func cancel_drop_event():
@@ -930,9 +934,11 @@ func move_block(block, direction):
 	if direction == 'up':
 		if block_index > 0:
 			timeline.move_child(block, block_index - 1)
+			$TimelineArea.update()
 			return true
 	if direction == 'down':
 		timeline.move_child(block, block_index + 1)
+		$TimelineArea.update()
 		return true
 	return false
 
@@ -1052,6 +1058,7 @@ func indent_events() -> void:
 			else:
 				event.set_indent(indent)
 		starter = false
+	$TimelineArea.update()
 
 
 # called from the toolbar

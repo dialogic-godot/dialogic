@@ -12,3 +12,5 @@ __meta__ = {
 }
 
 [node name="MenuButton" parent="." instance=ExtResource( 2 )]
+margin_right = 98.0
+margin_bottom = 24.0

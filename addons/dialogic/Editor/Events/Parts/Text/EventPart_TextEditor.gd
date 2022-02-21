@@ -6,6 +6,7 @@ extends "res://addons/dialogic/Editor/Events/Parts/EventPart.gd"
 ## node references
 onready var text_editor = $TextEdit
 
+var timeline_area = null
 
 # used to connect the signals
 func _ready():
@@ -20,6 +21,10 @@ func _ready():
 	text_editor.set('custom_colors/function_color', get_color("font_color", "Editor"))
 	text_editor.set('custom_colors/member_variable_color', get_color("font_color", "Editor"))
 	text_editor.set('custom_colors/symbol_color', get_color("font_color", "Editor"))
+	
+	timeline_area = find_parent('TimelineArea')
+	timeline_area.connect('resized', self, '_set_new_min_size')
+	_set_new_min_size()
 
 
 # called by the event block
@@ -82,21 +87,31 @@ func _set_new_min_size():
 	# Getting new sizes
 	var extra_vertical = 1.1
 	
-	if text_editor.get_line_count() > 1:
-		extra_vertical = 1.22
-		
 	
 	
-	text_editor.rect_min_size.y = get_font("normal_font").get_height() * ((text_editor.get_line_count() + 1) * extra_vertical)
 	
 	# Getting the longest string and making that the width of the dialog bubble
+	# also check how many lines wrap (and how often)
+	var count_wrapped_lines = 0
 	var longest_string = ''
 	for l in text_editor.text.split('\n'):
 		if l.length() > longest_string.length():
 			longest_string = l
+		if get_font("normal_font").get_string_size(l).x > get_max_x_size():
+			count_wrapped_lines += get_font("normal_font").get_string_size(l).x/(get_max_x_size())
 	
+	# set the height
+	if text_editor.get_line_count() > 1:
+		extra_vertical = 1.22
+	text_editor.rect_min_size.y = get_font("normal_font").get_height() * ((text_editor.get_line_count() + 1 + count_wrapped_lines) * extra_vertical)
+	
+	# set the width
 	text_editor.rect_min_size.x = get_font("normal_font").get_string_size(longest_string).x + 50
+	if text_editor.rect_min_size.x > get_max_x_size():
+		text_editor.rect_min_size.x = get_max_x_size()
 
+func get_max_x_size():
+	return timeline_area.rect_size.x - (text_editor.rect_global_position.x - timeline_area.rect_global_position.x) - 50
 
 func _on_TextEditor_focus_entered() -> void:
 	if (Input.is_mouse_button_pressed(BUTTON_LEFT)):
