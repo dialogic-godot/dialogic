@@ -278,6 +278,9 @@ static func rename_folder(path:String, new_folder_name:String):
 	if new_folder_name in get_folder_at_path(get_parent_path(path))['folders'].keys():
 		print("[D] A folder with the name '"+new_folder_name+"' already exists in the target folder '"+get_parent_path(path)+"'.")
 		return ERR_ALREADY_EXISTS
+	elif new_folder_name.empty():
+		return ERR_PRINTER_ON_FIRE
+		
 	
 	# save the content
 	var folder_content = get_folder_at_path(path)
@@ -368,6 +371,16 @@ static func check_folders_recursive(folder_data: Dictionary, file_names:Array):
 			file_names.erase(file)
 	return [folder_data, file_names]
 
+
+static func beautify_filename(animation_name: String) -> String:
+	if animation_name == '[Default]' or animation_name == '[No Animation]':
+		return animation_name
+	var a_string = animation_name.get_file().trim_suffix('.gd')
+	if '-' in a_string:
+		a_string = a_string.split('-')[1].capitalize()
+	else:
+		a_string = a_string.capitalize()
+	return a_string
 
 ## *****************************************************************************
 ##								USEFUL FUNCTIONS
@@ -487,9 +500,80 @@ static func resource_fixer():
 							i['event_id'] = 'dialogic_042'
 			timeline['events'] = events
 			DialogicResources.set_timeline(timeline)
+	if update_index < 2:
+		# Updates the text alignment to be saved as int like all anchors
+		print("[D] Update NR. "+str(update_index)+" | Changes how some theme values are saved. No need to worry about this.")
+		for theme_info in get_theme_list():
+			var theme = DialogicResources.get_theme_config(theme_info['file'])
+
+			match theme.get_value('text', 'alignment', 'Left'):
+				'Left':
+					DialogicResources.set_theme_value(theme_info['file'], 'text', 'alignment', 0)
+				'Center':
+					DialogicResources.set_theme_value(theme_info['file'], 'text', 'alignment', 1)
+				'Right':
+					DialogicResources.set_theme_value(theme_info['file'], 'text', 'alignment', 2)
 	
-	DialogicResources.set_settings_value("updates", "updatenumber", 1)
+	if update_index < 3:
+		# Character Join and Character Leave have been unified to a new Character event
+		print("[D] Update NR. "+str(update_index)+" | Removes Character Join and Character Leave events in favor of the new 'Character' event. No need to worry about this.")
+		for timeline_info in get_timeline_list():
+			var timeline = DialogicResources.get_timeline_json(timeline_info['file'])
+			var events = timeline["events"]
+			for i in range(len(events)):
+				if events[i]['event_id'] == 'dialogic_002':
+					var new_event = {
+						'event_id':'dialogic_002',
+						'type':0,
+						'character':events[i].get('character', ''),
+						'portrait':events[i].get('portrait',''),
+						'position':events[i].get('position'),
+						'animation':'[Default]',
+						'animation_length':0.5,
+						'mirror_portrait':events[i].get('mirror', false),
+						'z_index': events[i].get('z_index', 0),
+						}
+					events[i] = new_event
+				elif events[i]['event_id'] == 'dialogic_003':
+					var new_event = {
+						'event_id':'dialogic_002',
+						'type':1,
+						'character':events[i].get('character', ''),
+						'animation':'[Default]',
+						'animation_length':0.5,
+						'mirror_portrait':events[i].get('mirror', false),
+						'z_index':events[i].get('z_index', 0),
+						}
+					events[i] = new_event
+			timeline['events'] = events
+			DialogicResources.set_timeline(timeline)
+	DialogicResources.set_settings_value("updates", "updatenumber", 3)
+
+static func get_editor_scale(ref) -> float:
+	# There hasn't been a proper way of reliably getting the editor scale
+	# so this function aims at fixing that by identifying what the scale is and
+	# returning a value to use as a multiplier for manual UI tweaks
 	
+	# The way of getting the scale could change, but this is the most reliable
+	# solution I could find that works in many different computer/monitors.
+	var _scale = ref.get_constant("inspector_margin", "Editor")
+	_scale = _scale * 0.125
+	
+	return _scale
+
+
+static func list_dir(path: String) -> Array:
+	var files = []
+	var dir = Directory.new()
+	dir.open(path)
+	dir.list_dir_begin(true)
+
+	var file = dir.get_next()
+	while file != '':
+		files += [file]
+		file = dir.get_next()
+	return files
+
 
 ## *****************************************************************************
 ##							DIALOGIC_SORTER CLASS

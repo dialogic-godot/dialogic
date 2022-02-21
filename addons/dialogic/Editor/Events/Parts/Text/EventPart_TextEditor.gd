@@ -2,7 +2,6 @@ tool
 extends "res://addons/dialogic/Editor/Events/Parts/EventPart.gd"
 
 # has an event_data variable that stores the current data!!!
-var text_height = 21
 
 ## node references
 onready var text_editor = $TextEdit
@@ -21,12 +20,7 @@ func _ready():
 	text_editor.set('custom_colors/function_color', get_color("font_color", "Editor"))
 	text_editor.set('custom_colors/member_variable_color', get_color("font_color", "Editor"))
 	text_editor.set('custom_colors/symbol_color', get_color("font_color", "Editor"))
-	
-	var _scale = get_constant("inspector_margin", "Editor")
-	_scale = _scale * 0.125
-	text_height = text_height * _scale
-	text_editor.set("rect_min_size", Vector2(0, text_height*2))
-	
+
 
 # called by the event block
 func load_data(data:Dictionary):
@@ -45,7 +39,7 @@ func load_data(data:Dictionary):
 		text_editor.text = event_data['text']
 	
 	# resize the text_editor to the correct size 
-	text_editor.rect_min_size.y = text_height * (2 + text_editor.text.count('\n'))
+	_set_new_min_size()
 
 # has to return the wanted preview, only useful for body parts
 func get_preview():
@@ -76,10 +70,33 @@ func _on_TextEditor_text_changed():
 	# otherwise
 	else:
 		event_data['text'] = text_editor.text
-	text_editor.rect_min_size.y = text_height * (2 + text_editor.text.count('\n'))
+	_set_new_min_size()
 	
 	# informs the parent about the changes!
 	data_changed()
+
+
+func _set_new_min_size():
+	# Reset
+	text_editor.rect_min_size = Vector2(0,0)
+	# Getting new sizes
+	var extra_vertical = 1.1
+	
+	if text_editor.get_line_count() > 1:
+		extra_vertical = 1.22
+		
+	
+	
+	text_editor.rect_min_size.y = get_font("normal_font").get_height() * ((text_editor.get_line_count() + 1) * extra_vertical)
+	
+	# Getting the longest string and making that the width of the dialog bubble
+	var longest_string = ''
+	for l in text_editor.text.split('\n'):
+		if l.length() > longest_string.length():
+			longest_string = l
+	
+	text_editor.rect_min_size.x = get_font("normal_font").get_string_size(longest_string).x + 50
+
 
 func _on_TextEditor_focus_entered() -> void:
 	if (Input.is_mouse_button_pressed(BUTTON_LEFT)):

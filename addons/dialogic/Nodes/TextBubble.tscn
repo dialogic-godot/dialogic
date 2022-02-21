@@ -46,7 +46,7 @@ tracks/0/keys = {
 [sub_resource type="StyleBoxFlat" id=6]
 content_margin_left = 20.0
 content_margin_right = 20.0
-content_margin_bottom = -200.0
+content_margin_bottom = -170.0
 bg_color = Color( 1, 1, 1, 0 )
 expand_margin_left = 10.0
 
@@ -56,7 +56,7 @@ anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
 margin_left = -455.0
-margin_top = 393.0
+margin_top = 399.0
 margin_right = 455.0
 margin_bottom = 560.0
 script = ExtResource( 4 )
@@ -83,13 +83,24 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="RichTextLabel" type="RichTextLabel" parent="."]
+[node name="TextContainer" type="VBoxContainer" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = 20.0
-margin_top = 10.0
-margin_right = -20.0
-margin_bottom = -10.0
+margin_left = 10.0
+margin_top = 12.0
+margin_right = -10.0
+margin_bottom = -12.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+alignment = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="RichTextLabel" type="RichTextLabel" parent="TextContainer"]
+margin_top = 11.0
+margin_right = 890.0
+margin_bottom = 125.0
 focus_mode = 2
 custom_colors/default_color = Color( 1, 1, 1, 1 )
 custom_colors/selection_color = Color( 0, 0, 0, 0 )
@@ -100,9 +111,16 @@ custom_fonts/normal_font = ExtResource( 1 )
 custom_styles/focus = SubResource( 1 )
 custom_styles/normal = SubResource( 2 )
 bbcode_enabled = true
-bbcode_text = "Placeholder text for testing and formatting."
+bbcode_text = "Placeholder text for testing an formatting. 
+Placeholder text for testing an formatting. 
+adsd"
+visible_characters = 0
+percent_visible = 0.0
 meta_underlined = false
-text = "Placeholder text for testing and formatting."
+text = "Placeholder text for testing an formatting. 
+Placeholder text for testing an formatting. 
+adsd"
+fit_content_height = true
 selection_enabled = true
 __meta__ = {
 "_edit_use_anchors_": false

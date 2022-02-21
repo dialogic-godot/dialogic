@@ -32,7 +32,7 @@ func _on_file_selected(path, target):
 
 func _on_focus_entered():
 	if $PathEdit.text == '':
-		image_label.text = 'No image on this portrait entry.'
+		image_label.text = DTS.translate('NoImagePreview')
 		image_node.texture = null
 		image_node2.texture = null
 	else:
@@ -40,7 +40,7 @@ func _on_focus_entered():
 
 
 func update_preview(path):
-	image_label.text = 'Preview of "'+$NameEdit.text+'"'
+	image_label.text = DTS.translate('Preview of')+' "'+$NameEdit.text+'"'
 	var l_path = path.to_lower()
 	if '.png' in l_path or '.svg' in l_path:
 		image_node.texture = load(path)
@@ -49,7 +49,7 @@ func update_preview(path):
 	elif '.tscn' in l_path:
 		image_node.texture = null
 		image_node2.texture = null
-		image_label.text = '[!] Can\'t show previews of custom scenes.'
+		image_label.text = DTS.translate('CustomScenePreview')
 	else:
 		image_node.texture = null
 		image_node2.texture = null

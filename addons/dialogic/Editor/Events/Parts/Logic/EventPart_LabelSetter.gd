@@ -5,7 +5,6 @@ extends "res://addons/dialogic/Editor/Events/Parts/EventPart.gd"
 
 ## node references
 onready var input_field = $NameInput
-onready var id_text = $ID
 onready var new_id = $NewIdButton
 
 # used to connect the signals
@@ -24,12 +23,12 @@ func load_data(data:Dictionary):
 		new_id()
 	input_field.text = event_data['name']
 	
-	id_text.text = "  ID: "+data['id']
+	new_id.hint_tooltip = "Change to a new unique ID. \nOnly do this if you have a duplicate id in this timeline! \nWill break existing links. \n\nCurrent ID: "+data['id']
 
 func new_id():
 	event_data['id'] = 'anchor-' + str(OS.get_unix_time())
 	
-	id_text.text = "  ID: "+event_data['id']
+	new_id.hint_tooltip = "Change to a new unique ID. \nOnly do this if you have a duplicate id in this timeline! \nWill break existing links. \n\nCurrent ID: "+event_data['id']
 	data_changed()
 
 func _on_InputField_text_changed(text):

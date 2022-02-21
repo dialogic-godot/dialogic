@@ -1,16 +1,15 @@
 extends Node
 class_name DialogicParser
 
+
 # adds name coloring to the dialog texts
 static func parse_characters(dialog_script):
 	var characters = DialogicUtil.get_character_list()
-
 	var event_index := 0
 	for event in dialog_script['events']:
 		# if this is a text or question event
 		if event.get('event_id') in ['dialogic_001', 'dialogic_010']:
 			var text :String = event.get({'dialogic_001':'text', 'dialogic_010':'question'}[event.get('event_id')], '')
-			
 			for character in characters:
 				# check whether to use the name or the display name
 				var char_names = [character.get('name')]
@@ -18,7 +17,8 @@ static func parse_characters(dialog_script):
 					if character.get('display_name'): char_names.append(character.get('display_name'))
 				if character.get('data', {}).get('nickname_bool', false):
 					for nickname in character.get('data').get('nickname', '').split(',', true, 0):
-						char_names.append(nickname.strip_edges())
+						if nickname.strip_edges():
+							char_names.append(nickname.strip_edges())
 				
 				#Regex purposefully excludes [] as replacing those interferes with the second regex
 				var escapeRegExp = "(?=[+&|!(){}^\"~*.?:\\\\-])" 
@@ -27,15 +27,16 @@ static func parse_characters(dialog_script):
 				regex.compile(escapeRegExp)
 				char_names = regex.sub(str(char_names), "\\", true)
 				
-				var regex_thing = str(char_names).replace("[", "(").replace("]", ")").replace(", ", "|")+'\\b'
+				var regex_thing = "((\\]|^)[^\\[]*)(?<name>"+str(char_names).replace("[", "(").replace("]", ")").replace(", ", "|")+")"
 				regex.compile(regex_thing)
 				
 				var counter = 0
 				for result in regex.search_all(text):
-					text = text.insert(result.get_start()+((9+8+8)*counter), '[color=#' + character['color'].to_html() + ']')
-					text = text.insert(result.get_end()+9+8+((9+8+8)*counter), '[/color]')
+					text = text.insert(result.get_start("name")+((9+8+8)*counter), '[color=#' + character['color'].to_html() + ']')
+					text = text.insert(result.get_end("name")+9+8+((9+8+8)*counter), '[/color]')
 					result = regex.search(text)
 					counter += 1
+				
 				dialog_script['events'][event_index][{'dialogic_001':'text', 'dialogic_010':'question'}[event.get('event_id')]] = text
 		
 		event_index += 1
@@ -152,7 +153,7 @@ static func parse_branches(current_dialog, dialog_script: Dictionary) -> Diction
 			question_idx += 1
 			current_dialog.questions.append(event)
 			parser_queue.append(event)
-		elif event['event_id'] == 'dialogic_013':
+		elif event['event_id'] == 'dialogic_013' and parser_queue:
 			event['event_idx'] = event_idx
 			var opened_branch = parser_queue.pop_back()
 			event['end_branch_of'] = opened_branch['question_idx']
@@ -173,11 +174,11 @@ static func parse_anchors(current_dialog):
 
 # adds the alignment BBCode to text events
 static func parse_alignment(current_dialog, text):
-	var alignment = current_dialog.current_theme.get_value('text', 'alignment', 'Left')
+	var alignment = current_dialog.current_theme.get_value('text', 'alignment', 0)
 	var fname = current_dialog.current_theme.get_value('settings', 'name', 'none')
-	if alignment == 'Center':
+	if alignment in [1,4,7]:
 		text = '[center]' + text + '[/center]'
-	elif alignment == 'Right':
+	elif alignment in [2,5,8]:
 		text = '[right]' + text + '[/right]'
 	return text
 
@@ -207,9 +208,17 @@ static func _insert_variable_definitions(current_dialog, text: String):
 			else:
 				# Replace the name of a value [whatever] with the result
 				var r_string_array = r_string.replace('[', '').replace(']', '')
-				for d in current_dialog.definitions['variables']:
-					if d['name'] == r_string_array:
-						final_text = final_text.replace(r_string, d['value'])
+				
+				# Find the ID if it's got an absolute path
+				if '/' in r_string_array:
+					var variable_id=Dialogic._get_variable_from_file_name(r_string_array)
+					for d in current_dialog.definitions['variables']:
+						if d['id'] == variable_id:
+							final_text = final_text.replace(r_string, d['value'])
+				else:					
+					for d in current_dialog.definitions['variables']:
+						if d['name'] == r_string_array:
+							final_text = final_text.replace(r_string, d['value'])
 	
 	return final_text
 

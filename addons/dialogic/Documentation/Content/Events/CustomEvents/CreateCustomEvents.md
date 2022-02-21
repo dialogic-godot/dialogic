@@ -11,7 +11,7 @@ A custom event is made up of a two main parts: the **Event Block** and the **Eve
 
 The **Event Block** is the scene that will be shown in the timeline editor. It needs to inherit Dialogic's `EventTemplate.tscn` scene.
 
-In most cases you will additionally need scenes that have all the setting controls in them. These will be the "content" of your event block. This kind of scenes will have to extend the `EventPart.gd` script.
+In most cases you will additionally need scenes that have all the setting controls in them. These will be the "content" of your event block. These kind of scenes will have to extend the `EventPart.gd` script.
 
 Here is a very simple example of an `EventBlock`:
 ![EventBlock](./Images/EventBlock.png)
@@ -30,9 +30,9 @@ Let's now create a simple event that will print some text to the Output panel in
 
 ## Create the event
 Go to the `settings page` and in the `custom events section` hit the `New` button. 
-Fill in a name for your event, a folder name and an id. For the id's I recommend using your name or a string unique to you followed by a number. 
-**The id has to be different for every event!!!**
-This is why I recommend the unique string, because it will enable you to share the event with others without breaking their games.
+Fill in a name for your event, a folder name and an ID. For the IDs, I recommend using your name or a string unique to you followed by a number. 
+**The ID has to be different for every event!!!**
+This is why I recommend the unique string, as it will enable you to share the event with others without breaking their games.
 ![Creating](./Images/CreationProcess.PNG)
 
 When you are ready, hit `Create`. You will see the folder appear in the `FileSystem` under `res://dialogic/custom-events/`. 
@@ -49,30 +49,29 @@ This little menu already created a number of things for you:
 
 
 ## What next
-The automatic process already setup a lot. But it didn't know the purpose of our event.
-So we will have to add that.
+The automatic process already set up a lot, but it didn't know the purpose of our event, so we will have to add that.
 
 ### | Adding the data
 First we want to open the `EventBlock.tscn` scene. (Do not rename this scene!)
 
-Select its root node and look at it's exported variables in the inspector.
+Select its root node and look at its exported variables in the inspector.
 
-We will need to add all the data, that our event can have to the `event_data`.
-You can see, that it alread contains your event id. This needs to be there, do not delete it!
+We will need to add all the data that our event can have to `event_data`.
+As you can see, it already contains your event id. This needs to be there, so don't delete it!
 
-I want to be able to set a text that will be printed, when my event is activated, so I'll add an information slot for that:
+I want to be able to set the text that will be printed when my event is activated, so I'll add an information slot for that:
 ![EventData](./Images/EventBlock_EventData.PNG)
 
 ### | Icon and Stylebox
-You can also change your events icon in the inspector. Just drag an image into the `Event Icon`.
+You can also change your events icon in the Inspector. Just drag an image into the `Event Icon`.
 
-Below that, you can open the Stylebox and change its background color, to give your event a unique look.
+Below that, you can open the Stylebox and change its background color to give your event a unique look.
 
 
 ### | The Event Blocks Content (EventParts)
-Right now your event block will be empty so let's change that (if you want to).
+Right now your event block will be empty, so let's change that if you want to.
 
-The content of an EventBlock is separated as `EventParts`. This allows for some reuse.
+The content of an EventBlock is separated into `EventParts`. This allows for some reuse.
 There are two places EventParts can be in an EventBlock: The Header (always visible) and the Body (can be hidden).
 
 *An EventBlock does not have to have a body nor a header EventPart. For example the End Branch event has none.*
@@ -89,7 +88,7 @@ This is pretty much all you need to know.
 *If you want to find more examples you can go to `res://addons/dialogic/Editor/Events/Parts/` and look at the EventParts that shape Dialogic's default blocks.*
 
 ### | Using the EventPart
-Once you finished everything in your EventPart(s) you need to go into the `EventBlock` scene and set the `header`/`body` variable in the inspector to the new scene(s).
+Once you've finished everything in your EventPart(s) you need to, go into the `EventBlock` scene and set the `header`/`body` variable in the Inspector to the new scene(s).
 
 
 
@@ -99,11 +98,11 @@ Once you have your `EventBlock` finished, you need to add the event handling log
 #### | The handle_event() function
 If you open the script you will see, that there is only one function by default, the `handle_event()` function.
 
-It comes with two usefull pieces of information: the `event_data` and a reference to the `dialog_node`.
+It comes with two useful pieces of information: the `event_data` and a reference to the `dialog_node`.
 
 For me I'll just add
 `print(event_data['print_text']` 
-there. But of course you can do a lot more.
+there, but of course you can do a lot more.
 
 
 Some more stuff is already explained in the script:
@@ -117,6 +116,6 @@ Don't forget to set it back to `false`.
 
 
 ## And done!
-Great, you've created your first custom event for dialogic. 
+Great, you've created your first custom event for Dialogic. 
 
 *Make sure to check Emilio's Discord server just in case someone has already created the custom event that you need. They are super easy to [import](./ImportCustomEvents.md)!*
