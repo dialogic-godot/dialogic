@@ -254,11 +254,10 @@ func _spinbox_val_changed(newValue :float, spinbox_name):
 func _on_default_action_key_presssed(nodeName = 'default_action_key') -> void:
 	var settings = DialogicResources.get_settings_config()
 	nodes[nodeName].clear()
-	nodes[nodeName].add_item(settings.get_value('input', nodeName, '[Default]'))
-	nodes[nodeName].add_item('[Default]')
-	InputMap.load_from_globals()
-	for a in InputMap.get_actions():
-		nodes[nodeName].add_item(a)
+	nodes[nodeName].add_item(settings.get_value('input', nodeName, 'dialogic_default_action'))
+	for prop in ProjectSettings.get_property_list():
+		if prop.name.begins_with('input/'):
+			nodes[nodeName].add_item(prop.name.trim_prefix('input/'))
 
 
 func _on_default_action_key_item_selected(index, nodeName = 'default_action_key') -> void:
