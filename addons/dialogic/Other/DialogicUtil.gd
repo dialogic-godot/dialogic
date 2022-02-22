@@ -526,13 +526,14 @@ static func resource_fixer():
 						'event_id':'dialogic_002',
 						'type':0,
 						'character':events[i].get('character', ''),
-						'portrait':events[i].get('portrait',''),
+						'portrait':events[i].get('portrait','Default'),
 						'position':events[i].get('position'),
 						'animation':'[Default]',
 						'animation_length':0.5,
 						'mirror_portrait':events[i].get('mirror', false),
 						'z_index': events[i].get('z_index', 0),
 						}
+					if new_event['portrait'].empty(): new_event['portrait'] = 'Default'
 					events[i] = new_event
 				elif events[i]['event_id'] == 'dialogic_003':
 					var new_event = {
