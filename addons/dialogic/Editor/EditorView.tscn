@@ -15,7 +15,7 @@
 [ext_resource path="res://addons/dialogic/Images/Toolbar/add-theme.svg" type="Texture" id=13]
 [ext_resource path="res://addons/dialogic/Editor/MasterTree/MasterTree.tscn" type="PackedScene" id=35]
 
-[sub_resource type="Image" id=6]
+[sub_resource type="Image" id=1]
 data = {
 "data": PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ),
 "format": "LumAlpha8",
@@ -27,10 +27,10 @@ data = {
 [sub_resource type="ImageTexture" id=2]
 flags = 4
 flags = 4
-image = SubResource( 6 )
+image = SubResource( 1 )
 size = Vector2( 16, 16 )
 
-[sub_resource type="Image" id=7]
+[sub_resource type="Image" id=3]
 data = {
 "data": PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ),
 "format": "LumAlpha8",
@@ -42,7 +42,7 @@ data = {
 [sub_resource type="ImageTexture" id=4]
 flags = 4
 flags = 4
-image = SubResource( 7 )
+image = SubResource( 3 )
 size = Vector2( 16, 16 )
 
 [sub_resource type="StyleBoxTexture" id=5]
@@ -66,8 +66,7 @@ __meta__ = {
 
 [node name="ToolBar" type="HBoxContainer" parent="."]
 anchor_right = 1.0
-margin_bottom = 32.0
-custom_constants/separation = 0
+margin_bottom = 24.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -75,35 +74,35 @@ __meta__ = {
 [node name="NewTimelineButton" type="Button" parent="ToolBar"]
 modulate = Color( 0, 0, 0, 1 )
 margin_right = 28.0
-margin_bottom = 32.0
-hint_tooltip = "New Timeline"
+margin_bottom = 24.0
+hint_tooltip = "Add Timeline"
 icon = ExtResource( 4 )
 flat = true
 
 [node name="NewCharactersButton" type="ToolButton" parent="ToolBar"]
 modulate = Color( 0, 0, 0, 1 )
 self_modulate = Color( 0.870588, 0.870588, 0.870588, 1 )
-margin_left = 28.0
-margin_right = 56.0
-margin_bottom = 32.0
-hint_tooltip = "New Character"
+margin_left = 32.0
+margin_right = 60.0
+margin_bottom = 24.0
+hint_tooltip = "Add Character"
 icon = ExtResource( 3 )
 
 [node name="NewValueButton" type="Button" parent="ToolBar"]
 modulate = Color( 0, 0, 0, 1 )
-margin_left = 56.0
-margin_right = 84.0
-margin_bottom = 32.0
-hint_tooltip = "New Value"
+margin_left = 64.0
+margin_right = 92.0
+margin_bottom = 24.0
+hint_tooltip = "Add Value"
 icon = ExtResource( 5 )
 flat = true
 
 [node name="NewGlossaryEntryButton" type="Button" parent="ToolBar"]
 modulate = Color( 0, 0, 0, 1 )
-margin_left = 84.0
-margin_right = 112.0
-margin_bottom = 32.0
-hint_tooltip = "New Definition"
+margin_left = 96.0
+margin_right = 124.0
+margin_bottom = 24.0
+hint_tooltip = "Add Glossary Entry"
 icon = ExtResource( 10 )
 flat = true
 __meta__ = {
@@ -112,10 +111,10 @@ __meta__ = {
 
 [node name="NewThemeButton" type="Button" parent="ToolBar"]
 modulate = Color( 0, 0, 0, 1 )
-margin_left = 112.0
-margin_right = 140.0
-margin_bottom = 32.0
-hint_tooltip = "New Theme"
+margin_left = 128.0
+margin_right = 156.0
+margin_bottom = 24.0
+hint_tooltip = "Add Theme"
 icon = ExtResource( 13 )
 flat = true
 
@@ -146,27 +145,25 @@ icon = SubResource( 2 )
 align = 0
 
 [node name="Spacer" type="Control" parent="ToolBar"]
-margin_left = 140.0
-margin_right = 759.0
-margin_bottom = 32.0
+margin_left = 160.0
+margin_right = 747.0
+margin_bottom = 24.0
 size_flags_horizontal = 3
 
 [node name="Web" type="ToolButton" parent="ToolBar"]
 self_modulate = Color( 0.870588, 0.870588, 0.870588, 1 )
-margin_left = 759.0
-margin_right = 843.0
-margin_bottom = 32.0
-hint_tooltip = "Theme Editor"
+margin_left = 751.0
+margin_right = 835.0
+margin_bottom = 24.0
 mouse_default_cursor_shape = 2
 text = "Website"
 icon = SubResource( 2 )
 
 [node name="Docs" type="ToolButton" parent="ToolBar"]
 self_modulate = Color( 0.870588, 0.870588, 0.870588, 1 )
-margin_left = 843.0
-margin_right = 904.0
-margin_bottom = 32.0
-hint_tooltip = "Theme Editor"
+margin_left = 839.0
+margin_right = 900.0
+margin_bottom = 24.0
 mouse_default_cursor_shape = 2
 text = "Help"
 icon = SubResource( 2 )
@@ -174,10 +171,44 @@ icon = SubResource( 2 )
 [node name="Version" type="Label" parent="ToolBar"]
 self_modulate = Color( 1, 1, 1, 0.631373 )
 margin_left = 904.0
-margin_top = 9.0
+margin_top = 5.0
 margin_right = 1024.0
-margin_bottom = 23.0
+margin_bottom = 19.0
 text = "Dialogic v1.4 - DEV"
+
+[node name="DocumentationNavigation" type="HBoxContainer" parent="ToolBar"]
+visible = false
+margin_left = 980.0
+margin_right = 1024.0
+margin_bottom = 32.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VSeparator" type="VSeparator" parent="ToolBar/DocumentationNavigation"]
+margin_right = 4.0
+margin_bottom = 40.0
+
+[node name="Previous" type="Button" parent="ToolBar/DocumentationNavigation"]
+margin_right = 22.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 22, 22 )
+focus_mode = 0
+disabled = true
+icon = SubResource( 2 )
+flat = true
+expand_icon = true
+
+[node name="Next" type="Button" parent="ToolBar/DocumentationNavigation"]
+margin_left = 22.0
+margin_right = 44.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 22, 22 )
+focus_mode = 0
+disabled = true
+icon = SubResource( 2 )
+flat = true
+expand_icon = true
 
 [node name="MainPanel" type="HSplitContainer" parent="."]
 anchor_right = 1.0
@@ -263,7 +294,7 @@ text = "Select or create an element to start working"
 margin_right = 325.0
 margin_bottom = 88.0
 rect_min_size = Vector2( 250, 87.5 )
-window_title = "Por favor, Confirma..."
+window_title = "Be sure you want to delete!"
 dialog_text = "Are you sure you want to remove this [resource]?
 (Can't be restored)"
 __meta__ = {
@@ -274,8 +305,8 @@ __meta__ = {
 margin_right = 325.0
 margin_bottom = 88.0
 rect_min_size = Vector2( 250, 87.5 )
-window_title = "Por favor, Confirma..."
-dialog_text = "Are you sure you want to remove this folder and all the items contained in it?
+window_title = "Be sure you want to delete this folder!"
+dialog_text = "Are you sure you want to remove this folder and all the items contained in it? 
 (Can't be restored)"
 __meta__ = {
 "_edit_use_anchors_": false

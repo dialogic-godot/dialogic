@@ -1,0 +1,54 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://addons/dialogic/Example Assets/History/HistoryBackground.tscn" type="PackedScene" id=1]
+[ext_resource path="res://addons/dialogic/Example Assets/History/HistoryRow.tscn" type="PackedScene" id=2]
+[ext_resource path="res://addons/dialogic/Nodes/History.gd" type="Script" id=3]
+[ext_resource path="res://addons/dialogic/Example Assets/History/HistoryButton.tscn" type="PackedScene" id=4]
+[ext_resource path="res://addons/dialogic/Example Assets/History/HistoryReturnButton.tscn" type="PackedScene" id=5]
+
+[node name="History" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+script = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+HistoryRow = ExtResource( 2 )
+HistoryDefaultBackground = ExtResource( 1 )
+HistoryOpenButton = ExtResource( 4 )
+HistoryCloseButton = ExtResource( 5 )
+
+[node name="HistoryPopup" type="Control" parent="."]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="HistoryAudio" type="AudioStreamPlayer" parent="HistoryPopup"]
+
+[node name="ScrollHistoryContainer" type="ScrollContainer" parent="HistoryPopup"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_horizontal = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MarginContainer" type="MarginContainer" parent="HistoryPopup/ScrollHistoryContainer"]
+margin_right = 1024.0
+margin_bottom = 10.0
+size_flags_horizontal = 3
+custom_constants/margin_right = 5
+custom_constants/margin_top = 5
+custom_constants/margin_left = 5
+custom_constants/margin_bottom = 5
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HistoryTimeline" type="VBoxContainer" parent="HistoryPopup/ScrollHistoryContainer/MarginContainer"]
+margin_left = 5.0
+margin_top = 5.0
+margin_right = 1019.0
+margin_bottom = 5.0
+custom_constants/separation = 16

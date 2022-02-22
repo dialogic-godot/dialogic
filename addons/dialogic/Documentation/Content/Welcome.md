@@ -7,9 +7,8 @@ This project is made possible by the support of our [Patreons](https://www.patre
 
 # Index
 ## Events
-- [Text event](./Events/000.md)
-- [Character Join](./Events/001.md)
-- [Character Leave](./Events/002.md)
+- [Text Event](./Events/001.md)
+- [Character Event](./Events/001.md)
 - [Question Event](./Events/010.md)
 - [Choice Event](./Events/011.md)
 - [Condition Event](./Events/012.md)

@@ -1,0 +1,143 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://addons/dialogic/Editor/Events/Parts/Character/EventPart_CharacterActionSettings.gd" type="Script" id=1]
+[ext_resource path="res://addons/dialogic/Editor/Events/Parts/Text/GreyLabel.tscn" type="PackedScene" id=2]
+[ext_resource path="res://addons/dialogic/Editor/Events/Parts/ResourcePickers/ResourcePickerMenu.tscn" type="PackedScene" id=3]
+[ext_resource path="res://addons/dialogic/Editor/Events/styles/InputFieldsStyle.tres" type="Theme" id=4]
+
+[sub_resource type="Image" id=3]
+data = {
+"data": PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ),
+"format": "LumAlpha8",
+"height": 16,
+"mipmaps": false,
+"width": 16
+}
+
+[sub_resource type="ImageTexture" id=2]
+flags = 4
+flags = 4
+image = SubResource( 3 )
+size = Vector2( 16, 16 )
+
+[node name="CharacterActionSettings" type="VBoxContainer"]
+margin_right = 40.0
+margin_bottom = 40.0
+theme = ExtResource( 4 )
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Animation" type="HBoxContainer" parent="."]
+margin_right = 589.0
+margin_bottom = 24.0
+
+[node name="Label" parent="Animation" instance=ExtResource( 2 )]
+margin_top = 5.0
+margin_right = 70.0
+margin_bottom = 19.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Animation:"
+
+[node name="AnimationPicker" parent="Animation" instance=ExtResource( 3 )]
+margin_left = 74.0
+margin_right = 172.0
+margin_bottom = 24.0
+
+[node name="Label2" parent="Animation" instance=ExtResource( 2 )]
+margin_left = 176.0
+margin_top = 5.0
+margin_right = 223.0
+margin_bottom = 19.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Length:"
+
+[node name="AnimationLength" type="SpinBox" parent="Animation"]
+margin_left = 227.0
+margin_right = 303.0
+margin_bottom = 24.0
+step = 0.001
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label3" parent="Animation" instance=ExtResource( 2 )]
+margin_left = 307.0
+margin_top = 5.0
+margin_right = 355.0
+margin_bottom = 19.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Repeat:"
+
+[node name="Repeat" type="SpinBox" parent="Animation"]
+margin_left = 359.0
+margin_right = 435.0
+margin_bottom = 24.0
+min_value = 1.0
+value = 1.0
+rounded = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label4" parent="Animation" instance=ExtResource( 2 )]
+margin_left = 439.0
+margin_top = 5.0
+margin_right = 561.0
+margin_bottom = 19.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Wait for animation:"
+
+[node name="WaitForAnimation" type="CheckBox" parent="Animation"]
+margin_left = 565.0
+margin_right = 589.0
+margin_bottom = 24.0
+
+[node name="Positioning" type="HBoxContainer" parent="."]
+margin_top = 28.0
+margin_right = 589.0
+margin_bottom = 52.0
+
+[node name="Label" parent="Positioning" instance=ExtResource( 2 )]
+margin_top = 5.0
+margin_right = 52.0
+margin_bottom = 19.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Z-index:"
+
+[node name="EnableZIndex" type="ToolButton" parent="Positioning"]
+margin_left = 56.0
+margin_right = 84.0
+margin_bottom = 24.0
+toggle_mode = true
+icon = SubResource( 2 )
+
+[node name="Z_Index" type="SpinBox" parent="Positioning"]
+margin_left = 88.0
+margin_right = 164.0
+margin_bottom = 24.0
+min_value = -100.0
+rounded = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label2" parent="Positioning" instance=ExtResource( 2 )]
+margin_left = 168.0
+margin_top = 5.0
+margin_right = 227.0
+margin_bottom = 19.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "Mirrored:"
+
+[node name="EnableMirrored" type="ToolButton" parent="Positioning"]
+margin_left = 231.0
+margin_right = 243.0
+margin_bottom = 24.0
+toggle_mode = true
+
+[node name="Mirrored" type="CheckBox" parent="Positioning"]
+margin_left = 247.0
+margin_right = 271.0
+margin_bottom = 24.0

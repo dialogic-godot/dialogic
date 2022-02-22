@@ -93,6 +93,51 @@ static func start(timeline: String = '', default_timeline: String ='', dialog_sc
 	# Just in case everything else fails.
 	return returned_dialog_node
 
+# Loads the given timeline into the active DialogNode
+# This means it's state (theme, characters, background, music) is preserved.
+#
+# @param timeline				the name of the timeline to load
+static func change_timeline(timeline: String) -> void:
+	# Set Timeline
+	set_current_timeline(timeline)
+	
+	# If there is a dialog node
+	if has_current_dialog_node():
+		var dialog_node = Engine.get_main_loop().get_meta('latest_dialogic_node')
+		
+		# Get file name
+		var timeline_file = _get_timeline_file_from_name(timeline)
+		
+		dialog_node.change_timeline(timeline_file)
+	else:
+		print("[D] Tried to change timeline, but no DialogNode exists!")
+
+# Immediately plays the next event.
+#
+# @param discreetly				determines whether the Passing Audio will be played in the process
+static func next_event(discreetly: bool = false):
+	
+	# If there is a dialog node
+	if has_current_dialog_node():
+		var dialog_node = Engine.get_main_loop().get_meta('latest_dialogic_node')
+		
+		dialog_node.next_event(discreetly)
+
+
+################################################################################
+## 						Test to see if a timeline exists
+################################################################################
+
+## Check to see if a timeline with a given name/path exists. Useful for verifying
+## before calling a timeline, or for automated tests to make sure timeline calls 
+## are valid. Returns a boolean of true if the timeline exists, and false if it 
+## does not. 
+static func timeline_exists(timeline: String):
+	var timeline_file = _get_timeline_file_from_name(timeline)
+	if timeline_file:
+		return true
+	else:
+		return false
 
 
 ################################################################################
@@ -203,13 +248,27 @@ static func import(data: Dictionary) -> void:
 ## 						DEFINITIONS
 ## +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+# clears all variables
+static func clear_all_variables():
+	for d in _get_definitions()['variables']:
+		d['value'] = ""
+
 # sets the value of the value definition with the given name
 static func set_variable(name: String, value):
 	var exists = false
-	for d in _get_definitions()['variables']:
-		if d['name'] == name:
-			d['value'] = str(value)
-			exists = true
+	
+	if '/' in name:
+		var variable_id = _get_variable_from_file_name(name)
+		if variable_id != '':
+			for d in _get_definitions()['variables']:
+				if d['id'] == variable_id:
+					d['value'] = str(value)
+					exists = true
+	else:		
+		for d in _get_definitions()['variables']:
+			if d['name'] == name:
+				d['value'] = str(value)
+				exists = true
 	if exists == false:
 		# TODO it would be great to automatically generate that missing variable here so they don't
 		# have to create it from the editor. 
@@ -218,11 +277,19 @@ static func set_variable(name: String, value):
 
 # returns the value of the value definition with the given name
 static func get_variable(name: String, default = null):
-	for d in _get_definitions()['variables']:
-		if d['name'] == name:
-			return d['value']
-	print("[Dialogic] Warning! the variable [" + name + "] doesn't exists.")
-	return default
+	if '/' in name:
+		var variable_id = _get_variable_from_file_name(name)
+		for d in _get_definitions()['variables']:
+			if d['id'] == variable_id:
+				return d['value']
+		print("[Dialogic] Warning! the variable [" + name + "] doesn't exists.")
+		return default
+	else:
+		for d in _get_definitions()['variables']:
+			if d['name'] == name:
+				return d['value']
+		print("[Dialogic] Warning! the variable [" + name + "] doesn't exists.")
+		return default
 
 
 ## +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -248,6 +315,19 @@ static func set_saved_state_general_key(key: String, value) -> void:
 	Engine.get_main_loop().get_meta('game_state')[key] = str(value)
 	save('', true)
 
+
+################################################################################
+## 					HISTORY
+################################################################################
+
+# Used to toggle the history timeline display. Only useful if you do not wish to
+# use the provided buttons
+static func toggle_history():
+	if has_current_dialog_node():
+		var dialog_node = Engine.get_main_loop().get_meta('latest_dialogic_node')
+		dialog_node.HistoryTimeline._on_toggle_history()
+	else:
+		print('No dialog node yet')
 
 
 ################################################################################
@@ -280,7 +360,8 @@ static func get_current_timeline():
 
 # Returns a string with the action button set on the project settings
 static func get_action_button():
-	return DialogicResources.get_settings_value('input', 'default_action_key', 'ui_accept')
+	var action_button = DialogicResources.get_settings_value('input', 'default_action_key', 'ui_accept')
+	return action_button if action_button != "[Default]" else "ui_accept"
 
 ################################################################################
 ## 					NOT TO BE USED FROM OUTSIDE
@@ -361,29 +442,96 @@ static func set_variable_from_id(id: String, value: String, operation: String) -
 # tries to find the path of a given timeline 
 static func _get_timeline_file_from_name(timeline_name_path: String) -> String:
 	var timelines = DialogicUtil.get_full_resource_folder_structure()['folders']['Timelines']
-	var parts = timeline_name_path.split('/', false)
-	if parts.size() > 1:
-		var current_data
-		var current_depth = 0
-		for p in parts:
-			if current_depth == 0:
-				# Starting the crawl
-				current_data = timelines['folders'][p]
-			elif current_depth == parts.size() - 1:
-				# The final destination
-				for t in DialogicUtil.get_timeline_list():
-					for f in current_data['files']:
-						if t['file'] == f && t['name'] == p:
-							return t['file']
+	
+	# Checks for slash in the name, and uses the folder search if there is 
+	if '/' in timeline_name_path:
+		#Add leading slash if its a path and it is missing, for paths that have subfolders but no leading slash 
+		if(timeline_name_path.left(1) != '/'):
+			timeline_name_path = "/" + timeline_name_path
+		var parts = timeline_name_path.split('/', false)
+	
+		# First check if it's a timeline in the root folder
+		if parts.size() == 1:
+			for t in DialogicUtil.get_timeline_list():
+				for f in timelines['files']:
+					if t['file'] == f && t['name'] == parts[0]:
+						return t['file']
+		if parts.size() > 1:
+			var current_data
+			var current_depth = 0
+			for p in parts:
+				if current_depth == 0:
+					# Starting the crawl
+					if (timelines['folders'].has(p) ):
+						current_data = timelines['folders'][p]
+					else:
+						return ''
+				elif current_depth == parts.size() - 1:
+					# The final destination
+					for t in DialogicUtil.get_timeline_list():
+						for f in current_data['files']:
+							if t['file'] == f && t['name'] == p:
+								return t['file']
 							
-			else:
-				# Still going deeper
-				current_data = current_data['folders'][p]
-			current_depth += 1
+				else:
+					# Still going deeper
+					if (current_data['folders'].size() > 0):
+						if p in current_data['folders']:
+							current_data = current_data['folders'][p]
+						else:
+							return ''
+					else:
+						return ''
+				current_depth += 1
+		return ''
 	else:
 		# Searching for any timeline that could match that name
 		for t in DialogicUtil.get_timeline_list():
-			if parts.size():
-				if t['name'] == parts[0]:
-					return t['file']
+			if t['name'] == timeline_name_path:
+				return t['file']
+	return ''
+
+static func _get_variable_from_file_name(variable_name_path: String) -> String:
+	#First add the leading slash if it is missing so algorithm works properly
+	if(variable_name_path.left(1) != '/'):
+		variable_name_path = "/" + variable_name_path
+
+	var definitions = DialogicUtil.get_full_resource_folder_structure()['folders']['Definitions']
+	var parts = variable_name_path.split('/', false)
+	
+	# Check the root if it's a variable in the root folder 
+	if parts.size() == 1:
+		for t in _get_definitions()['variables']:
+			for f in definitions['files']:
+				if t['id'] == f && t['name'] == parts[0]:
+					return t['id']
+	if parts.size() > 1:
+		var current_data
+		var current_depth = 0
+		
+		for p in parts:
+			if current_depth == 0:
+
+				# Starting the crawl
+				if (definitions['folders'].has(p)):
+					current_data = definitions['folders'][p]
+				else:
+					return ''
+			elif current_depth == parts.size() - 1:
+				# The final destination
+				for t in _get_definitions()['variables']:
+					for f in current_data['files']:
+						if t['id'] == f && t['name'] == p:
+							return t['id']
+							
+			else:
+				# Still going deeper
+				if (current_data['folders'].size() > 0):
+					if p in current_data['folders']:
+						current_data = current_data['folders'][p]
+					else:
+						return ''
+				else:
+					return ''
+			current_depth += 1
 	return ''

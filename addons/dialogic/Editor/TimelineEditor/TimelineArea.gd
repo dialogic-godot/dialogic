@@ -69,3 +69,127 @@ func _on_gui_input(event):
 			if (_last_event_button_drop_attempt != ''):
 				drop_data(Vector2.ZERO, { "source": "EventButton", "event_id": _last_event_button_drop_attempt} )
 			_is_drag_receiving = false
+
+func _draw():
+	var timeline_children = $TimeLine.get_children()
+	var timeline_lenght = timeline_children.size()
+	var line_color = Color("#4D4D4D")
+	var test_color = Color(1,0,0,0.5)
+	var _scale = DialogicUtil.get_editor_scale(self)
+	var line_width = 3 * _scale
+	var pos_x = (32 * _scale)
+	var pos_y = 51 * _scale
+	
+	# Adjusting the pos_x. Not sure why it is not consistent between render scales
+	if _scale == 1.5:
+		pos_x -= 3
+	if _scale == 1.75:
+		pos_x -= 4
+	if _scale == 2:
+		pos_x -= 6
+	
+	for event in $TimeLine.get_children():
+		if not 'event_data' in event:
+			continue
+		
+		# If the event is the last one, don't draw anything aftwards
+		if timeline_children[timeline_lenght-1] == event:
+			return
+
+		# Drawing long lines on questions and conditions
+		if event.event_name == 'Question' or event.event_name == 'Condition':
+			var keep_going = true
+			var end_reference
+			for e in timeline_children:
+				if keep_going:
+					if e.get_index() > event.get_index():
+						if e.current_indent_level == event.current_indent_level:
+							if e.event_name == 'End Branch':
+								end_reference = e
+								keep_going = false
+							if e.event_name == 'Question' or event.event_name == 'Condition':
+								keep_going = false
+			if keep_going == false:
+				if end_reference:
+					# This line_size thing should be fixed, not sure why it is different when
+					# the indent level is 0 and when it is bigger. 
+					var line_size = 0
+					if event.current_indent_level > 0:
+						line_size = (event.indent_size * event.current_indent_level) + (4 * _scale)
+					# end the line_size thingy
+
+					# Drawing the line from the Question/Condition node to the End Branch one.
+					draw_rect(Rect2(
+								Vector2(pos_x + line_size , pos_y-scroll_vertical)+event.rect_position,
+								Vector2(line_width, (end_reference.rect_global_position.y - event.rect_global_position.y) - (43 * _scale))
+							),
+							line_color, true)
+
+		# Drawing other lines and archs
+		var next_event = timeline_children[event.get_index() + 1]
+		if event.current_indent_level > 0:
+			# Line at current indent
+			var line_size = (event.indent_size * event.current_indent_level) + (4 * _scale)
+			if next_event.event_name != 'End Branch' and event.event_name != 'Choice':
+				if event.event_name != 'Question' and next_event.event_name == 'Choice':
+					# Skip drawing lines before going to the next choice
+					pass
+				else:
+					draw_rect(Rect2(
+							Vector2(pos_x + line_size , pos_y-scroll_vertical)+event.rect_position,
+							Vector2(line_width, event.rect_size.y - (40 * _scale))
+						),
+						line_color,
+						true)
+		else:
+			# Root (level 0) Vertical Line
+			draw_rect(Rect2(
+					Vector2(pos_x, pos_y-scroll_vertical)+event.rect_position,
+					Vector2(line_width, event.rect_size.y - (40 * _scale))
+					),
+				line_color,
+				true)
+				
+		# Drawing arc
+		if event.event_name == 'Choice':
+			# Connecting with the question 
+			var arc_start_x = (event.indent_size * (event.current_indent_level)) + (16.2 * _scale)
+			var arc_start_y = 5
+			var arc_point_count = 12 * _scale
+			var arc_radius = 24 * _scale
+			var start_angle = 90
+			var end_angle = 185
+
+			if event.current_indent_level == 1:
+				arc_start_x = (event.indent_size * (event.current_indent_level)) + (12.5 * _scale)
+
+			draw_arc(
+				Vector2(arc_start_x, arc_start_y-scroll_vertical)+event.rect_position,
+				arc_radius,
+				deg2rad(start_angle),
+				deg2rad(end_angle),
+				arc_point_count, #point count
+				line_color,
+				line_width - (1 * _scale),
+				true
+			)
+
+			# Don't draw arc if next event is another choice event
+			if next_event.event_name == "Choice" or next_event.event_name == "End Branch":
+				continue
+
+			# Connecting with the next event
+
+			arc_start_x = (event.indent_size * (event.current_indent_level + 1)) + (16 * _scale)
+			arc_start_y = (pos_y + (8 * _scale))
+
+			draw_arc(
+				Vector2(arc_start_x, arc_start_y-scroll_vertical)+event.rect_position,
+				arc_radius,
+				deg2rad(start_angle),
+				deg2rad(end_angle),
+				arc_point_count,
+				line_color,
+				line_width - (1 * _scale),
+				true
+			)
