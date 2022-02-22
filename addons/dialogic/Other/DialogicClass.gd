@@ -327,7 +327,7 @@ static func toggle_history():
 		var dialog_node = Engine.get_main_loop().get_meta('latest_dialogic_node')
 		dialog_node.HistoryTimeline._on_toggle_history()
 	else:
-		print('No dialog node yet')
+		print('[D] Tried to toggle history, but no dialog node exists.')
 
 
 ################################################################################
