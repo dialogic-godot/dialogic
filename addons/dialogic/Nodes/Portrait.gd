@@ -11,6 +11,7 @@ var character_data = {
 }
 
 var single_portrait_mode = false
+var dim_time = 0.5
 var direction = 'left'
 var debug = false
 var fading_out = false
@@ -142,10 +143,10 @@ func focusout(dim_color = Color(0.5, 0.5, 0.5, 1.0)):
 		tween_modulate(modulate, dim_color)
 
 
-func tween_modulate(from_value, to_value, time = 0.5):
+func tween_modulate(from_value, to_value):
 	$ModulationTween.stop(self, 'modulation')
 	$ModulationTween.interpolate_property(
-		self, "modulate", from_value, to_value, time,
+		self, "modulate", from_value, to_value, dim_time,
 		Tween.TRANS_LINEAR, Tween.EASE_IN_OUT
 	)
 	$ModulationTween.start()

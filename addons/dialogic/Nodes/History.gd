@@ -167,7 +167,6 @@ func add_history_row_event(eventData):
 	if eventData.has('character') and eventData.character != '':
 		var characterData = DialogicUtil.get_character(eventData.character)
 		var characterName = characterData.get('name', '')
-		#print(eventData)
 		if eventData.has('character') and eventData.character == '[All]':
 			characterPrefix = str('Everyone')
 		elif characterData.data.get('display_name_bool', false)  == true:

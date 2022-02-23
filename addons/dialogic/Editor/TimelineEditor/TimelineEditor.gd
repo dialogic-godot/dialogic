@@ -1108,3 +1108,8 @@ func _read_event_data():
 					c[scene.get_node_property_name(0,p)] = scene.get_node_property_value(0, p)
 				events_data.append(c)
 	return events_data
+
+
+func play_timeline():
+	DialogicResources.set_settings_value('QuickTimelineTest', 'timeline_file', timeline_file)
+	editor_reference.editor_interface.play_custom_scene('res://addons/dialogic/Editor/TimelineEditor/TimelineTestingScene.tscn')
