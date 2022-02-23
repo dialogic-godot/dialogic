@@ -199,6 +199,8 @@ func load_values(settings: ConfigFile, section: String, key: Array):
 				nodes[k].text = settings.get_value(section, k)
 			elif nodes[k] is OptionButton or nodes[k] is MenuButton:
 				nodes[k].text = settings.get_value(section, k)
+				if section == 'animations':
+					nodes[k].text = DialogicUtil.beautify_filename(nodes[k].text)
 			elif nodes[k] is SpinBox:
 				nodes[k].value = settings.get_value(section, k)
 			else:
@@ -278,6 +280,7 @@ func _on_text_changed(text, section: String, key: String) -> void:
 func set_value(section, key, value):
 	DialogicResources.set_settings_value(section, key, value)
 
+
 func update_bus_selector():
 	if nodes["text_event_audio_default_bus"] != null:
 		var previous_selected_bus_name = ""
@@ -313,6 +316,7 @@ func _on_text_audio_default_bus_item_selected(index):
 func open_custom_event_docs():
 	editor_reference.get_node("MainPanel/MasterTreeContainer/MasterTree").select_documentation_item("res://addons/dialogic/Documentation/Content/Events/CustomEvents/CreateCustomEvents.md")
 
+
 func new_custom_event_pressed():
 	nodes['new_custom_event_section'].show()
 	nodes['new_custom_event_name'].text = ''
@@ -321,6 +325,7 @@ func new_custom_event_pressed():
 	
 	nodes['new_custom_event_create'].disabled = true
 	$VBoxContainer/HBoxContainer3/VBoxContainer2/CustomEvents/HBoxContainer/Message.text = ""
+
 
 func custom_event_name_entered(text:String):
 	nodes['new_custom_event_directory'].text = text
@@ -334,9 +339,11 @@ func custom_event_id_entered(text):
 		nodes['new_custom_event_create'].disabled = false
 	$VBoxContainer/HBoxContainer3/VBoxContainer2/CustomEvents/HBoxContainer/Message.text = ""
 
+
 func cancel_custom_event():
 	nodes['new_custom_event_section'].hide()
 	$VBoxContainer/HBoxContainer3/VBoxContainer2/CustomEvents/HBoxContainer/Message.text = ""
+
 
 func create_custom_event():
 	# do checks for incomplete input
