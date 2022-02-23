@@ -327,7 +327,7 @@ static func toggle_history():
 		var dialog_node = Engine.get_main_loop().get_meta('latest_dialogic_node')
 		dialog_node.HistoryTimeline._on_toggle_history()
 	else:
-		print('No dialog node yet')
+		print('[D] Tried to toggle history, but no dialog node exists.')
 
 
 ################################################################################
@@ -360,8 +360,7 @@ static func get_current_timeline():
 
 # Returns a string with the action button set on the project settings
 static func get_action_button():
-	var action_button = DialogicResources.get_settings_value('input', 'default_action_key', 'ui_accept')
-	return action_button if action_button != "[Default]" else "ui_accept"
+	return DialogicResources.get_settings_value('input', 'default_action_key', 'dialogic_default_action')
 
 ################################################################################
 ## 					NOT TO BE USED FROM OUTSIDE

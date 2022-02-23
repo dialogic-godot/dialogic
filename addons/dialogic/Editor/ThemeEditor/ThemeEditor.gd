@@ -76,6 +76,7 @@ onready var n : Dictionary = {
 	
 	'animation_show_time': $"VBoxContainer/TabContainer/Dialog Box/Column3/GridContainer/ShowTime/SpinBox",
 	'animation_dim_color': $"VBoxContainer/TabContainer/Dialog Box/Column3/GridContainer/DimColor/ColorPickerButton",
+	'animation_dim_time': $"VBoxContainer/TabContainer/Dialog Box/Column3/GridContainer/PortraitDimTime/SpinBox",
 	'portraits_behind_dialog_box' :$"VBoxContainer/TabContainer/Dialog Box/Column3/GridContainer/PortraitsBehindDialogCheckBox",
 	
 	# Character Names
@@ -318,7 +319,8 @@ func load_theme(filename):
 	n['dont_close_after_last_event'].pressed = theme.get_value('settings', 'dont_close_after_last_event', false)
 	
 	n['animation_dim_color'].color = Color(theme.get_value('animation', 'dim_color', '#ff808080'))
-	
+	n['animation_dim_time'].value = theme.get_value('animation', 'dim_time', 0.5)
+		
 	# Background
 	n['theme_background_image'].text = DialogicResources.get_filename_from_path(theme.get_value('background', 'image', default_background))
 	n['background_texture_button_visible'].pressed = theme.get_value('background', 'use_image', true)
@@ -746,6 +748,14 @@ func _on_DimColor_ColorPickerButton_color_changed(color) -> void:
 		return
 	DialogicResources.set_theme_value(current_theme, 'animation', 'dim_color', '#' + color.to_html())
 
+#Fade Time
+
+func _on_PortraitDimTime_value_changed(value):
+	if loading:
+		return
+	DialogicResources.set_theme_value(current_theme, 'animation', 'dim_time', value)
+
+
 # Next indicator
 func _on_NextIndicatorButton_pressed() -> void:
 	editor_reference.godot_dialog("*.png")
@@ -1076,5 +1086,6 @@ func _on_Glossary_BackgroundPanel_selected(path, target):
 func _on_audio_data_updated(section):
 	DialogicResources.set_theme_value(current_theme, 'audio', section, n['audio_pickers'][section].get_data())
 	_on_PreviewButton_pressed()
+
 
 
