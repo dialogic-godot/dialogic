@@ -184,7 +184,7 @@ func _ready():
 func update_data():
 	# Reloading the settings
 	var settings = DialogicResources.get_settings_config()
-	nodes['themes'].text = DialogicUtil.get_theme_dict()[settings.get_value("theme", "default", null)].get('name')
+	nodes['themes'].text = DialogicUtil.get_theme_dict()[settings.get_value("theme", "default", "default-theme.cfg")].get('name')
 	nodes['canvas_layer'].value = int(settings.get_value("theme", "canvas_layer", '1'))
 	load_values(settings, "input", INPUT_KEYS)
 	load_values(settings, "history", HISTORY_KEYS)
