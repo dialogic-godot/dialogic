@@ -1,0 +1,70 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://addons/dialogic/Images/Context Menus/Remove.svg" type="Texture" id=1]
+[ext_resource path="res://addons/dialogic/Editor/SettingsEditor/Scenes/LangaugeData.gd" type="Script" id=2]
+
+[node name="LanguageData" type="VBoxContainer"]
+margin_top = 54.0
+margin_right = 304.0
+margin_bottom = 78.0
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+is_default = null
+
+[node name="Label" type="Label" parent="."]
+margin_right = 304.0
+margin_bottom = 14.0
+custom_colors/font_color = Color( 0.329412, 0.898039, 1, 1 )
+text = "Langauge internal name"
+align = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+margin_top = 18.0
+margin_right = 304.0
+margin_bottom = 42.0
+
+[node name="Label_Set_name" type="Label" parent="HBoxContainer"]
+margin_top = 5.0
+margin_right = 85.0
+margin_bottom = 19.0
+text = "display name"
+
+[node name="display_name" type="LineEdit" parent="HBoxContainer"]
+margin_left = 89.0
+margin_right = 194.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+caret_blink = true
+caret_blink_speed = 0.5
+
+[node name="Label_Set_icon" type="Label" parent="HBoxContainer"]
+margin_left = 198.0
+margin_top = 5.0
+margin_right = 225.0
+margin_bottom = 19.0
+text = "icon"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextureButton" type="TextureButton" parent="HBoxContainer"]
+margin_left = 229.0
+margin_right = 229.0
+margin_bottom = 24.0
+
+[node name="TODO" type="Label" parent="HBoxContainer"]
+margin_left = 233.0
+margin_top = 5.0
+margin_right = 272.0
+margin_bottom = 19.0
+custom_colors/font_color = Color( 0.494118, 0.494118, 0.494118, 1 )
+text = "TODO"
+
+[node name="btn_delete" type="Button" parent="HBoxContainer"]
+margin_left = 276.0
+margin_right = 304.0
+margin_bottom = 24.0
+icon = ExtResource( 1 )
+flat = true
