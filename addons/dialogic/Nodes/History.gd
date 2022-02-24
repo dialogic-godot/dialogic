@@ -38,6 +38,12 @@ func _ready():
 	HistoryBackground = HistoryDefaultBackground.instance()
 	HistoryPopup.add_child(HistoryBackground)
 	HistoryPopup.move_child(HistoryBackground, 0)
+	
+	#Scrollbar only updates when visible, so need it to be handled
+	scrollbar.connect("changed",self,"handle_scrollbar_changed")
+	
+func handle_scrollbar_changed():
+	ScrollHistoryContainer.scroll_vertical = scrollbar.max_value
 
 
 func initalize_history():
