@@ -30,6 +30,13 @@ var eventsToLog = ['dialogic_001', 'dialogic_010']
 var logArrivals = false
 var logExits = false
 
+var scrollToBottom = true
+var reverseTimeline = false
+var characterNameColorOn = true
+var lineBreakAfterName = true
+
+var scrollToggle = false
+
 func _ready():
 	var testHistoryRow = HistoryRow.instance()
 	assert(testHistoryRow.has_method('add_history'), 'HistoryRow Scene must implement add_history(string, string) method.')
@@ -43,7 +50,13 @@ func _ready():
 	scrollbar.connect("changed",self,"handle_scrollbar_changed")
 	
 func handle_scrollbar_changed():
-	ScrollHistoryContainer.scroll_vertical = scrollbar.max_value
+	#It's firing every frame, we only want to check it once on opening 
+	if(scrollToggle):
+		scrollToggle = false
+		if (scrollToBottom):
+			ScrollHistoryContainer.scroll_vertical = scrollbar.max_value
+		else:
+			ScrollHistoryContainer.scroll_vertical = 0
 
 
 func initalize_history():
@@ -68,6 +81,13 @@ func initalize_history():
 	logExits = get_parent().settings.get_value('history', 'log_exits', true)
 	if logExits or logArrivals:
 		eventsToLog.push_back('dialogic_002')
+		
+	# Set the other selectable settings options
+	scrollToBottom = get_parent().settings.get_value('history', 'history_scroll_to_bottom', true)
+	reverseTimeline = get_parent().settings.get_value('history', 'history_reverse_timeline', false)
+	characterNameColorOn = get_parent().settings.get_value('history', 'history_name_color_on', true)
+	lineBreakAfterName = get_parent().settings.get_value('history', 'history_break_after_name', false)
+	
 	
 	# Grab some settings and make the boxes up right
 	var button_anchor = int(get_parent().settings.get_value('history', 'history_button_position', 2))
@@ -167,6 +187,8 @@ func add_history_row_event(eventData):
 	
 	var newHistoryRow = HistoryRow.instance()
 	HistoryTimeline.add_child(newHistoryRow)
+	if(reverseTimeline):
+		HistoryTimeline.move_child(newHistoryRow,0)
 	newHistoryRow.load_theme(curTheme)
 	
 	var characterPrefix = ''
@@ -182,7 +204,12 @@ func add_history_row_event(eventData):
 			var charDelimiter = get_parent().settings.get_value('history', 'history_character_delimiter', '')
 			var parsed_name = DialogicParser.parse_definitions(get_parent(), characterName, true, false)
 			var characterColor = characterData.data.get('color', Color.white)
-			characterPrefix = str("[color=",characterColor,"]", parsed_name, "[/color]", charDelimiter, ' ')
+			if (!characterNameColorOn):
+				characterColor = Color.white
+			var lineBreak = '' 
+			if (lineBreakAfterName):
+				lineBreak = '\n'
+			characterPrefix = str("[color=",characterColor,"]", parsed_name, "[/color]", charDelimiter, ' ', lineBreak)
 	
 	var audioData = ''
 	if eventData.has('voice_data'):
@@ -238,8 +265,9 @@ func _on_HistoryPopup_popup_hide():
 
 func _on_HistoryPopup_about_to_show():
 	if HistoryButton != null:
+		scrollToggle = true
 		HistoryButton.show()
-	ScrollHistoryContainer.scroll_vertical = scrollbar.max_value
+
 
 
 func _on_HistoryButton_mouse_entered():

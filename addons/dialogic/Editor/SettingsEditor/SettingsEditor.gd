@@ -39,6 +39,10 @@ onready var nodes = {
 	'log_exits': $VBoxContainer/HBoxContainer3/VBoxContainer2/HistorySettings/GridContainer/ChoiceBox4/LogExits,
 	'text_arrivals': $VBoxContainer/HBoxContainer3/VBoxContainer2/HistorySettings/GridContainer/LogBox/LineEdit,
 	'text_exits': $VBoxContainer/HBoxContainer3/VBoxContainer2/HistorySettings/GridContainer/LogBox2/LineEdit,
+	'history_scroll_to_bottom': $VBoxContainer/HBoxContainer3/VBoxContainer2/HistorySettings/GridContainer/ChoiceBox5/ScrollToBottom,
+	'history_reverse_timeline': $VBoxContainer/HBoxContainer3/VBoxContainer2/HistorySettings/GridContainer/ChoiceBox6/ReverseTimeline,
+	'history_name_color_on': $VBoxContainer/HBoxContainer3/VBoxContainer2/HistorySettings/GridContainer/ChoiceBox7/NameColorsOn,
+	'history_break_after_name': $VBoxContainer/HBoxContainer3/VBoxContainer2/HistorySettings/GridContainer/ChoiceBox8/NameLineBreak,
 	'history_button_position': $VBoxContainer/HBoxContainer3/VBoxContainer2/HistorySettings/GridContainer/PositionSelector,
 	'history_character_delimiter': $VBoxContainer/HBoxContainer3/VBoxContainer2/HistorySettings/GridContainer/CharacterDelimiter,
 	'history_screen_margin_x': $VBoxContainer/HBoxContainer3/VBoxContainer2/HistorySettings/GridContainer/BoxMargin/MarginX,
@@ -76,6 +80,10 @@ var HISTORY_KEYS := [
 	'log_exits',
 	'text_arrivals',
 	'text_exits',
+	'history_scroll_to_bottom',
+	'history_reverse_timeline',
+	'history_name_color_on',
+	'history_break_after_name',
 	'history_button_position',
 	'history_character_delimiter',
 	'history_screen_margin_x',
@@ -125,7 +133,11 @@ func _ready():
 	nodes['log_choices'].connect('toggled', self, '_on_item_toggled', ['history', 'log_choices'])
 	nodes['log_answers'].connect('toggled', self, '_on_item_toggled', ['history', 'log_answers'])
 	nodes['log_arrivals'].connect('toggled', self, '_on_item_toggled', ['history', 'log_arrivals'])
-	nodes['log_exits'].connect('toggled', self, '_on_item_toggled', ['history', 'log_exits'])
+	nodes['log_exits'].connect('toggled', self, '_on_item_toggled', ['history', 'history_scroll_to_bottom'])
+	nodes['history_scroll_to_bottom'].connect('toggled', self, '_on_item_toggled', ['history', 'history_scroll_to_bottom'])
+	nodes['history_reverse_timeline'].connect('toggled', self, '_on_item_toggled', ['history', 'history_reverse_timeline'])
+	nodes['history_name_color_on'].connect('toggled', self, '_on_item_toggled', ['history', 'history_name_color_on'])
+	nodes['history_break_after_name'].connect('toggled', self, '_on_item_toggled', ['history', 'history_break_after_name'])
 	nodes['history_button_position'].connect('item_selected', self, '_on_button_history_button_position_selected')
 	nodes['history_character_delimiter'].connect('text_changed', self, '_on_text_changed', ['history', 'history_character_delimiter'])
 	nodes['text_arrivals'].connect('text_changed', self, '_on_text_changed', ['history', 'text_arrivals'])
