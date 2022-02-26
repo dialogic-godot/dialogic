@@ -48,6 +48,7 @@ event_color = Color( 0.964706, 0.239216, 0.403922, 1 )
 event_icon = ExtResource( 5 )
 header_scene = ExtResource( 3 )
 body_scene = ExtResource( 4 )
+help_page_path = "res://addons/dialogic/Documentation/Content/Events/002.md"
 sorting_index = 1
 
 [node name="PanelContainer" parent="." index="1"]
