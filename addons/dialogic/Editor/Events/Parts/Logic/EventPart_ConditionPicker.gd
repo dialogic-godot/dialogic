@@ -77,8 +77,8 @@ func _on_Value_text_changed(text):
 	data_changed()
 
 func check_data():
-	if event_data['condition'] != '==' and event_data['condition'] != '!=':
-		if not event_data['value'].is_valid_float():
+	if event_data['condition'] != '==' and event_data['condition'] != '!=' and event_data['condition'] != '':
+		if not event_data['value'].is_valid_float() and not event_data['value'].begins_with("["):
 			emit_signal("set_warning", DTS.translate("The selected operator requires a number!"))
 			return
 	
