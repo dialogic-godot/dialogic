@@ -1,9 +1,9 @@
 ![WelcomeImage](./Images/dialogic-hero-1.3.png)
 Welcome to the help pages. Here you can find all the information available on how to use the plugin and its parts.  
 
-If you are looking for something specific, you can use the filter in the upper left. If you need extra help you can join [Emilio's Discord server](https://discord.gg/v4zhZNh)!
+If you are looking for something specific, you can use the filter in the upper left. If you need extra help you can ask questions here: [GitHub Discussions](https://github.com/coppolaemilio/dialogic/discussions) or alternatively chat about the development of Dialogic on [Emilio's Discord server](https://discord.gg/v4zhZNh)!
 
-This project is made possible by the support of our [Patreons](https://www.patreon.com/coppolaemilio)
+This project is made possible by the support of our [Patreons](https://www.patreon.com/coppolaemilio) and Github Sponsors.
 
 # Index
 ## Events
@@ -40,9 +40,10 @@ This project is made possible by the support of our [Patreons](https://www.patre
 ## Tutorials
 - [Beginners Guide](./Tutorials/BeginnersGuideStepByStep.md)
 - [Getting started (video)](https://www.youtube.com/watch?v=sYjgDIgD7AY)
-- [Updating to 1.3](./Tutorials/Updating.md)
+- [Updating to 1.4](./Tutorials/Updating.md)
 - [Saving and Loading](./Tutorials/Saving.md)
 - [Creating Custom Events](./Events/CustomEvents/CreateCustomEvents.md)
+- [Adding Character Animations](./Tutorials/AddingNewAnimations.md)
 - [Voice Line Support](./Tutorials/VoiceLines.md)
 
 
@@ -50,11 +51,11 @@ This project is made possible by the support of our [Patreons](https://www.patre
 # Dialogic is made by:
 **[Emilio Coppola](https://github.com/coppolaemilio)**
 [Jowan-Spooner](https://github.com/Jowan-Spooner)
-[Arnaud Vergnet](https://github.com/arnaudvergnet)
-[ellogwen](https://github.com/ellogwen)
 [Tim Krief](https://github.com/timkrief)
-[AnidemDex](https://github.com/AnidemDex)
 [zaknafean](https://github.com/zaknafean)
+[ellogwen](https://github.com/ellogwen)
+[AnidemDex](https://github.com/AnidemDex)
+[Arnaud Vergnet](https://github.com/arnaudvergnet)
 And many [more](https://github.com/coppolaemilio/dialogic/graphs/contributors)!
 
 
