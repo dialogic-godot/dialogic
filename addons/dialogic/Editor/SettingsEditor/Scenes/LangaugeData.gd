@@ -9,6 +9,7 @@ const DEFAULT_NAME := "default"
 export(bool) var is_default:bool
 var data:Dictionary setget _setdata
 var _pending:bool = false
+var _ptime:float = 0
 
 var nodes:Dictionary
 
@@ -18,21 +19,35 @@ var nodes:Dictionary
 
 
 # Called when the node enters the scene tree for the first time.
-func _ready():
+func _enter_tree():
 	nodes = {
-		"label" : $label,
+		"label" : $Label,
 		"dname" : $settings1/display_name,
 		"delete": $settings1/btn_delete,
 		"icon"  : $settings1/btn_icon,
+		"voice" : $settings2/btn_voice,
 
 	}
 	if is_default:
 		#hide settings not applicable to default language
 		nodes["delete"].disabled = true
+		self.data = DialogicResources.get_settings_value(SECTION_NAME, DEFAULT_NAME, {
+			#default data for default language
+			"internal" : "DEFAULT", #this internal name is not acually used anywhere, just kept for consitancy.
+			"display" : "english", #fair presumtion
+#			"icon" : null, #todo, if implemented: add english flag icon to default.
+			"use_default_voice" : true, #this setting would not matter any way for default.
+		})
+	var voice_enabled = DialogicResources.get_settings_value("dialog", "text_event_audio_enable", false)
+	nodes["voice"].visible = voice_enabled && not is_default
+
 		
 func _setdata(value:Dictionary):
+	print("Hello setdata")
 	data = value
-	nodes["dname"].text = data["display"]
+	$settings1/display_name.text = data["display"]
+	$Label.text = data["internal"]
+	$settings2/btn_voice.pressed = data["use_default_voice"]
 	pass
 
 ### Since data may change rapidly, we don't want to load alter and save the
@@ -42,9 +57,20 @@ func _data_changed():
 	if _pending:
 		return
 	_pending = true
-	yield(get_tree().create_timer(2), "_save")
+	_ptime = 2
 
-func _save():
+
+	#timer does not seem to work in editor.
+	#yield(get_tree().create_timer(2), "timeout")
+	#save()
+
+func _process(delta:float):
+	if(_pending):
+		_ptime -= delta
+		if _ptime <= 0:
+			save()
+
+func save():
 	if is_default:
 		DialogicResources.set_settings_value(SECTION_NAME, DEFAULT_NAME, data)
 	else:
@@ -55,6 +81,10 @@ func _save():
 
 func _on_display_name_text_changed(new_text:String):
 	data["display"] = new_text
+	_data_changed()
+
+func _on_btn_voice_toggled(value:bool):
+	data["use_default_voice"] = value
 	_data_changed()
 
 func _on_btn_delete_pressed():

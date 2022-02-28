@@ -12,7 +12,7 @@ content_margin_top = 4.0
 content_margin_bottom = 4.0
 bg_color = Color( 0.252, 0.2718, 0.3246, 1 )
 
-[node name="HistorySettings" type="VBoxContainer"]
+[node name="MultilangSettings" type="VBoxContainer"]
 margin_top = 258.0
 margin_right = 304.0
 margin_bottom = 390.0
@@ -33,17 +33,17 @@ margin_right = 304.0
 margin_bottom = 50.0
 
 [node name="EnableMultilangSupport" type="CheckBox" parent="MultilangBox"]
-margin_right = 194.0
+margin_right = 24.0
 margin_bottom = 24.0
 hint_tooltip = "Tick this to enable support for alternate languages in text and question events."
-size_flags_horizontal = 3
+pressed = true
 
 [node name="EnableLabel" parent="MultilangBox" instance=ExtResource( 2 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_left = 198.0
+margin_left = 28.0
 margin_top = 5.0
-margin_right = 304.0
+margin_right = 134.0
 margin_bottom = 19.0
 text = "Enable multilang"
 text_key = "Enable multilang"
@@ -51,11 +51,12 @@ text_key = "Enable multilang"
 [node name="settings" type="VBoxContainer" parent="."]
 margin_top = 54.0
 margin_right = 304.0
-margin_bottom = 144.0
+margin_bottom = 324.0
 
 [node name="DefaultNameBox" parent="settings" instance=ExtResource( 4 )]
 margin_top = 0.0
 margin_bottom = 42.0
+is_default = true
 
 [node name="HSeparator" type="HSeparator" parent="settings"]
 margin_top = 46.0
@@ -65,7 +66,7 @@ margin_bottom = 50.0
 [node name="languages" type="VBoxContainer" parent="settings"]
 margin_top = 54.0
 margin_right = 304.0
-margin_bottom = 62.0
+margin_bottom = 242.0
 
 [node name="template" parent="settings/languages" instance=ExtResource( 4 )]
 visible = false
@@ -74,16 +75,17 @@ margin_bottom = 42.0
 
 [node name="list" type="VBoxContainer" parent="settings/languages"]
 margin_right = 304.0
+margin_bottom = 180.0
 
 [node name="HSeparator" type="HSeparator" parent="settings/languages"]
-margin_top = 4.0
+margin_top = 184.0
 margin_right = 304.0
-margin_bottom = 8.0
+margin_bottom = 188.0
 
 [node name="newlang" type="HBoxContainer" parent="settings"]
-margin_top = 66.0
+margin_top = 246.0
 margin_right = 304.0
-margin_bottom = 90.0
+margin_bottom = 270.0
 
 [node name="NewName" type="LineEdit" parent="settings/newlang"]
 margin_right = 265.0
@@ -98,3 +100,6 @@ custom_colors/font_color = Color( 0, 1, 0.145098, 1 )
 text = "add"
 
 [connection signal="toggled" from="MultilangBox/EnableMultilangSupport" to="." method="_on_EnableMultilangSupport_toggled"]
+[connection signal="text_changed" from="settings/newlang/NewName" to="." method="_on_NewName_text_changed"]
+[connection signal="text_entered" from="settings/newlang/NewName" to="." method="_on_NewName_text_entered"]
+[connection signal="pressed" from="settings/newlang/btnAddnew" to="." method="_on_btnAddnew_pressed"]

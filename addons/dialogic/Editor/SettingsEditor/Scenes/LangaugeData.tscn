@@ -11,7 +11,6 @@ script = ExtResource( 2 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
-is_default = null
 
 [node name="Label" type="Label" parent="."]
 margin_right = 304.0
@@ -20,41 +19,44 @@ custom_colors/font_color = Color( 0.329412, 0.898039, 1, 1 )
 text = "Langauge internal name"
 align = 1
 
-[node name="HBoxContainer" type="HBoxContainer" parent="."]
+[node name="settings1" type="HBoxContainer" parent="."]
 margin_top = 18.0
 margin_right = 304.0
 margin_bottom = 42.0
 
-[node name="Label_Set_name" type="Label" parent="HBoxContainer"]
+[node name="Label_Set_name" type="Label" parent="settings1"]
 margin_top = 5.0
 margin_right = 85.0
 margin_bottom = 19.0
 text = "display name"
 
-[node name="display_name" type="LineEdit" parent="HBoxContainer"]
+[node name="display_name" type="LineEdit" parent="settings1"]
 margin_left = 89.0
-margin_right = 194.0
+margin_right = 272.0
 margin_bottom = 24.0
 size_flags_horizontal = 3
 caret_blink = true
 caret_blink_speed = 0.5
 
-[node name="Label_Set_icon" type="Label" parent="HBoxContainer"]
-margin_left = 198.0
+[node name="Label_Set_icon" type="Label" parent="settings1"]
+visible = false
+margin_left = 245.0
 margin_top = 5.0
-margin_right = 225.0
+margin_right = 272.0
 margin_bottom = 19.0
 text = "icon"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="TextureButton" type="TextureButton" parent="HBoxContainer"]
-margin_left = 229.0
-margin_right = 229.0
+[node name="btn_icon" type="TextureButton" parent="settings1"]
+visible = false
+margin_left = 272.0
+margin_right = 272.0
 margin_bottom = 24.0
 
-[node name="TODO" type="Label" parent="HBoxContainer"]
+[node name="TODO" type="Label" parent="settings1"]
+visible = false
 margin_left = 233.0
 margin_top = 5.0
 margin_right = 272.0
@@ -62,9 +64,26 @@ margin_bottom = 19.0
 custom_colors/font_color = Color( 0.494118, 0.494118, 0.494118, 1 )
 text = "TODO"
 
-[node name="btn_delete" type="Button" parent="HBoxContainer"]
+[node name="btn_delete" type="Button" parent="settings1"]
 margin_left = 276.0
 margin_right = 304.0
 margin_bottom = 24.0
 icon = ExtResource( 1 )
 flat = true
+
+[node name="settings2" type="HBoxContainer" parent="."]
+margin_top = 46.0
+margin_right = 304.0
+margin_bottom = 86.0
+
+[node name="btn_voice" type="CheckButton" parent="settings2"]
+margin_right = 191.0
+margin_bottom = 40.0
+text = "Use default voice"
+__meta__ = {
+"_editor_description_": "Uncheck to set seperate voice acting data for text events in this language"
+}
+
+[connection signal="text_changed" from="settings1/display_name" to="." method="_on_display_name_text_changed"]
+[connection signal="pressed" from="settings1/btn_delete" to="." method="_on_btn_delete_pressed"]
+[connection signal="toggled" from="settings2/btn_voice" to="." method="_on_btn_voice_toggled"]

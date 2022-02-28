@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://addons/dialogic/Editor/SettingsEditor/SettingsEditor.gd" type="Script" id=1]
 [ext_resource path="res://addons/dialogic/Editor/Common/SectionTitle.tscn" type="PackedScene" id=2]
@@ -7,6 +7,7 @@
 [ext_resource path="res://addons/dialogic/Editor/SettingsEditor/Scenes/HistorySettings.tscn" type="PackedScene" id=5]
 [ext_resource path="res://addons/dialogic/Editor/Events/Parts/ResourcePickers/ResourcePickerMenu.tscn" type="PackedScene" id=6]
 [ext_resource path="res://addons/dialogic/Editor/Events/styles/InputFieldsStyle.tres" type="Theme" id=7]
+[ext_resource path="res://addons/dialogic/Editor/SettingsEditor/Scenes/MultilangSettings.tscn" type="PackedScene" id=8]
 
 [sub_resource type="Image" id=3]
 data = {
@@ -33,18 +34,18 @@ __meta__ = {
 }
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
-margin_right = 1024.0
-margin_bottom = 600.0
+margin_right = 1012.0
+margin_bottom = 676.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="HBoxContainer3" type="HBoxContainer" parent="VBoxContainer"]
-margin_right = 1024.0
-margin_bottom = 520.0
+margin_right = 1012.0
+margin_bottom = 676.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer3"]
 margin_right = 413.0
-margin_bottom = 520.0
+margin_bottom = 676.0
 custom_constants/separation = 16
 
 [node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer"]
@@ -72,8 +73,9 @@ text_key = "Default"
 
 [node name="ThemePicker" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer/HBoxContainer" instance=ExtResource( 6 )]
 margin_left = 102.0
-margin_right = 216.0
+margin_right = 306.0
 custom_colors/font_color = Color( 0.8, 0.807843, 0.827451, 1 )
+text = "theme-1645478317.cfg"
 
 [node name="HBoxContainer3" type="HBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer"]
 margin_top = 54.0
@@ -95,6 +97,7 @@ margin_right = 163.0
 margin_bottom = 24.0
 min_value = -999.0
 max_value = 999.0
+value = 1.0
 rounded = true
 
 [node name="VBoxContainer2" type="VBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer"]
@@ -298,7 +301,7 @@ value = 0.5
 [node name="VBoxContainer2" type="VBoxContainer" parent="VBoxContainer/HBoxContainer3"]
 margin_left = 417.0
 margin_right = 723.0
-margin_bottom = 520.0
+margin_bottom = 676.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer2"]
 margin_right = 306.0
@@ -492,10 +495,15 @@ margin_top = 286.0
 margin_right = 306.0
 margin_bottom = 336.0
 
-[node name="CustomEvents" type="VBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer2"]
+[node name="MultilangSettings" parent="VBoxContainer/HBoxContainer3/VBoxContainer2" instance=ExtResource( 8 )]
 margin_top = 340.0
 margin_right = 306.0
-margin_bottom = 390.0
+margin_bottom = 618.0
+
+[node name="CustomEvents" type="VBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer2"]
+margin_top = 622.0
+margin_right = 306.0
+margin_bottom = 672.0
 
 [node name="SectionTitle" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/CustomEvents" instance=ExtResource( 2 )]
 margin_right = 306.0
@@ -609,6 +617,6 @@ margin_bottom = 20.0
 text = "Cancel"
 
 [node name="CustomEvents" type="VBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer2"]
-margin_top = 394.0
+margin_top = 676.0
 margin_right = 306.0
-margin_bottom = 394.0
+margin_bottom = 676.0
