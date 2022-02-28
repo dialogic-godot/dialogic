@@ -13,6 +13,10 @@ func _on_EnableHistoryLogging_toggled(button_pressed):
 	$GridContainer/ChoiceBox3/LogArrivals.disabled = !button_pressed
 	$GridContainer/LogBox/LineEdit.editable = button_pressed
 	$GridContainer/ChoiceBox4/LogExits.disabled = !button_pressed
+	$GridContainer/ChoiceBox5/ScrollToBottom.disabled = !button_pressed
+	$GridContainer/ChoiceBox6/ReverseTimeline.disabled = !button_pressed
+	$GridContainer/ChoiceBox7/NameColorsOn.disabled = !button_pressed
+	$GridContainer/ChoiceBox8/NameLineBreak.disabled = !button_pressed
 	$GridContainer/LogBox2/LineEdit.editable = button_pressed
 	$GridContainer/PositionSelector.disabled = !button_pressed
 	$GridContainer/CharacterDelimiter.editable = button_pressed
@@ -28,6 +32,10 @@ func _on_EnableHistoryLogging_toggled(button_pressed):
 	$GridContainer/ChoiceBox3.visible = button_pressed
 	$GridContainer/LogBox.visible = button_pressed
 	$GridContainer/ChoiceBox4.visible = button_pressed
+	$GridContainer/ChoiceBox5.visible = button_pressed
+	$GridContainer/ChoiceBox6.visible = button_pressed
+	$GridContainer/ChoiceBox7.visible = button_pressed
+	$GridContainer/ChoiceBox8.visible = button_pressed
 	$GridContainer/TLabel8.visible = button_pressed
 	$GridContainer/PositionSelector.visible = button_pressed
 	$GridContainer/LogBox2.visible = button_pressed
