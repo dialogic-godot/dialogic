@@ -127,7 +127,7 @@ func _draw():
 
 					# Drawing the line from the Question/Condition node to the End Branch one.
 					draw_rect(Rect2(
-								Vector2(pos.x + line_size , pos.y-scroll_vertical)+event.rect_position,
+								Vector2(pos.x + line_size -scroll_horizontal, pos.y-scroll_vertical)+event.rect_position,
 								Vector2(line_width,
 								(end_reference.rect_global_position.y - event.rect_global_position.y) - (43 * _scale))
 							),
@@ -144,7 +144,7 @@ func _draw():
 					pass
 				else:
 					draw_rect(Rect2(
-							Vector2(pos.x + line_size , pos.y - scroll_vertical)+event.rect_position,
+							Vector2(pos.x + line_size -scroll_horizontal, pos.y - scroll_vertical)+event.rect_position,
 							Vector2(line_width, event.rect_size.y - (40 * _scale))
 						),
 						line_color,
@@ -152,7 +152,7 @@ func _draw():
 		else:
 			# Root (level 0) Vertical Line
 			draw_rect(Rect2(
-					Vector2(pos.x, pos.y - scroll_vertical)+event.rect_position,
+					Vector2(pos.x-scroll_horizontal, pos.y - scroll_vertical)+event.rect_position,
 					Vector2(line_width, event.rect_size.y - (40 * _scale))
 					),
 				line_color,
@@ -176,7 +176,7 @@ func _draw():
 			arc_start = rendering_scale_correction(_scale, arc_start)
 
 			draw_arc(
-				Vector2(arc_start.x, arc_start.y - scroll_vertical) + event.rect_position,
+				Vector2(arc_start.x-scroll_horizontal, arc_start.y - scroll_vertical) + event.rect_position,
 				arc_radius,
 				deg2rad(start_angle),
 				deg2rad(end_angle),
@@ -198,7 +198,7 @@ func _draw():
 			arc_start = rendering_scale_correction(_scale, arc_start)
 
 			draw_arc(
-				Vector2(arc_start.x, arc_start.y - scroll_vertical) + event.rect_position,
+				Vector2(arc_start.x-scroll_horizontal, arc_start.y - scroll_vertical) + event.rect_position,
 				arc_radius,
 				deg2rad(start_angle),
 				deg2rad(end_angle),
