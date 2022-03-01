@@ -6,7 +6,6 @@ export var default : bool = false
 export var settings_section : String = ''
 export var settings_key : String = ''
 
-
 func _ready():
 	# This node needs a Settings Editor parent to get the current loaded settings
 	$CheckBox.text = DTS.translate(text)

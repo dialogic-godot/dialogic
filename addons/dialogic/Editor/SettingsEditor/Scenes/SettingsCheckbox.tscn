@@ -5,9 +5,6 @@
 [node name="SettingsCheckbox" type="HBoxContainer"]
 size_flags_horizontal = 3
 script = ExtResource( 1 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="CheckBox" type="CheckBox" parent="."]
 margin_right = 24.0

@@ -1,10 +1,11 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://addons/dialogic/Editor/CharacterEditor/PortraitEntry.tscn" type="PackedScene" id=1]
 [ext_resource path="res://addons/dialogic/Editor/CharacterEditor/CharacterEditor.gd" type="Script" id=2]
 [ext_resource path="res://addons/dialogic/Editor/Common/TLabel.tscn" type="PackedScene" id=3]
 [ext_resource path="res://addons/dialogic/Example Assets/portraits/df-3.png" type="Texture" id=4]
 [ext_resource path="res://addons/dialogic/Editor/Events/styles/InputFieldsStyle.tres" type="Theme" id=5]
+[ext_resource path="res://addons/dialogic/Editor/Events/Parts/ResourcePickers/ResourcePickerMenu.tscn" type="PackedScene" id=6]
 
 [sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 0.2, 0.23, 0.31, 1 )
@@ -128,6 +129,7 @@ margin_left = 168.0
 margin_right = 308.0
 margin_bottom = 24.0
 rect_min_size = Vector2( 140, 0 )
+expand_to_text_length = true
 caret_blink = true
 caret_blink_speed = 0.5
 
@@ -171,6 +173,7 @@ margin_left = 168.0
 margin_right = 308.0
 margin_bottom = 24.0
 rect_min_size = Vector2( 140, 0 )
+expand_to_text_length = true
 caret_blink = true
 caret_blink_speed = 0.5
 
@@ -233,11 +236,12 @@ margin_right = 581.0
 margin_bottom = 50.0
 rect_min_size = Vector2( 100, 50 )
 size_flags_horizontal = 3
+wrap_enabled = true
 
 [node name="Theme" type="HBoxContainer" parent="Split/EditorScroll/Editor"]
 margin_top = 138.0
 margin_right = 581.0
-margin_bottom = 158.0
+margin_bottom = 162.0
 
 [node name="TLabel5" parent="Split/EditorScroll/Editor/Theme" instance=ExtResource( 3 )]
 anchor_right = 0.0
@@ -249,26 +253,22 @@ size_flags_vertical = 0
 text = "Theme: "
 text_key = "Theme: "
 
-[node name="ThemeButton" type="MenuButton" parent="Split/EditorScroll/Editor/Theme"]
+[node name="ThemeButton" parent="Split/EditorScroll/Editor/Theme" instance=ExtResource( 6 )]
 margin_left = 134.0
-margin_right = 274.0
-margin_bottom = 20.0
-rect_min_size = Vector2( 140, 0 )
-text = "NightTheme"
-flat = false
-align = 0
+margin_right = 248.0
+custom_colors/font_color = Color( 0.8, 0.807843, 0.827451, 1 )
 
 [node name="Separator" type="HSeparator" parent="Split/EditorScroll/Editor"]
-margin_top = 162.0
+margin_top = 166.0
 margin_right = 581.0
-margin_bottom = 180.0
+margin_bottom = 184.0
 rect_min_size = Vector2( 0, 10 )
 custom_constants/separation = 18
 
 [node name="Portraits" type="HBoxContainer" parent="Split/EditorScroll/Editor"]
-margin_top = 184.0
+margin_top = 188.0
 margin_right = 581.0
-margin_bottom = 208.0
+margin_bottom = 212.0
 
 [node name="Title" parent="Split/EditorScroll/Editor/Portraits" instance=ExtResource( 3 )]
 anchor_right = 0.0
@@ -289,12 +289,13 @@ margin_bottom = 24.0
 rect_min_size = Vector2( 120, 0 )
 size_flags_vertical = 4
 expand_to_text_length = true
+clear_button_enabled = true
 placeholder_text = "Search"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Split/EditorScroll/Editor"]
-margin_top = 212.0
+margin_top = 216.0
 margin_right = 581.0
-margin_bottom = 236.0
+margin_bottom = 240.0
 
 [node name="TLabel11" parent="Split/EditorScroll/Editor/HBoxContainer" instance=ExtResource( 3 )]
 anchor_right = 0.0
@@ -360,7 +361,7 @@ margin_right = 125.0
 margin_bottom = 24.0
 
 [node name="PortraitPanel" type="PanelContainer" parent="Split/EditorScroll/Editor"]
-margin_top = 240.0
+margin_top = 244.0
 margin_right = 581.0
 margin_bottom = 600.0
 size_flags_vertical = 3
@@ -370,7 +371,7 @@ custom_styles/panel = SubResource( 7 )
 margin_left = 2.0
 margin_top = 2.0
 margin_right = 579.0
-margin_bottom = 358.0
+margin_bottom = 354.0
 
 [node name="Labels" type="HBoxContainer" parent="Split/EditorScroll/Editor/PortraitPanel/VBoxContainer"]
 margin_right = 577.0
@@ -418,13 +419,13 @@ icon = SubResource( 9 )
 [node name="ScrollContainer" type="ScrollContainer" parent="Split/EditorScroll/Editor/PortraitPanel/VBoxContainer"]
 margin_top = 26.0
 margin_right = 577.0
-margin_bottom = 356.0
+margin_bottom = 352.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Split/EditorScroll/Editor/PortraitPanel/VBoxContainer/ScrollContainer"]
 margin_right = 577.0
-margin_bottom = 330.0
+margin_bottom = 326.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 

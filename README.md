@@ -1,4 +1,4 @@
-![dialogic-new-cover](https://user-images.githubusercontent.com/2206700/152978050-9e9f837d-1c2f-4281-b76d-67900c829534.png)
+![dialogic-cover](https://user-images.githubusercontent.com/2206700/155892294-a8a202f1-4ce7-4014-b146-e5d7c99023a3.png)
 
 Create dialogs, characters and scenes to display conversations in your Godot games. 
 
@@ -11,7 +11,7 @@ Create dialogs, characters and scenes to display conversations in your Godot gam
 
 
 
-# Version 1.4 - Work in progress 🛠️  ![Godot v3.4](https://img.shields.io/badge/godot-v3.4-%23478cbf)
+# Version 1.4 - Curves Ahead  ![Godot v3.4](https://img.shields.io/badge/godot-v3.4-%23478cbf)
 
 ## Getting started
 
