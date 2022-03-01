@@ -1,4 +1,4 @@
-# Adding new animations to your Characters
+# Adding character animations
 
 Dialogic 1.4 introduced a new animation system ([Anima by Alessandro Senese](https://github.com/ceceppa/anima)).
 The files for the animations are stored in the `/dialogic/addons/dialogic/Nodes/Anima/animations` folder.
