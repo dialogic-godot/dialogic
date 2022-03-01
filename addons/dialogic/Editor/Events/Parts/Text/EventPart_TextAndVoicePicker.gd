@@ -50,3 +50,6 @@ func _on_voice_editor_data_changed(data) -> void:
 	voice_editor.visible = use_voices()
 	# informs the parent 
 	data_changed()
+
+func focus():
+	text_editor.focus()
