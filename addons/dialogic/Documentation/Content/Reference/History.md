@@ -2,7 +2,7 @@
 
 When enabled, the History timeline feature automatically builds a log of events that can be reviewed by the user or, if audio is enabled, replay the audio as well. The History timeline is at its core an opinionated, fancy logging system, and has many settings that can be configured to change its behavior. In addition to these settings, the history timelines look and feel can also be customized further by intermediate to experienced users, without affecting its functionality.
 
-![anatomy-history](https://user-images.githubusercontent.com/7741797/156091617-7a6c0920-007a-456f-bc1f-73c8d67eb383.png)
+![anatomy-history](./Images/history_settings_explained.png)
 
 The above image gives a rough look at how a history timeline can look in game. By default, a History timeline is made up of a *History* node that instances a single *HistoryBackground*, two *HistoryButtons*, and as many *HistoryRows* as neccesary. The History timeline is destroyed along with the rest of the Dialogic node when the timeline ends.
 
@@ -61,7 +61,7 @@ Add new HistoryRows to the top of the history timeline, reversing the default wa
 ### Show name colors
 Use the color defined in the character within the timeline 
 
-![image](https://user-images.githubusercontent.com/7741797/156090583-1372d00b-b2ec-4e0f-bb92-688ed08e72b5.png)
+![image](./Images/history_character_color_example.png)
 
 In this case the characters name woudld be blue in the history timeline. Disable this option to force character names to use the default font color.
 
@@ -71,7 +71,7 @@ Forces the character name to be logged on a separate line from the rest of the t
 ### History button position
 Choose the relative location on screen you want the default history open and default history close button to appear
 
-![image](https://user-images.githubusercontent.com/7741797/156090911-d2ca4d41-995c-42e0-9c84-7309221f9e28.png)
+![image](./Images/history_button_positions.png)
 
 If you wish to customize this further, consider using the exposed *toggle_history* function described in History API below
 
@@ -85,23 +85,23 @@ Changing this to a dash *\-* would display as:
 ### Screen margin
 Sets a distance in pixels that the history panel will buffer away from the edge of the screen. 
 
-![image](https://user-images.githubusercontent.com/7741797/156091395-bdb9b47d-a262-4b36-9ade-14ef7d829a62.png)
+![image](./Images/history_screen_margin.png)
 
 This example would give a margin of 25 pixels on the left and right sides of the screen (X axis) and 10 pixels on the top and bottom of the screen (Y axis)
 
 ### Log margin
 Sets a distance in pixels that the history panel will buffer away from the HistoryRows that it contains.
 
-![image](https://user-images.githubusercontent.com/7741797/156092238-f3527921-f974-4ca9-977b-7380f4875be9.png)
+![image](./Images/history_log_margin.png)
 
 This example would give a margine of 45 pixels on the left and right sides of the screen (X axis) and 15 pixels on the top and bottom of the screen (Y axis). Note that the Y axis pixels may not be as apparent as the scrollcontainer may obscure the bottom margin.
 
 ## History anatomy
-![image](https://user-images.githubusercontent.com/7741797/156189541-4a6bc8c4-2fd5-45f5-9399-cd8224b788d6.png)
+![image](./Images/history_scene_tree.png)
 
 The History node is a child of the DialogicNode and is made up of an AudioStreamPlayer to replay TextEvent audio and a ScrollContainer to ultimately hold HistoryRow instances. Neither of these nodes have much cause to be changed or customized.
 
-![image](https://user-images.githubusercontent.com/7741797/156194772-70d8b37d-6c07-4d39-9a4a-b4699823b863.png)
+![image](./Images/history_script_variables.png)
 
 The History node has four exposed script variables that are instanced at run time and can be customized, changed, or extended to suit your needs. These default parts can all be found in the */addons/dialogic/Example Assets/History/* folder.
 
@@ -112,14 +112,14 @@ There is no special code and few considerations when replacing or customizing th
 There is no special code or considerations when replacing either button. The only difference in these buttons are the Button texts. The buttons have their own theme that can be replaced, overridden, or ignored
 
 ### HistoryRow
-![image](https://user-images.githubusercontent.com/7741797/156197650-8923172b-1e02-4c63-89a4-1b057ae8b4be.png)
+![image](./Images/history_row_scene_tree.png)
 
 If you intend to replace the HistoryRow, make sure to extend the script. HistoryRow contains two important functions
 * add_history(historyString : string, newAudio='') - Called to actually write the data to the HistoryRow by the main History node. Edit this function with care.
 * load_theme(theme: ConfigFile) - called by the History node to theme the HistoryRow with the default theme of Dialogic. If you wish to style your HistoryRow manually, than replace this functions content with a *pass*.
 
 The key nodes of the HistoryRow are the *RichTextLabel* which is where the actual text appears and the *PlayAudioButton* which allows replays of audio dialog in TextEvents. In the case of customizing your own HistoryRow, you will need to set the node path of these nodes which can be done via the script varialbes as seen below
-![image](https://user-images.githubusercontent.com/7741797/156198571-beff3e11-c655-4e1c-a965-85ca6bf00261.png)
+![image](./Images/history_row_script_variables.png)
 
 
 ## History api
@@ -127,4 +127,7 @@ There is one exposed function in Dialogic that relates to the History system: to
 *Dialogic.toggle_history()*
 And can easily be tied to a button or function like so:
 
-![image](https://user-images.githubusercontent.com/7741797/156200547-fad8e0a1-5a2b-46c5-9884-ad9a5dfe72ee.png)
+```
+func _on_CustomHistoryButton_pressed():
+    Dialogic.toggle_history()
+```

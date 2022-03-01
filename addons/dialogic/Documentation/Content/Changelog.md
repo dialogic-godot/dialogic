@@ -7,15 +7,24 @@
 - Text event improvements:
   - You can now make a list of words like this: `[word1,word2,word3]` and Dialogic will pick a random word from the list. If the word is a Dialogic variable name and it gets picked it will show the value of that variable.
   - New commands [signal=argument], [pause=wait_time], [play=soundname], [nv=v] (for waiting until the audio finishes) added to the Text Event [[KvaGram](https://github.com/KvaGram)]
+- The Character Join and Character Leave events have been removed in favor of the new `Character Event`. They will be converted automatically. The new events allows for more customization including animations. These use the anima system. Learn more about the [event](./Events/002.md) and the [animations](./Tutorials/AddNewAnimations.md) [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
+
 
 #### Settings/Themes
 - Added: `Autofocus choices` in the settings [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
+- Added: A panel with `History functionality` can be enabled and configured in the settings. For further information read the [reference](./Reference/History.md) [[zaknafean](https://github.com/zaknafean)]
 - You can now set the character dim color from the theme settings [[Tim Krief](https://github.com/timkrief)]
   - Removed the setting to dim character portraits from the global settings
-- Custom theme per character [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
+  - Added a setting to control the dim speed [[thebardsrc](https://github.com/thebardsrc)]
+- You can now set a `custom theme per character` [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
 - New setting to use "Keep Aspect Centered" instead of stretch for the Background event [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
 - You can now verically align the text in the dialog box [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
 - You can now specify hotkeys for the choices or use default hot-keys (1-9) [[zaknafean](https://github.com/zaknafean)]
+- A new `dialogic_default_action` has been added and is the new default. We encourage you not to mess with the ui_* input actions. [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
+- You can now make portraits appear in front of the dialog box with a setting in the themes [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
+- The name label can now be disabled [[nickfla1](https://github.com/nickfla1)]
+- A new option will make it so the dialog doesn't get deleted after the last event allowing for it to be fully integrated into your design [[mechPenSketch](https://github.com/mechPenSketch)]
+
 
 #### Editors
 - Character Editor improvements [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
@@ -23,8 +32,13 @@
 - The Timeline Editor has been greatly redesigned resulting in a cleaner view
 - Improvement of the translations and introduction of german translation [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
 
+
 #### Script
 - You can now change the timeline of the active node with the `Dialogic.change_timeline()` function. This will preserve the previous state (characters, background, music, theme) [[mechPenSketch](https://github.com/mechPenSketch)]
+- You can now reference values with their full path in `Dialogic.set_variable()` and `Dialogic.get_variable()` [[thebardsrc](https://github.com/thebardsrc)]
+- There is now a function to check if a timeline exists `Dialogic.timeline_exists(@timeline_path)` [[thebardsrc](https://github.com/thebardsrc)]
+- For the History feature, the `Dialogic.toggle_history()` function has been added
+- There is now a function to go to the next event `Dialogic.next_event()` [[mechPenSketch](https://github.com/mechPenSketch)]
 
 #### Other
 - Many minor and major bugs fixed
