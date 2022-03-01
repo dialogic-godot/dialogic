@@ -36,6 +36,7 @@ This project is made possible by the support of our [Patreons](https://www.patre
 - [Timeline Editor](./Reference/Timeline.md)
 - [Character Editor](./Reference/Character.md)
 - [Theme Editor](./Reference/Theme.md)
+- [History Log](./Reference/History.md)
 
 ## Tutorials
 - [Beginners Guide](./Tutorials/BeginnersGuideStepByStep.md)
