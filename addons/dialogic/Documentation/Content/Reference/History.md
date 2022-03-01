@@ -91,3 +91,36 @@ Sets a distance in pixels that the history panel will buffer away from the Histo
 ![image](https://user-images.githubusercontent.com/7741797/156092238-f3527921-f974-4ca9-977b-7380f4875be9.png)
 
 This example would give a margine of 45 pixels on the left and right sides of the screen (X axis) and 15 pixels on the top and bottom of the screen (Y axis). Note that the Y axis pixels may not be as apparent as the scrollcontainer may obscure the bottom margin.
+
+## History anatomy
+![image](https://user-images.githubusercontent.com/7741797/156189541-4a6bc8c4-2fd5-45f5-9399-cd8224b788d6.png)
+
+The History node is a child of the DialogicNode and is made up of an AudioStreamPlayer to replay TextEvent audio, a ScrollContainer to ultimately hold HistoryRow instances. None of these nodes have much need to be changed or customized.
+
+![image](https://user-images.githubusercontent.com/7741797/156194772-70d8b37d-6c07-4d39-9a4a-b4699823b863.png)
+
+The History node has four available script variables that are instanced at run time, and can be customized and changed. These default parts can all be found in the  */addons/dialogic/Example Assets/History/* folder.
+
+### History background
+There is no special code and few considerations when replacing or customizing the HistoryBackground. Its simply a panel with *mouse_filter* set to ignore.
+
+### HistoryButton and HistoryReturnButton
+There is no special code or considerations when replacing either button. The button has its own theme that can be replaced, overridden, or ignored
+
+### HistoryRow
+![image](https://user-images.githubusercontent.com/7741797/156197650-8923172b-1e02-4c63-89a4-1b057ae8b4be.png)
+
+If you intend to replace the HistoryRow, make sure to extend the script. HistoryRow contians two important functions
+* add_history(historyString :strng, newAudio='') - Called to actually write the data to the HistoryRow by the main History node. Editing this function with care.
+* load_theme(theme: ConfigFile) - called by the History node to theme the HistoryRow with the default theme of Dialogic. If you wish to style your HistoryRow manually, than replace this function with a *pass*.
+
+The key nodes of the History row are the *RichTextLabel* which is where the actual text appears and the *PlayAudioButton* which allows replays of audio dialog in TextEvents. You can set the node path for these in HistoryRows script varialbes as seen below
+![image](https://user-images.githubusercontent.com/7741797/156198571-beff3e11-c655-4e1c-a965-85ca6bf00261.png)
+
+
+## History api
+There is one exposed function in Dialogic that relates to the History system: toggle_history(). Toggle history is used to create your own custom button or function to open and close the History window. It is called like this:
+*Dialogic.toggle_history()*
+And can easily ber tied to a button or function like so:
+
+![image](https://user-images.githubusercontent.com/7741797/156200547-fad8e0a1-5a2b-46c5-9884-ad9a5dfe72ee.png)
