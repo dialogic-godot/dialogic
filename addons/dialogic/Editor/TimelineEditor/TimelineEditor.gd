@@ -1004,7 +1004,8 @@ func scroll_to_piece(piece_index) -> void:
 	var height = 0
 	for i in range(0, piece_index):
 		height += $TimelineArea/TimeLine.get_child(i).rect_size.y
-	$TimelineArea.scroll_vertical = height
+	if height < $TimelineArea.scroll_vertical or height > $TimelineArea.scroll_vertical+$TimelineArea.rect_size.y-(200*DialogicUtil.get_editor_scale(self)):
+		$TimelineArea.scroll_vertical = height
 
 # Event Indenting
 func indent_events() -> void:
