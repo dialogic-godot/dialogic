@@ -40,6 +40,7 @@ func set_portrait(expression: String) -> void:
 		expression = 'Default'
 	
 	current_state['portrait'] = expression
+	
 	# Clearing old custom scenes
 	for n in get_children():
 		if 'DialogicCustomPortraitScene' in n.name:
@@ -49,6 +50,7 @@ func set_portrait(expression: String) -> void:
 	for p in character_data['portraits']:
 		if p['name'] == expression:
 			if is_scene(p['path']):
+				# Creating a scene portrait
 				var custom_node = load(p['path'])
 				var instance = custom_node.instance()
 				instance.name = 'DialogicCustomPortraitScene'
@@ -57,20 +59,37 @@ func set_portrait(expression: String) -> void:
 				$TextureRect.texture = ImageTexture.new()
 				return
 			else:
+				# Creating an image portrait
 				if ResourceLoader.exists(p['path']):
 					$TextureRect.texture = load(p['path'])
 				else:
 					$TextureRect.texture = ImageTexture.new()
 				return
+		
 		# Saving what the default is to fallback to it.
 		if p['name'] == 'Default':
 			default = p['path']
 	
+	
 	# Everything failed, go with the default one
-	if ResourceLoader.exists(default):
-		$TextureRect.texture = load(default)
-	else:
+	if is_scene(default):
+		push_warning('[Dialogic] Portrait missing: "' + expression + '". Maybe you deleted it? Update your timeline.')
+		# Creating a scene portrait
+		var custom_node = load(default)
+		var instance = custom_node.instance()
+		instance.name = 'DialogicCustomPortraitScene'
+		add_child(instance)
+		
 		$TextureRect.texture = ImageTexture.new()
+		return
+	else:
+		# Creating an image portrait
+		if ResourceLoader.exists(default):
+			$TextureRect.texture = load(default)
+		else:
+			$TextureRect.texture = ImageTexture.new()
+		return
+
 
 
 func set_mirror(value):
