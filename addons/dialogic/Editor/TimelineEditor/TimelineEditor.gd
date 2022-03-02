@@ -832,6 +832,10 @@ func create_event(event_id: String, data: Dictionary = {'no-data': true} , inden
 	# Indent on create
 	if indent:
 		indent_events()
+	
+	if not building_timeline:
+		piece.focus()
+	
 	return piece
 
 
