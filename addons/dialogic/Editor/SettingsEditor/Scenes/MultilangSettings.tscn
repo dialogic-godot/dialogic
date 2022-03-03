@@ -55,16 +55,16 @@ margin_bottom = 324.0
 
 [node name="DefaultNameBox" parent="settings" instance=ExtResource( 4 )]
 margin_top = 0.0
-margin_bottom = 42.0
+margin_bottom = 46.0
 is_default = true
 
 [node name="HSeparator" type="HSeparator" parent="settings"]
-margin_top = 46.0
+margin_top = 50.0
 margin_right = 304.0
-margin_bottom = 50.0
+margin_bottom = 54.0
 
 [node name="languages" type="VBoxContainer" parent="settings"]
-margin_top = 54.0
+margin_top = 58.0
 margin_right = 304.0
 margin_bottom = 242.0
 
@@ -75,12 +75,12 @@ margin_bottom = 42.0
 
 [node name="list" type="VBoxContainer" parent="settings/languages"]
 margin_right = 304.0
-margin_bottom = 180.0
+margin_bottom = 176.0
 
 [node name="HSeparator" type="HSeparator" parent="settings/languages"]
-margin_top = 184.0
+margin_top = 180.0
 margin_right = 304.0
-margin_bottom = 188.0
+margin_bottom = 184.0
 
 [node name="newlang" type="HBoxContainer" parent="settings"]
 margin_top = 246.0

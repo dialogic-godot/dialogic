@@ -1,0 +1,23 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://addons/dialogic/Editor/Events/Parts/Lang_selector.gd" type="Script" id=1]
+
+[node name="Language_Selector" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_right = -862.0
+margin_bottom = -579.0
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="OptionButton" type="OptionButton" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "language"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[connection signal="item_selected" from="OptionButton" to="." method="_on_OptionButton_item_selected"]
