@@ -31,6 +31,7 @@ func _enter_tree():
 	if is_default:
 		#hide settings not applicable to default language
 		nodes["delete"].disabled = true
+		#note to maintainers: self keyword allows the (otherwise bypassed) use of the data property's setter function.
 		self.data = DialogicResources.get_settings_value(SECTION_NAME, DEFAULT_NAME, {
 			#default data for default language
 			"internal" : "DEFAULT", #this internal name is not acually used anywhere, just kept for consitancy.
@@ -38,6 +39,9 @@ func _enter_tree():
 #			"icon" : null, #todo, if implemented: add english flag icon to default.
 			"use_default_voice" : true, #this setting would not matter any way for default.
 		})
+		nodes["dname"].hint_tooltip = "Set the display-name of the default lanaguge.\nThis is only used in the editor itself."
+	else:
+		nodes["dname"].hint_tooltip = "Set the display-name of the "+data["internal"]+" lanaguge.\nThis is only used in the editor itself."
 	var voice_enabled = DialogicResources.get_settings_value("dialog", "text_event_audio_enable", false)
 	nodes["voice"].visible = voice_enabled && not is_default
 

@@ -90,6 +90,9 @@ margin_bottom = 270.0
 [node name="NewName" type="LineEdit" parent="settings/newlang"]
 margin_right = 265.0
 margin_bottom = 24.0
+hint_tooltip = "Set the internal name of a new langauge to add.
+It is recommended to use ISO langauge name standards.
+WARNING: An internal name can not be changed once set. You will need to delete the langauge."
 size_flags_horizontal = 3
 
 [node name="btnAddnew" type="ToolButton" parent="settings/newlang"]

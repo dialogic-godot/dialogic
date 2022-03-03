@@ -68,6 +68,9 @@ text = "TODO"
 margin_left = 276.0
 margin_right = 304.0
 margin_bottom = 24.0
+hint_tooltip = "Deletes the langauge data.
+This will NOT delete the language from your timelines.
+If you delete a language by accident, you can safely recreate it by using the same internal name."
 icon = ExtResource( 1 )
 flat = true
 
