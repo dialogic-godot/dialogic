@@ -1,6 +1,6 @@
 # Changelog
 
-## v1.4 WIP
+## v1.4 - Curves Ahead
 #### Events
 - Wait seconds event can now be set to be skipped with the user's action [[SimonLammer](https://github.com/SimonLammer)]
 - New events: `Label Event` and `Go to Event`. This will help you creating an anchor position to go back to.[[Jowan-Spooner](https://github.com/Jowan-Spooner)]
@@ -18,7 +18,7 @@
   - Added a setting to control the dim speed [[thebardsrc](https://github.com/thebardsrc)]
 - You can now set a `custom theme per character` [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
 - New setting to use "Keep Aspect Centered" instead of stretch for the Background event [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
-- You can now verically align the text in the dialog box [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
+- You can now vertically align the text in the dialog box [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
 - You can now specify hotkeys for the choices or use default hot-keys (1-9) [[zaknafean](https://github.com/zaknafean)]
 - A new `dialogic_default_action` has been added and is the new default. We encourage you not to mess with the ui_* input actions. [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
 - You can now make portraits appear in front of the dialog box with a setting in the themes [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
@@ -30,7 +30,8 @@
 - Character Editor improvements [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
 - You can now connect signals to the DialogProxyNode (the one you drag and drop in) [[KvaGram](https://github.com/KvaGram)]
 - The Timeline Editor has been greatly redesigned resulting in a cleaner view
-- Improvement of the translations and introduction of german translation [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
+- You can now preview a timeline by itself from the Timeline Editor [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
+- Improvement of the translations and introduction of German translation [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
 
 
 #### Script
@@ -41,6 +42,12 @@
 - There is now a function to go to the next event `Dialogic.next_event()` [[mechPenSketch](https://github.com/mechPenSketch)]
 
 #### Other
+- Updates on the documentation and proofreading/fixes made by [[Aurora-Eluvia](https://github.com/Aurora-Eluvia)]
+- Improvements on the custom events handling [[idontkillcoyotes](https://github.com/idontkillcoyotes)]
+- Markdown parser updated [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
+- Added a state machine to handle Dialogic's current state
+- You can now use regular hotkeys in Mac using the `Command` key [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
+- Anima added to handle character animations [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
 - Many minor and major bugs fixed
 
 
