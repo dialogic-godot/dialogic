@@ -154,7 +154,7 @@ func animate(animation_name = '[No Animation]', time = 1, loop = 1, delete = fal
 	
 	if '_in' in animation_name:
 		if custom_instance != null:
-			custom_instance.modulate = Color(1,1,1,0)
+			custom_instance.modulate.a = 0
 		else:
 			$TextureRect.modulate = Color(1,1,1,0)
 		
