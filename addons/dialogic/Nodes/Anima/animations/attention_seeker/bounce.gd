@@ -13,15 +13,15 @@ func generate_animation(anima_tween: Tween, data: Dictionary) -> void:
 	]
 
 	var scale_frames = [
-		{ percentage = 0, to = 1 },
-		{ percentage = 20, to = 1 },
-		{ percentage = 40, to = 1.1, easing_points = [0.7555, 0.5, 0.8555, 0.06] },
-		{ percentage = 43, to = 1.1, easing_points = [0.7555, 0.5, 0.8555, 0.06] },
-		{ percentage = 53, to = 1 },
-		{ percentage = 70, to = 1.05, easing_points = [0.755, 0.05, 0.855, 0.06] },
-		{ percentage = 80, to = 0.95 },
-		{ percentage = 90, to = 1.02 },
-		{ percentage = 100, to = 1 },
+		{ percentage = 0, to = 1 * data.node.scale.y },
+		{ percentage = 20, to = 1 * data.node.scale.y },
+		{ percentage = 40, to = 1.1 * data.node.scale.y, easing_points = [0.7555, 0.5, 0.8555, 0.06] },
+		{ percentage = 43, to = 1.1 * data.node.scale.y, easing_points = [0.7555, 0.5, 0.8555, 0.06] },
+		{ percentage = 53, to = 1 * data.node.scale.y },
+		{ percentage = 70, to = 1.05 * data.node.scale.y, easing_points = [0.755, 0.05, 0.855, 0.06] },
+		{ percentage = 80, to = 0.95 * data.node.scale.y },
+		{ percentage = 90, to = 1.02 * data.node.scale.y },
+		{ percentage = 100, to = 1 * data.node.scale.y },
 	]
 
 	anima_tween.add_relative_frames(data, "Y", bounce_frames)
