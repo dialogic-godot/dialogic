@@ -15,6 +15,7 @@ var dim_time = 0.5
 var direction = 'left'
 var debug = false
 var fading_out = false
+var custom_instance : Node2D = null
 
 var current_state := {'character':'', 'portrait':'', 'position':'', 'mirrored':false}
 
@@ -45,6 +46,8 @@ func set_portrait(expression: String) -> void:
 	for n in get_children():
 		if 'DialogicCustomPortraitScene' in n.name:
 			n.queue_free()
+			
+	custom_instance = null
 	
 	var default
 	for p in character_data['portraits']:
@@ -52,9 +55,9 @@ func set_portrait(expression: String) -> void:
 			if is_scene(p['path']):
 				# Creating a scene portrait
 				var custom_node = load(p['path'])
-				var instance = custom_node.instance()
-				instance.name = 'DialogicCustomPortraitScene'
-				add_child(instance)
+				custom_instance = custom_node.instance()
+				custom_instance.name = 'DialogicCustomPortraitScene'
+				add_child(custom_instance)
 				
 				$TextureRect.texture = ImageTexture.new()
 				return
@@ -76,9 +79,9 @@ func set_portrait(expression: String) -> void:
 		push_warning('[Dialogic] Portrait missing: "' + expression + '". Maybe you deleted it? Update your timeline.')
 		# Creating a scene portrait
 		var custom_node = load(default)
-		var instance = custom_node.instance()
-		instance.name = 'DialogicCustomPortraitScene'
-		add_child(instance)
+		custom_instance = custom_node.instance()
+		custom_instance.name = 'DialogicCustomPortraitScene'
+		add_child(custom_instance)
 		
 		$TextureRect.texture = ImageTexture.new()
 		return
@@ -96,11 +99,20 @@ func set_mirror(value):
 	current_state['mirrored'] = value
 	if character_data["data"].has('mirror_portraits'):
 		if character_data["data"]['mirror_portraits']:
-			$TextureRect.flip_h = !value
+			if custom_instance != null:
+				custom_instance.scale.x = get_mirror_scale(!value)
+			else:
+				$TextureRect.flip_h = !value
+		else:
+			if custom_instance != null:
+				custom_instance.scale.x = get_mirror_scale(value)
+			else:
+				$TextureRect.flip_h = value
+	else:
+		if custom_instance != null:
+			custom_instance.scale.x = get_mirror_scale(value)
 		else:
 			$TextureRect.flip_h = value
-	else:
-		$TextureRect.flip_h = value
 
 
 func move_to_position(position_offset):
@@ -141,10 +153,17 @@ func animate(animation_name = '[No Animation]', time = 1, loop = 1, delete = fal
 		return
 	
 	if '_in' in animation_name:
-		$TextureRect.modulate = Color(1,1,1,0)
+		if custom_instance != null:
+			custom_instance.modulate = Color(1,1,1,0)
+		else:
+			$TextureRect.modulate = Color(1,1,1,0)
+		
 	
 	$AnimationTween.loop = loop
-	$AnimationTween.play($TextureRect, animation_name, time)
+	if custom_instance != null:
+		$AnimationTween.play(custom_instance, animation_name, time)
+	else:
+		$AnimationTween.play($TextureRect, animation_name, time)
 	
 	if delete:
 		$AnimationTween.connect("tween_all_completed", self, "queue_free")
@@ -176,3 +195,9 @@ func is_scene(path) -> bool:
 	if '.tscn' in path.to_lower():
 		return true
 	return false
+
+func get_mirror_scale(mirror_value:bool) -> int:
+	if mirror_value:
+		return -1
+	else:
+		return 1
