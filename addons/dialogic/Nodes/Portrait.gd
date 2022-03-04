@@ -100,17 +100,17 @@ func set_mirror(value):
 	if character_data["data"].has('mirror_portraits'):
 		if character_data["data"]['mirror_portraits']:
 			if custom_instance != null:
-				custom_instance.scale.x = get_mirror_scale(!value)
+				custom_instance.scale.x *= get_mirror_scale(custom_instance.scale.x, !value)
 			else:
 				$TextureRect.flip_h = !value
 		else:
 			if custom_instance != null:
-				custom_instance.scale.x = get_mirror_scale(value)
+				custom_instance.scale.x *= get_mirror_scale(custom_instance.scale.x, value)
 			else:
 				$TextureRect.flip_h = value
 	else:
 		if custom_instance != null:
-			custom_instance.scale.x = get_mirror_scale(value)
+			custom_instance.scale.x *= get_mirror_scale(custom_instance.scale.x, value)
 		else:
 			$TextureRect.flip_h = value
 
@@ -196,8 +196,8 @@ func is_scene(path) -> bool:
 		return true
 	return false
 
-func get_mirror_scale(mirror_value:bool) -> int:
-	if mirror_value:
+func get_mirror_scale(current_scale:float, mirror_value:bool) -> int:
+	if mirror_value and current_scale > 0:
 		return -1
 	else:
 		return 1
