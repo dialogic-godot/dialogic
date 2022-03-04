@@ -49,6 +49,7 @@
 - You can now use regular hotkeys in Mac using the `Command` key [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
 - Anima added to handle character animations [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
 - Many minor and major bugs fixed
+- Animation can be used on custom portrait scenes [[bitbrain](https://github.com/bitbrain)]
 
 
 ## v1.3 - Save me some time
