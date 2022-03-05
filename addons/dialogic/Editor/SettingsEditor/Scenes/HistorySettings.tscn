@@ -60,7 +60,8 @@ settings_key = "enable_history_logging"
 margin_left = 162.0
 margin_right = 336.0
 margin_bottom = 24.0
-text = "Use dialog theme"
+text = "Use default theme"
+default = true
 settings_section = "history"
 settings_key = "enable_dynamic_theme"
 
