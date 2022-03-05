@@ -7,6 +7,9 @@ export(NodePath) var Text_Label_Path = @"HBoxContainer/RichTextLabel"
 var audioPath = ''
 var AudioButton
 var TextLabel
+onready var TextContainer = $HBoxContainer
+onready var ColorRectElement = $ColorRect
+onready var TextureRectElement = $TextureRect
 
 """
 	Example of a HistoryRow. Every time dialog is logged, a new row is created.
@@ -50,11 +53,11 @@ func load_theme(theme: ConfigFile):
 	# setting the vertical alignment
 	var alignment = theme.get_value('text', 'alignment',0)
 	if alignment <= 2: # top
-		$HBoxContainer.alignment = BoxContainer.ALIGN_BEGIN
+		TextContainer.alignment = BoxContainer.ALIGN_BEGIN
 	elif alignment <= 5: # center
-		$HBoxContainer.alignment = BoxContainer.ALIGN_CENTER
+		TextContainer.alignment = BoxContainer.ALIGN_CENTER
 	elif alignment <= 8: # bottom
-		$HBoxContainer.alignment = BoxContainer.ALIGN_END
+		TextContainer.alignment = BoxContainer.ALIGN_END
 	
 	var text_color = Color(theme.get_value('text', 'color', '#ffffffff'))
 	TextLabel.set('custom_colors/default_color', text_color)
@@ -73,21 +76,21 @@ func load_theme(theme: ConfigFile):
 
 	# Margin
 	var text_margin = theme.get_value('text', 'margin', Vector2(20, 10))
-	$HBoxContainer.set('margin_left', text_margin.x)
-	$HBoxContainer.set('margin_right', text_margin.x * -1)
-	$HBoxContainer.set('margin_top', text_margin.y)
-	$HBoxContainer.set('margin_bottom', text_margin.y * -1)
+	TextContainer.set('margin_left', text_margin.x)
+	TextContainer.set('margin_right', text_margin.x * -1)
+	TextContainer.set('margin_top', text_margin.y)
+	TextContainer.set('margin_bottom', text_margin.y * -1)
 
 	# Backgrounds
-	$TextureRect.texture = DialogicUtil.path_fixer_load(theme.get_value('background','image', "res://addons/dialogic/Example Assets/backgrounds/background-2.png"))
-	$ColorRect.color = Color(theme.get_value('background','color', "#ff000000"))
+	TextureRectElement.texture = DialogicUtil.path_fixer_load(theme.get_value('background','image', "res://addons/dialogic/Example Assets/backgrounds/background-2.png"))
+	ColorRectElement.color = Color(theme.get_value('background','color', "#ff000000"))
 
 	if theme.get_value('background', 'modulation', false):
-		$TextureRect.modulate = Color(theme.get_value('background', 'modulation_color', '#ffffffff'))
+		TextureRectElement.modulate = Color(theme.get_value('background', 'modulation_color', '#ffffffff'))
 	else:
-		$TextureRect.modulate = Color('#ffffffff')
+		TextureRectElement.modulate = Color('#ffffffff')
 
-	$ColorRect.visible = theme.get_value('background', 'use_color', false)
-	$TextureRect.visible = theme.get_value('background', 'use_image', true)
+	ColorRectElement.visible = theme.get_value('background', 'use_color', false)
+	TextureRectElement.visible = theme.get_value('background', 'use_image', true)
 	
 	
