@@ -1,0 +1,3 @@
+# Custom portraits
+
+You can define custom portraits that are animated or have particle effects and shaders by selecting a path to a scene (*.tscn) rather than to an image in the character screen. Your custom scene can be a Control node, a sprite or an animated sprite. When selecting a Node2D Dialogic might be unable to access its intended dimensions due to the nature of Node2D not having a specific size attribute defined.
