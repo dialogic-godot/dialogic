@@ -189,7 +189,8 @@ func add_history_row_event(eventData):
 	HistoryTimeline.add_child(newHistoryRow)
 	if(reverseTimeline):
 		HistoryTimeline.move_child(newHistoryRow,0)
-	newHistoryRow.load_theme(curTheme)
+	if newHistoryRow.has_method('load_theme') and get_parent().settings.get_value('history', 'enable_dynamic_theme', false) == true:
+		newHistoryRow.load_theme(curTheme)
 	
 	var characterPrefix = ''
 	if eventData.has('character') and eventData.character != '':
