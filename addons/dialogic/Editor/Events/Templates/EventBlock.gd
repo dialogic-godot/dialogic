@@ -97,6 +97,14 @@ func set_indent(indent: int):
 func set_expanded(expanded: bool):
 	expand_control.set_expanded(expanded)
 
+#part of multilang support.
+#This is called from the editor-view's toolbar via the timeline editor.
+func on_language_changed(language):
+	if get_header():
+		get_header().on_language_changed(language)
+	if get_body():
+		get_body().on_language_changed(language)
+
 
 ## *****************************************************************************
 ##								PRIVATE METHODS

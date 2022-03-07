@@ -6,6 +6,11 @@ extends "res://addons/dialogic/Editor/Events/Parts/EventPart.gd"
 ## node references
 onready var text_editor = $TextEdit
 
+#multilang support variables
+onready var c_lang := "INTERNAL" #current language
+#end of multilang support variables
+
+
 var timeline_area = null
 
 # used to connect the signals
@@ -26,19 +31,38 @@ func _ready():
 	timeline_area.connect('resized', self, '_set_new_min_size')
 	_set_new_min_size()
 
+#part of the multilang support.
+#Called from the editorview's toolbar via timeline editor and eventblock
+func on_language_changed(language):
+	c_lang = language
+	_load_event_text()
+
 
 # called by the event block
 func load_data(data:Dictionary):
 	# First set the event_data
 	.load_data(data)
 	
+	_load_event_text()
+
+func _load_event_text():
 	# Now update the ui nodes to display the data. 
 	# in case this is a text event
-	if data['event_id'] == 'dialogic_001':
-		text_editor.text = event_data['text']
+	if event_data['event_id'] == 'dialogic_001':
+		if(c_lang == "INTERNAL"):
+			text_editor.text = event_data['text']
+			text_editor.hint_tooltip = ""
+		else:
+			text_editor.text = event_data.get('text_'+c_lang, "")
+			text_editor.hint_tooltip = event_data['text']
 	# in case this is a question event
-	elif data['event_id'] == 'dialogic_010':
-		text_editor.text = event_data['question']
+	elif event_data['event_id'] == 'dialogic_010':
+		if(c_lang == "INTERNAL"):
+			text_editor.text = event_data['question']
+			text_editor.hint_tooltip = ""
+		else:
+			text_editor.text = event_data.get('text_'+c_lang, "")
+			text_editor.hint_tooltip = event_data['question']
 	# otherwise
 	else:
 		text_editor.text = event_data['text']
@@ -68,10 +92,16 @@ func get_preview():
 func _on_TextEditor_text_changed():
 	# in case this is a text event
 	if event_data['event_id'] == 'dialogic_001':
-		event_data['text'] = text_editor.text
+		if(c_lang == "INTERNAL"):
+			event_data['text'] = text_editor.text
+		else:
+			event_data['text_'+c_lang] = text_editor.text
 	# in case this is a question event
 	elif event_data['event_id'] == 'dialogic_010':
-		event_data['question'] = text_editor.text
+		if(c_lang == "INTERNAL"):
+			event_data['question'] = text_editor.text
+		else:
+			event_data['question_'+c_lang] = text_editor.text
 	# otherwise
 	else:
 		event_data['text'] = text_editor.text

@@ -41,3 +41,8 @@ func get_preview_text():
 func data_changed():
 	emit_signal("data_changed", event_data)
 
+#to be overwritten by the subclasses where it applies.
+#part of the multilang support.
+#Called from the editorview's toolbar via timeline editor and eventblock
+func on_language_changed(langauge):
+	pass

@@ -41,13 +41,12 @@ func _enter_tree():
 		})
 		nodes["dname"].hint_tooltip = "Set the display-name of the default lanaguge.\nThis is only used in the editor itself."
 	else:
-		nodes["dname"].hint_tooltip = "Set the display-name of the "+data["internal"]+" lanaguge.\nThis is only used in the editor itself."
+		nodes["dname"].hint_tooltip = "Set the display-name of the "+data.get("internal", "[MISSING]")+" lanaguge.\nThis is only used in the editor itself."
 	var voice_enabled = DialogicResources.get_settings_value("dialog", "text_event_audio_enable", false)
 	nodes["voice"].visible = voice_enabled && not is_default
 
 		
 func _setdata(value:Dictionary):
-	print("Hello setdata")
 	data = value
 	$settings1/display_name.text = data["display"]
 	$Label.text = data["internal"]
