@@ -6,9 +6,9 @@ func generate_animation(anima_tween: Tween, data: Dictionary) -> void:
 	]
 
 	var scale_frames = [
-		{ percentage = 0, from = Vector2(1, 1) },
-		{ percentage = 20, to = Vector2(0.7, 0.7) },
-		{ percentage = 100, to = Vector2(0.7, 0.7) },
+		{ percentage = 0, from = data.node.scale * Vector2(1, 1) },
+		{ percentage = 20, to = data.node.scale *  Vector2(0.7, 0.7) },
+		{ percentage = 100, to = data.node.scale * Vector2(0.7, 0.7) },
 	]
 
 	var opacity_frames = [

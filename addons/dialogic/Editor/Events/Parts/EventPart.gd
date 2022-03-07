@@ -36,6 +36,9 @@ func load_data(data:Dictionary):
 func get_preview_text():
 	return ''
 
+# to be overwritten by the body-parts if some kind of focus (on event creation) is wanted
+func focus():
+	pass
 
 # has to be called everytime the data got changed
 func data_changed():

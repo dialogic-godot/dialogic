@@ -64,6 +64,12 @@ func visual_deselect():
 func load_data(data):
 	event_data = data
 
+# called to inform event parts, that a focus is wanted
+func focus():
+	if get_header():
+		get_header().focus()
+	if get_body():
+		get_body().focus()
 
 func get_body():
 	return body_node

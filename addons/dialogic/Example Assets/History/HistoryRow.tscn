@@ -1,8 +1,10 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://addons/dialogic/Example Assets/History/HistoryRow.gd" type="Script" id=1]
+[ext_resource path="res://addons/dialogic/Example Assets/backgrounds/background-2.png" type="Texture" id=2]
 
 [node name="HistoryRow" type="PanelContainer"]
+self_modulate = Color( 1, 1, 1, 0 )
 rect_min_size = Vector2( 0, 28 )
 size_flags_horizontal = 3
 size_flags_vertical = 0
@@ -22,14 +24,13 @@ __meta__ = {
 }
 
 [node name="TextureRect" type="TextureRect" parent="."]
-visible = false
 margin_left = 7.0
 margin_top = 7.0
 margin_right = 51.0
-margin_bottom = 7.0
-size_flags_horizontal = 5
-size_flags_vertical = 0
+margin_bottom = 43.0
+texture = ExtResource( 2 )
 expand = true
+stretch_mode = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }

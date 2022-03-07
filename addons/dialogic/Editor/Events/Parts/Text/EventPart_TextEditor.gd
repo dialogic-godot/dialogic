@@ -152,3 +152,6 @@ func _on_TextEdit_focus_exited():
 	# Remove text selection to visually notify the user that the text will not 
 	# be copied if they use a hotkey like CTRL + C 
 	$TextEdit.deselect()
+
+func focus():
+	$TextEdit.grab_focus()

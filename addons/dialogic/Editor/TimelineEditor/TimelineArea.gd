@@ -70,6 +70,20 @@ func _on_gui_input(event):
 				drop_data(Vector2.ZERO, { "source": "EventButton", "event_id": _last_event_button_drop_attempt} )
 			_is_drag_receiving = false
 
+
+func rendering_scale_correction(s, vector:Vector2) -> Vector2:
+	if s == 1.25:
+		return vector - Vector2(3, 2)
+	if s == 1.5:
+		return vector - Vector2(6, 6)
+	if s == 1.75:
+		return vector - Vector2(6, 7)
+	if s == 2:
+		return vector - Vector2(13, 8)
+	return vector
+	 
+
+
 func _draw():
 	var timeline_children = $TimeLine.get_children()
 	var timeline_lenght = timeline_children.size()
@@ -77,16 +91,9 @@ func _draw():
 	var test_color = Color(1,0,0,0.5)
 	var _scale = DialogicUtil.get_editor_scale(self)
 	var line_width = 3 * _scale
-	var pos_x = (32 * _scale)
-	var pos_y = 51 * _scale
+	var pos = Vector2(32 * _scale, 51 * _scale)
 	
-	# Adjusting the pos_x. Not sure why it is not consistent between render scales
-	if _scale == 1.5:
-		pos_x -= 3
-	if _scale == 1.75:
-		pos_x -= 4
-	if _scale == 2:
-		pos_x -= 6
+	pos = rendering_scale_correction(_scale, pos)
 	
 	for event in $TimeLine.get_children():
 		if not 'event_data' in event:
@@ -120,8 +127,9 @@ func _draw():
 
 					# Drawing the line from the Question/Condition node to the End Branch one.
 					draw_rect(Rect2(
-								Vector2(pos_x + line_size , pos_y-scroll_vertical)+event.rect_position,
-								Vector2(line_width, (end_reference.rect_global_position.y - event.rect_global_position.y) - (43 * _scale))
+								Vector2(pos.x + line_size -scroll_horizontal, pos.y-scroll_vertical)+event.rect_position,
+								Vector2(line_width,
+								(end_reference.rect_global_position.y - event.rect_global_position.y) - (43 * _scale))
 							),
 							line_color, true)
 
@@ -136,7 +144,7 @@ func _draw():
 					pass
 				else:
 					draw_rect(Rect2(
-							Vector2(pos_x + line_size , pos_y-scroll_vertical)+event.rect_position,
+							Vector2(pos.x + line_size -scroll_horizontal, pos.y - scroll_vertical)+event.rect_position,
 							Vector2(line_width, event.rect_size.y - (40 * _scale))
 						),
 						line_color,
@@ -144,7 +152,7 @@ func _draw():
 		else:
 			# Root (level 0) Vertical Line
 			draw_rect(Rect2(
-					Vector2(pos_x, pos_y-scroll_vertical)+event.rect_position,
+					Vector2(pos.x-scroll_horizontal, pos.y - scroll_vertical)+event.rect_position,
 					Vector2(line_width, event.rect_size.y - (40 * _scale))
 					),
 				line_color,
@@ -153,18 +161,22 @@ func _draw():
 		# Drawing arc
 		if event.event_name == 'Choice':
 			# Connecting with the question 
-			var arc_start_x = (event.indent_size * (event.current_indent_level)) + (16.2 * _scale)
-			var arc_start_y = 5
+			var arc_start = Vector2(
+				(event.indent_size * (event.current_indent_level)) + (16.2 * _scale),
+				5
+			)
 			var arc_point_count = 12 * _scale
 			var arc_radius = 24 * _scale
 			var start_angle = 90
 			var end_angle = 185
 
 			if event.current_indent_level == 1:
-				arc_start_x = (event.indent_size * (event.current_indent_level)) + (12.5 * _scale)
+				arc_start.x = (event.indent_size * (event.current_indent_level)) + (12.5 * _scale)
+			
+			arc_start = rendering_scale_correction(_scale, arc_start)
 
 			draw_arc(
-				Vector2(arc_start_x, arc_start_y-scroll_vertical)+event.rect_position,
+				Vector2(arc_start.x-scroll_horizontal, arc_start.y - scroll_vertical) + event.rect_position,
 				arc_radius,
 				deg2rad(start_angle),
 				deg2rad(end_angle),
@@ -180,11 +192,13 @@ func _draw():
 
 			# Connecting with the next event
 
-			arc_start_x = (event.indent_size * (event.current_indent_level + 1)) + (16 * _scale)
-			arc_start_y = (pos_y + (8 * _scale))
+			arc_start.x = (event.indent_size * (event.current_indent_level + 1)) + (16 * _scale)
+			arc_start.y = (pos.y + (8 * _scale))
+			
+			arc_start = rendering_scale_correction(_scale, arc_start)
 
 			draw_arc(
-				Vector2(arc_start_x, arc_start_y-scroll_vertical)+event.rect_position,
+				Vector2(arc_start.x-scroll_horizontal, arc_start.y - scroll_vertical) + event.rect_position,
 				arc_radius,
 				deg2rad(start_angle),
 				deg2rad(end_angle),
