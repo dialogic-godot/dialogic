@@ -61,7 +61,7 @@ func _load_event_text():
 			text_editor.text = event_data['question']
 			text_editor.hint_tooltip = ""
 		else:
-			text_editor.text = event_data.get('text_'+c_lang, "")
+			text_editor.text = event_data.get('question_'+c_lang, "")
 			text_editor.hint_tooltip = event_data['question']
 	# otherwise
 	else:

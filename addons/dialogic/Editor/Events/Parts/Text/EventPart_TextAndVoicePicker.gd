@@ -64,11 +64,13 @@ func _on_voice_editor_data_changed(data) -> void:
 #part of the multilang support.
 #Called from the editorview's toolbar via timeline editor and eventblock
 
-func on_language_changed(langauge):
+func on_language_changed(language):
+	text_editor.on_language_changed(language)
+	voice_editor.on_language_changed(language)
 	#lang_selector.on_language_changed(langauge)
-	_on_local_language_set(langauge)
+	#_on_local_language_set(langauge)
 #called from the local langauge setter. Sets language to this part only.
 # func _on_local_language_set(language):
 # 	c_lang = language
-# 	text_editor.on_language_changed(language)
-# 	voice_editor.on_language_changed(language)
+	# text_editor.on_language_changed(language)
+	# voice_editor.on_language_changed(language)

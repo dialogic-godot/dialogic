@@ -35,7 +35,7 @@ func _load_event_text():
 		input_field.text = event_data['choice']
 		input_field.hint_tooltip = ""
 	else:
-		input_field.text = event_data.get('choice_'+c_lang)
+		input_field.text = event_data.get('choice_'+c_lang, "")
 		input_field.hint_tooltip = event_data['choice']
 
 #part of the multilang support.
