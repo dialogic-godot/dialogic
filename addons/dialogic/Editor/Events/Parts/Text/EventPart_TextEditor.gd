@@ -32,7 +32,7 @@ func _ready():
 	_set_new_min_size()
 
 #part of the multilang support.
-#Called from the editorview's toolbar via timeline editor and eventblock
+#Called from the editorview's toolbar via timeline editor, eventblock and TextAndVoicepicker
 func on_language_changed(language):
 	c_lang = language
 	_load_event_text()

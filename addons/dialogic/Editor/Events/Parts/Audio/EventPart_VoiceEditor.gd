@@ -8,6 +8,9 @@ export(PackedScene) var audio_picker
 #onready var label_container = $List/Label
 var audio_lines = 1 # how many lines does the text event has
 
+#multilang support variables
+onready var c_lang := "INTERNAL" #current language
+#end of multilang support variables
 
 func load_data(data):
 	.load_data(data)
@@ -71,7 +74,10 @@ func _on_audio_picker_audio_loaded(data,index:int) -> void:
 	if not event_data.has('voice_data'):
 		event_data['voice_data'] = {}
 	
-	event_data['voice_data'][str(index)] = data
+	var key = str(index) #key made into a variable...
+	if(c_lang != "INTERNAL"):
+		key += "_"+c_lang #to allow appending the language
+	event_data['voice_data'][key] = data
 	
 	#load the data
 	load_data(event_data)
@@ -88,8 +94,21 @@ func update_data():
 	# divide by two, again becouse the two merged nodes.
 	# reused _get_audio_picker wherein we multiply by two again :D
 	# - KvaGram
+	# uh, it's me again. This time I am to blame for the new hack.
+	# Alternate languages are stored as intex_name.
+	# Where the default/internal keys are 0, 1, 2, etc, tranlations would be 0_NB, 1_NB, 2_NB, etc
+	# - KvaGram
 	for i in range($List.get_child_count() / 2):
-		if keys.has(str(i)):
-			var data = event_data['voice_data'][str(i)]
-			#voices_container.get_child(i).load_data(data)
-			_get_audio_picker(i).load_data(data)
+		var key = str(i) #key made into a variable...
+		if(c_lang != "INTERNAL"):
+			key += "_"+c_lang #to allow appending the language
+		var data = event_data['voice_data'].get(key, {})
+		#voices_container.get_child(i).load_data(data)
+		_get_audio_picker(i).load_data(data)
+			
+
+#part of the multilang support.
+#Called from the editorview's toolbar via timeline editor, eventblock and TextAndVoicepicker
+func on_language_changed(language):
+	c_lang = language
+	update_data()

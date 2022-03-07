@@ -38,7 +38,14 @@ func get_preview():
 
 func use_voices():
 	var config = DialogicResources.get_settings_config()
-	return config.get_value('dialog', 'text_event_audio_enable', false)
+	#if the voice settings are turned off, hide audio.
+	if not config.get_value('dialog', 'text_event_audio_enable', false):
+		return false
+	#if current language is set to internal/default, show audio
+	if c_lang == "INTERNAL":
+		return true
+	#If current langauge is set to use internal language's audio, hide audio
+	return not DialogicResources.get_settings_value(MULTI_SECTION_NAME, MULTI_LIST_NAME, {}).get(c_lang, {}).get("use_default_voice", true) 
 
 
 func _on_text_editor_data_changed(data) -> void:
@@ -63,10 +70,11 @@ func _on_voice_editor_data_changed(data) -> void:
 
 #part of the multilang support.
 #Called from the editorview's toolbar via timeline editor and eventblock
-
 func on_language_changed(language):
+	c_lang = language
 	text_editor.on_language_changed(language)
 	voice_editor.on_language_changed(language)
+	voice_editor.visible = use_voices()
 
 func focus():
 	text_editor.focus()
