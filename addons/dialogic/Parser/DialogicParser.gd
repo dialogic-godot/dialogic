@@ -1,6 +1,37 @@
 extends Node
 class_name DialogicParser
 
+static func parse_langauge(dialog_script, language):
+	var langdata:Dictionary = DialogicResources.get_settings_value("multilang", "list", {}).get(language, {})
+	if language == "INTERNAL":
+		return dialog_script #no translation processing needed
+	if langdata.empty():
+		printerr("Langauge " + language + " is invalid or not defined. Proceeding with internal language.")
+		return dialog_script #Error prosessing language, skipping
+	var use_default_voice = langdata.get("use_default_voice", true)
+	var event_index := 0
+	for event in dialog_script['events']:
+		#handle text events
+		if event.get('event_id') == 'dialogic_001':
+			event["text"] = event.get("text_"+language, event["text"])
+		#handle question events
+		elif event.get('event_id') == 'dialogic_010':
+			event["question"] = event.get("question_"+language, event["question"])
+		#handle choice events
+		elif event.get('event_id') == 'dialogic_011':
+			event["choice"] = event.get("choice_"+language, event["choice"])
+		#handle voiceovers
+		if not use_default_voice and event.get('event_id') == ['dialogic_001', 'dialogic_010'] and event.has('voice_data'):
+			var voice_data = event['voice_data']
+			var line:int = 0
+			#while loop becouse we don't know how many lines there are.
+			while(true):
+				#check if voicedata for this line exist for this langauge.
+				if not voice_data.has(str(line)+"_"+language):
+					break #if it does not, we are done here.
+				voice_data[str(line)] = voice_data[str(line)+"_"+language]
+				line += 1
+	return dialog_script
 
 # adds name coloring to the dialog texts
 static func parse_characters(dialog_script):

@@ -33,6 +33,7 @@ var current_default_theme = null
 var settings: ConfigFile
 var custom_events = {}
 var record_history: bool = false
+var current_langauge: String = "INTERNAL"
 
 ### DATA
 var definitions = {}
@@ -397,6 +398,8 @@ func load_dialog():
 	# All this parse events should be happening in the same loop ideally
 	# But until performance is not an issue I will probably stay lazy
 	# And keep adding different functions for each parsing operation.
+	if DialogicResources.get_settings_value("multilang", "enabled", false):
+		dialog_script = DialogicParser.parse_langauge(dialog_script, current_langauge)
 	if settings.get_value('dialog', 'auto_color_names', true):
 		dialog_script = DialogicParser.parse_characters(dialog_script)
 	dialog_script = DialogicParser.parse_text_lines(dialog_script, preview)
