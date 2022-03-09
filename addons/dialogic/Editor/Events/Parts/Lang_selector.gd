@@ -9,11 +9,12 @@ const DEFAULT_NAME := "default"
 signal language_changed(value)
 
 var langauges:Array
+var list:OptionButton
 
 func _ready():
 	#if not DialogicResources.get_settings_value(SECTION_NAME, IS_ENABLED_NAME, false):
 	# 	hide?
-	var list:OptionButton = $OptionButton
+	list = $OptionButton
 	list.clear()
 	langauges = ["INTERNAL"]
 	var langdata:Dictionary = DialogicResources.get_settings_value(SECTION_NAME, LIST_NAME, {})
@@ -32,4 +33,4 @@ func on_language_changed(langauge):
 	var i:int = langauge.find(langauge)
 	if i < 0:
 		i = 0
-	$OptionButton.select(i)
+	list.select(i)

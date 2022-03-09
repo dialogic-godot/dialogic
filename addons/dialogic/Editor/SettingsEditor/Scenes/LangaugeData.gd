@@ -13,12 +13,6 @@ var _ptime:float = 0
 
 var nodes:Dictionary
 
-# Declare member variables here. Examples:
-# var a = 2
-# var b = "text"
-
-
-# Called when the node enters the scene tree for the first time.
 func _enter_tree():
 	nodes = {
 		"label" : $Label,
@@ -36,7 +30,6 @@ func _enter_tree():
 			#default data for default language
 			"internal" : "DEFAULT", #this internal name is not acually used anywhere, just kept for consitancy.
 			"display" : "english", #fair presumtion
-#			"icon" : null, #todo, if implemented: add english flag icon to default.
 			"use_default_voice" : true, #this setting would not matter any way for default.
 		})
 		nodes["dname"].hint_tooltip = "Set the display-name of the default lanaguge.\nThis is only used in the editor itself."
@@ -51,7 +44,6 @@ func _setdata(value:Dictionary):
 	$settings1/display_name.text = data["display"]
 	$Label.text = data["internal"]
 	$settings2/btn_voice.pressed = data["use_default_voice"]
-	pass
 
 ### Since data may change rapidly, we don't want to load alter and save the
 ### configuration several times per secund. 
@@ -61,11 +53,6 @@ func _data_changed():
 		return
 	_pending = true
 	_ptime = 2
-
-
-	#timer does not seem to work in editor.
-	#yield(get_tree().create_timer(2), "timeout")
-	#save()
 
 func _process(delta:float):
 	if(_pending):
