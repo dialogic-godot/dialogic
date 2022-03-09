@@ -16,13 +16,13 @@ data = {
 "width": 16
 }
 
-[sub_resource type="ImageTexture" id=14]
+[sub_resource type="ImageTexture" id=20]
 flags = 4
 flags = 4
 image = SubResource( 31 )
 size = Vector2( 16, 16 )
 
-[sub_resource type="Image" id=32]
+[sub_resource type="Image" id=21]
 data = {
 "data": PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ),
 "format": "LumAlpha8",
@@ -34,7 +34,7 @@ data = {
 [sub_resource type="ImageTexture" id=18]
 flags = 4
 flags = 4
-image = SubResource( 32 )
+image = SubResource( 21 )
 size = Vector2( 16, 16 )
 
 [node name="ThemeEditor" type="ScrollContainer"]
@@ -159,7 +159,7 @@ margin_left = 122.0
 margin_right = 150.0
 margin_bottom = 22.0
 size_flags_vertical = 4
-icon = SubResource( 14 )
+icon = SubResource( 20 )
 
 [node name="TLabel2" parent="VBoxContainer/TabContainer/Dialog Text/Column/GridContainer" instance=ExtResource( 8 )]
 anchor_right = 0.0
@@ -189,7 +189,7 @@ margin_left = 122.0
 margin_right = 150.0
 margin_bottom = 22.0
 size_flags_vertical = 4
-icon = SubResource( 14 )
+icon = SubResource( 20 )
 
 [node name="TLabel3" parent="VBoxContainer/TabContainer/Dialog Text/Column/GridContainer" instance=ExtResource( 8 )]
 anchor_right = 0.0
@@ -219,7 +219,7 @@ margin_left = 122.0
 margin_right = 150.0
 margin_bottom = 22.0
 size_flags_vertical = 4
-icon = SubResource( 14 )
+icon = SubResource( 20 )
 
 [node name="SectionTitle2" parent="VBoxContainer/TabContainer/Dialog Text/Column" instance=ExtResource( 3 )]
 margin_top = 104.0
@@ -306,7 +306,7 @@ margin_bottom = 103.0
 text = "Margin Bottom"
 text_key = "Margin Bottom"
 
-[node name="MarginLeft4" type="SpinBox" parent="VBoxContainer/TabContainer/Dialog Text/Column/GridContainer2"]
+[node name="MarginBottom" type="SpinBox" parent="VBoxContainer/TabContainer/Dialog Text/Column/GridContainer2"]
 margin_left = 105.0
 margin_top = 84.0
 margin_right = 179.0
@@ -852,7 +852,7 @@ margin_bottom = 185.0
 text = "Margin Bottom"
 text_key = "Margin Bottom"
 
-[node name="MarginLeft4" type="SpinBox" parent="VBoxContainer/TabContainer/Dialog Box/Column/GridContainer2"]
+[node name="MarginBottom" type="SpinBox" parent="VBoxContainer/TabContainer/Dialog Box/Column/GridContainer2"]
 margin_left = 114.0
 margin_top = 166.0
 margin_right = 266.0
@@ -1189,7 +1189,7 @@ margin_left = 130.0
 margin_right = 158.0
 margin_bottom = 22.0
 size_flags_vertical = 4
-icon = SubResource( 14 )
+icon = SubResource( 20 )
 
 [node name="TLabel2" parent="VBoxContainer/TabContainer/Name Label/Column/VBoxContainer2/GridContainer" instance=ExtResource( 8 )]
 anchor_right = 0.0
@@ -1797,7 +1797,7 @@ margin_left = 90.0
 margin_right = 118.0
 margin_bottom = 22.0
 size_flags_vertical = 4
-icon = SubResource( 14 )
+icon = SubResource( 20 )
 
 [node name="VSeparator" type="VSeparator" parent="VBoxContainer/TabContainer/Glossary"]
 margin_left = 280.0
@@ -1849,7 +1849,7 @@ margin_left = 90.0
 margin_right = 118.0
 margin_bottom = 22.0
 size_flags_vertical = 4
-icon = SubResource( 14 )
+icon = SubResource( 20 )
 
 [node name="TLabel2" parent="VBoxContainer/TabContainer/Glossary/Column3/GridContainer" instance=ExtResource( 8 )]
 anchor_right = 0.0
@@ -1896,7 +1896,7 @@ margin_left = 90.0
 margin_right = 118.0
 margin_bottom = 22.0
 size_flags_vertical = 4
-icon = SubResource( 14 )
+icon = SubResource( 20 )
 
 [node name="TLabel4" parent="VBoxContainer/TabContainer/Glossary/Column3/GridContainer" instance=ExtResource( 8 )]
 anchor_right = 0.0
@@ -1943,7 +1943,7 @@ margin_left = 90.0
 margin_right = 118.0
 margin_bottom = 22.0
 size_flags_vertical = 4
-icon = SubResource( 14 )
+icon = SubResource( 20 )
 
 [node name="TLabel6" parent="VBoxContainer/TabContainer/Glossary/Column3/GridContainer" instance=ExtResource( 8 )]
 anchor_right = 0.0
