@@ -40,7 +40,7 @@ Dialog,,Dialog,,,
 New lines will create extra messages,新的线条会产生额外的信息,New lines will create extra messages,Nuevas líneas crearan nuevos mensajes,,Zeilenumbrüche erstellen automatisch neue Nachrichten
 Remove empty messages,删除空信息,Remove empty messages,Borrar mensajes vacíos,,Leere Nachrichten entfernen
 Auto color character names in messages,信息中的字符名称自动着色,Auto color character names in messages,Colorear nombres automáticamente,,Automatisch Charakternamen einfärben
-"Stretch background images ",,"Stretch background images ",,,Hintergrundbilder strecken
+Stretch background images ,,Stretch background images,,,Hintergrundbilder strecken
 Audio for Text events:,文本事件的音频:,Audio for Text events:,Audio para los eventos de texto:,,Audio für Text Ereignisse:
 Enable audio for Text events,启用文本事件的音频,Enable audio for Text events,Habilitar audio para eventos de texto,,Audio für Text Ereignisse aktivieren
 Default bus for Text event audio,文本事件音频的默认总线,Default bus for Text event audio,Audio bus predeterminado para eventos de texto,,Standard Audio-Bus für Text Ereignisse
