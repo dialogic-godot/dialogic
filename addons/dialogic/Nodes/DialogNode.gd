@@ -1260,6 +1260,8 @@ func grab_portrait_focus(character_data, event: Dictionary = {}) -> bool:
 			portrait.focus()
 			if event.has('portrait'):
 				portrait.set_portrait(get_portrait_name(event))
+				if settings.get_value('dialog', 'recenter_portrait', true):
+					portrait.move_to_position(portrait.direction)
 		else:
 			portrait.focusout(Color(current_theme.get_value('animation', 'dim_color', '#ff808080')))
 	return exists
