@@ -110,6 +110,8 @@ func _ready():
 	# Connecting resize signal
 	get_viewport().connect("size_changed", self, "resize_main")
 	resize_main()
+	if !DialogicResources.get_settings_value('dialog', 'stop_mouse', true):
+		mouse_filter = Control.MOUSE_FILTER_IGNORE
 	# Connecting some other timers
 	$OptionsDelayedInput.connect("timeout", self, '_on_OptionsDelayedInput_timeout')
 	# Setting everything up for the node to be default
