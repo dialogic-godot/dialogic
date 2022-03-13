@@ -40,6 +40,7 @@
   - Removed the setting to dim character portraits from the global settings
   - Added a setting to control the dim speed [[thebardsrc](https://github.com/thebardsrc)]
 - You can now set a `custom theme per character` [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
+- Added a setting for behavior to re-center the portrait each time it's changed from a text event. This fixes a number of portrait issues and is enabled by default, but is a BREAKING change, so please remember to disable this if you need the old behavior. [[thebardsrc](https://github.com/thebardsrc)]
 - New setting to use "Keep Aspect Centered" instead of stretch for the Background event [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
 - You can now vertically align the text in the dialog box [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
 - You can now specify hotkeys for the choices or use default hot-keys (1-9) [[zaknafean](https://github.com/zaknafean)]
