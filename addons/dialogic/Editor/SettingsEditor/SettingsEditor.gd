@@ -29,14 +29,6 @@ onready var nodes = {
 	'new_custom_event_cancel':$VBoxContainer/HBoxContainer3/VBoxContainer2/CustomEvents/CreateCustomEventSection/HBoxContainer/CancelCustomEvent,
 	
 	# History Settings
-	'enable_history_logging': $VBoxContainer/HBoxContainer3/VBoxContainer2/HistorySettings/GridContainer/HistoryBox/EnableHistoryLogging,
-	'enable_dynamic_theme': $VBoxContainer/HBoxContainer3/VBoxContainer2/HistorySettings/GridContainer/ThemeBox/EnableDynamicTheme,
-	'enable_open_button': $VBoxContainer/HBoxContainer3/VBoxContainer2/HistorySettings/GridContainer/OpenBox/EnableDefaultOpenButton,
-	'enable_close_button': $VBoxContainer/HBoxContainer3/VBoxContainer2/HistorySettings/GridContainer/CloseBox/EnableDefaultCloseButton,
-	'log_choices': $VBoxContainer/HBoxContainer3/VBoxContainer2/HistorySettings/GridContainer/ChoiceBox/LogChoices,
-	'log_answers': $VBoxContainer/HBoxContainer3/VBoxContainer2/HistorySettings/GridContainer/ChoiceBox2/LogAnswers,
-	'log_arrivals': $VBoxContainer/HBoxContainer3/VBoxContainer2/HistorySettings/GridContainer/ChoiceBox3/LogArrivals,
-	'log_exits': $VBoxContainer/HBoxContainer3/VBoxContainer2/HistorySettings/GridContainer/ChoiceBox4/LogExits,
 	'text_arrivals': $VBoxContainer/HBoxContainer3/VBoxContainer2/HistorySettings/GridContainer/LogBox/LineEdit,
 	'text_exits': $VBoxContainer/HBoxContainer3/VBoxContainer2/HistorySettings/GridContainer/LogBox2/LineEdit,
 	'history_button_position': $VBoxContainer/HBoxContainer3/VBoxContainer2/HistorySettings/GridContainer/PositionSelector,
@@ -66,14 +58,6 @@ var INPUT_KEYS := [
 	]
 
 var HISTORY_KEYS := [
-	'enable_history_logging',
-	'enable_dynamic_theme',
-	'enable_open_button',
-	'enable_close_button',
-	'log_choices',
-	'log_answers',
-	'log_arrivals',
-	'log_exits',
 	'text_arrivals',
 	'text_exits',
 	'history_button_position',
@@ -118,14 +102,6 @@ func _ready():
 	nodes['text_event_audio_default_bus'].connect('item_selected', self, '_on_text_audio_default_bus_item_selected')
 	
 	## History timeline connections
-	nodes['enable_history_logging'].connect('toggled', self, '_on_item_toggled', ['history', 'enable_history_logging'])
-	nodes['enable_dynamic_theme'].connect('toggled', self, '_on_item_toggled', ['history', 'enable_dynamic_theme'])
-	nodes['enable_open_button'].connect('toggled', self, '_on_item_toggled', ['history', 'enable_open_button'])
-	nodes['enable_close_button'].connect('toggled', self, '_on_item_toggled', ['history', 'enable_close_button'])
-	nodes['log_choices'].connect('toggled', self, '_on_item_toggled', ['history', 'log_choices'])
-	nodes['log_answers'].connect('toggled', self, '_on_item_toggled', ['history', 'log_answers'])
-	nodes['log_arrivals'].connect('toggled', self, '_on_item_toggled', ['history', 'log_arrivals'])
-	nodes['log_exits'].connect('toggled', self, '_on_item_toggled', ['history', 'log_exits'])
 	nodes['history_button_position'].connect('item_selected', self, '_on_button_history_button_position_selected')
 	nodes['history_character_delimiter'].connect('text_changed', self, '_on_text_changed', ['history', 'history_character_delimiter'])
 	nodes['text_arrivals'].connect('text_changed', self, '_on_text_changed', ['history', 'text_arrivals'])
@@ -184,7 +160,7 @@ func _ready():
 func update_data():
 	# Reloading the settings
 	var settings = DialogicResources.get_settings_config()
-	nodes['themes'].text = DialogicUtil.get_theme_dict()[settings.get_value("theme", "default", null)].get('name')
+	nodes['themes'].text = DialogicUtil.get_theme_dict()[settings.get_value("theme", "default", "default-theme.cfg")].get('name')
 	nodes['canvas_layer'].value = int(settings.get_value("theme", "canvas_layer", '1'))
 	load_values(settings, "input", INPUT_KEYS)
 	load_values(settings, "history", HISTORY_KEYS)
@@ -199,6 +175,8 @@ func load_values(settings: ConfigFile, section: String, key: Array):
 				nodes[k].text = settings.get_value(section, k)
 			elif nodes[k] is OptionButton or nodes[k] is MenuButton:
 				nodes[k].text = settings.get_value(section, k)
+				if section == 'animations':
+					nodes[k].text = DialogicUtil.beautify_filename(nodes[k].text)
 			elif nodes[k] is SpinBox:
 				nodes[k].value = settings.get_value(section, k)
 			else:
@@ -254,11 +232,10 @@ func _spinbox_val_changed(newValue :float, spinbox_name):
 func _on_default_action_key_presssed(nodeName = 'default_action_key') -> void:
 	var settings = DialogicResources.get_settings_config()
 	nodes[nodeName].clear()
-	nodes[nodeName].add_item(settings.get_value('input', nodeName, '[Default]'))
-	nodes[nodeName].add_item('[Default]')
-	InputMap.load_from_globals()
-	for a in InputMap.get_actions():
-		nodes[nodeName].add_item(a)
+	nodes[nodeName].add_item(settings.get_value('input', nodeName, 'dialogic_default_action'))
+	for prop in ProjectSettings.get_property_list():
+		if prop.name.begins_with('input/'):
+			nodes[nodeName].add_item(prop.name.trim_prefix('input/'))
 
 
 func _on_default_action_key_item_selected(index, nodeName = 'default_action_key') -> void:
@@ -277,6 +254,7 @@ func _on_text_changed(text, section: String, key: String) -> void:
 # Reading and saving data to the settings file
 func set_value(section, key, value):
 	DialogicResources.set_settings_value(section, key, value)
+
 
 func update_bus_selector():
 	if nodes["text_event_audio_default_bus"] != null:
@@ -313,6 +291,7 @@ func _on_text_audio_default_bus_item_selected(index):
 func open_custom_event_docs():
 	editor_reference.get_node("MainPanel/MasterTreeContainer/MasterTree").select_documentation_item("res://addons/dialogic/Documentation/Content/Events/CustomEvents/CreateCustomEvents.md")
 
+
 func new_custom_event_pressed():
 	nodes['new_custom_event_section'].show()
 	nodes['new_custom_event_name'].text = ''
@@ -321,6 +300,7 @@ func new_custom_event_pressed():
 	
 	nodes['new_custom_event_create'].disabled = true
 	$VBoxContainer/HBoxContainer3/VBoxContainer2/CustomEvents/HBoxContainer/Message.text = ""
+
 
 func custom_event_name_entered(text:String):
 	nodes['new_custom_event_directory'].text = text
@@ -334,9 +314,11 @@ func custom_event_id_entered(text):
 		nodes['new_custom_event_create'].disabled = false
 	$VBoxContainer/HBoxContainer3/VBoxContainer2/CustomEvents/HBoxContainer/Message.text = ""
 
+
 func cancel_custom_event():
 	nodes['new_custom_event_section'].hide()
 	$VBoxContainer/HBoxContainer3/VBoxContainer2/CustomEvents/HBoxContainer/Message.text = ""
+
 
 func create_custom_event():
 	# do checks for incomplete input

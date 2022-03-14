@@ -34,10 +34,15 @@ func load_data(data:Dictionary):
 	$Extra.visible = event_data['glossary_id'] != ''
 	
 	if event_data['glossary_id']:
-		var glossary_default 
+		var glossary_default
 		for d in DialogicResources.get_default_definitions()['glossary']:
 			if d['id'] == event_data['glossary_id']:
 				glossary_default = d
+		if glossary_default == null:
+			print('[D] The glossary item with id ', event_data['glossary_id'], ' cannot be found anymore. The event will be reset.')
+			event_data['glossary_id'] = ''
+			load_data(event_data)
+			return
 		title_input.placeholder_text = glossary_default['title']
 		text_input.placeholder_text = glossary_default['text']
 		extra_input.placeholder_text = glossary_default['extra']

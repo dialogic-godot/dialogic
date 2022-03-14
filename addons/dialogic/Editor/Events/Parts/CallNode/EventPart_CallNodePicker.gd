@@ -91,7 +91,7 @@ func _create_argument_controls():
 		
 		var label = Label.new()
 		label.name = "IndexLabel"
-		label.text = "Index %s:" % index
+		label.text = "Argument %s:" % index
 		label.rect_min_size.x = 100
 		container.add_child(label)
 		

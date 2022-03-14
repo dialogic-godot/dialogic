@@ -832,6 +832,10 @@ func create_event(event_id: String, data: Dictionary = {'no-data': true} , inden
 	# Indent on create
 	if indent:
 		indent_events()
+	
+	if not building_timeline:
+		piece.focus()
+	
 	return piece
 
 
@@ -1004,7 +1008,8 @@ func scroll_to_piece(piece_index) -> void:
 	var height = 0
 	for i in range(0, piece_index):
 		height += $TimelineArea/TimeLine.get_child(i).rect_size.y
-	$TimelineArea.scroll_vertical = height
+	if height < $TimelineArea.scroll_vertical or height > $TimelineArea.scroll_vertical+$TimelineArea.rect_size.y-(200*DialogicUtil.get_editor_scale(self)):
+		$TimelineArea.scroll_vertical = height
 
 # Event Indenting
 func indent_events() -> void:
@@ -1108,3 +1113,8 @@ func _read_event_data():
 					c[scene.get_node_property_name(0,p)] = scene.get_node_property_value(0, p)
 				events_data.append(c)
 	return events_data
+
+
+func play_timeline():
+	DialogicResources.set_settings_value('QuickTimelineTest', 'timeline_file', timeline_file)
+	editor_reference.editor_interface.play_custom_scene('res://addons/dialogic/Editor/TimelineEditor/TimelineTestingScene.tscn')

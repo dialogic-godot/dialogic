@@ -49,7 +49,7 @@ event_color = Color( 1, 1, 1, 1 )
 event_icon = ExtResource( 5 )
 header_scene = ExtResource( 1 )
 body_scene = ExtResource( 4 )
-help_page_path = "res://addons/dialogic/Documentation/Content/Events/000.md"
+help_page_path = "res://addons/dialogic/Documentation/Content/Events/001.md"
 show_name_in_timeline = false
 sorting_index = 0
 

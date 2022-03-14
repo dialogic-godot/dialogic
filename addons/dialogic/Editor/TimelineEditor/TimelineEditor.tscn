@@ -77,8 +77,8 @@ custom_styles/bg = SubResource( 2 )
 
 [node name="EventContainer" type="VBoxContainer" parent="ScrollContainer"]
 margin_left = 2.0
-margin_right = 168.0
-margin_bottom = 864.0
+margin_right = 186.0
+margin_bottom = 939.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_constants/separation = 9
@@ -87,13 +87,13 @@ __meta__ = {
 }
 
 [node name="EventsWarning" type="PanelContainer" parent="ScrollContainer/EventContainer"]
-margin_right = 166.0
+margin_right = 184.0
 margin_bottom = 68.0
 custom_styles/panel = SubResource( 3 )
 
 [node name="HBoxContainer" type="HBoxContainer" parent="ScrollContainer/EventContainer/EventsWarning"]
 margin_top = 10.0
-margin_right = 160.0
+margin_right = 178.0
 margin_bottom = 58.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -110,7 +110,7 @@ stretch_mode = 4
 
 [node name="Label" type="Label" parent="ScrollContainer/EventContainer/EventsWarning/HBoxContainer"]
 margin_left = 44.0
-margin_right = 160.0
+margin_right = 178.0
 margin_bottom = 48.0
 rect_min_size = Vector2( 100, 0 )
 size_flags_horizontal = 3
@@ -121,7 +121,7 @@ autowrap = true
 
 [node name="HBoxContainer6" type="HBoxContainer" parent="ScrollContainer/EventContainer"]
 margin_top = 77.0
-margin_right = 166.0
+margin_right = 184.0
 margin_bottom = 91.0
 
 [node name="TLabel" parent="ScrollContainer/EventContainer/HBoxContainer6" instance=ExtResource( 21 )]
@@ -134,20 +134,20 @@ text_key = "Main Events"
 
 [node name="HSeparator2" type="HSeparator" parent="ScrollContainer/EventContainer/HBoxContainer6"]
 margin_left = 81.0
-margin_right = 166.0
+margin_right = 184.0
 margin_bottom = 14.0
 size_flags_horizontal = 3
 
 [node name="FlexContainer1" type="Container" parent="ScrollContainer/EventContainer"]
 margin_top = 100.0
-margin_right = 166.0
+margin_right = 184.0
 margin_bottom = 145.0
 size_flags_horizontal = 3
 script = ExtResource( 29 )
 
 [node name="HBoxContainer5" type="HBoxContainer" parent="ScrollContainer/EventContainer"]
 margin_top = 154.0
-margin_right = 166.0
+margin_right = 184.0
 margin_bottom = 168.0
 
 [node name="TLabel2" parent="ScrollContainer/EventContainer/HBoxContainer5" instance=ExtResource( 21 )]
@@ -160,20 +160,20 @@ text_key = "Logic"
 
 [node name="HSeparator2" type="HSeparator" parent="ScrollContainer/EventContainer/HBoxContainer5"]
 margin_left = 37.0
-margin_right = 166.0
+margin_right = 184.0
 margin_bottom = 14.0
 size_flags_horizontal = 3
 
 [node name="FlexContainer2" type="Container" parent="ScrollContainer/EventContainer"]
 margin_top = 177.0
-margin_right = 166.0
+margin_right = 184.0
 margin_bottom = 272.0
 size_flags_horizontal = 3
 script = ExtResource( 29 )
 
 [node name="HBoxContainer3" type="HBoxContainer" parent="ScrollContainer/EventContainer"]
 margin_top = 281.0
-margin_right = 166.0
+margin_right = 184.0
 margin_bottom = 295.0
 
 [node name="TLabel3" parent="ScrollContainer/EventContainer/HBoxContainer3" instance=ExtResource( 21 )]
@@ -186,21 +186,21 @@ text_key = "Timeline"
 
 [node name="HSeparator2" type="HSeparator" parent="ScrollContainer/EventContainer/HBoxContainer3"]
 margin_left = 60.0
-margin_right = 166.0
+margin_right = 184.0
 margin_bottom = 14.0
 size_flags_horizontal = 3
 
 [node name="FlexContainer3" type="Container" parent="ScrollContainer/EventContainer"]
 margin_top = 304.0
-margin_right = 166.0
-margin_bottom = 474.0
+margin_right = 184.0
+margin_bottom = 449.0
 size_flags_horizontal = 3
 script = ExtResource( 29 )
 
 [node name="HBoxContainer4" type="HBoxContainer" parent="ScrollContainer/EventContainer"]
-margin_top = 483.0
-margin_right = 166.0
-margin_bottom = 497.0
+margin_top = 458.0
+margin_right = 184.0
+margin_bottom = 472.0
 
 [node name="TLabel4" parent="ScrollContainer/EventContainer/HBoxContainer4" instance=ExtResource( 21 )]
 anchor_right = 0.0
@@ -212,21 +212,21 @@ text_key = "Audio"
 
 [node name="HSeparator2" type="HSeparator" parent="ScrollContainer/EventContainer/HBoxContainer4"]
 margin_left = 41.0
-margin_right = 166.0
+margin_right = 184.0
 margin_bottom = 14.0
 size_flags_horizontal = 3
 
 [node name="FlexContainer4" type="Container" parent="ScrollContainer/EventContainer"]
-margin_top = 506.0
-margin_right = 166.0
-margin_bottom = 601.0
+margin_top = 481.0
+margin_right = 184.0
+margin_bottom = 576.0
 size_flags_horizontal = 3
 script = ExtResource( 29 )
 
 [node name="HBoxContainer" type="HBoxContainer" parent="ScrollContainer/EventContainer"]
-margin_top = 610.0
-margin_right = 166.0
-margin_bottom = 624.0
+margin_top = 585.0
+margin_right = 184.0
+margin_bottom = 599.0
 
 [node name="TLabel5" parent="ScrollContainer/EventContainer/HBoxContainer" instance=ExtResource( 21 )]
 anchor_right = 0.0
@@ -238,21 +238,21 @@ text_key = "Godot"
 
 [node name="HSeparator2" type="HSeparator" parent="ScrollContainer/EventContainer/HBoxContainer"]
 margin_left = 43.0
-margin_right = 166.0
+margin_right = 184.0
 margin_bottom = 14.0
 size_flags_horizontal = 3
 
 [node name="FlexContainer5" type="Container" parent="ScrollContainer/EventContainer"]
-margin_top = 633.0
-margin_right = 166.0
-margin_bottom = 703.0
+margin_top = 608.0
+margin_right = 184.0
+margin_bottom = 678.0
 size_flags_horizontal = 3
 script = ExtResource( 29 )
 
 [node name="CustomEventsHeadline" type="HBoxContainer" parent="ScrollContainer/EventContainer"]
-margin_top = 712.0
-margin_right = 166.0
-margin_bottom = 726.0
+margin_top = 687.0
+margin_right = 184.0
+margin_bottom = 701.0
 
 [node name="TLabel6" parent="ScrollContainer/EventContainer/CustomEventsHeadline" instance=ExtResource( 21 )]
 anchor_right = 0.0
@@ -264,19 +264,19 @@ text_key = "Custom Events"
 
 [node name="HSeparator2" type="HSeparator" parent="ScrollContainer/EventContainer/CustomEventsHeadline"]
 margin_left = 99.0
-margin_right = 166.0
+margin_right = 184.0
 margin_bottom = 14.0
 size_flags_horizontal = 3
 
 [node name="CustomEventsContainer" type="Container" parent="ScrollContainer/EventContainer"]
-margin_top = 735.0
-margin_right = 166.0
-margin_bottom = 755.0
+margin_top = 710.0
+margin_right = 184.0
+margin_bottom = 830.0
 size_flags_horizontal = 3
 script = ExtResource( 29 )
 
 [node name="Spacer" type="Control" parent="ScrollContainer/EventContainer"]
-margin_top = 764.0
-margin_right = 166.0
-margin_bottom = 864.0
+margin_top = 839.0
+margin_right = 184.0
+margin_bottom = 939.0
 rect_min_size = Vector2( 0, 100 )

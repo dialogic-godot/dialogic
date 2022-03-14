@@ -448,7 +448,7 @@ func _input(event: InputEvent) -> void:
 			else:
 				if current_event.has('options') and !is_state(state.WAITING_INPUT):
 					pass
-				elif is_state(state.WAITING_INPUT):
+				elif is_state(state.WAITING_INPUT) or is_state(state.ANIMATING):
 					pass
 				elif $TextBubble/NextIndicatorContainer/NextIndicator.is_visible():
 					$FX/CharacterVoice.stop_voice() # stop the current voice as well
@@ -632,7 +632,8 @@ func event_handler(event: Dictionary):
 		# Text Event
 		'dialogic_001':
 			emit_signal("event_start", "text", event)
-			fade_in_dialog()
+			if fade_in_dialog():
+				yield(get_node('fade_in_tween_show_time'), 'tween_completed')
 			set_state(state.TYPING)
 			if event.has('character'):
 				var character_data = DialogicUtil.get_character(event['character'])
@@ -664,6 +665,7 @@ func event_handler(event: Dictionary):
 					if current_theme.get_value('settings', 'single_portrait_mode', false):
 						p.single_portrait_mode = true
 					p.character_data = character_data
+					p.dim_time = current_theme.get_value('animation', 'dim_time', 0.5)
 					
 					var char_portrait = get_portrait_name(event)
 					p.init(char_portrait)
@@ -737,7 +739,8 @@ func event_handler(event: Dictionary):
 		# Question event
 		'dialogic_010':
 			emit_signal("event_start", "question", event)
-			fade_in_dialog()
+			if fade_in_dialog():
+				yield(get_node('fade_in_tween_show_time'), 'tween_completed')
 			set_state(state.TYPING)
 			if event.has('name'):
 				update_name(event['name'])
@@ -975,16 +978,12 @@ func event_handler(event: Dictionary):
 			if (not args is Array):
 				args = []
 
-			if (target != null):
-				if (target.has_method(method_name)):
-					if (args.empty()):
-						var func_result = target.call(method_name)
-						if (func_result is GDScriptFunctionState):
-							yield(func_result, "completed")
-					else:
-						var func_result = target.call(method_name, args)
-						if (func_result is GDScriptFunctionState):
-							yield(func_result, "completed")
+			if is_instance_valid(target):
+				if target.has_method(method_name):
+					var func_result = target.callv(method_name, args)
+					
+					if (func_result is GDScriptFunctionState):
+						yield(func_result, "completed")
 
 			set_state(state.IDLE)
 			$TextBubble.visible = true
@@ -1377,7 +1376,7 @@ func _on_Definition_Timer_timeout():
 # This will reset the text, reset any modulation it might have, and
 # set the variables that handle the fade in to the start position
 func _hide_dialog():
-	$TextBubble.update_text('') # Clearing the text
+	$TextBubble.clear() # Clearing the text
 	$TextBubble.modulate = Color(1,1,1,0)
 	dialog_faded_in_already = false
 
@@ -1388,7 +1387,7 @@ func fade_in_dialog(time = 0.5):
 	var has_tween = false
 	
 	if Engine.is_editor_hint() == false:
-		if dialog_faded_in_already == false:
+		if dialog_faded_in_already == false and do_fade_in:
 			var tween = Tween.new()
 			add_child(tween)
 			# The tween created ('fade_in_tween_show_time') is also reference for the $TextBubble
@@ -1405,6 +1404,8 @@ func fade_in_dialog(time = 0.5):
 		if has_tween:
 			set_state(state.ANIMATING)
 			dialog_faded_in_already = true
+			return true
+	return false
 
 # at the end of fade animation, reset flags
 func finished_fade_in_dialog(object, key, node):
@@ -1475,6 +1476,7 @@ func resume_state_from_info(state_info):
 
 			if current_theme.get_value('settings', 'single_portrait_mode', false):
 				p.single_portrait_mode = true
+			p.dim_time = current_theme.get_value('animation', 'dim_time', 0.5)
 			p.character_data = character_data
 			p.init(char_portrait)
 
