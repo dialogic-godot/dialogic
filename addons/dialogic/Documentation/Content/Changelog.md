@@ -6,7 +6,7 @@
 - New events: `Label Event` and `Go to Event`. This will help you creating an anchor position to go back to.[[Jowan-Spooner](https://github.com/Jowan-Spooner)]
 - Text event improvements:
   - You can now make a list of words like this: `[word1,word2,word3]` and Dialogic will pick a random word from the list. If the word is a Dialogic variable name and it gets picked it will show the value of that variable.
-  - New commands [signal=argument], [pause=wait_time], [play=soundname], [nv=v] (for waiting until the audio finishes) added to the Text Event [[KvaGram](https://github.com/KvaGram)]
+  - New commands [signal=argument], [pause=wait_time], [play=soundname], [nw=v] (for waiting until the audio finishes) added to the Text Event [[KvaGram](https://github.com/KvaGram)]
 - The Character Join and Character Leave events have been removed in favor of the new `Character Event`. They will be converted automatically. The new events allows for more customization including animations. These use the anima system. Learn more about the [event](./Events/002.md) and the [animations](./Tutorials/AddNewAnimations.md) [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
 - The `Call Node Event` now sends arguments instead of a single array. If you were using it in one of your timelines you will need to update the functions you are calling to accommodate this. [[AnidemDex](https://github.com/AnidemDex)]
 
