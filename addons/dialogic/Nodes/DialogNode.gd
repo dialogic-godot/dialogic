@@ -981,16 +981,12 @@ func event_handler(event: Dictionary):
 			if (not args is Array):
 				args = []
 
-			if (target != null):
-				if (target.has_method(method_name)):
-					if (args.empty()):
-						var func_result = target.call(method_name)
-						if (func_result is GDScriptFunctionState):
-							yield(func_result, "completed")
-					else:
-						var func_result = target.call(method_name, args)
-						if (func_result is GDScriptFunctionState):
-							yield(func_result, "completed")
+			if is_instance_valid(target):
+				if target.has_method(method_name):
+					var func_result = target.callv(method_name, args)
+					
+					if (func_result is GDScriptFunctionState):
+						yield(func_result, "completed")
 
 			set_state(state.IDLE)
 			$TextBubble.visible = true
