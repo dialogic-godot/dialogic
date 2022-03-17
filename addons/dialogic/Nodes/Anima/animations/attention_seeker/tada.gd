@@ -3,7 +3,7 @@ func generate_animation(anima_tween: Tween, data: Dictionary) -> void:
 		{ percentage = 0, from = 0 },
 	]
 	var scale_frames = [
-		{ percentage = 0, from = data.node.scale * Vector2(1, 1) },
+		{ percentage = 0, from = DialogicAnimaPropertiesHelper.get_scale(data.node) * Vector2(1, 1) },
 	]
 
 	for index in range(2, 9):

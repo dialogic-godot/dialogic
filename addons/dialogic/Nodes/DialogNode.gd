@@ -730,7 +730,7 @@ func event_handler(event: Dictionary):
 								
 								portrait.animate(event.get('animation', '[No Animation]'), event.get('animation_length', 1), event.get('animation_repeat', 1))
 								
-								if event.get('animation_wait', false):
+								if event.get('animation_wait', false) and event.get('animation', '[No Animation]') != "[No Animation]":
 									yield(portrait, 'animation_finished')
 				set_state(state.READY)
 				_load_next_event()
