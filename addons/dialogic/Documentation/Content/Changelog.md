@@ -1,5 +1,10 @@
 # Changelog
 
+## v1.4.1 - Animations hotfix
+- Portrait-Animation fixes:
+  Because the animations should work both with Controls and Node2Ds, just using node.scale won't work. Now they all use DialogicAnimaPropertiesHelper.get_scale(node), which will automatically use the correct one. [[Jowan-Spooner](https://github.com/Jowan-Spooner)]. Thanks a lot to @[zaknafean](https://github.com/zaknafean)
+
+
 ## v1.4 - Curves Ahead
 #### Events
 - Wait seconds event can now be set to be skipped with the user's action [[SimonLammer](https://github.com/SimonLammer)]
