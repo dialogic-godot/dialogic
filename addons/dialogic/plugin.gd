@@ -10,10 +10,6 @@ func _init():
 	if Engine.editor_hint:
 		# Make sure the core files exist 
 		DialogicResources.init_dialogic_files()
-
-	## Remove after 2.0
-	if Engine.editor_hint:
-		DialogicUtil.resource_fixer()
 	
 
 func _enter_tree() -> void:
