@@ -44,11 +44,10 @@ func add_history(historyString, newAudio=''):
 # Load Theme is called by 
 func load_theme(theme: ConfigFile):
 	# Text
-	var theme_font = DialogicUtil.path_fixer_load(theme.get_value('text', 'font', 'res://addons/dialogic/Example Assets/Fonts/DefaultFont.tres'))
+	var theme_font = load(theme.get_value('text', 'font', 'res://addons/dialogic/Example Assets/Fonts/DefaultFont.tres'))
 	TextLabel.set('custom_fonts/normal_font', theme_font)
-	TextLabel.set('custom_fonts/bold_font', DialogicUtil.path_fixer_load(theme.get_value('text', 'bold_font', 'res://addons/dialogic/Example Assets/Fonts/DefaultBoldFont.tres')))
-	TextLabel.set('custom_fonts/italics_font', DialogicUtil.path_fixer_load(theme.get_value('text', 'italic_font', 'res://addons/dialogic/Example Assets/Fonts/DefaultItalicFont.tres')))
-	#name_label.set('custom_fonts/font', DialogicUtil.path_fixer_load(theme.get_value('name', 'font', 'res://addons/dialogic/Example Assets/Fonts/NameFont.tres')))
+	TextLabel.set('custom_fonts/bold_font', load(theme.get_value('text', 'bold_font', 'res://addons/dialogic/Example Assets/Fonts/DefaultBoldFont.tres')))
+	TextLabel.set('custom_fonts/italics_font', load(theme.get_value('text', 'italic_font', 'res://addons/dialogic/Example Assets/Fonts/DefaultItalicFont.tres')))
 	
 	# setting the vertical alignment
 	var alignment = theme.get_value('text', 'alignment',0)
@@ -82,7 +81,7 @@ func load_theme(theme: ConfigFile):
 	TextContainer.set('margin_bottom', text_margin.y * -1)
 
 	# Backgrounds
-	TextureRectElement.texture = DialogicUtil.path_fixer_load(theme.get_value('background','image', "res://addons/dialogic/Example Assets/backgrounds/background-2.png"))
+	TextureRectElement.texture = load(theme.get_value('background','image', "res://addons/dialogic/Example Assets/backgrounds/background-2.png"))
 	ColorRectElement.color = Color(theme.get_value('background','color', "#ff000000"))
 
 	if theme.get_value('background', 'modulation', false):

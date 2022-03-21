@@ -162,11 +162,11 @@ func reset():
 
 func load_theme(theme: ConfigFile):
 	# Text
-	var theme_font = DialogicUtil.path_fixer_load(theme.get_value('text', 'font', 'res://addons/dialogic/Example Assets/Fonts/DefaultFont.tres'))
+	var theme_font = load(theme.get_value('text', 'font', 'res://addons/dialogic/Example Assets/Fonts/DefaultFont.tres'))
 	text_label.set('custom_fonts/normal_font', theme_font)
-	text_label.set('custom_fonts/bold_font', DialogicUtil.path_fixer_load(theme.get_value('text', 'bold_font', 'res://addons/dialogic/Example Assets/Fonts/DefaultBoldFont.tres')))
-	text_label.set('custom_fonts/italics_font', DialogicUtil.path_fixer_load(theme.get_value('text', 'italic_font', 'res://addons/dialogic/Example Assets/Fonts/DefaultItalicFont.tres')))
-	name_label.set('custom_fonts/font', DialogicUtil.path_fixer_load(theme.get_value('name', 'font', 'res://addons/dialogic/Example Assets/Fonts/NameFont.tres')))
+	text_label.set('custom_fonts/bold_font', load(theme.get_value('text', 'bold_font', 'res://addons/dialogic/Example Assets/Fonts/DefaultBoldFont.tres')))
+	text_label.set('custom_fonts/italics_font', load(theme.get_value('text', 'italic_font', 'res://addons/dialogic/Example Assets/Fonts/DefaultItalicFont.tres')))
+	name_label.set('custom_fonts/font', load(theme.get_value('name', 'font', 'res://addons/dialogic/Example Assets/Fonts/NameFont.tres')))
 	
 	# setting the vertical alignment
 	var alignment = theme.get_value('text', 'alignment',0)
@@ -205,7 +205,7 @@ func load_theme(theme: ConfigFile):
 	text_container.set('margin_bottom', text_margin.y * -1)
 
 	# Backgrounds
-	$TextureRect.texture = DialogicUtil.path_fixer_load(theme.get_value('background','image', "res://addons/dialogic/Example Assets/backgrounds/background-2.png"))
+	$TextureRect.texture = load(theme.get_value('background','image', "res://addons/dialogic/Example Assets/backgrounds/background-2.png"))
 	$ColorRect.color = Color(theme.get_value('background','color', "#ff000000"))
 
 	if theme.get_value('background', 'modulation', false):
@@ -218,7 +218,7 @@ func load_theme(theme: ConfigFile):
 
 	# Next image
 	$NextIndicatorContainer.rect_position = Vector2(0,0)
-	next_indicator.texture = DialogicUtil.path_fixer_load(theme.get_value('next_indicator', 'image', 'res://addons/dialogic/Example Assets/next-indicator/next-indicator.png'))
+	next_indicator.texture = load(theme.get_value('next_indicator', 'image', 'res://addons/dialogic/Example Assets/next-indicator/next-indicator.png'))
 	# Reset for up and down animation
 	next_indicator.margin_top = 0 
 	next_indicator.margin_bottom = 0 
@@ -236,7 +236,7 @@ func load_theme(theme: ConfigFile):
 	$NameLabel/ColorRect.visible = theme.get_value('name', 'background_visible', false)
 	$NameLabel/ColorRect.color = Color(theme.get_value('name', 'background', '#282828'))
 	$NameLabel/TextureRect.visible = theme.get_value('name', 'image_visible', false)
-	$NameLabel/TextureRect.texture = DialogicUtil.path_fixer_load(theme.get_value('name','image', "res://addons/dialogic/Example Assets/backgrounds/background-2.png"))
+	$NameLabel/TextureRect.texture = load(theme.get_value('name','image', "res://addons/dialogic/Example Assets/backgrounds/background-2.png"))
 	
 	var name_padding = theme.get_value('name', 'name_padding', Vector2( 10, 0 ))
 	var name_style = name_label.get('custom_styles/normal')

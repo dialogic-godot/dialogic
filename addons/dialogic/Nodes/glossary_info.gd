@@ -50,17 +50,17 @@ func load_theme(theme):
 	# Fonts
 	$VBoxContainer/Title.set(
 		'custom_fonts/normal_font', 
-		DialogicUtil.path_fixer_load(theme.get_value('definitions', 'font', "res://addons/dialogic/Example Assets/Fonts/GlossaryFont.tres")))
+		load(theme.get_value('definitions', 'font', "res://addons/dialogic/Example Assets/Fonts/GlossaryFont.tres")))
 	$VBoxContainer/Title.set('custom_colors/default_color', theme.get_value('definitions', 'title_color', "#ffffffff"))
 	
 	$VBoxContainer/Content.set(
 		'custom_fonts/normal_font', 
-		DialogicUtil.path_fixer_load(theme.get_value('definitions', 'text_font', "res://addons/dialogic/Example Assets/Fonts/GlossaryFont.tres")))
+		load(theme.get_value('definitions', 'text_font', "res://addons/dialogic/Example Assets/Fonts/GlossaryFont.tres")))
 	$VBoxContainer/Content.set('custom_colors/default_color', theme.get_value('definitions', 'text_color', "#c1c1c1"))
 	
 	$VBoxContainer/Extra.set(
 		'custom_fonts/normal_font', 
-		DialogicUtil.path_fixer_load(theme.get_value('definitions', 'extra_font', "res://addons/dialogic/Example Assets/Fonts/GlossaryFont.tres")))
+		load(theme.get_value('definitions', 'extra_font', "res://addons/dialogic/Example Assets/Fonts/GlossaryFont.tres")))
 	$VBoxContainer/Extra.set('custom_colors/default_color', theme.get_value('definitions', 'extra_color', "#c1c1c1"))
 	
 	set("custom_styles/panel", load(theme.get_value('definitions', 'background_panel', "res://addons/dialogic/Example Assets/backgrounds/GlossaryBackground.tres")))

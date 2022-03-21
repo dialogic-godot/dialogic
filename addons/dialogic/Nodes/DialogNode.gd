@@ -1138,7 +1138,7 @@ func get_classic_choice_button(label: String):
 	# Removing the blue selected border
 	button.set('custom_styles/focus', StyleBoxEmpty.new())
 	# Text
-	button.set('custom_fonts/font', DialogicUtil.path_fixer_load(theme.get_value('text', 'font', "res://addons/dialogic/Example Assets/Fonts/DefaultFont.tres")))
+	button.set('custom_fonts/font', load(theme.get_value('text', 'font', "res://addons/dialogic/Example Assets/Fonts/DefaultFont.tres")))
 
 
 	if theme.get_value('buttons', 'fixed', false):
@@ -1197,11 +1197,11 @@ func button_style_setter(section, data, button, theme):
 	var style_box = StyleBoxTexture.new()
 	if data[2]:
 		# I'm using a white texture to do the flat style because otherwise the padding doesn't work.
-		style_box.set('texture', DialogicUtil.path_fixer_load("res://addons/dialogic/Images/Plugin/white-texture.png"))
+		style_box.set('texture', load("res://addons/dialogic/Images/Plugin/white-texture.png"))
 		style_box.set('modulate_color', data[3])
 	else:
 		if data[4]:
-			style_box.set('texture', DialogicUtil.path_fixer_load(data[5]))
+			style_box.set('texture', load(data[5]))
 		if data[6]:
 			style_box.set('modulate_color', data[7])
 	
