@@ -99,7 +99,7 @@ func _ready():
 			button.visible_name = '       ' + b['event_name']
 			button.event_id = b['event_data']['event_id']
 			button.set_icon(b['event_icon'])
-			button.event_color = b['event_color']
+			#button.event_color = b['event_color']
 			button.event_category = b.get('event_category', 0)
 			button.sorting_index = b.get('sorting_index', 9999)
 			# Connecting the signal
@@ -113,6 +113,23 @@ func _ready():
 			get_node("ScrollContainer/EventContainer/FlexContainer" + str(button.event_category + 1)).add_child(button)
 			while button.get_index() != 0 and button.sorting_index < get_node("ScrollContainer/EventContainer/FlexContainer" + str(button.event_category + 1)).get_child(button.get_index()-1).sorting_index:
 				get_node("ScrollContainer/EventContainer/FlexContainer" + str(button.event_category + 1)).move_child(button, button.get_index()-1)
+	
+	var resource_list = DialogicResources.listdir("res://addons/dialogic/Editor/Events/")
+	for resource_path in resource_list:
+		if '.tres' in resource_path:
+			var event_resource = load("res://addons/dialogic/Editor/Events/" + resource_path)
+			var button = buttonScene.instance()
+			button.visible_name = '       ' + event_resource.scene
+			button.event_id = event_resource.id
+			#button.set_icon(b['event_icon'])
+			button.event_color = event_resource.color
+			button.event_category = event_resource.category
+			button.sorting_index = event_resource.sorting_index
+			button.connect('pressed', self, "_create_event_button_pressed", [event_resource.id])
+			get_node("ScrollContainer/EventContainer/FlexContainer" + str(button.event_category + 1)).add_child(button)
+			while button.get_index() != 0 and button.sorting_index < get_node("ScrollContainer/EventContainer/FlexContainer" + str(button.event_category + 1)).get_child(button.get_index()-1).sorting_index:
+				get_node("ScrollContainer/EventContainer/FlexContainer" + str(button.event_category + 1)).move_child(button, button.get_index()-1)
+	
 
 # handles dragging/moving of events
 func _process(delta):

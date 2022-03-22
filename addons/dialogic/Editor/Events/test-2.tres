@@ -1,0 +1,12 @@
+[gd_resource type="Resource" load_steps=2 format=2]
+
+[ext_resource path="res://addons/dialogic/Editor/Events/event_resource.gd" type="Script" id=1]
+
+[resource]
+script = ExtResource( 1 )
+id = ""
+scene = "Another Test"
+color = Color( 0.941176, 0.266667, 0.219608, 1 )
+properties = [  ]
+category = 3
+sorting_index = 0
