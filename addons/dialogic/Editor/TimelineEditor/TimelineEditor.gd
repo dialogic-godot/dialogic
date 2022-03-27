@@ -89,31 +89,8 @@ func _ready():
 	update_custom_events()
 	$TimelineArea.connect('resized', self, 'add_extra_scroll_area_to_timeline', [])
 	
-	# We create the event buttons
-	#event_data = _read_event_data()
+	# Event buttons
 	var buttonScene = load("res://addons/dialogic/Editor/TimelineEditor/SmallEventButton.tscn")
-	#for b in event_data:
-	#	if typeof(b['event_data']) == TYPE_DICTIONARY:
-	#		var button = buttonScene.instance()
-	#		# Button properties
-	#		button.visible_name = '       ' + b['event_name']
-	#		button.event_id = b['event_data']['event_id']
-	#		button.set_icon(b['event_icon'])
-	#		#button.event_color = b['event_color']
-	#		button.event_category = b.get('event_category', 0)
-	#		button.sorting_index = b.get('sorting_index', 9999)
-	#		# Connecting the signal
-	#		if button.event_id == 'dialogic_010':
-	#			button.connect('pressed', self, "_on_ButtonQuestion_pressed", [])
-	#		elif button.event_id == 'dialogic_012': # Condition
-	#			button.connect('pressed', self, "_on_ButtonCondition_pressed", [])
-	#		else:
-	#			button.connect('pressed', self, "_create_event_button_pressed", [button.event_id])
-	#		# Adding it to its section
-	#		get_node("ScrollContainer/EventContainer/FlexContainer" + str(button.event_category + 1)).add_child(button)
-	#		while button.get_index() != 0 and button.sorting_index < get_node("ScrollContainer/EventContainer/FlexContainer" + str(button.event_category + 1)).get_child(button.get_index()-1).sorting_index:
-	#			get_node("ScrollContainer/EventContainer/FlexContainer" + str(button.event_category + 1)).move_child(button, button.get_index()-1)
-	
 	var resource_list = DialogicResources.listdir("res://addons/dialogic/Editor/Events/")
 	for resource_path in resource_list:
 		if '.tres' in resource_path:
@@ -125,7 +102,13 @@ func _ready():
 			button.event_color = event_resource.color
 			button.event_category = event_resource.category
 			button.sorting_index = event_resource.sorting_index
-			button.connect('pressed', self, "_create_event_button_pressed", [event_resource.id])
+			# Connecting the signal
+			if button.event_id == 'dialogic_010':
+				button.connect('pressed', self, "_on_ButtonQuestion_pressed", [])
+			elif button.event_id == 'dialogic_012': # Condition
+				button.connect('pressed', self, "_on_ButtonCondition_pressed", [])
+			else:
+				button.connect('pressed', self, "_create_event_button_pressed", [event_resource.id])
 			get_node("ScrollContainer/EventContainer/FlexContainer" + str(button.event_category + 1)).add_child(button)
 			while button.get_index() != 0 and button.sorting_index < get_node("ScrollContainer/EventContainer/FlexContainer" + str(button.event_category + 1)).get_child(button.get_index()-1).sorting_index:
 				get_node("ScrollContainer/EventContainer/FlexContainer" + str(button.event_category + 1)).move_child(button, button.get_index()-1)
@@ -1096,6 +1079,7 @@ func unfold_all_nodes():
 		event.set_expanded(true)
 	add_extra_scroll_area_to_timeline()
 
+
 func get_current_events_anchors():
 	var anchors = {}
 	for event in timeline.get_children():
@@ -1104,32 +1088,13 @@ func get_current_events_anchors():
 				anchors[event.event_data['id']] = event.event_data['name']
 	return anchors
 
+
 func add_extra_scroll_area_to_timeline():
 	if timeline.get_children().size() > 4:
 		timeline.rect_min_size.y = 0
 		timeline.rect_size.y = 0
 		if timeline.rect_size.y + 200 > $TimelineArea.rect_size.y:
 			timeline.rect_min_size = Vector2(0, timeline.rect_size.y + 200)
-
-
-# Functions for reading the event data and coloring the buttons
-func _read_event_data():
-	var dir = 'res://addons/dialogic/Editor/Events/'
-	var file = File.new()
-	var config = ConfigFile.new()
-	var events_data = []
-	for f in DialogicUtil.list_dir(dir):
-		if '.tscn' in f:
-			if 'DummyEvent' in f:
-				# Need to figure out what to do with this one
-				pass
-			else:
-				var scene = load(dir + '/' + f).get_state()
-				var c = {}
-				for p in scene.get_node_property_count(0):
-					c[scene.get_node_property_name(0,p)] = scene.get_node_property_value(0, p)
-				events_data.append(c)
-	return events_data
 
 
 func play_timeline():
