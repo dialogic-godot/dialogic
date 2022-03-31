@@ -96,6 +96,7 @@ func _ready():
 		if '.tres' in resource_path:
 			var event_resource = load("res://addons/dialogic/Editor/Events/" + resource_path)
 			var button = buttonScene.instance()
+			button.resource = event_resource
 			button.visible_name = '       ' + event_resource.name
 			button.event_id = event_resource.id
 			button.set_icon(event_resource.icon)
@@ -107,10 +108,8 @@ func _ready():
 				button.connect('pressed', self, "_on_ButtonQuestion_pressed", [])
 			elif button.event_id == 'dialogic_012': # Condition
 				button.connect('pressed', self, "_on_ButtonCondition_pressed", [])
-			elif button.event_id == 'dialogic_023': # Wait
+			else:
 				button.connect('pressed', self, "_add_event_button_pressed", [event_resource])
-			#else:
-			#	button.connect('pressed', self, "_create_event_button_pressed", [event_resource.id])
 			get_node("ScrollContainer/EventContainer/FlexContainer" + str(button.event_category + 1)).add_child(button)
 			while button.get_index() != 0 and button.sorting_index < get_node("ScrollContainer/EventContainer/FlexContainer" + str(button.event_category + 1)).get_child(button.get_index()-1).sorting_index:
 				get_node("ScrollContainer/EventContainer/FlexContainer" + str(button.event_category + 1)).move_child(button, button.get_index()-1)
@@ -621,19 +620,6 @@ func delete_event(event):
 ## *****************************************************************************
 
 # Event Creation signal for buttons
-func _create_event_button_pressed(event_id):
-	var at_index = -1
-	if selected_items:
-		at_index = selected_items[-1].get_index()+1
-	else:
-		at_index = timeline.get_child_count()
-	TimelineUndoRedo.create_action("[D] Add event.")
-	TimelineUndoRedo.add_do_method(self, "create_event", event_id, {'no-data': true}, true, at_index, true)
-	TimelineUndoRedo.add_undo_method(self, "remove_events_at_index", at_index, 1)
-	TimelineUndoRedo.commit_action()
-	scroll_to_piece(at_index)
-	indent_events()
-
 func _add_event_button_pressed(event_resource):
 	print("_add_event_button_pressed")
 	var at_index = -1
@@ -768,10 +754,10 @@ func update_custom_events() -> void:
 ## *****************************************************************************
 
 # Creates a ghost event for drag and drop
-func create_drag_and_drop_event(event_id: String):
+func create_drag_and_drop_event(resource):
 	var index = get_index_under_cursor()
-	var piece = create_event(event_id)
-	currently_draged_event_type = event_id
+	var piece = add_event_to_timeline(resource)
+	currently_draged_event_type = resource
 	timeline.move_child(piece, index)
 	moving_piece = piece
 	piece_was_dragged = true
@@ -785,7 +771,7 @@ func drop_event():
 		var at_index = moving_piece.get_index()
 		moving_piece.queue_free()
 		TimelineUndoRedo.create_action("[D] Add event.")
-		TimelineUndoRedo.add_do_method(self, "create_event", currently_draged_event_type, {'no-data': true}, true, at_index, true)
+		TimelineUndoRedo.add_do_method(self, "add_event_to_timeline", currently_draged_event_type, {'no-data': true}, at_index, true, true)
 		TimelineUndoRedo.add_undo_method(self, "remove_events_at_index", at_index, 1)
 		TimelineUndoRedo.commit_action()
 		moving_piece = null

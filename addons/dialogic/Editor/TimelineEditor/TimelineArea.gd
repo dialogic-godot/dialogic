@@ -18,10 +18,10 @@ func _ready():
 func can_drop_data(position, data):
 	if data != null and data is Dictionary and data.has("source"):
 		if data["source"] == "EventButton":
-			if _last_event_button_drop_attempt.empty():
-				timeline_editor.create_drag_and_drop_event(data["event_id"])
+			if _last_event_button_drop_attempt is Resource == false:
+				timeline_editor.create_drag_and_drop_event(data["resource"])
 			_is_drag_receiving = true
-			_last_event_button_drop_attempt = data["event_id"]
+			_last_event_button_drop_attempt = data["resource"]
 			return true
 	return false
 

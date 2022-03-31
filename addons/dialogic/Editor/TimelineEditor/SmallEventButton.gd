@@ -1,12 +1,13 @@
 tool
 extends Button
 
-export(String) var visible_name = ""
-export (String) var event_id = 'dialogic_099'
+export (String) var visible_name = ""
+export (String) var event_id = ''
 export (Color) var event_color = Color('#48a2a2a2')
-export(Texture) var event_icon = null setget set_icon
+export (Texture) var event_icon = null setget set_icon
 export (int) var event_category := 0
 export (int) var sorting_index := 0
+export (Resource) var resource
 
 func _ready():
 	self_modulate = Color(1,1,1)
@@ -58,4 +59,4 @@ func get_drag_data(position):
 		
 	set_drag_preview(preview_label)
 	
-	return { "source": "EventButton", "event_id": event_id }
+	return { "source": "EventButton", "resource": resource }
