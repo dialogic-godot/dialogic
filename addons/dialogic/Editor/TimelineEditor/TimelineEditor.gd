@@ -107,8 +107,10 @@ func _ready():
 				button.connect('pressed', self, "_on_ButtonQuestion_pressed", [])
 			elif button.event_id == 'dialogic_012': # Condition
 				button.connect('pressed', self, "_on_ButtonCondition_pressed", [])
-			else:
-				button.connect('pressed', self, "_create_event_button_pressed", [event_resource.id])
+			elif button.event_id == 'dialogic_023': # Wait
+				button.connect('pressed', self, "_add_event_button_pressed", [event_resource])
+			#else:
+			#	button.connect('pressed', self, "_create_event_button_pressed", [event_resource.id])
 			get_node("ScrollContainer/EventContainer/FlexContainer" + str(button.event_category + 1)).add_child(button)
 			while button.get_index() != 0 and button.sorting_index < get_node("ScrollContainer/EventContainer/FlexContainer" + str(button.event_category + 1)).get_child(button.get_index()-1).sorting_index:
 				get_node("ScrollContainer/EventContainer/FlexContainer" + str(button.event_category + 1)).move_child(button, button.get_index()-1)
@@ -632,6 +634,19 @@ func _create_event_button_pressed(event_id):
 	scroll_to_piece(at_index)
 	indent_events()
 
+func _add_event_button_pressed(event_resource):
+	print("_add_event_button_pressed")
+	var at_index = -1
+	if selected_items:
+		at_index = selected_items[-1].get_index()+1
+	else:
+		at_index = timeline.get_child_count()
+	TimelineUndoRedo.create_action("[D] Add event.")
+	TimelineUndoRedo.add_do_method(self, "add_event_to_timeline", event_resource, {'no-data': true}, at_index, true, true)
+	TimelineUndoRedo.add_undo_method(self, "remove_events_at_index", at_index, 1)
+	TimelineUndoRedo.commit_action()
+	scroll_to_piece(at_index)
+	indent_events()
 
 # the Question button adds multiple blocks 
 func _on_ButtonQuestion_pressed() -> void:
@@ -791,7 +806,42 @@ func cancel_drop_event():
 ## *****************************************************************************
 ##					 	CREATING THE TIMELINE
 ## *****************************************************************************
+# Adding an event to the timeline
+func add_event_to_timeline(event_resource, data: Dictionary = {'no-data': true}, at_index:int = -1, auto_select: bool = false, indent: bool = false):
+	var piece = null
+	piece = load("res://addons/dialogic/Editor/Events/Templates/EventNode.tscn").instance()
+	piece.event_resource = event_resource
+	piece.editor_reference = editor_reference
+	
+	if data.has('no-data') == false:
+		piece.event_data = data
+	
+	if at_index == -1:
+		if len(selected_items) != 0:
+			timeline.add_child_below_node(selected_items[0], piece)
+		else:
+			timeline.add_child(piece)
+	else:
+		timeline.add_child(piece)
+		timeline.move_child(piece, at_index)
 
+	piece.connect("option_action", self, '_on_event_options_action', [piece])
+	piece.connect("gui_input", self, '_on_event_block_gui_input', [piece])
+	
+	events_warning.visible = false
+	if auto_select:
+		select_item(piece, false)
+	# Spacing
+	add_extra_scroll_area_to_timeline()
+	# Indent on create
+	if indent:
+		indent_events()
+	
+	if not building_timeline:
+		piece.focus()
+	
+	return piece
+	
 # Adding an event to the timeline
 func create_event(event_id: String, data: Dictionary = {'no-data': true} , indent: bool = false, at_index: int = -1, auto_select: bool = false):
 	var piece = null

@@ -1,24 +1,20 @@
 tool
 extends HBoxContainer
 
+var event_name
+
 # customization options for the event 
-
-# This is the default data that is going to be saved to json
-export(String) var event_name : String = 'Event name'
-export (Dictionary) var event_data: Dictionary = {'event_id':'dialogic_000'}
-export(Color) var event_color: Color = Color(0.6,0.6,0.6,1)
-export(Texture) var event_icon : Texture
-
 export(PackedScene) var header_scene : PackedScene
 export(PackedScene) var body_scene : PackedScene
 
-export (bool) var expand_on_default := false
-export (bool) var needs_indentation := false
-export (String) var help_page_path := ""
-export (bool) var show_name_in_timeline := true
-export(int, "Main", "Logic", "Timeline", "Audio/Visual", "Godot") var event_category = 0
-export (int) var sorting_index = -1
 signal option_action(action_name)
+
+# Resource
+export (Resource) var event_resource
+
+# This is the default data that is going to be saved to json
+export (Dictionary) var event_data: Dictionary = {'event_id':'dialogic_000'}
+
 
 ### internal node eferences
 onready var panel = $PanelContainer
@@ -127,7 +123,7 @@ func _set_event_icon(icon: Texture):
 	
 
 func _set_event_name(text: String):
-	if show_name_in_timeline:
+	if event_resource.display_name:
 		title_label.text = text
 	else:
 		var t_label = get_node_or_null("PanelContainer/MarginContainer/VBoxContainer/Header/TitleLabel")
@@ -147,17 +143,16 @@ func _set_body(scene: PackedScene):
 
 
 func _setup_event():
-	if event_icon != null:
-		_set_event_icon(event_icon)
+	if event_resource.icon != null:
+		_set_event_icon(event_resource.icon)
 	if event_name != null:
 		_set_event_name(event_name)
-	if header_scene != null:
-		_set_header(header_scene)
+	if event_resource.header_scene != null:
+		_set_header(event_resource.header_scene)
 	if body_scene != null:
-		_set_body(body_scene)
+		_set_body(body_scene) # TODO
 		body_content_container.add_constant_override('margin_left', 40*DialogicUtil.get_editor_scale(self))
-	if event_color != null:
-		$PanelContainer/MarginContainer/VBoxContainer/Header/CenterContainer/IconPanel.set("self_modulate", event_color)
+	$PanelContainer/MarginContainer/VBoxContainer/Header/CenterContainer/IconPanel.set("self_modulate", event_resource.color)
 
 
 func _set_content(container: Control, scene: PackedScene):
@@ -184,9 +179,9 @@ func _on_ExpandControl_state_changed(expanded: bool):
 
 func _on_OptionsControl_action(index):
 	if index == 0:
-		if help_page_path:
+		if event_resource.help_page_path:
 			var master_tree = editor_reference.get_node_or_null('MainPanel/MasterTreeContainer/MasterTree')
-			master_tree.select_documentation_item(help_page_path)
+			master_tree.select_documentation_item(event_resource.help_page_path)
 	elif index == 2:
 		emit_signal("option_action", "up")
 	elif index == 3:
@@ -198,7 +193,7 @@ func _on_OptionsControl_action(index):
 func _on_Indent_visibility_changed():
 	if not indent_node:
 		return
-	if needs_indentation:
+	if event_resource.needs_indentation:
 		if indent_node.visible:
 			remove_warning(DTS.translate("This event needs a question event around it!"))
 		else:
@@ -252,7 +247,7 @@ func _request_selection():
 ## *****************************************************************************
 
 func _ready():
-	event_name = DTS.translate(event_name)
+	event_name = DTS.translate(event_resource.name)
 	
 	## DO SOME STYLING
 	$PanelContainer/SelectedStyle.modulate = get_color("accent_color", "Editor")
@@ -301,6 +296,6 @@ func _ready():
 		get_body().load_data(event_data)
 	
 	if get_body():
-		set_expanded(expand_on_default)
+		set_expanded(event_resource.expand_by_default)
 	
 	_on_Indent_visibility_changed()
