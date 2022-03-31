@@ -301,20 +301,23 @@ func resize_main():
 		portraits.rect_position.y = reference.y
 
 # calls resize_main
-func deferred_resize(current_size, result):
+func deferred_resize(current_size, result, anchor):
 	$TextBubble.rect_size = result
-	if current_size != $TextBubble.rect_size:
+	if current_size != $TextBubble.rect_size or current_theme.get_value('box', 'anchor', 9) != anchor:
 		resize_main()
 
 # loads the given theme file
 func load_theme(filename):
+	var current_theme_anchor = -1
+	if current_theme:
+		current_theme_anchor = current_theme.get_value('box', 'anchor', 9)
 	var load_theme = DialogicResources.get_theme_config(filename)
 	if not load_theme:
 		return current_theme 
 	var theme = load_theme
 	current_theme_file_name = filename
 	# Box size
-	call_deferred('deferred_resize', $TextBubble.rect_size, theme.get_value('box', 'size', Vector2(910, 167)))
+	call_deferred('deferred_resize', $TextBubble.rect_size, theme.get_value('box', 'size', Vector2(910, 167)), current_theme_anchor)
 	
 	$TextBubble.load_theme(theme)
 	HistoryTimeline.change_theme(theme)
