@@ -6,7 +6,7 @@ export (String) var id
 export (String) var name
 export (Texture) var icon
 export (Color) var color
-export (Array) var properties
+export (Dictionary) var properties
 export (int, 'Main', 'Logic', 'Timeline', 'Audio/Visual', 'Godot', 'Other') var category
 
 export (String) var help_page_path

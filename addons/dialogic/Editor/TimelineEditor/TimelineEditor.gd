@@ -7,10 +7,11 @@ var timeline_file: String = ''
 var current_timeline: Dictionary = {}
 var TimelineUndoRedo := UndoRedo.new()
 
+onready var event_node = load("res://addons/dialogic/Editor/Events/Templates/EventNode.tscn")
+
 onready var master_tree = get_node('../MasterTreeContainer/MasterTree')
 onready var timeline = $TimelineArea/TimeLine
 onready var events_warning = $ScrollContainer/EventContainer/EventsWarning
-onready var custom_events_container = $ScrollContainer/EventContainer/CustomEventsContainer
 
 var hovered_item = null
 var selected_style : StyleBoxFlat = load("res://addons/dialogic/Editor/Events/styles/selected_styleboxflat.tres")
@@ -24,7 +25,6 @@ var move_start_position = null
 var moving_piece = null
 var piece_was_dragged = false
 
-var custom_events = {}
 
 var id_to_scene_name = {
 	#Main events
@@ -86,7 +86,6 @@ func _ready():
 	var style = $TimelineArea.get('custom_styles/bg')
 	style.set('bg_color', get_color("dark_color_1", "Editor"))
 	
-	update_custom_events()
 	$TimelineArea.connect('resized', self, 'add_extra_scroll_area_to_timeline', [])
 	
 	# Event buttons
@@ -405,10 +404,12 @@ func get_events_indexed(events:Array) -> Dictionary:
 		indexed_dict[event.get_index()] = event.event_data.duplicate(true)
 	return indexed_dict
 
+
 func select_indexed_events(indexed_events:Dictionary) -> void:
 	selected_items = []
 	for event_index in indexed_events.keys():
 		selected_items.append(timeline.get_child(event_index))
+
 
 func add_events_indexed(indexed_events:Dictionary) -> void:
 	var indexes = indexed_events.keys()
@@ -416,7 +417,7 @@ func add_events_indexed(indexed_events:Dictionary) -> void:
 	var events = []
 	for event_idx in indexes:
 		deselect_all_items()
-		events.append(create_event(indexed_events[event_idx].event_id, indexed_events[event_idx]))
+		#events.append(create_event(indexed_events[event_idx].event_id, indexed_events[event_idx]))
 		timeline.move_child(events[-1], event_idx)
 		
 	selected_items = events
@@ -425,6 +426,7 @@ func add_events_indexed(indexed_events:Dictionary) -> void:
 func delete_events_indexed(indexed_events:Dictionary) -> void:
 	select_indexed_events(indexed_events)
 	delete_selected_events()
+
 
 func delete_selected_events():
 	if len(selected_items) == 0:
@@ -478,6 +480,7 @@ func copy_selected_events():
 			"project_name": ProjectSettings.get_setting("application/config/name")
 		})
 
+
 func paste_check():
 	var clipboard_parse = JSON.parse(OS.clipboard).result
 	
@@ -491,11 +494,13 @@ func paste_check():
 		if clipboard_parse.has('events'):
 			return clipboard_parse['events']
 
+
 func remove_events_at_index(at_index:int, amount:int = 1)-> void:
 	selected_items = []
 	for i in range(0, amount):
 		selected_items.append(timeline.get_child(at_index + i))
 	delete_selected_events()
+
 
 func add_events_at_index(event_list:Array, at_index:int) -> void:
 	if at_index != -1:
@@ -507,14 +512,17 @@ func add_events_at_index(event_list:Array, at_index:int) -> void:
 	var new_items = []
 	for item in event_list:
 		if typeof(item) == TYPE_DICTIONARY and item.has('event_id'):
-			new_items.append(create_event(item['event_id'], item))
+			#new_items.append(create_event(item['event_id'], item))
+			pass
 	selected_items = new_items
 	sort_selection()
 	visual_update_selection()
 	indent_events()
 
+
 func paste_events_indexed(indexed_events):
 	pass
+
 
 func duplicate_events_indexed(indexed_events):
 	pass
@@ -621,14 +629,13 @@ func delete_event(event):
 
 # Event Creation signal for buttons
 func _add_event_button_pressed(event_resource):
-	print("_add_event_button_pressed")
 	var at_index = -1
 	if selected_items:
 		at_index = selected_items[-1].get_index()+1
 	else:
 		at_index = timeline.get_child_count()
 	TimelineUndoRedo.create_action("[D] Add event.")
-	TimelineUndoRedo.add_do_method(self, "add_event_to_timeline", event_resource, {'no-data': true}, at_index, true, true)
+	TimelineUndoRedo.add_do_method(self, "add_event_to_timeline", event_resource, at_index, true, true)
 	TimelineUndoRedo.add_undo_method(self, "remove_events_at_index", at_index, 1)
 	TimelineUndoRedo.commit_action()
 	scroll_to_piece(at_index)
@@ -652,15 +659,17 @@ func create_question(at_position):
 	if len(selected_items) != 0:
 		# Events are added bellow the selected node
 		# So we must reverse the adding order
-		create_event("dialogic_013", {'no-data': true}, true)
-		create_event("dialogic_011", {'no-data': true}, true)
-		create_event("dialogic_011", {'no-data': true}, true)
-		create_event("dialogic_010", {'no-data': true}, true)
+		#create_event("dialogic_013", {'no-data': true}, true)
+		#create_event("dialogic_011", {'no-data': true}, true)
+		#create_event("dialogic_011", {'no-data': true}, true)
+		#create_event("dialogic_010", {'no-data': true}, true)
+		pass
 	else:
-		create_event("dialogic_010", {'no-data': true}, true)
-		create_event("dialogic_011", {'no-data': true}, true)
-		create_event("dialogic_011", {'no-data': true}, true)
-		create_event("dialogic_013", {'no-data': true}, true)
+		#create_event("dialogic_010", {'no-data': true}, true)
+		#create_event("dialogic_011", {'no-data': true}, true)
+		#create_event("dialogic_011", {'no-data': true}, true)
+		#create_event("dialogic_013", {'no-data': true}, true)
+		pass
 
 
 # the Condition button adds multiple blocks 
@@ -681,73 +690,14 @@ func create_condition(at_position):
 	if len(selected_items) != 0:
 		# Events are added bellow the selected node
 		# So we must reverse the adding order
-		create_event("dialogic_013", {'no-data': true}, true)
-		create_event("dialogic_012", {'no-data': true}, true)
+		#create_event("dialogic_013", {'no-data': true}, true)
+		#create_event("dialogic_012", {'no-data': true}, true)
+		pass
 	else:
-		create_event("dialogic_012", {'no-data': true}, true)
-		create_event("dialogic_013", {'no-data': true}, true)
+		#create_event("dialogic_012", {'no-data': true}, true)
+		#create_event("dialogic_013", {'no-data': true}, true)
+		pass
 
-
-func update_custom_events() -> void:
-	## CLEANUP
-	custom_events = {}
-	
-	# cleaning the 'old' buttons
-	for child in custom_events_container.get_children():
-		child.queue_free()
-	
-	var path:String = "res://dialogic/custom-events"
-	
-	var dir = Directory.new()
-	if dir.open(path) == OK:
-		dir.list_dir_begin()
-		var file_name = dir.get_next()
-		# goes through all the folders in the custom events folder
-		while file_name != "":
-			# if it found a folder
-			if dir.current_is_dir() and not file_name in ['.', '..']:
-				# look through that folder
-				#print("Found custom event folder: " + file_name)
-				var event = load(path.plus_file(file_name).plus_file('EventBlock.tscn')).instance()
-				if event:
-					custom_events[event.event_data['event_id']] = {
-						'event_block_scene' :path.plus_file(file_name).plus_file('EventBlock.tscn'),
-						'event_name' : event.event_name,
-						'event_icon' : event.event_icon
-					}
-					event.queue_free()
-				else:
-					print("[D] An error occurred when trying to access a custom event.")
-				
-				
-			else:
-				pass # files in the directory are ignored
-			file_name = dir.get_next()
-			
-		# After we finishing checking, if any events exist, show the panel
-		if custom_events.size() == 0:
-			custom_events_container.hide()
-			$ScrollContainer/EventContainer/CustomEventsHeadline.hide()
-		else:
-			custom_events_container.show()
-			$ScrollContainer/EventContainer/CustomEventsHeadline.show()
-	else:
-		print("[D] An error occurred when trying to access the custom events folder.")
-	
-	## VISUAL UPDATE
-	
-	
-	# adding new ones
-	for custom_event_id in custom_events.keys():
-		var button = load('res://addons/dialogic/Editor/TimelineEditor/SmallEventButton.tscn').instance()
-		#button.set_script(preload("EventButton.gd"))
-		button.event_id = custom_event_id
-		button.visible_name = '       ' + custom_events[custom_event_id]['event_name']
-		if custom_events[custom_event_id]['event_icon']:
-			button.set_icon(custom_events[custom_event_id]['event_icon'])
-		#button.event_color = TODO
-		button.connect("pressed", self, "_create_event_button_pressed", [custom_event_id])
-		custom_events_container.add_child(button)
 
 ## *****************************************************************************
 ##					 	DRAG AND DROP
@@ -778,7 +728,6 @@ func drop_event():
 		piece_was_dragged = false
 		indent_events()
 		add_extra_scroll_area_to_timeline()
-		
 
 
 func cancel_drop_event():
@@ -793,60 +742,15 @@ func cancel_drop_event():
 ##					 	CREATING THE TIMELINE
 ## *****************************************************************************
 # Adding an event to the timeline
-func add_event_to_timeline(event_resource, data: Dictionary = {'no-data': true}, at_index:int = -1, auto_select: bool = false, indent: bool = false):
-	var piece = null
-	piece = load("res://addons/dialogic/Editor/Events/Templates/EventNode.tscn").instance()
-	piece.event_resource = event_resource
+func add_event_to_timeline(event_resource, at_index:int = -1, auto_select: bool = false, indent: bool = false):
+	var piece = event_node.instance()
+	var resource = event_resource.duplicate()
+	
+	piece.event_resource = resource
 	piece.editor_reference = editor_reference
 	
-	if data.has('no-data') == false:
-		piece.event_data = data
-	
-	if at_index == -1:
-		if len(selected_items) != 0:
-			timeline.add_child_below_node(selected_items[0], piece)
-		else:
-			timeline.add_child(piece)
-	else:
-		timeline.add_child(piece)
-		timeline.move_child(piece, at_index)
-
-	piece.connect("option_action", self, '_on_event_options_action', [piece])
-	piece.connect("gui_input", self, '_on_event_block_gui_input', [piece])
-	
-	events_warning.visible = false
-	if auto_select:
-		select_item(piece, false)
-	# Spacing
-	add_extra_scroll_area_to_timeline()
-	# Indent on create
-	if indent:
-		indent_events()
-	
-	if not building_timeline:
-		piece.focus()
-	
-	return piece
-	
-# Adding an event to the timeline
-func create_event(event_id: String, data: Dictionary = {'no-data': true} , indent: bool = false, at_index: int = -1, auto_select: bool = false):
-	var piece = null
-	
-	# check if it's a custom event
-	if event_id in custom_events.keys():
-		piece = load(custom_events[event_id]['event_block_scene']).instance()
-	# check if it's a builtin event
-	elif event_id in id_to_scene_name.keys():
-		piece = load("res://addons/dialogic/Editor/Events/" + id_to_scene_name[event_id] + ".tscn").instance()
-	# else use dummy event
-	else:
-		piece = load("res://addons/dialogic/Editor/Events/DummyEvent.tscn").instance()
-	
-	# load the piece with data
-	piece.editor_reference = editor_reference
-	
-	if data.has('no-data') == false:
-		piece.event_data = data
+	if resource.properties is Dictionary:
+		piece.event_data = resource.properties
 	
 	if at_index == -1:
 		if len(selected_items) != 0:
@@ -877,7 +781,6 @@ func create_event(event_id: String, data: Dictionary = {'no-data': true} , inden
 
 func load_timeline(filename: String):
 	clear_timeline()
-	update_custom_events()
 	if timeline_file != filename:
 		TimelineUndoRedo.clear_history()
 	building_timeline = true
@@ -909,7 +812,8 @@ func load_batch(data):
 	var current_batch = batches.pop_front()
 	if current_batch:
 		for i in current_batch:
-			create_event(i['event_id'], i, false, timeline.get_child_count())
+			#create_event(i['event_id'], i, false, timeline.get_child_count())
+			pass
 	emit_signal("batch_loaded")
 
 
@@ -1070,17 +974,16 @@ func indent_events() -> void:
 		if (not "event_data" in event):
 			continue
 		
-		
-		if event.event_data['event_id'] == 'dialogic_011':
+		if event.event_resource.id == 'dialogic_011':
 			if question_index > 0:
 				indent = question_indent[question_index] + 1
 				starter = true
-		elif event.event_data['event_id'] == 'dialogic_010' or event.event_data['event_id'] == 'dialogic_012':
+		elif event.event_resource.id == 'dialogic_010' or event.event_resource.id == 'dialogic_012':
 			indent += 1
 			starter = true
 			question_index += 1
 			question_indent[question_index] = indent
-		elif event.event_data['event_id'] == 'dialogic_013':
+		elif event.event_resource.id == 'dialogic_013':
 			if question_indent.has(question_index):
 				indent = question_indent[question_index]
 				indent -= 1
