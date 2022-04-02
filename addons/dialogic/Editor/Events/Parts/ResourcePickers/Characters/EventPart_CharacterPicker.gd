@@ -1,7 +1,7 @@
 tool
 extends "res://addons/dialogic/Editor/Events/Parts/EventPart.gd"
 
-# has an event_data variable that stores the current data!!!
+# has a `properties` variable that stores the current data!!!
 
 export (bool) var allow_no_character := false
 
@@ -45,7 +45,7 @@ func _ready():
 
 # called by the event block
 func load_data(data:Dictionary):
-	# First set the event_data
+	# First set the properties
 	.load_data(data)
 	
 	allow_no_character = data['event_id'] != 'dialogic_002'
@@ -60,14 +60,14 @@ func get_preview():
 
 # helper to not have the same code everywhere
 func update_to_character():
-	if event_data['character'] != '':
-		if event_data['character'] == '[All]':
+	if resource.properties['character'] != '':
+		if resource.properties['character'] == '[All]':
 			picker_menu.text = "All characters"
 			picker_menu.reset_modulation()
 			picker_menu.custom_icon = all_characters_icon
 		else:
 			for ch in DialogicUtil.get_character_list():
-				if ch['file'] == event_data['character']:
+				if ch['file'] == resource.properties['character']:
 					picker_menu.text = ch['name']
 					picker_menu.custom_icon_modulation = ch['color']
 					picker_menu.custom_icon = single_character_icon
@@ -83,13 +83,13 @@ func update_to_character():
 # when an index is selected on one of the menus.
 func _on_PickerMenu_selected(index, menu):
 	var metadata = menu.get_item_metadata(index)
-	if event_data['character'] != metadata.get('file',''):
-		if event_data.get('event_id') == 'dialogic_002':
-			if event_data.get('type') == 0:
-				event_data['portrait'] = 'Default'
-			elif event_data.get('type') == 2:
-				event_data['portrait'] = "(Don't change)"
-	event_data['character'] = metadata.get('file','')
+	if resource.properties['character'] != metadata.get('file',''):
+		if resource.properties.get('event_id') == 'dialogic_002':
+			if resource.properties.get('type') == 0:
+				resource.properties['portrait'] = 'Default'
+			elif resource.properties.get('type') == 2:
+				resource.properties['portrait'] = "(Don't change)"
+	resource.properties['character'] = metadata.get('file','')
 	
 	update_to_character()
 	
@@ -115,14 +115,14 @@ func build_PickerMenuFolder(menu:PopupMenu, folder_structure:Dictionary, current
 	
 	## THIS IS JUST FOR THE ROOT FOLDER
 	if menu == picker_menu.get_popup():
-		if event_data.get('event_id', 'dialogic_001') != 'dialogic_002':
+		if resource.properties.get('event_id', 'dialogic_001') != 'dialogic_002':
 			menu.add_item('No character')
 			menu.set_item_metadata(index, {'file':''})
 			menu.set_item_icon(index, no_character_icon)
 			index += 1
 
 		# in case this is a leave event
-		if event_data.get('type', 0) == 1:
+		if resource.properties.get('type', 0) == 1:
 			menu.add_item('All characters')
 			menu.set_item_metadata(index, {'file': '[All]'})
 			menu.set_item_icon(index, all_characters_icon)

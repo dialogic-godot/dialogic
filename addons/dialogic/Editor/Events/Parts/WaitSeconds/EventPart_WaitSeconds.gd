@@ -1,8 +1,6 @@
 tool
 extends "res://addons/dialogic/Editor/Events/Parts/EventPart.gd"
 
-# has an event_data variable that stores the current data!!!
-
 ## node references
 onready var seconds_selector = $HBoxContainer/SecondsBox
 onready var skippable_selector = $HBoxContainer/SkippableCheckbox
@@ -16,20 +14,22 @@ func _ready():
 
 # called by the event block
 func load_data(data:Dictionary):
-	# First set the event_data
+	# First set the resource.properties
 	.load_data(data)
 	
+	print('--: ', resource)
+	
 	# Now update the ui nodes to display the data. 
-	seconds_selector.value = event_data['wait_seconds']
-	skippable_selector.pressed = event_data.get('waiting_skippable', false)
-	hideBox_selector.pressed = event_data.get('hide_dialogbox', true)
-	if event_data['wait_seconds'] == 1:
+	seconds_selector.value = resource.properties['wait_seconds']
+	skippable_selector.pressed = resource.properties.get('waiting_skippable', false)
+	hideBox_selector.pressed = resource.properties.get('hide_dialogbox', true)
+	if resource.properties['wait_seconds'] == 1:
 		$HBoxContainer/Label2.text = "second"
 	else:
 		$HBoxContainer/Label2.text = "seconds"
 
 func _on_SecondsSelector_value_changed(value):
-	event_data['wait_seconds'] = value
+	resource.properties['wait_seconds'] = value
 	if value == 1:
 		$HBoxContainer/Label2.text = "second"
 	else:
@@ -37,11 +37,11 @@ func _on_SecondsSelector_value_changed(value):
 	data_changed()
 
 func _on_SkippableSelector_toggled(checkbox_value):
-	event_data['waiting_skippable'] = checkbox_value
+	resource.properties['waiting_skippable'] = checkbox_value
 	data_changed()
 
 func _on_HideDialogBox_toggled(checkbox_value):
-	event_data['hide_dialogbox'] = checkbox_value
+	resource.properties['hide_dialogbox'] = checkbox_value
 	data_changed()
 
 # has to return the wanted preview, only useful for body parts

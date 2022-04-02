@@ -745,12 +745,11 @@ func cancel_drop_event():
 func add_event_to_timeline(event_resource, at_index:int = -1, auto_select: bool = false, indent: bool = false):
 	var piece = event_node.instance()
 	var resource = event_resource.duplicate()
-	
-	piece.event_resource = resource
+	print(resource.properties)
+	piece.load_data(resource)
+	#piece.resource = resource
 	piece.editor_reference = editor_reference
 	
-	if resource.properties is Dictionary:
-		piece.event_data = resource.properties
 	
 	if at_index == -1:
 		if len(selected_items) != 0:
@@ -920,7 +919,7 @@ func generate_save_data():
 		# Checking that the event is not waiting to be removed
 		# or that it is not a drag and drop placeholder
 		if not get_event_ignore_save(event) and event.is_queued_for_deletion() == false:
-			info_to_save['events'].append(event.event_data)
+			info_to_save['events'].append(event.resource)
 	return info_to_save
 
 
@@ -974,16 +973,16 @@ func indent_events() -> void:
 		if (not "event_data" in event):
 			continue
 		
-		if event.event_resource.id == 'dialogic_011':
+		if event.resource.id == 'dialogic_011':
 			if question_index > 0:
 				indent = question_indent[question_index] + 1
 				starter = true
-		elif event.event_resource.id == 'dialogic_010' or event.event_resource.id == 'dialogic_012':
+		elif event.resource.id == 'dialogic_010' or event.resource.id == 'dialogic_012':
 			indent += 1
 			starter = true
 			question_index += 1
 			question_indent[question_index] = indent
-		elif event.event_resource.id == 'dialogic_013':
+		elif event.resource.id == 'dialogic_013':
 			if question_indent.has(question_index):
 				indent = question_indent[question_index]
 				indent -= 1

@@ -51,13 +51,10 @@ focus_mode = 1
 size_flags_horizontal = 3
 size_flags_vertical = 9
 script = ExtResource( 1 )
-event_data = {
-"event_id": "dialogic_000"
-}
 
 [node name="Indent" type="Control" parent="."]
 visible = false
-margin_bottom = 64.0
+margin_bottom = 112.0
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
 margin_right = 102.0
@@ -70,8 +67,8 @@ custom_styles/panel = SubResource( 1 )
 [node name="SelectedStyle" type="Panel" parent="PanelContainer"]
 visible = false
 modulate = Color( 0, 0, 0, 1 )
-margin_right = 76.0
-margin_bottom = 50.0
+margin_right = 102.0
+margin_bottom = 76.0
 custom_styles/panel = ExtResource( 3 )
 
 [node name="MarginContainer" type="MarginContainer" parent="PanelContainer"]
@@ -206,9 +203,9 @@ custom_constants/margin_top = 2
 custom_constants/margin_bottom = 2
 
 [node name="PopupMenu" type="PopupMenu" parent="."]
-margin_left = 38.0
-margin_right = 133.0
-margin_bottom = 88.0
+margin_left = 30.0
+margin_right = 169.0
+margin_bottom = 112.0
 custom_colors/font_color_hover = Color( 0, 0, 0, 1 )
 custom_constants/vseparation = 0
 custom_styles/hover = SubResource( 4 )

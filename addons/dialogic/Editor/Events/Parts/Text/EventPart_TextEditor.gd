@@ -35,13 +35,13 @@ func load_data(data:Dictionary):
 	# Now update the ui nodes to display the data. 
 	# in case this is a text event
 	if data['event_id'] == 'dialogic_001':
-		text_editor.text = event_data['text']
+		text_editor.text = resource.properties['text']
 	# in case this is a question event
 	elif data['event_id'] == 'dialogic_010':
-		text_editor.text = event_data['question']
+		text_editor.text = resource.properties['question']
 	# otherwise
 	else:
-		text_editor.text = event_data['text']
+		text_editor.text = resource.properties['text']
 	
 	# resize the text_editor to the correct size 
 	_set_new_min_size()
@@ -50,14 +50,14 @@ func load_data(data:Dictionary):
 func get_preview():
 	var max_preview_characters = 35
 	var text = ''
-	if event_data['event_id'] == 'dialogic_001':
-		text = event_data['text']
+	if resource.properties['event_id'] == 'dialogic_001':
+		text = resource.properties['text']
 	# in case this is a question event
-	elif event_data['event_id'] == 'dialogic_010':
-		text = event_data['question']
+	elif resource.properties['event_id'] == 'dialogic_010':
+		text = resource.properties['question']
 	# otherwise
 	else:
-		text = event_data['text']
+		text = resource.properties['text']
 	text = text.replace('\n', '[br]')
 	var preview = text.substr(0, min(max_preview_characters, len(text)))
 	if (len(text) > max_preview_characters):
@@ -67,14 +67,14 @@ func get_preview():
 
 func _on_TextEditor_text_changed():
 	# in case this is a text event
-	if event_data['event_id'] == 'dialogic_001':
-		event_data['text'] = text_editor.text
+	if resource.properties['event_id'] == 'dialogic_001':
+		resource.properties['text'] = text_editor.text
 	# in case this is a question event
-	elif event_data['event_id'] == 'dialogic_010':
-		event_data['question'] = text_editor.text
+	elif resource.properties['event_id'] == 'dialogic_010':
+		resource.properties['question'] = text_editor.text
 	# otherwise
 	else:
-		event_data['text'] = text_editor.text
+		resource.properties['text'] = text_editor.text
 	_set_new_min_size()
 	
 	# informs the parent about the changes!

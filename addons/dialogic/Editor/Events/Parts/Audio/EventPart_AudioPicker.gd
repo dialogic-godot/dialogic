@@ -57,8 +57,8 @@ func load_data(data:Dictionary):
 		region_group.show()
 	
 	# TODO 2.0 delete this mess
-	if event_data.has('audio'): event_data['audio'] = 'play'
-	if event_data.has('background-music'): event_data['background-music'] = 'play'
+	if resource.properties.has('audio'): resource.properties['audio'] = 'play'
+	if resource.properties.has('background-music'): resource.properties['background-music'] = 'play'
 
 func get_preview():
 	return ''
@@ -76,21 +76,21 @@ func update_bus_selector():
 				bus_selector.select(i)
 
 func _on_FilePicker_data_changed(data):
-	event_data['file'] = data['file']
+	resource.properties['file'] = data['file']
 	data_changed()
 
 func _on_BusSelector_item_selected(index):
-	event_data['audio_bus'] = bus_selector.get_item_text(index)
+	resource.properties['audio_bus'] = bus_selector.get_item_text(index)
 	data_changed()
 
 func _on_Volume_value_changed(value):
-	event_data['volume'] = value
+	resource.properties['volume'] = value
 	data_changed()
 
 func _on_StopAt_value_changed(value):
-	event_data['stop_time'] = value
+	resource.properties['stop_time'] = value
 	data_changed()
 
 func _on_StartAt_value_changed(value):
-	event_data['start_time'] = value
+	resource.properties['start_time'] = value
 	data_changed()

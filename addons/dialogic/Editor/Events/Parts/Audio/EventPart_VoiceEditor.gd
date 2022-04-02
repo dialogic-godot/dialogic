@@ -33,8 +33,8 @@ func repopulate() -> void:
 		$List.add_child(a_picker)
 		
 		#loaded data 
-		if event_data.has('voice_data'):
-			var voice_data = event_data['voice_data']
+		if resource.properties.has('voice_data'):
+			var voice_data = resource.properties['voice_data']
 			if voice_data.has(str(i)):
 				var _d = voice_data[str(i)]
 				if _d.has('file'):
@@ -68,28 +68,28 @@ func _get_audio_picker(index:int):
 
 func _on_audio_picker_audio_loaded(data,index:int) -> void:
 	# update the data 
-	if not event_data.has('voice_data'):
-		event_data['voice_data'] = {}
+	if not resource.properties.has('voice_data'):
+		resource.properties['voice_data'] = {}
 	
-	event_data['voice_data'][str(index)] = data
+	resource.properties['voice_data'][str(index)] = data
 	
 	#load the data
-	load_data(event_data)
+	load_data(resource.properties)
 	
 	# informs the parent about the data change 
 	data_changed()
 
 
 func update_data():
-	if not event_data.has('voice_data'):
+	if not resource.properties.has('voice_data'):
 		return
-	var keys = event_data['voice_data'].keys()
+	var keys = resource.properties['voice_data'].keys()
 	# This subroutine was already a hack before I got to it, so don't blame me.
 	# divide by two, again becouse the two merged nodes.
 	# reused _get_audio_picker wherein we multiply by two again :D
 	# - KvaGram
 	for i in range($List.get_child_count() / 2):
 		if keys.has(str(i)):
-			var data = event_data['voice_data'][str(i)]
+			var data = resource.properties['voice_data'][str(i)]
 			#voices_container.get_child(i).load_data(data)
 			_get_audio_picker(i).load_data(data)

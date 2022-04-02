@@ -159,42 +159,6 @@ func load_config_files():
 
 
 ## -----------------------------------------------------------------------------
-## 						CUSTOM EVENTS
-## -----------------------------------------------------------------------------
-## not used anymore. use $CustomEvents.update()
-func update_custom_events() -> void:
-	custom_events = {}
-	var path : String = DialogicResources.get_working_directories()["CUSTOM_EVENTS_DIR"]
-	var dir = Directory.new()
-	if dir.open(path) == OK:
-		dir.list_dir_begin()
-		var file_name = dir.get_next()
-		# goes through all the folders in the custom events folder
-		while file_name != "":
-			# if it found a folder
-			if dir.current_is_dir() and not file_name in ['.', '..']:
-				
-				# look through that folder
-				#print("Found custom event folder: " + file_name)
-				var event = load(path.plus_file(file_name).plus_file('EventBlock.tscn')).instance()
-				if event:
-					custom_events[event.event_data['event_id']] = {
-						'event_script' :path.plus_file(file_name).plus_file('event_'+event.event_data['event_id']+'.gd'),
-						'event_name' : event.event_name,
-					}
-					event.queue_free()
-				else:
-					print("[D] An error occurred when trying to access a custom event.")
-			
-			
-			else:
-				pass # files in the directory are ignored
-			file_name = dir.get_next()
-	else:
-		print("[D] An error occurred when trying to access the custom event folder.")
-
-
-## -----------------------------------------------------------------------------
 ## 						VISUALS
 ## -----------------------------------------------------------------------------
 # This function makes sure that the dialog is displayed at the correct

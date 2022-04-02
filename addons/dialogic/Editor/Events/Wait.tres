@@ -11,6 +11,7 @@ name = "Wait"
 icon = ExtResource( 2 )
 color = Color( 0.396078, 0.439216, 0.517647, 1 )
 properties = {
+"hide_dialogbox": false,
 "wait_seconds": 1.0
 }
 category = 2

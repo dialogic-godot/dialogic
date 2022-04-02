@@ -32,7 +32,7 @@ func use_voices():
 
 
 func _on_text_editor_data_changed(data) -> void:
-	event_data = data 
+	resource.properties = data 
 	
 	#udpate the voice picker to check if we repopulate it 
 	update_voices_lines()
@@ -46,7 +46,7 @@ func update_voices_lines():
 
 
 func _on_voice_editor_data_changed(data) -> void:
-	event_data['voice_data'] = data['voice_data']
+	resource.properties['voice_data'] = data['voice_data']
 	voice_editor.visible = use_voices()
 	# informs the parent 
 	data_changed()

@@ -4,7 +4,7 @@ extends Control
 # has to be set by the parent before adding it to the tree
 var editor_reference
 
-var event_data = {}
+var resource
 
 signal data_changed
 
@@ -29,7 +29,7 @@ func _ready():
 
 # to be overwritten by the subclasses
 func load_data(data:Dictionary):
-	event_data = data
+	resource = data
 
 
 # to be overwritten by body-parts that provide a preview
@@ -42,5 +42,5 @@ func focus():
 
 # has to be called everytime the data got changed
 func data_changed():
-	emit_signal("data_changed", event_data)
+	emit_signal("data_changed", resource.properties)
 

@@ -3,17 +3,10 @@ extends HBoxContainer
 
 var event_name
 
-# customization options for the event 
-export(PackedScene) var header_scene : PackedScene
-export(PackedScene) var body_scene : PackedScene
-
 signal option_action(action_name)
 
 # Resource
-export (Resource) var event_resource
-
-# This is the default data that is going to be saved to json
-export (Dictionary) var event_data: Dictionary = {'event_id':'dialogic_000'}
+export (Resource) var resource
 
 
 ### internal node eferences
@@ -28,8 +21,6 @@ onready var body_container = $PanelContainer/MarginContainer/VBoxContainer/Body
 onready var body_content_container = $PanelContainer/MarginContainer/VBoxContainer/Body/Content
 onready var indent_node = $Indent
 onready var help_button = $PanelContainer/MarginContainer/VBoxContainer/Header/HelpButton
-var header_node
-var body_node
 
 ### extarnal node references
 var editor_reference
@@ -57,7 +48,9 @@ func visual_deselect():
 
 # called by the timeline before adding it to the tree
 func load_data(data):
-	event_data = data
+	print('load_data')
+	print(data.properties)
+	resource = data
 
 # called to inform event parts, that a focus is wanted
 func focus():
@@ -67,11 +60,11 @@ func focus():
 		get_body().focus()
 
 func get_body():
-	return body_node
+	return resource.body_scene
 
 
 func get_header():
-	return header_node
+	return resource.header_scene
 
 
 func set_warning(text):
@@ -123,7 +116,7 @@ func _set_event_icon(icon: Texture):
 	
 
 func _set_event_name(text: String):
-	if event_resource.display_name:
+	if resource.display_name:
 		title_label.text = text
 	else:
 		var t_label = get_node_or_null("PanelContainer/MarginContainer/VBoxContainer/Header/TitleLabel")
@@ -133,26 +126,26 @@ func _set_event_name(text: String):
 
 
 func _set_header(scene: PackedScene):
-	header_node = _set_content(header_content_container, scene)
+	resource.header_scene = _set_content(header_content_container, scene)
 
 
 func _set_body(scene: PackedScene):
-	body_node = _set_content(body_content_container, scene)
+	resource.body_scene = _set_content(body_content_container, scene)
 	# show the expand toggle
-	expand_control.set_enabled(body_node != null)
+	expand_control.set_enabled(resource.body_scene != null)
 
 
 func _setup_event():
-	if event_resource.icon != null:
-		_set_event_icon(event_resource.icon)
+	if resource.icon != null:
+		_set_event_icon(resource.icon)
 	if event_name != null:
 		_set_event_name(event_name)
-	if event_resource.header_scene != null:
-		_set_header(event_resource.header_scene)
-	if body_scene != null:
-		_set_body(body_scene) # TODO
+	if resource.header_scene != null:
+		_set_header(resource.header_scene)
+	if resource.body_scene != null:
+		_set_body(resource.body_scene)
 		body_content_container.add_constant_override('margin_left', 40*DialogicUtil.get_editor_scale(self))
-	$PanelContainer/MarginContainer/VBoxContainer/Header/CenterContainer/IconPanel.set("self_modulate", event_resource.color)
+	$PanelContainer/MarginContainer/VBoxContainer/Header/CenterContainer/IconPanel.set("self_modulate", resource.color)
 
 
 func _set_content(container: Control, scene: PackedScene):
@@ -169,19 +162,19 @@ func _set_content(container: Control, scene: PackedScene):
 
 func _on_ExpandControl_state_changed(expanded: bool):
 	if expanded:
-		if body_node:
+		if resource.body_scene:
 			body_container.show()
 	else:
-		if body_node:
+		if resource.body_scene:
 			body_container.hide()
-			expand_control.set_preview(body_node.get_preview())
+			expand_control.set_preview(resource.body_scene.get_preview())
 
 
 func _on_OptionsControl_action(index):
 	if index == 0:
-		if event_resource.help_page_path:
+		if resource.help_page_path:
 			var master_tree = editor_reference.get_node_or_null('MainPanel/MasterTreeContainer/MasterTree')
-			master_tree.select_documentation_item(event_resource.help_page_path)
+			master_tree.select_documentation_item(resource.help_page_path)
 	elif index == 2:
 		emit_signal("option_action", "up")
 	elif index == 3:
@@ -193,7 +186,7 @@ func _on_OptionsControl_action(index):
 func _on_Indent_visibility_changed():
 	if not indent_node:
 		return
-	if event_resource.needs_indentation:
+	if resource.needs_indentation:
 		if indent_node.visible:
 			remove_warning(DTS.translate("This event needs a question event around it!"))
 		else:
@@ -214,20 +207,20 @@ func _on_gui_input(event):
 
 # called when the data of the header is changed
 func _on_Header_data_changed(new_event_data):
-	event_data = new_event_data
+	resource.properties = new_event_data
 	
 	# update the body in case it has to
 	if get_body():
-		get_body().load_data(event_data)
+		get_body().load_data(resource)
 
 
 # called when the data of the body is changed
 func _on_Body_data_changed(new_event_data):
-	event_data = new_event_data
+	resource.properties = new_event_data
 	
 	# update the header in case it has to
 	if get_header():
-		get_header().load_data(event_data)
+		get_header().load_data(resource)
 
 func _request_set_body_enabled(enabled:bool):
 	expand_control.set_enabled(enabled)
@@ -247,7 +240,8 @@ func _request_selection():
 ## *****************************************************************************
 
 func _ready():
-	event_name = DTS.translate(event_resource.name)
+	if resource.name:
+		event_name = DTS.translate(resource.name)
 	
 	## DO SOME STYLING
 	$PanelContainer/SelectedStyle.modulate = get_color("accent_color", "Editor")
@@ -283,7 +277,7 @@ func _ready():
 		get_header().connect("request_set_body_enabled", self, "_request_set_body_enabled")
 		get_header().connect("set_warning", self, "set_warning")
 		get_header().connect("remove_warning", self, "remove_warning")
-		get_header().load_data(event_data)
+		get_header().load_data(resource)
 	# if you have a body
 	if get_body():
 		get_body().connect("data_changed", self, "_on_Body_data_changed")
@@ -293,9 +287,9 @@ func _ready():
 		get_body().connect("request_selection", self, "_request_selection")
 		get_body().connect("set_warning", self, "set_warning")
 		get_body().connect("remove_warning", self, "remove_warning")
-		get_body().load_data(event_data)
+		get_body().load_data(resource)
 	
 	if get_body():
-		set_expanded(event_resource.expand_by_default)
+		set_expanded(resource.expand_by_default)
 	
 	_on_Indent_visibility_changed()

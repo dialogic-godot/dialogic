@@ -1,7 +1,7 @@
 tool
 extends "res://addons/dialogic/Editor/Events/Parts/EventPart.gd"
 
-# has an event_data variable that stores the current data!!!
+# has an resource.properties variable that stores the current data!!!
 export(String, "Audio", "Background", "Scene") var Mode = "Background"
 
 ## node references
@@ -73,11 +73,11 @@ func _on_FileButton_pressed():
 func _on_file_selected(path, target):
 	match Mode:
 		"Audio":
-			event_data['file'] = path
+			resource.properties['file'] = path
 		"Background":
-			event_data['background'] = path
+			resource.properties['background'] = path
 		"Scene":
-			event_data['change_scene'] = path
+			resource.properties['change_scene'] = path
 	
 	clear_button.visible = true
 	file_button.text = path.get_file()
@@ -89,13 +89,13 @@ func _on_file_selected(path, target):
 func _on_ClearButton_pressed():
 	match Mode:
 		"Audio":
-			event_data['file'] = ""
+			resource.properties['file'] = ""
 			file_button.text = 'nothing (will stop previous)'
 		"Background":
-			event_data['background'] = ""
+			resource.properties['background'] = ""
 			file_button.text = 'nothing (will hide previous)'
 		"Scene":
-			event_data['change_scene'] = ""
+			resource.properties['change_scene'] = ""
 			file_button.text = 'a yet to be selected scene'
 	clear_button.visible = false
 

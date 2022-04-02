@@ -3,7 +3,7 @@ extends "res://addons/dialogic/Editor/Events/Parts/EventPart.gd"
 
 ## BEFORE EDITING THIS MAKE SURE YOU HAVE CREATED A UNIQUE SCRIPT!!!
 
-# has an event_data variable that stores the current data!!!
+# has an resource.properties variable that stores the current data!!!
 
 ## node references
 # e.g. 
@@ -17,12 +17,12 @@ func _ready():
 
 # called by the event block
 func load_data(data:Dictionary):
-	# First set the event_data
+	# First set the resource.properties
 	.load_data(data)
 	
 	# Now update the ui nodes to display the data. 
 	# e.g. 
-	input_field.text = event_data['my_text_key']
+	input_field.text = resource.properties['my_text_key']
 
 # has to return the wanted preview, only useful for body parts
 func get_preview():
@@ -30,7 +30,7 @@ func get_preview():
 
 ## EXAMPLE CHANGE IN ONE OF THE NODES
 func _on_InputField_text_changed(text):
-	event_data['my_text_key'] = text
+	resource.properties['my_text_key'] = text
 	
 	# informs the parent about the changes!
 	data_changed()

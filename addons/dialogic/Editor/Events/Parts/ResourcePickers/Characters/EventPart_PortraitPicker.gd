@@ -39,18 +39,18 @@ func _ready():
 
 # called by the event block
 func load_data(data:Dictionary):
-	# First set the event_data
+	# First set the resource.properties
 	.load_data(data)
 	
-	allow_dont_change = event_data['event_id'] != 'dialogic_002' or (event_data['event_id'] == 'dialogic_002' and int(event_data.get('type', 0)) == 2)
+	allow_dont_change = resource.properties['event_id'] != 'dialogic_002' or (resource.properties['event_id'] == 'dialogic_002' and int(resource.properties.get('type', 0)) == 2)
 	
-	if event_data['event_id'] == 'dialogic_002' and event_data['type'] == 2:
+	if resource.properties['event_id'] == 'dialogic_002' and resource.properties['type'] == 2:
 		$HBox/Label.text = "to portrait"
 	else:
 		$HBox/Label.text = "with portrait"
 	
 	# Now update the ui nodes to display the data. 
-	if event_data.get('portrait', '').empty():
+	if resource.properties.get('portrait', '').empty():
 		# if this is a text/question event or character event in update mode 
 		if allow_dont_change:
 			picker_menu.text = "(Don't change)"
@@ -59,11 +59,11 @@ func load_data(data:Dictionary):
 			picker_menu.text = "Default"
 			picker_menu.custom_icon = portrait_icon
 	else:
-		if event_data['portrait'] == "[Definition]":
+		if resource.properties['portrait'] == "[Definition]":
 			picker_menu.text = "[Value]"
 			picker_menu.custom_icon = definition_icon
 		else:
-			picker_menu.text = event_data['portrait']
+			picker_menu.text = resource.properties['portrait']
 			picker_menu.custom_icon = portrait_icon
 
 # has to return the wanted preview, only useful for body parts
@@ -72,26 +72,26 @@ func get_preview():
 
 func _on_PickerMenu_selected(index):
 	if index == 0 and allow_dont_change:
-		event_data['portrait'] = "(Don't change)"
+		resource.properties['portrait'] = "(Don't change)"
 		picker_menu.custom_icon = no_change_icon
 	elif allow_definition and ((allow_dont_change and index == 1) or index == 0):
-		event_data['portrait'] = "[Definition]"
+		resource.properties['portrait'] = "[Definition]"
 		picker_menu.custom_icon = definition_icon
 	else:
-		event_data['portrait'] = picker_menu.get_popup().get_item_text(index)
+		resource.properties['portrait'] = picker_menu.get_popup().get_item_text(index)
 		picker_menu.custom_icon = portrait_icon
 	# TODO in 2.0
-	if event_data['portrait'] == "[Definition]":
+	if resource.properties['portrait'] == "[Definition]":
 		picker_menu.text = "[Value]"
 	else:
-		picker_menu.text = event_data['portrait']
+		picker_menu.text = resource.properties['portrait']
 	
 	# informs the parent about the changes!
 	data_changed()
 
 func get_character_data():
 	for ch in DialogicUtil.get_character_list():
-		if ch['file'] == event_data['character']:
+		if ch['file'] == resource.properties['character']:
 			return ch
 
 func _on_PickerMenu_about_to_show():
@@ -106,7 +106,7 @@ func _on_PickerMenu_about_to_show():
 		picker_menu.get_popup().add_item("[Value]")
 		picker_menu.get_popup().set_item_icon(index, definition_icon)
 		index += 1
-	if event_data['character']:
+	if resource.properties['character']:
 		if character_data.has('portraits'):
 			for p in character_data['portraits']:
 				picker_menu.get_popup().add_item(p['name'])

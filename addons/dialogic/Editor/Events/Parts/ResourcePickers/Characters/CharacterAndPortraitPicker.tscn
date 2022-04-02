@@ -21,7 +21,7 @@ custom_constants/separation = 5
 
 [node name="CharacterPicker" parent="HBox" instance=ExtResource( 2 )]
 margin_top = 9.0
-margin_right = 95.0
+margin_right = 115.0
 margin_bottom = 39.0
 
 [node name="PortraitPicker" parent="HBox" instance=ExtResource( 1 )]

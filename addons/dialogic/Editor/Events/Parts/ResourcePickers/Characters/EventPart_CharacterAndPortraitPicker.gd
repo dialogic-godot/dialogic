@@ -17,7 +17,7 @@ func _ready():
 	
 # called by the event block
 func load_data(data:Dictionary):
-	# First set the event_data
+	# First set the resource.properties
 	.load_data(data)
 	
 	# Now update the ui nodes to display the data. 
@@ -43,12 +43,12 @@ func get_preview():
 
 func get_character_data():
 	for ch in DialogicUtil.get_character_list():
-		if ch['file'] == event_data['character']:
+		if ch['file'] == resource.properties['character']:
 			return ch
 
 
 func _on_CharacterPicker_data_changed(data):
-	event_data = data
+	resource.properties = data
 	
 	# update the portrait picker data
 	portrait_picker.load_data(data)
@@ -61,18 +61,18 @@ func _on_CharacterPicker_data_changed(data):
 
 
 func _on_PortraitPicker_data_changed(data):
-	event_data = data
+	resource.properties = data
 	
 	# update the portrait picker data
 	character_picker.load_data(data)
-	definition_picker.visible = event_data['portrait'] == '[Definition]'
+	definition_picker.visible = resource.properties['portrait'] == '[Definition]'
 	
 	# informs the parent about the changes!
 	data_changed()
 
 
 func _on_DefinitionPicker_data_changed(data):
-	event_data['port_defn'] = data['definition']
+	resource.properties['port_defn'] = data['definition']
 
 	# informs the parent about the changes!
 	data_changed()

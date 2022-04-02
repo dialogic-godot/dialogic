@@ -17,46 +17,46 @@ func _ready():
 
 # called by the event block
 func load_data(data:Dictionary):
-	# First set the event_data
+	# First set the resource.properties
 	.load_data(data)
 	
 	# Now update the ui nodes to display the data. 
-	target_path_input.text = event_data['call_node']['target_node_path']
-	method_name_input.text = event_data['call_node']['method_name']
+	target_path_input.text = resource.properties['call_node']['target_node_path']
+	method_name_input.text = resource.properties['call_node']['method_name']
 	
-	for i in range(event_data['call_node']['arguments'].size()):
-		if (event_data['call_node']['arguments'][i] == null):
-			event_data['call_node']['arguments'][i] = ''
+	for i in range(resource.properties['call_node']['arguments'].size()):
+		if (resource.properties['call_node']['arguments'][i] == null):
+			resource.properties['call_node']['arguments'][i] = ''
 	
-	argument_length.value = len(event_data['call_node']['arguments'])
+	argument_length.value = len(resource.properties['call_node']['arguments'])
 	
 	_create_argument_controls()
 	
 # has to return the wanted preview, only useful for body parts
 func get_preview():
-	if event_data['call_node']["target_node_path"] and event_data['call_node']['method_name']:
-		return 'Calls `'+event_data['call_node']['method_name']+ "` on node `"+event_data['call_node']["target_node_path"]+"` with an array with "+str(len( event_data['call_node']['arguments'])) +" items."
+	if resource.properties['call_node']["target_node_path"] and resource.properties['call_node']['method_name']:
+		return 'Calls `'+resource.properties['call_node']['method_name']+ "` on node `"+resource.properties['call_node']["target_node_path"]+"` with an array with "+str(len( resource.properties['call_node']['arguments'])) +" items."
 	else:
 		return ''
 
 func _on_TargetPathInput_text_changed(text):
-	event_data['call_node']['target_node_path'] = text
+	resource.properties['call_node']['target_node_path'] = text
 	
 	# informs the parent about the changes!
 	data_changed()
 
 func _on_MethodName_text_changed(text):
-	event_data['call_node']['method_name'] = text
+	resource.properties['call_node']['method_name'] = text
 	
 	# informs the parent about the changes!
 	data_changed()
 
 func _on_AgrumentLength_value_changed(value):
-	event_data['call_node']['arguments'].resize(max(0, value))
+	resource.properties['call_node']['arguments'].resize(max(0, value))
 	
-	for i in range(event_data['call_node']['arguments'].size()):
-		if (event_data['call_node']['arguments'][i] == null):
-			event_data['call_node']['arguments'][i] = ''
+	for i in range(resource.properties['call_node']['arguments'].size()):
+		if (resource.properties['call_node']['arguments'][i] == null):
+			resource.properties['call_node']['arguments'][i] = ''
 			
 	_create_argument_controls()
 	
@@ -64,10 +64,10 @@ func _on_AgrumentLength_value_changed(value):
 	data_changed()
 
 func _on_argument_value_changed(value, arg_index):
-	if (arg_index < 0 or arg_index >= event_data['call_node']['arguments'].size()):
+	if (arg_index < 0 or arg_index >= resource.properties['call_node']['arguments'].size()):
 		return
 		
-	event_data['call_node']['arguments'][arg_index] = str(value)
+	resource.properties['call_node']['arguments'][arg_index] = str(value)
 	
 	# informs the parent about the changes!
 	data_changed()
@@ -75,7 +75,7 @@ func _on_argument_value_changed(value, arg_index):
 
 # helpers
 func _create_argument_controls():
-	if (not event_data['call_node']['arguments'] is Array):
+	if (not resource.properties['call_node']['arguments'] is Array):
 		return
 		
 	# clear old
@@ -85,7 +85,7 @@ func _create_argument_controls():
 		
 	# create controls
 	var index = 0
-	for a in event_data['call_node']['arguments']:
+	for a in resource.properties['call_node']['arguments']:
 		var container = HBoxContainer.new()
 		container.name = "Argument%s" % index
 		

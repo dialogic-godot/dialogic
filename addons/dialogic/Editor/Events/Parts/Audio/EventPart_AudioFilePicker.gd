@@ -21,8 +21,8 @@ func load_data(data:Dictionary):
 	.load_data(data)
 	
 	# Now update the ui nodes to display the data. 
-	file_picker.load_data(event_data)
-	preview_button.visible = !event_data['file'].empty()
+	file_picker.load_data(resource.properties)
+	preview_button.visible = !resource.properties['file'].empty()
 
 # has to return the wanted preview, only useful for body parts
 func get_preview():
@@ -30,9 +30,9 @@ func get_preview():
 
 
 func _on_FilePicker_data_changed(data):
-	event_data = data
+	resource.properties = data
 	
-	preview_button.visible = !event_data['file'].empty()
+	preview_button.visible = !resource.properties['file'].empty()
 	# informs the parent about the changes!
 	data_changed()
 
@@ -40,11 +40,11 @@ func _on_PreviewButton_pressed():
 	if audio_preview.is_playing():
 		audio_preview.stop()
 	else:
-		audio_preview.stream = load(event_data['file'])
-		audio_preview.bus = event_data['audio_bus']
-		audio_preview.volume_db =  event_data.get('volume', 0)
-		if event_data.has('start_time'):
-			audio_preview.play(event_data['start_time'])
+		audio_preview.stream = load(resource.properties['file'])
+		audio_preview.bus = resource.properties['audio_bus']
+		audio_preview.volume_db =  resource.properties.get('volume', 0)
+		if resource.properties.has('start_time'):
+			audio_preview.play(resource.properties['start_time'])
 		else:
 			audio_preview.play()
 		preview_button.icon = get_icon("Stop", "EditorIcons")
@@ -55,5 +55,5 @@ func _on_AudioPreview_finished():
 
 func _process(_delta):
 	#Will automatically stop playing when reaching stop_time
-	if(audio_preview.playing && event_data.has('stop_time') && audio_preview.get_playback_position() >= event_data['stop_time']):
+	if(audio_preview.playing && resource.properties.has('stop_time') && audio_preview.get_playback_position() >= resource.properties['stop_time']):
 		audio_preview.stop()

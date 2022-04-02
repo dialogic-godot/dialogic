@@ -17,7 +17,7 @@ func _ready():
 
 # called by the event block
 func load_data(data:Dictionary):
-	# First set the event_data
+	# First set the resource.properties
 	.load_data(data)
 	
 	# Now update the ui nodes to display the data. 
@@ -41,7 +41,7 @@ func _on_PickerMenu_selected(index, menu):
 	var metadata = menu.get_item_metadata(index)
 	picker_menu.text = text
 	
-	event_data['definition'] = metadata['file']
+	resource.properties['definition'] = metadata['file']
 	# informs the parent about the changes!
 	data_changed()
 
