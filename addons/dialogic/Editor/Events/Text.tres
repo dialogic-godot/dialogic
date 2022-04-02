@@ -1,9 +1,8 @@
-[gd_resource type="Resource" load_steps=5 format=2]
+[gd_resource type="Resource" load_steps=4 format=2]
 
 [ext_resource path="res://addons/dialogic/Editor/Events/event_resource.gd" type="Script" id=1]
 [ext_resource path="res://addons/dialogic/Images/Event Icons/Main Icons/text-event.svg" type="Texture" id=2]
-[ext_resource path="res://addons/dialogic/Editor/Events/Parts/Text/TextAndVoiceEditor.tscn" type="PackedScene" id=3]
-[ext_resource path="res://addons/dialogic/Editor/Events/Parts/ResourcePickers/Characters/CharacterAndPortraitPicker.tscn" type="PackedScene" id=4]
+[ext_resource path="res://addons/dialogic/Editor/Events/Fields/TextArea.tscn" type="PackedScene" id=3]
 
 [resource]
 script = ExtResource( 1 )
@@ -22,5 +21,5 @@ expand_by_default = true
 needs_indentation = false
 display_name = true
 sorting_index = 0
-header_scene = ExtResource( 4 )
+header_scene = ExtResource( 3 )
 body_scene = ExtResource( 3 )

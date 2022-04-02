@@ -745,11 +745,8 @@ func cancel_drop_event():
 func add_event_to_timeline(event_resource, at_index:int = -1, auto_select: bool = false, indent: bool = false):
 	var piece = event_node.instance()
 	var resource = event_resource.duplicate()
-	print(resource.properties)
-	piece.load_data(resource)
-	#piece.resource = resource
-	piece.editor_reference = editor_reference
-	
+	print('[D] New resource: ', resource)
+	piece.resource = resource
 	
 	if at_index == -1:
 		if len(selected_items) != 0:

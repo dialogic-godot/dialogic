@@ -43,7 +43,7 @@ flags = 4
 image = SubResource( 8 )
 size = Vector2( 16, 16 )
 
-[node name="EventTemplate" type="HBoxContainer"]
+[node name="EventNode" type="HBoxContainer"]
 anchor_right = 1.0
 margin_right = -922.0
 margin_bottom = 76.0
@@ -92,20 +92,20 @@ size_flags_vertical = 3
 
 [node name="Header" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer"]
 margin_right = 86.0
-margin_bottom = 64.0
+margin_bottom = 56.0
 rect_min_size = Vector2( 0, 32 )
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_constants/separation = 0
 
 [node name="CenterContainer" type="CenterContainer" parent="PanelContainer/MarginContainer/VBoxContainer/Header"]
-margin_bottom = 64.0
+margin_bottom = 56.0
 mouse_filter = 1
 
 [node name="IconPanel" type="TextureRect" parent="PanelContainer/MarginContainer/VBoxContainer/Header/CenterContainer"]
 self_modulate = Color( 0.6, 0.6, 0.6, 1 )
-margin_top = 32.0
-margin_bottom = 32.0
+margin_top = 28.0
+margin_bottom = 28.0
 mouse_default_cursor_shape = 6
 texture = ExtResource( 7 )
 expand = true
@@ -145,13 +145,13 @@ __meta__ = {
 }
 
 [node name="TitleLabel" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/Header"]
-margin_top = 25.0
-margin_bottom = 39.0
+margin_top = 21.0
+margin_bottom = 35.0
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 
 [node name="Content" type="MarginContainer" parent="PanelContainer/MarginContainer/VBoxContainer/Header"]
 margin_right = 10.0
-margin_bottom = 64.0
+margin_bottom = 56.0
 mouse_filter = 1
 custom_constants/margin_right = 5
 custom_constants/margin_left = 5
@@ -163,39 +163,21 @@ margin_right = 242.0
 [node name="Spacer" type="Control" parent="PanelContainer/MarginContainer/VBoxContainer/Header"]
 margin_left = 10.0
 margin_right = 86.0
-margin_bottom = 64.0
+margin_bottom = 56.0
 mouse_filter = 1
 size_flags_horizontal = 3
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="HelpButton" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer/Header"]
-visible = false
-margin_left = 90.0
-margin_right = 120.0
-margin_bottom = 30.0
-rect_min_size = Vector2( 30, 30 )
-hint_tooltip = "Open the documentation of this event"
-flat = true
-clip_text = true
-expand_icon = true
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
 [node name="Body" type="VBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer"]
-visible = false
-margin_left = 202.0
-margin_top = 34.0
-margin_right = 1012.0
-margin_bottom = 42.0
+margin_top = 60.0
+margin_right = 86.0
+margin_bottom = 64.0
 custom_constants/separation = 0
 
 [node name="Content" type="MarginContainer" parent="PanelContainer/MarginContainer/VBoxContainer/Body"]
-margin_top = 4.0
-margin_right = 1012.0
-margin_bottom = 8.0
+margin_bottom = 4.0
 mouse_filter = 1
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -214,4 +196,3 @@ items = [ "Documentation", SubResource( 6 ), 0, false, false, 0, 0, null, "", fa
 script = ExtResource( 8 )
 
 [connection signal="visibility_changed" from="Indent" to="." method="_on_Indent_visibility_changed"]
-[connection signal="pressed" from="PanelContainer/MarginContainer/VBoxContainer/Header/HelpButton" to="." method="_on_HelpButton_pressed"]

@@ -1,9 +1,7 @@
-[gd_resource type="Resource" load_steps=5 format=2]
+[gd_resource type="Resource" load_steps=3 format=2]
 
 [ext_resource path="res://addons/dialogic/Editor/Events/event_resource.gd" type="Script" id=1]
 [ext_resource path="res://addons/dialogic/Images/Event Icons/Main Icons/set-background.svg" type="Texture" id=2]
-[ext_resource path="res://addons/dialogic/Editor/Events/Parts/Images/BackgroundPreview.tscn" type="PackedScene" id=3]
-[ext_resource path="res://addons/dialogic/Editor/Events/Parts/Images/BackgroundPicker.tscn" type="PackedScene" id=4]
 
 [resource]
 script = ExtResource( 1 )
@@ -18,5 +16,3 @@ expand_by_default = true
 needs_indentation = false
 display_name = true
 sorting_index = 0
-header_scene = ExtResource( 4 )
-body_scene = ExtResource( 3 )

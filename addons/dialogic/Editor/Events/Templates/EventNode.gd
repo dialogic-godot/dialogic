@@ -20,7 +20,6 @@ onready var header_content_container = $PanelContainer/MarginContainer/VBoxConta
 onready var body_container = $PanelContainer/MarginContainer/VBoxContainer/Body
 onready var body_content_container = $PanelContainer/MarginContainer/VBoxContainer/Body/Content
 onready var indent_node = $Indent
-onready var help_button = $PanelContainer/MarginContainer/VBoxContainer/Header/HelpButton
 
 ### extarnal node references
 var editor_reference
@@ -39,6 +38,7 @@ var ignore_save = false
 
 func visual_select():
 	selected_style.show()
+	#print(resource, ' - ', resource.properties)
 
 
 func visual_deselect():
@@ -48,23 +48,16 @@ func visual_deselect():
 
 # called by the timeline before adding it to the tree
 func load_data(data):
-	print('load_data')
-	print(data.properties)
+	#print('load_data')
+	#print(data.properties)
 	resource = data
 
 # called to inform event parts, that a focus is wanted
 func focus():
-	if get_header():
-		get_header().focus()
-	if get_body():
-		get_body().focus()
-
-func get_body():
-	return resource.body_scene
-
-
-func get_header():
-	return resource.header_scene
+	if resource.header_scene:
+		resource.header_scene.focus()
+	if resource.body_scene:
+		resource.body_scene.focus()
 
 
 func set_warning(text):
@@ -116,7 +109,7 @@ func _set_event_icon(icon: Texture):
 	
 
 func _set_event_name(text: String):
-	if resource.display_name:
+	if resource.name:
 		title_label.text = text
 	else:
 		var t_label = get_node_or_null("PanelContainer/MarginContainer/VBoxContainer/Header/TitleLabel")
@@ -129,11 +122,6 @@ func _set_header(scene: PackedScene):
 	resource.header_scene = _set_content(header_content_container, scene)
 
 
-func _set_body(scene: PackedScene):
-	resource.body_scene = _set_content(body_content_container, scene)
-	# show the expand toggle
-	expand_control.set_enabled(resource.body_scene != null)
-
 
 func _setup_event():
 	if resource.icon != null:
@@ -141,9 +129,9 @@ func _setup_event():
 	if event_name != null:
 		_set_event_name(event_name)
 	if resource.header_scene != null:
-		_set_header(resource.header_scene)
+		resource.header_scene = _set_content(header_content_container, resource.header_scene)
 	if resource.body_scene != null:
-		_set_body(resource.body_scene)
+		resource.body_scene = _set_content(body_content_container, resource.body_scene)
 		body_content_container.add_constant_override('margin_left', 40*DialogicUtil.get_editor_scale(self))
 	$PanelContainer/MarginContainer/VBoxContainer/Header/CenterContainer/IconPanel.set("self_modulate", resource.color)
 
@@ -153,9 +141,8 @@ func _set_content(container: Control, scene: PackedScene):
 		container.remove_child(c)
 	if scene != null:
 		var node = scene.instance()
-		node.editor_reference = editor_reference
 		container.add_child(node)
-#		node.set_owner(get_tree().get_edited_scene_root())
+		node.owner = self
 		return node
 	return null
 
@@ -204,29 +191,6 @@ func _on_gui_input(event):
 			$PopupMenu.rect_global_position = get_global_mouse_position()
 			var popup = $PopupMenu.popup()
 
-
-# called when the data of the header is changed
-func _on_Header_data_changed(new_event_data):
-	resource.properties = new_event_data
-	
-	# update the body in case it has to
-	if get_body():
-		get_body().load_data(resource)
-
-
-# called when the data of the body is changed
-func _on_Body_data_changed(new_event_data):
-	resource.properties = new_event_data
-	
-	# update the header in case it has to
-	if get_header():
-		get_header().load_data(resource)
-
-func _request_set_body_enabled(enabled:bool):
-	expand_control.set_enabled(enabled)
-	
-	if get_body():
-		get_body().visible = enabled
 	
 func _request_selection():
 	var timeline_editor = editor_reference.get_node_or_null('MainPanel/TimelineEditor')
@@ -260,36 +224,5 @@ func _ready():
 	panel.connect("gui_input", self, '_on_gui_input')
 	expand_control.connect("state_changed", self, "_on_ExpandControl_state_changed")
 	$PopupMenu.connect("index_pressed", self, "_on_OptionsControl_action")
-	
-	# load icons
-	#if help_page_path != "":
-	#	help_button.icon = get_icon("HelpSearch", "EditorIcons")
-	#	help_button.show()
-	
-	# when it enters the tree, load the data into the header/body
-	# If there is any external data, it will be set already BEFORE the event is added to tree
-	# if you have a header
-	if get_header():
-		get_header().connect("data_changed", self, "_on_Header_data_changed")
-		get_header().connect("request_open_body", expand_control, "set_expanded", [true])
-		get_header().connect("request_close_body", expand_control, "set_expanded", [false])
-		get_header().connect("request_selection", self, "_request_selection")
-		get_header().connect("request_set_body_enabled", self, "_request_set_body_enabled")
-		get_header().connect("set_warning", self, "set_warning")
-		get_header().connect("remove_warning", self, "remove_warning")
-		get_header().load_data(resource)
-	# if you have a body
-	if get_body():
-		get_body().connect("data_changed", self, "_on_Body_data_changed")
-		get_body().connect("request_open_body", expand_control, "set_expanded", [true])
-		get_body().connect("request_close_body", expand_control, "set_expanded", [false])
-		get_body().connect("request_set_body_enabled", self, "_request_set_body_enabled")
-		get_body().connect("request_selection", self, "_request_selection")
-		get_body().connect("set_warning", self, "set_warning")
-		get_body().connect("remove_warning", self, "remove_warning")
-		get_body().load_data(resource)
-	
-	if get_body():
-		set_expanded(resource.expand_by_default)
 	
 	_on_Indent_visibility_changed()
