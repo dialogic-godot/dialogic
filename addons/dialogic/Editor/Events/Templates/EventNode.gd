@@ -38,7 +38,6 @@ var ignore_save = false
 
 func visual_select():
 	selected_style.show()
-	#print(resource, ' - ', resource.properties)
 
 
 func visual_deselect():
@@ -48,16 +47,7 @@ func visual_deselect():
 
 # called by the timeline before adding it to the tree
 func load_data(data):
-	#print('load_data')
-	#print(data.properties)
 	resource = data
-
-# called to inform event parts, that a focus is wanted
-func focus():
-	if resource.header_scene:
-		resource.header_scene.focus()
-	if resource.body_scene:
-		resource.body_scene.focus()
 
 
 func set_warning(text):
@@ -104,9 +94,7 @@ func _set_event_icon(icon: Texture):
 	cpanel.rect_min_size = Vector2(icon_size, icon_size) * _scale
 	ip.rect_min_size = cpanel.rect_min_size
 	ipc.rect_min_size = ip.rect_min_size
-	#rect_min_size.y = 50 * _scale
-	#icon_texture.rect_size = icon_texture.rect_size * _scale
-	
+
 
 func _set_event_name(text: String):
 	if resource.name:
@@ -115,36 +103,6 @@ func _set_event_name(text: String):
 		var t_label = get_node_or_null("PanelContainer/MarginContainer/VBoxContainer/Header/TitleLabel")
 		if t_label:
 			t_label.queue_free()
-
-
-
-func _set_header(scene: PackedScene):
-	resource.header_scene = _set_content(header_content_container, scene)
-
-
-
-func _setup_event():
-	if resource.icon != null:
-		_set_event_icon(resource.icon)
-	if event_name != null:
-		_set_event_name(event_name)
-	if resource.header_scene != null:
-		resource.header_scene = _set_content(header_content_container, resource.header_scene)
-	if resource.body_scene != null:
-		resource.body_scene = _set_content(body_content_container, resource.body_scene)
-		body_content_container.add_constant_override('margin_left', 40*DialogicUtil.get_editor_scale(self))
-	$PanelContainer/MarginContainer/VBoxContainer/Header/CenterContainer/IconPanel.set("self_modulate", resource.color)
-
-
-func _set_content(container: Control, scene: PackedScene):
-	for c in container.get_children():
-		container.remove_child(c)
-	if scene != null:
-		var node = scene.instance()
-		container.add_child(node)
-		node.owner = self
-		return node
-	return null
 
 
 func _on_ExpandControl_state_changed(expanded: bool):
@@ -199,6 +157,15 @@ func _request_selection():
 		# consider to make it "public" or add a public helper function
 		timeline_editor.select_item(self)
 
+
+# called to inform event parts, that a focus is wanted
+func focus():
+	pass
+	#if resource.header_scene:
+	#	resource.header_scene.focus()
+	#if resource.body_scene:
+	#	resource.body_scene.focus()
+
 ## *****************************************************************************
 ##								OVERRIDES
 ## *****************************************************************************
@@ -216,7 +183,26 @@ func _ready():
 	
 	indent_size = indent_size * DialogicUtil.get_editor_scale(self)
 	
-	_setup_event()
+	if resource.icon != null:
+		_set_event_icon(resource.icon)
+	if event_name != null:
+		_set_event_name(event_name)
+	if resource.header != null:
+		print('resource.header: ', resource.header)
+		for node in resource.header:
+			print(node)
+			var new_node = node.instance()
+			header_content_container.add_child(new_node)
+			new_node.owner = self
+			
+	if resource.body != null:
+		print('resource.body: ', resource.body)
+		for node in resource.body:
+			var new_node = node.instance()
+			body_content_container.add_child(new_node)
+			new_node.owner = self
+		body_content_container.add_constant_override('margin_left', 40*DialogicUtil.get_editor_scale(self))
+	$PanelContainer/MarginContainer/VBoxContainer/Header/CenterContainer/IconPanel.set("self_modulate", resource.color)
 	
 	set_focus_mode(1) # Allowing this node to grab focus
 	

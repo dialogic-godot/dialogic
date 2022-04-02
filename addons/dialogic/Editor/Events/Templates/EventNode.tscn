@@ -92,20 +92,20 @@ size_flags_vertical = 3
 
 [node name="Header" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer"]
 margin_right = 86.0
-margin_bottom = 56.0
+margin_bottom = 60.0
 rect_min_size = Vector2( 0, 32 )
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_constants/separation = 0
 
 [node name="CenterContainer" type="CenterContainer" parent="PanelContainer/MarginContainer/VBoxContainer/Header"]
-margin_bottom = 56.0
+margin_bottom = 60.0
 mouse_filter = 1
 
 [node name="IconPanel" type="TextureRect" parent="PanelContainer/MarginContainer/VBoxContainer/Header/CenterContainer"]
 self_modulate = Color( 0.6, 0.6, 0.6, 1 )
-margin_top = 28.0
-margin_bottom = 28.0
+margin_top = 30.0
+margin_bottom = 30.0
 mouse_default_cursor_shape = 6
 texture = ExtResource( 7 )
 expand = true
@@ -145,25 +145,20 @@ __meta__ = {
 }
 
 [node name="TitleLabel" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/Header"]
-margin_top = 21.0
-margin_bottom = 35.0
+margin_top = 23.0
+margin_bottom = 37.0
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 
-[node name="Content" type="MarginContainer" parent="PanelContainer/MarginContainer/VBoxContainer/Header"]
-margin_right = 10.0
-margin_bottom = 56.0
-mouse_filter = 1
-custom_constants/margin_right = 5
-custom_constants/margin_left = 5
+[node name="Content" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer/Header"]
+margin_bottom = 60.0
 
 [node name="ExpandControl" parent="PanelContainer/MarginContainer/VBoxContainer/Header" instance=ExtResource( 2 )]
 margin_left = 178.0
 margin_right = 242.0
 
 [node name="Spacer" type="Control" parent="PanelContainer/MarginContainer/VBoxContainer/Header"]
-margin_left = 10.0
 margin_right = 86.0
-margin_bottom = 56.0
+margin_bottom = 60.0
 mouse_filter = 1
 size_flags_horizontal = 3
 __meta__ = {
@@ -171,18 +166,16 @@ __meta__ = {
 }
 
 [node name="Body" type="VBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer"]
-margin_top = 60.0
+margin_top = 64.0
 margin_right = 86.0
 margin_bottom = 64.0
+size_flags_horizontal = 3
 custom_constants/separation = 0
 
-[node name="Content" type="MarginContainer" parent="PanelContainer/MarginContainer/VBoxContainer/Body"]
-margin_bottom = 4.0
-mouse_filter = 1
+[node name="Content" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer/Body"]
+margin_right = 86.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-custom_constants/margin_top = 2
-custom_constants/margin_bottom = 2
 
 [node name="PopupMenu" type="PopupMenu" parent="."]
 margin_left = 30.0

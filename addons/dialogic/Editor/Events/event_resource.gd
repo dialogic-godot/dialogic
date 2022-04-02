@@ -11,13 +11,13 @@ export (int, 'Main', 'Logic', 'Timeline', 'Audio/Visual', 'Godot', 'Other') var 
 
 export (String) var help_page_path
 
-export (bool) var expand_by_default = true
-export (bool) var needs_indentation = false
-export (bool) var display_name = true
+export (bool) var expand_by_default : bool = true
+export (bool) var needs_indentation : bool = false
+export (bool) var display_name : bool = true
 
-export (int) var sorting_index
+export (int) var sorting_index : int
 
 # Hopefully we can replace this with a cleaner system
 # maybe even generate them based on some markup? who knows, it is free to dream
-export(PackedScene) var header_scene : PackedScene
-export(PackedScene) var body_scene : PackedScene
+export(Array, PackedScene) var header : Array
+export(Array, PackedScene) var body : Array
