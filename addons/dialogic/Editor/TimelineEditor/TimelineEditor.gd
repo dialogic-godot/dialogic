@@ -143,7 +143,7 @@ func _on_event_block_gui_input(event, item: Node):
 				if move_start_position != to_position:
 					# move it back so the DO action works. (Kinda stupid but whatever)
 					move_block_to_index(to_position, move_start_position)
-					TimelineUndoRedo.create_action("[D] Moved event (type '"+moving_piece.event_data.event_id+"').")
+					TimelineUndoRedo.create_action("[D] Moved event (type '"+moving_piece.resource.id+"').")
 					TimelineUndoRedo.add_do_method(self, "move_block_to_index", move_start_position, to_position)
 					TimelineUndoRedo.add_undo_method(self, "move_block_to_index", to_position, move_start_position)
 					TimelineUndoRedo.commit_action()

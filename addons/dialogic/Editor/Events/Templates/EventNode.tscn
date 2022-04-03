@@ -150,13 +150,16 @@ margin_bottom = 37.0
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 
 [node name="Content" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer/Header"]
+margin_right = 43.0
 margin_bottom = 60.0
+size_flags_horizontal = 3
 
 [node name="ExpandControl" parent="PanelContainer/MarginContainer/VBoxContainer/Header" instance=ExtResource( 2 )]
 margin_left = 178.0
 margin_right = 242.0
 
 [node name="Spacer" type="Control" parent="PanelContainer/MarginContainer/VBoxContainer/Header"]
+margin_left = 43.0
 margin_right = 86.0
 margin_bottom = 60.0
 mouse_filter = 1
@@ -172,7 +175,7 @@ margin_bottom = 64.0
 size_flags_horizontal = 3
 custom_constants/separation = 0
 
-[node name="Content" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer/Body"]
+[node name="Content" type="VBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer/Body"]
 margin_right = 86.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
