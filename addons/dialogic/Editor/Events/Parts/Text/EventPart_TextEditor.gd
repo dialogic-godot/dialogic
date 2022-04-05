@@ -106,12 +106,12 @@ func _set_new_min_size():
 	text_editor.rect_min_size.y = get_font("normal_font").get_height() * ((text_editor.get_line_count() + 1 + count_wrapped_lines) * extra_vertical)
 	
 	# set the width
-	text_editor.rect_min_size.x = get_font("normal_font").get_string_size(longest_string).x + 50
+	text_editor.rect_min_size.x = get_font("normal_font").get_string_size(longest_string).x + 80
 	if text_editor.rect_min_size.x > get_max_x_size():
 		text_editor.rect_min_size.x = get_max_x_size()
 
 func get_max_x_size():
-	return timeline_area.rect_size.x - (text_editor.rect_global_position.x - timeline_area.rect_global_position.x) - 50
+	return timeline_area.rect_size.x - (text_editor.rect_global_position.x - timeline_area.rect_global_position.x) - 80
 
 func _on_TextEditor_focus_entered() -> void:
 	if (Input.is_mouse_button_pressed(BUTTON_LEFT)):
