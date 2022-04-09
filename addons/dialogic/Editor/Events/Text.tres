@@ -1,0 +1,26 @@
+[gd_resource type="Resource" load_steps=5 format=2]
+
+[ext_resource path="res://addons/dialogic/Editor/Events/event_resource.gd" type="Script" id=1]
+[ext_resource path="res://addons/dialogic/Images/Event Icons/Main Icons/text-event.svg" type="Texture" id=2]
+[ext_resource path="res://addons/dialogic/Editor/Events/Fields/TextArea.tscn" type="PackedScene" id=3]
+[ext_resource path="res://addons/dialogic/Editor/Events/Fields/Label.tscn" type="PackedScene" id=4]
+
+[resource]
+script = ExtResource( 1 )
+id = "dialogic_001"
+name = "Text"
+icon = ExtResource( 2 )
+color = Color( 1, 1, 1, 1 )
+properties = {
+"character": "",
+"portrait": "",
+"text": ""
+}
+category = 0
+help_page_path = "res://addons/dialogic/Documentation/Content/Events/001.md"
+expand_by_default = true
+needs_indentation = false
+display_name = true
+sorting_index = 0
+header = [ ExtResource( 4 ), ExtResource( 3 ), ExtResource( 3 ) ]
+body = [ ExtResource( 3 ), ExtResource( 3 ) ]

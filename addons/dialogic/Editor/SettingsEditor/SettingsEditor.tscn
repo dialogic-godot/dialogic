@@ -5,7 +5,7 @@
 [ext_resource path="res://addons/dialogic/Editor/Common/TLabel.tscn" type="PackedScene" id=3]
 [ext_resource path="res://addons/dialogic/Editor/SettingsEditor/Scenes/SettingsCheckbox.tscn" type="PackedScene" id=4]
 [ext_resource path="res://addons/dialogic/Editor/SettingsEditor/Scenes/HistorySettings.tscn" type="PackedScene" id=5]
-[ext_resource path="res://addons/dialogic/Editor/Events/Parts/ResourcePickers/ResourcePickerMenu.tscn" type="PackedScene" id=6]
+[ext_resource path="res://addons/dialogic/Editor/Placeholder_TODELETE.tscn" type="PackedScene" id=6]
 [ext_resource path="res://addons/dialogic/Editor/Events/styles/InputFieldsStyle.tres" type="Theme" id=7]
 
 [sub_resource type="Image" id=1]

@@ -1,0 +1,18 @@
+[gd_resource type="Resource" load_steps=3 format=2]
+
+[ext_resource path="res://addons/dialogic/Editor/Events/event_resource.gd" type="Script" id=1]
+[ext_resource path="res://addons/dialogic/Images/Event Icons/Main Icons/question.svg" type="Texture" id=2]
+
+[resource]
+script = ExtResource( 1 )
+id = "dialogic_010"
+name = "Question"
+icon = ExtResource( 2 )
+color = Color( 0.619608, 0.466667, 0.92549, 1 )
+properties = [  ]
+category = 1
+help_page_path = "res://addons/dialogic/Documentation/Content/Events/010.md"
+expand_by_default = true
+needs_indentation = false
+display_name = true
+sorting_index = 0

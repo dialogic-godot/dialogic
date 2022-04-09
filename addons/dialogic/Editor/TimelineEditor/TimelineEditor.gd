@@ -7,10 +7,11 @@ var timeline_file: String = ''
 var current_timeline: Dictionary = {}
 var TimelineUndoRedo := UndoRedo.new()
 
+onready var event_node = load("res://addons/dialogic/Editor/Events/Templates/EventNode.tscn")
+
 onready var master_tree = get_node('../MasterTreeContainer/MasterTree')
 onready var timeline = $TimelineArea/TimeLine
 onready var events_warning = $ScrollContainer/EventContainer/EventsWarning
-onready var custom_events_container = $ScrollContainer/EventContainer/CustomEventsContainer
 
 var hovered_item = null
 var selected_style : StyleBoxFlat = load("res://addons/dialogic/Editor/Events/styles/selected_styleboxflat.tres")
@@ -24,7 +25,6 @@ var move_start_position = null
 var moving_piece = null
 var piece_was_dragged = false
 
-var custom_events = {}
 
 var id_to_scene_name = {
 	#Main events
@@ -86,33 +86,33 @@ func _ready():
 	var style = $TimelineArea.get('custom_styles/bg')
 	style.set('bg_color', get_color("dark_color_1", "Editor"))
 	
-	update_custom_events()
 	$TimelineArea.connect('resized', self, 'add_extra_scroll_area_to_timeline', [])
 	
-	# We create the event buttons
-	event_data = _read_event_data()
+	# Event buttons
 	var buttonScene = load("res://addons/dialogic/Editor/TimelineEditor/SmallEventButton.tscn")
-	for b in event_data:
-		if typeof(b['event_data']) == TYPE_DICTIONARY:
+	var resource_list = DialogicResources.listdir("res://addons/dialogic/Editor/Events/")
+	for resource_path in resource_list:
+		if '.tres' in resource_path:
+			var event_resource = load("res://addons/dialogic/Editor/Events/" + resource_path)
 			var button = buttonScene.instance()
-			# Button properties
-			button.visible_name = '       ' + b['event_name']
-			button.event_id = b['event_data']['event_id']
-			button.set_icon(b['event_icon'])
-			button.event_color = b['event_color']
-			button.event_category = b.get('event_category', 0)
-			button.sorting_index = b.get('sorting_index', 9999)
+			button.resource = event_resource
+			button.visible_name = '       ' + event_resource.name
+			button.event_id = event_resource.id
+			button.set_icon(event_resource.icon)
+			button.event_color = event_resource.color
+			button.event_category = event_resource.category
+			button.sorting_index = event_resource.sorting_index
 			# Connecting the signal
 			if button.event_id == 'dialogic_010':
 				button.connect('pressed', self, "_on_ButtonQuestion_pressed", [])
 			elif button.event_id == 'dialogic_012': # Condition
 				button.connect('pressed', self, "_on_ButtonCondition_pressed", [])
 			else:
-				button.connect('pressed', self, "_create_event_button_pressed", [button.event_id])
-			# Adding it to its section
+				button.connect('pressed', self, "_add_event_button_pressed", [event_resource])
 			get_node("ScrollContainer/EventContainer/FlexContainer" + str(button.event_category + 1)).add_child(button)
 			while button.get_index() != 0 and button.sorting_index < get_node("ScrollContainer/EventContainer/FlexContainer" + str(button.event_category + 1)).get_child(button.get_index()-1).sorting_index:
 				get_node("ScrollContainer/EventContainer/FlexContainer" + str(button.event_category + 1)).move_child(button, button.get_index()-1)
+	
 
 # handles dragging/moving of events
 func _process(delta):
@@ -143,7 +143,7 @@ func _on_event_block_gui_input(event, item: Node):
 				if move_start_position != to_position:
 					# move it back so the DO action works. (Kinda stupid but whatever)
 					move_block_to_index(to_position, move_start_position)
-					TimelineUndoRedo.create_action("[D] Moved event (type '"+moving_piece.event_data.event_id+"').")
+					TimelineUndoRedo.create_action("[D] Moved event (type '"+moving_piece.resource.id+"').")
 					TimelineUndoRedo.add_do_method(self, "move_block_to_index", move_start_position, to_position)
 					TimelineUndoRedo.add_undo_method(self, "move_block_to_index", to_position, move_start_position)
 					TimelineUndoRedo.commit_action()
@@ -404,10 +404,12 @@ func get_events_indexed(events:Array) -> Dictionary:
 		indexed_dict[event.get_index()] = event.event_data.duplicate(true)
 	return indexed_dict
 
+
 func select_indexed_events(indexed_events:Dictionary) -> void:
 	selected_items = []
 	for event_index in indexed_events.keys():
 		selected_items.append(timeline.get_child(event_index))
+
 
 func add_events_indexed(indexed_events:Dictionary) -> void:
 	var indexes = indexed_events.keys()
@@ -415,7 +417,7 @@ func add_events_indexed(indexed_events:Dictionary) -> void:
 	var events = []
 	for event_idx in indexes:
 		deselect_all_items()
-		events.append(create_event(indexed_events[event_idx].event_id, indexed_events[event_idx]))
+		#events.append(create_event(indexed_events[event_idx].event_id, indexed_events[event_idx]))
 		timeline.move_child(events[-1], event_idx)
 		
 	selected_items = events
@@ -424,6 +426,7 @@ func add_events_indexed(indexed_events:Dictionary) -> void:
 func delete_events_indexed(indexed_events:Dictionary) -> void:
 	select_indexed_events(indexed_events)
 	delete_selected_events()
+
 
 func delete_selected_events():
 	if len(selected_items) == 0:
@@ -477,6 +480,7 @@ func copy_selected_events():
 			"project_name": ProjectSettings.get_setting("application/config/name")
 		})
 
+
 func paste_check():
 	var clipboard_parse = JSON.parse(OS.clipboard).result
 	
@@ -490,11 +494,13 @@ func paste_check():
 		if clipboard_parse.has('events'):
 			return clipboard_parse['events']
 
+
 func remove_events_at_index(at_index:int, amount:int = 1)-> void:
 	selected_items = []
 	for i in range(0, amount):
 		selected_items.append(timeline.get_child(at_index + i))
 	delete_selected_events()
+
 
 func add_events_at_index(event_list:Array, at_index:int) -> void:
 	if at_index != -1:
@@ -506,14 +512,17 @@ func add_events_at_index(event_list:Array, at_index:int) -> void:
 	var new_items = []
 	for item in event_list:
 		if typeof(item) == TYPE_DICTIONARY and item.has('event_id'):
-			new_items.append(create_event(item['event_id'], item))
+			#new_items.append(create_event(item['event_id'], item))
+			pass
 	selected_items = new_items
 	sort_selection()
 	visual_update_selection()
 	indent_events()
 
+
 func paste_events_indexed(indexed_events):
 	pass
+
 
 func duplicate_events_indexed(indexed_events):
 	pass
@@ -619,19 +628,18 @@ func delete_event(event):
 ## *****************************************************************************
 
 # Event Creation signal for buttons
-func _create_event_button_pressed(event_id):
+func _add_event_button_pressed(event_resource):
 	var at_index = -1
 	if selected_items:
 		at_index = selected_items[-1].get_index()+1
 	else:
 		at_index = timeline.get_child_count()
 	TimelineUndoRedo.create_action("[D] Add event.")
-	TimelineUndoRedo.add_do_method(self, "create_event", event_id, {'no-data': true}, true, at_index, true)
+	TimelineUndoRedo.add_do_method(self, "add_event_to_timeline", event_resource, at_index, true, true)
 	TimelineUndoRedo.add_undo_method(self, "remove_events_at_index", at_index, 1)
 	TimelineUndoRedo.commit_action()
 	scroll_to_piece(at_index)
 	indent_events()
-
 
 # the Question button adds multiple blocks 
 func _on_ButtonQuestion_pressed() -> void:
@@ -651,15 +659,17 @@ func create_question(at_position):
 	if len(selected_items) != 0:
 		# Events are added bellow the selected node
 		# So we must reverse the adding order
-		create_event("dialogic_013", {'no-data': true}, true)
-		create_event("dialogic_011", {'no-data': true}, true)
-		create_event("dialogic_011", {'no-data': true}, true)
-		create_event("dialogic_010", {'no-data': true}, true)
+		#create_event("dialogic_013", {'no-data': true}, true)
+		#create_event("dialogic_011", {'no-data': true}, true)
+		#create_event("dialogic_011", {'no-data': true}, true)
+		#create_event("dialogic_010", {'no-data': true}, true)
+		pass
 	else:
-		create_event("dialogic_010", {'no-data': true}, true)
-		create_event("dialogic_011", {'no-data': true}, true)
-		create_event("dialogic_011", {'no-data': true}, true)
-		create_event("dialogic_013", {'no-data': true}, true)
+		#create_event("dialogic_010", {'no-data': true}, true)
+		#create_event("dialogic_011", {'no-data': true}, true)
+		#create_event("dialogic_011", {'no-data': true}, true)
+		#create_event("dialogic_013", {'no-data': true}, true)
+		pass
 
 
 # the Condition button adds multiple blocks 
@@ -680,83 +690,24 @@ func create_condition(at_position):
 	if len(selected_items) != 0:
 		# Events are added bellow the selected node
 		# So we must reverse the adding order
-		create_event("dialogic_013", {'no-data': true}, true)
-		create_event("dialogic_012", {'no-data': true}, true)
+		#create_event("dialogic_013", {'no-data': true}, true)
+		#create_event("dialogic_012", {'no-data': true}, true)
+		pass
 	else:
-		create_event("dialogic_012", {'no-data': true}, true)
-		create_event("dialogic_013", {'no-data': true}, true)
+		#create_event("dialogic_012", {'no-data': true}, true)
+		#create_event("dialogic_013", {'no-data': true}, true)
+		pass
 
-
-func update_custom_events() -> void:
-	## CLEANUP
-	custom_events = {}
-	
-	# cleaning the 'old' buttons
-	for child in custom_events_container.get_children():
-		child.queue_free()
-	
-	var path:String = "res://dialogic/custom-events"
-	
-	var dir = Directory.new()
-	if dir.open(path) == OK:
-		dir.list_dir_begin()
-		var file_name = dir.get_next()
-		# goes through all the folders in the custom events folder
-		while file_name != "":
-			# if it found a folder
-			if dir.current_is_dir() and not file_name in ['.', '..']:
-				# look through that folder
-				#print("Found custom event folder: " + file_name)
-				var event = load(path.plus_file(file_name).plus_file('EventBlock.tscn')).instance()
-				if event:
-					custom_events[event.event_data['event_id']] = {
-						'event_block_scene' :path.plus_file(file_name).plus_file('EventBlock.tscn'),
-						'event_name' : event.event_name,
-						'event_icon' : event.event_icon
-					}
-					event.queue_free()
-				else:
-					print("[D] An error occurred when trying to access a custom event.")
-				
-				
-			else:
-				pass # files in the directory are ignored
-			file_name = dir.get_next()
-			
-		# After we finishing checking, if any events exist, show the panel
-		if custom_events.size() == 0:
-			custom_events_container.hide()
-			$ScrollContainer/EventContainer/CustomEventsHeadline.hide()
-		else:
-			custom_events_container.show()
-			$ScrollContainer/EventContainer/CustomEventsHeadline.show()
-	else:
-		print("[D] An error occurred when trying to access the custom events folder.")
-	
-	## VISUAL UPDATE
-	
-	
-	# adding new ones
-	for custom_event_id in custom_events.keys():
-		var button = load('res://addons/dialogic/Editor/TimelineEditor/SmallEventButton.tscn').instance()
-		#button.set_script(preload("EventButton.gd"))
-		button.event_id = custom_event_id
-		button.visible_name = '       ' + custom_events[custom_event_id]['event_name']
-		if custom_events[custom_event_id]['event_icon']:
-			button.set_icon(custom_events[custom_event_id]['event_icon'])
-		#button.event_color = TODO
-		button.connect("pressed", self, "_create_event_button_pressed", [custom_event_id])
-		custom_events_container.add_child(button)
 
 ## *****************************************************************************
 ##					 	DRAG AND DROP
 ## *****************************************************************************
 
 # Creates a ghost event for drag and drop
-func create_drag_and_drop_event(event_id: String):
+func create_drag_and_drop_event(resource):
 	var index = get_index_under_cursor()
-	var piece = create_event(event_id)
-	currently_draged_event_type = event_id
+	var piece = add_event_to_timeline(resource)
+	currently_draged_event_type = resource
 	timeline.move_child(piece, index)
 	moving_piece = piece
 	piece_was_dragged = true
@@ -770,14 +721,13 @@ func drop_event():
 		var at_index = moving_piece.get_index()
 		moving_piece.queue_free()
 		TimelineUndoRedo.create_action("[D] Add event.")
-		TimelineUndoRedo.add_do_method(self, "create_event", currently_draged_event_type, {'no-data': true}, true, at_index, true)
+		TimelineUndoRedo.add_do_method(self, "add_event_to_timeline", currently_draged_event_type, {'no-data': true}, at_index, true, true)
 		TimelineUndoRedo.add_undo_method(self, "remove_events_at_index", at_index, 1)
 		TimelineUndoRedo.commit_action()
 		moving_piece = null
 		piece_was_dragged = false
 		indent_events()
 		add_extra_scroll_area_to_timeline()
-		
 
 
 func cancel_drop_event():
@@ -791,26 +741,12 @@ func cancel_drop_event():
 ## *****************************************************************************
 ##					 	CREATING THE TIMELINE
 ## *****************************************************************************
-
 # Adding an event to the timeline
-func create_event(event_id: String, data: Dictionary = {'no-data': true} , indent: bool = false, at_index: int = -1, auto_select: bool = false):
-	var piece = null
-	
-	# check if it's a custom event
-	if event_id in custom_events.keys():
-		piece = load(custom_events[event_id]['event_block_scene']).instance()
-	# check if it's a builtin event
-	elif event_id in id_to_scene_name.keys():
-		piece = load("res://addons/dialogic/Editor/Events/" + id_to_scene_name[event_id] + ".tscn").instance()
-	# else use dummy event
-	else:
-		piece = load("res://addons/dialogic/Editor/Events/DummyEvent.tscn").instance()
-	
-	# load the piece with data
-	piece.editor_reference = editor_reference
-	
-	if data.has('no-data') == false:
-		piece.event_data = data
+func add_event_to_timeline(event_resource, at_index:int = -1, auto_select: bool = false, indent: bool = false):
+	var piece = event_node.instance()
+	var resource = event_resource.duplicate()
+	print('[D] New resource: ', resource)
+	piece.resource = resource
 	
 	if at_index == -1:
 		if len(selected_items) != 0:
@@ -841,7 +777,6 @@ func create_event(event_id: String, data: Dictionary = {'no-data': true} , inden
 
 func load_timeline(filename: String):
 	clear_timeline()
-	update_custom_events()
 	if timeline_file != filename:
 		TimelineUndoRedo.clear_history()
 	building_timeline = true
@@ -873,7 +808,8 @@ func load_batch(data):
 	var current_batch = batches.pop_front()
 	if current_batch:
 		for i in current_batch:
-			create_event(i['event_id'], i, false, timeline.get_child_count())
+			#create_event(i['event_id'], i, false, timeline.get_child_count())
+			pass
 	emit_signal("batch_loaded")
 
 
@@ -980,7 +916,7 @@ func generate_save_data():
 		# Checking that the event is not waiting to be removed
 		# or that it is not a drag and drop placeholder
 		if not get_event_ignore_save(event) and event.is_queued_for_deletion() == false:
-			info_to_save['events'].append(event.event_data)
+			info_to_save['events'].append(event.resource)
 	return info_to_save
 
 
@@ -1034,17 +970,16 @@ func indent_events() -> void:
 		if (not "event_data" in event):
 			continue
 		
-		
-		if event.event_data['event_id'] == 'dialogic_011':
+		if event.resource.id == 'dialogic_011':
 			if question_index > 0:
 				indent = question_indent[question_index] + 1
 				starter = true
-		elif event.event_data['event_id'] == 'dialogic_010' or event.event_data['event_id'] == 'dialogic_012':
+		elif event.resource.id == 'dialogic_010' or event.resource.id == 'dialogic_012':
 			indent += 1
 			starter = true
 			question_index += 1
 			question_indent[question_index] = indent
-		elif event.event_data['event_id'] == 'dialogic_013':
+		elif event.resource.id == 'dialogic_013':
 			if question_indent.has(question_index):
 				indent = question_indent[question_index]
 				indent -= 1
@@ -1079,6 +1014,7 @@ func unfold_all_nodes():
 		event.set_expanded(true)
 	add_extra_scroll_area_to_timeline()
 
+
 func get_current_events_anchors():
 	var anchors = {}
 	for event in timeline.get_children():
@@ -1087,32 +1023,13 @@ func get_current_events_anchors():
 				anchors[event.event_data['id']] = event.event_data['name']
 	return anchors
 
+
 func add_extra_scroll_area_to_timeline():
 	if timeline.get_children().size() > 4:
 		timeline.rect_min_size.y = 0
 		timeline.rect_size.y = 0
 		if timeline.rect_size.y + 200 > $TimelineArea.rect_size.y:
 			timeline.rect_min_size = Vector2(0, timeline.rect_size.y + 200)
-
-
-# Functions for reading the event data and coloring the buttons
-func _read_event_data():
-	var dir = 'res://addons/dialogic/Editor/Events/'
-	var file = File.new()
-	var config = ConfigFile.new()
-	var events_data = []
-	for f in DialogicUtil.list_dir(dir):
-		if '.tscn' in f:
-			if 'DummyEvent' in f:
-				# Need to figure out what to do with this one
-				pass
-			else:
-				var scene = load(dir + '/' + f).get_state()
-				var c = {}
-				for p in scene.get_node_property_count(0):
-					c[scene.get_node_property_name(0,p)] = scene.get_node_property_value(0, p)
-				events_data.append(c)
-	return events_data
 
 
 func play_timeline():

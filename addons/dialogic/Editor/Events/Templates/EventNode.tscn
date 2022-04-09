@@ -1,0 +1,194 @@
+[gd_scene load_steps=14 format=2]
+
+[ext_resource path="res://addons/dialogic/Editor/Events/Templates/EventNode.gd" type="Script" id=1]
+[ext_resource path="res://addons/dialogic/Editor/Events/Parts/EventBlock/ExpandControl.tscn" type="PackedScene" id=2]
+[ext_resource path="res://addons/dialogic/Editor/Events/styles/selected_styleboxflat.tres" type="StyleBox" id=3]
+[ext_resource path="res://addons/dialogic/Editor/Events/styles/ResourceMenuPanelBackground.tres" type="StyleBox" id=5]
+[ext_resource path="res://addons/dialogic/Images/Plugin/plugin-editor-icon-dark-theme.svg" type="Texture" id=6]
+[ext_resource path="res://addons/dialogic/Images/Event Icons/event-outline.svg" type="Texture" id=7]
+[ext_resource path="res://addons/dialogic/Editor/Events/Parts/EventBlock/PopupMenu.gd" type="Script" id=8]
+
+[sub_resource type="StyleBoxFlat" id=1]
+bg_color = Color( 0.6, 0.6, 0.6, 0 )
+
+[sub_resource type="Image" id=7]
+data = {
+"data": PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ),
+"format": "LumAlpha8",
+"height": 16,
+"mipmaps": false,
+"width": 16
+}
+
+[sub_resource type="ImageTexture" id=2]
+flags = 4
+flags = 4
+image = SubResource( 7 )
+size = Vector2( 16, 16 )
+
+[sub_resource type="StyleBoxEmpty" id=4]
+
+[sub_resource type="Image" id=8]
+data = {
+"data": PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ),
+"format": "LumAlpha8",
+"height": 16,
+"mipmaps": false,
+"width": 16
+}
+
+[sub_resource type="ImageTexture" id=6]
+flags = 4
+flags = 4
+image = SubResource( 8 )
+size = Vector2( 16, 16 )
+
+[node name="EventNode" type="HBoxContainer"]
+anchor_right = 1.0
+margin_right = -922.0
+margin_bottom = 76.0
+focus_mode = 1
+size_flags_horizontal = 3
+size_flags_vertical = 9
+script = ExtResource( 1 )
+
+[node name="Indent" type="Control" parent="."]
+visible = false
+margin_bottom = 112.0
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+margin_right = 102.0
+margin_bottom = 76.0
+mouse_filter = 1
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_styles/panel = SubResource( 1 )
+
+[node name="SelectedStyle" type="Panel" parent="PanelContainer"]
+visible = false
+modulate = Color( 0, 0, 0, 1 )
+margin_right = 102.0
+margin_bottom = 76.0
+custom_styles/panel = ExtResource( 3 )
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer"]
+margin_right = 102.0
+margin_bottom = 76.0
+mouse_filter = 1
+size_flags_vertical = 3
+custom_constants/margin_right = 6
+custom_constants/margin_top = 6
+custom_constants/margin_left = 10
+custom_constants/margin_bottom = 6
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/MarginContainer"]
+margin_left = 10.0
+margin_top = 6.0
+margin_right = 96.0
+margin_bottom = 70.0
+rect_min_size = Vector2( 0, 30 )
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Header" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer"]
+margin_right = 86.0
+margin_bottom = 60.0
+rect_min_size = Vector2( 0, 32 )
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_constants/separation = 0
+
+[node name="CenterContainer" type="CenterContainer" parent="PanelContainer/MarginContainer/VBoxContainer/Header"]
+margin_bottom = 60.0
+mouse_filter = 1
+
+[node name="IconPanel" type="TextureRect" parent="PanelContainer/MarginContainer/VBoxContainer/Header/CenterContainer"]
+self_modulate = Color( 0.6, 0.6, 0.6, 1 )
+margin_top = 30.0
+margin_bottom = 30.0
+mouse_default_cursor_shape = 6
+texture = ExtResource( 7 )
+expand = true
+stretch_mode = 1
+
+[node name="IconTexture" type="TextureRect" parent="PanelContainer/MarginContainer/VBoxContainer/Header/CenterContainer/IconPanel"]
+anchor_left = 1.0
+anchor_right = 1.0
+grow_horizontal = 0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 6 )
+expand = true
+stretch_mode = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Warning" type="TextureRect" parent="PanelContainer/MarginContainer/VBoxContainer/Header/CenterContainer/IconPanel"]
+visible = false
+margin_left = -9.19241
+margin_top = -4.24266
+margin_right = 12.8076
+margin_bottom = 17.7573
+hint_tooltip = "Choice events should go 
+between a [Question]
+and [End branch] events.
+
+[Question]
+    [Choice]
+    [...]
+[End branch]"
+texture = SubResource( 2 )
+stretch_mode = 5
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TitleLabel" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/Header"]
+margin_top = 23.0
+margin_bottom = 37.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+
+[node name="Content" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer/Header"]
+margin_right = 43.0
+margin_bottom = 60.0
+size_flags_horizontal = 3
+
+[node name="ExpandControl" parent="PanelContainer/MarginContainer/VBoxContainer/Header" instance=ExtResource( 2 )]
+margin_left = 178.0
+margin_right = 242.0
+
+[node name="Spacer" type="Control" parent="PanelContainer/MarginContainer/VBoxContainer/Header"]
+margin_left = 43.0
+margin_right = 86.0
+margin_bottom = 60.0
+mouse_filter = 1
+size_flags_horizontal = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Body" type="VBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer"]
+margin_top = 64.0
+margin_right = 86.0
+margin_bottom = 64.0
+size_flags_horizontal = 3
+custom_constants/separation = 0
+
+[node name="Content" type="VBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer/Body"]
+margin_right = 86.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="PopupMenu" type="PopupMenu" parent="."]
+margin_left = 30.0
+margin_right = 169.0
+margin_bottom = 112.0
+custom_colors/font_color_hover = Color( 0, 0, 0, 1 )
+custom_constants/vseparation = 0
+custom_styles/hover = SubResource( 4 )
+custom_styles/panel = ExtResource( 5 )
+items = [ "Documentation", SubResource( 6 ), 0, false, false, 0, 0, null, "", false, "", null, 0, false, false, -1, 0, null, "", true, "Move up", SubResource( 6 ), 0, false, false, 2, 0, null, "", false, "Move down", SubResource( 6 ), 0, false, false, 3, 0, null, "", false, "", null, 0, false, false, -1, 0, null, "", true, "Delete", SubResource( 6 ), 0, false, false, 5, 0, null, "", false ]
+script = ExtResource( 8 )
+
+[connection signal="visibility_changed" from="Indent" to="." method="_on_Indent_visibility_changed"]

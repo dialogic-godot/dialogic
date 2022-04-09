@@ -1,0 +1,18 @@
+[gd_resource type="Resource" load_steps=3 format=2]
+
+[ext_resource path="res://addons/dialogic/Editor/Events/event_resource.gd" type="Script" id=1]
+[ext_resource path="res://addons/dialogic/Images/Event Icons/Main Icons/set-background.svg" type="Texture" id=2]
+
+[resource]
+script = ExtResource( 1 )
+id = "dialogic_021"
+name = "Background"
+icon = ExtResource( 2 )
+color = Color( 0.964706, 0.239216, 0.403922, 1 )
+properties = [  ]
+category = 3
+help_page_path = ""
+expand_by_default = true
+needs_indentation = false
+display_name = true
+sorting_index = 0

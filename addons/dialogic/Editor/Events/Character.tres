@@ -1,0 +1,18 @@
+[gd_resource type="Resource" load_steps=3 format=2]
+
+[ext_resource path="res://addons/dialogic/Editor/Events/event_resource.gd" type="Script" id=1]
+[ext_resource path="res://addons/dialogic/Images/Event Icons/Main Icons/character.svg" type="Texture" id=2]
+
+[resource]
+script = ExtResource( 1 )
+id = "dialogic_002"
+name = "Character"
+icon = ExtResource( 2 )
+color = Color( 0.0705882, 0.717647, 0.415686, 1 )
+properties = [  ]
+category = 0
+help_page_path = "res://addons/dialogic/Documentation/Content/Events/002.md"
+expand_by_default = true
+needs_indentation = false
+display_name = true
+sorting_index = 1
