@@ -19,5 +19,6 @@ export (int) var sorting_index : int
 
 # Hopefully we can replace this with a cleaner system
 # maybe even generate them based on some markup? who knows, it is free to dream
-export(Array, PackedScene) var header : Array
+export(Array, Resource) var header : Array
 export(Array, PackedScene) var body : Array
+

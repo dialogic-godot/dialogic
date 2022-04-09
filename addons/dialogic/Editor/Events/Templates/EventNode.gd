@@ -188,12 +188,14 @@ func _ready():
 	if event_name != null:
 		_set_event_name(event_name)
 	if resource.header != null:
+		var label_editor = load("res://addons/dialogic/Editor/Events/Fields/Label.tscn")
 		print('resource.header: ', resource.header)
-		for node in resource.header:
-			print(node)
-			var new_node = node.instance()
-			header_content_container.add_child(new_node)
-			new_node.owner = self
+		for r in resource.header:
+			if r.type == 0:
+				var new_node = label_editor.instance()
+				new_node.text = r.key
+				header_content_container.add_child(new_node)
+				new_node.owner = self
 			
 	if resource.body != null:
 		print('resource.body: ', resource.body)

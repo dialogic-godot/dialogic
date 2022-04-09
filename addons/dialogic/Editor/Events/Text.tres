@@ -1,9 +1,20 @@
-[gd_resource type="Resource" load_steps=5 format=2]
+[gd_resource type="Resource" load_steps=6 format=2]
 
 [ext_resource path="res://addons/dialogic/Editor/Events/event_resource.gd" type="Script" id=1]
 [ext_resource path="res://addons/dialogic/Images/Event Icons/Main Icons/text-event.svg" type="Texture" id=2]
-[ext_resource path="res://addons/dialogic/Editor/Events/Fields/TextArea.tscn" type="PackedScene" id=3]
-[ext_resource path="res://addons/dialogic/Editor/Events/Fields/Label.tscn" type="PackedScene" id=4]
+[ext_resource path="res://addons/dialogic/Editor/Events/Fields/property_resource.gd" type="Script" id=5]
+
+[sub_resource type="Resource" id=2]
+script = ExtResource( 5 )
+key = "Another one"
+value = ""
+type = 0
+
+[sub_resource type="Resource" id=1]
+script = ExtResource( 5 )
+key = "This is a Label"
+value = ""
+type = 0
 
 [resource]
 script = ExtResource( 1 )
@@ -22,5 +33,5 @@ expand_by_default = true
 needs_indentation = false
 display_name = true
 sorting_index = 0
-header = [ ExtResource( 4 ), ExtResource( 3 ), ExtResource( 3 ) ]
-body = [ ExtResource( 3 ), ExtResource( 3 ) ]
+header = [ SubResource( 2 ), SubResource( 1 ) ]
+body = [ null, null, null ]
