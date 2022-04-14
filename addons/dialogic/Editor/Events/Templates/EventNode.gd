@@ -10,7 +10,6 @@ export (Resource) var resource
 
 
 ### internal node eferences
-onready var panel = $PanelContainer
 onready var selected_style = $PanelContainer/SelectedStyle
 onready var warning = $PanelContainer/MarginContainer/VBoxContainer/Header/CenterContainer/IconPanel/Warning
 onready var title_label = $PanelContainer/MarginContainer/VBoxContainer/Header/TitleLabel
@@ -65,6 +64,7 @@ func set_preview(text: String):
 
 
 func set_indent(indent: int):
+	var indent_node = $Indent
 	indent_node.rect_min_size = Vector2(indent_size * indent, 0)
 	indent_node.visible = indent != 0
 	current_indent_level = indent
@@ -187,20 +187,33 @@ func _ready():
 		_set_event_icon(resource.icon)
 	if event_name != null:
 		_set_event_name(event_name)
+	
+	var label_editor = load("res://addons/dialogic/Editor/Events/Fields/Label.tscn")
+	var text_area = load("res://addons/dialogic/Editor/Events/Fields/TextArea.tscn")
 	if resource.header != null:
-		var label_editor = load("res://addons/dialogic/Editor/Events/Fields/Label.tscn")
 		print('resource.header: ', resource.header)
 		for r in resource.header:
-			if r.type == 0:
-				var new_node = label_editor.instance()
+			var new_node = label_editor.instance()
+			
+			if r.type == 0: # Label
+				new_node = label_editor.instance()
 				new_node.text = r.key
-				header_content_container.add_child(new_node)
-				new_node.owner = self
+			if r.type == 1: # Text
+				new_node = text_area.instance()
+				
+			header_content_container.add_child(new_node)
+			new_node.owner = self
 			
 	if resource.body != null:
 		print('resource.body: ', resource.body)
-		for node in resource.body:
-			var new_node = node.instance()
+		for r in resource.body:
+			var new_node = label_editor.instance()
+			if r.type == 0: # Label
+				new_node = label_editor.instance()
+				new_node.text = r.key
+			if r.type == 1: # Text
+				new_node = text_area.instance()
+				
 			body_content_container.add_child(new_node)
 			new_node.owner = self
 		body_content_container.add_constant_override('margin_left', 40*DialogicUtil.get_editor_scale(self))
@@ -209,7 +222,7 @@ func _ready():
 	set_focus_mode(1) # Allowing this node to grab focus
 	
 	# signals
-	panel.connect("gui_input", self, '_on_gui_input')
+	$PanelContainer.connect("gui_input", self, '_on_gui_input')
 	expand_control.connect("state_changed", self, "_on_ExpandControl_state_changed")
 	$PopupMenu.connect("index_pressed", self, "_on_OptionsControl_action")
 	

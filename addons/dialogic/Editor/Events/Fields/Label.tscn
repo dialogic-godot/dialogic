@@ -14,4 +14,5 @@ margin_top = 293.0
 margin_right = 550.0
 margin_bottom = 307.0
 size_flags_horizontal = 3
+custom_colors/font_color = Color( 0.482353, 0.482353, 0.482353, 1 )
 text = "Hello World"

@@ -4,15 +4,15 @@
 [ext_resource path="res://addons/dialogic/Images/Event Icons/Main Icons/text-event.svg" type="Texture" id=2]
 [ext_resource path="res://addons/dialogic/Editor/Events/Fields/property_resource.gd" type="Script" id=5]
 
+[sub_resource type="Resource" id=3]
+script = ExtResource( 5 )
+key = "text"
+value = ""
+type = 1
+
 [sub_resource type="Resource" id=2]
 script = ExtResource( 5 )
 key = "Another one"
-value = ""
-type = 0
-
-[sub_resource type="Resource" id=1]
-script = ExtResource( 5 )
-key = "This is a Label"
 value = ""
 type = 0
 
@@ -22,16 +22,11 @@ id = "dialogic_001"
 name = "Text"
 icon = ExtResource( 2 )
 color = Color( 1, 1, 1, 1 )
-properties = {
-"character": "",
-"portrait": "",
-"text": ""
-}
+header = [ SubResource( 2 ) ]
+body = [ SubResource( 3 ), null ]
 category = 0
 help_page_path = "res://addons/dialogic/Documentation/Content/Events/001.md"
 expand_by_default = true
 needs_indentation = false
 display_name = true
 sorting_index = 0
-header = [ SubResource( 2 ), SubResource( 1 ) ]
-body = [ null, null, null ]

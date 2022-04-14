@@ -917,6 +917,7 @@ func generate_save_data():
 		# or that it is not a drag and drop placeholder
 		if not get_event_ignore_save(event) and event.is_queued_for_deletion() == false:
 			info_to_save['events'].append(event.resource)
+			ResourceSaver
 	return info_to_save
 
 
@@ -931,8 +932,9 @@ func get_event_ignore_save(event: Node) -> bool:
 func save_timeline() -> void:
 	if timeline_file != '' and building_timeline == false:
 		var info_to_save = generate_save_data()
+		print(info_to_save)
 		DialogicResources.set_timeline(info_to_save)
-		#print('[+] Saving: ' , timeline_file)
+		print('[+] Saving: ' , timeline_file)
 
 
 ## *****************************************************************************
