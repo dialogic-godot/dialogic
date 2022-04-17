@@ -11,7 +11,7 @@ Create dialogs, characters and scenes to display conversations in your Godot gam
 
 
 
-# Version 1.4.1 - Curves Ahead  ![Godot v3.4](https://img.shields.io/badge/godot-v3.4-%23478cbf)
+# Version 1.4.2 - WIP  ![Godot v3.4](https://img.shields.io/badge/godot-v3.4-%23478cbf)
 
 ## Getting started
 
