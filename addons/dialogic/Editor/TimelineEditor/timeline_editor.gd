@@ -1,5 +1,5 @@
 tool
-extends VBoxContainer
+extends HSplitContainer
 
 const TimelineDisplayer = preload("res://addons/dialogic/Editor/TimelineEditor/timeline_displayer.gd")
 const EventNode = preload("res://addons/dialogic/Editor/event_node/event_node.gd")
@@ -262,10 +262,6 @@ func _init() -> void:
 	theme = load("res://addons/dialogic/Editor/timeline_editor.tres") as Theme
 	mouse_filter = Control.MOUSE_FILTER_STOP
 	
-	_category_manager = CategoryManager.new()
-	_category_manager.connect("toolbar_button_pressed", self, "_on_CategoryManager_button_pressed")
-	add_child(_category_manager)
-	
 	_sc = ScrollContainer.new()
 	_sc.follow_focus = true
 	_sc.size_flags_horizontal = SIZE_EXPAND_FILL
@@ -291,6 +287,10 @@ func _init() -> void:
 	timeline_drawer.timeline_displayer = timeline_displayer
 	timeline_displayer.set_drag_forwarding(self)
 	add_child(_sc)
+	
+	_category_manager = CategoryManager.new()
+	_category_manager.connect("toolbar_button_pressed", self, "_on_CategoryManager_button_pressed")
+	add_child(_category_manager)
 	
 	_event_menu = EventMenu.new()
 	_event_menu.connect("index_pressed", self, "_on_EventMenu_index_pressed")
