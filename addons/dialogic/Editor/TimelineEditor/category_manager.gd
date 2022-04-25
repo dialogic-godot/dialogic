@@ -1,12 +1,20 @@
 tool
-extends HBoxContainer
+extends PanelContainer
 
 const EventButtonNode = preload("res://addons/dialogic/Editor/event_node/event_node.gd")
 const EventClass = preload("res://addons/dialogic/resources/event_class.gd")
 const TimelineClass = preload("res://addons/dialogic/resources/timeline_class.gd")
 
-class EventButton extends Button:
+class EventButton extends PanelContainer:
 	var event_script:Script
+	var icon
+	var text
+	
+	var button:ToolButton
+	var border:PanelContainer
+	var icon_node:TextureRect
+	var spacer:Control
+	var text_node:Label
 	
 	func get_drag_data(position):
 		var node = EventButtonNode.new()
@@ -15,20 +23,59 @@ class EventButton extends Button:
 		set_drag_preview(node)
 		return {"event":event_script.new()}
 	
+	func _ready():
+		border.add_stylebox_override("panel", get_stylebox("border", "EventButton"))
+		add_stylebox_override("panel", get_stylebox("normal", "EventButton"))
 	
 	func _init():
-		clip_text = true
-		expand_icon = true
+		rect_clip_content = true
 		size_flags_vertical = SIZE_EXPAND_FILL
-		rect_min_size = Vector2(24,24)
+		
+		button = ToolButton.new()
+		button.show_behind_parent = true
+		button.mouse_filter = Control.MOUSE_FILTER_PASS
+		add_child(button)
+		
+		icon_node = TextureRect.new()
+		icon_node.focus_mode = Control.FOCUS_NONE
+		icon_node.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		icon_node.rect_min_size = Vector2(24,24)
+		
+		text_node = Label.new()
+		text_node.focus_mode = Control.FOCUS_NONE
+		text_node.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		
+		border = PanelContainer.new()
+		border.focus_mode = Control.FOCUS_NONE
+		border.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		border.rect_min_size.x = 4
+		
+		spacer = Control.new()
+		spacer.focus_mode = Control.FOCUS_NONE
+		spacer.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		spacer.rect_min_size = Vector2(2, 0)
+		
+		var hb := HBoxContainer.new()
+		hb.size_flags_horizontal = SIZE_EXPAND_FILL
+		hb.focus_mode = Control.FOCUS_NONE
+		hb.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		hb.add_constant_override("separation", 0)
+		hb.add_child(border)
+		hb.add_child(icon_node)
+		hb.add_child(spacer)
+		hb.add_child(text_node)
+		
+		add_child(hb)
 
 
 class Category extends VBoxContainer:
+	const FlowContainer = preload("res://addons/dialogic/Other/flow_container.gd")
+	
 	signal event_button_added(button)
 	
 	var name_label:Label
 	var event_scripts:Array = []
-	var button_container:HBoxContainer
+	var button_container:FlowContainer
 	
 	func add_event(event) -> void:
 		var event_script:Script = event.get_script()
@@ -38,11 +85,14 @@ class Category extends VBoxContainer:
 		event_scripts.append(event_script)
 		
 		var btn := EventButton.new()
-		btn.icon = event.event_icon
 		btn.event_script = event_script
+		btn.icon_node.texture = event.event_icon
+		btn.text_node.text = event.get("event_name")
 		var event_hint := "{event_name}\n-----\n{event_hint}"
 		btn.hint_tooltip = event_hint.format({"event_name":event.get("event_name"), "event_hint":event.get("event_hint")})
 		button_container.add_child(btn)
+		btn.add_color_override("font_color", get_color("font_color", "Editor"))
+		btn.add_color_override("font_color_hover", get_color("accent_color", "Editor"))
 		emit_signal("event_button_added", btn)
 	
 	
@@ -58,10 +108,15 @@ class Category extends VBoxContainer:
 		event_scripts = []
 		name_label = Label.new()
 		name_label.align = Label.ALIGN_CENTER
-		add_child(name_label)
+		var separator = HSeparator.new()
+		separator.size_flags_horizontal = SIZE_EXPAND_FILL
+		var hb = HBoxContainer.new()
+		hb.size_flags_horizontal = SIZE_EXPAND_FILL
+		hb.add_child(name_label)
+		hb.add_child(separator)
+		add_child(hb)
 		
-		button_container = HBoxContainer.new()
-		button_container.alignment = BoxContainer.ALIGN_CENTER
+		button_container = FlowContainer.new()
 		add_child(button_container)
 
 
@@ -70,10 +125,14 @@ signal toolbar_button_pressed(button, event_script)
 var know_events:TimelineClass
 var categories:Dictionary = {}
 
+var _category_container:VBoxContainer
+
 func reload() -> void:
-	for child in get_children():
+	categories.clear()
+	
+	for child in _category_container.get_children():
 		child.queue_free()
-		categories.clear()
+	
 	create_categories()
 
 
@@ -99,32 +158,19 @@ func add_category(category_name:String) -> void:
 	
 	category.connect("event_button_added", self, "_on_Category_event_button_added")
 	category.name = category_name
-	if get_child_count() > 0:
-		add_child(VSeparator.new())
-	add_child(category)
+	_category_container.add_child(category)
 
 
 func _enter_tree():
 	know_events = TimelineClass.new()
+	know_events.add_event(EventClass.new())
+	
 	if not know_events.is_connected("changed",self,"reload"):
 		know_events.connect("changed",self,"reload")
-	theme = Theme.new()
-	var button_stylebox:StyleBox = get_stylebox("normal", "Button").duplicate()
-	button_stylebox.content_margin_bottom = 1
-	button_stylebox.content_margin_left = 1
-	button_stylebox.content_margin_right = 1
-	button_stylebox.content_margin_top = 1
-	theme.set_stylebox("normal", "Button", button_stylebox)
-	var hover_stylebox:StyleBox = get_stylebox("hover", "Button").duplicate()
-	hover_stylebox.content_margin_bottom = 3
-	hover_stylebox.content_margin_left = 3
-	hover_stylebox.content_margin_right = 3
-	hover_stylebox.content_margin_top = 3
-	theme.set_stylebox("hover", "Button", hover_stylebox)
 
 
 func _on_Category_event_button_added(event_button:EventButton) -> void:
-	event_button.connect("pressed", self, "_on_Category_event_button_pressed", [event_button])
+	event_button.button.connect("pressed", self, "_on_Category_event_button_pressed", [event_button])
 
 
 func _on_Category_event_button_pressed(event_button:EventButton) -> void:
@@ -137,6 +183,17 @@ func _notification(what: int) -> void:
 
 
 func _init():
-	alignment = BoxContainer.ALIGN_CENTER
 	categories = {}
 	name = "CategoryManager"
+	size_flags_vertical = SIZE_EXPAND_FILL
+	rect_min_size = Vector2(128, 64)
+	
+	var _sc = ScrollContainer.new()
+	_sc.size_flags_horizontal = SIZE_EXPAND_FILL
+	_sc.size_flags_vertical = SIZE_EXPAND_FILL
+	add_child(_sc)
+	
+	_category_container = VBoxContainer.new()
+	_category_container.size_flags_horizontal = SIZE_EXPAND_FILL
+	_category_container.size_flags_vertical = SIZE_EXPAND_FILL
+	_sc.add_child(_category_container)

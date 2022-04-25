@@ -305,5 +305,3 @@ func _notification(what: int) -> void:
 		NOTIFICATION_DRAG_END:
 			if is_instance_valid(_separator_node):
 				_separator_node.queue_free()
-		NOTIFICATION_THEME_CHANGED:
-			get_stylebox("panel", "PanelContainer").content_margin_left = get_constant("identation", "PanelContainer")
