@@ -3,11 +3,17 @@
 [ext_resource path="res://addons/dialogic/Editor/TimelineEditor/TimelineEditor.tscn" type="PackedScene" id=1]
 [ext_resource path="res://addons/dialogic/Editor/EditorView.gd" type="Script" id=2]
 
-[node name="EditorView" type="Container"]
+[node name="EditorView" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
+margin_left = -1.0
+margin_top = -1.0
+margin_right = 1.0
+margin_bottom = 1.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource( 2 )
 
 [node name="TimelineEditor" parent="." instance=ExtResource( 1 )]
+size_flags_horizontal = 3
+size_flags_vertical = 3

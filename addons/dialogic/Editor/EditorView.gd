@@ -1,14 +1,16 @@
 tool
-extends Container
+extends Control
 
 func _ready():
-	var main_panel = self
-	var separation = get_constant("separation", "BoxContainer") - 1
-	main_panel.margin_top = separation
-	main_panel.margin_left = separation
-	main_panel.margin_right = separation * -1
-	main_panel.margin_bottom = separation * -1
+	add_margin($TimelineEditor, get_constant("separation", "BoxContainer") - 1)
 
 
 func edit_timeline(object):
 	$TimelineEditor.load_timeline(object)
+
+
+func add_margin(node, separation):
+	node.margin_top = separation
+	node.margin_left = separation
+	node.margin_right = separation * -1
+	node.margin_bottom = separation * -1
