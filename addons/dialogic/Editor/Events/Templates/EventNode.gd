@@ -117,9 +117,7 @@ func _on_ExpandControl_state_changed(expanded: bool):
 
 func _on_OptionsControl_action(index):
 	if index == 0:
-		if resource.help_page_path:
-			var master_tree = editor_reference.get_node_or_null('MainPanel/MasterTreeContainer/MasterTree')
-			master_tree.select_documentation_item(resource.help_page_path)
+		print('Documentation here')
 	elif index == 2:
 		emit_signal("option_action", "up")
 	elif index == 3:
@@ -191,7 +189,7 @@ func _ready():
 	var label_editor = load("res://addons/dialogic/Editor/Events/Fields/Label.tscn")
 	var text_area = load("res://addons/dialogic/Editor/Events/Fields/TextArea.tscn")
 	if resource.header != null:
-		print('resource.header: ', resource.header)
+		#print('resource.header: ', resource.header)
 		for r in resource.header:
 			var new_node = label_editor.instance()
 			
@@ -205,14 +203,15 @@ func _ready():
 			new_node.owner = self
 			
 	if resource.body != null:
-		print('resource.body: ', resource.body)
+		#print('resource.body: ', resource.body)
 		for r in resource.body:
 			var new_node = label_editor.instance()
-			if r.type == 0: # Label
-				new_node = label_editor.instance()
-				new_node.text = r.key
-			if r.type == 1: # Text
-				new_node = text_area.instance()
+			if r.type:
+				if r.type == 0: # Label
+					new_node = label_editor.instance()
+					new_node.text = r.key
+				if r.type == 1: # Text
+					new_node = text_area.instance()
 				
 			body_content_container.add_child(new_node)
 			new_node.owner = self

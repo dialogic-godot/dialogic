@@ -1,6 +1,6 @@
 [gd_resource type="Resource" load_steps=3 format=2]
 
-[ext_resource path="res://addons/dialogic/Editor/Events/event_resource.gd" type="Script" id=1]
+[ext_resource path="res://addons/dialogic/Resources/event.gd" type="Script" id=1]
 [ext_resource path="res://addons/dialogic/Images/Event Icons/Main Icons/set-theme.svg" type="Texture" id=2]
 
 [resource]

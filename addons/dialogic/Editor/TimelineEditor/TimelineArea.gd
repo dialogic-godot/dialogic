@@ -9,6 +9,7 @@ var _mouse_exited = false
 # todo, getting timeline like this is prone to fail someday
 onready var timeline_editor = get_parent()
 
+
 func _ready():
 	connect("mouse_entered", self, '_on_mouse_entered')
 	connect("mouse_exited", self, '_on_mouse_exited')
@@ -96,8 +97,8 @@ func _draw():
 	pos = rendering_scale_correction(_scale, pos)
 	
 	for event in $TimeLine.get_children():
-		if not 'event_data' in event:
-			continue
+		#if not 'event_data' in event:
+		#	continue
 		
 		# If the event is the last one, don't draw anything aftwards
 		if timeline_children[timeline_lenght-1] == event:

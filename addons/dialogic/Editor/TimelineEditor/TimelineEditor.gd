@@ -2,14 +2,13 @@ tool
 extends HSplitContainer
 
 var editor_reference
-var timeline_name: String = ''
-var timeline_file: String = ''
-var current_timeline: Dictionary = {}
+
+var current_timeline: DialogicTimeline
+
 var TimelineUndoRedo := UndoRedo.new()
 
 onready var event_node = load("res://addons/dialogic/Editor/Events/Templates/EventNode.tscn")
 
-onready var master_tree = get_node('../MasterTreeContainer/MasterTree')
 onready var timeline = $TimelineArea/TimeLine
 onready var events_warning = $ScrollContainer/EventContainer/EventsWarning
 
@@ -62,13 +61,16 @@ var building_timeline = true
 signal selection_updated
 signal batch_loaded
 signal timeline_loaded
+	
 
 func _ready():
+	var dialogic_plugin = get_tree().root.get_node('EditorNode/DialogicPlugin')
+	dialogic_plugin.connect('dialogic_save', self, 'save_timeline')
+	
 	editor_reference = find_parent('EditorView')
 	connect("batch_loaded", self, '_on_batch_loaded')
 	var modifier = ''
-	var _scale = get_constant("inspector_margin", "Editor")
-	_scale = _scale * 0.125
+	var _scale = DialogicUtil.get_editor_scale(self)
 	$ScrollContainer.rect_min_size.x = 180
 	if _scale == 1.25:
 		modifier = '-1.25'
@@ -83,6 +85,7 @@ func _ready():
 		modifier = '-2'
 		$ScrollContainer.rect_min_size.x = 390
 	
+	
 	var style = $TimelineArea.get('custom_styles/bg')
 	style.set('bg_color', get_color("dark_color_1", "Editor"))
 	
@@ -90,7 +93,7 @@ func _ready():
 	
 	# Event buttons
 	var buttonScene = load("res://addons/dialogic/Editor/TimelineEditor/SmallEventButton.tscn")
-	var resource_list = DialogicResources.listdir("res://addons/dialogic/Editor/Events/")
+	var resource_list = DialogicUtil.listdir("res://addons/dialogic/Editor/Events/")
 	for resource_path in resource_list:
 		if '.tres' in resource_path:
 			var event_resource = load("res://addons/dialogic/Editor/Events/" + resource_path)
@@ -110,7 +113,8 @@ func _ready():
 			else:
 				button.connect('pressed', self, "_add_event_button_pressed", [event_resource])
 			get_node("ScrollContainer/EventContainer/FlexContainer" + str(button.event_category + 1)).add_child(button)
-			while button.get_index() != 0 and button.sorting_index < get_node("ScrollContainer/EventContainer/FlexContainer" + str(button.event_category + 1)).get_child(button.get_index()-1).sorting_index:
+			while button.get_index() != 0 and button.sorting_index < get_node("ScrollContainer/EventContainer/FlexContainer" + 
+					str(button.event_category + 1)).get_child(button.get_index()-1).sorting_index:
 				get_node("ScrollContainer/EventContainer/FlexContainer" + str(button.event_category + 1)).move_child(button, button.get_index()-1)
 	
 
@@ -711,7 +715,7 @@ func create_drag_and_drop_event(resource):
 	timeline.move_child(piece, index)
 	moving_piece = piece
 	piece_was_dragged = true
-	set_event_ignore_save(piece, true)
+	#set_event_ignore_save(piece, true)
 	select_item(piece)
 	return piece
 
@@ -745,7 +749,7 @@ func cancel_drop_event():
 func add_event_to_timeline(event_resource, at_index:int = -1, auto_select: bool = false, indent: bool = false):
 	var piece = event_node.instance()
 	var resource = event_resource.duplicate()
-	print('[D] New resource: ', resource)
+	#print('[D] New resource: ', resource)
 	piece.resource = resource
 	
 	if at_index == -1:
@@ -775,20 +779,21 @@ func add_event_to_timeline(event_resource, at_index:int = -1, auto_select: bool 
 	return piece
 
 
-func load_timeline(filename: String):
+# Saving
+func save_timeline() -> void:
+	var new_events = []
+	for event in timeline.get_children():
+		new_events.append(event.resource)
+		
+	current_timeline.events = new_events
+	ResourceSaver.save(current_timeline.resource_path, current_timeline)
+
+
+func load_timeline(object) -> void:
 	clear_timeline()
-	if timeline_file != filename:
-		TimelineUndoRedo.clear_history()
-	building_timeline = true
-	timeline_file = filename
-	
-	var data = DialogicResources.get_timeline_json(filename)
-	if data['metadata'].has('name'):
-		timeline_name = data['metadata']['name']
-	else:
-		timeline_name = data['metadata']['file']
-	data = data['events']
-	
+	#print('[D] Load timeline: ', object)
+	current_timeline = object
+	var data = object.events.duplicate()
 	var page = 1
 	var batch_size = 12
 	while batch_events(data, batch_size, page).size() != 0:
@@ -808,8 +813,7 @@ func load_batch(data):
 	var current_batch = batches.pop_front()
 	if current_batch:
 		for i in current_batch:
-			#create_event(i['event_id'], i, false, timeline.get_child_count())
-			pass
+			add_event_to_timeline(i, timeline.get_child_count())
 	emit_signal("batch_loaded")
 
 
@@ -884,57 +888,6 @@ func move_block(block, direction):
 
 func move_block_to_index(block_index, index):
 	timeline.move_child(timeline.get_child(block_index), index)
-
-## *****************************************************************************
-##					 TIMELINE CREATION AND SAVING
-## *****************************************************************************
-
-
-func create_timeline():
-	timeline_file = 'timeline-' + str(OS.get_unix_time()) + '.json'
-	var timeline = {
-		"events": [],
-		"metadata":{
-			"dialogic-version": editor_reference.version_string,
-			"file": timeline_file
-		}
-	}
-	DialogicResources.set_timeline(timeline)
-	return timeline
-
-# Saving
-func generate_save_data():
-	var info_to_save = {
-		'metadata': {
-			'dialogic-version': editor_reference.version_string,
-			'name': timeline_name,
-			'file': timeline_file
-		},
-		'events': []
-	}
-	for event in timeline.get_children():
-		# Checking that the event is not waiting to be removed
-		# or that it is not a drag and drop placeholder
-		if not get_event_ignore_save(event) and event.is_queued_for_deletion() == false:
-			info_to_save['events'].append(event.resource)
-			ResourceSaver
-	return info_to_save
-
-
-func set_event_ignore_save(event: Node, ignore: bool):
-	event.ignore_save = ignore
-	
-
-func get_event_ignore_save(event: Node) -> bool:
-	return event.ignore_save
-
-
-func save_timeline() -> void:
-	if timeline_file != '' and building_timeline == false:
-		var info_to_save = generate_save_data()
-		print(info_to_save)
-		DialogicResources.set_timeline(info_to_save)
-		print('[+] Saving: ' , timeline_file)
 
 
 ## *****************************************************************************
@@ -1034,6 +987,6 @@ func add_extra_scroll_area_to_timeline():
 			timeline.rect_min_size = Vector2(0, timeline.rect_size.y + 200)
 
 
-func play_timeline():
-	DialogicResources.set_settings_value('QuickTimelineTest', 'timeline_file', timeline_file)
-	editor_reference.editor_interface.play_custom_scene('res://addons/dialogic/Editor/TimelineEditor/TimelineTestingScene.tscn')
+#func play_timeline():
+#	DialogicResources.set_settings_value('QuickTimelineTest', 'timeline_file', timeline_file)
+#	editor_reference.editor_interface.play_custom_scene('res://addons/dialogic/Editor/TimelineEditor/TimelineTestingScene.tscn')
