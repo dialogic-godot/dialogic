@@ -725,7 +725,7 @@ func drop_event():
 		var at_index = moving_piece.get_index()
 		moving_piece.queue_free()
 		TimelineUndoRedo.create_action("[D] Add event.")
-		TimelineUndoRedo.add_do_method(self, "add_event_to_timeline", currently_draged_event_type, {'no-data': true}, at_index, true, true)
+		TimelineUndoRedo.add_do_method(self, "add_event_to_timeline", currently_draged_event_type, at_index, true, true)
 		TimelineUndoRedo.add_undo_method(self, "remove_events_at_index", at_index, 1)
 		TimelineUndoRedo.commit_action()
 		moving_piece = null
