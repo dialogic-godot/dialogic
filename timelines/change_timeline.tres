@@ -1,0 +1,25 @@
+[gd_resource type="Resource" load_steps=5 format=2]
+
+[ext_resource path="res://addons/dialogic/Images/Event Icons/Main Icons/change-timeline.svg" type="Texture" id=1]
+[ext_resource path="res://addons/dialogic/Resources/timeline.gd" type="Script" id=2]
+[ext_resource path="res://addons/dialogic/Resources/event.gd" type="Script" id=3]
+
+[sub_resource type="Resource" id=1]
+script = ExtResource( 3 )
+id = "dialogic_020"
+name = "Change Timeline"
+icon = ExtResource( 1 )
+color = Color( 0.0705882, 0.717647, 0.415686, 1 )
+header = [  ]
+body = [  ]
+category = 2
+help_page_path = "res://addons/dialogic/Documentation/Content/Events/020.md"
+expand_by_default = true
+needs_indentation = false
+display_name = true
+sorting_index = 0
+
+[resource]
+script = ExtResource( 2 )
+dialogic_version = ""
+events = [ SubResource( 1 ) ]

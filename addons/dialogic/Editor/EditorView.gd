@@ -1,8 +1,8 @@
 tool
-extends Control
+extends Container
 
 func _ready():
-	var main_panel = $VBoxContainer
+	var main_panel = self
 	var separation = get_constant("separation", "BoxContainer") - 1
 	main_panel.margin_top = separation
 	main_panel.margin_left = separation
@@ -11,5 +11,4 @@ func _ready():
 
 
 func edit_timeline(object):
-	$VBoxContainer/Toolbar/Label.text = object.resource_path
-	$VBoxContainer/TimelineEditor.load_timeline(object)
+	$TimelineEditor.load_timeline(object)

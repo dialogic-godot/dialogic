@@ -1,7 +1,7 @@
 tool
-extends HSplitContainer
+extends VBoxContainer
 
-var editor_reference
+var editor_file_dialog
 
 var current_timeline: DialogicTimeline
 
@@ -9,8 +9,9 @@ var TimelineUndoRedo := UndoRedo.new()
 
 onready var event_node = load("res://addons/dialogic/Editor/Events/Templates/EventNode.tscn")
 
-onready var timeline = $TimelineArea/TimeLine
-onready var events_warning = $ScrollContainer/EventContainer/EventsWarning
+onready var timeline_area = $View/TimelineArea
+onready var timeline = $View/TimelineArea/TimeLine
+onready var events_warning = $View/ScrollContainer/EventContainer/EventsWarning
 
 var hovered_item = null
 var selected_style : StyleBoxFlat = load("res://addons/dialogic/Editor/Events/styles/selected_styleboxflat.tres")
@@ -24,72 +25,52 @@ var move_start_position = null
 var moving_piece = null
 var piece_was_dragged = false
 
-
-var id_to_scene_name = {
-	#Main events
-	'dialogic_001':'TextEvent',
-	'dialogic_002':'Character',
-	#Logic
-	'dialogic_010':'Question',
-	'dialogic_011':'Choice',
-	'dialogic_012':'Condition',
-	'dialogic_013':'EndBranch',
-	'dialogic_014':'SetValue',
-	'dialogic_015':'LabelEvent',
-	'dialogic_016':'GoTo Event',
-	#Timeline
-	'dialogic_020':'ChangeTimeline',
-	'dialogic_021':'ChangeBackground',
-	'dialogic_022':'CloseDialog',
-	'dialogic_023':'WaitSeconds',
-	'dialogic_024':'SetTheme',
-	'dialogic_025':'SetGlossary',
-	'dialogic_026':'SaveEvent',
-	#Audio
-	'dialogic_030':'AudioEvent',
-	'dialogic_031':'BackgroundMusic',
-	#Godot
-	'dialogic_040':'EmitSignal',
-	'dialogic_041':'ChangeScene',
-	'dialogic_042':'CallNode',
-	}
-
 var event_data
 
 var batches = []
 var building_timeline = true
+
 signal selection_updated
 signal batch_loaded
 signal timeline_loaded
-	
 
 func _ready():
 	var dialogic_plugin = get_tree().root.get_node('EditorNode/DialogicPlugin')
 	dialogic_plugin.connect('dialogic_save', self, 'save_timeline')
 	
-	editor_reference = find_parent('EditorView')
+	
 	connect("batch_loaded", self, '_on_batch_loaded')
+	
+	# File dialog
+	editor_file_dialog = EditorFileDialog.new()
+	add_child(editor_file_dialog)
+	editor_file_dialog.connect('file_selected', self, 'create_and_save_new_timeline')
+	
+	
+	
+	# Margins
 	var modifier = ''
 	var _scale = DialogicUtil.get_editor_scale(self)
-	$ScrollContainer.rect_min_size.x = 180
+	var scroll_container = $View/ScrollContainer
+	scroll_container.rect_min_size.x = 180
 	if _scale == 1.25:
 		modifier = '-1.25'
-		$ScrollContainer.rect_min_size.x = 200
+		scroll_container.rect_min_size.x = 200
 	if _scale == 1.5:
 		modifier = '-1.25'
-		$ScrollContainer.rect_min_size.x = 200
+		scroll_container.rect_min_size.x = 200
 	if _scale == 1.75:
 		modifier = '-1.25'
-		$ScrollContainer.rect_min_size.x = 390
+		scroll_container.rect_min_size.x = 390
 	if _scale == 2:
 		modifier = '-2'
-		$ScrollContainer.rect_min_size.x = 390
+		scroll_container.rect_min_size.x = 390
 	
 	
-	var style = $TimelineArea.get('custom_styles/bg')
+	var style = timeline_area.get('custom_styles/bg')
 	style.set('bg_color', get_color("dark_color_1", "Editor"))
 	
-	$TimelineArea.connect('resized', self, 'add_extra_scroll_area_to_timeline', [])
+	timeline_area.connect('resized', self, 'add_extra_scroll_area_to_timeline', [])
 	
 	# Event buttons
 	var buttonScene = load("res://addons/dialogic/Editor/TimelineEditor/SmallEventButton.tscn")
@@ -112,10 +93,10 @@ func _ready():
 				button.connect('pressed', self, "_on_ButtonCondition_pressed", [])
 			else:
 				button.connect('pressed', self, "_add_event_button_pressed", [event_resource])
-			get_node("ScrollContainer/EventContainer/FlexContainer" + str(button.event_category + 1)).add_child(button)
-			while button.get_index() != 0 and button.sorting_index < get_node("ScrollContainer/EventContainer/FlexContainer" + 
+			get_node("View/ScrollContainer/EventContainer/FlexContainer" + str(button.event_category + 1)).add_child(button)
+			while button.get_index() != 0 and button.sorting_index < get_node("View/ScrollContainer/EventContainer/FlexContainer" + 
 					str(button.event_category + 1)).get_child(button.get_index()-1).sorting_index:
-				get_node("ScrollContainer/EventContainer/FlexContainer" + str(button.event_category + 1)).move_child(button, button.get_index()-1)
+				get_node("View/ScrollContainer/EventContainer/FlexContainer" + str(button.event_category + 1)).move_child(button, button.get_index()-1)
 	
 
 # handles dragging/moving of events
@@ -427,6 +408,7 @@ func add_events_indexed(indexed_events:Dictionary) -> void:
 	selected_items = events
 	visual_update_selection()
 
+
 func delete_events_indexed(indexed_events:Dictionary) -> void:
 	select_indexed_events(indexed_events)
 	delete_selected_events()
@@ -480,7 +462,7 @@ func copy_selected_events():
 	OS.clipboard = JSON.print(
 		{
 			"events":event_copy_array,
-			"dialogic_version": editor_reference.version_string,
+			#"dialogic_version": editor_reference.version_string,
 			"project_name": ProjectSettings.get_setting("application/config/name")
 		})
 
@@ -489,9 +471,9 @@ func paste_check():
 	var clipboard_parse = JSON.parse(OS.clipboard).result
 	
 	if typeof(clipboard_parse) == TYPE_DICTIONARY:
-		if clipboard_parse.has("dialogic_version"):
-			if clipboard_parse['dialogic_version'] != editor_reference.version_string:
-				print("[D] Be careful when copying from older versions!")
+		#if clipboard_parse.has("dialogic_version"):
+			#if clipboard_parse['dialogic_version'] != editor_reference.version_string:
+				#print("[D] Be careful when copying from older versions!")
 		if clipboard_parse.has("project_name"):
 			if clipboard_parse['project_name'] != ProjectSettings.get_setting("application/config/name"):
 				print("[D] Be careful when copying from another project!")
@@ -782,16 +764,41 @@ func add_event_to_timeline(event_resource, at_index:int = -1, auto_select: bool 
 # Saving
 func save_timeline() -> void:
 	var new_events = []
+	
 	for event in timeline.get_children():
 		new_events.append(event.resource)
-		
-	current_timeline.events = new_events
-	ResourceSaver.save(current_timeline.resource_path, current_timeline)
+	
+	if current_timeline:
+		current_timeline.events = new_events
+		ResourceSaver.save(current_timeline.resource_path, current_timeline)
+	else:
+		if new_events.size() > 0:
+			godot_file_dialog('*.tres', EditorFileDialog.MODE_SAVE_FILE)
+
+
+func godot_file_dialog(filter, mode = EditorFileDialog.MODE_OPEN_FILE):
+	editor_file_dialog.mode = mode
+	editor_file_dialog.clear_filters()
+	editor_file_dialog.popup_centered_ratio(0.75)
+	editor_file_dialog.add_filter(filter)
+	editor_file_dialog.window_title = "Save new Timeline"
+	editor_file_dialog.current_file = "New_Timeline"
+	return editor_file_dialog
+	
+
+func create_and_save_new_timeline(path):
+	var new_timeline = DialogicTimeline.new()
+	new_timeline.resource_path = path
+	current_timeline = new_timeline
+	save_timeline()
+	load_timeline(new_timeline)
+	
 
 
 func load_timeline(object) -> void:
-	clear_timeline()
 	#print('[D] Load timeline: ', object)
+	clear_timeline()
+	$Toolbar/Label.text = object.resource_path
 	current_timeline = object
 	var data = object.events.duplicate()
 	var page = 1
@@ -801,7 +808,7 @@ func load_timeline(object) -> void:
 		page += 1
 	load_batch(batches)
 	# Reset the scroll position
-	$TimelineArea.scroll_vertical = 0
+	timeline_area.scroll_vertical = 0
 
 
 func batch_events(array, size, batch_number):
@@ -878,11 +885,11 @@ func move_block(block, direction):
 	if direction == 'up':
 		if block_index > 0:
 			timeline.move_child(block, block_index - 1)
-			$TimelineArea.update()
+			timeline_area.update()
 			return true
 	if direction == 'down':
 		timeline.move_child(block, block_index + 1)
-		$TimelineArea.update()
+		timeline_area.update()
 		return true
 	return false
 
@@ -898,9 +905,9 @@ func move_block_to_index(block_index, index):
 func scroll_to_piece(piece_index) -> void:
 	var height = 0
 	for i in range(0, piece_index):
-		height += $TimelineArea/TimeLine.get_child(i).rect_size.y
-	if height < $TimelineArea.scroll_vertical or height > $TimelineArea.scroll_vertical+$TimelineArea.rect_size.y-(200*DialogicUtil.get_editor_scale(self)):
-		$TimelineArea.scroll_vertical = height
+		height += timeline.get_child(i).rect_size.y
+	if height < timeline_area.scroll_vertical or height > timeline_area.scroll_vertical+timeline_area.rect_size.y-(200*DialogicUtil.get_editor_scale(self)):
+		timeline_area.scroll_vertical = height
 
 # Event Indenting
 func indent_events() -> void:
@@ -953,7 +960,7 @@ func indent_events() -> void:
 			else:
 				event.set_indent(indent)
 		starter = false
-	$TimelineArea.update()
+	timeline_area.update()
 
 
 # called from the toolbar
@@ -983,7 +990,7 @@ func add_extra_scroll_area_to_timeline():
 	if timeline.get_children().size() > 4:
 		timeline.rect_min_size.y = 0
 		timeline.rect_size.y = 0
-		if timeline.rect_size.y + 200 > $TimelineArea.rect_size.y:
+		if timeline.rect_size.y + 200 > timeline_area.rect_size.y:
 			timeline.rect_min_size = Vector2(0, timeline.rect_size.y + 200)
 
 

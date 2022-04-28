@@ -1,33 +1,13 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://addons/dialogic/Editor/TimelineEditor/TimelineEditor.tscn" type="PackedScene" id=1]
 [ext_resource path="res://addons/dialogic/Editor/EditorView.gd" type="Script" id=2]
-[ext_resource path="res://addons/dialogic/Editor/Toolbar/Toolbar.tscn" type="PackedScene" id=3]
 
-[node name="EditorView" type="Control"]
+[node name="EditorView" type="Container"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource( 2 )
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_left = -1.0
-margin_top = -1.0
-margin_right = 1.0
-margin_bottom = 1.0
-
-[node name="Toolbar" parent="VBoxContainer" instance=ExtResource( 3 )]
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_right = 1026.0
-margin_bottom = 22.0
-
-[node name="TimelineEditor" parent="VBoxContainer" instance=ExtResource( 1 )]
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_top = 26.0
-margin_right = 1026.0
-margin_bottom = 602.0
+[node name="TimelineEditor" parent="." instance=ExtResource( 1 )]
