@@ -2,18 +2,19 @@ tool
 extends Resource
 class_name DialogicEvent
 
-export (String) var id
-export (String) var name
-export (Texture) var icon
-export (Color) var color
+enum Category {
+	MAIN,
+	LOGIC,
+	TIMELINE,
+	AUDIOVISUAL,
+	GODOT,
+	OTHER,
+}
 
 # Hopefully we can replace this with a cleaner system
 # maybe even generate them based on some markup? who knows, it is free to dream
 export(Array, Resource) var header : Array
 export(Array, Resource) var body : Array
-
-
-export (int, 'Main', 'Logic', 'Timeline', 'Audio/Visual', 'Godot', 'Other') var category
 
 export (String) var help_page_path
 
@@ -58,6 +59,34 @@ signal event_finished(event_resource)
 ## If value is true, the next event will be executed when event ends.
 export(bool) var continue_at_end:bool = true setget _set_continue
 
+## The event icon that'll be displayed in the editor
+var event_icon:Texture = load("res://addons/dialogic/Images/Event Icons/warning.svg")
+
+## The event color that event node will take in the editor
+var event_color:Color = Color("FBB13C")
+
+## The event name that'll be displayed in the editor.
+## If the resource name is different from the event name, resource_name is returned instead.
+var event_name:String = "Event"
+
+
+var event_category:int = Category.OTHER
+
+
+# This exist to avoid errors with the editor. Can be safely removed
+# when the editor works with the new property names.
+# Why with the "event_" prefix? To know wich properties are related to
+# the editor and avoid confusion with node properties.
+func _get(property: String):
+	if property == "name":
+		return event_name
+	if property == "icon":
+		return event_icon
+	if property == "color":
+		return event_color
+	if property == "category":
+		return event_category
+
 
 ## Executes the event behaviour.
 func execute() -> void:
@@ -93,7 +122,7 @@ func property_get_revert(property:String):
 
 
 func _to_string() -> String:
-	return "[{name}:{id}]".format({"name":name, "id":get_instance_id()})
+	return "[{name}:{id}]".format({"name":event_name, "id":get_instance_id()})
 
 
 func _hide_script_from_inspector():
