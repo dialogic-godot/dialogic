@@ -2,6 +2,7 @@
 
 ## v1.4.2 - WIP
 - Fixed an issue with MacOS and text events not adjusting their size properly
+- Android exports should work again [[zaknafean](https://github.com/zaknafean)]
 
 ## v1.4.1 - Animations hotfix
 - Portrait-Animation fixes:
