@@ -17,3 +17,4 @@ expand_by_default = false
 needs_indentation = false
 display_name = false
 sorting_index = 0
+continue_at_end = true
