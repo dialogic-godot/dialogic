@@ -18,8 +18,10 @@ expand_by_default = true
 needs_indentation = false
 display_name = true
 sorting_index = 2
+continue_at_end = true
 
 [resource]
+resource_name = "Timeline"
 script = ExtResource( 1 )
 dialogic_version = ""
 events = [ SubResource( 1 ) ]

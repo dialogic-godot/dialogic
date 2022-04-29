@@ -21,6 +21,7 @@ sorting_index = 0
 continue_at_end = true
 
 [resource]
+resource_name = "Timeline"
 script = ExtResource( 2 )
 dialogic_version = ""
 events = [ SubResource( 1 ) ]
