@@ -18,4 +18,4 @@ node_path = ""
 resource_name = "Timeline"
 script = ExtResource( 1 )
 dialogic_version = ""
-events = [ SubResource( 1 ) ]
+event/0 = SubResource( 1 )
