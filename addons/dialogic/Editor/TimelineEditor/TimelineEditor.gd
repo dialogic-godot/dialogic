@@ -74,28 +74,30 @@ func _ready():
 	
 	# Event buttons
 	var buttonScene = load("res://addons/dialogic/Editor/TimelineEditor/SmallEventButton.tscn")
-	var resource_list = DialogicUtil.listdir("res://addons/dialogic/Editor/Events/")
-	for resource_path in resource_list:
-		if '.tres' in resource_path:
-			var event_resource = load("res://addons/dialogic/Editor/Events/" + resource_path)
+	var file_list = DialogicUtil.listdir("res://addons/dialogic/Editor/Events/")
+	for file in file_list:
+		if '.gd' in file:
+			var event_script = load("res://addons/dialogic/Editor/Events/" + file)
+			var event_resource = event_script.new()
 			var button = buttonScene.instance()
 			button.resource = event_resource
-			button.visible_name = '       ' + event_resource.name
-			button.event_id = event_resource.id
-			button.set_icon(event_resource.icon)
-			button.event_color = event_resource.color
-			button.event_category = event_resource.category
-			button.sorting_index = event_resource.sorting_index
-			# Connecting the signal
-			if button.event_id == 'dialogic_010':
-				button.connect('pressed', self, "_on_ButtonQuestion_pressed", [])
-			elif button.event_id == 'dialogic_012': # Condition
-				button.connect('pressed', self, "_on_ButtonCondition_pressed", [])
-			else:
-				button.connect('pressed', self, "_add_event_button_pressed", [event_resource])
-			get_node("View/ScrollContainer/EventContainer/FlexContainer" + str(button.event_category + 1)).add_child(button)
-			while button.get_index() != 0 and button.sorting_index < get_node("View/ScrollContainer/EventContainer/FlexContainer" + 
-					str(button.event_category + 1)).get_child(button.get_index()-1).sorting_index:
+			button.visible_name = '       ' + event_resource.event_name
+			button.set_icon(event_resource.event_icon)
+			button.event_color = event_resource.event_color
+			button.event_category = event_resource.event_category
+			button.event_sorting_index = event_resource.event_sorting_index
+
+
+		#	if button.event_id == 'dialogic_010':
+		#		button.connect('pressed', self, "_on_ButtonQuestion_pressed", [])
+		#	elif button.event_id == 'dialogic_012': # Condition
+		#		button.connect('pressed', self, "_on_ButtonCondition_pressed", [])
+		#	else:
+			button.connect('pressed', self, "_add_event_button_pressed", [event_resource])
+		
+			get_node("View/ScrollContainer/EventContainer/FlexContainer" + str(button.event_category)).add_child(button)
+			while button.get_index() != 0 and button.event_sorting_index < get_node("View/ScrollContainer/EventContainer/FlexContainer" + 
+					str(button.event_category)).get_child(button.get_index()-1).event_sorting_index:
 				get_node("View/ScrollContainer/EventContainer/FlexContainer" + str(button.event_category + 1)).move_child(button, button.get_index()-1)
 	
 
@@ -731,8 +733,7 @@ func cancel_drop_event():
 func add_event_to_timeline(event_resource, at_index:int = -1, auto_select: bool = false, indent: bool = false):
 	var piece = event_node.instance()
 	var resource = event_resource.duplicate()
-	#print('[D] New resource: ', resource)
-	piece.resource = resource
+	piece.resource = event_resource
 	
 	if at_index == -1:
 		if len(selected_items) != 0:

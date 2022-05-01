@@ -22,8 +22,6 @@ export (bool) var expand_by_default : bool = true
 export (bool) var needs_indentation : bool = false
 export (bool) var display_name : bool = true
 
-export (int) var sorting_index : int
-
 # -----------------------------------------
 # Emilio:
 # Stuff I yet don't understand made by Dex:
@@ -72,6 +70,9 @@ var event_name:String = "Event"
 
 var event_category:int = Category.OTHER
 
+
+# To sort the buttons shown in the editor
+var event_sorting_index : int = 0
 
 # This exist to avoid errors with the editor. Can be safely removed
 # when the editor works with the new property names.

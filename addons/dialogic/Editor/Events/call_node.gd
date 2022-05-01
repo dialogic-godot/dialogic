@@ -12,6 +12,7 @@ func _init() -> void:
 	event_icon = load("res://addons/dialogic/Images/Event Icons/Main Icons/call-node.svg")
 	event_color = Color("#0ca5eb")
 	event_category = Category.GODOT
+	event_sorting_index = 1
 	
 	# maybe using setters is better for this scenario?
 	# like doing:
