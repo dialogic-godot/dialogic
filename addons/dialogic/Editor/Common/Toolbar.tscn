@@ -1,21 +1,20 @@
 [gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://addons/dialogic/Editor/Common/TLabel.tscn" type="PackedScene" id=1]
-[ext_resource path="res://addons/dialogic/Editor/Common/TLabel.gd" type="Script" id=2]
+[ext_resource path="res://addons/dialogic/Editor/Common/Toolbar.gd" type="Script" id=2]
 
 [node name="Toolbar" type="HBoxContainer"]
 margin_right = 1024.0
 margin_bottom = 22.0
+script = ExtResource( 2 )
 
-[node name="TLabel" type="Label" parent="." instance=ExtResource( 1 )]
+[node name="TLabel" parent="." instance=ExtResource( 1 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
 margin_top = 4.0
 margin_right = 111.0
 margin_bottom = 18.0
 text = "Current Timeline:"
-script = ExtResource( 2 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
 text_key = "Current Timeline:"
 
 [node name="Label" type="Label" parent="."]
@@ -27,12 +26,19 @@ text = "None"
 
 [node name="Spacer" type="Control" parent="."]
 margin_left = 153.0
-margin_right = 957.0
+margin_right = 953.0
 margin_bottom = 22.0
 size_flags_horizontal = 3
 
 [node name="Settings" type="ToolButton" parent="."]
-margin_left = 961.0
-margin_right = 1024.0
+margin_left = 957.0
+margin_right = 1020.0
 margin_bottom = 22.0
 text = "Settings"
+
+[node name="Version" type="Label" parent="."]
+margin_left = 1024.0
+margin_top = 4.0
+margin_right = 1024.0
+margin_bottom = 18.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )

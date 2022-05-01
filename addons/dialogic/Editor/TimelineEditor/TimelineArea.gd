@@ -6,8 +6,7 @@ var _is_drag_receiving = false
 var _last_event_button_drop_attempt = '' 
 var _mouse_exited = false
 
-# todo, getting timeline like this is prone to fail someday
-onready var timeline_editor = get_parent()
+onready var timeline_editor = find_parent('TimelineEditor')
 
 
 func _ready():

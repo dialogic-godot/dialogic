@@ -65,8 +65,9 @@ func _ready():
 		scroll_container.rect_min_size.x = 390
 	
 	
-	var style = timeline_area.get('custom_styles/bg')
-	style.set('bg_color', get_color("dark_color_1", "Editor"))
+	if find_parent('EditorView'): # This prevents the view to turn black if you are editing this scene in Godot
+		var style = timeline_area.get('custom_styles/bg')
+		style.set('bg_color', get_color("dark_color_1", "Editor"))
 	
 	timeline_area.connect('resized', self, 'add_extra_scroll_area_to_timeline', [])
 	
