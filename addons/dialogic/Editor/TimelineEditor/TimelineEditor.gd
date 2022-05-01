@@ -730,7 +730,7 @@ func cancel_drop_event():
 ##					 	CREATING THE TIMELINE
 ## *****************************************************************************
 # Adding an event to the timeline
-func add_event_to_timeline(event_resource, at_index:int = -1, auto_select: bool = false, indent: bool = false):
+func add_event_to_timeline(event_resource:Resource, at_index:int = -1, auto_select: bool = false, indent: bool = false):
 	var piece = event_node.instance()
 	var resource = event_resource.duplicate()
 	piece.resource = event_resource
