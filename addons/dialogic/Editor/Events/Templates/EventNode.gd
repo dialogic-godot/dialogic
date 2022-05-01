@@ -97,7 +97,7 @@ func _set_event_icon(icon: Texture):
 
 
 func _set_event_name(text: String):
-	if resource.name:
+	if resource.event_name:
 		title_label.text = text
 	else:
 		var t_label = get_node_or_null("PanelContainer/MarginContainer/VBoxContainer/Header/TitleLabel")
@@ -169,8 +169,8 @@ func focus():
 ## *****************************************************************************
 
 func _ready():
-	if resource.name:
-		event_name = DTS.translate(resource.name)
+	if resource.event_name:
+		event_name = DTS.translate(resource.event_name)
 	
 	## DO SOME STYLING
 	$PanelContainer/SelectedStyle.modulate = get_color("accent_color", "Editor")
@@ -181,8 +181,8 @@ func _ready():
 	
 	indent_size = indent_size * DialogicUtil.get_editor_scale(self)
 	
-	if resource.icon != null:
-		_set_event_icon(resource.icon)
+	if resource.event_icon != null:
+		_set_event_icon(resource.event_icon)
 	if event_name != null:
 		_set_event_name(event_name)
 	
@@ -216,7 +216,7 @@ func _ready():
 			body_content_container.add_child(new_node)
 			new_node.owner = self
 		body_content_container.add_constant_override('margin_left', 40*DialogicUtil.get_editor_scale(self))
-	$PanelContainer/MarginContainer/VBoxContainer/Header/CenterContainer/IconPanel.set("self_modulate", resource.color)
+	$PanelContainer/MarginContainer/VBoxContainer/Header/CenterContainer/IconPanel.set("self_modulate", resource.event_color)
 	
 	set_focus_mode(1) # Allowing this node to grab focus
 	

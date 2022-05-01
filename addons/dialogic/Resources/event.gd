@@ -74,20 +74,6 @@ var event_category:int = Category.OTHER
 # To sort the buttons shown in the editor
 var event_sorting_index : int = 0
 
-# This exist to avoid errors with the editor. Can be safely removed
-# when the editor works with the new property names.
-# Why with the "event_" prefix? To know wich properties are related to
-# the editor and avoid confusion with node properties.
-func _get(property: String):
-	if property == "name":
-		return event_name
-	if property == "icon":
-		return event_icon
-	if property == "color":
-		return event_color
-	if property == "category":
-		return event_category
-
 
 ## Executes the event behaviour.
 func execute() -> void:
