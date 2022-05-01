@@ -4,6 +4,7 @@ extends Control
 onready var timeline_editor = $MarginContainer/VBoxContainer/TimelineEditor
 
 func _ready():
+	$MarginContainer/VBoxContainer/Toolbar/Settings.connect("button_up", self, "show_settings")
 	set_current_margin($MarginContainer, get_constant("separation", "BoxContainer") - 1)
 
 
