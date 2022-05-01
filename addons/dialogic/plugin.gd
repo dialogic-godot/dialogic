@@ -5,24 +5,16 @@ var _editor_view
 var _parts_inspector
 var _export_plugin
 
+signal dialogic_save
 
 func _init():
-	if Engine.editor_hint:
-		# Make sure the core files exist 
-		DialogicResources.init_dialogic_files()
+	self.name = 'DialogicPlugin'
 	
 
 func _enter_tree() -> void:
-	_parts_inspector = load("res://addons/dialogic/Other/inspector_timeline_picker.gd").new()
-	add_inspector_plugin(_parts_inspector)
-	_export_plugin = load("res://addons/dialogic/Other/export_plugin.gd").new()
-	add_export_plugin(_export_plugin)
 	_add_custom_editor_view()
 	get_editor_interface().get_editor_viewport().add_child(_editor_view)
-	_editor_view.editor_interface = get_editor_interface()
 	make_visible(false)
-	_parts_inspector.dialogic_editor_plugin = self
-	_parts_inspector.dialogic_editor_view = _editor_view
 
 
 func _ready():
@@ -61,7 +53,6 @@ func get_plugin_icon():
 
 func _add_custom_editor_view():
 	_editor_view = preload("res://addons/dialogic/Editor/EditorView.tscn").instance()
-	#_editor_view.plugin_reference = self
 
 
 func _remove_custom_editor_view():
@@ -69,3 +60,17 @@ func _remove_custom_editor_view():
 		remove_control_from_bottom_panel(_editor_view)
 		_editor_view.queue_free()
 
+
+func save_external_data():
+	emit_signal('dialogic_save')
+
+
+func handles(object):
+	if object is DialogicTimeline:
+		return true
+
+
+func edit(object):
+	make_visible(true)
+	if object is DialogicTimeline:
+		_editor_view.edit_timeline(object)

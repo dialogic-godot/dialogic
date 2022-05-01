@@ -10,7 +10,6 @@ export (Resource) var resource
 
 
 ### internal node eferences
-onready var panel = $PanelContainer
 onready var selected_style = $PanelContainer/SelectedStyle
 onready var warning = $PanelContainer/MarginContainer/VBoxContainer/Header/CenterContainer/IconPanel/Warning
 onready var title_label = $PanelContainer/MarginContainer/VBoxContainer/Header/TitleLabel
@@ -65,6 +64,7 @@ func set_preview(text: String):
 
 
 func set_indent(indent: int):
+	var indent_node = $Indent
 	indent_node.rect_min_size = Vector2(indent_size * indent, 0)
 	indent_node.visible = indent != 0
 	current_indent_level = indent
@@ -97,7 +97,7 @@ func _set_event_icon(icon: Texture):
 
 
 func _set_event_name(text: String):
-	if resource.name:
+	if resource.event_name:
 		title_label.text = text
 	else:
 		var t_label = get_node_or_null("PanelContainer/MarginContainer/VBoxContainer/Header/TitleLabel")
@@ -117,9 +117,7 @@ func _on_ExpandControl_state_changed(expanded: bool):
 
 func _on_OptionsControl_action(index):
 	if index == 0:
-		if resource.help_page_path:
-			var master_tree = editor_reference.get_node_or_null('MainPanel/MasterTreeContainer/MasterTree')
-			master_tree.select_documentation_item(resource.help_page_path)
+		print('Documentation here')
 	elif index == 2:
 		emit_signal("option_action", "up")
 	elif index == 3:
@@ -171,8 +169,8 @@ func focus():
 ## *****************************************************************************
 
 func _ready():
-	if resource.name:
-		event_name = DTS.translate(resource.name)
+	if resource.event_name:
+		event_name = DTS.translate(resource.event_name)
 	
 	## DO SOME STYLING
 	$PanelContainer/SelectedStyle.modulate = get_color("accent_color", "Editor")
@@ -183,31 +181,47 @@ func _ready():
 	
 	indent_size = indent_size * DialogicUtil.get_editor_scale(self)
 	
-	if resource.icon != null:
-		_set_event_icon(resource.icon)
+	if resource.event_icon != null:
+		_set_event_icon(resource.event_icon)
 	if event_name != null:
 		_set_event_name(event_name)
+	
+	var label_editor = load("res://addons/dialogic/Editor/Events/Fields/Label.tscn")
+	var text_area = load("res://addons/dialogic/Editor/Events/Fields/TextArea.tscn")
 	if resource.header != null:
-		print('resource.header: ', resource.header)
-		for node in resource.header:
-			print(node)
-			var new_node = node.instance()
+		#print('resource.header: ', resource.header)
+		for r in resource.header:
+			var new_node = label_editor.instance()
+			
+			if r.type == 0: # Label
+				new_node = label_editor.instance()
+				new_node.text = r.key
+			if r.type == 1: # Text
+				new_node = text_area.instance()
+				
 			header_content_container.add_child(new_node)
 			new_node.owner = self
 			
 	if resource.body != null:
-		print('resource.body: ', resource.body)
-		for node in resource.body:
-			var new_node = node.instance()
+		#print('resource.body: ', resource.body)
+		for r in resource.body:
+			var new_node = label_editor.instance()
+			if r.type:
+				if r.type == 0: # Label
+					new_node = label_editor.instance()
+					new_node.text = r.key
+				if r.type == 1: # Text
+					new_node = text_area.instance()
+				
 			body_content_container.add_child(new_node)
 			new_node.owner = self
 		body_content_container.add_constant_override('margin_left', 40*DialogicUtil.get_editor_scale(self))
-	$PanelContainer/MarginContainer/VBoxContainer/Header/CenterContainer/IconPanel.set("self_modulate", resource.color)
+	$PanelContainer/MarginContainer/VBoxContainer/Header/CenterContainer/IconPanel.set("self_modulate", resource.event_color)
 	
 	set_focus_mode(1) # Allowing this node to grab focus
 	
 	# signals
-	panel.connect("gui_input", self, '_on_gui_input')
+	$PanelContainer.connect("gui_input", self, '_on_gui_input')
 	expand_control.connect("state_changed", self, "_on_ExpandControl_state_changed")
 	$PopupMenu.connect("index_pressed", self, "_on_OptionsControl_action")
 	
