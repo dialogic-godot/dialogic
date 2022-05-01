@@ -8,7 +8,7 @@
   - Fixed the 'default' setting not appearing after you set it for hotkey choices
   - Fixed hotkey choice settings layout
   - Changed the default status of autofocus from true to false
-- Fixes custom events breaking in Android exports [[zaknafean](https://github.com/zaknafean)]
+- A basic touch to advance implementation (#876) [[zaknafean](https://github.com/zaknafean)]
 
 ## v1.4.1 - Animations hotfix
 - Portrait-Animation fixes:
