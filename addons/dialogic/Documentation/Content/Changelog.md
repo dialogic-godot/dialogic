@@ -4,6 +4,11 @@
 - Fixed an issue with MacOS and text events not adjusting their size properly
 - Android exports should work again [[zaknafean](https://github.com/zaknafean)]
 - Add setting to disable the mouse block of the dialog node [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
+- Default settings adjustments [[zaknafean](https://github.com/zaknafean)]
+  - Fixed the 'default' setting not appearing after you set it for hotkey choices
+  - Fixed hotkey choice settings layout
+  - Changed the default status of autofocus from true to false
+- Fixes custom events breaking in Android exports [[zaknafean](https://github.com/zaknafean)]
 
 ## v1.4.1 - Animations hotfix
 - Portrait-Animation fixes:
