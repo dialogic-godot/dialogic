@@ -34,15 +34,9 @@ static func _get_translation(message)->String:
 	var translations = get_translations()
 	var default_fallback = 'en'
 	
-	var _test_locale:String = ProjectSettings.get_setting("locale/test")
-	var locale = TranslationServer.get_locale()
-	
-	if Engine.editor_hint:
-		var editor_settings = Dialogic.get_editor_interface.get_editor_settings
-		locale = editor_settings.get('interface/editor/editor_language')
-	elif _test_locale:
-		# There's a test locale property defined, use that instead editor locale
-		locale = _test_locale
+	var editor_plugin = EditorPlugin.new()
+	var editor_settings = editor_plugin.get_editor_interface().get_editor_settings()
+	var locale = editor_settings.get('interface/editor/editor_language')
 	
 	var cases = translations.get(
 		locale, 
