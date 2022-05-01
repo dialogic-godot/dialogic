@@ -93,7 +93,7 @@ func _ready():
 		#	elif button.event_id == 'dialogic_012': # Condition
 		#		button.connect('pressed', self, "_on_ButtonCondition_pressed", [])
 		#	else:
-			button.connect('pressed', self, "_add_event_button_pressed", [event_resource])
+			button.connect('pressed', self, "_add_event_button_pressed", [event_script])
 		
 			get_node("View/ScrollContainer/EventContainer/FlexContainer" + str(button.event_category)).add_child(button)
 			while button.get_index() != 0 and button.event_sorting_index < get_node("View/ScrollContainer/EventContainer/FlexContainer" + 
@@ -616,14 +616,14 @@ func delete_event(event):
 ## *****************************************************************************
 
 # Event Creation signal for buttons
-func _add_event_button_pressed(event_resource):
+func _add_event_button_pressed(event_script):
 	var at_index = -1
 	if selected_items:
 		at_index = selected_items[-1].get_index()+1
 	else:
 		at_index = timeline.get_child_count()
 	TimelineUndoRedo.create_action("[D] Add event.")
-	TimelineUndoRedo.add_do_method(self, "add_event_to_timeline", event_resource, at_index, true, true)
+	TimelineUndoRedo.add_do_method(self, "add_event_to_timeline", event_script.new(), at_index, true, true)
 	TimelineUndoRedo.add_undo_method(self, "remove_events_at_index", at_index, 1)
 	TimelineUndoRedo.commit_action()
 	scroll_to_piece(at_index)
@@ -732,7 +732,7 @@ func cancel_drop_event():
 # Adding an event to the timeline
 func add_event_to_timeline(event_resource:Resource, at_index:int = -1, auto_select: bool = false, indent: bool = false):
 	var piece = event_node.instance()
-	var resource = event_resource.duplicate()
+	var resource = event_resource
 	piece.resource = event_resource
 	
 	if at_index == -1:
@@ -770,7 +770,7 @@ func save_timeline() -> void:
 		new_events.append(event.resource)
 	
 	if current_timeline:
-		current_timeline.events = new_events
+		current_timeline.set_events(new_events)
 		ResourceSaver.save(current_timeline.resource_path, current_timeline)
 	else:
 		if new_events.size() > 0:
@@ -801,7 +801,7 @@ func load_timeline(object) -> void:
 	clear_timeline()
 	$Toolbar/Label.text = object.resource_path
 	current_timeline = object
-	var data = object.events.duplicate()
+	var data = object.get_events()
 	var page = 1
 	var batch_size = 12
 	while batch_events(data, batch_size, page).size() != 0:

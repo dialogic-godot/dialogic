@@ -4,7 +4,7 @@ class_name DialogicTimeline
 
 export (String) var dialogic_version
 
-export(Array, Resource) var events : Array
+#export(Array, Resource) var events : Array
 
 # -----------------------------------------
 # Emilio:
@@ -49,8 +49,6 @@ func get_events() -> Array:
 
 
 func _set(property:String, value) -> bool:
-	var has_property := false
-	
 	if property.begins_with("event/"):
 		var event_idx:int = int(property.split("/", true, 2)[1])
 		if event_idx < _events.size():
@@ -58,10 +56,14 @@ func _set(property:String, value) -> bool:
 		else:
 			_events.insert(event_idx, value)
 		
-		has_property = true
 		emit_changed()
+		property_list_changed_notify()
 	
-	return has_property
+	if property == "events":
+		set_events(value)
+		return true
+	
+	return false
 
 
 func _get(property:String):
@@ -69,6 +71,9 @@ func _get(property:String):
 		var event_idx:int = int(property.split("/", true, 2)[1])
 		if event_idx < _events.size():
 			return _events[event_idx]
+	
+	if property == "events":
+		return get_events()
 
 
 func _init() -> void:
@@ -85,6 +90,9 @@ func get_class() -> String: return "Timeline"
 
 func _get_property_list() -> Array:
 	var p = []
+	var usage = PROPERTY_USAGE_SCRIPT_VARIABLE
+	usage |= PROPERTY_USAGE_NOEDITOR
+	usage |= PROPERTY_USAGE_EDITOR # Comment this line to hide events from editor
 	for event_idx in _events.size():
 		p.append(
 			{
