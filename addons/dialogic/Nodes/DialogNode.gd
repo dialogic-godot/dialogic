@@ -122,6 +122,8 @@ func _ready():
 	$TextBubble.text_label.connect('meta_hover_started', self, '_on_RichTextLabel_meta_hover_started')
 	$TextBubble.text_label.connect('meta_hover_ended', self, '_on_RichTextLabel_meta_hover_ended')
 	
+	$TouchScreenButton.action = Dialogic.get_action_button()
+	
 	if Engine.is_editor_hint():
 		if preview:
 			get_parent().connect("resized", self, "resize_main")
@@ -290,7 +292,9 @@ func resize_main():
 	
 	$Options.rect_global_position = Vector2(0,0) + theme_choice_offset + position_offset
 	$Options.rect_size = reference
-
+	
+	if settings.get_value('input', 'clicking_dialog_action', true):
+		$TouchScreenButton.shape.extents = reference
 	
 	# Background positioning
 	var background = get_node_or_null('Background')
@@ -425,7 +429,7 @@ func _process(delta):
 			$TextBubble/NextIndicatorContainer/NextIndicator.visible = false
 		
 	# Hide if "Don't Close After Last Event" is checked and event is last text
-	if current_theme.get_value('settings', 'dont_close_after_last_event', false) and is_last_text:
+	if current_theme and current_theme.get_value('settings', 'dont_close_after_last_event', false) and is_last_text:
 		$TextBubble/NextIndicatorContainer/NextIndicator.visible = false
 	
 	# Hide if fading in
