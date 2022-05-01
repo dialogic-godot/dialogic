@@ -1,3 +1,4 @@
+tool
 extends DialogicEvent
 
 export(String) var node_path:String = "" # this probably will need a setter

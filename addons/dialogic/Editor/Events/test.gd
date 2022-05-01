@@ -1,3 +1,4 @@
+tool
 extends DialogicEvent
 class_name MyCustomEvent
 

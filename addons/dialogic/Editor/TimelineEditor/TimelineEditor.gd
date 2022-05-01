@@ -11,7 +11,7 @@ onready var event_node = load("res://addons/dialogic/Editor/Events/Templates/Eve
 
 onready var timeline_area = $View/TimelineArea
 onready var timeline = $View/TimelineArea/TimeLine
-onready var events_warning = $View/ScrollContainer/EventContainer/EventsWarning
+
 
 var hovered_item = null
 var selected_style : StyleBoxFlat = load("res://addons/dialogic/Editor/Events/styles/selected_styleboxflat.tres")
@@ -45,8 +45,6 @@ func _ready():
 	editor_file_dialog = EditorFileDialog.new()
 	add_child(editor_file_dialog)
 	editor_file_dialog.connect('file_selected', self, 'create_and_save_new_timeline')
-	
-	
 	
 	# Margins
 	var modifier = ''
@@ -747,7 +745,6 @@ func add_event_to_timeline(event_resource:Resource, at_index:int = -1, auto_sele
 	piece.connect("option_action", self, '_on_event_options_action', [piece])
 	piece.connect("gui_input", self, '_on_event_block_gui_input', [piece])
 	
-	events_warning.visible = false
 	if auto_select:
 		select_item(piece, false)
 	# Spacing
@@ -799,7 +796,7 @@ func create_and_save_new_timeline(path):
 func load_timeline(object) -> void:
 	#print('[D] Load timeline: ', object)
 	clear_timeline()
-	$Toolbar/Label.text = object.resource_path
+	get_parent().get_node('Toolbar/Label').text = object.resource_path
 	current_timeline = object
 	var data = object.get_events()
 	var page = 1
@@ -830,7 +827,6 @@ func _on_batch_loaded():
 		yield(get_tree().create_timer(0.01), "timeout")
 		load_batch(batches)
 	else:
-		events_warning.visible = false
 		indent_events()
 		building_timeline = false
 		emit_signal("timeline_loaded")
