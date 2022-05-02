@@ -4,7 +4,7 @@ extends "res://addons/dialogic/Editor/Events/Parts/EventPart.gd"
 # has an event_data variable that stores the current data!!!
 
 ## node references
-onready var text_editor = $TextEdit
+onready var text_editor = $HBoxContainer/TextEdit
 
 var timeline_area = null
 var text_gap = 50
@@ -27,7 +27,9 @@ func _ready():
 	
 	timeline_area = find_parent('TimelineArea')
 	timeline_area.connect('resized', self, '_set_new_min_size')
+	
 	_set_new_min_size()
+	
 
 
 # called by the event block
@@ -49,6 +51,8 @@ func load_data(data:Dictionary):
 	# resize the text_editor to the correct size 
 	_set_new_min_size()
 
+	_update_translation_preview()
+
 # has to return the wanted preview, only useful for body parts
 func get_preview():
 	var max_preview_characters = 35
@@ -62,6 +66,9 @@ func get_preview():
 	else:
 		text = event_data['text']
 	text = text.replace('\n', '[br]')
+	
+	text = DTS.translate(text)
+	
 	var preview = text.substr(0, min(max_preview_characters, len(text)))
 	if (len(text) > max_preview_characters):
 		preview += "..."
@@ -78,10 +85,29 @@ func _on_TextEditor_text_changed():
 	# otherwise
 	else:
 		event_data['text'] = text_editor.text
+	
 	_set_new_min_size()
+	
+	_update_translation_preview()
 	
 	# informs the parent about the changes!
 	data_changed()
+
+
+func _update_translation_preview():
+	if not DialogicResources.get_settings_value("dialog", "in_editor_translation", false):
+		$TranslatedText.visible = false
+		$HBoxContainer/EditTranslationButton.visible = false
+		return
+	
+	$HBoxContainer/EditTranslationButton.visible = true
+	var translated_text = DTS.translate(text_editor.text)
+	if translated_text != text_editor.text:
+		$TranslatedText.visible = true
+		$TranslatedText.text = translated_text
+	else:
+		$TranslatedText.text = ""
+		$TranslatedText.visible = false
 
 
 func _set_new_min_size():
@@ -89,9 +115,6 @@ func _set_new_min_size():
 	text_editor.rect_min_size = Vector2(0,0)
 	# Getting new sizes
 	var extra_vertical = 1.1
-	
-	
-	
 	
 	# Getting the longest string and making that the width of the dialog bubble
 	# also check how many lines wrap (and how often)
@@ -112,9 +135,23 @@ func _set_new_min_size():
 	text_editor.rect_min_size.x = get_font("normal_font").get_string_size(longest_string).x + text_gap
 	if text_editor.rect_min_size.x > get_max_x_size():
 		text_editor.rect_min_size.x = get_max_x_size()
+	
+	text_editor.rect_size.x = text_editor.rect_min_size.x
+	
+	_set_translated_text_min_size()
+
+func _set_translated_text_min_size():
+	var translated_text = $TranslatedText
+	if translated_text.visible == false:
+		return
+	
+	translated_text.rect_min_size.x = get_max_x_size() - 1
+	translated_text.rect_size.x = translated_text.rect_min_size.x
+
 
 func get_max_x_size():
 	return timeline_area.rect_size.x - (text_editor.rect_global_position.x - timeline_area.rect_global_position.x) - text_gap
+
 
 func _on_TextEditor_focus_entered() -> void:
 	if (Input.is_mouse_button_pressed(BUTTON_LEFT)):
@@ -124,7 +161,25 @@ func _on_TextEditor_focus_entered() -> void:
 func _on_TextEdit_focus_exited():
 	# Remove text selection to visually notify the user that the text will not 
 	# be copied if they use a hotkey like CTRL + C 
-	$TextEdit.deselect()
+	$HBoxContainer/TextEdit.deselect()
+
 
 func focus():
-	$TextEdit.grab_focus()
+	$HBoxContainer/TextEdit.grab_focus()
+
+
+func _on_EditTranslationButton_pressed() -> void:
+	return
+	var popup = load("res://addons/dialogic/Editor/Events/Parts/Text/TranslationTextEditPopup.tscn").instance()
+	add_child(popup)
+	popup.show_translation($HBoxContainer/TextEdit.text, $TranslatedText.text)
+	popup.connect("saving_value", self, "_on_TranslationTextEditPopupValueSaved")
+
+
+func _on_TranslationTextEditPopupValueSaved(var value : String) -> void:
+	$TranslatedText.text = value
+
+
+func _on_EditTranslationButton_key_saved(value) -> void:
+	text_editor.text = value
+	_on_TextEditor_text_changed()

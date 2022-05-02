@@ -1,0 +1,17 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://addons/dialogic/Editor/Events/Parts/Text/EditTranslationButton.gd" type="Script" id=1]
+
+[node name="EditTranslationButton" type="Button"]
+margin_left = 21.0
+margin_right = 40.0
+margin_bottom = 20.0
+hint_tooltip = "Click to edit the translation."
+size_flags_vertical = 4
+text = "E"
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[connection signal="pressed" from="." to="." method="_on_EditTranslationButton_pressed"]

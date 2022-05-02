@@ -32,13 +32,29 @@ func load_definition(id):
 	nodes['extra_title'].text = current_definition['title']
 	nodes['extra_text'].text = current_definition['text']
 	nodes['extra_extra'].text = current_definition['extra']
-	
+	_update_translations()
+
 
 func reset_editor():
 	nodes['name'].text = ''
 	nodes['extra_title'].text = ''
 	nodes['extra_text'].text = ''
 	nodes['extra_extra'].text = ''
+	_update_translations()
+
+
+func _update_translations():
+	if not DialogicResources.get_settings_value("dialog", "in_editor_translation", false):
+		$VBoxContainer/HBoxContainer/TranslatedInfo.visible = false
+		$VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer.visible = false
+		return
+	
+	$VBoxContainer/HBoxContainer/TranslatedInfo.visible = true
+	$VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer.visible = true
+	$VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer/EditTranslationButton._update_translation()
+	$VBoxContainer/HBoxContainer/TranslatedInfo/HBoxContainer/EditTranslationButton._update_translation()
+	$VBoxContainer/HBoxContainer/TranslatedInfo/HBoxContainer2/EditTranslationButton._update_translation()
+	$VBoxContainer/HBoxContainer/TranslatedInfo/HBoxContainer3/EditTranslationButton._update_translation()
 
 
 func _on_name_changed(text):
@@ -65,6 +81,7 @@ func create_glossary_entry() -> String:
 	var id = DialogicUtil.generate_random_id()
 	DialogicResources.set_default_definition_glossary(id, 'New glossary entry', '', '', '')
 	return id
+
 
 func save_definition():
 	if current_definition != null and current_definition['id'] != '':

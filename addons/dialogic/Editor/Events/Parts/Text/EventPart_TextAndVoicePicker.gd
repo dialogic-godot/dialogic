@@ -41,7 +41,7 @@ func _on_text_editor_data_changed(data) -> void:
 
 
 func update_voices_lines():
-	var text = text_editor.get_child(0).text
+	var text = text_editor.get_child(0).get_child(0).text
 	voice_editor._on_text_changed(text)
 
 

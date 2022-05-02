@@ -34,15 +34,15 @@ func load_preview(info):
 	nodes['extra'].visible = false
 	
 	if info['title'] != '':
-		nodes['title'].bbcode_text = info['title']
+		nodes['title'].bbcode_text = tr(info['title'])
 		nodes['title'].visible = true
 
 	if info['body'] != '':
-		nodes['body'].bbcode_text = info['body']
+		nodes['body'].bbcode_text = tr(info['body'])
 		nodes['body'].visible = true
 	
 	if info['extra'] != '':
-		nodes['extra'].bbcode_text = info['extra']
+		nodes['extra'].bbcode_text = tr(info['extra'])
 		nodes['extra'].visible = true
 
 

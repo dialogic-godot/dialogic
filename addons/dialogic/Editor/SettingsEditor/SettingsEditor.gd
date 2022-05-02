@@ -95,7 +95,7 @@ func _ready():
 	# Connect hotkey settings 1-4
 	for i in range(1, 5):
 		var key = str('choice_hotkey_', i)
-		nodes[key].connect('pressed', self, '_on_hotkey_action_key_presssed', [key])
+		nodes[key].connect('pressed', self, '_on_default_action_key_presssed', [key])
 		nodes[key].connect('item_selected', self, '_on_default_action_key_item_selected', [key])
 	
 	AudioServer.connect("bus_layout_changed", self, "update_bus_selector")
@@ -236,16 +236,6 @@ func _on_default_action_key_presssed(nodeName = 'default_action_key') -> void:
 	for prop in ProjectSettings.get_property_list():
 		if prop.name.begins_with('input/'):
 			nodes[nodeName].add_item(prop.name.trim_prefix('input/'))
-			
-
-func _on_hotkey_action_key_presssed(nodeName = '[Default]') -> void:
-	var settings = DialogicResources.get_settings_config()
-	nodes[nodeName].clear()
-	nodes[nodeName].add_item('[Default]')
-	for prop in ProjectSettings.get_property_list():
-		if prop.name.begins_with('input/'):
-			nodes[nodeName].add_item(prop.name.trim_prefix('input/'))
-			
 
 
 func _on_default_action_key_item_selected(index, nodeName = 'default_action_key') -> void:

@@ -21,6 +21,6 @@ margin_bottom = 15.0
 
 [node name="VoiceEditor" parent="VBoxContainer" instance=ExtResource( 2 )]
 visible = false
-margin_top = 4.0
-margin_right = 358.0
-margin_bottom = 44.0
+margin_top = 19.0
+margin_right = 484.0
+margin_bottom = 125.0

@@ -1,0 +1,57 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://addons/dialogic/Editor/Events/Parts/Text/TranslationKeyBrowserPopup.gd" type="Script" id=1]
+
+[node name="TranslationKeyBrowserPopup" type="PopupPanel"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_right = -529.0
+margin_bottom = -300.0
+rect_min_size = Vector2( 475, 300 )
+size_flags_horizontal = 4
+size_flags_vertical = 4
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+margin_left = 4.0
+margin_top = 4.0
+margin_right = 491.0
+margin_bottom = 296.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ScrollContainer" type="ScrollContainer" parent="HBoxContainer"]
+margin_right = 225.0
+margin_bottom = 292.0
+rect_min_size = Vector2( 225, 0 )
+scroll_horizontal_enabled = false
+
+[node name="Content" type="VBoxContainer" parent="HBoxContainer/ScrollContainer"]
+margin_right = 225.0
+rect_min_size = Vector2( 225, 0 )
+
+[node name="BackButton" type="Button" parent="HBoxContainer/ScrollContainer/Content"]
+visible = false
+margin_right = 225.0
+margin_bottom = 20.0
+text = "Back to File Browser"
+
+[node name="VSeparator" type="VSeparator" parent="HBoxContainer"]
+margin_left = 229.0
+margin_right = 233.0
+margin_bottom = 292.0
+
+[node name="KeyContents" type="Label" parent="HBoxContainer"]
+margin_left = 237.0
+margin_right = 487.0
+margin_bottom = 292.0
+rect_min_size = Vector2( 250, 0 )
+size_flags_horizontal = 3
+size_flags_vertical = 1
+autowrap = true
+
+[connection signal="pressed" from="HBoxContainer/ScrollContainer/Content/BackButton" to="." method="_on_BackButton_pressed"]

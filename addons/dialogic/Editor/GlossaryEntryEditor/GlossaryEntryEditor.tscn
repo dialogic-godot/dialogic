@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://addons/dialogic/Editor/GlossaryEntryEditor/GlossaryEntryEditor.gd" type="Script" id=1]
 [ext_resource path="res://addons/dialogic/Editor/Common/TLabel.tscn" type="PackedScene" id=2]
+[ext_resource path="res://addons/dialogic/Editor/Events/Parts/Text/EditTranslationButton.tscn" type="PackedScene" id=3]
 
 [node name="GlossaryEntryEditor" type="ScrollContainer"]
 anchor_right = 1.0
@@ -41,12 +42,32 @@ margin_top = 24.0
 margin_right = 300.0
 margin_bottom = 48.0
 
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/VBoxContainer"]
+margin_top = 58.0
+margin_right = 300.0
+margin_bottom = 82.0
+
+[node name="TranslatedName" type="LineEdit" parent="VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer"]
+margin_right = 277.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+editable = false
+
+[node name="EditTranslationButton" parent="VBoxContainer/HBoxContainer/VBoxContainer/HBoxContainer" instance=ExtResource( 3 )]
+margin_left = 281.0
+margin_top = 2.0
+margin_right = 300.0
+margin_bottom = 22.0
+handle_translation = true
+key_text = NodePath("../../Name")
+translated_text = NodePath("../TranslatedName")
+
 [node name="TLabel2" parent="VBoxContainer/HBoxContainer/VBoxContainer" instance=ExtResource( 2 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_top = 58.0
+margin_top = 92.0
 margin_right = 300.0
-margin_bottom = 89.0
+margin_bottom = 123.0
 text = "A popup will display this information when a player hovers the word in a dialog."
 autowrap = true
 text_key = "GlossaryExplanation"
@@ -85,3 +106,82 @@ margin_top = 168.0
 margin_right = 300.0
 margin_bottom = 192.0
 placeholder_text = "Extra"
+
+[node name="TranslatedInfo" type="VBoxContainer" parent="VBoxContainer/HBoxContainer"]
+margin_left = 632.0
+margin_right = 932.0
+margin_bottom = 192.0
+rect_min_size = Vector2( 300, 0 )
+custom_constants/separation = 10
+
+[node name="TLabel3" parent="VBoxContainer/HBoxContainer/TranslatedInfo" instance=ExtResource( 2 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 300.0
+margin_bottom = 14.0
+text = "GlossaryContentTranslated"
+text_key = "GlossaryContentTranslated"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/TranslatedInfo"]
+margin_top = 24.0
+margin_right = 300.0
+margin_bottom = 48.0
+
+[node name="Title" type="LineEdit" parent="VBoxContainer/HBoxContainer/TranslatedInfo/HBoxContainer"]
+margin_right = 277.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+editable = false
+placeholder_text = "Title"
+
+[node name="EditTranslationButton" parent="VBoxContainer/HBoxContainer/TranslatedInfo/HBoxContainer" instance=ExtResource( 3 )]
+margin_left = 281.0
+margin_top = 2.0
+margin_right = 300.0
+margin_bottom = 22.0
+handle_translation = true
+key_text = NodePath("../../../ExtraInfo/Title")
+translated_text = NodePath("../Title")
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/TranslatedInfo"]
+margin_top = 58.0
+margin_right = 300.0
+margin_bottom = 158.0
+
+[node name="Text" type="TextEdit" parent="VBoxContainer/HBoxContainer/TranslatedInfo/HBoxContainer2"]
+margin_right = 277.0
+margin_bottom = 100.0
+rect_min_size = Vector2( 0, 100 )
+size_flags_horizontal = 3
+size_flags_vertical = 3
+readonly = true
+wrap_enabled = true
+
+[node name="EditTranslationButton" parent="VBoxContainer/HBoxContainer/TranslatedInfo/HBoxContainer2" instance=ExtResource( 3 )]
+margin_left = 281.0
+margin_right = 300.0
+size_flags_vertical = 0
+handle_translation = true
+key_text = NodePath("../../../ExtraInfo/Text")
+translated_text = NodePath("../Text")
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="VBoxContainer/HBoxContainer/TranslatedInfo"]
+margin_top = 168.0
+margin_right = 300.0
+margin_bottom = 192.0
+
+[node name="Extra" type="LineEdit" parent="VBoxContainer/HBoxContainer/TranslatedInfo/HBoxContainer3"]
+margin_right = 277.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+editable = false
+placeholder_text = "Extra"
+
+[node name="EditTranslationButton" parent="VBoxContainer/HBoxContainer/TranslatedInfo/HBoxContainer3" instance=ExtResource( 3 )]
+margin_left = 281.0
+margin_top = 2.0
+margin_right = 300.0
+margin_bottom = 22.0
+handle_translation = true
+key_text = NodePath("../../../ExtraInfo/Extra")
+translated_text = NodePath("../Extra")

@@ -110,8 +110,6 @@ func _ready():
 	# Connecting resize signal
 	get_viewport().connect("size_changed", self, "resize_main")
 	resize_main()
-	if !DialogicResources.get_settings_value('dialog', 'stop_mouse', true):
-		mouse_filter = Control.MOUSE_FILTER_IGNORE
 	# Connecting some other timers
 	$OptionsDelayedInput.connect("timeout", self, '_on_OptionsDelayedInput_timeout')
 	# Setting everything up for the node to be default
@@ -121,8 +119,6 @@ func _ready():
 	$TextBubble.connect("signal_request", self, "_on_signal_request")
 	$TextBubble.text_label.connect('meta_hover_started', self, '_on_RichTextLabel_meta_hover_started')
 	$TextBubble.text_label.connect('meta_hover_ended', self, '_on_RichTextLabel_meta_hover_ended')
-	
-	$TouchScreenButton.action = Dialogic.get_action_button()
 	
 	if Engine.is_editor_hint():
 		if preview:
@@ -292,9 +288,7 @@ func resize_main():
 	
 	$Options.rect_global_position = Vector2(0,0) + theme_choice_offset + position_offset
 	$Options.rect_size = reference
-	
-	if settings.get_value('input', 'clicking_dialog_action', true):
-		$TouchScreenButton.shape.extents = reference
+
 	
 	# Background positioning
 	var background = get_node_or_null('Background')
@@ -429,7 +423,7 @@ func _process(delta):
 			$TextBubble/NextIndicatorContainer/NextIndicator.visible = false
 		
 	# Hide if "Don't Close After Last Event" is checked and event is last text
-	if current_theme and current_theme.get_value('settings', 'dont_close_after_last_event', false) and is_last_text:
+	if current_theme.get_value('settings', 'dont_close_after_last_event', false) and is_last_text:
 		$TextBubble/NextIndicatorContainer/NextIndicator.visible = false
 	
 	# Hide if fading in

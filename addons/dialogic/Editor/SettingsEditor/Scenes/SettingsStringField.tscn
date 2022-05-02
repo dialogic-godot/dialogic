@@ -1,0 +1,26 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://addons/dialogic/Editor/SettingsEditor/Scenes/SettingsStringField.gd" type="Script" id=1]
+
+[node name="TranslationExtraPath" type="HBoxContainer"]
+margin_top = 270.0
+margin_right = 426.0
+margin_bottom = 294.0
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="."]
+margin_top = 5.0
+margin_right = 207.0
+margin_bottom = 19.0
+text = "Additional translations location: "
+
+[node name="LineEdit" type="LineEdit" parent="."]
+margin_left = 211.0
+margin_right = 426.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+
+[connection signal="text_changed" from="LineEdit" to="." method="_on_LineEdit_text_changed"]
