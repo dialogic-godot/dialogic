@@ -60,5 +60,4 @@ func _on_key_input_text_changed(var __):
 func _on_TranslationTextEditPopup_NewKeySelected(var new_key : String):
 	get_node(key_text).text = new_key
 	_update_translation()
-	hide()
 	emit_signal("key_saved", new_key)

@@ -63,6 +63,7 @@ func _on_file_button_pressed(var file_path):
 
 func _on_key_selected(var key : String):
 	emit_signal("key_selected", key)
+	hide()
 
 
 func _on_key_hovered(var content : String):

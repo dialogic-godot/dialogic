@@ -17,6 +17,8 @@ func show_translation(var key : String, var value : String) -> void:
 	# If we can't find out where to save by default, don't let the user click this
 	if DTS._get_translation_location(key) == "":
 		$VBoxContainer/HBoxContainer2/DoneButton.disabled = true
+	if key == "":
+		$VBoxContainer/HBoxContainer2/SaveAtButton.disabled = true
 
 
 func _on_DoneButton_pressed() -> void:
@@ -55,3 +57,4 @@ func _on_done_saving():
 
 func _on_TranslationKeyBrowserPopup_key_selected(var new_key : String) -> void:
 	emit_signal("key_changed", new_key)
+	hide()
