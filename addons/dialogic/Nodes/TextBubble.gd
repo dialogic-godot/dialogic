@@ -215,6 +215,11 @@ func load_theme(theme: ConfigFile):
 
 	$ColorRect.visible = theme.get_value('background', 'use_color', false)
 	$TextureRect.visible = theme.get_value('background', 'use_image', true)
+	$TextureRect.visible = theme.get_value('background', 'use_image', true)
+	$TextureRect.patch_margin_left = theme.get_value('ninepatch', 'ninepatch_margin_left', 0)
+	$TextureRect.patch_margin_right = theme.get_value('ninepatch', 'ninepatch_margin_right', 0)
+	$TextureRect.patch_margin_top = theme.get_value('ninepatch', 'ninepatch_margin_top', 0)
+	$TextureRect.patch_margin_bottom = theme.get_value('ninepatch', 'ninepatch_margin_bottom', 0)
 
 	# Next image
 	$NextIndicatorContainer.rect_position = Vector2(0,0)

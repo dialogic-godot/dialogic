@@ -65,7 +65,10 @@ onready var n : Dictionary = {
 	'size_h': $"VBoxContainer/TabContainer/Dialog Box/Column/GridContainer2/HBoxContainer4/BoxSizeH", 
 	'box_margin_v': $"VBoxContainer/TabContainer/Dialog Box/Column/GridContainer2/BoxMargin/MarginV",
 	'box_margin_h': $"VBoxContainer/TabContainer/Dialog Box/Column/GridContainer2/BoxMargin/MarginH",
-	
+	'ninepatch_margin_left': $'VBoxContainer/TabContainer/Dialog Box/Column/GridContainer/NinePatchBoxLeftRight/PatchMarginLeft',
+	'ninepatch_margin_right': $'VBoxContainer/TabContainer/Dialog Box/Column/GridContainer/NinePatchBoxLeftRight/PatchMarginRight',
+	'ninepatch_margin_top': $'VBoxContainer/TabContainer/Dialog Box/Column/GridContainer/NinePatchBoxTopBottom/PatchMarginTop',
+	'ninepatch_margin_bottom': $'VBoxContainer/TabContainer/Dialog Box/Column/GridContainer/NinePatchBoxTopBottom/PatchMarginBottom',
 	
 	'theme_next_image': $"VBoxContainer/TabContainer/Dialog Box/Column2/GridContainer/NextIndicatorButton",
 	'next_indicator_offset_x': $"VBoxContainer/TabContainer/Dialog Box/Column2/GridContainer/HBoxContainer2/NextOffsetX",
@@ -196,6 +199,10 @@ func _ready() -> void:
 	n['animation_show_time'].connect('value_changed', self, '_on_generic_value_change', ['animation', 'show_time'])
 	n['box_margin_v'].connect('value_changed', self, '_on_generic_value_change', ['box', 'box_margin_v'])
 	n['box_margin_h'].connect('value_changed', self, '_on_generic_value_change', ['box', 'box_margin_h'])
+	n['ninepatch_margin_left'].connect('value_changed', self, '_on_generic_value_change', ['ninepatch', 'ninepatch_margin_left'])
+	n['ninepatch_margin_right'].connect('value_changed', self, '_on_generic_value_change', ['ninepatch', 'ninepatch_margin_right'])
+	n['ninepatch_margin_top'].connect('value_changed', self, '_on_generic_value_change', ['ninepatch', 'ninepatch_margin_top'])
+	n['ninepatch_margin_bottom'].connect('value_changed', self, '_on_generic_value_change', ['ninepatch', 'ninepatch_margin_bottom'])
 	
 	n['next_indicator_scale'].connect('value_changed', self, '_on_generic_value_change', ['next_indicator', 'scale'])
 
@@ -344,6 +351,11 @@ func load_theme(filename):
 	# TODO: remove backups in 2.0
 	n['box_margin_v'].value = theme.get_value('box', 'box_margin_v', theme.get_value('box', 'bottom_gap', 40))
 	n['box_margin_h'].value = theme.get_value('box', 'box_margin_h', theme.get_value('box', 'bottom_gap', 40))
+
+	n['ninepatch_margin_left'].value = theme.get_value('ninepatch', 'ninepatch_margin_left', theme.get_value('ninepatch', 'ninepatch_margin_left', 0))
+	n['ninepatch_margin_right'].value = theme.get_value('ninepatch', 'ninepatch_margin_right', theme.get_value('ninepatch', 'ninepatch_margin_right', 0))
+	n['ninepatch_margin_top'].value = theme.get_value('ninepatch', 'ninepatch_margin_top', theme.get_value('ninepatch', 'ninepatch_margin_top', 0))
+	n['ninepatch_margin_bottom'].value = theme.get_value('ninepatch', 'ninepatch_margin_bottom', theme.get_value('ninepatch', 'ninepatch_margin_bottom', 0))
 	
 	# Buttons
 	n['button_padding_x'].value = theme.get_value('buttons', 'padding', Vector2(5,5)).x
