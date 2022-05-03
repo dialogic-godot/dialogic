@@ -77,6 +77,7 @@ static func _get_translation(message)->String:
 			returned_translation = message
 	
 	#print('Message: ', message, ' - locale: ', locale, ' - ', returned_translation)
+	editor_plugin.queue_free()
 	return returned_translation
 
 
@@ -158,7 +159,8 @@ static func _replace_csv_line(var path, var key, var value):
 	dir.remove(file_to_delete_path)
 	
 	# Jank, but not sure how to do it otherwise.
-	EditorPlugin.new().get_editor_interface().get_resource_filesystem().scan()
+	var plugin = EditorPlugin.new().get_editor_interface().get_resource_filesystem().scan()
+	plugin.queue_free()
 
 
 
@@ -175,5 +177,7 @@ static func _get_locale_index(var csv_line : PoolStringArray) -> int:
 	
 	for i in range(csv_line.size()):
 		if csv_line[i] == locale:
+			editor_plugin.queue_free()
 			return i
+	editor_plugin.queue_free()
 	return -1

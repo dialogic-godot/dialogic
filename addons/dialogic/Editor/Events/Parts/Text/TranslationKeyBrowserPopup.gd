@@ -77,7 +77,10 @@ func _get_locale_index(var csv_line : PoolStringArray) -> int:
 	
 	for i in range(csv_line.size()):
 		if csv_line[i] == locale:
+			editor_plugin.queue_free()
 			return i
+	
+	editor_plugin.queue_free()
 	return -1
 
 
