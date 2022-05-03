@@ -229,27 +229,29 @@ func _spinbox_val_changed(newValue :float, spinbox_name):
 	set_value('history', spinbox_name, newValue)
 
 
-func _on_default_action_key_presssed(nodeName = 'default_action_key') -> void:
+func _on_default_action_key_presssed(settingName = 'default_action_key') -> void:
 	var settings = DialogicResources.get_settings_config()
-	nodes[nodeName].clear()
-	nodes[nodeName].add_item(settings.get_value('input', nodeName, 'dialogic_default_action'))
+	nodes[settingName].clear()
+	nodes[settingName].add_item(settings.get_value('input', settingName, 'dialogic_default_action'))
 	for prop in ProjectSettings.get_property_list():
 		if prop.name.begins_with('input/'):
-			nodes[nodeName].add_item(prop.name.trim_prefix('input/'))
+			nodes[settingName].add_item(prop.name.trim_prefix('input/'))
 			
 
-func _on_hotkey_action_key_presssed(nodeName = '[Default]') -> void:
+func _on_hotkey_action_key_presssed(settingName = 'choice_hotkey_1') -> void:
 	var settings = DialogicResources.get_settings_config()
-	nodes[nodeName].clear()
-	nodes[nodeName].add_item('[Default]')
+	nodes[settingName].clear()
+	nodes[settingName].add_item(settings.get_value('input', settingName, '[None]'))
+	nodes[settingName].add_item('[None]')
 	for prop in ProjectSettings.get_property_list():
 		if prop.name.begins_with('input/'):
-			nodes[nodeName].add_item(prop.name.trim_prefix('input/'))
-			
+			nodes[settingName].add_item(prop.name.trim_prefix('input/'))
+	
 
 
-func _on_default_action_key_item_selected(index, nodeName = 'default_action_key') -> void:
-	set_value('input', nodeName, nodes[nodeName].text)
+func _on_default_action_key_item_selected(index, settingName = 'default_action_key') -> void:
+	print(nodes[settingName].text)
+	set_value('input', settingName, nodes[settingName].text)
 
 
 func _on_canvas_layer_text_changed(text) -> void:

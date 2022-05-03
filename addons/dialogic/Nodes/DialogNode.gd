@@ -1081,7 +1081,7 @@ func add_choice_button(option: Dictionary) -> Button:
 	var hotkeyOption = settings.get_value('input', str('choice_hotkey_', buttonCount), '')
 	
 	# If there is a hotkey, use that key
-	if hotkeyOption != '' and hotkeyOption != '[Default]':
+	if hotkeyOption != '' and hotkeyOption != '[None]':
 		hotkey = InputEventAction.new()
 		hotkey.action = hotkeyOption
 	# otherwise default hotkeys are 1-9 for the first 10 buttons
@@ -1091,11 +1091,12 @@ func add_choice_button(option: Dictionary) -> Button:
 	else:
 		hotkey = InputEventKey.new()
 	
-	var shortcut = ShortCut.new()
-	shortcut.set_shortcut(hotkey)
-	
-	button.set_shortcut(shortcut)
-	button.shortcut_in_tooltip = false
+	if hotkeyOption != '[None]' or settings.get_value('input', 'enable_default_shortcut', false) == true:
+		var shortcut = ShortCut.new()
+		shortcut.set_shortcut(hotkey)
+		
+		button.set_shortcut(shortcut)
+		button.shortcut_in_tooltip = false
 	
 	# Selecting the first button added
 	if settings.get_value('input', 'autofocus_choices', true):
