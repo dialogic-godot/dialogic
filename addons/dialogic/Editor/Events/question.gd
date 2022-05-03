@@ -9,16 +9,11 @@ export(String) var node_path:String = "" # this probably will need a setter
 # ensuring to keep the same values everytime until
 # you modify them
 func _init() -> void:
-	event_name = "Call Node"
-	event_icon = load("res://addons/dialogic/Images/Event Icons/Main Icons/call-node.svg")
-	event_color = Color("#0ca5eb")
-	event_category = Category.GODOT
-	event_sorting_index = 1
-	
-	# maybe using setters is better for this scenario?
-	# like doing:
-	#set_name("Pepito Event")
-	#set_color(Color.black)
+	event_name = "Question"
+	event_icon = load("res://addons/dialogic/Images/Event Icons/Main Icons/question.svg")
+	event_color = Color("#9e77ec")
+	event_category = Category.LOGIC
+	event_sorting_index = 0
 
 
 func _execute() -> void:

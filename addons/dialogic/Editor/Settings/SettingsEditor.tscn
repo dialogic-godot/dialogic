@@ -1,0 +1,25 @@
+[gd_scene format=2]
+
+[node name="SettingsEditor" type="WindowDialog"]
+visible = true
+anchor_right = 0.5
+anchor_bottom = 0.5
+window_title = "Settings"
+resizable = true
+
+[node name="Tabs" type="Tabs" parent="."]
+margin_right = 40.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+tab_align = 0
+
+[node name="General" type="MarginContainer" parent="Tabs"]
+margin_right = 40.0
+margin_bottom = 40.0
+
+[node name="Label" type="Label" parent="Tabs/General"]
+margin_top = 13.0
+margin_right = 50.0
+margin_bottom = 27.0
+text = "General"

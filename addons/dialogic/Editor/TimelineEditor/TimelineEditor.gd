@@ -11,7 +11,7 @@ onready var event_node = load("res://addons/dialogic/Editor/Events/Templates/Eve
 
 onready var timeline_area = $View/TimelineArea
 onready var timeline = $View/TimelineArea/TimeLine
-onready var events_warning = $View/ScrollContainer/EventContainer/EventsWarning
+
 
 var hovered_item = null
 var selected_style : StyleBoxFlat = load("res://addons/dialogic/Editor/Events/styles/selected_styleboxflat.tres")
@@ -46,8 +46,6 @@ func _ready():
 	add_child(editor_file_dialog)
 	editor_file_dialog.connect('file_selected', self, 'create_and_save_new_timeline')
 	
-	
-	
 	# Margins
 	var modifier = ''
 	var _scale = DialogicUtil.get_editor_scale(self)
@@ -67,8 +65,9 @@ func _ready():
 		scroll_container.rect_min_size.x = 390
 	
 	
-	var style = timeline_area.get('custom_styles/bg')
-	style.set('bg_color', get_color("dark_color_1", "Editor"))
+	if find_parent('EditorView'): # This prevents the view to turn black if you are editing this scene in Godot
+		var style = timeline_area.get('custom_styles/bg')
+		style.set('bg_color', get_color("dark_color_1", "Editor"))
 	
 	timeline_area.connect('resized', self, 'add_extra_scroll_area_to_timeline', [])
 	
@@ -93,7 +92,7 @@ func _ready():
 		#	elif button.event_id == 'dialogic_012': # Condition
 		#		button.connect('pressed', self, "_on_ButtonCondition_pressed", [])
 		#	else:
-			button.connect('pressed', self, "_add_event_button_pressed", [event_resource])
+			button.connect('pressed', self, "_add_event_button_pressed", [event_script])
 		
 			get_node("View/ScrollContainer/EventContainer/FlexContainer" + str(button.event_category)).add_child(button)
 			while button.get_index() != 0 and button.event_sorting_index < get_node("View/ScrollContainer/EventContainer/FlexContainer" + 
@@ -616,14 +615,14 @@ func delete_event(event):
 ## *****************************************************************************
 
 # Event Creation signal for buttons
-func _add_event_button_pressed(event_resource):
+func _add_event_button_pressed(event_script):
 	var at_index = -1
 	if selected_items:
 		at_index = selected_items[-1].get_index()+1
 	else:
 		at_index = timeline.get_child_count()
 	TimelineUndoRedo.create_action("[D] Add event.")
-	TimelineUndoRedo.add_do_method(self, "add_event_to_timeline", event_resource, at_index, true, true)
+	TimelineUndoRedo.add_do_method(self, "add_event_to_timeline", event_script.new(), at_index, true, true)
 	TimelineUndoRedo.add_undo_method(self, "remove_events_at_index", at_index, 1)
 	TimelineUndoRedo.commit_action()
 	scroll_to_piece(at_index)
@@ -730,9 +729,9 @@ func cancel_drop_event():
 ##					 	CREATING THE TIMELINE
 ## *****************************************************************************
 # Adding an event to the timeline
-func add_event_to_timeline(event_resource, at_index:int = -1, auto_select: bool = false, indent: bool = false):
+func add_event_to_timeline(event_resource:Resource, at_index:int = -1, auto_select: bool = false, indent: bool = false):
 	var piece = event_node.instance()
-	var resource = event_resource.duplicate()
+	var resource = event_resource
 	piece.resource = event_resource
 	
 	if at_index == -1:
@@ -747,7 +746,6 @@ func add_event_to_timeline(event_resource, at_index:int = -1, auto_select: bool 
 	piece.connect("option_action", self, '_on_event_options_action', [piece])
 	piece.connect("gui_input", self, '_on_event_block_gui_input', [piece])
 	
-	events_warning.visible = false
 	if auto_select:
 		select_item(piece, false)
 	# Spacing
@@ -770,7 +768,7 @@ func save_timeline() -> void:
 		new_events.append(event.resource)
 	
 	if current_timeline:
-		current_timeline.events = new_events
+		current_timeline.set_events(new_events)
 		ResourceSaver.save(current_timeline.resource_path, current_timeline)
 	else:
 		if new_events.size() > 0:
@@ -799,9 +797,9 @@ func create_and_save_new_timeline(path):
 func load_timeline(object) -> void:
 	#print('[D] Load timeline: ', object)
 	clear_timeline()
-	$Toolbar/Label.text = object.resource_path
+	get_parent().get_node('Toolbar/Label').text = object.resource_path
 	current_timeline = object
-	var data = object.events.duplicate()
+	var data = object.get_events()
 	var page = 1
 	var batch_size = 12
 	while batch_events(data, batch_size, page).size() != 0:
@@ -830,7 +828,6 @@ func _on_batch_loaded():
 		yield(get_tree().create_timer(0.01), "timeout")
 		load_batch(batches)
 	else:
-		events_warning.visible = false
 		indent_events()
 		building_timeline = false
 		emit_signal("timeline_loaded")
