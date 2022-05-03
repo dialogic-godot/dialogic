@@ -1091,7 +1091,7 @@ func add_choice_button(option: Dictionary) -> Button:
 	else:
 		hotkey = InputEventKey.new()
 	
-	if hotkeyOption != '[None]':
+	if hotkeyOption != '[None]' or settings.get_value('input', 'enable_default_shortcut', false) == true:
 		var shortcut = ShortCut.new()
 		shortcut.set_shortcut(hotkey)
 		
