@@ -362,10 +362,10 @@ text_key = "Default action key"
 
 [node name="DefaultActionKey" type="OptionButton" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer/HBoxContainer2"]
 margin_left = 119.0
-margin_right = 195.0
+margin_right = 292.0
 margin_bottom = 20.0
 hint_tooltip = "The default value is \"ui_accept\""
-text = "ui_right"
+text = "dialogic_default_action"
 
 [node name="SettingsCheckbox" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer" instance=ExtResource( 4 )]
 margin_top = 106.0
@@ -405,7 +405,7 @@ margin_right = 306.0
 margin_bottom = 20.0
 hint_tooltip = "The default value is No Hotkey"
 size_flags_horizontal = 3
-text = "ui_accept"
+text = "[None]"
 
 [node name="HBoxContainer5" type="HBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer"]
 margin_top = 186.0
@@ -428,7 +428,7 @@ margin_right = 306.0
 margin_bottom = 20.0
 hint_tooltip = "The default value is No Hotkey"
 size_flags_horizontal = 3
-text = "dialogic_default_action"
+text = "[None]"
 
 [node name="HBoxContainer6" type="HBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer"]
 margin_top = 210.0
@@ -451,7 +451,7 @@ margin_right = 306.0
 margin_bottom = 20.0
 hint_tooltip = "The default value is No Hotkey"
 size_flags_horizontal = 3
-text = "[Default]"
+text = "[None]"
 
 [node name="HBoxContainer7" type="HBoxContainer" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer"]
 margin_top = 234.0
@@ -474,7 +474,7 @@ margin_right = 306.0
 margin_bottom = 20.0
 hint_tooltip = "The default value is No Hotkey"
 size_flags_horizontal = 3
-text = "[Default]"
+text = "[None]"
 
 [node name="SettingsCheckbox4" parent="VBoxContainer/HBoxContainer3/VBoxContainer2/VBoxContainer" instance=ExtResource( 4 )]
 margin_top = 258.0
