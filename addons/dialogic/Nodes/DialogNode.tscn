@@ -23,9 +23,6 @@ extents = Vector2( 1280, 720 )
 anchor_right = 1.0
 anchor_bottom = 1.0
 script = ExtResource( 6 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="Portraits" type="Control" parent="."]
 anchor_left = 0.5
@@ -177,6 +174,7 @@ script = ExtResource( 10 )
 
 [node name="TouchScreenButton" type="TouchScreenButton" parent="."]
 shape = SubResource( 2 )
+shape_visible = false
 action = "dialogic_default_action"
 visibility_mode = 1
 
