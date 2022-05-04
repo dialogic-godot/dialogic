@@ -5,6 +5,8 @@ extends "res://addons/dialogic/Editor/Events/Parts/EventPart.gd"
 
 ## node references
 onready var text_editor = $HBoxContainer/TextEdit
+onready var translated_text_label = $TranslatedText
+onready var edit_translation_button = $HBoxContainer/EditTranslationButton
 
 var timeline_area = null
 var text_gap = 50
@@ -96,18 +98,18 @@ func _on_TextEditor_text_changed():
 
 func _update_translation_preview():
 	if not DialogicResources.get_settings_value("dialog", "in_editor_translation", false):
-		$TranslatedText.visible = false
-		$HBoxContainer/EditTranslationButton.visible = false
+		translated_text_label.visible = false
+		edit_translation_button.visible = false
 		return
 	
-	$HBoxContainer/EditTranslationButton.visible = true
+	edit_translation_button.visible = true
 	var translated_text = DTS.translate(text_editor.text)
 	if translated_text != text_editor.text:
-		$TranslatedText.visible = true
-		$TranslatedText.text = translated_text
+		translated_text_label.visible = true
+		translated_text_label.text = translated_text
 	else:
-		$TranslatedText.text = ""
-		$TranslatedText.visible = false
+		translated_text_label.text = ""
+		translated_text_label.visible = false
 
 
 func _set_new_min_size():
@@ -141,12 +143,11 @@ func _set_new_min_size():
 	_set_translated_text_min_size()
 
 func _set_translated_text_min_size():
-	var translated_text = $TranslatedText
-	if translated_text.visible == false:
+	if translated_text_label.visible == false:
 		return
 	
-	translated_text.rect_min_size.x = get_max_x_size() - 1
-	translated_text.rect_size.x = translated_text.rect_min_size.x
+	translated_text_label.rect_min_size.x = get_max_x_size() - 1
+	translated_text_label.rect_size.x = translated_text_label.rect_min_size.x
 
 
 func get_max_x_size():
@@ -161,23 +162,15 @@ func _on_TextEditor_focus_entered() -> void:
 func _on_TextEdit_focus_exited():
 	# Remove text selection to visually notify the user that the text will not 
 	# be copied if they use a hotkey like CTRL + C 
-	$HBoxContainer/TextEdit.deselect()
+	text_editor.deselect()
 
 
 func focus():
-	$HBoxContainer/TextEdit.grab_focus()
-
-
-func _on_EditTranslationButton_pressed() -> void:
-	return
-	var popup = load("res://addons/dialogic/Editor/Events/Parts/Text/TranslationTextEditPopup.tscn").instance()
-	add_child(popup)
-	popup.show_translation($HBoxContainer/TextEdit.text, $TranslatedText.text)
-	popup.connect("saving_value", self, "_on_TranslationTextEditPopupValueSaved")
+	text_editor.grab_focus()
 
 
 func _on_TranslationTextEditPopupValueSaved(var value : String) -> void:
-	$TranslatedText.text = value
+	translated_text_label.text = value
 
 
 func _on_EditTranslationButton_key_saved(value) -> void:
