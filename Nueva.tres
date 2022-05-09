@@ -1,9 +1,10 @@
-[gd_resource type="Resource" load_steps=9 format=2]
+[gd_resource type="Resource" load_steps=13 format=2]
 
 [ext_resource path="res://addons/dialogic/Resources/timeline.gd" type="Script" id=1]
 [ext_resource path="res://addons/dialogic/Editor/Events/text.gd" type="Script" id=2]
 [ext_resource path="res://addons/dialogic/Editor/Events/call_node.gd" type="Script" id=3]
 [ext_resource path="res://addons/dialogic/Editor/Events/test.gd" type="Script" id=4]
+[ext_resource path="res://addons/dialogic/Editor/Events/change_timeline.gd" type="Script" id=5]
 
 [sub_resource type="Resource" id=1]
 script = ExtResource( 2 )
@@ -15,6 +16,7 @@ needs_indentation = false
 display_name = true
 continue_at_end = true
 node_path = ""
+display_name = true
 
 [sub_resource type="Resource" id=2]
 script = ExtResource( 3 )
@@ -37,6 +39,7 @@ needs_indentation = false
 display_name = true
 continue_at_end = true
 node_path = ""
+display_name = true
 
 [sub_resource type="Resource" id=3]
 script = ExtResource( 4 )
@@ -48,6 +51,40 @@ needs_indentation = false
 display_name = true
 continue_at_end = true
 
+[sub_resource type="Resource" id=5]
+script = ExtResource( 5 )
+header = [  ]
+body = [  ]
+help_page_path = ""
+expand_by_default = true
+needs_indentation = false
+display_name = true
+continue_at_end = true
+node_path = ""
+
+[sub_resource type="Resource" id=6]
+script = ExtResource( 2 )
+header = [  ]
+body = [  ]
+help_page_path = ""
+expand_by_default = true
+needs_indentation = false
+display_name = true
+continue_at_end = true
+node_path = ""
+display_name = true
+
+[sub_resource type="Resource" id=7]
+script = ExtResource( 5 )
+header = [  ]
+body = [  ]
+help_page_path = ""
+expand_by_default = true
+needs_indentation = false
+display_name = true
+continue_at_end = true
+node_path = ""
+
 [resource]
 resource_name = "Timeline"
 script = ExtResource( 1 )
@@ -56,3 +93,6 @@ event/0 = SubResource( 1 )
 event/1 = SubResource( 2 )
 event/2 = SubResource( 4 )
 event/3 = SubResource( 3 )
+event/4 = SubResource( 5 )
+event/5 = SubResource( 6 )
+event/6 = SubResource( 7 )

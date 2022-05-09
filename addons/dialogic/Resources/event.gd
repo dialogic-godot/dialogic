@@ -11,6 +11,11 @@ enum Category {
 	OTHER,
 }
 
+enum Location {
+	HEADER,
+	BODY
+}
+
 # Hopefully we can replace this with a cleaner system
 # maybe even generate them based on some markup? who knows, it is free to dream
 export(Array, Resource) var header : Array
@@ -95,6 +100,10 @@ func _set_continue(value:bool) -> void:
 	continue_at_end = value
 	property_list_changed_notify()
 	emit_changed()
+
+
+func __get_property_list() -> Array:
+	return []
 
 
 func property_can_revert(property:String) -> bool:

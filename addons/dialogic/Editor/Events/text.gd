@@ -24,3 +24,18 @@ func _init() -> void:
 func _execute() -> void:
 	# I have no idea how this event works
 	pass
+
+
+func _get_property_list() -> Array:
+	var p_list = []
+	p_list.append({
+		"name":"text",
+		"type":TYPE_STRING,
+		"location": Location.HEADER
+		})
+	p_list.append({
+		"name":"Testing int",
+		"type":TYPE_INT,
+		"location": Location.BODY
+		})
+	return p_list

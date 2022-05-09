@@ -122,14 +122,14 @@ size_flags_horizontal = 3
 [node name="FlexContainer1" type="Container" parent="View/ScrollContainer/EventContainer"]
 margin_top = 75.0
 margin_right = 178.0
-margin_bottom = 75.0
+margin_bottom = 95.0
 size_flags_horizontal = 3
 script = ExtResource( 29 )
 
 [node name="HBoxContainer3" type="HBoxContainer" parent="View/ScrollContainer/EventContainer"]
-margin_top = 84.0
+margin_top = 104.0
 margin_right = 178.0
-margin_bottom = 98.0
+margin_bottom = 118.0
 
 [node name="TLabel3" parent="View/ScrollContainer/EventContainer/HBoxContainer3" instance=ExtResource( 21 )]
 anchor_right = 0.0
@@ -146,16 +146,16 @@ margin_bottom = 14.0
 size_flags_horizontal = 3
 
 [node name="FlexContainer2" type="Container" parent="View/ScrollContainer/EventContainer"]
-margin_top = 107.0
+margin_top = 127.0
 margin_right = 178.0
-margin_bottom = 107.0
+margin_bottom = 147.0
 size_flags_horizontal = 3
 script = ExtResource( 29 )
 
 [node name="HBoxContainer4" type="HBoxContainer" parent="View/ScrollContainer/EventContainer"]
-margin_top = 116.0
+margin_top = 156.0
 margin_right = 178.0
-margin_bottom = 130.0
+margin_bottom = 170.0
 
 [node name="TLabel4" parent="View/ScrollContainer/EventContainer/HBoxContainer4" instance=ExtResource( 21 )]
 anchor_right = 0.0
@@ -172,16 +172,16 @@ margin_bottom = 14.0
 size_flags_horizontal = 3
 
 [node name="FlexContainer3" type="Container" parent="View/ScrollContainer/EventContainer"]
-margin_top = 139.0
+margin_top = 179.0
 margin_right = 178.0
-margin_bottom = 139.0
+margin_bottom = 224.0
 size_flags_horizontal = 3
 script = ExtResource( 29 )
 
 [node name="HBoxContainer" type="HBoxContainer" parent="View/ScrollContainer/EventContainer"]
-margin_top = 148.0
+margin_top = 233.0
 margin_right = 178.0
-margin_bottom = 162.0
+margin_bottom = 247.0
 
 [node name="TLabel5" parent="View/ScrollContainer/EventContainer/HBoxContainer" instance=ExtResource( 21 )]
 anchor_right = 0.0
@@ -198,16 +198,16 @@ margin_bottom = 14.0
 size_flags_horizontal = 3
 
 [node name="FlexContainer4" type="Container" parent="View/ScrollContainer/EventContainer"]
-margin_top = 171.0
+margin_top = 256.0
 margin_right = 178.0
-margin_bottom = 191.0
+margin_bottom = 276.0
 size_flags_horizontal = 3
 script = ExtResource( 29 )
 
 [node name="OtherContainer" type="HBoxContainer" parent="View/ScrollContainer/EventContainer"]
-margin_top = 200.0
+margin_top = 285.0
 margin_right = 178.0
-margin_bottom = 214.0
+margin_bottom = 299.0
 
 [node name="TLabel6" parent="View/ScrollContainer/EventContainer/OtherContainer" instance=ExtResource( 21 )]
 anchor_right = 0.0
@@ -224,14 +224,14 @@ margin_bottom = 14.0
 size_flags_horizontal = 3
 
 [node name="FlexContainer5" type="Container" parent="View/ScrollContainer/EventContainer"]
-margin_top = 223.0
+margin_top = 308.0
 margin_right = 178.0
-margin_bottom = 243.0
+margin_bottom = 328.0
 size_flags_horizontal = 3
 script = ExtResource( 29 )
 
 [node name="Spacer" type="Control" parent="View/ScrollContainer/EventContainer"]
-margin_top = 252.0
+margin_top = 337.0
 margin_right = 178.0
-margin_bottom = 352.0
+margin_bottom = 437.0
 rect_min_size = Vector2( 0, 100 )

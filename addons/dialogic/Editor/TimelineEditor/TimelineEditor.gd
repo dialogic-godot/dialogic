@@ -746,10 +746,15 @@ func add_event_to_timeline(event_resource:Resource, at_index:int = -1, auto_sele
 	piece.connect("option_action", self, '_on_event_options_action', [piece])
 	piece.connect("gui_input", self, '_on_event_block_gui_input', [piece])
 	
+	# Buidling editing part
+	piece.build_editor()
+	
 	if auto_select:
 		select_item(piece, false)
+	
 	# Spacing
 	add_extra_scroll_area_to_timeline()
+	
 	# Indent on create
 	if indent:
 		indent_events()
