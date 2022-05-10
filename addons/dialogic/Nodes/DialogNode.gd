@@ -212,23 +212,25 @@ func resize_main():
 	# Update box position
 	var anchor = current_theme.get_value('box', 'anchor', 9)
 	# TODO: remove backups in 2.0
-	var gap_v = current_theme.get_value('box', 'box_margin_v', current_theme.get_value('box', 'bottom_gap', 40))
-	var gap_h = current_theme.get_value('box', 'box_margin_h', current_theme.get_value('box', 'bottom_gap', 40))
+	var margin_bottom = current_theme.get_value('box', 'box_margin_bottom', current_theme.get_value('box', 'box_margin_v', 40) * -1)
+	var margin_top = current_theme.get_value('box', 'box_margin_top', current_theme.get_value('box', 'box_margin_v', 40))
+	var margin_left = current_theme.get_value('box', 'box_margin_left', current_theme.get_value('box', 'box_margin_h', 40))
+	var margin_right = current_theme.get_value('box', 'box_margin_right', current_theme.get_value('box', 'box_margin_h', 40) * -1)
 	# first the y position
 	if anchor in [0,1,2]: # TOP
-		$TextBubble.rect_position.y = gap_h
+		$TextBubble.rect_position.y = margin_top
 	elif anchor in [4,5,6]: # CENTER
 		$TextBubble.rect_position.y = (reference.y/2)-($TextBubble.rect_size.y/2)
 	else:
-		$TextBubble.rect_position.y = (reference.y) - ($TextBubble.rect_size.y)-gap_h
+		$TextBubble.rect_position.y = (reference.y) - ($TextBubble.rect_size.y) + margin_bottom
 	
 	# now x position
 	if anchor in [0,4,8]: # LEFT
-		$TextBubble.rect_position.x = gap_v
+		$TextBubble.rect_position.x = margin_left
 	elif anchor in [1,5,9]: # CENTER
 		$TextBubble.rect_position.x = (reference.x / 2) - ($TextBubble.rect_size.x / 2)
 	else:
-		$TextBubble.rect_position.x = reference.x - ($TextBubble.rect_size.x) - gap_v
+		$TextBubble.rect_position.x = reference.x - ($TextBubble.rect_size.x) + margin_right
 	
 	# Update TextBubble background size
 	var pos_x = 0
