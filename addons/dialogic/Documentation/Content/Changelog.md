@@ -10,6 +10,12 @@
   - Changed the default status of autofocus from true to false
 - A basic touch to advance implementation (#876) [[zaknafean](https://github.com/zaknafean)]
 - Added support for 9-patch rectangles for Dialog Box textures (#286) [[zaknafean](https://github.com/zaknafean)]
+- Added finer controls to Text and Box positions (#761) [[lamsorsen](https://github.com/lamsorsen)]
+  - **Box margin** replaced with **Margin** for the DialogBox settings
+  - **Box Padding** has been removed from the DialogBox settings, and replaced with **Margin**  for the Dialog Text setting to clear up confusion
+  - The margin Top/Bottom and Left/Right are no longer linked, and can be individually adjusted
+  - **Please note this change may break some existing themes**
+
 
 ## v1.4.1 - Animations hotfix
 - Portrait-Animation fixes:
