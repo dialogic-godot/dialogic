@@ -37,7 +37,7 @@ signal timeline_loaded
 func _ready():
 	var dialogic_plugin = get_tree().root.get_node('EditorNode/DialogicPlugin')
 	dialogic_plugin.connect('dialogic_save', self, 'save_timeline')
-	
+
 	
 	connect("batch_loaded", self, '_on_batch_loaded')
 	
@@ -93,12 +93,12 @@ func _ready():
 		#		button.connect('pressed', self, "_on_ButtonCondition_pressed", [])
 		#	else:
 			button.connect('pressed', self, "_add_event_button_pressed", [event_script])
-		
+
 			get_node("View/ScrollContainer/EventContainer/FlexContainer" + str(button.event_category)).add_child(button)
-			while button.get_index() != 0 and button.event_sorting_index < get_node("View/ScrollContainer/EventContainer/FlexContainer" + 
-					str(button.event_category)).get_child(button.get_index()-1).event_sorting_index:
-				get_node("View/ScrollContainer/EventContainer/FlexContainer" + str(button.event_category + 1)).move_child(button, button.get_index()-1)
-	
+#			while button.get_index() != 0 and button.event_sorting_index < get_node("View/ScrollContainer/EventContainer/FlexContainer" + 
+#					str(button.event_category)).get_child(button.get_index()-1).event_sorting_index:
+#				get_node("View/ScrollContainer/EventContainer/FlexContainer" + str(button.event_category + 1)).move_child(button, button.get_index()-1)
+
 
 # handles dragging/moving of events
 func _process(delta):
