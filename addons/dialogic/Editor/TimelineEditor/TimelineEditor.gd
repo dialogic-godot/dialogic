@@ -765,6 +765,11 @@ func add_event_to_timeline(event_resource:Resource, at_index:int = -1, auto_sele
 	return piece
 
 
+func new_timeline() -> void:
+	save_timeline()
+	clear_timeline()
+	godot_file_dialog('*.tres', EditorFileDialog.MODE_SAVE_FILE)
+
 # Saving
 func save_timeline() -> void:
 	var new_events = []

@@ -8,37 +8,47 @@ margin_right = 1024.0
 margin_bottom = 22.0
 script = ExtResource( 2 )
 
+[node name="AddTimeline" type="Button" parent="."]
+margin_right = 12.0
+margin_bottom = 22.0
+hint_tooltip = "Add Timeline"
+flat = true
+
 [node name="TLabel" parent="." instance=ExtResource( 1 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
+margin_left = 16.0
 margin_top = 4.0
-margin_right = 111.0
+margin_right = 127.0
 margin_bottom = 18.0
 text = "Current Timeline:"
 text_key = "Current Timeline:"
 
 [node name="Label" type="Label" parent="."]
-margin_left = 115.0
+margin_left = 131.0
 margin_top = 4.0
-margin_right = 149.0
+margin_right = 165.0
 margin_bottom = 18.0
 text = "None"
 
 [node name="Spacer" type="Control" parent="."]
-margin_left = 153.0
-margin_right = 953.0
+margin_left = 169.0
+margin_right = 885.0
 margin_bottom = 22.0
 size_flags_horizontal = 3
 
 [node name="Settings" type="ToolButton" parent="."]
-margin_left = 957.0
-margin_right = 1020.0
+margin_left = 889.0
+margin_right = 952.0
 margin_bottom = 22.0
 text = "Settings"
 
 [node name="Version" type="Label" parent="."]
-margin_left = 1024.0
+margin_left = 956.0
 margin_top = 4.0
 margin_right = 1024.0
 margin_bottom = 18.0
 custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "v2.0-Alpha"
+
+[connection signal="pressed" from="AddTimeline" to="." method="_on_AddTimeline_pressed"]
