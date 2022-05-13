@@ -7,19 +7,27 @@ anchor_bottom = 0.5
 window_title = "Settings"
 resizable = true
 
-[node name="Tabs" type="Tabs" parent="."]
-margin_right = 40.0
-margin_bottom = 24.0
+[node name="Panel" type="Panel" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="Tabs" type="Tabs" parent="Panel"]
+anchor_right = 1.0
+anchor_bottom = 1.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 tab_align = 0
 
-[node name="General" type="MarginContainer" parent="Tabs"]
-margin_right = 40.0
-margin_bottom = 40.0
+[node name="General" type="MarginContainer" parent="Panel/Tabs"]
+anchor_right = 1.0
+anchor_bottom = 1.0
 
-[node name="Label" type="Label" parent="Tabs/General"]
-margin_top = 13.0
-margin_right = 50.0
-margin_bottom = 27.0
+[node name="Label" type="Label" parent="Panel/Tabs/General"]
+margin_top = 143.0
+margin_right = 512.0
+margin_bottom = 157.0
 text = "General"
+
+[node name="Another" type="MarginContainer" parent="Panel/Tabs"]
+anchor_right = 1.0
+anchor_bottom = 1.0

@@ -32,6 +32,7 @@ margin_bottom = 604.0
 margin_right = 1028.0
 
 [node name="TimelineEditor" parent="MarginContainer/VBoxContainer" instance=ExtResource( 1 )]
+unique_name_in_owner = true
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_top = 26.0

@@ -164,13 +164,31 @@ func focus():
 	#if resource.body_scene:
 	#	resource.body_scene.focus()
 
+
+# 
+func build_editor():
+	print('here is the event node')
+	var p_list = resource._get_property_list()
+	for p in p_list:
+		var editor_node
+		var location = get_node("%Header/Content")
+		if p.location == 1:
+			location = get_node("%Body/Content")
+			
+		if p.type == TYPE_STRING:
+			editor_node = LineEdit.new()
+		else:
+			editor_node = Label.new()
+			editor_node.text = p.name
+		location.add_child(editor_node)
+
 ## *****************************************************************************
 ##								OVERRIDES
 ## *****************************************************************************
 
 func _ready():
-	if resource.event_name:
-		event_name = DTS.translate(resource.event_name)
+	#if resource.event_name:
+	#	event_name = DTS.translate(resource.event_name)
 	
 	## DO SOME STYLING
 	$PanelContainer/SelectedStyle.modulate = get_color("accent_color", "Editor")
