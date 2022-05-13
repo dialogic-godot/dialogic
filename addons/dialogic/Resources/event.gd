@@ -18,14 +18,14 @@ enum Location {
 
 # Hopefully we can replace this with a cleaner system
 # maybe even generate them based on some markup? who knows, it is free to dream
-export(Array, Resource) var header : Array
-export(Array, Resource) var body : Array
+var header : Array
+var body : Array
 
-export (String) var help_page_path
+var help_page_path : String = ""
 
-export (bool) var expand_by_default : bool = true
-export (bool) var needs_indentation : bool = false
-export (bool) var display_name : bool = true
+var expand_by_default : bool = true
+var needs_indentation : bool = false
+var display_name : bool = true
 
 # -----------------------------------------
 # Emilio:
@@ -60,7 +60,7 @@ signal event_finished(event_resource)
 
 ## Determines if the event will go to next event inmediatly or not. 
 ## If value is true, the next event will be executed when event ends.
-export(bool) var continue_at_end:bool = true setget _set_continue
+var continue_at_end:bool = true setget _set_continue
 
 ## The event icon that'll be displayed in the editor
 var event_icon:Texture = load("res://addons/dialogic/Images/Event Icons/warning.svg")
