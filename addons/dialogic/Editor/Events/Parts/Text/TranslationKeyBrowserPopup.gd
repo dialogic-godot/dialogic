@@ -52,8 +52,6 @@ func _on_file_button_pressed(var file_path):
 		keys.append(line[0])
 		content.append(line[locale_index])
 	
-	#print(keys)
-	
 	for i in range(keys.size()):
 		var new_button = Button.new()
 		$HBoxContainer/ScrollContainer/Content.add_child(new_button)

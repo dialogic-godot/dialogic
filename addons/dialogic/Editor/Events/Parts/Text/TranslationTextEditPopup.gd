@@ -15,14 +15,14 @@ func show_translation(var key : String, var value : String) -> void:
 	should_free_on_hide = true
 	
 	# If we can't find out where to save by default, don't let the user click this
-	if DTS._get_translation_location(key) == "":
+	if CSV_Translation.get_translation_location(key) == "":
 		$VBoxContainer/HBoxContainer2/DoneButton.disabled = true
 	if key == "":
 		$VBoxContainer/HBoxContainer2/SaveAtButton.disabled = true
 
 
 func _on_DoneButton_pressed() -> void:
-	DTS.save_translation($VBoxContainer/HBoxContainer/KeyValueLabel.text, $VBoxContainer/TextEdit.text)
+	CSV_Translation.save_translation($VBoxContainer/HBoxContainer/KeyValueLabel.text, $VBoxContainer/TextEdit.text)
 	_on_done_saving()
 	hide()
 
@@ -40,7 +40,7 @@ func _on_SaveAtButton_pressed() -> void:
 	file_picker.popup_centered_minsize(Vector2(100, 250))
 	var path = yield(file_picker, "file_selected")
 	file_picker.queue_free()
-	DTS.save_translation_at($VBoxContainer/HBoxContainer/KeyValueLabel.text, 
+	CSV_Translation.save_translation_at($VBoxContainer/HBoxContainer/KeyValueLabel.text, 
 			$VBoxContainer/TextEdit.text,
 			path)
 	_on_done_saving()

@@ -47,7 +47,7 @@ margin_bottom = 292.0
 
 [node name="KeyContents" type="Label" parent="HBoxContainer"]
 margin_left = 237.0
-margin_right = 487.0
+margin_right = 499.0
 margin_bottom = 292.0
 rect_min_size = Vector2( 250, 0 )
 size_flags_horizontal = 3

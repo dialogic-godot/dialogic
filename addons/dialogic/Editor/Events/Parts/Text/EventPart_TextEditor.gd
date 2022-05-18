@@ -69,7 +69,7 @@ func get_preview():
 		text = event_data['text']
 	text = text.replace('\n', '[br]')
 	
-	text = DTS.translate(text)
+	text = CSV_Translation.translate(text)
 	
 	var preview = text.substr(0, min(max_preview_characters, len(text)))
 	if (len(text) > max_preview_characters):
@@ -103,7 +103,7 @@ func _update_translation_preview():
 		return
 	
 	edit_translation_button.visible = true
-	var translated_text = DTS.translate(text_editor.text)
+	var translated_text = CSV_Translation.translate(text_editor.text)
 	if translated_text != text_editor.text:
 		translated_text_label.visible = true
 		translated_text_label.text = translated_text

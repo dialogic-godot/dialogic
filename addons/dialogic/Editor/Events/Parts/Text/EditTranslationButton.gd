@@ -45,7 +45,7 @@ func _ready() -> void:
 
 
 func _update_translation():
-	var new_text = DTS.translate(get_node(key_text).text)
+	var new_text = CSV_Translation.translate(get_node(key_text).text)
 	if new_text == get_node(key_text).text:
 		get_node(translated_text).text = ""
 		return
