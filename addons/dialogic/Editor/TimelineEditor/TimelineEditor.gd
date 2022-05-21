@@ -733,7 +733,7 @@ func add_event_to_timeline(event_resource:Resource, at_index:int = -1, auto_sele
 	var piece = event_node.instance()
 	var resource = event_resource
 	piece.resource = event_resource
-	
+	piece.connect('content_changed', self, 'something_changed')
 	if at_index == -1:
 		if len(selected_items) != 0:
 			timeline.add_child_below_node(selected_items[0], piece)
@@ -783,7 +783,7 @@ func save_timeline() -> void:
 	else:
 		if new_events.size() > 0:
 			godot_file_dialog('*.timeline; DialogicTimeline', EditorFileDialog.MODE_SAVE_FILE)
-
+	get_node("%Toolbar").set_resource_saved()
 
 func godot_file_dialog(filter, mode = EditorFileDialog.MODE_OPEN_FILE):
 	editor_file_dialog.mode = mode
@@ -807,7 +807,7 @@ func create_and_save_new_timeline(path):
 func load_timeline(object) -> void:
 	#print('[D] Load timeline: ', object)
 	clear_timeline()
-	get_parent().get_node('Toolbar/Label').text = object.resource_path
+	get_node('%Toolbar/CurrentResource').text = object.resource_path
 	current_timeline = object
 	var data = object.get_events()
 	var page = 1
@@ -818,6 +818,10 @@ func load_timeline(object) -> void:
 	load_batch(batches)
 	# Reset the scroll position
 	timeline_area.scroll_vertical = 0
+
+
+func something_changed():
+	get_node('%Toolbar').set_resource_unsaved()
 
 
 func batch_events(array, size, batch_number):

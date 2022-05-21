@@ -29,6 +29,7 @@ margin_right = 1028.0
 margin_bottom = 604.0
 
 [node name="Toolbar" parent="MarginContainer/VBoxContainer" instance=ExtResource( 4 )]
+unique_name_in_owner = true
 margin_right = 1028.0
 
 [node name="TimelineEditor" parent="MarginContainer/VBoxContainer" instance=ExtResource( 1 )]

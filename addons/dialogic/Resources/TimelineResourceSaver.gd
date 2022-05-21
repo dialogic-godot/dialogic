@@ -43,7 +43,8 @@ func save(path: String, resource: Resource, flags: int) -> int:
 	
 	var result = ""
 	for event in resource.events:
-		result += event.get_as_string_to_store() + "\n"
+		if event != null:
+			result += event.get_as_string_to_store() + "\n"
 	
 	file.store_string(result)
 	file.close()
