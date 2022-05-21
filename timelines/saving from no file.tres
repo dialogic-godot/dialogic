@@ -1,8 +1,0 @@
-[gd_resource type="Resource" load_steps=2 format=2]
-
-[ext_resource path="res://addons/dialogic/Resources/timeline.gd" type="Script" id=1]
-
-[resource]
-resource_name = "Timeline"
-script = ExtResource( 1 )
-dialogic_version = ""

@@ -768,7 +768,7 @@ func add_event_to_timeline(event_resource:Resource, at_index:int = -1, auto_sele
 func new_timeline() -> void:
 	save_timeline()
 	clear_timeline()
-	godot_file_dialog('*.tres', EditorFileDialog.MODE_SAVE_FILE)
+	godot_file_dialog('*.timeline; DialogicTimeline', EditorFileDialog.MODE_SAVE_FILE)
 
 # Saving
 func save_timeline() -> void:
@@ -782,7 +782,7 @@ func save_timeline() -> void:
 		ResourceSaver.save(current_timeline.resource_path, current_timeline)
 	else:
 		if new_events.size() > 0:
-			godot_file_dialog('*.tres', EditorFileDialog.MODE_SAVE_FILE)
+			godot_file_dialog('*.timeline; DialogicTimeline', EditorFileDialog.MODE_SAVE_FILE)
 
 
 func godot_file_dialog(filter, mode = EditorFileDialog.MODE_OPEN_FILE):

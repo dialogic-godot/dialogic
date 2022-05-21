@@ -1,0 +1,21 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://addons/dialogic/Editor/Events/Fields/Text.gd" type="Script" id=1]
+
+[node name="SinglelineText" type="HBoxContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+rect_min_size = Vector2( 300, 30 )
+size_flags_horizontal = 3
+script = ExtResource( 1 )
+
+[node name="Hint" type="Label" parent="."]
+margin_top = 293.0
+margin_bottom = 307.0
+
+[node name="TextEdit" type="LineEdit" parent="."]
+margin_left = 4.0
+margin_right = 1024.0
+margin_bottom = 600.0
+size_flags_horizontal = 3
+size_flags_vertical = 3

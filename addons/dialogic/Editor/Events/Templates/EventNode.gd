@@ -6,7 +6,7 @@ var event_name
 signal option_action(action_name)
 
 # Resource
-export (Resource) var resource
+var resource : DialogicEvent
 
 
 ### internal node eferences
@@ -167,20 +167,58 @@ func focus():
 
 # 
 func build_editor():
-	print('here is the event node')
+	#print('Building event node')
 	var p_list = resource._get_property_list()
+	#print(p_list)
 	for p in p_list:
+		### --------------------------------------------------------------------
+		### 1. CREATE A NODE OF THE CORRECT TYPE FOR THE PROPERTY
 		var editor_node
-		var location = get_node("%Header/Content")
-		if p.location == 1:
-			location = get_node("%Body/Content")
-			
 		if p.type == TYPE_STRING:
-			editor_node = LineEdit.new()
+			if p.get("dialogic_type") == resource.DialogicValueType.MultilineText:
+				editor_node = load("res://addons/dialogic/Editor/Events/Fields/MultilineText.tscn").instance()
+			else:
+				editor_node = load("res://addons/dialogic/Editor/Events/Fields/SinglelineText.tscn").instance()
+		
+		elif p.type == TYPE_OBJECT and p.has('dialogic_type'):
+			if p.dialogic_type == resource.DialogicValueType.Character:
+				editor_node = load("res://addons/dialogic/Editor/Events/Fields/DialogicResourcePicker.tscn").instance()
+		
 		else:
 			editor_node = Label.new()
 			editor_node.text = p.name
+		
+		### --------------------------------------------------------------------
+		### 2. FILL THE NEW NODE WITH INFORMATION AND LISTEN TO CHANGES
+		if 'property_name' in editor_node:
+			editor_node.property_name = p.name
+		if editor_node.has_method('set_value'):
+			editor_node.set_value(resource.get(p.name))
+		if editor_node.has_signal('value_changed'):
+			editor_node.connect('value_changed', self, "set_property")
+		if editor_node.has_method('set_hint') and p.has('hint_string'):
+			editor_node.set_hint(p.hint_string)
+		
+		### --------------------------------------------------------------------
+		### 3. ADD IT TO THE RIGHT PLACE (HEADER/BODY)
+		var location = get_node("%Header/Content")
+		if p.location == 1:
+			location = get_node("%Body/Content")
 		location.add_child(editor_node)
+		
+	
+	#resource.connect('changed', self, 'update_from_resource')
+
+#
+#
+#func update_from_resource():
+#	for node in get_node("%Header/Content").get_children():
+#		node.set_value(resource.get(node.property_name))
+#	for node in get_node("%Body/Content").get_children():
+#		node.set_value(resource.get(node.property_name))
+
+func set_property(property_name, value):
+	resource.set(property_name, value)
 
 ## *****************************************************************************
 ##								OVERRIDES
@@ -210,16 +248,16 @@ func _ready():
 		#print('resource.header: ', resource.header)
 		for r in resource.header:
 			var new_node = label_editor.instance()
-			
+
 			if r.type == 0: # Label
 				new_node = label_editor.instance()
 				new_node.text = r.key
 			if r.type == 1: # Text
 				new_node = text_area.instance()
-				
+
 			header_content_container.add_child(new_node)
 			new_node.owner = self
-			
+
 	if resource.body != null:
 		#print('resource.body: ', resource.body)
 		for r in resource.body:
@@ -230,10 +268,11 @@ func _ready():
 					new_node.text = r.key
 				if r.type == 1: # Text
 					new_node = text_area.instance()
-				
+
 			body_content_container.add_child(new_node)
 			new_node.owner = self
 		body_content_container.add_constant_override('margin_left', 40*DialogicUtil.get_editor_scale(self))
+
 	$PanelContainer/MarginContainer/VBoxContainer/Header/CenterContainer/IconPanel.set("self_modulate", resource.event_color)
 	
 	set_focus_mode(1) # Allowing this node to grab focus

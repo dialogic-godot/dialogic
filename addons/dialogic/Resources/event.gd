@@ -16,6 +16,18 @@ enum Location {
 	BODY
 }
 
+enum DialogicValueType {
+	Label,
+	MultilineText,
+	SinglelineText,
+	Timeline,
+	Character,
+	Theme,
+	Portrait,
+	Position,
+	Animation,
+}
+
 # Hopefully we can replace this with a cleaner system
 # maybe even generate them based on some markup? who knows, it is free to dream
 var header : Array

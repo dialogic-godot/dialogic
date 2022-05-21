@@ -10,3 +10,4 @@ func _ready():
 	#print('Text Label Ready!')
 	$Label.text = DTS.translate(text)
 	$Label.set('custom_colors/font_color', Color("#7b7b7b"))
+

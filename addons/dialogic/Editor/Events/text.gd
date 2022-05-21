@@ -1,7 +1,11 @@
 tool
 extends DialogicEvent
 
-export(String) var node_path:String = "" # this probably will need a setter
+#export(String) var node_path:String = "" # this probably will need a setter
+
+
+var Text:String = "" setget set_text
+var Character:String = ""
 
 # _init is the constructor
 # is called everytime the resource is being created
@@ -25,17 +29,43 @@ func _execute() -> void:
 	# I have no idea how this event works
 	pass
 
+## THIS RETURNS A READABLE REPRESENTATION, BUT HAS TO CONTAIN ALL DATA (This is how it's stored)
+func get_as_string_to_store() -> String:
+	if not Character.empty():
+		return Character+": "+Text
+	return Text
+
+## THIS HAS TO READ ALL THE DATA FROM THE SAVED STRING (see above) 
+func load_from_string_to_store(string):
+	if ":" in string:
+		var char_name = string.split(": ", 1)[0]
+		Character = char_name
+		Text = string.split(": ", 1)[1]
+	else:
+		Character = ""
+		Text = string
+
 
 func _get_property_list() -> Array:
 	var p_list = []
 	p_list.append({
-		"name":"text",
+		"name":"Character",
 		"type":TYPE_STRING,
-		"location": Location.HEADER
+		"location": Location.HEADER,
+		"usage":PROPERTY_USAGE_DEFAULT,
+		"dialogic_type":DialogicValueType.SinglelineText,
+		"hint_string":"Character:"
 		})
 	p_list.append({
-		"name":"Testing int",
-		"type":TYPE_INT,
-		"location": Location.BODY
+		"name":"Text",
+		"type":TYPE_STRING,
+		"location": Location.BODY,
+		"usage":PROPERTY_USAGE_DEFAULT,
+		"dialogic_type":DialogicValueType.MultilineText,
 		})
+	
 	return p_list
+
+func set_text(new_text):
+	Text = new_text
+	emit_changed()

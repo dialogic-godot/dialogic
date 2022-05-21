@@ -4,6 +4,7 @@ extends EditorPlugin
 var _editor_view
 var _parts_inspector
 var _export_plugin
+var _editor_interface
 
 signal dialogic_save
 
@@ -13,6 +14,7 @@ func _init():
 
 func _enter_tree() -> void:
 	_add_custom_editor_view()
+	_editor_interface = get_editor_interface()
 	get_editor_interface().get_editor_viewport().add_child(_editor_view)
 	make_visible(false)
 
