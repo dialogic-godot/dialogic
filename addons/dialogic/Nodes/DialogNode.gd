@@ -648,12 +648,12 @@ func event_handler(event: Dictionary):
 			set_state(state.TYPING)
 			if event.has('character'):
 				var character_data = DialogicUtil.get_character(event['character'])
-				update_name(character_data)
 				grab_portrait_focus(character_data, event)
 				if character_data.get('data', {}).get('theme', '') and current_theme_file_name != character_data.get('data', {}).get('theme', ''):
 					current_theme = load_theme(character_data.get('data', {}).get('theme', ''))
 				elif !character_data.get('data', {}).get('theme', '') and current_default_theme and  current_theme_file_name != current_default_theme:
 					current_theme = load_theme(current_default_theme)
+				update_name(character_data)
 
 			#voice 
 			handle_voice(event)
@@ -757,13 +757,13 @@ func event_handler(event: Dictionary):
 				update_name(event['name'])
 			elif event.has('character'):
 				var character_data = DialogicUtil.get_character(event['character'])
-				update_name(character_data)
 				grab_portrait_focus(character_data, event)
 				
 				if character_data.get('data', {}).get('theme', '') and current_theme_file_name != character_data.get('data', {}).get('theme', ''):
 					current_theme = load_theme(character_data.get('data', {}).get('theme', ''))
 				elif !character_data.get('data', {}).get('theme', '') and current_default_theme and  current_theme_file_name != current_default_theme:
 					current_theme = load_theme(current_default_theme)
+				update_name(character_data)
 			#voice 
 			handle_voice(event)
 			update_text(event['question'])
