@@ -15,6 +15,7 @@
   - **Box Padding** has been removed from the DialogBox settings, and replaced with **Margin**  for the Dialog Text setting to clear up confusion
   - The margin Top/Bottom and Left/Right are no longer linked, and can be individually adjusted
   - **Please note this change may break some existing themes**
+- Added option to recenter character portraits automatically [[thebardsrc](https://github.com/thebardsrc)]
 
 
 ## v1.4.1 - Animations hotfix
