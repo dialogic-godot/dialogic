@@ -1,8 +1,6 @@
 tool
 extends VBoxContainer
 
-var editor_file_dialog
-
 var current_timeline: DialogicTimeline
 
 var TimelineUndoRedo := UndoRedo.new()
@@ -40,11 +38,6 @@ func _ready():
 
 	
 	connect("batch_loaded", self, '_on_batch_loaded')
-	
-	# File dialog
-	editor_file_dialog = EditorFileDialog.new()
-	add_child(editor_file_dialog)
-	editor_file_dialog.connect('file_selected', self, 'create_and_save_new_timeline')
 	
 	# Margins
 	var modifier = ''
@@ -768,7 +761,7 @@ func add_event_to_timeline(event_resource:Resource, at_index:int = -1, auto_sele
 func new_timeline() -> void:
 	save_timeline()
 	clear_timeline()
-	godot_file_dialog('*.timeline; DialogicTimeline', EditorFileDialog.MODE_SAVE_FILE)
+	get_parent().get_parent().get_parent().godot_file_dialog(self,  'create_and_save_new_timeline', '*.dtl; DialogicTimeline', EditorFileDialog.MODE_SAVE_FILE)
 
 # Saving
 func save_timeline() -> void:
@@ -780,20 +773,11 @@ func save_timeline() -> void:
 	if current_timeline:
 		current_timeline.set_events(new_events)
 		ResourceSaver.save(current_timeline.resource_path, current_timeline)
+		get_node("%Toolbar").set_resource_saved()
 	else:
 		if new_events.size() > 0:
-			godot_file_dialog('*.timeline; DialogicTimeline', EditorFileDialog.MODE_SAVE_FILE)
-	get_node("%Toolbar").set_resource_saved()
+			get_parent().get_parent().get_parent().godot_file_dialog(self, 'create_and_save_new_timeline', '*.dtl; DialogicTimeline', EditorFileDialog.MODE_SAVE_FILE)
 
-func godot_file_dialog(filter, mode = EditorFileDialog.MODE_OPEN_FILE):
-	editor_file_dialog.mode = mode
-	editor_file_dialog.clear_filters()
-	editor_file_dialog.popup_centered_ratio(0.75)
-	editor_file_dialog.add_filter(filter)
-	editor_file_dialog.window_title = "Save new Timeline"
-	editor_file_dialog.current_file = "New_Timeline"
-	return editor_file_dialog
-	
 
 func create_and_save_new_timeline(path):
 	var new_timeline = DialogicTimeline.new()
