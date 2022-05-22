@@ -15,26 +15,40 @@ script = ExtResource( 1 )
 margin_top = 5.0
 margin_bottom = 19.0
 
-[node name="Search" type="LineEdit" parent="."]
+[node name="Control" type="Control" parent="."]
 margin_left = 4.0
+margin_right = 4.0
+margin_bottom = 24.0
+
+[node name="Search" type="LineEdit" parent="."]
+margin_left = 8.0
 margin_right = 503.0
 margin_bottom = 24.0
 rect_min_size = Vector2( 200, 0 )
+focus_next = NodePath("Suggestions")
 mouse_filter = 1
 size_flags_horizontal = 3
 size_flags_vertical = 4
 theme = ExtResource( 2 )
+placeholder_text = "Character"
 caret_blink = true
 caret_blink_speed = 0.5
 
 [node name="Suggestions" type="PopupMenu" parent="Search"]
-anchor_top = 1.0
+margin_left = 6.0
+margin_top = 27.0
+margin_right = 440.0
+margin_bottom = 139.0
+
+[node name="OpenButton" type="ToolButton" parent="Search"]
+anchor_left = 1.0
+anchor_top = 0.5
 anchor_right = 1.0
-anchor_bottom = 1.0
-margin_left = 1.0
-margin_top = 3.0
-margin_right = 1.0
-margin_bottom = 23.0
+anchor_bottom = 0.5
+margin_left = -25.0
+margin_top = -12.0
+margin_bottom = 12.0
 
 [connection signal="text_changed" from="Search" to="." method="_on_Search_text_changed"]
 [connection signal="text_entered" from="Search" to="." method="_on_Search_text_entered"]
+[connection signal="pressed" from="Search/OpenButton" to="." method="_on_OpenButton_pressed"]

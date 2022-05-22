@@ -63,3 +63,32 @@ static func listdir(path: String) -> Array:
 static func get_dialogic_plugin() -> Node:
 	var tree: SceneTree = Engine.get_main_loop()
 	return tree.get_root().get_node('EditorNode/DialogicPlugin')
+
+
+
+static func list_resources_of_type(extension):
+	var all_resources = scan_folder('res://', extension)
+	return all_resources
+
+static func scan_folder(folder_path:String, extension:String):
+	var dir = Directory.new()
+	var list = []
+	if dir.open(folder_path) == OK:
+		dir.list_dir_begin()
+		var file_name = dir.get_next()
+		while file_name != "":
+			if dir.current_is_dir() and not file_name.begins_with("."):
+				list += scan_folder(folder_path+"/"+file_name, extension)
+			else:
+				if file_name.ends_with(extension):
+					list.append(folder_path+"/"+file_name)
+			file_name = dir.get_next()
+	else:
+		print("An error occurred when trying to access the path.")
+	return list
+
+static func guess_resource(extension, identifier):
+	var resources = list_resources_of_type(extension)
+	for resource_path in resources:
+		if resource_path.get_file().trim_suffix(extension) == identifier:
+			return resource_path

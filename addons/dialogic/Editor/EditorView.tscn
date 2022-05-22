@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://addons/dialogic/Editor/TimelineEditor/TimelineEditor.tscn" type="PackedScene" id=1]
 [ext_resource path="res://addons/dialogic/Editor/EditorView.gd" type="Script" id=2]
 [ext_resource path="res://addons/dialogic/Editor/Settings/SettingsEditor.tscn" type="PackedScene" id=3]
 [ext_resource path="res://addons/dialogic/Editor/Common/Toolbar.tscn" type="PackedScene" id=4]
+[ext_resource path="res://addons/dialogic/Editor/CharacterEditor.gd" type="Script" id=5]
 
 [node name="EditorView" type="Control"]
 anchor_right = 1.0
@@ -38,9 +39,15 @@ anchor_right = 0.0
 anchor_bottom = 0.0
 margin_top = 26.0
 margin_right = 1028.0
-margin_bottom = 604.0
+margin_bottom = 600.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
+
+[node name="CharacterEditor" type="Control" parent="MarginContainer/VBoxContainer"]
+margin_top = 604.0
+margin_right = 1028.0
+margin_bottom = 604.0
+script = ExtResource( 5 )
 
 [node name="SettingsEditor" parent="." instance=ExtResource( 3 )]
 visible = false
