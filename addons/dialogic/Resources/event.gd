@@ -16,16 +16,26 @@ enum Location {
 	BODY
 }
 
+# This is necessary to distinguish different ways value types might need to be represented
+# It's used to communicate between the event resource and the event node, how a value
+#    should be shown
 enum DialogicValueType {
+	# STRINGS
 	Label,
 	MultilineText,
 	SinglelineText,
+	
+	# OBJECTS ? (for the ResourcePicker)
 	Timeline,
 	Character,
 	Theme,
 	Portrait,
 	Position,
 	Animation,
+	
+	# INTEGERS
+	FixedOptionSelector,
+	Integer,
 }
 
 # Hopefully we can replace this with a cleaner system

@@ -1,13 +1,13 @@
 tool
 extends ResourceFormatSaver
-class_name DialogicTimelineFormatSaver
+class_name DialogicCharacterFormatSaver
 
 # Preload to avoid problems with project.godot
 #const TimelineResource = preload("res://addons/custom_resource/resource_class.gd")
 
 
 func get_recognized_extensions(resource: Resource) -> PoolStringArray:
-	return PoolStringArray(["dtl"])
+	return PoolStringArray(["dch"])
 
 
 # Here you see if that resource is the type you need.
@@ -17,7 +17,7 @@ func get_recognized_extensions(resource: Resource) -> PoolStringArray:
 # You let other ResourceFormatSaver deal with it.
 func recognize(resource: Resource) -> bool:
 	# Cast instead of using "is" keyword in case is a subclass
-	resource = resource as DialogicTimeline
+	resource = resource as DialogicCharacter
 	
 	if resource:
 		return true
@@ -42,10 +42,7 @@ func save(path: String, resource: Resource, flags: int) -> int:
 		return err
 	
 	var result = ""
-	for event in resource.events:
-		if event != null:
-			result += event.get_as_string_to_store() + "\n"
-	
+	result = resource.name+"\n"+resource.display_name+"\n"+resource.color.to_html()+"\n"
 	file.store_string(result)
 	file.close()
 	return OK

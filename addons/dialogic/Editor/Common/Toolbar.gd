@@ -11,8 +11,18 @@ func _ready():
 
 
 	$AddTimeline.icon = load("res://addons/dialogic/Images/Toolbar/add-timeline.svg")
-	
 
 
 func _on_AddTimeline_pressed():
 	get_node("%TimelineEditor").new_timeline()
+
+func _on_AddCharacter_pressed():
+	get_parent().get_parent().get_parent().godot_file_dialog(get_parent().get_node("CharacterEditor"), 'new_character', '*.dch; DialogicCharacter', EditorFileDialog.MODE_SAVE_FILE)
+
+func set_resource_saved():
+	if $CurrentResource.text.ends_with(("(*)")):
+		$CurrentResource.text = $CurrentResource.text.trim_suffix("(*)")
+
+func set_resource_unsaved():
+	if not $CurrentResource.text.ends_with(("(*)")):
+		$CurrentResource.text += "(*)"

@@ -6,7 +6,7 @@ extends ResourceFormatLoader
 
 # Docs says that it needs a class_name in order to register it in ResourceLoader
 # Who am I to judge the docs?
-class_name DialogicTimelineFormatLoader
+class_name DialogicCharacterFormatLoader
 
 # Preload to avoid problems with project.godot
 #const TimelineResource = preload("res://addons/dialogic/Resources/timeline.gd")
@@ -14,7 +14,7 @@ class_name DialogicTimelineFormatLoader
 # Dude, look at the docs, I'm not going to explain each function... 
 # Specially when they are self explainatory...
 func get_recognized_extensions() -> PoolStringArray:
-	return PoolStringArray(["dtl"])
+	return PoolStringArray(["dch"])
 
 
 # Ok, if custom resources were a thing this would be even useful.
@@ -27,7 +27,7 @@ func get_resource_type(path: String) -> String:
 	# and you return "Resource" (or whatever you're working on) if you handle it.
 	# Everything else ""
 	var ext = path.get_extension().to_lower()
-	if ext == "dtl":
+	if ext == "dch":
 		return "Resource"
 	
 	return ""
@@ -52,7 +52,7 @@ func load(path: String, original_path: String):
 	print('load ' , path)
 	var err:int
 	
-	var res := DialogicTimeline.new()
+	var res := DialogicCharacter.new()
 	
 	err = file.open(path, File.READ)
 	if err != OK:
@@ -60,25 +60,17 @@ func load(path: String, original_path: String):
 		# You has to return the error constant
 		return err
 	
+	var idx = 0
 	# Parse the lines as seperate events and recreate them as resources
-	var events = []
-	for line in file.get_as_text().split("\n", false):
-		var event = load(identify_event(line)).new()
-		event.load_from_string_to_store(line)
-		events.append(event)
-	
-	res.events = events
+	for line in file.get_as_text().split("\n", true):
+		if idx == 0:
+			res.name = line
+		elif idx == 1:
+			res.display_name = line
+		elif idx == 2:
+			res.color = Color(line)
+		idx += 1
 	
 	# Everything went well, and you parsed your file data into your resource. Life is good, return it
 	return res
 
-func identify_event(line:String, prev_line:String = "", next_line:String = ""):
-	for event in [ # the text event should always be last. 
-		# Every event that isn't identified as something else, will end up as text
-		# We should get this list from a folder or something, but then we'll have to sort it somehow
-		"res://addons/dialogic/Resources/Events/event_character.gd",
-		"res://addons/dialogic/Resources/Events/event_comment.gd",
-		"res://addons/dialogic/Resources/Events/event_text.gd"
-	]:
-		if load(event).is_valid_event_string(line):
-			return event

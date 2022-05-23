@@ -4,6 +4,7 @@ extends HBoxContainer
 var event_name
 
 signal option_action(action_name)
+signal content_changed()
 
 # Resource
 var resource : DialogicEvent
@@ -183,7 +184,13 @@ func build_editor():
 		elif p.type == TYPE_OBJECT and p.has('dialogic_type'):
 			if p.dialogic_type == resource.DialogicValueType.Character:
 				editor_node = load("res://addons/dialogic/Editor/Events/Fields/DialogicResourcePicker.tscn").instance()
-		
+		elif p.type == TYPE_INT:
+			if not p.has('dialogic_type') or p.dialogic_type == resource.DialogicValueType.Integer:
+				editor_node = load("res://addons/dialogic/Editor/Events/Fields/Number.tscn").instance()
+			elif p.dialogic_type == resource.DialogicValueType.FixedOptionSelector:
+				editor_node = load("res://addons/dialogic/Editor/Events/Fields/OptionSelector.tscn").instance()
+				if p.has('selector_options'):
+					editor_node.options = p.selector_options
 		else:
 			editor_node = Label.new()
 			editor_node.text = p.name
@@ -219,6 +226,7 @@ func build_editor():
 
 func set_property(property_name, value):
 	resource.set(property_name, value)
+	emit_signal('content_changed')
 
 ## *****************************************************************************
 ##								OVERRIDES
@@ -241,37 +249,6 @@ func _ready():
 		_set_event_icon(resource.event_icon)
 	if event_name != null:
 		_set_event_name(event_name)
-	
-	var label_editor = load("res://addons/dialogic/Editor/Events/Fields/Label.tscn")
-	var text_area = load("res://addons/dialogic/Editor/Events/Fields/TextArea.tscn")
-	if resource.header != null:
-		#print('resource.header: ', resource.header)
-		for r in resource.header:
-			var new_node = label_editor.instance()
-
-			if r.type == 0: # Label
-				new_node = label_editor.instance()
-				new_node.text = r.key
-			if r.type == 1: # Text
-				new_node = text_area.instance()
-
-			header_content_container.add_child(new_node)
-			new_node.owner = self
-
-	if resource.body != null:
-		#print('resource.body: ', resource.body)
-		for r in resource.body:
-			var new_node = label_editor.instance()
-			if r.type:
-				if r.type == 0: # Label
-					new_node = label_editor.instance()
-					new_node.text = r.key
-				if r.type == 1: # Text
-					new_node = text_area.instance()
-
-			body_content_container.add_child(new_node)
-			new_node.owner = self
-		body_content_container.add_constant_override('margin_left', 40*DialogicUtil.get_editor_scale(self))
 
 	$PanelContainer/MarginContainer/VBoxContainer/Header/CenterContainer/IconPanel.set("self_modulate", resource.event_color)
 	

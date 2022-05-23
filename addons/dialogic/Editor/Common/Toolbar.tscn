@@ -1,7 +1,9 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://addons/dialogic/Editor/Common/TLabel.tscn" type="PackedScene" id=1]
 [ext_resource path="res://addons/dialogic/Editor/Common/Toolbar.gd" type="Script" id=2]
+[ext_resource path="res://addons/dialogic/Images/Toolbar/add-timeline.svg" type="Texture" id=3]
+[ext_resource path="res://addons/dialogic/Images/Toolbar/add-character.svg" type="Texture" id=4]
 
 [node name="Toolbar" type="HBoxContainer"]
 margin_right = 1024.0
@@ -9,30 +11,39 @@ margin_bottom = 22.0
 script = ExtResource( 2 )
 
 [node name="AddTimeline" type="Button" parent="."]
-margin_right = 12.0
+margin_right = 28.0
 margin_bottom = 22.0
 hint_tooltip = "Add Timeline"
+icon = ExtResource( 3 )
+flat = true
+
+[node name="AddCharacter" type="Button" parent="."]
+margin_left = 32.0
+margin_right = 60.0
+margin_bottom = 22.0
+hint_tooltip = "Add Timeline"
+icon = ExtResource( 4 )
 flat = true
 
 [node name="TLabel" parent="." instance=ExtResource( 1 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_left = 16.0
+margin_left = 64.0
 margin_top = 4.0
-margin_right = 127.0
+margin_right = 115.0
 margin_bottom = 18.0
-text = "Current Timeline:"
-text_key = "Current Timeline:"
+text = "Current:"
+text_key = "Current:"
 
-[node name="Label" type="Label" parent="."]
-margin_left = 131.0
+[node name="CurrentResource" type="Label" parent="."]
+margin_left = 119.0
 margin_top = 4.0
-margin_right = 165.0
+margin_right = 153.0
 margin_bottom = 18.0
 text = "None"
 
 [node name="Spacer" type="Control" parent="."]
-margin_left = 169.0
+margin_left = 157.0
 margin_right = 885.0
 margin_bottom = 22.0
 size_flags_horizontal = 3
@@ -52,3 +63,4 @@ custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "v2.0-Alpha"
 
 [connection signal="pressed" from="AddTimeline" to="." method="_on_AddTimeline_pressed"]
+[connection signal="pressed" from="AddCharacter" to="." method="_on_AddCharacter_pressed"]

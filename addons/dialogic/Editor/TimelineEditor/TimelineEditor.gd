@@ -1,8 +1,6 @@
 tool
 extends VBoxContainer
 
-var editor_file_dialog
-
 var current_timeline: DialogicTimeline
 
 var TimelineUndoRedo := UndoRedo.new()
@@ -41,11 +39,6 @@ func _ready():
 	
 	connect("batch_loaded", self, '_on_batch_loaded')
 	
-	# File dialog
-	editor_file_dialog = EditorFileDialog.new()
-	add_child(editor_file_dialog)
-	editor_file_dialog.connect('file_selected', self, 'create_and_save_new_timeline')
-	
 	# Margins
 	var modifier = ''
 	var _scale = DialogicUtil.get_editor_scale(self)
@@ -73,10 +66,10 @@ func _ready():
 	
 	# Event buttons
 	var buttonScene = load("res://addons/dialogic/Editor/TimelineEditor/SmallEventButton.tscn")
-	var file_list = DialogicUtil.listdir("res://addons/dialogic/Editor/Events/")
+	var file_list = DialogicUtil.listdir("res://addons/dialogic/Resources/Events/")
 	for file in file_list:
 		if '.gd' in file:
-			var event_script = load("res://addons/dialogic/Editor/Events/" + file)
+			var event_script = load("res://addons/dialogic/Resources/Events/" + file)
 			var event_resource = event_script.new()
 			var button = buttonScene.instance()
 			button.resource = event_resource
@@ -733,7 +726,7 @@ func add_event_to_timeline(event_resource:Resource, at_index:int = -1, auto_sele
 	var piece = event_node.instance()
 	var resource = event_resource
 	piece.resource = event_resource
-	
+	piece.connect('content_changed', self, 'something_changed')
 	if at_index == -1:
 		if len(selected_items) != 0:
 			timeline.add_child_below_node(selected_items[0], piece)
@@ -768,7 +761,7 @@ func add_event_to_timeline(event_resource:Resource, at_index:int = -1, auto_sele
 func new_timeline() -> void:
 	save_timeline()
 	clear_timeline()
-	godot_file_dialog('*.timeline; DialogicTimeline', EditorFileDialog.MODE_SAVE_FILE)
+	get_parent().get_parent().get_parent().godot_file_dialog(self,  'create_and_save_new_timeline', '*.dtl; DialogicTimeline', EditorFileDialog.MODE_SAVE_FILE)
 
 # Saving
 func save_timeline() -> void:
@@ -780,20 +773,11 @@ func save_timeline() -> void:
 	if current_timeline:
 		current_timeline.set_events(new_events)
 		ResourceSaver.save(current_timeline.resource_path, current_timeline)
+		get_node("%Toolbar").set_resource_saved()
 	else:
 		if new_events.size() > 0:
-			godot_file_dialog('*.timeline; DialogicTimeline', EditorFileDialog.MODE_SAVE_FILE)
+			get_parent().get_parent().get_parent().godot_file_dialog(self, 'create_and_save_new_timeline', '*.dtl; DialogicTimeline', EditorFileDialog.MODE_SAVE_FILE)
 
-
-func godot_file_dialog(filter, mode = EditorFileDialog.MODE_OPEN_FILE):
-	editor_file_dialog.mode = mode
-	editor_file_dialog.clear_filters()
-	editor_file_dialog.popup_centered_ratio(0.75)
-	editor_file_dialog.add_filter(filter)
-	editor_file_dialog.window_title = "Save new Timeline"
-	editor_file_dialog.current_file = "New_Timeline"
-	return editor_file_dialog
-	
 
 func create_and_save_new_timeline(path):
 	var new_timeline = DialogicTimeline.new()
@@ -807,7 +791,7 @@ func create_and_save_new_timeline(path):
 func load_timeline(object) -> void:
 	#print('[D] Load timeline: ', object)
 	clear_timeline()
-	get_parent().get_node('Toolbar/Label').text = object.resource_path
+	get_node('%Toolbar/CurrentResource').text = object.resource_path
 	current_timeline = object
 	var data = object.get_events()
 	var page = 1
@@ -818,6 +802,10 @@ func load_timeline(object) -> void:
 	load_batch(batches)
 	# Reset the scroll position
 	timeline_area.scroll_vertical = 0
+
+
+func something_changed():
+	get_node('%Toolbar').set_resource_unsaved()
 
 
 func batch_events(array, size, batch_number):
