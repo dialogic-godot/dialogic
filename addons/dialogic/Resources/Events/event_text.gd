@@ -32,8 +32,8 @@ func _execute() -> void:
 ## THIS RETURNS A READABLE REPRESENTATION, BUT HAS TO CONTAIN ALL DATA (This is how it's stored)
 func get_as_string_to_store() -> String:
 	if Character:
-		return Character.name+": "+Text
-	return Text
+		return Character.name+": "+Text.replace("\n", "<br>")
+	return Text.replace("\n", "<br>")
 
 ## THIS HAS TO READ ALL THE DATA FROM THE SAVED STRING (see above) 
 func load_from_string_to_store(string):
@@ -45,11 +45,13 @@ func load_from_string_to_store(string):
 		else:
 			Character = null
 			print("When importing timeline, we couldn't identify what character you meant with ", char_name, ".")
-		Text = string.split(": ", 1)[1]
+		Text = string.split(": ", 1)[1].replace("<br>", "\n")
 	else:
 		Character = null
-		Text = string
+		Text = string.replace("<br>", "\n")
 
+static func is_valid_event_string(string):
+	return true
 
 func _get_property_list() -> Array:
 	var p_list = []

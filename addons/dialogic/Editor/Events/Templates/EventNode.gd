@@ -184,7 +184,13 @@ func build_editor():
 		elif p.type == TYPE_OBJECT and p.has('dialogic_type'):
 			if p.dialogic_type == resource.DialogicValueType.Character:
 				editor_node = load("res://addons/dialogic/Editor/Events/Fields/DialogicResourcePicker.tscn").instance()
-		
+		elif p.type == TYPE_INT:
+			if not p.has('dialogic_type') or p.dialogic_type == resource.DialogicValueType.Integer:
+				editor_node = load("res://addons/dialogic/Editor/Events/Fields/Number.tscn").instance()
+			elif p.dialogic_type == resource.DialogicValueType.FixedOptionSelector:
+				editor_node = load("res://addons/dialogic/Editor/Events/Fields/OptionSelector.tscn").instance()
+				if p.has('selector_options'):
+					editor_node.options = p.selector_options
 		else:
 			editor_node = Label.new()
 			editor_node.text = p.name

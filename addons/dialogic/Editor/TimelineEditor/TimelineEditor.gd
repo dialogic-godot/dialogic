@@ -66,10 +66,10 @@ func _ready():
 	
 	# Event buttons
 	var buttonScene = load("res://addons/dialogic/Editor/TimelineEditor/SmallEventButton.tscn")
-	var file_list = DialogicUtil.listdir("res://addons/dialogic/Editor/Events/")
+	var file_list = DialogicUtil.listdir("res://addons/dialogic/Resources/Events/")
 	for file in file_list:
 		if '.gd' in file:
-			var event_script = load("res://addons/dialogic/Editor/Events/" + file)
+			var event_script = load("res://addons/dialogic/Resources/Events/" + file)
 			var event_resource = event_script.new()
 			var button = buttonScene.instance()
 			button.resource = event_resource

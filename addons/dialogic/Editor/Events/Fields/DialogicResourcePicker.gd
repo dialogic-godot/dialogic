@@ -37,7 +37,7 @@ func set_value(value):
 		$Search.text = value.name
 		$Search/OpenButton.show()
 	else:
-		$Search.text = "Nothing selected"
+		$Search.text = ""
 		$Search/OpenButton.hide()
 	current_value = value
 

@@ -24,13 +24,14 @@ margin_bottom = 24.0
 margin_left = 8.0
 margin_right = 503.0
 margin_bottom = 24.0
-rect_min_size = Vector2( 200, 0 )
+rect_min_size = Vector2( 140, 0 )
+focus_neighbour_bottom = NodePath("Suggestions")
 focus_next = NodePath("Suggestions")
 mouse_filter = 1
 size_flags_horizontal = 3
 size_flags_vertical = 4
 theme = ExtResource( 2 )
-placeholder_text = "Character"
+placeholder_text = "Select Resource"
 caret_blink = true
 caret_blink_speed = 0.5
 
