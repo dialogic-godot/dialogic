@@ -11,7 +11,7 @@ Create dialogs, characters and scenes to display conversations in your Godot gam
 
 
 
-# Version 1.4 - Curves Ahead  ![Godot v3.4](https://img.shields.io/badge/godot-v3.4-%23478cbf)
+# Version 1.4.2 - WIP  ![Godot v3.4](https://img.shields.io/badge/godot-v3.4-%23478cbf)
 
 ## Getting started
 
@@ -41,49 +41,47 @@ Contributors: [Jowan-Spooner](https://github.com/Jowan-Spooner), [Arnaud](https:
 ### Thank you to all my [Patreons](https://www.patreon.com/coppolaemilio) for making this possible!
 
 Mike King,
-Tyler Dean Osborne,
-Problematic Dave,
 Allyson Ota,
-Francisco Lepe,
 Gemma M. Rull,
-Alex Barton,
+newyear Studios,
 Joe Constant,
-Kycho,
-JDA,
-Kersla Margdel,
-Chris Shove,
+kycho ,
 Luke Peters,
-Wapiti,
-Penny,
+Wapiti .,
 Garrett Guillotte,
-Sl Tu,
 Alex Harry,
 Rokatansky,
 Karl Anderson,
-GammaGames,
-Taankydaanky,
 Alex (Well Done Games),
-GodofGrunts,
+GodofGrunts ,
 Tim Krief,
 Daniel Cheney,
 Carlo Cabanilla,
 Flaming Potato,
 Joseph Catrambone,
-AzulCrescent,
+AzulCrescent ,
 Hector Na Em,
-Furroy,
-Sergey,
-Container7,
+Sergey ,
 BasicIncomePlz,
 p sis,
-Justin,
-Guy Dadon,
 Sukh Atwal,
 Patrick Hogan,
 Jesse Priest,
-Lunos,
 Ceah Sharp,
-Mark Charnock
+Mark Charnock,
+soliare,
+Anthony Wilson,
+Anthony Pietra,
+KvaGram ,
+orgrinrt,
+Steven Shearer,
+Carter Lilley,
+CorbineCaleb,
+Thick Biscuit,
+teesloane,
+RagingRoosevelt,
+yochrisbolton,
+Jacquelinett
 
 
 

@@ -1,12 +1,35 @@
 # Changelog
 
+## v1.4.2 - WIP
+- Fixed an issue with MacOS and text events not adjusting their size properly
+- Android exports should work again [[zaknafean](https://github.com/zaknafean)]
+- Add setting to disable the mouse block of the dialog node [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
+- Default settings adjustments [[zaknafean](https://github.com/zaknafean)]
+  - Fixed the 'default' setting not appearing after you set it for hotkey choices
+  - Fixed hotkey choice settings layout
+  - Changed the default status of autofocus from true to false
+- A basic touch to advance implementation (#876) [[zaknafean](https://github.com/zaknafean)]
+- Added support for 9-patch rectangles for Dialog Box textures (#286) [[zaknafean](https://github.com/zaknafean)]
+- Added finer controls to Text and Box positions (#761) [[lamsorsen](https://github.com/lamsorsen)]
+  - **Box margin** replaced with **Margin** for the DialogBox settings
+  - **Box Padding** has been removed from the DialogBox settings, and replaced with **Margin**  for the Dialog Text setting to clear up confusion
+  - The margin Top/Bottom and Left/Right are no longer linked, and can be individually adjusted
+  - **Please note this change may break some existing themes**
+- Added option to recenter character portraits automatically [[thebardsrc](https://github.com/thebardsrc)]
+
+
+## v1.4.1 - Animations hotfix
+- Portrait-Animation fixes:
+  Because the animations should work both with Controls and Node2Ds, just using node.scale won't work. Now they all use DialogicAnimaPropertiesHelper.get_scale(node), which will automatically use the correct one. [[Jowan-Spooner](https://github.com/Jowan-Spooner)]. Thanks a lot to @[zaknafean](https://github.com/zaknafean)
+
+
 ## v1.4 - Curves Ahead
 #### Events
 - Wait seconds event can now be set to be skipped with the user's action [[SimonLammer](https://github.com/SimonLammer)]
 - New events: `Label Event` and `Go to Event`. This will help you creating an anchor position to go back to.[[Jowan-Spooner](https://github.com/Jowan-Spooner)]
 - Text event improvements:
   - You can now make a list of words like this: `[word1,word2,word3]` and Dialogic will pick a random word from the list. If the word is a Dialogic variable name and it gets picked it will show the value of that variable.
-  - New commands [signal=argument], [pause=wait_time], [play=soundname], [nv=v] (for waiting until the audio finishes) added to the Text Event [[KvaGram](https://github.com/KvaGram)]
+  - New commands [signal=argument], [pause=wait_time], [play=soundname], [nw=v] (for waiting until the audio finishes) added to the Text Event [[KvaGram](https://github.com/KvaGram)]
 - The Character Join and Character Leave events have been removed in favor of the new `Character Event`. They will be converted automatically. The new events allows for more customization including animations. These use the anima system. Learn more about the [event](./Events/002.md) and the [animations](./Tutorials/AddNewAnimations.md) [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
 - The `Call Node Event` now sends arguments instead of a single array. If you were using it in one of your timelines you will need to update the functions you are calling to accommodate this. [[AnidemDex](https://github.com/AnidemDex)]
 
@@ -18,6 +41,7 @@
   - Removed the setting to dim character portraits from the global settings
   - Added a setting to control the dim speed [[thebardsrc](https://github.com/thebardsrc)]
 - You can now set a `custom theme per character` [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
+- Added a setting for behavior to re-center the portrait each time it's changed from a text event. This fixes a number of portrait issues and is enabled by default, but is a BREAKING change, so please remember to disable this if you need the old behavior. [[thebardsrc](https://github.com/thebardsrc)]
 - New setting to use "Keep Aspect Centered" instead of stretch for the Background event [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
 - You can now vertically align the text in the dialog box [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
 - You can now specify hotkeys for the choices or use default hot-keys (1-9) [[zaknafean](https://github.com/zaknafean)]

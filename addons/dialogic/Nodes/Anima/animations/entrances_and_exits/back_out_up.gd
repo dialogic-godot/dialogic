@@ -4,11 +4,12 @@ func generate_animation(anima_tween: Tween, data: Dictionary) -> void:
 		{ percentage = 20, to = 0 },
 		{ percentage = 100, to = 700 },
 	]
-
+	
+	var scale = DialogicAnimaPropertiesHelper.get_scale(data.node)
 	var scale_frames = [
-		{ percentage = 0, from =  data.node.scale * Vector2(1, 1) },
-		{ percentage = 20, to =  data.node.scale * Vector2(0.7, 0.7) },
-		{ percentage = 100, to =  data.node.scale * Vector2(0.7, 0.7) },
+		{ percentage = 0, from =  scale * Vector2(1, 1) },
+		{ percentage = 20, to =  scale * Vector2(0.7, 0.7) },
+		{ percentage = 100, to =  scale * Vector2(0.7, 0.7) },
 	]
 
 	var opacity_frames = [

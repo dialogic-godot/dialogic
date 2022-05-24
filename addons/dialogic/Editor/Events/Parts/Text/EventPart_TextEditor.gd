@@ -7,9 +7,12 @@ extends "res://addons/dialogic/Editor/Events/Parts/EventPart.gd"
 onready var text_editor = $TextEdit
 
 var timeline_area = null
+var text_gap = 50
 
 # used to connect the signals
 func _ready():
+	text_gap = (text_gap * DialogicUtil.get_editor_scale(self))
+	
 	# signals
 	text_editor.connect("text_changed", self, "_on_TextEditor_text_changed")
 	text_editor.connect("focus_entered", self, "_on_TextEditor_focus_entered")
@@ -106,12 +109,12 @@ func _set_new_min_size():
 	text_editor.rect_min_size.y = get_font("normal_font").get_height() * ((text_editor.get_line_count() + 1 + count_wrapped_lines) * extra_vertical)
 	
 	# set the width
-	text_editor.rect_min_size.x = get_font("normal_font").get_string_size(longest_string).x + 50
+	text_editor.rect_min_size.x = get_font("normal_font").get_string_size(longest_string).x + text_gap
 	if text_editor.rect_min_size.x > get_max_x_size():
 		text_editor.rect_min_size.x = get_max_x_size()
 
 func get_max_x_size():
-	return timeline_area.rect_size.x - (text_editor.rect_global_position.x - timeline_area.rect_global_position.x) - 50
+	return timeline_area.rect_size.x - (text_editor.rect_global_position.x - timeline_area.rect_global_position.x) - text_gap
 
 func _on_TextEditor_focus_entered() -> void:
 	if (Input.is_mouse_button_pressed(BUTTON_LEFT)):

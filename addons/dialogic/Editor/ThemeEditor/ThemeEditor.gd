@@ -59,14 +59,23 @@ onready var n : Dictionary = {
 	'background_full_width': $"VBoxContainer/TabContainer/Dialog Box/Column/GridContainer2/HBoxContainer7/CheckBox",
 	
 	'dialog_box_anchor':$"VBoxContainer/TabContainer/Dialog Box/Column/GridContainer2/PositionSelector",
-	'theme_text_margin': $"VBoxContainer/TabContainer/Dialog Box/Column/GridContainer2/HBoxContainer/BoxPaddingV",
-	'theme_text_margin_h': $"VBoxContainer/TabContainer/Dialog Box/Column/GridContainer2/HBoxContainer/BoxPaddingH",
 	'size_w': $"VBoxContainer/TabContainer/Dialog Box/Column/GridContainer2/HBoxContainer4/BoxSizeW",
 	'size_h': $"VBoxContainer/TabContainer/Dialog Box/Column/GridContainer2/HBoxContainer4/BoxSizeH", 
-	'box_margin_v': $"VBoxContainer/TabContainer/Dialog Box/Column/GridContainer2/BoxMargin/MarginV",
-	'box_margin_h': $"VBoxContainer/TabContainer/Dialog Box/Column/GridContainer2/BoxMargin/MarginH",
-	
-	
+
+	'ninepatch_margin_left': $'VBoxContainer/TabContainer/Dialog Box/Column/GridContainer/NinePatchBoxLeftRight/PatchMarginLeft',
+	'ninepatch_margin_right': $'VBoxContainer/TabContainer/Dialog Box/Column/GridContainer/NinePatchBoxLeftRight/PatchMarginRight',
+	'ninepatch_margin_top': $'VBoxContainer/TabContainer/Dialog Box/Column/GridContainer/NinePatchBoxTopBottom/PatchMarginTop',
+	'ninepatch_margin_bottom': $'VBoxContainer/TabContainer/Dialog Box/Column/GridContainer/NinePatchBoxTopBottom/PatchMarginBottom',
+
+	'box_margin_left': $"VBoxContainer/TabContainer/Dialog Box/Column/GridContainer2/MarginLeft", 
+	'box_margin_top': $"VBoxContainer/TabContainer/Dialog Box/Column/GridContainer2/MarginTop", 
+	'box_margin_right': $"VBoxContainer/TabContainer/Dialog Box/Column/GridContainer2/MarginRight", 
+	'box_margin_bottom': $"VBoxContainer/TabContainer/Dialog Box/Column/GridContainer2/MarginBottom", 
+	'text_margin_left': $"VBoxContainer/TabContainer/Dialog Text/Column/GridContainer2/MarginLeft", 
+	'text_margin_top': $"VBoxContainer/TabContainer/Dialog Text/Column/GridContainer2/MarginTop", 
+	'text_margin_right': $"VBoxContainer/TabContainer/Dialog Text/Column/GridContainer2/MarginRight", 
+	'text_margin_bottom': $"VBoxContainer/TabContainer/Dialog Text/Column/GridContainer2/MarginBottom", 
+
 	'theme_next_image': $"VBoxContainer/TabContainer/Dialog Box/Column2/GridContainer/NextIndicatorButton",
 	'next_indicator_offset_x': $"VBoxContainer/TabContainer/Dialog Box/Column2/GridContainer/HBoxContainer2/NextOffsetX",
 	'next_indicator_offset_y': $"VBoxContainer/TabContainer/Dialog Box/Column2/GridContainer/HBoxContainer2/NextOffsetY",
@@ -187,6 +196,10 @@ func _ready() -> void:
 	n['single_portrait_mode'].connect('toggled', self, '_on_generic_checkbox', ['settings', 'single_portrait_mode'])
 	n['theme_text_speed'].connect('value_changed', self, '_on_generic_value_change', ['text','speed'])
 	n['dont_close_after_last_event'].connect('toggled', self, '_on_generic_checkbox', ['settings', 'dont_close_after_last_event'])
+	n['text_margin_left'].connect('value_changed', self, '_on_generic_value_change', ['text', 'text_margin_left'])
+	n['text_margin_top'].connect('value_changed', self, '_on_generic_value_change', ['text', 'text_margin_top'])
+	n['text_margin_right'].connect('value_changed', self, '_on_generic_value_change', ['text', 'text_margin_right'])
+	n['text_margin_bottom'].connect('value_changed', self, '_on_generic_value_change', ['text', 'text_margin_bottom'])
 	
 	# Dialog Box tab
 	n['theme_background_color_visible'].connect('toggled', self, '_on_generic_checkbox', ['background', 'use_color'])
@@ -194,9 +207,17 @@ func _ready() -> void:
 	n['background_modulation'].connect('toggled', self, '_on_generic_checkbox', ['background', 'modulation'])
 	n['background_full_width'].connect('toggled', self, '_on_generic_checkbox', ['background', 'full_width'])
 	n['animation_show_time'].connect('value_changed', self, '_on_generic_value_change', ['animation', 'show_time'])
-	n['box_margin_v'].connect('value_changed', self, '_on_generic_value_change', ['box', 'box_margin_v'])
-	n['box_margin_h'].connect('value_changed', self, '_on_generic_value_change', ['box', 'box_margin_h'])
-	
+
+	n['ninepatch_margin_left'].connect('value_changed', self, '_on_generic_value_change', ['ninepatch', 'ninepatch_margin_left'])
+	n['ninepatch_margin_right'].connect('value_changed', self, '_on_generic_value_change', ['ninepatch', 'ninepatch_margin_right'])
+	n['ninepatch_margin_top'].connect('value_changed', self, '_on_generic_value_change', ['ninepatch', 'ninepatch_margin_top'])
+	n['ninepatch_margin_bottom'].connect('value_changed', self, '_on_generic_value_change', ['ninepatch', 'ninepatch_margin_bottom'])
+
+	n['box_margin_left'].connect('value_changed', self, '_on_generic_value_change', ['box', 'box_margin_left'])
+	n['box_margin_top'].connect('value_changed', self, '_on_generic_value_change', ['box', 'box_margin_top'])
+	n['box_margin_right'].connect('value_changed', self, '_on_generic_value_change', ['box', 'box_margin_right'])
+	n['box_margin_bottom'].connect('value_changed', self, '_on_generic_value_change', ['box', 'box_margin_bottom'])
+
 	n['next_indicator_scale'].connect('value_changed', self, '_on_generic_value_change', ['next_indicator', 'scale'])
 
 	n['portraits_behind_dialog_box'].connect('toggled', self, '_on_generic_value_change', ['box', 'portraits_behind_dialog_box'])
@@ -320,7 +341,7 @@ func load_theme(filename):
 	
 	n['animation_dim_color'].color = Color(theme.get_value('animation', 'dim_color', '#ff808080'))
 	n['animation_dim_time'].value = theme.get_value('animation', 'dim_time', 0.5)
-		
+	
 	# Background
 	n['theme_background_image'].text = DialogicResources.get_filename_from_path(theme.get_value('background', 'image', default_background))
 	n['background_texture_button_visible'].pressed = theme.get_value('background', 'use_image', true)
@@ -342,9 +363,17 @@ func load_theme(filename):
 	n['size_h'].value = size_value.y
 	n['dialog_box_anchor'].select(theme.get_value('box', 'anchor', 9))
 	# TODO: remove backups in 2.0
-	n['box_margin_v'].value = theme.get_value('box', 'box_margin_v', theme.get_value('box', 'bottom_gap', 40))
-	n['box_margin_h'].value = theme.get_value('box', 'box_margin_h', theme.get_value('box', 'bottom_gap', 40))
+
+	n['ninepatch_margin_left'].value = theme.get_value('ninepatch', 'ninepatch_margin_left', theme.get_value('ninepatch', 'ninepatch_margin_left', 0))
+	n['ninepatch_margin_right'].value = theme.get_value('ninepatch', 'ninepatch_margin_right', theme.get_value('ninepatch', 'ninepatch_margin_right', 0))
+	n['ninepatch_margin_top'].value = theme.get_value('ninepatch', 'ninepatch_margin_top', theme.get_value('ninepatch', 'ninepatch_margin_top', 0))
+	n['ninepatch_margin_bottom'].value = theme.get_value('ninepatch', 'ninepatch_margin_bottom', theme.get_value('ninepatch', 'ninepatch_margin_bottom', 0))
 	
+	n['box_margin_left'].value = theme.get_value('box', 'box_margin_left', theme.get_value('box', 'box_margin_left', 40))
+	n['box_margin_top'].value = theme.get_value('box', 'box_margin_top', theme.get_value('box', 'box_margin_top', 40))
+	n['box_margin_right'].value = theme.get_value('box', 'box_margin_right', theme.get_value('box', 'box_margin_right', -40))
+	n['box_margin_bottom'].value = theme.get_value('box', 'box_margin_bottom', theme.get_value('box', 'box_margin_bottom', -40))
+
 	# Buttons
 	n['button_padding_x'].value = theme.get_value('buttons', 'padding', Vector2(5,5)).x
 	n['button_padding_y'].value = theme.get_value('buttons', 'padding', Vector2(5,5)).y
@@ -395,8 +424,10 @@ func load_theme(filename):
 	n['theme_text_shadow_color'].color = Color(theme.get_value('text', 'shadow_color', '#9e000000'))
 	n['theme_shadow_offset_x'].value = theme.get_value('text', 'shadow_offset', Vector2(2,2)).x
 	n['theme_shadow_offset_y'].value = theme.get_value('text', 'shadow_offset', Vector2(2,2)).y
-	n['theme_text_margin'].value = theme.get_value('text', 'margin', Vector2(20, 10)).x
-	n['theme_text_margin_h'].value = theme.get_value('text', 'margin', Vector2(20, 10)).y
+	n['text_margin_left'].value = theme.get_value('text', 'text_margin_left', 20)
+	n['text_margin_top'].value = theme.get_value('text', 'text_margin_top', 10)
+	n['text_margin_right'].value = theme.get_value('text', 'text_margin_right', -20)
+	n['text_margin_bottom'].value = theme.get_value('text', 'text_margin_bottom', -10)
 	n['alignment'].select(n['alignment'].get_item_index(theme.get_value('text', 'alignment', 0)))
 
 	
@@ -550,6 +581,7 @@ func _on_PreviewButton_pressed() -> void:
 	# maintaining the preview panel big enough for the dialog box
 	var box_size = preview_dialog.current_theme.get_value('box', 'size', Vector2(910, 167)).y
 	var bottom_gap = preview_dialog.current_theme.get_value('box', 'bottom_gap', 40)
+	var top_gap = preview_dialog.current_theme.get_value('box', 'bottom_gap', 40)
 	var extra = 90
 	$VBoxContainer/Panel.rect_min_size.y = box_size + extra + bottom_gap
 	$VBoxContainer/Panel.rect_size.y = 0
@@ -690,17 +722,6 @@ func _on_ShadowOffset_value_changed(_value) -> void:
 
 ## ------------ 		DIALOG BOX TAB	 	------------------------------------
 
-func _on_TextMargin_value_changed(value) -> void:
-	if loading:
-		return
-	var final_vector = Vector2(
-		n['theme_text_margin'].value,
-		n['theme_text_margin_h'].value
-	)
-	DialogicResources.set_theme_value(current_theme, 'text', 'margin', final_vector)
-	_on_PreviewButton_pressed() # Refreshing the preview
-
-
 func _on_BoxSize_value_changed(value) -> void:
 	if loading:
 		return
@@ -749,7 +770,6 @@ func _on_DimColor_ColorPickerButton_color_changed(color) -> void:
 	DialogicResources.set_theme_value(current_theme, 'animation', 'dim_color', '#' + color.to_html())
 
 #Fade Time
-
 func _on_PortraitDimTime_value_changed(value):
 	if loading:
 		return
@@ -1086,6 +1106,5 @@ func _on_Glossary_BackgroundPanel_selected(path, target):
 func _on_audio_data_updated(section):
 	DialogicResources.set_theme_value(current_theme, 'audio', section, n['audio_pickers'][section].get_data())
 	_on_PreviewButton_pressed()
-
 
 

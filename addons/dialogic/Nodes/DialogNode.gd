@@ -110,6 +110,8 @@ func _ready():
 	# Connecting resize signal
 	get_viewport().connect("size_changed", self, "resize_main")
 	resize_main()
+	if !DialogicResources.get_settings_value('dialog', 'stop_mouse', true):
+		mouse_filter = Control.MOUSE_FILTER_IGNORE
 	# Connecting some other timers
 	$OptionsDelayedInput.connect("timeout", self, '_on_OptionsDelayedInput_timeout')
 	# Setting everything up for the node to be default
@@ -119,6 +121,8 @@ func _ready():
 	$TextBubble.connect("signal_request", self, "_on_signal_request")
 	$TextBubble.text_label.connect('meta_hover_started', self, '_on_RichTextLabel_meta_hover_started')
 	$TextBubble.text_label.connect('meta_hover_ended', self, '_on_RichTextLabel_meta_hover_ended')
+	
+	$TouchScreenButton.action = Dialogic.get_action_button()
 	
 	if Engine.is_editor_hint():
 		if preview:
@@ -208,23 +212,25 @@ func resize_main():
 	# Update box position
 	var anchor = current_theme.get_value('box', 'anchor', 9)
 	# TODO: remove backups in 2.0
-	var gap_v = current_theme.get_value('box', 'box_margin_v', current_theme.get_value('box', 'bottom_gap', 40))
-	var gap_h = current_theme.get_value('box', 'box_margin_h', current_theme.get_value('box', 'bottom_gap', 40))
+	var margin_bottom = current_theme.get_value('box', 'box_margin_bottom', current_theme.get_value('box', 'box_margin_v', 40) * -1)
+	var margin_top = current_theme.get_value('box', 'box_margin_top', current_theme.get_value('box', 'box_margin_v', 40))
+	var margin_left = current_theme.get_value('box', 'box_margin_left', current_theme.get_value('box', 'box_margin_h', 40))
+	var margin_right = current_theme.get_value('box', 'box_margin_right', current_theme.get_value('box', 'box_margin_h', 40) * -1)
 	# first the y position
 	if anchor in [0,1,2]: # TOP
-		$TextBubble.rect_position.y = gap_h
+		$TextBubble.rect_position.y = margin_top
 	elif anchor in [4,5,6]: # CENTER
 		$TextBubble.rect_position.y = (reference.y/2)-($TextBubble.rect_size.y/2)
 	else:
-		$TextBubble.rect_position.y = (reference.y) - ($TextBubble.rect_size.y)-gap_h
+		$TextBubble.rect_position.y = (reference.y) - ($TextBubble.rect_size.y) + margin_bottom
 	
 	# now x position
 	if anchor in [0,4,8]: # LEFT
-		$TextBubble.rect_position.x = gap_v
+		$TextBubble.rect_position.x = margin_left
 	elif anchor in [1,5,9]: # CENTER
 		$TextBubble.rect_position.x = (reference.x / 2) - ($TextBubble.rect_size.x / 2)
 	else:
-		$TextBubble.rect_position.x = reference.x - ($TextBubble.rect_size.x) - gap_v
+		$TextBubble.rect_position.x = reference.x - ($TextBubble.rect_size.x) + margin_right
 	
 	# Update TextBubble background size
 	var pos_x = 0
@@ -288,7 +294,9 @@ func resize_main():
 	
 	$Options.rect_global_position = Vector2(0,0) + theme_choice_offset + position_offset
 	$Options.rect_size = reference
-
+	
+	if settings.get_value('input', 'clicking_dialog_action', true):
+		$TouchScreenButton.shape.extents = reference
 	
 	# Background positioning
 	var background = get_node_or_null('Background')
@@ -301,20 +309,23 @@ func resize_main():
 		portraits.rect_position.y = reference.y
 
 # calls resize_main
-func deferred_resize(current_size, result):
+func deferred_resize(current_size, result, anchor):
 	$TextBubble.rect_size = result
-	if current_size != $TextBubble.rect_size:
+	if current_size != $TextBubble.rect_size or current_theme.get_value('box', 'anchor', 9) != anchor:
 		resize_main()
 
 # loads the given theme file
 func load_theme(filename):
+	var current_theme_anchor = -1
+	if current_theme:
+		current_theme_anchor = current_theme.get_value('box', 'anchor', 9)
 	var load_theme = DialogicResources.get_theme_config(filename)
 	if not load_theme:
 		return current_theme 
 	var theme = load_theme
 	current_theme_file_name = filename
 	# Box size
-	call_deferred('deferred_resize', $TextBubble.rect_size, theme.get_value('box', 'size', Vector2(910, 167)))
+	call_deferred('deferred_resize', $TextBubble.rect_size, theme.get_value('box', 'size', Vector2(910, 167)), current_theme_anchor)
 	
 	$TextBubble.load_theme(theme)
 	HistoryTimeline.change_theme(theme)
@@ -420,7 +431,7 @@ func _process(delta):
 			$TextBubble/NextIndicatorContainer/NextIndicator.visible = false
 		
 	# Hide if "Don't Close After Last Event" is checked and event is last text
-	if current_theme.get_value('settings', 'dont_close_after_last_event', false) and is_last_text:
+	if current_theme and current_theme.get_value('settings', 'dont_close_after_last_event', false) and is_last_text:
 		$TextBubble/NextIndicatorContainer/NextIndicator.visible = false
 	
 	# Hide if fading in
@@ -637,12 +648,12 @@ func event_handler(event: Dictionary):
 			set_state(state.TYPING)
 			if event.has('character'):
 				var character_data = DialogicUtil.get_character(event['character'])
-				update_name(character_data)
 				grab_portrait_focus(character_data, event)
 				if character_data.get('data', {}).get('theme', '') and current_theme_file_name != character_data.get('data', {}).get('theme', ''):
 					current_theme = load_theme(character_data.get('data', {}).get('theme', ''))
 				elif !character_data.get('data', {}).get('theme', '') and current_default_theme and  current_theme_file_name != current_default_theme:
 					current_theme = load_theme(current_default_theme)
+				update_name(character_data)
 
 			#voice 
 			handle_voice(event)
@@ -730,7 +741,7 @@ func event_handler(event: Dictionary):
 								
 								portrait.animate(event.get('animation', '[No Animation]'), event.get('animation_length', 1), event.get('animation_repeat', 1))
 								
-								if event.get('animation_wait', false):
+								if event.get('animation_wait', false) and event.get('animation', '[No Animation]') != "[No Animation]":
 									yield(portrait, 'animation_finished')
 				set_state(state.READY)
 				_load_next_event()
@@ -746,13 +757,13 @@ func event_handler(event: Dictionary):
 				update_name(event['name'])
 			elif event.has('character'):
 				var character_data = DialogicUtil.get_character(event['character'])
-				update_name(character_data)
 				grab_portrait_focus(character_data, event)
 				
 				if character_data.get('data', {}).get('theme', '') and current_theme_file_name != character_data.get('data', {}).get('theme', ''):
 					current_theme = load_theme(character_data.get('data', {}).get('theme', ''))
 				elif !character_data.get('data', {}).get('theme', '') and current_default_theme and  current_theme_file_name != current_default_theme:
 					current_theme = load_theme(current_default_theme)
+				update_name(character_data)
 			#voice 
 			handle_voice(event)
 			update_text(event['question'])
@@ -1072,7 +1083,7 @@ func add_choice_button(option: Dictionary) -> Button:
 	var hotkeyOption = settings.get_value('input', str('choice_hotkey_', buttonCount), '')
 	
 	# If there is a hotkey, use that key
-	if hotkeyOption != '' and hotkeyOption != '[Default]':
+	if hotkeyOption != '' and hotkeyOption != '[None]':
 		hotkey = InputEventAction.new()
 		hotkey.action = hotkeyOption
 	# otherwise default hotkeys are 1-9 for the first 10 buttons
@@ -1082,11 +1093,12 @@ func add_choice_button(option: Dictionary) -> Button:
 	else:
 		hotkey = InputEventKey.new()
 	
-	var shortcut = ShortCut.new()
-	shortcut.set_shortcut(hotkey)
-	
-	button.set_shortcut(shortcut)
-	button.shortcut_in_tooltip = false
+	if hotkeyOption != '[None]' or settings.get_value('input', 'enable_default_shortcut', false) == true:
+		var shortcut = ShortCut.new()
+		shortcut.set_shortcut(hotkey)
+		
+		button.set_shortcut(shortcut)
+		button.shortcut_in_tooltip = false
 	
 	# Selecting the first button added
 	if settings.get_value('input', 'autofocus_choices', true):
@@ -1260,6 +1272,8 @@ func grab_portrait_focus(character_data, event: Dictionary = {}) -> bool:
 			portrait.focus()
 			if event.has('portrait'):
 				portrait.set_portrait(get_portrait_name(event))
+				if settings.get_value('dialog', 'recenter_portrait', true):
+					portrait.move_to_position(portrait.direction)
 		else:
 			portrait.focusout(Color(current_theme.get_value('animation', 'dim_color', '#ff808080')))
 	return exists

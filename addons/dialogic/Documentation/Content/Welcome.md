@@ -30,6 +30,7 @@ This project is made possible by the support of our [Patreons](https://www.patre
 - [My resolution is too small and the dialog is too big.](./FAQ/resolution-small-dialog-big.md)
 - [Using signals?](./FAQ/Signals.md)
 - [Why are you not using graph nodes?](./FAQ/why-not-graph-nodes.md)
+- [What kind of touch support is available?](./FAQ/touch-support-tutorial.md)
 
 ## Reference
 - [Dialog node](./Reference/000.md)
