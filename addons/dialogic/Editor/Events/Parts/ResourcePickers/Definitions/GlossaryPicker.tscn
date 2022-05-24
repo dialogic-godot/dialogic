@@ -20,6 +20,8 @@ text = "Set content of "
 
 [node name="MenuButton" parent="." instance=ExtResource( 2 )]
 margin_left = 97.0
-margin_top = 9.0
-margin_right = 191.0
-margin_bottom = 31.0
+margin_top = 8.0
+margin_right = 285.0
+margin_bottom = 32.0
+custom_colors/font_color = Color( 0.8, 0.807843, 0.827451, 1 )
+text = "Select Glossary Item"

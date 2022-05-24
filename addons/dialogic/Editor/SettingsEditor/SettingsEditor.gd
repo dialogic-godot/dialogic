@@ -5,7 +5,7 @@ var editor_reference
 
 onready var nodes = {
 	# Theme
-	'themes': $VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer/HBoxContainer/ThemeOptionButton,
+	'themes': $VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer/HBoxContainer/ThemePicker,
 	'canvas_layer' : $VBoxContainer/HBoxContainer3/VBoxContainer/VBoxContainer/HBoxContainer3/CanvasLayer,
 	
 	# Dialog
@@ -41,14 +41,6 @@ onready var nodes = {
 	'new_plugin_create_editor': $VBoxContainer/HBoxContainer3/VBoxContainer2/plugins/GeneratePlugin2/create_editor,
 	
 	# History Settings
-	'enable_history_logging': $VBoxContainer/HBoxContainer3/VBoxContainer2/HistorySettings/GridContainer/HistoryBox/EnableHistoryLogging,
-	'enable_dynamic_theme': $VBoxContainer/HBoxContainer3/VBoxContainer2/HistorySettings/GridContainer/ThemeBox/EnableDynamicTheme,
-	'enable_open_button': $VBoxContainer/HBoxContainer3/VBoxContainer2/HistorySettings/GridContainer/OpenBox/EnableDefaultOpenButton,
-	'enable_close_button': $VBoxContainer/HBoxContainer3/VBoxContainer2/HistorySettings/GridContainer/CloseBox/EnableDefaultCloseButton,
-	'log_choices': $VBoxContainer/HBoxContainer3/VBoxContainer2/HistorySettings/GridContainer/ChoiceBox/LogChoices,
-	'log_answers': $VBoxContainer/HBoxContainer3/VBoxContainer2/HistorySettings/GridContainer/ChoiceBox2/LogAnswers,
-	'log_arrivals': $VBoxContainer/HBoxContainer3/VBoxContainer2/HistorySettings/GridContainer/ChoiceBox3/LogArrivals,
-	'log_exits': $VBoxContainer/HBoxContainer3/VBoxContainer2/HistorySettings/GridContainer/ChoiceBox4/LogExits,
 	'text_arrivals': $VBoxContainer/HBoxContainer3/VBoxContainer2/HistorySettings/GridContainer/LogBox/LineEdit,
 	'text_exits': $VBoxContainer/HBoxContainer3/VBoxContainer2/HistorySettings/GridContainer/LogBox2/LineEdit,
 	'history_button_position': $VBoxContainer/HBoxContainer3/VBoxContainer2/HistorySettings/GridContainer/PositionSelector,
@@ -78,14 +70,6 @@ var INPUT_KEYS := [
 	]
 
 var HISTORY_KEYS := [
-	'enable_history_logging',
-	'enable_dynamic_theme',
-	'enable_open_button',
-	'enable_close_button',
-	'log_choices',
-	'log_answers',
-	'log_arrivals',
-	'log_exits',
 	'text_arrivals',
 	'text_exits',
 	'history_button_position',
@@ -110,9 +94,10 @@ func _ready():
 	update_data()
 	
 	# Themes
-	nodes['themes'].connect('item_selected', self, '_on_default_theme_selected')
+	nodes['themes'].connect('about_to_show', self, 'build_PickerMenu')
+	nodes['themes'].custom_icon = load("res://addons/dialogic/Images/Resources/theme.svg")
 	# TODO move to theme section later
-	nodes['canvas_layer'].connect('text_changed', self, '_on_canvas_layer_text_changed')
+	nodes['canvas_layer'].connect('value_changed', self, '_on_canvas_layer_text_changed')
 
 	# Input
 	nodes['delay_after_options'].connect('text_changed', self, '_on_delay_options_text_changed')
@@ -122,21 +107,13 @@ func _ready():
 	# Connect hotkey settings 1-4
 	for i in range(1, 5):
 		var key = str('choice_hotkey_', i)
-		nodes[key].connect('pressed', self, '_on_default_action_key_presssed', [key])
+		nodes[key].connect('pressed', self, '_on_hotkey_action_key_presssed', [key])
 		nodes[key].connect('item_selected', self, '_on_default_action_key_item_selected', [key])
 	
 	AudioServer.connect("bus_layout_changed", self, "update_bus_selector")
 	nodes['text_event_audio_default_bus'].connect('item_selected', self, '_on_text_audio_default_bus_item_selected')
 	
 	## History timeline connections
-	nodes['enable_history_logging'].connect('toggled', self, '_on_item_toggled', ['history', 'enable_history_logging'])
-	nodes['enable_dynamic_theme'].connect('toggled', self, '_on_item_toggled', ['history', 'enable_dynamic_theme'])
-	nodes['enable_open_button'].connect('toggled', self, '_on_item_toggled', ['history', 'enable_open_button'])
-	nodes['enable_close_button'].connect('toggled', self, '_on_item_toggled', ['history', 'enable_close_button'])
-	nodes['log_choices'].connect('toggled', self, '_on_item_toggled', ['history', 'log_choices'])
-	nodes['log_answers'].connect('toggled', self, '_on_item_toggled', ['history', 'log_answers'])
-	nodes['log_arrivals'].connect('toggled', self, '_on_item_toggled', ['history', 'log_arrivals'])
-	nodes['log_exits'].connect('toggled', self, '_on_item_toggled', ['history', 'log_exits'])
 	nodes['history_button_position'].connect('item_selected', self, '_on_button_history_button_position_selected')
 	nodes['history_character_delimiter'].connect('text_changed', self, '_on_text_changed', ['history', 'history_character_delimiter'])
 	nodes['text_arrivals'].connect('text_changed', self, '_on_text_changed', ['history', 'text_arrivals'])
@@ -208,9 +185,8 @@ func _ready():
 func update_data():
 	# Reloading the settings
 	var settings = DialogicResources.get_settings_config()
-	
-	nodes['canvas_layer'].text = settings.get_value("theme", "canvas_layer", '1')
-	refresh_themes(settings)
+	nodes['themes'].text = DialogicUtil.get_theme_dict()[settings.get_value("theme", "default", "default-theme.cfg")].get('name')
+	nodes['canvas_layer'].value = int(settings.get_value("theme", "canvas_layer", '1'))
 	load_values(settings, "input", INPUT_KEYS)
 	load_values(settings, "history", HISTORY_KEYS)
 	load_values(settings, "animations", ANIMATION_KEYS)
@@ -224,6 +200,8 @@ func load_values(settings: ConfigFile, section: String, key: Array):
 				nodes[k].text = settings.get_value(section, k)
 			elif nodes[k] is OptionButton or nodes[k] is MenuButton:
 				nodes[k].text = settings.get_value(section, k)
+				if section == 'animations':
+					nodes[k].text = DialogicUtil.beautify_filename(nodes[k].text)
 			elif nodes[k] is SpinBox:
 				nodes[k].value = settings.get_value(section, k)
 			else:
@@ -255,8 +233,6 @@ func refresh_themes(settings: ConfigFile):
 			set_value('theme', 'default', theme_list[0]['file'])
 
 
-func _on_default_theme_selected(index):
-	set_value('theme', 'default', nodes['themes'].get_item_metadata(index)['file'])
 
 
 
@@ -278,18 +254,29 @@ func _spinbox_val_changed(newValue :float, spinbox_name):
 	set_value('history', spinbox_name, newValue)
 
 
-func _on_default_action_key_presssed(nodeName = 'default_action_key') -> void:
+func _on_default_action_key_presssed(settingName = 'default_action_key') -> void:
 	var settings = DialogicResources.get_settings_config()
-	nodes[nodeName].clear()
-	nodes[nodeName].add_item(settings.get_value('input', nodeName, '[Default]'))
-	nodes[nodeName].add_item('[Default]')
-	InputMap.load_from_globals()
-	for a in InputMap.get_actions():
-		nodes[nodeName].add_item(a)
+	nodes[settingName].clear()
+	nodes[settingName].add_item(settings.get_value('input', settingName, 'dialogic_default_action'))
+	for prop in ProjectSettings.get_property_list():
+		if prop.name.begins_with('input/'):
+			nodes[settingName].add_item(prop.name.trim_prefix('input/'))
+			
+
+func _on_hotkey_action_key_presssed(settingName = 'choice_hotkey_1') -> void:
+	var settings = DialogicResources.get_settings_config()
+	nodes[settingName].clear()
+	nodes[settingName].add_item(settings.get_value('input', settingName, '[None]'))
+	nodes[settingName].add_item('[None]')
+	for prop in ProjectSettings.get_property_list():
+		if prop.name.begins_with('input/'):
+			nodes[settingName].add_item(prop.name.trim_prefix('input/'))
+	
 
 
-func _on_default_action_key_item_selected(index, nodeName = 'default_action_key') -> void:
-	set_value('input', nodeName, nodes[nodeName].text)
+func _on_default_action_key_item_selected(index, settingName = 'default_action_key') -> void:
+	print(nodes[settingName].text)
+	set_value('input', settingName, nodes[settingName].text)
 
 
 func _on_canvas_layer_text_changed(text) -> void:
@@ -304,6 +291,7 @@ func _on_text_changed(text, section: String, key: String) -> void:
 # Reading and saving data to the settings file
 func set_value(section, key, value):
 	DialogicResources.set_settings_value(section, key, value)
+
 
 func update_bus_selector():
 	if nodes["text_event_audio_default_bus"] != null:
@@ -340,6 +328,7 @@ func _on_text_audio_default_bus_item_selected(index):
 func open_custom_event_docs():
 	editor_reference.get_node("MainPanel/MasterTreeContainer/MasterTree").select_documentation_item("res://addons/dialogic/Documentation/Content/Events/CustomEvents/CreateCustomEvents.md")
 
+
 func new_custom_event_pressed():
 	nodes['new_custom_event_section'].show()
 	nodes['new_custom_event_name'].text = ''
@@ -348,6 +337,7 @@ func new_custom_event_pressed():
 	
 	nodes['new_custom_event_create'].disabled = true
 	$VBoxContainer/HBoxContainer3/VBoxContainer2/CustomEvents/HBoxContainer/Message.text = ""
+
 
 func custom_event_name_entered(text:String):
 	nodes['new_custom_event_directory'].text = text
@@ -361,9 +351,11 @@ func custom_event_id_entered(text):
 		nodes['new_custom_event_create'].disabled = false
 	$VBoxContainer/HBoxContainer3/VBoxContainer2/CustomEvents/HBoxContainer/Message.text = ""
 
+
 func cancel_custom_event():
 	nodes['new_custom_event_section'].hide()
 	$VBoxContainer/HBoxContainer3/VBoxContainer2/CustomEvents/HBoxContainer/Message.text = ""
+
 
 func create_custom_event():
 	# do checks for incomplete input
@@ -518,3 +510,43 @@ func _on_AnimationDefault_index_pressed(index, picker, key):
 
 func _on_AnimationDefaultLength_value_changed(value, key):
 	set_value('animations', key, value)
+
+
+##########
+## THEME
+##########
+func build_PickerMenu():
+	nodes['themes'].get_popup().clear()
+	var folder_structure = DialogicUtil.get_theme_folder_structure()
+
+	## building the root level
+	build_PickerMenuFolder(nodes['themes'].get_popup(), folder_structure, "MenuButton")
+
+# is called recursively to build all levels of the folder structure
+func build_PickerMenuFolder(menu:PopupMenu, folder_structure:Dictionary, current_folder_name:String):
+	var index = 0
+	for folder_name in folder_structure['folders'].keys():
+		var submenu = PopupMenu.new()
+		var submenu_name = build_PickerMenuFolder(submenu, folder_structure['folders'][folder_name], folder_name)
+		submenu.name = submenu_name
+		menu.add_submenu_item(folder_name, submenu_name)
+		menu.set_item_icon(index, get_icon("Folder", "EditorIcons"))
+		menu.add_child(submenu)
+		nodes['themes'].update_submenu_style(submenu)
+		index += 1
+	
+	var files_info = DialogicUtil.get_theme_dict()
+	for file in folder_structure['files']:
+		menu.add_item(files_info[file]['name'])
+		menu.set_item_icon(index, editor_reference.get_node("MainPanel/MasterTreeContainer/MasterTree").theme_icon)
+		menu.set_item_metadata(index, {'file':file})
+		index += 1
+	
+	if not menu.is_connected("index_pressed", self, "_on_ThemePicker_index_pressed"):
+		menu.connect("index_pressed", self, '_on_ThemePicker_index_pressed', [menu])
+	
+	return current_folder_name
+
+func _on_ThemePicker_index_pressed(index, menu):
+	nodes['themes'].text = menu.get_item_text(index)
+	set_value('theme', 'default', menu.get_item_metadata(index)['file'])

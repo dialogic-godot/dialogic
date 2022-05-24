@@ -30,6 +30,13 @@ var eventsToLog = ['dialogic_001', 'dialogic_010']
 var logArrivals = false
 var logExits = false
 
+var scrollToBottom = true
+var reverseTimeline = false
+var characterNameColorOn = true
+var lineBreakAfterName = true
+
+var scrollToggle = false
+
 func _ready():
 	var testHistoryRow = HistoryRow.instance()
 	assert(testHistoryRow.has_method('add_history'), 'HistoryRow Scene must implement add_history(string, string) method.')
@@ -38,6 +45,18 @@ func _ready():
 	HistoryBackground = HistoryDefaultBackground.instance()
 	HistoryPopup.add_child(HistoryBackground)
 	HistoryPopup.move_child(HistoryBackground, 0)
+	
+	#Scrollbar only updates when visible, so need it to be handled
+	scrollbar.connect("changed",self,"handle_scrollbar_changed")
+	
+func handle_scrollbar_changed():
+	#It's firing every frame, we only want to check it once on opening 
+	if(scrollToggle):
+		scrollToggle = false
+		if (scrollToBottom):
+			ScrollHistoryContainer.scroll_vertical = scrollbar.max_value
+		else:
+			ScrollHistoryContainer.scroll_vertical = 0
 
 
 func initalize_history():
@@ -62,6 +81,13 @@ func initalize_history():
 	logExits = get_parent().settings.get_value('history', 'log_exits', true)
 	if logExits or logArrivals:
 		eventsToLog.push_back('dialogic_002')
+		
+	# Set the other selectable settings options
+	scrollToBottom = get_parent().settings.get_value('history', 'history_scroll_to_bottom', true)
+	reverseTimeline = get_parent().settings.get_value('history', 'history_reverse_timeline', false)
+	characterNameColorOn = get_parent().settings.get_value('history', 'history_name_color_on', true)
+	lineBreakAfterName = get_parent().settings.get_value('history', 'history_break_after_name', false)
+	
 	
 	# Grab some settings and make the boxes up right
 	var button_anchor = int(get_parent().settings.get_value('history', 'history_button_position', 2))
@@ -161,13 +187,15 @@ func add_history_row_event(eventData):
 	
 	var newHistoryRow = HistoryRow.instance()
 	HistoryTimeline.add_child(newHistoryRow)
-	newHistoryRow.load_theme(curTheme)
+	if(reverseTimeline):
+		HistoryTimeline.move_child(newHistoryRow,0)
+	if newHistoryRow.has_method('load_theme') and get_parent().settings.get_value('history', 'enable_dynamic_theme', false) == true:
+		newHistoryRow.load_theme(curTheme)
 	
 	var characterPrefix = ''
 	if eventData.has('character') and eventData.character != '':
 		var characterData = DialogicUtil.get_character(eventData.character)
 		var characterName = characterData.get('name', '')
-		print(eventData)
 		if eventData.has('character') and eventData.character == '[All]':
 			characterPrefix = str('Everyone')
 		elif characterData.data.get('display_name_bool', false)  == true:
@@ -177,7 +205,12 @@ func add_history_row_event(eventData):
 			var charDelimiter = get_parent().settings.get_value('history', 'history_character_delimiter', '')
 			var parsed_name = DialogicParser.parse_definitions(get_parent(), characterName, true, false)
 			var characterColor = characterData.data.get('color', Color.white)
-			characterPrefix = str("[color=",characterColor,"]", parsed_name, "[/color]", charDelimiter, ' ')
+			if (!characterNameColorOn):
+				characterColor = Color.white
+			var lineBreak = '' 
+			if (lineBreakAfterName):
+				lineBreak = '\n'
+			characterPrefix = str("[color=",characterColor,"]", parsed_name, "[/color]", charDelimiter, ' ', lineBreak)
 	
 	var audioData = ''
 	if eventData.has('voice_data'):
@@ -233,30 +266,9 @@ func _on_HistoryPopup_popup_hide():
 
 func _on_HistoryPopup_about_to_show():
 	if HistoryButton != null:
+		scrollToggle = true
 		HistoryButton.show()
-	ScrollHistoryContainer.scroll_vertical = scrollbar.max_value
 
-
-func _on_HistoryPopup_item_rect_changed():
-	if not Engine.is_editor_hint():
-		HistoryPopup.rect_size =  get_tree().root.size;
-		
-		if get_parent().settings:
-			var button_anchor = get_parent().settings.get_value('history', 'history_button_position', 2)
-			var screen_margin_x = get_parent().settings.get_value('history', 'history_screen_margin_x', 0)
-			var screen_margin_y = get_parent().settings.get_value('history', 'history_screen_margin_y', 0)
-			var container_margin_X = get_parent().settings.get_value('history', 'history_container_margin_x', 0)
-			var container_margin_y = get_parent().settings.get_value('history', 'history_container_margin_y', 0)
-			
-			HistoryPopup.margin_left = screen_margin_x
-			HistoryPopup.margin_right = -screen_margin_x
-			HistoryPopup.margin_top = screen_margin_y
-			HistoryPopup.margin_bottom = -screen_margin_y
-			
-			ScrollHistoryContainer.margin_left = container_margin_X
-			ScrollHistoryContainer.margin_right = -container_margin_X
-			ScrollHistoryContainer.margin_top = container_margin_y
-			ScrollHistoryContainer.margin_bottom = -container_margin_y
 
 
 func _on_HistoryButton_mouse_entered():

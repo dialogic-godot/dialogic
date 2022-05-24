@@ -13,7 +13,7 @@ __meta__ = {
 }
 
 [node name="HBox" type="HBoxContainer" parent="."]
-margin_right = 76.0
+margin_right = 158.0
 margin_bottom = 27.0
 size_flags_vertical = 3
 
@@ -27,16 +27,16 @@ __meta__ = {
 
 [node name="ChoiceText" parent="HBox" instance=ExtResource( 2 )]
 margin_left = 14.0
-margin_right = 62.0
+margin_right = 144.0
 margin_bottom = 27.0
 
 [node name="Spacer" type="Control" parent="HBox"]
-margin_left = 66.0
-margin_right = 76.0
+margin_left = 148.0
+margin_right = 158.0
 margin_bottom = 27.0
 rect_min_size = Vector2( 10, 0 )
 
 [node name="ConditionPicker" parent="." instance=ExtResource( 1 )]
-margin_left = 80.0
-margin_right = 202.0
+margin_left = 162.0
+margin_right = 635.0
 margin_bottom = 27.0

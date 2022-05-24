@@ -52,5 +52,3 @@ margin_top = 5.0
 margin_right = 1019.0
 margin_bottom = 5.0
 custom_constants/separation = 16
-
-[connection signal="item_rect_changed" from="HistoryPopup" to="." method="_on_HistoryPopup_item_rect_changed"]

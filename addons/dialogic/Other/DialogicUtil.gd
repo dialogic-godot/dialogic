@@ -526,13 +526,14 @@ static func resource_fixer():
 						'event_id':'dialogic_002',
 						'type':0,
 						'character':events[i].get('character', ''),
-						'portrait':events[i].get('portrait',''),
+						'portrait':events[i].get('portrait','Default'),
 						'position':events[i].get('position'),
 						'animation':'[Default]',
 						'animation_length':0.5,
 						'mirror_portrait':events[i].get('mirror', false),
 						'z_index': events[i].get('z_index', 0),
 						}
+					if new_event['portrait'].empty(): new_event['portrait'] = 'Default'
 					events[i] = new_event
 				elif events[i]['event_id'] == 'dialogic_003':
 					var new_event = {
@@ -547,7 +548,27 @@ static func resource_fixer():
 					events[i] = new_event
 			timeline['events'] = events
 			DialogicResources.set_timeline(timeline)
+	
 	DialogicResources.set_settings_value("updates", "updatenumber", 3)
+	
+	if !ProjectSettings.has_setting('input/dialogic_default_action'):
+		print("[D] Added the 'dialogic_default_action' to the InputMap. This is the default if you didn't select a different one in the dialogic settings. You will have to force the InputMap editor to update before you can see the action (reload project or add a new input action).")
+		var input_enter = InputEventKey.new()
+		input_enter.scancode = KEY_ENTER
+		var input_left_click = InputEventMouseButton.new()
+		input_left_click.button_index = BUTTON_LEFT
+		input_left_click.pressed = true
+		var input_space = InputEventKey.new()
+		input_space.scancode = KEY_SPACE
+		var input_x = InputEventKey.new()
+		input_x.scancode = KEY_X
+		var input_controller = InputEventJoypadButton.new()
+		input_controller.button_index = JOY_BUTTON_0
+	
+		ProjectSettings.set_setting('input/dialogic_default_action', {'deadzone':0.5, 'events':[input_enter, input_left_click, input_space, input_x, input_controller]})
+		ProjectSettings.save()
+		if DialogicResources.get_settings_value('input', 'default_action_key', '[Default]') == '[Default]':
+			DialogicResources.set_settings_value('input', 'default_action_key', 'dialogic_default_action')
 
 static func get_editor_scale(ref) -> float:
 	# There hasn't been a proper way of reliably getting the editor scale
