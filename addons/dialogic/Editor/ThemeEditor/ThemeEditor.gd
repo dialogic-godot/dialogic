@@ -155,8 +155,8 @@ onready var n : Dictionary = {
 	},
 	
 	# Text preview
-	'text_preview': $VBoxContainer/HBoxContainer3/TextEdit,
-	'character_picker': $VBoxContainer/HBoxContainer3/CharacterPicker,
+	'text_preview': $"VBoxContainer/VBoxContainer/HBoxContainer3/TextEdit",
+	'character_picker': $"VBoxContainer/VBoxContainer/HBoxContainer/CharacterPicker",
 }
 
 ## ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -169,9 +169,9 @@ func _ready() -> void:
 	# Signal connection to free up some memory
 	connect("visibility_changed", self, "_on_visibility_changed")
 	if get_constant("dark_theme", "Editor"):
-		$VBoxContainer/HBoxContainer3/PreviewButton.icon = load("res://addons/dialogic/Images/Plugin/plugin-editor-icon-dark-theme.svg")
+		$"VBoxContainer/VBoxContainer/HBoxContainer3/PreviewButton".icon = load("res://addons/dialogic/Images/Plugin/plugin-editor-icon-dark-theme.svg")
 	else:
-		$VBoxContainer/HBoxContainer3/PreviewButton.icon = load("res://addons/dialogic/Images/Plugin/plugin-editor-icon-light-theme.svg")
+		$"VBoxContainer/VBoxContainer/HBoxContainer3/PreviewButton".icon = load("res://addons/dialogic/Images/Plugin/plugin-editor-icon-light-theme.svg")
 	
 	$DelayPreviewTimer.one_shot = true
 	$DelayPreviewTimer.connect("timeout", self, '_on_DelayPreview_timer_timeout')
@@ -294,11 +294,11 @@ func _ready() -> void:
 		n['audio_pickers'][name].connect('data_updated', self, '_on_audio_data_updated')
 	
 	# Character Picker
-	n['character_picker'].connect('about_to_show', self, 'character_picker_about_to_show')
-	n['character_picker'].get_popup().connect('index_pressed', self, 'character_picker_selected')
+	character_picker_update()
+	n['character_picker'].connect('item_selected', self, 'character_picker_selected')
 	
 	## Translation
-	$VBoxContainer/HBoxContainer3/PreviewButton.text = "  "+DTS.translate('Preview changes')
+	$"VBoxContainer/VBoxContainer/HBoxContainer3/PreviewButton".text = "  "+DTS.translate('Preview changes')
 	$VBoxContainer/TabContainer.set_tab_title(0, DTS.translate('DialogTextTabTitle'))
 	$VBoxContainer/TabContainer.set_tab_title(1, DTS.translate('DialogBoxTabTitle'))
 	$VBoxContainer/TabContainer.set_tab_title(2, DTS.translate('NameLabelTabTitle'))
@@ -311,22 +311,21 @@ func _ready() -> void:
 	_on_visibility_changed()
 
 
-
-func character_picker_about_to_show():
+func character_picker_update():
+	n['character_picker'].add_item('Random Character')
+	n['character_picker'].set_item_metadata(0, 'random')
+	
 	var characters : Array = DialogicUtil.get_character_list()
-	n['character_picker'].get_popup().clear()
-	n['character_picker'].get_popup().add_item('Random Character')
-	n['character_picker'].get_popup().set_item_metadata(0, 'random')
 	var index = 1
 	for c in characters:
-		n['character_picker'].get_popup().add_item(c['name'])
-		n['character_picker'].get_popup().set_item_metadata(index, c['file'])
+		n['character_picker'].add_item(c['name'])
+		n['character_picker'].set_item_metadata(index, c['file'])
 		index += 1
-
+	
 
 func character_picker_selected(index):
-	preview_character_selected = n['character_picker'].get_popup().get_item_metadata(index)
-	n['character_picker'].text = n['character_picker'].get_popup().get_item_text(index)
+	preview_character_selected = n['character_picker'].get_item_metadata(index)
+	n['character_picker'].text = n['character_picker'].get_item_text(index)
 	_on_PreviewButton_pressed()
 
 
@@ -565,9 +564,21 @@ func _on_PreviewButton_pressed() -> void:
 	if n['character_picker']: # Sometimes it can't find the node
 		if n['character_picker'].text == 'Random Character':
 			var characters : Array = DialogicUtil.get_character_list()
-			if characters.size():
-				characters.shuffle()
-				preview_character_selected = characters[0]['file']
+			var character_array = []
+			#var index = 0
+			#print(current_theme)
+			for c in characters:
+				#if c['data']['theme'] == current_theme:
+					character_array.append(c)
+					#print('Tiene!')
+				#else:
+				#	print('NOOO')
+				#print(c)
+				#index += 1
+				
+			if character_array.size():
+				character_array.shuffle()
+				preview_character_selected = character_array[0]['file']
 
 	preview_dialog.dialog_script = {
 			"events":[
