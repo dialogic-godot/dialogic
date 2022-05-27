@@ -294,7 +294,6 @@ func _ready() -> void:
 		n['audio_pickers'][name].connect('data_updated', self, '_on_audio_data_updated')
 	
 	# Character Picker
-	character_picker_update()
 	n['character_picker'].connect('item_selected', self, 'character_picker_selected')
 	
 	## Translation
@@ -312,15 +311,27 @@ func _ready() -> void:
 
 
 func character_picker_update():
+	n['character_picker'].clear()
 	n['character_picker'].add_item('Random Character')
 	n['character_picker'].set_item_metadata(0, 'random')
 	
 	var characters : Array = DialogicUtil.get_character_list()
-	var index = 1
+	var character_array = []
 	for c in characters:
+		if c['data']['theme'] == '':
+			character_array.append(c)
+		elif c['data']['theme'] == current_theme:
+			character_array.append(c)
+		else:
+			pass
+		
+	var index = 1
+	for c in character_array:
 		n['character_picker'].add_item(c['name'])
 		n['character_picker'].set_item_metadata(index, c['file'])
 		index += 1
+	
+	
 	
 
 func character_picker_selected(index):
@@ -332,6 +343,7 @@ func character_picker_selected(index):
 func load_theme(filename):
 	loading = true
 	current_theme = filename
+	character_picker_update()
 	var theme = DialogicResources.get_theme_config(filename)
 	var default_background = 'res://addons/dialogic/Example Assets/backgrounds/background-2.png'
 	# Settings
@@ -565,16 +577,11 @@ func _on_PreviewButton_pressed() -> void:
 		if n['character_picker'].text == 'Random Character':
 			var characters : Array = DialogicUtil.get_character_list()
 			var character_array = []
-			#var index = 0
-			#print(current_theme)
 			for c in characters:
-				#if c['data']['theme'] == current_theme:
+				if c['data']['theme'] == '':
 					character_array.append(c)
-					#print('Tiene!')
-				#else:
-				#	print('NOOO')
-				#print(c)
-				#index += 1
+				elif c['data']['theme'] == current_theme:
+					character_array.append(c)
 				
 			if character_array.size():
 				character_array.shuffle()
