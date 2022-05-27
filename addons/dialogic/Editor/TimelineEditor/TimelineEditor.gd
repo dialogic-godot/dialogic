@@ -1,41 +1,54 @@
 tool
 extends VBoxContainer
 
+
+################################################################################
+## 				TIMELINE RESOURCE
+################################################################################
 var current_timeline: DialogicTimeline
 
-var TimelineUndoRedo := UndoRedo.new()
 
-onready var event_node = load("res://addons/dialogic/Editor/Events/Templates/EventNode.tscn")
+################################################################################
+## 				EDITOR NODES
+################################################################################
+var TimelineUndoRedo := UndoRedo.new()
 
 onready var timeline_area = $View/TimelineArea
 onready var timeline = $View/TimelineArea/TimeLine
 
 
-var hovered_item = null
-var selected_style : StyleBoxFlat = load("res://addons/dialogic/Editor/Events/styles/selected_styleboxflat.tres")
-var saved_style : StyleBoxFlat
-var selected_items : Array = []
+################################################################################
+## 				 SIGNALS
+################################################################################
+signal selection_updated
+signal batch_loaded
+signal timeline_loaded
 
-var event_scenes : Dictionary = {}
+
+################################################################################
+## 				 TIMELINE LOADING
+################################################################################
+var batches = []
+var building_timeline = true
+
+
+################################################################################
+## 				 TIMELINE EVENT MANAGEMENT
+################################################################################
+var selected_items : Array = []
 
 var currently_draged_event_type = null
 var move_start_position = null
 var moving_piece = null
 var piece_was_dragged = false
 
-var event_data
-
-var batches = []
-var building_timeline = true
-
-signal selection_updated
-signal batch_loaded
-signal timeline_loaded
-
+################################################################################
+## 					SETUP
+################################################################################
 func _ready():
 	var dialogic_plugin = get_tree().root.get_node('EditorNode/DialogicPlugin')
 	dialogic_plugin.connect('dialogic_save', self, 'save_timeline')
-
+	
 	
 	connect("batch_loaded", self, '_on_batch_loaded')
 	
@@ -93,6 +106,7 @@ func _ready():
 #				get_node("View/ScrollContainer/EventContainer/FlexContainer" + str(button.event_category + 1)).move_child(button, button.get_index()-1)
 
 
+
 # handles dragging/moving of events
 func _process(delta):
 	if moving_piece != null:
@@ -122,7 +136,7 @@ func _on_event_block_gui_input(event, item: Node):
 				if move_start_position != to_position:
 					# move it back so the DO action works. (Kinda stupid but whatever)
 					move_block_to_index(to_position, move_start_position)
-					TimelineUndoRedo.create_action("[D] Moved event (type '"+moving_piece.resource.id+"').")
+					TimelineUndoRedo.create_action("[D] Moved event (type '"+moving_piece.resource.to_string()+"').")
 					TimelineUndoRedo.add_do_method(self, "move_block_to_index", move_start_position, to_position)
 					TimelineUndoRedo.add_undo_method(self, "move_block_to_index", to_position, move_start_position)
 					TimelineUndoRedo.commit_action()
@@ -380,7 +394,7 @@ func _unhandled_key_input(event):
 func get_events_indexed(events:Array) -> Dictionary:
 	var indexed_dict = {}
 	for event in events:
-		indexed_dict[event.get_index()] = event.event_data.duplicate(true)
+		indexed_dict[event.get_index()] = event.resource.get_as_string_to_store()
 	return indexed_dict
 
 
@@ -396,7 +410,7 @@ func add_events_indexed(indexed_events:Dictionary) -> void:
 	var events = []
 	for event_idx in indexes:
 		deselect_all_items()
-		#events.append(create_event(indexed_events[event_idx].event_id, indexed_events[event_idx]))
+		events.append(add_event_to_timeline(load(indexed_events[event_idx])))
 		timeline.move_child(events[-1], event_idx)
 		
 	selected_items = events
@@ -451,12 +465,10 @@ func copy_selected_events():
 		return
 	var event_copy_array = []
 	for item in selected_items:
-		event_copy_array.append(item.event_data)
-	
+		event_copy_array.append(item.resource.get_as_string_to_store())
 	OS.clipboard = JSON.print(
 		{
 			"events":event_copy_array,
-			#"dialogic_version": editor_reference.version_string,
 			"project_name": ProjectSettings.get_setting("application/config/name")
 		})
 
@@ -465,9 +477,6 @@ func paste_check():
 	var clipboard_parse = JSON.parse(OS.clipboard).result
 	
 	if typeof(clipboard_parse) == TYPE_DICTIONARY:
-		#if clipboard_parse.has("dialogic_version"):
-			#if clipboard_parse['dialogic_version'] != editor_reference.version_string:
-				#print("[D] Be careful when copying from older versions!")
 		if clipboard_parse.has("project_name"):
 			if clipboard_parse['project_name'] != ProjectSettings.get_setting("application/config/name"):
 				print("[D] Be careful when copying from another project!")
@@ -491,21 +500,16 @@ func add_events_at_index(event_list:Array, at_index:int) -> void:
 	
 	var new_items = []
 	for item in event_list:
-		if typeof(item) == TYPE_DICTIONARY and item.has('event_id'):
-			#new_items.append(create_event(item['event_id'], item))
-			pass
+		if typeof(item) == TYPE_STRING:
+			var resource = DialogicUtil.get_event_by_string(item).new()
+			resource.load_from_string_to_store(item)
+			if item:
+				new_items.append(add_event_to_timeline(resource))
 	selected_items = new_items
 	sort_selection()
 	visual_update_selection()
 	indent_events()
 
-
-func paste_events_indexed(indexed_events):
-	pass
-
-
-func duplicate_events_indexed(indexed_events):
-	pass
 
 ## *****************************************************************************
 ##					 	BLOCK SELECTION
@@ -601,8 +605,6 @@ func _on_event_options_action(action: String, item: Node):
 func delete_event(event):
 	event.get_parent().remove_child(event)
 	event.queue_free()
-
-
 ## *****************************************************************************
 ##				CREATING NEW EVENTS USING THE BUTTONS
 ## *****************************************************************************
@@ -723,7 +725,7 @@ func cancel_drop_event():
 ## *****************************************************************************
 # Adding an event to the timeline
 func add_event_to_timeline(event_resource:Resource, at_index:int = -1, auto_select: bool = false, indent: bool = false):
-	var piece = event_node.instance()
+	var piece = load("res://addons/dialogic/Editor/Events/Templates/EventNode.tscn").instance()
 	var resource = event_resource
 	piece.resource = event_resource
 	piece.connect('content_changed', self, 'something_changed')
@@ -920,7 +922,7 @@ func indent_events() -> void:
 		var indent_node
 		
 		event.set_indent(0)
-		
+	
 	# Adding new indents
 	for event in event_list:
 		# since there are indicators now, not all elements
