@@ -14,7 +14,7 @@ data = {
 "width": 16
 }
 
-[sub_resource type="ImageTexture" id=3]
+[sub_resource type="ImageTexture" id=4]
 flags = 4
 flags = 4
 image = SubResource( 7 )
@@ -54,51 +54,48 @@ show_name_in_timeline = false
 sorting_index = 0
 
 [node name="PanelContainer" parent="." index="1"]
-margin_right = 191.0
-margin_bottom = 82.0
+margin_right = 207.0
 
 [node name="MarginContainer" parent="PanelContainer" index="1"]
-margin_right = 191.0
-margin_bottom = 82.0
+margin_right = 207.0
 
 [node name="VBoxContainer" parent="PanelContainer/MarginContainer" index="0"]
-margin_right = 185.0
-margin_bottom = 76.0
+margin_right = 201.0
 
 [node name="Header" parent="PanelContainer/MarginContainer/VBoxContainer" index="0"]
-margin_right = 175.0
-margin_bottom = 32.0
+margin_right = 191.0
+margin_bottom = 41.0
 
 [node name="CenterContainer" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="0"]
-margin_bottom = 32.0
+margin_bottom = 41.0
 
 [node name="IconPanel" parent="PanelContainer/MarginContainer/VBoxContainer/Header/CenterContainer" index="0"]
 self_modulate = Color( 1, 1, 1, 1 )
-margin_top = 16.0
-margin_bottom = 16.0
+margin_top = 20.0
+margin_bottom = 20.0
 
 [node name="IconTexture" parent="PanelContainer/MarginContainer/VBoxContainer/Header/CenterContainer/IconPanel" index="0"]
 self_modulate = Color( 0, 0, 0, 1 )
 texture = ExtResource( 5 )
 
 [node name="Warning" parent="PanelContainer/MarginContainer/VBoxContainer/Header/CenterContainer/IconPanel" index="1"]
-texture = SubResource( 3 )
+texture = SubResource( 4 )
 
 [node name="Content" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="1"]
-margin_right = 131.0
-margin_bottom = 32.0
+margin_right = 147.0
+margin_bottom = 41.0
 
 [node name="ExpandControl" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="2"]
 visible = true
-margin_left = 131.0
-margin_top = 1.0
-margin_right = 175.0
-margin_bottom = 31.0
+margin_left = 147.0
+margin_top = 5.0
+margin_right = 191.0
+margin_bottom = 35.0
 
 [node name="Spacer" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="3"]
-margin_left = 175.0
-margin_right = 175.0
-margin_bottom = 32.0
+margin_left = 191.0
+margin_right = 191.0
+margin_bottom = 41.0
 
 [node name="HelpButton" parent="PanelContainer/MarginContainer/VBoxContainer/Header" index="4"]
 icon = SubResource( 2 )
@@ -106,18 +103,18 @@ icon = SubResource( 2 )
 [node name="Body" parent="PanelContainer/MarginContainer/VBoxContainer" index="1"]
 visible = true
 margin_left = 0.0
-margin_top = 36.0
-margin_right = 175.0
-margin_bottom = 70.0
+margin_top = 45.0
+margin_right = 191.0
+margin_bottom = 64.0
 
 [node name="Content" parent="PanelContainer/MarginContainer/VBoxContainer/Body" index="0"]
 margin_top = 0.0
-margin_right = 175.0
-margin_bottom = 34.0
+margin_right = 191.0
+margin_bottom = 19.0
 custom_constants/margin_left = 0
 
 [node name="AllowNoCharacter" type="Node" parent="." index="2"]
 
 [node name="PopupMenu" parent="." index="3"]
 custom_styles/hover = SubResource( 6 )
-items = [ "Documentation", SubResource( 3 ), 0, false, false, 0, 0, null, "", false, "", null, 0, false, false, -1, 0, null, "", true, "Move up", SubResource( 3 ), 0, false, false, 2, 0, null, "", false, "Move down", SubResource( 3 ), 0, false, false, 3, 0, null, "", false, "", null, 0, false, false, -1, 0, null, "", true, "Delete", SubResource( 3 ), 0, false, false, 5, 0, null, "", false ]
+items = [ "Documentation", SubResource( 4 ), 0, false, false, -1, 0, null, "", false, "", null, 0, false, false, -1, 0, null, "", true, "Move up", SubResource( 4 ), 0, false, false, 1, 0, null, "", false, "Move down", SubResource( 4 ), 0, false, false, 2, 0, null, "", false, "", null, 0, false, false, -1, 0, null, "", true, "Delete", SubResource( 4 ), 0, false, false, 4, 0, null, "", false ]
