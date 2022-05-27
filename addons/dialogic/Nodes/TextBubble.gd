@@ -103,6 +103,7 @@ func update_text(text:String):
 	# for this reason the RichTextLabel ist first set to just go for the size it needs,
 	# even if this might be more than available.
 	text_label.size_flags_vertical = 0
+	text_label.rect_clip_content = 0
 	text_label.fit_content_height = true
 	# a frame later, when the sizes have been updated, it will check if there 
 	# is enough space or the scrollbar should be activated.
