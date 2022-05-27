@@ -118,7 +118,8 @@ func _on_ExpandControl_state_changed(expanded: bool):
 
 func _on_OptionsControl_action(index):
 	if index == 0:
-		print('Documentation here')
+		if not resource.help_page_path.empty():
+			OS.shell_open(resource.help_page_path)
 	elif index == 2:
 		emit_signal("option_action", "up")
 	elif index == 3:
@@ -184,6 +185,10 @@ func build_editor():
 		elif p.type == TYPE_OBJECT and p.has('dialogic_type'):
 			if p.dialogic_type == resource.DialogicValueType.Character:
 				editor_node = load("res://addons/dialogic/Editor/Events/Fields/DialogicResourcePicker.tscn").instance()
+				editor_node.resource_type = editor_node.resource_types.Characters
+			elif p.dialogic_type == resource.DialogicValueType.Portrait:
+				editor_node = load("res://addons/dialogic/Editor/Events/Fields/DialogicResourcePicker.tscn").instance()
+				editor_node.resource_type = editor_node.resource_types.Portraits
 		elif p.type == TYPE_INT:
 			if not p.has('dialogic_type') or p.dialogic_type == resource.DialogicValueType.Integer:
 				editor_node = load("res://addons/dialogic/Editor/Events/Fields/Number.tscn").instance()
@@ -205,6 +210,11 @@ func build_editor():
 			editor_node.connect('value_changed', self, "set_property")
 		if editor_node.has_method('set_hint') and p.has('hint_string'):
 			editor_node.set_hint(p.hint_string)
+		if "event_resource" in editor_node:
+			editor_node.event_resource = resource
+		if editor_node.has_method("react_to_change"):
+			connect('content_changed', editor_node, 'react_to_change')
+			editor_node.react_to_change()
 		
 		### --------------------------------------------------------------------
 		### 3. ADD IT TO THE RIGHT PLACE (HEADER/BODY)

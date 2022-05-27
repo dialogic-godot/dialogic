@@ -63,7 +63,7 @@ func load(path: String, original_path: String):
 	# Parse the lines as seperate events and recreate them as resources
 	var events = []
 	for line in file.get_as_text().split("\n", false):
-		var event = load(identify_event(line)).new()
+		var event = DialogicUtil.get_event_by_string(line).new()
 		event.load_from_string_to_store(line)
 		events.append(event)
 	
@@ -71,14 +71,3 @@ func load(path: String, original_path: String):
 	
 	# Everything went well, and you parsed your file data into your resource. Life is good, return it
 	return res
-
-func identify_event(line:String, prev_line:String = "", next_line:String = ""):
-	for event in [ # the text event should always be last. 
-		# Every event that isn't identified as something else, will end up as text
-		# We should get this list from a folder or something, but then we'll have to sort it somehow
-		"res://addons/dialogic/Resources/Events/event_character.gd",
-		"res://addons/dialogic/Resources/Events/event_comment.gd",
-		"res://addons/dialogic/Resources/Events/event_text.gd"
-	]:
-		if load(event).is_valid_event_string(line):
-			return event

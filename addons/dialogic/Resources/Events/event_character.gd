@@ -43,6 +43,7 @@ func get_as_string_to_store() -> String:
 	
 	if Character:
 		result_string += Character.name
+		result_string+= " ("+Portrait+") "
 	
 	return result_string
 
@@ -58,7 +59,8 @@ func load_from_string_to_store(string:String):
 	elif string.begins_with("Update "):
 		ActionType = ActionTypes.Update
 		string = string.trim_prefix("Update ")
-	var char_guess = DialogicUtil.guess_resource('.dch', string.strip_edges())
+	var char_guess = DialogicUtil.guess_resource('.dch', string.get_slice("(", 0).strip_edges())
+	
 	if char_guess:
 		Character = load(char_guess)
 
@@ -95,6 +97,14 @@ func _get_property_list() -> Array:
 		"usage":PROPERTY_USAGE_DEFAULT,	
 		"dialogic_type":DialogicValueType.Character,	# Additional information for value displays
 		"hint_string":"Character:"		# Text that will be displayed in front of the field
+		})
+	p_list.append({
+		"name":"Portrait", # Must be the same as the corresponding property that it edits!
+		"type":TYPE_OBJECT,	# Defines the type of editor (LineEdit, Selector, etc.)
+		"location": Location.HEADER,	# Definest the location
+		"usage":PROPERTY_USAGE_DEFAULT,	
+		"dialogic_type":DialogicValueType.Portrait,	# Additional information for value displays
+		"hint_string":"Portrait:"		# Text that will be displayed in front of the field
 		})
 	
 	
