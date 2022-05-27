@@ -21,7 +21,7 @@ flat = true
 margin_left = 32.0
 margin_right = 60.0
 margin_bottom = 22.0
-hint_tooltip = "Add Timeline"
+hint_tooltip = "Add Character"
 icon = ExtResource( 4 )
 flat = true
 
