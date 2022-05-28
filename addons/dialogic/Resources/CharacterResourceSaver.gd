@@ -42,7 +42,7 @@ func save(path: String, resource: Resource, flags: int) -> int:
 		return err
 	
 	var result = ""
-	result = resource.name+"\n"+resource.display_name+"\n"+resource.color.to_html()+"\n"
+	result = resource.name+"\n"+resource.display_name+"\n"+resource.color.to_html()+"\n"+JSON.print(resource.portraits)
 	file.store_string(result)
 	file.close()
 	return OK

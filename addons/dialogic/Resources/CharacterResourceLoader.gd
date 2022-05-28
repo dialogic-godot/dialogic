@@ -69,6 +69,8 @@ func load(path: String, original_path: String):
 			res.display_name = line
 		elif idx == 2:
 			res.color = Color(line)
+		elif idx == 3:
+			res.portraits = parse_json(line)
 		idx += 1
 	
 	# Everything went well, and you parsed your file data into your resource. Life is good, return it

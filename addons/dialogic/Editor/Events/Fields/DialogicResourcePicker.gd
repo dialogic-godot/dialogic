@@ -36,11 +36,24 @@ func set_value(value):
 	if value is DialogicCharacter:
 		$Search.text = value.name
 		$Search/OpenButton.show()
+	elif typeof(value) == TYPE_STRING and resource_type == resource_types.Portraits:
+		$Search.text = value
+		$Search/OpenButton.hide()
 	else:
 		$Search.text = ""
 		$Search/OpenButton.hide()
 	current_value = value
 
+func react_to_change():
+	if resource_type == resource_types.Portraits:
+		if event_resource.Character:
+			if current_value and (not (current_value in event_resource.Character.portraits.keys())):
+				print(event_resource.Character)
+				set_value("")
+				emit_signal("value_changed", property_name, "")
+			show()
+		else:
+			hide()
 
 ################################################################################
 ## 						BASIC
@@ -65,19 +78,28 @@ func _on_Search_text_changed(new_text):
 	$Search/Suggestions.clear()
 	
 	if new_text != "":
-		var ext = ""
-		if resource_type in file_extensions:
-			ext = file_extensions[resource_type]
+		var suggestions = {}
+		
+		if resource_type == resource_types.Portraits:
+			if event_resource.Character or event_resource.Character != null:
+				for portrait in event_resource.Character.portraits:
+					suggestions[portrait] = portrait
 		else:
-			return
-		var resources = DialogicUtil.list_resources_of_type(ext)
-		#print(characters)
+			var ext = ""
+			if resource_type in file_extensions:
+				ext = file_extensions[resource_type]
+			else:
+				return
+			var resources = DialogicUtil.list_resources_of_type(ext)
+			for resource in resources:
+				if new_text.to_lower() in resource.to_lower().get_file().trim_suffix(ext):
+					suggestions[resource.get_file().trim_suffix(ext)] = resource
+		
 		var idx = 0
-		for element in resources:
-			if new_text.to_lower() in element.to_lower().get_file().trim_suffix(ext):
-				$Search/Suggestions.add_item(element.get_file().trim_suffix(ext))
-				$Search/Suggestions.set_item_metadata(idx, element)
-				idx += 1
+		for element in suggestions:
+			$Search/Suggestions.add_item(element) #element.get_file().trim_suffix(ext))
+			$Search/Suggestions.set_item_metadata(idx, suggestions[element])
+			idx += 1
 		
 		if not $Search/Suggestions.visible:
 			$Search/Suggestions.popup(Rect2($Search.rect_global_position + Vector2(0,1)*$Search.rect_size, Vector2($Search.rect_size.x, 100)))
@@ -86,14 +108,20 @@ func _on_Search_text_changed(new_text):
 		$Search/Suggestions.hide()
 	
 func suggestion_selected(index):
-	var file = load($Search/Suggestions.get_item_metadata(index))
-	$Search.text = file.name
-	current_value = file
-	emit_signal("value_changed", property_name, file)
+	$Search.text = $Search/Suggestions.get_item_text(index)
+	
+	# if this is a resource:
+	if resource_type in file_extensions:
+		var file = load($Search/Suggestions.get_item_metadata(index))
+		current_value = file
+	else:
+		current_value = $Search/Suggestions.get_item_metadata(index)
+	
 	ignore_popup_hide_once = true
 	$Search/Suggestions.hide()
+	if resource_type != resource_types.Portraits: $Search/OpenButton.show()
 	
-	$Search/OpenButton.show()
+	emit_signal("value_changed", property_name, current_value)
 
 func popup_hide():
 	if ignore_popup_hide_once:
