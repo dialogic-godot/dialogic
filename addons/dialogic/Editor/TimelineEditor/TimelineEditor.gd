@@ -763,7 +763,7 @@ func add_event_to_timeline(event_resource:Resource, at_index:int = -1, auto_sele
 func new_timeline() -> void:
 	save_timeline()
 	clear_timeline()
-	get_parent().get_parent().get_parent().godot_file_dialog(self,  'create_and_save_new_timeline', '*.dtl; DialogicTimeline', EditorFileDialog.MODE_SAVE_FILE)
+	show_save_dialog()
 
 # Saving
 func save_timeline() -> void:
@@ -778,7 +778,18 @@ func save_timeline() -> void:
 		get_node("%Toolbar").set_resource_saved()
 	else:
 		if new_events.size() > 0:
-			get_parent().get_parent().get_parent().godot_file_dialog(self, 'create_and_save_new_timeline', '*.dtl; DialogicTimeline', EditorFileDialog.MODE_SAVE_FILE)
+			show_save_dialog()
+
+
+func show_save_dialog():
+	get_parent().get_parent().get_parent().godot_file_dialog(
+		self,
+		'create_and_save_new_timeline',
+		'*.dtl; DialogicTimeline',
+		EditorFileDialog.MODE_SAVE_FILE,
+		"Save new Timeline",
+		"New_Timeline"
+	)
 
 
 func create_and_save_new_timeline(path):

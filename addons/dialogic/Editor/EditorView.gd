@@ -26,15 +26,15 @@ func show_settings():
 	$SettingsEditor.popup_centered()
 
 
-func godot_file_dialog(object, method, filter, mode = EditorFileDialog.MODE_OPEN_FILE):
+func godot_file_dialog(object, method, filter, mode = EditorFileDialog.MODE_OPEN_FILE, window_title = "Save", current_file_name = 'New_File'):
 	for connection in editor_file_dialog.get_signal_connection_list('file_selected'):
 		editor_file_dialog.disconnect('file_selected', connection.target, connection.method)
 	editor_file_dialog.mode = mode
 	editor_file_dialog.clear_filters()
 	editor_file_dialog.popup_centered_ratio(0.75)
 	editor_file_dialog.add_filter(filter)
-	editor_file_dialog.window_title = "Save new Timeline"
-	editor_file_dialog.current_file = "New_Timeline"
+	editor_file_dialog.window_title = window_title
+	editor_file_dialog.current_file = current_file_name
 	if mode == EditorFileDialog.MODE_OPEN_FILE or EditorFileDialog.MODE_SAVE_FILE:
 		editor_file_dialog.connect('file_selected', object, method)
 	elif mode == EditorFileDialog.MODE_OPEN_DIR:
