@@ -1,6 +1,6 @@
 # Changelog
 
-## v1.4.2 - WIP
+## v1.4.2 - Afterlife
 - Fixed an issue with MacOS and text events not adjusting their size properly
 - Android exports should work again [[zaknafean](https://github.com/zaknafean)]
 - Add setting to disable the mouse block of the dialog node [[Jowan-Spooner](https://github.com/Jowan-Spooner)]
