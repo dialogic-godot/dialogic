@@ -76,3 +76,10 @@ func edit(object):
 	make_visible(true)
 	if object is DialogicTimeline:
 		_editor_view.edit_timeline(object)
+
+
+func enable_plugin():
+	add_autoload_singleton("Dialogic", "res://addons/dialogic/Other/DialogicGameHandler.gd")
+
+func disable_plugin():
+	remove_autoload_singleton("Dialogic")

@@ -20,7 +20,7 @@ func _init() -> void:
 	event_category = Category.MAIN
 	event_sorting_index = 0
 	help_page_path = "https://dialogic.coppolaemilio.com/documentation/Events/000/"
-	
+	continue_at_end = false
 	# maybe using setters is better for this scenario?
 	# like doing:
 	#set_name("Pepito Event")
@@ -28,8 +28,12 @@ func _init() -> void:
 
 
 func _execute() -> void:
-	# I have no idea how this event works
-	pass
+	dialogic_game_handler.update_dialog_text(Text)
+	if Character:
+		dialogic_game_handler.update_name_label(Character.name, Character.color)
+	else:
+		dialogic_game_handler.update_name_label("")
+
 
 ## THIS RETURNS A READABLE REPRESENTATION, BUT HAS TO CONTAIN ALL DATA (This is how it's stored)
 func get_as_string_to_store() -> String:
@@ -49,7 +53,7 @@ func load_from_string_to_store(string):
 		else:
 			Character = null
 			print("When importing timeline, we couldn't identify what character you meant with ", result.get_string('name'), ".")
-		print(result.get_string('portrait'))
+		#print(result.get_string('portrait'))
 		if !result.get_string('portrait').empty():
 			Portrait = result.get_string('portrait').strip_edges()
 	Text = result.get_string('text').replace("<br>", "\n")
