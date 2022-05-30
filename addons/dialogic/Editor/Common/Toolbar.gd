@@ -17,7 +17,7 @@ func _on_AddTimeline_pressed():
 	get_node("%TimelineEditor").new_timeline()
 
 func _on_AddCharacter_pressed():
-	get_parent().get_parent().get_parent().godot_file_dialog(
+	find_parent('EditorView').godot_file_dialog(
 		get_parent().get_node("CharacterEditor"),
 		'new_character',
 		'*.dch; DialogicCharacter',

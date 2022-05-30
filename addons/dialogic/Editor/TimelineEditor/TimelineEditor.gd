@@ -782,7 +782,7 @@ func save_timeline() -> void:
 
 
 func show_save_dialog():
-	get_parent().get_parent().get_parent().godot_file_dialog(
+	find_parent('EditorView').godot_file_dialog(
 		self,
 		'create_and_save_new_timeline',
 		'*.dtl; DialogicTimeline',
