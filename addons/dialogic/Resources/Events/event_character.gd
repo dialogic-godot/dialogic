@@ -11,8 +11,7 @@ var Position = 0
 var Animation = ""
 
 func _execute() -> void:
-	# I have no idea how this event works
-	pass
+	finish()
 
 
 ################################################################################
@@ -26,6 +25,7 @@ func _init() -> void:
 	event_color = Color(0.613488, 0.734375, 0.235229)
 	event_category = Category.MAIN
 	event_sorting_index = 2
+	continue_at_end = true
 
 
 ################################################################################

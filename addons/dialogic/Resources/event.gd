@@ -2,6 +2,24 @@ tool
 extends Resource
 class_name DialogicEvent
 
+
+## The event icon that'll be displayed in the editor
+var event_icon:Texture = load("res://addons/dialogic/Images/Event Icons/warning.svg")
+
+## The event color that event node will take in the editor
+var event_color:Color = Color("FBB13C")
+
+## The event name that'll be displayed in the editor.
+## If the resource name is different from the event name, resource_name is returned instead.
+var event_name:String = "Event"
+
+
+var event_category:int = Category.OTHER
+
+
+# To sort the buttons shown in the editor
+var event_sorting_index : int = 0
+
 enum Category {
 	MAIN,
 	LOGIC,
@@ -77,35 +95,18 @@ signal event_started(event_resource)
 signal event_finished(event_resource)
 
 ##########
-# Default Event Properties
+# EVENT EXECUTION PROPERTIES
 ##########
 
 ## Determines if the event will go to next event inmediatly or not. 
 ## If value is true, the next event will be executed when event ends.
 var continue_at_end:bool = true setget _set_continue
-
-## The event icon that'll be displayed in the editor
-var event_icon:Texture = load("res://addons/dialogic/Images/Event Icons/warning.svg")
-
-## The event color that event node will take in the editor
-var event_color:Color = Color("FBB13C")
-
-## The event name that'll be displayed in the editor.
-## If the resource name is different from the event name, resource_name is returned instead.
-var event_name:String = "Event"
-
-
-var event_category:int = Category.OTHER
-
-
-# To sort the buttons shown in the editor
-var event_sorting_index : int = 0
-
+var dialogic_game_handler = null
 
 ## Executes the event behaviour.
-func execute() -> void:
+func execute(_dialogic_game_handler) -> void:
 	emit_signal("event_started", self)
-	
+	dialogic_game_handler = _dialogic_game_handler
 	call_deferred("_execute")
 
 

@@ -6,8 +6,9 @@ extends DialogicEvent
 var Text :String = ""
 
 func _execute() -> void:
-	# I have no idea how this event works
-	pass
+	print("[Dialogic Comment] #",  Text)
+	finish()
+
 
 
 ################################################################################
@@ -21,6 +22,7 @@ func _init() -> void:
 	event_color = Color(0.53125, 0.53125, 0.53125)
 	event_category = Category.OTHER
 	event_sorting_index = 0
+	continue_at_end = true
 
 
 ################################################################################
