@@ -42,8 +42,14 @@ margin_right = 153.0
 margin_bottom = 18.0
 text = "None"
 
-[node name="Spacer" type="Control" parent="."]
+[node name="PlayTimeline" type="ToolButton" parent="."]
 margin_left = 157.0
+margin_right = 255.0
+margin_bottom = 22.0
+text = "Play Timeline"
+
+[node name="Spacer" type="Control" parent="."]
+margin_left = 259.0
 margin_right = 885.0
 margin_bottom = 22.0
 size_flags_horizontal = 3

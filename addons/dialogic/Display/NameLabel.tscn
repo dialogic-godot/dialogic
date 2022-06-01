@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=2]
 
-[ext_resource path="res://addons/dialogic/DialogicDisplay/DialogicDisplay_NameLabel.gd" type="Script" id=1]
+[ext_resource path="res://addons/dialogic/Display/NameLabel.gd" type="Script" id=1]
 
 [node name="DialogicNameLabelDisplay" type="Label"]
 margin_right = 40.0

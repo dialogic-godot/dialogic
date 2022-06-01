@@ -8,8 +8,11 @@ func _ready():
 	var err = config.load("res://addons/dialogic/plugin.cfg")
 	if err == OK:
 		$Version.text = "v" + config.get_value("plugin", "version")
-
-
+	
+	
+	$PlayTimeline.icon = get_icon("PlayScene", "EditorIcons")
+	#$PlayTimeline.connect("pressed", self, "play_timeline")
+	
 	$AddTimeline.icon = load("res://addons/dialogic/Images/Toolbar/add-timeline.svg")
 
 

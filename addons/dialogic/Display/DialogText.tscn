@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=2]
 
-[ext_resource path="res://addons/dialogic/DialogicDisplay/DialogicDisplay_DialogText.gd" type="Script" id=1]
+[ext_resource path="res://addons/dialogic/Display/DialogText.gd" type="Script" id=1]
 
 [node name="DialogicTextDisplay" type="RichTextLabel"]
 margin_right = 780.0
