@@ -134,9 +134,13 @@ func get_current_choice_indexes() -> Array:
 		if evt_idx >= len(current_timeline_events):
 			break
 		
-		if current_timeline_events[evt_idx] is DialogicChoiceEvent and ignore == 0:
-			choices.append(evt_idx)
+		if current_timeline_events[evt_idx] is DialogicChoiceEvent:
+			if ignore == 0:
+				choices.append(evt_idx)
 			ignore += 1
+		else:
+			if ignore == 0:
+				break
 		
 		if current_timeline_events[evt_idx] is DialogicEndBranchEvent:
 			ignore -= 1

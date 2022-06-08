@@ -871,13 +871,11 @@ func batch_events(array, size, batch_number):
 var choice_stack = []
 
 func load_batch(data):
-	#print('[D] Loading batch')
 	var current_batch = batches.pop_front()
 	if current_batch:
 		for i in current_batch:
 			
 			if i is DialogicEndBranchEvent:
-				print(choice_stack)
 				create_end_branch_event(timeline.get_child_count(), choice_stack.pop_back())
 			else:
 				var piece = add_event_to_timeline(i, timeline.get_child_count())

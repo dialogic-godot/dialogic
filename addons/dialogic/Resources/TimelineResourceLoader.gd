@@ -68,8 +68,10 @@ func load(path: String, original_path: String):
 		if stripped_line.empty():
 			continue
 		var indent = line.substr(0,len(line)-len(stripped_line))
-		if indent < prev_indent:
-			events.append(DialogicEndBranchEvent.new())
+		if len(indent) < len(prev_indent):
+			for i in range(len(prev_indent)-len(indent)):
+				print('End branch')
+				events.append(DialogicEndBranchEvent.new())
 		prev_indent = indent
 		line = stripped_line
 		var event = DialogicUtil.get_event_by_string(line).new()

@@ -8,21 +8,23 @@ var parent_event = null
 
 func _execute() -> void:
 	dialogic_game_handler.current_event_idx = find_next_index()-1
-	print(dialogic_game_handler.current_event_idx)
 	finish()
 
 func find_next_index():
 	var idx = dialogic_game_handler.current_event_idx
+	if not dialogic_game_handler.current_timeline.get_event(idx+1) is DialogicChoiceEvent:
+		return idx+1
 	var ignore = 1
 	while true:
 		idx += 1
 		if dialogic_game_handler.current_timeline.get_event(idx) is DialogicChoiceEvent:
 			ignore += 1
+		elif ignore == 1:
+			break
 		# excuse this, checking like above creates a FUCKING CYCLIC DEPENDENCY....
 		elif 'this_is_an_end_event' in dialogic_game_handler.current_timeline.get_event(idx):
 			ignore -= 1
-		elif ignore == 1:
-			break
+		
 	return idx
 
 ################################################################################
