@@ -1,0 +1,55 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://addons/dialogic/Editor/Events/BranchEnd.gd" type="Script" id=1]
+
+[sub_resource type="StyleBoxLine" id=1]
+content_margin_left = 0.0
+content_margin_right = 0.0
+content_margin_top = 0.0
+content_margin_bottom = 0.0
+color = Color( 1, 1, 1, 1 )
+grow_begin = -5.0
+grow_end = -5.0
+thickness = 2
+
+[node name="EndBranch" type="HBoxContainer"]
+anchor_right = 1.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 0, 40 )
+mouse_filter = 0
+script = ExtResource( 1 )
+
+[node name="Indent" type="Control" parent="."]
+margin_bottom = 40.0
+
+[node name="Space" type="Control" parent="."]
+margin_left = 4.0
+margin_right = 34.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 30, 0 )
+
+[node name="PanelContainer2" type="PanelContainer" parent="."]
+margin_left = 38.0
+margin_top = 20.0
+margin_right = 243.0
+margin_bottom = 20.0
+size_flags_horizontal = 7
+size_flags_vertical = 4
+size_flags_stretch_ratio = 0.3
+custom_styles/panel = SubResource( 1 )
+
+[node name="Label" type="Label" parent="."]
+margin_left = 247.0
+margin_top = 13.0
+margin_right = 334.0
+margin_bottom = 27.0
+text = "End of Branch"
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+margin_left = 338.0
+margin_top = 20.0
+margin_right = 1024.0
+margin_bottom = 20.0
+size_flags_horizontal = 7
+size_flags_vertical = 4
+custom_styles/panel = SubResource( 1 )

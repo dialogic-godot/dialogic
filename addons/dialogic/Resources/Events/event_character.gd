@@ -1,5 +1,6 @@
 tool
 extends DialogicEvent
+class_name DialogicCharacterEvent
 
 enum ActionTypes {Join, Leave, Update}
 

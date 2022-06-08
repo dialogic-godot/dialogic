@@ -21,6 +21,8 @@ onready var body_container = $PanelContainer/MarginContainer/VBoxContainer/Body
 onready var body_content_container = $PanelContainer/MarginContainer/VBoxContainer/Body/Content
 onready var indent_node = $Indent
 
+var end_node = null
+
 ### extarnal node references
 var editor_reference
 
@@ -237,6 +239,8 @@ func build_editor():
 func set_property(property_name, value):
 	resource.set(property_name, value)
 	emit_signal('content_changed')
+	if end_node:
+		end_node.parent_node_changed()
 
 ## *****************************************************************************
 ##								OVERRIDES

@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://addons/dialogic/Display/ChoiceButton.gd" type="Script" id=1]
+
+[node name="ChoiceButton" type="Button"]
+margin_left = 217.0
+margin_top = 118.0
+margin_right = 289.0
+margin_bottom = 138.0
+script = ExtResource( 1 )

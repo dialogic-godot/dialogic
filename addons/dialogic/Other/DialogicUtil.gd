@@ -1,33 +1,7 @@
 tool
 class_name DialogicUtil
 
-
-static func list_to_dict(list):
-	var dict := {}
-	for val in list:
-		dict[val["file"]] = val
-	return dict
-
-
-static func beautify_filename(animation_name: String) -> String:
-	if animation_name == '[Default]' or animation_name == '[No Animation]':
-		return animation_name
-	var a_string = animation_name.get_file().trim_suffix('.gd')
-	if '-' in a_string:
-		a_string = a_string.split('-')[1].capitalize()
-	else:
-		a_string = a_string.capitalize()
-	return a_string
-
-
-static func compare_dicts(dict_1: Dictionary, dict_2: Dictionary) -> bool:
-	# I tried using the .hash() function but it was returning different numbers
-	# even when the dictionary was exactly the same.
-	if str(dict_1) != "Null" and str(dict_2) != "Null":
-		if str(dict_1) == str(dict_2):
-			return true
-	return false
-
+const settings_path = 'res://dialogic_settings.cfg'
 
 static func get_editor_scale(ref) -> float:
 	# There hasn't been a proper way of reliably getting the editor scale
@@ -98,6 +72,8 @@ static func get_event_by_string(string:String) -> Resource:
 	for event in [ # the text event should always be last. 
 		# Every event that isn't identified as something else, will end up as text
 		# We should get this list from a folder or something, but then we'll have to sort it somehow
+		"res://addons/dialogic/Resources/Events/event_end_branch.gd",
+		"res://addons/dialogic/Resources/Events/event_choice.gd",
 		"res://addons/dialogic/Resources/Events/event_character.gd",
 		"res://addons/dialogic/Resources/Events/event_comment.gd",
 		"res://addons/dialogic/Resources/Events/event_text.gd"
@@ -105,3 +81,45 @@ static func get_event_by_string(string:String) -> Resource:
 		if load(event).is_valid_event_string(string):
 			return load(event)
 	return load("res://addons/dialogic/Resources/Events/event_text.gd")
+
+static func get_settings_config():
+	var config = ConfigFile.new()
+	config.load(settings_path)
+	return config
+
+static func set_setting(section, key, value):
+	var config = get_settings_config()
+	config.set_value(section, key, value)
+	config.save(settings_path)
+
+static func get_setting(section, key):
+	var config = get_settings_config()
+	return config.get_value(section, key)
+
+
+# RENABLE IF REALLY NEEDED, OTHERWISE DELETE BEFORE RELEASE 
+#static func list_to_dict(list):
+#	var dict := {}
+#	for val in list:
+#		dict[val["file"]] = val
+#	return dict
+
+# RENABLE IF REALLY NEEDED, OTHERWISE DELETE BEFORE RELEASE 
+#static func beautify_filename(animation_name: String) -> String:
+#	if animation_name == '[Default]' or animation_name == '[No Animation]':
+#		return animation_name
+#	var a_string = animation_name.get_file().trim_suffix('.gd')
+#	if '-' in a_string:
+#		a_string = a_string.split('-')[1].capitalize()
+#	else:
+#		a_string = a_string.capitalize()
+#	return a_string
+
+# RENABLE IF REALLY NEEDED, OTHERWISE DELETE BEFORE RELEASE
+#static func compare_dicts(dict_1: Dictionary, dict_2: Dictionary) -> bool:
+#	# I tried using the .hash() function but it was returning different numbers
+#	# even when the dictionary was exactly the same.
+#	if str(dict_1) != "Null" and str(dict_2) != "Null":
+#		if str(dict_1) == str(dict_2):
+#			return true
+#	return false

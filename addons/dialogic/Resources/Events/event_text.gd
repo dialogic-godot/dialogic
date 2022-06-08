@@ -1,7 +1,6 @@
 tool
 extends DialogicEvent
-
-#export(String) var node_path:String = "" # this probably will need a setter
+class_name DialogicTextEvent
 
 
 var Text:String = "" setget set_text
@@ -33,12 +32,23 @@ func _execute() -> void:
 		dialogic_game_handler.update_name_label(Character.name, Character.color)
 	else:
 		dialogic_game_handler.update_name_label("")
+	while true:
+		yield(dialogic_game_handler, "state_changed")
+		if dialogic_game_handler.current_state == dialogic_game_handler.states.IDLE:
+			break
+	if dialogic_game_handler.is_question(dialogic_game_handler.current_event_idx):
+		print("QUESTION!")
+		dialogic_game_handler.show_current_choices()
+		dialogic_game_handler.current_state = dialogic_game_handler.states.AWAITING_CHOICE
+	finish()
 
 
 ## THIS RETURNS A READABLE REPRESENTATION, BUT HAS TO CONTAIN ALL DATA (This is how it's stored)
 func get_as_string_to_store() -> String:
 	if Character:
-		return Character.name+" ("+Portrait+"): "+Text.replace("\n", "<br>")
+		if not Portrait.empty():
+			return Character.name+" ("+Portrait+"): "+Text.replace("\n", "<br>")
+		return Character.name+": "+Text.replace("\n", "<br>")
 	return Text.replace("\n", "<br>")
 
 ## THIS HAS TO READ ALL THE DATA FROM THE SAVED STRING (see above) 
@@ -56,7 +66,7 @@ func load_from_string_to_store(string):
 		#print(result.get_string('portrait'))
 		if !result.get_string('portrait').empty():
 			Portrait = result.get_string('portrait').strip_edges()
-	Text = result.get_string('text').replace("<br>", "\n")
+	Text = result.get_string('text').replace("<br>", "\n").trim_prefix(" ")
 	
 
 static func is_valid_event_string(string):

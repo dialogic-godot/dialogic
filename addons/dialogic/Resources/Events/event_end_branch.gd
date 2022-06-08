@@ -1,14 +1,29 @@
 tool
 extends DialogicEvent
 
+class_name DialogicEndBranchEvent
 
-# DEFINE ALL PROPERTIES OF THE EVENT
-# var MySetting :String = ""
+var this_is_an_end_event
+var parent_event = null
 
 func _execute() -> void:
-	# I have no idea how this event works
+	dialogic_game_handler.current_event_idx = find_next_index()-1
+	print(dialogic_game_handler.current_event_idx)
 	finish()
 
+func find_next_index():
+	var idx = dialogic_game_handler.current_event_idx
+	var ignore = 1
+	while true:
+		idx += 1
+		if dialogic_game_handler.current_timeline.get_event(idx) is DialogicChoiceEvent:
+			ignore += 1
+		# excuse this, checking like above creates a FUCKING CYCLIC DEPENDENCY....
+		elif 'this_is_an_end_event' in dialogic_game_handler.current_timeline.get_event(idx):
+			ignore -= 1
+		elif ignore == 1:
+			break
+	return idx
 
 ################################################################################
 ## 						INITIALIZE
@@ -16,11 +31,13 @@ func _execute() -> void:
 
 # SET ALL VALUES THAT SHOULD NEVER CHANGE HERE
 func _init() -> void:
-	event_name = "Default"
-	event_icon = load("res://addons/dialogic/Images/Event Icons/Portrait.svg")
-	event_color = Color("#ffffff")
-	event_category = Category.MAIN
+	event_name = "End Branch"
+	event_icon = load("res://addons/dialogic/Images/Event Icons/Main Icons/end-branch.svg")
+	event_color = Color(0.71306, 0.427338, 0.816406)
+	event_category = Category.LOGIC
 	event_sorting_index = 0
+	disable_editor_button = true
+	continue_at_end = true
 
 
 ################################################################################
@@ -29,11 +46,8 @@ func _init() -> void:
 
 ## THIS RETURNS A READABLE REPRESENTATION, BUT HAS TO CONTAIN ALL DATA (This is how it's stored)
 func get_as_string_to_store() -> String:
-	var result_string = ""
 	
-	# fill the result_string with the properties
-	
-	return result_string
+	return "<<END BRANCH>>"
 
 
 ## THIS HAS TO READ ALL THE DATA FROM THE SAVED STRING (see above) 
@@ -47,8 +61,8 @@ func load_from_string_to_store(string:String):
 # RETURN TRUE IF THE GIVEN LINE SHOULD BE LOADED AS THIS EVENT
 static func is_valid_event_string(string:String):
 	
-	# check the string and maybe return true
-	
+	if string.strip_edges() == "<<END BRANCH>>":
+		return true
 	return false
 
 
@@ -58,15 +72,5 @@ static func is_valid_event_string(string:String):
 
 func _get_property_list() -> Array:
 	var p_list = []
-	
-	# fill the p_list with dictionaries like this one:
-#	p_list.append({
-#		"name":"Character", # Must be the same as the corresponding property that it edits!
-#		"type":TYPE_OBJECT,	# Defines the type of editor (LineEdit, Selector, etc.)
-#		"location": Location.HEADER,	# Definest the location
-#		"usage":PROPERTY_USAGE_DEFAULT,	
-#		"dialogic_type":DialogicValueType.Character,	# Additional information for resource pickers
-#		"hint_string":"Character:"		# Text that will be displayed in front of the field
-#		})
 	
 	return p_list

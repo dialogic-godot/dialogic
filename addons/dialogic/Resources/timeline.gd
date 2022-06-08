@@ -43,6 +43,10 @@ func remove_event(position:int) -> void:
 	emit_changed()
 	property_list_changed_notify()
 
+func get_event(index):
+	if index >= len(_events):
+		return null
+	return _events[index].duplicate()
 
 func get_events() -> Array:
 	return _events.duplicate()

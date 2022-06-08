@@ -66,6 +66,7 @@ var help_page_path : String = ""
 var expand_by_default : bool = true
 var needs_indentation : bool = false
 var display_name : bool = true
+var disable_editor_button : bool = false
 
 # -----------------------------------------
 # Emilio:
