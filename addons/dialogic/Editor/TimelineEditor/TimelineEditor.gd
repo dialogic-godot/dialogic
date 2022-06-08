@@ -84,6 +84,7 @@ func _ready():
 		if '.gd' in file:
 			var event_script = load("res://addons/dialogic/Resources/Events/" + file)
 			var event_resource = event_script.new()
+			if event_resource.disable_editor_button == true: continue
 			var button = buttonScene.instance()
 			button.resource = event_resource
 			button.visible_name = '       ' + event_resource.event_name
@@ -93,11 +94,6 @@ func _ready():
 			button.event_sorting_index = event_resource.event_sorting_index
 
 
-		#	if button.event_id == 'dialogic_010':
-		#		button.connect('pressed', self, "_on_ButtonQuestion_pressed", [])
-		#	elif button.event_id == 'dialogic_012': # Condition
-		#		button.connect('pressed', self, "_on_ButtonCondition_pressed", [])
-		#	else:
 			button.connect('pressed', self, "_add_event_button_pressed", [event_script])
 
 			get_node("View/ScrollContainer/EventContainer/FlexContainer" + str(button.event_category)).add_child(button)
@@ -118,8 +114,13 @@ func _process(delta):
 		if up_offset != null:
 			up_offset = (up_offset / 2) + 5
 			if current_position.y < node_position - up_offset:
-				move_block(moving_piece, 'up')
-				piece_was_dragged = true
+				if moving_piece.resource is DialogicEndBranchEvent:
+					if moving_piece.parent_node != get_block_above(moving_piece):
+						move_block(moving_piece, 'up')
+						piece_was_dragged = true
+				else:
+					move_block(moving_piece, 'up')
+					piece_was_dragged = true
 		if down_offset != null:
 			down_offset = height + (down_offset / 2) + 5
 			if current_position.y > node_position + down_offset:
@@ -134,12 +135,20 @@ func _on_event_block_gui_input(event, item: Node):
 			if (piece_was_dragged and moving_piece != null and move_start_position):
 				var to_position = moving_piece.get_index()
 				if move_start_position != to_position:
-					# move it back so the DO action works. (Kinda stupid but whatever)
-					move_block_to_index(to_position, move_start_position)
 					TimelineUndoRedo.create_action("[D] Moved event (type '"+moving_piece.resource.to_string()+"').")
 					TimelineUndoRedo.add_do_method(self, "move_block_to_index", move_start_position, to_position)
 					TimelineUndoRedo.add_undo_method(self, "move_block_to_index", to_position, move_start_position)
+					
+					# in case a choice or condition was moved BELOW it's end node the end_node is moved as well!!!
+					if moving_piece.resource is DialogicChoiceEvent:# or  moving_piece.resource is DialogicConditionEvent:
+						if moving_piece.end_node.get_index() < to_position:
+							TimelineUndoRedo.add_do_method(self, "move_block_to_index", moving_piece.end_node.get_index(), to_position)	
+							TimelineUndoRedo.add_undo_method(self, "move_block_to_index", to_position+1, moving_piece.end_node.get_index())
+					
+					# move it back so the DO action works. (Kinda stupid but whatever)
+					move_block_to_index(to_position, move_start_position)
 					TimelineUndoRedo.commit_action()
+	
 				move_start_position = null
 			else:
 				select_item(item)
@@ -433,6 +442,11 @@ func delete_selected_events():
 		next_node = null
 	
 	for event in selected_items:
+		if event.resource is DialogicEndBranchEvent:
+			continue
+		if 'end_node' in event and event.end_node != null:
+			event.end_node.get_parent().remove_child(event.end_node)
+			event.end_node.queue_free()
 		event.get_parent().remove_child(event)
 		event.queue_free()
 	
@@ -552,6 +566,7 @@ func select_item(item: Node, multi_possible:bool = true):
 				selected_items = [item]
 		else:
 			selected_items = [item]
+
 	
 	sort_selection()
 	
@@ -562,8 +577,12 @@ func select_item(item: Node, multi_possible:bool = true):
 func visual_update_selection():
 	for item in timeline.get_children():
 		item.visual_deselect()
+		if 'end_node' in item and item.end_node != null:
+			item.end_node.unhighlight()
 	for item in selected_items:
 		item.visual_select()
+		if 'end_node' in item and item.end_node != null:
+			item.end_node.highlight()
 
 
 ## Sorts the selection using 'custom_sort_selection'
@@ -616,69 +635,94 @@ func _add_event_button_pressed(event_script):
 		at_index = selected_items[-1].get_index()+1
 	else:
 		at_index = timeline.get_child_count()
-	TimelineUndoRedo.create_action("[D] Add event.")
-	TimelineUndoRedo.add_do_method(self, "add_event_to_timeline", event_script.new(), at_index, true, true)
-	TimelineUndoRedo.add_undo_method(self, "remove_events_at_index", at_index, 1)
-	TimelineUndoRedo.commit_action()
+	print(event_script)
+	if event_script.new() is DialogicChoiceEvent:
+		print("LOLOLOL")
+		TimelineUndoRedo.create_action("[D] Add choice event.")
+		TimelineUndoRedo.add_do_method(self, "add_choice", at_index)
+		TimelineUndoRedo.add_undo_method(self, "remove_events_at_index", at_index, 2)
+		TimelineUndoRedo.commit_action()
+	#elif event is DialogicConditionEvent:
+	#	add_condition(at_index)
+	else:
+		TimelineUndoRedo.create_action("[D] Add event.")
+		TimelineUndoRedo.add_do_method(self, "add_event_to_timeline", event_script.new(), at_index, true, true)
+		TimelineUndoRedo.add_undo_method(self, "remove_events_at_index", at_index, 1)
+		TimelineUndoRedo.commit_action()
 	scroll_to_piece(at_index)
 	indent_events()
 
-# the Question button adds multiple blocks 
-func _on_ButtonQuestion_pressed() -> void:
-	var at_index = -1
-	if selected_items:
-		at_index = selected_items[-1].get_index()+1
-	else:
-		at_index = timeline.get_child_count()
-	TimelineUndoRedo.create_action("[D] Add question events.")
-	TimelineUndoRedo.add_do_method(self, "create_question", at_index)
-	TimelineUndoRedo.add_undo_method(self, "remove_events_at_index", at_index, 4)
-	TimelineUndoRedo.commit_action()
 
-func create_question(at_position):
-	if at_position == 0: selected_items = []
-	else: selected_items = [timeline.get_child(at_position-1)]
-	if len(selected_items) != 0:
-		# Events are added bellow the selected node
-		# So we must reverse the adding order
-		#create_event("dialogic_013", {'no-data': true}, true)
-		#create_event("dialogic_011", {'no-data': true}, true)
-		#create_event("dialogic_011", {'no-data': true}, true)
-		#create_event("dialogic_010", {'no-data': true}, true)
-		pass
-	else:
-		#create_event("dialogic_010", {'no-data': true}, true)
-		#create_event("dialogic_011", {'no-data': true}, true)
-		#create_event("dialogic_011", {'no-data': true}, true)
-		#create_event("dialogic_013", {'no-data': true}, true)
-		pass
+func add_choice(at_index):
+	var choice = add_event_to_timeline(DialogicChoiceEvent.new(), at_index)
+	create_end_branch_event(at_index+1, choice)
 
+func create_end_branch_event(at_index, parent_node):
+	var end_branch_event = load("res://addons/dialogic/Editor/Events/BranchEnd.tscn").instance()
+	end_branch_event.resource = DialogicEndBranchEvent.new()
+	end_branch_event.connect("gui_input", self, '_on_event_block_gui_input', [end_branch_event])
+	parent_node.end_node = end_branch_event
+	end_branch_event.parent_node = parent_node
+	timeline.add_child(end_branch_event)
+	timeline.move_child(end_branch_event, at_index)
 
-# the Condition button adds multiple blocks 
-func _on_ButtonCondition_pressed() -> void:
-	var at_index = -1
-	if selected_items:
-		at_index = selected_items[-1].get_index()+1
-	else:
-		at_index = timeline.get_child_count()
-	TimelineUndoRedo.create_action("[D] Add condition events.")
-	TimelineUndoRedo.add_do_method(self, "create_condition", at_index)
-	TimelineUndoRedo.add_undo_method(self, "remove_events_at_index", at_index, 2)
-	TimelineUndoRedo.commit_action()
-	
-func create_condition(at_position):
-	if at_position == 0: selected_items = []
-	else: selected_items = [timeline.get_child(at_position-1)]
-	if len(selected_items) != 0:
-		# Events are added bellow the selected node
-		# So we must reverse the adding order
-		#create_event("dialogic_013", {'no-data': true}, true)
-		#create_event("dialogic_012", {'no-data': true}, true)
-		pass
-	else:
-		#create_event("dialogic_012", {'no-data': true}, true)
-		#create_event("dialogic_013", {'no-data': true}, true)
-		pass
+#
+## the Question button adds multiple blocks 
+#func _on_ButtonQuestion_pressed() -> void:
+#	var at_index = -1
+#	if selected_items:
+#		at_index = selected_items[-1].get_index()+1
+#	else:
+#		at_index = timeline.get_child_count()
+#	TimelineUndoRedo.create_action("[D] Add question events.")
+#	TimelineUndoRedo.add_do_method(self, "create_question", at_index)
+#	TimelineUndoRedo.add_undo_method(self, "remove_events_at_index", at_index, 4)
+#	TimelineUndoRedo.commit_action()
+##
+#func create_question(at_position):
+#	if at_position == 0: selected_items = []
+#	else: selected_items = [timeline.get_child(at_position-1)]
+#	if len(selected_items) != 0:
+#		# Events are added bellow the selected node
+#		# So we must reverse the adding order
+#		#create_event("dialogic_013", {'no-data': true}, true)
+#		#create_event("dialogic_011", {'no-data': true}, true)
+#		#create_event("dialogic_011", {'no-data': true}, true)
+#		#create_event("dialogic_010", {'no-data': true}, true)
+#		pass
+#	else:
+#		#create_event("dialogic_010", {'no-data': true}, true)
+#		#create_event("dialogic_011", {'no-data': true}, true)
+#		#create_event("dialogic_011", {'no-data': true}, true)
+#		#create_event("dialogic_013", {'no-data': true}, true)
+#		pass
+
+#
+## the Condition button adds multiple blocks 
+#func _on_ButtonCondition_pressed() -> void:
+#	var at_index = -1
+#	if selected_items:
+#		at_index = selected_items[-1].get_index()+1
+#	else:
+#		at_index = timeline.get_child_count()
+#	TimelineUndoRedo.create_action("[D] Add condition events.")
+#	TimelineUndoRedo.add_do_method(self, "create_condition", at_index)
+#	TimelineUndoRedo.add_undo_method(self, "remove_events_at_index", at_index, 2)
+#	TimelineUndoRedo.commit_action()
+##
+#func create_condition(at_position):
+#	if at_position == 0: selected_items = []
+#	else: selected_items = [timeline.get_child(at_position-1)]
+#	if len(selected_items) != 0:
+#		# Events are added bellow the selected node
+#		# So we must reverse the adding order
+#		#create_event("dialogic_013", {'no-data': true}, true)
+#		#create_event("dialogic_012", {'no-data': true}, true)
+#		pass
+#	else:
+#		#create_event("dialogic_012", {'no-data': true}, true)
+#		#create_event("dialogic_013", {'no-data': true}, true)
+#		pass
 
 
 ## *****************************************************************************
@@ -824,13 +868,19 @@ func something_changed():
 func batch_events(array, size, batch_number):
 	return array.slice((batch_number - 1) * size, batch_number * size - 1)
 
+var choice_stack = []
 
 func load_batch(data):
-	#print('[D] Loading batch')
 	var current_batch = batches.pop_front()
 	if current_batch:
 		for i in current_batch:
-			add_event_to_timeline(i, timeline.get_child_count())
+			
+			if i is DialogicEndBranchEvent:
+				create_end_branch_event(timeline.get_child_count(), choice_stack.pop_back())
+			else:
+				var piece = add_event_to_timeline(i, timeline.get_child_count())
+				if i is DialogicChoiceEvent:
+					choice_stack.push_back(piece)
 	emit_signal("batch_loaded")
 
 
@@ -922,7 +972,8 @@ func scroll_to_piece(piece_index) -> void:
 func indent_events() -> void:
 	# Now indenting
 	var indent: int = 0
-	var starter: bool = false
+	var prev_indent : int = 0
+	var delay: bool = false # true for some logic events, so indent only changes one event later
 	var event_list: Array = timeline.get_children()
 	var question_index: int = 0
 	var question_indent = {}
@@ -933,42 +984,49 @@ func indent_events() -> void:
 		var indent_node
 		
 		event.set_indent(0)
-	
 	# Adding new indents
 	for event in event_list:
 		# since there are indicators now, not all elements
 		# in this list have an event_data property
-		if (not "event_data" in event):
+		if (not "resource" in event):
 			continue
 		
-		if event.resource.id == 'dialogic_011':
+		## DETECT QUESTIONS
+		if event.resource is DialogicTextEvent: #  also add Condition here later
+			if get_block_below(event) and 'resource' in get_block_below(event) and get_block_below(event).resource is DialogicChoiceEvent:
+				indent += 1
+				delay = true
+				question_index += 1
+				question_indent[question_index] = indent
+		
+		elif event.resource is DialogicChoiceEvent:
 			if question_index > 0:
 				indent = question_indent[question_index] + 1
-				starter = true
-		elif event.resource.id == 'dialogic_010' or event.resource.id == 'dialogic_012':
-			indent += 1
-			starter = true
-			question_index += 1
-			question_indent[question_index] = indent
-		elif event.resource.id == 'dialogic_013':
+				delay = true
+			if (get_block_above(event) and 'resource' in get_block_above(event)) and (get_block_above(event).resource is DialogicEndBranchEvent or get_block_above(event).resource is DialogicTextEvent):
+				event.remove_warning('This event is not connected to any Question!')
+			else:
+				event.set_warning('This event is not connected to any Question!')
+
+		elif event.resource is DialogicEndBranchEvent:
 			if question_indent.has(question_index):
-				indent = question_indent[question_index]
-				indent -= 1
-				question_index -= 1
+				if get_block_below(event) and 'resource' in get_block_below(event) and get_block_below(event).resource is DialogicChoiceEvent:
+					indent = question_indent[question_index]
+					delay = true
+				else:
+					indent = question_indent[question_index] -1
+					delay = true
+					question_index -= 1
 				if indent < 0:
 					indent = 0
-				else:
-					event.remove_warning('This event is not connected to any Question or Condition but it should!')
-			else:
-				event.set_warning('This event is not connected to any Question or Condition but it should!')
-
-		if indent > 0:
-			# Keep old behavior for items without template
-			if starter:
-				event.set_indent(indent - 1)
+#				
+		if indent >= 0:
+			if delay:
+				event.set_indent(prev_indent)
 			else:
 				event.set_indent(indent)
-		starter = false
+		delay = false
+		prev_indent = indent
 	timeline_area.update()
 
 
@@ -1001,8 +1059,3 @@ func add_extra_scroll_area_to_timeline():
 		timeline.rect_size.y = 0
 		if timeline.rect_size.y + 200 > timeline_area.rect_size.y:
 			timeline.rect_min_size = Vector2(0, timeline.rect_size.y + 200)
-
-
-#func play_timeline():
-#	DialogicResources.set_settings_value('QuickTimelineTest', 'timeline_file', timeline_file)
-#	editor_reference.editor_interface.play_custom_scene('res://addons/dialogic/Editor/TimelineEditor/TimelineTestingScene.tscn')

@@ -11,7 +11,7 @@ func _ready():
 	
 	
 	$PlayTimeline.icon = get_icon("PlayScene", "EditorIcons")
-	#$PlayTimeline.connect("pressed", self, "play_timeline")
+	$PlayTimeline.connect("pressed", self, "play_timeline")
 	
 	$AddTimeline.icon = load("res://addons/dialogic/Images/Toolbar/add-timeline.svg")
 
@@ -28,8 +28,7 @@ func _on_AddCharacter_pressed():
 		'Save new Character',
 		'New_Character'
 	)
-	
-	
+
 
 func set_resource_saved():
 	if $CurrentResource.text.ends_with(("(*)")):
@@ -38,3 +37,10 @@ func set_resource_saved():
 func set_resource_unsaved():
 	if not $CurrentResource.text.ends_with(("(*)")):
 		$CurrentResource.text += "(*)"
+
+
+func play_timeline():
+	if get_node("%TimelineEditor").current_timeline:
+		DialogicUtil.set_setting('QuickTimelineTest', 'timeline_file',get_node("%TimelineEditor").current_timeline.resource_path)
+		var dialogic_plugin = DialogicUtil.get_dialogic_plugin()
+		dialogic_plugin._editor_interface.play_custom_scene("res://addons/dialogic/Other/DefaultDialogNode.tscn")

@@ -1,6 +1,6 @@
 tool
 extends DialogicEvent
-
+class_name DialogicCommentEvent
 
 # DEFINE ALL PROPERTIES OF THE EVENT
 var Text :String = ""

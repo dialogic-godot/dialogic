@@ -1,9 +1,9 @@
 tool
 extends DialogicEvent
-
+class_name DialogicChoiceEvent
 
 # DEFINE ALL PROPERTIES OF THE EVENT
-# var MySetting :String = ""
+var Text :String = ""
 
 func _execute() -> void:
 	# I have no idea how this event works
@@ -16,10 +16,10 @@ func _execute() -> void:
 
 # SET ALL VALUES THAT SHOULD NEVER CHANGE HERE
 func _init() -> void:
-	event_name = "Default"
-	event_icon = load("res://addons/dialogic/Images/Event Icons/Portrait.svg")
-	event_color = Color("#ffffff")
-	event_category = Category.MAIN
+	event_name = "Choice"
+	event_icon = load("res://addons/dialogic/Images/Event Icons/Main Icons/choice.svg")
+	event_color = Color(0.743674, 0.430023, 0.902344)
+	event_category = Category.LOGIC
 	event_sorting_index = 0
 
 
@@ -30,8 +30,8 @@ func _init() -> void:
 ## THIS RETURNS A READABLE REPRESENTATION, BUT HAS TO CONTAIN ALL DATA (This is how it's stored)
 func get_as_string_to_store() -> String:
 	var result_string = ""
-	
-	# fill the result_string with the properties
+
+	result_string = "- "+Text
 	
 	return result_string
 
@@ -39,15 +39,14 @@ func get_as_string_to_store() -> String:
 ## THIS HAS TO READ ALL THE DATA FROM THE SAVED STRING (see above) 
 func load_from_string_to_store(string:String):
 	
-	# fill your properies by interpreting the string
-	
-	pass
+	Text = string.strip_edges().trim_prefix("-").strip_edges()
 
 
 # RETURN TRUE IF THE GIVEN LINE SHOULD BE LOADED AS THIS EVENT
-static func is_valid_event_string(string:String):
+static func is_valid_event_string(string:String) -> bool:
 	
-	# check the string and maybe return true
+	if string.strip_edges().begins_with("-"):
+		return true
 	
 	return false
 
@@ -60,13 +59,13 @@ func _get_property_list() -> Array:
 	var p_list = []
 	
 	# fill the p_list with dictionaries like this one:
-#	p_list.append({
-#		"name":"Character", # Must be the same as the corresponding property that it edits!
-#		"type":TYPE_OBJECT,	# Defines the type of editor (LineEdit, Selector, etc.)
-#		"location": Location.HEADER,	# Definest the location
-#		"usage":PROPERTY_USAGE_DEFAULT,	
-#		"dialogic_type":DialogicValueType.Character,	# Additional information for resource pickers
-#		"hint_string":"Character:"		# Text that will be displayed in front of the field
-#		})
+	p_list.append({
+		"name":"Text", # Must be the same as the corresponding property that it edits!
+		"type":TYPE_STRING,	# Defines the type of editor (LineEdit, Selector, etc.)
+		"location": Location.HEADER,	# Definest the location
+		"usage":PROPERTY_USAGE_DEFAULT,	
+		"dialogic_type":DialogicValueType.SinglelineText,	# Additional information for resource pickers
+		"hint_string":""		# Text that will be displayed in front of the field
+		})
 	
 	return p_list

@@ -61,8 +61,19 @@ func load(path: String, original_path: String):
 		return err
 	
 	# Parse the lines as seperate events and recreate them as resources
+	var prev_indent = ""
 	var events = []
 	for line in file.get_as_text().split("\n", false):
+		var stripped_line = line.strip_edges(true, false)
+		if stripped_line.empty():
+			continue
+		var indent = line.substr(0,len(line)-len(stripped_line))
+		if len(indent) < len(prev_indent):
+			for i in range(len(prev_indent)-len(indent)):
+				print('End branch')
+				events.append(DialogicEndBranchEvent.new())
+		prev_indent = indent
+		line = stripped_line
 		var event = DialogicUtil.get_event_by_string(line).new()
 		event.load_from_string_to_store(line)
 		events.append(event)

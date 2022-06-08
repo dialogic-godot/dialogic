@@ -104,42 +104,48 @@ func _draw():
 			return
 
 		# Drawing long lines on questions and conditions
-		if event.event_name == 'Question' or event.event_name == 'Condition':
-			var keep_going = true
-			var end_reference
-			for e in timeline_children:
-				if keep_going:
-					if e.get_index() > event.get_index():
-						if e.current_indent_level == event.current_indent_level:
-							if e.event_name == 'End Branch':
-								end_reference = e
-								keep_going = false
-							if e.event_name == 'Question' or event.event_name == 'Condition':
-								keep_going = false
-			if keep_going == false:
-				if end_reference:
-					# This line_size thing should be fixed, not sure why it is different when
-					# the indent level is 0 and when it is bigger. 
-					var line_size = 0
-					if event.current_indent_level > 0:
-						line_size = (event.indent_size * event.current_indent_level) + (4 * _scale)
-					# end the line_size thingy
+		if is_question(event):# or event.event_name == 'Condition':
+			#print("wowie, question")
 
-					# Drawing the line from the Question/Condition node to the End Branch one.
-					draw_rect(Rect2(
-								Vector2(pos.x + line_size -scroll_horizontal, pos.y-scroll_vertical)+event.rect_position,
-								Vector2(line_width,
-								(end_reference.rect_global_position.y - event.rect_global_position.y) - (43 * _scale))
-							),
-							line_color, true)
+			var end_reference
+			var idx = event.get_index() +1
+			while true:
+				if $TimeLine.get_child(idx).current_indent_level == event.current_indent_level:
+					end_reference = $TimeLine.get_child(idx)
+					break
+				
+#				if $TimeLine.get_child(idx).resource is DialogicEndBranchEvent:
+#					if not $TimeLine.get_child(idx+1).resource is DialogicChoiceEvent:
+#						end_reference = $TimeLine.get_child(idx+1)
+#						break
+				if $TimeLine.get_child(idx).resource is DialogicChoiceEvent:
+					end_reference = $TimeLine.get_child(idx)
+				idx += 1
+				if $TimeLine.get_child_count() == idx:
+					break
+			if end_reference:
+				# This line_size thing should be fixed, not sure why it is different when
+				# the indent level is 0 and when it is bigger. 
+				var line_size = 0
+				if event.current_indent_level > 0:
+					line_size = (event.indent_size * event.current_indent_level) + (4 * _scale)
+				# end the line_size thingy
+
+				# Drawing the line from the Question/Condition node to the End Branch one.
+				draw_rect(Rect2(
+							Vector2(pos.x + line_size -scroll_horizontal, pos.y-scroll_vertical)+event.rect_position,
+							Vector2(line_width,
+							(end_reference.rect_global_position.y - event.rect_global_position.y) - (43 * _scale))
+						),
+						line_color, true)
 
 		# Drawing other lines and archs
 		var next_event = timeline_children[event.get_index() + 1]
 		if event.current_indent_level > 0:
 			# Line at current indent
 			var line_size = (event.indent_size * event.current_indent_level) + (4 * _scale)
-			if next_event.event_name != 'End Branch' and event.event_name != 'Choice':
-				if event.event_name != 'Question' and next_event.event_name == 'Choice':
+			if not event.resource is DialogicChoiceEvent:
+				if not is_question(event) and next_event.resource is DialogicChoiceEvent:
 					# Skip drawing lines before going to the next choice
 					pass
 				else:
@@ -159,7 +165,7 @@ func _draw():
 				true)
 				
 		# Drawing arc
-		if event.event_name == 'Choice':
+		if event.resource is DialogicChoiceEvent:
 			# Connecting with the question 
 			var arc_start = Vector2(
 				(event.indent_size * (event.current_indent_level)) + (16.2 * _scale),
@@ -187,7 +193,7 @@ func _draw():
 			)
 
 			# Don't draw arc if next event is another choice event
-			if next_event.event_name == "Choice" or next_event.event_name == "End Branch":
+			if next_event.resource is DialogicChoiceEvent or next_event.resource is DialogicEndBranchEvent:
 				continue
 
 			# Connecting with the next event
@@ -207,3 +213,6 @@ func _draw():
 				line_width - (1 * _scale),
 				true
 			)
+			
+func is_question(event):
+	return event.resource is DialogicTextEvent and timeline_editor.get_block_below(event) and timeline_editor.get_block_below(event).resource is DialogicChoiceEvent
