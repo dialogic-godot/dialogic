@@ -1,8 +1,6 @@
 tool
 class_name DialogicUtil
 
-const settings_path = 'res://dialogic_settings.cfg'
-
 static func get_editor_scale(ref) -> float:
 	# There hasn't been a proper way of reliably getting the editor scale
 	# so this function aims at fixing that by identifying what the scale is and
@@ -82,20 +80,6 @@ static func get_event_by_string(string:String) -> Resource:
 		if load(event).is_valid_event_string(string):
 			return load(event)
 	return load("res://addons/dialogic/Resources/Events/event_text.gd")
-
-static func get_settings_config():
-	var config = ConfigFile.new()
-	config.load(settings_path)
-	return config
-
-static func set_setting(section, key, value):
-	var config = get_settings_config()
-	config.set_value(section, key, value)
-	config.save(settings_path)
-
-static func get_setting(section, key):
-	var config = get_settings_config()
-	return config.get_value(section, key)
 
 
 # RENABLE IF REALLY NEEDED, OTHERWISE DELETE BEFORE RELEASE 

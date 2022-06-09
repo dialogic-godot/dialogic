@@ -75,6 +75,7 @@ func handles(object):
 func edit(object):
 	make_visible(true)
 	if object is DialogicTimeline:
+		ProjectSettings.set_setting('quick_timeline_test/timeline_file', object.resource_path)
 		_editor_view.edit_timeline(object)
 
 

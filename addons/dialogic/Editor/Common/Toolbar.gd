@@ -41,6 +41,5 @@ func set_resource_unsaved():
 
 func play_timeline():
 	if get_node("%TimelineEditor").current_timeline:
-		DialogicUtil.set_setting('QuickTimelineTest', 'timeline_file',get_node("%TimelineEditor").current_timeline.resource_path)
 		var dialogic_plugin = DialogicUtil.get_dialogic_plugin()
 		dialogic_plugin._editor_interface.play_custom_scene("res://addons/dialogic/Other/DefaultDialogNode.tscn")
