@@ -102,7 +102,10 @@ func _draw():
 		# If the event is the last one, don't draw anything aftwards
 		if timeline_children[timeline_lenght-1] == event:
 			return
-
+		
+		if not event.visible:
+			continue
+		
 		# Drawing long lines on questions and conditions
 		if is_question(event):# or event.event_name == 'Condition':
 			#print("wowie, question")
@@ -118,7 +121,7 @@ func _draw():
 #					if not $TimeLine.get_child(idx+1).resource is DialogicChoiceEvent:
 #						end_reference = $TimeLine.get_child(idx+1)
 #						break
-				if $TimeLine.get_child(idx).resource is DialogicChoiceEvent:
+				if $TimeLine.get_child(idx).resource is DialogicChoiceEvent and $TimeLine.get_child(idx).current_indent_level == event.current_indent_level-1:
 					end_reference = $TimeLine.get_child(idx)
 				idx += 1
 				if $TimeLine.get_child_count() == idx:

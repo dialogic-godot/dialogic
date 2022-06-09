@@ -984,12 +984,26 @@ func indent_events() -> void:
 		var indent_node
 		
 		event.set_indent(0)
+		
+	var currently_hidden = false
+	var hidden_until = null
 	# Adding new indents
 	for event in event_list:
 		# since there are indicators now, not all elements
 		# in this list have an event_data property
 		if (not "resource" in event):
 			continue
+			
+		if (not currently_hidden) and 'end_node' in event and event.end_node and event.collapsed:
+			currently_hidden = true
+			hidden_until = event.end_node
+		elif currently_hidden and event == hidden_until:
+			currently_hidden = false
+			hidden_until = null
+		elif currently_hidden:
+			event.hide()
+		else:
+			event.show()
 		
 		## DETECT QUESTIONS
 		if event.resource is DialogicTextEvent: #  also add Condition here later

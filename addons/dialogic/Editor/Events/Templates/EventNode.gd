@@ -21,7 +21,8 @@ onready var body_container = $PanelContainer/MarginContainer/VBoxContainer/Body
 onready var body_content_container = $PanelContainer/MarginContainer/VBoxContainer/Body/Content
 onready var indent_node = $Indent
 
-var end_node = null
+var end_node = null setget set_end_node
+var collapsed = false
 
 ### extarnal node references
 var editor_reference
@@ -168,8 +169,21 @@ func focus():
 	#if resource.body_scene:
 	#	resource.body_scene.focus()
 
+func toggle_collapse(toggled):
+	collapsed = toggled
+	print("TOGGLED ", toggled)
+	var timeline_editor = find_parent('TimelineEditor')
+	if (timeline_editor != null):
+		# @todo select item and clear selection is marked as "private" in TimelineEditor.gd
+		# consider to make it "public" or add a public helper function
+		timeline_editor.indent_events()
 
-# 
+
+func set_end_node(node):
+	end_node = node
+	$PanelContainer/MarginContainer/VBoxContainer/Header/CollapseButton.visible = true if end_node else false
+
+
 func build_editor():
 	#print('Building event node')
 	var p_list = resource._get_property_list()
@@ -264,6 +278,7 @@ func _ready():
 	if event_name != null:
 		_set_event_name(event_name)
 
+	
 	$PanelContainer/MarginContainer/VBoxContainer/Header/CenterContainer/IconPanel.set("self_modulate", resource.event_color)
 	
 	set_focus_mode(1) # Allowing this node to grab focus
@@ -274,3 +289,6 @@ func _ready():
 	$PopupMenu.connect("index_pressed", self, "_on_OptionsControl_action")
 	
 	_on_Indent_visibility_changed()
+	$PanelContainer/MarginContainer/VBoxContainer/Header/CollapseButton.connect('toggled', self, 'toggle_collapse')
+	$PanelContainer/MarginContainer/VBoxContainer/Header/CollapseButton.icon = get_icon("Collapse", "EditorIcons")
+	$PanelContainer/MarginContainer/VBoxContainer/Header/CollapseButton.hide()
