@@ -96,9 +96,6 @@ func _draw():
 	pos = rendering_scale_correction(_scale, pos)
 	
 	for event in $TimeLine.get_children():
-		#if not 'event_data' in event:
-		#	continue
-		
 		# If the event is the last one, don't draw anything aftwards
 		if timeline_children[timeline_lenght-1] == event:
 			return
@@ -107,9 +104,7 @@ func _draw():
 			continue
 		
 		# Drawing long lines on questions and conditions
-		if is_question(event):# or event.event_name == 'Condition':
-			#print("wowie, question")
-
+		if is_question(event) or event.resource is DialogicConditionEvent:
 			var end_reference
 			var idx = event.get_index() +1
 			while true:
@@ -117,15 +112,13 @@ func _draw():
 					end_reference = $TimeLine.get_child(idx)
 					break
 				
-#				if $TimeLine.get_child(idx).resource is DialogicEndBranchEvent:
-#					if not $TimeLine.get_child(idx+1).resource is DialogicChoiceEvent:
-#						end_reference = $TimeLine.get_child(idx+1)
-#						break
-				if $TimeLine.get_child(idx).resource is DialogicChoiceEvent and $TimeLine.get_child(idx).current_indent_level == event.current_indent_level-1:
-					end_reference = $TimeLine.get_child(idx)
+				if not event.resource is DialogicConditionEvent:
+					if $TimeLine.get_child(idx).resource is DialogicChoiceEvent and $TimeLine.get_child(idx).current_indent_level == event.current_indent_level+1:
+						end_reference = $TimeLine.get_child(idx)
 				idx += 1
 				if $TimeLine.get_child_count() == idx:
 					break
+			
 			if end_reference:
 				# This line_size thing should be fixed, not sure why it is different when
 				# the indent level is 0 and when it is bigger. 
@@ -141,7 +134,7 @@ func _draw():
 							(end_reference.rect_global_position.y - event.rect_global_position.y) - (43 * _scale))
 						),
 						line_color, true)
-
+		
 		# Drawing other lines and archs
 		var next_event = timeline_children[event.get_index() + 1]
 		if event.current_indent_level > 0:
@@ -174,6 +167,7 @@ func _draw():
 				(event.indent_size * (event.current_indent_level)) + (16.2 * _scale),
 				5
 			)
+		
 			var arc_point_count = 12 * _scale
 			var arc_radius = 24 * _scale
 			var start_angle = 90

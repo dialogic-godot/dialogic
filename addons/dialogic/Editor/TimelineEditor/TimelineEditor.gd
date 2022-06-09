@@ -140,7 +140,7 @@ func _on_event_block_gui_input(event, item: Node):
 					TimelineUndoRedo.add_undo_method(self, "move_block_to_index", to_position, move_start_position)
 					
 					# in case a choice or condition was moved BELOW it's end node the end_node is moved as well!!!
-					if moving_piece.resource is DialogicChoiceEvent:# or  moving_piece.resource is DialogicConditionEvent:
+					if moving_piece.resource is DialogicChoiceEvent or  moving_piece.resource is DialogicConditionEvent:
 						if moving_piece.end_node.get_index() < to_position:
 							TimelineUndoRedo.add_do_method(self, "move_block_to_index", moving_piece.end_node.get_index(), to_position)	
 							TimelineUndoRedo.add_undo_method(self, "move_block_to_index", to_position+1, moving_piece.end_node.get_index())
@@ -403,7 +403,10 @@ func _unhandled_key_input(event):
 func get_events_indexed(events:Array) -> Dictionary:
 	var indexed_dict = {}
 	for event in events:
-		indexed_dict[event.get_index()] = event.resource.get_as_string_to_store()
+		if not event.resource is DialogicEndBranchEvent:
+			indexed_dict[event.get_index()] = event.resource.get_as_string_to_store()
+			if 'end_node' in event and event.end_node:
+				indexed_dict[event.end_node.get_index()] = event.end_node.resource.get_as_string_to_store()+str(event.get_index())
 	return indexed_dict
 
 
@@ -416,11 +419,20 @@ func select_indexed_events(indexed_events:Dictionary) -> void:
 func add_events_indexed(indexed_events:Dictionary) -> void:
 	var indexes = indexed_events.keys()
 	indexes.sort()
+
 	var events = []
+	print('ADDING', indexed_events)
 	for event_idx in indexes:
 		deselect_all_items()
-		events.append(add_event_to_timeline(load(indexed_events[event_idx])))
-		timeline.move_child(events[-1], event_idx)
+		var event_resource = DialogicUtil.get_event_by_string(indexed_events[event_idx]).new()
+		event_resource.load_from_string_to_store(indexed_events[event_idx])
+		print(event_resource)
+		if event_resource is DialogicEndBranchEvent:
+			events.append(create_end_branch_event(timeline.get_child_count(), timeline.get_child(int(indexed_events[event_idx].trim_prefix('<<END BRANCH>>')))))
+			timeline.move_child(events[-1], event_idx)
+		else:
+			events.append(add_event_to_timeline(event_resource))
+			timeline.move_child(events[-1], event_idx)
 		
 	selected_items = events
 	visual_update_selection()
@@ -635,15 +647,16 @@ func _add_event_button_pressed(event_script):
 		at_index = selected_items[-1].get_index()+1
 	else:
 		at_index = timeline.get_child_count()
-	print(event_script)
 	if event_script.new() is DialogicChoiceEvent:
-		print("LOLOLOL")
 		TimelineUndoRedo.create_action("[D] Add choice event.")
 		TimelineUndoRedo.add_do_method(self, "add_choice", at_index)
 		TimelineUndoRedo.add_undo_method(self, "remove_events_at_index", at_index, 2)
 		TimelineUndoRedo.commit_action()
-	#elif event is DialogicConditionEvent:
-	#	add_condition(at_index)
+	elif event_script.new() is DialogicConditionEvent:
+		TimelineUndoRedo.create_action("[D] Add condition event.")
+		TimelineUndoRedo.add_do_method(self, "add_condition", at_index)
+		TimelineUndoRedo.add_undo_method(self, "remove_events_at_index", at_index, 2)
+		TimelineUndoRedo.commit_action()
 	else:
 		TimelineUndoRedo.create_action("[D] Add event.")
 		TimelineUndoRedo.add_do_method(self, "add_event_to_timeline", event_script.new(), at_index, true, true)
@@ -657,6 +670,10 @@ func add_choice(at_index):
 	var choice = add_event_to_timeline(DialogicChoiceEvent.new(), at_index)
 	create_end_branch_event(at_index+1, choice)
 
+func add_condition(at_index):
+	var condition = add_event_to_timeline(DialogicConditionEvent.new(), at_index)
+	create_end_branch_event(at_index+1, condition)
+
 func create_end_branch_event(at_index, parent_node):
 	var end_branch_event = load("res://addons/dialogic/Editor/Events/BranchEnd.tscn").instance()
 	end_branch_event.resource = DialogicEndBranchEvent.new()
@@ -665,6 +682,7 @@ func create_end_branch_event(at_index, parent_node):
 	end_branch_event.parent_node = parent_node
 	timeline.add_child(end_branch_event)
 	timeline.move_child(end_branch_event, at_index)
+	return end_branch_event
 
 #
 ## the Question button adds multiple blocks 
@@ -868,19 +886,19 @@ func something_changed():
 func batch_events(array, size, batch_number):
 	return array.slice((batch_number - 1) * size, batch_number * size - 1)
 
-var choice_stack = []
+# a list of all choice and condition events (so they get connected to their end events)
+var opener_events_stack = []
 
 func load_batch(data):
 	var current_batch = batches.pop_front()
 	if current_batch:
 		for i in current_batch:
-			
 			if i is DialogicEndBranchEvent:
-				create_end_branch_event(timeline.get_child_count(), choice_stack.pop_back())
+				create_end_branch_event(timeline.get_child_count(), opener_events_stack.pop_back())
 			else:
 				var piece = add_event_to_timeline(i, timeline.get_child_count())
-				if i is DialogicChoiceEvent:
-					choice_stack.push_back(piece)
+				if i is DialogicChoiceEvent or i is DialogicConditionEvent:
+					opener_events_stack.push_back(piece)
 	emit_signal("batch_loaded")
 
 
@@ -1006,8 +1024,8 @@ func indent_events() -> void:
 			event.show()
 		
 		## DETECT QUESTIONS
-		if event.resource is DialogicTextEvent: #  also add Condition here later
-			if get_block_below(event) and 'resource' in get_block_below(event) and get_block_below(event).resource is DialogicChoiceEvent:
+		if event.resource is DialogicTextEvent or event.resource is DialogicConditionEvent:
+			if (get_block_below(event) and 'resource' in get_block_below(event) and get_block_below(event).resource is DialogicChoiceEvent) or event.resource is DialogicConditionEvent:
 				indent += 1
 				delay = true
 				question_index += 1

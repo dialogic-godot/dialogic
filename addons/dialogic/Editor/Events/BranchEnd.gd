@@ -33,7 +33,12 @@ func set_indent(indent: int):
 	update()
 
 func parent_node_changed():
-	if parent_node and parent_node.resource is DialogicChoiceEvent:
-		$Label.text = "End of choice '"+parent_node.resource.Text+"'"
+	if parent_node:
+		if parent_node.resource is DialogicChoiceEvent:
+			$Label.text = "End of choice '"+parent_node.resource.Text+"'"
+		elif parent_node.resource is DialogicConditionEvent:
+			$Label.text = "End of condition '"+parent_node.resource.Condition+"'"
+			
+	
 
 
