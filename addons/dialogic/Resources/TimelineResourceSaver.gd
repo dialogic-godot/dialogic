@@ -47,16 +47,15 @@ func save(path: String, resource: Resource, flags: int) -> int:
 		var event = resource.events[idx]
 		
 		if event is DialogicEndBranchEvent:
-			if idx < len(resource.events)-1:
-				if resource.events[idx+1] is DialogicChoiceEvent:
-					indent -= 1
-				else:
-					indent -= 1
-					result += "\n"
-				continue
+			if idx < len(resource.events)-1 and resource.events[idx+1] is DialogicChoiceEvent:
+				indent -= 1
+			else:
+				indent -= 1
+				result += "\n"
+			continue
 		if event != null:
 			result += "\t".repeat(indent)+event.get_as_string_to_store() + "\n"
-		if event is DialogicChoiceEvent:
+		if event is DialogicChoiceEvent or event is DialogicConditionEvent:
 			indent += 1
 		if indent < 0: indent = 0
 	file.store_string(result)

@@ -15,12 +15,19 @@ func find_next_index():
 	if not dialogic_game_handler.current_timeline.get_event(idx+1) is DialogicChoiceEvent:
 		return idx+1
 	var ignore = 1
+	# this will go through the next events, until there is a event that's ONE INDENT LESS and NOT A CHOICE
 	while true:
 		idx += 1
+		if not dialogic_game_handler.current_timeline.get_event(idx):
+			idx -= 1
+			break 
 		if dialogic_game_handler.current_timeline.get_event(idx) is DialogicChoiceEvent:
 			ignore += 1
+		# excuse this, checking like above creates a FUCKING CYCLIC DEPENDENCY....
 		elif ignore == 1:
 			break
+		elif 'Condition' in dialogic_game_handler.current_timeline.get_event(idx):
+			ignore += 1
 		# excuse this, checking like above creates a FUCKING CYCLIC DEPENDENCY....
 		elif 'this_is_an_end_event' in dialogic_game_handler.current_timeline.get_event(idx):
 			ignore -= 1
@@ -63,7 +70,7 @@ func load_from_string_to_store(string:String):
 # RETURN TRUE IF THE GIVEN LINE SHOULD BE LOADED AS THIS EVENT
 static func is_valid_event_string(string:String):
 	
-	if string.strip_edges() == "<<END BRANCH>>":
+	if string.strip_edges().begins_with("<<END BRANCH>>"):
 		return true
 	return false
 

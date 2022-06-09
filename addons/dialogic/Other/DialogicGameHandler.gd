@@ -15,6 +15,7 @@ var current_name
 var current_text
 
 signal state_changed(new_state)
+signal timeline_ended()
 
 ################################################################################
 ## 						INPUT (WIP)
@@ -48,6 +49,7 @@ func handle_next_event(ignore_argument = ""):
 func handle_event(event_index):
 	hide_all_choices()
 	if event_index >= len(current_timeline_events):
+		emit_signal('timeline_ended')
 		return
 	
 	current_event_idx = event_index
@@ -137,6 +139,8 @@ func get_current_choice_indexes() -> Array:
 		if current_timeline_events[evt_idx] is DialogicChoiceEvent:
 			if ignore == 0:
 				choices.append(evt_idx)
+			ignore += 1
+		if current_timeline_events[evt_idx] is DialogicConditionEvent:
 			ignore += 1
 		else:
 			if ignore == 0:

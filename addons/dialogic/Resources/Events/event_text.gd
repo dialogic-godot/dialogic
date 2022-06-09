@@ -56,7 +56,7 @@ func load_from_string_to_store(string):
 	var reg = RegEx.new()
 	reg.compile("((?<name>[^:()\\n]*)?(?=(\\([^()]*\\))?:)(\\((?<portrait>[^()]*)\\))?)?:?(?<text>[^\\n]+)")
 	var result = reg.search(string)
-	if !result.get_string('name').empty():
+	if result and !result.get_string('name').empty():
 		var character = DialogicUtil.guess_resource('.dch', result.get_string('name').strip_edges())
 		if character:
 			Character = load(character)

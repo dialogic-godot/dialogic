@@ -133,7 +133,7 @@ margin_bottom = 37.0
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 
 [node name="Content" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer/Header"]
-margin_right = 43.0
+margin_right = 37.0
 margin_bottom = 60.0
 size_flags_horizontal = 3
 
@@ -142,14 +142,20 @@ margin_left = 178.0
 margin_right = 242.0
 
 [node name="Spacer" type="Control" parent="PanelContainer/MarginContainer/VBoxContainer/Header"]
-margin_left = 43.0
-margin_right = 86.0
+margin_left = 37.0
+margin_right = 74.0
 margin_bottom = 60.0
 mouse_filter = 1
 size_flags_horizontal = 3
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="CollapseButton" type="ToolButton" parent="PanelContainer/MarginContainer/VBoxContainer/Header"]
+margin_left = 74.0
+margin_right = 86.0
+margin_bottom = 60.0
+toggle_mode = true
 
 [node name="Body" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
@@ -177,7 +183,7 @@ custom_colors/font_color_hover = Color( 0, 0, 0, 1 )
 custom_constants/vseparation = 0
 custom_styles/hover = SubResource( 4 )
 custom_styles/panel = ExtResource( 5 )
-items = [ "Documentation", SubResource( 3 ), 0, false, false, 0, 0, null, "", false, "", null, 0, false, false, -1, 0, null, "", true, "Move up", SubResource( 3 ), 0, false, false, 2, 0, null, "", false, "Move down", SubResource( 3 ), 0, false, false, 3, 0, null, "", false, "", null, 0, false, false, -1, 0, null, "", true, "Delete", SubResource( 3 ), 0, false, false, 5, 0, null, "", false ]
+items = [ "Documentation", SubResource( 3 ), 0, false, false, -1, 0, null, "", false, "", null, 0, false, false, -1, 0, null, "", true, "Move up", SubResource( 3 ), 0, false, false, 1, 0, null, "", false, "Move down", SubResource( 3 ), 0, false, false, 2, 0, null, "", false, "", null, 0, false, false, -1, 0, null, "", true, "Delete", SubResource( 3 ), 0, false, false, 4, 0, null, "", false ]
 script = ExtResource( 8 )
 
 [connection signal="visibility_changed" from="Indent" to="." method="_on_Indent_visibility_changed"]
