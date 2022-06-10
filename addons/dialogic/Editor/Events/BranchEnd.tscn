@@ -31,7 +31,7 @@ rect_min_size = Vector2( 30, 0 )
 [node name="PanelContainer2" type="PanelContainer" parent="."]
 margin_left = 38.0
 margin_top = 20.0
-margin_right = 243.0
+margin_right = 212.0
 margin_bottom = 20.0
 size_flags_horizontal = 7
 size_flags_vertical = 4
@@ -39,14 +39,34 @@ size_flags_stretch_ratio = 0.3
 custom_styles/panel = SubResource( 1 )
 
 [node name="Label" type="Label" parent="."]
-margin_left = 247.0
+margin_left = 216.0
 margin_top = 13.0
-margin_right = 334.0
+margin_right = 303.0
 margin_bottom = 27.0
 text = "End of Branch"
 
+[node name="ConditionButtons" type="HBoxContainer" parent="."]
+margin_left = 307.0
+margin_right = 438.0
+margin_bottom = 40.0
+
+[node name="Elif" type="Button" parent="ConditionButtons"]
+margin_top = 10.0
+margin_right = 60.0
+margin_bottom = 30.0
+size_flags_vertical = 4
+text = "Add Elif"
+
+[node name="Else" type="Button" parent="ConditionButtons"]
+margin_left = 64.0
+margin_top = 10.0
+margin_right = 131.0
+margin_bottom = 30.0
+size_flags_vertical = 4
+text = "Add Else"
+
 [node name="PanelContainer" type="PanelContainer" parent="."]
-margin_left = 338.0
+margin_left = 442.0
 margin_top = 20.0
 margin_right = 1024.0
 margin_bottom = 20.0

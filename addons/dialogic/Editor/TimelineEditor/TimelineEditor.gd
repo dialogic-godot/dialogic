@@ -653,10 +653,7 @@ func _add_event_button_pressed(event_script):
 		TimelineUndoRedo.add_undo_method(self, "remove_events_at_index", at_index, 2)
 		TimelineUndoRedo.commit_action()
 	elif event_script.new() is DialogicConditionEvent:
-		TimelineUndoRedo.create_action("[D] Add condition event.")
-		TimelineUndoRedo.add_do_method(self, "add_condition", at_index)
-		TimelineUndoRedo.add_undo_method(self, "remove_events_at_index", at_index, 2)
-		TimelineUndoRedo.commit_action()
+		add_condition_pressed(at_index, DialogicConditionEvent.ConditionTypes.IF)
 	else:
 		TimelineUndoRedo.create_action("[D] Add event.")
 		TimelineUndoRedo.add_do_method(self, "add_event_to_timeline", event_script.new(), at_index, true, true)
@@ -670,8 +667,17 @@ func add_choice(at_index):
 	var choice = add_event_to_timeline(DialogicChoiceEvent.new(), at_index)
 	create_end_branch_event(at_index+1, choice)
 
-func add_condition(at_index):
-	var condition = add_event_to_timeline(DialogicConditionEvent.new(), at_index)
+# this is a seperate function, because it's also called from the EndBranch buttons.
+func add_condition_pressed(at_index, type):
+	TimelineUndoRedo.create_action("[D] Add condition event.")
+	TimelineUndoRedo.add_do_method(self, "add_condition", at_index, type)
+	TimelineUndoRedo.add_undo_method(self, "remove_events_at_index", at_index, 2)
+	TimelineUndoRedo.commit_action()
+
+func add_condition(at_index, type = DialogicConditionEvent.ConditionTypes.IF):
+	var resource = DialogicConditionEvent.new()
+	resource.ConditionType = type
+	var condition = add_event_to_timeline(resource, at_index)
 	create_end_branch_event(at_index+1, condition)
 
 func create_end_branch_event(at_index, parent_node):

@@ -212,6 +212,8 @@ func build_editor():
 				editor_node = load("res://addons/dialogic/Editor/Events/Fields/OptionSelector.tscn").instance()
 				if p.has('selector_options'):
 					editor_node.options = p.selector_options
+				if p.has('disabled'):
+					editor_node.disabled = p.disabled
 		else:
 			editor_node = Label.new()
 			editor_node.text = p.name

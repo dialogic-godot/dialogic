@@ -10,6 +10,8 @@ var current_indent_level = 1
 
 func _ready():
 	parent_node_changed()
+	$ConditionButtons/Elif.connect('pressed', self, 'add_elif')
+	$ConditionButtons/Else.connect('pressed', self, 'add_else')
 
 func visual_select():
 	modulate = get_color("accent_color", "Editor")
@@ -37,8 +39,23 @@ func parent_node_changed():
 		if parent_node.resource is DialogicChoiceEvent:
 			$Label.text = "End of choice '"+parent_node.resource.Text+"'"
 		elif parent_node.resource is DialogicConditionEvent:
-			$Label.text = "End of condition '"+parent_node.resource.Condition+"'"
+			if parent_node.resource.ConditionType != DialogicConditionEvent.ConditionTypes.ELSE:
+				$ConditionButtons.show()
+				$Label.text = "End of condition '"+parent_node.resource.Condition+"'"
+			else:
+				$ConditionButtons.hide()
+				$Label.text = "End of else"
+				
 			
-	
+func add_elif():
+	var timeline = find_parent('TimelineEditor')
+	if timeline:
+		timeline.add_condition_pressed(get_index()+1, DialogicConditionEvent.ConditionTypes.ELIF)
+		timeline.indent_events()
 
+func add_else():
+	var timeline = find_parent('TimelineEditor')
+	if timeline:
+		timeline.add_condition_pressed(get_index()+1, DialogicConditionEvent.ConditionTypes.ELSE)
+		timeline.indent_events()
 
