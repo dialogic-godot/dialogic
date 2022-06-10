@@ -12,21 +12,32 @@ func _execute() -> void:
 
 func find_next_index():
 	var idx = dialogic_game_handler.current_event_idx
-	if not dialogic_game_handler.current_timeline.get_event(idx+1) is DialogicChoiceEvent:
-		return idx+1
+	
+	# In case the next event is not a choice or ELIF/ELSE event, just go to the next one
+	# excuse this, checking like normally creates a FUCKING CYCLIC DEPENDENCY....
+	if not (dialogic_game_handler.current_timeline.get_event(idx+1) and 'Condition' in dialogic_game_handler.current_timeline.get_event(idx+1) and dialogic_game_handler.current_timeline.get_event(idx+1).ConditionType != 0):
+		if not dialogic_game_handler.current_timeline.get_event(idx+1) is DialogicChoiceEvent:
+			return idx+1
+			
+	
 	var ignore = 1
-	# this will go through the next events, until there is a event that's ONE INDENT LESS and NOT A CHOICE
+	# this will go through the next events, until 
+	# there is a event that's ONE INDENT LESS and NOT A CHOICE and NOT an ELIF or ELSE event
 	while true:
 		idx += 1
-		if not dialogic_game_handler.current_timeline.get_event(idx):
+		var event = dialogic_game_handler.current_timeline.get_event(idx)
+		if not event:
 			idx -= 1
-			break 
-		if dialogic_game_handler.current_timeline.get_event(idx) is DialogicChoiceEvent:
+			break
+		if event is DialogicChoiceEvent:
 			ignore += 1
-		# excuse this, checking like above creates a FUCKING CYCLIC DEPENDENCY....
+		# if we get to a condition that is of type elif or else
+		elif 'Condition' in event and event.ConditionType != 0:
+			pass
 		elif ignore == 1:
 			break
-		elif 'Condition' in dialogic_game_handler.current_timeline.get_event(idx):
+		# excuse this, checking like above creates a FUCKING CYCLIC DEPENDENCY....
+		if 'Condition' in dialogic_game_handler.current_timeline.get_event(idx):
 			ignore += 1
 		# excuse this, checking like above creates a FUCKING CYCLIC DEPENDENCY....
 		elif 'this_is_an_end_event' in dialogic_game_handler.current_timeline.get_event(idx):

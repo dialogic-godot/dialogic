@@ -5,10 +5,12 @@ var property_name : String
 signal value_changed
 
 var options : Dictionary
+var disabled = false setget set_disabled
 
 func _ready():
 	$MenuButton.connect("about_to_show", self,  'insert_options')
 	$MenuButton.get_popup().connect("index_pressed", self,  'index_pressed')
+
 
 func set_hint(value):
 	$Hint.text = str(value)
@@ -32,3 +34,7 @@ func index_pressed(idx):
 	$MenuButton.text = $MenuButton.get_popup().get_item_text(idx)
 	
 	emit_signal("value_changed", property_name, $MenuButton.get_popup().get_item_metadata(idx))
+
+func set_disabled(_disabled):
+	disabled = _disabled
+	$MenuButton.disabled = disabled
