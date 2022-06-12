@@ -18,15 +18,22 @@ onready var next_indicator = $NextIndicatorContainer/NextIndicator
 
 var _finished := false
 var _theme
+var next_indicator_visible: bool = true setget _set_next_indicator_visible, _get_next_indicator_visible
 
 signal text_completed()
 signal letter_written()
 signal signal_request(arg)
 
+func _set_next_indicator_visible(new_value):
+	next_indicator.visible = new_value
+
+
+func _get_next_indicator_visible() -> bool:
+	return next_indicator.visible
+
 ## *****************************************************************************
 ##								PUBLIC METHODS
 ## *****************************************************************************
-
 
 func update_name(name: String, color: Color = Color.white, autocolor: bool=false) -> void:
 	var name_is_hidden = _theme.get_value('name', 'is_hidden', false)
