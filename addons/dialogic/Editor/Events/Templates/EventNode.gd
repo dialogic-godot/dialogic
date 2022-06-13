@@ -208,12 +208,17 @@ func build_editor():
 		elif p.type == TYPE_INT:
 			if not p.has('dialogic_type') or p.dialogic_type == resource.DialogicValueType.Integer:
 				editor_node = load("res://addons/dialogic/Editor/Events/Fields/Number.tscn").instance()
+				editor_node.use_int_mode()
 			elif p.dialogic_type == resource.DialogicValueType.FixedOptionSelector:
 				editor_node = load("res://addons/dialogic/Editor/Events/Fields/OptionSelector.tscn").instance()
 				if p.has('selector_options'):
 					editor_node.options = p.selector_options
 				if p.has('disabled'):
 					editor_node.disabled = p.disabled
+		elif p.type == TYPE_REAL:
+			if not p.has('dialogic_type') or p.dialogic_type == resource.DialogicValueType.Float:
+				editor_node = load("res://addons/dialogic/Editor/Events/Fields/Number.tscn").instance()
+				editor_node.use_float_mode()
 		else:
 			editor_node = Label.new()
 			editor_node.text = p.name
