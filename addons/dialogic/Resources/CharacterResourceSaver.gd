@@ -41,8 +41,8 @@ func save(path: String, resource: Resource, flags: int) -> int:
 		printerr('Can\'t write file: "%s"! code: %d.' % [path, err])
 		return err
 	
-	var result = ""
-	result = resource.name+"\n"+resource.display_name+"\n"+resource.color.to_html()+"\n"+JSON.print(resource.portraits)
+	var result = ""	
+	result = resource.name+"\n"+resource.display_name+"\n"+resource.color.to_html()+"\n"+JSON.print(resource.portraits)+"\n"+JSON.print(resource.nicknames)+"\n"+resource.description.replace('\n', "<b>")+"\n"+str(resource.theme)+'\n'+str(resource.scale)
 	file.store_string(result)
 	file.close()
 	return OK

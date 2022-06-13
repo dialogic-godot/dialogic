@@ -835,6 +835,8 @@ func new_timeline() -> void:
 
 # Saving
 func save_timeline() -> void:
+	if ! visible:
+		return
 	var new_events = []
 	
 	for event in timeline.get_children():
@@ -873,6 +875,7 @@ func load_timeline(object) -> void:
 	#print('[D] Load timeline: ', object)
 	clear_timeline()
 	get_node('%Toolbar/CurrentResource').text = object.resource_path
+	get_node('%Toolbar').set_timeline_mode()
 	current_timeline = object
 	var data = object.get_events()
 	var page = 1

@@ -61,7 +61,6 @@ func load(path: String, original_path: String):
 		return err
 	
 	var idx = 0
-	# Parse the lines as seperate events and recreate them as resources
 	for line in file.get_as_text().split("\n", true):
 		if idx == 0:
 			res.name = line
@@ -71,8 +70,25 @@ func load(path: String, original_path: String):
 			res.color = Color(line)
 		elif idx == 3:
 			res.portraits = parse_json(line)
+			res = fix_portrait_vectors(res)
+		elif idx == 4:
+			res.nicknames = parse_json(line)
+		elif idx == 5:
+			res.description = line.replace("<b>", "\n")
+		elif idx == 6:
+			res.theme = line
+		elif idx == 7:
+			res.scale = float(line)
+
 		idx += 1
 	
 	# Everything went well, and you parsed your file data into your resource. Life is good, return it
 	return res
 
+# saving currently converts the vectors into strings :(
+func fix_portrait_vectors(resource:DialogicCharacter):
+
+	for portrait in resource.portraits:
+		resource.portraits[portrait].offset.strip_edges().trim_prefix('(').trim_suffix(')')
+		resource.portraits[portrait].offset = Vector2(int(resource.portraits[portrait].offset.split(',')[0]), int(resource.portraits[portrait].offset.split(',')[1]))
+	return resource

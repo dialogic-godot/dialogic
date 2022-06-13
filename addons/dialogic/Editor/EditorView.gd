@@ -14,6 +14,13 @@ func _ready():
 
 func edit_timeline(object):
 	get_node("%TimelineEditor").load_timeline(object)
+	get_node("%TimelineEditor").show()
+	get_node("%CharacterEditor").hide()
+
+func edit_character(object):
+	get_node("%CharacterEditor").load_character(object)
+	get_node("%TimelineEditor").hide()
+	get_node("%CharacterEditor").show()
 
 
 func set_current_margin(node, separation):
@@ -35,9 +42,9 @@ func godot_file_dialog(object, method, filter, mode = EditorFileDialog.MODE_OPEN
 	editor_file_dialog.add_filter(filter)
 	editor_file_dialog.window_title = window_title
 	editor_file_dialog.current_file = current_file_name
-	if mode == EditorFileDialog.MODE_OPEN_FILE or EditorFileDialog.MODE_SAVE_FILE:
-		editor_file_dialog.connect('file_selected', object, method)
+	if mode == EditorFileDialog.MODE_OPEN_FILE or mode == EditorFileDialog.MODE_SAVE_FILE:
+		editor_file_dialog.connect('file_selected', object, method, [], CONNECT_ONESHOT)
 	elif mode == EditorFileDialog.MODE_OPEN_DIR:
-		editor_file_dialog.connect('dir_selected', object, method)
+		editor_file_dialog.connect('dir_selected', object, method, [], CONNECT_ONESHOT)
 	return editor_file_dialog
 	
