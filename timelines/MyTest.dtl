@@ -1,7 +1,17 @@
-Emilio (Sad):  It's quite sad, we cannot use the Tree node.<br>What should we do instead?
+Emilio: It's quite sad, we cannot use the Tree node.<br>What should we do instead?
 - Do everything custom
-	John (Nice):  Do everything custom! It's the right thing to do!
-- Give up
-	John (Slick):  Just give up. There is nothing we can do
+	if true:
+		 Do everything custom! It's the right thing to do!
+		- That's right
+			Yup, right
+		- No, why?
+			I don't know either.
 
-Emilio (Happy):  That's a good idea!
+
+	if true:
+		This is the alternative.
+
+- Give up
+	 Just give up. There is nothing we can do
+
+Emilio:  That's a good idea!
