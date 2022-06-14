@@ -16,4 +16,11 @@ func set_hint(value):
 	$Hint.text = str(value)
 
 func set_value(value):
-	$Value.value = str(value)
+	$Value.value = value
+
+func use_float_mode():
+	$Value.step = 0.001
+	
+func use_int_mode():
+	$Value.step = 1
+	

@@ -15,6 +15,21 @@ func _ready():
 	
 	$AddTimeline.icon = load("res://addons/dialogic/Images/Toolbar/add-timeline.svg")
 
+################################################################################
+##							HELPERS
+################################################################################
+
+func set_resource_saved():
+	if $CurrentResource.text.ends_with(("(*)")):
+		$CurrentResource.text = $CurrentResource.text.trim_suffix("(*)")
+
+func set_resource_unsaved():
+	if not $CurrentResource.text.ends_with(("(*)")):
+		$CurrentResource.text += "(*)"
+
+################################################################################
+##							BASICS
+################################################################################
 
 func _on_AddTimeline_pressed():
 	get_node("%TimelineEditor").new_timeline()
@@ -30,14 +45,13 @@ func _on_AddCharacter_pressed():
 	)
 
 
-func set_resource_saved():
-	if $CurrentResource.text.ends_with(("(*)")):
-		$CurrentResource.text = $CurrentResource.text.trim_suffix("(*)")
 
-func set_resource_unsaved():
-	if not $CurrentResource.text.ends_with(("(*)")):
-		$CurrentResource.text += "(*)"
+################################################################################
+##							TIMELINE_MODE
+################################################################################
 
+func set_timeline_mode():
+	$PlayTimeline.show()
 
 func play_timeline():
 	if get_node("%TimelineEditor").current_timeline:
@@ -46,3 +60,11 @@ func play_timeline():
 		ProjectSettings.set_setting('dialogic/current_timeline_path', get_node("%TimelineEditor").current_timeline.resource_path)
 		ProjectSettings.save()
 		dialogic_plugin._editor_interface.play_custom_scene("res://addons/dialogic/Other/TestTimelineScene.tscn")
+
+
+################################################################################
+##							CHARACTER_MODE
+################################################################################
+
+func set_character_mode():
+	$PlayTimeline.hide()

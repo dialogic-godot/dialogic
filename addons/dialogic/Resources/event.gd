@@ -54,6 +54,8 @@ enum DialogicValueType {
 	# INTEGERS
 	FixedOptionSelector,
 	Integer,
+	
+	Float,
 }
 
 # Hopefully we can replace this with a cleaner system

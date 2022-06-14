@@ -23,6 +23,8 @@ func _execute() -> void:
 		# this will go through the next events, until there is a event that is not a choice and on the same level as this one
 		while true:
 			idx += 1
+			if not dialogic_game_handler.current_timeline.get_event(idx):
+				break
 			if dialogic_game_handler.current_timeline.get_event(idx) is DialogicChoiceEvent:
 				ignore += 1
 			elif dialogic_game_handler.current_timeline.get_event(idx) is DialogicEndBranchEvent:

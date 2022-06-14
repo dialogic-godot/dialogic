@@ -1,27 +1,56 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://addons/dialogic/Other/DefaultDialogNode.gd" type="Script" id=1]
 [ext_resource path="res://addons/dialogic/Display/DialogText.tscn" type="PackedScene" id=2]
 [ext_resource path="res://addons/dialogic/Display/NameLabel.tscn" type="PackedScene" id=3]
 [ext_resource path="res://addons/dialogic/Display/ChoiceButton.tscn" type="PackedScene" id=4]
+[ext_resource path="res://addons/dialogic/Display/PortraitPosition.tscn" type="PackedScene" id=5]
+[ext_resource path="res://addons/dialogic/Display/PortraitHolder.tscn" type="PackedScene" id=6]
 
 [node name="DefaultDialogNode" type="CanvasLayer"]
 script = ExtResource( 1 )
+
+[node name="PortraitHolder" parent="." instance=ExtResource( 6 )]
+layer = 0
+
+[node name="PortraitPosition" parent="." instance=ExtResource( 5 )]
+position = Vector2( 106, 604 )
+position_index = 1
+
+[node name="PortraitPosition2" parent="." instance=ExtResource( 5 )]
+position = Vector2( 300, 604 )
+position_index = 2
+
+[node name="PortraitPosition3" parent="." instance=ExtResource( 5 )]
+position = Vector2( 522, 602 )
+position_index = 3
+
+[node name="PortraitPosition4" parent="." instance=ExtResource( 5 )]
+position = Vector2( 714, 604 )
+position_index = 4
+
+[node name="PortraitPosition5" parent="." instance=ExtResource( 5 )]
+position = Vector2( 888, 605 )
+position_index = 5
 
 [node name="Control" type="Control" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
 
 [node name="PanelContainer2" type="PanelContainer" parent="Control"]
-margin_left = 182.0
-margin_top = 404.0
-margin_right = 344.0
-margin_bottom = 432.0
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -326.0
+margin_top = -199.0
+margin_right = -219.0
+margin_bottom = -171.0
 
 [node name="DialogicNameLabelDisplay" parent="Control/PanelContainer2" instance=ExtResource( 3 )]
 margin_left = 7.0
 margin_top = 7.0
-margin_right = 155.0
+margin_right = 100.0
 margin_bottom = 21.0
 
 [node name="PanelContainer" type="PanelContainer" parent="Control"]

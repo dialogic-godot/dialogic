@@ -8,10 +8,22 @@ enum ActionTypes {Join, Leave, Update}
 var ActionType = ActionTypes.Join
 var Character : DialogicCharacter
 var Portrait = ""
-var Position = 0
+var Position = 3
 var Animation = ""
 
 func _execute() -> void:
+	print(ActionType, Character, Portrait)
+	match ActionType:
+		ActionTypes.Join:
+			if Character and Portrait:
+				dialogic_game_handler.update_portrait(Character, Portrait, Position)
+		ActionTypes.Leave:
+			if Character:
+				dialogic_game_handler.remove_portrait(Character)
+		ActionTypes.Update:
+			if Character and Portrait:
+				dialogic_game_handler.update_portrait(Character, Portrait, Position)
+		
 	finish()
 
 
@@ -44,27 +56,39 @@ func get_as_string_to_store() -> String:
 	
 	if Character:
 		result_string += Character.name
-		result_string+= " ("+Portrait+") "
+		result_string+= " ("+Portrait+")"
+	
+	if Position:
+		result_string += " "+str(Position)
 	
 	return result_string
 
 
 ## THIS HAS TO READ ALL THE DATA FROM THE SAVED STRING (see above) 
 func load_from_string_to_store(string:String):
-	if string.begins_with("Join "):
-		ActionType = ActionTypes.Join
-		string = string.trim_prefix("Join ")
-	elif string.begins_with("Leave "):
-		ActionType = ActionTypes.Leave
-		string = string.trim_prefix("Leave ")
-	elif string.begins_with("Update "):
-		ActionType = ActionTypes.Update
-		string = string.trim_prefix("Update ")
-	var char_guess = DialogicUtil.guess_resource('.dch', string.get_slice("(", 0).strip_edges())
+	var regex = RegEx.new()
+	regex.compile("(?<type>Join|Update|Leave) (?<character>[^()\\d\\n]*)( *\\((?<portrait>\\S*)\\))? ?((?<position>\\d*))?")
 	
-	if char_guess:
-		Character = load(char_guess)
+	var result = regex.search(string)
+	
+	match result.get_string('type'):
+		"Join":
+			ActionType = ActionTypes.Join
+		"Leave":
+			ActionType = ActionTypes.Leave
+		"Update":
+			ActionType = ActionTypes.Update
+	
+	if result.get_string('character').strip_edges():
+		var char_guess = DialogicUtil.guess_resource('.dch', result.get_string('character').strip_edges())
+		if char_guess:
+			Character = load(char_guess)
+	
+	if result.get_string('portrait').strip_edges():
+		Portrait = result.get_string('portrait').strip_edges()
 
+	if result.get_string('position'):
+		Position = int(result.get_string('position'))
 
 # RETURN TRUE IF THE GIVEN LINE SHOULD BE LOADED AS THIS EVENT
 static func is_valid_event_string(string:String):
@@ -106,6 +130,14 @@ func _get_property_list() -> Array:
 		"usage":PROPERTY_USAGE_DEFAULT,	
 		"dialogic_type":DialogicValueType.Portrait,	# Additional information for value displays
 		"hint_string":"Portrait:"		# Text that will be displayed in front of the field
+		})
+	p_list.append({
+		"name":"Position", # Must be the same as the corresponding property that it edits!
+		"type":TYPE_INT,	# Defines the type of editor (LineEdit, Selector, etc.)
+		"location": Location.HEADER,	# Definest the location
+		"usage":PROPERTY_USAGE_DEFAULT,	
+		"dialogic_type":DialogicValueType.Integer,	# Additional information for value displays
+		"hint_string":"Position:"		# Text that will be displayed in front of the field
 		})
 	
 	

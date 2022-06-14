@@ -1,0 +1,20 @@
+Start
+if true:
+	This should play if true
+	if true:
+		THIS SHOULDN'T PLAY!
+
+
+elif true:
+	ELIF ELIF ELIF
+	if true:
+		ELIF ELIF ELIF ADDITION
+
+
+elif true:
+	ELIF ELIF ELIF 2222
+
+else:
+	ELSE ELSE ELSE !!!!
+
+End of affairs

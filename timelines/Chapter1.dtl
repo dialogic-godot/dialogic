@@ -1,8 +1,20 @@
-The timeline begins.
+Join Emilio (surprise) 4
+Emilio: This is some text 
+Join Jowan (surprise) 2
+Wait 1
+Update Emilio (sad) 5
+Emilio (shy): The timeline begins (different portrait).
 - Yes!
 	if true:
-		This is always true.
+		Jowan (sad): This is always true.
 
+	elif false:
+		This should play otherwise
+
+	else:
+		This plays if non of the above where true.
+
+	End of choice yes
 - NO!
 	if "".empty():
 		NO PLAY 1
@@ -11,6 +23,7 @@ The timeline begins.
 
 
 
+Leave Emilio () 3
 if 4>2:
 	Emilio: 4 is bigger than 2
 	if 2>4:
