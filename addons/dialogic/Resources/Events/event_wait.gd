@@ -6,15 +6,7 @@ extends DialogicEvent
 var Time :float = 1.0
 
 func _execute() -> void:
-	var timer = Timer.new()
-	dialogic_game_handler.add_child(timer)
-	timer.one_shot = true
-	timer.wait_time = Time
-	timer.connect("timeout", self, 'timeout', [timer])
-	timer.start()
-
-func timeout(the_timer):
-	the_timer.queue_free()
+	yield(dialogic_game_handler.get_tree().create_timer(Time), "timeout")
 	finish()
 
 ################################################################################
