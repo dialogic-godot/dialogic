@@ -209,9 +209,9 @@ func _on_Indent_visibility_changed():
 		return
 	if needs_indentation:
 		if indent_node.visible:
-			remove_warning(DTS.translate("This event needs a question event around it!"))
+			remove_warning("This event needs a question event around it!")
 		else:
-			set_warning(DTS.translate("This event needs a question event around it!"))
+			set_warning("This event needs a question event around it!")
 
 
 func _on_gui_input(event):
@@ -261,7 +261,7 @@ func _request_selection():
 ## *****************************************************************************
 
 func _ready():
-	event_name = DTS.translate(event_name)
+	#event_name = DTS.translate(event_name)
 	
 	## DO SOME STYLING
 	$PanelContainer/SelectedStyle.modulate = get_color("accent_color", "Editor")

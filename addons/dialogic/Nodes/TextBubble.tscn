@@ -44,9 +44,10 @@ tracks/0/keys = {
 }
 
 [sub_resource type="StyleBoxFlat" id=6]
-content_margin_left = 20.0
-content_margin_right = 20.0
-content_margin_bottom = -170.0
+content_margin_left = 10.0
+content_margin_right = 10.0
+content_margin_top = 0.0
+content_margin_bottom = 0.0
 bg_color = Color( 1, 1, 1, 0 )
 expand_margin_left = 10.0
 
@@ -60,9 +61,6 @@ margin_top = 399.0
 margin_right = 455.0
 margin_bottom = 560.0
 script = ExtResource( 4 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="ColorRect" type="ColorRect" parent="."]
 visible = false
@@ -73,15 +71,10 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="TextureRect" type="TextureRect" parent="."]
+[node name="TextureRect" type="NinePatchRect" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
 texture = ExtResource( 2 )
-expand = true
-stretch_mode = 1
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="TextContainer" type="VBoxContainer" parent="."]
 anchor_right = 1.0

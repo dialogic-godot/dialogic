@@ -166,7 +166,8 @@ func animate(animation_name = '[No Animation]', time = 1, loop = 1, delete = fal
 		$AnimationTween.play($TextureRect, animation_name, time)
 	
 	if delete:
-		$AnimationTween.connect("tween_all_completed", self, "queue_free")
+		if !$AnimationTween.is_connected("tween_all_completed", self, "queue_free"):
+			$AnimationTween.connect("tween_all_completed", self, "queue_free")
 
 
 func focus():

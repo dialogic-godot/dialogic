@@ -9,6 +9,9 @@ The settings are sorted into different sections. Most are self-explanatory, but 
 ## Dialog Text
 Allows you to set the look and behavior of the text inside the dialog box.
 
+##### Margin
+Sets the individual margin between the border of the box and the edge the dialog text for a given side.
+
 ##### Behaviour>Speed
 Using this setting, you can change the speed at which the text is shown. Bigger values will result in a slower speed.
 Setting this to 0 will result in the text instantly appearing.
@@ -27,14 +30,15 @@ If enabled, the dialog box will not delete itself after the last event. Instead 
 ### Dialog Box>Visuals
 You may choose either a solid color or a texture for the background of the box. For the texture, you can also change its modulation.
 
-##### Visuals>Full width
+## Dialog Box>Visuals>9-Patch Margin Left/Right and Top/Bottom
+Allows you to configure 9-Patch Rectangle support on the approprate sides of your image. See this tutorial for details on how a 9-patch rect works [Youtube](https://www.youtube.com/watch?v=1u4817DKvb8). Leaving these values at 0 treats the texture as a normal background texture.
+
+##### Size and Position>Full width
 This setting makes your box stretch to the full extent of the view.
 
-##### Visuals>Box padding
-Sets the padding between the border of the box and the text inside the box.
+##### Size and Position>Margin
+Sets the individual margin between the border of the box and the edge of the viewport.
 
-##### Visuals>Bottom gap
-Sets how far the box is from the bottom.
 
 ### Next indicator
 An icon that appears once the text is completed.
