@@ -47,7 +47,7 @@ static func start(timeline: String = '', default_timeline: String ='', dialog_sc
 	
 	returned_dialog_node = dialog_node if not canvas_dialog_node else canvas_dialog_node
 	
-	dialog_node.current_langauge = language
+	dialog_node.current_language = language
 	
 	## 1. Case: A slot has been loaded OR data has been imported
 	if timeline == '':

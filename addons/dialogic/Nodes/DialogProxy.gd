@@ -5,12 +5,12 @@ extends Control
 export(String, "TimelineDropdown") var timeline: String
 export(bool) var add_canvas = true
 export(bool) var reset_saves = true
-export(String) var langauge: String = "INTERNAL" #TODO make custom langauge picker based on TimelineDropdown
+export(String) var language: String = "INTERNAL" #TODO make custom language picker based on TimelineDropdown
 
 func _ready():
 	if reset_saves:
 		Dialogic.reset_saves()
-	var d = Dialogic.start(timeline, '', "res://addons/dialogic/Nodes/DialogNode.tscn", add_canvas, langauge)
+	var d = Dialogic.start(timeline, '', "res://addons/dialogic/Nodes/DialogNode.tscn", add_canvas, language)
 	get_parent().call_deferred('add_child', d)
 	_copy_signals(d if not add_canvas else d.dialog_node)	
 	queue_free()

@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://addons/dialogic/Images/Context Menus/Remove.svg" type="Texture" id=1]
-[ext_resource path="res://addons/dialogic/Editor/SettingsEditor/Scenes/LangaugeData.gd" type="Script" id=2]
+[ext_resource path="res://addons/dialogic/Editor/SettingsEditor/Scenes/LanguageData.gd" type="Script" id=2]
 
 [node name="LanguageData" type="VBoxContainer"]
 margin_top = 54.0
@@ -16,7 +16,7 @@ __meta__ = {
 margin_right = 304.0
 margin_bottom = 14.0
 custom_colors/font_color = Color( 0.329412, 0.898039, 1, 1 )
-text = "Langauge internal name"
+text = "Language internal name"
 align = 1
 
 [node name="settings1" type="HBoxContainer" parent="."]
@@ -68,7 +68,7 @@ text = "TODO"
 margin_left = 276.0
 margin_right = 304.0
 margin_bottom = 24.0
-hint_tooltip = "Deletes the langauge data.
+hint_tooltip = "Deletes the language data.
 This will NOT delete the language from your timelines.
 If you delete a language by accident, you can safely recreate it by using the same internal name."
 icon = ExtResource( 1 )

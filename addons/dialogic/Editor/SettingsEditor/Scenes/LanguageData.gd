@@ -32,9 +32,9 @@ func _enter_tree():
 			"display" : "english", #fair presumtion
 			"use_default_voice" : true, #this setting would not matter any way for default.
 		})
-		nodes["dname"].hint_tooltip = "Set the display-name of the default lanaguge.\nThis is only used in the editor itself."
+		nodes["dname"].hint_tooltip = "Set the display-name of the default language.\nThis is only used in the editor itself."
 	else:
-		nodes["dname"].hint_tooltip = "Set the display-name of the "+data.get("internal", "[MISSING]")+" lanaguge.\nThis is only used in the editor itself."
+		nodes["dname"].hint_tooltip = "Set the display-name of the "+data.get("internal", "[MISSING]")+" language.\nThis is only used in the editor itself."
 	var voice_enabled = DialogicResources.get_settings_value("dialog", "text_event_audio_enable", false)
 	nodes["voice"].visible = voice_enabled && not is_default
 
@@ -47,7 +47,7 @@ func _setdata(value:Dictionary):
 
 ### Since data may change rapidly, we don't want to load alter and save the
 ### configuration several times per secund. 
-### This function tells Godot to wait 2 secunds before saving data.
+### This function tells Godot to wait 2 seconds before saving data.
 func _data_changed():
 	if _pending:
 		return

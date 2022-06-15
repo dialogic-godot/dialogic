@@ -410,7 +410,7 @@ func load_dialog():
 	# But until performance is not an issue I will probably stay lazy
 	# And keep adding different functions for each parsing operation.
 	if DialogicResources.get_settings_value("multilang", "enabled", false):
-		dialog_script = DialogicParser.parse_langauge(dialog_script, current_language)
+		dialog_script = DialogicParser.parse_language(dialog_script, current_language)
 	if settings.get_value('dialog', 'auto_color_names', true):
 		dialog_script = DialogicParser.parse_characters(dialog_script)
 	dialog_script = DialogicParser.parse_text_lines(dialog_script, preview)
