@@ -4,7 +4,7 @@ class_name DialogicEvent
 
 
 ## The event icon that'll be displayed in the editor
-var event_icon:Texture = load("res://addons/dialogic/Images/Event Icons/warning.svg")
+var event_icon:Texture = load("res://addons/dialogic/Editor/Images/Event Icons/warning.svg")
 
 ## The event color that event node will take in the editor
 var event_color:Color = Color("FBB13C")

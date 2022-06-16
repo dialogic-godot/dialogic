@@ -1,3 +1,4 @@
+Change Background "res://icon.png"
 Join Emilio (surprise) 4
 Emilio: This is some text 
 Join Jowan (surprise) 2
@@ -5,11 +6,13 @@ Wait 1
 Update Emilio (sad) 5
 Emilio (shy): The timeline begins (different portrait).
 - Yes!
+	Start Timeline "res://timelines/Test2.dtl"
 	if true:
 		Jowan (sad): This is always true.
 
 	elif false:
 		This should play otherwise
+		End Timeline
 
 	else:
 		This plays if non of the above where true.

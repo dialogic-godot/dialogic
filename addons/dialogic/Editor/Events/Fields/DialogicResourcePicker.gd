@@ -35,10 +35,13 @@ func set_hint(value):
 func set_value(value):
 	if value is DialogicCharacter:
 		$Search.text = value.name
-		$Search/OpenButton.show()
+		#$Search/OpenButton.show()
 	elif typeof(value) == TYPE_STRING and resource_type == resource_types.Portraits:
 		$Search.text = value
 		$Search/OpenButton.hide()
+	elif value is DialogicTimeline:
+		$Search.text = value.resource_path.get_file().trim_suffix("."+value.resource_path.get_extension())
+		#$Search/OpenButton.show()
 	else:
 		$Search.text = ""
 		$Search/OpenButton.hide()
@@ -119,7 +122,7 @@ func suggestion_selected(index):
 	
 	ignore_popup_hide_once = true
 	$Search/Suggestions.hide()
-	if resource_type != resource_types.Portraits: $Search/OpenButton.show()
+	#if resource_type != resource_types.Portraits: $Search/OpenButton.show()
 	
 	emit_signal("value_changed", property_name, current_value)
 

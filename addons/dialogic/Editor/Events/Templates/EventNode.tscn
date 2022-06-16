@@ -4,8 +4,8 @@
 [ext_resource path="res://addons/dialogic/Editor/Events/Parts/EventBlock/ExpandControl.tscn" type="PackedScene" id=2]
 [ext_resource path="res://addons/dialogic/Editor/Events/styles/selected_styleboxflat.tres" type="StyleBox" id=3]
 [ext_resource path="res://addons/dialogic/Editor/Events/styles/ResourceMenuPanelBackground.tres" type="StyleBox" id=5]
-[ext_resource path="res://addons/dialogic/Images/Plugin/plugin-editor-icon-dark-theme.svg" type="Texture" id=6]
-[ext_resource path="res://addons/dialogic/Images/Event Icons/event-outline.svg" type="Texture" id=7]
+[ext_resource path="res://addons/dialogic/Editor/Images/Plugin/plugin-editor-icon-dark-theme.svg" type="Texture" id=6]
+[ext_resource path="res://addons/dialogic/Editor/Images/Event Icons/event-outline.svg" type="Texture" id=7]
 [ext_resource path="res://addons/dialogic/Editor/Events/Parts/EventBlock/PopupMenu.gd" type="Script" id=8]
 
 [sub_resource type="StyleBoxFlat" id=1]

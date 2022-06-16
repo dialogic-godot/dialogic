@@ -18,7 +18,7 @@ func _execute() -> void:
 # SET ALL VALUES THAT SHOULD NEVER CHANGE HERE
 func _init() -> void:
 	event_name = "Comment"
-	event_icon = load("res://addons/dialogic/Images/Event Icons/Main Icons/label.svg")
+	event_icon = load("res://addons/dialogic/Editor/Images/Event Icons/Main Icons/label.svg")
 	event_color = Color(0.53125, 0.53125, 0.53125)
 	event_category = Category.OTHER
 	event_sorting_index = 0

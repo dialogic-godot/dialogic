@@ -70,6 +70,10 @@ static func get_event_by_string(string:String) -> Resource:
 	for event in [ # the text event should always be last. 
 		# Every event that isn't identified as something else, will end up as text
 		# We should get this list from a folder or something, but then we'll have to sort it somehow
+		"res://addons/dialogic/Resources/Events/event_end.gd",
+		"res://addons/dialogic/Resources/Events/event_change_timeline.gd",
+		"res://addons/dialogic/Resources/Events/event_visual_background.gd",
+		"res://addons/dialogic/Resources/Events/event_signal.gd",
 		"res://addons/dialogic/Resources/Events/event_wait.gd",
 		"res://addons/dialogic/Resources/Events/event_condition.gd",
 		"res://addons/dialogic/Resources/Events/event_end_branch.gd",

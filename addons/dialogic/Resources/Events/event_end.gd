@@ -1,13 +1,14 @@
 tool
 extends DialogicEvent
-class_name DialogicChoiceEvent
+
 
 # DEFINE ALL PROPERTIES OF THE EVENT
-var Text :String = ""
+
 
 func _execute() -> void:
-	# I have no idea how this event works
-	finish()
+	for character in dialogic_game_handler.get_joined_characters():
+		dialogic_game_handler.remove_portrait(character)
+	dialogic_game_handler.end_timeline()
 
 
 ################################################################################
@@ -16,11 +17,12 @@ func _execute() -> void:
 
 # SET ALL VALUES THAT SHOULD NEVER CHANGE HERE
 func _init() -> void:
-	event_name = "Choice"
-	event_icon = load("res://addons/dialogic/Editor/Images/Event Icons/Main Icons/choice.svg")
-	event_color = Color("#9e77ec")
-	event_category = Category.LOGIC
-	event_sorting_index = 0
+	event_name = "End Timeline"
+	event_icon = load("res://addons/dialogic/Editor/Images/Event Icons/Main Icons/close-dialog.svg")
+	event_color = Color("#f04438")
+	event_category = Category.TIMELINE
+	event_sorting_index = 3
+	
 
 
 ################################################################################
@@ -30,8 +32,8 @@ func _init() -> void:
 ## THIS RETURNS A READABLE REPRESENTATION, BUT HAS TO CONTAIN ALL DATA (This is how it's stored)
 func get_as_string_to_store() -> String:
 	var result_string = ""
-
-	result_string = "- "+Text
+	
+	result_string = "End Timeline"
 	
 	return result_string
 
@@ -39,15 +41,13 @@ func get_as_string_to_store() -> String:
 ## THIS HAS TO READ ALL THE DATA FROM THE SAVED STRING (see above) 
 func load_from_string_to_store(string:String):
 	
-	Text = string.strip_edges().trim_prefix("-").strip_edges()
+	pass
 
 
 # RETURN TRUE IF THE GIVEN LINE SHOULD BE LOADED AS THIS EVENT
-static func is_valid_event_string(string:String) -> bool:
-	
-	if string.strip_edges().begins_with("-"):
+static func is_valid_event_string(string:String):
+	if string.strip_edges().to_lower() == "end timeline":
 		return true
-	
 	return false
 
 
@@ -59,13 +59,13 @@ func _get_property_list() -> Array:
 	var p_list = []
 	
 	# fill the p_list with dictionaries like this one:
-	p_list.append({
-		"name":"Text", # Must be the same as the corresponding property that it edits!
-		"type":TYPE_STRING,	# Defines the type of editor (LineEdit, Selector, etc.)
-		"location": Location.HEADER,	# Definest the location
-		"usage":PROPERTY_USAGE_DEFAULT,	
-		"dialogic_type":DialogicValueType.SinglelineText,	# Additional information for resource pickers
-		"hint_string":""		# Text that will be displayed in front of the field
-		})
+#	p_list.append({
+#		"name":"Character", # Must be the same as the corresponding property that it edits!
+#		"type":TYPE_OBJECT,	# Defines the type of editor (LineEdit, Selector, etc.)
+#		"location": Location.HEADER,	# Definest the location
+#		"usage":PROPERTY_USAGE_DEFAULT,	
+#		"dialogic_type":DialogicValueType.Character,	# Additional information for resource pickers
+#		"hint_string":"Character:"		# Text that will be displayed in front of the field
+#		})
 	
 	return p_list

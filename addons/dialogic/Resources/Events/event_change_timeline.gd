@@ -3,13 +3,15 @@ extends DialogicEvent
 
 
 # DEFINE ALL PROPERTIES OF THE EVENT
-var Time :float = 1.0
+var Timeline :DialogicTimeline = null
+var Anchor : String = ""
 
 func _execute() -> void:
-	dialogic_game_handler.current_state = dialogic_game_handler.states.WAITING
-	yield(dialogic_game_handler.get_tree().create_timer(Time), "timeout")
-	dialogic_game_handler.current_state = dialogic_game_handler.states.IDLE
-	finish()
+	if Timeline:
+		dialogic_game_handler.start_timeline(Timeline)
+	else:
+		finish()
+
 
 ################################################################################
 ## 						INITIALIZE
@@ -17,11 +19,12 @@ func _execute() -> void:
 
 # SET ALL VALUES THAT SHOULD NEVER CHANGE HERE
 func _init() -> void:
-	event_name = "Wait"
-	event_icon = load("res://addons/dialogic/Editor/Images/Event Icons/Main Icons/wait-seconds.svg")
-	event_color = Color("#657084")
+	event_name = "Change Timeline"
+	event_icon = load("res://addons/dialogic/Editor/Images/Event Icons/Main Icons/change-timeline.svg")
+	event_color = Color("#12b76a")
 	event_category = Category.TIMELINE
 	event_sorting_index = 0
+	
 
 
 ################################################################################
@@ -32,23 +35,35 @@ func _init() -> void:
 func get_as_string_to_store() -> String:
 	var result_string = ""
 	
-	result_string = "Wait "+str(Time)
-	
+	if Timeline is DialogicTimeline:
+		result_string = 'Start Timeline "'+Timeline.resource_path+'"'
+	else:
+		result_string = 'Start Timeline " "'
 	return result_string
 
 
 ## THIS HAS TO READ ALL THE DATA FROM THE SAVED STRING (see above) 
 func load_from_string_to_store(string:String):
 	
-	Time = float(string.trim_prefix('Wait ').strip_edges())
-
+	var timeline_name_or_path = string.strip_edges().trim_prefix('Start Timeline "').trim_suffix('"').strip_edges()
+	print("should load ", timeline_name_or_path)
+	var timeline_resource = null
+	if not timeline_name_or_path.ends_with('.dtl'):
+		timeline_resource = DialogicUtil.guess_resource('.dtl', timeline_name_or_path)
+	else: timeline_resource = timeline_name_or_path
+	if timeline_resource:
+		var tl = load(timeline_resource)
+		if tl is DialogicTimeline:
+			Timeline = tl
+		else:
+			print('[Dialogic] Error loading timeline "'+timeline_name_or_path+'"')
+		
 
 # RETURN TRUE IF THE GIVEN LINE SHOULD BE LOADED AS THIS EVENT
 static func is_valid_event_string(string:String):
 	
-	if string.begins_with('Wait '):
+	if string.begins_with('Start Timeline "'):
 		return true
-	
 	return false
 
 
@@ -61,12 +76,12 @@ func _get_property_list() -> Array:
 	
 	# fill the p_list with dictionaries like this one:
 	p_list.append({
-		"name":"Time", # Must be the same as the corresponding property that it edits!
-		"type":TYPE_REAL,	# Defines the type of editor (LineEdit, Selector, etc.)
+		"name":"Timeline", # Must be the same as the corresponding property that it edits!
+		"type":TYPE_OBJECT,	# Defines the type of editor (LineEdit, Selector, etc.)
 		"location": Location.HEADER,	# Definest the location
 		"usage":PROPERTY_USAGE_DEFAULT,	
-		"dialogic_type":DialogicValueType.Float,	# Additional information for resource pickers
-		"hint_string":"Seconds:"		# Text that will be displayed in front of the field
+		"dialogic_type":DialogicValueType.Timeline,	# Additional information for resource pickers
+		"hint_string":"Timeline:"		# Text that will be displayed in front of the field
 		})
 	
 	return p_list

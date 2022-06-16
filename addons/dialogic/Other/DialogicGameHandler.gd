@@ -1,6 +1,6 @@
 extends Node
 
-enum states {IDLE, SHOWING_TEXT, ANIMATING, AWAITING_CHOICE}
+enum states {IDLE, SHOWING_TEXT, ANIMATING, AWAITING_CHOICE, WAITING}
 
 var current_timeline = null
 var current_timeline_events = []
@@ -16,6 +16,7 @@ var current_text
 
 signal state_changed(new_state)
 signal timeline_ended()
+signal signal_event(argument)
 
 ################################################################################
 ## 						INPUT (WIP)
@@ -25,6 +26,8 @@ func _input(event:InputEvent) -> void:
 	if event is InputEventMouseButton and event.pressed:
 		if current_state == states.IDLE:
 			handle_next_event()
+		elif current_state == states.SHOWING_TEXT:
+			skip_text_animation()
 
 ################################################################################
 ## 						TIMELINE+EVENT HANDLING
@@ -42,11 +45,20 @@ func start_timeline(timeline_resource) -> void:
 	handle_next_event()
 
 
+func end_timeline():
+	current_timeline = null
+	current_timeline_events = []
+	emit_signal("timeline_ended")
+
+
 func handle_next_event(ignore_argument = "") -> void:
 	handle_event(current_event_idx+1)
 	
 	
 func handle_event(event_index:int) -> void:
+	if not current_timeline:
+		return
+	
 	hide_all_choices()
 	if event_index >= len(current_timeline_events):
 		emit_signal('timeline_ended')
@@ -72,9 +84,14 @@ func reset_all_display_nodes() -> void:
 	hide_all_choices()
 
 func update_dialog_text(text:String) -> void:
+	current_state = states.SHOWING_TEXT
 	for text_node in get_tree().get_nodes_in_group('dialogic_dialog_text'):
 		text_node.bbcode_text = text
 		text_node.reveal_text()
+
+func skip_text_animation():
+	for text_node in get_tree().get_nodes_in_group('dialogic_dialog_text'):
+		text_node.finish_text()
 
 func update_name_label(name:String, color:Color = Color()) -> void:
 	for name_label in get_tree().get_nodes_in_group('dialogic_name_label'):
@@ -154,11 +171,19 @@ func choice_selected(event_index:int) -> void:
 	current_state = states.IDLE
 	handle_event(event_index)
 
+func update_background(path:String) -> void:
+	for node in get_tree().get_nodes_in_group('dialogic_bg_image'):
+		if path.ends_with('.tscn'):
+			node.add_child(load(path).instance())
+		else:
+			node.texture = load(path)
+
 
 ################################################################################
 ## 						HELPERS
 ################################################################################
 func set_current_state(new_state:int) -> void:
+	print('~~~ CHANGE STATE ', ["IDLE", "TEXT", "ANIM", "CHOICE", "WAIT",][new_state])
 	current_state = new_state
 	emit_signal('state_changed', new_state)
 
@@ -199,9 +224,14 @@ func is_character_joined(character:DialogicCharacter) -> bool:
 			return true
 	return false
 
+func get_joined_characters() -> Array:
+	var chars = []
+	for portrait in current_portraits:
+		chars.append(portrait.character)
+	return chars
+
 func get_current_portrait_info_of_character(character:DialogicCharacter) -> Array:
 	for portrait in current_portraits:
 		if portrait.character == character:
 			return portrait
 	return []
-
