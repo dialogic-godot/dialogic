@@ -199,12 +199,13 @@ func build_editor():
 				editor_node = load("res://addons/dialogic/Editor/Events/Fields/SinglelineText.tscn").instance()
 		
 		elif p.type == TYPE_OBJECT and p.has('dialogic_type'):
+			editor_node = load("res://addons/dialogic/Editor/Events/Fields/DialogicResourcePicker.tscn").instance()
 			if p.dialogic_type == resource.DialogicValueType.Character:
-				editor_node = load("res://addons/dialogic/Editor/Events/Fields/DialogicResourcePicker.tscn").instance()
 				editor_node.resource_type = editor_node.resource_types.Characters
 			elif p.dialogic_type == resource.DialogicValueType.Portrait:
-				editor_node = load("res://addons/dialogic/Editor/Events/Fields/DialogicResourcePicker.tscn").instance()
 				editor_node.resource_type = editor_node.resource_types.Portraits
+			elif p.dialogic_type == resource.DialogicValueType.Timeline:
+				editor_node.resource_type = editor_node.resource_types.Timelines
 		elif p.type == TYPE_INT:
 			if not p.has('dialogic_type') or p.dialogic_type == resource.DialogicValueType.Integer:
 				editor_node = load("res://addons/dialogic/Editor/Events/Fields/Number.tscn").instance()

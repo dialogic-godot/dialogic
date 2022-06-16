@@ -1,4 +1,4 @@
-Start
+Start Timeline "res://timelines/Chapter1.dtl"
 if true:
 	This should play if true
 	if true:

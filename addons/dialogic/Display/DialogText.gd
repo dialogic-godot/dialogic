@@ -7,7 +7,7 @@ func _ready():
 	bbcode_text = ""
 	timer = Timer.new()
 	add_child(timer)
-	timer.wait_time = 0.001
+	timer.wait_time = 0.01
 	timer.connect("timeout", self, 'continue_reveal')
 
 func reveal_text():

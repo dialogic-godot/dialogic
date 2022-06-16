@@ -21,7 +21,7 @@ static func get_translations() -> Dictionary:
 	var translations = {}
 	
 	for resource in translations_resources:
-		var t:PHashTranslation = load('res://addons/dialogic/Localization/dialogic.' + resource + '.translation')
+		var t:PHashTranslation = load('res://addons/dialogic/Editor/Localization/dialogic.' + resource + '.translation')
 		if translations.has(t.locale):
 			translations[t.locale].append(t)
 		else:

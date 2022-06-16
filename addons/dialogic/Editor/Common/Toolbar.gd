@@ -13,7 +13,7 @@ func _ready():
 	$PlayTimeline.icon = get_icon("PlayScene", "EditorIcons")
 	$PlayTimeline.connect("pressed", self, "play_timeline")
 	
-	$AddTimeline.icon = load("res://addons/dialogic/Images/Toolbar/add-timeline.svg")
+	$AddTimeline.icon = load("res://addons/dialogic/Editor/Images/Toolbar/add-timeline.svg")
 
 ################################################################################
 ##							HELPERS
