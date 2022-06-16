@@ -6,6 +6,7 @@ var timeline_name: String = ''
 var timeline_file: String = ''
 var current_timeline: Dictionary = {}
 var TimelineUndoRedo := UndoRedo.new()
+var selected_language: String = "INTERNAL"
 
 onready var master_tree = get_node('../MasterTreeContainer/MasterTree')
 onready var timeline = $TimelineArea/TimeLine
@@ -1082,6 +1083,7 @@ func unfold_all_nodes():
 # called from the toolbar
 # part of multilang support
 func on_language_changed(language):
+	selected_language = language
 	for event in timeline.get_children():
 		event.on_language_changed(language)
 
@@ -1123,4 +1125,5 @@ func _read_event_data():
 
 func play_timeline():
 	DialogicResources.set_settings_value('QuickTimelineTest', 'timeline_file', timeline_file)
+	DialogicResources.set_settings_value('QuickTimelineTest', 'language', selected_language)
 	editor_reference.editor_interface.play_custom_scene('res://addons/dialogic/Editor/TimelineEditor/TimelineTestingScene.tscn')
