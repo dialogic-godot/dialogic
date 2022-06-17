@@ -52,7 +52,6 @@ func find_next_index():
 # SET ALL VALUES THAT SHOULD NEVER CHANGE HERE
 func _init() -> void:
 	event_name = "End Branch"
-	event_icon = load("res://addons/dialogic/Editor/Images/Event Icons/Main Icons/end-branch.svg")
 	event_color = Color.white
 	event_category = Category.LOGIC
 	event_sorting_index = 0

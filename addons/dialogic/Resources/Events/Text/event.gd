@@ -14,7 +14,6 @@ var Portrait = ""
 # you modify them
 func _init() -> void:
 	event_name = "Text"
-	event_icon = load("res://addons/dialogic/Editor/Images/Event Icons/Main Icons/text-event.svg")
 	event_color = Color("#ffffff")
 	event_category = Category.MAIN
 	event_sorting_index = 0

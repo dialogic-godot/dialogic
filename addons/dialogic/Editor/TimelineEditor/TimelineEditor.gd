@@ -79,16 +79,15 @@ func _ready():
 	
 	# Event buttons
 	var buttonScene = load("res://addons/dialogic/Editor/TimelineEditor/SmallEventButton.tscn")
-	var file_list = DialogicUtil.listdir("res://addons/dialogic/Resources/Events/")
+	var file_list = DialogicUtil.listdir("res://addons/dialogic/Resources/Events/", false)
 	for file in file_list:
-		if '.gd' in file:
-			var event_script = load("res://addons/dialogic/Resources/Events/" + file)
+			var event_script = load("res://addons/dialogic/Resources/Events/" + file + "/event.gd")
 			var event_resource = event_script.new()
 			if event_resource.disable_editor_button == true: continue
 			var button = buttonScene.instance()
 			button.resource = event_resource
 			button.visible_name = '       ' + event_resource.event_name
-			button.set_icon(event_resource.event_icon)
+			button.set_icon(event_resource.get_icon())
 			button.event_color = event_resource.event_color
 			button.event_category = event_resource.event_category
 			button.event_sorting_index = event_resource.event_sorting_index
@@ -97,9 +96,7 @@ func _ready():
 			button.connect('pressed', self, "_add_event_button_pressed", [event_script])
 
 			get_node("View/ScrollContainer/EventContainer/FlexContainer" + str(button.event_category)).add_child(button)
-#			while button.get_index() != 0 and button.event_sorting_index < get_node("View/ScrollContainer/EventContainer/FlexContainer" + 
-#					str(button.event_category)).get_child(button.get_index()-1).event_sorting_index:
-#				get_node("View/ScrollContainer/EventContainer/FlexContainer" + str(button.event_category + 1)).move_child(button, button.get_index()-1)
+
 
 
 

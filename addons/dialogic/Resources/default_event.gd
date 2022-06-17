@@ -17,7 +17,6 @@ func _execute() -> void:
 # SET ALL VALUES THAT SHOULD NEVER CHANGE HERE
 func _init() -> void:
 	event_name = "Default"
-	event_icon = load("res://addons/dialogic/Editor/Images/Event Icons/Portrait.svg")
 	event_color = Color("#ffffff")
 	event_category = Category.MAIN
 	event_sorting_index = 0

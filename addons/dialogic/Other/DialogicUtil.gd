@@ -14,7 +14,7 @@ static func get_editor_scale(ref) -> float:
 	return _scale
 
 
-static func listdir(path: String) -> Array:
+static func listdir(path: String, files_only: bool = true) -> Array:
 	# https://docs.godotengine.org/en/stable/classes/class_directory.html#description
 	var files: Array = []
 	var dir := Directory.new()
@@ -23,8 +23,12 @@ static func listdir(path: String) -> Array:
 		dir.list_dir_begin()
 		var file_name = dir.get_next()
 		while file_name != "":
-			if not dir.current_is_dir() and not file_name.begins_with("."):
-				files.append(file_name)
+			if not file_name.begins_with("."):
+				if files_only:
+					if not dir.current_is_dir():
+						files.append(file_name)
+				else:
+					files.append(file_name)
 			file_name = dir.get_next()
 		dir.list_dir_end()
 	else:
@@ -70,21 +74,21 @@ static func get_event_by_string(string:String) -> Resource:
 	for event in [ # the text event should always be last. 
 		# Every event that isn't identified as something else, will end up as text
 		# We should get this list from a folder or something, but then we'll have to sort it somehow
-		"res://addons/dialogic/Resources/Events/event_end.gd",
-		"res://addons/dialogic/Resources/Events/event_change_timeline.gd",
-		"res://addons/dialogic/Resources/Events/event_visual_background.gd",
-		"res://addons/dialogic/Resources/Events/event_signal.gd",
-		"res://addons/dialogic/Resources/Events/event_wait.gd",
-		"res://addons/dialogic/Resources/Events/event_condition.gd",
-		"res://addons/dialogic/Resources/Events/event_end_branch.gd",
-		"res://addons/dialogic/Resources/Events/event_choice.gd",
-		"res://addons/dialogic/Resources/Events/event_character.gd",
-		"res://addons/dialogic/Resources/Events/event_comment.gd",
-		"res://addons/dialogic/Resources/Events/event_text.gd"
+		"res://addons/dialogic/Resources/Events/End/event.gd",
+		"res://addons/dialogic/Resources/Events/Change Timeline/event.gd",
+		"res://addons/dialogic/Resources/Events/Visual Background/event.gd",
+		"res://addons/dialogic/Resources/Events/Signal/event.gd",
+		"res://addons/dialogic/Resources/Events/Wait/event.gd",
+		"res://addons/dialogic/Resources/Events/Condition/event.gd",
+		"res://addons/dialogic/Resources/Events/End Branch/event.gd",
+		"res://addons/dialogic/Resources/Events/Choice/event.gd",
+		"res://addons/dialogic/Resources/Events/Character/event.gd",
+		"res://addons/dialogic/Resources/Events/Comment/event.gd",
+		"res://addons/dialogic/Resources/Events/Text/event.gd"
 	]:
 		if load(event).is_valid_event_string(string):
 			return load(event)
-	return load("res://addons/dialogic/Resources/Events/event_text.gd")
+	return load("res://addons/dialogic/Resources/Events/Text/event.gd")
 
 
 # RENABLE IF REALLY NEEDED, OTHERWISE DELETE BEFORE RELEASE 

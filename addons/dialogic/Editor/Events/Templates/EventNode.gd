@@ -281,8 +281,8 @@ func _ready():
 	
 	indent_size = indent_size * DialogicUtil.get_editor_scale(self)
 	
-	if resource.event_icon != null:
-		_set_event_icon(resource.event_icon)
+	if resource.get_icon() != null:
+		_set_event_icon(resource.get_icon())
 	if event_name != null:
 		_set_event_name(event_name)
 

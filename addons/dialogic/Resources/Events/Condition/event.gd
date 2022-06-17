@@ -46,7 +46,6 @@ func _execute() -> void:
 # SET ALL VALUES THAT SHOULD NEVER CHANGE HERE
 func _init() -> void:
 	event_name = "Condition"
-	event_icon = load("res://addons/dialogic/Editor/Images/Event Icons/Main Icons/question.svg")
 	event_color = Color("#f3a04f")
 	event_category = Category.LOGIC
 	event_sorting_index = 0

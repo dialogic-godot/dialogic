@@ -20,7 +20,6 @@ func _execute() -> void:
 # SET ALL VALUES THAT SHOULD NEVER CHANGE HERE
 func _init() -> void:
 	event_name = "Change Timeline"
-	event_icon = load("res://addons/dialogic/Editor/Images/Event Icons/Main Icons/change-timeline.svg")
 	event_color = Color("#12b76a")
 	event_category = Category.TIMELINE
 	event_sorting_index = 0

@@ -2,10 +2,6 @@ tool
 extends Resource
 class_name DialogicEvent
 
-
-## The event icon that'll be displayed in the editor
-var event_icon:Texture = load("res://addons/dialogic/Editor/Images/Event Icons/warning.svg")
-
 ## The event color that event node will take in the editor
 var event_color:Color = Color("FBB13C")
 
@@ -149,3 +145,10 @@ func _to_string() -> String:
 
 func _hide_script_from_inspector():
 	return true
+
+
+func get_icon():
+	var icon = load(self.get_script().get_path().get_base_dir() + "/icon.svg")
+	if icon:
+		return icon
+	return load("res://addons/dialogic/Editor/Images/Event Icons/warning.svg")
