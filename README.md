@@ -11,7 +11,7 @@ Create dialogs, characters and scenes to display conversations in your Godot gam
 
 
 
-# Version 1.4 - Curves Ahead  ![Godot v3.4](https://img.shields.io/badge/godot-v3.4-%23478cbf)
+# Version 1.4.2 - Afterlife ![Godot v3.4](https://img.shields.io/badge/godot-v3.4-%23478cbf)
 
 ## Getting started
 
@@ -29,61 +29,58 @@ If you want to know more about installing plugins you can read the [Godot docs p
 You can also install Dialogic using the **AssetLib** tab in the editor, but the version here will not be the latest one available since it takes some time for it to be approved.
 
 ## ⚠ IMPORTANT
-If you encounter any issue when exporting your game, try having at least 1 theme in your project.
+There has been some people having issues exporting their games. If you are having issues you can try to add `*.cgh` and `*.json` to your export settings [(image)](https://coppolaemilio.com/images/dialogic/exporting-2.png). If it is not that, try having at least 1 theme in your project. If you still have issues, please [open an issue](https://github.com/coppolaemilio/dialogic/issues).
+
 
 ---
 
 ## 📃 Credits
 Made by [Emilio Coppola](https://github.com/coppolaemilio).
 
-Contributors: [Jowan-Spooner](https://github.com/Jowan-Spooner), [Arnaud](https://github.com/arnaudvergnet), [ellogwen](https://github.com/ellogwen), [Tim Krief](https://github.com/timkrief), [zaknafean](https://github.com/zaknafean), [and more!](https://github.com/coppolaemilio/dialogic/graphs/contributors). Special thanks: [Toen](https://twitter.com/ToenAndreMC), Òscar, [Francisco Presencia](https://francisco.io/). Placeholder images are from [Toen's](https://toen.world/) [YouTube DF series](https://www.youtube.com/watch?v=B1ggwiat7PM)
+Contributors: [Jowan-Spooner](https://github.com/Jowan-Spooner), [zaknafean](https://github.com/zaknafean), [Arnaud](https://github.com/arnaudvergnet), [ellogwen](https://github.com/ellogwen), [Tim Krief](https://github.com/timkrief), [and more!](https://github.com/coppolaemilio/dialogic/graphs/contributors). Special thanks: [Toen](https://twitter.com/ToenAndreMC), Òscar, [Francisco Presencia](https://francisco.io/). Placeholder images are from [Toen's](https://toen.world/) [YouTube DF series](https://www.youtube.com/watch?v=B1ggwiat7PM)
 
 ### Thank you to all my [Patreons](https://www.patreon.com/coppolaemilio) for making this possible!
 
-Mike King,
-Tyler Dean Osborne,
-Problematic Dave,
-Allyson Ota,
-Francisco Lepe,
-Gemma M. Rull,
-Alex Barton,
-Joe Constant,
-Kycho,
-JDA,
-Kersla Margdel,
-Chris Shove,
-Luke Peters,
-Wapiti,
-Penny,
-Garrett Guillotte,
-Sl Tu,
-Alex Harry,
-Rokatansky,
-Karl Anderson,
-GammaGames,
-Taankydaanky,
-Alex (Well Done Games),
-GodofGrunts,
-Tim Krief,
-Daniel Cheney,
-Carlo Cabanilla,
-Flaming Potato,
-Joseph Catrambone,
-AzulCrescent,
-Hector Na Em,
-Furroy,
-Sergey,
-Container7,
-BasicIncomePlz,
-p sis,
-Justin,
-Guy Dadon,
-Sukh Atwal,
-Patrick Hogan,
-Jesse Priest,
-Lunos,
-Ceah Sharp,
-Mark Charnock
+Mike King, 
+Allyson Ota, 
+Gemma M. Rull, 
+newyear Studios, 
+Joe Constant, 
+kycho , 
+Luke Peters, 
+Wapiti ., 
+Garrett Guillotte, 
+Karl Anderson, 
+Alex (Well Done Games), 
+GodofGrunts , 
+Tim Krief, 
+Daniel Cheney, 
+Carlo Cabanilla, 
+Flaming Potato, 
+Joseph Catrambone, 
+AzulCrescent , 
+Hector Na Em, 
+BasicIncomePlz, 
+p sis, 
+Sukh Atwal, 
+Patrick Hogan, 
+Jesse Priest, 
+Ceah Sharp, 
+Mark Charnock, 
+soliare, 
+Anthony Wilson, 
+KvaGram , 
+Steven Shearer, 
+Carter Lilley, 
+CorbineCaleb, 
+Thick Biscuit, 
+Rodemarck Júnior, 
+Jim Hewell, 
+White Vulture, 
+Brianna Allen, 
+teesloane, 
+RagingRoosevelt, 
+Jacquelinett
 
 
 

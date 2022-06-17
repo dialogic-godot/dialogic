@@ -1,6 +1,11 @@
 extends EditorExportPlugin
 
 func _export_begin(features: PoolStringArray, is_debug: bool, path: String, flags: int) -> void:
+	# This fixes the android export 'multiple file in zip' bug
+	for feature in features:
+		if feature == "Android":
+			return
+	
 	var file = File.new()
 	var directory = Directory.new()
 	

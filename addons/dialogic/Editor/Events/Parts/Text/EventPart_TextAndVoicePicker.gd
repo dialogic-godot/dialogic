@@ -44,7 +44,7 @@ func use_voices():
 	#if current language is set to internal/default, show audio
 	if c_lang == "INTERNAL":
 		return true
-	#If current langauge is set to use internal language's audio, hide audio
+	#If current language is set to use internal language's audio, hide audio
 	return not DialogicResources.get_settings_value(MULTI_SECTION_NAME, MULTI_LIST_NAME, {}).get(c_lang, {}).get("use_default_voice", true) 
 
 

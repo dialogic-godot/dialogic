@@ -8,7 +8,7 @@ const DEFAULT_NAME := "default"
 
 signal language_changed(value)
 
-var langauges:Array
+var languages:Array
 var list:OptionButton
 
 func _ready():
@@ -16,21 +16,21 @@ func _ready():
 	# 	hide?
 	list = $OptionButton
 	list.clear()
-	langauges = ["INTERNAL"]
+	languages = ["INTERNAL"]
 	var langdata:Dictionary = DialogicResources.get_settings_value(SECTION_NAME, LIST_NAME, {})
 	var defaultdata:Dictionary = DialogicResources.get_settings_value(SECTION_NAME, DEFAULT_NAME, {"display" : "english"})
 	list.add_item(defaultdata.get("display", "[missing]"))
 	for d in langdata:
 		list.add_item(langdata[d].get("display", "[missing]"))
-		langauges.append(langdata[d].get("internal", "INTERNAL"))
+		languages.append(langdata[d].get("internal", "INTERNAL"))
 
 
 func _on_OptionButton_item_selected(index:int):
-	emit_signal("language_changed", langauges[index])
+	emit_signal("language_changed", languages[index])
 
-#sets selected langauge if set from another menu above this.
-func on_language_changed(langauge):
-	var i:int = langauge.find(langauge)
+#sets selected language if set from another menu above this.
+func on_language_changed(language):
+	var i:int = language.find(language)
 	if i < 0:
 		i = 0
 	list.select(i)

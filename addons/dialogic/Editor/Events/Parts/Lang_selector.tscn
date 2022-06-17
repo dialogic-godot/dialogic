@@ -7,6 +7,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 margin_right = -862.0
 margin_bottom = -579.0
+rect_min_size = Vector2( 80, 0 )
 script = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -16,6 +17,7 @@ __meta__ = {
 anchor_right = 1.0
 anchor_bottom = 1.0
 text = "language"
+selected = 0
 __meta__ = {
 "_edit_use_anchors_": false
 }

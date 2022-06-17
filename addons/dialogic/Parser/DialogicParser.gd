@@ -1,12 +1,12 @@
 extends Node
 class_name DialogicParser
 
-static func parse_langauge(dialog_script, language):
+static func parse_language(dialog_script, language):
 	var langdata:Dictionary = DialogicResources.get_settings_value("multilang", "list", {}).get(language, {})
 	if language == "INTERNAL":
 		return dialog_script #no translation processing needed
 	if langdata.empty():
-		printerr("Langauge " + language + " is invalid or not defined. Proceeding with internal language.")
+		printerr("Language " + language + " is invalid or not defined. Proceeding with internal language.")
 		return dialog_script #Error prosessing language, skipping
 	var use_default_voice = langdata.get("use_default_voice", true)
 	var event_index := 0
@@ -26,7 +26,7 @@ static func parse_langauge(dialog_script, language):
 			var line:int = 0
 			#while loop becouse we don't know how many lines there are.
 			while(true):
-				#check if voicedata for this line exist for this langauge.
+				#check if voicedata for this line exist for this language.
 				if not voice_data.has(str(line)+"_"+language):
 					break #if it does not, we are done here.
 				voice_data[str(line)] = voice_data[str(line)+"_"+language]
