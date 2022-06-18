@@ -14,7 +14,7 @@ var Portrait = ""
 # you modify them
 func _init() -> void:
 	event_name = "Text"
-	event_color = Color("#ffffff")
+	event_color = Color("#2F80ED")
 	event_category = Category.MAIN
 	event_sorting_index = 0
 	help_page_path = "https://dialogic.coppolaemilio.com/documentation/Events/000/"

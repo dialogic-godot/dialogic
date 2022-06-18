@@ -46,7 +46,7 @@ func _execute() -> void:
 # SET ALL VALUES THAT SHOULD NEVER CHANGE HERE
 func _init() -> void:
 	event_name = "Condition"
-	event_color = Color("#f3a04f")
+	event_color = Color("#7622FF")
 	event_category = Category.LOGIC
 	event_sorting_index = 0
 	continue_at_end = true

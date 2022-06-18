@@ -5,13 +5,19 @@
 [ext_resource path="res://addons/dialogic/Editor/Events/styles/selected_styleboxflat.tres" type="StyleBox" id=3]
 [ext_resource path="res://addons/dialogic/Editor/Events/styles/ResourceMenuPanelBackground.tres" type="StyleBox" id=5]
 [ext_resource path="res://addons/dialogic/Editor/Images/Plugin/plugin-editor-icon-dark-theme.svg" type="Texture" id=6]
-[ext_resource path="res://addons/dialogic/Editor/Images/Event Icons/event-outline.svg" type="Texture" id=7]
 [ext_resource path="res://addons/dialogic/Editor/Events/Parts/EventBlock/PopupMenu.gd" type="Script" id=8]
 
 [sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 0.6, 0.6, 0.6, 0 )
 
-[sub_resource type="Image" id=5]
+[sub_resource type="StyleBoxFlat" id=2]
+bg_color = Color( 1, 1, 1, 1 )
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="Image" id=7]
 data = {
 "data": PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ),
 "format": "LumAlpha8",
@@ -20,13 +26,13 @@ data = {
 "width": 16
 }
 
-[sub_resource type="ImageTexture" id=3]
+[sub_resource type="ImageTexture" id=4]
 flags = 4
 flags = 4
-image = SubResource( 5 )
+image = SubResource( 7 )
 size = Vector2( 16, 16 )
 
-[sub_resource type="StyleBoxEmpty" id=4]
+[sub_resource type="StyleBoxEmpty" id=6]
 
 [node name="EventNode" type="HBoxContainer"]
 anchor_right = 1.0
@@ -88,14 +94,12 @@ custom_constants/separation = 0
 margin_bottom = 60.0
 mouse_filter = 1
 
-[node name="IconPanel" type="TextureRect" parent="PanelContainer/MarginContainer/VBoxContainer/Header/CenterContainer"]
+[node name="IconPanel" type="Panel" parent="PanelContainer/MarginContainer/VBoxContainer/Header/CenterContainer"]
 self_modulate = Color( 0.6, 0.6, 0.6, 1 )
 margin_top = 30.0
 margin_bottom = 30.0
 mouse_default_cursor_shape = 6
-texture = ExtResource( 7 )
-expand = true
-stretch_mode = 1
+custom_styles/panel = SubResource( 2 )
 
 [node name="IconTexture" type="TextureRect" parent="PanelContainer/MarginContainer/VBoxContainer/Header/CenterContainer/IconPanel"]
 anchor_left = 1.0
@@ -121,7 +125,7 @@ and [End branch] events.
     [Choice]
     [...]
 [End branch]"
-texture = SubResource( 3 )
+texture = SubResource( 4 )
 stretch_mode = 5
 __meta__ = {
 "_edit_use_anchors_": false
@@ -133,7 +137,7 @@ margin_bottom = 37.0
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 
 [node name="Content" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer/Header"]
-margin_right = 37.0
+margin_right = 43.0
 margin_bottom = 60.0
 size_flags_horizontal = 3
 
@@ -142,8 +146,8 @@ margin_left = 178.0
 margin_right = 242.0
 
 [node name="Spacer" type="Control" parent="PanelContainer/MarginContainer/VBoxContainer/Header"]
-margin_left = 37.0
-margin_right = 74.0
+margin_left = 43.0
+margin_right = 86.0
 margin_bottom = 60.0
 mouse_filter = 1
 size_flags_horizontal = 3
@@ -152,10 +156,12 @@ __meta__ = {
 }
 
 [node name="CollapseButton" type="ToolButton" parent="PanelContainer/MarginContainer/VBoxContainer/Header"]
+visible = false
 margin_left = 74.0
 margin_right = 86.0
 margin_bottom = 60.0
 toggle_mode = true
+icon = SubResource( 4 )
 
 [node name="Body" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
@@ -181,9 +187,9 @@ margin_right = 169.0
 margin_bottom = 112.0
 custom_colors/font_color_hover = Color( 0, 0, 0, 1 )
 custom_constants/vseparation = 0
-custom_styles/hover = SubResource( 4 )
+custom_styles/hover = SubResource( 6 )
 custom_styles/panel = ExtResource( 5 )
-items = [ "Documentation", SubResource( 3 ), 0, false, false, -1, 0, null, "", false, "", null, 0, false, false, -1, 0, null, "", true, "Move up", SubResource( 3 ), 0, false, false, 1, 0, null, "", false, "Move down", SubResource( 3 ), 0, false, false, 2, 0, null, "", false, "", null, 0, false, false, -1, 0, null, "", true, "Delete", SubResource( 3 ), 0, false, false, 4, 0, null, "", false ]
+items = [ "Documentation", SubResource( 4 ), 0, false, false, 0, 0, null, "", false, "", null, 0, false, false, -1, 0, null, "", true, "Move up", SubResource( 4 ), 0, false, false, 2, 0, null, "", false, "Move down", SubResource( 4 ), 0, false, false, 3, 0, null, "", false, "", null, 0, false, false, -1, 0, null, "", true, "Delete", SubResource( 4 ), 0, false, false, 5, 0, null, "", false ]
 script = ExtResource( 8 )
 
 [connection signal="visibility_changed" from="Indent" to="." method="_on_Indent_visibility_changed"]

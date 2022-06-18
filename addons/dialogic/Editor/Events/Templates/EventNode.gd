@@ -94,7 +94,7 @@ func _set_event_icon(icon: Texture):
 	if not get_constant("dark_theme", "Editor"):
 		icon_texture.self_modulate = get_color("font_color", "Editor")
 	# Resizing the icon acording to the scale
-	var icon_size = 38
+	var icon_size = 32
 	cpanel.rect_min_size = Vector2(icon_size, icon_size) * _scale
 	ip.rect_min_size = cpanel.rect_min_size
 	ipc.rect_min_size = ip.rect_min_size
@@ -281,13 +281,13 @@ func _ready():
 	
 	indent_size = indent_size * DialogicUtil.get_editor_scale(self)
 	
-	if resource.get_icon() != null:
-		_set_event_icon(resource.get_icon())
-	if event_name != null:
-		_set_event_name(event_name)
-
+	if resource:
+		if resource.get_icon() != null:
+			_set_event_icon(resource.get_icon())
+		if event_name != null:
+			_set_event_name(event_name)
 	
-	$PanelContainer/MarginContainer/VBoxContainer/Header/CenterContainer/IconPanel.set("self_modulate", resource.event_color)
+		$PanelContainer/MarginContainer/VBoxContainer/Header/CenterContainer/IconPanel.set("self_modulate", resource.event_color)
 	
 	set_focus_mode(1) # Allowing this node to grab focus
 	
