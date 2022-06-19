@@ -50,8 +50,8 @@ func save(path: String, resource: Resource, flags: int) -> int:
 			if idx < len(resource.events)-1 and resource.events[idx+1] is DialogicChoiceEvent:
 				indent -= 1
 			else:
+				result += "\t".repeat(indent)+"\n"
 				indent -= 1
-				result += "\n"
 			continue
 		if event != null:
 			result += "\t".repeat(indent)+event.get_as_string_to_store() + "\n"

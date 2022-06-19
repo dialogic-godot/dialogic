@@ -160,11 +160,13 @@ func show_current_choices() -> void:
 		button_idx += 1
 
 func show_choice(button_index:int, text:String, enabled:bool, event_index:int) -> void:
+	var idx = 1
 	for node in get_tree().get_nodes_in_group('dialogic_choice_button'):
-		if node.choice_index == button_index:
+		if (node.choice_index == button_index) or (idx == button_index and node.choice_index == -1):
 			node.show()
 			node.text = text
 			node.connect('pressed', self, 'choice_selected', [event_index])
+		idx += 1
 
 func choice_selected(event_index:int) -> void:
 	hide_all_choices()
@@ -199,10 +201,10 @@ func get_current_choice_indexes() -> Array:
 	var evt_idx = current_event_idx
 	var ignore = 0
 	while true:
+		
 		evt_idx += 1
 		if evt_idx >= len(current_timeline_events):
 			break
-		
 		if current_timeline_events[evt_idx] is DialogicChoiceEvent:
 			if ignore == 0:
 				choices.append(evt_idx)
@@ -215,7 +217,6 @@ func get_current_choice_indexes() -> Array:
 		
 		if current_timeline_events[evt_idx] is DialogicEndBranchEvent:
 			ignore -= 1
-	
 	return choices
 
 func is_character_joined(character:DialogicCharacter) -> bool:
