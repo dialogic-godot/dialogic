@@ -33,7 +33,7 @@ enum Location {
 # This is necessary to distinguish different ways value types might need to be represented
 # It's used to communicate between the event resource and the event node, how a value
 #    should be shown
-enum DialogicValueType {
+enum ValueType {
 	# STRINGS
 	Label,
 	MultilineText,
@@ -42,17 +42,17 @@ enum DialogicValueType {
 	# OBJECTS ? (for the ResourcePicker)
 	Timeline,
 	Character,
-	Theme,
 	Portrait,
-	Position,
-	Animation,
 	
 	# INTEGERS
 	FixedOptionSelector,
 	Integer,
-	
+
 	Float,
+	
+	Custom, 
 }
+var editor_list = []
 
 # Hopefully we can replace this with a cleaner system
 # maybe even generate them based on some markup? who knows, it is free to dream
@@ -139,19 +139,59 @@ func get_icon():
 	return load("res://addons/dialogic/Editor/Images/Event Icons/warning.svg")
 
 
-# Properties -------------------------------------------------------------------
+func parse_shortcode_parameters(shortcode : String) -> Dictionary:
+	var regex = RegEx.new()
+	regex.compile('((?<parameter>[^\\s=]*)\\s*=\\s*"(?<value>[^"]*)")')
+	var dict = {}
+	for result in regex.search_all(shortcode):
+		dict[result.get_string('parameter')] = result.get_string('value')
+	return dict
+
+################################################################################
+## 					BUILDING THE EDITOR LIST
+################################################################################
+func clear_editor() -> void:
+	editor_list.clear()
+
+
+func add_header_label(text:String) -> void:
+	editor_list.append({
+		"name":"something", 				# Must be the same as the corresponding property that it edits!
+		"type":TYPE_STRING,
+		"location": Location.HEADER,		# Definest the location
+		"usage":PROPERTY_USAGE_DEFAULT,	
+		"dialogic_type":ValueType.Label,	# Define the type of node
+		"display_info":{"text":text}, 
+		})
+
+
+func add_header_edit(variable:String, editor_type = ValueType.Label, left_text:String = "", right_text:String = "", extra_info:Dictionary = {}) -> void:
+	editor_list.append({
+		"name":variable, 				# Must be the same as the corresponding property that it edits!
+		"type":typeof(get(variable)),
+		"location": Location.HEADER,	# Definest the location
+		"usage":PROPERTY_USAGE_DEFAULT,	
+		"dialogic_type":editor_type,	# Define the type of node
+		"display_info":extra_info,
+		"left_text":left_text,			# Text that will be displayed left of the field
+		"right_text":right_text,		# Text that will be displayed right of the field
+		})
+
+
+func add_body_edit(variable:String, editor_type = ValueType.Label, extra_info:Dictionary = {}) -> void:
+	editor_list.append({
+		"name":variable, 				# Must be the same as the corresponding property that it edits!
+		"type":typeof(get(variable)),
+		"location": Location.BODY,	# Definest the location
+		"usage":PROPERTY_USAGE_DEFAULT,	
+		"dialogic_type":editor_type,	# Define the type of node
+		"display_info":extra_info,
+		})
+
 
 func __get_property_list() -> Array:
 	return []
 
-
-func property_label(text: String, location = Location.HEADER) -> Dictionary:
-	return {
-		"name": text,
-		"type": 0,
-		"location": location,
-		"dialogic_type":DialogicValueType.Label,
-	}
 
 func property_can_revert(property:String) -> bool:
 	if property == "event_node_path":
@@ -162,3 +202,4 @@ func property_can_revert(property:String) -> bool:
 func property_get_revert(property:String):
 	if property == "event_node_path":
 		return NodePath()
+

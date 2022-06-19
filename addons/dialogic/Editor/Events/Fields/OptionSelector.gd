@@ -12,8 +12,11 @@ func _ready():
 	$MenuButton.get_popup().connect("index_pressed", self,  'index_pressed')
 
 
-func set_hint(value):
-	$Hint.text = str(value)
+func set_right_text(value):
+	$RightText.text = str(value)
+
+func set_left_text(value):
+	$LeftText.text = str(value)
 
 func set_value(value):
 	for element in options:

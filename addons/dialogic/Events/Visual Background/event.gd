@@ -31,7 +31,7 @@ func _init() -> void:
 func get_as_string_to_store() -> String:
 	var result_string = ""
 	
-	result_string = 'Change Background "'+ImagePath+'"'
+	result_string = '[background path="'+ImagePath+'"]'
 	
 	return result_string
 
@@ -39,13 +39,15 @@ func get_as_string_to_store() -> String:
 ## THIS HAS TO READ ALL THE DATA FROM THE SAVED STRING (see above) 
 func load_from_string_to_store(string:String):
 	
-	ImagePath = string.trim_prefix('Change Background "').trim_suffix('"').strip_edges()
+	var data = parse_shortcode_parameters(string)
+	
+	ImagePath = data.get('path', '')
 
 
 # RETURN TRUE IF THE GIVEN LINE SHOULD BE LOADED AS THIS EVENT
 static func is_valid_event_string(string:String):
 	
-	if string.begins_with('Change Background "'):
+	if string.begins_with('[background'):
 		return true
 	return false
 
@@ -55,16 +57,8 @@ static func is_valid_event_string(string:String):
 ################################################################################
 
 func _get_property_list() -> Array:
-	var p_list = []
+
+	clear_editor()
+	add_header_edit('ImagePath', ValueType.SinglelineText, 'Path:')
 	
-	# fill the p_list with dictionaries like this one:
-	p_list.append({
-		"name":"ImagePath", # Must be the same as the corresponding property that it edits!
-		"type":TYPE_STRING,	# Defines the type of editor (LineEdit, Selector, etc.)
-		"location": Location.HEADER,	# Definest the location
-		"usage":PROPERTY_USAGE_DEFAULT,	
-		"dialogic_type":DialogicValueType.SinglelineText,	# Additional information for resource pickers
-		"hint_string":"Path:"		# Text that will be displayed in front of the field
-		})
-	
-	return p_list
+	return editor_list

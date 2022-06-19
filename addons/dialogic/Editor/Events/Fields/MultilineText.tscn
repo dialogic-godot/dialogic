@@ -27,13 +27,13 @@ rect_min_size = Vector2( 300, 30 )
 size_flags_horizontal = 3
 script = ExtResource( 1 )
 
-[node name="Hint" type="Label" parent="."]
+[node name="LeftText" type="Label" parent="."]
 margin_top = 93.0
 margin_bottom = 107.0
 
 [node name="TextEdit" type="TextEdit" parent="."]
 margin_left = 4.0
-margin_right = 1025.0
+margin_right = 1021.0
 margin_bottom = 200.0
 rect_min_size = Vector2( 100, 50 )
 size_flags_horizontal = 3
@@ -43,3 +43,9 @@ custom_styles/normal = ExtResource( 2 )
 show_line_numbers = true
 smooth_scrolling = true
 wrap_enabled = true
+
+[node name="RightText" type="Label" parent="."]
+margin_left = 1025.0
+margin_top = 93.0
+margin_right = 1025.0
+margin_bottom = 107.0

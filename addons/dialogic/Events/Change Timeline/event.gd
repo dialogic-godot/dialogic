@@ -45,7 +45,6 @@ func get_as_string_to_store() -> String:
 func load_from_string_to_store(string:String):
 	
 	var timeline_name_or_path = string.strip_edges().trim_prefix('Start Timeline "').trim_suffix('"').strip_edges()
-	print("should load ", timeline_name_or_path)
 	var timeline_resource = null
 	if not timeline_name_or_path.ends_with('.dtl'):
 		timeline_resource = DialogicUtil.guess_resource('.dtl', timeline_name_or_path)
@@ -71,16 +70,8 @@ static func is_valid_event_string(string:String):
 ################################################################################
 
 func _get_property_list() -> Array:
-	var p_list = []
-	
-	# fill the p_list with dictionaries like this one:
-	p_list.append({
-		"name":"Timeline", # Must be the same as the corresponding property that it edits!
-		"type":TYPE_OBJECT,	# Defines the type of editor (LineEdit, Selector, etc.)
-		"location": Location.HEADER,	# Definest the location
-		"usage":PROPERTY_USAGE_DEFAULT,	
-		"dialogic_type":DialogicValueType.Timeline,	# Additional information for resource pickers
-		"hint_string":"Timeline:"		# Text that will be displayed in front of the field
-		})
-	
-	return p_list
+
+	clear_editor()
+	add_header_edit('Timeline', ValueType.Timeline, 'Timeline:')
+
+	return editor_list

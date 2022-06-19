@@ -29,8 +29,11 @@ signal value_changed
 # These functions have to be implemented by all scenes that are used to display 
 # values on the events.
 
-func set_hint(value):
-	$Hint.text = str(value)
+func set_left_text(value):
+	$LeftText.text = str(value)
+
+func set_rightt_text(value):
+	$RightText.text = str(value)
 
 func set_value(value):
 	if value is DialogicCharacter:
@@ -51,7 +54,6 @@ func react_to_change():
 	if resource_type == resource_types.Portraits:
 		if event_resource.Character:
 			if current_value and (not (current_value in event_resource.Character.portraits.keys())):
-				print(event_resource.Character)
 				set_value("")
 				emit_signal("value_changed", property_name, "")
 			show()
@@ -151,11 +153,9 @@ func can_drop_data(position, data):
 	
 func drop_data(position, data):
 	var file = load(data.files[0])
-	$Search.text = file.name
-	current_value = file
+	set_value(file)
 	emit_signal("value_changed", property_name, file)
 
-	$Search/OpenButton.show()
 
 
 

@@ -12,7 +12,6 @@ var Position = 3
 var Animation = ""
 
 func _execute() -> void:
-	print(ActionType, Character, Portrait)
 	match ActionType:
 		ActionTypes.Join:
 			if Character and Portrait:
@@ -102,42 +101,11 @@ static func is_valid_event_string(string:String):
 ################################################################################
 
 func _get_property_list() -> Array:
-	var p_list = []
-	
-	# fill the p_list with dictionaries like this one:
-	p_list.append({
-		"name":"ActionType", # Must be the same as the corresponding property that it edits!
-		"type":TYPE_INT,	# Defines the type of editor (LineEdit, Selector, etc.)
-		"location": Location.HEADER,	# Definest the location
-		"usage":PROPERTY_USAGE_DEFAULT,	
-		"dialogic_type":DialogicValueType.FixedOptionSelector,	# Additional information for value displays
-		"selector_options":{"Join":ActionTypes.Join, "Leave":ActionTypes.Leave, "Update":ActionTypes.Update},
-		"hint_string":"Action:"		# Text that will be displayed in front of the field
-		})
-	p_list.append({
-		"name":"Character", # Must be the same as the corresponding property that it edits!
-		"type":TYPE_OBJECT,	# Defines the type of editor (LineEdit, Selector, etc.)
-		"location": Location.HEADER,	# Definest the location
-		"usage":PROPERTY_USAGE_DEFAULT,	
-		"dialogic_type":DialogicValueType.Character,	# Additional information for value displays
-		"hint_string":"Character:"		# Text that will be displayed in front of the field
-		})
-	p_list.append({
-		"name":"Portrait", # Must be the same as the corresponding property that it edits!
-		"type":TYPE_OBJECT,	# Defines the type of editor (LineEdit, Selector, etc.)
-		"location": Location.HEADER,	# Definest the location
-		"usage":PROPERTY_USAGE_DEFAULT,	
-		"dialogic_type":DialogicValueType.Portrait,	# Additional information for value displays
-		"hint_string":"Portrait:"		# Text that will be displayed in front of the field
-		})
-	p_list.append({
-		"name":"Position", # Must be the same as the corresponding property that it edits!
-		"type":TYPE_INT,	# Defines the type of editor (LineEdit, Selector, etc.)
-		"location": Location.HEADER,	# Definest the location
-		"usage":PROPERTY_USAGE_DEFAULT,	
-		"dialogic_type":DialogicValueType.Integer,	# Additional information for value displays
-		"hint_string":"Position:"		# Text that will be displayed in front of the field
-		})
-	
-	
-	return p_list
+	clear_editor()
+	add_header_edit('ActionType', ValueType.FixedOptionSelector, 'Action:', '',
+		 {'selector_options':{"Join":ActionTypes.Join, "Leave":ActionTypes.Leave, "Update":ActionTypes.Update}})
+	add_header_edit('Character', ValueType.Character, 'Character:')
+	add_header_edit('Portrait', ValueType.Portrait, 'Portrait:')
+	add_header_edit('Position', ValueType.Integer, 'Position:')
+
+	return editor_list

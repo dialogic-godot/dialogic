@@ -58,6 +58,7 @@ func save(path: String, resource: Resource, flags: int) -> int:
 		if event is DialogicChoiceEvent or event is DialogicConditionEvent:
 			indent += 1
 		if indent < 0: indent = 0
+		result += "\t".repeat(indent)+"\n"
 	file.store_string(result)
 	file.close()
 	return OK
