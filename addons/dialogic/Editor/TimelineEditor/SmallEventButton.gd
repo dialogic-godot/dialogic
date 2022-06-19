@@ -12,7 +12,7 @@ export (Resource) var resource
 func _ready():
 	self_modulate = Color(1,1,1)
 	if visible_name != '':
-		text = visible_name
+		text = '  ' + visible_name
 	hint_tooltip = DTS.translate(hint_tooltip)
 	var _scale = DialogicUtil.get_editor_scale(self)
 	rect_min_size = Vector2(30,30)
@@ -23,19 +23,7 @@ func _ready():
 	c_border.self_modulate = event_color
 	c_border.rect_min_size.x = 5 * _scale
 	c_border.rect_size.x = 5 * _scale
-	t_rect.margin_left = 18 * _scale
-	# Another programming crime was commited
-	# a switch statement is missing
-	# what a horrible sight
-	# elif I have you on my mind
-	if _scale == 2 or _scale == 1.75:
-		t_rect.rect_scale = Vector2(1, 1)
-	elif _scale == 1.5:
-		t_rect.rect_scale = Vector2(0.8, 0.8)
-	elif _scale == 0.75:
-		t_rect.rect_scale = Vector2(0.4, 0.4)
-	else:
-		t_rect.rect_scale = Vector2(0.6, 0.6)
+	t_rect.margin_left = 20 * _scale
 	
 	add_color_override("font_color", get_color("font_color", "Editor"))
 	add_color_override("font_color_hover", get_color("accent_color", "Editor"))

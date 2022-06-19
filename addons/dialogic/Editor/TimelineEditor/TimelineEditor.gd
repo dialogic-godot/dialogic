@@ -79,9 +79,9 @@ func _ready():
 	
 	# Event buttons
 	var buttonScene = load("res://addons/dialogic/Editor/TimelineEditor/SmallEventButton.tscn")
-	var file_list = DialogicUtil.listdir("res://addons/dialogic/Resources/Events/", false)
+	var file_list = DialogicUtil.listdir("res://addons/dialogic/Events/", false)
 	for file in file_list:
-			var event_script = load("res://addons/dialogic/Resources/Events/" + file + "/event.gd")
+			var event_script = load("res://addons/dialogic/Events/" + file + "/event.gd")
 			var event_resource = event_script.new()
 			if event_resource.disable_editor_button == true: continue
 			var button = buttonScene.instance()

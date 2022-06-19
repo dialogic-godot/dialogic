@@ -74,21 +74,21 @@ static func get_event_by_string(string:String) -> Resource:
 	for event in [ # the text event should always be last. 
 		# Every event that isn't identified as something else, will end up as text
 		# We should get this list from a folder or something, but then we'll have to sort it somehow
-		"res://addons/dialogic/Resources/Events/End/event.gd",
-		"res://addons/dialogic/Resources/Events/Change Timeline/event.gd",
-		"res://addons/dialogic/Resources/Events/Visual Background/event.gd",
-		"res://addons/dialogic/Resources/Events/Signal/event.gd",
-		"res://addons/dialogic/Resources/Events/Wait/event.gd",
-		"res://addons/dialogic/Resources/Events/Condition/event.gd",
-		"res://addons/dialogic/Resources/Events/End Branch/event.gd",
-		"res://addons/dialogic/Resources/Events/Choice/event.gd",
-		"res://addons/dialogic/Resources/Events/Character/event.gd",
-		"res://addons/dialogic/Resources/Events/Comment/event.gd",
-		"res://addons/dialogic/Resources/Events/Text/event.gd"
+		"res://addons/dialogic/Events/End/event.gd",
+		"res://addons/dialogic/Events/Change Timeline/event.gd",
+		"res://addons/dialogic/Events/Visual Background/event.gd",
+		"res://addons/dialogic/Events/Signal/event.gd",
+		"res://addons/dialogic/Events/Wait/event.gd",
+		"res://addons/dialogic/Events/Condition/event.gd",
+		"res://addons/dialogic/Events/End Branch/event.gd",
+		"res://addons/dialogic/Events/Choice/event.gd",
+		"res://addons/dialogic/Events/Character/event.gd",
+		"res://addons/dialogic/Events/Comment/event.gd",
+		"res://addons/dialogic/Events/Text/event.gd"
 	]:
 		if load(event).is_valid_event_string(string):
 			return load(event)
-	return load("res://addons/dialogic/Resources/Events/Text/event.gd")
+	return load("res://addons/dialogic/Events/Text/event.gd")
 
 
 # RENABLE IF REALLY NEEDED, OTHERWISE DELETE BEFORE RELEASE 

@@ -34,9 +34,6 @@ custom_colors/font_color_hover = Color( 0, 0, 0, 1 )
 custom_styles/focus = SubResource( 3 )
 flat = true
 script = ExtResource( 1 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="ColorBorder" type="Panel" parent="."]
 self_modulate = Color( 0.635294, 0.635294, 0.635294, 0.282353 )
@@ -62,8 +59,6 @@ __meta__ = {
 modulate = Color( 0, 0, 0, 1 )
 anchor_top = 0.5
 anchor_bottom = 0.5
-margin_left = 18.0
-rect_scale = Vector2( 0.6, 0.6 )
 size_flags_horizontal = 0
 size_flags_vertical = 0
 expand = true

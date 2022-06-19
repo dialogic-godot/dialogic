@@ -89,10 +89,7 @@ func _set_event_icon(icon: Texture):
 	var cpanel = $PanelContainer/MarginContainer/VBoxContainer/Header/CenterContainer
 	var ip = $PanelContainer/MarginContainer/VBoxContainer/Header/CenterContainer/IconPanel
 	var ipc = $PanelContainer/MarginContainer/VBoxContainer/Header/CenterContainer/IconPanel/IconTexture
-	# Change color if light theme
-	ipc.self_modulate = Color(1,1,1,1)
-	if not get_constant("dark_theme", "Editor"):
-		icon_texture.self_modulate = get_color("font_color", "Editor")
+	
 	# Resizing the icon acording to the scale
 	var icon_size = 32
 	cpanel.rect_min_size = Vector2(icon_size, icon_size) * _scale

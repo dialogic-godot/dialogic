@@ -98,6 +98,7 @@ mouse_filter = 1
 self_modulate = Color( 0.6, 0.6, 0.6, 1 )
 margin_top = 30.0
 margin_bottom = 30.0
+mouse_filter = 1
 mouse_default_cursor_shape = 6
 custom_styles/panel = SubResource( 2 )
 
