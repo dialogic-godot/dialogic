@@ -59,7 +59,7 @@ static func is_valid_event_string(string:String):
 ################################################################################
 
 func _get_property_list() -> Array:
-	
+
 	clear_editor()
 	add_header_edit('SecondsTime', ValueType.Float, 'Seconds:')
 	

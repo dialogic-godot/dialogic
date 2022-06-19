@@ -124,21 +124,6 @@ func _set_continue(value:bool) -> void:
 	emit_changed()
 
 
-func __get_property_list() -> Array:
-	return []
-
-
-func property_can_revert(property:String) -> bool:
-	if property == "event_node_path":
-		return true
-	return false
-
-
-func property_get_revert(property:String):
-	if property == "event_node_path":
-		return NodePath()
-
-
 func _to_string() -> String:
 	return "[{name}:{id}]".format({"name":event_name, "id":get_instance_id()})
 
@@ -168,6 +153,7 @@ func parse_shortcode_parameters(shortcode : String) -> Dictionary:
 func clear_editor() -> void:
 	editor_list.clear()
 
+
 func add_header_label(text:String) -> void:
 	editor_list.append({
 		"name":"something", 				# Must be the same as the corresponding property that it edits!
@@ -177,6 +163,7 @@ func add_header_label(text:String) -> void:
 		"dialogic_type":ValueType.Label,	# Define the type of node
 		"display_info":{"text":text}, 
 		})
+
 
 func add_header_edit(variable:String, editor_type = ValueType.Label, left_text:String = "", right_text:String = "", extra_info:Dictionary = {}) -> void:
 	editor_list.append({
@@ -190,6 +177,7 @@ func add_header_edit(variable:String, editor_type = ValueType.Label, left_text:S
 		"right_text":right_text,		# Text that will be displayed right of the field
 		})
 
+
 func add_body_edit(variable:String, editor_type = ValueType.Label, extra_info:Dictionary = {}) -> void:
 	editor_list.append({
 		"name":variable, 				# Must be the same as the corresponding property that it edits!
@@ -199,3 +187,19 @@ func add_body_edit(variable:String, editor_type = ValueType.Label, extra_info:Di
 		"dialogic_type":editor_type,	# Define the type of node
 		"display_info":extra_info,
 		})
+
+
+func __get_property_list() -> Array:
+	return []
+
+
+func property_can_revert(property:String) -> bool:
+	if property == "event_node_path":
+		return true
+	return false
+
+
+func property_get_revert(property:String):
+	if property == "event_node_path":
+		return NodePath()
+
