@@ -56,16 +56,14 @@ static func is_valid_event_string(string:String):
 ################################################################################
 
 func _get_property_list() -> Array:
-	var p_list = []
-	
-	# fill the p_list with dictionaries like this one:
-	p_list.append({
-		"name":"Time", # Must be the same as the corresponding property that it edits!
-		"type":TYPE_REAL,	# Defines the type of editor (LineEdit, Selector, etc.)
-		"location": Location.HEADER,	# Definest the location
-		"usage":PROPERTY_USAGE_DEFAULT,	
-		"dialogic_type":DialogicValueType.Float,	# Additional information for resource pickers
-		"hint_string":"Seconds:"		# Text that will be displayed in front of the field
-		})
-	
-	return p_list
+	return [
+		{
+			"name":"Time", # Must be the same as the corresponding property that it edits!
+			"type":TYPE_REAL,	# Defines the type of editor (LineEdit, Selector, etc.)
+			"location": Location.HEADER,	# Definest the location
+			"usage":PROPERTY_USAGE_DEFAULT,	
+			"dialogic_type":DialogicValueType.Float,	# Additional information for resource pickers
+			"hint_string":"Wait for "		# Text that will be displayed in front of the field
+		},
+		property_label('Seconds.')
+	]

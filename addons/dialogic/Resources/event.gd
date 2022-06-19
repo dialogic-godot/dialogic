@@ -124,21 +124,6 @@ func _set_continue(value:bool) -> void:
 	emit_changed()
 
 
-func __get_property_list() -> Array:
-	return []
-
-
-func property_can_revert(property:String) -> bool:
-	if property == "event_node_path":
-		return true
-	return false
-
-
-func property_get_revert(property:String):
-	if property == "event_node_path":
-		return NodePath()
-
-
 func _to_string() -> String:
 	return "[{name}:{id}]".format({"name":event_name, "id":get_instance_id()})
 
@@ -152,3 +137,28 @@ func get_icon():
 	if icon:
 		return icon
 	return load("res://addons/dialogic/Editor/Images/Event Icons/warning.svg")
+
+
+# Properties -------------------------------------------------------------------
+
+func __get_property_list() -> Array:
+	return []
+
+
+func property_label(text: String, location = Location.HEADER) -> Dictionary:
+	return {
+		"name": text,
+		"type": 0,
+		"location": location,
+		"dialogic_type":DialogicValueType.Label,
+	}
+
+func property_can_revert(property:String) -> bool:
+	if property == "event_node_path":
+		return true
+	return false
+
+
+func property_get_revert(property:String):
+	if property == "event_node_path":
+		return NodePath()
