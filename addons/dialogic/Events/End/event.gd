@@ -48,12 +48,3 @@ static func is_valid_event_string(string:String):
 	if string.strip_edges().to_lower() == "[end_timeline]":
 		return true
 	return false
-
-
-################################################################################
-## 						EDITOR REPRESENTATION
-################################################################################
-
-func _get_property_list() -> Array:
-	
-	return editor_list

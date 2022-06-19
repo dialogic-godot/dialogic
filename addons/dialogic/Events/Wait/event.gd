@@ -58,9 +58,6 @@ static func is_valid_event_string(string:String):
 ## 						EDITOR REPRESENTATION
 ################################################################################
 
-func _get_property_list() -> Array:
-
-	clear_editor()
-	add_header_edit('SecondsTime', ValueType.Float, 'Seconds:')
-	
-	return editor_list
+func build_event_editor():
+	add_header_edit('SecondsTime', ValueType.Float, 'Wait ')
+	add_header_label('seconds.')

@@ -72,14 +72,10 @@ func load_from_string_to_store(string):
 static func is_valid_event_string(string):
 	return true
 
-func _get_property_list() -> Array:
-	
-	clear_editor()
+func build_event_editor():
 	add_header_edit('Character', ValueType.Character, 'Character:')
 	add_header_edit('Portrait', ValueType.Portrait, '')
 	add_body_edit('Text', ValueType.MultilineText)
-
-	return editor_list
 
 
 func set_text(new_text):

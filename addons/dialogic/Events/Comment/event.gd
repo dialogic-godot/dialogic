@@ -51,9 +51,5 @@ static func is_valid_event_string(string:String):
 ## 						EDITOR REPRESENTATION
 ################################################################################
 
-func _get_property_list() -> Array:
-
-	clear_editor()
+func build_event_editor():
 	add_header_edit('Text', ValueType.SinglelineText, 'Comment:')
-	
-	return editor_list

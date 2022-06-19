@@ -188,9 +188,13 @@ func add_body_edit(variable:String, editor_type = ValueType.Label, extra_info:Di
 		"display_info":extra_info,
 		})
 
+func build_event_editor():
+	pass
 
-func __get_property_list() -> Array:
-	return []
+func _get_property_list() -> Array:
+	clear_editor()
+	build_event_editor()
+	return editor_list
 
 
 func property_can_revert(property:String) -> bool:
