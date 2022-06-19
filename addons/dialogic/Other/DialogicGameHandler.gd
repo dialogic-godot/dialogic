@@ -99,7 +99,6 @@ func update_name_label(name:String, color:Color = Color()) -> void:
 		name_label.self_modulate = color
 
 func update_portrait(character: DialogicCharacter, portrait:String = "", position_idx:int = -1, z_index:int = 0, move:bool = false, animation:String = "") -> void:
-	print("HELLO GUYS")
 	
 	if not character:
 		return
@@ -113,11 +112,9 @@ func update_portrait(character: DialogicCharacter, portrait:String = "", positio
 		if portrait == "":
 			portrait = info.portrait
 	
-	print(character.name, portrait, position_idx)
 	if portrait and position_idx:
 		for node in get_tree().get_nodes_in_group('dialogic_portrait_position'):
 			if node.position_index == position_idx:
-				print("hurray")
 				var path = character.portraits[portrait].path
 				for portrait in current_portraits:
 					if portrait.character == character:

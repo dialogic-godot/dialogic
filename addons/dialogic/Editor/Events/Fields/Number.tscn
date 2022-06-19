@@ -7,7 +7,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 script = ExtResource( 1 )
 
-[node name="Hint" type="Label" parent="."]
+[node name="LeftText" type="Label" parent="."]
 margin_top = 293.0
 margin_bottom = 307.0
 
@@ -15,5 +15,11 @@ margin_bottom = 307.0
 margin_left = 4.0
 margin_right = 78.0
 margin_bottom = 600.0
+
+[node name="RightText" type="Label" parent="."]
+margin_left = 82.0
+margin_top = 293.0
+margin_right = 82.0
+margin_bottom = 307.0
 
 [connection signal="value_changed" from="Value" to="." method="_on_Value_value_changed"]

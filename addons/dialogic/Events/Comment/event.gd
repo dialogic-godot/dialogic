@@ -52,22 +52,8 @@ static func is_valid_event_string(string:String):
 ################################################################################
 
 func _get_property_list() -> Array:
-	var p_list = []
+
+	clear_editor()
+	add_header_edit('Text', ValueType.SinglelineText, 'Comment:')
 	
-	# fill the p_list with dictionaries like this one:
-#	p_list.append({
-#		"name":"Character", # Must be the same as the corresponding property that it edits!
-#		"type":TYPE_OBJECT,	# Defines the type of editor (LineEdit, Selector, etc.)
-#		"location": Location.HEADER,	# Definest the location
-#		"usage":PROPERTY_USAGE_DEFAULT,	
-#		"dialogic_type":DialogicValueType.Character,	# Additional information for resource pickers
-#		"hint_string":"Character:"		# Text that will be displayed in front of the field
-#		})
-	p_list.append({
-		"name":"Text", # Must be the same as the corresponding property that it edits!
-		"type":TYPE_STRING,	# Defines the type of editor (LineEdit, Selector, etc.)
-		"location": Location.HEADER,	# Definest the location
-		"usage":PROPERTY_USAGE_DEFAULT,	
-		"hint_string":"Comment:"		# Text that will be displayed in front of the field
-		})
-	return p_list
+	return editor_list

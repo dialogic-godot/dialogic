@@ -12,8 +12,11 @@ func value_changed(value):
 	emit_signal("value_changed", property_name, $Value.value)
 
 
-func set_hint(value):
-	$Hint.text = str(value)
+func set_right_text(value):
+	$RightText.text = str(value)
+
+func set_left_text(value):
+	$LeftText.text = str(value)
 
 func set_value(value):
 	$Value.value = value

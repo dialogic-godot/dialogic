@@ -11,7 +11,7 @@ margin_right = -261.0
 margin_bottom = -538.0
 script = ExtResource( 1 )
 
-[node name="Hint" type="Label" parent="."]
+[node name="LeftText" type="Label" parent="."]
 margin_top = 24.0
 margin_bottom = 38.0
 
@@ -26,3 +26,9 @@ custom_colors/font_color_disabled = Color( 0.811765, 0.690196, 0.427451, 1 )
 custom_styles/hover = ExtResource( 2 )
 custom_styles/normal = ExtResource( 3 )
 flat = false
+
+[node name="RightText" type="Label" parent="."]
+margin_left = 18.0
+margin_top = 24.0
+margin_right = 18.0
+margin_bottom = 38.0

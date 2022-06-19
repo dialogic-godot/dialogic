@@ -168,7 +168,6 @@ func focus():
 
 func toggle_collapse(toggled):
 	collapsed = toggled
-	print("TOGGLED ", toggled)
 	var timeline_editor = find_parent('TimelineEditor')
 	if (timeline_editor != null):
 		# @todo select item and clear selection is marked as "private" in TimelineEditor.gd
@@ -189,34 +188,42 @@ func build_editor():
 		### --------------------------------------------------------------------
 		### 1. CREATE A NODE OF THE CORRECT TYPE FOR THE PROPERTY
 		var editor_node
-		if p.type == TYPE_STRING:
-			if p.get("dialogic_type") == resource.DialogicValueType.MultilineText:
-				editor_node = load("res://addons/dialogic/Editor/Events/Fields/MultilineText.tscn").instance()
-			else:
-				editor_node = load("res://addons/dialogic/Editor/Events/Fields/SinglelineText.tscn").instance()
 		
-		elif p.type == TYPE_OBJECT and p.has('dialogic_type'):
+		### STRINGS
+		if p.dialogic_type == resource.ValueType.MultilineText:
+			editor_node = load("res://addons/dialogic/Editor/Events/Fields/MultilineText.tscn").instance()
+		elif p.dialogic_type == resource.ValueType.SinglelineText:
+			editor_node = load("res://addons/dialogic/Editor/Events/Fields/SinglelineText.tscn").instance()
+		
+		## RESOURCES
+		elif p.dialogic_type in [resource.ValueType.Character, resource.ValueType.Portrait, resource.ValueType.Timeline]:
 			editor_node = load("res://addons/dialogic/Editor/Events/Fields/DialogicResourcePicker.tscn").instance()
-			if p.dialogic_type == resource.DialogicValueType.Character:
+			if p.dialogic_type == resource.ValueType.Character:
 				editor_node.resource_type = editor_node.resource_types.Characters
-			elif p.dialogic_type == resource.DialogicValueType.Portrait:
+			elif p.dialogic_type == resource.ValueType.Portrait:
 				editor_node.resource_type = editor_node.resource_types.Portraits
-			elif p.dialogic_type == resource.DialogicValueType.Timeline:
+			elif p.dialogic_type == resource.ValueType.Timeline:
 				editor_node.resource_type = editor_node.resource_types.Timelines
-		elif p.type == TYPE_INT:
-			if not p.has('dialogic_type') or p.dialogic_type == resource.DialogicValueType.Integer:
-				editor_node = load("res://addons/dialogic/Editor/Events/Fields/Number.tscn").instance()
-				editor_node.use_int_mode()
-			elif p.dialogic_type == resource.DialogicValueType.FixedOptionSelector:
-				editor_node = load("res://addons/dialogic/Editor/Events/Fields/OptionSelector.tscn").instance()
-				if p.has('selector_options'):
-					editor_node.options = p.selector_options
-				if p.has('disabled'):
-					editor_node.disabled = p.disabled
-		elif p.type == TYPE_REAL:
-			if not p.has('dialogic_type') or p.dialogic_type == resource.DialogicValueType.Float:
-				editor_node = load("res://addons/dialogic/Editor/Events/Fields/Number.tscn").instance()
-				editor_node.use_float_mode()
+		
+		## INTEGERS
+		elif p.dialogic_type == resource.ValueType.Integer:
+			editor_node = load("res://addons/dialogic/Editor/Events/Fields/Number.tscn").instance()
+			editor_node.use_int_mode()
+		elif p.dialogic_type == resource.ValueType.Float:
+			editor_node = load("res://addons/dialogic/Editor/Events/Fields/Number.tscn").instance()
+			editor_node.use_float_mode()
+		elif p.dialogic_type == resource.ValueType.FixedOptionSelector:
+			editor_node = load("res://addons/dialogic/Editor/Events/Fields/OptionSelector.tscn").instance()
+			if p.display_info.has('selector_options'):
+				editor_node.options = p.display_info.selector_options
+			if p.display_info.has('disabled'):
+				editor_node.disabled = p.display_info.disabled
+		elif p.dialogic_type == resource.ValueType.Label:
+			editor_node = Label.new()
+			editor_node.text = p.display_info.text
+		elif p.dialogic_type == resource.ValueType.Custom:
+			if p.display_info.has('path'):
+				editor_node = load(p.display_info.path).instance()
 		else:
 			editor_node = Label.new()
 			editor_node.text = p.name
@@ -229,8 +236,10 @@ func build_editor():
 			editor_node.set_value(resource.get(p.name))
 		if editor_node.has_signal('value_changed'):
 			editor_node.connect('value_changed', self, "set_property")
-		if editor_node.has_method('set_hint') and p.has('hint_string'):
-			editor_node.set_hint(p.hint_string)
+		if editor_node.has_method('set_left_text') and p.has('left_text'):
+			editor_node.set_left_text(p.left_text)
+		if editor_node.has_method('set_right_text') and p.has('right_text'):
+			editor_node.set_right_text(p.right_text)
 		if "event_resource" in editor_node:
 			editor_node.event_resource = resource
 		if editor_node.has_method("react_to_change"):

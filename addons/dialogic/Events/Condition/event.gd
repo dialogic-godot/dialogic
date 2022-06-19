@@ -97,26 +97,9 @@ static func is_valid_event_string(string:String):
 ################################################################################
 
 func _get_property_list() -> Array:
-	var p_list = []
-	
-	# fill the p_list with dictionaries like this one:
-	p_list.append({
-		"name":"ConditionType", # Must be the same as the corresponding property that it edits!
-		"type":TYPE_INT,	# Defines the type of editor (LineEdit, Selector, etc.)
-		"location": Location.HEADER,	# Definest the location
-		"usage":PROPERTY_USAGE_DEFAULT,	
-		"dialogic_type":DialogicValueType.FixedOptionSelector,	# Additional information for resource pickers
-		"selector_options":{"if":ConditionTypes.IF, "elif":ConditionTypes.ELIF, "else":ConditionTypes.ELSE},
-		'disabled': true,
-		"hint_string":""		# Text that will be displayed in front of the field
-		})
-	p_list.append({
-		"name":"Condition", # Must be the same as the corresponding property that it edits!
-		"type":TYPE_STRING,	# Defines the type of editor (LineEdit, Selector, etc.)
-		"location": Location.HEADER,	# Definest the location
-		"usage":PROPERTY_USAGE_DEFAULT,	
-		"dialogic_type":DialogicValueType.SinglelineText,	# Additional information for resource pickers
-		"hint_string":""		# Text that will be displayed in front of the field
-		})
-	
-	return p_list
+
+	clear_editor()
+	add_header_edit('ConditionType', ValueType.FixedOptionSelector, '', '', {'selector_options':{"if":ConditionTypes.IF, "elif":ConditionTypes.ELIF, "else":ConditionTypes.ELSE}, 'disabled':true})
+	add_header_edit('Condition', ValueType.SinglelineText)
+
+	return editor_list

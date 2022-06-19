@@ -64,7 +64,6 @@ func load_from_string_to_store(string):
 		else:
 			Character = null
 			print("When importing timeline, we couldn't identify what character you meant with ", result.get_string('name'), ".")
-		#print(result.get_string('portrait'))
 		if !result.get_string('portrait').empty():
 			Portrait = result.get_string('portrait').strip_edges()
 	Text = result.get_string('text').replace("<br>", "\n").trim_prefix(" ")
@@ -74,31 +73,14 @@ static func is_valid_event_string(string):
 	return true
 
 func _get_property_list() -> Array:
-	var p_list = []
-	p_list.append({
-		"name":"Character",
-		"type":TYPE_OBJECT,
-		"location": Location.HEADER,
-		"usage":PROPERTY_USAGE_DEFAULT,
-		"dialogic_type":DialogicValueType.Character,
-		"hint_string":"Character:"
-		})
-	p_list.append({
-		"name":"Text",
-		"type":TYPE_STRING,
-		"location": Location.BODY,
-		"usage":PROPERTY_USAGE_DEFAULT,
-		"dialogic_type":DialogicValueType.MultilineText,
-		})
-	p_list.append({
-		"name":"Portrait",
-		"type":TYPE_OBJECT,
-		"location": Location.HEADER,
-		"usage":PROPERTY_USAGE_DEFAULT,
-		"dialogic_type":DialogicValueType.Portrait,
-		})
 	
-	return p_list
+	clear_editor()
+	add_header_edit('Character', ValueType.Character, 'Character:')
+	add_header_edit('Portrait', ValueType.Portrait, '')
+	add_body_edit('Text', ValueType.MultilineText)
+
+	return editor_list
+
 
 func set_text(new_text):
 	Text = new_text

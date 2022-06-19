@@ -90,6 +90,5 @@ static func is_valid_event_string(string:String):
 ################################################################################
 
 func _get_property_list() -> Array:
-	var p_list = []
-	
-	return p_list
+
+	return editor_list
