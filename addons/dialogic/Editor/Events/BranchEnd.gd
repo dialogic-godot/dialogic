@@ -38,6 +38,7 @@ func parent_node_changed():
 	if parent_node:
 		if parent_node.resource is DialogicChoiceEvent:
 			$Label.text = "End of choice '"+parent_node.resource.Text+"'"
+			$ConditionButtons.hide()
 		elif parent_node.resource is DialogicConditionEvent:
 			if parent_node.resource.ConditionType != DialogicConditionEvent.ConditionTypes.ELSE:
 				$ConditionButtons.show()

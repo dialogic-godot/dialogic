@@ -87,42 +87,31 @@ margin_bottom = 106.0
 alignment = 1
 
 [node name="Choice" parent="Choices" instance=ExtResource( 4 )]
-margin_left = 0.0
 margin_top = 36.0
 margin_right = 292.0
 margin_bottom = 56.0
 
 [node name="Choice2" parent="Choices" instance=ExtResource( 4 )]
-margin_left = 0.0
 margin_top = 60.0
 margin_right = 292.0
 margin_bottom = 80.0
-choice_index = 2
 
 [node name="Choice3" parent="Choices" instance=ExtResource( 4 )]
-margin_left = 0.0
 margin_top = 84.0
 margin_right = 292.0
 margin_bottom = 104.0
-choice_index = 3
 
 [node name="Choice4" parent="Choices" instance=ExtResource( 4 )]
-margin_left = 0.0
 margin_top = 108.0
 margin_right = 292.0
 margin_bottom = 128.0
-choice_index = 4
 
 [node name="Choice5" parent="Choices" instance=ExtResource( 4 )]
-margin_left = 0.0
 margin_top = 132.0
 margin_right = 292.0
 margin_bottom = 152.0
-choice_index = 5
 
 [node name="Choice6" parent="Choices" instance=ExtResource( 4 )]
-margin_left = 0.0
 margin_top = 156.0
 margin_right = 292.0
 margin_bottom = 176.0
-choice_index = 6
