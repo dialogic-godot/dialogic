@@ -158,10 +158,11 @@ func get_as_string_to_store() -> String:
 	var result_string = "["+self.get_shortcode()
 	var params = get_shortcode_parameters()
 	for parameter in params.keys():
-		if typeof(get(params[parameter])) == TYPE_OBJECT:
-			result_string += " "+parameter+'="'+str(get(params[parameter]).resource_path)+'"'
-		else:
-			result_string += " "+parameter+'="'+str(get(params[parameter]))+'"'
+		if get(params[parameter]):
+			if typeof(get(params[parameter])) == TYPE_OBJECT:
+				result_string += " "+parameter+'="'+str(get(params[parameter]).resource_path)+'"'
+			else:
+				result_string += " "+parameter+'="'+str(get(params[parameter]))+'"'
 	result_string += "]"
 	return result_string
 
