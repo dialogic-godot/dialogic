@@ -1,6 +1,6 @@
 tool
 extends DialogicEvent
-
+class_name DialogicEndTimelineEvent
 
 # DEFINE ALL PROPERTIES OF THE EVENT
 
@@ -20,7 +20,7 @@ func _init() -> void:
 	event_name = "End Timeline"
 	event_color = Color("#f04438")
 	event_category = Category.TIMELINE
-	event_sorting_index = 3
+	event_sorting_index = 10
 	
 
 

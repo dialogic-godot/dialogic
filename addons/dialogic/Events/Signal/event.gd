@@ -1,6 +1,6 @@
 tool
 extends DialogicEvent
-
+class_name DialogicSignalEvent
 
 # DEFINE ALL PROPERTIES OF THE EVENT
 var Argument: String = ""

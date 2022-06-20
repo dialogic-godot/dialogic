@@ -1,6 +1,5 @@
 tool
 extends DialogicEvent
-
 class_name DialogicEndBranchEvent
 
 var this_is_an_end_event

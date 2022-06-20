@@ -1,6 +1,5 @@
 tool
 extends DialogicEvent
-
 class_name DialogicConditionEvent
 
 enum ConditionTypes {IF, ELIF, ELSE}
