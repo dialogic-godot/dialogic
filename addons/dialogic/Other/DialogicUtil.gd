@@ -86,7 +86,7 @@ static func get_event_by_string(string:String) -> Resource:
 		"res://addons/dialogic/Events/Comment/event.gd",
 		"res://addons/dialogic/Events/Text/event.gd"
 	]:
-		if load(event).is_valid_event_string(string):
+		if load(event).new().is_valid_event_string(string):
 			return load(event)
 	return load("res://addons/dialogic/Events/Text/event.gd")
 

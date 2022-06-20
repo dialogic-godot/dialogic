@@ -26,32 +26,14 @@ func _init() -> void:
 ################################################################################
 ## 						SAVING/LOADING
 ################################################################################
+func get_shortcode() -> String:
+	return "wait"
 
-## THIS RETURNS A READABLE REPRESENTATION, BUT HAS TO CONTAIN ALL DATA (This is how it's stored)
-func get_as_string_to_store() -> String:
-	var result_string = ""
-	
-	result_string = '[wait time="'+str(SecondsTime)+'"]'
-	
-	return result_string
-
-
-## THIS HAS TO READ ALL THE DATA FROM THE SAVED STRING (see above) 
-func load_from_string_to_store(string:String):
-	
-	var data = parse_shortcode_parameters(string)
-	
-	SecondsTime = data.get('time', 1)
-
-
-
-# RETURN TRUE IF THE GIVEN LINE SHOULD BE LOADED AS THIS EVENT
-static func is_valid_event_string(string:String):
-	
-	if string.begins_with('[wait'):
-		return true
-	
-	return false
+func get_shortcode_parameters() -> Dictionary:
+	return {
+		#param_name : property_name
+		"time"		: "SecondsTime",
+	}
 
 
 ################################################################################

@@ -69,7 +69,7 @@ func load_from_string_to_store(string):
 	Text = result.get_string('text').replace("<br>", "\n").trim_prefix(" ")
 	
 
-static func is_valid_event_string(string):
+func is_valid_event_string(string):
 	return true
 
 

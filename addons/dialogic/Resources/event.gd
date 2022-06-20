@@ -139,6 +139,51 @@ func get_icon():
 	return load("res://addons/dialogic/Editor/Images/Event Icons/warning.svg")
 
 
+################################################################################
+## 					PARSE AND STRINGIFY
+################################################################################
+## All of these functions can/should be overridden by the sub classes
+
+# if this uses the short-code format, return the shortcode
+func get_shortcode() -> String:
+	return 'default_shortcode'
+
+# if this uses the short-code format, return the parameters and corresponding property names
+func get_shortcode_parameters() -> Dictionary:
+	return {}
+
+# returns a readable presentation of the event (This is how it's stored)
+# by default it uses a shortcode format, but can be overridden
+func get_as_string_to_store() -> String:
+	var result_string = "["+self.get_shortcode()
+	var params = get_shortcode_parameters()
+	for parameter in params.keys():
+		if typeof(get(params[parameter])) == TYPE_OBJECT:
+			result_string += " "+parameter+'="'+str(get(params[parameter]).resource_path)+'"'
+		else:
+			result_string += " "+parameter+'="'+str(get(params[parameter]))+'"'
+	result_string += "]"
+	return result_string
+
+# loads the variables from the string stored above
+# by default it uses the shortcode format, but can be overridden
+func load_from_string_to_store(string:String):
+	var data = parse_shortcode_parameters(string)
+	var params = get_shortcode_parameters()
+	for parameter in params.keys():
+		if typeof(data[parameter]) == TYPE_STRING and (data[parameter].ends_with(".dtl") or data[parameter].ends_with(".dch")):
+			set(params[parameter], load(data[parameter]))
+		else:
+			set(params[parameter], convert(data[parameter], typeof(get(params[parameter]))))
+
+# has to return true, if the given string can be interpreted as this event
+# by default it uses the shortcode formta, but can be overridden
+func is_valid_event_string(string:String):
+	if string.strip_edges().begins_with('['+get_shortcode()):
+		return true
+	return false
+
+# used to get all the shortcode parameters in a string as a dictionary
 func parse_shortcode_parameters(shortcode : String) -> Dictionary:
 	var regex = RegEx.new()
 	regex.compile('((?<parameter>[^\\s=]*)\\s*=\\s*"(?<value>[^"]*)")')
@@ -155,7 +200,6 @@ func _get_property_list() -> Array:
 	build_event_editor()
 	return editor_list
 
-
 # to be overwriten by the sub_classes
 func build_event_editor() -> void:
 	pass
@@ -166,7 +210,7 @@ func add_header_label(text:String) -> void:
 		"name":"something", 				# Must be the same as the corresponding property that it edits!
 		"type":TYPE_STRING,
 		"location": Location.HEADER,		# Definest the location
-		"usage":PROPERTY_USAGE_DEFAULT,	
+		"usage":PROPERTY_USAGE_EDITOR_HELPER,	
 		"dialogic_type":ValueType.Label,	# Define the type of node
 		"display_info":{"text":text}, 
 		})

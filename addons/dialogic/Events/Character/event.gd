@@ -89,7 +89,7 @@ func load_from_string_to_store(string:String):
 		Position = int(result.get_string('position'))
 
 # RETURN TRUE IF THE GIVEN LINE SHOULD BE LOADED AS THIS EVENT
-static func is_valid_event_string(string:String):
+func is_valid_event_string(string:String):
 	
 	if string.begins_with("Join ") or string.begins_with("Leave ") or string.begins_with("Update "):
 		return true

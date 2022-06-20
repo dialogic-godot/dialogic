@@ -1,0 +1,16 @@
+[wait time="6"]
+
+Emilio (sad): This is very cool, if it works.
+
+[wait time="1"]
+
+[change_timeline path="res://timelines/Chapter1.dtl"]
+
+[background path="res://icon.png"]
+
+[signal arg="MyArgument"]
+
+# A cool comment that is long.!!!
+
+[end_timeline]
+
