@@ -52,7 +52,7 @@ func load(path: String, original_path: String):
 	print('load ' , path)
 	var err:int
 	
-	var res := DialogicCharacter.new()
+	#var res := DialogicCharacter.new()
 	
 	err = file.open(path, File.READ)
 	if err != OK:
@@ -61,26 +61,9 @@ func load(path: String, original_path: String):
 		return err
 	
 	var idx = 0
-	for line in file.get_as_text().split("\n", true):
-		if idx == 0:
-			res.name = line
-		elif idx == 1:
-			res.display_name = line
-		elif idx == 2:
-			res.color = Color(line)
-		elif idx == 3:
-			res.portraits = parse_json(line)
-			res = fix_portrait_vectors(res)
-		elif idx == 4:
-			res.nicknames = parse_json(line)
-		elif idx == 5:
-			res.description = line.replace("<b>", "\n")
-		elif idx == 6:
-			res.theme = line
-		elif idx == 7:
-			res.scale = float(line)
-
-		idx += 1
+	
+	var res = dict2inst(str2var(file.get_as_text()))
+	res = fix_portrait_vectors(res)
 	
 	# Everything went well, and you parsed your file data into your resource. Life is good, return it
 	return res

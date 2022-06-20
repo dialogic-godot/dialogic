@@ -5,14 +5,18 @@ const portrait_entry = preload("res://addons/dialogic/Editor/CharacterEditor/Por
 
 onready var toolbar = find_parent('EditorView').get_node('%Toolbar')
 var current_character : DialogicCharacter
-
 var current_portrait = null
+
+
+##############################################################################
+##							RESOURCE LOGIC
+##############################################################################
 
 func new_character(path: String) -> void:
 	var resource = DialogicCharacter.new()
 	resource.resource_path = path
-	resource.name = path.get_file().trim_suffix(path.get_extension())
-	resource.display_name = path.get_file().trim_suffix(path.get_extension())
+	resource.name = path.get_file().trim_suffix("."+path.get_extension())
+	resource.display_name = path.get_file().trim_suffix("."+path.get_extension())
 	resource.color = Color.white
 	ResourceSaver.save(path, resource)
 	find_parent('EditorView').edit_character(resource)
@@ -32,15 +36,16 @@ func load_character(resource: DialogicCharacter) -> void:
 	$'%ThemeButton'.set_value(resource.theme)
 	$'%CharacterScale'.value = 100*resource.scale
 	
+	# load the portraits
 	for node in $'%PortraitList'.get_children():
 		node.queue_free()
 	current_portrait = null
 	for portrait in resource.portraits.keys():
 		create_portrait_entry_instance(portrait, resource.portraits[portrait])
 	
-	yield(get_tree(), "idle_frame")
-	
-	if len($'%PortraitList'.get_children()):
+	# Show the first portrait, if there is one
+	if len(resource.portraits):
+		yield(get_tree(), "idle_frame")
 		get_node("%PortraitList").get_child(0).character_editor_reference = self
 		get_node("%PortraitList").get_child(0).update_preview()
 	else:
@@ -60,15 +65,14 @@ func save_character() -> void:
 	current_character.theme = $'%ThemeButton'.current_value
 	current_character.scale = $'%CharacterScale'.value/100.0
 	
-	ResourceSaver.save(current_character.resource_path, current_character)
-	toolbar.set_resource_saved()
-	
 	current_character.portraits = {}
 	
 	for node in $'%PortraitList'.get_children():
 		current_character.portraits[node.get_portrait_name()] = node.portrait_data
-
-
+	
+	ResourceSaver.save(current_character.resource_path, current_character)
+	toolbar.set_resource_saved()
+	
 
 ##############################################################################
 ##							INTERFACE
@@ -150,8 +154,7 @@ func update_portrait_preview(portrait_inst = "") -> void:
 	if current_portrait and is_instance_valid(current_portrait):
 		current_portrait.visual_defocus()
 	
-	
-	if portrait_inst:
+	if portrait_inst and is_instance_valid(portrait_inst):
 		current_portrait = portrait_inst
 		current_portrait.visual_focus()
 	
@@ -170,8 +173,8 @@ func update_portrait_preview(portrait_inst = "") -> void:
 			$'%PreviewRealRect'.rect_scale = Vector2(scale, scale)*char_scale
 			$'%PreviewRealRect'.flip_h = mirror
 			$'%PreviewFullRect'.flip_h = mirror
-			$'%PreviewRealRect'.rect_position.x = -($'%PreviewRealRect'.rect_size.x*scale*char_scale/2.0)+offset.x
-			$'%PreviewRealRect'.rect_position.y = -($'%PreviewRealRect'.rect_size.y*scale*char_scale)+offset.y
+			$'%PreviewRealRect'.rect_position.x = -($'%PreviewRealRect'.texture.get_width()*scale*char_scale/2.0)+offset.x
+			$'%PreviewRealRect'.rect_position.y = -($'%PreviewRealRect'.texture.get_height()*scale*char_scale)+offset.y
 			
 			$'%PortraitSettings'.show()
 		elif '.tscn' in l_path:
