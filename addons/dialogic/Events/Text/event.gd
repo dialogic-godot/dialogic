@@ -3,7 +3,7 @@ extends DialogicEvent
 class_name DialogicTextEvent
 
 
-var Text:String = "" setget set_text
+var Text:String = ""
 var Character:DialogicCharacter
 var Portrait = ""
 
@@ -72,12 +72,8 @@ func load_from_string_to_store(string):
 static func is_valid_event_string(string):
 	return true
 
+
 func build_event_editor():
 	add_header_edit('Character', ValueType.Character, 'Character:')
 	add_header_edit('Portrait', ValueType.Portrait, '')
 	add_body_edit('Text', ValueType.MultilineText)
-
-
-func set_text(new_text):
-	Text = new_text
-	emit_changed()

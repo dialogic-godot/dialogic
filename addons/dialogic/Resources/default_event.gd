@@ -56,8 +56,5 @@ static func is_valid_event_string(string:String):
 ## 						EDITOR REPRESENTATION
 ################################################################################
 
-func _get_property_list() -> Array:
-	
-	clear_editor()
-	
-	return editor_list
+func build_event_editor() -> void:
+	pass

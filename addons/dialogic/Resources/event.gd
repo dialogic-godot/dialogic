@@ -150,8 +150,15 @@ func parse_shortcode_parameters(shortcode : String) -> Dictionary:
 ################################################################################
 ## 					BUILDING THE EDITOR LIST
 ################################################################################
-func clear_editor() -> void:
+func _get_property_list() -> Array:
 	editor_list.clear()
+	build_event_editor()
+	return editor_list
+
+
+# to be overwriten by the sub_classes
+func build_event_editor() -> void:
+	pass
 
 
 func add_header_label(text:String) -> void:
@@ -188,14 +195,6 @@ func add_body_edit(variable:String, editor_type = ValueType.Label, extra_info:Di
 		"display_info":extra_info,
 		})
 
-func build_event_editor():
-	pass
-
-func _get_property_list() -> Array:
-	clear_editor()
-	build_event_editor()
-	return editor_list
-
 
 func property_can_revert(property:String) -> bool:
 	if property == "event_node_path":
@@ -206,4 +205,3 @@ func property_can_revert(property:String) -> bool:
 func property_get_revert(property:String):
 	if property == "event_node_path":
 		return NodePath()
-
