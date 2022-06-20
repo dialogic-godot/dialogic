@@ -1,35 +1,12 @@
-Change Background "res://icon.png"
-Join Emilio (surprise) 4
-Emilio: This is some text 
-Join Jowan (surprise) 2
-Wait 1
-Update Emilio (sad) 5
-Emilio (shy): The timeline begins (different portrait).
-- Yes!
-	Start Timeline "res://timelines/Test2.dtl"
-	if true:
-		Jowan (sad): This is always true.
+Emilio: Some cool text.
 
-	elif false:
-		This should play otherwise
-		End Timeline
+[end_timeline]
 
-	else:
-		This plays if non of the above where true.
+[wait time="3"]
 
-	End of choice yes
-- NO!
-	if "".empty():
-		NO PLAY 1
-		if "Hello".empty():
-			NO PLAY 2
+# A cool comment.
 
+[background path="res://icon.png"]
 
-
-Leave Emilio () 3
-if 4>2:
-	Emilio: 4 is bigger than 2
-	if 2>4:
-		Emilio: 2 is bigger than 4???
-
+[signal arg="My Argument"]
 

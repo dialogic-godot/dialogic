@@ -1,8 +1,67 @@
-Emilio
-Emi
-ff2a9fc2
-{"Default":{"path":"res://addons/dialogic/Example Assets/portraits/Antonio/pl5.png","scale":1,"offset":"(0, 0)","mirror":false},"blink":{"path":"res://addons/dialogic/Example Assets/portraits/Antonio/pl5 blink.png","scale":1,"offset":"(0, 0)","mirror":false},"doubt":{"path":"res://addons/dialogic/Example Assets/portraits/Antonio/pl5 doubt.png","scale":1,"offset":"(0, 0)","mirror":false},"hate":{"path":"res://addons/dialogic/Example Assets/portraits/Antonio/pl5 hate.png","scale":1,"offset":"(0, 0)","mirror":false},"plot":{"path":"res://addons/dialogic/Example Assets/portraits/Antonio/pl5 plot.png","scale":1,"offset":"(0, 0)","mirror":false},"sad":{"path":"res://addons/dialogic/Example Assets/portraits/Antonio/pl5 sad.png","scale":1,"offset":"(0, 0)","mirror":false},"scoff":{"path":"res://addons/dialogic/Example Assets/portraits/Antonio/pl5 scoff.png","scale":1,"offset":"(0, 0)","mirror":false},"shy":{"path":"res://addons/dialogic/Example Assets/portraits/Antonio/pl5 shy.png","scale":1,"offset":"(0, 0)","mirror":false},"surprise":{"path":"res://addons/dialogic/Example Assets/portraits/Antonio/pl5 surprise.png","scale":1,"offset":"(0, 0)","mirror":false}}
-["Emilio","Emi","Emilio Coppola"]
-The great founder of this.
-
-0.8
+{
+"@path": "res://addons/dialogic/Resources/character.gd",
+"@subpath": NodePath(""),
+"color": Color( 0.301961, 0.647059, 0.780392, 1 ),
+"description": "A programmer and youtuber. Founder of dialogic.",
+"display_name": "Emilio",
+"name": "Emilio",
+"nicknames": [ "Emilio", "Emi", "Emilio Coppola" ],
+"portraits": {
+"blink": {
+"mirror": false,
+"offset": Vector2( 0, 0 ),
+"path": "res://addons/dialogic/Example Assets/portraits/Antonio/pl5 blink.png",
+"scale": 1
+},
+"default": {
+"mirror": false,
+"offset": Vector2( 0, 0 ),
+"path": "res://addons/dialogic/Example Assets/portraits/Antonio/pl5.png",
+"scale": 1
+},
+"doubt": {
+"mirror": false,
+"offset": Vector2( 0, 0 ),
+"path": "res://addons/dialogic/Example Assets/portraits/Antonio/pl5 doubt.png",
+"scale": 1
+},
+"hate": {
+"mirror": false,
+"offset": Vector2( 0, 0 ),
+"path": "res://addons/dialogic/Example Assets/portraits/Antonio/pl5 hate.png",
+"scale": 1
+},
+"plot": {
+"mirror": false,
+"offset": Vector2( 0, 0 ),
+"path": "res://addons/dialogic/Example Assets/portraits/Antonio/pl5 plot.png",
+"scale": 1
+},
+"sad": {
+"mirror": false,
+"offset": Vector2( 0, 0 ),
+"path": "res://addons/dialogic/Example Assets/portraits/Antonio/pl5 sad.png",
+"scale": 1
+},
+"scoff": {
+"mirror": false,
+"offset": Vector2( 0, 0 ),
+"path": "res://addons/dialogic/Example Assets/portraits/Antonio/pl5 scoff.png",
+"scale": 1
+},
+"shy": {
+"mirror": false,
+"offset": Vector2( 0, 0 ),
+"path": "res://addons/dialogic/Example Assets/portraits/Antonio/pl5 shy.png",
+"scale": 1
+},
+"surprise": {
+"mirror": false,
+"offset": Vector2( 0, 0 ),
+"path": "res://addons/dialogic/Example Assets/portraits/Antonio/pl5 surprise.png",
+"scale": 1
+}
+},
+"scale": 0.8,
+"theme": ""
+}

@@ -86,7 +86,7 @@ func load_from_string_to_store(string:String):
 
 
 # RETURN TRUE IF THE GIVEN LINE SHOULD BE LOADED AS THIS EVENT
-static func is_valid_event_string(string:String):
+func is_valid_event_string(string:String):
 	if (string.strip_edges().begins_with('if ') or string.strip_edges().begins_with('elif ') or string.strip_edges().begins_with('else')) and string.strip_edges().ends_with(':'):
 		return true
 	return false

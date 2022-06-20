@@ -29,40 +29,14 @@ func _init() -> void:
 ################################################################################
 ## 						SAVING/LOADING
 ################################################################################
+func get_shortcode() -> String:
+	return "change_timeline"
 
-## THIS RETURNS A READABLE REPRESENTATION, BUT HAS TO CONTAIN ALL DATA (This is how it's stored)
-func get_as_string_to_store() -> String:
-	var result_string = ""
-	
-	if Timeline is DialogicTimeline:
-		result_string = 'Start Timeline "'+Timeline.resource_path+'"'
-	else:
-		result_string = 'Start Timeline " "'
-	return result_string
-
-
-## THIS HAS TO READ ALL THE DATA FROM THE SAVED STRING (see above) 
-func load_from_string_to_store(string:String):
-	
-	var timeline_name_or_path = string.strip_edges().trim_prefix('Start Timeline "').trim_suffix('"').strip_edges()
-	var timeline_resource = null
-	if not timeline_name_or_path.ends_with('.dtl'):
-		timeline_resource = DialogicUtil.guess_resource('.dtl', timeline_name_or_path)
-	else: timeline_resource = timeline_name_or_path
-	if timeline_resource:
-		var tl = load(timeline_resource)
-		if tl is DialogicTimeline:
-			Timeline = tl
-		else:
-			print('[Dialogic] Error loading timeline "'+timeline_name_or_path+'"')
-		
-
-# RETURN TRUE IF THE GIVEN LINE SHOULD BE LOADED AS THIS EVENT
-static func is_valid_event_string(string:String):
-	
-	if string.begins_with('Start Timeline "'):
-		return true
-	return false
+func get_shortcode_parameters() -> Dictionary:
+	return {
+		#param_name : property_name
+		"path"		: "Timeline",
+	}
 
 
 ################################################################################

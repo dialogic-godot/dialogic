@@ -181,9 +181,7 @@ func set_end_node(node):
 
 
 func build_editor():
-	#print('Building event node')
 	var p_list = resource._get_property_list()
-	#print(p_list)
 	for p in p_list:
 		### --------------------------------------------------------------------
 		### 1. CREATE A NODE OF THE CORRECT TYPE FOR THE PROPERTY
@@ -221,9 +219,13 @@ func build_editor():
 		elif p.dialogic_type == resource.ValueType.Label:
 			editor_node = Label.new()
 			editor_node.text = p.display_info.text
+		
+		## CUSTOM
 		elif p.dialogic_type == resource.ValueType.Custom:
 			if p.display_info.has('path'):
 				editor_node = load(p.display_info.path).instance()
+		
+		## ELSE
 		else:
 			editor_node = Label.new()
 			editor_node.text = p.name
@@ -252,17 +254,7 @@ func build_editor():
 		if p.location == 1:
 			location = get_node("%Body/Content")
 		location.add_child(editor_node)
-		
-	
-	#resource.connect('changed', self, 'update_from_resource')
 
-#
-#
-#func update_from_resource():
-#	for node in get_node("%Header/Content").get_children():
-#		node.set_value(resource.get(node.property_name))
-#	for node in get_node("%Body/Content").get_children():
-#		node.set_value(resource.get(node.property_name))
 
 func set_property(property_name, value):
 	resource.set(property_name, value)
@@ -275,8 +267,8 @@ func set_property(property_name, value):
 ## *****************************************************************************
 
 func _ready():
-	#if resource.event_name:
-	#	event_name = DTS.translate(resource.event_name)
+	if resource.event_name:
+		event_name = DTS.translate(resource.event_name)
 	
 	## DO SOME STYLING
 	$PanelContainer/SelectedStyle.modulate = get_color("accent_color", "Editor")

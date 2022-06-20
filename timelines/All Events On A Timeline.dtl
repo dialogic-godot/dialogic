@@ -1,9 +1,22 @@
-Join  3
+Jowan (avoid): This is some text
 
-- 
-	Wait 1
-
+- This is a choice
+	
+	Join Emilio (sad) 3
+	
+	
 if true:
-	End Timeline
-	Start Timeline " "
+	
+	[change_timeline path="res://timelines/Chapter1.dtl"]
+	
+	[end_timeline]
+	
+	[wait time="2"]
+	
+	
+[background path="res://icon.png"]
+
+[signal arg="MyArgument"]
+
+# A cool comment.
 

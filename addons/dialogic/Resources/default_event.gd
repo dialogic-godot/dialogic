@@ -26,38 +26,23 @@ func _init() -> void:
 ################################################################################
 ## 						SAVING/LOADING
 ################################################################################
+func get_shortcode() -> String:
+	return "default_shortcode"
 
-## THIS RETURNS A READABLE REPRESENTATION, BUT HAS TO CONTAIN ALL DATA (This is how it's stored)
-func get_as_string_to_store() -> String:
-	var result_string = ""
-	
-	# fill the result_string with the properties
-	
-	return result_string
+func get_shortcode_parameters() -> Dictionary:
+	return {
+		#param_name 	: property_name
+		#"arg_name"		: "NameOfProperty",
+	}
 
-
-## THIS HAS TO READ ALL THE DATA FROM THE SAVED STRING (see above) 
-func load_from_string_to_store(string:String):
-	
-	# fill your properies by interpreting the string
-	
-	pass
-
-
-# RETURN TRUE IF THE GIVEN LINE SHOULD BE LOADED AS THIS EVENT
-static func is_valid_event_string(string:String):
-	
-	# check the string and maybe return true
-	
-	return false
-
+# You can alternatively overwrite these 3 functions:
+# - get_as_string_to_store(), 
+# - load_from_string_to_store(),
+# - is_valid_event_string()
 
 ################################################################################
 ## 						EDITOR REPRESENTATION
 ################################################################################
 
-func _get_property_list() -> Array:
-	
-	clear_editor()
-	
-	return editor_list
+func build_event_editor() -> void:
+	pass
