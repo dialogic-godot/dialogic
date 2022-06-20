@@ -1,17 +1,15 @@
 tool
 extends DialogicEvent
-class_name DialogicChangeTimelineEvent
+class_name DialogicGoToEvent
 
 # DEFINE ALL PROPERTIES OF THE EVENT
-var Timeline :DialogicTimeline = null
-var Label : String = ""
+var LabelToGoTo :String = ""
 
 func _execute() -> void:
-	if Timeline:
-		dialogic_game_handler.start_timeline(Timeline, Label)
-	else:
-		finish()
-
+	var idx = -1
+	if LabelToGoTo:
+		dialogic_game_handler.jump_to_label(LabelToGoTo)
+	finish()
 
 ################################################################################
 ## 						INITIALIZE
@@ -19,24 +17,23 @@ func _execute() -> void:
 
 # SET ALL VALUES THAT SHOULD NEVER CHANGE HERE
 func _init() -> void:
-	event_name = "Change Timeline"
+	event_name = "Go to"
 	event_color = Color("#12b76a")
 	event_category = Category.TIMELINE
-	event_sorting_index = 0
-	
+	event_sorting_index = 2
+	continue_at_end = true
 
 
 ################################################################################
 ## 						SAVING/LOADING
 ################################################################################
 func get_shortcode() -> String:
-	return "change_timeline"
+	return "go to"
 
 func get_shortcode_parameters() -> Dictionary:
 	return {
 		#param_name : property_name
-		"path"		: "Timeline",
-		"label"		: "Label",
+		"label"		: "LabelToGoTo",
 	}
 
 
@@ -45,6 +42,4 @@ func get_shortcode_parameters() -> Dictionary:
 ################################################################################
 
 func build_event_editor():
-	add_header_edit('Timeline', ValueType.Timeline, 'Timeline:')
-	add_header_edit('Label', ValueType.SinglelineText, 'Label:')
-
+	add_header_edit('LabelToGoTo', ValueType.SinglelineText, '')

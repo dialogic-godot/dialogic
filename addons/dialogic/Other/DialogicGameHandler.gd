@@ -32,7 +32,7 @@ func _input(event:InputEvent) -> void:
 ################################################################################
 ## 						TIMELINE+EVENT HANDLING
 ################################################################################
-func start_timeline(timeline_resource) -> void:
+func start_timeline(timeline_resource, label = "") -> void:
 	# load the resource if only the path is given
 	if typeof(timeline_resource) == TYPE_STRING:
 		timeline_resource = load(timeline_resource)
@@ -41,6 +41,9 @@ func start_timeline(timeline_resource) -> void:
 	current_timeline = timeline_resource
 	current_timeline_events = current_timeline.get_events()
 	current_event_idx = -1
+	
+	if label:
+		jump_to_label(label)
 	
 	handle_next_event()
 
@@ -71,6 +74,19 @@ func handle_event(event_index:int) -> void:
 		print("    -> WILL AUTO CONTINUE!")
 		event.connect("event_finished", self, 'handle_next_event')
 	event.execute(self)
+
+
+func jump_to_label(label:String) -> void:
+	var idx = -1
+	while true:
+		idx += 1
+		var event = current_timeline.get_event(idx)
+		if not event:
+			idx = current_event_idx
+			break
+		if event is DialogicLabelEvent and event.Name == label:
+			break
+	current_event_idx = idx
 
 ################################################################################
 ## 						DISPLAY NODES
