@@ -36,7 +36,7 @@ func save(path: String, resource: Resource, flags: int) -> int:
 	var err:int
 	var file:File = File.new()
 	err = file.open(path, File.WRITE)
-	print('Dialogic saved "' , path, '"')
+	
 	if err != OK:
 		printerr('Can\'t write file: "%s"! code: %d.' % [path, err])
 		return err
@@ -61,4 +61,5 @@ func save(path: String, resource: Resource, flags: int) -> int:
 		result += "\t".repeat(indent)+"\n"
 	file.store_string(result)
 	file.close()
+	print('[Dialogic] Saved timeline "' , path, '"')
 	return OK

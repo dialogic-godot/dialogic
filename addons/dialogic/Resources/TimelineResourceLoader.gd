@@ -47,9 +47,9 @@ func handles_type(typename: String) -> bool:
 
 # Even JSON can be accepted here, if you like that (I don't, but I'm not going to judge you)
 func load(path: String, original_path: String):
-	var file := File.new()
+	print('[Dialogic] Reimporting timeline "' , path, '"')
 	
-	print('load ' , path)
+	var file := File.new()
 	var err:int
 	
 	var res := DialogicTimeline.new()

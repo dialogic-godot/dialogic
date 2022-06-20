@@ -36,16 +36,13 @@ func save(path: String, resource: Resource, flags: int) -> int:
 	var err:int
 	var file:File = File.new()
 	err = file.open(path, File.WRITE)
-	print('Dialogic saved "' , path, '"')
 	if err != OK:
 		printerr('Can\'t write file: "%s"! code: %d.' % [path, err])
 		return err
 	
-	var result = ""
+	var result = var2str(inst2dict(resource))
 	
-	result =var2str(inst2dict(resource))
-	
-#	result = resource.name+"\n"+resource.display_name+"\n"+resource.color.to_html()+"\n"+JSON.print(resource.portraits)+"\n"+JSON.print(resource.nicknames)+"\n"+resource.description.replace('\n', "<b>")+"\n"+str(resource.theme)+'\n'+str(resource.scale)
 	file.store_string(result)
 	file.close()
+	print('[Dialogic] Saved character "' , path, '"')
 	return OK

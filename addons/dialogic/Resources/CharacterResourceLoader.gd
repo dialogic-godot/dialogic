@@ -47,20 +47,15 @@ func handles_type(typename: String) -> bool:
 
 # Even JSON can be accepted here, if you like that (I don't, but I'm not going to judge you)
 func load(path: String, original_path: String):
+	print('[Dialogic] Reimporting character "' , path, '"')
 	var file := File.new()
 	
-	print('load ' , path)
 	var err:int
-	
-	#var res := DialogicCharacter.new()
 	
 	err = file.open(path, File.READ)
 	if err != OK:
 		push_error("For some reason, loading custom resource failed with error code: %s"%err)
-		# You has to return the error constant
 		return err
-	
-	var idx = 0
 	
 	var res = dict2inst(str2var(file.get_as_text()))
 	res = fix_portrait_vectors(res)
@@ -68,7 +63,8 @@ func load(path: String, original_path: String):
 	# Everything went well, and you parsed your file data into your resource. Life is good, return it
 	return res
 
-# saving currently converts the vectors into strings :(
+
+# saving unfortunately  converts the vectors into strings :(
 func fix_portrait_vectors(resource:DialogicCharacter):
 
 	for portrait in resource.portraits:
