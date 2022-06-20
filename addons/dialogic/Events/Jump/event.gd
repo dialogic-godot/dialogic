@@ -7,10 +7,12 @@ var Timeline :DialogicTimeline = null
 var Label : String = ""
 
 func _execute() -> void:
-	if Timeline:
+	if Timeline and Timeline != dialogic_game_handler.current_timeline:
+		print("---------------switching timelines----------------")
 		dialogic_game_handler.start_timeline(Timeline, Label)
-	else:
-		finish()
+	elif Label:
+		dialogic_game_handler.jump_to_label(Label)
+	finish()
 
 
 ################################################################################
@@ -19,7 +21,7 @@ func _execute() -> void:
 
 # SET ALL VALUES THAT SHOULD NEVER CHANGE HERE
 func _init() -> void:
-	event_name = "Change Timeline"
+	event_name = "Jump"
 	event_color = Color("#12b76a")
 	event_category = Category.TIMELINE
 	event_sorting_index = 0
@@ -30,12 +32,12 @@ func _init() -> void:
 ## 						SAVING/LOADING
 ################################################################################
 func get_shortcode() -> String:
-	return "change_timeline"
+	return "jump"
 
 func get_shortcode_parameters() -> Dictionary:
 	return {
 		#param_name : property_name
-		"path"		: "Timeline",
+		"timeline"		: "Timeline",
 		"label"		: "Label",
 	}
 

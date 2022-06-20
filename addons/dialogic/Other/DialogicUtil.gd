@@ -75,9 +75,8 @@ static func get_event_by_string(string:String) -> Resource:
 		# Every event that isn't identified as something else, will end up as text
 		# We should get this list from a folder or something, but then we'll have to sort it somehow
 		"res://addons/dialogic/Events/Label/event.gd",
-		"res://addons/dialogic/Events/Goto/event.gd",
 		"res://addons/dialogic/Events/End/event.gd",
-		"res://addons/dialogic/Events/Change Timeline/event.gd",
+		"res://addons/dialogic/Events/Jump/event.gd",
 		"res://addons/dialogic/Events/Visual Background/event.gd",
 		"res://addons/dialogic/Events/Signal/event.gd",
 		"res://addons/dialogic/Events/Wait/event.gd",
