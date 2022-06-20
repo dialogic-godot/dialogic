@@ -77,7 +77,8 @@ func _on_Search_text_entered(new_text = ""):
 	if $Search/Suggestions.get_item_count() and not $Search.text.empty():
 		suggestion_selected(0)
 	else:
-		set_value(current_value)
+		emit_signal("value_changed", property_name, null)
+#		set_value(null)
 
 func _on_Search_text_changed(new_text):
 	$Search/Suggestions.clear()

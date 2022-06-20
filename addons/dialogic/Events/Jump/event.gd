@@ -1,12 +1,17 @@
 tool
 extends DialogicEvent
-class_name DialogicSignalEvent
+class_name DialogicChangeTimelineEvent
 
 # DEFINE ALL PROPERTIES OF THE EVENT
-var Argument: String = ""
+var Timeline :DialogicTimeline = null
+var Label : String = ""
 
 func _execute() -> void:
-	dialogic_game_handler.emit_signal('signal_event', Argument)
+	if Timeline and Timeline != dialogic_game_handler.current_timeline:
+		print("---------------switching timelines----------------")
+		dialogic_game_handler.start_timeline(Timeline, Label)
+	elif Label:
+		dialogic_game_handler.jump_to_label(Label)
 	finish()
 
 
@@ -16,27 +21,32 @@ func _execute() -> void:
 
 # SET ALL VALUES THAT SHOULD NEVER CHANGE HERE
 func _init() -> void:
-	event_name = "Signal"
-	event_color = Color("#0ca5eb")
-	event_category = Category.GODOT
+	event_name = "Jump"
+	event_color = Color("#12b76a")
+	event_category = Category.TIMELINE
 	event_sorting_index = 0
+	
 
 
 ################################################################################
 ## 						SAVING/LOADING
 ################################################################################
 func get_shortcode() -> String:
-	return "signal"
+	return "jump"
 
 func get_shortcode_parameters() -> Dictionary:
 	return {
 		#param_name : property_name
-		"arg"		: "Argument",
+		"timeline"		: "Timeline",
+		"label"		: "Label",
 	}
+
 
 ################################################################################
 ## 						EDITOR REPRESENTATION
 ################################################################################
 
 func build_event_editor():
-	add_header_edit('Argument', ValueType.SinglelineText, 'Argument:')
+	add_header_edit('Timeline', ValueType.Timeline, 'Timeline:')
+	add_header_edit('Label', ValueType.SinglelineText, 'Label:')
+

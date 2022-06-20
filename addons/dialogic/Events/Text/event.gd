@@ -19,10 +19,6 @@ func _init() -> void:
 	event_sorting_index = 0
 	help_page_path = "https://dialogic.coppolaemilio.com/documentation/Events/000/"
 	continue_at_end = false
-	# maybe using setters is better for this scenario?
-	# like doing:
-	#set_name("Pepito Event")
-	#set_color(Color.black)
 
 
 func _execute() -> void:

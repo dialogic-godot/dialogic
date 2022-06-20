@@ -1,6 +1,6 @@
 tool
 extends DialogicEvent
-
+class_name DialogicWaitEvent
 
 # DEFINE ALL PROPERTIES OF THE EVENT
 var SecondsTime :float = 1.0
@@ -20,7 +20,7 @@ func _init() -> void:
 	event_name = "Wait"
 	event_color = Color("#657084")
 	event_category = Category.TIMELINE
-	event_sorting_index = 0
+	event_sorting_index = 5
 
 
 ################################################################################
