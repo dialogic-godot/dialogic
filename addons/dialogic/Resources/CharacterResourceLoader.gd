@@ -37,16 +37,6 @@ func load(path: String, original_path: String):
 		return err
 	
 	var res = dict2inst(str2var(file.get_as_text()))
-	res = fix_portrait_vectors(res)
 	
 	# Everything went well, and you parsed your file data into your resource. Life is good, return it
 	return res
-
-
-# saving unfortunately  converts the vectors into strings :(
-func fix_portrait_vectors(resource:DialogicCharacter):
-
-	for portrait in resource.portraits:
-		resource.portraits[portrait].offset.strip_edges().trim_prefix('(').trim_suffix(')')
-		resource.portraits[portrait].offset = Vector2(int(resource.portraits[portrait].offset.split(',')[0]), int(resource.portraits[portrait].offset.split(',')[1]))
-	return resource
