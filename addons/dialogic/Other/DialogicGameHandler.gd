@@ -193,7 +193,7 @@ func update_background(path:String) -> void:
 		else:
 			node.texture = load(path)
 
-func update_music(path, volume, audio_bus, fade_time):
+func update_music(path, volume:float = 0, audio_bus:String = "Master", fade_time:float = 0, loop:bool = true) -> void:
 	var fader = create_tween()
 	for node in get_tree().get_nodes_in_group('dialogic_music_player'):
 		var prev_node = null
@@ -208,9 +208,13 @@ func update_music(path, volume, audio_bus, fade_time):
 			node.volume_db = volume
 			node.bus = audio_bus
 			if "loop" in node.stream:
-				node.stream.loop = true
+				node.stream.loop = loop
 			elif "loop_mode" in node.stream:
-				node.stream.loop_mode = AudioStreamSample.LOOP_FORWARD
+				if loop:
+					node.stream.loop_mode = AudioStreamSample.LOOP_FORWARD
+				else:
+					node.stream.loop_mode = AudioStreamSample.LOOP_DISABLED
+			
 			node.play()
 			fader.parallel().tween_method(self, "interpolate_volume_linearly", 0.0,db2linear(volume),fade_time, [node])
 		else:
@@ -219,15 +223,18 @@ func update_music(path, volume, audio_bus, fade_time):
 			fader.tween_callback(prev_node, "queue_free")
 
 
-func play_sound(path, volume, audio_bus):
+func play_sound(path:String, volume:float = 0, audio_bus:String = "Master", loop :bool= false) -> void:
 	var sound_node = get_tree().get_nodes_in_group('dialogic_sound_player').front()
 	if sound_node and path:
 		var new_sound_node = sound_node.duplicate()
 		new_sound_node.stream = load(path)
 		if "loop" in new_sound_node.stream:
-			new_sound_node.stream.loop = false
+			new_sound_node.stream.loop = loop
 		elif "loop_mode" in new_sound_node.stream:
-			new_sound_node.stream.loop_mode = AudioStreamSample.LOOP_DISABLED
+			if loop:
+				new_sound_node.stream.loop_mode = AudioStreamSample.LOOP_FORWARD
+			else:
+				new_sound_node.stream.loop_mode = AudioStreamSample.LOOP_DISABLED
 		new_sound_node.volume_db = volume
 		new_sound_node.bus = audio_bus
 		add_child(new_sound_node)

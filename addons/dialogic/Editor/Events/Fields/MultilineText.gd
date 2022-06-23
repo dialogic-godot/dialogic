@@ -23,22 +23,25 @@ func set_value(value):
 
 
 func change_size():
-	print('resize')
-	var longest_line = 0
+	print(DialogicUtil.get_editor_scale(self))
+	# the distance between the sidebar of the timeline editor and the TextEdit box.
+	var max_width = find_parent('View').get_node('ScrollContainer').rect_global_position.x- $TextEdit.rect_global_position.x 
+	# adding a margin
+	max_width -= 50 * DialogicUtil.get_editor_scale(self)
+	
 	var font = get_font("normal_font")
-	var lines = 0
-	var max_width = get_max_width()
 	var line_height = font.get_height()+4
+	
+	var longest_line_len = 0
+	var lines = 0
 	for line in $TextEdit.text.split("\n"):
-		longest_line = font.get_string_size(line).x if font.get_string_size(line).x > longest_line else longest_line
+		longest_line_len = font.get_string_size(line).x if font.get_string_size(line).x > longest_line_len else longest_line_len
 		if font.get_string_size(line).x+50 > max_width:
 			lines += ceil(get_font("normal_font").get_string_size(line).x/(max_width))
 		lines += 1
-	longest_line += 50
-	print(longest_line)
-	print(get_parent().rect_size.x)
-	$TextEdit.rect_min_size.x = min(max_width, longest_line)
-	$TextEdit.rect_min_size.y = line_height*lines+20
-
-func get_max_width():
-	return find_parent('View').get_node('ScrollContainer').rect_global_position.x- $TextEdit.rect_global_position.x -50
+	
+	# because there is a margin and a number inside the stylebox (especially to the left) this needs to be added 
+	longest_line_len += 50 * DialogicUtil.get_editor_scale(self)
+	$TextEdit.rect_min_size.x = min(max_width, longest_line_len)
+	# a margin has to be added vertically as well because of the stylebox
+	$TextEdit.rect_min_size.y = line_height*lines + (20 * DialogicUtil.get_editor_scale(self))
