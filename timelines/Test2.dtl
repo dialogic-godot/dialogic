@@ -1,0 +1,18 @@
+[music path="res://test-project/ChillLofiR.mp3" volume="-10" fade="2" bus="Master" loop="True"]
+
+some text
+
+[music path="res://test-project/Countryside.mp3" volume="-10" bus="Master" loop="True"]
+
+[wait time="1"]
+
+[sound path="res://test-project/Goblin_03.mp3" bus="Master"]
+
+some text
+
+[wait time="2"]
+
+[music path="res://test-project/ChillLofiR.mp3" volume="-10" fade="5.004" bus="Master" loop="True"]
+
+[wait time="10"]
+

@@ -1,10 +1,17 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://addons/dialogic/Editor/Common/TLabel.tscn" type="PackedScene" id=1]
 [ext_resource path="res://addons/dialogic/Editor/Common/Toolbar.gd" type="Script" id=2]
+[ext_resource path="res://addons/dialogic/Editor/Images/Toolbar/add-timeline.svg" type="Texture" id=3]
 [ext_resource path="res://addons/dialogic/Editor/Images/Toolbar/add-character.svg" type="Texture" id=4]
 
-[sub_resource type="Image" id=1]
+[sub_resource type="InputEventKey" id=1]
+scancode = 16777250
+
+[sub_resource type="ShortCut" id=2]
+shortcut = SubResource( 1 )
+
+[sub_resource type="Image" id=5]
 data = {
 "data": PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ),
 "format": "LumAlpha8",
@@ -13,10 +20,10 @@ data = {
 "width": 16
 }
 
-[sub_resource type="ImageTexture" id=2]
+[sub_resource type="ImageTexture" id=4]
 flags = 4
 flags = 4
-image = SubResource( 1 )
+image = SubResource( 5 )
 size = Vector2( 16, 16 )
 
 [node name="Toolbar" type="HBoxContainer"]
@@ -25,29 +32,31 @@ margin_bottom = 22.0
 script = ExtResource( 2 )
 
 [node name="AddTimeline" type="Button" parent="."]
-margin_right = 12.0
+margin_right = 28.0
 margin_bottom = 24.0
 hint_tooltip = "Add Timeline"
+icon = ExtResource( 3 )
 flat = true
 
 [node name="AddCharacter" type="Button" parent="."]
-margin_left = 16.0
-margin_right = 44.0
+margin_left = 32.0
+margin_right = 60.0
 margin_bottom = 24.0
 hint_tooltip = "Add Character"
 icon = ExtResource( 4 )
 flat = true
 
 [node name="PlayTimeline" type="ToolButton" parent="."]
-margin_left = 48.0
-margin_right = 165.0
+margin_left = 64.0
+margin_right = 181.0
 margin_bottom = 24.0
+shortcut = SubResource( 2 )
 text = "Play Timeline"
-icon = SubResource( 2 )
+icon = SubResource( 4 )
 
 [node name="Spacer2" type="Control" parent="."]
-margin_left = 169.0
-margin_right = 472.0
+margin_left = 185.0
+margin_right = 480.0
 margin_bottom = 24.0
 size_flags_horizontal = 3
 
@@ -63,14 +72,14 @@ text = "Current:"
 text_key = "Current:"
 
 [node name="CurrentResource" type="Label" parent="."]
-margin_left = 476.0
+margin_left = 484.0
 margin_top = 5.0
-margin_right = 578.0
+margin_right = 586.0
 margin_bottom = 19.0
 text = "Nothing opened"
 
 [node name="Spacer" type="Control" parent="."]
-margin_left = 582.0
+margin_left = 590.0
 margin_right = 885.0
 margin_bottom = 24.0
 size_flags_horizontal = 3

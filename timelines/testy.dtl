@@ -4,7 +4,7 @@ Emilio (sad): This is very cool, if it works.
 
 [wait time="1"]
 
-[change_timeline path="res://timelines/Chapter1.dtl"]
+//timelines/Chapter1.dtl"]
 
 [background path="res://icon.png"]
 

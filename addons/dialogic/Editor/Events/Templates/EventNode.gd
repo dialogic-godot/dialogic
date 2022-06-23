@@ -193,6 +193,9 @@ func build_editor():
 		elif p.dialogic_type == resource.ValueType.SinglelineText:
 			editor_node = load("res://addons/dialogic/Editor/Events/Fields/SinglelineText.tscn").instance()
 		
+		elif p.dialogic_type == resource.ValueType.Bool:
+			editor_node = load("res://addons/dialogic/Editor/Events/Fields/Bool.tscn").instance()
+		
 		## RESOURCES
 		elif p.dialogic_type in [resource.ValueType.Character, resource.ValueType.Portrait, resource.ValueType.Timeline]:
 			editor_node = load("res://addons/dialogic/Editor/Events/Fields/DialogicResourcePicker.tscn").instance()
@@ -210,12 +213,17 @@ func build_editor():
 		elif p.dialogic_type == resource.ValueType.Float:
 			editor_node = load("res://addons/dialogic/Editor/Events/Fields/Number.tscn").instance()
 			editor_node.use_float_mode()
+		elif p.dialogic_type == resource.ValueType.Decibel:
+			editor_node = load("res://addons/dialogic/Editor/Events/Fields/Number.tscn").instance()
+			editor_node.use_decibel_mode()
 		elif p.dialogic_type == resource.ValueType.FixedOptionSelector:
 			editor_node = load("res://addons/dialogic/Editor/Events/Fields/OptionSelector.tscn").instance()
 			if p.display_info.has('selector_options'):
 				editor_node.options = p.display_info.selector_options
 			if p.display_info.has('disabled'):
 				editor_node.disabled = p.display_info.disabled
+		
+		
 		elif p.dialogic_type == resource.ValueType.Label:
 			editor_node = Label.new()
 			editor_node.text = p.display_info.text
