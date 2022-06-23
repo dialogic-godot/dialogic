@@ -23,7 +23,13 @@ func set_value(value):
 
 func use_float_mode():
 	$Value.step = 0.001
-	
+	$Value.suffix = ""
+
 func use_int_mode():
 	$Value.step = 1
-	
+	$Value.suffix = ""
+
+func use_decibel_mode():
+	$Value.max_value = 6
+	$Value.suffix = "dB"
+	$Value.min_value = -80

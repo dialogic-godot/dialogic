@@ -7,7 +7,7 @@ Jowan (avoid): This is some text
 	
 if true:
 	
-	[change_timeline path="res://timelines/Chapter1.dtl"]
+	//timelines/Chapter1.dtl"]
 	
 	[end_timeline]
 	
@@ -17,6 +17,8 @@ if true:
 [background path="res://icon.png"]
 
 [signal arg="MyArgument"]
+
+[music bus="Master" loop="True"]
 
 # A cool comment.
 

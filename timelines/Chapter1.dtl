@@ -1,12 +1,5 @@
-Emilio: Some cool text.
 
-[end_timeline]
 
-[wait time="3"]
 
-# A cool comment.
 
-[background path="res://icon.png"]
-
-[signal arg="My Argument"]
 

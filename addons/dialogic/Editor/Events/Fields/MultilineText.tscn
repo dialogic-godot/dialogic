@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=2]
 
-[ext_resource path="res://addons/dialogic/Editor/Events/Fields/Text.gd" type="Script" id=1]
+[ext_resource path="res://addons/dialogic/Editor/Events/Fields/MultilineText.gd" type="Script" id=1]
 [ext_resource path="res://addons/dialogic/Editor/Events/styles/TextBackground.tres" type="StyleBox" id=2]
 
 [sub_resource type="StyleBoxFlat" id=1]
@@ -23,7 +23,6 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 margin_right = 1.0
 margin_bottom = -400.0
-rect_min_size = Vector2( 300, 30 )
 size_flags_horizontal = 3
 script = ExtResource( 1 )
 

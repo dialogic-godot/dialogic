@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://addons/dialogic/Other/DefaultDialogNode.gd" type="Script" id=1]
 [ext_resource path="res://addons/dialogic/Display/DialogText.tscn" type="PackedScene" id=2]
@@ -7,9 +7,15 @@
 [ext_resource path="res://addons/dialogic/Display/PortraitPosition.tscn" type="PackedScene" id=5]
 [ext_resource path="res://addons/dialogic/Display/PortraitHolder.tscn" type="PackedScene" id=6]
 [ext_resource path="res://addons/dialogic/Display/Background.tscn" type="PackedScene" id=7]
+[ext_resource path="res://addons/dialogic/Display/MusicPlayer.tscn" type="PackedScene" id=8]
+[ext_resource path="res://addons/dialogic/Display/SoundPlayer.tscn" type="PackedScene" id=9]
 
 [node name="DefaultDialogNode" type="CanvasLayer"]
 script = ExtResource( 1 )
+
+[node name="SoundPlayer" parent="." instance=ExtResource( 9 )]
+
+[node name="MusicPlayer" parent="." instance=ExtResource( 8 )]
 
 [node name="BG" type="CanvasLayer" parent="."]
 layer = 0

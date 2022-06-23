@@ -39,6 +39,8 @@ enum ValueType {
 	MultilineText,
 	SinglelineText,
 	
+	Bool,
+	
 	# OBJECTS ? (for the ResourcePicker)
 	Timeline,
 	Character,
@@ -49,6 +51,7 @@ enum ValueType {
 	Integer,
 
 	Float,
+	Decibel,
 	
 	Custom, 
 }
@@ -128,8 +131,8 @@ func _to_string() -> String:
 	return "[{name}:{id}]".format({"name":event_name, "id":get_instance_id()})
 
 
-func _hide_script_from_inspector():
-	return true
+#func _hide_script_from_inspector():
+#	return true
 
 
 func get_icon():
@@ -172,6 +175,8 @@ func load_from_string_to_store(string:String):
 	var data = parse_shortcode_parameters(string)
 	var params = get_shortcode_parameters()
 	for parameter in params.keys():
+		if not parameter in data:
+			continue
 		if typeof(data[parameter]) == TYPE_STRING and (data[parameter].ends_with(".dtl") or data[parameter].ends_with(".dch")):
 			set(params[parameter], load(data[parameter]))
 		else:
@@ -230,7 +235,7 @@ func add_header_edit(variable:String, editor_type = ValueType.Label, left_text:S
 		})
 
 
-func add_body_edit(variable:String, editor_type = ValueType.Label, extra_info:Dictionary = {}) -> void:
+func add_body_edit(variable:String, editor_type = ValueType.Label, left_text:String= "", right_text:String="", extra_info:Dictionary = {}) -> void:
 	editor_list.append({
 		"name":variable, 				# Must be the same as the corresponding property that it edits!
 		"type":typeof(get(variable)),
@@ -238,6 +243,8 @@ func add_body_edit(variable:String, editor_type = ValueType.Label, extra_info:Di
 		"usage":PROPERTY_USAGE_DEFAULT,	
 		"dialogic_type":editor_type,	# Define the type of node
 		"display_info":extra_info,
+		"left_text":left_text,			# Text that will be displayed left of the field
+		"right_text":right_text,		# Text that will be displayed right of the field
 		})
 
 
