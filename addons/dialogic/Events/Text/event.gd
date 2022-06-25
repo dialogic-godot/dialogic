@@ -22,7 +22,7 @@ func _init() -> void:
 
 
 func _execute() -> void:
-	dialogic_game_handler.update_dialog_text(Text)
+	dialogic_game_handler.update_dialog_text(dialogic_game_handler.parse_variables(Text))
 	if Character:
 		dialogic_game_handler.update_name_label(Character.name, Character.color)
 		if Portrait:
