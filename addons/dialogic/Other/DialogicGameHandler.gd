@@ -169,7 +169,7 @@ func show_current_choices() -> void:
 	var button_idx = 1
 	for choice_index in get_current_choice_indexes():
 		var choice_event = current_timeline_events[choice_index]
-		show_choice(button_idx, choice_event.Text, true, choice_index)
+		show_choice(button_idx, choice_event.get_translated_text(), true, choice_index)
 		button_idx += 1
 
 func show_choice(button_index:int, text:String, enabled:bool, event_index:int) -> void:

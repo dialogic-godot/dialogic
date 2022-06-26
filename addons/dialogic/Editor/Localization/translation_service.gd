@@ -34,6 +34,9 @@ static func _get_translation(message)->String:
 	var translations = get_translations()
 	var default_fallback = 'en'
 	
+	if not Engine.editor_hint:
+		return message
+	
 	var editor_plugin = EditorPlugin.new()
 	var editor_settings = editor_plugin.get_editor_interface().get_editor_settings()
 	var locale = editor_settings.get('interface/editor/editor_language')

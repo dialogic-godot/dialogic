@@ -62,7 +62,7 @@ func load(path: String, original_path: String):
 		
 		line = stripped_line
 		var event = DialogicUtil.get_event_by_string(line).new()
-		event.load_from_string_to_store(line)
+		event._load_from_string(line)
 		events.append(event)
 		
 		prev_was_opener = (event is DialogicChoiceEvent or event is DialogicConditionEvent)

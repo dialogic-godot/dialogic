@@ -30,6 +30,9 @@ func save(path: String, resource: Resource, flags: int) -> int:
 	
 	var result = ""
 	var indent = 0
+	var trans_updates = {}
+	var translate = DialogicUtil.get_project_setting('dialogic/translation_enabled', false)
+	
 	for idx in range(0, len(resource.events)):
 		var event = resource.events[idx]
 		
@@ -41,7 +44,12 @@ func save(path: String, resource: Resource, flags: int) -> int:
 				indent -= 1
 			continue
 		if event != null:
-			result += "\t".repeat(indent)+event.get_as_string_to_store() + "\n"
+			result += "\t".repeat(indent)+event._store_as_string() + "\n"
+			if translate and event.can_be_translated():
+				if event.translation_id:
+					trans_updates[event.translation_id] = event.get_original_translation_text()
+				else:
+					trans_updates[event.add_translation_id()] = event.get_original_translation_text()
 		if event is DialogicChoiceEvent or event is DialogicConditionEvent:
 			indent += 1
 		if indent < 0: indent = 0
@@ -49,4 +57,40 @@ func save(path: String, resource: Resource, flags: int) -> int:
 	file.store_string(result)
 	file.close()
 	print('[Dialogic] Saved timeline "' , path, '"')
+	if translate:
+		update_translations(path, trans_updates)
 	return OK
+
+func update_translations(path, translation_updates):
+	if not translation_updates:
+		return
+	var err:int
+	var trans_file = File.new()
+	var file_path = ""
+	if DialogicUtil.get_project_setting('dialogic/translation_path', '').ends_with('.csv'):
+		file_path = ProjectSettings.get_setting('dialogic/translation_path')
+	else:
+		file_path = path.trim_suffix('.dtl')+'_translation.csv'
+	
+	err = trans_file.open(file_path, File.READ)
+	if err != OK:
+		printerr('[Dialogic] Can\'t read translation file: "%s"! code: %d.' % [file_path, err])
+		return
+	
+	var csv_lines = []
+	while !trans_file.eof_reached():
+		csv_lines.append(trans_file.get_csv_line())
+		if csv_lines[-1][0] in translation_updates.keys():
+			csv_lines[-1][1] = translation_updates[csv_lines[-1][0]]
+			translation_updates.erase(csv_lines[-1][0])
+	
+	
+	trans_file.close()
+	trans_file.open(file_path, File.WRITE)
+	for line in csv_lines:
+		if line:
+			trans_file.store_csv_line(line)
+	for key in translation_updates.keys():
+		trans_file.store_csv_line([key, translation_updates[key]])
+	trans_file.close()
+	print('[Dialogic] Updated translations for "', path ,'"')

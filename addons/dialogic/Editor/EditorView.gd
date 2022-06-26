@@ -34,7 +34,7 @@ func show_settings():
 
 
 func godot_file_dialog(object, method, filter, mode = EditorFileDialog.MODE_OPEN_FILE, window_title = "Save", current_file_name = 'New_File'):
-	for connection in editor_file_dialog.get_signal_connection_list('file_selected'):
+	for connection in editor_file_dialog.get_signal_connection_list('file_selected')+editor_file_dialog.get_signal_connection_list('dir_selected'):
 		editor_file_dialog.disconnect('file_selected', connection.target, connection.method)
 	editor_file_dialog.mode = mode
 	editor_file_dialog.clear_filters()
@@ -46,5 +46,8 @@ func godot_file_dialog(object, method, filter, mode = EditorFileDialog.MODE_OPEN
 		editor_file_dialog.connect('file_selected', object, method, [], CONNECT_ONESHOT)
 	elif mode == EditorFileDialog.MODE_OPEN_DIR:
 		editor_file_dialog.connect('dir_selected', object, method, [], CONNECT_ONESHOT)
+	elif mode == EditorFileDialog.MODE_OPEN_ANY:
+		editor_file_dialog.connect('dir_selected', object, method, [], CONNECT_ONESHOT)
+		editor_file_dialog.connect('file_selected', object, method, [], CONNECT_ONESHOT)
 	return editor_file_dialog
 	

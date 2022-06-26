@@ -1,33 +1,286 @@
-[gd_scene format=2]
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://addons/dialogic/Editor/Settings/SettingsEditor.gd" type="Script" id=1]
+[ext_resource path="res://addons/dialogic/Editor/Common/TLabel.tscn" type="PackedScene" id=2]
+
+[sub_resource type="Image" id=3]
+data = {
+"data": PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ),
+"format": "LumAlpha8",
+"height": 16,
+"mipmaps": false,
+"width": 16
+}
+
+[sub_resource type="ImageTexture" id=2]
+flags = 4
+flags = 4
+image = SubResource( 3 )
+size = Vector2( 16, 16 )
 
 [node name="SettingsEditor" type="WindowDialog"]
-visible = true
-anchor_right = 0.5
-anchor_bottom = 0.5
-window_title = "Settings"
+anchor_right = 1.0
+anchor_bottom = 1.0
+window_title = "Dialogic Settings"
 resizable = true
+script = ExtResource( 1 )
 
 [node name="Panel" type="Panel" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
 
-[node name="Tabs" type="Tabs" parent="Panel"]
+[node name="Tabs" type="TabContainer" parent="Panel"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 tab_align = 0
 
-[node name="General" type="MarginContainer" parent="Panel/Tabs"]
+[node name="General" type="HBoxContainer" parent="Panel/Tabs"]
 anchor_right = 1.0
 anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = 32.0
+margin_right = -4.0
+margin_bottom = -4.0
 
-[node name="Label" type="Label" parent="Panel/Tabs/General"]
-margin_top = 143.0
-margin_right = 512.0
-margin_bottom = 157.0
+[node name="VBox" type="VBoxContainer" parent="Panel/Tabs/General"]
+margin_right = 504.0
+margin_bottom = 264.0
+size_flags_horizontal = 3
+
+[node name="TLabel" parent="Panel/Tabs/General/VBox" instance=ExtResource( 2 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 504.0
+margin_bottom = 14.0
 text = "General"
+title = true
 
-[node name="Another" type="MarginContainer" parent="Panel/Tabs"]
+[node name="Translations" type="HBoxContainer" parent="Panel/Tabs"]
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = 32.0
+margin_right = -4.0
+margin_bottom = -4.0
+
+[node name="VBox" type="VBoxContainer" parent="Panel/Tabs/Translations"]
+margin_right = 330.0
+margin_bottom = 564.0
+size_flags_horizontal = 3
+
+[node name="Title" parent="Panel/Tabs/Translations/VBox" instance=ExtResource( 2 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 330.0
+margin_bottom = 14.0
+text = "Translation setup"
+text_key = "Tra"
+title = true
+
+[node name="HSeparator2" type="HSeparator" parent="Panel/Tabs/Translations/VBox"]
+margin_top = 18.0
+margin_right = 330.0
+margin_bottom = 22.0
+
+[node name="VBox" type="HBoxContainer" parent="Panel/Tabs/Translations/VBox"]
+margin_top = 26.0
+margin_right = 330.0
+margin_bottom = 50.0
+
+[node name="Title3" parent="Panel/Tabs/Translations/VBox/VBox" instance=ExtResource( 2 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 5.0
+margin_right = 268.0
+margin_bottom = 19.0
+size_flags_horizontal = 3
+text = "Original language"
+text_key = "Tra"
+
+[node name="TransOrigLanguage" type="LineEdit" parent="Panel/Tabs/Translations/VBox/VBox"]
+unique_name_in_owner = true
+margin_left = 272.0
+margin_right = 330.0
+margin_bottom = 24.0
+rect_min_size = Vector2( 50, 0 )
+text = "en"
+
+[node name="VBox2" type="HBoxContainer" parent="Panel/Tabs/Translations/VBox"]
+margin_top = 54.0
+margin_right = 330.0
+margin_bottom = 74.0
+
+[node name="Title3" parent="Panel/Tabs/Translations/VBox/VBox2" instance=ExtResource( 2 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 3.0
+margin_right = 235.0
+margin_bottom = 17.0
+size_flags_horizontal = 3
+text = "File mode"
+text_key = "Tra"
+
+[node name="TransFileMode" type="OptionButton" parent="Panel/Tabs/Translations/VBox/VBox2"]
+unique_name_in_owner = true
+margin_left = 239.0
+margin_right = 330.0
+margin_bottom = 20.0
+rect_min_size = Vector2( 50, 0 )
+text = "Single file"
+items = [ "Single file", null, false, 0, null, "File per timeline", null, false, 1, null ]
+selected = 0
+
+[node name="TransInitialize" type="Button" parent="Panel/Tabs/Translations/VBox"]
+unique_name_in_owner = true
+margin_left = 183.0
+margin_top = 78.0
+margin_right = 330.0
+margin_bottom = 98.0
+size_flags_horizontal = 8
+text = "Initialize translations"
+
+[node name="Info2" parent="Panel/Tabs/Translations/VBox" instance=ExtResource( 2 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 102.0
+margin_right = 330.0
+margin_bottom = 150.0
+text = "Initalizing will
+-> add translation ID's to all translatable events
+-> create basic translation file(s)"
+autowrap = true
+text_key = "Tra"
+
+[node name="VSeparator" type="VSeparator" parent="Panel/Tabs/Translations"]
+margin_left = 334.0
+margin_right = 338.0
+margin_bottom = 564.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel/Tabs/Translations"]
+margin_left = 342.0
+margin_right = 673.0
+margin_bottom = 564.0
+size_flags_horizontal = 3
+
+[node name="Title2" parent="Panel/Tabs/Translations/VBoxContainer" instance=ExtResource( 2 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 331.0
+margin_bottom = 14.0
+text = "Translation settings"
+text_key = "Tra"
+title = true
+
+[node name="HSeparator" type="HSeparator" parent="Panel/Tabs/Translations/VBoxContainer"]
+margin_top = 18.0
+margin_right = 331.0
+margin_bottom = 22.0
+
+[node name="VBox4" type="HBoxContainer" parent="Panel/Tabs/Translations/VBoxContainer"]
+margin_top = 26.0
+margin_right = 331.0
+margin_bottom = 50.0
+
+[node name="Title3" parent="Panel/Tabs/Translations/VBoxContainer/VBox4" instance=ExtResource( 2 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 5.0
+margin_right = 303.0
+margin_bottom = 19.0
+size_flags_horizontal = 3
+text = "Enabled"
+text_key = "Tra"
+
+[node name="TransEnabled" type="CheckBox" parent="Panel/Tabs/Translations/VBoxContainer/VBox4"]
+unique_name_in_owner = true
+margin_left = 307.0
+margin_right = 331.0
+margin_bottom = 24.0
+
+[node name="VBox3" type="HBoxContainer" parent="Panel/Tabs/Translations/VBoxContainer"]
+margin_top = 54.0
+margin_right = 331.0
+margin_bottom = 78.0
+
+[node name="Title3" parent="Panel/Tabs/Translations/VBoxContainer/VBox3" instance=ExtResource( 2 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 5.0
+margin_right = 211.0
+margin_bottom = 19.0
+size_flags_horizontal = 3
+text = "Folder/File"
+text_key = "Tra"
+
+[node name="TransFileFolder" type="LineEdit" parent="Panel/Tabs/Translations/VBoxContainer/VBox3"]
+unique_name_in_owner = true
+margin_left = 215.0
+margin_right = 315.0
+margin_bottom = 24.0
+rect_min_size = Vector2( 100, 0 )
+max_length = 50
+editable = false
+expand_to_text_length = true
+
+[node name="TransFileFolderChanger" type="Button" parent="Panel/Tabs/Translations/VBoxContainer/VBox3"]
+unique_name_in_owner = true
+margin_left = 319.0
+margin_right = 331.0
+margin_bottom = 24.0
+disabled = true
+icon = SubResource( 2 )
+
+[node name="TransRemove" type="Button" parent="Panel/Tabs/Translations/VBoxContainer"]
+unique_name_in_owner = true
+margin_top = 82.0
+margin_right = 331.0
+margin_bottom = 102.0
+disabled = true
+text = "Remove translations"
+
+[node name="VSeparator2" type="VSeparator" parent="Panel/Tabs/Translations"]
+margin_left = 677.0
+margin_right = 681.0
+margin_bottom = 564.0
+
+[node name="VBox2" type="VBoxContainer" parent="Panel/Tabs/Translations"]
+margin_left = 685.0
+margin_right = 1016.0
+margin_bottom = 564.0
+size_flags_horizontal = 3
+
+[node name="Title" parent="Panel/Tabs/Translations/VBox2" instance=ExtResource( 2 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 331.0
+margin_bottom = 14.0
+text = "Information on translations"
+text_key = "Tra"
+title = true
+
+[node name="HSeparator3" type="HSeparator" parent="Panel/Tabs/Translations/VBox2"]
+margin_top = 18.0
+margin_right = 331.0
+margin_bottom = 22.0
+
+[node name="Info" parent="Panel/Tabs/Translations/VBox2" instance=ExtResource( 2 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 26.0
+margin_right = 331.0
+margin_bottom = 210.0
+text = "When you initialize translations, every translatable event will get an unique id. Additionally one or multiple csv file(s) will be setup.
+
+We suggest you do not initialize translating, before your text is in a pretty finnished state.
+
+Before initialization, make sure you've selected the language you wrote your text in and decided whether to use a single translation file or one per timeline. 
+
+Afterwards, you can translate your timelines in a csv editor, by adding new columns with the text in different languages."
+autowrap = true
+text_key = "Tra"
+
+[connection signal="pressed" from="Panel/Tabs/Translations/VBox/TransInitialize" to="." method="_on_TransInitialize_pressed"]
+[connection signal="pressed" from="Panel/Tabs/Translations/VBoxContainer/TransRemove" to="." method="_on_TransRemove_pressed"]

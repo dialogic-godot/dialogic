@@ -89,9 +89,12 @@ static func get_event_by_string(string:String) -> Resource:
 		"res://addons/dialogic/Events/Comment/event.gd",
 		"res://addons/dialogic/Events/Text/event.gd"
 	]:
-		if load(event).new().is_valid_event_string(string):
+		if load(event).new()._test_event_string(string):
 			return load(event)
 	return load("res://addons/dialogic/Events/Text/event.gd")
+
+static func get_project_setting(setting:String, default = null):
+	return ProjectSettings.get_setting(setting) if ProjectSettings.has_setting(setting) else default
 
 
 # RENABLE IF REALLY NEEDED, OTHERWISE DELETE BEFORE RELEASE 

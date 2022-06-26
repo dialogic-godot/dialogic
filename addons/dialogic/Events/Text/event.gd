@@ -22,7 +22,7 @@ func _init() -> void:
 
 
 func _execute() -> void:
-	dialogic_game_handler.update_dialog_text(Text)
+	dialogic_game_handler.update_dialog_text(get_translated_text())
 	if Character:
 		dialogic_game_handler.update_name_label(Character.name, Character.color)
 		if Portrait:
@@ -49,7 +49,7 @@ func get_as_string_to_store() -> String:
 	return Text.replace("\n", "<br>")
 
 ## THIS HAS TO READ ALL THE DATA FROM THE SAVED STRING (see above) 
-func load_from_string_to_store(string):
+func load_from_string_to_store(string:String):
 	var reg = RegEx.new()
 	reg.compile("((?<name>[^:()\\n]*)?(?=(\\([^()]*\\))?:)(\\((?<portrait>[^()]*)\\))?)?:?(?<text>[^\\n]+)")
 	var result = reg.search(string)
@@ -68,6 +68,12 @@ func load_from_string_to_store(string):
 func is_valid_event_string(string):
 	return true
 
+
+func can_be_translated():
+	return true
+	
+func get_original_translation_text():
+	return Text
 
 func build_event_editor():
 	add_header_edit('Character', ValueType.Character, 'Character:')

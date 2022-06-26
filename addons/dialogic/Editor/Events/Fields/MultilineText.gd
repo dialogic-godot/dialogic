@@ -7,6 +7,7 @@ signal value_changed
 func _ready():
 	find_parent('TimelineArea').connect('resized', self, 'change_size')
 	$TextEdit.connect("text_changed", self,  'text_changed')
+	change_size()
 
 func text_changed(value = ""):
 	change_size()
@@ -20,10 +21,11 @@ func set_right_text(value):
 
 func set_value(value):
 	$TextEdit.text = str(value)
+	
 
 
 func change_size():
-	print(DialogicUtil.get_editor_scale(self))
+	#print(DialogicUtil.get_editor_scale(self))
 	# the distance between the sidebar of the timeline editor and the TextEdit box.
 	var max_width = find_parent('View').get_node('ScrollContainer').rect_global_position.x- $TextEdit.rect_global_position.x 
 	# adding a margin
