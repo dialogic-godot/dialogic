@@ -87,6 +87,7 @@ static func get_event_by_string(string:String) -> Resource:
 		"res://addons/dialogic/Events/Choice/event.gd",
 		"res://addons/dialogic/Events/Character/event.gd",
 		"res://addons/dialogic/Events/Comment/event.gd",
+		"res://addons/dialogic/Events/Variable/event.gd",
 		"res://addons/dialogic/Events/Text/event.gd"
 	]:
 		if load(event).new()._test_event_string(string):

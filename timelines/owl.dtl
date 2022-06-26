@@ -1,0 +1,32 @@
+[label name="Start"]
+
+Hello, I'm an owl. I see that you picked the {Game.difficulty} level of dificulty!<br>Do you want to keep it?
+
+- No, don't want it to be {Game.difficulty}
+	
+	Select one
+	
+	- Easy
+		
+		[variable name="Game.difficulty" value="Easy"]
+		
+		[jump label="Start"]
+		
+	- Medium
+		
+		[variable name="Game.difficulty" value="Medium"]
+		
+		[jump label="Start"]
+		
+	- Hard
+		
+		[variable name="Game.difficulty" value="Hard"]
+		
+		[jump label="Start"]
+		
+		
+- Yes, keep {Game.difficulty}
+	
+	Sounds good.<br> {Game.difficulty} it is!
+	
+	

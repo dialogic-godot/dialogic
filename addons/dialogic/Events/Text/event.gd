@@ -22,7 +22,8 @@ func _init() -> void:
 
 
 func _execute() -> void:
-	dialogic_game_handler.update_dialog_text(get_translated_text())
+	dialogic_game_handler.update_dialog_text(dialogic_game_handler.parse_variables(get_translated_text()))
+
 	if Character:
 		dialogic_game_handler.update_name_label(Character.name, Character.color)
 		if Portrait:
