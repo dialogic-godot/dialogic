@@ -4,6 +4,7 @@ func generate_animation(anima_tween: Tween, data: Dictionary) -> void:
 		{ percentage = 80, to = +2000 },
 		{ percentage = 100, to = 0 },
 	]
+	
 
 	var opacity_frames = [
 		{ percentage = 0, from = 0.7 },
