@@ -181,6 +181,8 @@ func show_choice(button_index:int, text:String, enabled:bool, event_index:int) -
 			node.show()
 			node.text = parse_variables(text)
 			node.connect('pressed', self, 'choice_selected', [event_index])
+		if node.choice_index >0:
+			idx = node.choice_index
 		idx += 1
 
 func choice_selected(event_index:int) -> void:
@@ -243,6 +245,13 @@ func play_sound(path:String, volume:float = 0, audio_bus:String = "Master", loop
 		new_sound_node.play()
 		new_sound_node.connect('finished', new_sound_node, 'queue_free')
 
+
+func change_theme(theme_name):
+	for theme_node in get_tree().get_nodes_in_group('dialogic_themes'):
+		if theme_node.theme_name == theme_name:
+			theme_node.show()
+		else:
+			theme_node.hide()
 
 func parse_variables(text:String) -> String:
 	# This function will try to get the value of variables provided inside curly brackets
