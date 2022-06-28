@@ -8,7 +8,7 @@ var Label : String = ""
 
 func _execute() -> void:
 	if Timeline and Timeline != dialogic_game_handler.current_timeline:
-		print("---------------switching timelines----------------")
+		#print("---------------switching timelines----------------")
 		dialogic_game_handler.start_timeline(Timeline, Label)
 	elif Label:
 		dialogic_game_handler.jump_to_label(Label)

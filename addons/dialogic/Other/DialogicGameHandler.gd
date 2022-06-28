@@ -71,9 +71,9 @@ func handle_event(event_index:int) -> void:
 	
 	current_event_idx = event_index
 	var event:DialogicEvent = current_timeline_events[event_index]
-	print("\n[D] Handle Event ", event_index, ": ", event)
+	#print("\n[D] Handle Event ", event_index, ": ", event)
 	if event.continue_at_end:
-		print("    -> WILL AUTO CONTINUE!")
+		#print("    -> WILL AUTO CONTINUE!")
 		event.connect("event_finished", self, 'handle_next_event')
 	event.execute(self)
 
@@ -310,7 +310,7 @@ func set_variable(variable_name: String, value: String) -> bool:
 ## 						HELPERS
 ################################################################################
 func set_current_state(new_state:int) -> void:
-	print('~~~ CHANGE STATE ', ["IDLE", "TEXT", "ANIM", "CHOICE", "WAIT",][new_state])
+	#print('~~~ CHANGE STATE ', ["IDLE", "TEXT", "ANIM", "CHOICE", "WAIT",][new_state])
 	current_state = new_state
 	emit_signal('state_changed', new_state)
 
