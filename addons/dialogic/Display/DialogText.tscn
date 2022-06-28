@@ -8,3 +8,7 @@ margin_bottom = 81.0
 bbcode_enabled = true
 text = "This is some preview dialog text!"
 script = ExtResource( 1 )
+Align = null
+
+[node name="Timer" type="Timer" parent="."]
+one_shot = true
