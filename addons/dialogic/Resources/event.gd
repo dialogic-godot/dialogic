@@ -158,7 +158,7 @@ func add_translation_id() -> String:
 
 func get_translated_text() -> String:
 	if translation_id and DialogicUtil.get_project_setting('dialogic/translation_enabled', false):
-		return tr(translation_id)
+		return tr(translation_id) if tr(translation_id) != translation_id else get_original_translation_text()
 	else:
 		return get_original_translation_text()
 
@@ -170,23 +170,22 @@ func get_translated_text() -> String:
 
 func _store_as_string() -> String:
 	if translation_id and can_be_translated():
-		return '<'+str(translation_id)+'>' + get_as_string_to_store()
+		return get_as_string_to_store() + ' #id:'+str(translation_id)
 	else:
 		return get_as_string_to_store()
 
 
 func _load_from_string(string:String) -> void:
-	if string.begins_with('<') and can_be_translated():
-		translation_id = string.get_slice('>', 0).trim_prefix('<')
-		if string.split('>', 1)[1]:
-			load_from_string_to_store(string.split('>', 1)[1])
+	if '#id:' in string and can_be_translated():
+		translation_id = string.get_slice('#id:', 1).strip_edges()
+		load_from_string_to_store(string.get_slice('#id:', 0))
 	else:
 		load_from_string_to_store(string)
 
 
 func _test_event_string(string:String) -> bool:
-	if string.begins_with('<') and can_be_translated():
-		return is_valid_event_string(string.split('>', 1)[1]) 
+	if '#id:' in string and can_be_translated():
+		return is_valid_event_string(string.get_slice('#id:', 0)) 
 	return is_valid_event_string(string.strip_edges())
 
 ################################################################################

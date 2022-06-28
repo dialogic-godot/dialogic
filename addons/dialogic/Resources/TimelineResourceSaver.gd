@@ -88,7 +88,7 @@ func update_translations(path, translation_updates):
 	trans_file.close()
 	trans_file.open(file_path, File.WRITE)
 	for line in csv_lines:
-		if line:
+		if line and line[0]:
 			trans_file.store_csv_line(line)
 	for key in translation_updates.keys():
 		trans_file.store_csv_line([key, translation_updates[key]])

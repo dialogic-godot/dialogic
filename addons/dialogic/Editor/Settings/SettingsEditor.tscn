@@ -19,6 +19,7 @@ image = SubResource( 3 )
 size = Vector2( 16, 16 )
 
 [node name="SettingsEditor" type="WindowDialog"]
+visible = true
 anchor_right = 1.0
 anchor_bottom = 1.0
 window_title = "Dialogic Settings"
@@ -37,6 +38,7 @@ size_flags_vertical = 3
 tab_align = 0
 
 [node name="General" type="HBoxContainer" parent="Panel/Tabs"]
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 4.0
@@ -45,20 +47,19 @@ margin_right = -4.0
 margin_bottom = -4.0
 
 [node name="VBox" type="VBoxContainer" parent="Panel/Tabs/General"]
-margin_right = 504.0
-margin_bottom = 264.0
+margin_right = 1016.0
+margin_bottom = 564.0
 size_flags_horizontal = 3
 
 [node name="TLabel" parent="Panel/Tabs/General/VBox" instance=ExtResource( 2 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_right = 504.0
+margin_right = 1016.0
 margin_bottom = 14.0
 text = "General"
 title = true
 
 [node name="Translations" type="HBoxContainer" parent="Panel/Tabs"]
-visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 4.0
@@ -107,6 +108,7 @@ margin_right = 330.0
 margin_bottom = 24.0
 rect_min_size = Vector2( 50, 0 )
 text = "en"
+editable = false
 
 [node name="VBox2" type="HBoxContainer" parent="Panel/Tabs/Translations/VBox"]
 margin_top = 54.0
@@ -129,6 +131,7 @@ margin_left = 239.0
 margin_right = 330.0
 margin_bottom = 20.0
 rect_min_size = Vector2( 50, 0 )
+disabled = true
 text = "Single file"
 items = [ "Single file", null, false, 0, null, "File per timeline", null, false, 1, null ]
 selected = 0
@@ -140,6 +143,7 @@ margin_top = 78.0
 margin_right = 330.0
 margin_bottom = 98.0
 size_flags_horizontal = 8
+disabled = true
 text = "Initialize translations"
 
 [node name="Info2" parent="Panel/Tabs/Translations/VBox" instance=ExtResource( 2 )]
@@ -199,6 +203,7 @@ unique_name_in_owner = true
 margin_left = 307.0
 margin_right = 331.0
 margin_bottom = 24.0
+pressed = true
 
 [node name="VBox3" type="HBoxContainer" parent="Panel/Tabs/Translations/VBoxContainer"]
 margin_top = 54.0
@@ -209,7 +214,7 @@ margin_bottom = 78.0
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_top = 5.0
-margin_right = 211.0
+margin_right = 195.0
 margin_bottom = 19.0
 size_flags_horizontal = 3
 text = "Folder/File"
@@ -217,28 +222,32 @@ text_key = "Tra"
 
 [node name="TransFileFolder" type="LineEdit" parent="Panel/Tabs/Translations/VBoxContainer/VBox3"]
 unique_name_in_owner = true
-margin_left = 215.0
-margin_right = 315.0
+margin_left = 199.0
+margin_right = 299.0
 margin_bottom = 24.0
 rect_min_size = Vector2( 100, 0 )
 max_length = 50
-editable = false
 expand_to_text_length = true
 
 [node name="TransFileFolderChanger" type="Button" parent="Panel/Tabs/Translations/VBoxContainer/VBox3"]
 unique_name_in_owner = true
-margin_left = 319.0
+margin_left = 303.0
 margin_right = 331.0
 margin_bottom = 24.0
-disabled = true
 icon = SubResource( 2 )
 
-[node name="TransRemove" type="Button" parent="Panel/Tabs/Translations/VBoxContainer"]
+[node name="TransUpdate" type="Button" parent="Panel/Tabs/Translations/VBoxContainer"]
 unique_name_in_owner = true
 margin_top = 82.0
 margin_right = 331.0
 margin_bottom = 102.0
-disabled = true
+text = "Update translations"
+
+[node name="TransRemove" type="Button" parent="Panel/Tabs/Translations/VBoxContainer"]
+unique_name_in_owner = true
+margin_top = 106.0
+margin_right = 331.0
+margin_bottom = 126.0
 text = "Remove translations"
 
 [node name="VSeparator2" type="VSeparator" parent="Panel/Tabs/Translations"]
@@ -271,7 +280,7 @@ anchor_right = 0.0
 anchor_bottom = 0.0
 margin_top = 26.0
 margin_right = 331.0
-margin_bottom = 210.0
+margin_bottom = 278.0
 text = "When you initialize translations, every translatable event will get an unique id. Additionally one or multiple csv file(s) will be setup.
 
 We suggest you do not initialize translating, before your text is in a pretty finnished state.
@@ -283,4 +292,5 @@ autowrap = true
 text_key = "Tra"
 
 [connection signal="pressed" from="Panel/Tabs/Translations/VBox/TransInitialize" to="." method="_on_TransInitialize_pressed"]
+[connection signal="pressed" from="Panel/Tabs/Translations/VBoxContainer/TransUpdate" to="." method="_on_TransUpdate_pressed"]
 [connection signal="pressed" from="Panel/Tabs/Translations/VBoxContainer/TransRemove" to="." method="_on_TransRemove_pressed"]
