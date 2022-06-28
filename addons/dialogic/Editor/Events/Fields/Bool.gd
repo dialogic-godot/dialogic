@@ -5,7 +5,7 @@ var property_name : String
 signal value_changed
 
 func _ready():
-	print("howdi")
+	#print("howdi")
 	$Toggle.connect("toggled", self,  'value_changed')
 
 

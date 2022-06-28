@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=21 format=2]
 
 [ext_resource path="res://addons/dialogic/Other/DefaultDialogNode.gd" type="Script" id=1]
 [ext_resource path="res://addons/dialogic/Display/DialogText.tscn" type="PackedScene" id=2]
@@ -9,6 +9,111 @@
 [ext_resource path="res://addons/dialogic/Display/Background.tscn" type="PackedScene" id=7]
 [ext_resource path="res://addons/dialogic/Display/MusicPlayer.tscn" type="PackedScene" id=8]
 [ext_resource path="res://addons/dialogic/Display/SoundPlayer.tscn" type="PackedScene" id=9]
+[ext_resource path="res://addons/dialogic/Display/Theme.tscn" type="PackedScene" id=10]
+[ext_resource path="res://addons/dialogic/Example Assets/Fonts/Roboto-Regular.ttf" type="DynamicFontData" id=11]
+
+[sub_resource type="StyleBoxFlat" id=5]
+content_margin_left = 15.0
+content_margin_right = 15.0
+content_margin_top = 5.0
+content_margin_bottom = 5.0
+bg_color = Color( 0.223529, 0.223529, 0.223529, 0.678431 )
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id=1]
+content_margin_left = 15.0
+content_margin_right = 15.0
+content_margin_top = 5.0
+content_margin_bottom = 5.0
+bg_color = Color( 0.223529, 0.223529, 0.223529, 0.678431 )
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id=2]
+content_margin_left = 15.0
+content_margin_right = 15.0
+content_margin_top = 5.0
+content_margin_bottom = 5.0
+bg_color = Color( 0.223529, 0.223529, 0.223529, 0.678431 )
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="DynamicFont" id=4]
+font_data = ExtResource( 11 )
+
+[sub_resource type="Theme" id=3]
+default_font = SubResource( 4 )
+Button/styles/hover = SubResource( 5 )
+Button/styles/normal = SubResource( 1 )
+Button/styles/pressed = SubResource( 1 )
+PanelContainer/styles/panel = SubResource( 2 )
+
+[sub_resource type="StyleBoxFlat" id=9]
+content_margin_left = 15.0
+content_margin_right = 15.0
+content_margin_top = 10.0
+content_margin_bottom = 10.0
+bg_color = Color( 0.878431, 0.521569, 0.521569, 0.678431 )
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color( 0.87451, 0.654902, 0.545098, 1 )
+corner_radius_top_right = 20
+corner_radius_bottom_left = 20
+shadow_color = Color( 0, 0, 0, 0.145098 )
+shadow_size = 10
+
+[sub_resource type="StyleBoxFlat" id=6]
+content_margin_left = 15.0
+content_margin_right = 15.0
+content_margin_top = 10.0
+content_margin_bottom = 10.0
+bg_color = Color( 0.662745, 0.47451, 0.47451, 0.678431 )
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+corner_radius_top_right = 20
+corner_radius_bottom_left = 20
+shadow_color = Color( 0, 0, 0, 0.145098 )
+shadow_size = 10
+
+[sub_resource type="StyleBoxFlat" id=8]
+content_margin_left = 15.0
+content_margin_right = 15.0
+content_margin_top = 15.0
+content_margin_bottom = 15.0
+bg_color = Color( 0.654902, 0.780392, 0.882353, 0.678431 )
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color( 0.85098, 0.568627, 0.266667, 1 )
+corner_radius_top_left = 30
+corner_radius_top_right = 30
+corner_radius_bottom_right = 30
+corner_radius_bottom_left = 30
+shadow_color = Color( 0.67451, 0.67451, 0.67451, 0.0784314 )
+shadow_size = 40
+
+[sub_resource type="Theme" id=7]
+default_font = SubResource( 4 )
+Button/styles/hover = SubResource( 9 )
+Button/styles/normal = SubResource( 6 )
+Button/styles/pressed = SubResource( 6 )
+PanelContainer/styles/panel = SubResource( 8 )
 
 [node name="DefaultDialogNode" type="CanvasLayer"]
 script = ExtResource( 1 )
@@ -45,27 +150,73 @@ position_index = 4
 position = Vector2( 888, 605 )
 position_index = 5
 
-[node name="Control" type="Control" parent="."]
+[node name="DefaultTheme" parent="." instance=ExtResource( 10 )]
 anchor_right = 1.0
 anchor_bottom = 1.0
+margin_left = 2.0
+margin_right = 2.0
+margin_bottom = 0.0
+theme = SubResource( 3 )
 
-[node name="PanelContainer2" type="PanelContainer" parent="Control"]
+[node name="Choices" type="VBoxContainer" parent="DefaultTheme"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -146.0
+margin_top = -102.0
+margin_right = 146.0
+margin_bottom = 102.0
+alignment = 1
+
+[node name="Choice" parent="DefaultTheme/Choices" instance=ExtResource( 4 )]
+margin_top = 5.0
+margin_right = 292.0
+margin_bottom = 34.0
+choice_index = 1
+
+[node name="Choice2" parent="DefaultTheme/Choices" instance=ExtResource( 4 )]
+margin_top = 38.0
+margin_right = 292.0
+margin_bottom = 67.0
+
+[node name="Choice3" parent="DefaultTheme/Choices" instance=ExtResource( 4 )]
+margin_top = 71.0
+margin_right = 292.0
+margin_bottom = 100.0
+
+[node name="Choice4" parent="DefaultTheme/Choices" instance=ExtResource( 4 )]
+margin_top = 104.0
+margin_right = 292.0
+margin_bottom = 133.0
+
+[node name="Choice5" parent="DefaultTheme/Choices" instance=ExtResource( 4 )]
+margin_top = 137.0
+margin_right = 292.0
+margin_bottom = 166.0
+
+[node name="Choice6" parent="DefaultTheme/Choices" instance=ExtResource( 4 )]
+margin_top = 170.0
+margin_right = 292.0
+margin_bottom = 199.0
+
+[node name="PanelContainer2" type="PanelContainer" parent="DefaultTheme"]
 anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-margin_left = -326.0
-margin_top = -199.0
-margin_right = -219.0
-margin_bottom = -171.0
+margin_left = -329.0
+margin_top = -206.0
+margin_right = -195.0
+margin_bottom = -170.0
 
-[node name="DialogicNameLabelDisplay" parent="Control/PanelContainer2" instance=ExtResource( 3 )]
-margin_left = 7.0
-margin_top = 7.0
-margin_right = 100.0
-margin_bottom = 21.0
+[node name="DialogicNameLabelDisplay" parent="DefaultTheme/PanelContainer2" instance=ExtResource( 3 )]
+margin_left = 15.0
+margin_top = 8.0
+margin_right = 119.0
+margin_bottom = 27.0
 
-[node name="PanelContainer" type="PanelContainer" parent="Control"]
+[node name="PanelContainer" type="PanelContainer" parent="DefaultTheme"]
 anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
@@ -75,49 +226,88 @@ margin_top = -163.0
 margin_right = 332.0
 margin_bottom = -31.0
 
-[node name="DialogicTextDisplay" parent="Control/PanelContainer" instance=ExtResource( 2 )]
-margin_left = 7.0
-margin_top = 7.0
-margin_right = 655.0
+[node name="DialogicTextDisplay" parent="DefaultTheme/PanelContainer" instance=ExtResource( 2 )]
+margin_left = 15.0
+margin_top = 5.0
+margin_right = 647.0
+margin_bottom = 127.0
+
+[node name="SpecialTheme" parent="." instance=ExtResource( 10 )]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 2.0
+margin_right = 2.0
+margin_bottom = 0.0
+theme = SubResource( 7 )
+theme_name = "Special"
+
+[node name="Choices" type="VBoxContainer" parent="SpecialTheme"]
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -322.0
+margin_top = -279.0
+margin_right = -30.0
+margin_bottom = -25.0
+grow_horizontal = 0
+alignment = 2
+
+[node name="Choice" parent="SpecialTheme/Choices" instance=ExtResource( 4 )]
+margin_right = 292.0
+margin_bottom = 39.0
+choice_index = 1
+
+[node name="Choice2" parent="SpecialTheme/Choices" instance=ExtResource( 4 )]
+margin_top = 43.0
+margin_right = 292.0
+margin_bottom = 82.0
+
+[node name="Choice3" parent="SpecialTheme/Choices" instance=ExtResource( 4 )]
+margin_top = 86.0
+margin_right = 292.0
 margin_bottom = 125.0
 
-[node name="Choices" type="VBoxContainer" parent="."]
+[node name="Choice4" parent="SpecialTheme/Choices" instance=ExtResource( 4 )]
+margin_top = 129.0
+margin_right = 292.0
+margin_bottom = 168.0
+
+[node name="Choice5" parent="SpecialTheme/Choices" instance=ExtResource( 4 )]
+margin_top = 172.0
+margin_right = 292.0
+margin_bottom = 211.0
+
+[node name="Choice6" parent="SpecialTheme/Choices" instance=ExtResource( 4 )]
+margin_top = 215.0
+margin_right = 292.0
+margin_bottom = 254.0
+
+[node name="PanelContainer" type="PanelContainer" parent="SpecialTheme"]
 anchor_left = 0.5
-anchor_top = 0.5
 anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = -146.0
-margin_top = -106.0
-margin_right = 146.0
-margin_bottom = 106.0
-alignment = 1
+margin_left = -226.0
+margin_top = 22.0
+margin_right = 224.0
+margin_bottom = 102.0
 
-[node name="Choice" parent="Choices" instance=ExtResource( 4 )]
-margin_top = 36.0
-margin_right = 292.0
-margin_bottom = 56.0
+[node name="VBoxContainer" type="VBoxContainer" parent="SpecialTheme/PanelContainer"]
+margin_left = 15.0
+margin_top = 15.0
+margin_right = 435.0
+margin_bottom = 65.0
 
-[node name="Choice2" parent="Choices" instance=ExtResource( 4 )]
-margin_top = 60.0
-margin_right = 292.0
-margin_bottom = 80.0
+[node name="DialogicNameLabelDisplay" parent="SpecialTheme/PanelContainer/VBoxContainer" instance=ExtResource( 3 )]
+margin_right = 420.0
+margin_bottom = 19.0
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
+custom_constants/shadow_as_outline = 2
+align = 1
 
-[node name="Choice3" parent="Choices" instance=ExtResource( 4 )]
-margin_top = 84.0
-margin_right = 292.0
-margin_bottom = 104.0
-
-[node name="Choice4" parent="Choices" instance=ExtResource( 4 )]
-margin_top = 108.0
-margin_right = 292.0
-margin_bottom = 128.0
-
-[node name="Choice5" parent="Choices" instance=ExtResource( 4 )]
-margin_top = 132.0
-margin_right = 292.0
-margin_bottom = 152.0
-
-[node name="Choice6" parent="Choices" instance=ExtResource( 4 )]
-margin_top = 156.0
-margin_right = 292.0
-margin_bottom = 176.0
+[node name="DialogicTextDisplay" parent="SpecialTheme/PanelContainer/VBoxContainer" instance=ExtResource( 2 )]
+margin_top = 23.0
+margin_right = 420.0
+margin_bottom = 50.0
+size_flags_vertical = 3
+Align = "Center"

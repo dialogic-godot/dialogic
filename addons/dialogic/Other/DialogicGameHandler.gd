@@ -71,9 +71,9 @@ func handle_event(event_index:int) -> void:
 	
 	current_event_idx = event_index
 	var event:DialogicEvent = current_timeline_events[event_index]
-	print("\n[D] Handle Event ", event_index, ": ", event)
+	#print("\n[D] Handle Event ", event_index, ": ", event)
 	if event.continue_at_end:
-		print("    -> WILL AUTO CONTINUE!")
+		#print("    -> WILL AUTO CONTINUE!")
 		event.connect("event_finished", self, 'handle_next_event')
 	event.execute(self)
 
@@ -171,8 +171,16 @@ func show_current_choices() -> void:
 	var button_idx = 1
 	for choice_index in get_current_choice_indexes():
 		var choice_event = current_timeline_events[choice_index]
-		show_choice(button_idx, choice_event.get_translated_text(), true, choice_index)
-		button_idx += 1
+		# check if condition is false
+		if not choice_event.Condition.empty() and not execute_condition(choice_event.Condition):
+			# check what to do in this case
+			if choice_event.IfFalseAction == DialogicChoiceEvent.IfFalseActions.DISABLE:
+				show_choice(button_idx, choice_event.get_translated_text(), false, choice_index)
+				button_idx += 1
+		# else just show it
+		else:
+			show_choice(button_idx, choice_event.get_translated_text(), true, choice_index)
+			button_idx += 1
 
 func show_choice(button_index:int, text:String, enabled:bool, event_index:int) -> void:
 	var idx = 1
@@ -180,7 +188,10 @@ func show_choice(button_index:int, text:String, enabled:bool, event_index:int) -
 		if (node.choice_index == button_index) or (idx == button_index and node.choice_index == -1):
 			node.show()
 			node.text = parse_variables(text)
+			node.disabled = not enabled
 			node.connect('pressed', self, 'choice_selected', [event_index])
+		if node.choice_index >0:
+			idx = node.choice_index
 		idx += 1
 
 func choice_selected(event_index:int) -> void:
@@ -244,6 +255,13 @@ func play_sound(path:String, volume:float = 0, audio_bus:String = "Master", loop
 		new_sound_node.connect('finished', new_sound_node, 'queue_free')
 
 
+func change_theme(theme_name):
+	for theme_node in get_tree().get_nodes_in_group('dialogic_themes'):
+		if theme_node.theme_name == theme_name:
+			theme_node.show()
+		else:
+			theme_node.hide()
+
 func parse_variables(text:String) -> String:
 	# This function will try to get the value of variables provided inside curly brackets
 	# and replace them with their values.
@@ -301,7 +319,7 @@ func set_variable(variable_name: String, value: String) -> bool:
 ## 						HELPERS
 ################################################################################
 func set_current_state(new_state:int) -> void:
-	print('~~~ CHANGE STATE ', ["IDLE", "TEXT", "ANIM", "CHOICE", "WAIT",][new_state])
+	#print('~~~ CHANGE STATE ', ["IDLE", "TEXT", "ANIM", "CHOICE", "WAIT",][new_state])
 	current_state = new_state
 	emit_signal('state_changed', new_state)
 
@@ -355,6 +373,11 @@ func get_current_portrait_info_of_character(character:DialogicCharacter) -> Arra
 
 func interpolate_volume_linearly(value, node):
 	node.volume_db = linear2db(value)
+
+func execute_condition(condition:String) -> bool:
+	var expr = Expression.new()
+	expr.parse(condition)
+	return true if expr.execute() else false
 
 func get_autoloads() -> Array:
 	var autoloads = []

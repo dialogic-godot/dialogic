@@ -14,7 +14,7 @@ static func get_editor_scale(ref) -> float:
 	return _scale
 
 
-static func listdir(path: String, files_only: bool = true) -> Array:
+static func listdir(path: String, files_only: bool = true, throw_error:bool = true) -> Array:
 	# https://docs.godotengine.org/en/stable/classes/class_directory.html#description
 	var files: Array = []
 	var dir := Directory.new()
@@ -32,7 +32,7 @@ static func listdir(path: String, files_only: bool = true) -> Array:
 			file_name = dir.get_next()
 		dir.list_dir_end()
 	else:
-		print("[Dialogic] Error while accessing path " + path + " - Error: " + str(err))
+		if throw_error: printerr("[Dialogic] Error while accessing path " + path + " - Error: " + str(err))
 	return files
 
 
@@ -60,7 +60,7 @@ static func scan_folder(folder_path:String, extension:String):
 					list.append(folder_path+"/"+file_name)
 			file_name = dir.get_next()
 	else:
-		print("An error occurred when trying to access the path.")
+		printerr("[Dialogic] Error while accessing path " + folder_path)
 	return list
 
 static func guess_resource(extension, identifier):
@@ -71,32 +71,35 @@ static func guess_resource(extension, identifier):
 
 
 static func get_event_by_string(string:String) -> Resource:
-	for event in [ # the text event should always be last. 
-		# Every event that isn't identified as something else, will end up as text
-		# We should get this list from a folder or something, but then we'll have to sort it somehow
-		"res://addons/dialogic/Events/Sound/event.gd",
-		"res://addons/dialogic/Events/Music/event.gd",
-		"res://addons/dialogic/Events/Label/event.gd",
-		"res://addons/dialogic/Events/End/event.gd",
-		"res://addons/dialogic/Events/Jump/event.gd",
-		"res://addons/dialogic/Events/Visual Background/event.gd",
-		"res://addons/dialogic/Events/Signal/event.gd",
-		"res://addons/dialogic/Events/Wait/event.gd",
-		"res://addons/dialogic/Events/Condition/event.gd",
-		"res://addons/dialogic/Events/End Branch/event.gd",
-		"res://addons/dialogic/Events/Choice/event.gd",
-		"res://addons/dialogic/Events/Character/event.gd",
-		"res://addons/dialogic/Events/Comment/event.gd",
-		"res://addons/dialogic/Events/Variable/event.gd",
-		"res://addons/dialogic/Events/Text/event.gd"
-	]:
+	var event_scripts = get_event_scripts()
+	
+	# move the text event to the end of the list as it's the default.
+	event_scripts.erase("res://addons/dialogic/Events/Text/event.gd")
+	event_scripts.append("res://addons/dialogic/Events/Text/event.gd")
+	
+	for event in event_scripts:
 		if load(event).new()._test_event_string(string):
+
 			return load(event)
 	return load("res://addons/dialogic/Events/Text/event.gd")
 
 static func get_project_setting(setting:String, default = null):
 	return ProjectSettings.get_setting(setting) if ProjectSettings.has_setting(setting) else default
 
+
+static func get_event_scripts(include_custom_events:bool = true) -> Array:
+	var event_scripts = []
+	
+	var file_list = listdir("res://addons/dialogic/Events/", false)
+	for file in file_list:
+		event_scripts.append("res://addons/dialogic/Events/" + file + "/event.gd")
+	
+	if include_custom_events:
+		file_list = listdir("res://addons/dialogic_additions/Events/", false, false)
+		for file in file_list:
+			event_scripts.append("res://addons/dialogic_additions/Events/" + file + "/event.gd")
+		
+	return event_scripts
 
 # RENABLE IF REALLY NEEDED, OTHERWISE DELETE BEFORE RELEASE 
 #static func list_to_dict(list):

@@ -136,9 +136,9 @@ func _to_string() -> String:
 #func _hide_script_from_inspector():
 #	return true
 
-
 func get_icon():
-	var icon = load(self.get_script().get_path().get_base_dir() + "/icon.svg")
+	var ext = '.png'
+	var icon = load(self.get_script().get_path().get_base_dir() + "/icon" + ext)
 	if icon:
 		return icon
 	return load("res://addons/dialogic/Editor/Images/Event Icons/warning.svg")

@@ -35,7 +35,7 @@ func _execute() -> void:
 		if dialogic_game_handler.current_state == dialogic_game_handler.states.IDLE:
 			break
 	if dialogic_game_handler.is_question(dialogic_game_handler.current_event_idx):
-		print("QUESTION!")
+		#print("QUESTION!")
 		dialogic_game_handler.show_current_choices()
 		dialogic_game_handler.current_state = dialogic_game_handler.states.AWAITING_CHOICE
 	finish()
@@ -60,7 +60,7 @@ func load_from_string_to_store(string:String):
 			Character = load(character)
 		else:
 			Character = null
-			print("When importing timeline, we couldn't identify what character you meant with ", result.get_string('name'), ".")
+			#print("When importing timeline, we couldn't identify what character you meant with ", result.get_string('name'), ".")
 		if !result.get_string('portrait').empty():
 			Portrait = result.get_string('portrait').strip_edges()
 	Text = result.get_string('text').replace("<br>", "\n").trim_prefix(" ")

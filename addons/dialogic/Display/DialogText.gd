@@ -1,5 +1,6 @@
 extends RichTextLabel
 
+export(String, 'Left', 'Center', 'Right') var Align = 'Left'
 var timer
 
 func _ready():
@@ -11,6 +12,10 @@ func _ready():
 	timer.connect("timeout", self, 'continue_reveal')
 
 func reveal_text():
+	if Align == 'Center':
+		bbcode_text = '[center]'+bbcode_text
+	elif Align == 'Right':
+		bbcode_text = '[right]'+bbcode_text
 	visible_characters = 0
 	timer.start()
 
