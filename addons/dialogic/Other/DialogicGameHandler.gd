@@ -9,10 +9,8 @@ var current_timeline_events = []
 var current_state = null setget set_current_state
 var current_event_idx = 0
 var current_portraits = []
-var current_bg_music
-var current_bg_image
-var current_name
-var current_text
+
+var current_state_info :Dictionary = {}
 
 var variable # This is used by the user to store variables
 
@@ -247,6 +245,7 @@ func play_sound(path:String, volume:float = 0, audio_bus:String = "Master", loop
 
 
 func change_theme(theme_name):
+	set_current_state_info('theme', theme_name)
 	for theme_node in get_tree().get_nodes_in_group('dialogic_themes'):
 		if theme_node.theme_name == theme_name:
 			theme_node.show()
@@ -370,3 +369,9 @@ func get_autoloads() -> Array:
 	for c in get_tree().root.get_children():
 		autoloads.append(c)
 	return autoloads
+
+func get_current_state_info(property:String, default = null):
+	return current_state_info.get(property, default)
+
+func set_current_state_info(property:String, value) -> void:
+	current_state_info[property] = value

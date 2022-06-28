@@ -7,6 +7,9 @@ var ThemeName: String = ""
 
 func _execute() -> void:
 	dialogic_game_handler.change_theme(ThemeName)
+	# base theme isn't overridden by character themes
+	# these means after a charcter theme, we can change back to the base theme
+	dialogic_game_handler.set_current_state_info('base_theme', ThemeName)
 	finish()
 
 

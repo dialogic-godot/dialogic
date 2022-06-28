@@ -3,17 +3,19 @@ extends Resource
 class_name DialogicCharacter
 
 
-export (String) var name = ""
-export (String) var display_name = ""
-export (PoolStringArray) var nicknames = []
+export (String) var name:String = ""
+export (String) var display_name:String = ""
+export (PoolStringArray) var nicknames:Array = []
 
-export (Color) var color = Color()
-export (String, MULTILINE) var description = ""
-export (String) var theme = ""
+export (Color) var color:Color = Color()
+export (String, MULTILINE) var description:String = ""
+export (String) var theme:String = ""
 
 export (float) var scale:float = 1.0 
+export (Vector2) var offset:Vector2 = Vector2()
+export (bool) var mirror:bool = false
 
-export (Dictionary) var portraits = {}
+export (Dictionary) var portraits:Dictionary = {}
 
 
 
