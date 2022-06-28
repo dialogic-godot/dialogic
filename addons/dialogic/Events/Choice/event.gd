@@ -2,8 +2,12 @@ tool
 extends DialogicEvent
 class_name DialogicChoiceEvent
 
+enum IfFalseActions {DEFAULT, HIDE, DISABLE}
+
 # DEFINE ALL PROPERTIES OF THE EVENT
 var Text :String = ""
+var Condition:String = ""
+var IfFalseAction = IfFalseActions.DEFAULT
 
 func _execute() -> void:
 	# I have no idea how this event works
@@ -31,15 +35,30 @@ func get_as_string_to_store() -> String:
 	var result_string = ""
 
 	result_string = "- "+Text
+	if Condition:
+		result_string += " [if "+Condition+"]"
+	
+	if IfFalseAction == IfFalseActions.HIDE:
+		result_string += " [else hide]"
+	elif IfFalseAction == IfFalseActions.DISABLE:
+		result_string += " [else disable]"
 	
 	return result_string
 
 
 ## THIS HAS TO READ ALL THE DATA FROM THE SAVED STRING (see above) 
 func load_from_string_to_store(string:String):
+	var regex = RegEx.new()
+	regex.compile('- (?<text>[^\\[]*)(\\[if (?<condition>[^\\]]+)])?\\s?(\\[else (?<else_option>[^\\]\\n]*)\\])?')
+	var result = regex.search(string.strip_edges())
 	
-	Text = string.strip_edges().trim_prefix("-").strip_edges()
-
+	Text = result.get_string('text')
+	Condition = result.get_string('condition')
+	if result.get_string('else_option'):
+		IfFalseAction = {
+			'default':IfFalseActions.DEFAULT, 
+			'hide':IfFalseActions.HIDE,
+			'disable':IfFalseActions.DISABLE}.get(result.get_string('else_option'), IfFalseActions.DEFAULT)
 
 # RETURN TRUE IF THE GIVEN LINE SHOULD BE LOADED AS THIS EVENT
 func is_valid_event_string(string:String) -> bool:
@@ -56,3 +75,5 @@ func is_valid_event_string(string:String) -> bool:
 
 func build_event_editor():
 	add_header_edit("Text", ValueType.SinglelineText)
+	add_body_edit("Condition", ValueType.SinglelineText, 'if ')
+	add_body_edit("IfFalseAction", ValueType.FixedOptionSelector, 'else ', '', {'selector_options':{"Default":IfFalseActions.DEFAULT, "Hide":IfFalseActions.HIDE, "Disable":IfFalseActions.DISABLE}})

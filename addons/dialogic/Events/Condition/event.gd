@@ -13,9 +13,7 @@ func _execute() -> void:
 		finish()
 		return
 	
-	var expr = Expression.new()
-	expr.parse(Condition)
-	var result = expr.execute()
+	var result = dialogic_game_handler.execute_condition(Condition)
 	if not result:
 		var idx = dialogic_game_handler.current_event_idx
 		var ignore = 1
