@@ -21,6 +21,7 @@ func set_right_text(value):
 
 func set_value(value):
 	$TextEdit.text = str(value)
+	
 
 
 func change_size():

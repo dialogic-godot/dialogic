@@ -69,6 +69,8 @@ var needs_indentation : bool = false
 var display_name : bool = true
 var disable_editor_button : bool = false
 
+var translation_id = null
+
 # -----------------------------------------
 # Emilio:
 # Stuff I yet don't understand made by Dex:
@@ -141,6 +143,50 @@ func get_icon():
 		return icon
 	return load("res://addons/dialogic/Editor/Images/Event Icons/warning.svg")
 
+################################################################################
+## 					TRANSLATIONS
+################################################################################
+func can_be_translated() -> bool:
+	return false
+
+func get_original_translation_text() -> String:
+	return ''
+
+func add_translation_id() -> String:
+	translation_id = "%x" % [get_instance_id()]
+	return translation_id
+
+func get_translated_text() -> String:
+	if translation_id and DialogicUtil.get_project_setting('dialogic/translation_enabled', false):
+		return tr(translation_id) if tr(translation_id) != translation_id else get_original_translation_text()
+	else:
+		return get_original_translation_text()
+
+################################################################################
+## 					PARSE AND STRINGIFY
+################################################################################
+# These functions are used by the timeline loader/saver
+# They mainly use the overridable behaviour below, but enforce the unique_id saving
+
+func _store_as_string() -> String:
+	if translation_id and can_be_translated():
+		return get_as_string_to_store() + ' #id:'+str(translation_id)
+	else:
+		return get_as_string_to_store()
+
+
+func _load_from_string(string:String) -> void:
+	if '#id:' in string and can_be_translated():
+		translation_id = string.get_slice('#id:', 1).strip_edges()
+		load_from_string_to_store(string.get_slice('#id:', 0))
+	else:
+		load_from_string_to_store(string)
+
+
+func _test_event_string(string:String) -> bool:
+	if '#id:' in string and can_be_translated():
+		return is_valid_event_string(string.get_slice('#id:', 0)) 
+	return is_valid_event_string(string.strip_edges())
 
 ################################################################################
 ## 					PARSE AND STRINGIFY
@@ -168,6 +214,7 @@ func get_as_string_to_store() -> String:
 				result_string += " "+parameter+'="'+str(get(params[parameter]))+'"'
 	result_string += "]"
 	return result_string
+
 
 # loads the variables from the string stored above
 # by default it uses the shortcode format, but can be overridden

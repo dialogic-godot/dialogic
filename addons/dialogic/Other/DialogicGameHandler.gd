@@ -173,12 +173,13 @@ func show_current_choices() -> void:
 		if not choice_event.Condition.empty() and not execute_condition(choice_event.Condition):
 			# check what to do in this case
 			if choice_event.IfFalseAction == DialogicChoiceEvent.IfFalseActions.DISABLE:
-				show_choice(button_idx, choice_event.Text, false, choice_index)
+				show_choice(button_idx, choice_event.get_translated_text(), false, choice_index)
 				button_idx += 1
 		# else just show it
 		else:
-			show_choice(button_idx, choice_event.Text, true, choice_index)
+			show_choice(button_idx, choice_event.get_translated_text(), true, choice_index)
 			button_idx += 1
+
 func show_choice(button_index:int, text:String, enabled:bool, event_index:int) -> void:
 	var idx = 1
 	for node in get_tree().get_nodes_in_group('dialogic_choice_button'):

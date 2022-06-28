@@ -69,6 +69,13 @@ func is_valid_event_string(string:String) -> bool:
 	return false
 
 
+func can_be_translated():
+	return true
+	
+func get_original_translation_text():
+	return Text
+
+
 ################################################################################
 ## 						EDITOR REPRESENTATION
 ################################################################################

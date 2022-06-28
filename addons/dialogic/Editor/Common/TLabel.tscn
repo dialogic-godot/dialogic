@@ -1,11 +1,13 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://addons/dialogic/Editor/Common/TLabel.gd" type="Script" id=1]
+
+[sub_resource type="StyleBoxFlat" id=1]
+bg_color = Color( 1, 1, 1, 0 )
 
 [node name="TLabel" type="Label"]
 anchor_right = 1.0
 anchor_bottom = 1.0
+custom_styles/normal = SubResource( 1 )
+text = "Some cool text"
 script = ExtResource( 1 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
