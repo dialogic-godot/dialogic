@@ -33,7 +33,7 @@ func _input(event:InputEvent) -> void:
 ################################################################################
 ## 						TIMELINE+EVENT HANDLING
 ################################################################################
-func start_timeline(timeline_resource, label = "") -> void:
+func start_timeline(timeline_resource, label_or_idx = "") -> void:
 	# load the resource if only the path is given
 	if typeof(timeline_resource) == TYPE_STRING:
 		timeline_resource = load(timeline_resource)
@@ -43,8 +43,12 @@ func start_timeline(timeline_resource, label = "") -> void:
 	current_timeline_events = current_timeline.get_events()
 	current_event_idx = -1
 	
-	if label:
-		jump_to_label(label)
+	if typeof(label_or_idx) == TYPE_STRING:
+		if label_or_idx:
+			jump_to_label(label_or_idx)
+	elif typeof(label_or_idx) == TYPE_INT:
+		if label_or_idx >-1:
+			current_event_idx = label_or_idx -1
 	
 	handle_next_event()
 
@@ -70,9 +74,9 @@ func handle_event(event_index:int) -> void:
 	
 	current_event_idx = event_index
 	var event:DialogicEvent = current_timeline_events[event_index]
-	#print("\n[D] Handle Event ", event_index, ": ", event)
+	print("\n[D] Handle Event ", event_index, ": ", event)
 	if event.continue_at_end:
-		#print("    -> WILL AUTO CONTINUE!")
+		print("    -> WILL AUTO CONTINUE!")
 		event.connect("event_finished", self, 'handle_next_event')
 	event.execute(self)
 
@@ -101,7 +105,7 @@ func reset_all_display_nodes() -> void:
 	hide_all_choices()
 
 func update_dialog_text(text:String) -> void:
-	current_state = states.SHOWING_TEXT
+	self.current_state = states.SHOWING_TEXT
 	for text_node in get_tree().get_nodes_in_group('dialogic_dialog_text'):
 		if text_node.is_visible_in_tree():
 			text_node.reveal_text(text)
@@ -326,7 +330,7 @@ func set_variable(variable_name: String, value: String) -> bool:
 ## 						HELPERS
 ################################################################################
 func set_current_state(new_state:int) -> void:
-	#print('~~~ CHANGE STATE ', ["IDLE", "TEXT", "ANIM", "CHOICE", "WAIT",][new_state])
+	print('~~~ CHANGE STATE ', ["IDLE", "TEXT", "ANIM", "CHOICE", "WAIT",][new_state])
 	current_state = new_state
 	emit_signal('state_changed', new_state)
 
@@ -393,6 +397,8 @@ func get_autoloads() -> Array:
 	return autoloads
 
 func get_current_state_info(property:String, default = null):
+	if current_state_info.get(property, null) == null:
+		return default
 	return current_state_info.get(property, default)
 
 func set_current_state_info(property:String, value) -> void:
