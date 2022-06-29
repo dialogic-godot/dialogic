@@ -10,31 +10,26 @@ var Label : String = ""
 var Return:int = ReturnTypes.None
 
 func _execute() -> void:
-#	print("ret: ", Return)
-#	print(dialogic_game_handler.current_state_info)
-#	if Return == ReturnTypes.ReturnToLastPoint:
-#		print("going to return")
-#		if len(dialogic_game_handler.get_current_state_info('jump_returns', [])):
-#			print("going to return")
-#			var return_to = dialogic_game_handler.get_current_state_info('jump_returns', []).pop_back()
-#			dialogic_game_handler.start_timeline(return_to[0], return_to[1])
-#			finish()
-#			return
-#
-#	elif Return == ReturnTypes.ReturnPoint:
-#		var return_points = dialogic_game_handler.get_current_state_info('jump_returns', [])
-#		return_points.append(
-#			[dialogic_game_handler.current_timeline,
-#			dialogic_game_handler.current_event_idx+1]
-#			)
-#		dialogic_game_handler.set_current_state_info('jump_returns', return_points)
+	if Return == ReturnTypes.ReturnToLastPoint:
+		if len(dialogic_game_handler.get_current_state_info('jump_returns', [])):
+			var return_to = dialogic_game_handler.get_current_state_info('jump_returns', []).pop_back()
+			dialogic_game_handler.start_timeline(return_to[0], return_to[1])
+			return
+
+	elif Return == ReturnTypes.ReturnPoint:
+		var return_points = dialogic_game_handler.get_current_state_info('jump_returns', [])
+		return_points.append(
+			[dialogic_game_handler.current_timeline,
+			dialogic_game_handler.current_event_idx+1]
+			)
+		dialogic_game_handler.set_current_state_info('jump_returns', return_points)
 
 	if Timeline and Timeline != dialogic_game_handler.current_timeline:
-		#print("---------------switching timelines----------------")
 		dialogic_game_handler.start_timeline(Timeline, Label)
 	elif Label:
 		dialogic_game_handler.jump_to_label(Label)
-	finish()
+	else:
+		finish()
 
 
 ################################################################################
