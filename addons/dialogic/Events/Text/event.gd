@@ -23,13 +23,16 @@ func _init() -> void:
 
 func _execute() -> void:
 	if Character:
+		dialogic_game_handler.set_current_state_info('character', Character)
 		dialogic_game_handler.update_name_label(Character.name, Character.color)
 		if Portrait:
 			dialogic_game_handler.update_portrait(Character, Portrait)
 		if Character.theme:
 			dialogic_game_handler.change_theme(Character.theme)
 	else:
+		dialogic_game_handler.set_current_state_info('character', null)
 		dialogic_game_handler.update_name_label("")
+		
 	
 	if not Character or not Character.theme:
 		# if previous characters had a custom theme change back to base theme 

@@ -17,6 +17,7 @@ var variable # This is used by the user to store variables
 signal state_changed(new_state)
 signal timeline_ended()
 signal signal_event(argument)
+signal text_signal(argument)
 
 ################################################################################
 ## 						INPUT (WIP)
@@ -102,22 +103,26 @@ func reset_all_display_nodes() -> void:
 func update_dialog_text(text:String) -> void:
 	current_state = states.SHOWING_TEXT
 	for text_node in get_tree().get_nodes_in_group('dialogic_dialog_text'):
-		text_node.bbcode_text = text
-		text_node.reveal_text()
+		if text_node.is_visible_in_tree():
+			text_node.reveal_text(text)
 
 func skip_text_animation():
 	for text_node in get_tree().get_nodes_in_group('dialogic_dialog_text'):
-		text_node.finish_text()
+		if text_node.is_visible_in_tree():
+			text_node.finish_text()
 
 func update_name_label(name:String, color:Color = Color()) -> void:
 	for name_label in get_tree().get_nodes_in_group('dialogic_name_label'):
-		name_label.text = name
-		name_label.self_modulate = color
+		if name_label.is_visible_in_tree():
+			name_label.text = name
+			name_label.self_modulate = color
 
 func update_portrait(character: DialogicCharacter, portrait:String = "", position_idx:int = -1, z_index:int = 0, move:bool = false, animation:String = "") -> void:
 	
 	if not character:
 		return
+	if not portrait in character.portraits:
+		printerr("[Dialogic] Character ", character.display_name, " has no portrait '",portrait,"'.")
 	if len(get_tree().get_nodes_in_group('dialogic_portrait_holder')) == 0:
 		assert('[Dialogic] If you want to display portraits, you need a PortraitHolder scene!')
 		
@@ -183,6 +188,8 @@ func show_current_choices() -> void:
 func show_choice(button_index:int, text:String, enabled:bool, event_index:int) -> void:
 	var idx = 1
 	for node in get_tree().get_nodes_in_group('dialogic_choice_button'):
+		if !node.get_parent().is_visible_in_tree():
+			continue
 		if (node.choice_index == button_index) or (idx == button_index and node.choice_index == -1):
 			node.show()
 			node.text = parse_variables(text)
@@ -199,10 +206,11 @@ func choice_selected(event_index:int) -> void:
 
 func update_background(path:String) -> void:
 	for node in get_tree().get_nodes_in_group('dialogic_bg_image'):
-		if path.ends_with('.tscn'):
-			node.add_child(load(path).instance())
-		else:
-			node.texture = load(path)
+		if node.is_visible_in_tree():
+			if path.ends_with('.tscn'):
+				node.add_child(load(path).instance())
+			else:
+				node.texture = load(path)
 
 func update_music(path, volume:float = 0, audio_bus:String = "Master", fade_time:float = 0, loop:bool = true) -> void:
 	var fader = create_tween()
