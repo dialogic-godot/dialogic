@@ -2,27 +2,31 @@ tool
 extends DialogicEvent
 class_name DialogicChangeTimelineEvent
 
-enum ReturnTypes {None, ReturnToLastPoint, ReturnPoint}
+enum CheckpointModes {None, GoToCheckpoint, IsCheckpoint}
 
 # DEFINE ALL PROPERTIES OF THE EVENT
 var Timeline :DialogicTimeline = null
 var Label : String = ""
-var Return:int = ReturnTypes.None
+var Checkpoint:int = CheckpointModes.None
 
 func _execute() -> void:
-	if Return == ReturnTypes.ReturnToLastPoint:
-		if len(dialogic_game_handler.get_current_state_info('jump_returns', [])):
-			var return_to = dialogic_game_handler.get_current_state_info('jump_returns', []).pop_back()
-			dialogic_game_handler.start_timeline(return_to[0], return_to[1])
+	if Checkpoint == CheckpointModes.GoToCheckpoint:
+		if len(dialogic_game_handler.get_current_state_info('checkpoints', [])):
+			var checkpoint = dialogic_game_handler.get_current_state_info('checkpoints', []).pop_back()
+			dialogic_game_handler.start_timeline(checkpoint[0], checkpoint[1])
 			return
+		else:
+			printerr('[Dialogic] Tried jumping to checkpoint, but non registerd.')
+			finish()
+			return 
 
-	elif Return == ReturnTypes.ReturnPoint:
-		var return_points = dialogic_game_handler.get_current_state_info('jump_returns', [])
-		return_points.append(
+	elif Checkpoint == CheckpointModes.IsCheckpoint:
+		var checkpoints = dialogic_game_handler.get_current_state_info('checkpoints', [])
+		checkpoints.append(
 			[dialogic_game_handler.current_timeline,
 			dialogic_game_handler.current_event_idx+1]
 			)
-		dialogic_game_handler.set_current_state_info('jump_returns', return_points)
+		dialogic_game_handler.set_current_state_info('checkpoints', checkpoints)
 
 	if Timeline and Timeline != dialogic_game_handler.current_timeline:
 		dialogic_game_handler.start_timeline(Timeline, Label)
@@ -56,7 +60,7 @@ func get_shortcode_parameters() -> Dictionary:
 		#param_name : property_name
 		"timeline"	: "Timeline",
 		"label"		: "Label",
-		"return"	: "Return",
+		"checkpoint": "Checkpoint",
 	}
 
 
@@ -67,4 +71,4 @@ func get_shortcode_parameters() -> Dictionary:
 func build_event_editor():
 	add_header_edit('Timeline', ValueType.Timeline, 'Timeline:')
 	add_header_edit('Label', ValueType.SinglelineText, 'Label:')
-	add_body_edit('Return', ValueType.FixedOptionSelector, 'Return mode:', '', {'selector_options':{"Nothing":ReturnTypes.None, "This is a return point":ReturnTypes.ReturnPoint, "Return to last return point":ReturnTypes.ReturnToLastPoint}})
+	add_body_edit('Checkpoint', ValueType.FixedOptionSelector, 'Checkpoint mode:', '', {'selector_options':{"Nothing":CheckpointModes.None, "This is a checkpoint":CheckpointModes.IsCheckpoint, "Go to last checkpoint":CheckpointModes.GoToCheckpoint}})
