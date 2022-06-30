@@ -101,10 +101,10 @@ You can add dialogue trees - in the form of Dialog nodes - by one of two ways: g
 ### | Instancing the scene using gdscript
 Using the `Dialogic` class, you can add dialogue trees from code easily:
 
-`
+```gdscript
 var new_dialog = Dialogic.start('Your Timeline Name Here')
 add_child(new_dialog)
-`
+```
 
 ### | Instancing the scene using the editor
 Using the editor, you can drag and drop the scene located at `/addons/dialogic/Dialog.tscn` and set the current timeline via the inspector.
