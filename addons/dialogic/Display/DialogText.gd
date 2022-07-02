@@ -93,7 +93,10 @@ func execute_effects(skip :bool= false) -> void:
 
 func parse_modifiers(_text:String) -> String:
 	for replace_mod_match in modifier_words_select_regex.search_all(_text):
-		var list = replace_mod_match.get_string().trim_prefix("[").trim_suffix("]").split(',')
+		var string = replace_mod_match.get_string().trim_prefix("[").trim_suffix("]")
+		string = string.replace('\\,', '<comma>')
+		var list = string.split(',')
 		var item = list[randi()%len(list)]
+		item = item.replace('<comma>', ',')
 		_text = _text.replace(replace_mod_match.get_string(), item.strip_edges())
 	return _text
