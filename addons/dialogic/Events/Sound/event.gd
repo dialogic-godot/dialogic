@@ -48,6 +48,6 @@ func get_shortcode_parameters() -> Dictionary:
 
 func build_event_editor():
 	add_header_edit('FilePath', ValueType.SinglelineText, 'Path:')
-	add_body_edit('Volume', ValueType.Decibel, 'Volume:')
-	add_body_edit('AudioBus', ValueType.SinglelineText, 'AudioBus:')
+	add_body_edit('Volume', ValueType.Decibel, 'Volume:', '', {}, '!FilePath.empty()')
+	add_body_edit('AudioBus', ValueType.SinglelineText, 'AudioBus:', '', {}, '!FilePath.empty()')
 	#add_body_edit('Loop', ValueType.Bool, 'Loop:')

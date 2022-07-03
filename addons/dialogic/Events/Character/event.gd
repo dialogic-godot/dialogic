@@ -104,5 +104,5 @@ func build_event_editor():
 	add_header_edit('ActionType', ValueType.FixedOptionSelector, 'Action:', '',
 		 {'selector_options':{"Join":ActionTypes.Join, "Leave":ActionTypes.Leave, "Update":ActionTypes.Update}})
 	add_header_edit('Character', ValueType.Character, 'Character:')
-	add_header_edit('Portrait', ValueType.Portrait, 'Portrait:')
-	add_header_edit('Position', ValueType.Integer, 'Position:')
+	add_header_edit('Portrait', ValueType.Portrait, 'Portrait:', '', {}, 'Character != null and ActionType != %s' %ActionTypes.Leave)
+	add_header_edit('Position', ValueType.Integer, 'Position:', '', {}, 'Character != null and ActionType != %s' %ActionTypes.Leave)

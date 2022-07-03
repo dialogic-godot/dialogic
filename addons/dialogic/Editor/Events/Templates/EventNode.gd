@@ -182,6 +182,7 @@ func set_end_node(node):
 
 func build_editor():
 	var p_list = resource._get_property_list()
+	var edit_conditions_list = []
 	for p in p_list:
 		### --------------------------------------------------------------------
 		### 1. CREATE A NODE OF THE CORRECT TYPE FOR THE PROPERTY
@@ -250,11 +251,10 @@ func build_editor():
 			editor_node.set_left_text(p.left_text)
 		if editor_node.has_method('set_right_text') and p.has('right_text'):
 			editor_node.set_right_text(p.right_text)
+		if p.has('condition'):
+			edit_conditions_list.append([editor_node, p.condition])
 		if "event_resource" in editor_node:
 			editor_node.event_resource = resource
-		if editor_node.has_method("react_to_change"):
-			connect('content_changed', editor_node, 'react_to_change')
-			editor_node.react_to_change()
 		
 		### --------------------------------------------------------------------
 		### 3. ADD IT TO THE RIGHT PLACE (HEADER/BODY)
@@ -262,7 +262,20 @@ func build_editor():
 		if p.location == 1:
 			location = get_node("%Body/Content")
 		location.add_child(editor_node)
+	connect('content_changed', self, 'recalculate_edit_visibility' , [edit_conditions_list])
+	recalculate_edit_visibility(edit_conditions_list)
 
+func recalculate_edit_visibility(list):
+	for node_con in list:
+		if node_con[1].empty():
+			node_con[0].show()
+		else:
+			var expr = Expression.new()
+			expr.parse(node_con[1])
+			if expr.execute([], resource):
+				node_con[0].show()
+			else:
+				node_con[0].hide()
 
 func set_property(property_name, value):
 	resource.set(property_name, value)
