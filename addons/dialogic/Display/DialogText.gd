@@ -18,10 +18,10 @@ func _ready() -> void:
 	timer.connect("timeout", self, 'continue_reveal')
 	
 	# compile effects regex
-	effect_regex.compile("\\[(?<command>[^\\[=,]*)(=(?<value>[^\\[]*))?\\]")
+	effect_regex.compile("(?<!\\\\)\\[(?<command>[^\\[=,]*)(=(?<value>[^\\[]*))?\\]")
 	
 	# compule modifier regexs
-	modifier_words_select_regex.compile("\\[[^\\[]+(,[^\\]]*)\\]")
+	modifier_words_select_regex.compile("(?<!\\\\)\\[[^\\[]+(,[^\\]]*)\\]")
 	
 # this is called by the DialogicGameHandler to set text
 func reveal_text(_text:String) -> void:
@@ -64,7 +64,7 @@ func parse_effects(_text:String) -> String:
 		
 		_text.erase(effect_match.get_start()-position_correction, len(effect_match.get_string()))
 		position_correction += len(effect_match.get_string())
-	
+	_text = _text.replace('\\[', '[')
 	return _text
 
 func execute_effects(skip :bool= false) -> void:
