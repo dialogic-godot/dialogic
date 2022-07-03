@@ -73,7 +73,7 @@ func handle_event(event_index:int) -> void:
 	#print("\n[D] Handle Event ", event_index, ": ", event)
 	if event.continue_at_end:
 		#print("    -> WILL AUTO CONTINUE!")
-		event.connect("event_finished", self, 'handle_next_event')
+		event.connect("event_finished", self, 'handle_next_event', [], CONNECT_ONESHOT)
 	event.execute(self)
 
 
