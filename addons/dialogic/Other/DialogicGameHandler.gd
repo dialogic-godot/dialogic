@@ -383,8 +383,13 @@ func interpolate_volume_linearly(value, node):
 
 func execute_condition(condition:String) -> bool:
 	var expr = Expression.new()
-	expr.parse(condition)
-	return true if expr.execute() else false
+	var autoload_names = []
+	var autoloads = []
+	for c in get_tree().root.get_children():
+		autoloads.append(c)
+		autoload_names.append(c.name)
+	expr.parse(condition, autoload_names)
+	return true if expr.execute(autoloads) else false
 
 func get_autoloads() -> Array:
 	var autoloads = []
