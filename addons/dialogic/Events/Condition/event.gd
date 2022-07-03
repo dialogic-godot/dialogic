@@ -13,26 +13,26 @@ func _execute() -> void:
 		finish()
 		return
 	
-	var result = dialogic_game_handler.execute_condition(Condition)
+	var result = dialogic.execute_condition(Condition)
 	if not result:
-		var idx = dialogic_game_handler.current_event_idx
+		var idx = dialogic.current_event_idx
 		var ignore = 1
 		# this will go through the next events, until there is a event that is not a choice and on the same level as this one
 		while true:
 			idx += 1
-			if not dialogic_game_handler.current_timeline.get_event(idx):
+			if not dialogic.current_timeline.get_event(idx):
 				break
-			if dialogic_game_handler.current_timeline.get_event(idx) is DialogicChoiceEvent:
+			if dialogic.current_timeline.get_event(idx) is DialogicChoiceEvent:
 				ignore += 1
-			elif dialogic_game_handler.current_timeline.get_event(idx) is DialogicEndBranchEvent:
+			elif dialogic.current_timeline.get_event(idx) is DialogicEndBranchEvent:
 				ignore -= 1
 			elif ignore == 0:
 				break
 			# excuse this, checking like above creates a FUCKING CYCLIC DEPENDENCY....
-			elif 'Condition' in dialogic_game_handler.current_timeline.get_event(idx):
+			elif 'Condition' in dialogic.current_timeline.get_event(idx):
 				ignore += 1
 			
-		dialogic_game_handler.current_event_idx = idx-1
+		dialogic.current_event_idx = idx-1
 	finish()
 
 

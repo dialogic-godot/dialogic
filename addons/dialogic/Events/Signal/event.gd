@@ -6,7 +6,7 @@ class_name DialogicSignalEvent
 var Argument: String = ""
 
 func _execute() -> void:
-	dialogic_game_handler.emit_signal('signal_event', Argument)
+	dialogic.emit_signal('signal_event', Argument)
 	finish()
 
 

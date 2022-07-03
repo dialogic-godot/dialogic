@@ -105,12 +105,12 @@ signal event_finished(event_resource)
 ## Determines if the event will go to next event inmediatly or not. 
 ## If value is true, the next event will be executed when event ends.
 var continue_at_end:bool = true setget _set_continue
-var dialogic_game_handler = null
+var dialogic = null
 
 ## Executes the event behaviour.
 func execute(_dialogic_game_handler) -> void:
 	emit_signal("event_started", self)
-	dialogic_game_handler = _dialogic_game_handler
+	dialogic = _dialogic_game_handler
 	call_deferred("_execute")
 
 
@@ -142,6 +142,10 @@ func get_icon():
 	if icon:
 		return icon
 	return load("res://addons/dialogic/Editor/Images/Event Icons/warning.svg")
+
+# to be overridden by sub-classes
+func get_required_subsystems() -> Array:
+	return []
 
 ################################################################################
 ## 					TRANSLATIONS

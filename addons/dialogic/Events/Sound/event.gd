@@ -9,7 +9,7 @@ var AudioBus: String = "Master"
 var Loop : bool = false
 
 func _execute() -> void:
-	dialogic_game_handler.play_sound(FilePath, Volume, AudioBus, Loop)
+	dialogic.play_sound(FilePath, Volume, AudioBus, Loop)
 	finish()
 
 

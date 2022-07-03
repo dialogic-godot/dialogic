@@ -10,7 +10,7 @@ var AudioBus: String = "Master"
 var Loop: bool = true
 
 func _execute() -> void:
-	dialogic_game_handler.update_music(FilePath, Volume, AudioBus, FadeLength, Loop)
+	dialogic.update_music(FilePath, Volume, AudioBus, FadeLength, Loop)
 	finish()
 
 

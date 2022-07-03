@@ -22,35 +22,38 @@ func _init() -> void:
 
 
 func _execute() -> void:
-	if Character:
-		dialogic_game_handler.set_current_state_info('character', Character)
-		dialogic_game_handler.update_name_label(Character.name, Character.color)
-		if Portrait:
-			dialogic_game_handler.update_portrait(Character, Portrait)
-		if Character.theme:
-			dialogic_game_handler.change_theme(Character.theme)
-	else:
-		dialogic_game_handler.set_current_state_info('character', null)
-		dialogic_game_handler.update_name_label("")
-		
-	
 	if not Character or not Character.theme:
 		# if previous characters had a custom theme change back to base theme 
-		if dialogic_game_handler.get_current_state_info('base_theme') != dialogic_game_handler.get_current_state_info('theme'):
-			dialogic_game_handler.change_theme(dialogic_game_handler.get_current_state_info('base_theme', 'Default'))
+		if dialogic.current_state_info.get('base_theme') != dialogic.current_state_info.get('theme'):
+			dialogic.change_theme(dialogic.current_state_info.get('base_theme', 'Default'))
 	
-	dialogic_game_handler.update_dialog_text(dialogic_game_handler.parse_variables(Text))
+	if Character:
+		if Character.theme:
+			dialogic.change_theme(Character.theme)
+		
+		dialogic.current_state_info['character'] = Character
+		dialogic.update_name_label(Character.name, Character.color)
+		
+		if Portrait and dialogic.has_subsystem('Portraits') and dialogic.Portraits.is_character_joined(Character):
+			dialogic.Portraits.change_portrait(Character, Portrait)
+	else:
+		dialogic.current_state_info['character'] = null
+		dialogic.update_name_label("")
+		
+	
+	
+	dialogic.update_dialog_text(dialogic.parse_variables(Text))
 	
 	# Wait for text to finish revealing
 	while true:
-		yield(dialogic_game_handler, "state_changed")
-		if dialogic_game_handler.current_state == dialogic_game_handler.states.IDLE:
+		yield(dialogic, "state_changed")
+		if dialogic.current_state == dialogic.states.IDLE:
 			break
 	
-	if dialogic_game_handler.is_question(dialogic_game_handler.current_event_idx):
+	if dialogic.is_question(dialogic.current_event_idx):
 		#print("QUESTION!")
-		dialogic_game_handler.show_current_choices()
-		dialogic_game_handler.current_state = dialogic_game_handler.states.AWAITING_CHOICE
+		dialogic.show_current_choices()
+		dialogic.current_state = dialogic.states.AWAITING_CHOICE
 	
 	finish()
 

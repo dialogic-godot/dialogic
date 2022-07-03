@@ -6,9 +6,9 @@ class_name DialogicWaitEvent
 var SecondsTime :float = 1.0
 
 func _execute() -> void:
-	dialogic_game_handler.current_state = dialogic_game_handler.states.WAITING
-	yield(dialogic_game_handler.get_tree().create_timer(SecondsTime), "timeout")
-	dialogic_game_handler.current_state = dialogic_game_handler.states.IDLE
+	dialogic.current_state = dialogic.states.WAITING
+	yield(dialogic.get_tree().create_timer(SecondsTime), "timeout")
+	dialogic.current_state = dialogic.states.IDLE
 	finish()
 
 ################################################################################

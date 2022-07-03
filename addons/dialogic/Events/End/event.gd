@@ -6,9 +6,9 @@ class_name DialogicEndTimelineEvent
 
 
 func _execute() -> void:
-	for character in dialogic_game_handler.get_joined_characters():
-		dialogic_game_handler.remove_portrait(character)
-	dialogic_game_handler.end_timeline()
+	for character in dialogic.Portraits.get_joined_characters():
+		dialogic.Portraits.remove_portrait(character)
+	dialogic.end_timeline()
 
 
 ################################################################################

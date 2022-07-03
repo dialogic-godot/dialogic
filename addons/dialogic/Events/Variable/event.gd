@@ -7,8 +7,8 @@ var Name: String = ""
 var Value: String = ""
 
 func _execute() -> void:
-	print('FROM EVENT: ', Name, Value)
-	dialogic_game_handler.set_variable(Name, Value)
+	#print('FROM EVENT: ', Name, Value)
+	dialogic.set_variable(Name, Value)
 	finish()
 
 

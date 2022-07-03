@@ -93,6 +93,7 @@ func jump_to_label(label:String) -> void:
 ## 						DISPLAY NODES
 ################################################################################
 func _ready() -> void:
+	collect_subsystems()
 	reset_all_display_nodes()
 
 func reset_all_display_nodes() -> void:
@@ -116,52 +117,6 @@ func update_name_label(name:String, color:Color = Color()) -> void:
 		if name_label.is_visible_in_tree():
 			name_label.text = name
 			name_label.self_modulate = color
-
-func update_portrait(character: DialogicCharacter, portrait:String = "", position_idx:int = -1, z_index:int = 0, move:bool = false, animation:String = "") -> void:
-	
-	if not character:
-		return
-	if not portrait in character.portraits:
-		printerr("[Dialogic] Character ", character.display_name, " has no portrait '",portrait,"'.")
-	if len(get_tree().get_nodes_in_group('dialogic_portrait_holder')) == 0:
-		assert('[Dialogic] If you want to display portraits, you need a PortraitHolder scene!')
-		
-	if is_character_joined(character):
-		var info = get_current_portrait_info_of_character(character)
-		if position_idx == -1:
-			position_idx = info.position
-		if portrait == "":
-			portrait = info.portrait
-	
-	if portrait and position_idx:
-		for node in get_tree().get_nodes_in_group('dialogic_portrait_position'):
-			if node.position_index == position_idx:
-				var path = character.portraits[portrait].path
-				for portrait in current_portraits:
-					if portrait.character == character:
-						portrait.node.queue_free()
-						current_portraits.erase(portrait)
-				if not path.ends_with('.tscn'):
-					var sprite = Sprite.new()
-					get_tree().get_nodes_in_group('dialogic_portrait_holder')[0].add_child(sprite)
-					sprite.texture = load(path)
-					sprite.centered = false
-					sprite.scale = Vector2(1,1)*character.portraits[portrait].scale
-					sprite.global_position = node.global_position + character.portraits[portrait].offset
-					sprite.global_position.x -= sprite.texture.get_width()/2.0*character.portraits[portrait].scale*character.scale
-					sprite.global_position.y -= sprite.texture.get_height()*character.portraits[portrait].scale*character.scale
-					current_portraits.append({'character':character, 'portrait':portrait, 'position':position_idx, 'node':sprite})
-				
-	else:
-		for portrait in current_portraits:
-			if portrait.character == character:
-				portrait.node.queue_free()
-				current_portraits.erase(portrait)
-
-func remove_portrait(character:DialogicCharacter) -> void:
-	var info = get_current_portrait_info_of_character(character)
-	info.node.queue_free()
-	current_portraits.erase(info)
 
 func hide_all_choices() -> void:
 	for node in get_tree().get_nodes_in_group('dialogic_choice_button'):
@@ -262,7 +217,7 @@ func play_sound(path:String, volume:float = 0, audio_bus:String = "Master", loop
 
 
 func change_theme(theme_name):
-	set_current_state_info('theme', theme_name)
+	current_state_info['theme'] = theme_name
 	for theme_node in get_tree().get_nodes_in_group('dialogic_themes'):
 		if theme_node.theme_name == theme_name:
 			theme_node.show()
@@ -330,6 +285,8 @@ func set_current_state(new_state:int) -> void:
 	current_state = new_state
 	emit_signal('state_changed', new_state)
 
+
+## QUESTION/CHOICES
 func is_question(index:int) -> bool:
 	if current_timeline_events[index] is DialogicTextEvent:
 		if len(current_timeline_events)-1 != index:
@@ -360,27 +317,12 @@ func get_current_choice_indexes() -> Array:
 			ignore -= 1
 	return choices
 
-func is_character_joined(character:DialogicCharacter) -> bool:
-	for portrait in current_portraits:
-		if portrait.character == character:
-			return true
-	return false
-
-func get_joined_characters() -> Array:
-	var chars = []
-	for portrait in current_portraits:
-		chars.append(portrait.character)
-	return chars
-
-func get_current_portrait_info_of_character(character:DialogicCharacter) -> Array:
-	for portrait in current_portraits:
-		if portrait.character == character:
-			return portrait
-	return []
-
+## SOUNDS
 func interpolate_volume_linearly(value, node):
 	node.volume_db = linear2db(value)
 
+
+## CONDITIONS/VARIABLES
 func execute_condition(condition:String) -> bool:
 	var expr = Expression.new()
 	expr.parse(condition)
@@ -392,8 +334,30 @@ func get_autoloads() -> Array:
 		autoloads.append(c)
 	return autoloads
 
-func get_current_state_info(property:String, default = null):
-	return current_state_info.get(property, default)
+################################################################################
+##						SUB-SYTSEMS
+################################################################################
+func collect_subsystems():
+	for script in DialogicUtil.get_event_scripts():
+		var x = load(script).new()
+		for i in x.get_required_subsystems():
+			if not has_subsystem(i[0]):
+				add_subsytsem(i[0], i[1]).clear_game_state()
 
-func set_current_state_info(property:String, value) -> void:
-	current_state_info[property] = value
+func has_subsystem(_name):
+	return has_node(_name)
+
+func get_subsystem(_name):
+	return get_node(_name)
+
+func add_subsytsem(_name, _script_path):
+	var node = Node.new()
+	node.name = _name
+	node.set_script(load(_script_path))
+	node.dialogic = self
+	add_child(node)
+	return node
+
+func _get(property):
+	if has_subsystem(property):
+		return get_node(property)

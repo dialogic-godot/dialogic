@@ -83,7 +83,7 @@ func edit(object):
 
 
 func enable_plugin():
-	add_autoload_singleton("DialogicGameHandler", "res://addons/dialogic/Other/DialogicGameHandler.gd")
+	add_autoload_singleton("Dialogic", "res://addons/dialogic/Other/DialogicGameHandler.gd")
 
 func disable_plugin():
-	remove_autoload_singleton("DialogicGameHandler")
+	remove_autoload_singleton("Dialogic")

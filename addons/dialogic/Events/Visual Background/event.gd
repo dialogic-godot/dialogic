@@ -6,7 +6,7 @@ class_name DialogicBackgroundEvent
 var ImagePath: String = ""
 
 func _execute() -> void:
-	dialogic_game_handler.update_background(ImagePath)
+	dialogic.update_background(ImagePath)
 	finish()
 
 

@@ -52,7 +52,7 @@ func finish_text():
 	percent_visible = 1
 	execute_effects(true)
 	timer.stop()
-	DialogicGameHandler.current_state = DialogicGameHandler.states.IDLE
+	Dialogic.current_state = Dialogic.states.IDLE
 
 
 func parse_effects(_text:String) -> String:
@@ -85,11 +85,11 @@ func execute_effects(skip :bool= false) -> void:
 				if effect[2].is_valid_float():
 					speed = float(effect[2])
 			'signal':
-				DialogicGameHandler.emit_signal("text_signal", effect[2])
+				Dialogic.emit_signal("text_signal", effect[2])
 			'portrait':
 				if effect[2]:
-					if DialogicGameHandler.get_current_state_info('character', null):
-						DialogicGameHandler.update_portrait(DialogicGameHandler.get_current_state_info('character'), effect[2])
+					if Dialogic.current_state_info.get('character', null):
+						Dialogic.update_portrait(Dialogic.current_state_info.get('character'), effect[2])
 
 func parse_modifiers(_text:String) -> String:
 	for replace_mod_match in modifier_words_select_regex.search_all(_text):
