@@ -1,19 +1,21 @@
 extends DialogicSubsystem
 
 
-
 ####################################################################################################
 ##					STATE
 ####################################################################################################
 
 func clear_game_state():
-	for portrait in dialogic.current_state_info.get('portraits', []):
-		remove_portrait(portrait.character)
+	for character in dialogic.current_state_info.get('portraits', {}).keys():
+		remove_portrait(load(character))
 	dialogic.current_state_info['portraits'] = {}
 
 func load_game_state():
-	for portrait in dialogic.current_state_info['portraits']:
-		add_portrait(portrait.character, portrait.portrait, portrait.position_idx)
+	for character_path in dialogic.current_state_info['portraits']:
+		add_portrait(
+			load(character_path), 
+			dialogic.current_state_info['portraits'][character_path].portrait, dialogic.current_state_info['portraits'][character_path].position_index
+			)
 
 
 ####################################################################################################
@@ -82,6 +84,7 @@ func set_portrait_z_index(portrait_node, z_index):
 	pass
 
 func remove_portrait(character:DialogicCharacter) -> void:
+	print("removing character ",character.name)
 	dialogic.current_state_info['portraits'][character.resource_path].node.queue_free()
 	dialogic.current_state_info['portraits'].erase(character.resource_path)
 

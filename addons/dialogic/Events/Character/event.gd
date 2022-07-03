@@ -35,7 +35,7 @@ func _execute() -> void:
 					
 	finish()
 
-# to be overridden by sub-classes
+
 func get_required_subsystems() -> Array:
 	return [
 				['Portraits', get_script().resource_path.get_base_dir().plus_file('Subsystem_Portraits.gd')],

@@ -14,7 +14,7 @@ func find_next_index():
 	
 	# In case the next event is not a choice or ELIF/ELSE event, just go to the next one
 	# excuse this, checking like normally creates a FUCKING CYCLIC DEPENDENCY....
-	if not (dialogic.current_timeline.get_event(idx+1) and 'Condition' in dialogic.current_timeline.get_event(idx+1) and dialogic.current_timeline.get_event(idx+1).ConditionType != 0):
+	if not (dialogic.current_timeline.get_event(idx+1) and 'ConditionType' in dialogic.current_timeline.get_event(idx+1) and dialogic.current_timeline.get_event(idx+1).ConditionType != 0):
 		if not dialogic.current_timeline.get_event(idx+1) is DialogicChoiceEvent:
 			return idx+1
 			
@@ -31,12 +31,12 @@ func find_next_index():
 		if event is DialogicChoiceEvent:
 			ignore += 1
 		# if we get to a condition that is of type elif or else
-		elif 'Condition' in event and event.ConditionType != 0:
+		elif 'ConditionType' in event and event.ConditionType != 0:
 			pass
 		elif ignore == 1:
 			break
 		# excuse this, checking like above creates a FUCKING CYCLIC DEPENDENCY....
-		if 'Condition' in dialogic.current_timeline.get_event(idx):
+		if 'ConditionType' in dialogic.current_timeline.get_event(idx):
 			ignore += 1
 		# excuse this, checking like above creates a FUCKING CYCLIC DEPENDENCY....
 		elif 'this_is_an_end_event' in dialogic.current_timeline.get_event(idx):

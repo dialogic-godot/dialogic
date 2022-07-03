@@ -13,6 +13,11 @@ func _execute() -> void:
 	# I have no idea how this event works
 	finish()
 
+func get_required_subsystems() -> Array:
+	return [
+				['Choices', get_script().resource_path.get_base_dir().plus_file('Subsystem_Choices.gd')],
+			]
+
 
 ################################################################################
 ## 						INITIALIZE

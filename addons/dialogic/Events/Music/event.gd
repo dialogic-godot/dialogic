@@ -10,9 +10,14 @@ var AudioBus: String = "Master"
 var Loop: bool = true
 
 func _execute() -> void:
-	dialogic.update_music(FilePath, Volume, AudioBus, FadeLength, Loop)
+	dialogic.Audio.update_music(FilePath, Volume, AudioBus, FadeLength, Loop)
 	finish()
 
+
+func get_required_subsystems() -> Array:
+	return [
+				['Audio', get_script().resource_path.get_base_dir().plus_file('Subsystem_Audio.gd')],
+			]
 
 ################################################################################
 ## 						INITIALIZE

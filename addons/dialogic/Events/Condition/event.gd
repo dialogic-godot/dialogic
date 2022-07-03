@@ -29,7 +29,7 @@ func _execute() -> void:
 			elif ignore == 0:
 				break
 			# excuse this, checking like above creates a FUCKING CYCLIC DEPENDENCY....
-			elif 'Condition' in dialogic.current_timeline.get_event(idx):
+			elif 'ConditionType' in dialogic.current_timeline.get_event(idx):
 				ignore += 1
 			
 		dialogic.current_event_idx = idx-1
