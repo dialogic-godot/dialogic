@@ -14,17 +14,32 @@ var Animation = ""
 func _execute() -> void:
 	match ActionType:
 		ActionTypes.Join:
+			
 			if Character and Portrait:
-				dialogic_game_handler.update_portrait(Character, Portrait, Position)
+				var n = dialogic.Portraits.add_portrait(Character, Portrait, Position)
+				
+				
+		
 		ActionTypes.Leave:
 			if Character:
-				dialogic_game_handler.remove_portrait(Character)
+				if Character.resource_path in dialogic.Portraits.is_character_joined(Character):
+					dialogic.Portraits.remove_portrait(Character)
+					
+		
 		ActionTypes.Update:
 			if Character and Portrait:
-				dialogic_game_handler.update_portrait(Character, Portrait, Position)
-		
+				if dialogic.Portraits.is_character_joined(Character):
+					dialogic.Portraits.change_portrait(Character, Portrait)
+					if Position != -1:
+						dialogic.Portraits.move_portrait(Character, Position)
+					
 	finish()
 
+
+func get_required_subsystems() -> Array:
+	return [
+				['Portraits', get_script().resource_path.get_base_dir().plus_file('Subsystem_Portraits.gd')],
+			]
 
 ################################################################################
 ## 						INITIALIZE

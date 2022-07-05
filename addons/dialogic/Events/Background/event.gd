@@ -6,8 +6,13 @@ class_name DialogicBackgroundEvent
 var ImagePath: String = ""
 
 func _execute() -> void:
-	dialogic_game_handler.update_background(ImagePath)
+	dialogic.Backgrounds.update_background(ImagePath)
 	finish()
+
+func get_required_subsystems() -> Array:
+	return [
+				['Backgrounds', get_script().resource_path.get_base_dir().plus_file('Subsystem_Backgrounds.gd')],
+			]
 
 
 ################################################################################

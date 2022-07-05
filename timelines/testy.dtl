@@ -1,16 +1,29 @@
-[wait time="6"]
+[music path="res://test-project/ChillLofiR.mp3" volume="-14" fade="3" bus="Master" loop="True"]
 
-Emilio (sad): This is very cool, if it works.
+Join Emilio (blink) 3
 
-[wait time="1"]
+begin
 
-//timelines/Chapter1.dtl"]
+[sound path="res://test-project/Goblin_03.mp3" volume="-5" bus="Master"]
 
-[background path="res://icon.png"]
+Emilio (shy): \[Hello stranger!, Hi Travaler., What's up\, guys!] \[pause=1] \[In Brackets] 
 
-[signal arg="MyArgument"]
+- Yes
+	
+- No
+	
+	
+Update Emilio (blink) 5
 
-# A cool comment that is long.!!!
+[background path="icon.png"]
 
-[end_timeline]
+Emilio (hate): Some normal text.
+
+Join Jowan (avoid) 1
+
+[background]
+
+Jowan (concept): We are back in the first timeline
+
+Jowan (happy): We are back in the first timeline
 

@@ -7,11 +7,11 @@ var Timeline :DialogicTimeline = null
 var Label : String = ""
 
 func _execute() -> void:
-	if Timeline and Timeline != dialogic_game_handler.current_timeline:
+	if Timeline and Timeline != dialogic.current_timeline:
 		#print("---------------switching timelines----------------")
-		dialogic_game_handler.start_timeline(Timeline, Label)
+		dialogic.start_timeline(Timeline, Label)
 	elif Label:
-		dialogic_game_handler.jump_to_label(Label)
+		dialogic.jump_to_label(Label)
 	finish()
 
 

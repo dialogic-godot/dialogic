@@ -7,11 +7,47 @@ var Text:String = ""
 var Character:DialogicCharacter
 var Portrait = ""
 
-# _init is the constructor
-# is called everytime the resource is being created
-# (including when the resource is loaded)
-# ensuring to keep the same values everytime until
-# you modify them
+func _execute() -> void:
+	if not Character or not Character.theme:
+		# if previous characters had a custom theme change back to base theme 
+		if dialogic.current_state_info.get('base_theme') != dialogic.current_state_info.get('theme'):
+			dialogic.Themes.change_theme(dialogic.current_state_info.get('base_theme', 'Default'))
+	
+	if Character:
+		if Character.theme:
+			dialogic.Themes.change_theme(Character.theme)
+		
+		dialogic.Text.update_name_label(Character)
+		
+		if Portrait and dialogic.has_subsystem('Portraits') and dialogic.Portraits.is_character_joined(Character):
+			dialogic.Portraits.change_portrait(Character, Portrait)
+	else:
+		dialogic.Text.update_name_label(null)
+		
+	
+	
+	dialogic.Text.update_dialog_text(dialogic.parse_variables(Text))
+	
+	# Wait for text to finish revealing
+	while true:
+		yield(dialogic, "state_changed")
+		if dialogic.current_state == dialogic.states.IDLE:
+			break
+	
+	if dialogic.has_subsystem('Choices') and dialogic.Choices.is_question(dialogic.current_event_idx):
+		dialogic.Choices.show_current_choices()
+		dialogic.current_state = dialogic.states.AWAITING_CHOICE
+	
+	finish()
+
+func get_required_subsystems() -> Array:
+	return [
+		['Text', get_script().resource_path.get_base_dir().plus_file('Subsystem_Text.gd')]
+	]
+################################################################################
+## 						INITIALIZE
+################################################################################
+
 func _init() -> void:
 	event_name = "Text"
 	event_color = Color("#2F80ED")
@@ -21,40 +57,10 @@ func _init() -> void:
 	continue_at_end = false
 
 
-func _execute() -> void:
-	if Character:
-		dialogic_game_handler.set_current_state_info('character', Character)
-		dialogic_game_handler.update_name_label(Character.name, Character.color)
-		if Portrait:
-			dialogic_game_handler.update_portrait(Character, Portrait)
-		if Character.theme:
-			dialogic_game_handler.change_theme(Character.theme)
-	else:
-		dialogic_game_handler.set_current_state_info('character', null)
-		dialogic_game_handler.update_name_label("")
-		
-	
-	if not Character or not Character.theme:
-		# if previous characters had a custom theme change back to base theme 
-		if dialogic_game_handler.get_current_state_info('base_theme') != dialogic_game_handler.get_current_state_info('theme'):
-			dialogic_game_handler.change_theme(dialogic_game_handler.get_current_state_info('base_theme', 'Default'))
-	
-	dialogic_game_handler.update_dialog_text(dialogic_game_handler.parse_variables(Text))
-	
-	# Wait for text to finish revealing
-	while true:
-		yield(dialogic_game_handler, "state_changed")
-		if dialogic_game_handler.current_state == dialogic_game_handler.states.IDLE:
-			break
-	
-	if dialogic_game_handler.is_question(dialogic_game_handler.current_event_idx):
-		#print("QUESTION!")
-		dialogic_game_handler.show_current_choices()
-		dialogic_game_handler.current_state = dialogic_game_handler.states.AWAITING_CHOICE
-	
-	finish()
 
-
+################################################################################
+## 						SAVING/LOADING
+################################################################################
 ## THIS RETURNS A READABLE REPRESENTATION, BUT HAS TO CONTAIN ALL DATA (This is how it's stored)
 func get_as_string_to_store() -> String:
 	if Character:
