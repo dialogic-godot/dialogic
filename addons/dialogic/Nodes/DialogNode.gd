@@ -145,9 +145,8 @@ func load_config_files():
 	settings = DialogicResources.get_settings_config()
 	# theme
 	var theme_file = 'res://addons/dialogic/Editor/ThemeEditor/default-theme.cfg'
-	if settings.has_section('theme'):
-		theme_file = settings.get_value('theme', 'default')
-		current_default_theme = theme_file
+	theme_file = settings.get_value('theme', 'default', 'default-theme.cfg')
+	current_default_theme = theme_file
 	current_theme = load_theme(theme_file)
 	
 	# history
