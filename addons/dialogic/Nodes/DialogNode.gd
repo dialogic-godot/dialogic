@@ -6,6 +6,7 @@ extends Control
 ## -----------------------------------------------------------------------------
 ## The timeline to load when starting the scene
 var timeline: String
+var timeline_name: String
 
 ### MODE
 var preview: bool = false
@@ -398,6 +399,7 @@ func play_audio(name):
 ## -----------------------------------------------------------------------------
 # load a timeline file and start parsing
 func set_current_dialog(dialog_path: String):
+	print(dialog_path)
 	current_timeline = dialog_path
 	dialog_script = DialogicResources.get_timeline_json(dialog_path)
 	return load_dialog()
@@ -545,8 +547,8 @@ func on_timeline_start():
 			# save to the default slot
 			Dialogic.save('', true)
 	# TODO remove event_start in 2.0
-	emit_signal("event_start", "timeline", current_timeline)
-	emit_signal("timeline_start", current_timeline)
+	emit_signal("event_start", "timeline", timeline_name)
+	emit_signal("timeline_start", timeline_name)
 
 # emits timeline_end and handles autosaving
 func on_timeline_end():
@@ -556,7 +558,7 @@ func on_timeline_end():
 			Dialogic.save('', true)
 	# TODO remove event_end in 2.0
 	emit_signal("event_end", "timeline")
-	emit_signal("timeline_end", current_timeline)
+	emit_signal("timeline_end", timeline_name)
 
 # does checks and calls the above functions
 func _emit_timeline_signals():

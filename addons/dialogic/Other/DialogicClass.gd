@@ -72,6 +72,7 @@ static func start(timeline: String = '', default_timeline: String ='', dialog_sc
 		for t in DialogicUtil.get_timeline_list():
 			if t['file'] == timeline:
 				dialog_node.timeline = t['file']
+				dialog_node.timeline_name = timeline
 				return returned_dialog_node
 		# No file found. Show error
 		dialog_node.dialog_script = {
@@ -88,6 +89,7 @@ static func start(timeline: String = '', default_timeline: String ='', dialog_sc
 	var timeline_file = _get_timeline_file_from_name(timeline)
 	if timeline_file:
 		dialog_node.timeline = timeline_file
+		dialog_node.timeline_name = timeline
 		return returned_dialog_node
 	
 	# Just in case everything else fails.
