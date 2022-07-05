@@ -50,15 +50,6 @@ func set_value(value):
 		$Search/OpenButton.hide()
 	current_value = value
 
-func react_to_change():
-	if resource_type == resource_types.Portraits:
-		if event_resource.Character:
-			if current_value and (not (current_value in event_resource.Character.portraits.keys())):
-				set_value("")
-				emit_signal("value_changed", property_name, "")
-			show()
-		else:
-			hide()
 
 ################################################################################
 ## 						BASIC

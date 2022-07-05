@@ -98,5 +98,5 @@ func get_original_translation_text():
 
 func build_event_editor():
 	add_header_edit('Character', ValueType.Character, 'Character:')
-	add_header_edit('Portrait', ValueType.Portrait, '')
+	add_header_edit('Portrait', ValueType.Portrait, '', '', {}, 'Character != null')
 	add_body_edit('Text', ValueType.MultilineText)

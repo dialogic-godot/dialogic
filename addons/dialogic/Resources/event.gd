@@ -273,7 +273,7 @@ func add_header_label(text:String) -> void:
 		})
 
 
-func add_header_edit(variable:String, editor_type = ValueType.Label, left_text:String = "", right_text:String = "", extra_info:Dictionary = {}) -> void:
+func add_header_edit(variable:String, editor_type = ValueType.Label, left_text:String = "", right_text:String = "", extra_info:Dictionary = {}, condition:String = "") -> void:
 	editor_list.append({
 		"name":variable, 				# Must be the same as the corresponding property that it edits!
 		"type":typeof(get(variable)),
@@ -283,10 +283,11 @@ func add_header_edit(variable:String, editor_type = ValueType.Label, left_text:S
 		"display_info":extra_info,
 		"left_text":left_text,			# Text that will be displayed left of the field
 		"right_text":right_text,		# Text that will be displayed right of the field
+		"condition":condition,			# If true (or empty), the edit is shown
 		})
 
 
-func add_body_edit(variable:String, editor_type = ValueType.Label, left_text:String= "", right_text:String="", extra_info:Dictionary = {}) -> void:
+func add_body_edit(variable:String, editor_type = ValueType.Label, left_text:String= "", right_text:String="", extra_info:Dictionary = {}, condition:String = "") -> void:
 	editor_list.append({
 		"name":variable, 				# Must be the same as the corresponding property that it edits!
 		"type":typeof(get(variable)),
@@ -296,6 +297,7 @@ func add_body_edit(variable:String, editor_type = ValueType.Label, left_text:Str
 		"display_info":extra_info,
 		"left_text":left_text,			# Text that will be displayed left of the field
 		"right_text":right_text,		# Text that will be displayed right of the field
+		"condition":condition,			# If true (or empty), the edit is shown
 		})
 
 
