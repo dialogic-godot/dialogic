@@ -399,7 +399,6 @@ func play_audio(name):
 ## -----------------------------------------------------------------------------
 # load a timeline file and start parsing
 func set_current_dialog(dialog_path: String):
-	print(dialog_path)
 	current_timeline = dialog_path
 	dialog_script = DialogicResources.get_timeline_json(dialog_path)
 	return load_dialog()
