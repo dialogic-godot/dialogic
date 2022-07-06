@@ -1,5 +1,23 @@
 # Changelog
 
+## v1.4.3 
+
+The biggest changes in this version are fixes to a bug when exporting the games. Thank you everyone!
+
+## What's Changed
+* Update Chinese Translation by @magian1127 in https://github.com/coppolaemilio/dialogic/pull/920
+* 1.4: Added simple slide_in character entrance animations by @champbob in https://github.com/coppolaemilio/dialogic/pull/945
+* 1.4: Added simple slide_out character entrance animations by @champbob in https://github.com/coppolaemilio/dialogic/pull/946
+* Fix multi-line code by @lemon37564 in https://github.com/coppolaemilio/dialogic/pull/970
+* 1.4.3 - Fix for export error due to settings theme failure by @zaknafean in https://github.com/coppolaemilio/dialogic/pull/978
+* 1.4.3 - Fix for #904 by @zaknafean in https://github.com/coppolaemilio/dialogic/pull/979
+
+## New Contributors
+* @champbob made their first contribution in https://github.com/coppolaemilio/dialogic/pull/945
+* @lemon37564 made their first contribution in https://github.com/coppolaemilio/dialogic/pull/970
+
+**Full Changelog**: https://github.com/coppolaemilio/dialogic/compare/1.4.2...1.4.3
+
 ## v1.4.2 - Afterlife
 - Fixed an issue with MacOS and text events not adjusting their size properly
 - Android exports should work again [[zaknafean](https://github.com/zaknafean)]

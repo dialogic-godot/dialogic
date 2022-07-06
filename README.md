@@ -8,10 +8,7 @@ Create dialogs, characters and scenes to display conversations in your Godot gam
 [Credits](#credits)
 
 
-
-
-
-# Version 1.4.2 - Afterlife ![Godot v3.4](https://img.shields.io/badge/godot-v3.4-%23478cbf)
+# Version 1.4.3 - Afterlife ![Godot v3.4](https://img.shields.io/badge/godot-v3.4-%23478cbf)
 
 ### ⚠️
 
