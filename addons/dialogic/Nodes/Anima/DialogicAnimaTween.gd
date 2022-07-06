@@ -325,16 +325,18 @@ func _on_animation_with_key(index: int, elapsed: float) -> void:
 	var property_data = _animation_data[index]._property_data
 	var node = animation_data.node
 	var value = property_data.from + (property_data.diff * elapsed)
-
-	node[property_data.property_name][property_data.key] = value
+	
+	if is_instance_valid(node):
+		node[property_data.property_name][property_data.key] = value
 
 func _on_animation_with_subkey(index: int, elapsed: float) -> void:
 	var animation_data = _animation_data[index]
 	var property_data = _animation_data[index]._property_data
 	var node = animation_data.node
 	var value = property_data.from + (property_data.diff * elapsed)
-
-	node[property_data.property_name][property_data.key][property_data.subkey] = value
+	
+	if is_instance_valid(node):
+		node[property_data.property_name][property_data.key][property_data.subkey] = value
 
 func _on_animation_without_key(index: int, elapsed: float) -> void:
 	var animation_data = _animation_data[index]
@@ -346,8 +348,9 @@ func _on_animation_without_key(index: int, elapsed: float) -> void:
 		property_data.callback.call_func(property_data.param, value)
 
 		return
-
-	node[property_data.property_name] = value
+	
+	if is_instance_valid(node):
+		node[property_data.property_name] = value
 
 #
 # We don't want the user to specify the from/to value as color
