@@ -102,6 +102,9 @@ func _set_event_icon(icon: Texture):
 	custom_style.corner_radius_top_right = 5 * _scale
 	custom_style.corner_radius_bottom_left = 5 * _scale
 	custom_style.corner_radius_bottom_right = 5 * _scale
+	
+	# Separation on the header
+	$"%Header".set("custom_constants/separation", 5 * _scale)
 
 
 func _set_event_name(text: String):
