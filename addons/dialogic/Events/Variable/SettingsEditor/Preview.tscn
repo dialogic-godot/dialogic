@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=2]
 
-[ext_resource path="res://addons/dialogic/Editor/Settings/VariablesEditor/Preview.gd" type="Script" id=1]
+[ext_resource path="res://addons/dialogic/Events/Variable/SettingsEditor/Preview.gd" type="Script" id=1]
 
 [sub_resource type="StyleBoxFlat" id=1]
 content_margin_left = 5.0

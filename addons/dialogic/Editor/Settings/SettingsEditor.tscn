@@ -2,7 +2,7 @@
 
 [ext_resource path="res://addons/dialogic/Editor/Settings/SettingsEditor.gd" type="Script" id=1]
 [ext_resource path="res://addons/dialogic/Editor/Common/TLabel.tscn" type="PackedScene" id=2]
-[ext_resource path="res://addons/dialogic/Editor/Settings/VariablesEditor/VariableFolder.tscn" type="PackedScene" id=3]
+[ext_resource path="res://addons/dialogic/Editor/Settings/Settings_Translations.gd" type="Script" id=4]
 
 [sub_resource type="Image" id=3]
 data = {
@@ -58,86 +58,6 @@ margin_bottom = 14.0
 text = "General"
 title = true
 
-[node name="Variables" type="HBoxContainer" parent="Panel/Tabs"]
-visible = false
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_left = 4.0
-margin_top = 32.0
-margin_right = -4.0
-margin_bottom = -4.0
-
-[node name="VBox" type="VBoxContainer" parent="Panel/Tabs/Variables"]
-margin_right = 1016.0
-margin_bottom = 564.0
-size_flags_horizontal = 3
-
-[node name="HBox" type="HBoxContainer" parent="Panel/Tabs/Variables/VBox"]
-margin_right = 103.0
-margin_bottom = 40.0
-
-[node name="Variables" parent="Panel/Tabs/Variables/VBox/HBox" instance=ExtResource( 2 )]
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_right = 1016.0
-margin_bottom = 14.0
-size_flags_horizontal = 3
-text = "Variables"
-title = true
-
-[node name="SaveVariablesButton" type="Button" parent="Panel/Tabs/Variables/VBox/HBox"]
-unique_name_in_owner = true
-margin_right = 12.0
-margin_bottom = 20.0
-text = "Save"
-
-[node name="ScrollContainer" type="ScrollContainer" parent="Panel/Tabs/Variables/VBox"]
-margin_top = 18.0
-margin_right = 664.0
-margin_bottom = 564.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-scroll_horizontal_enabled = false
-
-[node name="MainVariableFolder" parent="Panel/Tabs/Variables/VBox/ScrollContainer" instance=ExtResource( 3 )]
-unique_name_in_owner = true
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_right = 664.0
-margin_bottom = 15.0
-MainFolder = true
-
-[node name="VBoxContainer" type="VBoxContainer" parent="Panel/Tabs/Variables"]
-margin_left = 684.0
-margin_top = 18.0
-margin_right = 1016.0
-margin_bottom = 564.0
-size_flags_horizontal = 3
-size_flags_stretch_ratio = 0.5
-
-[node name="Variables2" parent="Panel/Tabs/Variables/VBoxContainer" instance=ExtResource( 2 )]
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_right = 332.0
-margin_bottom = 14.0
-text = "About variables"
-title = true
-
-[node name="Info2" parent="Panel/Tabs/Variables/VBoxContainer" instance=ExtResource( 2 )]
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_top = 18.0
-margin_right = 332.0
-margin_bottom = 219.0
-text = "You can define a set of variables here (each a name and a default value). You can then change them with the Set Variable event or use them in text using {MyVariableName}.
-
-You can group variables in folders (and subfolders) and then reference them using {MyFolder.MySubFolder.MyVariable} in text.
-
-You can access variables in scripts by doing 'Dialoigc.MyVariable'  
-or 'Dialogic.MyFolder.MySubfolder.MyVariable.'"
-autowrap = true
-text_key = "Tra"
-
 [node name="Translations" type="HBoxContainer" parent="Panel/Tabs"]
 visible = false
 anchor_right = 1.0
@@ -146,6 +66,7 @@ margin_left = 4.0
 margin_top = 32.0
 margin_right = -4.0
 margin_bottom = -4.0
+script = ExtResource( 4 )
 
 [node name="VBox" type="VBoxContainer" parent="Panel/Tabs/Translations"]
 margin_right = 330.0
@@ -371,7 +292,6 @@ Afterwards, you can translate your timelines in a csv editor, by adding new colu
 autowrap = true
 text_key = "Tra"
 
-[connection signal="pressed" from="Panel/Tabs/Variables/VBox/HBox/SaveVariablesButton" to="." method="_on_SaveVariables_pressed"]
 [connection signal="pressed" from="Panel/Tabs/Translations/VBox/TransInitialize" to="." method="_on_TransInitialize_pressed"]
 [connection signal="pressed" from="Panel/Tabs/Translations/VBoxContainer/TransUpdate" to="." method="_on_TransUpdate_pressed"]
 [connection signal="pressed" from="Panel/Tabs/Translations/VBoxContainer/TransRemove" to="." method="_on_TransRemove_pressed"]

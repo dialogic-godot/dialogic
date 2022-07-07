@@ -2,8 +2,9 @@ tool
 extends PanelContainer
 
 export (bool) var MainFolder = false
-var folder_scene = "res://addons/dialogic/Editor/Settings/VariablesEditor/VariableFolder.tscn"
-var field_scene = "res://addons/dialogic/Editor/Settings/VariablesEditor/VariableField.tscn"
+var folder_scene = get_script().resource_path.get_base_dir().plus_file("VariableFolder.tscn")
+var field_scene = get_script().resource_path.get_base_dir().plus_file("VariableField.tscn")
+var preview_scene = get_script().resource_path.get_base_dir().plus_file("Preview.tscn")
 
 var drag_preview = null
 
@@ -72,7 +73,7 @@ func get_drag_data(position):
 	}
 	data.data[get_name()] = get_data()
 	
-	var prev = load("res://addons/dialogic/Editor/Settings/VariablesEditor/Preview.tscn").instance()
+	var prev = load(preview_scene).instance()
 	prev.set_text(get_name())
 	set_drag_preview(prev)
 
