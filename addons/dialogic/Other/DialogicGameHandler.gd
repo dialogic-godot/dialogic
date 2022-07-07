@@ -11,7 +11,6 @@ var current_event_idx = 0
 
 var current_state_info :Dictionary = {}
 
-var variable # This is used by the user to store variables
 
 signal state_changed(new_state)
 signal timeline_ended()
@@ -108,62 +107,8 @@ func clear():
 
 
 ################################################################################
-## 						VARIABLES/CONDITIONS
+## 						STATE
 ################################################################################
-func parse_variables(text:String) -> String:
-	# This function will try to get the value of variables provided inside curly brackets
-	# and replace them with their values.
-	# It will:
-	# - look for the strings to replace
-	# - search all tree nodes (autoloads)
-	# - try to get the value from context
-	#
-	# So if you provide a string like `Hello, how are you doing {Game.player_name}
-	# it will try to search for an autoload with the name `Game` and get the value
-	# of `player_name` to replace it.
-	
-	if '{' in text: # Otherwise, why bother?
-		# Trying to extract the curly brackets from the text
-		var regex = RegEx.new()
-		regex.compile("\\{(?<variable>[^{}]*)\\}")
-		var to_replace = []
-		for result in regex.search_all(text):
-			to_replace.append(result.get_string('variable'))
-		
-		# Getting all the autoloads
-		var autoloads = get_autoloads()
-		
-		# Trying to replace the values
-		var parsed = text
-		for entry in to_replace:
-			if '.' in entry:
-				var query = entry.split('.')
-				var from = query[0]
-				var variable = query[1]
-				for a in autoloads:
-					if a.name == from:
-						parsed = parsed.replace('{' + entry + '}', a.get(variable))
-
-		return parsed
-	return text
-
-
-func set_variable(variable_name: String, value: String) -> bool:
-	# Getting all the autoloads
-	var autoloads = get_autoloads()
-	
-	if '.' in variable_name:
-		var query = variable_name.split('.')
-		var from = query[0]
-		var variable = query[1]
-		for a in autoloads:
-			if a.name == from:
-				a.set(variable, value)
-				return true
-	
-	return false
-
-
 func set_current_state(new_state:int) -> void:
 	#print('~~~ CHANGE STATE ', ["IDLE", "TEXT", "ANIM", "CHOICE", "WAIT",][new_state])
 	current_state = new_state
@@ -181,12 +126,6 @@ func execute_condition(condition:String) -> bool:
 	return true if expr.execute(autoloads) else false
 
 
-func get_autoloads() -> Array:
-	var autoloads = []
-	for c in get_tree().root.get_children():
-		autoloads.append(c)
-	return autoloads
-
 ################################################################################
 ## 						SAVING & LOADING
 ################################################################################
@@ -197,6 +136,7 @@ func get_full_state() -> Dictionary:
 	else:
 		current_state_info['current_event_idx'] = -1
 		current_state_info['current_timeline'] = null
+
 	return current_state_info
 
 
@@ -235,3 +175,7 @@ func add_subsytsem(_name, _script_path):
 func _get(property):
 	if has_subsystem(property):
 		return get_node(property)
+
+func _set(property, value):
+	if has_subsystem(property):
+		return true

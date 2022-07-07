@@ -44,7 +44,10 @@ func show_choice(button_index:int, text:String, enabled:bool, event_index:int) -
 			continue
 		if (node.choice_index == button_index) or (idx == button_index and node.choice_index == -1):
 			node.show()
-			node.text = dialogic.parse_variables(text)
+			if dialogic.has_subsystem('VAR'):
+				node.text = dialogic.VAR.parse_variables(text)
+			else:
+				node.text = text
 			node.disabled = not enabled
 			node.connect('pressed', self, 'choice_selected', [event_index])
 		if node.choice_index >0:

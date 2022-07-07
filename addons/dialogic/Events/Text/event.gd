@@ -25,8 +25,10 @@ func _execute() -> void:
 		dialogic.Text.update_name_label(null)
 		
 	
-	
-	dialogic.Text.update_dialog_text(dialogic.parse_variables(Text))
+	if dialogic.has_subsystem('VAR'):
+		dialogic.Text.update_dialog_text(dialogic.VAR.parse_variables(get_translated_text()))
+	else:
+		dialogic.Text.update_dialog_text(get_translated_text())
 	
 	# Wait for text to finish revealing
 	while true:

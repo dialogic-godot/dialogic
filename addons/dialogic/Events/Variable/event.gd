@@ -7,9 +7,15 @@ var Name: String = ""
 var Value: String = ""
 
 func _execute() -> void:
-	#print('FROM EVENT: ', Name, Value)
-	dialogic.set_variable(Name, Value)
+	dialogic.VAR.set_variable(Name, Value)
 	finish()
+
+
+func get_required_subsystems() -> Array:
+	return [
+				['VAR', get_script().resource_path.get_base_dir().plus_file('Subsystem_Variables.gd'),
+				get_script().resource_path.get_base_dir().plus_file('SettingsEditor/Editor.tscn')],
+			]
 
 
 ################################################################################

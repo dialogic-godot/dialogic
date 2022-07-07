@@ -1,0 +1,95 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://addons/dialogic/Events/Variable/SettingsEditor/VariableField.gd" type="Script" id=1]
+
+[sub_resource type="StyleBoxFlat" id=1]
+content_margin_left = 10.0
+content_margin_right = 5.0
+content_margin_top = 5.0
+content_margin_bottom = 5.0
+bg_color = Color( 1, 1, 1, 0.184314 )
+border_width_left = 4
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="Image" id=7]
+data = {
+"data": PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ),
+"format": "LumAlpha8",
+"height": 16,
+"mipmaps": false,
+"width": 16
+}
+
+[sub_resource type="ImageTexture" id=6]
+flags = 4
+flags = 4
+image = SubResource( 7 )
+size = Vector2( 16, 16 )
+
+[sub_resource type="StyleBoxEmpty" id=2]
+
+[sub_resource type="StyleBoxFlat" id=3]
+bg_color = Color( 0.6, 0.6, 0.6, 0 )
+draw_center = false
+border_width_bottom = 2
+
+[node name="VariableField" type="PanelContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_bottom = -562.0
+custom_styles/panel = SubResource( 1 )
+script = ExtResource( 1 )
+
+[node name="HBox" type="HBoxContainer" parent="."]
+margin_left = 10.0
+margin_top = 5.0
+margin_right = 1019.0
+margin_bottom = 33.0
+mouse_filter = 2
+
+[node name="Dragger" type="TextureRect" parent="HBox"]
+unique_name_in_owner = true
+margin_right = 28.0
+margin_bottom = 28.0
+rect_min_size = Vector2( 28, 28 )
+mouse_default_cursor_shape = 13
+texture = SubResource( 6 )
+expand = true
+stretch_mode = 1
+
+[node name="NameEdit" type="LineEdit" parent="HBox"]
+unique_name_in_owner = true
+margin_left = 32.0
+margin_right = 502.0
+margin_bottom = 28.0
+size_flags_horizontal = 3
+custom_styles/read_only = SubResource( 2 )
+custom_styles/focus = SubResource( 3 )
+text = "NewVariable"
+editable = false
+
+[node name="ValueEdit" type="LineEdit" parent="HBox"]
+unique_name_in_owner = true
+margin_left = 506.0
+margin_right = 977.0
+margin_bottom = 28.0
+size_flags_horizontal = 3
+
+[node name="DeleteButton" type="Button" parent="HBox"]
+unique_name_in_owner = true
+margin_left = 981.0
+margin_right = 1009.0
+margin_bottom = 28.0
+icon = SubResource( 6 )
+flat = true
+
+[connection signal="focus_exited" from="HBox/NameEdit" to="." method="_on_NameEdit_focus_exited"]
+[connection signal="gui_input" from="HBox/NameEdit" to="." method="_on_NameEdit_gui_input"]
+[connection signal="text_entered" from="HBox/NameEdit" to="." method="_on_NameEdit_text_entered"]
+[connection signal="pressed" from="HBox/DeleteButton" to="." method="_on_DeleteButton_pressed"]
