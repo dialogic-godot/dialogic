@@ -95,6 +95,13 @@ func _set_event_icon(icon: Texture):
 	cpanel.rect_min_size = Vector2(icon_size, icon_size) * _scale
 	ip.rect_min_size = cpanel.rect_min_size
 	ipc.rect_min_size = ip.rect_min_size
+	
+	# Updating the theme properties to scale
+	var custom_style = ip.get('custom_styles/panel')
+	custom_style.corner_radius_top_left = 5 * _scale
+	custom_style.corner_radius_top_right = 5 * _scale
+	custom_style.corner_radius_bottom_left = 5 * _scale
+	custom_style.corner_radius_bottom_right = 5 * _scale
 
 
 func _set_event_name(text: String):
