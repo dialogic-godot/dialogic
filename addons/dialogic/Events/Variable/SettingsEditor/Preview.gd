@@ -8,4 +8,4 @@ func set_text(text):
 	
 func _ready():
 	$Panel/HBox/TextureRect.texture = get_icon("TripleBar", "EditorIcons")
-	$Panel.self_modulate = get_color("prop_subsection", "Editor")
+	$Panel.self_modulate = get_color("prop_subGroup", "Editor")

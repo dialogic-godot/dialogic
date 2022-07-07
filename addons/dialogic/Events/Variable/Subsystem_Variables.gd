@@ -156,4 +156,3 @@ class VariableFolder:
 			return true
 		elif VariableFolder:
 			return true
-

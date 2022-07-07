@@ -1,7 +1,7 @@
 tool
 extends PanelContainer
 
-var parent_folder = null
+var parent_Group = null
 var preview_scene = get_script().resource_path.get_base_dir().plus_file("Preview.tscn")
 
 ################################################################################
@@ -14,8 +14,8 @@ func get_name() -> String:
 func get_data() -> String:
 	return $'%ValueEdit'.text
 
-func load_data(var_name:String, var_value:String, _folder:Control) -> void:
-	parent_folder = _folder
+func load_data(var_name:String, var_value:String, _Group:Control) -> void:
+	parent_Group = _Group
 	$'%NameEdit'.text = var_name
 	$'%ValueEdit'.text = var_value
 
@@ -46,7 +46,7 @@ func can_drop_data(position, data):
 	return false
 
 func drop_data(position, data):
-	parent_folder.add_data(data.data)
+	parent_Group.add_data(data.data)
 	data.node.queue_free()
 
 ################################################################################
@@ -62,9 +62,6 @@ func _on_DeleteButton_pressed():
 	queue_free()
 
 
-func _on_NameEdit_text_entered(new_text):
-	$'%NameEdit'.editable = false
-
 
 func _on_NameEdit_gui_input(event):
 	if event is InputEventMouseButton and event.pressed and event.doubleclick:
@@ -72,4 +69,17 @@ func _on_NameEdit_gui_input(event):
 
 
 func _on_NameEdit_focus_exited():
+	disable_name_edit()
+
+func _on_NameEdit_text_entered(new_text):
+	disable_name_edit()
+
+func disable_name_edit():
 	$'%NameEdit'.editable = false
+	parent_Group.check_data()
+
+func warning():
+	modulate = get_color("warning_color", "Editor")
+
+func no_warning():
+	modulate = Color.white

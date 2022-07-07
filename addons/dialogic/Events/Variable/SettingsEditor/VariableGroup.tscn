@@ -1,6 +1,6 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=9 format=2]
 
-[ext_resource path="res://addons/dialogic/Events/Variable/SettingsEditor/VariableFolder.gd" type="Script" id=1]
+[ext_resource path="res://addons/dialogic/Events/Variable/SettingsEditor/VariableGroup.gd" type="Script" id=1]
 
 [sub_resource type="StyleBoxFlat" id=1]
 content_margin_left = 20.0
@@ -17,11 +17,7 @@ corner_radius_top_right = 5
 corner_radius_bottom_right = 5
 corner_radius_bottom_left = 5
 
-[sub_resource type="StyleBoxEmpty" id=3]
-
-[sub_resource type="StyleBoxEmpty" id=4]
-
-[sub_resource type="Image" id=7]
+[sub_resource type="Image" id=10]
 data = {
 "data": PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ),
 "format": "LumAlpha8",
@@ -33,10 +29,29 @@ data = {
 [sub_resource type="ImageTexture" id=6]
 flags = 4
 flags = 4
-image = SubResource( 7 )
+image = SubResource( 10 )
 size = Vector2( 16, 16 )
 
-[node name="VariableFolder" type="PanelContainer"]
+[sub_resource type="StyleBoxEmpty" id=3]
+
+[sub_resource type="StyleBoxEmpty" id=4]
+
+[sub_resource type="Image" id=11]
+data = {
+"data": PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ),
+"format": "LumAlpha8",
+"height": 16,
+"mipmaps": false,
+"width": 16
+}
+
+[sub_resource type="ImageTexture" id=9]
+flags = 4
+flags = 4
+image = SubResource( 11 )
+size = Vector2( 16, 16 )
+
+[node name="VariableGroup" type="PanelContainer"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 size_flags_horizontal = 3
@@ -59,6 +74,7 @@ margin_right = 28.0
 margin_bottom = 28.0
 rect_min_size = Vector2( 28, 28 )
 mouse_default_cursor_shape = 13
+texture = SubResource( 6 )
 expand = true
 
 [node name="NameEdit" type="LineEdit" parent="VBox/MainBar"]
@@ -76,9 +92,12 @@ editable = false
 [node name="SearchBar" type="LineEdit" parent="VBox/MainBar"]
 unique_name_in_owner = true
 visible = false
-margin_left = 840.0
-margin_right = 898.0
-margin_bottom = 24.0
+margin_left = 568.0
+margin_right = 834.0
+margin_bottom = 28.0
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.5
+placeholder_text = "search"
 
 [node name="NewVariable" type="Button" parent="VBox/MainBar"]
 unique_name_in_owner = true
@@ -86,16 +105,16 @@ margin_left = 838.0
 margin_right = 866.0
 margin_bottom = 28.0
 hint_tooltip = "Add new variable"
-icon = SubResource( 6 )
+icon = SubResource( 9 )
 flat = true
 
-[node name="NewFolder" type="Button" parent="VBox/MainBar"]
+[node name="NewGroup" type="Button" parent="VBox/MainBar"]
 unique_name_in_owner = true
 margin_left = 870.0
 margin_right = 898.0
 margin_bottom = 28.0
 hint_tooltip = "Add new folder"
-icon = SubResource( 6 )
+icon = SubResource( 9 )
 flat = true
 
 [node name="DuplicateButton" type="Button" parent="VBox/MainBar"]
@@ -103,7 +122,7 @@ unique_name_in_owner = true
 margin_left = 902.0
 margin_right = 930.0
 margin_bottom = 28.0
-hint_tooltip = "Duplicate folder"
+hint_tooltip = "Duplicate Group"
 icon = SubResource( 6 )
 flat = true
 
@@ -112,7 +131,7 @@ unique_name_in_owner = true
 margin_left = 934.0
 margin_right = 962.0
 margin_bottom = 28.0
-hint_tooltip = "Delete folder"
+hint_tooltip = "Delete Group"
 icon = SubResource( 6 )
 flat = true
 
@@ -124,7 +143,7 @@ margin_bottom = 28.0
 hint_tooltip = "Hide/Show content"
 toggle_mode = true
 pressed = true
-icon = SubResource( 6 )
+icon = SubResource( 9 )
 flat = true
 
 [node name="ContentKeeper" type="HBoxContainer" parent="VBox"]
@@ -180,14 +199,14 @@ margin_right = 970.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[connection signal="gui_input" from="." to="." method="_on_VariableFolder_gui_input"]
-[connection signal="mouse_exited" from="." to="." method="_on_VariableFolder_mouse_exited"]
+[connection signal="gui_input" from="." to="." method="_on_VariableGroup_gui_input"]
+[connection signal="mouse_exited" from="." to="." method="_on_VariableGroup_mouse_exited"]
 [connection signal="focus_exited" from="VBox/MainBar/NameEdit" to="." method="_on_NameEdit_focus_exited"]
 [connection signal="gui_input" from="VBox/MainBar/NameEdit" to="." method="_on_NameEdit_gui_input"]
 [connection signal="text_entered" from="VBox/MainBar/NameEdit" to="." method="_on_NameEdit_text_entered"]
 [connection signal="text_changed" from="VBox/MainBar/SearchBar" to="." method="_on_SearchBar_text_changed"]
 [connection signal="pressed" from="VBox/MainBar/NewVariable" to="." method="_on_NewVariable_pressed"]
-[connection signal="pressed" from="VBox/MainBar/NewFolder" to="." method="_on_NewFolder_pressed"]
+[connection signal="pressed" from="VBox/MainBar/NewGroup" to="." method="_on_NewGroup_pressed"]
 [connection signal="pressed" from="VBox/MainBar/DuplicateButton" to="." method="_on_DuplicateButton_pressed"]
 [connection signal="pressed" from="VBox/MainBar/DeleteButton" to="." method="_on_DeleteButton_pressed"]
 [connection signal="toggled" from="VBox/MainBar/FoldButton" to="." method="_on_FoldButton_toggled"]
