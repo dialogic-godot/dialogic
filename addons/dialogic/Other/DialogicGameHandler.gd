@@ -11,7 +11,7 @@ var current_event_idx = 0
 
 var current_state_info :Dictionary = {}
 
-var variable # This is used by the user to store variables
+var variables # These are the built-in dialogic variables
 
 signal state_changed(new_state)
 signal timeline_ended()
@@ -21,6 +21,7 @@ signal text_signal(argument)
 func _ready() -> void:
 	collect_subsystems()
 	clear()
+	variables = DialogicUtil.get_project_setting('dialogic/variables', {})
 
 ################################################################################
 ## 						INPUT (WIP)
@@ -140,10 +141,26 @@ func parse_variables(text:String) -> String:
 				var query = entry.split('.')
 				var from = query[0]
 				var variable = query[1]
+				
+				# first look for autoloads
 				for a in autoloads:
 					if a.name == from:
 						parsed = parsed.replace('{' + entry + '}', a.get(variable))
-
+						continue
+				
+				# if none is found, try getting it from the dialogic variables
+				var cur_dat = variables
+				for i in query:
+					if i.strip_edges() in cur_dat.keys():
+						if typeof(cur_dat[i.strip_edges()]) == TYPE_DICTIONARY:
+							cur_dat = cur_dat[i.strip_edges()]
+						else:
+							parsed = parsed.replace('{' + entry + '}', cur_dat[i.strip_edges()])
+			
+			# see if it's a built-in variable
+			if entry.strip_edges() in variables:
+				if typeof(variables[entry.strip_edges()]) == TYPE_STRING:
+					parsed = parsed.replace('{' + entry + '}', variables[entry.strip_edges()])
 		return parsed
 	return text
 
@@ -160,9 +177,27 @@ func set_variable(variable_name: String, value: String) -> bool:
 			if a.name == from:
 				a.set(variable, value)
 				return true
+		
+		# if none is found, try getting it from the dialogic variables
+		_set_value_in_dictionary(variable_name, variables, value) 
 	
+	if variable_name in variables:
+		if typeof(variables[variable_name]) == TYPE_STRING:
+			variables[variable_name] = value
+			return true
 	return false
 
+# this will set a value in a dictionary (or a sub-dictionary based on the path)
+# e.g. it could set "Something.Something.Something" in {'Something':{'Something':{'Someting':"value"}}}
+func _set_value_in_dictionary(path:String, dictionary:Dictionary, value):
+	if '.' in path:
+		var from = path.split('.')[0]
+		if from in dictionary.keys():
+			dictionary[from] = _set_value_in_dictionary(path.trim_prefix(from+"."), dictionary[from], value)
+	else:
+		if path in dictionary.keys():
+			dictionary[path] = value
+	return dictionary
 
 func set_current_state(new_state:int) -> void:
 	#print('~~~ CHANGE STATE ', ["IDLE", "TEXT", "ANIM", "CHOICE", "WAIT",][new_state])
@@ -182,6 +217,51 @@ func get_autoloads() -> Array:
 		autoloads.append(c)
 	return autoloads
 
+
+# allows to set dialogic built-in variables 
+func _set(property, value):
+	if property in variables.keys():
+		if typeof(variables[property]) != TYPE_DICTIONARY:
+			variables[property] = value
+			return true
+		if value is VariableFolder:
+			return true 
+
+# allows to get dialogic built-in variables 
+func _get(property):
+	if has_subsystem(property):
+		return get_node(property)
+	if property in variables.keys():
+		if property in variables:
+			if typeof(variables[property]) == TYPE_DICTIONARY:
+				return VariableFolder.new(variables[property], property, self)
+			else:
+				return variables[property]
+
+
+class VariableFolder:
+	var data = {}
+	var path = ""
+	var outside
+	func _init(_data, _path, _outside):
+		data = _data
+		path = _path
+		outside = _outside
+	
+	func _get(property):
+		if property in data:
+			if typeof(data[property]) == TYPE_DICTIONARY:
+				return VariableFolder.new(data[property], path+"."+property, outside)
+			else:
+				return data[property]
+	
+	func _set(property, value):
+		if not value is VariableFolder:
+			outside._set_value_in_dictionary(path+"."+property, outside.variables, value)
+			return true
+		elif VariableFolder:
+			return true
+
 ################################################################################
 ## 						SAVING & LOADING
 ################################################################################
@@ -192,6 +272,7 @@ func get_full_state() -> Dictionary:
 	else:
 		current_state_info['current_event_idx'] = -1
 		current_state_info['current_timeline'] = null
+
 	return current_state_info
 
 
@@ -226,7 +307,3 @@ func add_subsytsem(_name, _script_path):
 	node.dialogic = self
 	add_child(node)
 	return node
-
-func _get(property):
-	if has_subsystem(property):
-		return get_node(property)

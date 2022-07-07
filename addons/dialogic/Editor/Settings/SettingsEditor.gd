@@ -15,9 +15,15 @@ func _ready():
 
 func set_project_setting(value, setting):
 	ProjectSettings.set_setting(setting, value)
+	
 	update()
 
 func update():
+	
+	## VARIABLES
+	$'%MainVariableFolder'.update()
+	$'%MainVariableFolder'.load_data('Variables', DialogicUtil.get_project_setting('dialogic/variables', {}))
+	$'%SaveVariablesButton'.icon = get_icon("Save", "EditorIcons")
 	
 	## TRANSLATIONS
 	# update language selector
@@ -162,3 +168,7 @@ func _on_TransUpdate_pressed():
 					trans_files.append(file)
 	
 	ProjectSettings.set_setting('locale/translations', PoolStringArray(trans_files))
+
+
+func _on_SaveVariables_pressed():
+	ProjectSettings.set_setting('dialogic/variables',$'%MainVariableFolder'.get_data())
