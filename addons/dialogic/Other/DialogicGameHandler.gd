@@ -172,8 +172,13 @@ func set_current_state(new_state:int) -> void:
 
 func execute_condition(condition:String) -> bool:
 	var expr = Expression.new()
-	expr.parse(condition)
-	return true if expr.execute() else false
+	var autoload_names = []
+	var autoloads = []
+	for c in get_tree().root.get_children():
+		autoloads.append(c)
+		autoload_names.append(c.name)
+	expr.parse(condition, autoload_names)
+	return true if expr.execute(autoloads) else false
 
 
 func get_autoloads() -> Array:
