@@ -5,9 +5,13 @@
 tool
 class_name DTS
 
+#var testText = "Initial Text"
+
+func _init():
+	print("entering the translation service")
 
 # Translates a message using translation catalogs configured in the Editor Settings.
-static func translate(message:String)->String:
+func translate(message:String)->String:
 	var translation
 	
 	translation = _get_translation(message)
@@ -16,7 +20,12 @@ static func translate(message:String)->String:
 
 
 # Each value is an Array of [PHashTranslation].
-static func get_translations() -> Dictionary:
+func get_translations() -> Dictionary:
+	print("getting transaltion files")
+	
+	#if (testText == "Initial Text"):
+		#print ("Trying to change the text")
+		
 	var translations_resources = ['en', 'zh_CN', 'es', 'fr', 'de']
 	var translations = {}
 	
@@ -29,7 +38,9 @@ static func get_translations() -> Dictionary:
 	return translations
 
 
-static func _get_translation(message)->String:
+func _get_translation(message)->String:
+	print(message)
+	print("translation requested")
 	var returned_translation = message
 	var translations = get_translations()
 	var default_fallback = 'en'
