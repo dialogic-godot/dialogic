@@ -112,8 +112,8 @@ text = "You can define a set of variables here (each a name and a default value)
 
 You can group variables in folders (and subfolders) and then reference them using {MyFolder.MySubFolder.MyVariable} in text.
 
-You can access variables in scripts by doing 'Dialoigc.MyVariable'  
-or 'Dialogic.MyFolder.MySubfolder.MyVariable.'"
+You can access variables in scripts by doing 'Dialoigc.VAR.MyVariable'  
+or 'Dialogic.VAR.MyFolder.MySubfolder.MyVariable.'"
 autowrap = true
 text_key = "Tra"
 
