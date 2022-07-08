@@ -27,7 +27,7 @@ func translations_initial_load():
 		#print ("Trying to change the text")
 		
 	var translations_resources = ['en', 'zh_CN', 'es', 'fr', 'de']
-	var translations = {}
+	translations = {}
 	
 	for resource in translations_resources:
 		var t:PHashTranslation = load('res://addons/dialogic/Localization/dialogic.' + resource + '.translation')
@@ -35,14 +35,11 @@ func translations_initial_load():
 			translations[t.locale].append(t)
 		else:
 			translations[t.locale] = [t]
-	return translations
 
 
 # Each value is an Array of [PHashTranslation].
 func get_translations() -> Dictionary:
 	return translations
-#	#if (testText == "Initial Text"):
-#		#print ("Trying to change the text")
 #
 #	var translations_resources = ['en', 'zh_CN', 'es', 'fr', 'de']
 #	var translations = {}
@@ -58,7 +55,6 @@ func get_translations() -> Dictionary:
 
 func _get_translation(message)->String:
 	print(message)
-	print("translation requested")
 	var returned_translation = message
 	var translations = get_translations()
 	var default_fallback = 'en'
