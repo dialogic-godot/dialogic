@@ -56,7 +56,6 @@ func get_translations() -> Dictionary:
 func _get_translation(message)->String:
 	print(message)
 	var returned_translation = message
-	var translations = get_translations()
 	var default_fallback = 'en'
 	
 	var editor_plugin = EditorPlugin.new()
