@@ -10,6 +10,7 @@ var timeline_name: String
 
 ### MODE
 var preview: bool = false
+var noSkipMode: bool = false
 
 enum state {
 	IDLE, # When nothing is happening
@@ -441,7 +442,7 @@ func _process(delta):
 
 # checks for the "input_next" action
 func _input(event: InputEvent) -> void:
-	if not Engine.is_editor_hint() and event.is_action_pressed(Dialogic.get_action_button()):
+	if not Engine.is_editor_hint() and event.is_action_pressed(Dialogic.get_action_button()) and !noSkipMode:
 		if HistoryTimeline.block_dialog_advance:
 			return
 		if is_state(state.WAITING):
@@ -998,6 +999,9 @@ func event_handler(event: Dictionary):
 
 			set_state(state.IDLE)
 			$TextBubble.visible = true
+			_load_next_event()
+		'dialogic_050':
+			noSkipMode = event['block_input']
 			_load_next_event()
 		_:
 			if event['event_id'] in $CustomEvents.handlers.keys():
