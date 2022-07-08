@@ -5,10 +5,12 @@
 tool
 class_name DTS
 
+var translations = {}
 #var testText = "Initial Text"
 
 func _init():
 	print("entering the translation service")
+	translations_initial_load()
 
 # Translates a message using translation catalogs configured in the Editor Settings.
 func translate(message:String)->String:
@@ -18,9 +20,7 @@ func translate(message:String)->String:
 	
 	return translation
 
-
-# Each value is an Array of [PHashTranslation].
-func get_translations() -> Dictionary:
+func translations_initial_load():
 	print("getting transaltion files")
 	
 	#if (testText == "Initial Text"):
@@ -36,6 +36,24 @@ func get_translations() -> Dictionary:
 		else:
 			translations[t.locale] = [t]
 	return translations
+
+
+# Each value is an Array of [PHashTranslation].
+func get_translations() -> Dictionary:
+	return translations
+#	#if (testText == "Initial Text"):
+#		#print ("Trying to change the text")
+#
+#	var translations_resources = ['en', 'zh_CN', 'es', 'fr', 'de']
+#	var translations = {}
+#
+#	for resource in translations_resources:
+#		var t:PHashTranslation = load('res://addons/dialogic/Localization/dialogic.' + resource + '.translation')
+#		if translations.has(t.locale):
+#			translations[t.locale].append(t)
+#		else:
+#			translations[t.locale] = [t]
+#	return translations
 
 
 func _get_translation(message)->String:

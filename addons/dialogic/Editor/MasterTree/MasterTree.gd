@@ -409,7 +409,7 @@ func create_rmb_context_menus():
 	rmb_popup_menus["Character"] = character_popup
 	
 	var theme_popup = PopupMenu.new()
-	theme_popup.add_icon_item(get_icon("Filesystem", "EditorIcons"), editor_reference.dialogicTranslatorS.translate('Show in File Manager'))
+	theme_popup.add_icon_item(get_icon("Filesystem", "EditorIcons"), editor_reference.dialogicTranslator.translate('Show in File Manager'))
 	theme_popup.add_icon_item(get_icon("Rename", "EditorIcons"), editor_reference.dialogicTranslator.translate('Copy File Name'))
 	theme_popup.add_icon_item(get_icon("Duplicate", "EditorIcons"), editor_reference.dialogicTranslator.translate('Duplicate Theme'))
 	theme_popup.add_icon_item(get_icon("Remove", "EditorIcons"), editor_reference.dialogicTranslator.translate('Remove Theme'))
