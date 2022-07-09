@@ -25,7 +25,8 @@ size = Vector2( 16, 16 )
 event_name = "No Skip"
 event_data = {
 "block_input": true,
-"event_id": "dialogic_050"
+"event_id": "dialogic_050",
+"wait_time": 0.0
 }
 event_color = Color( 0.92549, 0.0941176, 0.756863, 1 )
 event_icon = ExtResource( 3 )
