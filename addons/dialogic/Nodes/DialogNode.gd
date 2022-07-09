@@ -499,7 +499,7 @@ func _on_text_completed():
 		
 		# Auto focus
 		$DialogicTimer.start(0.1); yield($DialogicTimer, "timeout")
-		if settings.get_value('input', 'autofocus_choices', true):
+		if settings.get_value('input', 'autofocus_choices', false):
 			button_container.get_child(0).grab_focus()
 		
 	
@@ -1101,7 +1101,7 @@ func add_choice_button(option: Dictionary) -> Button:
 		button.shortcut_in_tooltip = false
 	
 	# Selecting the first button added
-	if settings.get_value('input', 'autofocus_choices', true):
+	if settings.get_value('input', 'autofocus_choices', false):
 		if button_container.get_child_count() == 1:
 			button.grab_focus()
 	else:
