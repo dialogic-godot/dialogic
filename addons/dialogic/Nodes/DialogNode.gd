@@ -81,6 +81,8 @@ signal timeline_start(timeline_name)
 signal timeline_end(timeline_name)
 # Custom user signal
 signal dialogic_signal(value)
+# Utility
+signal letter_displayed(lastLetter)
 
 
 ## -----------------------------------------------------------------------------
@@ -1039,8 +1041,10 @@ func update_text(text: String) -> String:
 	return final_text
 
 # plays a sound
-func _on_letter_written():
-	play_audio('typing')
+func _on_letter_written(lastLetter):
+	if lastLetter != ' ':
+		play_audio('typing')
+	emit_signal('letter_displayed', lastLetter)
 
 
 ## -----------------------------------------------------------------------------
