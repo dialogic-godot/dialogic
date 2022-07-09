@@ -331,6 +331,16 @@ static func toggle_history():
 	else:
 		print('[D] Tried to toggle history, but no dialog node exists.')
 
+################################################################################
+## 					AUTO-ADVANCE
+################################################################################
+static func auto_advance_on(toggle: bool, delay : float=2):
+	if has_current_dialog_node():
+		var dialog_node = Engine.get_main_loop().get_meta('latest_dialogic_node')
+		dialog_node.autoPlayMode = toggle
+		dialog_node.autoWaitTime = float(delay)
+	else:
+		print('[D] Tried to toggle auto advance mode, but no dialog node exists.')
 
 ################################################################################
 ## 					COULD BE USED
