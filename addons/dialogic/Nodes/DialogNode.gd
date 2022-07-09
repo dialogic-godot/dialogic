@@ -82,6 +82,8 @@ signal timeline_start(timeline_name)
 signal timeline_end(timeline_name)
 # Custom user signal
 signal dialogic_signal(value)
+# Utility
+signal letter_displayed(lastLetter)
 
 
 ## -----------------------------------------------------------------------------
@@ -500,7 +502,7 @@ func _on_text_completed():
 		
 		# Auto focus
 		$DialogicTimer.start(0.1); yield($DialogicTimer, "timeout")
-		if settings.get_value('input', 'autofocus_choices', true):
+		if settings.get_value('input', 'autofocus_choices', false):
 			button_container.get_child(0).grab_focus()
 		
 	
@@ -1043,8 +1045,10 @@ func update_text(text: String) -> String:
 	return final_text
 
 # plays a sound
-func _on_letter_written():
-	play_audio('typing')
+func _on_letter_written(lastLetter):
+	if lastLetter != ' ':
+		play_audio('typing')
+	emit_signal('letter_displayed', lastLetter)
 
 
 ## -----------------------------------------------------------------------------
@@ -1105,7 +1109,7 @@ func add_choice_button(option: Dictionary) -> Button:
 		button.shortcut_in_tooltip = false
 	
 	# Selecting the first button added
-	if settings.get_value('input', 'autofocus_choices', true):
+	if settings.get_value('input', 'autofocus_choices', false):
 		if button_container.get_child_count() == 1:
 			button.grab_focus()
 	else:

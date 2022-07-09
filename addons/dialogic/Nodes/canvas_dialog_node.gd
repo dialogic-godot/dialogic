@@ -13,7 +13,7 @@ signal timeline_end(timeline_name)
 signal text_complete(text_event)
 # Custom user signal
 signal dialogic_signal(value)
-
+signal letter_displayed(lastLetter)
 
 var _dialog_node_scene = load("res://addons/dialogic/Nodes/DialogNode.tscn")
 var dialog_node = null
@@ -35,6 +35,8 @@ func set_dialog_node_scene(scene) -> void:
 		_err = dialog_node.connect("text_complete", self, "_on_text_complete")
 		assert(_err == OK)
 		_err = dialog_node.connect("dialogic_signal", self, "_on_dialogic_signal")
+		assert(_err == OK)
+		_err = dialog_node.connect("letter_displayed", self, "_on_letter_displayed")
 		assert(_err == OK)
 
 func _enter_tree() -> void:  
@@ -76,3 +78,7 @@ func _on_text_complete(text_event) -> void:
 
 func _on_dialogic_signal(value) -> void:
 	emit_signal("dialogic_signal", value)
+
+
+func _on_letter_displayed(last_letter):
+	emit_signal("letter_displayed", last_letter)
