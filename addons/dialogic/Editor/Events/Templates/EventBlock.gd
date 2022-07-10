@@ -253,7 +253,10 @@ func _request_selection():
 ## *****************************************************************************
 
 func _ready():
-	event_name = editor_reference.dialogicTranslator.translate(event_name)
+	
+	# We only want to call this on actual Dialogic nodes, not custom events
+	if(event_data['event_id'].split("_")[0] == "dialogic"):
+		event_name = editor_reference.dialogicTranslator.translate(event_name)
 	
 	## DO SOME STYLING
 	$PanelContainer/SelectedStyle.modulate = get_color("accent_color", "Editor")
