@@ -9,7 +9,6 @@ var translations = {}
 #var testText = "Initial Text"
 
 func _init():
-	print("entering the translation service")
 	translations_initial_load()
 
 # Translates a message using translation catalogs configured in the Editor Settings.
@@ -20,12 +19,7 @@ func translate(message:String)->String:
 	
 	return translation
 
-func translations_initial_load():
-	print("getting transaltion files")
-	
-	#if (testText == "Initial Text"):
-		#print ("Trying to change the text")
-		
+func translations_initial_load():		
 	var translations_resources = ['en', 'zh_CN', 'es', 'fr', 'de']
 	translations = {}
 	
@@ -40,21 +34,9 @@ func translations_initial_load():
 # Each value is an Array of [PHashTranslation].
 func get_translations() -> Dictionary:
 	return translations
-#
-#	var translations_resources = ['en', 'zh_CN', 'es', 'fr', 'de']
-#	var translations = {}
-#
-#	for resource in translations_resources:
-#		var t:PHashTranslation = load('res://addons/dialogic/Localization/dialogic.' + resource + '.translation')
-#		if translations.has(t.locale):
-#			translations[t.locale].append(t)
-#		else:
-#			translations[t.locale] = [t]
-#	return translations
 
 
 func _get_translation(message)->String:
-	print(message)
 	var returned_translation = message
 	var default_fallback = 'en'
 	

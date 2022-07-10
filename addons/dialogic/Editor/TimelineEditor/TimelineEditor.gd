@@ -841,7 +841,7 @@ func create_event(event_id: String, data: Dictionary = {'no-data': true} , inden
 
 func load_timeline(filename: String): 
 	var time = OS.get_ticks_msec()
-	print("Timeline load started:" + String(time))
+	#print("Timeline load started:" + String(time))
 	clear_timeline()
 	update_custom_events()
 	if timeline_file != filename:
@@ -892,7 +892,7 @@ func _on_batch_loaded():
 	add_extra_scroll_area_to_timeline()
 	
 	var time = OS.get_ticks_msec()
-	print("Timeline load finished:" + String(time))
+	#print("Timeline load finished:" + String(time))
 
 
 func clear_timeline():
