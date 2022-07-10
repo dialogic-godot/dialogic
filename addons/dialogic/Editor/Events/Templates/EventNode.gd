@@ -158,6 +158,10 @@ func _on_gui_input(event):
 		if event.button_index == BUTTON_RIGHT and event.pressed:
 			$PopupMenu.rect_global_position = get_global_mouse_position()
 			var popup = $PopupMenu.popup()
+			if resource.help_page_path == "":
+				$PopupMenu.set_item_disabled(0, true)
+			else:
+				$PopupMenu.set_item_disabled(0, false)
 
 	
 func _request_selection():
