@@ -35,6 +35,7 @@ var current_indent_level = 1
 # Useful for making placeholder events in drag and drop
 var ignore_save = false
 
+
 ## *****************************************************************************
 ##								PUBLIC METHODS
 ## *****************************************************************************
@@ -297,6 +298,10 @@ func set_property(property_name, value):
 	if end_node:
 		end_node.parent_node_changed()
 
+
+func _update_color():
+	if resource.dialogic_color_name != '':
+		$PanelContainer/MarginContainer/VBoxContainer/Header/CenterContainer/IconPanel.self_modulate = DialogicUtil.get_color(resource.dialogic_color_name)
 ## *****************************************************************************
 ##								OVERRIDES
 ## *****************************************************************************
@@ -306,8 +311,10 @@ func _ready():
 		event_name = DTS.translate(resource.event_name)
 	
 	## DO SOME STYLING
+	var _scale = DialogicUtil.get_editor_scale(self)
 	$PanelContainer/SelectedStyle.modulate = get_color("accent_color", "Editor")
 	warning.texture = get_icon("NodeWarning", "EditorIcons")
+	warning.rect_size = Vector2(16 * _scale, 16 * _scale)
 	title_label.add_color_override("font_color", Color.white)
 	if not get_constant("dark_theme", "Editor"):
 		title_label.add_color_override("font_color", get_color("font_color", "Editor"))
@@ -325,6 +332,7 @@ func _ready():
 	set_focus_mode(1) # Allowing this node to grab focus
 	
 	# signals
+	ProjectSettings.connect('project_settings_changed', self, '_update_color')
 	$PanelContainer.connect("gui_input", self, '_on_gui_input')
 	expand_control.connect("state_changed", self, "_on_ExpandControl_state_changed")
 	$PopupMenu.connect("index_pressed", self, "_on_OptionsControl_action")

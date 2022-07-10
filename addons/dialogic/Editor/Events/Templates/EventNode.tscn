@@ -13,10 +13,10 @@ bg_color = Color( 0.6, 0.6, 0.6, 0 )
 
 [sub_resource type="StyleBoxFlat" id=2]
 bg_color = Color( 1, 1, 1, 1 )
-corner_radius_top_left = 10
-corner_radius_top_right = 10
-corner_radius_bottom_right = 10
-corner_radius_bottom_left = 10
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
 
 [sub_resource type="Image" id=5]
 data = {
@@ -132,8 +132,8 @@ stretch_mode = 1
 visible = false
 margin_left = -9.19241
 margin_top = -4.24266
-margin_right = 12.8076
-margin_bottom = 17.7573
+margin_right = 6.80759
+margin_bottom = 11.7573
 hint_tooltip = "Choice events should go 
 between a [Question]
 and [End branch] events.

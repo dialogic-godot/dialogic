@@ -4,6 +4,8 @@ class_name DialogicEvent
 
 ## The event color that event node will take in the editor
 var event_color:Color = Color("FBB13C")
+## If you are using the default color palette
+var dialogic_color_name:String = ''
 
 ## The event name that'll be displayed in the editor.
 ## If the resource name is different from the event name, resource_name is returned instead.
@@ -133,9 +135,6 @@ func _to_string() -> String:
 	return "[{name}:{id}]".format({"name":event_name, "id":get_instance_id()})
 
 
-#func _hide_script_from_inspector():
-#	return true
-
 func get_icon():
 	var ext = '.png'
 	var icon = load(self.get_script().get_path().get_base_dir() + "/icon" + ext)
@@ -143,6 +142,11 @@ func get_icon():
 		return icon
 	return load("res://addons/dialogic/Editor/Images/Event Icons/warning.svg")
 
+
+func set_default_color(value):
+	dialogic_color_name = value
+	event_color = DialogicUtil.get_color(value)
+	
 # to be overridden by sub-classes
 func get_required_subsystems() -> Array:
 	return []

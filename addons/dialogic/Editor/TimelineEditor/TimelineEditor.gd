@@ -86,7 +86,8 @@ func _ready():
 		button.resource = event_resource
 		button.visible_name = '       ' + event_resource.event_name
 		button.set_icon(event_resource.get_icon())
-		button.event_color = event_resource.event_color
+		button.set_color(event_resource.event_color)
+		button.dialogic_color_name = event_resource.dialogic_color_name
 		button.event_category = event_resource.event_category
 		button.event_sorting_index = event_resource.event_sorting_index
 

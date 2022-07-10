@@ -50,13 +50,66 @@ margin_right = 1016.0
 margin_bottom = 564.0
 size_flags_horizontal = 3
 
-[node name="TLabel" parent="Panel/Tabs/General/VBox" instance=ExtResource( 2 )]
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel/Tabs/General/VBox"]
+margin_right = 1016.0
+margin_bottom = 62.0
+
+[node name="TLabel" parent="Panel/Tabs/General/VBox/VBoxContainer" instance=ExtResource( 2 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_right = 1016.0
 margin_bottom = 14.0
-text = "General"
+text = "Color palette"
+text_key = "Color palette"
 title = true
+
+[node name="Colors" type="HBoxContainer" parent="Panel/Tabs/General/VBox/VBoxContainer"]
+unique_name_in_owner = true
+margin_top = 18.0
+margin_right = 1016.0
+margin_bottom = 38.0
+
+[node name="Color1" type="ColorPickerButton" parent="Panel/Tabs/General/VBox/VBoxContainer/Colors"]
+margin_right = 12.0
+margin_bottom = 20.0
+color = Color( 0.0862745, 0.45098, 0.917647, 1 )
+
+[node name="Color2" type="ColorPickerButton" parent="Panel/Tabs/General/VBox/VBoxContainer/Colors"]
+margin_left = 16.0
+margin_right = 28.0
+margin_bottom = 20.0
+color = Color( 0, 0.694118, 0.372549, 1 )
+
+[node name="Color3" type="ColorPickerButton" parent="Panel/Tabs/General/VBox/VBoxContainer/Colors"]
+margin_left = 32.0
+margin_right = 44.0
+margin_bottom = 20.0
+color = Color( 0.580392, 0.407843, 0.909804, 1 )
+
+[node name="Color4" type="ColorPickerButton" parent="Panel/Tabs/General/VBox/VBoxContainer/Colors"]
+margin_left = 48.0
+margin_right = 60.0
+margin_bottom = 20.0
+color = Color( 0.960784, 0.196078, 0.196078, 1 )
+
+[node name="Color5" type="ColorPickerButton" parent="Panel/Tabs/General/VBox/VBoxContainer/Colors"]
+margin_left = 64.0
+margin_right = 76.0
+margin_bottom = 20.0
+color = Color( 0.0980392, 0.721569, 0.109804, 1 )
+
+[node name="Color6" type="ColorPickerButton" parent="Panel/Tabs/General/VBox/VBoxContainer/Colors"]
+margin_left = 80.0
+margin_right = 92.0
+margin_bottom = 20.0
+color = Color( 0.486275, 0.486275, 0.486275, 1 )
+
+[node name="ResetColorsButton" type="Button" parent="Panel/Tabs/General/VBox/VBoxContainer"]
+margin_top = 42.0
+margin_right = 156.0
+margin_bottom = 62.0
+size_flags_horizontal = 0
+text = "Reset colors to default"
 
 [node name="Translations" type="HBoxContainer" parent="Panel/Tabs"]
 visible = false

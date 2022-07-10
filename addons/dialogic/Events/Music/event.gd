@@ -26,7 +26,7 @@ func get_required_subsystems() -> Array:
 # SET ALL VALUES THAT SHOULD NEVER CHANGE HERE
 func _init() -> void:
 	event_name = "Music"
-	event_color = Color("#fc6514")
+	set_default_color('Color5')
 	event_category = Category.AUDIOVISUAL
 	event_sorting_index = 2
 	

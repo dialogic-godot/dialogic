@@ -22,7 +22,7 @@ func _execute() -> void:
 # SET ALL VALUES THAT SHOULD NEVER CHANGE HERE
 func _init() -> void:
 	event_name = "Jump"
-	event_color = Color("#12b76a")
+	set_default_color('Color2')
 	event_category = Category.TIMELINE
 	event_sorting_index = 0
 	

@@ -20,7 +20,7 @@ func _execute() -> void:
 # SET ALL VALUES THAT SHOULD NEVER CHANGE HERE
 func _init() -> void:
 	event_name = "Sound"
-	event_color = Color("#fc6514")
+	set_default_color('Color5')
 	event_category = Category.AUDIOVISUAL
 	event_sorting_index = 3
 	
