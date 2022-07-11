@@ -11,6 +11,10 @@ var timeline_name: String
 ### MODE
 var preview: bool = false
 
+var noSkipMode: bool = false
+var autoPlayMode: bool = false
+var autoWaitTime : float = 2.0
+
 enum state {
 	IDLE, # When nothing is happening
 	READY, # When Dialogic already displayed the text on the screen
@@ -429,7 +433,7 @@ func _process(delta):
 	
 	# Hide if no input is required
 	if current_event.has('text'):
-		if '[nw]' in current_event['text'] or '[nw=' in current_event['text']:
+		if '[nw]' in current_event['text'] or '[nw=' in current_event['text'] or noSkipMode or autoPlayMode:
 			$TextBubble/NextIndicatorContainer/NextIndicator.visible = false
 		
 	# Hide if "Don't Close After Last Event" is checked and event is last text
@@ -443,7 +447,11 @@ func _process(delta):
 
 # checks for the "input_next" action
 func _input(event: InputEvent) -> void:
-	if not Engine.is_editor_hint() and event.is_action_pressed(Dialogic.get_action_button()):
+	if not Engine.is_editor_hint() and event.is_action_pressed(Dialogic.get_action_button()) and autoPlayMode:
+		autoPlayMode = false
+		return
+	
+	if not Engine.is_editor_hint() and event.is_action_pressed(Dialogic.get_action_button()) and (!noSkipMode and !autoPlayMode):
 		if HistoryTimeline.block_dialog_advance:
 			return
 		if is_state(state.WAITING):
@@ -511,7 +519,7 @@ func _on_text_completed():
 		
 		# [p] needs more work
 		# Setting the timer for how long to wait in the [nw] events
-		if '[nw]' in current_event['text'] or '[nw=' in current_event['text']:
+		if '[nw]' in current_event['text'] or '[nw=' in current_event['text'] or noSkipMode or autoPlayMode:
 			var waiting_time = 2
 			var current_index = dialog_index
 			if '[nw=' in current_event['text']: # Regex stuff
@@ -531,7 +539,12 @@ func _on_text_completed():
 				# - KvaGram
 				#original line
 				#waiting_time = float(wait_settings.split('=')[1])
-			
+			elif noSkipMode or autoPlayMode:
+				waiting_time = autoWaitTime
+				if current_event.has('voice_data'):
+					waiting_time = $"FX/CharacterVoice".remaining_time()
+				else:
+					waiting_time = float(waiting_time)
 			$DialogicTimer.start(waiting_time); yield($DialogicTimer, "timeout")
 			if dialog_index == current_index:
 				_load_next_event()
@@ -1000,6 +1013,10 @@ func event_handler(event: Dictionary):
 
 			set_state(state.IDLE)
 			$TextBubble.visible = true
+			_load_next_event()
+		'dialogic_050':
+			noSkipMode = event['block_input']
+			autoWaitTime = event['wait_time']
 			_load_next_event()
 		_:
 			if event['event_id'] in $CustomEvents.handlers.keys():

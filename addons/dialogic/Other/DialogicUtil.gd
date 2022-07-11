@@ -498,6 +498,9 @@ static func resource_fixer():
 						# Call Node event
 						{'call_node'}:
 							i['event_id'] = 'dialogic_042'
+						# No Skip event
+						{'block_input'}:
+							i['event_id'] = 'dialogic_050'
 			timeline['events'] = events
 			DialogicResources.set_timeline(timeline)
 	if update_index < 2:

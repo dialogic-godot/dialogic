@@ -53,6 +53,8 @@ var id_to_scene_name = {
 	'dialogic_040':'EmitSignal',
 	'dialogic_041':'ChangeScene',
 	'dialogic_042':'CallNode',
+	#Afterlife
+	'dialogic_050':'NoSkipEvent',
 	}
 
 var event_data
