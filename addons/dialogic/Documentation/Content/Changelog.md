@@ -1,5 +1,13 @@
 # Changelog
 
+## v1.4.4
+
+
+
+## What's Changed
+
+* Translation Service Speed fixes by [[thebardsrc](https://github.com/thebardsrc)] in https://github.com/coppolaemilio/dialogic/pull/995
+
 ## v1.4.3 
 
 The biggest changes in this version are fixes to a bug when exporting the games. Thank you everyone!
