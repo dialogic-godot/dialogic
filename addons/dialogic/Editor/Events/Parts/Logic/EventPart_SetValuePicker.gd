@@ -44,7 +44,7 @@ func get_preview():
 func check_data():
 	if event_data['operation'] != '=':
 		if not event_data['set_value'].is_valid_float():
-			emit_signal("set_warning", DTS.translate("The selected operator requires a number!"))
+			emit_signal("set_warning", editor_reference.dialogicTranslator.translate("The selected operator requires a number!"))
 			return
 	
 	emit_signal("remove_warning")

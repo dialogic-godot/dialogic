@@ -5,20 +5,23 @@
 tool
 class_name DTS
 
+var translations = {}
+#var testText = "Initial Text"
+
+func _init():
+	translations_initial_load()
 
 # Translates a message using translation catalogs configured in the Editor Settings.
-static func translate(message:String)->String:
+func translate(message:String)->String:
 	var translation
 	
 	translation = _get_translation(message)
 	
 	return translation
 
-
-# Each value is an Array of [PHashTranslation].
-static func get_translations() -> Dictionary:
+func translations_initial_load():		
 	var translations_resources = ['en', 'zh_CN', 'es', 'fr', 'de']
-	var translations = {}
+	translations = {}
 	
 	for resource in translations_resources:
 		var t:PHashTranslation = load('res://addons/dialogic/Localization/dialogic.' + resource + '.translation')
@@ -26,12 +29,15 @@ static func get_translations() -> Dictionary:
 			translations[t.locale].append(t)
 		else:
 			translations[t.locale] = [t]
+
+
+# Each value is an Array of [PHashTranslation].
+func get_translations() -> Dictionary:
 	return translations
 
 
-static func _get_translation(message)->String:
+func _get_translation(message)->String:
 	var returned_translation = message
-	var translations = get_translations()
 	var default_fallback = 'en'
 	
 	var editor_plugin = EditorPlugin.new()
