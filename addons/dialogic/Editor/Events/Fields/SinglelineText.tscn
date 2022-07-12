@@ -22,6 +22,7 @@ margin_bottom = 600.0
 rect_min_size = Vector2( 30, 0 )
 size_flags_horizontal = 3
 size_flags_vertical = 3
+expand_to_text_length = true
 
 [node name="RightText" type="Label" parent="."]
 margin_left = 1024.0

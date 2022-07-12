@@ -102,10 +102,10 @@ func get_as_string_to_store() -> String:
 	
 	if Character:
 		result_string += Character.name
-		if Portrait:
+		if Portrait and ActionType != ActionTypes.Leave:
 			result_string+= " ("+Portrait+")"
 	
-	if Position:
+	if Position and ActionType != ActionTypes.Leave:
 		result_string += " "+str(Position)
 	
 	if AnimationName:

@@ -42,12 +42,12 @@ func add_portrait(character:DialogicCharacter, portrait:String,  position_idx:in
 				node2d.add_child(sprite)
 				sprite.texture = load(path)
 				sprite.centered = false
-				sprite.scale = Vector2(1,1)*character.portraits[portrait].scale
+				sprite.scale = Vector2(1,1)*character.portraits[portrait].get('scale', 1)
 				node2d.global_position = node.global_position 
-				sprite.position = character.portraits[portrait].offset
-				sprite.position.x -= sprite.texture.get_width()/2.0*character.portraits[portrait].scale*character.scale
-				sprite.position.y -= sprite.texture.get_height()*character.portraits[portrait].scale*character.scale
-				portrait_node = node2d
+				sprite.position = character.portraits[portrait].get('offset', Vector2(0,0))
+				sprite.position.x -= sprite.texture.get_width()/2.0*character.portraits[portrait].get('scale', 1)*character.scale
+				sprite.position.y -= sprite.texture.get_height()*character.portraits[portrait].get('scale', 1)*character.scale
+				portrait_node = sprite
 	
 	if portrait_node:
 		dialogic.current_state_info['portraits'][character.resource_path] = {'portrait':portrait, 'node':portrait_node, 'position_index':position_idx}
