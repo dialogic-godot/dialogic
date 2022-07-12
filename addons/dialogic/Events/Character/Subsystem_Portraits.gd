@@ -40,10 +40,11 @@ func add_portrait(character:DialogicCharacter, portrait:String,  position_idx:in
 				get_tree().get_nodes_in_group('dialogic_portrait_holder')[0].add_child(sprite)
 				sprite.texture = load(path)
 				sprite.centered = false
-				sprite.scale = Vector2(1,1)*character.portraits[portrait].scale
-				sprite.global_position = node.global_position + character.portraits[portrait].offset
-				sprite.global_position.x -= sprite.texture.get_width()/2.0*character.portraits[portrait].scale*character.scale
-				sprite.global_position.y -= sprite.texture.get_height()*character.portraits[portrait].scale*character.scale
+				sprite.scale = Vector2(1,1)*character.portraits[portrait].get('scale', 1)
+				node2d.global_position = node.global_position 
+				sprite.position = character.portraits[portrait].get('offset', Vector2(0,0))
+				sprite.position.x -= sprite.texture.get_width()/2.0*character.portraits[portrait].get('scale', 1)*character.scale
+				sprite.position.y -= sprite.texture.get_height()*character.portraits[portrait].get('scale', 1)*character.scale
 				portrait_node = sprite
 	
 	if portrait_node:

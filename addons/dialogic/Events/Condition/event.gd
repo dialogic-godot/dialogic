@@ -95,4 +95,4 @@ func is_valid_event_string(string:String):
 
 func build_event_editor():
 	add_header_edit('ConditionType', ValueType.FixedOptionSelector, '', '', {'selector_options':{"if":ConditionTypes.IF, "elif":ConditionTypes.ELIF, "else":ConditionTypes.ELSE}, 'disabled':true})
-	add_header_edit('Condition', ValueType.SinglelineText)
+	add_header_edit('Condition', ValueType.SinglelineText, '', '', {}, 'ConditionType != %s'%ConditionTypes.ELSE)
