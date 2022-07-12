@@ -47,6 +47,6 @@ func get_shortcode_parameters() -> Dictionary:
 ################################################################################
 
 func build_event_editor():
-	add_header_edit('Timeline', ValueType.Timeline, 'Timeline:')
+	add_header_edit('Timeline', ValueType.Resource, 'Timeline:', '', {'file_extension':'.dtl'})
 	add_header_edit('Label', ValueType.SinglelineText, 'Label:')
 

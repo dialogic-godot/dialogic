@@ -14,7 +14,7 @@ static func get_editor_scale(ref) -> float:
 	return _scale
 
 
-static func listdir(path: String, files_only: bool = true, throw_error:bool = true) -> Array:
+static func listdir(path: String, files_only: bool = true, throw_error:bool = true, full_file_path:bool = false) -> Array:
 	# https://docs.godotengine.org/en/stable/classes/class_directory.html#description
 	var files: Array = []
 	var dir := Directory.new()
@@ -26,9 +26,15 @@ static func listdir(path: String, files_only: bool = true, throw_error:bool = tr
 			if not file_name.begins_with("."):
 				if files_only:
 					if not dir.current_is_dir():
-						files.append(file_name)
+						if full_file_path:
+							files.append(path.plus_file(file_name))
+						else:
+							files.append(file_name)
 				else:
-					files.append(file_name)
+					if full_file_path:
+						files.append(path.plus_file(file_name))
+					else:
+						files.append(file_name)
 			file_name = dir.get_next()
 		dir.list_dir_end()
 	else:
@@ -100,6 +106,17 @@ static func get_event_scripts(include_custom_events:bool = true) -> Array:
 			event_scripts.append("res://addons/dialogic_additions/Events/" + file + "/event.gd")
 		
 	return event_scripts
+
+
+static func pretty_name(script:String) -> String:
+	var _name = script.get_file().trim_suffix("."+script.get_extension())
+	_name = _name.replace('_', ' ')
+	_name = _name.capitalize()
+	return _name
+
+
+static func str_to_bool(boolstring:String) -> bool:
+	return true if boolstring == "True" else false
 
 # RENABLE IF REALLY NEEDED, OTHERWISE DELETE BEFORE RELEASE 
 #static func list_to_dict(list):
