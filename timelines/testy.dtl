@@ -1,29 +1,14 @@
-[music path="res://test-project/ChillLofiR.mp3" volume="-14" fade="3" bus="Master" loop="True"]
+Join Emilio (doubt) 3
 
-Join Emilio (blink) 3
+Emilio: Tets stes tste st
 
-begin
+Emilio: Tets stes tste st
 
-[sound path="res://test-project/Goblin_03.mp3" volume="-5" bus="Master"]
+Update Emilio 3 [animation="Tada" wait="True" repeat="3"]
 
-Emilio (shy): \[Hello stranger!, Hi Travaler., What's up\, guys!] \[pause=1] \[In Brackets] 
+Emilio: Tets stes tste st
 
-- Yes
-	
-- No
-	
-	
-Update Emilio (blink) 5
+Update Emilio 3 [animation="Heartbeat" wait="True" repeat="2"]
 
-[background path="icon.png"]
-
-Emilio (hate): Some normal text.
-
-Join Jowan (avoid) 1
-
-[background]
-
-Jowan (concept): We are back in the first timeline
-
-Jowan (happy): We are back in the first timeline
+Leave Emilio 3
 

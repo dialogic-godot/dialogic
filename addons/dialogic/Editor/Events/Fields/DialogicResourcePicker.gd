@@ -2,18 +2,14 @@ tool
 extends Control
 
 
-## SETTINGS FOR THE RESOURCE PICKER
-enum resource_types {Characters, Timelines, Themes, Portraits}
-var resource_type = resource_types.Characters
+### SETTINGS FOR THE RESOURCE PICKER
+var file_extension = ""
+var get_suggestions_func = [self, 'get_default_suggestions']
+var empty_text = ""
 
-var file_extensions : Dictionary = {
-	resource_types.Characters : '.dch',
-	resource_types.Timelines : '.dtl',
-	}
 # I'm so sorry for this, but the popup_hide signal get's triggered if the popup is hidden by me,
 # and I don't want it to change the resource, if one was just selected by clicking
 var ignore_popup_hide_once = false
-
 
 ## STORING VALUE AND REFERENCE TO RESOURCE
 var event_resource : DialogicEvent = null
@@ -21,7 +17,7 @@ var property_name : String
 var current_value
 
 # this signal is on all event parts and informs the event that a change happened.
-signal value_changed
+signal value_changed(property_name, value)
 
 ################################################################################
 ## 						BASIC EVENT PART FUNCTIONS
@@ -36,18 +32,16 @@ func set_rightt_text(value):
 	$RightText.text = str(value)
 
 func set_value(value):
-	if value is DialogicCharacter:
-		$Search.text = value.name
-		#$Search/OpenButton.show()
-	elif typeof(value) == TYPE_STRING and resource_type == resource_types.Portraits:
-		$Search.text = value
-		$Search/OpenButton.hide()
-	elif value is DialogicTimeline:
-		$Search.text = value.resource_path.get_file().trim_suffix("."+value.resource_path.get_extension())
-		#$Search/OpenButton.show()
+	if value == null:
+		$Search.text = empty_text
+	elif file_extension:
+		$Search.text = DialogicUtil.pretty_name(value.resource_path)
+		$Search.hint_tooltip = value.resource_path
+	elif value:
+		$Search.text = DialogicUtil.pretty_name(value)
 	else:
-		$Search.text = ""
-		$Search/OpenButton.hide()
+		$Search.text = empty_text
+
 	current_value = value
 
 
@@ -75,22 +69,7 @@ func _on_Search_text_changed(new_text):
 	$Search/Suggestions.clear()
 	
 	if new_text != "":
-		var suggestions = {}
-		
-		if resource_type == resource_types.Portraits:
-			if event_resource.Character or event_resource.Character != null:
-				for portrait in event_resource.Character.portraits:
-					suggestions[portrait] = portrait
-		else:
-			var ext = ""
-			if resource_type in file_extensions:
-				ext = file_extensions[resource_type]
-			else:
-				return
-			var resources = DialogicUtil.list_resources_of_type(ext)
-			for resource in resources:
-				if new_text.to_lower() in resource.to_lower().get_file().trim_suffix(ext):
-					suggestions[resource.get_file().trim_suffix(ext)] = resource
+		var suggestions = get_suggestions_func[0].call(get_suggestions_func[1], new_text)
 		
 		var idx = 0
 		for element in suggestions:
@@ -101,14 +80,24 @@ func _on_Search_text_changed(new_text):
 		if not $Search/Suggestions.visible:
 			$Search/Suggestions.popup(Rect2($Search.rect_global_position + Vector2(0,1)*$Search.rect_size, Vector2($Search.rect_size.x, 100)))
 			$Search.grab_focus()
+	
 	else:
 		$Search/Suggestions.hide()
+
+func get_default_suggestions(search_text):
+	if !file_extension: return {}
+	var suggestions = {}
+	var resources = DialogicUtil.list_resources_of_type(file_extension)
+	for resource in resources:
+		if search_text.to_lower() in DialogicUtil.pretty_name(resource).to_lower():
+			suggestions[DialogicUtil.pretty_name(resource)] = resource
+	return suggestions
 	
 func suggestion_selected(index):
 	$Search.text = $Search/Suggestions.get_item_text(index)
 	
 	# if this is a resource:
-	if resource_type in file_extensions:
+	if file_extension:
 		var file = load($Search/Suggestions.get_item_metadata(index))
 		current_value = file
 	else:
@@ -136,8 +125,8 @@ func popup_hide():
 
 func can_drop_data(position, data):
 	if typeof(data) == TYPE_DICTIONARY and data.has('files') and len(data.files) == 1:
-		if resource_type in file_extensions:
-			if data.files[0].ends_with(file_extensions[resource_type]):
+		if file_extension:
+			if data.files[0].ends_with(file_extension):
 				return true
 		else:
 			return false
@@ -149,12 +138,9 @@ func drop_data(position, data):
 	emit_signal("value_changed", property_name, file)
 
 
-
-
 ################################################################################
 ##	 					OPEN RESOURCE BUTTON
 ################################################################################
-
 # This function triggers the resource to be opened in the inspector and possible editors provided by plugins
 func _on_OpenButton_pressed():
 	if current_value:

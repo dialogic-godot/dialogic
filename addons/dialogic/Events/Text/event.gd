@@ -99,6 +99,15 @@ func get_original_translation_text():
 	return Text
 
 func build_event_editor():
-	add_header_edit('Character', ValueType.Character, 'Character:')
-	add_header_edit('Portrait', ValueType.Portrait, '', '', {}, 'Character != null')
+	add_header_edit('Character', ValueType.Resource, 'Character:', '', {'file_extension':'.dch'})
+	add_header_edit('Portrait', ValueType.Resource, '', '', {'suggestions_func':[self, 'get_portrait_suggestions'], 'empty_text':"Don't change"}, 'Character != null')
 	add_body_edit('Text', ValueType.MultilineText)
+
+func get_portrait_suggestions(search_text):
+	var suggestions = {}
+	suggestions["Don't change"] = ''
+	if Character != null:
+		for portrait in Character.portraits:
+			if search_text.to_lower() in portrait.to_lower():
+				suggestions[portrait] = portrait
+	return suggestions
