@@ -118,6 +118,33 @@ static func pretty_name(script:String) -> String:
 static func str_to_bool(boolstring:String) -> bool:
 	return true if boolstring == "True" else false
 
+
+static func get_color_palette(default:bool = false) -> Dictionary:
+	var colors = [
+		Color('#3b8bf2'), # Blue
+		Color('#00b15f'), # Green
+		Color('#9468e8'), # Purple
+		Color('#de5c5c'), # Red
+		Color('#fa952a'), # Orange
+		Color('#7C7C7C')  # Gray
+	]
+	var color_dict = {}
+	var index = 1
+	for n in colors:
+		var color_name = 'Color' + str(index)
+		color_dict[color_name] = n
+		if !default:
+			if ProjectSettings.has_setting('dialogic/' + color_name):
+				color_dict[color_name] = ProjectSettings.get_setting('dialogic/' + color_name)
+		index += 1
+	
+	return color_dict
+
+static func get_color(value:String) -> Color:
+	var colors = get_color_palette()
+	return colors[value]
+
+
 # RENABLE IF REALLY NEEDED, OTHERWISE DELETE BEFORE RELEASE 
 #static func list_to_dict(list):
 #	var dict := {}

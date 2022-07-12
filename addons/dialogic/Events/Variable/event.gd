@@ -25,7 +25,7 @@ func get_required_subsystems() -> Array:
 # SET ALL VALUES THAT SHOULD NEVER CHANGE HERE
 func _init() -> void:
 	event_name = "Set Variable"
-	event_color = Color("#0ca5eb")
+	set_default_color('Color1')
 	event_category = Category.GODOT
 	event_sorting_index = 0
 

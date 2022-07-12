@@ -35,6 +35,7 @@ var current_indent_level = 1
 # Useful for making placeholder events in drag and drop
 var ignore_save = false
 
+
 ## *****************************************************************************
 ##								PUBLIC METHODS
 ## *****************************************************************************
@@ -95,6 +96,16 @@ func _set_event_icon(icon: Texture):
 	cpanel.rect_min_size = Vector2(icon_size, icon_size) * _scale
 	ip.rect_min_size = cpanel.rect_min_size
 	ipc.rect_min_size = ip.rect_min_size
+	
+	# Updating the theme properties to scale
+	var custom_style = ip.get('custom_styles/panel')
+	custom_style.corner_radius_top_left = 5 * _scale
+	custom_style.corner_radius_top_right = 5 * _scale
+	custom_style.corner_radius_bottom_left = 5 * _scale
+	custom_style.corner_radius_bottom_right = 5 * _scale
+	
+	# Separation on the header
+	$"%Header".set("custom_constants/separation", 5 * _scale)
 
 
 func _set_event_name(text: String):
@@ -148,6 +159,10 @@ func _on_gui_input(event):
 		if event.button_index == BUTTON_RIGHT and event.pressed:
 			$PopupMenu.rect_global_position = get_global_mouse_position()
 			var popup = $PopupMenu.popup()
+			if resource.help_page_path == "":
+				$PopupMenu.set_item_disabled(0, true)
+			else:
+				$PopupMenu.set_item_disabled(0, false)
 
 	
 func _request_selection():
@@ -281,6 +296,10 @@ func set_property(property_name, value):
 	if end_node:
 		end_node.parent_node_changed()
 
+
+func _update_color():
+	if resource.dialogic_color_name != '':
+		$PanelContainer/MarginContainer/VBoxContainer/Header/CenterContainer/IconPanel.self_modulate = DialogicUtil.get_color(resource.dialogic_color_name)
 ## *****************************************************************************
 ##								OVERRIDES
 ## *****************************************************************************
@@ -290,8 +309,10 @@ func _ready():
 		event_name = DTS.translate(resource.event_name)
 	
 	## DO SOME STYLING
+	var _scale = DialogicUtil.get_editor_scale(self)
 	$PanelContainer/SelectedStyle.modulate = get_color("accent_color", "Editor")
 	warning.texture = get_icon("NodeWarning", "EditorIcons")
+	warning.rect_size = Vector2(16 * _scale, 16 * _scale)
 	title_label.add_color_override("font_color", Color.white)
 	if not get_constant("dark_theme", "Editor"):
 		title_label.add_color_override("font_color", get_color("font_color", "Editor"))
@@ -309,6 +330,7 @@ func _ready():
 	set_focus_mode(1) # Allowing this node to grab focus
 	
 	# signals
+	ProjectSettings.connect('project_settings_changed', self, '_update_color')
 	$PanelContainer.connect("gui_input", self, '_on_gui_input')
 	expand_control.connect("state_changed", self, "_on_ExpandControl_state_changed")
 	$PopupMenu.connect("index_pressed", self, "_on_OptionsControl_action")

@@ -26,7 +26,7 @@ func get_required_subsystems() -> Array:
 # SET ALL VALUES THAT SHOULD NEVER CHANGE HERE
 func _init() -> void:
 	event_name = "Choice"
-	event_color = Color("#9e77ec")
+	set_default_color('Color3')
 	event_category = Category.LOGIC
 	event_sorting_index = 0
 

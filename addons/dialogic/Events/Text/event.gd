@@ -52,7 +52,7 @@ func get_required_subsystems() -> Array:
 
 func _init() -> void:
 	event_name = "Text"
-	event_color = Color("#2F80ED")
+	set_default_color('Color1')
 	event_category = Category.MAIN
 	event_sorting_index = 0
 	help_page_path = "https://dialogic.coppolaemilio.com/documentation/Events/000/"

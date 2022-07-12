@@ -18,7 +18,7 @@ func _execute() -> void:
 # SET ALL VALUES THAT SHOULD NEVER CHANGE HERE
 func _init() -> void:
 	event_name = "End Timeline"
-	event_color = Color("#f04438")
+	set_default_color('Color4')
 	event_category = Category.TIMELINE
 	event_sorting_index = 10
 	

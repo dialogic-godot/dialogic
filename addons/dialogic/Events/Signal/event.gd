@@ -17,7 +17,7 @@ func _execute() -> void:
 # SET ALL VALUES THAT SHOULD NEVER CHANGE HERE
 func _init() -> void:
 	event_name = "Signal"
-	event_color = Color("#0ca5eb")
+	set_default_color('Color1')
 	event_category = Category.GODOT
 	event_sorting_index = 0
 

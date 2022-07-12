@@ -81,7 +81,7 @@ func get_required_subsystems() -> Array:
 # SET ALL VALUES THAT SHOULD NEVER CHANGE HERE
 func _init() -> void:
 	event_name = "Character"
-	event_color = Color("#12b76a")
+	set_default_color('Color2')
 	event_category = Category.MAIN
 	event_sorting_index = 2
 	continue_at_end = true

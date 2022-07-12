@@ -26,7 +26,7 @@ func get_required_subsystems() -> Array:
 # SET ALL VALUES THAT SHOULD NEVER CHANGE HERE
 func _init() -> void:
 	event_name = "Change Theme"
-	event_color = Color("#f63d67")
+	set_default_color('Color4')
 	event_category = Category.AUDIOVISUAL
 	event_sorting_index = 4
 	
