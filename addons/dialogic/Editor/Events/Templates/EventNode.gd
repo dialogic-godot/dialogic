@@ -213,15 +213,12 @@ func build_editor():
 			editor_node = load("res://addons/dialogic/Editor/Events/Fields/Bool.tscn").instance()
 		
 		## RESOURCES
-		elif p.dialogic_type in [resource.ValueType.Character, resource.ValueType.Portrait, resource.ValueType.Timeline]:
+		elif p.dialogic_type == resource.ValueType.Resource:
 			editor_node = load("res://addons/dialogic/Editor/Events/Fields/DialogicResourcePicker.tscn").instance()
-			if p.dialogic_type == resource.ValueType.Character:
-				editor_node.resource_type = editor_node.resource_types.Characters
-			elif p.dialogic_type == resource.ValueType.Portrait:
-				editor_node.resource_type = editor_node.resource_types.Portraits
-			elif p.dialogic_type == resource.ValueType.Timeline:
-				editor_node.resource_type = editor_node.resource_types.Timelines
-		
+			
+			editor_node.file_extension = p.display_info.get('file_extension', '')
+			editor_node.get_suggestions_func = p.display_info.get('suggestions_func', editor_node.get_suggestions_func)
+			editor_node.empty_text = p.display_info.get('empty_text', '')
 		## INTEGERS
 		elif p.dialogic_type == resource.ValueType.Integer:
 			editor_node = load("res://addons/dialogic/Editor/Events/Fields/Number.tscn").instance()
@@ -256,6 +253,8 @@ func build_editor():
 		
 		### --------------------------------------------------------------------
 		### 2. FILL THE NEW NODE WITH INFORMATION AND LISTEN TO CHANGES
+		if "event_resource" in editor_node:
+			editor_node.event_resource = resource
 		if 'property_name' in editor_node:
 			editor_node.property_name = p.name
 		if editor_node.has_method('set_value'):
@@ -268,8 +267,7 @@ func build_editor():
 			editor_node.set_right_text(p.right_text)
 		if p.has('condition'):
 			edit_conditions_list.append([editor_node, p.condition])
-		if "event_resource" in editor_node:
-			editor_node.event_resource = resource
+		
 		
 		### --------------------------------------------------------------------
 		### 3. ADD IT TO THE RIGHT PLACE (HEADER/BODY)

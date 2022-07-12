@@ -46,6 +46,7 @@ mouse_filter = 1
 size_flags_horizontal = 3
 size_flags_vertical = 4
 theme = ExtResource( 2 )
+expand_to_text_length = true
 placeholder_text = "Select Resource"
 caret_blink = true
 caret_blink_speed = 0.5
@@ -57,6 +58,7 @@ margin_right = 440.0
 margin_bottom = 139.0
 
 [node name="OpenButton" type="ToolButton" parent="Search"]
+visible = false
 anchor_left = 1.0
 anchor_top = 0.5
 anchor_right = 1.0

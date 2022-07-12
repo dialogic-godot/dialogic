@@ -44,9 +44,9 @@ enum ValueType {
 	Bool,
 	
 	# OBJECTS ? (for the ResourcePicker)
-	Timeline,
-	Character,
-	Portrait,
+	Resource,
+	Script,
+	File,
 	
 	# INTEGERS
 	FixedOptionSelector,
