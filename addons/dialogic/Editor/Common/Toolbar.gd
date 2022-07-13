@@ -57,7 +57,7 @@ func play_timeline():
 	if get_node("%TimelineEditor").current_timeline:
 		var dialogic_plugin = DialogicUtil.get_dialogic_plugin()
 		# Save the current opened timeline
-		ProjectSettings.set_setting('dialogic/current_timeline_path', get_node("%TimelineEditor").current_timeline.resource_path)
+		ProjectSettings.set_setting('dialogic/editor/current_timeline_path', get_node("%TimelineEditor").current_timeline.resource_path)
 		ProjectSettings.save()
 		dialogic_plugin._editor_interface.play_custom_scene("res://addons/dialogic/Other/TestTimelineScene.tscn")
 

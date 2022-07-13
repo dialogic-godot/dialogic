@@ -1,7 +1,8 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://addons/dialogic/Editor/Settings/SettingsEditor.gd" type="Script" id=1]
 [ext_resource path="res://addons/dialogic/Editor/Common/TLabel.tscn" type="PackedScene" id=2]
+[ext_resource path="res://addons/dialogic/Editor/Settings/Settings_General.gd" type="Script" id=3]
 [ext_resource path="res://addons/dialogic/Editor/Settings/Settings_Translations.gd" type="Script" id=4]
 
 [sub_resource type="Image" id=3]
@@ -20,6 +21,7 @@ image = SubResource( 3 )
 size = Vector2( 16, 16 )
 
 [node name="SettingsEditor" type="WindowDialog"]
+visible = true
 anchor_right = 1.0
 anchor_bottom = 1.0
 window_title = "Dialogic Settings"
@@ -44,67 +46,125 @@ margin_left = 4.0
 margin_top = 32.0
 margin_right = -4.0
 margin_bottom = -4.0
+script = ExtResource( 3 )
 
-[node name="VBox" type="VBoxContainer" parent="Panel/Tabs/General"]
+[node name="Extensions" type="VBoxContainer" parent="Panel/Tabs/General"]
+margin_right = 502.0
+margin_bottom = 564.0
+size_flags_horizontal = 3
+
+[node name="TLabel2" parent="Panel/Tabs/General/Extensions" instance=ExtResource( 2 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 502.0
+margin_bottom = 14.0
+text = "Extensions"
+text_key = "Color palette"
+title = true
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Panel/Tabs/General/Extensions"]
+margin_top = 18.0
+margin_right = 502.0
+margin_bottom = 38.0
+
+[node name="TLabel" parent="Panel/Tabs/General/Extensions/HBoxContainer" instance=ExtResource( 2 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 3.0
+margin_right = 137.0
+margin_bottom = 17.0
+text = "Custom events folder"
+text_key = "Color palette"
+title = true
+
+[node name="CustomEventsFolderLabel" type="Label" parent="Panel/Tabs/General/Extensions/HBoxContainer"]
+unique_name_in_owner = true
+margin_left = 141.0
+margin_top = 3.0
+margin_right = 486.0
+margin_bottom = 17.0
+size_flags_horizontal = 3
+align = 2
+
+[node name="CustomEventsFolderButton" type="Button" parent="Panel/Tabs/General/Extensions/HBoxContainer"]
+unique_name_in_owner = true
+margin_left = 490.0
+margin_right = 502.0
+margin_bottom = 20.0
+
+[node name="TLabel3" parent="Panel/Tabs/General/Extensions" instance=ExtResource( 2 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 42.0
+margin_right = 502.0
+margin_bottom = 56.0
+text = "You should restart godot after changing this path!"
+text_key = "Color palette"
+title = true
+
+[node name="VSeparator" type="VSeparator" parent="Panel/Tabs/General"]
+margin_left = 506.0
+margin_right = 510.0
+margin_bottom = 564.0
+
+[node name="Theming" type="VBoxContainer" parent="Panel/Tabs/General"]
+margin_left = 514.0
 margin_right = 1016.0
 margin_bottom = 564.0
 size_flags_horizontal = 3
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Panel/Tabs/General/VBox"]
-margin_right = 1016.0
-margin_bottom = 62.0
-
-[node name="TLabel" parent="Panel/Tabs/General/VBox/VBoxContainer" instance=ExtResource( 2 )]
+[node name="TLabel" parent="Panel/Tabs/General/Theming" instance=ExtResource( 2 )]
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_right = 1016.0
+margin_right = 502.0
 margin_bottom = 14.0
 text = "Color palette"
 text_key = "Color palette"
 title = true
 
-[node name="Colors" type="HBoxContainer" parent="Panel/Tabs/General/VBox/VBoxContainer"]
+[node name="Colors" type="HBoxContainer" parent="Panel/Tabs/General/Theming"]
 unique_name_in_owner = true
 margin_top = 18.0
-margin_right = 1016.0
+margin_right = 502.0
 margin_bottom = 38.0
 
-[node name="Color1" type="ColorPickerButton" parent="Panel/Tabs/General/VBox/VBoxContainer/Colors"]
+[node name="Color1" type="ColorPickerButton" parent="Panel/Tabs/General/Theming/Colors"]
 margin_right = 12.0
 margin_bottom = 20.0
-color = Color( 0.0862745, 0.45098, 0.917647, 1 )
+color = Color( 0.231373, 0.545098, 0.94902, 1 )
 
-[node name="Color2" type="ColorPickerButton" parent="Panel/Tabs/General/VBox/VBoxContainer/Colors"]
+[node name="Color2" type="ColorPickerButton" parent="Panel/Tabs/General/Theming/Colors"]
 margin_left = 16.0
 margin_right = 28.0
 margin_bottom = 20.0
 color = Color( 0, 0.694118, 0.372549, 1 )
 
-[node name="Color3" type="ColorPickerButton" parent="Panel/Tabs/General/VBox/VBoxContainer/Colors"]
+[node name="Color3" type="ColorPickerButton" parent="Panel/Tabs/General/Theming/Colors"]
 margin_left = 32.0
 margin_right = 44.0
 margin_bottom = 20.0
 color = Color( 0.580392, 0.407843, 0.909804, 1 )
 
-[node name="Color4" type="ColorPickerButton" parent="Panel/Tabs/General/VBox/VBoxContainer/Colors"]
+[node name="Color4" type="ColorPickerButton" parent="Panel/Tabs/General/Theming/Colors"]
 margin_left = 48.0
 margin_right = 60.0
 margin_bottom = 20.0
-color = Color( 0.960784, 0.196078, 0.196078, 1 )
+color = Color( 0.870588, 0.360784, 0.360784, 1 )
 
-[node name="Color5" type="ColorPickerButton" parent="Panel/Tabs/General/VBox/VBoxContainer/Colors"]
+[node name="Color5" type="ColorPickerButton" parent="Panel/Tabs/General/Theming/Colors"]
 margin_left = 64.0
 margin_right = 76.0
 margin_bottom = 20.0
-color = Color( 0.0980392, 0.721569, 0.109804, 1 )
+color = Color( 0.980392, 0.584314, 0.164706, 1 )
 
-[node name="Color6" type="ColorPickerButton" parent="Panel/Tabs/General/VBox/VBoxContainer/Colors"]
+[node name="Color6" type="ColorPickerButton" parent="Panel/Tabs/General/Theming/Colors"]
 margin_left = 80.0
 margin_right = 92.0
 margin_bottom = 20.0
 color = Color( 0.486275, 0.486275, 0.486275, 1 )
 
-[node name="ResetColorsButton" type="Button" parent="Panel/Tabs/General/VBox/VBoxContainer"]
+[node name="ResetColorsButton" type="Button" parent="Panel/Tabs/General/Theming"]
+unique_name_in_owner = true
 margin_top = 42.0
 margin_right = 156.0
 margin_bottom = 62.0
@@ -345,6 +405,7 @@ Afterwards, you can translate your timelines in a csv editor, by adding new colu
 autowrap = true
 text_key = "Tra"
 
+[connection signal="pressed" from="Panel/Tabs/General/Extensions/HBoxContainer/CustomEventsFolderButton" to="Panel/Tabs/General" method="_on_CustomEventsFolderButton_pressed"]
 [connection signal="pressed" from="Panel/Tabs/Translations/VBox/TransInitialize" to="." method="_on_TransInitialize_pressed"]
 [connection signal="pressed" from="Panel/Tabs/Translations/VBoxContainer/TransUpdate" to="." method="_on_TransUpdate_pressed"]
 [connection signal="pressed" from="Panel/Tabs/Translations/VBoxContainer/TransRemove" to="." method="_on_TransRemove_pressed"]
