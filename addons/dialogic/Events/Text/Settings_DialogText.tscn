@@ -1,0 +1,151 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://addons/dialogic/Editor/Common/TLabel.tscn" type="PackedScene" id=1]
+[ext_resource path="res://addons/dialogic/Events/Text/Settings_DialogText.gd" type="Script" id=2]
+[ext_resource path="res://addons/dialogic/Editor/Events/Fields/DialogicResourcePicker.tscn" type="PackedScene" id=3]
+
+[node name="DialogText" type="HBoxContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 2 )
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+margin_right = 1024.0
+margin_bottom = 600.0
+size_flags_horizontal = 3
+
+[node name="TLabel" parent="VBoxContainer" instance=ExtResource( 1 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 1024.0
+margin_bottom = 14.0
+text = "Dialog Text"
+title = true
+
+[node name="DefaultSpeed" type="HBoxContainer" parent="VBoxContainer"]
+margin_top = 18.0
+margin_right = 1024.0
+margin_bottom = 42.0
+
+[node name="TLabel" parent="VBoxContainer/DefaultSpeed" instance=ExtResource( 1 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 5.0
+margin_right = 946.0
+margin_bottom = 19.0
+size_flags_horizontal = 3
+text = "Default speed"
+
+[node name="DefaultSpeed" type="SpinBox" parent="VBoxContainer/DefaultSpeed"]
+unique_name_in_owner = true
+margin_left = 950.0
+margin_right = 1024.0
+margin_bottom = 24.0
+step = 0.001
+
+[node name="InputAction" type="HBoxContainer" parent="VBoxContainer"]
+margin_top = 46.0
+margin_right = 1024.0
+margin_bottom = 70.0
+
+[node name="TLabel" parent="VBoxContainer/InputAction" instance=ExtResource( 1 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 5.0
+margin_right = 868.0
+margin_bottom = 19.0
+size_flags_horizontal = 3
+text = "Input action"
+
+[node name="InputAction" parent="VBoxContainer/InputAction" instance=ExtResource( 3 )]
+unique_name_in_owner = true
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 872.0
+margin_right = 1024.0
+margin_bottom = 24.0
+
+[node name="Skippable" type="HBoxContainer" parent="VBoxContainer"]
+margin_top = 74.0
+margin_right = 1024.0
+margin_bottom = 98.0
+
+[node name="TLabel" parent="VBoxContainer/Skippable" instance=ExtResource( 1 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 5.0
+margin_right = 996.0
+margin_bottom = 19.0
+size_flags_horizontal = 3
+text = "Skippable"
+
+[node name="Skippable" type="CheckBox" parent="VBoxContainer/Skippable"]
+unique_name_in_owner = true
+margin_left = 1000.0
+margin_right = 1024.0
+margin_bottom = 24.0
+
+[node name="ColorNames" type="HBoxContainer" parent="VBoxContainer"]
+margin_top = 102.0
+margin_right = 1024.0
+margin_bottom = 126.0
+
+[node name="TLabel" parent="VBoxContainer/ColorNames" instance=ExtResource( 1 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 5.0
+margin_right = 996.0
+margin_bottom = 19.0
+size_flags_horizontal = 3
+text = "Autocolor names"
+
+[node name="AutocolorNames" type="CheckBox" parent="VBoxContainer/ColorNames"]
+unique_name_in_owner = true
+margin_left = 1000.0
+margin_right = 1024.0
+margin_bottom = 24.0
+
+[node name="AutoContinue" type="HBoxContainer" parent="VBoxContainer"]
+margin_top = 130.0
+margin_right = 1024.0
+margin_bottom = 154.0
+
+[node name="TLabel" parent="VBoxContainer/AutoContinue" instance=ExtResource( 1 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 5.0
+margin_right = 885.0
+margin_bottom = 19.0
+size_flags_horizontal = 3
+text = "Autocontinue"
+
+[node name="Autocontinue" type="CheckBox" parent="VBoxContainer/AutoContinue"]
+unique_name_in_owner = true
+margin_left = 889.0
+margin_right = 913.0
+margin_bottom = 24.0
+
+[node name="TLabel2" parent="VBoxContainer/AutoContinue" instance=ExtResource( 1 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 917.0
+margin_top = 5.0
+margin_right = 946.0
+margin_bottom = 19.0
+text = "after"
+align = 1
+
+[node name="AutocontinueDelay" type="SpinBox" parent="VBoxContainer/AutoContinue"]
+unique_name_in_owner = true
+margin_left = 950.0
+margin_right = 1024.0
+margin_bottom = 24.0
+step = 0.01
+suffix = "s"
+
+[connection signal="value_changed" from="VBoxContainer/DefaultSpeed/DefaultSpeed" to="." method="_on_DefaultSpeed_value_changed"]
+[connection signal="value_changed" from="VBoxContainer/InputAction/InputAction" to="." method="_on_InputAction_value_changed"]
+[connection signal="toggled" from="VBoxContainer/Skippable/Skippable" to="." method="_on_Skippable_toggled"]
+[connection signal="toggled" from="VBoxContainer/ColorNames/AutocolorNames" to="." method="_on_AutocolorNames_toggled"]
+[connection signal="toggled" from="VBoxContainer/AutoContinue/Autocontinue" to="." method="_on_Autocontinue_toggled"]
+[connection signal="value_changed" from="VBoxContainer/AutoContinue/AutocontinueDelay" to="." method="_on_AutocontinueDelay_value_changed"]

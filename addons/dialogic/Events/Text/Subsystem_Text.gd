@@ -1,6 +1,8 @@
 extends DialogicSubsystem
 
-
+# used to color names without searching for all characters each time
+var character_colors = {}
+var color_regex = RegEx.new()
 ####################################################################################################
 ##					STATE
 ####################################################################################################
@@ -54,3 +56,31 @@ func skip_text_animation() -> void:
 
 func get_current_speaker() -> DialogicCharacter:
 	return (load(dialogic.current_state_info['character']) as DialogicCharacter)
+
+
+func _ready():
+	update_character_names()
+
+func color_names(text:String) -> String:
+	if !DialogicUtil.get_project_setting('dialogic/text/autocolor_names', false):
+		return text
+
+	var counter = 0
+	for result in color_regex.search_all(text):
+		text = text.insert(result.get_start("name")+((9+8+8)*counter), '[color=#' + character_colors[result.get_string('name')].to_html() + ']')
+		text = text.insert(result.get_end("name")+9+8+((9+8+8)*counter), '[/color]')
+		counter += 1
+	
+	return text
+
+func update_character_names() -> void:
+	character_colors = {}
+	for dch_path in DialogicUtil.list_resources_of_type('.dch'):
+		var dch = (load(dch_path) as DialogicCharacter)
+#
+		if dch.name: character_colors[dch.name] = dch.color
+		for nickname in dch.nicknames:
+			if nickname.strip_edges(): character_colors[nickname.strip_edges()] = dch.color
+	
+	color_regex.compile('(?<=\\W)(?<name>'+str(character_colors.keys()).trim_prefix('[').trim_suffix(']').replace(', ', '|')+')(?=\\W|$)')
+	

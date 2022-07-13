@@ -25,13 +25,14 @@ func _ready() -> void:
 	timer.connect("timeout", self, 'continue_reveal')
 	
 	# compile effects regex
-	effect_regex.compile("(?<!\\\\)\\[(?<command>[^\\[=,]*)(=(?<value>[^\\[]*))?\\]")
+	effect_regex.compile("(?<!\\\\)\\[\\s*(?<command>portrait|speed|signal|pause)\\s*(=\\s*(?<value>.+?)\\s*)?\\]")
 	
 	# compule modifier regexs
 	modifier_words_select_regex.compile("(?<!\\\\)\\[[^\\[]+(,[^\\]]*)\\]")
-	
+
 # this is called by the DialogicGameHandler to set text
 func reveal_text(_text:String) -> void:
+	speed = DialogicUtil.get_project_setting('dialogic/text/speed', 0.01)
 	bbcode_text = parse_effects(parse_modifiers(_text))
 	if Align == 'Center':
 		bbcode_text = '[center]'+bbcode_text
@@ -78,7 +79,6 @@ func execute_effects(skip :bool= false) -> void:
 	# might have to execute multiple effects
 	while effects and (visible_characters >= effects.front()[0] or visible_characters== -1):
 		var effect = effects.pop_front()
-		print(effect)
 		match effect[1]:
 			'pause':
 				if skip:
@@ -92,6 +92,8 @@ func execute_effects(skip :bool= false) -> void:
 					continue
 				if effect[2].is_valid_float():
 					speed = float(effect[2])
+				else:
+					speed = DialogicUtil.get_project_setting('dialogic/text/speed', 0.01)
 			'signal':
 				Dialogic.emit_signal("text_signal", effect[2])
 			'portrait':

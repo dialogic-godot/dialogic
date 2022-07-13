@@ -84,6 +84,24 @@ func edit(object):
 
 func enable_plugin():
 	add_autoload_singleton("Dialogic", "res://addons/dialogic/Other/DialogicGameHandler.gd")
+	add_dialogic_default_action()
 
 func disable_plugin():
 	remove_autoload_singleton("Dialogic")
+
+func add_dialogic_default_action():
+	if !ProjectSettings.has_setting('input/dialogic_default_action'):
+		var input_enter = InputEventKey.new()
+		input_enter.scancode = KEY_ENTER
+		var input_left_click = InputEventMouseButton.new()
+		input_left_click.button_index = BUTTON_LEFT
+		input_left_click.pressed = true
+		var input_space = InputEventKey.new()
+		input_space.scancode = KEY_SPACE
+		var input_x = InputEventKey.new()
+		input_x.scancode = KEY_X
+		var input_controller = InputEventJoypadButton.new()
+		input_controller.button_index = JOY_BUTTON_0
+	
+		ProjectSettings.set_setting('input/dialogic_default_action', {'deadzone':0.5, 'events':[input_enter, input_left_click, input_space, input_x, input_controller]})
+		ProjectSettings.save()
