@@ -15,12 +15,15 @@ onready var selected_style = $PanelContainer/SelectedStyle
 onready var warning = $PanelContainer/MarginContainer/VBoxContainer/Header/CenterContainer/IconPanel/Warning
 onready var title_label = $PanelContainer/MarginContainer/VBoxContainer/Header/TitleLabel
 onready var icon_texture  = $PanelContainer/MarginContainer/VBoxContainer/Header/CenterContainer/IconPanel/IconTexture
-onready var expand_control = $PanelContainer/MarginContainer/VBoxContainer/Header/ExpandControl
 onready var header_content_container = $PanelContainer/MarginContainer/VBoxContainer/Header/Content
 onready var body_container = $PanelContainer/MarginContainer/VBoxContainer/Body
 onready var body_content_container = $PanelContainer/MarginContainer/VBoxContainer/Body/Content
 onready var indent_node = $Indent
 
+# is the body visible
+var expanded = true
+
+# for choice and condition
 var end_node = null setget set_end_node
 var collapsed = false
 
@@ -64,20 +67,12 @@ func remove_warning(text = ''):
 		warning.hide()
 
 
-func set_preview(text: String):
-	expand_control.set_preview(text)
-
-
 func set_indent(indent: int):
 	var indent_node = $Indent
 	indent_node.rect_min_size = Vector2(indent_size * indent, 0)
 	indent_node.visible = indent != 0
 	current_indent_level = indent
 	update()
-
-
-func set_expanded(expanded: bool):
-	expand_control.set_expanded(expanded)
 
 
 ## *****************************************************************************
@@ -117,15 +112,6 @@ func _set_event_name(text: String):
 			t_label.queue_free()
 
 
-func _on_ExpandControl_state_changed(expanded: bool):
-	if expanded:
-		if resource.body_scene:
-			body_container.show()
-	else:
-		if resource.body_scene:
-			body_container.hide()
-			expand_control.set_preview(resource.body_scene.get_preview())
-
 
 func _on_OptionsControl_action(index):
 	if index == 0:
@@ -152,8 +138,8 @@ func _on_Indent_visibility_changed():
 func _on_gui_input(event):
 	if event is InputEventMouseButton and event.is_pressed() and event.button_index == 1:
 		grab_focus() # Grab focus to avoid copy pasting text or events
-		if event.doubleclick and expand_control.enabled:
-			expand_control.set_expanded(not expand_control.expanded)
+		if event.doubleclick:
+			expanded = !expanded
 	# For opening the context menu
 	if event is InputEventMouseButton:
 		if event.button_index == BUTTON_RIGHT and event.pressed:
@@ -332,7 +318,6 @@ func _ready():
 	# signals
 	ProjectSettings.connect('project_settings_changed', self, '_update_color')
 	$PanelContainer.connect("gui_input", self, '_on_gui_input')
-	expand_control.connect("state_changed", self, "_on_ExpandControl_state_changed")
 	$PopupMenu.connect("index_pressed", self, "_on_OptionsControl_action")
 	
 	_on_Indent_visibility_changed()
