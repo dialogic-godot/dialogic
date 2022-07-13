@@ -1,6 +1,0 @@
-[gd_scene load_steps=2 format=2]
-
-[ext_resource path="res://addons/dialogic/Display/PortraitHolder.gd" type="Script" id=1]
-
-[node name="PortraitHolder" type="CanvasLayer"]
-script = ExtResource( 1 )
