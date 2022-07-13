@@ -106,7 +106,7 @@ func _set_event_icon(icon: Texture):
 	
 	# Separation on the header
 	$"%Header".set("custom_constants/separation", 5 * _scale)
-
+	$'%BodySpacing'.rect_min_size.x = ip.rect_min_size.x+(5*_scale)
 
 func _set_event_name(text: String):
 	if resource.event_name:
@@ -203,8 +203,12 @@ func build_editor():
 		### 1. CREATE A NODE OF THE CORRECT TYPE FOR THE PROPERTY
 		var editor_node
 		
+		### OTHER
+		if p.name == "linebreak":
+			editor_node = Control.new()
+			editor_node.theme_type_variation = "LineBreak"
 		### STRINGS
-		if p.dialogic_type == resource.ValueType.MultilineText:
+		elif p.dialogic_type == resource.ValueType.MultilineText:
 			editor_node = load("res://addons/dialogic/Editor/Events/Fields/MultilineText.tscn").instance()
 		elif p.dialogic_type == resource.ValueType.SinglelineText:
 			editor_node = load("res://addons/dialogic/Editor/Events/Fields/SinglelineText.tscn").instance()
@@ -236,7 +240,9 @@ func build_editor():
 			if p.display_info.has('disabled'):
 				editor_node.disabled = p.display_info.disabled
 		
-		
+		elif p.dialogic_type == resource.ValueType.StringArray:
+			editor_node = load("res://addons/dialogic/Editor/Events/Fields/Array.tscn").instance()
+			
 		elif p.dialogic_type == resource.ValueType.Label:
 			editor_node = Label.new()
 			editor_node.text = p.display_info.text

@@ -1,0 +1,52 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://addons/dialogic/Editor/Events/Fields/ArrayValue.tscn" type="PackedScene" id=1]
+[ext_resource path="res://addons/dialogic/Editor/Events/Fields/Array.gd" type="Script" id=2]
+
+[node name="Array" type="VBoxContainer"]
+margin_right = 300.0
+margin_bottom = 94.0
+rect_min_size = Vector2( 300, 0 )
+script = ExtResource( 2 )
+
+[node name="Editing" type="HBoxContainer" parent="."]
+margin_right = 300.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+alignment = 2
+
+[node name="LeftText" type="Label" parent="Editing"]
+unique_name_in_owner = true
+margin_top = 3.0
+margin_right = 220.0
+margin_bottom = 17.0
+size_flags_horizontal = 3
+text = "Top Text"
+
+[node name="AddButton" type="Button" parent="Editing"]
+margin_left = 224.0
+margin_right = 300.0
+margin_bottom = 20.0
+text = "Add Value"
+
+[node name="Values" type="VBoxContainer" parent="."]
+unique_name_in_owner = true
+margin_top = 24.0
+margin_right = 300.0
+margin_bottom = 76.0
+
+[node name="Value" parent="Values" instance=ExtResource( 1 )]
+margin_right = 300.0
+
+[node name="Value2" parent="Values" instance=ExtResource( 1 )]
+margin_top = 28.0
+margin_right = 300.0
+margin_bottom = 52.0
+
+[node name="RightText" type="Label" parent="."]
+visible = false
+margin_top = 80.0
+margin_right = 300.0
+margin_bottom = 94.0
+
+[connection signal="pressed" from="Editing/AddButton" to="." method="_on_AddButton_pressed"]
