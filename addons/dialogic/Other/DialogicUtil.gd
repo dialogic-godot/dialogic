@@ -120,6 +120,13 @@ static func str_to_bool(boolstring:String) -> bool:
 
 
 static func get_color_palette(default:bool = false) -> Dictionary:
+	# Colors are using the ProjectSettings instead of the EditorSettings
+	# because there is a bug in Godot which prevents us from using it.
+	# When you try to do it, the text in the timelines goes to weird artifacts
+	# and on the Output panel you see the error:
+	#  ./core/rid.h:151 - Condition "!id_map.has(p_rid.get_data())" is true. Returned: nullptr
+	# over and over again.
+	# Might revisit this in Godot 4, but don't have any high hopes for it improving.
 	var colors = [
 		Color('#3b8bf2'), # Blue
 		Color('#00b15f'), # Green
