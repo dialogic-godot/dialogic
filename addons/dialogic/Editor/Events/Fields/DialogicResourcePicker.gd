@@ -27,9 +27,11 @@ signal value_changed(property_name, value)
 
 func set_left_text(value):
 	$LeftText.text = str(value)
+	$LeftText.visible = bool(value)
 
 func set_rightt_text(value):
 	$RightText.text = str(value)
+	$RightText.visible = bool(value)
 
 func set_value(value):
 	if value == null:

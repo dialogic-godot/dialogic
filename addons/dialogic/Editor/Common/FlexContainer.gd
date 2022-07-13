@@ -71,7 +71,13 @@ func _calculate_layout(apply: bool) -> float:
 		if num_children_in_current_row > 0:
 			child_position.x += horizontal_margin
 		
-		if child_position.x + child_min_size.x > container_width:
+		if child.theme_type_variation == "LineBreak":
+			child_position = Vector2(0, child_position.y + row_height + vertical_margin)
+			row_height = 0
+			num_children_in_current_row = 0
+			continue
+		
+		if (child_position.x + child_min_size.x > container_width):
 			# Go to the next row.
 			child_position = Vector2(0, child_position.y + row_height + vertical_margin)
 			row_height = 0

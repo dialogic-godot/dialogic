@@ -1,0 +1,23 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://addons/dialogic/Editor/Events/Fields/ArrayValue.gd" type="Script" id=1]
+[ext_resource path="res://addons/dialogic/Editor/Events/styles/InputFieldsStyle.tres" type="Theme" id=2]
+
+[node name="Value" type="HBoxContainer"]
+margin_right = 242.0
+margin_bottom = 24.0
+theme = ExtResource( 2 )
+script = ExtResource( 1 )
+
+[node name="Value" type="LineEdit" parent="."]
+margin_right = 226.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+
+[node name="Delete" type="Button" parent="."]
+margin_left = 230.0
+margin_right = 242.0
+margin_bottom = 24.0
+
+[connection signal="text_changed" from="Value" to="." method="_on_Value_text_changed"]
+[connection signal="pressed" from="Delete" to="." method="_on_Delete_pressed"]
