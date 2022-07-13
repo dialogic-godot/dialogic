@@ -1,7 +1,9 @@
 extends RichTextLabel
 
+class_name DialogicDisplay_DialogText, "icon.png"
+
 export(String, 'Left', 'Center', 'Right') var Align :String = 'Left'
-onready var timer = $Timer
+onready var timer = null
 
 var effect_regex = RegEx.new()
 var modifier_words_select_regex = RegEx.new()
@@ -13,8 +15,13 @@ func _ready() -> void:
 	# add to necessary
 	add_to_group('dialogic_dialog_text')
 	
+	bbcode_enabled = true
+	
 	# setup my timer
+	timer = Timer.new()
+	add_child(timer)
 	timer.wait_time = 0.01
+	timer.one_shot = true
 	timer.connect("timeout", self, 'continue_reveal')
 	
 	# compile effects regex
@@ -71,6 +78,7 @@ func execute_effects(skip :bool= false) -> void:
 	# might have to execute multiple effects
 	while effects and (visible_characters >= effects.front()[0] or visible_characters== -1):
 		var effect = effects.pop_front()
+		print(effect)
 		match effect[1]:
 			'pause':
 				if skip:

@@ -789,7 +789,7 @@ func cancel_drop_event():
 ## *****************************************************************************
 # Adding an event to the timeline
 func add_event_to_timeline(event_resource:Resource, at_index:int = -1, auto_select: bool = false, indent: bool = false):
-	var piece = load("res://addons/dialogic/Editor/Events/Templates/EventNode.tscn").instance()
+	var piece = load("res://addons/dialogic/Editor/Events/EventNode/EventNode.tscn").instance()
 	var resource = event_resource
 	piece.resource = event_resource
 	piece.connect('content_changed', self, 'something_changed')
@@ -1065,20 +1065,6 @@ func indent_events() -> void:
 		delay = false
 		prev_indent = indent
 	timeline_area.update()
-
-
-# called from the toolbar
-func fold_all_nodes():
-	for event in timeline.get_children():
-		event.set_expanded(false)
-	add_extra_scroll_area_to_timeline()
-
-
-# called from the toolbar
-func unfold_all_nodes():
-	for event in timeline.get_children():
-		event.set_expanded(true)
-	add_extra_scroll_area_to_timeline()
 
 
 func get_current_events_anchors():

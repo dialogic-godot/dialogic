@@ -41,6 +41,7 @@ func _execute() -> void:
 	get_script().resource_path.get_base_dir().plus_file('DefaultAnimations/fade_out_down.gd'))
 						AnimationLength = DialogicUtil.get_project_setting('dialogic/animations_leave_default_length', 0.5) 
 						AnimationWait = DialogicUtil.get_project_setting('dialogic/animations_leave_default_wait', true)
+					
 					if AnimationName:
 						var anim = dialogic.Portraits.animate_portrait(Character, AnimationName, AnimationLength, AnimationRepeats)
 						
@@ -108,7 +109,7 @@ func get_as_string_to_store() -> String:
 	if Position and ActionType != ActionTypes.Leave:
 		result_string += " "+str(Position)
 	
-	if AnimationName:
+	if !AnimationName.empty():
 		result_string += ' [animation="'+DialogicUtil.pretty_name(AnimationName)+'"'
 	
 		if AnimationLength != 0.5:
@@ -121,14 +122,13 @@ func get_as_string_to_store() -> String:
 			result_string += ' repeat="'+str(AnimationRepeats)+'"'
 			
 		result_string += "]"
-	
 	return result_string
 
 
 ## THIS HAS TO READ ALL THE DATA FROM THE SAVED STRING (see above) 
 func load_from_string_to_store(string:String):
 	var regex = RegEx.new()
-	regex.compile("(?<type>Join|Update|Leave) (?<character>[^()\\d\\n]*)( *\\((?<portrait>\\S*)\\))? ?((?<position>\\d*))?\\s*(\\[(?<shortcode>.*)\\])?")
+	regex.compile("(?<type>Join|Update|Leave) (?<character>[^()\\d\\n\\[]*)( *\\((?<portrait>\\S*)\\))? ?((?<position>\\d*))?\\s*(\\[(?<shortcode>.*)\\])?")
 	
 	var result = regex.search(string)
 	

@@ -50,7 +50,7 @@ func get_plugin_icon():
 	# https://github.com/godotengine/godot-proposals/issues/572
 	if get_editor_interface().get_editor_settings().get_setting("interface/theme/base_color").v > 0.5:
 		_theme = 'light'
-	return load("res://addons/dialogic/Editor/Images/Plugin/plugin-editor-icon-" + _theme + "-theme-" + str(_scale) + ".svg")
+	return load("res://addons/dialogic/Editor/Images/Plugin/plugin-editor-icon-" + _theme + "-theme-1.svg")
 
 
 func _add_custom_editor_view():

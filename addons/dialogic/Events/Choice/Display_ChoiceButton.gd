@@ -1,5 +1,7 @@
 extends Button
 
+class_name DialogicDisplay_ChoiceButton, 'icon.png'
+
 export (int) var choice_index = -1
 
 func _ready():
