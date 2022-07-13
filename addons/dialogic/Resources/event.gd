@@ -43,10 +43,12 @@ enum ValueType {
 	
 	Bool,
 	
-	# OBJECTS ? (for the ResourcePicker)
+	# 
 	Resource,
 	Script,
 	File,
+	
+	StringArray,
 	
 	# INTEGERS
 	FixedOptionSelector,
@@ -218,8 +220,10 @@ func get_as_string_to_store() -> String:
 		if get(params[parameter]):
 			if typeof(get(params[parameter])) == TYPE_OBJECT:
 				result_string += " "+parameter+'="'+str(get(params[parameter]).resource_path)+'"'
+			elif typeof(get(params[parameter])) == TYPE_STRING:
+				result_string += " "+parameter+'="'+get(params[parameter]).replace('=', "\\=")+'"'
 			else:
-				result_string += " "+parameter+'="'+str(get(params[parameter]))+'"'
+				result_string += " "+parameter+'="'+var2str(get(params[parameter])).replace('=', "\\=")+'"'
 	result_string += "]"
 	return result_string
 
@@ -235,7 +239,8 @@ func load_from_string_to_store(string:String):
 		if typeof(data[parameter]) == TYPE_STRING and (data[parameter].ends_with(".dtl") or data[parameter].ends_with(".dch")):
 			set(params[parameter], load(data[parameter]))
 		else:
-			set(params[parameter], convert(data[parameter], typeof(get(params[parameter]))))
+			set(params[parameter], str2var(data[parameter].replace('\\=', '=')))
+
 
 # has to return true, if the given string can be interpreted as this event
 # by default it uses the shortcode formta, but can be overridden
@@ -247,7 +252,7 @@ func is_valid_event_string(string:String):
 # used to get all the shortcode parameters in a string as a dictionary
 func parse_shortcode_parameters(shortcode : String) -> Dictionary:
 	var regex = RegEx.new()
-	regex.compile('((?<parameter>[^\\s=]*)\\s*=\\s*"(?<value>[^"]*)")')
+	regex.compile('((?<parameter>[^\\s=]*)\\s*=\\s*"(?<value>([^=]|\\\\=)*)(?<!\\\\)")')
 	var dict = {}
 	for result in regex.search_all(shortcode):
 		dict[result.get_string('parameter')] = result.get_string('value')
@@ -304,6 +309,14 @@ func add_body_edit(variable:String, editor_type = ValueType.Label, left_text:Str
 		"condition":condition,			# If true (or empty), the edit is shown
 		})
 
+func add_body_line_break(condition:String = ""):
+	editor_list.append({
+		"name":"linebreak", 				# Must be the same as the corresponding property that it edits!
+		"type":TYPE_BOOL,
+		"location": Location.BODY,	# Definest the location
+		"usage":PROPERTY_USAGE_DEFAULT,	
+		"condition":condition,			# If true (or empty), the edit is shown
+		})
 
 func property_can_revert(property:String) -> bool:
 	if property == "event_node_path":

@@ -1,11 +1,12 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=15 format=2]
 
-[ext_resource path="res://addons/dialogic/Editor/Events/EventNode/EventNode.gd" type="Script" id=1]
+[ext_resource path="res://addons/dialogic/Editor/Events/Templates/EventNode.gd" type="Script" id=1]
+[ext_resource path="res://addons/dialogic/Editor/Events/Parts/EventBlock/ExpandControl.tscn" type="PackedScene" id=2]
 [ext_resource path="res://addons/dialogic/Editor/Events/styles/selected_styleboxflat.tres" type="StyleBox" id=3]
 [ext_resource path="res://addons/dialogic/Editor/Common/FlexContainer.gd" type="Script" id=4]
 [ext_resource path="res://addons/dialogic/Editor/Events/styles/ResourceMenuPanelBackground.tres" type="StyleBox" id=5]
-[ext_resource path="res://addons/dialogic/Editor/Images/Plugin/plugin-editor-icon-dark-theme-1.svg" type="Texture" id=6]
-[ext_resource path="res://addons/dialogic/Editor/Events/EventNode/PopupMenu.gd" type="Script" id=8]
+[ext_resource path="res://addons/dialogic/Editor/Images/Plugin/plugin-editor-icon-dark-theme.svg" type="Texture" id=6]
+[ext_resource path="res://addons/dialogic/Editor/Events/Parts/EventBlock/PopupMenu.gd" type="Script" id=8]
 
 [sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 0.6, 0.6, 0.6, 0 )
@@ -32,9 +33,9 @@ flags = 4
 image = SubResource( 9 )
 size = Vector2( 16, 16 )
 
-[sub_resource type="StyleBoxEmpty" id=10]
+[sub_resource type="StyleBoxEmpty" id=6]
 
-[sub_resource type="Image" id=11]
+[sub_resource type="Image" id=10]
 data = {
 "data": PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ),
 "format": "LumAlpha8",
@@ -46,7 +47,7 @@ data = {
 [sub_resource type="ImageTexture" id=8]
 flags = 4
 flags = 4
-image = SubResource( 11 )
+image = SubResource( 10 )
 size = Vector2( 16, 16 )
 
 [node name="EventNode" type="HBoxContainer"]
@@ -160,6 +161,10 @@ margin_right = 45.0
 margin_bottom = 60.0
 size_flags_horizontal = 3
 
+[node name="ExpandControl" parent="PanelContainer/MarginContainer/VBoxContainer/Header" instance=ExtResource( 2 )]
+margin_left = 178.0
+margin_right = 242.0
+
 [node name="Spacer" type="Control" parent="PanelContainer/MarginContainer/VBoxContainer/Header"]
 margin_left = 50.0
 margin_right = 86.0
@@ -204,7 +209,7 @@ margin_right = 169.0
 margin_bottom = 112.0
 custom_colors/font_color_hover = Color( 0, 0, 0, 1 )
 custom_constants/vseparation = 0
-custom_styles/hover = SubResource( 10 )
+custom_styles/hover = SubResource( 6 )
 custom_styles/panel = ExtResource( 5 )
 items = [ "Documentation", SubResource( 8 ), 0, false, false, 0, 0, null, "", false, "", null, 0, false, false, -1, 0, null, "", true, "Move up", SubResource( 8 ), 0, false, false, 2, 0, null, "", false, "Move down", SubResource( 8 ), 0, false, false, 3, 0, null, "", false, "", null, 0, false, false, -1, 0, null, "", true, "Delete", SubResource( 8 ), 0, false, false, 5, 0, null, "", false ]
 script = ExtResource( 8 )
