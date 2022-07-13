@@ -1,12 +1,11 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=14 format=2]
 
-[ext_resource path="res://addons/dialogic/Editor/Events/Templates/EventNode.gd" type="Script" id=1]
-[ext_resource path="res://addons/dialogic/Editor/Events/Parts/EventBlock/ExpandControl.tscn" type="PackedScene" id=2]
+[ext_resource path="res://addons/dialogic/Editor/Events/EventNode/EventNode.gd" type="Script" id=1]
 [ext_resource path="res://addons/dialogic/Editor/Events/styles/selected_styleboxflat.tres" type="StyleBox" id=3]
 [ext_resource path="res://addons/dialogic/Editor/Common/FlexContainer.gd" type="Script" id=4]
 [ext_resource path="res://addons/dialogic/Editor/Events/styles/ResourceMenuPanelBackground.tres" type="StyleBox" id=5]
-[ext_resource path="res://addons/dialogic/Editor/Images/Plugin/plugin-editor-icon-dark-theme.svg" type="Texture" id=6]
-[ext_resource path="res://addons/dialogic/Editor/Events/Parts/EventBlock/PopupMenu.gd" type="Script" id=8]
+[ext_resource path="res://addons/dialogic/Editor/Images/Plugin/plugin-editor-icon-dark-theme-1.svg" type="Texture" id=6]
+[ext_resource path="res://addons/dialogic/Editor/Events/EventNode/PopupMenu.gd" type="Script" id=8]
 
 [sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 0.6, 0.6, 0.6, 0 )
@@ -160,10 +159,6 @@ margin_left = 10.0
 margin_right = 45.0
 margin_bottom = 60.0
 size_flags_horizontal = 3
-
-[node name="ExpandControl" parent="PanelContainer/MarginContainer/VBoxContainer/Header" instance=ExtResource( 2 )]
-margin_left = 178.0
-margin_right = 242.0
 
 [node name="Spacer" type="Control" parent="PanelContainer/MarginContainer/VBoxContainer/Header"]
 margin_left = 50.0
