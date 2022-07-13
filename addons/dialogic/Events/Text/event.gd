@@ -20,10 +20,14 @@ func _execute() -> void:
 		dialogic.Text.update_name_label(Character)
 		
 		if Portrait and dialogic.has_subsystem('Portraits') and dialogic.Portraits.is_character_joined(Character):
-			dialogic.Portraits.change_portrait(Character, Portrait)
+				dialogic.Portraits.change_portrait(Character, Portrait)
+			
 	else:
 		dialogic.Text.update_name_label(null)
-		
+	
+	# this will only do something if the rpg portrait mode is enabled
+	if dialogic.has_subsystem('Portraits'):
+		dialogic.Portraits.update_rpg_portrait_mode(Character, Portrait)
 	
 	if dialogic.has_subsystem('VAR'):
 		dialogic.Text.update_dialog_text(dialogic.Text.color_names(dialogic.VAR.parse_variables(get_translated_text())))

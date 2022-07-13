@@ -1,5 +1,5 @@
 tool
-extends HSplitContainer
+extends HBoxContainer
 
 var current_animation_path = ""
 
@@ -9,38 +9,39 @@ func _ready():
 
 func refresh():
 	$'%CustomAnimationsFolderOpener'.icon = get_icon("Folder", "EditorIcons")
-	get_node('%CustomAnimationsFolder').text = DialogicUtil.get_project_setting('dialogic/animations_custom_folder', 'res://addons/dialogic_additions/Animations')
+	get_node('%CustomAnimationsFolder').text = DialogicUtil.get_project_setting('dialogic/animations/custom_folder', 'res://addons/dialogic_additions/Animations')
+	$'%PortraitMode'.select(DialogicUtil.get_project_setting('dialogic/portrait_mode', 0))
 	
-	$'%JoinDefault'.set_value(DialogicUtil.get_project_setting('dialogic/animations_join_default', 
+	$'%JoinDefault'.set_value(DialogicUtil.get_project_setting('dialogic/animations/join_default', 
 	get_script().resource_path.get_base_dir().plus_file('DefaultAnimations/fade_in_up.gd')))
-	$'%LeaveDefault'.set_value(DialogicUtil.get_project_setting('dialogic/animations_leave_default', 
+	$'%LeaveDefault'.set_value(DialogicUtil.get_project_setting('dialogic/animations/leave_default', 
 	get_script().resource_path.get_base_dir().plus_file('DefaultAnimations/fade_out_down.gd')))
-	$'%JoinDefaultLength'.set_value(DialogicUtil.get_project_setting('dialogic/animations_join_default_length', 0.5))
-	$'%LeaveDefaultLength'.set_value(DialogicUtil.get_project_setting('dialogic/animations_leave_default_length', 0.5))
-	$'%LeaveDefaultWait'.pressed = DialogicUtil.get_project_setting('dialogic/animations_leave_default_wait', true)
-	$'%JoinDefaultWait'.pressed = DialogicUtil.get_project_setting('dialogic/animations_join_default_wait', true)
+	$'%JoinDefaultLength'.set_value(DialogicUtil.get_project_setting('dialogic/animations/join_default_length', 0.5))
+	$'%LeaveDefaultLength'.set_value(DialogicUtil.get_project_setting('dialogic/animations/leave_default_length', 0.5))
+	$'%LeaveDefaultWait'.pressed = DialogicUtil.get_project_setting('dialogic/animations/leave_default_wait', true)
+	$'%JoinDefaultWait'.pressed = DialogicUtil.get_project_setting('dialogic/animations/join_default_wait', true)
 
 
 func _on_LeaveDefault_value_changed(property_name, value):
-	ProjectSettings.set_setting('dialogic/animations_leave_default', value)
+	ProjectSettings.set_setting('dialogic/animations/leave_default', value)
 
 
 func _on_JoinDefault_value_changed(property_name, value):
-	ProjectSettings.set_setting('dialogic/animations_join_default', value)
+	ProjectSettings.set_setting('dialogic/animations/join_default', value)
 
 
 func _on_JoinDefaultLength_value_changed(value):
-	ProjectSettings.set_setting('dialogic/animations_join_default_length', value)
+	ProjectSettings.set_setting('dialogic/animations/join_default_length', value)
 
 
 func _on_LeaveDefaultLength_value_changed(value):
-	ProjectSettings.set_setting('dialogic/animations_leave_default_length', value)
+	ProjectSettings.set_setting('dialogic/animations/leave_default_length', value)
 
 func _on_JoinDefaultWait_toggled(button_pressed):
-	ProjectSettings.set_setting('dialogic/animations_join_default_wait', button_pressed)
+	ProjectSettings.set_setting('dialogic/animations/join_default_wait', button_pressed)
 
 func _on_LeaveDefaultWait_toggled(button_pressed):
-	ProjectSettings.set_setting('dialogic/animations_leave_default_wait', button_pressed)
+	ProjectSettings.set_setting('dialogic/animations/leave_default_wait', button_pressed)
 
 
 func get_join_animation_suggestions(search_text):
@@ -61,7 +62,7 @@ func get_leave_animation_suggestions(search_text):
 
 func list_animations() -> Array:
 	var list = DialogicUtil.listdir(get_script().resource_path.get_base_dir().plus_file('DefaultAnimations'), true, false, true)
-	list.append_array(DialogicUtil.listdir(DialogicUtil.get_project_setting('dialogic/animations_custom_folder', 'res://addons/dialogic_additions/Animations'), true, false, true))
+	list.append_array(DialogicUtil.listdir(DialogicUtil.get_project_setting('dialogic/animations/custom_folder', 'res://addons/dialogic_additions/Animations'), true, false, true))
 	return list
 
 
@@ -70,5 +71,8 @@ func _on_CustomAnimationsFolderOpener_pressed():
 
 func custom_anims_folder_selected(path):
 	get_node('%CustomAnimationsFolder').text = path
-	ProjectSettings.set_setting('dialogic/animations_custom_folder', path)
+	ProjectSettings.set_setting('dialogic/animations/custom_folder', path)
 
+
+func _on_PortraitMode_item_selected(index):
+	ProjectSettings.set_setting('dialogic/portrait_mode', index)
