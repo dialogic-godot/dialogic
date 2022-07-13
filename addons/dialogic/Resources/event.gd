@@ -140,7 +140,7 @@ func get_icon():
 	var icon = load(self.get_script().get_path().get_base_dir() + "/icon" + ext)
 	if icon:
 		return icon
-	return load("res://addons/dialogic/Editor/Images/Event Icons/warning.svg")
+	return load("res://addons/dialogic/Editor/Images/Pieces/warning.svg")
 
 
 func set_default_color(value):
