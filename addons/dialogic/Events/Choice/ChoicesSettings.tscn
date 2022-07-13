@@ -1,0 +1,145 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://addons/dialogic/Editor/Common/TLabel.tscn" type="PackedScene" id=1]
+[ext_resource path="res://addons/dialogic/Events/Choice/ChoicesSettings.gd" type="Script" id=2]
+
+[node name="Choices" type="HBoxContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_constants/separation = 20
+script = ExtResource( 2 )
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+margin_right = 490.0
+margin_bottom = 600.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="TLabel" parent="VBoxContainer" instance=ExtResource( 1 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 490.0
+margin_bottom = 14.0
+text = "Choices"
+title = true
+
+[node name="Autofocus" type="HBoxContainer" parent="VBoxContainer"]
+margin_top = 18.0
+margin_right = 490.0
+margin_bottom = 42.0
+
+[node name="TLabel" parent="VBoxContainer/Autofocus" instance=ExtResource( 1 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 5.0
+margin_right = 462.0
+margin_bottom = 19.0
+size_flags_horizontal = 3
+text = "Autofocus first choice"
+
+[node name="Autofocus" type="CheckBox" parent="VBoxContainer/Autofocus"]
+unique_name_in_owner = true
+margin_left = 466.0
+margin_right = 490.0
+margin_bottom = 24.0
+
+[node name="Delay" type="HBoxContainer" parent="VBoxContainer"]
+margin_top = 46.0
+margin_right = 490.0
+margin_bottom = 70.0
+
+[node name="TLabel" parent="VBoxContainer/Delay" instance=ExtResource( 1 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 5.0
+margin_right = 412.0
+margin_bottom = 19.0
+size_flags_horizontal = 3
+text = "Delay before choices can be pressed"
+
+[node name="Delay" type="SpinBox" parent="VBoxContainer/Delay"]
+unique_name_in_owner = true
+margin_left = 416.0
+margin_right = 490.0
+margin_bottom = 24.0
+step = 0.01
+
+[node name="DefaultFalseBehaviour" type="HBoxContainer" parent="VBoxContainer"]
+margin_top = 74.0
+margin_right = 490.0
+margin_bottom = 94.0
+
+[node name="TLabel" parent="VBoxContainer/DefaultFalseBehaviour" instance=ExtResource( 1 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 3.0
+margin_right = 427.0
+margin_bottom = 17.0
+size_flags_horizontal = 3
+text = "Default behaviour for false choices"
+
+[node name="FalseBehaviour" type="OptionButton" parent="VBoxContainer/DefaultFalseBehaviour"]
+unique_name_in_owner = true
+margin_left = 431.0
+margin_right = 490.0
+margin_bottom = 20.0
+text = "Hide"
+items = [ "Hide", null, false, 0, null, "Disable", null, false, 1, null ]
+selected = 0
+
+[node name="VSeparator" type="VSeparator" parent="."]
+margin_left = 510.0
+margin_right = 514.0
+margin_bottom = 600.0
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="."]
+margin_left = 534.0
+margin_right = 1024.0
+margin_bottom = 600.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="TLabel" parent="VBoxContainer2" instance=ExtResource( 1 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 490.0
+margin_bottom = 14.0
+text = "Choice hotkeys"
+title = true
+
+[node name="HotkeySelection" type="HBoxContainer" parent="VBoxContainer2"]
+margin_top = 18.0
+margin_right = 490.0
+margin_bottom = 38.0
+
+[node name="TLabel" parent="VBoxContainer2/HotkeySelection" instance=ExtResource( 1 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 3.0
+margin_right = 383.0
+margin_bottom = 17.0
+size_flags_horizontal = 3
+text = "Hotkey type"
+
+[node name="HotkeyType" type="OptionButton" parent="VBoxContainer2/HotkeySelection"]
+unique_name_in_owner = true
+margin_left = 387.0
+margin_right = 490.0
+margin_bottom = 20.0
+text = "No Hotkeys"
+items = [ "No Hotkeys", null, false, 0, null, "Default (1-9)", null, false, 1, null ]
+selected = 0
+
+[node name="TLabel2" parent="VBoxContainer2" instance=ExtResource( 1 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 42.0
+margin_right = 490.0
+margin_bottom = 73.0
+text = "You can add more complex hotkeys by editing the \"shortcut\" property of a ChoiceButton. "
+autowrap = true
+
+[connection signal="toggled" from="VBoxContainer/Autofocus/Autofocus" to="." method="_on_Autofocus_toggled"]
+[connection signal="value_changed" from="VBoxContainer/Delay/Delay" to="." method="_on_Delay_value_changed"]
+[connection signal="item_selected" from="VBoxContainer/DefaultFalseBehaviour/FalseBehaviour" to="." method="_on_FalseBehaviour_item_selected"]
+[connection signal="item_selected" from="VBoxContainer2/HotkeySelection/HotkeyType" to="." method="_on_HotkeyType_item_selected"]

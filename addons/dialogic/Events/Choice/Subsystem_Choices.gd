@@ -1,5 +1,10 @@
 extends DialogicSubsystem
 
+var choice_blocker = Timer.new()
+
+func _ready():
+	choice_blocker.one_shot = true
+	add_child(choice_blocker)
 
 ####################################################################################################
 ##					STATE
@@ -28,6 +33,9 @@ func show_current_choices() -> void:
 		var choice_event = dialogic.current_timeline_events[choice_index]
 		# check if condition is false
 		if not choice_event.Condition.empty() and not dialogic.execute_condition(choice_event.Condition):
+			if choice_event.IfFalseAction == DialogicChoiceEvent.IfFalseActions.DEFAULT:
+				choice_event.IfFalseAction = DialogicUtil.get_project_setting('dialogic/choices_def_false_bahviour', 0)
+			
 			# check what to do in this case
 			if choice_event.IfFalseAction == DialogicChoiceEvent.IfFalseActions.DISABLE:
 				show_choice(button_idx, choice_event.get_translated_text(), false, choice_index)
@@ -36,6 +44,9 @@ func show_current_choices() -> void:
 		else:
 			show_choice(button_idx, choice_event.get_translated_text(), true, choice_index)
 			button_idx += 1
+	
+	choice_blocker.start(DialogicUtil.get_project_setting('dialogic/choices_delay', 0.2))
+
 
 func show_choice(button_index:int, text:String, enabled:bool, event_index:int) -> void:
 	var idx = 1
@@ -48,9 +59,21 @@ func show_choice(button_index:int, text:String, enabled:bool, event_index:int) -
 				node.text = dialogic.VAR.parse_variables(text)
 			else:
 				node.text = text
+			
+			if idx == 1 and DialogicUtil.get_project_setting('dialogic/choices_autofocus_first', true):
+				node.grab_focus()
+			
+			if DialogicUtil.get_project_setting('dialogic/choices_hotkey_behaviour', 0) == 1 and idx < 10:
+				var shortcut = ShortCut.new()
+				var input_key = InputEventKey.new()
+				input_key.scancode = OS.find_scancode_from_string(str(idx))
+				shortcut.shortcut = input_key
+				node.shortcut = shortcut
+			
 			node.disabled = not enabled
 			node.connect('pressed', self, 'choice_selected', [event_index])
-		if node.choice_index >0:
+			
+		if node.choice_index > 0:
 			idx = node.choice_index
 		idx += 1
 
@@ -58,6 +81,8 @@ func show_choice(button_index:int, text:String, enabled:bool, event_index:int) -
 ##					HELPERS
 ####################################################################################################
 func choice_selected(event_index:int) -> void:
+	if not choice_blocker.is_stopped():
+		return
 	hide_all_choices()
 	dialogic.current_state = dialogic.states.IDLE
 	dialogic.handle_event(event_index)
