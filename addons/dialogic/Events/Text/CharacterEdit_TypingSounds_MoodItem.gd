@@ -6,6 +6,7 @@ signal changed
 
 func _ready():
 	add_stylebox_override('panel', get_stylebox("sub_inspector_bg12", "Editor"))
+	$'%Name'.hint_tooltip = "Mood name"
 	$'%Duplicate'.icon = get_icon("Duplicate", "EditorIcons")
 	$'%Duplicate'.hint_tooltip = "Duplicate"
 	$'%Duplicate'.connect("pressed", self, "emit_signal", ["duplicate"])
