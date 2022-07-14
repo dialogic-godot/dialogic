@@ -88,6 +88,8 @@ func _on_Sound_finished() -> void:
 func _on_finished_revealing_text() -> void:
 	if end_sound != null:
 		stream = end_sound
+		pitch_variance = 1.0
+		volume_db = 0.0
 		play()
 
 func _get_configuration_warning():
