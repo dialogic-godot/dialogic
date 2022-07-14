@@ -11,6 +11,10 @@ var effects:Array = []
 
 var speed:float = 0.01
 
+signal started_revealing_text()
+
+signal continued_revealing_text(new_character)
+
 func _ready() -> void:
 	# add to necessary
 	add_to_group('dialogic_dialog_text')
@@ -39,11 +43,13 @@ func reveal_text(_text:String) -> void:
 		bbcode_text = '[right]'+bbcode_text
 	visible_characters = 0
 	timer.start(speed)
+	emit_signal('started_revealing_text')
 
 # called by the timer -> reveals more text
 func continue_reveal() -> void:
 	if visible_characters < len(bbcode_text):
 		visible_characters += 1
+		emit_signal("continued_revealing_text", bbcode_text[visible_characters-1])
 		execute_effects()
 		if timer.is_stopped():
 			if speed == 0:
