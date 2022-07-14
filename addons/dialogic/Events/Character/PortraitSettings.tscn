@@ -34,8 +34,9 @@ anchor_right = 0.0
 anchor_bottom = 0.0
 margin_right = 506.0
 margin_bottom = 14.0
+custom_colors/font_color = Color( 0.835938, 0.29715, 0.29715, 1 )
 text = "Portraits"
-title = true
+mode = "Title"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="General"]
 margin_top = 18.0
@@ -71,6 +72,7 @@ text = "Visual Novel: Multiple characters can show up in different positions at 
 
 RPG: Only the character that speaks is visible (always in the same location). Does not have to be joined/left manually. Uses only position_idx 1."
 autowrap = true
+mode = "Info"
 
 [node name="VSeparator" type="VSeparator" parent="."]
 margin_left = 510.0
@@ -89,8 +91,9 @@ anchor_right = 0.0
 anchor_bottom = 0.0
 margin_right = 506.0
 margin_bottom = 14.0
+custom_colors/font_color = Color( 0.835938, 0.29715, 0.29715, 1 )
 text = "Animations"
-title = true
+mode = "Title"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Animations"]
 margin_top = 18.0
@@ -133,8 +136,9 @@ anchor_bottom = 0.0
 margin_top = 54.0
 margin_right = 506.0
 margin_bottom = 68.0
+custom_colors/font_color = Color( 0.835938, 0.29715, 0.29715, 1 )
 text = "Default Animations"
-title = true
+mode = "Title"
 
 [node name="DefaultIn" type="HBoxContainer" parent="Animations"]
 margin_top = 72.0

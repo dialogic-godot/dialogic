@@ -21,7 +21,7 @@ anchor_bottom = 0.0
 margin_right = 490.0
 margin_bottom = 14.0
 text = "Choices"
-title = true
+mode = "Title"
 
 [node name="Autofocus" type="HBoxContainer" parent="VBoxContainer"]
 margin_top = 18.0
@@ -105,7 +105,7 @@ anchor_bottom = 0.0
 margin_right = 490.0
 margin_bottom = 14.0
 text = "Choice hotkeys"
-title = true
+mode = "Title"
 
 [node name="HotkeySelection" type="HBoxContainer" parent="VBoxContainer2"]
 margin_top = 18.0
@@ -138,6 +138,7 @@ margin_right = 490.0
 margin_bottom = 73.0
 text = "You can add more complex hotkeys by editing the \"shortcut\" property of a ChoiceButton. "
 autowrap = true
+mode = "Info"
 
 [connection signal="toggled" from="VBoxContainer/Autofocus/Autofocus" to="." method="_on_Autofocus_toggled"]
 [connection signal="value_changed" from="VBoxContainer/Delay/Delay" to="." method="_on_Delay_value_changed"]

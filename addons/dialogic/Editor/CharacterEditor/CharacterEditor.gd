@@ -91,8 +91,8 @@ func _ready() -> void:
 	$'%NewPortrait'.connect('pressed', self, 'create_portrait_entry_instance', ['', {'path':'', 'scale':1, 'offset':Vector2(), 'mirror':false}])
 	$'%ImportFromFolder'.connect('pressed', self, 'open_portrait_folder_select')
 	$'%PreviewMode'.connect('item_selected', self, '_on_PreviewMode_item_selected')
-	$'%PreviewMode'.select(ProjectSettings.get_setting('dialogic/editor/character_preview_mode'))
-	_on_PreviewMode_item_selected(ProjectSettings.get_setting('dialogic/editor/character_preview_mode'))
+	$'%PreviewMode'.select(DialogicUtil.get_project_setting('dialogic/editor/character_preview_mode', 0))
+	_on_PreviewMode_item_selected($'%PreviewMode'.selected)
 	$'%PreviewPositionIcon'.texture = get_icon("EditorPosition", "EditorIcons")
 	
 	if find_parent('EditorView'): # This prevents the view to turn black if you are editing this scene in Godot

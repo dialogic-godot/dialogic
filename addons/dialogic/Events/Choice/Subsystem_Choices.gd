@@ -34,7 +34,7 @@ func show_current_choices() -> void:
 		# check if condition is false
 		if not choice_event.Condition.empty() and not dialogic.execute_condition(choice_event.Condition):
 			if choice_event.IfFalseAction == DialogicChoiceEvent.IfFalseActions.DEFAULT:
-				choice_event.IfFalseAction = DialogicUtil.get_project_setting('dialogic/choices_def_false_bahviour', 0)
+				choice_event.IfFalseAction = DialogicUtil.get_project_setting('dialogic/choices/def_false_bahviour', 0)
 			
 			# check what to do in this case
 			if choice_event.IfFalseAction == DialogicChoiceEvent.IfFalseActions.DISABLE:
@@ -45,7 +45,7 @@ func show_current_choices() -> void:
 			show_choice(button_idx, choice_event.get_translated_text(), true, choice_index)
 			button_idx += 1
 	
-	choice_blocker.start(DialogicUtil.get_project_setting('dialogic/choices_delay', 0.2))
+	choice_blocker.start(DialogicUtil.get_project_setting('dialogic/choices/delay', 0.2))
 
 
 func show_choice(button_index:int, text:String, enabled:bool, event_index:int) -> void:
@@ -60,10 +60,10 @@ func show_choice(button_index:int, text:String, enabled:bool, event_index:int) -
 			else:
 				node.text = text
 			
-			if idx == 1 and DialogicUtil.get_project_setting('dialogic/choices_autofocus_first', true):
+			if idx == 1 and DialogicUtil.get_project_setting('dialogic/choices/autofocus_first', true):
 				node.grab_focus()
 			
-			if DialogicUtil.get_project_setting('dialogic/choices_hotkey_behaviour', 0) == 1 and idx < 10:
+			if DialogicUtil.get_project_setting('dialogic/choices/hotkey_behaviour', 0) == 1 and idx < 10:
 				var shortcut = ShortCut.new()
 				var input_key = InputEventKey.new()
 				input_key.scancode = OS.find_scancode_from_string(str(idx))

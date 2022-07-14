@@ -20,7 +20,7 @@ anchor_bottom = 0.0
 margin_right = 1024.0
 margin_bottom = 14.0
 text = "Dialog Text"
-title = true
+mode = "Title"
 
 [node name="DefaultSpeed" type="HBoxContainer" parent="VBoxContainer"]
 margin_top = 18.0
