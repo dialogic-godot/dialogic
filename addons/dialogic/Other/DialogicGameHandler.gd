@@ -21,17 +21,6 @@ func _ready() -> void:
 	collect_subsystems()
 	clear()
 
-################################################################################
-## 						INPUT (WIP)
-################################################################################
-# This shouldn't be handled by this script I think, but for testing purposes this works.
-func _input(event:InputEvent) -> void:
-	if event is InputEventMouseButton and event.pressed:
-		if current_state == states.IDLE:
-			handle_next_event()
-		elif current_state == states.SHOWING_TEXT:
-			self.Text.skip_text_animation()
-
 
 ################################################################################
 ## 						TIMELINE+EVENT HANDLING

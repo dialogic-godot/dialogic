@@ -20,15 +20,19 @@ func _execute() -> void:
 		dialogic.Text.update_name_label(Character)
 		
 		if Portrait and dialogic.has_subsystem('Portraits') and dialogic.Portraits.is_character_joined(Character):
-			dialogic.Portraits.change_portrait(Character, Portrait)
+				dialogic.Portraits.change_portrait(Character, Portrait)
+			
 	else:
 		dialogic.Text.update_name_label(null)
-		
+	
+	# this will only do something if the rpg portrait mode is enabled
+	if dialogic.has_subsystem('Portraits'):
+		dialogic.Portraits.update_rpg_portrait_mode(Character, Portrait)
 	
 	if dialogic.has_subsystem('VAR'):
-		dialogic.Text.update_dialog_text(dialogic.VAR.parse_variables(get_translated_text()))
+		dialogic.Text.update_dialog_text(dialogic.Text.color_names(dialogic.VAR.parse_variables(get_translated_text())))
 	else:
-		dialogic.Text.update_dialog_text(get_translated_text())
+		dialogic.Text.update_dialog_text(dialogic.Text.color_names(get_translated_text()))
 	
 	# Wait for text to finish revealing
 	while true:
@@ -39,12 +43,17 @@ func _execute() -> void:
 	if dialogic.has_subsystem('Choices') and dialogic.Choices.is_question(dialogic.current_event_idx):
 		dialogic.Choices.show_current_choices()
 		dialogic.current_state = dialogic.states.AWAITING_CHOICE
-	
-	finish()
+	elif DialogicUtil.get_project_setting('dialogic/text/autocontinue', false):
+		yield(dialogic.get_tree().create_timer(DialogicUtil.get_project_setting('dialogic/text/autocontinue_delay', 1)), 'timeout')
+		dialogic.handle_next_event()
+	else:
+		finish()
 
 func get_required_subsystems() -> Array:
 	return [
-		['Text', get_script().resource_path.get_base_dir().plus_file('Subsystem_Text.gd')]
+		['Text', get_script().resource_path.get_base_dir().plus_file('Subsystem_Text.gd'),
+		get_script().resource_path.get_base_dir().plus_file('Settings_DialogText.tscn')
+		]
 	]
 ################################################################################
 ## 						INITIALIZE

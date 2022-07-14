@@ -141,8 +141,8 @@ static func get_color_palette(default:bool = false) -> Dictionary:
 		var color_name = 'Color' + str(index)
 		color_dict[color_name] = n
 		if !default:
-			if ProjectSettings.has_setting('dialogic/' + color_name):
-				color_dict[color_name] = ProjectSettings.get_setting('dialogic/' + color_name)
+			if ProjectSettings.has_setting('dialogic/editor/' + color_name):
+				color_dict[color_name] = ProjectSettings.get_setting('dialogic/editor/' + color_name)
 		index += 1
 	
 	return color_dict

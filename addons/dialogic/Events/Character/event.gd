@@ -2,6 +2,7 @@ tool
 extends DialogicEvent
 class_name DialogicCharacterEvent
 
+enum PortraitModes {VisualNovel, RPG}
 enum ActionTypes {Join, Leave, Update}
 
 # DEFINE ALL PROPERTIES OF THE EVENT
@@ -22,11 +23,11 @@ func _execute() -> void:
 				var n = dialogic.Portraits.add_portrait(Character, Portrait, Position)
 				
 				if AnimationName.empty():
-					AnimationName = DialogicUtil.get_project_setting('dialogic/animations_join_default', 
+					AnimationName = DialogicUtil.get_project_setting('dialogic/animations/join_default', 
 	get_script().resource_path.get_base_dir().plus_file('DefaultAnimations/fade_in_up.gd'))
-					AnimationLength = DialogicUtil.get_project_setting('dialogic/animations_join_default_length', 0.5)
+					AnimationLength = DialogicUtil.get_project_setting('dialogic/animations/join_default_length', 0.5)
 					print('using default ', AnimationName, ' at length ', AnimationLength)
-					AnimationWait = DialogicUtil.get_project_setting('dialogic/animations_join_default_wait', true)
+					AnimationWait = DialogicUtil.get_project_setting('dialogic/animations/join_default_wait', true)
 				if AnimationName:
 					var anim = dialogic.Portraits.animate_portrait(Character, AnimationName, AnimationLength, AnimationRepeats)
 					
@@ -37,10 +38,10 @@ func _execute() -> void:
 			if Character:
 				if dialogic.Portraits.is_character_joined(Character):
 					if AnimationName.empty():
-						AnimationName = DialogicUtil.get_project_setting('dialogic/animations_leaven_default', 
+						AnimationName = DialogicUtil.get_project_setting('dialogic/animations/leave_default', 
 	get_script().resource_path.get_base_dir().plus_file('DefaultAnimations/fade_out_down.gd'))
-						AnimationLength = DialogicUtil.get_project_setting('dialogic/animations_leave_default_length', 0.5) 
-						AnimationWait = DialogicUtil.get_project_setting('dialogic/animations_leave_default_wait', true)
+						AnimationLength = DialogicUtil.get_project_setting('dialogic/animations/leave_default_length', 0.5) 
+						AnimationWait = DialogicUtil.get_project_setting('dialogic/animations/leave_default_wait', true)
 					
 					if AnimationName:
 						var anim = dialogic.Portraits.animate_portrait(Character, AnimationName, AnimationLength, AnimationRepeats)
@@ -72,7 +73,7 @@ func _execute() -> void:
 
 func get_required_subsystems() -> Array:
 	return [
-				['Portraits', get_script().resource_path.get_base_dir().plus_file('Subsystem_Portraits.gd'),  get_script().resource_path.get_base_dir().plus_file('AnimationsSettings.tscn'), ],
+				['Portraits', get_script().resource_path.get_base_dir().plus_file('Subsystem_Portraits.gd'),  get_script().resource_path.get_base_dir().plus_file('PortraitSettings.tscn'), ],
 			]
 
 ################################################################################
@@ -223,7 +224,7 @@ func get_animation_suggestions(search_text):
 
 func list_animations() -> Array:
 	var list = DialogicUtil.listdir(get_script().resource_path.get_base_dir().plus_file('DefaultAnimations'), true, false, true)
-	list.append_array(DialogicUtil.listdir(DialogicUtil.get_project_setting('dialogic/animations_custom_folder', 'res://addons/dialogic_additions/Animations'), true, false, true))
+	list.append_array(DialogicUtil.listdir(DialogicUtil.get_project_setting('dialogic/animations/custom_folder', 'res://addons/dialogic_additions/Animations'), true, false, true))
 	return list
 
 

@@ -38,7 +38,6 @@ corner_radius_bottom_right = 5
 corner_radius_bottom_left = 5
 
 [node name="VariablesEditor" type="HBoxContainer"]
-visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 4.0
@@ -48,32 +47,36 @@ margin_bottom = -4.0
 script = ExtResource( 2 )
 
 [node name="VBox" type="VBoxContainer" parent="."]
-margin_right = 1016.0
+margin_right = 669.0
 margin_bottom = 564.0
 size_flags_horizontal = 3
 
 [node name="HBox" type="HBoxContainer" parent="VBox"]
-margin_right = 103.0
-margin_bottom = 40.0
+margin_right = 669.0
+margin_bottom = 22.0
 
 [node name="Variables" parent="VBox/HBox" instance=ExtResource( 4 )]
-margin_right = 1016.0
-margin_bottom = 14.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 4.0
+margin_right = 606.0
+margin_bottom = 18.0
 size_flags_horizontal = 3
 custom_styles/normal = SubResource( 1 )
 text = "Variables"
-title = true
+mode = "Title"
 
 [node name="SaveVariablesButton" type="Button" parent="VBox/HBox"]
 unique_name_in_owner = true
-margin_right = 12.0
-margin_bottom = 20.0
+margin_left = 610.0
+margin_right = 669.0
+margin_bottom = 22.0
 text = "Save"
 icon = SubResource( 2 )
 
 [node name="ScrollContainer" type="ScrollContainer" parent="VBox"]
-margin_top = 18.0
-margin_right = 664.0
+margin_top = 26.0
+margin_right = 669.0
 margin_bottom = 564.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -83,29 +86,37 @@ scroll_horizontal_enabled = false
 unique_name_in_owner = true
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_right = 664.0
-margin_bottom = 15.0
+margin_right = 669.0
+margin_bottom = 45.0
 custom_styles/panel = SubResource( 4 )
 MainGroup = true
 
+[node name="VSeparator" type="VSeparator" parent="."]
+margin_left = 673.0
+margin_right = 677.0
+margin_bottom = 564.0
+
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
-margin_left = 684.0
-margin_top = 18.0
+margin_left = 681.0
 margin_right = 1016.0
 margin_bottom = 564.0
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 0.5
 
 [node name="Variables2" parent="VBoxContainer" instance=ExtResource( 4 )]
-margin_right = 332.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 335.0
 margin_bottom = 14.0
 custom_styles/normal = SubResource( 1 )
 text = "About variables"
-title = true
+mode = "Title"
 
 [node name="Info2" parent="VBoxContainer" instance=ExtResource( 4 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
 margin_top = 18.0
-margin_right = 332.0
+margin_right = 335.0
 margin_bottom = 219.0
 custom_styles/normal = SubResource( 1 )
 text = "You can define a set of variables here (each a name and a default value). You can then change them with the Set Variable event or use them in text using {MyVariableName}.
@@ -116,5 +127,6 @@ You can access variables in scripts by doing 'Dialogic.VAR.MyVariable'
 or 'Dialogic.VAR.MyGroup.MySubGroup.MyVariable'."
 autowrap = true
 text_key = "Tra"
+mode = "Info"
 
 [connection signal="pressed" from="VBox/HBox/SaveVariablesButton" to="." method="_on_SaveVariables_pressed"]
