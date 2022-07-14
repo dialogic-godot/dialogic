@@ -11,7 +11,7 @@ export(AudioStream) var sound_unhover
 export(AudioStream) var sound_focus
 export(AudioStream) var sound_unfocus
 
-onready var sound_node = get_parent().get_node("SoundButton")
+onready var sound_node = get_parent().get_node("DialogicDisplay_ButtonSound")
 
 func _ready():
 	connect('pressed', sound_node, '_on_pressed', [sound_pressed])
