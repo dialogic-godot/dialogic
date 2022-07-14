@@ -1,3 +1,4 @@
+tool
 extends AudioStreamPlayer
 
 class_name DialogicDisplay_TypeSounds
@@ -24,17 +25,19 @@ export(float, 0, 10, 0.01) var volume_variance = 0.0
 export(String) var disallowed_characters = ' .,'
 
 #might want to change how to get the dialog node
-onready var dialog_text_node = get_node('%DialogicDisplay_DialogText')
+onready var dialog_text_node = get_parent()
 
 var sound_finished = true
 var characters_since_last_sound: int = 0
 var base_pitch = pitch_scale
 var base_volume = volume_db
 var RNG = RandomNumberGenerator.new()
+
 func _ready():
-	add_to_group('dialogic_typeSounds')
-	dialog_text_node.connect('started_revealing_text', self, '_on_started_revealing_text')
-	dialog_text_node.connect('continued_revealing_text', self, '_on_continued_revealing_text')
+	assert(dialog_text_node is DialogicDisplay_DialogText, "[Dialogic] DialogicDisplay_TypeSound needs to be the child of a DialogText node!")
+	if !Engine.editor_hint:
+		dialog_text_node.connect('started_revealing_text', self, '_on_started_revealing_text')
+		dialog_text_node.connect('continued_revealing_text', self, '_on_continued_revealing_text')
 
 func _on_started_revealing_text() -> void:
 	if !enabled:
@@ -77,3 +80,8 @@ func _on_continued_revealing_text(new_character) -> void:
 
 func _on_Sound_finished():
 	sound_finished = true
+
+func _get_configuration_warning():
+	if not get_parent() is DialogicDisplay_DialogText:
+		return "This should be the child of a DialogText node!"
+	return ""
