@@ -194,6 +194,7 @@ rect_min_size = Vector2( 20, 0 )
 [node name="Content" type="Container" parent="PanelContainer/MarginContainer/VBoxContainer/Body"]
 margin_left = 20.0
 margin_right = 86.0
+mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource( 4 )
