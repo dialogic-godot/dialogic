@@ -15,8 +15,9 @@ func _ready():
 
 #basic play sound
 func play_sound(sound) -> void:
-	stream = sound
-	play()
+	if sound != null:
+		stream = sound
+		play()
 
 #the custom_sound argument comes from the specifec button and get used
 #if none are found, it uses the above sounds
