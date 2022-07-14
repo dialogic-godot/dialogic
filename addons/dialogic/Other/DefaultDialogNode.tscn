@@ -163,13 +163,8 @@ margin_bottom = 125.0
 script = ExtResource( 2 )
 
 [node name="DialogicDisplay_TypeSounds" type="AudioStreamPlayer" parent="DefaultTheme/PanelContainer/DialogicDisplay_DialogText"]
-volume_db = 9.093
-pitch_scale = 0.13
 script = ExtResource( 10 )
 sounds = [ ExtResource( 14 ), ExtResource( 16 ), ExtResource( 15 ), ExtResource( 11 ), ExtResource( 13 ) ]
-play_every_character = 1
-pitch_variance = 0.38
-volume_variance = 2.31
 
 [node name="SpecialTheme" type="Control" parent="."]
 visible = false
