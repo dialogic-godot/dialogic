@@ -59,12 +59,13 @@ func continue_reveal() -> void:
 			else:
 				timer.start(speed)
 	else:
-		emit_signal("finished_revealing_text")
+		
 		finish_text()
 
 # shows all the text imidiatly
 # called by this thing itself or the DialogicGameHandler
 func finish_text():
+	emit_signal("finished_revealing_text")
 	percent_visible = 1
 	execute_effects(true)
 	timer.stop()
