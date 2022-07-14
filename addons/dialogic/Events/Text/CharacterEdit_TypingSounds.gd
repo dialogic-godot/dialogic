@@ -40,7 +40,7 @@ func duplicate_mood_item(item):
 func _on_portrait_selected(previous, current):
 	if current and is_instance_valid(current):
 		$'%PortraitMood'.set_value(current.portrait_data.get('sound_mood', ''))
-		$'%PortraitMoodLabel'.text = 'Default sound mood for portrait "%s":'%current.get_portrait_name()
+		$'%PortraitMoodLabel'.text = 'Typing-Sound-Mood for portrait "%s":'%current.get_portrait_name()
 
 
 func mood_suggestions(filter):

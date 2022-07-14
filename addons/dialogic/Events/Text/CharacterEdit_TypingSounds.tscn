@@ -18,7 +18,7 @@ unique_name_in_owner = true
 margin_right = 174.0
 margin_bottom = 31.0
 size_flags_horizontal = 3
-text = "Default sound mood for portrait \"sad\":"
+text = "Sound mood for portrait \"sad\":"
 autowrap = true
 
 [node name="PortraitMood" parent="HBoxContainer2" instance=ExtResource( 2 )]
@@ -29,6 +29,7 @@ margin_left = 178.0
 margin_top = 3.0
 margin_right = 330.0
 margin_bottom = 27.0
+placeholder_text = "Select Mood"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
 margin_top = 35.0
