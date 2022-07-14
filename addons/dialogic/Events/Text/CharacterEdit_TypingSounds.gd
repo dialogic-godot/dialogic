@@ -11,6 +11,8 @@ func load_character(character:DialogicCharacter):
 	for mood in $'%Moods'.get_children():
 		mood.queue_free()
 	
+	$'%PortraitMood'.set_value('')
+	
 	for mood in character.custom_info.get('sound_moods', {}):
 		create_mood_item(character.custom_info.sound_moods[mood])
 
