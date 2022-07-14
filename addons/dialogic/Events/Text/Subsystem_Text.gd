@@ -16,7 +16,9 @@ func clear_game_state():
 
 func load_game_state():
 	update_dialog_text(dialogic.current_state_info.get('text', ''))
-	var character:DialogicCharacter = load(dialogic.current_state_info.get('character', null))
+	var character:DialogicCharacter = null
+	if dialogic.current_state_info.get('character', null):
+		character = load(dialogic.current_state_info.get('character', null))
 	
 	if character:
 		update_name_label(character)

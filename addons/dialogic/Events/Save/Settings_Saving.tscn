@@ -1,0 +1,115 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://addons/dialogic/Editor/Common/TLabel.tscn" type="PackedScene" id=1]
+[ext_resource path="res://addons/dialogic/Events/Save/Settings_Saving.gd" type="Script" id=2]
+
+[node name="Saving" type="HBoxContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 2 )
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+margin_right = 1024.0
+margin_bottom = 600.0
+size_flags_horizontal = 3
+
+[node name="TLabel" parent="VBoxContainer" instance=ExtResource( 1 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_right = 1024.0
+margin_bottom = 14.0
+text = "Saving"
+title = true
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+margin_top = 18.0
+margin_right = 1024.0
+margin_bottom = 42.0
+
+[node name="TLabel2" parent="VBoxContainer/HBoxContainer" instance=ExtResource( 1 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 5.0
+margin_right = 996.0
+margin_bottom = 19.0
+size_flags_horizontal = 3
+text = "Autosave"
+
+[node name="Autosave" type="CheckBox" parent="VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+margin_left = 1000.0
+margin_right = 1024.0
+margin_bottom = 24.0
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="VBoxContainer"]
+margin_top = 46.0
+margin_right = 1024.0
+margin_bottom = 66.0
+
+[node name="TLabel2" parent="VBoxContainer/HBoxContainer3" instance=ExtResource( 1 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 3.0
+margin_right = 831.0
+margin_bottom = 17.0
+size_flags_horizontal = 3
+text = "Autosave Mode"
+
+[node name="AutosaveMode" type="OptionButton" parent="VBoxContainer/HBoxContainer3"]
+unique_name_in_owner = true
+margin_left = 835.0
+margin_right = 1024.0
+margin_bottom = 20.0
+text = "Timeline Start+End+Jump"
+items = [ "Timeline Start+End+Jump", null, false, 0, null, "Each X Seconds", null, false, 1, null, "Every Text Event", null, false, 2, null ]
+selected = 0
+
+[node name="AutosaveDelayContainer" type="HBoxContainer" parent="VBoxContainer"]
+unique_name_in_owner = true
+margin_top = 70.0
+margin_right = 1024.0
+margin_bottom = 94.0
+
+[node name="TLabel2" parent="VBoxContainer/AutosaveDelayContainer" instance=ExtResource( 1 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 5.0
+margin_right = 946.0
+margin_bottom = 19.0
+size_flags_horizontal = 3
+text = "Save after"
+align = 2
+
+[node name="AutosaveDelay" type="SpinBox" parent="VBoxContainer/AutosaveDelayContainer"]
+unique_name_in_owner = true
+margin_left = 950.0
+margin_right = 1024.0
+margin_bottom = 24.0
+max_value = 1000.0
+suffix = "s"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer"]
+margin_top = 98.0
+margin_right = 1024.0
+margin_bottom = 122.0
+
+[node name="TLabel2" parent="VBoxContainer/HBoxContainer2" instance=ExtResource( 1 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 5.0
+margin_right = 962.0
+margin_bottom = 19.0
+size_flags_horizontal = 3
+text = "Default Save Slot name"
+
+[node name="DefaultSaveSlotName" type="LineEdit" parent="VBoxContainer/HBoxContainer2"]
+unique_name_in_owner = true
+margin_left = 966.0
+margin_right = 1024.0
+margin_bottom = 24.0
+expand_to_text_length = true
+
+[connection signal="toggled" from="VBoxContainer/HBoxContainer/Autosave" to="." method="_on_Autosave_toggled"]
+[connection signal="item_selected" from="VBoxContainer/HBoxContainer3/AutosaveMode" to="." method="_on_AutosaveMode_item_selected"]
+[connection signal="value_changed" from="VBoxContainer/AutosaveDelayContainer/AutosaveDelay" to="." method="_on_AutosaveDelay_value_changed"]
+[connection signal="text_changed" from="VBoxContainer/HBoxContainer2/DefaultSaveSlotName" to="." method="_on_DefaultSaveSlotName_text_changed"]

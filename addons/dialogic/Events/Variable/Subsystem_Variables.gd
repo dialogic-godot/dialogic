@@ -9,7 +9,19 @@ func clear_game_state():
 	dialogic.current_state_info['variables'] = DialogicUtil.get_project_setting('dialogic/variables', {})
 
 func load_game_state():
-	pass
+	dialogic.current_state_info['variables'] = merge_folder(dialogic.current_state_info['variables'], DialogicUtil.get_project_setting('dialogic/variables', {}))
+
+
+func merge_folder(new, defs) -> Dictionary:
+	# also go through all groups in this folder
+	for x in new.keys():
+		if x in defs and typeof(new[x]) == TYPE_DICTIONARY:
+			new[x] = merge_folder(new[x], defs[x])
+	# add all new variables
+	for x in defs.keys():
+		if not x in new:
+			new[x] = defs[x]
+	return new
 
 ####################################################################################################
 ##					MAIN METHODS
