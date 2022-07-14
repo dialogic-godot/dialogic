@@ -1,19 +1,21 @@
 tool
 extends DialogicEvent
-class_name DialogicJumpEvent
+class_name DialogicSaveEvent
 
 # DEFINE ALL PROPERTIES OF THE EVENT
-var Timeline :DialogicTimeline = null
-var Label : String = ""
+var SlotName :String = "Default"
 
 func _execute() -> void:
-	if Timeline and Timeline != dialogic.current_timeline:
-		#print("---------------switching timelines----------------")
-		dialogic.start_timeline(Timeline, Label)
-	elif Label:
-		dialogic.jump_to_label(Label)
+	if SlotName:
+		print("[Dialogic] Saved to slot'"+SlotName+"'.")
+		dialogic.Save.save(SlotName)
 	finish()
 
+func get_required_subsystems() -> Array:
+	return [
+				['Save', get_script().resource_path.get_base_dir().plus_file('Subsystem_Save.gd'),
+				get_script().resource_path.get_base_dir().plus_file('Settings_Saving.tscn')],
+			]
 
 ################################################################################
 ## 						INITIALIZE
@@ -21,24 +23,22 @@ func _execute() -> void:
 
 # SET ALL VALUES THAT SHOULD NEVER CHANGE HERE
 func _init() -> void:
-	event_name = "Jump"
+	event_name = "Save"
 	set_default_color('Color2')
-	event_category = Category.TIMELINE
-	event_sorting_index = 0
-	
+	event_category = Category.MAIN
+	event_sorting_index = 2
 
 
 ################################################################################
 ## 						SAVING/LOADING
 ################################################################################
 func get_shortcode() -> String:
-	return "jump"
+	return "save"
 
 func get_shortcode_parameters() -> Dictionary:
 	return {
 		#param_name : property_name
-		"timeline"		: "Timeline",
-		"label"		: "Label",
+		"slot"		: "SlotName",
 	}
 
 
@@ -47,6 +47,4 @@ func get_shortcode_parameters() -> Dictionary:
 ################################################################################
 
 func build_event_editor():
-	add_header_edit('Timeline', ValueType.Resource, 'Timeline:', '', {'file_extension':'.dtl'})
-	add_header_edit('Label', ValueType.SinglelineText, 'Label:')
-
+	add_header_edit('SlotName', ValueType.SinglelineText, 'Slot: ')

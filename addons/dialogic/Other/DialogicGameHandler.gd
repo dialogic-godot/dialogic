@@ -14,6 +14,9 @@ var current_state_info :Dictionary = {}
 
 signal state_changed(new_state)
 signal timeline_ended()
+signal timeline_started()
+signal event_handled(resource)
+
 signal signal_event(argument)
 signal text_signal(argument)
 
@@ -53,12 +56,14 @@ func start_timeline(timeline_resource, label_or_idx = "") -> void:
 		if label_or_idx >-1:
 			current_event_idx = label_or_idx -1
 	
+	emit_signal('timeline_started')
 	handle_next_event()
 
 
 func end_timeline():
 	current_timeline = null
 	current_timeline_events = []
+	clear()
 	emit_signal("timeline_ended")
 
 
@@ -71,7 +76,7 @@ func handle_event(event_index:int) -> void:
 		return
 	
 	if event_index >= len(current_timeline_events):
-		emit_signal('timeline_ended')
+		end_timeline()
 		return
 	
 	current_event_idx = event_index
@@ -81,6 +86,7 @@ func handle_event(event_index:int) -> void:
 		#print("    -> WILL AUTO CONTINUE!")
 		event.connect("event_finished", self, 'handle_next_event', [], CONNECT_ONESHOT)
 	event.execute(self)
+	emit_signal('event_handled', event)
 
 
 func jump_to_label(label:String) -> void:
@@ -136,15 +142,16 @@ func get_full_state() -> Dictionary:
 	else:
 		current_state_info['current_event_idx'] = -1
 		current_state_info['current_timeline'] = null
-
 	return current_state_info
 
 
 func load_full_state(state_info:Dictionary) -> void:
+	for subsystem in get_children():
+		subsystem.clear_game_state()
 	current_state_info = state_info
 	print(state_info)
 	if current_state_info.get('current_timeline', null):
-		start_timeline(current_state_info.current_timeline, str(current_state_info.get('current_event_idx', 0)))
+		start_timeline(current_state_info.current_timeline, current_state_info.get('current_event_idx', 0))
 	for subsystem in get_children():
 		subsystem.load_game_state()
 
