@@ -3,7 +3,7 @@ extends Control
 
 func _ready():
 	randomize()
-	var current_timeline = ProjectSettings.get_setting('dialogic/editor/')
+	var current_timeline = ProjectSettings.get_setting('dialogic/editor/current_timeline_path')
 	Dialogic.start_timeline(current_timeline)
 	Dialogic.connect("timeline_ended", get_tree(), 'quit')
 	Dialogic.connect("signal_event", self, 'recieve_event_signal')
