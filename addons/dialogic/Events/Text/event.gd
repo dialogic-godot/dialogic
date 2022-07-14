@@ -8,20 +8,21 @@ var Character:DialogicCharacter
 var Portrait = ""
 
 func _execute() -> void:
-	if not Character or not Character.theme:
+	if (not Character or not Character.custom_info.get('theme', '')) and dialogic.has_subsystem('Themes'):
 		# if previous characters had a custom theme change back to base theme 
 		if dialogic.current_state_info.get('base_theme') != dialogic.current_state_info.get('theme'):
 			dialogic.Themes.change_theme(dialogic.current_state_info.get('base_theme', 'Default'))
 	
 	if Character:
-		if Character.theme:
-			dialogic.Themes.change_theme(Character.theme)
+		if dialogic.has_subsystem('Themes') and Character.custom_info.get('theme', null):
+			dialogic.Themes.change_theme(Character.custom_info.theme)
 		
 		dialogic.Text.update_name_label(Character)
 		
 		if Portrait and dialogic.has_subsystem('Portraits') and dialogic.Portraits.is_character_joined(Character):
 				dialogic.Portraits.change_portrait(Character, Portrait)
-			
+		if Portrait:
+			dialogic.Text.update_typing_sound_mood(Character.custom_info.get('sound_moods', {}).get(Character.portraits[Portrait].get('sound_mood', {}), {}))
 	else:
 		dialogic.Text.update_name_label(null)
 	
@@ -51,10 +52,13 @@ func _execute() -> void:
 
 func get_required_subsystems() -> Array:
 	return [
-		['Text', get_script().resource_path.get_base_dir().plus_file('Subsystem_Text.gd'),
-		get_script().resource_path.get_base_dir().plus_file('Settings_DialogText.tscn')
-		]
-	]
+				{'name':'Text',
+				'subsystem': get_script().resource_path.get_base_dir().plus_file('Subsystem_Text.gd'),
+				'settings': get_script().resource_path.get_base_dir().plus_file('Settings_DialogText.tscn'),
+				'character_main':get_script().resource_path.get_base_dir().plus_file('CharacterEdit_TypingSounds.tscn')
+				},
+			]
+
 ################################################################################
 ## 						INITIALIZE
 ################################################################################
@@ -66,8 +70,6 @@ func _init() -> void:
 	event_sorting_index = 0
 	help_page_path = "https://dialogic.coppolaemilio.com/documentation/Events/000/"
 	continue_at_end = false
-
-
 
 ################################################################################
 ## 						SAVING/LOADING

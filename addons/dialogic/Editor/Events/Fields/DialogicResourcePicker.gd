@@ -65,7 +65,6 @@ func _on_Search_text_entered(new_text = ""):
 		suggestion_selected(0)
 	else:
 		emit_signal("value_changed", property_name, null)
-#		set_value(null)
 
 func _on_Search_text_changed(new_text):
 	$Search/Suggestions.clear()
@@ -84,6 +83,7 @@ func _on_Search_text_changed(new_text):
 			$Search.grab_focus()
 	
 	else:
+		emit_signal("value_changed", property_name, null)
 		$Search/Suggestions.hide()
 
 func get_default_suggestions(search_text):

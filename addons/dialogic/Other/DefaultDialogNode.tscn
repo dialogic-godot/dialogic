@@ -1,5 +1,4 @@
-[gd_scene load_steps=18 format=2]
-
+[gd_scene load_steps=19 format=2]
 
 [ext_resource path="res://addons/dialogic/Other/DefaultDialogNode.gd" type="Script" id=1]
 [ext_resource path="res://addons/dialogic/Events/Text/Display_DialogText.gd" type="Script" id=2]
@@ -10,18 +9,15 @@
 [ext_resource path="res://addons/dialogic/Events/Background/Display_Background.gd" type="Script" id=7]
 [ext_resource path="res://addons/dialogic/Events/Music/Display_MusicPlayer.gd" type="Script" id=8]
 [ext_resource path="res://addons/dialogic/Events/Sound/Display_SoundPlayer.gd" type="Script" id=9]
-
-
 [ext_resource path="res://addons/dialogic/Events/Text/DialogicDisplay_TypeSounds.gd" type="Script" id=10]
 [ext_resource path="res://addons/dialogic/Example Assets/Keyboard Noises/typing4.wav" type="AudioStream" id=11]
-
 [ext_resource path="res://addons/dialogic/Events/Theme/Display_Theme.gd" type="Script" id=12]
 [ext_resource path="res://addons/dialogic/Example Assets/Keyboard Noises/typing5.wav" type="AudioStream" id=13]
 [ext_resource path="res://addons/dialogic/Example Assets/Keyboard Noises/typing1.wav" type="AudioStream" id=14]
 [ext_resource path="res://addons/dialogic/Example Assets/Keyboard Noises/typing3.wav" type="AudioStream" id=15]
 [ext_resource path="res://addons/dialogic/Example Assets/Keyboard Noises/typing2.wav" type="AudioStream" id=16]
-
 [ext_resource path="res://addons/dialogic/Events/Text/Display_InputHandler.gd" type="Script" id=17]
+[ext_resource path="res://addons/dialogic/Events/Choice/SoundButton.gd" type="Script" id=18]
 
 [node name="DefaultDialogNode" type="CanvasLayer"]
 script = ExtResource( 1 )
@@ -126,6 +122,12 @@ margin_right = 292.0
 margin_bottom = 172.0
 script = ExtResource( 4 )
 
+[node name="DialogicDisplay_ButtonSound" type="AudioStreamPlayer" parent="DefaultTheme/Choices"]
+script = ExtResource( 18 )
+sound_pressed = ExtResource( 14 )
+sound_hover = ExtResource( 11 )
+sound_focus = ExtResource( 13 )
+
 [node name="PanelContainer2" type="PanelContainer" parent="DefaultTheme"]
 anchor_left = 0.5
 anchor_top = 1.0
@@ -161,11 +163,13 @@ margin_bottom = 125.0
 script = ExtResource( 2 )
 
 [node name="DialogicDisplay_TypeSounds" type="AudioStreamPlayer" parent="DefaultTheme/PanelContainer/DialogicDisplay_DialogText"]
+volume_db = 9.093
+pitch_scale = 0.13
 script = ExtResource( 10 )
 sounds = [ ExtResource( 14 ), ExtResource( 16 ), ExtResource( 15 ), ExtResource( 11 ), ExtResource( 13 ) ]
 play_every_character = 1
-pitch_variance = 0.17
-volume_variance = 0.51
+pitch_variance = 0.38
+volume_variance = 2.31
 
 [node name="SpecialTheme" type="Control" parent="."]
 visible = false

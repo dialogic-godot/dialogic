@@ -73,7 +73,10 @@ func _execute() -> void:
 
 func get_required_subsystems() -> Array:
 	return [
-				['Portraits', get_script().resource_path.get_base_dir().plus_file('Subsystem_Portraits.gd'),  get_script().resource_path.get_base_dir().plus_file('PortraitSettings.tscn'), ],
+				{'name':'Portraits',
+				'subsystem': get_script().resource_path.get_base_dir().plus_file('Subsystem_Portraits.gd'),
+				'settings': get_script().resource_path.get_base_dir().plus_file('PortraitSettings.tscn'),
+				},
 			]
 
 ################################################################################

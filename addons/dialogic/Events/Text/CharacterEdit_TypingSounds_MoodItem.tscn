@@ -1,0 +1,221 @@
+[gd_scene load_steps=9 format=2]
+
+[ext_resource path="res://addons/dialogic/Editor/Common/TLabel.tscn" type="PackedScene" id=1]
+[ext_resource path="res://addons/dialogic/Events/Text/CharacterEdit_TypingSounds_MoodItem.gd" type="Script" id=2]
+[ext_resource path="res://addons/dialogic/Events/Text/DialogicDisplay_TypeSounds.gd" type="Script" id=3]
+
+[sub_resource type="Image" id=6]
+data = {
+"data": PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ),
+"format": "LumAlpha8",
+"height": 16,
+"mipmaps": false,
+"width": 16
+}
+
+[sub_resource type="ImageTexture" id=2]
+flags = 4
+flags = 4
+image = SubResource( 6 )
+size = Vector2( 16, 16 )
+
+[sub_resource type="StyleBoxTexture" id=3]
+texture = SubResource( 2 )
+region_rect = Rect2( 0, 0, 16, 16 )
+margin_left = 2.0
+margin_right = 2.0
+margin_top = 2.0
+margin_bottom = 2.0
+
+[sub_resource type="Image" id=7]
+data = {
+"data": PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ),
+"format": "LumAlpha8",
+"height": 16,
+"mipmaps": false,
+"width": 16
+}
+
+[sub_resource type="ImageTexture" id=5]
+flags = 4
+flags = 4
+image = SubResource( 7 )
+size = Vector2( 16, 16 )
+
+[node name="MoodItem" type="PanelContainer"]
+margin_right = 348.0
+margin_bottom = 108.0
+size_flags_horizontal = 3
+custom_styles/panel = SubResource( 3 )
+script = ExtResource( 2 )
+
+[node name="VBox" type="VBoxContainer" parent="."]
+margin_left = 2.0
+margin_top = 2.0
+margin_right = 346.0
+margin_bottom = 106.0
+
+[node name="General" type="HBoxContainer" parent="VBox"]
+margin_right = 344.0
+margin_bottom = 24.0
+
+[node name="Name" type="LineEdit" parent="VBox/General"]
+unique_name_in_owner = true
+margin_right = 216.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+caret_blink = true
+caret_blink_speed = 0.5
+
+[node name="Play" type="Button" parent="VBox/General"]
+unique_name_in_owner = true
+margin_left = 220.0
+margin_right = 248.0
+margin_bottom = 24.0
+hint_tooltip = "Preview"
+icon = SubResource( 5 )
+
+[node name="Duplicate" type="Button" parent="VBox/General"]
+unique_name_in_owner = true
+margin_left = 252.0
+margin_right = 280.0
+margin_bottom = 24.0
+hint_tooltip = "Duplicate"
+icon = SubResource( 5 )
+
+[node name="Delete" type="Button" parent="VBox/General"]
+unique_name_in_owner = true
+margin_left = 284.0
+margin_right = 312.0
+margin_bottom = 24.0
+hint_tooltip = "Delete"
+icon = SubResource( 5 )
+
+[node name="Fold" type="Button" parent="VBox/General"]
+unique_name_in_owner = true
+margin_left = 316.0
+margin_right = 344.0
+margin_bottom = 24.0
+hint_tooltip = "Fold/Unfold"
+toggle_mode = true
+pressed = true
+icon = SubResource( 5 )
+
+[node name="Content" type="HBoxContainer" parent="VBox"]
+unique_name_in_owner = true
+visible = false
+margin_top = 28.0
+margin_right = 344.0
+margin_bottom = 106.0
+
+[node name="Control" type="Control" parent="VBox/Content"]
+margin_right = 30.0
+margin_bottom = 78.0
+rect_min_size = Vector2( 30, 0 )
+
+[node name="Content" type="VBoxContainer" parent="VBox/Content"]
+margin_left = 34.0
+margin_right = 344.0
+margin_bottom = 78.0
+size_flags_horizontal = 3
+
+[node name="SoundFolderSect" type="HBoxContainer" parent="VBox/Content/Content"]
+margin_right = 310.0
+margin_bottom = 22.0
+
+[node name="TLabel" parent="VBox/Content/Content/SoundFolderSect" instance=ExtResource( 1 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 4.0
+margin_right = 91.0
+margin_bottom = 18.0
+text = "Sounds folder "
+
+[node name="SoundFolder" type="Label" parent="VBox/Content/Content/SoundFolderSect"]
+unique_name_in_owner = true
+margin_left = 95.0
+margin_top = 4.0
+margin_right = 278.0
+margin_bottom = 18.0
+size_flags_horizontal = 3
+align = 2
+
+[node name="ChangeSoundFolderButton" type="Button" parent="VBox/Content/Content/SoundFolderSect"]
+unique_name_in_owner = true
+margin_left = 282.0
+margin_right = 310.0
+margin_bottom = 22.0
+hint_tooltip = "Change sounds folder"
+icon = SubResource( 5 )
+
+[node name="Pitch" type="HBoxContainer" parent="VBox/Content/Content"]
+margin_top = 26.0
+margin_right = 310.0
+margin_bottom = 50.0
+
+[node name="TLabel" parent="VBox/Content/Content/Pitch" instance=ExtResource( 1 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 5.0
+margin_right = 128.0
+margin_bottom = 19.0
+size_flags_horizontal = 3
+text = "Pitch"
+
+[node name="PitchBase" type="SpinBox" parent="VBox/Content/Content/Pitch"]
+unique_name_in_owner = true
+margin_left = 132.0
+margin_right = 206.0
+margin_bottom = 24.0
+step = 0.001
+value = 1.0
+
+[node name="PitchVariance" type="SpinBox" parent="VBox/Content/Content/Pitch"]
+unique_name_in_owner = true
+margin_left = 210.0
+margin_right = 310.0
+margin_bottom = 24.0
+rect_min_size = Vector2( 100, 0 )
+step = 0.001
+prefix = "+/-"
+
+[node name="Volume" type="HBoxContainer" parent="VBox/Content/Content"]
+margin_top = 54.0
+margin_right = 310.0
+margin_bottom = 78.0
+
+[node name="TLabel" parent="VBox/Content/Content/Volume" instance=ExtResource( 1 )]
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_top = 5.0
+margin_right = 128.0
+margin_bottom = 19.0
+size_flags_horizontal = 3
+text = "Volume"
+
+[node name="VolumeBase" type="SpinBox" parent="VBox/Content/Content/Volume"]
+unique_name_in_owner = true
+margin_left = 132.0
+margin_right = 206.0
+margin_bottom = 24.0
+min_value = -80.0
+step = 0.001
+suffix = "db"
+
+[node name="VolumeVariance" type="SpinBox" parent="VBox/Content/Content/Volume"]
+unique_name_in_owner = true
+margin_left = 210.0
+margin_right = 310.0
+margin_bottom = 24.0
+rect_min_size = Vector2( 100, 0 )
+step = 0.001
+prefix = "+/-"
+
+[node name="DialogicDisplay_TypeSounds" type="AudioStreamPlayer" parent="."]
+script = ExtResource( 3 )
+
+[connection signal="pressed" from="VBox/General/Play" to="." method="preview"]
+[connection signal="pressed" from="VBox/General/Duplicate" to="." method="_on_Duplicate_pressed"]
+[connection signal="pressed" from="VBox/General/Delete" to="." method="_on_Delete_pressed"]
+[connection signal="toggled" from="VBox/General/Fold" to="." method="_on_Fold_toggled"]
+[connection signal="pressed" from="VBox/Content/Content/SoundFolderSect/ChangeSoundFolderButton" to="." method="open_file_folder_dialog"]

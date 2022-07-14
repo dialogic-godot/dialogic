@@ -15,7 +15,10 @@ func _execute() -> void:
 
 func get_required_subsystems() -> Array:
 	return [
-				['Themes', get_script().resource_path.get_base_dir().plus_file('Subsystem_Themes.gd')],
+				{'name':'Themes',
+				'subsystem': get_script().resource_path.get_base_dir().plus_file('Subsystem_Themes.gd'),
+				'character_main':get_script().resource_path.get_base_dir().plus_file('Theme_CharacterEdit.tscn')
+				},
 			]
 
 
