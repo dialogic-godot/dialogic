@@ -104,7 +104,6 @@ func load_sounds_from_folder(folder:String):
 	return x_sounds
 
 func load_overwrite(dictionary:Dictionary) -> void:
-	print(dictionary)
 	current_overwrite_data = dictionary
 	if dictionary.has('sound_folder'):
 		current_overwrite_data['sounds'] = load_sounds_from_folder(dictionary.sound_folder)

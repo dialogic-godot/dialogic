@@ -54,5 +54,4 @@ func mood_suggestions(filter):
 func _on_PortraitMood_value_changed(property_name, value):
 	if find_parent('CharacterEditor').current_portrait:
 		find_parent('CharacterEditor').current_portrait.portrait_data['sound_mood'] = value
-		print(value)
 	emit_signal("changed")
