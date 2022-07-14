@@ -12,6 +12,9 @@ export(bool) var interrupt = true
 #will play a random sound between them
 export(Array, AudioStream) var sounds
 
+#will play after all text is revealed
+export(AudioStream) var end_sound
+
 #play the sound every "N" characters, default is 1 for playing it every character
 export(int, 1, 100) var play_every_character
 
@@ -38,6 +41,7 @@ func _ready():
 	if !Engine.editor_hint:
 		dialog_text_node.connect('started_revealing_text', self, '_on_started_revealing_text')
 		dialog_text_node.connect('continued_revealing_text', self, '_on_continued_revealing_text')
+		dialog_text_node.connect('finished_revealing_text', self, '_on_finished_revealing_text')
 
 func _on_started_revealing_text() -> void:
 	if !enabled:
@@ -78,8 +82,13 @@ func _on_continued_revealing_text(new_character) -> void:
 	sound_finished = false
 
 
-func _on_Sound_finished():
+func _on_Sound_finished() -> void:
 	sound_finished = true
+
+func _on_finished_revealing_text() -> void:
+	if end_sound != null:
+		stream = end_sound
+		play()
 
 func _get_configuration_warning():
 	if not get_parent() is DialogicDisplay_DialogText:
