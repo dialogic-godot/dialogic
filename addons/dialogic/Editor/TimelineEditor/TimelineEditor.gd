@@ -765,15 +765,12 @@ func create_drag_and_drop_event(resource):
 func drop_event():
 	if moving_piece != null:
 		var at_index = moving_piece.get_index()
+		var resource = moving_piece.resource.get_script()
 		moving_piece.queue_free()
-		TimelineUndoRedo.create_action("[D] Add event.")
-		TimelineUndoRedo.add_do_method(self, "add_event_to_timeline", currently_draged_event_type, at_index, true, true)
-		TimelineUndoRedo.add_undo_method(self, "remove_events_at_index", at_index, 1)
-		TimelineUndoRedo.commit_action()
+		
+		_add_event_button_pressed(resource)
 		moving_piece = null
 		piece_was_dragged = false
-		indent_events()
-		add_extra_scroll_area_to_timeline()
 
 
 func cancel_drop_event():
