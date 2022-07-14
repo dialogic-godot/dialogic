@@ -15,6 +15,8 @@ signal started_revealing_text()
 
 signal continued_revealing_text(new_character)
 
+signal finished_revealing_text()
+
 func _ready() -> void:
 	# add to necessary
 	add_to_group('dialogic_dialog_text')
@@ -58,11 +60,13 @@ func continue_reveal() -> void:
 			else:
 				timer.start(speed)
 	else:
+		
 		finish_text()
 
 # shows all the text imidiatly
 # called by this thing itself or the DialogicGameHandler
 func finish_text():
+	emit_signal("finished_revealing_text")
 	percent_visible = 1
 	execute_effects(true)
 	timer.stop()
