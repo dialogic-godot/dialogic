@@ -25,10 +25,7 @@ export(float, 0, 3, 0.01) var pitch_variance = 0.0
 export(float, 0, 10, 0.01) var volume_variance = 0.0
 
 #characters that don't increase the 'characters_since_last_sound' variable, useful for the space or fullstop
-export(String) var disallowed_characters = ' .,'
-
-#might want to change how to get the dialog node
-onready var dialog_text_node = get_parent()
+export(String) var ignore_characters = ' .,'
 
 var sound_finished = true
 var characters_since_last_sound: int = 0
@@ -36,12 +33,15 @@ var base_pitch = pitch_scale
 var base_volume = volume_db
 var RNG = RandomNumberGenerator.new()
 
+var current_overwrite_data = {}
+
 func _ready():
-	assert(dialog_text_node is DialogicDisplay_DialogText, "[Dialogic] DialogicDisplay_TypeSound needs to be the child of a DialogText node!")
-	if !Engine.editor_hint:
-		dialog_text_node.connect('started_revealing_text', self, '_on_started_revealing_text')
-		dialog_text_node.connect('continued_revealing_text', self, '_on_continued_revealing_text')
-		dialog_text_node.connect('finished_revealing_text', self, '_on_finished_revealing_text')
+	# add to necessary group
+	add_to_group('dialogic_type_sounds')
+	if !Engine.editor_hint and get_parent() is DialogicDisplay_DialogText:
+		get_parent().connect('started_revealing_text', self, '_on_started_revealing_text')
+		get_parent().connect('continued_revealing_text', self, '_on_continued_revealing_text')
+		get_parent().connect('finished_revealing_text', self, '_on_finished_revealing_text')
 
 func _on_started_revealing_text() -> void:
 	if !enabled:
@@ -58,11 +58,11 @@ func _on_continued_revealing_text(new_character) -> void:
 		return
 	
 	#if no sounds were given
-	if sounds.size() == 0:
+	if current_overwrite_data.get('sounds', sounds).size() == 0:
 		return
 	
 	#if the new character is not allowed
-	if new_character in disallowed_characters:
+	if new_character in ignore_characters:
 		return
 	
 	characters_since_last_sound += 1
@@ -71,16 +71,15 @@ func _on_continued_revealing_text(new_character) -> void:
 	characters_since_last_sound = 0
 	
 	#choose the random sound
-	stream = sounds[RNG.randi_range(0, sounds.size() - 1)]
+	stream = current_overwrite_data.get('sounds', sounds)[RNG.randi_range(0, sounds.size() - 1)]
 	
 	#choose a random pitch and volume
-	pitch_scale = base_pitch + pitch_variance * RNG.randf_range(-1.0, 1.0)
-	volume_db = base_volume + volume_variance * RNG.randf_range(-1.0, 1.0)
+	pitch_scale = current_overwrite_data.get('pitch_base', base_pitch) + current_overwrite_data.get('pitch_variance', pitch_variance) * RNG.randf_range(-1.0, 1.0)
+	volume_db = current_overwrite_data.get('volume_base', base_volume) + current_overwrite_data.get('volume_variance',volume_variance) * RNG.randf_range(-1.0, 1.0)
 	
 	#play the sound
 	play()
 	sound_finished = false
-
 
 func _on_Sound_finished() -> void:
 	sound_finished = true
@@ -96,3 +95,15 @@ func _get_configuration_warning():
 	if not get_parent() is DialogicDisplay_DialogText:
 		return "This should be the child of a DialogText node!"
 	return ""
+
+func load_sounds_from_folder(folder:String):
+	var x_sounds = []
+	for i in DialogicUtil.listdir(folder, true, false, true):
+		if i.get_extension().to_lower() in ['mp3', 'wav', 'ogg'] and load(i) is AudioStream:
+			x_sounds.append(load(i))
+	return x_sounds
+
+func load_overwrite(dictionary:Dictionary) -> void:
+	current_overwrite_data = dictionary
+	if dictionary.has('sound_folder'):
+		current_overwrite_data['sounds'] = load_sounds_from_folder(dictionary.sound_folder)

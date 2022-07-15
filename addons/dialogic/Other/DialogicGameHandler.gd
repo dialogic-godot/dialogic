@@ -151,8 +151,8 @@ func collect_subsystems():
 	for script in DialogicUtil.get_event_scripts():
 		var x = load(script).new()
 		for i in x.get_required_subsystems():
-			if not has_subsystem(i[0]):
-				add_subsytsem(i[0], i[1])
+			if i.has('subsystem') and not has_subsystem(i.name):
+				add_subsytsem(i.name, i.subsystem)
 
 func has_subsystem(_name):
 	return has_node(_name)

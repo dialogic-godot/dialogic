@@ -31,10 +31,10 @@ func _ready() -> void:
 	timer.connect("timeout", self, 'continue_reveal')
 	
 	# compile effects regex
-	effect_regex.compile("(?<!\\\\)\\[\\s*(?<command>portrait|speed|signal|pause)\\s*(=\\s*(?<value>.+?)\\s*)?\\]")
+	effect_regex.compile("(?<!\\\\)\\[\\s*(?<command>mood|portrait|speed|signal|pause)\\s*(=\\s*(?<value>.+?)\\s*)?\\]")
 	
 	# compule modifier regexs
-	modifier_words_select_regex.compile("(?<!\\\\)\\[[^\\[]+(,[^\\]]*)\\]")
+	modifier_words_select_regex.compile("(?<!\\\\)\\[[^\\[\\]]+(,[^\\]]*)\\]")
 
 # this is called by the DialogicGameHandler to set text
 func reveal_text(_text:String) -> void:
@@ -89,6 +89,7 @@ func execute_effects(skip :bool= false) -> void:
 	# might have to execute multiple effects
 	while effects and (visible_characters >= effects.front()[0] or visible_characters== -1):
 		var effect = effects.pop_front()
+		print(effect)
 		match effect[1]:
 			'pause':
 				if skip:
@@ -109,7 +110,12 @@ func execute_effects(skip :bool= false) -> void:
 			'portrait':
 				if effect[2]:
 					if Dialogic.current_state_info.get('character', null):
-						Dialogic.update_portrait(Dialogic.current_state_info.get('character'), effect[2])
+						Dialogic.Portraits.change_portrait(load(Dialogic.current_state_info.character), effect[2])
+			'mood':
+				if effect[2]:
+					if Dialogic.current_state_info.get('character', null):
+						var Character = load(Dialogic.current_state_info.character)
+						Dialogic.Text.update_typing_sound_mood(Character.custom_info.get('sound_moods', {}).get(effect[2], {}))
 
 func parse_modifiers(_text:String) -> String:
 	for replace_mod_match in modifier_words_select_regex.search_all(_text):

@@ -1,6 +1,7 @@
 tool
 extends Control
 
+export(String) var placeholder_text = "Select Resource"
 
 ### SETTINGS FOR THE RESOURCE PICKER
 var file_extension = ""
@@ -51,6 +52,7 @@ func set_value(value):
 ## 						BASIC
 ################################################################################
 func _ready():
+	$Search.placeholder_text = placeholder_text
 	$Search/Suggestions.hide()
 	$Search/Suggestions.connect("index_pressed", self, 'suggestion_selected')
 	$Search/Suggestions.connect("popup_hide", self, 'popup_hide')
@@ -65,7 +67,6 @@ func _on_Search_text_entered(new_text = ""):
 		suggestion_selected(0)
 	else:
 		emit_signal("value_changed", property_name, null)
-#		set_value(null)
 
 func _on_Search_text_changed(new_text):
 	$Search/Suggestions.clear()
@@ -84,6 +85,7 @@ func _on_Search_text_changed(new_text):
 			$Search.grab_focus()
 	
 	else:
+		emit_signal("value_changed", property_name, null)
 		$Search/Suggestions.hide()
 
 func get_default_suggestions(search_text):

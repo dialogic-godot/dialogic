@@ -26,7 +26,6 @@ func _execute() -> void:
 					AnimationName = DialogicUtil.get_project_setting('dialogic/animations/join_default', 
 	get_script().resource_path.get_base_dir().plus_file('DefaultAnimations/fade_in_up.gd'))
 					AnimationLength = DialogicUtil.get_project_setting('dialogic/animations/join_default_length', 0.5)
-					print('using default ', AnimationName, ' at length ', AnimationLength)
 					AnimationWait = DialogicUtil.get_project_setting('dialogic/animations/join_default_wait', true)
 				if AnimationName:
 					var anim = dialogic.Portraits.animate_portrait(Character, AnimationName, AnimationLength, AnimationRepeats)
@@ -73,7 +72,10 @@ func _execute() -> void:
 
 func get_required_subsystems() -> Array:
 	return [
-				['Portraits', get_script().resource_path.get_base_dir().plus_file('Subsystem_Portraits.gd'),  get_script().resource_path.get_base_dir().plus_file('PortraitSettings.tscn'), ],
+				{'name':'Portraits',
+				'subsystem': get_script().resource_path.get_base_dir().plus_file('Subsystem_Portraits.gd'),
+				'settings': get_script().resource_path.get_base_dir().plus_file('PortraitSettings.tscn'),
+				},
 			]
 
 ################################################################################

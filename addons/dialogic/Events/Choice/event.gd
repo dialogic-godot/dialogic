@@ -15,8 +15,10 @@ func _execute() -> void:
 
 func get_required_subsystems() -> Array:
 	return [
-				['Choices', get_script().resource_path.get_base_dir().plus_file('Subsystem_Choices.gd'),
-				get_script().resource_path.get_base_dir().plus_file('ChoicesSettings.tscn')],
+				{'name':'Choices',
+				'subsystem': get_script().resource_path.get_base_dir().plus_file('Subsystem_Choices.gd'),
+				'settings':get_script().resource_path.get_base_dir().plus_file('ChoicesSettings.tscn'),
+				},
 			]
 
 

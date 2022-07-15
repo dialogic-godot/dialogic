@@ -1,0 +1,62 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://addons/dialogic/Events/Text/CharacterEdit_TypingSounds.gd" type="Script" id=1]
+[ext_resource path="res://addons/dialogic/Editor/Events/Fields/DialogicResourcePicker.tscn" type="PackedScene" id=2]
+
+[node name="TypingSounds" type="VBoxContainer"]
+margin_right = 330.0
+margin_bottom = 115.0
+size_flags_vertical = 3
+script = ExtResource( 1 )
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="."]
+margin_right = 330.0
+margin_bottom = 31.0
+
+[node name="PortraitMoodLabel" type="Label" parent="HBoxContainer2"]
+unique_name_in_owner = true
+margin_right = 174.0
+margin_bottom = 31.0
+size_flags_horizontal = 3
+text = "Sound mood for portrait \"sad\":"
+autowrap = true
+
+[node name="PortraitMood" parent="HBoxContainer2" instance=ExtResource( 2 )]
+unique_name_in_owner = true
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = 178.0
+margin_top = 3.0
+margin_right = 330.0
+margin_bottom = 27.0
+placeholder_text = "Select Mood"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+margin_top = 35.0
+margin_right = 330.0
+margin_bottom = 55.0
+alignment = 2
+
+[node name="AddMood" type="Button" parent="HBoxContainer"]
+unique_name_in_owner = true
+margin_left = 252.0
+margin_right = 330.0
+margin_bottom = 20.0
+text = "Add mood"
+
+[node name="ScrollContainer" type="ScrollContainer" parent="."]
+margin_top = 59.0
+margin_right = 330.0
+margin_bottom = 259.0
+rect_min_size = Vector2( 0, 200 )
+size_flags_vertical = 3
+
+[node name="Moods" type="VBoxContainer" parent="ScrollContainer"]
+unique_name_in_owner = true
+margin_right = 330.0
+margin_bottom = 200.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[connection signal="value_changed" from="HBoxContainer2/PortraitMood" to="." method="_on_PortraitMood_value_changed"]
+[connection signal="pressed" from="HBoxContainer/AddMood" to="." method="_on_AddMood_pressed"]

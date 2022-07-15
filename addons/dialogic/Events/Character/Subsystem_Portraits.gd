@@ -107,7 +107,6 @@ func set_portrait_z_index(portrait_node, z_index):
 	pass
 
 func remove_portrait(character:DialogicCharacter) -> void:
-	print("removing character ",character.name)
 	dialogic.current_state_info['portraits'][character.resource_path].node.queue_free()
 	dialogic.current_state_info['portraits'].erase(character.resource_path)
 

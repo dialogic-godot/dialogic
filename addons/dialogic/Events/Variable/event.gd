@@ -13,8 +13,10 @@ func _execute() -> void:
 
 func get_required_subsystems() -> Array:
 	return [
-				['VAR', get_script().resource_path.get_base_dir().plus_file('Subsystem_Variables.gd'),
-				get_script().resource_path.get_base_dir().plus_file('SettingsEditor/Editor.tscn')],
+				{'name':'VAR',
+				'subsystem': get_script().resource_path.get_base_dir().plus_file('Subsystem_Variables.gd'),
+				'settings': get_script().resource_path.get_base_dir().plus_file('SettingsEditor/Editor.tscn'),
+				},
 			]
 
 

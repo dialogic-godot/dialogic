@@ -10,8 +10,8 @@ func _ready():
 	# Subsystems
 	for script in DialogicUtil.get_event_scripts():
 		for subsystem in load(script).new().get_required_subsystems():
-			if len(subsystem) > 2:
-				$Panel/Tabs.add_child(load(subsystem[2]).instance())
+			if subsystem.has('settings'):
+				$Panel/Tabs.add_child(load(subsystem.settings).instance())
 	refresh()
 
 

@@ -7,6 +7,7 @@ onready var toolbar = find_parent('EditorView').get_node('%Toolbar')
 var current_character : DialogicCharacter
 var current_portrait = null
 
+signal portrait_selected(previous, current)
 
 ##############################################################################
 ##							RESOURCE LOGIC
@@ -18,9 +19,9 @@ func new_character(path: String) -> void:
 	resource.name = path.get_file().trim_suffix("."+path.get_extension())
 	resource.display_name = path.get_file().trim_suffix("."+path.get_extension())
 	resource.color = Color.white
+	resource.custom_info = {}
 	ResourceSaver.save(path, resource)
 	find_parent('EditorView').edit_character(resource)
-
 
 func load_character(resource: DialogicCharacter) -> void:
 	if not resource:
@@ -33,12 +34,15 @@ func load_character(resource: DialogicCharacter) -> void:
 	$'%DisplayNameLineEdit'.text = resource.display_name
 	$'%NicknameLineEdit'.text = str(resource.nicknames).trim_prefix('[').trim_suffix(']')
 	$'%DescriptionTextEdit'.text = resource.description
-	$'%ThemeName'.text = resource.theme
 	$'%MainScale'.value = 100*resource.scale
 	$'%MainOffsetX'.value = resource.offset.x
 	$'%MainOffsetY'.value = resource.offset.y
 	$'%MainMirror'.pressed = resource.mirror
 	$'%PortraitSearch'.text = ""
+	
+	for main_edit in $'%MainEditTabs'.get_children():
+		if main_edit.has_method('load_character'):
+			main_edit.load_character(current_character)
 	
 	update_portrait_list()
 
@@ -53,18 +57,21 @@ func save_character() -> void:
 		nicknames.append(n_name.strip_edges())
 	current_character.nicknames = nicknames
 	current_character.description = $'%DescriptionTextEdit'.text
-	current_character.theme = $'%ThemeName'.text
 	current_character.scale = $'%MainScale'.value/100.0
 	current_character.offset = Vector2($'%MainOffsetX'.value, $'%MainOffsetY'.value) 
 	current_character.mirror = $'%MainMirror'.pressed
 	
-	current_character.portraits = {}
+	for main_edit in $'%MainEditTabs'.get_children():
+		if main_edit.has_method('save_character'):
+			main_edit.save_character(current_character)
 	
+	current_character.portraits = {}
 	for node in $'%PortraitList'.get_children():
 		current_character.portraits[node.get_portrait_name()] = node.portrait_data
 	
 	ResourceSaver.save(current_character.resource_path, current_character)
 	toolbar.set_resource_saved()
+	
 	
 
 ##############################################################################
@@ -81,7 +88,6 @@ func _ready() -> void:
 	$'%DisplayNameLineEdit'.connect('text_changed', self, 'something_changed')
 	$'%NicknameLineEdit'.connect('text_changed', self, 'something_changed')
 	$'%DescriptionTextEdit'.connect('text_changed', self, 'something_changed')
-	$'%ThemeName'.connect("text_changed", self, 'something_changed')
 	$'%MainScale'.connect("value_changed", self, 'main_portrait_settings_update')
 	$'%MainOffsetX'.connect("value_changed", self, 'main_portrait_settings_update')
 	$'%MainOffsetY'.connect("value_changed", self, 'main_portrait_settings_update')
@@ -102,13 +108,21 @@ func _ready() -> void:
 	$'%NewPortrait'.icon = get_icon("Add", "EditorIcons")
 	$'%ImportFromFolder'.icon = get_icon("Folder", "EditorIcons")
 	$'%PortraitsTitle'.set('custom_fonts/font', get_font("doc_title", "EditorFonts"))
-	$Split/EditorScroll/Editor/PortraitPanel.set('custom_styles/panel', get_stylebox("Background", "EditorStyles"))
+	$Split/EditorScroll/Editor/VBoxContainer/PortraitPanel.set('custom_styles/panel', get_stylebox("Background", "EditorStyles"))
 	
 	$'%PortraitScale'.connect("value_changed", self, 'set_portrait_scale')
 	$'%PortraitOffsetX'.connect("value_changed", self, 'set_portrait_offset_x')
 	$'%PortraitOffsetY'.connect("value_changed", self, 'set_portrait_offset_y')
 	$'%PortraitMirror'.connect("toggled", self, 'set_portrait_mirror')
-
+	
+	# Subsystems
+	for script in DialogicUtil.get_event_scripts():
+		for subsystem in load(script).new().get_required_subsystems():
+			if subsystem.has('character_main'):
+				var edit =  load(subsystem.character_main).instance()
+				if edit.has_signal('changed'):
+					edit.connect('changed', self, 'something_changed')
+				$'%MainEditTabs'.add_child(edit)
 	hide()
 
 
@@ -178,6 +192,8 @@ func update_portrait_list(filter_term:String = '') -> void:
 func update_portrait_preview(portrait_inst = "") -> void:
 	if current_portrait and is_instance_valid(current_portrait):
 		current_portrait.visual_defocus()
+	
+	emit_signal("portrait_selected", current_portrait, portrait_inst)
 	
 	if portrait_inst and is_instance_valid(portrait_inst):
 		current_portrait = portrait_inst

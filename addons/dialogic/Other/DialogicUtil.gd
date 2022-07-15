@@ -25,7 +25,7 @@ static func listdir(path: String, files_only: bool = true, throw_error:bool = tr
 		while file_name != "":
 			if not file_name.begins_with("."):
 				if files_only:
-					if not dir.current_is_dir():
+					if not dir.current_is_dir() and not file_name.ends_with('.import'):
 						if full_file_path:
 							files.append(path.plus_file(file_name))
 						else:
