@@ -8,6 +8,8 @@ var file_extension = ""
 var get_suggestions_func = [self, 'get_default_suggestions']
 var empty_text = ""
 
+var resource_icon:Texture = null setget set_icon
+
 # I'm so sorry for this, but the popup_hide signal get's triggered if the popup is hidden by me,
 # and I don't want it to change the resource, if one was just selected by clicking
 var ignore_popup_hide_once = false
@@ -52,11 +54,25 @@ func set_value(value):
 ## 						BASIC
 ################################################################################
 func _ready():
+	$Search/SelectButton.icon = get_icon("Collapse", "EditorIcons")
 	$Search.placeholder_text = placeholder_text
 	$Search/Suggestions.hide()
 	$Search/Suggestions.connect("index_pressed", self, 'suggestion_selected')
 	$Search/Suggestions.connect("popup_hide", self, 'popup_hide')
+	$Search/Suggestions.add_stylebox_override('panel', load("res://addons/dialogic/Editor/Events/styles/ResourceMenuPanelBackground.tres"))
 	$Search/OpenButton.icon = get_icon("EditResource", "EditorIcons")
+	if resource_icon == null:
+		self.resource_icon = null
+
+
+func set_icon(new_icon):
+	resource_icon = new_icon
+	$'%Icon'.rect_min_size.x = $'%Icon'.rect_size.y
+	$'%Icon'.texture = new_icon
+	if new_icon == null:
+		$Search.theme_type_variation = ""
+	else:
+		$Search.theme_type_variation = "LineEditWithIcon"
 
 
 ################################################################################
@@ -68,32 +84,41 @@ func _on_Search_text_entered(new_text = ""):
 	else:
 		emit_signal("value_changed", property_name, null)
 
-func _on_Search_text_changed(new_text):
+func _on_Search_text_changed(new_text, just_update = false):
 	$Search/Suggestions.clear()
 	
-	if new_text != "":
-		var suggestions = get_suggestions_func[0].call(get_suggestions_func[1], new_text)
-		
-		var idx = 0
-		for element in suggestions:
+	if new_text == "" and !just_update:
+		emit_signal("value_changed", property_name, null)
+	
+	var suggestions = get_suggestions_func[0].call(get_suggestions_func[1], new_text)
+	
+	var more_hidden = false
+	var idx = 0
+	for element in suggestions:
+		if new_text != "" or idx < 12:
 			$Search/Suggestions.add_item(element) #element.get_file().trim_suffix(ext))
 			$Search/Suggestions.set_item_metadata(idx, suggestions[element])
-			idx += 1
-		
-		if not $Search/Suggestions.visible:
-			$Search/Suggestions.popup(Rect2($Search.rect_global_position + Vector2(0,1)*$Search.rect_size, Vector2($Search.rect_size.x, 100)))
-			$Search.grab_focus()
+		else:
+			more_hidden = true
+			break
+		idx += 1
 	
-	else:
-		emit_signal("value_changed", property_name, null)
-		$Search/Suggestions.hide()
+	if more_hidden:
+		$Search/Suggestions.add_item('...')
+		$Search/Suggestions.set_item_disabled(idx, true)
+	
+	if not $Search/Suggestions.visible:
+		$Search/Suggestions.popup(Rect2($Search.rect_global_position + Vector2(0,1)*$Search.rect_size, Vector2($Search.rect_size.x, 100)))
+		$Search.grab_focus()
+
 
 func get_default_suggestions(search_text):
 	if !file_extension: return {}
 	var suggestions = {}
 	var resources = DialogicUtil.list_resources_of_type(file_extension)
+
 	for resource in resources:
-		if search_text.to_lower() in DialogicUtil.pretty_name(resource).to_lower():
+		if search_text.empty() or search_text.to_lower() in DialogicUtil.pretty_name(resource).to_lower():
 			suggestions[DialogicUtil.pretty_name(resource)] = resource
 	return suggestions
 	
@@ -109,10 +134,9 @@ func suggestion_selected(index):
 	
 	ignore_popup_hide_once = true
 	$Search/Suggestions.hide()
-	#if resource_type != resource_types.Portraits: $Search/OpenButton.show()
 	
 	emit_signal("value_changed", property_name, current_value)
-
+	
 func popup_hide():
 	if ignore_popup_hide_once:
 		ignore_popup_hide_once = false
@@ -120,7 +144,12 @@ func popup_hide():
 	if $Search/Suggestions.get_item_count() and not $Search.text.empty():
 		suggestion_selected(0)
 	else:
-		set_value(current_value)
+		set_value(null)
+		emit_signal("value_changed", property_name, null)
+
+func _on_Search_focus_entered():
+	if $Search.text == "" or not current_value:
+		_on_Search_text_changed("")
 
 
 ################################################################################
@@ -153,3 +182,8 @@ func _on_OpenButton_pressed():
 			dialogic_plugin._editor_interface.inspect_object(load(current_value))
 		elif typeof(current_value) == TYPE_OBJECT:
 			dialogic_plugin._editor_interface.inspect_object(current_value)
+
+
+
+func _on_SelectButton_pressed():
+	_on_Search_text_changed('', true)

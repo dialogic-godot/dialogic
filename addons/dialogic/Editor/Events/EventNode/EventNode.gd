@@ -209,6 +209,11 @@ func build_editor():
 			editor_node.file_extension = p.display_info.get('file_extension', '')
 			editor_node.get_suggestions_func = p.display_info.get('suggestions_func', editor_node.get_suggestions_func)
 			editor_node.empty_text = p.display_info.get('empty_text', '')
+			editor_node.placeholder_text = p.display_info.get('placeholder', 'Select Resource')
+			editor_node.resource_icon = p.display_info.get('icon', null)
+			if editor_node.resource_icon == null and p.display_info.has('editor_icon'):
+				editor_node.resource_icon = callv('get_icon', p.display_info.editor_icon)
+			
 		## INTEGERS
 		elif p.dialogic_type == resource.ValueType.Integer:
 			editor_node = load("res://addons/dialogic/Editor/Events/Fields/Number.tscn").instance()

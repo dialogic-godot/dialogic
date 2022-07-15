@@ -77,7 +77,7 @@ func _init() -> void:
 ## THIS RETURNS A READABLE REPRESENTATION, BUT HAS TO CONTAIN ALL DATA (This is how it's stored)
 func get_as_string_to_store() -> String:
 	if Character:
-		if not Portrait.empty():
+		if Portrait and not Portrait.empty():
 			return Character.name+" ("+Portrait+"): "+Text.replace("\n", "<br>")
 		return Character.name+": "+Text.replace("\n", "<br>")
 	return Text.replace("\n", "<br>")
@@ -110,8 +110,8 @@ func get_original_translation_text():
 	return Text
 
 func build_event_editor():
-	add_header_edit('Character', ValueType.Resource, 'Character:', '', {'file_extension':'.dch'})
-	add_header_edit('Portrait', ValueType.Resource, '', '', {'suggestions_func':[self, 'get_portrait_suggestions'], 'empty_text':"Don't change"}, 'Character != null')
+	add_header_edit('Character', ValueType.Resource, 'Character:', '', {'file_extension':'.dch', 'icon':load("res://addons/dialogic/Editor/Images/Resources/character.svg")})
+	add_header_edit('Portrait', ValueType.Resource, '', '', {'suggestions_func':[self, 'get_portrait_suggestions'], 'placeholder':"Don't change", 'icon':load("res://addons/dialogic/Editor/Images/Resources/Portrait.svg")}, 'Character')
 	add_body_edit('Text', ValueType.MultilineText)
 
 func get_portrait_suggestions(search_text):
@@ -119,6 +119,6 @@ func get_portrait_suggestions(search_text):
 	suggestions["Don't change"] = ''
 	if Character != null:
 		for portrait in Character.portraits:
-			if search_text.to_lower() in portrait.to_lower():
+			if search_text.empty() or search_text.to_lower() in portrait.to_lower():
 				suggestions[portrait] = portrait
 	return suggestions

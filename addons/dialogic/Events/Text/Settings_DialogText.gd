@@ -7,6 +7,7 @@ func refresh():
 	$'%Autocontinue'.pressed = DialogicUtil.get_project_setting('dialogic/text/autocontinue', false)
 	$'%Autocontinue'.pressed = DialogicUtil.get_project_setting('dialogic/text/autocolor_names', false)
 	$'%AutocontinueDelay'.value = DialogicUtil.get_project_setting('dialogic/text/autocontinue_delay', 1)
+	$'%InputAction'.resource_icon = get_icon("Mouse", "EditorIcons")
 	$'%InputAction'.set_value(DialogicUtil.get_project_setting('dialogic/text/input_action', 'dialogic_default_action'))
 	$'%InputAction'.get_suggestions_func = [self, 'suggest_actions']
 
@@ -33,7 +34,7 @@ func _on_InputAction_value_changed(property_name, value):
 func suggest_actions(search):
 	var suggs = {}
 	for prop in ProjectSettings.get_property_list():
-		if prop.name.begins_with('input/') and search.to_lower() in prop.name.trim_prefix('input/'):
+		if prop.name.begins_with('input/') and (!search or search.to_lower() in prop.name.trim_prefix('input/')):
 			suggs[prop.name.trim_prefix('input/')] = prop.name.trim_prefix('input/')
 	return suggs
 
