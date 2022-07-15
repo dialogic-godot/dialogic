@@ -8,6 +8,9 @@ var Method:String = ""
 var Arguments:Array=[]
 
 var Wait:bool = false
+var Inline: bool = false
+var Signal_Number: int = 1
+
 
 func _execute() -> void:
 	if Path.begins_with('root'):
@@ -18,12 +21,23 @@ func _execute() -> void:
 	var n = dialogic.get_node_or_null(Path)
 	if n:
 		if n.has_method(Method):
-			if Wait:
+			if Inline:
+				dialogic.connect("text_signal", self, "_call_on_signal", [], CONNECT_PERSIST)
+			elif Wait:
 				yield(n.callv(Method, Arguments), "completed")
 			else:
 				n.callv(Method, Arguments)
 	
 	finish()
+
+func _call_on_signal(number):
+	
+	#	_call_on_signal()
+	if number != str(Signal_Number):
+		return
+	dialogic.disconnect("text_signal", self, "_call_on_signal")
+	var n = dialogic.get_node_or_null(Path)
+	n.callv(Method, Arguments)
 
 ################################################################################
 ## 						INITIALIZE
@@ -50,7 +64,8 @@ func get_shortcode_parameters() -> Dictionary:
 		"path"		: "Path",
 		"method"	: "Method",
 		"args"		: "Arguments",
-		"wait"		: "Wait"
+		"wait"		: "Wait",
+		"inline"	: "Inline"
 	}
 
 
@@ -62,5 +77,7 @@ func build_event_editor():
 	add_header_edit('Path', ValueType.SinglelineText, 'Path:')
 	add_body_edit('Method', ValueType.SinglelineText, 'Method:')
 	add_body_edit('Wait', ValueType.Bool, 'Wait:')
+	add_body_edit('Inline', ValueType.Bool, 'Inline:')
+	add_body_edit('Signal_Number', ValueType.Integer, 'Signal Number', '', {}, 'Inline == true')
 	add_body_line_break()
 	add_body_edit('Arguments', ValueType.StringArray, 'Arguments:')
