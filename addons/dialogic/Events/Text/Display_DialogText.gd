@@ -35,7 +35,7 @@ func _ready() -> void:
 	
 	# compule modifier regexs
 	modifier_words_select_regex.compile("(?<!\\\\)\\[[^\\[\\]]+(,[^\\]]*)\\]")
-
+	
 # this is called by the DialogicGameHandler to set text
 func reveal_text(_text:String) -> void:
 	speed = DialogicUtil.get_project_setting('dialogic/text/speed', 0.01)
@@ -125,4 +125,6 @@ func parse_modifiers(_text:String) -> String:
 		var item = list[randi()%len(list)]
 		item = item.replace('<comma>', ',')
 		_text = _text.replace(replace_mod_match.get_string(), item.strip_edges())
+	
+	_text = _text.replace('[br]', '\n')
 	return _text
