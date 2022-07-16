@@ -10,7 +10,7 @@ var Wait: bool = false
 
 var Signal_Name: String
 var Inline: bool = false
-var One_Off: bool = true
+var One_Off: bool = false
 
 
 
@@ -45,7 +45,8 @@ func _call_on_signal(arg):
 	n.callv(Method, Arguments)
 
 func _disconnect_signal():
-	dialogic.disconnect("text_signal", self, "_call_on_signal")
+	if dialogic.is_connected('text_signal', self, '_call_on_signal'):
+		dialogic.disconnect("text_signal", self, "_call_on_signal")
 
 ################################################################################
 ## 						INITIALIZE
