@@ -10,6 +10,15 @@ func _ready():
 	# File dialog
 	editor_file_dialog = EditorFileDialog.new()
 	add_child(editor_file_dialog)
+	
+	# Open the last edited scene
+	if ProjectSettings.has_setting('dialogic/editor/current_timeline_path'):
+		var timeline_path = ProjectSettings.get_setting('dialogic/editor/current_timeline_path')
+		var file = File.new()
+		if file.file_exists(timeline_path):
+			edit_timeline(load(timeline_path))
+		else:
+			ProjectSettings.clear('dialogic/editor/current_timeline_path')
 
 
 func edit_timeline(object):
