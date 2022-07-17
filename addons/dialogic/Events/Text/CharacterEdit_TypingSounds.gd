@@ -46,7 +46,7 @@ func _on_portrait_selected(previous, current):
 func mood_suggestions(filter):
 	var suggestions = {}
 	for child in $'%Moods'.get_children():
-		if filter.to_lower() in child.get_data().name.to_lower():
+		if !filter or filter.to_lower() in child.get_data().name.to_lower():
 			suggestions[child.get_data().name] = child.get_data().name
 	return suggestions
 

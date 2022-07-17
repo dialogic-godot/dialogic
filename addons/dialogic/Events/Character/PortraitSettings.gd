@@ -12,6 +12,8 @@ func refresh():
 	get_node('%CustomAnimationsFolder').text = DialogicUtil.get_project_setting('dialogic/animations/custom_folder', 'res://addons/dialogic_additions/Animations')
 	$'%PortraitMode'.select(DialogicUtil.get_project_setting('dialogic/portrait_mode', 0))
 	
+	$'%JoinDefault'.resource_icon = get_icon("Animation", "EditorIcons")
+	$'%LeaveDefault'.resource_icon = get_icon("Animation", "EditorIcons")
 	$'%JoinDefault'.set_value(DialogicUtil.get_project_setting('dialogic/animations/join_default', 
 	get_script().resource_path.get_base_dir().plus_file('DefaultAnimations/fade_in_up.gd')))
 	$'%LeaveDefault'.set_value(DialogicUtil.get_project_setting('dialogic/animations/leave_default', 
@@ -47,7 +49,7 @@ func _on_LeaveDefaultWait_toggled(button_pressed):
 func get_join_animation_suggestions(search_text):
 	var suggestions = {}
 	for anim in list_animations():
-		if search_text.to_lower() in anim.get_file().to_lower():
+		if !search_text or search_text.to_lower() in anim.get_file().to_lower():
 			if '_in' in anim.get_file():
 				suggestions[DialogicUtil.pretty_name(anim)] = anim
 	return suggestions
@@ -55,7 +57,7 @@ func get_join_animation_suggestions(search_text):
 func get_leave_animation_suggestions(search_text):
 	var suggestions = {}
 	for anim in list_animations():
-		if search_text.to_lower() in anim.get_file().to_lower():
+		if !search_text or search_text.to_lower() in anim.get_file().to_lower():
 			if '_out' in anim.get_file():
 				suggestions[DialogicUtil.pretty_name(anim)] = anim
 	return suggestions

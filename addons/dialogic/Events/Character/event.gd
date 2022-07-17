@@ -112,7 +112,7 @@ func get_as_string_to_store() -> String:
 	if Position and ActionType != ActionTypes.Leave:
 		result_string += " "+str(Position)
 	
-	if !AnimationName.empty():
+	if AnimationName:
 		result_string += ' [animation="'+DialogicUtil.pretty_name(AnimationName)+'"'
 	
 		if AnimationLength != 0.5:
@@ -181,21 +181,21 @@ func is_valid_event_string(string:String):
 func build_event_editor():
 	add_header_edit('ActionType', ValueType.FixedOptionSelector, '', '',
 		 {'selector_options':{"Join":ActionTypes.Join, "Leave":ActionTypes.Leave, "Update":ActionTypes.Update}})
-	add_header_edit('Character', ValueType.Resource, '', '', {'file_extension':'.dch'})
+	add_header_edit('Character', ValueType.Resource, '', '', {'file_extension':'.dch', 'icon':load("res://addons/dialogic/Editor/Images/Resources/character.svg")})
 	
-	add_header_edit('Portrait', ValueType.Resource, 'Portrait:', '', {'suggestions_func':[self, 'get_portrait_suggestions']}, 'Character != null and ActionType != %s' %ActionTypes.Leave)
+	add_header_edit('Portrait', ValueType.Resource, 'Portrait:', '', {'suggestions_func':[self, 'get_portrait_suggestions'], 'icon':load("res://addons/dialogic/Editor/Images/Resources/Portrait.svg")}, 'Character != null and ActionType != %s' %ActionTypes.Leave)
 	add_header_edit('Position', ValueType.Integer, 'Position:', '', {}, 'Character != null and ActionType != %s' %ActionTypes.Leave)
 	
-	add_body_edit('AnimationName', ValueType.Resource, 'Animation:', '', {'suggestions_func':[self, 'get_animation_suggestions'], 'empty_text':'Default'}, 'Character != null')
-	add_body_edit('AnimationLength', ValueType.Float, 'Length:', '', {}, 'Character != null and AnimationName != "" and AnimationName != null and not "instant" in AnimationName')
-	add_body_edit('AnimationWait', ValueType.Bool, 'Wait:', '', {}, 'Character != null and AnimationName != "" and AnimationName != null and not "instant" in AnimationName')
-	add_body_edit('AnimationRepeats', ValueType.Integer, 'Repeat:', '', {}, 'Character != null and AnimationName != "" and AnimationName != null and not "instant" in AnimationName and ActionType == %s' %ActionTypes.Update)
+	add_body_edit('AnimationName', ValueType.Resource, 'Animation:', '', {'suggestions_func':[self, 'get_animation_suggestions'], 'editor_icon':["Animation", "EditorIcons"], 'placeholder':'Default'}, 'Character != null')
+	add_body_edit('AnimationLength', ValueType.Float, 'Length:', '', {}, 'Character and AnimationName')
+	add_body_edit('AnimationWait', ValueType.Bool, 'Wait:', '', {}, 'Character and AnimationName')
+	add_body_edit('AnimationRepeats', ValueType.Integer, 'Repeat:', '', {},'Character and AnimationName and ActionType == %s)' %ActionTypes.Update)
 
 func get_portrait_suggestions(search_text):
 	var suggestions = {}
 	if Character != null:
 		for portrait in Character.portraits:
-			if search_text.to_lower() in portrait.to_lower():
+			if search_text.empty() or search_text.to_lower() in portrait.to_lower():
 				suggestions[portrait] = portrait
 	return suggestions
 
@@ -207,9 +207,9 @@ func get_animation_suggestions(search_text):
 			suggestions['Default'] = ""
 		ActionTypes.Update:
 			suggestions['None'] = ""
-
+	
 	for anim in list_animations():
-		if search_text.to_lower() in anim.get_file().to_lower():
+		if search_text.empty() or search_text.to_lower() in anim.get_file().to_lower():
 			match ActionType:
 				ActionTypes.Join:
 					if '_in' in anim.get_file():
