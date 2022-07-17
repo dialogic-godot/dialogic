@@ -41,5 +41,5 @@ func get_shortcode_parameters() -> Dictionary:
 ################################################################################
 
 func build_event_editor():
-	add_header_edit('SecondsTime', ValueType.Float, 'Wait ')
+	add_header_edit('SecondsTime', ValueType.Float)
 	add_header_label('seconds.')
