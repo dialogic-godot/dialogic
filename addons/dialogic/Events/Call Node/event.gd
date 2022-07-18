@@ -10,7 +10,7 @@ var Wait: bool = false
 
 var Signal_Name: String
 var Inline: bool = false
-var One_Off: bool = false
+var Single_Use: bool = false
 
 
 
@@ -39,7 +39,7 @@ func _call_on_signal(arg):
 	
 	if arg != Signal_Name:
 		return
-	if One_Off:
+	if Single_Use:
 		dialogic.disconnect("text_signal", self, "_call_on_signal")
 	var n = dialogic.get_node_or_null(Path)
 	n.callv(Method, Arguments)
@@ -75,7 +75,8 @@ func get_shortcode_parameters() -> Dictionary:
 		"args"		: "Arguments",
 		"wait"		: "Wait",
 		"inline"	: "Inline",
-		"signal_name": "Signal_Name",
+		"signal": "Signal_Name",
+		"single_use": "Single_Use",
 	}
 
 
@@ -89,6 +90,6 @@ func build_event_editor():
 	add_body_edit('Wait', ValueType.Bool, 'Wait:')
 	add_body_edit('Inline', ValueType.Bool, 'Inline:')
 	add_body_edit('Signal_Name', ValueType.SinglelineText, 'Signal Name', '', {}, 'Inline == true')
-	add_body_edit('One_Off', ValueType.Bool, 'One Off', '', {}, 'Inline == true')
+	add_body_edit('Single_Use', ValueType.Bool, 'Signle Use', '', {}, 'Inline == true')
 	add_body_line_break()
 	add_body_edit('Arguments', ValueType.StringArray, 'Arguments:')
