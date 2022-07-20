@@ -54,7 +54,7 @@ func _ready():
 	
 	# Margins
 	var modifier = ''
-	var _scale = DialogicUtil.get_editor_scale(self)
+	var _scale = DialogicUtil.get_editor_scale()
 	var scroll_container = $View/ScrollContainer
 	scroll_container.rect_min_size.x = 180
 	if _scale == 1.25:
@@ -985,7 +985,7 @@ func scroll_to_piece(piece_index) -> void:
 	var height = 0
 	for i in range(0, piece_index):
 		height += timeline.get_child(i).rect_size.y
-	if height < timeline_area.scroll_vertical or height > timeline_area.scroll_vertical+timeline_area.rect_size.y-(200*DialogicUtil.get_editor_scale(self)):
+	if height < timeline_area.scroll_vertical or height > timeline_area.scroll_vertical+timeline_area.rect_size.y-(200*DialogicUtil.get_editor_scale()):
 		timeline_area.scroll_vertical = height
 
 # Event Indenting

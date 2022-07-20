@@ -1,17 +1,9 @@
 tool
 class_name DialogicUtil
 
-static func get_editor_scale(ref) -> float:
-	# There hasn't been a proper way of reliably getting the editor scale
-	# so this function aims at fixing that by identifying what the scale is and
-	# returning a value to use as a multiplier for manual UI tweaks
-	
-	# The way of getting the scale could change, but this is the most reliable
-	# solution I could find that works in many different computer/monitors.
-	var _scale = ref.get_constant("inspector_margin", "Editor")
-	_scale = _scale * 0.125
-	
-	return _scale
+static func get_editor_scale() -> float:
+	var ep = EditorPlugin.new()
+	return ep.get_editor_interface().get_editor_scale()
 
 
 static func listdir(path: String, files_only: bool = true, throw_error:bool = true, full_file_path:bool = false) -> Array:

@@ -81,7 +81,7 @@ func set_indent(indent: int):
 
 func _set_event_icon(icon: Texture):
 	icon_texture.texture = icon
-	var _scale = DialogicUtil.get_editor_scale(self)
+	var _scale = DialogicUtil.get_editor_scale()
 	var cpanel = $PanelContainer/MarginContainer/VBoxContainer/Header/CenterContainer
 	var ip = $PanelContainer/MarginContainer/VBoxContainer/Header/CenterContainer/IconPanel
 	var ipc = $PanelContainer/MarginContainer/VBoxContainer/Header/CenterContainer/IconPanel/IconTexture
@@ -306,7 +306,7 @@ func _ready():
 		event_name = DTS.translate(resource.event_name)
 	
 	## DO SOME STYLING
-	var _scale = DialogicUtil.get_editor_scale(self)
+	var _scale = DialogicUtil.get_editor_scale()
 	$PanelContainer/SelectedStyle.modulate = get_color("accent_color", "Editor")
 	warning.texture = get_icon("NodeWarning", "EditorIcons")
 	warning.rect_size = Vector2(16 * _scale, 16 * _scale)
@@ -314,7 +314,7 @@ func _ready():
 	if not get_constant("dark_theme", "Editor"):
 		title_label.add_color_override("font_color", get_color("font_color", "Editor"))
 	
-	indent_size = indent_size * DialogicUtil.get_editor_scale(self)
+	indent_size = indent_size * DialogicUtil.get_editor_scale()
 	
 	if resource:
 		if resource.get_icon() != null:

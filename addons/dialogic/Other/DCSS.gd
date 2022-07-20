@@ -2,7 +2,7 @@ tool
 class_name DCSS
 
 static func style(node, style:Dictionary) -> StyleBoxFlat:
-	var scale = DialogicUtil.get_editor_scale(node) # TODO: replace with plocal scale method
+	var scale = DialogicUtil.get_editor_scale()
 	var s = StyleBoxFlat.new()
 	for property in style.keys():
 		if property == 'border-radius':
@@ -28,7 +28,7 @@ static func style(node, style:Dictionary) -> StyleBoxFlat:
 			s.set('content_margin_bottom', value_v)
 			s.set('content_margin_left', value_h)
 			s.set('content_margin_right', value_h)
-	
+	print('scale is: ', scale)
 	node.set('custom_styles/normal', s)
 	node.set('custom_styles/hover', s)
 	node.set('custom_styles/pressed', s)

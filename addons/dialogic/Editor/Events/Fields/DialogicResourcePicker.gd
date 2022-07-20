@@ -54,6 +54,17 @@ func set_value(value):
 ## 						BASIC
 ################################################################################
 func _ready():
+	DCSS.style($Search, {
+		'border-radius': 3,
+		'border-color': '#14161A',
+		'border': 1,
+		'background': '#1D1F25',
+		'padding': [5, 25],
+	})
+	$Search/Icon.rect_position.x = 0
+	var scale = DialogicUtil.get_editor_scale()
+	if scale == 2:
+		$Search/Icon.rect_position.x = 10
 	$Search/SelectButton.icon = get_icon("Collapse", "EditorIcons")
 	$Search.placeholder_text = placeholder_text
 	$Search/Suggestions.hide()
