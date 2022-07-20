@@ -29,7 +29,10 @@ static func style(node, style:Dictionary) -> StyleBoxFlat:
 			s.set('content_margin_left', value_h)
 			s.set('content_margin_right', value_h)
 	print('scale is: ', scale)
+	
 	node.set('custom_styles/normal', s)
+	node.set('custom_styles/focus', s)
+	node.set('custom_styles/read_only', s)
 	node.set('custom_styles/hover', s)
 	node.set('custom_styles/pressed', s)
 	node.set('custom_styles/disabled', s)
