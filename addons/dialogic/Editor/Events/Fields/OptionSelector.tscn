@@ -1,8 +1,10 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://addons/dialogic/Editor/Events/Fields/OptionSelector.gd" type="Script" id=1]
-[ext_resource path="res://addons/dialogic/Editor/Events/styles/SimpleButtonHover.tres" type="StyleBox" id=2]
-[ext_resource path="res://addons/dialogic/Editor/Events/styles/SimpleButtonNormal.tres" type="StyleBox" id=3]
+
+[sub_resource type="StyleBoxFlat" id=1]
+bg_color = Color( 0.113725, 0.121569, 0.145098, 1 )
+border_color = Color( 0.0784314, 0.0862745, 0.101961, 1 )
 
 [node name="OptionSelector" type="HBoxContainer"]
 anchor_right = 1.0
@@ -17,18 +19,20 @@ margin_bottom = 38.0
 
 [node name="MenuButton" type="MenuButton" parent="."]
 margin_left = 4.0
-margin_top = 21.0
-margin_right = 14.0
-margin_bottom = 41.0
+margin_top = 24.0
+margin_right = 31.0
+margin_bottom = 38.0
 rect_min_size = Vector2( 10, 0 )
 size_flags_vertical = 4
-custom_colors/font_color_disabled = Color( 0.811765, 0.690196, 0.427451, 1 )
-custom_styles/hover = ExtResource( 2 )
-custom_styles/normal = ExtResource( 3 )
+custom_styles/hover = SubResource( 1 )
+custom_styles/pressed = SubResource( 1 )
+custom_styles/disabled = SubResource( 1 )
+custom_styles/normal = SubResource( 1 )
+text = "Test"
 flat = false
 
 [node name="RightText" type="Label" parent="."]
-margin_left = 18.0
+margin_left = 35.0
 margin_top = 24.0
-margin_right = 18.0
+margin_right = 35.0
 margin_bottom = 38.0

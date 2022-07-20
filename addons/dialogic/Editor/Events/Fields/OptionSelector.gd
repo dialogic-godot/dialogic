@@ -8,6 +8,13 @@ var options : Dictionary
 var disabled = false setget set_disabled
 
 func _ready():
+	DCSS.style($MenuButton, {
+		'border-radius': 3,
+		'border-color': '#14161A',
+		'border': 1,
+		'background': '#1D1F25',
+		'padding': [5, 10],
+	})
 	$MenuButton.connect("about_to_show", self,  'insert_options')
 	$MenuButton.get_popup().connect("index_pressed", self,  'index_pressed')
 
