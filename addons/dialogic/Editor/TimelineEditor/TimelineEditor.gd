@@ -53,6 +53,8 @@ var id_to_scene_name = {
 	'dialogic_040':'EmitSignal',
 	'dialogic_041':'ChangeScene',
 	'dialogic_042':'CallNode',
+	#Afterlife
+	'dialogic_050':'NoSkipEvent',
 	}
 
 var event_data
@@ -839,7 +841,7 @@ func create_event(event_id: String, data: Dictionary = {'no-data': true} , inden
 	return piece
 
 
-func load_timeline(filename: String):
+func load_timeline(filename: String): 
 	clear_timeline()
 	update_custom_events()
 	if timeline_file != filename:
@@ -862,6 +864,7 @@ func load_timeline(filename: String):
 	load_batch(batches)
 	# Reset the scroll position
 	$TimelineArea.scroll_vertical = 0
+	
 
 
 func batch_events(array, size, batch_number):
@@ -887,6 +890,7 @@ func _on_batch_loaded():
 		building_timeline = false
 		emit_signal("timeline_loaded")
 	add_extra_scroll_area_to_timeline()
+	
 
 
 func clear_timeline():

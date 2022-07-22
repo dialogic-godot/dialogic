@@ -297,13 +297,13 @@ func _ready() -> void:
 	n['character_picker'].connect('item_selected', self, 'character_picker_selected')
 	
 	## Translation
-	$"VBoxContainer/VBoxContainer/HBoxContainer3/PreviewButton".text = "  "+DTS.translate('Preview changes')
-	$VBoxContainer/TabContainer.set_tab_title(0, DTS.translate('DialogTextTabTitle'))
-	$VBoxContainer/TabContainer.set_tab_title(1, DTS.translate('DialogBoxTabTitle'))
-	$VBoxContainer/TabContainer.set_tab_title(2, DTS.translate('NameLabelTabTitle'))
-	$VBoxContainer/TabContainer.set_tab_title(3, DTS.translate('ChoiceButtonTabTitle'))
-	$VBoxContainer/TabContainer.set_tab_title(4, DTS.translate('GlossaryTabTitle'))
-	$VBoxContainer/TabContainer.set_tab_title(5, DTS.translate('AudioTabTitle'))
+	$"VBoxContainer/VBoxContainer/HBoxContainer3/PreviewButton".text = "  "+editor_reference.dialogicTranslator.translate('Preview changes')
+	$VBoxContainer/TabContainer.set_tab_title(0, editor_reference.dialogicTranslator.translate('DialogTextTabTitle'))
+	$VBoxContainer/TabContainer.set_tab_title(1, editor_reference.dialogicTranslator.translate('DialogBoxTabTitle'))
+	$VBoxContainer/TabContainer.set_tab_title(2, editor_reference.dialogicTranslator.translate('NameLabelTabTitle'))
+	$VBoxContainer/TabContainer.set_tab_title(3, editor_reference.dialogicTranslator.translate('ChoiceButtonTabTitle'))
+	$VBoxContainer/TabContainer.set_tab_title(4, editor_reference.dialogicTranslator.translate('GlossaryTabTitle'))
+	$VBoxContainer/TabContainer.set_tab_title(5, editor_reference.dialogicTranslator.translate('AudioTabTitle'))
 	
 	
 	# Force preview update

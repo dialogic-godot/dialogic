@@ -6,9 +6,14 @@ extends Control
 ## -----------------------------------------------------------------------------
 ## The timeline to load when starting the scene
 var timeline: String
+var timeline_name: String
 
 ### MODE
 var preview: bool = false
+
+var noSkipMode: bool = false
+var autoPlayMode: bool = false
+var autoWaitTime : float = 2.0
 
 enum state {
 	IDLE, # When nothing is happening
@@ -80,6 +85,8 @@ signal timeline_start(timeline_name)
 signal timeline_end(timeline_name)
 # Custom user signal
 signal dialogic_signal(value)
+# Utility
+signal letter_displayed(lastLetter)
 
 
 ## -----------------------------------------------------------------------------
@@ -145,9 +152,8 @@ func load_config_files():
 	settings = DialogicResources.get_settings_config()
 	# theme
 	var theme_file = 'res://addons/dialogic/Editor/ThemeEditor/default-theme.cfg'
-	if settings.has_section('theme'):
-		theme_file = settings.get_value('theme', 'default')
-		current_default_theme = theme_file
+	theme_file = settings.get_value('theme', 'default', 'default-theme.cfg')
+	current_default_theme = theme_file
 	current_theme = load_theme(theme_file)
 	
 	# history
@@ -427,7 +433,7 @@ func _process(delta):
 	
 	# Hide if no input is required
 	if current_event.has('text'):
-		if '[nw]' in current_event['text'] or '[nw=' in current_event['text']:
+		if '[nw]' in current_event['text'] or '[nw=' in current_event['text'] or noSkipMode or autoPlayMode:
 			$TextBubble/NextIndicatorContainer/NextIndicator.visible = false
 		
 	# Hide if "Don't Close After Last Event" is checked and event is last text
@@ -441,7 +447,11 @@ func _process(delta):
 
 # checks for the "input_next" action
 func _input(event: InputEvent) -> void:
-	if not Engine.is_editor_hint() and event.is_action_pressed(Dialogic.get_action_button()):
+	if not Engine.is_editor_hint() and event.is_action_pressed(Dialogic.get_action_button()) and autoPlayMode:
+		autoPlayMode = false
+		return
+	
+	if not Engine.is_editor_hint() and event.is_action_pressed(Dialogic.get_action_button()) and (!noSkipMode and !autoPlayMode):
 		if HistoryTimeline.block_dialog_advance:
 			return
 		if is_state(state.WAITING):
@@ -499,7 +509,7 @@ func _on_text_completed():
 		
 		# Auto focus
 		$DialogicTimer.start(0.1); yield($DialogicTimer, "timeout")
-		if settings.get_value('input', 'autofocus_choices', true):
+		if settings.get_value('input', 'autofocus_choices', false):
 			button_container.get_child(0).grab_focus()
 		
 	
@@ -509,7 +519,7 @@ func _on_text_completed():
 		
 		# [p] needs more work
 		# Setting the timer for how long to wait in the [nw] events
-		if '[nw]' in current_event['text'] or '[nw=' in current_event['text']:
+		if '[nw]' in current_event['text'] or '[nw=' in current_event['text'] or noSkipMode or autoPlayMode:
 			var waiting_time = 2
 			var current_index = dialog_index
 			if '[nw=' in current_event['text']: # Regex stuff
@@ -529,7 +539,12 @@ func _on_text_completed():
 				# - KvaGram
 				#original line
 				#waiting_time = float(wait_settings.split('=')[1])
-			
+			elif noSkipMode or autoPlayMode:
+				waiting_time = autoWaitTime
+				if current_event.has('voice_data'):
+					waiting_time = $"FX/CharacterVoice".remaining_time()
+				else:
+					waiting_time = float(waiting_time)
 			$DialogicTimer.start(waiting_time); yield($DialogicTimer, "timeout")
 			if dialog_index == current_index:
 				_load_next_event()
@@ -546,8 +561,8 @@ func on_timeline_start():
 			# save to the default slot
 			Dialogic.save('', true)
 	# TODO remove event_start in 2.0
-	emit_signal("event_start", "timeline", current_timeline)
-	emit_signal("timeline_start", current_timeline)
+	emit_signal("event_start", "timeline", timeline_name)
+	emit_signal("timeline_start", timeline_name)
 
 # emits timeline_end and handles autosaving
 func on_timeline_end():
@@ -557,7 +572,7 @@ func on_timeline_end():
 			Dialogic.save('', true)
 	# TODO remove event_end in 2.0
 	emit_signal("event_end", "timeline")
-	emit_signal("timeline_end", current_timeline)
+	emit_signal("timeline_end", timeline_name)
 
 # does checks and calls the above functions
 func _emit_timeline_signals():
@@ -999,6 +1014,10 @@ func event_handler(event: Dictionary):
 			set_state(state.IDLE)
 			$TextBubble.visible = true
 			_load_next_event()
+		'dialogic_050':
+			noSkipMode = event['block_input']
+			autoWaitTime = event['wait_time']
+			_load_next_event()
 		_:
 			if event['event_id'] in $CustomEvents.handlers.keys():
 				# get the handler node
@@ -1039,8 +1058,10 @@ func update_text(text: String) -> String:
 	return final_text
 
 # plays a sound
-func _on_letter_written():
-	play_audio('typing')
+func _on_letter_written(lastLetter):
+	if lastLetter != ' ':
+		play_audio('typing')
+	emit_signal('letter_displayed', lastLetter)
 
 
 ## -----------------------------------------------------------------------------
@@ -1101,7 +1122,7 @@ func add_choice_button(option: Dictionary) -> Button:
 		button.shortcut_in_tooltip = false
 	
 	# Selecting the first button added
-	if settings.get_value('input', 'autofocus_choices', true):
+	if settings.get_value('input', 'autofocus_choices', false):
 		if button_container.get_child_count() == 1:
 			button.grab_focus()
 	else:

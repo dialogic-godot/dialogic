@@ -32,33 +32,33 @@ Custom Events,自定义事件,Custom Events,Eventos personalizados,Événements 
 The selected operator requires a number!,所选的操作需要一个数字!,The selected operator requires a number!,El operador seleccionado requiere un número,,Der ausgewählte Operator muss eine Zahl sein
 This event needs a question event around it!,这个事件需要一个围绕它的问题事件!,This event needs a question event around it!,Este evento necesita estar dentro de una pregunta,,Dieses Ereignis muss Teil einer Frage sein
 ## SETTINGS ---------------------------------------------,,,,,
-Settings,,Settings,,,Einstellungen
-Theme,,Theme,,,Theme
+Settings,设置,Settings,,,Einstellungen
+Theme,主题,Theme,,,Theme
 Default,默认,Default Theme:,Predeterminado,défaut,Standart Theme:
 Canvas layer:,帆布层:,Canvas layer:,Canvas layer:,,Canvas Layer:
-Dialog,,Dialog,,,
+Dialog,对话,Dialog,,,
 New lines will create extra messages,新的线条会产生额外的信息,New lines will create extra messages,Nuevas líneas crearan nuevos mensajes,,Zeilenumbrüche erstellen automatisch neue Nachrichten
 Remove empty messages,删除空信息,Remove empty messages,Borrar mensajes vacíos,,Leere Nachrichten entfernen
 Auto color character names in messages,信息中的字符名称自动着色,Auto color character names in messages,Colorear nombres automáticamente,,Automatisch Charakternamen einfärben
-Stretch background images ,,Stretch background images,,,Hintergrundbilder strecken
+Stretch background images ,拉伸背景图像,Stretch background images,,,Hintergrundbilder strecken
 Audio for Text events:,文本事件的音频:,Audio for Text events:,Audio para los eventos de texto:,,Audio für Text Ereignisse:
 Enable audio for Text events,启用文本事件的音频,Enable audio for Text events,Habilitar audio para eventos de texto,,Audio für Text Ereignisse aktivieren
 Default bus for Text event audio,文本事件音频的默认总线,Default bus for Text event audio,Audio bus predeterminado para eventos de texto,,Standard Audio-Bus für Text Ereignisse
 Experimental Translations:,实验性翻译:,Experimental Translations:,Traducción experimental:,,Experimentelle Übersetzung:
 Inputs for text events will be treated as keys for tr(),文本事件的输入将被视为tr()的按键,Inputs for text events will be treated as keys for tr(),Inputs for text events will be treated as keys for tr(),,Behandele Text Ereignisse als Schlüssel für tr()
-Saving,,Game saving,,,Speichern im Spiel
-Autosave,,Autosave,,,Automatisch Speichern
-Input,,Input,,,Eingabe
-Autofocus choice buttons,,Autofocus choice buttons,,,Optionen automatisch fokussieren
+Saving,游戏保存中,Game saving,,,Speichern im Spiel
+Autosave,自动保存,Autosave,,,Automatisch Speichern
+Input,输入,Input,,,Eingabe
+Autofocus choice buttons,自动对焦选择按钮,Autofocus choice buttons,,,Optionen automatisch fokussieren
 Enable choice options after,启用选择选项后,Enable choice options after,Habilitar las opciones después de,,Aktiviere Optionen nach
 seconds,秒,seconds,segundos,secondes,Sekunden
 Propagate input to rest of the Tree,传播输入到树的其他部分,Propagate input to rest of the Tree,Propagar input al resto del Tree,,Eingabe an den Rest des Baumes weitergeben
-Tapping on the dialog to continue,,Tapping on the dialog to continue,,,Fortfahren durch Klicken des Textfeld
+Tapping on the dialog to continue,点击对话框继续,Tapping on the dialog to continue,,,Fortfahren durch Klicken des Textfeld
 Default action key,默认动作按键,Default action key,Tecla de acción predeterminada,,Standard Aktion
-Enable default choice hotkeys,,Enable default choice hotkeys,,,Standard Hotkeys nutzen
-Custom events,,Custom events,,,Benutzerdefinierte Ereignisse
+Enable default choice hotkeys,启用默认选择热键,Enable default choice hotkeys,,,Standard Hotkeys nutzen
+Custom events,自定义事件,Custom events,,,Benutzerdefinierte Ereignisse
 ## CHARACTER EDITOR ---------------------------------------------,,,,,
-Name:,名称,Name:,Nombre:,Nom:,Name:
+Name:,名称:,Name:,Nombre:,Nom:,Name:
 Display Name:,显示名称:,Display Name:,Display Name:,,Anzeigename:
 Nicknames:,昵称:,Nicknames:,Apodos:,,Spitznamen:
 Colors,颜色,Colors,Colores,Couleurs,Farben
@@ -67,21 +67,21 @@ Portraits,肖像,Portraits,Retratos,,Portraits
 File:,文件:,File:,Archivo:,,Datei
 Mirror portraits,镜像肖像,Mirror portraits,Espejar imágen,,Portraits spiegeln
 New portrait,添加新的肖像,New portrait,Nuevo retrato,,Neues Portrait
-Path,,Path,,,Datei
+Path,路径,Path,,,Datei
 Import folder,从文件夹中导入图片,Import folder,Importar carpeta,,Ordner importieren
-NoImagePreview,,No image on this portrait entry.,,,Dieses Portrait hat noch kein Bild.
-CustomScenePreview,,[!] Can\'t show previews of custom scenes.,,,Szenen können nicht angezeigt werden.
-Preview of,,Preview of,,,Vorschau von
-Full View,,Full View,,,Ganze Ansicht
-Actual Size,,Actual Size,,,Tasächliche Größe
+NoImagePreview,此肖像条目上没有图像.,No image on this portrait entry.,,,Dieses Portrait hat noch kein Bild.
+CustomScenePreview,[!] 无法显示自定义场景的预览.,[!] Can\'t show previews of custom scenes.,,,Szenen können nicht angezeigt werden.
+Preview of,预览自,Preview of,,,Vorschau von
+Full View,全视图,Full View,,,Ganze Ansicht
+Actual Size,实际尺寸,Actual Size,,,Tasächliche Größe
 ## THEME EDITOR ---------------------------------------------,,,,,
-Preview changes,,Preview changes,,,Vorschau aktualisieren
-DialogTextTabTitle,,Dialog Text,,,Dialogtext
-DialogBoxTabTitle,,Dialog Box,,,Dialogfeld
-NameLabelTabTitle,,Name Label,,,Namenstext
-ChoiceButtonTabTitle,,Choice Buttons,,,Optionen
-GlossaryTabTitle,,Glossary,,,Glossar
-AudioTabTitle,,Audio,,,Audio
+Preview changes,预览更改,Preview changes,,,Vorschau aktualisieren
+DialogTextTabTitle,对话文本,Dialog Text,,,Dialogtext
+DialogBoxTabTitle,对话框,Dialog Box,,,Dialogfeld
+NameLabelTabTitle,名称标签,Name Label,,,Namenstext
+ChoiceButtonTabTitle,选择按钮,Choice Buttons,,,Optionen
+GlossaryTabTitle,术语,Glossary,,,Glossar
+AudioTabTitle,音频,Audio,,,Audio
 Flat background,扁平背景,Flat background,Fondo plano,,Einfarbiger Hintergrund
 Background Texture,背景纹理,Background Texture,Textura de fondo,,Hintergrundbild
 Texture Modulation,纹理调制,Texture Modulation,Modulación de textura,Modulation de la texture,Texturfarbe
@@ -95,10 +95,10 @@ Behaviour,行为,Behaviour,Comportamiento,,Verhalten
 Speed (bigger = slower),速度 (更大=更慢),Speed (bigger = slower),Velocidad (a mayor número más lento),,Geschwindigkeit
 Alignment,对齐,Alignment,Alineación,,Ausrichtung
 Single Portrait Mode,单一肖像模式,Single Portrait Mode,Modo retrato único,,Alleinstehendes Portrait Modus
-Don't Close After Last Event,,Don't Close After Last Event,,,
+Don't Close After Last Event,最后一次活动后不要关闭,Don't Close After Last Event,,,
 Visuals,视觉效果,Visuals,Visuales,,Aussehen
 Background Color,背景颜色,Background Color,Color de fondo,,Hintergrundfarbe
-Size and Position,,Size and Position,,,Größe und Position
+Size and Position,尺寸和位置,Size and Position,,,Größe und Position
 Full width,全宽,Full width,Ancho completo,,Gesamte Breite
 Box padding,箱体填充,Box padding,Box padding,,
 Box size (pixels),盒子大小 (像素),Box size (pixels),Box size (pixels),,Textfeldgröße
@@ -135,50 +135,50 @@ Extra Font,额外字体,Extra Font,Extra Fuente,,Zusatzschrift
 Extra color,额外颜色,Extra color,Extra Color,,Zusatzfarbe
 Behaviour,行为,Behaviour,Comportamiento,,Verhalten
 Show,显示,Show,Mostrar,Afficher,Anzeigen
-Typing Sound Effects,打字音效,Typing Sound Effects,Sonido Del Texto,,Tipp-Geräusche
-Next Sound Effects,,Next Sound Effects,,,
-Choice Sound Effects,,Choice Sound Effects,,,
+Typing Sound Effects,'打字'音效,Typing Sound Effects,Sonido Del Texto,,Tipp-Geräusche
+Next Sound Effects,'下一个'音效,Next Sound Effects,,,
+Choice Sound Effects,'选择'音效,Choice Sound Effects,,,
 UseAudio,启用,Use audio file(s),Habilitar,Activer,Aktivieren
 File or folder path,文件或文件夹路径,File or folder path,Archivo o carpeta,,Datei- oder Ordnerpfad
 Volume,音量,Volume,Volumen,Volume,Lautstärke
 Volume random range,音量随机范围,Volume random range,Rango de volumen,,Lautstärkenvariation
-Pitch,,Pitch,,,Tonhöhe
+Pitch,音高,Pitch,,,Tonhöhe
 Pitch random range,音高随机范围,Pitch random range,Rango de tono,,Tonhöhenvariation
 Allow interrupt,允许中断,Allow interrupt,Permitir interrumpir,,Unterbrechen
 Audio Bus,音频总线,Audio Bus,Bus de Audio,Bus Audio,Audio Bus
-Button layout,,Button layout,Orden de botones,,
+Button layout,按钮布局,Button layout,Orden de botones,,
 Offset x-y,偏移 x-y,Offset x-y,Compensación x-y,,
-Position on screen,,Position on screen,Posición en la pantalla,,Position
+Position on screen,屏幕上的位置,Position on screen,Posición en la pantalla,,Position
 ## RESOURCE TREE / TOOLBAR ---------------------------------------------,,,,,
 # TOOL BAR ---------------------------------------------,,,,,
 Help,帮助,Help,Ayuda,Aide,Hilfe
 Website,网站,Website,Sitio Web,Site Web,Webseite
 # POPUP OPTIONS ---------------------------------------------,,,,,
-Show in File Manager,,Show in File Manager,,,Im Dateimanager öffnen
-Copy Timeline Name,,Copy Timeline Name,,,Name der Zeitlinie kopieren
-Remove Timeline,,Remove Timeline,,,Zeitlinie löschen
-Remove Character,,Remove Character,,,Charakter löschen
-Duplicate Theme,,Duplicate Theme,,,Theme duplizieren
-Remove Theme,,Remove Theme,,,Theme löschen
-Edit Definitions File,,Edit Definitions File,,,Definitions-Datei bearbeiten
-Remove Definition entry,,Remove Definition entry,,,Definition löschen
-Add Timeline,,Add Timeline,,,Neue Timeline
-Create Subfolder,,Create Subfolder,,,Neuer Unterordner
-Delete Folder,,Delete Folder,,,Ordner löschen
-Add Character,,Add Character,,,Neuer Charakter
-Add Theme,,Add Theme,,,Neues Theme
-Add Value,,Add Value,,,Neuer Wert
-Add Glossary Entry,,Add Glossary Entry,,,Neuer Glossar-Eintrag
-Toggle Editing Tools,,Toggle Editing Tools,,,Bearbeitungswerkzeuge aktivieren
-RemoveResourcePopupTitle,,Be sure you want to delete!,"Por favor, Confirma...",,"Sicher, dass Sie das löschen möchten?"
-RemoveFolderPopupTitle,,Be sure you want to delete this folder!,"Por favor, Confirma...",,Ordner wirklich löschen?
-CantDeleteLastTheme,,Dialogic always needs a theme. You cannot delete the last theme. Sorry!,,,"Dialogic benötigt immer ein Theme, darum darf das Letzte nicht gelöscht werden!"
-DeleteResourceText,,Are you sure you want to remove this [resource]? \n (Can't be restored),,,"Sind Sie sicher, dass Sie diese/s/n [resource] löschen wollen? \n (Kann nicht wiederhergestellt werden)"
-RemoveFolderPopupText,,Are you sure you want to remove this folder and all the items contained in it? \n(Can't be restored),,,"Sind Sie sicher, dass Sie diesen Ordner und alle darin enthaltenen Resourcen löschen möchten? \n(Nicht wiederherstellbar)"
+Show in File Manager,在文件管理器中显示,Show in File Manager,,,Im Dateimanager öffnen
+Copy Timeline Name,复制时间线名称,Copy Timeline Name,,,Name der Zeitlinie kopieren
+Remove Timeline,移除时间线,Remove Timeline,,,Zeitlinie löschen
+Remove Character,移除角色,Remove Character,,,Charakter löschen
+Duplicate Theme,复制主题,Duplicate Theme,,,Theme duplizieren
+Remove Theme,移除主题,Remove Theme,,,Theme löschen
+Edit Definitions File,编辑定义文件,Edit Definitions File,,,Definitions-Datei bearbeiten
+Remove Definition entry,移除定义条目,Remove Definition entry,,,Definition löschen
+Add Timeline,添加时间轴,Add Timeline,,,Neue Timeline
+Create Subfolder,创建子文件夹,Create Subfolder,,,Neuer Unterordner
+Delete Folder,删除文件夹,Delete Folder,,,Ordner löschen
+Add Character,添加角色,Add Character,,,Neuer Charakter
+Add Theme,添加主题,Add Theme,,,Neues Theme
+Add Value,添加价,Add Value,,,Neuer Wert
+Add Glossary Entry,添加术语条目,Add Glossary Entry,,,Neuer Glossar-Eintrag
+Toggle Editing Tools,切换编辑工具,Toggle Editing Tools,,,Bearbeitungswerkzeuge aktivieren
+RemoveResourcePopupTitle,请确定你要删除!,Be sure you want to delete!,"Por favor, Confirma...",,"Sicher, dass Sie das löschen möchten?"
+RemoveFolderPopupTitle,请确定你要删除这个文件夹!,Be sure you want to delete this folder!,"Por favor, Confirma...",,Ordner wirklich löschen?
+CantDeleteLastTheme,Dialogic总是需要一个主题. 很抱歉你不能删除最后的主题!,Dialogic always needs a theme. You cannot delete the last theme. Sorry!,,,"Dialogic benötigt immer ein Theme, darum darf das Letzte nicht gelöscht werden!"
+DeleteResourceText,是否确实要删除此 [resource]? \n (无法还原),Are you sure you want to remove this [resource]? \n (Can't be restored),,,"Sind Sie sicher, dass Sie diese/s/n [resource] löschen wollen? \n (Kann nicht wiederhergestellt werden)"
+RemoveFolderPopupText,确实要删除此文件夹及其包含的所有项目吗? \n (无法还原),Are you sure you want to remove this folder and all the items contained in it? \n(Can't be restored),,,"Sind Sie sicher, dass Sie diesen Ordner und alle darin enthaltenen Resourcen löschen möchten? \n(Nicht wiederherstellbar)"
 ## VALUE EDITOR,,,,,
-ValueName,名称,Name:,Nombre:,Nom:,Name:
-Value,,Value:,,,Wert:
+ValueName,名称:,Name:,Nombre:,Nom:,Name:
+Value,值:,Value:,,,Wert:
 ## GLOSSARY EDITOR,,,,,
-GlossaryName,,Name:,Nombre:,Nom:,Name:
-GlossaryExplanation,,A popup will display this information when a player hovers the word in a dialog.,,,"Diese Informationen werden in einem Popup gezeigt, wenn die Maus über disesem Wort ist."
-GlossaryContent,,Content:,,,Inhalt:
+GlossaryName,名称:,Name:,Nombre:,Nom:,Name:
+GlossaryExplanation,"当玩家在对话框中悬停在该词时, 会有一个弹出窗口显示该信息.",A popup will display this information when a player hovers the word in a dialog.,,,"Diese Informationen werden in einem Popup gezeigt, wenn die Maus über disesem Wort ist."
+GlossaryContent,内容:,Content:,,,Inhalt:

@@ -20,7 +20,7 @@ var _finished := false
 var _theme
 
 signal text_completed()
-signal letter_written()
+signal letter_written(lastLetter)
 signal signal_request(arg)
 
 ## *****************************************************************************
@@ -283,11 +283,11 @@ func _on_writing_timer_timeout():
 		if text_label.visible_characters > text_label.get_total_character_count():
 			_handle_text_completed()
 		elif (
-			text_label.visible_characters > 0 and 
+			text_label.visible_characters > 0 #and 
 			#text_label.text.length() > text_label.visible_characters-1 and 
-			text_label.text[text_label.visible_characters-1] != " "
+			#text_label.text[text_label.visible_characters-1] != " "
 		):
-			emit_signal('letter_written')
+			emit_signal('letter_written', text_label.text[text_label.visible_characters-1] )
 	else:
 		$WritingTimer.stop()
 

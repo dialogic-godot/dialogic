@@ -7,12 +7,14 @@ export (Color) var event_color = Color('#48a2a2a2')
 export(Texture) var event_icon = null setget set_icon
 export (int) var event_category := 0
 export (int) var sorting_index := 0
+var editor_reference
 
 func _ready():
+	editor_reference = find_parent('EditorView')
 	self_modulate = Color(1,1,1)
 	if visible_name != '':
 		text = visible_name
-	hint_tooltip = DTS.translate(hint_tooltip)
+	hint_tooltip = editor_reference.dialogicTranslator.translate(hint_tooltip)
 	var _scale = DialogicUtil.get_editor_scale(self)
 	rect_min_size = Vector2(30,30)
 	rect_min_size = rect_min_size * _scale
