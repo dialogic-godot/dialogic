@@ -2,17 +2,23 @@ tool
 extends DialogicEvent
 class_name DialogicVariableEvent
 
-enum OPERATIONS {SET, ADD, SUBSTRACT, MULTIPLY, DEVIDE}
+enum OPERATIONS {SET, ADD, SUBSTRACT, MULTIPLY, DIVIDE}
 
 # DEFINE ALL PROPERTIES OF THE EVENT
 var Name: String = ""
 var Operation: int = OPERATIONS.SET
 var Value: String = ""
+var RandomEnabled :bool= false
+var RandomMin :int = 0
+var RandomMax :int = 100
 
 func _execute() -> void:
 	if Name:
 		var orig = dialogic.VAR.get_variable(Name)
 		var value = dialogic.VAR.get_variable(Value, Value)
+		if RandomEnabled:
+			value = randi()%(RandomMax+1-RandomMin)+RandomMin
+		
 		if orig != null:
 			if Operation != OPERATIONS.SET and orig.is_valid_float() and value.is_valid_float():
 				orig = float(orig)
@@ -24,7 +30,7 @@ func _execute() -> void:
 						dialogic.VAR.set_variable(Name, str(orig-value))
 					OPERATIONS.MULTIPLY:
 						dialogic.VAR.set_variable(Name, str(orig*value))
-					OPERATIONS.DEVIDE:
+					OPERATIONS.DIVIDE:
 						dialogic.VAR.set_variable(Name, str(orig/value))
 			else:
 				dialogic.VAR.set_variable(Name, str(value))
@@ -55,16 +61,60 @@ func _init() -> void:
 ################################################################################
 ## 						SAVING/LOADING
 ################################################################################
-func get_shortcode() -> String:
-	return "variable"
+## THIS RETURNS A READABLE REPRESENTATION, BUT HAS TO CONTAIN ALL DATA (This is how it's stored)
+func get_as_string_to_store() -> String:
+	var string = "VAR "
+	if Name:
+		string += Name
+		match Operation:
+			OPERATIONS.SET:
+				string+= " = "
+			OPERATIONS.ADD:
+				string+= " += "
+			OPERATIONS.SUBSTRACT:
+				string+= " -= "
+			OPERATIONS.MULTIPLY:
+				string+= " *= "
+			OPERATIONS.DIVIDE:
+				string+= " /= "
+		string += Value
+	if RandomEnabled:
+		string += ' [random="True"'
+		if RandomMin != 0:
+			string += ' min="'+str(RandomMin)+'"' 
+		if RandomMax != 100:
+			string += ' max="'+str(RandomMax)+'"' 
+		string += "]"
+	return string
 
-func get_shortcode_parameters() -> Dictionary:
-	return {
-		#param_name : property_name
-		"name"		: "Name",
-		'operation' : "Operation",
-		"value"		: "Value",
-	}
+## THIS HAS TO READ ALL THE DATA FROM THE SAVED STRING (see above) 
+func load_from_string_to_store(string:String):
+	var reg = RegEx.new()
+	reg.compile("VAR (?<name>[^=+\\-*\\/]*)(?<operation>=|\\+=|-=|\\*=|\\/=)(?<value>[^\\[\\n]*)(?<shortcode>\\[.*)?")
+	var result = reg.search(string)
+	Name = result.get_string('name').strip_edges()
+	match result.get_string('operation').strip_edges():
+		'=':
+			Operation = OPERATIONS.SET
+		'-=':
+			Operation = OPERATIONS.SUBSTRACT
+		'+=':
+			Operation = OPERATIONS.ADD
+		'*=':
+			Operation = OPERATIONS.MULTIPLY
+		'/=':
+			Operation = OPERATIONS.DIVIDE
+	Value = result.get_string('value').strip_edges()
+	
+	print(result.get_string('shortcode'))
+	if !result.get_string('shortcode').empty():
+		var shortcodeparams = parse_shortcode_parameters(result.get_string('shortcode'))
+		RandomEnabled = true if shortcodeparams.get('random', "True") == "True" else false
+		RandomMin = int(shortcodeparams.get('min', 0))
+		RandomMax = int(shortcodeparams.get('max', 100))
+
+func is_valid_event_string(string:String) -> bool:
+	return string.begins_with('VAR ')
 
 ################################################################################
 ## 						EDITOR REPRESENTATION
@@ -73,9 +123,13 @@ func get_shortcode_parameters() -> Dictionary:
 func build_event_editor():
 	add_header_edit('Name', ValueType.ComplexPicker, '', '', {'suggestions_func':[self, 'get_var_suggestions'], 'editor_icon':["ClassList", "EditorIcons"], 'disable_pretty_name':true})
 	add_header_edit('Operation', ValueType.FixedOptionSelector, '', '', {'selector_options':
-		{'to be':OPERATIONS.SET, 'to itself plus':OPERATIONS.ADD, 'to itself minus':OPERATIONS.SUBSTRACT, 'to itself multiplied by':OPERATIONS.MULTIPLY, 'to itself divided by':OPERATIONS.DEVIDE}
+		{'to be':OPERATIONS.SET, 'to itself plus':OPERATIONS.ADD, 'to itself minus':OPERATIONS.SUBSTRACT, 'to itself multiplied by':OPERATIONS.MULTIPLY, 'to itself divided by':OPERATIONS.DIVIDE}
 		}, 'Name')
-	add_header_edit('Value', ValueType.ComplexPicker, '', '', {'suggestions_func':[self, 'get_value_suggestions'], 'editor_icon':["Variant", "EditorIcons"], 'disable_pretty_name':true}, 'bool(Name)')
+	add_header_edit('Value', ValueType.ComplexPicker, '', '', {'suggestions_func':[self, 'get_value_suggestions'], 'editor_icon':["Variant", "EditorIcons"], 'disable_pretty_name':true}, 'bool(Name) and not RandomEnabled')
+	add_header_label('a random integer', 'RandomEnabled')
+	add_body_edit('RandomEnabled', ValueType.Bool, 'Use Random Integer:', '', {}, 'Name')
+	add_body_edit('RandomMin', ValueType.Integer, 'Min:', '', {}, 'Name and RandomEnabled')
+	add_body_edit('RandomMax', ValueType.Integer, 'Max:', '', {}, 'Name and RandomEnabled')
 
 func get_var_suggestions(filter:String) -> Dictionary:
 	var suggestions = {}
