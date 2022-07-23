@@ -13,20 +13,21 @@ func _execute() -> void:
 	if Name:
 		var orig = dialogic.VAR.get_variable(Name)
 		var value = dialogic.VAR.get_variable(Value, Value)
-		if Operation != OPERATIONS.SET and orig.is_valid_float() and value.is_valid_float():
-			orig = float(orig)
-			value = float(value)
-			match Operation:
-				OPERATIONS.ADD:
-					dialogic.VAR.set_variable(Name, str(orig+value))
-				OPERATIONS.SUBSTRACT:
-					dialogic.VAR.set_variable(Name, str(orig-value))
-				OPERATIONS.MULTIPLY:
-					dialogic.VAR.set_variable(Name, str(orig*value))
-				OPERATIONS.DEVIDE:
-					dialogic.VAR.set_variable(Name, str(orig/value))
-		else:
-			dialogic.VAR.set_variable(Name, str(value))
+		if orig != null:
+			if Operation != OPERATIONS.SET and orig.is_valid_float() and value.is_valid_float():
+				orig = float(orig)
+				value = float(value)
+				match Operation:
+					OPERATIONS.ADD:
+						dialogic.VAR.set_variable(Name, str(orig+value))
+					OPERATIONS.SUBSTRACT:
+						dialogic.VAR.set_variable(Name, str(orig-value))
+					OPERATIONS.MULTIPLY:
+						dialogic.VAR.set_variable(Name, str(orig*value))
+					OPERATIONS.DEVIDE:
+						dialogic.VAR.set_variable(Name, str(orig/value))
+			else:
+				dialogic.VAR.set_variable(Name, str(value))
 	finish()
 
 
@@ -70,11 +71,11 @@ func get_shortcode_parameters() -> Dictionary:
 ################################################################################
 
 func build_event_editor():
-	add_header_edit('Name', ValueType.ComplexPicker, '', '', {'suggestions_func':[self, 'get_var_suggestions'], 'editor_icon':["ClassList", "EditorIcons"]})
+	add_header_edit('Name', ValueType.ComplexPicker, '', '', {'suggestions_func':[self, 'get_var_suggestions'], 'editor_icon':["ClassList", "EditorIcons"], 'disable_pretty_name':true})
 	add_header_edit('Operation', ValueType.FixedOptionSelector, '', '', {'selector_options':
 		{'to be':OPERATIONS.SET, 'to itself plus':OPERATIONS.ADD, 'to itself minus':OPERATIONS.SUBSTRACT, 'to itself multiplied by':OPERATIONS.MULTIPLY, 'to itself divided by':OPERATIONS.DEVIDE}
 		}, 'Name')
-	add_header_edit('Value', ValueType.ComplexPicker, '', '', {'suggestions_func':[self, 'get_value_suggestions'], 'editor_icon':["Variant", "EditorIcons"]}, 'Name')
+	add_header_edit('Value', ValueType.ComplexPicker, '', '', {'suggestions_func':[self, 'get_value_suggestions'], 'editor_icon':["Variant", "EditorIcons"], 'disable_pretty_name':true}, 'bool(Name)')
 
 func get_var_suggestions(filter:String) -> Dictionary:
 	var suggestions = {}

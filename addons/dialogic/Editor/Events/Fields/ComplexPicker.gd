@@ -7,6 +7,7 @@ export(String) var placeholder_text = "Select Resource"
 var file_extension = ""
 var get_suggestions_func = [self, 'get_default_suggestions']
 var empty_text = ""
+var disable_pretty_name := false
 
 var resource_icon:Texture = null setget set_icon
 
@@ -43,7 +44,10 @@ func set_value(value):
 		$Search.text = DialogicUtil.pretty_name(value.resource_path)
 		$Search.hint_tooltip = value.resource_path
 	elif value:
-		$Search.text = DialogicUtil.pretty_name(value)
+		if disable_pretty_name:
+			$Search.text =value
+		else:
+			$Search.text = DialogicUtil.pretty_name(value)
 	else:
 		$Search.text = empty_text
 
