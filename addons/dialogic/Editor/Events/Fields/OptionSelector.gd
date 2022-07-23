@@ -17,13 +17,15 @@ func _ready():
 	})
 	$MenuButton.connect("about_to_show", self,  'insert_options')
 	$MenuButton.get_popup().connect("index_pressed", self,  'index_pressed')
-
+	$MenuButton.get_popup().add_stylebox_override('panel', load("res://addons/dialogic/Editor/Events/styles/ResourceMenuPanelBackground.tres"))
 
 func set_right_text(value):
 	$RightText.text = str(value)
+	$RightText.visible = bool(value)
 
 func set_left_text(value):
 	$LeftText.text = str(value)
+	$LeftText.visible = bool(value)
 
 func set_value(value):
 	for element in options:

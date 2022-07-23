@@ -203,8 +203,8 @@ func build_editor():
 			editor_node = load("res://addons/dialogic/Editor/Events/Fields/Bool.tscn").instance()
 		
 		## RESOURCES
-		elif p.dialogic_type == resource.ValueType.Resource:
-			editor_node = load("res://addons/dialogic/Editor/Events/Fields/DialogicResourcePicker.tscn").instance()
+		elif p.dialogic_type == resource.ValueType.ComplexPicker:
+			editor_node = load("res://addons/dialogic/Editor/Events/Fields/ComplexPicker.tscn").instance()
 			
 			editor_node.file_extension = p.display_info.get('file_extension', '')
 			editor_node.get_suggestions_func = p.display_info.get('suggestions_func', editor_node.get_suggestions_func)

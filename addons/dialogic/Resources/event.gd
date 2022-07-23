@@ -44,7 +44,7 @@ enum ValueType {
 	Bool,
 	
 	# 
-	Resource,
+	ComplexPicker,
 	Script,
 	File,
 	

@@ -84,8 +84,6 @@ func parse_variables(text:String) -> String:
 
 
 func set_variable(variable_name: String, value: String) -> bool:
-	
-	
 	# Getting all the autoloads
 	var autoloads = get_autoloads()
 	
@@ -107,6 +105,28 @@ func set_variable(variable_name: String, value: String) -> bool:
 			return true
 	return false
 
+func get_variable(variable_path:String, default = null):
+	# Getting all the autoloads
+	var autoloads = get_autoloads()
+	
+	if '.' in variable_path:
+		var query = variable_path.split('.')
+		var from = query[0]
+		var variable = query[1]
+		for a in autoloads:
+			if a.name == from:
+				var myvar = a.get(variable)
+				return myvar if myvar != null else default
+		
+		# if none is found, try getting it from the dialogic variables
+		return _get_value_in_dictionary(variable_path, dialogic.current_state_info['variables'], default) 
+	
+	if variable_path in dialogic.current_state_info['variables'].keys():
+		if typeof(dialogic.current_state_info['variables'][variable_path]) == TYPE_STRING:
+			return dialogic.current_state_info['variables'][variable_path]
+	
+	return default
+
 # this will set a value in a dictionary (or a sub-dictionary based on the path)
 # e.g. it could set "Something.Something.Something" in {'Something':{'Something':{'Someting':"value"}}}
 func _set_value_in_dictionary(path:String, dictionary:Dictionary, value):
@@ -119,6 +139,17 @@ func _set_value_in_dictionary(path:String, dictionary:Dictionary, value):
 			dictionary[path] = value
 	return dictionary
 
+# this will get a value in a dictionary (or a sub-dictionary based on the path)
+# e.g. it could get "Something.Something.Something" in {'Something':{'Something':{'Someting':"value"}}}
+func _get_value_in_dictionary(path:String, dictionary:Dictionary, default= null):
+	if '.' in path:
+		var from = path.split('.')[0]
+		if from in dictionary.keys():
+			return _get_value_in_dictionary(path.trim_prefix(from+"."), dictionary[from], default)
+	else:
+		if path in dictionary.keys():
+			return dictionary[path]
+	return default
 
 func get_autoloads() -> Array:
 	var autoloads = []

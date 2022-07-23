@@ -2,7 +2,7 @@
 
 [ext_resource path="res://addons/dialogic/Editor/Common/TLabel.tscn" type="PackedScene" id=1]
 [ext_resource path="res://addons/dialogic/Events/Character/PortraitSettings.gd" type="Script" id=2]
-[ext_resource path="res://addons/dialogic/Editor/Events/Fields/DialogicResourcePicker.tscn" type="PackedScene" id=3]
+[ext_resource path="res://addons/dialogic/Editor/Events/Fields/ComplexPicker.tscn" type="PackedScene" id=3]
 
 [sub_resource type="Image" id=3]
 data = {

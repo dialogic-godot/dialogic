@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://addons/dialogic/Events/Text/CharacterEdit_TypingSounds.gd" type="Script" id=1]
-[ext_resource path="res://addons/dialogic/Editor/Events/Fields/DialogicResourcePicker.tscn" type="PackedScene" id=2]
+[ext_resource path="res://addons/dialogic/Editor/Events/Fields/ComplexPicker.tscn" type="PackedScene" id=2]
 
 [node name="TypingSounds" type="VBoxContainer"]
 margin_right = 330.0
