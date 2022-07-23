@@ -155,6 +155,8 @@ func suggestion_selected(index):
 	emit_signal("value_changed", property_name, current_value)
 	
 func popup_hide():
+	if !$Search/SelectButton.get_global_rect().has_point(get_global_mouse_position()):
+		$Search/SelectButton.pressed = false
 	if ignore_popup_hide_once:
 		ignore_popup_hide_once = false
 		return
@@ -201,6 +203,6 @@ func _on_OpenButton_pressed():
 			dialogic_plugin._editor_interface.inspect_object(current_value)
 
 
-
-func _on_SelectButton_pressed():
-	_on_Search_text_changed('', true)
+func _on_SelectButton_toggled(button_pressed):
+	if button_pressed:
+		_on_Search_text_changed('', true)

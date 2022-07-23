@@ -90,6 +90,8 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = -12.0
 grow_horizontal = 0
+toggle_mode = true
+shortcut_in_tooltip = false
 icon = SubResource( 3 )
 
 [node name="OpenButton" type="ToolButton" parent="Search"]
@@ -112,5 +114,5 @@ margin_bottom = 19.0
 [connection signal="focus_entered" from="Search" to="." method="_on_Search_focus_entered"]
 [connection signal="text_changed" from="Search" to="." method="_on_Search_text_changed"]
 [connection signal="text_entered" from="Search" to="." method="_on_Search_text_entered"]
-[connection signal="pressed" from="Search/SelectButton" to="." method="_on_SelectButton_pressed"]
+[connection signal="toggled" from="Search/SelectButton" to="." method="_on_SelectButton_toggled"]
 [connection signal="pressed" from="Search/OpenButton" to="." method="_on_OpenButton_pressed"]
