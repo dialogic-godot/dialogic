@@ -14,18 +14,25 @@ func _ready():
 	$PlayTimeline.connect("pressed", self, "play_timeline")
 	
 	$AddTimeline.icon = load("res://addons/dialogic/Editor/Images/Toolbar/add-timeline.svg")
+	$'%ResourcePicker'.get_suggestions_func = [self, 'suggest_resources']
+	$'%ResourcePicker'.resource_icon = get_icon("GuiRadioUnchecked", "EditorIcons")
 
 ################################################################################
 ##							HELPERS
 ################################################################################
 
 func set_resource_saved():
-	if $CurrentResource.text.ends_with(("(*)")):
-		$CurrentResource.text = $CurrentResource.text.trim_suffix("(*)")
+	if $'%ResourcePicker'.current_value.ends_with(("(*)")):
+		$'%ResourcePicker'.set_value($'%ResourcePicker'.current_value.trim_suffix("(*)"))
 
 func set_resource_unsaved():
-	if not $CurrentResource.text.ends_with(("(*)")):
-		$CurrentResource.text += "(*)"
+	if not $'%ResourcePicker'.current_value.ends_with(("(*)")):
+		$'%ResourcePicker'.set_value($'%ResourcePicker'.current_value +"(*)")
+
+func is_current_unsaved() -> bool:
+	if $'%ResourcePicker'.current_value and $'%ResourcePicker'.current_value.ends_with('(*)'):
+		return true
+	return false
 
 ################################################################################
 ##							BASICS
@@ -44,13 +51,31 @@ func _on_AddCharacter_pressed():
 		'New_Character'
 	)
 
+func suggest_resources(filter):
+	var suggestions = {}
+	for i in DialogicUtil.get_project_setting('dialogic/editor/last_resources', []):
+		if i.ends_with('.dtl'):
+			suggestions[DialogicUtil.pretty_name(i)] = {'value':i, 'tooltip':i, 'icon':load("res://addons/dialogic/Editor/Images/Resources/timeline.svg")}
+		elif i.ends_with('.dch'):
+			suggestions[DialogicUtil.pretty_name(i)] = {'value':i, 'tooltip':i, 'icon':load("res://addons/dialogic/Editor/Images/Resources/character.svg")}
+	return suggestions
+
+func resource_used(path:String):
+	var used_resources:Array = DialogicUtil.get_project_setting('dialogic/editor/last_resources', [])
+	if path in used_resources:
+		used_resources.erase(path)
+	used_resources.push_front(path)
+	ProjectSettings.set_setting('dialogic/editor/last_resources', used_resources)
 
 
 ################################################################################
 ##							TIMELINE_MODE
 ################################################################################
 
-func set_timeline_mode():
+func load_timeline(timeline_path):
+	resource_used(timeline_path)
+	$'%ResourcePicker'.set_value(DialogicUtil.pretty_name(timeline_path))
+	$'%ResourcePicker'.resource_icon = load("res://addons/dialogic/Editor/Images/Resources/timeline.svg")
 	$PlayTimeline.show()
 
 func play_timeline():
@@ -66,5 +91,14 @@ func play_timeline():
 ##							CHARACTER_MODE
 ################################################################################
 
-func set_character_mode():
+func load_character(character_path):
+	resource_used(character_path)
+	$'%ResourcePicker'.set_value(DialogicUtil.pretty_name(character_path))
+	$'%ResourcePicker'.resource_icon = load("res://addons/dialogic/Editor/Images/Resources/character.svg")
 	$PlayTimeline.hide()
+
+
+func _on_ResourcePicker_value_changed(property_name, value):
+	if value:
+		var dialogic_plugin = get_tree().root.get_node('EditorNode/DialogicPlugin')
+		dialogic_plugin._editor_interface.inspect_object(load(value))

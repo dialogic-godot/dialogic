@@ -3,6 +3,8 @@ extends Control
 
 var editor_file_dialog:EditorFileDialog
 
+signal continue_opening_resource
+
 func _ready():
 	$MarginContainer/VBoxContainer/Toolbar/Settings.connect("button_up", self, "show_settings")
 	set_current_margin($MarginContainer, get_constant("separation", "BoxContainer") - 1)
@@ -12,21 +14,25 @@ func _ready():
 	add_child(editor_file_dialog)
 	
 	# Open the last edited scene
-	if ProjectSettings.has_setting('dialogic/editor/current_timeline_path'):
-		var timeline_path = ProjectSettings.get_setting('dialogic/editor/current_timeline_path')
-		var file = File.new()
-		if file.file_exists(timeline_path):
-			edit_timeline(load(timeline_path))
-		else:
-			ProjectSettings.clear('dialogic/editor/current_timeline_path')
-
+	if ProjectSettings.has_setting('dialogic/editor/last_resources'):
+		var path = ProjectSettings.get_setting('dialogic/editor/last_resources')[0]
+		var dialogic_plugin = get_tree().root.get_node('EditorNode/DialogicPlugin')
+		dialogic_plugin._editor_interface.inspect_object(load(path))
+	
+	$SaveConfirmationDialog.add_button('No Saving Please!', true, 'nosave')
 
 func edit_timeline(object):
+	if $'%Toolbar'.is_current_unsaved():
+		save_current_resource()
+		yield(self, 'continue_opening_resource')
 	get_node("%TimelineEditor").load_timeline(object)
 	get_node("%TimelineEditor").show()
 	get_node("%CharacterEditor").hide()
 
 func edit_character(object):
+	if $'%Toolbar'.is_current_unsaved():
+		save_current_resource()
+		yield(self, 'continue_opening_resource')
 	get_node("%CharacterEditor").load_character(object)
 	get_node("%TimelineEditor").hide()
 	get_node("%CharacterEditor").show()
@@ -41,6 +47,22 @@ func set_current_margin(node, separation):
 func show_settings():
 	$SettingsEditor.popup_centered()
 
+func save_current_resource():
+	$SaveConfirmationDialog.popup_centered()
+	$SaveConfirmationDialog.window_title = "Unsaved changes!"
+	$SaveConfirmationDialog.dialog_text = "Save before changing resource?"
+
+func _on_SaveConfirmationDialog_confirmed():
+	if $'%TimelineEditor'.visible:
+		$'%TimelineEditor'.save_timeline()
+	elif $'%CharacterEditor'.visible:
+		$'%CharacterEditor'.save_character()
+	emit_signal("continue_opening_resource")
+
+
+func _on_SaveConfirmationDialog_custom_action(action):
+	$SaveConfirmationDialog.hide()
+	emit_signal("continue_opening_resource")
 
 func godot_file_dialog(object, method, filter, mode = EditorFileDialog.MODE_OPEN_FILE, window_title = "Save", current_file_name = 'New_File'):
 	for connection in editor_file_dialog.get_signal_connection_list('file_selected')+editor_file_dialog.get_signal_connection_list('dir_selected'):
@@ -59,4 +81,6 @@ func godot_file_dialog(object, method, filter, mode = EditorFileDialog.MODE_OPEN
 		editor_file_dialog.connect('dir_selected', object, method, [], CONNECT_ONESHOT)
 		editor_file_dialog.connect('file_selected', object, method, [], CONNECT_ONESHOT)
 	return editor_file_dialog
-	
+
+
+

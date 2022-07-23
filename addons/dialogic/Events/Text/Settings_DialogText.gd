@@ -36,7 +36,7 @@ func suggest_actions(search):
 	var suggs = {}
 	for prop in ProjectSettings.get_property_list():
 		if prop.name.begins_with('input/') and (!search or search.to_lower() in prop.name.trim_prefix('input/')):
-			suggs[prop.name.trim_prefix('input/')] = prop.name.trim_prefix('input/')
+			suggs[prop.name.trim_prefix('input/')] = {'value':prop.name.trim_prefix('input/')}
 	return suggs
 
 

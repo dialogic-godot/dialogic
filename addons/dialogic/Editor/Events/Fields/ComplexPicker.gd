@@ -113,8 +113,14 @@ func _on_Search_text_changed(new_text, just_update = false):
 	var idx = 0
 	for element in suggestions:
 		if new_text != "" or idx < 12:
-			$Search/Suggestions.add_item(element) #element.get_file().trim_suffix(ext))
-			$Search/Suggestions.set_item_metadata(idx, suggestions[element])
+			if suggestions[element].has('icon'):
+				$Search/Suggestions.add_icon_item(suggestions[element].icon, element)
+			elif suggestions[element].has('editor_icon'):
+				$Search/Suggestions.add_icon_item(get_icon(suggestions[element].editor_icon[0],suggestions[element].editor_icon[1]), element)
+			else:
+				$Search/Suggestions.add_item(element)
+			$Search/Suggestions.set_item_tooltip(idx, suggestions[element].get('tooltip', ''))
+			$Search/Suggestions.set_item_metadata(idx, suggestions[element].value)
 		else:
 			more_hidden = true
 			break
@@ -136,7 +142,7 @@ func get_default_suggestions(search_text):
 
 	for resource in resources:
 		if search_text.empty() or search_text.to_lower() in DialogicUtil.pretty_name(resource).to_lower():
-			suggestions[DialogicUtil.pretty_name(resource)] = resource
+			suggestions[DialogicUtil.pretty_name(resource)] = {'value':resource, 'tooltip':resource}
 	return suggestions
 	
 func suggestion_selected(index):

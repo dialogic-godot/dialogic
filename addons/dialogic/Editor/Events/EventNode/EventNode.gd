@@ -287,6 +287,12 @@ func recalculate_edit_visibility(list):
 				node_con[0].show()
 			else:
 				node_con[0].hide()
+	
+	$'%ExpandButton'.visible = false
+	for node in $'%Content'.get_children():
+		if node.visible:
+			$'%ExpandButton'.visible = true
+			break
 
 func set_property(property_name, value):
 	resource.set(property_name, value)
@@ -317,6 +323,8 @@ func _ready():
 	
 	indent_size = indent_size * DialogicUtil.get_editor_scale()
 	
+	$'%ExpandButton'.icon = get_icon("Tools", "EditorIcons")
+	
 	if resource:
 		if resource.get_icon() != null:
 			_set_event_icon(resource.get_icon())
@@ -324,7 +332,8 @@ func _ready():
 			_set_event_name(event_name)
 	
 		$PanelContainer/MarginContainer/VBoxContainer/Header/CenterContainer/IconPanel.set("self_modulate", resource.event_color)
-	
+		$'%ExpandButton'.pressed = resource.expand_by_default
+		_on_ExpandButton_toggled(resource.expand_by_default)
 	set_focus_mode(1) # Allowing this node to grab focus
 	
 	# signals
@@ -336,3 +345,13 @@ func _ready():
 	$PanelContainer/MarginContainer/VBoxContainer/Header/CollapseButton.connect('toggled', self, 'toggle_collapse')
 	$PanelContainer/MarginContainer/VBoxContainer/Header/CollapseButton.icon = get_icon("Collapse", "EditorIcons")
 	$PanelContainer/MarginContainer/VBoxContainer/Header/CollapseButton.hide()
+
+
+func _on_ExpandButton_toggled(button_pressed):
+	expanded = button_pressed
+	$'%Body'.visible = button_pressed
+
+
+func _on_EventNode_gui_input(event):
+	if event is InputEventMouseButton and event.doubleclick:
+		$'%ExpandButton'.pressed = !$'%ExpandButton'.pressed

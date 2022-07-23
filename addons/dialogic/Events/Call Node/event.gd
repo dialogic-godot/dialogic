@@ -58,6 +58,7 @@ func _init() -> void:
 	set_default_color('Color1')
 	event_category = Category.GODOT
 	event_sorting_index = 3
+	expand_by_default = false
 	
 
 
