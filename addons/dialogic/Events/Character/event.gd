@@ -181,12 +181,12 @@ func is_valid_event_string(string:String):
 func build_event_editor():
 	add_header_edit('ActionType', ValueType.FixedOptionSelector, '', '',
 		 {'selector_options':{"Join":ActionTypes.Join, "Leave":ActionTypes.Leave, "Update":ActionTypes.Update}})
-	add_header_edit('Character', ValueType.Resource, '', '', {'file_extension':'.dch', 'icon':load("res://addons/dialogic/Editor/Images/Resources/character.svg")})
+	add_header_edit('Character', ValueType.ComplexPicker, '', '', {'file_extension':'.dch', 'icon':load("res://addons/dialogic/Editor/Images/Resources/character.svg")})
 	
-	add_header_edit('Portrait', ValueType.Resource, 'Portrait:', '', {'suggestions_func':[self, 'get_portrait_suggestions'], 'icon':load("res://addons/dialogic/Editor/Images/Resources/Portrait.svg")}, 'Character != null and ActionType != %s' %ActionTypes.Leave)
+	add_header_edit('Portrait', ValueType.ComplexPicker, 'Portrait:', '', {'suggestions_func':[self, 'get_portrait_suggestions'], 'icon':load("res://addons/dialogic/Editor/Images/Resources/Portrait.svg")}, 'Character != null and ActionType != %s' %ActionTypes.Leave)
 	add_header_edit('Position', ValueType.Integer, 'Position:', '', {}, 'Character != null and ActionType != %s' %ActionTypes.Leave)
 	
-	add_body_edit('AnimationName', ValueType.Resource, 'Animation:', '', {'suggestions_func':[self, 'get_animation_suggestions'], 'editor_icon':["Animation", "EditorIcons"], 'placeholder':'Default'}, 'Character != null')
+	add_body_edit('AnimationName', ValueType.ComplexPicker, 'Animation:', '', {'suggestions_func':[self, 'get_animation_suggestions'], 'editor_icon':["Animation", "EditorIcons"], 'placeholder':'Default'}, 'Character != null')
 	add_body_edit('AnimationLength', ValueType.Float, 'Length:', '', {}, 'Character and AnimationName')
 	add_body_edit('AnimationWait', ValueType.Bool, 'Wait:', '', {}, 'Character and AnimationName')
 	add_body_edit('AnimationRepeats', ValueType.Integer, 'Repeat:', '', {},'Character and AnimationName and ActionType == %s)' %ActionTypes.Update)

@@ -47,6 +47,6 @@ func get_shortcode_parameters() -> Dictionary:
 ################################################################################
 
 func build_event_editor():
-	add_header_edit('Timeline', ValueType.Resource, 'Timeline:', '', {'file_extension':'.dtl', 'icon':load("res://addons/dialogic/Editor/Images/Resources/timeline.svg")})
+	add_header_edit('Timeline', ValueType.ComplexPicker, 'Timeline:', '', {'file_extension':'.dtl', 'icon':load("res://addons/dialogic/Editor/Images/Resources/timeline.svg")})
 	add_header_edit('Label', ValueType.SinglelineText, 'Label:')
 

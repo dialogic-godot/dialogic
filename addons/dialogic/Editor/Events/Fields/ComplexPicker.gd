@@ -7,6 +7,7 @@ export(String) var placeholder_text = "Select Resource"
 var file_extension = ""
 var get_suggestions_func = [self, 'get_default_suggestions']
 var empty_text = ""
+var disable_pretty_name := false
 
 var resource_icon:Texture = null setget set_icon
 
@@ -43,7 +44,10 @@ func set_value(value):
 		$Search.text = DialogicUtil.pretty_name(value.resource_path)
 		$Search.hint_tooltip = value.resource_path
 	elif value:
-		$Search.text = DialogicUtil.pretty_name(value)
+		if disable_pretty_name:
+			$Search.text =value
+		else:
+			$Search.text = DialogicUtil.pretty_name(value)
 	else:
 		$Search.text = empty_text
 
@@ -101,6 +105,8 @@ func _on_Search_text_changed(new_text, just_update = false):
 	if new_text == "" and !just_update:
 		emit_signal("value_changed", property_name, null)
 	
+	ignore_popup_hide_once = just_update
+	
 	var suggestions = get_suggestions_func[0].call(get_suggestions_func[1], new_text)
 	
 	var more_hidden = false
@@ -149,6 +155,8 @@ func suggestion_selected(index):
 	emit_signal("value_changed", property_name, current_value)
 	
 func popup_hide():
+	if !$Search/SelectButton.get_global_rect().has_point(get_global_mouse_position()):
+		$Search/SelectButton.pressed = false
 	if ignore_popup_hide_once:
 		ignore_popup_hide_once = false
 		return
@@ -195,6 +203,6 @@ func _on_OpenButton_pressed():
 			dialogic_plugin._editor_interface.inspect_object(current_value)
 
 
-
-func _on_SelectButton_pressed():
-	_on_Search_text_changed('', true)
+func _on_SelectButton_toggled(button_pressed):
+	if button_pressed:
+		_on_Search_text_changed('', true)

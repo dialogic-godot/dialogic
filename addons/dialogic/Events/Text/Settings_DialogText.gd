@@ -5,8 +5,8 @@ func refresh():
 	$'%DefaultSpeed'.value = DialogicUtil.get_project_setting('dialogic/text/speed', 0.01)
 	$'%Skippable'.pressed = DialogicUtil.get_project_setting('dialogic/text/skippable', true)
 	$'%Autocontinue'.pressed = DialogicUtil.get_project_setting('dialogic/text/autocontinue', false)
-	$'%Autocontinue'.pressed = DialogicUtil.get_project_setting('dialogic/text/autocolor_names', false)
 	$'%AutocontinueDelay'.value = DialogicUtil.get_project_setting('dialogic/text/autocontinue_delay', 1)
+	$'%AutocolorNames'.pressed = DialogicUtil.get_project_setting('dialogic/text/autocolor_names', false)
 	$'%InputAction'.resource_icon = get_icon("Mouse", "EditorIcons")
 	$'%InputAction'.set_value(DialogicUtil.get_project_setting('dialogic/text/input_action', 'dialogic_default_action'))
 	$'%InputAction'.get_suggestions_func = [self, 'suggest_actions']
@@ -17,6 +17,7 @@ func _on_AutocontinueDelay_value_changed(value):
 
 
 func _on_Autocontinue_toggled(button_pressed):
+	print("toggled")
 	ProjectSettings.set_setting('dialogic/text/autocontinue', button_pressed)
 
 

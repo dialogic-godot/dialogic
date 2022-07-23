@@ -44,7 +44,7 @@ enum ValueType {
 	Bool,
 	
 	# 
-	Resource,
+	ComplexPicker,
 	Script,
 	File,
 	
@@ -271,7 +271,7 @@ func build_event_editor() -> void:
 	pass
 
 
-func add_header_label(text:String) -> void:
+func add_header_label(text:String, condition:String = "") -> void:
 	editor_list.append({
 		"name":"something", 				# Must be the same as the corresponding property that it edits!
 		"type":TYPE_STRING,
@@ -279,6 +279,7 @@ func add_header_label(text:String) -> void:
 		"usage":PROPERTY_USAGE_EDITOR_HELPER,	
 		"dialogic_type":ValueType.Label,	# Define the type of node
 		"display_info":{"text":text}, 
+		"condition":condition
 		})
 
 

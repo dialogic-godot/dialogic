@@ -6,7 +6,7 @@
 [node name="SinglelineText" type="HBoxContainer"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-rect_min_size = Vector2( 300, 30 )
+rect_min_size = Vector2( 100, 30 )
 size_flags_horizontal = 3
 theme = ExtResource( 2 )
 script = ExtResource( 1 )

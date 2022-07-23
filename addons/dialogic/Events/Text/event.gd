@@ -110,8 +110,8 @@ func get_original_translation_text():
 	return Text
 
 func build_event_editor():
-	add_header_edit('Character', ValueType.Resource, 'Character:', '', {'file_extension':'.dch', 'icon':load("res://addons/dialogic/Editor/Images/Resources/character.svg")})
-	add_header_edit('Portrait', ValueType.Resource, '', '', {'suggestions_func':[self, 'get_portrait_suggestions'], 'placeholder':"Don't change", 'icon':load("res://addons/dialogic/Editor/Images/Resources/Portrait.svg")}, 'Character')
+	add_header_edit('Character', ValueType.ComplexPicker, 'Character:', '', {'file_extension':'.dch', 'icon':load("res://addons/dialogic/Editor/Images/Resources/character.svg")})
+	add_header_edit('Portrait', ValueType.ComplexPicker, '', '', {'suggestions_func':[self, 'get_portrait_suggestions'], 'placeholder':"Don't change", 'icon':load("res://addons/dialogic/Editor/Images/Resources/Portrait.svg")}, 'Character')
 	add_body_edit('Text', ValueType.MultilineText)
 
 func get_portrait_suggestions(search_text):

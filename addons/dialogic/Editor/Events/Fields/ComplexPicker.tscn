@@ -1,23 +1,23 @@
 [gd_scene load_steps=6 format=2]
 
-[ext_resource path="res://addons/dialogic/Editor/Events/Fields/DialogicResourcePicker.gd" type="Script" id=1]
+[ext_resource path="res://addons/dialogic/Editor/Events/Fields/ComplexPicker.gd" type="Script" id=1]
 [ext_resource path="res://addons/dialogic/Editor/Events/styles/ResourceMenuPanelBackground.tres" type="StyleBox" id=2]
 
 [sub_resource type="StyleBoxFlat" id=1]
-content_margin_left = 50.0
-content_margin_right = 50.0
-content_margin_top = 10.0
-content_margin_bottom = 10.0
+content_margin_left = 25.0
+content_margin_right = 25.0
+content_margin_top = 5.0
+content_margin_bottom = 5.0
 bg_color = Color( 0.113725, 0.121569, 0.145098, 1 )
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
 border_color = Color( 0.0784314, 0.0862745, 0.101961, 1 )
-corner_radius_top_left = 6
-corner_radius_top_right = 6
-corner_radius_bottom_right = 6
-corner_radius_bottom_left = 6
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
 
 [sub_resource type="Image" id=4]
 data = {
@@ -34,7 +34,7 @@ flags = 4
 image = SubResource( 4 )
 size = Vector2( 16, 16 )
 
-[node name="DialogicResourcePicker" type="HBoxContainer"]
+[node name="ComplexPicker" type="HBoxContainer"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_right = -521.0
@@ -43,24 +43,26 @@ size_flags_vertical = 4
 script = ExtResource( 1 )
 
 [node name="LeftText" type="Label" parent="."]
-margin_top = 10.0
-margin_bottom = 24.0
+margin_top = 5.0
+margin_bottom = 19.0
 
 [node name="Control" type="Control" parent="."]
 margin_left = 4.0
 margin_right = 4.0
-margin_bottom = 34.0
+margin_bottom = 24.0
 
 [node name="Search" type="LineEdit" parent="."]
 margin_left = 8.0
 margin_right = 499.0
-margin_bottom = 34.0
+margin_bottom = 24.0
 rect_min_size = Vector2( 140, 0 )
 focus_neighbour_bottom = NodePath("Suggestions")
 focus_next = NodePath("Suggestions")
 mouse_filter = 1
 size_flags_horizontal = 3
 size_flags_vertical = 4
+custom_styles/read_only = SubResource( 1 )
+custom_styles/focus = SubResource( 1 )
 custom_styles/normal = SubResource( 1 )
 expand_to_text_length = true
 placeholder_text = "Select Resource"
@@ -70,9 +72,8 @@ caret_blink_speed = 0.5
 [node name="Icon" type="TextureRect" parent="Search"]
 unique_name_in_owner = true
 anchor_bottom = 1.0
-margin_left = 10.0
-margin_right = 30.0
-rect_min_size = Vector2( 14, 0 )
+margin_right = 24.0
+rect_min_size = Vector2( 24, 0 )
 expand = true
 stretch_mode = 4
 
@@ -89,6 +90,8 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = -12.0
 grow_horizontal = 0
+toggle_mode = true
+shortcut_in_tooltip = false
 icon = SubResource( 3 )
 
 [node name="OpenButton" type="ToolButton" parent="Search"]
@@ -104,12 +107,12 @@ icon = SubResource( 3 )
 
 [node name="RightText" type="Label" parent="."]
 margin_left = 503.0
-margin_top = 10.0
+margin_top = 5.0
 margin_right = 503.0
-margin_bottom = 24.0
+margin_bottom = 19.0
 
 [connection signal="focus_entered" from="Search" to="." method="_on_Search_focus_entered"]
 [connection signal="text_changed" from="Search" to="." method="_on_Search_text_changed"]
 [connection signal="text_entered" from="Search" to="." method="_on_Search_text_entered"]
-[connection signal="pressed" from="Search/SelectButton" to="." method="_on_SelectButton_pressed"]
+[connection signal="toggled" from="Search/SelectButton" to="." method="_on_SelectButton_toggled"]
 [connection signal="pressed" from="Search/OpenButton" to="." method="_on_OpenButton_pressed"]

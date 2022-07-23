@@ -12,9 +12,11 @@ func text_changed(value = ""):
 
 func set_left_text(value):
 	$LeftText.text = str(value)
+	$LeftText.visible = bool(value)
 
 func set_right_text(value):
 	$RightText.text = str(value)
+	$RightText.visible = bool(value)
 
 func set_value(value):
 	$TextEdit.text = str(value)
