@@ -90,6 +90,6 @@ func build_event_editor():
 	add_body_edit('Wait', ValueType.Bool, 'Wait:')
 	add_body_edit('Inline', ValueType.Bool, 'Inline:')
 	add_body_edit('Signal_Name', ValueType.SinglelineText, 'Signal Name', '', {}, 'Inline == true')
-	add_body_edit('Single_Use', ValueType.Bool, 'Signle Use', '', {}, 'Inline == true')
+	add_body_edit('Single_Use', ValueType.Bool, 'Single Use', '', {}, 'Inline == true')
 	add_body_line_break()
 	add_body_edit('Arguments', ValueType.StringArray, 'Arguments:')
