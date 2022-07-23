@@ -105,6 +105,8 @@ func _on_Search_text_changed(new_text, just_update = false):
 	if new_text == "" and !just_update:
 		emit_signal("value_changed", property_name, null)
 	
+	ignore_popup_hide_once = just_update
+	
 	var suggestions = get_suggestions_func[0].call(get_suggestions_func[1], new_text)
 	
 	var more_hidden = false
