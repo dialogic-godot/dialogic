@@ -2,6 +2,9 @@ extends Control
 
 
 func _ready():
+	var scene = load( DialogicUtil.get_project_setting('dialogic/editor/test_dialog_scene', 'res://addons/dialogic/Other/DefaultDialogNode.tscn')).instance()
+	add_child(scene)
+	
 	randomize()
 	var current_timeline = ProjectSettings.get_setting('dialogic/editor/current_timeline_path')
 	Dialogic.start_timeline(current_timeline)
