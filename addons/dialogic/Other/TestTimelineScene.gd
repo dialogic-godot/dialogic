@@ -4,6 +4,11 @@ extends Control
 func _ready():
 	var scene = load( DialogicUtil.get_project_setting('dialogic/editor/test_dialog_scene', 'res://addons/dialogic/Other/DefaultDialogNode.tscn')).instance()
 	add_child(scene)
+	if !get_child(0) is CanvasLayer:
+		if get_child(0) is Control:
+			get_child(0).rect_position = get_viewport_rect().size/2.0
+		if get_child(0) is Node2D:
+			get_child(0).position = get_viewport_rect().size/2.0
 	
 	randomize()
 	var current_timeline = ProjectSettings.get_setting('dialogic/editor/current_timeline_path')

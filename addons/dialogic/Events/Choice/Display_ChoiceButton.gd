@@ -1,4 +1,4 @@
-extends BaseButton
+extends Button
 
 class_name DialogicDisplay_ChoiceButton, 'icon.png'
 
