@@ -21,7 +21,7 @@
 [ext_resource path="res://addons/dialogic/Example Assets/Fonts/Roboto-Regular.ttf" type="DynamicFontData" id=19]
 [ext_resource path="res://addons/dialogic/Example Assets/Fonts/Roboto-Bold.ttf" type="DynamicFontData" id=20]
 [ext_resource path="res://addons/dialogic/Example Assets/Fonts/Roboto-Italic.ttf" type="DynamicFontData" id=21]
-[ext_resource path="res://addons/dialogic/Example Assets/backgrounds/background-2.webp" type="Texture" id=22]
+[ext_resource path="res://addons/dialogic/Example Assets/backgrounds/background.webp" type="Texture" id=22]
 [ext_resource path="res://addons/dialogic/Other/HideWithChild.gd" type="Script" id=23]
 
 [sub_resource type="DynamicFont" id=5]
@@ -32,8 +32,7 @@ content_margin_left = 20.0
 content_margin_right = 20.0
 content_margin_top = 4.0
 content_margin_bottom = 4.0
-bg_color = Color( 0.117647, 0.117647, 0.117647, 0.847059 )
-draw_center = false
+bg_color = Color( 0.235294, 0.235294, 0.235294, 0.964706 )
 border_width_left = 2
 border_width_top = 2
 border_width_right = 2
@@ -42,13 +41,17 @@ corner_radius_top_left = 5
 corner_radius_top_right = 5
 corner_radius_bottom_right = 5
 corner_radius_bottom_left = 5
+expand_margin_left = 2.0
+expand_margin_right = 2.0
+expand_margin_top = 2.0
+expand_margin_bottom = 2.0
 
 [sub_resource type="StyleBoxFlat" id=7]
 content_margin_left = 20.0
 content_margin_right = 20.0
 content_margin_top = 4.0
 content_margin_bottom = 4.0
-bg_color = Color( 0.117647, 0.117647, 0.117647, 0.847059 )
+bg_color = Color( 0.117647, 0.117647, 0.117647, 0.964706 )
 corner_radius_top_left = 5
 corner_radius_top_right = 5
 corner_radius_bottom_right = 5
@@ -59,7 +62,7 @@ content_margin_left = 20.0
 content_margin_right = 20.0
 content_margin_top = 4.0
 content_margin_bottom = 4.0
-bg_color = Color( 0.117647, 0.117647, 0.117647, 0.847059 )
+bg_color = Color( 0.117647, 0.117647, 0.117647, 0.964706 )
 draw_center = false
 border_width_left = 2
 border_width_top = 2
@@ -69,13 +72,17 @@ corner_radius_top_left = 5
 corner_radius_top_right = 5
 corner_radius_bottom_right = 5
 corner_radius_bottom_left = 5
+expand_margin_left = 2.0
+expand_margin_right = 2.0
+expand_margin_top = 2.0
+expand_margin_bottom = 2.0
 
 [sub_resource type="StyleBoxFlat" id=9]
 content_margin_left = 20.0
 content_margin_right = 20.0
 content_margin_top = 4.0
 content_margin_bottom = 4.0
-bg_color = Color( 0.411765, 0.411765, 0.411765, 0.847059 )
+bg_color = Color( 0.411765, 0.411765, 0.411765, 1 )
 corner_radius_top_left = 5
 corner_radius_top_right = 5
 corner_radius_bottom_right = 5
@@ -86,7 +93,7 @@ content_margin_left = 20.0
 content_margin_right = 20.0
 content_margin_top = 4.0
 content_margin_bottom = 4.0
-bg_color = Color( 0.117647, 0.117647, 0.117647, 0.847059 )
+bg_color = Color( 0.117647, 0.117647, 0.117647, 0.964706 )
 corner_radius_top_left = 5
 corner_radius_top_right = 5
 corner_radius_bottom_right = 5
@@ -97,7 +104,7 @@ content_margin_left = 20.0
 content_margin_right = 20.0
 content_margin_top = 4.0
 content_margin_bottom = 4.0
-bg_color = Color( 0.117647, 0.117647, 0.117647, 0.847059 )
+bg_color = Color( 0.117647, 0.117647, 0.117647, 0.964706 )
 corner_radius_top_left = 5
 corner_radius_top_right = 5
 corner_radius_bottom_right = 5
@@ -216,7 +223,6 @@ script = ExtResource( 5 )
 position_index = 5
 
 [node name="DefaultTheme" type="Control" parent="."]
-visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 script = ExtResource( 12 )
@@ -230,16 +236,17 @@ margin_left = -146.0
 margin_top = -102.0
 margin_right = 146.0
 margin_bottom = 102.0
+custom_constants/separation = 5
 alignment = 1
 
 [node name="DialogicDisplay_ChoiceButton1" type="Button" parent="DefaultTheme/Choices"]
-margin_top = 11.0
+margin_top = 8.0
 margin_right = 292.0
-margin_bottom = 38.0
+margin_bottom = 35.0
 custom_colors/font_color_disabled = Color( 0.592157, 0.592157, 0.592157, 1 )
-custom_colors/font_color_focus = Color( 0.909804, 0.796078, 0.705882, 1 )
+custom_colors/font_color_focus = Color( 1, 1, 1, 1 )
 custom_colors/font_color = Color( 0.87451, 0.87451, 0.87451, 1 )
-custom_colors/font_color_hover = Color( 0.909804, 0.796078, 0.705882, 1 )
+custom_colors/font_color_hover = Color( 1, 1, 1, 1 )
 custom_colors/font_color_pressed = Color( 0.92549, 0.92549, 0.92549, 1 )
 custom_fonts/font = SubResource( 5 )
 custom_styles/hover = SubResource( 6 )
@@ -251,13 +258,13 @@ text = "Some text"
 script = ExtResource( 4 )
 
 [node name="DialogicDisplay_ChoiceButton2" type="Button" parent="DefaultTheme/Choices"]
-margin_top = 42.0
+margin_top = 40.0
 margin_right = 292.0
-margin_bottom = 69.0
+margin_bottom = 67.0
 custom_colors/font_color_disabled = Color( 0.592157, 0.592157, 0.592157, 1 )
-custom_colors/font_color_focus = Color( 0.909804, 0.796078, 0.705882, 1 )
+custom_colors/font_color_focus = Color( 1, 1, 1, 1 )
 custom_colors/font_color = Color( 0.87451, 0.87451, 0.87451, 1 )
-custom_colors/font_color_hover = Color( 0.909804, 0.796078, 0.705882, 1 )
+custom_colors/font_color_hover = Color( 1, 1, 1, 1 )
 custom_colors/font_color_pressed = Color( 0.92549, 0.92549, 0.92549, 1 )
 custom_fonts/font = SubResource( 5 )
 custom_styles/hover = SubResource( 6 )
@@ -272,13 +279,13 @@ __meta__ = {
 }
 
 [node name="DialogicDisplay_ChoiceButton3" type="Button" parent="DefaultTheme/Choices"]
-margin_top = 73.0
+margin_top = 72.0
 margin_right = 292.0
-margin_bottom = 100.0
+margin_bottom = 99.0
 custom_colors/font_color_disabled = Color( 0.592157, 0.592157, 0.592157, 1 )
-custom_colors/font_color_focus = Color( 0.909804, 0.796078, 0.705882, 1 )
+custom_colors/font_color_focus = Color( 1, 1, 1, 1 )
 custom_colors/font_color = Color( 0.87451, 0.87451, 0.87451, 1 )
-custom_colors/font_color_hover = Color( 0.909804, 0.796078, 0.705882, 1 )
+custom_colors/font_color_hover = Color( 1, 1, 1, 1 )
 custom_colors/font_color_pressed = Color( 0.92549, 0.92549, 0.92549, 1 )
 custom_fonts/font = SubResource( 5 )
 custom_styles/hover = SubResource( 6 )
@@ -297,9 +304,9 @@ margin_top = 104.0
 margin_right = 292.0
 margin_bottom = 131.0
 custom_colors/font_color_disabled = Color( 0.592157, 0.592157, 0.592157, 1 )
-custom_colors/font_color_focus = Color( 0.909804, 0.796078, 0.705882, 1 )
+custom_colors/font_color_focus = Color( 1, 1, 1, 1 )
 custom_colors/font_color = Color( 0.87451, 0.87451, 0.87451, 1 )
-custom_colors/font_color_hover = Color( 0.909804, 0.796078, 0.705882, 1 )
+custom_colors/font_color_hover = Color( 1, 1, 1, 1 )
 custom_colors/font_color_pressed = Color( 0.92549, 0.92549, 0.92549, 1 )
 custom_fonts/font = SubResource( 5 )
 custom_styles/hover = SubResource( 6 )
@@ -314,13 +321,13 @@ __meta__ = {
 }
 
 [node name="DialogicDisplay_ChoiceButton5" type="Button" parent="DefaultTheme/Choices"]
-margin_top = 135.0
+margin_top = 136.0
 margin_right = 292.0
-margin_bottom = 162.0
+margin_bottom = 163.0
 custom_colors/font_color_disabled = Color( 0.592157, 0.592157, 0.592157, 1 )
-custom_colors/font_color_focus = Color( 0.909804, 0.796078, 0.705882, 1 )
+custom_colors/font_color_focus = Color( 1, 1, 1, 1 )
 custom_colors/font_color = Color( 0.87451, 0.87451, 0.87451, 1 )
-custom_colors/font_color_hover = Color( 0.909804, 0.796078, 0.705882, 1 )
+custom_colors/font_color_hover = Color( 1, 1, 1, 1 )
 custom_colors/font_color_pressed = Color( 0.92549, 0.92549, 0.92549, 1 )
 custom_fonts/font = SubResource( 5 )
 custom_styles/hover = SubResource( 6 )
@@ -335,13 +342,13 @@ __meta__ = {
 }
 
 [node name="DialogicDisplay_ChoiceButton6" type="Button" parent="DefaultTheme/Choices"]
-margin_top = 166.0
+margin_top = 168.0
 margin_right = 292.0
-margin_bottom = 193.0
+margin_bottom = 195.0
 custom_colors/font_color_disabled = Color( 0.592157, 0.592157, 0.592157, 1 )
-custom_colors/font_color_focus = Color( 0.909804, 0.796078, 0.705882, 1 )
+custom_colors/font_color_focus = Color( 1, 1, 1, 1 )
 custom_colors/font_color = Color( 0.87451, 0.87451, 0.87451, 1 )
-custom_colors/font_color_hover = Color( 0.909804, 0.796078, 0.705882, 1 )
+custom_colors/font_color_hover = Color( 1, 1, 1, 1 )
 custom_colors/font_color_pressed = Color( 0.92549, 0.92549, 0.92549, 1 )
 custom_fonts/font = SubResource( 5 )
 custom_styles/hover = SubResource( 6 )
@@ -385,24 +392,24 @@ align = 1
 script = ExtResource( 3 )
 
 [node name="PanelContainer" type="TextureRect" parent="DefaultTheme"]
-self_modulate = Color( 0.054902, 0.054902, 0.054902, 1 )
+self_modulate = Color( 0.137255, 0.137255, 0.137255, 0.972549 )
 anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-margin_left = -319.0
+margin_left = -333.0
 margin_top = -180.0
-margin_right = 343.0
-margin_bottom = -48.0
+margin_right = 356.0
+margin_bottom = -42.0
 texture = ExtResource( 22 )
 expand = true
 
 [node name="DialogicDisplay_DialogText" type="RichTextLabel" parent="DefaultTheme/PanelContainer"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = 16.0
+margin_left = 26.0
 margin_top = 9.0
-margin_right = -16.0
+margin_right = -18.0
 margin_bottom = -7.0
 custom_colors/default_color = Color( 1, 1, 1, 1 )
 custom_fonts/italics_font = SubResource( 1 )
@@ -418,6 +425,7 @@ script = ExtResource( 10 )
 sounds = [ ExtResource( 14 ), ExtResource( 16 ), ExtResource( 15 ), ExtResource( 11 ), ExtResource( 13 ) ]
 
 [node name="SpecialTheme" type="Control" parent="."]
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 script = ExtResource( 12 )
