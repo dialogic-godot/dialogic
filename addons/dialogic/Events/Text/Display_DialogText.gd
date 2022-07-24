@@ -50,7 +50,7 @@ func reveal_text(_text:String) -> void:
 
 # called by the timer -> reveals more text
 func continue_reveal() -> void:
-	if visible_characters < len(bbcode_text):
+	if visible_characters < get_total_character_count():
 		visible_characters += 1
 		emit_signal("continued_revealing_text", bbcode_text[visible_characters-1])
 		execute_effects()

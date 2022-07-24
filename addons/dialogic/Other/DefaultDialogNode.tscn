@@ -21,7 +21,6 @@
 [ext_resource path="res://addons/dialogic/Example Assets/Fonts/Roboto-Regular.ttf" type="DynamicFontData" id=19]
 [ext_resource path="res://addons/dialogic/Example Assets/Fonts/Roboto-Bold.ttf" type="DynamicFontData" id=20]
 [ext_resource path="res://addons/dialogic/Example Assets/Fonts/Roboto-Italic.ttf" type="DynamicFontData" id=21]
-[ext_resource path="res://addons/dialogic/Example Assets/backgrounds/background.webp" type="Texture" id=22]
 [ext_resource path="res://addons/dialogic/Other/HideWithChild.gd" type="Script" id=23]
 
 [sub_resource type="DynamicFont" id=5]
@@ -113,6 +112,10 @@ corner_radius_bottom_left = 5
 [sub_resource type="DynamicFont" id=3]
 size = 20
 font_data = ExtResource( 19 )
+
+[sub_resource type="StyleBoxFlat" id=21]
+bg_color = Color( 0.117647, 0.117647, 0.117647, 0.964706 )
+skew = Vector2( -0.121, -0.008 )
 
 [sub_resource type="DynamicFont" id=1]
 size = 20
@@ -391,25 +394,23 @@ text = "Name"
 align = 1
 script = ExtResource( 3 )
 
-[node name="PanelContainer" type="TextureRect" parent="DefaultTheme"]
-self_modulate = Color( 0.137255, 0.137255, 0.137255, 0.972549 )
+[node name="PanelContainer" type="Panel" parent="DefaultTheme"]
 anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-margin_left = -333.0
-margin_top = -180.0
-margin_right = 356.0
-margin_bottom = -42.0
-texture = ExtResource( 22 )
-expand = true
+margin_left = -318.0
+margin_top = -177.0
+margin_right = 341.0
+margin_bottom = -39.0
+custom_styles/panel = SubResource( 21 )
 
 [node name="DialogicDisplay_DialogText" type="RichTextLabel" parent="DefaultTheme/PanelContainer"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = 26.0
+margin_left = 18.0
 margin_top = 9.0
-margin_right = -18.0
+margin_right = -14.0
 margin_bottom = -7.0
 custom_colors/default_color = Color( 1, 1, 1, 1 )
 custom_fonts/italics_font = SubResource( 1 )
