@@ -23,6 +23,7 @@ func _init() -> void:
 	set_default_color('Color5')
 	event_category = Category.AUDIOVISUAL
 	event_sorting_index = 3
+	expand_by_default = false
 	
 
 

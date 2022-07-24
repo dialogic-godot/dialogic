@@ -55,8 +55,18 @@ margin_bottom = 604.0
 size_flags_vertical = 3
 
 [node name="SettingsEditor" parent="." instance=ExtResource( 3 )]
-visible = false
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_right = 1026.0
 margin_bottom = 602.0
+
+[node name="SaveConfirmationDialog" type="AcceptDialog" parent="."]
+visible = true
+margin_left = 357.0
+margin_top = 189.0
+margin_right = 557.0
+margin_bottom = 259.0
+popup_exclusive = true
+
+[connection signal="confirmed" from="SaveConfirmationDialog" to="." method="_on_SaveConfirmationDialog_confirmed"]
+[connection signal="custom_action" from="SaveConfirmationDialog" to="." method="_on_SaveConfirmationDialog_custom_action"]

@@ -65,7 +65,7 @@ margin_bottom = 112.0
 [node name="PanelContainer" type="PanelContainer" parent="."]
 margin_right = 102.0
 margin_bottom = 76.0
-mouse_filter = 1
+mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_styles/panel = SubResource( 1 )
@@ -156,23 +156,30 @@ custom_colors/font_color = Color( 0, 0, 0, 1 )
 
 [node name="Content" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer/Header"]
 margin_left = 10.0
-margin_right = 45.0
+margin_right = 37.0
 margin_bottom = 60.0
 size_flags_horizontal = 3
 
 [node name="Spacer" type="Control" parent="PanelContainer/MarginContainer/VBoxContainer/Header"]
-margin_left = 50.0
-margin_right = 86.0
+margin_left = 42.0
+margin_right = 69.0
 margin_bottom = 60.0
-mouse_filter = 1
+mouse_filter = 2
 size_flags_horizontal = 3
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="ExpandButton" type="ToolButton" parent="PanelContainer/MarginContainer/VBoxContainer/Header"]
+unique_name_in_owner = true
+margin_left = 74.0
+margin_right = 86.0
+margin_bottom = 60.0
+toggle_mode = true
+
 [node name="CollapseButton" type="ToolButton" parent="PanelContainer/MarginContainer/VBoxContainer/Header"]
 visible = false
-margin_left = 74.0
+margin_left = 58.0
 margin_right = 86.0
 margin_bottom = 60.0
 toggle_mode = true
@@ -192,6 +199,7 @@ margin_right = 20.0
 rect_min_size = Vector2( 20, 0 )
 
 [node name="Content" type="Container" parent="PanelContainer/MarginContainer/VBoxContainer/Body"]
+unique_name_in_owner = true
 margin_left = 20.0
 margin_right = 86.0
 mouse_filter = 2
@@ -210,4 +218,6 @@ custom_styles/panel = ExtResource( 5 )
 items = [ "Documentation", SubResource( 8 ), 0, false, false, 0, 0, null, "", false, "", null, 0, false, false, -1, 0, null, "", true, "Move up", SubResource( 8 ), 0, false, false, 2, 0, null, "", false, "Move down", SubResource( 8 ), 0, false, false, 3, 0, null, "", false, "", null, 0, false, false, -1, 0, null, "", true, "Delete", SubResource( 8 ), 0, false, false, 5, 0, null, "", false ]
 script = ExtResource( 8 )
 
+[connection signal="gui_input" from="." to="." method="_on_EventNode_gui_input"]
 [connection signal="visibility_changed" from="Indent" to="." method="_on_Indent_visibility_changed"]
+[connection signal="toggled" from="PanelContainer/MarginContainer/VBoxContainer/Header/ExpandButton" to="." method="_on_ExpandButton_toggled"]

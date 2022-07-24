@@ -110,15 +110,26 @@ func get_original_translation_text():
 	return Text
 
 func build_event_editor():
-	add_header_edit('Character', ValueType.ComplexPicker, 'Character:', '', {'file_extension':'.dch', 'icon':load("res://addons/dialogic/Editor/Images/Resources/character.svg")})
+	add_header_edit('Character', ValueType.ComplexPicker, 'Character:', '', {'file_extension':'.dch','suggestions_func':[self, 'get_character_suggestions'], 'empty_text':'Noone','icon':load("res://addons/dialogic/Editor/Images/Resources/character.svg")})
 	add_header_edit('Portrait', ValueType.ComplexPicker, '', '', {'suggestions_func':[self, 'get_portrait_suggestions'], 'placeholder':"Don't change", 'icon':load("res://addons/dialogic/Editor/Images/Resources/Portrait.svg")}, 'Character')
 	add_body_edit('Text', ValueType.MultilineText)
 
+
+func get_character_suggestions(search_text:String):
+	var suggestions = {}
+	var resources = DialogicUtil.list_resources_of_type('.dch')
+	suggestions['Noone'] = {'value':'', 'editor_icon':["GuiRadioUnchecked", "EditorIcons"]}
+	
+	for resource in resources:
+		if search_text.empty() or search_text.to_lower() in DialogicUtil.pretty_name(resource).to_lower():
+			suggestions[DialogicUtil.pretty_name(resource)] = {'value':resource, 'tooltip':resource, 'icon':load("res://addons/dialogic/Editor/Images/Resources/character.svg")}
+	return suggestions
+
 func get_portrait_suggestions(search_text):
 	var suggestions = {}
-	suggestions["Don't change"] = ''
+	suggestions["Don't change"] = {'value':'', 'editor_icon':["GuiRadioUnchecked", "EditorIcons"]}
 	if Character != null:
 		for portrait in Character.portraits:
 			if search_text.empty() or search_text.to_lower() in portrait.to_lower():
-				suggestions[portrait] = portrait
+				suggestions[portrait] = {'value':portrait, 'icon':load("res://addons/dialogic/Editor/Images/Resources/Portrait.svg")}
 	return suggestions

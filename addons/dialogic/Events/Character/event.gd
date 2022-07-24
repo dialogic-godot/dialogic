@@ -89,6 +89,7 @@ func _init() -> void:
 	event_category = Category.MAIN
 	event_sorting_index = 2
 	continue_at_end = true
+	expand_by_default = false
 
 
 ################################################################################
@@ -181,7 +182,7 @@ func is_valid_event_string(string:String):
 func build_event_editor():
 	add_header_edit('ActionType', ValueType.FixedOptionSelector, '', '',
 		 {'selector_options':{"Join":ActionTypes.Join, "Leave":ActionTypes.Leave, "Update":ActionTypes.Update}})
-	add_header_edit('Character', ValueType.ComplexPicker, '', '', {'file_extension':'.dch', 'icon':load("res://addons/dialogic/Editor/Images/Resources/character.svg")})
+	add_header_edit('Character', ValueType.ComplexPicker, '', '', {'suggestions_func':[self, 'get_character_suggestions'],'file_extension':'.dch', 'icon':load("res://addons/dialogic/Editor/Images/Resources/character.svg")})
 	
 	add_header_edit('Portrait', ValueType.ComplexPicker, 'Portrait:', '', {'suggestions_func':[self, 'get_portrait_suggestions'], 'icon':load("res://addons/dialogic/Editor/Images/Resources/Portrait.svg")}, 'Character != null and ActionType != %s' %ActionTypes.Leave)
 	add_header_edit('Position', ValueType.Integer, 'Position:', '', {}, 'Character != null and ActionType != %s' %ActionTypes.Leave)
@@ -191,12 +192,23 @@ func build_event_editor():
 	add_body_edit('AnimationWait', ValueType.Bool, 'Wait:', '', {}, 'Character and AnimationName')
 	add_body_edit('AnimationRepeats', ValueType.Integer, 'Repeat:', '', {},'Character and AnimationName and ActionType == %s)' %ActionTypes.Update)
 
+func get_character_suggestions(search_text:String):
+	var suggestions = {}
+	var resources = DialogicUtil.list_resources_of_type('.dch')
+	
+	for resource in resources:
+		if search_text.empty() or search_text.to_lower() in DialogicUtil.pretty_name(resource).to_lower():
+			suggestions[DialogicUtil.pretty_name(resource)] = {'value':resource, 'tooltip':resource, 'icon':load("res://addons/dialogic/Editor/Images/Resources/character.svg")}
+	return suggestions
+
 func get_portrait_suggestions(search_text):
 	var suggestions = {}
+	if ActionType == ActionTypes.Update:
+		suggestions["Don't Change"] = {'value':'', 'editor_icon':["GuiRadioUnchecked", "EditorIcons"]}
 	if Character != null:
 		for portrait in Character.portraits:
 			if search_text.empty() or search_text.to_lower() in portrait.to_lower():
-				suggestions[portrait] = portrait
+				suggestions[portrait] = {'value':portrait, 'icon':load("res://addons/dialogic/Editor/Images/Resources/Portrait.svg")}
 	return suggestions
 
 func get_animation_suggestions(search_text):
@@ -204,22 +216,22 @@ func get_animation_suggestions(search_text):
 	
 	match ActionType:
 		ActionTypes.Join, ActionTypes.Leave:
-			suggestions['Default'] = ""
+			suggestions['Default'] = {'value':"", 'editor_icon':["GuiRadioUnchecked", "EditorIcons"]}
 		ActionTypes.Update:
-			suggestions['None'] = ""
+			suggestions['None'] = {'value':"", 'editor_icon':["GuiRadioUnchecked", "EditorIcons"]}
 	
 	for anim in list_animations():
 		if search_text.empty() or search_text.to_lower() in anim.get_file().to_lower():
 			match ActionType:
 				ActionTypes.Join:
 					if '_in' in anim.get_file():
-						suggestions[DialogicUtil.pretty_name(anim)] = anim
+						suggestions[DialogicUtil.pretty_name(anim)] = {'value':anim, 'editor_icon':["Animation", "EditorIcons"]}
 				ActionTypes.Leave:
 					if '_out' in anim.get_file():
-						suggestions[DialogicUtil.pretty_name(anim)] = anim
+						suggestions[DialogicUtil.pretty_name(anim)] = {'value':anim, 'editor_icon':["Animation", "EditorIcons"]}
 				ActionTypes.Update:
 					if not ('_in' in anim.get_file() or '_out' in anim.get_file()):
-						suggestions[DialogicUtil.pretty_name(anim)] = anim
+						suggestions[DialogicUtil.pretty_name(anim)] = {'value':anim, 'editor_icon':["Animation", "EditorIcons"]}
 						continue
 	return suggestions
 

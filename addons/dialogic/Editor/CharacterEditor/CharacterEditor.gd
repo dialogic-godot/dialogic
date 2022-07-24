@@ -27,8 +27,7 @@ func load_character(resource: DialogicCharacter) -> void:
 	if not resource:
 		return
 	current_character = resource
-	toolbar.get_node('CurrentResource').text = resource.resource_path
-	toolbar.set_character_mode()
+	toolbar.load_character(resource.resource_path)
 	$'%NameLineEdit'.text = resource.name
 	$'%ColorPickerButton'.color = resource.color
 	$'%DisplayNameLineEdit'.text = resource.display_name
