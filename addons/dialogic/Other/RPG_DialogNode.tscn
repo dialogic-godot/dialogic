@@ -1,0 +1,187 @@
+[gd_scene load_steps=14 format=2]
+
+[ext_resource path="res://addons/dialogic/Example Assets/Fonts/Roboto-Regular.ttf" type="DynamicFontData" id=1]
+[ext_resource path="res://addons/dialogic/Example Assets/Fonts/Roboto-Bold.ttf" type="DynamicFontData" id=2]
+[ext_resource path="res://addons/dialogic/Events/Text/Display_DialogText.gd" type="Script" id=3]
+[ext_resource path="res://addons/dialogic/Events/Character/Display_PortraitPosition.gd" type="Script" id=4]
+[ext_resource path="res://addons/dialogic/Events/Character/Display_PortraitHolder.gd" type="Script" id=5]
+[ext_resource path="res://addons/dialogic/Events/Text/Display_NameLabel.gd" type="Script" id=6]
+[ext_resource path="res://addons/dialogic/Example Assets/backgrounds/rpg_box.webp" type="Texture" id=7]
+[ext_resource path="res://addons/dialogic/Events/Text/Display_InputHandler.gd" type="Script" id=8]
+[ext_resource path="res://addons/dialogic/Events/Choice/Display_ChoiceButton.gd" type="Script" id=9]
+[ext_resource path="res://addons/dialogic/Example Assets/Fonts/Roboto-Italic.ttf" type="DynamicFontData" id=10]
+
+[sub_resource type="DynamicFont" id=1]
+size = 20
+font_data = ExtResource( 2 )
+
+[sub_resource type="DynamicFont" id=2]
+size = 18
+font_data = ExtResource( 1 )
+
+[sub_resource type="DynamicFont" id=3]
+font_data = ExtResource( 10 )
+
+[node name="RPG_ExampleNode" type="CanvasLayer"]
+layer = 3
+
+[node name="DialogicInputHandler" type="Node" parent="."]
+script = ExtResource( 8 )
+
+[node name="DialogicDisplay_PortraitHolder" type="CanvasLayer" parent="."]
+layer = 2
+script = ExtResource( 5 )
+
+[node name="TextureRect" type="TextureRect" parent="."]
+self_modulate = Color( 0.435294, 0.32549, 0.168627, 1 )
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -318.0
+margin_top = -160.0
+margin_right = 318.0
+margin_bottom = -24.0
+texture = ExtResource( 7 )
+expand = true
+
+[node name="DialogicDisplay_PortraitPosition" type="Position2D" parent="TextureRect"]
+position = Vector2( 69, 130 )
+script = ExtResource( 4 )
+
+[node name="CanvasLayer" type="CanvasLayer" parent="TextureRect"]
+
+[node name="ColorRect" type="ColorRect" parent="TextureRect/CanvasLayer"]
+margin_left = 199.0
+margin_top = 446.0
+margin_right = 327.0
+margin_bottom = 569.0
+color = Color( 0.121569, 0.105882, 0.0784314, 1 )
+
+[node name="VBoxContainer" type="VBoxContainer" parent="TextureRect"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 144.0
+margin_top = 13.0
+margin_right = -13.0
+margin_bottom = -13.0
+
+[node name="DialogicDisplay_NameLabel" type="Label" parent="TextureRect/VBoxContainer"]
+margin_right = 479.0
+margin_bottom = 24.0
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+custom_fonts/font = SubResource( 1 )
+text = "Name"
+script = ExtResource( 6 )
+
+[node name="DialogicDisplay_DialogText" type="RichTextLabel" parent="TextureRect/VBoxContainer"]
+margin_top = 28.0
+margin_right = 479.0
+margin_bottom = 87.0
+size_flags_vertical = 3
+custom_colors/default_color = Color( 1, 0.956863, 0.788235, 1 )
+custom_fonts/normal_font = SubResource( 2 )
+bbcode_enabled = true
+bbcode_text = "Some text"
+text = "Some text"
+fit_content_height = true
+script = ExtResource( 3 )
+
+[node name="VBoxContainer" type="HBoxContainer" parent="TextureRect/VBoxContainer"]
+margin_top = 91.0
+margin_right = 479.0
+margin_bottom = 110.0
+custom_constants/separation = 20
+alignment = 2
+
+[node name="DialogicDisplay_ChoiceButton" type="LinkButton" parent="TextureRect/VBoxContainer/VBoxContainer"]
+margin_left = 199.0
+margin_right = 229.0
+margin_bottom = 19.0
+custom_colors/font_color_focus = Color( 0.890196, 0.509804, 0.345098, 1 )
+custom_colors/font_color = Color( 0.937255, 0.803922, 0.635294, 1 )
+custom_colors/font_color_hover = Color( 0.941176, 0.619608, 0.243137, 1 )
+custom_colors/font_color_pressed = Color( 0.819608, 0.67451, 0.545098, 1 )
+custom_fonts/font = SubResource( 3 )
+text = "Text"
+script = ExtResource( 9 )
+
+[node name="DialogicDisplay_ChoiceButton2" type="LinkButton" parent="TextureRect/VBoxContainer/VBoxContainer"]
+margin_left = 249.0
+margin_right = 279.0
+margin_bottom = 19.0
+focus_mode = 2
+custom_colors/font_color_focus = Color( 0.890196, 0.509804, 0.345098, 1 )
+custom_colors/font_color = Color( 0.937255, 0.803922, 0.635294, 1 )
+custom_colors/font_color_hover = Color( 0.941176, 0.619608, 0.243137, 1 )
+custom_colors/font_color_pressed = Color( 0.819608, 0.67451, 0.545098, 1 )
+custom_fonts/font = SubResource( 3 )
+text = "Text"
+script = ExtResource( 9 )
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="DialogicDisplay_ChoiceButton3" type="LinkButton" parent="TextureRect/VBoxContainer/VBoxContainer"]
+margin_left = 299.0
+margin_right = 329.0
+margin_bottom = 19.0
+focus_mode = 2
+custom_colors/font_color_focus = Color( 0.890196, 0.509804, 0.345098, 1 )
+custom_colors/font_color = Color( 0.937255, 0.803922, 0.635294, 1 )
+custom_colors/font_color_hover = Color( 0.941176, 0.619608, 0.243137, 1 )
+custom_colors/font_color_pressed = Color( 0.819608, 0.67451, 0.545098, 1 )
+custom_fonts/font = SubResource( 3 )
+text = "Text"
+script = ExtResource( 9 )
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="DialogicDisplay_ChoiceButton4" type="LinkButton" parent="TextureRect/VBoxContainer/VBoxContainer"]
+margin_left = 349.0
+margin_right = 379.0
+margin_bottom = 19.0
+focus_mode = 2
+custom_colors/font_color_focus = Color( 0.890196, 0.509804, 0.345098, 1 )
+custom_colors/font_color = Color( 0.937255, 0.803922, 0.635294, 1 )
+custom_colors/font_color_hover = Color( 0.941176, 0.619608, 0.243137, 1 )
+custom_colors/font_color_pressed = Color( 0.819608, 0.67451, 0.545098, 1 )
+custom_fonts/font = SubResource( 3 )
+text = "Text"
+script = ExtResource( 9 )
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="DialogicDisplay_ChoiceButton5" type="LinkButton" parent="TextureRect/VBoxContainer/VBoxContainer"]
+margin_left = 399.0
+margin_right = 429.0
+margin_bottom = 19.0
+focus_mode = 2
+custom_colors/font_color_focus = Color( 0.890196, 0.509804, 0.345098, 1 )
+custom_colors/font_color = Color( 0.937255, 0.803922, 0.635294, 1 )
+custom_colors/font_color_hover = Color( 0.941176, 0.619608, 0.243137, 1 )
+custom_colors/font_color_pressed = Color( 0.819608, 0.67451, 0.545098, 1 )
+custom_fonts/font = SubResource( 3 )
+text = "Text"
+script = ExtResource( 9 )
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="DialogicDisplay_ChoiceButton6" type="LinkButton" parent="TextureRect/VBoxContainer/VBoxContainer"]
+margin_left = 449.0
+margin_right = 479.0
+margin_bottom = 19.0
+focus_mode = 2
+custom_colors/font_color_focus = Color( 0.890196, 0.509804, 0.345098, 1 )
+custom_colors/font_color = Color( 0.937255, 0.803922, 0.635294, 1 )
+custom_colors/font_color_hover = Color( 0.941176, 0.619608, 0.243137, 1 )
+custom_colors/font_color_pressed = Color( 0.819608, 0.67451, 0.545098, 1 )
+custom_fonts/font = SubResource( 3 )
+text = "Text"
+script = ExtResource( 9 )
+__meta__ = {
+"_editor_description_": ""
+}
