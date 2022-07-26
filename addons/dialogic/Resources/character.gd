@@ -5,7 +5,7 @@ class_name DialogicCharacter
 
 export (String) var name:String = ""
 export (String) var display_name:String = ""
-export (PoolStringArray) var nicknames:Array = []
+export (PackedStringArray) var nicknames:Array = []
 
 export (Color) var color:Color = Color()
 export (String, MULTILINE) var description:String = ""

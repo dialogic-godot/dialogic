@@ -6,8 +6,8 @@ class_name DialogicTimelineFormatLoader
 
 
 # returns all excepted extenstions
-func get_recognized_extensions() -> PoolStringArray:
-	return PoolStringArray(["dtl"])
+func get_recognized_extensions() -> PackedStringArray:
+	return PackedStringArray(["dtl"])
 
 
 # Returns "Rrsource" if this file can/should be loaded by this script

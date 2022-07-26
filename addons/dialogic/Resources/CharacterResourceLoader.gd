@@ -6,8 +6,8 @@ class_name DialogicCharacterFormatLoader
 
 
 # returns all excepted extenstions
-func get_recognized_extensions() -> PoolStringArray:
-	return PoolStringArray(["dch"])
+func get_recognized_extensions() -> PackedStringArray:
+	return PackedStringArray(["dch"])
 
 
 # Returns "Rrsource" if this file can/should be loaded by this script

@@ -122,7 +122,7 @@ func erase_translations():
 		ResourceSaver.save(timeline_path, tml)
 
 	
-	ProjectSettings.set_setting('locale/translations', PoolStringArray(trans_files))
+	ProjectSettings.set_setting('locale/translations', PackedStringArray(trans_files))
 	
 	refresh()
 
@@ -155,4 +155,4 @@ func _on_TransUpdate_pressed():
 				if not file in trans_files:
 					trans_files.append(file)
 	
-	ProjectSettings.set_setting('locale/translations', PoolStringArray(trans_files))
+	ProjectSettings.set_setting('locale/translations', PackedStringArray(trans_files))

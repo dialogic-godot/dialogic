@@ -3,8 +3,8 @@ extends ResourceFormatSaver
 class_name DialogicTimelineFormatSaver
 
 
-func get_recognized_extensions(resource: Resource) -> PoolStringArray:
-	return PoolStringArray(["dtl"])
+func get_recognized_extensions(resource: Resource) -> PackedStringArray:
+	return PackedStringArray(["dtl"])
 
 
 # Return true if this resource should be loaded as a DialogicCharacter 

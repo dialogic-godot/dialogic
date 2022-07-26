@@ -3,8 +3,8 @@ extends ResourceFormatSaver
 class_name DialogicCharacterFormatSaver
 
 
-func get_recognized_extensions(resource: Resource) -> PoolStringArray:
-	return PoolStringArray(["dch"])
+func get_recognized_extensions(resource: Resource) -> PackedStringArray:
+	return PackedStringArray(["dch"])
 
 
 # Return true if this resource should be loaded as a DialogicCharacter 
