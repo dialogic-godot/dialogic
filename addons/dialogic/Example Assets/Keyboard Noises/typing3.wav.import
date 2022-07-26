@@ -2,12 +2,13 @@
 
 importer="wav"
 type="AudioStreamSample"
-path="res://.import/typing3.wav-e77301ce145d318c0319e494a9be29c1.sample"
+uid="uid://blpfmsgi8yb18"
+path="res://.godot/imported/typing3.wav-e77301ce145d318c0319e494a9be29c1.sample"
 
 [deps]
 
 source_file="res://addons/dialogic/Example Assets/Keyboard Noises/typing3.wav"
-dest_files=[ "res://.import/typing3.wav-e77301ce145d318c0319e494a9be29c1.sample" ]
+dest_files=["res://.godot/imported/typing3.wav-e77301ce145d318c0319e494a9be29c1.sample"]
 
 [params]
 

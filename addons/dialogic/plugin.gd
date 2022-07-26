@@ -15,12 +15,12 @@ func _init():
 func _enter_tree() -> void:
 	_add_custom_editor_view()
 	_editor_interface = get_editor_interface()
-	get_editor_interface().get_editor_viewport().add_child(_editor_view)
+	get_editor_interface().get_editor_main_control().add_child(_editor_view)
 	make_visible(false)
 
 
 func _ready():
-	if Engine.editor_hint:
+	if Engine.is_editor_hint():
 		# Force Godot to show the dialogic folder
 		get_editor_interface().get_resource_filesystem().scan()
 	
@@ -54,7 +54,8 @@ func get_plugin_icon():
 
 
 func _add_custom_editor_view():
-	_editor_view = preload("res://addons/dialogic/Editor/EditorView.tscn").instance()
+	_editor_view = Button.new()
+#	_editor_view = preload("res://addons/dialogic/Editor/EditorView.tscn").instance()
 
 
 func _remove_custom_editor_view():
@@ -67,19 +68,19 @@ func save_external_data():
 	emit_signal('dialogic_save')
 
 
-func handles(object):
-	if object is DialogicTimeline:
-		return true
-	if object is DialogicCharacter:
-		return true
+#func handles(object):
+#	if object is DialogicTimeline:
+#		return true
+#	if object is DialogicCharacter:
+#		return true
 
 
-func edit(object):
-	make_visible(true)
-	if object is DialogicTimeline:
-		_editor_view.edit_timeline(object)
-	if object is DialogicCharacter:
-		_editor_view.edit_character(object)
+#func edit(object):
+#	make_visible(true)
+#	if object is DialogicTimeline:
+#		_editor_view.edit_timeline(object)
+#	if object is DialogicCharacter:
+#		_editor_view.edit_character(object)
 
 
 func enable_plugin():
@@ -94,14 +95,14 @@ func add_dialogic_default_action():
 		var input_enter = InputEventKey.new()
 		input_enter.scancode = KEY_ENTER
 		var input_left_click = InputEventMouseButton.new()
-		input_left_click.button_index = BUTTON_LEFT
+#		input_left_click.button_index = BUTTON_LEFT
 		input_left_click.pressed = true
 		var input_space = InputEventKey.new()
 		input_space.scancode = KEY_SPACE
 		var input_x = InputEventKey.new()
 		input_x.scancode = KEY_X
 		var input_controller = InputEventJoypadButton.new()
-		input_controller.button_index = JOY_BUTTON_0
+#		input_controller.button_index = JOY_BUTTON_0
 	
 		ProjectSettings.set_setting('input/dialogic_default_action', {'deadzone':0.5, 'events':[input_enter, input_left_click, input_space, input_x, input_controller]})
 		ProjectSettings.save()
