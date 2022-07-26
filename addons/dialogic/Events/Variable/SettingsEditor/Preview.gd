@@ -1,4 +1,4 @@
-tool
+@tool
 extends Control
 
 # This preview is used in the variables editor (Settings)

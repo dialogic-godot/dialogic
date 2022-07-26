@@ -1,4 +1,4 @@
-tool
+@tool
 extends Control
 
 const portrait_entry = preload("res://addons/dialogic/Editor/CharacterEditor/PortraitEntry.tscn")

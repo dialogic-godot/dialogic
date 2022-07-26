@@ -1,4 +1,4 @@
-tool
+@tool
 class_name DialogicUtil
 
 static func get_editor_scale() -> float:

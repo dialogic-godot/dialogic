@@ -1,4 +1,4 @@
-tool
+@tool
 extends PopupMenu
 
 func _ready():

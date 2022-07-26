@@ -1,4 +1,4 @@
-tool
+@tool
 extends Button
 
 export (String) var visible_name = ""

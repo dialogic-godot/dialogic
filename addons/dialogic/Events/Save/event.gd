@@ -1,4 +1,4 @@
-tool
+@tool
 extends DialogicEvent
 class_name DialogicSaveEvent
 

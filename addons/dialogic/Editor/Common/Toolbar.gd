@@ -1,4 +1,4 @@
-tool
+@tool
 extends HBoxContainer
 
 func _ready():

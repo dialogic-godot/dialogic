@@ -1,4 +1,4 @@
-tool
+@tool
 extends ScrollContainer
 
 # store last attempts since godot sometimes misses drop events

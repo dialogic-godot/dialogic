@@ -1,4 +1,4 @@
-tool
+@tool
 extends Container
 
 # The flow container will fit as many children in a row as it can

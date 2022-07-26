@@ -1,4 +1,4 @@
-tool
+@tool
 extends ResourceFormatLoader
 
 # Needed by godot

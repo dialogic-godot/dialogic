@@ -1,4 +1,4 @@
-tool
+@tool
 extends Control
 
 var property_name : String

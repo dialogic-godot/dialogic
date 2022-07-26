@@ -1,4 +1,4 @@
-tool
+@tool
 extends HBoxContainer
 
 signal value_changed()

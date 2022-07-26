@@ -1,4 +1,4 @@
-tool
+@tool
 extends Label
 export var text_key : String = ""
 

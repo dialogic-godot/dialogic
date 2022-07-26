@@ -1,4 +1,4 @@
-tool
+@tool
 extends Resource
 class_name DialogicCharacter
 

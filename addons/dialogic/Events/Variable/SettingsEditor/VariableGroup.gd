@@ -1,4 +1,4 @@
-tool
+@tool
 extends PanelContainer
 
 export (bool) var MainGroup = false

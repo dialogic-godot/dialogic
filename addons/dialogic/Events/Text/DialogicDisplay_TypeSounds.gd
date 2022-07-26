@@ -1,4 +1,4 @@
-tool
+@tool
 extends AudioStreamPlayer
 
 class_name DialogicDisplay_TypeSounds

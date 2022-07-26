@@ -1,4 +1,4 @@
-tool
+@tool
 extends VBoxContainer
 
 const ArrayValue = "res://addons/dialogic/Editor/Events/Fields/ArrayValue.tscn"

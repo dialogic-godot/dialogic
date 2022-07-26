@@ -1,4 +1,4 @@
-tool
+@tool
 extends HBoxContainer
 
 func load_character(character:DialogicCharacter):

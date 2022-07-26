@@ -1,4 +1,4 @@
-tool
+@tool
 extends WindowDialog
 
 func _ready():

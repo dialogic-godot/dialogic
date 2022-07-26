@@ -2,7 +2,7 @@
 # This is a modified version of AnidemDex's TranslationService 
 # https://github.com/AnidemDex/Godot-TranslationService
 
-tool
+@tool
 class_name DTS
 
 

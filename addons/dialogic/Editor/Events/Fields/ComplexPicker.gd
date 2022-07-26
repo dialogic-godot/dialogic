@@ -1,4 +1,4 @@
-tool
+@tool
 extends Control
 
 export(String) var placeholder_text = "Select Resource"

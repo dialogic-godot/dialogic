@@ -1,4 +1,4 @@
-tool
+@tool
 extends ResourceFormatSaver
 class_name DialogicTimelineFormatSaver
 

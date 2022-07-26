@@ -1,4 +1,4 @@
-tool
+@tool
 extends PanelContainer
 
 var parent_Group = null
