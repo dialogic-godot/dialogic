@@ -2,46 +2,36 @@
 extends Resource
 class_name DialogicTimeline
 
-export (String) var dialogic_version
+@export var dialogic_version:String
 
 #export(Array, Resource) var events : Array
 
-# -----------------------------------------
-# Emilio:
-# Stuff I yet don't understand made by Dex:
-# -----------------------------------------
-
-# This file is part of EventSystem, distributed under MIT license
-# and modified to work with Dialogic.
-# You can see the license of this file here
-# https://github.com/AnidemDex/Godot-EventSystem/blob/main/LICENSE
-
-var _events:Array = [] setget set_events
+var _events:Array = [] # setget set_events
 
 
 func set_events(events:Array) -> void:
 	_events = events
 	emit_changed()
-	property_list_changed_notify()
+	notify_property_list_changed()
 
 
 func add_event(event, at_position=-1) -> void:
 	var idx = at_position if at_position > -1 else _events.size()
 	_events.insert(idx, event)
 	emit_changed()
-	property_list_changed_notify()
+	notify_property_list_changed()
 
 
 func erase_event(event) -> void:
 	_events.erase(event)
 	emit_changed()
-	property_list_changed_notify()
+	notify_property_list_changed()
 
 
 func remove_event(position:int) -> void:
 	_events.remove(position)
 	emit_changed()
-	property_list_changed_notify()
+	notify_property_list_changed()
 
 func get_event(index):
 	if index >= len(_events):
@@ -61,7 +51,7 @@ func _set(property:String, value) -> bool:
 			_events.insert(event_idx, value)
 		
 		emit_changed()
-		property_list_changed_notify()
+		notify_property_list_changed()
 	
 	if property == "events":
 		set_events(value)

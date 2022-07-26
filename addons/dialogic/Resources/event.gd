@@ -129,7 +129,7 @@ func _execute() -> void:
 
 func _set_continue(value:bool) -> void:
 	continue_at_end = value
-	property_list_changed_notify()
+	notify_property_list_changed()
 	emit_changed()
 
 
