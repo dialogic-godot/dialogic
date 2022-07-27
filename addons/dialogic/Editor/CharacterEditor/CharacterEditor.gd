@@ -106,8 +106,8 @@ func _ready() -> void:
 	
 	$'%NewPortrait'.icon = get_theme_icon("Add", "EditorIcons")
 	$'%ImportFromFolder'.icon = get_theme_icon("Folder", "EditorIcons")
-	$'%PortraitsTitle'.set('custom_fonts/font', get_font("doc_title", "EditorFonts"))
-	$Split/EditorScroll/Editor/VBoxContainer/PortraitPanel.set('custom_styles/panel', get_stylebox("Background", "EditorStyles"))
+	$'%PortraitsTitle'.set('custom_fonts/font', get_theme_font("doc_title", "EditorFonts"))
+	$Split/EditorScroll/Editor/VBoxContainer/PortraitPanel.set('custom_styles/panel', get_theme_stylebox("Background", "EditorStyles"))
 	
 	$'%PortraitScale'.connect("value_changed", self, 'set_portrait_scale')
 	$'%PortraitOffsetX'.connect("value_changed", self, 'set_portrait_offset_x')
@@ -171,7 +171,7 @@ func update_portrait_list(filter_term:String = '') -> void:
 	var first_visible_item = null
 	for portrait in current_character.portraits.keys():
 		var port = create_portrait_entry_instance(portrait, current_character.portraits[portrait])
-		if filter_term.empty() or filter_term.to_lower() in portrait.to_lower():
+		if filter_term.is_empty() or filter_term.to_lower() in portrait.to_lower():
 			if not first_visible_item: first_visible_item = port
 			if portrait == prev_portrait_name:
 				current_portrait = port
