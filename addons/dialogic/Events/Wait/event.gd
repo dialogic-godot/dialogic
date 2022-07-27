@@ -7,7 +7,7 @@ var SecondsTime :float = 1.0
 
 func _execute() -> void:
 	dialogic.current_state = dialogic.states.WAITING
-	yield(dialogic.get_tree().create_timer(SecondsTime), "timeout")
+	await dialogic.get_tree().create_timer(SecondsTime).timeout
 	dialogic.current_state = dialogic.states.IDLE
 	finish()
 

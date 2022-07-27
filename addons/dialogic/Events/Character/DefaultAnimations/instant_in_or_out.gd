@@ -1,5 +1,5 @@
 extends DialogicAnimation
 
 func animate():
-	yield(node.get_tree(), "idle_frame")
+	await node.get_tree().process_frame
 	emit_signal('finished')

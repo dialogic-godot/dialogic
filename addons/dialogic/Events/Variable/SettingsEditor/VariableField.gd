@@ -8,7 +8,7 @@ var preview_scene = get_script().resource_path.get_base_dir().plus_file("Preview
 ##				FUNCTIONALITY
 ################################################################################
 
-func get_name() -> String:
+func get_name():
 	return $'%NameEdit'.text.strip_edges()
 
 func get_data() -> String:
@@ -54,8 +54,8 @@ func drop_data(position, data):
 ################################################################################
 
 func _ready():
-	$'%DeleteButton'.icon = get_icon("Remove", "EditorIcons")
-	$'%Dragger'.texture = get_icon("TripleBar", "EditorIcons")
+	$'%DeleteButton'.icon = get_theme_icon("Remove", "EditorIcons")
+	$'%Dragger'.texture = get_theme_icon("TripleBar", "EditorIcons")
 
 
 func _on_DeleteButton_pressed():
@@ -79,7 +79,7 @@ func disable_name_edit():
 	parent_Group.check_data()
 
 func warning():
-	modulate = get_color("warning_color", "Editor")
+	modulate = get_theme_color("warning_color", "Editor")
 
 func no_warning():
 	modulate = Color(1,1,1,1)

@@ -13,8 +13,8 @@ var current_timeline: DialogicTimeline
 ################################################################################
 var TimelineUndoRedo := UndoRedo.new()
 
-onready var timeline_area = $View/TimelineArea
-onready var timeline = $View/TimelineArea/TimeLine
+@onready var timeline_area = $View/TimelineArea
+@onready var timeline = $View/TimelineArea/TimeLine
 
 
 ################################################################################
@@ -905,7 +905,7 @@ func load_batch(data):
 
 func _on_batch_loaded():
 	if batches.size() > 0:
-		yield(get_tree().create_timer(0.01), "timeout")
+		await get_tree().create_timer(0.01).timeout
 		load_batch(batches)
 	else:
 		indent_events()
