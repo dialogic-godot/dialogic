@@ -25,9 +25,9 @@ func _ready():
 	t_rect.margin_left = 20 * _scale
 	t_rect.rect_scale = Vector2(_scale, _scale) * Vector2(0.5, 0.5)
 	
-	add_color_override("font_color", get_color("font_color", "Editor"))
-	add_color_override("font_color_hover", get_color("accent_color", "Editor"))
-	t_rect.modulate = get_color("font_color", "Editor")
+	add_color_override("font_color", get_theme_color("font_color", "Editor"))
+	add_color_override("font_color_hover", get_theme_color("accent_color", "Editor"))
+	t_rect.modulate = get_theme_color("font_color", "Editor")
 	
 	ProjectSettings.connect('project_settings_changed', self, '_update_color')
 

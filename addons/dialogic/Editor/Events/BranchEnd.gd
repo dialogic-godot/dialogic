@@ -14,14 +14,14 @@ func _ready():
 	$ConditionButtons/Else.connect('pressed', self, 'add_else')
 
 func visual_select():
-	modulate = get_color("accent_color", "Editor")
+	modulate = get_theme_color("accent_color", "Editor")
 
 
 func visual_deselect():
 	modulate = Color(1,1,1,1)
 
 func highlight():
-	modulate = get_color("warning_color", "Editor")
+	modulate = get_theme_color("warning_color", "Editor")
 
 
 func unhighlight():
