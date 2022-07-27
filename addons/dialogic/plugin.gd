@@ -54,10 +54,7 @@ func get_plugin_icon():
 
 
 func _add_custom_editor_view():
-	var button = Button.new()
-	button.text = 'Dialogic is this now'
-	_editor_view = button
-#	_editor_view = preload("res://addons/dialogic/Editor/EditorView.tscn").instance()
+	_editor_view = preload("res://addons/dialogic/Editor/EditorView.tscn").instanciate()
 
 
 func _remove_custom_editor_view():

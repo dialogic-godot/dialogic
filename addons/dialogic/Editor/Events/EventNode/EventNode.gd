@@ -195,16 +195,16 @@ func build_editor():
 			editor_node.theme_type_variation = "LineBreak"
 		### STRINGS
 		elif p.dialogic_type == resource.ValueType.MultilineText:
-			editor_node = load("res://addons/dialogic/Editor/Events/Fields/MultilineText.tscn").instance()
+			editor_node = load("res://addons/dialogic/Editor/Events/Fields/MultilineText.tscn").instanciate()
 		elif p.dialogic_type == resource.ValueType.SinglelineText:
-			editor_node = load("res://addons/dialogic/Editor/Events/Fields/SinglelineText.tscn").instance()
+			editor_node = load("res://addons/dialogic/Editor/Events/Fields/SinglelineText.tscn").instanciate()
 		
 		elif p.dialogic_type == resource.ValueType.Bool:
-			editor_node = load("res://addons/dialogic/Editor/Events/Fields/Bool.tscn").instance()
+			editor_node = load("res://addons/dialogic/Editor/Events/Fields/Bool.tscn").instanciate()
 		
 		## Complex Picker
 		elif p.dialogic_type == resource.ValueType.ComplexPicker:
-			editor_node = load("res://addons/dialogic/Editor/Events/Fields/ComplexPicker.tscn").instance()
+			editor_node = load("res://addons/dialogic/Editor/Events/Fields/ComplexPicker.tscn").instanciate()
 			
 			editor_node.file_extension = p.display_info.get('file_extension', '')
 			editor_node.get_suggestions_func = p.display_info.get('suggestions_func', editor_node.get_suggestions_func)
@@ -217,23 +217,23 @@ func build_editor():
 			
 		## INTEGERS
 		elif p.dialogic_type == resource.ValueType.Integer:
-			editor_node = load("res://addons/dialogic/Editor/Events/Fields/Number.tscn").instance()
+			editor_node = load("res://addons/dialogic/Editor/Events/Fields/Number.tscn").instanciate()
 			editor_node.use_int_mode()
 		elif p.dialogic_type == resource.ValueType.Float:
-			editor_node = load("res://addons/dialogic/Editor/Events/Fields/Number.tscn").instance()
+			editor_node = load("res://addons/dialogic/Editor/Events/Fields/Number.tscn").instanciate()
 			editor_node.use_float_mode()
 		elif p.dialogic_type == resource.ValueType.Decibel:
-			editor_node = load("res://addons/dialogic/Editor/Events/Fields/Number.tscn").instance()
+			editor_node = load("res://addons/dialogic/Editor/Events/Fields/Number.tscn").instanciate()
 			editor_node.use_decibel_mode()
 		elif p.dialogic_type == resource.ValueType.FixedOptionSelector:
-			editor_node = load("res://addons/dialogic/Editor/Events/Fields/OptionSelector.tscn").instance()
+			editor_node = load("res://addons/dialogic/Editor/Events/Fields/OptionSelector.tscn").instanciate()
 			if p.display_info.has('selector_options'):
 				editor_node.options = p.display_info.selector_options
 			if p.display_info.has('disabled'):
 				editor_node.disabled = p.display_info.disabled
 		
 		elif p.dialogic_type == resource.ValueType.StringArray:
-			editor_node = load("res://addons/dialogic/Editor/Events/Fields/Array.tscn").instance()
+			editor_node = load("res://addons/dialogic/Editor/Events/Fields/Array.tscn").instanciate()
 			
 		elif p.dialogic_type == resource.ValueType.Label:
 			editor_node = Label.new()
@@ -242,7 +242,7 @@ func build_editor():
 		## CUSTOM
 		elif p.dialogic_type == resource.ValueType.Custom:
 			if p.display_info.has('path'):
-				editor_node = load(p.display_info.path).instance()
+				editor_node = load(p.display_info.path).instanciate()
 		
 		## ELSE
 		else:

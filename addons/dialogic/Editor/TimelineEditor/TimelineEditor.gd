@@ -82,7 +82,7 @@ func _ready():
 	for event_script in DialogicUtil.get_event_scripts():
 		var event_resource = load(event_script).new()
 		if event_resource.disable_editor_button == true: continue
-		var button = buttonScene.instance()
+		var button = buttonScene.instanciate()
 		button.resource = event_resource
 		button.visible_name = '       ' + event_resource.event_name
 		button.set_icon(event_resource.get_icon())
@@ -677,7 +677,7 @@ func add_condition(at_index, type = DialogicConditionEvent.ConditionTypes.IF):
 	create_end_branch_event(at_index+1, condition)
 
 func create_end_branch_event(at_index, parent_node):
-	var end_branch_event = load("res://addons/dialogic/Editor/Events/BranchEnd.tscn").instance()
+	var end_branch_event = load("res://addons/dialogic/Editor/Events/BranchEnd.tscn").instanciate()
 	end_branch_event.resource = DialogicEndBranchEvent.new()
 	end_branch_event.connect("gui_input", self, '_on_event_block_gui_input', [end_branch_event])
 	parent_node.end_node = end_branch_event
@@ -786,7 +786,7 @@ func cancel_drop_event():
 ## *****************************************************************************
 # Adding an event to the timeline
 func add_event_to_timeline(event_resource:Resource, at_index:int = -1, auto_select: bool = false, indent: bool = false):
-	var piece = load("res://addons/dialogic/Editor/Events/EventNode/EventNode.tscn").instance()
+	var piece = load("res://addons/dialogic/Editor/Events/EventNode/EventNode.tscn").instanciate()
 	var resource = event_resource
 	piece.resource = event_resource
 	piece.connect('content_changed', self, 'something_changed')

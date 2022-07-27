@@ -118,7 +118,7 @@ func _ready() -> void:
 	for script in DialogicUtil.get_event_scripts():
 		for subsystem in load(script).new().get_required_subsystems():
 			if subsystem.has('character_main'):
-				var edit =  load(subsystem.character_main).instance()
+				var edit =  load(subsystem.character_main).instanciate()
 				if edit.has_signal('changed'):
 					edit.connect('changed', self, 'something_changed')
 				$'%MainEditTabs'.add_child(edit)
@@ -151,7 +151,7 @@ func _on_dir_selected(path:String) -> void:
 
 
 func create_portrait_entry_instance(name:String, portait_data:Dictionary) -> Node:
-	var instance = portrait_entry.instance()
+	var instance = portrait_entry.instanciate()
 	instance.load_data(name, portait_data.duplicate(), self)
 	get_node("%PortraitList").add_child(instance)
 	something_changed()

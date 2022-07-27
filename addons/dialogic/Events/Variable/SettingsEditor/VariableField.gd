@@ -30,7 +30,7 @@ func get_drag_data(position):
 	}
 	data.data[get_name()] = get_data()
 	
-	var prev = load(preview_scene).instance()
+	var prev = load(preview_scene).instanciate()
 	prev.set_text(get_name())
 	set_drag_preview(prev)
 
