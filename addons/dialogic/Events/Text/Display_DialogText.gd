@@ -50,7 +50,7 @@ func reveal_text(_text:String) -> void:
 
 # called by the timer -> reveals more text
 func continue_reveal() -> void:
-	if visible_characters < len(bbcode_text):
+	if visible_characters < get_total_character_count():
 		visible_characters += 1
 		emit_signal("continued_revealing_text", bbcode_text[visible_characters-1])
 		execute_effects()
@@ -66,11 +66,11 @@ func continue_reveal() -> void:
 # shows all the text imidiatly
 # called by this thing itself or the DialogicGameHandler
 func finish_text():
-	emit_signal("finished_revealing_text")
 	percent_visible = 1
 	execute_effects(true)
 	timer.stop()
 	Dialogic.current_state = Dialogic.states.IDLE
+	emit_signal("finished_revealing_text")
 
 
 func parse_effects(_text:String) -> String:

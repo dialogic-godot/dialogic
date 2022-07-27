@@ -15,9 +15,11 @@ func _ready():
 func refresh():
 	$'%CustomEventsFolderLabel'.text = DialogicUtil.get_project_setting('dialogic/custom_events_folder', 'res://addons/dialogic_additions/Events')
 	$'%CustomEventsFolderButton'.icon = get_icon("Folder", "EditorIcons")
+	$'%TestingSceneButton'.icon = get_icon("Folder", "EditorIcons")
+	$'%TestingSceneLabel'.text = DialogicUtil.get_project_setting('dialogic/editor/test_dialog_scene', 'res://addons/dialogic/Other/DefaultDialogNode.tscn')
 	
+	# Color Palett
 	color_palette = DialogicUtil.get_color_palette()
-	
 	var _scale = DialogicUtil.get_editor_scale()
 	for n in $"%Colors".get_children():
 		n.rect_min_size = Vector2(50 * _scale,0)
@@ -29,7 +31,6 @@ func _on_CustomEventsFolderButton_pressed():
 func custom_events_folder_selected(folder_path:String):
 	get_node('%CustomEventsFolderLabel').text = folder_path
 	ProjectSettings.set_setting('dialogic/custom_events_folder', folder_path)
-
 
 func _on_color_change(color: Color, who):
 	ProjectSettings.set_setting('dialogic/editor/' + who.name, color)
@@ -45,3 +46,11 @@ func _on_reset_colors_button():
 		# feel free to open a PR!
 		ProjectSettings.set_setting('dialogic/editor/' + n.name, color_palette[n.name])
 	emit_signal('colors_changed')
+
+
+func _on_TestingSceneButton_pressed():
+	find_parent('EditorView').godot_file_dialog(self, 'custom_testing_scene_selected', '*.tscn, *.scn', EditorFileDialog.MODE_OPEN_FILE, 'Select testing scene')
+
+func custom_testing_scene_selected(path:String):
+	get_node('%TestingSceneLabel').text = path
+	ProjectSettings.set_setting('dialogic/editor/test_dialog_scene', path)
