@@ -31,7 +31,7 @@ func load(path: String, original_path: String):
 	var file := File.new()
 	var err:int
 	
-	var res := DialogicTimeline.new()
+	var res = DialogicTimeline.new()
 	
 	err = file.open(path, File.READ)
 	if err != OK:

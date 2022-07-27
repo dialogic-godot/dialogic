@@ -43,4 +43,4 @@ func visual_focus():
 	modulate = get_color("warning_color", "Editor")
 
 func visual_defocus():
-	modulate = Color.white
+	modulate = Color(1,1,1,1)

@@ -4,9 +4,14 @@ class_name DialogicTimeline
 
 @export var dialogic_version:String
 
-#export(Array, Resource) var events : Array
 
-var _events:Array = [] # setget set_events
+var _events:Array = []:
+	get:
+		return _events
+	set(value):
+		emit_changed()
+		notify_property_list_changed()
+		_events = value
 
 
 func set_events(events:Array) -> void:
@@ -29,20 +34,22 @@ func erase_event(event) -> void:
 
 
 func remove_event(position:int) -> void:
-	_events.remove(position)
+	_events.erase(position)
 	emit_changed()
 	notify_property_list_changed()
+
 
 func get_event(index):
 	if index >= len(_events):
 		return null
 	return _events[index].duplicate()
 
+
 func get_events() -> Array:
 	return _events.duplicate()
 
 
-func _set(property:String, value) -> bool:
+func _set(property, value):
 	if property.begins_with("event/"):
 		var event_idx:int = int(property.split("/", true, 2)[1])
 		if event_idx < _events.size():
@@ -60,16 +67,6 @@ func _set(property:String, value) -> bool:
 	return false
 
 
-func _get(property:String):
-	if property.begins_with("event/"):
-		var event_idx:int = int(property.split("/", true, 2)[1])
-		if event_idx < _events.size():
-			return _events[event_idx]
-	
-	if property == "events":
-		return get_events()
-
-
 func _init() -> void:
 	_events = []
 	resource_name = get_class()
@@ -85,7 +82,7 @@ func get_class() -> String: return "Timeline"
 func _get_property_list() -> Array:
 	var p = []
 	var usage = PROPERTY_USAGE_SCRIPT_VARIABLE
-	usage |= PROPERTY_USAGE_NOEDITOR
+	usage |= PROPERTY_USAGE_NO_EDITOR
 	usage |= PROPERTY_USAGE_EDITOR # Comment this line to hide events from editor
 	for event_idx in _events.size():
 		p.append(

@@ -18,7 +18,7 @@ func new_character(path: String) -> void:
 	resource.resource_path = path
 	resource.name = path.get_file().trim_suffix("."+path.get_extension())
 	resource.display_name = path.get_file().trim_suffix("."+path.get_extension())
-	resource.color = Color.white
+	resource.color = Color(1,1,1,1)
 	resource.custom_info = {}
 	ResourceSaver.save(path, resource)
 	find_parent('EditorView').edit_character(resource)

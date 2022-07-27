@@ -127,7 +127,7 @@ func undrag():
 	if drag_preview != null:
 		drag_preview.queue_free()
 		drag_preview = null
-		self_modulate = Color.white
+		self_modulate = Color(1,1,1,1)
 
 ################################################################################
 ##				UI
@@ -168,7 +168,7 @@ func warning():
 	modulate = get_color("warning_color", "Editor")
 
 func no_warning():
-	modulate = Color.white
+	modulate = Color(1,1,1,1)
 
 func _on_DeleteButton_pressed():
 	queue_free()

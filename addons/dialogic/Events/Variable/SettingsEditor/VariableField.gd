@@ -82,4 +82,4 @@ func warning():
 	modulate = get_color("warning_color", "Editor")
 
 func no_warning():
-	modulate = Color.white
+	modulate = Color(1,1,1,1)

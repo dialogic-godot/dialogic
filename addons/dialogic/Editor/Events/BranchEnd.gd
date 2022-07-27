@@ -18,14 +18,14 @@ func visual_select():
 
 
 func visual_deselect():
-	modulate = Color.white
+	modulate = Color(1,1,1,1)
 
 func highlight():
 	modulate = get_color("warning_color", "Editor")
 
 
 func unhighlight():
-	modulate = Color.white
+	modulate = Color(1,1,1,1)
 
 func set_indent(indent: int):
 	var indent_node = $Indent

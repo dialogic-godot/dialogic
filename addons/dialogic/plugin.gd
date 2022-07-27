@@ -70,19 +70,19 @@ func save_external_data():
 	emit_signal('dialogic_save')
 
 
-#func handles(object):
-#	if object is DialogicTimeline:
-#		return true
-#	if object is DialogicCharacter:
-#		return true
+func handles(object):
+	if object is DialogicTimeline:
+		return true
+	if object is DialogicCharacter:
+		return true
 
 
-#func edit(object):
-#	make_visible(true)
-#	if object is DialogicTimeline:
-#		_editor_view.edit_timeline(object)
-#	if object is DialogicCharacter:
-#		_editor_view.edit_character(object)
+func edit(object):
+	make_visible(true)
+	if object is DialogicTimeline:
+		_editor_view.edit_timeline(object)
+	if object is DialogicCharacter:
+		_editor_view.edit_character(object)
 
 
 func enable_plugin():
