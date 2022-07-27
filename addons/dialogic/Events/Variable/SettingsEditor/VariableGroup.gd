@@ -1,7 +1,7 @@
 @tool
 extends PanelContainer
 
-export (bool) var MainGroup = false
+@export var MainGroup: bool = false
 var Group_scene = get_script().resource_path.get_base_dir().plus_file("VariableGroup.tscn")
 var field_scene = get_script().resource_path.get_base_dir().plus_file("VariableField.tscn")
 var preview_scene = get_script().resource_path.get_base_dir().plus_file("Preview.tscn")
@@ -12,7 +12,7 @@ var parent_Group = null
 ################################################################################
 ##				FUNCTIONALITY
 ################################################################################
-func get_name() -> String:
+func get_name():
 	return $'%NameEdit'.text
 
 func get_data() -> Dictionary:
@@ -59,14 +59,14 @@ func search(term:String) -> bool:
 			if not found_anything:
 				found_anything = res
 
-		elif term.empty():
+		elif term.is_empty():
 			child.show()
 		elif child.has_method('get_name'):
-			child.visible = term in  child.get_name().to_lower() or term in child.get_data().to_lower()
+			child.visible = term in  str(child.get_name()).to_lower() or term in child.get_data().to_lower()
 			if not found_anything:
 				found_anything = child.visible
 	
-	if not term.empty() and not found_anything and not MainGroup:
+	if not term.is_empty() and not found_anything and not MainGroup:
 		hide()
 	else:
 		show()

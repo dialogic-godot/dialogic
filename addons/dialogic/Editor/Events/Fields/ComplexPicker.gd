@@ -1,7 +1,7 @@
 @tool
 extends Control
 
-export(String) var placeholder_text = "Select Resource"
+@export var placeholder_text:String = "Select Resource"
 
 ### SETTINGS FOR THE RESOURCE PICKER
 var file_extension = ""
