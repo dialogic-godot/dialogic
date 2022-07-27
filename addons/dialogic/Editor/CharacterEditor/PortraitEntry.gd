@@ -16,8 +16,8 @@ func get_portrait_name() -> String:
 	return $NameEdit.text
 
 func _ready() -> void:
-	$ButtonDelete.icon = get_icon("Remove", "EditorIcons")
-	$ButtonSelect.icon = get_icon("ListSelect", "EditorIcons")
+	$ButtonDelete.icon = get_theme_icon("Remove", "EditorIcons")
+	$ButtonSelect.icon = get_theme_icon("ListSelect", "EditorIcons")
 
 func _on_ButtonDelete_pressed() -> void:
 	character_editor_reference.update_portrait_preview()
@@ -40,7 +40,7 @@ func update_preview() -> void:
 	character_editor_reference.update_portrait_preview(self)
 
 func visual_focus():
-	modulate = get_color("warning_color", "Editor")
+	modulate = get_theme_color("warning_color", "Editor")
 
 func visual_defocus():
 	modulate = Color(1,1,1,1)

@@ -3,19 +3,19 @@ extends HBoxContainer
 
 func _ready():
 	# Get version number
-	$Version.set("custom_colors/font_color", get_color("disabled_font_color", "Editor"))
+	$Version.set("custom_colors/font_color", get_theme_color("disabled_font_color", "Editor"))
 	var config = ConfigFile.new()
 	var err = config.load("res://addons/dialogic/plugin.cfg")
 	if err == OK:
 		$Version.text = "v" + config.get_value("plugin", "version")
 	
 	
-	$PlayTimeline.icon = get_icon("PlayScene", "EditorIcons")
+	$PlayTimeline.icon = get_theme_icon("PlayScene", "EditorIcons")
 	$PlayTimeline.connect("pressed", self, "play_timeline")
 	
 	$AddTimeline.icon = load("res://addons/dialogic/Editor/Images/Toolbar/add-timeline.svg")
 	$'%ResourcePicker'.get_suggestions_func = [self, 'suggest_resources']
-	$'%ResourcePicker'.resource_icon = get_icon("GuiRadioUnchecked", "EditorIcons")
+	$'%ResourcePicker'.resource_icon = get_theme_icon("GuiRadioUnchecked", "EditorIcons")
 
 ################################################################################
 ##							HELPERS

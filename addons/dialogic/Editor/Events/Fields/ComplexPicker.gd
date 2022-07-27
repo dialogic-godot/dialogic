@@ -69,13 +69,13 @@ func _ready():
 	var scale = DialogicUtil.get_editor_scale()
 	if scale == 2:
 		$Search/Icon.rect_position.x = 10
-	$Search/SelectButton.icon = get_icon("Collapse", "EditorIcons")
+	$Search/SelectButton.icon = get_theme_icon("Collapse", "EditorIcons")
 	$Search.placeholder_text = placeholder_text
 	$Search/Suggestions.hide()
 	$Search/Suggestions.connect("index_pressed", self, 'suggestion_selected')
 	$Search/Suggestions.connect("popup_hide", self, 'popup_hide')
 	$Search/Suggestions.add_stylebox_override('panel', load("res://addons/dialogic/Editor/Events/styles/ResourceMenuPanelBackground.tres"))
-	$Search/OpenButton.icon = get_icon("EditResource", "EditorIcons")
+	$Search/OpenButton.icon = get_theme_icon("EditResource", "EditorIcons")
 	if resource_icon == null:
 		self.resource_icon = null
 
@@ -116,7 +116,7 @@ func _on_Search_text_changed(new_text, just_update = false):
 			if suggestions[element].has('icon'):
 				$Search/Suggestions.add_icon_item(suggestions[element].icon, element)
 			elif suggestions[element].has('editor_icon'):
-				$Search/Suggestions.add_icon_item(get_icon(suggestions[element].editor_icon[0],suggestions[element].editor_icon[1]), element)
+				$Search/Suggestions.add_icon_item(get_theme_icon(suggestions[element].editor_icon[0],suggestions[element].editor_icon[1]), element)
 			else:
 				$Search/Suggestions.add_item(element)
 			$Search/Suggestions.set_item_tooltip(idx, suggestions[element].get('tooltip', ''))

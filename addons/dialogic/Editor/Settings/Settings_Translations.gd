@@ -31,7 +31,7 @@ func refresh():
 			get_node('%TransFileFolder').text = "Next to timeline"
 			get_node('%TransFileFolderChanger').disabled = true
 	
-	get_node('%TransFileFolderChanger').icon = get_icon("Folder", "EditorIcons")
+	get_node('%TransFileFolderChanger').icon = get_theme_icon("Folder", "EditorIcons")
 	get_node('%TransOrigLanguage').editable = !get_node('%TransEnabled').pressed
 	get_node('%TransFileMode').disabled = get_node('%TransEnabled').pressed
 	get_node('%TransInitialize').disabled = get_node('%TransEnabled').pressed

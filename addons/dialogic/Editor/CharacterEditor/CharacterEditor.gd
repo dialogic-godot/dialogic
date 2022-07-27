@@ -3,7 +3,7 @@ extends Control
 
 const portrait_entry = preload("res://addons/dialogic/Editor/CharacterEditor/PortraitEntry.tscn")
 
-onready var toolbar = find_parent('EditorView').get_node('%Toolbar')
+@onready var toolbar = find_parent('EditorView').get_node('%Toolbar')
 var current_character : DialogicCharacter
 var current_portrait = null
 
@@ -98,14 +98,14 @@ func _ready() -> void:
 	$'%PreviewMode'.connect('item_selected', self, '_on_PreviewMode_item_selected')
 	$'%PreviewMode'.select(DialogicUtil.get_project_setting('dialogic/editor/character_preview_mode', 0))
 	_on_PreviewMode_item_selected($'%PreviewMode'.selected)
-	$'%PreviewPositionIcon'.texture = get_icon("EditorPosition", "EditorIcons")
+	$'%PreviewPositionIcon'.texture = get_theme_icon("EditorPosition", "EditorIcons")
 	
 	if find_parent('EditorView'): # This prevents the view to turn black if you are editing this scene in Godot
 		var style = $Split/EditorScroll.get('custom_styles/bg')
 		style.set('bg_color', get_color("dark_color_1", "Editor"))
 	
-	$'%NewPortrait'.icon = get_icon("Add", "EditorIcons")
-	$'%ImportFromFolder'.icon = get_icon("Folder", "EditorIcons")
+	$'%NewPortrait'.icon = get_theme_icon("Add", "EditorIcons")
+	$'%ImportFromFolder'.icon = get_theme_icon("Folder", "EditorIcons")
 	$'%PortraitsTitle'.set('custom_fonts/font', get_font("doc_title", "EditorFonts"))
 	$Split/EditorScroll/Editor/VBoxContainer/PortraitPanel.set('custom_styles/panel', get_stylebox("Background", "EditorStyles"))
 	

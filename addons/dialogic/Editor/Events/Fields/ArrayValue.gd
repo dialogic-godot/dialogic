@@ -4,7 +4,7 @@ extends HBoxContainer
 signal value_changed()
 
 func _ready():
-	$Delete.icon = get_icon("Remove", "EditorIcons")
+	$Delete.icon = get_theme_icon("Remove", "EditorIcons")
 	
 
 func _on_Delete_pressed():

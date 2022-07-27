@@ -115,7 +115,7 @@ func _on_VariableGroup_gui_input(event):
 				drag_preview.rect_min_size.y = 30
 				$'%Content'.add_child(drag_preview)
 				$'%Content'.move_child(drag_preview, $'%Content'.get_child_count())
-			self_modulate = get_color("accent_color", "Editor")
+			self_modulate = get_theme_color("accent_color", "Editor")
 	else:
 		undrag()
 
@@ -144,19 +144,19 @@ func update():
 		$'%NameEdit'.editable = false
 		$'%SearchBar'.show()
 		$'%Dragger'.hide()
-		$'%SearchBar'.right_icon = get_icon("Search", "EditorIcons")
+		$'%SearchBar'.right_icon = get_theme_icon("Search", "EditorIcons")
 	
-	$'%Dragger'.texture = get_icon("TripleBar", "EditorIcons")
-	$'%NameEdit'.add_color_override("font_color_uneditable", get_color('font_color', 'Label'))
-	get_node('%DeleteButton').icon = get_icon("Remove", "EditorIcons")
+	$'%Dragger'.texture = get_theme_icon("TripleBar", "EditorIcons")
+	$'%NameEdit'.add_color_override("font_color_uneditable", get_theme_color('font_color', 'Label'))
+	get_node('%DeleteButton').icon = get_theme_icon("Remove", "EditorIcons")
 	get_node('%DeleteButton').hint_tooltip = "Delete Group"
-	get_node('%DuplicateButton').icon = get_icon("Duplicate", "EditorIcons")
+	get_node('%DuplicateButton').icon = get_theme_icon("Duplicate", "EditorIcons")
 	get_node('%DuplicateButton').hint_tooltip = "Duplicate Group"
-	get_node('%NewGroup').icon = get_icon("Folder", "EditorIcons")
+	get_node('%NewGroup').icon = get_theme_icon("Folder", "EditorIcons")
 	get_node('%NewGroup').hint_tooltip = "Add new Group"
-	get_node('%NewVariable').icon = get_icon("Add", "EditorIcons")
+	get_node('%NewVariable').icon = get_theme_icon("Add", "EditorIcons")
 	get_node('%NewVariable').hint_tooltip = "Add new variable"
-	get_node('%FoldButton').icon = get_icon("GuiVisibilityVisible", "EditorIcons")
+	get_node('%FoldButton').icon = get_theme_icon("GuiVisibilityVisible", "EditorIcons")
 	get_node('%FoldButton').hint_tooltip = "Hide/Show content"
 
 
@@ -165,7 +165,7 @@ func clear():
 		child.queue_free()
 
 func warning():
-	modulate = get_color("warning_color", "Editor")
+	modulate = get_theme_color("warning_color", "Editor")
 
 func no_warning():
 	modulate = Color(1,1,1,1)
@@ -190,9 +190,9 @@ func _on_FoldButton_toggled(button_pressed):
 	$'%Content'.visible = button_pressed
 	
 	if button_pressed:
-		get_node('%FoldButton').icon = get_icon("GuiVisibilityVisible", "EditorIcons")
+		get_node('%FoldButton').icon = get_theme_icon("GuiVisibilityVisible", "EditorIcons")
 	else:
-		get_node('%FoldButton').icon = get_icon("GuiVisibilityHidden", "EditorIcons")
+		get_node('%FoldButton').icon = get_theme_icon("GuiVisibilityHidden", "EditorIcons")
 
 
 func _on_NameEdit_gui_input(event):

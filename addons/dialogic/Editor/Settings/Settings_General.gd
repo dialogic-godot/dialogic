@@ -14,8 +14,8 @@ func _ready():
 	
 func refresh():
 	$'%CustomEventsFolderLabel'.text = DialogicUtil.get_project_setting('dialogic/custom_events_folder', 'res://addons/dialogic_additions/Events')
-	$'%CustomEventsFolderButton'.icon = get_icon("Folder", "EditorIcons")
-	$'%TestingSceneButton'.icon = get_icon("Folder", "EditorIcons")
+	$'%CustomEventsFolderButton'.icon = get_theme_icon("Folder", "EditorIcons")
+	$'%TestingSceneButton'.icon = get_theme_icon("Folder", "EditorIcons")
 	$'%TestingSceneLabel'.text = DialogicUtil.get_project_setting('dialogic/editor/test_dialog_scene', 'res://addons/dialogic/Other/DefaultDialogNode.tscn')
 	
 	# Color Palett

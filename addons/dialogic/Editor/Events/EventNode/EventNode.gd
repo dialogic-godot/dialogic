@@ -11,14 +11,14 @@ var resource : DialogicEvent
 
 
 ### internal node eferences
-onready var selected_style = $PanelContainer/SelectedStyle
-onready var warning = $PanelContainer/MarginContainer/VBoxContainer/Header/CenterContainer/IconPanel/Warning
-onready var title_label = $PanelContainer/MarginContainer/VBoxContainer/Header/TitleLabel
-onready var icon_texture  = $PanelContainer/MarginContainer/VBoxContainer/Header/CenterContainer/IconPanel/IconTexture
-onready var header_content_container = $PanelContainer/MarginContainer/VBoxContainer/Header/Content
-onready var body_container = $PanelContainer/MarginContainer/VBoxContainer/Body
-onready var body_content_container = $PanelContainer/MarginContainer/VBoxContainer/Body/Content
-onready var indent_node = $Indent
+@onready var selected_style = $PanelContainer/SelectedStyle
+@onready var warning = $PanelContainer/MarginContainer/VBoxContainer/Header/CenterContainer/IconPanel/Warning
+@onready var title_label = $PanelContainer/MarginContainer/VBoxContainer/Header/TitleLabel
+@onready var icon_texture  = $PanelContainer/MarginContainer/VBoxContainer/Header/CenterContainer/IconPanel/IconTexture
+@onready var header_content_container = $PanelContainer/MarginContainer/VBoxContainer/Header/Content
+@onready var body_container = $PanelContainer/MarginContainer/VBoxContainer/Body
+@onready var body_content_container = $PanelContainer/MarginContainer/VBoxContainer/Body/Content
+@onready var indent_node = $Indent
 
 # is the body visible
 var expanded = true
@@ -315,7 +315,7 @@ func _ready():
 	## DO SOME STYLING
 	var _scale = DialogicUtil.get_editor_scale()
 	$PanelContainer/SelectedStyle.modulate = get_color("accent_color", "Editor")
-	warning.texture = get_icon("NodeWarning", "EditorIcons")
+	warning.texture = get_theme_icon("NodeWarning", "EditorIcons")
 	warning.rect_size = Vector2(16 * _scale, 16 * _scale)
 	title_label.add_color_override("font_color", Color(1,1,1,1))
 	if not get_constant("dark_theme", "Editor"):
@@ -323,7 +323,7 @@ func _ready():
 	
 	indent_size = indent_size * DialogicUtil.get_editor_scale()
 	
-	$'%ExpandButton'.icon = get_icon("Tools", "EditorIcons")
+	$'%ExpandButton'.icon = get_theme_icon("Tools", "EditorIcons")
 	
 	if resource:
 		if resource.get_icon() != null:
@@ -343,7 +343,7 @@ func _ready():
 	
 	_on_Indent_visibility_changed()
 	$PanelContainer/MarginContainer/VBoxContainer/Header/CollapseButton.connect('toggled', self, 'toggle_collapse')
-	$PanelContainer/MarginContainer/VBoxContainer/Header/CollapseButton.icon = get_icon("Collapse", "EditorIcons")
+	$PanelContainer/MarginContainer/VBoxContainer/Header/CollapseButton.icon = get_theme_icon("Collapse", "EditorIcons")
 	$PanelContainer/MarginContainer/VBoxContainer/Header/CollapseButton.hide()
 
 

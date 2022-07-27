@@ -7,7 +7,7 @@ func refresh():
 	$'%Autocontinue'.pressed = DialogicUtil.get_project_setting('dialogic/text/autocontinue', false)
 	$'%AutocontinueDelay'.value = DialogicUtil.get_project_setting('dialogic/text/autocontinue_delay', 1)
 	$'%AutocolorNames'.pressed = DialogicUtil.get_project_setting('dialogic/text/autocolor_names', false)
-	$'%InputAction'.resource_icon = get_icon("Mouse", "EditorIcons")
+	$'%InputAction'.resource_icon = get_theme_icon("Mouse", "EditorIcons")
 	$'%InputAction'.set_value(DialogicUtil.get_project_setting('dialogic/text/input_action', 'dialogic_default_action'))
 	$'%InputAction'.get_suggestions_func = [self, 'suggest_actions']
 
