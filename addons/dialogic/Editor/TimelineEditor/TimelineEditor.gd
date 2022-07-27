@@ -1024,6 +1024,20 @@ func indent_events() -> void:
 		else:
 			event.show()
 		
+		#Note from KvaGram:
+		# Plese don't check for warnings in a function unrelated to warnings.
+		# I leave the voice event detection here becouse the choice event warning is also defined here.
+		# But I recommend moving this to a dedicated function elsewhere,
+		# prefrably with test asking the event-class itself for problems, rather than checking the type.
+		
+		## DETECT VOICE LINES
+		#TODO: implement check for voice lines
+		if event.resource is DialogicVoiceEvent:
+			if(get_block_below(event).resource is DialogicTextEvent):
+				event.remove_warning('This event is not connected to a dialog')
+			else:
+				event.set_warning('This event is not connected to a dialog')
+		
 		## DETECT QUESTIONS
 		if event.resource is DialogicTextEvent or event.resource is DialogicConditionEvent:
 			if (get_block_below(event) and 'resource' in get_block_below(event) and get_block_below(event).resource is DialogicChoiceEvent) or event.resource is DialogicConditionEvent:

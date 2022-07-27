@@ -1,0 +1,36 @@
+extends VBoxContainer
+
+var property_name : String
+signal value_changed
+
+func value_changed(_p, value):
+	emit_signal("value_changed", property_name, $Value.value)
+
+func _ready():
+	$NumRegions/NumberValue.set_min_value(1)
+	$NumRegions/NumberValue.connect("value_changed", self, "_on_NumberValue_value_changed")
+	repopulate(1) #Always have at least one audio region
+
+
+func set_value(value):
+	repopulate(len(value))
+	for i in range ($list.get_child_count()):
+		var n:Node = $list.get_child(i)
+		n.set_value(value[i])
+
+func _on_NumberValue_value_changed():
+	repopulate($NumRegions/NumberValue/Value.value)
+
+func repopulate(num:int):
+	var i = $list.get_child_count()
+	#add new audio regions
+	while i < num:
+		var node:Node = load("res://addons/dialogic/Events/Voice/AudioRegion.tscn").instance()
+		node.connect("value_changed", self, "value_changed")
+		i = i + 1
+	#remove excess audio regions
+	while i > num:
+		$list.get_child(i-1).queue_free()
+		i = i - 1
+func set_left_text(text):
+	$NumRegions/Label.text = text

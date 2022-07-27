@@ -33,3 +33,9 @@ func use_decibel_mode():
 	$Value.max_value = 6
 	$Value.suffix = "dB"
 	$Value.min_value = -80
+
+func set_max_value(value):
+	$Value.max_value = value
+	
+func set_min_value(value):
+	$Value.min_value = value

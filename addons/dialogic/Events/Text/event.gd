@@ -8,6 +8,9 @@ var Character:DialogicCharacter
 var Portrait = ""
 
 func _execute() -> void:
+	#TODO: implement call to voice support subsystem. Base on call for choices below.
+	#disable key-noises in voiced lines.
+	
 	if (not Character or not Character.custom_info.get('theme', '')) and dialogic.has_subsystem('Themes'):
 		# if previous characters had a custom theme change back to base theme 
 		if dialogic.current_state_info.get('base_theme') != dialogic.current_state_info.get('theme'):
