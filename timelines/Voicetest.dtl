@@ -1,0 +1,16 @@
+[voice path="res://timelines/voicetest.mp3" bus="Master"]
+
+kvagram: Look! This text event is voiced!
+
+Emilio: Really? Well this one is not.
+
+[voice path="res://timelines/voicetest.mp3" bus="Master"]
+
+kvagram: What? Are you just gonna stay silent?
+
+Emilio: I said! This text event is not voiced!
+
+[voice path="res://timelines/voicetest.mp3" bus="Master"]
+
+kvagram: I guess he went mute. Uh well.
+

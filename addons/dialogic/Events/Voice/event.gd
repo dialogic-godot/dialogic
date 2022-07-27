@@ -46,6 +46,6 @@ func build_event_editor():
 	add_header_edit('FilePath', ValueType.SinglelineText, 'Path:')
 	add_body_edit('Volume', ValueType.Decibel, 'Volume:', '', {}, '!FilePath.empty()')
 	add_body_edit('AudioBus', ValueType.SinglelineText, 'AudioBus:', '', {}, '!FilePath.empty()')
-	add_body_edit('voice_regions', ValueType.Custom, '', '', {'path' : ''}, '!FilePath.empty()')
+	add_body_edit('voice_regions', ValueType.Custom, '', '', {'path' : 'res://addons/dialogic/Events/Voice/SerialAudioregion.tscn'}, '!FilePath.empty()')
 
 
