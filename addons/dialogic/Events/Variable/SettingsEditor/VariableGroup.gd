@@ -33,11 +33,11 @@ func load_data(Group_name, data:Dictionary, _parent_Group:Control = null) -> voi
 func add_data(data) -> void:
 	for key in data.keys():
 		if typeof(data[key]) == TYPE_DICTIONARY:
-			var Group = load(Group_scene).instanciate()
+			var Group = load(Group_scene).instantiate()
 			$'%Content'.add_child(Group)
 			Group.load_data(key, data[key], self)
 		else:
-			var field = load(field_scene).instanciate()
+			var field = load(field_scene).instantiate()
 			$'%Content'.add_child(field)
 			field.load_data(key, data[key], self)
 
@@ -83,7 +83,7 @@ func get_drag_data(position):
 	}
 	data.data[get_name()] = get_data()
 	
-	var prev = load(preview_scene).instanciate()
+	var prev = load(preview_scene).instantiate()
 	prev.set_text(get_name())
 	set_drag_preview(prev)
 

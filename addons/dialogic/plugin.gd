@@ -13,7 +13,7 @@ func _init():
 	
 
 func _enter_tree() -> void:
-	_add_custom_editor_view()
+	_editor_view = preload("res://addons/dialogic/Editor/EditorView.tscn").instantiate()
 	_editor_interface = get_editor_interface()
 	get_editor_interface().get_editor_main_control().add_child(_editor_view)
 	make_visible(false)
@@ -51,10 +51,6 @@ func get_plugin_icon():
 	if get_editor_interface().get_editor_settings().get_setting("interface/theme/base_color").v > 0.5:
 		_theme = 'light'
 	return load("res://addons/dialogic/Editor/Images/Plugin/plugin-editor-icon-" + _theme + "-theme-" + str(_scale) + ".svg")
-
-
-func _add_custom_editor_view():
-	_editor_view = preload("res://addons/dialogic/Editor/EditorView.tscn").instanciate()
 
 
 func _remove_custom_editor_view():

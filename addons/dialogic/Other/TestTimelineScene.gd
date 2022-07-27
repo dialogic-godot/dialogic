@@ -2,7 +2,7 @@ extends Control
 
 
 func _ready():
-	var scene = load( DialogicUtil.get_project_setting('dialogic/editor/test_dialog_scene', 'res://addons/dialogic/Other/DefaultDialogNode.tscn')).instanciate()
+	var scene = load( DialogicUtil.get_project_setting('dialogic/editor/test_dialog_scene', 'res://addons/dialogic/Other/DefaultDialogNode.tscn')).instantiate()
 	add_child(scene)
 	if !get_child(0) is CanvasLayer:
 		if get_child(0) is Control:
