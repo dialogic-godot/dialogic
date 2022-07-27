@@ -1,3 +1,4 @@
+tool
 extends HBoxContainer
 
 const max_value:float = 9999.0

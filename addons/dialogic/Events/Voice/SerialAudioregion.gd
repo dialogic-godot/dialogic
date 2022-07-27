@@ -1,3 +1,4 @@
+tool
 extends VBoxContainer
 
 var property_name : String
@@ -13,19 +14,26 @@ func _ready():
 
 
 func set_value(value):
+	if not value or not value is Array:
+		return
+	if not value is Array:
+		printerr("Invalid data format")
+		return
+	$NumRegions/NumberValue.set_value(len(value))
 	repopulate(len(value))
 	for i in range ($list.get_child_count()):
 		var n:Node = $list.get_child(i)
 		n.set_value(value[i])
 
-func _on_NumberValue_value_changed():
-	repopulate($NumRegions/NumberValue/Value.value)
+func _on_NumberValue_value_changed(_p, value):
+	repopulate(value)
 
 func repopulate(num:int):
 	var i = $list.get_child_count()
 	#add new audio regions
 	while i < num:
 		var node:Node = load("res://addons/dialogic/Events/Voice/AudioRegion.tscn").instance()
+		$list.add_child(node)
 		node.connect("value_changed", self, "value_changed")
 		i = i + 1
 	#remove excess audio regions
