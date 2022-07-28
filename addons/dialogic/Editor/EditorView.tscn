@@ -24,13 +24,13 @@ offset_bottom = 600.0
 [node name="Toolbar" parent="MarginContainer/VBoxContainer" instance=ExtResource("4")]
 unique_name_in_owner = true
 offset_right = 1024.0
-offset_bottom = 31.0
+offset_bottom = 33.0
 
 [node name="TimelineEditor" parent="MarginContainer/VBoxContainer" instance=ExtResource("1")]
 unique_name_in_owner = true
 anchor_right = 0.0
 anchor_bottom = 0.0
-offset_top = 35.0
+offset_top = 37.0
 offset_right = 1024.0
 offset_bottom = 600.0
 size_flags_horizontal = 3
@@ -44,9 +44,12 @@ anchor_bottom = 0.0
 size_flags_vertical = 3
 
 [node name="SettingsEditor" parent="." instance=ExtResource("3")]
+unresizable = false
+popup_window = false
 
 [node name="SaveConfirmationDialog" type="AcceptDialog" parent="."]
 size = Vector2i(207, 100)
 
+[connection signal="close_requested" from="SettingsEditor" to="." method="_on_settings_editor_close_requested"]
 [connection signal="confirmed" from="SaveConfirmationDialog" to="." method="_on_SaveConfirmationDialog_confirmed"]
 [connection signal="custom_action" from="SaveConfirmationDialog" to="." method="_on_SaveConfirmationDialog_custom_action"]

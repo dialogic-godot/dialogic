@@ -318,9 +318,9 @@ func _ready():
 	$PanelContainer/SelectedStyle.modulate = get_theme_color("accent_color", "Editor")
 	warning.texture = get_theme_icon("NodeWarning", "EditorIcons")
 	warning.size = Vector2(16 * _scale, 16 * _scale)
-	title_label.add_color_override("font_color", Color(1,1,1,1))
+	title_label.add_theme_color_override("font_color", Color(1,1,1,1))
 	if not get_theme_constant("dark_theme", "Editor"):
-		title_label.add_color_override("font_color", get_theme_color("font_color", "Editor"))
+		title_label.add_theme_color_override("font_color", get_theme_color("font_color", "Editor"))
 	
 	indent_size = indent_size * DialogicUtil.get_editor_scale()
 	

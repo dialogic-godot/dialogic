@@ -89,4 +89,5 @@ func godot_file_dialog(callable, filter, mode = EditorFileDialog.MODE_OPEN_FILE,
 	return editor_file_dialog
 
 
-
+func _on_settings_editor_close_requested():
+	$SettingsEditor.hide()

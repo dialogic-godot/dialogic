@@ -171,7 +171,7 @@ func add_subsytsem(_name, _script_path):
 
 func _get(property):
 	if has_subsystem(property):
-		return get_node(property)
+		return get_node(str(property))
 
 func _set(property, value):
 	if has_subsystem(property):

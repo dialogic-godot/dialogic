@@ -39,13 +39,13 @@ signal value_changed(property_name, value)
 # These functions have to be implemented by all scenes that are used to display 
 # values on the events.
 
-func set_left_text(value):
+func set_left_text(value:String):
 	$LeftText.text = str(value)
-	$LeftText.visible = bool(value)
+	$LeftText.visible = !value.is_empty()
 
-func set_rightt_text(value):
+func set_rightt_text(value:String):
 	$RightText.text = str(value)
-	$RightText.visible = bool(value)
+	$RightText.visible = !value.is_empty()
 
 func set_value(value):
 	if value == null:

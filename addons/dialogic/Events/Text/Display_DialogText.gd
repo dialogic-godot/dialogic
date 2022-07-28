@@ -2,8 +2,10 @@ extends RichTextLabel
 
 class_name DialogicDisplay_DialogText, "icon.png"
 
-export(String, 'Left', 'Center', 'Right') var Align :String = 'Left'
-onready var timer = null
+enum ALIGNMENT {LEFT, CENTER, RIGHT}
+
+@export var Align : ALIGNMENT = ALIGNMENT.LEFT
+@onready var timer = null
 
 var effect_regex = RegEx.new()
 var modifier_words_select_regex = RegEx.new()
@@ -39,11 +41,11 @@ func _ready() -> void:
 # this is called by the DialogicGameHandler to set text
 func reveal_text(_text:String) -> void:
 	speed = DialogicUtil.get_project_setting('dialogic/text/speed', 0.01)
-	bbcode_text = parse_effects(parse_modifiers(_text))
-	if Align == 'Center':
-		bbcode_text = '[center]'+bbcode_text
-	elif Align == 'Right':
-		bbcode_text = '[right]'+bbcode_text
+	text = parse_effects(parse_modifiers(_text))
+	if Align == ALIGNMENT.CENTER:
+		text = '[center]'+text
+	elif Align == ALIGNMENT.RIGHT:
+		text = '[right]'+text
 	visible_characters = 0
 	timer.start(speed)
 	emit_signal('started_revealing_text')
@@ -52,7 +54,7 @@ func reveal_text(_text:String) -> void:
 func continue_reveal() -> void:
 	if visible_characters < get_total_character_count():
 		visible_characters += 1
-		emit_signal("continued_revealing_text", bbcode_text[visible_characters-1])
+		emit_signal("continued_revealing_text", text[visible_characters-1])
 		execute_effects()
 		if timer.is_stopped():
 			if speed == 0:
@@ -80,7 +82,9 @@ func parse_effects(_text:String) -> String:
 		# append [index, command, value] to effects array
 		effects.append([effect_match.get_start()-position_correction, effect_match.get_string('command'), effect_match.get_string('value').strip_edges()])
 		
-		_text.erase(effect_match.get_start()-position_correction, len(effect_match.get_string()))
+		## TODO MIGHT BE BROKEN, because I had to replace string.erase for godot 4
+		_text = _text.substr(0,effect_match.get_start()-position_correction)+_text.substr(effect_match.get_start()-position_correction+len(effect_match.get_string()))
+		
 		position_correction += len(effect_match.get_string())
 	_text = _text.replace('\\[', '[')
 	return _text
