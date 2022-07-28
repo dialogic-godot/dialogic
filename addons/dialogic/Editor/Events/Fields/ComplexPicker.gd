@@ -9,7 +9,17 @@ var get_suggestions_func = [self, 'get_default_suggestions']
 var empty_text = ""
 var disable_pretty_name := false
 
-var resource_icon:Texture = null setget set_icon
+var resource_icon:Texture = null:
+	get:
+		return resource_icon
+	set(new_icon):
+		resource_icon = new_icon
+		$'%Icon'.rect_min_size.x = $'%Icon'.rect_size.y
+		$'%Icon'.texture = new_icon
+		if new_icon == null:
+			$Search.theme_type_variation = ""
+		else:
+			$Search.theme_type_variation = "LineEditWithIcon"
 
 # I'm so sorry for this, but the popup_hide signal get's triggered if the popup is hidden by me,
 # and I don't want it to change the resource, if one was just selected by clicking
@@ -72,22 +82,12 @@ func _ready():
 	$Search/SelectButton.icon = get_theme_icon("Collapse", "EditorIcons")
 	$Search.placeholder_text = placeholder_text
 	$Search/Suggestions.hide()
-	$Search/Suggestions.connect("index_pressed", self, 'suggestion_selected')
-	$Search/Suggestions.connect("popup_hide", self, 'popup_hide')
+	$Search/Suggestions.index_pressed.connect(suggestion_selected)
+	$Search/Suggestions.popup_hide.connect(popup_hide)
 	$Search/Suggestions.add_stylebox_override('panel', load("res://addons/dialogic/Editor/Events/styles/ResourceMenuPanelBackground.tres"))
 	$Search/OpenButton.icon = get_theme_icon("EditResource", "EditorIcons")
 	if resource_icon == null:
 		self.resource_icon = null
-
-
-func set_icon(new_icon):
-	resource_icon = new_icon
-	$'%Icon'.rect_min_size.x = $'%Icon'.rect_size.y
-	$'%Icon'.texture = new_icon
-	if new_icon == null:
-		$Search.theme_type_variation = ""
-	else:
-		$Search.theme_type_variation = "LineEditWithIcon"
 
 
 ################################################################################

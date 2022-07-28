@@ -7,10 +7,10 @@ var color_palette = null
 
 func _ready():
 	# Colors
-	$'%ResetColorsButton'.connect('pressed', self, '_on_reset_colors_button')
+	$'%ResetColorsButton'.button_up.connect(_on_reset_colors_button)
 	
 	for n in $"%Colors".get_children():
-		n.connect('color_changed', self, '_on_color_change', [n])
+		n.color_changed.connect(_on_color_change, [n])
 	
 func refresh():
 	$'%CustomEventsFolderLabel'.text = DialogicUtil.get_project_setting('dialogic/custom_events_folder', 'res://addons/dialogic_additions/Events')
@@ -44,7 +44,7 @@ func _on_reset_colors_button():
 		# set/create new entries for all the colors used. 
 		# If you manage to make it work using the ProjectSettings.clear() 
 		# feel free to open a PR!
-		ProjectSettings.set_setting('dialogic/editor/' + n.name, color_palette[n.name])
+		ProjectSettings.set_setting('dialogic/editor/' + str(n.name), color_palette[n.name])
 	emit_signal('colors_changed')
 
 
