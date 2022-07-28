@@ -70,14 +70,14 @@ func _on_SaveConfirmationDialog_custom_action(action):
 
 func godot_file_dialog(callable, filter, mode = EditorFileDialog.FILE_MODE_OPEN_FILE, window_title = "Save", current_file_name = 'New_File'):
 	for connection in editor_file_dialog.file_selected.get_connections():
-		editor_file_dialog.file_selected.disconnect(connection)
+		editor_file_dialog.file_selected.disconnect(connection.callable)
 	for connection in editor_file_dialog.dir_selected.get_connections():
-		editor_file_dialog.dir_selected.disconnect(connection)
+		editor_file_dialog.dir_selected.disconnect(connection.callable)
 	editor_file_dialog.mode = mode
 	editor_file_dialog.clear_filters()
 	editor_file_dialog.popup_centered_ratio(0.75)
 	editor_file_dialog.add_filter(filter)
-	editor_file_dialog.window_title = window_title
+	editor_file_dialog.title = window_title
 	editor_file_dialog.current_file = current_file_name
 	if mode == EditorFileDialog.FILE_MODE_OPEN_FILE or mode == EditorFileDialog.MODE_SAVE_FILE:
 		editor_file_dialog.file_selected.connect(callable, CONNECT_ONESHOT)

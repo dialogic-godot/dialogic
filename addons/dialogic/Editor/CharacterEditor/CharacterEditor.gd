@@ -70,8 +70,7 @@ func save_character() -> void:
 	
 	ResourceSaver.save(current_character.resource_path, current_character)
 	toolbar.set_resource_saved()
-	
-	
+
 
 ##############################################################################
 ##							INTERFACE
