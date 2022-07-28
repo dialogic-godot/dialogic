@@ -46,8 +46,7 @@ var piece_was_dragged = false
 ## 					SETUP
 ################################################################################
 func _ready():
-	# TODO connect to saving
-	#find_parent('EditorView').plugin_reference.dialogic_save.connect(save_timeline)
+	DialogicUtil.get_dialogic_plugin().dialogic_save.connect(save_timeline)
 	
 	
 	batch_loaded.connect(_on_batch_loaded)
@@ -173,9 +172,8 @@ func _input(event):
 	# we protect this with is_visible_in_tree to not 
 	# invoke a shortcut by accident
 	
-	# TODO no idea how to replace this `get_focus_owner` with in Godot 4
-	#if get_focus_owner() is TextEdit: 
-	#	return
+	if get_viewport().gui_get_focus_owner() is TextEdit: 
+		return
 	
 	if (event is InputEventKey and event is InputEventWithModifiers and is_visible_in_tree()):
 		# CTRL Z # UNDO
@@ -600,9 +598,7 @@ func visual_update_selection():
 
 ## Sorts the selection using 'custom_sort_selection'
 func sort_selection():
-	pass
-	# TODO no idea how to do this in Godot 4
-	#selected_items.sort_custom(self, 'custom_sort_selection')
+	selected_items.sort_custom(custom_sort_selection)
 
 
 ## Compares two event blocks based on their position in the timeline

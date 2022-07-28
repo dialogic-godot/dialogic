@@ -99,5 +99,4 @@ func load_character(character_path):
 
 func _on_ResourcePicker_value_changed(property_name, value):
 	if value:
-		var dialogic_plugin = get_tree().root.get_node('EditorNode/DialogicPlugin')
-		dialogic_plugin._editor_interface.inspect_object(load(value))
+		DialogicUtil.get_dialogic_plugin()._editor_interface.inspect_object(load(value))

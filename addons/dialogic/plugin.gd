@@ -20,6 +20,7 @@ func _enter_tree():
 	_editor_interface = get_editor_interface()
 	get_editor_interface().get_editor_main_control().add_child(_editor_view)
 	_make_visible(false)
+	print(get_path())
 
 
 func _ready():

@@ -18,7 +18,7 @@ func _ready():
 	# Open the last edited scene
 	if ProjectSettings.has_setting('dialogic/editor/last_resources'):
 		var path = ProjectSettings.get_setting('dialogic/editor/last_resources')[0]
-		plugin_reference._editor_interface.inspect_object(load(path))
+		DialogicUtil.get_dialogic_plugin()._editor_interface.inspect_object(load(path))
 	
 	$SaveConfirmationDialog.add_button('No Saving Please!', true, 'nosave')
 	$SaveConfirmationDialog.hide()

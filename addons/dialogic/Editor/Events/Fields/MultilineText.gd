@@ -26,7 +26,7 @@ func set_value(value):
 
 func change_size():
 	# the distance between the sidebar of the timeline editor and the TextEdit box.
-	var max_width = find_parent('View').get_node('ScrollContainer').global_position.x- $TextEdit.rect_global_position.x 
+	var max_width = find_parent('View').get_node('ScrollContainer').global_position.x- $TextEdit.global_position.x 
 	# adding a margin
 	max_width -= 50 * DialogicUtil.get_editor_scale()
 	

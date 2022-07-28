@@ -86,7 +86,7 @@ func _ready():
 	$Search/Suggestions.hide()
 	$Search/Suggestions.index_pressed.connect(suggestion_selected)
 	$Search/Suggestions.popup_hide.connect(popup_hide)
-	# TODO: Invalid call. Nonexistent function 'add_theme_stylebox_override' in base 'PopupMenu'.
+	#TODO: Invalid call. Nonexistent function 'add_theme_stylebox_override' in base 'PopupMenu'.
 	#$Search/Suggestions.add_theme_stylebox_override('panel', load("res://addons/dialogic/Editor/Events/styles/ResourceMenuPanelBackground.tres"))
 	if resource_icon == null:
 		self.resource_icon = null

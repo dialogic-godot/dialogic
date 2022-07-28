@@ -78,8 +78,7 @@ func save_character() -> void:
 ##############################################################################
 
 func _ready() -> void:
-	# TODO connect to saving
-	#find_parent('EditorView').plugin_reference.dialogic_save.connect(save_character)
+	DialogicUtil.get_dialogic_plugin().dialogic_save.connect(save_character)
 	
 	# Let's go connecting!
 	$'%NameLineEdit'.text_changed.connect(something_changed)
@@ -209,7 +208,7 @@ func update_portrait_preview(portrait_inst = "") -> void:
 			$'%PreviewRealRect'.texture = load(path)
 			$'%PreviewFullRect'.texture = load(path)
 			$"%PreviewLabel".text += ' (' + str($'%PreviewRealRect'.texture.get_width()) + 'x' + str($'%PreviewRealRect'.texture.get_height())+')'
-			$'%PreviewRealRect'.rect_scale = Vector2(scale, scale)
+			$'%PreviewRealRect'.scale = Vector2(scale, scale)
 			$'%PreviewRealRect'.flip_h = mirror
 			$'%PreviewFullRect'.flip_h = mirror
 			$'%PreviewRealRect'.rect_position.x = -($'%PreviewRealRect'.texture.get_width()*scale/2.0)+offset.x
