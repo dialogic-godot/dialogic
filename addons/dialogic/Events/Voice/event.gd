@@ -3,7 +3,25 @@ extends DialogicEvent
 class_name DialogicVoiceEvent
 
 func _execute() -> void:
-	finish() #content is executed by a text event
+	dialogic.Voice.setFile(FilePath)
+	dialogic.Voice.setVolume(Volume)
+	dialogic.Voice.setBus(AudioBus)
+	#NOTE need better way of reading the regiondata. This deems messy
+	var regiondata = []
+	
+	var stringfluff = ["[", "]", "start at", "stop at"]
+	if not regions is String:
+		printerr("Invalid data - (DialogicVoiceEvent): serial regiondata not string.")
+	for f in stringfluff:
+		regions = regions.replace(f, "")
+	var data1:PoolStringArray = regions.split("region", false)
+	for d in data1:
+		var data2:PoolStringArray = d.split(",", false)
+		regiondata.push([float(data2[0]), float(data2[1])])
+	
+	dialogic.Voice.setRegions(regiondata)
+
+	finish() #the rest is executed by a text event
 
 # DEFINE ALL PROPERTIES OF THE EVENT
 var FilePath: String = ""
@@ -49,3 +67,9 @@ func build_event_editor():
 	add_body_edit('regions', ValueType.Custom, '', '', {'path' : 'res://addons/dialogic/Events/Voice/SerialAudioregion.tscn'}, '!FilePath.empty()')
 
 
+func get_required_subsystems() -> Array:
+	return [
+				{'name':'Text',
+				'subsystem': get_script().resource_path.get_base_dir().plus_file('Subsystem_Voice.gd'),
+				},
+			]

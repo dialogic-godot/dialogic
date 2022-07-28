@@ -33,22 +33,36 @@ func _execute() -> void:
 	if dialogic.has_subsystem('Portraits'):
 		dialogic.Portraits.update_rpg_portrait_mode(Character, Portrait)
 	
-	if dialogic.has_subsystem('VAR'):
-		dialogic.Text.update_dialog_text(dialogic.Text.color_names(dialogic.VAR.parse_variables(get_translated_text())))
-	else:
-		dialogic.Text.update_dialog_text(dialogic.Text.color_names(get_translated_text()))
-	
-	# Wait for text to finish revealing
-	while true:
-		yield(dialogic, "state_changed")
-		if dialogic.current_state == dialogic.states.IDLE:
-			break
+	#RENDER DIALOG
+	#Placeholder wrap. Replace with a loop iterating over text event's lines. - KvaGram
+	var index:int = 0
+	if true:
+		if dialogic.has_subsystem('VAR'):
+			dialogic.Text.update_dialog_text(dialogic.Text.color_names(dialogic.VAR.parse_variables(get_translated_text())))
+		else:
+			dialogic.Text.update_dialog_text(dialogic.Text.color_names(get_translated_text()))
+		
+		#Plays the audio region for the current line.
+		if dialogic.has_subsystem('Voice') and dialogic.Voice.is_Voiced(dialogic.current_event_idx):
+			dialogic.Voice.playVoiceRegion(index) #voice data is set by voice event.
+		
+		# Wait for text to finish revealing
+		while true:
+			yield(dialogic, "state_changed")
+			if dialogic.current_state == dialogic.states.IDLE:
+				break
+	#end of dialog
 	
 	if dialogic.has_subsystem('Choices') and dialogic.Choices.is_question(dialogic.current_event_idx):
 		dialogic.Choices.show_current_choices()
 		dialogic.current_state = dialogic.states.AWAITING_CHOICE
 	elif DialogicUtil.get_project_setting('dialogic/text/autocontinue', false):
-		yield(dialogic.get_tree().create_timer(DialogicUtil.get_project_setting('dialogic/text/autocontinue_delay', 1)), 'timeout')
+		var wait:float = DialogicUtil.get_project_setting('dialogic/text/autocontinue_delay', 1)
+		# if voiced, grab remaining time left on the voiceed line's audio region - KvaGram
+		if dialogic.has_subsystem('Voice') and dialogic.Voice.is_Voiced(dialogic.current_event_idx):
+			#autocontinue settings is set as minimal. change or keep this? - Kvagram
+			wait = max(wait, dialogic.Voice.getRemainingTime())
+		yield(dialogic.get_tree().create_timer(wait), 'timeout')
 		dialogic.handle_next_event()
 	else:
 		finish()
