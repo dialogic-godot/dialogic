@@ -4,28 +4,28 @@ extends AudioStreamPlayer
 class_name DialogicDisplay_TypeSounds
 
 #usefel if you want to change the sounds ot different node's sounds
-export(bool) var enabled = true
+@export var enabled = true
 
 #interrupts the current sound to play a new one
-export(bool) var interrupt = true
+@export var interrupt = true
 
 #will play a random sound between them
-export(Array, AudioStream) var sounds
+@export(Array, AudioStream) var sounds:Array
 
 #will play after all text is revealed
-export(AudioStream) var end_sound
+@export var end_sound:AudioStream
 
 #play the sound every "N" characters, default is 1 for playing it every character
-export(int, 1, 100) var play_every_character
+@export var play_every_character:int
 
 #changes the pitch by a random value from (pitch - pitch_variance) to (pitch + pitch_variance)
-export(float, 0, 3, 0.01) var pitch_variance = 0.0
+@export(float, 0, 3, 0.01) var pitch_variance = 0.0
 
 #changes the volume by a random value from (volume - volume_variance) to (volume + volume_variance)
-export(float, 0, 10, 0.01) var volume_variance = 0.0
+@export(float, 0, 10, 0.01) var volume_variance = 0.0
 
 #characters that don't increase the 'characters_since_last_sound' variable, useful for the space or fullstop
-export(String) var ignore_characters = ' .,'
+@export var ignore_characters:String = ' .,'
 
 var sound_finished = true
 var characters_since_last_sound: int = 0
@@ -39,9 +39,9 @@ func _ready():
 	# add to necessary group
 	add_to_group('dialogic_type_sounds')
 	if !Engine.is_editor_hint() and get_parent() is DialogicDisplay_DialogText:
-		get_parent().connect('started_revealing_text', self, '_on_started_revealing_text')
-		get_parent().connect('continued_revealing_text', self, '_on_continued_revealing_text')
-		get_parent().connect('finished_revealing_text', self, '_on_finished_revealing_text')
+		get_parent().started_revealing_text.connect(_on_started_revealing_text)
+		get_parent().continued_revealing_text.connect(_on_continued_revealing_text)
+		get_parent().finished_revealing_text.connect(_on_finished_revealing_text)
 
 func _on_started_revealing_text() -> void:
 	if !enabled:

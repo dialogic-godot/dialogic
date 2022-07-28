@@ -190,11 +190,11 @@ var autosave_timer = Timer.new()
 func _ready():
 	autosave_timer.one_shot = true
 	autosave_timer.name = "AutosaveTimer"
-	autosave_timer.connect("timeout", self, '_on_autosave_timer_timeout')
+	autosave_timer.timeout.connect(_on_autosave_timer_timeout)
 	add_child(autosave_timer)
-	dialogic.connect('event_handled', self, '_on_dialogic_event_handled')
-	dialogic.connect('timeline_started', self, 'autosave_start_end')
-	dialogic.connect('timeline_ended', self, 'autosave_start_end')
+	dialogic.event_handled.connect(_on_dialogic_event_handled)
+	dialogic.timeline_started.connect(autosave_start_end)
+	dialogic.timeline_ended.connect(autosave_start_end)
 	_on_autosave_timer_timeout()
 
 func _on_autosave_timer_timeout():

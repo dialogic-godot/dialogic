@@ -97,9 +97,8 @@ func _calculate_layout(apply: bool) -> float:
 
 func _make_parent_reevaluate_our_size():
 	# Hacky solution. Once there is a function for this, use it.
-	#rect_min_size = Vector2(0, 20000)
-	#rect_min_size = Vector2(0, 0)
-	pass
+	custom_minimum_size = Vector2(0, 20000)
+	custom_minimum_size = Vector2(0, 0)
 
 
 # Code by https://github.com/Wcubed/horizontal_flow_container

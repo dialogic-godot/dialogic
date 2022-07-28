@@ -56,19 +56,19 @@ func _ready():
 	var modifier = ''
 	var _scale = DialogicUtil.get_editor_scale()
 	var scroll_container = $View/ScrollContainer
-	scroll_container.rect_min_size.x = 180
+	scroll_container.custom_minimum_size.x = 180
 	if _scale == 1.25:
 		modifier = '-1.25'
-		scroll_container.rect_min_size.x = 200
+		scroll_container.custom_minimum_size.x = 200
 	if _scale == 1.5:
 		modifier = '-1.25'
-		scroll_container.rect_min_size.x = 200
+		scroll_container.custom_minimum_size.x = 200
 	if _scale == 1.75:
 		modifier = '-1.25'
-		scroll_container.rect_min_size.x = 390
+		scroll_container.custom_minimum_size.x = 390
 	if _scale == 2:
 		modifier = '-2'
-		scroll_container.rect_min_size.x = 390
+		scroll_container.custom_minimum_size.x = 390
 	
 	
 	if find_parent('EditorView'): # This prevents the view to turn black if you are editing this scene in Godot
@@ -92,7 +92,7 @@ func _ready():
 		button.event_sorting_index = event_resource.event_sorting_index
 
 
-		button.connect('pressed', self, "_add_event_button_pressed", [load(event_script)])
+		button.button_up.connect(_add_event_button_pressed, [load(event_script)])
 
 		get_node("View/ScrollContainer/EventContainer/FlexContainer" + str(button.event_category)).add_child(button)
 		while event_resource.event_sorting_index < get_node("View/ScrollContainer/EventContainer/FlexContainer" + str(button.event_category)).get_child(max(0, button.get_index()-1)).resource.event_sorting_index:
@@ -103,7 +103,7 @@ func _ready():
 func _process(delta):
 	if moving_piece != null:
 		var current_position = get_global_mouse_position()
-		var node_position = moving_piece.rect_global_position.y
+		var node_position = moving_piece.global_position.y
 		var height = get_block_height(moving_piece)
 		var up_offset = get_block_height(get_block_above(moving_piece))
 		var down_offset = get_block_height(get_block_below(moving_piece))
@@ -686,7 +686,7 @@ func add_condition(at_index, type = DialogicConditionEvent.ConditionTypes.IF):
 func create_end_branch_event(at_index, parent_node):
 	var end_branch_event = load("res://addons/dialogic/Editor/Events/BranchEnd.tscn").instantiate()
 	end_branch_event.resource = DialogicEndBranchEvent.new()
-	end_branch_event.connect("gui_input", self, '_on_event_block_gui_input', [end_branch_event])
+	end_branch_event.gui_input.connect(_on_event_block_gui_input, [end_branch_event])
 	parent_node.end_node = end_branch_event
 	end_branch_event.parent_node = parent_node
 	timeline.add_child(end_branch_event)
@@ -738,7 +738,7 @@ func add_event_to_timeline(event_resource:Resource, at_index:int = -1, auto_sele
 	var piece = load("res://addons/dialogic/Editor/Events/EventNode/EventNode.tscn").instantiate()
 	var resource = event_resource
 	piece.resource = event_resource
-	piece.connect('content_changed', self, 'something_changed')
+	piece.content_changed.connect(something_changed)
 	if at_index == -1:
 		if len(selected_items) != 0:
 			timeline.add_child_below_node(selected_items[0], piece)
@@ -748,8 +748,8 @@ func add_event_to_timeline(event_resource:Resource, at_index:int = -1, auto_sele
 		timeline.add_child(piece)
 		timeline.move_child(piece, at_index)
 
-	piece.connect("option_action", self, '_on_event_options_action', [piece])
-	piece.connect("gui_input", self, '_on_event_block_gui_input', [piece])
+	piece.option_action.connect(_on_event_options_action, [piece])
+	piece.gui_input.connect(_on_event_block_gui_input, [piece])
 	
 	# Buidling editing part
 	piece.build_editor()
@@ -901,7 +901,7 @@ func get_index_under_cursor():
 	var top_pos = 0
 	for i in range(timeline.get_child_count()):
 		var c = timeline.get_child(i)
-		if c.rect_global_position.y < current_position.y:
+		if c.global_position.y < current_position.y:
 			top_pos = i
 	return top_pos
 

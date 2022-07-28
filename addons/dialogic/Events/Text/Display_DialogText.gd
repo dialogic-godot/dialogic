@@ -28,7 +28,7 @@ func _ready() -> void:
 	add_child(timer)
 	timer.wait_time = 0.01
 	timer.one_shot = true
-	timer.connect("timeout", self, 'continue_reveal')
+	timer.timeout.connect(continue_reveal)
 	
 	# compile effects regex
 	effect_regex.compile("(?<!\\\\)\\[\\s*(?<command>mood|portrait|speed|signal|pause)\\s*(=\\s*(?<value>.+?)\\s*)?\\]")

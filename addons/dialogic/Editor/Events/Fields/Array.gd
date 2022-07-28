@@ -15,9 +15,9 @@ func set_value(value:Array):
 		var x = load(ArrayValue).instanciate()
 		$'%Values'.add_child(x)
 		x.set_value(item)
-		x.connect('value_changed', self, "recalculate_values")
+		x.value_changed.connect(recalculate_values)
 
-func value_changed(value):
+func _on_value_changed(value):
 	emit_signal("value_changed", property_name, value)
 
 func recalculate_values():
@@ -25,7 +25,7 @@ func recalculate_values():
 	for child in $'%Values'.get_children():
 		if !child.is_queued_for_deletion():
 			arr.append(child.get_value())
-	value_changed(arr)
+	_on_value_changed(arr)
 
 
 func set_right_text(value):

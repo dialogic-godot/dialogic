@@ -64,14 +64,14 @@ func show_choice(button_index:int, text:String, enabled:bool, event_index:int) -
 				node.grab_focus()
 			
 			if DialogicUtil.get_project_setting('dialogic/choices/hotkey_behaviour', 0) == 1 and idx < 10:
-				var shortcut = ShortCut.new()
+				var shortcut = Shortcut.new()
 				var input_key = InputEventKey.new()
-				input_key.scancode = OS.find_scancode_from_string(str(idx))
+				input_key.scancode = OS.find_keycode_from_string(str(idx))
 				shortcut.shortcut = input_key
 				node.shortcut = shortcut
 			
 			node.disabled = not enabled
-			node.connect('pressed', self, 'choice_selected', [event_index])
+			node.button_up.connect(choice_selected, [event_index])
 			
 		if node.choice_index > 0:
 			idx = node.choice_index

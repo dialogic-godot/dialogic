@@ -91,7 +91,7 @@ func _ready() -> void:
 	$'%MainOffsetX'.value_changed.connect(main_portrait_settings_update)
 	$'%MainOffsetY'.value_changed.connect(main_portrait_settings_update)
 	$'%MainMirror'.toggled.connect(main_portrait_settings_update)
-	$'%PortraitSearch'.text_changed.connect("text_changed", self, 'update_portrait_list')
+	$'%PortraitSearch'.text_changed.connect(update_portrait_list)
 	
 	$'%NewPortrait'.pressed.connect(create_portrait_entry_instance, ['', {'path':'', 'scale':1, 'offset':Vector2(), 'mirror':false}])
 	$'%ImportFromFolder'.pressed.connect(open_portrait_folder_select)
@@ -120,7 +120,7 @@ func _ready() -> void:
 			if subsystem.has('character_main'):
 				var edit =  load(subsystem.character_main).instantiate()
 				if edit.has_signal('changed'):
-					edit.connect('changed', self, 'something_changed')
+					edit.changed.connect(something_changed)
 				$'%MainEditTabs'.add_child(edit)
 	hide()
 

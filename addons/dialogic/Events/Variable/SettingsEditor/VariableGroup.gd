@@ -112,7 +112,7 @@ func _on_VariableGroup_gui_input(event):
 		if get_global_rect().has_point(get_global_mouse_position()):
 			if not drag_preview: 
 				drag_preview = Control.new()
-				drag_preview.rect_min_size.y = 30
+				drag_preview.custom_minimum_size.y = 30
 				$'%Content'.add_child(drag_preview)
 				$'%Content'.move_child(drag_preview, $'%Content'.get_child_count())
 			self_modulate = get_theme_color("accent_color", "Editor")

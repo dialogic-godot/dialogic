@@ -16,7 +16,7 @@ var Single_Use: bool = false
 
 func _execute() -> void:
 	if Inline:
-		dialogic.connect('timeline_ended', self, '_disconnect_signal')
+		dialogic.timeline_ended.connect(_disconnect_signal)
 	
 	if Path.begins_with('root'):
 		Path = "/"+Path
@@ -27,9 +27,9 @@ func _execute() -> void:
 	if n:
 		if n.has_method(Method):
 			if Inline:
-				dialogic.connect("text_signal", self, "_call_on_signal", [], CONNECT_PERSIST)
+				dialogic.text_signal.connect(_call_on_signal, [], CONNECT_PERSIST)
 			elif Wait:
-				yield(n.callv(Method, Arguments), "completed")
+				await n.callv(Method, Arguments).completed
 			else:
 				n.callv(Method, Arguments)
 	

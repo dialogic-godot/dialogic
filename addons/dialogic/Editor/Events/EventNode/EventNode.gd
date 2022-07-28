@@ -24,7 +24,13 @@ var resource : DialogicEvent
 var expanded = true
 
 # for choice and condition
-var end_node = null setget set_end_node
+var end_node:bool = false:
+	get:
+		return end_node
+	set(node):
+		end_node = node
+		$PanelContainer/MarginContainer/VBoxContainer/Header/CollapseButton.visible = true if end_node else false
+
 var collapsed = false
 
 ### extarnal node references
@@ -69,7 +75,7 @@ func remove_warning(text = ''):
 
 func set_indent(indent: int):
 	var indent_node = $Indent
-	indent_node.rect_min_size = Vector2(indent_size * indent, 0)
+	indent_node.custom_minimum_size = Vector2(indent_size * indent, 0)
 	indent_node.visible = indent != 0
 	current_indent_level = indent
 	update()
@@ -88,9 +94,9 @@ func _set_event_icon(icon: Texture):
 	
 	# Resizing the icon acording to the scale
 	var icon_size = 32
-	cpanel.rect_min_size = Vector2(icon_size, icon_size) * _scale
-	ip.rect_min_size = cpanel.rect_min_size
-	ipc.rect_min_size = ip.rect_min_size
+	cpanel.custom_minimum_size = Vector2(icon_size, icon_size) * _scale
+	ip.custom_minimum_size = cpanel.custom_minimum_size
+	ipc.custom_minimum_size = ip.custom_minimum_size
 	
 	# Updating the theme properties to scale
 	var custom_style = ip.get('custom_styles/panel')
@@ -101,7 +107,7 @@ func _set_event_icon(icon: Texture):
 	
 	# Separation on the header
 	$"%Header".set("custom_constants/separation", 5 * _scale)
-	$'%BodySpacing'.rect_min_size.x = ip.rect_min_size.x+(5*_scale)
+	$'%BodySpacing'.custom_minimum_size.x = ip.custom_minimum_size.x+(5*_scale)
 
 func _set_event_name(text: String):
 	if resource.event_name:
@@ -142,8 +148,8 @@ func _on_gui_input(event):
 			expanded = !expanded
 	# For opening the context menu
 	if event is InputEventMouseButton:
-		if event.button_index == BUTTON_RIGHT and event.pressed:
-			$PopupMenu.rect_global_position = get_global_mouse_position()
+		if event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:
+			$PopupMenu.global_position = get_global_mouse_position()
 			var popup = $PopupMenu.popup()
 			if resource.help_page_path == "":
 				$PopupMenu.set_item_disabled(0, true)
@@ -174,11 +180,6 @@ func toggle_collapse(toggled):
 		# @todo select item and clear selection is marked as "private" in TimelineEditor.gd
 		# consider to make it "public" or add a public helper function
 		timeline_editor.indent_events()
-
-
-func set_end_node(node):
-	end_node = node
-	$PanelContainer/MarginContainer/VBoxContainer/Header/CollapseButton.visible = true if end_node else false
 
 
 func build_editor():
@@ -258,7 +259,7 @@ func build_editor():
 		if editor_node.has_method('set_value'):
 			editor_node.set_value(resource.get(p.name))
 		if editor_node.has_signal('value_changed'):
-			editor_node.connect('value_changed', self, "set_property")
+			editor_node.value_changed.connect(set_property)
 		if editor_node.has_method('set_left_text') and p.has('left_text'):
 			editor_node.set_left_text(p.left_text)
 		if editor_node.has_method('set_right_text') and p.has('right_text'):
@@ -273,7 +274,7 @@ func build_editor():
 		if p.location == 1:
 			location = get_node("%Body/Content")
 		location.add_child(editor_node)
-	connect('content_changed', self, 'recalculate_edit_visibility' , [edit_conditions_list])
+	content_changed.connect(recalculate_edit_visibility, [edit_conditions_list])
 	recalculate_edit_visibility(edit_conditions_list)
 
 func recalculate_edit_visibility(list):
@@ -318,7 +319,7 @@ func _ready():
 	warning.texture = get_theme_icon("NodeWarning", "EditorIcons")
 	warning.size = Vector2(16 * _scale, 16 * _scale)
 	title_label.add_color_override("font_color", Color(1,1,1,1))
-	if not get_constant("dark_theme", "Editor"):
+	if not get_theme_constant("dark_theme", "Editor"):
 		title_label.add_color_override("font_color", get_theme_color("font_color", "Editor"))
 	
 	indent_size = indent_size * DialogicUtil.get_editor_scale()
@@ -337,12 +338,12 @@ func _ready():
 	set_focus_mode(1) # Allowing this node to grab focus
 	
 	# signals
-	ProjectSettings.connect('project_settings_changed', self, '_update_color')
-	$PanelContainer.connect("gui_input", self, '_on_gui_input')
-	$PopupMenu.connect("index_pressed", self, "_on_OptionsControl_action")
+	ProjectSettings.project_settings_changed.connect(_update_color)
+	$PanelContainer.gui_input.connect(_on_gui_input)
+	$PopupMenu.index_pressed.connect(_on_OptionsControl_action)
 	
 	_on_Indent_visibility_changed()
-	$PanelContainer/MarginContainer/VBoxContainer/Header/CollapseButton.connect('toggled', self, 'toggle_collapse')
+	$PanelContainer/MarginContainer/VBoxContainer/Header/CollapseButton.toggled.connect(toggle_collapse)
 	$PanelContainer/MarginContainer/VBoxContainer/Header/CollapseButton.icon = get_theme_icon("Collapse", "EditorIcons")
 	$PanelContainer/MarginContainer/VBoxContainer/Header/CollapseButton.hide()
 

@@ -22,7 +22,7 @@ func refresh():
 	color_palette = DialogicUtil.get_color_palette()
 	var _scale = DialogicUtil.get_editor_scale()
 	for n in $"%Colors".get_children():
-		n.rect_min_size = Vector2(50 * _scale,0)
+		n.custom_minimum_size = Vector2(50 * _scale,0)
 		n.color = color_palette[n.name]
 
 func _on_CustomEventsFolderButton_pressed():

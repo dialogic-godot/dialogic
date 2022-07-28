@@ -45,7 +45,7 @@ func _execute() -> void:
 					if AnimationName:
 						var anim = dialogic.Portraits.animate_portrait(Character, AnimationName, AnimationLength, AnimationRepeats)
 						
-						anim.connect('finished', dialogic.Portraits, 'remove_portrait', [Character])
+						anim.finished.connect(dialogic.Portraits.remove_portrait, [Character])
 						
 						if AnimationWait:
 							await anim.finished
