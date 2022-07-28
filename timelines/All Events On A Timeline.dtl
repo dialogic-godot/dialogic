@@ -11,14 +11,14 @@ if true:
 	
 	[end_timeline]
 	
-	[wait time="2"]
+	[wait time="2.0"]
 	
 	
 [background path="res://icon.png"]
 
 [signal arg="MyArgument"]
 
-[music bus="Master" loop="True"]
+[music bus="Master" loop="true"]
 
 # A cool comment.
 

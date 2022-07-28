@@ -1,31 +1,16 @@
-[voice path="res://timelines/voicetest.mp3" bus="Master" regions="[ {
-"start": 0.4,
-"stop": 1.1
-}, {
-"start": 19.0,
-"stop": 30.0
-}, {
-"start": 64.0,
-"stop": 68.0
-} ]"]
+[voice path="res://timelines/voicetest.mp3" bus="Master" regions="region start at 5, stop at 9 "]
 
 kvagram: Look! This text event is voiced!
 
 Emilio: Really? Well this one is not.
 
-[voice path="res://timelines/voicetest.mp3" bus="Master" regions="[ {
-"start": 6.0,
-"stop": 9.0
-} ]"]
+[voice path="res://timelines/voicetest.mp3" bus="Master" regions="region start at 10, stop at 10.1 "]
 
 kvagram: What? Are you just gonna stay silent?
 
 Emilio: I said! This text event is not voiced!
 
-[voice path="res://timelines/voicetest.mp3" bus="Master" regions="[ {
-"start": 10.0,
-"stop": 12.0
-} ]"]
+[voice path="res://timelines/voicetest.mp3" bus="Master" regions="region start at 80, stop at 80.1 "]
 
 kvagram: I guess he went mute. Uh well.
 

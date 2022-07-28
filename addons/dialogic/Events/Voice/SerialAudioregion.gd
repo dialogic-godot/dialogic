@@ -5,10 +5,10 @@ var property_name : String
 signal value_changed
 
 func value_changed(_p, value):
-	var data = []
+	var data:String = ""
 	for i in range ($list.get_child_count()):
 		var n:Node = $list.get_child(i)
-		data.append(n.get_value())
+		data += n.get_value() + " "
 	print(data)
 	emit_signal("value_changed", property_name, data)
 
@@ -19,16 +19,24 @@ func _ready():
 
 
 func set_value(value):
-	if not value or not value is Array:
-		return
-	if not value is Array:
-		printerr("Invalid data format")
-		return
-	$NumRegions/NumberValue.set_value(len(value))
-	repopulate(len(value))
+	if not value is String:
+		printerr("Invalid data - %s (SerialAudioRegion): data incoming is not string." % property_name)
+	var data:PoolStringArray = value.split("region", false)
+	$NumRegions/NumberValue.set_value(len(data))
+	repopulate(len(data))
 	for i in range ($list.get_child_count()):
 		var n:Node = $list.get_child(i)
-		n.set_value(value[i])
+		n.set_value(data[i])
+#	if not value or not value is Array:
+#		return
+#	if not value is Array:
+#		printerr("Invalid data format")
+#		return
+#	$NumRegions/NumberValue.set_value(len(value))
+#	repopulate(len(value))
+#	for i in range ($list.get_child_count()):
+#		var n:Node = $list.get_child(i)
+#		n.set_value(value[i])
 
 func _on_NumberValue_value_changed(_p, value):
 	repopulate(value)

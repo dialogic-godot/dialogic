@@ -9,7 +9,7 @@ func _execute() -> void:
 var FilePath: String = ""
 var Volume: float = 0
 var AudioBus: String = "Master"
-var regions : Array = [] 
+var regions : String #Array = [] 
 
 ################################################################################
 ## 						INITIALIZE

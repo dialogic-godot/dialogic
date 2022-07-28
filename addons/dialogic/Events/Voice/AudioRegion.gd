@@ -6,13 +6,23 @@ const max_value:float = 9999.0
 var property_name
 signal value_changed
 
+const stringfluff = ["[", "]", "start at", "stop at", "region"]
+
 func set_value(value):
-	$StartValue.set_value(value.get("start"))
-	$StopValue.set_value(value.get("stop"))
-	$StopValue.set_min_value($StartValue.get_value() + 0.1)
+	#strip irrelevant parts
+	for f in stringfluff:
+		value = value.replace(f, "")
+	var data:PoolStringArray = value.split(",", false) #value.replace("[", "").replace("]","").replace("region","").split(",", false)
+	if len(data) < 2:
+		printerr("Invalid data - %s (AudioRegion): no or incomplete set of timecodes found." % property_name)
+		return
+	$StartValue.set_value(float(data[0]))
+	$StopValue.set_value (float(data[1]))
 
 func get_value():
-	return {"start":$StartValue.get_value(), "stop":$StopValue.get_value()}
+	return "region start at %s, stop at %s" % [$StartValue.get_value(),$StopValue.get_value()]
+	#return "[region start at %s, stop at %s]" % [$StartValue.get_value(),$StopValue.get_value()]
+	#return {"start":$StartValue.get_value(), "stop":$StopValue.get_value()}
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
