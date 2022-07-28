@@ -5,11 +5,11 @@ signal duplicate
 signal changed
 
 func _ready():
-	add_stylebox_override('panel', get_stylebox("sub_inspector_bg12", "Editor"))
+	add_theme_stylebox_override('panel', get_theme_stylebox("sub_inspector_bg12", "Editor"))
 	$'%Name'.hint_tooltip = "Mood name"
 	$'%Duplicate'.icon = get_theme_icon("Duplicate", "EditorIcons")
 	$'%Duplicate'.hint_tooltip = "Duplicate"
-	$'%Duplicate'.connect("pressed", self, "emit_signal", ["duplicate"])
+	$'%Duplicate'.button_up.connect(emit_signal, ["duplicate"])
 	$'%Delete'.icon = get_theme_icon("Remove", "EditorIcons")
 	$'%Delete'.hint_tooltip = "Delete"
 	$'%ChangeSoundFolderButton'.icon = get_theme_icon("Folder", "EditorIcons")
@@ -20,11 +20,11 @@ func _ready():
 	$'%Play'.hint_tooltip = "Preview"
 	_on_Fold_toggled(true)
 	
-	$'%Name'.connect("text_changed", self, 'something_changed')
-	$'%PitchBase'.connect("value_changed", self, 'something_changed')
-	$'%PitchVariance'.connect("value_changed", self, 'something_changed')
-	$'%VolumeBase'.connect("value_changed", self, 'something_changed')
-	$'%VolumeVariance'.connect("value_changed", self, 'something_changed')
+	$'%Name'.text_changed.connect(something_changed)
+	$'%PitchBase'.value_changed.connect(something_changed)
+	$'%PitchVariance'.value_changed.connect(something_changed)
+	$'%VolumeBase'.value_changed.connect(something_changed)
+	$'%VolumeVariance'.value_changed.connect(something_changed)
 
 func load_data(dict:Dictionary):
 	$'%Name'.text = dict.get('name', '')

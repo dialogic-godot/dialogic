@@ -14,7 +14,7 @@ var resource_icon:Texture = null:
 		return resource_icon
 	set(new_icon):
 		resource_icon = new_icon
-		$'%Icon'.rect_min_size.x = $'%Icon'.rect_size.y
+		$'%Icon'.custom_minimum_size.x = $'%Icon'.rect_size.y
 		$'%Icon'.texture = new_icon
 		if new_icon == null:
 			$Search.theme_type_variation = ""
@@ -75,16 +75,18 @@ func _ready():
 		'background': '#1D1F25',
 		'padding': [5, 25],
 	})
-	$Search/Icon.rect_position.x = 0
+	$Search.text_changed.connect(_on_Search_text_changed)
+	$Search.focus_entered.connect(_on_Search_focus_entered)
+	$Search/Icon.position.x = 0
 	var scale = DialogicUtil.get_editor_scale()
 	if scale == 2:
-		$Search/Icon.rect_position.x = 10
+		$Search/Icon.position.x = 10
 	$Search/SelectButton.icon = get_theme_icon("Collapse", "EditorIcons")
 	$Search.placeholder_text = placeholder_text
 	$Search/Suggestions.hide()
 	$Search/Suggestions.index_pressed.connect(suggestion_selected)
 	$Search/Suggestions.popup_hide.connect(popup_hide)
-	$Search/Suggestions.add_stylebox_override('panel', load("res://addons/dialogic/Editor/Events/styles/ResourceMenuPanelBackground.tres"))
+	$Search/Suggestions.add_theme_stylebox_override('panel', load("res://addons/dialogic/Editor/Events/styles/ResourceMenuPanelBackground.tres"))
 	$Search/OpenButton.icon = get_theme_icon("EditResource", "EditorIcons")
 	if resource_icon == null:
 		self.resource_icon = null
