@@ -51,7 +51,7 @@ func file_folder_selected(path):
 
 func _on_TransInitialize_pressed():
 	
-	if get_node('%TransOrigLanguage').text.empty():
+	if get_node('%TransOrigLanguage').text.is_empty():
 		get_node('%TransOrigLanguage').text = ProjectSettings.get_setting('locale/fallback')
 	var orig_locale = get_node('%TransOrigLanguage').text.strip_edges()
 	var file = File.new()

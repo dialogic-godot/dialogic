@@ -22,7 +22,7 @@ func _execute() -> void:
 			if Character and Portrait:
 				var n = dialogic.Portraits.add_portrait(Character, Portrait, Position)
 				
-				if AnimationName.empty():
+				if AnimationName.is_empty():
 					AnimationName = DialogicUtil.get_project_setting('dialogic/animations/join_default', 
 	get_script().resource_path.get_base_dir().plus_file('DefaultAnimations/fade_in_up.gd'))
 					AnimationLength = DialogicUtil.get_project_setting('dialogic/animations/join_default_length', 0.5)
@@ -36,7 +36,7 @@ func _execute() -> void:
 		ActionTypes.Leave:
 			if Character:
 				if dialogic.Portraits.is_character_joined(Character):
-					if AnimationName.empty():
+					if AnimationName.is_empty():
 						AnimationName = DialogicUtil.get_project_setting('dialogic/animations/leave_default', 
 	get_script().resource_path.get_base_dir().plus_file('DefaultAnimations/fade_out_down.gd'))
 						AnimationLength = DialogicUtil.get_project_setting('dialogic/animations/leave_default_length', 0.5) 
@@ -221,7 +221,7 @@ func get_animation_suggestions(search_text):
 			suggestions['None'] = {'value':"", 'editor_icon':["GuiRadioUnchecked", "EditorIcons"]}
 	
 	for anim in list_animations():
-		if search_text.empty() or search_text.to_lower() in anim.get_file().to_lower():
+		if search_text.is_empty() or search_text.to_lower() in anim.get_file().to_lower():
 			match ActionType:
 				ActionTypes.Join:
 					if '_in' in anim.get_file():

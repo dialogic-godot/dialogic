@@ -108,7 +108,7 @@ func load_from_string_to_store(string:String):
 	Value = result.get_string('value').strip_edges()
 	
 	print(result.get_string('shortcode'))
-	if !result.get_string('shortcode').empty():
+	if !result.get_string('shortcode').is_empty():
 		var shortcodeparams = parse_shortcode_parameters(result.get_string('shortcode'))
 		RandomEnabled = true if shortcodeparams.get('random', "True") == "True" else false
 		RandomMin = int(shortcodeparams.get('min', 0))

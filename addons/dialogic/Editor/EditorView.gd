@@ -40,10 +40,12 @@ func edit_character(object):
 
 
 func set_current_margin(node, separation):
-	node.margin_top = separation
-	node.margin_left = separation
-	node.margin_right = separation * -1
-	node.margin_bottom = separation * -1
+	# TODO (No idea how this works in godot 4)
+	pass
+	#node.margin_top = separation
+	#node.margin_left = separation
+	#node.margin_right = separation * -1
+	#node.margin_bottom = separation * -1
 
 func show_settings():
 	$SettingsEditor.popup_centered()
@@ -66,7 +68,7 @@ func _on_SaveConfirmationDialog_custom_action(action):
 	emit_signal("continue_opening_resource")
 
 func godot_file_dialog(object, method, filter, mode = EditorFileDialog.MODE_OPEN_FILE, window_title = "Save", current_file_name = 'New_File'):
-	# TODO
+	# TODO (No idea how this works in godot 4)
 	#for connection in editor_file_dialog.get_signal_connection_list('file_selected')+editor_file_dialog.get_signal_connection_list('dir_selected'):
 	#	editor_file_dialog.disconnect('file_selected', connection.target, connection.method)
 	editor_file_dialog.mode = mode

@@ -139,7 +139,7 @@ func _make_sure_slot_dir_exists() -> void:
 
 func this_or_current_slot(slot_name:String):
 	if slot_name: set_latest_slot(slot_name)
-	return slot_name if not slot_name.empty() else get_latest_slot()
+	return slot_name if not slot_name.is_empty() else get_latest_slot()
 
 ####################################################################################################
 ##					SLOT INFO

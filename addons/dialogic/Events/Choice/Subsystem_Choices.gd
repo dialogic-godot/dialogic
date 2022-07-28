@@ -32,7 +32,7 @@ func show_current_choices() -> void:
 	for choice_index in get_current_choice_indexes():
 		var choice_event = dialogic.current_timeline_events[choice_index]
 		# check if condition is false
-		if not choice_event.Condition.empty() and not dialogic.execute_condition(choice_event.Condition):
+		if not choice_event.Condition.is_empty() and not dialogic.execute_condition(choice_event.Condition):
 			if choice_event.IfFalseAction == DialogicChoiceEvent.IfFalseActions.DEFAULT:
 				choice_event.IfFalseAction = DialogicUtil.get_project_setting('dialogic/choices/def_false_bahviour', 0)
 			

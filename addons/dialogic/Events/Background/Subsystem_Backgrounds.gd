@@ -23,5 +23,5 @@ func update_background(path:String = '') -> void:
 			node.texture = null
 			if path.ends_with('.tscn'):
 				node.add_child(load(path).instantiate())
-			elif not path.empty():
+			elif not path.is_empty():
 				node.texture = load(path)

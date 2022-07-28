@@ -56,7 +56,6 @@ visible = false
 
 [node name="SaveConfirmationDialog" type="AcceptDialog" parent="."]
 size = Vector2i(207, 100)
-visible = true
 
 [connection signal="confirmed" from="SaveConfirmationDialog" to="." method="_on_SaveConfirmationDialog_confirmed"]
 [connection signal="custom_action" from="SaveConfirmationDialog" to="." method="_on_SaveConfirmationDialog_custom_action"]

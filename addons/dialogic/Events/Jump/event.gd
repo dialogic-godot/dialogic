@@ -57,7 +57,7 @@ func get_timeline_suggestions(search_text:String):
 	suggestions['this timeline'] = {'value':'', 'editor_icon':['GuiRadioUnchecked', 'EditorIcons']}
 	
 	for resource in resources:
-		if search_text.empty() or search_text.to_lower() in DialogicUtil.pretty_name(resource).to_lower():
+		if search_text.is_empty() or search_text.to_lower() in DialogicUtil.pretty_name(resource).to_lower():
 			suggestions[DialogicUtil.pretty_name(resource)] = {'value':resource, 'tooltip':resource, 'icon':load("res://addons/dialogic/Editor/Images/Resources/timeline.svg")}
 	
 	return suggestions

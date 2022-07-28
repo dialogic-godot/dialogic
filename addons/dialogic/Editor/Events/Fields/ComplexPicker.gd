@@ -94,7 +94,7 @@ func set_icon(new_icon):
 ## 						SEARCH & SUGGESTION POPUP
 ################################################################################
 func _on_Search_text_entered(new_text = ""):
-	if $Search/Suggestions.get_item_count() and not $Search.text.empty():
+	if $Search/Suggestions.get_item_count() and not $Search.text.is_empty():
 		suggestion_selected(0)
 	else:
 		emit_signal("value_changed", property_name, null)
@@ -141,7 +141,7 @@ func get_default_suggestions(search_text):
 	var resources = DialogicUtil.list_resources_of_type(file_extension)
 
 	for resource in resources:
-		if search_text.empty() or search_text.to_lower() in DialogicUtil.pretty_name(resource).to_lower():
+		if search_text.is_empty() or search_text.to_lower() in DialogicUtil.pretty_name(resource).to_lower():
 			suggestions[DialogicUtil.pretty_name(resource)] = {'value':resource, 'tooltip':resource}
 	return suggestions
 	
@@ -166,7 +166,7 @@ func popup_hide():
 	if ignore_popup_hide_once:
 		ignore_popup_hide_once = false
 		return
-	if $Search/Suggestions.get_item_count() and not $Search.text.empty():
+	if $Search/Suggestions.get_item_count() and not $Search.text.is_empty():
 		suggestion_selected(0)
 	else:
 		set_value(null)
@@ -203,7 +203,7 @@ func drop_data(position, data):
 func _on_OpenButton_pressed():
 	if current_value:
 		var dialogic_plugin = get_tree().root.get_node('EditorNode/DialogicPlugin')
-		if typeof(current_value) == TYPE_STRING and not current_value.empty():
+		if typeof(current_value) == TYPE_STRING and not current_value.is_empty():
 			dialogic_plugin._editor_interface.inspect_object(load(current_value))
 		elif typeof(current_value) == TYPE_OBJECT:
 			dialogic_plugin._editor_interface.inspect_object(current_value)

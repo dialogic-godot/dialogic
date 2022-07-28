@@ -38,7 +38,7 @@ var current_overwrite_data = {}
 func _ready():
 	# add to necessary group
 	add_to_group('dialogic_type_sounds')
-	if !Engine.editor_hint and get_parent() is DialogicDisplay_DialogText:
+	if !Engine.is_editor_hint() and get_parent() is DialogicDisplay_DialogText:
 		get_parent().connect('started_revealing_text', self, '_on_started_revealing_text')
 		get_parent().connect('continued_revealing_text', self, '_on_continued_revealing_text')
 		get_parent().connect('finished_revealing_text', self, '_on_finished_revealing_text')

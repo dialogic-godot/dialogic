@@ -115,7 +115,7 @@ func _set_event_name(text: String):
 
 func _on_OptionsControl_action(index):
 	if index == 0:
-		if not resource.help_page_path.empty():
+		if not resource.help_page_path.is_empty():
 			OS.shell_open(resource.help_page_path)
 	elif index == 2:
 		emit_signal("option_action", "up")
@@ -278,7 +278,7 @@ func build_editor():
 
 func recalculate_edit_visibility(list):
 	for node_con in list:
-		if node_con[1].empty():
+		if node_con[1].is_empty():
 			node_con[0].show()
 		else:
 			var expr = Expression.new()

@@ -77,7 +77,7 @@ func _init() -> void:
 ## THIS RETURNS A READABLE REPRESENTATION, BUT HAS TO CONTAIN ALL DATA (This is how it's stored)
 func get_as_string_to_store() -> String:
 	if Character:
-		if Portrait and not Portrait.empty():
+		if Portrait and not Portrait.is_empty():
 			return Character.name+" ("+Portrait+"): "+Text.replace("\n", "<br>")
 		return Character.name+": "+Text.replace("\n", "<br>")
 	return Text.replace("\n", "<br>")
@@ -87,14 +87,14 @@ func load_from_string_to_store(string:String):
 	var reg = RegEx.new()
 	reg.compile("((?<name>[^:()\\n]*)?(?=(\\([^()]*\\))?:)(\\((?<portrait>[^()]*)\\))?)?:?(?<text>[^\\n]+)")
 	var result = reg.search(string)
-	if result and !result.get_string('name').empty():
+	if result and !result.get_string('name').is_empty():
 		var character = DialogicUtil.guess_resource('.dch', result.get_string('name').strip_edges())
 		if character:
 			Character = load(character)
 		else:
 			Character = null
 			#print("When importing timeline, we couldn't identify what character you meant with ", result.get_string('name'), ".")
-		if !result.get_string('portrait').empty():
+		if !result.get_string('portrait').is_empty():
 			Portrait = result.get_string('portrait').strip_edges()
 	Text = result.get_string('text').replace("<br>", "\n").trim_prefix(" ")
 	
@@ -121,7 +121,7 @@ func get_character_suggestions(search_text:String):
 	suggestions['Noone'] = {'value':'', 'editor_icon':["GuiRadioUnchecked", "EditorIcons"]}
 	
 	for resource in resources:
-		if search_text.empty() or search_text.to_lower() in DialogicUtil.pretty_name(resource).to_lower():
+		if search_text.is_empty() or search_text.to_lower() in DialogicUtil.pretty_name(resource).to_lower():
 			suggestions[DialogicUtil.pretty_name(resource)] = {'value':resource, 'tooltip':resource, 'icon':load("res://addons/dialogic/Editor/Images/Resources/character.svg")}
 	return suggestions
 
@@ -130,6 +130,6 @@ func get_portrait_suggestions(search_text):
 	suggestions["Don't change"] = {'value':'', 'editor_icon':["GuiRadioUnchecked", "EditorIcons"]}
 	if Character != null:
 		for portrait in Character.portraits:
-			if search_text.empty() or search_text.to_lower() in portrait.to_lower():
+			if search_text.is_empty() or search_text.to_lower() in portrait.to_lower():
 				suggestions[portrait] = {'value':portrait, 'icon':load("res://addons/dialogic/Editor/Images/Resources/Portrait.svg")}
 	return suggestions

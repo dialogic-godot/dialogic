@@ -48,7 +48,7 @@ func load(path: String, original_path: String):
 	for line in file.get_as_text().split("\n", false):
 		var stripped_line = line.strip_edges(true, false)
 		
-		if stripped_line.empty():
+		if stripped_line.is_empty():
 			continue
 		
 		var indent = line.substr(0,len(line)-len(stripped_line))
@@ -68,7 +68,7 @@ func load(path: String, original_path: String):
 		prev_was_opener = (event is DialogicChoiceEvent or event is DialogicConditionEvent)
 
 	
-	if !prev_indent.empty():
+	if !prev_indent.is_empty():
 		for i in range(len(prev_indent)):
 			events.append(DialogicEndBranchEvent.new())
 	

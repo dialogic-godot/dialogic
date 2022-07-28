@@ -11,7 +11,7 @@ func clear_game_state():
 
 func load_game_state():
 	var info = dialogic.current_state_info.get('music')
-	if not info or info.path.empty():
+	if not info or info.path.is_empty():
 		update_music()
 	else:
 		update_music(info.path, info.volume, info.audio_bus, 0, info.loop)
