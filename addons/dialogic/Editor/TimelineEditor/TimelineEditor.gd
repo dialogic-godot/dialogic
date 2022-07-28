@@ -47,10 +47,10 @@ var piece_was_dragged = false
 ################################################################################
 func _ready():
 	var dialogic_plugin = get_tree().root.get_node('EditorNode/DialogicPlugin')
-	dialogic_plugin.connect('dialogic_save', self, 'save_timeline')
+	dialogic_plugin.dialogic_save.connect(save_timeline)
 	
 	
-	connect("batch_loaded", self, '_on_batch_loaded')
+	batch_loaded.connect(_on_batch_loaded)
 	
 	# Margins
 	var modifier = ''
@@ -75,7 +75,7 @@ func _ready():
 		var style = timeline_area.get('custom_styles/bg')
 		style.set('bg_color', get_theme_color("dark_color_1", "Editor"))
 	
-	timeline_area.connect('resized', self, 'add_extra_scroll_area_to_timeline', [])
+	timeline_area.resized.connect(add_extra_scroll_area_to_timeline, [])
 	
 	# Event buttons
 	var buttonScene = load("res://addons/dialogic/Editor/TimelineEditor/SmallEventButton.tscn")
@@ -172,8 +172,11 @@ func _input(event):
 	# because certain godot controls swallow events (like textedit)
 	# we protect this with is_visible_in_tree to not 
 	# invoke a shortcut by accident
-	if get_focus_owner() is TextEdit:
-		return
+	
+	# TODO no idea how to replace this `get_focus_owner` with in Godot 4
+	#if get_focus_owner() is TextEdit: 
+	#	return
+	
 	if (event is InputEventKey and event is InputEventWithModifiers and is_visible_in_tree()):
 		# CTRL Z # UNDO
 		if (event.pressed
@@ -488,7 +491,8 @@ func copy_selected_events():
 	var event_copy_array = []
 	for item in selected_items:
 		event_copy_array.append(item.resource.get_as_string_to_store())
-	OS.clipboard = JSON.print(
+	var _json = JSON.new()
+	OS.clipboard = _json.stringify(
 		{
 			"events":event_copy_array,
 			"project_name": ProjectSettings.get_setting("application/config/name")
@@ -496,14 +500,15 @@ func copy_selected_events():
 
 
 func paste_check():
-	var clipboard_parse = JSON.parse(OS.clipboard).result
+	var _json = JSON.new()
+	var clipboard_parse = _json.parse(OS.clipboard)
 	
-	if typeof(clipboard_parse) == TYPE_DICTIONARY:
+	if clipboard_parse == OK:
 		if clipboard_parse.has("project_name"):
-			if clipboard_parse['project_name'] != ProjectSettings.get_setting("application/config/name"):
+			if clipboard_parse.project_name != ProjectSettings.get_setting("application/config/name"):
 				print("[D] Be careful when copying from another project!")
 		if clipboard_parse.has('events'):
-			return clipboard_parse['events']
+			return clipboard_parse.events
 
 
 func remove_events_at_index(at_index:int, amount:int = 1)-> void:
@@ -515,7 +520,7 @@ func remove_events_at_index(at_index:int, amount:int = 1)-> void:
 
 func add_events_at_index(event_list:Array, at_index:int) -> void:
 	if at_index != -1:
-		event_list.invert()
+		event_list.reverse()
 		selected_items = [timeline.get_child(at_index)]
 	else:
 		selected_items = []
@@ -545,7 +550,7 @@ func select_item(item: Node, multi_possible:bool = true):
 	if item == null:
 		return
 
-	if Input.is_key_pressed(KEY_CONTROL) and multi_possible:
+	if Input.is_key_pressed(KEY_CTRL) and multi_possible:
 		# deselect the item if it is selected
 		if _is_item_selected(item):
 			selected_items.erase(item)
@@ -595,7 +600,9 @@ func visual_update_selection():
 
 ## Sorts the selection using 'custom_sort_selection'
 func sort_selection():
-	selected_items.sort_custom(self, 'custom_sort_selection')
+	pass
+	# TODO no idea how to do this in Godot 4
+	#selected_items.sort_custom(self, 'custom_sort_selection')
 
 
 ## Compares two event blocks based on their position in the timeline
@@ -685,64 +692,6 @@ func create_end_branch_event(at_index, parent_node):
 	timeline.add_child(end_branch_event)
 	timeline.move_child(end_branch_event, at_index)
 	return end_branch_event
-
-#
-## the Question button adds multiple blocks 
-#func _on_ButtonQuestion_pressed() -> void:
-#	var at_index = -1
-#	if selected_items:
-#		at_index = selected_items[-1].get_index()+1
-#	else:
-#		at_index = timeline.get_child_count()
-#	TimelineUndoRedo.create_action("[D] Add question events.")
-#	TimelineUndoRedo.add_do_method(self, "create_question", at_index)
-#	TimelineUndoRedo.add_undo_method(self, "remove_events_at_index", at_index, 4)
-#	TimelineUndoRedo.commit_action()
-##
-#func create_question(at_position):
-#	if at_position == 0: selected_items = []
-#	else: selected_items = [timeline.get_child(at_position-1)]
-#	if len(selected_items) != 0:
-#		# Events are added bellow the selected node
-#		# So we must reverse the adding order
-#		#create_event("dialogic_013", {'no-data': true}, true)
-#		#create_event("dialogic_011", {'no-data': true}, true)
-#		#create_event("dialogic_011", {'no-data': true}, true)
-#		#create_event("dialogic_010", {'no-data': true}, true)
-#		pass
-#	else:
-#		#create_event("dialogic_010", {'no-data': true}, true)
-#		#create_event("dialogic_011", {'no-data': true}, true)
-#		#create_event("dialogic_011", {'no-data': true}, true)
-#		#create_event("dialogic_013", {'no-data': true}, true)
-#		pass
-
-#
-## the Condition button adds multiple blocks 
-#func _on_ButtonCondition_pressed() -> void:
-#	var at_index = -1
-#	if selected_items:
-#		at_index = selected_items[-1].get_index()+1
-#	else:
-#		at_index = timeline.get_child_count()
-#	TimelineUndoRedo.create_action("[D] Add condition events.")
-#	TimelineUndoRedo.add_do_method(self, "create_condition", at_index)
-#	TimelineUndoRedo.add_undo_method(self, "remove_events_at_index", at_index, 2)
-#	TimelineUndoRedo.commit_action()
-##
-#func create_condition(at_position):
-#	if at_position == 0: selected_items = []
-#	else: selected_items = [timeline.get_child(at_position-1)]
-#	if len(selected_items) != 0:
-#		# Events are added bellow the selected node
-#		# So we must reverse the adding order
-#		#create_event("dialogic_013", {'no-data': true}, true)
-#		#create_event("dialogic_012", {'no-data': true}, true)
-#		pass
-#	else:
-#		#create_event("dialogic_012", {'no-data': true}, true)
-#		#create_event("dialogic_013", {'no-data': true}, true)
-#		pass
 
 
 ## *****************************************************************************

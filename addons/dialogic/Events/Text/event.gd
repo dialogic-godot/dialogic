@@ -37,7 +37,7 @@ func _execute() -> void:
 	
 	# Wait for text to finish revealing
 	while true:
-		yield(dialogic, "state_changed")
+		await dialogic.state_changed
 		if dialogic.current_state == dialogic.states.IDLE:
 			break
 	
@@ -45,7 +45,7 @@ func _execute() -> void:
 		dialogic.Choices.show_current_choices()
 		dialogic.current_state = dialogic.states.AWAITING_CHOICE
 	elif DialogicUtil.get_project_setting('dialogic/text/autocontinue', false):
-		yield(dialogic.get_tree().create_timer(DialogicUtil.get_project_setting('dialogic/text/autocontinue_delay', 1)), 'timeout')
+		await dialogic.get_tree().create_timer(DialogicUtil.get_project_setting('dialogic/text/autocontinue_delay', 1)).timeout
 		dialogic.handle_next_event()
 	else:
 		finish()
