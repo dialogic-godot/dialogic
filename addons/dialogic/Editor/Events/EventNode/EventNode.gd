@@ -24,7 +24,7 @@ var resource : DialogicEvent
 var expanded = true
 
 # for choice and condition
-var end_node:bool = false:
+var end_node:Node = null:
 	get:
 		return end_node
 	set(node):

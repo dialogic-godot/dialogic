@@ -12,7 +12,7 @@ signal finished_once
 signal finished
 
 func _ready():
-	connect('finished_once', self, 'finished_one_loop')
+	connect('finished_once', self.finished_one_loop)
 
 # to be overridden
 func animate():

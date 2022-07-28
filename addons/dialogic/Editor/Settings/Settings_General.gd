@@ -26,7 +26,7 @@ func refresh():
 		n.color = color_palette[n.name]
 
 func _on_CustomEventsFolderButton_pressed():
-	find_parent('EditorView').godot_file_dialog(self, 'custom_events_folder_selected', '', EditorFileDialog.MODE_OPEN_DIR, 'Select custom events folder')
+	find_parent('EditorView').godot_file_dialog(custom_events_folder_selected, '', EditorFileDialog.MODE_OPEN_DIR, 'Select custom events folder')
 
 func custom_events_folder_selected(folder_path:String):
 	get_node('%CustomEventsFolderLabel').text = folder_path
@@ -49,7 +49,7 @@ func _on_reset_colors_button():
 
 
 func _on_TestingSceneButton_pressed():
-	find_parent('EditorView').godot_file_dialog(self, 'custom_testing_scene_selected', '*.tscn, *.scn', EditorFileDialog.MODE_OPEN_FILE, 'Select testing scene')
+	find_parent('EditorView').godot_file_dialog(custom_testing_scene_selected, '*.tscn, *.scn', EditorFileDialog.MODE_OPEN_FILE, 'Select testing scene')
 
 func custom_testing_scene_selected(path:String):
 	get_node('%TestingSceneLabel').text = path

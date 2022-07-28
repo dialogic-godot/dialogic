@@ -135,7 +135,7 @@ func update_rpg_portrait_mode(character:DialogicCharacter = null, portrait:Strin
 					
 				var anim = animate_portrait(load(joined_character), AnimationName, AnimationLength)
 				
-				anim.finished.connect(remove_portrait, [load(joined_character)])
+				anim.finished.connect(remove_portrait.bind(load(joined_character)))
 			else:
 				char_joined = true
 		

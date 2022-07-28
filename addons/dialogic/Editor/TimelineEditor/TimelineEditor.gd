@@ -46,7 +46,8 @@ var piece_was_dragged = false
 ## 					SETUP
 ################################################################################
 func _ready():
-	owner.plugin_reference.dialogic_save.connect(save_timeline)
+	# TODO connect to saving
+	#find_parent('EditorView').plugin_reference.dialogic_save.connect(save_timeline)
 	
 	
 	batch_loaded.connect(_on_batch_loaded)
@@ -84,14 +85,14 @@ func _ready():
 		var button = buttonScene.instantiate()
 		button.resource = event_resource
 		button.visible_name = '       ' + event_resource.event_name
-		button.set_icon(event_resource.get_icon())
+		button.icon = event_resource.get_icon()
 		button.set_color(event_resource.event_color)
 		button.dialogic_color_name = event_resource.dialogic_color_name
 		button.event_category = event_resource.event_category
 		button.event_sorting_index = event_resource.event_sorting_index
 
 
-		button.button_up.connect(_add_event_button_pressed, [load(event_script)])
+		button.button_up.connect(_add_event_button_pressed.bind(load(event_script)))
 
 		get_node("View/ScrollContainer/EventContainer/FlexContainer" + str(button.event_category)).add_child(button)
 		while event_resource.event_sorting_index < get_node("View/ScrollContainer/EventContainer/FlexContainer" + str(button.event_category)).get_child(max(0, button.get_index()-1)).resource.event_sorting_index:
@@ -685,7 +686,7 @@ func add_condition(at_index, type = DialogicConditionEvent.ConditionTypes.IF):
 func create_end_branch_event(at_index, parent_node):
 	var end_branch_event = load("res://addons/dialogic/Editor/Events/BranchEnd.tscn").instantiate()
 	end_branch_event.resource = DialogicEndBranchEvent.new()
-	end_branch_event.gui_input.connect(_on_event_block_gui_input, [end_branch_event])
+	end_branch_event.gui_input.connect(_on_event_block_gui_input.bind(end_branch_event))
 	parent_node.end_node = end_branch_event
 	end_branch_event.parent_node = parent_node
 	timeline.add_child(end_branch_event)
@@ -747,8 +748,8 @@ func add_event_to_timeline(event_resource:Resource, at_index:int = -1, auto_sele
 		timeline.add_child(piece)
 		timeline.move_child(piece, at_index)
 
-	piece.option_action.connect(_on_event_options_action, [piece])
-	piece.gui_input.connect(_on_event_block_gui_input, [piece])
+	piece.option_action.connect(_on_event_options_action.bind(piece))
+	piece.gui_input.connect(_on_event_block_gui_input.bind(piece))
 	
 	# Buidling editing part
 	piece.build_editor()
@@ -794,8 +795,7 @@ func save_timeline() -> void:
 
 func show_save_dialog():
 	find_parent('EditorView').godot_file_dialog(
-		self,
-		'create_and_save_new_timeline',
+		create_and_save_new_timeline,
 		'*.dtl; DialogicTimeline',
 		EditorFileDialog.MODE_SAVE_FILE,
 		"Save new Timeline",

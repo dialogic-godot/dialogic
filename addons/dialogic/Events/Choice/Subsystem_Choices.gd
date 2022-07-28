@@ -23,8 +23,8 @@ func load_game_state():
 func hide_all_choices() -> void:
 	for node in get_tree().get_nodes_in_group('dialogic_choice_button'):
 		node.hide()
-		if node.is_connected('pressed', self, 'choice_selected'):
-			node.disconnect('pressed', self, 'choice_selected')
+		if node.is_connected('pressed', self.choice_selected):
+			node.disconnect('pressed', self.choice_selected)
 
 func show_current_choices() -> void:
 	hide_all_choices()
@@ -71,7 +71,7 @@ func show_choice(button_index:int, text:String, enabled:bool, event_index:int) -
 				node.shortcut = shortcut
 			
 			node.disabled = not enabled
-			node.button_up.connect(choice_selected, [event_index])
+			node.button_up.connect(choice_selected.bind(event_index))
 			
 		if node.choice_index > 0:
 			idx = node.choice_index

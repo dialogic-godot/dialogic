@@ -9,7 +9,7 @@ func _ready():
 	$'%Name'.hint_tooltip = "Mood name"
 	$'%Duplicate'.icon = get_theme_icon("Duplicate", "EditorIcons")
 	$'%Duplicate'.hint_tooltip = "Duplicate"
-	$'%Duplicate'.button_up.connect(emit_signal, ["duplicate"])
+	$'%Duplicate'.button_up.connect(emit_signal.bind("duplicate"))
 	$'%Delete'.icon = get_theme_icon("Remove", "EditorIcons")
 	$'%Delete'.hint_tooltip = "Delete"
 	$'%ChangeSoundFolderButton'.icon = get_theme_icon("Folder", "EditorIcons")
@@ -61,7 +61,7 @@ func _on_Delete_pressed():
 	queue_free()
 
 func open_file_folder_dialog():
-	find_parent('EditorView').godot_file_dialog(self, 'file_folder_selected', '', EditorFileDialog.MODE_OPEN_DIR, 'Select folder with sounds')
+	find_parent('EditorView').godot_file_dialog(file_folder_selected, '', EditorFileDialog.MODE_OPEN_DIR, 'Select folder with sounds')
 
 func file_folder_selected(path):
 	$'%SoundFolder'.hint_tooltip = path

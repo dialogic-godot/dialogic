@@ -78,7 +78,8 @@ func save_character() -> void:
 ##############################################################################
 
 func _ready() -> void:
-	owner.plugin_reference.dialogic_save.connect(save_character)
+	# TODO connect to saving
+	#find_parent('EditorView').plugin_reference.dialogic_save.connect(save_character)
 	
 	# Let's go connecting!
 	$'%NameLineEdit'.text_changed.connect(something_changed)
@@ -129,7 +130,7 @@ func something_changed(fake_argument = "") -> void:
 
 
 func open_portrait_folder_select() -> void:
-	find_parent("EditorView").godot_file_dialog(self, "_on_dir_selected","*", EditorFileDialog.MODE_OPEN_DIR)
+	find_parent("EditorView").godot_file_dialog(_on_dir_selected, "*", EditorFileDialog.MODE_OPEN_DIR)
 
 
 func _on_dir_selected(path:String) -> void:

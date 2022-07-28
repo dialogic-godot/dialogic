@@ -41,7 +41,7 @@ func refresh():
 	get_node('%TransUpdate').disabled = !get_node('%TransEnabled').button_pressed
 
 func open_file_folder_dialog():
-	find_parent('EditorView').godot_file_dialog(self, 'file_folder_selected', '*.po, *.csv', EditorFileDialog.MODE_OPEN_ANY, 'Select folder or translation file')
+	find_parent('EditorView').godot_file_dialog(file_folder_selected, '*.po, *.csv', EditorFileDialog.MODE_OPEN_ANY, 'Select folder or translation file')
 
 func file_folder_selected(path):
 	get_node('%TransFileFolder').text = path

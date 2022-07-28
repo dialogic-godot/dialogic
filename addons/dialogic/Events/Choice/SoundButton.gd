@@ -20,9 +20,9 @@ func play_sound(sound) -> void:
 func _connect_all_buttons():
 	for child in get_parent().get_children():
 		if child is DialogicDisplay_ChoiceButton:
-			child.button_up.connect(_on_pressed, [child.sound_pressed])
-			child.mouse_entered.connect(_on_hover, [child.sound_hover])
-			child.focus_entered.connect(_on_focus, [child.sound_focus])
+			child.button_up.connect(_on_pressed.bind(child.sound_pressed))
+			child.mouse_entered.connect(_on_hover.bind(child.sound_hover))
+			child.focus_entered.connect(_on_focus.bind(child.sound_focus))
 
 
 #the custom_sound argument comes from the specifec button and get used

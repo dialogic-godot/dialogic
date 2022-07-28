@@ -13,4 +13,4 @@ func animate():
 	tween.tween_property(node, 'scale', Vector2(1,1), time).set_trans(Tween.TRANS_ELASTIC).set_ease(Tween.EASE_OUT)
 	tween.tween_property(node, 'modulate:a', 1.0, time)
 	
-	tween.finished.connect(emit_signal, ['finished_once'])
+	tween.finished.connect(emit_signal.bind('finished_once'))
