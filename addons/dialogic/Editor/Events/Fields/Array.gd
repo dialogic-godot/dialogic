@@ -12,7 +12,7 @@ func set_value(value:Array):
 		child.queue_free()
 	
 	for item in value:
-		var x = load(ArrayValue).instance()
+		var x = load(ArrayValue).instanciate()
 		$'%Values'.add_child(x)
 		x.set_value(item)
 		x.connect('value_changed', self, "recalculate_values")
@@ -37,7 +37,7 @@ func set_left_text(value):
 	$'%LeftText'.visible = bool(value)
 
 func _on_AddButton_pressed():
-	var x = load(ArrayValue).instance()
+	var x = load(ArrayValue).instanciate()
 	$'%Values'.add_child(x)
 	x.set_value("")
 	x.connect('value_changed', self, "recalculate_values")

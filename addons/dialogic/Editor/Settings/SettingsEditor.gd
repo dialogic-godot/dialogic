@@ -1,8 +1,9 @@
 @tool
-extends WindowDialog
+extends Window
 
 func _ready():
-	connect("about_to_show", self, 'refresh')
+	hide()
+	about_to_popup.connect(refresh)
 	
 	if not Engine.editor_hint:
 		popup()

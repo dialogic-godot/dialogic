@@ -20,6 +20,7 @@ func _ready():
 		dialogic_plugin._editor_interface.inspect_object(load(path))
 	
 	$SaveConfirmationDialog.add_button('No Saving Please!', true, 'nosave')
+	$SaveConfirmationDialog.hide()
 
 func edit_timeline(object):
 	if $'%Toolbar'.is_current_unsaved():
