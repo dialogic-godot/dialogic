@@ -64,6 +64,13 @@ func set_value(value):
 	current_value = value
 
 
+func changed_to_empty():
+	if file_extension:
+		emit_signal("value_changed", property_name, null)
+	else:
+		emit_signal("value_changed", property_name, "")
+		
+
 ################################################################################
 ## 						BASIC
 ################################################################################
@@ -99,13 +106,13 @@ func _on_Search_text_entered(new_text = ""):
 	if $Search/Suggestions.get_item_count() and not $Search.text.is_empty():
 		suggestion_selected(0)
 	else:
-		emit_signal("value_changed", property_name, null)
+		changed_to_empty()
 
 func _on_Search_text_changed(new_text, just_update = false):
 	$Search/Suggestions.clear()
 	
 	if new_text == "" and !just_update:
-		emit_signal("value_changed", property_name, null)
+		changed_to_empty()
 	
 	ignore_popup_hide_once = just_update
 	
@@ -172,12 +179,11 @@ func popup_hide():
 		suggestion_selected(0)
 	else:
 		set_value(null)
-		emit_signal("value_changed", property_name, null)
+		changed_to_empty()
 
 func _on_Search_focus_entered():
-	if $Search.text == "" or not current_value:
+	if $Search.text == "" or current_value.is_empty():
 		_on_Search_text_changed("")
-
 
 func _on_SelectButton_toggled(button_pressed):
 	if button_pressed:
@@ -200,4 +206,3 @@ func drop_data(position, data):
 	var file = load(data.files[0])
 	set_value(file)
 	emit_signal("value_changed", property_name, file)
-

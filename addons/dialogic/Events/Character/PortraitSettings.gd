@@ -69,7 +69,7 @@ func list_animations() -> Array:
 
 
 func _on_CustomAnimationsFolderOpener_pressed():
-	find_parent('EditorView').godot_file_dialog(custom_anims_folder_selected, '', EditorFileDialog.MODE_OPEN_DIR, 'Select custom animation folder')
+	find_parent('EditorView').godot_file_dialog(custom_anims_folder_selected, '', EditorFileDialog.FILE_MODE_OPEN_DIR, 'Select custom animation folder')
 
 func custom_anims_folder_selected(path):
 	get_node('%CustomAnimationsFolder').text = path

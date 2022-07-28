@@ -53,7 +53,7 @@ func show_settings():
 
 func save_current_resource():
 	$SaveConfirmationDialog.popup_centered()
-	$SaveConfirmationDialog.window_title = "Unsaved changes!"
+	$SaveConfirmationDialog.title = "Unsaved changes!"
 	$SaveConfirmationDialog.dialog_text = "Save before changing resource?"
 
 func _on_SaveConfirmationDialog_confirmed():
@@ -68,7 +68,7 @@ func _on_SaveConfirmationDialog_custom_action(action):
 	$SaveConfirmationDialog.hide()
 	emit_signal("continue_opening_resource")
 
-func godot_file_dialog(callable, filter, mode = EditorFileDialog.MODE_OPEN_FILE, window_title = "Save", current_file_name = 'New_File'):
+func godot_file_dialog(callable, filter, mode = EditorFileDialog.FILE_MODE_OPEN_FILE, window_title = "Save", current_file_name = 'New_File'):
 	for connection in editor_file_dialog.file_selected.get_connections():
 		editor_file_dialog.file_selected.disconnect(connection)
 	for connection in editor_file_dialog.dir_selected.get_connections():
@@ -79,11 +79,11 @@ func godot_file_dialog(callable, filter, mode = EditorFileDialog.MODE_OPEN_FILE,
 	editor_file_dialog.add_filter(filter)
 	editor_file_dialog.window_title = window_title
 	editor_file_dialog.current_file = current_file_name
-	if mode == EditorFileDialog.MODE_OPEN_FILE or mode == EditorFileDialog.MODE_SAVE_FILE:
+	if mode == EditorFileDialog.FILE_MODE_OPEN_FILE or mode == EditorFileDialog.MODE_SAVE_FILE:
 		editor_file_dialog.file_selected.connect(callable, CONNECT_ONESHOT)
-	elif mode == EditorFileDialog.MODE_OPEN_DIR:
+	elif mode == EditorFileDialog.FILE_MODE_OPEN_DIR:
 		editor_file_dialog.dir_selected.connect(callable, CONNECT_ONESHOT)
-	elif mode == EditorFileDialog.MODE_OPEN_ANY:
+	elif mode == EditorFileDialog.FILE_MODE_OPEN_ANY:
 		editor_file_dialog.dir_selected.connect(callable, CONNECT_ONESHOT)
 		editor_file_dialog.file_selected.connect(callable, CONNECT_ONESHOT)
 	return editor_file_dialog

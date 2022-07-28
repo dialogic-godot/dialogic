@@ -1,8 +1,6 @@
 @tool
 extends HBoxContainer
 
-var event_name
-
 signal option_action(action_name)
 signal content_changed()
 
@@ -105,18 +103,9 @@ func _set_event_icon(icon: Texture):
 	custom_style.corner_radius_bottom_right = 5 * _scale
 	
 	# Separation on the header
-	$'%Header'.add_theme_constant_override("custom_constants/separation", 5 * _scale)
-	$'%BodySpacing'.custom_minimum_size.x = title_label.position.x
-
-func _set_event_name(text: String):
-	if resource.event_name:
-		title_label.text = text
-	else:
-		var t_label = get_node_or_null("PanelContainer/MarginContainer/VBoxContainer/Header/TitleLabel")
-		if t_label:
-			t_label.queue_free()
-
-
+	$%Header.add_theme_constant_override("custom_constants/separation", 5 * _scale)
+	$%BodySpacing.custom_minimum_size.x = title_label.position.x
+	
 
 func _on_OptionsControl_action(index):
 	if index == 0:
@@ -213,7 +202,7 @@ func build_editor():
 			editor_node.resource_icon = p.display_info.get('icon', null)
 			editor_node.disable_pretty_name = p.display_info.get('disable_pretty_name', false)
 			if editor_node.resource_icon == null and p.display_info.has('editor_icon'):
-				editor_node.resource_icon = callv('get_icon', p.display_info.editor_icon)
+				editor_node.resource_icon = callv('get_theme_icon', p.display_info.editor_icon)
 			
 		## INTEGERS
 		elif p.dialogic_type == resource.ValueType.Integer:
@@ -309,8 +298,6 @@ func _update_color():
 ## *****************************************************************************
 
 func _ready():
-	if resource.event_name:
-		event_name = DTS.translate(resource.event_name)
 	
 	## DO SOME STYLING
 	var _scale = DialogicUtil.get_editor_scale()
@@ -325,14 +312,15 @@ func _ready():
 	
 	$'%ExpandButton'.icon = get_theme_icon("Tools", "EditorIcons")
 	
+	
 	if resource:
+		if resource.event_name:
+			title_label.text = DTS.translate(resource.event_name)
 		if resource.get_icon() != null:
 			_set_event_icon(resource.get_icon())
-		if event_name != null:
-			_set_event_name(event_name)
-	
-		$%IconPanel.set("self_modulate", resource.event_color)
-		$'%ExpandButton'.button_pressed = resource.expand_by_default
+
+		$%IconPanel.self_modulate = resource.event_color
+		$%ExpandButton.button_pressed = resource.expand_by_default
 		_on_ExpandButton_toggled(resource.expand_by_default)
 	set_focus_mode(1) # Allowing this node to grab focus
 	

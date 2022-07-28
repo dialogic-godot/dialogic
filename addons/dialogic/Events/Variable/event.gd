@@ -111,8 +111,8 @@ func load_from_string_to_store(string:String):
 	if !result.get_string('shortcode').is_empty():
 		var shortcodeparams = parse_shortcode_parameters(result.get_string('shortcode'))
 		RandomEnabled = true if shortcodeparams.get('random', "True") == "True" else false
-		RandomMin = int(shortcodeparams.get('min', 0))
-		RandomMax = int(shortcodeparams.get('max', 100))
+		RandomMin = shortcodeparams.get('min', 0).to_int()
+		RandomMax = shortcodeparams.get('max', 100).to_int()
 
 func is_valid_event_string(string:String) -> bool:
 	return string.begins_with('VAR ')

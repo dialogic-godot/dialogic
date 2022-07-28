@@ -1,10 +1,10 @@
 [gd_scene load_steps=6 format=3 uid="uid://b3mf0pcte7us0"]
 
-[ext_resource type="PackedScene" path="res://addons/dialogic/Editor/TimelineEditor/TimelineEditor.tscn" id="1"]
+[ext_resource type="PackedScene" uid="uid://cuud6b86l7juf" path="res://addons/dialogic/Editor/TimelineEditor/TimelineEditor.tscn" id="1"]
 [ext_resource type="Script" path="res://addons/dialogic/Editor/EditorView.gd" id="2"]
 [ext_resource type="PackedScene" uid="uid://cfwssh53iuf8x" path="res://addons/dialogic/Editor/Settings/SettingsEditor.tscn" id="3"]
 [ext_resource type="PackedScene" path="res://addons/dialogic/Editor/Common/Toolbar.tscn" id="4"]
-[ext_resource type="PackedScene" path="res://addons/dialogic/Editor/CharacterEditor/CharacterEditor.tscn" id="6"]
+[ext_resource type="PackedScene" uid="uid://bak1jk2glij8r" path="res://addons/dialogic/Editor/CharacterEditor/CharacterEditor.tscn" id="6"]
 
 [node name="EditorView" type="Control"]
 anchor_right = 1.0

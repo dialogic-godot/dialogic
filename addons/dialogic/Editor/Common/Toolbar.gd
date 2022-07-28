@@ -39,13 +39,13 @@ func is_current_unsaved() -> bool:
 ################################################################################
 
 func _on_AddTimeline_pressed():
-	get_node("%TimelineEditor").new_timeline()
+	get_parent().get_node("%TimelineEditor").new_timeline()
 
 func _on_AddCharacter_pressed():
 	find_parent('EditorView').godot_file_dialog(
 		get_parent().get_node("CharacterEditor").new_character,
 		'*.dch; DialogicCharacter',
-		EditorFileDialog.MODE_SAVE_FILE,
+		EditorFileDialog.FILE_MODE_OPEN_FILE,
 		'Save new Character',
 		'New_Character'
 	)

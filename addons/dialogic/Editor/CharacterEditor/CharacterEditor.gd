@@ -129,7 +129,7 @@ func something_changed(fake_argument = "") -> void:
 
 
 func open_portrait_folder_select() -> void:
-	find_parent("EditorView").godot_file_dialog(_on_dir_selected, "*", EditorFileDialog.MODE_OPEN_DIR)
+	find_parent("EditorView").godot_file_dialog(_on_dir_selected, "*", EditorFileDialog.FILE_MODE_OPEN_DIR)
 
 
 func _on_dir_selected(path:String) -> void:
@@ -211,8 +211,8 @@ func update_portrait_preview(portrait_inst = "") -> void:
 			$'%PreviewRealRect'.scale = Vector2(scale, scale)
 			$'%PreviewRealRect'.flip_h = mirror
 			$'%PreviewFullRect'.flip_h = mirror
-			$'%PreviewRealRect'.rect_position.x = -($'%PreviewRealRect'.texture.get_width()*scale/2.0)+offset.x
-			$'%PreviewRealRect'.rect_position.y = -($'%PreviewRealRect'.texture.get_height()*scale)+offset.y
+			$'%PreviewRealRect'.position.x = -($'%PreviewRealRect'.texture.get_width()*scale/2.0)+offset.x
+			$'%PreviewRealRect'.position.y = -($'%PreviewRealRect'.texture.get_height()*scale)+offset.y
 			
 			$'%PortraitSettings'.show()
 		elif '.tscn' in l_path:

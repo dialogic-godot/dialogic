@@ -11,7 +11,8 @@ static func translate(message:String)->String:
 	var translation
 	
 	translation = _get_translation(message)
-	
+	if translation.is_empty():
+		return message
 	return translation
 
 
