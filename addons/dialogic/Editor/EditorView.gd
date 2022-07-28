@@ -1,6 +1,8 @@
 @tool
 extends Control
 
+var plugin_reference = null
+
 var editor_file_dialog:EditorFileDialog
 
 signal continue_opening_resource

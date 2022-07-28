@@ -46,8 +46,7 @@ var piece_was_dragged = false
 ## 					SETUP
 ################################################################################
 func _ready():
-	var dialogic_plugin = get_tree().root.get_node('EditorNode/DialogicPlugin')
-	dialogic_plugin.dialogic_save.connect(save_timeline)
+	owner.plugin_reference.dialogic_save.connect(save_timeline)
 	
 	
 	batch_loaded.connect(_on_batch_loaded)
@@ -72,7 +71,7 @@ func _ready():
 	
 	
 	if find_parent('EditorView'): # This prevents the view to turn black if you are editing this scene in Godot
-		var style = timeline_area.get('custom_styles/bg')
+		var style = timeline_area.get_theme_stylebox('custom_styles/bg')
 		style.set('bg_color', get_theme_color("dark_color_1", "Editor"))
 	
 	timeline_area.resized.connect(add_extra_scroll_area_to_timeline, [])

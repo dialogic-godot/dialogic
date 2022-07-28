@@ -134,7 +134,7 @@ func _on_Search_text_changed(new_text, just_update = false):
 		$Search/Suggestions.set_item_disabled(idx, true)
 	
 	if not $Search/Suggestions.visible:
-		$Search/Suggestions.popup(Rect2($Search.rect_global_position + Vector2(0,1)*$Search.size, Vector2($Search.size.x, 100)))
+		$Search/Suggestions.popup(Rect2($Search.global_position + Vector2(0,1)*$Search.size, Vector2($Search.size.x, 100)))
 		$Search.grab_focus()
 
 
@@ -165,7 +165,7 @@ func suggestion_selected(index):
 	
 func popup_hide():
 	if !$Search/SelectButton.get_global_rect().has_point(get_global_mouse_position()):
-		$Search/SelectButton.pressed = false
+		$Search/SelectButton.button_pressed = false
 	if ignore_popup_hide_once:
 		ignore_popup_hide_once = false
 		return

@@ -20,8 +20,8 @@ func refresh():
 	get_script().resource_path.get_base_dir().plus_file('DefaultAnimations/fade_out_down.gd')))
 	$'%JoinDefaultLength'.set_value(DialogicUtil.get_project_setting('dialogic/animations/join_default_length', 0.5))
 	$'%LeaveDefaultLength'.set_value(DialogicUtil.get_project_setting('dialogic/animations/leave_default_length', 0.5))
-	$'%LeaveDefaultWait'.pressed = DialogicUtil.get_project_setting('dialogic/animations/leave_default_wait', true)
-	$'%JoinDefaultWait'.pressed = DialogicUtil.get_project_setting('dialogic/animations/join_default_wait', true)
+	$'%LeaveDefaultWait'.button_pressed = DialogicUtil.get_project_setting('dialogic/animations/leave_default_wait', true)
+	$'%JoinDefaultWait'.button_pressed = DialogicUtil.get_project_setting('dialogic/animations/join_default_wait', true)
 
 
 func _on_LeaveDefault_value_changed(property_name, value):

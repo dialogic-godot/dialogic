@@ -333,7 +333,7 @@ func _ready():
 			_set_event_name(event_name)
 	
 		$PanelContainer/MarginContainer/VBoxContainer/Header/CenterContainer/IconPanel.set("self_modulate", resource.event_color)
-		$'%ExpandButton'.pressed = resource.expand_by_default
+		$'%ExpandButton'.button_pressed = resource.expand_by_default
 		_on_ExpandButton_toggled(resource.expand_by_default)
 	set_focus_mode(1) # Allowing this node to grab focus
 	
@@ -355,4 +355,4 @@ func _on_ExpandButton_toggled(button_pressed):
 
 func _on_EventNode_gui_input(event):
 	if event is InputEventMouseButton and event.doubleclick:
-		$'%ExpandButton'.pressed = !$'%ExpandButton'.pressed
+		$'%ExpandButton'.button_pressed = !$'%ExpandButton'.button_pressed

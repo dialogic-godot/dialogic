@@ -49,7 +49,7 @@ func get_data():
 func something_changed(fake_arg= ''): emit_signal("changed")
 
 func _on_Fold_toggled(button_pressed):
-	$'%Fold'.pressed = button_pressed
+	$'%Fold'.button_pressed = button_pressed
 	if button_pressed:
 		$'%Fold'.icon = get_theme_icon("GuiVisibilityHidden", "EditorIcons")
 	else:

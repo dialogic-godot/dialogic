@@ -9,7 +9,7 @@ func _ready():
 
 
 func set_value(value):
-	$Toggle.pressed = value
+	$Toggle.button_pressed = value
 
 
 func _on_value_changed(value):

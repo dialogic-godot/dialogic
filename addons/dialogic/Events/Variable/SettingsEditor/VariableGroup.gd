@@ -200,10 +200,8 @@ func _on_NameEdit_gui_input(event):
 		if not MainGroup:
 			$'%NameEdit'.editable = true
 
-
-func _on_NameEdit_text_entered(new_text):
+func _on_name_edit_text_submitted(new_text):
 	disable_name_edit()
-
 
 func _on_NameEdit_focus_exited():
 	disable_name_edit()
@@ -215,3 +213,4 @@ func disable_name_edit():
 
 func _on_SearchBar_text_changed(new_text):
 	search(new_text.to_lower())
+

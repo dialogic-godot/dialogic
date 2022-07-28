@@ -6,12 +6,12 @@ class_name DialogicCharacterFormatLoader
 
 
 # returns all excepted extenstions
-func get_recognized_extensions() -> PackedStringArray:
+func _get_recognized_extensions() -> PackedStringArray:
 	return PackedStringArray(["dch"])
 
 
 # Returns "Rrsource" if this file can/should be loaded by this script
-func get_resource_type(path: String) -> String:
+func _get_resource_type(path: String) -> String:
 	var ext = path.get_extension().to_lower()
 	if ext == "dch":
 		return "Resource"
@@ -20,12 +20,12 @@ func get_resource_type(path: String) -> String:
 
 
 # Return true if this type is handled
-func handles_type(typename: String) -> bool:
+func _handles_type(typename: String) -> bool:
 	return ClassDB.is_parent_class(typename, "Resource")
 
 
 # parse the file and return a resource
-func load(path: String, original_path: String):
+func _load(path: String, original_path: String):
 	print('[Dialogic] Reimporting character "' , path, '"')
 	var file := File.new()
 	
