@@ -891,7 +891,7 @@ func get_block_below(block):
 
 func get_block_height(block):
 	if block != null:
-		return block.rect_size.y
+		return block.size.y
 	else:
 		return null
 
@@ -932,8 +932,8 @@ func move_block_to_index(block_index, index):
 func scroll_to_piece(piece_index) -> void:
 	var height = 0
 	for i in range(0, piece_index):
-		height += timeline.get_child(i).rect_size.y
-	if height < timeline_area.scroll_vertical or height > timeline_area.scroll_vertical+timeline_area.rect_size.y-(200*DialogicUtil.get_editor_scale()):
+		height += timeline.get_child(i).size.y
+	if height < timeline_area.scroll_vertical or height > timeline_area.scroll_vertical+timeline_area.size.y-(200*DialogicUtil.get_editor_scale()):
 		timeline_area.scroll_vertical = height
 
 # Event Indenting
@@ -1023,7 +1023,7 @@ func get_current_events_anchors():
 
 func add_extra_scroll_area_to_timeline():
 	if timeline.get_children().size() > 4:
-		timeline.rect_min_size.y = 0
-		timeline.rect_size.y = 0
-		if timeline.rect_size.y + 200 > timeline_area.rect_size.y:
-			timeline.rect_min_size = Vector2(0, timeline.rect_size.y + 200)
+		timeline.custom_minimum_size.y = 0
+		timeline.size.y = 0
+		if timeline.size.y + 200 > timeline_area.size.y:
+			timeline.custom_minimum_size = Vector2(0, timeline.size.y + 200)

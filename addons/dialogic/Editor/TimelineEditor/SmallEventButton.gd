@@ -20,8 +20,8 @@ func _ready():
 	icon = null
 	var t_rect = $TextureRect
 	var c_border = $ColorBorder
-	c_border.rect_min_size.x = 5 * _scale
-	c_border.rect_size.x = 5 * _scale
+	c_border.custom_minimum_size.x = 5 * _scale
+	c_border.size.x = 5 * _scale
 	t_rect.margin_left = 20 * _scale
 	t_rect.rect_scale = Vector2(_scale, _scale) * Vector2(0.5, 0.5)
 	

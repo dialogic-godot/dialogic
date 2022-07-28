@@ -57,7 +57,7 @@ func _notification(what):
 func _calculate_layout(apply: bool) -> float:
 	var child_position: Vector2 = Vector2(0, 0)
 	var row_height: float = 0
-	var container_width: float = 0#rect_size.x # TODO replace this with real flex 
+	var container_width: float = size.x # TODO replace this with real flex 
 	var num_children_in_current_row: float = 0
 	
 	for child in get_children():

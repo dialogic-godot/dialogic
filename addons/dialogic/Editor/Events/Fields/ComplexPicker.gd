@@ -14,7 +14,7 @@ var resource_icon:Texture = null:
 		return resource_icon
 	set(new_icon):
 		resource_icon = new_icon
-		$'%Icon'.custom_minimum_size.x = $'%Icon'.rect_size.y
+		$'%Icon'.custom_minimum_size.x = $'%Icon'.size.y
 		$'%Icon'.texture = new_icon
 		if new_icon == null:
 			$Search.theme_type_variation = ""
@@ -86,7 +86,8 @@ func _ready():
 	$Search/Suggestions.hide()
 	$Search/Suggestions.index_pressed.connect(suggestion_selected)
 	$Search/Suggestions.popup_hide.connect(popup_hide)
-	$Search/Suggestions.add_theme_stylebox_override('panel', load("res://addons/dialogic/Editor/Events/styles/ResourceMenuPanelBackground.tres"))
+	# TODO: Invalid call. Nonexistent function 'add_theme_stylebox_override' in base 'PopupMenu'.
+	#$Search/Suggestions.add_theme_stylebox_override('panel', load("res://addons/dialogic/Editor/Events/styles/ResourceMenuPanelBackground.tres"))
 	$Search/OpenButton.icon = get_theme_icon("EditResource", "EditorIcons")
 	if resource_icon == null:
 		self.resource_icon = null
@@ -133,7 +134,7 @@ func _on_Search_text_changed(new_text, just_update = false):
 		$Search/Suggestions.set_item_disabled(idx, true)
 	
 	if not $Search/Suggestions.visible:
-		$Search/Suggestions.popup(Rect2($Search.rect_global_position + Vector2(0,1)*$Search.rect_size, Vector2($Search.rect_size.x, 100)))
+		$Search/Suggestions.popup(Rect2($Search.rect_global_position + Vector2(0,1)*$Search.size, Vector2($Search.size.x, 100)))
 		$Search.grab_focus()
 
 
