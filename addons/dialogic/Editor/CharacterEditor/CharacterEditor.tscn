@@ -6,7 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://25qi7yo6ep6o" path="res://icon.png" id="4"]
 [ext_resource type="Theme" uid="uid://d3g4i4dshtdpu" path="res://addons/dialogic/Editor/Events/styles/InputFieldsStyle.tres" id="5"]
 
-[sub_resource type="Image" id="Image_euwjs"]
+[sub_resource type="Image" id="Image_eamdb"]
 data = {
 "data": PackedByteArray(255, 255, 255, 0, 255, 255, 255, 0, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 131, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 131, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 131, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 231, 255, 93, 93, 55, 255, 97, 97, 58, 255, 93, 93, 233, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 231, 255, 94, 94, 54, 255, 94, 94, 57, 255, 93, 93, 233, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 93, 93, 233, 255, 93, 93, 232, 255, 93, 93, 41, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 93, 93, 233, 255, 93, 93, 232, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 97, 97, 42, 255, 255, 255, 0, 255, 97, 97, 42, 255, 97, 97, 42, 255, 255, 255, 0, 255, 98, 98, 47, 255, 97, 97, 42, 255, 255, 255, 0, 255, 97, 97, 42, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 235, 255, 93, 93, 233, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 94, 94, 46, 255, 93, 93, 236, 255, 93, 93, 233, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 235, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 233, 255, 95, 95, 59, 255, 96, 96, 61, 255, 93, 93, 235, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 233, 255, 95, 95, 59, 255, 96, 96, 61, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0),
 "format": "RGBA8",
@@ -15,10 +15,11 @@ data = {
 "width": 16
 }
 
-[sub_resource type="ImageTexture" id="ImageTexture_c6uut"]
-image = SubResource("Image_euwjs")
+[sub_resource type="ImageTexture" id="ImageTexture_1o2nb"]
+image = SubResource("Image_eamdb")
 
 [node name="CharacterEditor" type="Control"]
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 theme = ExtResource("5")
@@ -47,7 +48,7 @@ size_flags_vertical = 11
 [node name="MainEditTabs" type="TabContainer" parent="Split/EditorScroll/Editor"]
 unique_name_in_owner = true
 offset_right = 596.0
-offset_bottom = 131.0
+offset_bottom = 31.0
 
 [node name="General" type="VBoxContainer" parent="Split/EditorScroll/Editor/MainEditTabs"]
 anchor_right = 1.0
@@ -99,8 +100,9 @@ caret_blink_speed = 0.5
 
 [node name="ColorPickerButton" type="ColorPickerButton" parent="Split/EditorScroll/Editor/MainEditTabs/General/DisplayName"]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(30, 30)
 offset_left = 248.0
-offset_right = 256.0
+offset_right = 278.0
 offset_bottom = 33.0
 color = Color(1, 1, 1, 1)
 edit_alpha = false
@@ -154,7 +156,7 @@ offset_bottom = 26.0
 size_flags_horizontal = 3
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Split/EditorScroll/Editor"]
-offset_top = 143.0
+offset_top = 43.0
 offset_right = 596.0
 offset_bottom = 600.0
 
@@ -307,7 +309,7 @@ unique_name_in_owner = true
 offset_right = 134.0
 offset_bottom = 31.0
 text = "  New portrait"
-icon = SubResource("ImageTexture_c6uut")
+icon = SubResource("ImageTexture_1o2nb")
 
 [node name="ImportFromFolder" type="Button" parent="Split/EditorScroll/Editor/VBoxContainer/PortraitPanel/VBoxContainer/Labels/HBoxContainer"]
 unique_name_in_owner = true
@@ -315,7 +317,7 @@ offset_left = 138.0
 offset_right = 276.0
 offset_bottom = 31.0
 text = "  Import folder"
-icon = SubResource("ImageTexture_c6uut")
+icon = SubResource("ImageTexture_1o2nb")
 
 [node name="ScrollContainer" type="ScrollContainer" parent="Split/EditorScroll/Editor/VBoxContainer/PortraitPanel/VBoxContainer"]
 offset_top = 35.0
@@ -349,28 +351,40 @@ size_flags_vertical = 3
 size_flags_stretch_ratio = 0.7
 
 [node name="Background" type="Panel" parent="Split/Preview"]
+clip_contents = true
 offset_right = 416.0
-offset_bottom = 588.0
+offset_bottom = 555.0
 size_flags_vertical = 3
 
 [node name="PreviewFullRect" type="TextureRect" parent="Split/Preview/Background"]
 unique_name_in_owner = true
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_top = 39.0
+grow_horizontal = 2
+grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 mouse_filter = 2
-stretch_mode = 6
+ignore_texture_size = true
+stretch_mode = 5
+metadata/_edit_layout_mode = 1
 
 [node name="PreviewReal" type="CenterContainer" parent="Split/Preview/Background"]
 unique_name_in_owner = true
-anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_top = 445.0
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_layout_mode = 1
 
 [node name="Control" type="Control" parent="Split/Preview/Background/PreviewReal"]
 offset_left = 208.0
+offset_top = 55.0
 offset_right = 208.0
+offset_bottom = 55.0
 
 [node name="PreviewRealRect" type="TextureRect" parent="Split/Preview/Background/PreviewReal/Control"]
 unique_name_in_owner = true
@@ -388,7 +402,7 @@ unique_name_in_owner = true
 size_flags_horizontal = 3
 size_flags_vertical = 3
 mouse_filter = 2
-texture = SubResource("ImageTexture_c6uut")
+texture = SubResource("ImageTexture_1o2nb")
 stretch_mode = 4
 
 [node name="PreviewLabel" parent="Split/Preview/Background" instance=ExtResource("3")]
@@ -404,11 +418,18 @@ unique_name_in_owner = true
 anchor_left = 1.0
 anchor_right = 1.0
 grow_horizontal = 0
+item_count = 2
+selected = 1
+popup/item_0/text = "Full View"
+popup/item_0/id = 0
+popup/item_1/text = "Real Size"
+popup/item_1/id = 1
 
 [node name="ScrollContainer" type="ScrollContainer" parent="Split/Preview"]
-offset_top = 592.0
+offset_top = 559.0
 offset_right = 416.0
 offset_bottom = 600.0
+vertical_scroll_mode = 0
 
 [node name="PortraitSettings" type="HBoxContainer" parent="Split/Preview/ScrollContainer"]
 unique_name_in_owner = true
