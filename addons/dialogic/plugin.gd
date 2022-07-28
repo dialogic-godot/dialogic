@@ -8,15 +8,17 @@ var _editor_interface
 
 signal dialogic_save
 
+const MainPanel = preload("res://addons/dialogic/Editor/EditorView.tscn")
+
 func _init():
 	self.name = 'DialogicPlugin'
 	
 
-func _enter_tree() -> void:
-	_editor_view = preload("res://addons/dialogic/Editor/EditorView.tscn").instantiate()
+func _enter_tree():
+	_editor_view = MainPanel.instantiate()
 	_editor_interface = get_editor_interface()
 	get_editor_interface().get_editor_main_control().add_child(_editor_view)
-	make_visible(false)
+	_make_visible(false)
 
 
 func _ready():
@@ -25,26 +27,28 @@ func _ready():
 		get_editor_interface().get_resource_filesystem().scan()
 	
 
-func _exit_tree() -> void:
+func _exit_tree():
+	if _editor_view:
+		_editor_view.queue_free()
 	_remove_custom_editor_view()
 	remove_inspector_plugin(_parts_inspector)
 	remove_export_plugin(_export_plugin)
 
 
-func has_main_screen():
+func _has_main_screen():
 	return true
 
 
-func get_plugin_name():
+func _get_plugin_name():
 	return "Dialogic"
 
 
-func make_visible(visible):
+func _make_visible(visible):
 	if _editor_view:
 		_editor_view.visible = visible
 
 
-func get_plugin_icon():
+func _get_plugin_icon():
 	var _scale = get_editor_interface().get_editor_scale()
 	var _theme = 'dark'
 	# https://github.com/godotengine/godot-proposals/issues/572
@@ -59,30 +63,30 @@ func _remove_custom_editor_view():
 		_editor_view.queue_free()
 
 
-func save_external_data():
+func _save_external_data():
 	emit_signal('dialogic_save')
 
 
-func handles(object):
+func _handles(object):
 	if object is DialogicTimeline:
 		return true
 	if object is DialogicCharacter:
 		return true
 
 
-func edit(object):
-	make_visible(true)
+func _edit(object):
+	_make_visible(true)
 	if object is DialogicTimeline:
 		_editor_view.edit_timeline(object)
 	if object is DialogicCharacter:
 		_editor_view.edit_character(object)
 
 
-func enable_plugin():
+func _enable_plugin():
 	add_autoload_singleton("Dialogic", "res://addons/dialogic/Other/DialogicGameHandler.gd")
 	add_dialogic_default_action()
 
-func disable_plugin():
+func _disable_plugin():
 	remove_autoload_singleton("Dialogic")
 
 func add_dialogic_default_action():

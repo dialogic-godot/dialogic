@@ -1,8 +1,11 @@
 @tool
 extends Label
-export var text_key : String = ""
 
-export (String, "Normal", "Title", "Info") var  mode : String ="Normal"
+@export var text_key : String = ""
+
+# TODO seems like this kind of export cant be made
+#@export("Normal", "Title", "Info") var  mode : String = "Normal"
+@export var mode:String = "Normal"
 
 func set_text_from_key(value):
 	text = DTS.translate(value)
@@ -10,7 +13,7 @@ func set_text_from_key(value):
 func _ready():
 	if DTS.translate(text_key) != text_key:
 		set_text_from_key(text_key)
-	remove_color_override('font_color')
+	remove_theme_color_override('font_color')
 	if find_parent('EditorView'):
 		if mode == "Title":
 			var x = StyleBoxFlat.new()
@@ -19,4 +22,4 @@ func _ready():
 			x.content_margin_top = 5
 			x.content_margin_left = 5
 			x.content_margin_right = 5
-			add_stylebox_override("normal", x)
+			add_theme_stylebox_override("normal", x)
