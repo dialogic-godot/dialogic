@@ -42,7 +42,7 @@ func add_portrait(character:DialogicCharacter, portrait:String,  position_idx:in
 				node2d.add_child(sprite)
 				sprite.texture = load(path)
 				sprite.centered = false
-				sprite.scale = Vector2(1,1)*character.portraits[portrait].get('scale', 1)
+				sprite.scale = Vector2(1,1)*character.portraits[portrait].get('scale', 1)*character.scale
 				node2d.global_position = node.global_position 
 				sprite.position = character.portraits[portrait].get('offset', Vector2(0,0))
 				sprite.position.x -= sprite.texture.get_width()/2.0*character.portraits[portrait].get('scale', 1)*character.scale
@@ -139,10 +139,10 @@ func update_rpg_portrait_mode(character:DialogicCharacter = null, portrait:Strin
 			else:
 				char_joined = true
 		
-		if (not char_joined) and character:
+		if (not char_joined) and character and portrait in character.portraits:
 			var AnimationName = DialogicUtil.get_project_setting('dialogic/animations/join_default', 
 	get_script().resource_path.get_base_dir().plus_file('DefaultAnimations/fade_in_up.gd'))
 			var AnimationLength = DialogicUtil.get_project_setting('dialogic/animations/join_default_length', 0.5)
-			add_portrait(character, portrait, 1)
+			add_portrait(character, portrait, 0)
 			var anim = animate_portrait(character, AnimationName, AnimationLength)
 			

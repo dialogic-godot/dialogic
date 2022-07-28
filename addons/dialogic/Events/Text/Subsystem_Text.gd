@@ -37,15 +37,15 @@ func update_dialog_text(text:String) -> void:
 
 func update_name_label(character:DialogicCharacter) -> void:
 	for name_label in get_tree().get_nodes_in_group('dialogic_name_label'):
-		if name_label.is_visible_in_tree():
-			if character:
-				dialogic.current_state_info['character'] = character.resource_path
-				name_label.text = character.display_name
+		if character:
+			dialogic.current_state_info['character'] = character.resource_path
+			name_label.text = character.display_name
+			if !'use_character_color' in name_label or name_label.use_character_color:
 				name_label.self_modulate = character.color
-			else:
-				dialogic.current_state_info['character'] = null
-				name_label.text = ''
-				name_label.self_modulate = Color.white
+		else:
+			dialogic.current_state_info['character'] = null
+			name_label.text = ''
+			name_label.self_modulate = Color.white
 
 func update_typing_sound_mood(mood:Dictionary = {}) -> void:
 	for typing_sound in get_tree().get_nodes_in_group('dialogic_type_sounds'):
