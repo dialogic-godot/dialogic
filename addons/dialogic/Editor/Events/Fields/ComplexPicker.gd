@@ -133,7 +133,7 @@ func _on_Search_text_changed(new_text, just_update = false):
 		$Search/Suggestions.set_item_disabled(idx, true)
 	
 	if not $Search/Suggestions.visible:
-		$Search/Suggestions.popup(Rect2($Search.global_position + Vector2(0,1)*$Search.size, Vector2($Search.size.x, 100)))
+		$Search/Suggestions.popup(Rect2(get_viewport().get_visible_rect().position+$Search.global_position + Vector2(0,1)*$Search.size, Vector2($Search.size.x, 100)))
 		$Search.grab_focus()
 
 

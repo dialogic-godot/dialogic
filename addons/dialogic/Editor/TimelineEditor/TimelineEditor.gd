@@ -84,7 +84,7 @@ func _ready():
 		var button = buttonScene.instantiate()
 		button.resource = event_resource
 		button.visible_name = '       ' + event_resource.event_name
-		button.icon = event_resource.get_icon()
+		button.event_icon = event_resource.get_icon()
 		button.set_color(event_resource.event_color)
 		button.dialogic_color_name = event_resource.dialogic_color_name
 		button.event_category = event_resource.event_category

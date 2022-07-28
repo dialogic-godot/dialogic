@@ -69,7 +69,6 @@ func _on_SaveConfirmationDialog_custom_action(action):
 	emit_signal("continue_opening_resource")
 
 func godot_file_dialog(callable, filter, mode = EditorFileDialog.MODE_OPEN_FILE, window_title = "Save", current_file_name = 'New_File'):
-	# TODO (No idea how this works in godot 4)
 	for connection in editor_file_dialog.file_selected.get_connections():
 		editor_file_dialog.file_selected.disconnect(connection)
 	for connection in editor_file_dialog.dir_selected.get_connections():

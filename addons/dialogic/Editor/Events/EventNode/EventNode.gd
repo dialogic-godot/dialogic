@@ -354,5 +354,5 @@ func _on_ExpandButton_toggled(button_pressed):
 
 
 func _on_EventNode_gui_input(event):
-	if event is InputEventMouseButton and event.doubleclick:
+	if event is InputEventMouseButton and event.double_click:
 		$'%ExpandButton'.button_pressed = !$'%ExpandButton'.button_pressed
