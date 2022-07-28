@@ -3,9 +3,9 @@ extends Control
 
 
 func _ready():
-	$'%TransEnabled'.connect('toggled', self, 'set_project_setting', ['dialogic/translation_enabled'])
-	$'%TransFileFolder'.connect('text_changed', self, 'set_project_setting', ['dialogic/translation_path'])
-	$'%TransFileFolderChanger'.connect('pressed', self, 'open_file_folder_dialog')
+	$'%TransEnabled'.toggled.connect(set_project_setting, ['dialogic/translation_enabled'])
+	$'%TransFileFolder'.text_changed.connect(set_project_setting, ['dialogic/translation_path'])
+	$'%TransFileFolderChanger'.button_up.connect(open_file_folder_dialog)
 
 
 func set_project_setting(value, setting):
