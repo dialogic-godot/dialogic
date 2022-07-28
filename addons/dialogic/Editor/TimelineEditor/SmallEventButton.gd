@@ -35,7 +35,8 @@ func _ready():
 	add_theme_color_override("font_color_hover", get_theme_color("accent_color", "Editor"))
 	t_rect.modulate = get_theme_color("font_color", "Editor")
 	
-	ProjectSettings.project_settings_changed.connect(_update_color)
+	# TODO godot4 signal was removed. find a way to react to color changes
+	# ProjectSettings.project_settings_changed.connect(_update_color)
 
 func set_color(color):
 	$ColorBorder.self_modulate = color

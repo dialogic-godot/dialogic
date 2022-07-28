@@ -11,14 +11,14 @@ var resource : DialogicEvent
 
 
 ### internal node eferences
-@onready var selected_style = $PanelContainer/SelectedStyle
-@onready var warning = $PanelContainer/MarginContainer/VBoxContainer/Header/CenterContainer/IconPanel/Warning
-@onready var title_label = $PanelContainer/MarginContainer/VBoxContainer/Header/TitleLabel
-@onready var icon_texture  = $PanelContainer/MarginContainer/VBoxContainer/Header/CenterContainer/IconPanel/IconTexture
-@onready var header_content_container = $PanelContainer/MarginContainer/VBoxContainer/Header/Content
-@onready var body_container = $PanelContainer/MarginContainer/VBoxContainer/Body
-@onready var body_content_container = $PanelContainer/MarginContainer/VBoxContainer/Body/Content
-@onready var indent_node = $Indent
+@onready var selected_style = $%SelectedStyle
+@onready var warning = $%Warning
+@onready var title_label = $%TitleLabel
+@onready var icon_texture  = $%IconTexture
+@onready var header_content_container = $%HeaderContent
+@onready var body_container = $%Body
+@onready var body_content_container = $%BodyContent
+@onready var indent_node = $%Indent
 
 # is the body visible
 var expanded = true
@@ -29,7 +29,7 @@ var end_node:Node = null:
 		return end_node
 	set(node):
 		end_node = node
-		$PanelContainer/MarginContainer/VBoxContainer/Header/CollapseButton.visible = true if end_node else false
+		$%CollapseButton.visible = true if end_node else false
 
 var collapsed = false
 
@@ -74,7 +74,6 @@ func remove_warning(text = ''):
 
 
 func set_indent(indent: int):
-	var indent_node = $Indent
 	indent_node.custom_minimum_size = Vector2(indent_size * indent, 0)
 	indent_node.visible = indent != 0
 	current_indent_level = indent
@@ -88,9 +87,9 @@ func set_indent(indent: int):
 func _set_event_icon(icon: Texture):
 	icon_texture.texture = icon
 	var _scale = DialogicUtil.get_editor_scale()
-	var cpanel = $PanelContainer/MarginContainer/VBoxContainer/Header/CenterContainer
-	var ip = $PanelContainer/MarginContainer/VBoxContainer/Header/CenterContainer/IconPanel
-	var ipc = $PanelContainer/MarginContainer/VBoxContainer/Header/CenterContainer/IconPanel/IconTexture
+	var cpanel = $%IconPanelCenterC
+	var ip = $%IconPanel
+	var ipc = icon_texture
 	
 	# Resizing the icon acording to the scale
 	var icon_size = 32
@@ -99,15 +98,15 @@ func _set_event_icon(icon: Texture):
 	ipc.custom_minimum_size = ip.custom_minimum_size
 	
 	# Updating the theme properties to scale
-	var custom_style = ip.get('custom_styles/panel')
+	var custom_style = ip.get_theme_stylebox('panel')
 	custom_style.corner_radius_top_left = 5 * _scale
 	custom_style.corner_radius_top_right = 5 * _scale
 	custom_style.corner_radius_bottom_left = 5 * _scale
 	custom_style.corner_radius_bottom_right = 5 * _scale
 	
 	# Separation on the header
-	$"%Header".set("custom_constants/separation", 5 * _scale)
-	$'%BodySpacing'.custom_minimum_size.x = ip.custom_minimum_size.x+(5*_scale)
+	$'%Header'.add_theme_constant_override("custom_constants/separation", 5 * _scale)
+	$'%BodySpacing'.custom_minimum_size.x = title_label.position.x
 
 func _set_event_name(text: String):
 	if resource.event_name:
@@ -270,9 +269,9 @@ func build_editor():
 		
 		### --------------------------------------------------------------------
 		### 3. ADD IT TO THE RIGHT PLACE (HEADER/BODY)
-		var location = get_node("%Header/Content")
+		var location = get_node("%HeaderContent")
 		if p.location == 1:
-			location = get_node("%Body/Content")
+			location = get_node("%BodyContent")
 		location.add_child(editor_node)
 	content_changed.connect(recalculate_edit_visibility.bind(edit_conditions_list))
 	recalculate_edit_visibility(edit_conditions_list)
@@ -290,7 +289,7 @@ func recalculate_edit_visibility(list):
 				node_con[0].hide()
 	
 	$'%ExpandButton'.visible = false
-	for node in $'%Content'.get_children():
+	for node in body_content_container.get_children():
 		if node.visible:
 			$'%ExpandButton'.visible = true
 			break
@@ -304,7 +303,7 @@ func set_property(property_name, value):
 
 func _update_color():
 	if resource.dialogic_color_name != '':
-		$PanelContainer/MarginContainer/VBoxContainer/Header/CenterContainer/IconPanel.self_modulate = DialogicUtil.get_color(resource.dialogic_color_name)
+		$%IconPanel.self_modulate = DialogicUtil.get_color(resource.dialogic_color_name)
 ## *****************************************************************************
 ##								OVERRIDES
 ## *****************************************************************************
@@ -315,7 +314,7 @@ func _ready():
 	
 	## DO SOME STYLING
 	var _scale = DialogicUtil.get_editor_scale()
-	$PanelContainer/SelectedStyle.modulate = get_theme_color("accent_color", "Editor")
+	selected_style.modulate = get_theme_color("accent_color", "Editor")
 	warning.texture = get_theme_icon("NodeWarning", "EditorIcons")
 	warning.size = Vector2(16 * _scale, 16 * _scale)
 	title_label.add_theme_color_override("font_color", Color(1,1,1,1))
@@ -332,25 +331,26 @@ func _ready():
 		if event_name != null:
 			_set_event_name(event_name)
 	
-		$PanelContainer/MarginContainer/VBoxContainer/Header/CenterContainer/IconPanel.set("self_modulate", resource.event_color)
+		$%IconPanel.set("self_modulate", resource.event_color)
 		$'%ExpandButton'.button_pressed = resource.expand_by_default
 		_on_ExpandButton_toggled(resource.expand_by_default)
 	set_focus_mode(1) # Allowing this node to grab focus
 	
 	# signals
-	ProjectSettings.project_settings_changed.connect(_update_color)
+	# TODO godot4 react to changes of the colors, the signal was removed
+	#ProjectSettings.project_settings_changed.connect(_update_color)
 	$PanelContainer.gui_input.connect(_on_gui_input)
 	$PopupMenu.index_pressed.connect(_on_OptionsControl_action)
 	
 	_on_Indent_visibility_changed()
-	$PanelContainer/MarginContainer/VBoxContainer/Header/CollapseButton.toggled.connect(toggle_collapse)
-	$PanelContainer/MarginContainer/VBoxContainer/Header/CollapseButton.icon = get_theme_icon("Collapse", "EditorIcons")
-	$PanelContainer/MarginContainer/VBoxContainer/Header/CollapseButton.hide()
+	$%CollapseButton.toggled.connect(toggle_collapse)
+	$%CollapseButton.icon = get_theme_icon("Collapse", "EditorIcons")
+	$%CollapseButton.hide()
 
 
 func _on_ExpandButton_toggled(button_pressed):
 	expanded = button_pressed
-	$'%Body'.visible = button_pressed
+	body_container.visible = button_pressed
 
 
 func _on_EventNode_gui_input(event):

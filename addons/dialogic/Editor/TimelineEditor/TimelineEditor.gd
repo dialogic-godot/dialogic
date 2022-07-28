@@ -71,7 +71,7 @@ func _ready():
 	
 	
 	if find_parent('EditorView'): # This prevents the view to turn black if you are editing this scene in Godot
-		timeline_area.add_theme_stylebox_override('bg', get_theme_stylebox("Background", "EditorStyles"))
+		timeline_area.add_theme_stylebox_override('bg', get_theme_stylebox("DebuggerTabBG", "EditorStyles"))
 	
 	timeline_area.resized.connect(add_extra_scroll_area_to_timeline)
 	
@@ -178,7 +178,7 @@ func _input(event):
 		# CTRL Z # UNDO
 		if (event.pressed
 			and event.alt_pressed == false
-			and event.shift_pressed_pressed == false
+			and event.shift_pressed == false
 			and (event.ctrl_pressed == true or event.command_pressed == true)
 			and event.scancode == KEY_Z
 			and event.echo == false
@@ -190,13 +190,13 @@ func _input(event):
 		# CTRL +SHIFT+ Z # REDO
 		if (event.pressed
 			and event.alt_pressed == false
-			and event.shift_pressed_pressed == true
+			and event.shift_pressed == true
 			and (event.ctrl_pressed == true or event.command_pressed == true)
 			and event.scancode == KEY_Z
 			and event.echo == false
 		) or (event.pressed
 			and event.alt_pressed == false
-			and event.shift_pressed_pressed == false
+			and event.shift_pressed == false
 			and (event.ctrl_pressed == true or event.command_pressed == true)
 			and event.scancode == KEY_Y
 			and event.echo == false):
@@ -207,7 +207,7 @@ func _input(event):
 		# UP
 		if (event.pressed
 			and event.alt_pressed == false
-			and event.shift_pressed_pressed == false
+			and event.shift_pressed == false
 			and (event.ctrl_pressed == false or event.command_pressed == false)
 			and event.scancode == KEY_UP
 			and event.echo == false
@@ -225,7 +225,7 @@ func _input(event):
 		# DOWN
 		if (event.pressed
 			and event.alt_pressed == false
-			and event.shift_pressed_pressed == false
+			and event.shift_pressed == false
 			and (event.ctrl_pressed == false or event.command_pressed == false)
 			and event.scancode == KEY_DOWN
 			and event.echo == false
