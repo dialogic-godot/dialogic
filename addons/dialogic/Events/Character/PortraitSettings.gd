@@ -20,8 +20,8 @@ func refresh():
 	get_script().resource_path.get_base_dir().plus_file('DefaultAnimations/fade_out_down.gd')))
 	$'%JoinDefaultLength'.set_value(DialogicUtil.get_project_setting('dialogic/animations/join_default_length', 0.5))
 	$'%LeaveDefaultLength'.set_value(DialogicUtil.get_project_setting('dialogic/animations/leave_default_length', 0.5))
-	$'%LeaveDefaultWait'.pressed = DialogicUtil.get_project_setting('dialogic/animations/leave_default_wait', true)
-	$'%JoinDefaultWait'.pressed = DialogicUtil.get_project_setting('dialogic/animations/join_default_wait', true)
+	$'%LeaveDefaultWait'.button_pressed = DialogicUtil.get_project_setting('dialogic/animations/leave_default_wait', true)
+	$'%JoinDefaultWait'.button_pressed = DialogicUtil.get_project_setting('dialogic/animations/join_default_wait', true)
 
 
 func _on_LeaveDefault_value_changed(property_name, value):
@@ -69,7 +69,7 @@ func list_animations() -> Array:
 
 
 func _on_CustomAnimationsFolderOpener_pressed():
-	find_parent('EditorView').godot_file_dialog(self, 'custom_anims_folder_selected', '', EditorFileDialog.MODE_OPEN_DIR, 'Select custom animation folder')
+	find_parent('EditorView').godot_file_dialog(custom_anims_folder_selected, '', EditorFileDialog.FILE_MODE_OPEN_DIR, 'Select custom animation folder')
 
 func custom_anims_folder_selected(path):
 	get_node('%CustomAnimationsFolder').text = path

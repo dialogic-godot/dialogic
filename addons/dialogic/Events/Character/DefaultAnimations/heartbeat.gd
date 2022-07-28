@@ -9,4 +9,4 @@ func animate():
 	#tween.tween_property(node, 'scale', Vector2(1,1)*1.1, time*0.5).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 	tween.tween_property(node, 'scale', Vector2(1,1), time*0.5).set_trans(Tween.TRANS_BOUNCE).set_ease(Tween.EASE_OUT)
 	
-	tween.finished.connect(emit_signal, ['finished_once'])
+	tween.finished.connect(emit_signal.bind('finished_once'))

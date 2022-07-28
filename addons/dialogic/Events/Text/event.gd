@@ -8,7 +8,7 @@ var Character:DialogicCharacter
 var Portrait = ""
 
 func _execute() -> void:
-	if (not Character or not Character.custom_info.get('theme', '')) and dialogic.has_subsystem('Themes'):
+	if (not Character or Character.custom_info.get('theme', '').is_empty()) and dialogic.has_subsystem('Themes'):
 		# if previous characters had a custom theme change back to base theme 
 		if dialogic.current_state_info.get('base_theme') != dialogic.current_state_info.get('theme'):
 			dialogic.Themes.change_theme(dialogic.current_state_info.get('base_theme', 'Default'))

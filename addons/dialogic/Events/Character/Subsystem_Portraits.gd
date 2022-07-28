@@ -28,7 +28,8 @@ func add_portrait(character:DialogicCharacter, portrait:String,  position_idx:in
 	if not character:
 		assert(false, "[Dialogic] Cannot add portrait of null character.")
 	if not portrait in character.portraits:
-		assert(false, "[Dialogic] Character "+ character.display_name+ " has no portrait '"+portrait+"'.")
+		print("[DialogicErrorInfo] ",character.display_name, " has no portrait ", portrait)
+		assert(false, "[Dialogic] Invalid portrait name.")
 	if len(get_tree().get_nodes_in_group('dialogic_portrait_holder')) == 0:
 		assert(false, '[Dialogic] If you want to display portraits, you need a PortraitHolder scene!')
 	
@@ -135,7 +136,7 @@ func update_rpg_portrait_mode(character:DialogicCharacter = null, portrait:Strin
 					
 				var anim = animate_portrait(load(joined_character), AnimationName, AnimationLength)
 				
-				anim.finished.connect(remove_portrait, [load(joined_character)])
+				anim.finished.connect(remove_portrait.bind(load(joined_character)))
 			else:
 				char_joined = true
 		

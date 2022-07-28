@@ -10,4 +10,4 @@ func animate():
 	tween.tween_property(node, 'position:y', orig_pos.y + node.get_viewport().size.y/5, time)
 	tween.tween_property(node, 'modulate:a', 0.0, time)
 	
-	tween.finished.connect(emit_signal, ['finished_once'])
+	tween.finished.connect(emit_signal.bind('finished_once'))

@@ -3,8 +3,8 @@ extends Control
 
 
 func _ready():
-	$'%TransEnabled'.toggled.connect(set_project_setting, ['dialogic/translation_enabled'])
-	$'%TransFileFolder'.text_changed.connect(set_project_setting, ['dialogic/translation_path'])
+	$'%TransEnabled'.toggled.connect(set_project_setting.bind('dialogic/translation_enabled'))
+	$'%TransFileFolder'.text_changed.connect(set_project_setting.bind('dialogic/translation_path'))
 	$'%TransFileFolderChanger'.button_up.connect(open_file_folder_dialog)
 
 
@@ -15,13 +15,13 @@ func set_project_setting(value, setting):
 
 func refresh():
 	# update language selector
-	get_node('%TransOrigLanguage').text = ProjectSettings.get_setting('locale/fallback')
+	get_node('%TransOrigLanguage').text = TranslationServer.get_locale()
 	get_node('%TransFileMode').select(0)
 	
 	
-	get_node('%TransEnabled').pressed = DialogicUtil.get_project_setting('dialogic/translation_enabled', false)
+	get_node('%TransEnabled').button_pressed = DialogicUtil.get_project_setting('dialogic/translation_enabled', false)
 	
-	if get_node('%TransEnabled').pressed:
+	if get_node('%TransEnabled').button_pressed:
 		if DialogicUtil.get_project_setting('dialogic/translation_path', ''):
 			get_node('%TransFileFolder').editable = true
 			get_node('%TransFileFolder').text = DialogicUtil.get_project_setting('dialogic/translation_path', '')
@@ -32,16 +32,16 @@ func refresh():
 			get_node('%TransFileFolderChanger').disabled = true
 	
 	get_node('%TransFileFolderChanger').icon = get_theme_icon("Folder", "EditorIcons")
-	get_node('%TransOrigLanguage').editable = !get_node('%TransEnabled').pressed
-	get_node('%TransFileMode').disabled = get_node('%TransEnabled').pressed
-	get_node('%TransInitialize').disabled = get_node('%TransEnabled').pressed
-	get_node('%TransFileFolder').editable = get_node('%TransEnabled').pressed
-	get_node('%TransFileFolderChanger').disabled = !get_node('%TransEnabled').pressed
-	get_node('%TransRemove').disabled = !get_node('%TransEnabled').pressed
-	get_node('%TransUpdate').disabled = !get_node('%TransEnabled').pressed
+	get_node('%TransOrigLanguage').editable = !get_node('%TransEnabled').button_pressed
+	get_node('%TransFileMode').disabled = get_node('%TransEnabled').button_pressed
+	get_node('%TransInitialize').disabled = get_node('%TransEnabled').button_pressed
+	get_node('%TransFileFolder').editable = get_node('%TransEnabled').button_pressed
+	get_node('%TransFileFolderChanger').disabled = !get_node('%TransEnabled').button_pressed
+	get_node('%TransRemove').disabled = !get_node('%TransEnabled').button_pressed
+	get_node('%TransUpdate').disabled = !get_node('%TransEnabled').button_pressed
 
 func open_file_folder_dialog():
-	find_parent('EditorView').godot_file_dialog(self, 'file_folder_selected', '*.po, *.csv', EditorFileDialog.MODE_OPEN_ANY, 'Select folder or translation file')
+	find_parent('EditorView').godot_file_dialog(file_folder_selected, '*.po, *.csv', EditorFileDialog.FILE_MODE_OPEN_ANY, 'Select folder or translation file')
 
 func file_folder_selected(path):
 	get_node('%TransFileFolder').text = path

@@ -27,7 +27,7 @@ func _execute() -> void:
 	if n:
 		if n.has_method(Method):
 			if Inline:
-				dialogic.text_signal.connect(_call_on_signal, [], CONNECT_PERSIST)
+				dialogic.text_signal.connect(_call_on_signal, CONNECT_PERSIST)
 			elif Wait:
 				await n.callv(Method, Arguments).completed
 			else:
@@ -40,13 +40,13 @@ func _call_on_signal(arg):
 	if arg != Signal_Name:
 		return
 	if Single_Use:
-		dialogic.disconnect("text_signal", self, "_call_on_signal")
+		dialogic.disconnect("text_signal", _call_on_signal)
 	var n = dialogic.get_node_or_null(Path)
 	n.callv(Method, Arguments)
 
 func _disconnect_signal():
-	if dialogic.is_connected('text_signal', self, '_call_on_signal'):
-		dialogic.disconnect("text_signal", self, "_call_on_signal")
+	if dialogic.text_signal.is_connected(_call_on_signal):
+		dialogic.text_signal.disconnect(_call_on_signal)
 
 ################################################################################
 ## 						INITIALIZE

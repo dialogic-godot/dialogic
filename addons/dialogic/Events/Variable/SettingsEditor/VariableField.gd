@@ -71,7 +71,7 @@ func _on_NameEdit_gui_input(event):
 func _on_NameEdit_focus_exited():
 	disable_name_edit()
 
-func _on_NameEdit_text_entered(new_text):
+func _on_name_edit_text_submitted(new_text):
 	disable_name_edit()
 
 func disable_name_edit():
@@ -83,3 +83,5 @@ func warning():
 
 func no_warning():
 	modulate = Color(1,1,1,1)
+
+

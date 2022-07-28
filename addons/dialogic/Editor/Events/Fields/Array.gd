@@ -30,15 +30,15 @@ func recalculate_values():
 
 func set_right_text(value):
 	$RightText.text = str(value)
-	$RightText.visible = bool(value)
+	$RightText.visible = value.is_empty()
 
 func set_left_text(value):
 	$'%LeftText'.text = str(value)
-	$'%LeftText'.visible = bool(value)
+	$'%LeftText'.visible = value.is_empty()
 
 func _on_AddButton_pressed():
-	var x = load(ArrayValue).instanciate()
+	var x = load(ArrayValue).instantiate()
 	$'%Values'.add_child(x)
 	x.set_value("")
-	x.connect('value_changed', self, "recalculate_values")
+	x.value_changed.connect(recalculate_values)
 	recalculate_values()

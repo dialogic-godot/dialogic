@@ -39,13 +39,13 @@ signal value_changed(property_name, value)
 # These functions have to be implemented by all scenes that are used to display 
 # values on the events.
 
-func set_left_text(value):
+func set_left_text(value:String):
 	$LeftText.text = str(value)
-	$LeftText.visible = bool(value)
+	$LeftText.visible = !value.is_empty()
 
-func set_rightt_text(value):
+func set_rightt_text(value:String):
 	$RightText.text = str(value)
-	$RightText.visible = bool(value)
+	$RightText.visible = !value.is_empty()
 
 func set_value(value):
 	if value == null:
@@ -63,6 +63,13 @@ func set_value(value):
 
 	current_value = value
 
+
+func changed_to_empty():
+	if file_extension:
+		emit_signal("value_changed", property_name, null)
+	else:
+		emit_signal("value_changed", property_name, "")
+		
 
 ################################################################################
 ## 						BASIC
@@ -86,9 +93,8 @@ func _ready():
 	$Search/Suggestions.hide()
 	$Search/Suggestions.index_pressed.connect(suggestion_selected)
 	$Search/Suggestions.popup_hide.connect(popup_hide)
-	# TODO: Invalid call. Nonexistent function 'add_theme_stylebox_override' in base 'PopupMenu'.
+	#TODO: Invalid call. Nonexistent function 'add_theme_stylebox_override' in base 'PopupMenu'.
 	#$Search/Suggestions.add_theme_stylebox_override('panel', load("res://addons/dialogic/Editor/Events/styles/ResourceMenuPanelBackground.tres"))
-	$Search/OpenButton.icon = get_theme_icon("EditResource", "EditorIcons")
 	if resource_icon == null:
 		self.resource_icon = null
 
@@ -100,13 +106,13 @@ func _on_Search_text_entered(new_text = ""):
 	if $Search/Suggestions.get_item_count() and not $Search.text.is_empty():
 		suggestion_selected(0)
 	else:
-		emit_signal("value_changed", property_name, null)
+		changed_to_empty()
 
 func _on_Search_text_changed(new_text, just_update = false):
 	$Search/Suggestions.clear()
 	
 	if new_text == "" and !just_update:
-		emit_signal("value_changed", property_name, null)
+		changed_to_empty()
 	
 	ignore_popup_hide_once = just_update
 	
@@ -134,7 +140,7 @@ func _on_Search_text_changed(new_text, just_update = false):
 		$Search/Suggestions.set_item_disabled(idx, true)
 	
 	if not $Search/Suggestions.visible:
-		$Search/Suggestions.popup(Rect2($Search.rect_global_position + Vector2(0,1)*$Search.size, Vector2($Search.size.x, 100)))
+		$Search/Suggestions.popup(Rect2(get_viewport().get_visible_rect().position+$Search.global_position + Vector2(0,1)*$Search.size, Vector2($Search.size.x, 100)))
 		$Search.grab_focus()
 
 
@@ -165,7 +171,7 @@ func suggestion_selected(index):
 	
 func popup_hide():
 	if !$Search/SelectButton.get_global_rect().has_point(get_global_mouse_position()):
-		$Search/SelectButton.pressed = false
+		$Search/SelectButton.button_pressed = false
 	if ignore_popup_hide_once:
 		ignore_popup_hide_once = false
 		return
@@ -173,12 +179,15 @@ func popup_hide():
 		suggestion_selected(0)
 	else:
 		set_value(null)
-		emit_signal("value_changed", property_name, null)
+		changed_to_empty()
 
 func _on_Search_focus_entered():
-	if $Search.text == "" or not current_value:
+	if $Search.text == "" or current_value.is_empty():
 		_on_Search_text_changed("")
 
+func _on_SelectButton_toggled(button_pressed):
+	if button_pressed:
+		_on_Search_text_changed('', true)
 
 ################################################################################
 ##	 					DRAG AND DROP
@@ -197,21 +206,3 @@ func drop_data(position, data):
 	var file = load(data.files[0])
 	set_value(file)
 	emit_signal("value_changed", property_name, file)
-
-
-################################################################################
-##	 					OPEN RESOURCE BUTTON
-################################################################################
-# This function triggers the resource to be opened in the inspector and possible editors provided by plugins
-func _on_OpenButton_pressed():
-	if current_value:
-		var dialogic_plugin = get_tree().root.get_node('EditorNode/DialogicPlugin')
-		if typeof(current_value) == TYPE_STRING and not current_value.is_empty():
-			dialogic_plugin._editor_interface.inspect_object(load(current_value))
-		elif typeof(current_value) == TYPE_OBJECT:
-			dialogic_plugin._editor_interface.inspect_object(current_value)
-
-
-func _on_SelectButton_toggled(button_pressed):
-	if button_pressed:
-		_on_Search_text_changed('', true)

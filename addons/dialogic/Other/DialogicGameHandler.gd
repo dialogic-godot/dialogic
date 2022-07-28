@@ -155,10 +155,10 @@ func collect_subsystems():
 			if i.has('subsystem') and not has_subsystem(i.name):
 				add_subsytsem(i.name, i.subsystem)
 
-func has_subsystem(_name):
+func has_subsystem(_name:String):
 	return has_node(_name)
 
-func get_subsystem(_name):
+func get_subsystem(_name:String):
 	return get_node(_name)
 
 func add_subsytsem(_name, _script_path):
@@ -171,7 +171,7 @@ func add_subsytsem(_name, _script_path):
 
 func _get(property):
 	if has_subsystem(property):
-		return get_node(property)
+		return get_node(str(property))
 
 func _set(property, value):
 	if has_subsystem(property):

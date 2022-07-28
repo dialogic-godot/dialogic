@@ -147,7 +147,7 @@ func update():
 		$'%SearchBar'.right_icon = get_theme_icon("Search", "EditorIcons")
 	
 	$'%Dragger'.texture = get_theme_icon("TripleBar", "EditorIcons")
-	$'%NameEdit'.add_color_override("font_color_uneditable", get_theme_color('font_color', 'Label'))
+	$'%NameEdit'.add_theme_color_override("font_color_uneditable", get_theme_color('font_color', 'Label'))
 	get_node('%DeleteButton').icon = get_theme_icon("Remove", "EditorIcons")
 	get_node('%DeleteButton').hint_tooltip = "Delete Group"
 	get_node('%DuplicateButton').icon = get_theme_icon("Duplicate", "EditorIcons")
@@ -200,10 +200,8 @@ func _on_NameEdit_gui_input(event):
 		if not MainGroup:
 			$'%NameEdit'.editable = true
 
-
-func _on_NameEdit_text_entered(new_text):
+func _on_name_edit_text_submitted(new_text):
 	disable_name_edit()
-
 
 func _on_NameEdit_focus_exited():
 	disable_name_edit()
@@ -215,3 +213,4 @@ func disable_name_edit():
 
 func _on_SearchBar_text_changed(new_text):
 	search(new_text.to_lower())
+

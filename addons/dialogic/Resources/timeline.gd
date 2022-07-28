@@ -50,8 +50,8 @@ func get_events() -> Array:
 
 
 func _set(property, value):
-	if property.begins_with("event/"):
-		var event_idx:int = int(property.split("/", true, 2)[1])
+	if str(property).begins_with("event/"):
+		var event_idx:int = str(property).split("/", true, 2)[1].to_int()
 		if event_idx < _events.size():
 			_events[event_idx] = value
 		else:

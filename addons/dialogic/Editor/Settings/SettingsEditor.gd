@@ -1,5 +1,5 @@
 @tool
-extends Window
+extends Popup
 
 func _ready():
 	hide()

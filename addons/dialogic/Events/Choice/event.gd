@@ -60,7 +60,8 @@ func load_from_string_to_store(string:String):
 	var regex = RegEx.new()
 	regex.compile('- (?<text>[^\\[]*)(\\[if (?<condition>[^\\]]+)])?\\s?(\\[else (?<else_option>[^\\]\\n]*)\\])?')
 	var result = regex.search(string.strip_edges())
-	
+	if result == null:
+		return
 	Text = result.get_string('text')
 	Condition = result.get_string('condition')
 	if result.get_string('else_option'):

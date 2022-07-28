@@ -45,7 +45,7 @@ func _execute() -> void:
 					if AnimationName:
 						var anim = dialogic.Portraits.animate_portrait(Character, AnimationName, AnimationLength, AnimationRepeats)
 						
-						anim.finished.connect(dialogic.Portraits.remove_portrait, [Character])
+						anim.finished.connect(dialogic.Portraits.remove_portrait.bind(Character))
 						
 						if AnimationWait:
 							await anim.finished
@@ -163,9 +163,9 @@ func load_from_string_to_store(string:String):
 		if !AnimationName.ends_with('.gd'):
 			printerr("[Dialogic] Couldn't identify animation '"+AnimationName+"'.")
 			AnimationName = ""
-		AnimationLength = float(shortcode_params.get('length', 0.5))
+		AnimationLength = shortcode_params.get('length', 0.5).to_float()
 		AnimationWait = DialogicUtil.str_to_bool(shortcode_params.get('wait', 'False'))
-		AnimationRepeats = int(shortcode_params.get('repeat', 1))
+		AnimationRepeats = shortcode_params.get('repeat', 1).to_int()
 
 # RETURN TRUE IF THE GIVEN LINE SHOULD BE LOADED AS THIS EVENT
 func is_valid_event_string(string:String):
@@ -188,9 +188,9 @@ func build_event_editor():
 	add_header_edit('Position', ValueType.Integer, 'Position:', '', {}, 'Character != null and ActionType != %s' %ActionTypes.Leave)
 	
 	add_body_edit('AnimationName', ValueType.ComplexPicker, 'Animation:', '', {'suggestions_func':[self, 'get_animation_suggestions'], 'editor_icon':["Animation", "EditorIcons"], 'placeholder':'Default'}, 'Character != null')
-	add_body_edit('AnimationLength', ValueType.Float, 'Length:', '', {}, 'Character and AnimationName')
-	add_body_edit('AnimationWait', ValueType.Bool, 'Wait:', '', {}, 'Character and AnimationName')
-	add_body_edit('AnimationRepeats', ValueType.Integer, 'Repeat:', '', {},'Character and AnimationName and ActionType == %s)' %ActionTypes.Update)
+	add_body_edit('AnimationLength', ValueType.Float, 'Length:', '', {}, 'Character and !AnimationName.is_empty()')
+	add_body_edit('AnimationWait', ValueType.Bool, 'Wait:', '', {}, 'Character and !AnimationName.is_empty()')
+	add_body_edit('AnimationRepeats', ValueType.Integer, 'Repeat:', '', {},'Character and !AnimationName.is_empty() and ActionType == %s)' %ActionTypes.Update)
 
 func get_character_suggestions(search_text:String):
 	var suggestions = {}

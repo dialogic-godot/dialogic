@@ -1,5 +1,5 @@
 @tool
-extends VBoxContainer
+extends Container
 
 
 ################################################################################
@@ -46,8 +46,7 @@ var piece_was_dragged = false
 ## 					SETUP
 ################################################################################
 func _ready():
-	var dialogic_plugin = get_tree().root.get_node('EditorNode/DialogicPlugin')
-	dialogic_plugin.dialogic_save.connect(save_timeline)
+	DialogicUtil.get_dialogic_plugin().dialogic_save.connect(save_timeline)
 	
 	
 	batch_loaded.connect(_on_batch_loaded)
@@ -72,10 +71,10 @@ func _ready():
 	
 	
 	if find_parent('EditorView'): # This prevents the view to turn black if you are editing this scene in Godot
-		var style = timeline_area.get('custom_styles/bg')
-		style.set('bg_color', get_theme_color("dark_color_1", "Editor"))
-	
-	timeline_area.resized.connect(add_extra_scroll_area_to_timeline, [])
+		pass # TODO godot4 not sure, think they changed the color names. Well make it adjust again
+		#timeline_area.get_theme_stylebox('bg').set('bg_color', get_theme_color("base_color", "Editor"))
+		
+	timeline_area.resized.connect(add_extra_scroll_area_to_timeline)
 	
 	# Event buttons
 	var buttonScene = load("res://addons/dialogic/Editor/TimelineEditor/SmallEventButton.tscn")
@@ -85,14 +84,14 @@ func _ready():
 		var button = buttonScene.instantiate()
 		button.resource = event_resource
 		button.visible_name = '       ' + event_resource.event_name
-		button.set_icon(event_resource.get_icon())
+		button.event_icon = event_resource.get_icon()
 		button.set_color(event_resource.event_color)
 		button.dialogic_color_name = event_resource.dialogic_color_name
 		button.event_category = event_resource.event_category
 		button.event_sorting_index = event_resource.event_sorting_index
 
 
-		button.button_up.connect(_add_event_button_pressed, [load(event_script)])
+		button.button_up.connect(_add_event_button_pressed.bind(load(event_script)))
 
 		get_node("View/ScrollContainer/EventContainer/FlexContainer" + str(button.event_category)).add_child(button)
 		while event_resource.event_sorting_index < get_node("View/ScrollContainer/EventContainer/FlexContainer" + str(button.event_category)).get_child(max(0, button.get_index()-1)).resource.event_sorting_index:
@@ -173,46 +172,45 @@ func _input(event):
 	# we protect this with is_visible_in_tree to not 
 	# invoke a shortcut by accident
 	
-	# TODO no idea how to replace this `get_focus_owner` with in Godot 4
-	#if get_focus_owner() is TextEdit: 
-	#	return
+	if get_viewport().gui_get_focus_owner() is TextEdit: 
+		return
 	
 	if (event is InputEventKey and event is InputEventWithModifiers and is_visible_in_tree()):
 		# CTRL Z # UNDO
 		if (event.pressed
-			and event.alt == false
-			and event.shift == false
-			and (event.control == true or event.command == true)
-			and event.scancode == KEY_Z
+			and event.alt_pressed == false
+			and event.shift_pressed == false
+			and (event.ctrl_pressed == true or event.command_pressed == true)
+			and event.keycode == KEY_Z
 			and event.echo == false
 		):
 			TimelineUndoRedo.undo()
 			indent_events()
-			get_tree().set_input_as_handled()
+			get_viewport().set_input_as_handled()
 	if (event is InputEventKey and event is InputEventWithModifiers and is_visible_in_tree()):
 		# CTRL +SHIFT+ Z # REDO
 		if (event.pressed
-			and event.alt == false
-			and event.shift == true
-			and (event.control == true or event.command == true)
-			and event.scancode == KEY_Z
+			and event.alt_pressed == false
+			and event.shift_pressed == true
+			and (event.ctrl_pressed == true or event.command_pressed == true)
+			and event.keycode == KEY_Z
 			and event.echo == false
 		) or (event.pressed
-			and event.alt == false
-			and event.shift == false
-			and (event.control == true or event.command == true)
-			and event.scancode == KEY_Y
+			and event.alt_pressed == false
+			and event.shift_pressed == false
+			and (event.ctrl_pressed == true or event.command_pressed == true)
+			and event.keycode == KEY_Y
 			and event.echo == false):
 			TimelineUndoRedo.redo()
 			indent_events()
-			get_tree().set_input_as_handled()
+			get_viewport().set_input_as_handled()
 	if (event is InputEventKey and event is InputEventWithModifiers and is_visible_in_tree()):
 		# UP
 		if (event.pressed
-			and event.alt == false
-			and event.shift == false
-			and (event.control == false or event.command == false)
-			and event.scancode == KEY_UP
+			and event.alt_pressed == false
+			and event.shift_pressed == false
+			and (event.ctrl_pressed == false or event.command_pressed == false)
+			and event.keycode == KEY_UP
 			and event.echo == false
 		):
 			# select previous
@@ -222,15 +220,15 @@ func _input(event):
 				if (prev_node != selected_items[0]):
 					selected_items = []
 					select_item(prev_node)
-				get_tree().set_input_as_handled()
+				get_viewport().set_input_as_handled()
 
 			
 		# DOWN
 		if (event.pressed
-			and event.alt == false
-			and event.shift == false
-			and (event.control == false or event.command == false)
-			and event.scancode == KEY_DOWN
+			and event.alt_pressed == false
+			and event.shift_pressed == false
+			and (event.ctrl_pressed == false or event.command_pressed == false)
+			and event.keycode == KEY_DOWN
 			and event.echo == false
 		):
 			# select next
@@ -240,14 +238,14 @@ func _input(event):
 				if (next_node != selected_items[0]):
 					selected_items = []
 					select_item(next_node)
-				get_tree().set_input_as_handled()
+				get_viewport().set_input_as_handled()
 			
 		# DELETE
 		if (event.pressed
-			and event.alt == false
-			and event.shift == false
-			and (event.control == false or event.command == false)
-			and event.scancode == KEY_DELETE
+			and event.alt_pressed == false
+			and event.shift_pressed == false
+			and (event.ctrl_pressed == false or event.command_pressed == false)
+			and event.keycode == KEY_DELETE
 			and event.echo == false
 		):
 			if (len(selected_items) != 0):
@@ -256,14 +254,14 @@ func _input(event):
 				TimelineUndoRedo.add_do_method(self, "delete_events_indexed", events_indexed)
 				TimelineUndoRedo.add_undo_method(self, "add_events_indexed", events_indexed)
 				TimelineUndoRedo.commit_action()
-				get_tree().set_input_as_handled()
+				get_viewport().set_input_as_handled()
 			
 		# CTRL T
 		if (event.pressed
-			and event.alt == false
-			and event.shift == false
-			and (event.control == true or event.command == true)
-			and event.scancode == KEY_T
+			and event.alt_pressed == false
+			and event.shift_pressed == false
+			and (event.ctrl_pressed == true or event.command_pressed == true)
+			and event.keycode == KEY_T
 			and event.echo == false
 		):
 			var at_index = -1
@@ -275,49 +273,49 @@ func _input(event):
 			TimelineUndoRedo.add_do_method(self, "create_event", "dialogic_001", {'no-data': true}, true, at_index, true)
 			TimelineUndoRedo.add_undo_method(self, "remove_events_at_index", at_index, 1)
 			TimelineUndoRedo.commit_action()
-			get_tree().set_input_as_handled()
+			get_viewport().set_input_as_handled()
 			
 		# CTRL A
 		if (event.pressed
-			and event.alt == false
-			and event.shift == false
-			and (event.control == true or event.command == true)
-			and event.scancode == KEY_A
+			and event.alt_pressed == false
+			and event.shift_pressed == false
+			and (event.ctrl_pressed == true or event.command_pressed == true)
+			and event.keycode == KEY_A
 			and event.echo == false
 		):
 			if (len(selected_items) != 0):
 				select_all_items()
-			get_tree().set_input_as_handled()
+			get_viewport().set_input_as_handled()
 		
 		# CTRL SHIFT A
 		if (event.pressed
-			and event.alt == false
-			and event.shift == true
-			and (event.control == true or event.command == true)
-			and event.scancode == KEY_A
+			and event.alt_pressed == false
+			and event.shift_pressed == true
+			and (event.ctrl_pressed == true or event.command_pressed == true)
+			and event.keycode == KEY_A
 			and event.echo == false
 		):
 			if (len(selected_items) != 0):
 				deselect_all_items()
-			get_tree().set_input_as_handled()
+			get_viewport().set_input_as_handled()
 		
 		# CTRL C
 		if (event.pressed
-			and event.alt == false
-			and event.shift == false
-			and (event.control == true or event.command == true)
-			and event.scancode == KEY_C
+			and event.alt_pressed == false
+			and event.shift_pressed == false
+			and (event.ctrl_pressed == true or event.command_pressed == true)
+			and event.keycode == KEY_C
 			and event.echo == false
 		):
 			copy_selected_events()
-			get_tree().set_input_as_handled()
+			get_viewport().set_input_as_handled()
 		
 		# CTRL V
 		if (event.pressed
-			and event.alt == false
-			and event.shift == false
-			and (event.control == true or event.command == true)
-			and event.scancode == KEY_V
+			and event.alt_pressed == false
+			and event.shift_pressed == false
+			and (event.ctrl_pressed == true or event.command_pressed == true)
+			and event.keycode == KEY_V
 			and event.echo == false
 		):
 			var events_list = paste_check()
@@ -330,14 +328,14 @@ func _input(event):
 			TimelineUndoRedo.add_do_method(self, "add_events_at_index", events_list, paste_position)
 			TimelineUndoRedo.add_undo_method(self, "remove_events_at_index", paste_position+1, len(events_list))
 			TimelineUndoRedo.commit_action()
-			get_tree().set_input_as_handled()
+			get_viewport().set_input_as_handled()
 		
 		# CTRL X
 		if (event.pressed
-			and event.alt == false
-			and event.shift == false
-			and (event.control == true or event.command == true)
-			and event.scancode == KEY_X
+			and event.alt_pressed == false
+			and event.shift_pressed == false
+			and (event.ctrl_pressed == true or event.command_pressed == true)
+			and event.keycode == KEY_X
 			and event.echo == false
 		):
 			var events_indexed = get_events_indexed(selected_items)
@@ -345,14 +343,14 @@ func _input(event):
 			TimelineUndoRedo.add_do_method(self, "cut_events_indexed", events_indexed)
 			TimelineUndoRedo.add_undo_method(self, "add_events_indexed", events_indexed)
 			TimelineUndoRedo.commit_action()
-			get_tree().set_input_as_handled()
+			get_viewport().set_input_as_handled()
 
 		# CTRL D
 		if (event.pressed
-			and event.alt == false
-			and event.shift == false
-			and (event.control == true or event.command == true)
-			and event.scancode == KEY_D
+			and event.alt_pressed == false
+			and event.shift_pressed == false
+			and (event.ctrl_pressed == true or event.command_pressed == true)
+			and event.keycode == KEY_D
 			and event.echo == false
 		):
 			
@@ -363,37 +361,37 @@ func _input(event):
 				TimelineUndoRedo.add_do_method(self, "add_events_at_index", events, at_index)
 				TimelineUndoRedo.add_undo_method(self, "remove_events_at_index", at_index, len(events))
 				TimelineUndoRedo.commit_action()
-			get_tree().set_input_as_handled()
+			get_viewport().set_input_as_handled()
 
 func _unhandled_key_input(event):
 	if (event is InputEventWithModifiers):
 		# ALT UP
 		if (event.pressed
-			and event.alt == true 
-			and event.shift == false 
-			and (event.control == false or event.command == false)
-			and event.scancode == KEY_UP
+			and event.alt_pressed == true 
+			and event.shift_pressed == false 
+			and (event.ctrl_pressed == false or event.command_pressed == false)
+			and event.keycode == KEY_UP
 			and event.echo == false
 		):
 			# move selected up
 			if (len(selected_items) == 1):
 				move_block(selected_items[0], "up")
 				indent_events()
-				get_tree().set_input_as_handled()
+				get_viewport().set_input_as_handled()
 			
 		# ALT DOWN
 		if (event.pressed
-			and event.alt == true 
-			and event.shift == false 
-			and (event.control == false or event.command == false)
-			and event.scancode == KEY_DOWN
+			and event.alt_pressed == true 
+			and event.shift_pressed == false 
+			and (event.ctrl_pressed == false or event.command_pressed == false)
+			and event.keycode == KEY_DOWN
 			and event.echo == false
 		):
 			# move selected down
 			if (len(selected_items) == 1):
 				move_block(selected_items[0], "down")
 				indent_events()
-				get_tree().set_input_as_handled()
+				get_viewport().set_input_as_handled()
 
 ## *****************************************************************************
 ##					 	DELETING, COPY, PASTE
@@ -427,7 +425,7 @@ func add_events_indexed(indexed_events:Dictionary) -> void:
 		event_resource.load_from_string_to_store(indexed_events[event_idx])
 		print(event_resource)
 		if event_resource is DialogicEndBranchEvent:
-			events.append(create_end_branch_event(timeline.get_child_count(), timeline.get_child(int(indexed_events[event_idx].trim_prefix('<<END BRANCH>>')))))
+			events.append(create_end_branch_event(timeline.get_child_count(), timeline.get_child(indexed_events[event_idx].trim_prefix('<<END BRANCH>>').to_int())))
 			timeline.move_child(events[-1], event_idx)
 		else:
 			events.append(add_event_to_timeline(event_resource))
@@ -492,18 +490,19 @@ func copy_selected_events():
 	for item in selected_items:
 		event_copy_array.append(item.resource.get_as_string_to_store())
 	var _json = JSON.new()
-	OS.clipboard = _json.stringify(
+	DisplayServer.clipboard_set(_json.stringify(
 		{
 			"events":event_copy_array,
 			"project_name": ProjectSettings.get_setting("application/config/name")
-		})
+		}))
 
 
 func paste_check():
 	var _json = JSON.new()
-	var clipboard_parse = _json.parse(OS.clipboard)
+	var clipboard_parse = _json.parse(DisplayServer.clipboard_get())
 	
 	if clipboard_parse == OK:
+		clipboard_parse = _json.get_data()
 		if clipboard_parse.has("project_name"):
 			if clipboard_parse.project_name != ProjectSettings.get_setting("application/config/name"):
 				print("[D] Be careful when copying from another project!")
@@ -600,9 +599,7 @@ func visual_update_selection():
 
 ## Sorts the selection using 'custom_sort_selection'
 func sort_selection():
-	pass
-	# TODO no idea how to do this in Godot 4
-	#selected_items.sort_custom(self, 'custom_sort_selection')
+	selected_items.sort_custom(custom_sort_selection)
 
 
 ## Compares two event blocks based on their position in the timeline
@@ -686,7 +683,7 @@ func add_condition(at_index, type = DialogicConditionEvent.ConditionTypes.IF):
 func create_end_branch_event(at_index, parent_node):
 	var end_branch_event = load("res://addons/dialogic/Editor/Events/BranchEnd.tscn").instantiate()
 	end_branch_event.resource = DialogicEndBranchEvent.new()
-	end_branch_event.gui_input.connect(_on_event_block_gui_input, [end_branch_event])
+	end_branch_event.gui_input.connect(_on_event_block_gui_input.bind(end_branch_event))
 	parent_node.end_node = end_branch_event
 	end_branch_event.parent_node = parent_node
 	timeline.add_child(end_branch_event)
@@ -741,15 +738,15 @@ func add_event_to_timeline(event_resource:Resource, at_index:int = -1, auto_sele
 	piece.content_changed.connect(something_changed)
 	if at_index == -1:
 		if len(selected_items) != 0:
-			timeline.add_child_below_node(selected_items[0], piece)
+			selected_items[0].add_sibling(piece)
 		else:
 			timeline.add_child(piece)
 	else:
 		timeline.add_child(piece)
 		timeline.move_child(piece, at_index)
 
-	piece.option_action.connect(_on_event_options_action, [piece])
-	piece.gui_input.connect(_on_event_block_gui_input, [piece])
+	piece.option_action.connect(_on_event_options_action.bind(piece))
+	piece.gui_input.connect(_on_event_block_gui_input.bind(piece))
 	
 	# Buidling editing part
 	piece.build_editor()
@@ -795,10 +792,9 @@ func save_timeline() -> void:
 
 func show_save_dialog():
 	find_parent('EditorView').godot_file_dialog(
-		self,
-		'create_and_save_new_timeline',
+		create_and_save_new_timeline,
 		'*.dtl; DialogicTimeline',
-		EditorFileDialog.MODE_SAVE_FILE,
+		EditorFileDialog.FILE_MODE_OPEN_FILE,
 		"Save new Timeline",
 		"New_Timeline"
 	)
