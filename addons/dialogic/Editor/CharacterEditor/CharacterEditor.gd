@@ -100,7 +100,7 @@ func _ready() -> void:
 	$'%PreviewPositionIcon'.texture = get_theme_icon("EditorPosition", "EditorIcons")
 	
 	if find_parent('EditorView'): # This prevents the view to turn black if you are editing this scene in Godot
-		var style = $Split/EditorScroll.get('custom_styles/bg')
+		var style = $Split/EditorScroll.get_theme_stylebox('custom_styles/bg')
 		style.set('bg_color', get_theme_color("dark_color_1", "Editor"))
 	
 	$'%NewPortrait'.icon = get_theme_icon("Add", "EditorIcons")

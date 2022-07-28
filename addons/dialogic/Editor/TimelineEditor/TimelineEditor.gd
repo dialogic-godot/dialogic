@@ -74,7 +74,7 @@ func _ready():
 		var style = timeline_area.get_theme_stylebox('custom_styles/bg')
 		style.set('bg_color', get_theme_color("dark_color_1", "Editor"))
 	
-	timeline_area.resized.connect(add_extra_scroll_area_to_timeline, [])
+	timeline_area.resized.connect(add_extra_scroll_area_to_timeline)
 	
 	# Event buttons
 	var buttonScene = load("res://addons/dialogic/Editor/TimelineEditor/SmallEventButton.tscn")
@@ -179,9 +179,9 @@ func _input(event):
 	if (event is InputEventKey and event is InputEventWithModifiers and is_visible_in_tree()):
 		# CTRL Z # UNDO
 		if (event.pressed
-			and event.alt == false
-			and event.shift == false
-			and (event.control == true or event.command == true)
+			and event.alt_pressed == false
+			and event.shift_pressed_pressed == false
+			and (event.ctrl_pressed == true or event.command_pressed == true)
 			and event.scancode == KEY_Z
 			and event.echo == false
 		):
@@ -191,15 +191,15 @@ func _input(event):
 	if (event is InputEventKey and event is InputEventWithModifiers and is_visible_in_tree()):
 		# CTRL +SHIFT+ Z # REDO
 		if (event.pressed
-			and event.alt == false
-			and event.shift == true
-			and (event.control == true or event.command == true)
+			and event.alt_pressed == false
+			and event.shift_pressed_pressed == true
+			and (event.ctrl_pressed == true or event.command_pressed == true)
 			and event.scancode == KEY_Z
 			and event.echo == false
 		) or (event.pressed
-			and event.alt == false
-			and event.shift == false
-			and (event.control == true or event.command == true)
+			and event.alt_pressed == false
+			and event.shift_pressed_pressed == false
+			and (event.ctrl_pressed == true or event.command_pressed == true)
 			and event.scancode == KEY_Y
 			and event.echo == false):
 			TimelineUndoRedo.redo()
@@ -208,9 +208,9 @@ func _input(event):
 	if (event is InputEventKey and event is InputEventWithModifiers and is_visible_in_tree()):
 		# UP
 		if (event.pressed
-			and event.alt == false
-			and event.shift == false
-			and (event.control == false or event.command == false)
+			and event.alt_pressed == false
+			and event.shift_pressed_pressed == false
+			and (event.ctrl_pressed == false or event.command_pressed == false)
 			and event.scancode == KEY_UP
 			and event.echo == false
 		):
@@ -226,9 +226,9 @@ func _input(event):
 			
 		# DOWN
 		if (event.pressed
-			and event.alt == false
-			and event.shift == false
-			and (event.control == false or event.command == false)
+			and event.alt_pressed == false
+			and event.shift_pressed_pressed == false
+			and (event.ctrl_pressed == false or event.command_pressed == false)
 			and event.scancode == KEY_DOWN
 			and event.echo == false
 		):
@@ -243,9 +243,9 @@ func _input(event):
 			
 		# DELETE
 		if (event.pressed
-			and event.alt == false
-			and event.shift == false
-			and (event.control == false or event.command == false)
+			and event.alt_pressed == false
+			and event.shift_pressed == false
+			and (event.ctrl_pressed == false or event.command_pressed == false)
 			and event.scancode == KEY_DELETE
 			and event.echo == false
 		):
@@ -259,9 +259,9 @@ func _input(event):
 			
 		# CTRL T
 		if (event.pressed
-			and event.alt == false
-			and event.shift == false
-			and (event.control == true or event.command == true)
+			and event.alt_pressed == false
+			and event.shift_pressed == false
+			and (event.ctrl_pressed == true or event.command_pressed == true)
 			and event.scancode == KEY_T
 			and event.echo == false
 		):
@@ -278,9 +278,9 @@ func _input(event):
 			
 		# CTRL A
 		if (event.pressed
-			and event.alt == false
-			and event.shift == false
-			and (event.control == true or event.command == true)
+			and event.alt_pressed == false
+			and event.shift_pressed == false
+			and (event.ctrl_pressed == true or event.command_pressed == true)
 			and event.scancode == KEY_A
 			and event.echo == false
 		):
@@ -290,9 +290,9 @@ func _input(event):
 		
 		# CTRL SHIFT A
 		if (event.pressed
-			and event.alt == false
-			and event.shift == true
-			and (event.control == true or event.command == true)
+			and event.alt_pressed == false
+			and event.shift_pressed == true
+			and (event.ctrl_pressed == true or event.command_pressed == true)
 			and event.scancode == KEY_A
 			and event.echo == false
 		):
@@ -302,9 +302,9 @@ func _input(event):
 		
 		# CTRL C
 		if (event.pressed
-			and event.alt == false
-			and event.shift == false
-			and (event.control == true or event.command == true)
+			and event.alt_pressed == false
+			and event.shift_pressed == false
+			and (event.ctrl_pressed == true or event.command_pressed == true)
 			and event.scancode == KEY_C
 			and event.echo == false
 		):
@@ -313,9 +313,9 @@ func _input(event):
 		
 		# CTRL V
 		if (event.pressed
-			and event.alt == false
-			and event.shift == false
-			and (event.control == true or event.command == true)
+			and event.alt_pressed == false
+			and event.shift_pressed == false
+			and (event.ctrl_pressed == true or event.command_pressed == true)
 			and event.scancode == KEY_V
 			and event.echo == false
 		):
@@ -333,9 +333,9 @@ func _input(event):
 		
 		# CTRL X
 		if (event.pressed
-			and event.alt == false
-			and event.shift == false
-			and (event.control == true or event.command == true)
+			and event.alt_pressed == false
+			and event.shift_pressed == false
+			and (event.ctrl_pressed == true or event.command_pressed == true)
 			and event.scancode == KEY_X
 			and event.echo == false
 		):
@@ -348,9 +348,9 @@ func _input(event):
 
 		# CTRL D
 		if (event.pressed
-			and event.alt == false
-			and event.shift == false
-			and (event.control == true or event.command == true)
+			and event.alt_pressed == false
+			and event.shift_pressed == false
+			and (event.ctrl_pressed == true or event.command_pressed == true)
 			and event.scancode == KEY_D
 			and event.echo == false
 		):
@@ -368,9 +368,9 @@ func _unhandled_key_input(event):
 	if (event is InputEventWithModifiers):
 		# ALT UP
 		if (event.pressed
-			and event.alt == true 
-			and event.shift == false 
-			and (event.control == false or event.command == false)
+			and event.alt_pressed == true 
+			and event.shift_pressed == false 
+			and (event.ctrl_pressed == false or event.command_pressed == false)
 			and event.scancode == KEY_UP
 			and event.echo == false
 		):
@@ -382,9 +382,9 @@ func _unhandled_key_input(event):
 			
 		# ALT DOWN
 		if (event.pressed
-			and event.alt == true 
-			and event.shift == false 
-			and (event.control == false or event.command == false)
+			and event.alt_pressed == true 
+			and event.shift_pressed == false 
+			and (event.ctrl_pressed == false or event.command_pressed == false)
 			and event.scancode == KEY_DOWN
 			and event.echo == false
 		):

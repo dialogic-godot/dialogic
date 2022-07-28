@@ -88,7 +88,6 @@ func _ready():
 	$Search/Suggestions.popup_hide.connect(popup_hide)
 	# TODO: Invalid call. Nonexistent function 'add_theme_stylebox_override' in base 'PopupMenu'.
 	#$Search/Suggestions.add_theme_stylebox_override('panel', load("res://addons/dialogic/Editor/Events/styles/ResourceMenuPanelBackground.tres"))
-	$Search/OpenButton.icon = get_theme_icon("EditResource", "EditorIcons")
 	if resource_icon == null:
 		self.resource_icon = null
 
@@ -180,6 +179,10 @@ func _on_Search_focus_entered():
 		_on_Search_text_changed("")
 
 
+func _on_SelectButton_toggled(button_pressed):
+	if button_pressed:
+		_on_Search_text_changed('', true)
+
 ################################################################################
 ##	 					DRAG AND DROP
 ################################################################################
@@ -198,20 +201,3 @@ func drop_data(position, data):
 	set_value(file)
 	emit_signal("value_changed", property_name, file)
 
-
-################################################################################
-##	 					OPEN RESOURCE BUTTON
-################################################################################
-# This function triggers the resource to be opened in the inspector and possible editors provided by plugins
-func _on_OpenButton_pressed():
-	if current_value:
-		var dialogic_plugin = get_tree().root.get_node('EditorNode/DialogicPlugin')
-		if typeof(current_value) == TYPE_STRING and not current_value.is_empty():
-			dialogic_plugin._editor_interface.inspect_object(load(current_value))
-		elif typeof(current_value) == TYPE_OBJECT:
-			dialogic_plugin._editor_interface.inspect_object(current_value)
-
-
-func _on_SelectButton_toggled(button_pressed):
-	if button_pressed:
-		_on_Search_text_changed('', true)

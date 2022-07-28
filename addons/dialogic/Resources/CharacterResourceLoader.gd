@@ -20,12 +20,12 @@ func _get_resource_type(path: String) -> String:
 
 
 # Return true if this type is handled
-func _handles_type(typename: String) -> bool:
+func _handles_type(typename: StringName) -> bool:
 	return ClassDB.is_parent_class(typename, "Resource")
 
 
 # parse the file and return a resource
-func _load(path: String, original_path: String):
+func _load(path: String, original_path: String, use_sub_threads: bool, cache_mode: int):
 	print('[Dialogic] Reimporting character "' , path, '"')
 	var file := File.new()
 	

@@ -274,7 +274,7 @@ func build_editor():
 		if p.location == 1:
 			location = get_node("%Body/Content")
 		location.add_child(editor_node)
-	content_changed.connect(recalculate_edit_visibility, [edit_conditions_list])
+	content_changed.connect(recalculate_edit_visibility.bind(edit_conditions_list))
 	recalculate_edit_visibility(edit_conditions_list)
 
 func recalculate_edit_visibility(list):

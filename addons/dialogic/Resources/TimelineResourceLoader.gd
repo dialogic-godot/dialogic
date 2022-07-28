@@ -73,6 +73,6 @@ func _load(path: String, original_path: String, use_sub_threads: bool, cache_mod
 			events.append(DialogicEndBranchEvent.new())
 	
 	
-	res.events = events
+	res._events = events
 	
 	return res

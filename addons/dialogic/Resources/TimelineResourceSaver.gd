@@ -33,11 +33,11 @@ func _save(path: String, resource: Resource, flags: int) -> int:
 	var trans_updates = {}
 	var translate = DialogicUtil.get_project_setting('dialogic/translation_enabled', false)
 	
-	for idx in range(0, len(resource.events)):
-		var event = resource.events[idx]
+	for idx in range(0, len(resource._events)):
+		var event = resource._events[idx]
 		
 		if event is DialogicEndBranchEvent:
-			if idx < len(resource.events)-1 and resource.events[idx+1] is DialogicChoiceEvent:
+			if idx < len(resource._events)-1 and resource._events[idx+1] is DialogicChoiceEvent:
 				indent -= 1
 			else:
 				result += "\t".repeat(indent)+"\n"
