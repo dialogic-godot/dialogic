@@ -3,12 +3,12 @@ extends ResourceFormatSaver
 class_name DialogicTimelineFormatSaver
 
 
-func get_recognized_extensions(resource: Resource) -> PackedStringArray:
+func _get_recognized_extensions(resource: Resource) -> PackedStringArray:
 	return PackedStringArray(["dtl"])
 
 
 # Return true if this resource should be loaded as a DialogicCharacter 
-func recognize(resource: Resource) -> bool:
+func _recognize(resource: Resource) -> bool:
 	# Cast instead of using "is" keyword in case is a subclass
 	resource = resource as DialogicTimeline
 	
@@ -19,7 +19,7 @@ func recognize(resource: Resource) -> bool:
 
 
 # Save the resource
-func save(path: String, resource: Resource, flags: int) -> int:
+func _save(path: String, resource: Resource, flags: int) -> int:
 	var err:int
 	var file:File = File.new()
 	err = file.open(path, File.WRITE)

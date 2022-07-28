@@ -3,8 +3,8 @@ extends Control
 
 
 func _ready():
-	$'%TransEnabled'.toggled.connect(set_project_setting, ['dialogic/translation_enabled'])
-	$'%TransFileFolder'.text_changed.connect(set_project_setting, ['dialogic/translation_path'])
+	$'%TransEnabled'.toggled.connect(set_project_setting.bind('dialogic/translation_enabled'))
+	$'%TransFileFolder'.text_changed.connect(set_project_setting.bind('dialogic/translation_path'))
 	$'%TransFileFolderChanger'.button_up.connect(open_file_folder_dialog)
 
 

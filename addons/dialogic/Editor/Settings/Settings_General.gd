@@ -10,8 +10,8 @@ func _ready():
 	$'%ResetColorsButton'.button_up.connect(_on_reset_colors_button)
 	
 	for n in $"%Colors".get_children():
-		n.color_changed.connect(_on_color_change, [n])
-	
+		n.color_changed.connect(_on_color_change.bind(n))
+
 func refresh():
 	$'%CustomEventsFolderLabel'.text = DialogicUtil.get_project_setting('dialogic/custom_events_folder', 'res://addons/dialogic_additions/Events')
 	$'%CustomEventsFolderButton'.icon = get_theme_icon("Folder", "EditorIcons")
