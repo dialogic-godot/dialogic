@@ -5,7 +5,12 @@ var property_name : String
 signal value_changed
 
 func value_changed(_p, value):
-	emit_signal("value_changed", property_name, $Value.value)
+	var data = []
+	for i in range ($list.get_child_count()):
+		var n:Node = $list.get_child(i)
+		data.append(n.get_value())
+	print(data)
+	emit_signal("value_changed", property_name, data)
 
 func _ready():
 	$NumRegions/NumberValue.set_min_value(1)

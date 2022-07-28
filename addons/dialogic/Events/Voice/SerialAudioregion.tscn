@@ -28,4 +28,4 @@ margin_bottom = 24.0
 [node name="list" type="VBoxContainer" parent="."]
 margin_top = 28.0
 margin_right = 1024.0
-margin_bottom = 28.0
+margin_bottom = 52.0

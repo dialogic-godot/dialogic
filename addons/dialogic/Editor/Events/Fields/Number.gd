@@ -20,6 +20,14 @@ func set_left_text(value):
 
 func set_value(value):
 	$Value.value = value
+	
+func get_value():
+	return $Value.value
+	
+func use_timestamp_mode():
+	$Value.step = 0.1
+	$Value.suffix = 'sec'
+	$Value.max_value = 9999 #2.7 hours. Enough, or is more needed?
 
 func use_float_mode():
 	$Value.step = 0.001
