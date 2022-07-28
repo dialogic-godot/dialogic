@@ -139,7 +139,7 @@ func get_var_suggestions(filter:String) -> Dictionary:
 		suggestions[filter] = {'value':filter, 'editor_icon':["GuiScrollArrowRight", "EditorIcons"]}
 	var vars = DialogicUtil.get_project_setting('dialogic/variables', {})
 	for var_path in list_variables(vars):
-		if !filter or filter.to_lower() in var_path.to_lower():
+		if !filter.is_empty() or filter.to_lower() in var_path.to_lower(): # Added the .is_empty here. Not sure if it was the right thing
 			suggestions[var_path] = {'value':var_path, 'editor_icon':["ClassList", "EditorIcons"]}
 	return suggestions
 

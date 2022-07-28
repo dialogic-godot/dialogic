@@ -79,23 +79,23 @@ func save_character() -> void:
 
 func _ready() -> void:
 	var dialogic_plugin = get_tree().root.get_node('EditorNode/DialogicPlugin')
-	dialogic_plugin.connect('dialogic_save', self, 'save_character')
+	dialogic_plugin.dialogic_save.connect(save_character)
 	
 	# Let's go connecting!
-	$'%NameLineEdit'.connect('text_changed', self, 'something_changed')
-	$'%ColorPickerButton'.connect('color_changed', self, 'something_changed')
-	$'%DisplayNameLineEdit'.connect('text_changed', self, 'something_changed')
-	$'%NicknameLineEdit'.connect('text_changed', self, 'something_changed')
-	$'%DescriptionTextEdit'.connect('text_changed', self, 'something_changed')
-	$'%MainScale'.connect("value_changed", self, 'main_portrait_settings_update')
-	$'%MainOffsetX'.connect("value_changed", self, 'main_portrait_settings_update')
-	$'%MainOffsetY'.connect("value_changed", self, 'main_portrait_settings_update')
-	$'%MainMirror'.connect("toggled", self, 'main_portrait_settings_update')
-	$'%PortraitSearch'.connect("text_changed", self, 'update_portrait_list')
+	$'%NameLineEdit'.text_changed.connect(something_changed)
+	$'%ColorPickerButton'.color_changed.connect(something_changed)
+	$'%DisplayNameLineEdit'.text_changed.connect(something_changed)
+	$'%NicknameLineEdit'.text_changed.connect(something_changed)
+	$'%DescriptionTextEdit'.text_changed.connect(something_changed)
+	$'%MainScale'.value_changed.connect(main_portrait_settings_update)
+	$'%MainOffsetX'.value_changed.connect(main_portrait_settings_update)
+	$'%MainOffsetY'.value_changed.connect(main_portrait_settings_update)
+	$'%MainMirror'.toggled.connect(main_portrait_settings_update)
+	$'%PortraitSearch'.text_changed.connect("text_changed", self, 'update_portrait_list')
 	
-	$'%NewPortrait'.connect('pressed', self, 'create_portrait_entry_instance', ['', {'path':'', 'scale':1, 'offset':Vector2(), 'mirror':false}])
-	$'%ImportFromFolder'.connect('pressed', self, 'open_portrait_folder_select')
-	$'%PreviewMode'.connect('item_selected', self, '_on_PreviewMode_item_selected')
+	$'%NewPortrait'.pressed.connect(create_portrait_entry_instance, ['', {'path':'', 'scale':1, 'offset':Vector2(), 'mirror':false}])
+	$'%ImportFromFolder'.pressed.connect(open_portrait_folder_select)
+	$'%PreviewMode'.item_selected.connect(_on_PreviewMode_item_selected)
 	$'%PreviewMode'.select(DialogicUtil.get_project_setting('dialogic/editor/character_preview_mode', 0))
 	_on_PreviewMode_item_selected($'%PreviewMode'.selected)
 	$'%PreviewPositionIcon'.texture = get_theme_icon("EditorPosition", "EditorIcons")
@@ -109,10 +109,10 @@ func _ready() -> void:
 	$'%PortraitsTitle'.set('custom_fonts/font', get_theme_font("doc_title", "EditorFonts"))
 	$Split/EditorScroll/Editor/VBoxContainer/PortraitPanel.set('custom_styles/panel', get_theme_stylebox("Background", "EditorStyles"))
 	
-	$'%PortraitScale'.connect("value_changed", self, 'set_portrait_scale')
-	$'%PortraitOffsetX'.connect("value_changed", self, 'set_portrait_offset_x')
-	$'%PortraitOffsetY'.connect("value_changed", self, 'set_portrait_offset_y')
-	$'%PortraitMirror'.connect("toggled", self, 'set_portrait_mirror')
+	$'%PortraitScale'.value_changed.connect(set_portrait_scale)
+	$'%PortraitOffsetX'.value_changed.connect(set_portrait_offset_x)
+	$'%PortraitOffsetY'.value_changed.connect(set_portrait_offset_y)
+	$'%PortraitMirror'.toggled.connect(set_portrait_mirror)
 	
 	# Subsystems
 	for script in DialogicUtil.get_event_scripts():
