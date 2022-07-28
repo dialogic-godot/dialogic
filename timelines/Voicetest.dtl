@@ -1,4 +1,4 @@
-[voice path="res://timelines/voicetest.mp3" bus="Master" regions="region start at 5, stop at 9 "]
+[voice path="res://timelines/voicetest.mp3" bus="Master" regions="region start at 5, stop at 9 region start at 60, stop at 70 region start at 85, stop at 98.7 "]
 
 kvagram: Look! This text event is voiced!
 
