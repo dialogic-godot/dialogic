@@ -1,4 +1,4 @@
-tool
+@tool
 extends DialogicEvent
 class_name DialogicVoiceEvent
 
@@ -14,10 +14,10 @@ func _execute() -> void:
 		printerr("Invalid data - (DialogicVoiceEvent): serial regiondata not string.")
 	for f in stringfluff:
 		regions = regions.replace(f, "")
-	var data1:PoolStringArray = regions.split("region", false)
+	var data1:PackedStringArray = regions.split("region", false)
 	for d in data1:
-		var data2:PoolStringArray = d.split(",", false)
-		regiondata.append([float(data2[0]), float(data2[1])])
+		var data2:PackedStringArray = d.split(",", false)
+		regiondata.append([data2[0].to_float(), data2[1].to_float()])
 	
 	dialogic.Voice.setRegions(regiondata)
 

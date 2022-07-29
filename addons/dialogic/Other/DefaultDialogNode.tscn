@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=3 uid="uid://dxf83tsi5p26t"]
+[gd_scene load_steps=23 format=3 uid="uid://dxf83tsi5p26t"]
 
 [ext_resource type="Script" path="res://addons/dialogic/Other/DefaultDialogNode.gd" id="1"]
 [ext_resource type="Script" path="res://addons/dialogic/Events/Text/Display_DialogText.gd" id="2"]
@@ -18,6 +18,7 @@
 [ext_resource type="AudioStream" uid="uid://dhwhlv7tdr0cb" path="res://addons/dialogic/Example Assets/Keyboard Noises/typing2.wav" id="16"]
 [ext_resource type="Script" path="res://addons/dialogic/Events/Text/Display_InputHandler.gd" id="17"]
 [ext_resource type="Script" path="res://addons/dialogic/Events/Choice/SoundButton.gd" id="18"]
+[ext_resource type="Script" path="res://addons/dialogic/Events/Voice/dialogic_dialog_voice.gd" id="20_x1o37"]
 [ext_resource type="Script" path="res://addons/dialogic/Other/HideWithChild.gd" id="23"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dpede"]
@@ -267,3 +268,6 @@ use_character_color = false
 text = "Some default text"
 fit_content_height = true
 script = ExtResource("2")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+script = ExtResource("20_x1o37")

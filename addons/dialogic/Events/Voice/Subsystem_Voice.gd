@@ -55,7 +55,7 @@ func setTimer(time:float):
 		voicetimer = Timer.new()
 		voicetimer.one_shot = true
 		add_child(voicetimer)
-		voicetimer.connect("timeout", self, "stopAudio")
+		voicetimer.timeout.connect(stopAudio)
 	voicetimer.stop()
 	voicetimer.start(time)
 
