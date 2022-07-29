@@ -93,23 +93,18 @@ func _disable_plugin():
 	remove_autoload_singleton("Dialogic")
 
 func add_dialogic_default_action():
-	InputMap.add_action('dialogic_default_action')
-	var input_enter = InputEventKey.new()
-	input_enter.keycode = KEY_ENTER
-	InputMap.action_add_event('dialogic_default_action', input_enter)
-	
-	var input_left_click = InputEventMouseButton.new()
-	input_left_click.button_index = MOUSE_BUTTON_LEFT
-	InputMap.action_add_event('dialogic_default_action', input_left_click)
+	if !ProjectSettings.has_setting('input/dialogic_default_action'):
+		var input_enter = InputEventKey.new()
+		input_enter.keycode = KEY_ENTER
+		var input_left_click = InputEventMouseButton.new()
+#		input_left_click.button_index = BUTTON_LEFT
+		input_left_click.pressed = true
+		var input_space = InputEventKey.new()
+		input_space.keycode = KEY_SPACE
+		var input_x = InputEventKey.new()
+		input_x.keycode = KEY_X
+		var input_controller = InputEventJoypadButton.new()
+		input_controller.button_index = JOY_BUTTON_A
 
-	var input_space = InputEventKey.new()
-	input_space.keycode = KEY_SPACE
-	InputMap.action_add_event('dialogic_default_action', input_space)
-	
-	var input_controller = InputEventJoypadButton.new()
-	input_controller.button_index = JOY_BUTTON_A
-	InputMap.action_add_event('dialogic_default_action', input_controller)
-	
-	var input_x = InputEventKey.new()
-	input_x.keycode = KEY_X
-	InputMap.action_add_event('dialogic_default_action', input_x)
+		ProjectSettings.set_setting('input/dialogic_default_action', {'deadzone':0.5, 'events':[input_enter, input_left_click, input_space, input_x, input_controller]})
+		ProjectSettings.save()

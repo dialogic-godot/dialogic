@@ -38,7 +38,6 @@ size_flags_vertical = 3
 
 [node name="CharacterEditor" parent="MarginContainer/VBoxContainer" instance=ExtResource("6")]
 unique_name_in_owner = true
-visible = false
 anchor_right = 0.0
 anchor_bottom = 0.0
 size_flags_vertical = 3

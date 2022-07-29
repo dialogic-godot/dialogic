@@ -3,7 +3,7 @@ extends Control
 
 const portrait_entry = preload("res://addons/dialogic/Editor/CharacterEditor/PortraitEntry.tscn")
 
-@onready var toolbar = find_parent('EditorView').get_node('%Toolbar')
+@onready var toolbar = get_parent().get_node('%Toolbar')
 var current_character : DialogicCharacter
 var current_portrait = null
 
@@ -31,7 +31,10 @@ func load_character(resource: DialogicCharacter) -> void:
 	$'%NameLineEdit'.text = resource.name
 	$'%ColorPickerButton'.color = resource.color
 	$'%DisplayNameLineEdit'.text = resource.display_name
-	$'%NicknameLineEdit'.text = str(resource.nicknames).trim_prefix('[').trim_suffix(']')
+	$'%NicknameLineEdit'.text = ""
+	for nickname in resource.nicknames: 
+		$'%NicknameLineEdit'.text += nickname +", "
+	$'%NicknameLineEdit'.text = $'%NicknameLineEdit'.text.trim_suffix(', ')
 	$'%DescriptionTextEdit'.text = resource.description
 	$'%MainScale'.value = 100*resource.scale
 	$'%MainOffsetX'.value = resource.offset.x

@@ -24,7 +24,7 @@ func _on_ButtonDelete_pressed() -> void:
 	queue_free()
 
 func _on_ButtonSelect_pressed() -> void:
-	find_parent('EditorView').godot_file_dialog(_on_file_selected, "*.png, *.svg, *.tscn")
+	find_parent('EditorView').godot_file_dialog(_on_file_selected, "*.png, *.svg, *.tscn", EditorFileDialog.FILE_MODE_OPEN_FILE, "Open portrait")
 
 func _on_file_selected(path:String) -> void:
 	$PathEdit.text = path

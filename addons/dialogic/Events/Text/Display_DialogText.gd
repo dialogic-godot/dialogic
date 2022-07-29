@@ -93,20 +93,19 @@ func execute_effects(skip :bool= false) -> void:
 	# might have to execute multiple effects
 	while effects and (visible_characters >= effects.front()[0] or visible_characters== -1):
 		var effect = effects.pop_front()
-		print(effect)
 		match effect[1]:
 			'pause':
 				if skip:
 					continue
 				if effect[2].is_valid_float():
-					timer.start(float(effect[2]))
+					timer.start(effect[2].to_float())
 				else:
 					timer.start(1)
 			'speed':
 				if skip:
 					continue
 				if effect[2].is_valid_float():
-					speed = float(effect[2])
+					speed = effect[2].to_float()
 				else:
 					speed = DialogicUtil.get_project_setting('dialogic/text/speed', 0.01)
 			'signal':
@@ -122,6 +121,7 @@ func execute_effects(skip :bool= false) -> void:
 						Dialogic.Text.update_typing_sound_mood(Character.custom_info.get('sound_moods', {}).get(effect[2], {}))
 
 func parse_modifiers(_text:String) -> String:
+	# [word, select] effect
 	for replace_mod_match in modifier_words_select_regex.search_all(_text):
 		var string = replace_mod_match.get_string().trim_prefix("[").trim_suffix("]")
 		string = string.replace('\\,', '<comma>')
@@ -130,5 +130,6 @@ func parse_modifiers(_text:String) -> String:
 		item = item.replace('<comma>', ',')
 		_text = _text.replace(replace_mod_match.get_string(), item.strip_edges())
 	
+	# [br] effect
 	_text = _text.replace('[br]', '\n')
 	return _text
