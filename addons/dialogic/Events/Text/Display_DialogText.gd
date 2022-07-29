@@ -93,7 +93,6 @@ func execute_effects(skip :bool= false) -> void:
 	# might have to execute multiple effects
 	while effects and (visible_characters >= effects.front()[0] or visible_characters== -1):
 		var effect = effects.pop_front()
-		print(effect)
 		match effect[1]:
 			'pause':
 				if skip:
