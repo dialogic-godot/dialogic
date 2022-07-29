@@ -43,7 +43,7 @@ func _execute() -> void:
 			dialogic.Text.update_dialog_text(dialogic.Text.color_names(get_translated_text()))
 		
 		#Plays the audio region for the current line.
-		if dialogic.has_subsystem('Voice') and dialogic.Voice.is_Voiced(dialogic.current_event_idx):
+		if dialogic.has_subsystem('Voice') and dialogic.Voice.isVoiced(dialogic.current_event_idx):
 			dialogic.Voice.playVoiceRegion(index) #voice data is set by voice event.
 		
 		# Wait for text to finish revealing

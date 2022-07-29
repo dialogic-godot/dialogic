@@ -1,4 +1,4 @@
-[gd_scene load_steps=42 format=2]
+[gd_scene load_steps=43 format=2]
 
 [ext_resource path="res://addons/dialogic/Other/DefaultDialogNode.gd" type="Script" id=1]
 [ext_resource path="res://addons/dialogic/Events/Text/Display_DialogText.gd" type="Script" id=2]
@@ -21,6 +21,7 @@
 [ext_resource path="res://addons/dialogic/Example Assets/Fonts/Roboto-Regular.ttf" type="DynamicFontData" id=19]
 [ext_resource path="res://addons/dialogic/Example Assets/Fonts/Roboto-Bold.ttf" type="DynamicFontData" id=20]
 [ext_resource path="res://addons/dialogic/Example Assets/Fonts/Roboto-Italic.ttf" type="DynamicFontData" id=21]
+[ext_resource path="res://addons/dialogic/Events/Voice/dialogic_dialog_voice.gd" type="Script" id=22]
 [ext_resource path="res://addons/dialogic/Other/HideWithChild.gd" type="Script" id=23]
 
 [sub_resource type="DynamicFont" id=5]
@@ -632,3 +633,6 @@ text = "Some default text"
 fit_content_height = true
 script = ExtResource( 2 )
 Align = "Center"
+
+[node name="dialogic_dialog_voice" type="AudioStreamPlayer" parent="."]
+script = ExtResource( 22 )

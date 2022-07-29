@@ -17,7 +17,7 @@ func _execute() -> void:
 	var data1:PoolStringArray = regions.split("region", false)
 	for d in data1:
 		var data2:PoolStringArray = d.split(",", false)
-		regiondata.push([float(data2[0]), float(data2[1])])
+		regiondata.append([float(data2[0]), float(data2[1])])
 	
 	dialogic.Voice.setRegions(regiondata)
 
@@ -69,7 +69,7 @@ func build_event_editor():
 
 func get_required_subsystems() -> Array:
 	return [
-				{'name':'Text',
+				{'name':'Voice',
 				'subsystem': get_script().resource_path.get_base_dir().plus_file('Subsystem_Voice.gd'),
 				},
 			]
