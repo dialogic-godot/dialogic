@@ -1,7 +1,7 @@
 extends DialogicAnimation
 
 func animate():
-	var tween = (node.get_tree().create_tween() as SceneTreeTween)
+	var tween = (node.get_tree().create_tween() as Tween)
 	tween.bind_node(self)
 	node.scale = Vector2()
 	node.modulate.a = 0
@@ -13,4 +13,4 @@ func animate():
 	tween.tween_property(node, 'scale', Vector2(1,1), time).set_trans(Tween.TRANS_ELASTIC).set_ease(Tween.EASE_OUT)
 	tween.tween_property(node, 'modulate:a', 1.0, time)
 	
-	tween.connect("finished", self, 'emit_signal', ['finished_once'])
+	tween.finished.connect(emit_signal.bind('finished_once'))

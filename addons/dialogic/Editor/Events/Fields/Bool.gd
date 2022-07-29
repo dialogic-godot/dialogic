@@ -1,19 +1,18 @@
-tool
+@tool
 extends HBoxContainer
 
 var property_name : String
 signal value_changed
 
 func _ready():
-	#print("howdi")
-	$Toggle.connect("toggled", self,  'value_changed')
+	$Toggle.toggled.connect(_on_value_changed)
 
 
 func set_value(value):
-	$Toggle.pressed = value
+	$Toggle.button_pressed = value
 
 
-func value_changed(value):
+func _on_value_changed(value):
 	emit_signal("value_changed", property_name, value)
 
 

@@ -22,7 +22,7 @@ func save(slot_name:String = '', is_autosave:bool = false, create_thumbnail:bool
 		return
 	
 	slot_name = this_or_current_slot(slot_name)
-	if not slot_name: return
+	if slot_name.is_empty(): return
 	
 	save_file(slot_name, 'state.txt', dialogic.get_full_state())
 	
@@ -41,9 +41,9 @@ func load(slot_name:String):
 
 func save_file(slot_name:String, file_name:String, data) -> int:
 	slot_name = this_or_current_slot(slot_name)
-	if not slot_name: return ERR_BUG
+	if slot_name.is_empty(): return ERR_BUG
 	
-	if not slot_name in get_slot_names():
+	if slot_name.is_empty() in get_slot_names():
 		add_empty_slot(slot_name)
 	
 	var file = File.new()
@@ -55,7 +55,7 @@ func save_file(slot_name:String, file_name:String, data) -> int:
 
 func load_file(slot_name:String, file_name:String, default):
 	slot_name = this_or_current_slot(slot_name)
-	if not slot_name: return
+	if slot_name.is_empty(): return
 	
 	var file := File.new()
 	if file.open(get_slot_path(slot_name).plus_file(file_name), File.READ) != OK:
@@ -115,7 +115,7 @@ func add_empty_slot(slot_name: String) -> void:
 # reset the state of the given save folder (or default)
 func reset_slot(slot_name: String = '') -> void:
 	slot_name = this_or_current_slot(slot_name)
-	if not slot_name: return
+	if slot_name.is_empty(): return
 	
 	var file = File.new()
 	file.store_var({})
@@ -139,19 +139,19 @@ func _make_sure_slot_dir_exists() -> void:
 
 func this_or_current_slot(slot_name:String):
 	if slot_name: set_latest_slot(slot_name)
-	return slot_name if not slot_name.empty() else get_latest_slot()
+	return slot_name if slot_name.is_empty() else get_latest_slot()
 
 ####################################################################################################
 ##					SLOT INFO
 ####################################################################################################
 func store_slot_info(slot_name:String, info: Dictionary) -> void:
 	slot_name = this_or_current_slot(slot_name)
-	if not slot_name: return
+	if slot_name.is_empty(): return
 	save_file(slot_name, 'info.txt', info)
 
 func get_slot_info(slot_name:String = '') -> Dictionary:
 	slot_name = this_or_current_slot(slot_name)
-	if not slot_name: return {}
+	if slot_name.is_empty(): return {}
 	return load_file(slot_name, 'info.txt', {})
 
 ####################################################################################################
@@ -168,7 +168,7 @@ func store_slot_image(slot_name:String) -> void:
 
 func get_slot_image(slot_name:String) -> ImageTexture:
 	slot_name = this_or_current_slot(slot_name)
-	if not slot_name: return null
+	if slot_name.is_empty(): return null
 	var file = File.new()
 	if file.open(get_slot_path(slot_name).plus_file('thumbnail.png'), File.READ) == OK:
 		var buffer = file.get_buffer(file.get_len())
@@ -190,11 +190,11 @@ var autosave_timer = Timer.new()
 func _ready():
 	autosave_timer.one_shot = true
 	autosave_timer.name = "AutosaveTimer"
-	autosave_timer.connect("timeout", self, '_on_autosave_timer_timeout')
+	autosave_timer.timeout.connect(_on_autosave_timer_timeout)
 	add_child(autosave_timer)
-	dialogic.connect('event_handled', self, '_on_dialogic_event_handled')
-	dialogic.connect('timeline_started', self, 'autosave_start_end')
-	dialogic.connect('timeline_ended', self, 'autosave_start_end')
+	dialogic.event_handled.connect(_on_dialogic_event_handled)
+	dialogic.timeline_started.connect(autosave_start_end)
+	dialogic.timeline_ended.connect(autosave_start_end)
 	_on_autosave_timer_timeout()
 
 func _on_autosave_timer_timeout():

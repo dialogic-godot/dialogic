@@ -1,10 +1,10 @@
-tool
+@tool
 extends VBoxContainer
 
 signal changed
 
 func _ready():
-	find_parent('CharacterEditor').connect('portrait_selected', self, '_on_portrait_selected')
+	find_parent('CharacterEditor').portrait_selected.connect(_on_portrait_selected)
 	$'%PortraitMood'.get_suggestions_func = [self, 'mood_suggestions']
 
 func load_character(character:DialogicCharacter):
@@ -27,11 +27,11 @@ func _on_AddMood_pressed():
 	emit_signal("changed")
 	
 func create_mood_item(data):
-	var new_mood = load(get_script().resource_path.get_base_dir().plus_file('CharacterEdit_TypingSounds_MoodItem.tscn')).instance()
+	var new_mood = load(get_script().resource_path.get_base_dir().plus_file('CharacterEdit_TypingSounds_MoodItem.tscn')).instantiate()
 	$'%Moods'.add_child(new_mood)
 	new_mood.load_data(data)
-	new_mood.connect('duplicate', self, 'duplicate_mood_item', [new_mood])
-	new_mood.connect('changed', self, 'emit_signal', ['changed'])
+	new_mood.duplicate.connect(duplicate_mood_item.bind(new_mood))
+	new_mood.changed.connect(emit_signal.bind('changed'))
 
 func duplicate_mood_item(item):
 	emit_signal("changed")

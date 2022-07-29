@@ -2,11 +2,11 @@ extends Button
 
 class_name DialogicDisplay_ChoiceButton, 'icon.png'
 
-export (int) var choice_index = -1
+@export var choice_index:int = -1
 
-export(AudioStream) var sound_pressed
-export(AudioStream) var sound_hover
-export(AudioStream) var sound_focus
+@export var sound_pressed: AudioStream
+@export var sound_hover: AudioStream
+@export var sound_focus: AudioStream
 
 func _ready():
 	add_to_group('dialogic_choice_button')

@@ -1,4 +1,4 @@
-tool
+@tool
 extends Resource
 class_name DialogicEvent
 
@@ -10,9 +10,6 @@ var dialogic_color_name:String = ''
 ## The event name that'll be displayed in the editor.
 ## If the resource name is different from the event name, resource_name is returned instead.
 var event_name:String = "Event"
-
-
-var event_category:int = Category.OTHER
 
 
 # To sort the buttons shown in the editor
@@ -31,6 +28,9 @@ enum Location {
 	HEADER,
 	BODY
 }
+
+var event_category:int = Category.OTHER
+
 
 # This is necessary to distinguish different ways value types might need to be represented
 # It's used to communicate between the event resource and the event node, how a value
@@ -108,7 +108,7 @@ signal event_finished(event_resource)
 
 ## Determines if the event will go to next event inmediatly or not. 
 ## If value is true, the next event will be executed when event ends.
-var continue_at_end:bool = true setget _set_continue
+var continue_at_end:bool = true #setget _set_continue
 var dialogic = null
 
 ## Executes the event behaviour.
@@ -129,7 +129,7 @@ func _execute() -> void:
 
 func _set_continue(value:bool) -> void:
 	continue_at_end = value
-	property_list_changed_notify()
+	notify_property_list_changed()
 	emit_changed()
 
 
@@ -276,7 +276,7 @@ func add_header_label(text:String, condition:String = "") -> void:
 		"name":"something", 				# Must be the same as the corresponding property that it edits!
 		"type":TYPE_STRING,
 		"location": Location.HEADER,		# Definest the location
-		"usage":PROPERTY_USAGE_EDITOR_HELPER,	
+		"usage":PROPERTY_USAGE_EDITOR,	
 		"dialogic_type":ValueType.Label,	# Define the type of node
 		"display_info":{"text":text}, 
 		"condition":condition

@@ -1,4 +1,4 @@
-tool
+@tool
 extends Container
 
 # The flow container will fit as many children in a row as it can
@@ -11,8 +11,8 @@ extends Container
 # TODO: Can we find a way to intuitively use a child's horizontal SIZE_EXPAND
 #       flag?
 
-export var horizontal_margin: float = 5
-export var vertical_margin: float = 5
+@export var horizontal_margin: float = 5
+@export var vertical_margin: float = 5
 
 # Used to make our parent re-evaluate our size when we have to create more or
 # less rows to fit in all the children.
@@ -57,7 +57,7 @@ func _notification(what):
 func _calculate_layout(apply: bool) -> float:
 	var child_position: Vector2 = Vector2(0, 0)
 	var row_height: float = 0
-	var container_width: float = rect_size.x
+	var container_width: float = size.x # TODO replace this with real flex 
 	var num_children_in_current_row: float = 0
 	
 	for child in get_children():
@@ -97,8 +97,8 @@ func _calculate_layout(apply: bool) -> float:
 
 func _make_parent_reevaluate_our_size():
 	# Hacky solution. Once there is a function for this, use it.
-	rect_min_size = Vector2(0, 20000)
-	rect_min_size = Vector2(0, 0)
+	custom_minimum_size = Vector2(0, 20000)
+	custom_minimum_size = Vector2(0, 0)
 
 
 # Code by https://github.com/Wcubed/horizontal_flow_container

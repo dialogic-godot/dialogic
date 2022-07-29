@@ -1,4 +1,4 @@
-tool
+@tool
 extends PanelContainer
 
 var parent_Group = null
@@ -8,7 +8,7 @@ var preview_scene = get_script().resource_path.get_base_dir().plus_file("Preview
 ##				FUNCTIONALITY
 ################################################################################
 
-func get_name() -> String:
+func get_name():
 	return $'%NameEdit'.text.strip_edges()
 
 func get_data() -> String:
@@ -30,7 +30,7 @@ func get_drag_data(position):
 	}
 	data.data[get_name()] = get_data()
 	
-	var prev = load(preview_scene).instance()
+	var prev = load(preview_scene).instantiate()
 	prev.set_text(get_name())
 	set_drag_preview(prev)
 
@@ -54,8 +54,8 @@ func drop_data(position, data):
 ################################################################################
 
 func _ready():
-	$'%DeleteButton'.icon = get_icon("Remove", "EditorIcons")
-	$'%Dragger'.texture = get_icon("TripleBar", "EditorIcons")
+	$'%DeleteButton'.icon = get_theme_icon("Remove", "EditorIcons")
+	$'%Dragger'.texture = get_theme_icon("TripleBar", "EditorIcons")
 
 
 func _on_DeleteButton_pressed():
@@ -71,7 +71,7 @@ func _on_NameEdit_gui_input(event):
 func _on_NameEdit_focus_exited():
 	disable_name_edit()
 
-func _on_NameEdit_text_entered(new_text):
+func _on_name_edit_text_submitted(new_text):
 	disable_name_edit()
 
 func disable_name_edit():
@@ -79,7 +79,9 @@ func disable_name_edit():
 	parent_Group.check_data()
 
 func warning():
-	modulate = get_color("warning_color", "Editor")
+	modulate = get_theme_color("warning_color", "Editor")
 
 func no_warning():
-	modulate = Color.white
+	modulate = Color(1,1,1,1)
+
+

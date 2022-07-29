@@ -1,14 +1,14 @@
-tool
+@tool
 extends ResourceFormatSaver
 class_name DialogicCharacterFormatSaver
 
 
-func get_recognized_extensions(resource: Resource) -> PoolStringArray:
-	return PoolStringArray(["dch"])
+func _get_recognized_extensions(resource: Resource) -> PackedStringArray:
+	return PackedStringArray(["dch"])
 
 
 # Return true if this resource should be loaded as a DialogicCharacter 
-func recognize(resource: Resource) -> bool:
+func _recognize(resource: Resource) -> bool:
 	# Cast instead of using "is" keyword in case is a subclass
 	resource = resource as DialogicCharacter
 	
@@ -19,7 +19,7 @@ func recognize(resource: Resource) -> bool:
 
 
 # Save the resource
-func save(path: String, resource: Resource, flags: int) -> int:
+func _save(path: String, resource: Resource, flags: int) -> int:
 	var err:int
 	var file:File = File.new()
 	err = file.open(path, File.WRITE)

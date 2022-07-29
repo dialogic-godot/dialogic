@@ -1,4 +1,4 @@
-tool
+@tool
 extends DialogicEvent
 class_name DialogicVariableEvent
 
@@ -108,11 +108,11 @@ func load_from_string_to_store(string:String):
 	Value = result.get_string('value').strip_edges()
 	
 	print(result.get_string('shortcode'))
-	if !result.get_string('shortcode').empty():
+	if !result.get_string('shortcode').is_empty():
 		var shortcodeparams = parse_shortcode_parameters(result.get_string('shortcode'))
 		RandomEnabled = true if shortcodeparams.get('random', "True") == "True" else false
-		RandomMin = int(shortcodeparams.get('min', 0))
-		RandomMax = int(shortcodeparams.get('max', 100))
+		RandomMin = shortcodeparams.get('min', 0).to_int()
+		RandomMax = shortcodeparams.get('max', 100).to_int()
 
 func is_valid_event_string(string:String) -> bool:
 	return string.begins_with('VAR ')
@@ -139,7 +139,7 @@ func get_var_suggestions(filter:String) -> Dictionary:
 		suggestions[filter] = {'value':filter, 'editor_icon':["GuiScrollArrowRight", "EditorIcons"]}
 	var vars = DialogicUtil.get_project_setting('dialogic/variables', {})
 	for var_path in list_variables(vars):
-		if !filter or filter.to_lower() in var_path.to_lower():
+		if !filter.is_empty() or filter.to_lower() in var_path.to_lower(): # Added the .is_empty here. Not sure if it was the right thing
 			suggestions[var_path] = {'value':var_path, 'editor_icon':["ClassList", "EditorIcons"]}
 	return suggestions
 

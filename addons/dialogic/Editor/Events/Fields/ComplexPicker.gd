@@ -1,7 +1,7 @@
-tool
+@tool
 extends Control
 
-export(String) var placeholder_text = "Select Resource"
+@export var placeholder_text:String = "Select Resource"
 
 ### SETTINGS FOR THE RESOURCE PICKER
 var file_extension = ""
@@ -9,7 +9,17 @@ var get_suggestions_func = [self, 'get_default_suggestions']
 var empty_text = ""
 var disable_pretty_name := false
 
-var resource_icon:Texture = null setget set_icon
+var resource_icon:Texture = null:
+	get:
+		return resource_icon
+	set(new_icon):
+		resource_icon = new_icon
+		$'%Icon'.custom_minimum_size.x = $'%Icon'.size.y
+		$'%Icon'.texture = new_icon
+		if new_icon == null:
+			$Search.theme_type_variation = ""
+		else:
+			$Search.theme_type_variation = "LineEditWithIcon"
 
 # I'm so sorry for this, but the popup_hide signal get's triggered if the popup is hidden by me,
 # and I don't want it to change the resource, if one was just selected by clicking
@@ -29,13 +39,13 @@ signal value_changed(property_name, value)
 # These functions have to be implemented by all scenes that are used to display 
 # values on the events.
 
-func set_left_text(value):
+func set_left_text(value:String):
 	$LeftText.text = str(value)
-	$LeftText.visible = bool(value)
+	$LeftText.visible = !value.is_empty()
 
-func set_rightt_text(value):
+func set_rightt_text(value:String):
 	$RightText.text = str(value)
-	$RightText.visible = bool(value)
+	$RightText.visible = !value.is_empty()
 
 func set_value(value):
 	if value == null:
@@ -54,6 +64,13 @@ func set_value(value):
 	current_value = value
 
 
+func changed_to_empty():
+	if file_extension:
+		emit_signal("value_changed", property_name, null)
+	else:
+		emit_signal("value_changed", property_name, "")
+		
+
 ################################################################################
 ## 						BASIC
 ################################################################################
@@ -65,45 +82,37 @@ func _ready():
 		'background': '#1D1F25',
 		'padding': [5, 25],
 	})
-	$Search/Icon.rect_position.x = 0
+	$Search.text_changed.connect(_on_Search_text_changed)
+	$Search.focus_entered.connect(_on_Search_focus_entered)
+	$Search/Icon.position.x = 0
 	var scale = DialogicUtil.get_editor_scale()
 	if scale == 2:
-		$Search/Icon.rect_position.x = 10
-	$Search/SelectButton.icon = get_icon("Collapse", "EditorIcons")
+		$Search/Icon.position.x = 10
+	$Search/SelectButton.icon = get_theme_icon("Collapse", "EditorIcons")
 	$Search.placeholder_text = placeholder_text
 	$Search/Suggestions.hide()
-	$Search/Suggestions.connect("index_pressed", self, 'suggestion_selected')
-	$Search/Suggestions.connect("popup_hide", self, 'popup_hide')
-	$Search/Suggestions.add_stylebox_override('panel', load("res://addons/dialogic/Editor/Events/styles/ResourceMenuPanelBackground.tres"))
-	$Search/OpenButton.icon = get_icon("EditResource", "EditorIcons")
+	$Search/Suggestions.index_pressed.connect(suggestion_selected)
+	$Search/Suggestions.popup_hide.connect(popup_hide)
+	#TODO: Invalid call. Nonexistent function 'add_theme_stylebox_override' in base 'PopupMenu'.
+	#$Search/Suggestions.add_theme_stylebox_override('panel', load("res://addons/dialogic/Editor/Events/styles/ResourceMenuPanelBackground.tres"))
 	if resource_icon == null:
 		self.resource_icon = null
-
-
-func set_icon(new_icon):
-	resource_icon = new_icon
-	$'%Icon'.rect_min_size.x = $'%Icon'.rect_size.y
-	$'%Icon'.texture = new_icon
-	if new_icon == null:
-		$Search.theme_type_variation = ""
-	else:
-		$Search.theme_type_variation = "LineEditWithIcon"
 
 
 ################################################################################
 ## 						SEARCH & SUGGESTION POPUP
 ################################################################################
 func _on_Search_text_entered(new_text = ""):
-	if $Search/Suggestions.get_item_count() and not $Search.text.empty():
+	if $Search/Suggestions.get_item_count() and not $Search.text.is_empty():
 		suggestion_selected(0)
 	else:
-		emit_signal("value_changed", property_name, null)
+		changed_to_empty()
 
 func _on_Search_text_changed(new_text, just_update = false):
 	$Search/Suggestions.clear()
 	
 	if new_text == "" and !just_update:
-		emit_signal("value_changed", property_name, null)
+		changed_to_empty()
 	
 	ignore_popup_hide_once = just_update
 	
@@ -116,7 +125,7 @@ func _on_Search_text_changed(new_text, just_update = false):
 			if suggestions[element].has('icon'):
 				$Search/Suggestions.add_icon_item(suggestions[element].icon, element)
 			elif suggestions[element].has('editor_icon'):
-				$Search/Suggestions.add_icon_item(get_icon(suggestions[element].editor_icon[0],suggestions[element].editor_icon[1]), element)
+				$Search/Suggestions.add_icon_item(get_theme_icon(suggestions[element].editor_icon[0],suggestions[element].editor_icon[1]), element)
 			else:
 				$Search/Suggestions.add_item(element)
 			$Search/Suggestions.set_item_tooltip(idx, suggestions[element].get('tooltip', ''))
@@ -131,7 +140,9 @@ func _on_Search_text_changed(new_text, just_update = false):
 		$Search/Suggestions.set_item_disabled(idx, true)
 	
 	if not $Search/Suggestions.visible:
-		$Search/Suggestions.popup(Rect2($Search.rect_global_position + Vector2(0,1)*$Search.rect_size, Vector2($Search.rect_size.x, 100)))
+#		$Search/Suggestions.popup(Rect2(get_viewport().get_visible_rect().position+$Search.global_position + Vector2(0,1)*$Search.size, Vector2($Search.size.x, 100)))
+		$Search/Suggestions.popup_on_parent(Rect2i($Search.get_global_rect().position+Vector2(0,$Search.size.y), Vector2($Search.size.x, 50)))
+		#(Rect2(get_viewport().get_visible_rect().position+$Search.global_position, Vector2()))
 		$Search.grab_focus()
 
 
@@ -141,7 +152,7 @@ func get_default_suggestions(search_text):
 	var resources = DialogicUtil.list_resources_of_type(file_extension)
 
 	for resource in resources:
-		if search_text.empty() or search_text.to_lower() in DialogicUtil.pretty_name(resource).to_lower():
+		if search_text.is_empty() or search_text.to_lower() in DialogicUtil.pretty_name(resource).to_lower():
 			suggestions[DialogicUtil.pretty_name(resource)] = {'value':resource, 'tooltip':resource}
 	return suggestions
 	
@@ -161,21 +172,23 @@ func suggestion_selected(index):
 	emit_signal("value_changed", property_name, current_value)
 	
 func popup_hide():
-	if !$Search/SelectButton.get_global_rect().has_point(get_global_mouse_position()):
-		$Search/SelectButton.pressed = false
+	$Search/SelectButton.button_pressed = false
 	if ignore_popup_hide_once:
 		ignore_popup_hide_once = false
 		return
-	if $Search/Suggestions.get_item_count() and not $Search.text.empty():
+	if $Search/Suggestions.get_item_count() and not $Search.text.is_empty():
 		suggestion_selected(0)
 	else:
 		set_value(null)
-		emit_signal("value_changed", property_name, null)
+		changed_to_empty()
 
 func _on_Search_focus_entered():
-	if $Search.text == "" or not current_value:
+	if $Search.text == "" or current_value == null or (typeof(current_value) == TYPE_STRING and current_value.is_empty()):
 		_on_Search_text_changed("")
 
+func _on_SelectButton_toggled(button_pressed):
+	if button_pressed:
+		_on_Search_text_changed('', true)
 
 ################################################################################
 ##	 					DRAG AND DROP
@@ -194,21 +207,3 @@ func drop_data(position, data):
 	var file = load(data.files[0])
 	set_value(file)
 	emit_signal("value_changed", property_name, file)
-
-
-################################################################################
-##	 					OPEN RESOURCE BUTTON
-################################################################################
-# This function triggers the resource to be opened in the inspector and possible editors provided by plugins
-func _on_OpenButton_pressed():
-	if current_value:
-		var dialogic_plugin = get_tree().root.get_node('EditorNode/DialogicPlugin')
-		if typeof(current_value) == TYPE_STRING and not current_value.empty():
-			dialogic_plugin._editor_interface.inspect_object(load(current_value))
-		elif typeof(current_value) == TYPE_OBJECT:
-			dialogic_plugin._editor_interface.inspect_object(current_value)
-
-
-func _on_SelectButton_toggled(button_pressed):
-	if button_pressed:
-		_on_Search_text_changed('', true)

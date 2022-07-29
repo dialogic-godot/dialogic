@@ -23,8 +23,8 @@ func load_game_state():
 func hide_all_choices() -> void:
 	for node in get_tree().get_nodes_in_group('dialogic_choice_button'):
 		node.hide()
-		if node.is_connected('pressed', self, 'choice_selected'):
-			node.disconnect('pressed', self, 'choice_selected')
+		if node.is_connected('pressed', self.choice_selected):
+			node.disconnect('pressed', self.choice_selected)
 
 func show_current_choices() -> void:
 	hide_all_choices()
@@ -32,7 +32,7 @@ func show_current_choices() -> void:
 	for choice_index in get_current_choice_indexes():
 		var choice_event = dialogic.current_timeline_events[choice_index]
 		# check if condition is false
-		if not choice_event.Condition.empty() and not dialogic.execute_condition(choice_event.Condition):
+		if not choice_event.Condition.is_empty() and not dialogic.execute_condition(choice_event.Condition):
 			if choice_event.IfFalseAction == DialogicChoiceEvent.IfFalseActions.DEFAULT:
 				choice_event.IfFalseAction = DialogicUtil.get_project_setting('dialogic/choices/def_false_bahviour', 0)
 			
@@ -64,14 +64,14 @@ func show_choice(button_index:int, text:String, enabled:bool, event_index:int) -
 				node.grab_focus()
 			
 			if DialogicUtil.get_project_setting('dialogic/choices/hotkey_behaviour', 0) == 1 and idx < 10:
-				var shortcut = ShortCut.new()
+				var shortcut = Shortcut.new()
 				var input_key = InputEventKey.new()
-				input_key.scancode = OS.find_scancode_from_string(str(idx))
+				input_key.scancode = OS.find_keycode_from_string(str(idx))
 				shortcut.shortcut = input_key
 				node.shortcut = shortcut
 			
 			node.disabled = not enabled
-			node.connect('pressed', self, 'choice_selected', [event_index])
+			node.button_up.connect(choice_selected.bind(event_index))
 			
 		if node.choice_index > 0:
 			idx = node.choice_index

@@ -1,8 +1,8 @@
-tool
+@tool
 extends Control
 
 
-export(String) var text = "Hello World"
+@export var text: String = "Hello World"
 
 
 # Called when the node enters the scene tree for the first time.

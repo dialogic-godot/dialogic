@@ -1,4 +1,4 @@
-tool
+@tool
 extends DialogicEvent
 class_name DialogicEndBranchEvent
 
@@ -51,7 +51,7 @@ func find_next_index():
 # SET ALL VALUES THAT SHOULD NEVER CHANGE HERE
 func _init() -> void:
 	event_name = "End Branch"
-	event_color = Color.white
+	event_color = Color(1,1,1,1)
 	event_category = Category.LOGIC
 	event_sorting_index = 0
 	disable_editor_button = true

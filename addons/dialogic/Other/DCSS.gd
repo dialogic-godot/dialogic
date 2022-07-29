@@ -1,4 +1,4 @@
-tool
+@tool
 class_name DCSS
 
 static func style(node, style:Dictionary) -> StyleBoxFlat:

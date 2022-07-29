@@ -45,7 +45,7 @@ func update_name_label(character:DialogicCharacter) -> void:
 		else:
 			dialogic.current_state_info['character'] = null
 			name_label.text = ''
-			name_label.self_modulate = Color.white
+			name_label.self_modulate = Color(1,1,1,1)
 
 func update_typing_sound_mood(mood:Dictionary = {}) -> void:
 	for typing_sound in get_tree().get_nodes_in_group('dialogic_type_sounds'):

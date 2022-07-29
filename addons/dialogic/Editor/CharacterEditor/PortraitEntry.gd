@@ -1,4 +1,4 @@
-tool
+@tool
 extends HBoxContainer
 
 var editor_reference
@@ -16,15 +16,15 @@ func get_portrait_name() -> String:
 	return $NameEdit.text
 
 func _ready() -> void:
-	$ButtonDelete.icon = get_icon("Remove", "EditorIcons")
-	$ButtonSelect.icon = get_icon("ListSelect", "EditorIcons")
+	$ButtonDelete.icon = get_theme_icon("Remove", "EditorIcons")
+	$ButtonSelect.icon = get_theme_icon("ListSelect", "EditorIcons")
 
 func _on_ButtonDelete_pressed() -> void:
 	character_editor_reference.update_portrait_preview()
 	queue_free()
 
 func _on_ButtonSelect_pressed() -> void:
-	find_parent('EditorView').godot_file_dialog(self,'_on_file_selected', "*.png, *.svg, *.tscn")
+	find_parent('EditorView').godot_file_dialog(_on_file_selected, "*.png, *.svg, *.tscn", EditorFileDialog.FILE_MODE_OPEN_FILE, "Open portrait")
 
 func _on_file_selected(path:String) -> void:
 	$PathEdit.text = path
@@ -40,7 +40,7 @@ func update_preview() -> void:
 	character_editor_reference.update_portrait_preview(self)
 
 func visual_focus():
-	modulate = get_color("warning_color", "Editor")
+	modulate = get_theme_color("warning_color", "Editor")
 
 func visual_defocus():
-	modulate = Color.white
+	modulate = Color(1,1,1,1)

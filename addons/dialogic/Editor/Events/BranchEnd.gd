@@ -1,4 +1,4 @@
-tool
+@tool
 extends Control
 
 var resource
@@ -10,26 +10,26 @@ var current_indent_level = 1
 
 func _ready():
 	parent_node_changed()
-	$ConditionButtons/Elif.connect('pressed', self, 'add_elif')
-	$ConditionButtons/Else.connect('pressed', self, 'add_else')
+	$ConditionButtons/Elif.pressed.connect(add_elif)
+	$ConditionButtons/Else.pressed.connect(add_else)
 
 func visual_select():
-	modulate = get_color("accent_color", "Editor")
+	modulate = get_theme_color("accent_color", "Editor")
 
 
 func visual_deselect():
-	modulate = Color.white
+	modulate = Color(1,1,1,1)
 
 func highlight():
-	modulate = get_color("warning_color", "Editor")
+	modulate = get_theme_color("warning_color", "Editor")
 
 
 func unhighlight():
-	modulate = Color.white
+	modulate = Color(1,1,1,1)
 
 func set_indent(indent: int):
 	var indent_node = $Indent
-	indent_node.rect_min_size = Vector2(indent_size * indent, 0)
+	indent_node.custom_minimum_size = Vector2(indent_size * indent, 0)
 	indent_node.visible = indent != 0
 	current_indent_level = indent
 	update()

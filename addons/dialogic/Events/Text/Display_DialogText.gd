@@ -2,8 +2,10 @@ extends RichTextLabel
 
 class_name DialogicDisplay_DialogText, "icon.png"
 
-export(String, 'Left', 'Center', 'Right') var Align :String = 'Left'
-onready var timer = null
+enum ALIGNMENT {LEFT, CENTER, RIGHT}
+
+@export var Align : ALIGNMENT = ALIGNMENT.LEFT
+@onready var timer = null
 
 var effect_regex = RegEx.new()
 var modifier_words_select_regex = RegEx.new()
@@ -28,7 +30,7 @@ func _ready() -> void:
 	add_child(timer)
 	timer.wait_time = 0.01
 	timer.one_shot = true
-	timer.connect("timeout", self, 'continue_reveal')
+	timer.timeout.connect(continue_reveal)
 	
 	# compile effects regex
 	effect_regex.compile("(?<!\\\\)\\[\\s*(?<command>mood|portrait|speed|signal|pause)\\s*(=\\s*(?<value>.+?)\\s*)?\\]")
@@ -39,11 +41,11 @@ func _ready() -> void:
 # this is called by the DialogicGameHandler to set text
 func reveal_text(_text:String) -> void:
 	speed = DialogicUtil.get_project_setting('dialogic/text/speed', 0.01)
-	bbcode_text = parse_effects(parse_modifiers(_text))
-	if Align == 'Center':
-		bbcode_text = '[center]'+bbcode_text
-	elif Align == 'Right':
-		bbcode_text = '[right]'+bbcode_text
+	text = parse_effects(parse_modifiers(_text))
+	if Align == ALIGNMENT.CENTER:
+		text = '[center]'+text
+	elif Align == ALIGNMENT.RIGHT:
+		text = '[right]'+text
 	visible_characters = 0
 	timer.start(speed)
 	emit_signal('started_revealing_text')
@@ -52,7 +54,7 @@ func reveal_text(_text:String) -> void:
 func continue_reveal() -> void:
 	if visible_characters < get_total_character_count():
 		visible_characters += 1
-		emit_signal("continued_revealing_text", bbcode_text[visible_characters-1])
+		emit_signal("continued_revealing_text", text[visible_characters-1])
 		execute_effects()
 		if timer.is_stopped():
 			if speed == 0:
@@ -80,7 +82,9 @@ func parse_effects(_text:String) -> String:
 		# append [index, command, value] to effects array
 		effects.append([effect_match.get_start()-position_correction, effect_match.get_string('command'), effect_match.get_string('value').strip_edges()])
 		
-		_text.erase(effect_match.get_start()-position_correction, len(effect_match.get_string()))
+		## TODO MIGHT BE BROKEN, because I had to replace string.erase for godot 4
+		_text = _text.substr(0,effect_match.get_start()-position_correction)+_text.substr(effect_match.get_start()-position_correction+len(effect_match.get_string()))
+		
 		position_correction += len(effect_match.get_string())
 	_text = _text.replace('\\[', '[')
 	return _text
@@ -89,20 +93,19 @@ func execute_effects(skip :bool= false) -> void:
 	# might have to execute multiple effects
 	while effects and (visible_characters >= effects.front()[0] or visible_characters== -1):
 		var effect = effects.pop_front()
-		print(effect)
 		match effect[1]:
 			'pause':
 				if skip:
 					continue
 				if effect[2].is_valid_float():
-					timer.start(float(effect[2]))
+					timer.start(effect[2].to_float())
 				else:
 					timer.start(1)
 			'speed':
 				if skip:
 					continue
 				if effect[2].is_valid_float():
-					speed = float(effect[2])
+					speed = effect[2].to_float()
 				else:
 					speed = DialogicUtil.get_project_setting('dialogic/text/speed', 0.01)
 			'signal':
@@ -118,6 +121,7 @@ func execute_effects(skip :bool= false) -> void:
 						Dialogic.Text.update_typing_sound_mood(Character.custom_info.get('sound_moods', {}).get(effect[2], {}))
 
 func parse_modifiers(_text:String) -> String:
+	# [word, select] effect
 	for replace_mod_match in modifier_words_select_regex.search_all(_text):
 		var string = replace_mod_match.get_string().trim_prefix("[").trim_suffix("]")
 		string = string.replace('\\,', '<comma>')
@@ -126,5 +130,6 @@ func parse_modifiers(_text:String) -> String:
 		item = item.replace('<comma>', ',')
 		_text = _text.replace(replace_mod_match.get_string(), item.strip_edges())
 	
+	# [br] effect
 	_text = _text.replace('[br]', '\n')
 	return _text

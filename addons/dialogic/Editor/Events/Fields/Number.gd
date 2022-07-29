@@ -1,14 +1,14 @@
-tool
+@tool
 extends Control
 
 var property_name : String
 signal value_changed
 
 func _ready():
-	$Value.connect("value_changed", self,  'value_changed')
+	$Value.value_changed.connect(_on_value_changed)
 
 
-func value_changed(value):
+func _on_value_changed(value):
 	emit_signal("value_changed", property_name, $Value.value)
 
 

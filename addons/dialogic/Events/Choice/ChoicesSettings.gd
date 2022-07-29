@@ -1,8 +1,8 @@
-tool
+@tool
 extends HBoxContainer
 
 func refresh():
-	$'%Autofocus'.pressed = DialogicUtil.get_project_setting('dialogic/choices/autofocus_first', true)
+	$'%Autofocus'.button_pressed = DialogicUtil.get_project_setting('dialogic/choices/autofocus_first', true)
 	$'%Delay'.value = DialogicUtil.get_project_setting('dialogic/choices/delay', 0.2)
 	$'%FalseBehaviour'.select(DialogicUtil.get_project_setting('dialogic/choices/def_false_bahviour', 0))
 	$'%HotkeyType'.select(DialogicUtil.get_project_setting('dialogic/choices/hotkey_behaviour', 0))

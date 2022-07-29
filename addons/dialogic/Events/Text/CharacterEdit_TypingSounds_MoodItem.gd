@@ -1,30 +1,30 @@
-tool
+@tool
 extends PanelContainer
 
 signal duplicate
 signal changed
 
 func _ready():
-	add_stylebox_override('panel', get_stylebox("sub_inspector_bg12", "Editor"))
+	add_theme_stylebox_override('panel', get_theme_stylebox("sub_inspector_bg12", "Editor"))
 	$'%Name'.hint_tooltip = "Mood name"
-	$'%Duplicate'.icon = get_icon("Duplicate", "EditorIcons")
+	$'%Duplicate'.icon = get_theme_icon("Duplicate", "EditorIcons")
 	$'%Duplicate'.hint_tooltip = "Duplicate"
-	$'%Duplicate'.connect("pressed", self, "emit_signal", ["duplicate"])
-	$'%Delete'.icon = get_icon("Remove", "EditorIcons")
+	$'%Duplicate'.button_up.connect(emit_signal.bind("duplicate"))
+	$'%Delete'.icon = get_theme_icon("Remove", "EditorIcons")
 	$'%Delete'.hint_tooltip = "Delete"
-	$'%ChangeSoundFolderButton'.icon = get_icon("Folder", "EditorIcons")
+	$'%ChangeSoundFolderButton'.icon = get_theme_icon("Folder", "EditorIcons")
 	$'%ChangeSoundFolderButton'.hint_tooltip = "Change sounds folder"
-	$'%Fold'.icon = get_icon("GuiVisibilityVisible", "EditorIcons")
+	$'%Fold'.icon = get_theme_icon("GuiVisibilityVisible", "EditorIcons")
 	$'%Fold'.hint_tooltip = "Fold/Unfold"
-	$'%Play'.icon = get_icon("Play", "EditorIcons")
+	$'%Play'.icon = get_theme_icon("Play", "EditorIcons")
 	$'%Play'.hint_tooltip = "Preview"
 	_on_Fold_toggled(true)
 	
-	$'%Name'.connect("text_changed", self, 'something_changed')
-	$'%PitchBase'.connect("value_changed", self, 'something_changed')
-	$'%PitchVariance'.connect("value_changed", self, 'something_changed')
-	$'%VolumeBase'.connect("value_changed", self, 'something_changed')
-	$'%VolumeVariance'.connect("value_changed", self, 'something_changed')
+	$'%Name'.text_changed.connect(something_changed)
+	$'%PitchBase'.value_changed.connect(something_changed)
+	$'%PitchVariance'.value_changed.connect(something_changed)
+	$'%VolumeBase'.value_changed.connect(something_changed)
+	$'%VolumeVariance'.value_changed.connect(something_changed)
 
 func load_data(dict:Dictionary):
 	$'%Name'.text = dict.get('name', '')
@@ -49,11 +49,11 @@ func get_data():
 func something_changed(fake_arg= ''): emit_signal("changed")
 
 func _on_Fold_toggled(button_pressed):
-	$'%Fold'.pressed = button_pressed
+	$'%Fold'.button_pressed = button_pressed
 	if button_pressed:
-		$'%Fold'.icon = get_icon("GuiVisibilityHidden", "EditorIcons")
+		$'%Fold'.icon = get_theme_icon("GuiVisibilityHidden", "EditorIcons")
 	else:
-		$'%Fold'.icon = get_icon("GuiVisibilityVisible", "EditorIcons")
+		$'%Fold'.icon = get_theme_icon("GuiVisibilityVisible", "EditorIcons")
 	$'%Content'.visible = !button_pressed
 
 func _on_Delete_pressed():
@@ -61,7 +61,7 @@ func _on_Delete_pressed():
 	queue_free()
 
 func open_file_folder_dialog():
-	find_parent('EditorView').godot_file_dialog(self, 'file_folder_selected', '', EditorFileDialog.MODE_OPEN_DIR, 'Select folder with sounds')
+	find_parent('EditorView').godot_file_dialog(file_folder_selected, '', EditorFileDialog.FILE_MODE_OPEN_DIR, 'Select folder with sounds')
 
 func file_folder_selected(path):
 	$'%SoundFolder'.hint_tooltip = path
@@ -69,12 +69,12 @@ func file_folder_selected(path):
 	emit_signal("changed")
 
 func preview():
-	if !$'%SoundFolder'.hint_tooltip: return
+	if $'%SoundFolder'.hint_tooltip.is_empty(): return
 	$DialogicDisplay_TypeSounds.load_overwrite(get_data())
 	var preview_timer = Timer.new()
 	add_child(preview_timer)
 	preview_timer.start(DialogicUtil.get_project_setting('text/speed', 0.01))
 	for i in range(20):
 		$DialogicDisplay_TypeSounds._on_continued_revealing_text("a")
-		yield(preview_timer, "timeout")
+		await preview_timer.timeout
 	preview_timer.queue_free()

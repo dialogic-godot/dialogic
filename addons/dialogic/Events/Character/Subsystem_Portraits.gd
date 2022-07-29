@@ -28,7 +28,8 @@ func add_portrait(character:DialogicCharacter, portrait:String,  position_idx:in
 	if not character:
 		assert(false, "[Dialogic] Cannot add portrait of null character.")
 	if not portrait in character.portraits:
-		assert(false, "[Dialogic] Character "+ character.display_name+ " has no portrait '"+portrait+"'.")
+		print("[DialogicErrorInfo] ",character.display_name, " has no portrait ", portrait)
+		assert(false, "[Dialogic] Invalid portrait name.")
 	if len(get_tree().get_nodes_in_group('dialogic_portrait_holder')) == 0:
 		assert(false, '[Dialogic] If you want to display portraits, you need a PortraitHolder scene!')
 	
@@ -37,7 +38,7 @@ func add_portrait(character:DialogicCharacter, portrait:String,  position_idx:in
 			var path = character.portraits[portrait].path
 			if not path.ends_with('.tscn'):
 				var node2d = Node2D.new()
-				var sprite = Sprite.new()
+				var sprite = Sprite2D.new()
 				get_tree().get_nodes_in_group('dialogic_portrait_holder')[0].add_child(node2d)
 				node2d.add_child(sprite)
 				sprite.texture = load(path)
@@ -90,7 +91,7 @@ func animate_portrait(character:DialogicCharacter, animation_path:String, length
 	dialogic.current_state_info['portraits'][character.resource_path]['animation_node'] = anim_node
 	return anim_node
 
-func move_portrait(character:DialogicCharacter, position_idx:int, tween:bool= false, time:float = 1):
+func move_portrait(character:DialogicCharacter, position_idx:int, tween:bool= false, time:float = 1.0):
 	if not character or not is_character_joined(character):
 		assert(false, "[Dialogic] Cannot move portrait of null/not joined character.")
 	
@@ -135,7 +136,7 @@ func update_rpg_portrait_mode(character:DialogicCharacter = null, portrait:Strin
 					
 				var anim = animate_portrait(load(joined_character), AnimationName, AnimationLength)
 				
-				anim.connect('finished', self, 'remove_portrait', [load(joined_character)])
+				anim.finished.connect(remove_portrait.bind(load(joined_character)))
 			else:
 				char_joined = true
 		

@@ -1,4 +1,4 @@
-tool
+@tool
 class_name DialogicUtil
 
 static func get_editor_scale() -> float:
@@ -36,7 +36,7 @@ static func listdir(path: String, files_only: bool = true, throw_error:bool = tr
 
 static func get_dialogic_plugin() -> Node:
 	var tree: SceneTree = Engine.get_main_loop()
-	return tree.get_root().get_node('EditorNode/DialogicPlugin')
+	return tree.get_root().get_child(0).get_node('DialogicPlugin')
 
 
 

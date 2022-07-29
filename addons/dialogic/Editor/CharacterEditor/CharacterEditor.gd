@@ -1,9 +1,9 @@
-tool
+@tool
 extends Control
 
 const portrait_entry = preload("res://addons/dialogic/Editor/CharacterEditor/PortraitEntry.tscn")
 
-onready var toolbar = find_parent('EditorView').get_node('%Toolbar')
+@onready var toolbar = get_parent().get_node('%Toolbar')
 var current_character : DialogicCharacter
 var current_portrait = null
 
@@ -18,7 +18,7 @@ func new_character(path: String) -> void:
 	resource.resource_path = path
 	resource.name = path.get_file().trim_suffix("."+path.get_extension())
 	resource.display_name = path.get_file().trim_suffix("."+path.get_extension())
-	resource.color = Color.white
+	resource.color = Color(1,1,1,1)
 	resource.custom_info = {}
 	ResourceSaver.save(path, resource)
 	find_parent('EditorView').edit_character(resource)
@@ -31,12 +31,15 @@ func load_character(resource: DialogicCharacter) -> void:
 	$'%NameLineEdit'.text = resource.name
 	$'%ColorPickerButton'.color = resource.color
 	$'%DisplayNameLineEdit'.text = resource.display_name
-	$'%NicknameLineEdit'.text = str(resource.nicknames).trim_prefix('[').trim_suffix(']')
+	$'%NicknameLineEdit'.text = ""
+	for nickname in resource.nicknames: 
+		$'%NicknameLineEdit'.text += nickname +", "
+	$'%NicknameLineEdit'.text = $'%NicknameLineEdit'.text.trim_suffix(', ')
 	$'%DescriptionTextEdit'.text = resource.description
 	$'%MainScale'.value = 100*resource.scale
 	$'%MainOffsetX'.value = resource.offset.x
 	$'%MainOffsetY'.value = resource.offset.y
-	$'%MainMirror'.pressed = resource.mirror
+	$'%MainMirror'.button_pressed = resource.mirror
 	$'%PortraitSearch'.text = ""
 	
 	for main_edit in $'%MainEditTabs'.get_children():
@@ -58,7 +61,7 @@ func save_character() -> void:
 	current_character.description = $'%DescriptionTextEdit'.text
 	current_character.scale = $'%MainScale'.value/100.0
 	current_character.offset = Vector2($'%MainOffsetX'.value, $'%MainOffsetY'.value) 
-	current_character.mirror = $'%MainMirror'.pressed
+	current_character.mirror = $'%MainMirror'.button_pressed
 	
 	for main_edit in $'%MainEditTabs'.get_children():
 		if main_edit.has_method('save_character'):
@@ -70,57 +73,55 @@ func save_character() -> void:
 	
 	ResourceSaver.save(current_character.resource_path, current_character)
 	toolbar.set_resource_saved()
-	
-	
+
 
 ##############################################################################
 ##							INTERFACE
 ##############################################################################
 
 func _ready() -> void:
-	var dialogic_plugin = get_tree().root.get_node('EditorNode/DialogicPlugin')
-	dialogic_plugin.connect('dialogic_save', self, 'save_character')
+	DialogicUtil.get_dialogic_plugin().dialogic_save.connect(save_character)
 	
 	# Let's go connecting!
-	$'%NameLineEdit'.connect('text_changed', self, 'something_changed')
-	$'%ColorPickerButton'.connect('color_changed', self, 'something_changed')
-	$'%DisplayNameLineEdit'.connect('text_changed', self, 'something_changed')
-	$'%NicknameLineEdit'.connect('text_changed', self, 'something_changed')
-	$'%DescriptionTextEdit'.connect('text_changed', self, 'something_changed')
-	$'%MainScale'.connect("value_changed", self, 'main_portrait_settings_update')
-	$'%MainOffsetX'.connect("value_changed", self, 'main_portrait_settings_update')
-	$'%MainOffsetY'.connect("value_changed", self, 'main_portrait_settings_update')
-	$'%MainMirror'.connect("toggled", self, 'main_portrait_settings_update')
-	$'%PortraitSearch'.connect("text_changed", self, 'update_portrait_list')
+	$'%NameLineEdit'.text_changed.connect(something_changed)
+	$'%ColorPickerButton'.color_changed.connect(something_changed)
+	$'%DisplayNameLineEdit'.text_changed.connect(something_changed)
+	$'%NicknameLineEdit'.text_changed.connect(something_changed)
+	$'%DescriptionTextEdit'.text_changed.connect(something_changed)
+	$'%MainScale'.value_changed.connect(main_portrait_settings_update)
+	$'%MainOffsetX'.value_changed.connect(main_portrait_settings_update)
+	$'%MainOffsetY'.value_changed.connect(main_portrait_settings_update)
+	$'%MainMirror'.toggled.connect(main_portrait_settings_update)
+	$'%PortraitSearch'.text_changed.connect(update_portrait_list)
 	
-	$'%NewPortrait'.connect('pressed', self, 'create_portrait_entry_instance', ['', {'path':'', 'scale':1, 'offset':Vector2(), 'mirror':false}])
-	$'%ImportFromFolder'.connect('pressed', self, 'open_portrait_folder_select')
-	$'%PreviewMode'.connect('item_selected', self, '_on_PreviewMode_item_selected')
+	$'%NewPortrait'.pressed.connect(create_portrait_entry_instance.bind('', {'path':'', 'scale':1, 'offset':Vector2(), 'mirror':false}))
+	$'%ImportFromFolder'.pressed.connect(open_portrait_folder_select)
+	$'%PreviewMode'.item_selected.connect(_on_PreviewMode_item_selected)
 	$'%PreviewMode'.select(DialogicUtil.get_project_setting('dialogic/editor/character_preview_mode', 0))
 	_on_PreviewMode_item_selected($'%PreviewMode'.selected)
-	$'%PreviewPositionIcon'.texture = get_icon("EditorPosition", "EditorIcons")
+	$'%PreviewPositionIcon'.texture = get_theme_icon("EditorPosition", "EditorIcons")
 	
 	if find_parent('EditorView'): # This prevents the view to turn black if you are editing this scene in Godot
-		var style = $Split/EditorScroll.get('custom_styles/bg')
-		style.set('bg_color', get_color("dark_color_1", "Editor"))
+		var style = $Split/EditorScroll.get_theme_stylebox('custom_styles/bg')
+		style.set('bg_color', get_theme_color("dark_color_1", "Editor"))
 	
-	$'%NewPortrait'.icon = get_icon("Add", "EditorIcons")
-	$'%ImportFromFolder'.icon = get_icon("Folder", "EditorIcons")
-	$'%PortraitsTitle'.set('custom_fonts/font', get_font("doc_title", "EditorFonts"))
-	$Split/EditorScroll/Editor/VBoxContainer/PortraitPanel.set('custom_styles/panel', get_stylebox("Background", "EditorStyles"))
+	$'%NewPortrait'.icon = get_theme_icon("Add", "EditorIcons")
+	$'%ImportFromFolder'.icon = get_theme_icon("Folder", "EditorIcons")
+	$'%PortraitsTitle'.set('custom_fonts/font', get_theme_font("doc_title", "EditorFonts"))
+	$Split/EditorScroll/Editor/VBoxContainer/PortraitPanel.set('custom_styles/panel', get_theme_stylebox("Background", "EditorStyles"))
 	
-	$'%PortraitScale'.connect("value_changed", self, 'set_portrait_scale')
-	$'%PortraitOffsetX'.connect("value_changed", self, 'set_portrait_offset_x')
-	$'%PortraitOffsetY'.connect("value_changed", self, 'set_portrait_offset_y')
-	$'%PortraitMirror'.connect("toggled", self, 'set_portrait_mirror')
+	$'%PortraitScale'.value_changed.connect(set_portrait_scale)
+	$'%PortraitOffsetX'.value_changed.connect(set_portrait_offset_x)
+	$'%PortraitOffsetY'.value_changed.connect(set_portrait_offset_y)
+	$'%PortraitMirror'.toggled.connect(set_portrait_mirror)
 	
 	# Subsystems
 	for script in DialogicUtil.get_event_scripts():
 		for subsystem in load(script).new().get_required_subsystems():
 			if subsystem.has('character_main'):
-				var edit =  load(subsystem.character_main).instance()
+				var edit =  load(subsystem.character_main).instantiate()
 				if edit.has_signal('changed'):
-					edit.connect('changed', self, 'something_changed')
+					edit.changed.connect(something_changed)
 				$'%MainEditTabs'.add_child(edit)
 	hide()
 
@@ -130,7 +131,7 @@ func something_changed(fake_argument = "") -> void:
 
 
 func open_portrait_folder_select() -> void:
-	find_parent("EditorView").godot_file_dialog(self, "_on_dir_selected","*", EditorFileDialog.MODE_OPEN_DIR)
+	find_parent("EditorView").godot_file_dialog(_on_dir_selected, "*", EditorFileDialog.FILE_MODE_OPEN_DIR)
 
 
 func _on_dir_selected(path:String) -> void:
@@ -151,7 +152,7 @@ func _on_dir_selected(path:String) -> void:
 
 
 func create_portrait_entry_instance(name:String, portait_data:Dictionary) -> Node:
-	var instance = portrait_entry.instance()
+	var instance = portrait_entry.instantiate()
 	instance.load_data(name, portait_data.duplicate(), self)
 	get_node("%PortraitList").add_child(instance)
 	something_changed()
@@ -171,7 +172,7 @@ func update_portrait_list(filter_term:String = '') -> void:
 	var first_visible_item = null
 	for portrait in current_character.portraits.keys():
 		var port = create_portrait_entry_instance(portrait, current_character.portraits[portrait])
-		if filter_term.empty() or filter_term.to_lower() in portrait.to_lower():
+		if filter_term.is_empty() or filter_term.to_lower() in portrait.to_lower():
 			if not first_visible_item: first_visible_item = port
 			if portrait == prev_portrait_name:
 				current_portrait = port
@@ -201,7 +202,7 @@ func update_portrait_preview(portrait_inst = "") -> void:
 		$'%PreviewLabel'.text = DTS.translate('Preview of')+' "'+current_portrait.get_portrait_name()+'"'
 		
 		var path:String = current_portrait.portrait_data.get('path', '')
-		var mirror:bool = current_portrait.portrait_data.get('mirror', false) != $'%MainMirror'.pressed
+		var mirror:bool = current_portrait.portrait_data.get('mirror', false) != $'%MainMirror'.button_pressed
 		var scale:float = current_portrait.portrait_data.get('scale', 1) * $'%MainScale'.value/100.0
 		var offset:Vector2 = current_portrait.portrait_data.get('offset', Vector2()) + Vector2($'%MainOffsetX'.value, $'%MainOffsetY'.value)
 		var l_path = path.to_lower()
@@ -209,11 +210,11 @@ func update_portrait_preview(portrait_inst = "") -> void:
 			$'%PreviewRealRect'.texture = load(path)
 			$'%PreviewFullRect'.texture = load(path)
 			$"%PreviewLabel".text += ' (' + str($'%PreviewRealRect'.texture.get_width()) + 'x' + str($'%PreviewRealRect'.texture.get_height())+')'
-			$'%PreviewRealRect'.rect_scale = Vector2(scale, scale)
+			$'%PreviewRealRect'.scale = Vector2(scale, scale)
 			$'%PreviewRealRect'.flip_h = mirror
 			$'%PreviewFullRect'.flip_h = mirror
-			$'%PreviewRealRect'.rect_position.x = -($'%PreviewRealRect'.texture.get_width()*scale/2.0)+offset.x
-			$'%PreviewRealRect'.rect_position.y = -($'%PreviewRealRect'.texture.get_height()*scale)+offset.y
+			$'%PreviewRealRect'.position.x = -($'%PreviewRealRect'.texture.get_width()*scale/2.0)+offset.x
+			$'%PreviewRealRect'.position.y = -($'%PreviewRealRect'.texture.get_height()*scale)+offset.y
 			
 			$'%PortraitSettings'.show()
 		elif '.tscn' in l_path:
@@ -225,7 +226,7 @@ func update_portrait_preview(portrait_inst = "") -> void:
 		$'%PortraitScale'.value = current_portrait.portrait_data.get('scale', 1)*100
 		$'%PortraitOffsetX'.value = current_portrait.portrait_data.get('offset', Vector2()).x
 		$'%PortraitOffsetY'.value = current_portrait.portrait_data.get('offset', Vector2()).y
-		$'%PortraitMirror'.pressed = current_portrait.portrait_data.get('mirror', false)
+		$'%PortraitMirror'.button_pressed = current_portrait.portrait_data.get('mirror', false)
 		
 	else:
 		$'%PortraitSettings'.hide()

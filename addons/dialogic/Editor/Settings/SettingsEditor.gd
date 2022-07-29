@@ -1,17 +1,18 @@
-tool
-extends WindowDialog
+@tool
+extends Popup
 
 func _ready():
-	connect("about_to_show", self, 'refresh')
+	hide()
+	about_to_popup.connect(refresh)
 	
-	if not Engine.editor_hint:
+	if not Engine.is_editor_hint():
 		popup()
 
 	# Subsystems
 	for script in DialogicUtil.get_event_scripts():
 		for subsystem in load(script).new().get_required_subsystems():
 			if subsystem.has('settings'):
-				$Panel/Tabs.add_child(load(subsystem.settings).instance())
+				$Panel/Tabs.add_child(load(subsystem.settings).instantiate())
 	refresh()
 
 

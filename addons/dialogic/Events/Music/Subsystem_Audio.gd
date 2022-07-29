@@ -11,7 +11,7 @@ func clear_game_state():
 
 func load_game_state():
 	var info = dialogic.current_state_info.get('music')
-	if not info or info.path.empty():
+	if not info or info.path.is_empty():
 		update_music()
 	else:
 		update_music(info.path, info.volume, info.audio_bus, 0, info.loop)
@@ -19,7 +19,7 @@ func load_game_state():
 ####################################################################################################
 ##					MAIN METHODS
 ####################################################################################################
-func update_music(path:String = '', volume:float = 0, audio_bus:String = "Master", fade_time:float = 0, loop:bool = true) -> void:
+func update_music(path:String = '', volume:float = 0.0, audio_bus:String = "Master", fade_time:float = 0.0, loop:bool = true) -> void:
 	dialogic.current_state_info['music'] = {'path':path, 'volume':volume, 'audio_bus':audio_bus, 'loop':loop}
 	for node in get_tree().get_nodes_in_group('dialogic_music_player'):
 		var fader = null
@@ -52,7 +52,7 @@ func update_music(path:String = '', volume:float = 0, audio_bus:String = "Master
 			fader.tween_callback(prev_node, "queue_free")
 
 
-func play_sound(path:String, volume:float = 0, audio_bus:String = "Master", loop :bool= false) -> void:
+func play_sound(path:String, volume:float = 0.0, audio_bus:String = "Master", loop :bool= false) -> void:
 	var sound_node = get_tree().get_nodes_in_group('dialogic_sound_player').front()
 	if sound_node and path:
 		var new_sound_node = sound_node.duplicate()
@@ -68,7 +68,7 @@ func play_sound(path:String, volume:float = 0, audio_bus:String = "Master", loop
 		new_sound_node.bus = audio_bus
 		add_child(new_sound_node)
 		new_sound_node.play()
-		new_sound_node.connect('finished', new_sound_node, 'queue_free')
+		new_sound_node.finished.connect(queue_free)
 
 func stop_all_sounds() -> void:
 	var sound_nodes = get_tree().get_nodes_in_group('dialogic_sound_player')

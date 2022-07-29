@@ -1,7 +1,7 @@
-tool
+@tool
 extends PanelContainer
 
-export (bool) var MainGroup = false
+@export var MainGroup: bool = false
 var Group_scene = get_script().resource_path.get_base_dir().plus_file("VariableGroup.tscn")
 var field_scene = get_script().resource_path.get_base_dir().plus_file("VariableField.tscn")
 var preview_scene = get_script().resource_path.get_base_dir().plus_file("Preview.tscn")
@@ -12,7 +12,7 @@ var parent_Group = null
 ################################################################################
 ##				FUNCTIONALITY
 ################################################################################
-func get_name() -> String:
+func get_name():
 	return $'%NameEdit'.text
 
 func get_data() -> Dictionary:
@@ -33,11 +33,11 @@ func load_data(Group_name, data:Dictionary, _parent_Group:Control = null) -> voi
 func add_data(data) -> void:
 	for key in data.keys():
 		if typeof(data[key]) == TYPE_DICTIONARY:
-			var Group = load(Group_scene).instance()
+			var Group = load(Group_scene).instantiate()
 			$'%Content'.add_child(Group)
 			Group.load_data(key, data[key], self)
 		else:
-			var field = load(field_scene).instance()
+			var field = load(field_scene).instantiate()
 			$'%Content'.add_child(field)
 			field.load_data(key, data[key], self)
 
@@ -59,14 +59,14 @@ func search(term:String) -> bool:
 			if not found_anything:
 				found_anything = res
 
-		elif term.empty():
+		elif term.is_empty():
 			child.show()
 		elif child.has_method('get_name'):
-			child.visible = term in  child.get_name().to_lower() or term in child.get_data().to_lower()
+			child.visible = term in  str(child.get_name()).to_lower() or term in child.get_data().to_lower()
 			if not found_anything:
 				found_anything = child.visible
 	
-	if not term.empty() and not found_anything and not MainGroup:
+	if not term.is_empty() and not found_anything and not MainGroup:
 		hide()
 	else:
 		show()
@@ -83,7 +83,7 @@ func get_drag_data(position):
 	}
 	data.data[get_name()] = get_data()
 	
-	var prev = load(preview_scene).instance()
+	var prev = load(preview_scene).instantiate()
 	prev.set_text(get_name())
 	set_drag_preview(prev)
 
@@ -112,10 +112,10 @@ func _on_VariableGroup_gui_input(event):
 		if get_global_rect().has_point(get_global_mouse_position()):
 			if not drag_preview: 
 				drag_preview = Control.new()
-				drag_preview.rect_min_size.y = 30
+				drag_preview.custom_minimum_size.y = 30
 				$'%Content'.add_child(drag_preview)
 				$'%Content'.move_child(drag_preview, $'%Content'.get_child_count())
-			self_modulate = get_color("accent_color", "Editor")
+			self_modulate = get_theme_color("accent_color", "Editor")
 	else:
 		undrag()
 
@@ -127,7 +127,7 @@ func undrag():
 	if drag_preview != null:
 		drag_preview.queue_free()
 		drag_preview = null
-		self_modulate = Color.white
+		self_modulate = Color(1,1,1,1)
 
 ################################################################################
 ##				UI
@@ -144,19 +144,19 @@ func update():
 		$'%NameEdit'.editable = false
 		$'%SearchBar'.show()
 		$'%Dragger'.hide()
-		$'%SearchBar'.right_icon = get_icon("Search", "EditorIcons")
+		$'%SearchBar'.right_icon = get_theme_icon("Search", "EditorIcons")
 	
-	$'%Dragger'.texture = get_icon("TripleBar", "EditorIcons")
-	$'%NameEdit'.add_color_override("font_color_uneditable", get_color('font_color', 'Label'))
-	get_node('%DeleteButton').icon = get_icon("Remove", "EditorIcons")
+	$'%Dragger'.texture = get_theme_icon("TripleBar", "EditorIcons")
+	$'%NameEdit'.add_theme_color_override("font_color_uneditable", get_theme_color('font_color', 'Label'))
+	get_node('%DeleteButton').icon = get_theme_icon("Remove", "EditorIcons")
 	get_node('%DeleteButton').hint_tooltip = "Delete Group"
-	get_node('%DuplicateButton').icon = get_icon("Duplicate", "EditorIcons")
+	get_node('%DuplicateButton').icon = get_theme_icon("Duplicate", "EditorIcons")
 	get_node('%DuplicateButton').hint_tooltip = "Duplicate Group"
-	get_node('%NewGroup').icon = get_icon("Folder", "EditorIcons")
+	get_node('%NewGroup').icon = get_theme_icon("Folder", "EditorIcons")
 	get_node('%NewGroup').hint_tooltip = "Add new Group"
-	get_node('%NewVariable').icon = get_icon("Add", "EditorIcons")
+	get_node('%NewVariable').icon = get_theme_icon("Add", "EditorIcons")
 	get_node('%NewVariable').hint_tooltip = "Add new variable"
-	get_node('%FoldButton').icon = get_icon("GuiVisibilityVisible", "EditorIcons")
+	get_node('%FoldButton').icon = get_theme_icon("GuiVisibilityVisible", "EditorIcons")
 	get_node('%FoldButton').hint_tooltip = "Hide/Show content"
 
 
@@ -165,10 +165,10 @@ func clear():
 		child.queue_free()
 
 func warning():
-	modulate = get_color("warning_color", "Editor")
+	modulate = get_theme_color("warning_color", "Editor")
 
 func no_warning():
-	modulate = Color.white
+	modulate = Color(1,1,1,1)
 
 func _on_DeleteButton_pressed():
 	queue_free()
@@ -190,9 +190,9 @@ func _on_FoldButton_toggled(button_pressed):
 	$'%Content'.visible = button_pressed
 	
 	if button_pressed:
-		get_node('%FoldButton').icon = get_icon("GuiVisibilityVisible", "EditorIcons")
+		get_node('%FoldButton').icon = get_theme_icon("GuiVisibilityVisible", "EditorIcons")
 	else:
-		get_node('%FoldButton').icon = get_icon("GuiVisibilityHidden", "EditorIcons")
+		get_node('%FoldButton').icon = get_theme_icon("GuiVisibilityHidden", "EditorIcons")
 
 
 func _on_NameEdit_gui_input(event):
@@ -200,10 +200,8 @@ func _on_NameEdit_gui_input(event):
 		if not MainGroup:
 			$'%NameEdit'.editable = true
 
-
-func _on_NameEdit_text_entered(new_text):
+func _on_name_edit_text_submitted(new_text):
 	disable_name_edit()
-
 
 func _on_NameEdit_focus_exited():
 	disable_name_edit()
@@ -215,3 +213,4 @@ func disable_name_edit():
 
 func _on_SearchBar_text_changed(new_text):
 	search(new_text.to_lower())
+

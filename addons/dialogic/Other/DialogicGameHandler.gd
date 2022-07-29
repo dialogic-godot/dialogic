@@ -6,7 +6,13 @@ var current_timeline = null
 var current_timeline_events = []
 
 
-var current_state = null setget set_current_state
+var current_state = null:
+	get:
+		return current_state
+	set(new_state):
+		current_state = new_state
+		emit_signal('state_changed', new_state)
+
 var current_event_idx = 0
 
 var current_state_info :Dictionary = {}
@@ -73,7 +79,7 @@ func handle_event(event_index:int) -> void:
 	#print("\n[D] Handle Event ", event_index, ": ", event)
 	if event.continue_at_end:
 		#print("    -> WILL AUTO CONTINUE!")
-		event.connect("event_finished", self, 'handle_next_event', [], CONNECT_ONESHOT)
+		event.event_finished.connect(handle_next_event, CONNECT_ONESHOT)
 	event.execute(self)
 	emit_signal('event_handled', event)
 
@@ -104,11 +110,6 @@ func clear():
 ################################################################################
 ## 						STATE
 ################################################################################
-func set_current_state(new_state:int) -> void:
-	#print('~~~ CHANGE STATE ', ["IDLE", "TEXT", "ANIM", "CHOICE", "WAIT",][new_state])
-	current_state = new_state
-	emit_signal('state_changed', new_state)
-
 
 func execute_condition(condition:String) -> bool:
 	var expr = Expression.new()
@@ -154,10 +155,10 @@ func collect_subsystems():
 			if i.has('subsystem') and not has_subsystem(i.name):
 				add_subsytsem(i.name, i.subsystem)
 
-func has_subsystem(_name):
+func has_subsystem(_name:String):
 	return has_node(_name)
 
-func get_subsystem(_name):
+func get_subsystem(_name:String):
 	return get_node(_name)
 
 func add_subsytsem(_name, _script_path):
@@ -170,7 +171,7 @@ func add_subsytsem(_name, _script_path):
 
 func _get(property):
 	if has_subsystem(property):
-		return get_node(property)
+		return get_node(str(property))
 
 func _set(property, value):
 	if has_subsystem(property):
