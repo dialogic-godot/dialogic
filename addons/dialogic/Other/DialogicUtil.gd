@@ -108,7 +108,7 @@ static func pretty_name(script:String) -> String:
 
 
 static func str_to_bool(boolstring:String) -> bool:
-	return true if boolstring == "True" else false
+	return true if boolstring == "true" else false
 
 
 static func get_color_palette(default:bool = false) -> Dictionary:
