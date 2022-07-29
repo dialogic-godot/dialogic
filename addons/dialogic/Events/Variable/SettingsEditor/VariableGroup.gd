@@ -12,13 +12,13 @@ var parent_Group = null
 ################################################################################
 ##				FUNCTIONALITY
 ################################################################################
-func get_name():
+func get_item_name():
 	return $'%NameEdit'.text
 
 func get_data() -> Dictionary:
 	var data = {}
 	for child in $'%Content'.get_children():
-		data[child.get_name()] = child.get_data()
+		data[child.get_item_name()] = child.get_data()
 	return data
 
 func load_data(Group_name, data:Dictionary, _parent_Group:Control = null) -> void:
@@ -35,6 +35,7 @@ func add_data(data) -> void:
 		if typeof(data[key]) == TYPE_DICTIONARY:
 			var Group = load(Group_scene).instantiate()
 			$'%Content'.add_child(Group)
+			Group.update()
 			Group.load_data(key, data[key], self)
 		else:
 			var field = load(field_scene).instantiate()
@@ -45,11 +46,11 @@ func check_data():
 	var names = []
 	for child in $'%Content'.get_children():
 		if child.has_method('warning') and not child.is_queued_for_deletion():
-			if child.get_name() in names:
+			if child.get_item_name() in names:
 				child.warning()
 			else:
 				child.no_warning()
-				names.append(child.get_name())
+				names.append(child.get_item_name())
 
 func search(term:String) -> bool:
 	var found_anything = false
@@ -61,8 +62,8 @@ func search(term:String) -> bool:
 
 		elif term.is_empty():
 			child.show()
-		elif child.has_method('get_name'):
-			child.visible = term in  str(child.get_name()).to_lower() or term in child.get_data().to_lower()
+		elif child.has_method('get_item_name'):
+			child.visible = term in  str(child.get_item_name()).to_lower() or term in child.get_data().to_lower()
 			if not found_anything:
 				found_anything = child.visible
 	
@@ -73,7 +74,7 @@ func search(term:String) -> bool:
 	
 	return found_anything
 
-func get_drag_data(position):
+func _get_drag_data(position):
 	if MainGroup:
 		return null
 	
@@ -81,20 +82,20 @@ func get_drag_data(position):
 		'data':{},
 		'node':self
 	}
-	data.data[get_name()] = get_data()
+	data.data[get_item_name()] = get_data()
 	
 	var prev = load(preview_scene).instantiate()
-	prev.set_text(get_name())
+	prev.set_text(get_item_name())
 	set_drag_preview(prev)
 
 	return data
 
-func can_drop_data(position, data):
+func _can_drop_data(position, data):
 	if typeof(data) == TYPE_DICTIONARY and data.has('data') and data.has('node'):
 		return true
 	return false
 
-func drop_data(position, data):
+func _drop_data(position, data):
 	# safety that should prevent dragging a Group into itself
 	var fold = self
 	while fold != null:
@@ -146,18 +147,18 @@ func update():
 		$'%Dragger'.hide()
 		$'%SearchBar'.right_icon = get_theme_icon("Search", "EditorIcons")
 	
-	$'%Dragger'.texture = get_theme_icon("TripleBar", "EditorIcons")
-	$'%NameEdit'.add_theme_color_override("font_color_uneditable", get_theme_color('font_color', 'Label'))
-	get_node('%DeleteButton').icon = get_theme_icon("Remove", "EditorIcons")
-	get_node('%DeleteButton').hint_tooltip = "Delete Group"
-	get_node('%DuplicateButton').icon = get_theme_icon("Duplicate", "EditorIcons")
-	get_node('%DuplicateButton').hint_tooltip = "Duplicate Group"
-	get_node('%NewGroup').icon = get_theme_icon("Folder", "EditorIcons")
-	get_node('%NewGroup').hint_tooltip = "Add new Group"
-	get_node('%NewVariable').icon = get_theme_icon("Add", "EditorIcons")
-	get_node('%NewVariable').hint_tooltip = "Add new variable"
-	get_node('%FoldButton').icon = get_theme_icon("GuiVisibilityVisible", "EditorIcons")
-	get_node('%FoldButton').hint_tooltip = "Hide/Show content"
+	$%Dragger.texture = get_theme_icon("TripleBar", "EditorIcons")
+	$%NameEdit.add_theme_color_override("font_color_uneditable", get_theme_color('font_color', 'Label'))
+	$%DeleteButton.icon = get_theme_icon("Remove", "EditorIcons")
+	$%DeleteButton.hint_tooltip = "Delete Group"
+	$%DuplicateButton.icon = get_theme_icon("Duplicate", "EditorIcons")
+	$%DuplicateButton.hint_tooltip = "Duplicate Group"
+	$%NewGroup.icon = get_theme_icon("Folder", "EditorIcons")
+	$%NewGroup.hint_tooltip = "Add new Group"
+	$%NewVariable.icon = get_theme_icon("Add", "EditorIcons")
+	$%NewVariable.hint_tooltip = "Add new variable"
+	$%FoldButton.icon = get_theme_icon("GuiVisibilityVisible", "EditorIcons")
+	$%FoldButton.hint_tooltip = "Hide/Show content"
 
 
 func clear():
@@ -175,7 +176,7 @@ func _on_DeleteButton_pressed():
 
 
 func _on_DuplicateButton_pressed():
-	parent_Group.add_data({get_name()+'_duplicate':get_data()})
+	parent_Group.add_data({get_item_name()+'_duplicate':get_data()})
 
 
 func _on_NewGroup_pressed():
@@ -190,13 +191,13 @@ func _on_FoldButton_toggled(button_pressed):
 	$'%Content'.visible = button_pressed
 	
 	if button_pressed:
-		get_node('%FoldButton').icon = get_theme_icon("GuiVisibilityVisible", "EditorIcons")
+		$%FoldButton.icon = get_theme_icon("GuiVisibilityVisible", "EditorIcons")
 	else:
-		get_node('%FoldButton').icon = get_theme_icon("GuiVisibilityHidden", "EditorIcons")
+		$%FoldButton.icon = get_theme_icon("GuiVisibilityHidden", "EditorIcons")
 
 
 func _on_NameEdit_gui_input(event):
-	if event is InputEventMouseButton and event.pressed and event.doubleclick:
+	if event is InputEventMouseButton and event.pressed and event.double_click:
 		if not MainGroup:
 			$'%NameEdit'.editable = true
 

@@ -15,7 +15,7 @@ func _ready():
 	gui_input.connect(_on_gui_input)
 
 
-func can_drop_data(position, data):
+func _can_drop_data(position, data):
 	if data != null and data is Dictionary and data.has("source"):
 		if data["source"] == "EventButton":
 			if _last_event_button_drop_attempt is Resource == false:
@@ -32,7 +32,7 @@ func cancel_drop():
 	timeline_editor.cancel_drop_event()
 
 	
-func drop_data(position, data):
+func _drop_data(position, data):
 	# add event
 	if (data["source"] == "EventButton"):
 		timeline_editor.drop_event()
@@ -67,5 +67,5 @@ func _on_gui_input(event):
 	if (event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT):
 		if (_is_drag_receiving):
 			if (_last_event_button_drop_attempt != ''):
-				drop_data(Vector2.ZERO, { "source": "EventButton", "event_id": _last_event_button_drop_attempt} )
+				_drop_data(Vector2.ZERO, { "source": "EventButton", "event_id": _last_event_button_drop_attempt} )
 			_is_drag_receiving = false
