@@ -182,7 +182,7 @@ func popup_hide():
 		changed_to_empty()
 
 func _on_Search_focus_entered():
-	if $Search.text == "" or current_value.is_empty():
+	if $Search.text == "" or current_value == null or (typeof(current_value) == TYPE_STRING and current_value.is_empty()):
 		_on_Search_text_changed("")
 
 func _on_SelectButton_toggled(button_pressed):

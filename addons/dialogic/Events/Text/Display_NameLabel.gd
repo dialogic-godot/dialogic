@@ -14,5 +14,5 @@ func _set(property, what):
 	if property == 'text' and typeof(what) == TYPE_STRING:
 		text = what
 		if hide_when_empty:
-			visible = what.is_empty()
+			visible = !what.is_empty()
 		return true
