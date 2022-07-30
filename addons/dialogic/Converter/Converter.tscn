@@ -1,0 +1,59 @@
+[gd_scene load_steps=2 format=3 uid="uid://jfp57twqgva3"]
+
+[ext_resource type="Script" path="res://addons/dialogic/Converter/Converter.gd" id="1_wedla"]
+
+[node name="Converter" type="Node2D"]
+script = ExtResource("1_wedla")
+
+[node name="Panel" type="Panel" parent="."]
+offset_right = 1029.0
+offset_bottom = 621.0
+
+[node name="Instructions" type="Label" parent="Panel"]
+offset_left = 28.0
+offset_top = 16.0
+offset_right = 68.0
+offset_bottom = 39.0
+text = "This is a converter script to convert Dialogic 1.4+ files into Dialogic 2.0 format. 
+
+This converter is meant to run directly as the scene."
+
+[node name="OutputLog" type="RichTextLabel" parent="Panel"]
+offset_left = 30.0
+offset_top = 101.0
+offset_right = 990.0
+offset_bottom = 515.0
+bbcode_enabled = true
+
+[node name="Begin" type="Button" parent="Panel"]
+offset_left = 873.0
+offset_top = 559.0
+offset_right = 1016.0
+offset_bottom = 590.0
+disabled = true
+text = "Begin Conversion"
+
+[node name="ChooseFolder" type="Button" parent="Panel"]
+offset_left = 5.0
+offset_top = 561.0
+offset_right = 177.0
+offset_bottom = 592.0
+text = "Choose output folder"
+
+[node name="OutputPath" type="Label" parent="Panel"]
+offset_left = 194.0
+offset_top = 564.0
+offset_right = 294.0
+offset_bottom = 590.0
+text = "Output path:"
+
+[node name="FileDialog" type="FileDialog" parent="."]
+title = "Open a Directory"
+position = Vector2i(50, 50)
+size = Vector2i(900, 500)
+ok_button_text = "Select Current Folder"
+file_mode = 2
+access = 2
+
+[connection signal="pressed" from="Panel/ChooseFolder" to="." method="_on_choose_folder_pressed"]
+[connection signal="dir_selected" from="FileDialog" to="." method="_on_file_dialog_dir_selected"]
