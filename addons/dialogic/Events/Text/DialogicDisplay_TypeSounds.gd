@@ -39,8 +39,8 @@ var current_overwrite_data = {}
 func _ready():
 	# add to necessary group
 	add_to_group('dialogic_type_sounds')
-	dialogic = get_node("/root/Dialogic")
 	if !Engine.is_editor_hint() and get_parent() is DialogicDisplay_DialogText:
+		dialogic = get_node("/root/Dialogic")
 		get_parent().started_revealing_text.connect(_on_started_revealing_text)
 		get_parent().continued_revealing_text.connect(_on_continued_revealing_text)
 		get_parent().finished_revealing_text.connect(_on_finished_revealing_text)

@@ -1,4 +1,4 @@
-tool
+@tool
 extends HBoxContainer
 
 const max_value:float = 9999.0
@@ -12,12 +12,12 @@ func set_value(value):
 	#strip irrelevant parts
 	for f in stringfluff:
 		value = value.replace(f, "")
-	var data:PoolStringArray = value.split(",", false) #value.replace("[", "").replace("]","").replace("region","").split(",", false)
+	var data:PackedStringArray = value.split(",", false) #value.replace("[", "").replace("]","").replace("region","").split(",", false)
 	if len(data) < 2:
 		printerr("Invalid data - %s (AudioRegion): no or incomplete set of timecodes found." % property_name)
 		return
-	$StartValue.set_value(float(data[0]))
-	$StopValue.set_value (float(data[1]))
+	$StartValue.set_value(data[0].to_float())
+	$StopValue.set_value (data[1].to_float())
 
 func get_value():
 	return "region start at %s, stop at %s" % [$StartValue.get_value(),$StopValue.get_value()]
@@ -28,13 +28,13 @@ func get_value():
 func _ready():
 	$StartValue.use_timestamp_mode()
 	$StartValue.set_max_value(max_value - 0.1)
-	$StartValue.connect("value_changed", self,  'value_changed')
+	$StartValue.connect.value_changed(on_value_changed)
 	$StopValue.use_timestamp_mode()
 	$StopValue.set_min_value(0.1)
 	$StopValue.set_max_value(max_value)
-	$StopValue.connect("value_changed", self,  'value_changed')
+	$StopValue.connect.value_changed(on_value_changed)
 	
-func value_changed(property_name, value):
+func on_value_changed(property_name, value):
 	$StopValue.set_min_value($StartValue.get_value() + 0.1)
 	emit_signal("value_changed", property_name, get_value())
 

@@ -1,10 +1,10 @@
-tool
+@tool
 extends VBoxContainer
 
 var property_name : String
 signal value_changed
 
-func value_changed(_p, value):
+func on_value_changed(_p, value):
 	var data:String = ""
 	for i in range ($list.get_child_count()):
 		var n:Node = $list.get_child(i)
@@ -14,7 +14,7 @@ func value_changed(_p, value):
 
 func _ready():
 	$NumRegions/NumberValue.set_min_value(1)
-	$NumRegions/NumberValue.connect("value_changed", self, "_on_NumberValue_value_changed")
+	$NumRegions/NumberValue.value_changed.connect(_on_NumberValue_value_changed)
 	if($list.get_child_count() < 1):
 		repopulate(1) #Always have at least one audio region
 
@@ -22,7 +22,7 @@ func _ready():
 func set_value(value):
 	if not value is String:
 		printerr("Invalid data - %s (SerialAudioRegion): data incoming is not string." % property_name)
-	var data:PoolStringArray = value.split("region", false)
+	var data:PackedStringArray = value.split("region", false)
 	$NumRegions/NumberValue.set_value(len(data))
 	repopulate(len(data))
 	for i in range ($list.get_child_count()):
@@ -48,9 +48,9 @@ func repopulate(num:int):
 	#add new audio regions
 	while i < num:
 		#print("adding node number " + str(i))
-		var node:Node = load("res://addons/dialogic/Events/Voice/AudioRegion.tscn").instance()
+		var node = load("res://addons/dialogic/Events/Voice/AudioRegion.tscn").instantiate()
 		$list.add_child(node)
-		node.connect("value_changed", self, "value_changed")
+		node.connect.value_changed(on_value_changed)
 		i = i + 1
 	#remove excess audio regions
 	#print(str(i) + ">" + str(num) + "=" + str(i > num))
