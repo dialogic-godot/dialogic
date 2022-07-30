@@ -14,8 +14,8 @@ var resource_icon:Texture = null:
 		return resource_icon
 	set(new_icon):
 		resource_icon = new_icon
-		$'%Icon'.custom_minimum_size.x = $'%Icon'.size.y
-		$'%Icon'.texture = new_icon
+		%Icon.custom_minimum_size.x = %Icon.size.y
+		%Icon.texture = new_icon
 		if new_icon == null:
 			$Search.theme_type_variation = ""
 		else:

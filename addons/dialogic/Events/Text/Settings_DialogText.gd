@@ -2,14 +2,14 @@
 extends HBoxContainer
 
 func refresh():
-	$'%DefaultSpeed'.value = DialogicUtil.get_project_setting('dialogic/text/speed', 0.01)
-	$'%Skippable'.button_pressed = DialogicUtil.get_project_setting('dialogic/text/skippable', true)
-	$'%Autocontinue'.button_pressed = DialogicUtil.get_project_setting('dialogic/text/autocontinue', false)
-	$'%AutocontinueDelay'.value = DialogicUtil.get_project_setting('dialogic/text/autocontinue_delay', 1)
-	$'%AutocolorNames'.button_pressed = DialogicUtil.get_project_setting('dialogic/text/autocolor_names', false)
-	$'%InputAction'.resource_icon = get_theme_icon("Mouse", "EditorIcons")
-	$'%InputAction'.set_value(DialogicUtil.get_project_setting('dialogic/text/input_action', 'dialogic_default_action'))
-	$'%InputAction'.get_suggestions_func = [self, 'suggest_actions']
+	%DefaultSpeed.value = DialogicUtil.get_project_setting('dialogic/text/speed', 0.01)
+	%Skippable.button_pressed = DialogicUtil.get_project_setting('dialogic/text/skippable', true)
+	%Autocontinue.button_pressed = DialogicUtil.get_project_setting('dialogic/text/autocontinue', false)
+	%AutocontinueDelay.value = DialogicUtil.get_project_setting('dialogic/text/autocontinue_delay', 1)
+	%AutocolorNames.button_pressed = DialogicUtil.get_project_setting('dialogic/text/autocolor_names', false)
+	%InputAction.resource_icon = get_theme_icon("Mouse", "EditorIcons")
+	%InputAction.set_value(DialogicUtil.get_project_setting('dialogic/text/input_action', 'dialogic_default_action'))
+	%InputAction.get_suggestions_func = [self, 'suggest_actions']
 
 
 func _on_AutocontinueDelay_value_changed(value):

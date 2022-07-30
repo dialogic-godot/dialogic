@@ -28,21 +28,21 @@ func load_character(resource: DialogicCharacter) -> void:
 		return
 	current_character = resource
 	toolbar.load_character(resource.resource_path)
-	$'%NameLineEdit'.text = resource.name
-	$'%ColorPickerButton'.color = resource.color
-	$'%DisplayNameLineEdit'.text = resource.display_name
-	$'%NicknameLineEdit'.text = ""
+	%NameLineEdit.text = resource.name
+	%ColorPickerButton.color = resource.color
+	%DisplayNameLineEdit.text = resource.display_name
+	%NicknameLineEdit.text = ""
 	for nickname in resource.nicknames: 
-		$'%NicknameLineEdit'.text += nickname +", "
-	$'%NicknameLineEdit'.text = $'%NicknameLineEdit'.text.trim_suffix(', ')
-	$'%DescriptionTextEdit'.text = resource.description
-	$'%MainScale'.value = 100*resource.scale
-	$'%MainOffsetX'.value = resource.offset.x
-	$'%MainOffsetY'.value = resource.offset.y
-	$'%MainMirror'.button_pressed = resource.mirror
-	$'%PortraitSearch'.text = ""
+		%NicknameLineEdit.text += nickname +", "
+	%NicknameLineEdit.text = %NicknameLineEdit.text.trim_suffix(', ')
+	%DescriptionTextEdit.text = resource.description
+	%MainScale.value = 100*resource.scale
+	%MainOffsetX.value = resource.offset.x
+	%MainOffsetY.value = resource.offset.y
+	%MainMirror.button_pressed = resource.mirror
+	%PortraitSearch.text = ""
 	
-	for main_edit in $'%MainEditTabs'.get_children():
+	for main_edit in %MainEditTabs.get_children():
 		if main_edit.has_method('load_character'):
 			main_edit.load_character(current_character)
 	
@@ -52,23 +52,23 @@ func load_character(resource: DialogicCharacter) -> void:
 func save_character() -> void:
 	if ! visible or not current_character:
 		return
-	current_character.display_name = $'%DisplayNameLineEdit'.text
-	current_character.color = $'%ColorPickerButton'.color
+	current_character.display_name = %DisplayNameLineEdit.text
+	current_character.color = %ColorPickerButton.color
 	var nicknames = []
-	for n_name in $'%NicknameLineEdit'.text.split(','):
+	for n_name in %NicknameLineEdit.text.split(','):
 		nicknames.append(n_name.strip_edges())
 	current_character.nicknames = nicknames
-	current_character.description = $'%DescriptionTextEdit'.text
-	current_character.scale = $'%MainScale'.value/100.0
-	current_character.offset = Vector2($'%MainOffsetX'.value, $'%MainOffsetY'.value) 
-	current_character.mirror = $'%MainMirror'.button_pressed
+	current_character.description = %DescriptionTextEdit.text
+	current_character.scale = %MainScale.value/100.0
+	current_character.offset = Vector2(%MainOffsetX.value, %MainOffsetY.value) 
+	current_character.mirror = %MainMirror.button_pressed
 	
-	for main_edit in $'%MainEditTabs'.get_children():
+	for main_edit in %MainEditTabs.get_children():
 		if main_edit.has_method('save_character'):
 			main_edit.save_character(current_character)
 	
 	current_character.portraits = {}
-	for node in $'%PortraitList'.get_children():
+	for node in %PortraitList.get_children():
 		current_character.portraits[node.get_portrait_name()] = node.portrait_data
 	
 	ResourceSaver.save(current_character.resource_path, current_character)
@@ -83,37 +83,37 @@ func _ready() -> void:
 	DialogicUtil.get_dialogic_plugin().dialogic_save.connect(save_character)
 	
 	# Let's go connecting!
-	$'%NameLineEdit'.text_changed.connect(something_changed)
-	$'%ColorPickerButton'.color_changed.connect(something_changed)
-	$'%DisplayNameLineEdit'.text_changed.connect(something_changed)
-	$'%NicknameLineEdit'.text_changed.connect(something_changed)
-	$'%DescriptionTextEdit'.text_changed.connect(something_changed)
-	$'%MainScale'.value_changed.connect(main_portrait_settings_update)
-	$'%MainOffsetX'.value_changed.connect(main_portrait_settings_update)
-	$'%MainOffsetY'.value_changed.connect(main_portrait_settings_update)
-	$'%MainMirror'.toggled.connect(main_portrait_settings_update)
-	$'%PortraitSearch'.text_changed.connect(update_portrait_list)
+	%NameLineEdit.text_changed.connect(something_changed)
+	%ColorPickerButton.color_changed.connect(something_changed)
+	%DisplayNameLineEdit.text_changed.connect(something_changed)
+	%NicknameLineEdit.text_changed.connect(something_changed)
+	%DescriptionTextEdit.text_changed.connect(something_changed)
+	%MainScale.value_changed.connect(main_portrait_settings_update)
+	%MainOffsetX.value_changed.connect(main_portrait_settings_update)
+	%MainOffsetY.value_changed.connect(main_portrait_settings_update)
+	%MainMirror.toggled.connect(main_portrait_settings_update)
+	%PortraitSearch.text_changed.connect(update_portrait_list)
 	
-	$'%NewPortrait'.pressed.connect(create_portrait_entry_instance.bind('', {'path':'', 'scale':1, 'offset':Vector2(), 'mirror':false}))
-	$'%ImportFromFolder'.pressed.connect(open_portrait_folder_select)
-	$'%PreviewMode'.item_selected.connect(_on_PreviewMode_item_selected)
-	$'%PreviewMode'.select(DialogicUtil.get_project_setting('dialogic/editor/character_preview_mode', 0))
-	_on_PreviewMode_item_selected($'%PreviewMode'.selected)
-	$'%PreviewPositionIcon'.texture = get_theme_icon("EditorPosition", "EditorIcons")
+	%NewPortrait.pressed.connect(create_portrait_entry_instance.bind('', {'path':'', 'scale':1, 'offset':Vector2(), 'mirror':false}))
+	%ImportFromFolder.pressed.connect(open_portrait_folder_select)
+	%PreviewMode.item_selected.connect(_on_PreviewMode_item_selected)
+	%PreviewMode.select(DialogicUtil.get_project_setting('dialogic/editor/character_preview_mode', 0))
+	_on_PreviewMode_item_selected(%PreviewMode.selected)
+	%PreviewPositionIcon.texture = get_theme_icon("EditorPosition", "EditorIcons")
 	
 	if find_parent('EditorView'): # This prevents the view to turn black if you are editing this scene in Godot
 		var style = $Split/EditorScroll.get_theme_stylebox('custom_styles/bg')
 		style.set('bg_color', get_theme_color("dark_color_1", "Editor"))
 	
-	$'%NewPortrait'.icon = get_theme_icon("Add", "EditorIcons")
-	$'%ImportFromFolder'.icon = get_theme_icon("Folder", "EditorIcons")
-	$'%PortraitsTitle'.set('custom_fonts/font', get_theme_font("doc_title", "EditorFonts"))
+	%NewPortrait.icon = get_theme_icon("Add", "EditorIcons")
+	%ImportFromFolder.icon = get_theme_icon("Folder", "EditorIcons")
+	%PortraitsTitle.set('custom_fonts/font', get_theme_font("doc_title", "EditorFonts"))
 	$Split/EditorScroll/Editor/VBoxContainer/PortraitPanel.set('custom_styles/panel', get_theme_stylebox("Background", "EditorStyles"))
 	
-	$'%PortraitScale'.value_changed.connect(set_portrait_scale)
-	$'%PortraitOffsetX'.value_changed.connect(set_portrait_offset_x)
-	$'%PortraitOffsetY'.value_changed.connect(set_portrait_offset_y)
-	$'%PortraitMirror'.toggled.connect(set_portrait_mirror)
+	%PortraitScale.value_changed.connect(set_portrait_scale)
+	%PortraitOffsetX.value_changed.connect(set_portrait_offset_x)
+	%PortraitOffsetY.value_changed.connect(set_portrait_offset_y)
+	%PortraitMirror.toggled.connect(set_portrait_mirror)
 	
 	# Subsystems
 	for script in DialogicUtil.get_event_scripts():
@@ -122,7 +122,7 @@ func _ready() -> void:
 				var edit =  load(subsystem.character_main).instantiate()
 				if edit.has_signal('changed'):
 					edit.changed.connect(something_changed)
-				$'%MainEditTabs'.add_child(edit)
+				%MainEditTabs.add_child(edit)
 	hide()
 
 
@@ -154,13 +154,13 @@ func _on_dir_selected(path:String) -> void:
 func create_portrait_entry_instance(name:String, portait_data:Dictionary) -> Node:
 	var instance = portrait_entry.instantiate()
 	instance.load_data(name, portait_data.duplicate(), self)
-	get_node("%PortraitList").add_child(instance)
+	%PortraitList.add_child(instance)
 	something_changed()
 	return instance
 
 
 func update_portrait_list(filter_term:String = '') -> void:
-	for node in $'%PortraitList'.get_children():
+	for node in %PortraitList.get_children():
 		node.queue_free()
 	
 	var prev_portrait_name = ''
@@ -199,49 +199,49 @@ func update_portrait_preview(portrait_inst = "") -> void:
 		current_portrait = portrait_inst
 		current_portrait.visual_focus()
 	
-		$'%PreviewLabel'.text = DTS.translate('Preview of')+' "'+current_portrait.get_portrait_name()+'"'
+		%PreviewLabel.text = DTS.translate('Preview of')+' "'+current_portrait.get_portrait_name()+'"'
 		
 		var path:String = current_portrait.portrait_data.get('path', '')
-		var mirror:bool = current_portrait.portrait_data.get('mirror', false) != $'%MainMirror'.button_pressed
-		var scale:float = current_portrait.portrait_data.get('scale', 1) * $'%MainScale'.value/100.0
-		var offset:Vector2 = current_portrait.portrait_data.get('offset', Vector2()) + Vector2($'%MainOffsetX'.value, $'%MainOffsetY'.value)
+		var mirror:bool = current_portrait.portrait_data.get('mirror', false) != %MainMirror.button_pressed
+		var scale:float = current_portrait.portrait_data.get('scale', 1) * %MainScale.value/100.0
+		var offset:Vector2 = current_portrait.portrait_data.get('offset', Vector2()) + Vector2(%MainOffsetX.value, %MainOffsetY.value)
 		var l_path = path.to_lower()
 		if '.png' in l_path or '.svg' in l_path:
-			$'%PreviewRealRect'.texture = load(path)
-			$'%PreviewFullRect'.texture = load(path)
-			$"%PreviewLabel".text += ' (' + str($'%PreviewRealRect'.texture.get_width()) + 'x' + str($'%PreviewRealRect'.texture.get_height())+')'
-			$'%PreviewRealRect'.scale = Vector2(scale, scale)
-			$'%PreviewRealRect'.flip_h = mirror
-			$'%PreviewFullRect'.flip_h = mirror
-			$'%PreviewRealRect'.position.x = -($'%PreviewRealRect'.texture.get_width()*scale/2.0)+offset.x
-			$'%PreviewRealRect'.position.y = -($'%PreviewRealRect'.texture.get_height()*scale)+offset.y
+			%PreviewRealRect.texture = load(path)
+			%PreviewFullRect.texture = load(path)
+			%PreviewLabel.text += ' (' + str(%PreviewRealRect.texture.get_width()) + 'x' + str(%PreviewRealRect.texture.get_height())+')'
+			%PreviewRealRect.scale = Vector2(scale, scale)
+			%PreviewRealRect.flip_h = mirror
+			%PreviewFullRect.flip_h = mirror
+			%PreviewRealRect.position.x = -(%PreviewRealRect.texture.get_width()*scale/2.0)+offset.x
+			%PreviewRealRect.position.y = -(%PreviewRealRect.texture.get_height()*scale)+offset.y
 			
-			$'%PortraitSettings'.show()
+			%PortraitSettings.show()
 		elif '.tscn' in l_path:
-			$'%PreviewRealRect'.texture = null
-			$'%PreviewFullRect'.texture = null
-			$'%PreviewLabel'.text = DTS.translate('CustomScenePreview')
-			$'%PortraitSettings'.hide()
+			%PreviewRealRect.texture = null
+			%PreviewFullRect.texture = null
+			%PreviewLabel.text = DTS.translate('CustomScenePreview')
+			%PortraitSettings.hide()
 		
-		$'%PortraitScale'.value = current_portrait.portrait_data.get('scale', 1)*100
-		$'%PortraitOffsetX'.value = current_portrait.portrait_data.get('offset', Vector2()).x
-		$'%PortraitOffsetY'.value = current_portrait.portrait_data.get('offset', Vector2()).y
-		$'%PortraitMirror'.button_pressed = current_portrait.portrait_data.get('mirror', false)
+		%PortraitScale.value = current_portrait.portrait_data.get('scale', 1)*100
+		%PortraitOffsetX.value = current_portrait.portrait_data.get('offset', Vector2()).x
+		%PortraitOffsetY.value = current_portrait.portrait_data.get('offset', Vector2()).y
+		%PortraitMirror.button_pressed = current_portrait.portrait_data.get('mirror', false)
 		
 	else:
-		$'%PortraitSettings'.hide()
-		$'%PreviewRealRect'.texture = null
-		$'%PreviewFullRect'.texture = null
-		$'%PreviewLabel'.text = DTS.translate('Nothing to preview')
+		%PortraitSettings.hide()
+		%PreviewRealRect.texture = null
+		%PreviewFullRect.texture = null
+		%PreviewLabel.text = DTS.translate('Nothing to preview')
 
 
 func _on_PreviewMode_item_selected(index:int) -> void:
 	if index == 0:
-		$'%PreviewReal'.hide()
-		$'%PreviewFullRect'.show()
+		%PreviewReal.hide()
+		%PreviewFullRect.show()
 	if index == 1 or index == null:
-		$'%PreviewReal'.show()
-		$'%PreviewFullRect'.hide()
+		%PreviewReal.show()
+		%PreviewFullRect.hide()
 	ProjectSettings.set_setting('dialogic/editor/character_preview_mode', index)
 	
 
