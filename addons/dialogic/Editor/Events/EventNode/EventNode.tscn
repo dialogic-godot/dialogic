@@ -1,10 +1,9 @@
-[gd_scene load_steps=12 format=3 uid="uid://ccx5mwul28wtn"]
+[gd_scene load_steps=11 format=3 uid="uid://ccx5mwul28wtn"]
 
 [ext_resource type="Script" path="res://addons/dialogic/Editor/Events/EventNode/EventNode.gd" id="1"]
 [ext_resource type="StyleBox" uid="uid://obyrr26pqk2p" path="res://addons/dialogic/Editor/Events/styles/selected_styleboxflat.tres" id="2_vj6hl"]
-[ext_resource type="Script" path="res://addons/dialogic/Editor/Common/FlexContainer.gd" id="4"]
 [ext_resource type="StyleBox" uid="uid://c8k6tbipodsg" path="res://addons/dialogic/Editor/Events/styles/ResourceMenuPanelBackground.tres" id="5_wntx6"]
-[ext_resource type="Texture2D" uid="uid://c34hwpdtmosps" path="res://addons/dialogic/Editor/Images/Plugin/plugin-editor-icon-dark-theme-1.svg" id="6"]
+[ext_resource type="Texture2D" uid="uid://dpfvgoi1w3fef" path="res://addons/dialogic/Editor/Images/Plugin/plugin-editor-icon-dark-theme-1.svg" id="6"]
 [ext_resource type="Script" path="res://addons/dialogic/Editor/Events/EventNode/PopupMenu.gd" id="8"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_otutu"]
@@ -14,7 +13,7 @@ corner_radius_top_right = 5
 corner_radius_bottom_right = 5
 corner_radius_bottom_left = 5
 
-[sub_resource type="Image" id="Image_wdcnv"]
+[sub_resource type="Image" id="Image_5i8g4"]
 data = {
 "data": PackedByteArray(255, 255, 255, 0, 255, 255, 255, 0, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 131, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 131, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 131, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 231, 255, 93, 93, 55, 255, 97, 97, 58, 255, 93, 93, 233, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 231, 255, 94, 94, 54, 255, 94, 94, 57, 255, 93, 93, 233, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 93, 93, 233, 255, 93, 93, 232, 255, 93, 93, 41, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 93, 93, 233, 255, 93, 93, 232, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 97, 97, 42, 255, 255, 255, 0, 255, 97, 97, 42, 255, 97, 97, 42, 255, 255, 255, 0, 255, 98, 98, 47, 255, 97, 97, 42, 255, 255, 255, 0, 255, 97, 97, 42, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 235, 255, 93, 93, 233, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 94, 94, 46, 255, 93, 93, 236, 255, 93, 93, 233, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 235, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 233, 255, 95, 95, 59, 255, 96, 96, 61, 255, 93, 93, 235, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 233, 255, 95, 95, 59, 255, 96, 96, 61, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0),
 "format": "RGBA8",
@@ -23,14 +22,14 @@ data = {
 "width": 16
 }
 
-[sub_resource type="ImageTexture" id="ImageTexture_ubbgl"]
-image = SubResource("Image_wdcnv")
+[sub_resource type="ImageTexture" id="ImageTexture_a2nhx"]
+image = SubResource("Image_5i8g4")
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_thopi"]
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_n1aoh"]
 
 [sub_resource type="Theme" id="Theme_g6f7f"]
 PopupMenu/colors/font_color_hover = Color(0, 0, 0, 1)
-PopupMenu/styles/hover = SubResource("StyleBoxEmpty_thopi")
+PopupMenu/styles/hover = SubResource("StyleBoxEmpty_n1aoh")
 PopupMenu/styles/panel = ExtResource("5_wntx6")
 
 [node name="EventNode" type="HBoxContainer"]
@@ -115,7 +114,7 @@ and [End branch] events.
     [Choice]
     [...]
 [End branch]"
-texture = SubResource("ImageTexture_ubbgl")
+texture = SubResource("ImageTexture_a2nhx")
 stretch_mode = 5
 
 [node name="TitleLabel" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/Header"]
@@ -146,14 +145,14 @@ offset_left = 993.0
 offset_right = 1017.0
 offset_bottom = 24.0
 toggle_mode = true
-icon = SubResource("ImageTexture_ubbgl")
+icon = SubResource("ImageTexture_a2nhx")
 flat = true
 
 [node name="CollapseButton" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer/Header"]
 unique_name_in_owner = true
 visible = false
 toggle_mode = true
-icon = SubResource("ImageTexture_ubbgl")
+icon = SubResource("ImageTexture_a2nhx")
 flat = true
 
 [node name="Body" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer"]
@@ -166,37 +165,34 @@ size_flags_horizontal = 3
 [node name="BodySpacing" type="Control" parent="PanelContainer/MarginContainer/VBoxContainer/Body"]
 unique_name_in_owner = true
 
-[node name="BodyContent" type="Container" parent="PanelContainer/MarginContainer/VBoxContainer/Body"]
+[node name="BodyContent" type="HFlowContainer" parent="PanelContainer/MarginContainer/VBoxContainer/Body"]
 unique_name_in_owner = true
 offset_left = 4.0
 offset_right = 1017.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 mouse_filter = 2
-script = ExtResource("4")
-horizontal_margin = 5.0
-vertical_margin = 5.0
 
 [node name="PopupMenu" type="PopupMenu" parent="."]
 theme = SubResource("Theme_g6f7f")
 item_count = 6
 item_0/text = "Documentation"
-item_0/icon = SubResource("ImageTexture_ubbgl")
+item_0/icon = SubResource("ImageTexture_a2nhx")
 item_0/id = 0
 item_1/text = ""
 item_1/id = -1
 item_1/separator = true
 item_2/text = "Move up"
-item_2/icon = SubResource("ImageTexture_ubbgl")
+item_2/icon = SubResource("ImageTexture_a2nhx")
 item_2/id = 2
 item_3/text = "Move down"
-item_3/icon = SubResource("ImageTexture_ubbgl")
+item_3/icon = SubResource("ImageTexture_a2nhx")
 item_3/id = 3
 item_4/text = ""
 item_4/id = -1
 item_4/separator = true
 item_5/text = "Delete"
-item_5/icon = SubResource("ImageTexture_ubbgl")
+item_5/icon = SubResource("ImageTexture_a2nhx")
 item_5/id = 5
 script = ExtResource("8")
 
