@@ -5,22 +5,8 @@
 [ext_resource type="Script" path="res://addons/dialogic/Editor/TimelineEditor/TimelineArea.gd" id="22"]
 [ext_resource type="Theme" path="res://addons/dialogic/Editor/Theme/MainTheme.tres" id="28"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_y436n"]
-content_margin_left = 5.0
-content_margin_top = 5.0
-content_margin_right = 5.0
-content_margin_bottom = 5.0
-bg_color = Color(0, 0, 0, 0.211765)
-border_width_left = 5
-border_width_top = 5
-border_width_right = 5
-border_width_bottom = 5
-border_color = Color(0.529412, 0.529412, 0.529412, 1)
-border_blend = true
-corner_radius_top_left = 5
-corner_radius_top_right = 5
-corner_radius_bottom_right = 5
-corner_radius_bottom_left = 5
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_prwb3"]
+bg_color = Color(0, 0, 0, 1)
 
 [node name="TimelineEditor" type="MarginContainer"]
 anchor_right = 1.0
@@ -44,14 +30,12 @@ offset_right = 822.0
 offset_bottom = 595.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-theme_override_styles/bg = SubResource("StyleBoxFlat_y436n")
+theme_override_styles/bg = SubResource("StyleBoxFlat_prwb3")
 script = ExtResource("22")
 
 [node name="TimeLine" type="VBoxContainer" parent="View/TimelineArea"]
-offset_left = 5.0
-offset_top = 5.0
-offset_right = 817.0
-offset_bottom = 590.0
+offset_right = 822.0
+offset_bottom = 595.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3

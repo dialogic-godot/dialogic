@@ -13,6 +13,10 @@ func _ready():
 	mouse_entered.connect(_on_mouse_entered)
 	mouse_exited.connect(_on_mouse_exited)
 	gui_input.connect(_on_gui_input)
+	
+	set('theme_override_styles/bg', DCSS.inline({
+		'background': get_theme_color('dark_color_1', 'Editor')
+	}))
 
 
 func _can_drop_data(position, data):
