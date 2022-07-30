@@ -140,16 +140,12 @@ func _on_Search_text_changed(new_text, just_update = false):
 		$Search/Suggestions.set_item_disabled(idx, true)
 	
 	if not $Search/Suggestions.visible:
-#		$Search/Suggestions.popup(Rect2(get_viewport().get_visible_rect().position+$Search.global_position + Vector2(0,1)*$Search.size, Vector2($Search.size.x, 100)))
 		$Search/Suggestions.popup_on_parent(Rect2i($Search.get_global_rect().position+Vector2(0,$Search.size.y), Vector2($Search.size.x, 50)))
-		#(Rect2(get_viewport().get_visible_rect().position+$Search.global_position, Vector2()))
-		$Search.grab_focus()
-		get_node('/root').grab_focus()
-		
-
+	
+	$Search.grab_focus()
 
 func get_default_suggestions(search_text):
-	if !file_extension: return {}
+	if file_extension.is_empty(): return {'Nothing found!':{'value':''}}
 	var suggestions = {}
 	var resources = DialogicUtil.list_resources_of_type(file_extension)
 
@@ -196,7 +192,7 @@ func _on_SelectButton_toggled(button_pressed):
 ##	 					DRAG AND DROP
 ################################################################################
 
-func can_drop_data(position, data):
+func _can_drop_data(position, data):
 	if typeof(data) == TYPE_DICTIONARY and data.has('files') and len(data.files) == 1:
 		if file_extension:
 			if data.files[0].ends_with(file_extension):
@@ -205,7 +201,7 @@ func can_drop_data(position, data):
 			return false
 	return false
 	
-func drop_data(position, data):
+func _drop_data(position, data):
 	var file = load(data.files[0])
 	set_value(file)
 	emit_signal("value_changed", property_name, file)
