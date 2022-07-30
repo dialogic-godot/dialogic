@@ -14,15 +14,13 @@ offset_left = 20.0
 offset_top = -1.0
 offset_right = 622.0
 offset_bottom = 77.0
-text = "This is a converter script to convert Dialogic 1.4+ files into Dialogic 2.0 format. 
-
-This converter is meant to run directly as the scene."
+text = "This is a converter script to convert Dialogic 1.4+ files into Dialogic 2.0 format. This converter is meant to run directly as the scene."
 
 [node name="OutputLog" type="RichTextLabel" parent="Panel"]
 offset_left = 68.0
-offset_top = 76.0
+offset_top = 22.0
 offset_right = 990.0
-offset_bottom = 534.0
+offset_bottom = 549.0
 bbcode_enabled = true
 scroll_following = true
 
