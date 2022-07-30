@@ -85,7 +85,7 @@ func get_as_string_to_store() -> String:
 ## THIS HAS TO READ ALL THE DATA FROM THE SAVED STRING (see above) 
 func load_from_string_to_store(string:String):
 	var reg = RegEx.new()
-	reg.compile("((?<name>[^:()\\n]*)?(?=(\\([^()]*\\))?:)(\\((?<portrait>[^()]*)\\))?)?:?(?<text>[^\\n]+)")
+	reg.compile("((?<name>[^:()\\n\\s]*)?(?=(\\([^()]*\\))?:)(\\((?<portrait>[^()]*)\\))?)?:?(?<text>[^\\n]+)")
 	var result = reg.search(string)
 	if result and !result.get_string('name').is_empty():
 		var character = DialogicUtil.guess_resource('.dch', result.get_string('name').strip_edges())

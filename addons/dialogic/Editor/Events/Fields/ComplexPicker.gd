@@ -144,6 +144,8 @@ func _on_Search_text_changed(new_text, just_update = false):
 		$Search/Suggestions.popup_on_parent(Rect2i($Search.get_global_rect().position+Vector2(0,$Search.size.y), Vector2($Search.size.x, 50)))
 		#(Rect2(get_viewport().get_visible_rect().position+$Search.global_position, Vector2()))
 		$Search.grab_focus()
+		get_node('/root').grab_focus()
+		
 
 
 func get_default_suggestions(search_text):

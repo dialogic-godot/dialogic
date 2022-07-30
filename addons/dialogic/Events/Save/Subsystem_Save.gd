@@ -159,7 +159,7 @@ func get_slot_info(slot_name:String = '') -> Dictionary:
 ####################################################################################################
 
 func take_slot_image() -> void:
-	saved_image = get_tree().get_root().get_texture().get_data()
+	saved_image = get_viewport().get_texture().get_image()
 	saved_image.flip_y()
 
 func store_slot_image(slot_name:String) -> void:

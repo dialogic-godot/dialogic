@@ -239,7 +239,8 @@ func load_from_string_to_store(string:String):
 		if typeof(data[parameter]) == TYPE_STRING and (data[parameter].ends_with(".dtl") or data[parameter].ends_with(".dch")):
 			set(params[parameter], load(data[parameter]))
 		else:
-			set(params[parameter], str2var(data[parameter].replace('\\=', '=')))
+			var value = str2var(data[parameter].replace('\\=', '=')) if str2var(data[parameter].replace('\\=', '=')) != null else data[parameter].replace('\\=', '=')
+			set(params[parameter], value)
 
 
 # has to return true, if the given string can be interpreted as this event

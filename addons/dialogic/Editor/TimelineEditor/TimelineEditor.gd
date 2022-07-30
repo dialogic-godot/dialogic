@@ -324,11 +324,12 @@ func _input(event):
 				paste_position = selected_items[-1].get_index()
 			else:
 				paste_position = timeline.get_child_count()-1
-			TimelineUndoRedo.create_action("[D] Pasting "+str(len(events_list))+" event(s).")
-			TimelineUndoRedo.add_do_method(self, "add_events_at_index", events_list, paste_position)
-			TimelineUndoRedo.add_undo_method(self, "remove_events_at_index", paste_position+1, len(events_list))
-			TimelineUndoRedo.commit_action()
-			get_viewport().set_input_as_handled()
+			if events_list:
+				TimelineUndoRedo.create_action("[D] Pasting "+str(len(events_list))+" event(s).")
+				TimelineUndoRedo.add_do_method(self, "add_events_at_index", events_list, paste_position)
+				TimelineUndoRedo.add_undo_method(self, "remove_events_at_index", paste_position+1, len(events_list))
+				TimelineUndoRedo.commit_action()
+				get_viewport().set_input_as_handled()
 		
 		# CTRL X
 		if (event.pressed
