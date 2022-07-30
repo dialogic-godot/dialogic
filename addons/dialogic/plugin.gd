@@ -25,10 +25,8 @@ func _enter_tree():
 
 
 func _ready():
-	if Engine.is_editor_hint():
-		# Force Godot to show the dialogic folder
-		get_editor_interface().get_resource_filesystem().scan()
-	
+	pass
+
 
 func _exit_tree():
 	if _editor_view:
