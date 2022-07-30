@@ -73,7 +73,7 @@ func parse_variables(text:String) -> String:
 						if typeof(cur_dat[i.strip_edges()]) == TYPE_DICTIONARY:
 							cur_dat = cur_dat[i.strip_edges()]
 						else:
-							parsed = parsed.replace('{' + entry + '}', cur_dat[i.strip_edges()])
+							parsed = parsed.replace('{' + entry + '}', str(cur_dat[i.strip_edges()]))
 			
 			# see if it's a built-in variable
 			if entry.strip_edges() in variables:
@@ -160,6 +160,7 @@ func get_autoloads() -> Array:
 
 # allows to set dialogic built-in variables 
 func _set(property, value):
+	property = str(property)
 	var variables = dialogic.current_state_info['variables']
 	if property in variables.keys():
 		if typeof(variables[property]) != TYPE_DICTIONARY:
@@ -170,11 +171,12 @@ func _set(property, value):
 
 # allows to get dialogic built-in variables 
 func _get(property):
+	property = str(property)
 	if property in dialogic.current_state_info['variables'].keys():
 		if typeof(dialogic.current_state_info['variables'][property]) == TYPE_DICTIONARY:
 			return VariableFolder.new(dialogic.current_state_info['variables'][property], property, self)
 		else:
-			return dialogic.current_state_info['variables'][property]
+			return DialogicUtil.logical_convert(dialogic.current_state_info['variables'][property])
 
 
 class VariableFolder:
@@ -187,13 +189,15 @@ class VariableFolder:
 		outside = _outside
 	
 	func _get(property):
+		property = str(property)
 		if property in data:
 			if typeof(data[property]) == TYPE_DICTIONARY:
 				return VariableFolder.new(data[property], path+"."+property, outside)
 			else:
-				return data[property]
+				return DialogicUtil.logical_convert(data[property])
 	
 	func _set(property, value):
+		property = str(property)
 		if not value is VariableFolder:
 			outside._set_value_in_dictionary(path+"."+property, outside.dialogic.current_state_info['variables'], value)
 			return true
