@@ -6,6 +6,7 @@ var folderStructure
 var timelineFolderBreakdown:Dictionary = {}
 var characterFolderBreakdown:Dictionary = {}
 var definitionFolderBreakdown:Dictionary = {}
+var themeFolderBreakdown:Dictionary = {}
 
 var integrityCheck = false
 var folderSelected = false
@@ -58,11 +59,13 @@ func _ready():
 		recursive_search("Timeline", folderStructure["folders"]["Timelines"], "/")
 		recursive_search("Character", folderStructure["folders"]["Characters"], "/")
 		recursive_search("Definition", folderStructure["folders"]["Definitions"], "/")
+		recursive_search("Theme", folderStructure["folders"]["Themes"], "/")
 		
 		
 		$Panel/OutputLog.text += "Timelines found: " + str(timelineFolderBreakdown.size()) + "\r\n"
 		$Panel/OutputLog.text += "Characters found: " + str(characterFolderBreakdown.size()) + "\r\n"
 		$Panel/OutputLog.text += "Definitions found: " + str(definitionFolderBreakdown.size()) + "\r\n"
+		$Panel/OutputLog.text += "Themes found: " + str(themeFolderBreakdown.size()) + "\r\n"
 		
 		$Panel/OutputLog.text += "\r\n"
 		$Panel/OutputLog.text += "Verifying count of JSON files for match with folder structure:\r\n"
@@ -105,6 +108,13 @@ func _ready():
 			$Panel/OutputLog.text += "Definition files found: [color=red]" + str(definitionsFile.size()) + "[/color]\r\n"
 			$Panel/OutputLog.text += "[color=yellow]There may be an issue, please check in Dialogic 1.x to make sure that is correct![/color]\r\n"
 			
+		var themeDirectory = list_files_in_directory("res://dialogic/themes")
+		if themeDirectory.size() ==  themeFolderBreakdown.size():
+			$Panel/OutputLog.text += "Theme files found: [color=green]" + str(themeDirectory.size()) + "[/color]\r\n"
+		else:
+			$Panel/OutputLog.text += "Theme files found: [color=red]" + str(themeDirectory.size()) + "[/color]\r\n"
+			$Panel/OutputLog.text += "[color=yellow]There may be an issue, please check in Dialogic 1.x to make sure that is correct![/color]\r\n"
+			
 		$Panel/OutputLog.text += "\r\n"
 		
 		$Panel/OutputLog.text += "Initial integrity check completed!\r\n"
@@ -144,7 +154,7 @@ func list_files_in_directory(path):
 		if file == "":
 			break
 		elif not file.begins_with("."):
-			if file.ends_with(".json"):
+			if file.ends_with(".json") || file.ends_with(".cfg"):
 				files.append(file)
 
 	dir.list_dir_end()
@@ -156,6 +166,7 @@ func recursive_search(currentCheck, currentDictionary, currentFolder):
 			"Timeline": timelineFolderBreakdown[structureFile] = currentFolder
 			"Character": characterFolderBreakdown[structureFile] = currentFolder
 			"Definition": definitionFolderBreakdown[structureFile] = currentFolder
+			"Theme": themeFolderBreakdown[structureFile] = currentFolder
 	
 	for structureFolder in currentDictionary["folders"]:
 		recursive_search(currentCheck, currentDictionary["folders"][structureFolder], currentFolder + structureFolder + "/")
