@@ -16,6 +16,7 @@ func _ready():
 	$AddTimeline.icon = load("res://addons/dialogic/Editor/Images/Toolbar/add-timeline.svg")
 	%ResourcePicker.get_suggestions_func = [self, 'suggest_resources']
 	%ResourcePicker.resource_icon = get_theme_icon("GuiRadioUnchecked", "EditorIcons")
+	$Settings.icon = get_theme_icon("Tools", "EditorIcons")
 
 ################################################################################
 ##							HELPERS
@@ -54,7 +55,7 @@ func suggest_resources(filter):
 	var suggestions = {}
 	for i in DialogicUtil.get_project_setting('dialogic/editor/last_resources', []):
 		if i.ends_with('.dtl'):
-			suggestions[DialogicUtil.pretty_name(i)] = {'value':i, 'tooltip':i, 'icon':load("res://addons/dialogic/Editor/Images/Resources/timeline.svg")}
+			suggestions[DialogicUtil.pretty_name(i)] = {'value':i, 'tooltip':i, 'editor_icon': ["TripleBar", "EditorIcons"]}
 		elif i.ends_with('.dch'):
 			suggestions[DialogicUtil.pretty_name(i)] = {'value':i, 'tooltip':i, 'icon':load("res://addons/dialogic/Editor/Images/Resources/character.svg")}
 	return suggestions
@@ -74,7 +75,7 @@ func resource_used(path:String):
 func load_timeline(timeline_path):
 	resource_used(timeline_path)
 	%ResourcePicker.set_value(DialogicUtil.pretty_name(timeline_path))
-	%ResourcePicker.resource_icon = load("res://addons/dialogic/Editor/Images/Resources/timeline.svg")
+	%ResourcePicker.resource_icon = get_theme_icon("TripleBar", "EditorIcons")
 	$PlayTimeline.show()
 
 func play_timeline():

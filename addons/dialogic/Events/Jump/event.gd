@@ -47,8 +47,17 @@ func get_shortcode_parameters() -> Dictionary:
 ################################################################################
 
 func build_event_editor():
-	add_header_edit('Timeline', ValueType.ComplexPicker, 'to', '', {'file_extension':'.dtl', 'suggestions_func':[self, 'get_timeline_suggestions'], 'icon':load("res://addons/dialogic/Editor/Images/Resources/timeline.svg"), 'empty_text':'this timeline'})
-	add_header_edit('LabelName', ValueType.ComplexPicker, 'at', '', {'suggestions_func':[self, 'get_label_suggestions'], 'editor_icon':['Label', 'EditorIcons'], 'empty_text':'the beginning'})
+	add_header_edit('Timeline', ValueType.ComplexPicker, 'to', '', {
+		'file_extension': '.dtl',
+		'suggestions_func': [self, 'get_timeline_suggestions'],
+		'editor_icon': ["TripleBar", "EditorIcons"],
+		'empty_text': 'this timeline'
+	})
+	add_header_edit('LabelName', ValueType.ComplexPicker, 'at', '', {
+		'suggestions_func': [self, 'get_label_suggestions'],
+		'editor_icon': ['Label', 'EditorIcons'],
+		'empty_text': 'the beginning'
+	})
 
 func get_timeline_suggestions(search_text:String):
 	var suggestions = {}
@@ -58,7 +67,11 @@ func get_timeline_suggestions(search_text:String):
 	
 	for resource in resources:
 		if search_text.is_empty() or search_text.to_lower() in DialogicUtil.pretty_name(resource).to_lower():
-			suggestions[DialogicUtil.pretty_name(resource)] = {'value':resource, 'tooltip':resource, 'icon':load("res://addons/dialogic/Editor/Images/Resources/timeline.svg")}
+			suggestions[DialogicUtil.pretty_name(resource)] = {
+				'value':resource,
+				'tooltip':resource,
+				'editor_icon': ["TripleBar", "EditorIcons"],
+			}
 	
 	return suggestions
 	
