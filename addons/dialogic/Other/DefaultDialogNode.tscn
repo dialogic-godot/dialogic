@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=3 uid="uid://dxf83tsi5p26t"]
+[gd_scene load_steps=23 format=3 uid="uid://dxf83tsi5p26t"]
 
 [ext_resource type="Script" path="res://addons/dialogic/Other/DefaultDialogNode.gd" id="1"]
 [ext_resource type="Script" path="res://addons/dialogic/Events/Text/Display_DialogText.gd" id="2"]
@@ -35,6 +35,25 @@ content_margin_bottom = 5.0
 bg_color = Color(0.117647, 0.117647, 0.117647, 0.952941)
 skew = Vector2(-0.121, 0)
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nnmvp"]
+content_margin_left = 10.0
+content_margin_top = 10.0
+content_margin_right = 10.0
+content_margin_bottom = 10.0
+bg_color = Color(0.6, 0.576471, 0.54902, 0.956863)
+border_width_left = 10
+border_width_top = 10
+border_width_right = 10
+border_width_bottom = 10
+border_color = Color(0.733333, 0.670588, 0.627451, 1)
+border_blend = true
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+shadow_color = Color(0.823529, 0.803922, 0.756863, 1)
+shadow_size = 5
+
 [node name="DefaultDialogNode" type="CanvasLayer"]
 script = ExtResource("1")
 
@@ -53,7 +72,8 @@ layer = 0
 [node name="DialogicDisplay_Background" type="TextureRect" parent="BG"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-stretch_mode = 7
+ignore_texture_size = true
+stretch_mode = 6
 script = ExtResource("7")
 
 [node name="DialogicDisplay_PortraitHolder" type="CanvasLayer" parent="."]
@@ -86,6 +106,7 @@ script = ExtResource("5")
 position_index = 5
 
 [node name="DefaultTheme" type="Control" parent="."]
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 script = ExtResource("12")
@@ -203,7 +224,6 @@ sounds = [ExtResource("14"), ExtResource("16"), ExtResource("15"), ExtResource("
 play_every_character = 0
 
 [node name="SpecialTheme" type="Control" parent="."]
-visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 script = ExtResource("12")
@@ -214,36 +234,65 @@ anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_left = -208.0
+offset_top = -276.0
+offset_right = -27.0
+offset_bottom = -30.0
 grow_horizontal = 0
 grow_vertical = 0
 alignment = 2
+metadata/_edit_layout_mode = 1
 
 [node name="DialogicDisplay_ChoiceButton1" type="Button" parent="SpecialTheme/Choices"]
+offset_left = 139.0
+offset_top = 40.0
+offset_right = 181.0
+offset_bottom = 71.0
 size_flags_horizontal = 8
 text = "Text"
 script = ExtResource("4")
 
 [node name="DialogicDisplay_ChoiceButton2" type="Button" parent="SpecialTheme/Choices"]
+offset_left = 139.0
+offset_top = 75.0
+offset_right = 181.0
+offset_bottom = 106.0
 size_flags_horizontal = 8
 text = "Text"
 script = ExtResource("4")
 
 [node name="DialogicDisplay_ChoiceButton3" type="Button" parent="SpecialTheme/Choices"]
+offset_left = 139.0
+offset_top = 110.0
+offset_right = 181.0
+offset_bottom = 141.0
 size_flags_horizontal = 8
 text = "Text"
 script = ExtResource("4")
 
 [node name="DialogicDisplay_ChoiceButton4" type="Button" parent="SpecialTheme/Choices"]
+offset_left = 139.0
+offset_top = 145.0
+offset_right = 181.0
+offset_bottom = 176.0
 size_flags_horizontal = 8
 text = "Text"
 script = ExtResource("4")
 
 [node name="DialogicDisplay_ChoiceButton5" type="Button" parent="SpecialTheme/Choices"]
+offset_left = 139.0
+offset_top = 180.0
+offset_right = 181.0
+offset_bottom = 211.0
 size_flags_horizontal = 8
 text = "Text"
 script = ExtResource("4")
 
 [node name="DialogicDisplay_ChoiceButton6" type="Button" parent="SpecialTheme/Choices"]
+offset_left = 139.0
+offset_top = 215.0
+offset_right = 181.0
+offset_bottom = 246.0
 size_flags_horizontal = 8
 text = "Text"
 script = ExtResource("4")
@@ -251,19 +300,39 @@ script = ExtResource("4")
 [node name="PanelContainer" type="PanelContainer" parent="SpecialTheme"]
 anchor_left = 0.5
 anchor_right = 0.5
+offset_left = -204.0
+offset_top = 26.0
+offset_right = 202.0
+offset_bottom = 95.0
+grow_horizontal = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_nnmvp")
+metadata/_edit_layout_mode = 1
 
 [node name="MarginContainer" type="MarginContainer" parent="SpecialTheme/PanelContainer"]
+offset_left = 10.0
+offset_top = 10.0
+offset_right = 396.0
+offset_bottom = 59.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="SpecialTheme/PanelContainer/MarginContainer"]
-offset_right = 47.0
-offset_bottom = 30.0
+offset_right = 386.0
+offset_bottom = 49.0
+theme_override_constants/separation = 0
+alignment = 1
 
 [node name="DialogicDisplay_NameLabel" type="Label" parent="SpecialTheme/PanelContainer/MarginContainer/VBoxContainer"]
+offset_right = 386.0
+offset_bottom = 26.0
 text = "Name"
+horizontal_alignment = 1
 script = ExtResource("3")
 use_character_color = false
 
 [node name="DialogicDisplay_DialogText" type="RichTextLabel" parent="SpecialTheme/PanelContainer/MarginContainer/VBoxContainer"]
+offset_top = 26.0
+offset_right = 386.0
+offset_bottom = 49.0
 text = "Some default text"
 fit_content_height = true
 script = ExtResource("2")
+Align = 1

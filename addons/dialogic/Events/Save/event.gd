@@ -7,14 +7,14 @@ var SlotName :String = "Default"
 
 func _execute() -> void:
 	if SlotName:
-		print("[Dialogic] Saved to slot'"+SlotName+"'.")
 		dialogic.Save.save(SlotName)
 	finish()
 
 func get_required_subsystems() -> Array:
 	return [
-				['Save', get_script().resource_path.get_base_dir().plus_file('Subsystem_Save.gd'),
-				get_script().resource_path.get_base_dir().plus_file('Settings_Saving.tscn')],
+				{'name':'Save', 
+				'subsystem': get_script().resource_path.get_base_dir().plus_file('Subsystem_Save.gd'),
+				'settings': get_script().resource_path.get_base_dir().plus_file('Settings_Saving.tscn')},
 			]
 
 ################################################################################
