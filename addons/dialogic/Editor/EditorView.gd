@@ -9,7 +9,6 @@ signal continue_opening_resource
 
 func _ready():
 	$MarginContainer/VBoxContainer/Toolbar/Settings.button_up.connect(show_settings)
-	set_current_margin($MarginContainer, get_theme_constant("separation", "BoxContainer") - 1)
 	
 	# File dialog
 	editor_file_dialog = EditorFileDialog.new()
@@ -24,32 +23,23 @@ func _ready():
 	$SaveConfirmationDialog.hide()
 
 func edit_timeline(object):
-	if $'%Toolbar'.is_current_unsaved():
+	if %Toolbar.is_current_unsaved():
 		save_current_resource()
 		await continue_opening_resource
-	get_node("%TimelineEditor").load_timeline(object)
-	get_node("%TimelineEditor").show()
-	get_node("%CharacterEditor").hide()
+	%TimelineEditor.load_timeline(object)
+	%TimelineEditor.show()
+	%CharacterEditor.hide()
 
 func edit_character(object):
-	if $'%Toolbar'.is_current_unsaved():
+	if %Toolbar.is_current_unsaved():
 		save_current_resource()
 		await continue_opening_resource
-	get_node("%CharacterEditor").load_character(object)
-	get_node("%TimelineEditor").hide()
-	get_node("%CharacterEditor").show()
+	%CharacterEditor.load_character(object)
+	%TimelineEditor.hide()
+	%CharacterEditor.show()
 
-
-func set_current_margin(node, separation):
-	# TODO (No idea how this works in godot 4)
-	pass
-	#node.margin_top = separation
-	#node.margin_left = separation
-	#node.margin_right = separation * -1
-	#node.margin_bottom = separation * -1
 
 func show_settings():
-	
 	$SettingsEditor.size = get_viewport().size/1.5
 	$SettingsEditor.popup_centered()
 
@@ -59,10 +49,10 @@ func save_current_resource():
 	$SaveConfirmationDialog.dialog_text = "Save before changing resource?"
 
 func _on_SaveConfirmationDialog_confirmed():
-	if $'%TimelineEditor'.visible:
-		$'%TimelineEditor'.save_timeline()
-	elif $'%CharacterEditor'.visible:
-		$'%CharacterEditor'.save_character()
+	if %TimelineEditor.visible:
+		%TimelineEditor.save_timeline()
+	elif %CharacterEditor.visible:
+		%CharacterEditor.save_character()
 	emit_signal("continue_opening_resource")
 
 
@@ -91,3 +81,6 @@ func godot_file_dialog(callable, filter, mode = EditorFileDialog.FILE_MODE_OPEN_
 		editor_file_dialog.file_selected.connect(callable)
 	return editor_file_dialog
 
+
+func _on_settings_editor_close_requested():
+	$SettingsEditor.hide()

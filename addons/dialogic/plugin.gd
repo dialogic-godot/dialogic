@@ -21,14 +21,11 @@ func _enter_tree():
 	_editor_interface = get_editor_interface()
 	get_editor_interface().get_editor_main_control().add_child(_editor_view)
 	_make_visible(false)
-	print(get_path())
 
 
 func _ready():
-	if Engine.is_editor_hint():
-		# Force Godot to show the dialogic folder
-		get_editor_interface().get_resource_filesystem().scan()
-	
+	pass
+
 
 func _exit_tree():
 	if _editor_view:

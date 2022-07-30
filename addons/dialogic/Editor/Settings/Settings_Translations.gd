@@ -3,9 +3,9 @@ extends Control
 
 
 func _ready():
-	$'%TransEnabled'.toggled.connect(set_project_setting.bind('dialogic/translation_enabled'))
-	$'%TransFileFolder'.text_changed.connect(set_project_setting.bind('dialogic/translation_path'))
-	$'%TransFileFolderChanger'.button_up.connect(open_file_folder_dialog)
+	%TransEnabled.toggled.connect(set_project_setting.bind('dialogic/translation_enabled'))
+	%TransFileFolder.text_changed.connect(set_project_setting.bind('dialogic/translation_path'))
+	%TransFileFolderChanger.button_up.connect(open_file_folder_dialog)
 
 
 func set_project_setting(value, setting):
@@ -15,48 +15,48 @@ func set_project_setting(value, setting):
 
 func refresh():
 	# update language selector
-	get_node('%TransOrigLanguage').text = TranslationServer.get_locale()
-	get_node('%TransFileMode').select(0)
+	%TransOrigLanguage.text = TranslationServer.get_locale()
+	%TransFileMode.select(0)
 	
 	
-	get_node('%TransEnabled').button_pressed = DialogicUtil.get_project_setting('dialogic/translation_enabled', false)
+	%TransEnabled.button_pressed = DialogicUtil.get_project_setting('dialogic/translation_enabled', false)
 	
-	if get_node('%TransEnabled').button_pressed:
+	if %TransEnabled.button_pressed:
 		if DialogicUtil.get_project_setting('dialogic/translation_path', ''):
-			get_node('%TransFileFolder').editable = true
-			get_node('%TransFileFolder').text = DialogicUtil.get_project_setting('dialogic/translation_path', '')
-			get_node('%TransFileFolderChanger').disabled = false
+			%TransFileFolder.editable = true
+			%TransFileFolder.text = DialogicUtil.get_project_setting('dialogic/translation_path', '')
+			%TransFileFolderChanger.disabled = false
 		else:
-			get_node('%TransFileFolder').editable = false
-			get_node('%TransFileFolder').text = "Next to timeline"
-			get_node('%TransFileFolderChanger').disabled = true
+			%TransFileFolder.editable = false
+			%TransFileFolder.text = "Next to timeline"
+			%TransFileFolderChanger.disabled = true
 	
-	get_node('%TransFileFolderChanger').icon = get_theme_icon("Folder", "EditorIcons")
-	get_node('%TransOrigLanguage').editable = !get_node('%TransEnabled').button_pressed
-	get_node('%TransFileMode').disabled = get_node('%TransEnabled').button_pressed
-	get_node('%TransInitialize').disabled = get_node('%TransEnabled').button_pressed
-	get_node('%TransFileFolder').editable = get_node('%TransEnabled').button_pressed
-	get_node('%TransFileFolderChanger').disabled = !get_node('%TransEnabled').button_pressed
-	get_node('%TransRemove').disabled = !get_node('%TransEnabled').button_pressed
-	get_node('%TransUpdate').disabled = !get_node('%TransEnabled').button_pressed
+	%TransFileFolderChanger.icon = get_theme_icon("Folder", "EditorIcons")
+	%TransOrigLanguage.editable = !%TransEnabled.button_pressed
+	%TransFileMode.disabled = %TransEnabled.button_pressed
+	%TransInitialize.disabled = %TransEnabled.button_pressed
+	%TransFileFolder.editable = %TransEnabled.button_pressed
+	%TransFileFolderChanger.disabled = !%TransEnabled.button_pressed
+	%TransRemove.disabled = !%TransEnabled.button_pressed
+	%TransUpdate.disabled = !%TransEnabled.button_pressed
 
 func open_file_folder_dialog():
 	find_parent('EditorView').godot_file_dialog(file_folder_selected, '*.po, *.csv', EditorFileDialog.FILE_MODE_OPEN_ANY, 'Select folder or translation file')
 
 func file_folder_selected(path):
-	get_node('%TransFileFolder').text = path
+	%TransFileFolder.text = path
 	ProjectSettings.set_setting('dialogic/translation_path', path)
 	refresh()
 
 
 func _on_TransInitialize_pressed():
 	
-	if get_node('%TransOrigLanguage').text.is_empty():
-		get_node('%TransOrigLanguage').text = ProjectSettings.get_setting('locale/fallback')
-	var orig_locale = get_node('%TransOrigLanguage').text.strip_edges()
+	if %TransOrigLanguage.text.is_empty():
+		%TransOrigLanguage.text = ProjectSettings.get_setting('locale/fallback')
+	var orig_locale = %TransOrigLanguage.text.strip_edges()
 	var file = File.new()
 	
-	if get_node('%TransFileMode').selected == 0:
+	if %TransFileMode.selected == 0:
 		file.open('res://dialogic_translation.csv', File.WRITE)
 		ProjectSettings.set_setting('dialogic/translation_path', 'res://dialogic_translation.csv')
 		file.store_csv_line(['keys', orig_locale])
@@ -65,7 +65,7 @@ func _on_TransInitialize_pressed():
 		
 	
 	for timeline_path in DialogicUtil.list_resources_of_type('.dtl'):
-		if get_node('%TransFileMode').selected == 1:
+		if %TransFileMode.selected == 1:
 			file.open(timeline_path.trim_suffix('.dtl')+'_translation.csv', File.WRITE)
 			file.store_csv_line(['keys', orig_locale])
 		
@@ -77,10 +77,10 @@ func _on_TransInitialize_pressed():
 		
 		ResourceSaver.save(timeline_path, tml)
 		
-		if get_node('%TransFileMode').selected == 1:
+		if %TransFileMode.selected == 1:
 			file.close()
 	
-	if get_node('%TransFileMode').selected == 0:
+	if %TransFileMode.selected == 0:
 		file.close()
 	
 	

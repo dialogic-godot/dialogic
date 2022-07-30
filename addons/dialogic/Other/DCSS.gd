@@ -1,8 +1,12 @@
 @tool
 class_name DCSS
 
-static func style(node, style:Dictionary) -> StyleBoxFlat:
-	var scale = DialogicUtil.get_editor_scale()
+static func get_editor_scale() -> float:
+	var ep = EditorPlugin.new()
+	return ep.get_editor_interface().get_editor_scale()
+	
+static func inline(style:Dictionary):
+	var scale = get_editor_scale()
 	var s = StyleBoxFlat.new()
 	for property in style.keys():
 		if property == 'border-radius':
@@ -28,7 +32,11 @@ static func style(node, style:Dictionary) -> StyleBoxFlat:
 			s.set('content_margin_bottom', value_v)
 			s.set('content_margin_left', value_h)
 			s.set('content_margin_right', value_h)
-	#print('scale is: ', scale)
+	return s
+
+static func style(node, style:Dictionary) -> StyleBoxFlat:
+	var scale = get_editor_scale()
+	var s = inline(style)
 	
 	node.set('custom_styles/normal', s)
 	node.set('custom_styles/focus', s)
