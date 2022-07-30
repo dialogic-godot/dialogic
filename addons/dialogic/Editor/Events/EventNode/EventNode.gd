@@ -129,22 +129,6 @@ func _on_Indent_visibility_changed():
 			set_warning(DTS.translate("This event needs a question event around it!"))
 
 
-func _on_gui_input(event):
-	if event is InputEventMouseButton and event.is_pressed() and event.button_index == 1:
-		grab_focus() # Grab focus to avoid copy pasting text or events
-		if event.double_click:
-			expanded = !expanded
-	# For opening the context menu
-	if event is InputEventMouseButton:
-		if event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:
-			$PopupMenu.global_position = get_global_mouse_position()
-			var popup = $PopupMenu.popup()
-			if resource.help_page_path == "":
-				$PopupMenu.set_item_disabled(0, true)
-			else:
-				$PopupMenu.set_item_disabled(0, false)
-
-	
 func _request_selection():
 	var timeline_editor = editor_reference.get_node_or_null('MainPanel/TimelineEditor')
 	if (timeline_editor != null):
@@ -327,7 +311,6 @@ func _ready():
 	# signals
 	# TODO godot4 react to changes of the colors, the signal was removed
 	#ProjectSettings.project_settings_changed.connect(_update_color)
-	$PanelContainer.gui_input.connect(_on_gui_input)
 	$PopupMenu.index_pressed.connect(_on_OptionsControl_action)
 	
 	_on_Indent_visibility_changed()
@@ -344,3 +327,15 @@ func _on_ExpandButton_toggled(button_pressed):
 func _on_EventNode_gui_input(event):
 	if event is InputEventMouseButton and event.double_click:
 		%ExpandButton.button_pressed = !%ExpandButton.button_pressed
+	if event is InputEventMouseButton and event.is_pressed() and event.button_index == 1:
+		grab_focus() # Grab focus to avoid copy pasting text or events
+		if event.double_click:
+			expanded = !expanded
+	# For opening the context menu
+	if event is InputEventMouseButton:
+		if event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:
+			$PopupMenu.popup_on_parent(Rect2(get_global_mouse_position(),Vector2()))
+			if resource.help_page_path == "":
+				$PopupMenu.set_item_disabled(0, true)
+			else:
+				$PopupMenu.set_item_disabled(0, false)
