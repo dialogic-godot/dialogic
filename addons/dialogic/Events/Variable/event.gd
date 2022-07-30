@@ -125,12 +125,12 @@ func build_event_editor():
 	add_header_edit('Name', ValueType.ComplexPicker, '', '', {'suggestions_func':[self, 'get_var_suggestions'], 'editor_icon':["ClassList", "EditorIcons"], 'disable_pretty_name':true})
 	add_header_edit('Operation', ValueType.FixedOptionSelector, '', '', {'selector_options':
 		{'to be':OPERATIONS.SET, 'to itself plus':OPERATIONS.ADD, 'to itself minus':OPERATIONS.SUBSTRACT, 'to itself multiplied by':OPERATIONS.MULTIPLY, 'to itself divided by':OPERATIONS.DIVIDE}
-		}, 'Name')
-	add_header_edit('Value', ValueType.ComplexPicker, '', '', {'suggestions_func':[self, 'get_value_suggestions'], 'editor_icon':["Variant", "EditorIcons"], 'disable_pretty_name':true}, 'bool(Name) and not RandomEnabled')
+		}, '!Name.is_empty()')
+	add_header_edit('Value', ValueType.ComplexPicker, '', '', {'suggestions_func':[self, 'get_value_suggestions'], 'editor_icon':["Variant", "EditorIcons"], 'disable_pretty_name':true}, '!Name.is_empty() and not RandomEnabled')
 	add_header_label('a random integer', 'RandomEnabled')
-	add_body_edit('RandomEnabled', ValueType.Bool, 'Use Random Integer:', '', {}, 'Name')
-	add_body_edit('RandomMin', ValueType.Integer, 'Min:', '', {}, 'Name and RandomEnabled')
-	add_body_edit('RandomMax', ValueType.Integer, 'Max:', '', {}, 'Name and RandomEnabled')
+	add_body_edit('RandomEnabled', ValueType.Bool, 'Use Random Integer:', '', {}, '!Name.is_empty()')
+	add_body_edit('RandomMin', ValueType.Integer, 'Min:', '', {}, '!Name.is_empty() and RandomEnabled')
+	add_body_edit('RandomMax', ValueType.Integer, 'Max:', '', {}, '!Name.is_empty() and RandomEnabled')
 
 func get_var_suggestions(filter:String) -> Dictionary:
 	var suggestions = {}

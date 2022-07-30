@@ -97,7 +97,7 @@ func add_dialogic_default_action():
 		var input_enter = InputEventKey.new()
 		input_enter.keycode = KEY_ENTER
 		var input_left_click = InputEventMouseButton.new()
-#		input_left_click.button_index = BUTTON_LEFT
+		input_left_click.button_index = MOUSE_BUTTON_LEFT
 		input_left_click.pressed = true
 		var input_space = InputEventKey.new()
 		input_space.keycode = KEY_SPACE

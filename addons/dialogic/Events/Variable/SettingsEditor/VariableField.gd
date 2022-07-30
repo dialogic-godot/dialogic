@@ -8,7 +8,7 @@ var preview_scene = get_script().resource_path.get_base_dir().plus_file("Preview
 ##				FUNCTIONALITY
 ################################################################################
 
-func get_name():
+func get_item_name():
 	return $'%NameEdit'.text.strip_edges()
 
 func get_data() -> String:
@@ -23,15 +23,15 @@ func load_data(var_name:String, var_value:String, _Group:Control) -> void:
 ##				DRAGGING
 ################################################################################
 
-func get_drag_data(position):
+func _get_drag_data(position):
 	var data = {
 		'data':{},
 		'node':self
 	}
-	data.data[get_name()] = get_data()
+	data.data[get_item_name()] = get_data()
 	
 	var prev = load(preview_scene).instantiate()
-	prev.set_text(get_name())
+	prev.set_text(get_item_name())
 	set_drag_preview(prev)
 
 	return data
@@ -40,12 +40,12 @@ func is_variable():
 	return true
 
 
-func can_drop_data(position, data):
+func _can_drop_data(position, data):
 	if typeof(data) == TYPE_DICTIONARY and data.has('data') and data.has('node'):
 		return true
 	return false
 
-func drop_data(position, data):
+func _drop_data(position, data):
 	parent_Group.add_data(data.data)
 	data.node.queue_free()
 
@@ -64,7 +64,7 @@ func _on_DeleteButton_pressed():
 
 
 func _on_NameEdit_gui_input(event):
-	if event is InputEventMouseButton and event.pressed and event.doubleclick:
+	if event is InputEventMouseButton and event.pressed and event.double_click:
 		$'%NameEdit'.editable = true
 
 

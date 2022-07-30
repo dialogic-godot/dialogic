@@ -43,7 +43,7 @@ func set_color(color):
 #		resource.event_color = new_color
 #		$%ColorBorder.self_modulate = DialogicUtil.get_color(dialogic_color_name)
 
-func get_drag_data(position):
+func _get_drag_data(position):
 	var preview_label = Label.new()
 	
 	preview_label.text = 'Add Event %s' % [ hint_tooltip ]

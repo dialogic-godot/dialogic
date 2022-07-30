@@ -49,6 +49,8 @@ func set_current_margin(node, separation):
 	#node.margin_bottom = separation * -1
 
 func show_settings():
+	
+	$SettingsEditor.size = get_viewport().size/1.5
 	$SettingsEditor.popup_centered()
 
 func save_current_resource():
