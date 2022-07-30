@@ -17,12 +17,12 @@ func _execute() -> void:
 		var orig = dialogic.VAR.get_variable(Name)
 		var value = dialogic.VAR.get_variable(Value, Value)
 		if RandomEnabled:
-			value = randi()%(RandomMax+1-RandomMin)+RandomMin
+			value = randi()%(RandomMax-RandomMin)+RandomMin
 		
 		if orig != null:
 			if Operation != OPERATIONS.SET and orig.is_valid_float() and value.is_valid_float():
-				orig = float(orig)
-				value = float(value)
+				orig = orig.to_float()
+				value = value.to_float()
 				match Operation:
 					OPERATIONS.ADD:
 						dialogic.VAR.set_variable(Name, str(orig+value))
@@ -107,12 +107,11 @@ func load_from_string_to_store(string:String):
 			Operation = OPERATIONS.DIVIDE
 	Value = result.get_string('value').strip_edges()
 	
-	print(result.get_string('shortcode'))
 	if !result.get_string('shortcode').is_empty():
 		var shortcodeparams = parse_shortcode_parameters(result.get_string('shortcode'))
 		RandomEnabled = true if shortcodeparams.get('random', "True") == "True" else false
-		RandomMin = shortcodeparams.get('min', 0).to_int()
-		RandomMax = shortcodeparams.get('max', 100).to_int()
+		RandomMin = DialogicUtil.logical_convert(shortcodeparams.get('min', 0))
+		RandomMax = DialogicUtil.logical_convert(shortcodeparams.get('max', 100))
 
 func is_valid_event_string(string:String) -> bool:
 	return string.begins_with('VAR ')
@@ -125,12 +124,12 @@ func build_event_editor():
 	add_header_edit('Name', ValueType.ComplexPicker, '', '', {'suggestions_func':[self, 'get_var_suggestions'], 'editor_icon':["ClassList", "EditorIcons"], 'disable_pretty_name':true})
 	add_header_edit('Operation', ValueType.FixedOptionSelector, '', '', {'selector_options':
 		{'to be':OPERATIONS.SET, 'to itself plus':OPERATIONS.ADD, 'to itself minus':OPERATIONS.SUBSTRACT, 'to itself multiplied by':OPERATIONS.MULTIPLY, 'to itself divided by':OPERATIONS.DIVIDE}
-		}, 'Name')
-	add_header_edit('Value', ValueType.ComplexPicker, '', '', {'suggestions_func':[self, 'get_value_suggestions'], 'editor_icon':["Variant", "EditorIcons"], 'disable_pretty_name':true}, 'bool(Name) and not RandomEnabled')
+		}, '!Name.is_empty()')
+	add_header_edit('Value', ValueType.ComplexPicker, '', '', {'suggestions_func':[self, 'get_value_suggestions'], 'editor_icon':["Variant", "EditorIcons"], 'disable_pretty_name':true}, '!Name.is_empty() and not RandomEnabled')
 	add_header_label('a random integer', 'RandomEnabled')
-	add_body_edit('RandomEnabled', ValueType.Bool, 'Use Random Integer:', '', {}, 'Name')
-	add_body_edit('RandomMin', ValueType.Integer, 'Min:', '', {}, 'Name and RandomEnabled')
-	add_body_edit('RandomMax', ValueType.Integer, 'Max:', '', {}, 'Name and RandomEnabled')
+	add_body_edit('RandomEnabled', ValueType.Bool, 'Use Random Integer:', '', {}, '!Name.is_empty()')
+	add_body_edit('RandomMin', ValueType.Integer, 'Min:', '', {}, '!Name.is_empty() and RandomEnabled')
+	add_body_edit('RandomMax', ValueType.Integer, 'Max:', '', {}, '!Name.is_empty() and RandomEnabled')
 
 func get_var_suggestions(filter:String) -> Dictionary:
 	var suggestions = {}

@@ -132,7 +132,7 @@ func _on_Indent_visibility_changed():
 func _on_gui_input(event):
 	if event is InputEventMouseButton and event.is_pressed() and event.button_index == 1:
 		grab_focus() # Grab focus to avoid copy pasting text or events
-		if event.doubleclick:
+		if event.double_click:
 			expanded = !expanded
 	# For opening the context menu
 	if event is InputEventMouseButton:

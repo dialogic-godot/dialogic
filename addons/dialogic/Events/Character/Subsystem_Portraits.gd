@@ -23,7 +23,7 @@ func load_game_state():
 ####################################################################################################
 
 func add_portrait(character:DialogicCharacter, portrait:String,  position_idx:int) -> Node:
-	var portrait_node = null
+	var character_node = null
 	
 	if not character:
 		assert(false, "[Dialogic] Cannot add portrait of null character.")
@@ -35,44 +35,49 @@ func add_portrait(character:DialogicCharacter, portrait:String,  position_idx:in
 	
 	for node in get_tree().get_nodes_in_group('dialogic_portrait_position'):
 		if node.position_index == position_idx:
-			var path = character.portraits[portrait].path
-			if not path.ends_with('.tscn'):
-				var node2d = Node2D.new()
-				var sprite = Sprite2D.new()
-				get_tree().get_nodes_in_group('dialogic_portrait_holder')[0].add_child(node2d)
-				node2d.add_child(sprite)
-				sprite.texture = load(path)
-				sprite.centered = false
-				sprite.scale = Vector2(1,1)*character.portraits[portrait].get('scale', 1)*character.scale
-				node2d.global_position = node.global_position 
-				sprite.position = character.portraits[portrait].get('offset', Vector2(0,0))
-				sprite.position.x -= sprite.texture.get_width()/2.0*character.portraits[portrait].get('scale', 1)*character.scale
-				sprite.position.y -= sprite.texture.get_height()*character.portraits[portrait].get('scale', 1)*character.scale
-				portrait_node = sprite
+			character_node = Node2D.new()
+			character_node.name = character.name
+			node.add_child(character_node)
+			character_node.global_position = node.global_position
+	if character_node:
+		dialogic.current_state_info['portraits'][character.resource_path] = {'portrait':portrait, 'node':character_node, 'position_index':position_idx}
+	if portrait:
+		change_portrait(character, portrait)
 	
-	if portrait_node:
-		dialogic.current_state_info['portraits'][character.resource_path] = {'portrait':portrait, 'node':portrait_node, 'position_index':position_idx}
-	
-	return portrait_node
+	return character_node
 
 func change_portrait(character:DialogicCharacter, portrait:String) -> void:
 	if not character or not is_character_joined(character):
 		assert(false, "[Dialogic] Cannot change portrait of null/not joined character.")
 	
-	var portrait_node = dialogic.current_state_info.portraits[character.resource_path].node
+	var char_node :Node = dialogic.current_state_info.portraits[character.resource_path].node
 	
-	if 'does_custom_portrait_change' in portrait_node and portrait_node.does_custom_portrait_change():
-		portrait_node.change_portrait(character, portrait)
+	if char_node.get_child_count() and 'does_custom_portrait_change' in char_node.get_child(0) and char_node.get_child(0).does_custom_portrait_change():
+		char_node.get_child(0).change_portrait(character, portrait)
 	else:
-		dialogic.current_state_info['portraits'][character.resource_path].node.queue_free()
-		add_portrait(character, portrait, dialogic.current_state_info['portraits'][character.resource_path].position_index)
+		# remove previous portrait
+		if char_node.get_child_count():
+			char_node.get_child(0).queue_free()
+		
+		var path = character.portraits[portrait].path
+		if not path.ends_with('.tscn'):
+			var sprite = Sprite2D.new()
+			sprite.texture = load(path)
+			sprite.centered = false
+			sprite.scale = Vector2(1,1)*character.portraits[portrait].get('scale', 1)*character.scale
+			char_node.add_child(sprite)
+			sprite.position = character.portraits[portrait].get('offset', Vector2(0,0))
+			sprite.position.x -= sprite.texture.get_width()/2.0*character.portraits[portrait].get('scale', 1)*character.scale
+			sprite.position.y -= sprite.texture.get_height()*character.portraits[portrait].get('scale', 1)*character.scale
+	
+	dialogic.current_state_info['portraits'][character.resource_path]['portrait'] = portrait
 
 
 func animate_portrait(character:DialogicCharacter, animation_path:String, length:float, repeats = 1):
 	if not character or not is_character_joined(character):
 		assert(false, "[Dialogic] Cannot animate portrait of null/not joined character.")
 	
-	var portrait_node = dialogic.current_state_info['portraits'][character.resource_path].node
+	var char_node = dialogic.current_state_info['portraits'][character.resource_path].node
 	
 	if dialogic.current_state_info['portraits'][character.resource_path].get('animation_node', null):
 		if is_instance_valid(dialogic.current_state_info['portraits'][character.resource_path].animation_node):
@@ -81,9 +86,9 @@ func animate_portrait(character:DialogicCharacter, animation_path:String, length
 	var anim_node = Node.new()
 	anim_node.set_script(anim_script)
 	anim_node = (anim_node as DialogicAnimation)
-	anim_node.node = portrait_node
-	anim_node.orig_pos = portrait_node.position
-	anim_node.end_position = portrait_node.position
+	anim_node.node = char_node
+	anim_node.orig_pos = char_node.position
+	anim_node.end_position = char_node.position
 	anim_node.time = length
 	anim_node.repeats = repeats
 	add_child(anim_node)
@@ -95,12 +100,12 @@ func move_portrait(character:DialogicCharacter, position_idx:int, tween:bool= fa
 	if not character or not is_character_joined(character):
 		assert(false, "[Dialogic] Cannot move portrait of null/not joined character.")
 	
-	var portrait_node = dialogic.current_state_info.portraits[character.resource_path].node
+	var char_node = dialogic.current_state_info.portraits[character.resource_path].node
 	
 	for node in get_tree().get_nodes_in_group('dialogic_portrait_position'):
 		if node.position_index == position_idx:
 			if not tween:
-				portrait_node.global_position = node.global_position
+				char_node.global_position = node.global_position
 	
 	dialogic.current_state_info.portraits[character.resource_path].position_index = position_idx
 

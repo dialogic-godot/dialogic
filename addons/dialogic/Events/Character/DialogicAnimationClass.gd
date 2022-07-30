@@ -1,18 +1,18 @@
 extends Node
 class_name DialogicAnimation
 
-var node
-var time
-var end_position
+var node :Node
+var time : float
+var end_position : Vector2
 
-var repeats
-var orig_pos
+var repeats : int
+var orig_pos : Vector2
 
 signal finished_once
 signal finished
 
 func _ready():
-	connect('finished_once', self.finished_one_loop)
+	connect('finished_once', finished_one_loop)
 
 # to be overridden
 func animate():

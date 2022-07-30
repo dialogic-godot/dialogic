@@ -1,234 +1,235 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=6 format=3]
 
-[ext_resource path="res://addons/dialogic/Editor/Common/TLabel.tscn" type="PackedScene" id=1]
-[ext_resource path="res://addons/dialogic/Events/Character/PortraitSettings.gd" type="Script" id=2]
-[ext_resource path="res://addons/dialogic/Editor/Events/Fields/ComplexPicker.tscn" type="PackedScene" id=3]
+[ext_resource type="PackedScene" uid="uid://duj8nl0vpms35" path="res://addons/dialogic/Editor/Common/TLabel.tscn" id="1"]
+[ext_resource type="Script" path="res://addons/dialogic/Events/Character/Settings_Portrait.gd" id="2"]
+[ext_resource type="PackedScene" uid="uid://dpwhshre1n4t6" path="res://addons/dialogic/Editor/Events/Fields/ComplexPicker.tscn" id="3"]
 
-[sub_resource type="Image" id=3]
+[sub_resource type="Image" id="Image_pujs1"]
 data = {
-"data": PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ),
+"data": PackedByteArray(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
 "format": "LumAlpha8",
 "height": 16,
 "mipmaps": false,
 "width": 16
 }
 
-[sub_resource type="ImageTexture" id=2]
-flags = 4
-flags = 4
-image = SubResource( 3 )
-size = Vector2( 16, 16 )
+[sub_resource type="ImageTexture" id="2"]
+image = SubResource("Image_pujs1")
 
 [node name="Portraits" type="HBoxContainer"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-script = ExtResource( 2 )
+script = ExtResource("2")
 
 [node name="General" type="VBoxContainer" parent="."]
-margin_right = 506.0
-margin_bottom = 600.0
+offset_right = 522.0
+offset_bottom = 600.0
 size_flags_horizontal = 3
 
-[node name="Title" parent="General" instance=ExtResource( 1 )]
+[node name="Title" parent="General" instance=ExtResource("1")]
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_right = 506.0
-margin_bottom = 14.0
-custom_colors/font_color = Color( 0.835938, 0.29715, 0.29715, 1 )
+offset_right = 522.0
+offset_bottom = 26.0
 text = "Portraits"
-mode = "Title"
+mode = 1
 
 [node name="HBoxContainer" type="HBoxContainer" parent="General"]
-margin_top = 18.0
-margin_right = 506.0
-margin_bottom = 38.0
+offset_top = 30.0
+offset_right = 522.0
+offset_bottom = 61.0
 
-[node name="TLabel" parent="General/HBoxContainer" instance=ExtResource( 1 )]
+[node name="TLabel" parent="General/HBoxContainer" instance=ExtResource("1")]
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_top = 3.0
-margin_right = 394.0
-margin_bottom = 17.0
+offset_top = 2.0
+offset_right = 332.0
+offset_bottom = 28.0
 size_flags_horizontal = 3
 text = "Portraits mode"
+mode = 0
 
 [node name="PortraitMode" type="OptionButton" parent="General/HBoxContainer"]
 unique_name_in_owner = true
-margin_left = 398.0
-margin_right = 506.0
-margin_bottom = 20.0
-text = "Visual Novel"
-items = [ "Visual Novel", null, false, 0, null, "RPG", null, false, 1, null ]
+offset_left = 336.0
+offset_right = 522.0
+offset_bottom = 31.0
+item_count = 2
 selected = 0
+popup/item_0/text = "Visual Novel Mode"
+popup/item_0/id = 0
+popup/item_1/text = "RPG Mode"
+popup/item_1/id = 1
 
-[node name="TLabel2" parent="General" instance=ExtResource( 1 )]
+[node name="TLabel2" parent="General" instance=ExtResource("1")]
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_top = 42.0
-margin_right = 506.0
-margin_bottom = 124.0
+offset_top = 65.0
+offset_right = 522.0
+offset_bottom = 247.0
 size_flags_horizontal = 3
 text = "Visual Novel: Multiple characters can show up in different positions at the same time. They have to be joined and leaved manually.
 
-RPG: Only the character that speaks is visible (always in the same location). Does not have to be joined/left manually. Uses only position_idx 1."
-autowrap = true
-mode = "Info"
+RPG: Only the character that speaks is visible (always in the same location). Does not have to be joined/left manually. Uses only position_idx 0."
+autowrap_mode = 3
+mode = 0
 
 [node name="VSeparator" type="VSeparator" parent="."]
-margin_left = 510.0
-margin_right = 514.0
-margin_bottom = 600.0
+offset_left = 526.0
+offset_right = 530.0
+offset_bottom = 600.0
 
 [node name="Animations" type="VBoxContainer" parent="."]
-margin_left = 518.0
-margin_right = 1024.0
-margin_bottom = 600.0
+offset_left = 534.0
+offset_right = 1024.0
+offset_bottom = 600.0
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 0.5
 
-[node name="TLabel" parent="Animations" instance=ExtResource( 1 )]
+[node name="TLabel" parent="Animations" instance=ExtResource("1")]
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_right = 506.0
-margin_bottom = 14.0
-custom_colors/font_color = Color( 0.835938, 0.29715, 0.29715, 1 )
+offset_right = 490.0
+offset_bottom = 26.0
 text = "Animations"
-mode = "Title"
+mode = 1
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Animations"]
-margin_top = 18.0
-margin_right = 506.0
-margin_bottom = 42.0
+offset_top = 30.0
+offset_right = 490.0
+offset_bottom = 61.0
 
-[node name="TLabel2" parent="Animations/HBoxContainer" instance=ExtResource( 1 )]
+[node name="TLabel2" parent="Animations/HBoxContainer" instance=ExtResource("1")]
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_top = 5.0
-margin_right = 235.0
-margin_bottom = 19.0
+offset_top = 2.0
+offset_right = 229.0
+offset_bottom = 28.0
 size_flags_horizontal = 3
 text = "Custom anims folder"
+mode = 0
 
 [node name="CustomAnimationsFolder" type="LineEdit" parent="Animations/HBoxContainer"]
 unique_name_in_owner = true
-margin_left = 239.0
-margin_right = 474.0
-margin_bottom = 24.0
+offset_left = 233.0
+offset_right = 462.0
+offset_bottom = 31.0
 size_flags_horizontal = 3
 caret_blink = true
 caret_blink_speed = 0.5
 
 [node name="CustomAnimationsFolderOpener" type="Button" parent="Animations/HBoxContainer"]
 unique_name_in_owner = true
-margin_left = 478.0
-margin_right = 506.0
-margin_bottom = 24.0
-icon = SubResource( 2 )
+offset_left = 466.0
+offset_right = 490.0
+offset_bottom = 31.0
+icon = SubResource("2")
 
 [node name="HSeparator" type="HSeparator" parent="Animations"]
-margin_top = 46.0
-margin_right = 506.0
-margin_bottom = 50.0
+offset_top = 65.0
+offset_right = 490.0
+offset_bottom = 69.0
 
-[node name="TLabel2" parent="Animations" instance=ExtResource( 1 )]
+[node name="TLabel2" parent="Animations" instance=ExtResource("1")]
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_top = 54.0
-margin_right = 506.0
-margin_bottom = 68.0
-custom_colors/font_color = Color( 0.835938, 0.29715, 0.29715, 1 )
+offset_top = 73.0
+offset_right = 490.0
+offset_bottom = 99.0
 text = "Default Animations"
-mode = "Title"
+mode = 1
 
 [node name="DefaultIn" type="HBoxContainer" parent="Animations"]
-margin_top = 72.0
-margin_right = 506.0
-margin_bottom = 112.0
+offset_top = 103.0
+offset_right = 490.0
+offset_bottom = 136.0
 
-[node name="TLabel2" parent="Animations/DefaultIn" instance=ExtResource( 1 )]
+[node name="TLabel2" parent="Animations/DefaultIn" instance=ExtResource("1")]
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_top = 13.0
-margin_right = 155.0
-margin_bottom = 27.0
+offset_top = 3.0
+offset_right = 107.0
+offset_bottom = 29.0
 size_flags_horizontal = 3
-text = "Default Join animation"
+text = "Default Join"
+mode = 0
 
-[node name="JoinDefault" parent="Animations/DefaultIn" instance=ExtResource( 3 )]
+[node name="JoinDefault" parent="Animations/DefaultIn" instance=ExtResource("3")]
 unique_name_in_owner = true
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_left = 159.0
-margin_top = 8.0
-margin_right = 311.0
-margin_bottom = 32.0
+offset_left = 111.0
+offset_right = 311.0
+offset_bottom = 33.0
 
 [node name="JoinDefaultLength" type="SpinBox" parent="Animations/DefaultIn"]
 unique_name_in_owner = true
-margin_left = 315.0
-margin_right = 389.0
-margin_bottom = 40.0
+offset_left = 315.0
+offset_right = 398.0
+offset_bottom = 33.0
 step = 0.1
 
-[node name="TLabel3" parent="Animations/DefaultIn" instance=ExtResource( 1 )]
+[node name="TLabel3" parent="Animations/DefaultIn" instance=ExtResource("1")]
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_left = 393.0
-margin_top = 13.0
-margin_right = 426.0
-margin_bottom = 27.0
+offset_left = 402.0
+offset_top = 3.0
+offset_right = 442.0
+offset_bottom = 29.0
 text = "Wait:"
+mode = 0
 
 [node name="JoinDefaultWait" type="CheckButton" parent="Animations/DefaultIn"]
 unique_name_in_owner = true
-margin_left = 430.0
-margin_right = 506.0
-margin_bottom = 40.0
+offset_left = 446.0
+offset_right = 490.0
+offset_bottom = 33.0
 
 [node name="DefaultOut" type="HBoxContainer" parent="Animations"]
-margin_top = 116.0
-margin_right = 506.0
-margin_bottom = 156.0
+offset_top = 140.0
+offset_right = 490.0
+offset_bottom = 173.0
 
-[node name="TLabel2" parent="Animations/DefaultOut" instance=ExtResource( 1 )]
+[node name="TLabel2" parent="Animations/DefaultOut" instance=ExtResource("1")]
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_top = 13.0
-margin_right = 155.0
-margin_bottom = 27.0
+offset_top = 3.0
+offset_right = 107.0
+offset_bottom = 29.0
 size_flags_horizontal = 3
-text = "Default Leave animation"
+text = "Default Leave"
+mode = 0
 
-[node name="LeaveDefault" parent="Animations/DefaultOut" instance=ExtResource( 3 )]
+[node name="LeaveDefault" parent="Animations/DefaultOut" instance=ExtResource("3")]
 unique_name_in_owner = true
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_left = 159.0
-margin_top = 8.0
-margin_right = 311.0
-margin_bottom = 32.0
+offset_left = 111.0
+offset_right = 311.0
+offset_bottom = 33.0
 
 [node name="LeaveDefaultLength" type="SpinBox" parent="Animations/DefaultOut"]
 unique_name_in_owner = true
-margin_left = 315.0
-margin_right = 389.0
-margin_bottom = 40.0
+offset_left = 315.0
+offset_right = 398.0
+offset_bottom = 33.0
 step = 0.1
 
-[node name="TLabel4" parent="Animations/DefaultOut" instance=ExtResource( 1 )]
+[node name="TLabel4" parent="Animations/DefaultOut" instance=ExtResource("1")]
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_left = 393.0
-margin_top = 13.0
-margin_right = 426.0
-margin_bottom = 27.0
+offset_left = 402.0
+offset_top = 3.0
+offset_right = 442.0
+offset_bottom = 29.0
 text = "Wait:"
+mode = 0
 
 [node name="LeaveDefaultWait" type="CheckButton" parent="Animations/DefaultOut"]
 unique_name_in_owner = true
-margin_left = 430.0
-margin_right = 506.0
-margin_bottom = 40.0
+offset_left = 446.0
+offset_right = 490.0
+offset_bottom = 33.0
 
 [connection signal="item_selected" from="General/HBoxContainer/PortraitMode" to="." method="_on_PortraitMode_item_selected"]
 [connection signal="pressed" from="Animations/HBoxContainer/CustomAnimationsFolderOpener" to="." method="_on_CustomAnimationsFolderOpener_pressed"]

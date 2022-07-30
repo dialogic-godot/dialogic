@@ -49,6 +49,8 @@ func set_current_margin(node, separation):
 	#node.margin_bottom = separation * -1
 
 func show_settings():
+	
+	$SettingsEditor.size = get_viewport().size/1.5
 	$SettingsEditor.popup_centered()
 
 func save_current_resource():
@@ -89,6 +91,3 @@ func godot_file_dialog(callable, filter, mode = EditorFileDialog.FILE_MODE_OPEN_
 		editor_file_dialog.file_selected.connect(callable)
 	return editor_file_dialog
 
-
-func _on_settings_editor_close_requested():
-	$SettingsEditor.hide()

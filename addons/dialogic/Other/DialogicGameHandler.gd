@@ -98,7 +98,7 @@ func jump_to_label(label:String) -> void:
 
 
 func clear():
-	for subsystem in Dialogic.get_children():
+	for subsystem in get_children():
 		subsystem.clear_game_state()
 	current_timeline = null
 	current_event_idx = -1
@@ -119,7 +119,7 @@ func execute_condition(condition:String) -> bool:
 		autoloads.append(c)
 		autoload_names.append(c.name)
 	expr.parse(condition, autoload_names)
-	return true if expr.execute(autoloads) else false
+	return true if expr.execute(autoloads, self) else false
 
 
 ################################################################################

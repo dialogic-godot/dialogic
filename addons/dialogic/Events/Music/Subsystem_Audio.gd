@@ -11,7 +11,7 @@ func clear_game_state():
 
 func load_game_state():
 	var info = dialogic.current_state_info.get('music')
-	if not info or info.path.is_empty():
+	if info == null or info.path.is_empty():
 		update_music()
 	else:
 		update_music(info.path, info.volume, info.audio_bus, 0, info.loop)
@@ -31,7 +31,7 @@ func update_music(path:String = '', volume:float = 0.0, audio_bus:String = "Mast
 			add_child(prev_node)
 			prev_node.play(node.get_playback_position())
 			prev_node.remove_from_group('dialogic_music_player')
-			fader.tween_method(self, "interpolate_volume_linearly", db2linear(prev_node.volume_db),0.0,fade_time, [prev_node])
+			fader.tween_method(interpolate_volume_linearly.bind(prev_node), db2linear(prev_node.volume_db),0.0,fade_time)
 		if path:
 			node.stream = load(path)
 			node.volume_db = volume
@@ -45,11 +45,11 @@ func update_music(path:String = '', volume:float = 0.0, audio_bus:String = "Mast
 					node.stream.loop_mode = AudioStreamSample.LOOP_DISABLED
 			
 			node.play()
-			fader.parallel().tween_method(self, "interpolate_volume_linearly", 0.0,db2linear(volume),fade_time, [node])
+			fader.parallel().tween_method(interpolate_volume_linearly.bind(node), 0.0,db2linear(volume),fade_time)
 		else:
 			node.stop()
 		if prev_node:
-			fader.tween_callback(prev_node, "queue_free")
+			fader.tween_callback(prev_node.queue_free)
 
 
 func play_sound(path:String, volume:float = 0.0, audio_bus:String = "Master", loop :bool= false) -> void:

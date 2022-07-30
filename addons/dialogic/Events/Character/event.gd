@@ -31,7 +31,9 @@ func _execute() -> void:
 					var anim = dialogic.Portraits.animate_portrait(Character, AnimationName, AnimationLength, AnimationRepeats)
 					
 					if AnimationWait:
+						dialogic.current_state = Dialogic.states.ANIMATING
 						await anim.finished
+						dialogic.current_state = Dialogic.states.IDLE
 				
 		ActionTypes.Leave:
 			if Character:
@@ -48,7 +50,9 @@ func _execute() -> void:
 						anim.finished.connect(dialogic.Portraits.remove_portrait.bind(Character))
 						
 						if AnimationWait:
+							dialogic.current_state = Dialogic.states.ANIMATING
 							await anim.finished
+							dialogic.current_state = Dialogic.states.IDLE
 					
 					else:
 						dialogic.Portraits.remove_portrait(Character)
@@ -65,7 +69,9 @@ func _execute() -> void:
 						var anim = dialogic.Portraits.animate_portrait(Character, AnimationName, AnimationLength, AnimationRepeats)
 						
 						if AnimationWait:
+							dialogic.current_state = Dialogic.states.ANIMATING
 							await anim.finished
+							dialogic.current_state = Dialogic.states.IDLE
 					
 	finish()
 
@@ -163,8 +169,10 @@ func load_from_string_to_store(string:String):
 		if !AnimationName.ends_with('.gd'):
 			printerr("[Dialogic] Couldn't identify animation '"+AnimationName+"'.")
 			AnimationName = ""
-		AnimationLength = shortcode_params.get('length', 0.5).to_float()
-		AnimationWait = DialogicUtil.str_to_bool(shortcode_params.get('wait', 'False'))
+		AnimationLength = shortcode_params.get('length', 0.5)
+		if typeof(AnimationLength) == TYPE_STRING:
+			AnimationLength = AnimationLength.to_float()
+		AnimationWait = DialogicUtil.str_to_bool(shortcode_params.get('wait', 'false'))
 		AnimationRepeats = shortcode_params.get('repeat', 1).to_int()
 
 # RETURN TRUE IF THE GIVEN LINE SHOULD BE LOADED AS THIS EVENT

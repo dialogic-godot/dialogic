@@ -108,8 +108,20 @@ static func pretty_name(script:String) -> String:
 
 
 static func str_to_bool(boolstring:String) -> bool:
-	return true if boolstring == "True" else false
+	return true if boolstring == "true" else false
 
+
+static func logical_convert(value):
+	if typeof(value) == TYPE_STRING:
+		if value.is_valid_int():
+			return value.to_int()
+		if value.is_valid_float():
+			return value.to_float()
+		if value == 'true':
+			return true
+		if value == 'false':
+			return false
+	return value
 
 static func get_color_palette(default:bool = false) -> Dictionary:
 	# Colors are using the ProjectSettings instead of the EditorSettings
