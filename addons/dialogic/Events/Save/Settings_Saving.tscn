@@ -61,6 +61,14 @@ unique_name_in_owner = true
 offset_left = 785.0
 offset_right = 1024.0
 offset_bottom = 31.0
+item_count = 3
+selected = 0
+popup/item_0/text = "Timeline Start+End+Jump"
+popup/item_0/id = 0
+popup/item_1/text = "Each X seconds"
+popup/item_1/id = 1
+popup/item_2/text = "Every Text Event"
+popup/item_2/id = 2
 
 [node name="AutosaveDelayContainer" type="HBoxContainer" parent="VBoxContainer"]
 unique_name_in_owner = true

@@ -26,3 +26,5 @@ offset_top = 31.0
 
 [node name="Translations" parent="Panel/Tabs" instance=ExtResource("3_q3qwt")]
 visible = false
+
+[connection signal="close_requested" from="." to="." method="_on_settings_editor_close_requested"]

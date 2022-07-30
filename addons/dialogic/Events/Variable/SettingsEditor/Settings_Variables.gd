@@ -4,8 +4,7 @@ extends HBoxContainer
 func refresh():
 	$'%MainVariableGroup'.update()
 	$'%MainVariableGroup'.load_data('Variables', DialogicUtil.get_project_setting('dialogic/variables', {}))
-	$'%SaveVariablesButton'.icon = get_theme_icon("Save", "EditorIcons")
 
-
-func _on_SaveVariables_pressed():
+func _about_to_close():
 	ProjectSettings.set_setting('dialogic/variables',$'%MainVariableGroup'.get_data())
+	ProjectSettings.save()

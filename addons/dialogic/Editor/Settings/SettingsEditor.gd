@@ -20,3 +20,10 @@ func refresh():
 	for child in $Panel/Tabs.get_children():
 		if child.has_method('refresh'):
 			child.refresh()
+
+
+func _on_settings_editor_close_requested():
+	for child in $Panel/Tabs.get_children():
+		if child.has_method('_about_to_close'):
+			child._about_to_close()
+	hide()
