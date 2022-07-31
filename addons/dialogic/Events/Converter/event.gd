@@ -6,7 +6,7 @@ class_name DialogicConverterEvent
 
 func get_required_subsystems() -> Array:
 	return [
-				{'name':'Text',
+				{'name':'Converter',
 				'subsystem': get_script().resource_path.get_base_dir().plus_file('Subsystem_Converter.gd'),
 				'settings': get_script().resource_path.get_base_dir().plus_file('Settings_Converter.tscn')
 				},
