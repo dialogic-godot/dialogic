@@ -35,7 +35,7 @@ var collapsed = false
 var editor_reference
 
 ### the indent size
-var indent_size = 45
+var indent_size = 15
 var current_indent_level = 1
 
 # Setting this to true will ignore the event while saving
@@ -52,9 +52,11 @@ func visual_select():
 
 
 func visual_deselect():
-	if selected_style:
-		selected_style.hide()
+	selected_style.hide()
 
+
+func is_selected() -> bool:
+	return selected_style.visible
 
 # called by the timeline before adding it to the tree
 func load_data(data):
@@ -147,6 +149,7 @@ func focus():
 
 func toggle_collapse(toggled):
 	collapsed = toggled
+	%CollapsedBody.visible = toggled
 	var timeline_editor = find_parent('TimelineEditor')
 	if (timeline_editor != null):
 		# @todo select item and clear selection is marked as "private" in TimelineEditor.gd
@@ -304,7 +307,7 @@ func _ready():
 			_set_event_icon(resource.get_icon())
 
 		%IconPanel.self_modulate = resource.event_color
-		%ExpandButton.button_pressed = resource.expand_by_default
+		
 		_on_ExpandButton_toggled(resource.expand_by_default)
 	set_focus_mode(1) # Allowing this node to grab focus
 	
@@ -320,8 +323,10 @@ func _ready():
 
 
 func _on_ExpandButton_toggled(button_pressed):
+	%ExpandButton.button_pressed = button_pressed
 	expanded = button_pressed
 	body_container.visible = button_pressed
+	get_parent().get_parent().update()
 
 
 func _on_EventNode_gui_input(event):
@@ -330,7 +335,7 @@ func _on_EventNode_gui_input(event):
 	if event is InputEventMouseButton and event.is_pressed() and event.button_index == 1:
 		grab_focus() # Grab focus to avoid copy pasting text or events
 		if event.double_click:
-			expanded = !expanded
+			_on_ExpandButton_toggled(!expanded)
 	# For opening the context menu
 	if event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:

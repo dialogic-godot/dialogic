@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://btmy7ageqpyq1"]
 
-[ext_resource type="PackedScene" path="res://addons/dialogic/Editor/Events/Fields/ArrayValue.tscn" id="1"]
+[ext_resource type="PackedScene" uid="uid://ch4j2lesn1sis" path="res://addons/dialogic/Editor/Events/Fields/ArrayValue.tscn" id="1"]
 [ext_resource type="Script" path="res://addons/dialogic/Editor/Events/Fields/Array.gd" id="2"]
 
 [node name="Array" type="VBoxContainer"]

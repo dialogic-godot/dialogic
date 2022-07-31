@@ -12,7 +12,7 @@ func set_value(value:Array):
 		child.queue_free()
 	
 	for item in value:
-		var x = load(ArrayValue).instanciate()
+		var x = load(ArrayValue).instantiate()
 		%Values.add_child(x)
 		x.set_value(item)
 		x.value_changed.connect(recalculate_values)
