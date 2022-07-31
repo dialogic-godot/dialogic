@@ -20,7 +20,7 @@ text = "This is a converter script to convert Dialogic 1.4+ files into Dialogic 
 offset_left = 68.0
 offset_top = 22.0
 offset_right = 990.0
-offset_bottom = 549.0
+offset_bottom = 551.0
 bbcode_enabled = true
 scroll_following = true
 
@@ -32,27 +32,11 @@ offset_bottom = 590.0
 disabled = true
 text = "Begin Conversion"
 
-[node name="ChooseFolder" type="Button" parent="Panel"]
-offset_left = 5.0
-offset_top = 561.0
-offset_right = 177.0
-offset_bottom = 592.0
-text = "Choose output folder"
-
 [node name="OutputPath" type="Label" parent="Panel"]
-offset_left = 194.0
-offset_top = 564.0
-offset_right = 294.0
-offset_bottom = 590.0
-text = "Output path:"
+offset_left = 13.0
+offset_top = 571.0
+offset_right = 113.0
+offset_bottom = 597.0
+text = "Output path: "
 
-[node name="FileDialog" type="FileDialog" parent="."]
-title = "Open a Directory"
-position = Vector2i(50, 50)
-size = Vector2i(900, 500)
-ok_button_text = "Select Current Folder"
-file_mode = 2
-access = 2
-
-[connection signal="pressed" from="Panel/ChooseFolder" to="." method="_on_choose_folder_pressed"]
-[connection signal="dir_selected" from="FileDialog" to="." method="_on_file_dialog_dir_selected"]
+[connection signal="pressed" from="Panel/Begin" to="." method="_on_begin_pressed"]
