@@ -177,42 +177,19 @@ func _input(event):
 	
 	if (event is InputEventKey and event is InputEventWithModifiers and is_visible_in_tree()):
 		# CTRL Z # UNDO
-		if (event.pressed
-			and event.alt_pressed == false
-			and event.shift_pressed == false
-			and (event.ctrl_pressed == true or event.command_pressed == true)
-			and event.keycode == KEY_Z
-			and event.echo == false
-		):
+		if is_event_pressed(event, KEY_Z, false, false, true):
 			TimelineUndoRedo.undo()
 			indent_events()
 			get_viewport().set_input_as_handled()
 	if (event is InputEventKey and event is InputEventWithModifiers and is_visible_in_tree()):
 		# CTRL +SHIFT+ Z # REDO
-		if (event.pressed
-			and event.alt_pressed == false
-			and event.shift_pressed == true
-			and (event.ctrl_pressed == true or event.command_pressed == true)
-			and event.keycode == KEY_Z
-			and event.echo == false
-		) or (event.pressed
-			and event.alt_pressed == false
-			and event.shift_pressed == false
-			and (event.ctrl_pressed == true or event.command_pressed == true)
-			and event.keycode == KEY_Y
-			and event.echo == false):
+		if is_event_pressed(event, KEY_Z, false, true, true) or is_event_pressed(event, KEY_Y, false, false, true):
 			TimelineUndoRedo.redo()
 			indent_events()
 			get_viewport().set_input_as_handled()
 	if (event is InputEventKey and event is InputEventWithModifiers and is_visible_in_tree()):
 		# UP
-		if (event.pressed
-			and event.alt_pressed == false
-			and event.shift_pressed == false
-			and (event.ctrl_pressed == false or event.command_pressed == false)
-			and event.keycode == KEY_UP
-			and event.echo == false
-		):
+		if is_event_pressed(event, KEY_UP, false, false, false):
 			# select previous
 			if (len(selected_items) == 1):
 				var prev = max(0, selected_items[0].get_index() - 1)
@@ -224,13 +201,7 @@ func _input(event):
 
 			
 		# DOWN
-		if (event.pressed
-			and event.alt_pressed == false
-			and event.shift_pressed == false
-			and (event.ctrl_pressed == false or event.command_pressed == false)
-			and event.keycode == KEY_DOWN
-			and event.echo == false
-		):
+		if is_event_pressed(event, KEY_DOWN, false, false, false):
 			# select next
 			if (len(selected_items) == 1):
 				var next = min(timeline.get_child_count() - 1, selected_items[0].get_index() + 1)
@@ -241,13 +212,7 @@ func _input(event):
 				get_viewport().set_input_as_handled()
 			
 		# DELETE
-		if (event.pressed
-			and event.alt_pressed == false
-			and event.shift_pressed == false
-			and (event.ctrl_pressed == false or event.command_pressed == false)
-			and event.keycode == KEY_DELETE
-			and event.echo == false
-		):
+		if is_event_pressed(event, KEY_DELETE, false, false, false):
 			if (len(selected_items) != 0):
 				var events_indexed = get_events_indexed(selected_items)
 				TimelineUndoRedo.create_action("[D] Deleting "+str(len(selected_items))+" event(s).")
@@ -257,67 +222,37 @@ func _input(event):
 				get_viewport().set_input_as_handled()
 			
 		# CTRL T
-		if (event.pressed
-			and event.alt_pressed == false
-			and event.shift_pressed == false
-			and (event.ctrl_pressed == true or event.command_pressed == true)
-			and event.keycode == KEY_T
-			and event.echo == false
-		):
+		if is_event_pressed(event, KEY_T, false, false, true):
 			var at_index = -1
 			if selected_items:
 				at_index = selected_items[-1].get_index()+1
 			else:
 				at_index = timeline.get_child_count()
-			TimelineUndoRedo.create_action("[D] Add Text event.")
-			TimelineUndoRedo.add_do_method(self, "create_event", "dialogic_001", {'no-data': true}, true, at_index, true)
-			TimelineUndoRedo.add_undo_method(self, "remove_events_at_index", at_index, 1)
-			TimelineUndoRedo.commit_action()
+#			TimelineUndoRedo.create_action("[D] Add Text event.")
+#			TimelineUndoRedo.add_do_method(self, "create_event", "dialogic_001", {'no-data': true}, true, at_index, true)
+#			TimelineUndoRedo.add_undo_method(self, "remove_events_at_index", at_index, 1)
+#			TimelineUndoRedo.commit_action()
 			get_viewport().set_input_as_handled()
 			
 		# CTRL A
-		if (event.pressed
-			and event.alt_pressed == false
-			and event.shift_pressed == false
-			and (event.ctrl_pressed == true or event.command_pressed == true)
-			and event.keycode == KEY_A
-			and event.echo == false
-		):
+		if is_event_pressed(event, KEY_A, false, false, true):
 			if (len(selected_items) != 0):
 				select_all_items()
 			get_viewport().set_input_as_handled()
 		
 		# CTRL SHIFT A
-		if (event.pressed
-			and event.alt_pressed == false
-			and event.shift_pressed == true
-			and (event.ctrl_pressed == true or event.command_pressed == true)
-			and event.keycode == KEY_A
-			and event.echo == false
-		):
+		if is_event_pressed(event, KEY_A, false, true, true):
 			if (len(selected_items) != 0):
 				deselect_all_items()
 			get_viewport().set_input_as_handled()
 		
 		# CTRL C
-		if (event.pressed
-			and event.alt_pressed == false
-			and event.shift_pressed == false
-			and (event.ctrl_pressed == true or event.command_pressed == true)
-			and event.keycode == KEY_C
-			and event.echo == false
-		):
+		if is_event_pressed(event, KEY_V, false, false, true):
 			copy_selected_events()
 			get_viewport().set_input_as_handled()
 		
 		# CTRL V
-		if (event.pressed
-			and event.alt_pressed == false
-			and event.shift_pressed == false
-			and (event.ctrl_pressed == true or event.command_pressed == true)
-			and event.keycode == KEY_V
-			and event.echo == false
-		):
+		if is_event_pressed(event, KEY_V, false, false, true):
 			var events_list = paste_check()
 			var paste_position = -1
 			if selected_items:
@@ -332,13 +267,7 @@ func _input(event):
 				get_viewport().set_input_as_handled()
 		
 		# CTRL X
-		if (event.pressed
-			and event.alt_pressed == false
-			and event.shift_pressed == false
-			and (event.ctrl_pressed == true or event.command_pressed == true)
-			and event.keycode == KEY_X
-			and event.echo == false
-		):
+		if is_event_pressed(event, KEY_X, false, false, true):
 			var events_indexed = get_events_indexed(selected_items)
 			TimelineUndoRedo.create_action("[D] Cut "+str(len(selected_items))+" event(s).")
 			TimelineUndoRedo.add_do_method(self, "cut_events_indexed", events_indexed)
@@ -347,14 +276,7 @@ func _input(event):
 			get_viewport().set_input_as_handled()
 
 		# CTRL D
-		if (event.pressed
-			and event.alt_pressed == false
-			and event.shift_pressed == false
-			and (event.ctrl_pressed == true or event.command_pressed == true)
-			and event.keycode == KEY_D
-			and event.echo == false
-		):
-			
+		if is_event_pressed(event, KEY_D, false, false, true):
 			if len(selected_items) > 0:
 				var events = get_events_indexed(selected_items).values()
 				var at_index = selected_items[-1].get_index()
@@ -367,13 +289,7 @@ func _input(event):
 func _unhandled_key_input(event):
 	if (event is InputEventWithModifiers):
 		# ALT UP
-		if (event.pressed
-			and event.alt_pressed == true 
-			and event.shift_pressed == false 
-			and (event.ctrl_pressed == false or event.command_pressed == false)
-			and event.keycode == KEY_UP
-			and event.echo == false
-		):
+		if is_event_pressed(event, KEY_UP, true, false, false):
 			# move selected up
 			if (len(selected_items) == 1):
 				move_block(selected_items[0], "up")
@@ -381,18 +297,19 @@ func _unhandled_key_input(event):
 				get_viewport().set_input_as_handled()
 			
 		# ALT DOWN
-		if (event.pressed
-			and event.alt_pressed == true 
-			and event.shift_pressed == false 
-			and (event.ctrl_pressed == false or event.command_pressed == false)
-			and event.keycode == KEY_DOWN
-			and event.echo == false
-		):
+		if is_event_pressed(event, KEY_DOWN, true, false, false):
 			# move selected down
 			if (len(selected_items) == 1):
 				move_block(selected_items[0], "down")
 				indent_events()
 				get_viewport().set_input_as_handled()
+
+func is_event_pressed(event, keycode, alt:bool, shift:bool, ctrl_or_command:bool):
+	return (event.pressed and event.alt_pressed == alt 
+			and event.shift_pressed == shift 
+			and (event.ctrl_pressed or event.command_pressed ) == ctrl_or_command
+			and event.keycode == keycode
+			and event.echo == false)
 
 ## *****************************************************************************
 ##					 	DELETING, COPY, PASTE
@@ -980,6 +897,7 @@ func indent_events() -> void:
 		else:
 			event.set_indent(0)
 		indent += delayed_indent
+	
 	timeline_area.update()
 
 
