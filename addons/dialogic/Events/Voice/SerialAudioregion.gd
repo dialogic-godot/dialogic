@@ -50,7 +50,7 @@ func repopulate(num:int):
 		#print("adding node number " + str(i))
 		var node = load("res://addons/dialogic/Events/Voice/AudioRegion.tscn").instantiate()
 		$list.add_child(node)
-		node.connect.value_changed(on_value_changed)
+		node.value_changed.connect(on_value_changed)
 		i = i + 1
 	#remove excess audio regions
 	#print(str(i) + ">" + str(num) + "=" + str(i > num))

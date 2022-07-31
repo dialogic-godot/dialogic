@@ -28,11 +28,11 @@ func get_value():
 func _ready():
 	$StartValue.use_timestamp_mode()
 	$StartValue.set_max_value(max_value - 0.1)
-	$StartValue.connect.value_changed(on_value_changed)
+	$StartValue.value_changed.connect(on_value_changed)
 	$StopValue.use_timestamp_mode()
 	$StopValue.set_min_value(0.1)
 	$StopValue.set_max_value(max_value)
-	$StopValue.connect.value_changed(on_value_changed)
+	$StopValue.value_changed.connect(on_value_changed)
 	
 func on_value_changed(property_name, value):
 	$StopValue.set_min_value($StartValue.get_value() + 0.1)
