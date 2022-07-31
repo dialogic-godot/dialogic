@@ -9,6 +9,9 @@ signal value_changed
 const stringfluff = ["[", "]", "start at", "stop at", "region"]
 
 func set_value(value):
+	print("AudioRegion set_value(" + value + ")")
+	if value == null:
+		return
 	#strip irrelevant parts
 	for f in stringfluff:
 		value = value.replace(f, "")
@@ -18,6 +21,11 @@ func set_value(value):
 		return
 	$StartValue.set_value(data[0].to_float())
 	$StopValue.set_value (data[1].to_float())
+
+#func set_left_text(value):
+#	$label.text = str(value)
+#func set_right_text(value):
+#	$label2.text = str(value)
 
 func get_value():
 	return "region start at %s, stop at %s" % [$StartValue.get_value(),$StopValue.get_value()]

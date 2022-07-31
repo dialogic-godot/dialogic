@@ -24,7 +24,7 @@ func playVoiceRegion(index:int):
 		if "visible" in audio_node and not audio_node.visible:
 			continue
 		audio_node.play(start)
-		setTimer(stop - start)
+	setTimer(stop - start)
 	
 func setFile(path:String):
 	if currentAudio == path:

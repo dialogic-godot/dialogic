@@ -20,6 +20,9 @@ func _ready():
 
 
 func set_value(value):
+	if value == null:
+		return
+	print("SerialAudioRegion set_value(" + value + ")")
 	if not value is String:
 		printerr("Invalid data - %s (SerialAudioRegion): data incoming is not string." % property_name)
 	var data:PackedStringArray = value.split("region", false)
@@ -28,16 +31,6 @@ func set_value(value):
 	for i in range ($list.get_child_count()):
 		var n:Node = $list.get_child(i)
 		n.set_value(data[i])
-#	if not value or not value is Array:
-#		return
-#	if not value is Array:
-#		printerr("Invalid data format")
-#		return
-#	$NumRegions/NumberValue.set_value(len(value))
-#	repopulate(len(value))
-#	for i in range ($list.get_child_count()):
-#		var n:Node = $list.get_child(i)
-#		n.set_value(value[i])
 
 func _on_NumberValue_value_changed(_p, value):
 	repopulate(value)
@@ -50,6 +43,7 @@ func repopulate(num:int):
 		#print("adding node number " + str(i))
 		var node = load("res://addons/dialogic/Events/Voice/AudioRegion.tscn").instantiate()
 		$list.add_child(node)
+		#node.set_left_text("| " + str(i) + " Start")
 		node.value_changed.connect(on_value_changed)
 		i = i + 1
 	#remove excess audio regions

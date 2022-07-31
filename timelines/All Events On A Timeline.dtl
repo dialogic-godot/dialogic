@@ -18,7 +18,3 @@ if true:
 
 [signal arg="MyArgument"]
 
-[music bus="Master" loop="true"]
-
-# A cool comment.
-

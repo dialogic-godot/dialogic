@@ -7,19 +7,19 @@ func _execute() -> void:
 	dialogic.Voice.setVolume(Volume)
 	dialogic.Voice.setBus(AudioBus)
 	#NOTE need better way of reading the regiondata. This deems messy
-#	var regiondata = []
-#
-#	var stringfluff = ["[", "]", "start at", "stop at"]
-#	if not regions is String:
-#		printerr("Invalid data - (DialogicVoiceEvent): serial regiondata not string.")
-#	for f in stringfluff:
-#		regions = regions.replace(f, "")
-#	var data1:PackedStringArray = regions.split("region", false)
-#	for d in data1:
-#		var data2:PackedStringArray = d.split(",", false)
-#		regiondata.append([data2[0].to_float(), data2[1].to_float()])
-#
-#	dialogic.Voice.setRegions(regiondata)
+	var regiondata = []
+
+	var stringfluff = ["[", "]", "start at", "stop at"]
+	if not regions is String:
+		printerr("Invalid data - (DialogicVoiceEvent): serial regiondata not string.")
+	for f in stringfluff:
+		regions = regions.replace(f, "")
+	var data1:PackedStringArray = regions.split("region", false)
+	for d in data1:
+		var data2:PackedStringArray = d.split(",", false)
+		regiondata.append([data2[0].to_float(), data2[1].to_float()])
+
+	dialogic.Voice.setRegions(regiondata)
 
 	finish() #the rest is executed by a text event
 
@@ -27,7 +27,7 @@ func _execute() -> void:
 var FilePath: String = ""
 var Volume: float = 0
 var AudioBus: String = "Master"
-#var regions : String #Array = [] 
+var regions : String #Array = [] 
 
 ################################################################################
 ## 						INITIALIZE
@@ -53,7 +53,7 @@ func get_shortcode_parameters() -> Dictionary:
 		"path"		: "FilePath",
 		"volume"	: "Volume",
 		"bus"		: "AudioBus",
-	#	"regions"	: "regions",
+		"regions"	: "regions",
 	}
 	
 ################################################################################
@@ -63,8 +63,8 @@ func get_shortcode_parameters() -> Dictionary:
 func build_event_editor():
 	add_header_edit('FilePath', ValueType.SinglelineText, 'Path:')
 	add_body_edit('Volume', ValueType.Decibel, 'Volume:', '', {}, '!FilePath.is_empty()')
-	add_body_edit('AudioBus', ValueType.SinglelineText, 'AudioBus:', '', {}, '!is_FilePath.empty()')
-	add_body_edit('regions', ValueType.Custom, '', '', {'path' : 'res://addons/dialogic/Events/Voice/SerialAudioregion.tscn'}, '!FilePath.empty()')
+	add_body_edit('AudioBus', ValueType.SinglelineText, 'AudioBus:', '', {}, '!FilePath.is_empty()')
+	add_body_edit('regions', ValueType.Custom, '', '', {'path' : 'res://addons/dialogic/Events/Voice/SerialAudioregion.tscn'}, '!FilePath.is_empty()')
 
 
 func get_required_subsystems() -> Array:
