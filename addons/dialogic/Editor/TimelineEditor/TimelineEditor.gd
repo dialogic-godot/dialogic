@@ -37,17 +37,116 @@ var building_timeline = true
 ################################################################################
 var selected_items : Array = []
 
-var currently_draged_event_type = null
 var move_start_position = null
 var moving_piece = null
 var piece_was_dragged = false
+
+
+################################################################################
+## 					CREATE/SAVE/LOAD
+################################################################################
+# helper to comunicate with the toolbar
+func something_changed():
+	%Toolbar.set_resource_unsaved()
+
+func new_timeline() -> void:
+	save_timeline()
+	clear_timeline()
+	show_save_dialog()
+
+func show_save_dialog():
+	find_parent('EditorView').godot_file_dialog(
+		create_and_save_new_timeline,
+		'*.dtl; DialogicTimeline',
+		EditorFileDialog.FILE_MODE_SAVE_FILE,
+		"Save new Timeline",
+		"New_Timeline",
+		true
+	)
+
+func create_and_save_new_timeline(path):
+	var new_timeline = DialogicTimeline.new()
+	new_timeline.resource_path = path
+	current_timeline = new_timeline
+	save_timeline()
+	load_timeline(new_timeline)
+
+
+func save_timeline() -> void:
+	if ! visible:
+		return
+	var new_events = []
+	
+	for event in timeline.get_children():
+		new_events.append(event.resource)
+	
+	if current_timeline:
+		current_timeline.set_events(new_events)
+		ResourceSaver.save(current_timeline.resource_path, current_timeline)
+		%Toolbar.set_resource_saved()
+	else:
+		if new_events.size() > 0:
+			show_save_dialog()
+
+
+func load_timeline(object) -> void:
+	clear_timeline()
+	%Toolbar.load_timeline(object.resource_path)
+	current_timeline = object
+	var data = object.get_events()
+	var page = 1
+	var batch_size = 12
+	while batch_events(data, batch_size, page).size() != 0:
+		batches.append(batch_events(data, batch_size, page))
+		page += 1
+	load_batch(batches)
+	# Reset the scroll position
+	timeline_area.scroll_vertical = 0
+
+func batch_events(array, size, batch_number):
+	return array.slice((batch_number - 1) * size, batch_number * size)
+
+# a list of all events like choice and condition events (so they get connected to their end events)
+var opener_events_stack = []
+
+func load_batch(data):
+	var current_batch = batches.pop_front()
+	if current_batch:
+		for i in current_batch:
+			if i is DialogicEndBranchEvent:
+				create_end_branch_event(timeline.get_child_count(), opener_events_stack.pop_back())
+			else:
+				var piece = add_event_node(i, timeline.get_child_count())
+				if i.can_contain_events:
+					opener_events_stack.push_back(piece)
+	emit_signal("batch_loaded")
+
+
+func _on_batch_loaded():
+	if batches.size() > 0:
+		await get_tree().create_timer(0.01).timeout
+		load_batch(batches)
+	else:
+		if opener_events_stack:
+			for ev in opener_events_stack:
+				create_end_branch_event(timeline.get_child_count(), ev)
+		opener_events_stack = []
+		indent_events()
+		building_timeline = false
+		emit_signal("timeline_loaded")
+	add_extra_scroll_area_to_timeline()
+
+
+func clear_timeline():
+	deselect_all_items()
+	for event in timeline.get_children():
+		event.free()
 
 ################################################################################
 ## 					SETUP
 ################################################################################
 func _ready():
 	DialogicUtil.get_dialogic_plugin().dialogic_save.connect(save_timeline)
-	
 	
 	batch_loaded.connect(_on_batch_loaded)
 	
@@ -98,6 +197,9 @@ func _ready():
 			get_node("View/ScrollContainer/EventContainer/FlexContainer" + str(button.event_category)).move_child(button, button.get_index()-1)
 
 
+################################################################################
+## 				DRAG&DROP + DRAGGING EVENTS
+################################################################################
 # handles dragging/moving of events
 func _process(delta):
 	if moving_piece != null:
@@ -111,16 +213,46 @@ func _process(delta):
 			if current_position.y < node_position - up_offset:
 				if moving_piece.resource is DialogicEndBranchEvent:
 					if moving_piece.parent_node != get_block_above(moving_piece):
-						move_block(moving_piece, 'up')
+						move_block_up(moving_piece)
 						piece_was_dragged = true
 				else:
-					move_block(moving_piece, 'up')
+					move_block_up(moving_piece)
 					piece_was_dragged = true
 		if down_offset != null:
 			down_offset = height + (down_offset / 2) + 5
 			if current_position.y > node_position + down_offset:
-				move_block(moving_piece, 'down')
+				move_block_down(moving_piece)
 				piece_was_dragged = true
+
+## INFO: These methods are mainly used by the TimelineArea
+
+# Creates a ghost event for drag and drop
+func create_drag_and_drop_event(resource):
+	var index = get_index_under_cursor()
+	var piece = add_event_node(resource)
+	timeline.move_child(piece, index)
+	moving_piece = piece
+	piece_was_dragged = true
+	select_item(piece)
+	return piece
+
+func drop_event():
+	if moving_piece != null:
+		var at_index = moving_piece.get_index()
+		var resource = moving_piece.resource.get_script()
+		moving_piece.queue_free()
+		
+		_add_event_button_pressed(resource)
+		moving_piece = null
+		piece_was_dragged = false
+		something_changed()
+
+func cancel_drop_event():
+	if moving_piece != null:
+		moving_piece = null
+		piece_was_dragged = false
+		delete_selected_events()
+		deselect_all_items()
 
 
 # SIGNAL handles input on the events mainly for selection and moving events
@@ -164,7 +296,6 @@ func _on_event_block_gui_input(event, item: Node):
 ## *****************************************************************************
 ##					 	SHORTCUTS
 ## *****************************************************************************
-
 func _input(event):
 	# some shortcuts need to get handled in the common input event
 	# especially CTRL-based
@@ -176,21 +307,20 @@ func _input(event):
 		return
 	
 	if (event is InputEventKey and event is InputEventWithModifiers and is_visible_in_tree()):
-		# CTRL Z # UNDO
+		# CTRL Z ->  UNDO
 		if is_event_pressed(event, KEY_Z, false, false, true):
 			TimelineUndoRedo.undo()
 			indent_events()
 			get_viewport().set_input_as_handled()
 	if (event is InputEventKey and event is InputEventWithModifiers and is_visible_in_tree()):
-		# CTRL +SHIFT+ Z # REDO
+		# CTRL +SHIFT+ Z // CTRL + Y -> REDO
 		if is_event_pressed(event, KEY_Z, false, true, true) or is_event_pressed(event, KEY_Y, false, false, true):
 			TimelineUndoRedo.redo()
 			indent_events()
 			get_viewport().set_input_as_handled()
 	if (event is InputEventKey and event is InputEventWithModifiers and is_visible_in_tree()):
-		# UP
+		# UP -> select previous
 		if is_event_pressed(event, KEY_UP, false, false, false):
-			# select previous
 			if (len(selected_items) == 1):
 				var prev = max(0, selected_items[0].get_index() - 1)
 				var prev_node = timeline.get_child(prev)
@@ -198,11 +328,9 @@ func _input(event):
 					selected_items = []
 					select_item(prev_node)
 				get_viewport().set_input_as_handled()
-
 			
-		# DOWN
+		# DOWN -> select next
 		if is_event_pressed(event, KEY_DOWN, false, false, false):
-			# select next
 			if (len(selected_items) == 1):
 				var next = min(timeline.get_child_count() - 1, selected_items[0].get_index() + 1)
 				var next_node = timeline.get_child(next)
@@ -221,7 +349,7 @@ func _input(event):
 				TimelineUndoRedo.commit_action()
 				get_viewport().set_input_as_handled()
 			
-		# CTRL T
+		# CTRL T -> Add text event
 		if is_event_pressed(event, KEY_T, false, false, true):
 			var at_index = -1
 			if selected_items:
@@ -234,13 +362,13 @@ func _input(event):
 #			TimelineUndoRedo.commit_action()
 			get_viewport().set_input_as_handled()
 			
-		# CTRL A
+		# CTRL A -> select all
 		if is_event_pressed(event, KEY_A, false, false, true):
 			if (len(selected_items) != 0):
 				select_all_items()
 			get_viewport().set_input_as_handled()
 		
-		# CTRL SHIFT A
+		# CTRL SHIFT A -> deselect all
 		if is_event_pressed(event, KEY_A, false, true, true):
 			if (len(selected_items) != 0):
 				deselect_all_items()
@@ -274,7 +402,7 @@ func _input(event):
 			TimelineUndoRedo.add_undo_method(self, "add_events_indexed", events_indexed)
 			TimelineUndoRedo.commit_action()
 			get_viewport().set_input_as_handled()
-
+		
 		# CTRL D
 		if is_event_pressed(event, KEY_D, false, false, true):
 			if len(selected_items) > 0:
@@ -285,25 +413,22 @@ func _input(event):
 				TimelineUndoRedo.add_undo_method(self, "remove_events_at_index", at_index, len(events))
 				TimelineUndoRedo.commit_action()
 			get_viewport().set_input_as_handled()
-
-func _unhandled_key_input(event):
-	if (event is InputEventWithModifiers):
-		# ALT UP
+		
+		# ALT UP -> move selected up
 		if is_event_pressed(event, KEY_UP, true, false, false):
-			# move selected up
 			if (len(selected_items) == 1):
-				move_block(selected_items[0], "up")
+				move_block_up(selected_items[0])
 				indent_events()
 				get_viewport().set_input_as_handled()
 			
-		# ALT DOWN
+		# ALT DOWN -> move selected down
 		if is_event_pressed(event, KEY_DOWN, true, false, false):
-			# move selected down
 			if (len(selected_items) == 1):
-				move_block(selected_items[0], "down")
+				move_block_down(selected_items[0])
 				indent_events()
 				get_viewport().set_input_as_handled()
 
+# helper to make the above methods shorter
 func is_event_pressed(event, keycode, alt:bool, shift:bool, ctrl_or_command:bool):
 	return (event.pressed and event.alt_pressed == alt 
 			and event.shift_pressed == shift 
@@ -428,6 +553,7 @@ func paste_check():
 
 func remove_events_at_index(at_index:int, amount:int = 1)-> void:
 	selected_items = []
+	something_changed()
 	for i in range(0, amount):
 		selected_items.append(timeline.get_child(at_index + i))
 	delete_selected_events()
@@ -448,18 +574,18 @@ func add_events_at_index(event_list:Array, at_index:int) -> void:
 			if item:
 				new_items.append(add_event_node(resource))
 	selected_items = new_items
+	something_changed()
 	sort_selection()
 	visual_update_selection()
 	indent_events()
 
 
 ## *****************************************************************************
-##					 	BLOCK SELECTION
+##					BLOCK SELECTION
 ## *****************************************************************************
 
 func _is_item_selected(item: Node):
 	return item in selected_items
-
 
 func select_item(item: Node, multi_possible:bool = true):
 	if item == null:
@@ -498,7 +624,6 @@ func select_item(item: Node, multi_possible:bool = true):
 	sort_selection()
 	visual_update_selection()
 
-
 # checks all the events and sets their styles (selected/deselected)
 func visual_update_selection():
 	for item in timeline.get_children():
@@ -510,16 +635,13 @@ func visual_update_selection():
 		if 'end_node' in item and item.end_node != null:
 			item.end_node.highlight()
 
-
 ## Sorts the selection using 'custom_sort_selection'
 func sort_selection():
 	selected_items.sort_custom(custom_sort_selection)
 
-
 ## Compares two event blocks based on their position in the timeline
 func custom_sort_selection(item1, item2):
 	return item1.get_index() < item2.get_index()
-
 
 ## Helpers
 func select_all_items():
@@ -528,28 +650,10 @@ func select_all_items():
 		selected_items.append(event)
 	visual_update_selection()
 
-
 func deselect_all_items():
 	selected_items = []
 	visual_update_selection()
 
-## *****************************************************************************
-##				SPECIAL BLOCK OPERATIONS
-## *****************************************************************************
-
-# SIGNAL handles the actions of the small menu on the right
-func _on_event_options_action(action: String, item: Node):
-	### WORK TODO
-	if action == "remove":
-		delete_selected_events()
-	else:
-		move_block(item, action)
-	indent_events()
-
-
-func delete_event(event):
-	event.get_parent().remove_child(event)
-	event.queue_free()
 
 ## *****************************************************************************
 ##				CREATING NEW EVENTS USING THE BUTTONS
@@ -572,50 +676,9 @@ func _add_event_button_pressed(event_script):
 		TimelineUndoRedo.add_do_method(self, "add_event_node", event_script.new(), at_index, true, true)
 		TimelineUndoRedo.add_undo_method(self, "remove_events_at_index", at_index, 1)
 		TimelineUndoRedo.commit_action()
-	
+	something_changed()
 	scroll_to_piece(at_index)
 	indent_events()
-
-func add_event_with_end_branch(resource, at_index:int=-1, auto_select:bool = false, indent:bool = false):
-	var event = add_event_node(resource, at_index, auto_select, indent)
-	create_end_branch_event(at_index+1, event)
-
-
-## *****************************************************************************
-##					 	DRAG AND DROP
-## *****************************************************************************
-
-# Creates a ghost event for drag and drop
-func create_drag_and_drop_event(resource):
-	var index = get_index_under_cursor()
-	var piece = add_event_node(resource)
-	currently_draged_event_type = resource
-	timeline.move_child(piece, index)
-	moving_piece = piece
-	piece_was_dragged = true
-	#set_event_ignore_save(piece, true)
-	select_item(piece)
-	return piece
-
-
-func drop_event():
-	if moving_piece != null:
-		var at_index = moving_piece.get_index()
-		var resource = moving_piece.resource.get_script()
-		moving_piece.queue_free()
-		
-		_add_event_button_pressed(resource)
-		moving_piece = null
-		piece_was_dragged = false
-
-
-func cancel_drop_event():
-	if moving_piece != null:
-		moving_piece = null
-		piece_was_dragged = false
-		delete_selected_events()
-		deselect_all_items()
-
 
 ## *****************************************************************************
 ##					 	CREATING THE TIMELINE
@@ -670,118 +733,14 @@ func create_end_branch_event(at_index, parent_node):
 	timeline.move_child(end_branch_event, at_index)
 	return end_branch_event
 
-## *****************************************************************************
-##					 	SAVING
-## *****************************************************************************
-
-func new_timeline() -> void:
-	save_timeline()
-	clear_timeline()
-	show_save_dialog()
-
-
-func save_timeline() -> void:
-	if ! visible:
-		return
-	var new_events = []
-	
-	for event in timeline.get_children():
-		new_events.append(event.resource)
-	
-	if current_timeline:
-		current_timeline.set_events(new_events)
-		ResourceSaver.save(current_timeline.resource_path, current_timeline)
-		%Toolbar.set_resource_saved()
-	else:
-		if new_events.size() > 0:
-			show_save_dialog()
-
-
-func show_save_dialog():
-	find_parent('EditorView').godot_file_dialog(
-		create_and_save_new_timeline,
-		'*.dtl; DialogicTimeline',
-		EditorFileDialog.FILE_MODE_OPEN_FILE,
-		"Save new Timeline",
-		"New_Timeline"
-	)
-
-
-func create_and_save_new_timeline(path):
-	var new_timeline = DialogicTimeline.new()
-	new_timeline.resource_path = path
-	current_timeline = new_timeline
-	save_timeline()
-	load_timeline(new_timeline)
-	
-
-## *****************************************************************************
-##					 	LOADING
-## *****************************************************************************
-
-func load_timeline(object) -> void:
-	clear_timeline()
-	%Toolbar.load_timeline(object.resource_path)
-	current_timeline = object
-	var data = object.get_events()
-	var page = 1
-	var batch_size = 12
-	while batch_events(data, batch_size, page).size() != 0:
-		batches.append(batch_events(data, batch_size, page))
-		page += 1
-	load_batch(batches)
-	# Reset the scroll position
-	timeline_area.scroll_vertical = 0
-
-
-func something_changed():
-	%Toolbar.set_resource_unsaved()
-
-
-func batch_events(array, size, batch_number):
-	return array.slice((batch_number - 1) * size, batch_number * size)
-
-# a list of all events like choice and condition events (so they get connected to their end events)
-var opener_events_stack = []
-
-func load_batch(data):
-	var current_batch = batches.pop_front()
-	if current_batch:
-		for i in current_batch:
-			if i is DialogicEndBranchEvent:
-				create_end_branch_event(timeline.get_child_count(), opener_events_stack.pop_back())
-			else:
-				var piece = add_event_node(i, timeline.get_child_count())
-				if i.can_contain_events:
-					opener_events_stack.push_back(piece)
-	emit_signal("batch_loaded")
-
-
-func _on_batch_loaded():
-	if batches.size() > 0:
-		await get_tree().create_timer(0.01).timeout
-		load_batch(batches)
-	else:
-		if opener_events_stack:
-			for ev in opener_events_stack:
-				create_end_branch_event(timeline.get_child_count(), ev)
-		opener_events_stack = []
-		indent_events()
-		building_timeline = false
-		emit_signal("timeline_loaded")
-	add_extra_scroll_area_to_timeline()
-
-
-func clear_timeline():
-	deselect_all_items()
-	for event in timeline.get_children():
-		event.free()
-
+# combination of the above that establishes the correct connection between the event and it's end branch
+func add_event_with_end_branch(resource, at_index:int=-1, auto_select:bool = false, indent:bool = false):
+	var event = add_event_node(resource, at_index, auto_select, indent)
+	create_end_branch_event(at_index+1, event)
 
 ## *****************************************************************************
 ##					 	BLOCK GETTERS
 ## *****************************************************************************
-
 func get_block_above(block):
 	var block_index = block.get_index()
 	var item = null
@@ -814,30 +773,30 @@ func get_index_under_cursor():
 			top_pos = i
 	return top_pos
 
+## *****************************************************************************
+##					 	BLOCK MOVEMENT
+## *****************************************************************************
+func move_block_up(block):
+	if block.get_index() < 1: return false
+	timeline.move_child(block, block.get_index() - 1)
+	timeline_area.update()
+	something_changed()
+	return true
+	
 
-# ordering blocks in timeline
-func move_block(block, direction):
-	var block_index = block.get_index()
-	if direction == 'up':
-		if block_index > 0:
-			timeline.move_child(block, block_index - 1)
-			timeline_area.update()
-			return true
-	if direction == 'down':
-		timeline.move_child(block, block_index + 1)
-		timeline_area.update()
-		return true
-	return false
+func move_block_down(block):
+	timeline.move_child(block, block.get_index() + 1)
+	timeline_area.update()
+	something_changed()
+	return true
 
 func move_block_to_index(block_index, index):
+	something_changed()
 	timeline.move_child(timeline.get_child(block_index), index)
 
-
 ## *****************************************************************************
-##					 UTILITIES/HELPERS
+##					VISIBILITY/VISUALS
 ## *****************************************************************************
-
-# Scrolling
 func scroll_to_piece(piece_index) -> void:
 	var height = 0
 	for i in range(0, piece_index):
@@ -845,7 +804,7 @@ func scroll_to_piece(piece_index) -> void:
 	if height < timeline_area.scroll_vertical or height > timeline_area.scroll_vertical+timeline_area.size.y-(200*DialogicUtil.get_editor_scale()):
 		timeline_area.scroll_vertical = height
 
-# Event Indenting
+
 func indent_events() -> void:
 	var indent: int = 0
 	var event_list: Array = timeline.get_children()
@@ -901,18 +860,24 @@ func indent_events() -> void:
 	timeline_area.update()
 
 
-func get_current_events_anchors():
-	var anchors = {}
-	for event in timeline.get_children():
-		if "event_data" in event:
-			if event.event_data['event_id'] == 'dialogic_015':
-				anchors[event.event_data['id']] = event.event_data['name']
-	return anchors
-
-
 func add_extra_scroll_area_to_timeline():
 	if timeline.get_children().size() > 4:
 		timeline.custom_minimum_size.y = 0
 		timeline.size.y = 0
 		if timeline.size.y + 200 > timeline_area.size.y:
 			timeline.custom_minimum_size = Vector2(0, timeline.size.y + 200)
+
+
+## *****************************************************************************
+##				SPECIAL BLOCK OPERATIONS
+## *****************************************************************************
+# SIGNAL handles the actions of the small menu on the right
+func _on_event_options_action(action: String, item: Node):
+	### WORK TODO
+	if action == "remove":
+		delete_selected_events()
+	elif action == "up":
+		move_block_up(item)
+	elif action == "down":
+		move_block_down(item)
+	indent_events()
