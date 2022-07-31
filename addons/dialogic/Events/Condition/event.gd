@@ -21,7 +21,8 @@ func _execute() -> void:
 			idx += 1
 			if not dialogic.current_timeline.get_event(idx):
 				break
-			
+			if ignore == 0 and dialogic.current_timeline.get_event(idx) is DialogicConditionEvent:
+				break
 			if dialogic.current_timeline.get_event(idx).can_contain_events:
 				ignore += 1
 			elif dialogic.current_timeline.get_event(idx) is DialogicEndBranchEvent:
