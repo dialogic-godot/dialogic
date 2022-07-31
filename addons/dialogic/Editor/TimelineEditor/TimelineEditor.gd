@@ -701,9 +701,10 @@ func show_save_dialog():
 	find_parent('EditorView').godot_file_dialog(
 		create_and_save_new_timeline,
 		'*.dtl; DialogicTimeline',
-		EditorFileDialog.FILE_MODE_OPEN_FILE,
+		EditorFileDialog.FILE_MODE_SAVE_FILE,
 		"Save new Timeline",
-		"New_Timeline"
+		"New_Timeline",
+		true
 	)
 
 
