@@ -27,6 +27,7 @@ class_name DialogicDisplay_TypeSounds
 #characters that don't increase the 'characters_since_last_sound' variable, useful for the space or fullstop
 @export var ignore_characters:String = ' .,'
 
+var dialogic:Node #singleton refrence
 var sound_finished = true
 var characters_since_last_sound: int = 0
 var base_pitch = pitch_scale
@@ -39,6 +40,7 @@ func _ready():
 	# add to necessary group
 	add_to_group('dialogic_type_sounds')
 	if !Engine.is_editor_hint() and get_parent() is DialogicDisplay_DialogText:
+		dialogic = get_node("/root/Dialogic")
 		get_parent().started_revealing_text.connect(_on_started_revealing_text)
 		get_parent().continued_revealing_text.connect(_on_continued_revealing_text)
 		get_parent().finished_revealing_text.connect(_on_finished_revealing_text)
@@ -51,6 +53,10 @@ func _on_started_revealing_text() -> void:
 func _on_continued_revealing_text(new_character) -> void:
 	#pretty obvious
 	if !enabled:
+		return
+		
+	#don't play if a voice-track is running
+	if dialogic.has_subsystem("Voice") and dialogic.Voice.isRunning():
 		return
 	
 	#if sound playing and can't interrupt

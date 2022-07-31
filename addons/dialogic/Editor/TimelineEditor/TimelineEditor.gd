@@ -873,12 +873,12 @@ func indent_events() -> void:
 			event.hide()
 		else:
 			event.show()
-
+		
 		delayed_indent = 0
 		
 		if event.resource.can_contain_events:
 			delayed_indent = 1
-
+		
 		if event.resource.needs_parent_event:
 			if get_block_above(event) and 'resource' in get_block_above(event):
 				if get_block_above(event).resource is DialogicEndBranchEvent:
