@@ -16,6 +16,7 @@ var contents
 var conversionReady = false
 
 var varSubsystemInstalled = false
+var anchorNames = {}
 
 func refresh():
 	pass
@@ -219,8 +220,9 @@ func _on_begin_pressed():
 	%OutputLog.text += "Beginning file conversion:\r\n"
 	%OutputLog.text += "\r\n"
 	
-	convertTimelines()
+	#Character conversion needs to be before timelines, so the character names are available
 	convertCharacters()
+	convertTimelines()
 	convertVariables()
 	convertGlossaries()
 	convertThemes()
@@ -259,17 +261,163 @@ func convertTimelines():
 					if !directory.dir_exists(conversionRootFolder + "/timelines" + progresiveDirectory):
 						directory.make_dir(conversionRootFolder + "/timelines" + progresiveDirectory)
 				
-				
-			file.open(conversionRootFolder + "/timelines" + folderPath + "/" + fileName + ".dtl",File.WRITE)
+			var newFilePath = conversionRootFolder + "/timelines" + folderPath + "/" + fileName + ".dtl"	
+			file.open(newFilePath,File.WRITE)
+			
+			# update the new location so we know where second pass items are
+			timelineFolderBreakdown[item] = newFilePath
+			
+			var depth = 0
 			for event in contents["events"]:
 				var eventLine = ""
 				
+				for i in depth:
+					eventLine += "	"
+				
 				if "dialogic_" in event["event_id"]:
 					match event["event_id"]:
+						"dialogic_001":
+							if event['character'] != "" && event['character']:
+								eventLine += characterFolderBreakdown[event['character']]['name']
+								if event['portrait'] != "":
+									eventLine += "(" +  event['portrait'] + ")"
+								
+								eventLine += ": "
+							if '\n' in event['text']:
+								var splitCount = 0
+								var split = event['text'].split('\n')
+								for splitItem in split:
+									if splitCount == 0:
+										file.store_line(eventLine + splitItem + "\\")
+									else:
+										file.store_line(splitItem + "\\")
+									splitCount += 1
+							else: 
+								file.store_string(eventLine + event['text'])
+						"dialogic_002":
+							match event['type']:
+								1:
+									eventLine += "Join "
+									eventLine += characterFolderBreakdown[event['character']]['name']
+									if (event['portrait'] != ""):
+										eventLine += " (" + event['portrait'] + ") "
+									
+									for i in event['position']:
+										if event['position'][i] == true:
+											eventLine += i
+								2:
+									eventLine += "Update "
+									eventLine += characterFolderBreakdown[event['character']]['name']
+									if (event['portrait'] != ""):
+										eventLine += " (" + event['portrait'] + ") "
+
+									var positionCheck = false
+									for i in event['position']:
+										
+										if event['position'][i] == true:
+											positionCheck = true
+											eventLine += i
+											
+									if !positionCheck:
+										%OutputLog.text += "\r\n[color=yellow]Warning: Character update with no positon set, this was possible in 1.x but not 2.0\r\nCharacter will be set to position 3[/color]\r\n"
+										eventLine += "3"
+								3:
+									eventLine += "Leave "
+									eventLine += characterFolderBreakdown[event['character']]['name']
+								
+							file.store_string(eventLine)	
+						"dialogic_010":
+							# With the change in 2.0, the root of the Question block is simply text event
+							if event['character'] != "" && event['character']:
+								eventLine += characterFolderBreakdown[event['character']]['name']
+								if event['portrait'] != "":
+									eventLine += "(" +  event['portrait'] + ")"
+								
+								eventLine += ": "
+							if '\n' in event['question']:
+								var splitCount = 0
+								var split = event['text'].split('\n')
+								for splitItem in split:
+									if splitCount == 0:
+										file.store_line(eventLine + splitItem + "\\")
+									else:
+										file.store_line(splitItem + "\\")
+									splitCount += 1
+							else: 
+								file.store_string(eventLine + event['question'])
+								
+							depth +=1
+						"dialogic_011":
+							eventLine += " - "
+							eventLine += event['choice']
+							file.store_string(eventLine)
+							print("choice node")
+							print ("bracnh depth now" + str(depth))
+						"dialogic_012":
+							eventLine += "if true:"
+							file.store_string(eventLine)
+							print("if branch node")
+							depth +=1
+							print ("bracnh depth now" + str(depth))
+						"dialogic_013": 
+							# this is the end branch, nothing here
+							print("end branch node")
+							depth -= 1
+							print ("bracnh depth now" + str(depth))
+						"dialogic_014":
+							if varSubsystemInstalled:
+								#creating as a comment for now, because it doesnt seme to work correctly in timeline editor currently
+								eventLine += " # "
+								eventLine += "VAR "
+								var path = definitionFolderBreakdown[event['definition']]['path']
+								path.replace("/", ".")
+								if path[0] == '.':
+									path = path.erase(0,1)
+								if path[path.length() - 1] != '.':
+									path += "."
+									
+								eventLine += path + definitionFolderBreakdown[event['definition']]['name']
+								file.store_string(eventLine)
+							else:
+								file.store_string(eventLine + "# Set variable function. Variables subsystem is disabled")
+						"dialogic_015":
+							file.store_string(eventLine + "[label name=" + event['name'] +"]")
+							anchorNames[event['id']] = event['name']
+						"dialogic_016":
+							# Dialogic 1.x only allowed jumping to labels in the same timeline
+							# But since it is stored as a ID reference, we will have to get it on the second pass
+							file.store_string(eventLine + "[jump label=<" + event['anchor_id'] +">]")
+						"dialogic_020":
+							# we will need to come back to this one on second pass, since we may not know the new path yet
+							file.store_string(eventLine + "[jump timeline=<" + event['change_timeline'] +">]")
+						"dialogic_021":
+							file.store_string(eventLine + "[background path=\"" + event['background'] +"\"]")
+						"dialogic_022":
+							file.store_string(eventLine + "[end_timeline]")
+						"dialogic_023":
+							file.store_string(eventLine + "[wait time=\"" + str(event['wait_seconds']) +"\"]")
+						"dialogic_024":
+							file.store_string(eventLine + "# Theme change event, not currently implemented")
+						"dialogic_025": 
+							file.store_string(eventLine + "# Set Glossary event, not currently implemented")
+						"dialogic_026":
+							file.store_string(eventLine + "# Save event, not currently implemented")
+						"dialogic_030":
+							file.store_string(eventLine + "# Audio event, not currently implemented")
+						"dialogic_031":
+							file.store_string(eventLine + "# Background music event, not currently implemented")
+						"dialogic_040":
+							file.store_string(eventLine + "[signal arg=\"" + event['emit_signal'] +"\"]")
+						"dialogic_041":
+							file.store_string(eventLine + "# Change scene event, not currently implemented")
+						"dialogic_042":
+							file.store_string(eventLine + "# Call node event, not currently implemented")
+						_: 
+							file.store_string(eventLine + "# unimplemented Dialogic control with unknown number")
+						
 						
 					
 					
-					file.store_string(eventLine)
 				else: 
 					eventLine += "# Custom event: "
 					eventLine += str(event)
@@ -289,7 +437,12 @@ func convertTimelines():
 		
 	%OutputLog.text += "\r\n"
 	
+	#second pass
+	for item in timelineFolderBreakdown:
+		print(item)
 	
+
+
 func convertCharacters(): 
 	%OutputLog.text += "Converting characters: \r\n"
 	for item in characterFolderBreakdown:
@@ -351,14 +504,13 @@ func convertCharacters():
 			current_character.scale = 1.0
 			
 			ResourceSaver.save(current_character.resource_path, current_character)	
-			#file.open(conversionRootFolder + "/characters" + folderPath + "/" + fileName + ".dch",File.WRITE)
-			#json_object = JSON.new()
-			#var output_string = json_object.stringify(charData, "\r")
-			#file.store_string(output_string)
+
+			# Before we're finished here, update the folder breakdown so it has the proper character name
+			var infoDict = {}
+			infoDict["path"] = characterFolderBreakdown[item]
+			infoDict["name"] = contents["name"]
 			
-			#file.close()
-			
-			
+			characterFolderBreakdown[item] = infoDict
 			
 			%OutputLog.text += "\r\n"
 		else:
@@ -407,3 +559,4 @@ func convertThemes():
 	%OutputLog.text += "Converting themes: [color=red]not currently implemented[/color] \r\n"
 	
 	%OutputLog.text += "\r\n"
+
