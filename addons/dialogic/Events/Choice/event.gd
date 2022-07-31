@@ -32,8 +32,17 @@ func _init() -> void:
 	set_default_color('Color3')
 	event_category = Category.LOGIC
 	event_sorting_index = 0
+	can_contain_events = true
+	needs_parent_event = true
 	expand_by_default = false
 
+# if needs_parent_event is true, this needs to return true if the event is that event
+func is_expected_parent_event(event:DialogicEvent):
+	return event is DialogicTextEvent
+
+# return a control node that should show on the END BRANCH node
+func get_end_branch_control() -> Control:
+	return load(get_script().resource_path.get_base_dir().plus_file('Choice_End.tscn')).instantiate()
 
 ################################################################################
 ## 						SAVING/LOADING

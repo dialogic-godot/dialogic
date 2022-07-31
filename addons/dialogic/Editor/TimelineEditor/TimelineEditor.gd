@@ -134,8 +134,8 @@ func _on_event_block_gui_input(event, item: Node):
 					TimelineUndoRedo.add_do_method(self, "move_block_to_index", move_start_position, to_position)
 					TimelineUndoRedo.add_undo_method(self, "move_block_to_index", to_position, move_start_position)
 					
-					# in case a choice or condition was moved BELOW it's end node the end_node is moved as well!!!
-					if moving_piece.resource is DialogicChoiceEvent or  moving_piece.resource is DialogicConditionEvent:
+					# in case a something like a choice or condition was moved BELOW it's end node the end_node is moved as well!!!
+					if moving_piece.resource.can_contain_events:
 						if moving_piece.end_node.get_index() < to_position:
 							TimelineUndoRedo.add_do_method(self, "move_block_to_index", moving_piece.end_node.get_index(), to_position)	
 							TimelineUndoRedo.add_undo_method(self, "move_block_to_index", to_position+1, moving_piece.end_node.get_index())
@@ -177,42 +177,19 @@ func _input(event):
 	
 	if (event is InputEventKey and event is InputEventWithModifiers and is_visible_in_tree()):
 		# CTRL Z # UNDO
-		if (event.pressed
-			and event.alt_pressed == false
-			and event.shift_pressed == false
-			and (event.ctrl_pressed == true or event.command_pressed == true)
-			and event.keycode == KEY_Z
-			and event.echo == false
-		):
+		if is_event_pressed(event, KEY_Z, false, false, true):
 			TimelineUndoRedo.undo()
 			indent_events()
 			get_viewport().set_input_as_handled()
 	if (event is InputEventKey and event is InputEventWithModifiers and is_visible_in_tree()):
 		# CTRL +SHIFT+ Z # REDO
-		if (event.pressed
-			and event.alt_pressed == false
-			and event.shift_pressed == true
-			and (event.ctrl_pressed == true or event.command_pressed == true)
-			and event.keycode == KEY_Z
-			and event.echo == false
-		) or (event.pressed
-			and event.alt_pressed == false
-			and event.shift_pressed == false
-			and (event.ctrl_pressed == true or event.command_pressed == true)
-			and event.keycode == KEY_Y
-			and event.echo == false):
+		if is_event_pressed(event, KEY_Z, false, true, true) or is_event_pressed(event, KEY_Y, false, false, true):
 			TimelineUndoRedo.redo()
 			indent_events()
 			get_viewport().set_input_as_handled()
 	if (event is InputEventKey and event is InputEventWithModifiers and is_visible_in_tree()):
 		# UP
-		if (event.pressed
-			and event.alt_pressed == false
-			and event.shift_pressed == false
-			and (event.ctrl_pressed == false or event.command_pressed == false)
-			and event.keycode == KEY_UP
-			and event.echo == false
-		):
+		if is_event_pressed(event, KEY_UP, false, false, false):
 			# select previous
 			if (len(selected_items) == 1):
 				var prev = max(0, selected_items[0].get_index() - 1)
@@ -224,13 +201,7 @@ func _input(event):
 
 			
 		# DOWN
-		if (event.pressed
-			and event.alt_pressed == false
-			and event.shift_pressed == false
-			and (event.ctrl_pressed == false or event.command_pressed == false)
-			and event.keycode == KEY_DOWN
-			and event.echo == false
-		):
+		if is_event_pressed(event, KEY_DOWN, false, false, false):
 			# select next
 			if (len(selected_items) == 1):
 				var next = min(timeline.get_child_count() - 1, selected_items[0].get_index() + 1)
@@ -241,13 +212,7 @@ func _input(event):
 				get_viewport().set_input_as_handled()
 			
 		# DELETE
-		if (event.pressed
-			and event.alt_pressed == false
-			and event.shift_pressed == false
-			and (event.ctrl_pressed == false or event.command_pressed == false)
-			and event.keycode == KEY_DELETE
-			and event.echo == false
-		):
+		if is_event_pressed(event, KEY_DELETE, false, false, false):
 			if (len(selected_items) != 0):
 				var events_indexed = get_events_indexed(selected_items)
 				TimelineUndoRedo.create_action("[D] Deleting "+str(len(selected_items))+" event(s).")
@@ -257,67 +222,37 @@ func _input(event):
 				get_viewport().set_input_as_handled()
 			
 		# CTRL T
-		if (event.pressed
-			and event.alt_pressed == false
-			and event.shift_pressed == false
-			and (event.ctrl_pressed == true or event.command_pressed == true)
-			and event.keycode == KEY_T
-			and event.echo == false
-		):
+		if is_event_pressed(event, KEY_T, false, false, true):
 			var at_index = -1
 			if selected_items:
 				at_index = selected_items[-1].get_index()+1
 			else:
 				at_index = timeline.get_child_count()
-			TimelineUndoRedo.create_action("[D] Add Text event.")
-			TimelineUndoRedo.add_do_method(self, "create_event", "dialogic_001", {'no-data': true}, true, at_index, true)
-			TimelineUndoRedo.add_undo_method(self, "remove_events_at_index", at_index, 1)
-			TimelineUndoRedo.commit_action()
+#			TimelineUndoRedo.create_action("[D] Add Text event.")
+#			TimelineUndoRedo.add_do_method(self, "create_event", "dialogic_001", {'no-data': true}, true, at_index, true)
+#			TimelineUndoRedo.add_undo_method(self, "remove_events_at_index", at_index, 1)
+#			TimelineUndoRedo.commit_action()
 			get_viewport().set_input_as_handled()
 			
 		# CTRL A
-		if (event.pressed
-			and event.alt_pressed == false
-			and event.shift_pressed == false
-			and (event.ctrl_pressed == true or event.command_pressed == true)
-			and event.keycode == KEY_A
-			and event.echo == false
-		):
+		if is_event_pressed(event, KEY_A, false, false, true):
 			if (len(selected_items) != 0):
 				select_all_items()
 			get_viewport().set_input_as_handled()
 		
 		# CTRL SHIFT A
-		if (event.pressed
-			and event.alt_pressed == false
-			and event.shift_pressed == true
-			and (event.ctrl_pressed == true or event.command_pressed == true)
-			and event.keycode == KEY_A
-			and event.echo == false
-		):
+		if is_event_pressed(event, KEY_A, false, true, true):
 			if (len(selected_items) != 0):
 				deselect_all_items()
 			get_viewport().set_input_as_handled()
 		
 		# CTRL C
-		if (event.pressed
-			and event.alt_pressed == false
-			and event.shift_pressed == false
-			and (event.ctrl_pressed == true or event.command_pressed == true)
-			and event.keycode == KEY_C
-			and event.echo == false
-		):
+		if is_event_pressed(event, KEY_V, false, false, true):
 			copy_selected_events()
 			get_viewport().set_input_as_handled()
 		
 		# CTRL V
-		if (event.pressed
-			and event.alt_pressed == false
-			and event.shift_pressed == false
-			and (event.ctrl_pressed == true or event.command_pressed == true)
-			and event.keycode == KEY_V
-			and event.echo == false
-		):
+		if is_event_pressed(event, KEY_V, false, false, true):
 			var events_list = paste_check()
 			var paste_position = -1
 			if selected_items:
@@ -332,13 +267,7 @@ func _input(event):
 				get_viewport().set_input_as_handled()
 		
 		# CTRL X
-		if (event.pressed
-			and event.alt_pressed == false
-			and event.shift_pressed == false
-			and (event.ctrl_pressed == true or event.command_pressed == true)
-			and event.keycode == KEY_X
-			and event.echo == false
-		):
+		if is_event_pressed(event, KEY_X, false, false, true):
 			var events_indexed = get_events_indexed(selected_items)
 			TimelineUndoRedo.create_action("[D] Cut "+str(len(selected_items))+" event(s).")
 			TimelineUndoRedo.add_do_method(self, "cut_events_indexed", events_indexed)
@@ -347,14 +276,7 @@ func _input(event):
 			get_viewport().set_input_as_handled()
 
 		# CTRL D
-		if (event.pressed
-			and event.alt_pressed == false
-			and event.shift_pressed == false
-			and (event.ctrl_pressed == true or event.command_pressed == true)
-			and event.keycode == KEY_D
-			and event.echo == false
-		):
-			
+		if is_event_pressed(event, KEY_D, false, false, true):
 			if len(selected_items) > 0:
 				var events = get_events_indexed(selected_items).values()
 				var at_index = selected_items[-1].get_index()
@@ -367,13 +289,7 @@ func _input(event):
 func _unhandled_key_input(event):
 	if (event is InputEventWithModifiers):
 		# ALT UP
-		if (event.pressed
-			and event.alt_pressed == true 
-			and event.shift_pressed == false 
-			and (event.ctrl_pressed == false or event.command_pressed == false)
-			and event.keycode == KEY_UP
-			and event.echo == false
-		):
+		if is_event_pressed(event, KEY_UP, true, false, false):
 			# move selected up
 			if (len(selected_items) == 1):
 				move_block(selected_items[0], "up")
@@ -381,18 +297,19 @@ func _unhandled_key_input(event):
 				get_viewport().set_input_as_handled()
 			
 		# ALT DOWN
-		if (event.pressed
-			and event.alt_pressed == true 
-			and event.shift_pressed == false 
-			and (event.ctrl_pressed == false or event.command_pressed == false)
-			and event.keycode == KEY_DOWN
-			and event.echo == false
-		):
+		if is_event_pressed(event, KEY_DOWN, true, false, false):
 			# move selected down
 			if (len(selected_items) == 1):
 				move_block(selected_items[0], "down")
 				indent_events()
 				get_viewport().set_input_as_handled()
+
+func is_event_pressed(event, keycode, alt:bool, shift:bool, ctrl_or_command:bool):
+	return (event.pressed and event.alt_pressed == alt 
+			and event.shift_pressed == shift 
+			and (event.ctrl_pressed or event.command_pressed ) == ctrl_or_command
+			and event.keycode == keycode
+			and event.echo == false)
 
 ## *****************************************************************************
 ##					 	DELETING, COPY, PASTE
@@ -419,17 +336,15 @@ func add_events_indexed(indexed_events:Dictionary) -> void:
 	indexes.sort()
 
 	var events = []
-	print('ADDING', indexed_events)
 	for event_idx in indexes:
 		deselect_all_items()
 		var event_resource = DialogicUtil.get_event_by_string(indexed_events[event_idx]).new()
 		event_resource.load_from_string_to_store(indexed_events[event_idx])
-		print(event_resource)
 		if event_resource is DialogicEndBranchEvent:
 			events.append(create_end_branch_event(timeline.get_child_count(), timeline.get_child(indexed_events[event_idx].trim_prefix('<<END BRANCH>>').to_int())))
 			timeline.move_child(events[-1], event_idx)
 		else:
-			events.append(add_event_to_timeline(event_resource))
+			events.append(add_event_node(event_resource))
 			timeline.move_child(events[-1], event_idx)
 		
 	selected_items = events
@@ -531,7 +446,7 @@ func add_events_at_index(event_list:Array, at_index:int) -> void:
 			var resource = DialogicUtil.get_event_by_string(item).new()
 			resource.load_from_string_to_store(item)
 			if item:
-				new_items.append(add_event_to_timeline(resource))
+				new_items.append(add_event_node(resource))
 	selected_items = new_items
 	sort_selection()
 	visual_update_selection()
@@ -579,10 +494,8 @@ func select_item(item: Node, multi_possible:bool = true):
 				selected_items = [item]
 		else:
 			selected_items = [item]
-
 	
 	sort_selection()
-	
 	visual_update_selection()
 
 
@@ -637,10 +550,10 @@ func _on_event_options_action(action: String, item: Node):
 func delete_event(event):
 	event.get_parent().remove_child(event)
 	event.queue_free()
+
 ## *****************************************************************************
 ##				CREATING NEW EVENTS USING THE BUTTONS
 ## *****************************************************************************
-
 # Event Creation signal for buttons
 func _add_event_button_pressed(event_script):
 	var at_index = -1
@@ -648,48 +561,24 @@ func _add_event_button_pressed(event_script):
 		at_index = selected_items[-1].get_index()+1
 	else:
 		at_index = timeline.get_child_count()
-	if event_script.new() is DialogicChoiceEvent:
-		TimelineUndoRedo.create_action("[D] Add choice event.")
-		TimelineUndoRedo.add_do_method(self, "add_choice", at_index)
+	
+	if event_script.new().can_contain_events:
+		TimelineUndoRedo.create_action("[D] Add event.")
+		TimelineUndoRedo.add_do_method(self, "add_event_with_end_branch", event_script.new(), at_index, true, true)
 		TimelineUndoRedo.add_undo_method(self, "remove_events_at_index", at_index, 2)
 		TimelineUndoRedo.commit_action()
-	elif event_script.new() is DialogicConditionEvent:
-		add_condition_pressed(at_index, DialogicConditionEvent.ConditionTypes.IF)
 	else:
 		TimelineUndoRedo.create_action("[D] Add event.")
-		TimelineUndoRedo.add_do_method(self, "add_event_to_timeline", event_script.new(), at_index, true, true)
+		TimelineUndoRedo.add_do_method(self, "add_event_node", event_script.new(), at_index, true, true)
 		TimelineUndoRedo.add_undo_method(self, "remove_events_at_index", at_index, 1)
 		TimelineUndoRedo.commit_action()
+	
 	scroll_to_piece(at_index)
 	indent_events()
 
-
-func add_choice(at_index):
-	var choice = add_event_to_timeline(DialogicChoiceEvent.new(), at_index)
-	create_end_branch_event(at_index+1, choice)
-
-# this is a seperate function, because it's also called from the EndBranch buttons.
-func add_condition_pressed(at_index, type):
-	TimelineUndoRedo.create_action("[D] Add condition event.")
-	TimelineUndoRedo.add_do_method(self, "add_condition", at_index, type)
-	TimelineUndoRedo.add_undo_method(self, "remove_events_at_index", at_index, 2)
-	TimelineUndoRedo.commit_action()
-
-func add_condition(at_index, type = DialogicConditionEvent.ConditionTypes.IF):
-	var resource = DialogicConditionEvent.new()
-	resource.ConditionType = type
-	var condition = add_event_to_timeline(resource, at_index)
-	create_end_branch_event(at_index+1, condition)
-
-func create_end_branch_event(at_index, parent_node):
-	var end_branch_event = load("res://addons/dialogic/Editor/Events/BranchEnd.tscn").instantiate()
-	end_branch_event.resource = DialogicEndBranchEvent.new()
-	end_branch_event.gui_input.connect(_on_event_block_gui_input.bind(end_branch_event))
-	parent_node.end_node = end_branch_event
-	end_branch_event.parent_node = parent_node
-	timeline.add_child(end_branch_event)
-	timeline.move_child(end_branch_event, at_index)
-	return end_branch_event
+func add_event_with_end_branch(resource, at_index:int=-1, auto_select:bool = false, indent:bool = false):
+	var event = add_event_node(resource, at_index, auto_select, indent)
+	create_end_branch_event(at_index+1, event)
 
 
 ## *****************************************************************************
@@ -699,7 +588,7 @@ func create_end_branch_event(at_index, parent_node):
 # Creates a ghost event for drag and drop
 func create_drag_and_drop_event(resource):
 	var index = get_index_under_cursor()
-	var piece = add_event_to_timeline(resource)
+	var piece = add_event_node(resource)
 	currently_draged_event_type = resource
 	timeline.move_child(piece, index)
 	moving_piece = piece
@@ -732,7 +621,10 @@ func cancel_drop_event():
 ##					 	CREATING THE TIMELINE
 ## *****************************************************************************
 # Adding an event to the timeline
-func add_event_to_timeline(event_resource:Resource, at_index:int = -1, auto_select: bool = false, indent: bool = false):
+func add_event_node(event_resource:Resource, at_index:int = -1, auto_select: bool = false, indent: bool = false):
+	if event_resource is DialogicEndBranchEvent:
+		return create_end_branch_event(at_index, timeline.get_child(0))
+	
 	var piece = load("res://addons/dialogic/Editor/Events/EventNode/EventNode.tscn").instantiate()
 	var resource = event_resource
 	piece.resource = event_resource
@@ -767,13 +659,27 @@ func add_event_to_timeline(event_resource:Resource, at_index:int = -1, auto_sele
 	
 	return piece
 
+func create_end_branch_event(at_index, parent_node):
+	var end_branch_event = load("res://addons/dialogic/Editor/Events/BranchEnd.tscn").instantiate()
+	end_branch_event.resource = DialogicEndBranchEvent.new()
+	end_branch_event.gui_input.connect(_on_event_block_gui_input.bind(end_branch_event))
+	parent_node.end_node = end_branch_event
+	end_branch_event.parent_node = parent_node
+	end_branch_event.add_end_control(parent_node.resource.get_end_branch_control())
+	timeline.add_child(end_branch_event)
+	timeline.move_child(end_branch_event, at_index)
+	return end_branch_event
+
+## *****************************************************************************
+##					 	SAVING
+## *****************************************************************************
 
 func new_timeline() -> void:
 	save_timeline()
 	clear_timeline()
 	show_save_dialog()
 
-# Saving
+
 func save_timeline() -> void:
 	if ! visible:
 		return
@@ -809,9 +715,11 @@ func create_and_save_new_timeline(path):
 	load_timeline(new_timeline)
 	
 
+## *****************************************************************************
+##					 	LOADING
+## *****************************************************************************
 
 func load_timeline(object) -> void:
-	#print('[D] Load timeline: ', object)
 	clear_timeline()
 	%Toolbar.load_timeline(object.resource_path)
 	current_timeline = object
@@ -831,9 +739,9 @@ func something_changed():
 
 
 func batch_events(array, size, batch_number):
-	return array.slice((batch_number - 1) * size, batch_number * size - 1)
+	return array.slice((batch_number - 1) * size, batch_number * size)
 
-# a list of all choice and condition events (so they get connected to their end events)
+# a list of all events like choice and condition events (so they get connected to their end events)
 var opener_events_stack = []
 
 func load_batch(data):
@@ -843,8 +751,8 @@ func load_batch(data):
 			if i is DialogicEndBranchEvent:
 				create_end_branch_event(timeline.get_child_count(), opener_events_stack.pop_back())
 			else:
-				var piece = add_event_to_timeline(i, timeline.get_child_count())
-				if i is DialogicChoiceEvent or i is DialogicConditionEvent:
+				var piece = add_event_node(i, timeline.get_child_count())
+				if i.can_contain_events:
 					opener_events_stack.push_back(piece)
 	emit_signal("batch_loaded")
 
@@ -854,6 +762,10 @@ func _on_batch_loaded():
 		await get_tree().create_timer(0.01).timeout
 		load_batch(batches)
 	else:
+		if opener_events_stack:
+			for ev in opener_events_stack:
+				create_end_branch_event(timeline.get_child_count(), ev)
+		opener_events_stack = []
 		indent_events()
 		building_timeline = false
 		emit_signal("timeline_loaded")
@@ -935,31 +847,23 @@ func scroll_to_piece(piece_index) -> void:
 
 # Event Indenting
 func indent_events() -> void:
-	# Now indenting
 	var indent: int = 0
-	var prev_indent : int = 0
-	var delay: bool = false # true for some logic events, so indent only changes one event later
 	var event_list: Array = timeline.get_children()
-	var question_index: int = 0
-	var question_indent = {}
+
 	if event_list.size() < 2:
 		return
-	# Resetting all the indents
-	for event in event_list:
-		var indent_node
-		
-		event.set_indent(0)
-		
+
 	var currently_hidden = false
 	var hidden_until = null
-	# Adding new indents
+	
+	# will be applied to the indent after the current event
+	var delayed_indent: int = 0
+	
 	for event in event_list:
-		# since there are indicators now, not all elements
-		# in this list have an event_data property
 		if (not "resource" in event):
 			continue
 			
-		if (not currently_hidden) and 'end_node' in event and event.end_node and event.collapsed:
+		if (not currently_hidden) and event.resource.can_contain_events and event.end_node and event.collapsed:
 			currently_hidden = true
 			hidden_until = event.end_node
 		elif currently_hidden and event == hidden_until:
@@ -969,43 +873,31 @@ func indent_events() -> void:
 			event.hide()
 		else:
 			event.show()
-		
-		## DETECT QUESTIONS
-		if event.resource is DialogicTextEvent or event.resource is DialogicConditionEvent:
-			if (get_block_below(event) and 'resource' in get_block_below(event) and get_block_below(event).resource is DialogicChoiceEvent) or event.resource is DialogicConditionEvent:
-				indent += 1
-				delay = true
-				question_index += 1
-				question_indent[question_index] = indent
-		
-		elif event.resource is DialogicChoiceEvent:
-			if question_index > 0:
-				indent = question_indent[question_index] + 1
-				delay = true
-			if (get_block_above(event) and 'resource' in get_block_above(event)) and (get_block_above(event).resource is DialogicEndBranchEvent or get_block_above(event).resource is DialogicTextEvent):
-				event.remove_warning('This event is not connected to any Question!')
-			else:
-				event.set_warning('This event is not connected to any Question!')
 
-		elif event.resource is DialogicEndBranchEvent:
-			if question_indent.has(question_index):
-				if get_block_below(event) and 'resource' in get_block_below(event) and get_block_below(event).resource is DialogicChoiceEvent:
-					indent = question_indent[question_index]
-					delay = true
-				else:
-					indent = question_indent[question_index] -1
-					delay = true
-					question_index -= 1
-				if indent < 0:
-					indent = 0
-#				
+		delayed_indent = 0
+		
+		if event.resource.can_contain_events:
+			delayed_indent = 1
+
+		if event.resource.needs_parent_event:
+			if get_block_above(event) and 'resource' in get_block_above(event):
+				if get_block_above(event).resource is DialogicEndBranchEvent:
+					if event.resource.is_expected_parent_event(get_block_above(get_block_above(event).parent_node).resource):
+						indent += 1
+				elif event.resource.is_expected_parent_event(get_block_above(event).resource):
+					indent += 1
+		
+		if event.resource is DialogicEndBranchEvent:
+			delayed_indent -= 1
+			if event.parent_node.resource.needs_parent_event:
+				delayed_indent -= 1
+		
 		if indent >= 0:
-			if delay:
-				event.set_indent(prev_indent)
-			else:
-				event.set_indent(indent)
-		delay = false
-		prev_indent = indent
+			event.set_indent(indent)
+		else:
+			event.set_indent(0)
+		indent += delayed_indent
+	
 	timeline_area.update()
 
 

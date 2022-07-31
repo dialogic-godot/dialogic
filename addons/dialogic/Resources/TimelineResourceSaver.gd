@@ -37,11 +37,8 @@ func _save(path: String, resource: Resource, flags: int) -> int:
 		var event = resource._events[idx]
 		
 		if event is DialogicEndBranchEvent:
-			if idx < len(resource._events)-1 and resource._events[idx+1] is DialogicChoiceEvent:
-				indent -= 1
-			else:
-				result += "\t".repeat(indent)+"\n"
-				indent -= 1
+			#result += "\t".repeat(indent)+"\n"
+			indent -= 1
 			continue
 		if event != null:
 			result += "\t".repeat(indent)+event._store_as_string() + "\n"
@@ -50,10 +47,11 @@ func _save(path: String, resource: Resource, flags: int) -> int:
 					trans_updates[event.translation_id] = event.get_original_translation_text()
 				else:
 					trans_updates[event.add_translation_id()] = event.get_original_translation_text()
-		if event is DialogicChoiceEvent or event is DialogicConditionEvent:
+		if event.can_contain_events:
 			indent += 1
 		if indent < 0: indent = 0
 		result += "\t".repeat(indent)+"\n"
+	
 	file.store_string(result)
 	file.close()
 	print('[Dialogic] Saved timeline "' , path, '"')
