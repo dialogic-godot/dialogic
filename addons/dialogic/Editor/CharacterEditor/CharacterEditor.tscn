@@ -119,7 +119,7 @@ anchor_bottom = 0.0
 offset_top = 3.0
 offset_right = 150.0
 offset_bottom = 29.0
-text = "Nickanmes:"
+text = "Nicknames:"
 text_key = "Nicknames: "
 mode = 0
 
