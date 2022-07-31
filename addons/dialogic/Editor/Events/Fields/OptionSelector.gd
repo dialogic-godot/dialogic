@@ -15,9 +15,9 @@ var disabled = false:
 func _ready():
 	DCSS.style($MenuButton, {
 		'border-radius': 3,
-		'border-color': '#14161A',
+		'border-color': Color('#14161A'),
 		'border': 1,
-		'background': '#1D1F25',
+		'background': Color('#1D1F25'),
 		'padding': [5, 10],
 	})
 	$MenuButton.about_to_popup.connect(insert_options)
