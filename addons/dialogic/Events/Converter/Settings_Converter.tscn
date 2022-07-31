@@ -48,3 +48,4 @@ disabled = true
 text = "Begin Conversion"
 
 [connection signal="pressed" from="RightPanel/Verify" to="." method="_on_verify_pressed"]
+[connection signal="pressed" from="RightPanel/Begin" to="." method="_on_begin_pressed"]
