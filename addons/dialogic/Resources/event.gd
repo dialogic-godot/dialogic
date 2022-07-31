@@ -159,6 +159,14 @@ func is_expected_parent_event(event:DialogicEvent):
 func get_end_branch_control() -> Control:
 	return null
 
+
+# to be overridden by sub-classes
+# only called if can_contain_events is true and the previous event was an end-branch event
+# return true if this event should be executed if the previous event was an end-branch event
+# basically only important for the Condition event but who knows. Some day someone might need this.
+func should_execute_this_branch():
+	return false
+
 ################################################################################
 ## 					TRANSLATIONS
 ################################################################################

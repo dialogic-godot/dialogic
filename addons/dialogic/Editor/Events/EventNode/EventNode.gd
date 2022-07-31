@@ -149,6 +149,7 @@ func focus():
 
 func toggle_collapse(toggled):
 	collapsed = toggled
+	%CollapsedBody.visible = toggled
 	var timeline_editor = find_parent('TimelineEditor')
 	if (timeline_editor != null):
 		# @todo select item and clear selection is marked as "private" in TimelineEditor.gd

@@ -86,6 +86,9 @@ func _draw():
 		if not "resource" in event:
 			continue
 		
+		if not event.visible:
+			continue
+		
 		if !event.resource is DialogicEndBranchEvent: 
 			var icon_panel_height = 32*_scale
 			var rect_position = event.get_node('%IconPanel').global_position+Vector2(0,1)*event.get_node('%IconPanel').size+Vector2(0,-4)

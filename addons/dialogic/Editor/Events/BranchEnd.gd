@@ -1,7 +1,5 @@
 @tool
 extends Control
-
-
 var resource
 var parent_node
 
@@ -23,6 +21,7 @@ func visual_select():
 
 func visual_deselect():
 	modulate = Color(1,1,1,1)
+
 
 func highlight():
 	modulate = parent_node.resource.event_color.lightened(0.5)

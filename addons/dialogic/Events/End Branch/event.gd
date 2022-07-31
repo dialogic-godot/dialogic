@@ -3,7 +3,6 @@ extends DialogicEvent
 class_name DialogicEndBranchEvent
 
 var this_is_an_end_event
-var parent_event = null
 
 func _execute() -> void:
 	dialogic.current_event_idx = find_next_index()-1
@@ -11,37 +10,28 @@ func _execute() -> void:
 
 func find_next_index():
 	var idx = dialogic.current_event_idx
-	
-	# In case the next event is not a choice or ELIF/ELSE event, just go to the next one
-	# excuse this, checking like normally creates a FUCKING CYCLIC DEPENDENCY....
-	if not (dialogic.current_timeline.get_event(idx+1) and 'ConditionType' in dialogic.current_timeline.get_event(idx+1) and dialogic.current_timeline.get_event(idx+1).ConditionType != 0):
-		if not dialogic.current_timeline.get_event(idx+1) is DialogicChoiceEvent:
-			return idx+1
-			
-	
+#
+#	# if the next event is a boringly normal event, just go there
+#	if dialogic.current_timeline.get_event(idx+1) and !dialogic.current_timeline.get_event(idx+1).can_contain_events:
+#		return idx+1
+#
+#	# if the next event
+#	if dialogic.current_timeline.get_event(idx+1) and dialogic.current_timeline.get_event(idx+1).should_execute_this_branch():
+#		return idx+1
+#
 	var ignore = 1
-	# this will go through the next events, until 
-	# there is a event that's ONE INDENT LESS and NOT A CHOICE and NOT an ELIF or ELSE event
 	while true:
 		idx += 1
 		var event = dialogic.current_timeline.get_event(idx)
 		if not event:
-			idx -= 1
-			break
-		if event is DialogicChoiceEvent:
+			return idx
+		if event is DialogicEndBranchEvent:
+			if ignore > 1: ignore -= 1
+		elif event.can_contain_events and not event.should_execute_this_branch():
 			ignore += 1
-		# if we get to a condition that is of type elif or else
-		elif 'ConditionType' in event and event.ConditionType != 0:
-			pass
-		elif ignore == 1:
-			break
-		# excuse this, checking like above creates a FUCKING CYCLIC DEPENDENCY....
-		if 'ConditionType' in dialogic.current_timeline.get_event(idx):
-			ignore += 1
-		# excuse this, checking like above creates a FUCKING CYCLIC DEPENDENCY....
-		elif 'this_is_an_end_event' in dialogic.current_timeline.get_event(idx):
-			ignore -= 1
-		
+		elif ignore <= 1:
+			return idx
+
 	return idx
 
 ################################################################################

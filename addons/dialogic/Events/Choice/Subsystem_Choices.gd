@@ -108,7 +108,7 @@ func get_current_choice_indexes() -> Array:
 			if ignore == 0:
 				choices.append(evt_idx)
 			ignore += 1
-		if dialogic.current_timeline_events[evt_idx] is DialogicConditionEvent:
+		elif dialogic.current_timeline_events[evt_idx].can_contain_events:
 			ignore += 1
 		else:
 			if ignore == 0:

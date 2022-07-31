@@ -419,12 +419,10 @@ func add_events_indexed(indexed_events:Dictionary) -> void:
 	indexes.sort()
 
 	var events = []
-	print('ADDING', indexed_events)
 	for event_idx in indexes:
 		deselect_all_items()
 		var event_resource = DialogicUtil.get_event_by_string(indexed_events[event_idx]).new()
 		event_resource.load_from_string_to_store(indexed_events[event_idx])
-		print(event_resource)
 		if event_resource is DialogicEndBranchEvent:
 			events.append(create_end_branch_event(timeline.get_child_count(), timeline.get_child(indexed_events[event_idx].trim_prefix('<<END BRANCH>>').to_int())))
 			timeline.move_child(events[-1], event_idx)
@@ -579,10 +577,8 @@ func select_item(item: Node, multi_possible:bool = true):
 				selected_items = [item]
 		else:
 			selected_items = [item]
-
 	
 	sort_selection()
-	
 	visual_update_selection()
 
 
@@ -666,18 +662,6 @@ func _add_event_button_pressed(event_script):
 func add_event_with_end_branch(resource, at_index:int=-1, auto_select:bool = false, indent:bool = false):
 	var event = add_event_node(resource, at_index, auto_select, indent)
 	create_end_branch_event(at_index+1, event)
-#
-## this is a seperate function, because it's also called from the EndBranch buttons.
-#func add_condition_pressed(at_index, type):
-#	TimelineUndoRedo.create_action("[D] Add condition event.")
-#	TimelineUndoRedo.add_do_method(self, "add_condition", at_index, type)
-#	TimelineUndoRedo.add_undo_method(self, "remove_events_at_index", at_index, 2)
-#	TimelineUndoRedo.commit_action()
-#
-#func add_condition(at_index, type = DialogicConditionEvent.ConditionTypes.IF):
-#
-#	var condition = add_event_node(resource, at_index)
-#	create_end_branch_event(at_index+1, condition)
 
 
 ## *****************************************************************************
@@ -819,7 +803,6 @@ func create_and_save_new_timeline(path):
 ## *****************************************************************************
 
 func load_timeline(object) -> void:
-	#print('[D] Load timeline: ', object)
 	clear_timeline()
 	%Toolbar.load_timeline(object.resource_path)
 	current_timeline = object
@@ -839,7 +822,7 @@ func something_changed():
 
 
 func batch_events(array, size, batch_number):
-	return array.slice((batch_number - 1) * size, batch_number * size - 1)
+	return array.slice((batch_number - 1) * size, batch_number * size)
 
 # a list of all events like choice and condition events (so they get connected to their end events)
 var opener_events_stack = []

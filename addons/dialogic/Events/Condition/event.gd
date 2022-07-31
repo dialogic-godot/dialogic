@@ -17,23 +17,25 @@ func _execute() -> void:
 	if not result:
 		var idx = dialogic.current_event_idx
 		var ignore = 1
-		# this will go through the next events, until there is a event that is not a choice and on the same level as this one
 		while true:
 			idx += 1
 			if not dialogic.current_timeline.get_event(idx):
 				break
-			if dialogic.current_timeline.get_event(idx) is DialogicChoiceEvent:
+			
+			if dialogic.current_timeline.get_event(idx).can_contain_events:
 				ignore += 1
 			elif dialogic.current_timeline.get_event(idx) is DialogicEndBranchEvent:
 				ignore -= 1
 			elif ignore == 0:
 				break
-			# excuse this, checking like above creates a FUCKING CYCLIC DEPENDENCY....
-			elif 'ConditionType' in dialogic.current_timeline.get_event(idx):
-				ignore += 1
-			
+		
 		dialogic.current_event_idx = idx-1
 	finish()
+
+# only called if the previous event was an end-branch event
+# return true if this event should be executed if the previous event was an end-branch event
+func should_execute_this_branch() -> bool:
+	return ConditionType == ConditionTypes.IF
 
 
 ################################################################################

@@ -84,7 +84,6 @@ func get_as_string_to_store() -> String:
 
 ## THIS HAS TO READ ALL THE DATA FROM THE SAVED STRING (see above) 
 func load_from_string_to_store(string:String):
-	print("Text Event from STRING: ", string)
 	var reg = RegEx.new()
 	reg.compile("((?<name>[^:()\\n]*)?(?=(\\([^()]*\\))?:)(\\((?<portrait>[^()]*)\\))?)?:?(?<text>(.|(?<=\\\\)\\n)+)")
 	var result = reg.search(string)
@@ -98,9 +97,7 @@ func load_from_string_to_store(string:String):
 		if !result.get_string('portrait').is_empty():
 			Portrait = result.get_string('portrait').strip_edges()
 	
-	print(result.get_string('text'))
 	Text = result.get_string('text').replace("\\\n", "\n").strip_edges()
-	
 
 func is_valid_event_string(string):
 	return true
