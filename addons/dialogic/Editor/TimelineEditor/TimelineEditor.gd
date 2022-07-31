@@ -77,7 +77,7 @@ func _ready():
 	timeline_area.resized.connect(add_extra_scroll_area_to_timeline)
 	
 	# Event buttons
-	var buttonScene = load("res://addons/dialogic/Editor/TimelineEditor/SmallEventButton.tscn")
+	var buttonScene = load("res://addons/dialogic/Editor/TimelineEditor/AddEventButton.tscn")
 	for event_script in DialogicUtil.get_event_scripts():
 		var event_resource = load(event_script).new()
 		if event_resource.disable_editor_button == true: continue
@@ -785,7 +785,7 @@ func save_timeline() -> void:
 	if current_timeline:
 		current_timeline.set_events(new_events)
 		ResourceSaver.save(current_timeline.resource_path, current_timeline)
-		get_node("%Toolbar").set_resource_saved()
+		%Toolbar.set_resource_saved()
 	else:
 		if new_events.size() > 0:
 			show_save_dialog()
@@ -813,7 +813,7 @@ func create_and_save_new_timeline(path):
 func load_timeline(object) -> void:
 	#print('[D] Load timeline: ', object)
 	clear_timeline()
-	$'%Toolbar'.load_timeline(object.resource_path)
+	%Toolbar.load_timeline(object.resource_path)
 	current_timeline = object
 	var data = object.get_events()
 	var page = 1
@@ -827,7 +827,7 @@ func load_timeline(object) -> void:
 
 
 func something_changed():
-	$'%Toolbar'.set_resource_unsaved()
+	%Toolbar.set_resource_unsaved()
 
 
 func batch_events(array, size, batch_number):

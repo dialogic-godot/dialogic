@@ -10,6 +10,7 @@ signal dialogic_save
 
 const MainPanel = preload("res://addons/dialogic/Editor/EditorView.tscn")
 
+
 func _init():
 	self.name = 'DialogicPlugin'
 	
@@ -21,14 +22,13 @@ func _enter_tree():
 	_editor_interface = get_editor_interface()
 	get_editor_interface().get_editor_main_control().add_child(_editor_view)
 	_make_visible(false)
-	print(get_path())
 
 
 func _ready():
-	if Engine.is_editor_hint():
-		# Force Godot to show the dialogic folder
-		get_editor_interface().get_resource_filesystem().scan()
-	
+	# Adding custom dialogic icons to Godot's theme
+	var c = Control.new()
+	pass
+
 
 func _exit_tree():
 	if _editor_view:
@@ -89,8 +89,10 @@ func _enable_plugin():
 	add_autoload_singleton("Dialogic", "res://addons/dialogic/Other/DialogicGameHandler.gd")
 	add_dialogic_default_action()
 
+
 func _disable_plugin():
 	remove_autoload_singleton("Dialogic")
+
 
 func add_dialogic_default_action():
 	if !ProjectSettings.has_setting('input/dialogic_default_action'):

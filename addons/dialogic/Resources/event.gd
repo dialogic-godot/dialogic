@@ -144,6 +144,12 @@ func get_icon():
 		return icon
 	return load("res://addons/dialogic/Editor/Images/Pieces/warning.svg")
 
+func get_theme_icon(name:StringName, theme_type:StringName):
+	#print('here')
+	#var empty_control = Control.new()
+	#return empty_control.get_theme_icon(name, theme_type)
+	return false
+	
 
 func set_default_color(value):
 	dialogic_color_name = value

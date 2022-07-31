@@ -9,15 +9,15 @@ var preview_scene = get_script().resource_path.get_base_dir().plus_file("Preview
 ################################################################################
 
 func get_item_name():
-	return $'%NameEdit'.text.strip_edges()
+	return %NameEdit.text.strip_edges()
 
 func get_data() -> String:
-	return $'%ValueEdit'.text
+	return %ValueEdit.text
 
 func load_data(var_name:String, var_value:String, _Group:Control) -> void:
 	parent_Group = _Group
-	$'%NameEdit'.text = var_name
-	$'%ValueEdit'.text = var_value
+	%NameEdit.text = var_name
+	%ValueEdit.text = var_value
 
 ################################################################################
 ##				DRAGGING
@@ -54,8 +54,8 @@ func _drop_data(position, data):
 ################################################################################
 
 func _ready():
-	$'%DeleteButton'.icon = get_theme_icon("Remove", "EditorIcons")
-	$'%Dragger'.texture = get_theme_icon("TripleBar", "EditorIcons")
+	%DeleteButton.icon = get_theme_icon("Remove", "EditorIcons")
+	%Dragger.texture = get_theme_icon("TripleBar", "EditorIcons")
 
 
 func _on_DeleteButton_pressed():
@@ -65,7 +65,7 @@ func _on_DeleteButton_pressed():
 
 func _on_NameEdit_gui_input(event):
 	if event is InputEventMouseButton and event.pressed and event.double_click:
-		$'%NameEdit'.editable = true
+		%NameEdit.editable = true
 
 
 func _on_NameEdit_focus_exited():
@@ -75,7 +75,7 @@ func _on_name_edit_text_submitted(new_text):
 	disable_name_edit()
 
 func disable_name_edit():
-	$'%NameEdit'.editable = false
+	%NameEdit.editable = false
 	parent_Group.check_data()
 
 func warning():

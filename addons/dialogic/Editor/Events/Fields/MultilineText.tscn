@@ -43,9 +43,9 @@ offset_bottom = 311.0
 
 [node name="TextEdit" type="TextEdit" parent="."]
 offset_left = 5.0
-offset_right = 1019.0
+offset_right = 22.0
 offset_bottom = 600.0
-size_flags_horizontal = 3
+size_flags_horizontal = 2
 size_flags_vertical = 3
 theme_override_styles/normal = SubResource("StyleBoxFlat_bofjx")
 theme_override_styles/focus = SubResource("StyleBoxFlat_lyutj")
