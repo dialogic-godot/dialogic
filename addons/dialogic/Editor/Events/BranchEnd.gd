@@ -1,27 +1,31 @@
 @tool
 extends Control
 
+
 var resource
 var parent_node
 
+var end_control :Control
+
 ### the indent size
-var indent_size = 45
+var indent_size = 15
 var current_indent_level = 1
 
 func _ready():
+	$Icon.icon = get_theme_icon("GuiSpinboxUpdown", "EditorIcons")
 	parent_node_changed()
-	$ConditionButtons/Elif.pressed.connect(add_elif)
-	$ConditionButtons/Else.pressed.connect(add_else)
+	$Spacer.custom_minimum_size.x = 300*DialogicUtil.get_editor_scale()
+	
 
 func visual_select():
-	modulate = get_theme_color("accent_color", "Editor")
+	modulate = get_theme_color("warning_color", "Editor")
 
 
 func visual_deselect():
 	modulate = Color(1,1,1,1)
 
 func highlight():
-	modulate = get_theme_color("warning_color", "Editor")
+	modulate = parent_node.resource.event_color.lightened(0.5)
 
 
 func unhighlight():
@@ -36,27 +40,14 @@ func set_indent(indent: int):
 
 func parent_node_changed():
 	if parent_node:
-		if parent_node.resource is DialogicChoiceEvent:
-			$Label.text = "End of choice '"+parent_node.resource.Text+"'"
-			$ConditionButtons.hide()
-		elif parent_node.resource is DialogicConditionEvent:
-			if parent_node.resource.ConditionType != DialogicConditionEvent.ConditionTypes.ELSE:
-				$ConditionButtons.show()
-				$Label.text = "End of condition '"+parent_node.resource.Condition+"'"
-			else:
-				$ConditionButtons.hide()
-				$Label.text = "End of else"
-				
-			
-func add_elif():
-	var timeline = find_parent('TimelineEditor')
-	if timeline:
-		timeline.add_condition_pressed(get_index()+1, DialogicConditionEvent.ConditionTypes.ELIF)
-		timeline.indent_events()
+		if end_control and end_control.has_method('refresh'):
+			end_control.refresh()
 
-func add_else():
-	var timeline = find_parent('TimelineEditor')
-	if timeline:
-		timeline.add_condition_pressed(get_index()+1, DialogicConditionEvent.ConditionTypes.ELSE)
-		timeline.indent_events()
+func add_end_control(control:Control):
+	add_child(control)
+	if "parent_resource" in control:
+		control.parent_resource = parent_node.resource
+	if control.has_method('refresh'):
+		control.refresh()
+	end_control = control
 

@@ -11,7 +11,6 @@ var dialogic_color_name:String = ''
 ## If the resource name is different from the event name, resource_name is returned instead.
 var event_name:String = "Event"
 
-
 # To sort the buttons shown in the editor
 var event_sorting_index : int = 0
 
@@ -31,6 +30,12 @@ enum Location {
 
 var event_category:int = Category.OTHER
 
+var help_page_path : String = ""
+
+var display_name : bool = true
+var disable_editor_button : bool = false
+var expand_by_default : bool = true
+
 
 # This is necessary to distinguish different ways value types might need to be represented
 # It's used to communicate between the event resource and the event node, how a value
@@ -43,9 +48,8 @@ enum ValueType {
 	
 	Bool,
 	
-	# 
+	# "Resources"
 	ComplexPicker,
-	Script,
 	File,
 	
 	StringArray,
@@ -61,24 +65,15 @@ enum ValueType {
 }
 var editor_list = []
 
-# Hopefully we can replace this with a cleaner system
-# maybe even generate them based on some markup? who knows, it is free to dream
-var header : Array
-var body : Array
-
-var help_page_path : String = ""
-
-var expand_by_default : bool = true
 var needs_indentation : bool = false
-var display_name : bool = true
-var disable_editor_button : bool = false
+
+##
+# This means it will always spawn with a END BRANCH event
+var can_contain_events : bool = false
+var end_branch_event : DialogicEndBranchEvent = null
+var needs_parent_event : bool = false
 
 var translation_id = null
-
-# -----------------------------------------
-# Emilio:
-# Stuff I yet don't understand made by Dex:
-# -----------------------------------------
 
 # This file is part of EventSystem, distributed under MIT license
 # and modified to work with Dialogic.
@@ -153,6 +148,17 @@ func set_default_color(value):
 func get_required_subsystems() -> Array:
 	return []
 
+# to be overridden by sub-classes
+# if needs_parent_event is true, this needs to return true if the event is that event
+func is_expected_parent_event(event:DialogicEvent):
+	return false
+
+# to be overridden by sub-classes
+# only called if can_contain_events is true. 
+# return a control node that should show on the END BRANCH node
+func get_end_branch_control() -> Control:
+	return null
+
 ################################################################################
 ## 					TRANSLATIONS
 ################################################################################
@@ -197,6 +203,7 @@ func _test_event_string(string:String) -> bool:
 	if '#id:' in string and can_be_translated():
 		return is_valid_event_string(string.get_slice('#id:', 0)) 
 	return is_valid_event_string(string.strip_edges())
+
 
 ################################################################################
 ## 					PARSE AND STRINGIFY
@@ -249,6 +256,14 @@ func is_valid_event_string(string:String):
 	if string.strip_edges().begins_with('['+get_shortcode()):
 		return true
 	return false
+
+# has to return true if this string seems to be a full event of this kind 
+# (only tested if is_valid_event_string() returned true)
+# if a shortcode it used it will default to true if the string ends with ']'
+func is_string_full_event(string:String) -> bool:
+	if get_shortcode() != 'default_shortcode': return string.ends_with(']')
+	return true
+
 
 # used to get all the shortcode parameters in a string as a dictionary
 func parse_shortcode_parameters(shortcode : String) -> Dictionary:

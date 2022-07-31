@@ -46,8 +46,13 @@ func _init() -> void:
 	set_default_color('Color3')
 	event_category = Category.LOGIC
 	event_sorting_index = 0
+	can_contain_events = true
 	continue_at_end = true
 
+
+# return a control node that should show on the END BRANCH node
+func get_end_branch_control() -> Control:
+	return load(get_script().resource_path.get_base_dir().plus_file('Condition_End.tscn')).instantiate()
 
 ################################################################################
 ## 						SAVING/LOADING
@@ -94,5 +99,5 @@ func is_valid_event_string(string:String):
 ################################################################################
 
 func build_event_editor():
-	add_header_edit('ConditionType', ValueType.FixedOptionSelector, '', '', {'selector_options':{"if":ConditionTypes.IF, "elif":ConditionTypes.ELIF, "else":ConditionTypes.ELSE}, 'disabled':true})
+	add_header_edit('ConditionType', ValueType.FixedOptionSelector, '', '', {'selector_options':{"IF":ConditionTypes.IF, "ELIF":ConditionTypes.ELIF, "ELSE":ConditionTypes.ELSE}, 'disabled':true})
 	add_header_edit('Condition', ValueType.SinglelineText, '', '', {}, 'ConditionType != %s'%ConditionTypes.ELSE)

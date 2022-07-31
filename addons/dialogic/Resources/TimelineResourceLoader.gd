@@ -45,27 +45,49 @@ func _load(path: String, original_path: String, use_sub_threads: bool, cache_mod
 	# this is needed to add a end branch event even to empty conditions/choices
 	var prev_was_opener = false
 	
-	for line in file.get_as_text().split("\n", false):
-		var stripped_line = line.strip_edges(true, false)
+	var lines = file.get_as_text().split('\n', true)
+	var idx = -1
+	
+	while idx < len(lines)-1:
+		idx += 1
+		var line = lines[idx]
+		var line_stripped = line.strip_edges(true, false)
 		
-		if stripped_line.is_empty():
+		if line_stripped.is_empty():
 			continue
-		
-		var indent = line.substr(0,len(line)-len(stripped_line))
+	
+		var indent = line.substr(0,len(line)-len(line_stripped))
+
 		if len(indent) < len(prev_indent):
 			for i in range(len(prev_indent)-len(indent)):
 				events.append(DialogicEndBranchEvent.new())
+		
 		elif prev_was_opener and len(indent) == len(prev_indent):
 			events.append(DialogicEndBranchEvent.new())
-			
+
 		prev_indent = indent
 		
-		line = stripped_line
-		var event = DialogicUtil.get_event_by_string(line).new()
-		event._load_from_string(line)
-		events.append(event)
+		var event_content = line_stripped
+		var event = DialogicUtil.get_event_by_string(event_content).new()
 		
-		prev_was_opener = (event is DialogicChoiceEvent or event is DialogicConditionEvent)
+		# add the following lines until the event says it's full there is an empty line or the indent changes
+		while !event.is_string_full_event(event_content):
+			idx += 1
+			if idx == len(lines):
+				break
+			var following_line = lines[idx]
+			var following_line_stripped = following_line.strip_edges(true, false)
+			var following_line_indent = following_line.substr(0,len(following_line)-len(following_line_stripped))
+			if following_line_stripped.is_empty():
+				break
+			if following_line_indent != indent:
+				idx -= 1
+				break
+			event_content += "\n"+following_line_stripped
+		
+		event._load_from_string(event_content)
+		events.append(event)
+		prev_was_opener = event.can_contain_events
 
 	
 	if !prev_indent.is_empty():
