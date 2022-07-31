@@ -92,14 +92,14 @@ func _init() -> void:
 func get_as_string_to_store() -> String:
 	if Character:
 		if Portrait and not Portrait.is_empty():
-			return Character.name+" ("+Portrait+"): "+Text.replace("\n", "<br>")
-		return Character.name+": "+Text.replace("\n", "<br>")
-	return Text.replace("\n", "<br>")
+			return Character.name+" ("+Portrait+"): "+Text.replace("\n", "\\\n")
+		return Character.name+": "+Text.replace("\n", "\\\n")
+	return Text.replace("\n", "\\\n")
 
 ## THIS HAS TO READ ALL THE DATA FROM THE SAVED STRING (see above) 
 func load_from_string_to_store(string:String):
 	var reg = RegEx.new()
-	reg.compile("((?<name>[^:()\\n\\s]*)?(?=(\\([^()]*\\))?:)(\\((?<portrait>[^()]*)\\))?)?:?(?<text>[^\\n]+)")
+	reg.compile("((?<name>[^:()\\n]*)?(?=(\\([^()]*\\))?:)(\\((?<portrait>[^()]*)\\))?)?:?(?<text>(.|(?<=\\\\)\\n)+)")
 	var result = reg.search(string)
 	if result and !result.get_string('name').is_empty():
 		var character = DialogicUtil.guess_resource('.dch', result.get_string('name').strip_edges())
@@ -110,12 +110,14 @@ func load_from_string_to_store(string:String):
 			#print("When importing timeline, we couldn't identify what character you meant with ", result.get_string('name'), ".")
 		if !result.get_string('portrait').is_empty():
 			Portrait = result.get_string('portrait').strip_edges()
-	Text = result.get_string('text').replace("<br>", "\n").trim_prefix(" ")
 	
+	Text = result.get_string('text').replace("\\\n", "\n").strip_edges()
 
 func is_valid_event_string(string):
 	return true
 
+func is_string_full_event(string:String) -> bool:
+	return !string.ends_with('\\')
 
 func can_be_translated():
 	return true

@@ -17,23 +17,26 @@ func _execute() -> void:
 	if not result:
 		var idx = dialogic.current_event_idx
 		var ignore = 1
-		# this will go through the next events, until there is a event that is not a choice and on the same level as this one
 		while true:
 			idx += 1
 			if not dialogic.current_timeline.get_event(idx):
 				break
-			if dialogic.current_timeline.get_event(idx) is DialogicChoiceEvent:
+			if ignore == 0 and dialogic.current_timeline.get_event(idx) is DialogicConditionEvent:
+				break
+			if dialogic.current_timeline.get_event(idx).can_contain_events:
 				ignore += 1
 			elif dialogic.current_timeline.get_event(idx) is DialogicEndBranchEvent:
 				ignore -= 1
 			elif ignore == 0:
 				break
-			# excuse this, checking like above creates a FUCKING CYCLIC DEPENDENCY....
-			elif 'ConditionType' in dialogic.current_timeline.get_event(idx):
-				ignore += 1
-			
+		
 		dialogic.current_event_idx = idx-1
 	finish()
+
+# only called if the previous event was an end-branch event
+# return true if this event should be executed if the previous event was an end-branch event
+func should_execute_this_branch() -> bool:
+	return ConditionType == ConditionTypes.IF
 
 
 ################################################################################
@@ -46,8 +49,13 @@ func _init() -> void:
 	set_default_color('Color3')
 	event_category = Category.LOGIC
 	event_sorting_index = 0
+	can_contain_events = true
 	continue_at_end = true
 
+
+# return a control node that should show on the END BRANCH node
+func get_end_branch_control() -> Control:
+	return load(get_script().resource_path.get_base_dir().plus_file('Condition_End.tscn')).instantiate()
 
 ################################################################################
 ## 						SAVING/LOADING
@@ -94,5 +102,5 @@ func is_valid_event_string(string:String):
 ################################################################################
 
 func build_event_editor():
-	add_header_edit('ConditionType', ValueType.FixedOptionSelector, '', '', {'selector_options':{"if":ConditionTypes.IF, "elif":ConditionTypes.ELIF, "else":ConditionTypes.ELSE}, 'disabled':true})
+	add_header_edit('ConditionType', ValueType.FixedOptionSelector, '', '', {'selector_options':{"IF":ConditionTypes.IF, "ELIF":ConditionTypes.ELIF, "ELSE":ConditionTypes.ELSE}, 'disabled':true})
 	add_header_edit('Condition', ValueType.SinglelineText, '', '', {}, 'ConditionType != %s'%ConditionTypes.ELSE)
