@@ -428,6 +428,7 @@ func paste_check():
 
 func remove_events_at_index(at_index:int, amount:int = 1)-> void:
 	selected_items = []
+	something_changed()
 	for i in range(0, amount):
 		selected_items.append(timeline.get_child(at_index + i))
 	delete_selected_events()
@@ -448,6 +449,7 @@ func add_events_at_index(event_list:Array, at_index:int) -> void:
 			if item:
 				new_items.append(add_event_node(resource))
 	selected_items = new_items
+	something_changed()
 	sort_selection()
 	visual_update_selection()
 	indent_events()
@@ -572,7 +574,7 @@ func _add_event_button_pressed(event_script):
 		TimelineUndoRedo.add_do_method(self, "add_event_node", event_script.new(), at_index, true, true)
 		TimelineUndoRedo.add_undo_method(self, "remove_events_at_index", at_index, 1)
 		TimelineUndoRedo.commit_action()
-	
+	something_changed()
 	scroll_to_piece(at_index)
 	indent_events()
 
@@ -607,6 +609,7 @@ func drop_event():
 		_add_event_button_pressed(resource)
 		moving_piece = null
 		piece_was_dragged = false
+		something_changed()
 
 
 func cancel_drop_event():
@@ -818,6 +821,7 @@ func get_index_under_cursor():
 
 # ordering blocks in timeline
 func move_block(block, direction):
+	something_changed()
 	var block_index = block.get_index()
 	if direction == 'up':
 		if block_index > 0:
@@ -831,6 +835,7 @@ func move_block(block, direction):
 	return false
 
 func move_block_to_index(block_index, index):
+	something_changed()
 	timeline.move_child(timeline.get_child(block_index), index)
 
 
@@ -900,15 +905,6 @@ func indent_events() -> void:
 		indent += delayed_indent
 	
 	timeline_area.update()
-
-
-func get_current_events_anchors():
-	var anchors = {}
-	for event in timeline.get_children():
-		if "event_data" in event:
-			if event.event_data['event_id'] == 'dialogic_015':
-				anchors[event.event_data['id']] = event.event_data['name']
-	return anchors
 
 
 func add_extra_scroll_area_to_timeline():
