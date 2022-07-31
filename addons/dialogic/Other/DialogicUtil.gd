@@ -39,10 +39,10 @@ static func get_dialogic_plugin() -> Node:
 	return tree.get_root().get_child(0).get_node('DialogicPlugin')
 
 
-
 static func list_resources_of_type(extension):
 	var all_resources = scan_folder('res://', extension)
 	return all_resources
+
 
 static func scan_folder(folder_path:String, extension:String):
 	var dir = Directory.new()
@@ -60,6 +60,7 @@ static func scan_folder(folder_path:String, extension:String):
 	else:
 		printerr("[Dialogic] Error while accessing path " + folder_path)
 	return list
+
 
 static func guess_resource(extension, identifier):
 	var resources = list_resources_of_type(extension)
@@ -80,6 +81,7 @@ static func get_event_by_string(string:String) -> Resource:
 
 			return load(event)
 	return load("res://addons/dialogic/Events/Text/event.gd")
+
 
 static func get_project_setting(setting:String, default = null):
 	return ProjectSettings.get_setting(setting) if ProjectSettings.has_setting(setting) else default
@@ -123,6 +125,7 @@ static func logical_convert(value):
 			return false
 	return value
 
+
 static func get_color_palette(default:bool = false) -> Dictionary:
 	# Colors are using the ProjectSettings instead of the EditorSettings
 	# because there is a bug in Godot which prevents us from using it.
@@ -151,34 +154,7 @@ static func get_color_palette(default:bool = false) -> Dictionary:
 	
 	return color_dict
 
+
 static func get_color(value:String) -> Color:
 	var colors = get_color_palette()
 	return colors[value]
-
-
-# RENABLE IF REALLY NEEDED, OTHERWISE DELETE BEFORE RELEASE 
-#static func list_to_dict(list):
-#	var dict := {}
-#	for val in list:
-#		dict[val["file"]] = val
-#	return dict
-
-# RENABLE IF REALLY NEEDED, OTHERWISE DELETE BEFORE RELEASE 
-#static func beautify_filename(animation_name: String) -> String:
-#	if animation_name == '[Default]' or animation_name == '[No Animation]':
-#		return animation_name
-#	var a_string = animation_name.get_file().trim_suffix('.gd')
-#	if '-' in a_string:
-#		a_string = a_string.split('-')[1].capitalize()
-#	else:
-#		a_string = a_string.capitalize()
-#	return a_string
-
-# RENABLE IF REALLY NEEDED, OTHERWISE DELETE BEFORE RELEASE
-#static func compare_dicts(dict_1: Dictionary, dict_2: Dictionary) -> bool:
-#	# I tried using the .hash() function but it was returning different numbers
-#	# even when the dictionary was exactly the same.
-#	if str(dict_1) != "Null" and str(dict_2) != "Null":
-#		if str(dict_1) == str(dict_2):
-#			return true
-#	return false

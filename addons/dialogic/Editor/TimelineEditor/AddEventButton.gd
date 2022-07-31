@@ -25,7 +25,7 @@ func _ready():
 	icon = null
 
 	%ColorBorder.custom_minimum_size.x = 5 * _scale
-	%IconContainer.custom_minimum_size.x = %IconContainer.size.y
+	%IconContainer.custom_minimum_size = custom_minimum_size
 	
 	add_theme_color_override("font_color", get_theme_color("font_color", "Editor"))
 	add_theme_color_override("font_color_hover", get_theme_color("accent_color", "Editor"))

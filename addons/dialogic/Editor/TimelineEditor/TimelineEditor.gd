@@ -77,7 +77,7 @@ func _ready():
 	timeline_area.resized.connect(add_extra_scroll_area_to_timeline)
 	
 	# Event buttons
-	var buttonScene = load("res://addons/dialogic/Editor/TimelineEditor/SmallEventButton.tscn")
+	var buttonScene = load("res://addons/dialogic/Editor/TimelineEditor/AddEventButton.tscn")
 	for event_script in DialogicUtil.get_event_scripts():
 		var event_resource = load(event_script).new()
 		if event_resource.disable_editor_button == true: continue
