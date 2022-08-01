@@ -53,10 +53,10 @@ func _make_visible(visible):
 
 func _get_plugin_icon():
 	var _scale = get_editor_interface().get_editor_scale()
-	var _theme = 'dark'
 	# https://github.com/godotengine/godot-proposals/issues/572
-	if get_editor_interface().get_editor_settings().get_setting("interface/theme/base_color").v > 0.5:
-		_theme = 'light'
+	var  _theme = 'light'
+	if get_editor_interface().get_base_control().get_theme_constant("dark_theme", "Editor"):
+		_theme = 'dark'
 	return load("res://addons/dialogic/Editor/Images/Plugin/plugin-editor-icon-" + _theme + "-theme-" + str(_scale) + ".svg")
 
 
