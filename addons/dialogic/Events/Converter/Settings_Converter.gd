@@ -165,7 +165,7 @@ func _on_verify_pressed():
 		if directoryCheck: 
 			%OutputLog.text += "[color=yellow]Conversion folder already exists, coverting will overwrite existing files.[/color]\r\n"
 		else:
-			$Panel/OutputPath.text += conversionRootFolder
+			%OutputLog.text += conversionRootFolder
 			%OutputLog.text += "Folders are being created in " + conversionRootFolder + ". Converted files will be located there.\r\n"
 			directory.open("res://")
 			directory.make_dir(conversionRootFolder)
@@ -267,8 +267,11 @@ func convertTimelines():
 			# update the new location so we know where second pass items are
 			timelineFolderBreakdown[item] = newFilePath
 			
+			var processedEvents = 0
+			
 			var depth = 0
 			for event in contents["events"]:
+				processedEvents += 1
 				var eventLine = ""
 				
 				for i in depth:
@@ -424,11 +427,15 @@ func convertTimelines():
 							#Goto event
 							# Dialogic 1.x only allowed jumping to labels in the same timeline
 							# But since it is stored as a ID reference, we will have to get it on the second pass
-							file.store_string(eventLine + "[jump label=<" + event['anchor_id'] +">]")
+							
+							#file.store_string(eventLine + "[jump label=<" + event['anchor_id'] +">]")
+							file.store_string(eventLine + "# jump label, just a comment for testing")
 						"dialogic_020":
 							#Change Timeline event
 							# we will need to come back to this one on second pass, since we may not know the new path yet
-							file.store_string(eventLine + "[jump timeline=<" + event['change_timeline'] +">]")
+							
+							#file.store_string(eventLine + "[jump timeline=<" + event['change_timeline'] +">]")
+							file.store_string(eventLine + "# jump timeline, just a comment for testing")
 						"dialogic_021":
 							#Change Background event
 							file.store_string(eventLine + "[background path=\"" + event['background'] +"\"]")
@@ -495,7 +502,7 @@ func convertTimelines():
 			
 			
 			
-			%OutputLog.text += "\r\n"
+			%OutputLog.text += "Processed events: " + str(processedEvents) + "\r\n"
 		else:
 			%OutputLog.text += "[color=red]There was a problem parsing this file![/color]\r\n"
 		
