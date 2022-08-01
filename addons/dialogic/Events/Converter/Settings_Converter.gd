@@ -401,21 +401,21 @@ func convertTimelines():
 							eventLine += " - "
 							eventLine += event['choice']
 							file.store_string(eventLine)
-							print("choice node")
-							print ("bracnh depth now" + str(depth))
+							#print("choice node")
+							#print ("bracnh depth now" + str(depth))
 						"dialogic_012":
 							#If event
 							eventLine += "if true:"
 							file.store_string(eventLine)
-							print("if branch node")
+							#print("if branch node")
 							depth +=1
-							print ("bracnh depth now" + str(depth))
+							#print ("bracnh depth now" + str(depth))
 						"dialogic_013": 
 							#End Branch event
 							# doesnt actually make any lines, just adjusts the tab depth
-							print("end branch node")
+							#print("end branch node")
 							depth -= 1
-							print ("bracnh depth now" + str(depth))
+							#print ("bracnh depth now" + str(depth))
 						"dialogic_014":
 							#Set Value event
 							if varSubsystemInstalled:
@@ -524,7 +524,8 @@ func convertTimelines():
 	
 	#second pass
 	for item in timelineFolderBreakdown:
-		print(item)
+		pass
+		#print(item)
 	
 
 
@@ -623,6 +624,7 @@ func convertCharacters():
 func convertVariables():
 	%OutputLog.text += "Converting variables: \r\n"
 	
+	var convertedVariables = 0
 	# Creating a file with a format identical to how the variables are stored in project settings
 	if varSubsystemInstalled:
 		var newVariableDictionary = {}
@@ -630,18 +632,32 @@ func convertVariables():
 			if definitionFolderBreakdown[varItem]["type"] == "variable":
 				if definitionFolderBreakdown[varItem]["path"] == "/":
 					newVariableDictionary[definitionFolderBreakdown[varItem]["name"]] = definitionFolderBreakdown[varItem]["value"]
+					convertedVariables += 1
 				else:
 					# I will fill this one in later, need to figure out the recursion for it
-					pass
+					var dictRef = newVariableDictionary
+					
+					for pathItem in definitionFolderBreakdown[varItem]["path"].split("/"):
+						
+						if pathItem != "":
+							if pathItem in dictRef:
+								dictRef = dictRef[pathItem]
+							else:
+								dictRef[pathItem] = {}
+								dictRef = dictRef[pathItem]
 							
-							
+						
+					dictRef[definitionFolderBreakdown[varItem]["name"]] = definitionFolderBreakdown[varItem]["value"]
+					convertedVariables +=1
 		
-		var file = File.new()
-		file.open(conversionRootFolder + "/variables.json",File.WRITE)
-		var json_object = JSON.new()
-		var output_string = json_object.stringify(newVariableDictionary, "\n")
-		file.store_string(output_string)
-		file.close()
+		ProjectSettings.set_setting('dialogic/variables', null)
+		ProjectSettings.save()
+		ProjectSettings.set_setting('dialogic/variables', newVariableDictionary)
+		ProjectSettings.save()
+		
+		#rebuild the data in the other tabs, so it doesnt override it
+		find_parent('SettingsEditor').refresh()
+		%OutputLog.text += str(convertedVariables) + " variables converted, and saved to project!\r\n"
 	else:
 		%OutputLog.text += "[color=yellow]Variable subsystem is not present! Variables were not converted![/color]\r\n"
 	
