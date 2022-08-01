@@ -20,6 +20,14 @@ func set_left_text(value):
 
 func set_value(value):
 	$Value.value = value
+	
+func get_value():
+	return $Value.value
+	
+func use_timestamp_mode():
+	$Value.step = 0.1
+	$Value.suffix = 'sec'
+	$Value.max_value = 9999 #2.7 hours. Enough, or is more needed?
 
 func use_float_mode():
 	$Value.step = 0.001
@@ -33,3 +41,9 @@ func use_decibel_mode():
 	$Value.max_value = 6
 	$Value.suffix = "dB"
 	$Value.min_value = -80
+
+func set_max_value(value):
+	$Value.max_value = value
+	
+func set_min_value(value):
+	$Value.min_value = value

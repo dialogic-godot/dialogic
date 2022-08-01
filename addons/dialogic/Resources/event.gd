@@ -275,7 +275,7 @@ func is_valid_event_string(string:String):
 # (only tested if is_valid_event_string() returned true)
 # if a shortcode it used it will default to true if the string ends with ']'
 func is_string_full_event(string:String) -> bool:
-	if get_shortcode() != 'default_shortcode': return string.ends_with(']')
+	if get_shortcode() != 'default_shortcode': return string.strip_edges().ends_with(']')
 	return true
 
 

@@ -4,11 +4,15 @@ Emilio: Tets stes tste st
 
 Emilio: Tets stes tste st
 
-Update Emilio 3 [animation="Tada" wait="True" repeat="3"]
+Update Emilio 3 [animation="Tada" repeat="3"]
 
 Emilio: Tets stes tste st
 
-Update Emilio 3 [animation="Heartbeat" wait="True" repeat="2"]
+Update Emilio 3 [animation="Heartbeat" repeat="2"]
 
-Leave Emilio 3
+Leave Emilio
+
+[sound path="test" bus="Master"]
+
+[voice bus="Master"]
 

@@ -1,0 +1,36 @@
+[gd_scene load_steps=3 format=3 uid="uid://dyh3flcxkmquk"]
+
+[ext_resource type="Script" path="res://addons/dialogic/Events/Voice/AudioRegion.gd" id="1"]
+[ext_resource type="PackedScene" path="res://addons/dialogic/Editor/Events/Fields/Number.tscn" id="2"]
+
+[node name="Auddioregion" type="HBoxContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource("1")
+
+[node name="Label" type="Label" parent="."]
+offset_top = 287.0
+offset_right = 38.0
+offset_bottom = 313.0
+text = "Start"
+
+[node name="StartValue" parent="." instance=ExtResource("2")]
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 42.0
+offset_right = 135.0
+offset_bottom = 600.0
+
+[node name="Label2" type="Label" parent="."]
+offset_left = 139.0
+offset_top = 287.0
+offset_right = 173.0
+offset_bottom = 313.0
+text = "stop"
+
+[node name="StopValue" parent="." instance=ExtResource("2")]
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 177.0
+offset_right = 270.0
+offset_bottom = 600.0

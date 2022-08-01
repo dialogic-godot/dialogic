@@ -37,11 +37,10 @@ func _save(path: String, resource: Resource, flags: int) -> int:
 		var event = resource._events[idx]
 		
 		if event is DialogicEndBranchEvent:
-			#result += "\t".repeat(indent)+"\n"
 			indent -= 1
 			continue
 		if event != null:
-			result += "\t".repeat(indent)+event._store_as_string() + "\n"
+			result += "\t".repeat(indent)+event._store_as_string().replace('\n', "\n"+"\t".repeat(indent)) + "\n"
 			if translate and event.can_be_translated():
 				if event.translation_id:
 					trans_updates[event.translation_id] = event.get_original_translation_text()

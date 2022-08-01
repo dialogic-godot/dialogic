@@ -263,6 +263,9 @@ func recalculate_edit_visibility(list):
 				node_con[0].show()
 			else:
 				node_con[0].hide()
+			if expr.has_execute_failed():
+				var name = "unnamed" if "property_name" not in node_con[0] else node_con[0].property_name
+				printerr("(recalculate_edit_visibility)  condition expression failed with error: " + expr.get_error_text())
 	
 	%ExpandButton.visible = false
 	for node in body_content_container.get_children():
