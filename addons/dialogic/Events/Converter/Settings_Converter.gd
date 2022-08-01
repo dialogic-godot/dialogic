@@ -277,6 +277,7 @@ func convertTimelines():
 				if "dialogic_" in event["event_id"]:
 					match event["event_id"]:
 						"dialogic_001":
+							#Text Event
 							if event['character'] != "" && event['character']:
 								eventLine += characterFolderBreakdown[event['character']]['name']
 								if event['portrait'] != "":
@@ -295,6 +296,7 @@ func convertTimelines():
 							else: 
 								file.store_string(eventLine + event['text'])
 						"dialogic_002":
+							# Character event
 							match event['type']:
 								1:
 									eventLine += "Join "
@@ -305,6 +307,15 @@ func convertTimelines():
 									for i in event['position']:
 										if event['position'][i] == true:
 											eventLine += i
+									
+									if event['animation'] != "[Default]" && event['animation'] != "":
+										# Note: due to Anima changes, animations will be converted into a default. Times and wait will be perserved
+										eventLine += " [animation=\"Instant In Or Out\" "
+										eventLine += "length=\"" +  str(event['animation_length']) + "\""
+										if event["animation_wait"]:
+											eventLine += " wait=\"true\""
+										eventLine += "]"
+										
 								2:
 									eventLine += "Update "
 									eventLine += characterFolderBreakdown[event['character']]['name']
@@ -321,12 +332,33 @@ func convertTimelines():
 									if !positionCheck:
 										%OutputLog.text += "\r\n[color=yellow]Warning: Character update with no positon set, this was possible in 1.x but not 2.0\r\nCharacter will be set to position 3[/color]\r\n"
 										eventLine += "3"
+										
+									if event['animation'] != "[Default]" && event['animation'] != "":
+										# Note: due to Anima changes, animations will be converted into a default. Times and wait will be perserved
+										eventLine += " [animation=\"Heartbeat\" "
+										eventLine += "length=\"" +  str(event['animation_length']) + "\""
+										if event["animation_wait"]:
+											eventLine += " wait=\"true\""
+										if "animation_repeat" in event:
+											eventLine += " repeat=\"" + event['animation_repeat'] + "\""
+										eventLine += "]"
+										
+											
 								3:
 									eventLine += "Leave "
 									eventLine += characterFolderBreakdown[event['character']]['name']
+									
+									if event['animation'] != "[Default]" && event['animation'] != "":
+										# Note: due to Anima changes, animations will be converted into a default. Times and wait will be perserved
+										eventLine += " [animation=\"Instant In Or Out\" "
+										eventLine += "length=\"" +  str(event['animation_length']) + "\""
+										if event["animation_wait"]:
+											eventLine += " wait=\"true\""
+										eventLine += "]"
 								
 							file.store_string(eventLine)	
 						"dialogic_010":
+							# Question event
 							# With the change in 2.0, the root of the Question block is simply text event
 							if event['character'] != "" && event['character']:
 								eventLine += characterFolderBreakdown[event['character']]['name']
@@ -348,23 +380,27 @@ func convertTimelines():
 								
 							depth +=1
 						"dialogic_011":
+							#Choice event
 							eventLine += " - "
 							eventLine += event['choice']
 							file.store_string(eventLine)
 							print("choice node")
 							print ("bracnh depth now" + str(depth))
 						"dialogic_012":
+							#If event
 							eventLine += "if true:"
 							file.store_string(eventLine)
 							print("if branch node")
 							depth +=1
 							print ("bracnh depth now" + str(depth))
 						"dialogic_013": 
-							# this is the end branch, nothing here
+							#End Branch event
+							# doesnt actually make any lines, just adjusts the tab depth
 							print("end branch node")
 							depth -= 1
 							print ("bracnh depth now" + str(depth))
 						"dialogic_014":
+							#Set Value event
 							if varSubsystemInstalled:
 								#creating as a comment for now, because it doesnt seme to work correctly in timeline editor currently
 								eventLine += " # "
@@ -381,37 +417,65 @@ func convertTimelines():
 							else:
 								file.store_string(eventLine + "# Set variable function. Variables subsystem is disabled")
 						"dialogic_015":
+							#Label event
 							file.store_string(eventLine + "[label name=" + event['name'] +"]")
 							anchorNames[event['id']] = event['name']
 						"dialogic_016":
+							#Goto event
 							# Dialogic 1.x only allowed jumping to labels in the same timeline
 							# But since it is stored as a ID reference, we will have to get it on the second pass
 							file.store_string(eventLine + "[jump label=<" + event['anchor_id'] +">]")
 						"dialogic_020":
+							#Change Timeline event
 							# we will need to come back to this one on second pass, since we may not know the new path yet
 							file.store_string(eventLine + "[jump timeline=<" + event['change_timeline'] +">]")
 						"dialogic_021":
+							#Change Background event
 							file.store_string(eventLine + "[background path=\"" + event['background'] +"\"]")
 						"dialogic_022":
+							#Close Dialog event
 							file.store_string(eventLine + "[end_timeline]")
 						"dialogic_023":
+							#Wait event
 							file.store_string(eventLine + "[wait time=\"" + str(event['wait_seconds']) +"\"]")
 						"dialogic_024":
+							#Change Theme event
 							file.store_string(eventLine + "# Theme change event, not currently implemented")
 						"dialogic_025": 
+							#Set Glossary event
 							file.store_string(eventLine + "# Set Glossary event, not currently implemented")
 						"dialogic_026":
-							file.store_string(eventLine + "# Save event, not currently implemented")
+							#Save event 
+							if event['use_default_slot']:
+								file.store_string(eventLine + "[save slot=\"Default\"]")
+							else:
+								file.store_string(eventLine + "[save slot=\"" + event['custom_slot'] + "\"]")
+							
 						"dialogic_030":
+							#Audio event
 							file.store_string(eventLine + "# Audio event, not currently implemented")
 						"dialogic_031":
+							#Background Music event
 							file.store_string(eventLine + "# Background music event, not currently implemented")
 						"dialogic_040":
+							#Emit Signal event
 							file.store_string(eventLine + "[signal arg=\"" + event['emit_signal'] +"\"]")
 						"dialogic_041":
-							file.store_string(eventLine + "# Change scene event, not currently implemented")
+							#Change Scene event
+							file.store_string(eventLine + "# Change scene event is deprecated. Scene called was: " + event['change_scene'])
 						"dialogic_042":
-							file.store_string(eventLine + "# Call node event, not currently implemented")
+							#Call Node event
+							eventLine += "[call_node path=\"" + event['call_node']['target_node_path'] + "\" "
+							eventLine += "method=\"" + event['call_node']['target_node_path'] + "\" "
+							eventLine += "args=\"["
+							for arg in event['call_node']['arguments']:
+								eventLine += "\"" + arg + "\", "
+							
+							#remove the last comma and space
+							eventLine = eventLine.left(-2)
+							
+							eventLine += "]"
+							file.store_string(eventLine)
 						_: 
 							file.store_string(eventLine + "# unimplemented Dialogic control with unknown number")
 						
