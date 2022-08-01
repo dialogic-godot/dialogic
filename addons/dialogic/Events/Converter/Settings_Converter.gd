@@ -300,8 +300,12 @@ func convertTimelines():
 								file.store_string(eventLine + event['text'])
 						"dialogic_002":
 							# Character event
-							match event['type']:
-								1:
+							
+							#For some reason this is loading as a float, and the match is failing. so hard casting as string
+							var eventType:String = str(event['type'])
+							
+							match eventType:
+								"0":
 									eventLine += "Join "
 									eventLine += characterFolderBreakdown[event['character']]['name']
 									if (event['portrait'] != ""):
@@ -315,39 +319,46 @@ func convertTimelines():
 										# Note: due to Anima changes, animations will be converted into a default. Times and wait will be perserved
 										eventLine += " [animation=\"Instant In Or Out\" "
 										eventLine += "length=\"" +  str(event['animation_length']) + "\""
-										if event["animation_wait"]:
+										if "animation_wait" in event:
 											eventLine += " wait=\"true\""
 										eventLine += "]"
 										
-								2:
-									eventLine += "Update "
-									eventLine += characterFolderBreakdown[event['character']]['name']
-									if (event['portrait'] != ""):
-										eventLine += " (" + event['portrait'] + ") "
+									file.store_string(eventLine)	
+								"1":
+									if event['character'] != "[All]":
+											
+										eventLine += "Update "
+										eventLine += characterFolderBreakdown[event['character']]['name']
+										if 'portrait' in event:
+											if (event['portrait'] != ""):
+												eventLine += " (" + event['portrait'] + ") "
 
-									var positionCheck = false
-									for i in event['position']:
-										
-										if event['position'][i] == true:
-											positionCheck = true
-											eventLine += i
+										var positionCheck = false
+										if 'position' in event:
+											for i in event['position']:
+												
+												if event['position'][i] == true:
+													positionCheck = true
+													eventLine += i
+												
+										if !positionCheck:
+											%OutputLog.text += "\r\n[color=yellow]Warning: Character update with no positon set, this was possible in 1.x but not 2.0\r\nCharacter will be set to position 3[/color]\r\n"
+											eventLine += "3"
 											
-									if !positionCheck:
-										%OutputLog.text += "\r\n[color=yellow]Warning: Character update with no positon set, this was possible in 1.x but not 2.0\r\nCharacter will be set to position 3[/color]\r\n"
-										eventLine += "3"
-										
-									if event['animation'] != "[Default]" && event['animation'] != "":
-										# Note: due to Anima changes, animations will be converted into a default. Times and wait will be perserved
-										eventLine += " [animation=\"Heartbeat\" "
-										eventLine += "length=\"" +  str(event['animation_length']) + "\""
-										if event["animation_wait"]:
-											eventLine += " wait=\"true\""
-										if "animation_repeat" in event:
-											eventLine += " repeat=\"" + event['animation_repeat'] + "\""
-										eventLine += "]"
-										
+										if event['animation'] != "[Default]" && event['animation'] != "":
+											# Note: due to Anima changes, animations will be converted into a default. Times and wait will be perserved
+											eventLine += " [animation=\"Heartbeat\" "
+											eventLine += "length=\"" +  str(event['animation_length']) + "\""
+											if "animation_wait" in event:
+												eventLine += " wait=\"true\""
+											if "animation_repeat" in event:
+												eventLine += " repeat=\"" + event['animation_repeat'] + "\""
+											eventLine += "]"
 											
-								3:
+										file.store_string(eventLine)	
+									else:
+										file.store_string(eventLine + "# Update and Leave All not currently implemented")		
+								"2":
 									eventLine += "Leave "
 									eventLine += characterFolderBreakdown[event['character']]['name']
 									
@@ -355,11 +366,14 @@ func convertTimelines():
 										# Note: due to Anima changes, animations will be converted into a default. Times and wait will be perserved
 										eventLine += " [animation=\"Instant In Or Out\" "
 										eventLine += "length=\"" +  str(event['animation_length']) + "\""
-										if event["animation_wait"]:
+										if "animation_wait" in event:
 											eventLine += " wait=\"true\""
 										eventLine += "]"
+									file.store_string(eventLine)	
+								_:
+									file.store_string("failed" + str(event['type']))
 								
-							file.store_string(eventLine)	
+							
 						"dialogic_010":
 							# Question event
 							# With the change in 2.0, the root of the Question block is simply text event
@@ -532,10 +546,11 @@ func convertCharacters():
 			var fileName = contents["name"]
 			%OutputLog.text += "Name: " + fileName
 			
-			if ("[" in fileName) || ("]" in fileName):
-				%OutputLog.text += " [color=yellow]Stripping brackets from name![/color]"
+			if ("[" in fileName) || ("]" in fileName) || ("?" in fileName):
+				%OutputLog.text += " [color=yellow]Stripping invalid characters from name![/color]"
 				fileName = fileName.replace("[","")
 				fileName = fileName.replace("]","")
+				fileName = fileName.replace("?","0")
 				
 			
 			var directory = Directory.new()
