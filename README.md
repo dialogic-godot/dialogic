@@ -11,7 +11,7 @@ Create dialogs, characters and scenes to display conversations in your Godot gam
 
 
 
-# Version 2.0.0 - WIP  ![Godot v3.5](https://img.shields.io/badge/godot-v3.5-%23478cbf)
+# Version 2.0.0 - WIP  ![Godot v4.0](https://img.shields.io/badge/Godot-v4.0-%23478cbf)
 
 ## Installation
 
@@ -26,7 +26,7 @@ You can also install Dialogic using the **AssetLib** tab in the editor, but the 
 ## 📃 Credits
 Made by [Emilio Coppola](https://github.com/coppolaemilio) and [Jowan-Spooner](https://github.com/Jowan-Spooner).
 
-Contributors: [Arnaud](https://github.com/arnaudvergnet), [ellogwen](https://github.com/ellogwen), [Tim Krief](https://github.com/timkrief), [zaknafean](https://github.com/zaknafean), [and more!](https://github.com/coppolaemilio/dialogic/graphs/contributors). Special thanks: [Toen](https://twitter.com/ToenAndreMC), Òscar, [Francisco Presencia](https://francisco.io/), [M7mdKady14](https://github.com/M7mdKady14). Placeholder images are from [Toen's](https://toen.world/) [YouTube DF series](https://www.youtube.com/watch?v=B1ggwiat7PM)
+Contributors: [zaknafean](https://github.com/zaknafean), [AnidemDex](https://github.com/AnidemDex), [Arnaud](https://github.com/arnaudvergnet), [ellogwen](https://github.com/ellogwen), [Tim Krief](https://github.com/timkrief), [and more!](https://github.com/coppolaemilio/dialogic/graphs/contributors). Special thanks: [Toen](https://twitter.com/ToenAndreMC), Òscar, [Francisco Presencia](https://francisco.io/), [M7mdKady14](https://github.com/M7mdKady14). Placeholder images are from [Toen's](https://toen.world/) [YouTube DF series](https://www.youtube.com/watch?v=B1ggwiat7PM)
 
 ### Thank you to all my [Patreons](https://www.patreon.com/coppolaemilio) and Github sponsors for making this possible!
 
