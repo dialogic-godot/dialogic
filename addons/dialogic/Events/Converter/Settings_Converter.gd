@@ -557,7 +557,7 @@ func convertCharacters():
 			current_character.resource_path = conversionRootFolder + "/characters" + folderPath + "/" + fileName + ".dch"
 			# Everything needs to be in exact order
 
-			current_character.color = Color.html(contents["color"])
+			current_character.color = Color(contents["color"].right(6))
 			var customInfoDict = {}
 			customInfoDict["sound_moods"] = {}
 			customInfoDict["theme"] = ""
@@ -571,7 +571,21 @@ func convertCharacters():
 			current_character.name = contents["name"]
 			current_character.nicknames = []
 			current_character.offset = Vector2(0,0)
-			current_character.portraits = {}
+			
+			var portraitsList = {}
+			for portrait in contents['portraits']:			
+				var portraitData = {}
+				portraitData['path'] = portrait['path']
+				#use the global offset, scale, and mirror setting from the origianl character file
+				portraitData['offset'] = Vector2(contents['offset_x'], contents['offset_y'])
+				portraitData['scale'] = contents['scale'] / 100
+				portraitData['mirror'] = contents['mirror_portraits']
+				
+				portraitsList[portrait['name']] = portraitData
+				
+			
+			
+			current_character.portraits = portraitsList
 			current_character.scale = 1.0
 			
 			ResourceSaver.save(current_character.resource_path, current_character)	
