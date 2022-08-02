@@ -404,6 +404,28 @@ func convertTimelines():
 							#Choice event
 							eventLine += " - "
 							eventLine += event['choice']
+							
+							if 'value' in event:
+								if event['value'] != "":
+									var valueLookup = variableNameConversion("[" + definitionFolderBreakdown[event['definition']]['path'] + definitionFolderBreakdown[event['definition']]['name'] + "]" )
+							
+									eventLine += " [if "
+									eventLine += valueLookup
+									if event['condition'] != "":
+										eventLine += " " + event['condition']
+									else:
+										#default is true, so it may not store it
+										eventLine += " =="
+									
+									# weird line due to missing type casts on String in current Godot 4 alpha
+									if event['value'] == str(event['value'].to_int()):
+										eventLine += " " + event['value']
+									else:
+										eventLine += " \"" + event['value'] + "\""
+									
+									eventLine += "]"
+									
+							
 							file.store_string(eventLine)
 							#print("choice node")
 							#print ("bracnh depth now" + str(depth))
@@ -413,7 +435,11 @@ func convertTimelines():
 							
 							eventLine += "if "
 							eventLine += valueLookup
-							eventLine += " " + event['condition']
+							if event['condition'] != "":
+								eventLine += " " + event['condition']
+							else:
+								#default is true, so it may not store it
+								eventLine += " =="
 							
 							# weird line due to missing type casts on String in current Godot 4 alpha
 							if event['value'] == str(event['value'].to_int()):
