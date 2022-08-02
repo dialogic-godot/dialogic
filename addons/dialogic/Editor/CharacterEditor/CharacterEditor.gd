@@ -19,6 +19,7 @@ func new_character(path: String) -> void:
 	resource.name = path.get_file().trim_suffix("."+path.get_extension())
 	resource.display_name = path.get_file().trim_suffix("."+path.get_extension())
 	resource.color = Color(1,1,1,1)
+	resource.default_portrait = ""
 	resource.custom_info = {}
 	ResourceSaver.save(path, resource)
 	find_parent('EditorView').edit_character(resource)
@@ -36,6 +37,7 @@ func load_character(resource: DialogicCharacter) -> void:
 		%NicknameLineEdit.text += nickname +", "
 	%NicknameLineEdit.text = %NicknameLineEdit.text.trim_suffix(', ')
 	%DescriptionTextEdit.text = resource.description
+	%DefaultPortraitPicker.set_value(resource.default_portrait)
 	%MainScale.value = 100*resource.scale
 	%MainOffsetX.value = resource.offset.x
 	%MainOffsetY.value = resource.offset.y
@@ -59,6 +61,18 @@ func save_character() -> void:
 		nicknames.append(n_name.strip_edges())
 	current_character.nicknames = nicknames
 	current_character.description = %DescriptionTextEdit.text
+	
+	current_character.portraits = {}
+	for node in $'%PortraitList'.get_children():
+		current_character.portraits[node.get_portrait_name()] = node.portrait_data
+	
+	if $'%DefaultPortraitPicker'.current_value in current_character.portraits.keys():
+		current_character.default_portrait = $'%DefaultPortraitPicker'.current_value
+	elif !current_character.portraits.is_empty():
+		current_character.default_portrait = current_character.portraits.keys()[0]
+	else:
+		current_character.default_portrait = ""
+	
 	current_character.scale = %MainScale.value/100.0
 	current_character.offset = Vector2(%MainOffsetX.value, %MainOffsetY.value) 
 	current_character.mirror = %MainMirror.button_pressed
@@ -66,10 +80,6 @@ func save_character() -> void:
 	for main_edit in %MainEditTabs.get_children():
 		if main_edit.has_method('save_character'):
 			main_edit.save_character(current_character)
-	
-	current_character.portraits = {}
-	for node in %PortraitList.get_children():
-		current_character.portraits[node.get_portrait_name()] = node.portrait_data
 	
 	ResourceSaver.save(current_character.resource_path, current_character)
 	toolbar.set_resource_saved()
@@ -81,13 +91,16 @@ func save_character() -> void:
 
 func _ready() -> void:
 	DialogicUtil.get_dialogic_plugin().dialogic_save.connect(save_character)
-	
 	# Let's go connecting!
 	%NameLineEdit.text_changed.connect(something_changed)
 	%ColorPickerButton.color_changed.connect(something_changed)
 	%DisplayNameLineEdit.text_changed.connect(something_changed)
 	%NicknameLineEdit.text_changed.connect(something_changed)
 	%DescriptionTextEdit.text_changed.connect(something_changed)
+	%DefaultPortraitPicker.resource_icon = load("res://addons/dialogic/Editor/Images/Resources/Portrait.svg")
+	%DefaultPortraitPicker.get_suggestions_func = [self, 'suggest_portraits']
+	%DefaultPortraitPicker.set_left_text("")
+	%DefaultPortraitPicker.value_changed.connect(something_changed)
 	%MainScale.value_changed.connect(main_portrait_settings_update)
 	%MainOffsetX.value_changed.connect(main_portrait_settings_update)
 	%MainOffsetY.value_changed.connect(main_portrait_settings_update)
@@ -126,9 +139,15 @@ func _ready() -> void:
 	hide()
 
 
-func something_changed(fake_argument = "") -> void:
+func something_changed(fake_argument = "", fake_arg2 = null) -> void:
 	toolbar.set_resource_unsaved()
 
+func suggest_portraits(search:String):
+	var suggestions = {}
+	for portrait in $'%PortraitList'.get_children():
+		if search.is_empty() or search.to_lower() in portrait.get_portrait_name().to_lower():
+			suggestions[portrait.get_portrait_name()] = {'value':portrait.get_portrait_name()}
+	return suggestions
 
 func open_portrait_folder_select() -> void:
 	find_parent("EditorView").godot_file_dialog(_on_dir_selected, "*", EditorFileDialog.FILE_MODE_OPEN_DIR)
@@ -151,7 +170,12 @@ func _on_dir_selected(path:String) -> void:
 		print("An error occurred when trying to access the path.")
 
 
-func create_portrait_entry_instance(name:String, portait_data:Dictionary) -> Node:
+func create_portrait_entry_instance(name:String, portait_data:Dictionary, loading = false) -> Node:
+	# if this is the first portrait, use as default
+	if !$'%PortraitList'.get_child_count() and !loading:
+		if name.is_empty():
+			name = "default"
+		$'%DefaultPortraitPicker'.set_value(name)
 	var instance = portrait_entry.instantiate()
 	instance.load_data(name, portait_data.duplicate(), self)
 	%PortraitList.add_child(instance)
@@ -171,7 +195,7 @@ func update_portrait_list(filter_term:String = '') -> void:
 	current_portrait = null
 	var first_visible_item = null
 	for portrait in current_character.portraits.keys():
-		var port = create_portrait_entry_instance(portrait, current_character.portraits[portrait])
+		var port = create_portrait_entry_instance(portrait, current_character.portraits[portrait], true)
 		if filter_term.is_empty() or filter_term.to_lower() in portrait.to_lower():
 			if not first_visible_item: first_visible_item = port
 			if portrait == prev_portrait_name:

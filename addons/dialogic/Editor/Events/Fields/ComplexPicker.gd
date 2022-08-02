@@ -39,7 +39,7 @@ func set_left_text(value:String):
 	$LeftText.text = str(value)
 	$LeftText.visible = !value.is_empty()
 
-func set_rightt_text(value:String):
+func set_right_text(value:String):
 	$RightText.text = str(value)
 	$RightText.visible = !value.is_empty()
 
