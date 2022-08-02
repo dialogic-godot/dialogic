@@ -8,6 +8,7 @@ var characterFolderBreakdown:Dictionary = {}
 var definitionFolderBreakdown:Dictionary = {}
 var themeFolderBreakdown:Dictionary = {}
 var definitionsFile = {}
+var flatDefinitionsFile = {}
 
 var conversionRootFolder = "res://converted-dialogic"
 
@@ -222,10 +223,11 @@ func _on_begin_pressed():
 	%OutputLog.text += "Beginning file conversion:\r\n"
 	%OutputLog.text += "\r\n"
 	
+	#Variable conversion needs to be first, to build the lookup table for new style
 	#Character conversion needs to be before timelines, so the character names are available
+	convertVariables()
 	convertCharacters()
 	convertTimelines()
-	convertVariables()
 	convertGlossaries()
 	convertThemes()
 	
@@ -284,7 +286,7 @@ func convertTimelines():
 						"dialogic_001":
 							#Text Event
 							if event['character'] != "" && event['character']:
-								eventLine += characterFolderBreakdown[event['character']]['name']
+								eventLine += variableNameConversion(characterFolderBreakdown[event['character']]['name'])
 								if event['portrait'] != "":
 									eventLine += "(" +  event['portrait'] + ")"
 								
@@ -299,7 +301,7 @@ func convertTimelines():
 										file.store_line(splitItem + "\\")
 									splitCount += 1
 							else: 
-								file.store_string(eventLine + event['text'])
+								file.store_string(eventLine + variableNameConversion(event['text']))
 						"dialogic_002":
 							# Character event
 							
@@ -427,7 +429,7 @@ func convertTimelines():
 								var path = definitionFolderBreakdown[event['definition']]['path']
 								path.replace("/", ".")
 								if path[0] == '.':
-									path = path.erase(0,1)
+									path = path.right(-1)
 								if path[path.length() - 1] != '.':
 									path += "."
 									
@@ -560,7 +562,7 @@ func convertCharacters():
 			%OutputLog.text += "Name: " + fileName
 			
 			if ("[" in fileName) || ("]" in fileName) || ("?" in fileName):
-				%OutputLog.text += " [color=yellow]Stripping invalid characters from name![/color]"
+				%OutputLog.text += " [color=yellow]Stripping invalid characters from file name![/color]"
 				fileName = fileName.replace("[","")
 				fileName = fileName.replace("]","")
 				fileName = fileName.replace("?","0")
@@ -590,13 +592,13 @@ func convertCharacters():
 			customInfoDict["sound_moods"] = {}
 			customInfoDict["theme"] = ""
 			current_character.custom_info = customInfoDict
-			current_character.description = contents["description"]
+			current_character.description = varNameStripSpecial(contents["description"])
 			if contents["display_name"] == "":
-				current_character.display_name = contents["name"]
+				current_character.display_name = varNameStripSpecial(contents["name"])
 			else:
-				current_character.display_name = contents["display_name"]
+				current_character.display_name = varNameStripSpecial(contents["display_name"])
 			current_character.mirror = contents["mirror_portraits"]
-			current_character.name = contents["name"]
+			current_character.name = varNameStripSpecial(contents["name"])
 			current_character.nicknames = []
 			current_character.offset = Vector2(0,0)
 			
@@ -644,24 +646,30 @@ func convertVariables():
 				if definitionFolderBreakdown[varItem]["type"] == "variable":
 					if definitionFolderBreakdown[varItem]["path"] == "/":
 						newVariableDictionary[varNameStripSpecial(definitionFolderBreakdown[varItem]["name"])] = definitionFolderBreakdown[varItem]["value"]
+						flatDefinitionsFile[varNameStripSpecial(definitionFolderBreakdown[varItem]["name"])] = varItem
 						convertedVariables += 1
 					else:
 						# I will fill this one in later, need to figure out the recursion for it
 						var dictRef = newVariableDictionary
+						var flatNameBuilder = ""
 						
-						for pathItem in definitionFolderBreakdown[varItem]["path"].split("/"):
+						for pathItem in varNameStripSpecial(definitionFolderBreakdown[varItem]["path"]).split("/"):
 							
 							if pathItem != "":
 								if pathItem in dictRef:
-									dictRef = dictRef[varNameStripSpecial(pathItem)]
+									dictRef = dictRef[pathItem]
+									flatNameBuilder += pathItem + "."
 								else:
-									dictRef[varNameStripSpecial(pathItem)] = {}
-									dictRef = dictRef[varNameStripSpecial(pathItem)]
+									dictRef[pathItem] = {}
+									dictRef = dictRef[pathItem]
+									flatNameBuilder += pathItem + "."
 								
-							
 						dictRef[varNameStripSpecial(definitionFolderBreakdown[varItem]["name"])] = definitionFolderBreakdown[varItem]["value"]
 						convertedVariables +=1
-		
+						var flatName = flatNameBuilder + varNameStripSpecial(definitionFolderBreakdown[varItem]["name"])
+						flatDefinitionsFile[flatName] = varItem
+						
+
 		ProjectSettings.set_setting('dialogic/variables', null)
 		ProjectSettings.save()
 		ProjectSettings.set_setting('dialogic/variables', newVariableDictionary)
@@ -672,7 +680,6 @@ func convertVariables():
 		%OutputLog.text += str(convertedVariables) + " variables converted, and saved to project!\r\n"
 	else:
 		%OutputLog.text += "[color=yellow]Variable subsystem is not present! Variables were not converted![/color]\r\n"
-	
 	
 	
 	%OutputLog.text += "\r\n"
@@ -699,8 +706,30 @@ func varNameStripSpecial(oldVariable):
 	
 	return(newVariable)
 	
-func variableNameConversion(oldVariable):
-	var newVariable = ""
-	var regex
-	return(newVariable)
+func variableNameConversion(oldText):
+	var newText = oldText
+	var regex = RegEx.new()
+	regex.compile('(\\[.*?\\])')
+	var result = regex.search_all(oldText)
+	if result:
+		for res in result:
+			var r_string = res.get_string()
+			var newString = res.get_string()
+			newString = newString.replace("[", "")
+			newString = newString.replace("]", "")
+			if newString[0] == '/':
+				newString = newString.right(-1)
+			
+			newString = varNameStripSpecial(newString)
+			newString = newString.replace("/", ".")
+			
+			
+			
+			if newString in flatDefinitionsFile:
+				newString = "{" + newString + "}"
+				newText = newText.replace(r_string, newString)
+			
+			
+	
+	return(newText)
 
