@@ -86,7 +86,7 @@ func get_value1_suggestions(filter:String) -> Dictionary:
 	var vars = DialogicUtil.get_project_setting('dialogic/variables', {})
 	for var_path in list_variables(vars):
 		if filter.is_empty() or filter.to_lower() in var_path.to_lower(): 
-			suggestions[var_path] = {'value':'VAR.'+var_path, 'editor_icon':["ClassList", "EditorIcons"]}
+			suggestions[var_path] = {'value':'{'+var_path+"}", 'editor_icon':["ClassList", "EditorIcons"]}
 	return suggestions
 
 func list_variables(dict, path = "") -> Array:
@@ -105,5 +105,5 @@ func get_value2_suggestions(filter:String) -> Dictionary:
 	var vars = DialogicUtil.get_project_setting('dialogic/variables', {})
 	for var_path in list_variables(vars):
 		if filter.is_empty() or filter.to_lower() in var_path.to_lower():
-			suggestions[var_path] = {'value':'VAR.'+var_path, 'editor_icon':["ClassList", "EditorIcons"]}
+			suggestions[var_path] = {'value':'{'+var_path+"}", 'editor_icon':["ClassList", "EditorIcons"]}
 	return suggestions
