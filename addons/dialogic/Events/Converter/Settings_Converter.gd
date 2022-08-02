@@ -112,31 +112,33 @@ func _on_verify_pressed():
 			%OutputLog.text += "Please check the output log for the error the JSON parser encountered.\r\n"
 			return
 		
+		
+		
+		for variable in definitionsFile["variables"]:
+			var varPath = definitionFolderBreakdown[variable["id"]]
+			var variableInfo = {}
+			variableInfo["type"] = "variable"
+			variableInfo["path"] = varPath
+			variableInfo["name"] = variable["name"]
+			variableInfo["value"] = variable["value"]
+			definitionFolderBreakdown[variable["id"]] = variableInfo
+		
+		for variable in definitionsFile["glossary"]:
+			var varPath = definitionFolderBreakdown[variable["id"]]
+			var variableInfo = {}
+			variableInfo["type"] = "glossary"
+			variableInfo["path"] = varPath
+			variableInfo["name"] = variable["name"]
+			variableInfo["text"] = variable["text"]
+			variableInfo["title"] = variable["title"]
+			variableInfo["extra"] = variable["extra"]
+			variableInfo["glossary_type"] = variable["type"]
+			definitionFolderBreakdown[variable["id"]] = variableInfo
+			
 		if (definitionsFile["glossary"].size() + definitionsFile["variables"].size())  ==  definitionFolderBreakdown.size():
 			%OutputLog.text += "Definitions found: [color=green]" + str((definitionsFile["glossary"].size() + definitionsFile["variables"].size())) + "[/color]\r\n"
 			%OutputLog.text += " • Glossaries found: " + str(definitionsFile["glossary"].size()) + "\r\n"
 			%OutputLog.text += " • Variables found: " + str(definitionsFile["variables"].size()) + "\r\n"
-			
-			for variable in definitionsFile["variables"]:
-				var varPath = definitionFolderBreakdown[variable["id"]]
-				var variableInfo = {}
-				variableInfo["type"] = "variable"
-				variableInfo["path"] = varPath
-				variableInfo["name"] = variable["name"]
-				variableInfo["value"] = variable["value"]
-				definitionFolderBreakdown[variable["id"]] = variableInfo
-			
-			for variable in definitionsFile["glossary"]:
-				var varPath = definitionFolderBreakdown[variable["id"]]
-				var variableInfo = {}
-				variableInfo["type"] = "glossary"
-				variableInfo["path"] = varPath
-				variableInfo["name"] = variable["name"]
-				variableInfo["text"] = variable["text"]
-				variableInfo["title"] = variable["title"]
-				variableInfo["extra"] = variable["extra"]
-				variableInfo["glossary_type"] = variable["type"]
-				definitionFolderBreakdown[variable["id"]] = variableInfo
 		else:
 			%OutputLog.text += "Definition files found: [color=red]" + str(definitionsFile.size()) + "[/color]\r\n"
 			%OutputLog.text += "[color=yellow]There may be an issue, please check in Dialogic 1.x to make sure that is correct![/color]\r\n"
@@ -474,10 +476,20 @@ func convertTimelines():
 							
 						"dialogic_030":
 							#Audio event
-							file.store_string(eventLine + "# Audio event, not currently implemented")
+							eventLine += "[sound"
+							eventLine += " path=\"" + event['file'] + "\""
+							eventLine += " volume=\"" + str(event['volume']) + "\""
+							eventLine += " bus=\"" + event['audio_bus'] + "\"]"
+							file.store_string(eventLine)
 						"dialogic_031":
 							#Background Music event
-							file.store_string(eventLine + "# Background music event, not currently implemented")
+							eventLine += "[music"
+							eventLine += " path=\"" + event['file'] + "\""
+							eventLine += " volume=\"" + str(event['volume']) + "\""
+							eventLine += " fade=\"" + str(event['fade_length']) + "\""
+							eventLine += " bus=\"" + event['audio_bus'] + "\""
+							eventLine += " loop=\"true\"]"
+							file.store_string(eventLine)
 						"dialogic_040":
 							#Emit Signal event
 							file.store_string(eventLine + "[signal arg=\"" + event['emit_signal'] +"\"]")
@@ -619,7 +631,6 @@ func convertCharacters():
 			
 	
 	%OutputLog.text += "\r\n"
-	
 
 func convertVariables():
 	%OutputLog.text += "Converting variables: \r\n"
@@ -629,26 +640,27 @@ func convertVariables():
 	if varSubsystemInstalled:
 		var newVariableDictionary = {}
 		for varItem in definitionFolderBreakdown:
-			if definitionFolderBreakdown[varItem]["type"] == "variable":
-				if definitionFolderBreakdown[varItem]["path"] == "/":
-					newVariableDictionary[definitionFolderBreakdown[varItem]["name"]] = definitionFolderBreakdown[varItem]["value"]
-					convertedVariables += 1
-				else:
-					# I will fill this one in later, need to figure out the recursion for it
-					var dictRef = newVariableDictionary
-					
-					for pathItem in definitionFolderBreakdown[varItem]["path"].split("/"):
+			if "type" in definitionFolderBreakdown[varItem]:
+				if definitionFolderBreakdown[varItem]["type"] == "variable":
+					if definitionFolderBreakdown[varItem]["path"] == "/":
+						newVariableDictionary[varNameStripSpecial(definitionFolderBreakdown[varItem]["name"])] = definitionFolderBreakdown[varItem]["value"]
+						convertedVariables += 1
+					else:
+						# I will fill this one in later, need to figure out the recursion for it
+						var dictRef = newVariableDictionary
 						
-						if pathItem != "":
-							if pathItem in dictRef:
-								dictRef = dictRef[pathItem]
-							else:
-								dictRef[pathItem] = {}
-								dictRef = dictRef[pathItem]
+						for pathItem in definitionFolderBreakdown[varItem]["path"].split("/"):
 							
-						
-					dictRef[definitionFolderBreakdown[varItem]["name"]] = definitionFolderBreakdown[varItem]["value"]
-					convertedVariables +=1
+							if pathItem != "":
+								if pathItem in dictRef:
+									dictRef = dictRef[varNameStripSpecial(pathItem)]
+								else:
+									dictRef[varNameStripSpecial(pathItem)] = {}
+									dictRef = dictRef[varNameStripSpecial(pathItem)]
+								
+							
+						dictRef[varNameStripSpecial(definitionFolderBreakdown[varItem]["name"])] = definitionFolderBreakdown[varItem]["value"]
+						convertedVariables +=1
 		
 		ProjectSettings.set_setting('dialogic/variables', null)
 		ProjectSettings.save()
@@ -675,4 +687,20 @@ func convertThemes():
 	%OutputLog.text += "Converting themes: [color=red]not currently implemented[/color] \r\n"
 	
 	%OutputLog.text += "\r\n"
+	
+func varNameStripSpecial(oldVariable):
+	# This is to remove special characters from variable names
+	# Since in code variables are accessed by Dialogic.VAR.path.to.variable, characters not usable in Godot paths have to be removed
+	var newVariable = oldVariable
+	newVariable = newVariable.replace(" ", "_")
+	newVariable = newVariable.replace(".", "_")
+	newVariable = newVariable.replace("-", "_")
+	
+	
+	return(newVariable)
+	
+func variableNameConversion(oldVariable):
+	var newVariable = ""
+	var regex
+	return(newVariable)
 
