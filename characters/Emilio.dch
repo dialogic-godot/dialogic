@@ -6,6 +6,7 @@
 "sound_moods": {},
 "theme": ""
 },
+"default_portrait": "default",
 "description": "THE dialogic developer!",
 "display_name": "Emi",
 "mirror": false,

@@ -14,6 +14,7 @@ class_name DialogicCharacter
 @export var offset:Vector2 = Vector2()
 @export var mirror:bool = false
 
+@export var default_portrait:String = ""
 @export var portraits:Dictionary = {}
 
 @export var custom_info:Dictionary = {}
