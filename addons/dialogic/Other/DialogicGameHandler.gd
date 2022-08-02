@@ -112,6 +112,16 @@ func clear():
 ################################################################################
 
 func execute_condition(condition:String) -> bool:
+	var regex = RegEx.new()
+	regex.compile('{(\\w.*)}')
+	var result = regex.search_all(condition)
+	if result:
+		for res in result:			
+			var r_string = res.get_string()
+			var replacement = "VAR." + r_string.substr(1,r_string.length()-2)
+			condition = condition.replace(r_string, replacement)
+	
+	
 	var expr = Expression.new()
 	var autoload_names = []
 	var autoloads = []
