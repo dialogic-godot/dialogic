@@ -1,25 +1,28 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=3 format=3 uid="uid://kdpp3mibml33"]
 
-[ext_resource path="res://addons/dialogic/Editor/Events/Fields/Number.gd" type="Script" id=1]
+[ext_resource type="Script" path="res://addons/dialogic/Editor/Events/Fields/Number.gd" id="1"]
+[ext_resource type="Theme" uid="uid://d3g4i4dshtdpu" path="res://addons/dialogic/Editor/Events/styles/InputFieldsStyle.tres" id="2_u2kma"]
 
 [node name="NumberValue" type="HBoxContainer"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-script = ExtResource( 1 )
+script = ExtResource("1")
 
 [node name="LeftText" type="Label" parent="."]
-margin_top = 293.0
-margin_bottom = 307.0
+offset_top = 288.0
+offset_right = 1.0
+offset_bottom = 311.0
 
 [node name="Value" type="SpinBox" parent="."]
-margin_left = 4.0
-margin_right = 78.0
-margin_bottom = 600.0
+offset_left = 5.0
+offset_right = 111.0
+offset_bottom = 600.0
+theme = ExtResource("2_u2kma")
 
 [node name="RightText" type="Label" parent="."]
-margin_left = 82.0
-margin_top = 293.0
-margin_right = 82.0
-margin_bottom = 307.0
+offset_left = 115.0
+offset_top = 288.0
+offset_right = 116.0
+offset_bottom = 311.0
 
 [connection signal="value_changed" from="Value" to="." method="_on_Value_value_changed"]

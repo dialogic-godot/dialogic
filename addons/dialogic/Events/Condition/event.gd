@@ -6,12 +6,14 @@ enum ConditionTypes {IF, ELIF, ELSE}
 
 # DEFINE ALL PROPERTIES OF THE EVENT
 var ConditionType = ConditionTypes.IF
-var Condition :String = "true"
+var Condition :String = ""
 
 func _execute() -> void:
 	if ConditionType == ConditionTypes.ELSE:
 		finish()
 		return
+	
+	if Condition.is_empty(): Condition = "true"
 	
 	var result = dialogic.execute_condition(Condition)
 	if not result:
@@ -102,5 +104,5 @@ func is_valid_event_string(string:String):
 ################################################################################
 
 func build_event_editor():
-	add_header_edit('ConditionType', ValueType.FixedOptionSelector, '', '', {'selector_options':{"IF":ConditionTypes.IF, "ELIF":ConditionTypes.ELIF, "ELSE":ConditionTypes.ELSE}, 'disabled':true})
-	add_header_edit('Condition', ValueType.SinglelineText, '', '', {}, 'ConditionType != %s'%ConditionTypes.ELSE)
+	add_header_edit('ConditionType', ValueType.FixedOptionSelector, 'Cond:', '', {'selector_options':{"IF":ConditionTypes.IF, "ELIF":ConditionTypes.ELIF, "ELSE":ConditionTypes.ELSE}, 'disabled':true})
+	add_header_edit('Condition', ValueType.Condition, '', '', {}, 'ConditionType != %s'%ConditionTypes.ELSE)
