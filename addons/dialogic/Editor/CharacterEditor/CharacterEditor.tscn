@@ -156,11 +156,11 @@ offset_right = 596.0
 offset_bottom = 26.0
 size_flags_horizontal = 3
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Split/EditorScroll/Editor/MainEditTabs/General"]
+[node name="DefaultPortrait" type="HBoxContainer" parent="Split/EditorScroll/Editor/MainEditTabs/General"]
 offset_right = 40.0
 offset_bottom = 40.0
 
-[node name="TLabel6" parent="Split/EditorScroll/Editor/MainEditTabs/General/HBoxContainer" instance=ExtResource("3")]
+[node name="TLabel6" parent="Split/EditorScroll/Editor/MainEditTabs/General/DefaultPortrait" instance=ExtResource("3")]
 custom_minimum_size = Vector2(150, 0)
 anchor_right = 0.0
 anchor_bottom = 0.0
@@ -168,11 +168,11 @@ offset_top = 74.0
 offset_right = 150.0
 offset_bottom = 100.0
 size_flags_vertical = 0
-text = "Description:"
-text_key = "Description: "
+text = "Default Portrait:"
+text_key = "Default Portrait:"
 mode = 0
 
-[node name="DefaultPortraitPicker" parent="Split/EditorScroll/Editor/MainEditTabs/General/HBoxContainer" instance=ExtResource("4_jo7m8")]
+[node name="DefaultPortraitPicker" parent="Split/EditorScroll/Editor/MainEditTabs/General/DefaultPortrait" instance=ExtResource("4_jo7m8")]
 unique_name_in_owner = true
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Split/EditorScroll/Editor"]
