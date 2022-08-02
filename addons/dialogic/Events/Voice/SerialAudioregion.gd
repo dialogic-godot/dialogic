@@ -22,7 +22,6 @@ func _ready():
 func set_value(value):
 	if value == null:
 		return
-	print("SerialAudioRegion set_value(" + value + ")")
 	if not value is String:
 		printerr("Invalid data - %s (SerialAudioRegion): data incoming is not string." % property_name)
 	var data:PackedStringArray = value.split("region", false)

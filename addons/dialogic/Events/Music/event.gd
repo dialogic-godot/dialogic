@@ -57,7 +57,7 @@ func get_shortcode_parameters() -> Dictionary:
 ################################################################################
 
 func build_event_editor():
-	add_header_edit('FilePath', ValueType.SinglelineText, 'Path:')
+	add_header_edit('FilePath', ValueType.File, 'Path:', '', {'file_filter':'*.mp3, *.ogg, *.wav', 'placeholder': "No music", 'editor_icon':["AudioStreamPlayer", "EditorIcons"]})
 	add_header_edit('FadeLength', ValueType.Float, 'Fade:')
 	add_body_edit('Volume', ValueType.Decibel, 'Volume:', '', {}, '!FilePath.is_empty()')
 	add_body_edit('AudioBus', ValueType.SinglelineText, 'AudioBus:', '', {}, '!FilePath.is_empty()')

@@ -121,7 +121,6 @@ func execute_condition(condition:String) -> bool:
 			var replacement = "VAR." + r_string.substr(1,r_string.length()-2)
 			condition = condition.replace(r_string, replacement)
 	
-	
 	var expr = Expression.new()
 	var autoload_names = []
 	var autoloads = []
