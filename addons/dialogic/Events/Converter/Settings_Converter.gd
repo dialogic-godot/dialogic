@@ -409,7 +409,19 @@ func convertTimelines():
 							#print ("bracnh depth now" + str(depth))
 						"dialogic_012":
 							#If event
-							eventLine += "if true:"
+							var valueLookup = variableNameConversion("[" + definitionFolderBreakdown[event['definition']]['path'] + definitionFolderBreakdown[event['definition']]['name'] + "]" )
+							
+							eventLine += "if "
+							eventLine += valueLookup
+							eventLine += " " + event['condition']
+							
+							# weird line due to missing type casts on String in current Godot 4 alpha
+							if event['value'] == str(event['value'].to_int()):
+								eventLine += " " + event['value']
+							else:
+								eventLine += " \"" + event['value'] + "\""
+							
+							eventLine += ":"
 							file.store_string(eventLine)
 							#print("if branch node")
 							depth +=1
@@ -423,7 +435,7 @@ func convertTimelines():
 						"dialogic_014":
 							#Set Value event
 							if varSubsystemInstalled:
-								#creating as a comment for now, because it doesnt seme to work correctly in timeline editor currently
+								
 								eventLine += " # "
 								eventLine += "VAR "
 								var path = definitionFolderBreakdown[event['definition']]['path']
