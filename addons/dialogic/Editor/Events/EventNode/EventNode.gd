@@ -169,6 +169,7 @@ func build_editor():
 		if p.name == "linebreak":
 			editor_node = Control.new()
 			editor_node.theme_type_variation = "LineBreak"
+		
 		### STRINGS
 		elif p.dialogic_type == resource.ValueType.MultilineText:
 			editor_node = load("res://addons/dialogic/Editor/Events/Fields/MultilineText.tscn").instantiate()
@@ -177,6 +178,17 @@ func build_editor():
 		
 		elif p.dialogic_type == resource.ValueType.Bool:
 			editor_node = load("res://addons/dialogic/Editor/Events/Fields/Bool.tscn").instantiate()
+		
+		elif p.dialogic_type == resource.ValueType.File:
+			editor_node = load("res://addons/dialogic/Editor/Events/Fields/FilePicker.tscn").instantiate()
+			editor_node.file_filter = p.display_info.get('file_filter', '')
+			editor_node.placeholder = p.display_info.get('placeholder', '')
+			editor_node.resource_icon = p.display_info.get('icon', null)
+			if editor_node.resource_icon == null and p.display_info.has('editor_icon'):
+				editor_node.resource_icon = callv('get_theme_icon', p.display_info.editor_icon)
+		
+		elif p.dialogic_type == resource.ValueType.Condition:
+			editor_node = load("res://addons/dialogic/Editor/Events/Fields/ConditionPicker.tscn").instantiate()
 		
 		## Complex Picker
 		elif p.dialogic_type == resource.ValueType.ComplexPicker:
@@ -235,10 +247,10 @@ func build_editor():
 			editor_node.set_value(resource.get(p.name))
 		if editor_node.has_signal('value_changed'):
 			editor_node.value_changed.connect(set_property)
-		if editor_node.has_method('set_left_text') and p.has('left_text'):
-			editor_node.set_left_text(p.left_text)
-		if editor_node.has_method('set_right_text') and p.has('right_text'):
-			editor_node.set_right_text(p.right_text)
+		if editor_node.has_method('set_left_text'):
+			editor_node.set_left_text(p.get('left_text', ''))
+		if editor_node.has_method('set_right_text'):
+			editor_node.set_right_text(p.get('right_text', ''))
 		if p.has('condition'):
 			edit_conditions_list.append([editor_node, p.condition])
 		

@@ -45,6 +45,7 @@ enum ValueType {
 	Label,
 	MultilineText,
 	SinglelineText,
+	Condition,
 	
 	Bool,
 	

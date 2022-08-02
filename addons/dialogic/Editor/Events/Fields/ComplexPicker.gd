@@ -7,7 +7,7 @@ extends Control
 var file_extension = ""
 var get_suggestions_func = [self, 'get_default_suggestions']
 var empty_text = ""
-var disable_pretty_name := false
+@export var disable_pretty_name := false
 
 var resource_icon:Texture = null:
 	get:
@@ -20,10 +20,6 @@ var resource_icon:Texture = null:
 			$Search.theme_type_variation = ""
 		else:
 			$Search.theme_type_variation = "LineEditWithIcon"
-
-# I'm so sorry for this, but the popup_hide signal get's triggered if the popup is hidden by me,
-# and I don't want it to change the resource, if one was just selected by clicking
-var ignore_popup_hide_once = false
 
 ## STORING VALUE AND REFERENCE TO RESOURCE
 var event_resource : DialogicEvent = null
@@ -90,11 +86,9 @@ func _ready():
 		$Search/Icon.position.x = 10
 	$Search/SelectButton.icon = get_theme_icon("Collapse", "EditorIcons")
 	$Search.placeholder_text = placeholder_text
-	$Search/Suggestions.hide()
-	$Search/Suggestions.index_pressed.connect(suggestion_selected)
-	$Search/Suggestions.popup_hide.connect(popup_hide)
-	#TODO: Invalid call. Nonexistent function 'add_theme_stylebox_override' in base 'PopupMenu'.
-	#$Search/Suggestions.add_theme_stylebox_override('panel', load("res://addons/dialogic/Editor/Events/styles/ResourceMenuPanelBackground.tres"))
+	%Suggestions.add_theme_stylebox_override('bg', load("res://addons/dialogic/Editor/Events/styles/ResourceMenuPanelBackground.tres"))
+	%Suggestions.hide()
+	%Suggestions.item_selected.connect(suggestion_selected)
 	if resource_icon == null:
 		self.resource_icon = null
 
@@ -103,44 +97,45 @@ func _ready():
 ## 						SEARCH & SUGGESTION POPUP
 ################################################################################
 func _on_Search_text_entered(new_text = ""):
-	if $Search/Suggestions.get_item_count() and not $Search.text.is_empty():
+	if %Suggestions.get_item_count() and not $Search.text.is_empty():
 		suggestion_selected(0)
 	else:
 		changed_to_empty()
 
 func _on_Search_text_changed(new_text, just_update = false):
-	$Search/Suggestions.clear()
+	%Suggestions.clear()
 	
 	if new_text == "" and !just_update:
 		changed_to_empty()
-	
-	ignore_popup_hide_once = just_update
-	
+
 	var suggestions = get_suggestions_func[0].call(get_suggestions_func[1], new_text)
 	
+	var line_length = 0
 	var more_hidden = false
 	var idx = 0
 	for element in suggestions:
 		if new_text != "" or idx < 12:
+			line_length = max(get_theme_font('font', 'Label').get_string_size(element, HORIZONTAL_ALIGNMENT_LEFT, -1, get_theme_font_size("font_size", 'Label')).x+80, line_length)
+			%Suggestions.add_item(element)
 			if suggestions[element].has('icon'):
-				$Search/Suggestions.add_icon_item(suggestions[element].icon, element)
+				%Suggestions.set_item_icon(idx, suggestions[element].icon)
 			elif suggestions[element].has('editor_icon'):
-				$Search/Suggestions.add_icon_item(get_theme_icon(suggestions[element].editor_icon[0],suggestions[element].editor_icon[1]), element)
-			else:
-				$Search/Suggestions.add_item(element)
-			$Search/Suggestions.set_item_tooltip(idx, suggestions[element].get('tooltip', ''))
-			$Search/Suggestions.set_item_metadata(idx, suggestions[element].value)
+				%Suggestions.set_item_icon(idx, get_theme_icon(suggestions[element].editor_icon[0],suggestions[element].editor_icon[1]))
+
+			%Suggestions.set_item_tooltip(idx, suggestions[element].get('tooltip', ''))
+			%Suggestions.set_item_metadata(idx, suggestions[element].value)
 		else:
 			more_hidden = true
 			break
 		idx += 1
 	
 	if more_hidden:
-		$Search/Suggestions.add_item('...')
-		$Search/Suggestions.set_item_disabled(idx, true)
+		%Suggestions.add_item('...', null, false)
 	
-	if not $Search/Suggestions.visible:
-		$Search/Suggestions.popup_on_parent(Rect2i($Search.get_global_rect().position+Vector2(0,$Search.size.y), Vector2($Search.size.x, 50)))
+	if not %Suggestions.visible:
+		%Suggestions.show()
+		%Suggestions.global_position = $Search.global_position+Vector2(0,1)*$Search.size.y
+		%Suggestions.custom_minimum_size.x = max($Search.size.x, line_length)
 	
 	$Search.grab_focus()
 
@@ -155,30 +150,27 @@ func get_default_suggestions(search_text):
 	return suggestions
 	
 func suggestion_selected(index):
-	$Search.text = $Search/Suggestions.get_item_text(index)
+	$Search.text = %Suggestions.get_item_text(index)
 	
 	# if this is a resource:
 	if file_extension:
-		var file = load($Search/Suggestions.get_item_metadata(index))
+		var file = load(%Suggestions.get_item_metadata(index))
 		current_value = file
 	else:
-		current_value = $Search/Suggestions.get_item_metadata(index)
+		current_value = %Suggestions.get_item_metadata(index)
 	
-	ignore_popup_hide_once = true
-	$Search/Suggestions.hide()
+	hide_suggestions()
 	
 	emit_signal("value_changed", property_name, current_value)
-	
-func popup_hide():
+
+func _input(event):
+	if event is InputEventMouseButton and event.pressed:
+		if !%Suggestions.get_global_rect().has_point(get_global_mouse_position()):
+			if %Suggestions.visible: hide_suggestions()
+
+func hide_suggestions():
 	$Search/SelectButton.button_pressed = false
-	if ignore_popup_hide_once:
-		ignore_popup_hide_once = false
-		return
-	if $Search/Suggestions.get_item_count() and not $Search.text.is_empty():
-		suggestion_selected(0)
-	else:
-		set_value(null)
-		changed_to_empty()
+	%Suggestions.hide()
 
 func _on_Search_focus_entered():
 	if $Search.text == "" or current_value == null or (typeof(current_value) == TYPE_STRING and current_value.is_empty()):
