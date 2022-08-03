@@ -478,17 +478,9 @@ func convertTimelines():
 							#Set Value event
 							if varSubsystemInstalled:
 								
-								eventLine += " # "
-								eventLine += "VAR "
-								var path = definitionFolderBreakdown[event['definition']]['path']
-								path.replace("/", ".")
-								if path[0] == '.':
-									path = path.right(-1)
-								if path[path.length() - 1] != '.':
-									path += "."
-									
-								eventLine += path + definitionFolderBreakdown[event['definition']]['name']
 								
+								eventLine += "VAR "
+								eventLine += variableNameConversion("[" + definitionFolderBreakdown[event['definition']]['path'] + definitionFolderBreakdown[event['definition']]['name'] + "]" )
 								eventLine += " = "
 								
 								if "set_random" in event:
@@ -572,7 +564,7 @@ func convertTimelines():
 						"dialogic_042":
 							#Call Node event
 							eventLine += "[call_node path=\"" + event['call_node']['target_node_path'] + "\" "
-							eventLine += "method=\"" + event['call_node']['target_node_path'] + "\" "
+							eventLine += "method=\"" + event['call_node']['method_name'] + "\" "
 							eventLine += "args=\"["
 							for arg in event['call_node']['arguments']:
 								eventLine += "\"" + arg + "\", "
@@ -580,7 +572,7 @@ func convertTimelines():
 							#remove the last comma and space
 							eventLine = eventLine.left(-2)
 							
-							eventLine += "]"
+							eventLine += "]\"]"
 							file.store_string(eventLine)
 						_: 
 							file.store_string(eventLine + "# unimplemented Dialogic control with unknown number")
@@ -681,10 +673,10 @@ func convertCharacters():
 		if error == OK:
 			contents = json_object.get_data()
 			var fileName = contents["name"]
-			%OutputLog.text += "Name: " + fileName
+			%OutputLog.text += "Name: " + fileName + "\r\n"
 			
 			if ("[" in fileName) || ("]" in fileName) || ("?" in fileName):
-				%OutputLog.text += " [color=yellow]Stripping invalid characters from file name![/color]"
+				%OutputLog.text += " [color=yellow]Stripping invalid characters from file name![/color]\r\n"
 				fileName = fileName.replace("[","")
 				fileName = fileName.replace("]","")
 				fileName = fileName.replace("?","0")
@@ -727,7 +719,12 @@ func convertCharacters():
 			var portraitsList = {}
 			for portrait in contents['portraits']:			
 				var portraitData = {}
-				portraitData['path'] = portrait['path']
+				if portrait['path'] != "":
+					portraitData['path'] = portrait['path']
+				else:
+					portrait['path'] = "res://icon.png"
+					%OutputLog.text += "[color=yellow]Portrait option without a file set, setting to res://icon.png[/color]\r\n"
+					
 				#use the global offset, scale, and mirror setting from the origianl character file
 				portraitData['offset'] = Vector2(contents['offset_x'], contents['offset_y'])
 				portraitData['scale'] = contents['scale'] / 100
@@ -857,7 +854,7 @@ func variableNameConversion(oldText):
 
 func convertSettings():
 	%OutputLog.text += "Converting other settings: \r\n"
-	%OutputLog.text += "[color=yellow]Note! Most original settings can't be converted. \r\n"
+	%OutputLog.text += "[color=yellow]Note! Most original settings can't be converted.[/color] \r\n"
 	
 	
 	var config = ConfigFile.new()
