@@ -581,12 +581,16 @@ func convertTimelines():
 					
 					
 				else: 
-					eventLine += "# Custom event: "
-					eventLine += str(event)
-					eventLine = eventLine.replace("{", "*")
-					eventLine = eventLine.replace("}", "*")
+					var returnString = CustomEventConverter.convertCustomeEvent(event)
+					if returnString != "":
+						file.store_string(eventLine + returnString)
+					else:
+						eventLine += "# Custom event: "
+						eventLine += str(event)
+						eventLine = eventLine.replace("{", "*")
+						eventLine = eventLine.replace("}", "*")
 					
-					file.store_string(eventLine)
+						file.store_string(eventLine)
 				
 				file.store_string("\r\n\r\n")
 			file.close()
