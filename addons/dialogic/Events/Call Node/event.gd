@@ -76,7 +76,7 @@ func get_shortcode_parameters() -> Dictionary:
 		"args"		: "Arguments",
 		"wait"		: "Wait",
 		"inline"	: "Inline",
-		"signal": "Signal_Name",
+		"signal"	: "Signal_Name",
 		"single_use": "Single_Use",
 	}
 

@@ -18,6 +18,13 @@ var property_name : String
 signal value_changed
 
 func _ready():
+	DCSS.style(%Field, {
+		'border-radius': 3,
+		'border-color': Color('#14161A'),
+		'border': 1,
+		'background': Color('#1D1F25'),
+		'padding': [5, 25],
+	})
 	%OpenButton.icon = get_theme_icon("Folder", "EditorIcons")
 	%ClearButton.icon = get_theme_icon("Reload", "EditorIcons")
 	%OpenButton.button_down.connect(_on_OpenButton_pressed)

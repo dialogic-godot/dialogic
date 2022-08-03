@@ -64,6 +64,7 @@ func build_event_editor():
 	add_header_edit('FilePath', ValueType.File, 'Path:', '', {'file_filter':'*.mp3, *.ogg, *.wav', 'placeholder': "Select file", 'editor_icon':["AudioStreamPlayer", "EditorIcons"]})
 	add_body_edit('Volume', ValueType.Decibel, 'Volume:', '', {}, '!FilePath.is_empty()')
 	add_body_edit('AudioBus', ValueType.SinglelineText, 'AudioBus:', '', {}, '!FilePath.is_empty()')
+	add_body_line_break()
 	add_body_edit('regions', ValueType.Custom, '', '', {'path' : 'res://addons/dialogic/Events/Voice/SerialAudioregion.tscn'}, '!FilePath.is_empty()')
 
 
