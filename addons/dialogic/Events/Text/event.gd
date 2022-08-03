@@ -22,7 +22,7 @@ func _execute() -> void:
 		if Portrait and dialogic.has_subsystem('Portraits') and dialogic.Portraits.is_character_joined(Character):
 				dialogic.Portraits.change_portrait(Character, Portrait)
 		var check_portrait = Portrait if !Portrait.is_empty() else dialogic.current_state_info['portraits'].get(Character.resource_path, {}).get('portrait', '')
-		if Character.portraits[check_portrait].get('sound_mood', '') in Character.custom_info.get('sound_moods', {}):
+		if Character.portraits.get(check_portrait, {}).get('sound_mood', '') in Character.custom_info.get('sound_moods', {}):
 			dialogic.Text.update_typing_sound_mood(Character.custom_info.get('sound_moods', {}).get(Character.portraits[check_portrait].get('sound_mood', {}), {}))
 		elif !Character.custom_info.get('sound_mood_default', '').is_empty():
 			dialogic.Text.update_typing_sound_mood(Character.custom_info.get('sound_moods', {}).get(Character.custom_info.get('sound_mood_default')))
