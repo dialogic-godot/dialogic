@@ -22,6 +22,8 @@ func _ready():
 	})
 	$MenuButton.about_to_popup.connect(insert_options)
 	$MenuButton.get_popup().index_pressed.connect(index_pressed)
+	set_left_text('')
+	set_right_text('')
 	# TODOT godot4 figure this out (popup background panel style) 
 	# $MenuButton.get_popup().add_theme_stylebox_override('panel', load("res://addons/dialogic/Editor/Events/styles/ResourceMenuPanelBackground.tres"))
 
@@ -38,6 +40,8 @@ func set_value(value):
 		if options[element] == value:
 			$MenuButton.text = element
 
+func get_value():
+	return $MenuButton.text
 
 func insert_options():
 	$MenuButton.get_popup().clear()

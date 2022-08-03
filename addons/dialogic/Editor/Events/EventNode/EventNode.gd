@@ -240,7 +240,14 @@ func build_editor():
 			editor_node.text = p.name
 		
 		### --------------------------------------------------------------------
-		### 2. FILL THE NEW NODE WITH INFORMATION AND LISTEN TO CHANGES
+		### 2. ADD IT TO THE RIGHT PLACE (HEADER/BODY)
+		var location = %HeaderContent
+		if p.location == 1:
+			location = current_body_container
+		location.add_child(editor_node)
+		
+		### --------------------------------------------------------------------
+		### 3. FILL THE NEW NODE WITH INFORMATION AND LISTEN TO CHANGES
 		if "event_resource" in editor_node:
 			editor_node.event_resource = resource
 		if 'property_name' in editor_node:
@@ -257,12 +264,6 @@ func build_editor():
 			edit_conditions_list.append([editor_node, p.condition])
 		
 		
-		### --------------------------------------------------------------------
-		### 3. ADD IT TO THE RIGHT PLACE (HEADER/BODY)
-		var location = %HeaderContent
-		if p.location == 1:
-			location = current_body_container
-		location.add_child(editor_node)
 	content_changed.connect(recalculate_edit_visibility.bind(edit_conditions_list))
 	recalculate_edit_visibility(edit_conditions_list)
 

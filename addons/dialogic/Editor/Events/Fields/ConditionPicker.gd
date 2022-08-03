@@ -12,14 +12,14 @@ func _ready():
 		'background': Color('#1D1F25'),
 		'padding': [5, 5],
 	})
-	%OptionSelector.options = {'==':'==', '>':'>', '<':'<', '<=': '<=', '>=':'>=', '!=':'!='}
+	%Operator.options = {'==':'==', '>':'>', '<':'<', '<=': '<=', '>=':'>=', '!=':'!='}
 	%ToggleComplex.icon = get_theme_icon("Enum", "EditorIcons")
 	
 	%Value1.resource_icon = get_theme_icon("ClassList", "EditorIcons")
 	%Value1.get_suggestions_func = [self, 'get_value1_suggestions']
 	%Value1.value_changed.connect(something_changed)
 	
-	%Operator.item_selected.connect(something_changed)
+	%Operator.value_changed.connect(something_changed)
 	
 	%Value2.resource_icon = get_theme_icon("Variant", "EditorIcons")
 	%Value2.get_suggestions_func = [self, 'get_value2_suggestions']
@@ -50,13 +50,13 @@ func something_changed(fake_arg1=null, fake_arg2 = null):
 	if %ComplexEditor.visible:
 		value_changed.emit(property_name, %ComplexEditor.text)
 	elif %SimpleEditor.visible:
-		value_changed.emit(property_name, simple2complex(%Value1.current_value, %Operator.get_item_text(%Operator.selected), %Value2.current_value))
+		value_changed.emit(property_name, simple2complex(%Value1.current_value, %Operator.get_value(), %Value2.current_value))
 
 func is_too_complex(condition:String) -> bool:
-	return !condition.is_empty() and len(condition.split(' ', false)) != 3 or not condition.split(' ', false)[1] in %Operator.options
+	return !condition.is_empty() and len(condition.split(' ', false)) != 3
 
 func complex2simple(condition:String) -> Array:
-	if is_too_complex(condition) or condition.is_empty():
+	if is_too_complex(condition) or condition.strip_edges().is_empty():
 		return ['', '==','']
 	return Array(condition.split(' ', false))
 
@@ -71,14 +71,14 @@ func _on_toggle_complex_toggled(button_pressed) -> void:
 	if button_pressed:
 		%ComplexEditor.show()
 		%SimpleEditor.hide()
-		%ComplexEditor.text = simple2complex(%Value1.current_value, %Operator.get_item_text(%Operator.selected), %Value2.current_value)
+		%ComplexEditor.text = simple2complex(%Value1.current_value, %Operator.get_value(), %Value2.current_value)
 	else:
 		if !is_too_complex(%ComplexEditor.text):
 			%ComplexEditor.hide()
 			%SimpleEditor.show()
 			var data = complex2simple(%ComplexEditor.text)
 			%Value1.set_value(data[0], data[0].trim_prefix("{").trim_suffix('}'))
-			%Operator.select(data[1].strip_edges())
+			%Operator.set_value(data[1].strip_edges())
 			%Value2.set_value(data[2], data[2].trim_prefix("{").trim_suffix('}'))
 
 func _on_complex_editor_text_changed(new_text):

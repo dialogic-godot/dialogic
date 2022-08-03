@@ -94,6 +94,8 @@ func _ready():
 	%Suggestions.item_selected.connect(suggestion_selected)
 	if resource_icon == null:
 		self.resource_icon = null
+	set_left_text('')
+	set_right_text('')
 
 
 ################################################################################
