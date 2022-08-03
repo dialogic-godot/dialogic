@@ -1,0 +1,10 @@
+if {TrueMyth} == 0:
+
+	True Myth is [b]off[/b].
+
+if {TrueMyth} == 1:
+
+	# Theme change event, not currently implemented
+
+	True Myth is [b]on[/b].
+

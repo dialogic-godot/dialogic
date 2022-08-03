@@ -1,0 +1,22 @@
+Test 1
+
+VAR {Temp} = [random="True" min="1" max="4"]
+
+if {Temp} == 1:
+
+	Random choice 1
+
+if {Temp} == 2:
+
+	Random choice 2
+
+if {Temp} == 3:
+
+	Random choice 3
+
+if {Temp} == 4:
+
+	Random choice 4
+
+[label name="asdf"]
+

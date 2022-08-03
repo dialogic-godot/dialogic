@@ -1,0 +1,54 @@
+if {01_Dahebre.CarterHouse.Jeff.Stage} == 1:
+
+	[wait time="0.1"]
+
+	[end_timeline]
+
+if {01_Dahebre.CarterHouse.Jeff.Stage} == 0:
+
+	Join Jeff (Default) 0
+
+	Join Amy (Default) 0
+
+	Jeff: Have you seen that defense system thing?
+
+	Amy(shock): Yeah...
+
+	Amy(neutral): Know anything about it?
+
+	Jeff: Just what the introduction e-mail says.
+
+	Jeff: Not very helpful, of course. I do know the town perimeters are out of bounds, that's about it though.
+
+	Jeff: Outside of that...
+
+	Amy(neutral): Outside of that, I'll need to fight. Right.
+
+	Amy(neutral): And me with no gear. 
+
+	Jeff: Didn't bring anything with you?
+
+	Amy(neutral): Nothing real, why would I need to? I could practice with just a practice sword there.
+
+	Jeff: I suppose.
+
+	Jeff(neutral): Most of my swords I left in a storage unit back home. Not a lot of space here, after all.
+
+	Jeff(neutral): I did bring one of my swords, though.It's on loan to the pawn shop here as a display piece for visitors to the island.
+
+	Amy(neutral): A good one, or one of those junky mall ones?
+
+	Jeff(neutral): It's a real sword!
+
+	Amy(neutral): You should bring it with you, better than nothing. I'll call and let them know you'll be by to pick it up. 
+
+	Amy(smile): Cool, thanks. That will help. 
+
+	VAR {01_Dahebre.CarterHouse.Jeff.Stage} = "1"
+
+	VAR {01_Dahebre.Town.SwordConvo} = "1"
+
+	VAR {01_Dahebre.CarterHouse.AutoEvent.Stage} = "2"
+
+	[call_node path="/root/3DGameRoot" method="dialogicHandler" args="["latch_autoevent", "na"]"]
+

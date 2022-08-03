@@ -1,0 +1,12 @@
+if {01_Dahebre.CarterHouse.AutoEvent.Stage} == 2:
+
+	[jump timeline="res://converted-dialogic/timelines/01-Dahebre/CarterHouse/AutoEvent.dtl"]
+
+if {01_Dahebre.CarterHouse.AutoEvent.Stage} == 1:
+
+	[jump timeline="res://converted-dialogic/timelines/01-Dahebre/CarterHouse/AutoEvent.dtl"]
+
+VAR {01_Dahebre.CarterHouse.AutoEvent.Stage} = "0"
+
+[jump timeline="res://converted-dialogic/timelines/01-Dahebre/CarterHouse/AutoEvent.dtl"]
+

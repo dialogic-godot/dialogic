@@ -1,0 +1,34 @@
+Join Amy (neutral) 0
+
+Join Liam (Default) 0
+
+if {01_Dahebre.CarterHouse.Liam.Stage} == 0:
+
+	Amy(smile): What you watching?
+
+	Liam: New day show, called Lindy, but that just ended.
+
+	Liam: Next is a court show.
+
+	Amy(neutral): Sheesh. All the way out in the Atlantic and you're still spending your time watching daytime TV? 
+
+	Amy(neutral): You gotta stop, it'll rot your brain.
+
+	VAR {01_Dahebre.CarterHouse.Liam.Stage} = "1"
+
+	[end_timeline]
+
+Amy(smile): Is that popcorn?
+
+Liam: Yep. Want some?
+
+[wait time="1"]
+
+Amy(surprised): Just salt? No butter?
+
+Liam: Just salt.
+
+Amy(smile): The secret of my skinny brother who sits around eating popcorn all day revealed at last.
+
+VAR {01_Dahebre.CarterHouse.Liam.Stage} = "0"
+

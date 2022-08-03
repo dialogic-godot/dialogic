@@ -1,0 +1,18 @@
+if {01_Dahebre.CarterHouse.Upstairs.Stage} == 1:
+
+	[call_node path="/root/3DGameRoot" method="dialogicHandler" args="["latch_autoevent", "na"]"]
+
+	[wait time="0.1"]
+
+	[end_timeline]
+
+if {01_Dahebre.CarterHouse.Upstairs.Stage} == 0:
+
+	Join Liam (Default) 0
+
+	Liam: Not the one in the back. That one’s mine, stay out.
+
+	VAR {01_Dahebre.CarterHouse.Upstairs.Stage} = "1"
+
+	[call_node path="/root/3DGameRoot" method="dialogicHandler" args="["latch_autoevent", "na"]"]
+

@@ -1,0 +1,50 @@
+# This is a direct copy of the SI2009 event script, and has not been proofred or updated
+
+# this might be better as an auto event? but original has it as Marcus standing in town
+
+Marcus: Oh, there you are. And hello, Darwitz, Miss Filznew.
+
+Amy: We ran into Xedre at the castle. 
+
+Marcus: Yeah, I had heard from some soldiers as I was passing by. Hey, I need your help, I tracked some more Omegas here.
+
+Amy: Okay, but...
+
+Marcus: Hmm?
+
+Amy: How do you register more than four people in a party?
+
+Marcus: Oh, that.
+
+Marcus: Yeah, the system will only allow four combatants in a party, any more will automatically be ignored.
+
+Valerie: Well doesn't that mean the extra ones could fight safely, essentially from the shadows?
+
+Daryl: It ignores there damage too. I had to break up my squads because of it, although it seems that the Omegas have had the same disadvantage.
+
+Amy: Nevermind the fact that it seems to be giving them far different advantages against us...
+
+Marcus: I agree, something strange is going on with that. But we'll worry about that later. 
+
+Marcus: As far as managing parties, once you try and add over your limit the stat management system will prompt you with a menu to select your party members.
+
+Marcus: It won't let you add anyone that's left and turned off their party status, though. So right now you won't be able to add John or Stephanie. 
+
+Marcus: Go ahead, try it out! Remember that I'm joining you for now fighting these soldiers in town.
+
+# party menu comes up with Marcus required
+
+Amy: Huh, well that's kind of cool. But doesn't that mean someone will fall behind?
+
+Marcus: We don't have time to go down there right now, but if you head down to the Underground Complex there is a training room down there now.
+
+Marcus: Anyone left out of the battles can still work on gaining levels down there and keep around the same as your level. 
+
+Frank: You can thank me for that one. I made sure they built that structure. It also gives status updates as to what you are doing.
+
+Amy: Oh, well that's not bad, then. 
+
+Marcus: Cool. Now that we got that down, let's go take care of that squad.
+
+# Marcus from the map is removed 
+

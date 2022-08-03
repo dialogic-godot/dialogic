@@ -1,0 +1,112 @@
+Join Amy (neutral) 0
+
+Join Frank
+
+Join Valerie
+
+Join Xedre (shock) 
+
+# looking around the room and inspecting the bodies there
+
+Frank: ...That's all of them.
+
+Frank: The entire defence force that would have been here at the castle for blockade, every one of them wiped out.
+
+Frank: Nobody is left.
+
+Valerie: Just like that? All defeated so easily...
+
+Valerie: Is there nothing we can do about them?
+
+Frank: I guess this is why people have been calling Xedre the Red Reaper...
+
+# Frank walks over and is looking at damage on furntiure in the room
+
+[wait time="1"]
+
+# Amy looking back to the door, and sees a flash. she goes to track it with ehr gun as the scene slows down
+
+if {TrueMyth} == 1:
+
+	# Theme change event, not currently implemented
+
+	Amy(shock): This feeling of everything in slow motion...
+
+	Amy(shock): I hate this feeling so much.
+
+	Amy(shock): Reminds me too much of Antarctica...
+
+	# Theme change event, not currently implemented
+
+Amy(angry): Frank, watch out!
+
+# all the action stuff leading to Xedre becoming visible, as in the book
+
+[wait time="1"]
+
+Xedre: Amy!?
+
+Xedre: Amy, what are you doing here?!
+
+Xedre: Wait, who are these other people?!
+
+if {TrueMyth} == 1:
+
+	# Theme change event, not currently implemented
+
+	Amy(sad): She's shaking in fright...
+
+	Amy(shock): Wait, no... something more than that? I've seen her like this before...
+
+	# Theme change event, not currently implemented
+
+Amy(neutral): Xedre.
+
+# menu opens and displays the battle list with Xedre in negative MP
+
+Amy(neutral): Calm down and breathe.
+
+Amy(neutral): How many energy drinks have you had today?
+
+Xedre(shock): I don't know.
+
+Xedre(shock): Three, four?  I needed my mana to refresh faster.
+
+Xedre(shock): It took so much to use Scythe Shadow on everyone to be able to end this peacefully.
+
+Xedre(shock): I hid here to wait for the energy drinks to take effect before moving on. 
+
+if {TrueMyth} == 1:
+
+	# Theme change event, not currently implemented
+
+	Amy(neutral): Great, as I suspected.
+
+	Amy(neutral): She'll only be more dangerous like this.
+
+	# Theme change event, not currently implemented
+
+Amy(neutral): You're not supposed to drink that many in a day, Xedre, you'll get a caffeine overdose.
+
+Amy(neutral): Don't you remember what happened last time at Marcus's house?
+
+Amy(neutral): What's your pulse right now?
+
+Xedre(sinister): I... I dunno, hundred twenty, hundred thirty?
+
+Xedre(sinister): I don't know, my heart's beating so fast it's ringing in my ears.
+
+Xedre(sinister): Why do I always react so badly? 
+
+Xedre(sinister): Marcus can chug them down easy, and Ryan doesn't have problems with them either.
+
+Xedre(sinister): Though he doesn't drink them very often.
+
+[wait time="1"]
+
+# Valerie tries to approach and Xedre panicks
+
+Xedre(mad): You stay right over there, whoever you are!
+
+Xedre(mad): Don't come near me!
+

@@ -1,0 +1,28 @@
+[signal arg="release_movement"]
+
+Test 3
+
+Join Amy (neutral) 0
+
+Join Test (test) 0
+
+Another man
+
+Amy(neutral): Dialogue mockup.
+
+Test: Another scene
+
+if {TrueMyth} == 1:
+
+	# Theme change event, not currently implemented
+
+	Amy(mad-tm): This is only true muth
+
+	rememner t set it back at the end
+
+	# Theme change event, not currently implemented
+
+Amy(shock): Proving once and for all
+
+This works as intended
+

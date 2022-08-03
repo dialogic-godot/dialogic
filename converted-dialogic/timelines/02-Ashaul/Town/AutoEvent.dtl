@@ -1,0 +1,68 @@
+if {02_Ashaul.Town.AutoEvent.Stage} == 0:
+
+	Join Amy (Default) 0
+
+	Join Marcus (happy) 0
+
+	Marcus: Well look who finally decided to come to Spiral Island.
+
+	Amy(happy): Marcus!
+
+	# Marcus comes up and hugs Amy
+
+	Amy(smile): It's been such a long time!
+
+	Marcus(smile): It’s only been six months.
+
+	Marcus(smile): Although, given everything that happened  since you left, yes, it has been a really long time.
+
+	if {TrueMyth} == 1:
+
+		# Theme change event, not currently implemented
+
+		Amy(sad): He's wearing the Ring again...
+
+		# Theme change event, not currently implemented
+
+	Marcus(neutral): So what brings you to Ashaul?
+
+	Amy(neutral): I’m on my way to the Tower to deliver my final report to James, I stopped here to recharge and get some supplies.
+
+	[wait time="1"]
+
+	Marcus(neutral): So how’ve you been? I've heard nothing from you in the last six months.
+
+	Marcus(neutral): You sent messages to your boyfriend, but not to your best friend since we were little kids? I’m hurt, you know.
+
+	Amy(sigh): Har, har. I was on assignment, Marcus, and everything I was doing was confidential.
+
+	Amy(sinister): I couldn’t just send mail freely to whoever I wanted. I [i]couldn't[/i] send any messages to James either, even more so. 
+
+	Amy(sinister): I wasn’t supposed to be considered affiliated with ArenaBlade, remember. I was a neutral party.
+
+	Amy(smile): I’m fine, though. It wasn’t too bad; the food was even almost bearable. What about you?
+
+	Marcus(smile): I’ve been good. Ever since we came here things got a lot calmer.
+
+	Marcus(smile): I’ve been good. Ever since we came here things got a lot calmer.
+
+	Amy(sad): Yeah. My dad told me about the incident at your house. Chrissy’s good?
+
+	Marcus(happy): Oh, yeah, Chrissy’s been great since we got here. 
+
+	Marcus(smile): There’s a good medical facility further inland, and they set up a much more advanced electric wheelchair for her. 
+
+	Marcus(happy): It gives her a lot of freedom to go around herself.
+
+	VAR {02_Ashaul.Town.AutoEvent.Stage} = "1"
+
+	[call_node path="/root/3DGameRoot" method="dialogicHandler" args="["latch_autoevent", "na"]"]
+
+if {02_Ashaul.Town.AutoEvent.Stage} == 1:
+
+	[call_node path="/root/3DGameRoot" method="dialogicHandler" args="["latch_autoevent", "na"]"]
+
+	[wait time="0.1"]
+
+	[end_timeline]
+

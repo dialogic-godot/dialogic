@@ -1,0 +1,214 @@
+Join Amy (neutral) 0
+
+Join Jeff (test) 0
+
+Join Liam0
+
+if {TrueMyth} == 1:
+
+	# Theme change event, not currently implemented
+
+	Amy(surprised): Woah...
+
+	Amy: It's amazing how close to our real home this is.
+
+	Amy: All these things here from our old home. They took a lot of effort to make it feel right.
+
+	# Theme change event, not currently implemented
+
+Amy(smile): Hey mom, dad, I'm here!
+
+Liam(mad): About time you got here.
+
+# Amy walks over to Liam at the couch
+
+[wait time="1"]
+
+Amy(smile): Hey bugger. Where's mom and dad?
+
+Liam: Dad just stepped out back.
+
+Liam: Mom's in Rydel... Rydia...
+
+Liam: No, that's not right. What's that place's name again?
+
+Jeff: She's in Rydri.
+
+# Jeff enters from the back kitchen
+
+Liam: Oh right, that's the name.
+
+# both Jeff and Amy walk over to the desk
+
+[wait time="1"]
+
+Jeff: Finally made it home, Amy.
+
+Jeff: Well, our new home. Our temporary home. 
+
+Jeff: As much as a home as we’ve needed to make it, anyway.
+
+Amy: I heard the general gist of what happened from the letter that was sent, but what exactly happened?
+
+Jeff: Yeah, you didn't get the full story, did you...
+
+[wait time="1"]
+
+Jeff: After you left to start your investigation, as the days ticked by with the Omega blockade going on, things started turning sour.
+
+Jeff: At first it was just targeted at James, ostracization at school by classmates.
+
+Jeff: Then spread to Marcus as well. Then from  there things began escalating to the  Tilden’s house.
+
+Jeff: The house was egged, papered, graffiti sprayed on it, with everything escalating  more and more. 
+
+Jeff: Until it came to a full head.
+
+Jeff: The Tilden’s house was firebombed. 
+
+[wait time="1"]
+
+# Amy reacts in shock, without words
+
+Jeff: It happened in the middle of the night, about two-ish in the morning. Someone threw a Molotov cocktail or something through the living room window. 
+
+Jeff: It didn’t take long for it to turn into a huge blaze.
+
+Jeff: Sydney and Jeffrey got out okay, Marcus and James made it out, but then ran back in to get Chrissy.
+
+Jeff: Chrissy had to go to the hospital for a few days from effects of prolonged smoke inhalation, and Marcus and James had incurred significant burns.
+
+Amy(surprised): How did they end up so burned, though? Couldn’t James handle the fire?
+
+Jeff: James said later he hadn’t been eating much because of the stress of what was happening, and he didn’t have the magic level to be able to do anything that night.
+
+Jeff: It wasn’t just in our neighborhood.
+
+Jeff: Multiple incidents of this kind of heckling and vandalism were happening all across the globe to employees of ArenaBlade and their families.
+
+Jeff: Even before the Tilden’s house burned down it was clearly getting to him.
+
+Jeff: You wouldn’t have approved, he had lost about ten pounds and was looking pretty frail. 
+
+[wait time="1"]
+
+Jeff: Frankly I don’t blame him.
+
+Jeff: The backlash from the same people that were pretty quick to sign over all responsibility to ArenaBlade was quite shocking to him.
+
+# Jeff turns to the desk?
+
+Jeff: That’s how we all ended up here, on this island in the middle of nowhere. To escape from that violence. 
+
+Jeff: Your mom and I figured we had better get out of Kent before we got caught up in the same mess the Tilden’s were, so we came here with them. 
+
+Jeff: They were already building it, from what I was told, but everything had to be pushed into operation in a rush far before it was ready.
+
+# Jeff i think pulls pamphlet from desk, idk check book 
+
+Jeff: That’s why we live in this prefab house constructed out of shipping containers.
+
+Jeff: The place was simply not ready yet and we’ve had to make do with what could be easily obtained out here. 
+
+Jeff: But I dunno much more than what’s in this pamphlet and what James has been able to explain to your mom and me.
+
+[wait time="1"]
+
+Jeff: But enough about that. How have things been with you? What’s my favorite daughter been up to all this time, anyway?
+
+if {TrueMyth} == 1:
+
+	# Theme change event, not currently implemented
+
+	Amy(sinister): As if you have another daughter besides me?
+
+	Amy(sinister): At least it looks like the move here hasn't crushed your spirits.
+
+	# Theme change event, not currently implemented
+
+if {TrueMyth} == 0:
+
+	Amy(sinister): ...
+
+Amy(neutral): They’ve been fine, I guess. I finished my mission as the neutral independant party for the initial investigation.
+
+Jeff: Really? What did you find?
+
+Amy(sigh): Come on, dad, you know I can’t tell you that. It’s very sensitive information.
+
+Jeff: Right, right. Of course. Above my security level. 
+
+Jeff: How my daughter could have more clearance then me in an international corporation such as this will never cease to amaze me. 
+
+Jeff: So, what now? Are you done? Have you sent in your report, then? 
+
+Amy(mad): No, they said I can’t deliver it by e-mail, it’s too sensitive.
+
+Amy(mad): And instead of to Louis, I have to give it to James, so I have to take it to him personally.
+
+Jeff: I see. How are you planning on getting there, then?
+
+Jeff: It might not really look like it very much, since you can see the tower from here if you use binoculars, but it’s a very long trip to get to Rasen from the surface.
+
+if {01_Dahebre.Town.HelicopterChecked} == 0:
+
+	Amy(neutral): Well I saw there was a helipad nearby with a freight helicopter, so I was going to go ask them for a ride.
+
+	Jeff: Ah, yeah that's not going to work. It's grounded right now, waiting for some parts that are late, I guess. 
+
+	Amy(neutral): Oh... Well I can wait for mom to get back then, to get a ride from her.
+
+if {01_Dahebre.Town.HelicopterChecked} == 1:
+
+	Amy(neutral): Well I was going to try and get the freight helicopter to fly me in, but that’s out of commission right now.
+
+	Amy(neutral): Then I came here hoping to get a ride from mom, but if she’s not here at the moment I guess I’ll wait.
+
+Jeff: Well...
+
+Jeff: Unfortunately she’s having to pull the duty of resource management without that helicopter as well, and so her route’s gotten a lot more complicated. 
+
+Jeff: She e-mailed me the itinerary she’s working off of right now this morning, according to that it’ll probably be about four to five days as well.
+
+Amy(sigh): Four to five days...
+
+[wait time="1"]
+
+Jeff: If you head further inland, though you could probably meet up with her sooner. Here, I’ll forward you her itinerary. 
+
+Jeff: Communal electric bicycles are available here, so if you want to head further inland and catch her at one of her closer stops you could always do that.
+
+Jeff: It would save you on at least some pedaling and tiring yourself out so much.
+
+Jeff: The Tilden’s live in the next town in, Ashaul. You could always meet up with Marcus, he might know more about what’s going on.
+
+Amy(smile): Okay, sounds good, I’ll do that. Thank you, dad.
+
+Jeff: ’Dad’, is it? So formal, surely you couldn’t have grown out of calling me ‘daddy’ so fast.
+
+if {TrueMyth} == 1:
+
+	# Theme change event, not currently implemented
+
+	Amy(sad): If only you knew...
+
+	Amy(sad): It hurts me so much that I can't tell you or mom what happened to me. But how would I even?
+
+	Amy(sad): How would it even make sense? I look just the same as before, but I'm older than both of you now...
+
+	# Theme change event, not currently implemented
+
+if {TrueMyth} == 0:
+
+	Amy(sinister): ...
+
+Jeff: Come on, why don’t you at least rest here for a while. There’s a room for you upstairs, we put all of your stuff in there.
+
+Jeff: It’s all in boxes, you’d have to unpack it yourself, but go ahead, take some time and make it feel more like home. 
+
+Amy(neutral): Okay, yeah, maybe I'll do that.
+
+VAR {01_Dahebre.CarterHouse.AutoEvent.Stage} = "1"
+
+[call_node path="/root/3DGameRoot" method="dialogicHandler" args="["show_character", "Jeff"]"]
+

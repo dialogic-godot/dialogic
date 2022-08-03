@@ -1,0 +1,26 @@
+I am a killer!
+
+[call_node path="/root/3DGameRoot" method="dialogicHandler" args="["hide_character", "Man"]"]
+
+[call_node path="/root/3DGameRoot" method="dialogicHandler" args="["hide_character", "Man2"]"]
+
+[call_node path="/root/3DGameRoot" method="dialogicHandler" args="["hide_character", "Man3"]"]
+
+if {Test.test2_variety} == 1:
+
+	Say a thing.
+
+if {Test.test2_variety} == 2:
+
+	Then another.
+
+if {Test.test2_variety} == 3:
+
+	Then a third.
+
+VAR {Test.test2_variety} = "1"
+
+if {Test.test2_variety} > 3:
+
+	VAR {Test.test2_variety} = "1"
+

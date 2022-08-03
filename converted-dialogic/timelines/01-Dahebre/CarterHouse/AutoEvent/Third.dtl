@@ -1,0 +1,6 @@
+[call_node path="/root/3DGameRoot" method="dialogicHandler" args="["latch_autoevent", "na"]"]
+
+[wait time="0.1"]
+
+[end_timeline]
+

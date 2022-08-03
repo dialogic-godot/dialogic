@@ -1,0 +1,8 @@
+This is an automatic event
+
+[call_node path="/root/3DGameRoot" method="dialogicHandler" args="["show_character", "Man"]"]
+
+[call_node path="/root/3DGameRoot" method="dialogicHandler" args="["show_character", "Man2"]"]
+
+[call_node path="/root/3DGameRoot" method="dialogicHandler" args="["show_character", "Man3"]"]
+

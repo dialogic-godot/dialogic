@@ -1,0 +1,68 @@
+All events on one timeline
+
+this one \has\multiple\lines\
+
+Test(test): with a test character
+
+Join Test (Default) 
+
+Join Test (test) 2 [animation="Instant In Or Out" length="0.908" wait="true"]
+
+Leave Test [animation="Instant In Or Out" length="0.032"]
+
+Update Test3 [animation="Heartbeat" length="0"]
+
+[save slot="Default"]
+
+[save slot="dsvfsdfv"]
+
+question
+
+ - A
+
+	Test: question from character
+
+	[label name="sbdfgb"]
+
+ - C [if {TrueMyth} > 3]
+
+ - D
+
+ - B [if {TrueMyth} == 1]
+
+if {TrueMyth} == 1:
+
+	text in an if 
+
+[jump timeline="res://converted-dialogic/timelines/AllEvents.dtl"]
+
+[label name="Label"]
+
+[jump label="Label"]
+
+[end_timeline]
+
+VAR {TrueMyth} = "1"
+
+# Set Glossary event, not currently implemented
+
+[wait time="1"]
+
+[sound path="res://addons/dialogic/Example Assets/Sound Effects/Beep.wav" volume="0" bus="Master"]
+
+[sound path="" volume="0" bus="Master"]
+
+[music path="res://addons/dialogic/Example Assets/Sound Effects/Beep.wav" volume="0" fade="1" bus="Master" loop="true"]
+
+[sound path="" volume="0" bus="Master"]
+
+# Theme change event, not currently implemented
+
+[background path="res://splash.png"]
+
+[signal arg="asdf"]
+
+# Change scene event is deprecated. Scene called was: res://splashscreen.tscn
+
+[call_node path="node_target" method="method" args="["arg1", "arg2"]"]
+

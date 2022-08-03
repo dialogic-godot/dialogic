@@ -1,0 +1,74 @@
+if {01_Dahebre.CarterHouse.Bedroom.Stage} == 0:
+
+	[call_node path="/root/3DGameRoot" method="dialogicHandler" args="["latch_autoevent", "na"]"]
+
+	if {TrueMyth} == 1:
+
+		Join Amy (neutral) 0
+
+		# Theme change event, not currently implemented
+
+		Amy(sinister): Did I really have all this stuff?
+
+		Amy(sinister): Maybe there's other stuff mixed in here too. Just using the room for storage...
+
+		[wait time="1"]
+
+		Amy(neutral): Shorts and pants...
+
+		Amy(neutral): Shirts...
+
+		Amy(neutral): And formal clothes...
+
+		Amy(neutral): Nope, all of it's mine. I owned so much clothing?
+
+		Amy(neutral): I was living out of a suitcase on the Omega Base. I... don't even know where to begin with all this clothing choice...
+
+		[wait time="1"]
+
+		Amy(neutral): Childhood toys.
+
+		Amy(neutral): Wall decorations... Posters, artwork, cutouts from magazines...
+
+		Amy(neutral): I must have just stuck these in a drawer, and not had the chance to throw them away, and then mom and dad packed them up with the rest.
+
+		Amy(sinister): Meaningless. All of it... Meaningless.
+
+		Amy(sad): Was I really once so shallow, so petty?
+
+		Amy(sad): Pictures of celebrities, band posters, advertisements...
+
+		[wait time="1"]
+
+		Amy(sad): No, not shallow. Just naive.
+
+		Amy(sad): A normal teenager doing normal teenager things.
+
+		Amy(sad): The problems of the world don't matter to a teenager. Their worst problems are school and relationships. 
+
+		Amy(sad): Even after the invasion, everythng went more or less back to normal for me...
+
+		Amy(sinister): Until Antarctica...
+
+		[wait time="1"]
+
+		Amy(neutral): Should I put some of this out anyway?
+
+		Amy(neutral): How much can I get away with without mom and dad being suspicious?
+
+		Amy(neutral): I got away with hiding it because of my breakdown after Antarctica, but are they expecting me to go back to normal now?
+
+		Amy(neutral): I got away with hiding it because of my breakdown after Antarctica, but are they expecting me to go back to normal now?
+
+		Amy(sad): Ugh...
+
+		# Theme change event, not currently implemented
+
+		VAR {01_Dahebre.CarterHouse.Bedroom.Stage} = "1"
+
+[wait time="0.1"]
+
+[call_node path="/root/3DGameRoot" method="dialogicHandler" args="["latch_autoevent", "na"]"]
+
+[end_timeline]
+
