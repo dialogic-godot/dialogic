@@ -87,7 +87,6 @@ func is_valid_event_string(string:String) -> bool:
 	
 	return false
 
-
 func can_be_translated():
 	return true
 	
@@ -101,5 +100,5 @@ func get_original_translation_text():
 
 func build_event_editor():
 	add_header_edit("Text", ValueType.SinglelineText)
-	add_body_edit("Condition", ValueType.SinglelineText, 'if ')
+	add_body_edit("Condition", ValueType.Condition, 'if ')
 	add_body_edit("IfFalseAction", ValueType.FixedOptionSelector, 'else ', '', {'selector_options':{"Default":IfFalseActions.DEFAULT, "Hide":IfFalseActions.HIDE, "Disable":IfFalseActions.DISABLE}}, '!Condition.is_empty()')

@@ -839,12 +839,12 @@ func indent_events() -> void:
 			delayed_indent = 1
 		
 		if event.resource.needs_parent_event:
-			if get_block_above(event) and 'resource' in get_block_above(event):
-				if get_block_above(event).resource is DialogicEndBranchEvent:
-					if event.resource.is_expected_parent_event(get_block_above(get_block_above(event).parent_node).resource):
-						indent += 1
-				elif event.resource.is_expected_parent_event(get_block_above(event).resource):
-					indent += 1
+			var current_block_above = get_block_above(event)
+			while current_block_above != null and current_block_above.resource is DialogicEndBranchEvent:
+				current_block_above = get_block_above(current_block_above.parent_node)
+				
+			if current_block_above != null and event.resource.is_expected_parent_event(current_block_above.resource):
+				indent += 1
 		
 		if event.resource is DialogicEndBranchEvent:
 			delayed_indent -= 1
