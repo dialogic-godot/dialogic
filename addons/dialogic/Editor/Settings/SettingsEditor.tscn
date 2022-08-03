@@ -6,7 +6,7 @@
 
 [node name="SettingsEditor" type="Popup"]
 title = "Dialogic Settings"
-size = Vector2i(700, 500)
+size = Vector2i(1024, 600)
 borderless = false
 min_size = Vector2i(700, 500)
 script = ExtResource("1")
