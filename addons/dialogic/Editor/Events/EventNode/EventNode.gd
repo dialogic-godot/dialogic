@@ -341,15 +341,13 @@ func _ready():
 
 
 func _on_ExpandButton_toggled(button_pressed):
-	%ExpandButton.button_pressed = button_pressed
+	%ExpandButton.set_pressed_no_signal(button_pressed)
 	expanded = button_pressed
 	body_container.visible = button_pressed
 	get_parent().get_parent().update()
 
 
 func _on_EventNode_gui_input(event):
-	if event is InputEventMouseButton and event.double_click:
-		%ExpandButton.button_pressed = !%ExpandButton.button_pressed
 	if event is InputEventMouseButton and event.is_pressed() and event.button_index == 1:
 		grab_focus() # Grab focus to avoid copy pasting text or events
 		if event.double_click:
