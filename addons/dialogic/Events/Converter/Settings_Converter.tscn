@@ -8,14 +8,14 @@ anchor_bottom = 1.0
 script = ExtResource("1_3feab")
 
 [node name="LeftPanel" type="VBoxContainer" parent="."]
-custom_minimum_size = Vector2(600, 0)
-offset_right = 600.0
+custom_minimum_size = Vector2(800, 0)
+offset_right = 800.0
 offset_bottom = 600.0
 
 [node name="OutputLog" type="RichTextLabel" parent="LeftPanel"]
 unique_name_in_owner = true
 clip_contents = false
-offset_right = 600.0
+offset_right = 800.0
 offset_bottom = 600.0
 size_flags_vertical = 3
 bbcode_enabled = true
@@ -26,13 +26,13 @@ Please copy your res://dialogic folder from a Dialogic 1.4 project into this pro
 Once you are ready, the Verify Files button will do a check to make sure all of the files are present, and prepare it for conversion."
 
 [node name="VSeparator" type="VSeparator" parent="."]
-offset_left = 604.0
-offset_right = 608.0
+offset_left = 804.0
+offset_right = 808.0
 offset_bottom = 600.0
 
 [node name="RightPanel" type="VBoxContainer" parent="."]
-offset_left = 612.0
-offset_right = 755.0
+offset_left = 812.0
+offset_right = 955.0
 offset_bottom = 600.0
 
 [node name="Verify" type="Button" parent="RightPanel"]
