@@ -23,6 +23,7 @@
 },
 "theme": ""
 },
+"default_portrait": "happy",
 "description": "A dialogic developer.",
 "display_name": "Jowan",
 "mirror": false,

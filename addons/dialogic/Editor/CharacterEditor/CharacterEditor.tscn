@@ -1,12 +1,13 @@
-[gd_scene load_steps=8 format=3 uid="uid://bak1jk2glij8r"]
+[gd_scene load_steps=9 format=3 uid="uid://bak1jk2glij8r"]
 
 [ext_resource type="PackedScene" uid="uid://dfwnfu41utt3d" path="res://addons/dialogic/Editor/CharacterEditor/PortraitEntry.tscn" id="1"]
 [ext_resource type="Script" path="res://addons/dialogic/Editor/CharacterEditor/CharacterEditor.gd" id="2"]
 [ext_resource type="PackedScene" uid="uid://duj8nl0vpms35" path="res://addons/dialogic/Editor/Common/TLabel.tscn" id="3"]
 [ext_resource type="Texture2D" uid="uid://25qi7yo6ep6o" path="res://icon.png" id="4"]
+[ext_resource type="PackedScene" uid="uid://dpwhshre1n4t6" path="res://addons/dialogic/Editor/Events/Fields/ComplexPicker.tscn" id="4_jo7m8"]
 [ext_resource type="Theme" uid="uid://d3g4i4dshtdpu" path="res://addons/dialogic/Editor/Events/styles/InputFieldsStyle.tres" id="5"]
 
-[sub_resource type="Image" id="Image_5xllx"]
+[sub_resource type="Image" id="Image_80h4x"]
 data = {
 "data": PackedByteArray(255, 255, 255, 0, 255, 255, 255, 0, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 131, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 131, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 131, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 231, 255, 93, 93, 55, 255, 97, 97, 58, 255, 93, 93, 233, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 231, 255, 94, 94, 54, 255, 94, 94, 57, 255, 93, 93, 233, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 93, 93, 233, 255, 93, 93, 232, 255, 93, 93, 41, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 93, 93, 233, 255, 93, 93, 232, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 97, 97, 42, 255, 255, 255, 0, 255, 97, 97, 42, 255, 97, 97, 42, 255, 255, 255, 0, 255, 98, 98, 47, 255, 97, 97, 42, 255, 255, 255, 0, 255, 97, 97, 42, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 235, 255, 93, 93, 233, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 94, 94, 46, 255, 93, 93, 236, 255, 93, 93, 233, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 235, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 233, 255, 95, 95, 59, 255, 96, 96, 61, 255, 93, 93, 235, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 233, 255, 95, 95, 59, 255, 96, 96, 61, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0),
 "format": "RGBA8",
@@ -15,8 +16,8 @@ data = {
 "width": 16
 }
 
-[sub_resource type="ImageTexture" id="ImageTexture_yy51n"]
-image = SubResource("Image_5xllx")
+[sub_resource type="ImageTexture" id="ImageTexture_sbro6"]
+image = SubResource("Image_80h4x")
 
 [node name="CharacterEditor" type="Control"]
 visible = false
@@ -154,6 +155,25 @@ offset_left = 154.0
 offset_right = 596.0
 offset_bottom = 26.0
 size_flags_horizontal = 3
+
+[node name="DefaultPortrait" type="HBoxContainer" parent="Split/EditorScroll/Editor/MainEditTabs/General"]
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="TLabel6" parent="Split/EditorScroll/Editor/MainEditTabs/General/DefaultPortrait" instance=ExtResource("3")]
+custom_minimum_size = Vector2(150, 0)
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_top = 74.0
+offset_right = 150.0
+offset_bottom = 100.0
+size_flags_vertical = 0
+text = "Default Portrait:"
+text_key = "Default Portrait:"
+mode = 0
+
+[node name="DefaultPortraitPicker" parent="Split/EditorScroll/Editor/MainEditTabs/General/DefaultPortrait" instance=ExtResource("4_jo7m8")]
+unique_name_in_owner = true
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Split/EditorScroll/Editor"]
 offset_top = 43.0
@@ -309,7 +329,7 @@ unique_name_in_owner = true
 offset_right = 134.0
 offset_bottom = 31.0
 text = "  New portrait"
-icon = SubResource("ImageTexture_yy51n")
+icon = SubResource("ImageTexture_sbro6")
 
 [node name="ImportFromFolder" type="Button" parent="Split/EditorScroll/Editor/VBoxContainer/PortraitPanel/VBoxContainer/Labels/HBoxContainer"]
 unique_name_in_owner = true
@@ -317,7 +337,7 @@ offset_left = 138.0
 offset_right = 276.0
 offset_bottom = 31.0
 text = "  Import folder"
-icon = SubResource("ImageTexture_yy51n")
+icon = SubResource("ImageTexture_sbro6")
 
 [node name="ScrollContainer" type="ScrollContainer" parent="Split/EditorScroll/Editor/VBoxContainer/PortraitPanel/VBoxContainer"]
 offset_top = 35.0
@@ -358,7 +378,6 @@ size_flags_vertical = 3
 
 [node name="PreviewFullRect" type="TextureRect" parent="Split/Preview/Background"]
 unique_name_in_owner = true
-visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_top = 39.0
@@ -373,6 +392,7 @@ metadata/_edit_layout_mode = 1
 
 [node name="PreviewReal" type="CenterContainer" parent="Split/Preview/Background"]
 unique_name_in_owner = true
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_top = 445.0
@@ -402,7 +422,7 @@ unique_name_in_owner = true
 size_flags_horizontal = 3
 size_flags_vertical = 3
 mouse_filter = 2
-texture = SubResource("ImageTexture_yy51n")
+texture = SubResource("ImageTexture_sbro6")
 stretch_mode = 4
 
 [node name="PreviewLabel" parent="Split/Preview/Background" instance=ExtResource("3")]
@@ -419,7 +439,7 @@ anchor_left = 1.0
 anchor_right = 1.0
 grow_horizontal = 0
 item_count = 2
-selected = 1
+selected = 0
 popup/item_0/text = "Full View"
 popup/item_0/id = 0
 popup/item_1/text = "Real Size"

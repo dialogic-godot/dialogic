@@ -56,8 +56,9 @@ func _on_continued_revealing_text(new_character) -> void:
 		return
 		
 	#don't play if a voice-track is running
-	if dialogic.has_subsystem("Voice") and dialogic.Voice.isRunning():
-		return
+	if !Engine.is_editor_hint() and get_parent() is DialogicDisplay_DialogText:
+		if dialogic.has_subsystem("Voice") and dialogic.Voice.isRunning():
+			return
 	
 	#if sound playing and can't interrupt
 	if !sound_finished and !interrupt:

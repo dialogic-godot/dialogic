@@ -25,6 +25,9 @@ func load_game_state():
 func add_portrait(character:DialogicCharacter, portrait:String,  position_idx:int) -> Node:
 	var character_node = null
 	
+	if portrait.is_empty():
+		portrait = character.default_portrait
+	
 	if not character:
 		assert(false, "[Dialogic] Cannot add portrait of null character.")
 	if not portrait in character.portraits:
@@ -49,6 +52,9 @@ func add_portrait(character:DialogicCharacter, portrait:String,  position_idx:in
 func change_portrait(character:DialogicCharacter, portrait:String) -> void:
 	if not character or not is_character_joined(character):
 		assert(false, "[Dialogic] Cannot change portrait of null/not joined character.")
+	
+	if portrait.is_empty():
+		portrait = character.default_portrait
 	
 	var char_node :Node = dialogic.current_state_info.portraits[character.resource_path].node
 	

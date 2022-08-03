@@ -19,7 +19,7 @@ func _execute() -> void:
 	match ActionType:
 		ActionTypes.Join:
 			
-			if Character and Portrait:
+			if Character:
 				var n = dialogic.Portraits.add_portrait(Character, Portrait, Position)
 				
 				if AnimationName.is_empty():
@@ -192,7 +192,7 @@ func build_event_editor():
 		{'selector_options':{"Join":ActionTypes.Join, "Leave":ActionTypes.Leave, "Update":ActionTypes.Update}})
 	add_header_edit('Character', ValueType.ComplexPicker, '', '', {'suggestions_func':[self, 'get_character_suggestions'],'file_extension':'.dch', 'icon':load("res://addons/dialogic/Editor/Images/Resources/character.svg")})
 	
-	add_header_edit('Portrait', ValueType.ComplexPicker, 'Portrait:', '', {'suggestions_func':[self, 'get_portrait_suggestions'], 'icon':load("res://addons/dialogic/Editor/Images/Resources/Portrait.svg")}, 'Character != null and !has_no_portraits() and ActionType != %s' %ActionTypes.Leave)
+	add_header_edit('Portrait', ValueType.ComplexPicker, 'Portrait:', '', {'empty_text':'Default', 'suggestions_func':[self, 'get_portrait_suggestions'], 'icon':load("res://addons/dialogic/Editor/Images/Resources/Portrait.svg")}, 'Character != null and !has_no_portraits() and ActionType != %s' %ActionTypes.Leave)
 	add_header_label('Character has no portraits!', 'has_no_portraits()')
 	add_header_edit('Position', ValueType.Integer, 'Position:', '', {}, 'Character != null and !has_no_portraits() and ActionType != %s' %ActionTypes.Leave)
 	
@@ -217,6 +217,8 @@ func get_portrait_suggestions(search_text):
 	var suggestions = {}
 	if ActionType == ActionTypes.Update:
 		suggestions["Don't Change"] = {'value':'', 'editor_icon':["GuiRadioUnchecked", "EditorIcons"]}
+	if ActionType == ActionTypes.Join:
+		suggestions["Default Portrait"] = {'value':'', 'editor_icon':["GuiRadioUnchecked", "EditorIcons"]}
 	if Character != null:
 		for portrait in Character.portraits:
 			if search_text.is_empty() or search_text.to_lower() in portrait.to_lower():
