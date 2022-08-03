@@ -266,11 +266,17 @@ func convertTimelines():
 					if !directory.dir_exists(conversionRootFolder + "/timelines" + progresiveDirectory):
 						directory.make_dir(conversionRootFolder + "/timelines" + progresiveDirectory)
 				
-			var newFilePath = conversionRootFolder + "/timelines" + folderPath + "/" + fileName + ".dtl"	
+			#just double check because sometimes its making double slashes at the final filename
+			if folderPath.right(1) == "/":
+				folderPath = folderPath.left(-1)
+			# we will save it as an intermediary file first, then on second pass cleanup make it the .dtl	
+			var newFilePath = conversionRootFolder + "/timelines" + folderPath + "/" + fileName + ".cnv"	
 			file.open(newFilePath,File.WRITE)
 			
 			# update the new location so we know where second pass items are
+
 			timelineFolderBreakdown[item] = newFilePath
+			
 			
 			var processedEvents = 0
 			
@@ -311,70 +317,79 @@ func convertTimelines():
 							
 							match eventType:
 								"0":
-									eventLine += "Join "
-									eventLine += characterFolderBreakdown[event['character']]['name']
-									if (event['portrait'] != ""):
-										eventLine += " (" + event['portrait'] + ") "
-									
-									for i in event['position']:
-										if event['position'][i] == true:
-											eventLine += i
-									
-									if event['animation'] != "[Default]" && event['animation'] != "":
-										# Note: due to Anima changes, animations will be converted into a default. Times and wait will be perserved
-										eventLine += " [animation=\"Instant In Or Out\" "
-										eventLine += "length=\"" +  str(event['animation_length']) + "\""
-										if "animation_wait" in event:
-											eventLine += " wait=\"true\""
-										eventLine += "]"
-										
-									file.store_string(eventLine)	
-								"1":
-									if event['character'] != "[All]":
-											
-										eventLine += "Update "
+									if event['character'] != "":
+										eventLine += "Join "
 										eventLine += characterFolderBreakdown[event['character']]['name']
-										if 'portrait' in event:
-											if (event['portrait'] != ""):
-												eventLine += " (" + event['portrait'] + ") "
-
-										var positionCheck = false
-										if 'position' in event:
-											for i in event['position']:
-												
-												if event['position'][i] == true:
-													positionCheck = true
-													eventLine += i
-												
-										if !positionCheck:
-											%OutputLog.text += "\r\n[color=yellow]Warning: Character update with no positon set, this was possible in 1.x but not 2.0\r\nCharacter will be set to position 3[/color]\r\n"
-											eventLine += "3"
-											
+										if (event['portrait'] != ""):
+											eventLine += " (" + event['portrait'] + ") "
+										
+										for i in event['position']:
+											if event['position'][i] == true:
+												eventLine += i
+										
 										if event['animation'] != "[Default]" && event['animation'] != "":
 											# Note: due to Anima changes, animations will be converted into a default. Times and wait will be perserved
-											eventLine += " [animation=\"Heartbeat\" "
+											eventLine += " [animation=\"Instant In Or Out\" "
 											eventLine += "length=\"" +  str(event['animation_length']) + "\""
 											if "animation_wait" in event:
 												eventLine += " wait=\"true\""
-											if "animation_repeat" in event:
-												eventLine += " repeat=\"" + event['animation_repeat'] + "\""
 											eventLine += "]"
 											
 										file.store_string(eventLine)	
 									else:
-										file.store_string(eventLine + "# Update and Leave All not currently implemented")		
+										eventLine += " # Character join event that did not have a selected character"
+								"1":
+									if event['character'] != "":
+										if event['character'] != "[All]":
+												
+											eventLine += "Update "
+											eventLine += characterFolderBreakdown[event['character']]['name']
+											if 'portrait' in event:
+												if (event['portrait'] != ""):
+													eventLine += " (" + event['portrait'] + ") "
+
+											var positionCheck = false
+											if 'position' in event:
+												for i in event['position']:
+													
+													if event['position'][i] == true:
+														positionCheck = true
+														eventLine += i
+													
+											if !positionCheck:
+												%OutputLog.text += "\r\n[color=yellow]Warning: Character update with no positon set, this was possible in 1.x but not 2.0\r\nCharacter will be set to position 3[/color]\r\n"
+												eventLine += "3"
+												
+											if event['animation'] != "[Default]" && event['animation'] != "":
+												# Note: due to Anima changes, animations will be converted into a default. Times and wait will be perserved
+												eventLine += " [animation=\"Heartbeat\" "
+												eventLine += "length=\"" +  str(event['animation_length']) + "\""
+												if "animation_wait" in event:
+													eventLine += " wait=\"true\""
+												if "animation_repeat" in event:
+													eventLine += " repeat=\"" + event['animation_repeat'] + "\""
+												eventLine += "]"
+												
+											file.store_string(eventLine)	
+										else:
+											file.store_string(eventLine + "# Update and Leave All not currently implemented")		
+									else:
+										eventLine += " # Character Update event that did not have a selected character"
 								"2":
-									eventLine += "Leave "
-									eventLine += characterFolderBreakdown[event['character']]['name']
-									
-									if event['animation'] != "[Default]" && event['animation'] != "":
-										# Note: due to Anima changes, animations will be converted into a default. Times and wait will be perserved
-										eventLine += " [animation=\"Instant In Or Out\" "
-										eventLine += "length=\"" +  str(event['animation_length']) + "\""
-										if "animation_wait" in event:
-											eventLine += " wait=\"true\""
-										eventLine += "]"
-									file.store_string(eventLine)	
+									if event['character'] != "":
+										eventLine += "Leave "
+										eventLine += characterFolderBreakdown[event['character']]['name']
+										
+										if event['animation'] != "[Default]" && event['animation'] != "":
+											# Note: due to Anima changes, animations will be converted into a default. Times and wait will be perserved
+											eventLine += " [animation=\"Instant In Or Out\" "
+											eventLine += "length=\"" +  str(event['animation_length']) + "\""
+											if "animation_wait" in event:
+												eventLine += " wait=\"true\""
+											eventLine += "]"
+										file.store_string(eventLine)	
+									else:
+										eventLine += " # Character Update event that did not have a selected character"
 								_:
 									file.store_string("failed" + str(event['type']))
 								
@@ -473,26 +488,43 @@ func convertTimelines():
 									path += "."
 									
 								eventLine += path + definitionFolderBreakdown[event['definition']]['name']
+								
+								eventLine += " = "
+								
+								if "set_random" in event:
+									if event['set_random'] == true:
+										eventLine += "[random=\"True\""
+										if "random_lower_limit" in event:
+											eventLine += " min=\"" + str(event['random_lower_limit']) + "\""
+										if "random_upper_limit" in event:
+											eventLine += " max=\"" + str(event['random_upper_limit']) + "\""
+											
+										eventLine += "]"
+									else:
+										eventLine += "\"" + event['set_value'] + "\""
+								else:
+									eventLine += "\"" + event['set_value'] + "\""
+								
 								file.store_string(eventLine)
 							else:
 								file.store_string(eventLine + "# Set variable function. Variables subsystem is disabled")
 						"dialogic_015":
 							#Label event
-							file.store_string(eventLine + "[label name=" + event['name'] +"]")
+							file.store_string(eventLine + "[label name=\"" + event['name'] +"\"]")
 							anchorNames[event['id']] = event['name']
 						"dialogic_016":
 							#Goto event
 							# Dialogic 1.x only allowed jumping to labels in the same timeline
 							# But since it is stored as a ID reference, we will have to get it on the second pass
 							
-							#file.store_string(eventLine + "[jump label=<" + event['anchor_id'] +">]")
-							file.store_string(eventLine + "# jump label, just a comment for testing")
+							file.store_string(eventLine + "[jump label=<" + event['anchor_id'] +">]")
+							#file.store_string(eventLine + "# jump label, just a comment for testing")
 						"dialogic_020":
 							#Change Timeline event
 							# we will need to come back to this one on second pass, since we may not know the new path yet
 							
-							#file.store_string(eventLine + "[jump timeline=<" + event['change_timeline'] +">]")
-							file.store_string(eventLine + "# jump timeline, just a comment for testing")
+							file.store_string(eventLine + "[jump timeline=<" + event['change_timeline'] +">]")
+							#file.store_string(eventLine + "# jump timeline, just a comment for testing")
 						"dialogic_021":
 							#Change Background event
 							file.store_string(eventLine + "[background path=\"" + event['background'] +"\"]")
@@ -577,7 +609,58 @@ func convertTimelines():
 	
 	#second pass
 	for item in timelineFolderBreakdown:
-		pass
+		%OutputLog.text += "Verifying file: " + timelineFolderBreakdown[item] + "\r\n"
+		
+		var oldFile = File.new()
+		oldFile.open(timelineFolderBreakdown[item] ,File.READ)
+		
+		var newFile = File.new()
+		newFile.open(timelineFolderBreakdown[item].replace(".cnv", ".dtl") ,File.WRITE)
+		
+		var regex = RegEx.new()
+		regex.compile('(<.*?>)')
+		#var result = regex.search_all(oldText)
+		
+		
+		var whitespaceCount = 0
+		while oldFile.get_position() < oldFile.get_length():
+			var line = oldFile.get_line()
+			
+			if line.length() == 0:
+				#clean up any extra whitespace so theres only one line betwen each command
+				whitespaceCount += 1
+				if whitespaceCount < 2:
+					newFile.store_string("\r\n\r\n")
+			else:
+				whitespaceCount = 0
+				
+				var result = regex.search_all(line)
+				if result:
+					for res in result:
+						var r_string = res.get_string()
+						var newString = r_string.substr(1,r_string.length()-2)
+
+						if "timeline" in line:
+							newString = "\"" + timelineFolderBreakdown[item].replace(".cnv", ".dtl") + "\""
+						if "label" in line:
+							newString = "\"" + anchorNames[newString] + "\""
+						
+						line = line.replace(r_string,newString)
+						newFile.store_string(line)
+				else:
+					newFile.store_string(line)
+				
+		
+		oldFile.close()
+		newFile.close()
+		
+		var dir = Directory.new()
+		var fileDirectory = timelineFolderBreakdown[item].replace(timelineFolderBreakdown[item].split("/")[-1], "")
+		dir.open(fileDirectory)
+		dir.remove(timelineFolderBreakdown[item])
+		
+		%OutputLog.text += "Completed conversion of file: " + timelineFolderBreakdown[item].replace(".cnv", ".dtl") + "\r\n"
+		
 		#print(item)
 	
 
@@ -784,7 +867,7 @@ func convertSettings():
 		%OutputLog.text += "[color=red]Dialogic 1.x Settings file could not be loaded![/color] \r\n"
 		return
 	
-	ProjectSettings.set_setting('dialogic/text/autocolor_names', config.get_value("dialog", "auto_color_names"))
-	ProjectSettings.set_setting('dialogic/choices/autofocus_first', config.get_value("input", "autofocus_choices"))
-	ProjectSettings.set_setting('dialogic/choices/delay', config.get_value("input", "delay_after_options"))
+	ProjectSettings.set_setting('dialogic/text/autocolor_names', config.get_value("dialog", "auto_color_names", true))
+	ProjectSettings.set_setting('dialogic/choices/autofocus_first', config.get_value("input", "autofocus_choices", false))
+	ProjectSettings.set_setting('dialogic/choices/delay', config.get_value("input", "delay_after_options", 0.2))
 	
