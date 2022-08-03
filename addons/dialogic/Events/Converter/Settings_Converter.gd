@@ -230,6 +230,7 @@ func _on_begin_pressed():
 	convertTimelines()
 	convertGlossaries()
 	convertThemes()
+	convertSettings()
 	
 	%OutputLog.text += "All conversions complete!\r\n"
 	
@@ -771,3 +772,19 @@ func variableNameConversion(oldText):
 	
 	return(newText)
 
+func convertSettings():
+	%OutputLog.text += "Converting other settings: \r\n"
+	%OutputLog.text += "[color=yellow]Note! Most original settings can't be converted. \r\n"
+	
+	
+	var config = ConfigFile.new()
+	
+	var err = config.load("res://dialogic/settings.cfg")
+	if err != OK:
+		%OutputLog.text += "[color=red]Dialogic 1.x Settings file could not be loaded![/color] \r\n"
+		return
+	
+	ProjectSettings.set_setting('dialogic/text/autocolor_names', config.get_value("dialog", "auto_color_names"))
+	ProjectSettings.set_setting('dialogic/choices/autofocus_first', config.get_value("input", "autofocus_choices"))
+	ProjectSettings.set_setting('dialogic/choices/delay', config.get_value("input", "delay_after_options"))
+	
