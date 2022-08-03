@@ -13,7 +13,7 @@ corner_radius_top_right = 5
 corner_radius_bottom_right = 5
 corner_radius_bottom_left = 5
 
-[sub_resource type="Image" id="Image_vgcnl"]
+[sub_resource type="Image" id="Image_2domf"]
 data = {
 "data": PackedByteArray(255, 255, 255, 0, 255, 255, 255, 0, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 131, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 131, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 131, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 231, 255, 93, 93, 55, 255, 97, 97, 58, 255, 93, 93, 233, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 231, 255, 94, 94, 54, 255, 94, 94, 57, 255, 93, 93, 233, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 93, 93, 233, 255, 93, 93, 232, 255, 93, 93, 41, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 93, 93, 233, 255, 93, 93, 232, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 97, 97, 42, 255, 255, 255, 0, 255, 97, 97, 42, 255, 97, 97, 42, 255, 255, 255, 0, 255, 98, 98, 47, 255, 97, 97, 42, 255, 255, 255, 0, 255, 97, 97, 42, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 235, 255, 93, 93, 233, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 94, 94, 46, 255, 93, 93, 236, 255, 93, 93, 233, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 235, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 233, 255, 95, 95, 59, 255, 96, 96, 61, 255, 93, 93, 235, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 233, 255, 95, 95, 59, 255, 96, 96, 61, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0),
 "format": "RGBA8",
@@ -22,14 +22,14 @@ data = {
 "width": 16
 }
 
-[sub_resource type="ImageTexture" id="ImageTexture_mjdnk"]
-image = SubResource("Image_vgcnl")
+[sub_resource type="ImageTexture" id="ImageTexture_ioh8t"]
+image = SubResource("Image_2domf")
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_qdmxb"]
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_omwh0"]
 
 [sub_resource type="Theme" id="Theme_g6f7f"]
-PopupMenu/colors/font_color_hover = Color(0.44, 0.73, 0.98, 1)
-PopupMenu/styles/hover = SubResource("StyleBoxEmpty_qdmxb")
+PopupMenu/colors/font_color_hover = Color(0, 0, 0, 1)
+PopupMenu/styles/hover = SubResource("StyleBoxEmpty_omwh0")
 PopupMenu/styles/panel = ExtResource("5_wntx6")
 
 [node name="EventNode" type="HBoxContainer"]
@@ -114,7 +114,7 @@ and [End branch] events.
     [Choice]
     [...]
 [End branch]"
-texture = SubResource("ImageTexture_mjdnk")
+texture = SubResource("ImageTexture_ioh8t")
 stretch_mode = 5
 
 [node name="TitleLabel" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/Header"]
@@ -145,14 +145,14 @@ offset_left = 993.0
 offset_right = 1017.0
 offset_bottom = 24.0
 toggle_mode = true
-icon = SubResource("ImageTexture_mjdnk")
+icon = SubResource("ImageTexture_ioh8t")
 flat = true
 
 [node name="CollapseButton" type="Button" parent="PanelContainer/MarginContainer/VBoxContainer/Header"]
 unique_name_in_owner = true
 visible = false
 toggle_mode = true
-icon = SubResource("ImageTexture_mjdnk")
+icon = SubResource("ImageTexture_ioh8t")
 flat = true
 
 [node name="CollapsedBody" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer"]
@@ -181,7 +181,7 @@ unique_name_in_owner = true
 custom_minimum_size = Vector2(10, 0)
 offset_right = 10.0
 
-[node name="BodyContent" type="HFlowContainer" parent="PanelContainer/MarginContainer/VBoxContainer/Body"]
+[node name="BodyContent" type="VBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer/Body"]
 unique_name_in_owner = true
 offset_left = 14.0
 offset_right = 1017.0
@@ -193,22 +193,22 @@ mouse_filter = 2
 theme = SubResource("Theme_g6f7f")
 item_count = 6
 item_0/text = "Documentation"
-item_0/icon = SubResource("ImageTexture_mjdnk")
+item_0/icon = SubResource("ImageTexture_ioh8t")
 item_0/id = 0
 item_1/text = ""
 item_1/id = -1
 item_1/separator = true
 item_2/text = "Move up"
-item_2/icon = SubResource("ImageTexture_mjdnk")
+item_2/icon = SubResource("ImageTexture_ioh8t")
 item_2/id = 2
 item_3/text = "Move down"
-item_3/icon = SubResource("ImageTexture_mjdnk")
+item_3/icon = SubResource("ImageTexture_ioh8t")
 item_3/id = 3
 item_4/text = ""
 item_4/id = -1
 item_4/separator = true
 item_5/text = "Delete"
-item_5/icon = SubResource("ImageTexture_mjdnk")
+item_5/icon = SubResource("ImageTexture_ioh8t")
 item_5/id = 5
 script = ExtResource("8")
 

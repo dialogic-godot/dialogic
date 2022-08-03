@@ -43,10 +43,11 @@ func set_right_text(value:String):
 	$RightText.text = str(value)
 	$RightText.visible = !value.is_empty()
 
-func set_value(value):
+func set_value(value, text = ''):
 	if value == null:
 		$Search.text = empty_text
 	elif file_extension:
+		
 		$Search.text = DialogicUtil.pretty_name(value.resource_path)
 		$Search.hint_tooltip = value.resource_path
 	elif value:
@@ -56,7 +57,8 @@ func set_value(value):
 			$Search.text = DialogicUtil.pretty_name(value)
 	else:
 		$Search.text = empty_text
-
+	if text:
+		$Search.text = text
 	current_value = value
 
 
@@ -80,6 +82,7 @@ func _ready():
 	})
 	$Search.text_changed.connect(_on_Search_text_changed)
 	$Search.focus_entered.connect(_on_Search_focus_entered)
+	$Search.text_submitted.connect(_on_Search_text_entered)
 	$Search/Icon.position.x = 0
 	var scale = DialogicUtil.get_editor_scale()
 	if scale == 2:
@@ -101,6 +104,7 @@ func _on_Search_text_entered(new_text = ""):
 		suggestion_selected(0)
 	else:
 		changed_to_empty()
+
 
 func _on_Search_text_changed(new_text, just_update = false):
 	%Suggestions.clear()
@@ -131,6 +135,8 @@ func _on_Search_text_changed(new_text, just_update = false):
 	
 	if more_hidden:
 		%Suggestions.add_item('...', null, false)
+		%Suggestions.set_item_disabled(idx, true)
+		%Suggestions.set_item_tooltip(idx, "More items found. Start typing to search.")
 	
 	if not %Suggestions.visible:
 		%Suggestions.show()
@@ -150,6 +156,9 @@ func get_default_suggestions(search_text):
 	return suggestions
 	
 func suggestion_selected(index):
+	if %Suggestions.is_item_disabled(index):
+		return
+	
 	$Search.text = %Suggestions.get_item_text(index)
 	
 	# if this is a resource:

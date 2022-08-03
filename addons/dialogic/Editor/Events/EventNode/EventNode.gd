@@ -160,6 +160,8 @@ func toggle_collapse(toggled):
 func build_editor():
 	var p_list = resource._get_property_list()
 	var edit_conditions_list = []
+	var current_body_container = HFlowContainer.new()
+	%BodyContent.add_child(current_body_container)
 	for p in p_list:
 		### --------------------------------------------------------------------
 		### 1. CREATE A NODE OF THE CORRECT TYPE FOR THE PROPERTY
@@ -167,8 +169,8 @@ func build_editor():
 		
 		### OTHER
 		if p.name == "linebreak":
-			editor_node = Control.new()
-			editor_node.theme_type_variation = "LineBreak"
+			current_body_container = HFlowContainer.new()
+			%BodyContent.add_child(current_body_container)
 		
 		### STRINGS
 		elif p.dialogic_type == resource.ValueType.MultilineText:
@@ -259,7 +261,7 @@ func build_editor():
 		### 3. ADD IT TO THE RIGHT PLACE (HEADER/BODY)
 		var location = %HeaderContent
 		if p.location == 1:
-			location = %BodyContent
+			location = current_body_container
 		location.add_child(editor_node)
 	content_changed.connect(recalculate_edit_visibility.bind(edit_conditions_list))
 	recalculate_edit_visibility(edit_conditions_list)
@@ -281,9 +283,10 @@ func recalculate_edit_visibility(list):
 	
 	%ExpandButton.visible = false
 	for node in body_content_container.get_children():
-		if node.visible:
-			%ExpandButton.visible = true
-			break
+		for sub_node in node.get_children():
+			if sub_node.visible:
+				%ExpandButton.visible = true
+				break
 
 func set_property(property_name, value):
 	resource.set(property_name, value)
@@ -338,15 +341,13 @@ func _ready():
 
 
 func _on_ExpandButton_toggled(button_pressed):
-	%ExpandButton.button_pressed = button_pressed
+	%ExpandButton.set_pressed_no_signal(button_pressed)
 	expanded = button_pressed
 	body_container.visible = button_pressed
 	get_parent().get_parent().update()
 
 
 func _on_EventNode_gui_input(event):
-	if event is InputEventMouseButton and event.double_click:
-		%ExpandButton.button_pressed = !%ExpandButton.button_pressed
 	if event is InputEventMouseButton and event.is_pressed() and event.button_index == 1:
 		grab_focus() # Grab focus to avoid copy pasting text or events
 		if event.double_click:
