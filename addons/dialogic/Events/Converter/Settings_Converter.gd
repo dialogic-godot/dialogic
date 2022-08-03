@@ -604,7 +604,7 @@ func convertTimelines():
 					
 					
 				else: 
-					var returnString = CustomEventConverter.convertCustomeEvent(event)
+					var returnString = CustomEventConverter.convertCustomEvent(event)
 					if returnString != "":
 						file.store_string(eventLine + returnString)
 					else:
