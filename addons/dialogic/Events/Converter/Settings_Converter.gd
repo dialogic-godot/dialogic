@@ -416,16 +416,21 @@ func convertTimelines():
 							else: 
 								file.store_string(eventLine + event['question'])
 								
-							depth.push_front("question")
+							#depth.push_front("question")
 
 						"dialogic_011":
 							#Choice event
 							
 							#Choice's in 1.x have depth, but they do not have matching End Nodes as Questions and Conditionals do
-							if depth[0] == "choice":								
-								#reset the tabs for this choice to be one tree up 
-								for i in (depth.size() - 1):
-									eventLine = "	"
+							if depth.size() > 0:
+								if depth[0] == "choice":								
+									#reset the tabs for this choice to be one tree up 
+									
+									if depth.size() == 1:
+										eventLine = ""
+									else:
+										for i in (depth.size() - 1):
+											eventLine = "	"
 
 							else:
 								#for the next line we want to add a depth								
@@ -488,14 +493,9 @@ func convertTimelines():
 							#End Branch event
 							# doesnt actually make any lines, just adjusts the tab depth
 							#print("end branch node")
-							if depth[0] == "choice":
-								#pop 2 if the top of the stack is a choice, because it means this is the end of a question
-								var _popped = depth.pop_front()
-								var _popped_2 = depth.pop_front()
 
-							else:
 
-								var _popped = depth.pop_front()
+							var _popped = depth.pop_front()
 							#print ("bracnh depth now" + str(depth))
 						"dialogic_014":
 							#Set Value event
