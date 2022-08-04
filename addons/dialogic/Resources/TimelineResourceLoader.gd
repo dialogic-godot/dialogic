@@ -52,6 +52,8 @@ func _load(path: String, original_path: String, use_sub_threads: bool, cache_mod
 		idx += 1
 		var line = lines[idx]
 		var line_stripped = line.strip_edges(true, false)
+		if line_stripped.is_empty():
+			continue
 		var indent = line.substr(0,len(line)-len(line_stripped))
 		
 		if len(indent) < len(prev_indent):
@@ -60,10 +62,6 @@ func _load(path: String, original_path: String, use_sub_threads: bool, cache_mod
 		
 		elif prev_was_opener and len(indent) == len(prev_indent):
 			events.append(DialogicEndBranchEvent.new())
-
-		if line_stripped.is_empty():
-			continue
-		
 		prev_indent = indent
 		var event_content = line_stripped
 		var event = DialogicUtil.get_event_by_string(event_content).new()
