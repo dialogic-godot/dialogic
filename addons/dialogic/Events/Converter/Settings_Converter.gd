@@ -294,7 +294,7 @@ func convertTimelines():
 						"dialogic_001":
 							#Text Event
 							if event['character'] != "" && event['character']:
-								eventLine += variableNameConversion(characterFolderBreakdown[event['character']]['name'])
+								eventLine += characterNameConversion(variableNameConversion(characterFolderBreakdown[event['character']]['name']))
 								if event['portrait'] != "":
 									eventLine += "(" +  event['portrait'] + ")"
 								
@@ -320,7 +320,7 @@ func convertTimelines():
 								"0":
 									if event['character'] != "":
 										eventLine += "Join "
-										eventLine += characterFolderBreakdown[event['character']]['name']
+										eventLine += characterNameConversion(characterFolderBreakdown[event['character']]['name'])
 										if (event['portrait'] != ""):
 											eventLine += " (" + event['portrait'] + ") "
 										
@@ -344,7 +344,7 @@ func convertTimelines():
 										if event['character'] != "[All]":
 												
 											eventLine += "Update "
-											eventLine += characterFolderBreakdown[event['character']]['name']
+											eventLine += characterNameConversion(characterFolderBreakdown[event['character']]['name'])
 											if 'portrait' in event:
 												if (event['portrait'] != ""):
 													eventLine += " (" + event['portrait'] + ") "
@@ -379,7 +379,7 @@ func convertTimelines():
 								"2":
 									if event['character'] != "":
 										eventLine += "Leave "
-										eventLine += characterFolderBreakdown[event['character']]['name']
+										eventLine += characterNameConversion(characterFolderBreakdown[event['character']]['name'])
 										
 										if event['animation'] != "[Default]" && event['animation'] != "":
 											# Note: due to Anima changes, animations will be converted into a default. Times and wait will be perserved
@@ -704,9 +704,8 @@ func convertCharacters():
 			
 			if ("[" in fileName) || ("]" in fileName) || ("?" in fileName):
 				%OutputLog.text += " [color=yellow]Stripping invalid characters from file name![/color]\r\n"
-				fileName = fileName.replace("[","")
-				fileName = fileName.replace("]","")
-				fileName = fileName.replace("?","0")
+				fileName = characterNameConversion(fileName)
+
 				
 			
 			var directory = Directory.new()
@@ -878,6 +877,15 @@ func variableNameConversion(oldText):
 			
 	
 	return(newText)
+	
+func characterNameConversion(oldText):
+	#as some characters aren't supported in filenames, we need to convert both the filenames, and references to them
+	var newText = oldText
+	newText = newText.replace("[","")
+	newText = newText.replace("]","")
+	newText = newText.replace("?","0")
+	
+	return newText
 
 func convertSettings():
 	%OutputLog.text += "Converting other settings: \r\n"
