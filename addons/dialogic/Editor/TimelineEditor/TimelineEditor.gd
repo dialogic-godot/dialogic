@@ -12,9 +12,7 @@ var current_timeline: DialogicTimeline
 ## 				EDITOR NODES
 ################################################################################
 var TimelineUndoRedo := UndoRedo.new()
-
-@onready var timeline_area = $View/TimelineArea
-@onready var timeline = $View/TimelineArea/TimeLine
+@onready var _toolbar = get_parent().get_node('Toolbar')
 
 
 ################################################################################
@@ -28,8 +26,8 @@ signal timeline_loaded
 ################################################################################
 ## 				 TIMELINE LOADING
 ################################################################################
-var batches = []
-var building_timeline = true
+var _batches = []
+var _building_timeline = true
 
 
 ################################################################################
@@ -47,12 +45,14 @@ var piece_was_dragged = false
 ################################################################################
 # helper to comunicate with the toolbar
 func something_changed():
-	%Toolbar.set_resource_unsaved()
+	_toolbar.set_resource_unsaved()
+
 
 func new_timeline() -> void:
 	save_timeline()
 	clear_timeline()
 	show_save_dialog()
+
 
 func show_save_dialog():
 	find_parent('EditorView').godot_file_dialog(
@@ -63,6 +63,7 @@ func show_save_dialog():
 		"New_Timeline",
 		true
 	)
+
 
 func create_and_save_new_timeline(path):
 	var new_timeline = DialogicTimeline.new()
@@ -77,13 +78,13 @@ func save_timeline() -> void:
 		return
 	var new_events = []
 	
-	for event in timeline.get_children():
+	for event in %Timeline.get_children():
 		new_events.append(event.resource)
 	
 	if current_timeline:
 		current_timeline.set_events(new_events)
 		ResourceSaver.save(current_timeline.resource_path, current_timeline)
-		%Toolbar.set_resource_saved()
+		_toolbar.set_resource_saved()
 	else:
 		if new_events.size() > 0:
 			show_save_dialog()
@@ -91,55 +92,57 @@ func save_timeline() -> void:
 
 func load_timeline(object) -> void:
 	clear_timeline()
-	%Toolbar.load_timeline(object.resource_path)
+	_toolbar.load_timeline(object.resource_path)
 	current_timeline = object
 	var data = object.get_events()
 	var page = 1
 	var batch_size = 12
 	while batch_events(data, batch_size, page).size() != 0:
-		batches.append(batch_events(data, batch_size, page))
+		_batches.append(batch_events(data, batch_size, page))
 		page += 1
-	load_batch(batches)
+	load_batch(_batches)
 	# Reset the scroll position
-	timeline_area.scroll_vertical = 0
+	%TimelineArea.scroll_vertical = 0
+
 
 func batch_events(array, size, batch_number):
 	return array.slice((batch_number - 1) * size, batch_number * size)
+
 
 # a list of all events like choice and condition events (so they get connected to their end events)
 var opener_events_stack = []
 
 func load_batch(data):
-	var current_batch = batches.pop_front()
+	var current_batch = _batches.pop_front()
 	if current_batch:
 		for i in current_batch:
 			if i is DialogicEndBranchEvent:
-				create_end_branch_event(timeline.get_child_count(), opener_events_stack.pop_back())
+				create_end_branch_event(%Timeline.get_child_count(), opener_events_stack.pop_back())
 			else:
-				var piece = add_event_node(i, timeline.get_child_count())
+				var piece = add_event_node(i, %Timeline.get_child_count())
 				if i.can_contain_events:
 					opener_events_stack.push_back(piece)
 	emit_signal("batch_loaded")
 
 
 func _on_batch_loaded():
-	if batches.size() > 0:
+	if _batches.size() > 0:
 		await get_tree().create_timer(0.01).timeout
-		load_batch(batches)
+		load_batch(_batches)
 	else:
 		if opener_events_stack:
 			for ev in opener_events_stack:
-				create_end_branch_event(timeline.get_child_count(), ev)
+				create_end_branch_event(%Timeline.get_child_count(), ev)
 		opener_events_stack = []
 		indent_events()
-		building_timeline = false
+		_building_timeline = false
 		emit_signal("timeline_loaded")
 	add_extra_scroll_area_to_timeline()
 
 
 func clear_timeline():
 	deselect_all_items()
-	for event in timeline.get_children():
+	for event in %Timeline.get_children():
 		event.free()
 
 ################################################################################
@@ -151,29 +154,15 @@ func _ready():
 	batch_loaded.connect(_on_batch_loaded)
 	
 	# Margins
-	var modifier = ''
 	var _scale = DialogicUtil.get_editor_scale()
 	var scroll_container = $View/ScrollContainer
-	scroll_container.custom_minimum_size.x = 180
-	if _scale == 1.25:
-		modifier = '-1.25'
-		scroll_container.custom_minimum_size.x = 200
-	if _scale == 1.5:
-		modifier = '-1.25'
-		scroll_container.custom_minimum_size.x = 200
-	if _scale == 1.75:
-		modifier = '-1.25'
-		scroll_container.custom_minimum_size.x = 390
-	if _scale == 2:
-		modifier = '-2'
-		scroll_container.custom_minimum_size.x = 390
+	scroll_container.custom_minimum_size.x = 200 * _scale
 	
 	
 	if find_parent('EditorView'): # This prevents the view to turn black if you are editing this scene in Godot
-		pass # TODO godot4 not sure, think they changed the color names. Well make it adjust again
-		#timeline_area.get_theme_stylebox('bg').set('bg_color', get_theme_color("base_color", "Editor"))
+		%TimelineArea.get_theme_color("background_color", "CodeEdit")
 		
-	timeline_area.resized.connect(add_extra_scroll_area_to_timeline)
+	%TimelineArea.resized.connect(add_extra_scroll_area_to_timeline)
 	
 	# Event buttons
 	var buttonScene = load("res://addons/dialogic/Editor/TimelineEditor/AddEventButton.tscn")
@@ -230,7 +219,7 @@ func _process(delta):
 func create_drag_and_drop_event(resource):
 	var index = get_index_under_cursor()
 	var piece = add_event_node(resource)
-	timeline.move_child(piece, index)
+	%Timeline.move_child(piece, index)
 	moving_piece = piece
 	piece_was_dragged = true
 	select_item(piece)
@@ -323,7 +312,7 @@ func _input(event):
 		if is_event_pressed(event, KEY_UP, false, false, false):
 			if (len(selected_items) == 1):
 				var prev = max(0, selected_items[0].get_index() - 1)
-				var prev_node = timeline.get_child(prev)
+				var prev_node = %Timeline.get_child(prev)
 				if (prev_node != selected_items[0]):
 					selected_items = []
 					select_item(prev_node)
@@ -332,8 +321,8 @@ func _input(event):
 		# DOWN -> select next
 		if is_event_pressed(event, KEY_DOWN, false, false, false):
 			if (len(selected_items) == 1):
-				var next = min(timeline.get_child_count() - 1, selected_items[0].get_index() + 1)
-				var next_node = timeline.get_child(next)
+				var next = min(%Timeline.get_child_count() - 1, selected_items[0].get_index() + 1)
+				var next_node = %Timeline.get_child(next)
 				if (next_node != selected_items[0]):
 					selected_items = []
 					select_item(next_node)
@@ -355,7 +344,7 @@ func _input(event):
 			if selected_items:
 				at_index = selected_items[-1].get_index()+1
 			else:
-				at_index = timeline.get_child_count()
+				at_index = %Timeline.get_child_count()
 #			TimelineUndoRedo.create_action("[D] Add Text event.")
 #			TimelineUndoRedo.add_do_method(self, "create_event", "dialogic_001", {'no-data': true}, true, at_index, true)
 #			TimelineUndoRedo.add_undo_method(self, "remove_events_at_index", at_index, 1)
@@ -386,7 +375,7 @@ func _input(event):
 			if selected_items:
 				paste_position = selected_items[-1].get_index()
 			else:
-				paste_position = timeline.get_child_count()-1
+				paste_position = %Timeline.get_child_count()-1
 			if events_list:
 				TimelineUndoRedo.create_action("[D] Pasting "+str(len(events_list))+" event(s).")
 				TimelineUndoRedo.add_do_method(self, "add_events_at_index", events_list, paste_position)
@@ -453,7 +442,7 @@ func get_events_indexed(events:Array) -> Dictionary:
 func select_indexed_events(indexed_events:Dictionary) -> void:
 	selected_items = []
 	for event_index in indexed_events.keys():
-		selected_items.append(timeline.get_child(event_index))
+		selected_items.append(%Timeline.get_child(event_index))
 
 
 func add_events_indexed(indexed_events:Dictionary) -> void:
@@ -466,11 +455,11 @@ func add_events_indexed(indexed_events:Dictionary) -> void:
 		var event_resource = DialogicUtil.get_event_by_string(indexed_events[event_idx]).new()
 		event_resource.load_from_string_to_store(indexed_events[event_idx])
 		if event_resource is DialogicEndBranchEvent:
-			events.append(create_end_branch_event(timeline.get_child_count(), timeline.get_child(indexed_events[event_idx].trim_prefix('<<END BRANCH>>').to_int())))
-			timeline.move_child(events[-1], event_idx)
+			events.append(create_end_branch_event(%Timeline.get_child_count(), %Timeline.get_child(indexed_events[event_idx].trim_prefix('<<END BRANCH>>').to_int())))
+			%Timeline.move_child(events[-1], event_idx)
 		else:
 			events.append(add_event_node(event_resource))
-			timeline.move_child(events[-1], event_idx)
+			%Timeline.move_child(events[-1], event_idx)
 		
 	selected_items = events
 	visual_update_selection()
@@ -486,8 +475,8 @@ func delete_selected_events():
 		return
 	
 	# get next element
-	var next = min(timeline.get_child_count() - 1, selected_items[-1].get_index() + 1)
-	var next_node = timeline.get_child(next)
+	var next = min(%Timeline.get_child_count() - 1, selected_items[-1].get_index() + 1)
+	var next_node = %Timeline.get_child(next)
 	if _is_item_selected(next_node):
 		next_node = null
 	
@@ -504,8 +493,8 @@ func delete_selected_events():
 	if (next_node != null):
 		select_item(next_node, false)
 	else:
-		if (timeline.get_child_count() > 0):
-			next_node = timeline.get_child(max(0, timeline.get_child_count() - 1))
+		if (%Timeline.get_child_count() > 0):
+			next_node = %Timeline.get_child(max(0, %Timeline.get_child_count() - 1))
 			if (next_node != null):
 				select_item(next_node, false)
 		else:
@@ -555,14 +544,14 @@ func remove_events_at_index(at_index:int, amount:int = 1)-> void:
 	selected_items = []
 	something_changed()
 	for i in range(0, amount):
-		selected_items.append(timeline.get_child(at_index + i))
+		selected_items.append(%Timeline.get_child(at_index + i))
 	delete_selected_events()
 
 
 func add_events_at_index(event_list:Array, at_index:int) -> void:
 	if at_index != -1:
 		event_list.reverse()
-		selected_items = [timeline.get_child(at_index)]
+		selected_items = [%Timeline.get_child(at_index)]
 	else:
 		selected_items = []
 	
@@ -607,8 +596,8 @@ func select_item(item: Node, multi_possible:bool = true):
 			while true:
 				if index < goal_idx: index += 1
 				else: index -= 1
-				if not timeline.get_child(index) in selected_items:
-					selected_items.append(timeline.get_child(index))
+				if not %Timeline.get_child(index) in selected_items:
+					selected_items.append(%Timeline.get_child(index))
 				
 				if index == goal_idx:
 					break
@@ -626,7 +615,7 @@ func select_item(item: Node, multi_possible:bool = true):
 
 # checks all the events and sets their styles (selected/deselected)
 func visual_update_selection():
-	for item in timeline.get_children():
+	for item in %Timeline.get_children():
 		item.visual_deselect()
 		if 'end_node' in item and item.end_node != null:
 			item.end_node.unhighlight()
@@ -646,7 +635,7 @@ func custom_sort_selection(item1, item2):
 ## Helpers
 func select_all_items():
 	selected_items = []
-	for event in timeline.get_children():
+	for event in %Timeline.get_children():
 		selected_items.append(event)
 	visual_update_selection()
 
@@ -664,7 +653,7 @@ func _add_event_button_pressed(event_script):
 	if selected_items:
 		at_index = selected_items[-1].get_index()+1
 	else:
-		at_index = timeline.get_child_count()
+		at_index = %Timeline.get_child_count()
 	
 	if event_script.new().can_contain_events:
 		TimelineUndoRedo.create_action("[D] Add event.")
@@ -686,7 +675,7 @@ func _add_event_button_pressed(event_script):
 # Adding an event to the timeline
 func add_event_node(event_resource:Resource, at_index:int = -1, auto_select: bool = false, indent: bool = false):
 	if event_resource is DialogicEndBranchEvent:
-		return create_end_branch_event(at_index, timeline.get_child(0))
+		return create_end_branch_event(at_index, %Timeline.get_child(0))
 	
 	var piece = load("res://addons/dialogic/Editor/Events/EventNode/EventNode.tscn").instantiate()
 	var resource = event_resource
@@ -696,10 +685,10 @@ func add_event_node(event_resource:Resource, at_index:int = -1, auto_select: boo
 		if len(selected_items) != 0:
 			selected_items[0].add_sibling(piece)
 		else:
-			timeline.add_child(piece)
+			%Timeline.add_child(piece)
 	else:
-		timeline.add_child(piece)
-		timeline.move_child(piece, at_index)
+		%Timeline.add_child(piece)
+		%Timeline.move_child(piece, at_index)
 
 	piece.option_action.connect(_on_event_options_action.bind(piece))
 	piece.gui_input.connect(_on_event_block_gui_input.bind(piece))
@@ -717,7 +706,7 @@ func add_event_node(event_resource:Resource, at_index:int = -1, auto_select: boo
 	if indent:
 		indent_events()
 	
-	if not building_timeline:
+	if not _building_timeline:
 		piece.focus()
 	
 	return piece
@@ -729,8 +718,8 @@ func create_end_branch_event(at_index, parent_node):
 	parent_node.end_node = end_branch_event
 	end_branch_event.parent_node = parent_node
 	end_branch_event.add_end_control(parent_node.resource.get_end_branch_control())
-	timeline.add_child(end_branch_event)
-	timeline.move_child(end_branch_event, at_index)
+	%Timeline.add_child(end_branch_event)
+	%Timeline.move_child(end_branch_event, at_index)
 	return end_branch_event
 
 # combination of the above that establishes the correct connection between the event and it's end branch
@@ -745,15 +734,15 @@ func get_block_above(block):
 	var block_index = block.get_index()
 	var item = null
 	if block_index > 0:
-		item = timeline.get_child(block_index - 1)
+		item = %Timeline.get_child(block_index - 1)
 	return item
 
 
 func get_block_below(block):
 	var block_index = block.get_index()
 	var item = null
-	if block_index < timeline.get_child_count() - 1:
-		item = timeline.get_child(block_index + 1)
+	if block_index < %Timeline.get_child_count() - 1:
+		item = %Timeline.get_child(block_index + 1)
 	return item
 
 
@@ -767,8 +756,8 @@ func get_block_height(block):
 func get_index_under_cursor():
 	var current_position = get_global_mouse_position()
 	var top_pos = 0
-	for i in range(timeline.get_child_count()):
-		var c = timeline.get_child(i)
+	for i in range(%Timeline.get_child_count()):
+		var c = %Timeline.get_child(i)
 		if c.global_position.y < current_position.y:
 			top_pos = i
 	return top_pos
@@ -778,21 +767,21 @@ func get_index_under_cursor():
 ## *****************************************************************************
 func move_block_up(block):
 	if block.get_index() < 1: return false
-	timeline.move_child(block, block.get_index() - 1)
-	timeline_area.update()
+	%Timeline.move_child(block, block.get_index() - 1)
+	%TimelineArea.update()
 	something_changed()
 	return true
 	
 
 func move_block_down(block):
-	timeline.move_child(block, block.get_index() + 1)
-	timeline_area.update()
+	%Timeline.move_child(block, block.get_index() + 1)
+	%TimelineArea.update()
 	something_changed()
 	return true
 
 func move_block_to_index(block_index, index):
 	something_changed()
-	timeline.move_child(timeline.get_child(block_index), index)
+	%Timeline.move_child(%Timeline.get_child(block_index), index)
 
 ## *****************************************************************************
 ##					VISIBILITY/VISUALS
@@ -800,14 +789,14 @@ func move_block_to_index(block_index, index):
 func scroll_to_piece(piece_index) -> void:
 	var height = 0
 	for i in range(0, piece_index):
-		height += timeline.get_child(i).size.y
-	if height < timeline_area.scroll_vertical or height > timeline_area.scroll_vertical+timeline_area.size.y-(200*DialogicUtil.get_editor_scale()):
-		timeline_area.scroll_vertical = height
+		height += %Timeline.get_child(i).size.y
+	if height < %TimelineArea.scroll_vertical or height > %TimelineArea.scroll_vertical+%TimelineArea.size.y-(200*DialogicUtil.get_editor_scale()):
+		%TimelineArea.scroll_vertical = height
 
 
 func indent_events() -> void:
 	var indent: int = 0
-	var event_list: Array = timeline.get_children()
+	var event_list: Array = %Timeline.get_children()
 
 	if event_list.size() < 2:
 		return
@@ -857,15 +846,15 @@ func indent_events() -> void:
 			event.set_indent(0)
 		indent += delayed_indent
 	
-	timeline_area.update()
+	%TimelineArea.update()
 
 
 func add_extra_scroll_area_to_timeline():
-	if timeline.get_children().size() > 4:
-		timeline.custom_minimum_size.y = 0
-		timeline.size.y = 0
-		if timeline.size.y + 200 > timeline_area.size.y:
-			timeline.custom_minimum_size = Vector2(0, timeline.size.y + 200)
+	if %Timeline.get_children().size() > 4:
+		%Timeline.custom_minimum_size.y = 0
+		%Timeline.size.y = 0
+		if %Timeline.size.y + 200 > %TimelineArea.size.y:
+			%Timeline.custom_minimum_size = Vector2(0, %Timeline.size.y + 200)
 
 
 ## *****************************************************************************

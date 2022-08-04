@@ -80,8 +80,8 @@ func _draw():
 	var horizontal_line_length = 300*_scale
 	var color_multiplier = Color(1,1,1,0.5)
 	var selected_color_multiplier = Color(1,1,1,1)
-	for idx in range($TimeLine.get_child_count()):
-		var event = $TimeLine.get_child(idx)
+	for idx in range($Timeline.get_child_count()):
+		var event = $Timeline.get_child(idx)
 		
 		if not "resource" in event:
 			continue
@@ -97,14 +97,14 @@ func _draw():
 				color *= selected_color_multiplier
 			else:
 				color *= color_multiplier
-			if idx < $TimeLine.get_child_count()-1 and event.current_indent_level < $TimeLine.get_child(idx+1).current_indent_level:
+			if idx < $Timeline.get_child_count()-1 and event.current_indent_level < $Timeline.get_child(idx+1).current_indent_level:
 				var end_node = event.end_node
 				var sub_idx = idx
 				if !end_node:
-					while sub_idx < $TimeLine.get_child_count()-1:
+					while sub_idx < $Timeline.get_child_count()-1:
 						sub_idx += 1
-						if $TimeLine.get_child(sub_idx).current_indent_level == event.current_indent_level:
-							end_node = $TimeLine.get_child(sub_idx-1)
+						if $Timeline.get_child(sub_idx).current_indent_level == event.current_indent_level:
+							end_node = $Timeline.get_child(sub_idx-1)
 							break
 				
 				if end_node != null:
@@ -115,7 +115,7 @@ func _draw():
 					draw_rect(Rect2(Vector2(event.get_node('%IconPanel').global_position.x+line_width, rect_position.y+rect_size.y-line_width)-global_position, Vector2(horizontal_line_length, line_width)), color)
 
 				else:
-					draw_rect(Rect2(rect_position-global_position, Vector2(line_width, $TimeLine.get_child(-3).position.y+$TimeLine.get_child(-3).size.y)), color)
+					draw_rect(Rect2(rect_position-global_position, Vector2(line_width, $Timeline.get_child(-3).position.y+$Timeline.get_child(-3).size.y)), color)
 
 			elif event.expanded:
 				draw_rect(Rect2(rect_position-global_position, Vector2(line_width, event.size.y-event.get_node('%IconPanel').size.y-8*_scale)), color)

@@ -1,10 +1,23 @@
-[gd_scene load_steps=6 format=3 uid="uid://b3mf0pcte7us0"]
+[gd_scene load_steps=8 format=3 uid="uid://b3mf0pcte7us0"]
 
 [ext_resource type="PackedScene" uid="uid://cuud6b86l7juf" path="res://addons/dialogic/Editor/TimelineEditor/TimelineEditor.tscn" id="1"]
 [ext_resource type="Script" path="res://addons/dialogic/Editor/EditorView.gd" id="2"]
 [ext_resource type="PackedScene" uid="uid://cfwssh53iuf8x" path="res://addons/dialogic/Editor/Settings/SettingsEditor.tscn" id="3"]
-[ext_resource type="PackedScene" path="res://addons/dialogic/Editor/Common/Toolbar.tscn" id="4"]
+[ext_resource type="PackedScene" uid="uid://cu27v0qpqbntn" path="res://addons/dialogic/Editor/Common/Toolbar.tscn" id="4"]
+[ext_resource type="PackedScene" uid="uid://dr7l1304wixcs" path="res://addons/dialogic/Editor/TextEditor/TextEditor.tscn" id="5_px80h"]
 [ext_resource type="PackedScene" uid="uid://bak1jk2glij8r" path="res://addons/dialogic/Editor/CharacterEditor/CharacterEditor.tscn" id="6"]
+
+[sub_resource type="CodeHighlighter" id="CodeHighlighter_pib7o"]
+number_color = Color(0.8025, 0.81, 0.8225, 1)
+symbol_color = Color(0.8025, 0.81, 0.8225, 1)
+member_variable_color = Color(0.8025, 0.81, 0.8225, 1)
+color_regions = {
+"\" \"": Color(1, 0.925, 0.63, 1),
+"- ": Color(0.556, 1, 0.856, 1),
+"< >": Color(0.34, 0.7, 1, 1),
+"[ ]": Color(0.34, 0.7, 1, 1),
+"{ }": Color(0.556, 1, 0.856, 1)
+}
 
 [node name="EditorView" type="Control"]
 anchor_right = 1.0
@@ -40,7 +53,18 @@ size_flags_vertical = 3
 unique_name_in_owner = true
 anchor_right = 0.0
 anchor_bottom = 0.0
+offset_top = 320.0
+offset_right = 1024.0
+offset_bottom = 600.0
 size_flags_vertical = 3
+
+[node name="TextEditor" parent="MarginContainer/VBoxContainer" instance=ExtResource("5_px80h")]
+unique_name_in_owner = true
+visible = false
+offset_top = 37.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+syntax_highlighter = SubResource("CodeHighlighter_pib7o")
 
 [node name="SettingsEditor" parent="." instance=ExtResource("3")]
 unresizable = false
