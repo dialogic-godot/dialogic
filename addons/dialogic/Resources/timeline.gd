@@ -90,12 +90,13 @@ func _get_property_list() -> Array:
 	var usage = PROPERTY_USAGE_SCRIPT_VARIABLE
 	usage |= PROPERTY_USAGE_NO_EDITOR
 	usage |= PROPERTY_USAGE_EDITOR # Comment this line to hide events from editor
-	for event_idx in _events.size():
-		p.append(
-			{
-				"name":"event/{idx}".format({"idx":event_idx}),
-				"type":TYPE_OBJECT,
-				"usage":PROPERTY_USAGE_DEFAULT|PROPERTY_USAGE_SCRIPT_VARIABLE
-			}
-		)
+	if _events != null:
+		for event_idx in _events.size():
+			p.append(
+				{
+					"name":"event/{idx}".format({"idx":event_idx}),
+					"type":TYPE_OBJECT,
+					"usage":PROPERTY_USAGE_DEFAULT|PROPERTY_USAGE_SCRIPT_VARIABLE
+				}
+			)
 	return p

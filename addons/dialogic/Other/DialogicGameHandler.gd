@@ -38,7 +38,8 @@ func start_timeline(timeline_resource, label_or_idx = "") -> void:
 	# load the resource if only the path is given
 	if typeof(timeline_resource) == TYPE_STRING:
 		timeline_resource = load(timeline_resource)
-	
+		if timeline_resource == null:
+			assert(false, "There was an error loading this timeline. Check the filename, and the timeline for errors")
 	
 	current_timeline = timeline_resource
 	current_timeline_events = current_timeline.get_events()
