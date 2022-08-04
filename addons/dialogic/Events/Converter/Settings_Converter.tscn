@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://addons/dialogic/Events/Converter/Settings_Converter.gd" id="1_3feab"]
 
-[node name="ConverterSettings" type="HBoxContainer"]
+[node name="Dialogic 1 Converter" type="HBoxContainer"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 script = ExtResource("1_3feab")
@@ -10,13 +10,13 @@ script = ExtResource("1_3feab")
 [node name="LeftPanel" type="VBoxContainer" parent="."]
 custom_minimum_size = Vector2(800, 0)
 offset_right = 800.0
-offset_bottom = 600.0
+offset_bottom = 1050.0
 
 [node name="OutputLog" type="RichTextLabel" parent="LeftPanel"]
 unique_name_in_owner = true
 clip_contents = false
 offset_right = 800.0
-offset_bottom = 600.0
+offset_bottom = 1050.0
 size_flags_vertical = 3
 bbcode_enabled = true
 text = "This is a converter script to convert Dialogic 1.4+ files into Dialogic 2.0 format. 
@@ -28,12 +28,12 @@ Once you are ready, the Verify Files button will do a check to make sure all of 
 [node name="VSeparator" type="VSeparator" parent="."]
 offset_left = 804.0
 offset_right = 808.0
-offset_bottom = 600.0
+offset_bottom = 1050.0
 
 [node name="RightPanel" type="VBoxContainer" parent="."]
 offset_left = 812.0
 offset_right = 955.0
-offset_bottom = 600.0
+offset_bottom = 1050.0
 
 [node name="Verify" type="Button" parent="RightPanel"]
 offset_right = 143.0
