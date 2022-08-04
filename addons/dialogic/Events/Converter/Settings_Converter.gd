@@ -660,7 +660,7 @@ func convertTimelines():
 						var newString = r_string.substr(1,r_string.length()-2)
 
 						if "timeline" in line:
-							newString = "\"" + timelineFolderBreakdown[item].replace(".cnv", ".dtl") + "\""
+							newString = "\"" + timelineFolderBreakdown[newString].replace(".cnv", ".dtl") + "\""
 						if "label" in line:
 							newString = "\"" + anchorNames[newString] + "\""
 						
