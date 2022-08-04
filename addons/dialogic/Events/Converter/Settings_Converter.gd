@@ -18,6 +18,7 @@ var conversionReady = false
 
 var varSubsystemInstalled = false
 var anchorNames = {}
+var prefixCharacters = false
 
 func refresh():
 	pass
@@ -294,7 +295,7 @@ func convertTimelines():
 						"dialogic_001":
 							#Text Event
 							if event['character'] != "" && event['character']:
-								eventLine += characterNameConversion(variableNameConversion(characterFolderBreakdown[event['character']]['name']))
+								eventLine += variableNameConversion(characterFolderBreakdown[event['character']]['name'])
 								if event['portrait'] != "":
 									eventLine += "(" +  event['portrait'] + ")"
 								
@@ -320,7 +321,7 @@ func convertTimelines():
 								"0":
 									if event['character'] != "":
 										eventLine += "Join "
-										eventLine += characterNameConversion(characterFolderBreakdown[event['character']]['name'])
+										eventLine += characterFolderBreakdown[event['character']]['name']
 										if (event['portrait'] != ""):
 											eventLine += " (" + event['portrait'] + ") "
 										
@@ -344,7 +345,7 @@ func convertTimelines():
 										if event['character'] != "[All]":
 												
 											eventLine += "Update "
-											eventLine += characterNameConversion(characterFolderBreakdown[event['character']]['name'])
+											eventLine += characterFolderBreakdown[event['character']]['name']
 											if 'portrait' in event:
 												if (event['portrait'] != ""):
 													eventLine += " (" + event['portrait'] + ") "
@@ -721,6 +722,13 @@ func convertCharacters():
 					if !directory.dir_exists(conversionRootFolder + "/characters" + progresiveDirectory):
 						directory.make_dir(conversionRootFolder + "/characters" + progresiveDirectory)
 			
+			#add the prefix if the prefix option is enabled
+			if prefixCharacters:
+				var prefix = ""
+				for level in folderPath.split('/'):
+					if level != "":
+						prefix += level.left(2) + "-"
+				fileName = prefix + fileName
 			# using the resource constructor for this one
 			
 			var current_character = DialogicCharacter.new()
@@ -768,7 +776,7 @@ func convertCharacters():
 			# Before we're finished here, update the folder breakdown so it has the proper character name
 			var infoDict = {}
 			infoDict["path"] = characterFolderBreakdown[item]
-			infoDict["name"] = contents["name"]
+			infoDict["name"] = fileName
 			
 			characterFolderBreakdown[item] = infoDict
 			
@@ -776,6 +784,13 @@ func convertCharacters():
 		else:
 			%OutputLog.text += "[color=red]There was a problem parsing this file![/color]\r\n"
 			
+	
+	# Second pass, if the toggle is enabled 
+	
+	if prefixCharacters:
+		%OutputLog.text += "Performing second pass to check for duplicate character names: \r\n"
+		
+	
 	
 	%OutputLog.text += "\r\n"
 
@@ -903,3 +918,8 @@ func convertSettings():
 	ProjectSettings.set_setting('dialogic/choices/autofocus_first', config.get_value("input", "autofocus_choices", false))
 	ProjectSettings.set_setting('dialogic/choices/delay', config.get_value("input", "delay_after_options", 0.2))
 	
+
+
+func _on_check_box_toggled(button_pressed):
+	prefixCharacters = button_pressed
+	%OutputLog.text += "\r\n\r\nToggling this will add a prefix to all character filenames, which will have letters from each folder depth they are in. Characters in the root folder will have no prefix. \r\n"
