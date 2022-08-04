@@ -1,6 +1,8 @@
 @tool
 extends HBoxContainer
 
+signal toggle_editor_view(mode)
+
 func _ready():
 	# Get version number
 	$Version.set("custom_colors/font_color", get_theme_color("disabled_font_color", "Editor"))
@@ -17,6 +19,12 @@ func _ready():
 	%ResourcePicker.get_suggestions_func = [self, 'suggest_resources']
 	%ResourcePicker.resource_icon = get_theme_icon("GuiRadioUnchecked", "EditorIcons")
 	$Settings.icon = get_theme_icon("Tools", "EditorIcons")
+	
+	
+	$ToggleVisualEditor.button_up.connect(_on_toggle_visual_editor_clicked)
+	$ToggleVisualEditor.icon = get_theme_icon("ThemeDeselectAll", "EditorIcons")
+	update_toggle_button()
+
 
 ################################################################################
 ##							HELPERS
@@ -52,6 +60,7 @@ func _on_AddCharacter_pressed():
 		true
 	)
 
+
 func suggest_resources(filter):
 	var suggestions = {}
 	for i in DialogicUtil.get_project_setting('dialogic/editor/last_resources', []):
@@ -60,6 +69,7 @@ func suggest_resources(filter):
 		elif i.ends_with('.dch'):
 			suggestions[DialogicUtil.pretty_name(i)] = {'value':i, 'tooltip':i, 'icon':load("res://addons/dialogic/Editor/Images/Resources/character.svg")}
 	return suggestions
+
 
 func resource_used(path:String):
 	var used_resources:Array = DialogicUtil.get_project_setting('dialogic/editor/last_resources', [])
@@ -78,6 +88,7 @@ func load_timeline(timeline_path):
 	%ResourcePicker.set_value(DialogicUtil.pretty_name(timeline_path))
 	%ResourcePicker.resource_icon = get_theme_icon("TripleBar", "EditorIcons")
 	$PlayTimeline.show()
+
 
 func play_timeline():
 	if find_parent('EditorView').get_node("%TimelineEditor").current_timeline:
@@ -102,3 +113,24 @@ func load_character(character_path):
 func _on_ResourcePicker_value_changed(property_name, value):
 	if value:
 		DialogicUtil.get_dialogic_plugin()._editor_interface.inspect_object(load(value))
+
+
+################################################################################
+##							EDITING MODE
+################################################################################
+
+func _on_toggle_visual_editor_clicked():
+	if DialogicUtil.get_project_setting('dialogic/editor_mode', 'visual') == 'visual':
+		ProjectSettings.set_setting('dialogic/editor_mode', 'text')
+		emit_signal('toggle_editor_view', 'text')
+	else:
+		ProjectSettings.set_setting('dialogic/editor_mode', 'visual')
+		emit_signal('toggle_editor_view', 'visual')
+	update_toggle_button()
+	
+
+func update_toggle_button():
+	if DialogicUtil.get_project_setting('dialogic/editor_mode', 'visual') == 'text':
+		$ToggleVisualEditor.text = 'Visual Editor'
+	else:
+		$ToggleVisualEditor.text = 'Text Editor'
