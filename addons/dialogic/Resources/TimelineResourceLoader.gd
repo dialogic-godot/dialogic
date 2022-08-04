@@ -31,12 +31,12 @@ func _load(path: String, original_path: String, use_sub_threads: bool, cache_mod
 	var file := File.new()
 	var err:int
 	
-	var res = DialogicTimeline.new()
-	
 	err = file.open(path, File.READ)
 	if err != OK:
 		push_error("For some reason, loading custom resource failed with error code: %s"%err)
 		return err
+		
+	var res = DialogicTimeline.new()
 	
 	# Parse the lines as seperate events and recreate them as resources
 	var prev_indent = ""
