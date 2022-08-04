@@ -438,7 +438,7 @@ func convertTimelines():
 								depth.push_front("choice")
 								
 								
-							eventLine += " - "
+							eventLine += "- "
 							eventLine += event['choice']
 							
 							if 'value' in event:
