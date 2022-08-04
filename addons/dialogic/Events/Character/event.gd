@@ -173,7 +173,10 @@ func load_from_string_to_store(string:String):
 		if typeof(AnimationLength) == TYPE_STRING:
 			AnimationLength = AnimationLength.to_float()
 		AnimationWait = DialogicUtil.str_to_bool(shortcode_params.get('wait', 'false'))
-		AnimationRepeats = shortcode_params.get('repeat', 1).to_int()
+		
+		#repeat is only supported on Update, the other two should not be checking this
+		if ActionType == ActionTypes.Update:
+			AnimationRepeats = shortcode_params.get('repeat', 1).to_int()
 
 # RETURN TRUE IF THE GIVEN LINE SHOULD BE LOADED AS THIS EVENT
 func is_valid_event_string(string:String):
