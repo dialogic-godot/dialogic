@@ -328,7 +328,7 @@ func convertTimelines():
 										for i in event['position']:
 											if event['position'][i] == true:
 												#1.x uses positions 0-4, while the default 2.0 scene uses positions 1-5
-												eventLine += i + 1
+												eventLine += str(i.to_int() + 1)
 										
 										if event['animation'] != "[Default]" && event['animation'] != "":
 											# Note: due to Anima changes, animations will be converted into a default. Times and wait will be perserved
@@ -357,7 +357,7 @@ func convertTimelines():
 													
 													if event['position'][i] == true:
 														positionCheck = true
-														eventLine += i + 1
+														eventLine += str(i.to_int() + 1)
 													
 											if !positionCheck:
 												%OutputLog.text += "\r\n[color=yellow]Warning: Character update with no positon set, this was possible in 1.x but not 2.0\r\nCharacter will be set to position 3[/color]\r\n"
