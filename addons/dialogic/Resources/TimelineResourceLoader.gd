@@ -66,6 +66,12 @@ func _load(path: String, original_path: String, use_sub_threads: bool, cache_mod
 		var event_content = line_stripped
 		var event = DialogicUtil.get_event_by_string(event_content).new()
 		
+		# While in editor, we want to let this process all ahead to build the editor, but not at runtime
+		if Engine.is_editor_hint():
+			event.set_meta("delayed_process", false)
+		else:
+			event.set_meta("delayed_process", true)
+		
 		# add the following lines until the event says it's full there is an empty line or the indent changes
 		while !event.is_string_full_event(event_content):
 			idx += 1
@@ -82,7 +88,11 @@ func _load(path: String, original_path: String, use_sub_threads: bool, cache_mod
 			event_content += "\n"+following_line_stripped
 		
 		event_content = event_content.replace("\n"+indent, "\n")
-		event._load_from_string(event_content)
+		if event.get_meta("delayed_process") == false:
+			event._load_from_string(event_content)
+		else:
+			#hold it for later if we're not processing it right now
+			event.set_meta("event_content", event_content)
 		events.append(event)
 		prev_was_opener = event.can_contain_events
 
