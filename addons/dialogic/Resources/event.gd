@@ -293,7 +293,10 @@ func parse_shortcode_parameters(shortcode : String) -> Dictionary:
 ## 					BUILDING THE EDITOR LIST
 ################################################################################
 func _get_property_list() -> Array:
-	editor_list.clear()
+	if editor_list != null:
+		editor_list.clear()
+	else:
+		editor_list = []
 	build_event_editor()
 	return editor_list
 
