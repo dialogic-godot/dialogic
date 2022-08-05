@@ -79,8 +79,8 @@ func handle_event(event_index:int) -> void:
 	var event:DialogicEvent = current_timeline_events[event_index]
 	
 	#actually process the event now, since we didnt earlier at runtime
-	if event.get_meta("delayed_process") == true:
-		event._load_from_string(event.get_meta("event_content"))
+	if event['event_node_ready'] == false:
+		event._load_from_string(event['deferred_processing_text'])
 	
 	#print("\n[D] Handle Event ", event_index, ": ", event)
 	if event.continue_at_end:

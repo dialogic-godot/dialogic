@@ -14,6 +14,10 @@ var event_name:String = "Event"
 # To sort the buttons shown in the editor
 var event_sorting_index : int = 0
 
+# A property used for runtime, to verify if it's been loaded yet or not
+var event_node_ready : bool = false
+var deferred_processing_text : String = ""
+
 enum Category {
 	MAIN,
 	LOGIC,
@@ -207,6 +211,7 @@ func _store_as_string() -> String:
 
 
 func _load_from_string(string:String) -> void:
+	event_node_ready = true
 	if '#id:' in string and can_be_translated():
 		translation_id = string.get_slice('#id:', 1).strip_edges()
 		load_from_string_to_store(string.get_slice('#id:', 0))
