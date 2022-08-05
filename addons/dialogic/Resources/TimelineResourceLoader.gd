@@ -95,7 +95,7 @@ func _load(path: String, original_path: String, use_sub_threads: bool, cache_mod
 			event._load_from_string(event_content)
 		else:
 			# a few types have exceptions with how they're currently written
-			if (event['event_name'] == "Label") || (event['event_name'] == "Choice") || (event['event_name'] == "EndBranch"):
+			if (event['event_name'] == "Label") || (event['event_name'] == "Choice"):
 				event.set_meta("delayed_process", false)
 				event._load_from_string(event_content)
 			else:
