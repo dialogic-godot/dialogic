@@ -211,12 +211,13 @@ func _store_as_string() -> String:
 
 
 func _load_from_string(string:String) -> void:
-	event_node_ready = true
 	if '#id:' in string and can_be_translated():
 		translation_id = string.get_slice('#id:', 1).strip_edges()
 		load_from_string_to_store(string.get_slice('#id:', 0))
+		event_node_ready = true
 	else:
 		load_from_string_to_store(string)
+		event_node_ready = true
 
 
 func _test_event_string(string:String) -> bool:
