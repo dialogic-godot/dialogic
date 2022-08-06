@@ -40,3 +40,19 @@ func _load(path: String, original_path: String, use_sub_threads: bool, cache_mod
 	
 	# Everything went well, and you parsed your file data into your resource. Life is good, return it
 	return res
+
+func _get_dependencies(path:String, add_type:bool):
+	var depends_on : PackedStringArray
+	var character:DialogicCharacter = load(path)
+	for p in character.portraits.values():
+		if p.path:
+			depends_on.append(p.path)
+	return depends_on
+
+func _rename_dependencies(path: String, renames: Dictionary):
+	var character:DialogicCharacter = load(path)
+	for p in character.portraits:
+		if character.portraits[p].path in renames:
+			character.portraits[p].path = renames[character.portraits[p].path]
+	ResourceSaver.save(path, character)
+	return OK
