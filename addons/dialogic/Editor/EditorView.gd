@@ -21,12 +21,13 @@ func _ready():
 		var directory = Directory.new();
 		var path = ProjectSettings.get_setting('dialogic/editor/last_resources')[0]
 		if directory.file_exists(path):
-			DialogicUtil.get_dialogic_plugin()._editor_interface.inspect_object(load(path))
+			DialogicUtil.get_dialogic_plugin().editor_interface.inspect_object(load(path))
 	
 	
 	# Connecting the toolbar editor mode signal
 	%Toolbar.toggle_editor_view.connect(_on_toggle_editor_view)
 	%Toolbar.create_timeline.connect(_on_create_timeline)
+	%Toolbar.play_timeline.connect(_on_play_timeline)
 	
 	$SaveConfirmationDialog.add_button('No Saving Please!', true, 'nosave')
 	$SaveConfirmationDialog.hide()
@@ -158,3 +159,12 @@ func _on_toggle_editor_view(mode:String) -> void:
 	
 func _on_create_timeline():
 	_get_timeline_editor().new_timeline()
+
+
+func _on_play_timeline():
+	if _get_timeline_editor().current_timeline:
+		var dialogic_plugin = DialogicUtil.get_dialogic_plugin()
+		# Save the current opened timeline
+		ProjectSettings.set_setting('dialogic/editor/current_timeline_path', _get_timeline_editor().current_timeline.resource_path)
+		ProjectSettings.save()
+		DialogicUtil.get_dialogic_plugin().editor_interface.play_custom_scene("res://addons/dialogic/Other/TestTimelineScene.tscn")

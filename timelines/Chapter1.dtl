@@ -1,6 +1,8 @@
 [theme name="Default"]
 
-Emilio: This is a cool feature.
+[wait time="1.0"]
+
+Dex: This is a cool feature.
 
 - Yes
 	
@@ -11,7 +13,6 @@ Emilio: This is a cool feature.
 - No
 	
 	Jowan: What are you talking about?
-	
 	
 This is some sick text.
 

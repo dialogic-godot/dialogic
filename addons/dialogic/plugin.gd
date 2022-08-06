@@ -4,7 +4,7 @@ extends EditorPlugin
 var _editor_view
 var _parts_inspector
 var _export_plugin
-var _editor_interface
+var editor_interface
 
 signal dialogic_save
 
@@ -19,7 +19,7 @@ func _enter_tree():
 	_editor_view = MainPanel.instantiate()
 	_editor_view.plugin_reference = self
 	_editor_view.hide()
-	_editor_interface = get_editor_interface()
+	editor_interface = get_editor_interface()
 	get_editor_interface().get_editor_main_control().add_child(_editor_view)
 	_make_visible(false)
 

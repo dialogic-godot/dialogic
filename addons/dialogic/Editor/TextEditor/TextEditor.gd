@@ -31,14 +31,14 @@ func save_timeline():
 		
 		# Since i'm not using the resource saver to save the timelines from text
 		# I need to re-import the resource with the new data.
-		DialogicUtil.get_dialogic_plugin().get_editor_interface().get_resource_filesystem().reimport_files([
+		DialogicUtil.get_dialogic_plugin().editor_interface.get_resource_filesystem().reimport_files([
 			current_timeline.resource_path
 		])
 
 
 func add_highlighting():
 	# This is a dumpster fire, so hopefully it will be improved during beta?
-	var editor_settings = DialogicUtil.get_dialogic_plugin().get_editor_interface().get_editor_settings()
+	var editor_settings = DialogicUtil.get_dialogic_plugin().editor_interface.get_editor_settings()
 	var s = CodeHighlighter.new()
 	s.color_regions = {
 		'[ ]': editor_settings.get('text_editor/theme/highlighting/function_color'),
@@ -78,5 +78,5 @@ func create_and_save_new_timeline(path):
 	new_timeline.resource_path = path
 	current_timeline = new_timeline
 	save_timeline()
-	DialogicUtil.get_dialogic_plugin().get_editor_interface().get_resource_filesystem().update_file(path)
+	DialogicUtil.get_dialogic_plugin().editor_interface.get_resource_filesystem().update_file(path)
 	load_timeline(new_timeline)

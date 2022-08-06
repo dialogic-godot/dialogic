@@ -8,11 +8,13 @@ enum LabelModes {Normal, Title, Info}
 @export var  mode : LabelModes = LabelModes.Normal
 
 func set_text_from_key(value):
-	text = DTS.translate(value)
+	#text = DTS.translate(value)
+	text = value
+	pass
 
 func _ready():
-	if DTS.translate(text_key) != text_key:
-		set_text_from_key(text_key)
+	#if DTS.translate(text_key) != text_key:
+	#	set_text_from_key(text_key)
 	remove_theme_color_override('font_color')
 	if find_parent('EditorView'):
 		if mode == LabelModes.Title:
