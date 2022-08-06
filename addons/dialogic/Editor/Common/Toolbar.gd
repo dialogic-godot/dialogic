@@ -22,7 +22,6 @@ func _ready():
 	
 	
 	$ToggleVisualEditor.button_up.connect(_on_toggle_visual_editor_clicked)
-	$ToggleVisualEditor.icon = get_theme_icon("ThemeDeselectAll", "EditorIcons")
 	update_toggle_button()
 
 
@@ -130,6 +129,12 @@ func _on_toggle_visual_editor_clicked():
 	
 
 func update_toggle_button():
+	$ToggleVisualEditor.icon = get_theme_icon("ThemeDeselectAll", "EditorIcons")
+	# Have to make this hack for the button to resize properly {
+	$ToggleVisualEditor.size = Vector2(0,0)
+	await get_tree().process_frame
+	$ToggleVisualEditor.size = Vector2(0,0)
+	# } End of hack :)
 	if DialogicUtil.get_project_setting('dialogic/editor_mode', 'visual') == 'text':
 		$ToggleVisualEditor.text = 'Visual Editor'
 	else:
