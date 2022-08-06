@@ -17,6 +17,9 @@ var current_event_idx = 0
 
 var current_state_info :Dictionary = {}
 
+# Thread for preloading data 
+var preloadingThread
+
 
 signal state_changed(new_state)
 signal timeline_ended()
@@ -27,8 +30,19 @@ signal signal_event(argument)
 signal text_signal(argument)
 
 func _ready() -> void:
+	#thread is only used at runtime for deferred loading
+	#as it's not particularly modifying much, just finishing a step we're deferring to fill in the event data, it should be safe for use without semaphores or mutexes
+	if Engine.is_editor_hint() == false:
+		preloadingThread = Thread.new()
 	collect_subsystems()
 	clear()
+	
+# 
+func _exit_tree():
+	# Thread needs to be disposed of
+	if Engine.is_editor_hint() == false:
+		preloadingThread.wait_to_finish()
+	# Probably other cleanup here
 
 
 ################################################################################
@@ -52,9 +66,21 @@ func start_timeline(timeline_resource, label_or_idx = "") -> void:
 		if label_or_idx >-1:
 			current_event_idx = label_or_idx -1
 	
+	# begin the runtime thread for processing events
+	var threadFunction = Callable(self, "_thread_deferred_timeline_items")
+	preloadingThread.start(threadFunction)
+	
 	emit_signal('timeline_started')
 	handle_next_event()
 
+
+# Preloader function, prepares a timeline and returns an object to hold for later
+func preload_timeline(timeline_resource):
+	#I think ideally this should be on a new thread, will test
+	if typeof(timeline_resource) == TYPE_STRING:
+		timeline_resource = load(timeline_resource)
+		if timeline_resource == null:
+			assert(false, "There was an error loading this timeline. Check the filename, and the timeline for errors")
 
 func end_timeline():
 	current_timeline = null
@@ -77,6 +103,11 @@ func handle_event(event_index:int) -> void:
 	
 	current_event_idx = event_index
 	var event:DialogicEvent = current_timeline_events[event_index]
+	
+	#actually process the event now, since we didnt earlier at runtime
+	if event['event_node_ready'] == false:
+		event._load_from_string(event['deferred_processing_text'])
+	
 	#print("\n[D] Handle Event ", event_index, ": ", event)
 	if event.continue_at_end:
 		#print("    -> WILL AUTO CONTINUE!")
@@ -186,3 +217,21 @@ func _get(property):
 func _set(property, value):
 	if has_subsystem(property):
 		return true
+		
+################################################################################
+##						PROCESSING THREADS
+################################################################################
+func _thread_deferred_timeline_items():
+	print("running thread")
+	
+	for event in current_timeline_events:
+		print("Event type: " + event['event_name'])
+		
+		# Jump's go through the whole recusrive preload, we don't want to do that yet
+		# Instead we will do a read-ahead to do a threaded preload of a new timeline with anoother thread function
+		if event['event_name'] != "Jump":
+			if event['event_node_ready'] == false:
+				event._load_from_string(event['deferred_processing_text'])
+
+func _thread_deferred_preload_timeline():
+	pass
