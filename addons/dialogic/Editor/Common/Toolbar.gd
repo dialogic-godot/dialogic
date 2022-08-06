@@ -2,6 +2,7 @@
 extends HBoxContainer
 
 signal toggle_editor_view(mode)
+signal create_timeline
 
 func _ready():
 	# Get version number
@@ -47,7 +48,8 @@ func is_current_unsaved() -> bool:
 ################################################################################
 
 func _on_AddTimeline_pressed():
-	get_parent().get_node("%TimelineEditor").new_timeline()
+	emit_signal("create_timeline")
+
 
 func _on_AddCharacter_pressed():
 	find_parent('EditorView').godot_file_dialog(

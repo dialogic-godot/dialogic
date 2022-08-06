@@ -24,6 +24,7 @@ func _ready():
 	
 	# Connecting the toolbar editor mode signal
 	%Toolbar.toggle_editor_view.connect(_on_toggle_editor_view)
+	%Toolbar.create_timeline.connect(_on_create_timeline)
 	
 	$SaveConfirmationDialog.add_button('No Saving Please!', true, 'nosave')
 	$SaveConfirmationDialog.hide()
@@ -150,3 +151,6 @@ func _on_toggle_editor_view(mode:String) -> void:
 	# After showing the proper timeline, open it to edit
 	_load_timeline(_last_timeline_opened)
 	
+	
+func _on_create_timeline():
+	_get_timeline_editor().new_timeline()
