@@ -264,7 +264,9 @@ func load_from_string_to_store(string:String):
 	for parameter in params.keys():
 		if not parameter in data:
 			continue
-		if typeof(data[parameter]) == TYPE_STRING and (data[parameter].ends_with(".dtl") or data[parameter].ends_with(".dch")):
+			
+		#if typeof(data[parameter]) == TYPE_STRING and (data[parameter].ends_with(".dtl") or data[parameter].ends_with(".dch")):
+		if typeof(data[parameter]) == TYPE_STRING and (data[parameter].ends_with(".dch")):
 			set(params[parameter], load(data[parameter]))
 		else:
 			var value = str2var(data[parameter].replace('\\=', '=')) if str2var(data[parameter].replace('\\=', '=')) != null else data[parameter].replace('\\=', '=')

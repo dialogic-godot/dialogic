@@ -17,9 +17,12 @@ var current_event_idx = 0
 
 var current_state_info :Dictionary = {}
 
-# Thread for preloading data 
-var preloadingThread
-
+# Thread and variables for handling delayed loader
+var deferred_loader: Thread
+var deferred_loader_semaphore = Semaphore.new()
+var deferred_loader_safe_to_run: bool = false
+var deferred_loader_running: bool = false
+var deferred_loader_cleanup: bool = false
 
 signal state_changed(new_state)
 signal timeline_ended()
@@ -33,7 +36,8 @@ func _ready() -> void:
 	#thread is only used at runtime for deferred loading
 	#as it's not particularly modifying much, just finishing a step we're deferring to fill in the event data, it should be safe for use without semaphores or mutexes
 	if Engine.is_editor_hint() == false:
-		preloadingThread = Thread.new()
+		deferred_loader = Thread.new()
+		
 	collect_subsystems()
 	clear()
 	
@@ -41,7 +45,10 @@ func _ready() -> void:
 func _exit_tree():
 	# Thread needs to be disposed of
 	if Engine.is_editor_hint() == false:
-		preloadingThread.wait_to_finish()
+		deferred_loader_cleanup = false
+		deferred_loader_safe_to_run = false
+		deferred_loader_semaphore.post()
+		deferred_loader.wait_to_finish()
 	# Probably other cleanup here
 
 
@@ -49,6 +56,13 @@ func _exit_tree():
 ## 						TIMELINE+EVENT HANDLING
 ################################################################################
 func start_timeline(timeline_resource, label_or_idx = "") -> void:
+	# Cancel all remaining tasks in the preloader thread
+	#If loader is running, wait for it to stop current line
+	deferred_loader_safe_to_run = false
+	while deferred_loader_running:		
+		continue
+		
+
 	# load the resource if only the path is given
 	if typeof(timeline_resource) == TYPE_STRING:
 		timeline_resource = load(timeline_resource)
@@ -67,8 +81,15 @@ func start_timeline(timeline_resource, label_or_idx = "") -> void:
 			current_event_idx = label_or_idx -1
 	
 	# begin the runtime thread for processing events
-	var threadFunction = Callable(self, "_thread_deferred_timeline_items")
-	preloadingThread.start(threadFunction)
+	if deferred_loader.is_alive() == false:
+		var threadFunction = Callable(self, "_thread_deferred_timeline_items")
+		deferred_loader.start(threadFunction)
+		deferred_loader_safe_to_run = true
+		deferred_loader_semaphore.post()
+	else:
+		deferred_loader_safe_to_run = true
+		deferred_loader_semaphore.post()
+
 	
 	emit_signal('timeline_started')
 	handle_next_event()
@@ -81,6 +102,8 @@ func preload_timeline(timeline_resource):
 		timeline_resource = load(timeline_resource)
 		if timeline_resource == null:
 			assert(false, "There was an error loading this timeline. Check the filename, and the timeline for errors")
+		else:
+			return timeline_resource
 
 func end_timeline():
 	current_timeline = null
@@ -107,6 +130,9 @@ func handle_event(event_index:int) -> void:
 	#actually process the event now, since we didnt earlier at runtime
 	if event['event_node_ready'] == false:
 		event._load_from_string(event['deferred_processing_text'])
+	
+	if event['event_name'] == "Jump":
+			event.load_timeline()
 	
 	#print("\n[D] Handle Event ", event_index, ": ", event)
 	if event.continue_at_end:
@@ -222,16 +248,26 @@ func _set(property, value):
 ##						PROCESSING THREADS
 ################################################################################
 func _thread_deferred_timeline_items():
-	print("running thread")
-	
-	for event in current_timeline_events:
-		print("Event type: " + event['event_name'])
+	while(true):
+		deferred_loader_semaphore.wait()
+		#break out needed when closing app so thread can end
+		if deferred_loader_cleanup: 
+			break
+		deferred_loader_running = true
+
 		
-		# Jump's go through the whole recusrive preload, we don't want to do that yet
-		# Instead we will do a read-ahead to do a threaded preload of a new timeline with anoother thread function
-		if event['event_name'] != "Jump":
-			if event['event_node_ready'] == false:
-				event._load_from_string(event['deferred_processing_text'])
+		for event in current_timeline_events:
+			# continue processing as long as it's safe, aborts when a new start_timeline() is run as that will replace the timeline
+			if deferred_loader_safe_to_run:
+				# Load everything else now
+				# This will load all the timelines this timeline jumps into as well
+				if event['event_node_ready'] == false:
+					event._load_from_string(event['deferred_processing_text'])
+					
+				if event['event_name'] == "Jump":
+					print("loading attached timeline")
+					event.load_timeline()
+		deferred_loader_running = false
 
 func _thread_deferred_preload_timeline():
 	pass
