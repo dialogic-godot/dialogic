@@ -81,6 +81,10 @@ func color_names(text:String) -> String:
 	return text
 
 func update_character_names() -> void:
+	#don't do this at all if we're not using autocolor names to begin with
+	if !DialogicUtil.get_project_setting('dialogic/text/autocolor_names', false):
+		return 
+	
 	character_colors = {}
 	for dch_path in DialogicUtil.list_resources_of_type('.dch'):
 		var dch = (load(dch_path) as DialogicCharacter)
