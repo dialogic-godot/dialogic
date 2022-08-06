@@ -126,9 +126,9 @@ func _on_Indent_visibility_changed():
 		return
 	if resource.needs_indentation:
 		if indent_node.visible:
-			remove_warning(DTS.translate("This event needs a question event around it!"))
+			remove_warning("This event needs a question event around it!")
 		else:
-			set_warning(DTS.translate("This event needs a question event around it!"))
+			set_warning("This event needs a question event around it!")
 
 
 func _request_selection():
@@ -321,7 +321,8 @@ func _ready():
 	
 	if resource:
 		if resource.event_name:
-			title_label.text = DTS.translate(resource.event_name)
+			#title_label.text = DTS.translate(resource.event_name)
+			title_label.text = resource.event_name
 		if resource.get_icon() != null:
 			_set_event_icon(resource.get_icon())
 

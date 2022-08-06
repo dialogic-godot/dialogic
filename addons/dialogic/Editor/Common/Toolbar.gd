@@ -3,6 +3,7 @@ extends HBoxContainer
 
 signal toggle_editor_view(mode)
 signal create_timeline
+signal play_timeline
 
 func _ready():
 	# Get version number
@@ -14,7 +15,7 @@ func _ready():
 	
 	
 	$PlayTimeline.icon = get_theme_icon("PlayScene", "EditorIcons")
-	$PlayTimeline.button_up.connect(play_timeline)
+	$PlayTimeline.button_up.connect(_on_play_timeline)
 	
 	$AddTimeline.icon = load("res://addons/dialogic/Editor/Images/Toolbar/add-timeline.svg")
 	%ResourcePicker.get_suggestions_func = [self, 'suggest_resources']
@@ -91,13 +92,9 @@ func load_timeline(timeline_path):
 	$PlayTimeline.show()
 
 
-func play_timeline():
-	if find_parent('EditorView').get_node("%TimelineEditor").current_timeline:
-		var dialogic_plugin = DialogicUtil.get_dialogic_plugin()
-		# Save the current opened timeline
-		ProjectSettings.set_setting('dialogic/editor/current_timeline_path', find_parent('EditorView').get_node("%TimelineEditor").current_timeline.resource_path)
-		ProjectSettings.save()
-		dialogic_plugin._editor_interface.play_custom_scene("res://addons/dialogic/Other/TestTimelineScene.tscn")
+func _on_play_timeline():
+	emit_signal('play_timeline')
+	$PlayTimeline.release_focus()
 
 
 ################################################################################
@@ -113,7 +110,7 @@ func load_character(character_path):
 
 func _on_ResourcePicker_value_changed(property_name, value):
 	if value:
-		DialogicUtil.get_dialogic_plugin()._editor_interface.inspect_object(load(value))
+		DialogicUtil.get_dialogic_plugin().editor_interface.inspect_object(load(value))
 
 
 ################################################################################
