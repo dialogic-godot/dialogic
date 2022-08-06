@@ -25,8 +25,6 @@ func _enter_tree():
 
 
 func _ready():
-	# Adding custom dialogic icons to Godot's theme
-	var c = Control.new()
 	pass
 
 
@@ -52,12 +50,11 @@ func _make_visible(visible):
 
 
 func _get_plugin_icon():
-	var _scale = get_editor_interface().get_editor_scale()
-	# https://github.com/godotengine/godot-proposals/issues/572
+	var _scale = str(get_editor_interface().get_editor_scale())
 	var  _theme = 'light'
 	if get_editor_interface().get_base_control().get_theme_constant("dark_theme", "Editor"):
 		_theme = 'dark'
-	return load("res://addons/dialogic/Editor/Images/Plugin/plugin-editor-icon-" + _theme + "-theme-" + str(_scale) + ".svg")
+	return load("res://addons/dialogic/Editor/Images/Plugin/plugin-editor-icon-" + _theme + "-theme-" + _scale + ".svg")
 
 
 func _remove_custom_editor_view():

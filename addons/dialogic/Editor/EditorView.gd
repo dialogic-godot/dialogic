@@ -139,11 +139,6 @@ func _on_toggle_editor_view(mode:String) -> void:
 		%TextEditor.save_timeline()
 		%TextEditor.hide()
 		%TextEditor.clear_timeline()
-		# Since i'm not using the resource loader to save the timelines from text
-		# I need to re-import the resource before being able to edit it normally.
-		DialogicUtil.get_dialogic_plugin().get_editor_interface().get_resource_filesystem().reimport_files([
-			_last_timeline_opened.resource_path
-		])
 		%TimelineEditor.show()
 	else:
 		%TimelineEditor.save_timeline()
