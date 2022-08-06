@@ -3,8 +3,10 @@ extends DialogicEvent
 class_name DialogicJumpEvent
 
 # DEFINE ALL PROPERTIES OF THE EVENT
-var Timeline :DialogicTimeline = null
+var Timeline :DialogicTimeline = null :
+	set = _set_timeline
 var LabelName : String = ""
+var _timeline_file: String = ""
 
 func _execute() -> void:
 	if Timeline and Timeline != dialogic.current_timeline:
@@ -13,7 +15,7 @@ func _execute() -> void:
 	elif LabelName:
 		dialogic.jump_to_label(LabelName)
 	finish()
-
+	
 
 ################################################################################
 ## 						INITIALIZE
@@ -25,8 +27,12 @@ func _init() -> void:
 	set_default_color('Color2')
 	event_category = Category.TIMELINE
 	event_sorting_index = 0
-	
 
+func _set_timeline(value):
+	if typeof(value) == TYPE_STRING:
+		_timeline_file = value
+	else:
+		Timeline = value
 
 ################################################################################
 ## 						SAVING/LOADING
@@ -41,6 +47,10 @@ func get_shortcode_parameters() -> Dictionary:
 		"label"		: "LabelName",
 	}
 
+func load_timeline() -> void:
+	if Timeline == null:
+		if _timeline_file != "":
+			Timeline = Dialogic.preload_timeline(_timeline_file)
 
 ################################################################################
 ## 						EDITOR REPRESENTATION
