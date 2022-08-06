@@ -340,7 +340,8 @@ func convertTimelines():
 											
 										file.store_string(eventLine)	
 									else:
-										eventLine += " # Character join event that did not have a selected character"
+										eventLine += "# Character join event that did not have a selected character"
+										file.store_string(eventLine)	
 								"2":
 									if event['character'] != "":
 										if event['character'] != "[All]":
@@ -377,24 +378,27 @@ func convertTimelines():
 										else:
 											file.store_string(eventLine + "# Update and Leave All not currently implemented")		
 									else:
-										eventLine += " # Character Update event that did not have a selected character"
+										eventLine += "# Character Update event that did not have a selected character"
+										file.store_string(eventLine)	
 								"1":
 									if event['character'] != "":
-										eventLine += "Leave "
-										eventLine += characterNameConversion(characterFolderBreakdown[event['character']]['name'])
-										
-										if event['animation'] != "[Default]" && event['animation'] != "":
-											# Note: due to Anima changes, animations will be converted into a default. Times and wait will be perserved
-											eventLine += " [animation=\"Instant In Or Out\" "
-											eventLine += "length=\"" +  str(event['animation_length']) + "\""
-											if "animation_wait" in event:
-												eventLine += " wait=\"true\""
-											eventLine += "]"
-										file.store_string(eventLine)	
+										if event['character'] != "[All]":
+											eventLine += "Leave "
+											eventLine += characterNameConversion(characterFolderBreakdown[event['character']]['name'])
+											
+											if event['animation'] != "[Default]" && event['animation'] != "":
+												# Note: due to Anima changes, animations will be converted into a default. Times and wait will be perserved
+												eventLine += " [animation=\"Instant In Or Out\" "
+												eventLine += "length=\"" +  str(event['animation_length']) + "\""
+												if "animation_wait" in event:
+													eventLine += " wait=\"true\""
+												eventLine += "]"
+											file.store_string(eventLine)	
 									else:
 										eventLine += " # Character Update event that did not have a selected character"
+										file.store_string(eventLine)	
 								_:
-									file.store_string("failed" + str(event['type']))
+									file.store_string("# failed" + str(event['type']))
 								
 							
 						"dialogic_010":
