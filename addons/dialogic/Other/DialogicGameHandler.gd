@@ -45,7 +45,7 @@ func _ready() -> void:
 func _exit_tree():
 	# Thread needs to be disposed of
 	if Engine.is_editor_hint() == false:
-		deferred_loader_cleanup = false
+		deferred_loader_cleanup = true
 		deferred_loader_safe_to_run = false
 		deferred_loader_semaphore.post()
 		deferred_loader.wait_to_finish()
@@ -124,15 +124,16 @@ func handle_event(event_index:int) -> void:
 		end_timeline()
 		return
 	
+	#actually process the event now, since we didnt earlier at runtime
+	#this needs to happen before we create the copy DialogicEvent variable, so it doesn't throw an error if not ready
+	if current_timeline_events[event_index]['event_node_ready'] == false:
+		current_timeline_events[event_index]._load_from_string(current_timeline_events[event_index]['deferred_processing_text'])
+	
+	if current_timeline_events[event_index]['event_name'] == "Jump":
+			current_timeline_events[event_index].load_timeline()
+	
 	current_event_idx = event_index
 	var event:DialogicEvent = current_timeline_events[event_index]
-	
-	#actually process the event now, since we didnt earlier at runtime
-	if event['event_node_ready'] == false:
-		event._load_from_string(event['deferred_processing_text'])
-	
-	if event['event_name'] == "Jump":
-			event.load_timeline()
 	
 	#print("\n[D] Handle Event ", event_index, ": ", event)
 	if event.continue_at_end:
@@ -255,7 +256,6 @@ func _thread_deferred_timeline_items():
 			break
 		deferred_loader_running = true
 
-		
 		for event in current_timeline_events:
 			# continue processing as long as it's safe, aborts when a new start_timeline() is run as that will replace the timeline
 			if deferred_loader_safe_to_run:
@@ -265,8 +265,20 @@ func _thread_deferred_timeline_items():
 					event._load_from_string(event['deferred_processing_text'])
 					
 				if event['event_name'] == "Jump":
-					print("loading attached timeline")
 					event.load_timeline()
+					
+
+		#while we still have free time on the thread, we can also start to process any timelines we loaded here, for events other than jumps:
+		for event in current_timeline_events:
+			if deferred_loader_safe_to_run:
+				if event['event_name'] == "Jump":
+
+					for timeline_event in event['Timeline']['_events']:
+						if deferred_loader_safe_to_run:
+
+							if timeline_event['event_node_ready'] == false && timeline_event['event_name'] != "Jump":
+								timeline_event._load_from_string(timeline_event['deferred_processing_text'])
+				
 		deferred_loader_running = false
 
 func _thread_deferred_preload_timeline():
