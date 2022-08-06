@@ -23,16 +23,17 @@ func load_timeline(object) -> void:
 
 
 func save_timeline():
-	var file = File.new()
-	file.open(current_timeline.resource_path, File.WRITE)
-	file.store_string(text)
-	file.close()
-	
-	# Since i'm not using the resource saver to save the timelines from text
-	# I need to re-import the resource with the new data.
-	DialogicUtil.get_dialogic_plugin().get_editor_interface().get_resource_filesystem().reimport_files([
-		current_timeline.resource_path
-	])
+	if current_timeline:
+		var file = File.new()
+		file.open(current_timeline.resource_path, File.WRITE)
+		file.store_string(text)
+		file.close()
+		
+		# Since i'm not using the resource saver to save the timelines from text
+		# I need to re-import the resource with the new data.
+		DialogicUtil.get_dialogic_plugin().get_editor_interface().get_resource_filesystem().reimport_files([
+			current_timeline.resource_path
+		])
 
 
 func add_highlighting():
