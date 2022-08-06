@@ -18,8 +18,10 @@ func _ready():
 	
 	# Open the last edited scene
 	if ProjectSettings.has_setting('dialogic/editor/last_resources'):
+		var directory = Directory.new();
 		var path = ProjectSettings.get_setting('dialogic/editor/last_resources')[0]
-		DialogicUtil.get_dialogic_plugin()._editor_interface.inspect_object(load(path))
+		if directory.file_exists(path):
+			DialogicUtil.get_dialogic_plugin()._editor_interface.inspect_object(load(path))
 	
 	
 	# Connecting the toolbar editor mode signal
