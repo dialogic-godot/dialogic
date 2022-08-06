@@ -53,6 +53,8 @@ func edit_character(object):
 func show_settings():
 	$SettingsEditor.popup_centered()
 	$SettingsEditor.size = get_viewport().size/1.5
+	$SettingsEditor.position -= $SettingsEditor.size / 2
+
 
 func save_current_resource():
 	$SaveConfirmationDialog.popup_centered()
