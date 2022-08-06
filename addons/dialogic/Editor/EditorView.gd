@@ -5,6 +5,8 @@ var plugin_reference = null
 
 var editor_file_dialog:EditorFileDialog
 
+var _last_timeline_opened
+
 signal continue_opening_resource
 
 func _ready():
@@ -19,28 +21,33 @@ func _ready():
 		var path = ProjectSettings.get_setting('dialogic/editor/last_resources')[0]
 		DialogicUtil.get_dialogic_plugin()._editor_interface.inspect_object(load(path))
 	
+	
+	# Connecting the toolbar editor mode signal
+	%Toolbar.toggle_editor_view.connect(_on_toggle_editor_view)
+	
 	$SaveConfirmationDialog.add_button('No Saving Please!', true, 'nosave')
 	$SaveConfirmationDialog.hide()
+
 
 func edit_timeline(object):
 	if %Toolbar.is_current_unsaved():
 		save_current_resource()
 		await continue_opening_resource
-	%TimelineEditor.load_timeline(object)
-	%TimelineEditor.show()
+	_load_timeline(object)
+	show_timeline_editor()
 	%CharacterEditor.hide()
+
 
 func edit_character(object):
 	if %Toolbar.is_current_unsaved():
 		save_current_resource()
 		await continue_opening_resource
 	%CharacterEditor.load_character(object)
-	%TimelineEditor.hide()
+	_hide_timeline_editor()
 	%CharacterEditor.show()
 
 
 func show_settings():
-	
 	$SettingsEditor.popup_centered()
 	$SettingsEditor.size = get_viewport().size/1.5
 
@@ -49,8 +56,9 @@ func save_current_resource():
 	$SaveConfirmationDialog.title = "Unsaved changes!"
 	$SaveConfirmationDialog.dialog_text = "Save before changing resource?"
 
+
 func _on_SaveConfirmationDialog_confirmed():
-	if %TimelineEditor.visible:
+	if _is_timeline_editor_visible:
 		%TimelineEditor.save_timeline()
 	elif %CharacterEditor.visible:
 		%CharacterEditor.save_character()
@@ -60,6 +68,7 @@ func _on_SaveConfirmationDialog_confirmed():
 func _on_SaveConfirmationDialog_custom_action(action):
 	$SaveConfirmationDialog.hide()
 	emit_signal("continue_opening_resource")
+
 
 func godot_file_dialog(callable, filter, mode = EditorFileDialog.FILE_MODE_OPEN_FILE, window_title = "Save", current_file_name = 'New_File', saving_something = false):
 	for connection in editor_file_dialog.file_selected.get_connections():
@@ -85,3 +94,63 @@ func godot_file_dialog(callable, filter, mode = EditorFileDialog.FILE_MODE_OPEN_
 
 func _on_settings_editor_close_requested():
 	$SettingsEditor.hide()
+
+########################################
+#		Timeline editor 
+########################################
+
+func _load_timeline(object) -> void:
+	_last_timeline_opened = object
+	_get_timeline_editor().load_timeline(object)
+
+func _save_timeline() -> void:
+	_get_timeline_editor().save_timeline()
+
+
+func show_timeline_editor() -> void:
+	if DialogicUtil.get_project_setting('dialogic/editor_mode', 'visual') == 'visual':
+		%TextEditor.hide()
+		%TimelineEditor.show()
+	else:
+		%TimelineEditor.hide()
+		%TextEditor.show()
+
+
+func _hide_timeline_editor() -> void:
+	%TimelineEditor.hide()
+	%TextEditor.hide()
+
+
+func _is_timeline_editor_visible() -> bool:
+	if _get_timeline_editor().visible:
+		return true
+	return false
+
+
+func _get_timeline_editor() -> Node:
+	if DialogicUtil.get_project_setting('dialogic/editor_mode', 'visual') == 'visual':
+		return %TimelineEditor
+	else:
+		return %TextEditor
+	
+
+func _on_toggle_editor_view(mode:String) -> void:
+	if mode == 'visual':
+		%TextEditor.save_timeline()
+		%TextEditor.hide()
+		%TextEditor.clear_timeline()
+		# Since i'm not using the resource loader to save the timelines from text
+		# I need to re-import the resource before being able to edit it normally.
+		DialogicUtil.get_dialogic_plugin().get_editor_interface().get_resource_filesystem().reimport_files([
+			_last_timeline_opened.resource_path
+		])
+		%TimelineEditor.show()
+	else:
+		%TimelineEditor.save_timeline()
+		%TimelineEditor.hide()
+		%TimelineEditor.clear_timeline()
+		%TextEditor.show()
+	
+	# After showing the proper timeline, open it to edit
+	_load_timeline(_last_timeline_opened)
+	

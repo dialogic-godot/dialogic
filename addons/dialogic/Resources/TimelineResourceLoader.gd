@@ -31,12 +31,12 @@ func _load(path: String, original_path: String, use_sub_threads: bool, cache_mod
 	var file := File.new()
 	var err:int
 	
-	var res = DialogicTimeline.new()
-	
 	err = file.open(path, File.READ)
 	if err != OK:
 		push_error("For some reason, loading custom resource failed with error code: %s"%err)
 		return err
+		
+	var res = DialogicTimeline.new()
 	
 	# Parse the lines as seperate events and recreate them as resources
 	var prev_indent = ""
@@ -82,7 +82,18 @@ func _load(path: String, original_path: String, use_sub_threads: bool, cache_mod
 			event_content += "\n"+following_line_stripped
 		
 		event_content = event_content.replace("\n"+indent, "\n")
-		event._load_from_string(event_content)
+		
+
+		
+		if Engine.is_editor_hint():
+			event._load_from_string(event_content)
+		else:
+			# a few types have exceptions with how they're currently written
+			if (event['event_name'] == "Label") || (event['event_name'] == "Choice"):
+				event._load_from_string(event_content)
+			else:
+				#hold it for later if we're not processing it right now
+				event['deferred_processing_text'] = event_content
 		events.append(event)
 		prev_was_opener = event.can_contain_events
 
@@ -94,3 +105,32 @@ func _load(path: String, original_path: String, use_sub_threads: bool, cache_mod
 	res._events = events
 	
 	return res
+
+
+func _get_dependencies(path:String, add_type:bool):
+	var depends_on : PackedStringArray
+	var timeline:DialogicTimeline = load(path)
+	for event in timeline._events:
+		for property in event.get_shortcode_parameters().values():
+			if event.get(property) is DialogicTimeline:
+				depends_on.append(event.get(property).resource_path)
+			elif event.get(property) is DialogicCharacter:
+				depends_on.append(event.get(property).resource_path)
+			elif typeof(event.get(property)) == TYPE_STRING and event.get(property).begins_with('res://'):
+				depends_on.append(event.get(property))
+	return depends_on
+
+func _rename_dependencies(path: String, renames: Dictionary):
+	var timeline:DialogicTimeline = load(path)
+	for event in timeline._events:
+		for property in event.get_shortcode_parameters().values():
+			if event.get(property) is DialogicTimeline:
+				if event.get(property).resource_path in renames:
+					event.set(property, load(renames[event.get(property).resource_path]))
+			elif event.get(property) is DialogicCharacter:
+				if event.get(property).resource_path in renames:
+					event.set(property, load(renames[event.get(property).resource_path]))
+			elif typeof(event.get(property)) == TYPE_STRING and event.get(property) in renames:
+				event.set(property, renames[event.get(property)])
+	ResourceSaver.save(path, timeline)
+	return OK

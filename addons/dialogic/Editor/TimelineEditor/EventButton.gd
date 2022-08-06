@@ -1,7 +1,7 @@
 @tool
 extends Button
 
-export (String) var EventName = ''
+@export var EventName:String = ''
 
 func get_drag_data(position):
 	var preview_label = Label.new()
