@@ -341,7 +341,7 @@ func convertTimelines():
 										file.store_string(eventLine)	
 									else:
 										eventLine += " # Character join event that did not have a selected character"
-								"1":
+								"2":
 									if event['character'] != "":
 										if event['character'] != "[All]":
 												
@@ -361,7 +361,7 @@ func convertTimelines():
 													
 											if !positionCheck:
 												%OutputLog.text += "\r\n[color=yellow]Warning: Character update with no positon set, this was possible in 1.x but not 2.0\r\nCharacter will be set to position 3[/color]\r\n"
-												eventLine += "3"
+												eventLine += " 3"
 												
 											if event['animation'] != "[Default]" && event['animation'] != "":
 												# Note: due to Anima changes, animations will be converted into a default. Times and wait will be perserved
@@ -378,7 +378,7 @@ func convertTimelines():
 											file.store_string(eventLine + "# Update and Leave All not currently implemented")		
 									else:
 										eventLine += " # Character Update event that did not have a selected character"
-								"2":
+								"1":
 									if event['character'] != "":
 										eventLine += "Leave "
 										eventLine += characterNameConversion(characterFolderBreakdown[event['character']]['name'])
