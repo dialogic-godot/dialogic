@@ -135,6 +135,7 @@ func _get_timeline_editor() -> Node:
 	
 
 func _on_toggle_editor_view(mode:String) -> void:
+	%CharacterEditor.visible = false
 	if mode == 'visual':
 		%TextEditor.save_timeline()
 		%TextEditor.hide()
