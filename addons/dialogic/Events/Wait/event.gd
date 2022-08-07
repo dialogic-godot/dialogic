@@ -4,11 +4,16 @@ class_name DialogicWaitEvent
 
 # DEFINE ALL PROPERTIES OF THE EVENT
 var SecondsTime :float = 1.0
+var HideText: bool = true
 
 func _execute() -> void:
+	if (HideText):
+		dialogic.Text.hide_text_boxes()
 	dialogic.current_state = dialogic.states.WAITING
 	await dialogic.get_tree().create_timer(SecondsTime).timeout
 	dialogic.current_state = dialogic.states.IDLE
+	if (HideText):
+		dialogic.Text.show_text_boxes()
 	finish()
 
 ################################################################################
@@ -33,6 +38,7 @@ func get_shortcode_parameters() -> Dictionary:
 	return {
 		#param_name : property_name
 		"time"		: "SecondsTime",
+		"hide_text"	: "HideText"
 	}
 
 
@@ -43,3 +49,4 @@ func get_shortcode_parameters() -> Dictionary:
 func build_event_editor():
 	add_header_edit('SecondsTime', ValueType.Float)
 	add_header_label('seconds.')
+	add_body_edit('HideText', ValueType.Bool, 'Hide text box:')
