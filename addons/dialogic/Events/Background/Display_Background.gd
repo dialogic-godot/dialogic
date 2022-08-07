@@ -12,4 +12,7 @@ func _init():
 	anchor_right = 1
 	anchor_bottom = 1
 	
+
+	
 	# TODO Might not be full screen when resizing window because I had to remove margin setters for godoto4
+
