@@ -558,7 +558,14 @@ func convertTimelines():
 							file.store_string(eventLine + "[end_timeline]")
 						"dialogic_023":
 							#Wait event
-							file.store_string(eventLine + "[wait time=\"" + str(event['wait_seconds']) +"\"]")
+							
+							eventLine += "[wait time=\"" + str(event['wait_seconds'])
+							if !("hide_dialogbox" in event) || (event['hide_dialogbox'] == true):
+								eventLine += ' hide_text="true"'
+							else:
+								eventLine += ' hide_text="false"'
+							eventLine += "\"]"
+							file.store_string(eventLine)
 						"dialogic_024":
 							#Change Theme event
 							file.store_string(eventLine + "# Theme change event, not currently implemented")
