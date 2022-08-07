@@ -2,8 +2,7 @@
 class_name DialogicUtil
 
 static func get_editor_scale() -> float:
-	var ep = EditorPlugin.new()
-	return ep.get_editor_interface().get_editor_scale()
+	return get_dialogic_plugin().editor_interface.get_editor_scale()
 
 
 static func listdir(path: String, files_only: bool = true, throw_error:bool = true, full_file_path:bool = false) -> Array:

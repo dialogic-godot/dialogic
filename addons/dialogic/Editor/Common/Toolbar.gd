@@ -2,6 +2,8 @@
 extends HBoxContainer
 
 signal toggle_editor_view(mode)
+signal create_timeline
+signal play_timeline
 
 func _ready():
 	# Get version number
@@ -13,7 +15,7 @@ func _ready():
 	
 	
 	$PlayTimeline.icon = get_theme_icon("PlayScene", "EditorIcons")
-	$PlayTimeline.button_up.connect(play_timeline)
+	$PlayTimeline.button_up.connect(_on_play_timeline)
 	
 	$AddTimeline.icon = load("res://addons/dialogic/Editor/Images/Toolbar/add-timeline.svg")
 	%ResourcePicker.get_suggestions_func = [self, 'suggest_resources']
@@ -22,7 +24,6 @@ func _ready():
 	
 	
 	$ToggleVisualEditor.button_up.connect(_on_toggle_visual_editor_clicked)
-	$ToggleVisualEditor.icon = get_theme_icon("ThemeDeselectAll", "EditorIcons")
 	update_toggle_button()
 
 
@@ -48,7 +49,8 @@ func is_current_unsaved() -> bool:
 ################################################################################
 
 func _on_AddTimeline_pressed():
-	get_parent().get_node("%TimelineEditor").new_timeline()
+	emit_signal("create_timeline")
+
 
 func _on_AddCharacter_pressed():
 	find_parent('EditorView').godot_file_dialog(
@@ -90,13 +92,9 @@ func load_timeline(timeline_path):
 	$PlayTimeline.show()
 
 
-func play_timeline():
-	if find_parent('EditorView').get_node("%TimelineEditor").current_timeline:
-		var dialogic_plugin = DialogicUtil.get_dialogic_plugin()
-		# Save the current opened timeline
-		ProjectSettings.set_setting('dialogic/editor/current_timeline_path', find_parent('EditorView').get_node("%TimelineEditor").current_timeline.resource_path)
-		ProjectSettings.save()
-		dialogic_plugin._editor_interface.play_custom_scene("res://addons/dialogic/Other/TestTimelineScene.tscn")
+func _on_play_timeline():
+	emit_signal('play_timeline')
+	$PlayTimeline.release_focus()
 
 
 ################################################################################
@@ -112,7 +110,7 @@ func load_character(character_path):
 
 func _on_ResourcePicker_value_changed(property_name, value):
 	if value:
-		DialogicUtil.get_dialogic_plugin()._editor_interface.inspect_object(load(value))
+		DialogicUtil.get_dialogic_plugin().editor_interface.inspect_object(load(value))
 
 
 ################################################################################
@@ -120,16 +118,21 @@ func _on_ResourcePicker_value_changed(property_name, value):
 ################################################################################
 
 func _on_toggle_visual_editor_clicked():
+	var _mode = 'visual'
 	if DialogicUtil.get_project_setting('dialogic/editor_mode', 'visual') == 'visual':
-		ProjectSettings.set_setting('dialogic/editor_mode', 'text')
-		emit_signal('toggle_editor_view', 'text')
-	else:
-		ProjectSettings.set_setting('dialogic/editor_mode', 'visual')
-		emit_signal('toggle_editor_view', 'visual')
+		_mode = 'text'
+	ProjectSettings.set_setting('dialogic/editor_mode', _mode)
+	emit_signal('toggle_editor_view', _mode)
 	update_toggle_button()
 	
 
 func update_toggle_button():
+	$ToggleVisualEditor.icon = get_theme_icon("ThemeDeselectAll", "EditorIcons")
+	# Have to make this hack for the button to resize properly {
+	$ToggleVisualEditor.size = Vector2(0,0)
+	await get_tree().process_frame
+	$ToggleVisualEditor.size = Vector2(0,0)
+	# } End of hack :)
 	if DialogicUtil.get_project_setting('dialogic/editor_mode', 'visual') == 'text':
 		$ToggleVisualEditor.text = 'Visual Editor'
 	else:
