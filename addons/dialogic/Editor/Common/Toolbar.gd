@@ -118,12 +118,11 @@ func _on_ResourcePicker_value_changed(property_name, value):
 ################################################################################
 
 func _on_toggle_visual_editor_clicked():
+	var _mode = 'visual'
 	if DialogicUtil.get_project_setting('dialogic/editor_mode', 'visual') == 'visual':
-		ProjectSettings.set_setting('dialogic/editor_mode', 'text')
-		emit_signal('toggle_editor_view', 'text')
-	else:
-		ProjectSettings.set_setting('dialogic/editor_mode', 'visual')
-		emit_signal('toggle_editor_view', 'visual')
+		_mode = 'text'
+	ProjectSettings.set_setting('dialogic/editor_mode', _mode)
+	emit_signal('toggle_editor_view', _mode)
 	update_toggle_button()
 	
 
