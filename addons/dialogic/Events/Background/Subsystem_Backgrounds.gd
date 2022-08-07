@@ -15,7 +15,6 @@ func load_game_state():
 ##					MAIN METHODS
 ####################################################################################################
 func update_background(path:String = '', fade_time:float = 0.0) -> void:
-	print_debug(Time.get_ticks_msec())
 	dialogic.current_state_info['background'] = path
 	for node in get_tree().get_nodes_in_group('dialogic_bg_image'):
 		if node.is_visible_in_tree():
@@ -40,6 +39,4 @@ func update_background(path:String = '', fade_time:float = 0.0) -> void:
 				if not path.is_empty():
 					node.texture = load(path)
 					
-	print_debug(Time.get_ticks_msec())
-
 

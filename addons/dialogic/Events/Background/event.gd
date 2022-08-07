@@ -4,9 +4,10 @@ class_name DialogicBackgroundEvent
 
 # DEFINE ALL PROPERTIES OF THE EVENT
 var Path: String = ""
+var Fade: float = 0.0
 
 func _execute() -> void:
-	dialogic.Backgrounds.update_background(Path)
+	dialogic.Backgrounds.update_background(Path, Fade)
 	finish()
 
 func get_required_subsystems() -> Array:
@@ -39,6 +40,7 @@ func get_shortcode_parameters() -> Dictionary:
 	return {
 		#param_name : property_name
 		"path"		: "Path",
+		"fade"		: "Fade"
 	}
 
 
@@ -48,3 +50,4 @@ func get_shortcode_parameters() -> Dictionary:
 
 func build_event_editor():
 	add_header_edit('Path', ValueType.File, 'Path:', '', {'file_filter':'*.tscn, *.scn, *.jpg, *.jpeg, *.png, *.webp, *.tga, *svg, *.bmp, *.dds, *.exr, *.hdr', 'placeholder': "No background", 'editor_icon':["Image", "EditorIcons"]})
+	add_body_edit("Fade", ValueType.Float, "Fade time")
