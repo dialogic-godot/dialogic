@@ -1,15 +1,15 @@
 @tool
 extends Control
 
-@export var placeholder_text:String = "Select Resource"
+@export var placeholder_text : String = "Select Resource"
 
 ### SETTINGS FOR THE RESOURCE PICKER
-var file_extension = ""
-var get_suggestions_func = [self, 'get_default_suggestions']
-var empty_text = ""
-@export var disable_pretty_name := false
+var file_extension : String = ""
+var get_suggestions_func : Array = [self, 'get_default_suggestions']
+var empty_text : String = ""
+@export var disable_pretty_name : bool = false
 
-var resource_icon:Texture = null:
+var resource_icon : Texture = null:
 	get:
 		return resource_icon
 	set(new_icon):
@@ -24,7 +24,7 @@ var resource_icon:Texture = null:
 ## STORING VALUE AND REFERENCE TO RESOURCE
 var event_resource : DialogicEvent = null
 var property_name : String
-var current_value
+var current_value : String
 
 # this signal is on all event parts and informs the event that a change happened.
 signal value_changed(property_name, value)
@@ -35,15 +35,15 @@ signal value_changed(property_name, value)
 # These functions have to be implemented by all scenes that are used to display 
 # values on the events.
 
-func set_left_text(value:String):
+func set_left_text(value:String) -> void:
 	$LeftText.text = str(value)
 	$LeftText.visible = !value.is_empty()
 
-func set_right_text(value:String):
+func set_right_text(value:String) -> void:
 	$RightText.text = str(value)
 	$RightText.visible = !value.is_empty()
 
-func set_value(value, text = ''):
+func set_value(value, text : String = '') -> void:
 	if value == null:
 		$Search.text = empty_text
 	elif file_extension:
@@ -62,7 +62,7 @@ func set_value(value, text = ''):
 	current_value = value
 
 
-func changed_to_empty():
+func changed_to_empty() -> void:
 	if file_extension:
 		emit_signal("value_changed", property_name, null)
 	else:
@@ -84,7 +84,7 @@ func _ready():
 	$Search.focus_entered.connect(_on_Search_focus_entered)
 	$Search.text_submitted.connect(_on_Search_text_entered)
 	$Search/Icon.position.x = 0
-	var scale = DialogicUtil.get_editor_scale()
+	var scale: float = DialogicUtil.get_editor_scale()
 	if scale == 2:
 		$Search/Icon.position.x = 10
 	$Search/SelectButton.icon = get_theme_icon("Collapse", "EditorIcons")
@@ -101,14 +101,14 @@ func _ready():
 ################################################################################
 ## 						SEARCH & SUGGESTION POPUP
 ################################################################################
-func _on_Search_text_entered(new_text = ""):
+func _on_Search_text_entered(new_text:String = "") -> void:
 	if %Suggestions.get_item_count() and not $Search.text.is_empty():
 		suggestion_selected(0)
 	else:
 		changed_to_empty()
 
 
-func _on_Search_text_changed(new_text, just_update = false):
+func _on_Search_text_changed(new_text:String, just_update:bool = false) -> void:
 	%Suggestions.clear()
 	
 	if new_text == "" and !just_update:
@@ -116,9 +116,9 @@ func _on_Search_text_changed(new_text, just_update = false):
 
 	var suggestions = get_suggestions_func[0].call(get_suggestions_func[1], new_text)
 	
-	var line_length = 0
-	var more_hidden = false
-	var idx = 0
+	var line_length:int = 0
+	var more_hidden:bool = false
+	var idx:int = 0
 	for element in suggestions:
 		if new_text != "" or idx < 12:
 			line_length = max(get_theme_font('font', 'Label').get_string_size(element, HORIZONTAL_ALIGNMENT_LEFT, -1, get_theme_font_size("font_size", 'Label')).x+80, line_length)
@@ -149,15 +149,16 @@ func _on_Search_text_changed(new_text, just_update = false):
 
 func get_default_suggestions(search_text):
 	if file_extension.is_empty(): return {'Nothing found!':{'value':''}}
-	var suggestions = {}
-	var resources = DialogicUtil.list_resources_of_type(file_extension)
+	var suggestions: Dictionary = {}
+	var resources: Array = DialogicUtil.list_resources_of_type(file_extension)
 
 	for resource in resources:
 		if search_text.is_empty() or search_text.to_lower() in DialogicUtil.pretty_name(resource).to_lower():
 			suggestions[DialogicUtil.pretty_name(resource)] = {'value':resource, 'tooltip':resource}
 	return suggestions
-	
-func suggestion_selected(index):
+
+
+func suggestion_selected(index : int) -> void:
 	if %Suggestions.is_item_disabled(index):
 		return
 	
@@ -174,20 +175,20 @@ func suggestion_selected(index):
 	
 	emit_signal("value_changed", property_name, current_value)
 
-func _input(event):
+func _input(event:InputEvent):
 	if event is InputEventMouseButton and event.pressed:
 		if !%Suggestions.get_global_rect().has_point(get_global_mouse_position()):
 			if %Suggestions.visible: hide_suggestions()
 
-func hide_suggestions():
+func hide_suggestions() -> void:
 	$Search/SelectButton.button_pressed = false
 	%Suggestions.hide()
 
-func _on_Search_focus_entered():
+func _on_Search_focus_entered() -> void:
 	if $Search.text == "" or current_value == null or (typeof(current_value) == TYPE_STRING and current_value.is_empty()):
 		_on_Search_text_changed("")
 
-func _on_SelectButton_toggled(button_pressed):
+func _on_SelectButton_toggled(button_pressed:bool) -> void:
 	if button_pressed:
 		_on_Search_text_changed('', true)
 
@@ -195,7 +196,7 @@ func _on_SelectButton_toggled(button_pressed):
 ##	 					DRAG AND DROP
 ################################################################################
 
-func _can_drop_data(position, data):
+func _can_drop_data(position, data) -> bool:
 	if typeof(data) == TYPE_DICTIONARY and data.has('files') and len(data.files) == 1:
 		if file_extension:
 			if data.files[0].ends_with(file_extension):
@@ -204,7 +205,7 @@ func _can_drop_data(position, data):
 			return false
 	return false
 	
-func _drop_data(position, data):
+func _drop_data(position, data) -> void:
 	var file = load(data.files[0])
 	set_value(file)
 	emit_signal("value_changed", property_name, file)

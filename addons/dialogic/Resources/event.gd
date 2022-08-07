@@ -211,12 +211,13 @@ func _store_as_string() -> String:
 
 
 func _load_from_string(string:String) -> void:
-	event_node_ready = true
 	if '#id:' in string and can_be_translated():
 		translation_id = string.get_slice('#id:', 1).strip_edges()
 		load_from_string_to_store(string.get_slice('#id:', 0))
+		event_node_ready = true
 	else:
 		load_from_string_to_store(string)
+		event_node_ready = true
 
 
 func _test_event_string(string:String) -> bool:
@@ -263,7 +264,9 @@ func load_from_string_to_store(string:String):
 	for parameter in params.keys():
 		if not parameter in data:
 			continue
-		if typeof(data[parameter]) == TYPE_STRING and (data[parameter].ends_with(".dtl") or data[parameter].ends_with(".dch")):
+			
+		#if typeof(data[parameter]) == TYPE_STRING and (data[parameter].ends_with(".dtl") or data[parameter].ends_with(".dch")):
+		if typeof(data[parameter]) == TYPE_STRING and (data[parameter].ends_with(".dch")):
 			set(params[parameter], load(data[parameter]))
 		else:
 			var value = str2var(data[parameter].replace('\\=', '=')) if str2var(data[parameter].replace('\\=', '=')) != null else data[parameter].replace('\\=', '=')

@@ -223,7 +223,7 @@ func update_portrait_preview(portrait_inst = "") -> void:
 		current_portrait = portrait_inst
 		current_portrait.visual_focus()
 	
-		%PreviewLabel.text = DTS.translate('Preview of')+' "'+current_portrait.get_portrait_name()+'"'
+		%PreviewLabel.text = 'Preview of "'+current_portrait.get_portrait_name()+'"'
 		
 		var path:String = current_portrait.portrait_data.get('path', '')
 		var mirror:bool = current_portrait.portrait_data.get('mirror', false) != %MainMirror.button_pressed
@@ -244,7 +244,7 @@ func update_portrait_preview(portrait_inst = "") -> void:
 		elif '.tscn' in l_path:
 			%PreviewRealRect.texture = null
 			%PreviewFullRect.texture = null
-			%PreviewLabel.text = DTS.translate('CustomScenePreview')
+			%PreviewLabel.text = 'CustomScenePreview'
 			%PortraitSettings.hide()
 		
 		%PortraitScale.value = current_portrait.portrait_data.get('scale', 1)*100
@@ -256,7 +256,7 @@ func update_portrait_preview(portrait_inst = "") -> void:
 		%PortraitSettings.hide()
 		%PreviewRealRect.texture = null
 		%PreviewFullRect.texture = null
-		%PreviewLabel.text = DTS.translate('Nothing to preview')
+		%PreviewLabel.text = 'Nothing to preview'
 
 
 func _on_PreviewMode_item_selected(index:int) -> void:

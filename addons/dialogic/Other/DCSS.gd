@@ -2,8 +2,7 @@
 class_name DCSS
 
 static func get_editor_scale() -> float:
-	var ep = EditorPlugin.new()
-	return ep.get_editor_interface().get_editor_scale()
+	return DialogicUtil.get_editor_scale()
 	
 static func inline(style:Dictionary):
 	var scale = get_editor_scale()

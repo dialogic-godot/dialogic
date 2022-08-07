@@ -8,7 +8,6 @@
 	
 	Sounds good.<br> {Game.difficulty} it is!
 	
-	
 [label]
 
 Hello, I'm an owl. I see that you picked the {Game.difficulty} level of dificulty!<br>Do you want to keep it?
@@ -35,5 +34,3 @@ Hello, I'm an owl. I see that you picked the {Game.difficulty} level of dificult
 		
 	- Yes, keep {Game.difficulty}
 		
-		
-	

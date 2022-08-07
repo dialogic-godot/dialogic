@@ -18,12 +18,16 @@ func _ready():
 	
 	# Open the last edited scene
 	if ProjectSettings.has_setting('dialogic/editor/last_resources'):
+		var directory = Directory.new();
 		var path = ProjectSettings.get_setting('dialogic/editor/last_resources')[0]
-		DialogicUtil.get_dialogic_plugin()._editor_interface.inspect_object(load(path))
+		if directory.file_exists(path):
+			DialogicUtil.get_dialogic_plugin().editor_interface.inspect_object(load(path))
 	
 	
 	# Connecting the toolbar editor mode signal
 	%Toolbar.toggle_editor_view.connect(_on_toggle_editor_view)
+	%Toolbar.create_timeline.connect(_on_create_timeline)
+	%Toolbar.play_timeline.connect(_on_play_timeline)
 	
 	$SaveConfirmationDialog.add_button('No Saving Please!', true, 'nosave')
 	$SaveConfirmationDialog.hide()
@@ -50,6 +54,8 @@ func edit_character(object):
 func show_settings():
 	$SettingsEditor.popup_centered()
 	$SettingsEditor.size = get_viewport().size/1.5
+	$SettingsEditor.position -= $SettingsEditor.size / 2
+
 
 func save_current_resource():
 	$SaveConfirmationDialog.popup_centered()
@@ -135,15 +141,11 @@ func _get_timeline_editor() -> Node:
 	
 
 func _on_toggle_editor_view(mode:String) -> void:
+	%CharacterEditor.visible = false
 	if mode == 'visual':
 		%TextEditor.save_timeline()
 		%TextEditor.hide()
 		%TextEditor.clear_timeline()
-		# Since i'm not using the resource loader to save the timelines from text
-		# I need to re-import the resource before being able to edit it normally.
-		DialogicUtil.get_dialogic_plugin().get_editor_interface().get_resource_filesystem().reimport_files([
-			_last_timeline_opened.resource_path
-		])
 		%TimelineEditor.show()
 	else:
 		%TimelineEditor.save_timeline()
@@ -154,3 +156,15 @@ func _on_toggle_editor_view(mode:String) -> void:
 	# After showing the proper timeline, open it to edit
 	_load_timeline(_last_timeline_opened)
 	
+	
+func _on_create_timeline():
+	_get_timeline_editor().new_timeline()
+
+
+func _on_play_timeline():
+	if _get_timeline_editor().current_timeline:
+		var dialogic_plugin = DialogicUtil.get_dialogic_plugin()
+		# Save the current opened timeline
+		ProjectSettings.set_setting('dialogic/editor/current_timeline_path', _get_timeline_editor().current_timeline.resource_path)
+		ProjectSettings.save()
+		DialogicUtil.get_dialogic_plugin().editor_interface.play_custom_scene("res://addons/dialogic/Other/TestTimelineScene.tscn")
