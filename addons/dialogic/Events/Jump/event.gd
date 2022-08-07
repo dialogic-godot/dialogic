@@ -45,7 +45,7 @@ func get_shortcode() -> String:
 func get_shortcode_parameters() -> Dictionary:
 	return {
 		#param_name : property_name
-		"timeline"	: "Timeline",
+		"timeline"	: "_timeline_file",
 		"label"		: "LabelName",
 	}
 
@@ -60,17 +60,20 @@ func load_timeline() -> void:
 ################################################################################
 
 func build_event_editor():
-	add_header_edit('Timeline', ValueType.ComplexPicker, 'to', '', {
-		'file_extension': '.dtl',
-		'suggestions_func': [self, 'get_timeline_suggestions'],
-		'editor_icon': ["TripleBar", "EditorIcons"],
-		'empty_text': 'this timeline'
-	})
-	add_header_edit('LabelName', ValueType.ComplexPicker, 'at', '', {
-		'suggestions_func': [self, 'get_label_suggestions'],
-		'editor_icon': ['Label', 'EditorIcons'],
-		'empty_text': 'the beginning'
-	})
+	add_header_edit("_timeline_file", ValueType.SinglelineText , "to")
+	add_body_edit("LabelName", ValueType.SinglelineText, "at ")
+	
+#	add_header_edit('Timeline', ValueType.ComplexPicker, 'to', '', {
+#		'file_extension': '.dtl',
+#		'suggestions_func': [self, 'get_timeline_suggestions'],
+#		'editor_icon': ["TripleBar", "EditorIcons"],
+#		'empty_text': 'this timeline'
+#	})
+#	add_header_edit('LabelName', ValueType.ComplexPicker, 'at', '', {
+#		'suggestions_func': [self, 'get_label_suggestions'],
+#		'editor_icon': ['Label', 'EditorIcons'],
+#		'empty_text': 'the beginning'
+#	})
 
 func get_timeline_suggestions(search_text:String):
 	var suggestions = {}
