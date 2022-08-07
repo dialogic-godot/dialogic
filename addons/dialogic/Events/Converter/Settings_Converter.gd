@@ -330,12 +330,22 @@ func convertTimelines():
 												#1.x uses positions 0-4, while the default 2.0 scene uses positions 1-5
 												eventLine += str(i.to_int() + 1)
 										
-										if event['animation'] != "[Default]" && event['animation'] != "":
+										if (event['animation'] != "[Default]" && event['animation'] != "") || ('z_index' in event) || ('mirror_portrait' in event):
 											# Note: due to Anima changes, animations will be converted into a default. Times and wait will be perserved
-											eventLine += " [animation=\"Instant In Or Out\" "
-											eventLine += "length=\"" +  str(event['animation_length']) + "\""
-											if "animation_wait" in event:
-												eventLine += " wait=\"true\""
+											eventLine += " ["
+											if (event['animation'] != "[Default]" && event['animation'] != ""):
+												eventLine += " [animation=\"Instant In Or Out\" "
+												eventLine += "length=\"" +  str(event['animation_length']) + "\""
+												if "animation_wait" in event:
+													eventLine += " wait=\"true\""
+											
+											if 'z_index' in event:
+												if event['z_index'] != 0:
+													eventLine += ' z-index="' + str(event['z_index']) + '"'
+											if 'mirror_portrait' in event:
+												if event['mirror_portrait']:
+													eventLine += ' mirrored="true"'
+											
 											eventLine += "]"
 											
 										file.store_string(eventLine)	
@@ -361,17 +371,24 @@ func convertTimelines():
 														eventLine += str(i.to_int() + 1)
 													
 											if !positionCheck:
-												%OutputLog.text += "\r\n[color=yellow]Warning: Character update with no positon set, this was possible in 1.x but not 2.0\r\nCharacter will be set to position 3[/color]\r\n"
-												eventLine += " 3"
+												eventLine += " -1"
 												
-											if event['animation'] != "[Default]" && event['animation'] != "":
+											if (event['animation'] != "[Default]" && event['animation'] != "") || ('z_index' in event) || ('mirror_portrait' in event):
 												# Note: due to Anima changes, animations will be converted into a default. Times and wait will be perserved
-												eventLine += " [animation=\"Heartbeat\" "
-												eventLine += "length=\"" +  str(event['animation_length']) + "\""
-												if "animation_wait" in event:
-													eventLine += " wait=\"true\""
-												if "animation_repeat" in event:
-													eventLine += " repeat=\"" + event['animation_repeat'] + "\""
+												eventLine += " ["
+												if (event['animation'] != "[Default]" && event['animation'] != ""):
+													eventLine += "animation=\"Heartbeat\" "
+													eventLine += "length=\"" +  str(event['animation_length']) + "\""
+													if "animation_wait" in event:
+														eventLine += " wait=\"true\""
+													if "animation_repeat" in event:
+														eventLine += " repeat=\"" + event['animation_repeat'] + "\""
+												if 'z_index' in event:																							if 'z_index' in event:
+													if event['z_index'] != 0:
+														eventLine += ' z-index="' + str(event['z_index']) + '"'
+												if 'mirror_portrait' in event:
+													if event['mirror_portrait']:
+														eventLine += ' mirrored="true"'
 												eventLine += "]"
 												
 											file.store_string(eventLine)	
@@ -382,17 +399,20 @@ func convertTimelines():
 										file.store_string(eventLine)	
 								"1":
 									if event['character'] != "":
-										if event['character'] != "[All]":
-											eventLine += "Leave "
+										
+										eventLine += "Leave "
+										if event['character'] == "[All]":
+											eventLine += "--All--"
+										else:
 											eventLine += characterNameConversion(characterFolderBreakdown[event['character']]['name'])
-											
-											if event['animation'] != "[Default]" && event['animation'] != "":
-												# Note: due to Anima changes, animations will be converted into a default. Times and wait will be perserved
-												eventLine += " [animation=\"Instant In Or Out\" "
-												eventLine += "length=\"" +  str(event['animation_length']) + "\""
-												if "animation_wait" in event:
-													eventLine += " wait=\"true\""
-												eventLine += "]"
+										
+										if event['animation'] != "[Default]" && event['animation'] != "":
+											# Note: due to Anima changes, animations will be converted into a default. Times and wait will be perserved
+											eventLine += " [animation=\"Instant In Or Out\" "
+											eventLine += "length=\"" +  str(event['animation_length']) + "\""
+											if "animation_wait" in event:
+												eventLine += " wait=\"true\""
+											eventLine += "]"
 											file.store_string(eventLine)	
 									else:
 										eventLine += " # Character Update event that did not have a selected character"
@@ -568,7 +588,7 @@ func convertTimelines():
 							file.store_string(eventLine)
 						"dialogic_024":
 							#Change Theme event
-							file.store_string(eventLine + "# Theme change event, not currently implemented")
+							file.store_string(eventLine + '[theme name="<' + event['set_theme'] + '>"]')
 						"dialogic_025": 
 							#Set Glossary event
 							file.store_string(eventLine + "# Set Glossary event, not currently implemented")
@@ -680,6 +700,16 @@ func convertTimelines():
 							newString = "\"" + timelineFolderBreakdown[newString].replace(".cnv", ".dtl") + "\""
 						if "label" in line:
 							newString = "\"" + anchorNames[newString] + "\""
+						if "theme" in line:
+							var prev = newString
+							var config = ConfigFile.new()
+							var error = config.load("res://dialogic/themes/" + newString)
+							if error != OK:
+								newString = "DefaultTheme"
+							for configitem in config.get_sections():
+								newString = config.get_value(configitem, "name")
+							if newString == prev:
+								newString = "DefaultTheme"
 						
 						line = line.replace(r_string,newString)
 						newFile.store_string(line)
@@ -804,7 +834,7 @@ func convertCharacters():
 		else:
 			%OutputLog.text += "[color=red]There was a problem parsing this file![/color]\r\n"
 			
-	
+		file.close()
 	# Second pass, if the toggle is enabled 
 	
 	if prefixCharacters:
