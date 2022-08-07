@@ -548,7 +548,11 @@ func convertTimelines():
 							#file.store_string(eventLine + "# jump timeline, just a comment for testing")
 						"dialogic_021":
 							#Change Background event
-							file.store_string(eventLine + "[background path=\"" + event['background'] +"\"]")
+							#in Dialogic 1.x, fade default value was 1. its now 0, so we need to always write one here
+							var time: float = 1.0
+							if "fade_duration" in event:
+								time = event['fade_duration']
+							file.store_string(eventLine + "[background path=\"" + event['background'] +"\" fade=\"" + str(time) + "\"]")
 						"dialogic_022":
 							#Close Dialog event
 							file.store_string(eventLine + "[end_timeline]")
@@ -756,24 +760,28 @@ func convertCharacters():
 			current_character.offset = Vector2(0,0)
 			
 			var portraitsList = {}
+			var firstPortrait = ""
 			for portrait in contents['portraits']:			
 				var portraitData = {}
 				if portrait['path'] != "":
 					portraitData['path'] = portrait['path']
-				else:
-					portrait['path'] = "res://icon.png"
-					%OutputLog.text += "[color=yellow]Portrait option without a file set, setting to res://icon.png[/color]\r\n"
-					
+
 				#use the global offset, scale, and mirror setting from the origianl character file
 				portraitData['offset'] = Vector2(contents['offset_x'], contents['offset_y'])
 				portraitData['scale'] = contents['scale'] / 100
 				portraitData['mirror'] = contents['mirror_portraits']
 				
-				portraitsList[portrait['name']] = portraitData
+				#discard it if there's an empty Default, so it doesn't throw an error
+				if !((portrait['name'] == "Default") && (portrait['path'] == "")):
+					portraitsList[portrait['name']] = portraitData
+					if firstPortrait == "":
+						firstPortrait = portrait['name']
 				
 			
 			
 			current_character.portraits = portraitsList
+			if firstPortrait != "":
+				current_character.default_portrait = firstPortrait 
 			current_character.scale = 1.0
 			
 			ResourceSaver.save(current_character.resource_path, current_character)	
@@ -926,5 +934,6 @@ func convertSettings():
 
 
 func _on_check_box_toggled(button_pressed):
+	print("box checked")
 	prefixCharacters = button_pressed
 	%OutputLog.text += "\r\n\r\nToggling this will add a prefix to all character filenames, which will have letters from each folder depth they are in. Characters in the root folder will have no prefix. \r\n"
