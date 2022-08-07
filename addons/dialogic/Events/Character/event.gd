@@ -8,12 +8,15 @@ enum ActionTypes {Join, Leave, Update}
 # DEFINE ALL PROPERTIES OF THE EVENT
 var ActionType = ActionTypes.Join
 var Character : DialogicCharacter
-var Portrait = ""
-var Position = 3
-var AnimationName = ""
-var AnimationLength = 0.5
-var AnimationRepeats = 1
-var AnimationWait = false
+var Portrait:String = ""
+var Position:int = 3
+var AnimationName:String = ""
+var AnimationLength: float = 0.5
+var AnimationRepeats: int = 1
+var AnimationWait: bool = false
+var Z_Index: int = 0
+var Mirrored: bool = false
+var _leave_all:bool = false
 
 func _execute() -> void:
 	match ActionType:
@@ -112,24 +115,33 @@ func get_as_string_to_store() -> String:
 		ActionTypes.Update: result_string += "Update "
 	
 	if Character:
-		result_string += Character.name
-		if Portrait and ActionType != ActionTypes.Leave:
-			result_string+= " ("+Portrait+")"
+		if ActionType == ActionTypes.Leave and _leave_all:
+			result_string += "--All--"
+		else: 
+			result_string += Character.name
+			if Portrait and ActionType != ActionTypes.Leave:
+				result_string+= " ("+Portrait+")"
 	
 	if Position and ActionType != ActionTypes.Leave:
 		result_string += " "+str(Position)
-	
-	if AnimationName:
-		result_string += ' [animation="'+DialogicUtil.pretty_name(AnimationName)+'"'
-	
-		if AnimationLength != 0.5:
-			result_string += ' length="'+str(AnimationLength)+'"'
+	if AnimationName != "" || Z_Index != 0 || Mirrored != false:
+		result_string += " ["
+		if AnimationName:
+			result_string += 'animation="'+DialogicUtil.pretty_name(AnimationName)+'"'
 		
-		if AnimationWait:
-			result_string += ' wait="'+str(AnimationWait)+'"'
+			if AnimationLength != 0.5:
+				result_string += ' length="'+str(AnimationLength)+'"'
 			
-		if AnimationRepeats != 1:
-			result_string += ' repeat="'+str(AnimationRepeats)+'"'
+			if AnimationWait:
+				result_string += ' wait="'+str(AnimationWait)+'"'
+				
+			if AnimationRepeats != 1:
+				result_string += ' repeat="'+str(AnimationRepeats)+'"'
+		if Z_Index != 0:
+			result_string += ' z-index="' + str(Z_Index) + '"'
+			
+		if Mirrored:
+			result_string += ' mirrored="' + str(Mirrored) + '"'
 			
 		result_string += "]"
 	return result_string
@@ -151,9 +163,12 @@ func load_from_string_to_store(string:String):
 			ActionType = ActionTypes.Update
 	
 	if result.get_string('character').strip_edges():
-		var char_guess = DialogicUtil.guess_resource('.dch', result.get_string('character').strip_edges())
-		if char_guess:
-			Character = load(char_guess)
+		if ActionType == ActionTypes.Leave and result == "--All--":
+			_leave_all = true
+		else: 
+			var char_guess = DialogicUtil.guess_resource('.dch', result.get_string('character').strip_edges())
+			if char_guess:
+				Character = load(char_guess)
 	
 	if result.get_string('portrait').strip_edges():
 		Portrait = result.get_string('portrait').strip_edges()
@@ -170,14 +185,16 @@ func load_from_string_to_store(string:String):
 			printerr("[Dialogic] Couldn't identify animation '"+AnimationName+"'.")
 			AnimationName = ""
 		AnimationLength = shortcode_params.get('length', 0.5)
-		if typeof(AnimationLength) == TYPE_STRING:
-			AnimationLength = AnimationLength.to_float()
+		#if typeof(AnimationLength) == TYPE_STRING:
+		#	AnimationLength = AnimationLength.to_float()
 		AnimationWait = DialogicUtil.str_to_bool(shortcode_params.get('wait', 'false'))
 		
 		#repeat is only supported on Update, the other two should not be checking this
 		if ActionType == ActionTypes.Update:
 			AnimationRepeats = shortcode_params.get('repeat', 1).to_int()
-
+			
+		Z_Index = 	shortcode_params.get('z-index', 1).to_int()
+		Mirrored = DialogicUtil.str_to_bool(shortcode_params.get('wait', 'false'))
 # RETURN TRUE IF THE GIVEN LINE SHOULD BE LOADED AS THIS EVENT
 func is_valid_event_string(string:String):
 	
@@ -203,6 +220,9 @@ func build_event_editor():
 	add_body_edit('AnimationLength', ValueType.Float, 'Length:', '', {}, 'Character and !AnimationName.is_empty()')
 	add_body_edit('AnimationWait', ValueType.Bool, 'Wait:', '', {}, 'Character and !AnimationName.is_empty()')
 	add_body_edit('AnimationRepeats', ValueType.Integer, 'Repeat:', '', {},'Character and !AnimationName.is_empty() and ActionType == %s)' %ActionTypes.Update)
+	add_body_edit('Z_Index', ValueType.Integer, 'Portrait z-index:', "",{},'ActionType != %s' %ActionTypes.Leave)
+	add_body_edit('Mirrored', ValueType.Bool, 'Mirrored:', "",{},'ActionType != %s' %ActionTypes.Leave)
+	add_body_edit('_leave_all', ValueType.Bool, 'Leave All:', "",{},'ActionType == %s' %ActionTypes.Leave)
 
 func has_no_portraits() -> bool:
 	return Character and Character.portraits.is_empty()
