@@ -50,6 +50,16 @@ func update_name_label(character:DialogicCharacter) -> void:
 func update_typing_sound_mood(mood:Dictionary = {}) -> void:
 	for typing_sound in get_tree().get_nodes_in_group('dialogic_type_sounds'):
 		typing_sound.load_overwrite(mood)
+		
+func hide_text_boxes() -> void:
+	for name_label in get_tree().get_nodes_in_group('dialogic_name_label'):
+		name_label.text = ""
+	for text_node in get_tree().get_nodes_in_group('dialogic_dialog_text'):
+		text_node.get_parent().visible = false
+		
+func show_text_boxes() -> void:
+	for text_node in get_tree().get_nodes_in_group('dialogic_dialog_text'):
+		text_node.get_parent().visible = true
 
 ####################################################################################################
 ##					HELPERS
