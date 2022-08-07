@@ -68,7 +68,7 @@ enum ValueType {
 	
 	Custom, 
 }
-var editor_list = []
+var editor_list : Array = []
 
 var needs_indentation : bool = false
 
@@ -137,21 +137,15 @@ func _to_string() -> String:
 	return "[{name}:{id}]".format({"name":event_name, "id":get_instance_id()})
 
 
-func get_icon():
-	var ext = '.png'
-	var icon = load(self.get_script().get_path().get_base_dir() + "/icon" + ext)
+func get_icon() -> Resource:
+	var ext : String = '.png'
+	var icon := load(self.get_script().get_path().get_base_dir() + "/icon" + ext)
 	if icon:
 		return icon
 	return load("res://addons/dialogic/Editor/Images/Pieces/warning.svg")
 
-func get_theme_icon(name:StringName, theme_type:StringName):
-	#print('here')
-	#var empty_control = Control.new()
-	#return empty_control.get_theme_icon(name, theme_type)
-	return false
-	
 
-func set_default_color(value):
+func set_default_color(value) -> void:
 	dialogic_color_name = value
 	event_color = DialogicUtil.get_color(value)
 	
@@ -161,7 +155,7 @@ func get_required_subsystems() -> Array:
 
 # to be overridden by sub-classes
 # if needs_parent_event is true, this needs to return true if the event is that event
-func is_expected_parent_event(event:DialogicEvent):
+func is_expected_parent_event(event:DialogicEvent) -> bool:
 	return false
 
 # to be overridden by sub-classes
@@ -175,7 +169,7 @@ func get_end_branch_control() -> Control:
 # only called if can_contain_events is true and the previous event was an end-branch event
 # return true if this event should be executed if the previous event was an end-branch event
 # basically only important for the Condition event but who knows. Some day someone might need this.
-func should_execute_this_branch():
+func should_execute_this_branch() -> bool:
 	return false
 
 ################################################################################
@@ -242,8 +236,8 @@ func get_shortcode_parameters() -> Dictionary:
 # returns a readable presentation of the event (This is how it's stored)
 # by default it uses a shortcode format, but can be overridden
 func get_as_string_to_store() -> String:
-	var result_string = "["+self.get_shortcode()
-	var params = get_shortcode_parameters()
+	var result_string : String = "["+self.get_shortcode()
+	var params : Dictionary = get_shortcode_parameters()
 	for parameter in params.keys():
 		if get(params[parameter]):
 			if typeof(get(params[parameter])) == TYPE_OBJECT:
@@ -259,8 +253,8 @@ func get_as_string_to_store() -> String:
 # loads the variables from the string stored above
 # by default it uses the shortcode format, but can be overridden
 func load_from_string_to_store(string:String):
-	var data = parse_shortcode_parameters(string)
-	var params = get_shortcode_parameters()
+	var data : Dictionary = parse_shortcode_parameters(string)
+	var params : Dictionary = get_shortcode_parameters()
 	for parameter in params.keys():
 		if not parameter in data:
 			continue
@@ -275,7 +269,7 @@ func load_from_string_to_store(string:String):
 
 # has to return true, if the given string can be interpreted as this event
 # by default it uses the shortcode formta, but can be overridden
-func is_valid_event_string(string:String):
+func is_valid_event_string(string:String) -> bool:
 	if string.strip_edges().begins_with('['+get_shortcode()):
 		return true
 	return false
@@ -290,9 +284,9 @@ func is_string_full_event(string:String) -> bool:
 
 # used to get all the shortcode parameters in a string as a dictionary
 func parse_shortcode_parameters(shortcode : String) -> Dictionary:
-	var regex = RegEx.new()
+	var regex:RegEx = RegEx.new()
 	regex.compile('((?<parameter>[^\\s=]*)\\s*=\\s*"(?<value>([^=]|\\\\=)*)(?<!\\\\)")')
-	var dict = {}
+	var dict : Dictionary = {}
 	for result in regex.search_all(shortcode):
 		dict[result.get_string('parameter')] = result.get_string('value')
 	return dict

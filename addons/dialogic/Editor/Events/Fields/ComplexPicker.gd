@@ -24,7 +24,7 @@ var resource_icon : Texture = null:
 ## STORING VALUE AND REFERENCE TO RESOURCE
 var event_resource : DialogicEvent = null
 var property_name : String
-var current_value : String
+var current_value # Dynamic
 
 # this signal is on all event parts and informs the event that a change happened.
 signal value_changed(property_name, value)
@@ -59,6 +59,7 @@ func set_value(value, text : String = '') -> void:
 		$Search.text = empty_text
 	if text:
 		$Search.text = text
+	
 	current_value = value
 
 
