@@ -130,14 +130,13 @@ func handle_event(event_index:int) -> void:
 		current_timeline_events[event_index]._load_from_string(current_timeline_events[event_index]['deferred_processing_text'])
 	
 	current_event_idx = event_index
-	var event:DialogicEvent = current_timeline_events[event_index]
 	
 	#print("\n[D] Handle Event ", event_index, ": ", event)
-	if event.continue_at_end:
+	if current_timeline_events[event_index].continue_at_end:
 		#print("    -> WILL AUTO CONTINUE!")
-		event.event_finished.connect(handle_next_event, CONNECT_ONESHOT)
-	event.execute(self)
-	emit_signal('event_handled', event)
+		current_timeline_events[event_index].event_finished.connect(handle_next_event, CONNECT_ONESHOT)
+	current_timeline_events[event_index].execute(self)
+	emit_signal('event_handled', current_timeline_events[event_index])
 
 
 func jump_to_label(label:String) -> void:
