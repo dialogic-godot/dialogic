@@ -129,9 +129,6 @@ func handle_event(event_index:int) -> void:
 	if current_timeline_events[event_index]['event_node_ready'] == false:
 		current_timeline_events[event_index]._load_from_string(current_timeline_events[event_index]['deferred_processing_text'])
 	
-	if current_timeline_events[event_index]['event_name'] == "Jump":
-			current_timeline_events[event_index].load_timeline()
-	
 	current_event_idx = event_index
 	var event:DialogicEvent = current_timeline_events[event_index]
 	
@@ -272,13 +269,13 @@ func _thread_deferred_timeline_items():
 		for event in current_timeline_events:
 			if deferred_loader_safe_to_run:
 				if event['event_name'] == "Jump":
+					if event['Timeline']['_events']:
+						for timeline_event in event['Timeline']['_events']:
+							if deferred_loader_safe_to_run:
 
-					for timeline_event in event['Timeline']['_events']:
-						if deferred_loader_safe_to_run:
-
-							if timeline_event['event_node_ready'] == false && timeline_event['event_name'] != "Jump":
-								timeline_event._load_from_string(timeline_event['deferred_processing_text'])
-				
+								if timeline_event['event_node_ready'] == false && timeline_event['event_name'] != "Jump":
+									timeline_event._load_from_string(timeline_event['deferred_processing_text'])
+					
 		deferred_loader_running = false
 
 func _thread_deferred_preload_timeline():

@@ -7,14 +7,16 @@ var Timeline :DialogicTimeline = null :
 	set = _set_timeline
 var LabelName : String = ""
 var _timeline_file: String = ""
+var _timeline_loaded: bool = false
 
 func _execute() -> void:
 	if Timeline and Timeline != dialogic.current_timeline:
 		#print("---------------switching timelines----------------")
 		dialogic.start_timeline(Timeline, LabelName)
+	elif _timeline_file != "":
+		dialogic.start_timeline(_timeline_file, LabelName)
 	elif LabelName:
 		dialogic.jump_to_label(LabelName)
-	finish()
 	
 
 ################################################################################
@@ -51,6 +53,7 @@ func load_timeline() -> void:
 	if Timeline == null:
 		if _timeline_file != "":
 			Timeline = Dialogic.preload_timeline(_timeline_file)
+			_timeline_loaded = true
 
 ################################################################################
 ## 						EDITOR REPRESENTATION
