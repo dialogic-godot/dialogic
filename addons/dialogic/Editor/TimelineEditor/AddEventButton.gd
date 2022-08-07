@@ -18,7 +18,7 @@ func _ready():
 	self_modulate = Color(1,1,1)
 	if visible_name != '':
 		text = '  ' + visible_name
-	hint_tooltip = DTS.translate(hint_tooltip)
+	#hint_tooltip = DTS.translate(hint_tooltip)
 	
 	var _scale = DialogicUtil.get_editor_scale()
 	custom_minimum_size = Vector2(30,30)* _scale

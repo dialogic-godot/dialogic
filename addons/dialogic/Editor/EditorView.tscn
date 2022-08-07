@@ -7,7 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://dr7l1304wixcs" path="res://addons/dialogic/Editor/TextEditor/TextEditor.tscn" id="5_px80h"]
 [ext_resource type="PackedScene" uid="uid://bak1jk2glij8r" path="res://addons/dialogic/Editor/CharacterEditor/CharacterEditor.tscn" id="6"]
 
-[sub_resource type="CodeHighlighter" id="CodeHighlighter_pib7o"]
+[sub_resource type="CodeHighlighter" id="CodeHighlighter_6teiw"]
 number_color = Color(0.8025, 0.81, 0.8225, 1)
 symbol_color = Color(0.8025, 0.81, 0.8225, 1)
 member_variable_color = Color(0.8025, 0.81, 0.8225, 1)
@@ -36,8 +36,8 @@ offset_bottom = 600.0
 
 [node name="Toolbar" parent="MarginContainer/VBoxContainer" instance=ExtResource("4")]
 unique_name_in_owner = true
+anchor_right = 0.0
 offset_right = 1024.0
-offset_bottom = 33.0
 
 [node name="TimelineEditor" parent="MarginContainer/VBoxContainer" instance=ExtResource("1")]
 unique_name_in_owner = true
@@ -64,7 +64,7 @@ visible = false
 offset_top = 37.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-syntax_highlighter = SubResource("CodeHighlighter_pib7o")
+syntax_highlighter = SubResource("CodeHighlighter_6teiw")
 
 [node name="SettingsEditor" parent="." instance=ExtResource("3")]
 unresizable = false

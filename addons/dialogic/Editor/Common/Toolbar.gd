@@ -1,19 +1,21 @@
 @tool
 extends HBoxContainer
 
-signal toggle_editor_view(mode)
+signal toggle_editor_view(mode:String)
+signal create_timeline
+signal play_timeline
 
 func _ready():
 	# Get version number
 	$Version.set("custom_colors/font_color", get_theme_color("disabled_font_color", "Editor"))
-	var config = ConfigFile.new()
-	var err = config.load("res://addons/dialogic/plugin.cfg")
+	var config := ConfigFile.new()
+	var err := config.load("res://addons/dialogic/plugin.cfg")
 	if err == OK:
 		$Version.text = "v" + config.get_value("plugin", "version")
 	
 	
 	$PlayTimeline.icon = get_theme_icon("PlayScene", "EditorIcons")
-	$PlayTimeline.button_up.connect(play_timeline)
+	$PlayTimeline.button_up.connect(_on_play_timeline)
 	
 	$AddTimeline.icon = load("res://addons/dialogic/Editor/Images/Toolbar/add-timeline.svg")
 	%ResourcePicker.get_suggestions_func = [self, 'suggest_resources']
@@ -22,7 +24,6 @@ func _ready():
 	
 	
 	$ToggleVisualEditor.button_up.connect(_on_toggle_visual_editor_clicked)
-	$ToggleVisualEditor.icon = get_theme_icon("ThemeDeselectAll", "EditorIcons")
 	update_toggle_button()
 
 
@@ -30,11 +31,11 @@ func _ready():
 ##							HELPERS
 ################################################################################
 
-func set_resource_saved():
+func set_resource_saved() -> void:
 	if %ResourcePicker.current_value.ends_with(("(*)")):
 		%ResourcePicker.set_value(%ResourcePicker.current_value.trim_suffix("(*)"))
 
-func set_resource_unsaved():
+func set_resource_unsaved() -> void:
 	if not %ResourcePicker.current_value.ends_with(("(*)")):
 		%ResourcePicker.set_value(%ResourcePicker.current_value +"(*)")
 
@@ -47,10 +48,11 @@ func is_current_unsaved() -> bool:
 ##							BASICS
 ################################################################################
 
-func _on_AddTimeline_pressed():
-	get_parent().get_node("%TimelineEditor").new_timeline()
+func _on_AddTimeline_pressed() -> void:
+	emit_signal("create_timeline")
 
-func _on_AddCharacter_pressed():
+
+func _on_AddCharacter_pressed() -> void:
 	find_parent('EditorView').godot_file_dialog(
 		get_parent().get_node("CharacterEditor").new_character,
 		'*.dch; DialogicCharacter',
@@ -61,7 +63,7 @@ func _on_AddCharacter_pressed():
 	)
 
 
-func suggest_resources(filter):
+func suggest_resources() -> Dictionary:
 	var suggestions = {}
 	for i in DialogicUtil.get_project_setting('dialogic/editor/last_resources', []):
 		if i.ends_with('.dtl'):
@@ -71,7 +73,7 @@ func suggest_resources(filter):
 	return suggestions
 
 
-func resource_used(path:String):
+func resource_used(path:String) -> void:
 	var used_resources:Array = DialogicUtil.get_project_setting('dialogic/editor/last_resources', [])
 	if path in used_resources:
 		used_resources.erase(path)
@@ -83,53 +85,54 @@ func resource_used(path:String):
 ##							TIMELINE_MODE
 ################################################################################
 
-func load_timeline(timeline_path):
+func load_timeline(timeline_path:String) -> void:
 	resource_used(timeline_path)
 	%ResourcePicker.set_value(DialogicUtil.pretty_name(timeline_path))
 	%ResourcePicker.resource_icon = get_theme_icon("TripleBar", "EditorIcons")
 	$PlayTimeline.show()
 
 
-func play_timeline():
-	if find_parent('EditorView').get_node("%TimelineEditor").current_timeline:
-		var dialogic_plugin = DialogicUtil.get_dialogic_plugin()
-		# Save the current opened timeline
-		ProjectSettings.set_setting('dialogic/editor/current_timeline_path', find_parent('EditorView').get_node("%TimelineEditor").current_timeline.resource_path)
-		ProjectSettings.save()
-		dialogic_plugin._editor_interface.play_custom_scene("res://addons/dialogic/Other/TestTimelineScene.tscn")
+func _on_play_timeline() -> void:
+	emit_signal('play_timeline')
+	$PlayTimeline.release_focus()
 
 
 ################################################################################
 ##							CHARACTER_MODE
 ################################################################################
 
-func load_character(character_path):
+func load_character(character_path:String) -> void:
 	resource_used(character_path)
 	%ResourcePicker.set_value(DialogicUtil.pretty_name(character_path))
 	%ResourcePicker.resource_icon = load("res://addons/dialogic/Editor/Images/Resources/character.svg")
 	$PlayTimeline.hide()
 
 
-func _on_ResourcePicker_value_changed(property_name, value):
+func _on_ResourcePicker_value_changed(property_name, value) -> void:
 	if value:
-		DialogicUtil.get_dialogic_plugin()._editor_interface.inspect_object(load(value))
+		DialogicUtil.get_dialogic_plugin().editor_interface.inspect_object(load(value))
 
 
 ################################################################################
 ##							EDITING MODE
 ################################################################################
 
-func _on_toggle_visual_editor_clicked():
+func _on_toggle_visual_editor_clicked() -> void:
+	var _mode := 'visual'
 	if DialogicUtil.get_project_setting('dialogic/editor_mode', 'visual') == 'visual':
-		ProjectSettings.set_setting('dialogic/editor_mode', 'text')
-		emit_signal('toggle_editor_view', 'text')
-	else:
-		ProjectSettings.set_setting('dialogic/editor_mode', 'visual')
-		emit_signal('toggle_editor_view', 'visual')
+		_mode = 'text'
+	ProjectSettings.set_setting('dialogic/editor_mode', _mode)
+	emit_signal('toggle_editor_view', _mode)
 	update_toggle_button()
 	
 
-func update_toggle_button():
+func update_toggle_button() -> void:
+	$ToggleVisualEditor.icon = get_theme_icon("ThemeDeselectAll", "EditorIcons")
+	# Have to make this hack for the button to resize properly {
+	$ToggleVisualEditor.size = Vector2(0,0)
+	await get_tree().process_frame
+	$ToggleVisualEditor.size = Vector2(0,0)
+	# } End of hack :)
 	if DialogicUtil.get_project_setting('dialogic/editor_mode', 'visual') == 'text':
 		$ToggleVisualEditor.text = 'Visual Editor'
 	else:

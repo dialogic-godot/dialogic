@@ -204,12 +204,12 @@ func _on_autosave_timer_timeout():
 
 func _on_dialogic_event_handled(event):
 	if event is DialogicJumpEvent:
-		if DialogicUtil.get_project_setting('dialogic/save/autosave_mode', 0) == 0:
+		if DialogicUtil.get_project_setting('dialogic/save/autosave_mode', 0) == 1:
 			save('', true)
 	if event is DialogicTextEvent:
-		if DialogicUtil.get_project_setting('dialogic/save/autosave_mode', 0) == 2:
+		if DialogicUtil.get_project_setting('dialogic/save/autosave_mode', 0) == 1:
 			save('', true)
 
 func autosave_start_end():
-	if DialogicUtil.get_project_setting('dialogic/save/autosave_mode', 0) == 0:
+	if DialogicUtil.get_project_setting('dialogic/save/autosave_mode', 0) == 1:
 		save('', true)
