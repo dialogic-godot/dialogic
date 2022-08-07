@@ -779,7 +779,7 @@ func convertCharacters():
 				portraitData['mirror'] = contents['mirror_portraits']
 				
 				#discard it if there's an empty Default, so it doesn't throw an error
-				if !((portrait['name'] == "Default") && (portrait['path'] == "")):
+				if !((portrait['name'] == "Default") && (portrait['path'] == "")) && !((portrait['name'] == "") && (portrait['path'] == "")):
 					portraitsList[portrait['name']] = portraitData
 					if firstPortrait == "":
 						firstPortrait = portrait['name']
