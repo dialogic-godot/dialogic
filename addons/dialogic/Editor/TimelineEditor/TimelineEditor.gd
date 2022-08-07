@@ -711,7 +711,7 @@ func add_event_node(event_resource:Resource, at_index:int = -1, auto_select: boo
 	
 	return piece
 
-func create_end_branch_event(at_index, parent_node):
+func create_end_branch_event(at_index:int, parent_node:Node) -> Node:
 	var end_branch_event = load("res://addons/dialogic/Editor/Events/BranchEnd.tscn").instantiate()
 	end_branch_event.resource = DialogicEndBranchEvent.new()
 	end_branch_event.gui_input.connect(_on_event_block_gui_input.bind(end_branch_event))
