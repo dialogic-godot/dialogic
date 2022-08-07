@@ -3,7 +3,7 @@ extends HBoxContainer
 
 func refresh():
 	%Autofocus.button_pressed = DialogicUtil.get_project_setting('dialogic/choices/autofocus_first', true)
-	%Delay.value = DialogicUtil.get_project_setting('dialogic/choices/delay', 0.2)
+	%Delay.value = DialogicUtil.get_project_setting('dialogic/choices/delay', 0.2).to_float()
 	%FalseBehaviour.select(DialogicUtil.get_project_setting('dialogic/choices/def_false_bahviour', 0))
 	%HotkeyType.select(DialogicUtil.get_project_setting('dialogic/choices/hotkey_behaviour', 0))
 
