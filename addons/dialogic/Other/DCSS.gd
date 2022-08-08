@@ -4,15 +4,15 @@ class_name DCSS
 static func get_editor_scale() -> float:
 	return DialogicUtil.get_editor_scale()
 	
-static func inline(style:Dictionary):
-	var scale = get_editor_scale()
-	var s = StyleBoxFlat.new()
+static func inline(style:Dictionary) -> StyleBoxFlat:
+	var scale:float = get_editor_scale()
+	var s := StyleBoxFlat.new()
 	for property in style.keys():
 		match property:
 			'border-left':
 				s.set('border_width_left', style[property] * scale)
 			'border-radius':
-				var radius = style[property] * scale
+				var radius:float = style[property] * scale
 				s.set('corner_radius_top_left', radius)
 				s.set('corner_radius_top_right', radius)
 				s.set('corner_radius_bottom_left', radius)
@@ -20,7 +20,7 @@ static func inline(style:Dictionary):
 			'background':
 				s.set('bg_color', style[property])
 			'border':
-				var width = style[property] * scale
+				var width:float = style[property] * scale
 				s.set('border_width_left', width)
 				s.set('border_width_right', width)
 				s.set('border_width_top', width)
@@ -28,8 +28,8 @@ static func inline(style:Dictionary):
 			'border-color':
 				s.set('border_color', style[property])
 			'padding':
-				var value_v = style[property][0] * scale
-				var value_h = style[property][1] * scale
+				var value_v:float = style[property][0] * scale
+				var value_h:float = style[property][1] * scale
 				s.set('content_margin_top', value_v)
 				s.set('content_margin_bottom', value_v)
 				s.set('content_margin_left', value_h)
@@ -39,8 +39,8 @@ static func inline(style:Dictionary):
 	return s
 
 static func style(node, style:Dictionary) -> StyleBoxFlat:
-	var scale = get_editor_scale()
-	var s = inline(style)
+	var scale:float = get_editor_scale()
+	var s:StyleBoxFlat = inline(style)
 	
 	node.set('theme_override_styles/normal', s)
 	node.set('theme_override_styles/focus', s)

@@ -23,6 +23,8 @@ func _ready():
 		if directory.file_exists(path):
 			DialogicUtil.get_dialogic_plugin().editor_interface.inspect_object(load(path))
 	
+	# Hide the character editor by default
+	%CharacterEditor.hide()
 	
 	# Connecting the toolbar editor mode signal
 	%Toolbar.toggle_editor_view.connect(_on_toggle_editor_view)

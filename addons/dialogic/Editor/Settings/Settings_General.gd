@@ -6,6 +6,13 @@ signal colors_changed
 var color_palette = null
 
 func _ready():
+	var s = DCSS.inline({
+		'padding': 5,
+		'background': Color(0.545098, 0.545098, 0.545098, 0.211765)
+	})
+	$General/TitleLabel.add_theme_stylebox_override("normal", s)
+	$General/TitleLabel2.add_theme_stylebox_override("normal", s)
+	
 	# Colors
 	%ResetColorsButton.button_up.connect(_on_reset_colors_button)
 	

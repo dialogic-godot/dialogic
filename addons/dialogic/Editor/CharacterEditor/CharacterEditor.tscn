@@ -1,13 +1,11 @@
-[gd_scene load_steps=9 format=3 uid="uid://bak1jk2glij8r"]
+[gd_scene load_steps=7 format=3 uid="uid://bak1jk2glij8r"]
 
 [ext_resource type="PackedScene" uid="uid://dfwnfu41utt3d" path="res://addons/dialogic/Editor/CharacterEditor/PortraitEntry.tscn" id="1"]
 [ext_resource type="Script" path="res://addons/dialogic/Editor/CharacterEditor/CharacterEditor.gd" id="2"]
-[ext_resource type="PackedScene" uid="uid://duj8nl0vpms35" path="res://addons/dialogic/Editor/Common/TLabel.tscn" id="3"]
-[ext_resource type="Texture2D" uid="uid://25qi7yo6ep6o" path="res://icon.png" id="4"]
 [ext_resource type="PackedScene" uid="uid://dpwhshre1n4t6" path="res://addons/dialogic/Editor/Events/Fields/ComplexPicker.tscn" id="4_jo7m8"]
 [ext_resource type="Theme" uid="uid://d3g4i4dshtdpu" path="res://addons/dialogic/Editor/Events/styles/InputFieldsStyle.tres" id="5"]
 
-[sub_resource type="Image" id="Image_80h4x"]
+[sub_resource type="Image" id="Image_ey6n8"]
 data = {
 "data": PackedByteArray(255, 255, 255, 0, 255, 255, 255, 0, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 131, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 131, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 131, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 231, 255, 93, 93, 55, 255, 97, 97, 58, 255, 93, 93, 233, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 231, 255, 94, 94, 54, 255, 94, 94, 57, 255, 93, 93, 233, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 93, 93, 233, 255, 93, 93, 232, 255, 93, 93, 41, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 93, 93, 233, 255, 93, 93, 232, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 97, 97, 42, 255, 255, 255, 0, 255, 97, 97, 42, 255, 97, 97, 42, 255, 255, 255, 0, 255, 98, 98, 47, 255, 97, 97, 42, 255, 255, 255, 0, 255, 97, 97, 42, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 235, 255, 93, 93, 233, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 94, 94, 46, 255, 93, 93, 236, 255, 93, 93, 233, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 235, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 233, 255, 95, 95, 59, 255, 96, 96, 61, 255, 93, 93, 235, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 233, 255, 95, 95, 59, 255, 96, 96, 61, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0),
 "format": "RGBA8",
@@ -17,10 +15,9 @@ data = {
 }
 
 [sub_resource type="ImageTexture" id="ImageTexture_sbro6"]
-image = SubResource("Image_80h4x")
+image = SubResource("Image_ey6n8")
 
 [node name="CharacterEditor" type="Control"]
-visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 theme = ExtResource("5")
@@ -49,7 +46,7 @@ size_flags_vertical = 11
 [node name="MainEditTabs" type="TabContainer" parent="Split/EditorScroll/Editor"]
 unique_name_in_owner = true
 offset_right = 596.0
-offset_bottom = 31.0
+offset_bottom = 168.0
 
 [node name="General" type="VBoxContainer" parent="Split/EditorScroll/Editor/MainEditTabs"]
 anchor_right = 1.0
@@ -59,12 +56,10 @@ offset_top = 31.0
 [node name="NameAndColor" type="HBoxContainer" parent="Split/EditorScroll/Editor/MainEditTabs/General"]
 visible = false
 
-[node name="TLabel" parent="Split/EditorScroll/Editor/MainEditTabs/General/NameAndColor" instance=ExtResource("3")]
-anchor_right = 0.0
-anchor_bottom = 0.0
-text = ""
-text_key = "Name: "
-mode = 0
+[node name="Label" type="Label" parent="Split/EditorScroll/Editor/MainEditTabs/General/NameAndColor"]
+offset_right = 40.0
+offset_bottom = 23.0
+text = "Name:"
 
 [node name="NameLineEdit" type="LineEdit" parent="Split/EditorScroll/Editor/MainEditTabs/General/NameAndColor"]
 unique_name_in_owner = true
@@ -76,24 +71,19 @@ caret_blink_speed = 0.5
 offset_right = 596.0
 offset_bottom = 33.0
 
-[node name="TLabel2" parent="Split/EditorScroll/Editor/MainEditTabs/General/DisplayName" instance=ExtResource("3")]
-custom_minimum_size = Vector2(150, 0)
-anchor_right = 0.0
-anchor_bottom = 0.0
+[node name="Label2" type="Label" parent="Split/EditorScroll/Editor/MainEditTabs/General/DisplayName"]
 offset_top = 3.0
-offset_right = 150.0
+offset_right = 116.0
 offset_bottom = 29.0
 text = "Display Name: "
-text_key = "Display Name: "
-mode = 0
 
 [node name="CheckBox" type="CheckBox" parent="Split/EditorScroll/Editor/MainEditTabs/General/DisplayName"]
 visible = false
 
 [node name="DisplayNameLineEdit" type="LineEdit" parent="Split/EditorScroll/Editor/MainEditTabs/General/DisplayName"]
 unique_name_in_owner = true
-offset_left = 154.0
-offset_right = 244.0
+offset_left = 120.0
+offset_right = 210.0
 offset_bottom = 33.0
 expand_to_text_length = true
 caret_blink = true
@@ -102,8 +92,8 @@ caret_blink_speed = 0.5
 [node name="ColorPickerButton" type="ColorPickerButton" parent="Split/EditorScroll/Editor/MainEditTabs/General/DisplayName"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(30, 30)
-offset_left = 248.0
-offset_right = 278.0
+offset_left = 214.0
+offset_right = 244.0
 offset_bottom = 33.0
 color = Color(1, 1, 1, 1)
 edit_alpha = false
@@ -113,20 +103,15 @@ offset_top = 37.0
 offset_right = 596.0
 offset_bottom = 70.0
 
-[node name="TLabel3" parent="Split/EditorScroll/Editor/MainEditTabs/General/DisplayNickname" instance=ExtResource("3")]
-custom_minimum_size = Vector2(150, 0)
-anchor_right = 0.0
-anchor_bottom = 0.0
+[node name="Label3" type="Label" parent="Split/EditorScroll/Editor/MainEditTabs/General/DisplayNickname"]
 offset_top = 3.0
-offset_right = 150.0
+offset_right = 91.0
 offset_bottom = 29.0
 text = "Nicknames:"
-text_key = "Nicknames: "
-mode = 0
 
 [node name="NicknameLineEdit" type="LineEdit" parent="Split/EditorScroll/Editor/MainEditTabs/General/DisplayNickname"]
 unique_name_in_owner = true
-offset_left = 154.0
+offset_left = 95.0
 offset_right = 596.0
 offset_bottom = 33.0
 size_flags_horizontal = 3
@@ -138,45 +123,39 @@ offset_top = 74.0
 offset_right = 596.0
 offset_bottom = 100.0
 
-[node name="TLabel5" parent="Split/EditorScroll/Editor/MainEditTabs/General/Description" instance=ExtResource("3")]
-custom_minimum_size = Vector2(150, 0)
-anchor_right = 0.0
-anchor_bottom = 0.0
-offset_right = 150.0
+[node name="Label4" type="Label" parent="Split/EditorScroll/Editor/MainEditTabs/General/Description"]
+offset_right = 94.0
 offset_bottom = 26.0
-size_flags_vertical = 0
 text = "Description:"
-text_key = "Description: "
-mode = 0
 
 [node name="DescriptionTextEdit" type="TextEdit" parent="Split/EditorScroll/Editor/MainEditTabs/General/Description"]
 unique_name_in_owner = true
-offset_left = 154.0
+offset_left = 98.0
 offset_right = 596.0
 offset_bottom = 26.0
 size_flags_horizontal = 3
 
 [node name="DefaultPortrait" type="HBoxContainer" parent="Split/EditorScroll/Editor/MainEditTabs/General"]
-offset_right = 40.0
-offset_bottom = 40.0
+offset_top = 104.0
+offset_right = 596.0
+offset_bottom = 137.0
 
-[node name="TLabel6" parent="Split/EditorScroll/Editor/MainEditTabs/General/DefaultPortrait" instance=ExtResource("3")]
-custom_minimum_size = Vector2(150, 0)
-anchor_right = 0.0
-anchor_bottom = 0.0
-offset_top = 74.0
-offset_right = 150.0
-offset_bottom = 100.0
-size_flags_vertical = 0
-text = "Default Portrait:"
-text_key = "Default Portrait:"
-mode = 0
+[node name="Label5" type="Label" parent="Split/EditorScroll/Editor/MainEditTabs/General/DefaultPortrait"]
+offset_top = 3.0
+offset_right = 91.0
+offset_bottom = 29.0
+text = "Nicknames:"
 
 [node name="DefaultPortraitPicker" parent="Split/EditorScroll/Editor/MainEditTabs/General/DefaultPortrait" instance=ExtResource("4_jo7m8")]
 unique_name_in_owner = true
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 95.0
+offset_right = 295.0
+offset_bottom = 33.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Split/EditorScroll/Editor"]
-offset_top = 43.0
+offset_top = 180.0
 offset_right = 596.0
 offset_bottom = 600.0
 
@@ -184,17 +163,13 @@ offset_bottom = 600.0
 offset_right = 596.0
 offset_bottom = 33.0
 
-[node name="PortraitsTitle" parent="Split/EditorScroll/Editor/VBoxContainer/Portraits" instance=ExtResource("3")]
+[node name="PortraitsTitle" type="Label" parent="Split/EditorScroll/Editor/VBoxContainer/Portraits"]
 unique_name_in_owner = true
-anchor_right = 0.0
-anchor_bottom = 0.0
 offset_top = 3.0
 offset_right = 478.0
 offset_bottom = 29.0
 size_flags_horizontal = 3
 text = "Portraits"
-text_key = "Portraits"
-mode = 1
 
 [node name="PortraitSearch" type="LineEdit" parent="Split/EditorScroll/Editor/VBoxContainer/Portraits"]
 unique_name_in_owner = true
@@ -212,16 +187,12 @@ offset_right = 596.0
 offset_bottom = 70.0
 alignment = 2
 
-[node name="TLabel11" parent="Split/EditorScroll/Editor/VBoxContainer/PortraitMainSettings" instance=ExtResource("3")]
-anchor_right = 0.0
-anchor_bottom = 0.0
+[node name="Label" type="Label" parent="Split/EditorScroll/Editor/VBoxContainer/PortraitMainSettings"]
 offset_left = 92.0
 offset_top = 3.0
 offset_right = 132.0
 offset_bottom = 29.0
 text = "Scale"
-text_key = "Scale"
-mode = 0
 
 [node name="MainScale" type="SpinBox" parent="Split/EditorScroll/Editor/VBoxContainer/PortraitMainSettings"]
 unique_name_in_owner = true
@@ -232,16 +203,12 @@ value = 100.0
 allow_greater = true
 suffix = "%"
 
-[node name="TLabel12" parent="Split/EditorScroll/Editor/VBoxContainer/PortraitMainSettings" instance=ExtResource("3")]
-anchor_right = 0.0
-anchor_bottom = 0.0
+[node name="Label2" type="Label" parent="Split/EditorScroll/Editor/VBoxContainer/PortraitMainSettings"]
 offset_left = 246.0
 offset_top = 3.0
 offset_right = 294.0
 offset_bottom = 29.0
 text = "Offset"
-text_key = "Offset"
-mode = 0
 
 [node name="MainOffsetX" type="SpinBox" parent="Split/EditorScroll/Editor/VBoxContainer/PortraitMainSettings"]
 unique_name_in_owner = true
@@ -266,15 +233,11 @@ offset_left = 518.0
 offset_right = 596.0
 offset_bottom = 33.0
 
-[node name="TLabel11" parent="Split/EditorScroll/Editor/VBoxContainer/PortraitMainSettings/MirrorOption" instance=ExtResource("3")]
-anchor_right = 0.0
-anchor_bottom = 0.0
+[node name="Label" type="Label" parent="Split/EditorScroll/Editor/VBoxContainer/PortraitMainSettings/MirrorOption"]
 offset_top = 3.0
 offset_right = 50.0
 offset_bottom = 29.0
 text = "Mirror"
-text_key = "Mirror"
-mode = 0
 
 [node name="MainMirror" type="CheckBox" parent="Split/EditorScroll/Editor/VBoxContainer/PortraitMainSettings/MirrorOption"]
 unique_name_in_owner = true
@@ -285,39 +248,31 @@ offset_bottom = 33.0
 [node name="PortraitPanel" type="PanelContainer" parent="Split/EditorScroll/Editor/VBoxContainer"]
 offset_top = 74.0
 offset_right = 596.0
-offset_bottom = 457.0
+offset_bottom = 420.0
 size_flags_vertical = 3
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Split/EditorScroll/Editor/VBoxContainer/PortraitPanel"]
 offset_right = 596.0
-offset_bottom = 383.0
+offset_bottom = 346.0
 
 [node name="Labels" type="HBoxContainer" parent="Split/EditorScroll/Editor/VBoxContainer/PortraitPanel/VBoxContainer"]
 offset_right = 596.0
 offset_bottom = 31.0
 
-[node name="TLabel7" parent="Split/EditorScroll/Editor/VBoxContainer/PortraitPanel/VBoxContainer/Labels" instance=ExtResource("3")]
+[node name="Label" type="Label" parent="Split/EditorScroll/Editor/VBoxContainer/PortraitPanel/VBoxContainer/Labels"]
 custom_minimum_size = Vector2(90, 0)
-anchor_right = 0.0
-anchor_bottom = 0.0
 offset_top = 2.0
 offset_right = 90.0
 offset_bottom = 28.0
 text = "Name"
-text_key = "Name"
-mode = 0
 
-[node name="TLabel8" parent="Split/EditorScroll/Editor/VBoxContainer/PortraitPanel/VBoxContainer/Labels" instance=ExtResource("3")]
-anchor_right = 0.0
-anchor_bottom = 0.0
+[node name="Label2" type="Label" parent="Split/EditorScroll/Editor/VBoxContainer/PortraitPanel/VBoxContainer/Labels"]
 offset_left = 94.0
 offset_top = 2.0
 offset_right = 316.0
 offset_bottom = 28.0
 size_flags_horizontal = 3
 text = "Path"
-text_key = "Path"
-mode = 0
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Split/EditorScroll/Editor/VBoxContainer/PortraitPanel/VBoxContainer/Labels"]
 offset_left = 320.0
@@ -342,13 +297,13 @@ icon = SubResource("ImageTexture_sbro6")
 [node name="ScrollContainer" type="ScrollContainer" parent="Split/EditorScroll/Editor/VBoxContainer/PortraitPanel/VBoxContainer"]
 offset_top = 35.0
 offset_right = 596.0
-offset_bottom = 383.0
+offset_bottom = 346.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Split/EditorScroll/Editor/VBoxContainer/PortraitPanel/VBoxContainer/ScrollContainer"]
 offset_right = 596.0
-offset_bottom = 348.0
+offset_bottom = 311.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
@@ -415,23 +370,14 @@ anchor_bottom = 0.5
 size_flags_horizontal = 3
 size_flags_vertical = 3
 mouse_filter = 2
-texture = ExtResource("4")
-
-[node name="PreviewPositionIcon" type="TextureRect" parent="Split/Preview/Background/PreviewReal/Control"]
-unique_name_in_owner = true
-size_flags_horizontal = 3
-size_flags_vertical = 3
-mouse_filter = 2
 texture = SubResource("ImageTexture_sbro6")
 stretch_mode = 4
 
-[node name="PreviewLabel" parent="Split/Preview/Background" instance=ExtResource("3")]
+[node name="PreviewLabel" type="Label" parent="Split/Preview/Background"]
 unique_name_in_owner = true
-anchor_right = 0.0
-anchor_bottom = 0.0
+offset_right = 40.0
+offset_bottom = 23.0
 text = "Preview"
-text_key = "Preview"
-mode = 0
 
 [node name="PreviewMode" type="OptionButton" parent="Split/Preview/Background"]
 unique_name_in_owner = true
@@ -439,7 +385,6 @@ anchor_left = 1.0
 anchor_right = 1.0
 grow_horizontal = 0
 item_count = 2
-selected = 0
 popup/item_0/text = "Full View"
 popup/item_0/id = 0
 popup/item_1/text = "Real Size"
@@ -457,15 +402,11 @@ offset_right = 504.0
 offset_bottom = 33.0
 alignment = 1
 
-[node name="TLabel11" parent="Split/Preview/ScrollContainer/PortraitSettings" instance=ExtResource("3")]
-anchor_right = 0.0
-anchor_bottom = 0.0
+[node name="Label" type="Label" parent="Split/Preview/ScrollContainer/PortraitSettings"]
 offset_top = 3.0
 offset_right = 40.0
 offset_bottom = 29.0
 text = "Scale"
-text_key = "Scale"
-mode = 0
 
 [node name="PortraitScale" type="SpinBox" parent="Split/Preview/ScrollContainer/PortraitSettings"]
 unique_name_in_owner = true
@@ -476,16 +417,12 @@ value = 100.0
 allow_greater = true
 suffix = "%"
 
-[node name="TLabel12" parent="Split/Preview/ScrollContainer/PortraitSettings" instance=ExtResource("3")]
-anchor_right = 0.0
-anchor_bottom = 0.0
+[node name="Label2" type="Label" parent="Split/Preview/ScrollContainer/PortraitSettings"]
 offset_left = 154.0
 offset_top = 3.0
 offset_right = 202.0
 offset_bottom = 29.0
 text = "Offset"
-text_key = "Offset"
-mode = 0
 
 [node name="PortraitOffsetX" type="SpinBox" parent="Split/Preview/ScrollContainer/PortraitSettings"]
 unique_name_in_owner = true
@@ -510,15 +447,11 @@ offset_left = 426.0
 offset_right = 504.0
 offset_bottom = 33.0
 
-[node name="TLabel11" parent="Split/Preview/ScrollContainer/PortraitSettings/MirrorOption" instance=ExtResource("3")]
-anchor_right = 0.0
-anchor_bottom = 0.0
+[node name="Label" type="Label" parent="Split/Preview/ScrollContainer/PortraitSettings/MirrorOption"]
 offset_top = 3.0
 offset_right = 50.0
 offset_bottom = 29.0
 text = "Mirror"
-text_key = "Mirror"
-mode = 0
 
 [node name="PortraitMirror" type="CheckBox" parent="Split/Preview/ScrollContainer/PortraitSettings/MirrorOption"]
 unique_name_in_owner = true
