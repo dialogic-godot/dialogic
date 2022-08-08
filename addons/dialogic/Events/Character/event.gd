@@ -163,7 +163,7 @@ func load_from_string_to_store(string:String):
 			ActionType = ActionTypes.Update
 	
 	if result.get_string('character').strip_edges():
-		if ActionType == ActionTypes.Leave and result == "--All--":
+		if ActionType == ActionTypes.Leave and result.get_string('character').strip_edges() == "--All--":
 			_leave_all = true
 		else: 
 			var char_guess = DialogicUtil.guess_resource('.dch', result.get_string('character').strip_edges())
@@ -179,21 +179,28 @@ func load_from_string_to_store(string:String):
 	if result.get_string('shortcode'):
 		var shortcode_params = parse_shortcode_parameters(result.get_string('shortcode'))
 		AnimationName = shortcode_params.get('animation', '')
-		if !AnimationName.ends_with('.gd'):
-			AnimationName = guess_animation_file(AnimationName)
-		if !AnimationName.ends_with('.gd'):
-			printerr("[Dialogic] Couldn't identify animation '"+AnimationName+"'.")
-			AnimationName = ""
-		AnimationLength = shortcode_params.get('length', 0.5)
+		if AnimationName != "":
+			if !AnimationName.ends_with('.gd'):
+				AnimationName = guess_animation_file(AnimationName)
+			if !AnimationName.ends_with('.gd'):
+				printerr("[Dialogic] Couldn't identify animation '"+AnimationName+"'.")
+				AnimationName = ""
+			
+			var animLength = shortcode_params.get('length', 0.5).to_float()
+			if typeof(animLength) == TYPE_FLOAT:
+				AnimationLength = animLength
+			else:
+				AnimationLength = animLength.to_float()
+			
 		#if typeof(AnimationLength) == TYPE_STRING:
 		#	AnimationLength = AnimationLength.to_float()
-		AnimationWait = DialogicUtil.str_to_bool(shortcode_params.get('wait', 'false'))
+			AnimationWait = DialogicUtil.str_to_bool(shortcode_params.get('wait', 'false'))
 		
 		#repeat is only supported on Update, the other two should not be checking this
-		if ActionType == ActionTypes.Update:
-			AnimationRepeats = shortcode_params.get('repeat', 1).to_int()
-			
-		Z_Index = 	shortcode_params.get('z-index', 1).to_int()
+			if ActionType == ActionTypes.Update:
+				AnimationRepeats = shortcode_params.get('repeat', 1).to_int()
+				
+		Z_Index = 	shortcode_params.get('z-index', 1)
 		Mirrored = DialogicUtil.str_to_bool(shortcode_params.get('wait', 'false'))
 # RETURN TRUE IF THE GIVEN LINE SHOULD BE LOADED AS THIS EVENT
 func is_valid_event_string(string:String):

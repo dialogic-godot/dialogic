@@ -234,6 +234,8 @@ func _on_begin_pressed():
 	convertSettings()
 	
 	%OutputLog.text += "All conversions complete!\r\n"
+	%OutputLog.text += "\r\nPlease check to make sure your timelines all look good. After that, you can remove the /addons/dialogic/Events/Converter folder, as it is no longer needed.\r\n\r\n"
+	%OutputLog.text += "Please be aware, Godot may take some time on the next project load to reload all of the Characters and Timelines. This is normal, and should only happen the one time."
 	
 
 func convertTimelines():
@@ -704,10 +706,10 @@ func convertTimelines():
 							var prev = newString
 							var config = ConfigFile.new()
 							var error = config.load("res://dialogic/themes/" + newString)
-							if error != OK:
-								newString = "DefaultTheme"
-							for configitem in config.get_sections():
-								newString = config.get_value(configitem, "name")
+							if error == OK:
+								if config.has_section_key("settings", "name"):
+									newString = config.get_value("settings", "name")
+								
 							if newString == prev:
 								newString = "DefaultTheme"
 						
