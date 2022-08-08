@@ -1,12 +1,10 @@
 # Changelog
 
 ## v1.4.4
-
-
-
-## What's Changed
-
+* Added no skip event [[zaknafean](https://github.com/zaknafean)]
+* Added auto-advance mode [[zaknafean](https://github.com/zaknafean)]
 * Translation Service Speed fixes by [[thebardsrc](https://github.com/thebardsrc)] in https://github.com/coppolaemilio/dialogic/pull/995
+* Fixed some Anima bugs [[zaknafean](https://github.com/zaknafean)]
 
 ## v1.4.3 
 
