@@ -1,5 +1,6 @@
 extends DialogicSubsystem
 
+var default_portrait_scene
 
 ####################################################################################################
 ##					STATE
@@ -14,15 +15,17 @@ func load_game_state():
 	for character_path in dialogic.current_state_info['portraits']:
 		add_portrait(
 			load(character_path), 
-			dialogic.current_state_info['portraits'][character_path].portrait, dialogic.current_state_info['portraits'][character_path].position_index
-			)
+			dialogic.current_state_info['portraits'][character_path].portrait, dialogic.current_state_info['portraits'][character_path].position_index,
+			false)
 
+func _ready():
+	default_portrait_scene = load("res://addons/dialogic/Other/DefaultPortrait.tscn")
 
 ####################################################################################################
 ##					MAIN METHODS
 ####################################################################################################
 
-func add_portrait(character:DialogicCharacter, portrait:String,  position_idx:int) -> Node:
+func add_portrait(character:DialogicCharacter, portrait:String,  position_idx:int, mirrored: bool = false) -> Node:
 	var character_node = null
 	
 	if portrait.is_empty():
@@ -45,11 +48,11 @@ func add_portrait(character:DialogicCharacter, portrait:String,  position_idx:in
 	if character_node:
 		dialogic.current_state_info['portraits'][character.resource_path] = {'portrait':portrait, 'node':character_node, 'position_index':position_idx}
 	if portrait:
-		change_portrait(character, portrait)
+		change_portrait(character, portrait,mirrored)
 	
 	return character_node
 
-func change_portrait(character:DialogicCharacter, portrait:String) -> void:
+func change_portrait(character:DialogicCharacter, portrait:String, mirrored:bool = false) -> void:
 	if not character or not is_character_joined(character):
 		assert(false, "[Dialogic] Cannot change portrait of null/not joined character.")
 	
@@ -58,7 +61,7 @@ func change_portrait(character:DialogicCharacter, portrait:String) -> void:
 	
 	var char_node :Node = dialogic.current_state_info.portraits[character.resource_path].node
 	
-	if char_node.get_child_count() and 'does_custom_portrait_change' in char_node.get_child(0) and char_node.get_child(0).does_custom_portrait_change():
+	if char_node.get_child_count() and 'does_custom_portrait_change' in char_node.get_child(0) and char_node.get_child(0).does_portrait_change():
 		char_node.get_child(0).change_portrait(character, portrait)
 	else:
 		# remove previous portrait
@@ -67,19 +70,26 @@ func change_portrait(character:DialogicCharacter, portrait:String) -> void:
 		
 		var path = character.portraits[portrait].path
 		if not path.ends_with('.tscn'):
-			var sprite = Sprite2D.new()
-			sprite.texture = load(path)
-			sprite.centered = false
-			sprite.scale = Vector2(1,1)*character.portraits[portrait].get('scale', 1)*character.scale
+			var sprite = default_portrait_scene.instantiate()
+			sprite.change_portrait(character, portrait)
+			sprite.position.x -= sprite.portrait_width/2.0
+			sprite.position.y -= sprite.portrait_height
+			
+			if sprite.does_portrait_mirror():
+				sprite.mirror_portrait(mirrored)
+			
 			char_node.add_child(sprite)
-			sprite.position = character.portraits[portrait].get('offset', Vector2(0,0))
-			sprite.position.x -= sprite.texture.get_width()/2.0*character.portraits[portrait].get('scale', 1)*character.scale
-			sprite.position.y -= sprite.texture.get_height()*character.portraits[portrait].get('scale', 1)*character.scale
-	
+		else:
+			var sprite = load(path)
+			sprite.position.x -= sprite.portrait_width/2.0
+			sprite.position.y -= sprite.portrait_height
+			if sprite.does_portrait_mirror():
+				sprite.mirror_portrait(mirrored)
+			char_node.add_child(path)
 	dialogic.current_state_info['portraits'][character.resource_path]['portrait'] = portrait
 
 
-func animate_portrait(character:DialogicCharacter, animation_path:String, length:float, repeats = 1):
+func animate_portrait(character:DialogicCharacter, animation_path:String, length:float, repeats = 1) -> DialogicAnimation:
 	if not character or not is_character_joined(character):
 		assert(false, "[Dialogic] Cannot animate portrait of null/not joined character.")
 	
@@ -155,6 +165,6 @@ func update_rpg_portrait_mode(character:DialogicCharacter = null, portrait:Strin
 			var AnimationName = DialogicUtil.get_project_setting('dialogic/animations/join_default', 
 	get_script().resource_path.get_base_dir().plus_file('DefaultAnimations/fade_in_up.gd'))
 			var AnimationLength = DialogicUtil.get_project_setting('dialogic/animations/join_default_length', 0.5)
-			add_portrait(character, portrait, 0)
+			add_portrait(character, portrait, 0, false)
 			var anim = animate_portrait(character, AnimationName, AnimationLength)
 			

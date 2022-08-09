@@ -322,17 +322,18 @@ theme_override_constants/separation = 0
 alignment = 1
 
 [node name="DialogicDisplay_NameLabel" type="Label" parent="SpecialTheme/PanelContainer/MarginContainer/VBoxContainer"]
+offset_top = 11.0
 offset_right = 386.0
-offset_bottom = 26.0
+offset_bottom = 37.0
 text = "Name"
 horizontal_alignment = 1
 script = ExtResource("3")
 use_character_color = false
 
 [node name="DialogicDisplay_DialogText" type="RichTextLabel" parent="SpecialTheme/PanelContainer/MarginContainer/VBoxContainer"]
-offset_top = 26.0
+offset_top = 37.0
 offset_right = 386.0
-offset_bottom = 49.0
+offset_bottom = 37.0
 text = "Some default text"
 fit_content_height = true
 script = ExtResource("2")
