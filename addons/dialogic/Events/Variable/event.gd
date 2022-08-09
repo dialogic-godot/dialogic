@@ -66,7 +66,7 @@ func _init() -> void:
 func get_as_string_to_store() -> String:
 	var string = "VAR "
 	if Name:
-		string += Name
+		string += "{" + Name + "}"
 		match Operation:
 			OPERATIONS.SET:
 				string+= " = "
@@ -93,7 +93,7 @@ func load_from_string_to_store(string:String):
 	var reg = RegEx.new()
 	reg.compile("VAR (?<name>[^=+\\-*\\/]*)(?<operation>=|\\+=|-=|\\*=|\\/=)(?<value>[^\\[\\n]*)(?<shortcode>\\[.*)?")
 	var result = reg.search(string)
-	Name = result.get_string('name').strip_edges()
+	Name = result.get_string('name').strip_edges().replace("{", "").replace("}", "")
 	match result.get_string('operation').strip_edges():
 		'=':
 			Operation = OPERATIONS.SET
