@@ -25,7 +25,7 @@ func _ready():
 ##					MAIN METHODS
 ####################################################################################################
 
-func add_portrait(character:DialogicCharacter, portrait:String,  position_idx:int, mirrored: bool) -> Node:
+func add_portrait(character:DialogicCharacter, portrait:String,  position_idx:int, mirrored: bool = false) -> Node:
 	var character_node = null
 	
 	if portrait.is_empty():
@@ -52,7 +52,7 @@ func add_portrait(character:DialogicCharacter, portrait:String,  position_idx:in
 	
 	return character_node
 
-func change_portrait(character:DialogicCharacter, portrait:String, mirrored:bool) -> void:
+func change_portrait(character:DialogicCharacter, portrait:String, mirrored:bool = false) -> void:
 	if not character or not is_character_joined(character):
 		assert(false, "[Dialogic] Cannot change portrait of null/not joined character.")
 	
@@ -89,7 +89,7 @@ func change_portrait(character:DialogicCharacter, portrait:String, mirrored:bool
 	dialogic.current_state_info['portraits'][character.resource_path]['portrait'] = portrait
 
 
-func animate_portrait(character:DialogicCharacter, animation_path:String, length:float, repeats = 1):
+func animate_portrait(character:DialogicCharacter, animation_path:String, length:float, repeats = 1) -> DialogicAnimation:
 	if not character or not is_character_joined(character):
 		assert(false, "[Dialogic] Cannot animate portrait of null/not joined character.")
 	

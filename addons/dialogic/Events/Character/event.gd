@@ -31,7 +31,7 @@ func _execute() -> void:
 					AnimationLength = DialogicUtil.get_project_setting('dialogic/animations/join_default_length', 0.5)
 					AnimationWait = DialogicUtil.get_project_setting('dialogic/animations/join_default_wait', true)
 				if AnimationName:
-					var anim = dialogic.Portraits.animate_portrait(Character, AnimationName, AnimationLength, AnimationRepeats)
+					var anim:DialogicAnimation = dialogic.Portraits.animate_portrait(Character, AnimationName, AnimationLength, AnimationRepeats)
 					
 					if AnimationWait:
 						dialogic.current_state = Dialogic.states.ANIMATING
