@@ -544,9 +544,9 @@ func convertTimelines():
 											
 										eventLine += "]"
 									else:
-										eventLine += "\"" + event['set_value'] + "\""
+										eventLine += event['set_value'] 
 								else:
-									eventLine += "\"" + event['set_value'] + "\""
+									eventLine +=  event['set_value'] 
 								
 								file.store_string(eventLine)
 							else:
