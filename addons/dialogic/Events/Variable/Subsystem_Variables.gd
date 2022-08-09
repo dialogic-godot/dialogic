@@ -84,6 +84,9 @@ func parse_variables(text:String) -> String:
 
 
 func set_variable(variable_name: String, value: String) -> bool:
+	if variable_name.left(1) == "{" && variable_name.right(1) == "}":
+		variable_name = variable_name.substr(1,variable_name.length()-2)
+	
 	# Getting all the autoloads
 	var autoloads = get_autoloads()
 	
@@ -106,6 +109,8 @@ func set_variable(variable_name: String, value: String) -> bool:
 	return false
 
 func get_variable(variable_path:String, default = null):
+	if variable_path.left(1) == "{" && variable_path.right(1) == "}":
+		variable_path = variable_path.substr(1,variable_path.length()-2)
 	# Getting all the autoloads
 	var autoloads = get_autoloads()
 	
