@@ -106,7 +106,7 @@ func _draw():
 						if $Timeline.get_child(sub_idx).current_indent_level == event.current_indent_level:
 							end_node = $Timeline.get_child(sub_idx-1)
 							break
-				var rect_size = Vector2()
+				var rect_size := Vector2()
 				if end_node != null:
 					rect_size = Vector2(line_width, end_node.global_position.y+end_node.size.y-rect_position.y)
 					if end_node.resource is DialogicEndBranchEvent and event.resource.can_contain_events:
