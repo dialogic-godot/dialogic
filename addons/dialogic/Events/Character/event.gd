@@ -23,7 +23,7 @@ func _execute() -> void:
 		ActionTypes.Join:
 			
 			if Character:
-				var n = dialogic.Portraits.add_portrait(Character, Portrait, Position)
+				var n = dialogic.Portraits.add_portrait(Character, Portrait, Position, Mirrored)
 				
 				if AnimationName.is_empty():
 					AnimationName = DialogicUtil.get_project_setting('dialogic/animations/join_default', 
@@ -39,7 +39,28 @@ func _execute() -> void:
 						dialogic.current_state = Dialogic.states.IDLE
 				
 		ActionTypes.Leave:
-			if Character:
+			if _leave_all:
+				if AnimationName.is_empty():
+					AnimationName = DialogicUtil.get_project_setting('dialogic/animations/leave_default', 
+get_script().resource_path.get_base_dir().plus_file('DefaultAnimations/fade_out_down.gd'))
+					AnimationLength = DialogicUtil.get_project_setting('dialogic/animations/leave_default_length', 0.5) 
+					AnimationWait = DialogicUtil.get_project_setting('dialogic/animations/leave_default_wait', true)
+				
+					if AnimationName:
+						for chara in dialogic.Portraits.get_joined_characters():
+							var anim = dialogic.Portraits.animate_portrait(chara, AnimationName, AnimationLength, AnimationRepeats)
+							
+							anim.finished.connect(dialogic.Portraits.remove_portrait.bind(Character))
+							
+							if AnimationWait:
+								dialogic.current_state = Dialogic.states.ANIMATING
+								await anim.finished
+								dialogic.current_state = Dialogic.states.IDLE
+					
+					else:
+						for chara in dialogic.Portraits.get_joined_characters():
+							dialogic.Portraits.remove_portrait(chara)
+			elif Character:
 				if dialogic.Portraits.is_character_joined(Character):
 					if AnimationName.is_empty():
 						AnimationName = DialogicUtil.get_project_setting('dialogic/animations/leave_default', 
@@ -63,9 +84,8 @@ func _execute() -> void:
 		ActionTypes.Update:
 			if Character:
 				if dialogic.Portraits.is_character_joined(Character):
-					if Portrait:
-						dialogic.Portraits.change_portrait(Character, Portrait)
-					if Position != -1:
+					dialogic.Portraits.change_portrait(Character, Portrait, Mirrored)
+					if Position != 0:
 						dialogic.Portraits.move_portrait(Character, Position)
 					
 					if AnimationName:
@@ -201,7 +221,7 @@ func load_from_string_to_store(string:String):
 				AnimationRepeats = shortcode_params.get('repeat', 1).to_int()
 				
 		Z_Index = 	shortcode_params.get('z-index', 1)
-		Mirrored = DialogicUtil.str_to_bool(shortcode_params.get('wait', 'false'))
+		Mirrored = DialogicUtil.str_to_bool(shortcode_params.get('mirrored', 'false'))
 # RETURN TRUE IF THE GIVEN LINE SHOULD BE LOADED AS THIS EVENT
 func is_valid_event_string(string:String):
 	

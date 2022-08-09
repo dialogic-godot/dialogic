@@ -361,7 +361,7 @@ func convertTimelines():
 											eventLine += "Update "
 											eventLine += characterFolderBreakdown[event['character']]['name']
 											if 'portrait' in event:
-												if (event['portrait'] != ""):
+												if (event['portrait'] != "") && (event['portrait'] != "(Don't change)"):
 													eventLine += " (" + event['portrait'] + ") "
 
 											var positionCheck = false
@@ -373,7 +373,7 @@ func convertTimelines():
 														eventLine += str(i.to_int() + 1)
 													
 											if !positionCheck:
-												eventLine += " -1"
+												eventLine += " 0"
 												
 											if (event['animation'] != "[Default]" && event['animation'] != "") || ('z_index' in event) || ('mirror_portrait' in event):
 												# Note: due to Anima changes, animations will be converted into a default. Times and wait will be perserved
