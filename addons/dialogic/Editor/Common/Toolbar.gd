@@ -63,7 +63,7 @@ func _on_AddCharacter_pressed() -> void:
 	)
 
 
-func suggest_resources() -> Dictionary:
+func suggest_resources(filter:String) -> Dictionary:
 	var suggestions = {}
 	for i in DialogicUtil.get_project_setting('dialogic/editor/last_resources', []):
 		if i.ends_with('.dtl'):
