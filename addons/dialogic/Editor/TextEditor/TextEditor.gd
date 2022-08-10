@@ -39,7 +39,7 @@ func save_timeline():
 func add_highlighting():
 	# This is a dumpster fire, so hopefully it will be improved during beta?
 	var editor_settings = DialogicUtil.get_dialogic_plugin().editor_interface.get_editor_settings()
-	var s = CodeHighlighter.new()
+	var s := CodeHighlighter.new()
 	s.color_regions = {
 		'[ ]': editor_settings.get('text_editor/theme/highlighting/function_color'),
 		'< >': editor_settings.get('text_editor/theme/highlighting/function_color'),
@@ -52,7 +52,7 @@ func add_highlighting():
 	s.symbol_color = editor_settings.get('text_editor/theme/highlighting/text_color')
 	s.number_color = editor_settings.get('text_editor/theme/highlighting/text_color')
 	s.member_variable_color = editor_settings.get('text_editor/theme/highlighting/text_color')
-	
+	s.function_color = editor_settings.get('text_editor/theme/highlighting/text_color')
 	s.add_color_region('- ', '', editor_settings.get('text_editor/theme/highlighting/engine_type_color'), true)
 	set('syntax_highlighter', s)
 
