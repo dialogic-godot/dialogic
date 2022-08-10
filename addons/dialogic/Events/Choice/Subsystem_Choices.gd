@@ -34,7 +34,7 @@ func show_current_choices() -> void:
 		# check if condition is false
 		if not choice_event.Condition.is_empty() and not dialogic.execute_condition(choice_event.Condition):
 			if choice_event.IfFalseAction == DialogicChoiceEvent.IfFalseActions.DEFAULT:
-				choice_event.IfFalseAction = DialogicUtil.get_project_setting('dialogic/choices/def_false_bahviour', 0)
+				choice_event.IfFalseAction = DialogicUtil.get_project_setting('dialogic/choices/def_false_behaviour', 0)
 			
 			# check what to do in this case
 			if choice_event.IfFalseAction == DialogicChoiceEvent.IfFalseActions.DISABLE:
