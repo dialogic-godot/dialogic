@@ -44,7 +44,7 @@ func _get_plugin_name():
 	return "Dialogic"
 
 
-func _make_visible(visible):
+func _make_visible(visible:bool):
 	if _editor_view:
 		_editor_view.visible = visible
 

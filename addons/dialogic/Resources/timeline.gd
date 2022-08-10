@@ -20,8 +20,8 @@ func set_events(events:Array) -> void:
 	notify_property_list_changed()
 
 
-func add_event(event, at_position=-1) -> void:
-	var idx = at_position if at_position > -1 else _events.size()
+func add_event(event, at_position:int =-1) -> void:
+	var idx : int = at_position if at_position > -1 else _events.size()
 	_events.insert(idx, event)
 	emit_changed()
 	notify_property_list_changed()
