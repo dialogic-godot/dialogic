@@ -1,14 +1,14 @@
 @tool
 extends EditorPlugin
 
-var _editor_view
-var _parts_inspector
-var _export_plugin
-var editor_interface
+var _editor_view: Control
+var _parts_inspector : EditorInspectorPlugin
+var _export_plugin : EditorExportPlugin
+var editor_interface : EditorInterface
 
 signal dialogic_save
 
-const MainPanel = preload("res://addons/dialogic/Editor/EditorView.tscn")
+const MainPanel := preload("res://addons/dialogic/Editor/EditorView.tscn")
 
 
 func _init():
@@ -50,8 +50,8 @@ func _make_visible(visible):
 
 
 func _get_plugin_icon():
-	var _scale = str(get_editor_interface().get_editor_scale())
-	var  _theme = 'light'
+	var _scale : String = str(get_editor_interface().get_editor_scale())
+	var  _theme : String = 'light'
 	if get_editor_interface().get_base_control().get_theme_constant("dark_theme", "Editor"):
 		_theme = 'dark'
 	return load("res://addons/dialogic/Editor/Images/Plugin/plugin-editor-icon-" + _theme + "-theme-" + _scale + ".svg")
@@ -91,18 +91,18 @@ func _disable_plugin():
 	remove_autoload_singleton("Dialogic")
 
 
-func add_dialogic_default_action():
+func add_dialogic_default_action() -> void:
 	if !ProjectSettings.has_setting('input/dialogic_default_action'):
-		var input_enter = InputEventKey.new()
+		var input_enter : InputEventKey = InputEventKey.new()
 		input_enter.keycode = KEY_ENTER
-		var input_left_click = InputEventMouseButton.new()
+		var input_left_click : InputEventMouseButton = InputEventMouseButton.new()
 		input_left_click.button_index = MOUSE_BUTTON_LEFT
 		input_left_click.pressed = true
-		var input_space = InputEventKey.new()
+		var input_space : InputEventKey = InputEventKey.new()
 		input_space.keycode = KEY_SPACE
-		var input_x = InputEventKey.new()
+		var input_x : InputEventKey = InputEventKey.new()
 		input_x.keycode = KEY_X
-		var input_controller = InputEventJoypadButton.new()
+		var input_controller : InputEventJoypadButton = InputEventJoypadButton.new()
 		input_controller.button_index = JOY_BUTTON_A
 
 		ProjectSettings.set_setting('input/dialogic_default_action', {'deadzone':0.5, 'events':[input_enter, input_left_click, input_space, input_x, input_controller]})
