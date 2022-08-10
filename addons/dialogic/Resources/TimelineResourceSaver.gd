@@ -36,6 +36,11 @@ func _save(path: String, resource: Resource, flags: int) -> int:
 	for idx in range(0, len(resource._events)):
 		var event = resource._events[idx]
 		
+		#it shouldn't be trying to save if the node's not been prepared, but if it does then it will just save default values instead so prepare it from what was there before
+		if event['event_node_ready'] == false:
+			event._load_from_string(event['deferred_processing_text'])
+		
+		
 		if event is DialogicEndBranchEvent:
 			indent -= 1
 			continue
