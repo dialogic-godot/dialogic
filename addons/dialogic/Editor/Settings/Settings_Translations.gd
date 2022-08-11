@@ -75,7 +75,7 @@ func _on_TransInitialize_pressed():
 			if event.can_be_translated():
 				file.store_csv_line([event.add_translation_id(), event.get_original_translation_text()])
 		
-		ResourceSaver.save(timeline_path, tml)
+		ResourceSaver.save(tml, timeline_path)
 		
 		if %TransFileMode.selected == 1:
 			file.close()
@@ -119,7 +119,7 @@ func erase_translations():
 			if event.translation_id:
 				event.translation_id = null
 		
-		ResourceSaver.save(timeline_path, tml)
+		ResourceSaver.save(tml, timeline_path)
 
 	
 	ProjectSettings.set_setting('locale/translations', PackedStringArray(trans_files))
@@ -137,7 +137,7 @@ func _on_TransUpdate_pressed():
 	
 	for timeline_path in DialogicUtil.list_resources_of_type('.dtl'):
 		var tml:DialogicTimeline = load(timeline_path)
-		ResourceSaver.save(timeline_path, tml)
+		ResourceSaver.save(tml, timeline_path)
 		
 		if !mode:
 			for file in DialogicUtil.listdir(timeline_path.get_base_dir()):

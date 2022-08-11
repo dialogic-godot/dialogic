@@ -130,5 +130,5 @@ func _rename_dependencies(path: String, renames: Dictionary):
 					event.set(property, load(renames[event.get(property).resource_path]))
 			elif typeof(event.get(property)) == TYPE_STRING and event.get(property) in renames:
 				event.set(property, renames[event.get(property)])
-	ResourceSaver.save(path, timeline)
+	ResourceSaver.save(timeline, path)
 	return OK

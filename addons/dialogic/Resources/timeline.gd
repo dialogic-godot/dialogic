@@ -86,7 +86,7 @@ func get_class() -> String: return "Timeline"
 
 
 func _get_property_list() -> Array:
-	var p = []
+	var p : Array = []
 	var usage = PROPERTY_USAGE_SCRIPT_VARIABLE
 	usage |= PROPERTY_USAGE_NO_EDITOR
 	usage |= PROPERTY_USAGE_EDITOR # Comment this line to hide events from editor

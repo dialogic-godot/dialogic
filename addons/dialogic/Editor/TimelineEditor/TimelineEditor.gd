@@ -83,7 +83,7 @@ func save_timeline() -> void:
 	
 	if current_timeline:
 		current_timeline.set_events(new_events)
-		ResourceSaver.save(current_timeline.resource_path, current_timeline)
+		ResourceSaver.save(current_timeline, current_timeline.resource_path)
 		_toolbar.set_resource_saved()
 	else:
 		if new_events.size() > 0:

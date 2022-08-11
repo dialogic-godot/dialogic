@@ -21,7 +21,7 @@ func new_character(path: String) -> void:
 	resource.color = Color(1,1,1,1)
 	resource.default_portrait = ""
 	resource.custom_info = {}
-	ResourceSaver.save(path, resource)
+	ResourceSaver.save(resource, path)
 	find_parent('EditorView').edit_character(resource)
 
 func load_character(resource: DialogicCharacter) -> void:

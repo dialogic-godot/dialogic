@@ -54,5 +54,5 @@ func _rename_dependencies(path: String, renames: Dictionary):
 	for p in character.portraits:
 		if character.portraits[p].path in renames:
 			character.portraits[p].path = renames[character.portraits[p].path]
-	ResourceSaver.save(path, character)
+	ResourceSaver.save(character, path)
 	return OK

@@ -823,7 +823,7 @@ func convertCharacters():
 				current_character.default_portrait = firstPortrait 
 			current_character.scale = 1.0
 			
-			ResourceSaver.save(current_character.resource_path, current_character)	
+			ResourceSaver.save(current_character, current_character.resource_path)	
 
 			# Before we're finished here, update the folder breakdown so it has the proper character name
 			var infoDict = {}
