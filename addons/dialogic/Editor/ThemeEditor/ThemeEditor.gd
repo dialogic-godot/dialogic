@@ -318,10 +318,13 @@ func character_picker_update():
 	var characters : Array = DialogicUtil.get_character_list()
 	var character_array = []
 	for c in characters:
-		if c['data']['theme'] == '':
-			character_array.append(c)
-		elif c['data']['theme'] == current_theme:
-			character_array.append(c)
+		if 'theme' in c['data']:
+			if c['data']['theme'] == '':
+				character_array.append(c)
+			elif c['data']['theme'] == current_theme:
+				character_array.append(c)
+			else:
+				pass
 		else:
 			pass
 		
@@ -578,10 +581,11 @@ func _on_PreviewButton_pressed() -> void:
 			var characters : Array = DialogicUtil.get_character_list()
 			var character_array = []
 			for c in characters:
-				if c['data']['theme'] == '':
-					character_array.append(c)
-				elif c['data']['theme'] == current_theme:
-					character_array.append(c)
+				if 'theme' in c['data']:
+					if c['data']['theme'] == '':
+						character_array.append(c)
+					elif c['data']['theme'] == current_theme:
+						character_array.append(c)
 				
 			if character_array.size():
 				character_array.shuffle()
