@@ -3,10 +3,12 @@ extends Control
 
 const portrait_entry = preload("res://addons/dialogic/Editor/CharacterEditor/PortraitEntry.tscn")
 
-@onready var toolbar = get_parent().get_node('%Toolbar')
 var current_character : DialogicCharacter
 var current_portrait = null
 
+signal set_resource_unsaved
+signal set_resource_saved
+signal character_loaded(resource_path:String)
 signal portrait_selected(previous, current)
 
 ##############################################################################
@@ -28,7 +30,6 @@ func load_character(resource: DialogicCharacter) -> void:
 	if not resource:
 		return
 	current_character = resource
-	toolbar.load_character(resource.resource_path)
 	%NameLineEdit.text = resource.name
 	%ColorPickerButton.color = resource.color
 	%DisplayNameLineEdit.text = resource.display_name
@@ -49,6 +50,7 @@ func load_character(resource: DialogicCharacter) -> void:
 			main_edit.load_character(current_character)
 	
 	update_portrait_list()
+	emit_signal('character_loaded', resource.resource_path)
 
 
 func save_character() -> void:
@@ -82,7 +84,7 @@ func save_character() -> void:
 			main_edit.save_character(current_character)
 	
 	ResourceSaver.save(current_character, current_character.resource_path)
-	toolbar.set_resource_saved()
+	emit_signal('set_resource_saved')
 
 
 ##############################################################################
@@ -112,7 +114,6 @@ func _ready() -> void:
 	%PreviewMode.item_selected.connect(_on_PreviewMode_item_selected)
 	%PreviewMode.select(DialogicUtil.get_project_setting('dialogic/editor/character_preview_mode', 0))
 	_on_PreviewMode_item_selected(%PreviewMode.selected)
-	%PreviewPositionIcon.texture = get_theme_icon("EditorPosition", "EditorIcons")
 	
 	if find_parent('EditorView'): # This prevents the view to turn black if you are editing this scene in Godot
 		var style = $Split/EditorScroll.get_theme_stylebox('custom_styles/bg')
@@ -140,7 +141,7 @@ func _ready() -> void:
 
 
 func something_changed(fake_argument = "", fake_arg2 = null) -> void:
-	toolbar.set_resource_unsaved()
+	emit_signal('set_resource_unsaved')
 
 func suggest_portraits(search:String):
 	var suggestions = {}
