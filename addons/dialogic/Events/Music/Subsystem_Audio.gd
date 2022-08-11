@@ -40,9 +40,9 @@ func update_music(path:String = '', volume:float = 0.0, audio_bus:String = "Mast
 				node.stream.loop = loop
 			elif "loop_mode" in node.stream:
 				if loop:
-					node.stream.loop_mode = AudioStreamSample.LOOP_FORWARD
+					node.stream.loop_mode = AudioStreamWAV.LOOP_FORWARD
 				else:
-					node.stream.loop_mode = AudioStreamSample.LOOP_DISABLED
+					node.stream.loop_mode = AudioStreamWAV.LOOP_DISABLED
 			
 			node.play()
 			fader.parallel().tween_method(interpolate_volume_linearly.bind(node), 0.0,db2linear(volume),fade_time)
@@ -61,9 +61,9 @@ func play_sound(path:String, volume:float = 0.0, audio_bus:String = "Master", lo
 			new_sound_node.stream.loop = loop
 		elif "loop_mode" in new_sound_node.stream:
 			if loop:
-				new_sound_node.stream.loop_mode = AudioStreamSample.LOOP_FORWARD
+				new_sound_node.stream.loop_mode = AudioStreamWAV.LOOP_FORWARD
 			else:
-				new_sound_node.stream.loop_mode = AudioStreamSample.LOOP_DISABLED
+				new_sound_node.stream.loop_mode = AudioStreamWAV.LOOP_DISABLED
 		new_sound_node.volume_db = volume
 		new_sound_node.bus = audio_bus
 		add_child(new_sound_node)
