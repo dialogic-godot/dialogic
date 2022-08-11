@@ -28,8 +28,14 @@ static func inline(style:Dictionary) -> StyleBoxFlat:
 			'border-color':
 				s.set('border_color', style[property])
 			'padding':
-				var value_v:float = style[property][0] * scale
-				var value_h:float = style[property][1] * scale
+				var value_v: float = 0.0
+				var value_h: float = 0.0
+				if style[property] is int:
+					value_v = style[property] * scale
+					value_h = value_v
+				else:
+					value_v = style[property][0] * scale
+					value_h = style[property][1] * scale
 				s.set('content_margin_top', value_v)
 				s.set('content_margin_bottom', value_v)
 				s.set('content_margin_left', value_h)

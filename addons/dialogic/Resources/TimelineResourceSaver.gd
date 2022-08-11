@@ -19,7 +19,7 @@ func _recognize(resource: Resource) -> bool:
 
 
 # Save the resource
-func _save(path: String, resource: Resource, flags: int) -> int:
+func _save(resource: Resource, path: String = '', flags: int = 0) -> int:
 	var err:int
 	var file:File = File.new()
 	err = file.open(path, File.WRITE)

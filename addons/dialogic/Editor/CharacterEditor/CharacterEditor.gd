@@ -81,7 +81,7 @@ func save_character() -> void:
 		if main_edit.has_method('save_character'):
 			main_edit.save_character(current_character)
 	
-	ResourceSaver.save(current_character.resource_path, current_character)
+	ResourceSaver.save(current_character, current_character.resource_path)
 	toolbar.set_resource_saved()
 
 
