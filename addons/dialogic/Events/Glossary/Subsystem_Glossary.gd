@@ -1,18 +1,18 @@
 extends DialogicSubsystem
 
-var glossaries = []
-var enabled = true
+var glossaries := []
+var enabled := true
 
 ####################################################################################################
 ##					STATE
 ####################################################################################################
 
-func clear_game_state():
+func clear_game_state() -> void:
 	glossaries = []
 	for path in DialogicUtil.get_project_setting('dialogic/glossary/glossary_files', []):
 		add_glossary(path)
 
-func load_game_state():
+func load_game_state() -> void:
 	pass
 
 ####################################################################################################
@@ -21,9 +21,9 @@ func load_game_state():
 
 func parse_glossary(text:String) -> String:
 	if !enabled: return text
-	var def_case_sensitive = DialogicUtil.get_project_setting('dialogic/glossary/default_case_sensitive', true)
-	var def_color = DialogicUtil.get_project_setting('dialogic/glossary/default_color', Color.POWDER_BLUE)
-	var regex = RegEx.new()
+	var def_case_sensitive :bool = DialogicUtil.get_project_setting('dialogic/glossary/default_case_sensitive', true)
+	var def_color : Color= DialogicUtil.get_project_setting('dialogic/glossary/default_color', Color.POWDER_BLUE)
+	var regex := RegEx.new()
 	for glossary in glossaries:
 		if !glossary.enabled:
 			continue
@@ -31,7 +31,7 @@ func parse_glossary(text:String) -> String:
 			if !glossary.entries[entry].get('enabled', true):
 				continue
 			
-			var pattern = '(?<word>'+glossary.entries[entry].get('regopts', entry)+')(?!])(?=\\W|$)'
+			var pattern :String = '(?<word>'+glossary.entries[entry].get('regopts', entry)+')(?!])(?=\\W|$)'
 			if glossary.entries[entry].get('case_sensitive', def_case_sensitive):
 				regex.compile(pattern)
 			else:
@@ -48,7 +48,7 @@ func add_glossary(path:String):
 	if x is DialogicGlossary:
 		glossaries.append(x)
 		for entry in x.entries.keys():
-			var regopts = entry
+			var regopts :String = entry
 			for i in x.entries[entry].get('alternatives', []):
 				regopts += '|'+i
 			x.entries[entry]['regopts'] = regopts

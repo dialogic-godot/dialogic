@@ -1,14 +1,14 @@
 extends Control
 
-func _ready():
+func _ready() -> void:
 	hide()
 
-func _process(delta):
+func _process(delta) -> void:
 	if visible:
 		global_position = get_global_mouse_position()
 
-func _on_dialogic_display_dialog_text_meta_hover_started(meta):
-	var info = Dialogic.Glossary.get_entry(meta)
+func _on_dialogic_display_dialog_text_meta_hover_started(meta:String) -> void:
+	var info :Dictionary = Dialogic.Glossary.get_entry(meta)
 	if info:
 		show()
 		$Panel/VBox/Title.text = info.get('title', '')
@@ -17,5 +17,5 @@ func _on_dialogic_display_dialog_text_meta_hover_started(meta):
 		modulate = info.get('color', Color.WHITE)#.darkened(0.5)
 		global_position = get_global_mouse_position()
 
-func _on_dialogic_display_dialog_text_meta_hover_ended(meta):
+func _on_dialogic_display_dialog_text_meta_hover_ended(meta:String) -> void:
 	hide()

@@ -37,7 +37,7 @@ func _execute() -> void:
 	#Placeholder wrap. Replace with a loop iterating over text event's lines. - KvaGram
 	var index:int = 0
 	if true:
-		var final_text = get_translated_text()
+		var final_text :String = get_translated_text()
 		if dialogic.has_subsystem('VAR'):
 			final_text = dialogic.VAR.parse_variables(final_text)
 		if dialogic.has_subsystem('Glossary'):
