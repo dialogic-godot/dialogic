@@ -3,7 +3,7 @@ extends Control
 
 func _ready():
 	var dialog_scene_path = DialogicUtil.get_project_setting(
-		'dialogic/editor/test_dialog_scene', 'res://addons/dialogic/Other/DefaultDialogNode.tscn')
+		'dialogic/editor/test_dialog_scene', 'res://addons/dialogic/Example Assets/ExampleScenes/DefaultDialogNode.tscn')
 	var scene = load(dialog_scene_path).instantiate()
 	add_child(scene)
 	if !get_child(0) is CanvasLayer:

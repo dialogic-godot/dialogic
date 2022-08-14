@@ -37,10 +37,13 @@ func _execute() -> void:
 	#Placeholder wrap. Replace with a loop iterating over text event's lines. - KvaGram
 	var index:int = 0
 	if true:
+		var final_text :String = get_translated_text()
 		if dialogic.has_subsystem('VAR'):
-			dialogic.Text.update_dialog_text(dialogic.Text.color_names(dialogic.VAR.parse_variables(get_translated_text())))
-		else:
-			dialogic.Text.update_dialog_text(dialogic.Text.color_names(get_translated_text()))
+			final_text = dialogic.VAR.parse_variables(final_text)
+		if dialogic.has_subsystem('Glossary'):
+			final_text = dialogic.Glossary.parse_glossary(final_text)
+		
+		dialogic.Text.update_dialog_text(dialogic.Text.color_names(final_text))
 		
 		#Plays the audio region for the current line.
 		if dialogic.has_subsystem('Voice') and dialogic.Voice.isVoiced(dialogic.current_event_idx):
