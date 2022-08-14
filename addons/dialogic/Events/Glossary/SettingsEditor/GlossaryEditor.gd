@@ -39,9 +39,14 @@ func refresh() -> void:
 		%GlossaryList.set_item_tooltip(idx, file)
 		idx += 1
 	
+	%EntryList.clear()
+	
 	if %GlossaryList.item_count != 0:
 		%GlossaryList.select(0)
 		_on_GlossaryList_item_selected(0)
+	else:
+		current_glossary = null
+		hide_entry_editor()
 
 ################################################################################
 ##					GLOSSARY LIST
@@ -82,6 +87,7 @@ func load_glossary_file(path:String) -> void:
 		%GlossaryList.add_item(DialogicUtil.pretty_name(path), get_theme_icon('FileList', 'EditorIcons'))
 		%GlossaryList.set_item_tooltip(%GlossaryList.item_count-1, path)
 		%GlossaryList.select(%GlossaryList.item_count-1)
+		_on_GlossaryList_item_selected(%GlossaryList.item_count-1)
 
 func _on_delete_glossary_file_pressed() -> void:
 	if len(%GlossaryList.get_selected_items()) != 0:
@@ -127,6 +133,7 @@ func _on_add_glossary_entry_pressed() -> void:
 	current_glossary.entries[new_name] = {}
 	ResourceSaver.save(current_glossary)
 	%EntryList.add_item(new_name)
+	%EntryList.select(%EntryList.item_count-1)
 	_on_EntryList_item_selected(%EntryList.item_count-1)
 
 func _on_delete_glossary_entry_pressed() -> void:
@@ -143,7 +150,7 @@ func hide_entry_editor() -> void:
 	%EntrySettings.hide()
 	%EntryEditorTitle.text = "No entry selected."
 
-func _on_entry_name_text_submitted(new_text:String) -> void:
+func _on_entry_name_text_changed(new_text:String) -> void:
 	if current_entry_name != new_text.strip_edges():
 		var info :Dictionary = current_glossary.entries[current_entry_name]
 		current_glossary.entries.erase(current_entry_name)

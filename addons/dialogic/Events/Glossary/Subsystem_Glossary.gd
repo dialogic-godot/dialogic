@@ -53,10 +53,15 @@ func add_glossary(path:String):
 				regopts += '|'+i
 			x.entries[entry]['regopts'] = regopts
 
-func get_entry(name:String) -> Dictionary:
+func get_entry(name:String, parse_variables:bool = true) -> Dictionary:
 	for glossary in glossaries:
 		if name in glossary.entries:
-			return glossary.entries[name]
+			var info:Dictionary = glossary.entries[name].duplicate()
+			if parse_variables and Dialogic.has_subsystem('VAR'):
+				for key in info.keys():
+					if typeof(info[key]) == TYPE_STRING:
+						info[key] = Dialogic.VAR.parse_variables(info[key])
+			return info
 	return {}
 
 func set_entry(name: String, value: Dictionary) -> bool:
