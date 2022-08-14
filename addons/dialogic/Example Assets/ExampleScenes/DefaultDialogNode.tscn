@@ -1,6 +1,6 @@
-[gd_scene load_steps=24 format=3 uid="uid://dxf83tsi5p26t"]
+[gd_scene load_steps=26 format=3 uid="uid://bx0fhxkbryo8w"]
 
-[ext_resource type="Script" path="res://addons/dialogic/Other/DefaultDialogNode.gd" id="1"]
+[ext_resource type="Script" path="res://addons/dialogic/Example Assets/ExampleScenes/DefaultDialogNode.gd" id="1"]
 [ext_resource type="Script" path="res://addons/dialogic/Events/Text/Display_DialogText.gd" id="2"]
 [ext_resource type="Script" path="res://addons/dialogic/Events/Text/Display_NameLabel.gd" id="3"]
 [ext_resource type="Script" path="res://addons/dialogic/Events/Choice/Display_ChoiceButton.gd" id="4"]
@@ -18,8 +18,9 @@
 [ext_resource type="AudioStream" uid="uid://dhwhlv7tdr0cb" path="res://addons/dialogic/Example Assets/Keyboard Noises/typing2.wav" id="16"]
 [ext_resource type="Script" path="res://addons/dialogic/Events/Text/Display_InputHandler.gd" id="17"]
 [ext_resource type="Script" path="res://addons/dialogic/Events/Choice/SoundButton.gd" id="18"]
+[ext_resource type="Script" path="res://addons/dialogic/Example Assets/ExampleScenes/ExampleGlossaryPopup.gd" id="20_vmnp2"]
 [ext_resource type="Script" path="res://addons/dialogic/Events/Voice/dialogic_dialog_voice.gd" id="20_x1o37"]
-[ext_resource type="Script" path="res://addons/dialogic/Other/HideWithChild.gd" id="23"]
+[ext_resource type="Script" path="res://addons/dialogic/Example Assets/ExampleScenes/HideWithChild.gd" id="23"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dpede"]
 content_margin_left = 10.0
@@ -35,6 +36,21 @@ content_margin_right = 10.0
 content_margin_bottom = 5.0
 bg_color = Color(0.117647, 0.117647, 0.117647, 0.952941)
 skew = Vector2(-0.121, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_a3cyk"]
+bg_color = Color(0.12549, 0.12549, 0.12549, 1)
+border_width_left = 2
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 2
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+expand_margin_left = 5.0
+expand_margin_top = 5.0
+expand_margin_right = 5.0
+expand_margin_bottom = 5.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nnmvp"]
 content_margin_left = 10.0
@@ -107,7 +123,6 @@ script = ExtResource("5")
 position_index = 5
 
 [node name="DefaultTheme" type="Control" parent="."]
-visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 script = ExtResource("12")
@@ -224,7 +239,80 @@ script = ExtResource("10")
 sounds = [ExtResource("14"), ExtResource("16"), ExtResource("15"), ExtResource("11"), ExtResource("13")]
 play_every_character = 0
 
+[node name="Glossary" type="Control" parent="DefaultTheme"]
+script = ExtResource("20_vmnp2")
+
+[node name="Panel" type="PanelContainer" parent="DefaultTheme/Glossary"]
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -99.0
+offset_top = -115.0
+offset_right = 104.0
+offset_bottom = -34.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_a3cyk")
+metadata/_edit_use_custom_anchors = true
+metadata/_edit_layout_mode = 1
+
+[node name="VBox" type="VBoxContainer" parent="DefaultTheme/Glossary/Panel"]
+offset_left = 2.0
+offset_top = 4.0
+offset_right = 199.0
+offset_bottom = 79.0
+theme_override_constants/separation = 0
+
+[node name="Title" type="Label" parent="DefaultTheme/Glossary/Panel/VBox"]
+offset_right = 197.0
+offset_bottom = 26.0
+text = "MyGlossaryEntry"
+
+[node name="HSeparator" type="HSeparator" parent="DefaultTheme/Glossary/Panel/VBox"]
+offset_top = 26.0
+offset_right = 197.0
+offset_bottom = 30.0
+
+[node name="Text" type="RichTextLabel" parent="DefaultTheme/Glossary/Panel/VBox"]
+offset_top = 30.0
+offset_right = 197.0
+offset_bottom = 53.0
+bbcode_enabled = true
+text = "Some text"
+fit_content_height = true
+
+[node name="Extra" type="RichTextLabel" parent="DefaultTheme/Glossary/Panel/VBox"]
+offset_top = 53.0
+offset_right = 197.0
+offset_bottom = 75.0
+theme_override_colors/default_color = Color(1, 1, 1, 0.584314)
+theme_override_font_sizes/normal_font_size = 15
+bbcode_enabled = true
+text = "[right]Wow, some text!"
+fit_content_height = true
+
+[node name="Control" type="Control" parent="DefaultTheme/Glossary/Panel"]
+show_behind_parent = true
+offset_left = 100.0
+offset_top = 79.0
+offset_right = 100.0
+offset_bottom = 79.0
+size_flags_horizontal = 4
+size_flags_vertical = 8
+
+[node name="PanelContainer" type="PanelContainer" parent="DefaultTheme/Glossary/Panel/Control"]
+offset_left = -0.999999
+offset_top = -14.0
+offset_right = 19.0
+offset_bottom = 6.0
+rotation = 0.75799
+size_flags_horizontal = 4
+size_flags_vertical = 8
+theme_override_styles/panel = SubResource("StyleBoxFlat_a3cyk")
+
 [node name="SpecialTheme" type="Control" parent="."]
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 script = ExtResource("12")
@@ -322,18 +410,17 @@ theme_override_constants/separation = 0
 alignment = 1
 
 [node name="DialogicDisplay_NameLabel" type="Label" parent="SpecialTheme/PanelContainer/MarginContainer/VBoxContainer"]
-offset_top = 11.0
 offset_right = 386.0
-offset_bottom = 37.0
+offset_bottom = 26.0
 text = "Name"
 horizontal_alignment = 1
 script = ExtResource("3")
 use_character_color = false
 
 [node name="DialogicDisplay_DialogText" type="RichTextLabel" parent="SpecialTheme/PanelContainer/MarginContainer/VBoxContainer"]
-offset_top = 37.0
+offset_top = 26.0
 offset_right = 386.0
-offset_bottom = 37.0
+offset_bottom = 49.0
 text = "Some default text"
 fit_content_height = true
 script = ExtResource("2")
@@ -341,3 +428,6 @@ Align = 1
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 script = ExtResource("20_x1o37")
+
+[connection signal="meta_hover_ended" from="DefaultTheme/PanelContainer/DialogicDisplay_DialogText" to="DefaultTheme/Glossary" method="_on_dialogic_display_dialog_text_meta_hover_ended"]
+[connection signal="meta_hover_started" from="DefaultTheme/PanelContainer/DialogicDisplay_DialogText" to="DefaultTheme/Glossary" method="_on_dialogic_display_dialog_text_meta_hover_started"]
