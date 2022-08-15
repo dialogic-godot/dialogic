@@ -22,7 +22,7 @@ func pause():
 	for child in get_children():
 		child.stream_paused = true
 
-func resume():
+func resume() -> void:
 	for node in get_tree().get_nodes_in_group('dialogic_music_player'):
 		node.stream_paused = false
 	for child in get_children():
