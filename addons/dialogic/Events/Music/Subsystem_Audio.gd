@@ -16,7 +16,7 @@ func load_game_state():
 	else:
 		update_music(info.path, info.volume, info.audio_bus, 0, info.loop)
 
-func pause():
+func pause() -> void:
 	for node in get_tree().get_nodes_in_group('dialogic_music_player'):
 		node.stream_paused = true
 	for child in get_children():
