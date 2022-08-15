@@ -1,6 +1,10 @@
 extends DialogicSubsystem
 
 var default_portrait_scene
+var _default_positions: Dictionary = {}
+var current_positions: Dictionary = {}
+
+var _portrait_holder_reference: Node = null
 
 ####################################################################################################
 ##					STATE
@@ -36,15 +40,27 @@ func add_portrait(character:DialogicCharacter, portrait:String,  position_idx:in
 	if not portrait in character.portraits:
 		print("[DialogicErrorInfo] ",character.display_name, " has no portrait ", portrait)
 		assert(false, "[Dialogic] Invalid portrait name.")
-	if len(get_tree().get_nodes_in_group('dialogic_portrait_holder')) == 0:
+	if _portrait_holder_reference == null and len(get_tree().get_nodes_in_group('dialogic_portrait_holder')) == 0:
 		assert(false, '[Dialogic] If you want to display portraits, you need a PortraitHolder scene!')
+	else: 
+		if _portrait_holder_reference == null:
+			_portrait_holder_reference = get_tree().get_first_node_in_group('dialogic_portrait_holder')
 	
-	for node in get_tree().get_nodes_in_group('dialogic_portrait_position'):
-		if node.position_index == position_idx:
-			character_node = Node2D.new()
-			character_node.name = character.name
-			node.add_child(character_node)
-			character_node.global_position = node.global_position
+	if _default_positions.size() == 0:
+		for node in get_tree().get_nodes_in_group('dialogic_portrait_position'):
+			_default_positions[node['position_index']] = node['position']
+			
+	if current_positions.size() == 0:
+		current_positions = _default_positions.duplicate()
+	
+	
+
+	character_node = Node2D.new()
+	character_node.name = character.name
+	character_node.position = current_positions[position_idx]
+	_portrait_holder_reference.add_child(character_node)
+	#character_node.global_position = _portrait_holder_reference.global_position
+	
 	if character_node:
 		dialogic.current_state_info['portraits'][character.resource_path] = {'portrait':portrait, 'node':character_node, 'position_index':position_idx}
 	if portrait:
