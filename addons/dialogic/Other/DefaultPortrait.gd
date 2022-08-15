@@ -35,18 +35,27 @@ func change_portrait(passed_character:DialogicCharacter, passed_portrait:String)
 	$Portrait.texture = null
 	$Portrait.texture = load(path)
 	$Portrait.centered = false
-	$Portrait.scale = Vector2(1,1)*character.portraits[portrait].get('scale', 1)*character.scale
+	
+	var scale = 1
+	if 'scale' in character:
+		scale = character.scale
+	
+	if 'scale' in character.portraits[portrait]:
+		$Portrait.scale = Vector2(1,1) * character.portraits[portrait].get('scale', 1) * scale
+	else:
+		$Portrait.scale = scale
 	
 	# Offset is for re-orienting the picutre at 1x scale, and so position in the scene needs to include the scale in the offset
-	$Portrait.position.x = character.portraits[portrait]['offset']['x'] * character.portraits[portrait].scale *character.scale
-	$Portrait.position.y = character.portraits[portrait]['offset']['y'] * character.portraits[portrait].scale *character.scale
+	if 'offset' in character.portraits[portrait]:
+		$Portrait.position.x = character.portraits[portrait]['offset']['x'] * $Portrait.scale
+		$Portrait.position.y = character.portraits[portrait]['offset']['y'] * $Portrait.scale
 	
 	if character.portraits[portrait].mirror:
 			$Portrait.flip_h = true
 
 	# Set the portrait dimensions that are reported back to Dialogic. Scale is included in the math here
-	portrait_width = $Portrait.texture.get_width() * character.portraits[portrait].scale * character.portraits[portrait].scale *character.scale
-	portrait_height = $Portrait.texture.get_height() * character.portraits[portrait].scale * character.scale
+	portrait_width = $Portrait.texture.get_width() * $Portrait.scale
+	portrait_height = $Portrait.texture.get_height() * $Portrait.scale
 	
 # These are from the separate Join/Update "Mirror" toggles, to override the default mirror
 func does_portrait_mirror() -> bool:
