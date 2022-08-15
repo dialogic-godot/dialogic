@@ -11,7 +11,7 @@ var current_state = null:
 	set(new_state):
 		current_state = new_state
 		emit_signal('state_changed', new_state)
-var paused = false
+var paused := false
 var current_event_idx = 0
 var current_state_info :Dictionary = {}
 
@@ -160,14 +160,14 @@ func clear():
 	return true
 
 
-func pause():
+func pause() -> void:
 	if paused: return
 	paused = true
 	for subsystem in get_children():
 		if subsystem.has_method('pause'):
 			subsystem.pause()
 
-func resume():
+func resume() -> void:
 	if !paused: return
 	paused = false
 	for subsystem in get_children():
