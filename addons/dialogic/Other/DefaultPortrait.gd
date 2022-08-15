@@ -38,15 +38,15 @@ func change_portrait(passed_character:DialogicCharacter, passed_portrait:String)
 	$Portrait.scale = Vector2(1,1)*character.portraits[portrait].get('scale', 1)*character.scale
 	
 	# Offset is for re-orienting the picutre at 1x scale, and so position in the scene needs to include the scale in the offset
-	$Portrait.position.x = character.portraits[portrait]['offset']['x'] * character.portraits[portrait].scale *character.scale
-	$Portrait.position.y = character.portraits[portrait]['offset']['y'] * character.portraits[portrait].scale *character.scale
+	$Portrait.position = character.portraits[portrait].get('offset', Vector2()) * character.portraits[portrait].get('scale', Vector2(1,1)) *character.scale
+	#$Portrait.position.y = character.portraits[portrait]['offset']['y'] * character.portraits[portrait].scale *character.scale
 	
-	if character.portraits[portrait].mirror:
+	if character.portraits[portrait].get('mirror', false):
 			$Portrait.flip_h = true
 
 	# Set the portrait dimensions that are reported back to Dialogic. Scale is included in the math here
-	portrait_width = $Portrait.texture.get_width() * character.portraits[portrait].scale * character.portraits[portrait].scale *character.scale
-	portrait_height = $Portrait.texture.get_height() * character.portraits[portrait].scale * character.scale
+	portrait_width = $Portrait.texture.get_width() * character.portraits[portrait].get('scale', 1) * character.scale
+	portrait_height = $Portrait.texture.get_height() * character.portraits[portrait].get('scale', 1) * character.scale
 	
 # These are from the separate Join/Update "Mirror" toggles, to override the default mirror
 func does_portrait_mirror() -> bool:
@@ -54,12 +54,12 @@ func does_portrait_mirror() -> bool:
 	
 func mirror_portrait(mirror:bool) -> void:
 	if mirror:
-		if character.portraits[portrait].mirror:
+		if character.portraits[portrait].get('mirror', false):
 			$Portrait.flip_h = false
 		else:
 			$Portrait.flip_h = true
 	else:
-		if character.portraits[portrait].mirror:
+		if character.portraits[portrait].get('mirror', false):
 			$Portrait.flip_h = true
 		else:
 			$Portrait.flip_h = false

@@ -5,7 +5,7 @@ class_name DialogicDisplay_DialogText, "icon.png"
 enum ALIGNMENT {LEFT, CENTER, RIGHT}
 
 @export var Align : ALIGNMENT = ALIGNMENT.LEFT
-@onready var timer = null
+@onready var timer :Timer = null
 
 var effect_regex = RegEx.new()
 var modifier_words_select_regex = RegEx.new()
@@ -67,7 +67,7 @@ func continue_reveal() -> void:
 
 # shows all the text imidiatly
 # called by this thing itself or the DialogicGameHandler
-func finish_text():
+func finish_text() -> void:
 	percent_visible = 1
 	execute_effects(true)
 	timer.stop()
@@ -133,3 +133,9 @@ func parse_modifiers(_text:String) -> String:
 	# [br] effect
 	_text = _text.replace('[br]', '\n')
 	return _text
+
+func pause() -> void: 
+	timer.stop()
+
+func resume() -> void:
+	continue_reveal()

@@ -5,16 +5,14 @@ enum states {IDLE, SHOWING_TEXT, ANIMATING, AWAITING_CHOICE, WAITING}
 var current_timeline = null
 var current_timeline_events = []
 
-
 var current_state = null:
 	get:
 		return current_state
 	set(new_state):
 		current_state = new_state
 		emit_signal('state_changed', new_state)
-
+var paused := false
 var current_event_idx = 0
-
 var current_state_info :Dictionary = {}
 
 # Thread and variables for handling delayed loader
@@ -161,6 +159,20 @@ func clear():
 	current_state = states.IDLE
 	return true
 
+
+func pause() -> void:
+	if paused: return
+	paused = true
+	for subsystem in get_children():
+		if subsystem.has_method('pause'):
+			subsystem.pause()
+
+func resume() -> void:
+	if !paused: return
+	paused = false
+	for subsystem in get_children():
+		if subsystem.has_method('resume'):
+			subsystem.resume()
 
 ################################################################################
 ## 						STATE

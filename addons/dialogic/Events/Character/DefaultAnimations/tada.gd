@@ -1,7 +1,7 @@
 extends DialogicAnimation
 
 func animate():
-	var tween = create_tween()
+	var tween = (node.create_tween() as Tween)
 	tween.set_parallel(true)
 	tween.set_trans(Tween.TRANS_SINE)
 	tween.set_ease(Tween.EASE_OUT)

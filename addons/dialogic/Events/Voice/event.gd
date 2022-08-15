@@ -3,9 +3,9 @@ extends DialogicEvent
 class_name DialogicVoiceEvent
 
 func _execute() -> void:
-	dialogic.Voice.setFile(FilePath)
-	dialogic.Voice.setVolume(Volume)
-	dialogic.Voice.setBus(AudioBus)
+	dialogic.Voice.set_file(FilePath)
+	dialogic.Voice.set_volume(Volume)
+	dialogic.Voice.set_bus(AudioBus)
 	#NOTE need better way of reading the regiondata. This deems messy
 	var regiondata = []
 
@@ -19,7 +19,7 @@ func _execute() -> void:
 		var data2:PackedStringArray = d.split(",", false)
 		regiondata.append([data2[0].to_float(), data2[1].to_float()])
 
-	dialogic.Voice.setRegions(regiondata)
+	dialogic.Voice.set_regions(regiondata)
 
 	finish() #the rest is executed by a text event
 
