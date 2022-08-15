@@ -1,20 +1,19 @@
 extends DialogicSubsystem
 
 # used to color names without searching for all characters each time
-var character_colors = {}
-var color_regex = RegEx.new()
+var character_colors := {}
+var color_regex := RegEx.new()
+
 ####################################################################################################
 ##					STATE
 ####################################################################################################
-
-func clear_game_state():
+func clear_game_state() -> void:
 	update_dialog_text('')
 	update_name_label(null)
 	dialogic.current_state_info['character'] = null
 	dialogic.current_state_info['text'] = ''
 
-
-func load_game_state():
+func load_game_state() -> void:
 	update_dialog_text(dialogic.current_state_info.get('text', ''))
 	var character:DialogicCharacter = null
 	if dialogic.current_state_info.get('character', null):
@@ -22,6 +21,16 @@ func load_game_state():
 	
 	if character:
 		update_name_label(character)
+
+func pause() -> void:
+	for text_node in get_tree().get_nodes_in_group('dialogic_dialog_text'):
+		if text_node.is_visible_in_tree():
+			text_node.pause()
+
+func resume() -> void:
+	for text_node in get_tree().get_nodes_in_group('dialogic_dialog_text'):
+		if text_node.is_visible_in_tree():
+			text_node.resume()
 
 ####################################################################################################
 ##					MAIN METHODS
@@ -69,7 +78,7 @@ func skip_text_animation() -> void:
 		if text_node.is_visible_in_tree():
 			text_node.finish_text()
 	if dialogic.has_subsystem('Voice'):
-		dialogic.Voice.stopAudio()
+		dialogic.Voice.stop_audio()
 
 func get_current_speaker() -> DialogicCharacter:
 	return (load(dialogic.current_state_info['character']) as DialogicCharacter)

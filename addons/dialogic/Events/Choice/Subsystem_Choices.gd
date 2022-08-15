@@ -84,7 +84,7 @@ func show_choice(button_index:int, text:String, enabled:bool, event_index:int) -
 ##					HELPERS
 ####################################################################################################
 func choice_selected(event_index:int) -> void:
-	if not choice_blocker.is_stopped():
+	if Dialogic.paused or not choice_blocker.is_stopped():
 		return
 	hide_all_choices()
 	dialogic.current_state = dialogic.states.IDLE

@@ -6,3 +6,14 @@
 anchor_right = 1.0
 anchor_bottom = 1.0
 script = ExtResource("1")
+
+[node name="PauseIndictator" type="Label" parent="."]
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -65.0
+offset_top = 7.0
+offset_right = -8.0
+offset_bottom = 33.0
+grow_horizontal = 0
+text = "Paused"
+metadata/_edit_layout_mode = 1
