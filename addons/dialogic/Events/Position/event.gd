@@ -13,12 +13,14 @@ var ResetAll: bool = false
 #Requires the Portraits subsystem to be present
 
 func _execute() -> void:
-	if NewPosition:
-		dialogic.Portraits.add_portrait_position(Position, Destination_X, Destination_Y)
-	elif ResetAll: 
-		dialogic.Portraits.reset_portrait_positions()
-	else: 
-		dialogic.Portraits.move_portrait_position(Position, Destination_X, Destination_Y, RelativePosition, MovementTime)
+	# If for some someone sets it to 0, ignore it entirely. 0 position is used for Update to indicate no change.
+	if Position > 0:
+		if NewPosition:
+			dialogic.Portraits.add_portrait_position(Position, Destination_X, Destination_Y)
+		elif ResetAll: 
+			dialogic.Portraits.reset_portrait_positions()
+		else: 
+			dialogic.Portraits.move_portrait_position(Position, Destination_X, Destination_Y, RelativePosition, MovementTime)
 
 
 func get_required_subsystems() -> Array:
