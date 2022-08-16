@@ -230,7 +230,8 @@ func load_from_string_to_store(string:String):
 				PositionMoveTime = shortcode_params.get('move_time', 0.0)
 		#move time is only supported on Update, but it isnt part of the animations so its separate
 		if ActionType == ActionTypes.Update:
-			PositionMoveTime = shortcode_params.get('move_time', 0.0)	
+			if typeof(shortcode_params.get('move_time', 0)) == TYPE_STRING:	
+				PositionMoveTime = shortcode_params.get('move_time', 0.0).to_float()
 		
 		if typeof(shortcode_params.get('z-index', 0)) == TYPE_STRING:	
 			Z_Index = 	shortcode_params.get('z-index', 0).to_int()
