@@ -49,7 +49,7 @@ func build_event_editor():
 ## 						SAVING/LOADING
 ################################################################################
 func get_shortcode() -> String:
-	return "position"
+	return "update_position"
 
 func get_shortcode_parameters() -> Dictionary:
 	return {
