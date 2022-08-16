@@ -59,6 +59,7 @@ func add_portrait(character:DialogicCharacter, portrait:String,  position_idx:in
 	character_node.name = character.name
 	character_node.position = current_positions[position_idx]
 	character_node.z_index = z_index
+	character_node.set_meta("position", position_idx)
 	_portrait_holder_reference.add_child(character_node)
 	#character_node.global_position = _portrait_holder_reference.global_position
 	
@@ -154,15 +155,33 @@ func remove_portrait(character:DialogicCharacter) -> void:
 func add_portrait_position(position_number: int, x:int, y:int) -> void:
 	# Create additional positions either from timeline or at runtime
 	# If it's an existing position, will move that position to the coordinates instead
+	# There's no need to actually remove them once added, but saves will need to track position updates as well, so the whole current_positions array will need to be saved
+	# This will always be an absolute value for new positions, existing positions will be updated as absolute values by this 
+	
 	if position_number in current_positions:
-		pass
+		move_portrait_position(position_number, x, y)
 	else:
 		# Add to both current and default positions
 		_default_positions[position_number] = Vector2(x,y)
 		current_positions[position_number] = Vector2(x,y)
 		
 func reset_portrait_positions() -> void:
-	pass
+	current_positions = _default_positions.duplicate()
+	for child in _portrait_holder_reference.get_children():
+		child.position = current_positions[child.get_meta('position')]
+	
+func move_portrait_position(position_number: int, x:int, y:int, relative:bool = false, time:float = 0.0) -> void:
+	current_positions[position_number] = Vector2(x,y)
+	
+	for child in _portrait_holder_reference.get_children():
+		if child.get_meta('position') == position_number:
+			if time != 0.0:
+				var tween = child.create_tween()
+				tween.tween_property(child, "position", current_positions[position_number], time)
+			else:
+				child.position = current_positions[position_number]
+	
+		
 	
 
 ####################################################################################################
