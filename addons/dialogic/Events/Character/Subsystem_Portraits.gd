@@ -151,6 +151,19 @@ func remove_portrait(character:DialogicCharacter) -> void:
 	dialogic.current_state_info['portraits'][character.resource_path].node.queue_free()
 	dialogic.current_state_info['portraits'].erase(character.resource_path)
 
+func add_portrait_position(position_number: int, x:int, y:int) -> void:
+	# Create additional positions either from timeline or at runtime
+	# If it's an existing position, will move that position to the coordinates instead
+	if position_number in current_positions:
+		pass
+	else:
+		# Add to both current and default positions
+		_default_positions[position_number] = Vector2(x,y)
+		current_positions[position_number] = Vector2(x,y)
+		
+func reset_portrait_positions() -> void:
+	pass
+	
 
 ####################################################################################################
 ##					HELPERS

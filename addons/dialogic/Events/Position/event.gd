@@ -12,6 +12,13 @@ var ResetAll: bool = false
 
 #Requires the Portraits subsystem to be present
 
+func _execute() -> void:
+	if NewPosition:
+		dialogic.Portraits.add_portrait_position(Position, Destination_X, Destination_Y)
+	elif ResetAll: 
+		dialogic.Portraits.reset_portrait_positions()
+
+
 func get_required_subsystems() -> Array:
 	return [
 				{'name':'Portraits',
