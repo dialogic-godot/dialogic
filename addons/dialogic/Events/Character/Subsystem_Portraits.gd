@@ -176,7 +176,10 @@ func reset_portrait_positions() -> void:
 		child.position = current_positions[child.get_meta('position')]
 	
 func move_portrait_position(position_number: int, x:int, y:int, relative:bool = false, time:float = 0.0) -> void:
-	current_positions[position_number] = Vector2(x,y)
+	if !relative:
+		current_positions[position_number] = Vector2(x,y)
+	else:
+		current_positions[position_number] += Vector2(x,y)
 	
 	for child in _portrait_holder_reference.get_children():
 		if child.get_meta('position') == position_number:
