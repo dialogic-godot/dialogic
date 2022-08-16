@@ -25,3 +25,10 @@ func finished_one_loop():
 	elif repeats == 0:
 		emit_signal("finished")
 	
+func pause():
+	print('anim paused')
+	process_mode = Node.PROCESS_MODE_DISABLED
+
+func resume():
+	print('anim unpaused')
+	process_mode = Node.PROCESS_MODE_INHERIT

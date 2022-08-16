@@ -1,8 +1,7 @@
 extends DialogicAnimation
 
 func animate():
-	var tween = (node.get_tree().create_tween() as Tween)
-	tween.bind_node(self)
+	var tween = (node.create_tween() as Tween)
 	node.scale = Vector2(1,1)
 	node.modulate.a = 1
 	

@@ -1,20 +1,39 @@
 extends DialogicSubsystem
 
-const audioplayer_name = "dialogic_dialog_voice"
-
-var voiceregions = []
-
+const audioplayer_name := "dialogic_dialog_voice"
+var voiceregions := []
 var voicetimer:Timer
-
 var currentAudio:String
 
-func isVoiced(index:int) -> bool:
+####################################################################################################
+##					STATE
+####################################################################################################
+func clear_game_state() -> void:
+	pass
+
+func load_game_state() -> void:
+	pass
+
+func pause() -> void:
+	for audio_node in get_tree().get_nodes_in_group(audioplayer_name):
+		audio_node.stream_paused = true
+	voicetimer.paused = true
+
+func resume() -> void:
+	for audio_node in get_tree().get_nodes_in_group(audioplayer_name):
+		audio_node.stream_paused = false
+	voicetimer.paused = false
+
+####################################################################################################
+##					MAIN METHODS
+####################################################################################################
+func is_voiced(index:int) -> bool:
 	if dialogic.current_timeline_events[index] is DialogicTextEvent:
 		if dialogic.current_timeline_events[index-1] is DialogicVoiceEvent:
 			return true
 	return false
 
-func playVoiceRegion(index:int):
+func play_voice_region(index:int):
 	if index >= len(voiceregions):
 		return
 	var start:float = voiceregions[index][0]
@@ -24,9 +43,9 @@ func playVoiceRegion(index:int):
 		if "visible" in audio_node and not audio_node.visible:
 			continue
 		audio_node.play(start)
-	setTimer(stop - start)
-	
-func setFile(path:String):
+	set_timer(stop - start)
+
+func set_file(path:String):
 	if currentAudio == path:
 		return
 	currentAudio = path
@@ -35,46 +54,35 @@ func setFile(path:String):
 	for audio_node in get_tree().get_nodes_in_group(audioplayer_name):
 		audio_node.stream = audio
 	
-func setVolume(value:float):
+func set_volume(value:float):
 	for audio_node in get_tree().get_nodes_in_group(audioplayer_name):
 		audio_node.volume_db = value
 
-func setRegions(value:Array):
+func set_regions(value:Array):
 	voiceregions = value
 
-func setBus(value:String):
+func set_bus(value:String):
 	for audio_node in get_tree().get_nodes_in_group(audioplayer_name):
 		audio_node.bus = value
 
-func stopAudio():
+func stop_audio():
 	for audio_node in get_tree().get_nodes_in_group(audioplayer_name):
 		audio_node.stop()
 
-func setTimer(time:float):
+func set_timer(time:float):
 	if !voicetimer:
 		voicetimer = Timer.new()
 		voicetimer.one_shot = true
 		add_child(voicetimer)
-		voicetimer.timeout.connect(stopAudio)
+		voicetimer.timeout.connect(stop_audio)
 	voicetimer.stop()
 	voicetimer.start(time)
 
-func getRemainingTime() -> float:
+func get_remaining_time() -> float:
 	if not voicetimer or voicetimer.is_stopped():
 		return 0.0 #contingency
 	return voicetimer.time_left
 
-func isRunning() -> bool:
-	return getRemainingTime() > 0.0
-	
-# To be overriden by sub-classes
-# Fill in everything that should be cleared (for example before loading a different state)
-func clear_game_state():
-	pass
+func is_running() -> bool:
+	return get_remaining_time() > 0.0
 
-# To be overriden by sub-classes
-# Fill in everything that should be loaded using the dialogic_game_handler.current_state_info
-# This is called when a save is loaded
-func load_game_state():
-	pass
-	

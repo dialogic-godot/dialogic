@@ -9,6 +9,8 @@ class_name DialogicInputHandler
 # This shouldn't be handled by this script I think, but for testing purposes this works.
 func _input(event:InputEvent) -> void:
 	if Input.is_action_just_pressed(DialogicUtil.get_project_setting('dialogic/text/input_action', 'dialogic_default_action')):
+		if Dialogic.paused: return
+		
 		if Dialogic.current_state == Dialogic.states.IDLE:
 			Dialogic.handle_next_event()
 		

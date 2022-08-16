@@ -22,6 +22,16 @@ func load_game_state():
 			dialogic.current_state_info['portraits'][character_path].portrait, dialogic.current_state_info['portraits'][character_path].position_index,
 			false)
 
+func pause() -> void:
+	for portrait in dialogic.current_state_info['portraits'].values():
+		if portrait.has('animation_node'):
+			portrait.animation_node.pause()
+
+func resume() -> void:
+	for portrait in dialogic.current_state_info['portraits'].values():
+		if portrait.has('animation_node'):
+			portrait.animation_node.resume()
+
 func _ready():
 	default_portrait_scene = load("res://addons/dialogic/Other/DefaultPortrait.tscn")
 
