@@ -52,7 +52,7 @@ func change_portrait(passed_character:DialogicCharacter, passed_portrait:String)
 		$Portrait.position = Vector2(character.portraits[portrait]['offset']['x'] * $Portrait.scale.x, 
 				character.portraits[portrait]['offset']['y'] * $Portrait.scale.y)
 
-	if character.portraits[portrait].mirror:
+	if character.portraits[portrait].get('mirror', false):
 			$Portrait.flip_h = true
 
 	# Set the portrait dimensions that are reported back to Dialogic. Scale is included in the math here
@@ -65,12 +65,12 @@ func does_portrait_mirror() -> bool:
 	
 func mirror_portrait(mirror:bool) -> void:
 	if mirror:
-		if character.portraits[portrait].mirror:
+		if character.portraits[portrait].get('mirror', false):
 			$Portrait.flip_h = false
 		else:
 			$Portrait.flip_h = true
 	else:
-		if character.portraits[portrait].mirror:
+		if character.portraits[portrait].get('mirror', false):
 			$Portrait.flip_h = true
 		else:
 			$Portrait.flip_h = false
