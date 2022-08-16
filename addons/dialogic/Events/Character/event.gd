@@ -23,7 +23,7 @@ func _execute() -> void:
 		ActionTypes.Join:
 			
 			if Character:
-				var n = dialogic.Portraits.add_portrait(Character, Portrait, Position, Mirrored)
+				var n = dialogic.Portraits.add_portrait(Character, Portrait, Position, Mirrored, Z_Index)
 				
 				if AnimationName.is_empty():
 					AnimationName = DialogicUtil.get_project_setting('dialogic/animations/join_default', 
@@ -84,9 +84,9 @@ get_script().resource_path.get_base_dir().plus_file('DefaultAnimations/fade_out_
 		ActionTypes.Update:
 			if Character:
 				if dialogic.Portraits.is_character_joined(Character):
-					dialogic.Portraits.change_portrait(Character, Portrait, Mirrored)
+					dialogic.Portraits.change_portrait(Character, Portrait, Mirrored, Z_Index)
 					if Position != 0:
-						dialogic.Portraits.move_portrait(Character, Position)
+						dialogic.Portraits.move_portrait(Character, Position, Z_Index)
 					
 					if AnimationName:
 						var anim = dialogic.Portraits.animate_portrait(Character, AnimationName, AnimationLength, AnimationRepeats)
@@ -219,8 +219,9 @@ func load_from_string_to_store(string:String):
 		#repeat is only supported on Update, the other two should not be checking this
 			if ActionType == ActionTypes.Update:
 				AnimationRepeats = shortcode_params.get('repeat', 1).to_int()
-				
-		Z_Index = 	shortcode_params.get('z-index', 1)
+		
+		if typeof(shortcode_params.get('z-index', 0)) == TYPE_STRING:	
+			Z_Index = 	shortcode_params.get('z-index', 0).to_int()
 		Mirrored = DialogicUtil.str_to_bool(shortcode_params.get('mirrored', 'false'))
 # RETURN TRUE IF THE GIVEN LINE SHOULD BE LOADED AS THIS EVENT
 func is_valid_event_string(string:String):
