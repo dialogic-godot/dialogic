@@ -14,6 +14,7 @@ var AnimationName:String = ""
 var AnimationLength: float = 0.5
 var AnimationRepeats: int = 1
 var AnimationWait: bool = false
+var PositionMoveTime: float = 0.0
 var Z_Index: int = 0
 var Mirrored: bool = false
 var _leave_all:bool = false
@@ -86,7 +87,7 @@ get_script().resource_path.get_base_dir().plus_file('DefaultAnimations/fade_out_
 				if dialogic.Portraits.is_character_joined(Character):
 					dialogic.Portraits.change_portrait(Character, Portrait, Mirrored, Z_Index)
 					if Position != 0:
-						dialogic.Portraits.move_portrait(Character, Position, Z_Index)
+						dialogic.Portraits.move_portrait(Character, Position, Z_Index, PositionMoveTime)
 					
 					if AnimationName:
 						var anim = dialogic.Portraits.animate_portrait(Character, AnimationName, AnimationLength, AnimationRepeats)
@@ -144,7 +145,7 @@ func get_as_string_to_store() -> String:
 	
 	if Position and ActionType != ActionTypes.Leave:
 		result_string += " "+str(Position)
-	if AnimationName != "" || Z_Index != 0 || Mirrored != false:
+	if AnimationName != "" || Z_Index != 0 || Mirrored != false || PositionMoveTime != 0.0:
 		result_string += " ["
 		if AnimationName:
 			result_string += 'animation="'+DialogicUtil.pretty_name(AnimationName)+'"'
@@ -162,6 +163,9 @@ func get_as_string_to_store() -> String:
 			
 		if Mirrored:
 			result_string += ' mirrored="' + str(Mirrored) + '"'
+		
+		if PositionMoveTime != 0:
+			result_string += ' move_time="' + str(PositionMoveTime) + '"'
 			
 		result_string += "]"
 	return result_string
@@ -216,9 +220,11 @@ func load_from_string_to_store(string:String):
 		#	AnimationLength = AnimationLength.to_float()
 			AnimationWait = DialogicUtil.str_to_bool(shortcode_params.get('wait', 'false'))
 		
-		#repeat is only supported on Update, the other two should not be checking this
+		#repeat and movement time are only supported on Update, the other two should not be checking this
 			if ActionType == ActionTypes.Update:
 				AnimationRepeats = shortcode_params.get('repeat', 1).to_int()
+				PositionMoveTime = shortcode_params.get('move_time', 0.0)
+				
 		
 		if typeof(shortcode_params.get('z-index', 0)) == TYPE_STRING:	
 			Z_Index = 	shortcode_params.get('z-index', 0).to_int()
@@ -250,6 +256,7 @@ func build_event_editor():
 	add_body_edit('AnimationRepeats', ValueType.Integer, 'Repeat:', '', {},'Character and !AnimationName.is_empty() and ActionType == %s)' %ActionTypes.Update)
 	add_body_edit('Z_Index', ValueType.Integer, 'Portrait z-index:', "",{},'ActionType != %s' %ActionTypes.Leave)
 	add_body_edit('Mirrored', ValueType.Bool, 'Mirrored:', "",{},'ActionType != %s' %ActionTypes.Leave)
+	add_body_edit('PositionMoveTime', ValueType.Float, 'Transiton time to change position:', '', {}, 'ActionType == %s' %ActionTypes.Update)
 	add_body_edit('_leave_all', ValueType.Bool, 'Leave All:', "",{},'ActionType == %s' %ActionTypes.Leave)
 
 func has_no_portraits() -> bool:

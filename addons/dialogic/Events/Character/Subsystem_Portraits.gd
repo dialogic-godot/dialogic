@@ -132,7 +132,7 @@ func animate_portrait(character:DialogicCharacter, animation_path:String, length
 	dialogic.current_state_info['portraits'][character.resource_path]['animation_node'] = anim_node
 	return anim_node
 
-func move_portrait(character:DialogicCharacter, position_idx:int, z_index:int = 0, tween:bool= false, time:float = 1.0):
+func move_portrait(character:DialogicCharacter, position_idx:int, z_index:int = 0, time:float = 0.0):
 	if not character or not is_character_joined(character):
 		assert(false, "[Dialogic] Cannot move portrait of null/not joined character.")
 	
@@ -140,10 +140,15 @@ func move_portrait(character:DialogicCharacter, position_idx:int, z_index:int = 
 	
 	char_node.z_index = z_index
 	
-	for node in get_tree().get_nodes_in_group('dialogic_portrait_position'):
-		if node.position_index == position_idx:
-			if not tween:
-				char_node.global_position = node.global_position
+	char_node.set_meta('position', position_idx)
+
+	if time == 0.0:
+		char_node.position = current_positions[position_idx]
+	else:
+		var tween = char_node.create_tween()
+		tween.tween_property(char_node, "position", current_positions[position_idx], time)
+
+				
 	
 	dialogic.current_state_info.portraits[character.resource_path].position_index = position_idx
 
