@@ -18,6 +18,7 @@ var PositionMoveTime: float = 0.0
 var Z_Index: int = 0
 var Mirrored: bool = false
 var _leave_all:bool = false
+var _update_zindex: bool = false
 
 func _execute() -> void:
 	match ActionType:
@@ -85,9 +86,9 @@ get_script().resource_path.get_base_dir().plus_file('DefaultAnimations/fade_out_
 		ActionTypes.Update:
 			if Character:
 				if dialogic.Portraits.is_character_joined(Character):
-					dialogic.Portraits.change_portrait(Character, Portrait, Mirrored, Z_Index)
+					dialogic.Portraits.change_portrait(Character, Portrait, Mirrored, Z_Index, _update_zindex)
 					if Position != 0:
-						dialogic.Portraits.move_portrait(Character, Position, Z_Index, PositionMoveTime)
+						dialogic.Portraits.move_portrait(Character, Position, Z_Index, _update_zindex, PositionMoveTime)
 					
 					if AnimationName:
 						var anim = dialogic.Portraits.animate_portrait(Character, AnimationName, AnimationLength, AnimationRepeats)
@@ -199,6 +200,9 @@ func load_from_string_to_store(string:String):
 
 	if result.get_string('position'):
 		Position = result.get_string('position').to_int()
+	elif ActionType == ActionTypes.Update:
+		# Override the normal default if it's an Update
+		Position = 0 
 	
 	if result.get_string('shortcode'):
 		var shortcode_params = parse_shortcode_parameters(result.get_string('shortcode'))
@@ -220,14 +224,17 @@ func load_from_string_to_store(string:String):
 		#	AnimationLength = AnimationLength.to_float()
 			AnimationWait = DialogicUtil.str_to_bool(shortcode_params.get('wait', 'false'))
 		
-		#repeat and movement time are only supported on Update, the other two should not be checking this
+		#repeat is supported on Update, the other two should not be checking this
 			if ActionType == ActionTypes.Update:
 				AnimationRepeats = shortcode_params.get('repeat', 1).to_int()
 				PositionMoveTime = shortcode_params.get('move_time', 0.0)
-				
+		#move time is only supported on Update, but it isnt part of the animations so its separate
+		if ActionType == ActionTypes.Update:
+			PositionMoveTime = shortcode_params.get('move_time', 0.0)	
 		
 		if typeof(shortcode_params.get('z-index', 0)) == TYPE_STRING:	
 			Z_Index = 	shortcode_params.get('z-index', 0).to_int()
+			_update_zindex = true 
 		Mirrored = DialogicUtil.str_to_bool(shortcode_params.get('mirrored', 'false'))
 # RETURN TRUE IF THE GIVEN LINE SHOULD BE LOADED AS THIS EVENT
 func is_valid_event_string(string:String):

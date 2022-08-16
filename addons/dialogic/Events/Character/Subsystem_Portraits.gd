@@ -70,7 +70,7 @@ func add_portrait(character:DialogicCharacter, portrait:String,  position_idx:in
 	
 	return character_node
 
-func change_portrait(character:DialogicCharacter, portrait:String, mirrored:bool = false, z_index: int = 0) -> void:
+func change_portrait(character:DialogicCharacter, portrait:String, mirrored:bool = false, z_index: int = 0, update_zindex:bool = false) -> void:
 	if not character or not is_character_joined(character):
 		assert(false, "[Dialogic] Cannot change portrait of null/not joined character.")
 	
@@ -79,7 +79,8 @@ func change_portrait(character:DialogicCharacter, portrait:String, mirrored:bool
 	
 	var char_node :Node = dialogic.current_state_info.portraits[character.resource_path].node
 	
-	char_node.z_index = z_index
+	if update_zindex:
+		char_node.z_index = z_index
 	
 	if char_node.get_child_count() and 'does_custom_portrait_change' in char_node.get_child(0) and char_node.get_child(0).does_portrait_change():
 		char_node.get_child(0).change_portrait(character, portrait)
@@ -132,13 +133,14 @@ func animate_portrait(character:DialogicCharacter, animation_path:String, length
 	dialogic.current_state_info['portraits'][character.resource_path]['animation_node'] = anim_node
 	return anim_node
 
-func move_portrait(character:DialogicCharacter, position_idx:int, z_index:int = 0, time:float = 0.0):
+func move_portrait(character:DialogicCharacter, position_idx:int, z_index:int = 0, update_zindex:bool = false,  time:float = 0.0):
 	if not character or not is_character_joined(character):
 		assert(false, "[Dialogic] Cannot move portrait of null/not joined character.")
 	
 	var char_node = dialogic.current_state_info.portraits[character.resource_path].node
 	
-	char_node.z_index = z_index
+	if update_zindex:
+		char_node.z_index = z_index
 	
 	char_node.set_meta('position', position_idx)
 

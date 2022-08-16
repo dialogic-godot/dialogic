@@ -21,6 +21,8 @@ func _execute() -> void:
 			dialogic.Portraits.reset_portrait_positions()
 		else: 
 			dialogic.Portraits.move_portrait_position(Position, Destination_X, Destination_Y, RelativePosition, MovementTime)
+			
+	finish()
 
 
 func get_required_subsystems() -> Array:
