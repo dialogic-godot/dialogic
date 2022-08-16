@@ -209,6 +209,9 @@ func build_editor():
 		elif p.dialogic_type == resource.ValueType.Integer:
 			editor_node = load("res://addons/dialogic/Editor/Events/Fields/Number.tscn").instantiate()
 			editor_node.use_int_mode()
+		elif p.dialogic_type == resource.ValueType.ScreenValue:
+			editor_node = load("res://addons/dialogic/Editor/Events/Fields/Number.tscn").instantiate()
+			editor_node.use_screen_value_mode()
 		elif p.dialogic_type == resource.ValueType.Float:
 			editor_node = load("res://addons/dialogic/Editor/Events/Fields/Number.tscn").instantiate()
 			editor_node.use_float_mode()
