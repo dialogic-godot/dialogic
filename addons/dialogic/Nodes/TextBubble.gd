@@ -35,7 +35,6 @@ func update_name(name: String, color: Color = Color.white, autocolor: bool=false
 		return
 	
 	if not name.empty():
-		name_label.visible = true
 		# Hack to reset the size
 		name_label.rect_min_size = Vector2(0, 0)
 		name_label.rect_size = Vector2(-1, 40)
@@ -45,6 +44,8 @@ func update_name(name: String, color: Color = Color.white, autocolor: bool=false
 		call_deferred('align_name_label')
 		if autocolor:
 			name_label.set('custom_colors/font_color', color)
+		
+		name_label.visible = true
 	else:
 		name_label.visible = false
 
