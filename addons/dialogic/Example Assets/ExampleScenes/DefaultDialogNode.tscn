@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=3 uid="uid://bx0fhxkbryo8w"]
+[gd_scene load_steps=28 format=3 uid="uid://bx0fhxkbryo8w"]
 
 [ext_resource type="Script" path="res://addons/dialogic/Example Assets/ExampleScenes/DefaultDialogNode.gd" id="1"]
 [ext_resource type="Script" path="res://addons/dialogic/Events/Text/Display_DialogText.gd" id="2"]
@@ -18,8 +18,10 @@
 [ext_resource type="AudioStream" uid="uid://dhwhlv7tdr0cb" path="res://addons/dialogic/Example Assets/Keyboard Noises/typing2.wav" id="16"]
 [ext_resource type="Script" path="res://addons/dialogic/Events/Text/Display_InputHandler.gd" id="17"]
 [ext_resource type="Script" path="res://addons/dialogic/Events/Choice/SoundButton.gd" id="18"]
+[ext_resource type="Script" path="res://addons/dialogic/Events/Text/Display_NextIndicator.gd" id="20_ljcq2"]
 [ext_resource type="Script" path="res://addons/dialogic/Example Assets/ExampleScenes/ExampleGlossaryPopup.gd" id="20_vmnp2"]
 [ext_resource type="Script" path="res://addons/dialogic/Events/Voice/dialogic_dialog_voice.gd" id="20_x1o37"]
+[ext_resource type="Texture2D" uid="uid://d3g6vvn16a6gn" path="res://addons/dialogic/Example Assets/next-indicator/next-indicator.png" id="21_rp1u3"]
 [ext_resource type="Script" path="res://addons/dialogic/Example Assets/ExampleScenes/HideWithChild.gd" id="23"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dpede"]
@@ -238,6 +240,27 @@ script = ExtResource("2")
 script = ExtResource("10")
 sounds = [ExtResource("14"), ExtResource("16"), ExtResource("15"), ExtResource("11"), ExtResource("13")]
 play_every_character = 0
+
+[node name="DialogicDisplay_NextIndicator" type="Control" parent="DefaultTheme/PanelContainer/DialogicDisplay_DialogText"]
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -25.0
+offset_top = -25.0
+grow_horizontal = 0
+grow_vertical = 0
+script = ExtResource("20_ljcq2")
+show_on_questions = true
+metadata/_edit_layout_mode = 1
+
+[node name="Icon" type="TextureRect" parent="DefaultTheme/PanelContainer/DialogicDisplay_DialogText/DialogicDisplay_NextIndicator"]
+offset_top = -2.0
+offset_right = 23.0
+offset_bottom = 21.0
+texture = ExtResource("21_rp1u3")
+ignore_texture_size = true
+stretch_mode = 5
 
 [node name="Glossary" type="Control" parent="DefaultTheme"]
 script = ExtResource("20_vmnp2")

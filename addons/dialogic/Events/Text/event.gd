@@ -49,17 +49,15 @@ func _execute() -> void:
 		if dialogic.has_subsystem('Voice') and dialogic.Voice.is_voiced(dialogic.current_event_idx):
 			dialogic.Voice.play_voice_region(index) #voice data is set by voice event.
 		
-		# Wait for text to finish revealing
-		while true:
-			await dialogic.state_changed
-			if dialogic.current_state == dialogic.states.IDLE:
-				break
-	#end of dialog
+		await dialogic.Text.text_finished
 	
+	#end of dialog
 	if dialogic.has_subsystem('Choices') and dialogic.Choices.is_question(dialogic.current_event_idx):
+		dialogic.Text.show_next_indicators(true)
 		dialogic.Choices.show_current_choices()
 		dialogic.current_state = dialogic.states.AWAITING_CHOICE
 	elif DialogicUtil.get_project_setting('dialogic/text/autocontinue', false):
+		dialogic.Text.show_next_indicators(false, true)
 		var wait:float = DialogicUtil.get_project_setting('dialogic/text/autocontinue_delay', 1)
 		# if voiced, grab remaining time left on the voiceed line's audio region - KvaGram
 		if dialogic.has_subsystem('Voice') and dialogic.Voice.is_Voiced(dialogic.current_event_idx):
@@ -68,6 +66,7 @@ func _execute() -> void:
 		await dialogic.get_tree().create_timer(wait).timeout
 		dialogic.handle_next_event()
 	else:
+		dialogic.Text.show_next_indicators()
 		finish()
 
 func get_required_subsystems() -> Array:
