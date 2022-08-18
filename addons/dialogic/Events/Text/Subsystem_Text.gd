@@ -46,10 +46,8 @@ func update_dialog_text(text:String) -> void:
 			text_node.reveal_text(text)
 			if !text_node.finished_revealing_text.is_connected(_on_dialog_text_finished):
 				text_node.finished_revealing_text.connect(_on_dialog_text_finished)
-				print("connect")
 
 func _on_dialog_text_finished():
-	print('hi')
 	text_finished.emit()
 
 func update_name_label(character:DialogicCharacter) -> void:
@@ -79,7 +77,6 @@ func show_text_boxes() -> void:
 		text_node.get_parent().visible = true
 
 func show_next_indicators(question=false, autocontinue=false) -> void:
-	print('show indicators', question, autocontinue)
 	for next_indicator in get_tree().get_nodes_in_group('dialogic_next_indicator'):
 		if (question and 'show_on_questions' in next_indicator and next_indicator.show_on_questions) or \
 			(autocontinue and 'show_on_autocontinue' in next_indicator and next_indicator.show_on_autocontinue) or (!question and !autocontinue):
