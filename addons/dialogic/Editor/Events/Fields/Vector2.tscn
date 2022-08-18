@@ -18,6 +18,10 @@ offset_bottom = 31.0
 offset_left = 5.0
 offset_right = 111.0
 offset_bottom = 40.0
+min_value = -9999.0
+max_value = 9999.0
+allow_greater = true
+allow_lesser = true
 alignment = 3
 prefix = "x"
 
@@ -25,6 +29,10 @@ prefix = "x"
 offset_left = 115.0
 offset_right = 221.0
 offset_bottom = 40.0
+min_value = -9999.0
+max_value = 9999.0
+allow_greater = true
+allow_lesser = true
 alignment = 3
 prefix = "y"
 
