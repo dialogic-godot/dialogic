@@ -24,16 +24,14 @@ func _ready():
 	$MenuButton.get_popup().index_pressed.connect(index_pressed)
 	set_left_text('')
 	set_right_text('')
-	# TODOT godot4 figure this out (popup background panel style) 
-	# $MenuButton.get_popup().add_theme_stylebox_override('panel', load("res://addons/dialogic/Editor/Events/styles/ResourceMenuPanelBackground.tres"))
 
-func set_right_text(value):
+func set_right_text(value:String):
 	$RightText.text = str(value)
-	$RightText.visible = value.is_empty()
+	$RightText.visible = !value.is_empty()
 
-func set_left_text(value):
+func set_left_text(value:String):
 	$LeftText.text = str(value)
-	$LeftText.visible = value.is_empty()
+	$LeftText.visible = !value.is_empty()
 
 func set_value(value):
 	for element in options:

@@ -62,8 +62,6 @@ func add_portrait(character:DialogicCharacter, portrait:String,  position_idx:in
 			
 	if current_positions.size() == 0:
 		current_positions = _default_positions.duplicate()
-	
-	
 
 	character_node = Node2D.new()
 	character_node.name = character.name
@@ -76,7 +74,7 @@ func add_portrait(character:DialogicCharacter, portrait:String,  position_idx:in
 	if character_node:
 		dialogic.current_state_info['portraits'][character.resource_path] = {'portrait':portrait, 'node':character_node, 'position_index':position_idx}
 	if portrait:
-		change_portrait(character, portrait,mirrored, z_index)
+		change_portrait(character, portrait, mirrored, z_index)
 	
 	return character_node
 
@@ -169,29 +167,37 @@ func remove_portrait(character:DialogicCharacter) -> void:
 	dialogic.current_state_info['portraits'][character.resource_path].node.queue_free()
 	dialogic.current_state_info['portraits'].erase(character.resource_path)
 
-func add_portrait_position(position_number: int, x:int, y:int) -> void:
+func add_portrait_position(position_number: int, position:Vector2) -> void:
 	# Create additional positions either from timeline or at runtime
 	# If it's an existing position, will move that position to the coordinates instead
 	# There's no need to actually remove them once added, but saves will need to track position updates as well, so the whole current_positions array will need to be saved
 	# This will always be an absolute value for new positions, existing positions will be updated as absolute values by this 
 	
 	if position_number in current_positions:
-		move_portrait_position(position_number, x, y)
+		move_portrait_position(position_number, position)
 	else:
 		# Add to both current and default positions
-		_default_positions[position_number] = Vector2(x,y)
-		current_positions[position_number] = Vector2(x,y)
-		
-func reset_portrait_positions() -> void:
-	current_positions = _default_positions.duplicate()
-	for child in _portrait_holder_reference.get_children():
-		child.position = current_positions[child.get_meta('position')]
+		_default_positions[position_number] = position
+		current_positions[position_number] = position
+
+func reset_portrait_positions(time:float = 0.0) -> void:
+	for position in current_positions:
+		move_portrait_position(position, _default_positions[position], false, time)
+
+func reset_portrait_position(position:int, time:float = 0.0) -> void:
+	move_portrait_position(position, _default_positions[position], false, time)
+
+
+func move_portrait_position(position_number: int, vector:Vector2, relative:bool = false, time:float = 0.0) -> void:
+	if !position_number in current_positions:
+		if !relative:
+			add_portrait_position(position_number, vector)
+		else: assert(false, '[Dialogic] Cannot move non-existent position. (Use SetAbsolute to create new position.)')
 	
-func move_portrait_position(position_number: int, x:int, y:int, relative:bool = false, time:float = 0.0) -> void:
 	if !relative:
-		current_positions[position_number] = Vector2(x,y)
+		current_positions[position_number] = vector
 	else:
-		current_positions[position_number] += Vector2(x,y)
+		current_positions[position_number] += vector
 	
 	for child in _portrait_holder_reference.get_children():
 		if child.get_meta('position') == position_number:
@@ -200,9 +206,7 @@ func move_portrait_position(position_number: int, x:int, y:int, relative:bool = 
 				tween.tween_property(child, "position", current_positions[position_number], time)
 			else:
 				child.position = current_positions[position_number]
-	
-		
-	
+
 
 ####################################################################################################
 ##					HELPERS

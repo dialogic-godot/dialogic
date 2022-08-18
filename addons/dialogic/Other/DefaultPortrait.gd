@@ -44,7 +44,7 @@ func change_portrait(passed_character:DialogicCharacter, passed_portrait:String)
 	if 'scale' in character.portraits[portrait]:
 		$Portrait.scale = Vector2(1,1) * character.portraits[portrait].get('scale', 1) * scale
 	else:
-		$Portrait.scale = scale
+		$Portrait.scale = Vector2(1,1) * scale
 	
 	# Offset is for re-orienting the picutre at 1x scale, and so position in the scene needs to include the scale in the offset
 	if 'offset' in character.portraits[portrait]:

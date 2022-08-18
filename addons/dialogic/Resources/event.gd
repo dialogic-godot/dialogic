@@ -62,7 +62,7 @@ enum ValueType {
 	# INTEGERS
 	FixedOptionSelector,
 	Integer,
-	ScreenValue,
+	Vector2,
 
 	Float,
 	Decibel,

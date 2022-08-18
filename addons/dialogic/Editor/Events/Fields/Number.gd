@@ -38,12 +38,6 @@ func use_float_mode():
 func use_int_mode():
 	$Value.step = 1
 	$Value.suffix = ""
-	
-func use_screen_value_mode():
-	$Value.step = 1
-	$Value.suffix = ""
-	$Value.min_value = -4096
-	$Value.max_value = 4096
 
 func use_decibel_mode():
 	$Value.max_value = 6

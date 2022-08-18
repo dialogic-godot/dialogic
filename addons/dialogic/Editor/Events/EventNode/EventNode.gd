@@ -209,9 +209,6 @@ func build_editor():
 		elif p.dialogic_type == resource.ValueType.Integer:
 			editor_node = load("res://addons/dialogic/Editor/Events/Fields/Number.tscn").instantiate()
 			editor_node.use_int_mode()
-		elif p.dialogic_type == resource.ValueType.ScreenValue:
-			editor_node = load("res://addons/dialogic/Editor/Events/Fields/Number.tscn").instantiate()
-			editor_node.use_screen_value_mode()
 		elif p.dialogic_type == resource.ValueType.Float:
 			editor_node = load("res://addons/dialogic/Editor/Events/Fields/Number.tscn").instantiate()
 			editor_node.use_float_mode()
@@ -224,6 +221,9 @@ func build_editor():
 				editor_node.options = p.display_info.selector_options
 			if p.display_info.has('disabled'):
 				editor_node.disabled = p.display_info.disabled
+		
+		elif p.dialogic_type == resource.ValueType.Vector2:
+			editor_node = load("res://addons/dialogic/Editor/Events/Fields/Vector2.tscn").instantiate()
 		
 		elif p.dialogic_type == resource.ValueType.StringArray:
 			editor_node = load("res://addons/dialogic/Editor/Events/Fields/Array.tscn").instantiate()

@@ -2,26 +2,31 @@
 extends DialogicEvent
 class_name DialogicPositionEvent
 
+enum ActionTypes {SetRelative, SetAbsolute, Reset, ResetAll}
+
+var ActionType := ActionTypes.SetRelative
 var Position: int = 1
-var Destination_X: int = 0
-var Destination_Y: int = 0
-var RelativePosition: bool = false
+var Vector: Vector2 = Vector2()
 var MovementTime: float = 0
-var NewPosition: bool = false
-var ResetAll: bool = false
 
 #Requires the Portraits subsystem to be present
 
 func _execute() -> void:
 	# If for some someone sets it to 0, ignore it entirely. 0 position is used for Update to indicate no change.
-	if Position > 0:
-		if NewPosition:
-			dialogic.Portraits.add_portrait_position(Position, Destination_X, Destination_Y)
-		elif ResetAll: 
-			dialogic.Portraits.reset_portrait_positions()
-		else: 
-			dialogic.Portraits.move_portrait_position(Position, Destination_X, Destination_Y, RelativePosition, MovementTime)
-			
+	if ActionType != ActionTypes.ResetAll and Position == 0:
+		finish()
+		return
+	
+	match ActionType:
+		ActionTypes.SetRelative:
+			dialogic.Portraits.move_portrait_position(Position, Vector, true, MovementTime)
+		ActionTypes.SetAbsolute:
+			dialogic.Portraits.move_portrait_position(Position, Vector, false, MovementTime)
+		ActionTypes.ResetAll:
+			dialogic.Portraits.reset_portrait_positions(MovementTime)
+		ActionTypes.Reset:
+			dialogic.Portraits.reset_portrait_position(Position, MovementTime)
+	
 	finish()
 
 
@@ -38,16 +43,15 @@ func _init() -> void:
 	event_category = Category.MAIN
 	event_sorting_index = 2
 	continue_at_end = true
-	expand_by_default = true
+	expand_by_default = false
 	
 func build_event_editor():
-	add_header_edit("Position", ValueType.Integer, "Position to move:")
-	add_header_edit("Destination_X", ValueType.ScreenValue, "X: ")
-	add_header_edit("Destination_Y", ValueType.ScreenValue, "Y: ")
-	add_header_edit("RelativePosition", ValueType.Bool, "New position is relative?")
-	add_body_edit("MovementTime", ValueType.Float, "Time for movement: ")
-	add_body_edit("NewPosition", ValueType.Bool, "Is this a new position?")
-	add_body_edit("ResetAll", ValueType.Bool, "Reset all positions?")
+	add_header_edit('ActionType', ValueType.FixedOptionSelector, '', '', {'selector_options':{"Change":ActionTypes.SetRelative, "Set":ActionTypes.SetAbsolute, "Reset":ActionTypes.Reset, "Reset All":ActionTypes.ResetAll}})
+	add_header_edit("Position", ValueType.Integer, "Position:", '', {}, 'ActionType != ActionTypes.ResetAll')
+	add_header_label('to (absolute)', 'ActionType == ActionTypes.SetAbsolute')
+	add_header_label('by (relative)', 'ActionType == ActionTypes.SetRelative')
+	add_header_edit("Vector", ValueType.Vector2, "", '', {}, 'ActionType != ActionTypes.Reset and ActionType != ActionTypes.ResetAll')
+	add_body_edit("MovementTime", ValueType.Float, "Time:")
 
 ################################################################################
 ## 						SAVING/LOADING
@@ -57,12 +61,9 @@ func get_shortcode() -> String:
 
 func get_shortcode_parameters() -> Dictionary:
 	return {
-		#param_name : property_name
-		"number"		: "Position",
-		"x"				: "Destination_X",
-		"y"				: "Destination_Y",
-		"new"			: "NewPosition",
-		"relative"		: "RelativePosition",
+		#param_name 	: property_name
+		"mode"			: "ActionType",
+		"position"		: "Position",
+		"vector"		: "Vector",
 		"time"			: "MovementTime",
-		"reset"			: "ResetAll"
 	}
