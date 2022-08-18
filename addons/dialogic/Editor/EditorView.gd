@@ -114,9 +114,6 @@ func _load_timeline(object) -> void:
 	_last_timeline_opened = object
 	_get_timeline_editor().load_timeline(object)
 
-func _save_timeline() -> void:
-	_get_timeline_editor().save_timeline()
-
 
 func show_timeline_editor() -> void:
 	if DialogicUtil.get_project_setting('dialogic/editor_mode', 'visual') == 'visual':
@@ -147,6 +144,7 @@ func _get_timeline_editor() -> Node:
 
 func _on_toggle_editor_view(mode:String) -> void:
 	%CharacterEditor.visible = false
+	
 	if mode == 'visual':
 		%TextEditor.save_timeline()
 		%TextEditor.hide()

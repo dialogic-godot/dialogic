@@ -12,28 +12,21 @@ func clear_timeline():
 	text = ''
 
 
-func load_timeline(object) -> void:
+func load_timeline(object:DialogicTimeline) -> void:
 	clear_timeline()
 	current_timeline = object
 	get_parent().get_node('Toolbar').load_timeline(current_timeline.resource_path)
-	var file = File.new()
-	file.open(current_timeline.resource_path, File.READ)
-	text = file.get_as_text()
-	file.close()
+	
+	text = TimelineUtil.events_to_text(object._events)
 
 
 func save_timeline():
+	if !visible:
+		return
+	
 	if current_timeline:
-		var file = File.new()
-		file.open(current_timeline.resource_path, File.WRITE)
-		file.store_string(text)
-		file.close()
-		
-		# Since i'm not using the resource saver to save the timelines from text
-		# I need to re-import the resource with the new data.
-		DialogicUtil.get_dialogic_plugin().editor_interface.get_resource_filesystem().reimport_files([
-			current_timeline.resource_path
-		])
+		current_timeline._events = TimelineUtil.text_to_events(text)
+		ResourceSaver.save(current_timeline)
 
 
 func add_highlighting():
