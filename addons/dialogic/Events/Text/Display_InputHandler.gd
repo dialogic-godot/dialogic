@@ -13,6 +13,7 @@ func _input(event:InputEvent) -> void:
 		
 		if Dialogic.current_state == Dialogic.states.IDLE:
 			Dialogic.handle_next_event()
+			
 		
 		elif Dialogic.current_state == Dialogic.states.SHOWING_TEXT:
 			if DialogicUtil.get_project_setting('dialogic/text/skippable', true):
