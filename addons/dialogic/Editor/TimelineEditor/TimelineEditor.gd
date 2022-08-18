@@ -74,8 +74,9 @@ func create_and_save_new_timeline(path):
 
 
 func save_timeline() -> void:
-	if ! visible:
+	if !visible:
 		return
+
 	var new_events = []
 	
 	for event in %Timeline.get_children():
