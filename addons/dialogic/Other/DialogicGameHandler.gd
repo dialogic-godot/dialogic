@@ -208,6 +208,10 @@ func get_full_state() -> Dictionary:
 	else:
 		current_state_info['current_event_idx'] = -1
 		current_state_info['current_timeline'] = null
+	if has_subsystem('Portraits'):
+		current_state_info['current_portrait_positions'] = self.Portraits.current_positions
+		current_state_info['default_portrait_positions'] = self.Portraits._default_positions
+	
 	return current_state_info
 
 
@@ -218,6 +222,10 @@ func load_full_state(state_info:Dictionary) -> void:
 	print(state_info)
 	if current_state_info.get('current_timeline', null):
 		start_timeline(current_state_info.current_timeline, current_state_info.get('current_event_idx', 0))
+	if has_subsystem('Portraits'):
+		if current_state_info.get('current_portrait_positions', null):
+			self.Portraits.current_positions = current_state_info['current_portrait_positions']
+			self.Portraits._default_positions = current_state_info['default_portrait_positions']
 	for subsystem in get_children():
 		subsystem.load_game_state()
 

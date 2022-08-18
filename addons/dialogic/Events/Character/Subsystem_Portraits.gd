@@ -1,6 +1,10 @@
 extends DialogicSubsystem
 
 var default_portrait_scene
+var _default_positions: Dictionary = {}
+var current_positions: Dictionary = {}
+
+var _portrait_holder_reference: Node = null
 
 ####################################################################################################
 ##					STATE
@@ -35,7 +39,7 @@ func _ready():
 ##					MAIN METHODS
 ####################################################################################################
 
-func add_portrait(character:DialogicCharacter, portrait:String,  position_idx:int, mirrored: bool = false) -> Node:
+func add_portrait(character:DialogicCharacter, portrait:String,  position_idx:int, mirrored: bool = false, z_index: int = 0) -> Node:
 	var character_node = null
 	
 	if portrait.is_empty():
@@ -46,23 +50,25 @@ func add_portrait(character:DialogicCharacter, portrait:String,  position_idx:in
 	if not portrait in character.portraits:
 		print("[DialogicErrorInfo] ",character.display_name, " has no portrait ", portrait)
 		assert(false, "[Dialogic] Invalid portrait name.")
-	if len(get_tree().get_nodes_in_group('dialogic_portrait_holder')) == 0:
-		assert(false, '[Dialogic] If you want to display portraits, you need a PortraitHolder scene!')
 	
-	for node in get_tree().get_nodes_in_group('dialogic_portrait_position'):
-		if node.position_index == position_idx:
-			character_node = Node2D.new()
-			character_node.name = character.name
-			node.add_child(character_node)
-			character_node.global_position = node.global_position
+	check_positions_and_holder()
+
+	character_node = Node2D.new()
+	character_node.name = character.name
+	character_node.position = current_positions[position_idx]
+	character_node.z_index = z_index
+	character_node.set_meta("position", position_idx)
+	_portrait_holder_reference.add_child(character_node)
+	#character_node.global_position = _portrait_holder_reference.global_position
+	
 	if character_node:
 		dialogic.current_state_info['portraits'][character.resource_path] = {'portrait':portrait, 'node':character_node, 'position_index':position_idx}
 	if portrait:
-		change_portrait(character, portrait,mirrored)
+		change_portrait(character, portrait, mirrored, z_index)
 	
 	return character_node
 
-func change_portrait(character:DialogicCharacter, portrait:String, mirrored:bool = false) -> void:
+func change_portrait(character:DialogicCharacter, portrait:String, mirrored:bool = false, z_index: int = 0, update_zindex:bool = false) -> void:
 	if not character or not is_character_joined(character):
 		assert(false, "[Dialogic] Cannot change portrait of null/not joined character.")
 	
@@ -70,6 +76,9 @@ func change_portrait(character:DialogicCharacter, portrait:String, mirrored:bool
 		portrait = character.default_portrait
 	
 	var char_node :Node = dialogic.current_state_info.portraits[character.resource_path].node
+	
+	if update_zindex:
+		char_node.z_index = z_index
 	
 	if char_node.get_child_count() and 'does_custom_portrait_change' in char_node.get_child(0) and char_node.get_child(0).does_portrait_change():
 		char_node.get_child(0).change_portrait(character, portrait)
@@ -122,25 +131,73 @@ func animate_portrait(character:DialogicCharacter, animation_path:String, length
 	dialogic.current_state_info['portraits'][character.resource_path]['animation_node'] = anim_node
 	return anim_node
 
-func move_portrait(character:DialogicCharacter, position_idx:int, tween:bool= false, time:float = 1.0):
+func move_portrait(character:DialogicCharacter, position_idx:int, z_index:int = 0, update_zindex:bool = false,  time:float = 0.0):
 	if not character or not is_character_joined(character):
 		assert(false, "[Dialogic] Cannot move portrait of null/not joined character.")
 	
 	var char_node = dialogic.current_state_info.portraits[character.resource_path].node
 	
-	for node in get_tree().get_nodes_in_group('dialogic_portrait_position'):
-		if node.position_index == position_idx:
-			if not tween:
-				char_node.global_position = node.global_position
+	if update_zindex:
+		char_node.z_index = z_index
+	
+	char_node.set_meta('position', position_idx)
+
+	if time == 0.0:
+		char_node.position = current_positions[position_idx]
+	else:
+		var tween = char_node.create_tween()
+		tween.tween_property(char_node, "position", current_positions[position_idx], time)
 	
 	dialogic.current_state_info.portraits[character.resource_path].position_index = position_idx
 
-func set_portrait_z_index(portrait_node, z_index):
-	pass
 
 func remove_portrait(character:DialogicCharacter) -> void:
 	dialogic.current_state_info['portraits'][character.resource_path].node.queue_free()
 	dialogic.current_state_info['portraits'].erase(character.resource_path)
+
+func add_portrait_position(position_number: int, position:Vector2) -> void:
+	# Create additional positions either from timeline or at runtime
+	# If it's an existing position, will move that position to the coordinates instead
+	# There's no need to actually remove them once added, but saves will need to track position updates as well, so the whole current_positions array will need to be saved
+	# This will always be an absolute value for new positions, existing positions will be updated as absolute values by this 
+	
+	check_positions_and_holder()
+	
+	if position_number in current_positions:
+		move_portrait_position(position_number, position)
+	else:
+		# Add to both current and default positions
+		_default_positions[position_number] = position
+		current_positions[position_number] = position
+
+func reset_portrait_positions(time:float = 0.0) -> void:
+	for position in current_positions:
+		move_portrait_position(position, _default_positions[position], false, time)
+
+func reset_portrait_position(position:int, time:float = 0.0) -> void:
+	move_portrait_position(position, _default_positions[position], false, time)
+
+
+func move_portrait_position(position_number: int, vector:Vector2, relative:bool = false, time:float = 0.0) -> void:
+	check_positions_and_holder()
+	
+	if !position_number in current_positions:
+		if !relative:
+			add_portrait_position(position_number, vector)
+		else: assert(false, '[Dialogic] Cannot move non-existent position. (Use SetAbsolute to create new position.)')
+	
+	if !relative:
+		current_positions[position_number] = vector
+	else:
+		current_positions[position_number] += vector
+	
+	for child in _portrait_holder_reference.get_children():
+		if child.get_meta('position') == position_number:
+			if time != 0.0:
+				var tween = child.create_tween()
+				tween.tween_property(child, "position", current_positions[position_number], time)
+			else:
+				child.position = current_positions[position_number]
 
 
 ####################################################################################################
@@ -177,4 +234,17 @@ func update_rpg_portrait_mode(character:DialogicCharacter = null, portrait:Strin
 			var AnimationLength = DialogicUtil.get_project_setting('dialogic/animations/join_default_length', 0.5)
 			add_portrait(character, portrait, 0, false)
 			var anim = animate_portrait(character, AnimationName, AnimationLength)
-			
+
+# makes sure positions are listed and can be accessed
+func check_positions_and_holder() -> void:
+	if _portrait_holder_reference == null and len(get_tree().get_nodes_in_group('dialogic_portrait_holder')) == 0:
+		assert(false, '[Dialogic] If you want to display portraits, you need a PortraitHolder scene!')
+	else: 
+		if _portrait_holder_reference == null:
+			_portrait_holder_reference = get_tree().get_first_node_in_group('dialogic_portrait_holder')
+	if _default_positions.size() == 0:
+		for node in get_tree().get_nodes_in_group('dialogic_portrait_position'):
+			_default_positions[node['position_index']] = node['position']
+	
+	if current_positions.size() == 0:
+		current_positions = _default_positions.duplicate()

@@ -222,6 +222,9 @@ func build_editor():
 			if p.display_info.has('disabled'):
 				editor_node.disabled = p.display_info.disabled
 		
+		elif p.dialogic_type == resource.ValueType.Vector2:
+			editor_node = load("res://addons/dialogic/Editor/Events/Fields/Vector2.tscn").instantiate()
+		
 		elif p.dialogic_type == resource.ValueType.StringArray:
 			editor_node = load("res://addons/dialogic/Editor/Events/Fields/Array.tscn").instantiate()
 			

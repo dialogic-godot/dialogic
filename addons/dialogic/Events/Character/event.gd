@@ -14,16 +14,18 @@ var AnimationName:String = ""
 var AnimationLength: float = 0.5
 var AnimationRepeats: int = 1
 var AnimationWait: bool = false
+var PositionMoveTime: float = 0.0
 var Z_Index: int = 0
 var Mirrored: bool = false
 var _leave_all:bool = false
+var _update_zindex: bool = false
 
 func _execute() -> void:
 	match ActionType:
 		ActionTypes.Join:
 			
 			if Character:
-				var n = dialogic.Portraits.add_portrait(Character, Portrait, Position, Mirrored)
+				var n = dialogic.Portraits.add_portrait(Character, Portrait, Position, Mirrored, Z_Index)
 				
 				if AnimationName.is_empty():
 					AnimationName = DialogicUtil.get_project_setting('dialogic/animations/join_default', 
@@ -84,9 +86,9 @@ get_script().resource_path.get_base_dir().plus_file('DefaultAnimations/fade_out_
 		ActionTypes.Update:
 			if Character:
 				if dialogic.Portraits.is_character_joined(Character):
-					dialogic.Portraits.change_portrait(Character, Portrait, Mirrored)
+					dialogic.Portraits.change_portrait(Character, Portrait, Mirrored, Z_Index, _update_zindex)
 					if Position != 0:
-						dialogic.Portraits.move_portrait(Character, Position)
+						dialogic.Portraits.move_portrait(Character, Position, Z_Index, _update_zindex, PositionMoveTime)
 					
 					if AnimationName:
 						var anim = dialogic.Portraits.animate_portrait(Character, AnimationName, AnimationLength, AnimationRepeats)
@@ -144,7 +146,7 @@ func get_as_string_to_store() -> String:
 	
 	if Position and ActionType != ActionTypes.Leave:
 		result_string += " "+str(Position)
-	if AnimationName != "" || Z_Index != 0 || Mirrored != false:
+	if AnimationName != "" || Z_Index != 0 || Mirrored != false || PositionMoveTime != 0.0:
 		result_string += " ["
 		if AnimationName:
 			result_string += 'animation="'+DialogicUtil.pretty_name(AnimationName)+'"'
@@ -162,6 +164,9 @@ func get_as_string_to_store() -> String:
 			
 		if Mirrored:
 			result_string += ' mirrored="' + str(Mirrored) + '"'
+		
+		if PositionMoveTime != 0:
+			result_string += ' move_time="' + str(PositionMoveTime) + '"'
 			
 		result_string += "]"
 	return result_string
@@ -195,6 +200,9 @@ func load_from_string_to_store(string:String):
 
 	if result.get_string('position'):
 		Position = result.get_string('position').to_int()
+	elif ActionType == ActionTypes.Update:
+		# Override the normal default if it's an Update
+		Position = 0 
 	
 	if result.get_string('shortcode'):
 		var shortcode_params = parse_shortcode_parameters(result.get_string('shortcode'))
@@ -216,11 +224,18 @@ func load_from_string_to_store(string:String):
 		#	AnimationLength = AnimationLength.to_float()
 			AnimationWait = DialogicUtil.str_to_bool(shortcode_params.get('wait', 'false'))
 		
-		#repeat is only supported on Update, the other two should not be checking this
+		#repeat is supported on Update, the other two should not be checking this
 			if ActionType == ActionTypes.Update:
 				AnimationRepeats = shortcode_params.get('repeat', 1).to_int()
-				
-		Z_Index = 	shortcode_params.get('z-index', 1)
+				PositionMoveTime = shortcode_params.get('move_time', 0.0)
+		#move time is only supported on Update, but it isnt part of the animations so its separate
+		if ActionType == ActionTypes.Update:
+			if typeof(shortcode_params.get('move_time', 0)) == TYPE_STRING:	
+				PositionMoveTime = shortcode_params.get('move_time', 0.0).to_float()
+		
+		if typeof(shortcode_params.get('z-index', 0)) == TYPE_STRING:	
+			Z_Index = 	shortcode_params.get('z-index', 0).to_int()
+			_update_zindex = true 
 		Mirrored = DialogicUtil.str_to_bool(shortcode_params.get('mirrored', 'false'))
 # RETURN TRUE IF THE GIVEN LINE SHOULD BE LOADED AS THIS EVENT
 func is_valid_event_string(string:String):
@@ -249,6 +264,7 @@ func build_event_editor():
 	add_body_edit('AnimationRepeats', ValueType.Integer, 'Repeat:', '', {},'Character and !AnimationName.is_empty() and ActionType == %s)' %ActionTypes.Update)
 	add_body_edit('Z_Index', ValueType.Integer, 'Portrait z-index:', "",{},'ActionType != %s' %ActionTypes.Leave)
 	add_body_edit('Mirrored', ValueType.Bool, 'Mirrored:', "",{},'ActionType != %s' %ActionTypes.Leave)
+	add_body_edit('PositionMoveTime', ValueType.Float, 'Transiton time to change position:', '', {}, 'ActionType == %s' %ActionTypes.Update)
 	add_body_edit('_leave_all', ValueType.Bool, 'Leave All:', "",{},'ActionType == %s' %ActionTypes.Leave)
 
 func has_no_portraits() -> bool:
