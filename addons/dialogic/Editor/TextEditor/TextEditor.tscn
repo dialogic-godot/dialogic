@@ -2,9 +2,10 @@
 
 [ext_resource type="Script" path="res://addons/dialogic/Editor/TextEditor/TextEditor.gd" id="1_1kbx2"]
 
-[sub_resource type="CodeHighlighter" id="CodeHighlighter_mv7gw"]
+[sub_resource type="CodeHighlighter" id="CodeHighlighter_p7h5p"]
 number_color = Color(0.8025, 0.81, 0.8225, 1)
 symbol_color = Color(0.8025, 0.81, 0.8225, 1)
+function_color = Color(0.8025, 0.81, 0.8225, 1)
 member_variable_color = Color(0.8025, 0.81, 0.8225, 1)
 color_regions = {
 "\" \"": Color(1, 0.925, 0.63, 1),
@@ -20,9 +21,10 @@ offset_right = 1024.0
 offset_bottom = 600.0
 highlight_current_line = true
 draw_tabs = true
-syntax_highlighter = SubResource("CodeHighlighter_mv7gw")
+syntax_highlighter = SubResource("CodeHighlighter_p7h5p")
 minimap_draw = true
 caret_blink = true
 line_folding = true
 gutters_draw_line_numbers = true
+indent_automatic = true
 script = ExtResource("1_1kbx2")

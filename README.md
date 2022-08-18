@@ -12,6 +12,8 @@ Create dialogs, characters and scenes to display conversations in your Godot gam
 
 
 # Version 2.0.0 - WIP  ![Godot v4.0](https://img.shields.io/badge/Godot-v4.0-%23478cbf)
+Dialogic 2.0 is a major rewrite of the plugin including many compatibility-breaking changes. It is currently developed exclusively for godot 4.
+
 
 ## Installation
 
