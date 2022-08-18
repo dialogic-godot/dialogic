@@ -34,8 +34,8 @@ func _save(resource: Resource, path: String = '', flags: int = 0) -> int:
 	print('[Dialogic] Saved timeline "' , path, '"')
 	
 	# Checking for translation updates
-	var trans_updates = {}
-	var translate = DialogicUtil.get_project_setting('dialogic/translation_enabled', false)
+	var trans_updates := {}
+	var translate :bool= DialogicUtil.get_project_setting('dialogic/translation_enabled', false)
 	for idx in range(0, len(resource._events)):
 		var event = resource._events[idx]
 		
@@ -50,12 +50,12 @@ func _save(resource: Resource, path: String = '', flags: int = 0) -> int:
 		update_translations(path, trans_updates)
 	return OK
 
-func update_translations(path, translation_updates):
-	if not translation_updates:
+func update_translations(path:String, translation_updates:Dictionary):
+	if translation_updates.is_empty():
 		return
 	var err:int
-	var trans_file = File.new()
-	var file_path = ""
+	var trans_file := File.new()
+	var file_path :String = ""
 	if DialogicUtil.get_project_setting('dialogic/translation_path', '').ends_with('.csv'):
 		file_path = ProjectSettings.get_setting('dialogic/translation_path')
 	else:
@@ -66,7 +66,7 @@ func update_translations(path, translation_updates):
 		printerr('[Dialogic] Can\'t read translation file: "%s"! code: %d.' % [file_path, err])
 		return
 	
-	var csv_lines = []
+	var csv_lines := []
 	while !trans_file.eof_reached():
 		csv_lines.append(trans_file.get_csv_line())
 		if csv_lines[-1][0] in translation_updates.keys():
