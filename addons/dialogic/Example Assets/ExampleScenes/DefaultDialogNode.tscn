@@ -21,7 +21,7 @@
 [ext_resource type="Script" path="res://addons/dialogic/Events/Text/Display_NextIndicator.gd" id="20_ljcq2"]
 [ext_resource type="Script" path="res://addons/dialogic/Example Assets/ExampleScenes/ExampleGlossaryPopup.gd" id="20_vmnp2"]
 [ext_resource type="Script" path="res://addons/dialogic/Events/Voice/dialogic_dialog_voice.gd" id="20_x1o37"]
-[ext_resource type="Texture2D" uid="uid://d3g6vvn16a6gn" path="res://addons/dialogic/Example Assets/next-indicator/next-indicator.png" id="21_rp1u3"]
+[ext_resource type="Texture2D" uid="uid://c8w17dsl8cin5" path="res://addons/dialogic/Example Assets/next-indicator/next-indicator.png" id="21_rp1u3"]
 [ext_resource type="Script" path="res://addons/dialogic/Example Assets/ExampleScenes/HideWithChild.gd" id="23"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dpede"]
