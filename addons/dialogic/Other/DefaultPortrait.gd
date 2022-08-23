@@ -20,7 +20,7 @@ var portrait: String
 # This function is needed on every custom portrait scene
 func does_portrait_change() -> bool:
 	return true
-	
+
 # If the custom portrait accepts a change, then accept it here
 func change_portrait(passed_character:DialogicCharacter, passed_portrait:String) -> void:
 	if passed_portrait == "":
@@ -77,3 +77,13 @@ func mirror_portrait(mirror:bool) -> void:
 			$Portrait.flip_h = true
 		else:
 			$Portrait.flip_h = false
+			
+# This function is needed on every custom portrait scene
+func does_portrait_accept_extra_data() -> bool:
+	return false	
+	
+# Function to accept and use the extra data, if the custom portrait wants to accept it
+func set_portrait_extra_data(data: String) -> void:
+	# This function can only receive paratmeters on an Update event, but it is called as part of Join
+	# If the extra_data parameter is not set, it will call with "" string, so make sure to handle that properly
+	pass

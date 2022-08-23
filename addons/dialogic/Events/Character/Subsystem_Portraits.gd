@@ -68,7 +68,7 @@ func add_portrait(character:DialogicCharacter, portrait:String,  position_idx:in
 	
 	return character_node
 
-func change_portrait(character:DialogicCharacter, portrait:String, mirrored:bool = false, z_index: int = 0, update_zindex:bool = false) -> void:
+func change_portrait(character:DialogicCharacter, portrait:String, mirrored:bool = false, z_index: int = 0, update_zindex:bool = false, extra_data:String = "") -> void:
 	if not character or not is_character_joined(character):
 		assert(false, "[Dialogic] Cannot change portrait of null/not joined character.")
 	
@@ -102,8 +102,13 @@ func change_portrait(character:DialogicCharacter, portrait:String, mirrored:bool
 			var sprite = load(path)
 			sprite.position.x -= sprite.portrait_width/2.0
 			sprite.position.y -= sprite.portrait_height
+			
 			if sprite.does_portrait_mirror():
 				sprite.mirror_portrait(mirrored)
+				
+			if sprite.does_portrait_accept_extra_data():
+				sprite.set_portrait_extra_data(extra_data)
+				
 			char_node.add_child(path)
 	dialogic.current_state_info['portraits'][character.resource_path]['portrait'] = portrait
 
