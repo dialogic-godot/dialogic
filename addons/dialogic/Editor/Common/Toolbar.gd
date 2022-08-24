@@ -89,15 +89,20 @@ func load_timeline(timeline_path:String) -> void:
 	resource_used(timeline_path)
 	%ResourcePicker.set_value(DialogicUtil.pretty_name(timeline_path))
 	%ResourcePicker.resource_icon = get_theme_icon("TripleBar", "EditorIcons")
-	$PlayTimeline.show()
-	$ToggleVisualEditor.show()
+	show_timeline_tool_buttons()
 
 
 func _on_play_timeline() -> void:
 	emit_signal('play_timeline')
 	$PlayTimeline.release_focus()
 
+func show_timeline_tool_buttons() -> void:
+	$PlayTimeline.show()
+	$ToggleVisualEditor.show()
 
+func hide_timeline_tool_buttons() -> void:
+	$PlayTimeline.hide()
+	$ToggleVisualEditor.hide()
 ################################################################################
 ##							CHARACTER_MODE
 ################################################################################
@@ -106,8 +111,7 @@ func load_character(character_path:String) -> void:
 	resource_used(character_path)
 	%ResourcePicker.set_value(DialogicUtil.pretty_name(character_path))
 	%ResourcePicker.resource_icon = load("res://addons/dialogic/Editor/Images/Resources/character.svg")
-	$PlayTimeline.hide()
-	$ToggleVisualEditor.hide()
+	hide_timeline_tool_buttons()
 
 
 func _on_ResourcePicker_value_changed(property_name, value) -> void:

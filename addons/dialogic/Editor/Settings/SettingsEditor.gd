@@ -1,29 +1,30 @@
 @tool
-extends Popup
+extends PanelContainer
 
 func _ready():
 	hide()
-	about_to_popup.connect(refresh)
-	
-	if not Engine.is_editor_hint():
-		popup()
+	visibility_changed.connect(_on_visibility_changed)
 
 	# Subsystems
 	for script in DialogicUtil.get_event_scripts():
 		for subsystem in load(script).new().get_required_subsystems():
 			if subsystem.has('settings'):
-				$Panel/Tabs.add_child(load(subsystem.settings).instantiate())
+				$Tabs.add_child(load(subsystem.settings).instantiate())
 	refresh()
 
+func _on_visibility_changed():
+	if visible:
+		refresh()
+	else:
+		close()
 
 func refresh():
-	for child in $Panel/Tabs.get_children():
+	for child in $Tabs.get_children():
 		if child.has_method('refresh'):
 			child.refresh()
 
-
-func _on_settings_editor_close_requested():
-	for child in $Panel/Tabs.get_children():
+func close():
+	for child in $Tabs.get_children():
 		if child.has_method('_about_to_close'):
 			child._about_to_close()
 	hide()

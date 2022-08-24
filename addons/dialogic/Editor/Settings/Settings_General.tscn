@@ -2,14 +2,14 @@
 
 [ext_resource type="Script" path="res://addons/dialogic/Editor/Settings/Settings_General.gd" id="2"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vujr8"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3nwa2"]
 content_margin_left = 5.0
 content_margin_top = 5.0
 content_margin_right = 5.0
 content_margin_bottom = 5.0
 bg_color = Color(0.545098, 0.545098, 0.545098, 0.211765)
 
-[sub_resource type="Image" id="Image_wik83"]
+[sub_resource type="Image" id="Image_svkl2"]
 data = {
 "data": PackedByteArray(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
 "format": "LumAlpha8",
@@ -19,7 +19,7 @@ data = {
 }
 
 [sub_resource type="ImageTexture" id="7"]
-image = SubResource("Image_wik83")
+image = SubResource("Image_svkl2")
 
 [node name="General" type="HBoxContainer"]
 anchor_right = 1.0
@@ -27,19 +27,19 @@ anchor_bottom = 1.0
 script = ExtResource("2")
 
 [node name="General" type="VBoxContainer" parent="."]
-offset_right = 506.0
+offset_right = 830.0
 offset_bottom = 600.0
 size_flags_horizontal = 3
 
 [node name="TitleLabel" type="Label" parent="General"]
-offset_right = 506.0
+offset_right = 830.0
 offset_bottom = 36.0
-theme_override_styles/normal = SubResource("StyleBoxFlat_vujr8")
+theme_override_styles/normal = SubResource("StyleBoxFlat_3nwa2")
 text = "Extensions"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="General"]
 offset_top = 40.0
-offset_right = 506.0
+offset_right = 830.0
 offset_bottom = 66.0
 
 [node name="Label" type="Label" parent="General/HBoxContainer"]
@@ -50,39 +50,40 @@ text = "Custom events folder"
 [node name="CustomEventsFolderLabel" type="Label" parent="General/HBoxContainer"]
 unique_name_in_owner = true
 offset_left = 170.0
-offset_right = 478.0
+offset_right = 802.0
 offset_bottom = 26.0
 size_flags_horizontal = 3
 text = "res://addons/dialogic_additions/Events"
+text_overrun_behavior = 1
 
 [node name="CustomEventsFolderButton" type="Button" parent="General/HBoxContainer"]
 unique_name_in_owner = true
-offset_left = 482.0
-offset_right = 506.0
+offset_left = 806.0
+offset_right = 830.0
 offset_bottom = 26.0
 icon = SubResource("7")
 
 [node name="Label" type="Label" parent="General"]
 offset_top = 70.0
-offset_right = 506.0
+offset_right = 830.0
 offset_bottom = 96.0
 text = "You should restart godot after changing this path!"
 
 [node name="HSeparator" type="HSeparator" parent="General"]
 offset_top = 100.0
-offset_right = 506.0
+offset_right = 830.0
 offset_bottom = 104.0
 
 [node name="TitleLabel2" type="Label" parent="General"]
 offset_top = 108.0
-offset_right = 506.0
+offset_right = 830.0
 offset_bottom = 144.0
-theme_override_styles/normal = SubResource("StyleBoxFlat_vujr8")
+theme_override_styles/normal = SubResource("StyleBoxFlat_3nwa2")
 text = "Testing"
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="General"]
 offset_top = 148.0
-offset_right = 506.0
+offset_right = 830.0
 offset_bottom = 174.0
 
 [node name="Label" type="Label" parent="General/HBoxContainer2"]
@@ -93,38 +94,38 @@ text = "Testing scene"
 [node name="TestingSceneLabel" type="Label" parent="General/HBoxContainer2"]
 unique_name_in_owner = true
 offset_left = 109.0
-offset_right = 478.0
+offset_right = 802.0
 offset_bottom = 26.0
 size_flags_horizontal = 3
 text = "res://addons/dialogic_additions/Events"
+text_overrun_behavior = 2
 
 [node name="TestingSceneButton" type="Button" parent="General/HBoxContainer2"]
 unique_name_in_owner = true
-offset_left = 482.0
-offset_right = 506.0
+offset_left = 806.0
+offset_right = 830.0
 offset_bottom = 26.0
 icon = SubResource("7")
 
 [node name="VSeparator" type="VSeparator" parent="."]
-offset_left = 510.0
-offset_right = 514.0
+offset_left = 834.0
+offset_right = 838.0
 offset_bottom = 600.0
 
 [node name="Theming" type="VBoxContainer" parent="."]
-offset_left = 518.0
+offset_left = 842.0
 offset_right = 1024.0
 offset_bottom = 600.0
-size_flags_horizontal = 3
 
 [node name="Label" type="Label" parent="Theming"]
-offset_right = 506.0
+offset_right = 182.0
 offset_bottom = 26.0
 text = "Color palette"
 
 [node name="Colors" type="HBoxContainer" parent="Theming"]
 unique_name_in_owner = true
 offset_top = 30.0
-offset_right = 506.0
+offset_right = 182.0
 offset_bottom = 38.0
 
 [node name="Color1" type="ColorPickerButton" parent="Theming/Colors"]
