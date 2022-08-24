@@ -54,7 +54,10 @@ func update_name_label(character:DialogicCharacter) -> void:
 	for name_label in get_tree().get_nodes_in_group('dialogic_name_label'):
 		if character:
 			dialogic.current_state_info['character'] = character.resource_path
-			name_label.text = character.display_name
+			if dialogic.has_subsystem('VAR'):
+				name_label.text = dialogic.VAR.parse_variables(character.display_name)
+			else:
+				name_label.text = character.display_name
 			if !'use_character_color' in name_label or name_label.use_character_color:
 				name_label.self_modulate = character.color
 		else:
