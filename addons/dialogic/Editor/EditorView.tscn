@@ -7,16 +7,17 @@
 [ext_resource type="PackedScene" uid="uid://dr7l1304wixcs" path="res://addons/dialogic/Editor/TextEditor/TextEditor.tscn" id="5_px80h"]
 [ext_resource type="PackedScene" uid="uid://bak1jk2glij8r" path="res://addons/dialogic/Editor/CharacterEditor/CharacterEditor.tscn" id="6"]
 
-[sub_resource type="CodeHighlighter" id="CodeHighlighter_6teiw"]
+[sub_resource type="CodeHighlighter" id="CodeHighlighter_p5dsy"]
 number_color = Color(0.8025, 0.81, 0.8225, 1)
 symbol_color = Color(0.8025, 0.81, 0.8225, 1)
+function_color = Color(0.8025, 0.81, 0.8225, 1)
 member_variable_color = Color(0.8025, 0.81, 0.8225, 1)
 color_regions = {
-"\" \"": Color(1, 0.925, 0.63, 1),
-"- ": Color(0.556, 1, 0.856, 1),
+"\" \"": Color(1, 0.93, 0.63, 1),
+"- ": Color(0.56, 1, 0.86, 1),
 "< >": Color(0.34, 0.7, 1, 1),
 "[ ]": Color(0.34, 0.7, 1, 1),
-"{ }": Color(0.556, 1, 0.856, 1)
+"{ }": Color(0.56, 1, 0.86, 1)
 }
 
 [node name="EditorView" type="Control"]
@@ -51,6 +52,7 @@ size_flags_vertical = 3
 
 [node name="CharacterEditor" parent="MarginContainer/VBoxContainer" instance=ExtResource("6")]
 unique_name_in_owner = true
+visible = false
 anchor_right = 0.0
 anchor_bottom = 0.0
 offset_top = 320.0
@@ -64,15 +66,16 @@ visible = false
 offset_top = 37.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-syntax_highlighter = SubResource("CodeHighlighter_6teiw")
+syntax_highlighter = SubResource("CodeHighlighter_p5dsy")
 
-[node name="SettingsEditor" parent="." instance=ExtResource("3")]
-unresizable = false
-popup_window = false
+[node name="SettingsEditor" parent="MarginContainer/VBoxContainer" instance=ExtResource("3")]
+unique_name_in_owner = true
+offset_top = 320.0
+offset_right = 1024.0
+size_flags_vertical = 3
 
 [node name="SaveConfirmationDialog" type="AcceptDialog" parent="."]
 size = Vector2i(207, 100)
 
-[connection signal="close_requested" from="SettingsEditor" to="." method="_on_settings_editor_close_requested"]
 [connection signal="confirmed" from="SaveConfirmationDialog" to="." method="_on_SaveConfirmationDialog_confirmed"]
 [connection signal="custom_action" from="SaveConfirmationDialog" to="." method="_on_SaveConfirmationDialog_custom_action"]
