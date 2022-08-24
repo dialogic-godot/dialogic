@@ -10,18 +10,14 @@ var _last_timeline_opened
 signal continue_opening_resource
 
 func _ready():
-	$MarginContainer/VBoxContainer/Toolbar/Settings.button_up.connect(show_settings)
+	$MarginContainer/VBoxContainer/Toolbar/Settings.button_up.connect(settings_pressed)
 	
 	# File dialog
 	editor_file_dialog = EditorFileDialog.new()
 	add_child(editor_file_dialog)
 	
 	# Open the last edited scene
-	if ProjectSettings.has_setting('dialogic/editor/last_resources'):
-		var directory = Directory.new();
-		var path = ProjectSettings.get_setting('dialogic/editor/last_resources')[0]
-		if directory.file_exists(path):
-			DialogicUtil.get_dialogic_plugin().editor_interface.inspect_object(load(path))
+	open_last_resource()
 	
 	# Hide the character editor by default and connect its signals
 	%CharacterEditor.hide()
@@ -37,6 +33,13 @@ func _ready():
 	$SaveConfirmationDialog.add_button('No Saving Please!', true, 'nosave')
 	$SaveConfirmationDialog.hide()
 
+func open_last_resource():
+	if ProjectSettings.has_setting('dialogic/editor/last_resources'):
+		var directory := Directory.new();
+		var path :String= ProjectSettings.get_setting('dialogic/editor/last_resources')[0]
+		if directory.file_exists(path):
+			DialogicUtil.get_dialogic_plugin().editor_interface.inspect_object(load(path))
+	
 
 func edit_timeline(object):
 	if %Toolbar.is_current_unsaved():
@@ -45,6 +48,7 @@ func edit_timeline(object):
 	_load_timeline(object)
 	show_timeline_editor()
 	%CharacterEditor.hide()
+	%SettingsEditor.close()
 
 
 func edit_character(object):
@@ -54,13 +58,20 @@ func edit_character(object):
 	%CharacterEditor.load_character(object)
 	_hide_timeline_editor()
 	%CharacterEditor.show()
+	%SettingsEditor.close()
 
 
-func show_settings():
-	$SettingsEditor.popup_centered()
-	$SettingsEditor.size = get_viewport().size/1.5
-	$SettingsEditor.position -= $SettingsEditor.size / 2
-
+func settings_pressed():
+	if %SettingsEditor.visible:
+		open_last_resource()
+	else:
+		if %Toolbar.is_current_unsaved():
+			save_current_resource()
+			await continue_opening_resource
+		%SettingsEditor.show()
+		_hide_timeline_editor()
+		%Toolbar.hide_timeline_tool_buttons()
+		%CharacterEditor.hide()
 
 func save_current_resource():
 	$SaveConfirmationDialog.popup_centered()
@@ -102,9 +113,6 @@ func godot_file_dialog(callable, filter, mode = EditorFileDialog.FILE_MODE_OPEN_
 		editor_file_dialog.file_selected.connect(callable)
 	return editor_file_dialog
 
-
-func _on_settings_editor_close_requested():
-	$SettingsEditor.hide()
 
 ########################################
 #		Timeline editor 
