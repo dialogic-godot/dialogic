@@ -3,7 +3,6 @@ extends Resource
 class_name DialogicCharacter
 
 
-@export var name:String = ""
 @export var display_name:String = ""
 @export var nicknames:Array = []
 
@@ -24,8 +23,11 @@ func __get_property_list() -> Array:
 
 
 func _to_string() -> String:
-	return "[{name}:{id}]".format({"name":name, "id":get_instance_id()})
+	return "[{name}:{id}]".format({"name":get_name(), "id":get_instance_id()})
 
 
-func _hide_script_from_inspector():
+func _hide_script_from_inspector() -> bool:
 	return true
+
+func get_name() -> String:
+	return resource_path.get_file().trim_suffix('.dch')
