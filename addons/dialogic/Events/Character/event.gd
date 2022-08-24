@@ -26,7 +26,7 @@ func _execute() -> void:
 		ActionTypes.Join:
 			
 			if Character:
-				var n = dialogic.Portraits.add_portrait(Character, Portrait, Position, Mirrored, Z_Index)
+				var n = dialogic.Portraits.add_portrait(Character, Portrait, Position, Mirrored, Z_Index, ExtraData)
 				
 				if AnimationName.is_empty():
 					AnimationName = DialogicUtil.get_project_setting('dialogic/animations/join_default', 

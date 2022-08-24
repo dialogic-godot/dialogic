@@ -39,7 +39,7 @@ func _ready():
 ##					MAIN METHODS
 ####################################################################################################
 
-func add_portrait(character:DialogicCharacter, portrait:String,  position_idx:int, mirrored: bool = false, z_index: int = 0) -> Node:
+func add_portrait(character:DialogicCharacter, portrait:String,  position_idx:int, mirrored: bool = false, z_index: int = 0, extra_data:String = "") -> Node:
 	var character_node = null
 	
 	if portrait.is_empty():
@@ -64,7 +64,7 @@ func add_portrait(character:DialogicCharacter, portrait:String,  position_idx:in
 	if character_node:
 		dialogic.current_state_info['portraits'][character.resource_path] = {'portrait':portrait, 'node':character_node, 'position_index':position_idx}
 	if portrait:
-		change_portrait(character, portrait, mirrored, z_index)
+		change_portrait(character, portrait, mirrored, z_index, false, extra_data)
 	
 	return character_node
 
@@ -80,7 +80,7 @@ func change_portrait(character:DialogicCharacter, portrait:String, mirrored:bool
 	if update_zindex:
 		char_node.z_index = z_index
 	
-	if char_node.get_child_count() and 'does_custom_portrait_change' in char_node.get_child(0) and char_node.get_child(0).does_portrait_change():
+	if char_node.get_child_count() and 'does_custom_portrait_change' in char_node.get_child(0) and char_node.get_child(0).has_method('change_portrait'):
 		char_node.get_child(0).change_portrait(character, portrait)
 	else:
 		# remove previous portrait
@@ -94,8 +94,7 @@ func change_portrait(character:DialogicCharacter, portrait:String, mirrored:bool
 			sprite.position.x -= sprite.portrait_width/2.0
 			sprite.position.y -= sprite.portrait_height
 			
-			if sprite.does_portrait_mirror():
-				sprite.mirror_portrait(mirrored)
+			sprite.mirror_portrait(mirrored)
 			
 			char_node.add_child(sprite)
 		else:
@@ -103,10 +102,13 @@ func change_portrait(character:DialogicCharacter, portrait:String, mirrored:bool
 			sprite.position.x -= sprite.portrait_width/2.0
 			sprite.position.y -= sprite.portrait_height
 			
-			if sprite.does_portrait_mirror():
+			if sprite.has_method('change_portrait'):
+				sprite.change_portrait(character, portrait)
+			
+			if sprite.has_method('mirror_portrait'):
 				sprite.mirror_portrait(mirrored)
 				
-			if sprite.does_portrait_accept_extra_data():
+			if sprite.has_method('set_portrait_extra_data'):
 				sprite.set_portrait_extra_data(extra_data)
 				
 			char_node.add_child(path)

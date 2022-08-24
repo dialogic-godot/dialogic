@@ -2,13 +2,14 @@ extends Node
 # Default portrait scene
 # Can be extended for custom portrait scenes, this has the minimum requirements
 
-# The following minimum features should be supported by all portrait scenes:
+# The following minimum features are expected and should be supported by all portrait scenes. They are used for calculating positions:
 # @export var portrait_width: int
 # @export var portrait_height: int
-# func does_portrait_change() -> bool
-#    If the above is returning true: func change_portrait(DialogicCharacter, String) -> void:
-# func does_portrait_mirror() -> bool:
-#    If the above is returning true: func mirror_portrait(mirror:bool) -> void:
+
+# The following methods are verified by has_method calls, and called with the variable types defined here:
+# func change_portrait(DialogicCharacter, String) -> void:
+# func mirror_portrait(bool) -> void:
+# func set_portrait_extra_data(String) -> void:
 
 class_name DialogicDefaultPortrait
 
@@ -78,4 +79,6 @@ func mirror_portrait(mirror:bool) -> void:
 func set_portrait_extra_data(data: String) -> void:
 	# This function can only receive paratmeters on an Update event, but it is called as part of Join
 	# If the extra_data parameter is not set, it will call with "" string, so make sure to handle that properly
+	
+	# As DefaultPortrait does not accept this, and this is a reference example class, we are not doing anything here so it just passes
 	pass
