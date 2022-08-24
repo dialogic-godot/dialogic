@@ -1,30 +1,50 @@
-[gd_scene load_steps=3 format=3 uid="uid://cdmst5tcv87kd"]
+[gd_scene load_steps=4 format=3 uid="uid://c0vkcehgjsjy"]
 
-[ext_resource type="Script" path="res://addons/dialogic/Editor/Events/Fields/Text.gd" id="1"]
+[ext_resource type="Script" path="res://addons/dialogic/Editor/Events/Fields/SinglelineText.gd" id="1"]
 [ext_resource type="Theme" uid="uid://d3g4i4dshtdpu" path="res://addons/dialogic/Editor/Events/styles/InputFieldsStyle.tres" id="2"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_t3hgn"]
+content_margin_left = 5.0
+content_margin_top = 5.0
+content_margin_right = 5.0
+content_margin_bottom = 5.0
+bg_color = Color(0.113725, 0.121569, 0.145098, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.0784314, 0.0862745, 0.101961, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
 
 [node name="SinglelineText" type="HBoxContainer"]
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_bottom = -567.0
 size_flags_horizontal = 0
 theme = ExtResource("2")
 script = ExtResource("1")
 
 [node name="LeftText" type="Label" parent="."]
-offset_top = 288.0
+offset_top = 5.0
 offset_right = 1.0
-offset_bottom = 311.0
+offset_bottom = 28.0
 
 [node name="TextEdit" type="LineEdit" parent="."]
 offset_left = 5.0
 offset_right = 1019.0
-offset_bottom = 600.0
+offset_bottom = 33.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
+theme_override_styles/normal = SubResource("StyleBoxFlat_t3hgn")
+theme_override_styles/focus = SubResource("StyleBoxFlat_t3hgn")
+theme_override_styles/read_only = SubResource("StyleBoxFlat_t3hgn")
 expand_to_text_length = true
 
 [node name="RightText" type="Label" parent="."]
 offset_left = 1023.0
-offset_top = 288.0
+offset_top = 5.0
 offset_right = 1024.0
-offset_bottom = 311.0
+offset_bottom = 28.0

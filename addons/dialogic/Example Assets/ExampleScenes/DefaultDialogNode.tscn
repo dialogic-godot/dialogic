@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=3 uid="uid://bx0fhxkbryo8w"]
+[gd_scene load_steps=29 format=3 uid="uid://bx0fhxkbryo8w"]
 
 [ext_resource type="Script" path="res://addons/dialogic/Example Assets/ExampleScenes/DefaultDialogNode.gd" id="1"]
 [ext_resource type="Script" path="res://addons/dialogic/Events/Text/Display_DialogText.gd" id="2"]
@@ -21,7 +21,8 @@
 [ext_resource type="Script" path="res://addons/dialogic/Events/Text/Display_NextIndicator.gd" id="20_ljcq2"]
 [ext_resource type="Script" path="res://addons/dialogic/Example Assets/ExampleScenes/ExampleGlossaryPopup.gd" id="20_vmnp2"]
 [ext_resource type="Script" path="res://addons/dialogic/Events/Voice/dialogic_dialog_voice.gd" id="20_x1o37"]
-[ext_resource type="Texture2D" uid="uid://c8w17dsl8cin5" path="res://addons/dialogic/Example Assets/next-indicator/next-indicator.png" id="21_rp1u3"]
+[ext_resource type="Texture2D" uid="uid://d3g6vvn16a6gn" path="res://addons/dialogic/Example Assets/next-indicator/next-indicator.png" id="21_rp1u3"]
+[ext_resource type="Script" path="res://addons/dialogic/Events/TextInput/DialogicDisplay_TextInput.gd" id="22_ltkcf"]
 [ext_resource type="Script" path="res://addons/dialogic/Example Assets/ExampleScenes/HideWithChild.gd" id="23"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dpede"]
@@ -261,6 +262,53 @@ offset_bottom = 21.0
 texture = ExtResource("21_rp1u3")
 ignore_texture_size = true
 stretch_mode = 5
+
+[node name="DialogicDisplay_TextInput" type="Control" parent="DefaultTheme"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -210.0
+offset_top = -50.0
+offset_right = 210.0
+offset_bottom = 50.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("22_ltkcf")
+input_line_edit = NodePath("PanelContainer/VBoxContainer/InputField")
+text_label = NodePath("PanelContainer/VBoxContainer/TextLabel")
+confirmation_button = NodePath("PanelContainer/VBoxContainer/ConfirmationButton")
+metadata/_edit_layout_mode = 1
+
+[node name="PanelContainer" type="PanelContainer" parent="DefaultTheme/DialogicDisplay_TextInput"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_e4oel")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="DefaultTheme/DialogicDisplay_TextInput/PanelContainer"]
+offset_left = 10.0
+offset_top = 5.0
+offset_right = 410.0
+offset_bottom = 101.0
+
+[node name="TextLabel" type="Label" parent="DefaultTheme/DialogicDisplay_TextInput/PanelContainer/VBoxContainer"]
+offset_right = 400.0
+offset_bottom = 26.0
+text = "Please enter some text:"
+autowrap_mode = 3
+
+[node name="InputField" type="LineEdit" parent="DefaultTheme/DialogicDisplay_TextInput/PanelContainer/VBoxContainer"]
+offset_top = 30.0
+offset_right = 400.0
+offset_bottom = 61.0
+
+[node name="ConfirmationButton" type="Button" parent="DefaultTheme/DialogicDisplay_TextInput/PanelContainer/VBoxContainer"]
+offset_left = 329.0
+offset_top = 65.0
+offset_right = 400.0
+offset_bottom = 96.0
+size_flags_horizontal = 8
+text = "Confirm"
 
 [node name="Glossary" type="Control" parent="DefaultTheme"]
 script = ExtResource("20_vmnp2")

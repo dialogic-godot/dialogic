@@ -231,6 +231,7 @@ func build_editor():
 		elif p.dialogic_type == resource.ValueType.Label:
 			editor_node = Label.new()
 			editor_node.text = p.display_info.text
+			editor_node.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 		
 		## CUSTOM
 		elif p.dialogic_type == resource.ValueType.Custom:

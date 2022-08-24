@@ -19,11 +19,11 @@ func text_changed(value = ""):
 
 func set_left_text(value):
 	$LeftText.text = str(value)
-	$LeftText.visible = value.is_empty()
+	$LeftText.visible = !value.is_empty()
 
 func set_right_text(value):
 	$RightText.text = str(value)
-	$RightText.visible = value.is_empty()
+	$RightText.visible = !value.is_empty()
 
 func set_value(value):
 	$TextEdit.text = str(value)
