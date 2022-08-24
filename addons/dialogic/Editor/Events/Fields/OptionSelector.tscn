@@ -1,0 +1,49 @@
+[gd_scene load_steps=3 format=3 uid="uid://d3bhehatwoio"]
+
+[ext_resource type="Script" path="res://addons/dialogic/Editor/Events/Fields/OptionSelector.gd" id="1"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rs7li"]
+content_margin_left = 10.0
+content_margin_top = 5.0
+content_margin_right = 10.0
+content_margin_bottom = 5.0
+bg_color = Color(0.113725, 0.121569, 0.145098, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.0784314, 0.0862745, 0.101961, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[node name="OptionSelector" type="HBoxContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource("1")
+
+[node name="LeftText" type="Label" parent="."]
+offset_top = 288.0
+offset_right = 1.0
+offset_bottom = 311.0
+
+[node name="MenuButton" type="MenuButton" parent="."]
+offset_left = 5.0
+offset_top = 283.0
+offset_right = 58.0
+offset_bottom = 316.0
+size_flags_vertical = 4
+theme_override_styles/normal = SubResource("StyleBoxFlat_rs7li")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_rs7li")
+theme_override_styles/hover = SubResource("StyleBoxFlat_rs7li")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_rs7li")
+theme_override_styles/focus = SubResource("StyleBoxFlat_rs7li")
+text = "Test"
+flat = false
+
+[node name="RightText" type="Label" parent="."]
+offset_left = 62.0
+offset_top = 288.0
+offset_right = 63.0
+offset_bottom = 311.0

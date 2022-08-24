@@ -1,0 +1,154 @@
+[gd_scene load_steps=4 format=3 uid="uid://bb1ond3og264d"]
+
+[ext_resource type="PackedScene" uid="uid://duj8nl0vpms35" path="res://addons/dialogic/Editor/Common/TLabel.tscn" id="1"]
+[ext_resource type="Script" path="res://addons/dialogic/Events/Text/Settings_DialogText.gd" id="2"]
+[ext_resource type="PackedScene" uid="uid://dpwhshre1n4t6" path="res://addons/dialogic/Editor/Events/Fields/ComplexPicker.tscn" id="3"]
+
+[node name="DialogText" type="HBoxContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource("2")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+offset_right = 1024.0
+offset_bottom = 600.0
+size_flags_horizontal = 3
+
+[node name="TLabel" parent="VBoxContainer" instance=ExtResource("1")]
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_right = 1024.0
+offset_bottom = 26.0
+text = "Dialog Text"
+mode = 1
+
+[node name="DefaultSpeed" type="HBoxContainer" parent="VBoxContainer"]
+offset_top = 30.0
+offset_right = 1024.0
+offset_bottom = 61.0
+
+[node name="TLabel" parent="VBoxContainer/DefaultSpeed" instance=ExtResource("1")]
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_top = 2.0
+offset_right = 937.0
+offset_bottom = 28.0
+size_flags_horizontal = 3
+text = "Default speed"
+mode = 0
+
+[node name="DefaultSpeed" type="SpinBox" parent="VBoxContainer/DefaultSpeed"]
+unique_name_in_owner = true
+offset_left = 941.0
+offset_right = 1024.0
+offset_bottom = 31.0
+step = 0.001
+
+[node name="InputAction" type="HBoxContainer" parent="VBoxContainer"]
+offset_top = 65.0
+offset_right = 1024.0
+offset_bottom = 98.0
+
+[node name="TLabel" parent="VBoxContainer/InputAction" instance=ExtResource("1")]
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_top = 3.0
+offset_right = 820.0
+offset_bottom = 29.0
+size_flags_horizontal = 3
+text = "Input action"
+mode = 0
+
+[node name="InputAction" parent="VBoxContainer/InputAction" instance=ExtResource("3")]
+unique_name_in_owner = true
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 824.0
+offset_right = 1024.0
+offset_bottom = 33.0
+
+[node name="Skippable" type="HBoxContainer" parent="VBoxContainer"]
+offset_top = 102.0
+offset_right = 1024.0
+offset_bottom = 128.0
+
+[node name="TLabel" parent="VBoxContainer/Skippable" instance=ExtResource("1")]
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_right = 996.0
+offset_bottom = 26.0
+size_flags_horizontal = 3
+text = "Skippable"
+mode = 0
+
+[node name="Skippable" type="CheckBox" parent="VBoxContainer/Skippable"]
+unique_name_in_owner = true
+offset_left = 1000.0
+offset_right = 1024.0
+offset_bottom = 26.0
+
+[node name="ColorNames" type="HBoxContainer" parent="VBoxContainer"]
+offset_top = 132.0
+offset_right = 1024.0
+offset_bottom = 158.0
+
+[node name="TLabel" parent="VBoxContainer/ColorNames" instance=ExtResource("1")]
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_right = 996.0
+offset_bottom = 26.0
+size_flags_horizontal = 3
+text = "Autocolor names"
+mode = 0
+
+[node name="AutocolorNames" type="CheckBox" parent="VBoxContainer/ColorNames"]
+unique_name_in_owner = true
+offset_left = 1000.0
+offset_right = 1024.0
+offset_bottom = 26.0
+
+[node name="AutoContinue" type="HBoxContainer" parent="VBoxContainer"]
+offset_top = 162.0
+offset_right = 1024.0
+offset_bottom = 193.0
+
+[node name="TLabel" parent="VBoxContainer/AutoContinue" instance=ExtResource("1")]
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_top = 2.0
+offset_right = 867.0
+offset_bottom = 28.0
+size_flags_horizontal = 3
+text = "Autocontinue"
+mode = 0
+
+[node name="Autocontinue" type="CheckBox" parent="VBoxContainer/AutoContinue"]
+unique_name_in_owner = true
+offset_left = 871.0
+offset_right = 895.0
+offset_bottom = 31.0
+
+[node name="TLabel2" parent="VBoxContainer/AutoContinue" instance=ExtResource("1")]
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 899.0
+offset_top = 2.0
+offset_right = 937.0
+offset_bottom = 28.0
+text = "after"
+mode = 0
+
+[node name="AutocontinueDelay" type="SpinBox" parent="VBoxContainer/AutoContinue"]
+unique_name_in_owner = true
+offset_left = 941.0
+offset_right = 1024.0
+offset_bottom = 31.0
+step = 0.01
+suffix = "s"
+
+[connection signal="value_changed" from="VBoxContainer/DefaultSpeed/DefaultSpeed" to="." method="_on_DefaultSpeed_value_changed"]
+[connection signal="value_changed" from="VBoxContainer/InputAction/InputAction" to="." method="_on_InputAction_value_changed"]
+[connection signal="toggled" from="VBoxContainer/Skippable/Skippable" to="." method="_on_Skippable_toggled"]
+[connection signal="toggled" from="VBoxContainer/ColorNames/AutocolorNames" to="." method="_on_AutocolorNames_toggled"]
+[connection signal="toggled" from="VBoxContainer/AutoContinue/Autocontinue" to="." method="_on_Autocontinue_toggled"]
+[connection signal="value_changed" from="VBoxContainer/AutoContinue/AutocontinueDelay" to="." method="_on_AutocontinueDelay_value_changed"]

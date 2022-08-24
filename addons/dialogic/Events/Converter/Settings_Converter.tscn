@@ -1,0 +1,58 @@
+[gd_scene load_steps=2 format=3 uid="uid://bythb570hbfd1"]
+
+[ext_resource type="Script" path="res://addons/dialogic/Events/Converter/Settings_Converter.gd" id="1_3feab"]
+
+[node name="Dialogic 1 Converter" type="HBoxContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource("1_3feab")
+
+[node name="LeftPanel" type="VBoxContainer" parent="."]
+custom_minimum_size = Vector2(800, 0)
+offset_right = 800.0
+offset_bottom = 1050.0
+
+[node name="OutputLog" type="RichTextLabel" parent="LeftPanel"]
+unique_name_in_owner = true
+clip_contents = false
+offset_right = 800.0
+offset_bottom = 1050.0
+size_flags_vertical = 3
+bbcode_enabled = true
+text = "This is a converter script to convert Dialogic 1.4+ files into Dialogic 2.0 format. 
+
+Please copy your res://dialogic folder from a Dialogic 1.4 project into this project before proceeding. 
+
+Once you are ready, the Verify Files button will do a check to make sure all of the files are present, and prepare it for conversion."
+
+[node name="VSeparator" type="VSeparator" parent="."]
+offset_left = 804.0
+offset_right = 808.0
+offset_bottom = 1050.0
+
+[node name="RightPanel" type="VBoxContainer" parent="."]
+offset_left = 812.0
+offset_right = 1102.0
+offset_bottom = 1050.0
+
+[node name="CheckBox" type="CheckBox" parent="RightPanel"]
+offset_right = 290.0
+offset_bottom = 31.0
+text = "Add prefix to duplicate characters"
+
+[node name="Verify" type="Button" parent="RightPanel"]
+offset_top = 35.0
+offset_right = 290.0
+offset_bottom = 66.0
+text = "Verify Files"
+
+[node name="Begin" type="Button" parent="RightPanel"]
+offset_top = 70.0
+offset_right = 290.0
+offset_bottom = 101.0
+disabled = true
+text = "Begin Conversion"
+
+[connection signal="toggled" from="RightPanel/CheckBox" to="." method="_on_check_box_toggled"]
+[connection signal="pressed" from="RightPanel/Verify" to="." method="_on_verify_pressed"]
+[connection signal="pressed" from="RightPanel/Begin" to="." method="_on_begin_pressed"]

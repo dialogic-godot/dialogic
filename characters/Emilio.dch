@@ -1,0 +1,22 @@
+{
+"@path": "res://addons/dialogic/Resources/character.gd",
+"@subpath": NodePath(""),
+"color": Color(0.215686, 0.721569, 0.686275, 1),
+"custom_info": {
+"sound_moods": {},
+"theme": ""
+},
+"default_portrait": "default",
+"description": "THE dialogic developer!",
+"display_name": "Emi",
+"mirror": false,
+"name": "Emilio",
+"nicknames": ["Emi", "Emilio", "Emilio Coppola"],
+"offset": Vector2(0, 0),
+"portraits": {
+"default": {
+"path": "res://icon.png"
+}
+},
+"scale": 1.0
+}

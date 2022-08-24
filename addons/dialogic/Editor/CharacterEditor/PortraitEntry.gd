@@ -1,55 +1,46 @@
-tool
+@tool
 extends HBoxContainer
 
 var editor_reference
-var image_node
-var image_node2
-var image_label
+var character_editor_reference
 
-func _ready():
-	$ButtonDelete.icon = get_icon("Remove", "EditorIcons")
+var portrait_data = {}
 
+func load_data(name: String, data:Dictionary, char_edi_reference:Control) -> void:
+	$NameEdit.text = name
+	$PathEdit.text = data.get('path', '')
+	portrait_data = data
+	character_editor_reference = char_edi_reference
 
-func _on_ButtonDelete_pressed():
-	if $NameEdit.text == 'Default':
-		$PathEdit.text = ''
-		update_preview('')
-	else:
-		queue_free()
+func get_portrait_name() -> String:
+	return $NameEdit.text
 
+func _ready() -> void:
+	$ButtonDelete.icon = get_theme_icon("Remove", "EditorIcons")
+	$ButtonSelect.icon = get_theme_icon("ListSelect", "EditorIcons")
 
-func _on_ButtonSelect_pressed():
-	editor_reference.godot_dialog("*.png, *.svg, *.tscn")
-	editor_reference.godot_dialog_connect(self, "_on_file_selected")
+func _on_ButtonDelete_pressed() -> void:
+	character_editor_reference.update_portrait_preview()
+	queue_free()
 
+func _on_ButtonSelect_pressed() -> void:
+	find_parent('EditorView').godot_file_dialog(_on_file_selected, "*.png, *.svg, *.tscn", EditorFileDialog.FILE_MODE_OPEN_FILE, "Open portrait")
 
-func _on_file_selected(path, target):
-	update_preview(path)
+func _on_file_selected(path:String) -> void:
 	$PathEdit.text = path
+	portrait_data.path = path
 	if $NameEdit.text == '':
-		$NameEdit.text = DialogicResources.get_filename_from_path(path)
+		$NameEdit.text = path.get_file().trim_suffix("."+path.get_extension())
+	update_preview()
 
+func _on_focus_entered() -> void:
+	update_preview()
 
-func _on_focus_entered():
-	if $PathEdit.text == '':
-		image_label.text = editor_reference.dialogicTranslator.translate('NoImagePreview')
-		image_node.texture = null
-		image_node2.texture = null
-	else:
-		update_preview($PathEdit.text)
+func update_preview() -> void:
+	character_editor_reference.update_portrait_preview(self)
 
+func visual_focus():
+	modulate = get_theme_color("warning_color", "Editor")
 
-func update_preview(path):
-	image_label.text = editor_reference.dialogicTranslator.translate('Preview of')+' "'+$NameEdit.text+'"'
-	var l_path = path.to_lower()
-	if '.png' in l_path or '.svg' in l_path:
-		image_node.texture = load(path)
-		image_node2.texture = load(path)
-		image_label.text += ' (' + str(image_node.texture.get_width()) + 'x' + str(image_node.texture.get_height())+')'
-	elif '.tscn' in l_path:
-		image_node.texture = null
-		image_node2.texture = null
-		image_label.text = editor_reference.dialogicTranslator.translate('CustomScenePreview')
-	else:
-		image_node.texture = null
-		image_node2.texture = null
+func visual_defocus():
+	modulate = Color(1,1,1,1)

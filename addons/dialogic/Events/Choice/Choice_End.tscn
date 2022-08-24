@@ -1,0 +1,13 @@
+[gd_scene load_steps=2 format=3 uid="uid://dtgsqv4xw0355"]
+
+[ext_resource type="Script" path="res://addons/dialogic/Events/Choice/Choice_End.gd" id="1_7qd85"]
+
+[node name="Choice_End" type="HBoxContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource("1_7qd85")
+
+[node name="Label" type="Label" parent="."]
+offset_top = 288.0
+offset_right = 1.0
+offset_bottom = 311.0

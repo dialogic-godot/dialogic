@@ -1,0 +1,175 @@
+[gd_scene load_steps=5 format=3 uid="uid://bmuda00fbd6i7"]
+
+[ext_resource type="Script" path="res://addons/dialogic/Editor/Settings/Settings_General.gd" id="2"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3nwa2"]
+content_margin_left = 5.0
+content_margin_top = 5.0
+content_margin_right = 5.0
+content_margin_bottom = 5.0
+bg_color = Color(0.545098, 0.545098, 0.545098, 0.211765)
+
+[sub_resource type="Image" id="Image_svkl2"]
+data = {
+"data": PackedByteArray(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+"format": "LumAlpha8",
+"height": 16,
+"mipmaps": false,
+"width": 16
+}
+
+[sub_resource type="ImageTexture" id="7"]
+image = SubResource("Image_svkl2")
+
+[node name="General" type="HBoxContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource("2")
+
+[node name="General" type="VBoxContainer" parent="."]
+offset_right = 830.0
+offset_bottom = 600.0
+size_flags_horizontal = 3
+
+[node name="TitleLabel" type="Label" parent="General"]
+offset_right = 830.0
+offset_bottom = 36.0
+theme_override_styles/normal = SubResource("StyleBoxFlat_3nwa2")
+text = "Extensions"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="General"]
+offset_top = 40.0
+offset_right = 830.0
+offset_bottom = 66.0
+
+[node name="Label" type="Label" parent="General/HBoxContainer"]
+offset_right = 166.0
+offset_bottom = 26.0
+text = "Custom events folder"
+
+[node name="CustomEventsFolderLabel" type="Label" parent="General/HBoxContainer"]
+unique_name_in_owner = true
+offset_left = 170.0
+offset_right = 802.0
+offset_bottom = 26.0
+size_flags_horizontal = 3
+text = "res://addons/dialogic_additions/Events"
+text_overrun_behavior = 1
+
+[node name="CustomEventsFolderButton" type="Button" parent="General/HBoxContainer"]
+unique_name_in_owner = true
+offset_left = 806.0
+offset_right = 830.0
+offset_bottom = 26.0
+icon = SubResource("7")
+
+[node name="Label" type="Label" parent="General"]
+offset_top = 70.0
+offset_right = 830.0
+offset_bottom = 96.0
+text = "You should restart godot after changing this path!"
+
+[node name="HSeparator" type="HSeparator" parent="General"]
+offset_top = 100.0
+offset_right = 830.0
+offset_bottom = 104.0
+
+[node name="TitleLabel2" type="Label" parent="General"]
+offset_top = 108.0
+offset_right = 830.0
+offset_bottom = 144.0
+theme_override_styles/normal = SubResource("StyleBoxFlat_3nwa2")
+text = "Testing"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="General"]
+offset_top = 148.0
+offset_right = 830.0
+offset_bottom = 174.0
+
+[node name="Label" type="Label" parent="General/HBoxContainer2"]
+offset_right = 105.0
+offset_bottom = 26.0
+text = "Testing scene"
+
+[node name="TestingSceneLabel" type="Label" parent="General/HBoxContainer2"]
+unique_name_in_owner = true
+offset_left = 109.0
+offset_right = 802.0
+offset_bottom = 26.0
+size_flags_horizontal = 3
+text = "res://addons/dialogic_additions/Events"
+text_overrun_behavior = 2
+
+[node name="TestingSceneButton" type="Button" parent="General/HBoxContainer2"]
+unique_name_in_owner = true
+offset_left = 806.0
+offset_right = 830.0
+offset_bottom = 26.0
+icon = SubResource("7")
+
+[node name="VSeparator" type="VSeparator" parent="."]
+offset_left = 834.0
+offset_right = 838.0
+offset_bottom = 600.0
+
+[node name="Theming" type="VBoxContainer" parent="."]
+offset_left = 842.0
+offset_right = 1024.0
+offset_bottom = 600.0
+
+[node name="Label" type="Label" parent="Theming"]
+offset_right = 182.0
+offset_bottom = 26.0
+text = "Color palette"
+
+[node name="Colors" type="HBoxContainer" parent="Theming"]
+unique_name_in_owner = true
+offset_top = 30.0
+offset_right = 182.0
+offset_bottom = 38.0
+
+[node name="Color1" type="ColorPickerButton" parent="Theming/Colors"]
+offset_right = 8.0
+offset_bottom = 8.0
+color = Color(0.231373, 0.545098, 0.94902, 1)
+
+[node name="Color2" type="ColorPickerButton" parent="Theming/Colors"]
+offset_left = 12.0
+offset_right = 20.0
+offset_bottom = 8.0
+color = Color(0, 0.694118, 0.372549, 1)
+
+[node name="Color3" type="ColorPickerButton" parent="Theming/Colors"]
+offset_left = 24.0
+offset_right = 32.0
+offset_bottom = 8.0
+color = Color(0.580392, 0.407843, 0.909804, 1)
+
+[node name="Color4" type="ColorPickerButton" parent="Theming/Colors"]
+offset_left = 36.0
+offset_right = 44.0
+offset_bottom = 8.0
+color = Color(0.870588, 0.360784, 0.360784, 1)
+
+[node name="Color5" type="ColorPickerButton" parent="Theming/Colors"]
+offset_left = 48.0
+offset_right = 56.0
+offset_bottom = 8.0
+color = Color(0.980392, 0.584314, 0.164706, 1)
+
+[node name="Color6" type="ColorPickerButton" parent="Theming/Colors"]
+offset_left = 60.0
+offset_right = 68.0
+offset_bottom = 8.0
+color = Color(0.486275, 0.486275, 0.486275, 1)
+
+[node name="ResetColorsButton" type="Button" parent="Theming"]
+unique_name_in_owner = true
+offset_top = 42.0
+offset_right = 182.0
+offset_bottom = 73.0
+size_flags_horizontal = 0
+text = "Reset colors to default"
+
+[connection signal="pressed" from="General/HBoxContainer/CustomEventsFolderButton" to="." method="_on_CustomEventsFolderButton_pressed"]
+[connection signal="pressed" from="General/HBoxContainer2/TestingSceneButton" to="." method="_on_TestingSceneButton_pressed"]

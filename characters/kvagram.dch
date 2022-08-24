@@ -1,0 +1,19 @@
+{
+"@path": "res://addons/dialogic/Resources/character.gd",
+"@subpath": NodePath(""),
+"color": Color( 0.0117647, 0.4, 0, 1 ),
+"custom_info": {
+"sound_moods": {
+},
+"theme": ""
+},
+"description": "",
+"display_name": "KvaGram",
+"mirror": false,
+"name": "kvagram",
+"nicknames": [ "" ],
+"offset": Vector2( 0, 0 ),
+"portraits": {
+},
+"scale": 1.0
+}

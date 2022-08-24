@@ -1,0 +1,79 @@
+[gd_scene load_steps=4 format=3 uid="uid://dw040wv25miih"]
+
+[ext_resource type="PackedScene" uid="uid://x8q2gtqyisxv" path="res://addons/dialogic/Events/Variable/SettingsEditor/VariableGroup.tscn" id="1"]
+[ext_resource type="Script" path="res://addons/dialogic/Events/Variable/SettingsEditor/Settings_Variables.gd" id="2"]
+[ext_resource type="PackedScene" uid="uid://duj8nl0vpms35" path="res://addons/dialogic/Editor/Common/TLabel.tscn" id="4"]
+
+[node name="VariablesEditor" type="HBoxContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource("2")
+
+[node name="VBox" type="VBoxContainer" parent="."]
+offset_right = 674.0
+offset_bottom = 600.0
+size_flags_horizontal = 3
+
+[node name="HBox" type="HBoxContainer" parent="VBox"]
+offset_right = 674.0
+offset_bottom = 26.0
+
+[node name="Variables" parent="VBox/HBox" instance=ExtResource("4")]
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_right = 674.0
+offset_bottom = 26.0
+size_flags_horizontal = 3
+text = "Variables"
+mode = 1
+
+[node name="ScrollContainer" type="ScrollContainer" parent="VBox"]
+offset_top = 30.0
+offset_right = 674.0
+offset_bottom = 600.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="MainVariableGroup" parent="VBox/ScrollContainer" instance=ExtResource("1")]
+unique_name_in_owner = true
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_right = 674.0
+offset_bottom = 45.0
+MainGroup = true
+
+[node name="VSeparator" type="VSeparator" parent="."]
+offset_left = 678.0
+offset_right = 682.0
+offset_bottom = 600.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+offset_left = 686.0
+offset_right = 1024.0
+offset_bottom = 600.0
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.5
+
+[node name="Variables2" parent="VBoxContainer" instance=ExtResource("4")]
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_right = 338.0
+offset_bottom = 26.0
+text = "About variables"
+mode = 1
+
+[node name="Info2" parent="VBoxContainer" instance=ExtResource("4")]
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_top = 30.0
+offset_right = 338.0
+offset_bottom = 446.0
+text = "You can define a set of variables here (each a name and a default value). You can then change them with the Set Variable sevent or use them in text using {MyVariableName}.
+
+You can group variables in groups (and subgroups) and then reference them using {MyGroup.MySubGroup.MyVariable} in text.
+
+You can access variables in scripts by doing 'Dialogic.VAR.MyVariable'  
+or 'Dialogic.VAR.MyGroup.MySubGroup.MyVariable'."
+autowrap_mode = 3
+text_key = "Tra"
+mode = 2

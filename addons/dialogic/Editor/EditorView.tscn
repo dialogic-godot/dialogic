@@ -1,330 +1,81 @@
-[gd_scene load_steps=22 format=2]
+[gd_scene load_steps=8 format=3 uid="uid://b3mf0pcte7us0"]
 
-[ext_resource path="res://addons/dialogic/Editor/EditorView.gd" type="Script" id=1]
-[ext_resource path="res://addons/dialogic/Editor/TimelineEditor/TimelineEditor.tscn" type="PackedScene" id=2]
-[ext_resource path="res://addons/dialogic/Images/Toolbar/add-character.svg" type="Texture" id=3]
-[ext_resource path="res://addons/dialogic/Images/Toolbar/add-timeline.svg" type="Texture" id=4]
-[ext_resource path="res://addons/dialogic/Images/Toolbar/add-definition.svg" type="Texture" id=5]
-[ext_resource path="res://addons/dialogic/Editor/SettingsEditor/SettingsEditor.tscn" type="PackedScene" id=6]
-[ext_resource path="res://addons/dialogic/Editor/CharacterEditor/CharacterEditor.tscn" type="PackedScene" id=7]
-[ext_resource path="res://addons/dialogic/Editor/ThemeEditor/ThemeEditor.tscn" type="PackedScene" id=8]
-[ext_resource path="res://addons/dialogic/Editor/GlossaryEntryEditor/GlossaryEntryEditor.tscn" type="PackedScene" id=9]
-[ext_resource path="res://addons/dialogic/Images/Toolbar/add-glossary.svg" type="Texture" id=10]
-[ext_resource path="res://addons/dialogic/Editor/DocumentationViewer/DocumentationViewer.tscn" type="PackedScene" id=11]
-[ext_resource path="res://addons/dialogic/Editor/ValueEditor/ValueEditor.tscn" type="PackedScene" id=12]
-[ext_resource path="res://addons/dialogic/Images/Toolbar/add-theme.svg" type="Texture" id=13]
-[ext_resource path="res://addons/dialogic/Editor/MasterTree/MasterTree.tscn" type="PackedScene" id=35]
+[ext_resource type="PackedScene" uid="uid://cuud6b86l7juf" path="res://addons/dialogic/Editor/TimelineEditor/TimelineEditor.tscn" id="1"]
+[ext_resource type="Script" path="res://addons/dialogic/Editor/EditorView.gd" id="2"]
+[ext_resource type="PackedScene" uid="uid://cfwssh53iuf8x" path="res://addons/dialogic/Editor/Settings/SettingsEditor.tscn" id="3"]
+[ext_resource type="PackedScene" uid="uid://cu27v0qpqbntn" path="res://addons/dialogic/Editor/Common/Toolbar.tscn" id="4"]
+[ext_resource type="PackedScene" uid="uid://dr7l1304wixcs" path="res://addons/dialogic/Editor/TextEditor/TextEditor.tscn" id="5_px80h"]
+[ext_resource type="PackedScene" uid="uid://bak1jk2glij8r" path="res://addons/dialogic/Editor/CharacterEditor/CharacterEditor.tscn" id="6"]
 
-[sub_resource type="Image" id=9]
-data = {
-"data": PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ),
-"format": "LumAlpha8",
-"height": 16,
-"mipmaps": false,
-"width": 16
+[sub_resource type="CodeHighlighter" id="CodeHighlighter_p5dsy"]
+number_color = Color(0.8025, 0.81, 0.8225, 1)
+symbol_color = Color(0.8025, 0.81, 0.8225, 1)
+function_color = Color(0.8025, 0.81, 0.8225, 1)
+member_variable_color = Color(0.8025, 0.81, 0.8225, 1)
+color_regions = {
+"\" \"": Color(1, 0.93, 0.63, 1),
+"- ": Color(0.56, 1, 0.86, 1),
+"< >": Color(0.34, 0.7, 1, 1),
+"[ ]": Color(0.34, 0.7, 1, 1),
+"{ }": Color(0.56, 1, 0.86, 1)
 }
-
-[sub_resource type="ImageTexture" id=2]
-flags = 4
-flags = 4
-image = SubResource( 9 )
-size = Vector2( 16, 16 )
-
-[sub_resource type="InputEventKey" id=7]
-scancode = 16777252
-
-[sub_resource type="ShortCut" id=8]
-shortcut = SubResource( 7 )
-
-[sub_resource type="Image" id=10]
-data = {
-"data": PoolByteArray( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ),
-"format": "LumAlpha8",
-"height": 16,
-"mipmaps": false,
-"width": 16
-}
-
-[sub_resource type="ImageTexture" id=4]
-flags = 4
-flags = 4
-image = SubResource( 10 )
-size = Vector2( 16, 16 )
-
-[sub_resource type="StyleBoxTexture" id=5]
-texture = SubResource( 4 )
-region_rect = Rect2( 0, 0, 16, 16 )
-margin_left = 2.0
-margin_right = 2.0
-margin_top = 2.0
-margin_bottom = 2.0
 
 [node name="EditorView" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-rect_min_size = Vector2( 0, 200 )
 size_flags_horizontal = 3
 size_flags_vertical = 3
-script = ExtResource( 1 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
+script = ExtResource("2")
 
-[node name="ToolBar" type="HBoxContainer" parent="."]
-anchor_right = 1.0
-margin_bottom = 24.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="NewTimelineButton" type="Button" parent="ToolBar"]
-modulate = Color( 0, 0, 0, 1 )
-margin_right = 28.0
-margin_bottom = 24.0
-hint_tooltip = "Add Timeline"
-icon = ExtResource( 4 )
-flat = true
-
-[node name="NewCharactersButton" type="ToolButton" parent="ToolBar"]
-modulate = Color( 0, 0, 0, 1 )
-self_modulate = Color( 0.870588, 0.870588, 0.870588, 1 )
-margin_left = 32.0
-margin_right = 60.0
-margin_bottom = 24.0
-hint_tooltip = "Add Character"
-icon = ExtResource( 3 )
-
-[node name="NewValueButton" type="Button" parent="ToolBar"]
-modulate = Color( 0, 0, 0, 1 )
-margin_left = 64.0
-margin_right = 92.0
-margin_bottom = 24.0
-hint_tooltip = "Add Value"
-icon = ExtResource( 5 )
-flat = true
-
-[node name="NewGlossaryEntryButton" type="Button" parent="ToolBar"]
-modulate = Color( 0, 0, 0, 1 )
-margin_left = 96.0
-margin_right = 124.0
-margin_bottom = 24.0
-hint_tooltip = "Add Glossary Entry"
-icon = ExtResource( 10 )
-flat = true
-__meta__ = {
-"_editor_description_": ""
-}
-
-[node name="NewThemeButton" type="Button" parent="ToolBar"]
-modulate = Color( 0, 0, 0, 1 )
-margin_left = 128.0
-margin_right = 156.0
-margin_bottom = 24.0
-hint_tooltip = "Add Theme"
-icon = ExtResource( 13 )
-flat = true
-
-[node name="FoldTools" type="HBoxContainer" parent="ToolBar"]
-visible = false
-margin_left = 160.0
-margin_right = 348.0
-margin_bottom = 24.0
-
-[node name="Label" type="Label" parent="ToolBar/FoldTools"]
-visible = false
-margin_top = 5.0
-margin_right = 59.0
-margin_bottom = 19.0
-text = "      Fold  "
-
-[node name="ButtonFold" type="ToolButton" parent="ToolBar/FoldTools"]
-margin_left = 63.0
-margin_right = 91.0
-margin_bottom = 24.0
-icon = SubResource( 2 )
-align = 0
-
-[node name="ButtonUnfold" type="ToolButton" parent="ToolBar/FoldTools"]
-margin_left = 95.0
-margin_right = 123.0
-margin_bottom = 24.0
-icon = SubResource( 2 )
-align = 0
-
-[node name="PlayTimeline" type="ToolButton" parent="ToolBar/FoldTools"]
-self_modulate = Color( 0.870588, 0.870588, 0.870588, 1 )
-margin_left = 127.0
-margin_right = 188.0
-margin_bottom = 24.0
-mouse_default_cursor_shape = 2
-shortcut = SubResource( 8 )
-text = "Play Timeline"
-icon = SubResource( 2 )
-
-[node name="Spacer" type="Control" parent="ToolBar"]
-margin_left = 160.0
-margin_right = 747.0
-margin_bottom = 24.0
-size_flags_horizontal = 3
-
-[node name="Web" type="ToolButton" parent="ToolBar"]
-self_modulate = Color( 0.870588, 0.870588, 0.870588, 1 )
-margin_left = 751.0
-margin_right = 835.0
-margin_bottom = 24.0
-mouse_default_cursor_shape = 2
-text = "Website"
-icon = SubResource( 2 )
-
-[node name="Docs" type="ToolButton" parent="ToolBar"]
-self_modulate = Color( 0.870588, 0.870588, 0.870588, 1 )
-margin_left = 839.0
-margin_right = 900.0
-margin_bottom = 24.0
-mouse_default_cursor_shape = 2
-text = "Help"
-icon = SubResource( 2 )
-
-[node name="Version" type="Label" parent="ToolBar"]
-self_modulate = Color( 1, 1, 1, 0.631373 )
-margin_left = 904.0
-margin_top = 5.0
-margin_right = 1024.0
-margin_bottom = 19.0
-text = "Dialogic v1.4 - DEV"
-
-[node name="DocumentationNavigation" type="HBoxContainer" parent="ToolBar"]
-visible = false
-margin_left = 980.0
-margin_right = 1024.0
-margin_bottom = 32.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="VSeparator" type="VSeparator" parent="ToolBar/DocumentationNavigation"]
-margin_right = 4.0
-margin_bottom = 40.0
-
-[node name="Previous" type="Button" parent="ToolBar/DocumentationNavigation"]
-margin_right = 22.0
-margin_bottom = 32.0
-rect_min_size = Vector2( 22, 22 )
-focus_mode = 0
-disabled = true
-icon = SubResource( 2 )
-flat = true
-expand_icon = true
-
-[node name="Next" type="Button" parent="ToolBar/DocumentationNavigation"]
-margin_left = 22.0
-margin_right = 44.0
-margin_bottom = 32.0
-rect_min_size = Vector2( 22, 22 )
-focus_mode = 0
-disabled = true
-icon = SubResource( 2 )
-flat = true
-expand_icon = true
-
-[node name="MainPanel" type="HSplitContainer" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_top = 38.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
-[node name="MasterTreeContainer" type="VBoxContainer" parent="MainPanel"]
-margin_right = 150.0
-margin_bottom = 562.0
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+offset_right = 1024.0
+offset_bottom = 600.0
 
-[node name="FilterMasterTreeEdit" type="LineEdit" parent="MainPanel/MasterTreeContainer"]
-margin_right = 150.0
-margin_bottom = 26.0
-clear_button_enabled = true
-right_icon = SubResource( 2 )
-placeholder_text = "Filter"
+[node name="Toolbar" parent="MarginContainer/VBoxContainer" instance=ExtResource("4")]
+unique_name_in_owner = true
+anchor_right = 0.0
+offset_right = 1024.0
 
-[node name="MasterTree" parent="MainPanel/MasterTreeContainer" instance=ExtResource( 35 )]
+[node name="TimelineEditor" parent="MarginContainer/VBoxContainer" instance=ExtResource("1")]
+unique_name_in_owner = true
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_top = 30.0
-margin_right = 150.0
-margin_bottom = 562.0
+offset_top = 37.0
+offset_right = 1024.0
+offset_bottom = 600.0
+size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="TimelineEditor" parent="MainPanel" instance=ExtResource( 2 )]
-visible = false
-
-[node name="CharacterEditor" parent="MainPanel" instance=ExtResource( 7 )]
-visible = false
-
-[node name="GlossaryEntryEditor" parent="MainPanel" instance=ExtResource( 9 )]
+[node name="CharacterEditor" parent="MarginContainer/VBoxContainer" instance=ExtResource("6")]
+unique_name_in_owner = true
 visible = false
 anchor_right = 0.0
 anchor_bottom = 0.0
-margin_left = 162.0
-margin_right = 1024.0
-margin_bottom = 562.0
+offset_top = 320.0
+offset_right = 1024.0
+offset_bottom = 600.0
+size_flags_vertical = 3
 
-[node name="ValueEditor" parent="MainPanel" instance=ExtResource( 12 )]
+[node name="TextEditor" parent="MarginContainer/VBoxContainer" instance=ExtResource("5_px80h")]
+unique_name_in_owner = true
 visible = false
+offset_top = 37.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+syntax_highlighter = SubResource("CodeHighlighter_p5dsy")
 
-[node name="ThemeEditor" parent="MainPanel" instance=ExtResource( 8 )]
-visible = false
+[node name="SettingsEditor" parent="MarginContainer/VBoxContainer" instance=ExtResource("3")]
+unique_name_in_owner = true
+offset_top = 320.0
+offset_right = 1024.0
+size_flags_vertical = 3
 
-[node name="SettingsEditor" parent="MainPanel" instance=ExtResource( 6 )]
-visible = false
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 192.0
-margin_right = 1253.0
-margin_bottom = 661.0
+[node name="SaveConfirmationDialog" type="AcceptDialog" parent="."]
+size = Vector2i(207, 100)
 
-[node name="DocumentationViewer" parent="MainPanel" instance=ExtResource( 11 )]
-visible = false
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 162.0
-margin_right = 1024.0
-margin_bottom = 562.0
-custom_styles/panel = SubResource( 5 )
-
-[node name="Empty" type="CenterContainer" parent="MainPanel"]
-margin_left = 162.0
-margin_right = 1024.0
-margin_bottom = 562.0
-
-[node name="VBoxContainer" type="VBoxContainer" parent="MainPanel/Empty"]
-margin_left = 291.0
-margin_top = 274.0
-margin_right = 571.0
-margin_bottom = 288.0
-
-[node name="Label" type="Label" parent="MainPanel/Empty/VBoxContainer"]
-margin_right = 280.0
-margin_bottom = 14.0
-text = "Select or create an element to start working"
-
-[node name="RemoveConfirmation" type="ConfirmationDialog" parent="."]
-margin_right = 325.0
-margin_bottom = 88.0
-rect_min_size = Vector2( 250, 87.5 )
-window_title = "Be sure you want to delete!"
-dialog_text = "Are you sure you want to remove this [resource]?
-(Can't be restored)"
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="RemoveFolderConfirmation" type="ConfirmationDialog" parent="."]
-margin_right = 325.0
-margin_bottom = 88.0
-rect_min_size = Vector2( 250, 87.5 )
-window_title = "Be sure you want to delete this folder!"
-dialog_text = "Are you sure you want to remove this folder and all the items contained in it? 
-(Can't be restored)"
-__meta__ = {
-"_edit_use_anchors_": false
-}
+[connection signal="confirmed" from="SaveConfirmationDialog" to="." method="_on_SaveConfirmationDialog_confirmed"]
+[connection signal="custom_action" from="SaveConfirmationDialog" to="." method="_on_SaveConfirmationDialog_custom_action"]
