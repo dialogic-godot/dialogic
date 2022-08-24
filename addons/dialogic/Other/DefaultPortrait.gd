@@ -60,11 +60,6 @@ func change_portrait(passed_character:DialogicCharacter, passed_portrait:String)
 
 	portrait_width = $Portrait.texture.get_width() * $Portrait.scale.x
 	portrait_height = $Portrait.texture.get_height() * $Portrait.scale.y
-
-	
-# These are from the separate Join/Update "Mirror" toggles, to override the default mirror
-func does_portrait_mirror() -> bool:
-	return true
 	
 func mirror_portrait(mirror:bool) -> void:
 	if mirror:
@@ -78,10 +73,7 @@ func mirror_portrait(mirror:bool) -> void:
 		else:
 			$Portrait.flip_h = false
 			
-# This function is needed on every custom portrait scene
-func does_portrait_accept_extra_data() -> bool:
-	return false	
-	
+
 # Function to accept and use the extra data, if the custom portrait wants to accept it
 func set_portrait_extra_data(data: String) -> void:
 	# This function can only receive paratmeters on an Update event, but it is called as part of Join
