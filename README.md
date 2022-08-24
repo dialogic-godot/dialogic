@@ -1,18 +1,11 @@
-<!-- ![dialogic-cover](https://user-images.githubusercontent.com/2206700/156223574-5052c607-408e-4143-80b5-c4aed1cf29a2.png) 
-
+# Dialogic
 Create dialogs, characters and scenes to display conversations in your Godot games. 
 
-[Changelog](https://github.com/coppolaemilio/dialogic/blob/main/addons/dialogic/Documentation/Content/Changelog.md) — 
-[Installation](#installation) — 
-[Documentation](https://github.com/coppolaemilio/dialogic/blob/main/addons/dialogic/Documentation/Content/Welcome.md) — 
-[Credits](#credits)
 
-!-->
+## Version 2.0 - Alpha  ![Godot v4.0](https://img.shields.io/badge/Godot-v4.0-%23478cbf)
+Dialogic 2.0 is a major rewrite of the plugin including many compatibility-breaking changes. It is currently developed exclusively for Godot 4.
 
-
-
-# Version 2.0.0 - WIP  ![Godot v4.0](https://img.shields.io/badge/Godot-v4.0-%23478cbf)
-Dialogic 2.0 is a major rewrite of the plugin including many compatibility-breaking changes. It is currently developed exclusively for godot 4.
+If you are looking for the Godot 3.5 version you can find it here: https://github.com/coppolaemilio/dialogic/tree/dialogic-1
 
 
 ## Installation
@@ -28,56 +21,8 @@ You can also install Dialogic using the **AssetLib** tab in the editor, but the 
 ## 📃 Credits
 Made by [Emilio Coppola](https://github.com/coppolaemilio) and [Jowan-Spooner](https://github.com/Jowan-Spooner).
 
-Contributors: [zaknafean](https://github.com/zaknafean), [AnidemDex](https://github.com/AnidemDex), [Arnaud](https://github.com/arnaudvergnet), [ellogwen](https://github.com/ellogwen), [Tim Krief](https://github.com/timkrief), [and more!](https://github.com/coppolaemilio/dialogic/graphs/contributors). Special thanks: [Toen](https://twitter.com/ToenAndreMC), Òscar, [Francisco Presencia](https://francisco.io/), [M7mdKady14](https://github.com/M7mdKady14). Placeholder images are from [Toen's](https://toen.world/) [YouTube DF series](https://www.youtube.com/watch?v=B1ggwiat7PM)
+Contributors: [zaknafean](https://github.com/zaknafean),[thebardsrc](https://github.com/thebardsrc), [AnidemDex](https://github.com/AnidemDex), [Arnaud](https://github.com/arnaudvergnet), [ellogwen](https://github.com/ellogwen), [Tim Krief](https://github.com/timkrief), [and more!](https://github.com/coppolaemilio/dialogic/graphs/contributors). Special thanks: [Toen](https://twitter.com/ToenAndreMC), Òscar, [Francisco Presencia](https://francisco.io/), [M7mdKady14](https://github.com/M7mdKady14).
 
 ### Thank you to all my [Patreons](https://www.patreon.com/coppolaemilio) and Github sponsors for making this possible!
-
-Mike King,
-Allyson Ota,
-Gemma M. Rull,
-newyear Studios,
-Joe Constant,
-kycho ,
-Luke Peters,
-Wapiti .,
-Garrett Guillotte,
-Alex Harry,
-Rokatansky,
-Karl Anderson,
-Alex (Well Done Games),
-GodofGrunts ,
-Tim Krief,
-Daniel Cheney,
-Carlo Cabanilla,
-Flaming Potato,
-Joseph Catrambone,
-AzulCrescent ,
-Hector Na Em,
-Sergey ,
-BasicIncomePlz,
-p sis,
-Sukh Atwal,
-Patrick Hogan,
-Jesse Priest,
-Ceah Sharp,
-Mark Charnock,
-soliare,
-Anthony Wilson,
-Anthony Pietra,
-KvaGram ,
-orgrinrt,
-Steven Shearer,
-Carter Lilley,
-CorbineCaleb,
-Thick Biscuit,
-teesloane,
-RagingRoosevelt,
-yochrisbolton,
-Jacquelinett,
-bitbrain,
-Charles Gray,
-
-
-Support me on [Patreon https://www.patreon.com/coppolaemilio](https://www.patreon.com/coppolaemilio)
 
 [MIT License](https://github.com/coppolaemilio/dialogic/blob/main/LICENSE)
