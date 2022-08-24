@@ -102,8 +102,8 @@ func get_as_string_to_store() -> String:
 	return Text.replace("\n", "\\\n")
 
 ## THIS HAS TO READ ALL THE DATA FROM THE SAVED STRING (see above) 
-func load_from_string_to_store(string:String):
-	var reg = RegEx.new()
+func load_from_string_to_store(string:String) -> void:
+	var reg := RegEx.new()
 	reg.compile("((?<name>[^:()\\n]*)?(?=(\\([^()]*\\))?:)(\\((?<portrait>[^()]*)\\))?)?:?(?<text>(.|(?<=\\\\)\\n)+)")
 	var result = reg.search(string)
 	if result and !result.get_string('name').is_empty():
@@ -116,7 +116,8 @@ func load_from_string_to_store(string:String):
 		if !result.get_string('portrait').is_empty():
 			Portrait = result.get_string('portrait').strip_edges()
 	
-	Text = result.get_string('text').replace("\\\n", "\n").strip_edges()
+	if result:
+		Text = result.get_string('text').replace("\\\n", "\n").strip_edges()
 
 func is_valid_event_string(string):
 	return true

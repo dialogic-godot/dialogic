@@ -21,7 +21,9 @@ You can also install Dialogic using the **AssetLib** tab in the editor, but the 
 ## 📃 Credits
 Made by [Emilio Coppola](https://github.com/coppolaemilio) and [Jowan-Spooner](https://github.com/Jowan-Spooner).
 
-Contributors: [zaknafean](https://github.com/zaknafean),[thebardsrc](https://github.com/thebardsrc), [AnidemDex](https://github.com/AnidemDex), [Arnaud](https://github.com/arnaudvergnet), [ellogwen](https://github.com/ellogwen), [Tim Krief](https://github.com/timkrief), [and more!](https://github.com/coppolaemilio/dialogic/graphs/contributors). Special thanks: [Toen](https://twitter.com/ToenAndreMC), Òscar, [Francisco Presencia](https://francisco.io/), [M7mdKady14](https://github.com/M7mdKady14).
+Contributors: [zaknafean](https://github.com/zaknafean), [thebardsrc](https://github.com/thebardsrc), [and more!](https://github.com/coppolaemilio/dialogic/graphs/contributors).
+
+Special thanks: [Arnaud](https://github.com/arnaudvergnet), [AnidemDex](https://github.com/AnidemDex), [ellogwen](https://github.com/ellogwen), [Tim Krief](https://github.com/timkrief), [Toen](https://twitter.com/ToenAndreMC), Òscar, [Francisco Presencia](https://francisco.io/), [M7mdKady14](https://github.com/M7mdKady14).
 
 ### Thank you to all my [Patreons](https://www.patreon.com/coppolaemilio) and Github sponsors for making this possible!
 
