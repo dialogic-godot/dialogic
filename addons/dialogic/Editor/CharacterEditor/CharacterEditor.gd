@@ -18,7 +18,6 @@ signal portrait_selected(previous, current)
 func new_character(path: String) -> void:
 	var resource = DialogicCharacter.new()
 	resource.resource_path = path
-	resource.name = path.get_file().trim_suffix("."+path.get_extension())
 	resource.display_name = path.get_file().trim_suffix("."+path.get_extension())
 	resource.color = Color(1,1,1,1)
 	resource.default_portrait = ""
@@ -30,7 +29,6 @@ func load_character(resource: DialogicCharacter) -> void:
 	if not resource:
 		return
 	current_character = resource
-	%NameLineEdit.text = resource.name
 	%ColorPickerButton.color = resource.color
 	%DisplayNameLineEdit.text = resource.display_name
 	%NicknameLineEdit.text = ""
@@ -94,7 +92,6 @@ func save_character() -> void:
 func _ready() -> void:
 	DialogicUtil.get_dialogic_plugin().dialogic_save.connect(save_character)
 	# Let's go connecting!
-	%NameLineEdit.text_changed.connect(something_changed)
 	%ColorPickerButton.color_changed.connect(something_changed)
 	%DisplayNameLineEdit.text_changed.connect(something_changed)
 	%NicknameLineEdit.text_changed.connect(something_changed)

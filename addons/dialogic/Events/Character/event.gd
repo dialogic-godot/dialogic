@@ -140,7 +140,7 @@ func get_as_string_to_store() -> String:
 		if ActionType == ActionTypes.Leave and _leave_all:
 			result_string += "--All--"
 		else: 
-			result_string += Character.name
+			result_string += Character.get_name()
 			if Portrait and ActionType != ActionTypes.Leave:
 				result_string+= " ("+Portrait+")"
 	
