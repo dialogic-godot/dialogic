@@ -4,6 +4,7 @@ enum states {IDLE, SHOWING_TEXT, ANIMATING, AWAITING_CHOICE, WAITING}
 
 var current_timeline = null
 var current_timeline_events = []
+var character_directory = {}
 
 var current_state = null:
 	get:
@@ -35,6 +36,13 @@ func _ready() -> void:
 	#as it's not particularly modifying much, just finishing a step we're deferring to fill in the event data, it should be safe for use without semaphores or mutexes
 	if Engine.is_editor_hint() == false:
 		deferred_loader = Thread.new()
+		
+		# Runtime will also build the character_directory dictionary. Editor will have to handle it a different way
+		var characters = DialogicUtil.list_resources_of_type(".dch")
+		
+		for character in characters:
+			var charfile = load(character)
+			character_directory[character] = charfile
 		
 	collect_subsystems()
 	clear()
