@@ -19,13 +19,14 @@ var Z_Index: int = 0
 var Mirrored: bool = false
 var _leave_all:bool = false
 var _update_zindex: bool = false
+var ExtraData: String = ""
 
 func _execute() -> void:
 	match ActionType:
 		ActionTypes.Join:
 			
 			if Character:
-				var n = dialogic.Portraits.add_portrait(Character, Portrait, Position, Mirrored, Z_Index)
+				var n = dialogic.Portraits.add_portrait(Character, Portrait, Position, Mirrored, Z_Index, ExtraData)
 				
 				if AnimationName.is_empty():
 					AnimationName = DialogicUtil.get_project_setting('dialogic/animations/join_default', 
@@ -86,7 +87,7 @@ get_script().resource_path.get_base_dir().plus_file('DefaultAnimations/fade_out_
 		ActionTypes.Update:
 			if Character:
 				if dialogic.Portraits.is_character_joined(Character):
-					dialogic.Portraits.change_portrait(Character, Portrait, Mirrored, Z_Index, _update_zindex)
+					dialogic.Portraits.change_portrait(Character, Portrait, Mirrored, Z_Index, _update_zindex, ExtraData)
 					if Position != 0:
 						dialogic.Portraits.move_portrait(Character, Position, Z_Index, _update_zindex, PositionMoveTime)
 					
@@ -146,7 +147,7 @@ func get_as_string_to_store() -> String:
 	
 	if Position and ActionType != ActionTypes.Leave:
 		result_string += " "+str(Position)
-	if AnimationName != "" || Z_Index != 0 || Mirrored != false || PositionMoveTime != 0.0:
+	if AnimationName != "" || Z_Index != 0 || Mirrored != false || PositionMoveTime != 0.0 || ExtraData != "":
 		result_string += " ["
 		if AnimationName:
 			result_string += 'animation="'+DialogicUtil.pretty_name(AnimationName)+'"'
@@ -167,6 +168,9 @@ func get_as_string_to_store() -> String:
 		
 		if PositionMoveTime != 0:
 			result_string += ' move_time="' + str(PositionMoveTime) + '"'
+		
+		if ExtraData != "":
+			result_string += ' extra_data="' + ExtraData + '"'
 			
 		result_string += "]"
 	return result_string
@@ -237,6 +241,8 @@ func load_from_string_to_store(string:String):
 			Z_Index = 	shortcode_params.get('z-index', 0).to_int()
 			_update_zindex = true 
 		Mirrored = DialogicUtil.str_to_bool(shortcode_params.get('mirrored', 'false'))
+		ExtraData = shortcode_params.get('extra_data', "")
+		
 # RETURN TRUE IF THE GIVEN LINE SHOULD BE LOADED AS THIS EVENT
 func is_valid_event_string(string:String):
 	
