@@ -1,6 +1,5 @@
-[gd_scene load_steps=5 format=3 uid="uid://bb1ond3og264d"]
+[gd_scene load_steps=6 format=3 uid="uid://bb1ond3og264d"]
 
-[ext_resource type="PackedScene" uid="uid://duj8nl0vpms35" path="res://addons/dialogic/Editor/Common/TLabel.tscn" id="1"]
 [ext_resource type="Script" path="res://addons/dialogic/Events/Text/Settings_DialogText.gd" id="2"]
 [ext_resource type="PackedScene" uid="uid://dpwhshre1n4t6" path="res://addons/dialogic/Editor/Events/Fields/ComplexPicker.tscn" id="3"]
 
@@ -10,6 +9,10 @@ content_margin_top = 5.0
 content_margin_right = 5.0
 content_margin_bottom = 5.0
 bg_color = Color(0.545098, 0.545098, 0.545098, 0.211765)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_5tav8"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_mamwx"]
 
 [node name="DialogText" type="HBoxContainer"]
 anchor_right = 1.0
@@ -107,25 +110,16 @@ offset_bottom = 203.0
 
 [node name="Label5" type="Label" parent="VBoxContainer/AutoContinue"]
 offset_top = 2.0
-offset_right = 349.0
+offset_right = 391.0
 offset_bottom = 28.0
 size_flags_horizontal = 3
 text = "Autocontinue"
 
 [node name="Autocontinue" type="CheckBox" parent="VBoxContainer/AutoContinue"]
 unique_name_in_owner = true
-offset_left = 353.0
-offset_right = 377.0
-offset_bottom = 31.0
-
-[node name="TLabel2" parent="VBoxContainer/AutoContinue" instance=ExtResource("1")]
-anchor_right = 0.0
-anchor_bottom = 0.0
-offset_left = 381.0
-offset_top = 2.0
+offset_left = 395.0
 offset_right = 419.0
-offset_bottom = 28.0
-text = "after"
+offset_bottom = 31.0
 
 [node name="AutocontinueDelay" type="SpinBox" parent="VBoxContainer/AutoContinue"]
 unique_name_in_owner = true
@@ -160,11 +154,14 @@ size_flags_vertical = 3
 horizontal_scroll_mode = 0
 
 [node name="Info" type="RichTextLabel" parent="VBoxContainer2/ScrollContainer"]
+unique_name_in_owner = true
 offset_right = 506.0
 offset_bottom = 560.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_colors/default_color = Color(1, 1, 1, 0.611765)
+theme_override_styles/focus = SubResource("StyleBoxEmpty_5tav8")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_mamwx")
 bbcode_enabled = true
 text = "There are a number of useful commands you can use in text events:
 - [b][speed=x][/b] changes the speed until the next speed command or the end of the text

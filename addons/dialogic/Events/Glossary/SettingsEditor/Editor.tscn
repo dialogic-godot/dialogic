@@ -1,15 +1,9 @@
 [gd_scene load_steps=5 format=3 uid="uid://dw040wv25miih"]
 
 [ext_resource type="Script" path="res://addons/dialogic/Events/Glossary/SettingsEditor/GlossaryEditor.gd" id="1_tf3p1"]
+[ext_resource type="StyleBox" uid="uid://dmsjhgv22dns8" path="res://addons/dialogic/Editor/Common/TitleBgStylebox.tres" id="2_kj6gm"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_blbvp"]
-content_margin_left = 5.0
-content_margin_top = 5.0
-content_margin_right = 5.0
-content_margin_bottom = 5.0
-bg_color = Color(0.545098, 0.545098, 0.545098, 0.211765)
-
-[sub_resource type="Image" id="Image_88ayt"]
+[sub_resource type="Image" id="Image_ruhry"]
 data = {
 "data": PackedByteArray(255, 255, 255, 0, 255, 255, 255, 0, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 131, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 131, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 131, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 231, 255, 93, 93, 55, 255, 97, 97, 58, 255, 93, 93, 233, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 231, 255, 94, 94, 54, 255, 94, 94, 57, 255, 93, 93, 233, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 93, 93, 233, 255, 93, 93, 232, 255, 93, 93, 41, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 93, 93, 233, 255, 93, 93, 232, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 97, 97, 42, 255, 255, 255, 0, 255, 97, 97, 42, 255, 97, 97, 42, 255, 255, 255, 0, 255, 98, 98, 47, 255, 97, 97, 42, 255, 255, 255, 0, 255, 97, 97, 42, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 235, 255, 93, 93, 233, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 94, 94, 46, 255, 93, 93, 236, 255, 93, 93, 233, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 235, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 233, 255, 95, 95, 59, 255, 96, 96, 61, 255, 93, 93, 235, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 233, 255, 95, 95, 59, 255, 96, 96, 61, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0),
 "format": "RGBA8",
@@ -18,8 +12,8 @@ data = {
 "width": 16
 }
 
-[sub_resource type="ImageTexture" id="ImageTexture_eevsv"]
-image = SubResource("Image_88ayt")
+[sub_resource type="ImageTexture" id="ImageTexture_mi8la"]
+image = SubResource("Image_ruhry")
 
 [node name="GlossaryEditor" type="VBoxContainer"]
 anchor_right = 1.0
@@ -41,7 +35,7 @@ size_flags_horizontal = 3
 offset_right = 371.0
 offset_bottom = 36.0
 size_flags_horizontal = 3
-theme_override_styles/normal = SubResource("StyleBoxFlat_blbvp")
+theme_override_styles/normal = ExtResource("2_kj6gm")
 text = "Glossary Settings"
 
 [node name="DefColor" type="HBoxContainer" parent="Entries/Settings"]
@@ -96,7 +90,7 @@ offset_bottom = 36.0
 offset_right = 218.0
 offset_bottom = 36.0
 size_flags_horizontal = 3
-theme_override_styles/normal = SubResource("StyleBoxFlat_blbvp")
+theme_override_styles/normal = ExtResource("2_kj6gm")
 text = "Active Files"
 
 [node name="LoadGlossaryFile" type="Button" parent="Entries/Settings/FileList/HBox"]
@@ -105,7 +99,7 @@ offset_left = 222.0
 offset_right = 284.0
 offset_bottom = 36.0
 text = "Load"
-icon = SubResource("ImageTexture_eevsv")
+icon = SubResource("ImageTexture_mi8la")
 
 [node name="AddGlossaryFile" type="Button" parent="Entries/Settings/FileList/HBox"]
 unique_name_in_owner = true
@@ -113,14 +107,14 @@ offset_left = 288.0
 offset_right = 343.0
 offset_bottom = 36.0
 text = "Add"
-icon = SubResource("ImageTexture_eevsv")
+icon = SubResource("ImageTexture_mi8la")
 
 [node name="DeleteGlossaryFile" type="Button" parent="Entries/Settings/FileList/HBox"]
 unique_name_in_owner = true
 offset_left = 347.0
 offset_right = 371.0
 offset_bottom = 36.0
-icon = SubResource("ImageTexture_eevsv")
+icon = SubResource("ImageTexture_mi8la")
 
 [node name="ScrollContainer" type="ScrollContainer" parent="Entries/Settings/FileList"]
 offset_top = 40.0
@@ -156,7 +150,7 @@ offset_bottom = 36.0
 offset_right = 125.0
 offset_bottom = 36.0
 size_flags_horizontal = 3
-theme_override_styles/normal = SubResource("StyleBoxFlat_blbvp")
+theme_override_styles/normal = ExtResource("2_kj6gm")
 text = "Entries"
 
 [node name="AddGlossaryEntry" type="Button" parent="Entries/EntryList/HBox"]
@@ -165,14 +159,14 @@ offset_left = 129.0
 offset_right = 229.0
 offset_bottom = 36.0
 text = "Add Entry"
-icon = SubResource("ImageTexture_eevsv")
+icon = SubResource("ImageTexture_mi8la")
 
 [node name="DeleteGlossaryEntry" type="Button" parent="Entries/EntryList/HBox"]
 unique_name_in_owner = true
 offset_left = 233.0
 offset_right = 257.0
 offset_bottom = 36.0
-icon = SubResource("ImageTexture_eevsv")
+icon = SubResource("ImageTexture_mi8la")
 
 [node name="ScrollContainer" type="ScrollContainer" parent="Entries/EntryList"]
 offset_top = 40.0
@@ -212,7 +206,7 @@ unique_name_in_owner = true
 offset_right = 372.0
 offset_bottom = 36.0
 size_flags_horizontal = 3
-theme_override_styles/normal = SubResource("StyleBoxFlat_blbvp")
+theme_override_styles/normal = ExtResource("2_kj6gm")
 text = "Entries"
 
 [node name="EntrySettings" type="GridContainer" parent="Entries/EntryEditor/VBox"]

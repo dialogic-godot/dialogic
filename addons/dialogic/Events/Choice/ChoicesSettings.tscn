@@ -1,14 +1,8 @@
 [gd_scene load_steps=4 format=3 uid="uid://txjh3ufo5d4y"]
 
 [ext_resource type="Script" path="res://addons/dialogic/Events/Choice/ChoicesSettings.gd" id="2"]
-[ext_resource type="LabelSettings" uid="uid://bsegxmwaxoc33" path="res://addons/dialogic/Editor/Common/HintLabelSettings.tres" id="2_eovsc"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_md6a8"]
-content_margin_left = 5.0
-content_margin_top = 5.0
-content_margin_right = 5.0
-content_margin_bottom = 5.0
-bg_color = Color(0.545098, 0.545098, 0.545098, 0.211765)
+[ext_resource type="StyleBox" uid="uid://dmsjhgv22dns8" path="res://addons/dialogic/Editor/Common/TitleBgStylebox.tres" id="2_cg22x"]
+[ext_resource type="LabelSettings" uid="uid://nkh7ypguw3il" path="res://addons/dialogic/Editor/Common/HintLabelSettings.tres" id="2_eovsc"]
 
 [node name="Choices" type="HBoxContainer"]
 anchor_right = 1.0
@@ -24,7 +18,7 @@ size_flags_vertical = 3
 [node name="Title" type="Label" parent="VBoxContainer"]
 offset_right = 506.0
 offset_bottom = 36.0
-theme_override_styles/normal = SubResource("StyleBoxFlat_md6a8")
+theme_override_styles/normal = ExtResource("2_cg22x")
 text = "Choice Settings"
 
 [node name="Autofocus" type="HBoxContainer" parent="VBoxContainer"]
@@ -102,7 +96,7 @@ size_flags_vertical = 3
 [node name="Title2" type="Label" parent="VBoxContainer2"]
 offset_right = 506.0
 offset_bottom = 36.0
-theme_override_styles/normal = SubResource("StyleBoxFlat_md6a8")
+theme_override_styles/normal = ExtResource("2_cg22x")
 text = "Choice Hotkeys"
 
 [node name="HotkeySelection" type="HBoxContainer" parent="VBoxContainer2"]
