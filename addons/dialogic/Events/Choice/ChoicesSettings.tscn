@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://txjh3ufo5d4y"]
+[gd_scene load_steps=4 format=3 uid="uid://txjh3ufo5d4y"]
 
-[ext_resource type="PackedScene" uid="uid://duj8nl0vpms35" path="res://addons/dialogic/Editor/Common/TLabel.tscn" id="1"]
 [ext_resource type="Script" path="res://addons/dialogic/Events/Choice/ChoicesSettings.gd" id="2"]
+[ext_resource type="StyleBox" uid="uid://dmsjhgv22dns8" path="res://addons/dialogic/Editor/Common/TitleBgStylebox.tres" id="2_cg22x"]
+[ext_resource type="LabelSettings" uid="uid://nkh7ypguw3il" path="res://addons/dialogic/Editor/Common/HintLabelSettings.tres" id="2_eovsc"]
 
 [node name="Choices" type="HBoxContainer"]
 anchor_right = 1.0
@@ -14,27 +15,22 @@ offset_bottom = 600.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="TLabel" parent="VBoxContainer" instance=ExtResource("1")]
-anchor_right = 0.0
-anchor_bottom = 0.0
+[node name="Title" type="Label" parent="VBoxContainer"]
 offset_right = 506.0
-offset_bottom = 26.0
-text = "Choices"
-mode = 1
+offset_bottom = 36.0
+theme_override_styles/normal = ExtResource("2_cg22x")
+text = "Choice Settings"
 
 [node name="Autofocus" type="HBoxContainer" parent="VBoxContainer"]
-offset_top = 30.0
+offset_top = 40.0
 offset_right = 506.0
-offset_bottom = 56.0
+offset_bottom = 66.0
 
-[node name="TLabel" parent="VBoxContainer/Autofocus" instance=ExtResource("1")]
-anchor_right = 0.0
-anchor_bottom = 0.0
+[node name="Label" type="Label" parent="VBoxContainer/Autofocus"]
 offset_right = 478.0
 offset_bottom = 26.0
 size_flags_horizontal = 3
 text = "Autofocus first choice"
-mode = 0
 
 [node name="Autofocus" type="CheckBox" parent="VBoxContainer/Autofocus"]
 unique_name_in_owner = true
@@ -43,19 +39,16 @@ offset_right = 506.0
 offset_bottom = 26.0
 
 [node name="Delay" type="HBoxContainer" parent="VBoxContainer"]
-offset_top = 60.0
+offset_top = 70.0
 offset_right = 506.0
-offset_bottom = 91.0
+offset_bottom = 101.0
 
-[node name="TLabel" parent="VBoxContainer/Delay" instance=ExtResource("1")]
-anchor_right = 0.0
-anchor_bottom = 0.0
+[node name="Label2" type="Label" parent="VBoxContainer/Delay"]
 offset_top = 2.0
 offset_right = 419.0
 offset_bottom = 28.0
 size_flags_horizontal = 3
 text = "Delay before choices can be pressed"
-mode = 0
 
 [node name="Delay" type="SpinBox" parent="VBoxContainer/Delay"]
 unique_name_in_owner = true
@@ -65,23 +58,20 @@ offset_bottom = 31.0
 step = 0.01
 
 [node name="DefaultFalseBehaviour" type="HBoxContainer" parent="VBoxContainer"]
-offset_top = 95.0
+offset_top = 105.0
 offset_right = 506.0
-offset_bottom = 126.0
+offset_bottom = 136.0
 
-[node name="TLabel" parent="VBoxContainer/DefaultFalseBehaviour" instance=ExtResource("1")]
-anchor_right = 0.0
-anchor_bottom = 0.0
+[node name="Label3" type="Label" parent="VBoxContainer/DefaultFalseBehaviour"]
 offset_top = 2.0
-offset_right = 423.0
+offset_right = 402.0
 offset_bottom = 28.0
 size_flags_horizontal = 3
 text = "Default behaviour for false choices"
-mode = 0
 
 [node name="FalseBehaviour" type="OptionButton" parent="VBoxContainer/DefaultFalseBehaviour"]
 unique_name_in_owner = true
-offset_left = 427.0
+offset_left = 406.0
 offset_right = 506.0
 offset_bottom = 31.0
 item_count = 2
@@ -103,32 +93,27 @@ offset_bottom = 600.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="TLabel" parent="VBoxContainer2" instance=ExtResource("1")]
-anchor_right = 0.0
-anchor_bottom = 0.0
+[node name="Title2" type="Label" parent="VBoxContainer2"]
 offset_right = 506.0
-offset_bottom = 26.0
-text = "Choice hotkeys"
-mode = 1
+offset_bottom = 36.0
+theme_override_styles/normal = ExtResource("2_cg22x")
+text = "Choice Hotkeys"
 
 [node name="HotkeySelection" type="HBoxContainer" parent="VBoxContainer2"]
-offset_top = 30.0
+offset_top = 40.0
 offset_right = 506.0
-offset_bottom = 61.0
+offset_bottom = 71.0
 
-[node name="TLabel" parent="VBoxContainer2/HotkeySelection" instance=ExtResource("1")]
-anchor_right = 0.0
-anchor_bottom = 0.0
+[node name="Label4" type="Label" parent="VBoxContainer2/HotkeySelection"]
 offset_top = 2.0
-offset_right = 369.0
+offset_right = 364.0
 offset_bottom = 28.0
 size_flags_horizontal = 3
 text = "Hotkey type"
-mode = 0
 
 [node name="HotkeyType" type="OptionButton" parent="VBoxContainer2/HotkeySelection"]
 unique_name_in_owner = true
-offset_left = 373.0
+offset_left = 368.0
 offset_right = 506.0
 offset_bottom = 31.0
 item_count = 2
@@ -138,15 +123,14 @@ popup/item_0/id = 0
 popup/item_1/text = "Default (1-9)"
 popup/item_1/id = 1
 
-[node name="TLabel2" parent="VBoxContainer2" instance=ExtResource("1")]
-anchor_right = 0.0
-anchor_bottom = 0.0
-offset_top = 65.0
+[node name="Info" type="Label" parent="VBoxContainer2"]
+offset_top = 75.0
 offset_right = 506.0
-offset_bottom = 117.0
+offset_bottom = 127.0
+size_flags_horizontal = 3
 text = "You can add more complex hotkeys by editing the \"shortcut\" property of a ChoiceButton. "
+label_settings = ExtResource("2_eovsc")
 autowrap_mode = 3
-mode = 2
 
 [connection signal="toggled" from="VBoxContainer/Autofocus/Autofocus" to="." method="_on_Autofocus_toggled"]
 [connection signal="value_changed" from="VBoxContainer/Delay/Delay" to="." method="_on_Delay_value_changed"]

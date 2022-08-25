@@ -1,8 +1,15 @@
-[gd_scene load_steps=4 format=3 uid="uid://dw040wv25miih"]
+[gd_scene load_steps=5 format=3 uid="uid://dw040wv25miih"]
 
 [ext_resource type="PackedScene" uid="uid://x8q2gtqyisxv" path="res://addons/dialogic/Events/Variable/SettingsEditor/VariableGroup.tscn" id="1"]
 [ext_resource type="Script" path="res://addons/dialogic/Events/Variable/SettingsEditor/Settings_Variables.gd" id="2"]
-[ext_resource type="PackedScene" uid="uid://duj8nl0vpms35" path="res://addons/dialogic/Editor/Common/TLabel.tscn" id="4"]
+[ext_resource type="LabelSettings" uid="uid://bsegxmwaxoc33" path="res://addons/dialogic/Editor/Common/HintLabelSettings.tres" id="3_8rgas"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vd2b4"]
+content_margin_left = 5.0
+content_margin_top = 5.0
+content_margin_right = 5.0
+content_margin_bottom = 5.0
+bg_color = Color(0.545098, 0.545098, 0.545098, 0.211765)
 
 [node name="VariablesEditor" type="HBoxContainer"]
 anchor_right = 1.0
@@ -16,19 +23,17 @@ size_flags_horizontal = 3
 
 [node name="HBox" type="HBoxContainer" parent="VBox"]
 offset_right = 674.0
-offset_bottom = 26.0
+offset_bottom = 36.0
 
-[node name="Variables" parent="VBox/HBox" instance=ExtResource("4")]
-anchor_right = 0.0
-anchor_bottom = 0.0
+[node name="Title" type="Label" parent="VBox/HBox"]
 offset_right = 674.0
-offset_bottom = 26.0
+offset_bottom = 36.0
 size_flags_horizontal = 3
+theme_override_styles/normal = SubResource("StyleBoxFlat_vd2b4")
 text = "Variables"
-mode = 1
 
 [node name="ScrollContainer" type="ScrollContainer" parent="VBox"]
-offset_top = 30.0
+offset_top = 40.0
 offset_right = 674.0
 offset_bottom = 600.0
 size_flags_horizontal = 3
@@ -54,26 +59,30 @@ offset_bottom = 600.0
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 0.5
 
-[node name="Variables2" parent="VBoxContainer" instance=ExtResource("4")]
-anchor_right = 0.0
-anchor_bottom = 0.0
+[node name="Title2" type="Label" parent="VBoxContainer"]
 offset_right = 338.0
-offset_bottom = 26.0
-text = "About variables"
-mode = 1
+offset_bottom = 36.0
+size_flags_horizontal = 3
+theme_override_styles/normal = SubResource("StyleBoxFlat_vd2b4")
+text = "About Variables"
 
-[node name="Info2" parent="VBoxContainer" instance=ExtResource("4")]
-anchor_right = 0.0
-anchor_bottom = 0.0
-offset_top = 30.0
+[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer"]
+offset_top = 40.0
 offset_right = 338.0
-offset_bottom = 446.0
+offset_bottom = 600.0
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+
+[node name="Info" type="Label" parent="VBoxContainer/ScrollContainer"]
+offset_right = 338.0
+offset_bottom = 560.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
 text = "You can define a set of variables here (each a name and a default value). You can then change them with the Set Variable sevent or use them in text using {MyVariableName}.
 
 You can group variables in groups (and subgroups) and then reference them using {MyGroup.MySubGroup.MyVariable} in text.
 
 You can access variables in scripts by doing 'Dialogic.VAR.MyVariable'  
 or 'Dialogic.VAR.MyGroup.MySubGroup.MyVariable'."
+label_settings = ExtResource("3_8rgas")
 autowrap_mode = 3
-text_key = "Tra"
-mode = 2

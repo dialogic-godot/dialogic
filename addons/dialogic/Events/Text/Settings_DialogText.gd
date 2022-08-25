@@ -2,6 +2,8 @@
 extends HBoxContainer
 
 func refresh():
+	%Info.add_theme_color_override('default_color', get_theme_color("accent_color", "Editor"))
+	
 	%DefaultSpeed.value = DialogicUtil.get_project_setting('dialogic/text/speed', 0.01)
 	%Skippable.button_pressed = DialogicUtil.get_project_setting('dialogic/text/skippable', true)
 	%Autocontinue.button_pressed = DialogicUtil.get_project_setting('dialogic/text/autocontinue', false)

@@ -1,11 +1,10 @@
-[gd_scene load_steps=6 format=3 uid="uid://cuud6b86l7juf"]
+[gd_scene load_steps=5 format=3 uid="uid://cuud6b86l7juf"]
 
 [ext_resource type="Script" path="res://addons/dialogic/Editor/TimelineEditor/TimelineEditor.gd" id="17"]
-[ext_resource type="PackedScene" uid="uid://duj8nl0vpms35" path="res://addons/dialogic/Editor/Common/TLabel.tscn" id="21"]
 [ext_resource type="Script" path="res://addons/dialogic/Editor/TimelineEditor/TimelineArea.gd" id="22"]
 [ext_resource type="Theme" path="res://addons/dialogic/Editor/Theme/MainTheme.tres" id="28"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kcvb6"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_siq3e"]
 bg_color = Color(0, 0, 0, 1)
 
 [node name="TimelineEditor" type="MarginContainer"]
@@ -27,16 +26,16 @@ split_offset = 7
 
 [node name="TimelineArea" type="ScrollContainer" parent="View"]
 unique_name_in_owner = true
-offset_right = 822.0
+offset_right = 802.0
 offset_bottom = 595.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-theme_override_styles/bg = SubResource("StyleBoxFlat_kcvb6")
+theme_override_styles/bg = SubResource("StyleBoxFlat_siq3e")
 script = ExtResource("22")
 
 [node name="Timeline" type="VBoxContainer" parent="View/TimelineArea"]
 unique_name_in_owner = true
-offset_right = 822.0
+offset_right = 802.0
 offset_bottom = 595.0
 grow_horizontal = 2
 grow_vertical = 2
@@ -44,173 +43,149 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="ScrollContainer" type="ScrollContainer" parent="View"]
-custom_minimum_size = Vector2(180, 0)
-offset_left = 834.0
+custom_minimum_size = Vector2(200, 0)
+offset_left = 814.0
 offset_right = 1014.0
 offset_bottom = 595.0
 
 [node name="EventContainer" type="VBoxContainer" parent="View/ScrollContainer"]
-offset_right = 172.0
-offset_bottom = 810.0
+offset_right = 200.0
+offset_bottom = 595.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="HBoxContainer6" type="HBoxContainer" parent="View/ScrollContainer/EventContainer"]
-offset_right = 172.0
+offset_right = 200.0
 offset_bottom = 26.0
 
-[node name="TLabel" parent="View/ScrollContainer/EventContainer/HBoxContainer6" instance=ExtResource("21")]
-anchor_right = 0.0
-anchor_bottom = 0.0
+[node name="Label" type="Label" parent="View/ScrollContainer/EventContainer/HBoxContainer6"]
 offset_right = 39.0
 offset_bottom = 26.0
 text = "Main"
-text_key = "Main Events"
-mode = 0
 
 [node name="HSeparator2" type="HSeparator" parent="View/ScrollContainer/EventContainer/HBoxContainer6"]
 offset_left = 43.0
-offset_right = 172.0
+offset_right = 200.0
 offset_bottom = 26.0
 size_flags_horizontal = 3
 
 [node name="FlexContainer0" type="HFlowContainer" parent="View/ScrollContainer/EventContainer"]
 offset_top = 30.0
-offset_right = 172.0
-offset_bottom = 131.0
+offset_right = 200.0
+offset_bottom = 61.0
 size_flags_horizontal = 3
 
 [node name="HBoxContainer5" type="HBoxContainer" parent="View/ScrollContainer/EventContainer"]
-offset_top = 135.0
-offset_right = 172.0
-offset_bottom = 161.0
+offset_top = 65.0
+offset_right = 200.0
+offset_bottom = 91.0
 
-[node name="TLabel2" parent="View/ScrollContainer/EventContainer/HBoxContainer5" instance=ExtResource("21")]
-anchor_right = 0.0
-anchor_bottom = 0.0
+[node name="Label2" type="Label" parent="View/ScrollContainer/EventContainer/HBoxContainer5"]
 offset_right = 40.0
 offset_bottom = 26.0
 text = "Logic"
-text_key = "Logic"
-mode = 0
 
 [node name="HSeparator2" type="HSeparator" parent="View/ScrollContainer/EventContainer/HBoxContainer5"]
 offset_left = 44.0
-offset_right = 172.0
+offset_right = 200.0
 offset_bottom = 26.0
 size_flags_horizontal = 3
 
 [node name="FlexContainer1" type="HFlowContainer" parent="View/ScrollContainer/EventContainer"]
-offset_top = 165.0
-offset_right = 172.0
-offset_bottom = 231.0
+offset_top = 95.0
+offset_right = 200.0
+offset_bottom = 161.0
 size_flags_horizontal = 3
 
 [node name="HBoxContainer3" type="HBoxContainer" parent="View/ScrollContainer/EventContainer"]
-offset_top = 235.0
-offset_right = 172.0
-offset_bottom = 261.0
+offset_top = 165.0
+offset_right = 200.0
+offset_bottom = 191.0
 
-[node name="TLabel3" parent="View/ScrollContainer/EventContainer/HBoxContainer3" instance=ExtResource("21")]
-anchor_right = 0.0
-anchor_bottom = 0.0
+[node name="Label3" type="Label" parent="View/ScrollContainer/EventContainer/HBoxContainer3"]
 offset_right = 67.0
 offset_bottom = 26.0
 text = "Timeline"
-text_key = "Timeline"
-mode = 0
 
 [node name="HSeparator2" type="HSeparator" parent="View/ScrollContainer/EventContainer/HBoxContainer3"]
 offset_left = 71.0
-offset_right = 172.0
+offset_right = 200.0
 offset_bottom = 26.0
 size_flags_horizontal = 3
 
 [node name="FlexContainer2" type="HFlowContainer" parent="View/ScrollContainer/EventContainer"]
-offset_top = 265.0
-offset_right = 172.0
-offset_bottom = 401.0
+offset_top = 195.0
+offset_right = 200.0
+offset_bottom = 226.0
 size_flags_horizontal = 3
 
 [node name="HBoxContainer4" type="HBoxContainer" parent="View/ScrollContainer/EventContainer"]
-offset_top = 405.0
-offset_right = 172.0
-offset_bottom = 431.0
+offset_top = 230.0
+offset_right = 200.0
+offset_bottom = 256.0
 
-[node name="TLabel4" parent="View/ScrollContainer/EventContainer/HBoxContainer4" instance=ExtResource("21")]
-anchor_right = 0.0
-anchor_bottom = 0.0
-offset_right = 92.0
+[node name="Label4" type="Label" parent="View/ScrollContainer/EventContainer/HBoxContainer4"]
+offset_right = 98.0
 offset_bottom = 26.0
-text = "AudioVisual"
-text_key = "Audio"
-mode = 0
+text = "Audio/Visual"
 
 [node name="HSeparator2" type="HSeparator" parent="View/ScrollContainer/EventContainer/HBoxContainer4"]
-offset_left = 96.0
-offset_right = 172.0
+offset_left = 102.0
+offset_right = 200.0
 offset_bottom = 26.0
 size_flags_horizontal = 3
 
 [node name="FlexContainer3" type="HFlowContainer" parent="View/ScrollContainer/EventContainer"]
-offset_top = 435.0
-offset_right = 172.0
-offset_bottom = 606.0
+offset_top = 260.0
+offset_right = 200.0
+offset_bottom = 260.0
 size_flags_horizontal = 3
 
 [node name="HBoxContainer" type="HBoxContainer" parent="View/ScrollContainer/EventContainer"]
-offset_top = 610.0
-offset_right = 172.0
-offset_bottom = 636.0
+offset_top = 264.0
+offset_right = 200.0
+offset_bottom = 290.0
 
-[node name="TLabel5" parent="View/ScrollContainer/EventContainer/HBoxContainer" instance=ExtResource("21")]
-anchor_right = 0.0
-anchor_bottom = 0.0
+[node name="Label5" type="Label" parent="View/ScrollContainer/EventContainer/HBoxContainer"]
 offset_right = 48.0
 offset_bottom = 26.0
 text = "Godot"
-text_key = "Godot"
-mode = 0
 
 [node name="HSeparator2" type="HSeparator" parent="View/ScrollContainer/EventContainer/HBoxContainer"]
 offset_left = 52.0
-offset_right = 172.0
+offset_right = 200.0
 offset_bottom = 26.0
 size_flags_horizontal = 3
 
 [node name="FlexContainer4" type="HFlowContainer" parent="View/ScrollContainer/EventContainer"]
-offset_top = 640.0
-offset_right = 172.0
-offset_bottom = 741.0
+offset_top = 294.0
+offset_right = 200.0
+offset_bottom = 294.0
 size_flags_horizontal = 3
 
 [node name="OtherContainer" type="HBoxContainer" parent="View/ScrollContainer/EventContainer"]
-offset_top = 745.0
-offset_right = 172.0
-offset_bottom = 771.0
+offset_top = 298.0
+offset_right = 200.0
+offset_bottom = 324.0
 
-[node name="TLabel6" parent="View/ScrollContainer/EventContainer/OtherContainer" instance=ExtResource("21")]
-anchor_right = 0.0
-anchor_bottom = 0.0
+[node name="Label6" type="Label" parent="View/ScrollContainer/EventContainer/OtherContainer"]
 offset_right = 46.0
 offset_bottom = 26.0
 text = "Other"
-text_key = "Other"
-mode = 0
 
 [node name="HSeparator2" type="HSeparator" parent="View/ScrollContainer/EventContainer/OtherContainer"]
 offset_left = 50.0
-offset_right = 172.0
+offset_right = 200.0
 offset_bottom = 26.0
 size_flags_horizontal = 3
 
 [node name="FlexContainer5" type="HFlowContainer" parent="View/ScrollContainer/EventContainer"]
-offset_top = 775.0
-offset_right = 172.0
-offset_bottom = 806.0
+offset_top = 328.0
+offset_right = 200.0
+offset_bottom = 359.0
 size_flags_horizontal = 3
 
 [node name="Spacer" type="Control" parent="View/ScrollContainer/EventContainer"]
-offset_top = 810.0
-offset_right = 172.0
-offset_bottom = 810.0
+offset_top = 363.0
+offset_right = 200.0
+offset_bottom = 363.0
