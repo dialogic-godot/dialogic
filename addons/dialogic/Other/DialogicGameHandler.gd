@@ -119,7 +119,7 @@ func end_timeline() -> void:
 	emit_signal("timeline_ended")
 
 
-func handle_next_event(ignore_argument:String = "") -> void:
+func handle_next_event(ignore_argument:Variant = "") -> void:
 	handle_event(current_event_idx+1)
 
 
