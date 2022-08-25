@@ -54,7 +54,7 @@ func add_portrait(character:DialogicCharacter, portrait:String,  position_idx:in
 	check_positions_and_holder()
 
 	character_node = Node2D.new()
-	character_node.name = character.get_name()
+	character_node.name = character.get_character_name()
 	character_node.position = current_positions[position_idx]
 	character_node.z_index = z_index
 	character_node.set_meta("position", position_idx)
