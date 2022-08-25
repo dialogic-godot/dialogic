@@ -4,7 +4,7 @@ enum states {IDLE, SHOWING_TEXT, ANIMATING, AWAITING_CHOICE, WAITING}
 
 var current_timeline = null
 var current_timeline_events = []
-var character_directory = {}
+var character_directory:Dictionary = {}
 
 var current_state = null:
 	get:
