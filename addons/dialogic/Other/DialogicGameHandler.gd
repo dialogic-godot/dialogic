@@ -41,7 +41,7 @@ func _ready() -> void:
 		var characters = DialogicUtil.list_resources_of_type(".dch")
 		
 		for character in characters:
-			var charfile = load(character)
+			var charfile: DialogicCharacter= load(character)
 			character_directory[character] = charfile
 		
 	collect_subsystems()
