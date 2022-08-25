@@ -191,9 +191,17 @@ func load_from_string_to_store(string:String):
 		if ActionType == ActionTypes.Leave and result.get_string('character').strip_edges() == "--All--":
 			_leave_all = true
 		else: 
-			var char_guess = DialogicUtil.guess_resource('.dch', result.get_string('character').strip_edges())
-			if char_guess:
-				Character = load(char_guess)
+			if Engine.is_editor_hint():
+				var char_guess = DialogicUtil.guess_resource('.dch', result.get_string('character').strip_edges())
+				if char_guess:
+					Character = load(char_guess)
+			else:
+				if Dialogic.character_directory != null:
+					if Dialogic.character_directory.size() > 0:
+						Character = null
+						for path in Dialogic.character_directory:
+							if result.get_string('character').strip_edges() in path: 
+								Character = Dialogic.character_directory[path]
 	
 	if result.get_string('portrait').strip_edges():
 		Portrait = result.get_string('portrait').strip_edges()
