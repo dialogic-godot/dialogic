@@ -140,7 +140,7 @@ func get_as_string_to_store() -> String:
 		if ActionType == ActionTypes.Leave and _leave_all:
 			result_string += "--All--"
 		else: 
-			result_string += Character.get_name()
+			result_string += Character.get_character_name()
 			if Portrait and ActionType != ActionTypes.Leave:
 				result_string+= " ("+Portrait+")"
 	
@@ -214,7 +214,7 @@ func load_from_string_to_store(string:String):
 				printerr("[Dialogic] Couldn't identify animation '"+AnimationName+"'.")
 				AnimationName = ""
 			
-			var animLength = shortcode_params.get('length', 0.5).to_float()
+			var animLength = shortcode_params.get('length', '0.5').to_float()
 			if typeof(animLength) == TYPE_FLOAT:
 				AnimationLength = animLength
 			else:

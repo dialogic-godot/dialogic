@@ -97,8 +97,8 @@ func _init() -> void:
 func get_as_string_to_store() -> String:
 	if Character:
 		if Portrait and not Portrait.is_empty():
-			return Character.get_name()+" ("+Portrait+"): "+Text.replace("\n", "\\\n")
-		return Character.get_name()+": "+Text.replace("\n", "\\\n")
+			return Character.get_character_name()+" ("+Portrait+"): "+Text.replace("\n", "\\\n")
+		return Character.get_character_name()+": "+Text.replace("\n", "\\\n")
 	return Text.replace("\n", "\\\n")
 
 ## THIS HAS TO READ ALL THE DATA FROM THE SAVED STRING (see above) 
