@@ -28,19 +28,19 @@ func _execute() -> void:
 			if Character:
 				if !dialogic.Portraits.is_character_joined(Character):
 					var n = dialogic.Portraits.add_portrait(Character, Portrait, Position, Mirrored, Z_Index, ExtraData)
-					
-					if AnimationName.is_empty():
-						AnimationName = DialogicUtil.get_project_setting('dialogic/animations/join_default', 
-		get_script().resource_path.get_base_dir().plus_file('DefaultAnimations/fade_in_up.gd'))
-						AnimationLength = DialogicUtil.get_project_setting('dialogic/animations/join_default_length', 0.5)
-						AnimationWait = DialogicUtil.get_project_setting('dialogic/animations/join_default_wait', true)
-					if AnimationName:
-						var anim:DialogicAnimation = dialogic.Portraits.animate_portrait(Character, AnimationName, AnimationLength, AnimationRepeats)
-						
-						if AnimationWait:
-							dialogic.current_state = Dialogic.states.ANIMATING
-							await anim.finished
-							dialogic.current_state = Dialogic.states.IDLE
+					if n:
+						if AnimationName.is_empty():
+							AnimationName = DialogicUtil.get_project_setting('dialogic/animations/join_default', 
+			get_script().resource_path.get_base_dir().plus_file('DefaultAnimations/fade_in_up.gd'))
+							AnimationLength = DialogicUtil.get_project_setting('dialogic/animations/join_default_length', 0.5)
+							AnimationWait = DialogicUtil.get_project_setting('dialogic/animations/join_default_wait', true)
+						if AnimationName:
+							var anim:DialogicAnimation = dialogic.Portraits.animate_portrait(Character, AnimationName, AnimationLength, AnimationRepeats)
+							
+							if AnimationWait:
+								dialogic.current_state = Dialogic.states.ANIMATING
+								await anim.finished
+								dialogic.current_state = Dialogic.states.IDLE
 				else:
 					dialogic.Portraits.change_portrait(Character, Portrait)
 					if AnimationName.is_empty():

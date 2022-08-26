@@ -46,10 +46,14 @@ func add_portrait(character:DialogicCharacter, portrait:String,  position_idx:in
 		portrait = character.default_portrait
 	
 	if not character:
-		assert(false, "[Dialogic] Cannot add portrait of null character.")
+		print_debug('[DialogicError] Cannot call add_portrait() with null character.')
+		return null
 	if not portrait in character.portraits:
-		print("[DialogicErrorInfo] ",character.display_name, " has no portrait ", portrait)
-		assert(false, "[Dialogic] Invalid portrait name.")
+		print_debug("[DialogicError] Tried joining ",character.display_name, " wit not-existing portrait '", portrait, "'. Will use default portrait instead.")
+		portrait = character.default_portrait
+		if portrait.is_empty():
+			print_debug("[DialogicError] Character ",character.display_name, " has no default portrait to use.")
+			return null
 	
 	check_positions_and_holder()
 
@@ -70,10 +74,15 @@ func add_portrait(character:DialogicCharacter, portrait:String,  position_idx:in
 
 func change_portrait(character:DialogicCharacter, portrait:String, mirrored:bool = false, z_index: int = 0, update_zindex:bool = false, extra_data:String = "") -> void:
 	if not character or not is_character_joined(character):
-		assert(false, "[Dialogic] Cannot change portrait of null/not joined character.")
+		print_debug('[DialogicError] Cannot change portrait of null/not joined character.')
+		return null
 	
 	if portrait.is_empty():
 		portrait = character.default_portrait
+	
+	if not portrait in character.portraits.keys():
+		print_debug('[Dialogic] Change to not-existing portrait will be ignored!')
+		return
 	
 	var char_node :Node = dialogic.current_state_info.portraits[character.resource_path].node
 	
@@ -123,7 +132,8 @@ func change_portrait(character:DialogicCharacter, portrait:String, mirrored:bool
 
 func animate_portrait(character:DialogicCharacter, animation_path:String, length:float, repeats = 1) -> DialogicAnimation:
 	if not character or not is_character_joined(character):
-		assert(false, "[Dialogic] Cannot animate portrait of null/not joined character.")
+		print_debug('[DialogicError] Cannot animate portrait of null/not joined character.')
+		return null
 	
 	var char_node = dialogic.current_state_info['portraits'][character.resource_path].node
 	
@@ -146,7 +156,8 @@ func animate_portrait(character:DialogicCharacter, animation_path:String, length
 
 func move_portrait(character:DialogicCharacter, position_idx:int, z_index:int = 0, update_zindex:bool = false,  time:float = 0.0):
 	if not character or not is_character_joined(character):
-		assert(false, "[Dialogic] Cannot move portrait of null/not joined character.")
+		print_debug('[DialogicError] Cannot move portrait of null/not joined character.')
+		return null
 	
 	var char_node = dialogic.current_state_info.portraits[character.resource_path].node
 	
@@ -197,7 +208,9 @@ func move_portrait_position(position_number: int, vector:Vector2, relative:bool 
 	if !position_number in current_positions:
 		if !relative:
 			add_portrait_position(position_number, vector)
-		else: assert(false, '[Dialogic] Cannot move non-existent position. (Use SetAbsolute to create new position.)')
+		else: 
+			print_debug('[DialogicError] Cannot move non-existent position. (Use SetAbsolute to create a new position)')
+			return null
 	
 	if !relative:
 		current_positions[position_number] = vector
