@@ -1,0 +1,23 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://addons/dialogic/Editor/Events/Fields/Bool.gd" type="Script" id=1]
+
+[node name="Bool" type="HBoxContainer"]
+margin_right = 40.0
+margin_bottom = 40.0
+script = ExtResource( 1 )
+
+[node name="LeftText" type="Label" parent="."]
+margin_top = 13.0
+margin_bottom = 27.0
+
+[node name="Toggle" type="CheckButton" parent="."]
+margin_left = 4.0
+margin_right = 80.0
+margin_bottom = 40.0
+
+[node name="RightText" type="Label" parent="."]
+margin_left = 84.0
+margin_top = 13.0
+margin_right = 84.0
+margin_bottom = 27.0

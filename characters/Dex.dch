@@ -1,0 +1,17 @@
+{
+"@path": "res://addons/dialogic/Resources/character.gd",
+"@subpath": NodePath(""),
+"color": Color(0.886275, 0.631373, 0.384314, 1),
+"custom_info": {
+"sound_moods": {},
+"theme": ""
+},
+"description": "A pro developer. Having math troubles it seems.",
+"display_name": "Dex",
+"mirror": false,
+"name": "Dex",
+"nicknames": ["\"\\\"AnidemDex\\\"\"", "\"\\\"Dex\\\"\"", "\"\\\"\\\"\""],
+"offset": Vector2(0, 0),
+"portraits": {},
+"scale": 1.0
+}

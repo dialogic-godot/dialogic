@@ -1,0 +1,86 @@
+[gd_scene load_steps=3 format=3 uid="uid://773346unbgti"]
+
+[ext_resource type="Script" path="res://addons/dialogic/Events/Text/CharacterEdit_TypingSounds.gd" id="1"]
+[ext_resource type="PackedScene" uid="uid://dpwhshre1n4t6" path="res://addons/dialogic/Editor/Events/Fields/ComplexPicker.tscn" id="2"]
+
+[node name="TypingSounds" type="VBoxContainer"]
+custom_minimum_size = Vector2(0, 130)
+offset_right = 443.0
+offset_bottom = 100.0
+size_flags_vertical = 3
+script = ExtResource("1")
+
+[node name="DefaultMood" type="HBoxContainer" parent="."]
+offset_right = 315.0
+offset_bottom = 33.0
+size_flags_horizontal = 0
+
+[node name="DefaultMoodLabel" type="Label" parent="DefaultMood"]
+offset_top = 3.0
+offset_right = 111.0
+offset_bottom = 29.0
+size_flags_horizontal = 3
+text = "Default mood:"
+
+[node name="DefaultMood" parent="DefaultMood" instance=ExtResource("2")]
+unique_name_in_owner = true
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 115.0
+offset_right = 315.0
+offset_bottom = 33.0
+placeholder_text = "Select Mood"
+
+[node name="PortraitMood" type="HBoxContainer" parent="."]
+offset_top = 37.0
+offset_right = 325.0
+offset_bottom = 70.0
+size_flags_horizontal = 0
+
+[node name="PortraitMoodLabel" type="Label" parent="PortraitMood"]
+unique_name_in_owner = true
+offset_top = 3.0
+offset_right = 121.0
+offset_bottom = 29.0
+size_flags_horizontal = 3
+text = "Mood for \"sad\":"
+
+[node name="PortraitMood" parent="PortraitMood" instance=ExtResource("2")]
+unique_name_in_owner = true
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 125.0
+offset_right = 325.0
+offset_bottom = 33.0
+placeholder_text = "Select Mood"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+offset_top = 74.0
+offset_right = 443.0
+offset_bottom = 105.0
+alignment = 2
+
+[node name="AddMood" type="Button" parent="HBoxContainer"]
+unique_name_in_owner = true
+offset_left = 355.0
+offset_right = 443.0
+offset_bottom = 31.0
+text = "Add mood"
+
+[node name="ScrollContainer" type="ScrollContainer" parent="."]
+offset_top = 109.0
+offset_right = 443.0
+offset_bottom = 130.0
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+
+[node name="Moods" type="VBoxContainer" parent="ScrollContainer"]
+unique_name_in_owner = true
+offset_right = 443.0
+offset_bottom = 21.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[connection signal="value_changed" from="DefaultMood/DefaultMood" to="." method="_on_default_mood_value_changed"]
+[connection signal="value_changed" from="PortraitMood/PortraitMood" to="." method="_on_PortraitMood_value_changed"]
+[connection signal="pressed" from="HBoxContainer/AddMood" to="." method="_on_AddMood_pressed"]

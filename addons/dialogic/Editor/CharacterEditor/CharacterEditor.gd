@@ -1,341 +1,157 @@
-tool
+@tool
 extends Control
 
-####################################################################################################
-##							VARIABLES
-####################################################################################################
-# references
-var editor_reference
-onready var master_tree = get_node('../MasterTreeContainer/MasterTree')
-var portrait_entry = load("res://addons/dialogic/Editor/CharacterEditor/PortraitEntry.tscn")
-onready var nodes = {
-	'editor': $Split/EditorScroll/Editor,
-	'name': $Split/EditorScroll/Editor/NameAndColor/NameLineEdit,
-	'color': $Split/EditorScroll/Editor/NameAndColor/ColorPickerButton,
-	'display_name_checkbox': $Split/EditorScroll/Editor/DisplayName/CheckBox,
-	'display_name': $Split/EditorScroll/Editor/DisplayName/LineEdit,
-	'nickname_checkbox': $Split/EditorScroll/Editor/DisplayNickname/CheckBox,
-	'nickname': $Split/EditorScroll/Editor/DisplayNickname/LineEdit,
-	'description': $Split/EditorScroll/Editor/Description/TextEdit,
-	'theme':$Split/EditorScroll/Editor/Theme/ThemeButton,
-	
-	'file': $Split/EditorScroll/Editor/FileName/LineEdit,
-	
-	'mirror_portraits_checkbox' : $Split/EditorScroll/Editor/HBoxContainer/MirrorOption/MirrorPortraitsCheckBox,
-	'scale': $Split/EditorScroll/Editor/HBoxContainer/Scale,
-	'offset_x': $Split/EditorScroll/Editor/HBoxContainer/OffsetX,
-	'offset_y': $Split/EditorScroll/Editor/HBoxContainer/OffsetY,
-	
-	'portrait_search':$Split/EditorScroll/Editor/Portraits/Search,
-	'portrait_list': $Split/EditorScroll/Editor/PortraitPanel/VBoxContainer/ScrollContainer/VBoxContainer/PortraitList,
-	'new_portrait_button': $Split/EditorScroll/Editor/PortraitPanel/VBoxContainer/Labels/HBoxContainer/NewPortrait,
-	'import_from_folder_button': $Split/EditorScroll/Editor/PortraitPanel/VBoxContainer/Labels/HBoxContainer/ImportFromFolder,
-	
-	'portrait_preview_full': $Split/Preview/Background/FullTextureRect,
-	'portrait_preview_real': $Split/Preview/Background/Positioner/RealSizedRect,
-	'image_label': $Split/Preview/Background/TLabel10,
-}
+const portrait_entry = preload("res://addons/dialogic/Editor/CharacterEditor/PortraitEntry.tscn")
 
-# data
-var opened_character_data
-var selected_theme_file = ''
+var current_character : DialogicCharacter
+var current_portrait = null
 
-####################################################################################################
-##							SCRIPT
-####################################################################################################
+signal set_resource_unsaved
+signal set_resource_saved
+signal character_loaded(resource_path:String)
+signal portrait_selected(previous, current)
 
-# connect functions; translate buttons; update styles, etc...
-func _ready():
-	editor_reference = find_parent('EditorView')
+##############################################################################
+##							RESOURCE LOGIC
+##############################################################################
 
-	nodes['new_portrait_button'].text = "  "+editor_reference.dialogicTranslator.translate("New portrait")
-	nodes['import_from_folder_button'].text = "  "+editor_reference.dialogicTranslator.translate("Import folder")
-	
-	# connecting signals
-	nodes['name'].connect('text_changed', self, '_on_name_changed')
-	nodes['name'].connect('focus_exited', self, '_update_name_on_tree')
-	nodes['color'].connect('color_changed', self, '_on_color_changed')
-	nodes['display_name_checkbox'].connect('toggled', self, '_on_display_name_toggled')
-	nodes['nickname_checkbox'].connect('toggled', self, '_on_nickname_toggled')
-	nodes['theme'].connect("about_to_show", self, "build_ThemePickerMenu")
-	
-	nodes['portrait_search'].connect('text_changed', self, '_on_PortraitSearch_text_changed')
-	nodes['portrait_search'].right_icon = get_icon("Search", "EditorIcons")
-	nodes['import_from_folder_button'].connect('pressed', self, '_on_Import_Portrait_Folder_Button_pressed')
-	nodes['new_portrait_button'].connect('pressed', self, '_on_New_Portrait_Button_pressed')
-	
-	# updating styles
-	var style = $Split/EditorScroll.get('custom_styles/bg')
-	style.set('bg_color', get_color("base_color", "Editor"))
-	nodes['new_portrait_button'].icon = get_icon("Add", "EditorIcons")
-	nodes['import_from_folder_button'].icon = get_icon("Folder", "EditorIcons")
-	$Split/EditorScroll/Editor/Portraits/Title.set('custom_fonts/font', get_font("doc_title", "EditorFonts"))
-	$Split/EditorScroll/Editor/PortraitPanel.set('custom_styles/panel', get_stylebox("Background", "EditorStyles"))
-	
-	# loading default setup
-	_on_PreviewMode_item_selected(DialogicResources.get_settings_value('editor', 'character_preview_mode', 1))
-	$Split/Preview/Background/PreviewMode.select(DialogicResources.get_settings_value('editor', 'character_preview_mode', 1))
-	$Split/Preview/Background/PreviewMode.set_item_text(0, editor_reference.dialogicTranslator.translate("Full View"))
-	$Split/Preview/Background/PreviewMode.set_item_text(1, editor_reference.dialogicTranslator.translate("Actual Size"))
+func new_character(path: String) -> void:
+	var resource = DialogicCharacter.new()
+	resource.resource_path = path
+	resource.display_name = path.get_file().trim_suffix("."+path.get_extension())
+	resource.color = Color(1,1,1,1)
+	resource.default_portrait = ""
+	resource.custom_info = {}
+	ResourceSaver.save(resource, path)
+	find_parent('EditorView').edit_character(resource)
 
-# removes all input for a new character
-func clear_character_editor():
-	nodes['file'].text = ''
-	nodes['name'].text = ''
-	nodes['color'].color = Color('#ffffff')
-	nodes['display_name_checkbox'].pressed = false
-	nodes['display_name'].text = ''
-	nodes['nickname_checkbox'].pressed = false
-	nodes['nickname'].text = ''
-	nodes['description'].text = ''
-	nodes['theme'].text = 'No custom theme'
-	selected_theme_file = ''
-	
-	nodes['portrait_search'].text = ''
-	nodes['portraits'] = []
-	nodes['scale'].value = 100
-	nodes['mirror_portraits_checkbox'].pressed = false
-	nodes['offset_x'].value = 0
-	nodes['offset_y'].value = 0
-
-	# Clearing portraits
-	for p in nodes['portrait_list'].get_children():
-		p.queue_free()
-	nodes['portrait_preview_full'].texture = null
-	nodes['portrait_preview_real'].texture = null
-	nodes['portrait_preview_real'].rect_scale = Vector2(1, 1)
-
-# creates new character data
-func create_character():
-	var character_file = 'character-' + str(OS.get_unix_time()) + '.json'
-	var character = {
-		'color': '#ffffff',
-		'id': character_file,
-		'portraits': [],
-		'mirror_portraits' :false
-	}
-	DialogicResources.set_character(character)
-	character['metadata'] = {'file': character_file}
-	return character
-
-####################################################################################################
-##							SAVING AND LOADING
-####################################################################################################
-
-# returns all of the current data in the format it's saved as
-func generate_character_data_to_save():
-	var portraits = []
-	for p in nodes['portrait_list'].get_children():
-		var entry = {}
-		entry['name'] = p.get_node("NameEdit").text
-		entry['path'] = p.get_node("PathEdit").text
-		portraits.append(entry)
-	var info_to_save = {
-		'id': nodes['file'].text,
-		'color': '#' + nodes['color'].color.to_html(),
-		'display_name_bool': nodes['display_name_checkbox'].pressed,
-		'display_name': nodes['display_name'].text,
-		'nickname_bool': nodes['nickname_checkbox'].pressed,
-		'nickname': nodes['nickname'].text,
-		'description': nodes['description'].text,
-		'theme': selected_theme_file, 
-		
-		'portraits': portraits,
-		'scale': nodes['scale'].value,
-		'mirror_portraits': nodes["mirror_portraits_checkbox"].pressed,
-		'offset_x': nodes['offset_x'].value,
-		'offset_y': nodes['offset_y'].value,
-	}
-	# Adding name later for cases when no name is provided
-	if nodes['name'].text != '':
-		info_to_save['name'] = nodes['name'].text
-	
-	return info_to_save
-
-# save the currently opened data
-func save_character():
-	var info_to_save = generate_character_data_to_save()
-	if info_to_save['id']:
-		DialogicResources.set_character(info_to_save)
-		opened_character_data = info_to_save
-
-# load data in
-func load_character(filename: String):
-	clear_character_editor()
-	var data = DialogicResources.get_character_json(filename)
-	opened_character_data = data
-	nodes['file'].text = data['id']
-	nodes['name'].text = data.get('name', '')
-	nodes['color'].color = Color(data.get('color','#ffffffff'))
-	nodes['display_name_checkbox'].pressed = data.get('display_name_bool', false)
-	nodes['display_name'].text = data.get('display_name', '')
-	nodes['nickname_checkbox'].pressed = data.get('nickname_bool', false)
-	nodes['nickname'].text = data.get('nickname', '')
-	nodes['description'].text = data.get('description', '')
-	refresh_themes_and_select(data.get('theme', ''))
-	
-	nodes['scale'].value = float(data.get('scale', 100))
-	#nodes['nickname'].visible
-	nodes['offset_x'].value = data.get('offset_x', 0)
-	nodes['offset_y'].value = data.get('offset_y', 0)
-	nodes['mirror_portraits_checkbox'].pressed = data.get('mirror_portraits', false)
-	nodes['portrait_preview_full'].flip_h = data.get('mirror_portraits', false)
-	nodes['portrait_preview_real'].flip_h = data.get('mirror_portraits', false)
-	nodes['portrait_preview_real'].rect_scale = Vector2(
-					float(data.get('scale', 100))/100, float(data.get('scale', 100))/100)
-	
-	# Portraits
-	var default_portrait = create_portrait_entry()
-	default_portrait.get_node('NameEdit').text = 'Default'
-	default_portrait.get_node('NameEdit').editable = false
-	if opened_character_data.has('portraits'):
-		for p in opened_character_data['portraits']:
-			var current_item
-			if p['name'] == 'Default':
-				default_portrait.get_node('PathEdit').text = p['path']
-				default_portrait.update_preview(p['path'])
-				current_item = default_portrait
-			else:
-				current_item = create_portrait_entry(p['name'], p['path'])
-			
-
-####################################################################################################
-##							UI FUNCTIONS
-####################################################################################################
-
-
-func _on_PortraitSearch_text_changed(text):
-	for portrait_item in nodes['portrait_list'].get_children():
-		if text.empty() or text.to_lower() in portrait_item.get_node("NameEdit").text.to_lower() or text.to_lower() in portrait_item.get_node("PathEdit").text.to_lower():
-			portrait_item.show()
-		else:
-			portrait_item.hide()
-
-func refresh_themes_and_select(file):
-	selected_theme_file = file
-
-	if file == '' or file == 'No custom theme':
-		nodes['theme'].text = "No custom theme"
-		nodes['theme'].custom_icon = get_icon("GuiRadioUnchecked", "EditorIcons")
-	else:
-		nodes['theme'].text = DialogicUtil.get_theme_dict()[file]['name']
-		nodes['theme'].custom_icon = editor_reference.get_node("MainPanel/MasterTreeContainer/MasterTree").theme_icon
-
-func build_ThemePickerMenu():
-	nodes['theme'].get_popup().clear()
-	var folder_structure = DialogicUtil.get_theme_folder_structure()
-
-	## building the root level
-	build_PickerMenuFolder(nodes['theme'].get_popup(), folder_structure, "MenuButton")
-
-# is called recursively to build all levels of the folder structure
-func build_PickerMenuFolder(menu:PopupMenu, folder_structure:Dictionary, current_folder_name:String):
-	var index = 0
-	
-	if menu == nodes["theme"].get_popup():
-		menu.add_item('No custom theme')
-		menu.set_item_icon(index, get_icon("GuiRadioUnchecked", "EditorIcons"))
-		menu.set_item_metadata(index, {"file":""})
-		index += 1
-	
-	for folder_name in folder_structure['folders'].keys():
-		var submenu = PopupMenu.new()
-		var submenu_name = build_PickerMenuFolder(submenu, folder_structure['folders'][folder_name], folder_name)
-		submenu.name = submenu_name
-		menu.add_submenu_item(folder_name, submenu_name)
-		menu.set_item_icon(index, get_icon("Folder", "EditorIcons"))
-		menu.add_child(submenu)
-		index += 1
-		
-		# give it the right style
-		nodes['theme'].update_submenu_style(submenu)
-	
-	var files_info = DialogicUtil.get_theme_dict()
-	for file in folder_structure['files']:
-		menu.add_item(files_info[file]['name'])
-		menu.set_item_icon(index, editor_reference.get_node("MainPanel/MasterTreeContainer/MasterTree").theme_icon)
-		menu.set_item_metadata(index, {'file':file})
-		index += 1
-	
-	if not menu.is_connected("index_pressed", self, "_on_theme_selected"):
-		menu.connect("index_pressed", self, '_on_theme_selected', [menu])
-	
-	return current_folder_name
-
-
-func _on_theme_selected(index, menu):
-	refresh_themes_and_select(menu.get_item_metadata(index).get('file', ''))
-	
-
-func _on_display_name_toggled(button_pressed):
-	nodes['display_name'].visible = button_pressed
-	if button_pressed: nodes['display_name'].grab_focus()
-
-
-func _on_nickname_toggled(button_pressed):
-	nodes['nickname'].visible = button_pressed
-	if button_pressed: nodes['nickname'].grab_focus()
-
-func is_selected(file: String):
-	return nodes['file'].text == file
-
-
-func _on_name_changed(value):
-	save_character()
-
-
-func _update_name_on_tree():
-	var item = master_tree.get_selected()
-	item.set_text(0, nodes['name'].text)
-	master_tree.build_characters(nodes['file'].text)
-	
-
-func _input(event):
-	if event is InputEventKey and event.pressed:
-		if nodes['name'].has_focus():
-			if event.scancode == KEY_ENTER:
-				nodes['name'].release_focus()
-
-
-func _on_color_changed(color):
-	var item = master_tree.get_selected()
-	item.set_icon_modulate(0, color)
-
-
-
-# Portraits
-func _on_New_Portrait_Button_pressed():
-	create_portrait_entry('', '', true)
-
-
-func create_portrait_entry(p_name = '', path = '', grab_focus = false):
-	if grab_focus and nodes['portrait_list'].get_child_count() == 1 and nodes['portrait_list'].get_child(0).get_node("PathEdit").text == '':
-		nodes['portrait_list'].get_child(0)._on_ButtonSelect_pressed()
+func load_character(resource: DialogicCharacter) -> void:
+	if not resource:
 		return
+	current_character = resource
+	%ColorPickerButton.color = resource.color
+	%DisplayNameLineEdit.text = resource.display_name
+	%NicknameLineEdit.text = ""
+	for nickname in resource.nicknames: 
+		%NicknameLineEdit.text += nickname +", "
+	%NicknameLineEdit.text = %NicknameLineEdit.text.trim_suffix(', ')
+	%DescriptionTextEdit.text = resource.description
+	%DefaultPortraitPicker.set_value(resource.default_portrait)
+	%MainScale.value = 100*resource.scale
+	%MainOffsetX.value = resource.offset.x
+	%MainOffsetY.value = resource.offset.y
+	%MainMirror.button_pressed = resource.mirror
+	%PortraitSearch.text = ""
 	
-	var p = portrait_entry.instance()
-	p.editor_reference = editor_reference
-	p.image_node = nodes['portrait_preview_full']
-	p.image_node2 = nodes['portrait_preview_real']
-	p.image_label = nodes['image_label']
-	var p_list = nodes['portrait_list']
-	p_list.add_child(p)
-	if p_name != '':
-		p.get_node("NameEdit").text = p_name
-	if path != '':
-		p.get_node("PathEdit").text = path
-	if grab_focus:
-		p.get_node("NameEdit").grab_focus()
-		p._on_ButtonSelect_pressed()
-	return p
+	for main_edit in %MainEditTabs.get_children():
+		if main_edit.has_method('load_character'):
+			main_edit.load_character(current_character)
+	
+	update_portrait_list()
+	emit_signal('character_loaded', resource.resource_path)
 
 
-func _on_Import_Portrait_Folder_Button_pressed():
-	editor_reference.godot_dialog("*", EditorFileDialog.MODE_OPEN_DIR)
-	editor_reference.godot_dialog_connect(self, "_on_dir_selected", "dir_selected")
+func save_character() -> void:
+	if ! visible or not current_character:
+		return
+	current_character.display_name = %DisplayNameLineEdit.text
+	current_character.color = %ColorPickerButton.color
+	var nicknames = []
+	for n_name in %NicknameLineEdit.text.split(','):
+		nicknames.append(n_name.strip_edges())
+	current_character.nicknames = nicknames
+	current_character.description = %DescriptionTextEdit.text
+	
+	current_character.portraits = {}
+	for node in $'%PortraitList'.get_children():
+		current_character.portraits[node.get_portrait_name()] = node.portrait_data
+	
+	if $'%DefaultPortraitPicker'.current_value in current_character.portraits.keys():
+		current_character.default_portrait = $'%DefaultPortraitPicker'.current_value
+	elif !current_character.portraits.is_empty():
+		current_character.default_portrait = current_character.portraits.keys()[0]
+	else:
+		current_character.default_portrait = ""
+	
+	current_character.scale = %MainScale.value/100.0
+	current_character.offset = Vector2(%MainOffsetX.value, %MainOffsetY.value) 
+	current_character.mirror = %MainMirror.button_pressed
+	
+	for main_edit in %MainEditTabs.get_children():
+		if main_edit.has_method('save_character'):
+			main_edit.save_character(current_character)
+	
+	ResourceSaver.save(current_character, current_character.resource_path)
+	emit_signal('set_resource_saved')
 
 
-func _on_dir_selected(path, target):
+##############################################################################
+##							INTERFACE
+##############################################################################
+
+func _ready() -> void:
+	DialogicUtil.get_dialogic_plugin().dialogic_save.connect(save_character)
+	# Let's go connecting!
+	%ColorPickerButton.color_changed.connect(something_changed)
+	%DisplayNameLineEdit.text_changed.connect(something_changed)
+	%NicknameLineEdit.text_changed.connect(something_changed)
+	%DescriptionTextEdit.text_changed.connect(something_changed)
+	%DefaultPortraitPicker.resource_icon = load("res://addons/dialogic/Editor/Images/Resources/Portrait.svg")
+	%DefaultPortraitPicker.get_suggestions_func = [self, 'suggest_portraits']
+	%DefaultPortraitPicker.set_left_text("")
+	%DefaultPortraitPicker.value_changed.connect(something_changed)
+	%MainScale.value_changed.connect(main_portrait_settings_update)
+	%MainOffsetX.value_changed.connect(main_portrait_settings_update)
+	%MainOffsetY.value_changed.connect(main_portrait_settings_update)
+	%MainMirror.toggled.connect(main_portrait_settings_update)
+	%PortraitSearch.text_changed.connect(update_portrait_list)
+	
+	%NewPortrait.pressed.connect(create_portrait_entry_instance.bind('', {'path':'', 'scale':1, 'offset':Vector2(), 'mirror':false}))
+	%ImportFromFolder.pressed.connect(open_portrait_folder_select)
+	%PreviewMode.item_selected.connect(_on_PreviewMode_item_selected)
+	%PreviewMode.select(DialogicUtil.get_project_setting('dialogic/editor/character_preview_mode', 0))
+	_on_PreviewMode_item_selected(%PreviewMode.selected)
+	
+	if find_parent('EditorView'): # This prevents the view to turn black if you are editing this scene in Godot
+		var style = $Split/EditorScroll.get_theme_stylebox('custom_styles/bg')
+		style.set('bg_color', get_theme_color("dark_color_1", "Editor"))
+	
+	%NewPortrait.icon = get_theme_icon("Add", "EditorIcons")
+	%ImportFromFolder.icon = get_theme_icon("Folder", "EditorIcons")
+	%PortraitsTitle.set('custom_fonts/font', get_theme_font("doc_title", "EditorFonts"))
+	$Split/EditorScroll/Editor/VBoxContainer/PortraitPanel.set('custom_styles/panel', get_theme_stylebox("Background", "EditorStyles"))
+	
+	%PortraitScale.value_changed.connect(set_portrait_scale)
+	%PortraitOffsetX.value_changed.connect(set_portrait_offset_x)
+	%PortraitOffsetY.value_changed.connect(set_portrait_offset_y)
+	%PortraitMirror.toggled.connect(set_portrait_mirror)
+	
+	# Subsystems
+	for script in DialogicUtil.get_event_scripts():
+		for subsystem in load(script).new().get_required_subsystems():
+			if subsystem.has('character_main'):
+				var edit =  load(subsystem.character_main).instantiate()
+				if edit.has_signal('changed'):
+					edit.changed.connect(something_changed)
+				%MainEditTabs.add_child(edit)
+	hide()
+
+
+func something_changed(fake_argument = "", fake_arg2 = null) -> void:
+	emit_signal('set_resource_unsaved')
+
+func suggest_portraits(search:String):
+	var suggestions = {}
+	for portrait in $'%PortraitList'.get_children():
+		if search.is_empty() or search.to_lower() in portrait.get_portrait_name().to_lower():
+			suggestions[portrait.get_portrait_name()] = {'value':portrait.get_portrait_name()}
+	return suggestions
+
+func open_portrait_folder_select() -> void:
+	find_parent("EditorView").godot_file_dialog(_on_dir_selected, "*", EditorFileDialog.FILE_MODE_OPEN_DIR)
+
+
+func _on_dir_selected(path:String) -> void:
 	var dir = Directory.new()
 	if dir.open(path) == OK:
 		dir.list_dir_begin()
@@ -346,29 +162,131 @@ func _on_dir_selected(path, target):
 				if '.svg' in file_lower or '.png' in file_lower:
 					if not '.import' in file_lower:
 						var final_name = path+ "/" + file_name
-						create_portrait_entry(DialogicResources.get_filename_from_path(file_name), final_name)
+						create_portrait_entry_instance(file_name.get_file().trim_suffix("."+file_name.get_extension()), {'path':final_name, 'scale':1, 'offset':Vector2(), 'mirror':false})
 			file_name = dir.get_next()
 	else:
 		print("An error occurred when trying to access the path.")
 
 
-func _on_MirrorPortraitsCheckBox_toggled(button_pressed):
-	nodes['portrait_preview_full'].flip_h = button_pressed
-	nodes['portrait_preview_real'].flip_h = button_pressed
+func create_portrait_entry_instance(name:String, portait_data:Dictionary, loading = false) -> Node:
+	# if this is the first portrait, use as default
+	if !$'%PortraitList'.get_child_count() and !loading:
+		if name.is_empty():
+			name = "default"
+		$'%DefaultPortraitPicker'.set_value(name)
+	var instance = portrait_entry.instantiate()
+	instance.load_data(name, portait_data.duplicate(), self)
+	%PortraitList.add_child(instance)
+	something_changed()
+	return instance
 
 
-func _on_Scale_value_changed(value):
-	#nodes['portrait_preview_real'].rect_position = ($Split/Preview/Background/Positioner.rect_position-nodes['portrait_preview_real'].rect_size*Vector2(0.5,1))
-	nodes['portrait_preview_real'].rect_size = Vector2()
-	nodes['portrait_preview_real'].rect_scale = Vector2(
-					float(value)/100, float(value)/100)
+func update_portrait_list(filter_term:String = '') -> void:
+	for node in %PortraitList.get_children():
+		node.queue_free()
+	
+	var prev_portrait_name = ''
+	if current_portrait and is_instance_valid(current_portrait):
+		prev_portrait_name = current_portrait.get_portrait_name()
+	
+	# load the portraits
+	current_portrait = null
+	var first_visible_item = null
+	for portrait in current_character.portraits.keys():
+		var port = create_portrait_entry_instance(portrait, current_character.portraits[portrait], true)
+		if filter_term.is_empty() or filter_term.to_lower() in portrait.to_lower():
+			if not first_visible_item: first_visible_item = port
+			if portrait == prev_portrait_name:
+				current_portrait = port
+		else:
+			port.hide()
+	
+	if current_portrait == null:
+		# Show the first portrait, if there is one
+		if first_visible_item:
+			update_portrait_preview(first_visible_item)
+		else:
+			update_portrait_preview()
+	else:
+		update_portrait_preview(current_portrait)
 
-func _on_PreviewMode_item_selected(index):
+
+func update_portrait_preview(portrait_inst = "") -> void:
+	if current_portrait and is_instance_valid(current_portrait):
+		current_portrait.visual_defocus()
+	
+	emit_signal("portrait_selected", current_portrait, portrait_inst)
+	
+	if portrait_inst and is_instance_valid(portrait_inst):
+		current_portrait = portrait_inst
+		current_portrait.visual_focus()
+	
+		%PreviewLabel.text = 'Preview of "'+current_portrait.get_portrait_name()+'"'
+		
+		var path:String = current_portrait.portrait_data.get('path', '')
+		var mirror:bool = current_portrait.portrait_data.get('mirror', false) != %MainMirror.button_pressed
+		var scale:float = current_portrait.portrait_data.get('scale', 1) * %MainScale.value/100.0
+		var offset:Vector2 = current_portrait.portrait_data.get('offset', Vector2()) + Vector2(%MainOffsetX.value, %MainOffsetY.value)
+		var l_path = path.to_lower()
+		if '.png' in l_path or '.svg' in l_path:
+			%PreviewRealRect.texture = load(path)
+			%PreviewFullRect.texture = load(path)
+			%PreviewLabel.text += ' (' + str(%PreviewRealRect.texture.get_width()) + 'x' + str(%PreviewRealRect.texture.get_height())+')'
+			%PreviewRealRect.scale = Vector2(scale, scale)
+			%PreviewRealRect.flip_h = mirror
+			%PreviewFullRect.flip_h = mirror
+			%PreviewRealRect.position.x = -(%PreviewRealRect.texture.get_width()*scale/2.0)+offset.x
+			%PreviewRealRect.position.y = -(%PreviewRealRect.texture.get_height()*scale)+offset.y
+			
+			%PortraitSettings.show()
+		elif '.tscn' in l_path:
+			%PreviewRealRect.texture = null
+			%PreviewFullRect.texture = null
+			%PreviewLabel.text = 'CustomScenePreview'
+			%PortraitSettings.hide()
+		
+		%PortraitScale.value = current_portrait.portrait_data.get('scale', 1)*100
+		%PortraitOffsetX.value = current_portrait.portrait_data.get('offset', Vector2()).x
+		%PortraitOffsetY.value = current_portrait.portrait_data.get('offset', Vector2()).y
+		%PortraitMirror.button_pressed = current_portrait.portrait_data.get('mirror', false)
+		
+	else:
+		%PortraitSettings.hide()
+		%PreviewRealRect.texture = null
+		%PreviewFullRect.texture = null
+		%PreviewLabel.text = 'Nothing to preview'
+
+
+func _on_PreviewMode_item_selected(index:int) -> void:
 	if index == 0:
-		nodes['portrait_preview_real'].hide()
-		nodes['portrait_preview_full'].show()
-	if index == 1:
-		nodes['portrait_preview_real'].show()
-		nodes['portrait_preview_full'].hide()
-	DialogicResources.set_settings_value('editor', 'character_preview_mode', index)
+		%PreviewReal.hide()
+		%PreviewFullRect.show()
+	if index == 1 or index == null:
+		%PreviewReal.show()
+		%PreviewFullRect.hide()
+	ProjectSettings.set_setting('dialogic/editor/character_preview_mode', index)
+	
 
+func set_portrait_mirror(toggle:bool) -> void:
+	current_portrait.portrait_data.mirror = toggle
+	update_portrait_preview(current_portrait)
+	something_changed()
+
+func set_portrait_scale(value:float) -> void:
+	current_portrait.portrait_data.scale = value/100.0
+	update_portrait_preview(current_portrait)
+	something_changed()
+
+func set_portrait_offset_x(value:float) -> void:
+	current_portrait.portrait_data.offset.x = value
+	update_portrait_preview(current_portrait)
+	something_changed()
+
+func set_portrait_offset_y(value:float) -> void:
+	current_portrait.portrait_data.offset.y = value
+	update_portrait_preview(current_portrait)
+	something_changed()
+
+func main_portrait_settings_update(value = null) -> void:
+	update_portrait_preview(current_portrait)
+	something_changed()

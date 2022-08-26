@@ -1,282 +1,191 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=5 format=3 uid="uid://cuud6b86l7juf"]
 
-[ext_resource path="res://addons/dialogic/Images/Tutorials/arrow-down.svg" type="Texture" id=13]
-[ext_resource path="res://addons/dialogic/Editor/TimelineEditor/TimelineEditor.gd" type="Script" id=17]
-[ext_resource path="res://addons/dialogic/Editor/Common/TLabel.tscn" type="PackedScene" id=21]
-[ext_resource path="res://addons/dialogic/Editor/TimelineEditor/TimelineArea.gd" type="Script" id=22]
-[ext_resource path="res://addons/dialogic/Editor/Theme/MainTheme.tres" type="Theme" id=28]
-[ext_resource path="res://addons/dialogic/Editor/TimelineEditor/FlexContainer.gd" type="Script" id=29]
+[ext_resource type="Script" path="res://addons/dialogic/Editor/TimelineEditor/TimelineEditor.gd" id="17"]
+[ext_resource type="Script" path="res://addons/dialogic/Editor/TimelineEditor/TimelineArea.gd" id="22"]
+[ext_resource type="Theme" path="res://addons/dialogic/Editor/Theme/MainTheme.tres" id="28"]
 
-[sub_resource type="StyleBoxFlat" id=1]
-content_margin_left = 5.0
-content_margin_right = 5.0
-content_margin_top = 5.0
-content_margin_bottom = 5.0
-bg_color = Color( 0, 0, 0, 1 )
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
-border_color = Color( 0.0980392, 0.113725, 0.152941, 1 )
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_siq3e"]
+bg_color = Color(0, 0, 0, 1)
 
-[sub_resource type="StyleBoxFlat" id=2]
-draw_center = false
-border_width_left = 2
-border_color = Color( 0.8, 0.8, 0.8, 0 )
-
-[sub_resource type="StyleBoxFlat" id=3]
-content_margin_right = 6.0
-content_margin_top = 10.0
-content_margin_bottom = 10.0
-bg_color = Color( 0.94902, 1, 0.482353, 1 )
-corner_radius_top_left = 5
-corner_radius_top_right = 5
-corner_radius_bottom_right = 5
-corner_radius_bottom_left = 5
-
-[node name="TimelineEditor" type="HSplitContainer"]
+[node name="TimelineEditor" type="MarginContainer"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_bottom = 138.0
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+script = ExtResource("17")
+
+[node name="View" type="HSplitContainer" parent="."]
+offset_left = 5.0
+offset_right = 1019.0
+offset_bottom = 595.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-theme = ExtResource( 28 )
+theme = ExtResource("28")
 split_offset = 7
-script = ExtResource( 17 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
-[node name="TimelineArea" type="ScrollContainer" parent="."]
-margin_right = 832.0
-margin_bottom = 738.0
+[node name="TimelineArea" type="ScrollContainer" parent="View"]
+unique_name_in_owner = true
+offset_right = 802.0
+offset_bottom = 595.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-custom_styles/bg = SubResource( 1 )
-script = ExtResource( 22 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
+theme_override_styles/bg = SubResource("StyleBoxFlat_siq3e")
+script = ExtResource("22")
 
-[node name="TimeLine" type="VBoxContainer" parent="TimelineArea"]
-margin_left = 5.0
-margin_top = 5.0
-margin_right = 827.0
-margin_bottom = 733.0
+[node name="Timeline" type="VBoxContainer" parent="View/TimelineArea"]
+unique_name_in_owner = true
+offset_right = 802.0
+offset_bottom = 595.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="ScrollContainer" type="ScrollContainer" parent="."]
-margin_left = 844.0
-margin_right = 1024.0
-margin_bottom = 738.0
-rect_min_size = Vector2( 180, 0 )
-custom_styles/bg = SubResource( 2 )
+[node name="ScrollContainer" type="ScrollContainer" parent="View"]
+custom_minimum_size = Vector2(200, 0)
+offset_left = 814.0
+offset_right = 1014.0
+offset_bottom = 595.0
 
-[node name="EventContainer" type="VBoxContainer" parent="ScrollContainer"]
-margin_left = 2.0
-margin_right = 186.0
-margin_bottom = 939.0
+[node name="EventContainer" type="VBoxContainer" parent="View/ScrollContainer"]
+offset_right = 200.0
+offset_bottom = 595.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-custom_constants/separation = 9
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
-[node name="EventsWarning" type="PanelContainer" parent="ScrollContainer/EventContainer"]
-margin_right = 184.0
-margin_bottom = 68.0
-custom_styles/panel = SubResource( 3 )
+[node name="HBoxContainer6" type="HBoxContainer" parent="View/ScrollContainer/EventContainer"]
+offset_right = 200.0
+offset_bottom = 26.0
 
-[node name="HBoxContainer" type="HBoxContainer" parent="ScrollContainer/EventContainer/EventsWarning"]
-margin_top = 10.0
-margin_right = 178.0
-margin_bottom = 58.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-__meta__ = {
-"_edit_use_anchors_": false
-}
+[node name="Label" type="Label" parent="View/ScrollContainer/EventContainer/HBoxContainer6"]
+offset_right = 39.0
+offset_bottom = 26.0
+text = "Main"
 
-[node name="TextureRect" type="TextureRect" parent="ScrollContainer/EventContainer/EventsWarning/HBoxContainer"]
-margin_right = 40.0
-margin_bottom = 48.0
-rect_min_size = Vector2( 40, 40 )
-texture = ExtResource( 13 )
-stretch_mode = 4
-
-[node name="Label" type="Label" parent="ScrollContainer/EventContainer/EventsWarning/HBoxContainer"]
-margin_left = 44.0
-margin_right = 178.0
-margin_bottom = 48.0
-rect_min_size = Vector2( 100, 0 )
-size_flags_horizontal = 3
-size_flags_vertical = 1
-custom_colors/font_color = Color( 0, 0, 0, 1 )
-text = "Add an event to start building your timeline"
-autowrap = true
-
-[node name="HBoxContainer6" type="HBoxContainer" parent="ScrollContainer/EventContainer"]
-margin_top = 77.0
-margin_right = 184.0
-margin_bottom = 91.0
-
-[node name="TLabel" parent="ScrollContainer/EventContainer/HBoxContainer6" instance=ExtResource( 21 )]
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_right = 77.0
-margin_bottom = 14.0
-text = "Main Events"
-text_key = "Main Events"
-
-[node name="HSeparator2" type="HSeparator" parent="ScrollContainer/EventContainer/HBoxContainer6"]
-margin_left = 81.0
-margin_right = 184.0
-margin_bottom = 14.0
+[node name="HSeparator2" type="HSeparator" parent="View/ScrollContainer/EventContainer/HBoxContainer6"]
+offset_left = 43.0
+offset_right = 200.0
+offset_bottom = 26.0
 size_flags_horizontal = 3
 
-[node name="FlexContainer1" type="Container" parent="ScrollContainer/EventContainer"]
-margin_top = 100.0
-margin_right = 184.0
-margin_bottom = 145.0
+[node name="FlexContainer0" type="HFlowContainer" parent="View/ScrollContainer/EventContainer"]
+offset_top = 30.0
+offset_right = 200.0
+offset_bottom = 61.0
 size_flags_horizontal = 3
-script = ExtResource( 29 )
 
-[node name="HBoxContainer5" type="HBoxContainer" parent="ScrollContainer/EventContainer"]
-margin_top = 154.0
-margin_right = 184.0
-margin_bottom = 168.0
+[node name="HBoxContainer5" type="HBoxContainer" parent="View/ScrollContainer/EventContainer"]
+offset_top = 65.0
+offset_right = 200.0
+offset_bottom = 91.0
 
-[node name="TLabel2" parent="ScrollContainer/EventContainer/HBoxContainer5" instance=ExtResource( 21 )]
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_right = 33.0
-margin_bottom = 14.0
+[node name="Label2" type="Label" parent="View/ScrollContainer/EventContainer/HBoxContainer5"]
+offset_right = 40.0
+offset_bottom = 26.0
 text = "Logic"
-text_key = "Logic"
 
-[node name="HSeparator2" type="HSeparator" parent="ScrollContainer/EventContainer/HBoxContainer5"]
-margin_left = 37.0
-margin_right = 184.0
-margin_bottom = 14.0
+[node name="HSeparator2" type="HSeparator" parent="View/ScrollContainer/EventContainer/HBoxContainer5"]
+offset_left = 44.0
+offset_right = 200.0
+offset_bottom = 26.0
 size_flags_horizontal = 3
 
-[node name="FlexContainer2" type="Container" parent="ScrollContainer/EventContainer"]
-margin_top = 177.0
-margin_right = 184.0
-margin_bottom = 272.0
+[node name="FlexContainer1" type="HFlowContainer" parent="View/ScrollContainer/EventContainer"]
+offset_top = 95.0
+offset_right = 200.0
+offset_bottom = 161.0
 size_flags_horizontal = 3
-script = ExtResource( 29 )
 
-[node name="HBoxContainer3" type="HBoxContainer" parent="ScrollContainer/EventContainer"]
-margin_top = 281.0
-margin_right = 184.0
-margin_bottom = 295.0
+[node name="HBoxContainer3" type="HBoxContainer" parent="View/ScrollContainer/EventContainer"]
+offset_top = 165.0
+offset_right = 200.0
+offset_bottom = 191.0
 
-[node name="TLabel3" parent="ScrollContainer/EventContainer/HBoxContainer3" instance=ExtResource( 21 )]
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_right = 56.0
-margin_bottom = 14.0
+[node name="Label3" type="Label" parent="View/ScrollContainer/EventContainer/HBoxContainer3"]
+offset_right = 67.0
+offset_bottom = 26.0
 text = "Timeline"
-text_key = "Timeline"
 
-[node name="HSeparator2" type="HSeparator" parent="ScrollContainer/EventContainer/HBoxContainer3"]
-margin_left = 60.0
-margin_right = 184.0
-margin_bottom = 14.0
+[node name="HSeparator2" type="HSeparator" parent="View/ScrollContainer/EventContainer/HBoxContainer3"]
+offset_left = 71.0
+offset_right = 200.0
+offset_bottom = 26.0
 size_flags_horizontal = 3
 
-[node name="FlexContainer3" type="Container" parent="ScrollContainer/EventContainer"]
-margin_top = 304.0
-margin_right = 184.0
-margin_bottom = 449.0
-size_flags_horizontal = 3
-script = ExtResource( 29 )
-
-[node name="HBoxContainer4" type="HBoxContainer" parent="ScrollContainer/EventContainer"]
-margin_top = 458.0
-margin_right = 184.0
-margin_bottom = 472.0
-
-[node name="TLabel4" parent="ScrollContainer/EventContainer/HBoxContainer4" instance=ExtResource( 21 )]
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_right = 37.0
-margin_bottom = 14.0
-text = "Audio"
-text_key = "Audio"
-
-[node name="HSeparator2" type="HSeparator" parent="ScrollContainer/EventContainer/HBoxContainer4"]
-margin_left = 41.0
-margin_right = 184.0
-margin_bottom = 14.0
+[node name="FlexContainer2" type="HFlowContainer" parent="View/ScrollContainer/EventContainer"]
+offset_top = 195.0
+offset_right = 200.0
+offset_bottom = 226.0
 size_flags_horizontal = 3
 
-[node name="FlexContainer4" type="Container" parent="ScrollContainer/EventContainer"]
-margin_top = 481.0
-margin_right = 184.0
-margin_bottom = 576.0
+[node name="HBoxContainer4" type="HBoxContainer" parent="View/ScrollContainer/EventContainer"]
+offset_top = 230.0
+offset_right = 200.0
+offset_bottom = 256.0
+
+[node name="Label4" type="Label" parent="View/ScrollContainer/EventContainer/HBoxContainer4"]
+offset_right = 98.0
+offset_bottom = 26.0
+text = "Audio/Visual"
+
+[node name="HSeparator2" type="HSeparator" parent="View/ScrollContainer/EventContainer/HBoxContainer4"]
+offset_left = 102.0
+offset_right = 200.0
+offset_bottom = 26.0
 size_flags_horizontal = 3
-script = ExtResource( 29 )
 
-[node name="HBoxContainer" type="HBoxContainer" parent="ScrollContainer/EventContainer"]
-margin_top = 585.0
-margin_right = 184.0
-margin_bottom = 599.0
+[node name="FlexContainer3" type="HFlowContainer" parent="View/ScrollContainer/EventContainer"]
+offset_top = 260.0
+offset_right = 200.0
+offset_bottom = 260.0
+size_flags_horizontal = 3
 
-[node name="TLabel5" parent="ScrollContainer/EventContainer/HBoxContainer" instance=ExtResource( 21 )]
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_right = 39.0
-margin_bottom = 14.0
+[node name="HBoxContainer" type="HBoxContainer" parent="View/ScrollContainer/EventContainer"]
+offset_top = 264.0
+offset_right = 200.0
+offset_bottom = 290.0
+
+[node name="Label5" type="Label" parent="View/ScrollContainer/EventContainer/HBoxContainer"]
+offset_right = 48.0
+offset_bottom = 26.0
 text = "Godot"
-text_key = "Godot"
 
-[node name="HSeparator2" type="HSeparator" parent="ScrollContainer/EventContainer/HBoxContainer"]
-margin_left = 43.0
-margin_right = 184.0
-margin_bottom = 14.0
+[node name="HSeparator2" type="HSeparator" parent="View/ScrollContainer/EventContainer/HBoxContainer"]
+offset_left = 52.0
+offset_right = 200.0
+offset_bottom = 26.0
 size_flags_horizontal = 3
 
-[node name="FlexContainer5" type="Container" parent="ScrollContainer/EventContainer"]
-margin_top = 608.0
-margin_right = 184.0
-margin_bottom = 678.0
-size_flags_horizontal = 3
-script = ExtResource( 29 )
-
-[node name="CustomEventsHeadline" type="HBoxContainer" parent="ScrollContainer/EventContainer"]
-margin_top = 687.0
-margin_right = 184.0
-margin_bottom = 701.0
-
-[node name="TLabel6" parent="ScrollContainer/EventContainer/CustomEventsHeadline" instance=ExtResource( 21 )]
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_right = 95.0
-margin_bottom = 14.0
-text = "Custom Events"
-text_key = "Custom Events"
-
-[node name="HSeparator2" type="HSeparator" parent="ScrollContainer/EventContainer/CustomEventsHeadline"]
-margin_left = 99.0
-margin_right = 184.0
-margin_bottom = 14.0
+[node name="FlexContainer4" type="HFlowContainer" parent="View/ScrollContainer/EventContainer"]
+offset_top = 294.0
+offset_right = 200.0
+offset_bottom = 294.0
 size_flags_horizontal = 3
 
-[node name="CustomEventsContainer" type="Container" parent="ScrollContainer/EventContainer"]
-margin_top = 710.0
-margin_right = 184.0
-margin_bottom = 830.0
-size_flags_horizontal = 3
-script = ExtResource( 29 )
+[node name="OtherContainer" type="HBoxContainer" parent="View/ScrollContainer/EventContainer"]
+offset_top = 298.0
+offset_right = 200.0
+offset_bottom = 324.0
 
-[node name="Spacer" type="Control" parent="ScrollContainer/EventContainer"]
-margin_top = 839.0
-margin_right = 184.0
-margin_bottom = 939.0
-rect_min_size = Vector2( 0, 100 )
+[node name="Label6" type="Label" parent="View/ScrollContainer/EventContainer/OtherContainer"]
+offset_right = 46.0
+offset_bottom = 26.0
+text = "Other"
+
+[node name="HSeparator2" type="HSeparator" parent="View/ScrollContainer/EventContainer/OtherContainer"]
+offset_left = 50.0
+offset_right = 200.0
+offset_bottom = 26.0
+size_flags_horizontal = 3
+
+[node name="FlexContainer5" type="HFlowContainer" parent="View/ScrollContainer/EventContainer"]
+offset_top = 328.0
+offset_right = 200.0
+offset_bottom = 359.0
+size_flags_horizontal = 3
+
+[node name="Spacer" type="Control" parent="View/ScrollContainer/EventContainer"]
+offset_top = 363.0
+offset_right = 200.0
+offset_bottom = 363.0

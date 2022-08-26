@@ -22,3 +22,6 @@ export_presets.cfg
 /test-project
 # Excluding obsidian generated files
 /addons/dialogic/Documentation/.obsidian
+
+# Godot 4 specific
+.godot

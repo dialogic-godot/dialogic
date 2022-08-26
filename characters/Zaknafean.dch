@@ -1,0 +1,17 @@
+{
+"@path": "res://addons/dialogic/Resources/character.gd",
+"@subpath": NodePath(""),
+"color": Color(0.788235, 0.760784, 0.341176, 1),
+"custom_info": {
+"sound_moods": {},
+"theme": ""
+},
+"description": "A dialogic developer.",
+"display_name": "Zaknafean",
+"mirror": false,
+"name": "Zaknafean",
+"nicknames": ["\"Cyzaine\"", "\"Zak\"", "\"Zaknafean\""],
+"offset": Vector2(0, 0),
+"portraits": {},
+"scale": 1.0
+}
