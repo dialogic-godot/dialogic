@@ -92,13 +92,12 @@ func change_portrait(character:DialogicCharacter, portrait:String, mirrored:bool
 		(!char_node.get_child(0).has_method('_should_do_portrait_update') or char_node.get_child(0)._should_do_portrait_update(character, portrait))):
 			portrait_node = char_node.get_child(0)
 	else:
-
 		# remove previous portrait
 		if char_node.get_child_count():
 			char_node.get_child(0).queue_free()
 
 		if scene_path.is_empty():
-			var sprite = default_portrait_scene.instantiate()
+			portrait_node = default_portrait_scene.instantiate()
 		else:
 			portrait_node = load(scene_path).instantiate()
 	
