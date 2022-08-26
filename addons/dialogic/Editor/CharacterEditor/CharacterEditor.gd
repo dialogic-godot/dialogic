@@ -119,20 +119,23 @@ func _ready() -> void:
 	%PreviewMode.select(DialogicUtil.get_project_setting('dialogic/editor/character_preview_mode', 0))
 	_on_PreviewMode_item_selected(%PreviewMode.selected)
 	
+	# Let's go styling!
+	self_modulate = get_theme_color("dark_color_3", "Editor")
+	
 	%AddPortraitButton.icon = get_theme_icon("Add", "EditorIcons")
 	%ImportPortraitsButton.icon = get_theme_icon("Folder", "EditorIcons")
 	%PortraitSearch.right_icon = get_theme_icon("Search", "EditorIcons")
-
+	
 	var panel_style = DCSS.inline({
 		'border-radius': 5,
 		'border': 1,
 		'border_color':get_theme_color("dark_color_3", "Editor"),
-		'background': get_theme_color("dark_color_1", "Editor"),
+		'background': get_theme_color("base_color", "Editor"),
 		'padding': [10, 10],
 	})
 	
 	var tab_panel :StyleBoxFlat = get_theme_stylebox('tab_selected', 'TabContainer').duplicate()
-	tab_panel.bg_color = get_theme_color("dark_color_1", "Editor")
+	tab_panel.bg_color = get_theme_color("base_color", "Editor")
 	
 	%MainEditTabs.add_theme_stylebox_override('panel', panel_style)
 	%MainEditTabs.add_theme_stylebox_override('tab_selected', tab_panel)
