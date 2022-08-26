@@ -108,7 +108,11 @@ func change_portrait(character:DialogicCharacter, portrait:String, mirrored:bool
 		if scene_path.is_empty():
 			portrait_node = default_portrait_scene.instantiate()
 		else:
-			portrait_node = load(scene_path).instantiate()
+			var p = load(scene_path)
+			if p:
+				portrait_node = p.instantiate()
+			else:
+				push_error('Dialogic: Portrait node "' + str(scene_path) + '" for character [' + character.display_name + '] could not be loaded. Your portrait might not show up on the screen.')
 	
 	if portrait_node:
 		portrait_node.position = character.offset + character.portraits[portrait].get('offset', Vector2())
