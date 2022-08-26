@@ -17,13 +17,6 @@ var paused := false
 var current_event_idx: int = 0
 var current_state_info: Dictionary = {}
 
-# Thread and variables for handling delayed loader
-var deferred_loader: Thread
-var deferred_loader_semaphore: Semaphore = Semaphore.new()
-var deferred_loader_safe_to_run: bool = false
-var deferred_loader_running: bool = false
-var deferred_loader_cleanup: bool = false
-
 signal state_changed(new_state)
 signal timeline_ended()
 signal timeline_started()
@@ -33,12 +26,10 @@ signal signal_event(argument)
 signal text_signal(argument)
 
 func _ready() -> void:
-	#thread is only used at runtime for deferred loading
-	#as it's not particularly modifying much, just finishing a step we're deferring to fill in the event data, it should be safe for use without semaphores or mutexes
+
 	if Engine.is_editor_hint() == false:
-		deferred_loader = Thread.new()
 		
-		# Runtime will also build the character_directory dictionary. Editor will have to handle it a different way
+		# Runtime will build the character_directory dictionary. Editor will have to handle it a different way
 		var characters: Array = DialogicUtil.list_resources_of_type(".dch")
 		
 		for character in characters:
@@ -49,25 +40,14 @@ func _ready() -> void:
 	clear()
 	
 # 
-func _exit_tree():
-	# Thread needs to be disposed of
-	if Engine.is_editor_hint() == false:
-		deferred_loader_cleanup = true
-		deferred_loader_safe_to_run = false
-		deferred_loader_semaphore.post()
-		deferred_loader.wait_to_finish()
-	# Probably other cleanup here
+
 
 
 ################################################################################
 ## 						TIMELINE+EVENT HANDLING
 ################################################################################
 func start_timeline(timeline_resource:Variant, label_or_idx:Variant = "") -> void:
-	# Cancel all remaining tasks in the preloader thread
-	#If loader is running, wait for it to stop current line
-	deferred_loader_safe_to_run = false
-	while deferred_loader_running:		
-		continue
+
 		
 	# load the resource if only the path is given
 	if typeof(timeline_resource) == TYPE_STRING:
@@ -90,15 +70,6 @@ func start_timeline(timeline_resource:Variant, label_or_idx:Variant = "") -> voi
 		if label_or_idx >-1:
 			current_event_idx = label_or_idx -1
 	
-	# begin the runtime thread for processing events
-#	if deferred_loader.is_alive() == false:
-#		var threadFunction = Callable(self, "_thread_deferred_timeline_items")
-#		deferred_loader.start(threadFunction)
-#		deferred_loader_safe_to_run = true
-#		deferred_loader_semaphore.post()
-#	else:
-#		deferred_loader_safe_to_run = true
-#		deferred_loader_semaphore.post()
 
 	
 	emit_signal('timeline_started')
@@ -252,17 +223,27 @@ func load_full_state(state_info:Dictionary) -> void:
 ##						SUB-SYTSEMS
 ################################################################################
 func collect_subsystems() -> void:
+	# This also builds th event script cache in runtime, since it's iteraitng here anyway 
 	for script in DialogicUtil.get_event_scripts():
 		var x = load(script).new()
 		
 		if Engine.is_editor_hint() == false:
 			x.set_meta("script_path", script)
-			_event_script_cache.push_back(x)
+			if script != "res://addons/dialogic/Events/End Branch/event.gd":
+				_event_script_cache.push_back(x)
 		for i in x.get_required_subsystems():
 			if i.has('subsystem') and not has_subsystem(i.name):
 				add_subsytsem(i.name, i.subsystem)
 				
 	if Engine.is_editor_hint() == false:			
+		# Events are checked in order while testing them. EndBranch needs to be first, Text needs to be last
+		for i in _event_script_cache.size():
+			if _event_script_cache[i].get_meta("script_path") == "res://addons/dialogic/Events/End Branch/event.gd":
+				var x = load("res://addons/dialogic/Events/End Branch/event.gd").new()
+				x.set_meta("script_path", "res://addons/dialogic/Events/End Branch/event.gd")
+				_event_script_cache.push_front(x)
+				break
+				
 		for i in _event_script_cache.size():
 			if _event_script_cache[i].get_meta("script_path") == "res://addons/dialogic/Events/Text/event.gd":
 				_event_script_cache.push_back(_event_script_cache[i])
@@ -296,50 +277,20 @@ func _set(property, value):
 		return true
 		
 ################################################################################
-##						PROCESSING THREADS
+##						PROCESSING FUNCTIONS
 ################################################################################
-func _thread_deferred_timeline_items() -> void:
-	while(true):
-		deferred_loader_semaphore.wait()
-		#break out needed when closing app so thread can end
-		if deferred_loader_cleanup: 
-			break
-		deferred_loader_running = true
-
-		for event in current_timeline_events:
-			# continue processing as long as it's safe, aborts when a new start_timeline() is run as that will replace the timeline
-			if deferred_loader_safe_to_run:
-				# Load everything else now
-				# This will load all the timelines this timeline jumps into as well
-				if event['event_node_ready'] == false:
-					event._load_from_string(event['deferred_processing_text'])
-					
-				if event['event_name'] == "Jump":
-					event.load_timeline()
-					
-
-		#while we still have free time on the thread, we can also start to process any timelines we loaded here, for events other than jumps:
-		for event in current_timeline_events:
-			if deferred_loader_safe_to_run:
-				if event['event_name'] == "Jump":
-					if event['Timeline']['_events']:
-						for timeline_event in event['Timeline']['_events']:
-							if deferred_loader_safe_to_run:
-
-								if timeline_event['event_node_ready'] == false && timeline_event['event_name'] != "Jump":
-									timeline_event._load_from_string(timeline_event['deferred_processing_text'])
-					
-		deferred_loader_running = false
-
-
-func _thread_deferred_preload_timeline() -> void:
-	pass
 
 func process_timeline(timeline: DialogicTimeline) -> DialogicTimeline:
 #	print(str(Time.get_ticks_msec()) + ": Starting process unloaded timeline")	
 	if timeline._events_processed:
 		return timeline
 	else:
+		var end_event: DialogicEndBranchEvent 
+		for i in _event_script_cache:
+			if i.get_meta("script_path") == "res://addons/dialogic/Events/End Branch/event.gd":
+					end_event = i.duplicate()
+					break
+		
 		var prev_indent := ""
 		var events := []
 		
@@ -361,10 +312,10 @@ func process_timeline(timeline: DialogicTimeline) -> DialogicTimeline:
 			
 			if len(indent) < len(prev_indent):
 				for i in range(len(prev_indent)-len(indent)):
-					events.append(DialogicEndBranchEvent.new())
+					events.append(end_event.duplicate())
 			
 			elif prev_was_opener and len(indent) == len(prev_indent):
-				events.append(DialogicEndBranchEvent.new())
+				events.append(end_event.duplicate())
 			prev_indent = indent
 			var event_content :String = line_stripped
 
@@ -401,7 +352,7 @@ func process_timeline(timeline: DialogicTimeline) -> DialogicTimeline:
 
 		if !prev_indent.is_empty():
 			for i in range(len(prev_indent)):
-				events.append(DialogicEndBranchEvent.new())
+				events.append(end_event.duplicate())
 		
 		timeline._events = events	
 		timeline._events_processed = true
