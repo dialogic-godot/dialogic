@@ -57,7 +57,7 @@ func start_timeline(timeline_resource:Variant, label_or_idx:Variant = "") -> voi
 		if timeline_resource == null:
 			assert(false, "There was an error loading this timeline. Check the filename, and the timeline for errors")
 	
-	process_timeline(timeline_resource)
+	timeline_resource = process_timeline(timeline_resource)
 		
 	current_timeline = timeline_resource
 	current_timeline_events = current_timeline.get_events()
@@ -84,6 +84,7 @@ func preload_timeline(timeline_resource:Variant) -> Variant:
 		if timeline_resource == null:
 			assert(false, "There was an error loading this timeline. Check the filename, and the timeline for errors")
 		else:
+			timeline_resource = process_timeline(timeline_resource)
 			return timeline_resource
 	return false
 
@@ -281,10 +282,11 @@ func _set(property, value):
 ################################################################################
 
 func process_timeline(timeline: DialogicTimeline) -> DialogicTimeline:
-#	print(str(Time.get_ticks_msec()) + ": Starting process unloaded timeline")	
+
 	if timeline._events_processed:
 		return timeline
 	else:
+		#print(str(Time.get_ticks_msec()) + ": Starting process unloaded timeline")	
 		var end_event: DialogicEndBranchEvent 
 		for i in _event_script_cache:
 			if i.get_meta("script_path") == "res://addons/dialogic/Events/End Branch/event.gd":

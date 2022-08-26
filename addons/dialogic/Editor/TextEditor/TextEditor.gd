@@ -3,8 +3,12 @@ extends CodeEdit
 
 var current_timeline: DialogicTimeline
 
+var editor_reference = null
+
 func _ready():
 	DialogicUtil.get_dialogic_plugin().dialogic_save.connect(save_timeline)
+	if find_parent('EditorView'): # This prevents the view to turn black if you are editing this scene in Godot
+		editor_reference = find_parent('EditorView')
 	add_highlighting()
 
 

@@ -118,6 +118,8 @@ func rebuild_event_script_cache():
 				event_script_cache.remove_at(i)
 				break
 
+
+
 func godot_file_dialog(callable, filter, mode = EditorFileDialog.FILE_MODE_OPEN_FILE, window_title = "Save", current_file_name = 'New_File', saving_something = false):
 	for connection in editor_file_dialog.file_selected.get_connections():
 		editor_file_dialog.file_selected.disconnect(connection.callable)
@@ -146,6 +148,7 @@ func godot_file_dialog(callable, filter, mode = EditorFileDialog.FILE_MODE_OPEN_
 
 func _load_timeline(object) -> void:
 	_last_timeline_opened = object
+	object = process_timeline(object)
 	_get_timeline_editor().load_timeline(object)
 
 
@@ -205,3 +208,90 @@ func _on_play_timeline():
 		ProjectSettings.set_setting('dialogic/editor/current_timeline_path', _get_timeline_editor().current_timeline.resource_path)
 		ProjectSettings.save()
 		DialogicUtil.get_dialogic_plugin().editor_interface.play_custom_scene("res://addons/dialogic/Other/TestTimelineScene.tscn")
+
+
+#########################################################
+###				TIMELINE PROCESSOR
+########################################################
+
+func process_timeline(timeline: DialogicTimeline) -> DialogicTimeline:
+	print(event_script_cache)
+	print(event_script_cache.size())
+	print(str(Time.get_ticks_msec()) + ": Starting process unloaded timeline")	
+	if timeline._events_processed:
+		return timeline
+	else:
+		var end_event: DialogicEndBranchEvent 
+		for i in event_script_cache:
+			if i.get_meta("script_path") == "res://addons/dialogic/Events/End Branch/event.gd":
+					end_event = i.duplicate()
+					break
+		
+		var prev_indent := ""
+		var events := []
+		
+		# this is needed to add a end branch event even to empty conditions/choices
+		var prev_was_opener := false
+		
+		var lines := timeline._events
+		var idx := -1
+		
+		while idx < len(lines)-1:
+			idx += 1
+			var line :String = lines[idx]
+			
+			
+			var line_stripped :String = line.strip_edges(true, false)
+			if line_stripped.is_empty():
+				continue
+			var indent :String= line.substr(0,len(line)-len(line_stripped))
+			
+			if len(indent) < len(prev_indent):
+				for i in range(len(prev_indent)-len(indent)):
+					events.append(end_event.duplicate())
+			
+			elif prev_was_opener and len(indent) == len(prev_indent):
+				events.append(end_event.duplicate())
+			prev_indent = indent
+			var event_content :String = line_stripped
+
+			var event :DialogicEvent
+			for i in event_script_cache:
+				if i._test_event_string(event_content):
+					event = i.duplicate()
+					break
+
+			# add the following lines until the event says it's full there is an empty line or the indent changes
+			while !event.is_string_full_event(event_content):
+				idx += 1
+				if idx == len(lines):
+					break
+				var following_line :String = lines[idx]
+				var following_line_stripped :String = following_line.strip_edges(true, false)
+				var following_line_indent :String = following_line.substr(0,len(following_line)-len(following_line_stripped))
+				if following_line_stripped.is_empty():
+					break
+				if following_line_indent != indent:
+					idx -= 1
+					break
+				event_content += "\n"+following_line_stripped
+			
+			event_content = event_content.replace("\n"+indent, "\n")
+			
+
+			#event._load_from_string(event_content)
+			event['deferred_processing_text'] = event_content
+			
+			events.append(event)
+			prev_was_opener = event.can_contain_events
+			
+		
+
+		if !prev_indent.is_empty():
+			for i in range(len(prev_indent)):
+				events.append(end_event.duplicate())
+		
+		timeline._events = events	
+		timeline._events_processed = true
+		print(str(Time.get_ticks_msec()) + ": Finished process unloaded timeline")	
+		return timeline
