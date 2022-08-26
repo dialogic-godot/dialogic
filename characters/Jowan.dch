@@ -3,94 +3,88 @@
 "@subpath": NodePath(""),
 "color": Color(0.596078, 0.690196, 0.356863, 1),
 "custom_info": {
+"sound_mood_default": "",
 "sound_moods": {
-"happy": {
-"name": "happy",
-"pitch_base": 1.0,
+"new": {
+"name": "new",
+"pitch_base": 0.5,
 "pitch_variance": 0.0,
 "sound_folder": "res://addons/dialogic/Example Assets/Keyboard Noises",
 "volume_base": 0.0,
 "volume_variance": 0.0
 },
-"sad": {
-"name": "sad",
-"pitch_base": 0.4,
-"pitch_variance": 0.2,
+"something": {
+"name": "something",
+"pitch_base": 1.0,
+"pitch_variance": 0.0,
 "sound_folder": "res://addons/dialogic/Example Assets/Keyboard Noises",
-"volume_base": -5.0,
-"volume_variance": 2.0
+"volume_base": 0.0,
+"volume_variance": 0.0
 }
 },
 "theme": ""
 },
-"default_portrait": "happy",
+"default_portrait": "neutral",
 "description": "A dialogic developer.",
 "display_name": "Jowan",
 "mirror": false,
-"name": "Jowan",
 "nicknames": ["Jo", "Jowan Spooner", "Jowan"],
-"offset": Vector2(0, 40),
+"offset": Vector2(0, 0),
 "portraits": {
-"avoid": {
+"angry": {
+"image": "",
 "mirror": false,
 "offset": Vector2(0, 0),
-"path": "res://addons/dialogic/Example Assets/portraits/Jane/pl3 avoid.png",
-"scale": 1
-},
-"blink": {
-"mirror": false,
-"offset": Vector2(0, 0),
-"path": "res://addons/dialogic/Example Assets/portraits/Jane/pl3 blink.png",
-"scale": 1
-},
-"concept": {
-"mirror": false,
-"offset": Vector2(0, 0),
-"path": "res://addons/dialogic/Example Assets/portraits/Jane/pl3 concept.png",
-"scale": 1
-},
-"confusion": {
-"mirror": false,
-"offset": Vector2(0, 0),
-"path": "res://addons/dialogic/Example Assets/portraits/Jane/pl3 confusion.png",
-"scale": 1
-},
-"doubt": {
-"mirror": false,
-"offset": Vector2(0, 0),
-"path": "res://addons/dialogic/Example Assets/portraits/Jane/pl3 doubt.png",
-"scale": 1
+"scale": 1,
+"scene": "res://addons/dialogic/Example Assets/portraits/CustomPortrait_FaceAtlas.tscn",
+"sound_mood": "new",
+"sound_mood_default": "something"
 },
 "happy": {
+"image": "",
 "mirror": false,
 "offset": Vector2(0, 0),
-"path": "res://addons/dialogic/Example Assets/portraits/Jane/pl3 happy.png",
-"scale": 1
+"scale": 1,
+"scene": "res://addons/dialogic/Example Assets/portraits/CustomPortrait_FaceAtlas.tscn",
+"sound_mood": "new",
+"sound_mood_default": "something"
 },
-"plot": {
+"joy": {
+"image": "",
 "mirror": false,
 "offset": Vector2(0, 0),
-"path": "res://addons/dialogic/Example Assets/portraits/Jane/pl3 plot.png",
-"scale": 1
+"scale": 1,
+"scene": "res://addons/dialogic/Example Assets/portraits/CustomPortrait_FaceAtlas.tscn",
+"sound_mood": "new",
+"sound_mood_default": "something"
+},
+"neutral": {
+"image": "",
+"mirror": false,
+"offset": Vector2(0, 0),
+"scale": 1,
+"scene": "res://addons/dialogic/Example Assets/portraits/CustomPortrait_FaceAtlas.tscn",
+"sound_mood": "new",
+"sound_mood_default": "something"
 },
 "sad": {
-"mirror": true,
-"offset": Vector2(0, 0),
-"path": "res://addons/dialogic/Example Assets/portraits/Jane/pl3 sad.png",
-"scale": 1
-},
-"shy": {
+"image": "",
 "mirror": false,
 "offset": Vector2(0, 0),
-"path": "res://addons/dialogic/Example Assets/portraits/Jane/pl3 shy.png",
-"scale": 1
+"scale": 1,
+"scene": "res://addons/dialogic/Example Assets/portraits/CustomPortrait_FaceAtlas.tscn",
+"sound_mood": "new",
+"sound_mood_default": "something"
 },
-"surprise": {
+"shocked": {
+"image": "",
 "mirror": false,
 "offset": Vector2(0, 0),
-"path": "res://addons/dialogic/Example Assets/portraits/Jane/pl3 surprise.png",
-"scale": 1
+"scale": 1,
+"scene": "res://addons/dialogic/Example Assets/portraits/CustomPortrait_FaceAtlas.tscn",
+"sound_mood": "new",
+"sound_mood_default": "something"
 }
 },
-"scale": 0.8
+"scale": 1.2
 }
