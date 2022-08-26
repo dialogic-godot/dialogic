@@ -7,9 +7,12 @@ var editor_file_dialog:EditorFileDialog
 
 var _last_timeline_opened
 
+var event_script_cache: Array = []
+
 signal continue_opening_resource
 
 func _ready():
+	rebuild_event_script_cache()
 	$MarginContainer/VBoxContainer/Toolbar/Settings.button_up.connect(settings_pressed)
 	
 	# File dialog
@@ -90,7 +93,30 @@ func _on_SaveConfirmationDialog_confirmed():
 func _on_SaveConfirmationDialog_custom_action(action):
 	$SaveConfirmationDialog.hide()
 	emit_signal("continue_opening_resource")
+	
+func rebuild_event_script_cache():
+	event_script_cache = []
+	for script in DialogicUtil.get_event_scripts():
+		var x = load(script).new()
+		x.set_meta("script_path", script)
+		if script != "res://addons/dialogic/Events/End Branch/event.gd":
+			event_script_cache.push_back(x)
 
+				
+	if Engine.is_editor_hint() == false:			
+		# Events are checked in order while testing them. EndBranch needs to be first, Text needs to be last
+		for i in event_script_cache.size():
+			if event_script_cache[i].get_meta("script_path") == "res://addons/dialogic/Events/End Branch/event.gd":
+				var x = load("res://addons/dialogic/Events/End Branch/event.gd").new()
+				x.set_meta("script_path", "res://addons/dialogic/Events/End Branch/event.gd")
+				event_script_cache.push_front(x)
+				break
+				
+		for i in event_script_cache.size():
+			if event_script_cache[i].get_meta("script_path") == "res://addons/dialogic/Events/Text/event.gd":
+				event_script_cache.push_back(event_script_cache[i])
+				event_script_cache.remove_at(i)
+				break
 
 func godot_file_dialog(callable, filter, mode = EditorFileDialog.FILE_MODE_OPEN_FILE, window_title = "Save", current_file_name = 'New_File', saving_something = false):
 	for connection in editor_file_dialog.file_selected.get_connections():

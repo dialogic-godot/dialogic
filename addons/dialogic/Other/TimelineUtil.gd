@@ -28,41 +28,12 @@ static func text_to_events(text:String) -> Array:
 			events.append("<<END BRANCH>>")
 		prev_indent = indent
 		var event_content :String = line_stripped
-		if Engine.is_editor_hint() == false:
-			events.append(event_content)
-		else:
-			var event :DialogicEvent = DialogicUtil.get_event_by_string(event_content).new()
-			
-			# add the following lines until the event says it's full there is an empty line or the indent changes
-			while !event.is_string_full_event(event_content):
-				idx += 1
-				if idx == len(lines):
-					break
-				var following_line :String = lines[idx]
-				var following_line_stripped :String = following_line.strip_edges(true, false)
-				var following_line_indent :String = following_line.substr(0,len(following_line)-len(following_line_stripped))
-				if following_line_stripped.is_empty():
-					break
-				if following_line_indent != indent:
-					idx -= 1
-					break
-				event_content += "\n"+following_line_stripped
-			
-			event_content = event_content.replace("\n"+indent, "\n")
-			
-			# a few types have exceptions with how they're currently written
-			if (event['event_name'] == "Label") || (event['event_name'] == "Choice"):
-				event._load_from_string(event_content)
-			else:
-				#hold it for later if we're not processing it right now
-				event['deferred_processing_text'] = event_content
-			events.append(event)
-			prev_was_opener = event.can_contain_events
-	
-	if Engine.is_editor_hint() == false:
-		if !prev_indent.is_empty():
-			for i in range(len(prev_indent)):
-				events.append("<<END BRANCH>>")
+
+		events.append(event_content)	
+
+	if !prev_indent.is_empty():
+		for i in range(len(prev_indent)):
+			events.append("<<END BRANCH>>")
 		
 	return events
 

@@ -1,6 +1,7 @@
 @tool
 extends Container
 
+var editor_reference = null
 
 ################################################################################
 ## 				TIMELINE RESOURCE
@@ -161,14 +162,28 @@ func _ready():
 	
 	
 	if find_parent('EditorView'): # This prevents the view to turn black if you are editing this scene in Godot
+		editor_reference = find_parent('EditorView')
 		%TimelineArea.get_theme_color("background_color", "CodeEdit")
 		
 	%TimelineArea.resized.connect(add_extra_scroll_area_to_timeline)
 	
 	# Event buttons
 	var buttonScene = load("res://addons/dialogic/Editor/TimelineEditor/AddEventButton.tscn")
-	for event_script in DialogicUtil.get_event_scripts():
-		var event_resource = load(event_script).new()
+	
+	var scripts: Array = []
+	if editor_reference != null:
+		scripts = editor_reference.event_script_cache
+	else:
+		scripts = DialogicUtil.get_event_scripts()
+		
+	for event_script in scripts:
+		var event_resource: DialogicEvent
+		
+		if typeof(event_script) == TYPE_STRING:
+			event_resource = load(event_script).new()
+		else:
+			event_resource = event_script
+		
 		if event_resource.disable_editor_button == true: continue
 		var button = buttonScene.instantiate()
 		button.resource = event_resource
@@ -453,7 +468,16 @@ func add_events_indexed(indexed_events:Dictionary) -> void:
 	var events = []
 	for event_idx in indexes:
 		deselect_all_items()
-		var event_resource = DialogicUtil.get_event_by_string(indexed_events[event_idx]).new()
+		
+		var event_resource :DialogicEvent
+		if editor_reference != null:
+			for i in editor_reference.event_script_cache:
+				if i._test_event_string(indexed_events[event_idx]):
+					event_resource = i.duplicate()
+					break
+		else:
+			event_resource = DialogicUtil.get_event_by_string(indexed_events[event_idx]).new()
+		
 		event_resource.load_from_string_to_store(indexed_events[event_idx])
 		if event_resource is DialogicEndBranchEvent:
 			events.append(create_end_branch_event(%Timeline.get_child_count(), %Timeline.get_child(indexed_events[event_idx].trim_prefix('<<END BRANCH>>').to_int())))
@@ -559,7 +583,15 @@ func add_events_at_index(event_list:Array, at_index:int) -> void:
 	var new_items = []
 	for item in event_list:
 		if typeof(item) == TYPE_STRING:
-			var resource = DialogicUtil.get_event_by_string(item).new()
+			var resource :DialogicEvent
+			if editor_reference != null:
+				for i in editor_reference.event_script_cache:
+					if i._test_event_string(item):
+						resource = i.duplicate()
+						break
+			else:
+				resource = DialogicUtil.get_event_by_string(item).new()
+			
 			resource.load_from_string_to_store(item)
 			if item:
 				new_items.append(add_event_node(resource))
