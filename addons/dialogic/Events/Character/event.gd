@@ -54,20 +54,20 @@ get_script().resource_path.get_base_dir().plus_file('DefaultAnimations/fade_out_
 					AnimationLength = DialogicUtil.get_project_setting('dialogic/animations/leave_default_length', 0.5) 
 					AnimationWait = DialogicUtil.get_project_setting('dialogic/animations/leave_default_wait', true)
 				
-					if AnimationName:
-						for chara in dialogic.Portraits.get_joined_characters():
-							var anim = dialogic.Portraits.animate_portrait(chara, AnimationName, AnimationLength, AnimationRepeats)
-							
-							anim.finished.connect(dialogic.Portraits.remove_portrait.bind(Character))
-							
-							if AnimationWait:
-								dialogic.current_state = Dialogic.states.ANIMATING
-								await anim.finished
-								dialogic.current_state = Dialogic.states.IDLE
-					
-					else:
-						for chara in dialogic.Portraits.get_joined_characters():
-							dialogic.Portraits.remove_portrait(chara)
+				if AnimationName:
+					for chara in dialogic.Portraits.get_joined_characters():
+						var anim = dialogic.Portraits.animate_portrait(chara, AnimationName, AnimationLength, AnimationRepeats)
+						
+						anim.finished.connect(dialogic.Portraits.remove_portrait.bind(chara))
+						
+						if AnimationWait:
+							dialogic.current_state = Dialogic.states.ANIMATING
+							await anim.finished
+							dialogic.current_state = Dialogic.states.IDLE
+				
+				else:
+					for chara in dialogic.Portraits.get_joined_characters():
+						dialogic.Portraits.remove_portrait(chara)
 			elif Character:
 				if dialogic.Portraits.is_character_joined(Character):
 					if AnimationName.is_empty():
