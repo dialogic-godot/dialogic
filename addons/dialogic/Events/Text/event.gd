@@ -107,11 +107,19 @@ func load_from_string_to_store(string:String) -> void:
 	reg.compile("((?<name>[^:()\\n]*)?(?=(\\([^()]*\\))?:)(\\((?<portrait>[^()]*)\\))?)?:?(?<text>(.|(?<=\\\\)\\n)+)")
 	var result = reg.search(string)
 	if result and !result.get_string('name').is_empty():
-		var character = DialogicUtil.guess_resource('.dch', result.get_string('name').strip_edges())
-		if character:
-			Character = load(character)
+		if Engine.is_editor_hint() == false:
+			if Dialogic.character_directory != null:
+				if Dialogic.character_directory.size() > 0:
+					Character = null
+					for path in Dialogic.character_directory:
+						if result.get_string('name').strip_edges() in path: 
+							Character = Dialogic.character_directory[path]
 		else:
-			Character = null
+			var character = DialogicUtil.guess_resource('.dch', result.get_string('name').strip_edges())
+			if character:
+				Character = load(character)
+			else:
+				Character = null
 			#print("When importing timeline, we couldn't identify what character you meant with ", result.get_string('name'), ".")
 		if !result.get_string('portrait').is_empty():
 			Portrait = result.get_string('portrait').strip_edges()

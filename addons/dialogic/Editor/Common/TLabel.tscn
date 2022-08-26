@@ -1,9 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://duj8nl0vpms35"]
-
-[ext_resource type="Script" path="res://addons/dialogic/Editor/Common/TLabel.gd" id="1"]
-
-[node name="TLabel" type="Label"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-text = "Some cool text"
-script = ExtResource("1")
