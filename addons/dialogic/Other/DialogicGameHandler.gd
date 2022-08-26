@@ -5,6 +5,7 @@ enum states {IDLE, SHOWING_TEXT, ANIMATING, AWAITING_CHOICE, WAITING}
 var current_timeline: Variant = null
 var current_timeline_events: Array = []
 var character_directory: Dictionary = {}
+var _event_script_cache: Array = []
 
 var current_state: Variant = null:
 	get:
@@ -89,14 +90,14 @@ func start_timeline(timeline_resource:Variant, label_or_idx:Variant = "") -> voi
 			current_event_idx = label_or_idx -1
 	
 	# begin the runtime thread for processing events
-	if deferred_loader.is_alive() == false:
-		var threadFunction = Callable(self, "_thread_deferred_timeline_items")
-		deferred_loader.start(threadFunction)
-		deferred_loader_safe_to_run = true
-		deferred_loader_semaphore.post()
-	else:
-		deferred_loader_safe_to_run = true
-		deferred_loader_semaphore.post()
+#	if deferred_loader.is_alive() == false:
+#		var threadFunction = Callable(self, "_thread_deferred_timeline_items")
+#		deferred_loader.start(threadFunction)
+#		deferred_loader_safe_to_run = true
+#		deferred_loader_semaphore.post()
+#	else:
+#		deferred_loader_safe_to_run = true
+#		deferred_loader_semaphore.post()
 
 	
 	emit_signal('timeline_started')
@@ -252,12 +253,20 @@ func load_full_state(state_info:Dictionary) -> void:
 func collect_subsystems() -> void:
 	for script in DialogicUtil.get_event_scripts():
 		var x = load(script).new()
+		
 		if Engine.is_editor_hint() == false:
-			_event_script_cache[script] = x
+			x.set_meta("script_path", script)
+			_event_script_cache.push_back(x)
 		for i in x.get_required_subsystems():
 			if i.has('subsystem') and not has_subsystem(i.name):
 				add_subsytsem(i.name, i.subsystem)
-
+				
+	if Engine.is_editor_hint() == false:			
+		for i in _event_script_cache.size():
+			if _event_script_cache[i].get_meta("script_path") == "res://addons/dialogic/Events/Text/event.gd":
+				_event_script_cache.push_back(_event_script_cache[i])
+				_event_script_cache.remove_at(i)
+				break
 
 func has_subsystem(_name:String) -> bool:
 	return has_node(_name)
@@ -326,6 +335,72 @@ func _thread_deferred_preload_timeline() -> void:
 	pass
 
 func _process_unloaded_timeline(timeline: DialogicTimeline) -> DialogicTimeline:
+	print(str(Time.get_ticks_msec()) + ": Starting process unloaded timeline")	
+	var prev_indent := ""
+	var events := []
 	
+	# this is needed to add a end branch event even to empty conditions/choices
+	var prev_was_opener := false
 	
-	pass
+	var lines := timeline._events
+	var idx := -1
+	
+	while idx < len(lines)-1:
+		idx += 1
+		var line :String = lines[idx]
+		
+		
+		var line_stripped :String = line.strip_edges(true, false)
+		if line_stripped.is_empty():
+			continue
+		var indent :String= line.substr(0,len(line)-len(line_stripped))
+		
+		if len(indent) < len(prev_indent):
+			for i in range(len(prev_indent)-len(indent)):
+				events.append(DialogicEndBranchEvent.new())
+		
+		elif prev_was_opener and len(indent) == len(prev_indent):
+			events.append(DialogicEndBranchEvent.new())
+		prev_indent = indent
+		var event_content :String = line_stripped
+
+		var event :DialogicEvent
+		for i in _event_script_cache:
+			if i._test_event_string(event_content):
+				event = i.duplicate()
+				break
+		
+		# add the following lines until the event says it's full there is an empty line or the indent changes
+		while !event.is_string_full_event(event_content):
+			idx += 1
+			if idx == len(lines):
+				break
+			var following_line :String = lines[idx]
+			var following_line_stripped :String = following_line.strip_edges(true, false)
+			var following_line_indent :String = following_line.substr(0,len(following_line)-len(following_line_stripped))
+			if following_line_stripped.is_empty():
+				break
+			if following_line_indent != indent:
+				idx -= 1
+				break
+			event_content += "\n"+following_line_stripped
+		
+		event_content = event_content.replace("\n"+indent, "\n")
+		
+
+		event._load_from_string(event_content)
+
+		events.append(event)
+		prev_was_opener = event.can_contain_events
+		
+	
+
+	if !prev_indent.is_empty():
+		for i in range(len(prev_indent)):
+			events.append(DialogicEndBranchEvent.new())
+	
+	timeline._events = events	
+	print(str(Time.get_ticks_msec()) + ": Finished process unloaded timeline")	
+	return timeline
+	
+
