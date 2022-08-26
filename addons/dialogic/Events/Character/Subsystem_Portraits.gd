@@ -80,38 +80,45 @@ func change_portrait(character:DialogicCharacter, portrait:String, mirrored:bool
 	if update_zindex:
 		char_node.z_index = z_index
 	
-	if char_node.get_child_count() and 'does_custom_portrait_change' in char_node.get_child(0) and char_node.get_child(0).has_method('change_portrait'):
-		char_node.get_child(0).change_portrait(character, portrait)
+	# path to the scene to use
+	var scene_path :String = character.portraits[portrait].get('scene', '')
+	
+	var portrait_node = null
+	
+	# check if the scene is the same as the currently loaded scene
+	if (char_node.get_child_count() and 
+		character.portraits[dialogic.current_state_info['portraits'][character.resource_path]['portrait']].get('scene', '') == scene_path and 
+		# also check if the scene supports changing to the given portrait
+		(!char_node.get_child(0).has_method('_should_do_portrait_update') or char_node.get_child(0)._should_do_portrait_update(character, portrait))):
+			portrait_node = char_node.get_child(0)
 	else:
+
 		# remove previous portrait
 		if char_node.get_child_count():
 			char_node.get_child(0).queue_free()
-		
-		var path = character.portraits[portrait].path
-		if not path.ends_with('.tscn'):
+
+		if scene_path.is_empty():
 			var sprite = default_portrait_scene.instantiate()
-			sprite.change_portrait(character, portrait)
-			sprite.position.x -= sprite.portrait_width/2.0
-			sprite.position.y -= sprite.portrait_height
-			
-			sprite.mirror_portrait(mirrored)
-			
-			char_node.add_child(sprite)
 		else:
-			var sprite = load(path)
-			sprite.position.x -= sprite.portrait_width/2.0
-			sprite.position.y -= sprite.portrait_height
-			
-			if sprite.has_method('change_portrait'):
-				sprite.change_portrait(character, portrait)
-			
-			if sprite.has_method('mirror_portrait'):
-				sprite.mirror_portrait(mirrored)
-				
-			if sprite.has_method('set_portrait_extra_data'):
-				sprite.set_portrait_extra_data(extra_data)
-				
-			char_node.add_child(path)
+			portrait_node = load(scene_path).instantiate()
+	
+	if portrait_node:
+		portrait_node.position = character.offset + character.portraits[portrait].get('offset', Vector2())
+		
+		# ignore the character scale on custom portraits that have 'ignore_char_scale' set to true
+		if scene_path.is_empty() or !character.portraits[portrait].get('ignore_char_scale', false):
+			portrait_node.scale = Vector2(1,1)*character.scale * character.portraits[portrait].get('scale', 1)
+		else:
+			portrait_node.scale = Vector2(1,1)*character.portraits[portrait].get('scale', 1)
+		if portrait_node.has_method('_update_portrait'):
+			portrait_node._update_portrait(character, portrait)
+		if portrait_node.has_method('_set_mirror'):
+			portrait_node._set_mirror(mirrored)
+		if portrait_node.has_method('_set_extra_data'):
+			portrait_node._set_extra_data(extra_data)
+		
+		if !portrait_node.is_inside_tree():
+			char_node.add_child(portrait_node)
 	dialogic.current_state_info['portraits'][character.resource_path]['portrait'] = portrait
 
 

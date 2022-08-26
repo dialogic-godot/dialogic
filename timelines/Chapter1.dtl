@@ -1,16 +1,26 @@
 [label name="start"]
 
-Emilio: This is a cool feature.
+[theme name="Default"]
+
+Join Jowan (shocked) 3 [ mirrored="true"]
+
+Join Emilio (default) 5
+
+Jowan: This is a cool feature [portrait=joy].
 
 - Yes
 	
-	[theme name="Default"]
+	Update Jowan (angry) 1 [ move_time="0.3" extra_data="alien"]
 	
 	Jowan: You are right.
+	
+	[update_position position="1" vector="Vector2(100, 0)" time="0.3"]
 	
 	Emilio: I know, right?
 	
 - No
+	
+	[update_position mode="2" position="1" vector="Vector2(100, 0)" time="0.3"]
 	
 	[theme name="Special"]
 	
