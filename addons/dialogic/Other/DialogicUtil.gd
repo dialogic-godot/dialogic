@@ -88,15 +88,20 @@ static func get_project_setting(setting:String, default = null):
 
 static func get_event_scripts(include_custom_events:bool = true) -> Array:
 	var event_scripts = []
+	var directory:Directory = Directory.new()
 	
 	var file_list = listdir("res://addons/dialogic/Events/", false)
 	for file in file_list:
-		event_scripts.append("res://addons/dialogic/Events/" + file + "/event.gd")
+		var possible_script:String = "res://addons/dialogic/Events/" + file + "/event.gd"
+		if directory.file_exists(possible_script):
+			event_scripts.append(possible_script)
 	
 	if include_custom_events:
 		file_list = listdir("res://addons/dialogic_additions/Events/", false, false)
 		for file in file_list:
-			event_scripts.append("res://addons/dialogic_additions/Events/" + file + "/event.gd")
+			var possible_script: String = "res://addons/dialogic_additions/Events/" + file + "/event.gd"
+			if directory.file_exists(possible_script):
+				event_scripts.append(possible_script)
 		
 	return event_scripts
 

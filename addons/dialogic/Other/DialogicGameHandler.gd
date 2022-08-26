@@ -74,6 +74,9 @@ func start_timeline(timeline_resource:Variant, label_or_idx:Variant = "") -> voi
 		if timeline_resource == null:
 			assert(false, "There was an error loading this timeline. Check the filename, and the timeline for errors")
 	
+	if timeline_resource._events_processed == false:
+		timeline_resource = _process_unloaded_timeline(timeline_resource)
+		
 	current_timeline = timeline_resource
 	current_timeline_events = current_timeline.get_events()
 	current_event_idx = -1
@@ -249,6 +252,8 @@ func load_full_state(state_info:Dictionary) -> void:
 func collect_subsystems() -> void:
 	for script in DialogicUtil.get_event_scripts():
 		var x = load(script).new()
+		if Engine.is_editor_hint() == false:
+			_event_script_cache[script] = x
 		for i in x.get_required_subsystems():
 			if i.has('subsystem') and not has_subsystem(i.name):
 				add_subsytsem(i.name, i.subsystem)
@@ -318,4 +323,9 @@ func _thread_deferred_timeline_items() -> void:
 
 
 func _thread_deferred_preload_timeline() -> void:
+	pass
+
+func _process_unloaded_timeline(timeline: DialogicTimeline) -> DialogicTimeline:
+	
+	
 	pass
