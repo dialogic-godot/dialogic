@@ -1198,6 +1198,7 @@ func get_classic_choice_button(label: String):
 	
 	var style_normal = theme.get_value('buttons', 'normal', default_style)
 	var style_hover = theme.get_value('buttons', 'hover', hover_style)
+	var style_focus = theme.get_value('buttons', 'focus', hover_style)
 	var style_pressed = theme.get_value('buttons', 'pressed', default_style)
 	var style_disabled = theme.get_value('buttons', 'disabled', default_style)
 	
@@ -1205,6 +1206,7 @@ func get_classic_choice_button(label: String):
 	var default_color = Color(theme.get_value('text', 'color', '#ffffff'))
 	button.set('custom_colors/font_color', default_color)
 	button.set('custom_colors/font_color_hover', default_color.lightened(0.2))
+	button.set('custom_colors/font_color_focus', default_color.lightened(0.2))
 	button.set('custom_colors/font_color_pressed', default_color.darkened(0.2))
 	button.set('custom_colors/font_color_disabled', default_color.darkened(0.8))
 	
@@ -1212,6 +1214,8 @@ func get_classic_choice_button(label: String):
 		button.set('custom_colors/font_color', style_normal[1])
 	if style_hover[0]:
 		button.set('custom_colors/font_color_hover', style_hover[1])
+	if style_focus[0]:
+		button.set('custom_colors/font_color_focus', style_focus[1])
 	if style_pressed[0]:
 		button.set('custom_colors/font_color_pressed', style_pressed[1])
 	if style_disabled[0]:
@@ -1221,6 +1225,7 @@ func get_classic_choice_button(label: String):
 	# Style normal
 	button_style_setter('normal', style_normal, button, theme)
 	button_style_setter('hover', style_hover, button, theme)
+	button_style_setter('focus', style_focus, button, theme)
 	button_style_setter('pressed', style_pressed, button, theme)
 	button_style_setter('disabled', style_disabled, button, theme)
 	return button
