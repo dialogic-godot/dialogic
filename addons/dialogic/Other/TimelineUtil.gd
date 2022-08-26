@@ -22,10 +22,10 @@ static func text_to_events(text:String) -> Array:
 		
 		if len(indent) < len(prev_indent):
 			for i in range(len(prev_indent)-len(indent)):
-				events.append(DialogicEndBranchEvent.new())
+				events.append("<<END BRANCH>>")
 		
 		elif prev_was_opener and len(indent) == len(prev_indent):
-			events.append(DialogicEndBranchEvent.new())
+			events.append("<<END BRANCH>>")
 		prev_indent = indent
 		var event_content :String = line_stripped
 		if Engine.is_editor_hint() == false:
@@ -62,7 +62,7 @@ static func text_to_events(text:String) -> Array:
 	if Engine.is_editor_hint() == false:
 		if !prev_indent.is_empty():
 			for i in range(len(prev_indent)):
-				events.append(DialogicEndBranchEvent.new())
+				events.append("<<END BRANCH>>")
 		
 	return events
 
