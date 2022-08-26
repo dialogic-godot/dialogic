@@ -5,13 +5,31 @@ signal toggle_editor_view(mode:String)
 signal create_timeline
 signal play_timeline
 
+var current_version := ""
+
 func _ready():
-	# Get version number
-	$Version.set("custom_colors/font_color", get_theme_color("disabled_font_color", "Editor"))
+	# Update available
+	%UpdateAvailable.visible = false
+	%UpdateAvailable.button_up.connect(_open_website.bind("https://dialogic.coppolaemilio.com/update"))
+	%UpdateAvailable.icon = get_theme_icon("Warning", "EditorIcons")
+	
+	# Donate button
+	%Donate.icon = get_theme_icon("Heart", "EditorIcons")
+	%Donate.button_up.connect(_open_website.bind("https://dialogic.coppolaemilio.com/donate"))
+	%Donate.focus_mode = 0
+	
+	# Version
+	%Version.set("custom_colors/font_color", get_theme_color("disabled_font_color", "Editor"))
 	var config := ConfigFile.new()
 	var err := config.load("res://addons/dialogic/plugin.cfg")
 	if err == OK:
-		$Version.text = "v" + config.get_value("plugin", "version")
+		current_version = config.get_value("plugin", "version")
+		%Version.text = "v" + config.get_value("plugin", "version")
+		%Version/HTTPRequest.request_completed.connect(_version_request_completed)
+		%Version/HTTPRequest.request(
+			"http://dialogic.coppolaemilio.com/latest-version/"
+		)
+			
 	
 	
 	$PlayTimeline.icon = get_theme_icon("PlayScene", "EditorIcons")
@@ -25,6 +43,18 @@ func _ready():
 	
 	$ToggleVisualEditor.button_up.connect(_on_toggle_visual_editor_clicked)
 	update_toggle_button()
+
+
+## Update checking
+func _version_request_completed(result, response_code, headers, body):
+	var latest_version: String = body.get_string_from_utf8()
+	if current_version.to_lower() != latest_version.to_lower():
+		%UpdateAvailable.visible = true
+		print('check for updates!')
+
+
+func _open_website(url:String) -> void:
+	OS.shell_open(url)
 
 
 ################################################################################
