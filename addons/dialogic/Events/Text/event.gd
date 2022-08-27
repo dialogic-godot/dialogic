@@ -115,11 +115,13 @@ func load_from_string_to_store(string:String) -> void:
 						if result.get_string('name').strip_edges() in path: 
 							Character = Dialogic.character_directory[path]
 		else:
+
 			if self.get_meta("editor_character_directory") != null:
+				
 				if self.get_meta("editor_character_directory").size() > 0:
 					Character = null
 					for path in self.get_meta("editor_character_directory"):
-						if result.get_string('character').strip_edges() in path: 
+						if result.get_string('name').strip_edges() in path: 
 							Character = self.get_meta("editor_character_directory")[path]
 			#print("When importing timeline, we couldn't identify what character you meant with ", result.get_string('name'), ".")
 		if !result.get_string('portrait').is_empty():
