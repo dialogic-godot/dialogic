@@ -39,12 +39,9 @@ func _load(path: String, original_path: String, use_sub_threads: bool, cache_mod
 	var res = DialogicTimeline.new()
 	
 	var text = file.get_as_text()
-	# Parse the lines as seperate events and recreate them as resources
+	# Parse the lines as seperate events and insert them in an array, so they can be converted to DialogicEvent's when processed later
 	var prev_indent := ""
 	var events := []
-	
-	# this is needed to add a end branch event even to empty conditions/choices
-	var prev_was_opener := false
 	
 	var lines := text.split('\n', true)
 	var idx := -1
@@ -52,26 +49,12 @@ func _load(path: String, original_path: String, use_sub_threads: bool, cache_mod
 	while idx < len(lines)-1:
 		idx += 1
 		var line :String = lines[idx]
-		var line_stripped :String = line.strip_edges(true, false)
+		var line_stripped :String = line.strip_edges(true, true)
 		if line_stripped.is_empty():
 			continue
-		var indent :String= line.substr(0,len(line)-len(line_stripped))
-		
-		if len(indent) < len(prev_indent):
-			for i in range(len(prev_indent)-len(indent)):
-				events.append("<<END BRANCH>>")
-		
-		elif prev_was_opener and len(indent) == len(prev_indent):
-			events.append("<<END BRANCH>>")
-		prev_indent = indent
-		var event_content :String = line_stripped
+		events.append(line)
 
-		events.append(event_content)	
 
-	if !prev_indent.is_empty():
-		for i in range(len(prev_indent)):
-			events.append("<<END BRANCH>>")
-		
 	res._events = events
 	return res
 
