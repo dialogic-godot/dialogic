@@ -59,7 +59,6 @@ func save_timeline():
 		#set back as false again so the saver knows it's ready to use
 		current_timeline._events_processed = false
 		
-		print(current_timeline._events)
 		ResourceSaver.save(current_timeline, current_timeline.resource_path)
 
 
