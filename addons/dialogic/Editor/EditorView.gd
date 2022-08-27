@@ -13,7 +13,6 @@ var character_directory: Dictionary = {}
 signal continue_opening_resource
 
 func _ready():
-	print(str(Time.get_ticks_msec()) + ": Starting EditorView.ready()")
 	rebuild_event_script_cache()
 	rebuild_character_directory()
 	$MarginContainer/VBoxContainer/Toolbar/Settings.button_up.connect(settings_pressed)
@@ -40,7 +39,6 @@ func _ready():
 	$SaveConfirmationDialog.hide()
 
 func open_last_resource():
-	print(str(Time.get_ticks_msec()) + ": Starting EditorView.open_last_resource()")
 	if ProjectSettings.has_setting('dialogic/editor/last_resources'):
 		var directory := Directory.new();
 		var path :String= ProjectSettings.get_setting('dialogic/editor/last_resources')[0]
@@ -49,7 +47,6 @@ func open_last_resource():
 	
 
 func edit_timeline(object):
-	print(str(Time.get_ticks_msec()) + ": Starting EditorView.edit_timeline()")
 	if %Toolbar.is_current_unsaved():
 		save_current_resource()
 		await continue_opening_resource
@@ -88,7 +85,7 @@ func save_current_resource():
 
 
 func _on_SaveConfirmationDialog_confirmed():
-	print(str(Time.get_ticks_msec()) + ": Starting EditorView._saveconfirmation_confirmed()")
+
 	if _is_timeline_editor_visible:
 		%TimelineEditor.save_timeline()
 	elif %CharacterEditor.visible:
@@ -120,9 +117,7 @@ func rebuild_event_script_cache():
 			event_script_cache.push_back(event_script_cache[i])
 			event_script_cache.remove_at(i)
 			break
-			
-	print(event_script_cache)
-	print(event_script_cache.size())
+
 
 func rebuild_character_directory() -> void:
 	var characters: Array = DialogicUtil.list_resources_of_type(".dch")
@@ -159,14 +154,12 @@ func godot_file_dialog(callable, filter, mode = EditorFileDialog.FILE_MODE_OPEN_
 ########################################
 
 func _load_timeline(object) -> void:
-	print(str(Time.get_ticks_msec()) + ": Starting EditorView._load_timeline()")
 	_last_timeline_opened = object
 	object = process_timeline(object)
 	_get_timeline_editor().load_timeline(object)
 
 
 func show_timeline_editor() -> void:
-	print(str(Time.get_ticks_msec()) + ": Starting EditorView.show_timeline_editor()")
 	if DialogicUtil.get_project_setting('dialogic/editor_mode', 'visual') == 'visual':
 		%TextEditor.hide()
 		%TimelineEditor.show()
@@ -234,10 +227,8 @@ func process_timeline(timeline: DialogicTimeline) -> DialogicTimeline:
 
 
 	if timeline._events_processed:
-		print(str(Time.get_ticks_msec()) + ": Timeline is already processed")
 		return timeline
 	else:
-		print(str(Time.get_ticks_msec()) + ": Starting process unloaded timeline")
 		var end_event: DialogicEndBranchEvent 
 		for i in event_script_cache:
 			if i.get_meta("script_path") == "res://addons/dialogic/Events/End Branch/event.gd":
@@ -315,5 +306,4 @@ func process_timeline(timeline: DialogicTimeline) -> DialogicTimeline:
 		
 		timeline._events = events	
 		timeline._events_processed = true
-		print(str(Time.get_ticks_msec()) + ": Finished process unloaded timeline")	
 		return timeline

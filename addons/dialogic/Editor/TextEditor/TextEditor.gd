@@ -6,7 +6,6 @@ var current_timeline: DialogicTimeline
 var editor_reference = null
 
 func _ready():
-	print(str(Time.get_ticks_msec()) + ": Starting TextEditor.ready()")
 	DialogicUtil.get_dialogic_plugin().dialogic_save.connect(save_timeline)
 	if find_parent('EditorView'): # This prevents the view to turn black if you are editing this scene in Godot
 		editor_reference = find_parent('EditorView')
@@ -18,7 +17,6 @@ func clear_timeline():
 
 
 func load_timeline(object:DialogicTimeline) -> void:
-	print(str(Time.get_ticks_msec()) + ": Starting TextEditor.load_timeline()")
 	clear_timeline()
 	current_timeline = object
 	get_parent().get_node('Toolbar').load_timeline(current_timeline.resource_path)
@@ -44,7 +42,6 @@ func load_timeline(object:DialogicTimeline) -> void:
 
 
 func save_timeline():
-	print(str(Time.get_ticks_msec()) + ": Starting TextEditor.save_timeline()")
 	if !visible:
 		return
 	
@@ -84,7 +81,6 @@ func add_highlighting():
 
 
 func new_timeline() -> void:
-	print(str(Time.get_ticks_msec()) + ": Starting TextEditor.new_timeline()")
 	save_timeline()
 	clear_timeline()
 	show_save_dialog()
@@ -101,7 +97,6 @@ func show_save_dialog():
 	)
 
 func create_and_save_new_timeline(path):
-	print(str(Time.get_ticks_msec()) + ": Starting TextEditor.ceate_and_save_new()")
 	var new_timeline = DialogicTimeline.new()
 	new_timeline.resource_path = path
 	current_timeline = new_timeline
