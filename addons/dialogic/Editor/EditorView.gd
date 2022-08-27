@@ -246,7 +246,11 @@ func process_timeline(timeline: DialogicTimeline) -> DialogicTimeline:
 		
 		while idx < len(lines)-1:
 			idx += 1
-			var line :String = lines[idx]
+			var line: String = ""
+			if typeof(lines[idx]) == TYPE_STRING:
+				line = lines[idx]
+			else:
+				line = lines[idx]['event_node_as_text']
 			
 			
 			var line_stripped :String = line.strip_edges(true, false)

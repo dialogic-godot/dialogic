@@ -26,7 +26,6 @@ func _handles_type(typename: StringName) -> bool:
 
 # parse the file and return a resource
 func _load(path: String, original_path: String, use_sub_threads: bool, cache_mode: int):
-	print(str(Time.get_ticks_msec()) + ": TimelineResourceLoader._load()")
 	print('[Dialogic] Reimporting timeline "' , path, '"')
 	
 	var file := File.new()
@@ -40,7 +39,6 @@ func _load(path: String, original_path: String, use_sub_threads: bool, cache_mod
 	var res = DialogicTimeline.new()
 	
 	var text = file.get_as_text()
-	print(str(Time.get_ticks_msec()) + ": TimelineUtil.text_to_events()")
 	# Parse the lines as seperate events and recreate them as resources
 	var prev_indent := ""
 	var events := []
@@ -79,7 +77,6 @@ func _load(path: String, original_path: String, use_sub_threads: bool, cache_mod
 
 
 func _get_dependencies(path:String, add_type:bool):
-	print(str(Time.get_ticks_msec()) + ": TimelineResourceLoader._get_dependencies")
 	var depends_on : PackedStringArray
 	var timeline:DialogicTimeline = load(path)
 	for event in timeline._events:
@@ -93,7 +90,6 @@ func _get_dependencies(path:String, add_type:bool):
 	return depends_on
 
 func _rename_dependencies(path: String, renames: Dictionary):
-	print(str(Time.get_ticks_msec()) + ": TimelineResourceLoader.rename_dependencies()")
 	var timeline:DialogicTimeline = load(path)
 	for event in timeline._events:
 		for property in event.get_shortcode_parameters().values():

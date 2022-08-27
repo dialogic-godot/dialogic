@@ -20,7 +20,6 @@ func _recognize(resource: Resource) -> bool:
 
 # Save the resource
 func _save(resource: Resource, path: String = '', flags: int = 0) -> int:
-	print(str(Time.get_ticks_msec()) + ": TimelineResourceSaver.save()")
 	# Do not do this if the timeline's not in a ready state, so it doesn't accidentally save it blank
 	if !resource._events_processed:
 		print('[Dialogic] Saving timeline...')
@@ -76,7 +75,6 @@ func _save(resource: Resource, path: String = '', flags: int = 0) -> int:
 		return ERR_INVALID_DATA
 
 func update_translations(path:String, translation_updates:Dictionary):
-	print(str(Time.get_ticks_msec()) + ": TimelineResourceSaver.update_translationS()")
 	if translation_updates.is_empty():
 		return
 	var err:int
