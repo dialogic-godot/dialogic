@@ -8,16 +8,14 @@ Create dialogs, characters and scenes to display conversations in your Godot gam
 [Credits](#credits)
 
 
-# Version 1.4.4 - Afterlife ![Godot v3.4](https://img.shields.io/badge/Godot-v3.4-%23478cbf) ![Godot v3.5](https://img.shields.io/badge/Godot-v3.5-%23478cbf)
+# Version 1.4.5 - Afterlife ![Godot v3.4](https://img.shields.io/badge/Godot-v3.4-%23478cbf) ![Godot v3.5](https://img.shields.io/badge/Godot-v3.5-%23478cbf)
 
 ### ⚠️
 
 # We are working on the new 2.0 version.
-- If you are interested in contributing [feel free to visit that branch](https://github.com/coppolaemilio/dialogic/tree/version-2.0).
+- If you are interested in contributing [feel free to visit the main branch](https://github.com/coppolaemilio/dialogic).
 - Only bug fixes are going to be merged to this branch
-- Thanks and hope to see you soon! :)
 
-### ⚠️
 
 -----
 ## Getting started

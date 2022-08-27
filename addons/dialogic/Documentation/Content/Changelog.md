@@ -1,5 +1,11 @@
 # Changelog
 
+## v1.4.5
+* Added focus style options for themes [[CptFubar](https://github.com/CptFubar)]
+* Fixed a broken font reference [[todd-koeck](https://github.com/todd-koeck)]
+* Fix for Nameplate being unaligned [[meyaoigames](https://github.com/meyaoigames)]
+* Fix crash if theme is missing on character file [[thebardsrc](https://github.com/thebardsrc)]
+
 ## v1.4.4
 * Added no skip event [[zaknafean](https://github.com/zaknafean)]
 * Added auto-advance mode [[zaknafean](https://github.com/zaknafean)]
