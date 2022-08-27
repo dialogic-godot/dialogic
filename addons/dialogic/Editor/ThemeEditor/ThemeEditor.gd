@@ -129,6 +129,7 @@ onready var n : Dictionary = {
 	# Button modifiers (Inherited scenes)
 	'button_normal': $"VBoxContainer/TabContainer/Choice Buttons/Column/TabContainer/Normal",
 	'button_hover': $"VBoxContainer/TabContainer/Choice Buttons/Column/TabContainer/Hover",
+	'button_focus': $"VBoxContainer/TabContainer/Choice Buttons/Column/TabContainer/Focus",
 	'button_pressed': $"VBoxContainer/TabContainer/Choice Buttons/Column/TabContainer/Pressed",
 	'button_disabled': $"VBoxContainer/TabContainer/Choice Buttons/Column/TabContainer/Disabled",
 	
@@ -234,11 +235,13 @@ func _ready() -> void:
 	# Choice button style modifiers
 	n['button_normal'].connect('picking_background', self, '_on_ButtonTextureButton_pressed')
 	n['button_hover'].connect('picking_background', self, '_on_ButtonTextureButton_pressed')
+	n['button_focus'].connect('picking_background', self, '_on_ButtonTextureButton_pressed')
 	n['button_pressed'].connect('picking_background', self, '_on_ButtonTextureButton_pressed')
 	n['button_disabled'].connect('picking_background', self, '_on_ButtonTextureButton_pressed')
 	
 	n['button_normal'].connect('style_modified', self, '_on_choice_style_modified')
 	n['button_hover'].connect('style_modified', self, '_on_choice_style_modified')
+	n['button_focus'].connect('style_modified', self, '_on_choice_style_modified')
 	n['button_pressed'].connect('style_modified', self, '_on_choice_style_modified')
 	n['button_disabled'].connect('style_modified', self, '_on_choice_style_modified')
 	
@@ -407,6 +410,7 @@ func load_theme(filename):
 	var hover_style = [true, Color( 0.698039, 0.698039, 0.698039, 1 ), false, Color.black, true, default_background, false, Color.white]
 	n['button_normal'].load_style(theme.get_value('buttons', 'normal', default_style))
 	n['button_hover'].load_style(theme.get_value('buttons', 'hover', hover_style))
+	n['button_focus'].load_style(theme.get_value('buttons', 'focus', hover_style))
 	n['button_pressed'].load_style(theme.get_value('buttons', 'pressed', default_style))
 	n['button_disabled'].load_style(theme.get_value('buttons', 'disabled', default_style))
 	
