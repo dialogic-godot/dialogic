@@ -84,10 +84,15 @@ func save_timeline() -> void:
 	var new_events = []
 	
 	for event in %Timeline.get_children():
+		#print(event.get_meta('script_path'))
+		#print(event.resource)
+		#print(event.resource._store_as_string())
+		event.resource['event_node_as_text'] = event.resource._store_as_string()
 		new_events.append(event.resource)
 	
 	if current_timeline:
 		current_timeline.set_events(new_events)
+		current_timeline._events_processed = false
 		ResourceSaver.save(current_timeline, current_timeline.resource_path)
 		_toolbar.set_resource_saved()
 	else:
@@ -183,9 +188,14 @@ func _ready():
 	
 	var scripts: Array = []
 	if editor_reference != null:
+		if editor_reference.event_script_cache.size() == 0:
+			editor_reference.rebuild_event_script_cache()
 		scripts = editor_reference.event_script_cache
+
+		
 	else:
 		scripts = DialogicUtil.get_event_scripts()
+
 		
 	for event_script in scripts:
 		var event_resource: Variant
@@ -206,7 +216,7 @@ func _ready():
 		button.event_sorting_index = event_resource.event_sorting_index
 
 
-		button.button_up.connect(_add_event_button_pressed.bind(load(event_script)))
+		button.button_up.connect(_add_event_button_pressed.bind(event_resource))
 
 		get_node("View/ScrollContainer/EventContainer/FlexContainer" + str(button.event_category)).add_child(button)
 		while event_resource.event_sorting_index < get_node("View/ScrollContainer/EventContainer/FlexContainer" + str(button.event_category)).get_child(max(0, button.get_index()-1)).resource.event_sorting_index:
