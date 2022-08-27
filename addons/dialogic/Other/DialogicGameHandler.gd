@@ -111,7 +111,7 @@ func handle_event(event_index:int) -> void:
 	#actually process the event now, since we didnt earlier at runtime
 	#this needs to happen before we create the copy DialogicEvent variable, so it doesn't throw an error if not ready
 	if current_timeline_events[event_index]['event_node_ready'] == false:
-		current_timeline_events[event_index]._load_from_string(current_timeline_events[event_index]['deferred_processing_text'])
+		current_timeline_events[event_index]._load_from_string(current_timeline_events[event_index]['event_node_as_text'])
 	
 	current_event_idx = event_index
 	
@@ -238,12 +238,10 @@ func collect_subsystems() -> void:
 				
 	if Engine.is_editor_hint() == false:			
 		# Events are checked in order while testing them. EndBranch needs to be first, Text needs to be last
-		for i in _event_script_cache.size():
-			if _event_script_cache[i].get_meta("script_path") == "res://addons/dialogic/Events/End Branch/event.gd":
-				var x = load("res://addons/dialogic/Events/End Branch/event.gd").new()
-				x.set_meta("script_path", "res://addons/dialogic/Events/End Branch/event.gd")
-				_event_script_cache.push_front(x)
-				break
+		var x = load("res://addons/dialogic/Events/End Branch/event.gd").new()
+		x.set_meta("script_path", "res://addons/dialogic/Events/End Branch/event.gd")
+		_event_script_cache.push_front(x)
+
 				
 		for i in _event_script_cache.size():
 			if _event_script_cache[i].get_meta("script_path") == "res://addons/dialogic/Events/Text/event.gd":
@@ -321,7 +319,7 @@ func process_timeline(timeline: DialogicTimeline) -> DialogicTimeline:
 			prev_indent = indent
 			var event_content :String = line_stripped
 
-			var event :DialogicEvent
+			var event :Variant
 			for i in _event_script_cache:
 				if i._test_event_string(event_content):
 					event = i.duplicate()

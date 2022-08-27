@@ -6,6 +6,7 @@ static func get_editor_scale() -> float:
 
 
 static func listdir(path: String, files_only: bool = true, throw_error:bool = true, full_file_path:bool = false) -> Array:
+	print(str(Time.get_ticks_msec()) + ": DialogicUtil.listdir")
 	# https://docs.godotengine.org/en/stable/classes/class_directory.html#description
 	var files: Array = []
 	var dir := Directory.new()
@@ -44,6 +45,7 @@ static func list_resources_of_type(extension):
 
 
 static func scan_folder(folder_path:String, extension:String) -> Array:
+	#print(str(Time.get_ticks_msec()) + ": DialogicUtil.scan_folder")
 	var dir:Directory = Directory.new()
 	var list: Array = []
 	if dir.open(folder_path) == OK:
@@ -62,6 +64,7 @@ static func scan_folder(folder_path:String, extension:String) -> Array:
 
 
 static func guess_resource(extension, identifier):
+	print(str(Time.get_ticks_msec()) + ": DialogicUtil.guess_resource: " + str(extension) + " " + str(identifier))
 	var resources = list_resources_of_type(extension)
 	for resource_path in resources:
 		if resource_path.get_file().trim_suffix(extension) == identifier:
@@ -69,6 +72,7 @@ static func guess_resource(extension, identifier):
 
 
 static func get_event_by_string(string:String) -> Resource:
+	print(str(Time.get_ticks_msec()) + ": DialogicUtil.get_event_by_string")
 	var event_scripts = get_event_scripts()
 	
 	# move the text event to the end of the list as it's the default.
@@ -87,6 +91,7 @@ static func get_project_setting(setting:String, default = null):
 
 
 static func get_event_scripts(include_custom_events:bool = true) -> Array:
+	print(str(Time.get_ticks_msec()) + ": DialogicUtil.get_event_scripts")
 	var event_scripts = []
 	var directory:Directory = Directory.new()
 	

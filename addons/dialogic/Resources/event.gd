@@ -16,7 +16,7 @@ var event_sorting_index : int = 0
 
 # A property used for runtime, to verify if it's been loaded yet or not
 var event_node_ready : bool = false
-var deferred_processing_text : String = ""
+var event_node_as_text : String = ""
 
 enum Category {
 	MAIN,

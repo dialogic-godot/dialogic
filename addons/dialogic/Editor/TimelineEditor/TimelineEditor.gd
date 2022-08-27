@@ -14,7 +14,7 @@ var current_timeline: DialogicTimeline
 ################################################################################
 var TimelineUndoRedo := UndoRedo.new()
 @onready var _toolbar = get_parent().get_node('Toolbar')
-
+var event_node
 
 ################################################################################
 ## 				 SIGNALS
@@ -50,6 +50,7 @@ func something_changed():
 
 
 func new_timeline() -> void:
+	print(str(Time.get_ticks_msec()) + ": Starting TimelineEditor.new_timeline()")
 	save_timeline()
 	clear_timeline()
 	show_save_dialog()
@@ -67,6 +68,7 @@ func show_save_dialog():
 
 
 func create_and_save_new_timeline(path):
+	print(str(Time.get_ticks_msec()) + ": Starting TimelineEditor.create_and_save_new()")
 	var new_timeline = DialogicTimeline.new()
 	new_timeline.resource_path = path
 	current_timeline = new_timeline
@@ -75,6 +77,7 @@ func create_and_save_new_timeline(path):
 
 
 func save_timeline() -> void:
+	print(str(Time.get_ticks_msec()) + ": Starting TimelineEditor.save_timeline()")
 	if !visible:
 		return
 
@@ -93,6 +96,7 @@ func save_timeline() -> void:
 
 
 func load_timeline(object) -> void:
+	print(str(Time.get_ticks_msec()) + ": Starting TimelineEditor.load_timeline()")
 	clear_timeline()
 	_toolbar.load_timeline(object.resource_path)
 	current_timeline = object
@@ -108,6 +112,7 @@ func load_timeline(object) -> void:
 
 
 func batch_events(array, size, batch_number):
+	
 	return array.slice((batch_number - 1) * size, batch_number * size)
 
 
@@ -115,12 +120,14 @@ func batch_events(array, size, batch_number):
 var opener_events_stack = []
 
 func load_batch(data):
+	print(str(Time.get_ticks_msec()) + ": Starting TimelineEditor.load_batch()")
 	var current_batch = _batches.pop_front()
 	if current_batch:
 		for i in current_batch:
 			if i is DialogicEndBranchEvent:
 				create_end_branch_event(%Timeline.get_child_count(), opener_events_stack.pop_back())
 			else:
+				#print(i)
 				var piece = add_event_node(i, %Timeline.get_child_count())
 				if i.can_contain_events:
 					opener_events_stack.push_back(piece)
@@ -128,6 +135,7 @@ func load_batch(data):
 
 
 func _on_batch_loaded():
+	print(str(Time.get_ticks_msec()) + ": Starting TimelineEditor._on_batch_loaded()")
 	if _batches.size() > 0:
 		await get_tree().create_timer(0.01).timeout
 		load_batch(_batches)
@@ -143,6 +151,7 @@ func _on_batch_loaded():
 
 
 func clear_timeline():
+	print(str(Time.get_ticks_msec()) + ": Starting TimelineEditor.clear_timeline()")
 	deselect_all_items()
 	for event in %Timeline.get_children():
 		event.free()
@@ -151,7 +160,9 @@ func clear_timeline():
 ## 					SETUP
 ################################################################################
 func _ready():
+	print(str(Time.get_ticks_msec()) + ": Starting TimelineEditor.ready()")
 	DialogicUtil.get_dialogic_plugin().dialogic_save.connect(save_timeline)
+	event_node = load("res://addons/dialogic/Editor/Events/EventNode/EventNode.tscn")
 	
 	batch_loaded.connect(_on_batch_loaded)
 	
@@ -177,7 +188,7 @@ func _ready():
 		scripts = DialogicUtil.get_event_scripts()
 		
 	for event_script in scripts:
-		var event_resource: DialogicEvent
+		var event_resource: Variant
 		
 		if typeof(event_script) == TYPE_STRING:
 			event_resource = load(event_script).new()
@@ -446,6 +457,7 @@ func is_event_pressed(event, keycode, alt:bool, shift:bool, ctrl_or_command:bool
 ## *****************************************************************************
 
 func get_events_indexed(events:Array) -> Dictionary:
+	print(str(Time.get_ticks_msec()) + ": Starting TimelineEditor.get_events_indexed()")
 	var indexed_dict = {}
 	for event in events:
 		if not event.resource is DialogicEndBranchEvent:
@@ -456,12 +468,14 @@ func get_events_indexed(events:Array) -> Dictionary:
 
 
 func select_indexed_events(indexed_events:Dictionary) -> void:
+	print(str(Time.get_ticks_msec()) + ": Starting TimelineEditor.select_indexed()")
 	selected_items = []
 	for event_index in indexed_events.keys():
 		selected_items.append(%Timeline.get_child(event_index))
 
 
 func add_events_indexed(indexed_events:Dictionary) -> void:
+	print(str(Time.get_ticks_msec()) + ": Starting TimelineEditor.add_events_indexed()")
 	var indexes = indexed_events.keys()
 	indexes.sort()
 
@@ -469,7 +483,7 @@ func add_events_indexed(indexed_events:Dictionary) -> void:
 	for event_idx in indexes:
 		deselect_all_items()
 		
-		var event_resource :DialogicEvent
+		var event_resource :Variant
 		if editor_reference != null:
 			for i in editor_reference.event_script_cache:
 				if i._test_event_string(indexed_events[event_idx]):
@@ -491,11 +505,13 @@ func add_events_indexed(indexed_events:Dictionary) -> void:
 
 
 func delete_events_indexed(indexed_events:Dictionary) -> void:
+	print(str(Time.get_ticks_msec()) + ": Starting TimelineEditor.delete_events_indexed()")
 	select_indexed_events(indexed_events)
 	delete_selected_events()
 
 
 func delete_selected_events():
+	print(str(Time.get_ticks_msec()) + ": Starting TimelineEditor.delete_selected_events()")
 	if len(selected_items) == 0:
 		return
 	
@@ -529,16 +545,19 @@ func delete_selected_events():
 
 
 func cut_selected_events():
+	print(str(Time.get_ticks_msec()) + ": Starting TimelineEditor.cut_selected_events()")
 	copy_selected_events()
 	delete_selected_events()
 
 
 func cut_events_indexed(indexed_events:Dictionary) -> void:
+	print(str(Time.get_ticks_msec()) + ": Starting TimelineEditor.cut_events_indexed()")
 	select_indexed_events(indexed_events)
 	cut_selected_events()
 
 
 func copy_selected_events():
+	print(str(Time.get_ticks_msec()) + ": Starting TimelineEditor.copy_selected_events()")
 	if len(selected_items) == 0:
 		return
 	var event_copy_array = []
@@ -553,6 +572,7 @@ func copy_selected_events():
 
 
 func paste_check():
+	print(str(Time.get_ticks_msec()) + ": Starting TimelineEditor.paste_check()")
 	var _json = JSON.new()
 	var clipboard_parse = _json.parse(DisplayServer.clipboard_get())
 	
@@ -566,6 +586,7 @@ func paste_check():
 
 
 func remove_events_at_index(at_index:int, amount:int = 1)-> void:
+	print(str(Time.get_ticks_msec()) + ": Starting TimelineEditor.remove_at_index()")
 	selected_items = []
 	something_changed()
 	for i in range(0, amount):
@@ -574,6 +595,7 @@ func remove_events_at_index(at_index:int, amount:int = 1)-> void:
 
 
 func add_events_at_index(event_list:Array, at_index:int) -> void:
+	print(str(Time.get_ticks_msec()) + ": Starting TimelineEditor.add_at_index()")
 	if at_index != -1:
 		event_list.reverse()
 		selected_items = [%Timeline.get_child(at_index)]
@@ -583,7 +605,7 @@ func add_events_at_index(event_list:Array, at_index:int) -> void:
 	var new_items = []
 	for item in event_list:
 		if typeof(item) == TYPE_STRING:
-			var resource :DialogicEvent
+			var resource :Variant
 			if editor_reference != null:
 				for i in editor_reference.event_script_cache:
 					if i._test_event_string(item):
@@ -648,6 +670,7 @@ func select_item(item: Node, multi_possible:bool = true):
 
 # checks all the events and sets their styles (selected/deselected)
 func visual_update_selection():
+	print(str(Time.get_ticks_msec()) + ": Starting TimelineEditor.visual_update_selection()")
 	for item in %Timeline.get_children():
 		item.visual_deselect()
 		if 'end_node' in item and item.end_node != null:
@@ -667,6 +690,7 @@ func custom_sort_selection(item1, item2):
 
 ## Helpers
 func select_all_items():
+	
 	selected_items = []
 	for event in %Timeline.get_children():
 		selected_items.append(event)
@@ -682,6 +706,7 @@ func deselect_all_items():
 ## *****************************************************************************
 # Event Creation signal for buttons
 func _add_event_button_pressed(event_script):
+	print(str(Time.get_ticks_msec()) + ": Starting TimelineEditor.add_button_pressed()")
 	var at_index = -1
 	if selected_items:
 		at_index = selected_items[-1].get_index()+1
@@ -707,14 +732,16 @@ func _add_event_button_pressed(event_script):
 ## *****************************************************************************
 # Adding an event to the timeline
 func add_event_node(event_resource:Resource, at_index:int = -1, auto_select: bool = false, indent: bool = false):
+	#print(str(Time.get_ticks_msec()) + ": Starting TimelineEditor.add_event()")
+	#print(event_resource)
 	if event_resource is DialogicEndBranchEvent:
 		return create_end_branch_event(at_index, %Timeline.get_child(0))
 	
 	if event_resource['event_node_ready'] == false:
-		if event_resource['deferred_processing_text'] != "":
-			event_resource._load_from_string(event_resource['deferred_processing_text'])
+		if event_resource['event_node_as_text'] != "":
+			event_resource._load_from_string(event_resource['event_node_as_text'])
 	
-	var piece = load("res://addons/dialogic/Editor/Events/EventNode/EventNode.tscn").instantiate()
+	var piece = event_node.instantiate()
 	var resource = event_resource
 	piece.resource = event_resource
 	piece.content_changed.connect(something_changed)

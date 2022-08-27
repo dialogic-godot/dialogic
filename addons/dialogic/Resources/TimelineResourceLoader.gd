@@ -26,6 +26,7 @@ func _handles_type(typename: StringName) -> bool:
 
 # parse the file and return a resource
 func _load(path: String, original_path: String, use_sub_threads: bool, cache_mode: int):
+	print(str(Time.get_ticks_msec()) + ": TimelineResourceLoader._load()")
 	print('[Dialogic] Reimporting timeline "' , path, '"')
 	
 	var file := File.new()
@@ -38,12 +39,47 @@ func _load(path: String, original_path: String, use_sub_threads: bool, cache_mod
 		
 	var res = DialogicTimeline.new()
 	
-	res._events = TimelineUtil.text_to_events(file.get_as_text())
+	var text = file.get_as_text()
+	print(str(Time.get_ticks_msec()) + ": TimelineUtil.text_to_events()")
+	# Parse the lines as seperate events and recreate them as resources
+	var prev_indent := ""
+	var events := []
 	
+	# this is needed to add a end branch event even to empty conditions/choices
+	var prev_was_opener := false
+	
+	var lines := text.split('\n', true)
+	var idx := -1
+	
+	while idx < len(lines)-1:
+		idx += 1
+		var line :String = lines[idx]
+		var line_stripped :String = line.strip_edges(true, false)
+		if line_stripped.is_empty():
+			continue
+		var indent :String= line.substr(0,len(line)-len(line_stripped))
+		
+		if len(indent) < len(prev_indent):
+			for i in range(len(prev_indent)-len(indent)):
+				events.append("<<END BRANCH>>")
+		
+		elif prev_was_opener and len(indent) == len(prev_indent):
+			events.append("<<END BRANCH>>")
+		prev_indent = indent
+		var event_content :String = line_stripped
+
+		events.append(event_content)	
+
+	if !prev_indent.is_empty():
+		for i in range(len(prev_indent)):
+			events.append("<<END BRANCH>>")
+		
+	res._events = events
 	return res
 
 
 func _get_dependencies(path:String, add_type:bool):
+	print(str(Time.get_ticks_msec()) + ": TimelineResourceLoader._get_dependencies")
 	var depends_on : PackedStringArray
 	var timeline:DialogicTimeline = load(path)
 	for event in timeline._events:
@@ -57,6 +93,7 @@ func _get_dependencies(path:String, add_type:bool):
 	return depends_on
 
 func _rename_dependencies(path: String, renames: Dictionary):
+	print(str(Time.get_ticks_msec()) + ": TimelineResourceLoader.rename_dependencies()")
 	var timeline:DialogicTimeline = load(path)
 	for event in timeline._events:
 		for property in event.get_shortcode_parameters().values():

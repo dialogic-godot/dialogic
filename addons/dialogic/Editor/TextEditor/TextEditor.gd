@@ -6,6 +6,7 @@ var current_timeline: DialogicTimeline
 var editor_reference = null
 
 func _ready():
+	print(str(Time.get_ticks_msec()) + ": Starting TextEditor.ready()")
 	DialogicUtil.get_dialogic_plugin().dialogic_save.connect(save_timeline)
 	if find_parent('EditorView'): # This prevents the view to turn black if you are editing this scene in Godot
 		editor_reference = find_parent('EditorView')
@@ -17,20 +18,49 @@ func clear_timeline():
 
 
 func load_timeline(object:DialogicTimeline) -> void:
+	print(str(Time.get_ticks_msec()) + ": Starting TextEditor.load_timeline()")
 	clear_timeline()
 	current_timeline = object
 	get_parent().get_node('Toolbar').load_timeline(current_timeline.resource_path)
 	
-	text = TimelineUtil.events_to_text(object._events)
+	#text = TimelineUtil.events_to_text(object._events)
+	var result:String = ""	
+	var indent := 0
+	for idx in range(0, len(object._events)):
+		var event = object._events[idx]
+		
+		if event['event_name'] == 'End Branch':
+			indent -= 1
+			continue
+		
+		if event != null:
+			result += "\t".repeat(indent)+event['event_node_as_text'].replace('\n', "\n"+"\t".repeat(indent)) + "\n"
+		if event.can_contain_events:
+			indent += 1
+		if indent < 0: indent = 0
+		result += "\t".repeat(indent)+"\n"
+		
+	text = result
 
 
 func save_timeline():
+	print(str(Time.get_ticks_msec()) + ": Starting TextEditor.save_timeline()")
 	if !visible:
 		return
 	
 	if current_timeline:
-		current_timeline._events = TimelineUtil.text_to_events(text)
-		ResourceSaver.save(current_timeline)
+		# The translations need this to be actual Events, so we do a few steps of conversion here
+		current_timeline._events = text_timeline_to_array(text)
+		
+		#set as false the first time, so the processor can parse it
+		current_timeline._events_processed = false
+		editor_reference.process_timeline(current_timeline)
+		
+		#set back as false again so the saver knows it's ready to use
+		current_timeline._events_processed = false
+		
+		print(current_timeline._events)
+		ResourceSaver.save(current_timeline, current_timeline.resource_path)
 
 
 func add_highlighting():
@@ -55,6 +85,7 @@ func add_highlighting():
 
 
 func new_timeline() -> void:
+	print(str(Time.get_ticks_msec()) + ": Starting TextEditor.new_timeline()")
 	save_timeline()
 	clear_timeline()
 	show_save_dialog()
@@ -71,9 +102,30 @@ func show_save_dialog():
 	)
 
 func create_and_save_new_timeline(path):
+	print(str(Time.get_ticks_msec()) + ": Starting TextEditor.ceate_and_save_new()")
 	var new_timeline = DialogicTimeline.new()
 	new_timeline.resource_path = path
 	current_timeline = new_timeline
 	save_timeline()
 	DialogicUtil.get_dialogic_plugin().editor_interface.get_resource_filesystem().update_file(path)
 	load_timeline(new_timeline)
+
+func text_timeline_to_array(text:String) -> Array:
+	# Parse the lines down into an array
+	var prev_indent := ""
+	var events := []
+	
+	# this is needed to add a end branch event even to empty conditions/choices
+	var prev_was_opener := false
+	
+	var lines := text.split('\n', true)
+	var idx := -1
+	
+	while idx < len(lines)-1:
+		idx += 1
+		var line :String = lines[idx]
+		var line_stripped :String = line.strip_edges(true, true)
+		if !line_stripped.is_empty():
+			events.append(line)
+		
+	return events

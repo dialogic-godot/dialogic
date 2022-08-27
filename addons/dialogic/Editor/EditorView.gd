@@ -8,11 +8,14 @@ var editor_file_dialog:EditorFileDialog
 var _last_timeline_opened
 
 var event_script_cache: Array = []
+var character_directory: Dictionary = {}
 
 signal continue_opening_resource
 
 func _ready():
+	print(str(Time.get_ticks_msec()) + ": Starting EditorView.ready()")
 	rebuild_event_script_cache()
+	rebuild_character_directory()
 	$MarginContainer/VBoxContainer/Toolbar/Settings.button_up.connect(settings_pressed)
 	
 	# File dialog
@@ -37,6 +40,7 @@ func _ready():
 	$SaveConfirmationDialog.hide()
 
 func open_last_resource():
+	print(str(Time.get_ticks_msec()) + ": Starting EditorView.open_last_resource()")
 	if ProjectSettings.has_setting('dialogic/editor/last_resources'):
 		var directory := Directory.new();
 		var path :String= ProjectSettings.get_setting('dialogic/editor/last_resources')[0]
@@ -45,6 +49,7 @@ func open_last_resource():
 	
 
 func edit_timeline(object):
+	print(str(Time.get_ticks_msec()) + ": Starting EditorView.edit_timeline()")
 	if %Toolbar.is_current_unsaved():
 		save_current_resource()
 		await continue_opening_resource
@@ -83,6 +88,7 @@ func save_current_resource():
 
 
 func _on_SaveConfirmationDialog_confirmed():
+	print(str(Time.get_ticks_msec()) + ": Starting EditorView._saveconfirmation_confirmed()")
 	if _is_timeline_editor_visible:
 		%TimelineEditor.save_timeline()
 	elif %CharacterEditor.visible:
@@ -103,21 +109,27 @@ func rebuild_event_script_cache():
 			event_script_cache.push_back(x)
 
 				
-	if Engine.is_editor_hint() == false:			
-		# Events are checked in order while testing them. EndBranch needs to be first, Text needs to be last
-		for i in event_script_cache.size():
-			if event_script_cache[i].get_meta("script_path") == "res://addons/dialogic/Events/End Branch/event.gd":
-				var x = load("res://addons/dialogic/Events/End Branch/event.gd").new()
-				x.set_meta("script_path", "res://addons/dialogic/Events/End Branch/event.gd")
-				event_script_cache.push_front(x)
-				break
-				
-		for i in event_script_cache.size():
-			if event_script_cache[i].get_meta("script_path") == "res://addons/dialogic/Events/Text/event.gd":
-				event_script_cache.push_back(event_script_cache[i])
-				event_script_cache.remove_at(i)
-				break
 
+	# Events are checked in order while testing them. EndBranch needs to be first, Text needs to be last
+	var x = load("res://addons/dialogic/Events/End Branch/event.gd").new()
+	x.set_meta("script_path", "res://addons/dialogic/Events/End Branch/event.gd")
+	event_script_cache.push_front(x)
+			
+	for i in event_script_cache.size():
+		if event_script_cache[i].get_meta("script_path") == "res://addons/dialogic/Events/Text/event.gd":
+			event_script_cache.push_back(event_script_cache[i])
+			event_script_cache.remove_at(i)
+			break
+			
+	print(event_script_cache)
+	print(event_script_cache.size())
+
+func rebuild_character_directory() -> void:
+	var characters: Array = DialogicUtil.list_resources_of_type(".dch")
+		
+	for character in characters:
+		var charfile: DialogicCharacter= load(character)
+		character_directory[character] = charfile
 
 
 func godot_file_dialog(callable, filter, mode = EditorFileDialog.FILE_MODE_OPEN_FILE, window_title = "Save", current_file_name = 'New_File', saving_something = false):
@@ -147,12 +159,14 @@ func godot_file_dialog(callable, filter, mode = EditorFileDialog.FILE_MODE_OPEN_
 ########################################
 
 func _load_timeline(object) -> void:
+	print(str(Time.get_ticks_msec()) + ": Starting EditorView._load_timeline()")
 	_last_timeline_opened = object
 	object = process_timeline(object)
 	_get_timeline_editor().load_timeline(object)
 
 
 func show_timeline_editor() -> void:
+	print(str(Time.get_ticks_msec()) + ": Starting EditorView.show_timeline_editor()")
 	if DialogicUtil.get_project_setting('dialogic/editor_mode', 'visual') == 'visual':
 		%TextEditor.hide()
 		%TimelineEditor.show()
@@ -180,6 +194,7 @@ func _get_timeline_editor() -> Node:
 	
 
 func _on_toggle_editor_view(mode:String) -> void:
+	print(str(Time.get_ticks_msec()) + ": Starting EditorView._on_toggle_editor_view()")
 	%CharacterEditor.visible = false
 	
 	if mode == 'visual':
@@ -198,6 +213,7 @@ func _on_toggle_editor_view(mode:String) -> void:
 	
 	
 func _on_create_timeline():
+	print(str(Time.get_ticks_msec()) + ": Starting EditorView._on_create_timeline()")
 	_get_timeline_editor().new_timeline()
 
 
@@ -215,12 +231,13 @@ func _on_play_timeline():
 ########################################################
 
 func process_timeline(timeline: DialogicTimeline) -> DialogicTimeline:
-	print(event_script_cache)
-	print(event_script_cache.size())
-	print(str(Time.get_ticks_msec()) + ": Starting process unloaded timeline")	
+
+
 	if timeline._events_processed:
+		print(str(Time.get_ticks_msec()) + ": Timeline is already processed")
 		return timeline
 	else:
+		print(str(Time.get_ticks_msec()) + ": Starting process unloaded timeline")
 		var end_event: DialogicEndBranchEvent 
 		for i in event_script_cache:
 			if i.get_meta("script_path") == "res://addons/dialogic/Events/End Branch/event.gd":
@@ -255,7 +272,7 @@ func process_timeline(timeline: DialogicTimeline) -> DialogicTimeline:
 			prev_indent = indent
 			var event_content :String = line_stripped
 
-			var event :DialogicEvent
+			var event :Variant
 			for i in event_script_cache:
 				if i._test_event_string(event_content):
 					event = i.duplicate()
@@ -279,8 +296,13 @@ func process_timeline(timeline: DialogicTimeline) -> DialogicTimeline:
 			event_content = event_content.replace("\n"+indent, "\n")
 			
 
-			#event._load_from_string(event_content)
-			event['deferred_processing_text'] = event_content
+			# Unlike at runtime, for some reason here the event scripts can't access the scene tree to get to the character directory, so we will need to pass it to it before processing
+			
+			if event['event_name'] == 'Character' || event['event_name'] == 'Text':
+				event.set_meta('editor_character_directory', character_directory)
+
+			event._load_from_string(event_content)
+			event['event_node_as_text'] = event_content
 			
 			events.append(event)
 			prev_was_opener = event.can_contain_events
