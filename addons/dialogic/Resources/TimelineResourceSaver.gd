@@ -47,7 +47,7 @@ func _save(resource: Resource, path: String = '', flags: int = 0) -> int:
 					continue
 				
 				if event != null:
-					result += event['event_node_as_text'] + "\n"
+					result += "\t".repeat(indent)+ event['event_node_as_text'] + "\n"
 				if event.can_contain_events:
 					indent += 1
 				if indent < 0: 
