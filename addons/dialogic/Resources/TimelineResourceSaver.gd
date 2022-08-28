@@ -44,6 +44,7 @@ func _save(resource: Resource, path: String = '', flags: int = 0) -> int:
 				
 
 				if event['event_name'] == 'End Branch':
+					indent -=1
 					continue
 				
 				if event != null:
