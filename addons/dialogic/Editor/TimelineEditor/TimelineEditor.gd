@@ -703,14 +703,14 @@ func _add_event_button_pressed(event_script):
 	else:
 		at_index = %Timeline.get_child_count()
 	
-	if event_script.new().can_contain_events:
+	if event_script.can_contain_events:
 		TimelineUndoRedo.create_action("[D] Add event.")
-		TimelineUndoRedo.add_do_method(self, "add_event_with_end_branch", event_script.new(), at_index, true, true)
+		TimelineUndoRedo.add_do_method(self, "add_event_with_end_branch", event_script.duplicate(), at_index, true, true)
 		TimelineUndoRedo.add_undo_method(self, "remove_events_at_index", at_index, 2)
 		TimelineUndoRedo.commit_action()
 	else:
 		TimelineUndoRedo.create_action("[D] Add event.")
-		TimelineUndoRedo.add_do_method(self, "add_event_node", event_script.new(), at_index, true, true)
+		TimelineUndoRedo.add_do_method(self, "add_event_node", event_script.duplicate(), at_index, true, true)
 		TimelineUndoRedo.add_undo_method(self, "remove_events_at_index", at_index, 1)
 		TimelineUndoRedo.commit_action()
 	something_changed()
