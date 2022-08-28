@@ -102,6 +102,9 @@ func load_timeline(object) -> void:
 	clear_timeline()
 	_toolbar.load_timeline(object.resource_path)
 	current_timeline = object
+	if current_timeline._events_processed == false:
+		current_timeline = editor_reference.process_timeline(current_timeline)
+		
 	var data = object.get_events()
 	var page = 1
 	var batch_size = 12

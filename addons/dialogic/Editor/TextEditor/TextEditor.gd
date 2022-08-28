@@ -19,6 +19,8 @@ func clear_timeline():
 func load_timeline(object:DialogicTimeline) -> void:
 	clear_timeline()
 	current_timeline = object
+	if current_timeline._events_processed == false:
+		current_timeline = editor_reference.process_timeline(current_timeline)
 	get_parent().get_node('Toolbar').load_timeline(current_timeline.resource_path)
 	
 	#text = TimelineUtil.events_to_text(object._events)

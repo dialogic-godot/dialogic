@@ -56,6 +56,7 @@ func _load(path: String, original_path: String, use_sub_threads: bool, cache_mod
 
 
 	res._events = events
+	res._events_processed = false
 	return res
 
 
