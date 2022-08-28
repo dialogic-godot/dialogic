@@ -81,11 +81,21 @@ func save_timeline() -> void:
 
 	var new_events = []
 	
+	var indent := 0
+	
 	for event in %Timeline.get_children():
 		#print(event.get_meta('script_path'))
 		#print(event.resource)
 		#print(event.resource._store_as_string())
-		event.resource['event_node_as_text'] = event.resource._store_as_string()
+		if event['event_name'] == 'End Branch':
+				indent -= 1
+				continue
+		if event.can_contain_events:
+			indent += 1
+		if indent < 0: 
+			indent = 0
+			
+		event.resource['event_node_as_text'] = "\t".repeat(indent) + event.resource._store_as_string()
 		new_events.append(event.resource)
 	
 	if current_timeline:
@@ -159,6 +169,7 @@ func _on_batch_loaded():
 
 
 func clear_timeline():
+	current_timeline = DialogicTimeline.new()
 	deselect_all_items()
 	for event in %Timeline.get_children():
 		event.free()

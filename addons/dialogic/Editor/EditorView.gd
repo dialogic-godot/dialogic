@@ -288,7 +288,7 @@ func process_timeline(timeline: DialogicTimeline) -> DialogicTimeline:
 					break
 				event_content += "\n"+following_line_stripped
 			
-			event_content = event_content.replace("\n"+indent, "\n")
+			#event_content = event_content.replace("\n"+indent, "\n")
 			
 
 			# Unlike at runtime, for some reason here the event scripts can't access the scene tree to get to the character directory, so we will need to pass it to it before processing
@@ -298,6 +298,7 @@ func process_timeline(timeline: DialogicTimeline) -> DialogicTimeline:
 
 			event._load_from_string(event_content)
 			event['event_node_as_text'] = event_content
+			
 			
 			events.append(event)
 			prev_was_opener = event.can_contain_events

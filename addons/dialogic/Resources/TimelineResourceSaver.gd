@@ -40,14 +40,14 @@ func _save(resource: Resource, path: String = '', flags: int = 0) -> int:
 			
 
 			if event['event_name'] == 'End Branch':
-				indent -= 1
 				continue
 			
 			if event != null:
-				result += "\t".repeat(indent)+event['event_node_as_text'].replace('\n', "\n"+"\t".repeat(indent)) + "\n"
+				result += event['event_node_as_text'] + "\n"
 			if event.can_contain_events:
 				indent += 1
-			if indent < 0: indent = 0
+			if indent < 0: 
+				indent = 0
 			result += "\t".repeat(indent)+"\n"
 			
 		file.store_string(result)

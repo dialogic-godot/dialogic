@@ -14,6 +14,7 @@ func _ready():
 
 func clear_timeline():
 	text = ''
+	DialogicTimeline.new()
 
 
 func load_timeline(object:DialogicTimeline) -> void:
