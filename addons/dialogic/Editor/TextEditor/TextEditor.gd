@@ -11,6 +11,9 @@ func _ready():
 		editor_reference = find_parent('EditorView')
 	add_highlighting()
 
+func _exit_tree():
+	# Explicitly free any open cache resources on close, so we don't get leaked resource errors on shutdown
+	current_timeline = null
 
 func clear_timeline():
 	text = ''
@@ -20,7 +23,6 @@ func clear_timeline():
 func load_timeline(object:DialogicTimeline) -> void:
 	clear_timeline()
 	current_timeline = object
-	
 	if current_timeline._events.size() == 0:
 		pass
 	else: 
@@ -51,21 +53,25 @@ func load_timeline(object:DialogicTimeline) -> void:
 
 
 func save_timeline():
+	
 	if !visible:
 		return
-	
 	if current_timeline:
 		# The translations need this to be actual Events, so we do a few steps of conversion here
-		current_timeline._events = text_timeline_to_array(text)
 		
-		#set as false the first time, so the processor can parse it
+		var text_array:Array = text_timeline_to_array(text)
+		current_timeline._events = text_array
+		
+		# Build new processed timeline for the ResourceSaver to use
+		# ResourceSaver needs a DialogicEvents timeline so the translation builder can run
 		current_timeline._events_processed = false
 		editor_reference.process_timeline(current_timeline)
-		
-		#set back as false again so the saver knows it's ready to use
-		current_timeline._events_processed = false
-		
+		current_timeline._events_processed = false		
 		ResourceSaver.save(current_timeline, current_timeline.resource_path)
+		
+		#Switch back to the text event array, in case we're switching editor modes
+		current_timeline._events = text_array
+		
 
 
 func add_highlighting():
@@ -130,5 +136,6 @@ func text_timeline_to_array(text:String) -> Array:
 		var line_stripped :String = line.strip_edges(true, true)
 		if !line_stripped.is_empty():
 			events.append(line)
-		
+	
+	
 	return events

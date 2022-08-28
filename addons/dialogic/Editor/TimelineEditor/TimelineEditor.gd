@@ -76,24 +76,22 @@ func create_and_save_new_timeline(path):
 
 
 func save_timeline() -> void:
+	
 	if !visible:
 		return
-
 	var new_events = []
 	
 	var indent := 0
 	
 	for event in %Timeline.get_children():
-		#print(event.get_meta('script_path'))
-		#print(event.resource)
-		#print(event.resource._store_as_string())
+
 		if 'event_name' in event.resource:
 			
 			if event.resource['event_name'] == 'End Branch':
 					indent -= 1
 					continue
 			
-			event.resource['event_node_as_text'] = "\t".repeat(indent) + event.resource._store_as_string()
+			new_events.append("\t".repeat(indent) + event.resource._store_as_string())
 			
 			if event.resource.can_contain_events:
 				indent += 1
@@ -101,12 +99,20 @@ func save_timeline() -> void:
 				indent = 0
 				
 			
-			new_events.append(event.resource)
 	
 	if current_timeline:
 		current_timeline.set_events(new_events)
+		
+		# Build new processed timeline for the ResourceSaver to use
+		# ResourceSaver needs a DialogicEvents timeline so the translation builder can run
 		current_timeline._events_processed = false
+		editor_reference.process_timeline(current_timeline)
+		current_timeline._events_processed = false		
 		ResourceSaver.save(current_timeline, current_timeline.resource_path)
+		
+		#Switch back to the text event array, in case we're switching editor modes
+		current_timeline.set_events(new_events)
+		
 		_toolbar.set_resource_saved()
 	else:
 		if new_events.size() > 0:
@@ -118,13 +124,15 @@ func load_timeline(object) -> void:
 	_toolbar.load_timeline(object.resource_path)
 	current_timeline = object
 	
+	
+	
 	if current_timeline._events.size() == 0:
 		pass
 	else: 
 		if typeof(current_timeline._events[0]) == TYPE_STRING:
 			current_timeline._events_processed = false
 			current_timeline = editor_reference.process_timeline(current_timeline)
-		
+	
 	var data = object.get_events()
 	var page = 1
 	var batch_size = 12
@@ -151,7 +159,6 @@ func load_batch(data):
 			if i is DialogicEndBranchEvent:
 				create_end_branch_event(%Timeline.get_child_count(), opener_events_stack.pop_back())
 			else:
-				#print(i)
 				var piece = add_event_node(i, %Timeline.get_child_count())
 				if i.can_contain_events:
 					opener_events_stack.push_back(piece)
@@ -238,6 +245,15 @@ func _ready():
 		get_node("View/ScrollContainer/EventContainer/FlexContainer" + str(button.event_category)).add_child(button)
 		while event_resource.event_sorting_index < get_node("View/ScrollContainer/EventContainer/FlexContainer" + str(button.event_category)).get_child(max(0, button.get_index()-1)).resource.event_sorting_index:
 			get_node("View/ScrollContainer/EventContainer/FlexContainer" + str(button.event_category)).move_child(button, button.get_index()-1)
+
+
+################################################################################
+##				CLEANUP
+################################################################################
+func _exit_tree():
+	# Explicitly free any open cache resources on close, so we don't get leaked resource errors on shutdown
+	clear_timeline()
+	current_timeline = null
 
 
 ################################################################################
@@ -746,8 +762,6 @@ func _add_event_button_pressed(event_script):
 ## *****************************************************************************
 # Adding an event to the timeline
 func add_event_node(event_resource:Resource, at_index:int = -1, auto_select: bool = false, indent: bool = false):
-	#print(str(Time.get_ticks_msec()) + ": Starting TimelineEditor.add_event()")
-	#print(event_resource)
 	if event_resource is DialogicEndBranchEvent:
 		return create_end_branch_event(at_index, %Timeline.get_child(0))
 	

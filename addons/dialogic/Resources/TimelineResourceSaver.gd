@@ -20,8 +20,11 @@ func _recognize(resource: Resource) -> bool:
 
 # Save the resource
 func _save(resource: Resource, path: String = '', flags: int = 0) -> int:
+	if len(resource._events) == 0:
+		printerr("Timeline is empty! Aborting save to prevent accidental data loss, please delete the file if it is supposed to be empty")
+		return ERR_INVALID_DATA
 	# Do not do this if the timeline's not in a ready state, so it doesn't accidentally save it blank
-	if !resource._events_processed:
+	elif !resource._events_processed:
 		print('[Dialogic] Saving timeline...')
 		var err:int
 		var file:File = File.new()

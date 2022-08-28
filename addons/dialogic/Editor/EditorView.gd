@@ -37,6 +37,12 @@ func _ready():
 	
 	$SaveConfirmationDialog.add_button('No Saving Please!', true, 'nosave')
 	$SaveConfirmationDialog.hide()
+	
+func _exit_tree():
+	# Explicitly free any open cache resources on close, so we don't get leaked resource errors on shutdown
+	event_script_cache = []
+	character_directory = {}
+	_last_timeline_opened = null
 
 func open_last_resource():
 	if ProjectSettings.has_setting('dialogic/editor/last_resources'):
@@ -187,14 +193,14 @@ func _get_timeline_editor() -> Node:
 	
 
 func _on_toggle_editor_view(mode:String) -> void:
-	print(str(Time.get_ticks_msec()) + ": Starting EditorView._on_toggle_editor_view()")
 	%CharacterEditor.visible = false
-	
+
 	if mode == 'visual':
 		%TextEditor.save_timeline()
 		%TextEditor.hide()
 		%TextEditor.clear_timeline()
 		%TimelineEditor.show()
+		
 	else:
 		%TimelineEditor.save_timeline()
 		%TimelineEditor.hide()
@@ -206,7 +212,6 @@ func _on_toggle_editor_view(mode:String) -> void:
 	
 	
 func _on_create_timeline():
-	print(str(Time.get_ticks_msec()) + ": Starting EditorView._on_create_timeline()")
 	_get_timeline_editor().new_timeline()
 
 
@@ -224,7 +229,6 @@ func _on_play_timeline():
 ########################################################
 
 func process_timeline(timeline: DialogicTimeline) -> DialogicTimeline:
-
 
 	if timeline._events_processed:
 		return timeline
@@ -251,6 +255,7 @@ func process_timeline(timeline: DialogicTimeline) -> DialogicTimeline:
 				line = lines[idx]
 			else:
 				line = lines[idx]['event_node_as_text']
+			
 			
 			
 			var line_stripped :String = line.strip_edges(true, false)
@@ -308,6 +313,7 @@ func process_timeline(timeline: DialogicTimeline) -> DialogicTimeline:
 		if !prev_indent.is_empty():
 			for i in range(len(prev_indent)):
 				events.append(end_event.duplicate())
+		
 		
 		timeline._events = events	
 		timeline._events_processed = true
