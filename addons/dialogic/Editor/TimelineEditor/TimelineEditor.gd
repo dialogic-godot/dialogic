@@ -47,7 +47,7 @@ var piece_was_dragged = false
 # helper to comunicate with the toolbar
 func something_changed():
 	_toolbar.set_resource_unsaved()
-
+	current_timeline.set_meta("timeline_not_saved", true)
 
 func new_timeline() -> void:
 	save_timeline()
@@ -79,50 +79,59 @@ func save_timeline() -> void:
 	
 	if !visible:
 		return
-	var new_events = []
-	
-	var indent := 0
-	
-	for event in %Timeline.get_children():
+	if _toolbar.is_current_unsaved():
+		
+		print("Visual Editor Saving")
+		
+		var new_events = []
+		
+		var indent := 0
+		
+		for event in %Timeline.get_children():
 
-		if 'event_name' in event.resource:
-			
-			if event.resource['event_name'] == 'End Branch':
-					indent -= 1
-					continue
-			
-			new_events.append("\t".repeat(indent) + event.resource._store_as_string())
-			
-			if event.resource.can_contain_events:
-				indent += 1
-			if indent < 0: 
-				indent = 0
+			if 'event_name' in event.resource:
 				
+				if event.resource['event_name'] == 'End Branch':
+						indent -= 1
+						continue
+				
+				new_events.append("\t".repeat(indent) + event.resource._store_as_string())
+				
+				if event.resource.can_contain_events:
+					indent += 1
+				if indent < 0: 
+					indent = 0
+					
+				
+		
+		if current_timeline:
+			current_timeline.set_events(new_events)
 			
-	
-	if current_timeline:
-		current_timeline.set_events(new_events)
-		
-		# Build new processed timeline for the ResourceSaver to use
-		# ResourceSaver needs a DialogicEvents timeline so the translation builder can run
-		current_timeline._events_processed = false
-		editor_reference.process_timeline(current_timeline)
-		current_timeline._events_processed = false		
-		ResourceSaver.save(current_timeline, current_timeline.resource_path)
-		
-		#Switch back to the text event array, in case we're switching editor modes
-		current_timeline.set_events(new_events)
-		
-		_toolbar.set_resource_saved()
-	else:
-		if new_events.size() > 0:
-			show_save_dialog()
+			# Build new processed timeline for the ResourceSaver to use
+			# ResourceSaver needs a DialogicEvents timeline so the translation builder can run
+			current_timeline._events_processed = false
+			editor_reference.process_timeline(current_timeline)
+			current_timeline._events_processed = false		
+			ResourceSaver.save(current_timeline, current_timeline.resource_path)
+			
+			#Switch back to the text event array, in case we're switching editor modes
+			current_timeline.set_events(new_events)
+			
+			current_timeline.set_meta("unsaved", false)
+			_toolbar.set_resource_saved()
+			current_timeline.set_meta("timeline_not_saved", false)
+		else:
+			if new_events.size() > 0:
+				show_save_dialog()
 
 
 func load_timeline(object) -> void:
+	if _toolbar.is_current_unsaved():
+		save_timeline()
 	clear_timeline()
 	_toolbar.load_timeline(object.resource_path)
 	current_timeline = object
+	current_timeline.set_meta("timeline_not_saved", false)
 	
 	
 	
@@ -176,7 +185,7 @@ func _on_batch_loaded():
 		opener_events_stack = []
 		indent_events()
 		_building_timeline = false
-		emit_signal("timeline_loaded")
+
 	add_extra_scroll_area_to_timeline()
 
 

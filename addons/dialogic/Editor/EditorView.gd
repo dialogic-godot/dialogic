@@ -93,7 +93,10 @@ func save_current_resource():
 func _on_SaveConfirmationDialog_confirmed():
 
 	if _is_timeline_editor_visible:
-		%TimelineEditor.save_timeline()
+		if DialogicUtil.get_project_setting('dialogic/editor_mode', 'visual') == 'visual':
+			%TimelineEditor.save_timeline()
+		else:	
+			%TextEditor.save_timeline()
 	elif %CharacterEditor.visible:
 		%CharacterEditor.save_character()
 	emit_signal("continue_opening_resource")
@@ -217,10 +220,15 @@ func _on_create_timeline():
 
 func _on_play_timeline():
 	if _get_timeline_editor().current_timeline:
+		
 		var dialogic_plugin = DialogicUtil.get_dialogic_plugin()
 		# Save the current opened timeline
 		ProjectSettings.set_setting('dialogic/editor/current_timeline_path', _get_timeline_editor().current_timeline.resource_path)
 		ProjectSettings.save()
+		if DialogicUtil.get_project_setting('dialogic/editor_mode', 'visual') == 'visual':
+			%TimelineEditor.save_timeline()
+		else:	
+			%TextEditor.save_timeline()
 		DialogicUtil.get_dialogic_plugin().editor_interface.play_custom_scene("res://addons/dialogic/Other/TestTimelineScene.tscn")
 
 
