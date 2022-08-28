@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://addons/dialogic/Editor/TextEditor/TextEditor.gd" id="1_1kbx2"]
 
-[sub_resource type="CodeHighlighter" id="CodeHighlighter_irl5r"]
+[sub_resource type="CodeHighlighter" id="CodeHighlighter_vs5bt"]
 number_color = Color(0.8025, 0.81, 0.8225, 1)
 symbol_color = Color(0.8025, 0.81, 0.8225, 1)
 function_color = Color(0.8025, 0.81, 0.8225, 1)
@@ -15,13 +15,13 @@ color_regions = {
 "{ }": Color(0.56, 1, 0.86, 1)
 }
 
-[node name="TextEditor" type="CodeEdit"]
+[node name="TimelineTextEditor" type="CodeEdit"]
 offset_top = 592.0
 offset_right = 1024.0
 offset_bottom = 600.0
 highlight_current_line = true
 draw_tabs = true
-syntax_highlighter = SubResource("CodeHighlighter_irl5r")
+syntax_highlighter = SubResource("CodeHighlighter_vs5bt")
 minimap_draw = true
 caret_blink = true
 line_folding = true

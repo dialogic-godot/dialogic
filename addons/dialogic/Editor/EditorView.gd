@@ -94,9 +94,9 @@ func _on_SaveConfirmationDialog_confirmed():
 
 	if _is_timeline_editor_visible:
 		if DialogicUtil.get_project_setting('dialogic/editor_mode', 'visual') == 'visual':
-			%TimelineEditor.save_timeline()
+			%TimelineVisualEditor.save_timeline()
 		else:	
-			%TextEditor.save_timeline()
+			%TimelineTextEditor.save_timeline()
 	elif %CharacterEditor.visible:
 		%CharacterEditor.save_character()
 	emit_signal("continue_opening_resource")
@@ -170,16 +170,16 @@ func _load_timeline(object) -> void:
 
 func show_timeline_editor() -> void:
 	if DialogicUtil.get_project_setting('dialogic/editor_mode', 'visual') == 'visual':
-		%TextEditor.hide()
-		%TimelineEditor.show()
+		%TimelineTextEditor.hide()
+		%TimelineVisualEditor.show()
 	else:
-		%TimelineEditor.hide()
-		%TextEditor.show()
+		%TimelineVisualEditor.hide()
+		%TimelineTextEditor.show()
 
 
 func _hide_timeline_editor() -> void:
-	%TimelineEditor.hide()
-	%TextEditor.hide()
+	%TimelineVisualEditor.hide()
+	%TimelineTextEditor.hide()
 
 
 func _is_timeline_editor_visible() -> bool:
@@ -190,25 +190,25 @@ func _is_timeline_editor_visible() -> bool:
 
 func _get_timeline_editor() -> Node:
 	if DialogicUtil.get_project_setting('dialogic/editor_mode', 'visual') == 'visual':
-		return %TimelineEditor
+		return %TimelineVisualEditor
 	else:
-		return %TextEditor
+		return %TimelineTextEditor
 	
 
 func _on_toggle_editor_view(mode:String) -> void:
 	%CharacterEditor.visible = false
 
 	if mode == 'visual':
-		%TextEditor.save_timeline()
-		%TextEditor.hide()
-		%TextEditor.clear_timeline()
-		%TimelineEditor.show()
+		%TimelineTextEditor.save_timeline()
+		%TimelineTextEditor.hide()
+		%TimelineTextEditor.clear_timeline()
+		%TimelineVisualEditor.show()
 		
 	else:
-		%TimelineEditor.save_timeline()
-		%TimelineEditor.hide()
-		%TimelineEditor.clear_timeline()
-		%TextEditor.show()
+		%TimelineVisualEditor.save_timeline()
+		%TimelineVisualEditor.hide()
+		%TimelineVisualEditor.clear_timeline()
+		%TimelineTextEditor.show()
 	
 	# After showing the proper timeline, open it to edit
 	_load_timeline(_last_timeline_opened)
@@ -221,14 +221,15 @@ func _on_create_timeline():
 func _on_play_timeline():
 	if _get_timeline_editor().current_timeline:
 		
+		_get_timeline_editor().save_timeline() 
+		
 		var dialogic_plugin = DialogicUtil.get_dialogic_plugin()
 		# Save the current opened timeline
+
+			
 		ProjectSettings.set_setting('dialogic/editor/current_timeline_path', _get_timeline_editor().current_timeline.resource_path)
 		ProjectSettings.save()
-		if DialogicUtil.get_project_setting('dialogic/editor_mode', 'visual') == 'visual':
-			%TimelineEditor.save_timeline()
-		else:	
-			%TextEditor.save_timeline()
+
 		DialogicUtil.get_dialogic_plugin().editor_interface.play_custom_scene("res://addons/dialogic/Other/TestTimelineScene.tscn")
 
 

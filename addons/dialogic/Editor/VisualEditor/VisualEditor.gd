@@ -81,8 +81,6 @@ func save_timeline() -> void:
 		return
 	if _toolbar.is_current_unsaved():
 		
-		print("Visual Editor Saving")
-		
 		var new_events = []
 		
 		var indent := 0
@@ -217,7 +215,7 @@ func _ready():
 	%TimelineArea.resized.connect(add_extra_scroll_area_to_timeline)
 	
 	# Event buttons
-	var buttonScene = load("res://addons/dialogic/Editor/TimelineEditor/AddEventButton.tscn")
+	var buttonScene = load("res://addons/dialogic/Editor/VisualEditor/AddEventButton.tscn")
 	
 	var scripts: Array = []
 	if editor_reference != null:

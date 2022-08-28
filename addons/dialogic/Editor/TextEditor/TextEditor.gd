@@ -68,7 +68,6 @@ func save_timeline():
 		return
 	
 	if _toolbar.is_current_unsaved():
-		print("Text Editor Saving")
 		
 		if current_timeline:
 			# The translations need this to be actual Events, so we do a few steps of conversion here
