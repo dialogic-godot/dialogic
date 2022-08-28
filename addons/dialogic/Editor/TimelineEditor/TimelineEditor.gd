@@ -87,16 +87,21 @@ func save_timeline() -> void:
 		#print(event.get_meta('script_path'))
 		#print(event.resource)
 		#print(event.resource._store_as_string())
-		if event['event_name'] == 'End Branch':
-				indent -= 1
-				continue
-		if event.can_contain_events:
-			indent += 1
-		if indent < 0: 
-			indent = 0
+		if 'event_name' in event.resource:
 			
-		event.resource['event_node_as_text'] = "\t".repeat(indent) + event.resource._store_as_string()
-		new_events.append(event.resource)
+			if event.resource['event_name'] == 'End Branch':
+					indent -= 1
+					continue
+			
+			event.resource['event_node_as_text'] = "\t".repeat(indent) + event.resource._store_as_string()
+			
+			if event.resource.can_contain_events:
+				indent += 1
+			if indent < 0: 
+				indent = 0
+				
+			
+			new_events.append(event.resource)
 	
 	if current_timeline:
 		current_timeline.set_events(new_events)
