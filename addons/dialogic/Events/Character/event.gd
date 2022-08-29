@@ -184,7 +184,7 @@ func get_as_string_to_store() -> String:
 ## THIS HAS TO READ ALL THE DATA FROM THE SAVED STRING (see above) 
 func load_from_string_to_store(string:String):
 	var regex = RegEx.new()
-	regex.compile("(?<type>Join|Update|Leave) (?<character>[^()\\d\\n\\[]*)( *\\((?<portrait>\\S*)\\))? ?((?<position>\\d*))?\\s*(\\[(?<shortcode>.*)\\])?")
+	regex.compile("(?<type>Join|Update|Leave) (?<character>[^()\\n\\[]*)( *\\((?<portrait>\\S*)\\))? ?((?<position>\\d*))?\\s*(\\[(?<shortcode>.*)\\])?")
 	
 	var result = regex.search(string)
 	
