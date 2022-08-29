@@ -98,6 +98,9 @@ func _ready():
 	set_left_text('')
 	set_right_text('')
 
+func _exit_tree():
+	# Explicitly free any open cache resources on close, so we don't get leaked resource errors on shutdown
+	event_resource = null
 
 ################################################################################
 ## 						SEARCH & SUGGESTION POPUP

@@ -6,6 +6,7 @@ static func get_editor_scale() -> float:
 
 
 static func listdir(path: String, files_only: bool = true, throw_error:bool = true, full_file_path:bool = false) -> Array:
+
 	# https://docs.godotengine.org/en/stable/classes/class_directory.html#description
 	var files: Array = []
 	var dir := Directory.new()
@@ -44,6 +45,7 @@ static func list_resources_of_type(extension):
 
 
 static func scan_folder(folder_path:String, extension:String) -> Array:
+	#print(str(Time.get_ticks_msec()) + ": DialogicUtil.scan_folder")
 	var dir:Directory = Directory.new()
 	var list: Array = []
 	if dir.open(folder_path) == OK:
@@ -88,15 +90,20 @@ static func get_project_setting(setting:String, default = null):
 
 static func get_event_scripts(include_custom_events:bool = true) -> Array:
 	var event_scripts = []
+	var directory:Directory = Directory.new()
 	
 	var file_list = listdir("res://addons/dialogic/Events/", false)
 	for file in file_list:
-		event_scripts.append("res://addons/dialogic/Events/" + file + "/event.gd")
+		var possible_script:String = "res://addons/dialogic/Events/" + file + "/event.gd"
+		if directory.file_exists(possible_script):
+			event_scripts.append(possible_script)
 	
 	if include_custom_events:
 		file_list = listdir("res://addons/dialogic_additions/Events/", false, false)
 		for file in file_list:
-			event_scripts.append("res://addons/dialogic_additions/Events/" + file + "/event.gd")
+			var possible_script: String = "res://addons/dialogic_additions/Events/" + file + "/event.gd"
+			if directory.file_exists(possible_script):
+				event_scripts.append(possible_script)
 		
 	return event_scripts
 

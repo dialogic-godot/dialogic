@@ -21,9 +21,6 @@ var resource : DialogicEvent
 # is the body visible
 var expanded = true
 
-# does the body have elements?
-var has_body_content = false
-
 # for choice and condition
 var end_node:Node = null:
 	get:
@@ -60,7 +57,6 @@ func visual_deselect():
 
 func is_selected() -> bool:
 	return selected_style.visible
-
 
 # called by the timeline before adding it to the tree
 func load_data(data):
@@ -150,7 +146,6 @@ func focus():
 	#	resource.header_scene.focus()
 	#if resource.body_scene:
 	#	resource.body_scene.focus()
-
 
 func toggle_collapse(toggled):
 	collapsed = toggled
@@ -271,18 +266,10 @@ func build_editor():
 			editor_node.set_right_text(p.get('right_text', ''))
 		if p.has('condition'):
 			edit_conditions_list.append([editor_node, p.condition])
-	
-	if current_body_container.get_child_count() > 0:
-		has_body_content = true
-	else:
-		has_body_content = false
-		expanded = false
-		body_container.visible = false
 		
-	
+		
 	content_changed.connect(recalculate_edit_visibility.bind(edit_conditions_list))
 	recalculate_edit_visibility(edit_conditions_list)
-
 
 func recalculate_edit_visibility(list):
 	for node_con in list:
@@ -306,7 +293,6 @@ func recalculate_edit_visibility(list):
 				%ExpandButton.visible = true
 				break
 
-
 func set_property(property_name, value):
 	resource.set(property_name, value)
 	emit_signal('content_changed')
@@ -322,6 +308,7 @@ func _update_color():
 ## *****************************************************************************
 
 func _ready():
+	
 	## DO SOME STYLING
 	var _scale = DialogicUtil.get_editor_scale()
 	selected_style.modulate = get_theme_color("accent_color", "Editor")
@@ -384,8 +371,7 @@ func _on_EventNode_gui_input(event):
 	if event is InputEventMouseButton and event.is_pressed() and event.button_index == 1:
 		grab_focus() # Grab focus to avoid copy pasting text or events
 		if event.double_click:
-			if has_body_content:
-				_on_ExpandButton_toggled(!expanded)
+			_on_ExpandButton_toggled(!expanded)
 	# For opening the context menu
 	if event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:

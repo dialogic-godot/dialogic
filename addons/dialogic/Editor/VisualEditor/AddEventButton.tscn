@@ -1,7 +1,7 @@
-[gd_scene load_steps=4 format=3 uid="uid://v3hym6wo7jjc"]
+[gd_scene load_steps=4 format=3]
 
-[ext_resource type="Script" path="res://addons/dialogic/Editor/TimelineEditor/AddEventButton.gd" id="1_s43sc"]
-[ext_resource type="Texture2D" path="res://icon.png" id="2_sa3jl"]
+[ext_resource type="Script" path="res://addons/dialogic/Editor/VisualEditor/AddEventButton.gd" id="1_s43sc"]
+[ext_resource type="Texture2D" uid="uid://iyl3gyvh8x6h" path="res://icon.png" id="2_sa3jl"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ba8bn"]
 bg_color = Color(1, 1, 1, 1)
