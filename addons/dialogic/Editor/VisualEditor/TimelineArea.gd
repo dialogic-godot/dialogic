@@ -89,33 +89,34 @@ func _draw():
 		if not event.visible:
 			continue
 		
-		if !event.resource is DialogicEndBranchEvent: 
-			var icon_panel_height = 32*_scale
-			var rect_position = event.get_node('%IconPanel').global_position+Vector2(0,1)*event.get_node('%IconPanel').size+Vector2(0,-4)
-			var color = event.resource.event_color
-			if event.is_selected():
-				color *= selected_color_multiplier
-			else:
-				color *= color_multiplier
-			if idx < $Timeline.get_child_count()-1 and event.current_indent_level < $Timeline.get_child(idx+1).current_indent_level:
-				var end_node = event.end_node
-				var sub_idx = idx
-				if !end_node:
-					while sub_idx < $Timeline.get_child_count()-1:
-						sub_idx += 1
-						if $Timeline.get_child(sub_idx).current_indent_level == event.current_indent_level:
-							end_node = $Timeline.get_child(sub_idx-1)
-							break
-				var rect_size := Vector2()
-				if end_node != null:
-					rect_size = Vector2(line_width, end_node.global_position.y+end_node.size.y-rect_position.y)
-					if end_node.resource is DialogicEndBranchEvent and event.resource.can_contain_events:
-						rect_size = Vector2(line_width, end_node.global_position.y+end_node.size.y/2-rect_position.y)
+		if !event.resource is DialogicEndBranchEvent:
+			if event.has_body_content or event.resource.can_contain_events:
+				var icon_panel_height = 32*_scale
+				var rect_position = event.get_node('%IconPanel').global_position+Vector2(0,1)*event.get_node('%IconPanel').size+Vector2(0,-4)
+				var color = event.resource.event_color
+				if event.is_selected():
+					color *= selected_color_multiplier
 				else:
-					rect_size = Vector2(line_width, $Timeline.get_child(-2).position.y+$Timeline.get_child(-2).size.y)
-						
-				draw_rect(Rect2(rect_position-global_position, rect_size), color)
-				draw_rect(Rect2(Vector2(event.get_node('%IconPanel').global_position.x+line_width, rect_position.y+rect_size.y-line_width)-global_position, Vector2(horizontal_line_length, line_width)), color)
+					color *= color_multiplier
+				if idx < $Timeline.get_child_count()-1 and event.current_indent_level < $Timeline.get_child(idx+1).current_indent_level:
+					var end_node = event.end_node
+					var sub_idx = idx
+					if !end_node:
+						while sub_idx < $Timeline.get_child_count()-1:
+							sub_idx += 1
+							if $Timeline.get_child(sub_idx).current_indent_level == event.current_indent_level:
+								end_node = $Timeline.get_child(sub_idx-1)
+								break
+					var rect_size := Vector2()
+					if end_node != null:
+						rect_size = Vector2(line_width, end_node.global_position.y+end_node.size.y-rect_position.y)
+						if end_node.resource is DialogicEndBranchEvent and event.resource.can_contain_events:
+							rect_size = Vector2(line_width, end_node.global_position.y+end_node.size.y/2-rect_position.y)
+					else:
+						rect_size = Vector2(line_width, $Timeline.get_child(-2).position.y+$Timeline.get_child(-2).size.y)
+							
+					draw_rect(Rect2(rect_position-global_position, rect_size), color)
+					draw_rect(Rect2(Vector2(event.get_node('%IconPanel').global_position.x+line_width, rect_position.y+rect_size.y-line_width)-global_position, Vector2(horizontal_line_length, line_width)), color)
 
-			elif event.expanded:
-				draw_rect(Rect2(rect_position-global_position, Vector2(line_width, event.size.y-event.get_node('%IconPanel').size.y-8*_scale)), color)
+				elif event.expanded:
+					draw_rect(Rect2(rect_position-global_position, Vector2(line_width, event.size.y-event.get_node('%IconPanel').size.y-8*_scale)), color)
