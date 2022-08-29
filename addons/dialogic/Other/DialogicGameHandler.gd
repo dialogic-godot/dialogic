@@ -51,9 +51,7 @@ func start_timeline(timeline_resource:Variant, label_or_idx:Variant = "") -> voi
 		
 	# load the resource if only the path is given
 	if typeof(timeline_resource) == TYPE_STRING:
-		print(str(Time.get_ticks_msec()) + ": Loading timeline")	
 		timeline_resource = load(timeline_resource)
-		print(str(Time.get_ticks_msec()) + ": Finished loading timeline")	
 		if timeline_resource == null:
 			assert(false, "There was an error loading this timeline. Check the filename, and the timeline for errors")
 	
@@ -210,7 +208,6 @@ func load_full_state(state_info:Dictionary) -> void:
 	for subsystem in get_children():
 		subsystem.clear_game_state()
 	current_state_info = state_info
-	print(state_info)
 	if current_state_info.get('current_timeline', null):
 		start_timeline(current_state_info.current_timeline, current_state_info.get('current_event_idx', 0))
 	if has_subsystem('Portraits'):
