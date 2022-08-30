@@ -12,11 +12,13 @@ func _ready():
 	%UpdateAvailable.visible = false
 	%UpdateAvailable.button_up.connect(_open_website.bind("https://dialogic.coppolaemilio.com/update"))
 	%UpdateAvailable.icon = get_theme_icon("Warning", "EditorIcons")
+	%UpdateAvailable.flat = true
 	
 	# Donate button
 	%Donate.icon = get_theme_icon("Heart", "EditorIcons")
 	%Donate.button_up.connect(_open_website.bind("https://dialogic.coppolaemilio.com/donate"))
 	%Donate.focus_mode = 0
+	%Donate.flat = true
 	
 	# Version
 	%Version.set("custom_colors/font_color", get_theme_color("disabled_font_color", "Editor"))
