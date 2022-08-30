@@ -274,8 +274,8 @@ func rebuild_character_directory() -> void:
 	var characters: Array = DialogicUtil.list_resources_of_type(".dch")
 	
 	# First sort by length of path, so shorter paths are first
-	characters.sort_custom(func(a, b):return (a.count("/") < b.count("/")) && (a.nocasecmp_to(b) < 0))
-	#characters.sort_custom(func(a, b): return a.naturalnocasecmp_to(b) < 0)
+	characters.sort_custom(func(a, b):return a.count("/") < b.count("/"))
+	
 	# next we prepare the additional arrays needed for building the depth tree
 	var shortened_paths:Array = []
 	var reverse_array:Array = []

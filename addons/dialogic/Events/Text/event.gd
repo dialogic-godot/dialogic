@@ -109,13 +109,21 @@ func load_from_string_to_store(string:String) -> void:
 	reg.compile("((\")?(?<name>(?(2)[^\"\\n]*|[^(: \\n]*))(?(2)\"|)(\\W*\\((?<portrait>.*)\\))?\\s*(?<!\\\\):)?(?<text>.*)")
 	var result = reg.search(string)
 	if result and !result.get_string('name').is_empty():
+		var name = result.get_string('name').strip_edges()
 		if Engine.is_editor_hint() == false:
 			if Dialogic.character_directory != null:
 				if Dialogic.character_directory.size() > 0:
 					Character = null
-					for path in Dialogic.character_directory:
-						if result.get_string('name').strip_edges() in path: 
-							Character = Dialogic.character_directory[path]
+					if Dialogic.character_directory.has(name):
+						Character = Dialogic.character_directory[name]['resource']
+					else:
+						# If it doesn't exist, we'll consider it a guest and create a temporary character
+						Character = DialogicCharacter.new()
+						Character.display_name = name
+						var entry:Dictionary = {}
+						entry['resource'] = Character
+						entry['full_path'] = "runtime://" + name
+						Dialogic.character_directory[name] = entry
 		else:
 
 			if self.get_meta("editor_character_directory") != null:
