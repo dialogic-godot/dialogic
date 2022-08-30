@@ -28,13 +28,7 @@ signal text_signal(argument)
 func _ready() -> void:
 
 	if Engine.is_editor_hint() == false:
-		
-		# Runtime will build the character_directory dictionary. Editor will have to handle it a different way
-		var characters: Array = DialogicUtil.list_resources_of_type(".dch")
-		
-		for character in characters:
-			var charfile: DialogicCharacter= load(character)
-			character_directory[character] = charfile
+		rebuild_character_directory()
 		
 	collect_subsystems()
 	clear()
@@ -275,6 +269,57 @@ func _set(property, value):
 ################################################################################
 ##						PROCESSING FUNCTIONS
 ################################################################################
+
+func rebuild_character_directory() -> void:
+	var characters: Array = DialogicUtil.list_resources_of_type(".dch")
+	
+	# First sort by length of path, so shorter paths are first
+	characters.sort_custom(func(a, b):return (a.count("/") < b.count("/")) && (a.nocasecmp_to(b) < 0))
+	#characters.sort_custom(func(a, b): return a.naturalnocasecmp_to(b) < 0)
+	# next we prepare the additional arrays needed for building the depth tree
+	var shortened_paths:Array = []
+	var reverse_array:Array = []
+	var reverse_array_splits:Array = []
+	
+	for i in characters.size():
+		var path = characters[i].replace("res://","").replace(".dch", "")
+		if path[0] == "/":
+			path = path.right(-1)
+		shortened_paths.append(path) 
+		
+		#split the shortened path up, and reverse it
+		var path_breakdown = path.split("/")
+		path_breakdown.reverse()
+		
+		#Add the name of the file at beginning now, and another array saving the reversed split within each element
+		reverse_array.append(path_breakdown[0])
+		reverse_array_splits.append(path_breakdown)
+		
+	
+	# Now the three arrays are prepped, begin the depth search
+	var clean_search_path:bool = false
+	var depth = 1
+	
+	while !clean_search_path:
+		var interim_array:Array = []
+		clean_search_path = true
+		
+		for i in shortened_paths.size():
+			if reverse_array.count(reverse_array[i]) > 1:
+				clean_search_path = false
+				interim_array.append(reverse_array_splits[i][depth] + "/" + reverse_array[i])
+			else:
+				interim_array.append(reverse_array[i])
+		depth += 1
+		reverse_array = interim_array		
+			
+	# Now finally build the database from those arrays
+	for i in characters.size():
+		var entry:Dictionary = {}
+		var charfile: DialogicCharacter= load(characters[i])
+		entry['resource'] = charfile
+		entry['full_path'] = characters[i]
+		character_directory[reverse_array[i]] = entry
 
 func process_timeline(timeline: DialogicTimeline) -> DialogicTimeline:
 
