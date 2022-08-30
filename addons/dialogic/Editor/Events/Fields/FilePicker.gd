@@ -1,9 +1,9 @@
 @tool
 extends Control
 
-var file_filter := ""
-var placeholder := ""
-var resource_icon:Texture = null:
+@export var file_filter := ""
+@export var placeholder := ""
+@export var resource_icon:Texture = null:
 	get:
 		return resource_icon
 	set(new_icon):

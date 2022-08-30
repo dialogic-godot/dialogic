@@ -46,10 +46,14 @@ func add_portrait(character:DialogicCharacter, portrait:String,  position_idx:in
 		portrait = character.default_portrait
 	
 	if not character:
-		assert(false, "[Dialogic] Cannot add portrait of null character.")
+		print_debug('[DialogicError] Cannot call add_portrait() with null character.')
+		return null
 	if not portrait in character.portraits:
-		print("[DialogicErrorInfo] ",character.display_name, " has no portrait ", portrait)
-		assert(false, "[Dialogic] Invalid portrait name.")
+		print_debug("[DialogicError] Tried joining ",character.display_name, " wit not-existing portrait '", portrait, "'. Will use default portrait instead.")
+		portrait = character.default_portrait
+		if portrait.is_empty():
+			print_debug("[DialogicError] Character ",character.display_name, " has no default portrait to use.")
+			return null
 	
 	check_positions_and_holder()
 
@@ -70,54 +74,70 @@ func add_portrait(character:DialogicCharacter, portrait:String,  position_idx:in
 
 func change_portrait(character:DialogicCharacter, portrait:String, mirrored:bool = false, z_index: int = 0, update_zindex:bool = false, extra_data:String = "") -> void:
 	if not character or not is_character_joined(character):
-		assert(false, "[Dialogic] Cannot change portrait of null/not joined character.")
+		print_debug('[DialogicError] Cannot change portrait of null/not joined character.')
+		return null
 	
 	if portrait.is_empty():
 		portrait = character.default_portrait
+	
+	if not portrait in character.portraits.keys():
+		print_debug('[Dialogic] Change to not-existing portrait will be ignored!')
+		return
 	
 	var char_node :Node = dialogic.current_state_info.portraits[character.resource_path].node
 	
 	if update_zindex:
 		char_node.z_index = z_index
 	
-	if char_node.get_child_count() and 'does_custom_portrait_change' in char_node.get_child(0) and char_node.get_child(0).has_method('change_portrait'):
-		char_node.get_child(0).change_portrait(character, portrait)
+	# path to the scene to use
+	var scene_path :String = character.portraits[portrait].get('scene', '')
+	
+	var portrait_node = null
+	
+	# check if the scene is the same as the currently loaded scene
+	if (char_node.get_child_count() and 
+		character.portraits[dialogic.current_state_info['portraits'][character.resource_path]['portrait']].get('scene', '') == scene_path and 
+		# also check if the scene supports changing to the given portrait
+		(!char_node.get_child(0).has_method('_should_do_portrait_update') or char_node.get_child(0)._should_do_portrait_update(character, portrait))):
+			portrait_node = char_node.get_child(0)
 	else:
 		# remove previous portrait
 		if char_node.get_child_count():
 			char_node.get_child(0).queue_free()
-		
-		var path = character.portraits[portrait].path
-		if not path.ends_with('.tscn'):
-			var sprite = default_portrait_scene.instantiate()
-			sprite.change_portrait(character, portrait)
-			sprite.position.x -= sprite.portrait_width/2.0
-			sprite.position.y -= sprite.portrait_height
-			
-			sprite.mirror_portrait(mirrored)
-			
-			char_node.add_child(sprite)
+
+		if scene_path.is_empty():
+			portrait_node = default_portrait_scene.instantiate()
 		else:
-			var sprite = load(path)
-			sprite.position.x -= sprite.portrait_width/2.0
-			sprite.position.y -= sprite.portrait_height
-			
-			if sprite.has_method('change_portrait'):
-				sprite.change_portrait(character, portrait)
-			
-			if sprite.has_method('mirror_portrait'):
-				sprite.mirror_portrait(mirrored)
-				
-			if sprite.has_method('set_portrait_extra_data'):
-				sprite.set_portrait_extra_data(extra_data)
-				
-			char_node.add_child(path)
+			var p = load(scene_path)
+			if p:
+				portrait_node = p.instantiate()
+			else:
+				push_error('Dialogic: Portrait node "' + str(scene_path) + '" for character [' + character.display_name + '] could not be loaded. Your portrait might not show up on the screen.')
+	
+	if portrait_node:
+		portrait_node.position = character.offset + character.portraits[portrait].get('offset', Vector2())
+		
+		# ignore the character scale on custom portraits that have 'ignore_char_scale' set to true
+		if scene_path.is_empty() or !character.portraits[portrait].get('ignore_char_scale', false):
+			portrait_node.scale = Vector2(1,1)*character.scale * character.portraits[portrait].get('scale', 1)
+		else:
+			portrait_node.scale = Vector2(1,1)*character.portraits[portrait].get('scale', 1)
+		if portrait_node.has_method('_update_portrait'):
+			portrait_node._update_portrait(character, portrait)
+		if portrait_node.has_method('_set_mirror'):
+			portrait_node._set_mirror(mirrored)
+		if portrait_node.has_method('_set_extra_data'):
+			portrait_node._set_extra_data(extra_data)
+		
+		if !portrait_node.is_inside_tree():
+			char_node.add_child(portrait_node)
 	dialogic.current_state_info['portraits'][character.resource_path]['portrait'] = portrait
 
 
 func animate_portrait(character:DialogicCharacter, animation_path:String, length:float, repeats = 1) -> DialogicAnimation:
 	if not character or not is_character_joined(character):
-		assert(false, "[Dialogic] Cannot animate portrait of null/not joined character.")
+		print_debug('[DialogicError] Cannot animate portrait of null/not joined character.')
+		return null
 	
 	var char_node = dialogic.current_state_info['portraits'][character.resource_path].node
 	
@@ -140,7 +160,8 @@ func animate_portrait(character:DialogicCharacter, animation_path:String, length
 
 func move_portrait(character:DialogicCharacter, position_idx:int, z_index:int = 0, update_zindex:bool = false,  time:float = 0.0):
 	if not character or not is_character_joined(character):
-		assert(false, "[Dialogic] Cannot move portrait of null/not joined character.")
+		print_debug('[DialogicError] Cannot move portrait of null/not joined character.')
+		return null
 	
 	var char_node = dialogic.current_state_info.portraits[character.resource_path].node
 	
@@ -191,7 +212,9 @@ func move_portrait_position(position_number: int, vector:Vector2, relative:bool 
 	if !position_number in current_positions:
 		if !relative:
 			add_portrait_position(position_number, vector)
-		else: assert(false, '[Dialogic] Cannot move non-existent position. (Use SetAbsolute to create new position.)')
+		else: 
+			print_debug('[DialogicError] Cannot move non-existent position. (Use SetAbsolute to create a new position)')
+			return null
 	
 	if !relative:
 		current_positions[position_number] = vector

@@ -22,7 +22,7 @@ func _execute() -> void:
 		if Portrait and dialogic.has_subsystem('Portraits') and dialogic.Portraits.is_character_joined(Character):
 				dialogic.Portraits.change_portrait(Character, Portrait)
 		var check_portrait = Portrait if !Portrait.is_empty() else dialogic.current_state_info['portraits'].get(Character.resource_path, {}).get('portrait', '')
-		if Character.portraits.get(check_portrait, {}).get('sound_mood', '') in Character.custom_info.get('sound_moods', {}):
+		if check_portrait and Character.portraits.get(check_portrait, {}).get('sound_mood', '') in Character.custom_info.get('sound_moods', {}):
 			dialogic.Text.update_typing_sound_mood(Character.custom_info.get('sound_moods', {}).get(Character.portraits[check_portrait].get('sound_mood', {}), {}))
 		elif !Character.custom_info.get('sound_mood_default', '').is_empty():
 			dialogic.Text.update_typing_sound_mood(Character.custom_info.get('sound_moods', {}).get(Character.custom_info.get('sound_mood_default')))
@@ -115,11 +115,14 @@ func load_from_string_to_store(string:String) -> void:
 						if result.get_string('name').strip_edges() in path: 
 							Character = Dialogic.character_directory[path]
 		else:
-			var character = DialogicUtil.guess_resource('.dch', result.get_string('name').strip_edges())
-			if character:
-				Character = load(character)
-			else:
-				Character = null
+
+			if self.get_meta("editor_character_directory") != null:
+				
+				if self.get_meta("editor_character_directory").size() > 0:
+					Character = null
+					for path in self.get_meta("editor_character_directory"):
+						if result.get_string('name').strip_edges() in path: 
+							Character = self.get_meta("editor_character_directory")[path]
 			#print("When importing timeline, we couldn't identify what character you meant with ", result.get_string('name'), ".")
 		if !result.get_string('portrait').is_empty():
 			Portrait = result.get_string('portrait').strip_edges()

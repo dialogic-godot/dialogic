@@ -3,11 +3,9 @@ extends VBoxContainer
 
 signal changed
 
-func _ready():
-	find_parent('CharacterEditor').portrait_selected.connect(_on_portrait_selected)
-	%PortraitMood.get_suggestions_func = [self, 'mood_suggestions']
-	%DefaultMood.get_suggestions_func = [self, 'mood_suggestions']
-
+################################################################################
+##					COMMUNICATION WITH EDITOR
+################################################################################
 func load_character(character:DialogicCharacter):
 	for mood in %Moods.get_children():
 		mood.queue_free()
@@ -25,6 +23,29 @@ func save_character(character:DialogicCharacter):
 	character.custom_info['sound_mood_default'] = %DefaultMood.current_value
 	character.custom_info['sound_moods'] = moods
 
+func get_portrait_data() -> Dictionary:
+	var editor : Control = find_parent('CharacterEditor')
+	if editor.selected_item and is_instance_valid(editor.selected_item):
+		return editor.selected_item.get_metadata(0)
+	return {}
+
+func set_portrait_data(data:Dictionary) -> void:
+	var editor : Control = find_parent('CharacterEditor')
+	if editor.selected_item and is_instance_valid(editor.selected_item):
+		editor.selected_item.set_metadata(0, data)
+
+func _ready():
+	find_parent('CharacterEditor').portrait_selected.connect(_on_portrait_selected)
+	%PortraitMood.get_suggestions_func = [self, 'mood_suggestions']
+	%DefaultMood.get_suggestions_func = [self, 'mood_suggestions']
+
+func _on_portrait_selected(portrait_name:String, data:Dictionary) -> void:
+	%PortraitMood.set_value(data.get('sound_mood', ''))
+	%PortraitMoodLabel.text = 'Mood for "%s":'%portrait_name
+
+################################################################################
+##					OWN STUFF
+################################################################################
 func _on_AddMood_pressed():
 	create_mood_item({})
 	emit_signal("changed")
@@ -40,11 +61,6 @@ func duplicate_mood_item(item):
 	emit_signal("changed")
 	create_mood_item(item.get_data())
 
-func _on_portrait_selected(previous, current):
-	if current and is_instance_valid(current):
-		%PortraitMood.set_value(current.portrait_data.get('sound_mood', ''))
-		%PortraitMoodLabel.text = 'Mood for "%s":'%current.get_portrait_name()
-
 
 func mood_suggestions(filter):
 	var suggestions = {}
@@ -55,12 +71,14 @@ func mood_suggestions(filter):
 
 
 func _on_PortraitMood_value_changed(property_name, value):
-	if find_parent('CharacterEditor').current_portrait:
-		find_parent('CharacterEditor').current_portrait.portrait_data['sound_mood'] = value
+	var data :Dictionary = get_portrait_data()
+	data['sound_mood'] = value
+	set_portrait_data(data)
 	emit_signal("changed")
 
 
 func _on_default_mood_value_changed(property_name, value):
-	if find_parent('CharacterEditor').current_portrait:
-		find_parent('CharacterEditor').current_portrait.portrait_data['sound_mood_default'] = value
+	var data :Dictionary = get_portrait_data()
+	data['sound_mood_default'] = value
+	set_portrait_data(data)
 	emit_signal("changed")

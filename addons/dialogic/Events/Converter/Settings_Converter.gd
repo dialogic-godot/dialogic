@@ -794,7 +794,7 @@ func convertCharacters():
 			else:
 				current_character.display_name = varNameStripSpecial(contents["display_name"])
 			current_character.mirror = contents["mirror_portraits"]
-			current_character.name = varNameStripSpecial(contents["name"])
+			#current_character.name = varNameStripSpecial(contents["name"])
 			current_character.nicknames = []
 			current_character.offset = Vector2(0,0)
 			
@@ -803,7 +803,10 @@ func convertCharacters():
 			for portrait in contents['portraits']:			
 				var portraitData = {}
 				if portrait['path'] != "":
-					portraitData['path'] = portrait['path']
+					if ".tscn" in portrait['path']:
+						portraitData['scene'] = portrait['path']
+					else:
+						portraitData['image'] = portrait['path']
 
 				#use the global offset, scale, and mirror setting from the origianl character file
 				portraitData['offset'] = Vector2(contents['offset_x'], contents['offset_y'])

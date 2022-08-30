@@ -20,35 +20,66 @@ func _recognize(resource: Resource) -> bool:
 
 # Save the resource
 func _save(resource: Resource, path: String = '', flags: int = 0) -> int:
-	var err:int
-	var file:File = File.new()
-	err = file.open(path, File.WRITE)
-	
-	if err != OK:
-		printerr('Can\'t write file: "%s"! code: %d.' % [path, err])
-		return err
-	
-	var result = TimelineUtil.events_to_text(resource._events)
-	file.store_string(result)
-	file.close()
-	print('[Dialogic] Saved timeline "' , path, '"')
-	
-	# Checking for translation updates
-	var trans_updates := {}
-	var translate :bool= DialogicUtil.get_project_setting('dialogic/translation_enabled', false)
-	for idx in range(0, len(resource._events)):
-		var event = resource._events[idx]
-		
-		if event != null:
-			if translate and event.can_be_translated():
-				if event.translation_id:
-					trans_updates[event.translation_id] = event.get_original_translation_text()
-				else:
-					trans_updates[event.add_translation_id()] = event.get_original_translation_text()
-	
-	if translate:
-		update_translations(path, trans_updates)
-	return OK
+	if resource.get_meta("timeline_not_saved", false):
+		if len(resource._events) == 0:
+			printerr("Timeline is empty! Aborting save to prevent accidental data loss, please delete the file if it is supposed to be empty")
+			return ERR_INVALID_DATA
+		# Do not do this if the timeline's not in a ready state, so it doesn't accidentally save it blank
+		elif !resource._events_processed:
+			print('[Dialogic] Saving timeline...')
+			var err:int
+			var file:File = File.new()
+			err = file.open(path, File.WRITE)
+			
+			if err != OK:
+				printerr('Can\'t write file: "%s"! code: %d.' % [path, err])
+				return err
+			
+			#var result = events_to_text(resource._events)
+			var result := ""
+			var indent := 0
+
+			for idx in range(0, len(resource._events)):
+				var event = resource._events[idx]
+				
+
+				if event['event_name'] == 'End Branch':
+					indent -=1
+					continue
+				
+				if event != null:
+					result += "\t".repeat(indent)+ event['event_node_as_text'] + "\n"
+				if event.can_contain_events:
+					indent += 1
+				if indent < 0: 
+					indent = 0
+				result += "\t".repeat(indent)+"\n"
+				
+			file.store_string(result)
+			file.close()
+			print('[Dialogic] Saved timeline "' , path, '"')
+			
+			# Checking for translation updates 
+			var trans_updates := {}
+			var translate :bool= DialogicUtil.get_project_setting('dialogic/translation_enabled', false)
+			for idx in range(0, len(resource._events)):
+				var event = resource._events[idx]
+
+				if event != null:
+					if translate and event.can_be_translated():
+						if event.translation_id:
+							trans_updates[event.translation_id] = event.get_original_translation_text()
+						else:
+							trans_updates[event.add_translation_id()] = event.get_original_translation_text()
+
+	#		if translate:
+	#			update_translations(path, trans_updates)
+			return OK
+		else: 
+			printerr(path + ": Timeline was not in ready state for saving! Timeline was not saved!")
+			return ERR_INVALID_DATA
+	else:
+		return OK
 
 func update_translations(path:String, translation_updates:Dictionary):
 	if translation_updates.is_empty():

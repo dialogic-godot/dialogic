@@ -158,6 +158,7 @@ func _on_toggle_visual_editor_clicked() -> void:
 	if DialogicUtil.get_project_setting('dialogic/editor_mode', 'visual') == 'visual':
 		_mode = 'text'
 	ProjectSettings.set_setting('dialogic/editor_mode', _mode)
+	ProjectSettings.save()
 	emit_signal('toggle_editor_view', _mode)
 	update_toggle_button()
 	

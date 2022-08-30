@@ -38,8 +38,25 @@ func _load(path: String, original_path: String, use_sub_threads: bool, cache_mod
 		
 	var res = DialogicTimeline.new()
 	
-	res._events = TimelineUtil.text_to_events(file.get_as_text())
+	var text = file.get_as_text()
+	# Parse the lines as seperate events and insert them in an array, so they can be converted to DialogicEvent's when processed later
+	var prev_indent := ""
+	var events := []
 	
+	var lines := text.split('\n', true)
+	var idx := -1
+	
+	while idx < len(lines)-1:
+		idx += 1
+		var line :String = lines[idx]
+		var line_stripped :String = line.strip_edges(true, true)
+		if line_stripped.is_empty():
+			continue
+		events.append(line)
+
+
+	res._events = events
+	res._events_processed = false
 	return res
 
 
