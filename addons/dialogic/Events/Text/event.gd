@@ -104,7 +104,9 @@ func get_as_string_to_store() -> String:
 ## THIS HAS TO READ ALL THE DATA FROM THE SAVED STRING (see above) 
 func load_from_string_to_store(string:String) -> void:
 	var reg := RegEx.new()
-	reg.compile("((?<name>[^:()\\n]*)?(?=(\\([^()]*\\))?:)(\\((?<portrait>[^()]*)\\))?)?:?(?<text>(.|(?<=\\\\)\\n)+)")
+	
+	# Reference regex without Godot escapes: ((")?(?<name>(?(2)[^"\n]*|[^(: \n]*))(?(2)"|)(\W*\((?<portrait>.*)\))?\s*(?<!\\):)?(?<text>.*)
+	reg.compile("((\")?(?<name>(?(2)[^\"\\n]*|[^(: \\n]*))(?(2)\"|)(\\W*\\((?<portrait>.*)\\))?\\s*(?<!\\\\):)?(?<text>.*)")
 	var result = reg.search(string)
 	if result and !result.get_string('name').is_empty():
 		if Engine.is_editor_hint() == false:
