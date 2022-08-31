@@ -2,9 +2,9 @@
 
 Create dialogs, characters and scenes to display conversations in your Godot games. 
 
-[Changelog](https://github.com/coppolaemilio/dialogic/blob/main/addons/dialogic/Documentation/Content/Changelog.md) — 
+[Changelog](https://github.com/coppolaemilio/dialogic/blob/dialogic-1/addons/dialogic/Documentation/Content/Changelog.md) — 
 [Installation](#installation) — 
-[Documentation](https://github.com/coppolaemilio/dialogic/blob/main/addons/dialogic/Documentation/Content/Welcome.md) — 
+[Documentation](https://github.com/coppolaemilio/dialogic/blob/dialogic-1/addons/dialogic/Documentation/Content/Welcome.md) — 
 [Credits](#credits)
 
 
@@ -20,10 +20,10 @@ Create dialogs, characters and scenes to display conversations in your Godot gam
 -----
 ## Getting started
 
-You can read a step by step guide on how to use [Dialogic here](https://github.com/coppolaemilio/dialogic/blob/main/addons/dialogic/Documentation/Content/Tutorials/BeginnersGuideStepByStep.md)
+You can read a step by step guide on how to use [Dialogic here](https://github.com/coppolaemilio/dialogic/blob/dialogic-1/addons/dialogic/Documentation/Content/Tutorials/BeginnersGuideStepByStep.md)
 
 ## 📚 Documentation
-You can check the documentation from inside the plugin or [here](https://github.com/coppolaemilio/dialogic/blob/main/addons/dialogic/Documentation/Content/Welcome.md)
+You can check the documentation from inside the plugin or [here](https://github.com/coppolaemilio/dialogic/blob/dialogic-1/addons/dialogic/Documentation/Content/Welcome.md)
 
 ## Installation
 
@@ -39,7 +39,7 @@ There has been some people having issues exporting their games. If you are havin
 
 ---
 
-## 📃 Credits
+## Credits
 Made by [Emilio Coppola](https://github.com/coppolaemilio).
 
 Contributors: [Jowan-Spooner](https://github.com/Jowan-Spooner), [zaknafean](https://github.com/zaknafean), [Arnaud](https://github.com/arnaudvergnet), [ellogwen](https://github.com/ellogwen), [Tim Krief](https://github.com/timkrief), [and more!](https://github.com/coppolaemilio/dialogic/graphs/contributors). Special thanks: [Toen](https://twitter.com/ToenAndreMC), Òscar, [Francisco Presencia](https://francisco.io/). Placeholder images are from [Toen's](https://toen.world/) [YouTube DF series](https://www.youtube.com/watch?v=B1ggwiat7PM)
