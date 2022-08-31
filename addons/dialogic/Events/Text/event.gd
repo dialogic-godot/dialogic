@@ -117,13 +117,20 @@ func load_from_string_to_store(string:String) -> void:
 					if Dialogic.character_directory.has(name):
 						Character = Dialogic.character_directory[name]['resource']
 					else:
+						# First do a full search to see if more of the path is there then necessary:
+						for character in Dialogic.character_directory:
+							if name in Dialogic.character_directory[character]['full_path']:
+								Character = Dialogic.character_directory[character]['resource']
+								break								
+						
 						# If it doesn't exist, we'll consider it a guest and create a temporary character
-						Character = DialogicCharacter.new()
-						Character.display_name = name
-						var entry:Dictionary = {}
-						entry['resource'] = Character
-						entry['full_path'] = "runtime://" + name
-						Dialogic.character_directory[name] = entry
+						if Character == null:
+							Character = DialogicCharacter.new()
+							Character.display_name = name
+							var entry:Dictionary = {}
+							entry['resource'] = Character
+							entry['full_path'] = "runtime://" + name
+							Dialogic.character_directory[name] = entry
 		else:
 
 			if self.get_meta("editor_character_directory") != null:
