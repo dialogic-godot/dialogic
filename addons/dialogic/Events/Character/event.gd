@@ -203,36 +203,37 @@ func load_from_string_to_store(string:String):
 			_leave_all = true
 		else: 
 			var name = result.get_string('name').strip_edges()
+			
+			var character_directory: Dictionary = {}
+			if Engine.is_editor_hint() == false:
+				character_directory = Dialogic.character_directory
+			else:
+				character_directory = self.get_meta("editor_character_directory")
+									
 			if !Engine.is_editor_hint():
-				if Dialogic.character_directory != null:
-					if Dialogic.character_directory.size() > 0:
+				if character_directory != null:
+					if character_directory.size() > 0:
 						Character = null
-						if Dialogic.character_directory.has(name):
-							Character = Dialogic.character_directory[name]['resource']
+						if character_directory.has(name):
+							Character = character_directory[name]['resource']
 						else:
 							name = name.replace('"', "")
 							# First do a full search to see if more of the path is there then necessary:
-							for character in Dialogic.character_directory:
-								if name in Dialogic.character_directory[character]['full_path']:
-									Character = Dialogic.character_directory[character]['resource']
+							for character in character_directory:
+								if name in character_directory[character]['full_path']:
+									Character = character_directory[character]['resource']
 									break								
 							
 							# If it doesn't exist, we'll consider it a guest and create a temporary character
 							if Character == null:
-								Character = DialogicCharacter.new()
-								Character.display_name = name
-								var entry:Dictionary = {}
-								entry['resource'] = Character
-								entry['full_path'] = "runtime://" + name
-								Dialogic.character_directory[name] = entry
-			else:
-				if self.get_meta("editor_character_directory") != null:
-					
-					if self.get_meta("editor_character_directory").size() > 0:
-						Character = null
-						for path in self.get_meta("editor_character_directory"):
-							if result.get_string('character').strip_edges() in path: 
-								Character = self.get_meta("editor_character_directory")[path]
+								if Engine.is_editor_hint() == false:
+									Character = DialogicCharacter.new()
+									Character.display_name = name
+									var entry:Dictionary = {}
+									entry['resource'] = Character
+									entry['full_path'] = "runtime://" + name
+									Dialogic.character_directory[name] = entry
+
 	
 	if result.get_string('portrait').strip_edges():
 		Portrait = result.get_string('portrait').strip_edges()

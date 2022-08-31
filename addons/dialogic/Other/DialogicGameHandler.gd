@@ -25,12 +25,13 @@ signal event_handled(resource)
 signal signal_event(argument)
 signal text_signal(argument)
 
+	
 func _ready() -> void:
 
-	if Engine.is_editor_hint() == false:
-		rebuild_character_directory()
+	rebuild_character_directory()
 		
 	collect_subsystems()
+
 	clear()
 	
 # 
@@ -215,30 +216,31 @@ func load_full_state(state_info:Dictionary) -> void:
 ##						SUB-SYTSEMS
 ################################################################################
 func collect_subsystems() -> void:
-	# This also builds th event script cache in runtime, since it's iteraitng here anyway 
+	# This also builds th event script cache as well
 	for script in DialogicUtil.get_event_scripts():
 		var x = load(script).new()
 		
-		if Engine.is_editor_hint() == false:
-			x.set_meta("script_path", script)
-			if script != "res://addons/dialogic/Events/End Branch/event.gd":
-				_event_script_cache.push_back(x)
-		for i in x.get_required_subsystems():
-			if i.has('subsystem') and not has_subsystem(i.name):
-				add_subsytsem(i.name, i.subsystem)
-				
-	if Engine.is_editor_hint() == false:			
+		x.set_meta("script_path", script)
+		if script != "res://addons/dialogic/Events/End Branch/event.gd":
+			_event_script_cache.push_back(x)
+		
+		#only build the subsystems at runtime
+		if !Engine.is_editor_hint():
+			for i in x.get_required_subsystems():
+				if i.has('subsystem') and not has_subsystem(i.name):
+					add_subsytsem(i.name, i.subsystem)
+					
 		# Events are checked in order while testing them. EndBranch needs to be first, Text needs to be last
-		var x = load("res://addons/dialogic/Events/End Branch/event.gd").new()
-		x.set_meta("script_path", "res://addons/dialogic/Events/End Branch/event.gd")
-		_event_script_cache.push_front(x)
+	var x = load("res://addons/dialogic/Events/End Branch/event.gd").new()
+	x.set_meta("script_path", "res://addons/dialogic/Events/End Branch/event.gd")
+	_event_script_cache.push_front(x)
 
 				
-		for i in _event_script_cache.size():
-			if _event_script_cache[i].get_meta("script_path") == "res://addons/dialogic/Events/Text/event.gd":
-				_event_script_cache.push_back(_event_script_cache[i])
-				_event_script_cache.remove_at(i)
-				break
+	for i in _event_script_cache.size():
+		if _event_script_cache[i].get_meta("script_path") == "res://addons/dialogic/Events/Text/event.gd":
+			_event_script_cache.push_back(_event_script_cache[i])
+			_event_script_cache.remove_at(i)
+			break
 
 func has_subsystem(_name:String) -> bool:
 	return has_node(_name)
@@ -344,7 +346,11 @@ func process_timeline(timeline: DialogicTimeline) -> DialogicTimeline:
 		
 		while idx < len(lines)-1:
 			idx += 1
-			var line :String = lines[idx]
+			var line: String = ""
+			if typeof(lines[idx]) == TYPE_STRING:
+				line = lines[idx]
+			else:
+				line = lines[idx]['event_node_as_text']
 			
 			
 			var line_stripped :String = line.strip_edges(true, false)
@@ -382,10 +388,14 @@ func process_timeline(timeline: DialogicTimeline) -> DialogicTimeline:
 					break
 				event_content += "\n"+following_line_stripped
 			
-			event_content = event_content.replace("\n"+indent, "\n")
-			
+			if Engine.is_editor_hint():
+				# Unlike at runtime, for some reason here the event scripts can't access the scene tree to get to the character directory, so we will need to pass it to it before processing
+				if event['event_name'] == 'Character' || event['event_name'] == 'Text':
+					event.set_meta('editor_character_directory', character_directory)
+
 
 			event._load_from_string(event_content)
+			event['event_node_as_text'] = event_content
 
 			events.append(event)
 			prev_was_opener = event.can_contain_events
