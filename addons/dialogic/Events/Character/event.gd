@@ -146,6 +146,9 @@ func get_as_string_to_store() -> String:
 		if ActionType == ActionTypes.Leave and _leave_all:
 			result_string += "--All--"
 		else: 
+			var name = Character.get_character_name()
+			if name.count(" ") > 0:
+				name = '"' + name + '"'
 			result_string += Character.get_character_name()
 			if Portrait and ActionType != ActionTypes.Leave:
 				result_string+= " ("+Portrait+")"
@@ -155,7 +158,7 @@ func get_as_string_to_store() -> String:
 	if AnimationName != "" || Z_Index != 0 || Mirrored != false || PositionMoveTime != 0.0 || ExtraData != "":
 		result_string += " ["
 		if AnimationName:
-			result_string += 'animation="'+DialogicUtil.pretty_name(AnimationName)+'"'
+			result_string += 'animation="'+AnimationName+'"'
 		
 			if AnimationLength != 0.5:
 				result_string += ' length="'+str(AnimationLength)+'"'
@@ -314,12 +317,19 @@ func has_no_portraits() -> bool:
 
 func get_character_suggestions(search_text:String):
 	var suggestions = {}
-	var resources = DialogicUtil.list_resources_of_type('.dch')
 	
-	for resource in resources:
-		if search_text.is_empty() or search_text.to_lower() in DialogicUtil.pretty_name(resource).to_lower():
-			suggestions[DialogicUtil.pretty_name(resource)] = {'value':resource, 'tooltip':resource, 'icon':load("res://addons/dialogic/Editor/Images/Resources/character.svg")}
+	var character_directory: Dictionary = {}
+	if Engine.is_editor_hint() == false:
+		character_directory = Dialogic.character_directory
+	else:
+		character_directory = self.get_meta("editor_character_directory")
+		
+	suggestions['Noone'] = {'value':'', 'editor_icon':["GuiRadioUnchecked", "EditorIcons"]}
+	
+	for resource in character_directory.keys():
+		suggestions[resource] = {'value': character_directory[resource]['full_path'], 'tooltip': character_directory[resource]['full_path'], 'icon':load("res://addons/dialogic/Editor/Images/Resources/character.svg")}
 	return suggestions
+	
 
 func get_portrait_suggestions(search_text):
 	var suggestions = {}
@@ -347,13 +357,13 @@ func get_animation_suggestions(search_text):
 			match ActionType:
 				ActionTypes.Join:
 					if '_in' in anim.get_file():
-						suggestions[DialogicUtil.pretty_name(anim)] = {'value':anim, 'editor_icon':["Animation", "EditorIcons"]}
+						suggestions[anim] = {'value':anim, 'editor_icon':["Animation", "EditorIcons"]}
 				ActionTypes.Leave:
 					if '_out' in anim.get_file():
-						suggestions[DialogicUtil.pretty_name(anim)] = {'value':anim, 'editor_icon':["Animation", "EditorIcons"]}
+						suggestions[anim] = {'value':anim, 'editor_icon':["Animation", "EditorIcons"]}
 				ActionTypes.Update:
 					if not ('_in' in anim.get_file() or '_out' in anim.get_file()):
-						suggestions[DialogicUtil.pretty_name(anim)] = {'value':anim, 'editor_icon':["Animation", "EditorIcons"]}
+						suggestions[anim] = {'value':anim, 'editor_icon':["Animation", "EditorIcons"]}
 						continue
 	return suggestions
 
@@ -366,6 +376,6 @@ func list_animations() -> Array:
 
 func guess_animation_file(animation_name):
 	for file in list_animations():
-		if DialogicUtil.pretty_name(animation_name) == DialogicUtil.pretty_name(file):
+		if animation_name == file:
 			return file
 	return animation_name

@@ -32,9 +32,9 @@ func refresh() -> void:
 	var idx := 0
 	for file in DialogicUtil.get_project_setting('dialogic/glossary/glossary_files', []):
 		if Directory.new().file_exists(file):
-			%GlossaryList.add_item(DialogicUtil.pretty_name(file), get_theme_icon('FileList', 'EditorIcons'))
+			%GlossaryList.add_item(file, get_theme_icon('FileList', 'EditorIcons'))
 		else:
-			%GlossaryList.add_item(DialogicUtil.pretty_name(file), get_theme_icon('FileDead', 'EditorIcons'))
+			%GlossaryList.add_item(file, get_theme_icon('FileDead', 'EditorIcons'))
 			
 		%GlossaryList.set_item_tooltip(idx, file)
 		idx += 1
@@ -84,7 +84,7 @@ func load_glossary_file(path:String) -> void:
 	if not path in list:
 		list.append(path)
 		ProjectSettings.set_setting('dialogic/glossary/glossary_files', list)
-		%GlossaryList.add_item(DialogicUtil.pretty_name(path), get_theme_icon('FileList', 'EditorIcons'))
+		%GlossaryList.add_item(path, get_theme_icon('FileList', 'EditorIcons'))
 		%GlossaryList.set_item_tooltip(%GlossaryList.item_count-1, path)
 		%GlossaryList.select(%GlossaryList.item_count-1)
 		_on_GlossaryList_item_selected(%GlossaryList.item_count-1)

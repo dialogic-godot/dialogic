@@ -82,8 +82,8 @@ func get_timeline_suggestions(search_text:String):
 	suggestions['this timeline'] = {'value':'', 'editor_icon':['GuiRadioUnchecked', 'EditorIcons']}
 	
 	for resource in resources:
-		if search_text.is_empty() or search_text.to_lower() in DialogicUtil.pretty_name(resource).to_lower():
-			suggestions[DialogicUtil.pretty_name(resource)] = {
+		if search_text.is_empty() or search_text in resource:
+			suggestions[resource] = {
 				'value':resource,
 				'tooltip':resource,
 				'editor_icon': ["TripleBar", "EditorIcons"],

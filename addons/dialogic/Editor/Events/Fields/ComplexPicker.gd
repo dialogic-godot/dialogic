@@ -7,7 +7,7 @@ extends Control
 var file_extension : String = ""
 var get_suggestions_func : Array = [self, 'get_default_suggestions']
 var empty_text : String = ""
-@export var disable_pretty_name : bool = false
+@export var disable_pretty_name : bool = true
 
 var resource_icon : Texture = null:
 	get:
@@ -48,13 +48,10 @@ func set_value(value, text : String = '') -> void:
 		$Search.text = empty_text
 	elif file_extension:
 		
-		$Search.text = DialogicUtil.pretty_name(value.resource_path)
+		$Search.text = value.resource_path
 		$Search.hint_tooltip = value.resource_path
 	elif value:
-		if disable_pretty_name:
-			$Search.text =value
-		else:
-			$Search.text = DialogicUtil.pretty_name(value)
+		$Search.text = value
 	else:
 		$Search.text = empty_text
 	if text:
@@ -158,7 +155,7 @@ func get_default_suggestions(search_text):
 
 	for resource in resources:
 		if search_text.is_empty() or search_text.to_lower() in DialogicUtil.pretty_name(resource).to_lower():
-			suggestions[DialogicUtil.pretty_name(resource)] = {'value':resource, 'tooltip':resource}
+			suggestions[resource] = {'value':resource, 'tooltip':resource}
 	return suggestions
 
 

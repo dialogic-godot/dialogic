@@ -96,9 +96,12 @@ func _init() -> void:
 ## THIS RETURNS A READABLE REPRESENTATION, BUT HAS TO CONTAIN ALL DATA (This is how it's stored)
 func get_as_string_to_store() -> String:
 	if Character:
+		var name = Character.get_character_name()
+		if name.count(" ") > 0:
+			name = '"' + name + '"'
 		if Portrait and not Portrait.is_empty():
-			return Character.get_character_name()+" ("+Portrait+"): "+Text.replace("\n", "\\\n")
-		return Character.get_character_name()+": "+Text.replace("\n", "\\\n")
+			return name+" ("+Portrait+"): "+Text.replace("\n", "\\\n")
+		return name+": "+Text.replace("\n", "\\\n")
 	return Text.replace("\n", "\\\n")
 
 ## THIS HAS TO READ ALL THE DATA FROM THE SAVED STRING (see above) 
@@ -167,13 +170,19 @@ func build_event_editor():
 
 func get_character_suggestions(search_text:String):
 	var suggestions = {}
-	var resources = DialogicUtil.list_resources_of_type('.dch')
+	
+	var character_directory: Dictionary = {}
+	if Engine.is_editor_hint() == false:
+		character_directory = Dialogic.character_directory
+	else:
+		character_directory = self.get_meta("editor_character_directory")
+		
 	suggestions['Noone'] = {'value':'', 'editor_icon':["GuiRadioUnchecked", "EditorIcons"]}
 	
-	for resource in resources:
-		if search_text.is_empty() or search_text.to_lower() in DialogicUtil.pretty_name(resource).to_lower():
-			suggestions[DialogicUtil.pretty_name(resource)] = {'value':resource, 'tooltip':resource, 'icon':load("res://addons/dialogic/Editor/Images/Resources/character.svg")}
+	for resource in character_directory.keys():
+		suggestions[resource] = {'value': character_directory[resource]['full_path'], 'tooltip': character_directory[resource]['full_path'], 'icon':load("res://addons/dialogic/Editor/Images/Resources/character.svg")}
 	return suggestions
+	
 
 func get_portrait_suggestions(search_text):
 	var suggestions = {}

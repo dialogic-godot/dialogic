@@ -67,9 +67,9 @@ func suggest_resources(filter:String) -> Dictionary:
 	var suggestions = {}
 	for i in DialogicUtil.get_project_setting('dialogic/editor/last_resources', []):
 		if i.ends_with('.dtl'):
-			suggestions[DialogicUtil.pretty_name(i)] = {'value':i, 'tooltip':i, 'editor_icon': ["TripleBar", "EditorIcons"]}
+			suggestions[i] = {'value':i, 'tooltip':i, 'editor_icon': ["TripleBar", "EditorIcons"]}
 		elif i.ends_with('.dch'):
-			suggestions[DialogicUtil.pretty_name(i)] = {'value':i, 'tooltip':i, 'icon':load("res://addons/dialogic/Editor/Images/Resources/character.svg")}
+			suggestions[i] = {'value':i, 'tooltip':i, 'icon':load("res://addons/dialogic/Editor/Images/Resources/character.svg")}
 	return suggestions
 
 
@@ -87,7 +87,7 @@ func resource_used(path:String) -> void:
 
 func load_timeline(timeline_path:String) -> void:
 	resource_used(timeline_path)
-	%ResourcePicker.set_value(DialogicUtil.pretty_name(timeline_path))
+	%ResourcePicker.set_value(timeline_path)
 	%ResourcePicker.resource_icon = get_theme_icon("TripleBar", "EditorIcons")
 	show_timeline_tool_buttons()
 
@@ -109,7 +109,7 @@ func hide_timeline_tool_buttons() -> void:
 
 func load_character(character_path:String) -> void:
 	resource_used(character_path)
-	%ResourcePicker.set_value(DialogicUtil.pretty_name(character_path))
+	%ResourcePicker.set_value(character_path)
 	%ResourcePicker.resource_icon = load("res://addons/dialogic/Editor/Images/Resources/character.svg")
 	hide_timeline_tool_buttons()
 

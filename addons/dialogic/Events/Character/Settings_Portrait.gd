@@ -51,7 +51,7 @@ func get_join_animation_suggestions(search_text):
 	for anim in list_animations():
 		if search_text.is_empty() or search_text.to_lower() in anim.get_file().to_lower():
 			if '_in' in anim.get_file():
-				suggestions[DialogicUtil.pretty_name(anim)] = {'value':anim, 'icon':get_theme_icon('Animation', 'EditorIcons')}
+				suggestions[anim] = {'value':anim, 'icon':get_theme_icon('Animation', 'EditorIcons')}
 	return suggestions
 
 func get_leave_animation_suggestions(search_text):
@@ -59,7 +59,7 @@ func get_leave_animation_suggestions(search_text):
 	for anim in list_animations():
 		if search_text.is_empty() or search_text.to_lower() in anim.get_file().to_lower():
 			if '_out' in anim.get_file():
-				suggestions[DialogicUtil.pretty_name(anim)] = {'value':anim, 'icon':get_theme_icon('Animation', 'EditorIcons')}
+				suggestions[anim] = {'value':anim, 'icon':get_theme_icon('Animation', 'EditorIcons')}
 	return suggestions
 
 func list_animations() -> Array:
