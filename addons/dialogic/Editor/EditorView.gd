@@ -7,9 +7,14 @@ var editor_file_dialog:EditorFileDialog
 
 var _last_timeline_opened
 
+var event_script_cache: Array = []
+var character_directory: Dictionary = {}
+
 signal continue_opening_resource
 
 func _ready():
+	rebuild_event_script_cache()
+	rebuild_character_directory()
 	$MarginContainer/VBoxContainer/Toolbar/Settings.button_up.connect(settings_pressed)
 	
 	# File dialog
@@ -32,6 +37,12 @@ func _ready():
 	
 	$SaveConfirmationDialog.add_button('No Saving Please!', true, 'nosave')
 	$SaveConfirmationDialog.hide()
+	
+func _exit_tree():
+	# Explicitly free any open cache resources on close, so we don't get leaked resource errors on shutdown
+	event_script_cache = []
+	character_directory = {}
+	_last_timeline_opened = null
 
 func open_last_resource():
 	if ProjectSettings.has_setting('dialogic/editor/last_resources'):
@@ -80,8 +91,12 @@ func save_current_resource():
 
 
 func _on_SaveConfirmationDialog_confirmed():
+
 	if _is_timeline_editor_visible:
-		%TimelineEditor.save_timeline()
+		if DialogicUtil.get_project_setting('dialogic/editor_mode', 'visual') == 'visual':
+			%TimelineVisualEditor.save_timeline()
+		else:	
+			%TimelineTextEditor.save_timeline()
 	elif %CharacterEditor.visible:
 		%CharacterEditor.save_character()
 	emit_signal("continue_opening_resource")
@@ -90,6 +105,35 @@ func _on_SaveConfirmationDialog_confirmed():
 func _on_SaveConfirmationDialog_custom_action(action):
 	$SaveConfirmationDialog.hide()
 	emit_signal("continue_opening_resource")
+	
+func rebuild_event_script_cache():
+	event_script_cache = []
+	for script in DialogicUtil.get_event_scripts():
+		var x = load(script).new()
+		x.set_meta("script_path", script)
+		if script != "res://addons/dialogic/Events/End Branch/event.gd":
+			event_script_cache.push_back(x)
+
+				
+
+	# Events are checked in order while testing them. EndBranch needs to be first, Text needs to be last
+	var x = load("res://addons/dialogic/Events/End Branch/event.gd").new()
+	x.set_meta("script_path", "res://addons/dialogic/Events/End Branch/event.gd")
+	event_script_cache.push_front(x)
+			
+	for i in event_script_cache.size():
+		if event_script_cache[i].get_meta("script_path") == "res://addons/dialogic/Events/Text/event.gd":
+			event_script_cache.push_back(event_script_cache[i])
+			event_script_cache.remove_at(i)
+			break
+
+
+func rebuild_character_directory() -> void:
+	var characters: Array = DialogicUtil.list_resources_of_type(".dch")
+		
+	for character in characters:
+		var charfile: DialogicCharacter= load(character)
+		character_directory[character] = charfile
 
 
 func godot_file_dialog(callable, filter, mode = EditorFileDialog.FILE_MODE_OPEN_FILE, window_title = "Save", current_file_name = 'New_File', saving_something = false):
@@ -120,21 +164,22 @@ func godot_file_dialog(callable, filter, mode = EditorFileDialog.FILE_MODE_OPEN_
 
 func _load_timeline(object) -> void:
 	_last_timeline_opened = object
+	object = process_timeline(object)
 	_get_timeline_editor().load_timeline(object)
 
 
 func show_timeline_editor() -> void:
 	if DialogicUtil.get_project_setting('dialogic/editor_mode', 'visual') == 'visual':
-		%TextEditor.hide()
-		%TimelineEditor.show()
+		%TimelineTextEditor.hide()
+		%TimelineVisualEditor.show()
 	else:
-		%TimelineEditor.hide()
-		%TextEditor.show()
+		%TimelineVisualEditor.hide()
+		%TimelineTextEditor.show()
 
 
 func _hide_timeline_editor() -> void:
-	%TimelineEditor.hide()
-	%TextEditor.hide()
+	%TimelineVisualEditor.hide()
+	%TimelineTextEditor.hide()
 
 
 func _is_timeline_editor_visible() -> bool:
@@ -145,24 +190,25 @@ func _is_timeline_editor_visible() -> bool:
 
 func _get_timeline_editor() -> Node:
 	if DialogicUtil.get_project_setting('dialogic/editor_mode', 'visual') == 'visual':
-		return %TimelineEditor
+		return %TimelineVisualEditor
 	else:
-		return %TextEditor
+		return %TimelineTextEditor
 	
 
 func _on_toggle_editor_view(mode:String) -> void:
 	%CharacterEditor.visible = false
-	
+
 	if mode == 'visual':
-		%TextEditor.save_timeline()
-		%TextEditor.hide()
-		%TextEditor.clear_timeline()
-		%TimelineEditor.show()
+		%TimelineTextEditor.save_timeline()
+		%TimelineTextEditor.hide()
+		%TimelineTextEditor.clear_timeline()
+		%TimelineVisualEditor.show()
+		
 	else:
-		%TimelineEditor.save_timeline()
-		%TimelineEditor.hide()
-		%TimelineEditor.clear_timeline()
-		%TextEditor.show()
+		%TimelineVisualEditor.save_timeline()
+		%TimelineVisualEditor.hide()
+		%TimelineVisualEditor.clear_timeline()
+		%TimelineTextEditor.show()
 	
 	# After showing the proper timeline, open it to edit
 	_load_timeline(_last_timeline_opened)
@@ -174,8 +220,110 @@ func _on_create_timeline():
 
 func _on_play_timeline():
 	if _get_timeline_editor().current_timeline:
+		
+		_get_timeline_editor().save_timeline() 
+		
 		var dialogic_plugin = DialogicUtil.get_dialogic_plugin()
 		# Save the current opened timeline
+
+			
 		ProjectSettings.set_setting('dialogic/editor/current_timeline_path', _get_timeline_editor().current_timeline.resource_path)
 		ProjectSettings.save()
+
 		DialogicUtil.get_dialogic_plugin().editor_interface.play_custom_scene("res://addons/dialogic/Other/TestTimelineScene.tscn")
+
+
+#########################################################
+###				TIMELINE PROCESSOR
+########################################################
+
+func process_timeline(timeline: DialogicTimeline) -> DialogicTimeline:
+
+	if timeline._events_processed:
+		return timeline
+	else:
+		var end_event: DialogicEndBranchEvent 
+		for i in event_script_cache:
+			if i.get_meta("script_path") == "res://addons/dialogic/Events/End Branch/event.gd":
+					end_event = i.duplicate()
+					break
+		
+		var prev_indent := ""
+		var events := []
+		
+		# this is needed to add a end branch event even to empty conditions/choices
+		var prev_was_opener := false
+		
+		var lines := timeline._events
+		var idx := -1
+		
+		while idx < len(lines)-1:
+			idx += 1
+			var line: String = ""
+			if typeof(lines[idx]) == TYPE_STRING:
+				line = lines[idx]
+			else:
+				line = lines[idx]['event_node_as_text']
+			
+			
+			
+			var line_stripped :String = line.strip_edges(true, false)
+			if line_stripped.is_empty():
+				continue
+			var indent :String= line.substr(0,len(line)-len(line_stripped))
+			
+			if len(indent) < len(prev_indent):
+				for i in range(len(prev_indent)-len(indent)):
+					events.append(end_event.duplicate())
+			
+			elif prev_was_opener and len(indent) == len(prev_indent):
+				events.append(end_event.duplicate())
+			prev_indent = indent
+			var event_content :String = line_stripped
+
+			var event :Variant
+			for i in event_script_cache:
+				if i._test_event_string(event_content):
+					event = i.duplicate()
+					break
+
+			# add the following lines until the event says it's full there is an empty line or the indent changes
+			while !event.is_string_full_event(event_content):
+				idx += 1
+				if idx == len(lines):
+					break
+				var following_line :String = lines[idx]
+				var following_line_stripped :String = following_line.strip_edges(true, false)
+				var following_line_indent :String = following_line.substr(0,len(following_line)-len(following_line_stripped))
+				if following_line_stripped.is_empty():
+					break
+				if following_line_indent != indent:
+					idx -= 1
+					break
+				event_content += "\n"+following_line_stripped
+			
+			#event_content = event_content.replace("\n"+indent, "\n")
+			
+
+			# Unlike at runtime, for some reason here the event scripts can't access the scene tree to get to the character directory, so we will need to pass it to it before processing
+			
+			if event['event_name'] == 'Character' || event['event_name'] == 'Text':
+				event.set_meta('editor_character_directory', character_directory)
+
+			event._load_from_string(event_content)
+			event['event_node_as_text'] = event_content
+			
+			
+			events.append(event)
+			prev_was_opener = event.can_contain_events
+			
+		
+
+		if !prev_indent.is_empty():
+			for i in range(len(prev_indent)):
+				events.append(end_event.duplicate())
+		
+		
+		timeline._events = events	
+		timeline._events_processed = true
+		return timeline

@@ -3,19 +3,32 @@
 "@subpath": NodePath(""),
 "color": Color(0.215686, 0.721569, 0.686275, 1),
 "custom_info": {
-"sound_moods": {},
+"sound_mood_default": "",
+"sound_moods": {
+"": {
+"name": "",
+"pitch_base": 1.0,
+"pitch_variance": 0.0,
+"sound_folder": "",
+"volume_base": 0.0,
+"volume_variance": 0.0
+}
+},
 "theme": ""
 },
 "default_portrait": "default",
 "description": "THE dialogic developer!",
 "display_name": "Emi",
 "mirror": false,
-"name": "Emilio",
 "nicknames": ["Emi", "Emilio", "Emilio Coppola"],
 "offset": Vector2(0, 0),
 "portraits": {
 "default": {
-"path": "res://icon.png"
+"image": "",
+"mirror": false,
+"offset": Vector2(0, 0),
+"scale": 1,
+"scene": "res://addons/dialogic/Example Assets/portraits/CustomPortrait_AnimatedSprite.tscn"
 }
 },
 "scale": 1.0

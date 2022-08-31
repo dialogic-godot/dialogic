@@ -12,6 +12,8 @@ var _events:Array = []:
 		emit_changed()
 		notify_property_list_changed()
 		_events = value
+		
+var _events_processed:bool = false
 
 
 func set_events(events:Array) -> void:

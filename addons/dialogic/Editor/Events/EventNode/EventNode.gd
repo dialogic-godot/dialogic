@@ -21,6 +21,9 @@ var resource : DialogicEvent
 # is the body visible
 var expanded = true
 
+# does the body have elements?
+var has_body_content = false
+
 # for choice and condition
 var end_node:Node = null:
 	get:
@@ -124,11 +127,12 @@ func _on_OptionsControl_action(index):
 func _on_Indent_visibility_changed():
 	if not indent_node:
 		return
-	if resource.needs_indentation:
-		if indent_node.visible:
-			remove_warning("This event needs a question event around it!")
-		else:
-			set_warning("This event needs a question event around it!")
+	if resource:
+		if resource.needs_indentation:
+			if indent_node.visible:
+				remove_warning("This event needs a question event around it!")
+			else:
+				set_warning("This event needs a question event around it!")
 
 
 func _request_selection():
@@ -149,7 +153,7 @@ func focus():
 
 func toggle_collapse(toggled):
 	collapsed = toggled
-	%CollapsedBody.visible = toggled
+	$PanelContainer/MarginContainer/VBoxContainer/CollapsedBody.visible = toggled
 	var timeline_editor = find_parent('TimelineEditor')
 	if (timeline_editor != null):
 		# @todo select item and clear selection is marked as "private" in TimelineEditor.gd
@@ -266,7 +270,13 @@ func build_editor():
 			editor_node.set_right_text(p.get('right_text', ''))
 		if p.has('condition'):
 			edit_conditions_list.append([editor_node, p.condition])
-		
+
+	
+	has_body_content = true
+	if current_body_container.get_child_count() == 0:
+		has_body_content = false
+		expanded = false
+		body_container.visible = false
 		
 	content_changed.connect(recalculate_edit_visibility.bind(edit_conditions_list))
 	recalculate_edit_visibility(edit_conditions_list)
@@ -333,12 +343,26 @@ func _ready():
 		%IconPanel.self_modulate = resource.event_color
 		
 		_on_ExpandButton_toggled(resource.expand_by_default)
+		
+		# Only create this if it can collapse children events
+		if resource.can_contain_events:
+			var cb:HBoxContainer = HBoxContainer.new()
+			cb.name = 'CollapsedBody'
+			cb.visible = false
+			var cb_label:Label = Label.new()
+			cb_label.text = 'Contains Events (currently hidden)'
+			cb_label.size_flags_horizontal = 3
+			cb_label.horizontal_alignment = 1
+			cb.add_child(cb_label)
+			$PanelContainer/MarginContainer/VBoxContainer.add_child(cb)
+	
 	set_focus_mode(1) # Allowing this node to grab focus
 	
 	# signals
 	# TODO godot4 react to changes of the colors, the signal was removed
 	#ProjectSettings.project_settings_changed.connect(_update_color)
 	$PopupMenu.index_pressed.connect(_on_OptionsControl_action)
+	
 	
 	_on_Indent_visibility_changed()
 	%CollapseButton.toggled.connect(toggle_collapse)
@@ -357,7 +381,8 @@ func _on_EventNode_gui_input(event):
 	if event is InputEventMouseButton and event.is_pressed() and event.button_index == 1:
 		grab_focus() # Grab focus to avoid copy pasting text or events
 		if event.double_click:
-			_on_ExpandButton_toggled(!expanded)
+			if has_body_content:
+				_on_ExpandButton_toggled(!expanded)
 	# For opening the context menu
 	if event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:

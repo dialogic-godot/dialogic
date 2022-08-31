@@ -1,0 +1,67 @@
+[gd_scene load_steps=9 format=3 uid="uid://bgshjju5v2q0i"]
+
+[ext_resource type="Script" path="res://addons/dialogic/Example Assets/portraits/CustomPortrait_FaceAtlas.gd" id="1_fc12l"]
+[ext_resource type="Texture2D" uid="uid://h80jjn7hs0hm" path="res://addons/dialogic/Example Assets/portraits/Princess/princess_blank.png" id="2_igcyp"]
+[ext_resource type="Texture2D" uid="uid://dr04cva4mwlfl" path="res://addons/dialogic/Example Assets/portraits/Princess/anger.png" id="3_wdpjk"]
+[ext_resource type="Texture2D" uid="uid://ca3su2q0vnr15" path="res://addons/dialogic/Example Assets/portraits/Princess/frown.png" id="4_pimb3"]
+[ext_resource type="Texture2D" uid="uid://csvmp1ay20loh" path="res://addons/dialogic/Example Assets/portraits/Princess/joy.png" id="5_2ekfy"]
+[ext_resource type="Texture2D" uid="uid://ddqaxbgy1kk8k" path="res://addons/dialogic/Example Assets/portraits/Princess/neutral.png" id="6_5hpoa"]
+[ext_resource type="Texture2D" uid="uid://d2a8oap2l8yly" path="res://addons/dialogic/Example Assets/portraits/Princess/shock.png" id="7_5xil3"]
+[ext_resource type="Texture2D" uid="uid://b80jlkfwrx178" path="res://addons/dialogic/Example Assets/portraits/Princess/smile.png" id="8_7s6tq"]
+
+[node name="CustomPortraitFaceAtlass" type="Node2D"]
+position = Vector2(301, 598)
+script = ExtResource("1_fc12l")
+portrait_width = 0
+portrait_height = 0
+
+[node name="Body" type="Sprite2D" parent="."]
+position = Vector2(-182, -465)
+scale = Vector2(0.287561, 0.287561)
+texture = ExtResource("2_igcyp")
+centered = false
+
+[node name="Alien" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(-63, -363)
+rotation = -0.271821
+scale = Vector2(0.398363, 0.421716)
+
+[node name="Faces" type="Node2D" parent="."]
+position = Vector2(2, -397)
+
+[node name="Anger" type="Sprite2D" parent="Faces"]
+position = Vector2(-38, -41)
+scale = Vector2(0.290393, 0.288066)
+texture = ExtResource("3_wdpjk")
+centered = false
+
+[node name="Frown" type="Sprite2D" parent="Faces"]
+position = Vector2(-38, -41)
+scale = Vector2(0.290393, 0.288066)
+texture = ExtResource("4_pimb3")
+centered = false
+
+[node name="Joy" type="Sprite2D" parent="Faces"]
+position = Vector2(-38, -41)
+scale = Vector2(0.290393, 0.288066)
+texture = ExtResource("5_2ekfy")
+centered = false
+
+[node name="Neutral" type="Sprite2D" parent="Faces"]
+position = Vector2(-38, -41)
+scale = Vector2(0.290393, 0.288066)
+texture = ExtResource("6_5hpoa")
+centered = false
+
+[node name="Shock" type="Sprite2D" parent="Faces"]
+position = Vector2(-38, -41)
+scale = Vector2(0.290393, 0.288066)
+texture = ExtResource("7_5xil3")
+centered = false
+
+[node name="Smile" type="Sprite2D" parent="Faces"]
+position = Vector2(-38, -41)
+scale = Vector2(0.290393, 0.288066)
+texture = ExtResource("8_7s6tq")
+centered = false

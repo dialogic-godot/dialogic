@@ -9,9 +9,9 @@ offset_bottom = -569.0
 script = ExtResource("2")
 
 [node name="Label" type="Label" parent="."]
-offset_top = 2.0
 offset_right = 58.0
-offset_bottom = 28.0
+offset_bottom = 26.0
+size_flags_vertical = 0
 text = "Theme:"
 
 [node name="ThemeName" type="LineEdit" parent="."]
