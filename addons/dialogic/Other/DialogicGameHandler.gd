@@ -321,6 +321,7 @@ func rebuild_character_directory() -> void:
 		var charfile: DialogicCharacter= load(characters[i])
 		entry['resource'] = charfile
 		entry['full_path'] = characters[i]
+		entry['unique_short_path'] = reverse_array[i]
 		character_directory[reverse_array[i]] = entry
 
 func process_timeline(timeline: DialogicTimeline) -> DialogicTimeline:

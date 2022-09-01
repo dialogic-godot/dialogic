@@ -21,6 +21,20 @@ var _leave_all:bool = false
 var _update_zindex: bool = false
 var ExtraData: String = ""
 
+var _character_from_directory: String: 
+	get:
+		for item in _character_directory.keys():
+			if _character_directory[item]['resource'] == Character:
+				return item
+				break
+		return ""
+	set(value): 
+		_character_from_directory = value
+		if value in _character_directory.keys():
+			Character = _character_directory[value]['resource']
+
+var _character_directory: Dictionary = {}
+
 func _execute() -> void:
 	match ActionType:
 		ActionTypes.Join:
@@ -146,7 +160,11 @@ func get_as_string_to_store() -> String:
 		if ActionType == ActionTypes.Leave and _leave_all:
 			result_string += "--All--"
 		else: 
-			var name = Character.get_character_name()
+			var name = ""
+			for path in _character_directory.keys():
+				if _character_directory[path]['resource'] == Character:
+					name = path
+					break
 			if name.count(" ") > 0:
 				name = '"' + name + '"'
 			result_string += Character.get_character_name()
@@ -186,6 +204,11 @@ func get_as_string_to_store() -> String:
 
 ## THIS HAS TO READ ALL THE DATA FROM THE SAVED STRING (see above) 
 func load_from_string_to_store(string:String):
+	if Engine.is_editor_hint() == false:
+		_character_directory = Dialogic.character_directory
+	else:
+		_character_directory = self.get_meta("editor_character_directory")
+		
 	var regex = RegEx.new()
 	
 	# Reference regex without Godot escapes: (?<type>Join|Update|Leave)\s*(")?(?<name>(?(2)[^"\n]*|[^(: \n]*))(?(2)"|)(\W*\((?<portrait>.*)\))?(\s*(?<position>\d))?(\s*\[(?<shortcode>.*)\])?
@@ -206,25 +229,19 @@ func load_from_string_to_store(string:String):
 			_leave_all = true
 		else: 
 			var name = result.get_string('name').strip_edges()
-			
-			var character_directory: Dictionary = {}
-			if Engine.is_editor_hint() == false:
-				character_directory = Dialogic.character_directory
-			else:
-				character_directory = self.get_meta("editor_character_directory")
 									
 			if !Engine.is_editor_hint():
-				if character_directory != null:
-					if character_directory.size() > 0:
+				if _character_directory != null:
+					if _character_directory.size() > 0:
 						Character = null
-						if character_directory.has(name):
-							Character = character_directory[name]['resource']
+						if _character_directory.has(name):
+							Character = _character_directory[name]['resource']
 						else:
 							name = name.replace('"', "")
 							# First do a full search to see if more of the path is there then necessary:
-							for character in character_directory:
-								if name in character_directory[character]['full_path']:
-									Character = character_directory[character]['resource']
+							for character in _character_directory:
+								if name in _character_directory[character]['full_path']:
+									Character = _character_directory[character]['resource']
 									break								
 							
 							# If it doesn't exist, we'll consider it a guest and create a temporary character
@@ -297,7 +314,7 @@ func is_valid_event_string(string:String):
 func build_event_editor():
 	add_header_edit('ActionType', ValueType.FixedOptionSelector, '', '',
 		{'selector_options':{"Join":ActionTypes.Join, "Leave":ActionTypes.Leave, "Update":ActionTypes.Update}})
-	add_header_edit('Character', ValueType.ComplexPicker, '', '', {'suggestions_func':[self, 'get_character_suggestions'],'file_extension':'.dch', 'icon':load("res://addons/dialogic/Editor/Images/Resources/character.svg")})
+	add_header_edit('_character_from_directory', ValueType.ComplexPicker, '', '', {'suggestions_func':[self, 'get_character_suggestions'], 'icon':load("res://addons/dialogic/Editor/Images/Resources/character.svg")})
 	
 	add_header_edit('Portrait', ValueType.ComplexPicker, 'Portrait:', '', {'empty_text':'Default', 'suggestions_func':[self, 'get_portrait_suggestions'], 'icon':load("res://addons/dialogic/Editor/Images/Resources/Portrait.svg")}, 'Character != null and !has_no_portraits() and ActionType != %s' %ActionTypes.Leave)
 	add_header_label('Character has no portraits!', 'has_no_portraits()')
@@ -317,22 +334,19 @@ func has_no_portraits() -> bool:
 
 func get_character_suggestions(search_text:String):
 	var suggestions = {}
+	var icon = load("res://addons/dialogic/Editor/Images/Resources/character.svg")
+
+	suggestions['(No one)'] = {'value':'', 'editor_icon':["GuiRadioUnchecked", "EditorIcons"]}
 	
-	var character_directory: Dictionary = {}
-	if Engine.is_editor_hint() == false:
-		character_directory = Dialogic.character_directory
-	else:
-		character_directory = self.get_meta("editor_character_directory")
-		
-	suggestions['Noone'] = {'value':'', 'editor_icon':["GuiRadioUnchecked", "EditorIcons"]}
-	
-	for resource in character_directory.keys():
-		suggestions[resource] = {'value': character_directory[resource]['full_path'], 'tooltip': character_directory[resource]['full_path'], 'icon':load("res://addons/dialogic/Editor/Images/Resources/character.svg")}
+	for resource in _character_directory.keys():
+		#if resource.contains(search_text):
+		suggestions[resource] = {'value': resource, 'tooltip': _character_directory[resource]['full_path'], 'icon': icon.duplicate()}
 	return suggestions
 	
 
 func get_portrait_suggestions(search_text):
 	var suggestions = {}
+	var icon = load("res://addons/dialogic/Editor/Images/Resources/Portrait.svg")
 	if ActionType == ActionTypes.Update:
 		suggestions["Don't Change"] = {'value':'', 'editor_icon':["GuiRadioUnchecked", "EditorIcons"]}
 	if ActionType == ActionTypes.Join:
@@ -340,7 +354,7 @@ func get_portrait_suggestions(search_text):
 	if Character != null:
 		for portrait in Character.portraits:
 			if search_text.is_empty() or search_text.to_lower() in portrait.to_lower():
-				suggestions[portrait] = {'value':portrait, 'icon':load("res://addons/dialogic/Editor/Images/Resources/Portrait.svg")}
+				suggestions[portrait] = {'value':portrait, 'icon':icon.duplicate()}
 	return suggestions
 
 func get_animation_suggestions(search_text):

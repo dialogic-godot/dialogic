@@ -4,8 +4,22 @@ class_name DialogicTextEvent
 
 
 var Text:String = ""
-var Character:DialogicCharacter
+var Character : DialogicCharacter
 var Portrait = ""
+
+var _character_from_directory: String: 
+	get:
+		for item in _character_directory.keys():
+			if _character_directory[item]['resource'] == Character:
+				return item
+				break
+		return ""
+	set(value): 
+		_character_from_directory = value
+		if value in _character_directory.keys():
+			Character = _character_directory[value]['resource']
+
+var _character_directory: Dictionary = {}
 
 func _execute() -> void:
 	if (not Character or Character.custom_info.get('theme', '').is_empty()) and dialogic.has_subsystem('Themes'):
@@ -96,7 +110,11 @@ func _init() -> void:
 ## THIS RETURNS A READABLE REPRESENTATION, BUT HAS TO CONTAIN ALL DATA (This is how it's stored)
 func get_as_string_to_store() -> String:
 	if Character:
-		var name = Character.get_character_name()
+		var name = ""
+		for path in _character_directory.keys():
+			if _character_directory[path]['resource'] == Character:
+				name = path
+				break
 		if name.count(" ") > 0:
 			name = '"' + name + '"'
 		if Portrait and not Portrait.is_empty():
@@ -106,6 +124,11 @@ func get_as_string_to_store() -> String:
 
 ## THIS HAS TO READ ALL THE DATA FROM THE SAVED STRING (see above) 
 func load_from_string_to_store(string:String) -> void:
+	if Engine.is_editor_hint() == false:
+		_character_directory = Dialogic.character_directory
+	else:
+		_character_directory = self.get_meta("editor_character_directory")
+		
 	var reg := RegEx.new()
 	
 	# Reference regex without Godot escapes: ((")?(?<name>(?(2)[^"\n]*|[^(: \n]*))(?(2)"|)(\W*\((?<portrait>.*)\))?\s*(?<!\\):)?(?<text>.*)
@@ -163,32 +186,29 @@ func get_original_translation_text():
 	return Text
 
 func build_event_editor():
-	add_header_edit('Character', ValueType.ComplexPicker, 'Character:', '', {'file_extension':'.dch','suggestions_func':[self, 'get_character_suggestions'], 'empty_text':'Noone','icon':load("res://addons/dialogic/Editor/Images/Resources/character.svg")})
+	add_header_edit('_character_from_directory', ValueType.ComplexPicker, 'Character:', '', {'suggestions_func':[self, 'get_character_suggestions'], 'empty_text':'(No one)','icon':load("res://addons/dialogic/Editor/Images/Resources/character.svg")})
 	add_header_edit('Portrait', ValueType.ComplexPicker, '', '', {'suggestions_func':[self, 'get_portrait_suggestions'], 'placeholder':"Don't change", 'icon':load("res://addons/dialogic/Editor/Images/Resources/Portrait.svg")}, 'Character')
 	add_body_edit('Text', ValueType.MultilineText)
 
 
 func get_character_suggestions(search_text:String):
 	var suggestions = {}
+	var icon = load("res://addons/dialogic/Editor/Images/Resources/character.svg")
 	
-	var character_directory: Dictionary = {}
-	if Engine.is_editor_hint() == false:
-		character_directory = Dialogic.character_directory
-	else:
-		character_directory = self.get_meta("editor_character_directory")
-		
-	suggestions['Noone'] = {'value':'', 'editor_icon':["GuiRadioUnchecked", "EditorIcons"]}
+	suggestions['(No one)'] = {'value':'', 'editor_icon':["GuiRadioUnchecked", "EditorIcons"]}
 	
-	for resource in character_directory.keys():
-		suggestions[resource] = {'value': character_directory[resource]['full_path'], 'tooltip': character_directory[resource]['full_path'], 'icon':load("res://addons/dialogic/Editor/Images/Resources/character.svg")}
+	for resource in _character_directory.keys():
+		#if resource.contains(search_text):
+		suggestions[resource] = {'value': resource, 'tooltip': _character_directory[resource]['full_path'], 'icon': icon.duplicate()}
 	return suggestions
 	
 
 func get_portrait_suggestions(search_text):
 	var suggestions = {}
+	var icon = load("res://addons/dialogic/Editor/Images/Resources/Portrait.svg")
 	suggestions["Don't change"] = {'value':'', 'editor_icon':["GuiRadioUnchecked", "EditorIcons"]}
 	if Character != null:
 		for portrait in Character.portraits:
 			if search_text.is_empty() or search_text.to_lower() in portrait.to_lower():
-				suggestions[portrait] = {'value':portrait, 'icon':load("res://addons/dialogic/Editor/Images/Resources/Portrait.svg")}
+				suggestions[portrait] = {'value':portrait, 'icon':icon}
 	return suggestions
