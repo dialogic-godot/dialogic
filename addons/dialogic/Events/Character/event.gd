@@ -167,7 +167,7 @@ func get_as_string_to_store() -> String:
 					break
 			if name.count(" ") > 0:
 				name = '"' + name + '"'
-			result_string += Character.get_character_name()
+			result_string += name
 			if Portrait and ActionType != ActionTypes.Leave:
 				result_string+= " ("+Portrait+")"
 	
