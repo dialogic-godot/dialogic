@@ -18,10 +18,8 @@ func _ready():
 	#initialize DGH, and set the local variables to references of the DGH ones
 	#since we're not actually adding it to the event node, we have to manually run the commands to build the cache's
 	dialogic_handler = load("res://addons/dialogic/Other/DialogicGameHandler.gd").new()
-	dialogic_handler.rebuild_character_directory()		
-	dialogic_handler.collect_subsystems()
-	event_script_cache = dialogic_handler._event_script_cache
-	character_directory = dialogic_handler.character_directory
+	rebuild_character_directory()		
+	rebuild_event_script_cache()
 
 	$MarginContainer/VBoxContainer/Toolbar/Settings.button_up.connect(settings_pressed)
 	

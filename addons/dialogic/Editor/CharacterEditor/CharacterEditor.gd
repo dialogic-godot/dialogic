@@ -86,7 +86,7 @@ func save_character() -> void:
 	
 	ResourceSaver.save(current_character, current_character.resource_path)
 	emit_signal('set_resource_saved')
-	find_parent('EditorView').dialogic_handler.rebuild_character_directory()
+	find_parent('EditorView').rebuild_character_directory()
 
 
 ##############################################################################
