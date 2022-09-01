@@ -24,6 +24,7 @@ func _ready() -> void:
 	add_to_group('dialogic_dialog_text')
 	
 	bbcode_enabled = true
+	text = ""
 	
 	# setup my timer
 	timer = Timer.new()
