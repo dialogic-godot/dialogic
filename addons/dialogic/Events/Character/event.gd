@@ -229,30 +229,30 @@ func load_from_string_to_store(string:String):
 			_leave_all = true
 		else: 
 			var name = result.get_string('name').strip_edges()
-									
-			if !Engine.is_editor_hint():
-				if _character_directory != null:
-					if _character_directory.size() > 0:
-						Character = null
-						if _character_directory.has(name):
-							Character = _character_directory[name]['resource']
-						else:
-							name = name.replace('"', "")
-							# First do a full search to see if more of the path is there then necessary:
-							for character in _character_directory:
-								if name in _character_directory[character]['full_path']:
-									Character = _character_directory[character]['resource']
-									break								
-							
-							# If it doesn't exist, we'll consider it a guest and create a temporary character
-							if Character == null:
-								if Engine.is_editor_hint() == false:
-									Character = DialogicCharacter.new()
-									Character.display_name = name
-									var entry:Dictionary = {}
-									entry['resource'] = Character
-									entry['full_path'] = "runtime://" + name
-									Dialogic.character_directory[name] = entry
+			
+
+			if _character_directory != null:
+				if _character_directory.size() > 0:
+					Character = null
+					if _character_directory.has(name):
+						Character = _character_directory[name]['resource']
+					else:
+						name = name.replace('"', "")
+						# First do a full search to see if more of the path is there then necessary:
+						for character in _character_directory:
+							if name in _character_directory[character]['full_path']:
+								Character = _character_directory[character]['resource']
+								break								
+						
+						# If it doesn't exist, we'll consider it a guest and create a temporary character
+						if Character == null:
+							if Engine.is_editor_hint() == false:
+								Character = DialogicCharacter.new()
+								Character.display_name = name
+								var entry:Dictionary = {}
+								entry['resource'] = Character
+								entry['full_path'] = "runtime://" + name
+								Dialogic.character_directory[name] = entry
 
 	
 	if result.get_string('portrait').strip_edges():

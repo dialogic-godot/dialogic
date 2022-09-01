@@ -124,11 +124,11 @@ func get_as_string_to_store() -> String:
 
 ## THIS HAS TO READ ALL THE DATA FROM THE SAVED STRING (see above) 
 func load_from_string_to_store(string:String) -> void:
+	_character_directory = {}
 	if Engine.is_editor_hint() == false:
 		_character_directory = Dialogic.character_directory
 	else:
 		_character_directory = self.get_meta("editor_character_directory")
-		
 	var reg := RegEx.new()
 	
 	# Reference regex without Godot escapes: ((")?(?<name>(?(2)[^"\n]*|[^(: \n]*))(?(2)"|)(\W*\((?<portrait>.*)\))?\s*(?<!\\):)?(?<text>.*)
@@ -136,25 +136,18 @@ func load_from_string_to_store(string:String) -> void:
 	var result = reg.search(string)
 	if result and !result.get_string('name').is_empty():
 		var name = result.get_string('name').strip_edges()
-		
-		var character_directory: Dictionary = {}
-		if Engine.is_editor_hint() == false:
-			character_directory = Dialogic.character_directory
-		else:
-			character_directory = self.get_meta("editor_character_directory")
-		
 
-		if character_directory != null:
-			if character_directory.size() > 0:
+		if _character_directory != null:
+			if _character_directory.size() > 0:
 				Character = null
-				if character_directory.has(name):
-					Character = character_directory[name]['resource']
+				if _character_directory.has(name):
+					Character = _character_directory[name]['resource']
 				else:
 					name = name.replace('"', "")
 					# First do a full search to see if more of the path is there then necessary:
-					for character in character_directory:
-						if name in character_directory[character]['full_path']:
-							Character = character_directory[character]['resource']
+					for character in _character_directory:
+						if name in _character_directory[character]['full_path']:
+							Character = _character_directory[character]['resource']
 							break								
 					
 					# If it doesn't exist,  at runtime we'll consider it a guest and create a temporary character
@@ -165,7 +158,7 @@ func load_from_string_to_store(string:String) -> void:
 							var entry:Dictionary = {}
 							entry['resource'] = Character
 							entry['full_path'] = "runtime://" + name
-							character_directory[name] = entry
+							_character_directory[name] = entry
 							
 		if !result.get_string('portrait').is_empty():
 			Portrait = result.get_string('portrait').strip_edges()
