@@ -116,14 +116,35 @@ func _on_SaveConfirmationDialog_custom_action(action):
 	
 func rebuild_event_script_cache():
 	event_script_cache = []
-	dialogic_handler.collect_subsystems()
-	event_script_cache = dialogic_handler._event_script_cache
+	if dialogic_handler != null:
+		dialogic_handler.collect_subsystems()
+		event_script_cache = dialogic_handler._event_script_cache
+	else:
+		for script in DialogicUtil.get_event_scripts():
+			var x = load(script).new()
+			x.set_meta("script_path", script)
+			if script != "res://addons/dialogic/Events/End Branch/event.gd":
+				event_script_cache.push_back(x)
+
+
+
+		# Events are checked in order while testing them. EndBranch needs to be first, Text needs to be last
+		var x = load("res://addons/dialogic/Events/End Branch/event.gd").new()
+		x.set_meta("script_path", "res://addons/dialogic/Events/End Branch/event.gd")
+		event_script_cache.push_front(x)
+
+		for i in event_script_cache.size():
+			if event_script_cache[i].get_meta("script_path") == "res://addons/dialogic/Events/Text/event.gd":
+				event_script_cache.push_back(event_script_cache[i])
+				event_script_cache.remove_at(i)
+				break
 
 
 func rebuild_character_directory() -> void:
-	dialogic_handler.rebuild_character_directory()	
 	character_directory = {}
-	character_directory = dialogic_handler.character_directory
+	if dialogic_handler != null:		
+		dialogic_handler.rebuild_character_directory()	
+		character_directory = dialogic_handler.character_directory
 
 
 func godot_file_dialog(callable, filter, mode = EditorFileDialog.FILE_MODE_OPEN_FILE, window_title = "Save", current_file_name = 'New_File', saving_something = false):
