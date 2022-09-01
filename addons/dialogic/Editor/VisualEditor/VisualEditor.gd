@@ -369,7 +369,7 @@ func _input(event):
 	# we protect this with is_visible_in_tree to not 
 	# invoke a shortcut by accident
 	
-	if get_viewport().gui_get_focus_owner() is TextEdit: 
+	if get_viewport().gui_get_focus_owner() is TextEdit || get_viewport().gui_get_focus_owner() is LineEdit: 
 		return
 	
 	if (event is InputEventKey and event is InputEventWithModifiers and is_visible_in_tree()):
