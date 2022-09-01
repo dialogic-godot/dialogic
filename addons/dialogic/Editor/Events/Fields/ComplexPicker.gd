@@ -25,6 +25,7 @@ var resource_icon : Texture = null:
 var event_resource : DialogicEvent = null
 var property_name : String
 var current_value # Dynamic
+var editor_reference
 
 # this signal is on all event parts and informs the event that a change happened.
 signal value_changed(property_name, value)
@@ -94,6 +95,7 @@ func _ready():
 		self.resource_icon = null
 	set_left_text('')
 	set_right_text('')
+	editor_reference = find_parent('EditorView')
 
 func _exit_tree():
 	# Explicitly free any open cache resources on close, so we don't get leaked resource errors on shutdown
@@ -181,6 +183,7 @@ func _input(event:InputEvent):
 		if !%Suggestions.get_global_rect().has_point(get_global_mouse_position()):
 			if %Suggestions.visible: hide_suggestions()
 
+
 func hide_suggestions() -> void:
 	$Search/SelectButton.button_pressed = false
 	%Suggestions.hide()
@@ -202,11 +205,19 @@ func _can_drop_data(position, data) -> bool:
 		if file_extension:
 			if data.files[0].ends_with(file_extension):
 				return true
+			if data.files[0].ends_with('dch'):
+				return true
 		else:
 			return false
 	return false
 	
 func _drop_data(position, data) -> void:
-	var file = load(data.files[0])
-	set_value(file)
-	emit_signal("value_changed", property_name, file)
+	if data.files[0].ends_with('dch'):
+		for character in editor_reference.character_directory:
+			if character["full_path"] == data.files[0]:
+				set_value(character['unique_short_path'])
+				break
+	else:
+		var file = load(data.files[0])
+		set_value(file)
+		emit_signal("value_changed", property_name, file)
