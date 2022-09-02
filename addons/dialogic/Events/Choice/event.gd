@@ -16,8 +16,8 @@ func _execute() -> void:
 func get_required_subsystems() -> Array:
 	return [
 				{'name':'Choices',
-				'subsystem': get_script().resource_path.get_base_dir().plus_file('Subsystem_Choices.gd'),
-				'settings':get_script().resource_path.get_base_dir().plus_file('ChoicesSettings.tscn'),
+				'subsystem': get_script().resource_path.get_base_dir().path_join('Subsystem_Choices.gd'),
+				'settings':get_script().resource_path.get_base_dir().path_join('ChoicesSettings.tscn'),
 				},
 			]
 
@@ -42,7 +42,7 @@ func is_expected_parent_event(event:DialogicEvent):
 
 # return a control node that should show on the END BRANCH node
 func get_end_branch_control() -> Control:
-	return load(get_script().resource_path.get_base_dir().plus_file('Choice_End.tscn')).instantiate()
+	return load(get_script().resource_path.get_base_dir().path_join('Choice_End.tscn')).instantiate()
 
 ################################################################################
 ## 						SAVING/LOADING

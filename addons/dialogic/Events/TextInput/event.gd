@@ -23,7 +23,7 @@ func _on_DialogicTextInput_input_confirmed(input:String) -> void:
 func get_required_subsystems() -> Array:
 	return [
 				{'name':'TextInput',
-				'subsystem': get_script().resource_path.get_base_dir().plus_file('Subsystem_TextInput.gd'),
+				'subsystem': get_script().resource_path.get_base_dir().path_join('Subsystem_TextInput.gd'),
 				},
 			]
 

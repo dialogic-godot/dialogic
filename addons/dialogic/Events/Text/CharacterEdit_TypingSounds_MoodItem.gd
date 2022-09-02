@@ -6,18 +6,18 @@ signal changed
 
 func _ready():
 	add_theme_stylebox_override('panel', get_theme_stylebox("sub_inspector_bg12", "Editor"))
-	%Name.hint_tooltip = "Mood name"
+	%Name.tooltip_text = "Mood name"
 	%Duplicate.icon = get_theme_icon("Duplicate", "EditorIcons")
-	%Duplicate.hint_tooltip = "Duplicate"
+	%Duplicate.tooltip_text = "Duplicate"
 	%Duplicate.button_up.connect(emit_signal.bind("duplicate"))
 	%Delete.icon = get_theme_icon("Remove", "EditorIcons")
-	%Delete.hint_tooltip = "Delete"
+	%Delete.tooltip_text = "Delete"
 	%ChangeSoundFolderButton.icon = get_theme_icon("Folder", "EditorIcons")
-	%ChangeSoundFolderButton.hint_tooltip = "Change sounds folder"
+	%ChangeSoundFolderButton.tooltip_text = "Change sounds folder"
 	%Fold.icon = get_theme_icon("GuiVisibilityVisible", "EditorIcons")
-	%Fold.hint_tooltip = "Fold/Unfold"
+	%Fold.tooltip_text = "Fold/Unfold"
 	%Play.icon = get_theme_icon("Play", "EditorIcons")
-	%Play.hint_tooltip = "Preview"
+	%Play.tooltip_text = "Preview"
 	_on_Fold_toggled(true)
 	
 	%Name.text_changed.connect(something_changed)
@@ -29,7 +29,7 @@ func _ready():
 func load_data(dict:Dictionary):
 	%Name.text = dict.get('name', '')
 	%SoundFolder.text = dict.get('sound_folder', '').get_file()
-	%SoundFolder.hint_tooltip = dict.get('sound_folder', '')
+	%SoundFolder.tooltip_text = dict.get('sound_folder', '')
 	%PitchBase.value = dict.get('pitch_base', 1)
 	%PitchVariance.value = dict.get('pitch_variance', 0)
 	%VolumeBase.value = dict.get('volume_base', 0)
@@ -39,7 +39,7 @@ func get_data():
 	var dict = {}
 	dict['name'] = %Name.text
 	
-	dict['sound_folder'] = %SoundFolder.hint_tooltip
+	dict['sound_folder'] = %SoundFolder.tooltip_text
 	dict['pitch_base'] = %PitchBase.value
 	dict['pitch_variance'] = %PitchVariance.value
 	dict['volume_base'] = %VolumeBase.value
@@ -64,12 +64,12 @@ func open_file_folder_dialog():
 	find_parent('EditorView').godot_file_dialog(file_folder_selected, '', EditorFileDialog.FILE_MODE_OPEN_DIR, 'Select folder with sounds')
 
 func file_folder_selected(path):
-	%SoundFolder.hint_tooltip = path
+	%SoundFolder.tooltip_text = path
 	%SoundFolder.text = path.get_file()
 	emit_signal("changed")
 
 func preview():
-	if %SoundFolder.hint_tooltip.is_empty(): return
+	if %SoundFolder.tooltip_text.is_empty(): return
 	$DialogicDisplay_TypeSounds.load_overwrite(get_data())
 	var preview_timer = Timer.new()
 	add_child(preview_timer)

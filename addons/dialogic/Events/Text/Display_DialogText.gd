@@ -69,7 +69,7 @@ func continue_reveal() -> void:
 # shows all the text imidiatly
 # called by this thing itself or the DialogicGameHandler
 func finish_text() -> void:
-	percent_visible = 1
+	visible_ratio = 1
 	execute_effects(true)
 	timer.stop()
 	Dialogic.current_state = Dialogic.states.IDLE

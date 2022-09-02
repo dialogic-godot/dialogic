@@ -68,11 +68,11 @@ func load_data(data):
 
 func set_warning(text):
 	warning.show()
-	warning.hint_tooltip = text
+	warning.tooltip_text = text
 
 
 func remove_warning(text = ''):
-	if warning.hint_tooltip == text or text == '':
+	if warning.tooltip_text == text or text == '':
 		warning.hide()
 
 

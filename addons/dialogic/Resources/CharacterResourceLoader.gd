@@ -36,7 +36,7 @@ func _load(path: String, original_path: String, use_sub_threads: bool, cache_mod
 		push_error("For some reason, loading custom resource failed with error code: %s"%err)
 		return err
 	
-	var res = dict2inst(str2var(file.get_as_text()))
+	var res = dict_to_inst(str_to_var(file.get_as_text()))
 	
 	# Everything went well, and you parsed your file data into your resource. Life is good, return it
 	return res
