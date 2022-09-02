@@ -25,6 +25,7 @@ var resource_icon : Texture = null:
 var event_resource : DialogicEvent = null
 var property_name : String
 var current_value # Dynamic
+var editor_reference
 
 # this signal is on all event parts and informs the event that a change happened.
 signal value_changed(property_name, value)
@@ -46,15 +47,12 @@ func set_right_text(value:String) -> void:
 func set_value(value, text : String = '') -> void:
 	if value == null:
 		$Search.text = empty_text
-	elif file_extension:
+	elif file_extension != "" && file_extension != ".dch" && file_extension != ".dtl":
 		
-		$Search.text = DialogicUtil.pretty_name(value.resource_path)
+		$Search.text = value.resource_path
 		$Search.hint_tooltip = value.resource_path
 	elif value:
-		if disable_pretty_name:
-			$Search.text =value
-		else:
-			$Search.text = DialogicUtil.pretty_name(value)
+		$Search.text = value
 	else:
 		$Search.text = empty_text
 	if text:
@@ -64,7 +62,7 @@ func set_value(value, text : String = '') -> void:
 
 
 func changed_to_empty() -> void:
-	if file_extension:
+	if file_extension != "" && file_extension != ".dch":
 		emit_signal("value_changed", property_name, null)
 	else:
 		emit_signal("value_changed", property_name, "")
@@ -97,6 +95,7 @@ func _ready():
 		self.resource_icon = null
 	set_left_text('')
 	set_right_text('')
+	editor_reference = find_parent('EditorView')
 
 func _exit_tree():
 	# Explicitly free any open cache resources on close, so we don't get leaked resource errors on shutdown
@@ -154,12 +153,18 @@ func _on_Search_text_changed(new_text:String, just_update:bool = false) -> void:
 func get_default_suggestions(search_text):
 	if file_extension.is_empty(): return {'Nothing found!':{'value':''}}
 	var suggestions: Dictionary = {}
-	var resources: Array = DialogicUtil.list_resources_of_type(file_extension)
+	if file_extension == ".dch":
+		suggestions['(No one)'] = {'value':'', 'editor_icon':["GuiRadioUnchecked", "EditorIcons"]}
+		
+		for resource in editor_reference.character_directory.keys():
+			suggestions[resource] = {'value': resource, 'tooltip': editor_reference.character_directory[resource]['full_path']}
+	else:
+		var resources: Array = DialogicUtil.list_resources_of_type(file_extension)
 
-	for resource in resources:
-		if search_text.is_empty() or search_text.to_lower() in DialogicUtil.pretty_name(resource).to_lower():
-			suggestions[DialogicUtil.pretty_name(resource)] = {'value':resource, 'tooltip':resource}
-	return suggestions
+		for resource in resources:
+			if search_text.is_empty() or search_text.to_lower() in DialogicUtil.pretty_name(resource).to_lower():
+				suggestions[resource] = {'value':resource, 'tooltip':resource}
+		return suggestions
 
 
 func suggestion_selected(index : int) -> void:
@@ -169,7 +174,7 @@ func suggestion_selected(index : int) -> void:
 	$Search.text = %Suggestions.get_item_text(index)
 	
 	# if this is a resource:
-	if file_extension:
+	if file_extension != "" && file_extension != ".dch" && file_extension != ".dtl":
 		var file = load(%Suggestions.get_item_metadata(index))
 		current_value = file
 	else:
@@ -183,6 +188,7 @@ func _input(event:InputEvent):
 	if event is InputEventMouseButton and event.pressed:
 		if !%Suggestions.get_global_rect().has_point(get_global_mouse_position()):
 			if %Suggestions.visible: hide_suggestions()
+
 
 func hide_suggestions() -> void:
 	$Search/SelectButton.button_pressed = false
@@ -210,6 +216,17 @@ func _can_drop_data(position, data) -> bool:
 	return false
 	
 func _drop_data(position, data) -> void:
-	var file = load(data.files[0])
-	set_value(file)
-	emit_signal("value_changed", property_name, file)
+	if data.files[0].ends_with('dch'):
+		for character in editor_reference.character_directory.keys():
+			if editor_reference.character_directory[character]["full_path"] == data.files[0]:
+				set_value(character)
+				break
+	elif data.files[0].ends_with('dtl'):
+		for timeline in editor_reference.timeline_directory.keys():
+			if editor_reference.timeline_directory[timeline] == data.files[0]:
+				set_value(timeline)
+				break
+	else:
+		var file = load(data.files[0])
+		set_value(file)
+		emit_signal("value_changed", property_name, file)

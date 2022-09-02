@@ -118,6 +118,7 @@ func save_timeline() -> void:
 			current_timeline.set_meta("unsaved", false)
 			_toolbar.set_resource_saved()
 			current_timeline.set_meta("timeline_not_saved", false)
+			editor_reference.rebuild_timeline_directory()
 		else:
 			if new_events.size() > 0:
 				show_save_dialog()
@@ -369,7 +370,7 @@ func _input(event):
 	# we protect this with is_visible_in_tree to not 
 	# invoke a shortcut by accident
 	
-	if get_viewport().gui_get_focus_owner() is TextEdit: 
+	if get_viewport().gui_get_focus_owner() is TextEdit || get_viewport().gui_get_focus_owner() is LineEdit: 
 		return
 	
 	if (event is InputEventKey and event is InputEventWithModifiers and is_visible_in_tree()):

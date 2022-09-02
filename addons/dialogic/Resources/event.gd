@@ -296,12 +296,16 @@ func parse_shortcode_parameters(shortcode : String) -> Dictionary:
 ## 					BUILDING THE EDITOR LIST
 ################################################################################
 func _get_property_list() -> Array:
-	if editor_list != null:
-		editor_list.clear()
+	if Engine.is_editor_hint():
+		if editor_list != null:
+			editor_list.clear()
+		else:
+			editor_list = []
+		
+		build_event_editor()
+		return editor_list
 	else:
-		editor_list = []
-	build_event_editor()
-	return editor_list
+		return []
 
 # to be overwriten by the sub_classes
 func build_event_editor() -> void:

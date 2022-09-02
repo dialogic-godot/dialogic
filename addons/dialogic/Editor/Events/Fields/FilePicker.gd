@@ -46,7 +46,7 @@ func set_value(value):
 	%ClearButton.visible = !value.is_empty()
 
 func _on_OpenButton_pressed() -> void:
-	find_parent('EditorView').godot_file_dialog(_on_file_dialog_selected, file_filter, EditorFileDialog.FILE_MODE_OPEN_FILE, "Open "+DialogicUtil.pretty_name(property_name))
+	find_parent('EditorView').godot_file_dialog(_on_file_dialog_selected, file_filter, EditorFileDialog.FILE_MODE_OPEN_FILE, "Open "+ property_name)
 
 func _on_file_dialog_selected(path:String) -> void:
 	emit_signal("value_changed", property_name, path)
