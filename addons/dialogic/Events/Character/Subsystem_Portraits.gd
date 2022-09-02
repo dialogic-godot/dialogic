@@ -262,7 +262,7 @@ func update_rpg_portrait_mode(character:DialogicCharacter = null, portrait:Strin
 			var AnimationName = DialogicUtil.get_project_setting('dialogic/animations/join_default', 
 	get_script().resource_path.get_base_dir().plus_file('DefaultAnimations/fade_in_up.gd'))
 			var AnimationLength = DialogicUtil.get_project_setting('dialogic/animations/join_default_length', 0.5)
-			add_portrait(character, portrait, 0, false)
+			add_portrait(character, portrait, 1, false)
 			var anim = animate_portrait(character, AnimationName, AnimationLength)
 
 # makes sure positions are listed and can be accessed
