@@ -9,8 +9,6 @@ var LabelName : String = ""
 var _timeline_file: String = ""
 var _timeline_loaded: bool = false
 
-var _timeline_directory: Dictionary = {}
-
 func _execute() -> void:
 	if Timeline and Timeline != dialogic.current_timeline:
 		#print("---------------switching timelines----------------")
