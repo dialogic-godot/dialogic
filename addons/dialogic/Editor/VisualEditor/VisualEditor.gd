@@ -118,6 +118,7 @@ func save_timeline() -> void:
 			current_timeline.set_meta("unsaved", false)
 			_toolbar.set_resource_saved()
 			current_timeline.set_meta("timeline_not_saved", false)
+			editor_reference.rebuild_timeline_directory()
 		else:
 			if new_events.size() > 0:
 				show_save_dialog()

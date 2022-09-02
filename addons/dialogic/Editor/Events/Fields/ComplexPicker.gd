@@ -7,7 +7,7 @@ extends Control
 var file_extension : String = ""
 var get_suggestions_func : Array = [self, 'get_default_suggestions']
 var empty_text : String = ""
-@export var disable_pretty_name : bool = true
+@export var disable_pretty_name : bool = false
 
 var resource_icon : Texture = null:
 	get:
@@ -47,7 +47,7 @@ func set_right_text(value:String) -> void:
 func set_value(value, text : String = '') -> void:
 	if value == null:
 		$Search.text = empty_text
-	elif file_extension != "" && file_extension != ".dch":
+	elif file_extension != "" && file_extension != ".dch" && file_extension != ".dtl":
 		
 		$Search.text = value.resource_path
 		$Search.hint_tooltip = value.resource_path
@@ -174,7 +174,7 @@ func suggestion_selected(index : int) -> void:
 	$Search.text = %Suggestions.get_item_text(index)
 	
 	# if this is a resource:
-	if file_extension != "" && file_extension != ".dch":
+	if file_extension != "" && file_extension != ".dch" && file_extension != ".dtl":
 		var file = load(%Suggestions.get_item_metadata(index))
 		current_value = file
 	else:
@@ -220,6 +220,11 @@ func _drop_data(position, data) -> void:
 		for character in editor_reference.character_directory.keys():
 			if editor_reference.character_directory[character]["full_path"] == data.files[0]:
 				set_value(character)
+				break
+	elif data.files[0].ends_with('dtl'):
+		for timeline in editor_reference.timeline_directory.keys():
+			if editor_reference.timeline_directory[timeline] == data.files[0]:
+				set_value(timeline)
 				break
 	else:
 		var file = load(data.files[0])

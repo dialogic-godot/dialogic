@@ -186,6 +186,10 @@ func build_event_editor():
 
 func get_character_suggestions(search_text:String):
 	var suggestions = {}
+	
+	#override the previous _character_directory with the meta, specifically for searching otherwise new nodes wont work
+	_character_directory = Engine.get_meta('dialogic_character_directory')
+	
 	var icon = load("res://addons/dialogic/Editor/Images/Resources/character.svg")
 	print(search_text)
 	suggestions['(No one)'] = {'value':'', 'editor_icon':["GuiRadioUnchecked", "EditorIcons"]}

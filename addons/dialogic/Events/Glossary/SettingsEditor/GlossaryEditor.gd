@@ -32,9 +32,9 @@ func refresh() -> void:
 	var idx := 0
 	for file in DialogicUtil.get_project_setting('dialogic/glossary/glossary_files', []):
 		if Directory.new().file_exists(file):
-			%GlossaryList.add_item(file, get_theme_icon('FileList', 'EditorIcons'))
+			%GlossaryList.add_item(DialogicUtil.pretty_name(file), get_theme_icon('FileList', 'EditorIcons'))
 		else:
-			%GlossaryList.add_item(file, get_theme_icon('FileDead', 'EditorIcons'))
+			%GlossaryList.add_item(DialogicUtil.pretty_name(file), get_theme_icon('FileDead', 'EditorIcons'))
 			
 		%GlossaryList.set_item_tooltip(idx, file)
 		idx += 1
@@ -84,7 +84,7 @@ func load_glossary_file(path:String) -> void:
 	if not path in list:
 		list.append(path)
 		ProjectSettings.set_setting('dialogic/glossary/glossary_files', list)
-		%GlossaryList.add_item(path, get_theme_icon('FileList', 'EditorIcons'))
+		%GlossaryList.add_item(DialogicUtil.pretty_name(path), get_theme_icon('FileList', 'EditorIcons'))
 		%GlossaryList.set_item_tooltip(%GlossaryList.item_count-1, path)
 		%GlossaryList.select(%GlossaryList.item_count-1)
 		_on_GlossaryList_item_selected(%GlossaryList.item_count-1)
@@ -103,7 +103,7 @@ func _on_delete_glossary_file_pressed() -> void:
 func _on_EntryList_item_selected(idx:int) -> void:
 	current_entry_name = %EntryList.get_item_text(idx)
 	var entry_info = current_glossary.entries[current_entry_name]
-	%EntryEditorTitle.text = "Edit entry: "+current_entry_name
+	%EntryEditorTitle.text = "Edit entry"
 	%EntrySettings.show()
 	%EntryName.text = current_entry_name
 	%EntryCaseSensitive.button_pressed = entry_info.get('case_sensitive', %DefaultCaseSensitive.button_pressed)
@@ -148,7 +148,7 @@ func _on_delete_glossary_entry_pressed() -> void:
 ################################################################################
 func hide_entry_editor() -> void:
 	%EntrySettings.hide()
-	%EntryEditorTitle.text = "Edit entry: -"
+	%EntryEditorTitle.text = "No entry selected."
 
 func _on_entry_name_text_changed(new_text:String) -> void:
 	if current_entry_name != new_text.strip_edges():
@@ -157,7 +157,6 @@ func _on_entry_name_text_changed(new_text:String) -> void:
 		current_glossary.entries[new_text.strip_edges()] = info
 		%EntryList.set_item_text(%EntryList.get_selected_items()[0], new_text.strip_edges())
 		current_entry_name = new_text.strip_edges()
-		%EntryEditorTitle.text = "Edit entry: "+current_entry_name
 	ResourceSaver.save(current_glossary)
 
 func _on_entry_case_sensitive_toggled(button_pressed:bool) -> void:

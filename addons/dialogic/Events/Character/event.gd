@@ -176,7 +176,7 @@ func get_as_string_to_store() -> String:
 	if AnimationName != "" || Z_Index != 0 || Mirrored != false || PositionMoveTime != 0.0 || ExtraData != "":
 		result_string += " ["
 		if AnimationName:
-			result_string += 'animation="'+AnimationName+'"'
+			result_string += 'animation="'+DialogicUtil.pretty_name(AnimationName)+'"'
 		
 			if AnimationLength != 0.5:
 				result_string += ' length="'+str(AnimationLength)+'"'
@@ -334,6 +334,9 @@ func has_no_portraits() -> bool:
 
 func get_character_suggestions(search_text:String):
 	var suggestions = {}
+	
+	#override the previous _character_directory with the meta, specifically for searching otherwise new nodes wont work
+	_character_directory = Engine.get_meta('dialogic_character_directory')
 
 	var icon = load("res://addons/dialogic/Editor/Images/Resources/character.svg")
 
@@ -372,13 +375,13 @@ func get_animation_suggestions(search_text):
 			match ActionType:
 				ActionTypes.Join:
 					if '_in' in anim.get_file():
-						suggestions[anim] = {'value':anim, 'editor_icon':["Animation", "EditorIcons"]}
+						suggestions[DialogicUtil.pretty_name(anim)] = {'value':anim, 'editor_icon':["Animation", "EditorIcons"]}
 				ActionTypes.Leave:
 					if '_out' in anim.get_file():
-						suggestions[anim] = {'value':anim, 'editor_icon':["Animation", "EditorIcons"]}
+						suggestions[DialogicUtil.pretty_name(anim)] = {'value':anim, 'editor_icon':["Animation", "EditorIcons"]}
 				ActionTypes.Update:
 					if not ('_in' in anim.get_file() or '_out' in anim.get_file()):
-						suggestions[anim] = {'value':anim, 'editor_icon':["Animation", "EditorIcons"]}
+						suggestions[DialogicUtil.pretty_name(anim)] = {'value':anim, 'editor_icon':["Animation", "EditorIcons"]}
 						continue
 	return suggestions
 
@@ -391,6 +394,6 @@ func list_animations() -> Array:
 
 func guess_animation_file(animation_name):
 	for file in list_animations():
-		if animation_name == file:
+		if DialogicUtil.pretty_name(animation_name) == DialogicUtil.pretty_name(file):
 			return file
 	return animation_name

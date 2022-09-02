@@ -5,6 +5,7 @@ enum states {IDLE, SHOWING_TEXT, ANIMATING, AWAITING_CHOICE, WAITING}
 var current_timeline: Variant = null
 var current_timeline_events: Array = []
 var character_directory: Dictionary = {}
+var timeline_directory: Dictionary = {}
 var _event_script_cache: Array = []
 
 var current_state: Variant = null:
@@ -29,6 +30,7 @@ signal text_signal(argument)
 func _ready() -> void:
 
 	rebuild_character_directory()
+	rebuild_timeline_directory()
 		
 	collect_subsystems()
 
@@ -310,7 +312,10 @@ func rebuild_character_directory() -> void:
 		for i in shortened_paths.size():
 			if reverse_array.count(reverse_array[i]) > 1:
 				clean_search_path = false
-				interim_array.append(reverse_array_splits[i][depth] + "/" + reverse_array[i])
+				if depth < reverse_array_splits[i].size():
+					interim_array.append(reverse_array_splits[i][depth] + "/" + reverse_array[i])
+				else:
+					interim_array.append(reverse_array[i])
 			else:
 				interim_array.append(reverse_array[i])
 		depth += 1
@@ -324,6 +329,61 @@ func rebuild_character_directory() -> void:
 		entry['full_path'] = characters[i]
 		entry['unique_short_path'] = reverse_array[i]
 		character_directory[reverse_array[i]] = entry
+		
+func rebuild_timeline_directory() -> void:
+	var characters: Array = DialogicUtil.list_resources_of_type(".dtl")
+	
+	# First sort by length of path, so shorter paths are first
+	characters.sort_custom(func(a, b):return a.count("/") < b.count("/"))
+	
+	# next we prepare the additional arrays needed for building the depth tree
+	var shortened_paths:Array = []
+	var reverse_array:Array = []
+	var reverse_array_splits:Array = []
+	
+	for i in characters.size():
+		characters[i] = characters[i].replace("res:///", "res://")
+		var path = characters[i].replace("res://","").replace(".dtl", "")
+		if path[0] == "/":
+			path = path.right(-1)
+		shortened_paths.append(path) 
+		
+		#split the shortened path up, and reverse it
+		var path_breakdown = path.split("/")
+		path_breakdown.reverse()
+		
+		#Add the name of the file at beginning now, and another array saving the reversed split within each element
+		reverse_array.append(path_breakdown[0])
+		reverse_array_splits.append(path_breakdown)
+		
+	
+	# Now the three arrays are prepped, begin the depth search
+	var clean_search_path:bool = false
+	var depth = 1
+	
+
+	while !clean_search_path:
+		var interim_array:Array = []
+		clean_search_path = true
+		
+		for i in shortened_paths.size():
+			if reverse_array.count(reverse_array[i]) > 1:
+				clean_search_path = false
+				if depth < reverse_array_splits[i].size():
+					interim_array.append(reverse_array_splits[i][depth] + "/" + reverse_array[i])
+				else:
+					interim_array.append(reverse_array[i])
+			else:
+				interim_array.append(reverse_array[i])
+		depth += 1
+		reverse_array = interim_array		
+			
+			
+
+	
+	# Now finally build the database from those arrays
+	for i in characters.size():
+		timeline_directory[reverse_array[i]] = characters[i]
 
 func process_timeline(timeline: DialogicTimeline) -> DialogicTimeline:
 	if timeline != null:

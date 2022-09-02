@@ -86,6 +86,7 @@ func save_timeline():
 			current_timeline._events = text_array
 			current_timeline.set_meta("timeline_not_saved", false)
 			_toolbar.set_resource_saved()
+			editor_reference.rebuild_timeline_directory()
 		
 
 

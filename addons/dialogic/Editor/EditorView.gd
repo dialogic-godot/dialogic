@@ -11,6 +11,7 @@ var _last_timeline_opened
 var dialogic_handler: Node 
 var event_script_cache: Array = []
 var character_directory: Dictionary = {}
+var timeline_directory: Dictionary = {}
 
 signal continue_opening_resource
 
@@ -18,7 +19,8 @@ func _ready():
 	#initialize DGH, and set the local variables to references of the DGH ones
 	#since we're not actually adding it to the event node, we have to manually run the commands to build the cache's
 	dialogic_handler = load("res://addons/dialogic/Other/DialogicGameHandler.gd").new()
-	rebuild_character_directory()		
+	rebuild_character_directory()
+	rebuild_timeline_directory()
 	rebuild_event_script_cache()
 
 	$MarginContainer/VBoxContainer/Toolbar/Settings.button_up.connect(settings_pressed)
@@ -143,6 +145,14 @@ func rebuild_character_directory() -> void:
 	if dialogic_handler != null:		
 		dialogic_handler.rebuild_character_directory()	
 		character_directory = dialogic_handler.character_directory
+		Engine.set_meta("dialogic_character_directory", character_directory)
+		
+func rebuild_timeline_directory() -> void:
+	timeline_directory = {}
+	if dialogic_handler != null:		
+		dialogic_handler.rebuild_timeline_directory()	
+		timeline_directory = dialogic_handler.timeline_directory
+		Engine.set_meta("dialogic_timeline_directory", timeline_directory)
 
 
 func godot_file_dialog(callable, filter, mode = EditorFileDialog.FILE_MODE_OPEN_FILE, window_title = "Save", current_file_name = 'New_File', saving_something = false):
