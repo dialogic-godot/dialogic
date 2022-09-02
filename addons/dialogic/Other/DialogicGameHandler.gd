@@ -113,7 +113,7 @@ func handle_event(event_index:int) -> void:
 	#print("\n[D] Handle Event ", event_index, ": ", event)
 	if current_timeline_events[event_index].continue_at_end:
 		#print("    -> WILL AUTO CONTINUE!")
-		if not current_timeline_events[event_index].is_connected('event_finished', handle_next_event):
+		if not current_timeline_events[event_index].event_finished.is_connected(handle_next_event):
 			current_timeline_events[event_index].event_finished.connect(handle_next_event, CONNECT_ONESHOT)
 	current_timeline_events[event_index].execute(self)
 	emit_signal('event_handled', current_timeline_events[event_index])
