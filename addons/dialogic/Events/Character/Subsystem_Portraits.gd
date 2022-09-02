@@ -245,6 +245,12 @@ func get_joined_characters() -> Array:
 
 func update_rpg_portrait_mode(character:DialogicCharacter = null, portrait:String = "") -> void:
 	if DialogicUtil.get_project_setting('dialogic/portrait_mode', 0) == DialogicCharacterEvent.PortraitModes.RPG:
+		if portrait == "":
+			if character.has_meta('rpg_last_portrait'):
+				portrait = character.get_meta('rpg_last_portrait')
+			else:
+				portrait = character.default_portrait
+		character.set_meta('rpg_last_portrait',portrait)
 		var char_joined = false
 		for joined_character in dialogic.current_state_info.portraits:
 			if not character or (joined_character != character.resource_path):
