@@ -314,7 +314,7 @@ func is_valid_event_string(string:String):
 func build_event_editor():
 	add_header_edit('ActionType', ValueType.FixedOptionSelector, '', '',
 		{'selector_options':{"Join":ActionTypes.Join, "Leave":ActionTypes.Leave, "Update":ActionTypes.Update}})
-	add_header_edit('_character_from_directory', ValueType.ComplexPicker, '', '', {'suggestions_func':[self, 'get_character_suggestions'], 'icon':load("res://addons/dialogic/Editor/Images/Resources/character.svg")})
+	add_header_edit('_character_from_directory', ValueType.ComplexPicker, '', '', {'file_extension':'.dch', 'suggestions_func':[self, 'get_character_suggestions'], 'icon':load("res://addons/dialogic/Editor/Images/Resources/character.svg")})
 	
 	add_header_edit('Portrait', ValueType.ComplexPicker, 'Portrait:', '', {'empty_text':'Default', 'suggestions_func':[self, 'get_portrait_suggestions'], 'icon':load("res://addons/dialogic/Editor/Images/Resources/Portrait.svg")}, 'Character != null and !has_no_portraits() and ActionType != %s' %ActionTypes.Leave)
 	add_header_label('Character has no portraits!', 'has_no_portraits()')
@@ -334,13 +334,14 @@ func has_no_portraits() -> bool:
 
 func get_character_suggestions(search_text:String):
 	var suggestions = {}
+
 	var icon = load("res://addons/dialogic/Editor/Images/Resources/character.svg")
 
 	suggestions['(No one)'] = {'value':'', 'editor_icon':["GuiRadioUnchecked", "EditorIcons"]}
 	
 	for resource in _character_directory.keys():
-		#if resource.contains(search_text):
-		suggestions[resource] = {'value': resource, 'tooltip': _character_directory[resource]['full_path'], 'icon': icon.duplicate()}
+		if search_text == "" || resource.to_lower().contains(search_text.to_lower()):
+			suggestions[resource] = {'value': resource, 'tooltip': _character_directory[resource]['full_path'], 'icon': icon.duplicate()}
 	return suggestions
 	
 

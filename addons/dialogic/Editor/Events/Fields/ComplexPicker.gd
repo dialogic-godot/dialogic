@@ -47,7 +47,7 @@ func set_right_text(value:String) -> void:
 func set_value(value, text : String = '') -> void:
 	if value == null:
 		$Search.text = empty_text
-	elif file_extension:
+	elif file_extension != "" && file_extension != ".dch":
 		
 		$Search.text = value.resource_path
 		$Search.hint_tooltip = value.resource_path
@@ -62,7 +62,7 @@ func set_value(value, text : String = '') -> void:
 
 
 func changed_to_empty() -> void:
-	if file_extension:
+	if file_extension != "" && file_extension != ".dch":
 		emit_signal("value_changed", property_name, null)
 	else:
 		emit_signal("value_changed", property_name, "")
@@ -153,12 +153,18 @@ func _on_Search_text_changed(new_text:String, just_update:bool = false) -> void:
 func get_default_suggestions(search_text):
 	if file_extension.is_empty(): return {'Nothing found!':{'value':''}}
 	var suggestions: Dictionary = {}
-	var resources: Array = DialogicUtil.list_resources_of_type(file_extension)
+	if file_extension == ".dch":
+		suggestions['(No one)'] = {'value':'', 'editor_icon':["GuiRadioUnchecked", "EditorIcons"]}
+		
+		for resource in editor_reference.character_directory.keys():
+			suggestions[resource] = {'value': resource, 'tooltip': editor_reference.character_directory[resource]['full_path']}
+	else:
+		var resources: Array = DialogicUtil.list_resources_of_type(file_extension)
 
-	for resource in resources:
-		if search_text.is_empty() or search_text.to_lower() in DialogicUtil.pretty_name(resource).to_lower():
-			suggestions[resource] = {'value':resource, 'tooltip':resource}
-	return suggestions
+		for resource in resources:
+			if search_text.is_empty() or search_text.to_lower() in DialogicUtil.pretty_name(resource).to_lower():
+				suggestions[resource] = {'value':resource, 'tooltip':resource}
+		return suggestions
 
 
 func suggestion_selected(index : int) -> void:
@@ -168,7 +174,7 @@ func suggestion_selected(index : int) -> void:
 	$Search.text = %Suggestions.get_item_text(index)
 	
 	# if this is a resource:
-	if file_extension:
+	if file_extension != "" && file_extension != ".dch":
 		var file = load(%Suggestions.get_item_metadata(index))
 		current_value = file
 	else:
@@ -205,17 +211,15 @@ func _can_drop_data(position, data) -> bool:
 		if file_extension:
 			if data.files[0].ends_with(file_extension):
 				return true
-			if data.files[0].ends_with('dch'):
-				return true
 		else:
 			return false
 	return false
 	
 func _drop_data(position, data) -> void:
 	if data.files[0].ends_with('dch'):
-		for character in editor_reference.character_directory:
-			if character["full_path"] == data.files[0]:
-				set_value(character['unique_short_path'])
+		for character in editor_reference.character_directory.keys():
+			if editor_reference.character_directory[character]["full_path"] == data.files[0]:
+				set_value(character)
 				break
 	else:
 		var file = load(data.files[0])

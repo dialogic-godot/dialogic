@@ -179,7 +179,7 @@ func get_original_translation_text():
 	return Text
 
 func build_event_editor():
-	add_header_edit('_character_from_directory', ValueType.ComplexPicker, 'Character:', '', {'suggestions_func':[self, 'get_character_suggestions'], 'empty_text':'(No one)','icon':load("res://addons/dialogic/Editor/Images/Resources/character.svg")})
+	add_header_edit('_character_from_directory', ValueType.ComplexPicker, 'Character:', '', {'file_extension':'.dch', 'suggestions_func':[self, 'get_character_suggestions'], 'empty_text':'(No one)','icon':load("res://addons/dialogic/Editor/Images/Resources/character.svg")})
 	add_header_edit('Portrait', ValueType.ComplexPicker, '', '', {'suggestions_func':[self, 'get_portrait_suggestions'], 'placeholder':"Don't change", 'icon':load("res://addons/dialogic/Editor/Images/Resources/Portrait.svg")}, 'Character')
 	add_body_edit('Text', ValueType.MultilineText)
 
@@ -187,12 +187,12 @@ func build_event_editor():
 func get_character_suggestions(search_text:String):
 	var suggestions = {}
 	var icon = load("res://addons/dialogic/Editor/Images/Resources/character.svg")
-	
+	print(search_text)
 	suggestions['(No one)'] = {'value':'', 'editor_icon':["GuiRadioUnchecked", "EditorIcons"]}
 	
 	for resource in _character_directory.keys():
-		#if resource.contains(search_text):
-		suggestions[resource] = {'value': resource, 'tooltip': _character_directory[resource]['full_path'], 'icon': icon.duplicate()}
+		if search_text == "" || resource.to_lower().contains(search_text.to_lower()):
+			suggestions[resource] = {'value': resource, 'tooltip': _character_directory[resource]['full_path'], 'icon': icon.duplicate()}
 	return suggestions
 	
 

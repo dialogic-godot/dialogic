@@ -284,6 +284,7 @@ func rebuild_character_directory() -> void:
 	var reverse_array_splits:Array = []
 	
 	for i in characters.size():
+		characters[i] = characters[i].replace("res:///", "res://")
 		var path = characters[i].replace("res://","").replace(".dch", "")
 		if path[0] == "/":
 			path = path.right(-1)
