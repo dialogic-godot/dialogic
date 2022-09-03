@@ -198,7 +198,7 @@ margin_bottom = 35.0
 grow_horizontal = 0
 alignment = 2
 
-[node name="DialogicDisplay_ChoiceButton" type="Button" parent="Control/HBoxContainer"]
+[node name="DialogicNode_ChoiceButton" type="Button" parent="Control/HBoxContainer"]
 margin_left = 264.0
 margin_right = 314.0
 margin_bottom = 28.0
@@ -217,7 +217,7 @@ custom_styles/normal = SubResource( 9 )
 text = "Yes!"
 script = ExtResource( 9 )
 
-[node name="DialogicDisplay_ChoiceButton2" type="Button" parent="Control/HBoxContainer"]
+[node name="DialogicNode_ChoiceButton2" type="Button" parent="Control/HBoxContainer"]
 margin_left = 318.0
 margin_right = 368.0
 margin_bottom = 28.0
@@ -239,7 +239,7 @@ __meta__ = {
 "_editor_description_": ""
 }
 
-[node name="DialogicDisplay_ChoiceButton3" type="Button" parent="Control/HBoxContainer"]
+[node name="DialogicNode_ChoiceButton3" type="Button" parent="Control/HBoxContainer"]
 margin_left = 372.0
 margin_right = 422.0
 margin_bottom = 28.0
@@ -261,7 +261,7 @@ __meta__ = {
 "_editor_description_": ""
 }
 
-[node name="DialogicDisplay_ChoiceButton4" type="Button" parent="Control/HBoxContainer"]
+[node name="DialogicNode_ChoiceButton4" type="Button" parent="Control/HBoxContainer"]
 margin_left = 426.0
 margin_right = 476.0
 margin_bottom = 28.0
@@ -283,7 +283,7 @@ __meta__ = {
 "_editor_description_": ""
 }
 
-[node name="DialogicDisplay_ChoiceButton5" type="Button" parent="Control/HBoxContainer"]
+[node name="DialogicNode_ChoiceButton5" type="Button" parent="Control/HBoxContainer"]
 margin_left = 480.0
 margin_right = 530.0
 margin_bottom = 28.0
@@ -314,7 +314,7 @@ rect_rotation = -1.88517
 custom_styles/panel = SubResource( 3 )
 script = ExtResource( 4 )
 
-[node name="DialogicDisplay_NameLabel" type="Label" parent="Control/NameLabel"]
+[node name="DialogicNode_NameLabel" type="Label" parent="Control/NameLabel"]
 margin_left = 10.0
 margin_top = 5.0
 margin_right = 10.0

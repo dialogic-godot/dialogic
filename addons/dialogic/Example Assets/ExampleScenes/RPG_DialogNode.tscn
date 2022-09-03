@@ -14,7 +14,7 @@ layer = 3
 [node name="DialogicInputHandler" type="Node" parent="."]
 script = ExtResource("8")
 
-[node name="DialogicDisplay_PortraitHolder" type="CanvasLayer" parent="."]
+[node name="DialogicNode_PortraitHolder" type="CanvasLayer" parent="."]
 layer = 2
 script = ExtResource("5")
 
@@ -26,7 +26,7 @@ anchor_right = 0.5
 anchor_bottom = 1.0
 texture = ExtResource("7")
 
-[node name="DialogicDisplay_PortraitPosition" type="Position2D" parent="TextureRect"]
+[node name="DialogicNode_PortraitPosition" type="Position2D" parent="TextureRect"]
 position = Vector2(69, 130)
 script = ExtResource("4")
 
@@ -39,13 +39,13 @@ color = Color(0.121569, 0.105882, 0.0784314, 1)
 anchor_right = 1.0
 anchor_bottom = 1.0
 
-[node name="DialogicDisplay_NameLabel" type="Label" parent="TextureRect/VBoxContainer"]
+[node name="DialogicNode_NameLabel" type="Label" parent="TextureRect/VBoxContainer"]
 offset_right = 1200.0
 offset_bottom = 26.0
 text = "Name"
 script = ExtResource("6")
 
-[node name="DialogicDisplay_DialogText" type="RichTextLabel" parent="TextureRect/VBoxContainer"]
+[node name="DialogicNode_DialogText" type="RichTextLabel" parent="TextureRect/VBoxContainer"]
 offset_top = 30.0
 offset_right = 1200.0
 offset_bottom = 234.0
@@ -61,42 +61,42 @@ offset_right = 1200.0
 offset_bottom = 269.0
 alignment = 2
 
-[node name="DialogicDisplay_ChoiceButton" type="Button" parent="TextureRect/VBoxContainer/VBoxContainer"]
+[node name="DialogicNode_ChoiceButton" type="Button" parent="TextureRect/VBoxContainer/VBoxContainer"]
 offset_left = 928.0
 offset_right = 970.0
 offset_bottom = 31.0
 text = "Text"
 script = ExtResource("9")
 
-[node name="DialogicDisplay_ChoiceButton2" type="Button" parent="TextureRect/VBoxContainer/VBoxContainer"]
+[node name="DialogicNode_ChoiceButton2" type="Button" parent="TextureRect/VBoxContainer/VBoxContainer"]
 offset_left = 974.0
 offset_right = 1016.0
 offset_bottom = 31.0
 text = "Text"
 script = ExtResource("9")
 
-[node name="DialogicDisplay_ChoiceButton3" type="Button" parent="TextureRect/VBoxContainer/VBoxContainer"]
+[node name="DialogicNode_ChoiceButton3" type="Button" parent="TextureRect/VBoxContainer/VBoxContainer"]
 offset_left = 1020.0
 offset_right = 1062.0
 offset_bottom = 31.0
 text = "Text"
 script = ExtResource("9")
 
-[node name="DialogicDisplay_ChoiceButton4" type="Button" parent="TextureRect/VBoxContainer/VBoxContainer"]
+[node name="DialogicNode_ChoiceButton4" type="Button" parent="TextureRect/VBoxContainer/VBoxContainer"]
 offset_left = 1066.0
 offset_right = 1108.0
 offset_bottom = 31.0
 text = "Text"
 script = ExtResource("9")
 
-[node name="DialogicDisplay_ChoiceButton5" type="Button" parent="TextureRect/VBoxContainer/VBoxContainer"]
+[node name="DialogicNode_ChoiceButton5" type="Button" parent="TextureRect/VBoxContainer/VBoxContainer"]
 offset_left = 1112.0
 offset_right = 1154.0
 offset_bottom = 31.0
 text = "Text"
 script = ExtResource("9")
 
-[node name="DialogicDisplay_ChoiceButton6" type="Button" parent="TextureRect/VBoxContainer/VBoxContainer"]
+[node name="DialogicNode_ChoiceButton6" type="Button" parent="TextureRect/VBoxContainer/VBoxContainer"]
 offset_left = 1158.0
 offset_right = 1200.0
 offset_bottom = 31.0

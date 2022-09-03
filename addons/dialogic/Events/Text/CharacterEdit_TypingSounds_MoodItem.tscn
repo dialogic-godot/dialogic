@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=3 uid="uid://dbt7fj7axgpum"]
 
 [ext_resource type="Script" path="res://addons/dialogic/Events/Text/CharacterEdit_TypingSounds_MoodItem.gd" id="2"]
-[ext_resource type="Script" path="res://addons/dialogic/Events/Text/DialogicDisplay_TypeSounds.gd" id="3"]
+[ext_resource type="Script" path="res://addons/dialogic/Events/Text/DialogicNode_TypeSounds.gd" id="3"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_h1p4u"]
 content_margin_left = 4.0
@@ -185,7 +185,7 @@ offset_bottom = 31.0
 step = 0.001
 prefix = "+/-"
 
-[node name="DialogicDisplay_TypeSounds" type="AudioStreamPlayer" parent="."]
+[node name="DialogicNode_TypeSounds" type="AudioStreamPlayer" parent="."]
 script = ExtResource("3")
 sounds = []
 play_every_character = 0
