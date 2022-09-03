@@ -108,7 +108,7 @@ func _init() -> void:
 ## 						SAVING/LOADING
 ################################################################################
 ## THIS RETURNS A READABLE REPRESENTATION, BUT HAS TO CONTAIN ALL DATA (This is how it's stored)
-func get_as_string_to_store() -> String:
+func to_text() -> String:
 	if Character:
 		var name = ""
 		for path in _character_directory.keys():
@@ -123,7 +123,7 @@ func get_as_string_to_store() -> String:
 	return Text.replace("\n", "\\\n")
 
 ## THIS HAS TO READ ALL THE DATA FROM THE SAVED STRING (see above) 
-func load_from_string_to_store(string:String) -> void:
+func from_text(string:String) -> void:
 	_character_directory = {}
 	if Engine.is_editor_hint() == false:
 		_character_directory = Dialogic.character_directory
@@ -166,7 +166,7 @@ func load_from_string_to_store(string:String) -> void:
 	if result:
 		Text = result.get_string('text').replace("\\\n", "\n").strip_edges()
 
-func is_valid_event_string(string):
+func is_valid_event(string:String) -> bool:
 	return true
 
 func is_string_full_event(string:String) -> bool:

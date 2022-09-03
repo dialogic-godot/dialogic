@@ -200,25 +200,25 @@ func get_translated_text() -> String:
 
 func _store_as_string() -> String:
 	if translation_id and can_be_translated():
-		return get_as_string_to_store() + ' #id:'+str(translation_id)
+		return to_text() + ' #id:'+str(translation_id)
 	else:
-		return get_as_string_to_store()
+		return to_text()
 
 
 func _load_from_string(string:String) -> void:
 	if '#id:' in string and can_be_translated():
 		translation_id = string.get_slice('#id:', 1).strip_edges()
-		load_from_string_to_store(string.get_slice('#id:', 0))
+		from_text(string.get_slice('#id:', 0))
 		event_node_ready = true
 	else:
-		load_from_string_to_store(string)
+		from_text(string)
 		event_node_ready = true
 
 
 func _test_event_string(string:String) -> bool:
 	if '#id:' in string and can_be_translated():
-		return is_valid_event_string(string.get_slice('#id:', 0)) 
-	return is_valid_event_string(string.strip_edges())
+		return is_valid_event(string.get_slice('#id:', 0)) 
+	return is_valid_event(string.strip_edges())
 
 
 ################################################################################
@@ -236,7 +236,7 @@ func get_shortcode_parameters() -> Dictionary:
 
 # returns a readable presentation of the event (This is how it's stored)
 # by default it uses a shortcode format, but can be overridden
-func get_as_string_to_store() -> String:
+func to_text() -> String:
 	var result_string : String = "["+self.get_shortcode()
 	var params : Dictionary = get_shortcode_parameters()
 	for parameter in params.keys():
@@ -253,7 +253,7 @@ func get_as_string_to_store() -> String:
 
 # loads the variables from the string stored above
 # by default it uses the shortcode format, but can be overridden
-func load_from_string_to_store(string:String):
+func from_text(string:String) -> void:
 	var data : Dictionary = parse_shortcode_parameters(string)
 	var params : Dictionary = get_shortcode_parameters()
 	for parameter in params.keys():
@@ -270,13 +270,13 @@ func load_from_string_to_store(string:String):
 
 # has to return true, if the given string can be interpreted as this event
 # by default it uses the shortcode formta, but can be overridden
-func is_valid_event_string(string:String) -> bool:
+func is_valid_event(string:String) -> bool:
 	if string.strip_edges().begins_with('['+get_shortcode()):
 		return true
 	return false
 
 # has to return true if this string seems to be a full event of this kind 
-# (only tested if is_valid_event_string() returned true)
+# (only tested if is_valid_event() returned true)
 # if a shortcode it used it will default to true if the string ends with ']'
 func is_string_full_event(string:String) -> bool:
 	if get_shortcode() != 'default_shortcode': return string.strip_edges().ends_with(']')

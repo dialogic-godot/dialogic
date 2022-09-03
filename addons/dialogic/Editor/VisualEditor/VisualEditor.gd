@@ -511,9 +511,9 @@ func get_events_indexed(events:Array) -> Dictionary:
 	var indexed_dict = {}
 	for event in events:
 		if not event.resource is DialogicEndBranchEvent:
-			indexed_dict[event.get_index()] = event.resource.get_as_string_to_store()
+			indexed_dict[event.get_index()] = event.resource.to_text()
 			if 'end_node' in event and event.end_node:
-				indexed_dict[event.end_node.get_index()] = event.end_node.resource.get_as_string_to_store()+str(event.get_index())
+				indexed_dict[event.end_node.get_index()] = event.end_node.resource.to_text()+str(event.get_index())
 	return indexed_dict
 
 
@@ -540,7 +540,7 @@ func add_events_indexed(indexed_events:Dictionary) -> void:
 		else:
 			event_resource = DialogicUtil.get_event_by_string(indexed_events[event_idx]).new()
 		
-		event_resource.load_from_string_to_store(indexed_events[event_idx])
+		event_resource.from_text(indexed_events[event_idx])
 		if event_resource is DialogicEndBranchEvent:
 			events.append(create_end_branch_event(%Timeline.get_child_count(), %Timeline.get_child(indexed_events[event_idx].trim_prefix('<<END BRANCH>>').to_int())))
 			%Timeline.move_child(events[-1], event_idx)
@@ -605,7 +605,7 @@ func copy_selected_events():
 		return
 	var event_copy_array = []
 	for item in selected_items:
-		event_copy_array.append(item.resource.get_as_string_to_store())
+		event_copy_array.append(item.resource.to_text())
 	var _json = JSON.new()
 	DisplayServer.clipboard_set(_json.stringify(
 		{
@@ -654,7 +654,7 @@ func add_events_at_index(event_list:Array, at_index:int) -> void:
 			else:
 				resource = DialogicUtil.get_event_by_string(item).new()
 			
-			resource.load_from_string_to_store(item)
+			resource.from_text(item)
 			if item:
 				new_items.append(add_event_node(resource))
 	selected_items = new_items
