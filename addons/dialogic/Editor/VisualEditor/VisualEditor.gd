@@ -134,11 +134,11 @@ func load_timeline(object) -> void:
 	
 	
 	
-	if current_timeline._events.size() == 0:
+	if current_timeline.events.size() == 0:
 		pass
 	else: 
-		if typeof(current_timeline._events[0]) == TYPE_STRING:
-			current_timeline._events_processed = false
+		if typeof(current_timeline.events[0]) == TYPE_STRING:
+			current_timeline.events_processed = false
 			current_timeline = editor_reference.process_timeline(current_timeline)
 	
 	var data = object.get_events()

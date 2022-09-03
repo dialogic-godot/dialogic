@@ -388,7 +388,7 @@ func rebuild_timeline_directory() -> void:
 
 func process_timeline(timeline: DialogicTimeline) -> DialogicTimeline:
 	if timeline != null:
-		if timeline._events_processed:
+		if timeline.events_processed:
 			return timeline
 		else:
 			#print(str(Time.get_ticks_msec()) + ": Starting process unloaded timeline")	
@@ -404,7 +404,7 @@ func process_timeline(timeline: DialogicTimeline) -> DialogicTimeline:
 			# this is needed to add a end branch event even to empty conditions/choices
 			var prev_was_opener := false
 			
-			var lines := timeline._events
+			var lines := timeline.events
 			var idx := -1
 			
 			while idx < len(lines)-1:
@@ -469,8 +469,8 @@ func process_timeline(timeline: DialogicTimeline) -> DialogicTimeline:
 				for i in range(len(prev_indent)):
 					events.append(end_event.duplicate())
 			
-			timeline._events = events	
-			timeline._events_processed = true
+			timeline.events = events	
+			timeline.events_processed = true
 			#print(str(Time.get_ticks_msec()) + ": Finished process unloaded timeline")	
 			return timeline
 	else:
