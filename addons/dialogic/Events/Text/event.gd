@@ -74,9 +74,9 @@ func _execute() -> void:
 		dialogic.Text.show_next_indicators(false, true)
 		var wait:float = DialogicUtil.get_project_setting('dialogic/text/autocontinue_delay', 1)
 		# if voiced, grab remaining time left on the voiceed line's audio region - KvaGram
-		if dialogic.has_subsystem('Voice') and dialogic.Voice.is_Voiced(dialogic.current_event_idx):
+		if dialogic.has_subsystem('Voice') and dialogic.Voice.is_voiced(dialogic.current_event_idx):
 			#autocontinue settings is set as minimal. change or keep this? - Kvagram
-			wait = max(wait, dialogic.Voice.getRemainingTime())
+			wait = max(wait, dialogic.Voice.get_remaining_time())
 		await dialogic.get_tree().create_timer(wait).timeout
 		dialogic.handle_next_event()
 	else:
