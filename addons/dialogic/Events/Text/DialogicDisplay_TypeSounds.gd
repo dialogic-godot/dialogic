@@ -1,7 +1,7 @@
 @tool
 extends AudioStreamPlayer
 
-class_name DialogicDisplay_TypeSounds
+class_name DialogicNode_TypeSounds
 
 #usefel if you want to change the sounds ot different node's sounds
 @export var enabled := true
@@ -39,7 +39,7 @@ var current_overwrite_data = {}
 func _ready():
 	# add to necessary group
 	add_to_group('dialogic_type_sounds')
-	if !Engine.is_editor_hint() and get_parent() is DialogicDisplay_DialogText:
+	if !Engine.is_editor_hint() and get_parent() is DialogicNode_DialogText:
 		dialogic = get_node("/root/Dialogic")
 		get_parent().started_revealing_text.connect(_on_started_revealing_text)
 		get_parent().continued_revealing_text.connect(_on_continued_revealing_text)
@@ -56,7 +56,7 @@ func _on_continued_revealing_text(new_character) -> void:
 		return
 		
 	#don't play if a voice-track is running
-	if !Engine.is_editor_hint() and get_parent() is DialogicDisplay_DialogText:
+	if !Engine.is_editor_hint() and get_parent() is DialogicNode_DialogText:
 		if dialogic.has_subsystem("Voice") and dialogic.Voice.is_running():
 			return
 	
@@ -99,7 +99,7 @@ func _on_finished_revealing_text() -> void:
 		play()
 
 func _get_configuration_warning():
-	if not get_parent() is DialogicDisplay_DialogText:
+	if not get_parent() is DialogicNode_DialogText:
 		return "This should be the child of a DialogText node!"
 	return ""
 

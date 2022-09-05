@@ -32,20 +32,20 @@ func load_timeline(object:DialogicTimeline) -> void:
 		save_timeline()
 	clear_timeline()
 	current_timeline = object
-	if current_timeline._events.size() == 0:
+	if current_timeline.events.size() == 0:
 		pass
 	else: 
-		if typeof(current_timeline._events[0]) == TYPE_STRING:
-			current_timeline._events_processed = false
+		if typeof(current_timeline.events[0]) == TYPE_STRING:
+			current_timeline.events_processed = false
 			current_timeline = editor_reference.process_timeline(current_timeline)
 		
 	get_parent().get_node('Toolbar').load_timeline(current_timeline.resource_path)
 	
-	#text = TimelineUtil.events_to_text(object._events)
+	#text = TimelineUtil.events_to_text(object.events)
 	var result:String = ""	
 	var indent := 0
-	for idx in range(0, len(object._events)):
-		var event = object._events[idx]
+	for idx in range(0, len(object.events)):
+		var event = object.events[idx]
 		
 		if event['event_name'] == 'End Branch':
 			indent -= 1
@@ -73,19 +73,20 @@ func save_timeline():
 			# The translations need this to be actual Events, so we do a few steps of conversion here
 			
 			var text_array:Array = text_timeline_to_array(text)
-			current_timeline._events = text_array
+			current_timeline.events = text_array
 			
 			# Build new processed timeline for the ResourceSaver to use
 			# ResourceSaver needs a DialogicEvents timeline so the translation builder can run
-			current_timeline._events_processed = false
+			current_timeline.events_processed = false
 			editor_reference.process_timeline(current_timeline)
-			current_timeline._events_processed = false		
+			current_timeline.events_processed = false		
 			ResourceSaver.save(current_timeline, current_timeline.resource_path)
 			
 			#Switch back to the text event array, in case we're switching editor modes
-			current_timeline._events = text_array
+			current_timeline.events = text_array
 			current_timeline.set_meta("timeline_not_saved", false)
 			_toolbar.set_resource_saved()
+			editor_reference.rebuild_timeline_directory()
 		
 
 

@@ -245,6 +245,16 @@ func get_joined_characters() -> Array:
 
 func update_rpg_portrait_mode(character:DialogicCharacter = null, portrait:String = "") -> void:
 	if DialogicUtil.get_project_setting('dialogic/portrait_mode', 0) == DialogicCharacterEvent.PortraitModes.RPG:
+		if !Dialogic.current_state_info.has('rpg_last_portrait'):
+			Dialogic.current_state_info['rpg_last_portraits'] = {}
+		
+		if character != null:
+			if portrait == "":
+				if Dialogic.current_state_info['rpg_last_portraits'].has(character.resource_path):
+					portrait = Dialogic.current_state_info['rpg_last_portraits'][character.resource_path]
+				else:
+					portrait = character.default_portrait
+			Dialogic.current_state_info['rpg_last_portraits'][character.resource_path] = portrait
 		var char_joined = false
 		for joined_character in dialogic.current_state_info.portraits:
 			if not character or (joined_character != character.resource_path):
@@ -262,7 +272,7 @@ func update_rpg_portrait_mode(character:DialogicCharacter = null, portrait:Strin
 			var AnimationName = DialogicUtil.get_project_setting('dialogic/animations/join_default', 
 	get_script().resource_path.get_base_dir().plus_file('DefaultAnimations/fade_in_up.gd'))
 			var AnimationLength = DialogicUtil.get_project_setting('dialogic/animations/join_default_length', 0.5)
-			add_portrait(character, portrait, 0, false)
+			add_portrait(character, portrait, 1, false)
 			var anim = animate_portrait(character, AnimationName, AnimationLength)
 
 # makes sure positions are listed and can be accessed

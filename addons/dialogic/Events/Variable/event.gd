@@ -63,7 +63,7 @@ func _init() -> void:
 ## 						SAVING/LOADING
 ################################################################################
 ## THIS RETURNS A READABLE REPRESENTATION, BUT HAS TO CONTAIN ALL DATA (This is how it's stored)
-func get_as_string_to_store() -> String:
+func to_text() -> String:
 	var string = "VAR "
 	if Name:
 		string += "{" + Name + "}"
@@ -89,7 +89,7 @@ func get_as_string_to_store() -> String:
 	return string
 
 ## THIS HAS TO READ ALL THE DATA FROM THE SAVED STRING (see above) 
-func load_from_string_to_store(string:String):
+func from_text(string:String) -> void:
 	var reg = RegEx.new()
 	reg.compile("VAR (?<name>[^=+\\-*\\/]*)(?<operation>=|\\+=|-=|\\*=|\\/=)(?<value>[^\\[\\n]*)(?<shortcode>\\[.*)?")
 	var result = reg.search(string)
@@ -113,7 +113,7 @@ func load_from_string_to_store(string:String):
 		RandomMin = DialogicUtil.logical_convert(shortcodeparams.get('min', 0))
 		RandomMax = DialogicUtil.logical_convert(shortcodeparams.get('max', 100))
 
-func is_valid_event_string(string:String) -> bool:
+func is_valid_event(string:String) -> bool:
 	return string.begins_with('VAR ')
 
 ################################################################################

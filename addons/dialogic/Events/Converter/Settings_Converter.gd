@@ -206,10 +206,10 @@ func list_files_in_directory(path):
 func recursive_search(currentCheck, currentDictionary, currentFolder):
 	for structureFile in currentDictionary["files"]:
 		match currentCheck:
-			"Timeline": timelineFolderBreakdown[structureFile] = currentFolder
-			"Character": characterFolderBreakdown[structureFile] = currentFolder
-			"Definition": definitionFolderBreakdown[structureFile] = currentFolder
-			"Theme": themeFolderBreakdown[structureFile] = currentFolder
+			"Timeline": timelineFolderBreakdown[structureFile] = characterNameConversion(currentFolder, false)
+			"Character": characterFolderBreakdown[structureFile] = characterNameConversion(currentFolder,false)
+			"Definition": definitionFolderBreakdown[structureFile] = characterNameConversion(currentFolder, false)
+			"Theme": themeFolderBreakdown[structureFile] = characterNameConversion(currentFolder, false)
 	
 	for structureFolder in currentDictionary["folders"]:
 		recursive_search(currentCheck, currentDictionary["folders"][structureFolder], currentFolder + structureFolder + "/")
@@ -296,8 +296,11 @@ func convertTimelines():
 					match event["event_id"]:
 						"dialogic_001":
 							#Text Event
+							var has_character:bool = false
 							if event['character'] != "" && event['character']:
-								eventLine += variableNameConversion(characterFolderBreakdown[event['character']]['name'])
+								has_character = true
+								eventLine += characterFolderBreakdown[event['character']]['searchable_name']
+
 								if event['portrait'] != "":
 									eventLine += "(" +  event['portrait'] + ")"
 								
@@ -306,13 +309,18 @@ func convertTimelines():
 								var splitCount = 0
 								var split = event['text'].split('\n')
 								for splitItem in split:
+									if has_character == false && splitItem.find(' ') > 0 && splitItem.find(':') > 0 && (splitItem.find(' ') > splitItem.find(':')):
+										splitItem = splitItem.insert("\\", splitItem.find(':'))
 									if splitCount == 0:
 										file.store_line(eventLine + splitItem + "\\")
 									else:
 										file.store_line(splitItem + "\\")
 									splitCount += 1
 							else: 
-								file.store_string(eventLine + variableNameConversion(event['text']))
+								var text_line  = variableNameConversion(event['text'])
+								if has_character == false && text_line.find(' ') > 0 && text_line.find(':') > 0 && (text_line.find(' ') > text_line.find(':')):
+										text_line = text_line.insert("\\", text_line.find(':'))
+								file.store_string(eventLine + text_line)
 						"dialogic_002":
 							# Character event
 							
@@ -323,7 +331,7 @@ func convertTimelines():
 								"0":
 									if event['character'] != "":
 										eventLine += "Join "
-										eventLine += characterFolderBreakdown[event['character']]['name']
+										eventLine += characterFolderBreakdown[event['character']]['searchable_name']
 										if (event['portrait'] != ""):
 											eventLine += " (" + event['portrait'] + ") "
 										
@@ -359,7 +367,7 @@ func convertTimelines():
 										if event['character'] != "[All]":
 												
 											eventLine += "Update "
-											eventLine += characterFolderBreakdown[event['character']]['name']
+											eventLine += characterFolderBreakdown[event['character']]['searchable_name']
 											if 'portrait' in event:
 												if (event['portrait'] != "") && (event['portrait'] != "(Don't change)"):
 													eventLine += " (" + event['portrait'] + ") "
@@ -406,7 +414,7 @@ func convertTimelines():
 										if event['character'] == "[All]":
 											eventLine += "--All--"
 										else:
-											eventLine += characterNameConversion(characterFolderBreakdown[event['character']]['name'])
+											eventLine += characterFolderBreakdown[event['character']]['searchable_name']
 										
 										if event['animation'] != "[Default]" && event['animation'] != "":
 											# Note: due to Anima changes, animations will be converted into a default. Times and wait will be perserved
@@ -736,6 +744,7 @@ func convertTimelines():
 func convertCharacters(): 
 	%OutputLog.text += "Converting characters: \r\n"
 	for item in characterFolderBreakdown:
+		var original_file = item
 		var folderPath = characterFolderBreakdown[item]
 		%OutputLog.text += "Character " + folderPath + item +": "
 		var jsonData = {}
@@ -830,8 +839,14 @@ func convertCharacters():
 
 			# Before we're finished here, update the folder breakdown so it has the proper character name
 			var infoDict = {}
+			infoDict["original_file"] = original_file
 			infoDict["path"] = characterFolderBreakdown[item]
 			infoDict["name"] = fileName
+			var name_breakdown:Array = ( folderPath + fileName).split("/")
+			name_breakdown.reverse()
+			infoDict["name_breakdown"] = name_breakdown	
+			
+			infoDict["searchable_name"] = infoDict["name_breakdown"][0] 
 			
 			characterFolderBreakdown[item] = infoDict
 			
@@ -840,12 +855,41 @@ func convertCharacters():
 			%OutputLog.text += "[color=red]There was a problem parsing this file![/color]\r\n"
 			
 		file.close()
-	# Second pass, if the toggle is enabled 
+	# Second pass, shorten all of the paths, so they match the character dictionary in Dialogic itself
 	
-	if prefixCharacters:
-		%OutputLog.text += "Performing second pass to check for duplicate character names: \r\n"
+	# Temporarily need an array to be able to sort
+	var sorting_array:Array = []
+	
+	for item in characterFolderBreakdown:
+		sorting_array.append(characterFolderBreakdown[item])
+	
+	sorting_array.sort_custom(func(a, b):return a['name_breakdown'].count("/") < b['name_breakdown'].count("/"))
+	
+	var clean_search_path:bool = false
+	var depth = 1
+	
+	while !clean_search_path:
+		var interim_array:Array = []
+		clean_search_path = true
 		
+		for i in sorting_array.size():
+			if sorting_array.filter(func(val): return val['searchable_name'] == sorting_array[i]['searchable_name']).size() > 1:
+				clean_search_path = false
+				var replace_dict:Dictionary = sorting_array[i]
+				replace_dict["searchable_name"] = replace_dict["name_breakdown"][depth] + "/" + replace_dict["searchable_name"]
+				interim_array.append(replace_dict)
+			else: 
+				interim_array.append(sorting_array[i])
+		depth += 1
+		sorting_array = interim_array	
+		
+	characterFolderBreakdown.clear()
 	
+	for item in sorting_array:
+		if item["searchable_name"].count(" ") > 0:
+			item["searchable_name"] = '"' + item["searchable_name"] + '"'
+		characterFolderBreakdown[item['original_file']] = item
+		%OutputLog.text += "Final character name for " + item['original_file'] + ": " + item['searchable_name'] + "\r\n"
 	
 	%OutputLog.text += "\r\n"
 
@@ -948,12 +992,26 @@ func variableNameConversion(oldText):
 	
 	return(newText)
 	
-func characterNameConversion(oldText):
+func characterNameConversion(oldText:String, filter_forward_slash:bool = true):
 	#as some characters aren't supported in filenames, we need to convert both the filenames, and references to them
+	#Most character name restrictions are only restrictions of Windows, but we are going to enforce it for Dialogic due to node and regex complexities for platform uniformity
+	#We're also restricting the special characters used for other designations 
 	var newText = oldText
-	newText = newText.replace("[","")
-	newText = newText.replace("]","")
+	newText = newText.replace("<","[")
+	newText = newText.replace(">","]")
+	newText = newText.replace(":","-")
+	newText = newText.replace("\\","/")
+	if filter_forward_slash:
+		newText = newText.replace("/","-")
+	newText = newText.replace("|","-")
+	newText = newText.replace("*","@")
 	newText = newText.replace("?","0")
+	newText = newText.replace('"',"'")
+	
+	#These ones as they are the delimiter for portraits
+	newText = newText.replace("(","[")
+	newText = newText.replace(")","]")
+	
 	
 	return newText
 

@@ -5,6 +5,8 @@ signal toggle_editor_view(mode:String)
 signal create_timeline
 signal play_timeline
 
+var editor_reference = null
+
 func _ready():
 	# Get version number
 	$Version.set("custom_colors/font_color", get_theme_color("disabled_font_color", "Editor"))
@@ -13,7 +15,7 @@ func _ready():
 	if err == OK:
 		$Version.text = "v" + config.get_value("plugin", "version")
 	
-	
+	editor_reference = find_parent('EditorView')
 	$PlayTimeline.icon = get_theme_icon("PlayScene", "EditorIcons")
 	$PlayTimeline.button_up.connect(_on_play_timeline)
 	
@@ -67,9 +69,19 @@ func suggest_resources(filter:String) -> Dictionary:
 	var suggestions = {}
 	for i in DialogicUtil.get_project_setting('dialogic/editor/last_resources', []):
 		if i.ends_with('.dtl'):
-			suggestions[DialogicUtil.pretty_name(i)] = {'value':i, 'tooltip':i, 'editor_icon': ["TripleBar", "EditorIcons"]}
+			var short_name = i
+			for item in editor_reference.timeline_directory:
+				if editor_reference.timeline_directory[item] == i:
+					short_name = item
+					break
+			suggestions[short_name] = {'value':i, 'tooltip':i, 'editor_icon': ["TripleBar", "EditorIcons"]}
 		elif i.ends_with('.dch'):
-			suggestions[DialogicUtil.pretty_name(i)] = {'value':i, 'tooltip':i, 'icon':load("res://addons/dialogic/Editor/Images/Resources/character.svg")}
+			var short_name = i
+			for item in editor_reference.character_directory:
+				if editor_reference.character_directory[item]['full_path'] == i:
+					short_name = item
+					break
+			suggestions[short_name] = {'value':i, 'tooltip':i, 'icon':load("res://addons/dialogic/Editor/Images/Resources/character.svg")}
 	return suggestions
 
 
@@ -87,7 +99,14 @@ func resource_used(path:String) -> void:
 
 func load_timeline(timeline_path:String) -> void:
 	resource_used(timeline_path)
-	%ResourcePicker.set_value(DialogicUtil.pretty_name(timeline_path))
+	var found: bool = false
+	for item in editor_reference.timeline_directory:
+			if editor_reference.timeline_directory[item] == timeline_path:
+				found = true
+				%ResourcePicker.set_value(item)
+				break
+	if !found:
+		%ResourcePicker.set_value(timeline_path)
 	%ResourcePicker.resource_icon = get_theme_icon("TripleBar", "EditorIcons")
 	show_timeline_tool_buttons()
 
@@ -109,7 +128,15 @@ func hide_timeline_tool_buttons() -> void:
 
 func load_character(character_path:String) -> void:
 	resource_used(character_path)
-	%ResourcePicker.set_value(DialogicUtil.pretty_name(character_path))
+	var found: bool = false
+	for item in editor_reference.character_directory:
+		if editor_reference.character_directory[item]['full_path'] == character_path:
+			found = true
+			%ResourcePicker.set_value(item)
+			break
+	if !found:
+		%ResourcePicker.set_value(character_path)
+
 	%ResourcePicker.resource_icon = load("res://addons/dialogic/Editor/Images/Resources/character.svg")
 	hide_timeline_tool_buttons()
 

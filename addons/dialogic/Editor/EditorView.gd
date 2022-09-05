@@ -7,14 +7,22 @@ var editor_file_dialog:EditorFileDialog
 
 var _last_timeline_opened
 
+# barebones instance of DGH, with local Editor references to the event cache and charcater directory
+var dialogic_handler: Node 
 var event_script_cache: Array = []
 var character_directory: Dictionary = {}
+var timeline_directory: Dictionary = {}
 
 signal continue_opening_resource
 
 func _ready():
-	rebuild_event_script_cache()
+	#initialize DGH, and set the local variables to references of the DGH ones
+	#since we're not actually adding it to the event node, we have to manually run the commands to build the cache's
+	dialogic_handler = load("res://addons/dialogic/Other/DialogicGameHandler.gd").new()
 	rebuild_character_directory()
+	rebuild_timeline_directory()
+	rebuild_event_script_cache()
+
 	$MarginContainer/VBoxContainer/Toolbar/Settings.button_up.connect(settings_pressed)
 	
 	# File dialog
@@ -108,32 +116,43 @@ func _on_SaveConfirmationDialog_custom_action(action):
 	
 func rebuild_event_script_cache():
 	event_script_cache = []
-	for script in DialogicUtil.get_event_scripts():
-		var x = load(script).new()
-		x.set_meta("script_path", script)
-		if script != "res://addons/dialogic/Events/End Branch/event.gd":
-			event_script_cache.push_back(x)
+	if dialogic_handler != null:
+		dialogic_handler.collect_subsystems()
+		event_script_cache = dialogic_handler._event_script_cache
+	else:
+		for script in DialogicUtil.get_event_scripts():
+			var x = load(script).new()
+			x.set_meta("script_path", script)
+			if script != "res://addons/dialogic/Events/End Branch/event.gd":
+				event_script_cache.push_back(x)
 
-				
 
-	# Events are checked in order while testing them. EndBranch needs to be first, Text needs to be last
-	var x = load("res://addons/dialogic/Events/End Branch/event.gd").new()
-	x.set_meta("script_path", "res://addons/dialogic/Events/End Branch/event.gd")
-	event_script_cache.push_front(x)
-			
-	for i in event_script_cache.size():
-		if event_script_cache[i].get_meta("script_path") == "res://addons/dialogic/Events/Text/event.gd":
-			event_script_cache.push_back(event_script_cache[i])
-			event_script_cache.remove_at(i)
-			break
+
+		# Events are checked in order while testing them. EndBranch needs to be first, Text needs to be last
+		var x = load("res://addons/dialogic/Events/End Branch/event.gd").new()
+		x.set_meta("script_path", "res://addons/dialogic/Events/End Branch/event.gd")
+		event_script_cache.push_front(x)
+
+		for i in event_script_cache.size():
+			if event_script_cache[i].get_meta("script_path") == "res://addons/dialogic/Events/Text/event.gd":
+				event_script_cache.push_back(event_script_cache[i])
+				event_script_cache.remove_at(i)
+				break
 
 
 func rebuild_character_directory() -> void:
-	var characters: Array = DialogicUtil.list_resources_of_type(".dch")
+	character_directory = {}
+	if dialogic_handler != null:		
+		dialogic_handler.rebuild_character_directory()	
+		character_directory = dialogic_handler.character_directory
+		Engine.set_meta("dialogic_character_directory", character_directory)
 		
-	for character in characters:
-		var charfile: DialogicCharacter= load(character)
-		character_directory[character] = charfile
+func rebuild_timeline_directory() -> void:
+	timeline_directory = {}
+	if dialogic_handler != null:		
+		dialogic_handler.rebuild_timeline_directory()	
+		timeline_directory = dialogic_handler.timeline_directory
+		Engine.set_meta("dialogic_timeline_directory", timeline_directory)
 
 
 func godot_file_dialog(callable, filter, mode = EditorFileDialog.FILE_MODE_OPEN_FILE, window_title = "Save", current_file_name = 'New_File', saving_something = false):
@@ -238,92 +257,5 @@ func _on_play_timeline():
 ########################################################
 
 func process_timeline(timeline: DialogicTimeline) -> DialogicTimeline:
+	return dialogic_handler.process_timeline(timeline)
 
-	if timeline._events_processed:
-		return timeline
-	else:
-		var end_event: DialogicEndBranchEvent 
-		for i in event_script_cache:
-			if i.get_meta("script_path") == "res://addons/dialogic/Events/End Branch/event.gd":
-					end_event = i.duplicate()
-					break
-		
-		var prev_indent := ""
-		var events := []
-		
-		# this is needed to add a end branch event even to empty conditions/choices
-		var prev_was_opener := false
-		
-		var lines := timeline._events
-		var idx := -1
-		
-		while idx < len(lines)-1:
-			idx += 1
-			var line: String = ""
-			if typeof(lines[idx]) == TYPE_STRING:
-				line = lines[idx]
-			else:
-				line = lines[idx]['event_node_as_text']
-			
-			
-			
-			var line_stripped :String = line.strip_edges(true, false)
-			if line_stripped.is_empty():
-				continue
-			var indent :String= line.substr(0,len(line)-len(line_stripped))
-			
-			if len(indent) < len(prev_indent):
-				for i in range(len(prev_indent)-len(indent)):
-					events.append(end_event.duplicate())
-			
-			elif prev_was_opener and len(indent) == len(prev_indent):
-				events.append(end_event.duplicate())
-			prev_indent = indent
-			var event_content :String = line_stripped
-
-			var event :Variant
-			for i in event_script_cache:
-				if i._test_event_string(event_content):
-					event = i.duplicate()
-					break
-
-			# add the following lines until the event says it's full there is an empty line or the indent changes
-			while !event.is_string_full_event(event_content):
-				idx += 1
-				if idx == len(lines):
-					break
-				var following_line :String = lines[idx]
-				var following_line_stripped :String = following_line.strip_edges(true, false)
-				var following_line_indent :String = following_line.substr(0,len(following_line)-len(following_line_stripped))
-				if following_line_stripped.is_empty():
-					break
-				if following_line_indent != indent:
-					idx -= 1
-					break
-				event_content += "\n"+following_line_stripped
-			
-			#event_content = event_content.replace("\n"+indent, "\n")
-			
-
-			# Unlike at runtime, for some reason here the event scripts can't access the scene tree to get to the character directory, so we will need to pass it to it before processing
-			
-			if event['event_name'] == 'Character' || event['event_name'] == 'Text':
-				event.set_meta('editor_character_directory', character_directory)
-
-			event._load_from_string(event_content)
-			event['event_node_as_text'] = event_content
-			
-			
-			events.append(event)
-			prev_was_opener = event.can_contain_events
-			
-		
-
-		if !prev_indent.is_empty():
-			for i in range(len(prev_indent)):
-				events.append(end_event.duplicate())
-		
-		
-		timeline._events = events	
-		timeline._events_processed = true
-		return timeline

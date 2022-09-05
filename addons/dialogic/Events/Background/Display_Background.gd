@@ -1,6 +1,6 @@
 extends TextureRect
 
-class_name DialogicDisplay_Background, 'icon.png'
+class_name DialogicNode_Background, 'icon.png'
 
 func _ready():
 	add_to_group('dialogic_bg_image')

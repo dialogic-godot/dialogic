@@ -5,6 +5,7 @@ enum states {IDLE, SHOWING_TEXT, ANIMATING, AWAITING_CHOICE, WAITING}
 var current_timeline: Variant = null
 var current_timeline_events: Array = []
 var character_directory: Dictionary = {}
+var timeline_directory: Dictionary = {}
 var _event_script_cache: Array = []
 
 var current_state: Variant = null:
@@ -25,18 +26,14 @@ signal event_handled(resource)
 signal signal_event(argument)
 signal text_signal(argument)
 
+	
 func _ready() -> void:
 
-	if Engine.is_editor_hint() == false:
-		
-		# Runtime will build the character_directory dictionary. Editor will have to handle it a different way
-		var characters: Array = DialogicUtil.list_resources_of_type(".dch")
-		
-		for character in characters:
-			var charfile: DialogicCharacter= load(character)
-			character_directory[character] = charfile
+	rebuild_character_directory()
+	rebuild_timeline_directory()
 		
 	collect_subsystems()
+
 	clear()
 	
 # 
@@ -116,7 +113,8 @@ func handle_event(event_index:int) -> void:
 	#print("\n[D] Handle Event ", event_index, ": ", event)
 	if current_timeline_events[event_index].continue_at_end:
 		#print("    -> WILL AUTO CONTINUE!")
-		current_timeline_events[event_index].event_finished.connect(handle_next_event, CONNECT_ONESHOT)
+		if not current_timeline_events[event_index].event_finished.is_connected(handle_next_event):
+			current_timeline_events[event_index].event_finished.connect(handle_next_event, CONNECT_ONESHOT)
 	current_timeline_events[event_index].execute(self)
 	emit_signal('event_handled', current_timeline_events[event_index])
 
@@ -221,30 +219,31 @@ func load_full_state(state_info:Dictionary) -> void:
 ##						SUB-SYTSEMS
 ################################################################################
 func collect_subsystems() -> void:
-	# This also builds th event script cache in runtime, since it's iteraitng here anyway 
+	# This also builds th event script cache as well
 	for script in DialogicUtil.get_event_scripts():
 		var x = load(script).new()
 		
-		if Engine.is_editor_hint() == false:
-			x.set_meta("script_path", script)
-			if script != "res://addons/dialogic/Events/End Branch/event.gd":
-				_event_script_cache.push_back(x)
-		for i in x.get_required_subsystems():
-			if i.has('subsystem') and not has_subsystem(i.name):
-				add_subsytsem(i.name, i.subsystem)
-				
-	if Engine.is_editor_hint() == false:			
+		x.set_meta("script_path", script)
+		if script != "res://addons/dialogic/Events/End Branch/event.gd":
+			_event_script_cache.push_back(x)
+		
+		#only build the subsystems at runtime
+		if !Engine.is_editor_hint():
+			for i in x.get_required_subsystems():
+				if i.has('subsystem') and not has_subsystem(i.name):
+					add_subsytsem(i.name, i.subsystem)
+					
 		# Events are checked in order while testing them. EndBranch needs to be first, Text needs to be last
-		var x = load("res://addons/dialogic/Events/End Branch/event.gd").new()
-		x.set_meta("script_path", "res://addons/dialogic/Events/End Branch/event.gd")
-		_event_script_cache.push_front(x)
+	var x = load("res://addons/dialogic/Events/End Branch/event.gd").new()
+	x.set_meta("script_path", "res://addons/dialogic/Events/End Branch/event.gd")
+	_event_script_cache.push_front(x)
 
 				
-		for i in _event_script_cache.size():
-			if _event_script_cache[i].get_meta("script_path") == "res://addons/dialogic/Events/Text/event.gd":
-				_event_script_cache.push_back(_event_script_cache[i])
-				_event_script_cache.remove_at(i)
-				break
+	for i in _event_script_cache.size():
+		if _event_script_cache[i].get_meta("script_path") == "res://addons/dialogic/Events/Text/event.gd":
+			_event_script_cache.push_back(_event_script_cache[i])
+			_event_script_cache.remove_at(i)
+			break
 
 func has_subsystem(_name:String) -> bool:
 	return has_node(_name)
@@ -276,84 +275,205 @@ func _set(property, value):
 ##						PROCESSING FUNCTIONS
 ################################################################################
 
-func process_timeline(timeline: DialogicTimeline) -> DialogicTimeline:
+func rebuild_character_directory() -> void:
+	var characters: Array = DialogicUtil.list_resources_of_type(".dch")
+	
+	# First sort by length of path, so shorter paths are first
+	characters.sort_custom(func(a, b):return a.count("/") < b.count("/"))
+	
+	# next we prepare the additional arrays needed for building the depth tree
+	var shortened_paths:Array = []
+	var reverse_array:Array = []
+	var reverse_array_splits:Array = []
+	
+	for i in characters.size():
+		characters[i] = characters[i].replace("res:///", "res://")
+		var path = characters[i].replace("res://","").replace(".dch", "")
+		if path[0] == "/":
+			path = path.right(-1)
+		shortened_paths.append(path) 
+		
+		#split the shortened path up, and reverse it
+		var path_breakdown = path.split("/")
+		path_breakdown.reverse()
+		
+		#Add the name of the file at beginning now, and another array saving the reversed split within each element
+		reverse_array.append(path_breakdown[0])
+		reverse_array_splits.append(path_breakdown)
+		
+	
+	# Now the three arrays are prepped, begin the depth search
+	var clean_search_path:bool = false
+	var depth = 1
+	
+	while !clean_search_path:
+		var interim_array:Array = []
+		clean_search_path = true
+		
+		for i in shortened_paths.size():
+			if reverse_array.count(reverse_array[i]) > 1:
+				clean_search_path = false
+				if depth < reverse_array_splits[i].size():
+					interim_array.append(reverse_array_splits[i][depth] + "/" + reverse_array[i])
+				else:
+					interim_array.append(reverse_array[i])
+			else:
+				interim_array.append(reverse_array[i])
+		depth += 1
+		reverse_array = interim_array		
+			
+	# Now finally build the database from those arrays
+	for i in characters.size():
+		var entry:Dictionary = {}
+		var charfile: DialogicCharacter= load(characters[i])
+		entry['resource'] = charfile
+		entry['full_path'] = characters[i]
+		entry['unique_short_path'] = reverse_array[i]
+		character_directory[reverse_array[i]] = entry
+		
+func rebuild_timeline_directory() -> void:
+	var characters: Array = DialogicUtil.list_resources_of_type(".dtl")
+	
+	# First sort by length of path, so shorter paths are first
+	characters.sort_custom(func(a, b):return a.count("/") < b.count("/"))
+	
+	# next we prepare the additional arrays needed for building the depth tree
+	var shortened_paths:Array = []
+	var reverse_array:Array = []
+	var reverse_array_splits:Array = []
+	
+	for i in characters.size():
+		characters[i] = characters[i].replace("res:///", "res://")
+		var path = characters[i].replace("res://","").replace(".dtl", "")
+		if path[0] == "/":
+			path = path.right(-1)
+		shortened_paths.append(path) 
+		
+		#split the shortened path up, and reverse it
+		var path_breakdown = path.split("/")
+		path_breakdown.reverse()
+		
+		#Add the name of the file at beginning now, and another array saving the reversed split within each element
+		reverse_array.append(path_breakdown[0])
+		reverse_array_splits.append(path_breakdown)
+		
+	
+	# Now the three arrays are prepped, begin the depth search
+	var clean_search_path:bool = false
+	var depth = 1
+	
 
-	if timeline._events_processed:
-		return timeline
-	else:
-		#print(str(Time.get_ticks_msec()) + ": Starting process unloaded timeline")	
-		var end_event: DialogicEndBranchEvent 
-		for i in _event_script_cache:
-			if i.get_meta("script_path") == "res://addons/dialogic/Events/End Branch/event.gd":
-					end_event = i.duplicate()
-					break
+	while !clean_search_path:
+		var interim_array:Array = []
+		clean_search_path = true
 		
-		var prev_indent := ""
-		var events := []
-		
-		# this is needed to add a end branch event even to empty conditions/choices
-		var prev_was_opener := false
-		
-		var lines := timeline._events
-		var idx := -1
-		
-		while idx < len(lines)-1:
-			idx += 1
-			var line :String = lines[idx]
+		for i in shortened_paths.size():
+			if reverse_array.count(reverse_array[i]) > 1:
+				clean_search_path = false
+				if depth < reverse_array_splits[i].size():
+					interim_array.append(reverse_array_splits[i][depth] + "/" + reverse_array[i])
+				else:
+					interim_array.append(reverse_array[i])
+			else:
+				interim_array.append(reverse_array[i])
+		depth += 1
+		reverse_array = interim_array		
 			
 			
-			var line_stripped :String = line.strip_edges(true, false)
-			if line_stripped.is_empty():
-				continue
-			var indent :String= line.substr(0,len(line)-len(line_stripped))
+
+	
+	# Now finally build the database from those arrays
+	for i in characters.size():
+		timeline_directory[reverse_array[i]] = characters[i]
+
+func process_timeline(timeline: DialogicTimeline) -> DialogicTimeline:
+	if timeline != null:
+		if timeline.events_processed:
+			return timeline
+		else:
+			#print(str(Time.get_ticks_msec()) + ": Starting process unloaded timeline")	
+			var end_event: DialogicEndBranchEvent 
+			for i in _event_script_cache:
+				if i.get_meta("script_path") == "res://addons/dialogic/Events/End Branch/event.gd":
+						end_event = i.duplicate()
+						break
 			
-			if len(indent) < len(prev_indent):
-				for i in range(len(prev_indent)-len(indent)):
+			var prev_indent := ""
+			var events := []
+			
+			# this is needed to add a end branch event even to empty conditions/choices
+			var prev_was_opener := false
+			
+			var lines := timeline.events
+			var idx := -1
+			
+			while idx < len(lines)-1:
+				idx += 1
+				var line: String = ""
+				if typeof(lines[idx]) == TYPE_STRING:
+					line = lines[idx]
+				else:
+					line = lines[idx]['event_node_as_text']
+				
+				
+				var line_stripped :String = line.strip_edges(true, false)
+				if line_stripped.is_empty():
+					continue
+				var indent :String= line.substr(0,len(line)-len(line_stripped))
+				
+				if len(indent) < len(prev_indent):
+					for i in range(len(prev_indent)-len(indent)):
+						events.append(end_event.duplicate())
+				
+				elif prev_was_opener and len(indent) == len(prev_indent):
+					events.append(end_event.duplicate())
+				prev_indent = indent
+				var event_content :String = line_stripped
+
+				var event :Variant
+				for i in _event_script_cache:
+					if i._test_event_string(event_content):
+						event = i.duplicate()
+						break
+				
+				# add the following lines until the event says it's full there is an empty line or the indent changes
+				while !event.is_string_full_event(event_content):
+					idx += 1
+					if idx == len(lines):
+						break
+					var following_line :String = lines[idx]
+					var following_line_stripped :String = following_line.strip_edges(true, false)
+					var following_line_indent :String = following_line.substr(0,len(following_line)-len(following_line_stripped))
+					if following_line_stripped.is_empty():
+						break
+					if following_line_indent != indent:
+						idx -= 1
+						break
+					event_content += "\n"+following_line_stripped
+				
+				if Engine.is_editor_hint():
+					# Unlike at runtime, for some reason here the event scripts can't access the scene tree to get to the character directory, so we will need to pass it to it before processing
+					if event['event_name'] == 'Character' || event['event_name'] == 'Text':
+						event.set_meta('editor_character_directory', character_directory)
+
+
+				event._load_from_string(event_content)
+				event['event_node_as_text'] = event_content
+
+				events.append(event)
+				prev_was_opener = event.can_contain_events
+				
+			
+
+			if !prev_indent.is_empty():
+				for i in range(len(prev_indent)):
 					events.append(end_event.duplicate())
 			
-			elif prev_was_opener and len(indent) == len(prev_indent):
-				events.append(end_event.duplicate())
-			prev_indent = indent
-			var event_content :String = line_stripped
-
-			var event :Variant
-			for i in _event_script_cache:
-				if i._test_event_string(event_content):
-					event = i.duplicate()
-					break
-			
-			# add the following lines until the event says it's full there is an empty line or the indent changes
-			while !event.is_string_full_event(event_content):
-				idx += 1
-				if idx == len(lines):
-					break
-				var following_line :String = lines[idx]
-				var following_line_stripped :String = following_line.strip_edges(true, false)
-				var following_line_indent :String = following_line.substr(0,len(following_line)-len(following_line_stripped))
-				if following_line_stripped.is_empty():
-					break
-				if following_line_indent != indent:
-					idx -= 1
-					break
-				event_content += "\n"+following_line_stripped
-			
-			event_content = event_content.replace("\n"+indent, "\n")
-			
-
-			event._load_from_string(event_content)
-
-			events.append(event)
-			prev_was_opener = event.can_contain_events
-			
-		
-
-		if !prev_indent.is_empty():
-			for i in range(len(prev_indent)):
-				events.append(end_event.duplicate())
-		
-		timeline._events = events	
-		timeline._events_processed = true
-		#print(str(Time.get_ticks_msec()) + ": Finished process unloaded timeline")	
-		return timeline
+			timeline.events = events	
+			timeline.events_processed = true
+			#print(str(Time.get_ticks_msec()) + ": Finished process unloaded timeline")	
+			return timeline
+	else:
+		return DialogicTimeline.new()
 	
 

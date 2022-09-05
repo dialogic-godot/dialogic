@@ -1,6 +1,6 @@
 extends RichTextLabel
 
-class_name DialogicDisplay_DialogText, "icon.png"
+class_name DialogicNode_DialogText, "icon.png"
 
 enum ALIGNMENT {LEFT, CENTER, RIGHT}
 
@@ -24,6 +24,7 @@ func _ready() -> void:
 	add_to_group('dialogic_dialog_text')
 	
 	bbcode_enabled = true
+	text = ""
 	
 	# setup my timer
 	timer = Timer.new()

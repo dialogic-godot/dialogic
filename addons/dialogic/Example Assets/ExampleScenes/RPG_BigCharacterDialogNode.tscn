@@ -75,11 +75,11 @@ skew = Vector2( -0.051, 0 )
 [node name="DialogicInputHandler" type="Node" parent="."]
 script = ExtResource( 8 )
 
-[node name="DialogicDisplay_PortraitHolder" type="CanvasLayer" parent="."]
+[node name="DialogicNode_PortraitHolder" type="CanvasLayer" parent="."]
 layer = 2
 script = ExtResource( 5 )
 
-[node name="DialogicDisplay_PortraitPosition" type="Position2D" parent="."]
+[node name="DialogicNode_PortraitPosition" type="Position2D" parent="."]
 position = Vector2( 163, 601 )
 script = ExtResource( 4 )
 
@@ -104,7 +104,7 @@ margin_right = 530.0
 margin_bottom = -188.0
 custom_styles/panel = SubResource( 4 )
 
-[node name="DialogicDisplay_NameLabel" type="Label" parent="TextureRect/TextureRect2"]
+[node name="DialogicNode_NameLabel" type="Label" parent="TextureRect/TextureRect2"]
 margin_left = 20.0
 margin_top = 6.0
 margin_right = 168.0
@@ -114,7 +114,7 @@ custom_fonts/font = SubResource( 1 )
 text = "Name"
 script = ExtResource( 6 )
 
-[node name="DialogicDisplay_DialogText" type="RichTextLabel" parent="TextureRect"]
+[node name="DialogicNode_DialogText" type="RichTextLabel" parent="TextureRect"]
 margin_left = 351.0
 margin_top = 31.0
 margin_right = 1015.0
@@ -141,11 +141,11 @@ rect_rotation = 0.940045
 rect_pivot_offset = Vector2( 294.705, 89.0195 )
 alignment = 2
 
-[node name="DialogicDisplay_ChoiceButton" type="Button" parent="TextureRect/VBoxContainer2"]
+[node name="DialogicNode_ChoiceButton" type="Button" parent="TextureRect/VBoxContainer2"]
 margin_right = 265.0
 margin_bottom = 27.0
-focus_neighbour_top = NodePath("../DialogicDisplay_ChoiceButton6")
-focus_neighbour_bottom = NodePath("../DialogicDisplay_ChoiceButton2")
+focus_neighbour_top = NodePath("../DialogicNode_ChoiceButton6")
+focus_neighbour_bottom = NodePath("../DialogicNode_ChoiceButton2")
 custom_colors/font_color_disabled = Color( 0.654902, 0.654902, 0.654902, 1 )
 custom_colors/font_color_focus = Color( 0.917647, 0.917647, 0.917647, 1 )
 custom_colors/font_color = Color( 0.905882, 0.905882, 0.905882, 1 )
@@ -159,12 +159,12 @@ custom_styles/normal = SubResource( 8 )
 text = "Text"
 script = ExtResource( 9 )
 
-[node name="DialogicDisplay_ChoiceButton2" type="Button" parent="TextureRect/VBoxContainer2"]
+[node name="DialogicNode_ChoiceButton2" type="Button" parent="TextureRect/VBoxContainer2"]
 margin_top = 31.0
 margin_right = 265.0
 margin_bottom = 58.0
-focus_neighbour_top = NodePath("../DialogicDisplay_ChoiceButton")
-focus_neighbour_bottom = NodePath("../DialogicDisplay_ChoiceButton3")
+focus_neighbour_top = NodePath("../DialogicNode_ChoiceButton")
+focus_neighbour_bottom = NodePath("../DialogicNode_ChoiceButton3")
 custom_colors/font_color_disabled = Color( 0.654902, 0.654902, 0.654902, 1 )
 custom_colors/font_color_focus = Color( 0.917647, 0.917647, 0.917647, 1 )
 custom_colors/font_color = Color( 0.905882, 0.905882, 0.905882, 1 )
@@ -181,12 +181,12 @@ __meta__ = {
 "_editor_description_": ""
 }
 
-[node name="DialogicDisplay_ChoiceButton3" type="Button" parent="TextureRect/VBoxContainer2"]
+[node name="DialogicNode_ChoiceButton3" type="Button" parent="TextureRect/VBoxContainer2"]
 margin_top = 62.0
 margin_right = 265.0
 margin_bottom = 89.0
-focus_neighbour_top = NodePath("../DialogicDisplay_ChoiceButton2")
-focus_neighbour_bottom = NodePath("../DialogicDisplay_ChoiceButton4")
+focus_neighbour_top = NodePath("../DialogicNode_ChoiceButton2")
+focus_neighbour_bottom = NodePath("../DialogicNode_ChoiceButton4")
 custom_colors/font_color_disabled = Color( 0.654902, 0.654902, 0.654902, 1 )
 custom_colors/font_color_focus = Color( 0.917647, 0.917647, 0.917647, 1 )
 custom_colors/font_color = Color( 0.905882, 0.905882, 0.905882, 1 )
@@ -203,12 +203,12 @@ __meta__ = {
 "_editor_description_": ""
 }
 
-[node name="DialogicDisplay_ChoiceButton4" type="Button" parent="TextureRect/VBoxContainer2"]
+[node name="DialogicNode_ChoiceButton4" type="Button" parent="TextureRect/VBoxContainer2"]
 margin_top = 93.0
 margin_right = 265.0
 margin_bottom = 120.0
-focus_neighbour_top = NodePath("../DialogicDisplay_ChoiceButton3")
-focus_neighbour_bottom = NodePath("../DialogicDisplay_ChoiceButton5")
+focus_neighbour_top = NodePath("../DialogicNode_ChoiceButton3")
+focus_neighbour_bottom = NodePath("../DialogicNode_ChoiceButton5")
 custom_colors/font_color_disabled = Color( 0.654902, 0.654902, 0.654902, 1 )
 custom_colors/font_color_focus = Color( 0.917647, 0.917647, 0.917647, 1 )
 custom_colors/font_color = Color( 0.905882, 0.905882, 0.905882, 1 )
@@ -225,12 +225,12 @@ __meta__ = {
 "_editor_description_": ""
 }
 
-[node name="DialogicDisplay_ChoiceButton5" type="Button" parent="TextureRect/VBoxContainer2"]
+[node name="DialogicNode_ChoiceButton5" type="Button" parent="TextureRect/VBoxContainer2"]
 margin_top = 124.0
 margin_right = 265.0
 margin_bottom = 151.0
-focus_neighbour_top = NodePath("../DialogicDisplay_ChoiceButton4")
-focus_neighbour_bottom = NodePath("../DialogicDisplay_ChoiceButton6")
+focus_neighbour_top = NodePath("../DialogicNode_ChoiceButton4")
+focus_neighbour_bottom = NodePath("../DialogicNode_ChoiceButton6")
 custom_colors/font_color_disabled = Color( 0.654902, 0.654902, 0.654902, 1 )
 custom_colors/font_color_focus = Color( 0.917647, 0.917647, 0.917647, 1 )
 custom_colors/font_color = Color( 0.905882, 0.905882, 0.905882, 1 )
@@ -247,12 +247,12 @@ __meta__ = {
 "_editor_description_": ""
 }
 
-[node name="DialogicDisplay_ChoiceButton6" type="Button" parent="TextureRect/VBoxContainer2"]
+[node name="DialogicNode_ChoiceButton6" type="Button" parent="TextureRect/VBoxContainer2"]
 margin_top = 155.0
 margin_right = 265.0
 margin_bottom = 182.0
-focus_neighbour_top = NodePath("../DialogicDisplay_ChoiceButton5")
-focus_neighbour_bottom = NodePath("../DialogicDisplay_ChoiceButton")
+focus_neighbour_top = NodePath("../DialogicNode_ChoiceButton5")
+focus_neighbour_bottom = NodePath("../DialogicNode_ChoiceButton")
 custom_colors/font_color_disabled = Color( 0.654902, 0.654902, 0.654902, 1 )
 custom_colors/font_color_focus = Color( 0.917647, 0.917647, 0.917647, 1 )
 custom_colors/font_color = Color( 0.905882, 0.905882, 0.905882, 1 )
