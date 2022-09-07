@@ -20,7 +20,7 @@ func _enter_tree():
 	_editor_view.plugin_reference = self
 	_editor_view.hide()
 	editor_interface = get_editor_interface()
-	get_editor_interface().get_editor_main_control().add_child(_editor_view)
+	get_editor_interface().get_editor_main_screen().add_child(_editor_view)
 	_make_visible(false)
 
 
