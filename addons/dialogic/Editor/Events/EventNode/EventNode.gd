@@ -80,7 +80,7 @@ func set_indent(indent: int):
 	indent_node.custom_minimum_size = Vector2(indent_size * indent, 0)
 	indent_node.visible = indent != 0
 	current_indent_level = indent
-	update()
+	queue_redraw()
 
 
 ## *****************************************************************************
