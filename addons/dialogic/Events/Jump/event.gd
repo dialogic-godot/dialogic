@@ -98,14 +98,14 @@ func get_label_suggestions(search_text:String):
 	suggestions['the beginning'] = {'value':'', 'editor_icon':['GuiRadioUnchecked', 'EditorIcons']}
 	
 	if Timeline:
-		for event in Timeline._events:
+		for event in Timeline.events:
 			if event is DialogicLabelEvent:
 				if event.Name and search_text.is_empty() or search_text.to_lower() in event.Name.to_lower():
 					suggestions[event.Name] = {'value':event.Name, 'editor_icon':['Label', 'EditorIcons']}
 	else:
 		var current = load(ProjectSettings.get_setting('dialogic/editor/current_timeline_path'))
 		if current:
-			for event in current._events:
+			for event in current.events:
 				if event is DialogicLabelEvent:
 					if event.Name and search_text.is_empty() or search_text.to_lower() in event.Name.to_lower():
 						suggestions[event.Name] = {'value':event.Name, 'editor_icon':['Label', 'EditorIcons']}

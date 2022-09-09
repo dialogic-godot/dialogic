@@ -2,6 +2,7 @@ extends RichTextLabel
 
 class_name DialogicDisplay_DialogText
 
+
 enum ALIGNMENT {LEFT, CENTER, RIGHT}
 
 @export var Align : ALIGNMENT = ALIGNMENT.LEFT

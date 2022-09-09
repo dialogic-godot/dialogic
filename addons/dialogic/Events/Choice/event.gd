@@ -49,7 +49,7 @@ func get_end_branch_control() -> Control:
 ################################################################################
 
 ## THIS RETURNS A READABLE REPRESENTATION, BUT HAS TO CONTAIN ALL DATA (This is how it's stored)
-func get_as_string_to_store() -> String:
+func to_text() -> String:
 	var result_string = ""
 
 	result_string = "- "+Text
@@ -65,7 +65,7 @@ func get_as_string_to_store() -> String:
 
 
 ## THIS HAS TO READ ALL THE DATA FROM THE SAVED STRING (see above) 
-func load_from_string_to_store(string:String):
+func from_text(string:String) -> void:
 	var regex = RegEx.new()
 	regex.compile('- (?<text>[^\\[]*)(\\[if (?<condition>[^\\]]+)])?\\s?(\\[else (?<else_option>[^\\]\\n]*)\\])?')
 	var result = regex.search(string.strip_edges())
@@ -80,11 +80,9 @@ func load_from_string_to_store(string:String):
 			'disable':IfFalseActions.DISABLE}.get(result.get_string('else_option'), IfFalseActions.DEFAULT)
 
 # RETURN TRUE IF THE GIVEN LINE SHOULD BE LOADED AS THIS EVENT
-func is_valid_event_string(string:String) -> bool:
-	
+func is_valid_event(string:String) -> bool:
 	if string.strip_edges().begins_with("-"):
 		return true
-	
 	return false
 
 func can_be_translated():

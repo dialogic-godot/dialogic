@@ -69,12 +69,12 @@ func file_folder_selected(path):
 	emit_signal("changed")
 
 func preview():
-	if %SoundFolder.tooltip_text.is_empty(): return
-	$DialogicDisplay_TypeSounds.load_overwrite(get_data())
+	if %SoundFolder.hint_tooltip.is_empty(): return
+	$DialogicNode_TypeSounds.load_overwrite(get_data())
 	var preview_timer = Timer.new()
 	add_child(preview_timer)
 	preview_timer.start(DialogicUtil.get_project_setting('text/speed', 0.01))
 	for i in range(20):
-		$DialogicDisplay_TypeSounds._on_continued_revealing_text("a")
+		$DialogicNode_TypeSounds._on_continued_revealing_text("a")
 		await preview_timer.timeout
 	preview_timer.queue_free()

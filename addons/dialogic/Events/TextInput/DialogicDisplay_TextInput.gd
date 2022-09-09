@@ -1,6 +1,6 @@
 extends Control
 
-class_name DialogicDisplay_TextInput
+class_name DialogicNode_TextInput
 
 @export_node_path var input_line_edit:NodePath
 @export_node_path var text_label:NodePath

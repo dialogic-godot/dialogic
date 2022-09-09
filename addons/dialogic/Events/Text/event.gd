@@ -74,9 +74,9 @@ func _execute() -> void:
 		dialogic.Text.show_next_indicators(false, true)
 		var wait:float = DialogicUtil.get_project_setting('dialogic/text/autocontinue_delay', 1)
 		# if voiced, grab remaining time left on the voiceed line's audio region - KvaGram
-		if dialogic.has_subsystem('Voice') and dialogic.Voice.is_Voiced(dialogic.current_event_idx):
+		if dialogic.has_subsystem('Voice') and dialogic.Voice.is_voiced(dialogic.current_event_idx):
 			#autocontinue settings is set as minimal. change or keep this? - Kvagram
-			wait = max(wait, dialogic.Voice.getRemainingTime())
+			wait = max(wait, dialogic.Voice.get_remaining_time())
 		await dialogic.get_tree().create_timer(wait).timeout
 		dialogic.handle_next_event()
 	else:
@@ -108,7 +108,7 @@ func _init() -> void:
 ## 						SAVING/LOADING
 ################################################################################
 ## THIS RETURNS A READABLE REPRESENTATION, BUT HAS TO CONTAIN ALL DATA (This is how it's stored)
-func get_as_string_to_store() -> String:
+func to_text() -> String:
 	if Character:
 		var name = ""
 		for path in _character_directory.keys():
@@ -123,7 +123,7 @@ func get_as_string_to_store() -> String:
 	return Text.replace("\n", "\\\n")
 
 ## THIS HAS TO READ ALL THE DATA FROM THE SAVED STRING (see above) 
-func load_from_string_to_store(string:String) -> void:
+func from_text(string:String) -> void:
 	_character_directory = {}
 	if Engine.is_editor_hint() == false:
 		_character_directory = Dialogic.character_directory
@@ -166,7 +166,7 @@ func load_from_string_to_store(string:String) -> void:
 	if result:
 		Text = result.get_string('text').replace("\\\n", "\n").strip_edges()
 
-func is_valid_event_string(string):
+func is_valid_event(string:String) -> bool:
 	return true
 
 func is_string_full_event(string:String) -> bool:

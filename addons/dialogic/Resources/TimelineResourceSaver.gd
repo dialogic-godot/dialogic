@@ -21,11 +21,11 @@ func _recognize(resource: Resource) -> bool:
 # Save the resource
 func _save(resource: Resource, path: String = '', flags: int = 0) -> int:
 	if resource.get_meta("timeline_not_saved", false):
-		if len(resource._events) == 0:
+		if len(resource.events) == 0:
 			printerr("Timeline is empty! Aborting save to prevent accidental data loss, please delete the file if it is supposed to be empty")
 			return ERR_INVALID_DATA
 		# Do not do this if the timeline's not in a ready state, so it doesn't accidentally save it blank
-		elif !resource._events_processed:
+		elif !resource.events_processed:
 			print('[Dialogic] Saving timeline...')
 			var err:int
 			var file:File = File.new()
@@ -35,12 +35,12 @@ func _save(resource: Resource, path: String = '', flags: int = 0) -> int:
 				printerr('Can\'t write file: "%s"! code: %d.' % [path, err])
 				return err
 			
-			#var result = events_to_text(resource._events)
+			#var result = events_to_text(resource.events)
 			var result := ""
 			var indent := 0
 
-			for idx in range(0, len(resource._events)):
-				var event = resource._events[idx]
+			for idx in range(0, len(resource.events)):
+				var event = resource.events[idx]
 				
 
 				if event['event_name'] == 'End Branch':
@@ -62,8 +62,8 @@ func _save(resource: Resource, path: String = '', flags: int = 0) -> int:
 			# Checking for translation updates 
 			var trans_updates := {}
 			var translate :bool= DialogicUtil.get_project_setting('dialogic/translation_enabled', false)
-			for idx in range(0, len(resource._events)):
-				var event = resource._events[idx]
+			for idx in range(0, len(resource.events)):
+				var event = resource.events[idx]
 
 				if event != null:
 					if translate and event.can_be_translated():

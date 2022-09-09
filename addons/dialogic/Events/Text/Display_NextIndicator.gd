@@ -1,6 +1,6 @@
 extends Control
 
-class_name DialogicDisplay_NextIndicator
+class_name DialogicNode_NextIndicator
 
 @export var show_on_questions := false
 

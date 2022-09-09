@@ -1,6 +1,6 @@
 extends Label
 
-class_name DialogicDisplay_NameLabel
+class_name DialogicNode_NameLabel
 
 @export var hide_when_empty := true
 

@@ -36,9 +36,9 @@ func get_shortcode_parameters() -> Dictionary:
 	}
 
 # You can alternatively overwrite these 3 functions:
-# - get_as_string_to_store(), 
-# - load_from_string_to_store(),
-# - is_valid_event_string()
+# - to_text(), 
+# - from_text(),
+# - is_valid_event()
 
 ################################################################################
 ## 						EDITOR REPRESENTATION

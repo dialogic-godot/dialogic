@@ -55,15 +55,15 @@ func _load(path: String, original_path: String, use_sub_threads: bool, cache_mod
 		events.append(line)
 
 
-	res._events = events
-	res._events_processed = false
+	res.events = events
+	res.events_processed = false
 	return res
 
 
 func _get_dependencies(path:String, add_type:bool):
 	var depends_on : PackedStringArray
 	var timeline:DialogicTimeline = load(path)
-	for event in timeline._events:
+	for event in timeline.events:
 		for property in event.get_shortcode_parameters().values():
 			if event.get(property) is DialogicTimeline:
 				depends_on.append(event.get(property).resource_path)
@@ -75,7 +75,7 @@ func _get_dependencies(path:String, add_type:bool):
 
 func _rename_dependencies(path: String, renames: Dictionary):
 	var timeline:DialogicTimeline = load(path)
-	for event in timeline._events:
+	for event in timeline.events:
 		for property in event.get_shortcode_parameters().values():
 			if event.get(property) is DialogicTimeline:
 				if event.get(property).resource_path in renames:

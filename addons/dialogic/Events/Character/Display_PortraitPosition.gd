@@ -1,6 +1,6 @@
 extends Marker2D
 
-class_name DialogicDisplay_PortraitPosition
+class_name DialogicNode_PortraitPosition
 
 @export var position_index = 0
 
