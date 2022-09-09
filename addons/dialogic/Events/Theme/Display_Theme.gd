@@ -1,6 +1,6 @@
 extends Control
 
-class_name DialogicDisplay_Theme
+class_name DialogicNode_Theme
 
 
 @export var theme_name:String = 'Default'

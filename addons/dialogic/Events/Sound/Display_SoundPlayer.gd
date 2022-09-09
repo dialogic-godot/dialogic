@@ -1,6 +1,6 @@
 extends AudioStreamPlayer
 
-class_name DialogicDisplay_SoundPlayer
+class_name DialogicNode_SoundPlayer
 
 
 func _ready():

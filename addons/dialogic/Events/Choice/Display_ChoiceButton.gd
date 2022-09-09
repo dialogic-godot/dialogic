@@ -1,6 +1,6 @@
 extends Button
 
-class_name DialogicDisplay_ChoiceButton
+class_name DialogicNode_ChoiceButton
 
 
 @export var choice_index:int = -1

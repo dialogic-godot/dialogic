@@ -1,6 +1,6 @@
 extends CanvasLayer
 
-class_name DialogicDisplay_PortraitHolder
+class_name DialogicNode_PortraitHolder
 
 
 func _ready():

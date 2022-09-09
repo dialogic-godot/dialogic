@@ -1,6 +1,6 @@
 extends RichTextLabel
 
-class_name DialogicDisplay_DialogText
+class_name DialogicNode_DialogText
 
 
 enum ALIGNMENT {LEFT, CENTER, RIGHT}
