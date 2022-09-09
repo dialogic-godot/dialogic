@@ -868,14 +868,14 @@ func get_index_under_cursor():
 func move_block_up(block):
 	if block.get_index() < 1: return false
 	%Timeline.move_child(block, block.get_index() - 1)
-	%TimelineArea.update()
+	%TimelineArea.queue_redraw()
 	something_changed()
 	return true
 	
 
 func move_block_down(block):
 	%Timeline.move_child(block, block.get_index() + 1)
-	%TimelineArea.update()
+	%TimelineArea.queue_redraw()
 	something_changed()
 	return true
 
@@ -946,7 +946,7 @@ func indent_events() -> void:
 			event.set_indent(0)
 		indent += delayed_indent
 	
-	%TimelineArea.update()
+	%TimelineArea.queue_redraw()
 
 
 func add_extra_scroll_area_to_timeline():

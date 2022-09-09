@@ -374,7 +374,7 @@ func _on_ExpandButton_toggled(button_pressed):
 	%ExpandButton.set_pressed_no_signal(button_pressed)
 	expanded = button_pressed
 	body_container.visible = button_pressed
-	get_parent().get_parent().update()
+	get_parent().get_parent().queue_redraw()
 
 
 func _on_EventNode_gui_input(event):
