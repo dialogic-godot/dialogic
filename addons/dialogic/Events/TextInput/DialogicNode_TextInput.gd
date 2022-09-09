@@ -14,7 +14,8 @@ func _ready():
 		get_node(confirmation_button).pressed.connect(_on_confirmation_button_pressed)
 	if input_line_edit:
 		get_node(input_line_edit).text_changed.connect(_on_input_text_changed)
-	hide()
+	visible = false
+	print('here')
 
 func set_text(text:String) -> void:
 	if get_node(text_label) is Label:
