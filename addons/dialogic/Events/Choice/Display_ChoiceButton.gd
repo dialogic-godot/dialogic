@@ -1,6 +1,6 @@
 extends Button
 
-class_name DialogicDisplay_ChoiceButton, 'icon.png'
+class_name DialogicDisplay_ChoiceButton
 
 @export var choice_index:int = -1
 

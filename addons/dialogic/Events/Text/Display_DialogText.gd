@@ -1,6 +1,6 @@
 extends RichTextLabel
 
-class_name DialogicDisplay_DialogText, "icon.png"
+class_name DialogicDisplay_DialogText
 
 enum ALIGNMENT {LEFT, CENTER, RIGHT}
 
