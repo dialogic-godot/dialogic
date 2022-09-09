@@ -259,7 +259,7 @@ func update_rpg_portrait_mode(character:DialogicCharacter = null, portrait:Strin
 		for joined_character in dialogic.current_state_info.portraits:
 			if not character or (joined_character != character.resource_path):
 				var AnimationName = DialogicUtil.get_project_setting('dialogic/animations/leave_default', 
-	get_script().resource_path.get_base_dir().plus_file('DefaultAnimations/fade_out_down.gd'))
+	get_script().resource_path.get_base_dir().path_join('DefaultAnimations/fade_out_down.gd'))
 				var AnimationLength = DialogicUtil.get_project_setting('dialogic/animations/leave_default_length', 0.5) 
 					
 				var anim = animate_portrait(load(joined_character), AnimationName, AnimationLength)
@@ -270,7 +270,7 @@ func update_rpg_portrait_mode(character:DialogicCharacter = null, portrait:Strin
 		
 		if (not char_joined) and character and portrait in character.portraits:
 			var AnimationName = DialogicUtil.get_project_setting('dialogic/animations/join_default', 
-	get_script().resource_path.get_base_dir().plus_file('DefaultAnimations/fade_in_up.gd'))
+	get_script().resource_path.get_base_dir().path_join('DefaultAnimations/fade_in_up.gd'))
 			var AnimationLength = DialogicUtil.get_project_setting('dialogic/animations/join_default_length', 0.5)
 			add_portrait(character, portrait, 1, false)
 			var anim = animate_portrait(character, AnimationName, AnimationLength)

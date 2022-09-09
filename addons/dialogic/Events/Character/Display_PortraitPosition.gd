@@ -1,4 +1,4 @@
-extends Position2D
+extends Marker2D
 
 class_name DialogicNode_PortraitPosition
 

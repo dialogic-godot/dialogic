@@ -2,9 +2,9 @@
 extends PanelContainer
 
 @export var MainGroup: bool = false
-var Group_scene = get_script().resource_path.get_base_dir().plus_file("VariableGroup.tscn")
-var field_scene = get_script().resource_path.get_base_dir().plus_file("VariableField.tscn")
-var preview_scene = get_script().resource_path.get_base_dir().plus_file("Preview.tscn")
+var Group_scene = get_script().resource_path.get_base_dir().path_join("VariableGroup.tscn")
+var field_scene = get_script().resource_path.get_base_dir().path_join("VariableField.tscn")
+var preview_scene = get_script().resource_path.get_base_dir().path_join("Preview.tscn")
 
 var drag_preview = null
 
@@ -150,15 +150,15 @@ func update():
 	%Dragger.texture = get_theme_icon("TripleBar", "EditorIcons")
 	%NameEdit.add_theme_color_override("font_color_uneditable", get_theme_color('font_color', 'Label'))
 	%DeleteButton.icon = get_theme_icon("Remove", "EditorIcons")
-	%DeleteButton.hint_tooltip = "Delete Group"
+	%DeleteButton.tooltip_text = "Delete Group"
 	%DuplicateButton.icon = get_theme_icon("Duplicate", "EditorIcons")
-	%DuplicateButton.hint_tooltip = "Duplicate Group"
+	%DuplicateButton.tooltip_text = "Duplicate Group"
 	%NewGroup.icon = get_theme_icon("Folder", "EditorIcons")
-	%NewGroup.hint_tooltip = "Add new Group"
+	%NewGroup.tooltip_text = "Add new Group"
 	%NewVariable.icon = get_theme_icon("Add", "EditorIcons")
-	%NewVariable.hint_tooltip = "Add new variable"
+	%NewVariable.tooltip_text = "Add new variable"
 	%FoldButton.icon = get_theme_icon("GuiVisibilityVisible", "EditorIcons")
-	%FoldButton.hint_tooltip = "Hide/Show content"
+	%FoldButton.tooltip_text = "Hide/Show content"
 
 
 func clear():

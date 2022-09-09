@@ -42,7 +42,7 @@ func set_left_text(value:String):
 
 func set_value(value):
 	%Field.text = value.get_file()
-	%Field.hint_tooltip = value
+	%Field.tooltip_text = value
 	%ClearButton.visible = !value.is_empty()
 
 func _on_OpenButton_pressed() -> void:

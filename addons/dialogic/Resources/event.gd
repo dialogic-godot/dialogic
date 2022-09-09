@@ -246,7 +246,7 @@ func to_text() -> String:
 			elif typeof(get(params[parameter])) == TYPE_STRING:
 				result_string += " "+parameter+'="'+get(params[parameter]).replace('=', "\\=")+'"'
 			else:
-				result_string += " "+parameter+'="'+var2str(get(params[parameter])).replace('=', "\\=")+'"'
+				result_string += " "+parameter+'="'+var_to_str(get(params[parameter])).replace('=', "\\=")+'"'
 	result_string += "]"
 	return result_string
 
@@ -264,7 +264,7 @@ func from_text(string:String) -> void:
 		if typeof(data[parameter]) == TYPE_STRING and (data[parameter].ends_with(".dch")):
 			set(params[parameter], load(data[parameter]))
 		else:
-			var value = str2var(data[parameter].replace('\\=', '=')) if str2var(data[parameter].replace('\\=', '=')) != null else data[parameter].replace('\\=', '=')
+			var value = str_to_var(data[parameter].replace('\\=', '=')) if str_to_var(data[parameter].replace('\\=', '=')) != null else data[parameter].replace('\\=', '=')
 			set(params[parameter], value)
 
 

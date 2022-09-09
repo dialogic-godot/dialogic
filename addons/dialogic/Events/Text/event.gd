@@ -86,9 +86,9 @@ func _execute() -> void:
 func get_required_subsystems() -> Array:
 	return [
 				{'name':'Text',
-				'subsystem': get_script().resource_path.get_base_dir().plus_file('Subsystem_Text.gd'),
-				'settings': get_script().resource_path.get_base_dir().plus_file('Settings_DialogText.tscn'),
-				'character_main':get_script().resource_path.get_base_dir().plus_file('CharacterEdit_TypingSounds.tscn')
+				'subsystem': get_script().resource_path.get_base_dir().path_join('Subsystem_Text.gd'),
+				'settings': get_script().resource_path.get_base_dir().path_join('Settings_DialogText.tscn'),
+				'character_main':get_script().resource_path.get_base_dir().path_join('CharacterEdit_TypingSounds.tscn')
 				},
 			]
 

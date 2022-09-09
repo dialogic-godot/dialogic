@@ -1,6 +1,7 @@
 extends AudioStreamPlayer
 
-class_name DialogicNode_MusicPlayer, 'icon.png'
+class_name DialogicDisplay_MusicPlayer
+
 
 func _ready():
 	add_to_group('dialogic_music_player')

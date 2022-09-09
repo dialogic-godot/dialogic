@@ -1,6 +1,7 @@
 extends RichTextLabel
 
-class_name DialogicNode_DialogText, "icon.png"
+class_name DialogicDisplay_DialogText
+
 
 enum ALIGNMENT {LEFT, CENTER, RIGHT}
 
@@ -69,7 +70,7 @@ func continue_reveal() -> void:
 # shows all the text imidiatly
 # called by this thing itself or the DialogicGameHandler
 func finish_text() -> void:
-	percent_visible = 1
+	visible_ratio = 1
 	execute_effects(true)
 	timer.stop()
 	Dialogic.current_state = Dialogic.states.IDLE
