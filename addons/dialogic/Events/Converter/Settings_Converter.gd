@@ -392,7 +392,7 @@ func convertTimelines():
 													if "animation_wait" in event:
 														eventLine += " wait=\"true\""
 													if "animation_repeat" in event:
-														eventLine += " repeat=\"" + event['animation_repeat'] + "\""
+														eventLine += " repeat=\"" + str(event['animation_repeat']) + "\""
 												if 'z_index' in event:																							if 'z_index' in event:
 													if event['z_index'] != 0:
 														eventLine += ' z-index="' + str(event['z_index']) + '"'
