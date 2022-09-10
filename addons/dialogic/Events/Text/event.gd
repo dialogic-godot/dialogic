@@ -74,9 +74,9 @@ func _execute() -> void:
 		dialogic.Text.show_next_indicators(false, true)
 		var wait:float = DialogicUtil.get_project_setting('dialogic/text/autocontinue_delay', 1)
 		# if voiced, grab remaining time left on the voiceed line's audio region - KvaGram
-		if dialogic.has_subsystem('Voice') and dialogic.Voice.is_Voiced(dialogic.current_event_idx):
+		if dialogic.has_subsystem('Voice') and dialogic.Voice.is_voiced(dialogic.current_event_idx):
 			#autocontinue settings is set as minimal. change or keep this? - Kvagram
-			wait = max(wait, dialogic.Voice.getRemainingTime())
+			wait = max(wait, dialogic.Voice.get_remaining_time())
 		await dialogic.get_tree().create_timer(wait).timeout
 		dialogic.handle_next_event()
 	else:
@@ -86,9 +86,9 @@ func _execute() -> void:
 func get_required_subsystems() -> Array:
 	return [
 				{'name':'Text',
-				'subsystem': get_script().resource_path.get_base_dir().plus_file('Subsystem_Text.gd'),
-				'settings': get_script().resource_path.get_base_dir().plus_file('Settings_DialogText.tscn'),
-				'character_main':get_script().resource_path.get_base_dir().plus_file('CharacterEdit_TypingSounds.tscn')
+				'subsystem': get_script().resource_path.get_base_dir().path_join('Subsystem_Text.gd'),
+				'settings': get_script().resource_path.get_base_dir().path_join('Settings_DialogText.tscn'),
+				'character_main':get_script().resource_path.get_base_dir().path_join('CharacterEdit_TypingSounds.tscn')
 				},
 			]
 

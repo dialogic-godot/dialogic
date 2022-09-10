@@ -51,7 +51,7 @@ func _on_AddMood_pressed():
 	emit_signal("changed")
 	
 func create_mood_item(data):
-	var new_mood = load(get_script().resource_path.get_base_dir().plus_file('CharacterEdit_TypingSounds_MoodItem.tscn')).instantiate()
+	var new_mood = load(get_script().resource_path.get_base_dir().path_join('CharacterEdit_TypingSounds_MoodItem.tscn')).instantiate()
 	%Moods.add_child(new_mood)
 	new_mood.load_data(data)
 	new_mood.duplicate.connect(duplicate_mood_item.bind(new_mood))

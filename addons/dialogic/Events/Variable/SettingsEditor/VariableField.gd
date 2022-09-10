@@ -2,7 +2,7 @@
 extends PanelContainer
 
 var parent_Group = null
-var preview_scene = get_script().resource_path.get_base_dir().plus_file("Preview.tscn")
+var preview_scene = get_script().resource_path.get_base_dir().path_join("Preview.tscn")
 
 ################################################################################
 ##				FUNCTIONALITY

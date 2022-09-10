@@ -45,7 +45,7 @@ func _execute() -> void:
 					if n:
 						if AnimationName.is_empty():
 							AnimationName = DialogicUtil.get_project_setting('dialogic/animations/join_default', 
-			get_script().resource_path.get_base_dir().plus_file('DefaultAnimations/fade_in_up.gd'))
+			get_script().resource_path.get_base_dir().path_join('DefaultAnimations/fade_in_up.gd'))
 							AnimationLength = DialogicUtil.get_project_setting('dialogic/animations/join_default_length', 0.5)
 							AnimationWait = DialogicUtil.get_project_setting('dialogic/animations/join_default_wait', true)
 						if AnimationName:
@@ -64,7 +64,7 @@ func _execute() -> void:
 			if _leave_all:
 				if AnimationName.is_empty():
 					AnimationName = DialogicUtil.get_project_setting('dialogic/animations/leave_default', 
-get_script().resource_path.get_base_dir().plus_file('DefaultAnimations/fade_out_down.gd'))
+get_script().resource_path.get_base_dir().path_join('DefaultAnimations/fade_out_down.gd'))
 					AnimationLength = DialogicUtil.get_project_setting('dialogic/animations/leave_default_length', 0.5) 
 					AnimationWait = DialogicUtil.get_project_setting('dialogic/animations/leave_default_wait', true)
 				
@@ -86,7 +86,7 @@ get_script().resource_path.get_base_dir().plus_file('DefaultAnimations/fade_out_
 				if dialogic.Portraits.is_character_joined(Character):
 					if AnimationName.is_empty():
 						AnimationName = DialogicUtil.get_project_setting('dialogic/animations/leave_default', 
-	get_script().resource_path.get_base_dir().plus_file('DefaultAnimations/fade_out_down.gd'))
+	get_script().resource_path.get_base_dir().path_join('DefaultAnimations/fade_out_down.gd'))
 						AnimationLength = DialogicUtil.get_project_setting('dialogic/animations/leave_default_length', 0.5) 
 						AnimationWait = DialogicUtil.get_project_setting('dialogic/animations/leave_default_wait', true)
 					
@@ -124,8 +124,8 @@ get_script().resource_path.get_base_dir().plus_file('DefaultAnimations/fade_out_
 func get_required_subsystems() -> Array:
 	return [
 				{'name':'Portraits',
-				'subsystem': get_script().resource_path.get_base_dir().plus_file('Subsystem_Portraits.gd'),
-				'settings': get_script().resource_path.get_base_dir().plus_file('PortraitSettings.tscn'),
+				'subsystem': get_script().resource_path.get_base_dir().path_join('Subsystem_Portraits.gd'),
+				'settings': get_script().resource_path.get_base_dir().path_join('PortraitSettings.tscn'),
 				},
 			]
 
@@ -386,7 +386,7 @@ func get_animation_suggestions(search_text):
 
 
 func list_animations() -> Array:
-	var list = DialogicUtil.listdir(get_script().resource_path.get_base_dir().plus_file('DefaultAnimations'), true, false, true)
+	var list = DialogicUtil.listdir(get_script().resource_path.get_base_dir().path_join('DefaultAnimations'), true, false, true)
 	list.append_array(DialogicUtil.listdir(DialogicUtil.get_project_setting('dialogic/animations/custom_folder', 'res://addons/dialogic_additions/Animations'), true, false, true))
 	return list
 

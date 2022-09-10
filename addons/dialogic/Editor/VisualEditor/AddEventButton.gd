@@ -18,7 +18,7 @@ func _ready():
 	self_modulate = Color(1,1,1)
 	if visible_name != '':
 		text = '  ' + visible_name
-	#hint_tooltip = DTS.translate(hint_tooltip)
+	#tooltip_text = DTS.translate(tooltip_text)
 	
 	var _scale = DialogicUtil.get_editor_scale()
 	custom_minimum_size = Vector2(30,30)* _scale
@@ -46,7 +46,7 @@ func set_color(color):
 func _get_drag_data(position):
 	var preview_label = Label.new()
 	
-	preview_label.text = 'Add Event %s' % [ hint_tooltip ]
+	preview_label.text = 'Add Event %s' % [ tooltip_text ]
 	if self.text != '':
 		preview_label.text = text
 		

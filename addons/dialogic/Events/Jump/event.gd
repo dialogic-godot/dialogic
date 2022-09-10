@@ -17,7 +17,7 @@ func _execute() -> void:
 		if _timeline_file.contains("res://"):
 			dialogic.start_timeline(_timeline_file, LabelName)
 		else: 
-			dialogic.start_timeline(Dialogic.timeline_directory[_timeline_file], LabelName)
+			dialogic.start_timeline(Dialogic.find_timeline(_timeline_file), LabelName)
 	elif LabelName:
 		dialogic.jump_to_label(LabelName)
 	

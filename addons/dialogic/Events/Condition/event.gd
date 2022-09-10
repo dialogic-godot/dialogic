@@ -57,7 +57,7 @@ func _init() -> void:
 
 # return a control node that should show on the END BRANCH node
 func get_end_branch_control() -> Control:
-	return load(get_script().resource_path.get_base_dir().plus_file('Condition_End.tscn')).instantiate()
+	return load(get_script().resource_path.get_base_dir().path_join('Condition_End.tscn')).instantiate()
 
 ################################################################################
 ## 						SAVING/LOADING

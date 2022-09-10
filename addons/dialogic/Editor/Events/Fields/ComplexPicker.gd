@@ -50,7 +50,7 @@ func set_value(value, text : String = '') -> void:
 	elif file_extension != "" && file_extension != ".dch" && file_extension != ".dtl":
 		
 		$Search.text = value.resource_path
-		$Search.hint_tooltip = value.resource_path
+		$Search.tooltip_text = value.resource_path
 	elif value:
 		$Search.text = value
 	else:

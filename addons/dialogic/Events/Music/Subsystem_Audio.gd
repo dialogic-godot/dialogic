@@ -43,7 +43,7 @@ func update_music(path:String = '', volume:float = 0.0, audio_bus:String = "Mast
 			add_child(prev_node)
 			prev_node.play(node.get_playback_position())
 			prev_node.remove_from_group('dialogic_music_player')
-			fader.tween_method(interpolate_volume_linearly.bind(prev_node), db2linear(prev_node.volume_db),0.0,fade_time)
+			fader.tween_method(interpolate_volume_linearly.bind(prev_node), db_to_linear(prev_node.volume_db),0.0,fade_time)
 		if path:
 			node.stream = load(path)
 			node.volume_db = volume
@@ -57,7 +57,7 @@ func update_music(path:String = '', volume:float = 0.0, audio_bus:String = "Mast
 					node.stream.loop_mode = AudioStreamWAV.LOOP_DISABLED
 			
 			node.play()
-			fader.parallel().tween_method(interpolate_volume_linearly.bind(node), 0.0,db2linear(volume),fade_time)
+			fader.parallel().tween_method(interpolate_volume_linearly.bind(node), 0.0,db_to_linear(volume),fade_time)
 		else:
 			node.stop()
 		if prev_node:
@@ -89,4 +89,4 @@ func stop_all_sounds() -> void:
 			sound_player.queue_free() 
 
 func interpolate_volume_linearly(value, node):
-	node.volume_db = linear2db(value)
+	node.volume_db = linear_to_db(value)

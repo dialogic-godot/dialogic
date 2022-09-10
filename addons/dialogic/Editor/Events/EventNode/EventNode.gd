@@ -68,11 +68,11 @@ func load_data(data):
 
 func set_warning(text):
 	warning.show()
-	warning.hint_tooltip = text
+	warning.tooltip_text = text
 
 
 func remove_warning(text = ''):
-	if warning.hint_tooltip == text or text == '':
+	if warning.tooltip_text == text or text == '':
 		warning.hide()
 
 
@@ -80,7 +80,7 @@ func set_indent(indent: int):
 	indent_node.custom_minimum_size = Vector2(indent_size * indent, 0)
 	indent_node.visible = indent != 0
 	current_indent_level = indent
-	update()
+	queue_redraw()
 
 
 ## *****************************************************************************
@@ -374,7 +374,7 @@ func _on_ExpandButton_toggled(button_pressed):
 	%ExpandButton.set_pressed_no_signal(button_pressed)
 	expanded = button_pressed
 	body_container.visible = button_pressed
-	get_parent().get_parent().update()
+	get_parent().get_parent().queue_redraw()
 
 
 func _on_EventNode_gui_input(event):

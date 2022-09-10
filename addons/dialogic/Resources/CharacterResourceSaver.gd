@@ -27,7 +27,7 @@ func _save(resource: Resource, path: String = '', flags: int = 0) -> int:
 		printerr('Can\'t write file: "%s"! code: %d.' % [path, err])
 		return err
 	
-	var result = var2str(inst2dict(resource))
+	var result = var_to_str(inst_to_dict(resource))
 	
 	file.store_string(result)
 	file.close()

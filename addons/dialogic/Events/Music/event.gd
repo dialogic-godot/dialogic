@@ -17,7 +17,7 @@ func _execute() -> void:
 func get_required_subsystems() -> Array:
 	return [
 				{'name':'Audio',
-				'subsystem': get_script().resource_path.get_base_dir().plus_file('Subsystem_Audio.gd'),
+				'subsystem': get_script().resource_path.get_base_dir().path_join('Subsystem_Audio.gd'),
 				},
 			]
 

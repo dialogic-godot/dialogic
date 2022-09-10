@@ -19,12 +19,12 @@ static func listdir(path: String, files_only: bool = true, throw_error:bool = tr
 				if files_only:
 					if not dir.current_is_dir() and not file_name.ends_with('.import'):
 						if full_file_path:
-							files.append(path.plus_file(file_name))
+							files.append(path.path_join(file_name))
 						else:
 							files.append(file_name)
 				else:
 					if full_file_path:
-						files.append(path.plus_file(file_name))
+						files.append(path.path_join(file_name))
 					else:
 						files.append(file_name)
 			file_name = dir.get_next()

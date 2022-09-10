@@ -48,7 +48,11 @@ func start_timeline(timeline_resource:Variant, label_or_idx:Variant = "") -> voi
 		
 	# load the resource if only the path is given
 	if typeof(timeline_resource) == TYPE_STRING:
-		timeline_resource = load(timeline_resource)
+		#check the lookup table if it's not a full file name
+		if timeline_resource.contains("res://"):
+			timeline_resource = load(timeline_resource)
+		else: 
+			timeline_resource = load(find_timeline(timeline_resource))
 		if timeline_resource == null:
 			assert(false, "There was an error loading this timeline. Check the filename, and the timeline for errors")
 	
@@ -114,7 +118,7 @@ func handle_event(event_index:int) -> void:
 	if current_timeline_events[event_index].continue_at_end:
 		#print("    -> WILL AUTO CONTINUE!")
 		if not current_timeline_events[event_index].event_finished.is_connected(handle_next_event):
-			current_timeline_events[event_index].event_finished.connect(handle_next_event, CONNECT_ONESHOT)
+			current_timeline_events[event_index].event_finished.connect(handle_next_event, CONNECT_ONE_SHOT)
 	current_timeline_events[event_index].execute(self)
 	emit_signal('event_handled', current_timeline_events[event_index])
 
@@ -385,6 +389,16 @@ func rebuild_timeline_directory() -> void:
 	# Now finally build the database from those arrays
 	for i in characters.size():
 		timeline_directory[reverse_array[i]] = characters[i]
+
+func find_timeline(path: String) -> String:
+	if path in timeline_directory.keys():
+		return timeline_directory[path]
+	else:
+		for i in timeline_directory.keys():
+			if timeline_directory[i].contains(path):
+				return timeline_directory[i]
+				
+	return ""
 
 func process_timeline(timeline: DialogicTimeline) -> DialogicTimeline:
 	if timeline != null:

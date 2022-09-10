@@ -47,7 +47,7 @@ func save_file(slot_name:String, file_name:String, data) -> int:
 		add_empty_slot(slot_name)
 	
 	var file = File.new()
-	var err = file.open(SAVE_SLOTS_DIR.plus_file(slot_name).plus_file(file_name), File.WRITE)
+	var err = file.open(SAVE_SLOTS_DIR.path_join(slot_name).path_join(file_name), File.WRITE)
 	if err == OK:
 		file.store_var(data, true)
 		file.close()
@@ -58,7 +58,7 @@ func load_file(slot_name:String, file_name:String, default):
 	if slot_name.is_empty(): return
 	
 	var file := File.new()
-	if file.open(get_slot_path(slot_name).plus_file(file_name), File.READ) != OK:
+	if file.open(get_slot_path(slot_name).path_join(file_name), File.READ) != OK:
 		file.close()
 		return default
 	
@@ -91,7 +91,7 @@ func has_slot(slot_name:String) -> bool:
 
 func remove_slot(slot_name:String) -> void:
 	var directory := Directory.new()
-	if directory.open(SAVE_SLOTS_DIR.plus_file(slot_name)) != OK:
+	if directory.open(SAVE_SLOTS_DIR.path_join(slot_name)) != OK:
 		print("[D] Error: Failed to access save folder '"+slot_name+"'.")
 		return
 	
@@ -102,7 +102,7 @@ func remove_slot(slot_name:String) -> void:
 		directory.remove(file_name)
 		file_name = directory.get_next()
 	# then delete folder
-	directory.remove(SAVE_SLOTS_DIR.plus_file(slot_name))
+	directory.remove(SAVE_SLOTS_DIR.path_join(slot_name))
 
 # this adds a new save folder with the given name
 func add_empty_slot(slot_name: String) -> void:
@@ -122,7 +122,7 @@ func reset_slot(slot_name: String = '') -> void:
 	save_file(slot_name, 'state.txt', file)
 
 func get_slot_path(slot_name:String) -> String:
-	return SAVE_SLOTS_DIR.plus_file(slot_name)
+	return SAVE_SLOTS_DIR.path_join(slot_name)
 
 
 func get_latest_slot() -> String:
@@ -164,13 +164,13 @@ func take_slot_image() -> void:
 
 func store_slot_image(slot_name:String) -> void:
 	if saved_image:
-		saved_image.save_png(get_slot_path(slot_name).plus_file('thumbnail.png'))
+		saved_image.save_png(get_slot_path(slot_name).path_join('thumbnail.png'))
 
 func get_slot_image(slot_name:String) -> ImageTexture:
 	slot_name = this_or_current_slot(slot_name)
 	if slot_name.is_empty(): return null
 	var file = File.new()
-	if file.open(get_slot_path(slot_name).plus_file('thumbnail.png'), File.READ) == OK:
+	if file.open(get_slot_path(slot_name).path_join('thumbnail.png'), File.READ) == OK:
 		var buffer = file.get_buffer(file.get_len())
 		file.close()
 
