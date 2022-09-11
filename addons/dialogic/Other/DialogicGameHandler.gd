@@ -121,7 +121,7 @@ func handle_event(event_index:int) -> void:
 			current_timeline_events[event_index].event_finished.connect(handle_next_event, CONNECT_ONE_SHOT)
 	
 	if has_subsystem('History'):
-		self.History.add_event_to_history(current_timeline, event_index, current_timeline_events[event_index])
+		self.History.add_event_to_history(current_timeline.resource_path, event_index, current_timeline_events[event_index])
 	
 	current_timeline_events[event_index].execute(self)
 	emit_signal('event_handled', current_timeline_events[event_index])
@@ -206,6 +206,12 @@ func get_full_state() -> Dictionary:
 	if has_subsystem('Portraits'):
 		current_state_info['current_portrait_positions'] = self.Portraits.current_positions
 		current_state_info['default_portrait_positions'] = self.Portraits._default_positions
+	if has_subsystem('History'):
+		if self.History.full_history_enabled:
+			self.Portraits.strip_events_from_full_history()
+			current_state_info['full_history'] = self.History.full_history
+		if self.History.text_read_history_enabled:
+			current_state_info['text_read_history'] = self.History.text_read_history
 	
 	return current_state_info
 
@@ -220,6 +226,11 @@ func load_full_state(state_info:Dictionary) -> void:
 		if current_state_info.get('current_portrait_positions', null):
 			self.Portraits.current_positions = current_state_info['current_portrait_positions']
 			self.Portraits._default_positions = current_state_info['default_portrait_positions']
+	if has_subsystem('History'):
+		if self.History.full_history_enabled:
+			self.History.full_history = current_state_info['full_history'] 
+		if self.History.text_read_history_enabled:
+			self.History.text_read_history	= current_state_info['text_read_history']
 	for subsystem in get_children():
 		subsystem.load_game_state()
 
