@@ -5,6 +5,7 @@ var character_colors := {}
 var color_regex := RegEx.new()
 
 signal text_finished
+signal speaking_character(argument)
 
 ####################################################################################################
 ##					STATE
@@ -60,10 +61,12 @@ func update_name_label(character:DialogicCharacter) -> void:
 				name_label.text = character.display_name
 			if !'use_character_color' in name_label or name_label.use_character_color:
 				name_label.self_modulate = character.color
+			speaking_character.emit(name_label.text)
 		else:
 			dialogic.current_state_info['character'] = null
 			name_label.text = ''
 			name_label.self_modulate = Color(1,1,1,1)
+			speaking_character.emit("(Nobody)")
 
 func update_typing_sound_mood(mood:Dictionary = {}) -> void:
 	for typing_sound in get_tree().get_nodes_in_group('dialogic_type_sounds'):
