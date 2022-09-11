@@ -119,6 +119,10 @@ func handle_event(event_index:int) -> void:
 		#print("    -> WILL AUTO CONTINUE!")
 		if not current_timeline_events[event_index].event_finished.is_connected(handle_next_event):
 			current_timeline_events[event_index].event_finished.connect(handle_next_event, CONNECT_ONE_SHOT)
+	
+	if has_subsystem('History'):
+		self.History.add_event_to_history(current_timeline, event_index, current_timeline_events[event_index])
+	
 	current_timeline_events[event_index].execute(self)
 	emit_signal('event_handled', current_timeline_events[event_index])
 
