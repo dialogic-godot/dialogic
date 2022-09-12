@@ -130,6 +130,7 @@ func get_latest_slot() -> String:
 
 func set_latest_slot(slot_name:String) -> void:
 	ProjectSettings.set_setting('dialogic/save/latest_save', slot_name)
+	ProjectSettings.save()
 
 
 func _make_sure_slot_dir_exists() -> void:

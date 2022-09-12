@@ -16,23 +16,28 @@ func refresh():
 
 func _on_AutocontinueDelay_value_changed(value):
 	ProjectSettings.set_setting('dialogic/text/autocontinue_delay', value)
+	ProjectSettings.save()
 
 
 func _on_Autocontinue_toggled(button_pressed):
 	print("toggled")
 	ProjectSettings.set_setting('dialogic/text/autocontinue', button_pressed)
+	ProjectSettings.save()
 
 
 func _on_Skippable_toggled(button_pressed):
 	ProjectSettings.set_setting('dialogic/text/skippable', button_pressed)
+	ProjectSettings.save()
 
 
 func _on_DefaultSpeed_value_changed(value):
 	ProjectSettings.set_setting('dialogic/text/speed', value)
+	ProjectSettings.save()
 
 
 func _on_InputAction_value_changed(property_name, value):
 	ProjectSettings.set_setting('dialogic/text/input_action', value)
+	ProjectSettings.save()
 
 func suggest_actions(search):
 	var suggs = {}
@@ -44,3 +49,4 @@ func suggest_actions(search):
 
 func _on_AutocolorNames_toggled(button_pressed):
 	ProjectSettings.set_setting('dialogic/text/autocolor_names', button_pressed)
+	ProjectSettings.save()
