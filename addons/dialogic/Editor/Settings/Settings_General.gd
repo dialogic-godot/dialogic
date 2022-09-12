@@ -41,7 +41,7 @@ func custom_events_folder_selected(folder_path:String):
 	ProjectSettings.save()
 
 func _on_color_change(color: Color, who):
-	ProjectSettings.set_setting('dialogic/editor/' + who.name, color)
+	ProjectSettings.set_setting('dialogic/editor/' + str(who.name), color)
 	ProjectSettings.save()
 	emit_signal('colors_changed')
 
