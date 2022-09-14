@@ -2,8 +2,21 @@
 extends DialogicEvent
 class_name DialogicHistoryEvent
 
+enum ActionTypes {Clear, Pause, Resume}
+
+var ActionType := ActionTypes.Pause
+
 func _execute() -> void:
-	pass
+	
+	match ActionType:
+		ActionTypes.Clear:
+			dialogic.History.full_history = []
+		ActionTypes.Pause:
+			dialogic.History.full_history_enabled = false
+		ActionTypes.Resume:
+			dialogic.History.full_history_enabled = true
+	
+	finish()
 
 func get_required_subsystems() -> Array:
 	return [
@@ -35,6 +48,8 @@ func get_shortcode() -> String:
 
 func get_shortcode_parameters() -> Dictionary:
 	return {
+		#param_name 	: property_name
+		"action"			: "ActionType",
 	}
 
 ################################################################################
@@ -42,4 +57,19 @@ func get_shortcode_parameters() -> Dictionary:
 ################################################################################
 
 func build_event_editor():
-	pass
+	add_header_edit('ActionType', ValueType.FixedOptionSelector, '', '', {
+		'selector_options': [
+			{
+				'label': 'Pause History',
+				'value': ActionTypes.Pause,
+			},
+			{
+				'label': 'Resume History',
+				'value': ActionTypes.Resume,
+			},
+			{
+				'label': 'Clear History',
+				'value': ActionTypes.Clear,
+			},
+		]
+		})
