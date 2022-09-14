@@ -91,6 +91,7 @@ func resource_used(path:String) -> void:
 		used_resources.erase(path)
 	used_resources.push_front(path)
 	ProjectSettings.set_setting('dialogic/editor/last_resources', used_resources)
+	ProjectSettings.save()
 
 
 ################################################################################

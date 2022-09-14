@@ -10,6 +10,7 @@ func _ready():
 
 func set_project_setting(value, setting):
 	ProjectSettings.set_setting(setting, value)
+	ProjectSettings.save()
 	
 	refresh()
 
@@ -46,6 +47,7 @@ func open_file_folder_dialog():
 func file_folder_selected(path):
 	%TransFileFolder.text = path
 	ProjectSettings.set_setting('dialogic/translation_path', path)
+	ProjectSettings.save()
 	refresh()
 
 
@@ -62,6 +64,7 @@ func _on_TransInitialize_pressed():
 		file.store_csv_line(['keys', orig_locale])
 	else:
 		ProjectSettings.set_setting('dialogic/translation_path', '')
+	ProjectSettings.save()
 		
 	
 	for timeline_path in DialogicUtil.list_resources_of_type('.dtl'):
@@ -85,6 +88,7 @@ func _on_TransInitialize_pressed():
 	
 	
 	ProjectSettings.set_setting('dialogic/translation_enabled', true)
+	ProjectSettings.save()
 	refresh()
 
 func _on_TransRemove_pressed():
@@ -123,7 +127,7 @@ func erase_translations():
 
 	
 	ProjectSettings.set_setting('locale/translations', PackedStringArray(trans_files))
-	
+	ProjectSettings.save()
 	refresh()
 
 
@@ -156,3 +160,4 @@ func _on_TransUpdate_pressed():
 					trans_files.append(file)
 	
 	ProjectSettings.set_setting('locale/translations', PackedStringArray(trans_files))
+	ProjectSettings.save()

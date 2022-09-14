@@ -10,15 +10,19 @@ func refresh() -> void:
 
 func _on_Autofocus_toggled(button_pressed: bool) -> void:
 	ProjectSettings.set_setting('dialogic/choices/autofocus_first', button_pressed)
+	ProjectSettings.save()
 
 
 func _on_FalseBehaviour_item_selected(index) -> void:
 	ProjectSettings.set_setting('dialogic/choices/def_false_behaviour', index)
+	ProjectSettings.save()
 
 
 func _on_HotkeyType_item_selected(index) -> void:
 	ProjectSettings.set_setting('dialogic/choices/hotkey_behaviour', index)
+	ProjectSettings.save()
 
 
 func _on_Delay_value_changed(value) -> void:
 	ProjectSettings.set_setting('dialogic/choices/delay', value)
+	ProjectSettings.save()

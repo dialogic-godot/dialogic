@@ -23,6 +23,7 @@ func _ready() -> void:
 
 func set_setting(value, setting:String)  -> void:
 	ProjectSettings.set_setting(setting, value)
+	ProjectSettings.save()
 
 func refresh() -> void:
 	%DefaultColor.color = DialogicUtil.get_project_setting('dialogic/glossary/default_color', Color.POWDER_BLUE)
@@ -84,6 +85,7 @@ func load_glossary_file(path:String) -> void:
 	if not path in list:
 		list.append(path)
 		ProjectSettings.set_setting('dialogic/glossary/glossary_files', list)
+		ProjectSettings.save()
 		%GlossaryList.add_item(DialogicUtil.pretty_name(path), get_theme_icon('FileList', 'EditorIcons'))
 		%GlossaryList.set_item_tooltip(%GlossaryList.item_count-1, path)
 		%GlossaryList.select(%GlossaryList.item_count-1)
@@ -95,6 +97,7 @@ func _on_delete_glossary_file_pressed() -> void:
 		list.erase(%GlossaryList.get_item_tooltip(
 			%GlossaryList.get_selected_items()[0]))
 		ProjectSettings.set_setting('dialogic/glossary/glossary_files', list)
+		ProjectSettings.save()
 		refresh()
 
 ################################################################################

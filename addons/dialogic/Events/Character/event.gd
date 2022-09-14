@@ -311,8 +311,25 @@ func is_valid_event(string:String) -> bool:
 ################################################################################
 
 func build_event_editor():
-	add_header_edit('ActionType', ValueType.FixedOptionSelector, '', '',
-		{'selector_options':{"Join":ActionTypes.Join, "Leave":ActionTypes.Leave, "Update":ActionTypes.Update}})
+	add_header_edit('ActionType', ValueType.FixedOptionSelector, '', '', {
+		'selector_options': [
+			{
+				'label': 'Join',
+				'value': ActionTypes.Join,
+				'icon': load("res://addons/dialogic/Editor/Images/Dropdown/join.svg")
+			},
+			{
+				'label': 'Leave',
+				'value': ActionTypes.Leave,
+				'icon': load("res://addons/dialogic/Editor/Images/Dropdown/leave.svg")
+			},
+			{
+				'label': 'Update',
+				'value': ActionTypes.Update,
+				'icon': load("res://addons/dialogic/Editor/Images/Dropdown/update.svg")
+			}
+		]
+	})
 	add_header_edit('_character_from_directory', ValueType.ComplexPicker, '', '', {'file_extension':'.dch', 'suggestions_func':[self, 'get_character_suggestions'], 'icon':load("res://addons/dialogic/Editor/Images/Resources/character.svg")})
 	
 	add_header_edit('Portrait', ValueType.ComplexPicker, 'Portrait:', '', {'empty_text':'Default', 'suggestions_func':[self, 'get_portrait_suggestions'], 'icon':load("res://addons/dialogic/Editor/Images/Resources/Portrait.svg")}, 'Character != null and !has_no_portraits() and ActionType != %s' %ActionTypes.Leave)
