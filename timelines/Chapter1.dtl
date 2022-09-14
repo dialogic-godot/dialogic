@@ -2,6 +2,8 @@
 
 [theme name="Default"]
 
+[background path="res://addons/dialogic/Example Assets/backgrounds/vn-background-1.png"]
+
 Join Jowan (shocked) 3 [ mirrored="true"]
 
 Join Emilio (default) 5
@@ -9,6 +11,8 @@ Join Emilio (default) 5
 Jowan: This is a cool feature [portrait=joy].
 
 - Yes
+	
+	[background path="res://addons/dialogic/Example Assets/backgrounds/vn-background-2.png" fade="0.5"]
 	
 	Update Jowan (angry) 1 [ move_time="0.3" extra_data="alien"]
 	
@@ -19,6 +23,8 @@ Jowan: This is a cool feature [portrait=joy].
 	Emilio: I know, right?
 	
 - No
+	
+	[background path="res://addons/dialogic/Example Assets/backgrounds/vn-background-3.png"]
 	
 	[update_position mode="2" position="1" vector="Vector2(100, 0)" time="0.3"]
 	
