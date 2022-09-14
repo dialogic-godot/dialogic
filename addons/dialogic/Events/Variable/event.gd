@@ -12,7 +12,8 @@ var RandomEnabled :bool= false
 var RandomMin :int = 0
 var RandomMax :int = 100
 
-func _execute() -> void:
+func _execute() -> void:		
+		
 	if Name:
 		var orig = dialogic.VAR.get_variable(Name)
 		var value = dialogic.VAR.get_variable(Value, Value)
@@ -20,6 +21,10 @@ func _execute() -> void:
 			value = randi()%(RandomMax-RandomMin)+RandomMin
 		
 		if orig != null:
+			if Dialogic.has_subsystem('History'):
+				if Dialogic.History.full_history_enabled:
+					Dialogic.History.full_history[0]['previous_value'] = orig
+			
 			if Operation != OPERATIONS.SET and orig.is_valid_float() and value.is_valid_float():
 				orig = orig.to_float()
 				value = value.to_float()
