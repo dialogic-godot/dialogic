@@ -10,16 +10,16 @@
 [ext_resource type="Script" path="res://addons/dialogic/Events/Music/Display_MusicPlayer.gd" id="8"]
 [ext_resource type="Script" path="res://addons/dialogic/Events/Sound/Display_SoundPlayer.gd" id="9"]
 [ext_resource type="Script" path="res://addons/dialogic/Events/Text/DialogicNode_TypeSounds.gd" id="10"]
-[ext_resource type="AudioStream" uid="uid://b667kjxanowm1" path="res://addons/dialogic/Example Assets/Keyboard Noises/typing4.wav" id="11"]
+[ext_resource type="AudioStream" uid="uid://cuhpykc7nblvp" path="res://addons/dialogic/Example Assets/Keyboard Noises/typing4.wav" id="11"]
 [ext_resource type="Script" path="res://addons/dialogic/Events/Theme/Display_Theme.gd" id="12"]
-[ext_resource type="AudioStream" uid="uid://dm3kggq1daf18" path="res://addons/dialogic/Example Assets/Keyboard Noises/typing5.wav" id="13"]
-[ext_resource type="AudioStream" uid="uid://c5f4b0wqdc221" path="res://addons/dialogic/Example Assets/Keyboard Noises/typing1.wav" id="14"]
+[ext_resource type="AudioStream" uid="uid://c0kbwyd4f11wb" path="res://addons/dialogic/Example Assets/Keyboard Noises/typing5.wav" id="13"]
+[ext_resource type="AudioStream" uid="uid://dn4wqv4fvdv8l" path="res://addons/dialogic/Example Assets/Keyboard Noises/typing1.wav" id="14"]
 [ext_resource type="Script" path="res://addons/dialogic/Events/Text/Display_InputHandler.gd" id="17"]
 [ext_resource type="Script" path="res://addons/dialogic/Events/Choice/SoundButton.gd" id="18"]
 [ext_resource type="Script" path="res://addons/dialogic/Events/Text/Display_NextIndicator.gd" id="20_ljcq2"]
 [ext_resource type="Script" path="res://addons/dialogic/Example Assets/ExampleScenes/ExampleGlossaryPopup.gd" id="20_vmnp2"]
 [ext_resource type="Script" path="res://addons/dialogic/Events/Voice/dialogic_dialog_voice.gd" id="20_x1o37"]
-[ext_resource type="Texture2D" uid="uid://c8w17dsl8cin5" path="res://addons/dialogic/Example Assets/next-indicator/next-indicator.png" id="21_rp1u3"]
+[ext_resource type="Texture2D" uid="uid://d3g6vvn16a6gn" path="res://addons/dialogic/Example Assets/next-indicator/next-indicator.png" id="21_rp1u3"]
 [ext_resource type="Script" path="res://addons/dialogic/Events/TextInput/DialogicNode_TextInput.gd" id="22_ltkcf"]
 [ext_resource type="Script" path="res://addons/dialogic/Example Assets/ExampleScenes/HideWithChild.gd" id="23"]
 
@@ -84,15 +84,8 @@ script = ExtResource("9")
 [node name="DialogicNode_MusicPlayer" type="AudioStreamPlayer" parent="."]
 script = ExtResource("8")
 
-[node name="BG" type="CanvasLayer" parent="."]
-layer = 0
-
-[node name="DialogicNode_Background" type="TextureRect" parent="BG"]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-ignore_texture_size = true
-stretch_mode = 6
+[node name="DialogicNode_BackgroundHolder" type="CanvasLayer" parent="."]
+layer = -1
 script = ExtResource("7")
 
 [node name="DialogicNode_PortraitHolder" type="CanvasLayer" parent="."]
@@ -129,6 +122,8 @@ layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 script = ExtResource("12")
 
 [node name="Choices" type="VBoxContainer" parent="DefaultTheme"]
@@ -211,6 +206,7 @@ offset_left = -269.0
 offset_top = -171.0
 offset_right = -202.0
 offset_bottom = -141.0
+grow_horizontal = 2
 grow_vertical = 0
 theme_override_styles/panel = SubResource("StyleBoxFlat_dpede")
 script = ExtResource("23")
@@ -254,6 +250,8 @@ script = ExtResource("2")
 
 [node name="DialogicNode_TypeSounds" type="AudioStreamPlayer" parent="DefaultTheme/PanelContainer/DialogicNode_DialogText"]
 script = ExtResource("10")
+sounds = []
+play_every_character = 0
 
 [node name="DialogicNode_NextIndicator" type="Control" parent="DefaultTheme/PanelContainer/DialogicNode_DialogText"]
 layout_mode = 1
@@ -300,6 +298,8 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_e4oel")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="DefaultTheme/DialogicNode_TextInput/PanelContainer"]
@@ -332,6 +332,7 @@ size_flags_horizontal = 8
 text = "Confirm"
 
 [node name="Glossary" type="Control" parent="DefaultTheme"]
+layout_mode = 1
 anchors_preset = 0
 script = ExtResource("20_vmnp2")
 
@@ -420,6 +421,8 @@ layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 script = ExtResource("12")
 theme_name = "Special"
 
