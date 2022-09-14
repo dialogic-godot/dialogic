@@ -122,9 +122,35 @@ func is_valid_event(string:String) -> bool:
 
 func build_event_editor():
 	add_header_edit('Name', ValueType.ComplexPicker, '', '', {'suggestions_func':[self, 'get_var_suggestions'], 'editor_icon':["ClassList", "EditorIcons"], 'disable_pretty_name':true})
-	add_header_edit('Operation', ValueType.FixedOptionSelector, '', '', {'selector_options':
-		{'to be':OPERATIONS.SET, 'to itself plus':OPERATIONS.ADD, 'to itself minus':OPERATIONS.SUBSTRACT, 'to itself multiplied by':OPERATIONS.MULTIPLY, 'to itself divided by':OPERATIONS.DIVIDE}
-		}, '!Name.is_empty()')
+	add_header_edit('Operation', ValueType.FixedOptionSelector, '', '', {
+		'selector_options': [
+			{
+				'label': 'to be',
+				'icon': load("res://addons/dialogic/Editor/Images/Dropdown/set.svg"),
+				'value': OPERATIONS.SET
+			},
+			{
+				'label': 'to itself plus',
+				'icon': load("res://addons/dialogic/Editor/Images/Dropdown/plus.svg"),
+				'value': OPERATIONS.ADD
+			},
+			{
+				'label': 'to itself minus',
+				'icon': load("res://addons/dialogic/Editor/Images/Dropdown/minus.svg"),
+				'value': OPERATIONS.SUBSTRACT
+			},
+			{
+				'label': 'to itself multiplied by',
+				'icon': load("res://addons/dialogic/Editor/Images/Dropdown/multiply.svg"),
+				'value': OPERATIONS.MULTIPLY
+			},
+			{
+				'label': 'to itself divided by',
+				'icon': load("res://addons/dialogic/Editor/Images/Dropdown/divide.svg"),
+				'value': OPERATIONS.DIVIDE
+			}
+		]
+	}, '!Name.is_empty()')
 	add_header_edit('Value', ValueType.ComplexPicker, '', '', {'suggestions_func':[self, 'get_value_suggestions'], 'editor_icon':["Variant", "EditorIcons"], 'disable_pretty_name':true}, '!Name.is_empty() and not RandomEnabled')
 	add_header_label('a random integer', 'RandomEnabled')
 	add_body_edit('RandomEnabled', ValueType.Bool, 'Use Random Integer:', '', {}, '!Name.is_empty()')

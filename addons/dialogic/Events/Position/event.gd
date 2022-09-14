@@ -46,7 +46,26 @@ func _init() -> void:
 	expand_by_default = false
 	
 func build_event_editor():
-	add_header_edit('ActionType', ValueType.FixedOptionSelector, '', '', {'selector_options':{"Change":ActionTypes.SetRelative, "Set":ActionTypes.SetAbsolute, "Reset":ActionTypes.Reset, "Reset All":ActionTypes.ResetAll}})
+	add_header_edit('ActionType', ValueType.FixedOptionSelector, '', '', {
+		'selector_options': [
+			{
+				'label': 'Change',
+				'value': ActionTypes.SetRelative,
+			},
+			{
+				'label': 'Set',
+				'value': ActionTypes.SetAbsolute,
+			},
+			{
+				'label': 'Reset',
+				'value': ActionTypes.Reset,
+			},
+			{
+				'label': 'Reset All',
+				'value': ActionTypes.ResetAll,
+			}
+		]
+		})
 	add_header_edit("Position", ValueType.Integer, "Position:", '', {}, 'ActionType != ActionTypes.ResetAll')
 	add_header_label('to (absolute)', 'ActionType == ActionTypes.SetAbsolute')
 	add_header_label('by (relative)', 'ActionType == ActionTypes.SetRelative')

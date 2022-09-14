@@ -1,9 +1,9 @@
-[gd_scene load_steps=11 format=3 uid="uid://ccx5mwul28wtn"]
+[gd_scene load_steps=11 format=3]
 
 [ext_resource type="Script" path="res://addons/dialogic/Editor/Events/EventNode/EventNode.gd" id="1"]
 [ext_resource type="StyleBox" uid="uid://obyrr26pqk2p" path="res://addons/dialogic/Editor/Events/styles/selected_styleboxflat.tres" id="2_vj6hl"]
 [ext_resource type="StyleBox" uid="uid://c8k6tbipodsg" path="res://addons/dialogic/Editor/Events/styles/ResourceMenuPanelBackground.tres" id="5_wntx6"]
-[ext_resource type="Texture2D" uid="uid://dpfvgoi1w3fef" path="res://addons/dialogic/Editor/Images/Plugin/plugin-editor-icon-dark-theme-1.svg" id="6"]
+[ext_resource type="Texture2D" uid="uid://cjypo16bjche7" path="res://addons/dialogic/Editor/Images/plugin-icon.svg" id="6"]
 [ext_resource type="Script" path="res://addons/dialogic/Editor/Events/EventNode/PopupMenu.gd" id="8"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_otutu"]
