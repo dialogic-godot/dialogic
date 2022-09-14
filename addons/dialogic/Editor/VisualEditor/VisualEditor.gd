@@ -107,9 +107,9 @@ func save_timeline() -> void:
 			
 			# Build new processed timeline for the ResourceSaver to use
 			# ResourceSaver needs a DialogicEvents timeline so the translation builder can run
-			current_timeline._events_processed = false
+			current_timeline.events_processed = false
 			editor_reference.process_timeline(current_timeline)
-			current_timeline._events_processed = false		
+			current_timeline.events_processed = false		
 			ResourceSaver.save(current_timeline, current_timeline.resource_path)
 			
 			#Switch back to the text event array, in case we're switching editor modes
