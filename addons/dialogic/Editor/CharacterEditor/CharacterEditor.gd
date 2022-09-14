@@ -355,6 +355,7 @@ func _on_PreviewMode_item_selected(index:int) -> void:
 		%RealSizeRemotePivotTransform.update_position = true
 	update_preview()
 	ProjectSettings.set_setting('dialogic/editor/character_preview_mode', index)
+	ProjectSettings.save()
 
 func main_portrait_settings_update(value = null) -> void:
 	update_preview()

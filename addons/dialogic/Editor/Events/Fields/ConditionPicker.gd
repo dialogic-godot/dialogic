@@ -12,7 +12,32 @@ func _ready():
 		'background': Color('#1D1F25'),
 		'padding': [5, 5],
 	})
-	%Operator.options = {'==':'==', '>':'>', '<':'<', '<=': '<=', '>=':'>=', '!=':'!='}
+	%Operator.options = [
+		{
+			'label': '==',
+			'value': '=='
+		}, 
+		{
+			'label': '>',
+			'value': '>'
+		}, 
+		{
+			'label': '<',
+			'value': '<'
+		}, 
+		{
+			'label': '<=',
+			'value': '<='
+		}, 
+		{
+			'label': '>=',
+			'value': '>='
+		}, 
+		{
+			'label': '!=',
+			'value': '!='
+		}
+	]
 	%ToggleComplex.icon = get_theme_icon("Enum", "EditorIcons")
 	
 	%Value1.resource_icon = get_theme_icon("ClassList", "EditorIcons")

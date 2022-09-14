@@ -42,6 +42,8 @@ static func inline(style:Dictionary) -> StyleBoxFlat:
 				s.set('content_margin_right', value_h)
 			'padding-right':
 				s.set('content_margin_right', style[property] * scale)
+			'padding-left':
+				s.set('content_margin_left', style[property] * scale)
 	return s
 
 static func style(node, style:Dictionary) -> StyleBoxFlat:

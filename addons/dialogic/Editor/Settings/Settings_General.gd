@@ -38,9 +38,11 @@ func _on_CustomEventsFolderButton_pressed():
 func custom_events_folder_selected(folder_path:String):
 	%CustomEventsFolderLabel.text = folder_path
 	ProjectSettings.set_setting('dialogic/custom_events_folder', folder_path)
+	ProjectSettings.save()
 
 func _on_color_change(color: Color, who):
-	ProjectSettings.set_setting('dialogic/editor/' + who.name, color)
+	ProjectSettings.set_setting('dialogic/editor/' + str(who.name), color)
+	ProjectSettings.save()
 	emit_signal('colors_changed')
 
 func _on_reset_colors_button():
@@ -52,6 +54,7 @@ func _on_reset_colors_button():
 		# If you manage to make it work using the ProjectSettings.clear() 
 		# feel free to open a PR!
 		ProjectSettings.set_setting('dialogic/editor/' + str(n.name), color_palette[n.name])
+	ProjectSettings.save()
 	emit_signal('colors_changed')
 
 
@@ -61,3 +64,4 @@ func _on_TestingSceneButton_pressed():
 func custom_testing_scene_selected(path:String):
 	%TestingSceneLabel.text = path
 	ProjectSettings.set_setting('dialogic/editor/test_dialog_scene', path)
+	ProjectSettings.save()

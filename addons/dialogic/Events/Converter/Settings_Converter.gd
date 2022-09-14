@@ -930,7 +930,6 @@ func convertVariables():
 						
 
 		ProjectSettings.set_setting('dialogic/variables', null)
-		ProjectSettings.save()
 		ProjectSettings.set_setting('dialogic/variables', newVariableDictionary)
 		ProjectSettings.save()
 		
@@ -1030,6 +1029,7 @@ func convertSettings():
 	ProjectSettings.set_setting('dialogic/text/autocolor_names', config.get_value("dialog", "auto_color_names", true))
 	ProjectSettings.set_setting('dialogic/choices/autofocus_first', config.get_value("input", "autofocus_choices", false))
 	ProjectSettings.set_setting('dialogic/choices/delay', config.get_value("input", "delay_after_options", 0.2))
+	ProjectSettings.save()
 	
 
 
