@@ -32,6 +32,7 @@ func _ready() -> void:
 	add_child(timer)
 	timer.wait_time = 0.01
 	timer.one_shot = true
+	timer.process_callback = Timer.TIMER_PROCESS_PHYSICS
 	timer.timeout.connect(continue_reveal)
 	
 	# compile effects regex

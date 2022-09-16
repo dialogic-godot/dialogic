@@ -72,6 +72,7 @@ func preview():
 	if %SoundFolder.hint_tooltip.is_empty(): return
 	$DialogicNode_TypeSounds.load_overwrite(get_data())
 	var preview_timer = Timer.new()
+	preview_timer.process_callback = Timer.TIMER_PROCESS_PHYSICS
 	add_child(preview_timer)
 	preview_timer.start(DialogicUtil.get_project_setting('text/speed', 0.01))
 	for i in range(20):

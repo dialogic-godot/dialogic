@@ -252,7 +252,7 @@ func load_selected_portrait():
 			if tab.has_method('load_portrait_data'):
 				tab.load_portrait_data(selected_item, current_portrait_data)
 		
-		await get_tree().create_timer(0.01).timeout
+		await get_tree().create_timer(0.01, true, true).timeout
 		selected_item.set_editable(0, true)
 
 func delete_portrait_item(item:TreeItem) -> void:
