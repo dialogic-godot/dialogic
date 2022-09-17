@@ -72,7 +72,7 @@ func stop_audio():
 func set_timer(time:float):
 	if !voicetimer:
 		voicetimer = Timer.new()
-		voicetimer.process_callback = Timer.TIMER_PROCESS_PHYSICS
+		DialogicUtil.update_timer_process_callback(voicetimer)
 		voicetimer.one_shot = true
 		add_child(voicetimer)
 		voicetimer.timeout.connect(stop_audio)

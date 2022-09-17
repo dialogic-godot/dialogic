@@ -4,7 +4,7 @@ var choice_blocker = Timer.new()
 
 func _ready():
 	choice_blocker.one_shot = true
-	choice_blocker.process_callback = Timer.TIMER_PROCESS_PHYSICS
+	DialogicUtil.update_timer_process_callback(choice_blocker)
 	add_child(choice_blocker)
 
 ####################################################################################################

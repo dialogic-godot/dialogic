@@ -164,3 +164,11 @@ static func get_color_palette(default:bool = false) -> Dictionary:
 static func get_color(value:String) -> Color:
 	var colors = get_color_palette()
 	return colors[value]
+
+
+static func is_physics_timer()->bool:
+	return get_project_setting('dialogic/timer/process_in_physics', false)
+	
+
+static func update_timer_process_callback(timer:Timer):
+	timer.process_callback = Timer.TIMER_PROCESS_PHYSICS if is_physics_timer() else Timer.TIMER_PROCESS_IDLE

@@ -190,7 +190,7 @@ var autosave_timer = Timer.new()
 
 func _ready():
 	autosave_timer.one_shot = true
-	autosave_timer.process_callback = Timer.TIMER_PROCESS_PHYSICS
+	DialogicUtil.update_timer_process_callback(autosave_timer)
 	autosave_timer.name = "AutosaveTimer"
 	autosave_timer.timeout.connect(_on_autosave_timer_timeout)
 	add_child(autosave_timer)

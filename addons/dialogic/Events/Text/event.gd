@@ -77,7 +77,7 @@ func _execute() -> void:
 		if dialogic.has_subsystem('Voice') and dialogic.Voice.is_voiced(dialogic.current_event_idx):
 			#autocontinue settings is set as minimal. change or keep this? - Kvagram
 			wait = max(wait, dialogic.Voice.get_remaining_time())
-		await dialogic.get_tree().create_timer(wait, true, true).timeout
+		await dialogic.get_tree().create_timer(wait, true, DialogicUtil.is_physics_timer()).timeout
 		dialogic.handle_next_event()
 	else:
 		dialogic.Text.show_next_indicators()
