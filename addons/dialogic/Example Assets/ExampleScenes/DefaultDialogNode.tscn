@@ -10,16 +10,16 @@
 [ext_resource type="Script" path="res://addons/dialogic/Events/Music/Display_MusicPlayer.gd" id="8"]
 [ext_resource type="Script" path="res://addons/dialogic/Events/Sound/Display_SoundPlayer.gd" id="9"]
 [ext_resource type="Script" path="res://addons/dialogic/Events/Text/DialogicNode_TypeSounds.gd" id="10"]
-[ext_resource type="AudioStream" uid="uid://b667kjxanowm1" path="res://addons/dialogic/Example Assets/Keyboard Noises/typing4.wav" id="11"]
+[ext_resource type="AudioStream" uid="uid://cuhpykc7nblvp" path="res://addons/dialogic/Example Assets/Keyboard Noises/typing4.wav" id="11"]
 [ext_resource type="Script" path="res://addons/dialogic/Events/Theme/Display_Theme.gd" id="12"]
-[ext_resource type="AudioStream" uid="uid://dm3kggq1daf18" path="res://addons/dialogic/Example Assets/Keyboard Noises/typing5.wav" id="13"]
-[ext_resource type="AudioStream" uid="uid://c5f4b0wqdc221" path="res://addons/dialogic/Example Assets/Keyboard Noises/typing1.wav" id="14"]
+[ext_resource type="AudioStream" uid="uid://c0kbwyd4f11wb" path="res://addons/dialogic/Example Assets/Keyboard Noises/typing5.wav" id="13"]
+[ext_resource type="AudioStream" uid="uid://dn4wqv4fvdv8l" path="res://addons/dialogic/Example Assets/Keyboard Noises/typing1.wav" id="14"]
 [ext_resource type="Script" path="res://addons/dialogic/Events/Text/Display_InputHandler.gd" id="17"]
 [ext_resource type="Script" path="res://addons/dialogic/Events/Choice/SoundButton.gd" id="18"]
 [ext_resource type="Script" path="res://addons/dialogic/Events/Text/Display_NextIndicator.gd" id="20_ljcq2"]
 [ext_resource type="Script" path="res://addons/dialogic/Example Assets/ExampleScenes/ExampleGlossaryPopup.gd" id="20_vmnp2"]
 [ext_resource type="Script" path="res://addons/dialogic/Events/Voice/dialogic_dialog_voice.gd" id="20_x1o37"]
-[ext_resource type="Texture2D" uid="uid://c8w17dsl8cin5" path="res://addons/dialogic/Example Assets/next-indicator/next-indicator.png" id="21_rp1u3"]
+[ext_resource type="Texture2D" uid="uid://d3g6vvn16a6gn" path="res://addons/dialogic/Example Assets/next-indicator/next-indicator.png" id="21_rp1u3"]
 [ext_resource type="Script" path="res://addons/dialogic/Events/TextInput/DialogicNode_TextInput.gd" id="22_ltkcf"]
 [ext_resource type="Script" path="res://addons/dialogic/Example Assets/ExampleScenes/HideWithChild.gd" id="23"]
 
@@ -84,15 +84,8 @@ script = ExtResource("9")
 [node name="DialogicNode_MusicPlayer" type="AudioStreamPlayer" parent="."]
 script = ExtResource("8")
 
-[node name="BG" type="CanvasLayer" parent="."]
-layer = 0
-
-[node name="DialogicNode_Background" type="TextureRect" parent="BG"]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-ignore_texture_size = true
-stretch_mode = 6
+[node name="DialogicNode_BackgroundHolder" type="CanvasLayer" parent="."]
+layer = -1
 script = ExtResource("7")
 
 [node name="DialogicNode_PortraitHolder" type="CanvasLayer" parent="."]
@@ -129,10 +122,11 @@ layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 script = ExtResource("12")
 
 [node name="Choices" type="VBoxContainer" parent="DefaultTheme"]
-layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -148,14 +142,12 @@ alignment = 1
 metadata/_edit_layout_mode = 1
 
 [node name="DialogicNode_ChoiceButton1" type="Button" parent="DefaultTheme/Choices"]
-layout_mode = 2
 offset_right = 230.0
 offset_bottom = 31.0
 text = "Some text"
 script = ExtResource("4")
 
 [node name="DialogicNode_ChoiceButton2" type="Button" parent="DefaultTheme/Choices"]
-layout_mode = 2
 offset_top = 35.0
 offset_right = 230.0
 offset_bottom = 66.0
@@ -163,7 +155,6 @@ text = "Some text"
 script = ExtResource("4")
 
 [node name="DialogicNode_ChoiceButton3" type="Button" parent="DefaultTheme/Choices"]
-layout_mode = 2
 offset_top = 70.0
 offset_right = 230.0
 offset_bottom = 101.0
@@ -171,7 +162,6 @@ text = "Some text"
 script = ExtResource("4")
 
 [node name="DialogicNode_ChoiceButton4" type="Button" parent="DefaultTheme/Choices"]
-layout_mode = 2
 offset_top = 105.0
 offset_right = 230.0
 offset_bottom = 136.0
@@ -179,7 +169,6 @@ text = "Some text"
 script = ExtResource("4")
 
 [node name="DialogicNode_ChoiceButton5" type="Button" parent="DefaultTheme/Choices"]
-layout_mode = 2
 offset_top = 140.0
 offset_right = 230.0
 offset_bottom = 171.0
@@ -187,7 +176,6 @@ text = "Some text"
 script = ExtResource("4")
 
 [node name="DialogicNode_ChoiceButton6" type="Button" parent="DefaultTheme/Choices"]
-layout_mode = 2
 offset_top = 175.0
 offset_right = 230.0
 offset_bottom = 206.0
@@ -201,7 +189,6 @@ sound_hover = ExtResource("11")
 sound_focus = ExtResource("13")
 
 [node name="PanelContainer2" type="PanelContainer" parent="DefaultTheme"]
-layout_mode = 1
 anchors_preset = 7
 anchor_left = 0.5
 anchor_top = 1.0
@@ -211,6 +198,7 @@ offset_left = -269.0
 offset_top = -171.0
 offset_right = -202.0
 offset_bottom = -141.0
+grow_horizontal = 2
 grow_vertical = 0
 theme_override_styles/panel = SubResource("StyleBoxFlat_dpede")
 script = ExtResource("23")
@@ -218,7 +206,6 @@ metadata/_edit_layout_mode = 1
 metadata/_edit_use_custom_anchors = true
 
 [node name="DialogicNode_NameLabel" type="Label" parent="DefaultTheme/PanelContainer2"]
-layout_mode = 2
 offset_left = 10.0
 offset_top = 2.0
 offset_right = 57.0
@@ -227,7 +214,6 @@ text = "Name"
 script = ExtResource("3")
 
 [node name="PanelContainer" type="PanelContainer" parent="DefaultTheme"]
-layout_mode = 1
 anchors_preset = 7
 anchor_left = 0.5
 anchor_top = 1.0
@@ -243,7 +229,6 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_e4oel")
 metadata/_edit_layout_mode = 1
 
 [node name="DialogicNode_DialogText" type="RichTextLabel" parent="DefaultTheme/PanelContainer"]
-layout_mode = 2
 offset_left = 10.0
 offset_top = 5.0
 offset_right = 542.0
@@ -254,9 +239,11 @@ script = ExtResource("2")
 
 [node name="DialogicNode_TypeSounds" type="AudioStreamPlayer" parent="DefaultTheme/PanelContainer/DialogicNode_DialogText"]
 script = ExtResource("10")
+sounds = []
+play_every_character = 0
 
 [node name="DialogicNode_NextIndicator" type="Control" parent="DefaultTheme/PanelContainer/DialogicNode_DialogText"]
-layout_mode = 1
+layout_mode = 3
 anchors_preset = 3
 anchor_left = 1.0
 anchor_top = 1.0
@@ -271,7 +258,6 @@ show_on_questions = true
 metadata/_edit_layout_mode = 1
 
 [node name="Icon" type="TextureRect" parent="DefaultTheme/PanelContainer/DialogicNode_DialogText/DialogicNode_NextIndicator"]
-layout_mode = 0
 offset_top = -2.0
 offset_right = 23.0
 offset_bottom = 21.0
@@ -280,7 +266,7 @@ ignore_texture_size = true
 stretch_mode = 5
 
 [node name="DialogicNode_TextInput" type="Control" parent="DefaultTheme"]
-layout_mode = 1
+layout_mode = 3
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -296,34 +282,31 @@ script = ExtResource("22_ltkcf")
 metadata/_edit_layout_mode = 1
 
 [node name="PanelContainer" type="PanelContainer" parent="DefaultTheme/DialogicNode_TextInput"]
-layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_e4oel")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="DefaultTheme/DialogicNode_TextInput/PanelContainer"]
-layout_mode = 2
 offset_left = 10.0
 offset_top = 5.0
 offset_right = 410.0
 offset_bottom = 101.0
 
 [node name="TextLabel" type="Label" parent="DefaultTheme/DialogicNode_TextInput/PanelContainer/VBoxContainer"]
-layout_mode = 2
 offset_right = 400.0
 offset_bottom = 26.0
 text = "Please enter some text:"
 autowrap_mode = 3
 
 [node name="InputField" type="LineEdit" parent="DefaultTheme/DialogicNode_TextInput/PanelContainer/VBoxContainer"]
-layout_mode = 2
 offset_top = 30.0
 offset_right = 400.0
 offset_bottom = 61.0
 
 [node name="ConfirmationButton" type="Button" parent="DefaultTheme/DialogicNode_TextInput/PanelContainer/VBoxContainer"]
-layout_mode = 2
 offset_left = 329.0
 offset_top = 65.0
 offset_right = 400.0
@@ -332,11 +315,11 @@ size_flags_horizontal = 8
 text = "Confirm"
 
 [node name="Glossary" type="Control" parent="DefaultTheme"]
+layout_mode = 3
 anchors_preset = 0
 script = ExtResource("20_vmnp2")
 
 [node name="Panel" type="PanelContainer" parent="DefaultTheme/Glossary"]
-layout_mode = 1
 anchors_preset = 7
 anchor_left = 0.5
 anchor_top = 1.0
@@ -353,7 +336,6 @@ metadata/_edit_use_custom_anchors = true
 metadata/_edit_layout_mode = 1
 
 [node name="VBox" type="VBoxContainer" parent="DefaultTheme/Glossary/Panel"]
-layout_mode = 2
 offset_left = 2.0
 offset_top = 4.0
 offset_right = 199.0
@@ -361,19 +343,16 @@ offset_bottom = 79.0
 theme_override_constants/separation = 0
 
 [node name="Title" type="Label" parent="DefaultTheme/Glossary/Panel/VBox"]
-layout_mode = 2
 offset_right = 197.0
 offset_bottom = 26.0
 text = "MyGlossaryEntry"
 
 [node name="HSeparator" type="HSeparator" parent="DefaultTheme/Glossary/Panel/VBox"]
-layout_mode = 2
 offset_top = 26.0
 offset_right = 197.0
 offset_bottom = 30.0
 
 [node name="Text" type="RichTextLabel" parent="DefaultTheme/Glossary/Panel/VBox"]
-layout_mode = 2
 offset_top = 30.0
 offset_right = 197.0
 offset_bottom = 53.0
@@ -382,7 +361,6 @@ text = "Some text"
 fit_content_height = true
 
 [node name="Extra" type="RichTextLabel" parent="DefaultTheme/Glossary/Panel/VBox"]
-layout_mode = 2
 offset_top = 53.0
 offset_right = 197.0
 offset_bottom = 75.0
@@ -394,7 +372,7 @@ fit_content_height = true
 
 [node name="Control" type="Control" parent="DefaultTheme/Glossary/Panel"]
 show_behind_parent = true
-layout_mode = 2
+layout_mode = 3
 anchors_preset = 0
 offset_left = 100.0
 offset_top = 79.0
@@ -404,7 +382,6 @@ size_flags_horizontal = 4
 size_flags_vertical = 8
 
 [node name="PanelContainer" type="PanelContainer" parent="DefaultTheme/Glossary/Panel/Control"]
-layout_mode = 0
 offset_left = -0.999999
 offset_top = -14.0
 offset_right = 19.0
@@ -420,11 +397,12 @@ layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 script = ExtResource("12")
 theme_name = "Special"
 
 [node name="Choices" type="VBoxContainer" parent="SpecialTheme"]
-layout_mode = 1
 anchors_preset = 3
 anchor_left = 1.0
 anchor_top = 1.0
@@ -440,7 +418,6 @@ alignment = 2
 metadata/_edit_layout_mode = 1
 
 [node name="DialogicNode_ChoiceButton1" type="Button" parent="SpecialTheme/Choices"]
-layout_mode = 2
 offset_left = 139.0
 offset_top = 40.0
 offset_right = 181.0
@@ -450,7 +427,6 @@ text = "Text"
 script = ExtResource("4")
 
 [node name="DialogicNode_ChoiceButton2" type="Button" parent="SpecialTheme/Choices"]
-layout_mode = 2
 offset_left = 139.0
 offset_top = 75.0
 offset_right = 181.0
@@ -460,7 +436,6 @@ text = "Text"
 script = ExtResource("4")
 
 [node name="DialogicNode_ChoiceButton3" type="Button" parent="SpecialTheme/Choices"]
-layout_mode = 2
 offset_left = 139.0
 offset_top = 110.0
 offset_right = 181.0
@@ -470,7 +445,6 @@ text = "Text"
 script = ExtResource("4")
 
 [node name="DialogicNode_ChoiceButton4" type="Button" parent="SpecialTheme/Choices"]
-layout_mode = 2
 offset_left = 139.0
 offset_top = 145.0
 offset_right = 181.0
@@ -480,7 +454,6 @@ text = "Text"
 script = ExtResource("4")
 
 [node name="DialogicNode_ChoiceButton5" type="Button" parent="SpecialTheme/Choices"]
-layout_mode = 2
 offset_left = 139.0
 offset_top = 180.0
 offset_right = 181.0
@@ -490,7 +463,6 @@ text = "Text"
 script = ExtResource("4")
 
 [node name="DialogicNode_ChoiceButton6" type="Button" parent="SpecialTheme/Choices"]
-layout_mode = 2
 offset_left = 139.0
 offset_top = 215.0
 offset_right = 181.0
@@ -500,7 +472,6 @@ text = "Text"
 script = ExtResource("4")
 
 [node name="PanelContainer" type="PanelContainer" parent="SpecialTheme"]
-layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
@@ -513,21 +484,18 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_nnmvp")
 metadata/_edit_layout_mode = 1
 
 [node name="MarginContainer" type="MarginContainer" parent="SpecialTheme/PanelContainer"]
-layout_mode = 2
 offset_left = 10.0
 offset_top = 10.0
 offset_right = 396.0
 offset_bottom = 59.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="SpecialTheme/PanelContainer/MarginContainer"]
-layout_mode = 2
 offset_right = 386.0
 offset_bottom = 49.0
 theme_override_constants/separation = 0
 alignment = 1
 
 [node name="DialogicNode_NameLabel" type="Label" parent="SpecialTheme/PanelContainer/MarginContainer/VBoxContainer"]
-layout_mode = 2
 offset_right = 386.0
 offset_bottom = 26.0
 text = "Name"
@@ -536,7 +504,6 @@ script = ExtResource("3")
 use_character_color = false
 
 [node name="DialogicNode_DialogText" type="RichTextLabel" parent="SpecialTheme/PanelContainer/MarginContainer/VBoxContainer"]
-layout_mode = 2
 offset_top = 26.0
 offset_right = 386.0
 offset_bottom = 49.0
