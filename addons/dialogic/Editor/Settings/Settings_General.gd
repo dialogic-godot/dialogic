@@ -67,6 +67,6 @@ func custom_testing_scene_selected(path:String):
 	ProjectSettings.set_setting('dialogic/editor/test_dialog_scene', path)
 	ProjectSettings.save()
 
-func _on_physics_timer_button_toggled(button_pressed:bool):
+func _on_physics_timer_button_toggled(button_pressed:bool) -> void:
 	ProjectSettings.set_setting('dialogic/timer/process_in_physics', button_pressed)
 	ProjectSettings.save()

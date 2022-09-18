@@ -175,7 +175,7 @@ func load_batch(data):
 
 func _on_batch_loaded():
 	if _batches.size() > 0:
-		await get_tree().create_timer(0.01, true, DialogicUtil.is_physics_timer()).timeout
+		await get_tree().create_timer(0.01).timeout
 		load_batch(_batches)
 	else:
 		if opener_events_stack:
