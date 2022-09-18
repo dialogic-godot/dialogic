@@ -1,13 +1,13 @@
-[gd_scene load_steps=12 format=3 uid="uid://00n6eaae77j6"]
+[gd_scene load_steps=12 format=3]
 
-[ext_resource type="Script" path="res://addons/dialogic/Events/Style/Display_Style.gd" id="1_aoco8"]
-[ext_resource type="Script" path="res://addons/dialogic/Events/Text/Display_InputHandler.gd" id="2_7abe3"]
+[ext_resource type="Script" path="res://addons/dialogic/Events/Style/DialogicNode_Style.gd" id="1_aoco8"]
+[ext_resource type="Script" path="res://addons/dialogic/Events/Text/DialogicNode_InputHandler.gd" id="2_7abe3"]
 [ext_resource type="Script" path="res://addons/dialogic/Example Assets/example-scenes/ExampleTextBubble.gd" id="3_2q2a6"]
 [ext_resource type="Texture2D" uid="uid://xupbj8gf778j" path="res://addons/dialogic/Example Assets/backgrounds/BubbleEnd.png" id="4_q6vcu"]
-[ext_resource type="Script" path="res://addons/dialogic/Events/Text/Display_DialogText.gd" id="5_rcetc"]
-[ext_resource type="Script" path="res://addons/dialogic/Events/Choice/Display_ChoiceButton.gd" id="6_8g1dv"]
+[ext_resource type="Script" path="res://addons/dialogic/Events/Text/DialogicNode_DialogText.gd" id="5_rcetc"]
+[ext_resource type="Script" path="res://addons/dialogic/Events/Choice/DialogicNode_ChoiceButton.gd" id="6_8g1dv"]
 [ext_resource type="Script" path="res://addons/dialogic/Example Assets/example-scenes/HideWithChild.gd" id="7_1j72f"]
-[ext_resource type="Script" path="res://addons/dialogic/Events/Text/Display_NameLabel.gd" id="8_agitx"]
+[ext_resource type="Script" path="res://addons/dialogic/Events/Text/DialogicNode_NameLabel.gd" id="8_agitx"]
 
 [sub_resource type="StyleBoxFlat" id="11"]
 bg_color = Color(0.847059, 0.627451, 0.364706, 1)
