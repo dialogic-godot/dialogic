@@ -1,6 +1,6 @@
 @tool
 extends DialogicEvent
-class_name DialogicChangeStyleEvent
+class_name DialogicStyleEvent
 
 # DEFINE ALL PROPERTIES OF THE EVENT
 var StyleName: String = ""

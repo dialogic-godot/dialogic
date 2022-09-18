@@ -1,12 +1,14 @@
-[label name="start"]
+Hello
 
-[theme name="Default"]
+[label name="start"]
 
 [background path="res://addons/dialogic/Example Assets/backgrounds/vn-background-1.png"]
 
 Join Jowan (shocked) 3 [ mirrored="true"]
 
 Join Emilio (default) 5
+
+Join Dex 1
 
 Jowan: This is a cool feature [portrait=joy].
 
