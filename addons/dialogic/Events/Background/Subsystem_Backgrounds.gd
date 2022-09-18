@@ -16,7 +16,7 @@ func load_game_state():
 ####################################################################################################
 func update_background(scene:String = '', argument:String = '', fade_time:float = 0.0) -> void:
 	
-	for node in get_tree().get_nodes_in_group('dialogic_bg_image'):
+	for node in get_tree().get_nodes_in_group('dialogic_background_holders'):
 		if node.visible:
 			var bg_set: bool = false
 			if scene == dialogic.current_state_info['background_scene']:

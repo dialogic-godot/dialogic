@@ -283,7 +283,7 @@ func update_preview() -> void:
 		
 		var scene = null
 		if current_portrait_data.get('scene', '').is_empty():
-			scene = load("res://addons/dialogic/Other/DefaultPortrait.tscn")
+			scene = load("res://addons/dialogic/Events/Character/DefaultPortrait.tscn")
 		else:
 			scene = load(current_portrait_data.get('scene'))
 		

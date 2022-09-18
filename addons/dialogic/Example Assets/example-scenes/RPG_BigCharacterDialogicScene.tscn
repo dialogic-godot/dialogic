@@ -1,0 +1,270 @@
+[gd_scene load_steps=19 format=3]
+
+[ext_resource type="DynamicFontData" path="res://addons/dialogic/Example Assets/fonts/Roboto-Regular.ttf" id="1"]
+[ext_resource type="DynamicFontData" path="res://addons/dialogic/Example Assets/fonts/Roboto-Bold.ttf" id="2"]
+[ext_resource type="Script" path="res://addons/dialogic/Events/Text/DialogicNode_DialogText.gd" id="3"]
+[ext_resource type="Script" path="res://addons/dialogic/Events/Character/DialogicNode_PortraitPosition.gd" id="4"]
+[ext_resource type="Script" path="res://addons/dialogic/Events/Character/DialogicNode_PortraitHolder.gd" id="5"]
+[ext_resource type="Script" path="res://addons/dialogic/Events/Text/DialogicNode_NameLabel.gd" id="6"]
+[ext_resource type="Texture" path="res://addons/dialogic/Example Assets/backgrounds/background.webp" id="7"]
+[ext_resource type="Script" path="res://addons/dialogic/Events/Text/DialogicNode_InputHandler.gd" id="8"]
+[ext_resource type="Script" path="res://addons/dialogic/Events/Choice/DialogicNode_ChoiceButton.gd" id="9"]
+[ext_resource type="DynamicFontData" path="res://addons/dialogic/Example Assets/fonts/Roboto-Italic.ttf" id="10"]
+
+[sub_resource type="StyleBoxFlat" id=4]
+content_margin_left = 20.0
+content_margin_right = 20.0
+content_margin_top = 4.0
+content_margin_bottom = 4.0
+bg_color = Color( 0.117647, 0.0862745, 0.188235, 1 )
+skew = Vector2( -0.245, 0 )
+shadow_color = Color( 0.501961, 0.501961, 0.501961, 0.298039 )
+shadow_size = 5
+
+[sub_resource type="DynamicFont" id=1]
+size = 20
+font_data = ExtResource( 2 )
+
+[sub_resource type="DynamicFont" id=2]
+size = 18
+font_data = ExtResource( 1 )
+
+[sub_resource type="DynamicFont" id=3]
+font_data = ExtResource( 10 )
+
+[sub_resource type="StyleBoxFlat" id=5]
+content_margin_left = 4.0
+content_margin_right = 4.0
+content_margin_top = 4.0
+content_margin_bottom = 4.0
+bg_color = Color( 0.235294, 0.203922, 0.341176, 1 )
+skew = Vector2( -0.051, 0 )
+
+[sub_resource type="StyleBoxFlat" id=6]
+content_margin_left = 4.0
+content_margin_right = 4.0
+content_margin_top = 4.0
+content_margin_bottom = 4.0
+bg_color = Color( 0.14902, 0.12549, 0.227451, 1 )
+draw_center = false
+skew = Vector2( -0.051, 0 )
+border_width_right = 2
+border_width_bottom = 2
+corner_radius_bottom_right = 3
+expand_margin_right = 2.0
+expand_margin_bottom = 2.0
+
+[sub_resource type="StyleBoxFlat" id=7]
+content_margin_left = 4.0
+content_margin_right = 4.0
+content_margin_top = 4.0
+content_margin_bottom = 4.0
+bg_color = Color( 0.262745, 0.25098, 0.305882, 1 )
+skew = Vector2( -0.051, 0 )
+
+[sub_resource type="StyleBoxFlat" id=8]
+content_margin_left = 4.0
+content_margin_right = 4.0
+content_margin_top = 4.0
+content_margin_bottom = 4.0
+bg_color = Color( 0.14902, 0.12549, 0.227451, 1 )
+skew = Vector2( -0.051, 0 )
+
+[node name="RPG_ExampleNode" type="CanvasLayer"]
+
+[node name="DialogicInputHandler" type="Node" parent="."]
+script = ExtResource( 8 )
+
+[node name="DialogicNode_PortraitHolder" type="CanvasLayer" parent="."]
+layer = 2
+script = ExtResource( 5 )
+
+[node name="DialogicNode_PortraitPosition" type="Position2D" parent="."]
+position = Vector2( 163, 601 )
+script = ExtResource( 4 )
+
+[node name="TextureRect" type="TextureRect" parent="."]
+self_modulate = Color( 0.0705882, 0.0745098, 0.196078, 0.819608 )
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -38.0
+margin_top = -145.0
+margin_right = 28.0
+margin_bottom = 59.0
+texture = ExtResource( 7 )
+expand = true
+
+[node name="TextureRect2" type="PanelContainer" parent="TextureRect"]
+anchor_top = 1.0
+anchor_bottom = 1.0
+margin_left = 342.0
+margin_top = -224.0
+margin_right = 530.0
+margin_bottom = -188.0
+custom_styles/panel = SubResource( 4 )
+
+[node name="DialogicNode_NameLabel" type="Label" parent="TextureRect/TextureRect2"]
+margin_left = 20.0
+margin_top = 6.0
+margin_right = 168.0
+margin_bottom = 30.0
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+custom_fonts/font = SubResource( 1 )
+text = "Name"
+script = ExtResource( 6 )
+
+[node name="DialogicNode_DialogText" type="RichTextLabel" parent="TextureRect"]
+margin_left = 351.0
+margin_top = 31.0
+margin_right = 1015.0
+margin_bottom = 123.0
+size_flags_vertical = 3
+custom_colors/default_color = Color( 0.996078, 0.996078, 0.996078, 1 )
+custom_fonts/normal_font = SubResource( 2 )
+bbcode_enabled = true
+bbcode_text = "Some text"
+text = "Some text"
+fit_content_height = true
+script = ExtResource( 3 )
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="TextureRect"]
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -314.5
+margin_top = -179.177
+margin_right = -49.5001
+margin_bottom = 2.82298
+grow_horizontal = 0
+grow_vertical = 0
+rect_rotation = 0.940045
+rect_pivot_offset = Vector2( 294.705, 89.0195 )
+alignment = 2
+
+[node name="DialogicNode_ChoiceButton" type="Button" parent="TextureRect/VBoxContainer2"]
+margin_right = 265.0
+margin_bottom = 27.0
+focus_neighbour_top = NodePath("../DialogicNode_ChoiceButton6")
+focus_neighbour_bottom = NodePath("../DialogicNode_ChoiceButton2")
+custom_colors/font_color_disabled = Color( 0.654902, 0.654902, 0.654902, 1 )
+custom_colors/font_color_focus = Color( 0.917647, 0.917647, 0.917647, 1 )
+custom_colors/font_color = Color( 0.905882, 0.905882, 0.905882, 1 )
+custom_colors/font_color_hover = Color( 0.886275, 0.815686, 0.952941, 1 )
+custom_colors/font_color_pressed = Color( 1, 1, 1, 1 )
+custom_fonts/font = SubResource( 3 )
+custom_styles/hover = SubResource( 5 )
+custom_styles/focus = SubResource( 6 )
+custom_styles/disabled = SubResource( 7 )
+custom_styles/normal = SubResource( 8 )
+text = "Text"
+script = ExtResource( 9 )
+
+[node name="DialogicNode_ChoiceButton2" type="Button" parent="TextureRect/VBoxContainer2"]
+margin_top = 31.0
+margin_right = 265.0
+margin_bottom = 58.0
+focus_neighbour_top = NodePath("../DialogicNode_ChoiceButton")
+focus_neighbour_bottom = NodePath("../DialogicNode_ChoiceButton3")
+custom_colors/font_color_disabled = Color( 0.654902, 0.654902, 0.654902, 1 )
+custom_colors/font_color_focus = Color( 0.917647, 0.917647, 0.917647, 1 )
+custom_colors/font_color = Color( 0.905882, 0.905882, 0.905882, 1 )
+custom_colors/font_color_hover = Color( 0.886275, 0.815686, 0.952941, 1 )
+custom_colors/font_color_pressed = Color( 1, 1, 1, 1 )
+custom_fonts/font = SubResource( 3 )
+custom_styles/hover = SubResource( 5 )
+custom_styles/focus = SubResource( 6 )
+custom_styles/disabled = SubResource( 7 )
+custom_styles/normal = SubResource( 8 )
+text = "Text"
+script = ExtResource( 9 )
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="DialogicNode_ChoiceButton3" type="Button" parent="TextureRect/VBoxContainer2"]
+margin_top = 62.0
+margin_right = 265.0
+margin_bottom = 89.0
+focus_neighbour_top = NodePath("../DialogicNode_ChoiceButton2")
+focus_neighbour_bottom = NodePath("../DialogicNode_ChoiceButton4")
+custom_colors/font_color_disabled = Color( 0.654902, 0.654902, 0.654902, 1 )
+custom_colors/font_color_focus = Color( 0.917647, 0.917647, 0.917647, 1 )
+custom_colors/font_color = Color( 0.905882, 0.905882, 0.905882, 1 )
+custom_colors/font_color_hover = Color( 0.886275, 0.815686, 0.952941, 1 )
+custom_colors/font_color_pressed = Color( 1, 1, 1, 1 )
+custom_fonts/font = SubResource( 3 )
+custom_styles/hover = SubResource( 5 )
+custom_styles/focus = SubResource( 6 )
+custom_styles/disabled = SubResource( 7 )
+custom_styles/normal = SubResource( 8 )
+text = "Text"
+script = ExtResource( 9 )
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="DialogicNode_ChoiceButton4" type="Button" parent="TextureRect/VBoxContainer2"]
+margin_top = 93.0
+margin_right = 265.0
+margin_bottom = 120.0
+focus_neighbour_top = NodePath("../DialogicNode_ChoiceButton3")
+focus_neighbour_bottom = NodePath("../DialogicNode_ChoiceButton5")
+custom_colors/font_color_disabled = Color( 0.654902, 0.654902, 0.654902, 1 )
+custom_colors/font_color_focus = Color( 0.917647, 0.917647, 0.917647, 1 )
+custom_colors/font_color = Color( 0.905882, 0.905882, 0.905882, 1 )
+custom_colors/font_color_hover = Color( 0.886275, 0.815686, 0.952941, 1 )
+custom_colors/font_color_pressed = Color( 1, 1, 1, 1 )
+custom_fonts/font = SubResource( 3 )
+custom_styles/hover = SubResource( 5 )
+custom_styles/focus = SubResource( 6 )
+custom_styles/disabled = SubResource( 7 )
+custom_styles/normal = SubResource( 8 )
+text = "Text"
+script = ExtResource( 9 )
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="DialogicNode_ChoiceButton5" type="Button" parent="TextureRect/VBoxContainer2"]
+margin_top = 124.0
+margin_right = 265.0
+margin_bottom = 151.0
+focus_neighbour_top = NodePath("../DialogicNode_ChoiceButton4")
+focus_neighbour_bottom = NodePath("../DialogicNode_ChoiceButton6")
+custom_colors/font_color_disabled = Color( 0.654902, 0.654902, 0.654902, 1 )
+custom_colors/font_color_focus = Color( 0.917647, 0.917647, 0.917647, 1 )
+custom_colors/font_color = Color( 0.905882, 0.905882, 0.905882, 1 )
+custom_colors/font_color_hover = Color( 0.886275, 0.815686, 0.952941, 1 )
+custom_colors/font_color_pressed = Color( 1, 1, 1, 1 )
+custom_fonts/font = SubResource( 3 )
+custom_styles/hover = SubResource( 5 )
+custom_styles/focus = SubResource( 6 )
+custom_styles/disabled = SubResource( 7 )
+custom_styles/normal = SubResource( 8 )
+text = "Text"
+script = ExtResource( 9 )
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="DialogicNode_ChoiceButton6" type="Button" parent="TextureRect/VBoxContainer2"]
+margin_top = 155.0
+margin_right = 265.0
+margin_bottom = 182.0
+focus_neighbour_top = NodePath("../DialogicNode_ChoiceButton5")
+focus_neighbour_bottom = NodePath("../DialogicNode_ChoiceButton")
+custom_colors/font_color_disabled = Color( 0.654902, 0.654902, 0.654902, 1 )
+custom_colors/font_color_focus = Color( 0.917647, 0.917647, 0.917647, 1 )
+custom_colors/font_color = Color( 0.905882, 0.905882, 0.905882, 1 )
+custom_colors/font_color_hover = Color( 0.886275, 0.815686, 0.952941, 1 )
+custom_colors/font_color_pressed = Color( 1, 1, 1, 1 )
+custom_fonts/font = SubResource( 3 )
+custom_styles/hover = SubResource( 5 )
+custom_styles/focus = SubResource( 6 )
+custom_styles/disabled = SubResource( 7 )
+custom_styles/normal = SubResource( 8 )
+text = "Text"
+script = ExtResource( 9 )
+__meta__ = {
+"_editor_description_": ""
+}

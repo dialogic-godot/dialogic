@@ -39,7 +39,7 @@ func play_voice_region(index:int):
 	var start:float = voiceregions[index][0]
 	var stop:float = voiceregions[index][1]
 	for audio_node in get_tree().get_nodes_in_group(audioplayer_name):
-		#do not play in invisible nodes. This allows audio (2d and 3d) to be used in themes
+		#do not play in invisible nodes. This allows audio (2d and 3d) to be used in styles
 		if "visible" in audio_node and not audio_node.visible:
 			continue
 		audio_node.play(start)
