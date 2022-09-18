@@ -1,17 +1,17 @@
 [gd_scene load_steps=8 format=3 uid="uid://dm4kxvcn7d7ug"]
 
 [ext_resource type="Script" path="res://addons/dialogic/Editor/Settings/Settings_General.gd" id="2"]
-[ext_resource type="LabelSettings" uid="uid://bqlmi2bwcj0s6" path="res://addons/dialogic/Editor/Common/HintLabelSettings.tres" id="2_hs15a"]
 [ext_resource type="StyleBox" uid="uid://dmsjhgv22dns8" path="res://addons/dialogic/Editor/Common/TitleBgStylebox.tres" id="2_u584y"]
+[ext_resource type="Script" path="res://addons/dialogic/Editor/Settings/HintLabelStylingScript.gd" id="2_uxx4f"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6mpk2"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ui276"]
 content_margin_left = 5.0
 content_margin_top = 5.0
 content_margin_right = 5.0
 content_margin_bottom = 5.0
 bg_color = Color(0.545098, 0.545098, 0.545098, 0.211765)
 
-[sub_resource type="Image" id="Image_iyfpw"]
+[sub_resource type="Image" id="Image_6ds5e"]
 data = {
 "data": PackedByteArray(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
 "format": "LumAlpha8",
@@ -21,7 +21,7 @@ data = {
 }
 
 [sub_resource type="ImageTexture" id="7"]
-image = SubResource("Image_iyfpw")
+image = SubResource("Image_6ds5e")
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3mwvq"]
 content_margin_left = 5.0
@@ -48,7 +48,7 @@ size_flags_horizontal = 3
 layout_mode = 2
 offset_right = 958.0
 offset_bottom = 36.0
-theme_override_styles/normal = SubResource("StyleBoxFlat_6mpk2")
+theme_override_styles/normal = SubResource("StyleBoxFlat_ui276")
 text = "Extensions"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="General"]
@@ -89,27 +89,21 @@ offset_top = 70.0
 offset_right = 958.0
 offset_bottom = 96.0
 text = "You should restart godot after changing this path!"
-label_settings = ExtResource("2_hs15a")
-
-[node name="HSeparator" type="HSeparator" parent="General"]
-layout_mode = 2
-offset_top = 100.0
-offset_right = 958.0
-offset_bottom = 104.0
+script = ExtResource("2_uxx4f")
 
 [node name="TitleLabel2" type="Label" parent="General"]
 layout_mode = 2
-offset_top = 108.0
+offset_top = 100.0
 offset_right = 958.0
-offset_bottom = 144.0
-theme_override_styles/normal = SubResource("StyleBoxFlat_6mpk2")
+offset_bottom = 136.0
+theme_override_styles/normal = SubResource("StyleBoxFlat_ui276")
 text = "Testing"
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="General"]
 layout_mode = 2
-offset_top = 148.0
+offset_top = 140.0
 offset_right = 958.0
-offset_bottom = 174.0
+offset_bottom = 166.0
 
 [node name="Label" type="Label" parent="General/HBoxContainer2"]
 layout_mode = 2
@@ -139,23 +133,23 @@ icon = SubResource("7")
 
 [node name="HSeparator2" type="HSeparator" parent="General"]
 layout_mode = 2
-offset_top = 178.0
+offset_top = 170.0
 offset_right = 958.0
-offset_bottom = 182.0
+offset_bottom = 174.0
 
 [node name="TitleLabel3" type="Label" parent="General"]
 layout_mode = 2
-offset_top = 186.0
+offset_top = 178.0
 offset_right = 958.0
-offset_bottom = 222.0
+offset_bottom = 214.0
 theme_override_styles/normal = SubResource("StyleBoxFlat_3mwvq")
 text = "Timer"
 
 [node name="HBoxContainer3" type="HBoxContainer" parent="General"]
 layout_mode = 2
-offset_top = 226.0
+offset_top = 218.0
 offset_right = 958.0
-offset_bottom = 252.0
+offset_bottom = 244.0
 
 [node name="Label" type="Label" parent="General/HBoxContainer3"]
 layout_mode = 2
