@@ -5,8 +5,8 @@
 [ext_resource type="Script" path="res://addons/dialogic/Events/Text/DialogicNode_NameLabel.gd" id="3"]
 [ext_resource type="Script" path="res://addons/dialogic/Events/Choice/DialogicNode_ChoiceButton.gd" id="4"]
 [ext_resource type="Script" path="res://addons/dialogic/Events/Character/DialogicNode_PortraitPosition.gd" id="5"]
+[ext_resource type="Script" path="res://addons/dialogic/Events/Background/DialogicNode_BackgroundHolder.gd" id="5_uvb2c"]
 [ext_resource type="Script" path="res://addons/dialogic/Events/Character/DialogicNode_PortraitHolder.gd" id="6"]
-[ext_resource type="Script" path="res://addons/dialogic/Events/Background/DialogicNode_Background.gd" id="7"]
 [ext_resource type="Script" path="res://addons/dialogic/Events/Music/DialogicNode_MusicPlayer.gd" id="8"]
 [ext_resource type="Script" path="res://addons/dialogic/Events/Sound/DialogicNode_SoundPlayer.gd" id="9"]
 [ext_resource type="Script" path="res://addons/dialogic/Events/Text/DialogicNode_TypeSounds.gd" id="10"]
@@ -84,18 +84,9 @@ script = ExtResource("9")
 [node name="DialogicNode_MusicPlayer" type="AudioStreamPlayer" parent="."]
 script = ExtResource("8")
 
-[node name="BG" type="CanvasLayer" parent="."]
-layer = 0
-
-[node name="DialogicNode_Background" type="TextureRect" parent="BG"]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-ignore_texture_size = true
-stretch_mode = 6
-script = ExtResource("7")
+[node name="DialogicNode_BackgroundHolder" type="CanvasLayer" parent="."]
+layer = -1
+script = ExtResource("5_uvb2c")
 
 [node name="DialogicNode_PortraitHolder" type="CanvasLayer" parent="."]
 layer = 0
