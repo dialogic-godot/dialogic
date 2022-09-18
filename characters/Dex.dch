@@ -12,7 +12,7 @@
 "description": "A pro developer. Having math troubles it seems.",
 "display_name": "Dex",
 "mirror": false,
-"nicknames": ["\"\\\"AnidemDex\\\"\"", "\"\\\"Dex\\\"\"", "\"\\\"\\\"\""],
+"nicknames": ["AnidemDex", "Dex"],
 "offset": Vector2(0, 80),
 "portraits": {
 "happy": {

@@ -2,9 +2,9 @@
 
 [ext_resource type="Script" path="res://addons/dialogic/Editor/Settings/Settings_Translations.gd" id="1_dvmyi"]
 [ext_resource type="StyleBox" uid="uid://dmsjhgv22dns8" path="res://addons/dialogic/Editor/Common/TitleBgStylebox.tres" id="2_kfqs4"]
-[ext_resource type="LabelSettings" uid="uid://nkh7ypguw3il" path="res://addons/dialogic/Editor/Common/HintLabelSettings.tres" id="3_t43rx"]
+[ext_resource type="Script" path="res://addons/dialogic/Editor/Settings/HintLabelStylingScript.gd" id="3_mkxlr"]
 
-[sub_resource type="Image" id="Image_u5ame"]
+[sub_resource type="Image" id="Image_cml6w"]
 data = {
 "data": PackedByteArray(255, 255, 255, 0, 255, 255, 255, 0, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 131, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 131, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 131, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 231, 255, 93, 93, 55, 255, 97, 97, 58, 255, 93, 93, 233, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 231, 255, 94, 94, 54, 255, 94, 94, 57, 255, 93, 93, 233, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 93, 93, 233, 255, 93, 93, 232, 255, 93, 93, 41, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 93, 93, 233, 255, 93, 93, 232, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 97, 97, 42, 255, 255, 255, 0, 255, 97, 97, 42, 255, 97, 97, 42, 255, 255, 255, 0, 255, 98, 98, 47, 255, 97, 97, 42, 255, 255, 255, 0, 255, 97, 97, 42, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 235, 255, 93, 93, 233, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 94, 94, 46, 255, 93, 93, 236, 255, 93, 93, 233, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 235, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 233, 255, 95, 95, 59, 255, 96, 96, 61, 255, 93, 93, 235, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 233, 255, 95, 95, 59, 255, 96, 96, 61, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0),
 "format": "RGBA8",
@@ -14,66 +14,75 @@ data = {
 }
 
 [sub_resource type="ImageTexture" id="ImageTexture_xranq"]
-image = SubResource("Image_u5ame")
+image = SubResource("Image_cml6w")
 
 [node name="Translations" type="HBoxContainer"]
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 script = ExtResource("1_dvmyi")
 
 [node name="Setup" type="VBoxContainer" parent="."]
-offset_right = 333.0
-offset_bottom = 600.0
+layout_mode = 2
+offset_right = 376.0
+offset_bottom = 648.0
 size_flags_horizontal = 3
 
 [node name="Title" type="Label" parent="Setup"]
-offset_right = 333.0
+layout_mode = 2
+offset_right = 376.0
 offset_bottom = 36.0
 theme_override_styles/normal = ExtResource("2_kfqs4")
 text = "Translation setup"
 
 [node name="HSeparator2" type="HSeparator" parent="Setup"]
+layout_mode = 2
 offset_top = 40.0
-offset_right = 333.0
+offset_right = 376.0
 offset_bottom = 44.0
 
 [node name="VBox" type="HBoxContainer" parent="Setup"]
+layout_mode = 2
 offset_top = 48.0
-offset_right = 333.0
+offset_right = 376.0
 offset_bottom = 79.0
 
 [node name="Label3" type="Label" parent="Setup/VBox"]
+layout_mode = 2
 offset_top = 2.0
-offset_right = 262.0
+offset_right = 305.0
 offset_bottom = 28.0
 size_flags_horizontal = 3
 text = "Default locale"
 
 [node name="TransOrigLanguage" type="LineEdit" parent="Setup/VBox"]
 unique_name_in_owner = true
-offset_left = 266.0
-offset_right = 333.0
+layout_mode = 2
+offset_left = 309.0
+offset_right = 376.0
 offset_bottom = 31.0
 text = "de_DE"
 caret_blink = true
-caret_blink_speed = 0.5
 
 [node name="VBox2" type="HBoxContainer" parent="Setup"]
+layout_mode = 2
 offset_top = 83.0
-offset_right = 333.0
+offset_right = 376.0
 offset_bottom = 114.0
 
 [node name="Label2" type="Label" parent="Setup/VBox2"]
+layout_mode = 2
 offset_top = 2.0
-offset_right = 189.0
+offset_right = 232.0
 offset_bottom = 28.0
 size_flags_horizontal = 3
 text = "Translation file mode"
 
 [node name="TransFileMode" type="OptionButton" parent="Setup/VBox2"]
 unique_name_in_owner = true
-offset_left = 193.0
-offset_right = 333.0
+layout_mode = 2
+offset_left = 236.0
+offset_right = 376.0
 offset_bottom = 31.0
 item_count = 2
 selected = 0
@@ -84,132 +93,151 @@ popup/item_1/id = 1
 
 [node name="TransInitialize" type="Button" parent="Setup"]
 unique_name_in_owner = true
-offset_left = 162.0
+layout_mode = 2
+offset_left = 205.0
 offset_top = 118.0
-offset_right = 333.0
+offset_right = 376.0
 offset_bottom = 149.0
 size_flags_horizontal = 8
 text = "Initialize translations"
 
 [node name="Label" type="Label" parent="Setup"]
+layout_mode = 2
 offset_top = 153.0
-offset_right = 333.0
+offset_right = 376.0
 offset_bottom = 179.0
 size_flags_horizontal = 3
 text = "Some short info that got lost in g4"
-label_settings = ExtResource("3_t43rx")
+script = ExtResource("3_mkxlr")
 
 [node name="VSeparator" type="VSeparator" parent="."]
-offset_left = 337.0
-offset_right = 341.0
-offset_bottom = 600.0
+layout_mode = 2
+offset_left = 380.0
+offset_right = 384.0
+offset_bottom = 648.0
 
 [node name="Settings" type="VBoxContainer" parent="."]
-offset_left = 345.0
-offset_right = 678.0
-offset_bottom = 600.0
+layout_mode = 2
+offset_left = 388.0
+offset_right = 764.0
+offset_bottom = 648.0
 size_flags_horizontal = 3
 
 [node name="Title" type="Label" parent="Settings"]
-offset_right = 333.0
+layout_mode = 2
+offset_right = 376.0
 offset_bottom = 36.0
 theme_override_styles/normal = ExtResource("2_kfqs4")
 text = "Translation settings"
 
 [node name="HSeparator" type="HSeparator" parent="Settings"]
+layout_mode = 2
 offset_top = 40.0
-offset_right = 333.0
+offset_right = 376.0
 offset_bottom = 44.0
 
 [node name="VBox4" type="HBoxContainer" parent="Settings"]
+layout_mode = 2
 offset_top = 48.0
-offset_right = 333.0
+offset_right = 376.0
 offset_bottom = 74.0
 
 [node name="Label" type="Label" parent="Settings/VBox4"]
-offset_right = 305.0
+layout_mode = 2
+offset_right = 348.0
 offset_bottom = 26.0
 size_flags_horizontal = 3
 text = "Enabled"
 
 [node name="TransEnabled" type="CheckBox" parent="Settings/VBox4"]
 unique_name_in_owner = true
-offset_left = 309.0
-offset_right = 333.0
+layout_mode = 2
+offset_left = 352.0
+offset_right = 376.0
 offset_bottom = 26.0
 
 [node name="VBox3" type="HBoxContainer" parent="Settings"]
+layout_mode = 2
 offset_top = 78.0
-offset_right = 333.0
+offset_right = 376.0
 offset_bottom = 109.0
 
 [node name="Label" type="Label" parent="Settings/VBox3"]
+layout_mode = 2
 offset_top = 2.0
-offset_right = 234.0
+offset_right = 277.0
 offset_bottom = 28.0
 size_flags_horizontal = 3
 text = "Translation file-path"
 
 [node name="TransFileFolder" type="LineEdit" parent="Settings/VBox3"]
 unique_name_in_owner = true
-offset_left = 238.0
-offset_right = 305.0
+layout_mode = 2
+offset_left = 281.0
+offset_right = 348.0
 offset_bottom = 31.0
 max_length = 50
 editable = false
 expand_to_text_length = true
 caret_blink = true
-caret_blink_speed = 0.5
 
 [node name="TransFileFolderChanger" type="Button" parent="Settings/VBox3"]
 unique_name_in_owner = true
-offset_left = 309.0
-offset_right = 333.0
+layout_mode = 2
+offset_left = 352.0
+offset_right = 376.0
 offset_bottom = 31.0
 disabled = true
 icon = SubResource("ImageTexture_xranq")
 
 [node name="TransUpdate" type="Button" parent="Settings"]
 unique_name_in_owner = true
+layout_mode = 2
 offset_top = 113.0
-offset_right = 333.0
+offset_right = 376.0
 offset_bottom = 144.0
 disabled = true
 text = "Update translations"
 
 [node name="TransRemove" type="Button" parent="Settings"]
 unique_name_in_owner = true
+layout_mode = 2
 offset_top = 148.0
-offset_right = 333.0
+offset_right = 376.0
 offset_bottom = 179.0
 disabled = true
 text = "Remove translations"
 
 [node name="VSeparator2" type="VSeparator" parent="."]
-offset_left = 682.0
-offset_right = 686.0
-offset_bottom = 600.0
+layout_mode = 2
+offset_left = 768.0
+offset_right = 772.0
+offset_bottom = 648.0
 
 [node name="Information" type="VBoxContainer" parent="."]
-offset_left = 690.0
-offset_right = 1024.0
-offset_bottom = 600.0
+layout_mode = 2
+offset_left = 776.0
+offset_right = 1152.0
+offset_bottom = 648.0
 size_flags_horizontal = 3
 
 [node name="Title" type="Label" parent="Information"]
-offset_right = 334.0
+layout_mode = 2
+offset_right = 376.0
 offset_bottom = 36.0
 theme_override_styles/normal = ExtResource("2_kfqs4")
 text = "Information"
 
 [node name="HSeparator3" type="HSeparator" parent="Information"]
+layout_mode = 2
 offset_top = 40.0
-offset_right = 334.0
+offset_right = 376.0
 offset_bottom = 44.0
 
 [node name="Label" type="Label" parent="Information"]
+layout_mode = 2
 offset_top = 48.0
-offset_right = 334.0
+offset_right = 376.0
 offset_bottom = 256.0
 size_flags_horizontal = 3
 text = "Some long explanation that got lost in the g4 update.
@@ -217,8 +245,8 @@ text = "Some long explanation that got lost in the g4 update.
 Some long explanation that got lost in the g4 update.
 
 Some long explanation that got lost in the g4 update."
-label_settings = ExtResource("3_t43rx")
 autowrap_mode = 3
+script = ExtResource("3_mkxlr")
 
 [connection signal="pressed" from="Setup/TransInitialize" to="." method="_on_TransInitialize_pressed"]
 [connection signal="pressed" from="Settings/VBox3/TransFileFolderChanger" to="." method="open_file_folder_dialog"]
