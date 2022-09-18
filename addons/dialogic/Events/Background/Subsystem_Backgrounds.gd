@@ -23,7 +23,7 @@ func update_background(scene:String = '', argument:String = '', fade_time:float 
 				for old_bg in node.get_children():
 					if old_bg.has_method("_should_do_background_update") and old_bg._should_do_background_update(argument):
 						if old_bg.has_method('_update_background'):
-							old_bg._update_background(argument)
+							old_bg._update_background(argument, fade_time)
 							bg_set = true
 			if !bg_set:
 				# remove previous backgrounds
@@ -50,11 +50,11 @@ func update_background(scene:String = '', argument:String = '', fade_time:float 
 					node.add_child(new_node)
 					
 					if new_node.has_method('_update_background'):
-						new_node._update_background(argument)
+						new_node._update_background(argument, fade_time)
 					
 					if new_node.has_method('_fade_in'):
 						new_node._fade_in(fade_time)
-						
+					
 					elif "modulate" in new_node:
 						new_node.modulate = Color.TRANSPARENT
 						var tween = new_node.create_tween()
