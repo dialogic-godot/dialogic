@@ -2,7 +2,7 @@ Hello
 
 [label name="start"]
 
-[background path="res://addons/dialogic/Example Assets/backgrounds/vn-background-1.png"]
+[background arg="res://addons/dialogic/Example Assets/backgrounds/vn-background-1.png"]
 
 Join Jowan (shocked) 3 [ mirrored="true"]
 
@@ -14,7 +14,7 @@ Jowan: This is a cool feature [portrait=joy].
 
 - Yes
 	
-	[background path="res://addons/dialogic/Example Assets/backgrounds/vn-background-2.png" fade="0.5"]
+	[background arg="res://addons/dialogic/Example Assets/backgrounds/vn-background-2.png" fade="1.0"]
 	
 	Update Jowan (angry) 1 [ move_time="0.3" extra_data="alien"]
 	
@@ -26,7 +26,7 @@ Jowan: This is a cool feature [portrait=joy].
 	
 - No
 	
-	[background path="res://addons/dialogic/Example Assets/backgrounds/vn-background-3.png"]
+	[background]
 	
 	[update_position mode="2" position="1" vector="Vector2(100, 0)" time="0.3"]
 	
@@ -35,4 +35,6 @@ Jowan: This is a cool feature [portrait=joy].
 	Jowan: What are you talking about?
 	
 [jump timeline="res://timelines/Chapter1.dtl" label="Start"]
+
+[background]
 
