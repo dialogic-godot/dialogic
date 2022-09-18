@@ -49,7 +49,10 @@ func reveal_text(_text:String) -> void:
 	elif Align == ALIGNMENT.RIGHT:
 		text = '[right]'+text
 	visible_characters = 0
-	timer.start(speed)
+	if speed <= 0:
+		timer.start(0.01)
+	else:
+		timer.start(speed) 
 	emit_signal('started_revealing_text')
 
 # called by the timer -> reveals more text
@@ -59,7 +62,7 @@ func continue_reveal() -> void:
 		emit_signal("continued_revealing_text", text[visible_characters-1])
 		execute_effects()
 		if timer.is_stopped():
-			if speed == 0:
+			if speed <= 0:
 				continue_reveal()
 			else:
 				timer.start(speed)
