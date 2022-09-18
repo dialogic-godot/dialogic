@@ -1,21 +1,24 @@
-[gd_scene load_steps=2 format=3 uid="uid://beutvnxtpuskn"]
+[gd_scene load_steps=2 format=3 uid="uid://owppqkj3ddal"]
 
-[ext_resource type="Script" path="res://addons/dialogic/Events/Theme/Theme_CharacterEdit.gd" id="2"]
+[ext_resource type="Script" path="res://addons/dialogic/Events/Style/CharacterEdit_Style.gd" id="2"]
 
-[node name="Theme" type="HBoxContainer"]
+[node name="Style" type="HBoxContainer"]
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_bottom = -569.0
 script = ExtResource("2")
 
 [node name="Label" type="Label" parent="."]
+layout_mode = 2
 offset_right = 58.0
 offset_bottom = 26.0
 size_flags_vertical = 0
 text = "Theme:"
 
-[node name="ThemeName" type="LineEdit" parent="."]
+[node name="StyleName" type="LineEdit" parent="."]
 unique_name_in_owner = true
+layout_mode = 2
 offset_left = 62.0
 offset_right = 129.0
 offset_bottom = 31.0

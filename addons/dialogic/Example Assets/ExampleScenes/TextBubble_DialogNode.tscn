@@ -9,7 +9,7 @@
 [ext_resource type="Script" path="res://addons/dialogic/Events/Text/Display_InputHandler.gd" id="7"]
 [ext_resource type="Script" path="res://addons/dialogic/Example Assets/ExampleScenes/ExampleTextBubble.gd" id="8"]
 [ext_resource type="Script" path="res://addons/dialogic/Events/Choice/Display_ChoiceButton.gd" id="9"]
-[ext_resource type="Script" path="res://addons/dialogic/Events/Theme/Display_Theme.gd" id="10"]
+[ext_resource type="Script" path="res://addons/dialogic/Events/Style/Display_Style.gd" id="10"]
 
 [sub_resource type="StyleBoxFlat" id=11]
 bg_color = Color( 0.847059, 0.627451, 0.364706, 1 )
