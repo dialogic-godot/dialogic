@@ -598,7 +598,7 @@ func convertTimelines():
 							file.store_string(eventLine)
 						"dialogic_024":
 							#Change Theme event
-							file.store_string(eventLine + '[theme name="<' + event['set_theme'] + '>"]')
+							file.store_string(eventLine + '[style name="<' + event['set_theme'] + '>"]')
 						"dialogic_025": 
 							#Set Glossary event
 							file.store_string(eventLine + "# Set Glossary event, not currently implemented")
@@ -710,7 +710,7 @@ func convertTimelines():
 							newString = "\"" + timelineFolderBreakdown[newString].replace(".cnv", ".dtl") + "\""
 						if "label" in line:
 							newString = "\"" + anchorNames[newString] + "\""
-						if "theme" in line:
+						if "style" in line:
 							var prev = newString
 							var config = ConfigFile.new()
 							var error = config.load("res://dialogic/themes/" + newString)

@@ -1,10 +1,17 @@
-[gd_scene load_steps=6 format=3 uid="uid://dm4kxvcn7d7ug"]
+[gd_scene load_steps=8 format=3 uid="uid://dm4kxvcn7d7ug"]
 
 [ext_resource type="Script" path="res://addons/dialogic/Editor/Settings/Settings_General.gd" id="2"]
-[ext_resource type="LabelSettings" uid="uid://nkh7ypguw3il" path="res://addons/dialogic/Editor/Common/HintLabelSettings.tres" id="2_hs15a"]
 [ext_resource type="StyleBox" uid="uid://dmsjhgv22dns8" path="res://addons/dialogic/Editor/Common/TitleBgStylebox.tres" id="2_u584y"]
+[ext_resource type="Script" path="res://addons/dialogic/Editor/Settings/HintLabelStylingScript.gd" id="2_uxx4f"]
 
-[sub_resource type="Image" id="Image_3nstt"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ui276"]
+content_margin_left = 5.0
+content_margin_top = 5.0
+content_margin_right = 5.0
+content_margin_bottom = 5.0
+bg_color = Color(0.545098, 0.545098, 0.545098, 0.211765)
+
+[sub_resource type="Image" id="Image_6ds5e"]
 data = {
 "data": PackedByteArray(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
 "format": "LumAlpha8",
@@ -14,39 +21,54 @@ data = {
 }
 
 [sub_resource type="ImageTexture" id="7"]
-image = SubResource("Image_3nstt")
+image = SubResource("Image_6ds5e")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3mwvq"]
+content_margin_left = 5.0
+content_margin_top = 5.0
+content_margin_right = 5.0
+content_margin_bottom = 5.0
+bg_color = Color(0.545098, 0.545098, 0.545098, 0.211765)
 
 [node name="General" type="HBoxContainer"]
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 script = ExtResource("2")
 
 [node name="General" type="VBoxContainer" parent="."]
-offset_right = 830.0
-offset_bottom = 600.0
+layout_mode = 2
+offset_right = 958.0
+offset_bottom = 648.0
 size_flags_horizontal = 3
 
 [node name="TitleLabel" type="Label" parent="General"]
-offset_right = 830.0
+layout_mode = 2
+offset_right = 958.0
 offset_bottom = 36.0
-theme_override_styles/normal = ExtResource("2_u584y")
+theme_override_styles/normal = SubResource("StyleBoxFlat_ui276")
 text = "Extensions"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="General"]
+layout_mode = 2
 offset_top = 40.0
-offset_right = 830.0
+offset_right = 958.0
 offset_bottom = 66.0
 
 [node name="Label" type="Label" parent="General/HBoxContainer"]
-offset_right = 498.0
+layout_mode = 2
+offset_right = 626.0
 offset_bottom = 26.0
 size_flags_horizontal = 3
 text = "Custom events folder"
 
 [node name="CustomEventsFolderLabel" type="Label" parent="General/HBoxContainer"]
 unique_name_in_owner = true
-offset_left = 502.0
-offset_right = 802.0
+layout_mode = 2
+offset_left = 630.0
+offset_right = 930.0
 offset_bottom = 26.0
 size_flags_horizontal = 8
 text = "res://addons/dialogic_additions/Events"
@@ -55,45 +77,46 @@ visible_characters_behavior = 4
 
 [node name="CustomEventsFolderButton" type="Button" parent="General/HBoxContainer"]
 unique_name_in_owner = true
-offset_left = 806.0
-offset_right = 830.0
+layout_mode = 2
+offset_left = 934.0
+offset_right = 958.0
 offset_bottom = 26.0
 icon = SubResource("7")
 
 [node name="Label" type="Label" parent="General"]
+layout_mode = 2
 offset_top = 70.0
-offset_right = 830.0
+offset_right = 958.0
 offset_bottom = 96.0
 text = "You should restart godot after changing this path!"
-label_settings = ExtResource("2_hs15a")
-
-[node name="HSeparator" type="HSeparator" parent="General"]
-offset_top = 100.0
-offset_right = 830.0
-offset_bottom = 104.0
+script = ExtResource("2_uxx4f")
 
 [node name="TitleLabel2" type="Label" parent="General"]
-offset_top = 108.0
-offset_right = 830.0
-offset_bottom = 144.0
-theme_override_styles/normal = ExtResource("2_u584y")
+layout_mode = 2
+offset_top = 100.0
+offset_right = 958.0
+offset_bottom = 136.0
+theme_override_styles/normal = SubResource("StyleBoxFlat_ui276")
 text = "Testing"
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="General"]
-offset_top = 148.0
-offset_right = 830.0
-offset_bottom = 174.0
+layout_mode = 2
+offset_top = 140.0
+offset_right = 958.0
+offset_bottom = 166.0
 
 [node name="Label" type="Label" parent="General/HBoxContainer2"]
-offset_right = 494.0
+layout_mode = 2
+offset_right = 622.0
 offset_bottom = 26.0
 size_flags_horizontal = 3
 text = "Testing scene"
 
 [node name="TestingSceneLabel" type="Label" parent="General/HBoxContainer2"]
 unique_name_in_owner = true
-offset_left = 498.0
-offset_right = 802.0
+layout_mode = 2
+offset_left = 626.0
+offset_right = 930.0
 offset_bottom = 26.0
 size_flags_horizontal = 8
 text = "res://addons/dialogic_additions/Events "
@@ -102,22 +125,60 @@ visible_characters_behavior = 4
 
 [node name="TestingSceneButton" type="Button" parent="General/HBoxContainer2"]
 unique_name_in_owner = true
-offset_left = 806.0
-offset_right = 830.0
+layout_mode = 2
+offset_left = 934.0
+offset_right = 958.0
 offset_bottom = 26.0
 icon = SubResource("7")
 
+[node name="HSeparator2" type="HSeparator" parent="General"]
+layout_mode = 2
+offset_top = 170.0
+offset_right = 958.0
+offset_bottom = 174.0
+
+[node name="TitleLabel3" type="Label" parent="General"]
+layout_mode = 2
+offset_top = 178.0
+offset_right = 958.0
+offset_bottom = 214.0
+theme_override_styles/normal = SubResource("StyleBoxFlat_3mwvq")
+text = "Timer"
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="General"]
+layout_mode = 2
+offset_top = 218.0
+offset_right = 958.0
+offset_bottom = 244.0
+
+[node name="Label" type="Label" parent="General/HBoxContainer3"]
+layout_mode = 2
+offset_right = 930.0
+offset_bottom = 26.0
+size_flags_horizontal = 3
+text = "Process in physics"
+
+[node name="PhysicsTimerButton" type="CheckBox" parent="General/HBoxContainer3"]
+unique_name_in_owner = true
+layout_mode = 2
+offset_left = 934.0
+offset_right = 958.0
+offset_bottom = 26.0
+
 [node name="VSeparator" type="VSeparator" parent="."]
-offset_left = 834.0
-offset_right = 838.0
-offset_bottom = 600.0
+layout_mode = 2
+offset_left = 962.0
+offset_right = 966.0
+offset_bottom = 648.0
 
 [node name="Theming" type="VBoxContainer" parent="."]
-offset_left = 842.0
-offset_right = 1024.0
-offset_bottom = 600.0
+layout_mode = 2
+offset_left = 970.0
+offset_right = 1152.0
+offset_bottom = 648.0
 
 [node name="Label" type="Label" parent="Theming"]
+layout_mode = 2
 offset_right = 182.0
 offset_bottom = 36.0
 theme_override_styles/normal = ExtResource("2_u584y")
@@ -125,40 +186,47 @@ text = "Color palette"
 
 [node name="Colors" type="HBoxContainer" parent="Theming"]
 unique_name_in_owner = true
+layout_mode = 2
 offset_top = 40.0
 offset_right = 182.0
 offset_bottom = 48.0
 
 [node name="Color1" type="ColorPickerButton" parent="Theming/Colors"]
+layout_mode = 2
 offset_right = 8.0
 offset_bottom = 8.0
 color = Color(0.231373, 0.545098, 0.94902, 1)
 
 [node name="Color2" type="ColorPickerButton" parent="Theming/Colors"]
+layout_mode = 2
 offset_left = 12.0
 offset_right = 20.0
 offset_bottom = 8.0
 color = Color(0, 0.694118, 0.372549, 1)
 
 [node name="Color3" type="ColorPickerButton" parent="Theming/Colors"]
+layout_mode = 2
 offset_left = 24.0
 offset_right = 32.0
 offset_bottom = 8.0
 color = Color(0.580392, 0.407843, 0.909804, 1)
 
 [node name="Color4" type="ColorPickerButton" parent="Theming/Colors"]
+layout_mode = 2
 offset_left = 36.0
 offset_right = 44.0
 offset_bottom = 8.0
 color = Color(0.870588, 0.360784, 0.360784, 1)
 
 [node name="Color5" type="ColorPickerButton" parent="Theming/Colors"]
+layout_mode = 2
 offset_left = 48.0
 offset_right = 56.0
 offset_bottom = 8.0
 color = Color(0.980392, 0.584314, 0.164706, 1)
 
 [node name="Color6" type="ColorPickerButton" parent="Theming/Colors"]
+layout_mode = 2
 offset_left = 60.0
 offset_right = 68.0
 offset_bottom = 8.0
@@ -166,6 +234,7 @@ color = Color(0.486275, 0.486275, 0.486275, 1)
 
 [node name="ResetColorsButton" type="Button" parent="Theming"]
 unique_name_in_owner = true
+layout_mode = 2
 offset_top = 52.0
 offset_right = 182.0
 offset_bottom = 83.0
@@ -174,3 +243,4 @@ text = "Reset colors to default"
 
 [connection signal="pressed" from="General/HBoxContainer/CustomEventsFolderButton" to="." method="_on_CustomEventsFolderButton_pressed"]
 [connection signal="pressed" from="General/HBoxContainer2/TestingSceneButton" to="." method="_on_TestingSceneButton_pressed"]
+[connection signal="toggled" from="General/HBoxContainer3/PhysicsTimerButton" to="." method="_on_physics_timer_button_toggled"]

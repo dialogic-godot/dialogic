@@ -1,0 +1,143 @@
+[gd_scene load_steps=12 format=3]
+
+[ext_resource type="Script" path="res://addons/dialogic/Events/Style/DialogicNode_Style.gd" id="1_aoco8"]
+[ext_resource type="Script" path="res://addons/dialogic/Events/Text/DialogicNode_InputHandler.gd" id="2_7abe3"]
+[ext_resource type="Script" path="res://addons/dialogic/Example Assets/example-scenes/ExampleTextBubble.gd" id="3_2q2a6"]
+[ext_resource type="Texture2D" uid="uid://xupbj8gf778j" path="res://addons/dialogic/Example Assets/backgrounds/BubbleEnd.png" id="4_q6vcu"]
+[ext_resource type="Script" path="res://addons/dialogic/Events/Text/DialogicNode_DialogText.gd" id="5_rcetc"]
+[ext_resource type="Script" path="res://addons/dialogic/Events/Choice/DialogicNode_ChoiceButton.gd" id="6_8g1dv"]
+[ext_resource type="Script" path="res://addons/dialogic/Example Assets/example-scenes/HideWithChild.gd" id="7_1j72f"]
+[ext_resource type="Script" path="res://addons/dialogic/Events/Text/DialogicNode_NameLabel.gd" id="8_agitx"]
+
+[sub_resource type="StyleBoxFlat" id="11"]
+bg_color = Color(0.847059, 0.627451, 0.364706, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 1, 1, 0.768627)
+border_blend = true
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="StyleBoxFlat" id="12"]
+content_margin_left = 5.0
+content_margin_right = 5.0
+bg_color = Color(0.647059, 0.647059, 0.647059, 1)
+border_width_top = 10
+border_width_bottom = 10
+border_color = Color(0.8, 0.8, 0.8, 0)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="Theme" id="13"]
+VScrollBar/styles/grabber = SubResource("11")
+VScrollBar/styles/grabber_highlight = SubResource("11")
+VScrollBar/styles/grabber_pressed = SubResource("11")
+VScrollBar/styles/scroll = SubResource("12")
+
+[node name="TextBubble" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_aoco8")
+
+[node name="DialogicInputHandler" type="Node" parent="."]
+script = ExtResource("2_7abe3")
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 0
+theme = SubResource("13")
+script = ExtResource("3_2q2a6")
+
+[node name="BubbleEnd" type="TextureRect" parent="Control"]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+grow_vertical = 0
+texture = ExtResource("4_q6vcu")
+
+[node name="DialogText" type="RichTextLabel" parent="Control"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Some Text"
+scroll_active = false
+script = ExtResource("5_rcetc")
+
+[node name="OverlayPanel" type="Panel" parent="Control"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Control"]
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 0
+grow_vertical = 0
+alignment = 2
+
+[node name="DialogicNode_ChoiceButton" type="Button" parent="Control/HBoxContainer"]
+offset_right = 39.0
+offset_bottom = 31.0
+size_flags_horizontal = 4
+text = "Yes!"
+script = ExtResource("6_8g1dv")
+
+[node name="DialogicNode_ChoiceButton2" type="Button" parent="Control/HBoxContainer"]
+offset_left = 43.0
+offset_right = 82.0
+offset_bottom = 31.0
+size_flags_horizontal = 4
+text = "Yes!"
+script = ExtResource("6_8g1dv")
+
+[node name="DialogicNode_ChoiceButton3" type="Button" parent="Control/HBoxContainer"]
+offset_left = 86.0
+offset_right = 125.0
+offset_bottom = 31.0
+size_flags_horizontal = 4
+text = "Yes!"
+script = ExtResource("6_8g1dv")
+
+[node name="DialogicNode_ChoiceButton4" type="Button" parent="Control/HBoxContainer"]
+offset_left = 129.0
+offset_right = 168.0
+offset_bottom = 31.0
+size_flags_horizontal = 4
+text = "Yes!"
+script = ExtResource("6_8g1dv")
+
+[node name="DialogicNode_ChoiceButton5" type="Button" parent="Control/HBoxContainer"]
+offset_left = 172.0
+offset_right = 211.0
+offset_bottom = 31.0
+size_flags_horizontal = 4
+text = "Yes!"
+script = ExtResource("6_8g1dv")
+
+[node name="NameLabel" type="PanelContainer" parent="Control"]
+script = ExtResource("7_1j72f")
+
+[node name="DialogicNode_NameLabel" type="Label" parent="Control/NameLabel"]
+offset_right = 1.0
+offset_bottom = 23.0
+script = ExtResource("8_agitx")
+
+[connection signal="continued_revealing_text" from="Control/DialogText" to="Control" method="_on_DialogText_continued_revealing_text"]
+[connection signal="finished_revealing_text" from="Control/DialogText" to="Control" method="_on_DialogText_continued_revealing_text"]

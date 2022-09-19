@@ -172,7 +172,7 @@ text = "There are a number of useful commands you can use in text events:
 - [b][mood=sad][/b] changes the typing sound mood.
 - [b][signal=arg][/b] emits the Dialogic.text_signal signal with the given argument.
 
-Also you can use the bbcode commands like [i][ i ] [/i], [b][ b ][/b], [u][ u ] [/u], [color=orange][ color=orange ][/color], [[wave]wave[/wave]], or [ img] [img=30x30]res://icon.png[/img] [/img].
+Also you can use the bbcode commands like [i][ i ] [/i], [b][ b ][/b], [u][ u ] [/u], [color=orange][ color=orange ][/color], [[wave]wave[/wave]], or [ img] [img=30x30]res://addons/dialogic/Editor/Images/plugin-icon.svg[/img] [/img].
 Learn more about bbcode in the official godot docs."
 
 [connection signal="value_changed" from="VBoxContainer/DefaultSpeed/DefaultSpeed" to="." method="_on_DefaultSpeed_value_changed"]

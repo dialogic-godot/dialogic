@@ -10,7 +10,7 @@ func _execute() -> void:
 	if (HideText):
 		dialogic.Text.hide_text_boxes()
 	dialogic.current_state = dialogic.states.WAITING
-	await dialogic.get_tree().create_timer(SecondsTime).timeout
+	await dialogic.get_tree().create_timer(SecondsTime, true, DialogicUtil.is_physics_timer()).timeout
 	dialogic.current_state = dialogic.states.IDLE
 	if (HideText):
 		dialogic.Text.show_text_boxes()

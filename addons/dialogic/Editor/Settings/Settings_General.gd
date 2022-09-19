@@ -23,7 +23,8 @@ func refresh():
 	%CustomEventsFolderLabel.text = DialogicUtil.get_project_setting('dialogic/custom_events_folder', 'res://addons/dialogic_additions/Events')
 	%CustomEventsFolderButton.icon = get_theme_icon("Folder", "EditorIcons")
 	%TestingSceneButton.icon = get_theme_icon("Folder", "EditorIcons")
-	%TestingSceneLabel.text = DialogicUtil.get_project_setting('dialogic/editor/test_dialog_scene', 'res://addons/dialogic/Other/DefaultDialogNode.tscn')
+	%TestingSceneLabel.text = DialogicUtil.get_project_setting('dialogic/editor/test_dialog_scene', "res://addons/dialogic/Example Assets/example-scenes/DialogicDefaultScene.tscn")
+	%PhysicsTimerButton.button_pressed = DialogicUtil.is_physics_timer()
 	
 	# Color Palett
 	color_palette = DialogicUtil.get_color_palette()
@@ -64,4 +65,8 @@ func _on_TestingSceneButton_pressed():
 func custom_testing_scene_selected(path:String):
 	%TestingSceneLabel.text = path
 	ProjectSettings.set_setting('dialogic/editor/test_dialog_scene', path)
+	ProjectSettings.save()
+
+func _on_physics_timer_button_toggled(button_pressed:bool) -> void:
+	ProjectSettings.set_setting('dialogic/timer/process_in_physics', button_pressed)
 	ProjectSettings.save()

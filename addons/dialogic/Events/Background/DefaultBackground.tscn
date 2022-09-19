@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://big38olfc2dt8"]
+
+[ext_resource type="Script" path="res://addons/dialogic/Events/Background/DefaultBackground.gd" id="1_nkdrp"]
+
+[node name="DefaultBackground" type="TextureRect"]
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("1_nkdrp")

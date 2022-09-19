@@ -2,10 +2,10 @@
 
 [ext_resource type="Script" path="res://addons/dialogic/Editor/Events/Fields/OptionSelector.gd" id="1"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_q2rex"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kmem4"]
 content_margin_left = 10.0
 content_margin_top = 10.0
-content_margin_right = 10.0
+content_margin_right = 20.0
 content_margin_bottom = 10.0
 bg_color = Color(0.113725, 0.121569, 0.145098, 1)
 border_width_left = 2
@@ -32,14 +32,14 @@ offset_bottom = 311.0
 
 [node name="MenuButton" type="MenuButton" parent="."]
 layout_mode = 2
-offset_right = 149.0
+offset_right = 159.0
 offset_bottom = 43.0
 size_flags_vertical = 4
-theme_override_styles/normal = SubResource("StyleBoxFlat_q2rex")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_q2rex")
-theme_override_styles/hover = SubResource("StyleBoxFlat_q2rex")
-theme_override_styles/disabled = SubResource("StyleBoxFlat_q2rex")
-theme_override_styles/focus = SubResource("StyleBoxFlat_q2rex")
+theme_override_styles/normal = SubResource("StyleBoxFlat_kmem4")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_kmem4")
+theme_override_styles/hover = SubResource("StyleBoxFlat_kmem4")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_kmem4")
+theme_override_styles/focus = SubResource("StyleBoxFlat_kmem4")
 text = "Placeholder Text"
 flat = false
 

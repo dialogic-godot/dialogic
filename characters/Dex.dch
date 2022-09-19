@@ -3,15 +3,25 @@
 "@subpath": NodePath(""),
 "color": Color(0.886275, 0.631373, 0.384314, 1),
 "custom_info": {
+"sound_mood_default": "",
 "sound_moods": {},
+"style": "",
 "theme": ""
 },
+"default_portrait": "happy",
 "description": "A pro developer. Having math troubles it seems.",
 "display_name": "Dex",
 "mirror": false,
-"name": "Dex",
-"nicknames": ["\"\\\"AnidemDex\\\"\"", "\"\\\"Dex\\\"\"", "\"\\\"\\\"\""],
+"nicknames": ["AnidemDex", "Dex"],
+"offset": Vector2(0, 80),
+"portraits": {
+"happy": {
+"image": "res://addons/dialogic/Example Assets/portraits/Jane/pl3 blink.png",
+"mirror": false,
 "offset": Vector2(0, 0),
-"portraits": {},
-"scale": 1.0
+"scale": 1,
+"scene": ""
+}
+},
+"scale": 0.8
 }

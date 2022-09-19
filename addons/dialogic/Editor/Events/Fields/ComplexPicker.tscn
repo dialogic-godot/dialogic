@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://addons/dialogic/Editor/Events/Fields/ComplexPicker.gd" id="1"]
 [ext_resource type="Theme" uid="uid://d3g4i4dshtdpu" path="res://addons/dialogic/Editor/Events/styles/InputFieldsStyle.tres" id="2_lcu5c"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_p34uv"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8l2f6"]
 content_margin_left = 50.0
 content_margin_top = 10.0
 content_margin_right = 50.0
@@ -19,7 +19,7 @@ corner_radius_top_right = 6
 corner_radius_bottom_right = 6
 corner_radius_bottom_left = 6
 
-[sub_resource type="Image" id="Image_kcnpd"]
+[sub_resource type="Image" id="Image_15fpd"]
 data = {
 "data": PackedByteArray(255, 255, 255, 0, 255, 255, 255, 0, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 131, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 131, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 131, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 231, 255, 93, 93, 55, 255, 97, 97, 58, 255, 93, 93, 233, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 231, 255, 94, 94, 54, 255, 94, 94, 57, 255, 93, 93, 233, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 93, 93, 233, 255, 93, 93, 232, 255, 93, 93, 41, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 93, 93, 233, 255, 93, 93, 232, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 97, 97, 42, 255, 255, 255, 0, 255, 97, 97, 42, 255, 97, 97, 42, 255, 255, 255, 0, 255, 98, 98, 47, 255, 97, 97, 42, 255, 255, 255, 0, 255, 97, 97, 42, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 235, 255, 93, 93, 233, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 94, 94, 46, 255, 93, 93, 236, 255, 93, 93, 233, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 235, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 233, 255, 95, 95, 59, 255, 96, 96, 61, 255, 93, 93, 235, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 233, 255, 95, 95, 59, 255, 96, 96, 61, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0),
 "format": "RGBA8",
@@ -28,8 +28,8 @@ data = {
 "width": 16
 }
 
-[sub_resource type="ImageTexture" id="ImageTexture_1fwss"]
-image = SubResource("Image_kcnpd")
+[sub_resource type="ImageTexture" id="ImageTexture_o6n2f"]
+image = SubResource("Image_15fpd")
 
 [node name="ComplexPicker" type="HBoxContainer"]
 custom_minimum_size = Vector2i(200, 0)
@@ -38,18 +38,18 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 offset_right = -824.0
 offset_bottom = -567.0
+grow_horizontal = 2
+grow_vertical = 2
 size_flags_vertical = 4
 script = ExtResource("1")
 
 [node name="LeftText" type="Label" parent="."]
 visible = false
-layout_mode = 2
 offset_top = 230.0
 offset_right = 1.0
 offset_bottom = 253.0
 
 [node name="Search" type="LineEdit" parent="."]
-layout_mode = 2
 offset_top = 19.0
 offset_right = 328.0
 offset_bottom = 62.0
@@ -58,21 +58,21 @@ size_flags_vertical = 4
 focus_neighbor_bottom = NodePath("Suggestions")
 mouse_filter = 1
 theme = ExtResource("2_lcu5c")
-theme_override_styles/normal = SubResource("StyleBoxFlat_p34uv")
-theme_override_styles/focus = SubResource("StyleBoxFlat_p34uv")
-theme_override_styles/read_only = SubResource("StyleBoxFlat_p34uv")
+theme_override_styles/normal = SubResource("StyleBoxFlat_8l2f6")
+theme_override_styles/focus = SubResource("StyleBoxFlat_8l2f6")
+theme_override_styles/read_only = SubResource("StyleBoxFlat_8l2f6")
 placeholder_text = "Select Resource"
 expand_to_text_length = true
 caret_blink = true
 
 [node name="Icon" type="TextureRect" parent="Search"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2i(35, 0)
-layout_mode = 1
+custom_minimum_size = Vector2i(43, 0)
 anchors_preset = 9
 anchor_bottom = 1.0
 offset_left = 10.0
 offset_right = 45.0
+grow_vertical = 2
 ignore_texture_size = true
 stretch_mode = 3
 
@@ -81,7 +81,6 @@ unique_name_in_owner = true
 visible = false
 top_level = true
 custom_minimum_size = Vector2i(100, 0)
-layout_mode = 0
 offset_left = -5.0
 offset_right = 95.0
 offset_bottom = 104.0
@@ -93,20 +92,20 @@ item_count = 1
 item_0/text = ""
 
 [node name="SelectButton" type="Button" parent="Search"]
-layout_mode = 1
 anchors_preset = 11
 anchor_left = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_left = -8.0
 grow_horizontal = 0
+grow_vertical = 2
 toggle_mode = true
 shortcut_in_tooltip = false
-icon = SubResource("ImageTexture_1fwss")
+icon = SubResource("ImageTexture_o6n2f")
 flat = true
 
 [node name="RightText" type="Label" parent="."]
 visible = false
-layout_mode = 2
 offset_left = 855.0
 offset_top = 230.0
 offset_right = 856.0

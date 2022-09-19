@@ -22,14 +22,14 @@ var _character_from_directory: String:
 var _character_directory: Dictionary = {}
 
 func _execute() -> void:
-	if (not Character or Character.custom_info.get('theme', '').is_empty()) and dialogic.has_subsystem('Themes'):
-		# if previous characters had a custom theme change back to base theme 
-		if dialogic.current_state_info.get('base_theme') != dialogic.current_state_info.get('theme'):
-			dialogic.Themes.change_theme(dialogic.current_state_info.get('base_theme', 'Default'))
+	if (not Character or Character.custom_info.get('style', '').is_empty()) and dialogic.has_subsystem('Styles'):
+		# if previous characters had a custom style change back to base style 
+		if dialogic.current_state_info.get('base_style') != dialogic.current_state_info.get('style'):
+			dialogic.Styles.change_style(dialogic.current_state_info.get('base_style', 'Default'))
 	
 	if Character:
-		if dialogic.has_subsystem('Themes') and Character.custom_info.get('theme', null):
-			dialogic.Themes.change_theme(Character.custom_info.theme)
+		if dialogic.has_subsystem('Styles') and Character.custom_info.get('style', null):
+			dialogic.Styles.change_style(Character.custom_info.style)
 		
 		dialogic.Text.update_name_label(Character)
 		
@@ -77,7 +77,7 @@ func _execute() -> void:
 		if dialogic.has_subsystem('Voice') and dialogic.Voice.is_voiced(dialogic.current_event_idx):
 			#autocontinue settings is set as minimal. change or keep this? - Kvagram
 			wait = max(wait, dialogic.Voice.get_remaining_time())
-		await dialogic.get_tree().create_timer(wait).timeout
+		await dialogic.get_tree().create_timer(wait, true, DialogicUtil.is_physics_timer()).timeout
 		dialogic.handle_next_event()
 	else:
 		dialogic.Text.show_next_indicators()

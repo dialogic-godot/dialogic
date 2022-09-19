@@ -3,11 +3,12 @@ extends DialogicEvent
 class_name DialogicBackgroundEvent
 
 # DEFINE ALL PROPERTIES OF THE EVENT
-var Path: String = ""
+var Scene: String = ""
+var Argument: String = ""
 var Fade: float = 0.0
 
 func _execute() -> void:
-	dialogic.Backgrounds.update_background(Path, Fade)
+	dialogic.Backgrounds.update_background(Scene, Argument, Fade)
 	finish()
 
 func get_required_subsystems() -> Array:
@@ -27,6 +28,7 @@ func _init() -> void:
 	set_default_color('Color4')
 	event_category = Category.AUDIOVISUAL
 	event_sorting_index = 0
+	expand_by_default = false
 	
 
 
@@ -39,7 +41,8 @@ func get_shortcode() -> String:
 func get_shortcode_parameters() -> Dictionary:
 	return {
 		#param_name : property_name
-		"path"		: "Path",
+		"scene"		: "Scene",
+		"arg"		: "Argument",
 		"fade"		: "Fade"
 	}
 
@@ -49,5 +52,7 @@ func get_shortcode_parameters() -> Dictionary:
 ################################################################################
 
 func build_event_editor():
-	add_header_edit('Path', ValueType.File, 'Path:', '', {'file_filter':'*.tscn, *.scn, *.jpg, *.jpeg, *.png, *.webp, *.tga, *svg, *.bmp, *.dds, *.exr, *.hdr', 'placeholder': "No background", 'editor_icon':["Image", "EditorIcons"]})
-	add_body_edit("Fade", ValueType.Float, "Fade time")
+	add_header_edit('Argument', ValueType.File, 'Image:', '', {'file_filter':'*.tscn, *.scn, *.jpg, *.jpeg, *.png, *.webp, *.tga, *svg, *.bmp, *.dds, *.exr, *.hdr', 'placeholder': "No background", 'editor_icon':["Image", "EditorIcons"]}, 'Scene == ""')
+	add_header_edit('Argument', ValueType.SinglelineText, 'Argument:', '', {}, 'Scene != ""')
+	add_header_edit("Fade", ValueType.Float, "Fade time")
+	add_body_edit("Scene", ValueType.File, 'Scene:', '', {'file_filter':'*.tscn, *.scn','placeholder': "Default Scene", 'editor_icon':["PackedScene", "EditorIcons"]})

@@ -33,7 +33,7 @@ func resume() -> void:
 			portrait.animation_node.resume()
 
 func _ready():
-	default_portrait_scene = load("res://addons/dialogic/Other/DefaultPortrait.tscn")
+	default_portrait_scene = load("res://addons/dialogic/Events/Character/DefaultPortrait.tscn")
 
 ####################################################################################################
 ##					MAIN METHODS

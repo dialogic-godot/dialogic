@@ -2,11 +2,6 @@
 extends PanelContainer
 
 func _ready():
-	var info_font_settings :LabelSettings = load("res://addons/dialogic/Editor/Common/HintLabelSettings.tres")
-	info_font_settings.font = get_theme_font("doc_italic", "EditorFonts")
-	info_font_settings.font_size = get_theme_font_size('font_size', 'Label')
-	info_font_settings.font_color = get_theme_color("accent_color", "Editor")
-	
 	hide()
 	visibility_changed.connect(_on_visibility_changed)
 	
