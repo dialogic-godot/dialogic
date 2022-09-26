@@ -496,10 +496,10 @@ func _input(event):
 				get_viewport().set_input_as_handled()
 
 # helper to make the above methods shorter
-func is_event_pressed(event, keycode, alt:bool, shift:bool, ctrl_or_command:bool):
+func is_event_pressed(event, keycode, alt:bool, shift:bool, ctrl_or_meta:bool):
 	return (event.pressed and event.alt_pressed == alt 
 			and event.shift_pressed == shift 
-			and (event.ctrl_pressed or event.command_pressed ) == ctrl_or_command
+			and (event.ctrl_pressed or event.meta_pressed ) == ctrl_or_meta
 			and event.keycode == keycode
 			and event.echo == false)
 
