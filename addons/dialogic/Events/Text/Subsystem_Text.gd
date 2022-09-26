@@ -3,6 +3,7 @@ extends DialogicSubsystem
 # used to color names without searching for all characters each time
 var character_colors := {}
 var color_regex := RegEx.new()
+var text_already_read:bool = false
 
 signal text_finished
 signal speaking_character(argument)

@@ -43,6 +43,9 @@ func add_event_to_history(current_timeline:String, current_index:int, current_ev
 		if current_event.event_name == "Text":
 			text_read_history[str(current_index)+ "**" + current_timeline] = true
 
-func strip_events_from_full_history():
+func strip_events_from_full_history() -> void:
 	for i in full_history.size():
 		full_history[i].erase('event_object')
+		
+func rebuild_all_history_events() -> void:
+	pass
