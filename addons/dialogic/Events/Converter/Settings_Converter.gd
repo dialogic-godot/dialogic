@@ -25,21 +25,19 @@ func refresh():
 
 func _on_verify_pressed():
 	
-	var file = File.new()
-	
 	%OutputLog.text = ""
 	
-	if file.file_exists("res://dialogic/settings.cfg"):
+	if FileAccess.file_exists("res://dialogic/settings.cfg"):
 		%OutputLog.text += "[√] Dialogic 1.x data [color=green]found![/color]\r\n"
 		
-		if file.file_exists("res://dialogic/definitions.json"):
+		if FileAccess.file_exists("res://dialogic/definitions.json"):
 			%OutputLog.text += "[√] Dialogic 1.x definitions [color=green]found![/color]\r\n"
 		else:
 			%OutputLog.text += "[X] Dialogic 1.x definitions [color=red]not found![/color]\r\n"
 			%OutputLog.text += "Please copy the res://dialogic folder from your Dialogic 1.x project into this project and try again.\r\n"
 			return
 			
-		if file.file_exists("res://dialogic/settings.cfg"):
+		if FileAccess.file_exists("res://dialogic/settings.cfg"):
 			%OutputLog.text += "[√] Dialogic 1.x settings [color=green]found![/color]\r\n"
 		else:
 			%OutputLog.text += "[X] Dialogic 1.x settings [color=red]not found![/color]\r\n"
@@ -49,7 +47,7 @@ func _on_verify_pressed():
 		%OutputLog.text += "\r\n"
 		
 		%OutputLog.text += "Verifying data:\r\n"
-		file.open("res://dialogic/folder_structure.json",File.READ)
+		var file := FileAccess.open("res://dialogic/folder_structure.json", FileAccess.READ)
 		var fileContent = file.get_as_text()
 		var json_object = JSON.new()
 		
@@ -99,7 +97,7 @@ func _on_verify_pressed():
 			%OutputLog.text += "[color=yellow]There may be an issue, please check in Dialogic 1.x to make sure that is correct![/color]\r\n"
 			
 		
-		file.open("res://dialogic/definitions.json",File.READ)
+		file = FileAccess.open("res://dialogic/definitions.json",FileAccess.READ)
 		fileContent = file.get_as_text()
 		json_object = JSON.new()
 		
@@ -163,15 +161,13 @@ func _on_verify_pressed():
 		%OutputLog.text += "Initial integrity check completed!\r\n"
 		
 		
-		var directory = Directory.new()
-		var directoryCheck = directory.dir_exists(conversionRootFolder)
 		
-		if directoryCheck: 
+		if DirAccess.dir_exists_absolute(conversionRootFolder): 
 			%OutputLog.text += "[color=yellow]Conversion folder already exists, coverting will overwrite existing files.[/color]\r\n"
 		else:
 			%OutputLog.text += conversionRootFolder
 			%OutputLog.text += "Folders are being created in " + conversionRootFolder + ". Converted files will be located there.\r\n"
-			directory.open("res://")
+			var directory = DirAccess.open("res://")
 			directory.make_dir(conversionRootFolder)
 			directory.open(conversionRootFolder)	
 			directory.make_dir("characters")
@@ -188,8 +184,7 @@ func _on_verify_pressed():
 
 func list_files_in_directory(path):
 	var files = []
-	var dir = Directory.new()
-	dir.open(path)
+	var dir = DirAccess.open(path)
 	dir.list_dir_begin()
 
 	while true:
@@ -244,8 +239,7 @@ func convertTimelines():
 		var folderPath = timelineFolderBreakdown[item]
 		%OutputLog.text += "Timeline " + folderPath + item +": "
 		var jsonData = {}
-		var file = File.new()
-		file.open("res://dialogic/timelines/" + item,File.READ)
+		var file := FileAccess.open("res://dialogic/timelines/" + item, FileAccess.READ)
 		var fileContent = file.get_as_text()
 		var json_object = JSON.new()
 		
@@ -256,10 +250,9 @@ func convertTimelines():
 			var fileName = contents["metadata"]["name"]
 			%OutputLog.text += "Name: " + fileName + ", " + str(contents["events"].size()) + " timeline events"
 			
-			var directory = Directory.new()
-			var directoryCheck = directory.dir_exists(conversionRootFolder + "/timelines" + folderPath)
-			if !directoryCheck: 
-				directory.open(conversionRootFolder + "/timelines")
+			
+			if not DirAccess.dir_exists_absolute(conversionRootFolder + "/timelines" + folderPath): 
+				var directory = DirAccess.open(conversionRootFolder + "/timelines")
 				
 				var progresiveDirectory = ""
 				for pathItem in folderPath.split('/'):
@@ -274,7 +267,8 @@ func convertTimelines():
 				folderPath = folderPath.left(-1)
 			# we will save it as an intermediary file first, then on second pass cleanup make it the .dtl	
 			var newFilePath = conversionRootFolder + "/timelines" + folderPath + "/" + fileName + ".cnv"	
-			file.open(newFilePath,File.WRITE)
+			
+			file = FileAccess.open(newFilePath, FileAccess.WRITE)
 			
 			# update the new location so we know where second pass items are
 
@@ -663,7 +657,6 @@ func convertTimelines():
 						file.store_string(eventLine)
 				
 				file.store_string("\r\n\r\n")
-			file.close()
 			
 			
 			
@@ -677,11 +670,8 @@ func convertTimelines():
 	for item in timelineFolderBreakdown:
 		%OutputLog.text += "Verifying file: " + timelineFolderBreakdown[item] + "\r\n"
 		
-		var oldFile = File.new()
-		oldFile.open(timelineFolderBreakdown[item] ,File.READ)
-		
-		var newFile = File.new()
-		newFile.open(timelineFolderBreakdown[item].replace(".cnv", ".dtl") ,File.WRITE)
+		var oldFile = FileAccess.open(timelineFolderBreakdown[item], FileAccess.READ)
+		var newFile = FileAccess.open(timelineFolderBreakdown[item].replace(".cnv", ".dtl"), FileAccess.WRITE)
 		
 		var regex = RegEx.new()
 		regex.compile('(<.*?>)')
@@ -725,14 +715,10 @@ func convertTimelines():
 						newFile.store_string(line)
 				else:
 					newFile.store_string(line)
-				
 		
-		oldFile.close()
-		newFile.close()
 		
-		var dir = Directory.new()
 		var fileDirectory = timelineFolderBreakdown[item].replace(timelineFolderBreakdown[item].split("/")[-1], "")
-		dir.open(fileDirectory)
+		var dir = DirAccess.open(fileDirectory)
 		dir.remove(timelineFolderBreakdown[item])
 		
 		%OutputLog.text += "Completed conversion of file: " + timelineFolderBreakdown[item].replace(".cnv", ".dtl") + "\r\n"
@@ -748,8 +734,7 @@ func convertCharacters():
 		var folderPath = characterFolderBreakdown[item]
 		%OutputLog.text += "Character " + folderPath + item +": "
 		var jsonData = {}
-		var file = File.new()
-		file.open("res://dialogic/characters/" + item,File.READ)
+		var file := FileAccess.open("res://dialogic/characters/" + item, FileAccess.READ)
 		var fileContent = file.get_as_text()
 		var json_object = JSON.new()
 		
@@ -766,10 +751,9 @@ func convertCharacters():
 
 				
 			
-			var directory = Directory.new()
-			var directoryCheck = directory.dir_exists(conversionRootFolder + "/characters" + folderPath)
-			if !directoryCheck: 
-				directory.open(conversionRootFolder + "/characters")
+			
+			if not DirAccess.dir_exists_absolute(conversionRootFolder + "/characters" + folderPath): 
+				var directory = DirAccess.open(conversionRootFolder + "/characters")
 				
 				var progresiveDirectory = ""
 				for pathItem in folderPath.split('/'):
@@ -854,7 +838,6 @@ func convertCharacters():
 		else:
 			%OutputLog.text += "[color=red]There was a problem parsing this file![/color]\r\n"
 			
-		file.close()
 	# Second pass, shorten all of the paths, so they match the character dictionary in Dialogic itself
 	
 	# Temporarily need an array to be able to sort

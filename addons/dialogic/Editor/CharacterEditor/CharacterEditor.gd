@@ -178,25 +178,24 @@ func open_portrait_folder_select() -> void:
 
 
 func import_portraits_from_folder(path:String) -> void:
-	var dir := Directory.new()
-	if dir.open(path) == OK:
-		dir.list_dir_begin()
-		var file_name :String = dir.get_next()
-		while file_name != "":
-			if not dir.current_is_dir():
-				var file_lower = file_name.to_lower()
-				if '.svg' in file_lower or '.png' in file_lower:
-					if not '.import' in file_lower:
-						var final_name :String= path+ "/" + file_name
-						add_portrait(file_name.trim_suffix('.'+file_name.get_extension()), {'scene':"",'image':final_name, 'scale':1, 'offset':Vector2(), 'mirror':false}) 
-			file_name = dir.get_next()
-	else:
-		print("An error occurred when trying to access the path.")
+	var dir := DirAccess.open(path)
+	dir.list_dir_begin()
+	var file_name :String = dir.get_next()
+	while file_name != "":
+		if not dir.current_is_dir():
+			var file_lower = file_name.to_lower()
+			if '.svg' in file_lower or '.png' in file_lower:
+				if not '.import' in file_lower:
+					var final_name :String= path+ "/" + file_name
+					add_portrait(file_name.trim_suffix('.'+file_name.get_extension()), {'scene':"",'image':final_name, 'scale':1, 'offset':Vector2(), 'mirror':false}) 
+		file_name = dir.get_next()
+
 
 func add_portrait(portrait_name:String='New portrait', portrait_data:Dictionary={'scene':"", 'image':'', 'scale':1, 'offset':Vector2(), 'mirror':false}) -> void:
 	var root = %PortraitTree.get_root()
 	add_portrait_item(portrait_name, portrait_data, root).select(0)
 	something_changed()
+
 
 func load_portrait_tree() -> void:
 	%PortraitTree.clear()
@@ -207,6 +206,7 @@ func load_portrait_tree() -> void:
 	
 	if root.get_child_count():
 		root.get_first_child().select(0)
+
 
 func filter_portrait_list(filter_term:String = '') -> void:
 	var item : TreeItem = %PortraitTree.get_root().get_first_child()

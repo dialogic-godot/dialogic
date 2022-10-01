@@ -32,7 +32,7 @@ func refresh() -> void:
 	%GlossaryList.clear()
 	var idx := 0
 	for file in DialogicUtil.get_project_setting('dialogic/glossary/glossary_files', []):
-		if Directory.new().file_exists(file):
+		if FileAccess.file_exists(file):
 			%GlossaryList.add_item(DialogicUtil.pretty_name(file), get_theme_icon('FileList', 'EditorIcons'))
 		else:
 			%GlossaryList.add_item(DialogicUtil.pretty_name(file), get_theme_icon('FileDead', 'EditorIcons'))
@@ -54,7 +54,7 @@ func refresh() -> void:
 ################################################################################
 func _on_GlossaryList_item_selected(idx:int) -> void:
 	%EntryList.clear()
-	if Directory.new().file_exists(%GlossaryList.get_item_tooltip(idx)):
+	if FileAccess.file_exists(%GlossaryList.get_item_tooltip(idx)):
 		current_glossary = load(%GlossaryList.get_item_tooltip(idx))
 		if not current_glossary is DialogicGlossary:
 			return

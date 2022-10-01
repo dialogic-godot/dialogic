@@ -54,9 +54,8 @@ func _exit_tree():
 
 func open_last_resource():
 	if ProjectSettings.has_setting('dialogic/editor/last_resources'):
-		var directory := Directory.new();
 		var path :String= ProjectSettings.get_setting('dialogic/editor/last_resources')[0]
-		if directory.file_exists(path):
+		if FileAccess.file_exists(path):
 			DialogicUtil.get_dialogic_plugin().editor_interface.inspect_object(load(path))
 	
 
