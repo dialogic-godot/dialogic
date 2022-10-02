@@ -56,10 +56,9 @@ func _on_TransInitialize_pressed():
 	if %TransOrigLanguage.text.is_empty():
 		%TransOrigLanguage.text = ProjectSettings.get_setting('locale/fallback')
 	var orig_locale = %TransOrigLanguage.text.strip_edges()
-	var file = File.new()
 	
 	if %TransFileMode.selected == 0:
-		file.open('res://dialogic_translation.csv', File.WRITE)
+		var file := FileAccess.open('res://dialogic_translation.csv', FileAccess.WRITE)
 		ProjectSettings.set_setting('dialogic/translation_path', 'res://dialogic_translation.csv')
 		file.store_csv_line(['keys', orig_locale])
 	else:
@@ -68,8 +67,8 @@ func _on_TransInitialize_pressed():
 		
 	
 	for timeline_path in DialogicUtil.list_resources_of_type('.dtl'):
+		var file := FileAccess.open(timeline_path.trim_suffix('.dtl')+'_translation.csv', FileAccess.WRITE)
 		if %TransFileMode.selected == 1:
-			file.open(timeline_path.trim_suffix('.dtl')+'_translation.csv', File.WRITE)
 			file.store_csv_line(['keys', orig_locale])
 		
 		var tml:DialogicTimeline = load(timeline_path)
@@ -77,15 +76,8 @@ func _on_TransInitialize_pressed():
 			#if event.
 			if event.can_be_translated():
 				file.store_csv_line([event.add_translation_id(), event.get_original_translation_text()])
-		
+
 		ResourceSaver.save(tml, timeline_path)
-		
-		if %TransFileMode.selected == 1:
-			file.close()
-	
-	if %TransFileMode.selected == 0:
-		file.close()
-	
 	
 	ProjectSettings.set_setting('dialogic/translation_enabled', true)
 	ProjectSettings.save()
@@ -96,26 +88,24 @@ func _on_TransRemove_pressed():
 
 func erase_translations():
 	ProjectSettings.set_setting('dialogic/translation_enabled', false)
-	var file = File.new()
-	var dir = Directory.new()
 	var trans_files = Array(ProjectSettings.get_setting('locale/translations'))
 	var trans_path = DialogicUtil.get_project_setting('dialogic/translation_path', '')
 	if trans_path.ends_with('.csv'):
 		for x_file in DialogicUtil.listdir(trans_path.get_base_dir()):
 			if x_file.ends_with('.translation'):
 				trans_files.erase(trans_path.get_base_dir().path_join(x_file))
-				dir.remove(trans_path.get_base_dir().path_join(x_file))
-		dir.remove(DialogicUtil.get_project_setting('dialogic/translation_path', ''))
+				DirAccess.remove_absolute(trans_path.get_base_dir().path_join(x_file))
+		DirAccess.remove_absolute(DialogicUtil.get_project_setting('dialogic/translation_path', ''))
 	
 	ProjectSettings.set_setting('dialogic/translation_path', null)
 	
 	for timeline_path in DialogicUtil.list_resources_of_type('.dtl'):
 		if trans_path == '':
-			dir.remove(timeline_path.trim_suffix('.dtl')+'_translation.csv')
+			DirAccess.remove_absolute(timeline_path.trim_suffix('.dtl')+'_translation.csv')
 			for x_file in DialogicUtil.listdir(timeline_path.get_base_dir()):
 				if x_file.ends_with('.translation'):
 					trans_files.erase(timeline_path.get_base_dir().path_join(x_file))
-					dir.remove(timeline_path.get_base_dir().path_join(x_file))
+					DirAccess.remove_absolute(timeline_path.get_base_dir().path_join(x_file))
 		
 		var tml:DialogicTimeline = load(timeline_path)
 		for event in tml.get_events():
