@@ -2,7 +2,7 @@
 <img width="1280" alt="cover" src="https://user-images.githubusercontent.com/2206700/189457799-6327bab0-b085-4421-8640-6a18e395d17d.png">
 Create dialogs, characters and scenes to display conversations in your Godot games.
 
-## Version 2.0 - Alpha  ![Godot v4.0](https://img.shields.io/badge/Godot-v4.0-%23478cbf)
+## Version 2.0 - Alpha  ![Godot v4.0 (Beta 2)](https://img.shields.io/badge/Godot-v4.0%20(Beta%202)-%23478cbf)
 Dialogic 2.0 is a major rewrite of the plugin including many compatibility-breaking changes. It is currently developed exclusively for Godot 4.
 
 If you are looking for the Godot 3.5 version you can find it here: https://github.com/coppolaemilio/dialogic/tree/dialogic-1
