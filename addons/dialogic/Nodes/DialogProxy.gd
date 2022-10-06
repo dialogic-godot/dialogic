@@ -35,6 +35,7 @@ var _signals_to_copy = [
 	'timeline_end',
 	'dialogic_signal',
 	'letter_displayed',
+	'auto_advance_toggled',
 ]
 ## -----------------------------------------------------------------------------
 ## 						SIGNALS (proxy copy of DialogNode signals)
@@ -50,3 +51,4 @@ signal timeline_end(timeline_name)
 # Custom user signal
 signal dialogic_signal(value)
 signal letter_displayed(lastLetter)
+signal auto_advance_toggled(toggleValue)

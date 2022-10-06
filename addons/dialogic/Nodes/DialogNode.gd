@@ -12,7 +12,7 @@ var timeline_name: String
 var preview: bool = false
 
 var noSkipMode: bool = false
-var autoPlayMode: bool = false
+var autoPlayMode: bool = false setget _set_autoPlayMode
 var autoWaitTime : float = 2.0
 
 enum state {
@@ -87,6 +87,7 @@ signal timeline_end(timeline_name)
 signal dialogic_signal(value)
 # Utility
 signal letter_displayed(lastLetter)
+signal auto_advance_toggled()
 
 
 ## -----------------------------------------------------------------------------
@@ -448,6 +449,7 @@ func _process(delta):
 # checks for the "input_next" action
 func _input(event: InputEvent) -> void:
 	if not Engine.is_editor_hint() and event.is_action_pressed(Dialogic.get_action_button()) and autoPlayMode:
+		emit_signal("auto_advance_toggled", false)
 		autoPlayMode = false
 		return
 	
@@ -1558,6 +1560,14 @@ func resume_state_from_info(state_info):
 			dialog_script['events'][event_index]['answered'] = true
 
 	_load_event_at_index(state_info['event_idx'])
+
+## -----
+## 	Setter/Getter
+## -----
+func _set_autoPlayMode(newValue : bool):
+	emit_signal("auto_advance_toggled", newValue)
+	autoPlayMode = newValue
+	
 
 
 ## -----------------------------------------------------------------------------
