@@ -83,7 +83,9 @@ func _ready():
 	$Search.focus_entered.connect(_on_Search_focus_entered)
 	$Search.text_submitted.connect(_on_Search_text_entered)
 	var scale: float = DialogicUtil.get_editor_scale()
-	$Search/Icon.position.x = 0 + (5 * scale)
+	$Search/Icon.position.x = -8
+	if scale != 1:
+		$Search/Icon.position.x = 0 + (5 * scale)
 	$Search/SelectButton.icon = get_theme_icon("Collapse", "EditorIcons")
 	$Search.placeholder_text = placeholder_text
 	%Suggestions.add_theme_stylebox_override('bg', load("res://addons/dialogic/Editor/Events/styles/ResourceMenuPanelBackground.tres"))
