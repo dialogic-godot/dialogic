@@ -2,7 +2,7 @@ extends Control
 
 func _ready() -> void:
 	$PauseIndictator.hide()
-	var dialog_scene_path :String= DialogicUtil.get_project_setting(
+	var dialog_scene_path: String = DialogicUtil.get_project_setting(
 		'dialogic/editor/test_dialog_scene', "res://addons/dialogic/Example Assets/example-scenes/DialogicDefaultScene.tscn")
 	var scene = load(dialog_scene_path).instantiate()
 	add_child(scene)
@@ -13,7 +13,7 @@ func _ready() -> void:
 			scene.position = get_viewport_rect().size/2.0
 	
 	randomize()
-	var current_timeline :String= ProjectSettings.get_setting('dialogic/editor/current_timeline_path')
+	var current_timeline: String = ProjectSettings.get_setting('dialogic/editor/current_timeline_path')
 	Dialogic.start_timeline(current_timeline)
 	Dialogic.timeline_ended.connect(get_tree().quit)
 	Dialogic.signal_event.connect(recieve_event_signal)

@@ -26,17 +26,14 @@ signal event_handled(resource)
 signal signal_event(argument)
 signal text_signal(argument)
 
-	
-func _ready() -> void:
 
+func _ready() -> void:
 	rebuild_character_directory()
 	rebuild_timeline_directory()
-		
+	
 	collect_subsystems()
 
 	clear()
-	
-# 
 
 
 
@@ -274,7 +271,7 @@ func _get(property):
 func _set(property, value):
 	if has_subsystem(property):
 		return true
-		
+
 ################################################################################
 ##						PROCESSING FUNCTIONS
 ################################################################################
@@ -491,3 +488,15 @@ func process_timeline(timeline: DialogicTimeline) -> DialogicTimeline:
 		return DialogicTimeline.new()
 	
 
+
+################################################################################
+##						FOR END USER
+################################################################################
+func start(timeline, single_instance = true):
+	var dialog_scene_path: String = DialogicUtil.get_project_setting(
+		'dialogic/editor/default_dialog_scene', "res://addons/dialogic/Example Assets/example-scenes/DialogicDefaultScene.tscn")
+	if single_instance:
+		if get_tree().get_nodes_in_group('dialogic_main_node').is_empty():
+			var scene = load(dialog_scene_path).instantiate()
+			add_child(scene)
+	Dialogic.start_timeline(timeline)
