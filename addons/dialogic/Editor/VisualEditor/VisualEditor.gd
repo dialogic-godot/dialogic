@@ -79,8 +79,8 @@ func save_timeline() -> void:
 	
 	if !visible:
 		return
-	if _toolbar.is_current_unsaved():
-		
+	if _toolbar.is_current_unsaved() or (current_timeline and len(current_timeline.events) == 0):
+		print("Saving ", current_timeline.resource_path)
 		var new_events = []
 		
 		var indent := 0
@@ -101,7 +101,6 @@ func save_timeline() -> void:
 					indent = 0
 					
 				
-		
 		if current_timeline:
 			current_timeline.set_events(new_events)
 			
@@ -110,7 +109,7 @@ func save_timeline() -> void:
 			current_timeline.events_processed = false
 			editor_reference.process_timeline(current_timeline)
 			current_timeline.events_processed = false		
-			ResourceSaver.save(current_timeline, current_timeline.resource_path)
+			print("Error code : ", ResourceSaver.save(current_timeline, current_timeline.resource_path))
 			
 			#Switch back to the text event array, in case we're switching editor modes
 			current_timeline.set_events(new_events)
