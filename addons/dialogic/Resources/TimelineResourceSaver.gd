@@ -75,6 +75,7 @@ func _save(resource: Resource, path: String = '', flags: int = 0) -> int:
 			printerr(path + ": Timeline was not in ready state for saving! Timeline was not saved!")
 			return ERR_INVALID_DATA
 	else:
+		var file := FileAccess.open(path, FileAccess.WRITE)
 		return OK
 
 func update_translations(path:String, translation_updates:Dictionary):

@@ -79,8 +79,8 @@ func save_timeline() -> void:
 	
 	if !visible:
 		return
-	if _toolbar.is_current_unsaved():
-		
+	if _toolbar.is_current_unsaved() or (current_timeline and len(current_timeline.events) == 0):
+		print("Saving ", current_timeline.resource_path)
 		var new_events = []
 		
 		var indent := 0
@@ -101,7 +101,6 @@ func save_timeline() -> void:
 					indent = 0
 					
 				
-		
 		if current_timeline:
 			current_timeline.set_events(new_events)
 			
@@ -110,7 +109,7 @@ func save_timeline() -> void:
 			current_timeline.events_processed = false
 			editor_reference.process_timeline(current_timeline)
 			current_timeline.events_processed = false		
-			ResourceSaver.save(current_timeline, current_timeline.resource_path)
+			print("Error code : ", ResourceSaver.save(current_timeline, current_timeline.resource_path))
 			
 			#Switch back to the text event array, in case we're switching editor modes
 			current_timeline.set_events(new_events)
@@ -330,14 +329,14 @@ func _on_event_block_gui_input(event, item: Node):
 				var to_position = moving_piece.get_index()
 				if move_start_position != to_position:
 					TimelineUndoRedo.create_action("[D] Moved event (type '"+moving_piece.resource.to_string()+"').")
-					TimelineUndoRedo.add_do_method(move_block_to_index.call(move_start_position, to_position))
-					TimelineUndoRedo.add_undo_method(move_block_to_index.call(to_position, move_start_position))
+					TimelineUndoRedo.add_do_method(move_block_to_index.bind(move_start_position, to_position))
+					TimelineUndoRedo.add_undo_method(move_block_to_index.bind(to_position, move_start_position))
 					
 					# in case a something like a choice or condition was moved BELOW it's end node the end_node is moved as well!!!
 					if moving_piece.resource.can_contain_events:
 						if moving_piece.end_node.get_index() < to_position:
-							TimelineUndoRedo.add_do_method(move_block_to_index.call(moving_piece.end_node.get_index(), to_position))
-							TimelineUndoRedo.add_undo_method(move_block_to_index.call(to_position+1, moving_piece.end_node.get_index()))
+							TimelineUndoRedo.add_do_method(move_block_to_index.bind(moving_piece.end_node.get_index(), to_position))
+							TimelineUndoRedo.add_undo_method(move_block_to_index.bind(to_position+1, moving_piece.end_node.get_index()))
 					
 					# move it back so the DO action works. (Kinda stupid but whatever)
 					move_block_to_index(to_position, move_start_position)
@@ -411,8 +410,8 @@ func _input(event):
 			if (len(selected_items) != 0):
 				var events_indexed = get_events_indexed(selected_items)
 				TimelineUndoRedo.create_action("[D] Deleting "+str(len(selected_items))+" event(s).")
-				TimelineUndoRedo.add_do_method(delete_events_indexed.call(events_indexed))
-				TimelineUndoRedo.add_undo_method(add_events_indexed.call(events_indexed))
+				TimelineUndoRedo.add_do_method(delete_events_indexed.bind(events_indexed))
+				TimelineUndoRedo.add_undo_method(add_events_indexed.bind(events_indexed))
 				TimelineUndoRedo.commit_action()
 				get_viewport().set_input_as_handled()
 			
@@ -456,8 +455,8 @@ func _input(event):
 				paste_position = %Timeline.get_child_count()-1
 			if events_list:
 				TimelineUndoRedo.create_action("[D] Pasting "+str(len(events_list))+" event(s).")
-				TimelineUndoRedo.add_do_method(add_events_at_index.call(events_list, paste_position))
-				TimelineUndoRedo.add_undo_method(remove_events_at_index.call(paste_position+1, len(events_list)))
+				TimelineUndoRedo.add_do_method(add_events_at_index.bind(events_list, paste_position))
+				TimelineUndoRedo.add_undo_method(remove_events_at_index.bind(paste_position+1, len(events_list)))
 				TimelineUndoRedo.commit_action()
 				get_viewport().set_input_as_handled()
 		
@@ -465,8 +464,8 @@ func _input(event):
 		if is_event_pressed(event, KEY_X, false, false, true):
 			var events_indexed = get_events_indexed(selected_items)
 			TimelineUndoRedo.create_action("[D] Cut "+str(len(selected_items))+" event(s).")
-			TimelineUndoRedo.add_do_method(cut_events_indexed.call(events_indexed))
-			TimelineUndoRedo.add_undo_method(add_events_indexed.call(events_indexed))
+			TimelineUndoRedo.add_do_method(cut_events_indexed.bind(events_indexed))
+			TimelineUndoRedo.add_undo_method(add_events_indexed.bind(events_indexed))
 			TimelineUndoRedo.commit_action()
 			get_viewport().set_input_as_handled()
 		
@@ -476,8 +475,8 @@ func _input(event):
 				var events = get_events_indexed(selected_items).values()
 				var at_index = selected_items[-1].get_index()
 				TimelineUndoRedo.create_action("[D] Duplicate "+str(len(events))+" event(s).")
-				TimelineUndoRedo.add_do_method(add_events_at_index.call(events, at_index))
-				TimelineUndoRedo.add_undo_method(remove_events_at_index.call(at_index, len(events)))
+				TimelineUndoRedo.add_do_method(add_events_at_index.bind(events, at_index))
+				TimelineUndoRedo.add_undo_method(remove_events_at_index.bind(at_index, len(events)))
 				TimelineUndoRedo.commit_action()
 			get_viewport().set_input_as_handled()
 		
@@ -753,13 +752,13 @@ func _add_event_button_pressed(event_script):
 	
 	if event_script.can_contain_events:
 		TimelineUndoRedo.create_action("[D] Add event.")
-		TimelineUndoRedo.add_do_method(add_event_with_end_branch.call(event_script.duplicate(), at_index, true, true))
-		TimelineUndoRedo.add_undo_method(remove_events_at_index.call(at_index, 2))
+		TimelineUndoRedo.add_do_method(add_event_with_end_branch.bind(event_script.duplicate(), at_index, true, true))
+		TimelineUndoRedo.add_undo_method(remove_events_at_index.bind(at_index, 2))
 		TimelineUndoRedo.commit_action()
 	else:
 		TimelineUndoRedo.create_action("[D] Add event.")
-		TimelineUndoRedo.add_do_method(add_event_node.call(event_script.duplicate(), at_index, true, true))
-		TimelineUndoRedo.add_undo_method(remove_events_at_index.call(at_index, 1))
+		TimelineUndoRedo.add_do_method(add_event_node.bind(event_script.duplicate(), at_index, true, true))
+		TimelineUndoRedo.add_undo_method(remove_events_at_index.bind(at_index, 1))
 		TimelineUndoRedo.commit_action()
 	something_changed()
 	scroll_to_piece(at_index)
