@@ -743,7 +743,7 @@ func deselect_all_items():
 ##				CREATING NEW EVENTS USING THE BUTTONS
 ## *****************************************************************************
 # Event Creation signal for buttons
-func _add_event_button_pressed(event_script:Script):
+func _add_event_button_pressed(event_script):
 	var at_index := -1
 	if selected_items:
 		at_index = selected_items[-1].get_index()+1
