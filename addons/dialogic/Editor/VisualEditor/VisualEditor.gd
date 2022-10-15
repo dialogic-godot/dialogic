@@ -743,23 +743,24 @@ func deselect_all_items():
 ##				CREATING NEW EVENTS USING THE BUTTONS
 ## *****************************************************************************
 # Event Creation signal for buttons
-func _add_event_button_pressed(event_script):
-	var at_index = -1
+func _add_event_button_pressed(event_script:Script):
+	var at_index := -1
 	if selected_items:
 		at_index = selected_items[-1].get_index()+1
 	else:
 		at_index = %Timeline.get_child_count()
 	
+	var remove_event_index := 1
+	
+	TimelineUndoRedo.create_action("[D] Add event.")
 	if event_script.can_contain_events:
-		TimelineUndoRedo.create_action("[D] Add event.")
 		TimelineUndoRedo.add_do_method(add_event_with_end_branch.bind(event_script.duplicate(), at_index, true, true))
 		TimelineUndoRedo.add_undo_method(remove_events_at_index.bind(at_index, 2))
-		TimelineUndoRedo.commit_action()
 	else:
-		TimelineUndoRedo.create_action("[D] Add event.")
 		TimelineUndoRedo.add_do_method(add_event_node.bind(event_script.duplicate(), at_index, true, true))
 		TimelineUndoRedo.add_undo_method(remove_events_at_index.bind(at_index, 1))
-		TimelineUndoRedo.commit_action()
+	TimelineUndoRedo.commit_action()
+	
 	something_changed()
 	scroll_to_piece(at_index)
 	indent_events()
