@@ -180,9 +180,17 @@ func get_original_translation_text():
 
 func build_event_editor():
 	add_header_edit('_character_from_directory', ValueType.ComplexPicker, 'Character:', '', {'file_extension':'.dch', 'suggestions_func':[self, 'get_character_suggestions'], 'empty_text':'(No one)','icon':load("res://addons/dialogic/Editor/Images/Resources/character.svg")})
-	add_header_edit('Portrait', ValueType.ComplexPicker, '', '', {'suggestions_func':[self, 'get_portrait_suggestions'], 'placeholder':"Don't change", 'icon':load("res://addons/dialogic/Editor/Images/Resources/Portrait.svg")}, 'Character')
+	add_header_edit('Portrait', ValueType.ComplexPicker, '', '', {'suggestions_func':[self, 'get_portrait_suggestions'], 'placeholder':"Don't change", 'icon':load("res://addons/dialogic/Editor/Images/Resources/Portrait.svg")}, 'Character != null and !has_no_portraits()')
+	
+	# I think it is better not to show the picker. Leaving the commented out version to re-add or replace if needed.
+	# add_header_label('(Character has no portraits)', 'has_no_portraits()')
+	
+	add_header_edit('Position', ValueType.Integer, 'Position:', '', {}, 'Character != null and !has_no_portraits()')
 	add_body_edit('Text', ValueType.MultilineText)
 
+
+func has_no_portraits() -> bool:
+	return Character and Character.portraits.is_empty()
 
 func get_character_suggestions(search_text:String):
 	var suggestions = {}

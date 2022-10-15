@@ -209,8 +209,7 @@ func _is_timeline_editor_visible() -> bool:
 func _get_timeline_editor() -> Node:
 	if DialogicUtil.get_project_setting('dialogic/editor_mode', 'visual') == 'visual':
 		return %TimelineVisualEditor
-	else:
-		return %TimelineTextEditor
+	return %TimelineTextEditor
 	
 
 func _on_toggle_editor_view(mode:String) -> void:
@@ -221,7 +220,6 @@ func _on_toggle_editor_view(mode:String) -> void:
 		%TimelineTextEditor.hide()
 		%TimelineTextEditor.clear_timeline()
 		%TimelineVisualEditor.show()
-		
 	else:
 		%TimelineVisualEditor.save_timeline()
 		%TimelineVisualEditor.hide()

@@ -333,7 +333,10 @@ func build_event_editor():
 	add_header_edit('_character_from_directory', ValueType.ComplexPicker, '', '', {'file_extension':'.dch', 'suggestions_func':[self, 'get_character_suggestions'], 'icon':load("res://addons/dialogic/Editor/Images/Resources/character.svg")})
 	
 	add_header_edit('Portrait', ValueType.ComplexPicker, 'Portrait:', '', {'empty_text':'Default', 'suggestions_func':[self, 'get_portrait_suggestions'], 'icon':load("res://addons/dialogic/Editor/Images/Resources/Portrait.svg")}, 'Character != null and !has_no_portraits() and ActionType != %s' %ActionTypes.Leave)
-	add_header_label('Character has no portraits!', 'has_no_portraits()')
+	
+	# I think it is better not to show the picker. Leaving the commented out version to re-add or replace if needed.
+	# add_header_label('(Character has no portraits)', 'has_no_portraits()')
+	
 	add_header_edit('Position', ValueType.Integer, 'Position:', '', {}, 'Character != null and !has_no_portraits() and ActionType != %s' %ActionTypes.Leave)
 	
 	add_body_edit('AnimationName', ValueType.ComplexPicker, 'Animation:', '', {'suggestions_func':[self, 'get_animation_suggestions'], 'editor_icon':["Animation", "EditorIcons"], 'placeholder':'Default'}, 'Character != null')
