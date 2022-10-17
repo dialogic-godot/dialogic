@@ -20,8 +20,7 @@ func _recognize(resource: Resource) -> bool:
 
 # Save the resource
 func _save(resource: Resource, path: String = '', flags: int = 0):
-	if FileAccess.file_exists(path):
-		var file := FileAccess.open(path, FileAccess.READ)
-		var result := var_to_str(inst_to_dict(resource))
-		file.store_string(result)
-		print('[Dialogic] Saved character "' , path, '"')
+	var file := FileAccess.open(path, FileAccess.WRITE)
+	var result := var_to_str(inst_to_dict(resource))
+	file.store_string(result)
+	print('[Dialogic] Saved character "' , path, '"')
