@@ -69,7 +69,7 @@ func file_folder_selected(path):
 	emit_signal("changed")
 
 func preview():
-	if %SoundFolder.hint_tooltip.is_empty(): return
+	if %SoundFolder.tooltip_text.is_empty(): return
 	$DialogicNode_TypeSounds.load_overwrite(get_data())
 	var preview_timer = Timer.new()
 	DialogicUtil.update_timer_process_callback(preview_timer)
