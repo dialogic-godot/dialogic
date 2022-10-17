@@ -743,7 +743,7 @@ func deselect_all_items():
 ##				CREATING NEW EVENTS USING THE BUTTONS
 ## *****************************************************************************
 # Event Creation signal for buttons
-func _add_event_button_pressed(event_script):
+func _add_event_button_pressed(event_resource:Resource):
 	var at_index := -1
 	if selected_items:
 		at_index = selected_items[-1].get_index()+1
@@ -753,11 +753,11 @@ func _add_event_button_pressed(event_script):
 	var remove_event_index := 1
 	
 	TimelineUndoRedo.create_action("[D] Add event.")
-	if event_script.can_contain_events:
-		TimelineUndoRedo.add_do_method(add_event_with_end_branch.bind(event_script.duplicate(), at_index, true, true))
+	if event_resource.can_contain_events:
+		TimelineUndoRedo.add_do_method(add_event_with_end_branch.bind(event_resource.duplicate(), at_index, true, true))
 		TimelineUndoRedo.add_undo_method(remove_events_at_index.bind(at_index, 2))
 	else:
-		TimelineUndoRedo.add_do_method(add_event_node.bind(event_script.duplicate(), at_index, true, true))
+		TimelineUndoRedo.add_do_method(add_event_node.bind(event_resource.duplicate(), at_index, true, true))
 		TimelineUndoRedo.add_undo_method(remove_events_at_index.bind(at_index, 1))
 	TimelineUndoRedo.commit_action()
 	
