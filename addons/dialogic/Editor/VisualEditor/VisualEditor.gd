@@ -305,7 +305,7 @@ func create_drag_and_drop_event(resource):
 func drop_event():
 	if moving_piece != null:
 		var at_index = moving_piece.get_index()
-		var resource = moving_piece.resource.get_script()
+		var resource = moving_piece.resource
 		moving_piece.queue_free()
 		
 		_add_event_button_pressed(resource)
