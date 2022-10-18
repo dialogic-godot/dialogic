@@ -39,87 +39,78 @@ func load(slot_name:String):
 	set_latest_slot(slot_name)
 	dialogic.load_full_state(load_file(slot_name, 'state.txt', {}))
 
-func save_file(slot_name:String, file_name:String, data) -> int:
+func save_file(slot_name:String, file_name:String, data) -> void:
 	slot_name = this_or_current_slot(slot_name)
-	if slot_name.is_empty(): return ERR_BUG
-	
-	if slot_name.is_empty() in get_slot_names():
-		add_empty_slot(slot_name)
-	
-	var file = File.new()
-	var err = file.open(SAVE_SLOTS_DIR.path_join(slot_name).path_join(file_name), File.WRITE)
-	if err == OK:
+	if not slot_name.is_empty():
+		if slot_name.is_empty() in get_slot_names():
+			add_empty_slot(slot_name)
+		
+		var file = FileAccess.open(SAVE_SLOTS_DIR.path_join(slot_name).path_join(file_name), FileAccess.WRITE)
 		file.store_var(data, true)
-		file.close()
-	return err
+
 
 func load_file(slot_name:String, file_name:String, default):
 	slot_name = this_or_current_slot(slot_name)
-	if slot_name.is_empty(): return
+	if slot_name.is_empty():
+		return
 	
-	var file := File.new()
-	if file.open(get_slot_path(slot_name).path_join(file_name), File.READ) != OK:
-		file.close()
-		return default
+	var path := get_slot_path(slot_name).path_join(file_name)
 	
-	var data = file.get_var(true)
-	file.close()
-	
-	return data
+	if FileAccess.file_exists(path):
+		var data = FileAccess.open(path, FileAccess.READ).get_var(true)
+		return data
+	return default
+
 
 ####################################################################################################
 ##					SLOT HELPERS
 ####################################################################################################
 func get_slot_names() -> Array:
-	var save_folders = []
-	var directory := Directory.new()
-	if directory.open(SAVE_SLOTS_DIR) != OK:
-		print("[Dialogic] Error: Failed to access save directory.")
-		return []
-	
-	directory.list_dir_begin()
-	var file_name = directory.get_next()
-	while file_name != "":
-		if directory.current_is_dir() and not file_name.begins_with("."):
-			save_folders.append(file_name)
-		file_name = directory.get_next()
+	var save_folders := []
 
-	return save_folders
+	if DirAccess.dir_exists_absolute(SAVE_SLOTS_DIR):
+		var directory := DirAccess.open(SAVE_SLOTS_DIR)
+		directory.list_dir_begin()
+		var file_name := directory.get_next()
+		while file_name != "":
+			if directory.current_is_dir() and not file_name.begins_with("."):
+				save_folders.append(file_name)
+			file_name = directory.get_next()
+		return save_folders
+	
+	return []
+
 
 func has_slot(slot_name:String) -> bool:
 	return slot_name in get_slot_names()
 
 func remove_slot(slot_name:String) -> void:
-	var directory := Directory.new()
-	if directory.open(SAVE_SLOTS_DIR.path_join(slot_name)) != OK:
-		print("[D] Error: Failed to access save folder '"+slot_name+"'.")
-		return
+	var path := SAVE_SLOTS_DIR.path_join(slot_name)
 	
-	# first remove the content, becaus deleting filled folders isn't allowed
-	directory.list_dir_begin()
-	var file_name = directory.get_next()
-	while file_name != "":
-		directory.remove(file_name)
-		file_name = directory.get_next()
-	# then delete folder
-	directory.remove(SAVE_SLOTS_DIR.path_join(slot_name))
+	if DirAccess.dir_exists_absolute(path):
+		var directory := DirAccess.open(path)
+		directory.list_dir_begin()
+		var file_name := directory.get_next()
+		while file_name != "":
+			directory.remove(file_name)
+			file_name = directory.get_next()
+		# then delete folder
+		directory.remove(SAVE_SLOTS_DIR.path_join(slot_name))
+
 
 # this adds a new save folder with the given name
 func add_empty_slot(slot_name: String) -> void:
-	var directory := Directory.new()
-	if directory.open(SAVE_SLOTS_DIR) != OK:
-		print("[D] Error: Failed to access working directory.")
-		return 
-	directory.make_dir(slot_name)
+	if DirAccess.dir_exists_absolute(SAVE_SLOTS_DIR):
+		var directory := DirAccess.open(SAVE_SLOTS_DIR)
+		directory.make_dir(slot_name)
+
 
 # reset the state of the given save folder (or default)
 func reset_slot(slot_name: String = '') -> void:
 	slot_name = this_or_current_slot(slot_name)
 	if slot_name.is_empty(): return
-	
-	var file = File.new()
-	file.store_var({})
-	save_file(slot_name, 'state.txt', file)
+
+	save_file(slot_name, 'state.txt', {})
 
 func get_slot_path(slot_name:String) -> String:
 	return SAVE_SLOTS_DIR.path_join(slot_name)
@@ -134,9 +125,8 @@ func set_latest_slot(slot_name:String) -> void:
 
 
 func _make_sure_slot_dir_exists() -> void:
-	var directory := Directory.new()
-	if not directory.dir_exists(SAVE_SLOTS_DIR):
-		directory.make_dir_recursive(SAVE_SLOTS_DIR)
+	if not DirAccess.dir_exists_absolute(SAVE_SLOTS_DIR):
+		DirAccess.make_dir_recursive_absolute(SAVE_SLOTS_DIR)
 
 func this_or_current_slot(slot_name:String):
 	if slot_name: set_latest_slot(slot_name)
@@ -170,10 +160,11 @@ func store_slot_image(slot_name:String) -> void:
 func get_slot_image(slot_name:String) -> ImageTexture:
 	slot_name = this_or_current_slot(slot_name)
 	if slot_name.is_empty(): return null
-	var file = File.new()
-	if file.open(get_slot_path(slot_name).path_join('thumbnail.png'), File.READ) == OK:
+	
+	var path := get_slot_path(slot_name).path_join('thumbnail.png')
+	if FileAccess.file_exists(path):
+		var file := FileAccess.open(path, FileAccess.READ)
 		var buffer = file.get_buffer(file.get_len())
-		file.close()
 
 		var image = Image.new()
 		image.load_png_from_buffer(buffer)

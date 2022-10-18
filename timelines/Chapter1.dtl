@@ -1,7 +1,5 @@
 Hello
 
-[label name="start"]
-
 [background arg="res://addons/dialogic/Example Assets/backgrounds/vn-background-1.png"]
 
 Join Jowan (shocked) 3 [ mirrored="true"]
@@ -34,7 +32,5 @@ Jowan: This is a cool feature [portrait=joy].
 	
 	Jowan: What are you talking about?
 	
-[jump timeline="res://timelines/Chapter1.dtl" label="Start"]
-
 [background]
 

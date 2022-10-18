@@ -26,17 +26,14 @@ signal event_handled(resource)
 signal signal_event(argument)
 signal text_signal(argument)
 
-	
-func _ready() -> void:
 
+func _ready() -> void:
 	rebuild_character_directory()
 	rebuild_timeline_directory()
-		
+	
 	collect_subsystems()
 
 	clear()
-	
-# 
 
 
 
@@ -143,6 +140,12 @@ func jump_to_label(label:String) -> void:
 func clear() -> bool:
 	for subsystem in get_children():
 		subsystem.clear_game_state()
+		
+	# Clearing existing Dialogic main nodes
+	for i in get_tree().get_nodes_in_group('dialogic_main_node'):
+				i.queue_free()
+	
+	# Resetting variables
 	current_timeline = null
 	current_event_idx = -1
 	current_timeline_events = []
@@ -264,6 +267,7 @@ func collect_subsystems() -> void:
 			_event_script_cache.remove_at(i)
 			break
 
+
 func has_subsystem(_name:String) -> bool:
 	return has_node(_name)
 
@@ -289,7 +293,8 @@ func _get(property):
 func _set(property, value):
 	if has_subsystem(property):
 		return true
-		
+
+
 ################################################################################
 ##						PROCESSING FUNCTIONS
 ################################################################################
@@ -349,7 +354,8 @@ func rebuild_character_directory() -> void:
 		entry['full_path'] = characters[i]
 		entry['unique_short_path'] = reverse_array[i]
 		character_directory[reverse_array[i]] = entry
-		
+
+
 func rebuild_timeline_directory() -> void:
 	var characters: Array = DialogicUtil.list_resources_of_type(".dtl")
 	
@@ -405,6 +411,7 @@ func rebuild_timeline_directory() -> void:
 	for i in characters.size():
 		timeline_directory[reverse_array[i]] = characters[i]
 
+
 func find_timeline(path: String) -> String:
 	if path in timeline_directory.keys():
 		return timeline_directory[path]
@@ -414,6 +421,7 @@ func find_timeline(path: String) -> String:
 				return timeline_directory[i]
 				
 	return ""
+
 
 func process_timeline(timeline: DialogicTimeline) -> DialogicTimeline:
 	if timeline != null:
@@ -504,5 +512,21 @@ func process_timeline(timeline: DialogicTimeline) -> DialogicTimeline:
 			return timeline
 	else:
 		return DialogicTimeline.new()
-	
 
+
+################################################################################
+##						FOR END USER
+################################################################################
+func start(timeline, single_instance = true):
+	var dialog_scene_path: String = DialogicUtil.get_project_setting(
+		'dialogic/editor/default_dialog_scene', "res://addons/dialogic/Example Assets/example-scenes/DialogicDefaultScene.tscn")
+	if single_instance:
+		if get_tree().get_nodes_in_group('dialogic_main_node').is_empty():
+			var scene = load(dialog_scene_path).instantiate()
+			get_parent().add_child(scene)
+	Dialogic.start_timeline(timeline)
+
+func is_running() -> bool:
+	if get_tree().get_nodes_in_group('dialogic_main_node').is_empty():
+		return false
+	return true

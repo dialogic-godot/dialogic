@@ -27,37 +27,30 @@ func _handles_type(typename: StringName) -> bool:
 # parse the file and return a resource
 func _load(path: String, original_path: String, use_sub_threads: bool, cache_mode: int):
 	print('[Dialogic] Reimporting timeline "' , path, '"')
-	
-	var file := File.new()
-	var err:int
-	
-	err = file.open(path, File.READ)
-	if err != OK:
-		push_error("For some reason, loading custom resource failed with error code: %s"%err)
-		return err
+	if FileAccess.file_exists(path):
+		var file := FileAccess.open(path, FileAccess.READ)
+		var res = DialogicTimeline.new()
+		var text = file.get_as_text()
 		
-	var res = DialogicTimeline.new()
-	
-	var text = file.get_as_text()
-	# Parse the lines as seperate events and insert them in an array, so they can be converted to DialogicEvent's when processed later
-	var prev_indent := ""
-	var events := []
-	
-	var lines := text.split('\n', true)
-	var idx := -1
-	
-	while idx < len(lines)-1:
-		idx += 1
-		var line :String = lines[idx]
-		var line_stripped :String = line.strip_edges(true, true)
-		if line_stripped.is_empty():
-			continue
-		events.append(line)
+		# Parse the lines as seperate events and insert them in an array, so they can be converted to DialogicEvent's when processed later
+		var prev_indent := ""
+		var events := []
+		
+		var lines := text.split('\n', true)
+		var idx := -1
+		
+		while idx < len(lines)-1:
+			idx += 1
+			var line :String = lines[idx]
+			var line_stripped :String = line.strip_edges(true, true)
+			if line_stripped.is_empty():
+				continue
+			events.append(line)
 
 
-	res.events = events
-	res.events_processed = false
-	return res
+		res.events = events
+		res.events_processed = false
+		return res
 
 
 func _get_dependencies(path:String, add_type:bool):

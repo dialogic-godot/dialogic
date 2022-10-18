@@ -27,19 +27,13 @@ func _handles_type(typename: StringName) -> bool:
 # parse the file and return a resource
 func _load(path: String, original_path: String, use_sub_threads: bool, cache_mode: int):
 	print('[Dialogic] Reimporting character "' , path, '"')
-	var file := File.new()
-	
-	var err:int
-	
-	err = file.open(path, File.READ)
-	if err != OK:
-		push_error("For some reason, loading custom resource failed with error code: %s"%err)
-		return err
-	
-	var res = dict_to_inst(str_to_var(file.get_as_text()))
-	
-	# Everything went well, and you parsed your file data into your resource. Life is good, return it
-	return res
+	if FileAccess.file_exists(path):
+		var file = FileAccess.open(path, FileAccess.READ)
+		return dict_to_inst(str_to_var(file.get_as_text()))
+	else:
+		push_error("File does not exists")
+		return false
+
 
 func _get_dependencies(path:String, add_type:bool):
 	var depends_on : PackedStringArray

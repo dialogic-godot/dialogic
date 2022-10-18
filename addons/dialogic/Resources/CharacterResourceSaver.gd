@@ -19,17 +19,8 @@ func _recognize(resource: Resource) -> bool:
 
 
 # Save the resource
-func _save(resource: Resource, path: String = '', flags: int = 0) -> int:
-	var err:int
-	var file:File = File.new()
-	err = file.open(path, File.WRITE)
-	if err != OK:
-		printerr('Can\'t write file: "%s"! code: %d.' % [path, err])
-		return err
-	
-	var result = var_to_str(inst_to_dict(resource))
-	
+func _save(resource: Resource, path: String = '', flags: int = 0):
+	var file := FileAccess.open(path, FileAccess.WRITE)
+	var result := var_to_str(inst_to_dict(resource))
 	file.store_string(result)
-	file.close()
 	print('[Dialogic] Saved character "' , path, '"')
-	return OK

@@ -20,8 +20,9 @@ func set_left_text(value):
 	$LeftText.text = str(value)
 	$LeftText.visible = !value.is_empty()
 
-func set_value(value):
-	$Value.value = value
+func set_value(value) -> void:
+	if value:
+		$Value.value = value
 	
 func get_value():
 	return $Value.value
