@@ -576,7 +576,7 @@ func convertTimelines():
 							var time: float = 1.0
 							if "fade_duration" in event:
 								time = event['fade_duration']
-							file.store_string(eventLine + "[background path=\"" + event['background'] +"\" fade=\"" + str(time) + "\"]")
+							file.store_string(eventLine + "[background arg=\"" + event['background'] +"\" fade=\"" + str(time) + "\"]")
 						"dialogic_022":
 							#Close Dialog event
 							file.store_string(eventLine + "[end_timeline]")
