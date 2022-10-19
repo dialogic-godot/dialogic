@@ -29,6 +29,7 @@ func _save(resource: Resource, path: String = '', flags: int = 0) -> int:
 			print('[Dialogic] Saving timeline...')
 			if FileAccess.file_exists(path):
 				var file := FileAccess.open(path, FileAccess.WRITE)
+				var file := FileAccess.open(path, FileAccess.READ_WRITE)
 				
 				#var result = events_to_text(resource.events)
 				var result := ""
@@ -75,7 +76,7 @@ func _save(resource: Resource, path: String = '', flags: int = 0) -> int:
 			printerr(path + ": Timeline was not in ready state for saving! Timeline was not saved!")
 			return ERR_INVALID_DATA
 	else:
-		var file := FileAccess.open(path, FileAccess.WRITE)
+		var file := FileAccess.open(path, FileAccess.READ_WRITE)
 		return OK
 
 func update_translations(path:String, translation_updates:Dictionary):
