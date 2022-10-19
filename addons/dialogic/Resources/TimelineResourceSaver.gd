@@ -28,7 +28,6 @@ func _save(resource: Resource, path: String = '', flags: int = 0) -> int:
 		elif !resource.events_processed:
 			print('[Dialogic] Saving timeline...')
 			if FileAccess.file_exists(path):
-				var file := FileAccess.open(path, FileAccess.WRITE)
 				var file := FileAccess.open(path, FileAccess.READ_WRITE)
 				
 				#var result = events_to_text(resource.events)
