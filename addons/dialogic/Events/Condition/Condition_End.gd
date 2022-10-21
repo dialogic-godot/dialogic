@@ -9,13 +9,27 @@ func _ready():
 
 func refresh():
 	if parent_resource is DialogicConditionEvent:
-		show()
-		$Label.text = "End of IF ("+parent_resource.Condition+")"
+		# hide add elif and add else button on ELSE event
+		$AddElif.visible = parent_resource.ConditionType != DialogicConditionEvent.ConditionTypes.ELSE
+		$AddElse.visible = parent_resource.ConditionType != DialogicConditionEvent.ConditionTypes.ELSE
+		$Label.text = "End of "+["IF", "ELIF", "ELSE"][parent_resource.ConditionType]+" ("+parent_resource.Condition+")"
+		
+		# hide add add else button if followed by ELIF or ELSE event
+		var timeline_editor = find_parent('TimelineVisualEditor')
+		if timeline_editor:
+			var next_event = null
+			if timeline_editor.get_block_below(get_parent()):
+				next_event = timeline_editor.get_block_below(get_parent()).resource
+				if next_event is DialogicConditionEvent:
+					if next_event.ConditionType != DialogicConditionEvent.ConditionTypes.IF:
+						$AddElse.hide()
+		if parent_resource.ConditionType == DialogicConditionEvent.ConditionTypes.ELSE:
+			$Label.text = "End of ELSE"
 	else:
 		hide()
 
 func add_elif():
-	var timeline = find_parent('TimelineEditor')
+	var timeline = find_parent('TimelineVisualEditor')
 	if timeline:
 		var resource = DialogicConditionEvent.new()
 		resource.ConditionType = DialogicConditionEvent.ConditionTypes.ELIF
@@ -23,7 +37,7 @@ func add_elif():
 		timeline.indent_events()
 
 func add_else():
-	var timeline = find_parent('TimelineEditor')
+	var timeline = find_parent('TimelineVisualEditor')
 	if timeline:
 		var resource = DialogicConditionEvent.new()
 		resource.ConditionType = DialogicConditionEvent.ConditionTypes.ELSE
