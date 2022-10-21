@@ -583,12 +583,12 @@ func convertTimelines():
 						"dialogic_023":
 							#Wait event
 							
-							eventLine += "[wait time=\"" + str(event['wait_seconds'])
+							eventLine += "[wait time=\"" + str(event['wait_seconds']) + "\""
 							if !("hide_dialogbox" in event) || (event['hide_dialogbox'] == true):
 								eventLine += ' hide_text="true"'
 							else:
 								eventLine += ' hide_text="false"'
-							eventLine += "\"]"
+							eventLine += "]"
 							file.store_string(eventLine)
 						"dialogic_024":
 							#Change Theme event
@@ -716,6 +716,7 @@ func convertTimelines():
 				else:
 					newFile.store_string(line)
 		
+		oldFile = null
 		
 		var fileDirectory = timelineFolderBreakdown[item].replace(timelineFolderBreakdown[item].split("/")[-1], "")
 		var dir = DirAccess.open(fileDirectory)
