@@ -132,6 +132,7 @@ func load_timeline(object) -> void:
 	current_timeline.set_meta("timeline_not_saved", false)
 	
 	
+	_building_timeline = true
 	
 	if current_timeline.events.size() == 0:
 		pass
@@ -936,6 +937,7 @@ func indent_events() -> void:
 				indent += 1
 		
 		if event.resource is DialogicEndBranchEvent:
+			event.parent_node_changed()
 			delayed_indent -= 1
 			if event.parent_node.resource.needs_parent_event:
 				delayed_indent -= 1

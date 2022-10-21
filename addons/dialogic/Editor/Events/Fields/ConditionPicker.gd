@@ -83,13 +83,17 @@ func is_too_complex(condition:String) -> bool:
 func complex2simple(condition:String) -> Array:
 	if is_too_complex(condition) or condition.strip_edges().is_empty():
 		return ['', '==','']
-	return Array(condition.split(' ', false))
+	var cond_split = Array(condition.split(' ', false))
+	if cond_split[2].begins_with('"'): cond_split[2] = cond_split[2].trim_prefix('"').trim_suffix('"')
+	return cond_split
 
 func simple2complex(value1, operator, value2) -> String:
 	if value1 == null: value1 = ''
 	if value1.is_empty():
 		return ''
 	if value2 == null: value2 = ''
+	if !value2.is_valid_float() and !value2.begins_with('{'):
+		value2 = '"'+value2+'"'
 	return value1 +" "+ operator +" "+ value2
 
 func _on_toggle_complex_toggled(button_pressed) -> void:

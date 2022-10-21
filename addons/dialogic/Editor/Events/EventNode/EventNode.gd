@@ -136,6 +136,7 @@ func _on_Indent_visibility_changed():
 
 
 func _request_selection():
+	# TODO doesn't work. I'm sure - JS
 	var timeline_editor = editor_reference.get_node_or_null('MainPanel/TimelineEditor')
 	if (timeline_editor != null):
 		# @todo select item and clear selection is marked as "private" in TimelineEditor.gd
@@ -154,7 +155,7 @@ func focus():
 func toggle_collapse(toggled):
 	collapsed = toggled
 	$PanelContainer/MarginContainer/VBoxContainer/CollapsedBody.visible = toggled
-	var timeline_editor = find_parent('TimelineEditor')
+	var timeline_editor = find_parent('TimelineVisualEditor')
 	if (timeline_editor != null):
 		# @todo select item and clear selection is marked as "private" in TimelineEditor.gd
 		# consider to make it "public" or add a public helper function
