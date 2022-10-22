@@ -2,6 +2,12 @@
 extends DialogicEvent
 class_name DialogicVoiceEvent
 
+# DEFINE ALL PROPERTIES OF THE EVENT
+var FilePath: String = ""
+var Volume: float = 0
+var AudioBus: String = "Master"
+var regions : String #Array = [] 
+
 func _execute() -> void:
 	dialogic.Voice.set_file(FilePath)
 	dialogic.Voice.set_volume(Volume)
@@ -23,11 +29,13 @@ func _execute() -> void:
 
 	finish() #the rest is executed by a text event
 
-# DEFINE ALL PROPERTIES OF THE EVENT
-var FilePath: String = ""
-var Volume: float = 0
-var AudioBus: String = "Master"
-var regions : String #Array = [] 
+
+func get_required_subsystems() -> Array:
+	return [
+				{'name':'Voice',
+				'subsystem': get_script().resource_path.get_base_dir().path_join('Subsystem_Voice.gd'),
+				},
+			]
 
 ################################################################################
 ## 						INITIALIZE
@@ -39,7 +47,7 @@ func _init() -> void:
 	set_default_color('Color1')
 	event_category = Category.AUDIOVISUAL
 	event_sorting_index = 5
-	expand_by_default = true
+	expand_by_default = false
 
 ################################################################################
 ## 						SAVING/LOADING
@@ -61,16 +69,8 @@ func get_shortcode_parameters() -> Dictionary:
 ################################################################################
 
 func build_event_editor():
-	add_header_edit('FilePath', ValueType.File, 'Path:', '', {'file_filter':'*.mp3, *.ogg, *.wav', 'placeholder': "Select file", 'editor_icon':["AudioStreamPlayer", "EditorIcons"]})
+	add_header_edit('FilePath', ValueType.File, '', 'is the audio for the next text', {'file_filter':'*.mp3, *.ogg, *.wav', 'placeholder': "Select file", 'editor_icon':["AudioStreamPlayer", "EditorIcons"]})
 	add_body_edit('Volume', ValueType.Decibel, 'Volume:', '', {}, '!FilePath.is_empty()')
 	add_body_edit('AudioBus', ValueType.SinglelineText, 'AudioBus:', '', {}, '!FilePath.is_empty()')
 	add_body_line_break()
-	add_body_edit('regions', ValueType.Custom, '', '', {'path' : 'res://addons/dialogic/Events/Voice/SerialAudioregion.tscn'}, '!FilePath.is_empty()')
-
-
-func get_required_subsystems() -> Array:
-	return [
-				{'name':'Voice',
-				'subsystem': get_script().resource_path.get_base_dir().path_join('Subsystem_Voice.gd'),
-				},
-			]
+	add_body_edit('regions', ValueType.Custom, 'Number of lines/audio regions:', '', {'path' : 'res://addons/dialogic/Events/Voice/SerialAudioregion.tscn'}, '!FilePath.is_empty()')

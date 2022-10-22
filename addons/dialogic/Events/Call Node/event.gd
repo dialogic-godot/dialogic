@@ -86,11 +86,11 @@ func get_shortcode_parameters() -> Dictionary:
 ################################################################################
 
 func build_event_editor():
-	add_header_edit('Path', ValueType.SinglelineText, 'Path:')
-	add_body_edit('Method', ValueType.SinglelineText, 'Method:')
-	add_body_edit('Wait', ValueType.Bool, 'Wait:')
-	add_body_edit('Inline', ValueType.Bool, 'Inline:')
-	add_body_edit('Signal_Name', ValueType.SinglelineText, 'Signal Name', '', {}, 'Inline == true')
-	add_body_edit('Single_Use', ValueType.Bool, 'Single Use', '', {}, 'Inline == true')
+	add_header_edit('Method', ValueType.SinglelineText, 'Call method')
+	add_header_edit('Path', ValueType.SinglelineText, 'in object')
+	add_body_edit('Wait', ValueType.Bool, 'Wait for method to finsih:')
+	add_body_edit('Inline', ValueType.Bool, 'Use as Inline Command:')
+	add_body_edit('Signal_Name', ValueType.SinglelineText, 'Inline Signal Name', '', {}, 'Inline == true')
+	add_body_edit('Single_Use', ValueType.Bool, 'Single Use:', '', {}, 'Inline == true')
 	add_body_line_break()
 	add_body_edit('Arguments', ValueType.StringArray, 'Arguments:')

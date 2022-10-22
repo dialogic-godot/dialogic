@@ -36,8 +36,8 @@ func set_portrait_data(data:Dictionary) -> void:
 
 func _ready():
 	find_parent('CharacterEditor').portrait_selected.connect(_on_portrait_selected)
-	%PortraitMood.get_suggestions_func = [self, 'mood_suggestions']
-	%DefaultMood.get_suggestions_func = [self, 'mood_suggestions']
+	%PortraitMood.get_suggestions_func = mood_suggestions
+	%DefaultMood.get_suggestions_func = mood_suggestions
 
 func _on_portrait_selected(portrait_name:String, data:Dictionary) -> void:
 	%PortraitMood.set_value(data.get('sound_mood', ''))
@@ -62,11 +62,10 @@ func duplicate_mood_item(item):
 	create_mood_item(item.get_data())
 
 
-func mood_suggestions(filter):
+func mood_suggestions(filter:String) -> Dictionary:
 	var suggestions = {}
 	for child in %Moods.get_children():
-		if filter.is_empty() or filter.to_lower() in child.get_data().name.to_lower():
-			suggestions[child.get_data().name] = {'value':child.get_data().name}
+		suggestions[child.get_data().name] = {'value':child.get_data().name}
 	return suggestions
 
 

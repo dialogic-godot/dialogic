@@ -76,7 +76,7 @@ func _on_gui_input(event):
 func _draw():
 	var _scale = DialogicUtil.get_editor_scale()
 	var line_width = 5 * _scale
-	var horizontal_line_length = 300*_scale
+	var horizontal_line_length = 100*_scale
 	var color_multiplier = Color(1,1,1,0.5)
 	var selected_color_multiplier = Color(1,1,1,1)
 	for idx in range($Timeline.get_child_count()):

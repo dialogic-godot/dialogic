@@ -101,7 +101,7 @@ func _ready() -> void:
 	%NicknameLineEdit.text_changed.connect(something_changed)
 	%DescriptionTextEdit.text_changed.connect(something_changed)
 	%DefaultPortraitPicker.resource_icon = load("res://addons/dialogic/Editor/Images/Resources/Portrait.svg")
-	%DefaultPortraitPicker.get_suggestions_func = [self, 'suggest_portraits']
+	%DefaultPortraitPicker.get_suggestions_func = suggest_portraits
 	%DefaultPortraitPicker.set_left_text("")
 	%DefaultPortraitPicker.value_changed.connect(default_portrait_changed)
 	%MainScale.value_changed.connect(main_portrait_settings_update)

@@ -66,11 +66,11 @@ func build_event_editor():
 			}
 		]
 		})
-	add_header_edit("Position", ValueType.Integer, "Position:", '', {}, 'ActionType != ActionTypes.ResetAll')
+	add_header_edit("Position", ValueType.Integer, "position", '', {}, 'ActionType != ActionTypes.ResetAll')
 	add_header_label('to (absolute)', 'ActionType == ActionTypes.SetAbsolute')
 	add_header_label('by (relative)', 'ActionType == ActionTypes.SetRelative')
 	add_header_edit("Vector", ValueType.Vector2, "", '', {}, 'ActionType != ActionTypes.Reset and ActionType != ActionTypes.ResetAll')
-	add_body_edit("MovementTime", ValueType.Float, "Time:")
+	add_body_edit("MovementTime", ValueType.Float, "AnimationTime:", "(0 for instant)")
 
 ################################################################################
 ## 						SAVING/LOADING

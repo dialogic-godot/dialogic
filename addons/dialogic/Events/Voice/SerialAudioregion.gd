@@ -51,5 +51,6 @@ func repopulate(num:int):
 		$list.get_child(i-1).queue_free()
 		#print("removing node number " + str(i))
 		i = i - 1
+
 func set_left_text(text):
 	$NumRegions/Label.text = text

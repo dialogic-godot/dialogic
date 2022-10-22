@@ -182,7 +182,7 @@ func build_editor():
 			editor_node = load("res://addons/dialogic/Editor/Events/Fields/MultilineText.tscn").instantiate()
 		elif p.dialogic_type == resource.ValueType.SinglelineText:
 			editor_node = load("res://addons/dialogic/Editor/Events/Fields/SinglelineText.tscn").instantiate()
-		
+			editor_node.placeholder = p.display_info.get('placeholder', '')
 		elif p.dialogic_type == resource.ValueType.Bool:
 			editor_node = load("res://addons/dialogic/Editor/Events/Fields/Bool.tscn").instantiate()
 		
@@ -214,9 +214,13 @@ func build_editor():
 		elif p.dialogic_type == resource.ValueType.Integer:
 			editor_node = load("res://addons/dialogic/Editor/Events/Fields/Number.tscn").instantiate()
 			editor_node.use_int_mode()
+			editor_node.max = p.display_info.get('max', 9999)
+			editor_node.min = p.display_info.get('min', -9999)
 		elif p.dialogic_type == resource.ValueType.Float:
 			editor_node = load("res://addons/dialogic/Editor/Events/Fields/Number.tscn").instantiate()
 			editor_node.use_float_mode()
+			editor_node.max = p.display_info.get('max', 9999)
+			editor_node.min = p.display_info.get('min', 0)
 		elif p.dialogic_type == resource.ValueType.Decibel:
 			editor_node = load("res://addons/dialogic/Editor/Events/Fields/Number.tscn").instantiate()
 			editor_node.use_decibel_mode()

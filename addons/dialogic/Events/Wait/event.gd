@@ -26,6 +26,7 @@ func _init() -> void:
 	set_default_color('Color6')
 	event_category = Category.TIMELINE
 	event_sorting_index = 5
+	expand_by_default = false
 
 
 ################################################################################

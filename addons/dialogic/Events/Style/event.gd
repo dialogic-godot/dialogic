@@ -53,4 +53,4 @@ func get_shortcode_parameters() -> Dictionary:
 ################################################################################
 
 func build_event_editor():
-	add_header_edit('StyleName', ValueType.SinglelineText, 'Name:')
+	add_header_edit('StyleName', ValueType.SinglelineText, 'Show all style nodes with name ', '(hides others)')

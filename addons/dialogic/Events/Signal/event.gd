@@ -39,4 +39,4 @@ func get_shortcode_parameters() -> Dictionary:
 ################################################################################
 
 func build_event_editor():
-	add_header_edit('Argument', ValueType.SinglelineText, 'Argument:')
+	add_header_edit('Argument', ValueType.SinglelineText, 'Emit "signal_event" signal with argument')

@@ -330,18 +330,18 @@ func build_event_editor():
 			}
 		]
 	})
-	add_header_edit('_character_from_directory', ValueType.ComplexPicker, '', '', {'file_extension':'.dch', 'suggestions_func':[self, 'get_character_suggestions'], 'icon':load("res://addons/dialogic/Editor/Images/Resources/character.svg")})
+	add_header_edit('_character_from_directory', ValueType.ComplexPicker, '', '', {'empty_text':'Character', 'file_extension':'.dch', 'suggestions_func':get_character_suggestions, 'icon':load("res://addons/dialogic/Editor/Images/Resources/character.svg")})
 	
-	add_header_edit('Portrait', ValueType.ComplexPicker, 'Portrait:', '', {'empty_text':'Default', 'suggestions_func':[self, 'get_portrait_suggestions'], 'icon':load("res://addons/dialogic/Editor/Images/Resources/Portrait.svg")}, 'Character != null and !has_no_portraits() and ActionType != %s' %ActionTypes.Leave)
+	add_header_edit('Portrait', ValueType.ComplexPicker, '', '', {'empty_text':'Default', 'suggestions_func':get_portrait_suggestions, 'icon':load("res://addons/dialogic/Editor/Images/Resources/Portrait.svg")}, 'Character != null and !has_no_portraits() and ActionType != %s' %ActionTypes.Leave)
 	
 	# I think it is better not to show the picker. Leaving the commented out version to re-add or replace if needed.
 	# add_header_label('(Character has no portraits)', 'has_no_portraits()')
 	
-	add_header_edit('Position', ValueType.Integer, 'Position:', '', {}, 'Character != null and !has_no_portraits() and ActionType != %s' %ActionTypes.Leave)
+	add_header_edit('Position', ValueType.Integer, ' at position', '', {}, 'Character != null and !has_no_portraits() and ActionType != %s' %ActionTypes.Leave)
 	
-	add_body_edit('AnimationName', ValueType.ComplexPicker, 'Animation:', '', {'suggestions_func':[self, 'get_animation_suggestions'], 'editor_icon':["Animation", "EditorIcons"], 'placeholder':'Default'}, 'Character != null')
+	add_body_edit('AnimationName', ValueType.ComplexPicker, 'Animation:', '', {'suggestions_func':get_animation_suggestions, 'editor_icon':["Animation", "EditorIcons"], 'placeholder':'Default'}, 'Character != null')
 	add_body_edit('AnimationLength', ValueType.Float, 'Length:', '', {}, 'Character and !AnimationName.is_empty()')
-	add_body_edit('AnimationWait', ValueType.Bool, 'Wait:', '', {}, 'Character and !AnimationName.is_empty()')
+	add_body_edit('AnimationWait', ValueType.Bool, 'Wait for animation to finish:', '', {}, 'Character and !AnimationName.is_empty()')
 	add_body_edit('AnimationRepeats', ValueType.Integer, 'Repeat:', '', {},'Character and !AnimationName.is_empty() and ActionType == %s)' %ActionTypes.Update)
 	add_body_edit('Z_Index', ValueType.Integer, 'Portrait z-index:', "",{},'ActionType != %s' %ActionTypes.Leave)
 	add_body_edit('Mirrored', ValueType.Bool, 'Mirrored:', "",{},'ActionType != %s' %ActionTypes.Leave)
@@ -362,8 +362,7 @@ func get_character_suggestions(search_text:String):
 	suggestions['(No one)'] = {'value':'', 'editor_icon':["GuiRadioUnchecked", "EditorIcons"]}
 	
 	for resource in _character_directory.keys():
-		if search_text == "" || resource.to_lower().contains(search_text.to_lower()):
-			suggestions[resource] = {'value': resource, 'tooltip': _character_directory[resource]['full_path'], 'icon': icon.duplicate()}
+		suggestions[resource] = {'value': resource, 'tooltip': _character_directory[resource]['full_path'], 'icon': icon.duplicate()}
 	return suggestions
 	
 
@@ -376,8 +375,7 @@ func get_portrait_suggestions(search_text):
 		suggestions["Default Portrait"] = {'value':'', 'editor_icon':["GuiRadioUnchecked", "EditorIcons"]}
 	if Character != null:
 		for portrait in Character.portraits:
-			if search_text.is_empty() or search_text.to_lower() in portrait.to_lower():
-				suggestions[portrait] = {'value':portrait, 'icon':icon.duplicate()}
+			suggestions[portrait] = {'value':portrait, 'icon':icon.duplicate()}
 	return suggestions
 
 func get_animation_suggestions(search_text):
@@ -390,18 +388,17 @@ func get_animation_suggestions(search_text):
 			suggestions['None'] = {'value':"", 'editor_icon':["GuiRadioUnchecked", "EditorIcons"]}
 	
 	for anim in list_animations():
-		if search_text.is_empty() or search_text.to_lower() in anim.get_file().to_lower():
-			match ActionType:
-				ActionTypes.Join:
-					if '_in' in anim.get_file():
-						suggestions[DialogicUtil.pretty_name(anim)] = {'value':anim, 'editor_icon':["Animation", "EditorIcons"]}
-				ActionTypes.Leave:
-					if '_out' in anim.get_file():
-						suggestions[DialogicUtil.pretty_name(anim)] = {'value':anim, 'editor_icon':["Animation", "EditorIcons"]}
-				ActionTypes.Update:
-					if not ('_in' in anim.get_file() or '_out' in anim.get_file()):
-						suggestions[DialogicUtil.pretty_name(anim)] = {'value':anim, 'editor_icon':["Animation", "EditorIcons"]}
-						continue
+		match ActionType:
+			ActionTypes.Join:
+				if '_in' in anim.get_file():
+					suggestions[DialogicUtil.pretty_name(anim)] = {'value':anim, 'editor_icon':["Animation", "EditorIcons"]}
+			ActionTypes.Leave:
+				if '_out' in anim.get_file():
+					suggestions[DialogicUtil.pretty_name(anim)] = {'value':anim, 'editor_icon':["Animation", "EditorIcons"]}
+			ActionTypes.Update:
+				if not ('_in' in anim.get_file() or '_out' in anim.get_file()):
+					suggestions[DialogicUtil.pretty_name(anim)] = {'value':anim, 'editor_icon':["Animation", "EditorIcons"]}
+					continue
 	return suggestions
 
 

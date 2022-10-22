@@ -9,7 +9,7 @@ signal value_changed
 const stringfluff = ["[", "]", "start at", "stop at", "region"]
 
 func set_value(value):
-	print("AudioRegion set_value(" + value + ")")
+	#print("AudioRegion set_value(" + value + ")")
 	if value == null:
 		return
 	#strip irrelevant parts
