@@ -3,17 +3,17 @@ extends VBoxContainer
 #Example scene for viewing the History
 #Implements all of the visual options from 1.x History mode
 
-@export var show_open_button: bool
-@export var show_close_button: bool
-@export var show_all_choices: bool
-@export var show_selected_choice: bool
-@export var show_character_joins: bool
-@export var show_character_leaves: bool
-@export var scroll_to_bottom: bool
-@export var show_name_colors: bool
-@export var oldest_items_first: bool
+@export var show_open_button: bool = true
+@export var show_close_button: bool = true
+@export var show_all_choices: bool = true
+@export var show_selected_choice: bool = true
+@export var show_character_joins: bool = true
+@export var show_character_leaves: bool = true
+@export var scroll_to_bottom: bool = true
+@export var show_name_colors: bool = true
+@export var oldest_items_first: bool = true
 @export var line_break_after_names: bool
-@export var name_delimeter: String
+@export var name_delimeter: String = ":"
 
 @export var history_font_size: int
 @export var history_font_normal: Font
@@ -157,7 +157,7 @@ func show_history() -> void:
 								
 								if search_depth == 1:
 									if show_selected_choice && search_line == item['index']:
-										history_item_string += "•[u]" + working_timeline.events[search_line].get_translated_text() + "[/u]\n"
+										history_item_string += "•[b]" + working_timeline.events[search_line].get_translated_text() + "[/b]\n"
 									else:
 										history_item_string += "•" + working_timeline.events[search_line].get_translated_text() + "\n"
 								
