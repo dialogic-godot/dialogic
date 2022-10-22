@@ -211,7 +211,7 @@ func get_full_state() -> Dictionary:
 		current_state_info['default_portrait_positions'] = self.Portraits._default_positions
 	if has_subsystem('History'):
 		if self.History.full_history_enabled:
-			self.Portraits.strip_events_from_full_history()
+			self.History.strip_events_from_full_history()
 			current_state_info['full_history'] = self.History.full_history
 		if self.History.text_read_history_enabled:
 			current_state_info['text_read_history'] = self.History.text_read_history

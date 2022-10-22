@@ -18,10 +18,10 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+mouse_filter = 2
 script = ExtResource("1_o5tfq")
 
 [node name="ShowHistory" type="Button" parent="."]
-layout_mode = 2
 offset_left = 808.0
 offset_right = 872.0
 offset_bottom = 31.0
@@ -31,7 +31,6 @@ text = "History"
 
 [node name="HideHistory" type="Button" parent="."]
 visible = false
-layout_mode = 2
 offset_left = 809.0
 offset_top = 35.0
 offset_right = 870.0
@@ -43,7 +42,6 @@ text = "Return"
 [node name="HistoryBox" type="ScrollContainer" parent="."]
 unique_name_in_owner = true
 visible = false
-layout_mode = 2
 offset_top = 70.0
 offset_right = 1680.0
 offset_bottom = 1050.0
@@ -53,7 +51,6 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_1hdvb")
 [node name="HistoryLog" type="VBoxContainer" parent="HistoryBox"]
 unique_name_in_owner = true
 layout_direction = 1
-layout_mode = 2
 offset_left = 20.0
 offset_right = 1660.0
 offset_bottom = 960.0

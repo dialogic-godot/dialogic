@@ -30,7 +30,7 @@ var scroll_to_bottom_flag: bool = false
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	if Dialogic.has_subsystem('History'):
-		text_node = load('res://addons/dialogic/Example Assets/example-scenes/ExampleHistoryScene.tscn').instantiate()
+		text_node = load('res://addons/dialogic/Example Assets/example-scenes/ExampleHistoryItem.tscn').instantiate()
 		$ShowHistory.visible = show_open_button
 	else: 
 		self.visible = false
@@ -40,7 +40,7 @@ func _ready():
 func _process(delta):
 	if scroll_to_bottom_flag:
 		await get_tree().process_frame
-		%HistoryLog.ensure_control_visible(%HistoryLog.get_children()[-1])
+		%HistoryBox.ensure_control_visible(%HistoryLog.get_children()[-1])
 		scroll_to_bottom_flag = false
 
 
@@ -59,16 +59,25 @@ func show_history() -> void:
 			if item['event_type'] == "Text":
 				var history_item_string:String = ""
 				var new_node = text_node.duplicate()
+				new_node.prepare_texbox(self)
 				
-				if Dialogic.has_subsystem('VAR'):
-					history_item_string += Dialogic.VAR.parse_variables(item['event_object'].Character.display_name)
-				else:
-					history_item_string += item['event_object'].Character.display_name
+				if item['event_object'].Character != null:
+					var character_name = ""
+					
+					if Dialogic.has_subsystem('VAR'):
+						character_name += Dialogic.VAR.parse_variables(item['event_object'].Character.display_name)
+					else:
+						character_name += item['event_object'].Character.display_name
+					
+					if show_name_colors:
+						character_name = "[color=#" + item['event_object'].Character.color.to_html(false) + "]" + character_name + "[/color]"
+					
+					history_item_string += character_name
+					
+					history_item_string += name_delimeter
 				
-				history_item_string += name_delimeter
-				
-				if line_break_after_names:
-					history_item_string += "[br]"
+					if line_break_after_names:
+						history_item_string += "\n"
 				
 				var final_text :String = item['event_object'].get_translated_text()
 				if Dialogic.has_subsystem('VAR'):
@@ -76,7 +85,7 @@ func show_history() -> void:
 				if Dialogic.has_subsystem('Glossary'):
 					final_text = Dialogic.Glossary.parse_glossary(final_text)
 				
-				history_item_string += final_text
+				history_item_string += Dialogic.Text.color_names(final_text)
 				
 				if show_name_colors:
 					history_item_string = Dialogic.Text.color_names(history_item_string)
@@ -89,16 +98,22 @@ func show_history() -> void:
 			if item['event_type'] == "Character" && (show_character_joins || show_character_leaves): 
 				var history_item_string:String = "[i]"
 				var new_node = text_node.duplicate()
+				new_node.prepare_texbox(self)
 				
-				if item['event_object'].Character != "--All--":
+				if !item['event_object']._leave_all:
+					var character_name = ""
+					
 					if Dialogic.has_subsystem('VAR'):
-						history_item_string += Dialogic.VAR.parse_variables(item['event_object'].Character.display_name)
+						character_name += Dialogic.VAR.parse_variables(item['event_object'].Character.display_name)
 					else:
-						history_item_string += item['event_object'].Character.display_name
+						character_name += item['event_object'].Character.display_name
+						
 					if show_name_colors:
-						history_item_string = Dialogic.Text.color_names(history_item_string)
+						history_item_string += "[color=#" + item['event_object'].Character.color.to_html(false) + "]" + character_name + "[/color]"
 					else: 
-						history_item_string += "Everyone"
+						history_item_string += character_name
+				else: 
+					history_item_string += "Everyone"
 				
 				if item['event_object'].ActionType == DialogicCharacterEvent.ActionTypes.Join && show_character_joins:
 					history_item_string += " has arrived[/i]" 
@@ -114,6 +129,7 @@ func show_history() -> void:
 			if Dialogic.has_subsystem('Choices') && item['event_type'] == "Choice" && (show_all_choices || show_selected_choice): 
 				var history_item_string:String = ""
 				var new_node = text_node.duplicate()
+				new_node.prepare_texbox(self)
 				
 				if show_selected_choice && !show_all_choices:
 					history_item_string += "[ul][b]" + item['event_object'].get_translated_text() + "[/b][/ul]"
@@ -123,7 +139,7 @@ func show_history() -> void:
 						#Here be shenanigans
 						
 						var choice_starting_event = Dialogic.History.full_history[index + 1]
-						history_item_string += "[ul]"
+						
 						
 						var working_timeline: DialogicTimeline = null
 						
@@ -136,21 +152,26 @@ func show_history() -> void:
 						var search_depth = 0
 						
 						while search_depth > -1:
-							if working_timeline[search_line].event_name == "Choice":
+							if working_timeline.events[search_line].event_name == "Choice":
 								search_depth += 1
 								
 								if search_depth == 1:
-									if show_selected_choice && working_timeline[search_line].Text == item['event_object'].Text:
-										history_item_string += "[b]" + working_timeline[search_line].get_translated_text() + "[/b]\n"
+									if show_selected_choice && search_line == item['index']:
+										history_item_string += "•[u]" + working_timeline.events[search_line].get_translated_text() + "[/u]\n"
 									else:
-										history_item_string += working_timeline[search_line].get_translated_text() + "\n"
+										history_item_string += "•" + working_timeline.events[search_line].get_translated_text() + "\n"
 								
 							else:
-								search_depth -= 1
+								if search_depth > 0: 
+									if working_timeline.events[search_line].event_name == "End Branch":
+										search_depth -= 1
+								else:
+									search_depth -= 1
+							search_line += 1
 						
-						history_item_string += "[/ul]"
+						
 					else:
-						history_item_string += "[ul][b]" + item['event_object'].get_translated_text() + "[/b][/ul]"
+						history_item_string += "•" + item['event_object'].get_translated_text() 
 					
 					
 				new_node.set_text(history_item_string)
@@ -169,12 +190,14 @@ func show_history() -> void:
 				
 			
 		
-		$ShowHistory.visible = false
-		$HideHistory.visible = show_close_button
-		%HistoryBox.visible = true
+
 		
 		if scroll_to_bottom:
 			scroll_to_bottom_flag = true
+
+	$ShowHistory.visible = false
+	$HideHistory.visible = show_close_button
+	%HistoryBox.visible = true
 
 func _on_hide_history_pressed():
 	%HistoryBox.visible = false
