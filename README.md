@@ -34,7 +34,7 @@ If you want to know more about installing plugins you can read the [Godot docs p
 You can also install Dialogic using the **AssetLib** tab in the editor, but the version here will not be the latest one available since it takes some time for it to be approved.
 
 ## ⚠ IMPORTANT
-There has been some people having issues exporting their games. If you are having issues you can try to add `*.cgh` and `*.json` to your export settings [(image)](https://coppolaemilio.com/images/dialogic/exporting-2.png). If it is not that, try having at least 1 theme in your project. If you still have issues, please [open an issue](https://github.com/coppolaemilio/dialogic/issues).
+There has been some people having issues exporting their games. If you are having issues you can try to add `*.cfg` and `*.json` to your export settings [(image)](https://coppolaemilio.com/images/dialogic/exporting-2.png). If it is not that, try having at least 1 theme in your project. If you still have issues, please [open an issue](https://github.com/coppolaemilio/dialogic/issues).
 
 
 ---
