@@ -7,7 +7,7 @@ extends Control
 var file_extension : String = ""
 var get_suggestions_func : Callable = get_default_suggestions
 var empty_text : String = ""
-@export var disable_pretty_name : bool = false
+@export var enable_pretty_name : bool = false
 
 var resource_icon : Texture = null:
 	get:
@@ -48,10 +48,10 @@ func set_value(value, text : String = '') -> void:
 		%Search.text = value.resource_path
 		%Search.tooltip_text = value.resource_path
 	elif value:
-		if disable_pretty_name:
-			%Search.text = value
-		else:
+		if enable_pretty_name:
 			%Search.text = DialogicUtil.pretty_name(value)
+		else:
+			%Search.text = value
 	else:
 		%Search.text = empty_text
 	if text:
@@ -115,36 +115,31 @@ func _on_Search_text_changed(new_text:String, just_update:bool = false) -> void:
 	var suggestions = get_suggestions_func.call(new_text)
 	
 	var line_length:int = 0
-	var more_hidden:bool = false
 	var idx:int = 0
 	for element in suggestions:
-		if new_text != "" or idx < 12:
-			if new_text.is_empty() or new_text.to_lower() in element.to_lower() or new_text.to_lower() in str(suggestions[element].value).to_lower():
-				line_length = max(get_theme_font('font', 'Label').get_string_size(element, HORIZONTAL_ALIGNMENT_LEFT, -1, get_theme_font_size("font_size", 'Label')).x+80, line_length)
-				%Suggestions.add_item(element)
-				if suggestions[element].has('icon'):
-					%Suggestions.set_item_icon(idx, suggestions[element].icon)
-				elif suggestions[element].has('editor_icon'):
-					%Suggestions.set_item_icon(idx, get_theme_icon(suggestions[element].editor_icon[0],suggestions[element].editor_icon[1]))
+		if new_text.is_empty() or new_text.to_lower() in element.to_lower() or new_text.to_lower() in str(suggestions[element].value).to_lower():
+			line_length = max(get_theme_font('font', 'Label').get_string_size(element, HORIZONTAL_ALIGNMENT_LEFT, -1, get_theme_font_size("font_size", 'Label')).x+80, line_length)
+			%Suggestions.add_item(element)
+			if suggestions[element].has('icon'):
+				%Suggestions.set_item_icon(idx, suggestions[element].icon)
+			elif suggestions[element].has('editor_icon'):
+				%Suggestions.set_item_icon(idx, get_theme_icon(suggestions[element].editor_icon[0],suggestions[element].editor_icon[1]))
 
-				%Suggestions.set_item_tooltip(idx, suggestions[element].get('tooltip', ''))
-				%Suggestions.set_item_metadata(idx, suggestions[element].value)
-		else:
-			more_hidden = true
-			break
+			%Suggestions.set_item_tooltip(idx, suggestions[element].get('tooltip', ''))
+			%Suggestions.set_item_metadata(idx, suggestions[element].value)
 		idx += 1
-	
-	if more_hidden:
-		%Suggestions.add_item('...', null, false)
-		%Suggestions.set_item_disabled(idx, true)
-		%Suggestions.set_item_tooltip(idx, "More items found. Start typing to search.")
 	
 	if not %Suggestions.visible:
 		%Suggestions.show()
 		%Suggestions.global_position = $PanelContainer.global_position+Vector2(0,1)*$PanelContainer.size.y
-		%Suggestions.custom_minimum_size.x = max(%Search.size.x, line_length)
-	
-	current_selected = -1
+		#%Suggestions.position = Vector2()
+		%Suggestions.size.x = max(%Search.size.x, line_length)
+		%Suggestions.size.y = min(%Suggestions.get_item_count()*35*DialogicUtil.get_editor_scale(), 200*DialogicUtil.get_editor_scale())
+	if %Suggestions.get_item_count():
+		%Suggestions.select(0)
+		current_selected = 0
+	else:
+		current_selected = -1
 	%Search.grab_focus()
 
 func get_default_suggestions(input:String) -> Dictionary:
@@ -182,6 +177,7 @@ func suggestion_selected(index : int, position:=Vector2(), button_index:=MOUSE_B
 	
 	hide_suggestions()
 	
+	%Search.grab_focus()
 	emit_signal("value_changed", property_name, current_value)
 
 func _input(event:InputEvent):
@@ -239,11 +235,13 @@ func _on_search_gui_input(event):
 	if event is InputEventKey and (event.keycode == KEY_DOWN or event.keycode == KEY_UP) and event.pressed:
 		if !%Suggestions.visible:
 			_on_Search_text_changed('', true)
+			current_selected = -1
 		if event.keycode == KEY_DOWN:
 			current_selected = wrapi(current_selected+1, 0, %Suggestions.item_count)
 		if event.keycode == KEY_UP:
 			current_selected = wrapi(current_selected-1, 0, %Suggestions.item_count)
 		%Suggestions.select(current_selected)
+		%Suggestions.ensure_current_is_visible()
 
 func _on_search_focus_entered():
 	%Focus.show()

@@ -418,15 +418,7 @@ func _input(event):
 			
 		# CTRL T -> Add text event
 		if is_event_pressed(event, KEY_T, false, false, true):
-			var at_index = -1
-			if selected_items:
-				at_index = selected_items[-1].get_index()+1
-			else:
-				at_index = %Timeline.get_child_count()
-#			TimelineUndoRedo.create_action("[D] Add Text event.")
-#			TimelineUndoRedo.add_do_method(self, "create_event", "dialogic_001", {'no-data': true}, true, at_index, true)
-#			TimelineUndoRedo.add_undo_method(self, "remove_events_at_index", at_index, 1)
-#			TimelineUndoRedo.commit_action()
+			_add_event_button_pressed(DialogicTextEvent.new())
 			get_viewport().set_input_as_handled()
 			
 		# CTRL A -> select all
@@ -653,7 +645,8 @@ func add_events_at_index(event_list:Array, at_index:int) -> void:
 						break
 			else:
 				resource = DialogicUtil.get_event_by_string(item).new()
-			
+			if resource['event_name'] == 'Character' || resource['event_name'] == 'Text':
+				resource.set_meta('editor_character_directory', find_parent('EditorView').character_directory)
 			resource.from_text(item)
 			if item:
 				new_items.append(add_event_node(resource))
@@ -744,7 +737,7 @@ func deselect_all_items():
 ##				CREATING NEW EVENTS USING THE BUTTONS
 ## *****************************************************************************
 # Event Creation signal for buttons
-func _add_event_button_pressed(event_resource:Resource):
+func _add_event_button_pressed(event_resource:DialogicEvent):
 	var at_index := -1
 	if selected_items:
 		at_index = selected_items[-1].get_index()+1
@@ -753,7 +746,7 @@ func _add_event_button_pressed(event_resource:Resource):
 	
 	var remove_event_index := 1
 	
-	TimelineUndoRedo.create_action("[D] Add event.")
+	TimelineUndoRedo.create_action("[D] Add "+event_resource.event_name+" event.")
 	if event_resource.can_contain_events:
 		TimelineUndoRedo.add_do_method(add_event_with_end_branch.bind(event_resource.duplicate(), at_index, true, true))
 		TimelineUndoRedo.add_undo_method(remove_events_at_index.bind(at_index, 2))

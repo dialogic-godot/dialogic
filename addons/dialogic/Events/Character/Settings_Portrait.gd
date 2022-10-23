@@ -5,8 +5,10 @@ var current_animation_path = ""
 
 func _ready():
 	%JoinDefault.get_suggestions_func = get_join_animation_suggestions
+	%JoinDefault.enable_pretty_name = true
 	%LeaveDefault.get_suggestions_func = get_leave_animation_suggestions
-
+	%LeaveDefault.enable_pretty_name = true
+	
 func refresh():
 	%CustomAnimationsFolderOpener.icon = get_theme_icon("Folder", "EditorIcons")
 	%CustomAnimationsFolder.text = DialogicUtil.get_project_setting('dialogic/animations/custom_folder', 'res://addons/dialogic_additions/Animations')

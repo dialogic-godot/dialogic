@@ -339,7 +339,7 @@ func build_event_editor():
 	
 	add_header_edit('Position', ValueType.Integer, ' at position', '', {}, 'Character != null and !has_no_portraits() and ActionType != %s' %ActionTypes.Leave)
 	
-	add_body_edit('AnimationName', ValueType.ComplexPicker, 'Animation:', '', {'suggestions_func':get_animation_suggestions, 'editor_icon':["Animation", "EditorIcons"], 'placeholder':'Default'}, 'Character != null')
+	add_body_edit('AnimationName', ValueType.ComplexPicker, 'Animation:', '', {'suggestions_func':get_animation_suggestions, 'editor_icon':["Animation", "EditorIcons"], 'placeholder':'Default', 'enable_pretty_name':true}, 'Character != null')
 	add_body_edit('AnimationLength', ValueType.Float, 'Length:', '', {}, 'Character and !AnimationName.is_empty()')
 	add_body_edit('AnimationWait', ValueType.Bool, 'Wait for animation to finish:', '', {}, 'Character and !AnimationName.is_empty()')
 	add_body_edit('AnimationRepeats', ValueType.Integer, 'Repeat:', '', {},'Character and !AnimationName.is_empty() and ActionType == %s)' %ActionTypes.Update)

@@ -56,7 +56,7 @@ func get_shortcode_parameters() -> Dictionary:
 ################################################################################
 func build_event_editor() -> void:
 	add_header_label('Show an input field. The value will be stored to')
-	add_header_edit('Variable', ValueType.ComplexPicker, '', '', {'suggestions_func':get_var_suggestions, 'editor_icon':["ClassList", "EditorIcons"], 'disable_pretty_name':true})
+	add_header_edit('Variable', ValueType.ComplexPicker, '', '', {'suggestions_func':get_var_suggestions, 'editor_icon':["ClassList", "EditorIcons"]})
 	add_body_edit('Text', ValueType.SinglelineText, 'Text:')
 	add_body_edit('Placeholder', ValueType.SinglelineText, 'Placeholder:')
 	add_body_edit('Default', ValueType.SinglelineText, 'Default:')

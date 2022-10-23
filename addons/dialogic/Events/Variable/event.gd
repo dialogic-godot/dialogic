@@ -121,7 +121,7 @@ func is_valid_event(string:String) -> bool:
 ################################################################################
 
 func build_event_editor():
-	add_header_edit('Name', ValueType.ComplexPicker, '', '', {'suggestions_func':get_var_suggestions, 'editor_icon':["ClassList", "EditorIcons"], 'disable_pretty_name':true})
+	add_header_edit('Name', ValueType.ComplexPicker, '', '', {'suggestions_func':get_var_suggestions, 'editor_icon':["ClassList", "EditorIcons"]})
 	add_header_edit('Operation', ValueType.FixedOptionSelector, '', '', {
 		'selector_options': [
 			{
@@ -151,7 +151,7 @@ func build_event_editor():
 			}
 		]
 	}, '!Name.is_empty()')
-	add_header_edit('Value', ValueType.ComplexPicker, '', '', {'suggestions_func':get_value_suggestions, 'editor_icon':["Variant", "EditorIcons"], 'disable_pretty_name':true}, '!Name.is_empty() and not RandomEnabled')
+	add_header_edit('Value', ValueType.ComplexPicker, '', '', {'suggestions_func':get_value_suggestions, 'editor_icon':["Variant", "EditorIcons"], }, '!Name.is_empty() and not RandomEnabled')
 	add_header_label('a random integer', 'RandomEnabled')
 	add_body_edit('RandomEnabled', ValueType.Bool, 'Use Random Integer:', '', {}, '!Name.is_empty()')
 	add_body_edit('RandomMin', ValueType.Integer, 'Min:', '', {}, '!Name.is_empty() and RandomEnabled')
