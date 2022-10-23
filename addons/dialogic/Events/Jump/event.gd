@@ -32,6 +32,7 @@ func _init() -> void:
 	set_default_color('Color2')
 	event_category = Category.TIMELINE
 	event_sorting_index = 0
+	expand_by_default = false
 
 func _set_timeline(value):
 	if typeof(value) == TYPE_STRING:
@@ -63,50 +64,45 @@ func load_timeline() -> void:
 ################################################################################
 
 func build_event_editor():
-	#add_header_edit("_timeline_file", ValueType.SinglelineText , "to")
-	
-	
+
 	add_header_edit('_timeline_file', ValueType.ComplexPicker, 'to', '', {
 		'file_extension': '.dtl',
-		'suggestions_func': [self, 'get_timeline_suggestions'],
+		'suggestions_func': get_timeline_suggestions,
 		'editor_icon': ["TripleBar", "EditorIcons"],
 		'empty_text': '(this timeline)'
 	})
-	add_body_edit("LabelName", ValueType.SinglelineText, "at ")
+	add_header_edit("LabelName", ValueType.SinglelineText, "at", '', {'placeholder':'the beginning'})
 #	add_header_edit('LabelName', ValueType.ComplexPicker, 'at', '', {
-#		'suggestions_func': [self, 'get_label_suggestions'],
+#		'suggestions_func': get_label_suggestions,
 #		'editor_icon': ['Label', 'EditorIcons'],
 #		'empty_text': 'the beginning'
 #	})
 
-func get_timeline_suggestions(search_text:String):
+func get_timeline_suggestions(filter:String) -> Dictionary:
 	var suggestions = {}
 	var resources = DialogicUtil.list_resources_of_type('.dtl')
 	
 	suggestions['(this timeline)'] = {'value':'', 'editor_icon':['GuiRadioUnchecked', 'EditorIcons']}
 	
 	for resource in Engine.get_meta('dialogic_timeline_directory').keys():
-		if search_text == "" || resource.to_lower().contains(search_text.to_lower()):
-			suggestions[resource] = {'value': resource, 'tooltip':Engine.get_meta('dialogic_timeline_directory')[resource], 'editor_icon': ["TripleBar", "EditorIcons"]}
+		suggestions[resource] = {'value': resource, 'tooltip':Engine.get_meta('dialogic_timeline_directory')[resource], 'editor_icon': ["TripleBar", "EditorIcons"]}
 	return suggestions
-	
-func get_label_suggestions(search_text:String):
-	var suggestions = {}
-	if !Timeline and !search_text.is_empty():
-		suggestions[search_text] = {'value':search_text, 'editor_icon':['GuiScrollArrowRight', 'EditorIcons']}
-	
-	suggestions['the beginning'] = {'value':'', 'editor_icon':['GuiRadioUnchecked', 'EditorIcons']}
-	
-	if Timeline:
-		for event in Timeline.events:
-			if event is DialogicLabelEvent:
-				if event.Name and search_text.is_empty() or search_text.to_lower() in event.Name.to_lower():
-					suggestions[event.Name] = {'value':event.Name, 'editor_icon':['Label', 'EditorIcons']}
-	else:
-		var current = load(ProjectSettings.get_setting('dialogic/editor/current_timeline_path'))
-		if current:
-			for event in current.events:
-				if event is DialogicLabelEvent:
-					if event.Name and search_text.is_empty() or search_text.to_lower() in event.Name.to_lower():
-						suggestions[event.Name] = {'value':event.Name, 'editor_icon':['Label', 'EditorIcons']}
-	return suggestions
+#
+#func get_label_suggestions(search_text:String):
+#	var suggestions = {}
+#	if !Timeline and !search_text.is_empty():
+#		suggestions[search_text] = {'value':search_text, 'editor_icon':['GuiScrollArrowRight', 'EditorIcons']}
+#
+#	suggestions['the beginning'] = {'value':'', 'editor_icon':['GuiRadioUnchecked', 'EditorIcons']}
+#
+#	if Timeline:
+#		for event in Timeline.events:
+#			if event is DialogicLabelEvent:
+#				suggestions[event.Name] = {'value':event.Name, 'editor_icon':['Label', 'EditorIcons']}
+#	else:
+#		var current = load(ProjectSettings.get_setting('dialogic/editor/current_timeline_path'))
+#		if current:
+#			for event in current.events:
+#				if event is DialogicLabelEvent:
+#					suggestions[event.Name] = {'value':event.Name, 'editor_icon':['Label', 'EditorIcons']}
+#	return suggestions

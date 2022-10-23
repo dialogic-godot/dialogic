@@ -12,7 +12,7 @@ var current_indent_level = 1
 func _ready():
 	$Icon.icon = get_theme_icon("GuiSpinboxUpdown", "EditorIcons")
 	parent_node_changed()
-	$Spacer.custom_minimum_size.x = 300*DialogicUtil.get_editor_scale()
+	$Spacer.custom_minimum_size.x = 100*DialogicUtil.get_editor_scale()
 	
 
 func visual_select():

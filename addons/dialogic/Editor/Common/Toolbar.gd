@@ -20,7 +20,7 @@ func _ready():
 	$PlayTimeline.button_up.connect(_on_play_timeline)
 	
 	$AddTimeline.icon = load("res://addons/dialogic/Editor/Images/Toolbar/add-timeline.svg")
-	%ResourcePicker.get_suggestions_func = [self, 'suggest_resources']
+	%ResourcePicker.get_suggestions_func = suggest_resources
 	%ResourcePicker.resource_icon = get_theme_icon("GuiRadioUnchecked", "EditorIcons")
 	$Settings.icon = get_theme_icon("Tools", "EditorIcons")
 	

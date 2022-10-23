@@ -179,41 +179,37 @@ func get_original_translation_text():
 	return Text
 
 func build_event_editor():
-	add_header_edit('_character_from_directory', ValueType.ComplexPicker, 'Character:', '', {'file_extension':'.dch', 'suggestions_func':[self, 'get_character_suggestions'], 'empty_text':'(No one)','icon':load("res://addons/dialogic/Editor/Images/Resources/character.svg")})
-	add_header_edit('Portrait', ValueType.ComplexPicker, '', '', {'suggestions_func':[self, 'get_portrait_suggestions'], 'placeholder':"Don't change", 'icon':load("res://addons/dialogic/Editor/Images/Resources/Portrait.svg")}, 'Character != null and !has_no_portraits()')
+	add_header_edit('_character_from_directory', ValueType.ComplexPicker, '', '', {'file_extension':'.dch', 'suggestions_func':get_character_suggestions, 'empty_text':'(No one)','icon':load("res://addons/dialogic/Editor/Images/Resources/character.svg")})
+	add_header_edit('Portrait', ValueType.ComplexPicker, '', '', {'suggestions_func':get_portrait_suggestions, 'placeholder':"Don't change", 'icon':load("res://addons/dialogic/Editor/Images/Resources/Portrait.svg")}, 'Character != null and !has_no_portraits()')
 	
 	# I think it is better not to show the picker. Leaving the commented out version to re-add or replace if needed.
 	# add_header_label('(Character has no portraits)', 'has_no_portraits()')
 	
-	add_header_edit('Position', ValueType.Integer, 'Position:', '', {}, 'Character != null and !has_no_portraits()')
 	add_body_edit('Text', ValueType.MultilineText)
 
 
 func has_no_portraits() -> bool:
 	return Character and Character.portraits.is_empty()
 
-func get_character_suggestions(search_text:String):
+func get_character_suggestions(search_text:String) -> Dictionary:
 	var suggestions = {}
 	
 	#override the previous _character_directory with the meta, specifically for searching otherwise new nodes wont work
 	_character_directory = Engine.get_meta('dialogic_character_directory')
 	
 	var icon = load("res://addons/dialogic/Editor/Images/Resources/character.svg")
-	print(search_text)
-	suggestions['(No one)'] = {'value':'', 'editor_icon':["GuiRadioUnchecked", "EditorIcons"]}
+	suggestions['(No one)'] = {'value':null, 'editor_icon':["GuiRadioUnchecked", "EditorIcons"]}
 	
 	for resource in _character_directory.keys():
-		if search_text == "" || resource.to_lower().contains(search_text.to_lower()):
-			suggestions[resource] = {'value': resource, 'tooltip': _character_directory[resource]['full_path'], 'icon': icon.duplicate()}
+		suggestions[resource] = {'value': resource, 'tooltip': _character_directory[resource]['full_path'], 'icon': icon.duplicate()}
 	return suggestions
 	
 
-func get_portrait_suggestions(search_text):
+func get_portrait_suggestions(search_text:String) -> Dictionary:
 	var suggestions = {}
 	var icon = load("res://addons/dialogic/Editor/Images/Resources/Portrait.svg")
 	suggestions["Don't change"] = {'value':'', 'editor_icon':["GuiRadioUnchecked", "EditorIcons"]}
 	if Character != null:
 		for portrait in Character.portraits:
-			if search_text.is_empty() or search_text.to_lower() in portrait.to_lower():
-				suggestions[portrait] = {'value':portrait, 'icon':icon}
+			suggestions[portrait] = {'value':portrait, 'icon':icon}
 	return suggestions

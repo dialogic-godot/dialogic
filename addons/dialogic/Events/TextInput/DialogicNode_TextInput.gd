@@ -15,7 +15,6 @@ func _ready():
 	if input_line_edit:
 		get_node(input_line_edit).text_changed.connect(_on_input_text_changed)
 	visible = false
-	print('here')
 
 func set_text(text:String) -> void:
 	if get_node(text_label) is Label:

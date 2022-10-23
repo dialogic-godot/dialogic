@@ -11,16 +11,15 @@ var disabled = false:
 	set(_disabled):
 		disabled = _disabled
 		$MenuButton.disabled = disabled
+		$MenuButton.focus_mode = FOCUS_NONE
 
 func _ready():
-	DCSS.style($MenuButton, {
-		'border-radius': 3,
-		'border-color': Color('#14161A'),
-		'border': 1,
-		'background': Color('#1D1F25'),
-		'padding': [5, 5],
-		'padding-right': 10
-	})
+	$MenuButton.add_theme_stylebox_override("normal", get_theme_stylebox("normal", "LineEdit"))
+	$MenuButton.add_theme_stylebox_override("hover", get_theme_stylebox("normal", "LineEdit"))
+	
+	$MenuButton.add_theme_stylebox_override("focus", get_theme_stylebox("focus", "LineEdit"))
+	$MenuButton.add_theme_stylebox_override("disabled", get_theme_stylebox("normal", "LineEdit"))
+	$MenuButton.add_theme_color_override("font_disabled_color", get_theme_color("font_color", "MenuButton"))
 	$MenuButton.about_to_popup.connect(insert_options)
 	$MenuButton.get_popup().index_pressed.connect(index_pressed)
 	set_left_text('')
