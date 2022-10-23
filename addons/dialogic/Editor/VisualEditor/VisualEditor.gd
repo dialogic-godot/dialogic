@@ -434,7 +434,7 @@ func _input(event):
 			get_viewport().set_input_as_handled()
 		
 		# CTRL C
-		if is_event_pressed(event, KEY_V, false, false, true):
+		if is_event_pressed(event, KEY_C, false, false, true):
 			copy_selected_events()
 			get_viewport().set_input_as_handled()
 		
@@ -609,7 +609,6 @@ func copy_selected_events():
 func paste_check():
 	var _json = JSON.new()
 	var clipboard_parse = _json.parse(DisplayServer.clipboard_get())
-	
 	if clipboard_parse == OK:
 		clipboard_parse = _json.get_data()
 		if clipboard_parse.has("project_name"):
