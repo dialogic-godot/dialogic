@@ -26,7 +26,7 @@ func _save(resource: Resource, path: String = '', flags: int = 0) -> int:
 			return ERR_INVALID_DATA
 		# Do not do this if the timeline's not in a ready state, so it doesn't accidentally save it blank
 		elif !resource.events_processed:
-			print('[Dialogic] Beginning saving timeline. Safety checks will be performed before writing...')
+			print('[Dialogic] Beginning saving timeline. Safety checks will be performed before writing, and temporary file will be created and removed if saving is successful...')
 			
 			#prepare everything before writing, we will only open the file if it's successfuly prepared, as that will clear the file contents
 			#var result = events_to_text(resource.events)
@@ -47,12 +47,37 @@ func _save(resource: Resource, path: String = '', flags: int = 0) -> int:
 					indent += 1
 				if indent < 0: 
 					indent = 0
-				result += "\t".repeat(indent)+"\n"
+				#result += "\t".repeat(indent)+"\n"
+				result += "\n"
 				
 			if (len(result) > 0):
-				var file := FileAccess.open(path, FileAccess.WRITE)
+				var file := FileAccess.open(path.replace(".dtl", ".tmp"), FileAccess.WRITE)
 				file.store_string(result)
-				print('[Dialogic] Completed saving timeline "' , path, '"')
+				file = null
+				
+				var dir = DirAccess.open("res://")
+				if  dir.file_exists(path.replace(".dtl", ".tmp")):
+					file = FileAccess.open(path.replace(".dtl", ".tmp"), FileAccess.READ)
+					var check_length = file.get_length()
+					if check_length > 0:
+						var check_result = file.get_as_text()
+						if result == check_result:
+							dir.remove(path)
+							dir.rename(path.replace(".dtl", ".tmp"), path)
+							print('[Dialogic] Completed saving timeline "' , path, '"')
+						else:
+							printerr("[Dialogic] " + path + ": Temporary timeline file contents do not match what was written! Temporary file was saved as .tmp extension, please check to see if it matches your timeline, and rename to .dtl manually.")
+							return ERR_INVALID_DATA
+					else:
+						printerr("[Dialogic] " + path + ": Temporary timeline file is empty! Timeline was not saved!")
+						dir.remove(path.replace(".dtl", ".tmp"))
+						return ERR_INVALID_DATA
+				else:
+					printerr("[Dialogic] " + path + ": Temporary timeline file failed to create! Timeline was not saved!")
+					return ERR_INVALID_DATA
+				
+				
+				
 			else: 
 				printerr("[Dialogic] " + path + ": Timeline failed to convert to text for saving! Timeline was not saved!")
 				return ERR_INVALID_DATA
