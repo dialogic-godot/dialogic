@@ -1,8 +1,8 @@
 [gd_scene load_steps=5 format=3 uid="uid://cyns86lydp1tl"]
 
 [ext_resource type="Script" path="res://addons/dialogic/Example Assets/portraits/CustomPortrait_AnimatedSprite.gd" id="1_63c5k"]
-[ext_resource type="Texture2D" uid="uid://bhr2vortpmaq2" path="res://addons/dialogic/Example Assets/portraits/Antonio/pl5.png" id="2_15o4t"]
-[ext_resource type="Texture2D" uid="uid://b5co56ufpg28c" path="res://addons/dialogic/Example Assets/portraits/Antonio/pl5 blink.png" id="3_qen6e"]
+[ext_resource type="Texture2D" uid="uid://ds1wjmyc4h51k" path="res://addons/dialogic/Example Assets/portraits/Antonio/pl5.png" id="2_15o4t"]
+[ext_resource type="Texture2D" uid="uid://dhwtbxiraoje4" path="res://addons/dialogic/Example Assets/portraits/Antonio/pl5 blink.png" id="3_qen6e"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_yaycq"]
 animations = [{
@@ -20,7 +20,6 @@ script = ExtResource("1_63c5k")
 position = Vector2(-194, -565)
 scale = Vector2(0.751953, 0.751953)
 frames = SubResource("SpriteFrames_yaycq")
-frame = 26
 playing = true
 centered = false
 
