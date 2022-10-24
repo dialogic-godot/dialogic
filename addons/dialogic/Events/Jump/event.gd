@@ -6,10 +6,13 @@ class_name DialogicJumpEvent
 var Timeline :DialogicTimeline = null :
 	set = _set_timeline
 var LabelName : String = ""
+var Return: bool = false
 var _timeline_file: String = ""
 var _timeline_loaded: bool = false
 
 func _execute() -> void:
+	if Return:
+		dialogic.push_to_jump_stack()
 	if Timeline and Timeline != dialogic.current_timeline:
 		#print("---------------switching timelines----------------")
 		dialogic.start_timeline(Timeline, LabelName)
@@ -51,6 +54,7 @@ func get_shortcode_parameters() -> Dictionary:
 		#param_name : property_name
 		"timeline"	: "_timeline_file",
 		"label"		: "LabelName",
+		"return"	: "Return"
 	}
 
 func load_timeline() -> void:
@@ -72,6 +76,7 @@ func build_event_editor():
 		'empty_text': '(this timeline)'
 	})
 	add_header_edit("LabelName", ValueType.SinglelineText, "at", '', {'placeholder':'the beginning'})
+	add_body_edit("Return", ValueType.Bool, "Return to this spot after completed?")
 #	add_header_edit('LabelName', ValueType.ComplexPicker, 'at', '', {
 #		'suggestions_func': get_label_suggestions,
 #		'editor_icon': ['Label', 'EditorIcons'],
