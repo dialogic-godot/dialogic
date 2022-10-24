@@ -11,6 +11,8 @@ var full_history:Array = []
 
 var text_read_history:Dictionary = {}
 
+signal history_text_already_read()
+
 ####################################################################################################
 ##					STATE
 ####################################################################################################
@@ -40,8 +42,13 @@ func add_event_to_history(current_timeline:String, current_index:int, current_ev
 			var dropped = full_history.pop_back()
 		
 	if text_read_history_enabled:
-		if current_event.event_name == "Text":
-			text_read_history[str(current_index)+ "**" + current_timeline] = true
+		if current_event.event_name == "Text" || current_event.event_name == "Choice":
+			var line = str(current_index)+ "**" + current_timeline
+			if line in text_read_history:
+				emit_signal("history_text_already_read")
+			else:	
+				text_read_history[line] = true
+				
 
 func strip_events_from_full_history() -> void:
 	for i in full_history.size():
