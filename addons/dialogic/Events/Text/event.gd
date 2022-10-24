@@ -5,7 +5,7 @@ class_name DialogicTextEvent
 
 var Text:String = ""
 var Character : DialogicCharacter
-var Portrait = ""
+var Portrait:String = ""
 
 var _character_from_directory: String: 
 	get:

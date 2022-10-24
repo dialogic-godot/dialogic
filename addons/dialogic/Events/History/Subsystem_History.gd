@@ -5,6 +5,8 @@ var enabled:bool = true
 var full_history_enabled:bool = true
 var full_history_length:int = 50
 
+var full_history_option_save_text: bool = false
+
 var text_read_history_enabled:bool = true
 
 var full_history:Array = []
@@ -12,6 +14,14 @@ var full_history:Array = []
 var text_read_history:Dictionary = {}
 
 signal history_text_already_read()
+
+func _ready() -> void: 
+	enabled = DialogicUtil.get_project_setting('dialogic/history/history_system', true)
+	full_history_enabled = DialogicUtil.get_project_setting('dialogic/history/full_history', true)
+	full_history_length = DialogicUtil.get_project_setting('dialogic/history/full_history_length', 50)
+	full_history_option_save_text = DialogicUtil.get_project_setting('dialogic/history/full_history_option_save_text', false)
+	text_read_history_enabled = DialogicUtil.get_project_setting('dialogic/history/text_history', true)
+	
 
 ####################################################################################################
 ##					STATE
@@ -36,6 +46,11 @@ func add_event_to_history(current_timeline:String, current_index:int, current_ev
 		event_dict['event_type'] = current_event.event_name
 		
 		#A few more specific types of checks need to happen here to capture previous values
+		
+		if current_event.event_name == "Text" && full_history_option_save_text:
+			event_dict['text_event_character'] = current_event.Character.get_character_name()
+			event_dict['text_event_portrait'] = current_event.Portrait
+			event_dict['text_event_text'] = current_event.Text
 		
 		full_history.push_front(event_dict)
 		if full_history.size() > full_history_length:
