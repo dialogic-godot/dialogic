@@ -55,4 +55,14 @@ func strip_events_from_full_history() -> void:
 		full_history[i].erase('event_object')
 		
 func rebuild_all_history_events() -> void:
-	pass
+	var temp_timelines:Dictionary = {} 
+	for i in full_history.size():
+		if full_history[i]['timeline'] in temp_timelines:
+			full_history[i]['event_object'] = temp_timelines[full_history[i]['timeline']].events[full_history[i]['index']]
+		else:
+			var loaded_timeline = Dialogic.preload_timeline(full_history[i]['timeline'])
+			temp_timelines[full_history[i]['timeline']] = loaded_timeline
+			full_history[i]['event_object'] = loaded_timeline.events[full_history[i]['index']]
+			
+
+	
