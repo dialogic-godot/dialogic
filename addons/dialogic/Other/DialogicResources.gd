@@ -507,3 +507,11 @@ static func get_resource_folder_structure() -> Dictionary:
 
 static func save_resource_folder_structure(data):
 	set_json(get_config_files_paths()['FOLDER_STRUCTURE_FILE'], data)
+	
+static func folder_structure_to_flat_tree(folder_structure) -> Dictionary:
+	# Convert the folder structure from the JSON file into a simpler one that doesn't require recursive loops
+	return {}
+	
+static func flat_tree_to_folder_structure(flat_tree) -> Dictionary:
+	# Convert the flat folder structure back into the nested dictionary to be able to save to JSON
+	return {}
