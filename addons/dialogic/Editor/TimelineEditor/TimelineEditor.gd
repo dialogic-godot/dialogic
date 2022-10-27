@@ -803,7 +803,13 @@ func create_event(event_id: String, data: Dictionary = {'no-data': true} , inden
 		piece = load(custom_events[event_id]['event_block_scene']).instance()
 	# check if it's a builtin event
 	elif event_id in id_to_scene_name.keys():
-		piece = load("res://addons/dialogic/Editor/Events/" + id_to_scene_name[event_id] + ".tscn").instance()
+		var piece_name = "res://addons/dialogic/Editor/Events/" + id_to_scene_name[event_id] + ".tscn"
+		if piece_name in editor_reference.editor_scene_cache:
+			piece = editor_reference.editor_scene_cache[piece_name].instance()
+		else:
+			var scene_piece = load("res://addons/dialogic/Editor/Events/" + id_to_scene_name[event_id] + ".tscn")
+			editor_reference.editor_scene_cache[piece_name] = scene_piece
+			piece = scene_piece.instance()
 	# else use dummy event
 	else:
 		piece = load("res://addons/dialogic/Editor/Events/DummyEvent.tscn").instance()

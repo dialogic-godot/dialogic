@@ -10,6 +10,9 @@ var dialogicTranslator = load("res://addons/dialogic/Localization/translation_se
 # this is set when the plugins main-view is instanced in dialogic.gd
 var editor_interface = null
 
+#runtime cache of all .tscn's loaded by Dialogic, to speed it up
+var editor_scene_cache = {}
+
 func _ready():
 	# Adding file dialog to get used by Events
 	editor_file_dialog = EditorFileDialog.new()
