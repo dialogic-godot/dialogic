@@ -2,11 +2,11 @@
 extends HBoxContainer
 
 func refresh():
-	%HistoryToggle.pressed = DialogicUtil.get_project_setting('dialogic/history/history_system', true)
-	%FullHistory.pressed = DialogicUtil.get_project_setting('dialogic/history/full_history', true)
+	%HistoryToggle.button_pressed = DialogicUtil.get_project_setting('dialogic/history/history_system', true)
+	%FullHistory.button_pressed = DialogicUtil.get_project_setting('dialogic/history/full_history', true)
 	%HistoryLength.value = DialogicUtil.get_project_setting('dialogic/history/full_history_length', 50)
-	%TextHistory.pressed = DialogicUtil.get_project_setting('dialogic/history/text_history', true)
-	%FullText.pressed = DialogicUtil.get_project_setting('dialogic/history/full_history_option_save_text', false)
+	%TextHistory.button_pressed = DialogicUtil.get_project_setting('dialogic/history/text_history', true)
+	%FullText.button_pressed = DialogicUtil.get_project_setting('dialogic/history/full_history_option_save_text', false)
 
 func _on_history_toggle_toggled(button_pressed):
 	ProjectSettings.set_setting('dialogic/history/history_system', button_pressed)
