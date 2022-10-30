@@ -117,7 +117,7 @@ func to_text() -> String:
 				break
 		if name.count(" ") > 0:
 			name = '"' + name + '"'
-		if Portrait and not Portrait.is_empty():
+		if not Portrait.is_empty():
 			return name+" ("+Portrait+"): "+Text.replace("\n", "\\\n")
 		return name+": "+Text.replace("\n", "\\\n")
 	return Text.replace("\n", "\\\n")
