@@ -6,12 +6,12 @@ class_name DialogicJumpEvent
 var Timeline :DialogicTimeline = null :
 	set = _set_timeline
 var LabelName : String = ""
-var Return: bool = false
+var ReturnAfter: bool = false
 var _timeline_file: String = ""
 var _timeline_loaded: bool = false
 
 func _execute() -> void:
-	if Return:
+	if ReturnAfter:
 		dialogic.push_to_jump_stack()
 	if Timeline and Timeline != dialogic.current_timeline:
 		#print("---------------switching timelines----------------")
@@ -54,7 +54,7 @@ func get_shortcode_parameters() -> Dictionary:
 		#param_name : property_name
 		"timeline"	: "_timeline_file",
 		"label"		: "LabelName",
-		"return"	: "Return"
+		"return_after"	: "ReturnAfter"
 	}
 
 func load_timeline() -> void:

@@ -144,7 +144,7 @@ func push_to_jump_stack() -> void:
 	timeline_jump_stack.push_front(current_point)
 
 func pop_from_jump_stack() -> void:
-	var stack_point = timeline_jump_stack.pop_front()
+	var stack_point:Dictionary = timeline_jump_stack.pop_front()
 	current_timeline = stack_point['timeline']
 	current_timeline_events = current_timeline.get_events()
 	current_event_idx = stack_point['index']
