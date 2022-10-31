@@ -508,10 +508,32 @@ static func get_resource_folder_structure() -> Dictionary:
 static func save_resource_folder_structure(data):
 	set_json(get_config_files_paths()['FOLDER_STRUCTURE_FILE'], data)
 	
-static func folder_structure_to_flat_tree(folder_structure) -> Dictionary:
+static func get_resource_folder_flat_structure() -> Dictionary:
 	# Convert the folder structure from the JSON file into a simpler one that doesn't require recursive loops
-	return {}
+	var flat_structure = {}
 	
-static func flat_tree_to_folder_structure(flat_tree) -> Dictionary:
+	var json_structure = get_resource_folder_structure()
+	
+	flat_structure = recursive_search("Timeline", json_structure["folders"]["Timelines"], "/", flat_structure)
+	flat_structure = recursive_search("Character", json_structure["folders"]["Characters"], "/", flat_structure)
+	flat_structure = recursive_search("Definition", json_structure["folders"]["Definitions"], "/", flat_structure)
+	flat_structure = recursive_search("Theme", json_structure["folders"]["Themes"], "/", flat_structure)
+	
+	return flat_structure
+	
+static func save_resource_folder_flat_structure(flat_tree) -> Dictionary:
 	# Convert the flat folder structure back into the nested dictionary to be able to save to JSON
 	return {}
+	
+static func recursive_search(currentCheck, currentDictionary, currentFolder, structure_dictionary):
+	for structureFile in currentDictionary["files"]:
+		match currentCheck:
+			"Timeline": structure_dictionary['Timeline'][structureFile] = currentFolder
+			"Character":  structure_dictionary['Character'][structureFile] = currentFolder
+			"Definition":  structure_dictionary['Definition'][structureFile] = currentFolder
+			"Theme":  structure_dictionary['Theme'][structureFile] = currentFolder
+	
+	for structureFolder in currentDictionary["folders"]:
+		recursive_search(currentCheck, currentDictionary["folders"][structureFolder], currentFolder + structureFolder + "/", structure_dictionary)
+		
+	return structure_dictionary
