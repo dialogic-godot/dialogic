@@ -44,7 +44,7 @@ func remove_event(position:int) -> void:
 func get_event(index):
 	if index >= len(events):
 		return null
-	return events[index].duplicate()
+	return events[index]
 
 
 func get_events() -> Array:
