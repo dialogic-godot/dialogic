@@ -56,4 +56,5 @@ static func style(node, style:Dictionary) -> StyleBoxFlat:
 	node.set('theme_override_styles/hover', s)
 	node.set('theme_override_styles/pressed', s)
 	node.set('theme_override_styles/disabled', s)
+	node.set('theme_override_styles/panel', s)
 	return s

@@ -147,10 +147,7 @@ func _request_selection():
 # called to inform event parts, that a focus is wanted
 func focus():
 	pass
-	#if resource.header_scene:
-	#	resource.header_scene.focus()
-	#if resource.body_scene:
-	#	resource.body_scene.focus()
+
 
 func toggle_collapse(toggled):
 	collapsed = toggled
@@ -176,13 +173,14 @@ func build_editor():
 		if p.name == "linebreak":
 			current_body_container = HFlowContainer.new()
 			%BodyContent.add_child(current_body_container)
+			continue
 		
 		### STRINGS
 		elif p.dialogic_type == resource.ValueType.MultilineText:
 			editor_node = load("res://addons/dialogic/Editor/Events/Fields/MultilineText.tscn").instantiate()
 		elif p.dialogic_type == resource.ValueType.SinglelineText:
 			editor_node = load("res://addons/dialogic/Editor/Events/Fields/SinglelineText.tscn").instantiate()
-		
+			editor_node.placeholder = p.display_info.get('placeholder', '')
 		elif p.dialogic_type == resource.ValueType.Bool:
 			editor_node = load("res://addons/dialogic/Editor/Events/Fields/Bool.tscn").instantiate()
 		
@@ -206,7 +204,7 @@ func build_editor():
 			editor_node.empty_text = p.display_info.get('empty_text', '')
 			editor_node.placeholder_text = p.display_info.get('placeholder', 'Select Resource')
 			editor_node.resource_icon = p.display_info.get('icon', null)
-			editor_node.disable_pretty_name = p.display_info.get('disable_pretty_name', false)
+			editor_node.enable_pretty_name = p.display_info.get('enable_pretty_name', false)
 			if editor_node.resource_icon == null and p.display_info.has('editor_icon'):
 				editor_node.resource_icon = callv('get_theme_icon', p.display_info.editor_icon)
 			
@@ -214,9 +212,13 @@ func build_editor():
 		elif p.dialogic_type == resource.ValueType.Integer:
 			editor_node = load("res://addons/dialogic/Editor/Events/Fields/Number.tscn").instantiate()
 			editor_node.use_int_mode()
+			editor_node.max = p.display_info.get('max', 9999)
+			editor_node.min = p.display_info.get('min', -9999)
 		elif p.dialogic_type == resource.ValueType.Float:
 			editor_node = load("res://addons/dialogic/Editor/Events/Fields/Number.tscn").instantiate()
 			editor_node.use_float_mode()
+			editor_node.max = p.display_info.get('max', 9999)
+			editor_node.min = p.display_info.get('min', 0)
 		elif p.dialogic_type == resource.ValueType.Decibel:
 			editor_node = load("res://addons/dialogic/Editor/Events/Fields/Number.tscn").instantiate()
 			editor_node.use_decibel_mode()

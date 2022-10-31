@@ -8,7 +8,7 @@ func _ready():
 	$X.value_changed.connect(_on_value_changed)
 	$Y.value_changed.connect(_on_value_changed)
 
-func _on_value_changed(value):
+func _on_value_changed(property, value):
 	emit_signal("value_changed", property_name, Vector2($X.value, $Y.value))
 
 func set_right_text(value):
@@ -20,5 +20,5 @@ func set_left_text(value):
 	$LeftText.visible = !value.is_empty()
 
 func set_value(value:Vector2):
-	$X.value = value.x
-	$Y.value = value.y
+	$X.set_value(value.x)
+	$Y.set_value(value.y)

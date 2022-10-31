@@ -47,4 +47,4 @@ func get_shortcode_parameters() -> Dictionary:
 ################################################################################
 
 func build_event_editor():
-	add_header_edit('SlotName', ValueType.SinglelineText, 'Slot: ')
+	add_header_edit('SlotName', ValueType.SinglelineText, 'to slot')

@@ -43,14 +43,18 @@ func parse_glossary(text:String) -> String:
 	return text
 
 func add_glossary(path:String):
-	var x = load(path)
-	if x is DialogicGlossary:
-		glossaries.append(x)
-		for entry in x.entries.keys():
-			var regopts :String = entry
-			for i in x.entries[entry].get('alternatives', []):
-				regopts += '|'+i
-			x.entries[entry]['regopts'] = regopts
+	if FileAccess.file_exists(path):
+		var x = load(path)
+		if x is DialogicGlossary:
+			glossaries.append(x)
+			for entry in x.entries.keys():
+				var regopts :String = entry
+				for i in x.entries[entry].get('alternatives', []):
+					regopts += '|'+i
+				x.entries[entry]['regopts'] = regopts
+	else:
+		printerr('[Dialogic] The glossary file "' + path + '" is missing. Make sure it exists.')
+	
 
 func get_entry(name:String, parse_variables:bool = true) -> Dictionary:
 	for glossary in glossaries:

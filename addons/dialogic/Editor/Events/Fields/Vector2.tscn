@@ -1,43 +1,53 @@
 [gd_scene load_steps=3 format=3 uid="uid://dtimnsj014cu"]
 
 [ext_resource type="Script" path="res://addons/dialogic/Editor/Events/Fields/Vector2.gd" id="1_288li"]
-[ext_resource type="Theme" uid="uid://d3g4i4dshtdpu" path="res://addons/dialogic/Editor/Events/styles/InputFieldsStyle.tres" id="1_uc741"]
+[ext_resource type="PackedScene" uid="uid://kdpp3mibml33" path="res://addons/dialogic/Editor/Events/Fields/Number.tscn" id="3_l3bum"]
 
 [node name="Vector2" type="HBoxContainer"]
 offset_right = 40.0
 offset_bottom = 40.0
-theme = ExtResource("1_uc741")
+theme_override_constants/separation = -7
 script = ExtResource("1_288li")
 
 [node name="LeftText" type="Label" parent="."]
+layout_mode = 2
 offset_top = 8.0
 offset_right = 1.0
 offset_bottom = 31.0
 
-[node name="X" type="SpinBox" parent="."]
-offset_left = 5.0
-offset_right = 111.0
+[node name="X" parent="." instance=ExtResource("3_l3bum")]
+layout_mode = 2
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = -6.0
+offset_right = 42.0
 offset_bottom = 40.0
-min_value = -9999.0
-max_value = 9999.0
-allow_greater = true
-allow_lesser = true
-alignment = 3
-prefix = "x"
+grow_horizontal = 1
+grow_vertical = 1
+step = 1.0
+min = -9999.0
+max = 9999.0
+suffix = "x"
 
-[node name="Y" type="SpinBox" parent="."]
-offset_left = 115.0
-offset_right = 221.0
+[node name="Y" parent="." instance=ExtResource("3_l3bum")]
+layout_mode = 2
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 35.0
+offset_right = 83.0
 offset_bottom = 40.0
-min_value = -9999.0
-max_value = 9999.0
-allow_greater = true
-allow_lesser = true
-alignment = 3
-prefix = "y"
+grow_horizontal = 1
+grow_vertical = 1
+step = 1.0
+min = -9999.0
+max = 9999.0
+suffix = "y"
 
 [node name="RightText" type="Label" parent="."]
-offset_left = 225.0
+layout_mode = 2
+offset_left = 76.0
 offset_top = 8.0
-offset_right = 226.0
+offset_right = 77.0
 offset_bottom = 31.0

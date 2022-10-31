@@ -56,7 +56,7 @@ func get_shortcode_parameters() -> Dictionary:
 ################################################################################
 func build_event_editor() -> void:
 	add_header_label('Show an input field. The value will be stored to')
-	add_header_edit('Variable', ValueType.ComplexPicker, '', '', {'suggestions_func':[self, 'get_var_suggestions'], 'editor_icon':["ClassList", "EditorIcons"], 'disable_pretty_name':true})
+	add_header_edit('Variable', ValueType.ComplexPicker, '', '', {'suggestions_func':get_var_suggestions, 'editor_icon':["ClassList", "EditorIcons"]})
 	add_body_edit('Text', ValueType.SinglelineText, 'Text:')
 	add_body_edit('Placeholder', ValueType.SinglelineText, 'Placeholder:')
 	add_body_edit('Default', ValueType.SinglelineText, 'Default:')
@@ -69,8 +69,7 @@ func get_var_suggestions(filter:String) -> Dictionary:
 		suggestions[filter] = {'value':filter, 'editor_icon':["GuiScrollArrowRight", "EditorIcons"]}
 	var vars :Dictionary = DialogicUtil.get_project_setting('dialogic/variables', {})
 	for var_path in list_variables(vars):
-		if filter.is_empty() or filter.to_lower() in var_path.to_lower():
-			suggestions[var_path] = {'value':var_path, 'editor_icon':["ClassList", "EditorIcons"]}
+		suggestions[var_path] = {'value':var_path, 'editor_icon':["ClassList", "EditorIcons"]}
 	return suggestions
 
 func list_variables(dict:Dictionary, path := "") -> Array:

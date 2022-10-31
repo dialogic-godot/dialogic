@@ -5,13 +5,9 @@ var property_name : String
 signal value_changed
 
 func _ready():
-	DCSS.style(%ComplexEditor, {
-		'border-radius': 3,
-		'border-color': Color('#14161A'),
-		'border': 1,
-		'background': Color('#1D1F25'),
-		'padding': [5, 5],
-	})
+	%ComplexEditor.add_theme_stylebox_override('normal', get_theme_stylebox('normal', 'LineEdit'))
+	%ComplexEditor.add_theme_stylebox_override('focus', get_theme_stylebox('focus', 'LineEdit'))
+	
 	%Operator.options = [
 		{
 			'label': '==',
@@ -41,13 +37,12 @@ func _ready():
 	%ToggleComplex.icon = get_theme_icon("Enum", "EditorIcons")
 	
 	%Value1.resource_icon = get_theme_icon("ClassList", "EditorIcons")
-	%Value1.get_suggestions_func = [self, 'get_value1_suggestions']
+	%Value1.get_suggestions_func = get_value1_suggestions
 	%Value1.value_changed.connect(something_changed)
-	
 	%Operator.value_changed.connect(something_changed)
 	
 	%Value2.resource_icon = get_theme_icon("Variant", "EditorIcons")
-	%Value2.get_suggestions_func = [self, 'get_value2_suggestions']
+	%Value2.get_suggestions_func = get_value2_suggestions
 	%Value2.value_changed.connect(something_changed)
 
 func set_right_text(value:String):
@@ -120,8 +115,7 @@ func get_value1_suggestions(filter:String) -> Dictionary:
 		suggestions[filter] = {'value':filter, 'editor_icon':["GuiScrollArrowRight", "EditorIcons"]}
 	var vars = DialogicUtil.get_project_setting('dialogic/variables', {})
 	for var_path in list_variables(vars):
-		if filter.is_empty() or filter.to_lower() in var_path.to_lower(): 
-			suggestions[var_path] = {'value':'{'+var_path+"}", 'editor_icon':["ClassList", "EditorIcons"]}
+		suggestions[var_path] = {'value':'{'+var_path+"}", 'editor_icon':["ClassList", "EditorIcons"]}
 	return suggestions
 
 func list_variables(dict, path = "") -> Array:
@@ -139,6 +133,5 @@ func get_value2_suggestions(filter:String) -> Dictionary:
 		suggestions[filter] = {'value':filter, 'editor_icon':["GuiScrollArrowRight", "EditorIcons"]}
 	var vars = DialogicUtil.get_project_setting('dialogic/variables', {})
 	for var_path in list_variables(vars):
-		if filter.is_empty() or filter.to_lower() in var_path.to_lower():
-			suggestions[var_path] = {'value':'{'+var_path+"}", 'editor_icon':["ClassList", "EditorIcons"]}
+		suggestions[var_path] = {'value':'{'+var_path+"}", 'editor_icon':["ClassList", "EditorIcons"]}
 	return suggestions

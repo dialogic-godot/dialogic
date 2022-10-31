@@ -20,11 +20,12 @@ signal value_changed
 func _ready():
 	DCSS.style(%Field, {
 		'border-radius': 3,
-		'border-color': Color('#14161A'),
+		'border-color': get_theme_color("dark_color_3", "Editor"),
 		'border': 1,
-		'background': Color('#1D1F25'),
-		'padding': [5, 25],
+		'background': get_theme_color("dark_color_1", "Editor"),
+		'padding': [5, 5],
 	})
+	$PanelContainer.add_theme_stylebox_override('panel', get_theme_stylebox("normal", "LineEdit"))
 	%OpenButton.icon = get_theme_icon("Folder", "EditorIcons")
 	%ClearButton.icon = get_theme_icon("Reload", "EditorIcons")
 	%OpenButton.button_down.connect(_on_OpenButton_pressed)

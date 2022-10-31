@@ -523,7 +523,7 @@ func start(timeline, single_instance = true):
 	if single_instance:
 		if get_tree().get_nodes_in_group('dialogic_main_node').is_empty():
 			var scene = load(dialog_scene_path).instantiate()
-			get_parent().add_child(scene)
+			get_parent().call_deferred("add_child", scene)
 	Dialogic.start_timeline(timeline)
 
 func is_running() -> bool:
