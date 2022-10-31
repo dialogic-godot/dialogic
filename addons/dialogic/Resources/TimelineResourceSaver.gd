@@ -61,10 +61,17 @@ func _save(resource: Resource, path: String = '', flags: int = 0) -> int:
 					var check_length = file.get_length()
 					if check_length > 0:
 						var check_result = file.get_as_text()
+						file = null
 						if result == check_result:
-							dir.remove(path)
-							dir.rename(path.replace(".dtl", ".tmp"), path)
-							print('[Dialogic] Completed saving timeline "' , path, '"')
+							dir.copy(path.replace(".dtl", ".tmp"), path)
+							file = FileAccess.open(path, FileAccess.READ)
+							var check_result2 = file.get_as_text()
+							if result == check_result2:
+								print('[Dialogic] Completed saving timeline "' , path, '"')
+								dir.remove(path.replace(".dtl", ".tmp"))
+							else:
+								printerr("[Dialogic] " + path + ": Overwriting .dtl file failed! Temporary file was saved as .tmp extension, please check to see if it matches your timeline, and rename to .dtl manually.")
+								return ERR_INVALID_DATA
 						else:
 							printerr("[Dialogic] " + path + ": Temporary timeline file contents do not match what was written! Temporary file was saved as .tmp extension, please check to see if it matches your timeline, and rename to .dtl manually.")
 							return ERR_INVALID_DATA
