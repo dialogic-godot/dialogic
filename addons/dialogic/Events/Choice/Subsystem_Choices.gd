@@ -39,11 +39,14 @@ func show_current_choices() -> void:
 			
 			# check what to do in this case
 			if choice_event.IfFalseAction == DialogicChoiceEvent.IfFalseActions.DISABLE:
-				show_choice(button_idx, choice_event.get_translated_text(), false, choice_index)
+				if !choice_event.DisabledText.is_empty():
+					show_choice(button_idx, choice_event.get_property_translated('disabled_text'), false, choice_index)
+				else:
+					show_choice(button_idx, choice_event.get_property_translated('text'), false, choice_index)
 				button_idx += 1
 		# else just show it
 		else:
-			show_choice(button_idx, choice_event.get_translated_text(), true, choice_index)
+			show_choice(button_idx, choice_event.get_property_translated('text'), true, choice_index)
 			button_idx += 1
 	
 	if typeof(DialogicUtil.get_project_setting('dialogic/choices/delay')) != TYPE_FLOAT:

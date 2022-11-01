@@ -81,7 +81,7 @@ func _init() -> void:
 
 
 func _to_string() -> String:
-	return "[{class}:{id}]".format({"class":get_class(), "id":get_instance_id()})
+	return "[{class}:{file}]".format({"class":get_class(), "file":resource_path})
 
 
 func get_class() -> String: return "Timeline"

@@ -491,7 +491,7 @@ func process_timeline(timeline: DialogicTimeline) -> DialogicTimeline:
 				for i in range(len(prev_indent)):
 					events.append(end_event.duplicate())
 			
-			timeline.events = events	
+			timeline.events = events
 			timeline.events_processed = true
 			#print(str(Time.get_ticks_msec()) + ": Finished process unloaded timeline")	
 			return timeline

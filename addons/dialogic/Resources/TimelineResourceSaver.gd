@@ -89,51 +89,10 @@ func _save(resource: Resource, path: String = '', flags: int = 0) -> int:
 				printerr("[Dialogic] " + path + ": Timeline failed to convert to text for saving! Timeline was not saved!")
 				return ERR_INVALID_DATA
 				
-			# Checking for translation updates 
-			var trans_updates := {}
-			var translate :bool= DialogicUtil.get_project_setting('dialogic/translation_enabled', false)
-			for idx in range(0, len(resource.events)):
-				var event = resource.events[idx]
 
-				if event != null:
-					if translate and event.can_be_translated():
-						if event.translation_id:
-							trans_updates[event.translation_id] = event.get_original_translation_text()
-						else:
-							trans_updates[event.add_translation_id()] = event.get_original_translation_text()
-
-	#		if translate:
-	#			update_translations(path, trans_updates)
 			return OK
 		else: 
 			printerr("[Dialogic] " + path + ": Timeline was not in ready state for saving! Timeline was not saved!")
 			return ERR_INVALID_DATA
 	else:
 		return OK
-
-func update_translations(path:String, translation_updates:Dictionary):
-	if translation_updates.is_empty():
-		return
-	
-	var file_path :String = path.trim_suffix('.dtl')+'_translation.csv'
-	if DialogicUtil.get_project_setting('dialogic/translation_path', '').ends_with('.csv'):
-		file_path = ProjectSettings.get_setting('dialogic/translation_path')
-	
-	
-	var csv_lines := []
-	if FileAccess.file_exists(file_path):
-		var trans_file := FileAccess.open(file_path, FileAccess.READ)
-		
-		while !trans_file.eof_reached():
-			csv_lines.append(trans_file.get_csv_line())
-			if csv_lines[-1][0] in translation_updates.keys():
-				csv_lines[-1][1] = translation_updates[csv_lines[-1][0]]
-				translation_updates.erase(csv_lines[-1][0])
-	else:
-		var trans_file := FileAccess.open(file_path, FileAccess.WRITE)
-		for line in csv_lines:
-			if line and line[0]:
-				trans_file.store_csv_line(line)
-		for key in translation_updates.keys():
-			trans_file.store_csv_line([key, translation_updates[key]])
-		print('[Dialogic] Updated translations for "', path ,'"')
