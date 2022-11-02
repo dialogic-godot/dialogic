@@ -5,7 +5,7 @@ class_name DialogicTextEvent
 
 var Text:String = ""
 var Character : DialogicCharacter
-var Portrait = ""
+var Portrait:String = ""
 
 var _character_from_directory: String: 
 	get:
@@ -117,7 +117,7 @@ func to_text() -> String:
 				break
 		if name.count(" ") > 0:
 			name = '"' + name + '"'
-		if Portrait and not Portrait.is_empty():
+		if not Portrait.is_empty():
 			return name+" ("+Portrait+"): "+Text.replace("\n", "\\\n")
 		return name+": "+Text.replace("\n", "\\\n")
 	return Text.replace("\n", "\\\n")

@@ -1,0 +1,44 @@
+[gd_scene load_steps=3 format=3 uid="uid://d3qjtdsyg3if5"]
+
+[ext_resource type="Script" path="res://addons/dialogic/Example Assets/example-scenes/ExampleHistoryItem.gd" id="1_dgoja"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_upgjp"]
+bg_color = Color(0.317647, 0.317647, 0.317647, 1)
+
+[node name="ExampleHistoryItem" type="MarginContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 15
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 0
+script = ExtResource("1_dgoja")
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+offset_left = 15.0
+offset_top = 15.0
+offset_right = 1665.0
+offset_bottom = 1050.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_upgjp")
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer"]
+offset_right = 1650.0
+offset_bottom = 1035.0
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="TextBox" type="RichTextLabel" parent="PanelContainer/MarginContainer"]
+unique_name_in_owner = true
+offset_left = 10.0
+offset_top = 10.0
+offset_right = 1640.0
+offset_bottom = 1025.0
+bbcode_enabled = true
+text = "Example text"
+fit_content_height = true

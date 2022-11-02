@@ -3,6 +3,7 @@ extends DialogicSubsystem
 # used to color names without searching for all characters each time
 var character_colors := {}
 var color_regex := RegEx.new()
+var text_already_read:bool = false
 
 signal text_finished
 signal speaking_character(argument)
@@ -131,10 +132,13 @@ func update_character_names() -> void:
 	character_colors = {}
 	for dch_path in DialogicUtil.list_resources_of_type('.dch'):
 		var dch = (load(dch_path) as DialogicCharacter)
-#
-		if dch.name: character_colors[dch.name] = dch.color
+
+		if dch.display_name:
+			character_colors[dch.display_name] = dch.color
+		
 		for nickname in dch.nicknames:
-			if nickname.strip_edges(): character_colors[nickname.strip_edges()] = dch.color
+			if nickname.strip_edges():
+				character_colors[nickname.strip_edges()] = dch.color
 	
 	color_regex.compile('(?<=\\W)(?<name>'+str(character_colors.keys()).trim_prefix('[').trim_suffix(']').replace(', ', '|')+')(?=\\W|$)')
 	

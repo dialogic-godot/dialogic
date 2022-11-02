@@ -1,0 +1,61 @@
+[gd_scene load_steps=3 format=3 uid="uid://d0rj8iawfra65"]
+
+[ext_resource type="Script" path="res://addons/dialogic/Example Assets/example-scenes/ExampleHistoryScene.gd" id="1_o5tfq"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1hdvb"]
+bg_color = Color(0, 0, 0, 0.776471)
+border_width_left = 20
+border_width_right = 20
+border_width_bottom = 20
+border_color = Color(0.8, 0.8, 0.8, 0)
+
+[node name="ExampleHistoryScene" type="VBoxContainer"]
+layout_direction = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_filter = 2
+script = ExtResource("1_o5tfq")
+
+[node name="ShowHistory" type="Button" parent="."]
+offset_left = 808.0
+offset_right = 872.0
+offset_bottom = 31.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+text = "History"
+
+[node name="HideHistory" type="Button" parent="."]
+visible = false
+offset_left = 809.0
+offset_top = 35.0
+offset_right = 870.0
+offset_bottom = 66.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+text = "Return"
+
+[node name="HistoryBox" type="ScrollContainer" parent="."]
+unique_name_in_owner = true
+visible = false
+offset_top = 70.0
+offset_right = 1680.0
+offset_bottom = 1050.0
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_1hdvb")
+
+[node name="HistoryLog" type="VBoxContainer" parent="HistoryBox"]
+unique_name_in_owner = true
+layout_direction = 1
+offset_left = 20.0
+offset_right = 1660.0
+offset_bottom = 960.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[connection signal="pressed" from="ShowHistory" to="." method="_on_show_history_pressed"]
+[connection signal="pressed" from="HideHistory" to="." method="_on_hide_history_pressed"]

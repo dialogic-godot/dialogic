@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=3 uid="uid://d2s758uwpok2f"]
+[gd_scene load_steps=31 format=3 uid="uid://d2s758uwpok2f"]
 
 [ext_resource type="Script" path="res://addons/dialogic/Example Assets/example-scenes/DialogicDefaultScene.gd" id="1"]
 [ext_resource type="Script" path="res://addons/dialogic/Events/Text/DialogicNode_DialogText.gd" id="2"]
@@ -19,9 +19,13 @@
 [ext_resource type="Script" path="res://addons/dialogic/Events/Text/DialogicNode_NextIndicator.gd" id="20_ljcq2"]
 [ext_resource type="Script" path="res://addons/dialogic/Example Assets/example-scenes/ExampleGlossaryPopup.gd" id="20_vmnp2"]
 [ext_resource type="Script" path="res://addons/dialogic/Events/Voice/DialogicNode_VoicePlayer.gd" id="20_x1o37"]
-[ext_resource type="Texture2D" uid="uid://c8w17dsl8cin5" path="res://addons/dialogic/Example Assets/next-indicator/next-indicator.png" id="21_rp1u3"]
+[ext_resource type="Texture2D" uid="uid://bh6hmgampex6n" path="res://addons/dialogic/Example Assets/next-indicator/next-indicator.png" id="21_rp1u3"]
+[ext_resource type="PackedScene" uid="uid://d0rj8iawfra65" path="res://addons/dialogic/Example Assets/example-scenes/ExampleHistoryScene.tscn" id="22_854kg"]
 [ext_resource type="Script" path="res://addons/dialogic/Events/TextInput/DialogicNode_TextInput.gd" id="22_ltkcf"]
 [ext_resource type="Script" path="res://addons/dialogic/Example Assets/example-scenes/HideWithChild.gd" id="23"]
+[ext_resource type="FontFile" uid="uid://bp253wnqw5fmg" path="res://addons/dialogic/Example Assets/Fonts/Roboto-Regular.ttf" id="23_gyqve"]
+[ext_resource type="FontFile" uid="uid://d0tmcipgtbqnb" path="res://addons/dialogic/Example Assets/Fonts/Roboto-Bold.ttf" id="24_aa4pl"]
+[ext_resource type="FontFile" uid="uid://by2ak3qj6bj4w" path="res://addons/dialogic/Example Assets/Fonts/Roboto-Italic.ttf" id="25_wt3bc"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dpede"]
 content_margin_left = 10.0
@@ -390,6 +394,12 @@ rotation = 0.75799
 size_flags_horizontal = 4
 size_flags_vertical = 8
 theme_override_styles/panel = SubResource("StyleBoxFlat_a3cyk")
+
+[node name="ExampleHistoryScene" parent="DefaultStyle" instance=ExtResource("22_854kg")]
+layout_mode = 1
+history_font_normal = ExtResource("23_gyqve")
+history_font_bold = ExtResource("24_aa4pl")
+history_font_italics = ExtResource("25_wt3bc")
 
 [node name="SpecialStyle" type="Control" parent="."]
 visible = false
