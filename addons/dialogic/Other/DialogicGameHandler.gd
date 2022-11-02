@@ -4,6 +4,7 @@ enum states {IDLE, SHOWING_TEXT, ANIMATING, AWAITING_CHOICE, WAITING}
 
 var current_timeline: Variant = null
 var current_timeline_events: Array = []
+var timeline_jump_stack: Array = []
 var character_directory: Dictionary = {}
 var timeline_directory: Dictionary = {}
 var _event_script_cache: Array = []
@@ -101,8 +102,12 @@ func handle_event(event_index:int) -> void:
 		return
 	
 	if event_index >= len(current_timeline_events):
-		end_timeline()
-		return
+		if timeline_jump_stack.size() > 0:
+			pop_from_jump_stack()
+			event_index = current_event_idx+1
+		else:
+			end_timeline()
+			return
 	
 	#actually process the event now, since we didnt earlier at runtime
 	#this needs to happen before we create the copy DialogicEvent variable, so it doesn't throw an error if not ready
@@ -136,6 +141,18 @@ func jump_to_label(label:String) -> void:
 			break
 	current_event_idx = idx
 
+func push_to_jump_stack() -> void:
+	var current_point:Dictionary = {}
+	current_point['timeline'] = current_timeline 
+	current_point['index'] = current_event_idx
+	timeline_jump_stack.push_front(current_point)
+
+func pop_from_jump_stack() -> void:
+	var stack_point:Dictionary = timeline_jump_stack.pop_front()
+	current_timeline = stack_point['timeline']
+	current_timeline_events = current_timeline.get_events()
+	current_event_idx = stack_point['index']
+	
 
 func clear() -> bool:
 	for subsystem in get_children():
