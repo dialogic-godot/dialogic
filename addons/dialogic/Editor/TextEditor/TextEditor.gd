@@ -5,7 +5,7 @@ var current_timeline: DialogicTimeline
 
 var editor_reference = null
 
-@onready var _toolbar = get_parent().get_node('Toolbar')
+@onready var _toolbar = get_parent().get_parent().get_node('Toolbar')
 
 func _ready():
 	DialogicUtil.get_dialogic_plugin().dialogic_save.connect(save_timeline)
