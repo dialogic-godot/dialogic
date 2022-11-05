@@ -1,6 +1,6 @@
 @tool
-extends Resource
 class_name DialogicEvent
+extends Resource
 
 ## The event color that event node will take in the editor
 var event_color:Color = Color("FBB13C")
@@ -79,7 +79,7 @@ var can_contain_events : bool = false
 var end_branch_event : DialogicEndBranchEvent = null
 var needs_parent_event : bool = false
 
-var translation_id = null
+@export var _translation_id :String= ""
 
 # This file is part of EventSystem, distributed under MIT license
 # and modified to work with Dialogic.
@@ -110,6 +110,7 @@ signal event_finished(event_resource)
 ## Determines if the event will go to next event inmediatly or not. 
 ## If value is true, the next event will be executed when event ends.
 var continue_at_end:bool = true #setget _set_continue
+
 var dialogic = null
 
 ## Executes the event behaviour.
@@ -176,21 +177,39 @@ func should_execute_this_branch() -> bool:
 ################################################################################
 ## 					TRANSLATIONS
 ################################################################################
-func can_be_translated() -> bool:
-	return false
+# Overwrite if this events needs translation.
+func _get_translatable_properties() -> Array:
+	return []
 
-func get_original_translation_text() -> String:
+# Overwrite if this events needs translation.
+func _get_property_original_translation(property_name:String) -> String:
 	return ''
 
-func add_translation_id() -> String:
-	translation_id = "%x" % [get_instance_id()]
-	return translation_id
+# Returns true if there is any translatable properties on this event.
+# Overwrite [_get_translatable_properties()] to change this.
+func can_be_translated() -> bool:
+	return !_get_translatable_properties().is_empty()
 
-func get_translated_text() -> String:
-	if translation_id and DialogicUtil.get_project_setting('dialogic/translation_enabled', false):
-		return tr(translation_id) if tr(translation_id) != translation_id else get_original_translation_text()
+# This is automatically called, no need to use this.
+func add_translation_id() -> String:
+	_translation_id = DialogicUtil.get_next_translation_id()
+	print("Added ", _translation_id, " to ", self)
+	return _translation_id
+
+func remove_translation_id() -> void:
+	_translation_id = ""
+
+func get_property_translation_key(property_name:String) -> String:
+	return event_name.path_join(_translation_id).path_join(property_name)
+	
+# Call this whenever you are using a translatable property
+func get_property_translated(property_name:String) -> String:
+	if !_translation_id.is_empty() and DialogicUtil.get_project_setting('dialogic/translation_enabled', false):
+		var translation = tr(get_property_translation_key(property_name))
+		# if no translation is found tr() returns the id, but we want to fallback to the original
+		return translation if translation != _translation_id else _get_property_original_translation(property_name)
 	else:
-		return get_original_translation_text()
+		return _get_property_original_translation(property_name)
 
 ################################################################################
 ## 					PARSE AND STRINGIFY
@@ -198,23 +217,28 @@ func get_translated_text() -> String:
 # These functions are used by the timeline loader/saver
 # They mainly use the overridable behaviour below, but enforce the unique_id saving
 
+# Used by the Timeline saver.
 func _store_as_string() -> String:
-	if translation_id and can_be_translated():
-		return to_text() + ' #id:'+str(translation_id)
+	if !_translation_id.is_empty() and can_be_translated():
+		return to_text() + ' #id:'+str(_translation_id)
 	else:
 		return to_text()
 
+# Call this if you updated an event and want the changes to be saved.
+func update_text_version() -> void:
+	event_node_as_text = _store_as_string()
 
+# Used by timeline processor (DGH).
 func _load_from_string(string:String) -> void:
 	if '#id:' in string and can_be_translated():
-		translation_id = string.get_slice('#id:', 1).strip_edges()
+		_translation_id = string.get_slice('#id:', 1).strip_edges()
 		from_text(string.get_slice('#id:', 0))
 		event_node_ready = true
 	else:
 		from_text(string)
 		event_node_ready = true
 
-
+# Used by the timeline processor (DGH).
 func _test_event_string(string:String) -> bool:
 	if '#id:' in string and can_be_translated():
 		return is_valid_event(string.get_slice('#id:', 0)) 
