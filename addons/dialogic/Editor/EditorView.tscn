@@ -8,7 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://dr7l1304wixcs" path="res://addons/dialogic/Editor/TextEditor/TextEditor.tscn" id="5_px80h"]
 [ext_resource type="PackedScene" uid="uid://bak1jk2glij8r" path="res://addons/dialogic/Editor/CharacterEditor/CharacterEditor.tscn" id="6"]
 
-[sub_resource type="CodeHighlighter" id="CodeHighlighter_acv3r"]
+[sub_resource type="CodeHighlighter" id="CodeHighlighter_h0rgh"]
 number_color = Color(0.8025, 0.81, 0.8225, 1)
 symbol_color = Color(0.8025, 0.81, 0.8225, 1)
 function_color = Color(0.8025, 0.81, 0.8225, 1)
@@ -22,7 +22,6 @@ color_regions = {
 }
 
 [node name="EditorView" type="Control"]
-visible = false
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -59,8 +58,6 @@ offset_top = 39.0
 offset_right = 1152.0
 offset_bottom = 648.0
 size_flags_vertical = 3
-theme_override_constants/separation = 0
-theme_override_constants/minimum_grab_thickness = 0
 split_offset = 150
 
 [node name="SideBar" parent="MarginContainer/VBoxContainer/HSplitContainer" instance=ExtResource("3_rnlfb")]
@@ -74,13 +71,14 @@ layout_mode = 2
 anchors_preset = 0
 anchor_right = 0.0
 anchor_bottom = 0.0
-offset_left = 158.0
+offset_left = 162.0
 offset_right = 1152.0
 offset_bottom = 609.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+theme_override_constants/margin_left = 0
 
 [node name="CharacterEditor" parent="MarginContainer/VBoxContainer/HSplitContainer" instance=ExtResource("6")]
 unique_name_in_owner = true
@@ -101,7 +99,7 @@ offset_top = -611.0
 offset_bottom = -48.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-syntax_highlighter = SubResource("CodeHighlighter_acv3r")
+syntax_highlighter = SubResource("CodeHighlighter_h0rgh")
 
 [node name="SettingsEditor" parent="MarginContainer/VBoxContainer/HSplitContainer" instance=ExtResource("3")]
 unique_name_in_owner = true

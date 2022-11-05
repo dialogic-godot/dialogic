@@ -5,6 +5,7 @@ signal file_activated
 
 func _ready():
 	load_recent_files()
+	%ResourcesList.item_selected.connect(_on_resources_list_item_selected)
 
 func load_recent_files(latest_file:String = ""):
 	var character_directory :Dictionary = find_parent('EditorView').character_directory
@@ -31,5 +32,5 @@ func load_recent_files(latest_file:String = ""):
 			idx += 1
 	%ResourcesList.sort_items_by_text()
 
-func _on_resources_list_item_activated(index):
+func _on_resources_list_item_selected(index):
 	DialogicUtil.get_dialogic_plugin().editor_interface.inspect_object(load(%ResourcesList.get_item_metadata(index)))
