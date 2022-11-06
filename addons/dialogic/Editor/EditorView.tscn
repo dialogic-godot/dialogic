@@ -1,14 +1,15 @@
-[gd_scene load_steps=9 format=3 uid="uid://di0dp1s7g2u2t"]
+[gd_scene load_steps=10 format=3 uid="uid://di0dp1s7g2u2t"]
 
 [ext_resource type="PackedScene" uid="uid://ynhtuxgwp3se" path="res://addons/dialogic/Editor/VisualEditor/VisualEditor.tscn" id="1"]
 [ext_resource type="Script" path="res://addons/dialogic/Editor/EditorView.gd" id="2"]
 [ext_resource type="PackedScene" path="res://addons/dialogic/Editor/Settings/SettingsEditor.tscn" id="3"]
-[ext_resource type="PackedScene" uid="uid://br118r7bh2oyq" path="res://addons/dialogic/Editor/Common/side_bar.tscn" id="3_rnlfb"]
+[ext_resource type="PackedScene" path="res://addons/dialogic/Editor/Common/side_bar.tscn" id="3_rnlfb"]
 [ext_resource type="PackedScene" uid="uid://cu27v0qpqbntn" path="res://addons/dialogic/Editor/Common/Toolbar.tscn" id="4"]
 [ext_resource type="PackedScene" uid="uid://dr7l1304wixcs" path="res://addons/dialogic/Editor/TextEditor/TextEditor.tscn" id="5_px80h"]
 [ext_resource type="PackedScene" uid="uid://bak1jk2glij8r" path="res://addons/dialogic/Editor/CharacterEditor/CharacterEditor.tscn" id="6"]
+[ext_resource type="PackedScene" uid="uid://uo7pa6rar0sp" path="res://addons/dialogic/Editor/WelcomeScreen/welcome_screen.tscn" id="8_e0jfb"]
 
-[sub_resource type="CodeHighlighter" id="CodeHighlighter_h0rgh"]
+[sub_resource type="CodeHighlighter" id="CodeHighlighter_p21j1"]
 number_color = Color(0.8025, 0.81, 0.8225, 1)
 symbol_color = Color(0.8025, 0.81, 0.8225, 1)
 function_color = Color(0.8025, 0.81, 0.8225, 1)
@@ -64,6 +65,8 @@ split_offset = 150
 unique_name_in_owner = true
 custom_minimum_size = Vector2(20, 0)
 layout_mode = 2
+offset_right = 150.0
+offset_bottom = 609.0
 
 [node name="TimelineVisualEditor" parent="MarginContainer/VBoxContainer/HSplitContainer" instance=ExtResource("1")]
 unique_name_in_owner = true
@@ -99,7 +102,7 @@ offset_top = -611.0
 offset_bottom = -48.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-syntax_highlighter = SubResource("CodeHighlighter_h0rgh")
+syntax_highlighter = SubResource("CodeHighlighter_p21j1")
 
 [node name="SettingsEditor" parent="MarginContainer/VBoxContainer/HSplitContainer" instance=ExtResource("3")]
 unique_name_in_owner = true
@@ -111,6 +114,11 @@ size_flags_vertical = 3
 
 [node name="SaveConfirmationDialog" type="AcceptDialog" parent="."]
 size = Vector2i(207, 100)
+
+[node name="WelcomeScreen" parent="." instance=ExtResource("8_e0jfb")]
+visible = false
+top_level = true
+layout_mode = 1
 
 [connection signal="confirmed" from="SaveConfirmationDialog" to="." method="_on_SaveConfirmationDialog_confirmed"]
 [connection signal="custom_action" from="SaveConfirmationDialog" to="." method="_on_SaveConfirmationDialog_custom_action"]

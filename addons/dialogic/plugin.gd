@@ -79,6 +79,8 @@ func _edit(object):
 
 
 func _enable_plugin():
+	_editor_view.show_welcome_screen()
+	_make_visible(true)
 	add_autoload_singleton("Dialogic", "res://addons/dialogic/Other/DialogicGameHandler.gd")
 	add_dialogic_default_action()
 

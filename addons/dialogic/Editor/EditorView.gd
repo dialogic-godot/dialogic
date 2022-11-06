@@ -249,6 +249,8 @@ func _on_play_timeline():
 
 		DialogicUtil.get_dialogic_plugin().editor_interface.play_custom_scene("res://addons/dialogic/Editor/Common/TestTimelineScene.tscn")
 
+func show_welcome_screen():
+	$WelcomeScreen.show()
 
 #########################################################
 ###				TIMELINE PROCESSOR
