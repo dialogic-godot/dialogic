@@ -1,9 +1,9 @@
-[gd_scene load_steps=12 format=3]
+[gd_scene load_steps=12 format=3 uid="uid://d3agok55xydgt"]
 
 [ext_resource type="Script" path="res://addons/dialogic/Events/Style/DialogicNode_Style.gd" id="1_aoco8"]
 [ext_resource type="Script" path="res://addons/dialogic/Events/Text/DialogicNode_InputHandler.gd" id="2_7abe3"]
 [ext_resource type="Script" path="res://addons/dialogic/Example Assets/example-scenes/ExampleTextBubble.gd" id="3_2q2a6"]
-[ext_resource type="Texture2D" uid="uid://xupbj8gf778j" path="res://addons/dialogic/Example Assets/backgrounds/BubbleEnd.png" id="4_q6vcu"]
+[ext_resource type="Texture2D" uid="uid://b3sccqj6l42w6" path="res://addons/dialogic/Example Assets/backgrounds/BubbleEnd.png" id="4_q6vcu"]
 [ext_resource type="Script" path="res://addons/dialogic/Events/Text/DialogicNode_DialogText.gd" id="5_rcetc"]
 [ext_resource type="Script" path="res://addons/dialogic/Events/Choice/DialogicNode_ChoiceButton.gd" id="6_8g1dv"]
 [ext_resource type="Script" path="res://addons/dialogic/Example Assets/example-scenes/HideWithChild.gd" id="7_1j72f"]

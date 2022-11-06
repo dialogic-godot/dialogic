@@ -1,17 +1,28 @@
 extends Control
 
-class_name DialogicNode_NextIndicator
+class_name DNextIndicator
+@icon("res://addons/dialogic/Events/Text/DNextIndicator_icon.svg")
 
 @export var show_on_questions := false
-
 @export var show_on_autocontinue := false
-
 @export var animation := 'bounce'
+@export var texture := preload("res://addons/dialogic/Example Assets/next-indicator/next-indicator.png")
 
 @onready var start_position : Vector2 = position
 
 func _ready():
 	add_to_group('dialogic_next_indicator')
+	
+	# Creating texture
+	if texture:
+		var icon = TextureRect.new()
+		icon.ignore_texture_size = true
+		icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		icon.size = Vector2(32,32)
+		icon.position -= icon.size
+		add_child(icon)
+		icon.texture = texture
+	
 	hide()
 	visibility_changed.connect(_on_visibility_changed)
 
