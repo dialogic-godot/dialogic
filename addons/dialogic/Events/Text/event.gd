@@ -51,7 +51,7 @@ func _execute() -> void:
 	#Placeholder wrap. Replace with a loop iterating over text event's lines. - KvaGram
 	var index:int = 0
 	if true:
-		var final_text :String = get_translated_text()
+		var final_text :String = get_property_translated('text')
 		if dialogic.has_subsystem('VAR'):
 			final_text = dialogic.VAR.parse_variables(final_text)
 		if dialogic.has_subsystem('Glossary'):
@@ -172,11 +172,24 @@ func is_valid_event(string:String) -> bool:
 func is_string_full_event(string:String) -> bool:
 	return !string.ends_with('\\')
 
-func can_be_translated():
-	return true
-	
-func get_original_translation_text():
-	return Text
+
+################################################################################
+## 						TRANSLATIONS
+################################################################################
+
+func _get_translatable_properties() -> Array:
+	return ['text']
+
+func _get_property_original_translation(property:String) -> String:
+	match property:
+		'text':
+			return Text
+	return ''
+
+
+################################################################################
+## 						EVENT EDITOR
+################################################################################
 
 func build_event_editor():
 	add_header_edit('_character_from_directory', ValueType.ComplexPicker, '', '', {'file_extension':'.dch', 'suggestions_func':get_character_suggestions, 'empty_text':'(No one)','icon':load("res://addons/dialogic/Editor/Images/Resources/character.svg")})

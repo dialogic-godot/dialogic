@@ -1,4 +1,4 @@
-[gd_scene load_steps=31 format=3 uid="uid://d2s758uwpok2f"]
+[gd_scene load_steps=30 format=3 uid="uid://bhvhx6bh0mxlu"]
 
 [ext_resource type="Script" path="res://addons/dialogic/Example Assets/example-scenes/DialogicDefaultScene.gd" id="1"]
 [ext_resource type="Script" path="res://addons/dialogic/Events/Text/DialogicNode_DialogText.gd" id="2"]
@@ -10,37 +10,43 @@
 [ext_resource type="Script" path="res://addons/dialogic/Events/Music/DialogicNode_MusicPlayer.gd" id="8"]
 [ext_resource type="Script" path="res://addons/dialogic/Events/Sound/DialogicNode_SoundPlayer.gd" id="9"]
 [ext_resource type="Script" path="res://addons/dialogic/Events/Text/DialogicNode_TypeSounds.gd" id="10"]
-[ext_resource type="AudioStream" uid="uid://cv0h6alssb7t3" path="res://addons/dialogic/Example Assets/sound-effects/typing4.wav" id="11"]
+[ext_resource type="AudioStream" uid="uid://c2viukvbub6v6" path="res://addons/dialogic/Example Assets/sound-effects/typing4.wav" id="11"]
 [ext_resource type="Script" path="res://addons/dialogic/Events/Style/DialogicNode_Style.gd" id="12"]
-[ext_resource type="AudioStream" uid="uid://cwli6ndwsdfkk" path="res://addons/dialogic/Example Assets/sound-effects/typing5.wav" id="13"]
-[ext_resource type="AudioStream" uid="uid://c2weninn0w4au" path="res://addons/dialogic/Example Assets/sound-effects/typing1.wav" id="14"]
+[ext_resource type="AudioStream" uid="uid://dwcre3fjf3cj8" path="res://addons/dialogic/Example Assets/sound-effects/typing5.wav" id="13"]
+[ext_resource type="AudioStream" uid="uid://b6c1p14bc20p1" path="res://addons/dialogic/Example Assets/sound-effects/typing1.wav" id="14"]
 [ext_resource type="Script" path="res://addons/dialogic/Events/Text/DialogicNode_InputHandler.gd" id="17"]
 [ext_resource type="Script" path="res://addons/dialogic/Events/Choice/SoundButton.gd" id="18"]
-[ext_resource type="Script" path="res://addons/dialogic/Events/Text/DialogicNode_NextIndicator.gd" id="20_ljcq2"]
+[ext_resource type="Script" path="res://addons/dialogic/Events/Text/DNextIndicator.gd" id="20_ljcq2"]
 [ext_resource type="Script" path="res://addons/dialogic/Example Assets/example-scenes/ExampleGlossaryPopup.gd" id="20_vmnp2"]
 [ext_resource type="Script" path="res://addons/dialogic/Events/Voice/DialogicNode_VoicePlayer.gd" id="20_x1o37"]
-[ext_resource type="Texture2D" uid="uid://bh6hmgampex6n" path="res://addons/dialogic/Example Assets/next-indicator/next-indicator.png" id="21_rp1u3"]
 [ext_resource type="PackedScene" uid="uid://d0rj8iawfra65" path="res://addons/dialogic/Example Assets/example-scenes/ExampleHistoryScene.tscn" id="22_854kg"]
 [ext_resource type="Script" path="res://addons/dialogic/Events/TextInput/DialogicNode_TextInput.gd" id="22_ltkcf"]
 [ext_resource type="Script" path="res://addons/dialogic/Example Assets/example-scenes/HideWithChild.gd" id="23"]
-[ext_resource type="FontFile" uid="uid://bp253wnqw5fmg" path="res://addons/dialogic/Example Assets/Fonts/Roboto-Regular.ttf" id="23_gyqve"]
-[ext_resource type="FontFile" uid="uid://d0tmcipgtbqnb" path="res://addons/dialogic/Example Assets/Fonts/Roboto-Bold.ttf" id="24_aa4pl"]
-[ext_resource type="FontFile" uid="uid://by2ak3qj6bj4w" path="res://addons/dialogic/Example Assets/Fonts/Roboto-Italic.ttf" id="25_wt3bc"]
+[ext_resource type="FontFile" uid="uid://vrrmdx83skor" path="res://addons/dialogic/Example Assets/Fonts/Roboto-Regular.ttf" id="23_gyqve"]
+[ext_resource type="FontFile" uid="uid://cc4xli25271fd" path="res://addons/dialogic/Example Assets/Fonts/Roboto-Bold.ttf" id="24_aa4pl"]
+[ext_resource type="FontFile" uid="uid://b5c0p00x6g6u5" path="res://addons/dialogic/Example Assets/Fonts/Roboto-Italic.ttf" id="25_wt3bc"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dpede"]
-content_margin_left = 10.0
-content_margin_top = 2.0
-content_margin_right = 10.0
-content_margin_bottom = 2.0
-bg_color = Color(0.117647, 0.117647, 0.117647, 0.952941)
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wpkyg"]
+bg_color = Color(0, 0, 0, 0.752941)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+expand_margin_left = 5.0
+expand_margin_top = 5.0
+expand_margin_right = 5.0
+expand_margin_bottom = 5.0
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_e4oel"]
-content_margin_left = 10.0
-content_margin_top = 5.0
-content_margin_right = 10.0
-content_margin_bottom = 5.0
-bg_color = Color(0.117647, 0.117647, 0.117647, 0.952941)
-skew = Vector2(-0.121, 0)
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_q3vpc"]
+bg_color = Color(0, 0, 0, 0.752941)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+expand_margin_left = 15.0
+expand_margin_top = 15.0
+expand_margin_right = 15.0
+expand_margin_bottom = 15.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_a3cyk"]
 bg_color = Color(0.12549, 0.12549, 0.12549, 1)
@@ -198,21 +204,21 @@ anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = -269.0
-offset_top = -171.0
-offset_right = -202.0
-offset_bottom = -141.0
+offset_left = -276.0
+offset_top = -190.0
+offset_right = -209.0
+offset_bottom = -160.0
 grow_horizontal = 2
 grow_vertical = 0
-theme_override_styles/panel = SubResource("StyleBoxFlat_dpede")
+theme_override_styles/panel = SubResource("StyleBoxFlat_wpkyg")
 script = ExtResource("23")
 metadata/_edit_layout_mode = 1
 metadata/_edit_use_custom_anchors = true
+metadata/_edit_group_ = true
 
 [node name="DialogicNode_NameLabel" type="Label" parent="DefaultStyle/PanelContainer2"]
-offset_left = 10.0
 offset_top = 2.0
-offset_right = 57.0
+offset_right = 67.0
 offset_bottom = 28.0
 text = "Name"
 script = ExtResource("3")
@@ -229,14 +235,12 @@ offset_right = 286.0
 offset_bottom = -27.0
 grow_horizontal = 2
 grow_vertical = 0
-theme_override_styles/panel = SubResource("StyleBoxFlat_e4oel")
+theme_override_styles/panel = SubResource("StyleBoxFlat_q3vpc")
 metadata/_edit_layout_mode = 1
 
 [node name="DialogicNode_DialogText" type="RichTextLabel" parent="DefaultStyle/PanelContainer"]
-offset_left = 10.0
-offset_top = 5.0
-offset_right = 542.0
-offset_bottom = 104.0
+offset_right = 552.0
+offset_bottom = 109.0
 bbcode_enabled = true
 text = "Some default text"
 script = ExtResource("2")
@@ -246,28 +250,20 @@ script = ExtResource("10")
 sounds = []
 play_every_character = 0
 
-[node name="DialogicNode_NextIndicator" type="Control" parent="DefaultStyle/PanelContainer/DialogicNode_DialogText"]
+[node name="DNextIndicator" type="Control" parent="DefaultStyle/PanelContainer"]
 layout_mode = 3
-anchors_preset = 3
-anchor_left = 1.0
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -25.0
-offset_top = -25.0
+anchors_preset = 0
+offset_left = 552.0
+offset_top = 109.0
+offset_right = 552.0
+offset_bottom = 109.0
 grow_horizontal = 0
 grow_vertical = 0
+size_flags_horizontal = 8
+size_flags_vertical = 8
 script = ExtResource("20_ljcq2")
 show_on_questions = true
 metadata/_edit_layout_mode = 1
-
-[node name="Icon" type="TextureRect" parent="DefaultStyle/PanelContainer/DialogicNode_DialogText/DialogicNode_NextIndicator"]
-offset_top = -2.0
-offset_right = 23.0
-offset_bottom = 21.0
-texture = ExtResource("21_rp1u3")
-ignore_texture_size = true
-stretch_mode = 5
 
 [node name="DialogicNode_TextInput" type="Control" parent="DefaultStyle"]
 layout_mode = 3
@@ -291,29 +287,27 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_e4oel")
+theme_override_styles/panel = SubResource("StyleBoxFlat_q3vpc")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="DefaultStyle/DialogicNode_TextInput/PanelContainer"]
-offset_left = 10.0
-offset_top = 5.0
-offset_right = 410.0
-offset_bottom = 101.0
+offset_right = 420.0
+offset_bottom = 100.0
 
 [node name="TextLabel" type="Label" parent="DefaultStyle/DialogicNode_TextInput/PanelContainer/VBoxContainer"]
-offset_right = 400.0
+offset_right = 420.0
 offset_bottom = 26.0
 text = "Please enter some text:"
 autowrap_mode = 3
 
 [node name="InputField" type="LineEdit" parent="DefaultStyle/DialogicNode_TextInput/PanelContainer/VBoxContainer"]
 offset_top = 30.0
-offset_right = 400.0
+offset_right = 420.0
 offset_bottom = 61.0
 
 [node name="ConfirmationButton" type="Button" parent="DefaultStyle/DialogicNode_TextInput/PanelContainer/VBoxContainer"]
-offset_left = 329.0
+offset_left = 349.0
 offset_top = 65.0
-offset_right = 400.0
+offset_right = 420.0
 offset_bottom = 96.0
 size_flags_horizontal = 8
 text = "Confirm"
@@ -396,10 +390,10 @@ size_flags_vertical = 8
 theme_override_styles/panel = SubResource("StyleBoxFlat_a3cyk")
 
 [node name="ExampleHistoryScene" parent="DefaultStyle" instance=ExtResource("22_854kg")]
-layout_mode = 1
 history_font_normal = ExtResource("23_gyqve")
 history_font_bold = ExtResource("24_aa4pl")
 history_font_italics = ExtResource("25_wt3bc")
+metadata/_edit_lock_ = true
 
 [node name="SpecialStyle" type="Control" parent="."]
 visible = false

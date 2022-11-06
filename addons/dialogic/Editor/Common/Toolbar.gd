@@ -4,6 +4,7 @@ extends HBoxContainer
 signal toggle_editor_view(mode:String)
 signal create_timeline
 signal play_timeline
+signal used_resource(latest)
 
 var editor_reference = null
 
@@ -92,6 +93,8 @@ func resource_used(path:String) -> void:
 	used_resources.push_front(path)
 	ProjectSettings.set_setting('dialogic/editor/last_resources', used_resources)
 	ProjectSettings.save()
+	# emit signal to notify sidebar
+	used_resource.emit(path)
 
 
 ################################################################################

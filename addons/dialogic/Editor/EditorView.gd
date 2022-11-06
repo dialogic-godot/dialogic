@@ -24,6 +24,7 @@ func _ready():
 	rebuild_event_script_cache()
 
 	$MarginContainer/VBoxContainer/Toolbar/Settings.button_up.connect(settings_pressed)
+	%Toolbar.used_resource.connect(%SideBar.load_recent_files)
 	
 	# File dialog
 	editor_file_dialog = EditorFileDialog.new()

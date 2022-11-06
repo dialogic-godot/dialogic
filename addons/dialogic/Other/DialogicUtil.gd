@@ -47,10 +47,10 @@ static func scan_folder(path:String, extension:String) -> Array:
 		var file_name := dir.get_next()
 		while file_name != "":
 			if dir.current_is_dir() and not file_name.begins_with("."):
-				list += scan_folder(path + "/" + file_name, extension)
+				list += scan_folder(path.path_join(file_name), extension)
 			else:
 				if file_name.ends_with(extension):
-					list.append(path + "/" + file_name)
+					list.append(path.path_join(file_name))
 			file_name = dir.get_next()
 	return list
 
@@ -163,3 +163,7 @@ static func is_physics_timer()->bool:
 
 static func update_timer_process_callback(timer:Timer) -> void:
 	timer.process_callback = Timer.TIMER_PROCESS_PHYSICS if is_physics_timer() else Timer.TIMER_PROCESS_IDLE
+
+static func get_next_translation_id() -> String:
+	ProjectSettings.set_setting('dialogic/translation/id_counter', get_project_setting('dialogic/translation/id_counter', 16)+1)
+	return '%x' % get_project_setting('dialogic/translation/id_counter', 16)
