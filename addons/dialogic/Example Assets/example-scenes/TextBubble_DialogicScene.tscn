@@ -49,7 +49,7 @@ script = ExtResource("1_aoco8")
 script = ExtResource("2_7abe3")
 
 [node name="Control" type="Control" parent="."]
-layout_mode = 3
+layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -59,6 +59,7 @@ theme = SubResource("13")
 script = ExtResource("3_2q2a6")
 
 [node name="BubbleEnd" type="TextureRect" parent="Control"]
+layout_mode = 1
 anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
@@ -66,6 +67,7 @@ grow_vertical = 0
 texture = ExtResource("4_q6vcu")
 
 [node name="DialogText" type="RichTextLabel" parent="Control"]
+layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -76,6 +78,7 @@ scroll_active = false
 script = ExtResource("5_rcetc")
 
 [node name="OverlayPanel" type="Panel" parent="Control"]
+layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -84,6 +87,7 @@ grow_vertical = 2
 mouse_filter = 2
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Control"]
+layout_mode = 1
 anchors_preset = 12
 anchor_top = 1.0
 anchor_right = 1.0
@@ -93,6 +97,7 @@ grow_vertical = 0
 alignment = 2
 
 [node name="DialogicNode_ChoiceButton" type="Button" parent="Control/HBoxContainer"]
+layout_mode = 2
 offset_right = 39.0
 offset_bottom = 31.0
 size_flags_horizontal = 4
@@ -100,6 +105,7 @@ text = "Yes!"
 script = ExtResource("6_8g1dv")
 
 [node name="DialogicNode_ChoiceButton2" type="Button" parent="Control/HBoxContainer"]
+layout_mode = 2
 offset_left = 43.0
 offset_right = 82.0
 offset_bottom = 31.0
@@ -108,6 +114,7 @@ text = "Yes!"
 script = ExtResource("6_8g1dv")
 
 [node name="DialogicNode_ChoiceButton3" type="Button" parent="Control/HBoxContainer"]
+layout_mode = 2
 offset_left = 86.0
 offset_right = 125.0
 offset_bottom = 31.0
@@ -116,6 +123,7 @@ text = "Yes!"
 script = ExtResource("6_8g1dv")
 
 [node name="DialogicNode_ChoiceButton4" type="Button" parent="Control/HBoxContainer"]
+layout_mode = 2
 offset_left = 129.0
 offset_right = 168.0
 offset_bottom = 31.0
@@ -124,6 +132,7 @@ text = "Yes!"
 script = ExtResource("6_8g1dv")
 
 [node name="DialogicNode_ChoiceButton5" type="Button" parent="Control/HBoxContainer"]
+layout_mode = 2
 offset_left = 172.0
 offset_right = 211.0
 offset_bottom = 31.0
@@ -132,9 +141,11 @@ text = "Yes!"
 script = ExtResource("6_8g1dv")
 
 [node name="NameLabel" type="PanelContainer" parent="Control"]
+layout_mode = 0
 script = ExtResource("7_1j72f")
 
 [node name="DialogicNode_NameLabel" type="Label" parent="Control/NameLabel"]
+layout_mode = 2
 offset_right = 1.0
 offset_bottom = 23.0
 script = ExtResource("8_agitx")

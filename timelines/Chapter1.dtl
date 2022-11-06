@@ -1,10 +1,16 @@
-Hello, Welcome to Dialogic 2! This example timeline will show you everything you need to know about the new version.
+Hello, Welcome to Dialogic 2! Have you used Dialogic before?
 
-If you used Dialogic before, you will notice that a lot has changed, so let's go over what Dialogic 2 can do.
+- Yes
+
+	Okay, so let's go over what's new in Dialogic 2 then!
+
+- No
+
+	That's okay, you will get familiar with Dialogic in no time
 
 [label name="start"]
 
-[background arg="res://addons/dialogic/Example Assets/backgrounds/vn-background-1.png"]
+[background arg="res://addons/dialogic/Example Assets/backgrounds/green-field.png"]
 
 Join Jowan (shocked) 3 [ mirrored="true"]
 

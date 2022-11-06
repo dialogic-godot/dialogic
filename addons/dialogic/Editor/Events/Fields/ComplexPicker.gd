@@ -85,6 +85,13 @@ func _ready():
 	%Suggestions.item_clicked.connect(suggestion_selected)
 	if resource_icon == null:
 		self.resource_icon = null
+	
+	%Search.placeholder_text = 'Select Resource'
+	if file_extension == '.dch':
+		%Search.placeholder_text = 'Select Character'
+	if file_extension == '.dtl':
+		%Search.placeholder_text = 'Select Timeline'
+	
 	set_left_text('')
 	set_right_text('')
 	editor_reference = find_parent('EditorView')
