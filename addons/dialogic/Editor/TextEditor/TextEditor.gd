@@ -5,7 +5,7 @@ var current_timeline: DialogicTimeline
 
 var editor_reference = null
 
-@onready var _toolbar = get_parent().get_node('Toolbar')
+@onready var _toolbar = get_parent().get_parent().get_node('Toolbar')
 
 func _ready():
 	DialogicUtil.get_dialogic_plugin().dialogic_save.connect(save_timeline)
@@ -38,8 +38,8 @@ func load_timeline(object:DialogicTimeline) -> void:
 		if typeof(current_timeline.events[0]) == TYPE_STRING:
 			current_timeline.events_processed = false
 			current_timeline = editor_reference.process_timeline(current_timeline)
-		
-	get_parent().get_node('Toolbar').load_timeline(current_timeline.resource_path)
+	
+	get_parent().get_parent().get_node('Toolbar').load_timeline(current_timeline.resource_path)
 	
 	#text = TimelineUtil.events_to_text(object.events)
 	var result:String = ""	

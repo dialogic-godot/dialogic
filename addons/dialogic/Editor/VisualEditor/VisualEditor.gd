@@ -13,7 +13,7 @@ var current_timeline: DialogicTimeline
 ## 				EDITOR NODES
 ################################################################################
 var TimelineUndoRedo := UndoRedo.new()
-@onready var _toolbar = get_parent().get_node('Toolbar')
+@onready var _toolbar = get_parent().get_parent().get_node('Toolbar')
 var event_node
 
 ################################################################################
