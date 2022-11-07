@@ -1,4 +1,10 @@
 # Changelog
+## v1.4.6
+* timeline_end and timeline_start properly return name of timelines when a Change Timeline Event occurs [[zaknafean](https://github.com/zaknafean)]
+* timeline_changed signal added. Emitted during a Change Timeline Event, returns old_timeline_name and new_timeline_name
+* Name Label aligns properly when name sizes vary
+* 
+
 
 ## v1.4.5
 * Added focus style options for themes [[CptFubar](https://github.com/CptFubar)]
