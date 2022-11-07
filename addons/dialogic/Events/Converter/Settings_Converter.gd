@@ -1,5 +1,5 @@
 @tool
-extends HBoxContainer
+extends HSplitContainer
 
 var folderStructure
 
