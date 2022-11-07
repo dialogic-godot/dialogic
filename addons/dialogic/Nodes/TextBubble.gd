@@ -35,11 +35,16 @@ func update_name(name: String, color: Color = Color.white, autocolor: bool=false
 		return
 	
 	if not name.empty():
+		
 		# Hack to reset the size
 		name_label.rect_min_size = Vector2(0, 0)
 		name_label.rect_size = Vector2(-1, 40)
+		
 		# Setting the color and text
 		name_label.text = name
+		
+		name_label.rect_size = name_label.get_font("font").get_string_size(name_label.text)
+		name_label.rect_min_size = name_label.get_font("font").get_string_size(name_label.text)
 		# Alignment
 		call_deferred('align_name_label')
 		if autocolor:
@@ -319,7 +324,7 @@ func align_name_label():
 		name_label.rect_global_position.x = rect_global_position.x + (rect_size.x / 2) - (label_size / 2) + horizontal_offset
 	elif name_label_position == 2: # Right
 		name_label.rect_global_position.x = rect_global_position.x + rect_size.x - label_size + horizontal_offset
-
+	
 ## *****************************************************************************
 ##								OVERRIDES
 ## *****************************************************************************
