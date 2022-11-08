@@ -79,7 +79,7 @@ func show_history() -> void:
 					if line_break_after_names:
 						history_item_string += "\n"
 				
-				var final_text :String = item['event_object'].get_translated_text()
+				var final_text :String = item['event_object'].get_property_translated('text')
 				if Dialogic.has_subsystem('VAR'):
 					final_text = Dialogic.VAR.parse_variables(final_text)
 				if Dialogic.has_subsystem('Glossary'):
@@ -132,7 +132,7 @@ func show_history() -> void:
 				new_node.prepare_texbox(self)
 				
 				if show_selected_choice && !show_all_choices:
-					history_item_string += "[ul][b]" + item['event_object'].get_translated_text() + "[/b][/ul]"
+					history_item_string += "[ul][b]" + item['event_object'].get_property_translated('text') + "[/b][/ul]"
 				else:
 					if index + 1 < Dialogic.History.full_history.size():
 						
@@ -157,9 +157,9 @@ func show_history() -> void:
 								
 								if search_depth == 1:
 									if show_selected_choice && search_line == item['index']:
-										history_item_string += "•[b]" + working_timeline.events[search_line].get_translated_text() + "[/b]\n"
+										history_item_string += "•[b]" + working_timeline.events[search_line].get_property_translated('text') + "[/b]\n"
 									else:
-										history_item_string += "•" + working_timeline.events[search_line].get_translated_text() + "\n"
+										history_item_string += "•" + working_timeline.events[search_line].get_property_translated('text') + "\n"
 								
 							else:
 								if search_depth > 0: 
@@ -171,7 +171,7 @@ func show_history() -> void:
 						
 						
 					else:
-						history_item_string += "•" + item['event_object'].get_translated_text() 
+						history_item_string += "•" + item['event_object'].get_property_translated('text') 
 					
 					
 				new_node.set_text(history_item_string)

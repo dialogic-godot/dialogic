@@ -17,12 +17,14 @@ func load_game_state() -> void:
 func pause() -> void:
 	for audio_node in get_tree().get_nodes_in_group(audioplayer_name):
 		audio_node.stream_paused = true
-	voicetimer.paused = true
+	if voicetimer:
+		voicetimer.paused = true
 
 func resume() -> void:
 	for audio_node in get_tree().get_nodes_in_group(audioplayer_name):
 		audio_node.stream_paused = false
-	voicetimer.paused = false
+	if voicetimer:
+		voicetimer.paused = false
 
 ####################################################################################################
 ##					MAIN METHODS

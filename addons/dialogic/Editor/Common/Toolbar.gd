@@ -57,7 +57,7 @@ func _on_AddTimeline_pressed() -> void:
 
 func _on_AddCharacter_pressed() -> void:
 	find_parent('EditorView').godot_file_dialog(
-		get_parent().get_node("CharacterEditor").new_character,
+		get_parent().get_node("Editors/CharacterEditor").new_character,
 		'*.dch; DialogicCharacter',
 		EditorFileDialog.FILE_MODE_SAVE_FILE,
 		'Save new Character',

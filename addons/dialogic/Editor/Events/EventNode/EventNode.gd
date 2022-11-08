@@ -264,7 +264,7 @@ func build_editor():
 		if 'property_name' in editor_node:
 			editor_node.property_name = p.name
 		if editor_node.has_method('set_value'):
-			if resource.get(p.name): # Got an error here saying that "Cannot convert argument 1 from Nil to bool." so I'm adding this check
+			if resource.get(p.name) != null: # Got an error here saying that "Cannot convert argument 1 from Nil to bool." so I'm adding this check
 				editor_node.set_value(resource.get(p.name))
 		if editor_node.has_signal('value_changed'):
 			editor_node.value_changed.connect(set_property)
