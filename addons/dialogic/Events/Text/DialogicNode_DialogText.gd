@@ -8,6 +8,7 @@ enum ALIGNMENT {LEFT, CENTER, RIGHT}
 @export var Align : ALIGNMENT = ALIGNMENT.LEFT
 @onready var timer :Timer = null
 
+var dialogic:Node #singleton refrence
 var effect_regex = RegEx.new()
 var modifier_words_select_regex = RegEx.new()
 var effects:Array = []
@@ -24,6 +25,7 @@ func _ready() -> void:
 	# add to necessary
 	add_to_group('dialogic_dialog_text')
 	
+	dialogic = get_node("/root/Dialogic")
 	bbcode_enabled = true
 	text = ""
 	
@@ -36,7 +38,7 @@ func _ready() -> void:
 	timer.timeout.connect(continue_reveal)
 	
 	# compile effects regex
-	effect_regex.compile("(?<!\\\\)\\[\\s*(?<command>mood|portrait|speed|signal|pause)\\s*(=\\s*(?<value>.+?)\\s*)?\\]")
+	effect_regex.compile("(?<!\\\\)\\[\\s*(?<command>mood|portrait|speed|signal|pause|voice)\\s*(=\\s*(?<value>.+?)\\s*)?\\]")
 	
 	# compule modifier regexs
 	modifier_words_select_regex.compile("(?<!\\\\)\\[[^\\[\\]]+(,[^\\]]*)\\]")
@@ -125,6 +127,21 @@ func execute_effects(skip :bool= false) -> void:
 					if Dialogic.current_state_info.get('character', null):
 						var Character = load(Dialogic.current_state_info.character)
 						Dialogic.Text.update_typing_sound_mood(Character.custom_info.get('sound_moods', {}).get(effect[2], {}))
+			'voice':
+				if skip:
+					continue
+				if not dialogic.has_subsystem("Voice"):
+					continue
+				var index = effect[2].to_int() if len(effect) > 2 && effect[2].is_valid_integer() else -1
+				if dialogic.Voice.is_running(): #This is the 'Not ready' state.
+					#A voice track is still running.
+					#pause the dialog untill the voice track completes.
+					timer.start(dialogic.Voice.get_remaining_time() + 0.1) #Adds 0.1 sec just to be sure
+					#If this effect is starting a new voiced line, return the effect to the stack.
+					if index >= 0:
+						dialogic.Voice.play_or_queue_voice_region(index)
+				
+					
 
 func parse_modifiers(_text:String) -> String:
 	# [word, select] effect

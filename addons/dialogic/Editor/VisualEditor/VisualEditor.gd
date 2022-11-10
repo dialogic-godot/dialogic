@@ -47,6 +47,8 @@ var piece_was_dragged = false
 # helper to comunicate with the toolbar
 func something_changed():
 	_toolbar.set_resource_unsaved()
+	if(current_timeline == null):
+		return #this happens sometime, so we just abort!
 	current_timeline.set_meta("timeline_not_saved", true)
 
 func new_timeline() -> void:

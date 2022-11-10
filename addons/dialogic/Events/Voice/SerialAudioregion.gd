@@ -24,6 +24,8 @@ func set_value(value):
 		return
 	if not value is String:
 		printerr("Invalid data - %s (SerialAudioRegion): data incoming is not string." % property_name)
+	if value.is_empty():
+		return
 	var data:PackedStringArray = value.split("region", false)
 	$NumRegions/NumberValue.set_value(len(data))
 	repopulate(len(data))

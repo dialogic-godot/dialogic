@@ -39,6 +39,8 @@ func set_resource_saved() -> void:
 		%ResourcePicker.set_value(%ResourcePicker.current_value.trim_suffix("(*)"))
 
 func set_resource_unsaved() -> void:
+	if %ResourcePicker.current_value == null:
+		return #this happens sometime, so we just abort! 
 	if not %ResourcePicker.current_value.ends_with(("(*)")):
 		%ResourcePicker.set_value(%ResourcePicker.current_value +"(*)")
 

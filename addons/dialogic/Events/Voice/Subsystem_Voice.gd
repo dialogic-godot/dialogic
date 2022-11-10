@@ -4,6 +4,7 @@ const audioplayer_name := "dialogic_dialog_voice"
 var voiceregions := []
 var voicetimer:Timer
 var currentAudio:String
+var queued_index:int = -1
 
 ####################################################################################################
 ##					STATE
@@ -29,11 +30,11 @@ func resume() -> void:
 ####################################################################################################
 ##					MAIN METHODS
 ####################################################################################################
-func is_voiced(index:int) -> bool:
-	if dialogic.current_timeline_events[index] is DialogicTextEvent:
-		if dialogic.current_timeline_events[index-1] is DialogicVoiceEvent:
-			return true
-	return false
+#func is_voiced(index:int) -> bool:
+#	if dialogic.current_timeline_events[index] is DialogicTextEvent:
+#		if dialogic.current_timeline_events[index-1] is DialogicVoiceEvent:
+#			return true
+#	return false
 
 func play_voice_region(index:int):
 	if index >= len(voiceregions):
@@ -77,9 +78,15 @@ func set_timer(time:float):
 		DialogicUtil.update_timer_process_callback(voicetimer)
 		voicetimer.one_shot = true
 		add_child(voicetimer)
-		voicetimer.timeout.connect(stop_audio)
+		voicetimer.timeout.connect(on_audio_timeout)
 	voicetimer.stop()
 	voicetimer.start(time)
+	
+func on_audio_timeout():
+	stop_audio()
+	if queued_index >= 0:
+		play_voice_region(queued_index)
+	queued_index = -1
 
 func get_remaining_time() -> float:
 	if not voicetimer or voicetimer.is_stopped():
@@ -88,4 +95,11 @@ func get_remaining_time() -> float:
 
 func is_running() -> bool:
 	return get_remaining_time() > 0.0
+
+func play_or_queue_voice_region(index):
+	if is_running:
+		queued_index = index
+	else:
+		play_voice_region(index)
+	
 

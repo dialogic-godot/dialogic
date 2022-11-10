@@ -59,9 +59,10 @@ func _execute() -> void:
 		
 		dialogic.Text.update_dialog_text(dialogic.Text.color_names(final_text))
 		
+		#disabled! moving voice to dialog effects
 		#Plays the audio region for the current line.
-		if dialogic.has_subsystem('Voice') and dialogic.Voice.is_voiced(dialogic.current_event_idx):
-			dialogic.Voice.play_voice_region(index) #voice data is set by voice event.
+		#if dialogic.has_subsystem('Voice') and dialogic.Voice.is_voiced(dialogic.current_event_idx):
+		#	dialogic.Voice.play_voice_region(index) #voice data is set by voice event.
 		
 		await dialogic.Text.text_finished
 	
@@ -74,7 +75,7 @@ func _execute() -> void:
 		dialogic.Text.show_next_indicators(false, true)
 		var wait:float = DialogicUtil.get_project_setting('dialogic/text/autocontinue_delay', 1)
 		# if voiced, grab remaining time left on the voiceed line's audio region - KvaGram
-		if dialogic.has_subsystem('Voice') and dialogic.Voice.is_voiced(dialogic.current_event_idx):
+		if dialogic.has_subsystem('Voice') and dialogic.Voice.is_running():
 			#autocontinue settings is set as minimal. change or keep this? - Kvagram
 			wait = max(wait, dialogic.Voice.get_remaining_time())
 		await dialogic.get_tree().create_timer(wait, true, DialogicUtil.is_physics_timer()).timeout

@@ -100,8 +100,8 @@ func skip_text_animation() -> void:
 	for text_node in get_tree().get_nodes_in_group('dialogic_dialog_text'):
 		if text_node.is_visible_in_tree():
 			text_node.finish_text()
-	if dialogic.has_subsystem('Voice'):
-		dialogic.Voice.stop_audio()
+#	if dialogic.has_subsystem('Voice'):
+#		dialogic.Voice.stop_audio()
 
 func get_current_speaker() -> DialogicCharacter:
 	return (load(dialogic.current_state_info['character']) as DialogicCharacter)
