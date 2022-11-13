@@ -1,44 +1,57 @@
 @tool
-extends DialogicEvent
 class_name DialogicSaveEvent
+extends DialogicEvent
 
-# DEFINE ALL PROPERTIES OF THE EVENT
-var SlotName :String = "Default"
+## Event that allows saving to a specific slot.
 
-func _execute() -> void:
-	if SlotName:
-		dialogic.Save.save(SlotName)
-	finish()
 
-func get_required_subsystems() -> Array:
-	return [
-				{'name':'Save', 
-				'subsystem': get_script().resource_path.get_base_dir().path_join('Subsystem_Save.gd'),
-				'settings': get_script().resource_path.get_base_dir().path_join('Settings_Saving.tscn')},
-			]
+### Settings
+
+## The name of the slot to save to. Learn more in the saving subsystem.
+var slot_name: String = "Default"
+
 
 ################################################################################
 ## 						INITIALIZE
 ################################################################################
 
-# SET ALL VALUES THAT SHOULD NEVER CHANGE HERE
+func _execute() -> void:
+	if slot_name:
+		dialogic.Save.save(slot_name)
+	finish()
+
+
+################################################################################
+## 						INITIALIZE
+################################################################################
+
 func _init() -> void:
 	event_name = "Save"
 	set_default_color('Color2')
-	event_category = Category.MAIN
+	event_category = Category.Main
 	event_sorting_index = 2
+
+
+func get_required_subsystems() -> Array:
+	return [
+				{'name':'Save', 
+				'subsystem': get_script().resource_path.get_base_dir().path_join('subsystem_save.gd'),
+				'settings': get_script().resource_path.get_base_dir().path_join('settings_save.tscn')},
+			]
 
 
 ################################################################################
 ## 						SAVING/LOADING
 ################################################################################
+
 func get_shortcode() -> String:
 	return "save"
 
+
 func get_shortcode_parameters() -> Dictionary:
 	return {
-		#param_name : property_name
-		"slot"		: "SlotName",
+		#param_name : property_info
+		"slot"		: {"property": "slot_name", "default": "Default"},
 	}
 
 
@@ -47,4 +60,4 @@ func get_shortcode_parameters() -> Dictionary:
 ################################################################################
 
 func build_event_editor():
-	add_header_edit('SlotName', ValueType.SinglelineText, 'to slot')
+	add_header_edit('slot_name', ValueType.SinglelineText, 'to slot')

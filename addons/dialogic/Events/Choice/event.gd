@@ -1,14 +1,27 @@
 @tool
-extends DialogicEvent
 class_name DialogicChoiceEvent
+extends DialogicEvent
 
-enum IfFalseActions {HIDE, DISABLE, DEFAULT}
+## Event that allows adding choices. Needs to go after a text event (or another choices EndBranch).
 
-# DEFINE ALL PROPERTIES OF THE EVENT
-var Text :String = ""
-var DisabledText:String = ""
-var Condition:String = ""
-var IfFalseAction = IfFalseActions.DEFAULT
+enum ElseActions {Hide, Disable, Default}
+
+
+### Settings
+## The text that is displayed on the choice button.
+var text :String = ""
+## If not empty this condition will determine if this choice is active.
+var condition: String = ""
+## Determines what happens if  [condition] is false. Default will use the action set in the settings.
+var else_action: = ElseActions.Default
+## The text that is displayed if [condition] is false and [else_action] is Disable. 
+## If empty [text] will be used for disabled button as well.
+var disabled_text: String = ""
+
+
+################################################################################
+## 						EXECUTION
+################################################################################
 
 func _execute() -> void:
 	# This event is basically a placeholder only used to indicate a position. 
@@ -16,87 +29,88 @@ func _execute() -> void:
 	#   to find the choices that belong to the question.  
 	finish()
 
-func get_required_subsystems() -> Array:
-	return [
-				{'name':'Choices',
-				'subsystem': get_script().resource_path.get_base_dir().path_join('Subsystem_Choices.gd'),
-				'settings':get_script().resource_path.get_base_dir().path_join('ChoicesSettings.tscn'),
-				},
-			]
-
 
 ################################################################################
 ## 						INITIALIZE
 ################################################################################
 
-# SET ALL VALUES THAT SHOULD NEVER CHANGE HERE
 func _init() -> void:
 	event_name = "Choice"
 	set_default_color('Color3')
-	event_category = Category.LOGIC
+	event_category = Category.Logic
 	event_sorting_index = 0
 	can_contain_events = true
 	needs_parent_event = true
 	expand_by_default = false
 
+
+func get_required_subsystems() -> Array:
+	return [
+				{'name':'Choices',
+				'subsystem': get_script().resource_path.get_base_dir().path_join('subsystem_choices.gd'),
+				'settings':get_script().resource_path.get_base_dir().path_join('settings_choices.tscn'),
+				},
+			]
+
+
 # if needs_parent_event is true, this needs to return true if the event is that event
-func is_expected_parent_event(event:DialogicEvent):
+func is_expected_parent_event(event:DialogicEvent) -> bool:
 	return event is DialogicTextEvent
+
 
 # return a control node that should show on the END BRANCH node
 func get_end_branch_control() -> Control:
-	return load(get_script().resource_path.get_base_dir().path_join('Choice_End.tscn')).instantiate()
+	return load(get_script().resource_path.get_base_dir().path_join('ui_choice_end.tscn')).instantiate()
 
 ################################################################################
 ## 						SAVING/LOADING
 ################################################################################
 
-## THIS RETURNS A READABLE REPRESENTATION, BUT HAS TO CONTAIN ALL DATA (This is how it's stored)
 func to_text() -> String:
-	var result_string = ""
+	var result_string := ""
 
-	result_string = "- "+Text.strip_edges()
-	if Condition:
-		result_string += " [if "+Condition+"]"
+	result_string = "- "+text.strip_edges()
+	if condition:
+		result_string += " [if "+condition+"]"
 	
 	
 	var shortcode = '['
-	if IfFalseAction == IfFalseActions.HIDE:
+	if else_action == ElseActions.Hide:
 		shortcode += 'else="hide"'
-	elif IfFalseAction == IfFalseActions.DISABLE:
+	elif else_action == ElseActions.Disable:
 		shortcode += 'else="disable"'
 	
-	if DisabledText:
-		shortcode += " alt_text="+'"'+DisabledText+'"'
+	if disabled_text:
+		shortcode += " alt_text="+'"'+disabled_text+'"'
 	
 	if len(shortcode) > 1:
 		result_string += shortcode + "]"
 	return result_string
 
 
-## THIS HAS TO READ ALL THE DATA FROM THE SAVED STRING (see above) 
 func from_text(string:String) -> void:
 	var regex = RegEx.new()
 	regex.compile('- (?<text>[^\\[]*)(\\[if (?<condition>[^\\]]+)])?\\s?(\\s*\\[(?<shortcode>.*)\\])?')
 	var result = regex.search(string.strip_edges())
 	if result == null:
 		return
-	Text = result.get_string('text')
-	Condition = result.get_string('condition')
+	text = result.get_string('text')
+	condition = result.get_string('condition')
 	if result.get_string('shortcode'):
 		var shortcode_params = parse_shortcode_parameters(result.get_string('shortcode'))
-		IfFalseAction = {
-			'default':IfFalseActions.DEFAULT, 
-			'hide':IfFalseActions.HIDE,
-			'disable':IfFalseActions.DISABLE}.get(shortcode_params.get('else', ''), IfFalseActions.DEFAULT)
+		else_action = {
+			'default':ElseActions.Default, 
+			'hide':ElseActions.Hide,
+			'disable':ElseActions.Disable}.get(shortcode_params.get('else', ''), ElseActions.Default)
 		
-		DisabledText = shortcode_params.get('alt_text', '')
+		disabled_text = shortcode_params.get('alt_text', '')
 
-# RETURN TRUE IF THE GIVEN LINE SHOULD BE LOADED AS THIS EVENT
+
 func is_valid_event(string:String) -> bool:
 	if string.strip_edges().begins_with("-"):
 		return true
 	return false
+
 
 ################################################################################
 ## 						TRANSLATIONS
@@ -105,37 +119,44 @@ func is_valid_event(string:String) -> bool:
 func _get_translatable_properties() -> Array:
 	return ['text', 'disabled_text']
 
+
 func _get_property_original_translation(property:String) -> String:
 	match property:
 		'text':
-			return Text
+			return text
 		'disabled_text':
-			return DisabledText
+			return disabled_text
 	return ''
+
 
 ################################################################################
 ## 						EDITOR REPRESENTATION
 ################################################################################
 
-func build_event_editor():
-	add_header_edit("Text", ValueType.SinglelineText)
-	add_body_edit("Condition", ValueType.Condition, 'if ')
-	add_body_edit("IfFalseAction", ValueType.FixedOptionSelector, 'else ', '', {
+func build_event_editor() -> void:
+	add_header_edit("text", ValueType.SinglelineText)
+	add_body_edit("condition", ValueType.Condition, 'if ')
+	add_body_edit("else_action", ValueType.FixedOptionSelector, 'else ', '', {
 		'selector_options': [
 			{
 				'label': 'Default',
-				'value': IfFalseActions.DEFAULT,
+				'value': ElseActions.Default,
 			},
 			{
 				'label': 'Hide',
-				'value': IfFalseActions.HIDE,
+				'value': ElseActions.Hide,
 			},
 			{
 				'label': 'Disable',
-				'value': IfFalseActions.DISABLE,
+				'value': ElseActions.Disable,
 			}
-		]}, '!Condition.is_empty()')
-	add_body_edit("DisabledText", ValueType.SinglelineText, 'Disabled text:', '', {'placeholder':'(Empty for same)'}, 'allow_alt_text()')
+		]}, '!condition.is_empty()')
+	add_body_edit("disabled_text", ValueType.SinglelineText, 'Disabled text:', '', 
+			{'placeholder':'(Empty for same)'}, 'allow_alt_text()')
+
 
 func allow_alt_text() -> bool:
-	return Condition and (IfFalseAction == IfFalseActions.DISABLE or (IfFalseAction == IfFalseActions.DEFAULT and DialogicUtil.get_project_setting("dialogic/choices/def_false_behaviour", 0) == 1))
+	return condition and (
+		else_action == ElseActions.Disable or 
+		(else_action == ElseActions.Default and 
+		DialogicUtil.get_project_setting("dialogic/choices/def_false_behaviour", 0) == 1))

@@ -34,8 +34,8 @@ static func get_dialogic_plugin() -> Node:
 	return tree.get_root().get_child(0).get_node('DialogicPlugin')
 
 
-static func list_resources_of_type(extension):
-	var all_resources = scan_folder('res://', extension)
+static func list_resources_of_type(extension:String) -> Array:
+	var all_resources := scan_folder('res://', extension)
 	return all_resources
 
 

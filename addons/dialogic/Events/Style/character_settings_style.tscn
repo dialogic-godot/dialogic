@@ -1,0 +1,27 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://addons/dialogic/Events/Style/character_settings_style.gd" id="2"]
+
+[node name="Style" type="HBoxContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_bottom = -569.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("2")
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 2
+offset_right = 42.0
+offset_bottom = 26.0
+size_flags_vertical = 0
+text = "Style:"
+
+[node name="StyleName" type="LineEdit" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+offset_left = 46.0
+offset_right = 113.0
+offset_bottom = 31.0
+size_flags_vertical = 0

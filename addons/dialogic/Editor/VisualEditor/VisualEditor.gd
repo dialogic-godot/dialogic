@@ -633,10 +633,10 @@ func add_events_at_index(event_list:Array, at_index:int) -> void:
 	else:
 		selected_items = []
 	
-	var new_items = []
+	var new_items := []
 	for item in event_list:
 		if typeof(item) == TYPE_STRING:
-			var resource :Variant
+			var resource: Variant
 			if editor_reference != null:
 				for i in editor_reference.event_script_cache:
 					if i._test_event_string(item):
@@ -644,7 +644,7 @@ func add_events_at_index(event_list:Array, at_index:int) -> void:
 						break
 			else:
 				resource = DialogicUtil.get_event_by_string(item).new()
-			if resource['event_name'] == 'Character' || resource['event_name'] == 'Text':
+			if resource['event_name'] == 'Character' or resource['event_name'] == 'Text':
 				resource.set_meta('editor_character_directory', find_parent('EditorView').character_directory)
 			resource.from_text(item)
 			if item:

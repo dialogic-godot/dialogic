@@ -58,25 +58,25 @@ func _get_dependencies(path:String, add_type:bool):
 	var timeline:DialogicTimeline = load(path)
 	for event in timeline.events:
 		for property in event.get_shortcode_parameters().values():
-			if event.get(property) is DialogicTimeline:
-				depends_on.append(event.get(property).resource_path)
-			elif event.get(property) is DialogicCharacter:
-				depends_on.append(event.get(property).resource_path)
-			elif typeof(event.get(property)) == TYPE_STRING and event.get(property).begins_with('res://'):
-				depends_on.append(event.get(property))
+			if event.get(property['property']) is DialogicTimeline:
+				depends_on.append(event.get(property['property']).resource_path)
+			elif event.get(property['property']) is DialogicCharacter:
+				depends_on.append(event.get(property['property']).resource_path)
+			elif typeof(event.get(property['property'])) == TYPE_STRING and event.get(property['property']).begins_with('res://'):
+				depends_on.append(event.get(property['property']))
 	return depends_on
 
 func _rename_dependencies(path: String, renames: Dictionary):
 	var timeline:DialogicTimeline = load(path)
 	for event in timeline.events:
 		for property in event.get_shortcode_parameters().values():
-			if event.get(property) is DialogicTimeline:
-				if event.get(property).resource_path in renames:
-					event.set(property, load(renames[event.get(property).resource_path]))
-			elif event.get(property) is DialogicCharacter:
-				if event.get(property).resource_path in renames:
-					event.set(property, load(renames[event.get(property).resource_path]))
-			elif typeof(event.get(property)) == TYPE_STRING and event.get(property) in renames:
-				event.set(property, renames[event.get(property)])
+			if event.get(property['property']) is DialogicTimeline:
+				if event.get(property['property']).resource_path in renames:
+					event.set(property['property'], load(renames[event.get(property['property']).resource_path]))
+			elif event.get(property['property']) is DialogicCharacter:
+				if event.get(property['property']).resource_path in renames:
+					event.set(property['property'], load(renames[event.get(property['property']).resource_path]))
+			elif typeof(event.get(property['property'])) == TYPE_STRING and event.get(property['property']) in renames:
+				event.set(property['property'], renames[event.get(property['property'])])
 	ResourceSaver.save(timeline, path)
 	return OK
