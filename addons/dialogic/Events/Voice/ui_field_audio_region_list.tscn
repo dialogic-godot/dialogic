@@ -1,0 +1,43 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="PackedScene" uid="uid://kdpp3mibml33" path="res://addons/dialogic/Editor/Events/Fields/Number.tscn" id="1"]
+[ext_resource type="Script" path="res://addons/dialogic/Events/Voice/ui_field_audio_region_list.gd" id="2"]
+
+[node name="SerialAudioRegion" type="VBoxContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+script = ExtResource("2")
+
+[node name="NumRegions" type="HBoxContainer" parent="."]
+layout_mode = 2
+offset_right = 1152.0
+offset_bottom = 31.0
+
+[node name="Label" type="Label" parent="NumRegions"]
+layout_mode = 2
+offset_top = 2.0
+offset_right = 240.0
+offset_bottom = 28.0
+text = "Number of lines/audio regions:"
+
+[node name="NumberValue" parent="NumRegions" instance=ExtResource("1")]
+layout_mode = 2
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 244.0
+offset_right = 302.0
+offset_bottom = 31.0
+step = 1.0
+min = 1.0
+value = 1
+
+[node name="list" type="VBoxContainer" parent="."]
+layout_mode = 2
+offset_top = 35.0
+offset_right = 1152.0
+offset_bottom = 66.0

@@ -74,8 +74,9 @@ func start_timeline(timeline_resource:Variant, label_or_idx:Variant = "") -> voi
 
 
 # Preloader function, prepares a timeline and returns an object to hold for later
+## TODO: Question: why is this taking a variant and then only allowing a string?
 func preload_timeline(timeline_resource:Variant) -> Variant:
-	#I think ideally this should be on a new thread, will test
+	# I think ideally this should be on a new thread, will test
 	if typeof(timeline_resource) == TYPE_STRING:
 		timeline_resource = load(timeline_resource)
 		if timeline_resource == null:
@@ -130,6 +131,9 @@ func handle_event(event_index:int) -> void:
 
 
 func jump_to_label(label:String) -> void:
+	if label.is_empty():
+		current_event_idx = 0
+		return
 	var idx: int = -1
 	while true:
 		idx += 1
@@ -137,7 +141,7 @@ func jump_to_label(label:String) -> void:
 		if not event:
 			idx = current_event_idx
 			break
-		if event is DialogicLabelEvent and event.Name == label:
+		if event is DialogicLabelEvent and event.name == label:
 			break
 	current_event_idx = idx
 
@@ -198,18 +202,25 @@ func execute_condition(condition:String) -> bool:
 	if result:
 		for res in result:
 			var r_string: String = res.get_string()
-			var replacement: String = "VAR." + r_string.substr(1,r_string.length()-2)
-			condition = condition.replace(r_string, replacement)
-	
+			var value: String = self.VAR.get_variable(r_string)
+			if !value.is_valid_float():
+				value = '"'+value+'"'
+			condition = condition.replace(r_string, value)
 	var expr: Expression = Expression.new()
-	var autoload_names: Array = []
-	var autoloads: Array = []
-	for c in get_tree().root.get_children():
-		autoloads.append(c)
-		autoload_names.append(c.name)
-	expr.parse(condition, autoload_names)
-	if expr.execute(autoloads, self):
+	# this doesn't work currently, not sure why. However you can still use autoloads in conditions
+	# you have to put them in {} brackets tho. E.g. `if {MyAutoload.my_var} > 20:`
+#	var autoload_names: Array = []
+#	var autoloads: Array = []
+#	for c in get_tree().root.get_children():
+#		autoloads.append(c)
+#		autoload_names.append(c.name)
+#	expr.parse(condition, autoload_names)
+#	if expr.execute(autoloads, self):
+	expr.parse(condition)
+	if expr.execute([], self):
 		return true
+	if expr.has_execute_failed():
+		printerr('Dialogic: Condition failed to execute: ', expr.get_error_text())
 	return false
 
 

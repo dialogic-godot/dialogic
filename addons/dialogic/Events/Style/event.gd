@@ -1,38 +1,46 @@
 @tool
-extends DialogicEvent
 class_name DialogicStyleEvent
+extends DialogicEvent
 
-# DEFINE ALL PROPERTIES OF THE EVENT
-var StyleName: String = ""
+## Event that allows changing the currently displayed style.
+
+
+### Settings
+
+## The name of the style to change to. Can be set on the DialogicNode_Style. 
+var style_name: String = ""
+
+
+################################################################################
+## 						EXECUTE
+################################################################################
 
 func _execute() -> void:
-	dialogic.Styles.change_style(StyleName)
+	dialogic.Styles.change_style(style_name)
 	# base style isn't overridden by character styles
 	# this means after a charcter style, we can change back to the base style
-	dialogic.current_state_info['base_style'] = StyleName
+	dialogic.current_state_info['base_style'] = style_name
 	finish()
-
-
-func get_required_subsystems() -> Array:
-	return [
-				{'name':'Styles',
-				'subsystem': get_script().resource_path.get_base_dir().path_join('Subsystem_Styles.gd'),
-				'character_main':get_script().resource_path.get_base_dir().path_join('CharacterEdit_Style.tscn')
-				},
-			]
 
 
 ################################################################################
 ## 						INITIALIZE
 ################################################################################
 
-# SET ALL VALUES THAT SHOULD NEVER CHANGE HERE
 func _init() -> void:
 	event_name = "Change Style"
 	set_default_color('Color4')
-	event_category = Category.AUDIOVISUAL
+	event_category = Category.AudioVisual
 	event_sorting_index = 4
-	
+
+
+func get_required_subsystems() -> Array:
+	return [
+				{'name':'Styles',
+				'subsystem': get_script().resource_path.get_base_dir().path_join('subsystem_styles.gd'),
+				'character_main':get_script().resource_path.get_base_dir().path_join('character_settings_style.tscn')
+				},
+			]
 
 
 ################################################################################
@@ -41,10 +49,11 @@ func _init() -> void:
 func get_shortcode() -> String:
 	return "style"
 
+
 func get_shortcode_parameters() -> Dictionary:
 	return {
-		#param_name : property_name
-		"name"		: "StyleName",
+		#param_name : property_info
+		"name" 		: {"property": "style_name", "default": ""},
 	}
 
 
@@ -53,4 +62,4 @@ func get_shortcode_parameters() -> Dictionary:
 ################################################################################
 
 func build_event_editor():
-	add_header_edit('StyleName', ValueType.SinglelineText, 'Show all style nodes with name ', '(hides others)')
+	add_header_edit('style_name', ValueType.SinglelineText, 'Show all style nodes with name ', '(hides others)')

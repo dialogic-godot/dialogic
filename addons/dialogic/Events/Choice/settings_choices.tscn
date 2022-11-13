@@ -1,0 +1,157 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://addons/dialogic/Events/Choice/settings_choices.gd" id="2"]
+[ext_resource type="StyleBox" uid="uid://dmsjhgv22dns8" path="res://addons/dialogic/Editor/Common/TitleBgStylebox.tres" id="2_cg22x"]
+[ext_resource type="Script" path="res://addons/dialogic/Editor/Settings/HintLabelStylingScript.gd" id="3_mpugv"]
+
+[node name="Choices" type="HBoxContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource("2")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+offset_right = 570.0
+offset_bottom = 648.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Title" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+offset_right = 570.0
+offset_bottom = 36.0
+theme_override_styles/normal = ExtResource("2_cg22x")
+text = "Choice Settings"
+
+[node name="Autofocus" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+offset_top = 40.0
+offset_right = 570.0
+offset_bottom = 66.0
+
+[node name="Label" type="Label" parent="VBoxContainer/Autofocus"]
+layout_mode = 2
+offset_right = 542.0
+offset_bottom = 26.0
+size_flags_horizontal = 3
+text = "Autofocus first choice"
+
+[node name="Autofocus" type="CheckBox" parent="VBoxContainer/Autofocus"]
+unique_name_in_owner = true
+layout_mode = 2
+offset_left = 546.0
+offset_right = 570.0
+offset_bottom = 26.0
+
+[node name="Delay" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+offset_top = 70.0
+offset_right = 570.0
+offset_bottom = 101.0
+
+[node name="Label2" type="Label" parent="VBoxContainer/Delay"]
+layout_mode = 2
+offset_top = 2.0
+offset_right = 483.0
+offset_bottom = 28.0
+size_flags_horizontal = 3
+text = "Delay before choices can be pressed"
+
+[node name="Delay" type="SpinBox" parent="VBoxContainer/Delay"]
+unique_name_in_owner = true
+layout_mode = 2
+offset_left = 487.0
+offset_right = 570.0
+offset_bottom = 31.0
+step = 0.01
+
+[node name="DefaultFalseBehaviour" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+offset_top = 105.0
+offset_right = 570.0
+offset_bottom = 136.0
+
+[node name="Label3" type="Label" parent="VBoxContainer/DefaultFalseBehaviour"]
+layout_mode = 2
+offset_top = 2.0
+offset_right = 466.0
+offset_bottom = 28.0
+size_flags_horizontal = 3
+text = "Default behaviour for false choices"
+
+[node name="FalseBehaviour" type="OptionButton" parent="VBoxContainer/DefaultFalseBehaviour"]
+unique_name_in_owner = true
+layout_mode = 2
+offset_left = 470.0
+offset_right = 570.0
+offset_bottom = 31.0
+item_count = 2
+selected = 0
+popup/item_0/text = "Hide"
+popup/item_0/id = 0
+popup/item_1/text = "Disable"
+popup/item_1/id = 1
+
+[node name="VSeparator" type="VSeparator" parent="."]
+layout_mode = 2
+offset_left = 574.0
+offset_right = 578.0
+offset_bottom = 648.0
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="."]
+layout_mode = 2
+offset_left = 582.0
+offset_right = 1152.0
+offset_bottom = 648.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Title2" type="Label" parent="VBoxContainer2"]
+layout_mode = 2
+offset_right = 570.0
+offset_bottom = 36.0
+theme_override_styles/normal = ExtResource("2_cg22x")
+text = "Choice Hotkeys"
+
+[node name="HotkeySelection" type="HBoxContainer" parent="VBoxContainer2"]
+layout_mode = 2
+offset_top = 40.0
+offset_right = 570.0
+offset_bottom = 71.0
+
+[node name="Label4" type="Label" parent="VBoxContainer2/HotkeySelection"]
+layout_mode = 2
+offset_top = 2.0
+offset_right = 428.0
+offset_bottom = 28.0
+size_flags_horizontal = 3
+text = "Hotkey type"
+
+[node name="HotkeyType" type="OptionButton" parent="VBoxContainer2/HotkeySelection"]
+unique_name_in_owner = true
+layout_mode = 2
+offset_left = 432.0
+offset_right = 570.0
+offset_bottom = 31.0
+item_count = 2
+selected = 0
+popup/item_0/text = "No Hotkeys"
+popup/item_0/id = 0
+popup/item_1/text = "Default (1-9)"
+popup/item_1/id = 1
+
+[node name="Info" type="Label" parent="VBoxContainer2"]
+layout_mode = 2
+offset_top = 75.0
+offset_right = 570.0
+offset_bottom = 127.0
+size_flags_horizontal = 3
+text = "You can add more complex hotkeys by editing the \"shortcut\" property of a ChoiceButton. "
+autowrap_mode = 3
+script = ExtResource("3_mpugv")
+
+[connection signal="toggled" from="VBoxContainer/Autofocus/Autofocus" to="." method="_on_Autofocus_toggled"]
+[connection signal="value_changed" from="VBoxContainer/Delay/Delay" to="." method="_on_Delay_value_changed"]
+[connection signal="item_selected" from="VBoxContainer/DefaultFalseBehaviour/FalseBehaviour" to="." method="_on_FalseBehaviour_item_selected"]
+[connection signal="item_selected" from="VBoxContainer2/HotkeySelection/HotkeyType" to="." method="_on_HotkeyType_item_selected"]
