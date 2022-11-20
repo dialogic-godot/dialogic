@@ -416,9 +416,51 @@ static func get_saved_definitions(save_name: String = '') -> Dictionary:
 		print("[D] Wasn't able to find save '"+save_name+"'. Loaded the default definitions.")
 		return get_default_definitions()
 	
-	return load_json(WORKING_DIR+"/"+save_name+"/definitions.json", {})
+#	return load_json(WORKING_DIR+"/"+save_name+"/definitions.json", {})
 
+	var default_definitions : Dictionary = get_default_definitions()
 
+	var saved_definitions : Dictionary = {}
+
+	if save_name == '':
+		saved_definitions = load_json(get_config_files_paths()['DEFINITIONS_DEFAULT_SAVE'], default_definitions)
+		print("empty save slot, loaded saved definition from default save definitions")
+
+	else:
+		saved_definitions = load_json(WORKING_DIR+"/"+save_name+"/definitions.json", {})
+		print("saved user definitions on ''user://'' loaded")
+	
+	# Store variables in arrays from saved and default data
+	var base_def_var = default_definitions.variables
+	var saved_user_def_var = saved_definitions.variables
+
+	#filler out depreciated variables
+	var distilled_saved_data: Array = []
+	for sd in saved_user_def_var:
+		var sd_id = sd.id
+		var bd_id
+		for bd in base_def_var:
+			bd_id = bd.id
+			if sd_id == bd_id:
+				distilled_saved_data.append (sd)
+
+	#adds missing new variables not in saved game
+	for dd in base_def_var:
+		var dd_id = dd.id
+		var sd_id
+		for sd in distilled_saved_data:
+			var sd_keys = sd.id
+			if dd_id == sd_keys:
+				sd_id = sd_keys
+		if dd_id == sd_id:
+			pass
+		else:
+			distilled_saved_data.append (dd)
+
+	#adds it back distilled data into main Saved Definitions
+	saved_definitions.variables = distilled_saved_data
+
+	return saved_definitions
 
 ## *****************************************************************************
 ##						FOLDER STRUCTURE
