@@ -2,26 +2,36 @@
 
 [ext_resource type="Script" path="res://addons/dialogic/Editor/TextEditor/TextEditor.gd" id="1_1kbx2"]
 
-[sub_resource type="CodeHighlighter" id="CodeHighlighter_vs5bt"]
-number_color = Color(0.8025, 0.81, 0.8225, 1)
-symbol_color = Color(0.8025, 0.81, 0.8225, 1)
-function_color = Color(0.8025, 0.81, 0.8225, 1)
-member_variable_color = Color(0.8025, 0.81, 0.8225, 1)
+[sub_resource type="CodeHighlighter" id="CodeHighlighter_q5u0f"]
+number_color = Color(0.741176, 0.576471, 0.976471, 1)
+symbol_color = Color(0.972549, 0.972549, 0.94902, 1)
+function_color = Color(0.972549, 0.972549, 0.94902, 1)
+member_variable_color = Color(0.972549, 0.972549, 0.94902, 1)
+keyword_colors = {
+"and": Color(1, 0.47451, 0.776471, 1),
+"elif": Color(1, 0.47451, 0.776471, 1),
+"else": Color(1, 0.47451, 0.776471, 1),
+"if": Color(1, 0.47451, 0.776471, 1),
+"or": Color(1, 0.47451, 0.776471, 1)
+}
 color_regions = {
-"\" \"": Color(1, 0.93, 0.63, 1),
-"- ": Color(0.56, 1, 0.86, 1),
-"< >": Color(0.34, 0.7, 1, 1),
-"[ ]": Color(0.34, 0.7, 1, 1),
-"{ }": Color(0.56, 1, 0.86, 1)
+"\" \"": Color(0.945098, 0.980392, 0.54902, 1),
+"# ": Color(0.384314, 0.447059, 0.643137, 1),
+"- ": Color(0.545098, 0.913725, 0.992157, 1),
+": ": Color(0.972549, 0.972549, 0.94902, 1),
+"< >": Color(0.545098, 0.913725, 0.992157, 1),
+"[ ]": Color(0.545098, 0.913725, 0.992157, 1),
+"{ }": Color(0.545098, 0.913725, 0.992157, 1)
 }
 
 [node name="TimelineTextEditor" type="CodeEdit"]
 offset_top = 592.0
 offset_right = 1024.0
 offset_bottom = 600.0
+theme_override_constants/line_spacing = 10
 highlight_current_line = true
 draw_tabs = true
-syntax_highlighter = SubResource("CodeHighlighter_vs5bt")
+syntax_highlighter = SubResource("CodeHighlighter_q5u0f")
 minimap_draw = true
 caret_blink = true
 line_folding = true
