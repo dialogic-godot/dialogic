@@ -327,6 +327,12 @@ static func delete_default_definition(id: String):
 static func get_saves_folders() -> Array:
 	var save_folders = []
 	var directory := Directory.new()
+	if (OS.get_name() == "HTML5"):
+		if (OS.has_feature("JavaScript")):	
+			directory.make_dir(WORKING_DIR)
+			print("get saves fold func: got working dir ", WORKING_DIR)
+		else:
+			printerr("JavaScript not enabled")
 	if directory.open(WORKING_DIR) != OK:
 		print("[D] Error: Failed to access working directory.")
 		return []
