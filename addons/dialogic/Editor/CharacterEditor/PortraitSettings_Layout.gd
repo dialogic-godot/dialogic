@@ -16,21 +16,21 @@ func load_portrait_data(item:TreeItem, data:Dictionary) -> void:
 func _on_portrait_scale_value_changed(value):
 	var data:Dictionary = selected_item.get_metadata(0)
 	data['scale'] = value/100.0
-	find_parent('CharacterEditor').update_preview()
+	find_parent('Character Editor').update_preview()
 
 func _on_portrait_offset_x_value_changed(value):
 	var data:Dictionary = selected_item.get_metadata(0)
 	data['offset'] = data.get('offset', Vector2())
 	data['offset'].x = value
-	find_parent('CharacterEditor').update_preview()
+	find_parent('Character Editor').update_preview()
 
 func _on_portrait_offset_y_value_changed(value):
 	var data:Dictionary = selected_item.get_metadata(0)
 	data['offset'] = data.get('offset', Vector2())
 	data['offset'].y = value
-	find_parent('CharacterEditor').update_preview()
+	find_parent('Character Editor').update_preview()
 
 func _on_portrait_mirror_toggled(button_pressed):
 	var data:Dictionary = selected_item.get_metadata(0)
 	data['mirror'] = button_pressed
-	find_parent('CharacterEditor').update_preview()
+	find_parent('Character Editor').update_preview()

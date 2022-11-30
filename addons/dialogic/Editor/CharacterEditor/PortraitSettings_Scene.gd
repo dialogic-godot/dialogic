@@ -17,9 +17,9 @@ func load_portrait_data(item:TreeItem, data:Dictionary) -> void:
 func _on_scene_picker_value_changed(prop_name:String, value:String):
 	var data:Dictionary = selected_item.get_metadata(0)
 	data['scene'] = value
-	find_parent('CharacterEditor').load_selected_portrait()
+	find_parent('Character Editor').load_selected_portrait()
 
 func _on_ignore_scale_toggled(button_pressed):
 	var data:Dictionary = selected_item.get_metadata(0)
 	data['ignore_char_scale'] = button_pressed
-	find_parent('CharacterEditor').load_selected_portrait()
+	find_parent('Character Editor').load_selected_portrait()

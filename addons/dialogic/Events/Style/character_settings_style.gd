@@ -1,8 +1,13 @@
 @tool
-extends HBoxContainer
+extends DialogicCharacterEditorMainTab
 
-func load_character(character:DialogicCharacter):
+## Character editor tab that allows setting a custom style fot the character. 
+
+
+func _load_character(character:DialogicCharacter) -> void:
 	%StyleName.text = character.custom_info.get('style', '')
 
-func save_character(character:DialogicCharacter):
+
+func _save_changes(character:DialogicCharacter) -> DialogicCharacter:
 	character.custom_info['style'] = %StyleName.text
+	return character

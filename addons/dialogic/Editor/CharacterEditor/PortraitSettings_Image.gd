@@ -22,4 +22,4 @@ func load_portrait_data(item:TreeItem, data:Dictionary) -> void:
 func _on_image_picker_value_changed(prop_name:String, value:String):
 	var data:Dictionary = selected_item.get_metadata(0)
 	data['image'] = value
-	find_parent('CharacterEditor').update_preview()
+	find_parent('Character Editor').update_preview()

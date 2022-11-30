@@ -1,0 +1,186 @@
+[gd_scene load_steps=3 format=3 uid="uid://cqy73hshqqgga"]
+
+[ext_resource type="Script" path="res://addons/dialogic/Editor/HomePage/home_page.gd" id="1_6g38w"]
+[ext_resource type="Texture2D" uid="uid://6vklqnh10h2l" path="res://addons/dialogic/Example Assets/backgrounds/green-field.png" id="2_3lw3i"]
+
+[node name="HomePage" type="VBoxContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_6g38w")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+self_modulate = Color(0.223529, 0.223529, 0.223529, 1)
+offset_right = 1152.0
+offset_bottom = 148.0
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.3
+texture = ExtResource("2_3lw3i")
+ignore_texture_size = true
+stretch_mode = 6
+
+[node name="Label" type="Label" parent="TextureRect"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 38
+text = "Dialogic"
+horizontal_alignment = 1
+vertical_alignment = 1
+uppercase = true
+
+[node name="HBoxContainer" type="ScrollContainer" parent="."]
+offset_top = 152.0
+offset_right = 1152.0
+offset_bottom = 648.0
+size_flags_vertical = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="HBoxContainer"]
+offset_right = 1152.0
+offset_bottom = 496.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/MarginContainer"]
+offset_right = 1152.0
+offset_bottom = 496.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/MarginContainer/HBoxContainer"]
+offset_right = 376.0
+offset_bottom = 496.0
+size_flags_horizontal = 3
+
+[node name="Label2" type="Label" parent="HBoxContainer/MarginContainer/HBoxContainer/VBoxContainer"]
+offset_right = 376.0
+offset_bottom = 31.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 20
+text = "Welcome"
+vertical_alignment = 1
+
+[node name="Label3" type="Label" parent="HBoxContainer/MarginContainer/HBoxContainer/VBoxContainer"]
+offset_top = 35.0
+offset_right = 376.0
+offset_bottom = 242.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_vertical = 7
+text = "Welcome to dialogic! Easily create visual novels or dialogs for your game.  "
+autowrap_mode = 3
+
+[node name="HSeparator2" type="HSeparator" parent="HBoxContainer/MarginContainer/HBoxContainer/VBoxContainer"]
+offset_top = 246.0
+offset_right = 376.0
+offset_bottom = 250.0
+
+[node name="Label5" type="Label" parent="HBoxContainer/MarginContainer/HBoxContainer/VBoxContainer"]
+offset_top = 254.0
+offset_right = 376.0
+offset_bottom = 285.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 20
+text = "Attention:"
+vertical_alignment = 1
+
+[node name="Label4" type="Label" parent="HBoxContainer/MarginContainer/HBoxContainer/VBoxContainer"]
+offset_top = 289.0
+offset_right = 376.0
+offset_bottom = 496.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_vertical = 7
+text = "If you've just installed dialogic you might need to restart godot once, so all scripts load correctly!"
+autowrap_mode = 3
+
+[node name="VSeparator" type="VSeparator" parent="HBoxContainer/MarginContainer/HBoxContainer"]
+offset_left = 380.0
+offset_right = 384.0
+offset_bottom = 496.0
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="HBoxContainer/MarginContainer/HBoxContainer"]
+offset_left = 388.0
+offset_right = 764.0
+offset_bottom = 496.0
+size_flags_horizontal = 3
+
+[node name="Label2" type="Label" parent="HBoxContainer/MarginContainer/HBoxContainer/VBoxContainer2"]
+offset_right = 376.0
+offset_bottom = 31.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 20
+text = "How to start"
+vertical_alignment = 1
+
+[node name="Label3" type="Label" parent="HBoxContainer/MarginContainer/HBoxContainer/VBoxContainer2"]
+offset_top = 35.0
+offset_right = 376.0
+offset_bottom = 242.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_vertical = 7
+text = "If you are new to dialogic, check out the beginners guide in the wiki."
+autowrap_mode = 3
+
+[node name="HSeparator" type="HSeparator" parent="HBoxContainer/MarginContainer/HBoxContainer/VBoxContainer2"]
+offset_top = 246.0
+offset_right = 376.0
+offset_bottom = 250.0
+
+[node name="Label4" type="Label" parent="HBoxContainer/MarginContainer/HBoxContainer/VBoxContainer2"]
+offset_top = 254.0
+offset_right = 376.0
+offset_bottom = 285.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 20
+text = "Something wrong?"
+vertical_alignment = 1
+
+[node name="Label5" type="Label" parent="HBoxContainer/MarginContainer/HBoxContainer/VBoxContainer2"]
+offset_top = 289.0
+offset_right = 376.0
+offset_bottom = 496.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_vertical = 7
+text = "You found a bug? Or feel like something could be improved? Create a github issue to let us know!"
+autowrap_mode = 3
+
+[node name="VSeparator2" type="VSeparator" parent="HBoxContainer/MarginContainer/HBoxContainer"]
+offset_left = 768.0
+offset_right = 772.0
+offset_bottom = 496.0
+
+[node name="VBoxContainer3" type="VBoxContainer" parent="HBoxContainer/MarginContainer/HBoxContainer"]
+offset_left = 776.0
+offset_right = 1152.0
+offset_bottom = 496.0
+size_flags_horizontal = 3
+
+[node name="Label2" type="Label" parent="HBoxContainer/MarginContainer/HBoxContainer/VBoxContainer3"]
+offset_right = 376.0
+offset_bottom = 31.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 20
+text = "Making something cool?"
+vertical_alignment = 1
+
+[node name="Label3" type="Label" parent="HBoxContainer/MarginContainer/HBoxContainer/VBoxContainer3"]
+offset_top = 35.0
+offset_right = 376.0
+offset_bottom = 113.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "We always like to hear about cool things being made with dialogic. Let us know what you are using it for!"
+vertical_alignment = 1
+autowrap_mode = 3
