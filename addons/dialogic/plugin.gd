@@ -87,11 +87,8 @@ func _save_external_data() -> void:
 
 
 func _handles(object:Variant) -> bool:
-#	print("handles", object)
 	if editor_view != null and editor_view.editors_manager != null and object is Resource:
-		print( editor_view.editors_manager.can_edit_resource(object))
 		return editor_view.editors_manager.can_edit_resource(object)
-#	print("false!")
 	return false
 
 
