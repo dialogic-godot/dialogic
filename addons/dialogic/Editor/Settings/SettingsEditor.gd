@@ -14,7 +14,6 @@ func _ready():
 				$Tabs.add_child(load(subsystem.settings).instantiate())
 
 
-
 func _open(extra_information:Variant = null) -> void:
 	refresh()
 

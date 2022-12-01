@@ -57,7 +57,6 @@ func _register() -> void:
 func _open_resource(resource:Resource) -> void:
 	current_resource = resource
 	current_resource_state = ResourceStates.Saved
-	print("loading_timeline", is_inside_tree())
 	match current_editor_mode:
 		0:
 			$VisualEditor.load_timeline(current_resource)

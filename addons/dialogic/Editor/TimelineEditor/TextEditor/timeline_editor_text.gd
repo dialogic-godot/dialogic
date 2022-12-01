@@ -97,30 +97,6 @@ func add_highlighting():
 	s.add_color_region('- ', '', editor_settings.get('text_editor/theme/highlighting/engine_type_color'), true)
 	set('syntax_highlighter', s)
 
-#
-#func new_timeline() -> void:
-#	save_timeline()
-#	clear_timeline()
-#	show_save_dialog()
-
-#
-#func show_save_dialog():
-#	find_parent('EditorView').godot_file_dialog(
-#		create_and_save_new_timeline,
-#		'*.dtl; DialogicTimeline',
-#		EditorFileDialog.FILE_MODE_SAVE_FILE,
-#		"Save new Timeline",
-#		"New_Timeline",
-#		true
-#	)
-#
-#func create_and_save_new_timeline(path):
-#	var new_timeline = DialogicTimeline.new()
-#	new_timeline.resource_path = path
-#	current_timeline = new_timeline
-#	save_timeline()
-#	DialogicUtil.get_dialogic_plugin().editor_interface.get_resource_filesystem().update_file(path)
-#	load_timeline(new_timeline)
 
 func text_timeline_to_array(text:String) -> Array:
 	# Parse the lines down into an array

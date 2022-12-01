@@ -78,7 +78,6 @@ func _on_editors_tab_changed(tab:int) -> void:
 
 
 func edit_resource(resource:Resource, save_previous:bool = true) -> void:
-#	print('edit resource', resource)
 	## Update the latest resource lis
 	var used_resources:Array = DialogicUtil.get_project_setting('dialogic/editor/last_resources', [])
 	if resource.resource_path in used_resources:
@@ -115,7 +114,6 @@ func open_editor(editor:DialogicEditor, save_previous: bool = true, extra_info:V
 	if current_editor:
 		current_editor._close()
 	
-#	print('changing tab index to ', editor.get_index())
 	editors_holder.current_tab = editor.get_index()
 	editor._open(extra_info)
 	current_editor = editor

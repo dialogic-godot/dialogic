@@ -3,19 +3,11 @@ extends Container
 
 ## Visual mode of the timeline editor. 
 
-#var editor_reference = null
-
-################################################################################
-## 				TIMELINE RESOURCE
-################################################################################
-#var current_timeline: DialogicTimeline
-
 
 ################################################################################
 ## 				EDITOR NODES
 ################################################################################
 var TimelineUndoRedo := UndoRedo.new()
-#@onready var _toolbar = get_parent().get_parent().get_node('Toolbar')
 var event_node
 
 ################################################################################
@@ -915,7 +907,7 @@ func add_extra_scroll_area_to_timeline():
 ## *****************************************************************************
 ##				SPECIAL BLOCK OPERATIONS
 ## *****************************************************************************
-# SIGNAL handles the actions of the small menu on the right
+# SIGNAL handles the actions of the small menu on the right (that was removed wasn't it?)
 func _on_event_options_action(action: String, item: Node):
 	### WORK TODO
 	if action == "remove":

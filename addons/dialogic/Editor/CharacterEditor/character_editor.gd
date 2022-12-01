@@ -23,7 +23,6 @@ var selected_item: TreeItem
 
 # Method is called once editors manager is ready to accept registers.
 func _register() -> void:
-	
 	# Makes the editor open this when a .dch file is selected.
 	# Then _open_resource() is called.
 	editors_manager.register_resource_editor("dch", self)
@@ -56,7 +55,6 @@ func _open_resource(resource:Resource) -> void:
 	# Portrait section
 	%PortraitSearch.text = ""
 	load_portrait_tree()
-	
 	
 	loading = false
 	character_loaded.emit(resource.resource_path)

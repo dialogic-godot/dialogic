@@ -18,7 +18,7 @@ var _parts_inspector : EditorInspectorPlugin
 var _export_plugin : EditorExportPlugin
 var editor_interface : EditorInterface
 
-# emii
+# emitted if godot wants us to save
 signal dialogic_save
 
 
