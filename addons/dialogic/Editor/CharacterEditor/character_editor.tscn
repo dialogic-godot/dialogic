@@ -1,12 +1,12 @@
-[gd_scene load_steps=11 format=3 uid="uid://cg7cmuh5e1w4t"]
+[gd_scene load_steps=11 format=3 uid="uid://dxt0c6mx24nxo"]
 
 [ext_resource type="Script" path="res://addons/dialogic/Editor/CharacterEditor/character_editor.gd" id="2"]
-[ext_resource type="Script" path="res://addons/dialogic/Editor/CharacterEditor/PortraitSettings_Image.gd" id="4_2x67k"]
+[ext_resource type="Script" path="res://addons/dialogic/Editor/CharacterEditor/character_editor_ptab_image.gd" id="2_cusvj"]
+[ext_resource type="Script" path="res://addons/dialogic/Editor/CharacterEditor/character_editor_ptab_scene.gd" id="4_6tltp"]
 [ext_resource type="PackedScene" uid="uid://7mvxuaulctcq" path="res://addons/dialogic/Editor/Events/Fields/FilePicker.tscn" id="4_a4bcu"]
-[ext_resource type="Script" path="res://addons/dialogic/Editor/CharacterEditor/PortraitSettings_Scene.gd" id="6_hbhiq"]
-[ext_resource type="Script" path="res://addons/dialogic/Editor/CharacterEditor/PortraitSettings_Layout.gd" id="7_7ncjm"]
+[ext_resource type="Script" path="res://addons/dialogic/Editor/CharacterEditor/character_editor_ptab_layout.gd" id="5_eicvp"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2so57"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cf78c"]
 content_margin_left = 10.0
 content_margin_top = 4.0
 content_margin_right = 10.0
@@ -16,7 +16,7 @@ border_width_top = 2
 border_color = Color(1, 1, 1, 0.75)
 corner_detail = 1
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wqv5o"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_l8t00"]
 content_margin_left = 7.5
 content_margin_top = 7.5
 content_margin_right = 7.5
@@ -27,7 +27,7 @@ corner_radius_top_right = 3
 corner_radius_bottom_right = 3
 corner_radius_bottom_left = 3
 
-[sub_resource type="Image" id="Image_puriq"]
+[sub_resource type="Image" id="Image_fyuk7"]
 data = {
 "data": PackedByteArray(255, 255, 255, 0, 255, 255, 255, 0, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 131, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 131, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 131, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 231, 255, 93, 93, 55, 255, 97, 97, 58, 255, 93, 93, 233, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 231, 255, 94, 94, 54, 255, 94, 94, 57, 255, 93, 93, 233, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 93, 93, 233, 255, 93, 93, 232, 255, 93, 93, 41, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 93, 93, 233, 255, 93, 93, 232, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 97, 97, 42, 255, 255, 255, 0, 255, 97, 97, 42, 255, 97, 97, 42, 255, 255, 255, 0, 255, 98, 98, 47, 255, 97, 97, 42, 255, 255, 255, 0, 255, 97, 97, 42, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 235, 255, 93, 93, 233, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 94, 94, 46, 255, 93, 93, 236, 255, 93, 93, 233, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 235, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 233, 255, 95, 95, 59, 255, 96, 96, 61, 255, 93, 93, 235, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 233, 255, 95, 95, 59, 255, 96, 96, 61, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0),
 "format": "RGBA8",
@@ -36,12 +36,13 @@ data = {
 "width": 16
 }
 
-[sub_resource type="ImageTexture" id="ImageTexture_4kt7t"]
-image = SubResource("Image_puriq")
+[sub_resource type="ImageTexture" id="ImageTexture_asiy6"]
+image = SubResource("Image_fyuk7")
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_4xgdx"]
 
 [node name="CharacterEditor" type="MarginContainer"]
+visible = false
 self_modulate = Color(0, 0, 0, 1)
 anchors_preset = 15
 anchor_right = 1.0
@@ -73,7 +74,7 @@ size_flags_vertical = 11
 [node name="EditorScroll" type="ScrollContainer" parent="Split/Editor"]
 layout_mode = 2
 offset_right = 454.0
-offset_bottom = 276.0
+offset_bottom = 54.0
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 0.0
 vertical_scroll_mode = 0
@@ -82,22 +83,22 @@ vertical_scroll_mode = 0
 unique_name_in_owner = true
 layout_mode = 2
 offset_right = 454.0
-offset_bottom = 276.0
+offset_bottom = 54.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_constants/side_margin = 5
-theme_override_styles/tab_selected = SubResource("StyleBoxFlat_2so57")
-theme_override_styles/panel = SubResource("StyleBoxFlat_wqv5o")
+theme_override_styles/tab_selected = SubResource("StyleBoxFlat_cf78c")
+theme_override_styles/panel = SubResource("StyleBoxFlat_l8t00")
 
 [node name="PortraitListSection" type="TabContainer" parent="Split/Editor"]
 unique_name_in_owner = true
 layout_mode = 2
-offset_top = 288.0
+offset_top = 66.0
 offset_right = 454.0
 offset_bottom = 648.0
 theme_override_constants/side_margin = 5
-theme_override_styles/tab_selected = SubResource("StyleBoxFlat_2so57")
-theme_override_styles/panel = SubResource("StyleBoxFlat_wqv5o")
+theme_override_styles/tab_selected = SubResource("StyleBoxFlat_cf78c")
+theme_override_styles/panel = SubResource("StyleBoxFlat_l8t00")
 
 [node name="Portraits" type="VBoxContainer" parent="Split/Editor/PortraitListSection"]
 layout_mode = 2
@@ -121,7 +122,7 @@ unique_name_in_owner = true
 layout_mode = 2
 offset_right = 24.0
 offset_bottom = 31.0
-icon = SubResource("ImageTexture_4kt7t")
+icon = SubResource("ImageTexture_asiy6")
 
 [node name="ImportPortraitsButton" type="Button" parent="Split/Editor/PortraitListSection/Portraits/PortraitListTools"]
 unique_name_in_owner = true
@@ -129,7 +130,7 @@ layout_mode = 2
 offset_left = 28.0
 offset_right = 52.0
 offset_bottom = 31.0
-icon = SubResource("ImageTexture_4kt7t")
+icon = SubResource("ImageTexture_asiy6")
 
 [node name="PortraitSearch" type="LineEdit" parent="Split/Editor/PortraitListSection/Portraits/PortraitListTools"]
 unique_name_in_owner = true
@@ -142,7 +143,7 @@ size_flags_vertical = 4
 placeholder_text = "Search"
 expand_to_text_length = true
 clear_button_enabled = true
-right_icon = SubResource("ImageTexture_4kt7t")
+right_icon = SubResource("ImageTexture_asiy6")
 caret_blink = true
 caret_blink_interval = 0.5
 
@@ -180,7 +181,7 @@ offset_right = 686.0
 offset_bottom = 492.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-theme_override_styles/panel = SubResource("StyleBoxFlat_wqv5o")
+theme_override_styles/panel = SubResource("StyleBoxFlat_l8t00")
 
 [node name="Node2D" type="Node2D" parent="Split/RightSection/PortraitPreviewSection"]
 position = Vector2(13, 17)
@@ -188,7 +189,7 @@ position = Vector2(13, 17)
 [node name="RealPreviewPivot" type="Sprite2D" parent="Split/RightSection/PortraitPreviewSection/Node2D"]
 unique_name_in_owner = true
 position = Vector2(289, 362)
-texture = SubResource("ImageTexture_4kt7t")
+texture = SubResource("ImageTexture_asiy6")
 
 [node name="ScenePreviewWarning" type="Label" parent="Split/RightSection/PortraitPreviewSection"]
 unique_name_in_owner = true
@@ -296,8 +297,8 @@ offset_bottom = 648.0
 size_flags_vertical = 3
 size_flags_stretch_ratio = 0.3
 theme_override_constants/side_margin = 5
-theme_override_styles/tab_selected = SubResource("StyleBoxFlat_2so57")
-theme_override_styles/panel = SubResource("StyleBoxFlat_wqv5o")
+theme_override_styles/tab_selected = SubResource("StyleBoxFlat_cf78c")
+theme_override_styles/panel = SubResource("StyleBoxFlat_l8t00")
 
 [node name="Image" type="ScrollContainer" parent="Split/RightSection/PortraitSettingsSection"]
 custom_minimum_size = Vector2(0, 35)
@@ -312,7 +313,7 @@ offset_bottom = -7.5
 grow_horizontal = 2
 grow_vertical = 2
 horizontal_scroll_mode = 0
-script = ExtResource("4_2x67k")
+script = ExtResource("2_cusvj")
 
 [node name="Flow" type="HFlowContainer" parent="Split/RightSection/PortraitSettingsSection/Image"]
 layout_mode = 2
@@ -344,7 +345,7 @@ offset_right = 671.0
 offset_bottom = 38.0
 size_flags_horizontal = 3
 file_filter = "*.png, *.svg"
-resource_icon = SubResource("ImageTexture_4kt7t")
+resource_icon = SubResource("ImageTexture_asiy6")
 
 [node name="Scene" type="ScrollContainer" parent="Split/RightSection/PortraitSettingsSection"]
 visible = false
@@ -360,7 +361,7 @@ offset_bottom = -10.0
 grow_horizontal = 2
 grow_vertical = 2
 horizontal_scroll_mode = 0
-script = ExtResource("6_hbhiq")
+script = ExtResource("4_6tltp")
 
 [node name="Flow" type="HFlowContainer" parent="Split/RightSection/PortraitSettingsSection/Scene"]
 unique_name_in_owner = true
@@ -394,7 +395,7 @@ offset_bottom = 33.0
 size_flags_horizontal = 3
 file_filter = "*.tscn"
 placeholder = "Default scene"
-resource_icon = SubResource("ImageTexture_4kt7t")
+resource_icon = SubResource("ImageTexture_asiy6")
 
 [node name="Label2" type="Label" parent="Split/RightSection/PortraitSettingsSection/Scene/Flow/GridContainer"]
 layout_mode = 2
@@ -422,7 +423,7 @@ offset_top = 31.0
 grow_horizontal = 2
 grow_vertical = 2
 horizontal_scroll_mode = 0
-script = ExtResource("7_7ncjm")
+script = ExtResource("5_eicvp")
 
 [node name="Flow" type="HFlowContainer" parent="Split/RightSection/PortraitSettingsSection/Layout"]
 layout_mode = 2

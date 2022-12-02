@@ -139,7 +139,14 @@ func _ready() -> void:
 		for subsystem in load(script).new().get_required_subsystems():
 			if subsystem.has('character_main'):
 				add_main_tab(subsystem.character_main)
-	hide()
+	
+	for child in %PortraitSettingsSection.get_children():
+		if !child is DialogicCharacterEditorPortraitSettingsTab:
+			printerr("[Dialogic Editor] Portrait settings tabs should extend the right class!")
+		else:
+			child.character_editor = self
+			child.changed.connect(something_changed)
+			child.update_preview.connect(update_preview)
 
 
 func add_main_tab(scene_path:String) ->  void:
@@ -242,8 +249,11 @@ func load_selected_portrait():
 		update_preview()
 		
 		for tab in %PortraitSettingsSection.get_children():
-			if tab.has_method('load_portrait_data'):
-				tab.load_portrait_data(selected_item, current_portrait_data)
+			if !tab is DialogicCharacterEditorPortraitSettingsTab:
+				printerr("[Dialogic Editor] Portrait settings tabs should extend the right class!")
+			else:
+				tab.selected_item = selected_item
+				tab._load_portrait_data(current_portrait_data)
 		
 		await get_tree().create_timer(0.01).timeout
 		selected_item.set_editable(0, true)
