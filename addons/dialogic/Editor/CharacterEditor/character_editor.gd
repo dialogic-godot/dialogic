@@ -275,7 +275,7 @@ func update_preview() -> void:
 		%PreviewLabel.text = 'Preview of "'+selected_item.get_text(0)+'"'
 		var current_portrait_data: Dictionary = selected_item.get_metadata(0)
 		var mirror:bool = current_portrait_data.get('mirror', false) != current_resource.mirror
-		var scale:float = current_portrait_data.get('scale', 1) * current_resource.scale/100.0
+		var scale:float = current_portrait_data.get('scale', 1) * current_resource.scale
 		var offset:Vector2 =current_portrait_data.get('offset', Vector2()) + current_resource.offset
 		
 		var scene = null

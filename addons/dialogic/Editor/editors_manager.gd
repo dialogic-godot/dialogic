@@ -92,6 +92,8 @@ func edit_resource(resource:Resource, save_previous:bool = true) -> void:
 		if editor.get('extension', '') == extension:
 			editor['node']._open_resource(resource)
 			open_editor(editor['node'], save_previous)
+	
+	resource_opened.emit(resource)
 
 
 ## Only works if there was a different editor opened previously
@@ -104,21 +106,21 @@ func toggle_editor(editor) -> void:
 
 ## Shows the given editor
 func open_editor(editor:DialogicEditor, save_previous: bool = true, extra_info:Variant = null) -> void:
+	
+	
 	if current_editor and save_previous:
 		current_editor._save_resource()
-	
-	if current_editor != editor:
-		previous_editor = current_editor
-	
 	
 	if current_editor:
 		current_editor._close()
 	
+	if current_editor != previous_editor:
+		previous_editor = current_editor
+	
 	editors_holder.current_tab = editor.get_index()
 	editor._open(extra_info)
 	current_editor = editor
-#	print(editor)
-#	print(editor.current_resource)
+	
 	if editor.current_resource:
 		var text:String = editor.current_resource.resource_path.get_file()
 		if editor.current_resource_state == DialogicEditor.ResourceStates.Unsaved:
@@ -132,8 +134,7 @@ func open_editor(editor:DialogicEditor, save_previous: bool = true, extra_info:V
 		button.show()
 	
 	save_current_state()
-
-
+	editor_changed.emit(previous_editor, current_editor)
 
 
 ## Shows a file selector. Calls [accept_callable] once accepted
