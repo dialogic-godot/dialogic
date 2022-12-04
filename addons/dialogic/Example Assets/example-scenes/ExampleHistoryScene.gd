@@ -13,7 +13,7 @@ extends VBoxContainer
 @export var show_name_colors: bool = true
 @export var oldest_items_first: bool = true
 @export var line_break_after_names: bool
-@export var name_delimeter: String = ":"
+@export var name_delimeter: String = ": "
 
 @export var history_font_size: int
 @export var history_font_normal: Font

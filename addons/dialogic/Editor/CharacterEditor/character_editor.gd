@@ -1,23 +1,80 @@
 @tool
-extends Control
+extends DialogicEditor
 
-enum PreviewModes {Full, Real}
-var current_preview_mode = PreviewModes.Full
+## Editor for editing character resources.
 
-var loading = false
-
-var current_character : DialogicCharacter
-var selected_item:TreeItem 
-
-signal set_resource_unsaved
-signal set_resource_saved
 signal character_loaded(resource_path:String)
 signal portrait_selected()
+
+
+# Enums
+enum PreviewModes {Full, Real}
+
+# Current state
+var current_preview_mode = PreviewModes.Full
+var loading = false
+
+# References
+var selected_item: TreeItem 
 
 ##############################################################################
 ##							RESOURCE LOGIC
 ##############################################################################
 
+# Method is called once editors manager is ready to accept registers.
+func _register() -> void:
+	# Makes the editor open this when a .dch file is selected.
+	# Then _open_resource() is called.
+	editors_manager.register_resource_editor("dch", self)
+	# Add an "add character" button
+	var add_character_button = editors_manager.add_icon_button( 
+			load("res://addons/dialogic/Editor/Images/Toolbar/add-character.svg"),
+			'Add Character',
+			self)
+	add_character_button.pressed.connect(
+			editors_manager.show_add_resource_dialog.bind(
+			new_character, 
+			'*.dch; DialogicCharacter',
+			'Create new character',
+			'character',
+			))
+
+
+# Called when a character is opened somehow
+func _open_resource(resource:Resource) -> void:
+	# update resource
+	current_resource = resource
+	
+	# make sure changes in the ui won't trigger saving
+	loading = true
+	
+	## Load other main tabs
+	for main_edit in %MainEditTabs.get_children():
+		main_edit._load_character(current_resource)
+	
+	# Portrait section
+	%PortraitSearch.text = ""
+	load_portrait_tree()
+	
+	loading = false
+	character_loaded.emit(resource.resource_path)
+
+
+func _save_resource() -> void:
+	if ! visible or not current_resource:
+		return
+	
+	current_resource.portraits = get_updated_portrait_dict()
+	
+	for main_edit in %MainEditTabs.get_children():
+		current_resource = main_edit._save_changes(current_resource)
+	
+	ResourceSaver.save(current_resource, current_resource.resource_path)
+	current_resource_state = ResourceStates.Saved
+	editors_manager.resource_helper.rebuild_character_directory()
+
+
+# Saves a new empty character to the given path
 func new_character(path: String) -> void:
 	var resource = DialogicCharacter.new()
 	resource.resource_path = path
@@ -26,67 +83,7 @@ func new_character(path: String) -> void:
 	resource.default_portrait = ""
 	resource.custom_info = {}
 	ResourceSaver.save(resource, path)
-	find_parent('EditorView').edit_character(resource)
-
-func load_character(resource: DialogicCharacter) -> void:
-	if not resource:
-		return
-	loading = true
-	current_character = resource
-	%ColorPickerButton.color = resource.color
-	%DisplayNameLineEdit.text = resource.display_name
-	%NicknameLineEdit.text = ""
-	for nickname in resource.nicknames: 
-		%NicknameLineEdit.text += nickname +", "
-	%NicknameLineEdit.text = %NicknameLineEdit.text.trim_suffix(', ')
-	%DescriptionTextEdit.text = resource.description
-	%DefaultPortraitPicker.set_value(resource.default_portrait)
-	%MainScale.value = 100*resource.scale
-	%MainOffsetX.value = resource.offset.x
-	%MainOffsetY.value = resource.offset.y
-	%MainMirror.button_pressed = resource.mirror
-	%PortraitSearch.text = ""
-	
-	for main_edit in %MainEditTabs.get_children():
-		if main_edit.has_method('load_character'):
-			main_edit.load_character(current_character)
-	
-	load_portrait_tree()
-	loading = false
-	emit_signal('character_loaded', resource.resource_path)
-
-
-func save_character() -> void:
-	if ! visible or not current_character:
-		return
-	current_character.display_name = %DisplayNameLineEdit.text
-	current_character.color = %ColorPickerButton.color
-	var nicknames = []
-	for n_name in %NicknameLineEdit.text.split(','):
-		nicknames.append(n_name.strip_edges())
-	current_character.nicknames = nicknames
-	current_character.description = %DescriptionTextEdit.text
-	
-	current_character.portraits = get_updated_portrait_dict()
-
-	if $'%DefaultPortraitPicker'.current_value in current_character.portraits.keys():
-		current_character.default_portrait = $'%DefaultPortraitPicker'.current_value
-	elif !current_character.portraits.is_empty():
-		current_character.default_portrait = current_character.portraits.keys()[0]
-	else:
-		current_character.default_portrait = ""
-	
-	current_character.scale = %MainScale.value/100.0
-	current_character.offset = Vector2(%MainOffsetX.value, %MainOffsetY.value) 
-	current_character.mirror = %MainMirror.button_pressed
-	
-	for main_edit in %MainEditTabs.get_children():
-		if main_edit.has_method('save_character'):
-			main_edit.save_character(current_character)
-	
-	ResourceSaver.save(current_character, current_character.resource_path)
-	emit_signal('set_resource_saved')
-	find_parent('EditorView').rebuild_character_directory()
+	editors_manager.edit_resource(resource)
 
 
 ##############################################################################
@@ -94,23 +91,12 @@ func save_character() -> void:
 ##############################################################################
 
 func _ready() -> void:
-	DialogicUtil.get_dialogic_plugin().dialogic_save.connect(save_character)
-	# Let's go connecting!
-	%ColorPickerButton.color_changed.connect(something_changed)
-	%DisplayNameLineEdit.text_changed.connect(something_changed)
-	%NicknameLineEdit.text_changed.connect(something_changed)
-	%DescriptionTextEdit.text_changed.connect(something_changed)
-	%DefaultPortraitPicker.resource_icon = load("res://addons/dialogic/Editor/Images/Resources/portrait.svg")
-	%DefaultPortraitPicker.get_suggestions_func = suggest_portraits
-	%DefaultPortraitPicker.set_left_text("")
-	%DefaultPortraitPicker.value_changed.connect(default_portrait_changed)
-	%MainScale.value_changed.connect(main_portrait_settings_update)
-	%MainOffsetX.value_changed.connect(main_portrait_settings_update)
-	%MainOffsetY.value_changed.connect(main_portrait_settings_update)
-	%MainMirror.toggled.connect(main_portrait_settings_update)
-#
+	## Portrait section styling/connections
+	%AddPortraitButton.icon = get_theme_icon("Add", "EditorIcons")
 	%AddPortraitButton.pressed.connect(add_portrait)
+	%ImportPortraitsButton.icon = get_theme_icon("Folder", "EditorIcons")
 	%ImportPortraitsButton.pressed.connect(open_portrait_folder_select)
+	%PortraitSearch.right_icon = get_theme_icon("Search", "EditorIcons")
 	%PortraitSearch.text_changed.connect(filter_portrait_list)
 	
 	%PortraitTree.item_selected.connect(load_selected_portrait)
@@ -120,13 +106,7 @@ func _ready() -> void:
 	%PreviewMode.select(DialogicUtil.get_project_setting('dialogic/editor/character_preview_mode', 0))
 	_on_PreviewMode_item_selected(%PreviewMode.selected)
 	
-	# Let's go styling!
-	self_modulate = get_theme_color("dark_color_3", "Editor")
-	
-	%AddPortraitButton.icon = get_theme_icon("Add", "EditorIcons")
-	%ImportPortraitsButton.icon = get_theme_icon("Folder", "EditorIcons")
-	%PortraitSearch.right_icon = get_theme_icon("Search", "EditorIcons")
-	
+	## General Styling
 	var panel_style = DCSS.inline({
 		'border-radius': 5,
 		'border': 1,
@@ -150,31 +130,46 @@ func _ready() -> void:
 	%PortraitSettingsSection.add_theme_constant_override('side_margin', 5)
 	
 	%RealPreviewPivot.texture = get_theme_icon("EditorPivot", "EditorIcons")
-
-	# Subsystems
+	
+	# Add general tab
+	add_main_tab("res://addons/dialogic/Editor/CharacterEditor/character_editor_tab_general.tscn")
+	
+	# Load main tabs from subsystems/events
 	for script in DialogicUtil.get_event_scripts():
 		for subsystem in load(script).new().get_required_subsystems():
 			if subsystem.has('character_main'):
-				var edit =  load(subsystem.character_main).instantiate()
-				if edit.has_signal('changed'):
-					edit.changed.connect(something_changed)
-				%MainEditTabs.add_child(edit)
-	hide()
+				add_main_tab(subsystem.character_main)
+	
+	for child in %PortraitSettingsSection.get_children():
+		if !child is DialogicCharacterEditorPortraitSettingsTab:
+			printerr("[Dialogic Editor] Portrait settings tabs should extend the right class!")
+		else:
+			child.character_editor = self
+			child.changed.connect(something_changed)
+			child.update_preview.connect(update_preview)
+
+
+func add_main_tab(scene_path:String) ->  void:
+	var edit: DialogicCharacterEditorMainTab =  load(scene_path).instantiate()
+	edit.changed.connect(something_changed)
+	edit.character_editor = self
+	%MainEditTabs.add_child(edit)
+
 
 func something_changed(fake_argument = "", fake_arg2 = null) -> void:
-	if ! loading:
-		emit_signal('set_resource_unsaved')
-		save_character()
+	if not loading:
+		current_resource_state = ResourceStates.Unsaved
+#		_save_resource() TODO, should this happen?
 
-func suggest_portraits(search:String):
-	var suggestions = {}
-	for portrait in get_updated_portrait_dict().keys():
-		if search.is_empty() or search.to_lower() in portrait.to_lower():
-			suggestions[portrait] = {'value':portrait}
-	return suggestions
+
+##############################################################################
+##							PORTRAIT SECTION
+##############################################################################
 
 func open_portrait_folder_select() -> void:
-	find_parent("EditorView").godot_file_dialog(import_portraits_from_folder, "*", EditorFileDialog.FILE_MODE_OPEN_DIR)
+	find_parent("EditorView").godot_file_dialog(
+		import_portraits_from_folder, "*", 
+		EditorFileDialog.FILE_MODE_OPEN_DIR)
 
 
 func import_portraits_from_folder(path:String) -> void:
@@ -186,26 +181,28 @@ func import_portraits_from_folder(path:String) -> void:
 			var file_lower = file_name.to_lower()
 			if '.svg' in file_lower or '.png' in file_lower:
 				if not '.import' in file_lower:
-					var final_name :String= path+ "/" + file_name
-					add_portrait(file_name.trim_suffix('.'+file_name.get_extension()), {'scene':"",'image':final_name, 'scale':1, 'offset':Vector2(), 'mirror':false}) 
+					var final_name: String= path+ "/" + file_name
+					add_portrait(file_name.trim_suffix('.'+file_name.get_extension()), 
+							{'scene':"",'image':final_name, 'scale':1, 'offset':Vector2(), 'mirror':false}) 
 		file_name = dir.get_next()
 
 
 func add_portrait(portrait_name:String='New portrait', portrait_data:Dictionary={'scene':"", 'image':'', 'scale':1, 'offset':Vector2(), 'mirror':false}) -> void:
-	var root = %PortraitTree.get_root()
+	var root: TreeItem = %PortraitTree.get_root()
 	add_portrait_item(portrait_name, portrait_data, root).select(0)
 	something_changed()
 
 
 func load_portrait_tree() -> void:
 	%PortraitTree.clear()
-	var root = %PortraitTree.create_item()
+	var root:TreeItem = %PortraitTree.create_item()
 	
-	for portrait in current_character.portraits.keys():
-		add_portrait_item(portrait, current_character.portraits[portrait], root)
+	for portrait in current_resource.portraits.keys():
+		add_portrait_item(portrait, current_resource.portraits[portrait], root)
 	
 	if root.get_child_count():
 		root.get_first_child().select(0)
+
 
 
 func filter_portrait_list(filter_term:String = '') -> void:
@@ -216,6 +213,7 @@ func filter_portrait_list(filter_term:String = '') -> void:
 		if !item:
 			break
 
+
 # this is used to save the portrait data
 func get_updated_portrait_dict() -> Dictionary:
 	var dict : Dictionary = {}
@@ -225,15 +223,17 @@ func get_updated_portrait_dict() -> Dictionary:
 		item = item.get_next()
 	return dict
 
+
 func add_portrait_item(portrait_name:String, portrait_data:Dictionary, parent_item:TreeItem) -> TreeItem:
 	var item :TreeItem = %PortraitTree.create_item(parent_item)
 	item.set_text(0, portrait_name)
 	item.set_metadata(0, portrait_data)
-	if portrait_name == current_character.default_portrait:
+	if portrait_name == current_resource.default_portrait:
 		item.add_button(0, get_theme_icon('Favorites', 'EditorIcons'), 2, true, 'Default')
 	item.add_button(0, get_theme_icon('Duplicate', 'EditorIcons'), 3, false, 'Duplicate')
 	item.add_button(0, get_theme_icon('Remove', 'EditorIcons'), 1, false, 'Remove')
 	return item
+
 
 func load_selected_portrait():
 	if selected_item and is_instance_valid(selected_item):
@@ -249,18 +249,24 @@ func load_selected_portrait():
 		update_preview()
 		
 		for tab in %PortraitSettingsSection.get_children():
-			if tab.has_method('load_portrait_data'):
-				tab.load_portrait_data(selected_item, current_portrait_data)
+			if !tab is DialogicCharacterEditorPortraitSettingsTab:
+				printerr("[Dialogic Editor] Portrait settings tabs should extend the right class!")
+			else:
+				tab.selected_item = selected_item
+				tab._load_portrait_data(current_portrait_data)
 		
 		await get_tree().create_timer(0.01).timeout
 		selected_item.set_editable(0, true)
+
 
 func delete_portrait_item(item:TreeItem) -> void:
 	item.free()
 	something_changed()
 
+
 func duplicate_item(item:TreeItem) -> void:
 	add_portrait_item(item.get_text(0)+'_duplicated', item.get_metadata(0), item.get_parent()).select(0)
+
 
 func _on_portrait_tree_button_clicked(item:TreeItem, column:int, id:int, mouse_button_index:int):
 	# DELETE BUTTON
@@ -270,20 +276,21 @@ func _on_portrait_tree_button_clicked(item:TreeItem, column:int, id:int, mouse_b
 	if id == 3:
 		duplicate_item(item)
 
+
 func update_preview() -> void:
 	for node in %RealPreviewPivot.get_children():
 		node.queue_free()
 	%ScenePreviewWarning.hide()
 	if selected_item and is_instance_valid(selected_item):
 		%PreviewLabel.text = 'Preview of "'+selected_item.get_text(0)+'"'
-		var current_portrait_data :Dictionary = selected_item.get_metadata(0)
-		var mirror:bool = current_portrait_data.get('mirror', false) != %MainMirror.button_pressed
-		var scale:float = current_portrait_data.get('scale', 1) * %MainScale.value/100.0
-		var offset:Vector2 =current_portrait_data.get('offset', Vector2()) + Vector2(%MainOffsetX.value, %MainOffsetY.value)
+		var current_portrait_data: Dictionary = selected_item.get_metadata(0)
+		var mirror:bool = current_portrait_data.get('mirror', false) != current_resource.mirror
+		var scale:float = current_portrait_data.get('scale', 1) * current_resource.scale
+		var offset:Vector2 =current_portrait_data.get('offset', Vector2()) + current_resource.offset
 		
 		var scene = null
 		if current_portrait_data.get('scene', '').is_empty():
-			scene = load("res://addons/dialogic/Events/Character/DefaultPortrait.tscn")
+			scene = load("res://addons/dialogic/Events/Character/default_portrait.tscn")
 		else:
 			scene = load(current_portrait_data.get('scene'))
 		
@@ -295,7 +302,7 @@ func update_preview() -> void:
 			
 			if scene.script.is_tool():
 				if scene.has_method('_update_portrait'):
-					scene._update_portrait(current_character, selected_item.get_text(0))
+					scene._update_portrait(current_resource, selected_item.get_text(0))
 				if scene.has_method('_set_mirror'):
 					scene._set_mirror(mirror)
 			
@@ -319,13 +326,14 @@ func update_preview() -> void:
 			%PreviewFullRect.texture = null
 			%PreviewLabel.text = 'Nothing to preview'
 
+
 # this removes/and adds the DEFAULT star on the portrait list
-func default_portrait_changed(property:String, text:String) -> void:
+func update_default_portrait_star(default_portrait_name:String) -> void:
 	var item : TreeItem = %PortraitTree.get_root().get_first_child()
 	while true:
 		if item.get_button_by_id(0, 2) != -1:
 			item.erase_button(0, item.get_button_by_id(0, 2))
-		if item.get_text(0) == text:
+		if item.get_text(0) == default_portrait_name:
 			item.erase_button(0, item.get_button_by_id(0, 1))
 			item.erase_button(0, item.get_button_by_id(0, 3))
 			item.add_button(0, get_theme_icon('Favorites', 'EditorIcons'), 2, true, 'Default')
@@ -334,16 +342,16 @@ func default_portrait_changed(property:String, text:String) -> void:
 		item = item.get_next()
 		if !item:
 			break
-	something_changed()
-	
+
 
 func _on_item_edited():
 	selected_item = %PortraitTree.get_selected()
 	something_changed()
 	if selected_item:
-		if %PreviewLabel.text.trim_prefix('Preview of "').trim_suffix('"') == %DefaultPortraitPicker.current_value:
-			%DefaultPortraitPicker.set_value(selected_item.get_text(0))
+		if %PreviewLabel.text.trim_prefix('Preview of "').trim_suffix('"') == current_resource.default_portrait:
+			current_resource.default_portrait = selected_item.get_text(0)
 	update_preview()
+
 
 func _on_PreviewMode_item_selected(index:int) -> void:
 	current_preview_mode = index
@@ -356,6 +364,7 @@ func _on_PreviewMode_item_selected(index:int) -> void:
 	update_preview()
 	ProjectSettings.set_setting('dialogic/editor/character_preview_mode', index)
 	ProjectSettings.save()
+
 
 func main_portrait_settings_update(value = null) -> void:
 	update_preview()

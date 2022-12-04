@@ -281,7 +281,7 @@ func build_editor():
 		has_body_content = false
 		expanded = false
 		body_container.visible = false
-		
+	
 	content_changed.connect(recalculate_edit_visibility.bind(edit_conditions_list))
 	recalculate_edit_visibility(edit_conditions_list)
 
@@ -301,11 +301,12 @@ func recalculate_edit_visibility(list):
 				printerr("(recalculate_edit_visibility)  condition expression failed with error: " + expr.get_error_text())
 	
 	%ExpandButton.visible = false
-	for node in body_content_container.get_children():
-		for sub_node in node.get_children():
-			if sub_node.visible:
-				%ExpandButton.visible = true
-				break
+	if body_content_container != null:
+		for node in body_content_container.get_children():
+			for sub_node in node.get_children():
+				if sub_node.visible:
+					%ExpandButton.visible = true
+					break
 
 func set_property(property_name, value):
 	resource.set(property_name, value)

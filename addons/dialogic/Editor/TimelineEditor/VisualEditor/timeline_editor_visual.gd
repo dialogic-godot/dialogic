@@ -1,19 +1,13 @@
 @tool
 extends Container
 
-var editor_reference = null
-
-################################################################################
-## 				TIMELINE RESOURCE
-################################################################################
-var current_timeline: DialogicTimeline
+## Visual mode of the timeline editor. 
 
 
 ################################################################################
 ## 				EDITOR NODES
 ################################################################################
 var TimelineUndoRedo := UndoRedo.new()
-@onready var _toolbar = get_parent().get_parent().get_node('Toolbar')
 var event_node
 
 ################################################################################
@@ -44,102 +38,68 @@ var piece_was_dragged = false
 ################################################################################
 ## 					CREATE/SAVE/LOAD
 ################################################################################
-# helper to comunicate with the toolbar
+
 func something_changed():
-	_toolbar.set_resource_unsaved()
-	current_timeline.set_meta("timeline_not_saved", true)
-
-func new_timeline() -> void:
-	save_timeline()
-	clear_timeline()
-	show_save_dialog()
-
-
-func show_save_dialog():
-	find_parent('EditorView').godot_file_dialog(
-		create_and_save_new_timeline,
-		'*.dtl; DialogicTimeline',
-		EditorFileDialog.FILE_MODE_SAVE_FILE,
-		"Save new Timeline",
-		"New_Timeline",
-		true
-	)
-
-
-func create_and_save_new_timeline(path):
-
-	var new_timeline = DialogicTimeline.new()
-	new_timeline.resource_path = path
-	current_timeline = new_timeline
-	save_timeline()
-	load_timeline(new_timeline)
+	get_parent().current_resource_state = DialogicEditor.ResourceStates.Unsaved
 
 
 func save_timeline() -> void:
-	
-	if !visible:
+	# return if resource is unchanged
+	if get_parent().current_resource_state != DialogicEditor.ResourceStates.Unsaved:
 		return
-	if _toolbar.is_current_unsaved() or (current_timeline and len(current_timeline.events) == 0):
-		print("Saving ", current_timeline.resource_path)
-		var new_events = []
+	
+	
+	# create a list of text versions of all the events with the right indent
+	var new_events = []
+	var indent := 0
+	
+	for event in %Timeline.get_children():
 		
-		var indent := 0
-		
-		for event in %Timeline.get_children():
+		if 'event_name' in event.resource:
+			
+			if event.resource['event_name'] == 'End Branch':
+					indent -= 1
+					continue
+			
+			new_events.append("\t".repeat(indent) + event.resource._store_as_string())
+			
+			if event.resource.can_contain_events:
+				indent += 1
+			if indent < 0: 
+				indent = 0
+	
+	# 
+	if !get_parent().current_resource:
+		return
 
-			if 'event_name' in event.resource:
-				
-				if event.resource['event_name'] == 'End Branch':
-						indent -= 1
-						continue
-				
-				new_events.append("\t".repeat(indent) + event.resource._store_as_string())
-				
-				if event.resource.can_contain_events:
-					indent += 1
-				if indent < 0: 
-					indent = 0
-					
-				
-		if current_timeline:
-			current_timeline.set_events(new_events)
-			
-			# Build new processed timeline for the ResourceSaver to use
-			# ResourceSaver needs a DialogicEvents timeline so the translation builder can run
-			current_timeline.events_processed = false
-			editor_reference.process_timeline(current_timeline)
-			current_timeline.events_processed = false		
-			print("Error code : ", ResourceSaver.save(current_timeline, current_timeline.resource_path))
-			
-			#Switch back to the text event array, in case we're switching editor modes
-			current_timeline.set_events(new_events)
-			
-			current_timeline.set_meta("unsaved", false)
-			_toolbar.set_resource_saved()
-			current_timeline.set_meta("timeline_not_saved", false)
-			editor_reference.rebuild_timeline_directory()
-		else:
-			if new_events.size() > 0:
-				show_save_dialog()
+	get_parent().current_resource.set_events(new_events)
+	
+	# Build new processed timeline for the ResourceSaver to use
+	# ResourceSaver needs a DialogicEvents timeline so the translation builder can run
+	get_parent().current_resource.events_processed = false
+	get_parent().editors_manager.resource_helper.process_timeline(get_parent().current_resource)
+	get_parent().current_resource.events_processed = false		
+	print("Error code : ", ResourceSaver.save(get_parent().current_resource, get_parent().current_resource.resource_path))
+	
+	#Switch back to the text event array, in case we're switching editor modes
+	get_parent().current_resource.set_events(new_events)
+	
+	get_parent().current_resource.set_meta("unsaved", false)
+	get_parent().current_resource_state = DialogicEditor.ResourceStates.Saved
+	get_parent().editors_manager.resource_helper.rebuild_timeline_directory()
 
 
 func load_timeline(object) -> void:
-	if _toolbar.is_current_unsaved():
-		save_timeline()
-	clear_timeline()
-	_toolbar.load_timeline(object.resource_path)
-	current_timeline = object
-	current_timeline.set_meta("timeline_not_saved", false)
-	
+	clear_timeline_nodes()
 	
 	_building_timeline = true
 	
-	if current_timeline.events.size() == 0:
+	if get_parent().current_resource.events.size() == 0:
 		pass
 	else: 
-		if typeof(current_timeline.events[0]) == TYPE_STRING:
-			current_timeline.events_processed = false
-			current_timeline = editor_reference.process_timeline(current_timeline)
+		if typeof(get_parent().current_resource.events[0]) == TYPE_STRING:
+			get_parent().current_resource.events_processed = false
+			get_parent().current_resource = get_parent().editors_manager.resource_helper.process_timeline(get_parent().current_resource)
 	
 	var data = object.get_events()
 	var page = 1
@@ -188,8 +148,7 @@ func _on_batch_loaded():
 	add_extra_scroll_area_to_timeline()
 
 
-func clear_timeline():
-	current_timeline = DialogicTimeline.new()
+func clear_timeline_nodes():
 	deselect_all_items()
 	for event in %Timeline.get_children():
 		event.free()
@@ -197,6 +156,7 @@ func clear_timeline():
 ################################################################################
 ## 					SETUP
 ################################################################################
+
 func _ready():
 	DialogicUtil.get_dialogic_plugin().dialogic_save.connect(save_timeline)
 	event_node = load("res://addons/dialogic/Editor/Events/EventNode/EventNode.tscn")
@@ -210,25 +170,17 @@ func _ready():
 	
 	
 	if find_parent('EditorView'): # This prevents the view to turn black if you are editing this scene in Godot
-		editor_reference = find_parent('EditorView')
 		%TimelineArea.get_theme_color("background_color", "CodeEdit")
 		
 	%TimelineArea.resized.connect(add_extra_scroll_area_to_timeline)
+
+
+func load_event_buttons() -> void:
+	var scripts: Array = get_parent().editors_manager.resource_helper.get_event_scripts()
 	
 	# Event buttons
-	var buttonScene = load("res://addons/dialogic/Editor/VisualEditor/AddEventButton.tscn")
+	var buttonScene = load("res://addons/dialogic/Editor/TimelineEditor/VisualEditor/AddEventButton.tscn")
 	
-	var scripts: Array = []
-	if editor_reference != null:
-		if editor_reference.event_script_cache.size() == 0:
-			editor_reference.rebuild_event_script_cache()
-		scripts = editor_reference.event_script_cache
-
-		
-	else:
-		scripts = DialogicUtil.get_event_scripts()
-
-		
 	for event_script in scripts:
 		var event_resource: Variant
 		
@@ -247,9 +199,8 @@ func _ready():
 		button.event_category = event_resource.event_category
 		button.event_sorting_index = event_resource.event_sorting_index
 
-
 		button.button_up.connect(_add_event_button_pressed.bind(event_resource))
-
+		
 		get_node("View/ScrollContainer/EventContainer/FlexContainer" + str(button.event_category)).add_child(button)
 		while event_resource.event_sorting_index < get_node("View/ScrollContainer/EventContainer/FlexContainer" + str(button.event_category)).get_child(max(0, button.get_index()-1)).resource.event_sorting_index:
 			get_node("View/ScrollContainer/EventContainer/FlexContainer" + str(button.event_category)).move_child(button, button.get_index()-1)
@@ -258,17 +209,17 @@ func _ready():
 ################################################################################
 ##				CLEANUP
 ################################################################################
-func _exit_tree():
+
+func _exit_tree() -> void:
 	# Explicitly free any open cache resources on close, so we don't get leaked resource errors on shutdown
-	clear_timeline()
-	current_timeline = null
+	clear_timeline_nodes()
 
 
 ################################################################################
 ## 				DRAG&DROP + DRAGGING EVENTS
 ################################################################################
 # handles dragging/moving of events
-func _process(delta):
+func _process(delta:float) -> void:
 	if moving_piece != null:
 		var current_position = get_global_mouse_position()
 		var node_position = moving_piece.global_position.y
@@ -291,10 +242,10 @@ func _process(delta):
 				move_block_down(moving_piece)
 				piece_was_dragged = true
 
-## INFO: These methods are mainly used by the TimelineArea
 
+## INFO: These methods are mainly used by the TimelineArea
 # Creates a ghost event for drag and drop
-func create_drag_and_drop_event(resource):
+func create_drag_and_drop_event(resource) -> void:
 	var index = get_index_under_cursor()
 	var piece = add_event_node(resource)
 	%Timeline.move_child(piece, index)
@@ -303,7 +254,8 @@ func create_drag_and_drop_event(resource):
 	select_item(piece)
 	return piece
 
-func drop_event():
+
+func drop_event() -> void:
 	if moving_piece != null:
 		var at_index = moving_piece.get_index()
 		var resource = moving_piece.resource
@@ -314,7 +266,8 @@ func drop_event():
 		piece_was_dragged = false
 		something_changed()
 
-func cancel_drop_event():
+
+func cancel_drop_event() -> void:
 	if moving_piece != null:
 		moving_piece = null
 		piece_was_dragged = false
@@ -524,8 +477,8 @@ func add_events_indexed(indexed_events:Dictionary) -> void:
 		deselect_all_items()
 		
 		var event_resource :Variant
-		if editor_reference != null:
-			for i in editor_reference.event_script_cache:
+		if get_parent().editors_manager.resource_helper:
+			for i in get_parent().editors_manager.resource_helper.get_event_scripts():
 				if i._test_event_string(indexed_events[event_idx]):
 					event_resource = i.duplicate()
 					break
@@ -637,8 +590,8 @@ func add_events_at_index(event_list:Array, at_index:int) -> void:
 	for item in event_list:
 		if typeof(item) == TYPE_STRING:
 			var resource: Variant
-			if editor_reference != null:
-				for i in editor_reference.event_script_cache:
+			if get_parent().editors_manager.resource_helper:
+				for i in get_parent().editors_manager.resource_helper.get_event_scripts():
 					if i._test_event_string(item):
 						resource = i.duplicate()
 						break
@@ -954,7 +907,7 @@ func add_extra_scroll_area_to_timeline():
 ## *****************************************************************************
 ##				SPECIAL BLOCK OPERATIONS
 ## *****************************************************************************
-# SIGNAL handles the actions of the small menu on the right
+# SIGNAL handles the actions of the small menu on the right (that was removed wasn't it?)
 func _on_event_options_action(action: String, item: Node):
 	### WORK TODO
 	if action == "remove":

@@ -1,6 +1,6 @@
-[gd_scene load_steps=3 format=3 uid="uid://dr7l1304wixcs"]
+[gd_scene load_steps=3 format=3]
 
-[ext_resource type="Script" path="res://addons/dialogic/Editor/TextEditor/TextEditor.gd" id="1_1kbx2"]
+[ext_resource type="Script" path="res://addons/dialogic/Editor/TimelineEditor/TextEditor/timeline_editor_text.gd" id="1_1kbx2"]
 
 [sub_resource type="CodeHighlighter" id="CodeHighlighter_vs5bt"]
 number_color = Color(0.8025, 0.81, 0.8225, 1)

@@ -1,21 +1,12 @@
-[gd_scene load_steps=14 format=3 uid="uid://bak1jk2glij8r"]
+[gd_scene load_steps=11 format=3 uid="uid://dxt0c6mx24nxo"]
 
-[ext_resource type="Script" path="res://addons/dialogic/Editor/CharacterEditor/CharacterEditor.gd" id="2"]
-[ext_resource type="Script" path="res://addons/dialogic/Editor/CharacterEditor/PortraitSettings_Image.gd" id="4_2x67k"]
+[ext_resource type="Script" path="res://addons/dialogic/Editor/CharacterEditor/character_editor.gd" id="2"]
+[ext_resource type="Script" path="res://addons/dialogic/Editor/CharacterEditor/character_editor_ptab_image.gd" id="2_cusvj"]
+[ext_resource type="Script" path="res://addons/dialogic/Editor/CharacterEditor/character_editor_ptab_scene.gd" id="4_6tltp"]
 [ext_resource type="PackedScene" uid="uid://7mvxuaulctcq" path="res://addons/dialogic/Editor/Events/Fields/FilePicker.tscn" id="4_a4bcu"]
-[ext_resource type="PackedScene" uid="uid://dpwhshre1n4t6" path="res://addons/dialogic/Editor/Events/Fields/ComplexPicker.tscn" id="4_jo7m8"]
-[ext_resource type="Theme" uid="uid://d3g4i4dshtdpu" path="res://addons/dialogic/Editor/Events/styles/InputFieldsStyle.tres" id="5"]
-[ext_resource type="Script" path="res://addons/dialogic/Editor/CharacterEditor/PortraitSettings_Scene.gd" id="6_hbhiq"]
-[ext_resource type="Script" path="res://addons/dialogic/Editor/CharacterEditor/PortraitSettings_Layout.gd" id="7_7ncjm"]
+[ext_resource type="Script" path="res://addons/dialogic/Editor/CharacterEditor/character_editor_ptab_layout.gd" id="5_eicvp"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_a26v5"]
-content_margin_left = 10.0
-content_margin_top = 10.0
-content_margin_right = 10.0
-content_margin_bottom = 10.0
-bg_color = Color(1, 1, 1, 1)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4lhxe"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cf78c"]
 content_margin_left = 10.0
 content_margin_top = 4.0
 content_margin_right = 10.0
@@ -25,22 +16,18 @@ border_width_top = 2
 border_color = Color(1, 1, 1, 0.75)
 corner_detail = 1
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_i0rs3"]
-content_margin_left = 10.0
-content_margin_top = 10.0
-content_margin_right = 10.0
-content_margin_bottom = 10.0
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_l8t00"]
+content_margin_left = 7.5
+content_margin_top = 7.5
+content_margin_right = 7.5
+content_margin_bottom = 7.5
 bg_color = Color(0, 0, 0, 1)
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
-corner_radius_top_left = 5
-corner_radius_top_right = 5
-corner_radius_bottom_right = 5
-corner_radius_bottom_left = 5
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
 
-[sub_resource type="Image" id="Image_hoq3c"]
+[sub_resource type="Image" id="Image_fyuk7"]
 data = {
 "data": PackedByteArray(255, 255, 255, 0, 255, 255, 255, 0, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 131, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 131, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 131, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 231, 255, 93, 93, 55, 255, 97, 97, 58, 255, 93, 93, 233, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 231, 255, 94, 94, 54, 255, 94, 94, 57, 255, 93, 93, 233, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 93, 93, 233, 255, 93, 93, 232, 255, 93, 93, 41, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 93, 93, 233, 255, 93, 93, 232, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 97, 97, 42, 255, 255, 255, 0, 255, 97, 97, 42, 255, 97, 97, 42, 255, 255, 255, 0, 255, 98, 98, 47, 255, 97, 97, 42, 255, 255, 255, 0, 255, 97, 97, 42, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 235, 255, 93, 93, 233, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 94, 94, 46, 255, 93, 93, 236, 255, 93, 93, 233, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 235, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 233, 255, 95, 95, 59, 255, 96, 96, 61, 255, 93, 93, 235, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 233, 255, 95, 95, 59, 255, 96, 96, 61, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0),
 "format": "RGBA8",
@@ -49,298 +36,139 @@ data = {
 "width": 16
 }
 
-[sub_resource type="ImageTexture" id="ImageTexture_kxrt6"]
-image = SubResource("Image_hoq3c")
+[sub_resource type="ImageTexture" id="ImageTexture_asiy6"]
+image = SubResource("Image_fyuk7")
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_4xgdx"]
 
-[node name="CharacterEditor" type="PanelContainer"]
+[node name="CharacterEditor" type="MarginContainer"]
+visible = false
 self_modulate = Color(0, 0, 0, 1)
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-theme = ExtResource("5")
-theme_override_styles/panel = SubResource("StyleBoxFlat_a26v5")
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 0
+theme_override_constants/margin_bottom = 0
 script = ExtResource("2")
 
 [node name="Split" type="HSplitContainer" parent="."]
-offset_left = 10.0
-offset_top = 10.0
-offset_right = 1014.0
-offset_bottom = 590.0
+layout_mode = 2
+offset_right = 1152.0
+offset_bottom = 648.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="Editor" type="VSplitContainer" parent="Split"]
-offset_right = 395.0
-offset_bottom = 580.0
+layout_mode = 2
+offset_right = 454.0
+offset_bottom = 648.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 11
 
 [node name="EditorScroll" type="ScrollContainer" parent="Split/Editor"]
-offset_right = 395.0
-offset_bottom = 309.0
+layout_mode = 2
+offset_right = 454.0
+offset_bottom = 54.0
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 0.0
 vertical_scroll_mode = 0
 
 [node name="MainEditTabs" type="TabContainer" parent="Split/Editor/EditorScroll"]
 unique_name_in_owner = true
-offset_right = 403.0
-offset_bottom = 301.0
+layout_mode = 2
+offset_right = 454.0
+offset_bottom = 54.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_constants/side_margin = 5
-theme_override_styles/tab_selected = SubResource("StyleBoxFlat_4lhxe")
-theme_override_styles/panel = SubResource("StyleBoxFlat_i0rs3")
-
-[node name="General" type="GridContainer" parent="Split/Editor/EditorScroll/MainEditTabs"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 10.0
-offset_top = 41.0
-offset_right = -10.0
-offset_bottom = -10.0
-columns = 2
-
-[node name="Label2" type="Label" parent="Split/Editor/EditorScroll/MainEditTabs/General"]
-offset_right = 131.0
-offset_bottom = 26.0
-size_flags_vertical = 0
-text = "Display Name: "
-
-[node name="DisplayName" type="HBoxContainer" parent="Split/Editor/EditorScroll/MainEditTabs/General"]
-offset_left = 135.0
-offset_right = 403.0
-offset_bottom = 33.0
-size_flags_horizontal = 3
-
-[node name="CheckBox" type="CheckBox" parent="Split/Editor/EditorScroll/MainEditTabs/General/DisplayName"]
-visible = false
-
-[node name="DisplayNameLineEdit" type="LineEdit" parent="Split/Editor/EditorScroll/MainEditTabs/General/DisplayName"]
-unique_name_in_owner = true
-offset_right = 90.0
-offset_bottom = 33.0
-expand_to_text_length = true
-caret_blink = true
-caret_blink_speed = 0.5
-
-[node name="ColorPickerButton" type="ColorPickerButton" parent="Split/Editor/EditorScroll/MainEditTabs/General/DisplayName"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(30, 30)
-offset_left = 94.0
-offset_right = 124.0
-offset_bottom = 33.0
-color = Color(1, 1, 1, 1)
-edit_alpha = false
-
-[node name="Label3" type="Label" parent="Split/Editor/EditorScroll/MainEditTabs/General"]
-offset_top = 37.0
-offset_right = 131.0
-offset_bottom = 63.0
-size_flags_vertical = 0
-text = "Nicknames:"
-
-[node name="DisplayNickname" type="HBoxContainer" parent="Split/Editor/EditorScroll/MainEditTabs/General"]
-offset_left = 135.0
-offset_top = 37.0
-offset_right = 403.0
-offset_bottom = 70.0
-size_flags_horizontal = 3
-
-[node name="NicknameLineEdit" type="LineEdit" parent="Split/Editor/EditorScroll/MainEditTabs/General/DisplayNickname"]
-unique_name_in_owner = true
-offset_right = 268.0
-offset_bottom = 33.0
-size_flags_horizontal = 3
-caret_blink = true
-caret_blink_speed = 0.5
-
-[node name="Label4" type="Label" parent="Split/Editor/EditorScroll/MainEditTabs/General"]
-offset_top = 74.0
-offset_right = 131.0
-offset_bottom = 100.0
-size_flags_vertical = 0
-text = "Description:"
-
-[node name="Description" type="HBoxContainer" parent="Split/Editor/EditorScroll/MainEditTabs/General"]
-offset_left = 135.0
-offset_top = 74.0
-offset_right = 403.0
-offset_bottom = 109.0
-size_flags_horizontal = 3
-
-[node name="DescriptionTextEdit" type="TextEdit" parent="Split/Editor/EditorScroll/MainEditTabs/General/Description"]
-unique_name_in_owner = true
-offset_right = 268.0
-offset_bottom = 35.0
-size_flags_horizontal = 3
-scroll_fit_content_height = true
-
-[node name="Label5" type="Label" parent="Split/Editor/EditorScroll/MainEditTabs/General"]
-offset_top = 113.0
-offset_right = 131.0
-offset_bottom = 139.0
-size_flags_vertical = 0
-text = "Default Portrait:"
-
-[node name="DefaultPortrait" type="HBoxContainer" parent="Split/Editor/EditorScroll/MainEditTabs/General"]
-offset_left = 135.0
-offset_top = 113.0
-offset_right = 403.0
-offset_bottom = 146.0
-size_flags_horizontal = 3
-
-[node name="DefaultPortraitPicker" parent="Split/Editor/EditorScroll/MainEditTabs/General/DefaultPortrait" instance=ExtResource("4_jo7m8")]
-unique_name_in_owner = true
-anchor_right = 0.0
-anchor_bottom = 0.0
-offset_right = 200.0
-offset_bottom = 33.0
-
-[node name="Label6" type="Label" parent="Split/Editor/EditorScroll/MainEditTabs/General"]
-offset_top = 150.0
-offset_right = 131.0
-offset_bottom = 176.0
-size_flags_vertical = 0
-text = "Portrait Settings:"
-
-[node name="PortraitMainSettings" type="HFlowContainer" parent="Split/Editor/EditorScroll/MainEditTabs/General"]
-offset_left = 135.0
-offset_top = 150.0
-offset_right = 403.0
-offset_bottom = 250.0
-size_flags_horizontal = 3
-
-[node name="Label" type="Label" parent="Split/Editor/EditorScroll/MainEditTabs/General/PortraitMainSettings"]
-offset_top = 3.0
-offset_right = 40.0
-offset_bottom = 29.0
-text = "Scale"
-
-[node name="MainScale" type="SpinBox" parent="Split/Editor/EditorScroll/MainEditTabs/General/PortraitMainSettings"]
-unique_name_in_owner = true
-offset_left = 44.0
-offset_right = 150.0
-offset_bottom = 33.0
-value = 100.0
-allow_greater = true
-suffix = "%"
-
-[node name="Offset" type="HBoxContainer" parent="Split/Editor/EditorScroll/MainEditTabs/General/PortraitMainSettings"]
-offset_top = 37.0
-offset_right = 268.0
-offset_bottom = 70.0
-
-[node name="Label2" type="Label" parent="Split/Editor/EditorScroll/MainEditTabs/General/PortraitMainSettings/Offset"]
-offset_top = 3.0
-offset_right = 48.0
-offset_bottom = 29.0
-text = "Offset"
-
-[node name="MainOffsetX" type="SpinBox" parent="Split/Editor/EditorScroll/MainEditTabs/General/PortraitMainSettings/Offset"]
-unique_name_in_owner = true
-offset_left = 52.0
-offset_right = 158.0
-offset_bottom = 33.0
-allow_greater = true
-allow_lesser = true
-suffix = "X"
-
-[node name="MainOffsetY" type="SpinBox" parent="Split/Editor/EditorScroll/MainEditTabs/General/PortraitMainSettings/Offset"]
-unique_name_in_owner = true
-offset_left = 162.0
-offset_right = 268.0
-offset_bottom = 33.0
-allow_greater = true
-allow_lesser = true
-suffix = "Y"
-
-[node name="MirrorOption" type="HBoxContainer" parent="Split/Editor/EditorScroll/MainEditTabs/General/PortraitMainSettings"]
-offset_top = 74.0
-offset_right = 78.0
-offset_bottom = 100.0
-
-[node name="Label" type="Label" parent="Split/Editor/EditorScroll/MainEditTabs/General/PortraitMainSettings/MirrorOption"]
-offset_right = 50.0
-offset_bottom = 26.0
-text = "Mirror"
-
-[node name="MainMirror" type="CheckBox" parent="Split/Editor/EditorScroll/MainEditTabs/General/PortraitMainSettings/MirrorOption"]
-unique_name_in_owner = true
-offset_left = 54.0
-offset_right = 78.0
-offset_bottom = 26.0
+theme_override_styles/tab_selected = SubResource("StyleBoxFlat_cf78c")
+theme_override_styles/panel = SubResource("StyleBoxFlat_l8t00")
 
 [node name="PortraitListSection" type="TabContainer" parent="Split/Editor"]
 unique_name_in_owner = true
-offset_top = 321.0
-offset_right = 395.0
-offset_bottom = 580.0
+layout_mode = 2
+offset_top = 66.0
+offset_right = 454.0
+offset_bottom = 648.0
 theme_override_constants/side_margin = 5
-theme_override_styles/tab_selected = SubResource("StyleBoxFlat_4lhxe")
-theme_override_styles/panel = SubResource("StyleBoxFlat_i0rs3")
+theme_override_styles/tab_selected = SubResource("StyleBoxFlat_cf78c")
+theme_override_styles/panel = SubResource("StyleBoxFlat_l8t00")
 
 [node name="Portraits" type="VBoxContainer" parent="Split/Editor/PortraitListSection"]
+layout_mode = 2
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 10.0
-offset_top = 41.0
-offset_right = -10.0
-offset_bottom = -10.0
+offset_left = 7.5
+offset_top = 38.5
+offset_right = -7.5
+offset_bottom = -7.5
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="PortraitListTools" type="HBoxContainer" parent="Split/Editor/PortraitListSection/Portraits"]
-offset_right = 375.0
-offset_bottom = 33.0
+layout_mode = 2
+offset_right = 439.0
+offset_bottom = 31.0
 
 [node name="AddPortraitButton" type="Button" parent="Split/Editor/PortraitListSection/Portraits/PortraitListTools"]
 unique_name_in_owner = true
+layout_mode = 2
 offset_right = 24.0
-offset_bottom = 33.0
-icon = SubResource("ImageTexture_kxrt6")
+offset_bottom = 31.0
+icon = SubResource("ImageTexture_asiy6")
 
 [node name="ImportPortraitsButton" type="Button" parent="Split/Editor/PortraitListSection/Portraits/PortraitListTools"]
 unique_name_in_owner = true
+layout_mode = 2
 offset_left = 28.0
 offset_right = 52.0
-offset_bottom = 33.0
-icon = SubResource("ImageTexture_kxrt6")
+offset_bottom = 31.0
+icon = SubResource("ImageTexture_asiy6")
 
 [node name="PortraitSearch" type="LineEdit" parent="Split/Editor/PortraitListSection/Portraits/PortraitListTools"]
 unique_name_in_owner = true
+layout_mode = 2
 offset_left = 56.0
-offset_right = 375.0
-offset_bottom = 33.0
+offset_right = 439.0
+offset_bottom = 31.0
 size_flags_horizontal = 3
 size_flags_vertical = 4
 placeholder_text = "Search"
 expand_to_text_length = true
 clear_button_enabled = true
-right_icon = SubResource("ImageTexture_kxrt6")
+right_icon = SubResource("ImageTexture_asiy6")
 caret_blink = true
-caret_blink_speed = 0.5
+caret_blink_interval = 0.5
 
 [node name="Panel" type="PanelContainer" parent="Split/Editor/PortraitListSection/Portraits"]
-offset_top = 37.0
-offset_right = 375.0
-offset_bottom = 208.0
+layout_mode = 2
+offset_top = 35.0
+offset_right = 439.0
+offset_bottom = 314.0
 size_flags_vertical = 3
 theme_override_styles/panel = SubResource("StyleBoxEmpty_4xgdx")
 
 [node name="PortraitTree" type="Tree" parent="Split/Editor/PortraitListSection/Portraits/Panel"]
 unique_name_in_owner = true
-offset_right = 375.0
-offset_bottom = 171.0
+layout_mode = 2
+offset_right = 439.0
+offset_bottom = 279.0
 allow_rmb_select = true
 hide_folding = true
 hide_root = true
 
 [node name="RightSection" type="VSplitContainer" parent="Split"]
-offset_left = 407.0
-offset_right = 1004.0
-offset_bottom = 580.0
+layout_mode = 2
+offset_left = 466.0
+offset_right = 1152.0
+offset_bottom = 648.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 size_flags_stretch_ratio = 1.5
@@ -348,11 +176,12 @@ size_flags_stretch_ratio = 1.5
 [node name="PortraitPreviewSection" type="Panel" parent="Split/RightSection"]
 unique_name_in_owner = true
 clip_contents = true
-offset_right = 597.0
-offset_bottom = 440.0
+layout_mode = 2
+offset_right = 686.0
+offset_bottom = 492.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-theme_override_styles/panel = SubResource("StyleBoxFlat_i0rs3")
+theme_override_styles/panel = SubResource("StyleBoxFlat_l8t00")
 
 [node name="Node2D" type="Node2D" parent="Split/RightSection/PortraitPreviewSection"]
 position = Vector2(13, 17)
@@ -360,11 +189,13 @@ position = Vector2(13, 17)
 [node name="RealPreviewPivot" type="Sprite2D" parent="Split/RightSection/PortraitPreviewSection/Node2D"]
 unique_name_in_owner = true
 position = Vector2(289, 362)
-texture = SubResource("ImageTexture_kxrt6")
+texture = SubResource("ImageTexture_asiy6")
 
 [node name="ScenePreviewWarning" type="Label" parent="Split/RightSection/PortraitPreviewSection"]
 unique_name_in_owner = true
 visible = false
+layout_mode = 1
+anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -383,6 +214,8 @@ metadata/_edit_layout_mode = 1
 
 [node name="PreviewReal" type="CenterContainer" parent="Split/RightSection/PortraitPreviewSection"]
 unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 7
 anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
@@ -395,6 +228,8 @@ grow_vertical = 0
 metadata/_edit_layout_mode = 1
 
 [node name="Control" type="Control" parent="Split/RightSection/PortraitPreviewSection/PreviewReal"]
+layout_mode = 2
+anchors_preset = 0
 offset_left = 302.0
 offset_top = 69.0
 offset_right = 302.0
@@ -409,6 +244,8 @@ update_scale = false
 
 [node name="FullPreviewAvailableRect" type="Control" parent="Split/RightSection/PortraitPreviewSection"]
 unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 10.0
@@ -421,12 +258,15 @@ metadata/_edit_layout_mode = 1
 
 [node name="PreviewLabel" type="Label" parent="Split/RightSection/PortraitPreviewSection"]
 unique_name_in_owner = true
+layout_mode = 0
 offset_right = 40.0
 offset_bottom = 23.0
 text = "Preview"
 
 [node name="PreviewMode" type="OptionButton" parent="Split/RightSection/PortraitPreviewSection"]
 unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
 offset_left = -121.0
@@ -443,80 +283,96 @@ popup/item_1/id = 1
 metadata/_edit_layout_mode = 1
 
 [node name="TextureRect" type="TextureRect" parent="Split/RightSection/PortraitPreviewSection"]
+layout_mode = 0
 offset_top = -12.0
 offset_right = 597.0
 offset_bottom = -12.0
 
 [node name="PortraitSettingsSection" type="TabContainer" parent="Split/RightSection"]
 unique_name_in_owner = true
-offset_top = 452.0
-offset_right = 597.0
-offset_bottom = 580.0
+layout_mode = 2
+offset_top = 504.0
+offset_right = 686.0
+offset_bottom = 648.0
 size_flags_vertical = 3
 size_flags_stretch_ratio = 0.3
 theme_override_constants/side_margin = 5
-theme_override_styles/tab_selected = SubResource("StyleBoxFlat_4lhxe")
-theme_override_styles/panel = SubResource("StyleBoxFlat_i0rs3")
+theme_override_styles/tab_selected = SubResource("StyleBoxFlat_cf78c")
+theme_override_styles/panel = SubResource("StyleBoxFlat_l8t00")
 
 [node name="Image" type="ScrollContainer" parent="Split/RightSection/PortraitSettingsSection"]
 custom_minimum_size = Vector2(0, 35)
+layout_mode = 2
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 10.0
-offset_top = 41.0
-offset_right = -10.0
-offset_bottom = -10.0
+offset_left = 7.5
+offset_top = 38.5
+offset_right = -7.5
+offset_bottom = -7.5
+grow_horizontal = 2
+grow_vertical = 2
 horizontal_scroll_mode = 0
-script = ExtResource("4_2x67k")
+script = ExtResource("2_cusvj")
 
 [node name="Flow" type="HFlowContainer" parent="Split/RightSection/PortraitSettingsSection/Image"]
-offset_right = 577.0
-offset_bottom = 77.0
+layout_mode = 2
+offset_right = 671.0
+offset_bottom = 98.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="GridContainer" type="GridContainer" parent="Split/RightSection/PortraitSettingsSection/Image/Flow"]
-offset_right = 577.0
-offset_bottom = 33.0
+layout_mode = 2
+offset_right = 671.0
+offset_bottom = 38.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 columns = 2
 
 [node name="Label" type="Label" parent="Split/RightSection/PortraitSettingsSection/Image/Flow/GridContainer"]
-offset_top = 3.0
+layout_mode = 2
+offset_top = 6.0
 offset_right = 57.0
-offset_bottom = 29.0
+offset_bottom = 32.0
 text = "Image: "
 
 [node name="ImagePicker" parent="Split/RightSection/PortraitSettingsSection/Image/Flow/GridContainer" instance=ExtResource("4_a4bcu")]
 unique_name_in_owner = true
+layout_mode = 2
 offset_left = 61.0
-offset_right = 577.0
-offset_bottom = 33.0
+offset_right = 671.0
+offset_bottom = 38.0
 size_flags_horizontal = 3
 file_filter = "*.png, *.svg"
-resource_icon = SubResource("ImageTexture_kxrt6")
+resource_icon = SubResource("ImageTexture_asiy6")
 
 [node name="Scene" type="ScrollContainer" parent="Split/RightSection/PortraitSettingsSection"]
 visible = false
 custom_minimum_size = Vector2(0, 35)
+layout_mode = 2
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 10.0
 offset_top = 41.0
 offset_right = -10.0
 offset_bottom = -10.0
+grow_horizontal = 2
+grow_vertical = 2
 horizontal_scroll_mode = 0
-script = ExtResource("6_hbhiq")
+script = ExtResource("4_6tltp")
 
 [node name="Flow" type="HFlowContainer" parent="Split/RightSection/PortraitSettingsSection/Scene"]
 unique_name_in_owner = true
-offset_right = 577.0
-offset_bottom = 77.0
+layout_mode = 2
+offset_right = 666.0
+offset_bottom = 93.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="GridContainer" type="GridContainer" parent="Split/RightSection/PortraitSettingsSection/Scene/Flow"]
+layout_mode = 2
 offset_right = 584.0
 offset_bottom = 63.0
 size_flags_horizontal = 3
@@ -524,6 +380,7 @@ size_flags_vertical = 3
 columns = 2
 
 [node name="Label" type="Label" parent="Split/RightSection/PortraitSettingsSection/Scene/Flow/GridContainer"]
+layout_mode = 2
 offset_top = 3.0
 offset_right = 102.0
 offset_bottom = 29.0
@@ -531,15 +388,17 @@ text = "Scene: "
 
 [node name="ScenePicker" parent="Split/RightSection/PortraitSettingsSection/Scene/Flow/GridContainer" instance=ExtResource("4_a4bcu")]
 unique_name_in_owner = true
+layout_mode = 2
 offset_left = 106.0
 offset_right = 584.0
 offset_bottom = 33.0
 size_flags_horizontal = 3
 file_filter = "*.tscn"
 placeholder = "Default scene"
-resource_icon = SubResource("ImageTexture_kxrt6")
+resource_icon = SubResource("ImageTexture_asiy6")
 
 [node name="Label2" type="Label" parent="Split/RightSection/PortraitSettingsSection/Scene/Flow/GridContainer"]
+layout_mode = 2
 offset_top = 37.0
 offset_right = 102.0
 offset_bottom = 63.0
@@ -547,6 +406,7 @@ text = "Ignore scale: "
 
 [node name="IgnoreScale" type="CheckBox" parent="Split/RightSection/PortraitSettingsSection/Scene/Flow/GridContainer"]
 unique_name_in_owner = true
+layout_mode = 2
 offset_left = 106.0
 offset_top = 37.0
 offset_right = 584.0
@@ -555,23 +415,30 @@ offset_bottom = 63.0
 [node name="Layout" type="ScrollContainer" parent="Split/RightSection/PortraitSettingsSection"]
 visible = false
 custom_minimum_size = Vector2(0, 35)
+layout_mode = 2
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_top = 31.0
+grow_horizontal = 2
+grow_vertical = 2
 horizontal_scroll_mode = 0
-script = ExtResource("7_7ncjm")
+script = ExtResource("5_eicvp")
 
 [node name="Flow" type="HFlowContainer" parent="Split/RightSection/PortraitSettingsSection/Layout"]
-offset_right = 597.0
-offset_bottom = 97.0
+layout_mode = 2
+offset_right = 686.0
+offset_bottom = 113.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Split/RightSection/PortraitSettingsSection/Layout/Flow"]
+layout_mode = 2
 offset_right = 150.0
 offset_bottom = 33.0
 
 [node name="Label" type="Label" parent="Split/RightSection/PortraitSettingsSection/Layout/Flow/HBoxContainer"]
+layout_mode = 2
 offset_top = 3.0
 offset_right = 40.0
 offset_bottom = 29.0
@@ -579,6 +446,7 @@ text = "Scale:"
 
 [node name="PortraitScale" type="SpinBox" parent="Split/RightSection/PortraitSettingsSection/Layout/Flow/HBoxContainer"]
 unique_name_in_owner = true
+layout_mode = 2
 offset_left = 44.0
 offset_right = 150.0
 offset_bottom = 33.0
@@ -587,11 +455,13 @@ allow_greater = true
 suffix = "%"
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="Split/RightSection/PortraitSettingsSection/Layout/Flow"]
+layout_mode = 2
 offset_top = 37.0
 offset_right = 268.0
 offset_bottom = 70.0
 
 [node name="Label2" type="Label" parent="Split/RightSection/PortraitSettingsSection/Layout/Flow/HBoxContainer2"]
+layout_mode = 2
 offset_top = 3.0
 offset_right = 48.0
 offset_bottom = 29.0
@@ -599,6 +469,7 @@ text = "Offset:"
 
 [node name="PortraitOffsetX" type="SpinBox" parent="Split/RightSection/PortraitSettingsSection/Layout/Flow/HBoxContainer2"]
 unique_name_in_owner = true
+layout_mode = 2
 offset_left = 52.0
 offset_right = 158.0
 offset_bottom = 33.0
@@ -608,6 +479,7 @@ suffix = "X"
 
 [node name="PortraitOffsetY" type="SpinBox" parent="Split/RightSection/PortraitSettingsSection/Layout/Flow/HBoxContainer2"]
 unique_name_in_owner = true
+layout_mode = 2
 offset_left = 162.0
 offset_right = 268.0
 offset_bottom = 33.0
@@ -616,12 +488,14 @@ allow_lesser = true
 suffix = "Y"
 
 [node name="MirrorOption" type="HBoxContainer" parent="Split/RightSection/PortraitSettingsSection/Layout/Flow"]
+layout_mode = 2
 offset_left = 272.0
 offset_top = 37.0
 offset_right = 350.0
 offset_bottom = 70.0
 
 [node name="Label" type="Label" parent="Split/RightSection/PortraitSettingsSection/Layout/Flow/MirrorOption"]
+layout_mode = 2
 offset_top = 3.0
 offset_right = 50.0
 offset_bottom = 29.0
@@ -629,6 +503,7 @@ text = "Mirror:"
 
 [node name="PortraitMirror" type="CheckBox" parent="Split/RightSection/PortraitSettingsSection/Layout/Flow/MirrorOption"]
 unique_name_in_owner = true
+layout_mode = 2
 offset_left = 54.0
 offset_right = 78.0
 offset_bottom = 33.0

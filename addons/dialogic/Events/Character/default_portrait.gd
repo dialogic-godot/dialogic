@@ -26,9 +26,8 @@ func _update_portrait(passed_character:DialogicCharacter, passed_portrait:String
 		passed_portrait = passed_character['default_portrait']
 	portrait = passed_portrait
 	if passed_character != null:
-		if character == null || character != passed_character:
+		if character == null or character != passed_character:
 			character = passed_character
-		
 		
 	var path :String = character.portraits[portrait].get('image', '')
 	$Portrait.texture = null

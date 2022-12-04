@@ -1018,6 +1018,5 @@ func convertSettings():
 
 
 func _on_check_box_toggled(button_pressed):
-	print("box checked")
 	prefixCharacters = button_pressed
 	%OutputLog.text += "\r\n\r\nToggling this will add a prefix to all character filenames, which will have letters from each folder depth they are in. Characters in the root folder will have no prefix. \r\n"
