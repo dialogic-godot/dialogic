@@ -10,8 +10,63 @@ extends Node
 ## Trying to follow this documentation convention: https://github.com/godotengine/godot/pull/41095
 class_name Dialogic
 
+## Preloader function, loads and prepares the tree into the Engine meta
+## Not necessary to run separately, it will be run by Dialogic.start() the first time if it's not present
+## But useful to speed up loading
+## This might be slower than the older way, though, so best to do with some other loading
+## If for any reason during game runtime this needs to be rebuilt, Engine.get_main_loop().remove_meta('dialogic_tree_loaded') will make it run on next Dialogic.start()
 
-## Refactor the start function for 2.0 there should be a cleaner way to do it :)
+static func prepare(): 
+	var timeline_folder_breakdown = {}
+	var character_folder_breakdown = {}
+	var definition_folder_breakdown = {}
+	var theme_folder_breakdown = {}
+	
+	# load the main folder strucutre, and then use the DialogicUtils to match their names
+	var structure = DialogicResources.get_resource_folder_flat_structure()
+	var timeline_list = DialogicUtil.get_timeline_list()
+	var character_list = DialogicUtil.get_character_list()
+	var definition_list = DialogicUtil.get_default_definitions_list()
+	var theme_list = DialogicUtil.get_theme_list()
+	
+	
+	# populate the data from the resources
+	for timeline in timeline_list:
+		timeline['path'] = structure['Timeline'][timeline['file']] + timeline['name']
+		structure['Timeline'][timeline['file']]= timeline
+	
+	for character in character_list:
+		character['path'] = structure['Character'][character['file']] + character['name']
+		structure['Character'][character['file']]= character
+		
+	for definition in definition_list:
+		definition['path'] = structure['Definition'][definition['id']] + definition['name']
+		structure['Definition'][definition['id']]= definition
+		
+	for theme in theme_list:
+		theme['path'] = structure['Theme'][theme['file']] + theme['name']
+		structure['Theme'][theme['file']]= theme
+		
+	# After that we put them in the order we need to make the folder paths easiest to use
+	for timeline in structure['Timeline'].keys():
+		timeline_folder_breakdown[structure['Timeline'][timeline]['path']] = structure['Timeline'][timeline]
+
+	for character in structure['Character'].keys():
+		character_folder_breakdown[structure['Character'][character]['path']] = structure['Character'][character]
+		
+	for definition in structure['Definition'].keys():
+		definition_folder_breakdown[structure['Definition'][definition]['path']] = structure['Definition'][definition]
+		
+	for theme in structure['Theme'].keys():
+		theme_folder_breakdown[structure['Theme'][theme]['path']] = structure['Theme'][theme]		
+		
+	Engine.set_meta('dialogic_tree_loaded',true)
+	Engine.set_meta('dialogic_timeline_tree', timeline_folder_breakdown)
+	Engine.set_meta('dialogic_character_tree', character_folder_breakdown)
+	Engine.set_meta('dialogic_definition_tree', definition_folder_breakdown)
+	Engine.set_meta('dialogic_theme_tree', theme_folder_breakdown)
+	
+	print("loaded")
 
 ## Starts the dialog for the given timeline and returns a Dialog node.
 ## You must then add it manually to the scene to display the dialog.
@@ -36,6 +91,9 @@ static func start(timeline: String = '', default_timeline: String ='', dialog_sc
 	var dialog_node = null
 	var canvas_dialog_node = null
 	var returned_dialog_node = null
+	
+	if !Engine.get_main_loop().has_meta('dialogic_tree_loaded'):
+		prepare()
 	
 	if use_canvas_instead:
 		var canvas_dialog_script = load("res://addons/dialogic/Nodes/canvas_dialog_node.gd")

@@ -511,6 +511,11 @@ static func save_resource_folder_structure(data):
 static func get_resource_folder_flat_structure() -> Dictionary:
 	# Convert the folder structure from the JSON file into a simpler one that doesn't require recursive loops
 	var flat_structure = {}
+	flat_structure['Timeline'] = {}
+	flat_structure['Character'] = {}
+	flat_structure['Definition'] = {}
+	flat_structure['Theme'] = {}
+	
 	
 	var json_structure = get_resource_folder_structure()
 	
