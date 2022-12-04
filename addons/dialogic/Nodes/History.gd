@@ -222,7 +222,11 @@ func add_history_row_event(eventData):
 	# event logging handled here
 	# Text Events, replacing br with linebreaks
 	if eventData.event_id == 'dialogic_001':
-		newHistoryRow.add_history(str(characterPrefix, eventData.text.replace('[br]', '\n')), audioData)
+		eventData.text = eventData.text.replace('[br]', '\n')
+		var regex = RegEx.new()
+		regex.compile("\\[[^\\]]{0,}speed[^\\]]{0,}\\]")
+		eventData.text = regex.sub(eventData.text, "")
+		newHistoryRow.add_history(str(characterPrefix, eventData.text), audioData)
 	# Character Arrivals
 	elif eventData.event_id == 'dialogic_002':
 		var logText = get_parent().settings.get_value('history', 'text_arrivals', 'has arrived')
