@@ -47,6 +47,8 @@ var continue_at_end:bool = true
 var event_node_as_text: String = ""
 ## Flags if the event has been processed or is only stored as text
 var event_node_ready: bool = false
+## How many empty lines are before this event
+var empty_lines_above:int = 0
 
 
 ### Editor UI Properties ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

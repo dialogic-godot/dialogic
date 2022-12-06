@@ -356,7 +356,7 @@ func rebuild_character_directory() -> void:
 	
 	# Now the three arrays are prepped, begin the depth search
 	var clean_search_path:bool = false
-	var depth = 1
+	var depth := 1
 	
 	while !clean_search_path:
 		var interim_array:Array = []
@@ -471,21 +471,24 @@ func process_timeline(timeline: DialogicTimeline) -> DialogicTimeline:
 			
 			var lines := timeline.events
 			var idx := -1
-			
+			var empty_lines = 0
 			while idx < len(lines)-1:
 				idx += 1
+				
+				## First manage indent and creation of end branch events
+				## For this, we still treat the event as a string
 				var line: String = ""
 				if typeof(lines[idx]) == TYPE_STRING:
 					line = lines[idx]
 				else:
 					line = lines[idx]['event_node_as_text']
 				
-				
 				var line_stripped :String = line.strip_edges(true, false)
 				if line_stripped.is_empty():
+					empty_lines += 1
 					continue
-				var indent :String= line.substr(0,len(line)-len(line_stripped))
 				
+				var indent :String= line.substr(0,len(line)-len(line_stripped))
 				if len(indent) < len(prev_indent):
 					for i in range(len(prev_indent)-len(indent)):
 						events.append(end_event.duplicate())
@@ -493,14 +496,17 @@ func process_timeline(timeline: DialogicTimeline) -> DialogicTimeline:
 				elif prev_was_opener and len(indent) == len(prev_indent):
 					events.append(end_event.duplicate())
 				prev_indent = indent
+				
+				## Now we process the event into a resource 
+				## by checking on each event if it recognizes this string 
 				var event_content :String = line_stripped
-
 				var event :Variant
 				for i in _event_script_cache:
 					if i._test_event_string(event_content):
 						event = i.duplicate()
 						break
 				
+				event.empty_lines_above = empty_lines
 				# add the following lines until the event says it's full there is an empty line or the indent changes
 				while !event.is_string_full_event(event_content):
 					idx += 1
@@ -521,13 +527,13 @@ func process_timeline(timeline: DialogicTimeline) -> DialogicTimeline:
 					if event['event_name'] == 'Character' || event['event_name'] == 'Text':
 						event.set_meta('editor_character_directory', character_directory)
 
-
+				
 				event._load_from_string(event_content)
 				event['event_node_as_text'] = event_content
 
 				events.append(event)
 				prev_was_opener = event.can_contain_events
-				
+				empty_lines = 0
 			
 
 			if !prev_indent.is_empty():
