@@ -41,15 +41,17 @@ func _register() -> void:
 	
 	$VisualEditor.load_event_buttons()
 	
-	current_editor_mode = DialogicUtil.get_project_setting('dialogic/timeline_editor_mode', 0)
+	current_editor_mode = DialogicUtil.get_project_setting('dialogic/editor/timeline_editor_mode', 0)
 	
 	match current_editor_mode:
 		0:
 			$VisualEditor.show()
 			$TextEditor.hide()
+			editor_mode_toggle_button.text = "Text Editor"
 		1:
-			$VisualEditor.show()
-			$TextEditor.hide()
+			$VisualEditor.hide()
+			$TextEditor.show()
+			editor_mode_toggle_button.text = "Visual Editor"
 	$NoTimelineScreen.show()
 
 
@@ -106,7 +108,7 @@ func toggle_editor_mode():
 			$VisualEditor.show()
 			editor_mode_toggle_button.text = "Text Editor"
 	
-	ProjectSettings.set_setting('dialogic/timeline_editor_mode', current_editor_mode)
+	ProjectSettings.set_setting('dialogic/editor/timeline_editor_mode', current_editor_mode)
 	ProjectSettings.save()
 
 
