@@ -48,41 +48,24 @@ func save_timeline() -> void:
 	if get_parent().current_resource_state != DialogicEditor.ResourceStates.Unsaved:
 		return
 	
-	
 	# create a list of text versions of all the events with the right indent
-	var new_events = []
+	var new_events := []
 	var indent := 0
 	
 	for event in %Timeline.get_children():
 		
 		if 'event_name' in event.resource:
-			
-			if event.resource['event_name'] == 'End Branch':
-					indent -= 1
-					continue
-			
-			new_events.append("\t".repeat(indent) + event.resource._store_as_string())
-			
-			if event.resource.can_contain_events:
-				indent += 1
-			if indent < 0: 
-				indent = 0
-	
-	# 
+			event.resource.update_text_version() 
+			new_events.append(event.resource)
+
 	if !get_parent().current_resource:
 		return
 
 	get_parent().current_resource.set_events(new_events)
-	
-	# Build new processed timeline for the ResourceSaver to use
-	# ResourceSaver needs a DialogicEvents timeline so the translation builder can run
-	get_parent().current_resource.events_processed = false
-	get_parent().editors_manager.resource_helper.process_timeline(get_parent().current_resource)
-	get_parent().current_resource.events_processed = false		
-	print("Error code : ", ResourceSaver.save(get_parent().current_resource, get_parent().current_resource.resource_path))
-	
-	#Switch back to the text event array, in case we're switching editor modes
-	get_parent().current_resource.set_events(new_events)
+	get_parent().current_resource.events_processed = true
+	var error :int = ResourceSaver.save(get_parent().current_resource, get_parent().current_resource.resource_path)
+	if error != OK:
+		print('[Dialogic] Saving error: ', error)
 	
 	get_parent().current_resource.set_meta("unsaved", false)
 	get_parent().current_resource_state = DialogicEditor.ResourceStates.Saved

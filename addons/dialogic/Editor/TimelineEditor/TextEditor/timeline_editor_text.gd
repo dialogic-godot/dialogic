@@ -52,6 +52,8 @@ func load_timeline(object:DialogicTimeline) -> void:
 			continue
 		
 		if event != null:
+			for i in event.empty_lines_above:
+				result += "\t".repeat(indent)+"\n"
 			result += "\t".repeat(indent)+event['event_node_as_text'].replace('\n', "\n"+"\t".repeat(indent)) + "\n"
 		if event.can_contain_events:
 			indent += 1
@@ -64,32 +66,20 @@ func load_timeline(object:DialogicTimeline) -> void:
 
 func save_timeline():
 	if get_parent().current_resource:
-			# The translations need this to be actual Events, so we do a few steps of conversion here
-			
-			var text_array:Array = text_timeline_to_array(text)
-			get_parent().current_resource.events = text_array
-			
-			# Build new processed timeline for the ResourceSaver to use
-			# ResourceSaver needs a DialogicEvents timeline so the translation builder can run
-			get_parent().current_resource.events_processed = false
-			get_parent().editors_manager.resource_helper.process_timeline(get_parent().current_resource)
-			get_parent().current_resource.events_processed = false		
-			ResourceSaver.save(get_parent().current_resource, get_parent().current_resource.resource_path)
-			
-			#Switch back to the text event array, in case we're switching editor modes
-			get_parent().current_resource.events = text_array
-			get_parent().current_resource.set_meta("timeline_not_saved", false)
-			get_parent().current_resource_state = DialogicEditor.ResourceStates.Saved
-			get_parent().editors_manager.resource_helper.rebuild_timeline_directory()
+		var text_array:Array = text_timeline_to_array(text)
+		
+		get_parent().current_resource.events = text_array
+		get_parent().current_resource.events_processed = false
+		ResourceSaver.save(get_parent().current_resource, get_parent().current_resource.resource_path)
+
+		get_parent().current_resource.set_meta("timeline_not_saved", false)
+		get_parent().current_resource_state = DialogicEditor.ResourceStates.Saved
+		get_parent().editors_manager.resource_helper.rebuild_timeline_directory()
 
 
 func text_timeline_to_array(text:String) -> Array:
 	# Parse the lines down into an array
-	var prev_indent := ""
 	var events := []
-	
-	# this is needed to add a end branch event even to empty conditions/choices
-	var prev_was_opener := false
 	
 	var lines := text.split('\n', true)
 	var idx := -1
@@ -98,8 +88,7 @@ func text_timeline_to_array(text:String) -> Array:
 		idx += 1
 		var line :String = lines[idx]
 		var line_stripped :String = line.strip_edges(true, true)
-		if !line_stripped.is_empty():
-			events.append(line)
+		events.append(line)
 	
 	return events
 
