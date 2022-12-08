@@ -32,6 +32,10 @@ func _init() -> void:
 	continue_at_end = true
 
 
+func _get_icon() -> Resource:
+	return load(self.get_script().get_path().get_base_dir().path_join('icon_label.png'))
+
+
 ################################################################################
 ## 						SAVING/LOADING
 ################################################################################

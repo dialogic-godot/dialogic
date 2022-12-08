@@ -34,15 +34,6 @@ func _init() -> void:
 	event_sorting_index = 4
 
 
-func get_required_subsystems() -> Array:
-	return [
-				{'name':'Styles',
-				'subsystem': get_script().resource_path.get_base_dir().path_join('subsystem_styles.gd'),
-				'character_main':get_script().resource_path.get_base_dir().path_join('character_settings_style.tscn')
-				},
-			]
-
-
 ################################################################################
 ## 						SAVING/LOADING
 ################################################################################

@@ -118,16 +118,6 @@ func _init() -> void:
 	continue_at_end = false
 
 
-func get_required_subsystems() -> Array:
-	return [
-				{'name':'Text',
-				'subsystem': get_script().resource_path.get_base_dir().path_join('subsystem_text.gd'),
-				'settings': get_script().resource_path.get_base_dir().path_join('settings_text.tscn'),
-				'character_main':get_script().resource_path.get_base_dir().path_join('character_settings/character_settings_text.tscn')
-				},
-			]
-
-
 ################################################################################
 ## 						SAVING/LOADING
 ################################################################################

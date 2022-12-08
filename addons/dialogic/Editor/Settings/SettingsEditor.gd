@@ -8,10 +8,9 @@ func _register():
 
 
 func _ready():
-	for script in DialogicUtil.get_event_scripts():
-		for subsystem in load(script).new().get_required_subsystems():
-			if subsystem.has('settings'):
-				$Tabs.add_child(load(subsystem.settings).instantiate())
+	for indexer in DialogicUtil.get_indexers():
+		for settings_page in indexer._get_settings_pages():
+			$Tabs.add_child(load(settings_page).instantiate())
 
 
 func _open(extra_information:Variant = null) -> void:

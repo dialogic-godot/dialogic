@@ -2,6 +2,8 @@
 class_name DialogicBackgroundEvent
 extends DialogicEvent
 
+## Event to show scenes in the background and switch between them. 
+
 ### Settings
 
 ## The scene to use. If empty, this will default to the DefaultBackground.gd scene.
@@ -35,13 +37,6 @@ func _init() -> void:
 	event_category = Category.AudioVisual
 	event_sorting_index = 0
 	expand_by_default = false
-
-
-func get_required_subsystems() -> Array:
-	return [
-				{'name':'Backgrounds',
-				'subsystem':get_script().resource_path.get_base_dir().path_join('subsystem_backgrounds.gd')},
-			]
 
 
 ################################################################################

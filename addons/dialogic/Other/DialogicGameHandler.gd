@@ -7,7 +7,7 @@ var current_timeline_events: Array = []
 var timeline_jump_stack: Array = []
 var character_directory: Dictionary = {}
 var timeline_directory: Dictionary = {}
-var _event_script_cache: Array = []
+var _event_script_cache: Array[DialogicEvent] = []
 
 var current_state: Variant = null:
 	get:
@@ -269,31 +269,24 @@ func load_full_state(state_info:Dictionary) -> void:
 ##						SUB-SYTSEMS
 ################################################################################
 func collect_subsystems() -> void:
-	# This also builds th event script cache as well
-	for script in DialogicUtil.get_event_scripts():
-		var x = load(script).new()
+	# This also builds the event script cache as well
+	_event_script_cache = []
+	
+	for indexer in DialogicUtil.get_indexers():
 		
-		x.set_meta("script_path", script)
-		if script != "res://addons/dialogic/Events/End Branch/event.gd":
-			_event_script_cache.push_back(x)
+		# build event cache
+		for event in indexer._get_events():
+			if not 'event_end_branch.gd' in event and not 'event_text.gd' in event:
+				_event_script_cache.append(load(event).new())
 		
-		#only build the subsystems at runtime
+		# build the subsystems (only at runtime)
 		if !Engine.is_editor_hint():
-			for i in x.get_required_subsystems():
-				if i.has('subsystem') and not has_subsystem(i.name):
-					add_subsytsem(i.name, i.subsystem)
-					
-		# Events are checked in order while testing them. EndBranch needs to be first, Text needs to be last
-	var x = load("res://addons/dialogic/Events/End Branch/event.gd").new()
-	x.set_meta("script_path", "res://addons/dialogic/Events/End Branch/event.gd")
-	_event_script_cache.push_front(x)
-
-				
-	for i in _event_script_cache.size():
-		if _event_script_cache[i].get_meta("script_path") == "res://addons/dialogic/Events/Text/event.gd":
-			_event_script_cache.push_back(_event_script_cache[i])
-			_event_script_cache.remove_at(i)
-			break
+			for subsystem in indexer._get_subsystems():
+				add_subsytsem(subsystem.name, subsystem.script)
+	
+	# Events are checked in order while testing them. EndBranch needs to be first, Text needs to be last
+	_event_script_cache.push_front(DialogicEndBranchEvent.new())
+	_event_script_cache.push_back(DialogicTextEvent.new())
 
 
 func has_subsystem(_name:String) -> bool:
@@ -457,11 +450,7 @@ func process_timeline(timeline: DialogicTimeline) -> DialogicTimeline:
 			return timeline
 		else:
 			#print(str(Time.get_ticks_msec()) + ": Starting process unloaded timeline")	
-			var end_event: DialogicEndBranchEvent 
-			for i in _event_script_cache:
-				if i.get_meta("script_path") == "res://addons/dialogic/Events/End Branch/event.gd":
-						end_event = i.duplicate()
-						break
+			var end_event := DialogicEndBranchEvent.new()
 			
 			var prev_indent := ""
 			var events := []
