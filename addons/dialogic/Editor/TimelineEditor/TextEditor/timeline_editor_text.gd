@@ -5,8 +5,7 @@ extends CodeEdit
 
  
 func _ready():
-	DialogicUtil.get_dialogic_plugin().dialogic_save.connect(save_timeline)
-	add_highlighting()
+	syntax_highlighter = load("res://addons/dialogic/Editor/TimelineEditor/TextEditor/syntax_highlighter.gd").new()
 
 
 func _on_text_editor_text_changed():
@@ -82,47 +81,6 @@ func save_timeline():
 			get_parent().current_resource.set_meta("timeline_not_saved", false)
 			get_parent().current_resource_state = DialogicEditor.ResourceStates.Saved
 			get_parent().editors_manager.resource_helper.rebuild_timeline_directory()
-		
-
-
-func add_highlighting():
-	# This is a dumpster fire, so hopefully it will be improved during beta?
-	var editor_settings = DialogicUtil.get_dialogic_plugin().editor_interface.get_editor_settings()
-	var keywords_color: Color = editor_settings.get('text_editor/theme/highlighting/keyword_color')
-	var functions_color: Color = editor_settings.get('text_editor/theme/highlighting/function_color')
-	var strings_color: Color = editor_settings.get('text_editor/theme/highlighting/string_color')
-	var numbers_color: Color = editor_settings.get("text_editor/theme/highlighting/number_color")
-	var types_color: Color = editor_settings.get('text_editor/theme/highlighting/engine_type_color')
-	var jumps_color: Color = editor_settings.get("text_editor/theme/highlighting/control_flow_keyword_color")
-	var symbols_color: Color = editor_settings.get('text_editor/theme/highlighting/text_color')
-	var text_color: Color = editor_settings.get('text_editor/theme/highlighting/text_color')
-	var comments_color: Color = editor_settings.get('text_editor/theme/highlighting/comment_color')
-	
-	var s := CodeHighlighter.new()
-	
-	s.color_regions = {
-		'[ ]': functions_color,
-		'< >': functions_color,
-		'" "': strings_color,
-		'{ }': types_color
-	}
-	s.add_color_region('- ', '', types_color, true)
-	s.add_color_region('# ', '', comments_color, true)
-	s.add_color_region(': ', '', text_color, true)
-	
-	s.keyword_colors = {
-		"if": keywords_color,
-		"elif": keywords_color,
-		"else": keywords_color,
-		"and": keywords_color,
-		"or": keywords_color
-	}
-	
-	s.symbol_color = symbols_color
-	s.number_color = numbers_color
-	s.member_variable_color = text_color
-	s.function_color = text_color
-	set('syntax_highlighter', s)
 
 
 func text_timeline_to_array(text:String) -> Array:
@@ -142,7 +100,6 @@ func text_timeline_to_array(text:String) -> Array:
 		var line_stripped :String = line.strip_edges(true, true)
 		if !line_stripped.is_empty():
 			events.append(line)
-	
 	
 	return events
 
