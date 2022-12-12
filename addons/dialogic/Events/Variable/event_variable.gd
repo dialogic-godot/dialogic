@@ -58,15 +58,6 @@ func _execute() -> void:
 	finish()
 
 
-func get_required_subsystems() -> Array:
-	return [
-				{'name':'VAR',
-				'subsystem': get_script().resource_path.get_base_dir().path_join('subsystem_variables.gd'),
-				'settings': get_script().resource_path.get_base_dir().path_join('variables_editor/settings_variables.tscn'),
-				},
-			]
-
-
 ################################################################################
 ## 						INITIALIZE
 ################################################################################

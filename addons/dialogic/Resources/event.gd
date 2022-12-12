@@ -130,11 +130,6 @@ func _execute() -> void:
 ################################################################################
 
 ## to be overridden by sub-classes
-func get_required_subsystems() -> Array:
-	return []
-
-
-## to be overridden by sub-classes
 ## if needs_parent_event is true, this needs to return true if the event is that event
 func is_expected_parent_event(event:DialogicEvent) -> bool:
 	return false
@@ -319,7 +314,7 @@ func parse_shortcode_parameters(shortcode : String) -> Dictionary:
 ## 					EDITOR REPRESENTATION
 ################################################################################
 
-func get_icon() -> Resource:
+func _get_icon() -> Resource:
 	var ext : String = '.png'
 	var icon := load(self.get_script().get_path().get_base_dir() + "/icon" + ext)
 	if icon:

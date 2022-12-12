@@ -1,16 +1,31 @@
 @tool
-class_name DialogicGlossaryEvent
+class_name DialogicHistoryEvent
 extends DialogicEvent
 
-## Event that does nothing right now.
+## Event that allows clearing, pausing and resuming of history functionality.
+
+enum ActionTypes {Clear, Pause, Resume}
+
+### Settings
+
+## The type of action: Clear, Pause or Resume
+var action_type := ActionTypes.Pause
 
 
 ################################################################################
-## 						EXECUTE
+## 						EXECUTION
 ################################################################################
 
 func _execute() -> void:
-	pass
+	match action_type:
+		ActionTypes.Clear:
+			dialogic.History.full_history = []
+		ActionTypes.Pause:
+			dialogic.History.full_history_enabled = false
+		ActionTypes.Resume:
+			dialogic.History.full_history_enabled = true
+	
+	finish()
 
 
 ################################################################################
@@ -18,29 +33,24 @@ func _execute() -> void:
 ################################################################################
 
 func _init() -> void:
-	event_name = "Glossary"
+	event_name = "History"
 	set_default_color('Color6')
 	event_category = Category.AudioVisual
 	event_sorting_index = 0
 	expand_by_default = false
 
 
-func get_required_subsystems() -> Array:
-	return [
-				{'name':'Glossary',
-				'subsystem': get_script().resource_path.get_base_dir().path_join('subsystem_glossary.gd'),
-				'settings': get_script().resource_path.get_base_dir().path_join('settings_glossary.tscn'),
-				},
-			]
-
 ################################################################################
 ## 						SAVING/LOADING
 ################################################################################
+
 func get_shortcode() -> String:
-	return "glossary"
+	return "history"
 
 func get_shortcode_parameters() -> Dictionary:
 	return {
+		#param_name 		: property_info
+		"action" 			: {"property": "action_type", "default": ActionTypes.Pause},
 	}
 
 ################################################################################
@@ -48,4 +58,19 @@ func get_shortcode_parameters() -> Dictionary:
 ################################################################################
 
 func build_event_editor():
-	pass
+	add_header_edit('action_type', ValueType.FixedOptionSelector, '', '', {
+		'selector_options': [
+			{
+				'label': 'Pause History',
+				'value': ActionTypes.Pause,
+			},
+			{
+				'label': 'Resume History',
+				'value': ActionTypes.Resume,
+			},
+			{
+				'label': 'Clear History',
+				'value': ActionTypes.Clear,
+			},
+		]
+		})

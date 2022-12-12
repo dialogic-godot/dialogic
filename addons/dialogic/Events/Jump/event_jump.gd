@@ -60,6 +60,9 @@ func _init() -> void:
 	expand_by_default = false
 
 
+func _get_icon() -> Resource:
+	return load(self.get_script().get_path().get_base_dir().path_join('icon_jump.png'))
+
 ################################################################################
 ## 						SAVING/LOADING
 ################################################################################

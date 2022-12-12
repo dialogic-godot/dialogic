@@ -135,10 +135,9 @@ func _ready() -> void:
 	add_main_tab("res://addons/dialogic/Editor/CharacterEditor/character_editor_tab_general.tscn")
 	
 	# Load main tabs from subsystems/events
-	for script in DialogicUtil.get_event_scripts():
-		for subsystem in load(script).new().get_required_subsystems():
-			if subsystem.has('character_main'):
-				add_main_tab(subsystem.character_main)
+	for indexer in DialogicUtil.get_indexers():
+		for main_tab in indexer._get_character_editor_tabs():
+			add_main_tab(main_tab)
 	
 	for child in %PortraitSettingsSection.get_children():
 		if !child is DialogicCharacterEditorPortraitSettingsTab:

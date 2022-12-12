@@ -40,13 +40,8 @@ func _init() -> void:
 	expand_by_default = false
 
 
-func get_required_subsystems() -> Array:
-	return [
-				{'name':'Audio',
-				'subsystem': get_script().resource_path.get_base_dir().path_join('subsystem_audio.gd'),
-				},
-			]
-
+func _get_icon() -> Resource:
+	return load(self.get_script().get_path().get_base_dir().path_join('icon_music.png'))
 
 ################################################################################
 ## 						SAVING/LOADING

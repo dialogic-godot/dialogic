@@ -1,24 +1,16 @@
 @tool
-class_name DialogicSaveEvent
+class_name DialogicGlossaryEvent
 extends DialogicEvent
 
-## Event that allows saving to a specific slot.
-
-
-### Settings
-
-## The name of the slot to save to. Learn more in the saving subsystem.
-var slot_name: String = "Default"
+## Event that does nothing right now.
 
 
 ################################################################################
-## 						INITIALIZE
+## 						EXECUTE
 ################################################################################
 
 func _execute() -> void:
-	if slot_name:
-		dialogic.Save.save(slot_name)
-	finish()
+	pass
 
 
 ################################################################################
@@ -26,38 +18,26 @@ func _execute() -> void:
 ################################################################################
 
 func _init() -> void:
-	event_name = "Save"
-	set_default_color('Color2')
-	event_category = Category.Main
-	event_sorting_index = 2
-
-
-func get_required_subsystems() -> Array:
-	return [
-				{'name':'Save', 
-				'subsystem': get_script().resource_path.get_base_dir().path_join('subsystem_save.gd'),
-				'settings': get_script().resource_path.get_base_dir().path_join('settings_save.tscn')},
-			]
+	event_name = "Glossary"
+	set_default_color('Color6')
+	event_category = Category.AudioVisual
+	event_sorting_index = 0
+	expand_by_default = false
 
 
 ################################################################################
 ## 						SAVING/LOADING
 ################################################################################
-
 func get_shortcode() -> String:
-	return "save"
-
+	return "glossary"
 
 func get_shortcode_parameters() -> Dictionary:
 	return {
-		#param_name : property_info
-		"slot"		: {"property": "slot_name", "default": "Default"},
 	}
-
 
 ################################################################################
 ## 						EDITOR REPRESENTATION
 ################################################################################
 
 func build_event_editor():
-	add_header_edit('slot_name', ValueType.SinglelineText, 'to slot')
+	pass

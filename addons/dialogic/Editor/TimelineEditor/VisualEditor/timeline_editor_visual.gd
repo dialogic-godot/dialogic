@@ -176,7 +176,7 @@ func load_event_buttons() -> void:
 		var button = buttonScene.instantiate()
 		button.resource = event_resource
 		button.visible_name = '       ' + event_resource.event_name
-		button.event_icon = event_resource.get_icon()
+		button.event_icon = event_resource._get_icon()
 		button.set_color(event_resource.event_color)
 		button.dialogic_color_name = event_resource.dialogic_color_name
 		button.event_category = event_resource.event_category
@@ -466,8 +466,8 @@ func add_events_indexed(indexed_events:Dictionary) -> void:
 					event_resource = i.duplicate()
 					break
 		else:
-			event_resource = DialogicUtil.get_event_by_string(indexed_events[event_idx]).new()
-		
+			printerr("[Dialogic] Unable to access resource_helper!")
+			continue
 		event_resource.from_text(indexed_events[event_idx])
 		if event_resource is DialogicEndBranchEvent:
 			events.append(create_end_branch_event(%Timeline.get_child_count(), %Timeline.get_child(indexed_events[event_idx].trim_prefix('<<END BRANCH>>').to_int())))
@@ -579,7 +579,8 @@ func add_events_at_index(event_list:Array, at_index:int) -> void:
 						resource = i.duplicate()
 						break
 			else:
-				resource = DialogicUtil.get_event_by_string(item).new()
+				printerr("[Dialogic] Unable to access resource_helper!")
+				continue
 			if resource['event_name'] == 'Character' or resource['event_name'] == 'Text':
 				resource.set_meta('editor_character_directory', find_parent('EditorView').character_directory)
 			resource.from_text(item)

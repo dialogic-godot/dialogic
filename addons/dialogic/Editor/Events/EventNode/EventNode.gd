@@ -342,8 +342,8 @@ func _ready():
 		if resource.event_name:
 			#title_label.text = DTS.translate(resource.event_name)
 			title_label.text = resource.event_name
-		if resource.get_icon() != null:
-			_set_event_icon(resource.get_icon())
+		if resource._get_icon() != null:
+			_set_event_icon(resource._get_icon())
 
 		%IconPanel.self_modulate = resource.event_color
 		

@@ -56,14 +56,6 @@ func _init() -> void:
 	expand_by_default = false
 
 
-func get_required_subsystems() -> Array:
-	return [
-				{'name':'Voice',
-				'subsystem': get_script().resource_path.get_base_dir().path_join('subsystem_voice.gd'),
-				},
-			]
-
-
 ################################################################################
 ## 						SAVING/LOADING
 ################################################################################

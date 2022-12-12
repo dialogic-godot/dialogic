@@ -151,7 +151,7 @@ func _on_verify_pressed():
 			%OutputLog.text += "[color=yellow]There may be an issue, please check in Dialogic 1.x to make sure that is correct![/color]\r\n"
 			
 		# dirty check for the variable subsystem, as properly calling has subsystem is complicated currently
-		varSubsystemInstalled = file.file_exists("res://addons/dialogic/Events/Variable/event.gd")
+		varSubsystemInstalled = file.file_exists("res://addons/dialogic/Events/Variable/event_variable.gd")
 		
 		if !varSubsystemInstalled:
 			%OutputLog.text += "[color=yellow]Variable subsystem is not present in this Dialogic! Variables will not be converted![/color]"

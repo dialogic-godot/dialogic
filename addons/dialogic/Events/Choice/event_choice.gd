@@ -44,15 +44,6 @@ func _init() -> void:
 	expand_by_default = false
 
 
-func get_required_subsystems() -> Array:
-	return [
-				{'name':'Choices',
-				'subsystem': get_script().resource_path.get_base_dir().path_join('subsystem_choices.gd'),
-				'settings':get_script().resource_path.get_base_dir().path_join('settings_choices.tscn'),
-				},
-			]
-
-
 # if needs_parent_event is true, this needs to return true if the event is that event
 func is_expected_parent_event(event:DialogicEvent) -> bool:
 	return event is DialogicTextEvent

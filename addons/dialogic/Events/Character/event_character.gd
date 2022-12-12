@@ -165,14 +165,8 @@ func _init() -> void:
 	expand_by_default = false
 
 
-func get_required_subsystems() -> Array:
-	return [
-				{'name':'Portraits',
-				'subsystem': get_script().resource_path.get_base_dir().path_join('subsystem_portraits.gd'),
-				'settings': get_script().resource_path.get_base_dir().path_join('settings_portraits.tscn'),
-				},
-			]
-
+func _get_icon() -> Resource:
+	return load(self.get_script().get_path().get_base_dir().path_join('icon_character.png'))
 
 ################################################################################
 ## 						SAVING/LOADING

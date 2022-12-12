@@ -7,7 +7,7 @@ extends Node
 # barebones instance of DGH, with local Editor references to the event cache and charcater directory
 var dialogic_handler: Node 
 
-var event_script_cache: Array = []
+var event_script_cache: Array[DialogicEvent] = []
 var character_directory: Dictionary = {}
 var timeline_directory: Dictionary = {}
 
@@ -28,22 +28,18 @@ func rebuild_event_script_cache():
 		dialogic_handler.collect_subsystems()
 		event_script_cache = dialogic_handler._event_script_cache
 	else:
-		for script in DialogicUtil.get_event_scripts():
-			var x = load(script).new()
-			x.set_meta("script_path", script)
-			if script != "res://addons/dialogic/Events/End Branch/event.gd":
-				event_script_cache.push_back(x)
+		for indexer in DialogicUtil.get_indexers():
+			# build event cache
+			for event in indexer._get_events():
+				if not 'event_end_branch.gd' in event and not 'event_text.gd' in event:
+					event_script_cache.append(load(event).new())
+			
 		# Events are checked in order while testing them. EndBranch needs to be first, Text needs to be last
-		var x = load("res://addons/dialogic/Events/End Branch/event.gd").new()
-		x.set_meta("script_path", "res://addons/dialogic/Events/End Branch/event.gd")
-		event_script_cache.push_front(x)
-
-		for i in event_script_cache.size():
-			if event_script_cache[i].get_meta("script_path") == "res://addons/dialogic/Events/Text/event.gd":
-				event_script_cache.push_back(event_script_cache[i])
-				event_script_cache.remove_at(i)
-				break
+		event_script_cache.push_front(DialogicEndBranchEvent.new())
+		event_script_cache.push_back(DialogicTextEvent.new())
+	
 	return event_script_cache
+
 
 func rebuild_character_directory() -> void:
 	character_directory = {}

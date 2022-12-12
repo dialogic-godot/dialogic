@@ -51,14 +51,6 @@ func _init() -> void:
 	expand_by_default = false
 
 
-func get_required_subsystems() -> Array:
-	return [
-				{'name':'TextInput',
-				'subsystem': get_script().resource_path.get_base_dir().path_join('subsystem_text_input.gd'),
-				},
-			]
-
-
 ################################################################################
 ## 						SAVING/LOADING
 ################################################################################
