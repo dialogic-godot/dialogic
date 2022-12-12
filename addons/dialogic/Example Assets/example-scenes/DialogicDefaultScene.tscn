@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=3]
+[gd_scene load_steps=30 format=3 uid="uid://btx7jmmry0ots"]
 
 [ext_resource type="Script" path="res://addons/dialogic/Example Assets/example-scenes/DialogicDefaultScene.gd" id="1"]
 [ext_resource type="Script" path="res://addons/dialogic/Events/Text/node_dialog_text.gd" id="2"]
@@ -154,48 +154,31 @@ metadata/_edit_layout_mode = 1
 
 [node name="DialogicNode_ChoiceButton1" type="Button" parent="DefaultStyle/Choices"]
 layout_mode = 2
-offset_right = 230.0
-offset_bottom = 31.0
 text = "Some text"
 script = ExtResource("4")
 
 [node name="DialogicNode_ChoiceButton2" type="Button" parent="DefaultStyle/Choices"]
 layout_mode = 2
-offset_top = 35.0
-offset_right = 230.0
-offset_bottom = 66.0
 text = "Some text"
 script = ExtResource("4")
 
 [node name="DialogicNode_ChoiceButton3" type="Button" parent="DefaultStyle/Choices"]
 layout_mode = 2
-offset_top = 70.0
-offset_right = 230.0
-offset_bottom = 101.0
 text = "Some text"
 script = ExtResource("4")
 
 [node name="DialogicNode_ChoiceButton4" type="Button" parent="DefaultStyle/Choices"]
 layout_mode = 2
-offset_top = 105.0
-offset_right = 230.0
-offset_bottom = 136.0
 text = "Some text"
 script = ExtResource("4")
 
 [node name="DialogicNode_ChoiceButton5" type="Button" parent="DefaultStyle/Choices"]
 layout_mode = 2
-offset_top = 140.0
-offset_right = 230.0
-offset_bottom = 171.0
 text = "Some text"
 script = ExtResource("4")
 
 [node name="DialogicNode_ChoiceButton6" type="Button" parent="DefaultStyle/Choices"]
 layout_mode = 2
-offset_top = 175.0
-offset_right = 230.0
-offset_bottom = 206.0
 text = "Some text"
 script = ExtResource("4")
 
@@ -226,9 +209,6 @@ metadata/_edit_group_ = true
 
 [node name="DialogicNode_NameLabel" type="Label" parent="DefaultStyle/PanelContainer2"]
 layout_mode = 2
-offset_top = 2.0
-offset_right = 67.0
-offset_bottom = 28.0
 text = "Name"
 script = ExtResource("3")
 
@@ -250,8 +230,6 @@ metadata/_edit_layout_mode = 1
 
 [node name="DialogicNode_DialogText" type="RichTextLabel" parent="DefaultStyle/PanelContainer"]
 layout_mode = 2
-offset_right = 552.0
-offset_bottom = 109.0
 bbcode_enabled = true
 text = "Some default text"
 script = ExtResource("2")
@@ -263,13 +241,6 @@ play_every_character = 0
 
 [node name="DNextIndicator" type="Control" parent="DefaultStyle/PanelContainer"]
 layout_mode = 2
-anchors_preset = 0
-offset_left = 552.0
-offset_top = 109.0
-offset_right = 552.0
-offset_bottom = 109.0
-grow_horizontal = 0
-grow_vertical = 0
 size_flags_horizontal = 8
 size_flags_vertical = 8
 script = ExtResource("20_ljcq2")
@@ -306,28 +277,17 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_q3vpc")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="DefaultStyle/DialogicNode_TextInput/PanelContainer"]
 layout_mode = 2
-offset_right = 420.0
-offset_bottom = 100.0
 
 [node name="TextLabel" type="Label" parent="DefaultStyle/DialogicNode_TextInput/PanelContainer/VBoxContainer"]
 layout_mode = 2
-offset_right = 420.0
-offset_bottom = 26.0
 text = "Please enter some text:"
 autowrap_mode = 3
 
 [node name="InputField" type="LineEdit" parent="DefaultStyle/DialogicNode_TextInput/PanelContainer/VBoxContainer"]
 layout_mode = 2
-offset_top = 30.0
-offset_right = 420.0
-offset_bottom = 61.0
 
 [node name="ConfirmationButton" type="Button" parent="DefaultStyle/DialogicNode_TextInput/PanelContainer/VBoxContainer"]
 layout_mode = 2
-offset_left = 349.0
-offset_top = 65.0
-offset_right = 420.0
-offset_bottom = 96.0
 size_flags_horizontal = 8
 text = "Confirm"
 
@@ -355,38 +315,23 @@ metadata/_edit_layout_mode = 1
 
 [node name="VBox" type="VBoxContainer" parent="DefaultStyle/Glossary/Panel"]
 layout_mode = 2
-offset_left = 2.0
-offset_top = 4.0
-offset_right = 199.0
-offset_bottom = 79.0
 theme_override_constants/separation = 0
 
 [node name="Title" type="Label" parent="DefaultStyle/Glossary/Panel/VBox"]
 layout_mode = 2
-offset_right = 197.0
-offset_bottom = 26.0
 text = "MyGlossaryEntry"
 
 [node name="HSeparator" type="HSeparator" parent="DefaultStyle/Glossary/Panel/VBox"]
 layout_mode = 2
-offset_top = 26.0
-offset_right = 197.0
-offset_bottom = 30.0
 
 [node name="Text" type="RichTextLabel" parent="DefaultStyle/Glossary/Panel/VBox"]
 layout_mode = 2
-offset_top = 30.0
-offset_right = 197.0
-offset_bottom = 53.0
 bbcode_enabled = true
 text = "Some text"
 fit_content_height = true
 
 [node name="Extra" type="RichTextLabel" parent="DefaultStyle/Glossary/Panel/VBox"]
 layout_mode = 2
-offset_top = 53.0
-offset_right = 197.0
-offset_bottom = 75.0
 theme_override_colors/default_color = Color(1, 1, 1, 0.584314)
 theme_override_font_sizes/normal_font_size = 15
 bbcode_enabled = true
@@ -396,11 +341,6 @@ fit_content_height = true
 [node name="Control" type="Control" parent="DefaultStyle/Glossary/Panel"]
 show_behind_parent = true
 layout_mode = 2
-anchors_preset = 0
-offset_left = 100.0
-offset_top = 79.0
-offset_right = 100.0
-offset_bottom = 79.0
 size_flags_horizontal = 4
 size_flags_vertical = 8
 
@@ -414,13 +354,6 @@ rotation = 0.75799
 size_flags_horizontal = 4
 size_flags_vertical = 8
 theme_override_styles/panel = SubResource("StyleBoxFlat_a3cyk")
-
-[node name="ExampleHistoryScene" parent="DefaultStyle" instance=ExtResource("22_854kg")]
-layout_mode = 1
-history_font_normal = ExtResource("23_gyqve")
-history_font_bold = ExtResource("24_aa4pl")
-history_font_italics = ExtResource("25_wt3bc")
-metadata/_edit_lock_ = true
 
 [node name="SpecialStyle" type="Control" parent="."]
 visible = false
@@ -451,60 +384,36 @@ metadata/_edit_layout_mode = 1
 
 [node name="DialogicNode_ChoiceButton1" type="Button" parent="SpecialStyle/Choices"]
 layout_mode = 2
-offset_left = 139.0
-offset_top = 40.0
-offset_right = 181.0
-offset_bottom = 71.0
 size_flags_horizontal = 8
 text = "Text"
 script = ExtResource("4")
 
 [node name="DialogicNode_ChoiceButton2" type="Button" parent="SpecialStyle/Choices"]
 layout_mode = 2
-offset_left = 139.0
-offset_top = 75.0
-offset_right = 181.0
-offset_bottom = 106.0
 size_flags_horizontal = 8
 text = "Text"
 script = ExtResource("4")
 
 [node name="DialogicNode_ChoiceButton3" type="Button" parent="SpecialStyle/Choices"]
 layout_mode = 2
-offset_left = 139.0
-offset_top = 110.0
-offset_right = 181.0
-offset_bottom = 141.0
 size_flags_horizontal = 8
 text = "Text"
 script = ExtResource("4")
 
 [node name="DialogicNode_ChoiceButton4" type="Button" parent="SpecialStyle/Choices"]
 layout_mode = 2
-offset_left = 139.0
-offset_top = 145.0
-offset_right = 181.0
-offset_bottom = 176.0
 size_flags_horizontal = 8
 text = "Text"
 script = ExtResource("4")
 
 [node name="DialogicNode_ChoiceButton5" type="Button" parent="SpecialStyle/Choices"]
 layout_mode = 2
-offset_left = 139.0
-offset_top = 180.0
-offset_right = 181.0
-offset_bottom = 211.0
 size_flags_horizontal = 8
 text = "Text"
 script = ExtResource("4")
 
 [node name="DialogicNode_ChoiceButton6" type="Button" parent="SpecialStyle/Choices"]
 layout_mode = 2
-offset_left = 139.0
-offset_top = 215.0
-offset_right = 181.0
-offset_bottom = 246.0
 size_flags_horizontal = 8
 text = "Text"
 script = ExtResource("4")
@@ -524,22 +433,14 @@ metadata/_edit_layout_mode = 1
 
 [node name="MarginContainer" type="MarginContainer" parent="SpecialStyle/PanelContainer"]
 layout_mode = 2
-offset_left = 10.0
-offset_top = 10.0
-offset_right = 396.0
-offset_bottom = 59.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="SpecialStyle/PanelContainer/MarginContainer"]
 layout_mode = 2
-offset_right = 386.0
-offset_bottom = 49.0
 theme_override_constants/separation = 0
 alignment = 1
 
 [node name="DialogicNode_NameLabel" type="Label" parent="SpecialStyle/PanelContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
-offset_right = 386.0
-offset_bottom = 26.0
 text = "Name"
 horizontal_alignment = 1
 script = ExtResource("3")
@@ -547,13 +448,16 @@ use_character_color = false
 
 [node name="DialogicNode_DialogText" type="RichTextLabel" parent="SpecialStyle/PanelContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
-offset_top = 26.0
-offset_right = 386.0
-offset_bottom = 49.0
 text = "Some default text"
 fit_content_height = true
 script = ExtResource("2")
 Align = 1
+
+[node name="ExampleHistoryScene" parent="." instance=ExtResource("22_854kg")]
+history_font_normal = ExtResource("23_gyqve")
+history_font_bold = ExtResource("24_aa4pl")
+history_font_italics = ExtResource("25_wt3bc")
+metadata/_edit_lock_ = true
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 script = ExtResource("20_x1o37")
