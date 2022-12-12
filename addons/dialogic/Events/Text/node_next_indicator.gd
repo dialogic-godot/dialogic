@@ -14,16 +14,13 @@ extends Control
 @export_enum('bounce', 'blink', 'none') var animation := 0
 ## Set the image to use as the indicator.
 @export var texture := preload("res://addons/dialogic/Example Assets/next-indicator/next-indicator.png")
-## Allows setting an offset to the icon.
-@onready var start_position : Vector2 = position
 
 
 func _ready():
 	add_to_group('dialogic_next_indicator')
-	
 	# Creating texture
 	if texture:
-		var icon = TextureRect.new()
+		var icon := TextureRect.new()
 		icon.ignore_texture_size = true
 		icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 		icon.size = Vector2(32,32)
@@ -43,15 +40,14 @@ func _on_visibility_changed():
 func play_animation(animation: int, time:float) -> void:
 	if animation == 0:
 		var tween:Tween = (create_tween() as Tween)
-		position = start_position
 		var distance := 4
 		tween.set_parallel(false)
 		tween.set_trans(Tween.TRANS_SINE)
 		tween.set_ease(Tween.EASE_IN_OUT)
 		tween.set_loops()
 		
-		tween.tween_property(self, 'position', position + Vector2(0,distance), time*0.3)
-		tween.tween_property(self, 'position', position - Vector2(0,distance), time*0.3)
+		tween.tween_property(self, 'position', Vector2(0,distance), time*0.3).as_relative()
+		tween.tween_property(self, 'position', - Vector2(0,distance), time*0.3).as_relative()
 	if animation == 1:
 		var tween:Tween = (create_tween() as Tween)
 		tween.set_parallel(false)
