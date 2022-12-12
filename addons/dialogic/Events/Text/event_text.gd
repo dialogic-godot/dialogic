@@ -55,7 +55,7 @@ func _execute() -> void:
 		dialogic.Text.update_name_label(character)
 		
 		if portrait and dialogic.has_subsystem('Portraits') and dialogic.Portraits.is_character_joined(character):
-				dialogic.portraits.change_portrait(character, portrait)
+				dialogic.Portraits.change_portrait(character, portrait)
 		var check_portrait = portrait if !portrait.is_empty() else dialogic.current_state_info['portraits'].get(character.resource_path, {}).get('portrait', '')
 		if check_portrait and character.portraits.get(check_portrait, {}).get('sound_mood', '') in character.custom_info.get('sound_moods', {}):
 			dialogic.Text.update_typing_sound_mood(character.custom_info.get('sound_moods', {}).get(character.portraits[check_portrait].get('sound_mood', {}), {}))
