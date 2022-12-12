@@ -100,7 +100,7 @@ func show_history() -> void:
 				var new_node = text_node.duplicate()
 				new_node.prepare_texbox(self)
 				
-				if !item['event_object']._leave_all:
+				if !item['event_object'].leave_all:
 					var character_name = ""
 					
 					if Dialogic.has_subsystem('VAR'):

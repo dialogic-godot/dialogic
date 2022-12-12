@@ -39,7 +39,7 @@ var mirrored: bool = false
 ## Only used on Leave events. If true, all joined characters will leave. 
 var leave_all: bool = false
 ## If set, will be passed to the portrait scene.
-var ExtraData: String = ""
+var extra_data: String = ""
 
 
 ### Helpers
@@ -72,7 +72,7 @@ func _execute() -> void:
 			
 			if character:
 				if !dialogic.Portraits.is_character_joined(character):
-					var n = dialogic.Portraits.add_portrait(character, portrait, position, mirrored, z_index, ExtraData)
+					var n = dialogic.Portraits.add_portrait(character, portrait, position, mirrored, z_index, extra_data)
 					if n:
 						if animation_name.is_empty():
 							animation_name = DialogicUtil.get_project_setting('dialogic/animations/join_default', 
@@ -137,7 +137,7 @@ get_script().resource_path.get_base_dir().path_join('DefaultAnimations/fade_out_
 		ActionTypes.Update:
 			if character:
 				if dialogic.Portraits.is_character_joined(character):
-					dialogic.Portraits.change_portrait(character, portrait, mirrored, z_index, _update_zindex, ExtraData)
+					dialogic.Portraits.change_portrait(character, portrait, mirrored, z_index, _update_zindex, extra_data)
 					if position != 0:
 						dialogic.Portraits.move_portrait(character, position, z_index, _update_zindex, position_move_time)
 					
@@ -197,7 +197,7 @@ func to_text() -> String:
 	
 	if position and action_type != ActionTypes.Leave:
 		result_string += " "+str(position)
-	if animation_name != "" or z_index != 0 or mirrored != false or position_move_time != 0.0 or ExtraData != "":
+	if animation_name != "" or z_index != 0 or mirrored != false or position_move_time != 0.0 or extra_data != "":
 		result_string += " ["
 		if animation_name:
 			result_string += 'animation="'+DialogicUtil.pretty_name(animation_name)+'"'
@@ -219,8 +219,8 @@ func to_text() -> String:
 		if position_move_time != 0:
 			result_string += ' move_time="' + str(position_move_time) + '"'
 		
-		if ExtraData != "":
-			result_string += ' extra_data="' + ExtraData + '"'
+		if extra_data != "":
+			result_string += ' extra_data="' + extra_data + '"'
 			
 		result_string += "]"
 	return result_string
@@ -317,7 +317,7 @@ func from_text(string:String) -> void:
 			z_index = 	shortcode_params.get('z-index', 0).to_int()
 			_update_zindex = true 
 		mirrored = DialogicUtil.str_to_bool(shortcode_params.get('mirrored', 'false'))
-		ExtraData = shortcode_params.get('extra_data', "")
+		extra_data = shortcode_params.get('extra_data', "")
 
 
 func is_valid_event(string:String) -> bool:
