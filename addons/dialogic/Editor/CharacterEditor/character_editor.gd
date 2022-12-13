@@ -299,7 +299,7 @@ func update_preview() -> void:
 			
 			%RealPreviewPivot.add_child(scene)
 			
-			if scene.script.is_tool():
+			if is_instance_valid(scene.get_script()) and scene.script.is_tool():
 				if scene.has_method('_update_portrait'):
 					scene._update_portrait(current_resource, selected_item.get_text(0))
 				if scene.has_method('_set_mirror'):
@@ -311,7 +311,7 @@ func update_preview() -> void:
 				if current_portrait_data.get('scene', '').is_empty() or !current_portrait_data.get('ignore_char_scale', false):
 					scene.scale = Vector2(1,1)*scale
 			else:
-				if scene.script.is_tool() and scene.has_method('_get_covered_rect'):
+				if  is_instance_valid(scene.get_script()) and scene.script.is_tool() and scene.has_method('_get_covered_rect'):
 					var rect :Rect2= scene._get_covered_rect()
 					var available_rect:Rect2 = %FullPreviewAvailableRect.get_rect()
 					scene.scale = Vector2(1,1) * min(available_rect.size.x/rect.size.x, available_rect.size.y/rect.size.y)
