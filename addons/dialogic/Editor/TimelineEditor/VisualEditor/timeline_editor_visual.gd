@@ -699,7 +699,7 @@ func _add_event_button_pressed(event_resource:DialogicEvent):
 ##					 	CREATING THE TIMELINE
 ## *****************************************************************************
 # Adding an event to the timeline
-func add_event_node(event_resource:Resource, at_index:int = -1, auto_select: bool = false, indent: bool = false):
+func add_event_node(event_resource:DialogicEvent, at_index:int = -1, auto_select: bool = false, indent: bool = false):
 	if event_resource is DialogicEndBranchEvent:
 		return create_end_branch_event(at_index, %Timeline.get_child(0))
 	
@@ -710,6 +710,7 @@ func add_event_node(event_resource:Resource, at_index:int = -1, auto_select: boo
 	var piece = event_node.instantiate()
 	var resource = event_resource
 	piece.resource = event_resource
+	event_resource._editor_node = piece
 	piece.content_changed.connect(something_changed)
 	if at_index == -1:
 		if len(selected_items) != 0:

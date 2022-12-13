@@ -15,6 +15,8 @@ func _ready():
 
 func _open(extra_information:Variant = null) -> void:
 	refresh()
+	if typeof(extra_information) == TYPE_STRING and has_node('Tabs/'+extra_information):
+		$Tabs.current_tab = get_node('Tabs/'+extra_information).get_index()
 
 
 func _close():

@@ -239,7 +239,15 @@ func build_editor():
 			editor_node = Label.new()
 			editor_node.text = p.display_info.text
 			editor_node.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-		
+		elif p.dialogic_type == resource.ValueType.Button:
+			editor_node = Button.new()
+			editor_node.text = p.display_info.text
+			editor_node.icon = p.display_info.icon
+			#editor_node.expand_icon = true
+			editor_node.flat = true
+			editor_node.custom_minimum_size.x = 30*DialogicUtil.get_editor_scale()
+			editor_node.tooltip_text = p.display_info.tooltip
+			editor_node.pressed.connect(p.display_info.callable)
 		## CUSTOM
 		elif p.dialogic_type == resource.ValueType.Custom:
 			if p.display_info.has('path'):
