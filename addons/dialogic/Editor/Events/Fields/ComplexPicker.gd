@@ -44,7 +44,7 @@ func set_right_text(value:String) -> void:
 func set_value(value, text : String = '') -> void:
 	if value == null:
 		%Search.text = empty_text
-	elif file_extension != "" && file_extension != ".dch" && file_extension != ".dtl":
+	elif file_extension != "" and file_extension != ".dch" and file_extension != ".dtl":
 		%Search.text = value.resource_path
 		%Search.tooltip_text = value.resource_path
 	elif value:
@@ -176,7 +176,7 @@ func suggestion_selected(index : int, position:=Vector2(), button_index:=MOUSE_B
 		current_value = null
 	
 	# if this is a resource, then load it instead of assigning the string:
-	elif file_extension != "" && file_extension != ".dch" && file_extension != ".dtl":
+	elif file_extension != "" and file_extension != ".dch" and file_extension != ".dtl":
 		var file = load(%Suggestions.get_item_metadata(index))
 		current_value = file
 	else:
