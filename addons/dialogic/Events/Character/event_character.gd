@@ -355,6 +355,8 @@ func build_event_editor() -> void:
 			'file_extension' 	: '.dch', 
 			'suggestions_func' 	: get_character_suggestions, 
 			'icon' 				: load("res://addons/dialogic/Editor/Images/Resources/character.svg")})
+	add_header_button('', _on_character_edit_pressed, 'Edit character', _editor_node.get_theme_icon("Edit", "EditorIcons"))
+	
 	add_header_edit('portrait', ValueType.ComplexPicker, '', '', 
 			{'empty_text' 		: 'Default', 
 			'suggestions_func' 	: get_portrait_suggestions, 
@@ -453,3 +455,8 @@ func guess_animation_file(animation_name: String) -> String:
 		if DialogicUtil.pretty_name(animation_name) == DialogicUtil.pretty_name(file):
 			return file
 	return animation_name
+
+func _on_character_edit_pressed() -> void:
+	var editor_manager := _editor_node.find_parent('EditorsManager')
+	if editor_manager:
+		editor_manager.edit_resource(character)
