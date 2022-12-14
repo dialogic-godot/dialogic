@@ -15,7 +15,24 @@ var current_state: Variant = null:
 	set(new_state):
 		current_state = new_state
 		emit_signal('state_changed', new_state)
-var paused := false
+
+var paused := false:
+	set(value):
+		paused = value
+		if paused:
+			for subsystem in get_children():
+				if subsystem.has_method('pause'):
+					subsystem.pause()
+			dialogic_paused.emit()
+		else:
+			for subsystem in get_children():
+				if subsystem.has_method('resume'):
+					subsystem.resume()
+			dialogic_resumed.emit()
+
+signal dialogic_paused
+signal dialogic_resumed
+
 var current_event_idx: int = 0
 var current_state_info: Dictionary = {}
 
@@ -42,8 +59,6 @@ func _ready() -> void:
 ## 						TIMELINE+EVENT HANDLING
 ################################################################################
 func start_timeline(timeline_resource:Variant, label_or_idx:Variant = "") -> void:
-
-		
 	# load the resource if only the path is given
 	if typeof(timeline_resource) == TYPE_STRING:
 		#check the lookup table if it's not a full file name
@@ -101,6 +116,9 @@ func handle_next_event(ignore_argument:Variant = "") -> void:
 func handle_event(event_index:int) -> void:
 	if not current_timeline:
 		return
+	
+	if paused:
+		await dialogic_resumed
 	
 	if event_index >= len(current_timeline_events):
 		if timeline_jump_stack.size() > 0:
@@ -173,23 +191,6 @@ func clear() -> bool:
 	current_state = states.IDLE
 	return true
 
-
-func pause() -> void:
-	if paused: 
-		return
-	paused = true
-	for subsystem in get_children():
-		if subsystem.has_method('pause'):
-			subsystem.pause()
-
-
-func resume() -> void:
-	if !paused: 
-		return
-	paused = false
-	for subsystem in get_children():
-		if subsystem.has_method('resume'):
-			subsystem.resume()
 
 ################################################################################
 ## 						STATE

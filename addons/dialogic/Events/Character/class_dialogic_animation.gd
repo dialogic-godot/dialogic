@@ -38,8 +38,10 @@ func finished_one_loop():
 
 
 func pause():
-	process_mode = Node.PROCESS_MODE_DISABLED
+	if node:
+		node.process_mode = Node.PROCESS_MODE_DISABLED
 
 
 func resume():
-	process_mode = Node.PROCESS_MODE_INHERIT
+	if node:
+		node.process_mode = Node.PROCESS_MODE_INHERIT
