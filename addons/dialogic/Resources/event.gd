@@ -383,7 +383,7 @@ func add_header_edit(variable:String, editor_type = ValueType.Label, left_text:S
 		})
 
 
-func add_header_button(text:String, callable:Callable, tooltip:String, icon: Texture2D = null, condition:String = "") -> void:
+func add_header_button(text:String, callable:Callable, tooltip:String, icon: Variant = null, condition:String = "") -> void:
 	editor_list.append({
 		"name"			: "Button",
 		"type" 			: TYPE_STRING,

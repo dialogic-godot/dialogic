@@ -242,8 +242,10 @@ func build_editor():
 		elif p.dialogic_type == resource.ValueType.Button:
 			editor_node = Button.new()
 			editor_node.text = p.display_info.text
-			editor_node.icon = p.display_info.icon
-			#editor_node.expand_icon = true
+			if typeof(p.display_info.icon) == TYPE_ARRAY:
+				editor_node.icon = callv('get_theme_icon', p.display_info.icon)
+			else:
+				editor_node.icon = p.display_info.icon
 			editor_node.flat = true
 			editor_node.custom_minimum_size.x = 30*DialogicUtil.get_editor_scale()
 			editor_node.tooltip_text = p.display_info.tooltip

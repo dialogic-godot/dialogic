@@ -171,7 +171,7 @@ func build_event_editor():
 			'editor_icon' 		: ["Variant", "EditorIcons"], }, 
 			'!name.is_empty() and not random_enabled')
 	add_header_label('a random integer', 'random_enabled')
-	add_header_button('', _on_variable_editor_pressed, 'Variable Editor', _editor_node.get_theme_icon("EditAddRemove", "EditorIcons"))
+	add_header_button('', _on_variable_editor_pressed, 'Variable Editor', ["EditAddRemove", "EditorIcons"])
 	add_body_edit('random_enabled', ValueType.Bool, 'Use Random Integer:', '', {}, '!name.is_empty()')
 	add_body_edit('random_min', ValueType.Integer, 'Min:', '', {}, '!name.is_empty() and random_enabled')
 	add_body_edit('random_max', ValueType.Integer, 'Max:', '', {}, '!name.is_empty() and random_enabled')
