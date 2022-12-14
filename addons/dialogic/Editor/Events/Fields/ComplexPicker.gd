@@ -119,7 +119,7 @@ func _on_Search_text_changed(new_text:String, just_update:bool = false) -> void:
 	if new_text == "" and !just_update:
 		changed_to_empty()
 
-	var suggestions = get_suggestions_func.call(new_text)
+	var suggestions :Dictionary = get_suggestions_func.call(new_text)
 	
 	var line_length:int = 0
 	var idx:int = 0
