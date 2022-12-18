@@ -36,6 +36,7 @@ func _init() -> void:
 	event_category = Category.AudioVisual
 	event_sorting_index = 3
 	expand_by_default = false
+	help_page_path = "https://dialogic.coppolaemilio.com"
 
 
 func _get_icon() -> Resource:
@@ -52,10 +53,12 @@ func get_shortcode() -> String:
 func get_shortcode_parameters() -> Dictionary:
 	return {
 		#param_name : property_name
-		"path"		: {"property": "file_path", 	"default": ""},
+		"path"		: {"property": "file_path", 	"default": "",},
 		"volume"	: {"property": "volume", 		"default": 0},
-		"bus"		: {"property": "audio_bus", 	"default": "Master"},
-		"loop"		: {"property": "loop", 			 "default": false},
+		"bus"		: {"property": "audio_bus", 	"default": "Master", 
+							"suggestions": get_bus_suggestions},
+		"loop"		: {"property": "loop", 			"default": false, 
+							"suggestions": func(): return {'True':{'value':'true'}, 'False':{'value':'false'}}},
 	}
 
 
@@ -70,3 +73,9 @@ func build_event_editor():
 			'editor_icon' 	: ["AudioStreamPlayer", "EditorIcons"]})
 	add_body_edit('volume', ValueType.Decibel, 'volume:', '', {}, '!file_path.is_empty()')
 	add_body_edit('audio_bus', ValueType.SinglelineText, 'audio_bus:', '', {}, '!file_path.is_empty()')
+
+func get_bus_suggestions() -> Dictionary:
+	var bus_name_list := {}
+	for i in range(AudioServer.bus_count):
+		bus_name_list[AudioServer.get_bus_name(i)] = {'value':AudioServer.get_bus_name(i)}
+	return bus_name_list

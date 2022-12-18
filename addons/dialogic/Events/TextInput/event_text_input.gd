@@ -91,16 +91,6 @@ func get_var_suggestions(filter:String) -> Dictionary:
 			'value'			: filter, 
 			'editor_icon'	: ["GuiScrollArrowRight", "EditorIcons"]}
 	var vars :Dictionary = DialogicUtil.get_project_setting('dialogic/variables', {})
-	for var_path in list_variables(vars):
+	for var_path in DialogicUtil.list_variables(vars):
 		suggestions[var_path] = {'value':var_path, 'editor_icon':["ClassList", "EditorIcons"]}
 	return suggestions
-
-
-func list_variables(dict:Dictionary, path := "") -> Array:
-	var array := []
-	for key in dict.keys():
-		if typeof(dict[key]) == TYPE_DICTIONARY:
-			array.append_array(list_variables(dict[key], path+key+"."))
-		else:
-			array.append(path+key)
-	return array

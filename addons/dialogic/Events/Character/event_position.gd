@@ -69,7 +69,8 @@ func get_shortcode() -> String:
 func get_shortcode_parameters() -> Dictionary:
 	return {
 		#param_name 	: property_info
-		"action"		:  {"property": "action_type", 		"default": ActionTypes.SetRelative},
+		"action"		:  {"sproperty": "action_type", 		"default": ActionTypes.SetRelative, 
+								"suggestions": func(): return {"Set Relative":{'value':'0'}, "Set Absolute":{'value':'1'}, "Reset":{'value':'2'}, "Reset All":{'value':'3'}}},
 		"position"		:  {"property": "position", 		"default": 0},
 		"vector"		:  {"property": "vector", 			"default": Vector2()},
 		"time"			:  {"property": "movement_time", 	"default": 0},

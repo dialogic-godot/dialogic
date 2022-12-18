@@ -74,9 +74,11 @@ func get_shortcode() -> String:
 func get_shortcode_parameters() -> Dictionary:
 	return {
 		#param_name 	: property_info
-		"timeline"		: {"property": "_timeline_file", 	"default": null},
+		"timeline"		: {"property": "_timeline_file", 	"default": null, 
+							"suggestions": get_timeline_suggestions},
 		"label"			: {"property": "label_name", 		"default": ""},
-		"return_after"	: {"property": "return_after", 		"default": false}
+		"return_after"	: {"property": "return_after", 		"default": false, 
+							"suggestions": func(): return {'True':{'value':'true'}, 'False':{'value':'false'}}}
 	}
 
 
@@ -95,7 +97,7 @@ func build_event_editor():
 	add_body_edit("return_after", ValueType.Bool, "Return to this spot after completed?")
 
 
-func get_timeline_suggestions(filter:String) -> Dictionary:
+func get_timeline_suggestions(filter:String= "") -> Dictionary:
 	var suggestions := {}
 	var resources := DialogicUtil.list_resources_of_type('.dtl')
 	

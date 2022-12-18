@@ -169,3 +169,14 @@ static func update_timer_process_callback(timer:Timer) -> void:
 static func get_next_translation_id() -> String:
 	ProjectSettings.set_setting('dialogic/translation/id_counter', get_project_setting('dialogic/translation/id_counter', 16)+1)
 	return '%x' % get_project_setting('dialogic/translation/id_counter', 16)
+
+
+# helper that converts a nested variable dictionary into an array with paths
+static func list_variables(dict:Dictionary, path := "") -> Array:
+	var array := []
+	for key in dict.keys():
+		if typeof(dict[key]) == TYPE_DICTIONARY:
+			array.append_array(list_variables(dict[key], path+key+"."))
+		else:
+			array.append(path+key)
+	return array

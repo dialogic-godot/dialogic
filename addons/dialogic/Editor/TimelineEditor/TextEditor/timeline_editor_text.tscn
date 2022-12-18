@@ -1,28 +1,10 @@
-[gd_scene load_steps=3 format=3 uid="uid://defdeav8rli6o"]
+[gd_scene load_steps=4 format=3 uid="uid://defdeav8rli6o"]
 
 [ext_resource type="Script" path="res://addons/dialogic/Editor/TimelineEditor/TextEditor/timeline_editor_text.gd" id="1_1kbx2"]
+[ext_resource type="Script" path="res://addons/dialogic/Editor/TimelineEditor/TextEditor/syntax_highlighter.gd" id="1_5qfro"]
 
-[sub_resource type="CodeHighlighter" id="CodeHighlighter_uwx55"]
-number_color = Color(0.63, 1, 0.88, 1)
-symbol_color = Color(0.8025, 0.81, 0.8225, 1)
-function_color = Color(0.8025, 0.81, 0.8225, 1)
-member_variable_color = Color(0.8025, 0.81, 0.8225, 1)
-keyword_colors = {
-"and": Color(1, 0.44, 0.52, 1),
-"elif": Color(1, 0.44, 0.52, 1),
-"else": Color(1, 0.44, 0.52, 1),
-"if": Color(1, 0.44, 0.52, 1),
-"or": Color(1, 0.44, 0.52, 1)
-}
-color_regions = {
-"\" \"": Color(1, 0.93, 0.63, 1),
-"# ": Color(0.8025, 0.81, 0.8225, 0.5),
-"- ": Color(0.56, 1, 0.86, 1),
-": ": Color(0.8025, 0.81, 0.8225, 1),
-"< >": Color(0.34, 0.7, 1, 1),
-"[ ]": Color(0.34, 0.7, 1, 1),
-"{ }": Color(0.56, 1, 0.86, 1)
-}
+[sub_resource type="SyntaxHighlighter" id="SyntaxHighlighter_q86qr"]
+script = ExtResource("1_5qfro")
 
 [node name="TimelineTextEditor" type="CodeEdit"]
 offset_top = 592.0
@@ -31,12 +13,20 @@ offset_bottom = 600.0
 theme_override_constants/line_spacing = 10
 highlight_current_line = true
 draw_tabs = true
-syntax_highlighter = SubResource("CodeHighlighter_uwx55")
+syntax_highlighter = SubResource("SyntaxHighlighter_q86qr")
 minimap_draw = true
 caret_blink = true
 line_folding = true
 gutters_draw_line_numbers = true
+gutters_draw_fold_gutter = true
+code_completion_enabled = true
+code_completion_prefixes = ["[", "{", "f"]
 indent_automatic = true
+auto_brace_completion_enabled = true
+auto_brace_completion_highlight_matching = true
 script = ExtResource("1_1kbx2")
 
+[connection signal="code_completion_requested" from="." to="." method="_on_code_completion_requested"]
+[connection signal="symbol_lookup" from="." to="." method="_on_symbol_lookup"]
+[connection signal="symbol_validate" from="." to="." method="_on_symbol_validate"]
 [connection signal="text_changed" from="." to="." method="_on_text_editor_text_changed"]
