@@ -55,7 +55,7 @@ func should_execute_this_branch() -> bool:
 ################################################################################
 
 func _init() -> void:
-	event_name = "condition"
+	event_name = "Condition"
 	set_default_color('Color3')
 	event_category = Category.Logic
 	event_sorting_index = 0

@@ -7,7 +7,7 @@ func _get_events() -> Array:
 
 
 func _get_subsystems() -> Array:
-	return [{'name':'Variables', 'script':this_folder.path_join('subsystem_variables.gd')}]
+	return [{'name':'VAR', 'script':this_folder.path_join('subsystem_variables.gd')}]
 
 
 func _get_settings_pages() -> Array:

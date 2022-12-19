@@ -68,6 +68,10 @@ var expand_by_default : bool = true
 ## The URL to open when right_click>Documentation is selected 
 var help_page_path : String = ""
 
+## Reference to the node, that represents this event. Only works while in visual editor mode.
+## Use with care.
+var _editor_node : Control = null
+
 ## The categories and which one to put it in (in the visual editor sidebar)
 enum Category {Main, Logic, Timeline, AudioVisual, Godot, Other}
 var event_category:int = Category.Other
@@ -93,7 +97,7 @@ enum ValueType {
 	# Floats
 	Float, Decibel,
 	# Other
-	Custom, 
+	Custom, Button,
 }
 ## List that stores the fields for the editor
 var editor_list : Array = []
@@ -377,6 +381,18 @@ func add_header_edit(variable:String, editor_type = ValueType.Label, left_text:S
 		"right_text" 	: right_text,
 		"condition" 	: condition,
 		})
+
+
+func add_header_button(text:String, callable:Callable, tooltip:String, icon: Variant = null, condition:String = "") -> void:
+	editor_list.append({
+		"name"			: "Button",
+		"type" 			: TYPE_STRING,
+		"location" 		: Location.Header,
+		"usage" 		: PROPERTY_USAGE_DEFAULT,
+		"dialogic_type" : ValueType.Button,
+		"display_info" 	: {'text':text, 'tooltip':tooltip, 'callable':callable, 'icon':icon},
+		"condition" 	: condition,
+	})
 
 
 func add_body_edit(variable:String, editor_type = ValueType.Label, left_text:String= "", right_text:String="", extra_info:Dictionary = {}, condition:String = "") -> void:

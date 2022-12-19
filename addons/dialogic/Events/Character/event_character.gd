@@ -36,8 +36,6 @@ var position_move_time: float = 0.0
 var z_index: int = 0
 ## If true, the portrait will be set to mirrored.
 var mirrored: bool = false
-## Only used on Leave events. If true, all joined characters will leave. 
-var leave_all: bool = false
 ## If set, will be passed to the portrait scene.
 var extra_data: String = ""
 
@@ -49,6 +47,8 @@ var _update_zindex: bool = false
 ## Used to set the character resource from the unique name identifier and vice versa
 var _character_from_directory: String: 
 	get:
+		if _character_from_directory == '--All--':
+			return '--All--'
 		for item in _character_directory.keys():
 			if _character_directory[item]['resource'] == character:
 				return item
@@ -58,6 +58,8 @@ var _character_from_directory: String:
 		_character_from_directory = value
 		if value in _character_directory.keys():
 			character = _character_directory[value]['resource']
+		else:
+			character = null
 ## Used by [_character_from_directory]
 var _character_directory: Dictionary = {}
 
@@ -92,10 +94,10 @@ func _execute() -> void:
 						animation_length = DialogicUtil.get_project_setting('dialogic/animations/join_default_length', 0.5)
 					dialogic.Portraits.move_portrait(character, position, z_index, false, animation_length)
 		ActionTypes.Leave:
-			if leave_all:
+			if _character_from_directory == '--All--':
 				if animation_name.is_empty():
 					animation_name = DialogicUtil.get_project_setting('dialogic/animations/leave_default', 
-get_script().resource_path.get_base_dir().path_join('DefaultAnimations/fade_out_down.gd'))
+							get_script().resource_path.get_base_dir().path_join('DefaultAnimations/fade_out_down.gd'))
 					animation_length = DialogicUtil.get_project_setting('dialogic/animations/leave_default_length', 0.5) 
 					animation_wait = DialogicUtil.get_project_setting('dialogic/animations/leave_default_wait', true)
 				
@@ -117,7 +119,7 @@ get_script().resource_path.get_base_dir().path_join('DefaultAnimations/fade_out_
 				if dialogic.Portraits.is_character_joined(character):
 					if animation_name.is_empty():
 						animation_name = DialogicUtil.get_project_setting('dialogic/animations/leave_default', 
-	get_script().resource_path.get_base_dir().path_join('DefaultAnimations/fade_out_down.gd'))
+								get_script().resource_path.get_base_dir().path_join('DefaultAnimations/fade_out_down.gd'))
 						animation_length = DialogicUtil.get_project_setting('dialogic/animations/leave_default_length', 0.5) 
 						animation_wait = DialogicUtil.get_project_setting('dialogic/animations/leave_default_wait', true)
 					
@@ -180,8 +182,13 @@ func to_text() -> String:
 		ActionTypes.Leave: result_string += "Leave "
 		ActionTypes.Update: result_string += "Update "
 	
-	if character:
-		if action_type == ActionTypes.Leave and leave_all:
+	print('to_string')
+	
+	print('character ', character)
+	print('characterfrom ', _character_from_directory)
+	
+	if character or _character_from_directory == '--All--':
+		if action_type == ActionTypes.Leave and _character_from_directory == '--All--':
 			result_string += "--All--"
 		else: 
 			var name := ""
@@ -249,7 +256,7 @@ func from_text(string:String) -> void:
 	
 	if result.get_string('name').strip_edges():
 		if action_type == ActionTypes.Leave and result.get_string('name').strip_edges() == "--All--":
-			leave_all = true
+			_character_from_directory = '--All--'
 		else: 
 			var name := result.get_string('name').strip_edges()
 			
@@ -351,10 +358,12 @@ func build_event_editor() -> void:
 		]
 	})
 	add_header_edit('_character_from_directory', ValueType.ComplexPicker, '', '', 
-			{'empty_text' 		: 'character', 
+			{'empty_text' 		: 'Character', 
 			'file_extension' 	: '.dch', 
 			'suggestions_func' 	: get_character_suggestions, 
 			'icon' 				: load("res://addons/dialogic/Editor/Images/Resources/character.svg")})
+	add_header_button('', _on_character_edit_pressed, 'Edit character', ["Edit", "EditorIcons"], 'character != null and _character_from_directory != "--All--"')
+	
 	add_header_edit('portrait', ValueType.ComplexPicker, '', '', 
 			{'empty_text' 		: 'Default', 
 			'suggestions_func' 	: get_portrait_suggestions, 
@@ -369,22 +378,23 @@ func build_event_editor() -> void:
 			'editor_icon' 			: ["Animation", "EditorIcons"], 
 			'placeholder' 			: 'Default',
 			'enable_pretty_name' 	: true}, 
-			'character != null')
+			'should_show_animation_options()')
 	add_body_edit('animation_length', ValueType.Float, 'Length:', '', {}, 
-			'character and !animation_name.is_empty()')
+			'should_show_animation_options() and !animation_name.is_empty()')
 	add_body_edit('animation_wait', ValueType.Bool, 'Wait for animation to finish:', '', {}, 
-			'character and !animation_name.is_empty()')
+			'should_show_animation_options() and !animation_name.is_empty()')
 	add_body_edit('animation_repeats', ValueType.Integer, 'Repeat:', '', {},
-			'character and !animation_name.is_empty() and action_type == %s)' %ActionTypes.Update)
+			'should_show_animation_options() and !animation_name.is_empty() and action_type == %s)' %ActionTypes.Update)
 	add_body_edit('z_index', ValueType.Integer, 'portrait z-index:', "",{},
 			'action_type != %s' %ActionTypes.Leave)
 	add_body_edit('mirrored', ValueType.Bool, 'mirrored:', "",{},
 			'action_type != %s' %ActionTypes.Leave)
 	add_body_edit('position_move_time', ValueType.Float, 'Transiton time to change position:', '', {}, 
 			'action_type == %s' %ActionTypes.Update)
-	add_body_edit('leave_all', ValueType.Bool, 'Leave All:', "",{},
-			'action_type == %s' %ActionTypes.Leave)
 
+
+func should_show_animation_options() -> bool:
+	return (character != null and !character.portraits.is_empty()) or _character_from_directory == '--All--' 
 
 func has_no_portraits() -> bool:
 	return character and character.portraits.is_empty()
@@ -399,7 +409,8 @@ func get_character_suggestions(search_text:String) -> Dictionary:
 	var icon = load("res://addons/dialogic/Editor/Images/Resources/character.svg")
 
 	suggestions['(No one)'] = {'value':'', 'editor_icon':["GuiRadioUnchecked", "EditorIcons"]}
-	
+	if action_type == ActionTypes.Leave:
+		suggestions['ALL'] = {'value':'--All--', 'tooltip':'All currently joined characters leave', 'editor_icon':["GuiEllipsis", "EditorIcons"]}
 	for resource in _character_directory.keys():
 		suggestions[resource] = {'value': resource, 'tooltip': _character_directory[resource]['full_path'], 'icon': icon.duplicate()}
 	return suggestions
@@ -453,3 +464,8 @@ func guess_animation_file(animation_name: String) -> String:
 		if DialogicUtil.pretty_name(animation_name) == DialogicUtil.pretty_name(file):
 			return file
 	return animation_name
+
+func _on_character_edit_pressed() -> void:
+	var editor_manager := _editor_node.find_parent('EditorsManager')
+	if editor_manager:
+		editor_manager.edit_resource(character)

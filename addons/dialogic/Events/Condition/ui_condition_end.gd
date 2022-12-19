@@ -15,7 +15,7 @@ func refresh():
 		$Label.text = "End of "+["IF", "ELIF", "ELSE"][parent_resource.condition_type]+" ("+parent_resource.condition+")"
 		
 		# hide add add else button if followed by ELIF or ELSE event
-		var timeline_editor = find_parent('TimelineVisualEditor')
+		var timeline_editor = find_parent('VisualEditor')
 		if timeline_editor:
 			var next_event = null
 			if timeline_editor.get_block_below(get_parent()):
@@ -29,7 +29,7 @@ func refresh():
 		hide()
 
 func add_elif():
-	var timeline = find_parent('TimelineVisualEditor')
+	var timeline = find_parent('VisualEditor')
 	if timeline:
 		var resource = DialogicConditionEvent.new()
 		resource.condition_type = DialogicConditionEvent.ConditionTypes.Elif
@@ -37,7 +37,7 @@ func add_elif():
 		timeline.indent_events()
 
 func add_else():
-	var timeline = find_parent('TimelineVisualEditor')
+	var timeline = find_parent('VisualEditor')
 	if timeline:
 		var resource = DialogicConditionEvent.new()
 		resource.condition_type = DialogicConditionEvent.ConditionTypes.Else

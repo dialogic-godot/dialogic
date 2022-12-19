@@ -155,11 +155,20 @@ func hide_entry_editor() -> void:
 
 func _on_entry_name_text_changed(new_text:String) -> void:
 	if current_entry_name != new_text.strip_edges():
+		if new_text.strip_edges().is_empty() or new_text.strip_edges() in current_glossary.entries.keys():
+			%EntryList.set_item_custom_bg_color(%EntryList.get_selected_items()[0],
+					get_theme_color("warning_color", "Editor").darkened(0.8))
+			%EntryList.set_item_text(%EntryList.get_selected_items()[0], new_text.strip_edges() + " (invalid name)")
+			return 
+		else:
+			%EntryList.set_item_custom_bg_color(%EntryList.get_selected_items()[0],
+				Color.TRANSPARENT)
 		var info :Dictionary = current_glossary.entries[current_entry_name]
 		current_glossary.entries.erase(current_entry_name)
 		current_glossary.entries[new_text.strip_edges()] = info
 		%EntryList.set_item_text(%EntryList.get_selected_items()[0], new_text.strip_edges())
 		current_entry_name = new_text.strip_edges()
+	
 	ResourceSaver.save(current_glossary)
 
 func _on_entry_case_sensitive_toggled(button_pressed:bool) -> void:

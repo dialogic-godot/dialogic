@@ -57,10 +57,10 @@ func _init():
 	character_name_color = editor_settings.get('text_editor/theme/highlighting/executing_line_color')
 	character_portrait_color = character_name_color.lightened(0.6)
 	
-	shortcode_regex.compile("\\W*\\[(?<id>\\w*)(?<args>[^\\]]*)?\\]")
+	shortcode_regex.compile("\\W*\\[(?<id>\\w*)(?<args>[^\\]]*)?")
 	shortcode_param_regex.compile('((?<parameter>[^\\s=]*)\\s*=\\s*"(?<value>([^=]|\\\\=)*)(?<!\\\\)")')
 	text_event_regex.compile("\\W*((\")?(?<name>(?(2)[^\"\\n]*|[^(: \\n]*))(?(2)\"|)(\\W*\\((?<portrait>.*)\\))?\\s*(?<!\\\\):)?(?<text>.*)")
-	text_effects_regex.compile("(?<!\\\\)\\[\\s*(?<command>mood|portrait|speed|signal|pause)\\s*(=\\s*(?<value>.+?)\\s*)?\\]")
+	text_effects_regex.compile("(?<!\\\\)\\[\\s*(?<command>mood|portrait|speed|signal|pause|br)\\s*(=\\s*(?<value>.+?)\\s*)?\\]")
 	character_event_regex.compile("(?<type>Join|Update|Leave)\\s*(\")?(?<name>(?(2)[^\"\\n]*|[^(: \\n]*))(?(2)\"|)(\\W*\\((?<portrait>.*)\\))?(\\s*(?<position>\\d))?(\\s*\\[(?<shortcode>.*)\\])?")
 
 func _get_line_syntax_highlighting(line:int) -> Dictionary:

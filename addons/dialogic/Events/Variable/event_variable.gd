@@ -171,6 +171,7 @@ func build_event_editor():
 			'editor_icon' 		: ["Variant", "EditorIcons"], }, 
 			'!name.is_empty() and not random_enabled')
 	add_header_label('a random integer', 'random_enabled')
+	add_header_button('', _on_variable_editor_pressed, 'Variable Editor', ["EditAddRemove", "EditorIcons"])
 	add_body_edit('random_enabled', ValueType.Bool, 'Use Random Integer:', '', {}, '!name.is_empty()')
 	add_body_edit('random_min', ValueType.Integer, 'Min:', '', {}, '!name.is_empty() and random_enabled')
 	add_body_edit('random_max', ValueType.Integer, 'Max:', '', {}, '!name.is_empty() and random_enabled')
@@ -181,19 +182,10 @@ func get_var_suggestions(filter:String) -> Dictionary:
 	if filter:
 		suggestions[filter] = {'value':filter, 'editor_icon':["GuiScrollArrowRight", "EditorIcons"]}
 	var vars: Dictionary = DialogicUtil.get_project_setting('dialogic/variables', {})
-	for var_path in list_variables(vars):
+	for var_path in DialogicUtil.list_variables(vars):
 		suggestions[var_path] = {'value':var_path, 'editor_icon':["ClassList", "EditorIcons"]}
 	return suggestions
 
-
-func list_variables(dict, path = "") -> Array:
-	var array := []
-	for key in dict.keys():
-		if typeof(dict[key]) == TYPE_DICTIONARY:
-			array.append_array(list_variables(dict[key], path+key+"."))
-		else:
-			array.append(path+key)
-	return array
 
 func get_value_suggestions(filter:String) -> Dictionary:
 	var suggestions := {}
@@ -201,6 +193,12 @@ func get_value_suggestions(filter:String) -> Dictionary:
 	if filter:
 		suggestions[filter] = {'value':filter, 'editor_icon':["GuiScrollArrowRight", "EditorIcons"]}
 	var vars: Dictionary = DialogicUtil.get_project_setting('dialogic/variables', {})
-	for var_path in list_variables(vars):
+	for var_path in DialogicUtil.list_variables(vars):
 		suggestions[var_path] = {'value':var_path, 'editor_icon':["ClassList", "EditorIcons"]}
 	return suggestions
+
+
+func _on_variable_editor_pressed():
+	var editor_manager := _editor_node.find_parent('EditorsManager')
+	if editor_manager:
+		editor_manager.open_editor(editor_manager.editors['Settings']['node'], true, 'VariablesEditor')

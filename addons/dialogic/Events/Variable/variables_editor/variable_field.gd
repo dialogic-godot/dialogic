@@ -62,26 +62,32 @@ func _on_DeleteButton_pressed():
 	queue_free()
 
 
-
 func _on_NameEdit_gui_input(event):
 	if event is InputEventMouseButton and event.pressed and event.double_click:
 		%NameEdit.editable = true
+	if event is InputEventKey and event.pressed and event.keycode == KEY_ENTER and !%NameEdit.editable:
+		print('hey')
+		%NameEdit.editable = true
+		get_viewport().set_input_as_handled()
 
 
 func _on_NameEdit_focus_exited():
 	disable_name_edit()
 
-func _on_name_edit_text_submitted(new_text):
+
+func _on_name_edit_text_submitted(new_text:String) -> void:
+	%NameEdit.text = new_text.replace(' ', '_')
 	disable_name_edit()
+
 
 func disable_name_edit():
 	%NameEdit.editable = false
 	parent_Group.check_data()
 
+
 func warning():
 	modulate = get_theme_color("warning_color", "Editor")
 
+
 func no_warning():
 	modulate = Color(1,1,1,1)
-
-
