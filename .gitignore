@@ -2,7 +2,7 @@
 .DS_Store
 project.godot
 test-scenes
-*.import
+
 /.import
 /.vscode
 /default_env.tres
