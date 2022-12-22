@@ -83,7 +83,7 @@ func play_sound(path:String, volume:float = 0.0, audio_bus:String = "Master", lo
 		new_sound_node.bus = audio_bus
 		add_child(new_sound_node)
 		new_sound_node.play()
-		new_sound_node.finished.connect(queue_free)
+		new_sound_node.finished.connect(new_sound_node.queue_free)
 
 func stop_all_sounds() -> void:
 	var sound_nodes: Array = get_tree().get_nodes_in_group('dialogic_sound_player')
