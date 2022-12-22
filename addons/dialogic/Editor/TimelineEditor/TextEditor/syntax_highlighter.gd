@@ -34,28 +34,29 @@ var shortcode_param_color : Color
 var shortcode_value_color : Color
 
 func _init():
-	# Load colors from editor settings 
-	var editor_settings = DialogicUtil.get_dialogic_plugin().editor_interface.get_editor_settings()
-	normal_color = editor_settings.get('text_editor/theme/highlighting/text_color')
-	comment_color = editor_settings.get('text_editor/theme/highlighting/comment_color')
-	text_effect_color = normal_color.darkened(0.5)
-	choice_color = editor_settings.get('text_editor/theme/highlighting/function_color')
-	
-	code_flow_color = editor_settings.get("text_editor/theme/highlighting/control_flow_keyword_color")
-	boolean_operator_color = code_flow_color.lightened(0.5)
-	variable_color = editor_settings.get('text_editor/theme/highlighting/engine_type_color')
-	string_color = editor_settings.get('text_editor/theme/highlighting/string_color')
-	
-	
-	shortcode_color =  editor_settings.get('text_editor/theme/highlighting/gdscript/annotation_color')
-	shortcode_param_color = editor_settings.get('text_editor/theme/highlighting/gdscript/node_path_color')
-	shortcode_value_color = editor_settings.get('text_editor/theme/highlighting/gdscript/node_reference_color')
-	
-	keyword_VAR_color = editor_settings.get('text_editor/theme/highlighting/keyword_color')
-	
-	character_event_color = editor_settings.get('text_editor/theme/highlighting/symbol_color')
-	character_name_color = editor_settings.get('text_editor/theme/highlighting/executing_line_color')
-	character_portrait_color = character_name_color.lightened(0.6)
+	# Load colors from editor settings
+	if DialogicUtil.get_dialogic_plugin():
+		var editor_settings = DialogicUtil.get_dialogic_plugin().editor_interface.get_editor_settings()
+		normal_color = editor_settings.get('text_editor/theme/highlighting/text_color')
+		comment_color = editor_settings.get('text_editor/theme/highlighting/comment_color')
+		text_effect_color = normal_color.darkened(0.5)
+		choice_color = editor_settings.get('text_editor/theme/highlighting/function_color')
+
+		code_flow_color = editor_settings.get("text_editor/theme/highlighting/control_flow_keyword_color")
+		boolean_operator_color = code_flow_color.lightened(0.5)
+		variable_color = editor_settings.get('text_editor/theme/highlighting/engine_type_color')
+		string_color = editor_settings.get('text_editor/theme/highlighting/string_color')
+
+
+		shortcode_color =  editor_settings.get('text_editor/theme/highlighting/gdscript/annotation_color')
+		shortcode_param_color = editor_settings.get('text_editor/theme/highlighting/gdscript/node_path_color')
+		shortcode_value_color = editor_settings.get('text_editor/theme/highlighting/gdscript/node_reference_color')
+
+		keyword_VAR_color = editor_settings.get('text_editor/theme/highlighting/keyword_color')
+
+		character_event_color = editor_settings.get('text_editor/theme/highlighting/symbol_color')
+		character_name_color = editor_settings.get('text_editor/theme/highlighting/executing_line_color')
+		character_portrait_color = character_name_color.lightened(0.6)
 	
 	shortcode_regex.compile("\\W*\\[(?<id>\\w*)(?<args>[^\\]]*)?")
 	shortcode_param_regex.compile('((?<parameter>[^\\s=]*)\\s*=\\s*"(?<value>([^=]|\\\\=)*)(?<!\\\\)")')

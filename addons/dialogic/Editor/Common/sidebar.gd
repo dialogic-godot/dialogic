@@ -67,9 +67,15 @@ func update_resource_list() -> void:
 	var current_file := ""
 	if editors_manager.current_editor and editors_manager.current_editor.current_resource:
 		current_file = editors_manager.current_editor.current_resource.resource_path
+	
 	var character_directory: Dictionary = editors_manager.resource_helper.character_directory
 	var timeline_directory: Dictionary = editors_manager.resource_helper.timeline_directory
 	var latest_resources: Array = DialogicUtil.get_project_setting('dialogic/editor/last_resources', [])
+	for res in latest_resources:
+		if !FileAccess.file_exists(res):
+			latest_resources.erase(res)
+	ProjectSettings.set_setting('dialogic/editor/last_resources', latest_resources)
+	
 	%ResourcesList.clear()
 	var idx := 0
 	for character in character_directory.values():

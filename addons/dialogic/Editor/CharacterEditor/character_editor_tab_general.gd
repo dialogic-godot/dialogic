@@ -43,7 +43,7 @@ func _load_character(resource:DialogicCharacter) -> void:
 func _save_changes(resource:DialogicCharacter) -> DialogicCharacter:
 	resource.display_name = %DisplayNameLineEdit.text
 	resource.color = %ColorPickerButton.color
-	var nicknames = []
+	var nicknames := []
 	for n_name in %NicknameLineEdit.text.split(','):
 		nicknames.append(n_name.strip_edges())
 	resource.nicknames = nicknames

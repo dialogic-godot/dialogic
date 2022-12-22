@@ -31,7 +31,9 @@ static func listdir(path: String, files_only: bool = true, throw_error:bool = tr
 
 static func get_dialogic_plugin() -> Node:
 	var tree: SceneTree = Engine.get_main_loop()
-	return tree.get_root().get_child(0).get_node('DialogicPlugin')
+	if tree.get_root().get_child(0).has_node('DialogicPlugin'):
+		return tree.get_root().get_child(0).get_node('DialogicPlugin')
+	return null
 
 
 static func list_resources_of_type(extension:String) -> Array:
