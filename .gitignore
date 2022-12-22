@@ -8,6 +8,7 @@ test-scenes
 /default_env.tres
 /default_bus_layout.tres
 /icon.svg
+/icon.svg.import
 export_presets.cfg
 
 # Only add dialogic plugin 
