@@ -78,11 +78,17 @@ func _on_editors_tab_changed(tab:int) -> void:
 
 
 func edit_resource(resource:Resource, save_previous:bool = true) -> void:
+	if current_editor and save_previous:
+		current_editor._save_resource()
+	
 	## Update the latest resource lis
 	var used_resources:Array = DialogicUtil.get_project_setting('dialogic/editor/last_resources', [])
+	
 	if resource.resource_path in used_resources:
 		used_resources.erase(resource.resource_path)
+	
 	used_resources.push_front(resource.resource_path)
+	
 	ProjectSettings.set_setting('dialogic/editor/last_resources', used_resources)
 	ProjectSettings.save()
 	
@@ -91,7 +97,7 @@ func edit_resource(resource:Resource, save_previous:bool = true) -> void:
 	for editor in editors.values():
 		if editor.get('extension', '') == extension:
 			editor['node']._open_resource(resource)
-			open_editor(editor['node'], save_previous)
+			open_editor(editor['node'], false)
 	
 	resource_opened.emit(resource)
 
@@ -106,7 +112,6 @@ func toggle_editor(editor) -> void:
 
 ## Shows the given editor
 func open_editor(editor:DialogicEditor, save_previous: bool = true, extra_info:Variant = null) -> void:
-	
 	
 	if current_editor and save_previous:
 		current_editor._save_resource()

@@ -140,4 +140,4 @@ func update_character_names() -> void:
 			if nickname.strip_edges():
 				character_colors[nickname.strip_edges()] = dch.color
 	
-	color_regex.compile('(?<=\\W)(?<name>'+str(character_colors.keys()).trim_prefix('["').trim_suffix('"]').replace('", "', '|')+')(?=\\W|$)')
+	color_regex.compile('(?<=\\W|^)(?<name>'+str(character_colors.keys()).trim_prefix('["').trim_suffix('"]').replace('", "', '|')+')(?=\\W|$)')
