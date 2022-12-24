@@ -535,8 +535,6 @@ static func save_resource_folder_flat_structure(flat_tree) -> Dictionary:
 	nested_structure['Theme'] = {}
 	
 	for timeline in flat_tree['Timeline'].keys():
-		#First build just the folders 
-		if timeline[-1] == ".":
 			var nested = {} 
 			nested = recursive_build(timeline, flat_tree['Timeline'][timeline])
 			
@@ -565,9 +563,15 @@ static func recursive_search(currentCheck, currentDictionary, currentFolder, str
 
 static func recursive_build(build_path, meta):
 	var passer = {}
+	passer['folders'] = {}
+	passer['files'] = []
 	if '/' in build_path: 
-		passer[build_path.split('/', true, 1)[0]] = recursive_build(build_path.split('/', true, 1)[1], meta)
+		passer['folders'][build_path.split('/', true, 1)[0]] = recursive_build(build_path.split('/', true, 1)[1], meta)
 		return passer
 	else:
-		passer['metadata'] = meta
+		if build_path == ".":
+			passer['metadata'] = meta
+		else:
+			passer['files'].append(meta['file'])
+		
 		return passer
