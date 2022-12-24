@@ -49,17 +49,32 @@ static func prepare():
 		
 	# After that we put them in the order we need to make the folder paths easiest to use
 	for timeline in structure['Timeline'].keys():
-		timeline_folder_breakdown[structure['Timeline'][timeline]['path']] = structure['Timeline'][timeline]
+		if ".json" in timeline:
+			timeline_folder_breakdown[structure['Timeline'][timeline]['path']] = structure['Timeline'][timeline]
+		else:
+			timeline_folder_breakdown[timeline] = structure['Timeline'][timeline]
 
 	for character in structure['Character'].keys():
-		character_folder_breakdown[structure['Character'][character]['path']] = structure['Character'][character]
-		
+		if ".json" in character:
+			character_folder_breakdown[structure['Character'][character]['path']] = structure['Character'][character]
+		else:
+			character_folder_breakdown[character] = structure['Character'][character]
+
+
 	for definition in structure['Definition'].keys():
-		definition_folder_breakdown[structure['Definition'][definition]['path']] = structure['Definition'][definition]
-		
+		if ".json" in definition:
+			definition_folder_breakdown[structure['Definition'][definition]['path']] = structure['Definition'][definition]
+		else:
+			definition_folder_breakdown[definition] = structure['Definition'][definition]
+
+
 	for theme in structure['Theme'].keys():
-		theme_folder_breakdown[structure['Theme'][theme]['path']] = structure['Theme'][theme]		
-		
+		if ".json" in theme:
+			theme_folder_breakdown[structure['Theme'][theme]['path']] = structure['Theme'][theme]		
+		else:
+			theme_folder_breakdown[theme] = structure['Theme'][theme]
+
+
 	Engine.set_meta('dialogic_tree_loaded',true)
 	Engine.set_meta('dialogic_timeline_tree', timeline_folder_breakdown)
 	Engine.set_meta('dialogic_character_tree', character_folder_breakdown)
@@ -67,6 +82,14 @@ static func prepare():
 	Engine.set_meta('dialogic_theme_tree', theme_folder_breakdown)
 	
 	print("loaded")
+	
+	var flatten = {}
+	flatten['Timeline'] = timeline_folder_breakdown
+	flatten['Character'] = character_folder_breakdown
+	flatten['Definition'] = definition_folder_breakdown
+	flatten['Theme'] = theme_folder_breakdown
+	
+	DialogicResources.save_resource_folder_flat_structure(flatten)
 
 ## Starts the dialog for the given timeline and returns a Dialog node.
 ## You must then add it manually to the scene to display the dialog.

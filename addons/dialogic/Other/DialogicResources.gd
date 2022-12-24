@@ -528,9 +528,29 @@ static func get_resource_folder_flat_structure() -> Dictionary:
 	
 static func save_resource_folder_flat_structure(flat_tree) -> Dictionary:
 	# Convert the flat folder structure back into the nested dictionary to be able to save to JSON
+	var nested_structure = {}
+	nested_structure['Timeline'] = {}
+	nested_structure['Character'] = {}
+	nested_structure['Definition'] = {}
+	nested_structure['Theme'] = {}
+	
+	for timeline in flat_tree['Timeline'].keys():
+		#First build just the folders 
+		if timeline[-1] == ".":
+			var nested = {} 
+			nested = recursive_build(timeline, flat_tree['Timeline'][timeline])
+			
+			print(nested)
+		
+			
+				
+		
+	
 	return {}
 	
 static func recursive_search(currentCheck, currentDictionary, currentFolder, structure_dictionary):
+	structure_dictionary[currentCheck][currentFolder + "."] = currentDictionary['metadata']
+	
 	for structureFile in currentDictionary["files"]:
 		match currentCheck:
 			"Timeline": structure_dictionary['Timeline'][structureFile] = currentFolder
@@ -542,3 +562,12 @@ static func recursive_search(currentCheck, currentDictionary, currentFolder, str
 		recursive_search(currentCheck, currentDictionary["folders"][structureFolder], currentFolder + structureFolder + "/", structure_dictionary)
 		
 	return structure_dictionary
+
+static func recursive_build(build_path, meta):
+	var passer = {}
+	if '/' in build_path: 
+		passer[build_path.split('/', true, 1)[0]] = recursive_build(build_path.split('/', true, 1)[1], meta)
+		return passer
+	else:
+		passer['metadata'] = meta
+		return passer
