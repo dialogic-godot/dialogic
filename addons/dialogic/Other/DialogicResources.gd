@@ -534,13 +534,18 @@ static func save_resource_folder_flat_structure(flat_tree) -> Dictionary:
 	nested_structure['Definition'] = {}
 	nested_structure['Theme'] = {}
 	
+	set_json("res://flat.json", flat_tree)
+	
+	print(flat_tree['Timeline'])
+	var nested = {} 
+	nested['folders'] = {}
+	nested['files'] = []
 	for timeline in flat_tree['Timeline'].keys():
-			var nested = {} 
-			nested = recursive_build(timeline, flat_tree['Timeline'][timeline])
+			nested = recursive_build(timeline.right(1), flat_tree['Timeline'][timeline], nested)
 			
-			print(nested)
-		
 			
+	print(nested)	
+	set_json("res://nested.json", nested)
 				
 		
 	
@@ -561,17 +566,22 @@ static func recursive_search(currentCheck, currentDictionary, currentFolder, str
 		
 	return structure_dictionary
 
-static func recursive_build(build_path, meta):
+static func recursive_build(build_path, meta, current_dictionary):
 	var passer = {}
 	passer['folders'] = {}
 	passer['files'] = []
 	if '/' in build_path: 
-		passer['folders'][build_path.split('/', true, 1)[0]] = recursive_build(build_path.split('/', true, 1)[1], meta)
-		return passer
+		var current_step = build_path.split('/', true, 1)[0]
+		if !current_dictionary['folders'].has(current_step):
+			current_dictionary['folders'][current_step] = passer
+			
+		current_dictionary['folders'][current_step] = recursive_build(build_path.split('/', true, 1)[1], meta,current_dictionary['folders'][current_step])
+		
+		return current_dictionary
 	else:
 		if build_path == ".":
-			passer['metadata'] = meta
+			current_dictionary['metadata'] = meta
 		else:
-			passer['files'].append(meta['file'])
+			current_dictionary['files'].append(meta['file'])
 		
-		return passer
+		return current_dictionary

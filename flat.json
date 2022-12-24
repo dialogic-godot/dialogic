@@ -1,0 +1,2645 @@
+{
+	"Character": {
+		"/.": {
+			"color": null,
+			"folded": false
+		},
+		"/Anhedonia/.": {
+			"color": null,
+			"folded": false
+		},
+		"/Anhedonia/Amy-B": {
+			"color": "0.521569,0.764706,1,1",
+			"data": {
+				"color": "#ff85c3ff",
+				"description": "",
+				"display_name": "Amy",
+				"display_name_bool": true,
+				"id": "character-1641704620.json",
+				"mirror_portraits": false,
+				"name": "Amy-B",
+				"nickname": "",
+				"nickname_bool": false,
+				"offset_x": 0,
+				"offset_y": 0,
+				"portraits": [
+					{
+						"name": "Default",
+						"path": ""
+					},
+					{
+						"name": "normal-neutral-straight",
+						"path": "res://portraits/amy-b/normal-neutral-straight.png"
+					}
+				],
+				"scale": 100,
+				"theme": ""
+			},
+			"display_name": "Amy",
+			"file": "character-1641704620.json",
+			"name": "Amy-B",
+			"nickname": "",
+			"path": "/Anhedonia/Amy-B",
+			"portraits": [
+				{
+					"name": "Default",
+					"path": ""
+				},
+				{
+					"name": "normal-neutral-straight",
+					"path": "res://portraits/amy-b/normal-neutral-straight.png"
+				}
+			]
+		},
+		"/Chaos/.": {
+			"color": null,
+			"folded": false
+		},
+		"/Chaos/Amy-D": {
+			"color": "0.521569,0.764706,1,1",
+			"data": {
+				"color": "#ff85c3ff",
+				"description": "",
+				"display_name": "Amy",
+				"display_name_bool": true,
+				"id": "character-1638041213.json",
+				"mirror_portraits": false,
+				"name": "Amy-D",
+				"nickname": "",
+				"nickname_bool": false,
+				"offset_x": 0,
+				"offset_y": 0,
+				"portraits": [
+					{
+						"name": "Default",
+						"path": "res://transparent.png"
+					},
+					{
+						"name": "pajama-distress-side",
+						"path": "res://portraits/amy-d/pajama-distress-side.png"
+					},
+					{
+						"name": "pajama-distress-straight",
+						"path": "res://portraits/amy-d/pajama-distress-straight.png"
+					},
+					{
+						"name": "pajama-mad-side",
+						"path": "res://portraits/amy-d/pajama-mad-side.png"
+					},
+					{
+						"name": "pajama-mad-straight",
+						"path": "res://portraits/amy-d/pajama-mad-straight.png"
+					},
+					{
+						"name": "pajama-neutral-side",
+						"path": "res://portraits/amy-d/pajama-neutral-side.png"
+					},
+					{
+						"name": "pajama-neutral-straight",
+						"path": "res://portraits/amy-d/pajama-neutral-straight.png"
+					},
+					{
+						"name": "shirt-distressed-straight",
+						"path": "res://portraits/amy-d/shirt-distressed-straight.png"
+					},
+					{
+						"name": "shirt-happy-straight",
+						"path": "res://portraits/amy-d/shirt-happy-straight.png"
+					},
+					{
+						"name": "shirt-mad-straight",
+						"path": "res://portraits/amy-d/shirt-mad-straight.png"
+					},
+					{
+						"name": "shirt-neutral-straight",
+						"path": "res://portraits/amy-d/shirt-neutral-straight.png"
+					},
+					{
+						"name": "shirt-smile-straight",
+						"path": "res://portraits/amy-d/shirt-smile-straight.png"
+					},
+					{
+						"name": "shirt-confused-straight",
+						"path": "res://portraits/amy-d/shirt-confused-straight.png"
+					},
+					{
+						"name": "overshirt-mad-straight",
+						"path": "res://portraits/amy-d/overshirt-mad-straight.png"
+					},
+					{
+						"name": "overshirt-yell-straight",
+						"path": "res://portraits/amy-d/overshirt-yell-straight.png"
+					},
+					{
+						"name": "drunk-confused-straight",
+						"path": "res://portraits/amy-d/drunk-confused-straight.png"
+					},
+					{
+						"name": "drunk-distress-straight",
+						"path": "res://portraits/amy-d/drunk-distress-straight.png"
+					},
+					{
+						"name": "drunk-ehehe-straight",
+						"path": "res://portraits/amy-d/drunk-ehehe-straight.png"
+					},
+					{
+						"name": "drunk-frown-straight",
+						"path": "res://portraits/amy-d/drunk-frown-straight.png"
+					},
+					{
+						"name": "drunk-horny-straight",
+						"path": "res://portraits/amy-d/drunk-horny-straight.png"
+					},
+					{
+						"name": "drunk-neutral-straight",
+						"path": "res://portraits/amy-d/drunk-neutral-straight.png"
+					},
+					{
+						"name": "drunk-sad-side",
+						"path": "res://portraits/amy-d/drunk-sad-side.png"
+					},
+					{
+						"name": "drunk-sad-straight",
+						"path": "res://portraits/amy-d/drunk-sad-straight.png"
+					},
+					{
+						"name": "drunk-smile-straight",
+						"path": "res://portraits/amy-d/drunk-smile-straight.png"
+					},
+					{
+						"name": "hangover-confused-side",
+						"path": "res://portraits/amy-d/hangover-confused-side.png"
+					},
+					{
+						"name": "hangover-confused-straight",
+						"path": "res://portraits/amy-d/hangover-confused-straight.png"
+					},
+					{
+						"name": "hangover-ehehe-straight",
+						"path": "res://portraits/amy-d/hangover-ehehe-straight.png"
+					},
+					{
+						"name": "hangover-frown-straight",
+						"path": "res://portraits/amy-d/hangover-frown-straight.png"
+					},
+					{
+						"name": "hangover-sad-straight",
+						"path": "res://portraits/amy-d/hangover-sad-straight.png"
+					},
+					{
+						"name": "hangover-smile-side",
+						"path": "res://portraits/amy-d/hangover-smile-side.png"
+					},
+					{
+						"name": "hangover-smile-straight",
+						"path": "res://portraits/amy-d/hangover-smile-straight.png"
+					},
+					{
+						"name": "shirt-panic-straight",
+						"path": "res://portraits/amy-d/shirt-panic-straight.png"
+					},
+					{
+						"name": "coat-cry-straight",
+						"path": "res://portraits/amy-d/coat-cry-straight.png"
+					},
+					{
+						"name": "coat-excited-straight",
+						"path": "res://portraits/amy-d/coat-excited-straight.png"
+					},
+					{
+						"name": "coat-frown-straight",
+						"path": "res://portraits/amy-d/coat-frown-straight.png"
+					},
+					{
+						"name": "coat-smile-straight",
+						"path": "res://portraits/amy-d/coat-smile-straight.png"
+					},
+					{
+						"name": "shirt-sad-straight",
+						"path": "res://portraits/amy-d/shirt-sad-straight.png"
+					},
+					{
+						"name": "nogloves-frown-straight",
+						"path": "res://portraits/amy-d/nogloves-frown-straight.png"
+					},
+					{
+						"name": "nochoker-distress-sick",
+						"path": "res://portraits/amy-d/nochoker-distress-sick.png"
+					},
+					{
+						"name": "nochoker-ehehe-sick",
+						"path": "res://portraits/amy-d/nochoker-ehehe-sick.png"
+					},
+					{
+						"name": "nochoker-frown-sick",
+						"path": "res://portraits/amy-d/nochoker-frown-sick.png"
+					},
+					{
+						"name": "clean-curious-straight",
+						"path": "res://portraits/amy-d/clean-curious-straight.png"
+					},
+					{
+						"name": "clean-distressed-straight",
+						"path": "res://portraits/amy-d/clean-distressed-straight.png"
+					},
+					{
+						"name": "clean-sad-straight",
+						"path": "res://portraits/amy-d/clean-sad-straight.png"
+					},
+					{
+						"name": "clean-smile-straight",
+						"path": "res://portraits/amy-d/clean-smile-straight.png"
+					},
+					{
+						"name": "clean-surprised-straight",
+						"path": "res://portraits/amy-d/clean-surprised-straight.png"
+					}
+				],
+				"scale": 100,
+				"theme": ""
+			},
+			"display_name": "Amy",
+			"file": "character-1638041213.json",
+			"name": "Amy-D",
+			"nickname": "",
+			"path": "/Chaos/Amy-D",
+			"portraits": [
+				{
+					"name": "Default",
+					"path": "res://transparent.png"
+				},
+				{
+					"name": "pajama-distress-side",
+					"path": "res://portraits/amy-d/pajama-distress-side.png"
+				},
+				{
+					"name": "pajama-distress-straight",
+					"path": "res://portraits/amy-d/pajama-distress-straight.png"
+				},
+				{
+					"name": "pajama-mad-side",
+					"path": "res://portraits/amy-d/pajama-mad-side.png"
+				},
+				{
+					"name": "pajama-mad-straight",
+					"path": "res://portraits/amy-d/pajama-mad-straight.png"
+				},
+				{
+					"name": "pajama-neutral-side",
+					"path": "res://portraits/amy-d/pajama-neutral-side.png"
+				},
+				{
+					"name": "pajama-neutral-straight",
+					"path": "res://portraits/amy-d/pajama-neutral-straight.png"
+				},
+				{
+					"name": "shirt-distressed-straight",
+					"path": "res://portraits/amy-d/shirt-distressed-straight.png"
+				},
+				{
+					"name": "shirt-happy-straight",
+					"path": "res://portraits/amy-d/shirt-happy-straight.png"
+				},
+				{
+					"name": "shirt-mad-straight",
+					"path": "res://portraits/amy-d/shirt-mad-straight.png"
+				},
+				{
+					"name": "shirt-neutral-straight",
+					"path": "res://portraits/amy-d/shirt-neutral-straight.png"
+				},
+				{
+					"name": "shirt-smile-straight",
+					"path": "res://portraits/amy-d/shirt-smile-straight.png"
+				},
+				{
+					"name": "shirt-confused-straight",
+					"path": "res://portraits/amy-d/shirt-confused-straight.png"
+				},
+				{
+					"name": "overshirt-mad-straight",
+					"path": "res://portraits/amy-d/overshirt-mad-straight.png"
+				},
+				{
+					"name": "overshirt-yell-straight",
+					"path": "res://portraits/amy-d/overshirt-yell-straight.png"
+				},
+				{
+					"name": "drunk-confused-straight",
+					"path": "res://portraits/amy-d/drunk-confused-straight.png"
+				},
+				{
+					"name": "drunk-distress-straight",
+					"path": "res://portraits/amy-d/drunk-distress-straight.png"
+				},
+				{
+					"name": "drunk-ehehe-straight",
+					"path": "res://portraits/amy-d/drunk-ehehe-straight.png"
+				},
+				{
+					"name": "drunk-frown-straight",
+					"path": "res://portraits/amy-d/drunk-frown-straight.png"
+				},
+				{
+					"name": "drunk-horny-straight",
+					"path": "res://portraits/amy-d/drunk-horny-straight.png"
+				},
+				{
+					"name": "drunk-neutral-straight",
+					"path": "res://portraits/amy-d/drunk-neutral-straight.png"
+				},
+				{
+					"name": "drunk-sad-side",
+					"path": "res://portraits/amy-d/drunk-sad-side.png"
+				},
+				{
+					"name": "drunk-sad-straight",
+					"path": "res://portraits/amy-d/drunk-sad-straight.png"
+				},
+				{
+					"name": "drunk-smile-straight",
+					"path": "res://portraits/amy-d/drunk-smile-straight.png"
+				},
+				{
+					"name": "hangover-confused-side",
+					"path": "res://portraits/amy-d/hangover-confused-side.png"
+				},
+				{
+					"name": "hangover-confused-straight",
+					"path": "res://portraits/amy-d/hangover-confused-straight.png"
+				},
+				{
+					"name": "hangover-ehehe-straight",
+					"path": "res://portraits/amy-d/hangover-ehehe-straight.png"
+				},
+				{
+					"name": "hangover-frown-straight",
+					"path": "res://portraits/amy-d/hangover-frown-straight.png"
+				},
+				{
+					"name": "hangover-sad-straight",
+					"path": "res://portraits/amy-d/hangover-sad-straight.png"
+				},
+				{
+					"name": "hangover-smile-side",
+					"path": "res://portraits/amy-d/hangover-smile-side.png"
+				},
+				{
+					"name": "hangover-smile-straight",
+					"path": "res://portraits/amy-d/hangover-smile-straight.png"
+				},
+				{
+					"name": "shirt-panic-straight",
+					"path": "res://portraits/amy-d/shirt-panic-straight.png"
+				},
+				{
+					"name": "coat-cry-straight",
+					"path": "res://portraits/amy-d/coat-cry-straight.png"
+				},
+				{
+					"name": "coat-excited-straight",
+					"path": "res://portraits/amy-d/coat-excited-straight.png"
+				},
+				{
+					"name": "coat-frown-straight",
+					"path": "res://portraits/amy-d/coat-frown-straight.png"
+				},
+				{
+					"name": "coat-smile-straight",
+					"path": "res://portraits/amy-d/coat-smile-straight.png"
+				},
+				{
+					"name": "shirt-sad-straight",
+					"path": "res://portraits/amy-d/shirt-sad-straight.png"
+				},
+				{
+					"name": "nogloves-frown-straight",
+					"path": "res://portraits/amy-d/nogloves-frown-straight.png"
+				},
+				{
+					"name": "nochoker-distress-sick",
+					"path": "res://portraits/amy-d/nochoker-distress-sick.png"
+				},
+				{
+					"name": "nochoker-ehehe-sick",
+					"path": "res://portraits/amy-d/nochoker-ehehe-sick.png"
+				},
+				{
+					"name": "nochoker-frown-sick",
+					"path": "res://portraits/amy-d/nochoker-frown-sick.png"
+				},
+				{
+					"name": "clean-curious-straight",
+					"path": "res://portraits/amy-d/clean-curious-straight.png"
+				},
+				{
+					"name": "clean-distressed-straight",
+					"path": "res://portraits/amy-d/clean-distressed-straight.png"
+				},
+				{
+					"name": "clean-sad-straight",
+					"path": "res://portraits/amy-d/clean-sad-straight.png"
+				},
+				{
+					"name": "clean-smile-straight",
+					"path": "res://portraits/amy-d/clean-smile-straight.png"
+				},
+				{
+					"name": "clean-surprised-straight",
+					"path": "res://portraits/amy-d/clean-surprised-straight.png"
+				}
+			]
+		},
+		"/Chaos/Emily": {
+			"color": "0.917647,0.772549,0.678431,1",
+			"data": {
+				"color": "#ffeac5ad",
+				"description": "",
+				"display_name": "Woman",
+				"display_name_bool": true,
+				"id": "character-1641441147.json",
+				"mirror_portraits": false,
+				"name": "Emily",
+				"nickname": "",
+				"nickname_bool": false,
+				"offset_x": 0,
+				"offset_y": 0,
+				"portraits": [
+					{
+						"name": "Default",
+						"path": ""
+					},
+					{
+						"name": "suit-distressed-straight",
+						"path": "res://portraits/emily/suit-distressed-straight.png"
+					},
+					{
+						"name": "suit-frown-straight",
+						"path": "res://portraits/emily/suit-frown-straight.png"
+					},
+					{
+						"name": "suit-happy-straight",
+						"path": "res://portraits/emily/suit-happy-straight.png"
+					},
+					{
+						"name": "suit-serious-straight",
+						"path": "res://portraits/emily/suit-serious-straight.png"
+					},
+					{
+						"name": "suit-smile-straight",
+						"path": "res://portraits/emily/suit-smile-straight.png"
+					}
+				],
+				"scale": 100,
+				"theme": ""
+			},
+			"display_name": "Woman",
+			"file": "character-1641441147.json",
+			"name": "Emily",
+			"nickname": "",
+			"path": "/Chaos/Emily",
+			"portraits": [
+				{
+					"name": "Default",
+					"path": ""
+				},
+				{
+					"name": "suit-distressed-straight",
+					"path": "res://portraits/emily/suit-distressed-straight.png"
+				},
+				{
+					"name": "suit-frown-straight",
+					"path": "res://portraits/emily/suit-frown-straight.png"
+				},
+				{
+					"name": "suit-happy-straight",
+					"path": "res://portraits/emily/suit-happy-straight.png"
+				},
+				{
+					"name": "suit-serious-straight",
+					"path": "res://portraits/emily/suit-serious-straight.png"
+				},
+				{
+					"name": "suit-smile-straight",
+					"path": "res://portraits/emily/suit-smile-straight.png"
+				}
+			]
+		},
+		"/Chaos/Marceline": {
+			"color": "0.517647,0.901961,0.529412,1",
+			"data": {
+				"color": "#ff84e687",
+				"description": "",
+				"display_name": "",
+				"display_name_bool": false,
+				"id": "character-1641441574.json",
+				"mirror_portraits": false,
+				"name": "Marceline",
+				"nickname": "",
+				"nickname_bool": false,
+				"offset_x": 0,
+				"offset_y": 0,
+				"portraits": [
+					{
+						"name": "Default",
+						"path": ""
+					},
+					{
+						"name": "dress-curious-straight",
+						"path": "res://portraits/marceline/dress-curious-straight.png"
+					},
+					{
+						"name": "dress-distressed-straight",
+						"path": "res://portraits/marceline/dress-distressed-straight.png"
+					},
+					{
+						"name": "dress-happy-closed",
+						"path": "res://portraits/marceline/dress-happy-closed.png"
+					},
+					{
+						"name": "dress-happy-straight",
+						"path": "res://portraits/marceline/dress-happy-straight.png"
+					},
+					{
+						"name": "dress-serious-straight",
+						"path": "res://portraits/marceline/dress-serious-straight.png"
+					},
+					{
+						"name": "dress-smile-straight",
+						"path": "res://portraits/marceline/dress-smile-straight.png"
+					},
+					{
+						"name": "dress-unhappy-straight",
+						"path": "res://portraits/marceline/dress-unhappy-straight.png"
+					}
+				],
+				"scale": 100
+			},
+			"display_name": "",
+			"file": "character-1641441574.json",
+			"name": "Marceline",
+			"nickname": "",
+			"path": "/Chaos/Marceline",
+			"portraits": [
+				{
+					"name": "Default",
+					"path": ""
+				},
+				{
+					"name": "dress-curious-straight",
+					"path": "res://portraits/marceline/dress-curious-straight.png"
+				},
+				{
+					"name": "dress-distressed-straight",
+					"path": "res://portraits/marceline/dress-distressed-straight.png"
+				},
+				{
+					"name": "dress-happy-closed",
+					"path": "res://portraits/marceline/dress-happy-closed.png"
+				},
+				{
+					"name": "dress-happy-straight",
+					"path": "res://portraits/marceline/dress-happy-straight.png"
+				},
+				{
+					"name": "dress-serious-straight",
+					"path": "res://portraits/marceline/dress-serious-straight.png"
+				},
+				{
+					"name": "dress-smile-straight",
+					"path": "res://portraits/marceline/dress-smile-straight.png"
+				},
+				{
+					"name": "dress-unhappy-straight",
+					"path": "res://portraits/marceline/dress-unhappy-straight.png"
+				}
+			]
+		},
+		"/Chaos/Marceline-???": {
+			"color": "0.517647,0.901961,0.529412,1",
+			"data": {
+				"color": "#ff84e687",
+				"description": "",
+				"display_name": "???",
+				"display_name_bool": true,
+				"id": "character-1641441541.json",
+				"mirror_portraits": false,
+				"name": "Marceline-???",
+				"nickname": "",
+				"nickname_bool": false,
+				"offset_x": 0,
+				"offset_y": 0,
+				"portraits": [
+					{
+						"name": "Default",
+						"path": ""
+					}
+				],
+				"scale": 100
+			},
+			"display_name": "???",
+			"file": "character-1641441541.json",
+			"name": "Marceline-???",
+			"nickname": "",
+			"path": "/Chaos/Marceline-???",
+			"portraits": [
+				{
+					"name": "Default",
+					"path": ""
+				}
+			]
+		},
+		"/Chaos/Marcus": {
+			"color": "0.701961,0.588235,0.588235,1",
+			"data": {
+				"color": "#ffb39696",
+				"description": "",
+				"display_name": "",
+				"display_name_bool": false,
+				"id": "character-1639165833.json",
+				"mirror_portraits": false,
+				"name": "Marcus",
+				"nickname": "",
+				"nickname_bool": false,
+				"offset_x": 0,
+				"offset_y": 0,
+				"portraits": [
+					{
+						"name": "Default",
+						"path": ""
+					},
+					{
+						"name": "",
+						"path": ""
+					},
+					{
+						"name": "work-angry-straight",
+						"path": "res://portraits/marcus/work-angry-straight.png"
+					},
+					{
+						"name": "work-frown-straight",
+						"path": "res://portraits/marcus/work-frown-straight.png"
+					},
+					{
+						"name": "work-neutral-straight",
+						"path": "res://portraits/marcus/work-neutral-straight.png"
+					},
+					{
+						"name": "work-smile-straight",
+						"path": "res://portraits/marcus/work-smile-straight.png"
+					}
+				],
+				"scale": 100,
+				"theme": ""
+			},
+			"display_name": "",
+			"file": "character-1639165833.json",
+			"name": "Marcus",
+			"nickname": "",
+			"path": "/Chaos/Marcus",
+			"portraits": [
+				{
+					"name": "Default",
+					"path": ""
+				},
+				{
+					"name": "",
+					"path": ""
+				},
+				{
+					"name": "work-angry-straight",
+					"path": "res://portraits/marcus/work-angry-straight.png"
+				},
+				{
+					"name": "work-frown-straight",
+					"path": "res://portraits/marcus/work-frown-straight.png"
+				},
+				{
+					"name": "work-neutral-straight",
+					"path": "res://portraits/marcus/work-neutral-straight.png"
+				},
+				{
+					"name": "work-smile-straight",
+					"path": "res://portraits/marcus/work-smile-straight.png"
+				}
+			]
+		},
+		"/Chaos/Moran": {
+			"color": "0.839216,0.65098,0.878431,1",
+			"data": {
+				"color": "#ffd6a6e0",
+				"description": "",
+				"display_name": "Agent Moran",
+				"display_name_bool": true,
+				"id": "character-1641442800.json",
+				"mirror_portraits": false,
+				"name": "Moran",
+				"nickname": "",
+				"nickname_bool": false,
+				"offset_x": 0,
+				"offset_y": 0,
+				"portraits": [
+					{
+						"name": "Default",
+						"path": ""
+					}
+				],
+				"scale": 100
+			},
+			"display_name": "Agent Moran",
+			"file": "character-1641442800.json",
+			"name": "Moran",
+			"nickname": "",
+			"path": "/Chaos/Moran",
+			"portraits": [
+				{
+					"name": "Default",
+					"path": ""
+				}
+			]
+		},
+		"/Chaos/Moran-Man": {
+			"color": "0.839216,0.65098,0.878431,1",
+			"data": {
+				"color": "#ffd6a6e0",
+				"description": "",
+				"display_name": "Man",
+				"display_name_bool": true,
+				"id": "character-1641442751.json",
+				"mirror_portraits": false,
+				"name": "Moran-Man",
+				"nickname": "",
+				"nickname_bool": false,
+				"offset_x": 0,
+				"offset_y": 0,
+				"portraits": [
+					{
+						"name": "Default",
+						"path": ""
+					}
+				],
+				"scale": 100,
+				"theme": ""
+			},
+			"display_name": "Man",
+			"file": "character-1641442751.json",
+			"name": "Moran-Man",
+			"nickname": "",
+			"path": "/Chaos/Moran-Man",
+			"portraits": [
+				{
+					"name": "Default",
+					"path": ""
+				}
+			]
+		},
+		"/Chaos/Officer": {
+			"color": "1,1,1,1",
+			"data": {
+				"color": "#ffffffff",
+				"description": "",
+				"display_name": "",
+				"display_name_bool": false,
+				"id": "character-1639714911.json",
+				"mirror_portraits": false,
+				"name": "Officer",
+				"nickname": "",
+				"nickname_bool": false,
+				"offset_x": 0,
+				"offset_y": 0,
+				"portraits": [
+					{
+						"name": "Default",
+						"path": ""
+					}
+				],
+				"scale": 100,
+				"theme": ""
+			},
+			"display_name": "",
+			"file": "character-1639714911.json",
+			"name": "Officer",
+			"nickname": "",
+			"path": "/Chaos/Officer",
+			"portraits": [
+				{
+					"name": "Default",
+					"path": ""
+				}
+			]
+		},
+		"/Chaos/Thug": {
+			"color": "1,1,1,1",
+			"data": {
+				"color": "#ffffffff",
+				"description": "",
+				"display_name": "",
+				"display_name_bool": false,
+				"id": "character-1639420125.json",
+				"mirror_portraits": false,
+				"name": "Thug",
+				"nickname": "",
+				"nickname_bool": false,
+				"offset_x": 0,
+				"offset_y": 0,
+				"portraits": [
+					{
+						"name": "Default",
+						"path": ""
+					},
+					{
+						"name": "thug-frown",
+						"path": "res://portraits/thug/thug-frown.png"
+					},
+					{
+						"name": "thug-gun",
+						"path": "res://portraits/thug/thug-gun.png"
+					},
+					{
+						"name": "thug-shout",
+						"path": "res://portraits/thug/thug-shout.png"
+					}
+				],
+				"scale": 100,
+				"theme": ""
+			},
+			"display_name": "",
+			"file": "character-1639420125.json",
+			"name": "Thug",
+			"nickname": "",
+			"path": "/Chaos/Thug",
+			"portraits": [
+				{
+					"name": "Default",
+					"path": ""
+				},
+				{
+					"name": "thug-frown",
+					"path": "res://portraits/thug/thug-frown.png"
+				},
+				{
+					"name": "thug-gun",
+					"path": "res://portraits/thug/thug-gun.png"
+				},
+				{
+					"name": "thug-shout",
+					"path": "res://portraits/thug/thug-shout.png"
+				}
+			]
+		},
+		"/Chaos/Thug 2": {
+			"color": "1,1,1,1",
+			"data": {
+				"color": "#ffffffff",
+				"description": "",
+				"display_name": "",
+				"display_name_bool": false,
+				"id": "character-1639714073.json",
+				"mirror_portraits": false,
+				"name": "Thug 2",
+				"nickname": "",
+				"nickname_bool": false,
+				"offset_x": 0,
+				"offset_y": 0,
+				"portraits": [
+					{
+						"name": "Default",
+						"path": ""
+					}
+				],
+				"scale": 100
+			},
+			"display_name": "",
+			"file": "character-1639714073.json",
+			"name": "Thug 2",
+			"nickname": "",
+			"path": "/Chaos/Thug 2",
+			"portraits": [
+				{
+					"name": "Default",
+					"path": ""
+				}
+			]
+		},
+		"/Chaos/Thug 3": {
+			"color": "1,1,1,1",
+			"data": {
+				"color": "#ffffffff",
+				"description": "",
+				"display_name": "",
+				"display_name_bool": false,
+				"id": "character-1639714081.json",
+				"mirror_portraits": false,
+				"name": "Thug 3",
+				"nickname": "",
+				"nickname_bool": false,
+				"offset_x": 0,
+				"offset_y": 0,
+				"portraits": [
+					{
+						"name": "Default",
+						"path": ""
+					}
+				],
+				"scale": 100,
+				"theme": ""
+			},
+			"display_name": "",
+			"file": "character-1639714081.json",
+			"name": "Thug 3",
+			"nickname": "",
+			"path": "/Chaos/Thug 3",
+			"portraits": [
+				{
+					"name": "Default",
+					"path": ""
+				}
+			]
+		},
+		"/Divergence/.": {
+			"color": null,
+			"folded": false
+		},
+		"/Divergence/Attia-???": {
+			"color": "0.541176,0.976471,0.760784,1",
+			"data": {
+				"color": "#ff8af9c2",
+				"description": "",
+				"display_name": "???",
+				"display_name_bool": true,
+				"id": "character-1639689789.json",
+				"mirror_portraits": false,
+				"name": "Attia-???",
+				"nickname": "",
+				"nickname_bool": false,
+				"offset_x": 0,
+				"offset_y": 0,
+				"portraits": [
+					{
+						"name": "Default",
+						"path": ""
+					},
+					{
+						"name": "stripes-frown-straight",
+						"path": "res://portraits/attiacitan/stripes-frown-straight.png"
+					},
+					{
+						"name": "stripes-happy-straight",
+						"path": "res://portraits/attiacitan/stripes-happy-straight.png"
+					},
+					{
+						"name": "stripes-mad-straight",
+						"path": "res://portraits/attiacitan/stripes-mad-straight.png"
+					},
+					{
+						"name": "stripes-neutral-straight",
+						"path": "res://portraits/attiacitan/stripes-neutral-straight.png"
+					},
+					{
+						"name": "stripes-proud-straight",
+						"path": "res://portraits/attiacitan/stripes-proud-straight.png"
+					},
+					{
+						"name": "stripes-smile-straight",
+						"path": "res://portraits/attiacitan/stripes-smile-straight.png"
+					},
+					{
+						"name": "stripes-worried-straight",
+						"path": "res://portraits/attiacitan/stripes-worried-straight.png"
+					}
+				],
+				"scale": 100,
+				"theme": ""
+			},
+			"display_name": "???",
+			"file": "character-1639689789.json",
+			"name": "Attia-???",
+			"nickname": "",
+			"path": "/Divergence/Attia-???",
+			"portraits": [
+				{
+					"name": "Default",
+					"path": ""
+				},
+				{
+					"name": "stripes-frown-straight",
+					"path": "res://portraits/attiacitan/stripes-frown-straight.png"
+				},
+				{
+					"name": "stripes-happy-straight",
+					"path": "res://portraits/attiacitan/stripes-happy-straight.png"
+				},
+				{
+					"name": "stripes-mad-straight",
+					"path": "res://portraits/attiacitan/stripes-mad-straight.png"
+				},
+				{
+					"name": "stripes-neutral-straight",
+					"path": "res://portraits/attiacitan/stripes-neutral-straight.png"
+				},
+				{
+					"name": "stripes-proud-straight",
+					"path": "res://portraits/attiacitan/stripes-proud-straight.png"
+				},
+				{
+					"name": "stripes-smile-straight",
+					"path": "res://portraits/attiacitan/stripes-smile-straight.png"
+				},
+				{
+					"name": "stripes-worried-straight",
+					"path": "res://portraits/attiacitan/stripes-worried-straight.png"
+				}
+			]
+		},
+		"/Divergence/AttiaCitan": {
+			"color": "0.541176,0.976471,0.760784,1",
+			"data": {
+				"color": "#ff8af9c2",
+				"description": "",
+				"display_name": "Jenna",
+				"display_name_bool": true,
+				"id": "character-1639689665.json",
+				"mirror_portraits": false,
+				"name": "AttiaCitan",
+				"nickname": "",
+				"nickname_bool": false,
+				"offset_x": 0,
+				"offset_y": 0,
+				"portraits": [
+					{
+						"name": "Default",
+						"path": ""
+					},
+					{
+						"name": "",
+						"path": ""
+					},
+					{
+						"name": "stripes-frown-straight",
+						"path": "res://portraits/attiacitan/stripes-frown-straight.png"
+					},
+					{
+						"name": "stripes-happy-straight",
+						"path": "res://portraits/attiacitan/stripes-happy-straight.png"
+					},
+					{
+						"name": "stripes-mad-straight",
+						"path": "res://portraits/attiacitan/stripes-mad-straight.png"
+					},
+					{
+						"name": "stripes-neutral-straight",
+						"path": "res://portraits/attiacitan/stripes-neutral-straight.png"
+					},
+					{
+						"name": "stripes-proud-straight",
+						"path": "res://portraits/attiacitan/stripes-proud-straight.png"
+					},
+					{
+						"name": "stripes-smile-straight",
+						"path": "res://portraits/attiacitan/stripes-smile-straight.png"
+					},
+					{
+						"name": "stripes-worried-straight",
+						"path": "res://portraits/attiacitan/stripes-worried-straight.png"
+					}
+				],
+				"scale": 100,
+				"theme": ""
+			},
+			"display_name": "Jenna",
+			"file": "character-1639689665.json",
+			"name": "AttiaCitan",
+			"nickname": "",
+			"path": "/Divergence/AttiaCitan",
+			"portraits": [
+				{
+					"name": "Default",
+					"path": ""
+				},
+				{
+					"name": "",
+					"path": ""
+				},
+				{
+					"name": "stripes-frown-straight",
+					"path": "res://portraits/attiacitan/stripes-frown-straight.png"
+				},
+				{
+					"name": "stripes-happy-straight",
+					"path": "res://portraits/attiacitan/stripes-happy-straight.png"
+				},
+				{
+					"name": "stripes-mad-straight",
+					"path": "res://portraits/attiacitan/stripes-mad-straight.png"
+				},
+				{
+					"name": "stripes-neutral-straight",
+					"path": "res://portraits/attiacitan/stripes-neutral-straight.png"
+				},
+				{
+					"name": "stripes-proud-straight",
+					"path": "res://portraits/attiacitan/stripes-proud-straight.png"
+				},
+				{
+					"name": "stripes-smile-straight",
+					"path": "res://portraits/attiacitan/stripes-smile-straight.png"
+				},
+				{
+					"name": "stripes-worried-straight",
+					"path": "res://portraits/attiacitan/stripes-worried-straight.png"
+				}
+			]
+		},
+		"/Extras/.": {
+			"color": null,
+			"folded": false
+		},
+		"/Extras/Amy-T": {
+			"color": "0.521569,0.764706,1,1",
+			"data": {
+				"color": "#ff85c3ff",
+				"description": "",
+				"display_name": "Amy",
+				"display_name_bool": true,
+				"id": "character-1641702109.json",
+				"mirror_portraits": false,
+				"name": "Amy-T",
+				"nickname": "",
+				"nickname_bool": false,
+				"offset_x": 0,
+				"offset_y": 0,
+				"portraits": [
+					{
+						"name": "Default",
+						"path": ""
+					},
+					{
+						"name": "confused",
+						"path": "res://portraits/amy-t/confused.png"
+					},
+					{
+						"name": "frown",
+						"path": "res://portraits/amy-t/frown.png"
+					},
+					{
+						"name": "glare",
+						"path": "res://portraits/amy-t/glare.png"
+					},
+					{
+						"name": "neutral",
+						"path": "res://portraits/amy-t/neutral.png"
+					},
+					{
+						"name": "shout",
+						"path": "res://portraits/amy-t/shout.png"
+					},
+					{
+						"name": "exasperated",
+						"path": "res://portraits/amy-t/exasperated.png"
+					},
+					{
+						"name": "cross",
+						"path": "res://portraits/amy-t/cross.png"
+					},
+					{
+						"name": "armsonhips",
+						"path": "res://portraits/amy-t/armsonhips.png"
+					},
+					{
+						"name": "thinking",
+						"path": "res://portraits/amy-t/thinking.png"
+					},
+					{
+						"name": "amyshadertest",
+						"path": "res://amyshadertest.tscn"
+					}
+				],
+				"scale": 100,
+				"theme": ""
+			},
+			"display_name": "Amy",
+			"file": "character-1641702109.json",
+			"name": "Amy-T",
+			"nickname": "",
+			"path": "/Extras/Amy-T",
+			"portraits": [
+				{
+					"name": "Default",
+					"path": ""
+				},
+				{
+					"name": "confused",
+					"path": "res://portraits/amy-t/confused.png"
+				},
+				{
+					"name": "frown",
+					"path": "res://portraits/amy-t/frown.png"
+				},
+				{
+					"name": "glare",
+					"path": "res://portraits/amy-t/glare.png"
+				},
+				{
+					"name": "neutral",
+					"path": "res://portraits/amy-t/neutral.png"
+				},
+				{
+					"name": "shout",
+					"path": "res://portraits/amy-t/shout.png"
+				},
+				{
+					"name": "exasperated",
+					"path": "res://portraits/amy-t/exasperated.png"
+				},
+				{
+					"name": "cross",
+					"path": "res://portraits/amy-t/cross.png"
+				},
+				{
+					"name": "armsonhips",
+					"path": "res://portraits/amy-t/armsonhips.png"
+				},
+				{
+					"name": "thinking",
+					"path": "res://portraits/amy-t/thinking.png"
+				},
+				{
+					"name": "amyshadertest",
+					"path": "res://amyshadertest.tscn"
+				}
+			]
+		},
+		"/Extras/AttiaCitan": {
+			"color": "0.541176,0.976471,0.760784,1",
+			"data": {
+				"color": "#ff8af9c2",
+				"description": "",
+				"display_name": "",
+				"display_name_bool": false,
+				"id": "character-1641703870.json",
+				"mirror_portraits": false,
+				"name": "AttiaCitan",
+				"nickname": "",
+				"nickname_bool": false,
+				"offset_x": 0,
+				"offset_y": 0,
+				"portraits": [
+					{
+						"name": "Default",
+						"path": ""
+					}
+				],
+				"scale": 100
+			},
+			"display_name": "",
+			"file": "character-1641703870.json",
+			"name": "AttiaCitan",
+			"nickname": "",
+			"path": "/Extras/AttiaCitan",
+			"portraits": [
+				{
+					"name": "Default",
+					"path": ""
+				}
+			]
+		},
+		"/Extras/MikolElrik": {
+			"color": "0.67451,0.682353,0.427451,1",
+			"data": {
+				"color": "#ffacae6d",
+				"description": "",
+				"display_name": "",
+				"display_name_bool": false,
+				"id": "character-1641703940.json",
+				"mirror_portraits": false,
+				"name": "MikolElrik",
+				"nickname": "",
+				"nickname_bool": false,
+				"offset_x": 0,
+				"offset_y": 0,
+				"portraits": [
+					{
+						"name": "Default",
+						"path": ""
+					}
+				],
+				"scale": 100
+			},
+			"display_name": "",
+			"file": "character-1641703940.json",
+			"name": "MikolElrik",
+			"nickname": "",
+			"path": "/Extras/MikolElrik",
+			"portraits": [
+				{
+					"name": "Default",
+					"path": ""
+				}
+			]
+		},
+		"/Phobia/.": {
+			"color": null,
+			"folded": false
+		},
+		"/Phobia/Aimee": {
+			"color": "1,0.760784,0.521569,1",
+			"data": {
+				"color": "#ffffc285",
+				"description": "",
+				"display_name": "",
+				"display_name_bool": false,
+				"id": "character-1644966307.json",
+				"mirror_portraits": false,
+				"name": "Aimee",
+				"nickname": "",
+				"nickname_bool": false,
+				"offset_x": 0,
+				"offset_y": 0,
+				"portraits": [
+					{
+						"name": "Default",
+						"path": "res://portraits/phobia/aimee-test.png"
+					}
+				],
+				"scale": 70
+			},
+			"display_name": "",
+			"file": "character-1644966307.json",
+			"name": "Aimee",
+			"nickname": "",
+			"path": "/Phobia/Aimee",
+			"portraits": [
+				{
+					"name": "Default",
+					"path": "res://portraits/phobia/aimee-test.png"
+				}
+			]
+		},
+		"/Phobia/AttiaCitan": {
+			"color": "0.541176,0.976471,0.760784,1",
+			"data": {
+				"color": "#ff8af9c2",
+				"description": "",
+				"display_name": "",
+				"display_name_bool": false,
+				"id": "character-1644966329.json",
+				"mirror_portraits": true,
+				"name": "AttiaCitan",
+				"nickname": "",
+				"nickname_bool": false,
+				"offset_x": 0,
+				"offset_y": 0,
+				"portraits": [
+					{
+						"name": "Default",
+						"path": "res://portraits/phobia/attia-test.png"
+					}
+				],
+				"scale": 70
+			},
+			"display_name": "",
+			"file": "character-1644966329.json",
+			"name": "AttiaCitan",
+			"nickname": "",
+			"path": "/Phobia/AttiaCitan",
+			"portraits": [
+				{
+					"name": "Default",
+					"path": "res://portraits/phobia/attia-test.png"
+				}
+			]
+		},
+		"/Phobia/James": {
+			"color": "0.988235,1,0.615686,1",
+			"data": {
+				"color": "#fffcff9d",
+				"description": "",
+				"display_name": "",
+				"display_name_bool": false,
+				"id": "character-1644966302.json",
+				"mirror_portraits": false,
+				"name": "James",
+				"nickname": "",
+				"nickname_bool": false,
+				"offset_x": 0,
+				"offset_y": 0,
+				"portraits": [
+					{
+						"name": "Default",
+						"path": "res://portraits/phobia/james-test.png"
+					}
+				],
+				"scale": 70
+			},
+			"display_name": "",
+			"file": "character-1644966302.json",
+			"name": "James",
+			"nickname": "",
+			"path": "/Phobia/James",
+			"portraits": [
+				{
+					"name": "Default",
+					"path": "res://portraits/phobia/james-test.png"
+				}
+			]
+		},
+		"/Phobia/MikolElrik": {
+			"color": "0.709804,0.709804,0.545098,1",
+			"data": {
+				"color": "#ffb5b58b",
+				"description": "",
+				"display_name": "",
+				"display_name_bool": false,
+				"id": "character-1644966321.json",
+				"mirror_portraits": true,
+				"name": "MikolElrik",
+				"nickname": "",
+				"nickname_bool": false,
+				"offset_x": 0,
+				"offset_y": 0,
+				"portraits": [
+					{
+						"name": "Default",
+						"path": "res://portraits/phobia/mikol-test.png"
+					}
+				],
+				"scale": 70
+			},
+			"display_name": "",
+			"file": "character-1644966321.json",
+			"name": "MikolElrik",
+			"nickname": "",
+			"path": "/Phobia/MikolElrik",
+			"portraits": [
+				{
+					"name": "Default",
+					"path": "res://portraits/phobia/mikol-test.png"
+				}
+			]
+		},
+		"/Phobia/Tiffany": {
+			"color": "0.745098,0.619608,1,1",
+			"data": {
+				"color": "#ffbe9eff",
+				"description": "",
+				"display_name": "",
+				"display_name_bool": false,
+				"id": "character-1644966315.json",
+				"mirror_portraits": false,
+				"name": "Tiffany",
+				"nickname": "",
+				"nickname_bool": false,
+				"offset_x": 0,
+				"offset_y": 0,
+				"portraits": [
+					{
+						"name": "Default",
+						"path": "res://portraits/phobia/tiffany-test.png"
+					}
+				],
+				"scale": 70
+			},
+			"display_name": "",
+			"file": "character-1644966315.json",
+			"name": "Tiffany",
+			"nickname": "",
+			"path": "/Phobia/Tiffany",
+			"portraits": [
+				{
+					"name": "Default",
+					"path": "res://portraits/phobia/tiffany-test.png"
+				}
+			]
+		},
+		"/PrivateWorld/.": {
+			"color": null,
+			"folded": false
+		},
+		"/PrivateWorld/Amy-A": {
+			"color": "0.521569,0.764706,1,1",
+			"data": {
+				"color": "#ff85c3ff",
+				"description": "",
+				"display_name": "Amy",
+				"display_name_bool": true,
+				"id": "character-1641704651.json",
+				"mirror_portraits": false,
+				"name": "Amy-A",
+				"nickname": "",
+				"nickname_bool": false,
+				"offset_x": 0,
+				"offset_y": 0,
+				"portraits": [
+					{
+						"name": "Default",
+						"path": ""
+					},
+					{
+						"name": "normal-sad-straight",
+						"path": "res://portraits/amy-a/normal-sad-straight.png"
+					},
+					{
+						"name": "normal-confused-straight",
+						"path": "res://portraits/amy-a/normal-confused-straight.png"
+					},
+					{
+						"name": "normal-neutral-straight",
+						"path": "res://portraits/amy-a/normal-neutral-straight.png"
+					},
+					{
+						"name": "normal-proud-straight",
+						"path": "res://portraits/amy-a/normal-proud-straight.png"
+					},
+					{
+						"name": "normal-sigh-straight",
+						"path": "res://portraits/amy-a/normal-sigh-straight.png"
+					},
+					{
+						"name": "normal-smile-straight",
+						"path": "res://portraits/amy-a/normal-smile-straight.png"
+					},
+					{
+						"name": "normal-smirk-straight",
+						"path": "res://portraits/amy-a/normal-smirk-straight.png"
+					},
+					{
+						"name": "normal-happy-straight",
+						"path": "res://portraits/amy-a/normal-happy-straight.png"
+					},
+					{
+						"name": "normal-shout-straight",
+						"path": "res://portraits/amy-a/normal-shout-straight.png"
+					}
+				],
+				"scale": 100
+			},
+			"display_name": "Amy",
+			"file": "character-1641704651.json",
+			"name": "Amy-A",
+			"nickname": "",
+			"path": "/PrivateWorld/Amy-A",
+			"portraits": [
+				{
+					"name": "Default",
+					"path": ""
+				},
+				{
+					"name": "normal-sad-straight",
+					"path": "res://portraits/amy-a/normal-sad-straight.png"
+				},
+				{
+					"name": "normal-confused-straight",
+					"path": "res://portraits/amy-a/normal-confused-straight.png"
+				},
+				{
+					"name": "normal-neutral-straight",
+					"path": "res://portraits/amy-a/normal-neutral-straight.png"
+				},
+				{
+					"name": "normal-proud-straight",
+					"path": "res://portraits/amy-a/normal-proud-straight.png"
+				},
+				{
+					"name": "normal-sigh-straight",
+					"path": "res://portraits/amy-a/normal-sigh-straight.png"
+				},
+				{
+					"name": "normal-smile-straight",
+					"path": "res://portraits/amy-a/normal-smile-straight.png"
+				},
+				{
+					"name": "normal-smirk-straight",
+					"path": "res://portraits/amy-a/normal-smirk-straight.png"
+				},
+				{
+					"name": "normal-happy-straight",
+					"path": "res://portraits/amy-a/normal-happy-straight.png"
+				},
+				{
+					"name": "normal-shout-straight",
+					"path": "res://portraits/amy-a/normal-shout-straight.png"
+				}
+			]
+		},
+		"/PrivateWorld/Jessica": {
+			"color": "0.701961,0.588235,0.588235,1",
+			"data": {
+				"color": "#ffb39696",
+				"description": "",
+				"display_name": "",
+				"display_name_bool": false,
+				"id": "character-1644888036.json",
+				"mirror_portraits": false,
+				"name": "Jessica",
+				"nickname": "",
+				"nickname_bool": false,
+				"offset_x": 0,
+				"offset_y": 0,
+				"portraits": [
+					{
+						"name": "Default",
+						"path": ""
+					},
+					{
+						"name": "goth-curious-normal",
+						"path": "res://portraits/jessica/goth-curious-normal.png"
+					},
+					{
+						"name": "goth-disappointed-normal",
+						"path": "res://portraits/jessica/goth-disappointed-normal.png"
+					},
+					{
+						"name": "goth-happy-normal",
+						"path": "res://portraits/jessica/goth-happy-normal.png"
+					},
+					{
+						"name": "goth-mad-normal",
+						"path": "res://portraits/jessica/goth-mad-normal.png"
+					},
+					{
+						"name": "goth-neutral-normal",
+						"path": "res://portraits/jessica/goth-neutral-normal.png"
+					},
+					{
+						"name": "goth-sad-normal",
+						"path": "res://portraits/jessica/goth-sad-normal.png"
+					},
+					{
+						"name": "goth-shout-normal",
+						"path": "res://portraits/jessica/goth-shout-normal.png"
+					},
+					{
+						"name": "goth-sigh-normal",
+						"path": "res://portraits/jessica/goth-sigh-normal.png"
+					},
+					{
+						"name": "goth-smile-normal",
+						"path": "res://portraits/jessica/goth-smile-normal.png"
+					},
+					{
+						"name": "goth-surprised-normal",
+						"path": "res://portraits/jessica/goth-surprised-normal.png"
+					},
+					{
+						"name": "goth-thought-normal",
+						"path": "res://portraits/jessica/goth-thought-normal.png"
+					},
+					{
+						"name": "goth-wink-normal",
+						"path": "res://portraits/jessica/goth-wink-normal.png"
+					}
+				],
+				"scale": 100
+			},
+			"display_name": "",
+			"file": "character-1644888036.json",
+			"name": "Jessica",
+			"nickname": "",
+			"path": "/PrivateWorld/Jessica",
+			"portraits": [
+				{
+					"name": "Default",
+					"path": ""
+				},
+				{
+					"name": "goth-curious-normal",
+					"path": "res://portraits/jessica/goth-curious-normal.png"
+				},
+				{
+					"name": "goth-disappointed-normal",
+					"path": "res://portraits/jessica/goth-disappointed-normal.png"
+				},
+				{
+					"name": "goth-happy-normal",
+					"path": "res://portraits/jessica/goth-happy-normal.png"
+				},
+				{
+					"name": "goth-mad-normal",
+					"path": "res://portraits/jessica/goth-mad-normal.png"
+				},
+				{
+					"name": "goth-neutral-normal",
+					"path": "res://portraits/jessica/goth-neutral-normal.png"
+				},
+				{
+					"name": "goth-sad-normal",
+					"path": "res://portraits/jessica/goth-sad-normal.png"
+				},
+				{
+					"name": "goth-shout-normal",
+					"path": "res://portraits/jessica/goth-shout-normal.png"
+				},
+				{
+					"name": "goth-sigh-normal",
+					"path": "res://portraits/jessica/goth-sigh-normal.png"
+				},
+				{
+					"name": "goth-smile-normal",
+					"path": "res://portraits/jessica/goth-smile-normal.png"
+				},
+				{
+					"name": "goth-surprised-normal",
+					"path": "res://portraits/jessica/goth-surprised-normal.png"
+				},
+				{
+					"name": "goth-thought-normal",
+					"path": "res://portraits/jessica/goth-thought-normal.png"
+				},
+				{
+					"name": "goth-wink-normal",
+					"path": "res://portraits/jessica/goth-wink-normal.png"
+				}
+			]
+		},
+		"/PrivateWorld/Jessica-???": {
+			"color": "0.701961,0.588235,0.588235,1",
+			"data": {
+				"color": "#ffb39696",
+				"description": "",
+				"display_name": "???",
+				"display_name_bool": true,
+				"id": "character-1644888018.json",
+				"mirror_portraits": false,
+				"name": "Jessica-???",
+				"nickname": "",
+				"nickname_bool": false,
+				"offset_x": 0,
+				"offset_y": 0,
+				"portraits": [
+					{
+						"name": "Default",
+						"path": ""
+					},
+					{
+						"name": "goth-curious-normal",
+						"path": "res://portraits/jessica/goth-curious-normal.png"
+					},
+					{
+						"name": "goth-surprised-normal",
+						"path": "res://portraits/jessica/goth-surprised-normal.png"
+					},
+					{
+						"name": "goth-smile-normal",
+						"path": "res://portraits/jessica/goth-smile-normal.png"
+					},
+					{
+						"name": "goth-sigh-normal",
+						"path": "res://portraits/jessica/goth-sigh-normal.png"
+					}
+				],
+				"scale": 100
+			},
+			"display_name": "???",
+			"file": "character-1644888018.json",
+			"name": "Jessica-???",
+			"nickname": "",
+			"path": "/PrivateWorld/Jessica-???",
+			"portraits": [
+				{
+					"name": "Default",
+					"path": ""
+				},
+				{
+					"name": "goth-curious-normal",
+					"path": "res://portraits/jessica/goth-curious-normal.png"
+				},
+				{
+					"name": "goth-surprised-normal",
+					"path": "res://portraits/jessica/goth-surprised-normal.png"
+				},
+				{
+					"name": "goth-smile-normal",
+					"path": "res://portraits/jessica/goth-smile-normal.png"
+				},
+				{
+					"name": "goth-sigh-normal",
+					"path": "res://portraits/jessica/goth-sigh-normal.png"
+				}
+			]
+		},
+		"/SchoolDaze/.": {
+			"color": null,
+			"folded": false
+		},
+		"/SchoolDaze/Amy-C": {
+			"color": "0.521569,0.764706,1,1",
+			"data": {
+				"color": "#ff85c3ff",
+				"description": "",
+				"display_name": "Amy",
+				"display_name_bool": true,
+				"id": "character-1641704666.json",
+				"mirror_portraits": false,
+				"name": "Amy-C",
+				"nickname": "",
+				"nickname_bool": false,
+				"offset_x": 0,
+				"offset_y": 0,
+				"portraits": [
+					{
+						"name": "Default",
+						"path": ""
+					},
+					{
+						"name": "normal-smile-straight",
+						"path": "res://portraits/amy-c/normal-smile-straight.png"
+					}
+				],
+				"scale": 100
+			},
+			"display_name": "Amy",
+			"file": "character-1641704666.json",
+			"name": "Amy-C",
+			"nickname": "",
+			"path": "/SchoolDaze/Amy-C",
+			"portraits": [
+				{
+					"name": "Default",
+					"path": ""
+				},
+				{
+					"name": "normal-smile-straight",
+					"path": "res://portraits/amy-c/normal-smile-straight.png"
+				}
+			]
+		},
+		"/Shared/.": {
+			"color": null,
+			"folded": false
+		},
+		"/Shared/All": {
+			"color": "1,1,1,1",
+			"data": {
+				"color": "#ffffffff",
+				"description": "",
+				"display_name": "",
+				"display_name_bool": false,
+				"id": "character-1641494010.json",
+				"mirror_portraits": false,
+				"name": "All",
+				"nickname": "",
+				"nickname_bool": false,
+				"offset_x": 0,
+				"offset_y": 0,
+				"portraits": [
+					{
+						"name": "Default",
+						"path": ""
+					}
+				],
+				"scale": 100
+			},
+			"display_name": "",
+			"file": "character-1641494010.json",
+			"name": "All",
+			"nickname": "",
+			"path": "/Shared/All",
+			"portraits": [
+				{
+					"name": "Default",
+					"path": ""
+				}
+			]
+		},
+		"/Shared/Amy-???": {
+			"color": "0.521569,0.764706,1,1",
+			"data": {
+				"color": "#ff85c3ff",
+				"description": "",
+				"display_name": "???",
+				"display_name_bool": true,
+				"id": "character-1638076571.json",
+				"mirror_portraits": false,
+				"name": "Amy-???",
+				"nickname": "",
+				"nickname_bool": false,
+				"offset_x": 0,
+				"offset_y": 0,
+				"portraits": [
+					{
+						"name": "Default",
+						"path": ""
+					}
+				],
+				"scale": 100,
+				"theme": ""
+			},
+			"display_name": "???",
+			"file": "character-1638076571.json",
+			"name": "Amy-???",
+			"nickname": "",
+			"path": "/Shared/Amy-???",
+			"portraits": [
+				{
+					"name": "Default",
+					"path": ""
+				}
+			]
+		},
+		"/Shared/Doctor": {
+			"color": "1,1,1,1",
+			"data": {
+				"color": "#ffffffff",
+				"description": "",
+				"display_name": "",
+				"display_name_bool": false,
+				"id": "character-1637984819.json",
+				"mirror_portraits": false,
+				"name": "Doctor",
+				"nickname": "",
+				"nickname_bool": false,
+				"offset_x": 0,
+				"offset_y": 0,
+				"portraits": [
+					{
+						"name": "Default",
+						"path": ""
+					}
+				],
+				"scale": 100
+			},
+			"display_name": "",
+			"file": "character-1637984819.json",
+			"name": "Doctor",
+			"nickname": "",
+			"path": "/Shared/Doctor",
+			"portraits": [
+				{
+					"name": "Default",
+					"path": ""
+				}
+			]
+		},
+		"/Shared/James": {
+			"color": "0.988235,1,0.615686,1",
+			"data": {
+				"color": "#fffcff9d",
+				"description": "",
+				"display_name": "",
+				"display_name_bool": false,
+				"id": "character-1637960611.json",
+				"mirror_portraits": false,
+				"name": "James",
+				"nickname": "",
+				"nickname_bool": false,
+				"offset_x": 0,
+				"offset_y": 0,
+				"portraits": [
+					{
+						"name": "Default",
+						"path": ""
+					}
+				],
+				"scale": 100
+			},
+			"display_name": "",
+			"file": "character-1637960611.json",
+			"name": "James",
+			"nickname": "",
+			"path": "/Shared/James",
+			"portraits": [
+				{
+					"name": "Default",
+					"path": ""
+				}
+			]
+		},
+		"/Shared/KingOfHearts": {
+			"color": "1,1,1,1",
+			"data": {
+				"color": "#ffffffff",
+				"description": "",
+				"display_name": "Dr. Hart",
+				"display_name_bool": true,
+				"id": "character-1639165152.json",
+				"mirror_portraits": false,
+				"name": "KingOfHearts",
+				"nickname": "",
+				"nickname_bool": false,
+				"offset_x": 0,
+				"offset_y": 0,
+				"portraits": [
+					{
+						"name": "Default",
+						"path": ""
+					},
+					{
+						"name": "psych-neutral-straight",
+						"path": "res://portraits/kingofhearts/psych-neutral-straight.png"
+					}
+				],
+				"scale": 100,
+				"theme": ""
+			},
+			"display_name": "Dr. Hart",
+			"file": "character-1639165152.json",
+			"name": "KingOfHearts",
+			"nickname": "",
+			"path": "/Shared/KingOfHearts",
+			"portraits": [
+				{
+					"name": "Default",
+					"path": ""
+				},
+				{
+					"name": "psych-neutral-straight",
+					"path": "res://portraits/kingofhearts/psych-neutral-straight.png"
+				}
+			]
+		},
+		"/Shared/Misc-???": {
+			"color": "1,1,1,1",
+			"data": {
+				"color": "#ffffffff",
+				"description": "",
+				"display_name": "???",
+				"display_name_bool": true,
+				"id": "character-1639714895.json",
+				"mirror_portraits": false,
+				"name": "Misc-???",
+				"nickname": "",
+				"nickname_bool": false,
+				"offset_x": 0,
+				"offset_y": 0,
+				"portraits": [
+					{
+						"name": "Default",
+						"path": ""
+					}
+				],
+				"scale": 100,
+				"theme": ""
+			},
+			"display_name": "???",
+			"file": "character-1639714895.json",
+			"name": "Misc-???",
+			"nickname": "",
+			"path": "/Shared/Misc-???",
+			"portraits": [
+				{
+					"name": "Default",
+					"path": ""
+				}
+			]
+		},
+		"/Shared/Nurse": {
+			"color": "1,1,1,1",
+			"data": {
+				"color": "#ffffffff",
+				"description": "",
+				"display_name": "",
+				"display_name_bool": false,
+				"id": "character-1637984811.json",
+				"mirror_portraits": false,
+				"name": "Nurse",
+				"nickname": "",
+				"nickname_bool": false,
+				"offset_x": 0,
+				"offset_y": 0,
+				"portraits": [
+					{
+						"name": "Default",
+						"path": ""
+					}
+				],
+				"scale": 100
+			},
+			"display_name": "",
+			"file": "character-1637984811.json",
+			"name": "Nurse",
+			"nickname": "",
+			"path": "/Shared/Nurse",
+			"portraits": [
+				{
+					"name": "Default",
+					"path": ""
+				}
+			]
+		}
+	},
+	"Definition": {
+		"/.": {
+			"color": null,
+			"folded": false
+		},
+		"/New Folder 1667185667/.": {
+			"color": null,
+			"folded": false
+		},
+		"1637962614-364": {
+			"id": "1637962614-364",
+			"name": "Iteration",
+			"path": "/Iteration",
+			"type": 0,
+			"value": "0"
+		},
+		"1637980455-648": {
+			"id": "1637980455-648",
+			"name": "LastAmy",
+			"path": "/LastAmy",
+			"type": 0,
+			"value": "0"
+		},
+		"1640299195-648": {
+			"id": "1640299195-648",
+			"name": "BranchA",
+			"path": "/BranchA",
+			"type": 0,
+			"value": "0"
+		},
+		"1640299228-787": {
+			"id": "1640299228-787",
+			"name": "BranchB",
+			"path": "/BranchB",
+			"type": 0,
+			"value": "0"
+		},
+		"1640299237-366": {
+			"id": "1640299237-366",
+			"name": "BranchC",
+			"path": "/BranchC",
+			"type": 0,
+			"value": "0"
+		},
+		"1640299253-146": {
+			"id": "1640299253-146",
+			"name": "BranchD",
+			"path": "/BranchD",
+			"type": 0,
+			"value": "0"
+		},
+		"1657506003-648": {
+			"id": "1657506003-648",
+			"name": "ReviewMode",
+			"path": "/ReviewMode",
+			"type": 0,
+			"value": "0"
+		}
+	},
+	"Theme": {
+		"/.": {
+			"color": null,
+			"folded": false
+		},
+		"/New Folder 1667185671/.": {
+			"color": null,
+			"folded": false
+		},
+		"default-theme.cfg": {
+			"config": "[ConfigFile:1525]",
+			"file": "default-theme.cfg",
+			"name": "Default Theme",
+			"path": "/Default Theme"
+		},
+		"theme-1637887617.cfg": {
+			"config": "[ConfigFile:1527]",
+			"file": "theme-1637887617.cfg",
+			"name": "TypeB",
+			"path": "/TypeB"
+		},
+		"theme-1647033784.cfg": {
+			"config": "[ConfigFile:1528]",
+			"file": "theme-1647033784.cfg",
+			"name": "theme-1647033784.cfg",
+			"path": "/theme-1647033784.cfg"
+		},
+		"theme-1650214108.cfg": {
+			"config": "[ConfigFile:1526]",
+			"file": "theme-1650214108.cfg",
+			"name": "TypeB-nodim",
+			"path": "/TypeB-nodim"
+		},
+		"theme-1657083809.cfg": {
+			"config": "[ConfigFile:1529]",
+			"file": "theme-1657083809.cfg",
+			"name": "Distorted",
+			"path": "/Distorted"
+		},
+		"theme-1657502129.cfg": {
+			"config": "[ConfigFile:1530]",
+			"file": "theme-1657502129.cfg",
+			"name": "CreditsWait",
+			"path": "/CreditsWait"
+		}
+	},
+	"Timeline": {
+		"/.": {
+			"color": null,
+			"folded": false
+		},
+		"/Anhedonia/.": {
+			"color": null,
+			"folded": false
+		},
+		"/Anhedonia/step-1": {
+			"color": "1,1,1,1",
+			"file": "timeline-1640471640.json",
+			"name": "step-1",
+			"path": "/Anhedonia/step-1"
+		},
+		"/Anhedonia/step-last": {
+			"color": "1,1,1,1",
+			"file": "timeline-1644935376.json",
+			"name": "step-last",
+			"path": "/Anhedonia/step-last"
+		},
+		"/Anhedonia/step-mid": {
+			"color": "1,1,1,1",
+			"file": "timeline-1655846991.json",
+			"name": "step-mid",
+			"path": "/Anhedonia/step-mid"
+		},
+		"/Chaos/.": {
+			"color": null,
+			"folded": false
+		},
+		"/Chaos/New Folder 1666844659/.": {
+			"color": null,
+			"folded": false
+		},
+		"/Chaos/New Folder 1666844659/New Folder 1666844963/.": {
+			"color": null,
+			"folded": false
+		},
+		"/Chaos/New Folder 1666844659/New Folder 1666844963/New Folder 1666845169/.": {
+			"color": null,
+			"folded": false
+		},
+		"/Chaos/New Folder 1666844659/New Folder 1666844963/New Folder 1666845169/New Folder 1666845175/.": {
+			"color": null,
+			"folded": false
+		},
+		"/Chaos/New Folder 1666844659/New Folder 1666844963/New Folder 1666845169/New Folder 1666845175/New Folder 1666845194/.": {
+			"color": null,
+			"folded": false
+		},
+		"/Chaos/New Folder 1666844659/New Folder 1666844963/New Folder 1666845169/New Folder 1666845175/New Folder 1666845194/ddfgdfg/.": {
+			"color": null,
+			"folded": false
+		},
+		"/Chaos/New Folder 1666844659/New Folder 1666844963/New Folder 1666845169/New Folder 1666845175/New Folder 1666845194/ddfgdfg/New Folder 1667185561/.": {
+			"color": null,
+			"folded": false
+		},
+		"/Chaos/step-1": {
+			"color": "1,1,1,1",
+			"file": "timeline-1638076419.json",
+			"name": "step-1",
+			"path": "/Chaos/step-1"
+		},
+		"/Chaos/step-10": {
+			"color": "1,1,1,1",
+			"file": "timeline-1639788969.json",
+			"name": "step-10",
+			"path": "/Chaos/step-10"
+		},
+		"/Chaos/step-11": {
+			"color": "1,1,1,1",
+			"file": "timeline-1639788975.json",
+			"name": "step-11",
+			"path": "/Chaos/step-11"
+		},
+		"/Chaos/step-12": {
+			"color": "1,1,1,1",
+			"file": "timeline-1641351628.json",
+			"name": "step-12",
+			"path": "/Chaos/step-12"
+		},
+		"/Chaos/step-13": {
+			"color": "1,1,1,1",
+			"file": "timeline-1644372410.json",
+			"name": "step-13",
+			"path": "/Chaos/step-13"
+		},
+		"/Chaos/step-14": {
+			"color": "1,1,1,1",
+			"file": "timeline-1644373602.json",
+			"name": "step-14",
+			"path": "/Chaos/step-14"
+		},
+		"/Chaos/step-15": {
+			"color": "1,1,1,1",
+			"file": "timeline-1644373684.json",
+			"name": "step-15",
+			"path": "/Chaos/step-15"
+		},
+		"/Chaos/step-16": {
+			"color": "1,1,1,1",
+			"file": "timeline-1644629041.json",
+			"name": "step-16",
+			"path": "/Chaos/step-16"
+		},
+		"/Chaos/step-17": {
+			"color": "1,1,1,1",
+			"file": "timeline-1644629050.json",
+			"name": "step-17",
+			"path": "/Chaos/step-17"
+		},
+		"/Chaos/step-18": {
+			"color": "1,1,1,1",
+			"file": "timeline-1646621254.json",
+			"name": "step-18",
+			"path": "/Chaos/step-18"
+		},
+		"/Chaos/step-2": {
+			"color": "1,1,1,1",
+			"file": "timeline-1638159119.json",
+			"name": "step-2",
+			"path": "/Chaos/step-2"
+		},
+		"/Chaos/step-3": {
+			"color": "1,1,1,1",
+			"file": "timeline-1638245534.json",
+			"name": "step-3",
+			"path": "/Chaos/step-3"
+		},
+		"/Chaos/step-4": {
+			"color": "1,1,1,1",
+			"file": "timeline-1638491011.json",
+			"name": "step-4",
+			"path": "/Chaos/step-4"
+		},
+		"/Chaos/step-5": {
+			"color": "1,1,1,1",
+			"file": "timeline-1639165202.json",
+			"name": "step-5",
+			"path": "/Chaos/step-5"
+		},
+		"/Chaos/step-6": {
+			"color": "1,1,1,1",
+			"file": "timeline-1639165263.json",
+			"name": "step-6",
+			"path": "/Chaos/step-6"
+		},
+		"/Chaos/step-7": {
+			"color": "1,1,1,1",
+			"file": "timeline-1639167221.json",
+			"name": "step-7",
+			"path": "/Chaos/step-7"
+		},
+		"/Chaos/step-8": {
+			"color": "1,1,1,1",
+			"file": "timeline-1639511076.json",
+			"name": "step-8",
+			"path": "/Chaos/step-8"
+		},
+		"/Chaos/step-9": {
+			"color": "1,1,1,1",
+			"file": "timeline-1639711484.json",
+			"name": "step-9",
+			"path": "/Chaos/step-9"
+		},
+		"/DefaultTimeline": {
+			"color": "1,1,1,1",
+			"file": "timeline-1640294642.json",
+			"name": "DefaultTimeline",
+			"path": "/DefaultTimeline"
+		},
+		"/Divergence/.": {
+			"color": null,
+			"folded": false
+		},
+		"/Divergence/step-1": {
+			"color": "1,1,1,1",
+			"file": "timeline-1639689624.json",
+			"name": "step-1",
+			"path": "/Divergence/step-1"
+		},
+		"/Divergence/step-last": {
+			"color": "1,1,1,1",
+			"file": "timeline-1657083875.json",
+			"name": "step-last",
+			"path": "/Divergence/step-last"
+		},
+		"/Extras/.": {
+			"color": null,
+			"folded": false
+		},
+		"/Extras/amy-contact": {
+			"color": "1,1,1,1",
+			"file": "timeline-1641702565.json",
+			"name": "amy-contact",
+			"path": "/Extras/amy-contact"
+		},
+		"/Intro/.": {
+			"color": null,
+			"folded": false
+		},
+		"/Intro/intro": {
+			"color": "1,1,1,1",
+			"file": "timeline-1637959587.json",
+			"name": "intro",
+			"path": "/Intro/intro"
+		},
+		"/Phobia/.": {
+			"color": null,
+			"folded": false
+		},
+		"/Phobia/New Folder 1667185581/.": {
+			"color": null,
+			"folded": false
+		},
+		"/Phobia/Reviews/.": {
+			"color": null,
+			"folded": false
+		},
+		"/Phobia/Reviews/AnhedSD/.": {
+			"color": null,
+			"folded": false
+		},
+		"/Phobia/Reviews/AnhedSD/step-1": {
+			"color": "1,1,1,1",
+			"file": "timeline-1650379703.json",
+			"name": "step-1",
+			"path": "/Phobia/Reviews/AnhedSD/step-1"
+		},
+		"/Phobia/Reviews/Anhedonia/.": {
+			"color": null,
+			"folded": false
+		},
+		"/Phobia/Reviews/Anhedonia/step-idk": {
+			"color": "1,1,1,1",
+			"file": "timeline-1655999723.json",
+			"name": "step-idk",
+			"path": "/Phobia/Reviews/Anhedonia/step-idk"
+		},
+		"/Phobia/Reviews/Anhedonia/step-last": {
+			"color": "1,1,1,1",
+			"file": "timeline-1648476775.json",
+			"name": "step-last",
+			"path": "/Phobia/Reviews/Anhedonia/step-last"
+		},
+		"/Phobia/Reviews/Chaos/.": {
+			"color": null,
+			"folded": false
+		},
+		"/Phobia/Reviews/Chaos/step-1": {
+			"color": "1,1,1,1",
+			"file": "timeline-1650208093.json",
+			"name": "step-1",
+			"path": "/Phobia/Reviews/Chaos/step-1"
+		},
+		"/Phobia/Reviews/Chaos/step-12": {
+			"color": "1,1,1,1",
+			"file": "timeline-1645281133.json",
+			"name": "step-12",
+			"path": "/Phobia/Reviews/Chaos/step-12"
+		},
+		"/Phobia/Reviews/Chaos/step-3": {
+			"color": "1,1,1,1",
+			"file": "timeline-1645904743.json",
+			"name": "step-3",
+			"path": "/Phobia/Reviews/Chaos/step-3"
+		},
+		"/Phobia/Reviews/Chaos/step-8": {
+			"color": "1,1,1,1",
+			"file": "timeline-1644976135.json",
+			"name": "step-8",
+			"path": "/Phobia/Reviews/Chaos/step-8"
+		},
+		"/Phobia/Reviews/ChaosPW/.": {
+			"color": null,
+			"folded": false
+		},
+		"/Phobia/Reviews/ChaosPW/step-1": {
+			"color": "1,1,1,1",
+			"file": "timeline-1650213352.json",
+			"name": "step-1",
+			"path": "/Phobia/Reviews/ChaosPW/step-1"
+		},
+		"/Phobia/Reviews/Divergence/.": {
+			"color": null,
+			"folded": false
+		},
+		"/Phobia/Reviews/Divergence/step-1": {
+			"color": "1,1,1,1",
+			"file": "timeline-1648491092.json",
+			"name": "step-1",
+			"path": "/Phobia/Reviews/Divergence/step-1"
+		},
+		"/Phobia/Reviews/Divergence/step-3": {
+			"color": "1,1,1,1",
+			"file": "timeline-1648503983.json",
+			"name": "step-3",
+			"path": "/Phobia/Reviews/Divergence/step-3"
+		},
+		"/Phobia/Reviews/Extras/.": {
+			"color": null,
+			"folded": false
+		},
+		"/Phobia/Reviews/Extras/amy-contact": {
+			"color": "1,1,1,1",
+			"file": "timeline-1644985622.json",
+			"name": "amy-contact",
+			"path": "/Phobia/Reviews/Extras/amy-contact"
+		},
+		"/Phobia/Reviews/Extras/marcus-druglord": {
+			"color": "1,1,1,1",
+			"file": "timeline-1645055274.json",
+			"name": "marcus-druglord",
+			"path": "/Phobia/Reviews/Extras/marcus-druglord"
+		},
+		"/Phobia/Reviews/Extras/marcus-observation": {
+			"color": "1,1,1,1",
+			"file": "timeline-1644986027.json",
+			"name": "marcus-observation",
+			"path": "/Phobia/Reviews/Extras/marcus-observation"
+		},
+		"/Phobia/Reviews/PrivateWorld/.": {
+			"color": null,
+			"folded": false
+		},
+		"/Phobia/Reviews/PrivateWorld/step-idk": {
+			"color": "1,1,1,1",
+			"file": "timeline-1644983642.json",
+			"name": "step-idk",
+			"path": "/Phobia/Reviews/PrivateWorld/step-idk"
+		},
+		"/Phobia/Reviews/SchoolDaze/.": {
+			"color": null,
+			"folded": false
+		},
+		"/Phobia/Reviews/SchoolDaze/step-idk": {
+			"color": "1,1,1,1",
+			"file": "timeline-1650385585.json",
+			"name": "step-idk",
+			"path": "/Phobia/Reviews/SchoolDaze/step-idk"
+		},
+		"/PrivateWorld/.": {
+			"color": null,
+			"folded": false
+		},
+		"/PrivateWorld/step-1": {
+			"color": "1,1,1,1",
+			"file": "timeline-1640471655.json",
+			"name": "step-1",
+			"path": "/PrivateWorld/step-1"
+		},
+		"/PrivateWorld/step-idk": {
+			"color": "1,1,1,1",
+			"file": "timeline-1644885560.json",
+			"name": "step-idk",
+			"path": "/PrivateWorld/step-idk"
+		},
+		"/PrivateWorld/step-last": {
+			"color": "1,1,1,1",
+			"file": "timeline-1644935463.json",
+			"name": "step-last",
+			"path": "/PrivateWorld/step-last"
+		},
+		"/SchoolDaze/.": {
+			"color": null,
+			"folded": false
+		},
+		"/SchoolDaze/dfgdgf/.": {
+			"color": null,
+			"folded": false
+		},
+		"/SchoolDaze/dfgdgf/New Folder 1666844265/.": {
+			"color": null,
+			"folded": false
+		},
+		"/SchoolDaze/step-1": {
+			"color": "1,1,1,1",
+			"file": "timeline-1640471668.json",
+			"name": "step-1",
+			"path": "/SchoolDaze/step-1"
+		},
+		"/SchoolDaze/step-last": {
+			"color": "1,1,1,1",
+			"file": "timeline-1645278809.json",
+			"name": "step-last",
+			"path": "/SchoolDaze/step-last"
+		},
+		"/credits": {
+			"color": "1,1,1,1",
+			"file": "timeline-1644631930.json",
+			"name": "credits",
+			"path": "/credits"
+		},
+		"/debugintro": {
+			"color": "1,1,1,1",
+			"file": "timeline-1637980436.json",
+			"name": "debugintro",
+			"path": "/debugintro"
+		},
+		"/pic-test": {
+			"color": "1,1,1,1",
+			"file": "timeline-1638041067.json",
+			"name": "pic-test",
+			"path": "/pic-test"
+		},
+		"/portraittest": {
+			"color": "1,1,1,1",
+			"file": "timeline-1641705554.json",
+			"name": "portraittest",
+			"path": "/portraittest"
+		},
+		"/xbxbc": {
+			"color": "1,1,1,1",
+			"file": "timeline-1670110627.json",
+			"name": "xbxbc",
+			"path": "/xbxbc"
+		}
+	}
+}
