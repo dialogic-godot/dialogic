@@ -1,4 +1,4 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene load_steps=3 format=3 uid="uid://c4yp65n7ju1br"]
 
 [ext_resource type="Script" path="res://addons/dialogic/Events/Character/default_portrait.gd" id="1_wn77n"]
 

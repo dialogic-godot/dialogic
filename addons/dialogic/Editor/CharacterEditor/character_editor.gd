@@ -52,6 +52,13 @@ func _open_resource(resource:Resource) -> void:
 	for main_edit in %MainEditTabs.get_children():
 		main_edit._load_character(current_resource)
 	
+	%DefaultPortraitPicker.set_value(resource.default_portrait)
+	
+	%MainScale.value = 100*resource.scale
+	%MainOffsetX.value = resource.offset.x
+	%MainOffsetY.value = resource.offset.y
+	%MainMirror.button_pressed = resource.mirror
+	
 	# Portrait section
 	%PortraitSearch.text = ""
 	load_portrait_tree()
@@ -64,8 +71,22 @@ func _save_resource() -> void:
 	if ! visible or not current_resource:
 		return
 	
+	# Portrait list
 	current_resource.portraits = get_updated_portrait_dict()
 	
+	# Portrait settings
+	if %DefaultPortraitPicker.current_value in current_resource.portraits.keys():
+		current_resource.default_portrait = %DefaultPortraitPicker.current_value
+	elif !current_resource.portraits.is_empty():
+		current_resource.default_portrait = current_resource.portraits.keys()[0]
+	else:
+		current_resource.default_portrait = ""
+	
+	current_resource.scale = %MainScale.value/100.0
+	current_resource.offset = Vector2(%MainOffsetX.value, %MainOffsetY.value) 
+	current_resource.mirror = %MainMirror.button_pressed
+	
+	# Main tabs
 	for main_edit in %MainEditTabs.get_children():
 		current_resource = main_edit._save_changes(current_resource)
 	
@@ -101,6 +122,17 @@ func _ready() -> void:
 	
 	%PortraitTree.item_selected.connect(load_selected_portrait)
 	%PortraitTree.item_edited.connect(_on_item_edited)
+	
+	%DefaultPortraitPicker.value_changed.connect(default_portrait_changed)
+	%MainScale.value_changed.connect(main_portrait_settings_update)
+	%MainOffsetX.value_changed.connect(main_portrait_settings_update)
+	%MainOffsetY.value_changed.connect(main_portrait_settings_update)
+	%MainMirror.toggled.connect(main_portrait_settings_update)
+	
+	# Setting up Default Portrait Picker
+	%DefaultPortraitPicker.resource_icon = load("res://addons/dialogic/Editor/Images/Resources/portrait.svg")
+	%DefaultPortraitPicker.get_suggestions_func = suggest_portraits
+	%DefaultPortraitPicker.set_left_text("")
 	
 	%PreviewMode.item_selected.connect(_on_PreviewMode_item_selected)
 	%PreviewMode.select(DialogicUtil.get_project_setting('dialogic/editor/character_preview_mode', 0))
@@ -158,7 +190,7 @@ func add_main_tab(scene_path:String) ->  void:
 func something_changed(fake_argument = "", fake_arg2 = null) -> void:
 	if not loading:
 		current_resource_state = ResourceStates.Unsaved
-#		_save_resource() TODO, should this happen?
+		editors_manager.save_current_resource() #TODO, should this happen?
 
 
 ##############################################################################
@@ -365,11 +397,28 @@ func _on_PreviewMode_item_selected(index:int) -> void:
 	ProjectSettings.save()
 
 
-func main_portrait_settings_update(value = null) -> void:
-	update_preview()
-	something_changed()
-
-
 func _on_full_preview_available_rect_resized():
 	if current_preview_mode == PreviewModes.Full:
 		update_preview()
+
+
+# Make sure preview get's updated when portrait settings change
+func main_portrait_settings_update(value = null) -> void:
+	current_resource.scale = %MainScale.value/100.0
+	current_resource.offset = Vector2(%MainOffsetX.value, %MainOffsetY.value) 
+	current_resource.mirror = %MainMirror.button_pressed
+	update_preview()
+	something_changed()
+
+func default_portrait_changed(property:String, value:String) -> void:
+	current_resource.default_portrait = value
+	update_default_portrait_star(value)
+
+
+# Get suggestions for DefaultPortraitPicker
+func suggest_portraits(search:String) -> Dictionary:
+	var suggestions := {}
+	for portrait in get_updated_portrait_dict().keys():
+		suggestions[portrait] = {'value':portrait}
+	return suggestions
+

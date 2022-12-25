@@ -43,4 +43,6 @@ func _set_mirror(mirror:bool) -> void:
 
 ## If implemented, this is used by the editor for the "full view" mode
 func _get_covered_rect() -> Rect2:
+	if $Portrait.texture == null: 
+		return Rect2()
 	return Rect2($Portrait.position, $Portrait.get_rect().size)
