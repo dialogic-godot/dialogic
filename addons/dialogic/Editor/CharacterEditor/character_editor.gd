@@ -43,7 +43,7 @@ func _register() -> void:
 # Called when a character is opened somehow
 func _open_resource(resource:Resource) -> void:
 	# update resource
-	current_resource = resource
+	current_resource = (resource as DialogicCharacter)
 	
 	# make sure changes in the ui won't trigger saving
 	loading = true
@@ -62,6 +62,9 @@ func _open_resource(resource:Resource) -> void:
 	# Portrait section
 	%PortraitSearch.text = ""
 	load_portrait_tree()
+	
+	if resource.portraits.is_empty():
+		update_preview()
 	
 	loading = false
 	character_loaded.emit(resource.resource_path)
