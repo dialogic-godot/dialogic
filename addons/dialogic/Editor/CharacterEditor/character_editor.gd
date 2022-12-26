@@ -13,6 +13,7 @@ enum PreviewModes {Full, Real}
 # Current state
 var current_preview_mode = PreviewModes.Full
 var loading = false
+var current_previewed_scene = null
 
 # References
 var selected_item: TreeItem 
@@ -62,9 +63,6 @@ func _open_resource(resource:Resource) -> void:
 	# Portrait section
 	%PortraitSearch.text = ""
 	load_portrait_tree()
-	
-	if resource.portraits.is_empty():
-		update_preview()
 	
 	loading = false
 	character_loaded.emit(resource.resource_path)
@@ -236,6 +234,9 @@ func load_portrait_tree() -> void:
 	
 	if root.get_child_count():
 		root.get_first_child().select(0)
+	else:
+		# Call anyways to clear preview and hide portrait settings section
+		load_selected_portrait()
 
 
 
@@ -276,7 +277,7 @@ func load_selected_portrait():
 	selected_item = %PortraitTree.get_selected()
 	
 	if selected_item:
-		
+		%PortraitSettingsSection.show()
 		var current_portrait_data :Dictionary = selected_item.get_metadata(0)
 		portrait_selected.emit(selected_item.get_text(0), current_portrait_data)
 		
@@ -289,8 +290,20 @@ func load_selected_portrait():
 				tab.selected_item = selected_item
 				tab._load_portrait_data(current_portrait_data)
 		
+		# switch tabs if the current one is hidden (until the next not hidden tab)
+		for i in range(%PortraitSettingsSection.get_tab_count()):
+			if %PortraitSettingsSection.is_tab_hidden(%PortraitSettingsSection.current_tab):
+				if %PortraitSettingsSection.current_tab == %PortraitSettingsSection.get_tab_count()-1:
+					%PortraitSettingsSection.current_tab = 0
+				else:
+					%PortraitSettingsSection.current_tab += 1
+			else:
+				break
+			
 		await get_tree().create_timer(0.01).timeout
 		selected_item.set_editable(0, true)
+	else:
+		%PortraitSettingsSection.hide()
 
 
 func delete_portrait_item(item:TreeItem) -> void:
@@ -312,8 +325,6 @@ func _on_portrait_tree_button_clicked(item:TreeItem, column:int, id:int, mouse_b
 
 
 func update_preview() -> void:
-	for node in %RealPreviewPivot.get_children():
-		node.queue_free()
 	%ScenePreviewWarning.hide()
 	if selected_item and is_instance_valid(selected_item):
 		%PreviewLabel.text = 'Preview of "'+selected_item.get_text(0)+'"'
@@ -322,24 +333,35 @@ func update_preview() -> void:
 		var scale:float = current_portrait_data.get('scale', 1) * current_resource.scale
 		var offset:Vector2 =current_portrait_data.get('offset', Vector2()) + current_resource.offset
 		
-		var scene = null
-		if current_portrait_data.get('scene', '').is_empty():
-			scene = load("res://addons/dialogic/Events/Character/default_portrait.tscn")
+		if current_previewed_scene != null and current_previewed_scene.get_meta('path', null) == current_portrait_data.get('scene') and current_previewed_scene.has_method('_should_do_portrait_update') and current_previewed_scene._should_do_portrait_update(current_resource, selected_item.get_text(0)):
+			pass # we keep the same scene
 		else:
-			scene = load(current_portrait_data.get('scene'))
-		
-		if scene:
-			scene = scene.instantiate()
+			for node in %RealPreviewPivot.get_children():
+				node.queue_free()
+			current_previewed_scene = null
+			if current_portrait_data.get('scene', '').is_empty():
+				if FileAccess.file_exists("res://addons/dialogic/Events/Character/default_portrait.tscn"):
+					current_previewed_scene = load("res://addons/dialogic/Events/Character/default_portrait.tscn").instantiate()
+					current_previewed_scene.set_meta('path', '')
+			else:
+				if FileAccess.file_exists(current_portrait_data.get('scene')):
+					current_previewed_scene = load(current_portrait_data.get('scene')).instantiate()
+					current_previewed_scene.set_meta('path', current_portrait_data.get('scene'))
+			if current_previewed_scene:
+				%RealPreviewPivot.add_child(current_previewed_scene)
+
+		if current_previewed_scene != null:
+			var scene = current_previewed_scene
 			scene.show_behind_parent = true
 			
-			%RealPreviewPivot.add_child(scene)
+			for prop in current_portrait_data.get('export_overrides', {}).keys():
+				scene.set(prop, str_to_var(current_portrait_data['export_overrides'][prop]))
 			
 			if is_instance_valid(scene.get_script()) and scene.script.is_tool():
 				if scene.has_method('_update_portrait'):
 					scene._update_portrait(current_resource, selected_item.get_text(0))
 				if scene.has_method('_set_mirror'):
 					scene._set_mirror(mirror)
-			
 			if current_preview_mode == PreviewModes.Real:
 				scene.position = Vector2() + offset
 				
@@ -359,7 +381,13 @@ func update_preview() -> void:
 			%PreviewRealRect.texture = null
 			%PreviewFullRect.texture = null
 			%PreviewLabel.text = 'Nothing to preview'
-
+	
+	else:
+		%PreviewLabel.text = 'No portrait to preview.'
+		for node in %RealPreviewPivot.get_children():
+			node.queue_free()
+		current_previewed_scene = null
+		
 
 # this removes/and adds the DEFAULT star on the portrait list
 func update_default_portrait_star(default_portrait_name:String) -> void:

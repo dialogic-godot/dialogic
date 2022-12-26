@@ -13,12 +13,7 @@ func _ready() -> void:
 func _load_portrait_data(data:Dictionary) -> void:
 	# hides/shows this tab based on the scene value of this portrait
 	# (only shown if the default scene is used) 
-	if !data.get('scene', '').is_empty():
-		get_parent().set_tab_hidden(get_index(), true)
-		while get_parent().is_tab_hidden(get_parent().current_tab):
-			get_parent().current_tab = (get_parent().current_tab+1)%get_parent().get_tab_count()
-	else:
-		get_parent().set_tab_hidden(get_index(), false)
+	get_parent().set_tab_hidden(get_index(), !data.get('scene', '').is_empty())
 	
 	%ImagePicker.set_value(data.get('image', ''))
 

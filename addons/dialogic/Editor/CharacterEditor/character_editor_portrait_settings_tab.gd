@@ -12,5 +12,5 @@ var character_editor:Control
 
 var selected_item :TreeItem = null
 
-func _load_portrait(data:Dictionary) -> void:
+func _load_portrait_data(data:Dictionary) -> void:
 	pass
