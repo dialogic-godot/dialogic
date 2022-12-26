@@ -1,14 +1,14 @@
-[gd_scene load_steps=6 format=3]
+[gd_scene load_steps=6 format=3 uid="uid://x8alx74fnm10"]
 
 [ext_resource type="Script" path="res://addons/dialogic/Events/Text/character_settings/ui_mood_item.gd" id="2"]
 [ext_resource type="Script" path="res://addons/dialogic/Events/Text/node_type_sound.gd" id="3"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_h1p4u"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rsmy0"]
 content_margin_left = 4.0
 content_margin_top = 4.0
 content_margin_right = 4.0
 content_margin_bottom = 4.0
-bg_color = Color(0.147, 0.168, 0.203, 1)
+bg_color = Color(1, 0.365, 0.365, 1)
 draw_center = false
 border_width_left = 2
 border_width_top = 2
@@ -16,7 +16,7 @@ border_width_right = 2
 border_width_bottom = 2
 corner_detail = 1
 
-[sub_resource type="Image" id="Image_7wswg"]
+[sub_resource type="Image" id="Image_uegt4"]
 data = {
 "data": PackedByteArray(255, 255, 255, 0, 255, 255, 255, 0, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 131, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 131, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 131, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 231, 255, 93, 93, 55, 255, 97, 97, 58, 255, 93, 93, 233, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 231, 255, 94, 94, 54, 255, 94, 94, 57, 255, 93, 93, 233, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 93, 93, 233, 255, 93, 93, 232, 255, 93, 93, 41, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 93, 93, 233, 255, 93, 93, 232, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 97, 97, 42, 255, 255, 255, 0, 255, 97, 97, 42, 255, 97, 97, 42, 255, 255, 255, 0, 255, 98, 98, 47, 255, 97, 97, 42, 255, 255, 255, 0, 255, 97, 97, 42, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 235, 255, 93, 93, 233, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 94, 94, 46, 255, 93, 93, 236, 255, 93, 93, 233, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 235, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 233, 255, 95, 95, 59, 255, 96, 96, 61, 255, 93, 93, 235, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 233, 255, 95, 95, 59, 255, 96, 96, 61, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0),
 "format": "RGBA8",
@@ -25,163 +25,123 @@ data = {
 "width": 16
 }
 
-[sub_resource type="ImageTexture" id="ImageTexture_o5mle"]
-image = SubResource("Image_7wswg")
+[sub_resource type="ImageTexture" id="ImageTexture_osvex"]
+image = SubResource("Image_uegt4")
 
 [node name="MoodItem" type="PanelContainer"]
 size_flags_horizontal = 3
-theme_override_styles/panel = SubResource("StyleBoxFlat_h1p4u")
+theme_override_styles/panel = SubResource("StyleBoxFlat_rsmy0")
 script = ExtResource("2")
 
 [node name="VBox" type="VBoxContainer" parent="."]
-offset_left = 4.0
-offset_top = 4.0
-offset_right = 241.0
-offset_bottom = 135.0
+layout_mode = 2
 
 [node name="General" type="HBoxContainer" parent="VBox"]
-offset_right = 237.0
-offset_bottom = 31.0
+layout_mode = 2
 
 [node name="Name" type="LineEdit" parent="VBox/General"]
 unique_name_in_owner = true
-offset_right = 125.0
-offset_bottom = 31.0
+layout_mode = 2
 size_flags_horizontal = 3
-hint_tooltip = "Mood name"
+tooltip_text = "Mood name"
 caret_blink = true
-caret_blink_speed = 0.5
 
 [node name="Play" type="Button" parent="VBox/General"]
 unique_name_in_owner = true
-offset_left = 129.0
-offset_right = 153.0
-offset_bottom = 31.0
-hint_tooltip = "Preview"
-icon = SubResource("ImageTexture_o5mle")
+layout_mode = 2
+tooltip_text = "Preview"
+icon = SubResource("ImageTexture_osvex")
 
 [node name="Duplicate" type="Button" parent="VBox/General"]
 unique_name_in_owner = true
-offset_left = 157.0
-offset_right = 181.0
-offset_bottom = 31.0
-hint_tooltip = "Duplicate"
-icon = SubResource("ImageTexture_o5mle")
+layout_mode = 2
+tooltip_text = "Duplicate"
+icon = SubResource("ImageTexture_osvex")
 
 [node name="Delete" type="Button" parent="VBox/General"]
 unique_name_in_owner = true
-offset_left = 185.0
-offset_right = 209.0
-offset_bottom = 31.0
-hint_tooltip = "Delete"
-icon = SubResource("ImageTexture_o5mle")
+layout_mode = 2
+tooltip_text = "Delete"
+icon = SubResource("ImageTexture_osvex")
 
 [node name="Fold" type="Button" parent="VBox/General"]
 unique_name_in_owner = true
-offset_left = 213.0
-offset_right = 237.0
-offset_bottom = 31.0
-hint_tooltip = "Fold/Unfold"
+layout_mode = 2
+tooltip_text = "Fold/Unfold"
 toggle_mode = true
 button_pressed = true
-icon = SubResource("ImageTexture_o5mle")
+icon = SubResource("ImageTexture_osvex")
 
 [node name="Content" type="HBoxContainer" parent="VBox"]
 unique_name_in_owner = true
-offset_top = 35.0
-offset_right = 237.0
-offset_bottom = 131.0
+visible = false
+layout_mode = 2
 
 [node name="Control" type="Control" parent="VBox/Content"]
-offset_bottom = 96.0
+layout_mode = 2
 
 [node name="Content" type="VBoxContainer" parent="VBox/Content"]
-offset_left = 4.0
-offset_right = 237.0
-offset_bottom = 96.0
+layout_mode = 2
 size_flags_horizontal = 3
 
 [node name="SoundFolderSect" type="HBoxContainer" parent="VBox/Content/Content"]
-offset_right = 233.0
-offset_bottom = 26.0
+layout_mode = 2
 
 [node name="Label" type="Label" parent="VBox/Content/Content/SoundFolderSect"]
-offset_right = 107.0
-offset_bottom = 26.0
+layout_mode = 2
 size_flags_horizontal = 3
 text = "Sounds folder"
 
 [node name="SoundFolder" type="Label" parent="VBox/Content/Content/SoundFolderSect"]
 unique_name_in_owner = true
-offset_left = 111.0
-offset_top = 1.0
-offset_right = 205.0
-offset_bottom = 24.0
+layout_mode = 2
 size_flags_horizontal = 3
 horizontal_alignment = 2
 
 [node name="ChangeSoundFolderButton" type="Button" parent="VBox/Content/Content/SoundFolderSect"]
 unique_name_in_owner = true
-offset_left = 209.0
-offset_right = 233.0
-offset_bottom = 26.0
-hint_tooltip = "Change sounds folder"
-icon = SubResource("ImageTexture_o5mle")
+layout_mode = 2
+tooltip_text = "Change sounds folder"
+icon = SubResource("ImageTexture_osvex")
 
 [node name="Pitch" type="HBoxContainer" parent="VBox/Content/Content"]
-offset_top = 30.0
-offset_right = 233.0
-offset_bottom = 61.0
+layout_mode = 2
 
 [node name="Label2" type="Label" parent="VBox/Content/Content/Pitch"]
-offset_top = 2.0
-offset_right = 59.0
-offset_bottom = 28.0
+layout_mode = 2
 size_flags_horizontal = 3
 text = "Pitch"
 
 [node name="PitchBase" type="SpinBox" parent="VBox/Content/Content/Pitch"]
 unique_name_in_owner = true
-offset_left = 63.0
-offset_right = 146.0
-offset_bottom = 31.0
+layout_mode = 2
 step = 0.001
 value = 1.0
 
 [node name="PitchVariance" type="SpinBox" parent="VBox/Content/Content/Pitch"]
 unique_name_in_owner = true
-offset_left = 150.0
-offset_right = 233.0
-offset_bottom = 31.0
+layout_mode = 2
 step = 0.001
 prefix = "+/-"
 
 [node name="Volume" type="HBoxContainer" parent="VBox/Content/Content"]
-offset_top = 65.0
-offset_right = 233.0
-offset_bottom = 96.0
+layout_mode = 2
 
 [node name="Label3" type="Label" parent="VBox/Content/Content/Volume"]
-offset_top = 2.0
-offset_right = 59.0
-offset_bottom = 28.0
+layout_mode = 2
 size_flags_horizontal = 3
 text = "Volume"
 
 [node name="VolumeBase" type="SpinBox" parent="VBox/Content/Content/Volume"]
 unique_name_in_owner = true
-offset_left = 63.0
-offset_right = 146.0
-offset_bottom = 31.0
+layout_mode = 2
 min_value = -80.0
 step = 0.001
 suffix = "db"
 
 [node name="VolumeVariance" type="SpinBox" parent="VBox/Content/Content/Volume"]
 unique_name_in_owner = true
-offset_left = 150.0
-offset_right = 233.0
-offset_bottom = 31.0
+layout_mode = 2
 step = 0.001
 prefix = "+/-"
 
