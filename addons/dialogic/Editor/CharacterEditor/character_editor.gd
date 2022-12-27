@@ -432,7 +432,11 @@ func update_preview() -> void:
 		var scale:float = current_portrait_data.get('scale', 1) * current_resource.scale
 		var offset:Vector2 =current_portrait_data.get('offset', Vector2()) + current_resource.offset
 		
-		if current_previewed_scene != null and current_previewed_scene.get_meta('path', null) == current_portrait_data.get('scene') and current_previewed_scene.has_method('_should_do_portrait_update') and current_previewed_scene._should_do_portrait_update(current_resource, selected_item.get_text(0)):
+		if current_previewed_scene != null \
+			and current_previewed_scene.get_meta('path', null) == current_portrait_data.get('scene') \
+			and current_previewed_scene.has_method('_should_do_portrait_update') \
+			and is_instance_valid(current_previewed_scene.get_script()) \
+			and current_previewed_scene._should_do_portrait_update(current_resource, selected_item.get_text(0)):
 			pass # we keep the same scene
 		else:
 			for node in %RealPreviewPivot.get_children():
