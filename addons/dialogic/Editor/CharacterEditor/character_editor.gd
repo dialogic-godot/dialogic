@@ -98,7 +98,7 @@ func _save_resource() -> void:
 
 # Saves a new empty character to the given path
 func new_character(path: String) -> void:
-	var resource = DialogicCharacter.new()
+	var resource := DialogicCharacter.new()
 	resource.resource_path = path
 	resource.display_name = path.get_file().trim_suffix("."+path.get_extension())
 	resource.color = Color(1,1,1,1)
@@ -113,27 +113,9 @@ func new_character(path: String) -> void:
 ##############################################################################
 
 func _ready() -> void:
-	## Portrait section styling/connections
-	%AddPortraitButton.icon = get_theme_icon("Add", "EditorIcons")
-	%AddPortraitButton.pressed.connect(add_portrait)
-	%ImportPortraitsButton.icon = get_theme_icon("Folder", "EditorIcons")
-	%ImportPortraitsButton.pressed.connect(open_portrait_folder_select)
-	%PortraitSearch.right_icon = get_theme_icon("Search", "EditorIcons")
-	%PortraitSearch.text_changed.connect(filter_portrait_list)
+	setup_portrait_list_tab()
 	
-	%PortraitTree.item_selected.connect(load_selected_portrait)
-	%PortraitTree.item_edited.connect(_on_item_edited)
-	
-	%DefaultPortraitPicker.value_changed.connect(default_portrait_changed)
-	%MainScale.value_changed.connect(main_portrait_settings_update)
-	%MainOffsetX.value_changed.connect(main_portrait_settings_update)
-	%MainOffsetY.value_changed.connect(main_portrait_settings_update)
-	%MainMirror.toggled.connect(main_portrait_settings_update)
-	
-	# Setting up Default Portrait Picker
-	%DefaultPortraitPicker.resource_icon = load("res://addons/dialogic/Editor/Images/Resources/portrait.svg")
-	%DefaultPortraitPicker.get_suggestions_func = suggest_portraits
-	%DefaultPortraitPicker.set_left_text("")
+	setup_portrait_settings_tab()
 	
 	%PreviewMode.item_selected.connect(_on_PreviewMode_item_selected)
 	%PreviewMode.select(DialogicUtil.get_project_setting('dialogic/editor/character_preview_mode', 0))
@@ -198,6 +180,22 @@ func something_changed(fake_argument = "", fake_arg2 = null) -> void:
 ##							PORTRAIT SECTION
 ##############################################################################
 
+func setup_portrait_list_tab() -> void:
+	%PortraitTree.editor = self
+	
+	## Portrait section styling/connections
+	%AddPortraitButton.icon = get_theme_icon("Add", "EditorIcons")
+	%AddPortraitButton.pressed.connect(add_portrait)
+	%AddPortraitGroupButton.icon = get_theme_icon("Groups", "EditorIcons")
+	%AddPortraitGroupButton.pressed.connect(add_portrait_group)
+	%ImportPortraitsButton.icon = get_theme_icon("Folder", "EditorIcons")
+	%ImportPortraitsButton.pressed.connect(open_portrait_folder_select)
+	%PortraitSearch.right_icon = get_theme_icon("Search", "EditorIcons")
+	%PortraitSearch.text_changed.connect(filter_portrait_list)
+	
+	%PortraitTree.item_selected.connect(load_selected_portrait)
+	%PortraitTree.item_edited.connect(_on_item_edited)
+
 func open_portrait_folder_select() -> void:
 	find_parent("EditorView").godot_file_dialog(
 		import_portraits_from_folder, "*", 
@@ -205,6 +203,10 @@ func open_portrait_folder_select() -> void:
 
 
 func import_portraits_from_folder(path:String) -> void:
+	var parent: TreeItem = %PortraitTree.get_root()
+	if %PortraitTree.get_selected() and %PortraitTree.get_selected().get_metadata(0).has('group'):
+		parent = %PortraitTree.get_selected()
+	
 	var dir := DirAccess.open(path)
 	dir.list_dir_begin()
 	var file_name :String = dir.get_next()
@@ -214,23 +216,44 @@ func import_portraits_from_folder(path:String) -> void:
 			if '.svg' in file_lower or '.png' in file_lower:
 				if not '.import' in file_lower:
 					var final_name: String= path+ "/" + file_name
-					add_portrait(file_name.trim_suffix('.'+file_name.get_extension()), 
-							{'scene':"",'image':final_name, 'scale':1, 'offset':Vector2(), 'mirror':false}) 
+					%PortraitTree.add_portrait_item(file_name.trim_suffix('.'+file_name.get_extension()), 
+							{'scene':"",'image':final_name, 'scale':1, 'offset':Vector2(), 'mirror':false}, parent) 
 		file_name = dir.get_next()
-
-
-func add_portrait(portrait_name:String='New portrait', portrait_data:Dictionary={'scene':"", 'image':'', 'scale':1, 'offset':Vector2(), 'mirror':false}) -> void:
-	var root: TreeItem = %PortraitTree.get_root()
-	add_portrait_item(portrait_name, portrait_data, root).select(0)
 	something_changed()
 
 
+func add_portrait(portrait_name:String='New portrait', portrait_data:Dictionary={'scene':"", 'image':'', 'scale':1, 'offset':Vector2(), 'mirror':false}) -> void:
+	var parent: TreeItem = %PortraitTree.get_root()
+	if %PortraitTree.get_selected():
+		if %PortraitTree.get_selected().get_metadata(0).has('group'):
+			parent = %PortraitTree.get_selected()
+		else:
+			parent = %PortraitTree.get_selected().get_parent()
+	%PortraitTree.add_portrait_item(portrait_name, portrait_data, parent).select(0)
+	something_changed()
+
+
+func add_portrait_group() -> void:
+	var parent_item :TreeItem = %PortraitTree.get_root()
+	if %PortraitTree.get_selected() and %PortraitTree.get_selected().get_metadata(0).has('group'):
+		parent_item = %PortraitTree.get_selected()
+	%PortraitTree.add_portrait_group("Group", parent_item)
+
+
 func load_portrait_tree() -> void:
-	%PortraitTree.clear()
+	%PortraitTree.clear_tree()
 	var root:TreeItem = %PortraitTree.create_item()
 	
 	for portrait in current_resource.portraits.keys():
-		add_portrait_item(portrait, current_resource.portraits[portrait], root)
+		var portrait_label = portrait
+		var parent = %PortraitTree.get_root()
+		if '/' in portrait:
+			parent = %PortraitTree.create_necessary_group_items(portrait)
+			portrait_label = portrait.split('/')[-1]
+		
+		%PortraitTree.add_portrait_item(portrait_label, current_resource.portraits[portrait], parent)
+	
+	update_default_portrait_star(current_resource.default_portrait)
 	
 	if root.get_child_count():
 		root.get_first_child().select(0)
@@ -239,35 +262,36 @@ func load_portrait_tree() -> void:
 		load_selected_portrait()
 
 
-
 func filter_portrait_list(filter_term:String = '') -> void:
-	var item : TreeItem = %PortraitTree.get_root().get_first_child()
-	while true:
-		item.visible = filter_term.is_empty() or filter_term.to_lower() in item.get_text(0).to_lower()
-		item = item.get_next()
-		if !item:
-			break
+	filter_branch(%PortraitTree.get_root(), filter_term)
+
+
+func filter_branch(parent:TreeItem, filter_term:String) -> bool:
+	var anything_visible := false
+	for item in parent.get_children():
+		if item.get_metadata(0).has('group'):
+			item.visible = filter_branch(item, filter_term)
+			anything_visible = item.visible
+		elif filter_term.is_empty() or filter_term.to_lower() in item.get_text(0).to_lower():
+			item.visible = true
+			anything_visible = true
+		else:
+			item.visible = false
+	return anything_visible
 
 
 # this is used to save the portrait data
 func get_updated_portrait_dict() -> Dictionary:
-	var dict : Dictionary = {}
-	var item : TreeItem = %PortraitTree.get_root().get_first_child()
-	while item:
-		dict[item.get_text(0)] = item.get_metadata(0)
-		item = item.get_next()
+	return list_portraits(%PortraitTree.get_root().get_children())
+
+
+func list_portraits(tree_items:Array[TreeItem], dict:Dictionary = {}, path_prefix = "") -> Dictionary:
+	for item in tree_items:
+		if item.get_metadata(0).has('group'):
+			dict = list_portraits(item.get_children(), dict, path_prefix+item.get_text(0)+"/")
+		else:
+			dict[path_prefix +item.get_text(0)] = item.get_metadata(0)
 	return dict
-
-
-func add_portrait_item(portrait_name:String, portrait_data:Dictionary, parent_item:TreeItem) -> TreeItem:
-	var item :TreeItem = %PortraitTree.create_item(parent_item)
-	item.set_text(0, portrait_name)
-	item.set_metadata(0, portrait_data)
-	if portrait_name == current_resource.default_portrait:
-		item.add_button(0, get_theme_icon('Favorites', 'EditorIcons'), 2, true, 'Default')
-	item.add_button(0, get_theme_icon('Duplicate', 'EditorIcons'), 3, false, 'Duplicate')
-	item.add_button(0, get_theme_icon('Remove', 'EditorIcons'), 1, false, 'Remove')
-	return item
 
 
 func load_selected_portrait():
@@ -276,10 +300,11 @@ func load_selected_portrait():
 	
 	selected_item = %PortraitTree.get_selected()
 	
-	if selected_item:
+	
+	if selected_item and !selected_item.get_metadata(0).has('group'):
 		%PortraitSettingsSection.show()
 		var current_portrait_data :Dictionary = selected_item.get_metadata(0)
-		portrait_selected.emit(selected_item.get_text(0), current_portrait_data)
+		portrait_selected.emit(%PortraitTree.get_full_item_name(selected_item), current_portrait_data)
 		
 		update_preview()
 		
@@ -299,11 +324,13 @@ func load_selected_portrait():
 					%PortraitSettingsSection.current_tab += 1
 			else:
 				break
-			
-		await get_tree().create_timer(0.01).timeout
-		selected_item.set_editable(0, true)
 	else:
 		%PortraitSettingsSection.hide()
+		update_preview()
+	
+	if selected_item:
+		await get_tree().create_timer(0.01).timeout
+		selected_item.set_editable(0, true)
 
 
 func delete_portrait_item(item:TreeItem) -> void:
@@ -312,7 +339,7 @@ func delete_portrait_item(item:TreeItem) -> void:
 
 
 func duplicate_item(item:TreeItem) -> void:
-	add_portrait_item(item.get_text(0)+'_duplicated', item.get_metadata(0), item.get_parent()).select(0)
+	%PortraitTree.add_portrait_item(item.get_text(0)+'_duplicated', item.get_metadata(0), item.get_parent()).select(0)
 
 
 func _on_portrait_tree_button_clicked(item:TreeItem, column:int, id:int, mouse_button_index:int):
@@ -324,10 +351,82 @@ func _on_portrait_tree_button_clicked(item:TreeItem, column:int, id:int, mouse_b
 		duplicate_item(item)
 
 
+# this removes/and adds the DEFAULT star on the portrait list
+func update_default_portrait_star(default_portrait_name:String) -> void:
+	var item_list : Array = %PortraitTree.get_root().get_children()
+	while true:
+		var item = item_list.pop_back()
+		if item.get_button_by_id(0, 2) != -1:
+			item.erase_button(0, item.get_button_by_id(0, 2))
+		if %PortraitTree.get_full_item_name(item) == default_portrait_name:
+			item.erase_button(0, item.get_button_by_id(0, 1))
+			item.erase_button(0, item.get_button_by_id(0, 3))
+			item.add_button(0, get_theme_icon('Favorites', 'EditorIcons'), 2, true, 'Default')
+			item.add_button(0, get_theme_icon('Duplicate', 'EditorIcons'), 3, false, 'Duplicate')
+			item.add_button(0, get_theme_icon('Remove', 'EditorIcons'), 1, false, 'Remove')
+		item_list.append_array(item.get_children())
+		
+		if item_list.is_empty():
+			break
+
+
+func _on_item_edited():
+	selected_item = %PortraitTree.get_selected()
+	something_changed()
+	if selected_item:
+		if %PreviewLabel.text.trim_prefix('Preview of "').trim_suffix('"') == current_resource.default_portrait:
+			current_resource.default_portrait = %PortraitTree.get_full_item_name(selected_item)
+	update_preview()
+
+
+
+##############################################################################
+##						PORTRAIT SETTINGS TAB
+##############################################################################
+
+func setup_portrait_settings_tab() -> void:
+	%DefaultPortraitPicker.value_changed.connect(default_portrait_changed)
+	%MainScale.value_changed.connect(main_portrait_settings_update)
+	%MainOffsetX.value_changed.connect(main_portrait_settings_update)
+	%MainOffsetY.value_changed.connect(main_portrait_settings_update)
+	%MainMirror.toggled.connect(main_portrait_settings_update)
+	
+	# Setting up Default Portrait Picker
+	%DefaultPortraitPicker.resource_icon = load("res://addons/dialogic/Editor/Images/Resources/portrait.svg")
+	%DefaultPortraitPicker.get_suggestions_func = suggest_portraits
+	%DefaultPortraitPicker.set_left_text("")
+
+
+# Make sure preview get's updated when portrait settings change
+func main_portrait_settings_update(value = null) -> void:
+	current_resource.scale = %MainScale.value/100.0
+	current_resource.offset = Vector2(%MainOffsetX.value, %MainOffsetY.value) 
+	current_resource.mirror = %MainMirror.button_pressed
+	update_preview()
+	something_changed()
+
+
+func default_portrait_changed(property:String, value:String) -> void:
+	current_resource.default_portrait = value
+	update_default_portrait_star(value)
+
+
+# Get suggestions for DefaultPortraitPicker
+func suggest_portraits(search:String) -> Dictionary:
+	var suggestions := {}
+	for portrait in get_updated_portrait_dict().keys():
+		suggestions[portrait] = {'value':portrait}
+	return suggestions
+
+
+##############################################################################
+##							PREVIEW
+##############################################################################
+
 func update_preview() -> void:
 	%ScenePreviewWarning.hide()
-	if selected_item and is_instance_valid(selected_item):
-		%PreviewLabel.text = 'Preview of "'+selected_item.get_text(0)+'"'
+	if selected_item and is_instance_valid(selected_item) and !selected_item.get_metadata(0).has('group'):
+		%PreviewLabel.text = 'Preview of "'+%PortraitTree.get_full_item_name(selected_item)+'"'
 		var current_portrait_data: Dictionary = selected_item.get_metadata(0)
 		var mirror:bool = current_portrait_data.get('mirror', false) != current_resource.mirror
 		var scale:float = current_portrait_data.get('scale', 1) * current_resource.scale
@@ -359,7 +458,7 @@ func update_preview() -> void:
 			
 			if is_instance_valid(scene.get_script()) and scene.script.is_tool():
 				if scene.has_method('_update_portrait'):
-					scene._update_portrait(current_resource, selected_item.get_text(0))
+					scene._update_portrait(current_resource, %PortraitTree.get_full_item_name(selected_item))
 				if scene.has_method('_set_mirror'):
 					scene._set_mirror(mirror)
 			if current_preview_mode == PreviewModes.Real:
@@ -387,32 +486,6 @@ func update_preview() -> void:
 		for node in %RealPreviewPivot.get_children():
 			node.queue_free()
 		current_previewed_scene = null
-		
-
-# this removes/and adds the DEFAULT star on the portrait list
-func update_default_portrait_star(default_portrait_name:String) -> void:
-	var item : TreeItem = %PortraitTree.get_root().get_first_child()
-	while true:
-		if item.get_button_by_id(0, 2) != -1:
-			item.erase_button(0, item.get_button_by_id(0, 2))
-		if item.get_text(0) == default_portrait_name:
-			item.erase_button(0, item.get_button_by_id(0, 1))
-			item.erase_button(0, item.get_button_by_id(0, 3))
-			item.add_button(0, get_theme_icon('Favorites', 'EditorIcons'), 2, true, 'Default')
-			item.add_button(0, get_theme_icon('Duplicate', 'EditorIcons'), 3, false, 'Duplicate')
-			item.add_button(0, get_theme_icon('Remove', 'EditorIcons'), 1, false, 'Remove')
-		item = item.get_next()
-		if !item:
-			break
-
-
-func _on_item_edited():
-	selected_item = %PortraitTree.get_selected()
-	something_changed()
-	if selected_item:
-		if %PreviewLabel.text.trim_prefix('Preview of "').trim_suffix('"') == current_resource.default_portrait:
-			current_resource.default_portrait = selected_item.get_text(0)
-	update_preview()
 
 
 func _on_PreviewMode_item_selected(index:int) -> void:
@@ -431,25 +504,4 @@ func _on_PreviewMode_item_selected(index:int) -> void:
 func _on_full_preview_available_rect_resized():
 	if current_preview_mode == PreviewModes.Full:
 		update_preview()
-
-
-# Make sure preview get's updated when portrait settings change
-func main_portrait_settings_update(value = null) -> void:
-	current_resource.scale = %MainScale.value/100.0
-	current_resource.offset = Vector2(%MainOffsetX.value, %MainOffsetY.value) 
-	current_resource.mirror = %MainMirror.button_pressed
-	update_preview()
-	something_changed()
-
-func default_portrait_changed(property:String, value:String) -> void:
-	current_resource.default_portrait = value
-	update_default_portrait_star(value)
-
-
-# Get suggestions for DefaultPortraitPicker
-func suggest_portraits(search:String) -> Dictionary:
-	var suggestions := {}
-	for portrait in get_updated_portrait_dict().keys():
-		suggestions[portrait] = {'value':portrait}
-	return suggestions
 

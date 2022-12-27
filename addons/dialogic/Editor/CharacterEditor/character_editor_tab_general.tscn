@@ -19,7 +19,6 @@ script = ExtResource("1_3e1i1")
 
 [node name="Label2" type="Label" parent="."]
 layout_mode = 2
-tooltip_text = "This name will be displayed on the name label. You can use a dialogic variable: {Player.name}"
 text = "Display Name: "
 
 [node name="DisplayName" type="HBoxContainer" parent="."]
@@ -29,7 +28,7 @@ size_flags_horizontal = 3
 [node name="DisplayNameLineEdit" type="LineEdit" parent="DisplayName"]
 unique_name_in_owner = true
 layout_mode = 2
-tooltip_text = "This name will be displayed on the name label. You can use a dialogic variable: {Player.name}"
+tooltip_text = "This name will be displayed on the name label. You can use a dialogic variable. E.g. :{Player.name}"
 expand_to_text_length = true
 caret_blink = true
 caret_blink_interval = 0.5
@@ -44,7 +43,6 @@ edit_alpha = false
 
 [node name="Label3" type="Label" parent="."]
 layout_mode = 2
-tooltip_text = "If autocolor names is enabled, these will be colored in the characters color as well."
 text = "Nicknames:"
 
 [node name="NicknameLineEdit" type="LineEdit" parent="."]
@@ -58,7 +56,6 @@ caret_blink_interval = 0.5
 [node name="Label4" type="Label" parent="."]
 layout_mode = 2
 size_flags_vertical = 0
-tooltip_text = "No effect, just for you."
 text = "Description:"
 
 [node name="DescriptionTextEdit" type="TextEdit" parent="."]
