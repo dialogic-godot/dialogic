@@ -8,7 +8,8 @@ extends DialogicEvent
 ### Settings
 
 ## The name of the slot to save to. Learn more in the saving subsystem.
-var slot_name: String = "Default"
+## If empty, the event will attempt to save to the latest slot, and otherwise use the default.
+var slot_name: String = ""
 
 
 ################################################################################
@@ -16,7 +17,12 @@ var slot_name: String = "Default"
 ################################################################################
 
 func _execute() -> void:
-	if slot_name:
+	if slot_name.is_empty():
+		if Dialogic.Save.get_latest_slot():
+			dialogic.Save.save(Dialogic.Save.get_latest_slot())
+		else:
+			dialogic.Save.save()
+	else:
 		dialogic.Save.save(slot_name)
 	finish()
 
