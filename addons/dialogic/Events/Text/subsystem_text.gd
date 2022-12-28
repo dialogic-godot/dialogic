@@ -12,13 +12,13 @@ signal speaking_character(argument)
 ##					STATE
 ####################################################################################################
 func clear_game_state() -> void:
-	update_dialog_text('')
+	update_dialog_text('', true)
 	update_name_label(null)
 	dialogic.current_state_info['character'] = null
 	dialogic.current_state_info['text'] = ''
 
 func load_game_state() -> void:
-	update_dialog_text(dialogic.current_state_info.get('text', ''))
+	update_dialog_text(dialogic.current_state_info.get('text', ''), true)
 	var character:DialogicCharacter = null
 	if dialogic.current_state_info.get('character', null):
 		character = load(dialogic.current_state_info.get('character', null))
@@ -40,15 +40,20 @@ func resume() -> void:
 ##					MAIN METHODS
 ####################################################################################################
 
-func update_dialog_text(text:String) -> void:
-	dialogic.current_state = dialogic.states.SHOWING_TEXT
+## Shows the given text on all visible DialogText nodes. 
+## Instant can be used to skip all reveiling (effects won't work).
+func update_dialog_text(text:String, instant:bool= false) -> void:
+	if !instant: dialogic.current_state = dialogic.states.SHOWING_TEXT
 	dialogic.current_state_info['text'] = text
 	for text_node in get_tree().get_nodes_in_group('dialogic_dialog_text'):
 		if text_node.is_visible_in_tree():
-			text_node.reveal_text(text)
-			if !text_node.finished_revealing_text.is_connected(_on_dialog_text_finished):
-				text_node.finished_revealing_text.connect(_on_dialog_text_finished)
-
+			if instant:
+				text_node.text = text
+			else:
+				text_node.reveal_text(text)
+				if !text_node.finished_revealing_text.is_connected(_on_dialog_text_finished):
+					text_node.finished_revealing_text.connect(_on_dialog_text_finished)
+		
 func _on_dialog_text_finished():
 	text_finished.emit()
 
