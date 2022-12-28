@@ -32,47 +32,48 @@ static func prepare():
 	
 	# populate the data from the resources
 	for timeline in timeline_list:
-		timeline['path'] = structure['Timeline'][timeline['file']] + timeline['name']
-		structure['Timeline'][timeline['file']]= timeline
+		timeline['path'] = structure['Timelines'][timeline['file']] + timeline['name']
+		structure['Timelines'][timeline['file']]= timeline
 	
 	for character in character_list:
-		character['path'] = structure['Character'][character['file']] + character['name']
-		structure['Character'][character['file']]= character
+		character['path'] = structure['Characters'][character['file']] + character['name']
+		structure['Characters'][character['file']]= character
 		
 	for definition in definition_list:
-		definition['path'] = structure['Definition'][definition['id']] + definition['name']
-		structure['Definition'][definition['id']]= definition
+		definition['path'] = structure['Definitions'][definition['id']] + definition['name']
+		structure['Definitions'][definition['id']]= definition
+		definition['file'] = definition['id']
 		
 	for theme in theme_list:
-		theme['path'] = structure['Theme'][theme['file']] + theme['name']
-		structure['Theme'][theme['file']]= theme
+		theme['path'] = structure['Themes'][theme['file']] + theme['name']
+		structure['Themes'][theme['file']]= theme
 		
 	# After that we put them in the order we need to make the folder paths easiest to use
-	for timeline in structure['Timeline'].keys():
+	for timeline in structure['Timelines'].keys():
 		if ".json" in timeline:
-			timeline_folder_breakdown[structure['Timeline'][timeline]['path']] = structure['Timeline'][timeline]
+			timeline_folder_breakdown[structure['Timelines'][timeline]['path']] = structure['Timelines'][timeline]
 		else:
-			timeline_folder_breakdown[timeline] = structure['Timeline'][timeline]
+			timeline_folder_breakdown[timeline] = structure['Timelines'][timeline]
 
-	for character in structure['Character'].keys():
+	for character in structure['Characters'].keys():
 		if ".json" in character:
-			character_folder_breakdown[structure['Character'][character]['path']] = structure['Character'][character]
+			character_folder_breakdown[structure['Characters'][character]['path']] = structure['Characters'][character]
 		else:
-			character_folder_breakdown[character] = structure['Character'][character]
+			character_folder_breakdown[character] = structure['Characters'][character]
 
 
-	for definition in structure['Definition'].keys():
+	for definition in structure['Definitions'].keys():
 		if ".json" in definition:
-			definition_folder_breakdown[structure['Definition'][definition]['path']] = structure['Definition'][definition]
+			definition_folder_breakdown[structure['Definitions'][definition]['path']] = structure['Definitions'][definition]
 		else:
-			definition_folder_breakdown[definition] = structure['Definition'][definition]
+			definition_folder_breakdown[definition] = structure['Definitions'][definition]
 
 
-	for theme in structure['Theme'].keys():
+	for theme in structure['Themes'].keys():
 		if ".json" in theme:
-			theme_folder_breakdown[structure['Theme'][theme]['path']] = structure['Theme'][theme]		
+			theme_folder_breakdown[structure['Themes'][theme]['path']] = structure['Themes'][theme]		
 		else:
-			theme_folder_breakdown[theme] = structure['Theme'][theme]
+			theme_folder_breakdown[theme] = structure['Themes'][theme]
 
 
 	Engine.set_meta('dialogic_tree_loaded',true)
@@ -84,10 +85,10 @@ static func prepare():
 	print("loaded")
 	
 	var flatten = {}
-	flatten['Timeline'] = timeline_folder_breakdown
-	flatten['Character'] = character_folder_breakdown
-	flatten['Definition'] = definition_folder_breakdown
-	flatten['Theme'] = theme_folder_breakdown
+	flatten['Timelines'] = timeline_folder_breakdown
+	flatten['Characters'] = character_folder_breakdown
+	flatten['Definitions'] = definition_folder_breakdown
+	flatten['Themes'] = theme_folder_breakdown
 	
 	DialogicResources.save_resource_folder_flat_structure(flatten)
 
