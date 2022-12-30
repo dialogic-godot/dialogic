@@ -7,7 +7,7 @@ var current_timeline_events: Array = []
 var timeline_jump_stack: Array = []
 var character_directory: Dictionary = {}
 var timeline_directory: Dictionary = {}
-var _event_script_cache: Array = []
+var _event_script_cache: Array[DialogicEvent] = []
 
 var current_state: Variant = null:
 	get:
@@ -15,7 +15,24 @@ var current_state: Variant = null:
 	set(new_state):
 		current_state = new_state
 		emit_signal('state_changed', new_state)
-var paused := false
+
+var paused := false:
+	set(value):
+		paused = value
+		if paused:
+			for subsystem in get_children():
+				if subsystem.has_method('pause'):
+					subsystem.pause()
+			dialogic_paused.emit()
+		else:
+			for subsystem in get_children():
+				if subsystem.has_method('resume'):
+					subsystem.resume()
+			dialogic_resumed.emit()
+
+signal dialogic_paused
+signal dialogic_resumed
+
 var current_event_idx: int = 0
 var current_state_info: Dictionary = {}
 
@@ -42,8 +59,6 @@ func _ready() -> void:
 ## 						TIMELINE+EVENT HANDLING
 ################################################################################
 func start_timeline(timeline_resource:Variant, label_or_idx:Variant = "") -> void:
-
-		
 	# load the resource if only the path is given
 	if typeof(timeline_resource) == TYPE_STRING:
 		#check the lookup table if it's not a full file name
@@ -74,8 +89,9 @@ func start_timeline(timeline_resource:Variant, label_or_idx:Variant = "") -> voi
 
 
 # Preloader function, prepares a timeline and returns an object to hold for later
+## TODO: Question: why is this taking a variant and then only allowing a string?
 func preload_timeline(timeline_resource:Variant) -> Variant:
-	#I think ideally this should be on a new thread, will test
+	# I think ideally this should be on a new thread, will test
 	if typeof(timeline_resource) == TYPE_STRING:
 		timeline_resource = load(timeline_resource)
 		if timeline_resource == null:
@@ -100,6 +116,9 @@ func handle_next_event(ignore_argument:Variant = "") -> void:
 func handle_event(event_index:int) -> void:
 	if not current_timeline:
 		return
+	
+	if paused:
+		await dialogic_resumed
 	
 	if event_index >= len(current_timeline_events):
 		if timeline_jump_stack.size() > 0:
@@ -130,6 +149,9 @@ func handle_event(event_index:int) -> void:
 
 
 func jump_to_label(label:String) -> void:
+	if label.is_empty():
+		current_event_idx = 0
+		return
 	var idx: int = -1
 	while true:
 		idx += 1
@@ -137,7 +159,7 @@ func jump_to_label(label:String) -> void:
 		if not event:
 			idx = current_event_idx
 			break
-		if event is DialogicLabelEvent and event.Name == label:
+		if event is DialogicLabelEvent and event.name == label:
 			break
 	current_event_idx = idx
 
@@ -170,23 +192,6 @@ func clear() -> bool:
 	return true
 
 
-func pause() -> void:
-	if paused: 
-		return
-	paused = true
-	for subsystem in get_children():
-		if subsystem.has_method('pause'):
-			subsystem.pause()
-
-
-func resume() -> void:
-	if !paused: 
-		return
-	paused = false
-	for subsystem in get_children():
-		if subsystem.has_method('resume'):
-			subsystem.resume()
-
 ################################################################################
 ## 						STATE
 ################################################################################
@@ -198,18 +203,25 @@ func execute_condition(condition:String) -> bool:
 	if result:
 		for res in result:
 			var r_string: String = res.get_string()
-			var replacement: String = "VAR." + r_string.substr(1,r_string.length()-2)
-			condition = condition.replace(r_string, replacement)
-	
+			var value: String = self.VAR.get_variable(r_string)
+			if !value.is_valid_float():
+				value = '"'+value+'"'
+			condition = condition.replace(r_string, value)
 	var expr: Expression = Expression.new()
-	var autoload_names: Array = []
-	var autoloads: Array = []
-	for c in get_tree().root.get_children():
-		autoloads.append(c)
-		autoload_names.append(c.name)
-	expr.parse(condition, autoload_names)
-	if expr.execute(autoloads, self):
+	# this doesn't work currently, not sure why. However you can still use autoloads in conditions
+	# you have to put them in {} brackets tho. E.g. `if {MyAutoload.my_var} > 20:`
+#	var autoload_names: Array = []
+#	var autoloads: Array = []
+#	for c in get_tree().root.get_children():
+#		autoloads.append(c)
+#		autoload_names.append(c.name)
+#	expr.parse(condition, autoload_names)
+#	if expr.execute(autoloads, self):
+	expr.parse(condition)
+	if expr.execute([], self):
 		return true
+	if expr.has_execute_failed():
+		printerr('Dialogic: Condition failed to execute: ', expr.get_error_text())
 	return false
 
 
@@ -258,31 +270,24 @@ func load_full_state(state_info:Dictionary) -> void:
 ##						SUB-SYTSEMS
 ################################################################################
 func collect_subsystems() -> void:
-	# This also builds th event script cache as well
-	for script in DialogicUtil.get_event_scripts():
-		var x = load(script).new()
+	# This also builds the event script cache as well
+	_event_script_cache = []
+	
+	for indexer in DialogicUtil.get_indexers():
 		
-		x.set_meta("script_path", script)
-		if script != "res://addons/dialogic/Events/End Branch/event.gd":
-			_event_script_cache.push_back(x)
+		# build event cache
+		for event in indexer._get_events():
+			if not 'event_end_branch.gd' in event and not 'event_text.gd' in event:
+				_event_script_cache.append(load(event).new())
 		
-		#only build the subsystems at runtime
+		# build the subsystems (only at runtime)
 		if !Engine.is_editor_hint():
-			for i in x.get_required_subsystems():
-				if i.has('subsystem') and not has_subsystem(i.name):
-					add_subsytsem(i.name, i.subsystem)
-					
-		# Events are checked in order while testing them. EndBranch needs to be first, Text needs to be last
-	var x = load("res://addons/dialogic/Events/End Branch/event.gd").new()
-	x.set_meta("script_path", "res://addons/dialogic/Events/End Branch/event.gd")
-	_event_script_cache.push_front(x)
-
-				
-	for i in _event_script_cache.size():
-		if _event_script_cache[i].get_meta("script_path") == "res://addons/dialogic/Events/Text/event.gd":
-			_event_script_cache.push_back(_event_script_cache[i])
-			_event_script_cache.remove_at(i)
-			break
+			for subsystem in indexer._get_subsystems():
+				add_subsytsem(subsystem.name, subsystem.script)
+	
+	# Events are checked in order while testing them. EndBranch needs to be first, Text needs to be last
+	_event_script_cache.push_front(DialogicEndBranchEvent.new())
+	_event_script_cache.push_back(DialogicTextEvent.new())
 
 
 func has_subsystem(_name:String) -> bool:
@@ -345,7 +350,7 @@ func rebuild_character_directory() -> void:
 	
 	# Now the three arrays are prepped, begin the depth search
 	var clean_search_path:bool = false
-	var depth = 1
+	var depth := 1
 	
 	while !clean_search_path:
 		var interim_array:Array = []
@@ -446,11 +451,7 @@ func process_timeline(timeline: DialogicTimeline) -> DialogicTimeline:
 			return timeline
 		else:
 			#print(str(Time.get_ticks_msec()) + ": Starting process unloaded timeline")	
-			var end_event: DialogicEndBranchEvent 
-			for i in _event_script_cache:
-				if i.get_meta("script_path") == "res://addons/dialogic/Events/End Branch/event.gd":
-						end_event = i.duplicate()
-						break
+			var end_event := DialogicEndBranchEvent.new()
 			
 			var prev_indent := ""
 			var events := []
@@ -460,21 +461,24 @@ func process_timeline(timeline: DialogicTimeline) -> DialogicTimeline:
 			
 			var lines := timeline.events
 			var idx := -1
-			
+			var empty_lines = 0
 			while idx < len(lines)-1:
 				idx += 1
+				
+				## First manage indent and creation of end branch events
+				## For this, we still treat the event as a string
 				var line: String = ""
 				if typeof(lines[idx]) == TYPE_STRING:
 					line = lines[idx]
 				else:
 					line = lines[idx]['event_node_as_text']
 				
-				
 				var line_stripped :String = line.strip_edges(true, false)
 				if line_stripped.is_empty():
+					empty_lines += 1
 					continue
-				var indent :String= line.substr(0,len(line)-len(line_stripped))
 				
+				var indent :String= line.substr(0,len(line)-len(line_stripped))
 				if len(indent) < len(prev_indent):
 					for i in range(len(prev_indent)-len(indent)):
 						events.append(end_event.duplicate())
@@ -482,14 +486,17 @@ func process_timeline(timeline: DialogicTimeline) -> DialogicTimeline:
 				elif prev_was_opener and len(indent) == len(prev_indent):
 					events.append(end_event.duplicate())
 				prev_indent = indent
+				
+				## Now we process the event into a resource 
+				## by checking on each event if it recognizes this string 
 				var event_content :String = line_stripped
-
 				var event :Variant
 				for i in _event_script_cache:
 					if i._test_event_string(event_content):
 						event = i.duplicate()
 						break
 				
+				event.empty_lines_above = empty_lines
 				# add the following lines until the event says it's full there is an empty line or the indent changes
 				while !event.is_string_full_event(event_content):
 					idx += 1
@@ -510,13 +517,13 @@ func process_timeline(timeline: DialogicTimeline) -> DialogicTimeline:
 					if event['event_name'] == 'Character' || event['event_name'] == 'Text':
 						event.set_meta('editor_character_directory', character_directory)
 
-
+				
 				event._load_from_string(event_content)
 				event['event_node_as_text'] = event_content
 
 				events.append(event)
 				prev_was_opener = event.can_contain_events
-				
+				empty_lines = 0
 			
 
 			if !prev_indent.is_empty():

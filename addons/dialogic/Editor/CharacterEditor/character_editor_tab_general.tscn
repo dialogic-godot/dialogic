@@ -1,0 +1,67 @@
+[gd_scene load_steps=2 format=3 uid="uid://de5kj4vd0we1w"]
+
+[ext_resource type="Script" path="res://addons/dialogic/Editor/CharacterEditor/character_editor_tab_general.gd" id="1_3e1i1"]
+
+[node name="General" type="GridContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 7.5
+offset_top = 38.5
+offset_right = -7.5
+offset_bottom = -7.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/h_separation = 1
+theme_override_constants/v_separation = 6
+columns = 2
+script = ExtResource("1_3e1i1")
+
+[node name="Label2" type="Label" parent="."]
+layout_mode = 2
+text = "Display Name: "
+
+[node name="DisplayName" type="HBoxContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="DisplayNameLineEdit" type="LineEdit" parent="DisplayName"]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "This name will be displayed on the name label. You can use a dialogic variable. E.g. :{Player.name}"
+expand_to_text_length = true
+caret_blink = true
+caret_blink_interval = 0.5
+
+[node name="ColorPickerButton" type="ColorPickerButton" parent="DisplayName"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(30, 0)
+layout_mode = 2
+tooltip_text = "This color can be used on the name label and for occurences of the characters name in text (autocolor names)."
+color = Color(1, 1, 1, 1)
+edit_alpha = false
+
+[node name="Label3" type="Label" parent="."]
+layout_mode = 2
+text = "Nicknames:"
+
+[node name="NicknameLineEdit" type="LineEdit" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "If autocolor names is enabled, these will be colored in the characters color as well."
+caret_blink = true
+caret_blink_interval = 0.5
+
+[node name="Label4" type="Label" parent="."]
+layout_mode = 2
+size_flags_vertical = 0
+text = "Description:"
+
+[node name="DescriptionTextEdit" type="TextEdit" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "No effect, just for you."
+wrap_mode = 1
+scroll_fit_content_height = true

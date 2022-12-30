@@ -1,12 +1,12 @@
 [gd_scene load_steps=8 format=3]
 
-[ext_resource type="Script" path="res://addons/dialogic/Events/Text/DialogicNode_DialogText.gd" id="3"]
-[ext_resource type="Script" path="res://addons/dialogic/Events/Character/DialogicNode_PortraitPosition.gd" id="4"]
-[ext_resource type="Script" path="res://addons/dialogic/Events/Character/DialogicNode_PortraitHolder.gd" id="5"]
-[ext_resource type="Script" path="res://addons/dialogic/Events/Text/DialogicNode_NameLabel.gd" id="6"]
-[ext_resource type="Texture2D" uid="uid://k1b83oev52eh" path="res://addons/dialogic/Example Assets/backgrounds/rpg_box.webp" id="7"]
-[ext_resource type="Script" path="res://addons/dialogic/Events/Text/DialogicNode_InputHandler.gd" id="8"]
-[ext_resource type="Script" path="res://addons/dialogic/Events/Choice/DialogicNode_ChoiceButton.gd" id="9"]
+[ext_resource type="Script" path="res://addons/dialogic/Events/Text/node_dialog_text.gd" id="3"]
+[ext_resource type="Script" path="res://addons/dialogic/Events/Character/node_portrait_position.gd" id="4"]
+[ext_resource type="Script" path="res://addons/dialogic/Events/Character/node_portrait_holder.gd" id="5"]
+[ext_resource type="Script" path="res://addons/dialogic/Events/Text/node_name_label.gd" id="6"]
+[ext_resource type="Texture2D" uid="uid://suqebxc71s24" path="res://addons/dialogic/Example Assets/backgrounds/rpg_box.webp" id="7"]
+[ext_resource type="Script" path="res://addons/dialogic/Events/Text/node_input_handler.gd" id="8"]
+[ext_resource type="Script" path="res://addons/dialogic/Events/Choice/node_choice_button.gd" id="9"]
 
 [node name="RPG_ExampleNode" type="CanvasLayer"]
 layer = 3

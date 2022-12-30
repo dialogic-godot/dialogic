@@ -37,7 +37,7 @@ func set_value(value):
 	for option in options:
 		if option['value'] == value:
 			$MenuButton.text = option['label']
-			$MenuButton.icon = option.get('icon',load("res://addons/dialogic/Editor/Images/Dropdown/default.svg"))
+			$MenuButton.icon = option.get('icon', load("res://addons/dialogic/Editor/Images/Dropdown/default.svg"))
 
 func get_value():
 	return $MenuButton.text

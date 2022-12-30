@@ -1,0 +1,71 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://addons/dialogic/Editor/TimelineEditor/VisualEditor/AddEventButton.gd" id="1_s43sc"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ba8bn"]
+bg_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 5
+corner_radius_bottom_left = 5
+
+[node name="AddEventButton" type="Button"]
+custom_minimum_size = Vector2(60, 60)
+offset_right = 103.0
+offset_bottom = 31.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "  S"
+flat = true
+script = ExtResource("1_s43sc")
+visible_name = "S"
+
+[node name="Border" type="Panel" parent="."]
+show_behind_parent = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+
+[node name="Hbox" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 0
+metadata/_edit_layout_mode = 1
+
+[node name="ColorBorder" type="Panel" parent="Hbox"]
+unique_name_in_owner = true
+self_modulate = Color(0.635294, 0.635294, 0.635294, 0.282353)
+show_behind_parent = true
+custom_minimum_size = Vector2(10, 0)
+layout_mode = 2
+offset_right = 10.0
+offset_bottom = 60.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_ba8bn")
+
+[node name="IconContainer" type="MarginContainer" parent="Hbox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(60, 60)
+layout_mode = 2
+offset_left = 10.0
+offset_right = 70.0
+offset_bottom = 60.0
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 0
+theme_override_constants/margin_bottom = 0
+
+[node name="Icon" type="TextureRect" parent="Hbox/IconContainer"]
+unique_name_in_owner = true
+modulate = Color(0, 0, 0, 1)
+layout_mode = 2
+offset_right = 60.0
+offset_bottom = 60.0
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+ignore_texture_size = true
+metadata/_edit_layout_mode = 1

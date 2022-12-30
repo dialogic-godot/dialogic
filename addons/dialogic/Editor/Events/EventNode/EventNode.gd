@@ -239,7 +239,17 @@ func build_editor():
 			editor_node = Label.new()
 			editor_node.text = p.display_info.text
 			editor_node.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-		
+		elif p.dialogic_type == resource.ValueType.Button:
+			editor_node = Button.new()
+			editor_node.text = p.display_info.text
+			if typeof(p.display_info.icon) == TYPE_ARRAY:
+				editor_node.icon = callv('get_theme_icon', p.display_info.icon)
+			else:
+				editor_node.icon = p.display_info.icon
+			editor_node.flat = true
+			editor_node.custom_minimum_size.x = 30*DialogicUtil.get_editor_scale()
+			editor_node.tooltip_text = p.display_info.tooltip
+			editor_node.pressed.connect(p.display_info.callable)
 		## CUSTOM
 		elif p.dialogic_type == resource.ValueType.Custom:
 			if p.display_info.has('path'):
@@ -281,7 +291,7 @@ func build_editor():
 		has_body_content = false
 		expanded = false
 		body_container.visible = false
-		
+	
 	content_changed.connect(recalculate_edit_visibility.bind(edit_conditions_list))
 	recalculate_edit_visibility(edit_conditions_list)
 
@@ -301,11 +311,12 @@ func recalculate_edit_visibility(list):
 				printerr("(recalculate_edit_visibility)  condition expression failed with error: " + expr.get_error_text())
 	
 	%ExpandButton.visible = false
-	for node in body_content_container.get_children():
-		for sub_node in node.get_children():
-			if sub_node.visible:
-				%ExpandButton.visible = true
-				break
+	if body_content_container != null:
+		for node in body_content_container.get_children():
+			for sub_node in node.get_children():
+				if sub_node.visible:
+					%ExpandButton.visible = true
+					break
 
 func set_property(property_name, value):
 	resource.set(property_name, value)
@@ -341,8 +352,8 @@ func _ready():
 		if resource.event_name:
 			#title_label.text = DTS.translate(resource.event_name)
 			title_label.text = resource.event_name
-		if resource.get_icon() != null:
-			_set_event_icon(resource.get_icon())
+		if resource._get_icon() != null:
+			_set_event_icon(resource._get_icon())
 
 		%IconPanel.self_modulate = resource.event_color
 		

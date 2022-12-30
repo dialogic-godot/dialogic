@@ -31,11 +31,13 @@ static func listdir(path: String, files_only: bool = true, throw_error:bool = tr
 
 static func get_dialogic_plugin() -> Node:
 	var tree: SceneTree = Engine.get_main_loop()
-	return tree.get_root().get_child(0).get_node('DialogicPlugin')
+	if tree.get_root().get_child(0).has_node('DialogicPlugin'):
+		return tree.get_root().get_child(0).get_node('DialogicPlugin')
+	return null
 
 
-static func list_resources_of_type(extension):
-	var all_resources = scan_folder('res://', extension)
+static func list_resources_of_type(extension:String) -> Array:
+	var all_resources := scan_folder('res://', extension)
 	return all_resources
 
 
@@ -61,42 +63,44 @@ static func guess_resource(extension, identifier):
 		if resource_path.get_file().trim_suffix(extension) == identifier:
 			return resource_path
 
-
-static func get_event_by_string(string:String) -> Resource:
-	var event_scripts = get_event_scripts()
-	
-	# move the text event to the end of the list as it's the default.
-	event_scripts.erase("res://addons/dialogic/Events/Text/event.gd")
-	event_scripts.append("res://addons/dialogic/Events/Text/event.gd")
-	
-	for event in event_scripts:
-		if load(event).new()._test_event_string(string):
-
-			return load(event)
-	return load("res://addons/dialogic/Events/Text/event.gd")
+#
+#static func get_event_by_string(string:String) -> Resource:
+#	var event_scripts = get_event_scripts()
+#
+#	# move the text event to the end of the list as it's the default.
+#	event_scripts.erase("res://addons/dialogic/Events/Text/event_text.gd")
+#	event_scripts.append("res://addons/dialogic/Events/Text/event_text.gd")
+#
+#	for event in event_scripts:
+#		if load(event).new()._test_event_string(string):
+#
+#			return load(event)
+#	return load("res://addons/dialogic/Events/Text/event_text.gd")
 
 
 static func get_project_setting(setting:String, default = null):
 	return ProjectSettings.get_setting(setting) if ProjectSettings.has_setting(setting) else default
 
 
-static func get_event_scripts(include_custom_events:bool = true) -> Array:
-	var event_scripts = []
+static func get_indexers(include_custom := true, force_reload := false) -> Array[DialogicIndexer]:
+	if Engine.get_main_loop().has_meta('dialogic_indexers') and !force_reload:
+		return Engine.get_main_loop().get_meta('dialogic_indexers')
 	
-	var file_list = listdir("res://addons/dialogic/Events/", false)
-	for file in file_list:
-		var possible_script:String = "res://addons/dialogic/Events/" + file + "/event.gd"
+	var indexers := []
+	
+	for file in listdir("res://addons/dialogic/Events/", false):
+		var possible_script:String = "res://addons/dialogic/Events/" + file + "/index.gd"
 		if FileAccess.file_exists(possible_script):
-			event_scripts.append(possible_script)
+			indexers.append(load(possible_script).new())
 	
-	if include_custom_events:
-		file_list = listdir("res://addons/dialogic_additions/Events/", false, false)
-		for file in file_list:
-			var possible_script: String = "res://addons/dialogic_additions/Events/" + file + "/event.gd"
+	if include_custom:
+		for file in listdir("res://addons/dialogic_additions/Events/", false, false):
+			var possible_script: String = "res://addons/dialogic_additions/Events/" + file + "/index.gd"
 			if FileAccess.file_exists(possible_script):
-				event_scripts.append(possible_script)
-		
-	return event_scripts
+				indexers.append(load(possible_script).new())
+	
+	Engine.get_main_loop().set_meta('dialogic_indexers', indexers)
+	return indexers
 
 
 static func pretty_name(script:String) -> String:
@@ -167,3 +171,14 @@ static func update_timer_process_callback(timer:Timer) -> void:
 static func get_next_translation_id() -> String:
 	ProjectSettings.set_setting('dialogic/translation/id_counter', get_project_setting('dialogic/translation/id_counter', 16)+1)
 	return '%x' % get_project_setting('dialogic/translation/id_counter', 16)
+
+
+# helper that converts a nested variable dictionary into an array with paths
+static func list_variables(dict:Dictionary, path := "") -> Array:
+	var array := []
+	for key in dict.keys():
+		if typeof(dict[key]) == TYPE_DICTIONARY:
+			array.append_array(list_variables(dict[key], path+key+"."))
+		else:
+			array.append(path+key)
+	return array

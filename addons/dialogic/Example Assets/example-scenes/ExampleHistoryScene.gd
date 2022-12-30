@@ -13,7 +13,7 @@ extends VBoxContainer
 @export var show_name_colors: bool = true
 @export var oldest_items_first: bool = true
 @export var line_break_after_names: bool
-@export var name_delimeter: String = ":"
+@export var name_delimeter: String = ": "
 
 @export var history_font_size: int
 @export var history_font_normal: Font
@@ -61,16 +61,16 @@ func show_history() -> void:
 				var new_node = text_node.duplicate()
 				new_node.prepare_texbox(self)
 				
-				if item['event_object'].Character != null:
+				if item['event_object'].character != null:
 					var character_name = ""
 					
 					if Dialogic.has_subsystem('VAR'):
-						character_name += Dialogic.VAR.parse_variables(item['event_object'].Character.display_name)
+						character_name += Dialogic.VAR.parse_variables(item['event_object'].character.display_name)
 					else:
-						character_name += item['event_object'].Character.display_name
+						character_name += item['event_object'].character.display_name
 					
 					if show_name_colors:
-						character_name = "[color=#" + item['event_object'].Character.color.to_html(false) + "]" + character_name + "[/color]"
+						character_name = "[color=#" + item['event_object'].character.color.to_html(false) + "]" + character_name + "[/color]"
 					
 					history_item_string += character_name
 					
@@ -100,25 +100,25 @@ func show_history() -> void:
 				var new_node = text_node.duplicate()
 				new_node.prepare_texbox(self)
 				
-				if !item['event_object']._leave_all:
+				if !item['event_object'].leave_all:
 					var character_name = ""
 					
 					if Dialogic.has_subsystem('VAR'):
-						character_name += Dialogic.VAR.parse_variables(item['event_object'].Character.display_name)
+						character_name += Dialogic.VAR.parse_variables(item['event_object'].character.display_name)
 					else:
-						character_name += item['event_object'].Character.display_name
+						character_name += item['event_object'].character.display_name
 						
 					if show_name_colors:
-						history_item_string += "[color=#" + item['event_object'].Character.color.to_html(false) + "]" + character_name + "[/color]"
+						history_item_string += "[color=#" + item['event_object'].character.color.to_html(false) + "]" + character_name + "[/color]"
 					else: 
 						history_item_string += character_name
 				else: 
 					history_item_string += "Everyone"
 				
-				if item['event_object'].ActionType == DialogicCharacterEvent.ActionTypes.Join && show_character_joins:
+				if item['event_object'].action_type == DialogicCharacterEvent.ActionTypes.Join && show_character_joins:
 					history_item_string += " has arrived[/i]" 
 				
-				if item['event_object'].ActionType == DialogicCharacterEvent.ActionTypes.Leave && show_character_leaves:
+				if item['event_object'].action_type == DialogicCharacterEvent.ActionTypes.Leave && show_character_leaves:
 					history_item_string += " has left[/i]" 
 				
 				new_node.set_text(history_item_string)
