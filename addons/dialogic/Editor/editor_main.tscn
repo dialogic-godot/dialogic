@@ -9,19 +9,19 @@
 [ext_resource type="Script" path="res://addons/dialogic/Editor/directory_holder.gd" id="7_1xvr0"]
 [ext_resource type="PackedScene" uid="uid://cl7g6q68aqt4f" path="res://addons/dialogic/Editor/Settings/SettingsEditor.tscn" id="7_s6egf"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_120yq"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_560hy"]
 bg_color = Color(0, 0, 0, 1)
 draw_center = false
 border_width_left = 2
 border_width_top = 2
 border_width_right = 2
 border_width_bottom = 2
-border_color = Color(0.21, 0.24, 0.29, 1)
+border_color = Color(0, 0, 0, 1)
 corner_radius_top_right = 5
 corner_radius_bottom_right = 5
 corner_radius_bottom_left = 5
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_7f2pa"]
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_kj5tw"]
 
 [node name="EditorView" type="ColorRect"]
 anchors_preset = 15
@@ -33,7 +33,7 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 color = Color(0, 0, 0, 1)
 script = ExtResource("1_x88ov")
-editor_tab_bg = SubResource("StyleBoxFlat_120yq")
+editor_tab_bg = SubResource("StyleBoxFlat_560hy")
 
 [node name="Margin" type="MarginContainer" parent="."]
 layout_mode = 1
@@ -50,6 +50,7 @@ script = ExtResource("2_pe2tl")
 [node name="HSplit" type="HSplitContainer" parent="Margin/EditorsManager"]
 layout_mode = 2
 size_flags_vertical = 3
+theme_override_constants/separation = 0
 split_offset = 150
 
 [node name="Sidebar" parent="Margin/EditorsManager/HSplit" instance=ExtResource("3_lp6hj")]
@@ -60,8 +61,8 @@ split_offset = 0
 
 [node name="Editors" type="TabContainer" parent="Margin/EditorsManager/HSplit"]
 layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_120yq")
-theme_override_styles/tabbar_background = SubResource("StyleBoxEmpty_7f2pa")
+theme_override_styles/panel = SubResource("StyleBoxFlat_560hy")
+theme_override_styles/tabbar_background = SubResource("StyleBoxEmpty_kj5tw")
 
 [node name="HomePage" parent="Margin/EditorsManager/HSplit/Editors" instance=ExtResource("4_vey4f")]
 visible = false
