@@ -1,6 +1,5 @@
-[gd_scene load_steps=3 format=3 uid="uid://de5kj4vd0we1w"]
+[gd_scene load_steps=2 format=3 uid="uid://de5kj4vd0we1w"]
 
-[ext_resource type="PackedScene" uid="uid://dpwhshre1n4t6" path="res://addons/dialogic/Editor/Events/Fields/ComplexPicker.tscn" id="1_3b04d"]
 [ext_resource type="Script" path="res://addons/dialogic/Editor/CharacterEditor/character_editor_tab_general.gd" id="1_3e1i1"]
 
 [node name="General" type="GridContainer"]
@@ -20,27 +19,16 @@ script = ExtResource("1_3e1i1")
 
 [node name="Label2" type="Label" parent="."]
 layout_mode = 2
-offset_right = 131.0
-offset_bottom = 26.0
-size_flags_vertical = 0
 text = "Display Name: "
 
 [node name="DisplayName" type="HBoxContainer" parent="."]
 layout_mode = 2
-offset_left = 132.0
-offset_right = 1137.0
-offset_bottom = 31.0
 size_flags_horizontal = 3
-
-[node name="CheckBox" type="CheckBox" parent="DisplayName"]
-visible = false
-layout_mode = 2
 
 [node name="DisplayNameLineEdit" type="LineEdit" parent="DisplayName"]
 unique_name_in_owner = true
 layout_mode = 2
-offset_right = 67.0
-offset_bottom = 31.0
+tooltip_text = "This name will be displayed on the name label. You can use a dialogic variable. E.g. :{Player.name}"
 expand_to_text_length = true
 caret_blink = true
 caret_blink_interval = 0.5
@@ -49,173 +37,31 @@ caret_blink_interval = 0.5
 unique_name_in_owner = true
 custom_minimum_size = Vector2(30, 0)
 layout_mode = 2
-offset_left = 71.0
-offset_right = 101.0
-offset_bottom = 31.0
+tooltip_text = "This color can be used on the name label and for occurences of the characters name in text (autocolor names)."
 color = Color(1, 1, 1, 1)
 edit_alpha = false
 
 [node name="Label3" type="Label" parent="."]
 layout_mode = 2
-offset_top = 37.0
-offset_right = 131.0
-offset_bottom = 63.0
-size_flags_vertical = 0
 text = "Nicknames:"
 
-[node name="DisplayNickname" type="HBoxContainer" parent="."]
-layout_mode = 2
-offset_left = 132.0
-offset_top = 37.0
-offset_right = 1137.0
-offset_bottom = 68.0
-size_flags_horizontal = 3
-
-[node name="NicknameLineEdit" type="LineEdit" parent="DisplayNickname"]
+[node name="NicknameLineEdit" type="LineEdit" parent="."]
 unique_name_in_owner = true
 layout_mode = 2
-offset_right = 1005.0
-offset_bottom = 31.0
 size_flags_horizontal = 3
+tooltip_text = "If autocolor names is enabled, these will be colored in the characters color as well."
 caret_blink = true
 caret_blink_interval = 0.5
 
 [node name="Label4" type="Label" parent="."]
 layout_mode = 2
-offset_top = 74.0
-offset_right = 131.0
-offset_bottom = 100.0
 size_flags_vertical = 0
 text = "Description:"
 
-[node name="Description" type="HBoxContainer" parent="."]
-layout_mode = 2
-offset_left = 132.0
-offset_top = 74.0
-offset_right = 1137.0
-offset_bottom = 109.0
-size_flags_horizontal = 3
-
-[node name="DescriptionTextEdit" type="TextEdit" parent="Description"]
+[node name="DescriptionTextEdit" type="TextEdit" parent="."]
 unique_name_in_owner = true
 layout_mode = 2
-offset_right = 1005.0
-offset_bottom = 35.0
 size_flags_horizontal = 3
+tooltip_text = "No effect, just for you."
 wrap_mode = 1
 scroll_fit_content_height = true
-
-[node name="Label5" type="Label" parent="."]
-layout_mode = 2
-offset_top = 115.0
-offset_right = 131.0
-offset_bottom = 141.0
-size_flags_vertical = 0
-text = "Default Portrait:"
-
-[node name="DefaultPortrait" type="HBoxContainer" parent="."]
-layout_mode = 2
-offset_left = 132.0
-offset_top = 115.0
-offset_right = 1137.0
-offset_bottom = 150.0
-size_flags_horizontal = 3
-
-[node name="DefaultPortraitPicker" parent="DefaultPortrait" instance=ExtResource("1_3b04d")]
-unique_name_in_owner = true
-layout_mode = 2
-anchors_preset = 0
-anchor_right = 0.0
-anchor_bottom = 0.0
-offset_left = 0.0
-offset_top = 0.0
-offset_right = 180.0
-offset_bottom = 35.0
-grow_horizontal = 1
-grow_vertical = 1
-
-[node name="Label6" type="Label" parent="."]
-layout_mode = 2
-offset_top = 156.0
-offset_right = 131.0
-offset_bottom = 182.0
-size_flags_vertical = 0
-text = "Portrait Settings:"
-
-[node name="PortraitMainSettings" type="HFlowContainer" parent="."]
-layout_mode = 2
-offset_left = 132.0
-offset_top = 156.0
-offset_right = 1137.0
-offset_bottom = 187.0
-size_flags_horizontal = 3
-
-[node name="Label" type="Label" parent="PortraitMainSettings"]
-layout_mode = 2
-offset_top = 2.0
-offset_right = 40.0
-offset_bottom = 28.0
-text = "Scale"
-
-[node name="MainScale" type="SpinBox" parent="PortraitMainSettings"]
-unique_name_in_owner = true
-layout_mode = 2
-offset_left = 44.0
-offset_right = 127.0
-offset_bottom = 31.0
-value = 100.0
-allow_greater = true
-suffix = "%"
-
-[node name="Offset" type="HBoxContainer" parent="PortraitMainSettings"]
-layout_mode = 2
-offset_left = 131.0
-offset_right = 353.0
-offset_bottom = 31.0
-
-[node name="Label2" type="Label" parent="PortraitMainSettings/Offset"]
-layout_mode = 2
-offset_top = 2.0
-offset_right = 48.0
-offset_bottom = 28.0
-text = "Offset"
-
-[node name="MainOffsetX" type="SpinBox" parent="PortraitMainSettings/Offset"]
-unique_name_in_owner = true
-layout_mode = 2
-offset_left = 52.0
-offset_right = 135.0
-offset_bottom = 31.0
-allow_greater = true
-allow_lesser = true
-suffix = "X"
-
-[node name="MainOffsetY" type="SpinBox" parent="PortraitMainSettings/Offset"]
-unique_name_in_owner = true
-layout_mode = 2
-offset_left = 139.0
-offset_right = 222.0
-offset_bottom = 31.0
-allow_greater = true
-allow_lesser = true
-suffix = "Y"
-
-[node name="MirrorOption" type="HBoxContainer" parent="PortraitMainSettings"]
-layout_mode = 2
-offset_left = 357.0
-offset_right = 435.0
-offset_bottom = 31.0
-
-[node name="Label" type="Label" parent="PortraitMainSettings/MirrorOption"]
-layout_mode = 2
-offset_top = 2.0
-offset_right = 50.0
-offset_bottom = 28.0
-text = "Mirror"
-
-[node name="MainMirror" type="CheckBox" parent="PortraitMainSettings/MirrorOption"]
-unique_name_in_owner = true
-layout_mode = 2
-offset_left = 54.0
-offset_right = 78.0
-offset_bottom = 31.0
