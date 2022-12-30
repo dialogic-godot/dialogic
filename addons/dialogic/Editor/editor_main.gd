@@ -17,7 +17,7 @@ func _ready():
 	editors_manager = $Margin/EditorsManager
 	
 	## STYLING
-	color = get_theme_color("dark_color_2", "Editor")
+	color = get_theme_color("base_color", "Editor")
 	editor_tab_bg.border_color = get_theme_color("base_color", "Editor")
 	$Margin/EditorsManager/HSplit/Editors.add_theme_stylebox_override('panel', editor_tab_bg)
 	
