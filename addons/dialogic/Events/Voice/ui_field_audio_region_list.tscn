@@ -13,29 +13,22 @@ size_flags_horizontal = 3
 script = ExtResource("2")
 
 [node name="NumRegions" type="HBoxContainer" parent="."]
-offset_right = 1152.0
-offset_bottom = 31.0
+layout_mode = 2
 
 [node name="Label" type="Label" parent="NumRegions"]
-offset_top = 2.0
-offset_right = 240.0
-offset_bottom = 28.0
+layout_mode = 2
 text = "Number of lines/audio regions:"
 
 [node name="NumberValue" parent="NumRegions" instance=ExtResource("1")]
-anchors_preset = 0
-anchor_right = 0.0
-anchor_bottom = 0.0
-offset_left = 244.0
-offset_right = 302.0
-offset_bottom = 31.0
-grow_horizontal = 1
-grow_vertical = 1
+layout_mode = 2
 step = 1.0
 min = 1.0
 value = 1.0
 
+[node name="Fromfile" type="LinkButton" parent="NumRegions"]
+layout_mode = 2
+tooltip_text = "Supports dialogic audio region list and audacity label format"
+text = "Load from clipboard"
+
 [node name="list" type="VBoxContainer" parent="."]
-offset_top = 35.0
-offset_right = 1152.0
-offset_bottom = 66.0
+layout_mode = 2

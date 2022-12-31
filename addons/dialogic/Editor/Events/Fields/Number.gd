@@ -73,7 +73,7 @@ func _on_value_text_submitted(new_text):
 	new_text = new_text.trim_suffix(suffix)
 	if new_text.is_valid_float():
 		var temp:float = min(max(new_text.to_float(), min), max)
-		if !enforce_step or temp/step == round(temp/step):
+		if !enforce_step or is_equal_approx(temp/step, roundf(temp/step)):
 			value = temp
 	elif allow_string:
 		value = new_text
