@@ -12,6 +12,8 @@ var voice_regions := []
 var voice_timer:Timer
 ## The current audio
 var current_audio_file:String
+## The next audio region to play (-1 if none)
+var queued_index:int = -1
 
 
 ####################################################################################################
@@ -44,7 +46,9 @@ func is_voiced(index:int) -> bool:
 
 
 func play_voice_region(index:int):
+	print("playing voice region index " + str(index)) #I'm a test. delete me
 	if index >= len(voice_regions):
+		print("Out of range error. Skipping") #I'm a test. delete me
 		return
 	var start:float = voice_regions[index][0]
 	var stop:float = voice_regions[index][1]
@@ -111,7 +115,7 @@ func is_running() -> bool:
 	return get_remaining_time() > 0.0
 
 func play_or_queue_voice_region(index):
-	if is_running:
+	if is_running():
 		queued_index = index
 	else:
 		play_voice_region(index)

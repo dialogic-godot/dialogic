@@ -1,16 +1,22 @@
-[voice path="res://timelines/voicetest.mp3" bus="Master" regions="region start at 10, stop at 12.8 "]
+[voice path="res://timelines/voicetest.mp3" regions="region start at 9.9, stop at 12.4 region start at 15.6, stop at 18.3 region start at 22.5, stop at 25.4"]
 
-kvagram: Look! This text event is voiced!
+kvagram: [voice=0]Look! This text event is voiced!
 
 Emilio: Really? Well this one is not.
 
-[voice path="res://timelines/voicetest.mp3" bus="Master" regions="region start at 15.6, stop at 18.3 "]
-
-kvagram: What? Are you just gonna stay silent?
+kvagram: [voice=1]What? Are you just gonna stay silent?
 
 Emilio: I said! This text event is not voiced!
 
-[voice path="res://timelines/voicetest.mp3" bus="Master" regions="region start at 22.5, stop at 25.4 "]
+kvagram: [voice=2]I guess he went mute. Uh well.
 
-kvagram: I guess he went mute. Uh well.
+[voice path="res://timelines/voicetest2.mp3" regions="region start at 7.7, stop at 11.1 region start at 13.4, stop at 18.9 region start at 20.7, stop at 23.2 region start at 24.1, stop at 29.9 region start at 49.9, stop at 67.5 region start at 93.0, stop at 98.5 region start at 125.0, stop at 136.8"]
+
+kvagram: With that gag over with,[voice=0] allow me to demo some more advanced uses[voice=1], and to explain how and why the first part of this text event was unvoiced.
+
+kvagram: [voice=2]For a text event to play a voicetrack,[voice=3] an audio region has to be specified. This is done in something called a text event effect.
+
+kvagram: [voice=4]If you open this timeline in the editor, you will see this effect in clamps, like this \[voice=4].Like other text effects, it will only trigger when the text reveal reaches the effect[voice]. You may question why this text is late.[voice=5] That is becouse I used the voice effect without an index.
+
+kvagram: [voice=6]Why would you wish to do that? I don't know. It was just easier to program it so, allowing it to be blank rather than to demand an index. So use it however you like.
 
