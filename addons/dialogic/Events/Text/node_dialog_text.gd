@@ -128,11 +128,9 @@ func execute_effects(skip :bool= false) -> void:
 						var Character = load(Dialogic.current_state_info.character)
 						Dialogic.Text.update_typing_sound_mood(Character.custom_info.get('sound_moods', {}).get(effect[2], {}))
 			'voice':
-				print("exe voice effect") #I'm a test, remove me.
 				if skip:
 					continue
 				if not dialogic.has_subsystem("Voice"):
-					print("voice subsystem missing. skipping")#I'm a test, remove me
 					continue
 				var index = effect[2].to_int() if len(effect) > 2 && effect[2].is_valid_int() else -1
 				if dialogic.Voice.is_running(): #This is the 'Not ready' state.
@@ -142,7 +140,6 @@ func execute_effects(skip :bool= false) -> void:
 					#If this effect is starting a new voiced line, return the effect to the stack.
 				if index >= 0:
 					dialogic.Voice.play_or_queue_voice_region(index)
-					print("audio region index queued")#I'm a test, remove me
 				
 					
 

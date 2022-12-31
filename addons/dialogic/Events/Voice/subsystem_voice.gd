@@ -46,9 +46,7 @@ func is_voiced(index:int) -> bool:
 
 
 func play_voice_region(index:int):
-	print("playing voice region index " + str(index)) #I'm a test. delete me
 	if index >= len(voice_regions):
-		print("Out of range error. Skipping") #I'm a test. delete me
 		return
 	var start:float = voice_regions[index][0]
 	var stop:float = voice_regions[index][1]

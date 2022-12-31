@@ -39,6 +39,7 @@ func use_timestamp_mode():
 	step = 0.1
 	suffix = ' sec'
 	max = 9999 #2.7 hours. Enough, or is more needed?
+	enforce_step = false
 
 func use_float_mode():
 	step = 0.1
