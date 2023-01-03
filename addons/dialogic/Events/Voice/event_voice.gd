@@ -73,7 +73,21 @@ func get_shortcode_parameters() -> Dictionary:
 		"regions"	: {"property": "regions", 	"default": ""},
 	}
 
+################################################################################
+## 						TRANSLATIONS
+################################################################################
 
+func _get_translatable_properties() -> Array:
+	return ['file_path', 'regions']
+
+
+func _get_property_original_translation(property:String) -> String:
+	match property:
+		'file_path':
+			return file_path
+		'regions':
+			return regions
+	return ''
 ################################################################################
 ## 						EDITOR REPRESENTATION
 ################################################################################
