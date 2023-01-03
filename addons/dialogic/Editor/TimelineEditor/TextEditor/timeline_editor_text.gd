@@ -320,6 +320,8 @@ func _request_code_completion(force):
 			add_code_completion_option(CodeEdit.KIND_MEMBER, 'speed (default)', 'speed', syntax_highlighter.normal_color, get_theme_icon("RichTextEffect", "EditorIcons"), ']')
 			add_code_completion_option(CodeEdit.KIND_MEMBER, 'pause (custom)', 'pause=', syntax_highlighter.normal_color, get_theme_icon("RichTextEffect", "EditorIcons"))
 			add_code_completion_option(CodeEdit.KIND_MEMBER, 'pause (default)', 'pause', syntax_highlighter.normal_color, get_theme_icon("RichTextEffect", "EditorIcons"), ']')
+			add_code_completion_option(CodeEdit.KIND_MEMBER, 'voice','voice=', syntax_highlighter.normal_color, get_theme_icon("RichTextEffect", "EditorIcons"))
+			add_code_completion_option(CodeEdit.KIND_MEMBER, 'voice (pause only)','voice', syntax_highlighter.normal_color, get_theme_icon("RichTextEffect", "EditorIcons"), ']')
 			add_code_completion_option(CodeEdit.KIND_MEMBER, 'portrait', 'portrait=', syntax_highlighter.normal_color, get_theme_icon("RichTextEffect", "EditorIcons"))
 			add_code_completion_option(CodeEdit.KIND_MEMBER, 'br', 'br', syntax_highlighter.normal_color, get_theme_icon("RichTextEffect", "EditorIcons"), ']')
 			add_code_completion_option(CodeEdit.KIND_MEMBER, 'signal', 'signal=', syntax_highlighter.normal_color, get_theme_icon("RichTextEffect", "EditorIcons"))

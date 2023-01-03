@@ -61,7 +61,7 @@ func _init():
 	shortcode_regex.compile("\\W*\\[(?<id>\\w*)(?<args>[^\\]]*)?")
 	shortcode_param_regex.compile('((?<parameter>[^\\s=]*)\\s*=\\s*"(?<value>([^=]|\\\\=)*)(?<!\\\\)")')
 	text_event_regex.compile("\\W*((\")?(?<name>(?(2)[^\"\\n]*|[^(: \\n]*))(?(2)\"|)(\\W*\\((?<portrait>.*)\\))?\\s*(?<!\\\\):)?(?<text>.*)")
-	text_effects_regex.compile("(?<!\\\\)\\[\\s*(?<command>mood|portrait|speed|signal|pause|br)\\s*(=\\s*(?<value>.+?)\\s*)?\\]")
+	text_effects_regex.compile("(?<!\\\\)\\[\\s*(?<command>mood|portrait|speed|signal|pause|br|voice)\\s*(=\\s*(?<value>.+?)\\s*)?\\]")
 	character_event_regex.compile("(?<type>Join|Update|Leave)\\s*(\")?(?<name>(?(2)[^\"\\n]*|[^(: \\n]*))(?(2)\"|)(\\W*\\((?<portrait>.*)\\))?(\\s*(?<position>\\d))?(\\s*\\[(?<shortcode>.*)\\])?")
 
 func _get_line_syntax_highlighting(line:int) -> Dictionary:
