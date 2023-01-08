@@ -45,3 +45,9 @@ func _open(extra_info:Variant = null) -> void:
 ## Overwrite. Called when another editor is opened. (hide() doesn't have to be called)
 func _close():
 	pass
+
+
+## Overwrite. Called to clear all current state and resource from the editor.
+## Although rarely used, sometimes you just want NO timeline to be open.
+func _clear():
+	pass

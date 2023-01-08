@@ -138,3 +138,14 @@ func _on_create_timeline_button_pressed():
 			'Create new timeline',
 			'timeline',
 			)
+
+
+func _clear():
+	current_resource = null
+	current_resource_state = ResourceStates.Saved
+	match current_editor_mode:
+		0:
+			$VisualEditor.clear_timeline_nodes()
+		1:
+			$TextEditor.clear_timeline()
+	$NoTimelineScreen.show()

@@ -1,6 +1,9 @@
 extends Control
 
 func _ready() -> void:
+	print("[Dialogic] Testing scene was started.")
+	if !ProjectSettings.get_setting('internationalization/locale/test', "").is_empty():
+		print("Testing locale is: ", ProjectSettings.get_setting('internationalization/locale/test'))
 	$PauseIndictator.hide()
 	var dialog_scene_path: String = DialogicUtil.get_project_setting(
 		'dialogic/editor/test_dialog_scene', "res://addons/dialogic/Example Assets/example-scenes/DialogicDefaultScene.tscn")

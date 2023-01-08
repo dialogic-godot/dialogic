@@ -1,8 +1,8 @@
-[gd_scene load_steps=4 format=3 uid="uid://cl7g6q68aqt4f"]
+[gd_scene load_steps=4 format=3]
 
-[ext_resource type="Script" path="res://addons/dialogic/Editor/Settings/SettingsEditor.gd" id="1"]
-[ext_resource type="PackedScene" uid="uid://dm4kxvcn7d7ug" path="res://addons/dialogic/Editor/Settings/Settings_General.tscn" id="3"]
-[ext_resource type="PackedScene" uid="uid://c4fay73phesum" path="res://addons/dialogic/Editor/Settings/Settings_Translations.tscn" id="3_q3qwt"]
+[ext_resource type="Script" path="res://addons/dialogic/Editor/Settings/settings_editor.gd" id="1"]
+[ext_resource type="PackedScene" path="res://addons/dialogic/Editor/Settings/settings_general.tscn" id="3"]
+[ext_resource type="PackedScene" path="res://addons/dialogic/Editor/Settings/settings_translation.tscn" id="3_q3qwt"]
 
 [node name="SettingsEditor" type="MarginContainer"]
 visible = false
