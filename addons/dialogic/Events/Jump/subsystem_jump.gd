@@ -38,11 +38,9 @@ func jump_to_label(label:String) -> void:
 
 func push_to_jump_stack() -> void:
 	dialogic.current_state_info['jump_stack'].push_back({'timeline':dialogic.current_timeline, 'index':dialogic.current_event_idx})
-	print("pusehd" , dialogic.current_state_info['jump_stack'])
 
 
 func resume_from_latst_jump() -> void:
-	print("resume" , dialogic.current_state_info['jump_stack'])
 	dialogic.start_timeline(
 		dialogic.current_state_info['jump_stack'][-1].timeline, 
 		dialogic.current_state_info['jump_stack'][-1].index+1)

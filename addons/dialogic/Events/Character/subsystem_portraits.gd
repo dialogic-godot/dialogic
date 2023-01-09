@@ -57,7 +57,7 @@ func add_portrait(character:DialogicCharacter, portrait:String,  position_idx:in
 		print_debug('[DialogicError] Cannot call add_portrait() with null character.')
 		return null
 	if not portrait in character.portraits:
-		print_debug("[DialogicError] Tried joining ",character.display_name, " wit not-existing portrait '", portrait, "'. Will use default portrait instead.")
+		print_debug("[DialogicError] Tried joining ",character.display_name, " with not-existing portrait '", portrait, "'. Will use default portrait instead.")
 		portrait = character.default_portrait
 		if portrait.is_empty():
 			print_debug("[DialogicError] Character ",character.display_name, " has no default portrait to use.")
