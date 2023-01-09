@@ -21,7 +21,7 @@ func _ready() -> void:
 	
 	%UpdateCsvFiles.pressed.connect(update_csv_files)
 	%CollectTranslations.pressed.connect(collect_translations)
-	%TransRemove.pressed.connect(erase_translations)
+	%TransRemove.pressed.connect(_on_erase_translations_pressed)
 
 
 func refresh() -> void:
@@ -188,28 +188,38 @@ func collect_translations() -> void:
 	%StatusMessage.text = "Collected "+str(len(all_trans_files)-orig_file_amount) + " new translation files."
 
 
+func _on_erase_translations_pressed():
+	$EraseConfirmationDialog.popup_centered()
+
+
 func erase_translations() -> void:
 	var trans_files := Array(DialogicUtil.get_project_setting('internationalization/locale/translations', []))
 	var translation_mode : int = %TransMode.selected
+	
+	var counts := [0,0] # csv files, translation files
 	
 	if translation_mode == TranslationModes.PerProject:
 		var trans_path :String = DialogicUtil.get_project_setting('dialogic/translation/translation_folder', 'res://')
 		DirAccess.remove_absolute(trans_path+'dialogic_translations.csv')
 		DirAccess.remove_absolute(trans_path+'dialogic_translations.csv.import')
+		counts[0] += 1
 		for x_file in DialogicUtil.listdir(trans_path):
 			if x_file.ends_with('.translation'):
 				trans_files.erase(trans_path.get_base_dir().path_join(x_file))
 				DirAccess.remove_absolute(trans_path.get_base_dir().path_join(x_file))
+				counts[1] += 1
 
 	for timeline_path in DialogicUtil.list_resources_of_type('.dtl'):
 		# in per project mode, remove all translation files/resources next to the timelines
 		if translation_mode == TranslationModes.PerTimeline:
 			DirAccess.remove_absolute(timeline_path.trim_suffix('.dtl')+'_translation.csv')
 			DirAccess.remove_absolute(timeline_path.trim_suffix('.dtl')+'_translation.csv.import')
+			counts[0] += 1
 			for x_file in DialogicUtil.listdir(timeline_path.get_base_dir()):
 				if x_file.ends_with('.translation'):
 					trans_files.erase(timeline_path.get_base_dir().path_join(x_file))
 					DirAccess.remove_absolute(timeline_path.get_base_dir().path_join(x_file))
+					counts[1] += 1
 		
 		# clear the timeline events of their translation_id's
 		var tml:DialogicTimeline = load(timeline_path)
@@ -227,5 +237,6 @@ func erase_translations() -> void:
 	
 	find_parent('EditorView').plugin_reference.editor_interface.get_resource_filesystem().scan_sources()
 	
+	%StatusMessage.text = "Removed "+str(counts[0])+" csv files, "+str(counts[1])+" translations and all translation id's."
 	refresh()
 
