@@ -14,6 +14,9 @@ func _ready() -> void:
 	%OrigLocale.get_suggestions_func = get_locales
 	%OrigLocale.resource_icon = get_theme_icon("Translation", "EditorIcons")
 	%OrigLocale.value_changed.connect(store_changes)
+	%TestingLocale.get_suggestions_func = get_locales
+	%TestingLocale.resource_icon = get_theme_icon("Translation", "EditorIcons")
+	%TestingLocale.value_changed.connect(store_changes)
 	%TransFolderPicker.value_changed.connect(store_changes)
 	
 	%UpdateCsvFiles.pressed.connect(update_csv_files)
@@ -28,6 +31,7 @@ func refresh() -> void:
 	%OrigLocale.set_value(DialogicUtil.get_project_setting('dialogic/translation/original_locale', TranslationServer.get_tool_locale()))
 	%TransMode.select(DialogicUtil.get_project_setting('dialogic/translation/file_mode', 1))
 	%TransFolderPicker.set_value(DialogicUtil.get_project_setting('dialogic/translation/translation_folder', ''))
+	%TestingLocale.set_value(DialogicUtil.get_project_setting('internationalization/locale/test', ''))
 	loading = false
 
 
@@ -36,13 +40,15 @@ func store_changes(fake_arg = "", fake_arg2 = "") -> void:
 	ProjectSettings.set_setting('dialogic/translation/enabled', %TransEnabled.button_pressed)
 	%TranslationSettings.visible = %TransEnabled.button_pressed
 	ProjectSettings.set_setting('dialogic/translation/original_locale', %OrigLocale.current_value)
-	ProjectSettings.set_setting('dialogic/translation/transation_folder', %TransFolderPicker.current_value)
 	ProjectSettings.set_setting('dialogic/translation/file_mode', %TransMode.selected)
+	ProjectSettings.set_setting('dialogic/translation/translation_folder', %TransFolderPicker.current_value)
+	ProjectSettings.set_setting('internationalization/locale/test', %TestingLocale.current_value)
 	ProjectSettings.save()
 
 
 func get_locales(filter:String) -> Dictionary:
 	var suggestions := {}
+	suggestions['Default'] = {'value':'', 'tooltip':"Will use the fallback locale set in the project settings."}
 	suggestions[TranslationServer.get_tool_locale()] = {'value':TranslationServer.get_tool_locale()}
 	for locale in TranslationServer.get_all_languages():
 		suggestions[locale] = {'value':locale, 'tooltip':TranslationServer.get_language_name(locale)}
