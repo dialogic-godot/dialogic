@@ -63,7 +63,7 @@ static func guess_resource(extension, identifier):
 		if resource_path.get_file().trim_suffix(extension) == identifier:
 			return resource_path
 
-#
+# TODO
 #static func get_event_by_string(string:String) -> Resource:
 #	var event_scripts = get_event_scripts()
 #
