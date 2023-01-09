@@ -190,7 +190,7 @@ func get_property_translation_key(property_name:String) -> String:
 
 ## Call this whenever you are using a translatable property
 func get_property_translated(property_name:String) -> String:
-	if !_translation_id.is_empty() and DialogicUtil.get_project_setting('dialogic/translation_enabled', false):
+	if !_translation_id.is_empty() and DialogicUtil.get_project_setting('dialogic/translation/enabled', false):
 		var translation = tr(get_property_translation_key(property_name))
 		# if no translation is found tr() returns the id, but we want to fallback to the original
 		return translation if translation != _translation_id else _get_property_original_translation(property_name)
