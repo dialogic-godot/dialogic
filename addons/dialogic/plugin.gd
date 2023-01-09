@@ -14,8 +14,8 @@ const MainPanel := preload("res://addons/dialogic/Editor/editor_main.tscn")
 var editor_view: Control
 
 # multiple editor compononents/helper classes
-var _parts_inspector : EditorInspectorPlugin
-var _export_plugin : EditorExportPlugin
+#var _parts_inspector : EditorInspectorPlugin # TODO remove
+#var _export_plugin : EditorExportPlugin # TODO remove
 var editor_interface : EditorInterface
 
 # emitted if godot wants us to save
@@ -56,8 +56,8 @@ func _exit_tree() -> void:
 	if editor_view:
 		remove_control_from_bottom_panel(editor_view)
 		editor_view.queue_free()
-	remove_inspector_plugin(_parts_inspector)
-	remove_export_plugin(_export_plugin)
+#	remove_inspector_plugin(_parts_inspector)
+#	remove_export_plugin(_export_plugin)
 
 
 func _has_main_screen() -> bool:

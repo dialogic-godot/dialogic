@@ -130,6 +130,10 @@ func change_portrait(character:DialogicCharacter, portrait:String, mirrored:bool
 			portrait_node.scale = Vector2(1,1)*character.scale * character.portraits[portrait].get('scale', 1)
 		else:
 			portrait_node.scale = Vector2(1,1)*character.portraits[portrait].get('scale', 1)
+		
+		for property in character.portraits[portrait].get('export_overrides', {}).keys():
+			portrait_node.set(property, str_to_var(character.portraits[portrait]['export_overrides'][property]))
+		
 		if portrait_node.has_method('_update_portrait'):
 			portrait_node._update_portrait(character, portrait)
 		if portrait_node.has_method('_set_mirror'):

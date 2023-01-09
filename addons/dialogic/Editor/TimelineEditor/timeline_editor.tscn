@@ -5,10 +5,10 @@
 [ext_resource type="PackedScene" uid="uid://defdeav8rli6o" path="res://addons/dialogic/Editor/TimelineEditor/TextEditor/timeline_editor_text.tscn" id="3_up2bn"]
 [ext_resource type="Script" path="res://addons/dialogic/Editor/TimelineEditor/TextEditor/syntax_highlighter.gd" id="4_1t6bf"]
 
-[sub_resource type="SyntaxHighlighter" id="SyntaxHighlighter_fdy60"]
+[sub_resource type="SyntaxHighlighter" id="SyntaxHighlighter_wn64x"]
 script = ExtResource("4_1t6bf")
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_eu36r"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gyf34"]
 content_margin_left = 4.0
 content_margin_top = 4.0
 content_margin_right = 4.0
@@ -27,62 +27,42 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/margin_left = 0
-theme_override_constants/margin_top = 0
-theme_override_constants/margin_right = 0
-theme_override_constants/margin_bottom = 0
 script = ExtResource("1_4aceh")
 
 [node name="VisualEditor" parent="." instance=ExtResource("2_qs7vc")]
-anchors_preset = 0
-anchor_right = 0.0
-anchor_bottom = 0.0
-offset_right = 1152.0
-offset_bottom = 648.0
+layout_mode = 2
 theme_override_constants/margin_left = 0
 theme_override_constants/margin_top = 0
 theme_override_constants/margin_right = 0
 theme_override_constants/margin_bottom = 0
 
 [node name="TextEditor" parent="." instance=ExtResource("3_up2bn")]
-offset_top = 0.0
-offset_right = 1152.0
-offset_bottom = 648.0
-syntax_highlighter = SubResource("SyntaxHighlighter_fdy60")
+layout_mode = 2
+syntax_highlighter = SubResource("SyntaxHighlighter_wn64x")
 symbol_lookup_on_click = true
 line_folding = false
 gutters_draw_fold_gutter = false
 
 [node name="NoTimelineScreen" type="PanelContainer" parent="."]
-offset_right = 1152.0
-offset_bottom = 648.0
-theme_override_styles/panel = SubResource("StyleBoxFlat_eu36r")
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_gyf34")
 
 [node name="CenterContainer" type="CenterContainer" parent="NoTimelineScreen"]
-offset_left = 4.0
-offset_top = 4.0
-offset_right = 1148.0
-offset_bottom = 644.0
+layout_mode = 2
 
 [node name="VBoxContainer" type="VBoxContainer" parent="NoTimelineScreen/CenterContainer"]
 custom_minimum_size = Vector2(250, 0)
-offset_left = 447.0
-offset_top = 263.0
-offset_right = 697.0
-offset_bottom = 376.0
+layout_mode = 2
 
 [node name="Label" type="Label" parent="NoTimelineScreen/CenterContainer/VBoxContainer"]
-offset_right = 250.0
-offset_bottom = 78.0
+layout_mode = 2
 text = "No timeline opened. 
 Create a timeline or double-click one in the file system dock."
 horizontal_alignment = 1
 autowrap_mode = 3
 
 [node name="CreateTimelineButton" type="Button" parent="NoTimelineScreen/CenterContainer/VBoxContainer"]
-offset_top = 82.0
-offset_right = 250.0
-offset_bottom = 113.0
+layout_mode = 2
 text = "Create New Timeline"
 
 [connection signal="pressed" from="NoTimelineScreen/CenterContainer/VBoxContainer/CreateTimelineButton" to="." method="_on_create_timeline_button_pressed"]
