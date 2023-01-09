@@ -182,10 +182,10 @@ func to_text() -> String:
 		ActionTypes.Leave: result_string += "Leave "
 		ActionTypes.Update: result_string += "Update "
 	
-	print('to_string')
+#	print('to_string')
 	
-	print('character ', character)
-	print('characterfrom ', _character_from_directory)
+#	print('character ', character)
+#	print('characterfrom ', _character_from_directory)
 	
 	if character or _character_from_directory == '--All--':
 		if action_type == ActionTypes.Leave and _character_from_directory == '--All--':
