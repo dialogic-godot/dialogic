@@ -5,11 +5,11 @@
 [ext_resource type="PackedScene" uid="uid://cwe3r2tbh2og1" path="res://addons/dialogic/Editor/Common/side_bar.tscn" id="3_lp6hj"]
 [ext_resource type="PackedScene" uid="uid://cqy73hshqqgga" path="res://addons/dialogic/Editor/HomePage/home_page.tscn" id="4_vey4f"]
 [ext_resource type="PackedScene" uid="uid://crce0na84rhfd" path="res://addons/dialogic/Editor/TimelineEditor/timeline_editor.tscn" id="5_e5v7u"]
-[ext_resource type="PackedScene" uid="uid://dxt0c6mx24nxo" path="res://addons/dialogic/Editor/CharacterEditor/character_editor.tscn" id="6_y5x3e"]
+[ext_resource type="PackedScene" uid="uid://dlskc36c5hrwv" path="res://addons/dialogic/Editor/CharacterEditor/character_editor.tscn" id="6_y5x3e"]
 [ext_resource type="Script" path="res://addons/dialogic/Editor/directory_holder.gd" id="7_1xvr0"]
-[ext_resource type="PackedScene" uid="uid://cl7g6q68aqt4f" path="res://addons/dialogic/Editor/Settings/SettingsEditor.tscn" id="7_s6egf"]
+[ext_resource type="PackedScene" path="res://addons/dialogic/Editor/Settings/settings_editor.tscn" id="7_lqfl7"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_560hy"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yawcu"]
 bg_color = Color(0, 0, 0, 1)
 draw_center = false
 border_width_left = 2
@@ -21,7 +21,7 @@ corner_radius_top_right = 5
 corner_radius_bottom_right = 5
 corner_radius_bottom_left = 5
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_kj5tw"]
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_22y6g"]
 
 [node name="EditorView" type="ColorRect"]
 anchors_preset = 15
@@ -33,7 +33,7 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 color = Color(0, 0, 0, 1)
 script = ExtResource("1_x88ov")
-editor_tab_bg = SubResource("StyleBoxFlat_560hy")
+editor_tab_bg = SubResource("StyleBoxFlat_yawcu")
 
 [node name="Margin" type="MarginContainer" parent="."]
 layout_mode = 1
@@ -61,24 +61,23 @@ split_offset = 0
 
 [node name="Editors" type="TabContainer" parent="Margin/EditorsManager/HSplit"]
 layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_560hy")
-theme_override_styles/tabbar_background = SubResource("StyleBoxEmpty_kj5tw")
+theme_override_styles/panel = SubResource("StyleBoxFlat_yawcu")
+theme_override_styles/tabbar_background = SubResource("StyleBoxEmpty_22y6g")
 
 [node name="HomePage" parent="Margin/EditorsManager/HSplit/Editors" instance=ExtResource("4_vey4f")]
-visible = false
 layout_mode = 2
-theme_override_constants/separation = 30
 metadata/_tab_name = ""
 
 [node name="Timeline Editor" parent="Margin/EditorsManager/HSplit/Editors" instance=ExtResource("5_e5v7u")]
+visible = false
 layout_mode = 2
 
 [node name="Character Editor" parent="Margin/EditorsManager/HSplit/Editors" instance=ExtResource("6_y5x3e")]
+visible = false
 layout_mode = 2
 
-[node name="Settings" parent="Margin/EditorsManager/HSplit/Editors" instance=ExtResource("7_s6egf")]
+[node name="Settings" parent="Margin/EditorsManager/HSplit/Editors" instance=ExtResource("7_lqfl7")]
 layout_mode = 2
-size_flags_vertical = 3
 
 [node name="ResourceHelper" type="Node" parent="Margin/EditorsManager"]
 script = ExtResource("7_1xvr0")
