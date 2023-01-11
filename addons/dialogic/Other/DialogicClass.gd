@@ -465,97 +465,41 @@ static func set_variable_from_id(id: String, value: String, operation: String) -
 
 # tries to find the path of a given timeline 
 static func _get_timeline_file_from_name(timeline_name_path: String) -> String:
-	var timelines = DialogicUtil.get_full_resource_folder_structure()['folders']['Timelines']
+	#First add the leading slash if it is missing so algorithm works properly
+	if(timeline_name_path.left(1) != '/'):
+		timeline_name_path = "/" + timeline_name_path
+		
+	if !Engine.get_main_loop().has_meta('dialogic_tree'):
+		prepare()
+
+
+	var timelines = Engine.get_main_loop().get_meta('dialogic_tree')['Timelines']
 	
-	# Checks for slash in the name, and uses the folder search if there is 
-	if '/' in timeline_name_path:
-		#Add leading slash if its a path and it is missing, for paths that have subfolders but no leading slash 
-		if(timeline_name_path.left(1) != '/'):
-			timeline_name_path = "/" + timeline_name_path
-		var parts = timeline_name_path.split('/', false)
-	
-		# First check if it's a timeline in the root folder
-		if parts.size() == 1:
-			for t in DialogicUtil.get_timeline_list():
-				for f in timelines['files']:
-					if t['file'] == f && t['name'] == parts[0]:
-						return t['file']
-		if parts.size() > 1:
-			var current_data
-			var current_depth = 0
-			for p in parts:
-				if current_depth == 0:
-					# Starting the crawl
-					if (timelines['folders'].has(p) ):
-						current_data = timelines['folders'][p]
-					else:
-						return ''
-				elif current_depth == parts.size() - 1:
-					# The final destination
-					for t in DialogicUtil.get_timeline_list():
-						for f in current_data['files']:
-							if t['file'] == f && t['name'] == p:
-								return t['file']
-							
-				else:
-					# Still going deeper
-					if (current_data['folders'].size() > 0):
-						if p in current_data['folders']:
-							current_data = current_data['folders'][p]
-						else:
-							return ''
-					else:
-						return ''
-				current_depth += 1
-		return ''
+	if timeline_name_path in timelines:
+		return timelines[timeline_name_path]['file']
 	else:
-		# Searching for any timeline that could match that name
-		for t in DialogicUtil.get_timeline_list():
-			if t['name'] == timeline_name_path:
-				return t['file']
+		#step through each one in turn to find the first matching string
+		for path in timelines.keys():
+			if timeline_name_path in path:
+				return timelines[path]['file']
 	return ''
 
 static func _get_variable_from_file_name(variable_name_path: String) -> String:
 	#First add the leading slash if it is missing so algorithm works properly
 	if(variable_name_path.left(1) != '/'):
 		variable_name_path = "/" + variable_name_path
-
-	var definitions = DialogicUtil.get_full_resource_folder_structure()['folders']['Definitions']
-	var parts = variable_name_path.split('/', false)
-	
-	# Check the root if it's a variable in the root folder 
-	if parts.size() == 1:
-		for t in _get_definitions()['variables']:
-			for f in definitions['files']:
-				if t['id'] == f && t['name'] == parts[0]:
-					return t['id']
-	if parts.size() > 1:
-		var current_data
-		var current_depth = 0
 		
-		for p in parts:
-			if current_depth == 0:
+	if !Engine.get_main_loop().has_meta('dialogic_tree'):
+		prepare()
 
-				# Starting the crawl
-				if (definitions['folders'].has(p)):
-					current_data = definitions['folders'][p]
-				else:
-					return ''
-			elif current_depth == parts.size() - 1:
-				# The final destination
-				for t in _get_definitions()['variables']:
-					for f in current_data['files']:
-						if t['id'] == f && t['name'] == p:
-							return t['id']
-							
-			else:
-				# Still going deeper
-				if (current_data['folders'].size() > 0):
-					if p in current_data['folders']:
-						current_data = current_data['folders'][p]
-					else:
-						return ''
-				else:
-					return ''
-			current_depth += 1
+
+	var definitions = Engine.get_main_loop().get_meta('dialogic_tree')['Definitions']
+	
+	if variable_name_path in definitions:
+		return definitions[variable_name_path]['id']
+	else:
+		#step through each one in turn to find the first matching string
+		for path in definitions.keys():
+			if variable_name_path in path:
+				return definitions[path]['id']
 	return ''
