@@ -490,7 +490,6 @@ static func save_resource_folder_flat_structure(flat_tree) -> Dictionary:
 	
 	var structure_keys = {"Characters":"Characters", "Definitions":"Definitions", "Themes":"Themes", "Timelines":"Timelines"}
 	
-	set_json("res://flat.json", flat_tree)
 	
 	for key in structure_keys:
 		
@@ -502,7 +501,7 @@ static func save_resource_folder_flat_structure(flat_tree) -> Dictionary:
 		nested_structure['folders'][key] = nested	
 			
 	
-	set_json("res://nested.json", nested_structure)
+	set_json(get_config_files_paths()['FOLDER_STRUCTURE_FILE'], nested_structure)
 				
 		
 	

@@ -597,6 +597,77 @@ static func list_dir(path: String) -> Array:
 		files += [file]
 		file = dir.get_next()
 	return files
+	
+## *****************************************************************************
+##							DIALOGIC FLAT LOADER
+## *****************************************************************************
+
+static func get_flat_folders_list() -> Dictionary:
+	var timeline_folder_breakdown = {}
+	var character_folder_breakdown = {}
+	var definition_folder_breakdown = {}
+	var theme_folder_breakdown = {}
+	
+	# load the main folder strucutre, and then use the DialogicUtils to match their names
+	var structure = DialogicResources.get_resource_folder_flat_structure()
+	var timeline_list = get_timeline_list()
+	var character_list = get_character_list()
+	var definition_list = get_default_definitions_list()
+	var theme_list = get_theme_list()
+	
+	
+	# populate the data from the resources
+	for timeline in timeline_list:
+		timeline['path'] = structure['Timelines'][timeline['file']] + timeline['name']
+		structure['Timelines'][timeline['file']]= timeline
+	
+	for character in character_list:
+		character['path'] = structure['Characters'][character['file']] + character['name']
+		structure['Characters'][character['file']]= character
+		
+	for definition in definition_list:
+		definition['path'] = structure['Definitions'][definition['id']] + definition['name']
+		structure['Definitions'][definition['id']]= definition
+		definition['file'] = definition['id']
+		
+	for theme in theme_list:
+		theme['path'] = structure['Themes'][theme['file']] + theme['name']
+		structure['Themes'][theme['file']]= theme
+		
+	# After that we put them in the order we need to make the folder paths easiest to use
+	for timeline in structure['Timelines'].keys():
+		if ".json" in timeline:
+			timeline_folder_breakdown[structure['Timelines'][timeline]['path']] = structure['Timelines'][timeline]
+		else:
+			timeline_folder_breakdown[timeline] = structure['Timelines'][timeline]
+
+	for character in structure['Characters'].keys():
+		if ".json" in character:
+			character_folder_breakdown[structure['Characters'][character]['path']] = structure['Characters'][character]
+		else:
+			character_folder_breakdown[character] = structure['Characters'][character]
+
+
+	for definition in structure['Definitions'].keys():
+		if ".json" in definition:
+			definition_folder_breakdown[structure['Definitions'][definition]['path']] = structure['Definitions'][definition]
+		else:
+			definition_folder_breakdown[definition] = structure['Definitions'][definition]
+
+
+	for theme in structure['Themes'].keys():
+		if ".json" in theme:
+			theme_folder_breakdown[structure['Themes'][theme]['path']] = structure['Themes'][theme]		
+		else:
+			theme_folder_breakdown[theme] = structure['Themes'][theme]
+			
+	var flatten = {}
+	flatten['Timelines'] = timeline_folder_breakdown
+	flatten['Characters'] = character_folder_breakdown
+	flatten['Definitions'] = definition_folder_breakdown
+	flatten['Themes'] = theme_folder_breakdown
+	
+	return flatten
 
 
 ## *****************************************************************************
@@ -629,3 +700,5 @@ class DialgicSorter:
 
 	static func sort_resources(a: Dictionary, b: Dictionary):
 		return get_compare_value(a).to_lower() < get_compare_value(b).to_lower()
+
+
