@@ -14,14 +14,13 @@ class_name Dialogic
 ## Not necessary to run separately, it will be run by Dialogic.start() the first time if it's not present
 ## But useful to speed up loading
 ## This might be slower than the older way, though, so best to do with some other loading
-## If for any reason during game runtime this needs to be rebuilt, Engine.get_main_loop().remove_meta('dialogic_tree_loaded') will make it run on next Dialogic.start()
+## If for any reason during game runtime this needs to be rebuilt, Engine.get_main_loop().remove_meta('dialogic_tree') will make it run on next Dialogic.start()
 
 static func prepare(): 
 
 	var flat_structure = DialogicUtil.get_flat_folders_list() 
 
-	Engine.set_meta('dialogic_tree_loaded',true)
-	Engine.set_meta('dialogic_tree', flat_structure)
+	Engine.get_main_loop().set_meta('dialogic_tree', flat_structure)
 
 
 ## Starts the dialog for the given timeline and returns a Dialog node.
