@@ -10,7 +10,6 @@ signal event_end(type)
 # Timeline end/start
 signal timeline_start(timeline_name)
 signal timeline_end(timeline_name)
-signal timeline_changed(old_timeline_name, new_timeline_name)
 signal text_complete(text_event)
 # Custom user signal
 signal dialogic_signal(value)
@@ -34,8 +33,6 @@ func set_dialog_node_scene(scene) -> void:
 		_err = dialog_node.connect("timeline_start", self, "_on_timeline_start")
 		assert(_err == OK)
 		_err = dialog_node.connect("timeline_end", self, "_on_timeline_end")
-		assert(_err == OK)
-		_err = dialog_node.connect("timeline_changed", self, "_on_timeline_changed")
 		assert(_err == OK)
 		_err = dialog_node.connect("text_complete", self, "_on_text_complete")
 		assert(_err == OK)
@@ -71,10 +68,6 @@ func _on_event_start(type, event) -> void:
 
 func _on_event_end(type) -> void:
 	emit_signal("event_end", type)
-
-
-func _on_timeline_changed(old_timeline_name, new_timeline_name) -> void:
-	emit_signal("timeline_changed", old_timeline_name, new_timeline_name)
 
 
 func _on_timeline_start(timeline_name) -> void:

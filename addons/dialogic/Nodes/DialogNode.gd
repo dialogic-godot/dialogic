@@ -83,7 +83,6 @@ signal event_end(type)
 signal text_complete(text_data)
 # Timeline end/start
 signal timeline_start(timeline_name)
-signal timeline_changed(old_timeline_name, new_timeline_name)
 signal timeline_end(timeline_name)
 # Custom user signal
 signal dialogic_signal(value)
@@ -1033,8 +1032,6 @@ func event_handler(event: Dictionary):
 				
 func change_timeline(timeline):
 	dialog_script = set_current_dialog(timeline)
-	emit_signal("timeline_changed", timeline_name, dialog_script['metadata']['name'])
-	timeline_name = dialog_script['metadata']['name']
 	_init_dialog()
 
 

@@ -33,7 +33,6 @@ var _signals_to_copy = [
 	'text_complete',
 	'timeline_start',
 	'timeline_end',
-	'timeline_changed',
 	'dialogic_signal',
 	'letter_displayed',
 	'auto_advance_toggled',
@@ -50,7 +49,6 @@ signal text_complete(text_data)
 # Timeline end/start
 signal timeline_start(timeline_name)
 signal timeline_end(timeline_name)
-signal timeline_changed(old_timeline_name, new_timeline_name)
 # Custom user signal
 signal dialogic_signal(value)
 signal letter_displayed(lastLetter)
