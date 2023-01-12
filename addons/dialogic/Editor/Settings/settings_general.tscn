@@ -1,6 +1,6 @@
-[gd_scene load_steps=12 format=3 uid="uid://dm4kxvcn7d7ug"]
+[gd_scene load_steps=12 format=3]
 
-[ext_resource type="Script" path="res://addons/dialogic/Editor/Settings/Settings_General.gd" id="2"]
+[ext_resource type="Script" path="res://addons/dialogic/Editor/Settings/settings_general.gd" id="2"]
 [ext_resource type="StyleBox" uid="uid://dmsjhgv22dns8" path="res://addons/dialogic/Editor/Common/TitleBgStylebox.tres" id="2_u584y"]
 [ext_resource type="Script" path="res://addons/dialogic/Editor/Settings/HintLabelStylingScript.gd" id="2_uxx4f"]
 

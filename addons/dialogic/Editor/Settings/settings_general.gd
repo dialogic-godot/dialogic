@@ -1,12 +1,15 @@
 @tool
 extends HBoxContainer
 
+## Settings tab that holds genreal dialogic settings.
+
 signal colors_changed
 
-var color_palette = null
+var color_palette :Dictionary = {}
 
-func _ready():
-	var s = DCSS.inline({
+
+func _ready() -> void:
+	var s := DCSS.inline({
 		'padding': 5,
 		'background': Color(0.545098, 0.545098, 0.545098, 0.211765)
 	})
@@ -25,7 +28,8 @@ func _ready():
 	for n in $"%Colors".get_children():
 		n.color_changed.connect(_on_color_change.bind(n))
 
-func refresh():
+
+func refresh() -> void:
 	%CustomEventsFolderLabel.text = DialogicUtil.get_project_setting('dialogic/custom_events_folder', 'res://addons/dialogic_additions/Events')
 	%CustomEventsFolderButton.icon = get_theme_icon("Folder", "EditorIcons")
 	%TestingSceneButton.icon = get_theme_icon("Folder", "EditorIcons")
@@ -36,10 +40,9 @@ func refresh():
 	%DefaultSceneButton.icon = get_theme_icon("Folder", "EditorIcons")
 	%DefaultSceneLabel.text = DialogicUtil.get_project_setting('dialogic/editor/default_dialog_scene', "res://addons/dialogic/Example Assets/example-scenes/DialogicDefaultScene.tscn")
 	
-	
 	# Color Palett
 	color_palette = DialogicUtil.get_color_palette()
-	var _scale = DialogicUtil.get_editor_scale()
+	var _scale := DialogicUtil.get_editor_scale()
 	for n in %Colors.get_children():
 		n.custom_minimum_size = Vector2(50 ,50)*scale
 		n.color = color_palette[n.name]

@@ -142,6 +142,13 @@ func open_editor(editor:DialogicEditor, save_previous: bool = true, extra_info:V
 	editor_changed.emit(previous_editor, current_editor)
 
 
+## Rarely used to completely clear a editor.
+func clear_editor(editor:DialogicEditor, save:bool = false) -> void:
+	if save:
+		editor._save_resource()
+	
+	editor._clear()
+
 ## Shows a file selector. Calls [accept_callable] once accepted
 func show_add_resource_dialog(accept_callable:Callable, filter:String = "*", title = "New resource", default_name = "new_character", mode = EditorFileDialog.FILE_MODE_SAVE_FILE) -> void:
 	find_parent('EditorView').godot_file_dialog(
