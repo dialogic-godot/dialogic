@@ -70,7 +70,7 @@ func set_variable(variable_name: String, value: String) -> bool:
 		# if none is found, try getting it from the dialogic variables
 		_set_value_in_dictionary(variable_name, dialogic.current_state_info['variables'], value) 
 	
-	if variable_name in dialogic.current_state_info['variables'].keys():
+	elif variable_name in dialogic.current_state_info['variables'].keys():
 		if typeof(dialogic.current_state_info['variables'][variable_name]) == TYPE_STRING:
 			dialogic.current_state_info['variables'][variable_name] = value
 			return true

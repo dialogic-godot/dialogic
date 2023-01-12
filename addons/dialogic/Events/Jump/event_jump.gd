@@ -8,7 +8,15 @@ extends DialogicEvent
 ### Settings
 
 ## The timeline to jump to, if null then it's the current one. This setting should be a dialogic timeline resource.
-var timeline :DialogicTimeline = null
+var timeline :DialogicTimeline = null:
+	get:
+		if timeline == null:
+			if !_timeline_file.is_empty():
+				if _timeline_file.contains("res://"):
+					return load(_timeline_file)
+				else: 
+					return load(Dialogic.find_timeline(_timeline_file))
+		return timeline
 ## If not empty, the event will try to find a Label event with this set as name. Empty by default..
 var label_name : String = ""
 ## If true when the timeline this event jumps to finishes, dialogic will continue this one from here.
@@ -28,24 +36,16 @@ var _timeline_loaded: bool = false
 ################################################################################
 
 func _execute() -> void:
-	if timeline: # TODO: Question, why is this always done, even if return_after  is false?
-		dialogic.push_to_jump_stack()
+	if return_after:
+		dialogic.Jump.push_to_jump_stack()
 	if timeline and timeline != dialogic.current_timeline:
 		dialogic.start_timeline(timeline, label_name)
-	elif _timeline_file != "":
-		if _timeline_file.contains("res://"):
-			dialogic.start_timeline(_timeline_file, label_name)
-		else: 
-			dialogic.start_timeline(Dialogic.find_timeline(_timeline_file), label_name)
-	dialogic.jump_to_label(label_name)
-
-
-# TODO: Question what this is supposed to do. Can't see it being used anywhere. Is it for use from outside?
-func load_timeline() -> void:
-	if timeline == null:
-		if _timeline_file != "":
-			timeline = Dialogic.preload_timeline(_timeline_file)
-			_timeline_loaded = true
+	else:
+		if label_name:
+			dialogic.Jump.jump_to_label(label_name)
+			finish()
+		else:
+			dialogic.start_timeline(dialogic.current_timeline)
 
 
 ################################################################################
@@ -62,6 +62,7 @@ func _init() -> void:
 
 func _get_icon() -> Resource:
 	return load(self.get_script().get_path().get_base_dir().path_join('icon_jump.png'))
+
 
 ################################################################################
 ## 						SAVING/LOADING
