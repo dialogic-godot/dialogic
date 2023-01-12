@@ -153,6 +153,9 @@ func build_full_tree(selected_item: String = ''):
 	# Adding Themes
 	build_flat_tree_items(selected_item, "Themes")
 	
+	# force redraw control
+	update()
+	
 func build_flat_tree_items(selected_item: String='',current_tree: String=''):
 	#break if the flat_structure isn't built yet so it doesn't throw an error, which happens at plugin start
 	if !current_tree in editor_reference.flat_structure:
