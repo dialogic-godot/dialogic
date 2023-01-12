@@ -43,6 +43,7 @@ signal editor_selected(selected)
 
 func _ready():
 	editor_reference = find_parent('EditorView')
+
 	# Tree Settings
 	allow_rmb_select = true
 	var root = tree.create_item()
@@ -144,14 +145,105 @@ func _ready():
 
 func build_full_tree(selected_item: String = ''):
 	# Adding timelines
-	build_timelines(selected_item)
+	build_flat_tree_items(selected_item, "Timelines")
 	# Adding characters
-	build_characters(selected_item)
+	build_flat_tree_items(selected_item, "Characters")
 	# Adding Definitions
-	build_definitions(selected_item)
+	build_flat_tree_items(selected_item, "Definitions")
 	# Adding Themes
-	build_themes(selected_item)
+	build_flat_tree_items(selected_item, "Themes")
+	
+func build_flat_tree_items(selected_item: String='',current_tree: String=''):
+	#break if the flat_structure isn't built yet so it doesn't throw an error, which happens at plugin start
+	if !current_tree in editor_reference.flat_structure:
+		return
 
+	var current_root
+	var editor
+	var depth_stack = []
+	
+	match (current_tree):
+		"Timelines":
+			current_root = timelines_tree
+			_clear_tree_children(timelines_tree)
+			editor = "Timeline Root"
+		"Characters": 
+			current_root = characters_tree
+			_clear_tree_children(characters_tree)
+			editor = "Character Root"
+		"Definitions":
+			current_root = definitions_tree
+			_clear_tree_children(definitions_tree)
+			editor = "Definition Root"
+		"Themes":
+			current_root = themes_tree
+			_clear_tree_children(themes_tree)
+			editor = "Theme Root"
+	
+	depth_stack.push_back({"path": "/", "object": current_root})
+	
+	for entry in editor_reference.flat_structure[current_tree]:
+		#Skip the root folder 
+		if entry == "/.":
+			continue
+		
+		#check where we are in the stack
+		while !(depth_stack[-1]["path"] in entry.rsplit("/", true,1)[0]) and depth_stack.size() > 1:
+			var popped = depth_stack.pop_back()
+		
+		current_root = depth_stack[-1]["object"]
+		
+		if "folded" in editor_reference.flat_structure[current_tree][entry]:
+			# folder add
+			var folder_item:TreeItem= tree.create_item(current_root)
+			# set text and icon
+			folder_item.set_text(0, entry.split("/")[-2])
+			folder_item.set_icon(0, get_icon("Folder", "EditorIcons"))
+			folder_item.set_icon_modulate(0, get_color("folder_icon_modulate", "FileDialog"))
+			# set metadata
+			folder_item.set_metadata(0, {'editor': editor, 'editable': true})
+			# set collapsed
+			folder_item.collapsed = editor_reference.flat_structure[current_tree][entry]['folded']
+			current_root = folder_item	
+			depth_stack.push_back({"path": entry.rstrip("/."), "object": folder_item})
+			
+		else:
+			#file add
+			var resource_data = editor_reference.flat_structure[current_tree][entry]
+			
+			var item = tree.create_item(current_root)
+			# set the text
+			if resource_data.has('name'):
+				item.set_text(0, resource_data['name'])
+			else:
+				item.set_text(0, resource_data['file'])
+			if not get_constant("dark_theme", "Editor"):
+				item.set_icon_modulate(0, get_color("property_color", "Editor"))
+			# set it as editable
+			resource_data['editable'] = true
+			# resource specific changes
+			match current_tree:
+				"Timelines":
+					item.set_icon(0, timeline_icon)
+					resource_data['editor'] = 'Timeline'
+				"Characters":
+					item.set_icon(0, character_icon)
+					resource_data['editor'] = 'Character'
+					if resource_data.has('color'):
+						item.set_icon_modulate(0, resource_data['color'])
+				"Definitions":
+					if resource_data['type'] == 0:
+						item.set_icon(0, definition_icon)
+						resource_data['editor'] = 'Value'
+					else:
+						item.set_icon(0, glossary_icon)
+						resource_data['editor'] = 'GlossaryEntry'
+				"Themes":
+					item.set_icon(0, theme_icon)
+					resource_data['editor'] = 'Theme'
+			
+			item.set_metadata(0, resource_data)
+	
 
 func _clear_tree_children(parent: TreeItem):
 	while parent.get_children() != null:

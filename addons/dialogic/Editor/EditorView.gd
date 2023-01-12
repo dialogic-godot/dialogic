@@ -6,7 +6,7 @@ var file_picker_data: Dictionary = {'method': '', 'node': self}
 var version_string: String 
 
 var dialogicTranslator = load("res://addons/dialogic/Localization/translation_service.gd").new()
-
+var flat_structure = {}
 # this is set when the plugins main-view is instanced in dialogic.gd
 var editor_interface = null
 
@@ -14,6 +14,9 @@ var editor_interface = null
 var editor_scene_cache = {}
 
 func _ready():
+	# Updating the folder structure
+	flat_structure = DialogicUtil.get_flat_folders_list() 
+	
 	# Adding file dialog to get used by Events
 	editor_file_dialog = EditorFileDialog.new()
 	add_child(editor_file_dialog)
@@ -23,9 +26,6 @@ func _ready():
 	
 	$MainPanel/MasterTreeContainer/MasterTree.connect("editor_selected", self, 'on_master_tree_editor_selected')
 
-	# Updating the folder structure
-	DialogicUtil.update_resource_folder_structure()
-	
 	# Sizes
 	# This part of the code is a bit terrible. But there is no better way
 	# of doing this in Godot at the moment. I'm sorry.
@@ -109,7 +109,7 @@ func _ready():
 		$ToolBar/Version.text = 'Dialogic v' + version_string
 		
 	$MainPanel/MasterTreeContainer/FilterMasterTreeEdit.right_icon = get_icon("Search", "EditorIcons")
-
+	$MainPanel/MasterTreeContainer/MasterTree.build_full_tree()
 
 func on_master_tree_editor_selected(editor: String):
 	$ToolBar/FoldTools.visible = editor == 'timeline'
