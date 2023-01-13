@@ -9,7 +9,7 @@
 [ext_resource type="Script" path="res://addons/dialogic/Editor/CharacterEditor/character_editor_ptab_layout.gd" id="5_eicvp"]
 [ext_resource type="Script" path="res://addons/dialogic/Editor/CharacterEditor/character_editor_ptab_exports.gd" id="7_4enie"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kxihh"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ymb8o"]
 content_margin_left = 10.0
 content_margin_top = 4.0
 content_margin_right = 10.0
@@ -19,18 +19,22 @@ border_width_top = 2
 border_color = Color(1, 1, 1, 0.75)
 corner_detail = 1
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1pdx5"]
-content_margin_left = 7.5
-content_margin_top = 7.5
-content_margin_right = 7.5
-content_margin_bottom = 7.5
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_y3nok"]
+content_margin_left = 10.0
+content_margin_top = 10.0
+content_margin_right = 10.0
+content_margin_bottom = 10.0
 bg_color = Color(0, 0, 0, 1)
-corner_radius_top_left = 3
-corner_radius_top_right = 3
-corner_radius_bottom_right = 3
-corner_radius_bottom_left = 3
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
 
-[sub_resource type="Image" id="Image_8q5e2"]
+[sub_resource type="Image" id="Image_sqjqr"]
 data = {
 "data": PackedByteArray(255, 255, 255, 0, 255, 255, 255, 0, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 131, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 131, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 131, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 231, 255, 93, 93, 55, 255, 97, 97, 58, 255, 93, 93, 233, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 231, 255, 94, 94, 54, 255, 94, 94, 57, 255, 93, 93, 233, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 93, 93, 233, 255, 93, 93, 232, 255, 93, 93, 41, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 93, 93, 233, 255, 93, 93, 232, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 97, 97, 42, 255, 255, 255, 0, 255, 97, 97, 42, 255, 97, 97, 42, 255, 255, 255, 0, 255, 98, 98, 47, 255, 97, 97, 42, 255, 255, 255, 0, 255, 97, 97, 42, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 235, 255, 93, 93, 233, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 94, 94, 46, 255, 93, 93, 236, 255, 93, 93, 233, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 235, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 233, 255, 95, 95, 59, 255, 96, 96, 61, 255, 93, 93, 235, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 233, 255, 95, 95, 59, 255, 96, 96, 61, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0),
 "format": "RGBA8",
@@ -39,12 +43,12 @@ data = {
 "width": 16
 }
 
-[sub_resource type="ImageTexture" id="ImageTexture_uf4x7"]
-image = SubResource("Image_8q5e2")
+[sub_resource type="ImageTexture" id="ImageTexture_oqc78"]
+image = SubResource("Image_sqjqr")
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_4xgdx"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_81xk6"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_o1arq"]
 content_margin_left = 4.0
 content_margin_top = 4.0
 content_margin_right = 4.0
@@ -59,7 +63,6 @@ corner_detail = 1
 
 [node name="CharacterEditor" type="MarginContainer"]
 self_modulate = Color(0, 0, 0, 1)
-anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
@@ -92,15 +95,15 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_constants/side_margin = 5
-theme_override_styles/tab_selected = SubResource("StyleBoxFlat_kxihh")
-theme_override_styles/panel = SubResource("StyleBoxFlat_1pdx5")
+theme_override_styles/tab_selected = SubResource("StyleBoxFlat_ymb8o")
+theme_override_styles/panel = SubResource("StyleBoxFlat_y3nok")
 
 [node name="PortraitListSection" type="TabContainer" parent="Split/Editor"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/side_margin = 5
-theme_override_styles/tab_selected = SubResource("StyleBoxFlat_kxihh")
-theme_override_styles/panel = SubResource("StyleBoxFlat_1pdx5")
+theme_override_styles/tab_selected = SubResource("StyleBoxFlat_ymb8o")
+theme_override_styles/panel = SubResource("StyleBoxFlat_y3nok")
 
 [node name="Portraits" type="VBoxContainer" parent="Split/Editor/PortraitListSection"]
 layout_mode = 2
@@ -112,19 +115,19 @@ layout_mode = 2
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "Add portrait"
-icon = SubResource("ImageTexture_uf4x7")
+icon = SubResource("ImageTexture_oqc78")
 
 [node name="AddPortraitGroupButton" type="Button" parent="Split/Editor/PortraitListSection/Portraits/PortraitListTools"]
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "Add Group"
-icon = SubResource("ImageTexture_uf4x7")
+icon = SubResource("ImageTexture_oqc78")
 
 [node name="ImportPortraitsButton" type="Button" parent="Split/Editor/PortraitListSection/Portraits/PortraitListTools"]
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "Import images from folder"
-icon = SubResource("ImageTexture_uf4x7")
+icon = SubResource("ImageTexture_oqc78")
 
 [node name="PortraitSearch" type="LineEdit" parent="Split/Editor/PortraitListSection/Portraits/PortraitListTools"]
 unique_name_in_owner = true
@@ -134,7 +137,7 @@ size_flags_vertical = 4
 placeholder_text = "Search"
 expand_to_text_length = true
 clear_button_enabled = true
-right_icon = SubResource("ImageTexture_uf4x7")
+right_icon = SubResource("ImageTexture_oqc78")
 caret_blink = true
 caret_blink_interval = 0.5
 
@@ -231,7 +234,7 @@ clip_contents = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-theme_override_styles/panel = SubResource("StyleBoxFlat_1pdx5")
+theme_override_styles/panel = SubResource("StyleBoxFlat_y3nok")
 
 [node name="Node2D" type="Node2D" parent="Split/RightSection/PortraitPreviewSection"]
 position = Vector2(13, 17)
@@ -239,7 +242,7 @@ position = Vector2(13, 17)
 [node name="RealPreviewPivot" type="Sprite2D" parent="Split/RightSection/PortraitPreviewSection/Node2D"]
 unique_name_in_owner = true
 position = Vector2(330, 405)
-texture = SubResource("ImageTexture_uf4x7")
+texture = SubResource("ImageTexture_oqc78")
 
 [node name="ScenePreviewWarning" type="Label" parent="Split/RightSection/PortraitPreviewSection"]
 unique_name_in_owner = true
@@ -339,8 +342,8 @@ layout_mode = 2
 size_flags_vertical = 3
 size_flags_stretch_ratio = 0.3
 theme_override_constants/side_margin = 5
-theme_override_styles/tab_selected = SubResource("StyleBoxFlat_kxihh")
-theme_override_styles/panel = SubResource("StyleBoxFlat_1pdx5")
+theme_override_styles/tab_selected = SubResource("StyleBoxFlat_ymb8o")
+theme_override_styles/panel = SubResource("StyleBoxFlat_y3nok")
 
 [node name="Image" type="ScrollContainer" parent="Split/RightSection/PortraitSettingsSection"]
 custom_minimum_size = Vector2(0, 35)
@@ -368,7 +371,7 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 file_filter = "*.png, *.svg"
-resource_icon = SubResource("ImageTexture_uf4x7")
+resource_icon = SubResource("ImageTexture_oqc78")
 
 [node name="Scene" type="ScrollContainer" parent="Split/RightSection/PortraitSettingsSection"]
 visible = false
@@ -399,7 +402,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 file_filter = "*.tscn"
 placeholder = "Default scene"
-resource_icon = SubResource("ImageTexture_uf4x7")
+resource_icon = SubResource("ImageTexture_oqc78")
 
 [node name="Label2" type="Label" parent="Split/RightSection/PortraitSettingsSection/Scene/Flow/GridContainer"]
 layout_mode = 2
@@ -471,7 +474,7 @@ layout_mode = 2
 visible = false
 custom_minimum_size = Vector2(0, 35)
 layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_81xk6")
+theme_override_styles/panel = SubResource("StyleBoxFlat_o1arq")
 horizontal_scroll_mode = 0
 script = ExtResource("7_4enie")
 

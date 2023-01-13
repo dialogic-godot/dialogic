@@ -3,7 +3,7 @@ extends Tree
 
 ## Tree that displays the portrait list as a hirarchy
 
-var editor := find_parent('Character Editor')
+var editor = find_parent('Character Editor')
 var current_group_nodes := {}
 
 
@@ -42,7 +42,7 @@ func get_full_item_name(item:TreeItem) -> String:
 
 # Will create all not yet existing folders in the given path.
 # Returns the last folder (the parent of the portrait item of this path). 
-func create_necessary_group_items(path:String) -> void:
+func create_necessary_group_items(path:String) -> TreeItem:
 	var last_item := get_root()
 	var item_path := ""
 	

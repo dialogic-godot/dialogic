@@ -235,7 +235,6 @@ func create_drag_and_drop_event(resource) -> void:
 	moving_piece = piece
 	piece_was_dragged = true
 	select_item(piece)
-	return piece
 
 
 func drop_event() -> void:
