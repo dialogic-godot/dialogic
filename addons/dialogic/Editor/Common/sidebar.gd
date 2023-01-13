@@ -13,6 +13,9 @@ func _ready():
 	editors_manager.resource_opened.connect(_on_editors_resource_opened)
 	editors_manager.editor_changed.connect(_on_editors_editor_changed)
 	%Search.right_icon = get_theme_icon("Search", "EditorIcons")
+	var editor_scale = DialogicUtil.get_editor_scale()
+	$VBoxContainer/MarginContainer.set("theme_override_constants/margin_left", 4 * editor_scale)
+	$VBoxContainer/MarginContainer.set("theme_override_constants/margin_bottom", 4 * editor_scale)
 
 ################################################################################
 ## 					EDITOR BUTTONS/LABELS 
