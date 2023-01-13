@@ -18,7 +18,7 @@ func _execute() -> void:
 func _init() -> void:
 	event_name = "Default"
 	event_color = Color("#ffffff")
-	event_category = Category.Main
+	event_category = Category.MAIN
 	event_sorting_index = 0
 	
 
