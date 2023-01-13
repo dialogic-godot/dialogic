@@ -31,7 +31,7 @@ func _ready():
 	%ClearButton.icon = get_theme_icon("Reload", "EditorIcons")
 	%OpenButton.button_down.connect(_on_OpenButton_pressed)
 	%ClearButton.button_up.connect(clear_path)
-	%Field.set_drag_forwarding(self)
+	%Field.set_drag_forwarding(Callable(), self._can_drop_data_fw, self._drop_data_fw)
 	%Field.placeholder_text = placeholder
 
 func set_right_text(value:String):
@@ -62,7 +62,7 @@ func clear_path():
 	emit_signal("value_changed", property_name, "")
 	set_value("")
 
-func _can_drop_data_fw(position, data, from_control):
+func _can_drop_data_fw(at_position: Vector2, data: Variant) -> bool:
 	if typeof(data) == TYPE_DICTIONARY and data.has('files') and len(data.files) == 1:
 		if file_filter:
 			if '*.'+data.files[0].get_extension() in file_filter:
@@ -70,5 +70,5 @@ func _can_drop_data_fw(position, data, from_control):
 		else: return true
 	return false
 
-func _drop_data_fw(position, data, from_control):
+func _drop_data_fw(at_position: Vector2, data: Variant) -> void:
 	_on_file_dialog_selected(data.files[0])
