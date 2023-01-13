@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://de6yhw4r8jqb3"]
+[gd_scene load_steps=10 format=3 uid="uid://de6yhw4r8jqb3"]
 
 [ext_resource type="Script" path="res://addons/dialogic/Editor/editor_main.gd" id="1_x88ov"]
 [ext_resource type="Script" path="res://addons/dialogic/Editor/editors_manager.gd" id="2_pe2tl"]
@@ -16,10 +16,12 @@ border_width_left = 2
 border_width_top = 2
 border_width_right = 2
 border_width_bottom = 2
-border_color = Color(0, 0, 0, 1)
+border_color = Color(0.21, 0.24, 0.29, 1)
 corner_radius_top_right = 5
 corner_radius_bottom_right = 5
 corner_radius_bottom_left = 5
+expand_margin_left = 2.0
+expand_margin_top = 2.0
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_22y6g"]
 
@@ -42,6 +44,8 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_constants/margin_right = 1
+theme_override_constants/margin_bottom = 2
 
 [node name="EditorsManager" type="VBoxContainer" parent="Margin"]
 layout_mode = 2

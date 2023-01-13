@@ -380,7 +380,7 @@ func rebuild_timeline_directory() -> void:
 	
 	# Now the three arrays are prepped, begin the depth search
 	var clean_search_path:bool = false
-	var depth = 1
+	var depth := 1
 	
 
 	while !clean_search_path:
@@ -414,7 +414,7 @@ func find_timeline(path: String) -> String:
 		for i in timeline_directory.keys():
 			if timeline_directory[i].contains(path):
 				return timeline_directory[i]
-				
+	
 	return ""
 
 

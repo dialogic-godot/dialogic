@@ -25,67 +25,12 @@
 "style": "Special",
 "theme": ""
 },
-"default_portrait": "neutral",
+"default_portrait": "",
 "description": "A dialogic developer.",
 "display_name": "Jowan",
 "mirror": false,
 "nicknames": ["Jo", "Jowan Spooner", "Jowan"],
 "offset": Vector2(0, 0),
-"portraits": {
-"angry": {
-"image": "",
-"mirror": false,
-"offset": Vector2(0, 0),
-"scale": 1,
-"scene": "res://addons/dialogic/Example Assets/portraits/CustomPortrait_FaceAtlas.tscn",
-"sound_mood": "new",
-"sound_mood_default": "something"
-},
-"happy": {
-"image": "",
-"mirror": false,
-"offset": Vector2(0, 0),
-"scale": 1,
-"scene": "res://addons/dialogic/Example Assets/portraits/CustomPortrait_FaceAtlas.tscn",
-"sound_mood": "new",
-"sound_mood_default": "something"
-},
-"joy": {
-"image": "",
-"mirror": false,
-"offset": Vector2(0, 0),
-"scale": 1,
-"scene": "res://addons/dialogic/Example Assets/portraits/CustomPortrait_FaceAtlas.tscn",
-"sound_mood": "new",
-"sound_mood_default": "something"
-},
-"neutral": {
-"image": "",
-"mirror": false,
-"offset": Vector2(0, 0),
-"scale": 1,
-"scene": "res://addons/dialogic/Example Assets/portraits/CustomPortrait_FaceAtlas.tscn",
-"sound_mood": "new",
-"sound_mood_default": "something"
-},
-"sad": {
-"image": "",
-"mirror": false,
-"offset": Vector2(0, 0),
-"scale": 1,
-"scene": "res://addons/dialogic/Example Assets/portraits/CustomPortrait_FaceAtlas.tscn",
-"sound_mood": "new",
-"sound_mood_default": "something"
-},
-"shocked": {
-"image": "",
-"mirror": false,
-"offset": Vector2(0, 0),
-"scale": 1,
-"scene": "res://addons/dialogic/Example Assets/portraits/CustomPortrait_FaceAtlas.tscn",
-"sound_mood": "new",
-"sound_mood_default": "something"
-}
-},
+"portraits": {},
 "scale": 1.2
 }

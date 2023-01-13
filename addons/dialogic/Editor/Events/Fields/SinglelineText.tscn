@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://addons/dialogic/Editor/Events/Fields/SinglelineText.gd" id="1"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6mta0"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_okl7u"]
 content_margin_left = 4.0
 content_margin_top = 4.0
 content_margin_right = 4.0
@@ -16,7 +16,7 @@ corner_radius_bottom_right = 3
 corner_radius_bottom_left = 3
 corner_detail = 5
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_66k5i"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_emw2l"]
 content_margin_left = 4.0
 content_margin_top = 4.0
 content_margin_right = 4.0
@@ -47,26 +47,10 @@ grow_vertical = 2
 size_flags_horizontal = 0
 script = ExtResource("1")
 
-[node name="LeftText" type="Label" parent="."]
-layout_mode = 2
-offset_top = 29.0
-offset_right = 1.0
-offset_bottom = 52.0
-
 [node name="TextEdit" type="LineEdit" parent="."]
 layout_mode = 2
-offset_left = 5.0
-offset_right = 1147.0
-offset_bottom = 81.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-theme_override_styles/normal = SubResource("StyleBoxFlat_6mta0")
-theme_override_styles/focus = SubResource("StyleBoxFlat_66k5i")
+theme_override_styles/normal = SubResource("StyleBoxFlat_okl7u")
+theme_override_styles/focus = SubResource("StyleBoxFlat_emw2l")
 expand_to_text_length = true
-
-[node name="RightText" type="Label" parent="."]
-layout_mode = 2
-offset_left = 1151.0
-offset_top = 29.0
-offset_right = 1152.0
-offset_bottom = 52.0

@@ -3,35 +3,28 @@
 [ext_resource type="Script" path="res://addons/dialogic/Editor/Events/Fields/MultilineText.gd" id="1"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bofjx"]
-content_margin_left = 16.0
+content_margin_left = 10.0
 content_margin_top = 14.0
 bg_color = Color(0.09, 0.09, 0.09, 0.588235)
+corner_radius_top_left = 8
 corner_radius_top_right = 8
 corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
 
 [node name="MultilineText" type="HBoxContainer"]
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 0
 script = ExtResource("1")
 
-[node name="LeftText" type="Label" parent="."]
-visible = false
-offset_top = 288.0
-offset_right = 1.0
-offset_bottom = 311.0
-
 [node name="TextEdit" type="TextEdit" parent="."]
-offset_right = 1024.0
-offset_bottom = 600.0
+layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_styles/normal = SubResource("StyleBoxFlat_bofjx")
-
-[node name="RightText" type="Label" parent="."]
-visible = false
-offset_left = 1023.0
-offset_top = 288.0
-offset_right = 1024.0
-offset_bottom = 311.0
+wrap_mode = 1
+scroll_fit_content_height = true

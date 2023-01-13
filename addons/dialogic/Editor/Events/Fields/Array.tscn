@@ -7,41 +7,28 @@
 script = ExtResource("2")
 
 [node name="Editing" type="HBoxContainer" parent="."]
-offset_right = 157.0
-offset_bottom = 31.0
+layout_mode = 2
 size_flags_horizontal = 3
 alignment = 2
 
 [node name="LeftText" type="Label" parent="Editing"]
 unique_name_in_owner = true
-offset_top = 2.0
-offset_right = 67.0
-offset_bottom = 28.0
+layout_mode = 2
 size_flags_horizontal = 3
 text = "Top Text"
 
 [node name="AddButton" type="Button" parent="Editing"]
-offset_left = 71.0
-offset_right = 157.0
-offset_bottom = 31.0
+layout_mode = 2
 text = "Add Value"
 
 [node name="Values" type="VBoxContainer" parent="."]
 unique_name_in_owner = true
-offset_top = 35.0
-offset_right = 157.0
-offset_bottom = 105.0
+layout_mode = 2
 
 [node name="Value" parent="Values" instance=ExtResource("1")]
-offset_right = 157.0
-offset_bottom = 33.0
+layout_mode = 2
 
 [node name="Value2" parent="Values" instance=ExtResource("1")]
-offset_top = 37.0
-offset_right = 157.0
-offset_bottom = 70.0
-
-[node name="RightText" type="Label" parent="."]
-visible = false
+layout_mode = 2
 
 [connection signal="pressed" from="Editing/AddButton" to="." method="_on_AddButton_pressed"]

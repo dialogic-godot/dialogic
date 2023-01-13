@@ -1,6 +1,11 @@
 @tool
 extends Control
 
+## Event block field for selecting a file or directory.
+
+signal value_changed
+var property_name : String
+
 @export var file_filter := ""
 @export var placeholder := ""
 @export var file_mode : EditorFileDialog.FileMode = EditorFileDialog.FILE_MODE_OPEN_FILE
@@ -15,10 +20,9 @@ extends Control
 		else:
 			%Field.theme_type_variation = "LineEditWithIcon"
 var current_value : String
-var property_name : String
-signal value_changed
 
-func _ready():
+
+func _ready() -> void:
 	DCSS.style(%Field, {
 		'border-radius': 3,
 		'border-color': get_theme_color("dark_color_3", "Editor"),
@@ -34,15 +38,8 @@ func _ready():
 	%Field.set_drag_forwarding(self)
 	%Field.placeholder_text = placeholder
 
-func set_right_text(value:String):
-	$RightText.text = str(value)
-	$RightText.visible = !value.is_empty()
 
-func set_left_text(value:String):
-	$LeftText.text = str(value)
-	$LeftText.visible = !value.is_empty()
-
-func set_value(value):
+func set_value(value:String) -> void:
 	current_value = value
 	if file_mode != EditorFileDialog.FILE_MODE_OPEN_DIR:
 		%Field.text = value.get_file()
@@ -51,18 +48,22 @@ func set_value(value):
 	else:
 		%Field.text = value
 
+
 func _on_OpenButton_pressed() -> void:
 	find_parent('EditorView').godot_file_dialog(_on_file_dialog_selected, file_filter, file_mode, "Open "+ property_name)
+
 
 func _on_file_dialog_selected(path:String) -> void:
 	emit_signal("value_changed", property_name, path)
 	set_value(path)
 
-func clear_path():
+
+func clear_path() -> void:
 	emit_signal("value_changed", property_name, "")
 	set_value("")
 
-func _can_drop_data_fw(position, data, from_control):
+
+func _can_drop_data_fw(position:Vector2, data:Variant, from_control:Control) -> bool:
 	if typeof(data) == TYPE_DICTIONARY and data.has('files') and len(data.files) == 1:
 		if file_filter:
 			if '*.'+data.files[0].get_extension() in file_filter:
@@ -70,5 +71,6 @@ func _can_drop_data_fw(position, data, from_control):
 		else: return true
 	return false
 
-func _drop_data_fw(position, data, from_control):
+
+func _drop_data_fw(position:Vector2, data:Variant, from_control:Control) -> void:
 	_on_file_dialog_selected(data.files[0])

@@ -2,20 +2,17 @@
 extends ScrollContainer
 
 # store last attempts since godot sometimes misses drop events
-var _is_drag_receiving = false
-var _last_event_button_drop_attempt = '' 
-var _mouse_exited = false
+var _is_drag_receiving := false
+var _last_event_button_drop_attempt :Variant = '' 
+var _mouse_exited := false
 
-@onready var timeline_editor = find_parent('TimelineVisualEditor')
+@onready var timeline_editor := find_parent('TimelineVisualEditor')
 
 
 func _ready():
 	mouse_entered.connect(_on_mouse_entered)
 	mouse_exited.connect(_on_mouse_exited)
 	gui_input.connect(_on_gui_input)
-	
-	
-	set('theme_override_styles/panel', get_theme_stylebox("Background", "EditorStyles"))
 
 
 func _can_drop_data(position, data):
@@ -34,7 +31,7 @@ func cancel_drop():
 	_last_event_button_drop_attempt = ''
 	timeline_editor.cancel_drop_event()
 
-	
+
 func _drop_data(position, data):
 	# add event
 	if (data["source"] == "EventButton"):
