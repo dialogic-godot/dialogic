@@ -720,9 +720,8 @@ func add_event_node(event_resource:DialogicEvent, at_index:int = -1, auto_select
 	piece.option_action.connect(_on_event_options_action.bind(piece))
 	piece.gui_input.connect(_on_event_block_gui_input.bind(piece))
 	
-	# Buidling editing part
+	# Building editing part
 	piece.build_editor(true, event_resource.expand_by_default)
-
 	
 	if auto_select:
 		select_item(piece, false)

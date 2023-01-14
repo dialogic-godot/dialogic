@@ -160,11 +160,8 @@ func build_editor(build_header:bool = true, build_body:bool = false) ->  void:
 		current_body_container = HFlowContainer.new()
 		%BodyContent.add_child(current_body_container)
 		body_was_build = true
-		
-	var p_list :Array = resource.get_custom_properties()
 	
-	for p in p_list:
-#		print(p)
+	for p in resource.get_event_editor_info():
 		if !build_body and p.location == 1:
 			has_body_content = true
 			continue
@@ -314,15 +311,8 @@ func build_editor(build_header:bool = true, build_body:bool = false) ->  void:
 		
 	recalculate_field_visibility()
 
-#func count_children(node:Node, count:int = 0) -> int:
-#	count += 1
-#	for child in node.get_children():
-#		count += count_children(child, count)
-#	print(node.name, " ", count)
-#	return count
 
 func recalculate_field_visibility() -> void:
-#	print("recalculate_field_visibility ", field_conditions_list)
 	for node_con in field_conditions_list:
 		if node_con[0].is_empty():
 			for node in node_con[1]: node.show()
@@ -344,6 +334,7 @@ func recalculate_field_visibility() -> void:
 				if sub_node.visible:
 					%ExpandButton.visible = true
 					break
+
 
 func set_property(property_name:String, value:Variant) -> void:
 	resource.set(property_name, value)
