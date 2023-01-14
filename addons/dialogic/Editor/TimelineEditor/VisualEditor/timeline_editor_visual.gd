@@ -277,8 +277,7 @@ func _on_event_block_gui_input(event, item: Node):
 					TimelineUndoRedo.commit_action()
 	
 				move_start_position = null
-			else:
-				select_item(item)
+			
 			if (moving_piece != null):
 				
 				indent_events()
@@ -288,7 +287,7 @@ func _on_event_block_gui_input(event, item: Node):
 			moving_piece = item
 			move_start_position = moving_piece.get_index()
 			if not _is_item_selected(item):
-				pass#piece_was_dragged = true
+				select_item(item)
 			else:
 				piece_was_dragged = false
 
@@ -511,7 +510,7 @@ func delete_selected_events():
 				select_item(next_node, false)
 		else:
 			deselect_all_items()
-	
+	something_changed()
 	indent_events()
 
 
@@ -717,7 +716,6 @@ func add_event_node(event_resource:DialogicEvent, at_index:int = -1, auto_select
 		%Timeline.add_child(piece)
 		%Timeline.move_child(piece, at_index)
 	
-	piece.option_action.connect(_on_event_options_action.bind(piece))
 	piece.gui_input.connect(_on_event_block_gui_input.bind(piece))
 	
 	# Building editing part
@@ -797,18 +795,18 @@ func move_block_up(block):
 	%Timeline.move_child(block, block.get_index() - 1)
 	%TimelineArea.queue_redraw()
 	something_changed()
-	return true
-	
+	indent_events()
 
 func move_block_down(block):
 	%Timeline.move_child(block, block.get_index() + 1)
 	%TimelineArea.queue_redraw()
 	something_changed()
-	return true
+	indent_events()
 
 func move_block_to_index(block_index, index):
-	something_changed()
 	%Timeline.move_child(%Timeline.get_child(block_index), index)
+	something_changed()
+	indent_events()
 
 ## *****************************************************************************
 ##					VISIBILITY/VISUALS
@@ -888,13 +886,16 @@ func add_extra_scroll_area_to_timeline():
 ## *****************************************************************************
 ##				SPECIAL BLOCK OPERATIONS
 ## *****************************************************************************
-# SIGNAL handles the actions of the small menu on the right (that was removed wasn't it?)
-func _on_event_options_action(action: String, item: Node):
-	### WORK TODO
-	if action == "remove":
-		delete_selected_events()
-	elif action == "up":
+
+func _on_event_popup_menu_index_pressed(index:int) -> void:
+	var item :Control = %EventPopupMenu.current_event
+	if index == 0:
+		if not item.resource.help_page_path.is_empty():
+			OS.shell_open(item.resource.help_page_path)
+	elif index == 2:
 		move_block_up(item)
-	elif action == "down":
+	elif index == 3:
 		move_block_down(item)
+	elif index == 5:
+		delete_selected_events()
 	indent_events()

@@ -111,19 +111,6 @@ func _set_event_icon(icon: Texture) -> void:
 	custom_style.corner_radius_top_right = 5 * _scale
 	custom_style.corner_radius_bottom_left = 5 * _scale
 	custom_style.corner_radius_bottom_right = 5 * _scale
-	
-	
-
-func _on_OptionsControl_action(index:int) -> void:
-	if index == 0:
-		if not resource.help_page_path.is_empty():
-			OS.shell_open(resource.help_page_path)
-	elif index == 2:
-		emit_signal("option_action", "up")
-	elif index == 3:
-		emit_signal("option_action", "down")
-	elif index == 5:
-		emit_signal("option_action", "remove")
 
 
 func _request_selection() -> void:
@@ -395,7 +382,6 @@ func _ready():
 	# signals
 	# TODO godot4 react to changes of the colors, the signal was removed
 	#ProjectSettings.project_settings_changed.connect(_update_color)
-	#$PopupMenu.index_pressed.connect(_on_OptionsControl_action)
 	
 	# Separation on the header
 	%Header.add_theme_constant_override("custom_constants/separation", 5 * _scale)
@@ -418,7 +404,7 @@ func _on_ExpandButton_toggled(button_pressed:bool) -> void:
 	get_parent().get_parent().queue_redraw()
 
 
-func _on_EventNode_gui_input(event):
+func _on_EventNode_gui_input(event:InputEvent) -> void:
 	if event is InputEventMouseButton and event.is_pressed() and event.button_index == 1:
 		grab_focus() # Grab focus to avoid copy pasting text or events
 		if event.double_click:
@@ -427,8 +413,10 @@ func _on_EventNode_gui_input(event):
 	# For opening the context menu
 	if event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:
-			$PopupMenu.popup_on_parent(Rect2(get_global_mouse_position(),Vector2()))
+			var popup :PopupMenu = get_parent().get_parent().get_node('EventPopupMenu')
+			popup.current_event = self
+			popup.popup_on_parent(Rect2(get_global_mouse_position(),Vector2()))
 			if resource.help_page_path == "":
-				$PopupMenu.set_item_disabled(0, true)
+				popup.set_item_disabled(0, true)
 			else:
-				$PopupMenu.set_item_disabled(0, false)
+				popup.set_item_disabled(0, false)

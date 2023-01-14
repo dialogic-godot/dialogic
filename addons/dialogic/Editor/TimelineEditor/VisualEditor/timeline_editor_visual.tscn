@@ -1,14 +1,14 @@
-[gd_scene load_steps=5 format=3 uid="uid://b3fd6xpit60pb"]
+[gd_scene load_steps=6 format=3 uid="uid://ysqbusmy0qma"]
 
 [ext_resource type="Script" path="res://addons/dialogic/Editor/TimelineEditor/VisualEditor/timeline_editor_visual.gd" id="1_8smxc"]
 [ext_resource type="Theme" uid="uid://cqst728xxipcw" path="res://addons/dialogic/Editor/Theme/MainTheme.tres" id="2_x0fhp"]
 [ext_resource type="Script" path="res://addons/dialogic/Editor/TimelineEditor/VisualEditor/TimelineArea.gd" id="3_sap1x"]
+[ext_resource type="Script" path="res://addons/dialogic/Editor/Events/EventBlock/event_right_click_menu.gd" id="4_ugiq6"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_phyjj"]
 content_margin_top = 10.0
 
 [node name="TimelineVisualEditor" type="MarginContainer"]
-anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
@@ -39,6 +39,10 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_constants/separation = 5
+
+[node name="EventPopupMenu" type="PopupMenu" parent="View/TimelineArea"]
+unique_name_in_owner = true
+script = ExtResource("4_ugiq6")
 
 [node name="ScrollContainer" type="ScrollContainer" parent="View"]
 custom_minimum_size = Vector2(150, 0)
@@ -141,3 +145,5 @@ size_flags_horizontal = 3
 
 [node name="Spacer" type="Control" parent="View/ScrollContainer/EventContainer"]
 layout_mode = 2
+
+[connection signal="index_pressed" from="View/TimelineArea/EventPopupMenu" to="." method="_on_event_popup_menu_index_pressed"]
