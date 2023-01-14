@@ -71,14 +71,10 @@ func save_timeline() -> void:
 	get_parent().current_resource_state = DialogicEditor.ResourceStates.Saved
 	get_parent().editors_manager.resource_helper.rebuild_timeline_directory()
 
-var load_start_time := 0 
-var event_averages := {}
 
 func load_timeline(resource:DialogicTimeline) -> void:
 	clear_timeline_nodes()
-	load_start_time = Time.get_ticks_msec()
 	_building_timeline = true
-#	print(get_parent().current_resource.events)
 	if get_parent().current_resource.events.size() == 0:
 		pass
 	else: 
@@ -86,18 +82,15 @@ func load_timeline(resource:DialogicTimeline) -> void:
 			get_parent().current_resource.events_processed = false
 			get_parent().current_resource = get_parent().editors_manager.resource_helper.process_timeline(get_parent().current_resource)
 		if get_parent().current_resource.events.size() == 0:
-#			print("oops")
 			return
-		print("timeline proccessed in ", Time.get_ticks_msec()-load_start_time, " ticks msec")
 		var data := resource.get_events()
 		var page := 1
-		var batch_size := 100
+		var batch_size := 10
 		_batches = []
 		while batch_events(data, batch_size, page).size() != 0:
 			_batches.append(batch_events(data, batch_size, page))
 			page += 1
 		batch_loaded.emit()
-		#load_batch(_batches)
 	# Reset the scroll position
 	%TimelineArea.scroll_vertical = 0
 
@@ -121,12 +114,10 @@ func load_batch(data:Array) -> void:
 					opener_events_stack.push_back(piece)
 	batch_loaded.emit()
 
-
 func _on_batch_loaded():
 	if _batches.size() > 0:
 		indent_events()
 		await get_tree().process_frame
-#		await get_tree().process_frame
 		load_batch(_batches)
 	else:
 		if opener_events_stack:
@@ -135,10 +126,6 @@ func _on_batch_loaded():
 		opener_events_stack = []
 		indent_events()
 		_building_timeline = false
-		print('Loaded ',len(get_parent().current_resource.events), 
-				' events in ', Time.get_ticks_msec()-load_start_time, ' ticks msec (',
-				(Time.get_ticks_msec()-load_start_time)/len(get_parent().current_resource.events), ' per event)')
-		print(event_averages)
 		add_extra_scroll_area_to_timeline()
 
 
@@ -239,7 +226,7 @@ func _process(delta:float) -> void:
 
 ## INFO: These methods are mainly used by the TimelineArea
 # Creates a ghost event for drag and drop
-func create_drag_and_drop_event(resource) -> Control:
+func create_drag_and_drop_event(resource):
 	var index = get_index_under_cursor()
 	var piece = add_event_node(resource)
 	%Timeline.move_child(piece, index)
@@ -710,7 +697,6 @@ func _add_event_button_pressed(event_resource:DialogicEvent):
 ## *****************************************************************************
 # Adding an event to the timeline
 func add_event_node(event_resource:DialogicEvent, at_index:int = -1, auto_select: bool = false, indent: bool = false) -> Control:
-	var starting_time := Time.get_ticks_msec()
 	if event_resource is DialogicEndBranchEvent:
 		return create_end_branch_event(at_index, %Timeline.get_child(0))
 	
@@ -719,7 +705,6 @@ func add_event_node(event_resource:DialogicEvent, at_index:int = -1, auto_select
 			event_resource._load_from_string(event_resource['event_node_as_text'])
 	
 	var piece :Control = event_node.instantiate()
-#	print("Loaded and instantiated after ", Time.get_ticks_msec()-starting_time)
 	piece.resource = event_resource
 	event_resource._editor_node = piece
 	piece.content_changed.connect(something_changed)
@@ -731,13 +716,13 @@ func add_event_node(event_resource:DialogicEvent, at_index:int = -1, auto_select
 	else:
 		%Timeline.add_child(piece)
 		%Timeline.move_child(piece, at_index)
-#	print("Added after ", Time.get_ticks_msec()-starting_time)
-
+	
 	piece.option_action.connect(_on_event_options_action.bind(piece))
 	piece.gui_input.connect(_on_event_block_gui_input.bind(piece))
 	
 	# Buidling editing part
 	piece.build_editor(true, event_resource.expand_by_default)
+
 	
 	if auto_select:
 		select_item(piece, false)
@@ -752,12 +737,6 @@ func add_event_node(event_resource:DialogicEvent, at_index:int = -1, auto_select
 	if not _building_timeline:
 		piece.focus()
 	
-#	print(event_resource.event_name, " added in ", Time.get_ticks_msec()-starting_time, '\n')
-	if !event_averages.has(event_resource.event_name):
-		event_averages[event_resource.event_name] = Time.get_ticks_msec()-starting_time
-	else:
-		event_averages[event_resource.event_name] += Time.get_ticks_msec()-starting_time
-		event_averages[event_resource.event_name] /= 2.0
 	return piece
 
 func create_end_branch_event(at_index:int, parent_node:Node) -> Node:

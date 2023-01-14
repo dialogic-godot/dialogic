@@ -56,4 +56,4 @@ func get_shortcode_parameters() -> Dictionary:
 ################################################################################
 
 func build_event_editor():
-	add_header_edit('name', ValueType.SinglelineText, '')
+	add_header_edit('name', ValueType.SinglelineText)

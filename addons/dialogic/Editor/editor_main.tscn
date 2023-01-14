@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://de6yhw4r8jqb3"]
+[gd_scene load_steps=11 format=3 uid="uid://de6yhw4r8jqb3"]
 
 [ext_resource type="Script" path="res://addons/dialogic/Editor/editor_main.gd" id="1_x88ov"]
 [ext_resource type="Script" path="res://addons/dialogic/Editor/editors_manager.gd" id="2_pe2tl"]
@@ -9,9 +9,8 @@
 [ext_resource type="Script" path="res://addons/dialogic/Editor/directory_holder.gd" id="7_1xvr0"]
 [ext_resource type="PackedScene" path="res://addons/dialogic/Editor/Settings/settings_editor.tscn" id="7_lqfl7"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yawcu"]
-bg_color = Color(0, 0, 0, 1)
-draw_center = false
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7lxu4"]
+bg_color = Color(0.1155, 0.132, 0.1595, 1)
 border_width_left = 2
 border_width_top = 2
 border_width_right = 2
@@ -23,10 +22,9 @@ corner_radius_bottom_left = 5
 expand_margin_left = 2.0
 expand_margin_top = 2.0
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_22y6g"]
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_1qqdn"]
 
 [node name="EditorView" type="ColorRect"]
-anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
@@ -35,7 +33,7 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 color = Color(0, 0, 0, 1)
 script = ExtResource("1_x88ov")
-editor_tab_bg = SubResource("StyleBoxFlat_yawcu")
+editor_tab_bg = SubResource("StyleBoxFlat_7lxu4")
 
 [node name="Margin" type="MarginContainer" parent="."]
 layout_mode = 1
@@ -65,15 +63,15 @@ split_offset = 0
 
 [node name="Editors" type="TabContainer" parent="Margin/EditorsManager/HSplit"]
 layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_yawcu")
-theme_override_styles/tabbar_background = SubResource("StyleBoxEmpty_22y6g")
+theme_override_styles/panel = SubResource("StyleBoxFlat_7lxu4")
+theme_override_styles/tabbar_background = SubResource("StyleBoxEmpty_1qqdn")
 
 [node name="HomePage" parent="Margin/EditorsManager/HSplit/Editors" instance=ExtResource("4_vey4f")]
+visible = false
 layout_mode = 2
 metadata/_tab_name = ""
 
 [node name="Timeline Editor" parent="Margin/EditorsManager/HSplit/Editors" instance=ExtResource("5_e5v7u")]
-visible = false
 layout_mode = 2
 
 [node name="Character Editor" parent="Margin/EditorsManager/HSplit/Editors" instance=ExtResource("6_y5x3e")]

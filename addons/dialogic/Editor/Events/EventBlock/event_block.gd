@@ -60,10 +60,12 @@ var ignore_save := false
 func visual_select() -> void:
 	$PanelContainer.add_theme_stylebox_override('panel', load("res://addons/dialogic/Editor/Events/styles/selected_styleboxflat.tres"))
 	selected = true
+	%IconPanel.self_modulate = resource.event_color
 
 func visual_deselect() -> void:
 	$PanelContainer.add_theme_stylebox_override('panel', load("res://addons/dialogic/Editor/Events/styles/unselected_stylebox.tres"))
 	selected = false
+	%IconPanel.self_modulate = resource.event_color.lerp(Color.DARK_SLATE_GRAY, 0.3)
 
 func is_selected() -> bool:
 	return selected
@@ -150,14 +152,15 @@ func toggle_collapse(toggled:bool) -> void:
 
 func build_editor(build_header:bool = true, build_body:bool = false) ->  void:
 	var current_body_container :HFlowContainer = null
+	
+	if build_body and body_was_build: build_body = false
 	if build_body:
 		if body_was_build:
 			return
-#		print("building body of ", resource.event_name)
 		current_body_container = HFlowContainer.new()
 		%BodyContent.add_child(current_body_container)
 		body_was_build = true
-	
+		
 	var p_list :Array = resource.get_custom_properties()
 	
 	for p in p_list:
