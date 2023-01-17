@@ -1,14 +1,20 @@
-[gd_scene load_steps=9 format=3 uid="uid://ysqbusmy0qma"]
+[gd_scene load_steps=11 format=3 uid="uid://ysqbusmy0qma"]
 
 [ext_resource type="Script" path="res://addons/dialogic/Editor/TimelineEditor/VisualEditor/timeline_editor_visual.gd" id="1_8smxc"]
 [ext_resource type="Theme" uid="uid://cqst728xxipcw" path="res://addons/dialogic/Editor/Theme/MainTheme.tres" id="2_x0fhp"]
 [ext_resource type="Script" path="res://addons/dialogic/Editor/TimelineEditor/VisualEditor/TimelineArea.gd" id="3_sap1x"]
+[ext_resource type="StyleBox" uid="uid://c8k6tbipodsg" path="res://addons/dialogic/Editor/Events/styles/ResourceMenuPanelBackground.tres" id="4_cqp1m"]
 [ext_resource type="Script" path="res://addons/dialogic/Editor/Events/EventBlock/event_right_click_menu.gd" id="4_ugiq6"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_phyjj"]
 content_margin_top = 10.0
 
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_8o7ew"]
+
 [sub_resource type="Theme" id="Theme_ycwn2"]
+PopupMenu/colors/font_color_hover = Color(0.44, 0.73, 0.98, 1)
+PopupMenu/styles/hover = SubResource("StyleBoxEmpty_8o7ew")
+PopupMenu/styles/panel = ExtResource("4_cqp1m")
 
 [sub_resource type="Image" id="Image_wp5qe"]
 data = {
