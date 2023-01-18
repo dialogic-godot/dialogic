@@ -78,7 +78,7 @@ func _execute() -> void:
 		if dialogic.has_subsystem('Glossary'):
 			final_text = dialogic.Glossary.parse_glossary(final_text)
 		
-		dialogic.Text.update_dialog_text(dialogic.Text.color_names(final_text))
+		dialogic.Text.update_dialog_text(final_text)
 		
 		#Plays the audio region for the current line.
 		if dialogic.has_subsystem('Voice') and dialogic.Voice.is_voiced(dialogic.current_event_idx):
