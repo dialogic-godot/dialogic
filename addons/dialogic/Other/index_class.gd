@@ -15,7 +15,7 @@ func _get_events() -> Array:
 	return []
 
 
-func _get_subsystems() -> Array:
+func _get_subsystems() -> Array[Dictionary]:
 	return []
 
 
@@ -24,4 +24,16 @@ func _get_settings_pages() -> Array:
 
 
 func _get_character_editor_tabs() -> Array:
+	return []
+
+
+## Should return array of dictionaries with the following keys:
+## "command" 	-> the text e.g. "speed"
+## "node_path" or "subsystem" -> whichever contains your effect method
+## "method" 	-> name of the effect method
+func _get_text_effects() -> Array[Dictionary]:
+	return []
+
+
+func _get_text_modifiers() -> Array:
 	return []

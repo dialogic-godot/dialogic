@@ -184,7 +184,7 @@ func move_portrait(character:DialogicCharacter, position_idx:int, z_index:int = 
 		char_node.z_index = z_index
 	
 	char_node.set_meta('position', position_idx)
-
+	
 	if time == 0.0:
 		char_node.position = current_positions[position_idx]
 	else:
@@ -214,9 +214,11 @@ func add_portrait_position(position_number: int, position:Vector2) -> void:
 		_default_positions[position_number] = position
 		current_positions[position_number] = position
 
+
 func reset_portrait_positions(time:float = 0.0) -> void:
 	for position in current_positions:
 		move_portrait_position(position, _default_positions[position], false, time)
+
 
 func reset_portrait_position(position:int, time:float = 0.0) -> void:
 	move_portrait_position(position, _default_positions[position], false, time)
@@ -253,11 +255,13 @@ func move_portrait_position(position_number: int, vector:Vector2, relative:bool 
 func is_character_joined(character:DialogicCharacter) -> bool:
 	return character.resource_path in dialogic.current_state_info['portraits']
 
+
 func get_joined_characters() -> Array:
 	var chars = []
 	for char_path in dialogic.current_state_info.get('portraits', {}).keys():
 		chars.append(load(char_path))
 	return chars
+
 
 func update_rpg_portrait_mode(character:DialogicCharacter = null, portrait:String = "") -> void:
 	if DialogicUtil.get_project_setting('dialogic/portrait_mode', 0) == DialogicCharacterEvent.PortraitModes.RPG:
@@ -291,6 +295,7 @@ func update_rpg_portrait_mode(character:DialogicCharacter = null, portrait:Strin
 			add_portrait(character, portrait, 1, false)
 			var anim = animate_portrait(character, AnimationName, AnimationLength)
 
+
 # makes sure positions are listed and can be accessed
 func check_positions_and_holder() -> void:
 	if _portrait_holder_reference == null and len(get_tree().get_nodes_in_group('dialogic_portrait_holder')) == 0:
@@ -304,3 +309,9 @@ func check_positions_and_holder() -> void:
 	
 	if current_positions.size() == 0:
 		current_positions = _default_positions.duplicate()
+
+
+func text_effect_portrait(text_node:Control, skipped:bool, argument:String) -> void:
+	if argument:
+		if Dialogic.current_state_info.get('character', null):
+			Dialogic.Portraits.change_portrait(load(Dialogic.current_state_info.character), argument)
