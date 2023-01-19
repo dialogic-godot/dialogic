@@ -9,22 +9,8 @@ offset_bottom = 40.0
 theme_override_constants/separation = -7
 script = ExtResource("1_288li")
 
-[node name="LeftText" type="Label" parent="."]
-layout_mode = 2
-offset_top = 8.0
-offset_right = 1.0
-offset_bottom = 31.0
-
 [node name="X" parent="." instance=ExtResource("3_l3bum")]
 layout_mode = 2
-anchors_preset = 0
-anchor_right = 0.0
-anchor_bottom = 0.0
-offset_left = -6.0
-offset_right = 42.0
-offset_bottom = 40.0
-grow_horizontal = 1
-grow_vertical = 1
 step = 1.0
 min = -9999.0
 max = 9999.0
@@ -32,22 +18,7 @@ suffix = "x"
 
 [node name="Y" parent="." instance=ExtResource("3_l3bum")]
 layout_mode = 2
-anchors_preset = 0
-anchor_right = 0.0
-anchor_bottom = 0.0
-offset_left = 35.0
-offset_right = 83.0
-offset_bottom = 40.0
-grow_horizontal = 1
-grow_vertical = 1
 step = 1.0
 min = -9999.0
 max = 9999.0
 suffix = "y"
-
-[node name="RightText" type="Label" parent="."]
-layout_mode = 2
-offset_left = 76.0
-offset_top = 8.0
-offset_right = 77.0
-offset_bottom = 31.0

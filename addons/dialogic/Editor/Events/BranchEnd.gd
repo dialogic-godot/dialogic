@@ -44,6 +44,7 @@ func parent_node_changed():
 
 func add_end_control(control:Control):
 	add_child(control)
+	control.size_flags_vertical = SIZE_SHRINK_BEGIN
 	if "parent_resource" in control:
 		control.parent_resource = parent_node.resource
 	if control.has_method('refresh'):

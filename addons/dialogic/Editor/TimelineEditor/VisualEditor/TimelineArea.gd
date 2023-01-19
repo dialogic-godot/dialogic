@@ -2,20 +2,17 @@
 extends ScrollContainer
 
 # store last attempts since godot sometimes misses drop events
-var _is_drag_receiving = false
-var _last_event_button_drop_attempt = '' 
-var _mouse_exited = false
+var _is_drag_receiving := false
+var _last_event_button_drop_attempt :Variant = '' 
+var _mouse_exited := false
 
-@onready var timeline_editor = find_parent('TimelineVisualEditor')
+@onready var timeline_editor := find_parent('TimelineVisualEditor')
 
 
 func _ready():
 	mouse_entered.connect(_on_mouse_entered)
 	mouse_exited.connect(_on_mouse_exited)
 	gui_input.connect(_on_gui_input)
-	
-	
-	set('theme_override_styles/panel', get_theme_stylebox("Background", "EditorStyles"))
 
 
 func _can_drop_data(position, data):
@@ -34,7 +31,7 @@ func cancel_drop():
 	_last_event_button_drop_attempt = ''
 	timeline_editor.cancel_drop_event()
 
-	
+
 func _drop_data(position, data):
 	# add event
 	if (data["source"] == "EventButton"):
@@ -74,13 +71,13 @@ func _on_gui_input(event):
 			_is_drag_receiving = false
 
 func _draw():
-	var _scale = DialogicUtil.get_editor_scale()
-	var line_width = 5 * _scale
-	var horizontal_line_length = 100*_scale
-	var color_multiplier = Color(1,1,1,0.5)
-	var selected_color_multiplier = Color(1,1,1,1)
+	var _scale := DialogicUtil.get_editor_scale()
+	var line_width := 5 * _scale
+	var horizontal_line_length := 100*_scale
+	var color_multiplier := Color(1,1,1,0.5)
+	var selected_color_multiplier := Color(1,1,1,1)
 	for idx in range($Timeline.get_child_count()):
-		var event = $Timeline.get_child(idx)
+		var event : Control = $Timeline.get_child(idx)
 		
 		if not "resource" in event:
 			continue
@@ -90,16 +87,16 @@ func _draw():
 		
 		if !event.resource is DialogicEndBranchEvent:
 			if event.has_body_content or event.resource.can_contain_events:
-				var icon_panel_height = 32*_scale
-				var rect_position = event.get_node('%IconPanel').global_position+Vector2(0,1)*event.get_node('%IconPanel').size+Vector2(0,-4)
-				var color = event.resource.event_color
+				var icon_panel_height := 32*_scale
+				var rect_position :Vector2= event.get_node('%IconPanel').global_position+Vector2(0,1)*event.get_node('%IconPanel').size+Vector2(0,-4)
+				var color :Color= event.resource.event_color
 				if event.is_selected():
 					color *= selected_color_multiplier
 				else:
 					color *= color_multiplier
 				if idx < $Timeline.get_child_count()-1 and event.current_indent_level < $Timeline.get_child(idx+1).current_indent_level:
-					var end_node = event.end_node
-					var sub_idx = idx
+					var end_node :Node= event.end_node
+					var sub_idx := idx
 					if !end_node:
 						while sub_idx < $Timeline.get_child_count()-1:
 							sub_idx += 1
@@ -118,4 +115,4 @@ func _draw():
 					draw_rect(Rect2(Vector2(event.get_node('%IconPanel').global_position.x+line_width, rect_position.y+rect_size.y-line_width)-global_position, Vector2(horizontal_line_length, line_width)), color)
 
 				elif event.expanded:
-					draw_rect(Rect2(rect_position-global_position, Vector2(line_width, event.size.y-event.get_node('%IconPanel').size.y-8*_scale)), color)
+					draw_rect(Rect2(rect_position-global_position, Vector2(line_width, event.size.y-event.get_node('%IconPanel').size.y+10*_scale)), color.darkened(0.5))

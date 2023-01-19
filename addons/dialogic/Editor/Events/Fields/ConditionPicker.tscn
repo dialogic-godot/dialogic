@@ -4,7 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://dpwhshre1n4t6" path="res://addons/dialogic/Editor/Events/Fields/ComplexPicker.tscn" id="1_rr7mq"]
 [ext_resource type="PackedScene" uid="uid://d3bhehatwoio" path="res://addons/dialogic/Editor/Events/Fields/OptionSelector.tscn" id="4_27ir8"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6mta0"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0i2t2"]
 content_margin_left = 4.0
 content_margin_top = 4.0
 content_margin_right = 4.0
@@ -18,7 +18,7 @@ corner_radius_bottom_right = 3
 corner_radius_bottom_left = 3
 corner_detail = 5
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_66k5i"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pxts0"]
 content_margin_left = 4.0
 content_margin_top = 4.0
 content_margin_right = 4.0
@@ -51,7 +51,7 @@ corner_radius_top_right = 2
 corner_radius_bottom_right = 2
 corner_radius_bottom_left = 2
 
-[sub_resource type="Image" id="Image_vivn8"]
+[sub_resource type="Image" id="Image_ov00m"]
 data = {
 "data": PackedByteArray(255, 255, 255, 0, 255, 255, 255, 0, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 131, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 131, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 131, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 231, 255, 93, 93, 55, 255, 97, 97, 58, 255, 93, 93, 233, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 231, 255, 94, 94, 54, 255, 94, 94, 57, 255, 93, 93, 233, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 93, 93, 233, 255, 93, 93, 232, 255, 93, 93, 41, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 93, 93, 233, 255, 93, 93, 232, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 97, 97, 42, 255, 255, 255, 0, 255, 97, 97, 42, 255, 97, 97, 42, 255, 255, 255, 0, 255, 98, 98, 47, 255, 97, 97, 42, 255, 255, 255, 0, 255, 97, 97, 42, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 235, 255, 93, 93, 233, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 94, 94, 46, 255, 93, 93, 236, 255, 93, 93, 233, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 235, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 233, 255, 95, 95, 59, 255, 96, 96, 61, 255, 93, 93, 235, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 233, 255, 95, 95, 59, 255, 96, 96, 61, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0),
 "format": "RGBA8",
@@ -60,72 +60,40 @@ data = {
 "width": 16
 }
 
-[sub_resource type="ImageTexture" id="ImageTexture_vtsk1"]
-image = SubResource("Image_vivn8")
+[sub_resource type="ImageTexture" id="ImageTexture_oe0il"]
+image = SubResource("Image_ov00m")
 
 [node name="ConditionPicker" type="HBoxContainer"]
 offset_right = 77.0
 offset_bottom = 31.0
 script = ExtResource("1_q5p62")
 
-[node name="LeftText" type="Label" parent="."]
-layout_mode = 2
-offset_top = 5.0
-offset_right = 1.0
-offset_bottom = 28.0
-
 [node name="SimpleEditor" type="HBoxContainer" parent="."]
 unique_name_in_owner = true
 layout_mode = 2
-offset_left = 5.0
-offset_right = 542.0
-offset_bottom = 34.0
 
 [node name="Value1" parent="SimpleEditor" instance=ExtResource("1_rr7mq")]
 unique_name_in_owner = true
 layout_mode = 2
-anchors_preset = 0
-anchor_right = 0.0
-anchor_bottom = 0.0
-offset_right = 196.0
-offset_bottom = 34.0
-grow_horizontal = 1
-grow_vertical = 1
 placeholder_text = "Variable"
-disable_pretty_name = true
 
 [node name="Operator" parent="SimpleEditor" instance=ExtResource("4_27ir8")]
 unique_name_in_owner = true
 layout_mode = 2
-offset_left = 200.0
-offset_right = 337.0
-offset_bottom = 34.0
 
 [node name="Value2" parent="SimpleEditor" instance=ExtResource("1_rr7mq")]
 unique_name_in_owner = true
 layout_mode = 2
-anchors_preset = 0
-anchor_right = 0.0
-anchor_bottom = 0.0
-offset_left = 341.0
-offset_right = 537.0
-offset_bottom = 34.0
-grow_horizontal = 1
-grow_vertical = 1
 placeholder_text = "Value"
-disable_pretty_name = true
 
 [node name="ComplexEditor" type="LineEdit" parent="."]
 unique_name_in_owner = true
 visible = false
-custom_minimum_size = Vector2i(150, 0)
+custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
-offset_left = 569.0
-offset_right = 1076.0
-offset_bottom = 34.0
 mouse_filter = 1
-theme_override_styles/normal = SubResource("StyleBoxFlat_6mta0")
-theme_override_styles/focus = SubResource("StyleBoxFlat_66k5i")
+theme_override_styles/normal = SubResource("StyleBoxFlat_0i2t2")
+theme_override_styles/focus = SubResource("StyleBoxFlat_pxts0")
 theme_override_styles/read_only = SubResource("StyleBoxFlat_q81pd")
 text = "VAR.Player.Health > 20 and VAR.Counter < 3 and randi()%3 == 2"
 placeholder_text = "Enter condition"
@@ -134,19 +102,9 @@ expand_to_text_length = true
 [node name="ToggleComplex" type="Button" parent="."]
 unique_name_in_owner = true
 layout_mode = 2
-offset_left = 546.0
-offset_right = 570.0
-offset_bottom = 34.0
 tooltip_text = "Use complex expression"
 toggle_mode = true
-icon = SubResource("ImageTexture_vtsk1")
-
-[node name="RightText" type="Label" parent="."]
-layout_mode = 2
-offset_left = 574.0
-offset_top = 5.0
-offset_right = 575.0
-offset_bottom = 28.0
+icon = SubResource("ImageTexture_oe0il")
 
 [connection signal="text_changed" from="ComplexEditor" to="." method="_on_complex_editor_text_changed"]
 [connection signal="toggled" from="ToggleComplex" to="." method="_on_toggle_complex_toggled"]

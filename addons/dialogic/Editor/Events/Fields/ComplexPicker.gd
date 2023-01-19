@@ -1,9 +1,16 @@
 @tool
 extends Control
 
-@export var placeholder_text : String = "Select Resource"
+## Event block field for resources/options.
+
+
+# this signal is on all event parts and informs the event that a change happened.
+signal value_changed(property_name, value)
+var property_name : String
+var event_resource : DialogicEvent = null
 
 ### SETTINGS FOR THE RESOURCE PICKER
+@export var placeholder_text : String = "Select Resource"
 var file_extension : String = ""
 var get_suggestions_func : Callable = get_default_suggestions
 var empty_text : String = ""
@@ -17,31 +24,16 @@ var resource_icon : Texture = null:
 		%Icon.texture = new_icon
 
 ## STORING VALUE AND REFERENCE TO RESOURCE
-var event_resource : DialogicEvent = null
-var property_name : String
-var current_value # Dynamic
+var current_value :Variant # Dynamic
 var editor_reference
 
 var current_selected = 0
 
-# this signal is on all event parts and informs the event that a change happened.
-signal value_changed(property_name, value)
-
 ################################################################################
 ## 						BASIC EVENT PART FUNCTIONS
 ################################################################################
-# These functions have to be implemented by all scenes that are used to display 
-# values on the events.
 
-func set_left_text(value:String) -> void:
-	$LeftText.text = str(value)
-	$LeftText.visible = !value.is_empty()
-
-func set_right_text(value:String) -> void:
-	$RightText.text = str(value)
-	$RightText.visible = !value.is_empty()
-
-func set_value(value, text : String = '') -> void:
+func set_value(value:Variant, text : String = '') -> void:
 	if value == null:
 		%Search.text = empty_text
 	elif file_extension != "" and file_extension != ".dch" and file_extension != ".dtl":
@@ -92,13 +84,13 @@ func _ready():
 	if file_extension == '.dtl':
 		%Search.placeholder_text = 'Select Timeline'
 	
-	set_left_text('')
-	set_right_text('')
 	editor_reference = find_parent('EditorView')
+
 
 func _exit_tree():
 	# Explicitly free any open cache resources on close, so we don't get leaked resource errors on shutdown
 	event_resource = null
+
 
 ################################################################################
 ## 						SEARCH & SUGGESTION POPUP

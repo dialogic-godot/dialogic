@@ -1,9 +1,44 @@
-[gd_scene load_steps=5 format=3 uid="uid://kdpp3mibml33"]
+[gd_scene load_steps=7 format=3 uid="uid://kdpp3mibml33"]
 
 [ext_resource type="Script" path="res://addons/dialogic/Editor/Events/Fields/Number.gd" id="1"]
 [ext_resource type="Theme" uid="uid://d3g4i4dshtdpu" path="res://addons/dialogic/Editor/Events/styles/InputFieldsStyle.tres" id="2_u2kma"]
 
-[sub_resource type="Image" id="Image_q6bmg"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_okl7u"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.1, 0.1, 0.1, 0.6)
+border_width_bottom = 2
+border_color = Color(0, 0, 0, 0.6)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_emw2l"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(1, 1, 1, 0.75)
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 5
+expand_margin_left = 2.0
+expand_margin_top = 2.0
+expand_margin_right = 2.0
+expand_margin_bottom = 2.0
+
+[sub_resource type="Image" id="Image_nh7h1"]
 data = {
 "data": PackedByteArray(255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 76, 255, 255, 255, 75, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 99, 255, 255, 255, 191, 255, 255, 255, 191, 255, 255, 255, 99, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 4, 255, 255, 255, 122, 255, 255, 255, 191, 255, 255, 255, 188, 255, 255, 255, 188, 255, 255, 255, 191, 255, 255, 255, 121, 255, 255, 255, 4, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 12, 255, 255, 255, 142, 255, 255, 255, 191, 255, 255, 255, 181, 255, 255, 255, 53, 255, 255, 255, 54, 255, 255, 255, 181, 255, 255, 255, 191, 255, 255, 255, 142, 255, 255, 255, 12, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 71, 255, 255, 255, 191, 255, 255, 255, 171, 255, 255, 255, 36, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 36, 255, 255, 255, 171, 255, 255, 255, 191, 255, 255, 255, 71, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 86, 255, 255, 255, 22, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 22, 255, 255, 255, 86, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 86, 255, 255, 255, 22, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 22, 255, 255, 255, 86, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 71, 255, 255, 255, 191, 255, 255, 255, 171, 255, 255, 255, 36, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 36, 255, 255, 255, 171, 255, 255, 255, 191, 255, 255, 255, 71, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 12, 255, 255, 255, 142, 255, 255, 255, 191, 255, 255, 255, 181, 255, 255, 255, 54, 255, 255, 255, 54, 255, 255, 255, 182, 255, 255, 255, 191, 255, 255, 255, 142, 255, 255, 255, 12, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 4, 255, 255, 255, 121, 255, 255, 255, 191, 255, 255, 255, 188, 255, 255, 255, 188, 255, 255, 255, 191, 255, 255, 255, 121, 255, 255, 255, 4, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 98, 255, 255, 255, 191, 255, 255, 255, 191, 255, 255, 255, 98, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 75, 255, 255, 255, 75, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0),
 "format": "RGBA8",
@@ -12,8 +47,8 @@ data = {
 "width": 16
 }
 
-[sub_resource type="ImageTexture" id="ImageTexture_cbs3g"]
-image = SubResource("Image_q6bmg")
+[sub_resource type="ImageTexture" id="ImageTexture_tfou8"]
+image = SubResource("Image_nh7h1")
 
 [node name="NumberValue" type="HBoxContainer"]
 anchors_preset = 15
@@ -25,41 +60,23 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 0
 script = ExtResource("1")
-min = 0.0
-max = 999.0
-
-[node name="LeftText" type="Label" parent="."]
-layout_mode = 2
-offset_top = 5.0
-offset_right = 1.0
-offset_bottom = 28.0
+value = 0.0
 
 [node name="Value" type="LineEdit" parent="."]
 layout_mode = 2
-offset_left = 1.0
-offset_right = 46.0
-offset_bottom = 33.0
 theme = ExtResource("2_u2kma")
 theme_override_constants/minimum_character_width = 0
+theme_override_styles/normal = SubResource("StyleBoxFlat_okl7u")
+theme_override_styles/focus = SubResource("StyleBoxFlat_emw2l")
+text = "0"
 expand_to_text_length = true
 
 [node name="Spin" type="Button" parent="."]
 layout_mode = 2
-offset_left = 46.0
-offset_top = 4.0
-offset_right = 70.0
-offset_bottom = 28.0
 size_flags_vertical = 4
 focus_mode = 0
-icon = SubResource("ImageTexture_cbs3g")
+icon = SubResource("ImageTexture_tfou8")
 flat = true
-
-[node name="RightText" type="Label" parent="."]
-layout_mode = 2
-offset_left = 70.0
-offset_top = 5.0
-offset_right = 71.0
-offset_bottom = 28.0
 
 [connection signal="focus_exited" from="Value" to="." method="_on_value_focus_exited"]
 [connection signal="text_submitted" from="Value" to="." method="_on_value_text_submitted"]

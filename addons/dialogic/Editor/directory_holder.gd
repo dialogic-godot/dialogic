@@ -22,7 +22,7 @@ func _ready():
 	rebuild_event_script_cache()
 
 
-func rebuild_event_script_cache():
+func rebuild_event_script_cache() -> Array:
 	event_script_cache = []
 	if dialogic_handler != null:
 		dialogic_handler.collect_subsystems()

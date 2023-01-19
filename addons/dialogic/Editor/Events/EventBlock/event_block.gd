@@ -1,5 +1,7 @@
 @tool
-extends HBoxContainer
+extends MarginContainer
+
+## Scene that represents an event in the visual timeline editor.
 
 signal option_action(action_name)
 signal content_changed()
@@ -7,22 +9,27 @@ signal content_changed()
 # Resource
 var resource : DialogicEvent
 
+var selected : bool = false
 
 ### internal node eferences
-@onready var selected_style = %SelectedStyle
-@onready var warning = %Warning
-@onready var title_label = %TitleLabel
-@onready var icon_texture  = %IconTexture
-@onready var header_content_container = %HeaderContent
-@onready var body_container = %Body
-@onready var body_content_container = %BodyContent
-@onready var indent_node = %Indent
+@onready var warning := %Warning
+@onready var title_label := %TitleLabel
+@onready var icon_texture  := %IconTexture
+@onready var header_content_container := %HeaderContent
+@onready var body_container := %Body
+@onready var body_content_container := %BodyContent
 
 # is the body visible
-var expanded = true
+var expanded := true
+
+# was the body content loaded
+var body_was_build := false
 
 # does the body have elements?
-var has_body_content = false
+var has_body_content := false
+
+# list that stores visibility conditions 
+var field_conditions_list := []
 
 # for choice and condition
 var end_node:Node = null:
@@ -32,72 +39,70 @@ var end_node:Node = null:
 		end_node = node
 		%CollapseButton.visible = true if end_node else false
 
-var collapsed = false
+var collapsed := false
 
 ### extarnal node references
 var editor_reference
 
 ### the indent size
-var indent_size = 15
-var current_indent_level = 1
+var indent_size := 22
+var current_indent_level := 1
 
 # Setting this to true will ignore the event while saving
 # Useful for making placeholder events in drag and drop
-var ignore_save = false
+var ignore_save := false
 
 
 ## *****************************************************************************
 ##								PUBLIC METHODS
 ## *****************************************************************************
 
-func visual_select():
-	selected_style.show()
+func visual_select() -> void:
+	$PanelContainer.add_theme_stylebox_override('panel', load("res://addons/dialogic/Editor/Events/styles/selected_styleboxflat.tres"))
+	selected = true
+	%IconPanel.self_modulate = resource.event_color
 
-
-func visual_deselect():
-	selected_style.hide()
-
+func visual_deselect() -> void:
+	$PanelContainer.add_theme_stylebox_override('panel', load("res://addons/dialogic/Editor/Events/styles/unselected_stylebox.tres"))
+	selected = false
+	%IconPanel.self_modulate = resource.event_color.lerp(Color.DARK_SLATE_GRAY, 0.3)
 
 func is_selected() -> bool:
-	return selected_style.visible
+	return selected
 
 # called by the timeline before adding it to the tree
-func load_data(data):
+func load_data(data:DialogicEvent) -> void:
 	resource = data
 
 
-func set_warning(text):
+func set_warning(text:String) -> void:
 	warning.show()
 	warning.tooltip_text = text
 
 
-func remove_warning(text = ''):
+func remove_warning(text := '') -> void:
 	if warning.tooltip_text == text or text == '':
 		warning.hide()
 
 
-func set_indent(indent: int):
-	indent_node.custom_minimum_size = Vector2(indent_size * indent, 0)
-	indent_node.visible = indent != 0
+func set_indent(indent: int) -> void:
+	add_theme_constant_override("margin_left", indent_size*indent)
 	current_indent_level = indent
-	queue_redraw()
 
 
 ## *****************************************************************************
 ##								PRIVATE METHODS
 ## *****************************************************************************
 
-func _set_event_icon(icon: Texture):
+func _set_event_icon(icon: Texture) -> void:
 	icon_texture.texture = icon
 	var _scale = DialogicUtil.get_editor_scale()
-	var cpanel = %IconPanelCenterC
 	var ip = %IconPanel
 	var ipc = icon_texture
 	
 	# Resizing the icon acording to the scale
 	var icon_size = 32
-	cpanel.custom_minimum_size = Vector2(icon_size, icon_size) * _scale
-	ip.custom_minimum_size = cpanel.custom_minimum_size
+	ip.custom_minimum_size = Vector2(icon_size, icon_size) * _scale
 	ipc.custom_minimum_size = ip.custom_minimum_size
 	
 	# Updating the theme properties to scale
@@ -106,36 +111,9 @@ func _set_event_icon(icon: Texture):
 	custom_style.corner_radius_top_right = 5 * _scale
 	custom_style.corner_radius_bottom_left = 5 * _scale
 	custom_style.corner_radius_bottom_right = 5 * _scale
-	
-	# Separation on the header
-	%Header.add_theme_constant_override("custom_constants/separation", 5 * _scale)
-	%BodySpacing.custom_minimum_size.x = title_label.position.x
-	
-
-func _on_OptionsControl_action(index):
-	if index == 0:
-		if not resource.help_page_path.is_empty():
-			OS.shell_open(resource.help_page_path)
-	elif index == 2:
-		emit_signal("option_action", "up")
-	elif index == 3:
-		emit_signal("option_action", "down")
-	elif index == 5:
-		emit_signal("option_action", "remove")
 
 
-func _on_Indent_visibility_changed():
-	if not indent_node:
-		return
-	if resource:
-		if resource.needs_indentation:
-			if indent_node.visible:
-				remove_warning("This event needs a question event around it!")
-			else:
-				set_warning("This event needs a question event around it!")
-
-
-func _request_selection():
+func _request_selection() -> void:
 	# TODO doesn't work. I'm sure - JS
 	var timeline_editor = editor_reference.get_node_or_null('MainPanel/TimelineEditor')
 	if (timeline_editor != null):
@@ -149,9 +127,9 @@ func focus():
 	pass
 
 
-func toggle_collapse(toggled):
+func toggle_collapse(toggled:bool) -> void:
 	collapsed = toggled
-	$PanelContainer/MarginContainer/VBoxContainer/CollapsedBody.visible = toggled
+	$PanelContainer/VBoxContainer/CollapsedBody.visible = toggled
 	var timeline_editor = find_parent('TimelineVisualEditor')
 	if (timeline_editor != null):
 		# @todo select item and clear selection is marked as "private" in TimelineEditor.gd
@@ -159,18 +137,32 @@ func toggle_collapse(toggled):
 		timeline_editor.indent_events()
 
 
-func build_editor():
-	var p_list = resource._get_property_list()
-	var edit_conditions_list = []
-	var current_body_container = HFlowContainer.new()
-	%BodyContent.add_child(current_body_container)
-	for p in p_list:
+func build_editor(build_header:bool = true, build_body:bool = false) ->  void:
+	var current_body_container :HFlowContainer = null
+	
+	if build_body and body_was_build: build_body = false
+	if build_body:
+		if body_was_build:
+			return
+		current_body_container = HFlowContainer.new()
+		%BodyContent.add_child(current_body_container)
+		body_was_build = true
+	
+	for p in resource.get_event_editor_info():
+		if !build_body and p.location == 1:
+			has_body_content = true
+			continue
+		elif !build_header and p.location == 0:
+			continue
+		
 		### --------------------------------------------------------------------
 		### 1. CREATE A NODE OF THE CORRECT TYPE FOR THE PROPERTY
-		var editor_node
+		var editor_node : Control
 		
-		### OTHER
+		### LINEBREAK
 		if p.name == "linebreak":
+			if !current_body_container.get_child_count():
+				current_body_container.queue_free()
 			current_body_container = HFlowContainer.new()
 			%BodyContent.add_child(current_body_container)
 			continue
@@ -239,6 +231,7 @@ func build_editor():
 			editor_node = Label.new()
 			editor_node.text = p.display_info.text
 			editor_node.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+			editor_node.set('custom_colors/font_color', Color("#7b7b7b"))
 		elif p.dialogic_type == resource.ValueType.Button:
 			editor_node = Button.new()
 			editor_node.text = p.display_info.text
@@ -262,7 +255,7 @@ func build_editor():
 		
 		### --------------------------------------------------------------------
 		### 2. ADD IT TO THE RIGHT PLACE (HEADER/BODY)
-		var location = %HeaderContent
+		var location :Control = %HeaderContent
 		if p.location == 1:
 			location = current_body_container
 		location.add_child(editor_node)
@@ -278,37 +271,48 @@ func build_editor():
 				editor_node.set_value(resource.get(p.name))
 		if editor_node.has_signal('value_changed'):
 			editor_node.value_changed.connect(set_property)
-		if editor_node.has_method('set_left_text'):
-			editor_node.set_left_text(p.get('left_text', ''))
-		if editor_node.has_method('set_right_text'):
-			editor_node.set_right_text(p.get('right_text', ''))
+		var left_label :Label = null 
+		var right_label :Label = null
+		if !p.get('left_text', '').is_empty():
+			left_label = Label.new()
+			left_label.text = p.get('left_text')
+			location.add_child(left_label)
+			location.move_child(left_label, editor_node.get_index())
+		if !p.get('right_text', '').is_empty():
+			right_label = Label.new()
+			right_label.text = p.get('right_text')
+			location.add_child(right_label)
+			location.move_child(right_label, editor_node.get_index()+1)
+		
 		if p.has('condition'):
-			edit_conditions_list.append([editor_node, p.condition])
-
+			field_conditions_list.append([p.condition, [editor_node]])
+			if left_label: field_conditions_list[-1][1].append(left_label)
+			if right_label: field_conditions_list[-1][1].append(right_label)
 	
-	has_body_content = true
-	if current_body_container.get_child_count() == 0:
-		has_body_content = false
-		expanded = false
-		body_container.visible = false
-	
-	content_changed.connect(recalculate_edit_visibility.bind(edit_conditions_list))
-	recalculate_edit_visibility(edit_conditions_list)
+	if build_body:
+		has_body_content = true
+		if current_body_container.get_child_count() == 0:
+			has_body_content = false
+			expanded = false
+			body_container.visible = false
+		
+	recalculate_field_visibility()
 
-func recalculate_edit_visibility(list):
-	for node_con in list:
-		if node_con[1].is_empty():
-			node_con[0].show()
+
+func recalculate_field_visibility() -> void:
+	for node_con in field_conditions_list:
+		if node_con[0].is_empty():
+			for node in node_con[1]: node.show()
 		else:
 			var expr = Expression.new()
-			expr.parse(node_con[1])
+			expr.parse(node_con[0])
 			if expr.execute([], resource):
-				node_con[0].show()
+				for node in node_con[1]: node.show()
 			else:
-				node_con[0].hide()
+				for node in node_con[1]: node.show()
 			if expr.has_execute_failed():
-				var name = "unnamed" if "property_name" not in node_con[0] else node_con[0].property_name
-				printerr("(recalculate_edit_visibility)  condition expression failed with error: " + expr.get_error_text())
+				var name :String= "unnamed" if "property_name" not in node_con[1][0] else node_con[1][0].property_name
+				printerr("[Dialogic] Failed executing visibility condition for '",name,"': " + expr.get_error_text())
 	
 	%ExpandButton.visible = false
 	if body_content_container != null:
@@ -318,16 +322,18 @@ func recalculate_edit_visibility(list):
 					%ExpandButton.visible = true
 					break
 
-func set_property(property_name, value):
+
+func set_property(property_name:String, value:Variant) -> void:
 	resource.set(property_name, value)
-	emit_signal('content_changed')
+	content_changed.emit()
 	if end_node:
 		end_node.parent_node_changed()
 
 
-func _update_color():
+func _update_color() -> void:
 	if resource.dialogic_color_name != '':
 		%IconPanel.self_modulate = DialogicUtil.get_color(resource.dialogic_color_name)
+	
 ## *****************************************************************************
 ##								OVERRIDES
 ## *****************************************************************************
@@ -335,8 +341,8 @@ func _update_color():
 func _ready():
 	
 	## DO SOME STYLING
-	var _scale = DialogicUtil.get_editor_scale()
-	selected_style.modulate = get_theme_color("accent_color", "Editor")
+	var _scale := DialogicUtil.get_editor_scale()
+	$PanelContainer.self_modulate = get_theme_color("accent_color", "Editor")
 	warning.texture = get_theme_icon("NodeWarning", "EditorIcons")
 	warning.size = Vector2(16 * _scale, 16 * _scale)
 	title_label.add_theme_color_override("font_color", Color(1,1,1,1))
@@ -369,30 +375,36 @@ func _ready():
 			cb_label.size_flags_horizontal = 3
 			cb_label.horizontal_alignment = 1
 			cb.add_child(cb_label)
-			$PanelContainer/MarginContainer/VBoxContainer.add_child(cb)
+			$PanelContainer/VBoxContainer.add_child(cb)
 	
 	set_focus_mode(1) # Allowing this node to grab focus
 	
 	# signals
 	# TODO godot4 react to changes of the colors, the signal was removed
 	#ProjectSettings.project_settings_changed.connect(_update_color)
-	$PopupMenu.index_pressed.connect(_on_OptionsControl_action)
 	
+	# Separation on the header
+	%Header.add_theme_constant_override("custom_constants/separation", 5 * _scale)
 	
-	_on_Indent_visibility_changed()
+	content_changed.connect(recalculate_field_visibility)
+	
+#	_on_Indent_visibility_changed()
 	%CollapseButton.toggled.connect(toggle_collapse)
 	%CollapseButton.icon = get_theme_icon("Collapse", "EditorIcons")
 	%CollapseButton.hide()
+	await get_tree().process_frame
+	body_container.add_theme_constant_override("margin_left", title_label.position.x)
 
-
-func _on_ExpandButton_toggled(button_pressed):
+func _on_ExpandButton_toggled(button_pressed:bool) -> void:
+	if button_pressed and !body_was_build:
+		build_editor(false, true)
 	%ExpandButton.set_pressed_no_signal(button_pressed)
 	expanded = button_pressed
 	body_container.visible = button_pressed
 	get_parent().get_parent().queue_redraw()
 
 
-func _on_EventNode_gui_input(event):
+func _on_EventNode_gui_input(event:InputEvent) -> void:
 	if event is InputEventMouseButton and event.is_pressed() and event.button_index == 1:
 		grab_focus() # Grab focus to avoid copy pasting text or events
 		if event.double_click:
@@ -401,8 +413,10 @@ func _on_EventNode_gui_input(event):
 	# For opening the context menu
 	if event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:
-			$PopupMenu.popup_on_parent(Rect2(get_global_mouse_position(),Vector2()))
+			var popup :PopupMenu = get_parent().get_parent().get_node('EventPopupMenu')
+			popup.current_event = self
+			popup.popup_on_parent(Rect2(get_global_mouse_position(),Vector2()))
 			if resource.help_page_path == "":
-				$PopupMenu.set_item_disabled(0, true)
+				popup.set_item_disabled(0, true)
 			else:
-				$PopupMenu.set_item_disabled(0, false)
+				popup.set_item_disabled(0, false)

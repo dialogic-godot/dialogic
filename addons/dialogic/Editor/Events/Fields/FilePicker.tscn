@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://addons/dialogic/Editor/Events/Fields/FilePicker.gd" id="1_838yp"]
 [ext_resource type="Theme" uid="uid://d3g4i4dshtdpu" path="res://addons/dialogic/Editor/Events/styles/InputFieldsStyle.tres" id="2_514jv"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_oahfl"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0i2t2"]
 content_margin_left = 4.0
 content_margin_top = 4.0
 content_margin_right = 4.0
@@ -17,7 +17,7 @@ corner_radius_bottom_right = 3
 corner_radius_bottom_left = 3
 corner_detail = 5
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qm060"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1qtlg"]
 content_margin_left = 3.75
 content_margin_top = 3.75
 content_margin_right = 3.75
@@ -29,7 +29,7 @@ corner_radius_top_right = 2
 corner_radius_bottom_right = 2
 corner_radius_bottom_left = 2
 
-[sub_resource type="Image" id="Image_b3vou"]
+[sub_resource type="Image" id="Image_ov00m"]
 data = {
 "data": PackedByteArray(255, 255, 255, 0, 255, 255, 255, 0, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 131, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 131, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 131, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 231, 255, 93, 93, 55, 255, 97, 97, 58, 255, 93, 93, 233, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 231, 255, 94, 94, 54, 255, 94, 94, 57, 255, 93, 93, 233, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 93, 93, 233, 255, 93, 93, 232, 255, 93, 93, 41, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 93, 93, 233, 255, 93, 93, 232, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 97, 97, 42, 255, 255, 255, 0, 255, 97, 97, 42, 255, 97, 97, 42, 255, 255, 255, 0, 255, 98, 98, 47, 255, 97, 97, 42, 255, 255, 255, 0, 255, 97, 97, 42, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 235, 255, 93, 93, 233, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 94, 94, 46, 255, 93, 93, 236, 255, 93, 93, 233, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 235, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 233, 255, 95, 95, 59, 255, 96, 96, 61, 255, 93, 93, 235, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 233, 255, 95, 95, 59, 255, 96, 96, 61, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0),
 "format": "RGBA8",
@@ -38,81 +38,49 @@ data = {
 "width": 16
 }
 
-[sub_resource type="ImageTexture" id="ImageTexture_bx3tb"]
-image = SubResource("Image_b3vou")
+[sub_resource type="ImageTexture" id="ImageTexture_oe0il"]
+image = SubResource("Image_ov00m")
 
 [node name="FilePicker" type="HBoxContainer"]
 offset_right = 340.0
 offset_bottom = 40.0
 script = ExtResource("1_838yp")
 
-[node name="LeftText" type="Label" parent="."]
-visible = false
-layout_mode = 2
-offset_top = 8.0
-offset_right = 1.0
-offset_bottom = 31.0
-
 [node name="PanelContainer" type="PanelContainer" parent="."]
 layout_mode = 2
-offset_right = 340.0
-offset_bottom = 40.0
 size_flags_horizontal = 3
-theme_override_styles/panel = SubResource("StyleBoxFlat_oahfl")
+theme_override_styles/panel = SubResource("StyleBoxFlat_0i2t2")
 
 [node name="HBox" type="HBoxContainer" parent="PanelContainer"]
 layout_mode = 2
-offset_left = 4.0
-offset_top = 4.0
-offset_right = 336.0
-offset_bottom = 36.0
 alignment = 2
 
 [node name="Icon" type="TextureRect" parent="PanelContainer/HBox"]
 unique_name_in_owner = true
 layout_mode = 2
-offset_top = 16.0
-offset_bottom = 16.0
 size_flags_vertical = 4
 mouse_filter = 2
 
 [node name="Field" type="LineEdit" parent="PanelContainer/HBox"]
 unique_name_in_owner = true
 layout_mode = 2
-offset_left = 4.0
-offset_right = 276.0
-offset_bottom = 32.0
 size_flags_horizontal = 3
 mouse_filter = 1
 theme = ExtResource("2_514jv")
 theme_type_variation = &"LineEditWithIcon"
-theme_override_styles/normal = SubResource("StyleBoxFlat_qm060")
-theme_override_styles/focus = SubResource("StyleBoxFlat_qm060")
-theme_override_styles/read_only = SubResource("StyleBoxFlat_qm060")
+theme_override_styles/normal = SubResource("StyleBoxFlat_1qtlg")
+theme_override_styles/focus = SubResource("StyleBoxFlat_1qtlg")
+theme_override_styles/read_only = SubResource("StyleBoxFlat_1qtlg")
 expand_to_text_length = true
 
 [node name="OpenButton" type="Button" parent="PanelContainer/HBox"]
 unique_name_in_owner = true
 layout_mode = 2
-offset_left = 280.0
-offset_right = 304.0
-offset_bottom = 32.0
-icon = SubResource("ImageTexture_bx3tb")
+icon = SubResource("ImageTexture_oe0il")
 flat = true
 
 [node name="ClearButton" type="Button" parent="PanelContainer/HBox"]
 unique_name_in_owner = true
 layout_mode = 2
-offset_left = 308.0
-offset_right = 332.0
-offset_bottom = 32.0
-icon = SubResource("ImageTexture_bx3tb")
+icon = SubResource("ImageTexture_oe0il")
 flat = true
-
-[node name="RightText" type="Label" parent="."]
-visible = false
-layout_mode = 2
-offset_left = 339.0
-offset_top = 8.0
-offset_right = 340.0
-offset_bottom = 31.0

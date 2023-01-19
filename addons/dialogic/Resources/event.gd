@@ -331,7 +331,7 @@ func set_default_color(value) -> void:
 	event_color = DialogicUtil.get_color(value)
 
 
-func _get_property_list() -> Array:
+func get_event_editor_info() -> Array:
 	if Engine.is_editor_hint():
 		if editor_list != null:
 			editor_list.clear()
