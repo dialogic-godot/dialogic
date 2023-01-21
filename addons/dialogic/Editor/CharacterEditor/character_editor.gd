@@ -394,7 +394,6 @@ func setup_portrait_settings_tab() -> void:
 	# Setting up Default Portrait Picker
 	%DefaultPortraitPicker.resource_icon = load("res://addons/dialogic/Editor/Images/Resources/portrait.svg")
 	%DefaultPortraitPicker.get_suggestions_func = suggest_portraits
-	%DefaultPortraitPicker.set_left_text("")
 
 
 # Make sure preview get's updated when portrait settings change
