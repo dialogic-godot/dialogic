@@ -13,13 +13,14 @@ func _ready() -> void:
 		'padding': 5,
 		'background': Color(0.545098, 0.545098, 0.545098, 0.211765)
 	})
-	$General/TitleLabel.add_theme_stylebox_override("normal", s)
-	$General/TitleLabel2.add_theme_stylebox_override("normal", s)
+	%ExtensionsFolderPicker.resource_icon = get_theme_icon("Folder", "EditorIcons")
+	%TestingScenePicker.resource_icon = get_theme_icon("PlayScene", "EditorIcons")
+	%DefaultScenePicker.resource_icon = get_theme_icon("PackedScene", "EditorIcons")
 	
 	# Signals
-	%TestingSceneButton.pressed.connect(_on_TestingSceneButton_pressed)
-	%DefaultSceneButton.pressed.connect(_on_DefaultSceneButton_pressed)
-	%CustomEventsFolderButton.pressed.connect(_on_CustomEventsFolderButton_pressed)
+	%TestingScenePicker.value_changed.connect(_on_TestingScene_value_changed)
+	%DefaultScenePicker.value_changed.connect(_on_DefaultScene_value_changed)
+	%ExtensionsFolderPicker.value_changed.connect(_on_ExtensionsFolder_value_changed)
 	%PhysicsTimerButton.pressed.connect(_on_physics_timer_button_toggled)
 	
 	# Colors
@@ -27,18 +28,17 @@ func _ready() -> void:
 	
 	for n in $"%Colors".get_children():
 		n.color_changed.connect(_on_color_change.bind(n))
-
+	
+	# Extension creator
+	%ExtensionCreator.hide()
 
 func refresh() -> void:
-	%CustomEventsFolderLabel.text = DialogicUtil.get_project_setting('dialogic/custom_events_folder', 'res://addons/dialogic_additions/Events')
-	%CustomEventsFolderButton.icon = get_theme_icon("Folder", "EditorIcons")
-	%TestingSceneButton.icon = get_theme_icon("Folder", "EditorIcons")
-	%TestingSceneLabel.text = DialogicUtil.get_project_setting('dialogic/editor/test_dialog_scene', "res://addons/dialogic/Example Assets/example-scenes/DialogicDefaultScene.tscn")
+	%DefaultScenePicker.set_value(DialogicUtil.get_project_setting('dialogic/default_dialog_scene', "res://addons/dialogic/Example Assets/example-scenes/DialogicDefaultScene.tscn"))
+	%TestingScenePicker.set_value(DialogicUtil.get_project_setting('dialogic/editor/test_dialog_scene', "res://addons/dialogic/Example Assets/example-scenes/DialogicDefaultScene.tscn"))
 	
 	%PhysicsTimerButton.button_pressed = DialogicUtil.is_physics_timer()
 	
-	%DefaultSceneButton.icon = get_theme_icon("Folder", "EditorIcons")
-	%DefaultSceneLabel.text = DialogicUtil.get_project_setting('dialogic/editor/default_dialog_scene', "res://addons/dialogic/Example Assets/example-scenes/DialogicDefaultScene.tscn")
+	%ExtensionsFolderPicker.set_value(DialogicUtil.get_project_setting('dialogic/extensions_folder', 'res://addons/dialogic_additions'))
 	
 	# Color Palett
 	color_palette = DialogicUtil.get_color_palette()
@@ -48,13 +48,17 @@ func refresh() -> void:
 		n.color = color_palette[n.name]
 
 
-func _on_CustomEventsFolderButton_pressed() -> void:
-	find_parent('EditorView').godot_file_dialog(custom_events_folder_selected, '', EditorFileDialog.FILE_MODE_OPEN_DIR, 'Select custom events folder')
+func _on_TestingScene_value_changed(property:String, value:String) -> void:
+	if value == null or value.is_empty():
+		value = "res://addons/dialogic/Example Assets/example-scenes/DialogicDefaultScene.tscn"
+	ProjectSettings.set_setting('dialogic/editor/test_dialog_scene', value)
+	ProjectSettings.save()
 
 
-func custom_events_folder_selected(folder_path:String) -> void:
-	%CustomEventsFolderLabel.text = folder_path
-	ProjectSettings.set_setting('dialogic/custom_events_folder', folder_path)
+func _on_DefaultScene_value_changed(property:String, value:String) -> void:
+	if value == null or value.is_empty():
+		value = "res://addons/dialogic/Example Assets/example-scenes/DialogicDefaultScene.tscn"
+	ProjectSettings.set_setting('dialogic/default_dialog_scene', value)
 	ProjectSettings.save()
 
 
@@ -77,26 +81,120 @@ func _on_reset_colors_button() -> void:
 	emit_signal('colors_changed')
 
 
-func _on_TestingSceneButton_pressed() -> void:
-	find_parent('EditorView').godot_file_dialog(custom_testing_scene_selected, '*.tscn, *.scn', EditorFileDialog.FILE_MODE_OPEN_FILE, 'Select testing scene')
-
-
-func custom_testing_scene_selected(path:String) -> void:
-	%TestingSceneLabel.text = path
-	ProjectSettings.set_setting('dialogic/editor/test_dialog_scene', path)
-	ProjectSettings.save()
-
-
-func _on_DefaultSceneButton_pressed() -> void:
-	find_parent('EditorView').godot_file_dialog(custom_default_scene_selected, '*.tscn, *.scn', EditorFileDialog.FILE_MODE_OPEN_FILE, 'Select default scene')
-
-
-func custom_default_scene_selected(path:String) -> void:
-	%DefaultSceneLabel.text = path
-	ProjectSettings.set_setting('dialogic/editor/default_dialog_scene', path)
-	ProjectSettings.save()
-
-
 func _on_physics_timer_button_toggled(button_pressed:bool) -> void:
 	ProjectSettings.set_setting('dialogic/timer/process_in_physics', button_pressed)
 	ProjectSettings.save()
+
+
+func _on_ExtensionsFolder_value_changed(property:String, value:String) -> void:
+	if value == null or value.is_empty():
+		value = 'res://addons/dialogic_additions'
+	ProjectSettings.set_setting('dialogic/extensions_folder', value)
+	ProjectSettings.save()
+
+################################################################################
+## 					EXTENSION CREATOR
+################################################################################
+
+func _on_create_extension_button_pressed() -> void:
+	%CreateExtensionButton.hide()
+	%ExtensionCreator.show()
+	
+	%NameEdit.text = ""
+	%NameEdit.grab_focus()
+
+
+func _on_submit_extension_button_pressed() -> void:
+	if %NameEdit.text.is_empty():
+		return
+	
+	var extensions_folder :String = DialogicUtil.get_project_setting('dialogic/extensions_folder', 'res://addons/dialogic_additions')
+	
+	extensions_folder = extensions_folder.path_join(%NameEdit.text.to_pascal_case())
+	DirAccess.make_dir_recursive_absolute(extensions_folder)
+	var mode :int= %ExtensionMode.selected
+	
+	var file : FileAccess
+	var indexer_content := "@tool\nextends DialogicIndexer\n\n"
+	if mode != 1: # don't add event in Subsystem Only mode
+		indexer_content += """func _get_events() -> Array:
+	return [this_folder.path_join('event_"""+%NameEdit.text.to_snake_case()+""".gd')]\n\n"""
+		file = FileAccess.open(extensions_folder.path_join('event_'+%NameEdit.text.to_snake_case()+'.gd'), FileAccess.WRITE)
+		file.store_string(
+"""@tool
+extends DialogicEvent
+class_name Dialogic"""+%NameEdit.text.to_pascal_case()+"""Event
+
+# Define properties of the event here
+
+func _execute() -> void:
+	# This will execute when the event is reached
+	finish() # called to continue with the next event
+
+
+################################################################################
+## 						INITIALIZE
+################################################################################
+
+# Set fixed settings of this event
+func _init() -> void:
+	event_name = \""""+%NameEdit.text.capitalize()+"""\"
+	event_category = Category.Other
+
+\n
+################################################################################
+## 						SAVING/LOADING
+################################################################################
+func get_shortcode() -> String:
+	return \""""+%NameEdit.text.to_snake_case()+"""\"
+
+func get_shortcode_parameters() -> Dictionary:
+	return {
+		#param_name 	: property_info
+		#"my_parameter"		: {"property": "property", "default": "Default"},
+	}
+
+# You can alternatively overwrite these 3 functions: to_text(), from_text(), is_valid_event()
+
+################################################################################
+## 						EDITOR REPRESENTATION
+################################################################################
+
+func build_event_editor() -> void:
+	pass""")
+
+	if mode != 0: # don't add subsystem in event only mode
+		indexer_content += """func _get_subsystems() -> Array:
+	return [{'name':'"""+%NameEdit.text.to_pascal_case()+"""', 'script':this_folder.path_join('subsystem_"""+%NameEdit.text.to_snake_case()+""".gd')}]"""
+		file = FileAccess.open(extensions_folder.path_join('subsystem_'+%NameEdit.text.to_snake_case()+'.gd'), FileAccess.WRITE)
+		file.store_string(
+"""extends DialogicSubsystem
+
+## Describe the subsystems purpose here.
+
+
+####################################################################################################
+##					STATE
+####################################################################################################
+
+func clear_game_state():
+	pass
+
+func load_game_state():
+	pass
+
+
+####################################################################################################
+##					MAIN METHODS
+####################################################################################################
+
+# Add some useful methods here.
+
+""")
+	file = FileAccess.open(extensions_folder.path_join('index.gd'), FileAccess.WRITE)
+	file.store_string(indexer_content)
+	
+	%ExtensionCreator.hide()
+	%CreateExtensionButton.show()
+	
+	find_parent('EditorView').plugin_reference.editor_interface.get_resource_filesystem().scan_sources()
