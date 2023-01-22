@@ -16,6 +16,7 @@ var editor_scene_cache = {}
 func _ready():
 	# Updating the folder structure
 	flat_structure = DialogicUtil.get_flat_folders_list() 
+	flat_structure_to_editor_array()
 	
 	# Adding file dialog to get used by Events
 	editor_file_dialog = EditorFileDialog.new()
@@ -110,6 +111,24 @@ func _ready():
 		
 	$MainPanel/MasterTreeContainer/FilterMasterTreeEdit.right_icon = get_icon("Search", "EditorIcons")
 	$MainPanel/MasterTreeContainer/MasterTree.build_full_tree()
+
+func flat_structure_to_editor_array():
+	flat_structure['Timelines_Array'] = []
+	flat_structure['Characters_Array'] = []
+	flat_structure['Definitions_Array'] = []
+	flat_structure['Themes_Array'] = []
+	
+	for key in flat_structure['Timelines'].keys():
+		flat_structure['Timelines_Array'].push_back({'key': key, 'value': flat_structure['Timelines'][key]})
+
+	for key in flat_structure['Characters'].keys():
+		flat_structure['Characters_Array'].push_back({'key': key, 'value': flat_structure['Characters'][key]})
+		
+	for key in flat_structure['Definitions'].keys():
+		flat_structure['Definitions_Array'].push_back({'key': key, 'value': flat_structure['Definitions'][key]})
+		
+	for key in flat_structure['Themes'].keys():
+		flat_structure['Themes_Array'].push_back({'key': key, 'value': flat_structure['Themes'][key]})
 
 func on_master_tree_editor_selected(editor: String):
 	$ToolBar/FoldTools.visible = editor == 'timeline'

@@ -242,15 +242,15 @@ static func get_folder_meta(folder_path: String, key:String):
 
 
 ## FOLDER FUNCTIONS
-static func add_folder(path:String, folder_name:String):
+static func add_folder(folder_structure:Dictionary, tree:String, path:String, folder_name:String):
 	# check if the name is allowed
-	if folder_name in get_folder_at_path(path)['folders'].keys():
+	var new_path = path + "/" + folder_name + "/."
+	
+	if new_path in folder_structure[tree]:
 		print("[D] A folder with the name '"+folder_name+"' already exists in the target folder '"+path+"'.")
 		return ERR_ALREADY_EXISTS
 	
-	var folder_data = get_folder_at_path(path)
-	folder_data['folders'][folder_name] = {"folders":{}, "files":[], 'metadata':{'color':null, 'folded':false}}
-	set_folder_at_path(path, folder_data)
+	folder_structure[tree][path + "/" + folder_name + "/."] = {'color':null, 'folded':false}
 	
 	return OK
 
@@ -273,7 +273,7 @@ static func remove_folder(folder_path:String, delete_files:bool = true):
 					DialogicResources.delete_theme(file)
 	set_folder_at_path(folder_path, {})
 
-static func rename_folder(path:String, new_folder_name:String):
+static func rename_folder(folder_structure: Dictionary, path:String, new_folder_name:String):
 	# check if the name is allowed
 	if new_folder_name in get_folder_at_path(get_parent_path(path))['folders'].keys():
 		print("[D] A folder with the name '"+new_folder_name+"' already exists in the target folder '"+get_parent_path(path)+"'.")
@@ -289,13 +289,13 @@ static func rename_folder(path:String, new_folder_name:String):
 	remove_folder(path, false)
 	
 	# add the new folder
-	add_folder(get_parent_path(path), new_folder_name)
+	add_folder(folder_structure, "tree", get_parent_path(path), new_folder_name)
 	var new_path = get_parent_path(path)+ "/"+new_folder_name
 	set_folder_at_path(new_path, folder_content)
 
 	return OK
 
-static func move_folder_to_folder(orig_path, target_folder):
+static func move_folder_to_folder(folder_structure:Dictionary, orig_path, target_folder):
 	# check if the name is allowed
 	if orig_path.split("/")[-1] in get_folder_at_path(target_folder)['folders'].keys():
 		print("[D] A folder with the name '"+orig_path.split("/")[-1]+"' already exists in the target folder '"+target_folder+"'.")
@@ -310,7 +310,7 @@ static func move_folder_to_folder(orig_path, target_folder):
 	
 	# add the new folder
 	var folder_name = orig_path.split("/")[-1]
-	add_folder(target_folder, folder_name)
+	add_folder(folder_structure, "tree", target_folder, folder_name)
 	var new_path = target_folder+ "/"+folder_name
 	set_folder_at_path(new_path, folder_content)
 	
