@@ -123,8 +123,8 @@ func _ready() -> void:
 	
 	## General Styling
 	var panel_style = DCSS.inline({
-		'border-radius': 5,
-		'border': 1,
+		'border-radius': 3,
+		'border': 0,
 		'border_color':get_theme_color("dark_color_3", "Editor"),
 		'background': get_theme_color("base_color", "Editor"),
 		'padding': [10, 10],
