@@ -354,20 +354,21 @@ func _on_portrait_tree_button_clicked(item:TreeItem, column:int, id:int, mouse_b
 # this removes/and adds the DEFAULT star on the portrait list
 func update_default_portrait_star(default_portrait_name:String) -> void:
 	var item_list : Array = %PortraitTree.get_root().get_children()
-	while true:
-		var item = item_list.pop_back()
-		if item.get_button_by_id(0, 2) != -1:
-			item.erase_button(0, item.get_button_by_id(0, 2))
-		if %PortraitTree.get_full_item_name(item) == default_portrait_name:
-			item.erase_button(0, item.get_button_by_id(0, 1))
-			item.erase_button(0, item.get_button_by_id(0, 3))
-			item.add_button(0, get_theme_icon('Favorites', 'EditorIcons'), 2, true, 'Default')
-			item.add_button(0, get_theme_icon('Duplicate', 'EditorIcons'), 3, false, 'Duplicate')
-			item.add_button(0, get_theme_icon('Remove', 'EditorIcons'), 1, false, 'Remove')
-		item_list.append_array(item.get_children())
-		
-		if item_list.is_empty():
-			break
+	if item_list.is_empty() == false:
+		while true:
+			var item = item_list.pop_back()
+			if item.get_button_by_id(0, 2) != -1:
+				item.erase_button(0, item.get_button_by_id(0, 2))
+			if %PortraitTree.get_full_item_name(item) == default_portrait_name:
+				item.erase_button(0, item.get_button_by_id(0, 1))
+				item.erase_button(0, item.get_button_by_id(0, 3))
+				item.add_button(0, get_theme_icon('Favorites', 'EditorIcons'), 2, true, 'Default')
+				item.add_button(0, get_theme_icon('Duplicate', 'EditorIcons'), 3, false, 'Duplicate')
+				item.add_button(0, get_theme_icon('Remove', 'EditorIcons'), 1, false, 'Remove')
+			item_list.append_array(item.get_children())
+			
+			if item_list.is_empty():
+				break
 
 
 func _on_item_edited():
