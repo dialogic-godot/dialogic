@@ -1,6 +1,6 @@
+@icon("res://addons/dialogic/Events/Text/node_next_indicator_icon.svg")
 class_name DNextIndicator
 extends Control
-@icon("res://addons/dialogic/Events/Text/node_next_indicator_icon.svg")
 
 ## Node that is shown when the text is fully revealed.
 ## The default implementation allows to set an icon and animation.
