@@ -63,7 +63,7 @@ func add_portrait(character:DialogicCharacter, portrait:String,  position_idx:in
 			print_debug("[DialogicError] Character ",character.display_name, " has no default portrait to use.")
 			return null
 	
-	check_positions_and_holder()
+	if !check_positions_and_holder(): return
 
 	character_node = Node2D.new()
 	character_node.name = character.get_character_name()
@@ -205,7 +205,7 @@ func remove_portrait(character:DialogicCharacter) -> void:
 ## This will always be an absolute value for new positions, existing positions will be updated as absolute values by this 
 func add_portrait_position(position_number: int, position:Vector2) -> void:
 	
-	check_positions_and_holder()
+	if !check_positions_and_holder(): return
 	
 	if position_number in current_positions:
 		move_portrait_position(position_number, position)
@@ -225,7 +225,7 @@ func reset_portrait_position(position:int, time:float = 0.0) -> void:
 
 
 func move_portrait_position(position_number: int, vector:Vector2, relative:bool = false, time:float = 0.0) -> void:
-	check_positions_and_holder()
+	if !check_positions_and_holder(): return
 	
 	if !position_number in current_positions:
 		if !relative:
@@ -297,9 +297,10 @@ func update_rpg_portrait_mode(character:DialogicCharacter = null, portrait:Strin
 
 
 # makes sure positions are listed and can be accessed
-func check_positions_and_holder() -> void:
+func check_positions_and_holder() -> bool:
 	if _portrait_holder_reference == null and len(get_tree().get_nodes_in_group('dialogic_portrait_holder')) == 0:
-		assert(false, '[Dialogic] If you want to display portraits, you need a PortraitHolder scene!')
+		printerr('[Dialogic] If you want to display portraits, you need a PortraitHolder scene!')
+		return false
 	else: 
 		if _portrait_holder_reference == null:
 			_portrait_holder_reference = get_tree().get_first_node_in_group('dialogic_portrait_holder')
@@ -309,7 +310,10 @@ func check_positions_and_holder() -> void:
 	
 	if current_positions.size() == 0:
 		current_positions = _default_positions.duplicate()
-
+	
+	if current_positions.size() == 0:
+		return false
+	return true
 
 func text_effect_portrait(text_node:Control, skipped:bool, argument:String) -> void:
 	if argument:

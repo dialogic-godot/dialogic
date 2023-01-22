@@ -1,35 +1,31 @@
-Hello, Welcome to Dialogic 2! Have you used Dialogic before?
+[background arg="res://test-project/Medieval Town 136.png"]
+Join Jowan 0
 
-Okay, so let's go over what's new in Dialogic 2 then!
+Jowan: Hello, Welcome to Dialogic 2! Have you used Dialogic before?
 - Yes
-
 - No
 	
 	That's okay, you will get familiar with Dialogic in no time
 
+Join characters/Emilio 1 [ mirrored="true"]
+Update characters/Emilio [animation="Tada" wait="true" repeat="1" mirrored="true"]
+
+characters/Emilio: Okay, so let's go over what's new in Dialogic 2 then!
+
+Leave Jowan
+Join Dex 0
 [label name="start"]
 
 [background arg="res://addons/dialogic/Example Assets/backgrounds/green-field.png"]
 
-Join Jowan (shocked) 3 [ mirrored="true"]
-
-Join  1
-
-Join Dex 1
-
 Jowan: This is a cool feature [portrait=joy].
 
 - Yes
-	
-	[background arg="res://addons/dialogic/Example Assets/backgrounds/vn-background-2.png" fade="1.0"]
-	
-	Update Jowan (angry) 1 [ move_time="0.3" extra_data="alien"]
-	
-	Jowan: You are right Emilio.
+	characters/Emilio: You are right Jowan.
 	
 	
 	
-	I know, right? Jowan (testing color)
+	characters/Emilio: I know, right? Jowan (testing color)
 
 - No
 	
@@ -37,7 +33,7 @@ Jowan: This is a cool feature [portrait=joy].
 	
 	
 	
-	[theme name="Special"]
+	test-project/Emilio: Lalalalala
 	
 	Jowan: What are you talking about?
 
@@ -90,3 +86,4 @@ Jowan: This is a cool feature [portrait=joy].
 [background]
 
 [jump timeline="Chapter1" label="start"]
+

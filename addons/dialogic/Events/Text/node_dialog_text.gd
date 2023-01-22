@@ -1,8 +1,8 @@
+class_name DialogicNode_DialogText
 extends RichTextLabel
 
-class_name DialogicNode_DialogText
-
 ## Dialogic node that can reveal text at a given (changeable speed). 
+
 
 signal started_revealing_text()
 signal continued_revealing_text(new_character)

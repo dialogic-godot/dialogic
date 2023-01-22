@@ -66,8 +66,8 @@ func start_timeline(timeline_resource:Variant, label_or_idx:Variant = "") -> voi
 		else: 
 			timeline_resource = load(find_timeline(timeline_resource))
 		if timeline_resource == null:
-			assert(false, "There was an error loading this timeline. Check the filename, and the timeline for errors")
-	
+			printerr("[Dialogic] There was an error loading this timeline. Check the filename, and the timeline for errors")
+			return
 	timeline_resource = process_timeline(timeline_resource)
 		
 	current_timeline = timeline_resource
@@ -82,8 +82,6 @@ func start_timeline(timeline_resource:Variant, label_or_idx:Variant = "") -> voi
 		if label_or_idx >-1:
 			current_event_idx = label_or_idx -1
 	
-
-	
 	emit_signal('timeline_started')
 	handle_next_event()
 
@@ -95,7 +93,8 @@ func preload_timeline(timeline_resource:Variant) -> Variant:
 	if typeof(timeline_resource) == TYPE_STRING:
 		timeline_resource = load(timeline_resource)
 		if timeline_resource == null:
-			assert(false, "There was an error loading this timeline. Check the filename, and the timeline for errors")
+			printerr("[Dialogic] There was an error preloading this timeline. Check the filename, and the timeline for errors")
+			return false
 		else:
 			timeline_resource = process_timeline(timeline_resource)
 			return timeline_resource

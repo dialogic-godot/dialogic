@@ -13,15 +13,15 @@
 "display_name": "Dex",
 "mirror": false,
 "nicknames": ["AnidemDex", "Dex"],
-"offset": Vector2(0, 80),
+"offset": Vector2(0, 0),
 "portraits": {
 "happy": {
-"image": "res://addons/dialogic/Example Assets/portraits/Jane/pl3 blink.png",
+"image": "res://test-project/coraxdigitalart-realistic-human-heroes__9_-removebg-preview.png",
 "mirror": false,
 "offset": Vector2(0, 0),
-"scale": 1,
+"scale": 0.9,
 "scene": ""
 }
 },
-"scale": 0.8
+"scale": 1.0
 }

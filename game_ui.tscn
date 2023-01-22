@@ -1,0 +1,178 @@
+[gd_scene load_steps=12 format=3 uid="uid://bodlkbe7qcbqs"]
+
+[ext_resource type="Script" path="res://addons/dialogic/Events/Background/node_background_holder.gd" id="1_7xoxi"]
+[ext_resource type="Script" path="res://addons/dialogic/Events/Text/node_dialog_text.gd" id="1_pyeja"]
+[ext_resource type="Script" path="res://addons/dialogic/Events/Choice/node_choice_button.gd" id="2_0chsi"]
+[ext_resource type="Script" path="res://addons/dialogic/Events/Text/node_next_indicator.gd" id="2_8o2ju"]
+[ext_resource type="Script" path="res://addons/dialogic/Events/Text/node_input_handler.gd" id="2_cul8m"]
+[ext_resource type="Texture2D" uid="uid://bbqfq3s7qrduv" path="res://icon.svg" id="3_y357o"]
+[ext_resource type="Script" path="res://addons/dialogic/Events/Text/node_name_label.gd" id="3_yr5sj"]
+[ext_resource type="Script" path="res://addons/dialogic/Events/Character/node_portrait_position.gd" id="7_sijvi"]
+[ext_resource type="Script" path="res://addons/dialogic/Events/Character/node_portrait_holder.gd" id="8_mhj1c"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8d420"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.176471, 0.180392, 0.254902, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="Theme" id="Theme_x6eit"]
+ChoiceButton/base_type = &"Button"
+ChoiceButton/styles/normal = SubResource("StyleBoxFlat_8d420")
+
+[node name="GameUI" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = SubResource("Theme_x6eit")
+
+[node name="DialogicNode_BackgroundHolder" type="CanvasLayer" parent="."]
+layer = -1
+script = ExtResource("1_7xoxi")
+
+[node name="ColorRect2" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.0431373, 0.0431373, 0.0431373, 0.490196)
+
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -13.0
+offset_top = -175.0
+offset_right = 9.0
+grow_horizontal = 2
+grow_vertical = 0
+rotation = 0.000493497
+color = Color(0.0470588, 0.0470588, 0.0470588, 0.811765)
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -338.0
+offset_top = -163.0
+offset_right = 338.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="DialogicNode_NameLabel" type="Label" parent="VBoxContainer2"]
+layout_mode = 2
+text = "Example Name"
+horizontal_alignment = 1
+script = ExtResource("3_yr5sj")
+hide_when_empty = false
+
+[node name="DialogicNode_DialogText" type="RichTextLabel" parent="VBoxContainer2"]
+clip_contents = false
+layout_mode = 2
+text = "This is some default text that is as long as it needs to be for me to see where the dialog box and it's limits are."
+fit_content_height = true
+script = ExtResource("1_pyeja")
+Align = 1
+
+[node name="DNextIndicator" type="Control" parent="VBoxContainer2/DialogicNode_DialogText"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_top = 50.0
+offset_bottom = 50.0
+grow_horizontal = 2
+grow_vertical = 0
+script = ExtResource("2_8o2ju")
+texture = ExtResource("3_y357o")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer2"]
+layout_mode = 2
+alignment = 1
+
+[node name="DialogicNode_ChoiceButton" type="Button" parent="VBoxContainer2/VBoxContainer"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 4
+theme_type_variation = &"ChoiceButton"
+text = "Example Choice"
+flat = true
+alignment = 0
+expand_icon = true
+script = ExtResource("2_0chsi")
+
+[node name="DialogicNode_ChoiceButton2" type="Button" parent="VBoxContainer2/VBoxContainer"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 4
+theme_type_variation = &"ChoiceButton"
+text = "Example Choice"
+flat = true
+alignment = 0
+expand_icon = true
+script = ExtResource("2_0chsi")
+
+[node name="DialogicNode_ChoiceButton3" type="Button" parent="VBoxContainer2/VBoxContainer"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 4
+theme_type_variation = &"ChoiceButton"
+text = "Example Choice"
+flat = true
+alignment = 0
+expand_icon = true
+script = ExtResource("2_0chsi")
+
+[node name="DialogicNode_ChoiceButton4" type="Button" parent="VBoxContainer2/VBoxContainer"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 4
+theme_type_variation = &"ChoiceButton"
+text = "Example Choice"
+flat = true
+alignment = 0
+expand_icon = true
+script = ExtResource("2_0chsi")
+
+[node name="DialogicNode_ChoiceButton5" type="Button" parent="VBoxContainer2/VBoxContainer"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 4
+theme_type_variation = &"ChoiceButton"
+text = "Example Choice"
+flat = true
+alignment = 0
+expand_icon = true
+script = ExtResource("2_0chsi")
+
+[node name="DialogicNode_InputHandler" type="Node" parent="."]
+script = ExtResource("2_cul8m")
+
+[node name="DialogicNode_PortraitPosition" type="Marker2D" parent="."]
+position = Vector2(148, 656)
+script = ExtResource("7_sijvi")
+
+[node name="DialogicNode_PortraitPosition2" type="Marker2D" parent="."]
+position = Vector2(983, 656)
+script = ExtResource("7_sijvi")
+position_index = 1
+
+[node name="DialogicNode_PortraitHolder" type="CanvasLayer" parent="."]
+script = ExtResource("8_mhj1c")
