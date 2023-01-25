@@ -161,7 +161,7 @@ func build_flat_tree_items(current_tree: String=''):
 	#break if the flat_structure isn't built yet so it doesn't throw an error, which happens at plugin start
 	if !current_tree in editor_reference.flat_structure:
 		return
-
+		
 	var current_root
 	var editor
 	var depth_stack = []
@@ -613,7 +613,7 @@ func _on_item_rmb_selected(position):
 func get_item_folder(item: TreeItem, root : String):
 	if not item:
 		return root
-	var current_path:String = get_item_path(item)
+	var current_path:String = get_item_path(item)['path']
 	if not "Root" in item.get_metadata(0)['editor']:
 		current_path = DialogicUtil.get_parent_path(current_path)
 	if not current_path.begins_with(root):
@@ -621,14 +621,14 @@ func get_item_folder(item: TreeItem, root : String):
 	return current_path
 
 
-func get_item_path(item: TreeItem) -> String:
+func get_item_path(item: TreeItem) -> Dictionary:
 	if item == null:
-		return ''
+		return {'path': "", 'step': '0'}
 	
 	print(item.get_metadata(0)['path'])
 	if 	!'path' in item.get_metadata(0):
-		return "/"
-	return item.get_metadata(0)['path']
+		return {'path': "/", 'step': '0'}
+	return {'path': item.get_metadata(0)['path'], 'step': item.get_metadata(0)['step']}
 
 
 func create_item_path_recursive(item:TreeItem, path:String) -> String:
@@ -648,7 +648,7 @@ func _on_TimelinePopupMenu_id_pressed(id):
 	if id == 0: # View files
 		OS.shell_open(ProjectSettings.globalize_path(DialogicResources.get_path('TIMELINE_DIR')))
 	elif id == 1: # Copy to clipboard
-		OS.set_clipboard(get_item_path(get_selected()).replace('Timelines', ''))
+		OS.set_clipboard(get_item_path(get_selected())['path'].replace('Timelines', ''))
 	elif id == 2: # Copy File name
 		OS.set_clipboard(get_selected().get_metadata(0).get('file'))
 	elif id == 3: # Remove
@@ -699,7 +699,7 @@ func _on_TimelineRootPopupMenu_id_pressed(id):
 		new_timeline()
 	if id == 1: # add subfolder
 		print(get_item_path(get_selected()))
-		DialogicUtil.add_folder(editor_reference.flat_structure, "Timelines", get_item_path(get_selected()), "New Folder "+str(OS.get_unix_time()))
+		DialogicUtil.add_folder(editor_reference.flat_structure, "Timelines_Array", get_item_path(get_selected()), "New Folder "+str(OS.get_unix_time()))
 		build_flat_tree_items("Timelines")
 	if id == 2: # remove folder and substuff
 		if get_selected().get_parent() == get_root():
@@ -713,7 +713,7 @@ func _on_CharacterRootPopupMenu_id_pressed(id):
 		new_character()
 	if id == 1: # add subfolder
 		print(get_item_path(get_selected()))
-		DialogicUtil.add_folder(editor_reference.flat_structure, "Characters", get_item_path(get_selected()), "New Folder "+str(OS.get_unix_time()))
+		DialogicUtil.add_folder(editor_reference.flat_structure, "Characters_Array", get_item_path(get_selected()), "New Folder "+str(OS.get_unix_time()))
 		
 		build_flat_tree_items("Characters")
 	if id == 2: # remove folder and substuff
@@ -730,7 +730,7 @@ func _on_DefinitionRootPopupMenu_id_pressed(id):
 		new_glossary_entry()
 	if id == 2: # add subfolder
 		print(get_item_path(get_selected()))
-		DialogicUtil.add_folder(editor_reference.flat_structure, "Definitions", get_item_path(get_selected()), "New Folder "+str(OS.get_unix_time()))
+		DialogicUtil.add_folder(editor_reference.flat_structure, "Definitions_Array", get_item_path(get_selected()), "New Folder "+str(OS.get_unix_time()))
 		build_flat_tree_items("Definitions")
 	if id == 3: # remove folder and substuff
 		if get_selected().get_parent() == get_root():
@@ -744,7 +744,7 @@ func _on_ThemeRootPopupMenu_id_pressed(id):
 		new_theme()
 	if id == 1: # add subfolder
 		print(get_item_path(get_selected()))
-		DialogicUtil.add_folder(editor_reference.flat_structure, "Themes", get_item_path(get_selected()), "New Folder "+str(OS.get_unix_time()))
+		DialogicUtil.add_folder(editor_reference.flat_structure, "Themes_Array", get_item_path(get_selected()), "New Folder "+str(OS.get_unix_time()))
 		build_flat_tree_items("Themes")
 	if id == 2: # remove folder and substuff
 		if get_selected().get_parent() == get_root():
@@ -914,7 +914,7 @@ func _start_rename():
 	var item = get_selected()
 	var metadata = item.get_metadata(0)
 	if metadata.has("editable") and metadata["editable"]:
-		item_path_before_edit = get_item_path(item)
+		item_path_before_edit = get_item_path(item)['path']
 		item.set_editable(0, true)
 		$RenamerReset.start(0.5)
 
