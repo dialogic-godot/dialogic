@@ -158,7 +158,7 @@ func popup_remove_confirmation(what):
 
 func _on_RemoveFolderConfirmation_confirmed():
 	var item_path = $MainPanel/MasterTreeContainer/MasterTree.get_item_path($MainPanel/MasterTreeContainer/MasterTree.get_selected())
-	DialogicUtil.remove_folder(item_path)
+	DialogicUtil.remove_folder(flat_structure, item_path)
 	$MainPanel/MasterTreeContainer/MasterTree.build_full_tree()
 
 

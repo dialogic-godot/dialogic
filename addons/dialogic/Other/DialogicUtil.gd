@@ -255,23 +255,21 @@ static func add_folder(folder_structure:Dictionary, tree:String, path:Dictionary
 	
 	return OK
 
-static func remove_folder(folder_path:String, delete_files:bool = true):
+static func remove_folder(flat_structure: Dictionary, folder_path:Dictionary, delete_files:bool = true):
 	#print("[D] Removing 'Folder' "+folder_path)
-	for folder in get_folder_at_path(folder_path)['folders']:
-		remove_folder(folder_path+"/"+folder, delete_files)
+	
+	#temp because i need to leave soon and want to remember what I'm doing 
+	var tree ="Timelines"
+	flat_structure[tree].erase(folder_path['path'])
+	flat_structure[tree +"_Array"].remove(folder_path['step'])
 	
 	if delete_files:
-		for file in get_folder_at_path(folder_path)['files']:
-			#print("[D] Removing file ", file)
-			match folder_path.split("/")[0]:
-				'Timelines':
-					DialogicResources.delete_timeline(file)
-				'Characters':
-					DialogicResources.delete_character(file)
-				'Definitions':
-					DialogicResources.delete_default_definition(file)
-				'Themes':
-					DialogicResources.delete_theme(file)
+		var folder_root = folder_path.rstrip("/.")
+		
+		for key in flat_structure[tree].keys():
+			if folder_root in key:
+				#Erasing elements while iterating over them is not supported and will result in undefined behavior.
+		
 	set_folder_at_path(folder_path, {})
 
 static func rename_folder(folder_structure: Dictionary, path:String, new_folder_name:String):
