@@ -699,7 +699,7 @@ func _on_TimelineRootPopupMenu_id_pressed(id):
 		new_timeline()
 	if id == 1: # add subfolder
 		print(get_item_path(get_selected()))
-		DialogicUtil.add_folder(editor_reference.flat_structure, "Timelines_Array", get_item_path(get_selected()), "New Folder "+str(OS.get_unix_time()))
+		DialogicUtil.add_folder(editor_reference.flat_structure, "Timelines", get_item_path(get_selected()), "New Folder "+str(OS.get_unix_time()))
 		build_flat_tree_items("Timelines")
 	if id == 2: # remove folder and substuff
 		if get_selected().get_parent() == get_root():
@@ -713,7 +713,7 @@ func _on_CharacterRootPopupMenu_id_pressed(id):
 		new_character()
 	if id == 1: # add subfolder
 		print(get_item_path(get_selected()))
-		DialogicUtil.add_folder(editor_reference.flat_structure, "Characters_Array", get_item_path(get_selected()), "New Folder "+str(OS.get_unix_time()))
+		DialogicUtil.add_folder(editor_reference.flat_structure, "Characters", get_item_path(get_selected()), "New Folder "+str(OS.get_unix_time()))
 		
 		build_flat_tree_items("Characters")
 	if id == 2: # remove folder and substuff
@@ -730,7 +730,7 @@ func _on_DefinitionRootPopupMenu_id_pressed(id):
 		new_glossary_entry()
 	if id == 2: # add subfolder
 		print(get_item_path(get_selected()))
-		DialogicUtil.add_folder(editor_reference.flat_structure, "Definitions_Array", get_item_path(get_selected()), "New Folder "+str(OS.get_unix_time()))
+		DialogicUtil.add_folder(editor_reference.flat_structure, "Definitions", get_item_path(get_selected()), "New Folder "+str(OS.get_unix_time()))
 		build_flat_tree_items("Definitions")
 	if id == 3: # remove folder and substuff
 		if get_selected().get_parent() == get_root():
@@ -744,7 +744,7 @@ func _on_ThemeRootPopupMenu_id_pressed(id):
 		new_theme()
 	if id == 1: # add subfolder
 		print(get_item_path(get_selected()))
-		DialogicUtil.add_folder(editor_reference.flat_structure, "Themes_Array", get_item_path(get_selected()), "New Folder "+str(OS.get_unix_time()))
+		DialogicUtil.add_folder(editor_reference.flat_structure, "Themes", get_item_path(get_selected()), "New Folder "+str(OS.get_unix_time()))
 		build_flat_tree_items("Themes")
 	if id == 2: # remove folder and substuff
 		if get_selected().get_parent() == get_root():

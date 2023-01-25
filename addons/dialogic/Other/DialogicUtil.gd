@@ -250,7 +250,8 @@ static func add_folder(folder_structure:Dictionary, tree:String, path:Dictionary
 		print("[D] A folder with the name '"+folder_name+"' already exists in the target folder '"+path['path']+"'.")
 		return ERR_ALREADY_EXISTS
 	
-	folder_structure[tree].insert(path['step'] + 1, {'key': new_path, "value":{'color':null, 'folded':false}})
+	folder_structure[tree][new_path] = {'color':null, 'folded':false}
+	folder_structure[tree + "_Array"].insert(path['step'] + 1, {'key': new_path, "value":{'color':null, 'folded':false}})
 	
 	return OK
 
