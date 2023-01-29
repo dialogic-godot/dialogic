@@ -1,11 +1,11 @@
-[gd_scene load_steps=4 format=3]
+[gd_scene load_steps=5 format=3 uid="uid://dijepn02p5l8k"]
 
 [ext_resource type="Script" path="res://addons/dialogic/Editor/Settings/settings_editor.gd" id="1"]
-[ext_resource type="PackedScene" path="res://addons/dialogic/Editor/Settings/settings_general.tscn" id="3"]
-[ext_resource type="PackedScene" path="res://addons/dialogic/Editor/Settings/settings_translation.tscn" id="3_q3qwt"]
+[ext_resource type="PackedScene" uid="uid://b873ho41sklv8" path="res://addons/dialogic/Editor/Settings/settings_general.tscn" id="3"]
+[ext_resource type="PackedScene" uid="uid://chpb1mj03xjxv" path="res://addons/dialogic/Editor/Settings/settings_translation.tscn" id="3_q3qwt"]
+[ext_resource type="PackedScene" uid="uid://eis5n410bmnl" path="res://addons/dialogic/Editor/Settings/settings_layout.tscn" id="4_ogssd"]
 
 [node name="SettingsEditor" type="MarginContainer"]
-visible = false
 offset_right = 1020.0
 offset_bottom = 600.0
 theme_override_constants/margin_left = 0
@@ -16,15 +16,17 @@ script = ExtResource("1")
 
 [node name="Tabs" type="TabContainer" parent="."]
 layout_mode = 2
-offset_right = 1020.0
-offset_bottom = 600.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="General" parent="Tabs" instance=ExtResource("3")]
 layout_mode = 2
-offset_top = 31.0
 
 [node name="Translations" parent="Tabs" instance=ExtResource("3_q3qwt")]
 visible = false
 layout_mode = 2
+
+[node name="LayoutSelection" parent="Tabs" instance=ExtResource("4_ogssd")]
+visible = false
+layout_mode = 2
+metadata/_tab_name = "Layout"

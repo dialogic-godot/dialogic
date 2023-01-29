@@ -30,7 +30,7 @@ var scroll_to_bottom_flag: bool = false
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	if Dialogic.has_subsystem('History'):
-		text_node = load('res://addons/dialogic/Example Assets/example-scenes/ExampleHistoryItem.tscn').instantiate()
+		text_node = load('res://addons/dialogic/Events/DefaultLayouts/ExampleHistoryItem.tscn').instantiate()
 		$ShowHistory.visible = show_open_button
 	else: 
 		self.visible = false

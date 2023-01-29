@@ -2,11 +2,11 @@
 
 [ext_resource type="Script" path="res://addons/dialogic/Events/Style/node_style.gd" id="1_aoco8"]
 [ext_resource type="Script" path="res://addons/dialogic/Events/Text/node_input_handler.gd" id="2_7abe3"]
-[ext_resource type="Script" path="res://addons/dialogic/Example Assets/example-scenes/ExampleTextBubble.gd" id="3_2q2a6"]
-[ext_resource type="Texture2D" uid="uid://id54n8h232yn" path="res://addons/dialogic/Example Assets/backgrounds/BubbleEnd.png" id="4_q6vcu"]
+[ext_resource type="Script" path="res://addons/dialogic/Events/DefaultLayouts/ExampleTextBubble.gd" id="3_2q2a6"]
+[ext_resource type="Texture2D" uid="uid://b3sccqj6l42w6" path="res://addons/dialogic/Example Assets/backgrounds/BubbleEnd.png" id="4_q6vcu"]
 [ext_resource type="Script" path="res://addons/dialogic/Events/Text/node_dialog_text.gd" id="5_rcetc"]
 [ext_resource type="Script" path="res://addons/dialogic/Events/Choice/node_choice_button.gd" id="6_8g1dv"]
-[ext_resource type="Script" path="res://addons/dialogic/Example Assets/example-scenes/HideWithChild.gd" id="7_1j72f"]
+[ext_resource type="Script" path="res://addons/dialogic/Events/DefaultLayouts/HideWithChild.gd" id="7_1j72f"]
 [ext_resource type="Script" path="res://addons/dialogic/Events/Text/node_name_label.gd" id="8_agitx"]
 
 [sub_resource type="StyleBoxFlat" id="11"]

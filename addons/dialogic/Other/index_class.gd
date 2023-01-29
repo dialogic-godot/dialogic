@@ -27,6 +27,16 @@ func _get_character_editor_tabs() -> Array:
 	return []
 
 
+
+## Should return an array of dictionaries with the following keys:
+## "path" 		-> the path to the scene
+## "name"		-> name for this layout
+## "description"-> description of this layout. list what features/events are supported
+## "preview_image"-> array of preview images
+func _get_layout_scenes() -> Array[Dictionary]:
+	return []
+
+
 ## Should return array of dictionaries with the following keys:
 ## "command" 	-> the text e.g. "speed"
 ## "node_path" or "subsystem" -> whichever contains your effect method

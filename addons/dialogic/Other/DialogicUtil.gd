@@ -1,10 +1,28 @@
 @tool
 class_name DialogicUtil
 
+## Script that container helper methods for both editor and game execution.
+## Used whenever the same thing is needed in different parts of the plugin.
+ 
+
+################################################################################
+##					EDITOR
+################################################################################
 static func get_editor_scale() -> float:
 	return get_dialogic_plugin().editor_interface.get_editor_scale()
 
 
+static func get_dialogic_plugin() -> Node:
+	var tree: SceneTree = Engine.get_main_loop()
+	if tree.get_root().get_child(0).has_node('DialogicPlugin'):
+		return tree.get_root().get_child(0).get_node('DialogicPlugin')
+	return null
+
+
+
+################################################################################
+##					FILE SYSTEM
+################################################################################
 static func listdir(path: String, files_only: bool = true, throw_error:bool = true, full_file_path:bool = false) -> Array:
 	var files: Array = []
 	if DirAccess.dir_exists_absolute(path):
@@ -27,13 +45,6 @@ static func listdir(path: String, files_only: bool = true, throw_error:bool = tr
 			file_name = dir.get_next()
 		dir.list_dir_end()
 	return files
-
-
-static func get_dialogic_plugin() -> Node:
-	var tree: SceneTree = Engine.get_main_loop()
-	if tree.get_root().get_child(0).has_node('DialogicPlugin'):
-		return tree.get_root().get_child(0).get_node('DialogicPlugin')
-	return null
 
 
 static func list_resources_of_type(extension:String) -> Array:
@@ -63,21 +74,8 @@ static func guess_resource(extension, identifier):
 		if resource_path.get_file().trim_suffix(extension) == identifier:
 			return resource_path
 
-# TODO
-#static func get_event_by_string(string:String) -> Resource:
-#	var event_scripts = get_event_scripts()
-#
-#	# move the text event to the end of the list as it's the default.
-#	event_scripts.erase("res://addons/dialogic/Events/Text/event_text.gd")
-#	event_scripts.append("res://addons/dialogic/Events/Text/event_text.gd")
-#
-#	for event in event_scripts:
-#		if load(event).new()._test_event_string(string):
-#
-#			return load(event)
-#	return load("res://addons/dialogic/Events/Text/event_text.gd")
 
-
+## TODO remove this since ProjectSetting.get_setting supports default arg now.
 static func get_project_setting(setting:String, default = null):
 	return ProjectSettings.get_setting(setting) if ProjectSettings.has_setting(setting) else default
 
@@ -183,3 +181,13 @@ static func list_variables(dict:Dictionary, path := "") -> Array:
 		else:
 			array.append(path+key)
 	return array
+
+
+static func apply_scene_export_overrides(node:Node, export_overrides:Dictionary) -> void:
+	print("eo: ", export_overrides)
+	for i in export_overrides:
+		print(i)
+		if i in node:
+			node.set(i, export_overrides[i])
+		else:
+			print("not in node")

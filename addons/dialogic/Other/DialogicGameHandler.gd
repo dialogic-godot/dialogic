@@ -515,12 +515,14 @@ func process_timeline(timeline: DialogicTimeline) -> DialogicTimeline:
 ################################################################################
 func start(timeline, single_instance = true):
 	var dialog_scene_path: String = DialogicUtil.get_project_setting(
-		'dialogic/default_dialog_scene', "res://addons/dialogic/Example Assets/example-scenes/DialogicDefaultScene.tscn")
+		'dialogic/layout_scene', "res://addons/dialogic/Example Assets/example-scenes/DialogicDefaultScene.tscn")
 	if single_instance:
 		if get_tree().get_nodes_in_group('dialogic_main_node').is_empty():
 			var scene = load(dialog_scene_path).instantiate()
+			DialogicUtil.apply_scene_export_overrides(scene, ProjectSettings.get_setting('dialogic/layout/export_overrides', {}))
 			get_parent().call_deferred("add_child", scene)
 	Dialogic.start_timeline(timeline)
+
 
 func is_running() -> bool:
 	if get_tree().get_nodes_in_group('dialogic_main_node').is_empty():

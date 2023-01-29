@@ -64,7 +64,7 @@ func add_portrait(character:DialogicCharacter, portrait:String,  position_idx:in
 			return null
 	
 	if !check_positions_and_holder(): return
-
+	
 	character_node = Node2D.new()
 	character_node.name = character.get_character_name()
 	character_node.position = current_positions[position_idx]
@@ -78,6 +78,7 @@ func add_portrait(character:DialogicCharacter, portrait:String,  position_idx:in
 		change_portrait(character, portrait, mirrored, z_index, false, extra_data)
 	
 	return character_node
+
 
 ## Changes the portrait of a character. Only works with characters that joined previously.
 func change_portrait(character:DialogicCharacter, portrait:String, mirrored:bool = false, z_index: int = 0, update_zindex:bool = false, extra_data:String = "") -> void:

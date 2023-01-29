@@ -93,6 +93,8 @@ func _handles(object:Variant) -> bool:
 
 
 func _edit(object:Variant) -> void:
+	if object == null:
+		return
 	_make_visible(true)
 	if editor_view and editor_view.editors_manager:
 		editor_view.editors_manager.edit_resource(object)

@@ -23,7 +23,7 @@ func add_portrait_item(portrait_name:String, portrait_data:Dictionary, parent_it
 	return item
 
 
-func add_portrait_group(goup_name:String = "Group", parent_item:TreeItem = get_root()):
+func add_portrait_group(goup_name:String = "Group", parent_item:TreeItem = get_root()) -> TreeItem:
 	var item :TreeItem = %PortraitTree.create_item(parent_item)
 	item.set_icon(0, get_theme_icon("Groups", "EditorIcons"))
 	item.set_text(0, goup_name)
