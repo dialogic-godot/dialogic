@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=3 uid="uid://c6aikt2x2qu1"]
+[gd_scene load_steps=26 format=3 uid="uid://b4gdessh6n1pt"]
 
 [ext_resource type="Script" path="res://addons/dialogic/Events/DefaultLayouts/DialogicDefaultScene.gd" id="1"]
 [ext_resource type="Script" path="res://addons/dialogic/Events/Text/node_dialog_text.gd" id="2"]
@@ -7,18 +7,14 @@
 [ext_resource type="Script" path="res://addons/dialogic/Events/Character/node_portrait_position.gd" id="5"]
 [ext_resource type="Script" path="res://addons/dialogic/Events/Background/node_background_holder.gd" id="5_uvb2c"]
 [ext_resource type="Script" path="res://addons/dialogic/Events/Character/node_portrait_holder.gd" id="6"]
-[ext_resource type="Script" path="res://addons/dialogic/Events/Audio/node_music_player.gd" id="8"]
-[ext_resource type="Script" path="res://addons/dialogic/Events/Audio/node_sound_player.gd" id="9"]
 [ext_resource type="Script" path="res://addons/dialogic/Events/Text/node_type_sound.gd" id="10"]
 [ext_resource type="AudioStream" uid="uid://c2viukvbub6v6" path="res://addons/dialogic/Example Assets/sound-effects/typing4.wav" id="11"]
 [ext_resource type="Script" path="res://addons/dialogic/Events/Style/node_style.gd" id="12"]
 [ext_resource type="AudioStream" uid="uid://dwcre3fjf3cj8" path="res://addons/dialogic/Example Assets/sound-effects/typing5.wav" id="13"]
 [ext_resource type="AudioStream" uid="uid://b6c1p14bc20p1" path="res://addons/dialogic/Example Assets/sound-effects/typing1.wav" id="14"]
-[ext_resource type="Script" path="res://addons/dialogic/Events/Text/node_input_handler.gd" id="17"]
 [ext_resource type="Script" path="res://addons/dialogic/Events/Choice/node_button_sound.gd" id="18"]
 [ext_resource type="Script" path="res://addons/dialogic/Events/Text/node_next_indicator.gd" id="20_ljcq2"]
 [ext_resource type="Script" path="res://addons/dialogic/Events/DefaultLayouts/ExampleGlossaryPopup.gd" id="20_vmnp2"]
-[ext_resource type="Script" path="res://addons/dialogic/Events/Voice/node_voice_player.gd" id="20_x1o37"]
 [ext_resource type="PackedScene" path="res://addons/dialogic/Events/DefaultLayouts/ExampleHistoryScene.tscn" id="22_854kg"]
 [ext_resource type="Script" path="res://addons/dialogic/Events/TextInput/node_text_input.gd" id="22_ltkcf"]
 [ext_resource type="Script" path="res://addons/dialogic/Events/DefaultLayouts/HideWithChild.gd" id="23"]
@@ -84,16 +80,6 @@ shadow_size = 5
 
 [node name="DefaultDialogNode" type="CanvasLayer"]
 script = ExtResource("1")
-font_size = null
-
-[node name="DialogicInputHandler" type="Node" parent="."]
-script = ExtResource("17")
-
-[node name="DialogicNode_SoundPlayer" type="AudioStreamPlayer" parent="."]
-script = ExtResource("9")
-
-[node name="DialogicNode_MusicPlayer" type="AudioStreamPlayer" parent="."]
-script = ExtResource("8")
 
 [node name="DialogicNode_BackgroundHolder" type="CanvasLayer" parent="."]
 layer = -1
@@ -232,6 +218,7 @@ metadata/_edit_layout_mode = 1
 [node name="DialogicNode_DialogText" type="RichTextLabel" parent="DefaultStyle/PanelContainer"]
 unique_name_in_owner = true
 layout_mode = 2
+theme_override_font_sizes/normal_font_size = 15
 bbcode_enabled = true
 text = "Some default text"
 script = ExtResource("2")
@@ -457,9 +444,6 @@ history_font_normal = ExtResource("23_gyqve")
 history_font_bold = ExtResource("24_aa4pl")
 history_font_italics = ExtResource("25_wt3bc")
 metadata/_edit_lock_ = true
-
-[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
-script = ExtResource("20_x1o37")
 
 [connection signal="meta_hover_ended" from="DefaultStyle/PanelContainer/DialogicNode_DialogText" to="DefaultStyle/Glossary" method="_on_dialogic_display_dialog_text_meta_hover_ended"]
 [connection signal="meta_hover_started" from="DefaultStyle/PanelContainer/DialogicNode_DialogText" to="DefaultStyle/Glossary" method="_on_dialogic_display_dialog_text_meta_hover_started"]

@@ -17,6 +17,8 @@ var text_effects_regex := RegEx.new()
 var text_modifiers := []
 
 
+var input_handler_node :Node = null
+
 ####################################################################################################
 ##					STATE
 ####################################################################################################
@@ -203,7 +205,9 @@ func _ready():
 	collect_text_effects()
 	collect_text_modifiers()
 	Dialogic.event_handled.connect(hide_next_indicators)
-
+	input_handler_node = Node.new()
+	input_handler_node.set_script(load(get_script().resource_path.get_base_dir().path_join('default_input_handler.gd')))
+	add_child(input_handler_node)
 
 func color_names(text:String) -> String:
 	if !DialogicUtil.get_project_setting('dialogic/text/autocolor_names', false):

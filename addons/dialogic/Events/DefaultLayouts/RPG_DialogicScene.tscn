@@ -4,8 +4,8 @@
 [ext_resource type="Script" path="res://addons/dialogic/Events/Character/node_portrait_position.gd" id="4"]
 [ext_resource type="Script" path="res://addons/dialogic/Events/Character/node_portrait_holder.gd" id="5"]
 [ext_resource type="Script" path="res://addons/dialogic/Events/Text/node_name_label.gd" id="6"]
-[ext_resource type="Texture2D" uid="uid://suqebxc71s24" path="res://addons/dialogic/Example Assets/backgrounds/rpg_box.webp" id="7"]
-[ext_resource type="Script" path="res://addons/dialogic/Events/Text/node_input_handler.gd" id="8"]
+[ext_resource type="Texture2D" uid="uid://dch8fuekijffp" path="res://addons/dialogic/Example Assets/backgrounds/rpg_box.webp" id="7"]
+[ext_resource type="Script" path="res://addons/dialogic/Events/Text/default_input_handler.gd" id="8"]
 [ext_resource type="Script" path="res://addons/dialogic/Events/Choice/node_choice_button.gd" id="9"]
 
 [node name="RPG_ExampleNode" type="CanvasLayer"]
