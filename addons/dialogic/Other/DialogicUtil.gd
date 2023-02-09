@@ -242,76 +242,82 @@ static func get_folder_meta(folder_path: String, key:String):
 
 
 ## FOLDER FUNCTIONS
-static func add_folder(folder_structure:Dictionary, tree:String, path:Dictionary, folder_name:String):
+static func add_folder(flat_structure:Dictionary, tree:String, path:Dictionary, folder_name:String):
 	# check if the name is allowed
 	var new_path = path['path'] + "/" + folder_name + "/."
 	
-	if new_path in folder_structure[tree]:
+	if new_path in flat_structure[tree]:
 		print("[D] A folder with the name '"+folder_name+"' already exists in the target folder '"+path['path']+"'.")
 		return ERR_ALREADY_EXISTS
 	
-	folder_structure[tree][new_path] = {'color':null, 'folded':false}
-	folder_structure[tree + "_Array"].insert(path['step'] + 1, {'key': new_path, "value":{'color':null, 'folded':false}})
+	flat_structure[tree][new_path] = {'color':null, 'folded':false}
+	flat_structure[tree + "_Array"].insert(path['step'] + 1, {'key': new_path, "value":{'color':null, 'folded':false}})
 	
+	DialogicResources.save_resource_folder_flat_structure(flat_structure)
 	return OK
 
-static func remove_folder(flat_structure: Dictionary, folder_path:Dictionary, delete_files:bool = true):
+static func remove_folder(flat_structure: Dictionary, tree:String, folder_path:Dictionary, delete_files:bool = true):
 	#print("[D] Removing 'Folder' "+folder_path)
 	
-	#temp because i need to leave soon and want to remember what I'm doing 
-	var tree ="Timelines"
 	flat_structure[tree].erase(folder_path['path'])
 	flat_structure[tree +"_Array"].remove(folder_path['step'])
 	
 	if delete_files:
-		var folder_root = folder_path.rstrip("/.")
+		var folder_root = folder_path['step'].rstrip("/.")
 		
 		for key in flat_structure[tree].keys():
 			if folder_root in key:
-				#Erasing elements while iterating over them is not supported and will result in undefined behavior.
-		
-	set_folder_at_path(folder_path, {})
+				flat_structure.erase(key)
 
-static func rename_folder(folder_structure: Dictionary, path:String, new_folder_name:String):
+		
+	DialogicResources.save_resource_folder_flat_structure(flat_structure)
+
+static func rename_folder(flat_structure: Dictionary, tree:String, path:Dictionary, new_folder_name:String):
 	# check if the name is allowed
-	if new_folder_name in get_folder_at_path(get_parent_path(path))['folders'].keys():
-		print("[D] A folder with the name '"+new_folder_name+"' already exists in the target folder '"+get_parent_path(path)+"'.")
+	var new_path = path['path'] + "/" + new_folder_name + "/."
+	
+	if new_path in flat_structure[tree]:
+		print("[D] A folder with the name '"+new_folder_name+"' already exists in the target folder '"++path['path']+"'.")
 		return ERR_ALREADY_EXISTS
 	elif new_folder_name.empty():
 		return ERR_PRINTER_ON_FIRE
 		
+	flat_structure[tree + "_Array"][path['step']]['key'] = new_path
+	#gotta split up the dictionary and reassemble it to change a key's name
+	var tree_keys = flat_structure[tree].keys()
+	var tree_values = flat_structure[tree].values()
+	tree_keys[path['step'] + 1] = new_path
 	
-	# save the content
-	var folder_content = get_folder_at_path(path)
+	var new_dictionary = {}
+	for i in tree_keys.size():
+		new_dictionary[tree_keys[i]] = tree_values[i]
 	
-	# remove the old folder BUT NOT THE FILES !!!!!
-	remove_folder(path, false)
+	flat_structure[tree] = new_dictionary
 	
-	# add the new folder
-	add_folder(folder_structure, "tree", get_parent_path(path), new_folder_name)
-	var new_path = get_parent_path(path)+ "/"+new_folder_name
-	set_folder_at_path(new_path, folder_content)
+	DialogicResources.save_resource_folder_flat_structure(flat_structure)
 
 	return OK
 
-static func move_folder_to_folder(folder_structure:Dictionary, orig_path, target_folder):
+static func move_folder_to_folder(flat_structure:Dictionary, tree:String, original_path:Dictionary, destination_path:Dictionary):
 	# check if the name is allowed
-	if orig_path.split("/")[-1] in get_folder_at_path(target_folder)['folders'].keys():
-		print("[D] A folder with the name '"+orig_path.split("/")[-1]+"' already exists in the target folder '"+target_folder+"'.")
-		return ERR_ALREADY_EXISTS
+	var new_path = destination_path['path']
 	
-	# save the content
-	var folder_content = get_folder_at_path(orig_path)
+	if new_path in flat_structure[tree]:
+		print("[D] A folder with the name '"+destination_path['path'].split("/")[-1]+"' already exists in the target folder '"+original_path['path']+"'.")
+		return ERR_ALREADY_EXISTS
+
 	
 	# remove the old folder BUT DON'T DELETE THE FILES!!!!!!!!!!!
 	# took me ages to find this when I forgot it..
-	remove_folder(orig_path, false)
+	remove_folder(flat_structure, tree,original_path, false)
 	
 	# add the new folder
-	var folder_name = orig_path.split("/")[-1]
-	add_folder(folder_structure, "tree", target_folder, folder_name)
-	var new_path = target_folder+ "/"+folder_name
-	set_folder_at_path(new_path, folder_content)
+	var folder_name = destination_path['path'].split("/")[-1]
+	
+	add_folder(flat_structure, tree, destination_path, new_path)
+
+	
+	DialogicResources.save_resource_folder_flat_structure(flat_structure)
 	
 	return OK
 
