@@ -10,19 +10,27 @@
 "pitch_base": 1.0,
 "pitch_variance": 0.0,
 "sound_folder": "",
-"volume_base": 0.0,
+"volume_base": 1.66533e-15,
 "volume_variance": 0.0
 }
 },
 "style": "",
 "theme": ""
 },
-"default_portrait": "",
+"default_portrait": "Some portrait",
 "description": "THE dialogic developer!",
 "display_name": "Emi",
 "mirror": false,
 "nicknames": ["Emi", "Emilio", "Emilio Coppola"],
 "offset": Vector2(0, 0),
-"portraits": {},
+"portraits": {
+"Some portrait": {
+"image": "res://addons/dialogic/Example Assets/portraits/Antonio/pl5 blink.png",
+"mirror": false,
+"offset": Vector2(0, 0),
+"scale": 1,
+"scene": ""
+}
+},
 "scale": 1.0
 }

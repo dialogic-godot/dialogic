@@ -10,7 +10,7 @@
 "pitch_base": 0.5,
 "pitch_variance": 0.0,
 "sound_folder": "res://addons/dialogic/Example Assets/Keyboard Noises",
-"volume_base": 0.0,
+"volume_base": 1.66533e-15,
 "volume_variance": 0.0
 },
 "something": {
@@ -18,7 +18,7 @@
 "pitch_base": 1.0,
 "pitch_variance": 0.0,
 "sound_folder": "res://addons/dialogic/Example Assets/Keyboard Noises",
-"volume_base": 0.0,
+"volume_base": 1.66533e-15,
 "volume_variance": 0.0
 }
 },

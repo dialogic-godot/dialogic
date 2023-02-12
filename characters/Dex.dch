@@ -13,7 +13,7 @@
 "display_name": "Dex",
 "mirror": false,
 "nicknames": ["AnidemDex", "Dex"],
-"offset": Vector2(0, 80),
+"offset": Vector2(0, 0),
 "portraits": {
 "happy": {
 "image": "res://addons/dialogic/Example Assets/portraits/Jane/pl3 blink.png",
