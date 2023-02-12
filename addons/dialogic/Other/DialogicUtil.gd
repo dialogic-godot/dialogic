@@ -82,7 +82,7 @@ static func get_project_setting(setting:String, default = null):
 	return ProjectSettings.get_setting(setting) if ProjectSettings.has_setting(setting) else default
 
 
-static func get_indexers(include_custom := true, force_reload := false) -> Array[DialogicIndexer]:
+static func get_indexers(include_custom := true, force_reload := false) -> Array:
 	if Engine.get_main_loop().has_meta('dialogic_indexers') and !force_reload:
 		return Engine.get_main_loop().get_meta('dialogic_indexers')
 	
