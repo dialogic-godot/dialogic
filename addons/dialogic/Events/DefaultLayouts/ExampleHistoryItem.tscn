@@ -1,6 +1,6 @@
-[gd_scene load_steps=3 format=3 uid="uid://d3qjtdsyg3if5"]
+[gd_scene load_steps=3 format=3]
 
-[ext_resource type="Script" path="res://addons/dialogic/Example Assets/example-scenes/ExampleHistoryItem.gd" id="1_dgoja"]
+[ext_resource type="Script" path="res://addons/dialogic/Events/DefaultLayouts/ExampleHistoryItem.gd" id="1_dgoja"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_upgjp"]
 bg_color = Color(0.317647, 0.317647, 0.317647, 1)

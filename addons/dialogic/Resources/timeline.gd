@@ -81,10 +81,7 @@ func _init() -> void:
 
 
 func _to_string() -> String:
-	return "[{class}:{file}]".format({"class":get_class(), "file":resource_path})
-
-
-func get_class() -> String: return "Timeline"
+	return "[DialogicTimeline:{file}]".format({"file":resource_path})
 
 
 func _get_property_list() -> Array:

@@ -202,7 +202,7 @@ func to_text() -> String:
 			if !portrait.is_empty() and action_type != ActionTypes.Leave:
 				result_string+= " ("+portrait+")"
 	
-	if position and action_type != ActionTypes.Leave:
+	if action_type != ActionTypes.Leave:
 		result_string += " "+str(position)
 	if animation_name != "" or z_index != 0 or mirrored != false or position_move_time != 0.0 or extra_data != "":
 		result_string += " ["
@@ -313,7 +313,7 @@ func from_text(string:String) -> void:
 		
 		#repeat is supported on Update, the other two should not be checking this
 			if action_type == ActionTypes.Update:
-				animation_repeats = shortcode_params.get('repeat', 1).to_int()
+				animation_repeats = int(shortcode_params.get('repeat', 1))
 				position_move_time = shortcode_params.get('move_time', 0.0)
 		#move time is only supported on Update, but it isnt part of the animations so its separate
 		if action_type == ActionTypes.Update:

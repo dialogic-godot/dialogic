@@ -1,30 +1,26 @@
-[gd_scene load_steps=30 format=3 uid="uid://btx7jmmry0ots"]
+[gd_scene load_steps=26 format=3 uid="uid://r8jg1cax6dui"]
 
-[ext_resource type="Script" path="res://addons/dialogic/Example Assets/example-scenes/DialogicDefaultScene.gd" id="1"]
+[ext_resource type="Script" path="res://addons/dialogic/Events/DefaultLayouts/Default/DialogicDefaultLayout.gd" id="1"]
 [ext_resource type="Script" path="res://addons/dialogic/Events/Text/node_dialog_text.gd" id="2"]
 [ext_resource type="Script" path="res://addons/dialogic/Events/Text/node_name_label.gd" id="3"]
 [ext_resource type="Script" path="res://addons/dialogic/Events/Choice/node_choice_button.gd" id="4"]
 [ext_resource type="Script" path="res://addons/dialogic/Events/Character/node_portrait_position.gd" id="5"]
 [ext_resource type="Script" path="res://addons/dialogic/Events/Background/node_background_holder.gd" id="5_uvb2c"]
 [ext_resource type="Script" path="res://addons/dialogic/Events/Character/node_portrait_holder.gd" id="6"]
-[ext_resource type="Script" path="res://addons/dialogic/Events/Audio/node_music_player.gd" id="8"]
-[ext_resource type="Script" path="res://addons/dialogic/Events/Audio/node_sound_player.gd" id="9"]
 [ext_resource type="Script" path="res://addons/dialogic/Events/Text/node_type_sound.gd" id="10"]
-[ext_resource type="AudioStream" uid="uid://bcj247fr4724u" path="res://addons/dialogic/Example Assets/sound-effects/typing4.wav" id="11"]
+[ext_resource type="AudioStream" uid="uid://c2viukvbub6v6" path="res://addons/dialogic/Example Assets/sound-effects/typing4.wav" id="11"]
 [ext_resource type="Script" path="res://addons/dialogic/Events/Style/node_style.gd" id="12"]
-[ext_resource type="AudioStream" uid="uid://b0h804rt2qkra" path="res://addons/dialogic/Example Assets/sound-effects/typing5.wav" id="13"]
-[ext_resource type="AudioStream" uid="uid://daebxvtgwbw1n" path="res://addons/dialogic/Example Assets/sound-effects/typing1.wav" id="14"]
-[ext_resource type="Script" path="res://addons/dialogic/Events/Text/node_input_handler.gd" id="17"]
+[ext_resource type="AudioStream" uid="uid://dwcre3fjf3cj8" path="res://addons/dialogic/Example Assets/sound-effects/typing5.wav" id="13"]
+[ext_resource type="AudioStream" uid="uid://b6c1p14bc20p1" path="res://addons/dialogic/Example Assets/sound-effects/typing1.wav" id="14"]
 [ext_resource type="Script" path="res://addons/dialogic/Events/Choice/node_button_sound.gd" id="18"]
 [ext_resource type="Script" path="res://addons/dialogic/Events/Text/node_next_indicator.gd" id="20_ljcq2"]
-[ext_resource type="Script" path="res://addons/dialogic/Example Assets/example-scenes/ExampleGlossaryPopup.gd" id="20_vmnp2"]
-[ext_resource type="Script" path="res://addons/dialogic/Events/Voice/node_voice_player.gd" id="20_x1o37"]
-[ext_resource type="PackedScene" uid="uid://d0rj8iawfra65" path="res://addons/dialogic/Example Assets/example-scenes/ExampleHistoryScene.tscn" id="22_854kg"]
+[ext_resource type="Script" path="res://addons/dialogic/Events/DefaultLayouts/Default/ExampleGlossaryPopup.gd" id="20_vmnp2"]
+[ext_resource type="PackedScene" path="res://addons/dialogic/Events/DefaultLayouts/ExampleHistoryScene.tscn" id="22_854kg"]
 [ext_resource type="Script" path="res://addons/dialogic/Events/TextInput/node_text_input.gd" id="22_ltkcf"]
-[ext_resource type="Script" path="res://addons/dialogic/Example Assets/example-scenes/HideWithChild.gd" id="23"]
-[ext_resource type="FontFile" uid="uid://2qv66mtjb25r" path="res://addons/dialogic/Example Assets/Fonts/Roboto-Regular.ttf" id="23_gyqve"]
-[ext_resource type="FontFile" uid="uid://bomh4hpbfqpen" path="res://addons/dialogic/Example Assets/Fonts/Roboto-Bold.ttf" id="24_aa4pl"]
-[ext_resource type="FontFile" uid="uid://d223qsr1bjod3" path="res://addons/dialogic/Example Assets/Fonts/Roboto-Italic.ttf" id="25_wt3bc"]
+[ext_resource type="Script" path="res://addons/dialogic/Events/DefaultLayouts/HideWithChild.gd" id="23"]
+[ext_resource type="FontFile" uid="uid://vrrmdx83skor" path="res://addons/dialogic/Example Assets/Fonts/Roboto-Regular.ttf" id="23_gyqve"]
+[ext_resource type="FontFile" uid="uid://cc4xli25271fd" path="res://addons/dialogic/Example Assets/Fonts/Roboto-Bold.ttf" id="24_aa4pl"]
+[ext_resource type="FontFile" uid="uid://b5c0p00x6g6u5" path="res://addons/dialogic/Example Assets/Fonts/Roboto-Italic.ttf" id="25_wt3bc"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wpkyg"]
 bg_color = Color(0, 0, 0, 0.752941)
@@ -85,15 +81,6 @@ shadow_size = 5
 [node name="DefaultDialogNode" type="CanvasLayer"]
 script = ExtResource("1")
 
-[node name="DialogicInputHandler" type="Node" parent="."]
-script = ExtResource("17")
-
-[node name="DialogicNode_SoundPlayer" type="AudioStreamPlayer" parent="."]
-script = ExtResource("9")
-
-[node name="DialogicNode_MusicPlayer" type="AudioStreamPlayer" parent="."]
-script = ExtResource("8")
-
 [node name="DialogicNode_BackgroundHolder" type="CanvasLayer" parent="."]
 layer = -1
 script = ExtResource("5_uvb2c")
@@ -103,27 +90,27 @@ layer = 0
 script = ExtResource("6")
 
 [node name="PortraitPosition1" type="Marker2D" parent="."]
-position = Vector2(106, 604)
+position = Vector2(184, 604)
 script = ExtResource("5")
 position_index = 1
 
 [node name="PortraitPosition2" type="Marker2D" parent="."]
-position = Vector2(302, 601)
+position = Vector2(380, 601)
 script = ExtResource("5")
 position_index = 2
 
 [node name="PortraitPosition3" type="Marker2D" parent="."]
-position = Vector2(497, 603)
+position = Vector2(575, 603)
 script = ExtResource("5")
 position_index = 3
 
 [node name="PortraitPosition4" type="Marker2D" parent="."]
-position = Vector2(683, 603)
+position = Vector2(761, 603)
 script = ExtResource("5")
 position_index = 4
 
 [node name="PortraitPosition5" type="Marker2D" parent="."]
-position = Vector2(887, 605)
+position = Vector2(965, 605)
 script = ExtResource("5")
 position_index = 5
 
@@ -229,14 +216,16 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_q3vpc")
 metadata/_edit_layout_mode = 1
 
 [node name="DialogicNode_DialogText" type="RichTextLabel" parent="DefaultStyle/PanelContainer"]
+unique_name_in_owner = true
 layout_mode = 2
+theme_override_font_sizes/normal_font_size = 15
 bbcode_enabled = true
 text = "Some default text"
+visible_characters_behavior = 1
 script = ExtResource("2")
 
 [node name="DialogicNode_TypeSounds" type="AudioStreamPlayer" parent="DefaultStyle/PanelContainer/DialogicNode_DialogText"]
 script = ExtResource("10")
-sounds = []
 play_every_character = 0
 
 [node name="DNextIndicator" type="Control" parent="DefaultStyle/PanelContainer"]
@@ -329,7 +318,7 @@ layout_mode = 2
 layout_mode = 2
 bbcode_enabled = true
 text = "Some text"
-fit_content_height = true
+fit_content = true
 
 [node name="Extra" type="RichTextLabel" parent="DefaultStyle/Glossary/Panel/VBox"]
 layout_mode = 2
@@ -337,7 +326,7 @@ theme_override_colors/default_color = Color(1, 1, 1, 0.584314)
 theme_override_font_sizes/normal_font_size = 15
 bbcode_enabled = true
 text = "[right]Wow, some text!"
-fit_content_height = true
+fit_content = true
 
 [node name="Control" type="Control" parent="DefaultStyle/Glossary/Panel"]
 show_behind_parent = true
@@ -450,18 +439,13 @@ use_character_color = false
 [node name="DialogicNode_DialogText" type="RichTextLabel" parent="SpecialStyle/PanelContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 text = "Some default text"
-fit_content_height = true
 script = ExtResource("2")
-Align = 1
 
 [node name="ExampleHistoryScene" parent="." instance=ExtResource("22_854kg")]
 history_font_normal = ExtResource("23_gyqve")
 history_font_bold = ExtResource("24_aa4pl")
 history_font_italics = ExtResource("25_wt3bc")
 metadata/_edit_lock_ = true
-
-[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
-script = ExtResource("20_x1o37")
 
 [connection signal="meta_hover_ended" from="DefaultStyle/PanelContainer/DialogicNode_DialogText" to="DefaultStyle/Glossary" method="_on_dialogic_display_dialog_text_meta_hover_ended"]
 [connection signal="meta_hover_started" from="DefaultStyle/PanelContainer/DialogicNode_DialogText" to="DefaultStyle/Glossary" method="_on_dialogic_display_dialog_text_meta_hover_started"]

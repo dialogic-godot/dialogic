@@ -1,6 +1,5 @@
-extends RichTextLabel
-
 class_name DialogicNode_DialogText
+extends RichTextLabel
 
 ## Dialogic node that can reveal text at a given (changeable speed). 
 
@@ -9,7 +8,7 @@ signal continued_revealing_text(new_character)
 signal finished_revealing_text()
 enum ALIGNMENT {LEFT, CENTER, RIGHT}
 
-@export var Align : ALIGNMENT = ALIGNMENT.LEFT
+@export var alignment : ALIGNMENT = ALIGNMENT.LEFT
 @onready var timer :Timer = null
 
 
@@ -35,9 +34,9 @@ func _ready() -> void:
 func reveal_text(_text:String) -> void:
 	speed = DialogicUtil.get_project_setting('dialogic/text/speed', 0.01)
 	text = _text
-	if Align == ALIGNMENT.CENTER:
+	if alignment == ALIGNMENT.CENTER:
 		text = '[center]'+text
-	elif Align == ALIGNMENT.RIGHT:
+	elif alignment == ALIGNMENT.RIGHT:
 		text = '[right]'+text
 	visible_characters = 0
 	if speed <= 0:

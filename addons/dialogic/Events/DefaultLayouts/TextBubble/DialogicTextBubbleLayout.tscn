@@ -1,0 +1,191 @@
+[gd_scene load_steps=14 format=3 uid="uid://dvfqggirw3uab"]
+
+[ext_resource type="Script" path="res://addons/dialogic/Events/DefaultLayouts/TextBubble/DialogicTextBubbleLayout.gd" id="1_502mo"]
+[ext_resource type="Texture2D" uid="uid://b3sccqj6l42w6" path="res://addons/dialogic/Example Assets/backgrounds/BubbleEnd.png" id="2_sqahx"]
+[ext_resource type="Script" path="res://addons/dialogic/Events/Text/node_dialog_text.gd" id="3_ou07r"]
+[ext_resource type="Script" path="res://addons/dialogic/Events/Text/node_type_sound.gd" id="4_6ctnn"]
+[ext_resource type="Script" path="res://addons/dialogic/Events/Choice/node_choice_button.gd" id="5_d7df1"]
+[ext_resource type="Script" path="res://addons/dialogic/Events/DefaultLayouts/HideWithChild.gd" id="6_dlfb7"]
+[ext_resource type="Script" path="res://addons/dialogic/Events/Text/node_name_label.gd" id="7_xx1xf"]
+
+[sub_resource type="StyleBoxFlat" id="11"]
+bg_color = Color(0.847059, 0.627451, 0.364706, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 1, 1, 0.768627)
+border_blend = true
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="StyleBoxFlat" id="12"]
+content_margin_left = 5.0
+content_margin_right = 5.0
+bg_color = Color(0.647059, 0.647059, 0.647059, 1)
+border_width_top = 10
+border_width_bottom = 10
+border_color = Color(0.8, 0.8, 0.8, 0)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="Theme" id="13"]
+VScrollBar/styles/grabber = SubResource("11")
+VScrollBar/styles/grabber_highlight = SubResource("11")
+VScrollBar/styles/grabber_pressed = SubResource("11")
+VScrollBar/styles/scroll = SubResource("12")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kr20r"]
+bg_color = Color(0.970602, 0.970602, 0.970602, 1)
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+shadow_color = Color(0, 0, 0, 0.211765)
+shadow_size = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_g4yjl"]
+draw_center = false
+border_width_bottom = 3
+border_color = Color(0.227451, 0.227451, 0.227451, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_h6ls0"]
+content_margin_left = 5.0
+content_margin_right = 5.0
+bg_color = Color(0.901961, 0.901961, 0.901961, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+shadow_color = Color(0, 0, 0, 0.278431)
+shadow_size = 5
+
+[node name="Control" type="Control"]
+custom_minimum_size = Vector2(100, 75)
+layout_mode = 3
+anchors_preset = 0
+offset_left = -13.0
+offset_top = -112.0
+offset_right = 87.0
+offset_bottom = -37.0
+grow_vertical = 0
+theme = SubResource("13")
+script = ExtResource("1_502mo")
+sizing_mode = 1
+max_width = 200.0
+
+[node name="BubbleEnd" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 8.0
+offset_top = -4.0
+offset_right = 89.0
+offset_bottom = 41.0
+grow_vertical = 0
+texture = ExtResource("2_sqahx")
+expand_mode = 1
+
+[node name="OverlayPanel" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_kr20r")
+
+[node name="DialogText" type="RichTextLabel" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 9.0
+offset_top = 8.0
+offset_right = -9.0
+offset_bottom = -7.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+text = "Some Text"
+scroll_active = false
+script = ExtResource("3_ou07r")
+
+[node name="DialogicNode_TypeSounds" type="AudioStreamPlayer" parent="DialogText"]
+script = ExtResource("4_6ctnn")
+
+[node name="ChoiceContainer" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 8.0
+offset_top = -31.0
+offset_right = -8.0
+grow_horizontal = 2
+grow_vertical = 0
+alignment = 2
+
+[node name="DialogicNode_ChoiceButton" type="Button" parent="ChoiceContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_colors/font_color = Color(0.188235, 0.188235, 0.188235, 1)
+theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(0.682353, 0.482353, 0.137255, 1)
+theme_override_colors/font_focus_color = Color(0.27451, 0.180392, 0.0627451, 1)
+theme_override_styles/focus = SubResource("StyleBoxFlat_g4yjl")
+text = "Yes!"
+flat = true
+script = ExtResource("5_d7df1")
+
+[node name="DialogicNode_ChoiceButton2" type="Button" parent="ChoiceContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_colors/font_color = Color(0.188235, 0.188235, 0.188235, 1)
+theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(0.682353, 0.482353, 0.137255, 1)
+theme_override_colors/font_focus_color = Color(0.27451, 0.180392, 0.0627451, 1)
+theme_override_styles/focus = SubResource("StyleBoxFlat_g4yjl")
+text = "Yes!"
+flat = true
+script = ExtResource("5_d7df1")
+
+[node name="DialogicNode_ChoiceButton3" type="Button" parent="ChoiceContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_colors/font_color = Color(0.188235, 0.188235, 0.188235, 1)
+theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(0.682353, 0.482353, 0.137255, 1)
+theme_override_colors/font_focus_color = Color(0.27451, 0.180392, 0.0627451, 1)
+theme_override_styles/focus = SubResource("StyleBoxFlat_g4yjl")
+text = "Yes!"
+flat = true
+script = ExtResource("5_d7df1")
+
+[node name="NameLabel" type="PanelContainer" parent="."]
+layout_mode = 1
+anchors_preset = -1
+offset_left = 12.0
+offset_top = -15.0
+offset_right = 16.0
+offset_bottom = 11.0
+grow_horizontal = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_h6ls0")
+script = ExtResource("6_dlfb7")
+
+[node name="DialogicNode_NameLabel" type="Label" parent="NameLabel"]
+layout_mode = 2
+horizontal_alignment = 1
+script = ExtResource("7_xx1xf")
+
+[connection signal="continued_revealing_text" from="DialogText" to="." method="_on_DialogText_continued_revealing_text"]
+[connection signal="finished_revealing_text" from="DialogText" to="." method="_on_DialogText_continued_revealing_text"]
+[connection signal="finished_revealing_text" from="DialogText" to="." method="_on_dialog_text_finished_revealing_text"]
+[connection signal="started_revealing_text" from="DialogText" to="." method="_on_dialog_text_started_revealing_text"]

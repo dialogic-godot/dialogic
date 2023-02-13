@@ -7,7 +7,7 @@
 [ext_resource type="Script" path="res://addons/dialogic/Events/Character/node_portrait_holder.gd" id="5"]
 [ext_resource type="Script" path="res://addons/dialogic/Events/Text/node_name_label.gd" id="6"]
 [ext_resource type="Texture" path="res://addons/dialogic/Example Assets/backgrounds/background.webp" id="7"]
-[ext_resource type="Script" path="res://addons/dialogic/Events/Text/node_input_handler.gd" id="8"]
+[ext_resource type="Script" path="res://addons/dialogic/Events/Text/default_input_handler.gd" id="8"]
 [ext_resource type="Script" path="res://addons/dialogic/Events/Choice/node_choice_button.gd" id="9"]
 [ext_resource type="DynamicFontData" path="res://addons/dialogic/Example Assets/fonts/Roboto-Italic.ttf" id="10"]
 

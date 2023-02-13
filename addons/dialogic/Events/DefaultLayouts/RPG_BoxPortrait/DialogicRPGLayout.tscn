@@ -1,18 +1,14 @@
-[gd_scene load_steps=8 format=3]
+[gd_scene load_steps=7 format=3 uid="uid://8kce10038du4"]
 
 [ext_resource type="Script" path="res://addons/dialogic/Events/Text/node_dialog_text.gd" id="3"]
 [ext_resource type="Script" path="res://addons/dialogic/Events/Character/node_portrait_position.gd" id="4"]
 [ext_resource type="Script" path="res://addons/dialogic/Events/Character/node_portrait_holder.gd" id="5"]
 [ext_resource type="Script" path="res://addons/dialogic/Events/Text/node_name_label.gd" id="6"]
-[ext_resource type="Texture2D" uid="uid://suqebxc71s24" path="res://addons/dialogic/Example Assets/backgrounds/rpg_box.webp" id="7"]
-[ext_resource type="Script" path="res://addons/dialogic/Events/Text/node_input_handler.gd" id="8"]
+[ext_resource type="Texture2D" uid="uid://dch8fuekijffp" path="res://addons/dialogic/Example Assets/backgrounds/rpg_box.webp" id="7"]
 [ext_resource type="Script" path="res://addons/dialogic/Events/Choice/node_choice_button.gd" id="9"]
 
 [node name="RPG_ExampleNode" type="CanvasLayer"]
 layer = 3
-
-[node name="DialogicInputHandler" type="Node" parent="."]
-script = ExtResource("8")
 
 [node name="DialogicNode_PortraitHolder" type="CanvasLayer" parent="."]
 layer = 2
@@ -20,35 +16,60 @@ script = ExtResource("5")
 
 [node name="TextureRect" type="TextureRect" parent="."]
 self_modulate = Color(0.435294, 0.32549, 0.168627, 1)
+anchors_preset = 7
 anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
+offset_left = -354.0
+offset_top = -206.0
+offset_right = 362.0
+offset_bottom = -47.0
+grow_horizontal = 2
+grow_vertical = 0
 texture = ExtResource("7")
+expand_mode = 1
 
-[node name="DialogicNode_PortraitPosition" type="Position2D" parent="TextureRect"]
-position = Vector2(69, 130)
+[node name="DialogicNode_PortraitPosition" type="Marker2D" parent="TextureRect"]
+position = Vector2(83, 152)
 script = ExtResource("4")
+position_index = 1
 
 [node name="CanvasLayer" type="CanvasLayer" parent="TextureRect"]
 
 [node name="ColorRect" type="ColorRect" parent="TextureRect/CanvasLayer"]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -350.0
+offset_top = -200.0
+offset_right = -206.0
+offset_bottom = -56.0
+grow_horizontal = 2
+grow_vertical = 0
 color = Color(0.121569, 0.105882, 0.0784314, 1)
 
 [node name="VBoxContainer" type="VBoxContainer" parent="TextureRect"]
+layout_mode = 1
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_left = 164.0
+offset_top = 12.0
+offset_right = -20.0
+offset_bottom = -16.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="DialogicNode_NameLabel" type="Label" parent="TextureRect/VBoxContainer"]
-offset_right = 1200.0
-offset_bottom = 26.0
+layout_mode = 2
 text = "Name"
 script = ExtResource("6")
 
 [node name="DialogicNode_DialogText" type="RichTextLabel" parent="TextureRect/VBoxContainer"]
-offset_top = 30.0
-offset_right = 1200.0
-offset_bottom = 234.0
+layout_mode = 2
 size_flags_vertical = 3
 bbcode_enabled = true
 text = "Some text"
@@ -56,49 +77,41 @@ scroll_following = true
 script = ExtResource("3")
 
 [node name="VBoxContainer" type="HBoxContainer" parent="TextureRect/VBoxContainer"]
-offset_top = 238.0
-offset_right = 1200.0
-offset_bottom = 269.0
+layout_mode = 2
 alignment = 2
 
 [node name="DialogicNode_ChoiceButton" type="Button" parent="TextureRect/VBoxContainer/VBoxContainer"]
-offset_left = 928.0
-offset_right = 970.0
-offset_bottom = 31.0
+layout_mode = 2
 text = "Text"
+flat = true
 script = ExtResource("9")
 
 [node name="DialogicNode_ChoiceButton2" type="Button" parent="TextureRect/VBoxContainer/VBoxContainer"]
-offset_left = 974.0
-offset_right = 1016.0
-offset_bottom = 31.0
+layout_mode = 2
 text = "Text"
+flat = true
 script = ExtResource("9")
 
 [node name="DialogicNode_ChoiceButton3" type="Button" parent="TextureRect/VBoxContainer/VBoxContainer"]
-offset_left = 1020.0
-offset_right = 1062.0
-offset_bottom = 31.0
+layout_mode = 2
 text = "Text"
+flat = true
 script = ExtResource("9")
 
 [node name="DialogicNode_ChoiceButton4" type="Button" parent="TextureRect/VBoxContainer/VBoxContainer"]
-offset_left = 1066.0
-offset_right = 1108.0
-offset_bottom = 31.0
+layout_mode = 2
 text = "Text"
+flat = true
 script = ExtResource("9")
 
 [node name="DialogicNode_ChoiceButton5" type="Button" parent="TextureRect/VBoxContainer/VBoxContainer"]
-offset_left = 1112.0
-offset_right = 1154.0
-offset_bottom = 31.0
+layout_mode = 2
 text = "Text"
+flat = true
 script = ExtResource("9")
 
 [node name="DialogicNode_ChoiceButton6" type="Button" parent="TextureRect/VBoxContainer/VBoxContainer"]
-offset_left = 1158.0
-offset_right = 1200.0
-offset_bottom = 31.0
+layout_mode = 2
 text = "Text"
+flat = true
 script = ExtResource("9")

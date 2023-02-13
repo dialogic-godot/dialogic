@@ -25,12 +25,20 @@
 "style": "Special",
 "theme": ""
 },
-"default_portrait": "",
+"default_portrait": "default",
 "description": "A dialogic developer.",
 "display_name": "Jowan",
 "mirror": false,
 "nicknames": ["Jo", "Jowan Spooner", "Jowan"],
 "offset": Vector2(0, 0),
-"portraits": {},
-"scale": 1.2
+"portraits": {
+"default": {
+"image": "res://test-project/coraxdigitalart-realistic-human-heroes__83_-removebg-preview.png",
+"mirror": false,
+"offset": Vector2(0, 0),
+"scale": 0.9,
+"scene": ""
+}
+},
+"scale": 1.0
 }

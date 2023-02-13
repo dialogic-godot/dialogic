@@ -14,12 +14,8 @@ func _ready() -> void:
 		'background': Color(0.545098, 0.545098, 0.545098, 0.211765)
 	})
 	%ExtensionsFolderPicker.resource_icon = get_theme_icon("Folder", "EditorIcons")
-	%TestingScenePicker.resource_icon = get_theme_icon("PlayScene", "EditorIcons")
-	%DefaultScenePicker.resource_icon = get_theme_icon("PackedScene", "EditorIcons")
 	
 	# Signals
-	%TestingScenePicker.value_changed.connect(_on_TestingScene_value_changed)
-	%DefaultScenePicker.value_changed.connect(_on_DefaultScene_value_changed)
 	%ExtensionsFolderPicker.value_changed.connect(_on_ExtensionsFolder_value_changed)
 	%PhysicsTimerButton.pressed.connect(_on_physics_timer_button_toggled)
 	
@@ -33,9 +29,6 @@ func _ready() -> void:
 	%ExtensionCreator.hide()
 
 func refresh() -> void:
-	%DefaultScenePicker.set_value(DialogicUtil.get_project_setting('dialogic/default_dialog_scene', "res://addons/dialogic/Example Assets/example-scenes/DialogicDefaultScene.tscn"))
-	%TestingScenePicker.set_value(DialogicUtil.get_project_setting('dialogic/editor/test_dialog_scene', "res://addons/dialogic/Example Assets/example-scenes/DialogicDefaultScene.tscn"))
-	
 	%PhysicsTimerButton.button_pressed = DialogicUtil.is_physics_timer()
 	
 	%ExtensionsFolderPicker.set_value(DialogicUtil.get_project_setting('dialogic/extensions_folder', 'res://addons/dialogic_additions'))

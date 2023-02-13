@@ -6,12 +6,13 @@ func _ready() -> void:
 		print("Testing locale is: ", ProjectSettings.get_setting('internationalization/locale/test'))
 	$PauseIndictator.hide()
 	var dialog_scene_path: String = DialogicUtil.get_project_setting(
-		'dialogic/editor/test_dialog_scene', "res://addons/dialogic/Example Assets/example-scenes/DialogicDefaultScene.tscn")
+		'dialogic/editor/custom_testing_layout', "res://addons/dialogic/Example Assets/example-scenes/DialogicDefaultScene.tscn")
 	var scene: Node = load(dialog_scene_path).instantiate()
+	DialogicUtil.apply_scene_export_overrides(scene, ProjectSettings.get_setting('dialogic/layout/export_overrides', {}))
 	add_child(scene)
-	if scene is CanvasLayer:
+	if not scene is CanvasLayer:
 		if scene is Control:
-			scene.rect_position = get_viewport_rect().size/2.0
+			scene.position = get_viewport_rect().size/2.0
 		if scene is Node2D:
 			scene.position = get_viewport_rect().size/2.0
 	
