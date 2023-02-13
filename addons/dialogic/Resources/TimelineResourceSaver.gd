@@ -21,10 +21,10 @@ func _recognize(resource: Resource) -> bool:
 # Save the resource
 func _save(resource: Resource, path: String = '', flags: int = 0) -> int:
 	if resource.get_meta("timeline_not_saved", false):
-		if len(resource.events) == 0:
-			printerr("[Dialogic] "+path+": save was called, but there are no events. Timeline will not be saved, to prevent accidental data loss. Please delete the timeline file if you are trying to clear all of the events.")
-			return ERR_INVALID_DATA
-		
+#		if len(resource.events) == 0:
+#			printerr("[Dialogic] "+path+": save was called, but there are no events. Timeline will not be saved, to prevent accidental data loss. Please delete the timeline file if you are trying to clear all of the events.")
+#			return ERR_INVALID_DATA
+#
 #		print('[Dialogic] Beginning saving timeline. Safety checks will be performed before writing, and temporary file will be created and removed if saving is successful...')
 		
 		#prepare everything before writing, we will only open the file if it's successfuly prepared, as that will clear the file contents

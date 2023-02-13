@@ -69,7 +69,7 @@ func start_timeline(timeline_resource:Variant, label_or_idx:Variant = "") -> voi
 			printerr("[Dialogic] There was an error loading this timeline. Check the filename, and the timeline for errors")
 			return
 	timeline_resource = process_timeline(timeline_resource)
-		
+	
 	current_timeline = timeline_resource
 	current_timeline_events = current_timeline.get_events()
 	current_event_idx = -1
@@ -420,9 +420,10 @@ func find_timeline(path: String) -> String:
 func process_timeline(timeline: DialogicTimeline) -> DialogicTimeline:
 	if timeline != null:
 		if timeline.events_processed:
+			for event in timeline.events:
+				event.event_node_ready = true
 			return timeline
 		else:
-			#print(str(Time.get_ticks_msec()) + ": Starting process unloaded timeline")	
 			var end_event := DialogicEndBranchEvent.new()
 			
 			var prev_indent := ""
@@ -515,7 +516,7 @@ func process_timeline(timeline: DialogicTimeline) -> DialogicTimeline:
 ################################################################################
 func start(timeline, single_instance = true):
 	var dialog_scene_path: String = DialogicUtil.get_project_setting(
-		'dialogic/layout_scene', "res://addons/dialogic/Example Assets/example-scenes/DialogicDefaultScene.tscn")
+		'dialogic/layout_scene', DialogicUtil.get_default_layout())
 	if single_instance:
 		if get_tree().get_nodes_in_group('dialogic_main_node').is_empty():
 			var scene = load(dialog_scene_path).instantiate()

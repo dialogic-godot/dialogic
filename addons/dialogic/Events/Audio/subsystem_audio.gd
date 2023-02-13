@@ -43,7 +43,6 @@ func _ready() -> void:
 ## Updates the background music. Will fade out previous music.
 func update_music(path:String = '', volume:float = 0.0, audio_bus:String = "Master", fade_time:float = 0.0, loop:bool = true) -> void:
 	dialogic.current_state_info['music'] = {'path':path, 'volume':volume, 'audio_bus':audio_bus, 'loop':loop}
-	print("play music!", path)
 	
 	var fader: Tween = null
 	if base_music_player.playing or !path.is_empty():

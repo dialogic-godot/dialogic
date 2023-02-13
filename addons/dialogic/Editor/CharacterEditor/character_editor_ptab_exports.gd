@@ -36,37 +36,18 @@ func load_portrait_scene_export_variables():
 			var label = Label.new()
 			label.text = i['name']
 			label.add_theme_stylebox_override('normal', get_theme_stylebox("CanvasItemInfoOverlay", "EditorStyles"))
-			label.size_flags_horizontal = SIZE_EXPAND_FILL
 			$Grid.add_child(label)
 			
-			
-			var input = null
-			var current_value :String = ""
+			var current_value :Variant = scene.get(i['name'])
 			if current_portrait_data.has('export_overrides') and current_portrait_data['export_overrides'].has(i['name']):
-				current_value = current_portrait_data['export_overrides'][i['name']]
-			match typeof(scene.get(i['name'])):
-				TYPE_BOOL:
-					input = CheckBox.new()
-					if current_value:
-						input.button_pressed = current_value == "true"
-					input.toggled.connect(_on_export_bool_submitted.bind(i['name']))
-				TYPE_COLOR:
-					input = ColorPickerButton.new()
-					if current_value:
-						input.color = str_to_var(current_value)
-					input.color_changed.connect(_on_export_color_submitted.bind(i['name']))
-					input.custom_minimum_size.x = DialogicUtil.get_editor_scale()*50
-				TYPE_INT:
-					if i['hint'] & PROPERTY_HINT_ENUM:
-						input = OptionButton.new()
-						for x in i['hint_string'].split(','):
-							input.add_item(x)
-						input.item_selected.connect(_on_export_int_enum_submitted.bind(i['name']))
-				_:
-					input = LineEdit.new()
-					if current_value:
-						input.text = current_value
-					input.text_submitted.connect(_on_export_input_text_submitted.bind(i['name']))
+				current_value = str_to_var(current_portrait_data['export_overrides'][i['name']])
+			
+			var input :Node = DialogicUtil.setup_script_property_edit_node(
+				i, current_value, 
+				{'bool':_on_export_bool_submitted, 'color':_on_export_color_submitted, 'enum':_on_export_int_enum_submitted,
+				'int':_on_export_number_submitted, 'float':_on_export_number_submitted, 'file':_on_export_file_submitted,
+				'string':_on_export_input_text_submitted, "string_enum": _on_export_string_enum_submitted})
+			
 			input.size_flags_horizontal = SIZE_EXPAND_FILL
 			$Grid.add_child(input)
 		if i['usage'] & PROPERTY_USAGE_GROUP:
@@ -100,3 +81,12 @@ func _on_export_color_submitted(color:Color, property_name:String) -> void:
 
 func _on_export_int_enum_submitted(item:int, property_name:String) -> void:
 	set_export_override(property_name, var_to_str(item))
+
+func _on_export_number_submitted(value:float, property_name:String) -> void:
+	set_export_override(property_name, var_to_str(value))
+
+func _on_export_file_submitted(property_name:String, value:String) -> void:
+	set_export_override(property_name, value)
+
+func _on_export_string_enum_submitted(value:int, property_name:String, list:PackedStringArray):
+	set_export_override(property_name, list[value])

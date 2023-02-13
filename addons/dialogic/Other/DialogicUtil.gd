@@ -80,11 +80,11 @@ static func get_project_setting(setting:String, default = null):
 	return ProjectSettings.get_setting(setting) if ProjectSettings.has_setting(setting) else default
 
 
-static func get_indexers(include_custom := true, force_reload := false) -> Array[DialogicIndexer]:
+static func get_indexers(include_custom := true, force_reload := false) -> Array:
 	if Engine.get_main_loop().has_meta('dialogic_indexers') and !force_reload:
 		return Engine.get_main_loop().get_meta('dialogic_indexers')
 	
-	var indexers := []
+	var indexers : Array[DialogicIndexer] = []
 	
 	for file in listdir("res://addons/dialogic/Events/", false):
 		var possible_script:String = "res://addons/dialogic/Events/" + file + "/index.gd"
@@ -167,6 +167,7 @@ static func is_physics_timer()->bool:
 static func update_timer_process_callback(timer:Timer) -> void:
 	timer.process_callback = Timer.TIMER_PROCESS_PHYSICS if is_physics_timer() else Timer.TIMER_PROCESS_IDLE
 
+
 static func get_next_translation_id() -> String:
 	ProjectSettings.set_setting('dialogic/translation/id_counter', get_project_setting('dialogic/translation/id_counter', 16)+1)
 	return '%x' % get_project_setting('dialogic/translation/id_counter', 16)
@@ -183,11 +184,73 @@ static func list_variables(dict:Dictionary, path := "") -> Array:
 	return array
 
 
+static func get_default_layout() -> String:
+	return "res://addons/dialogic/Events/DefaultLayouts/Default/DialogicDefaultLayout.tscn"
+
+
 static func apply_scene_export_overrides(node:Node, export_overrides:Dictionary) -> void:
-	print("eo: ", export_overrides)
 	for i in export_overrides:
-		print(i)
 		if i in node:
 			node.set(i, export_overrides[i])
-		else:
-			print("not in node")
+
+static func setup_script_property_edit_node(property_info: Dictionary, value:Variant, methods:Dictionary) -> Control:
+	var input :Control = null
+	match property_info['type']:
+		TYPE_BOOL:
+			input = CheckBox.new()
+			if value != null:
+				input.button_pressed = value
+			input.toggled.connect(methods.get('bool').bind(property_info['name']))
+		TYPE_COLOR:
+			input = ColorPickerButton.new()
+			if value != null:
+				input.color = value
+			input.color_changed.connect(methods.get('color').bind(property_info['name']))
+			input.custom_minimum_size.x = DialogicUtil.get_editor_scale()*50
+		TYPE_INT:
+			if property_info['hint'] & PROPERTY_HINT_ENUM:
+				input = OptionButton.new()
+				for x in property_info['hint_string'].split(','):
+					input.add_item(x.split(':')[0])
+				if value != null:
+					input.select(value)
+				input.item_selected.connect(methods.get('enum').bind(property_info['name']))
+			else:
+				input = SpinBox.new()
+				input.value_changed.connect(methods.get('int').bind(property_info['name']))
+				input.step = 1
+				if value != null:
+					input.value = value
+		TYPE_FLOAT:
+			input = SpinBox.new()
+			input.value_changed.connect(methods.get('float').bind(property_info['name']))
+			if value != null:
+				input.value = value
+		TYPE_STRING:
+			if property_info['hint'] & PROPERTY_HINT_ENUM:
+				input = OptionButton.new()
+				var options :PackedStringArray = []  
+				for x in property_info['hint_string'].split(','):
+					options.append(x.split(':')[0].strip_edges())
+					input.add_item(options[-1])
+				if value != null:
+					input.select(options.find(value))
+				input.item_selected.connect(methods.get('string_enum').bind(property_info['name'], options))
+			elif property_info['hint'] & PROPERTY_HINT_FILE:
+				input = load("res://addons/dialogic/Editor/Events/Fields/FilePicker.tscn").instantiate()
+				input.file_filter = property_info['hint_string']
+				input.property_name = property_info['name']
+				if value != null:
+					input.set_value(value)
+				input.value_changed.connect(methods.get('file'))
+			else:
+				input = LineEdit.new()
+				if value != null:
+					input.text = value
+				input.text_submitted.connect(methods.get('string').bind(property_info['name']))
+		_:
+			input = LineEdit.new()
+			if value != null:
+				input.text = value
+			input.text_submitted.connect(methods.get('string').bind(property_info['name']))
+	return input

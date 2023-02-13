@@ -309,7 +309,7 @@ func recalculate_field_visibility() -> void:
 			if expr.execute([], resource):
 				for node in node_con[1]: node.show()
 			else:
-				for node in node_con[1]: node.show()
+				for node in node_con[1]: node.hide()
 			if expr.has_execute_failed():
 				var name :String= "unnamed" if "property_name" not in node_con[1][0] else node_con[1][0].property_name
 				printerr("[Dialogic] Failed executing visibility condition for '",name,"': " + expr.get_error_text())

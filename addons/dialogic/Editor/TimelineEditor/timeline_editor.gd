@@ -32,6 +32,7 @@ func _register() -> void:
 		get_theme_icon("PlayScene", "EditorIcons"),
 		self)
 	play_timeline_button.pressed.connect(play_timeline)
+	play_timeline_button.tooltip_text = "Play the current timeline (CTRL+F5)"
 	# switch editor mode button
 	editor_mode_toggle_button = editors_manager.add_custom_button(
 		"Text editor",
@@ -75,6 +76,12 @@ func _save_resource() -> void:
 		1:
 			$TextEditor.save_timeline()
 
+
+func _input(event: InputEvent) -> void:
+	
+	if event is InputEventKey and event.keycode == KEY_F5 and event.pressed:
+		if Input.is_key_pressed(KEY_CTRL):
+			play_timeline()
 
 
 ## Method to play the current timeline. Connected to the button in the sidebar.

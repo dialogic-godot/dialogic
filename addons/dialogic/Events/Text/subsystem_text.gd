@@ -12,7 +12,7 @@ var color_regex := RegEx.new()
 var text_already_read:bool = false
 
 var text_effects := {}
-var parsed_text_effect_info := []
+var parsed_text_effect_info : Array[Dictionary]= []
 var text_effects_regex := RegEx.new()
 var text_modifiers := []
 
@@ -168,7 +168,7 @@ func execute_effects(current_index:int, text_node:Control, skipping:bool= false)
 			return
 		if current_index == -1 or current_index < parsed_text_effect_info[0]['index']:
 			return
-		var effect :=  parsed_text_effect_info.pop_front()
+		var effect :Dictionary=  parsed_text_effect_info.pop_front()
 		await (effect['execution_info']['callable'] as Callable).call(text_node, skipping, effect['value'])
 
 
@@ -276,9 +276,7 @@ func effect_mood(text_node:Control, skipped:bool, argument:String) -> void:
 
 var modifier_words_select_regex := RegEx.create_from_string("(?<!\\\\)\\[[^\\[\\]]+(\\/[^\\]]*)\\]")
 func modifier_random_selection(text:String) -> String:
-	print("\n seraching through '",text,"'")
 	for replace_mod_match in modifier_words_select_regex.search_all(text):
-		print("found ", replace_mod_match)
 		var string :String= replace_mod_match.get_string().trim_prefix("[").trim_suffix("]")
 		string = string.replace('//', '<slash>')
 		var list :PackedStringArray= string.split('/')

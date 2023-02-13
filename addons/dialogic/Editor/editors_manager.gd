@@ -81,8 +81,12 @@ func edit_resource(resource:Resource, save_previous:bool = true) -> void:
 	if current_editor and save_previous:
 		current_editor._save_resource()
 	
-	## Update the latest resource lis
+	## Update the latest resource list
 	var used_resources:Array = DialogicUtil.get_project_setting('dialogic/editor/last_resources', [])
+	
+	for res in used_resources:
+		if !FileAccess.file_exists(res):
+			used_resources.erase(res)
 	
 	if resource.resource_path in used_resources:
 		used_resources.erase(resource.resource_path)
@@ -183,7 +187,7 @@ func load_saved_state() -> void:
 	for editor in current_resources.keys():
 		editors[editor]['node']._open_resource(load(current_resources[editor]))
 		
-	var current_editor: String = DialogicUtil.get_project_setting('dialogic/editor/current_editor', 'Timeline Editor')
+	var current_editor: String = DialogicUtil.get_project_setting('dialogic/editor/current_editor', 'HomePage')
 	open_editor(editors[current_editor]['node'])
 
 

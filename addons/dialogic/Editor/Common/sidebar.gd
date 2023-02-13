@@ -74,10 +74,6 @@ func update_resource_list() -> void:
 	var character_directory: Dictionary = editors_manager.resource_helper.character_directory
 	var timeline_directory: Dictionary = editors_manager.resource_helper.timeline_directory
 	var latest_resources: Array = DialogicUtil.get_project_setting('dialogic/editor/last_resources', [])
-	for res in latest_resources:
-		if !FileAccess.file_exists(res):
-			latest_resources.erase(res)
-	ProjectSettings.set_setting('dialogic/editor/last_resources', latest_resources)
 	
 	%ResourcesList.clear()
 	var idx := 0
@@ -106,6 +102,8 @@ func update_resource_list() -> void:
 
 
 func _on_resources_list_item_selected(index:int) -> void:
+	if %ResourcesList.get_item_metadata(index) == null:
+		return
 	editors_manager.edit_resource(load(%ResourcesList.get_item_metadata(index)))
 
 

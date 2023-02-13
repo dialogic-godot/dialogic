@@ -307,7 +307,7 @@ func check_positions_and_holder() -> bool:
 			_portrait_holder_reference = get_tree().get_first_node_in_group('dialogic_portrait_holder')
 	if _default_positions.size() == 0:
 		for node in get_tree().get_nodes_in_group('dialogic_portrait_position'):
-			_default_positions[node['position_index']] = node['position']
+			_default_positions[node['position_index']] = node.global_position
 	
 	if current_positions.size() == 0:
 		current_positions = _default_positions.duplicate()

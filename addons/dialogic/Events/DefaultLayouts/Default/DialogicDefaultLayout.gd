@@ -3,9 +3,10 @@ extends CanvasLayer
 
 enum Alignments {Left, Center, Right}
 
+@export_group("Main")
+@export_subgroup("Font")
 @export var font_size := 15
 @export var text_alignment :Alignments= Alignments.Left
-
 
 ## FOR TESTING PURPOSES
 func _ready():

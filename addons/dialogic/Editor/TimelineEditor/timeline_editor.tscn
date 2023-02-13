@@ -1,14 +1,14 @@
 [gd_scene load_steps=7 format=3 uid="uid://crce0na84rhfd"]
 
 [ext_resource type="Script" path="res://addons/dialogic/Editor/TimelineEditor/timeline_editor.gd" id="1_4aceh"]
-[ext_resource type="PackedScene" uid="uid://b3fd6xpit60pb" path="res://addons/dialogic/Editor/TimelineEditor/VisualEditor/timeline_editor_visual.tscn" id="2_qs7vc"]
+[ext_resource type="PackedScene" uid="uid://ysqbusmy0qma" path="res://addons/dialogic/Editor/TimelineEditor/VisualEditor/timeline_editor_visual.tscn" id="2_qs7vc"]
 [ext_resource type="PackedScene" uid="uid://defdeav8rli6o" path="res://addons/dialogic/Editor/TimelineEditor/TextEditor/timeline_editor_text.tscn" id="3_up2bn"]
 [ext_resource type="Script" path="res://addons/dialogic/Editor/TimelineEditor/TextEditor/syntax_highlighter.gd" id="4_1t6bf"]
 
-[sub_resource type="SyntaxHighlighter" id="SyntaxHighlighter_wn64x"]
+[sub_resource type="SyntaxHighlighter" id="SyntaxHighlighter_uisma"]
 script = ExtResource("4_1t6bf")
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gyf34"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_j03ud"]
 content_margin_left = 4.0
 content_margin_top = 4.0
 content_margin_right = 4.0
@@ -38,14 +38,14 @@ theme_override_constants/margin_bottom = 0
 
 [node name="TextEditor" parent="." instance=ExtResource("3_up2bn")]
 layout_mode = 2
-syntax_highlighter = SubResource("SyntaxHighlighter_wn64x")
+syntax_highlighter = SubResource("SyntaxHighlighter_uisma")
 symbol_lookup_on_click = true
 line_folding = false
 gutters_draw_fold_gutter = false
 
 [node name="NoTimelineScreen" type="PanelContainer" parent="."]
 layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_gyf34")
+theme_override_styles/panel = SubResource("StyleBoxFlat_j03ud")
 
 [node name="CenterContainer" type="CenterContainer" parent="NoTimelineScreen"]
 layout_mode = 2

@@ -1,6 +1,6 @@
-[gd_scene load_steps=26 format=3 uid="uid://b4gdessh6n1pt"]
+[gd_scene load_steps=26 format=3 uid="uid://r8jg1cax6dui"]
 
-[ext_resource type="Script" path="res://addons/dialogic/Events/DefaultLayouts/DialogicDefaultScene.gd" id="1"]
+[ext_resource type="Script" path="res://addons/dialogic/Events/DefaultLayouts/Default/DialogicDefaultLayout.gd" id="1"]
 [ext_resource type="Script" path="res://addons/dialogic/Events/Text/node_dialog_text.gd" id="2"]
 [ext_resource type="Script" path="res://addons/dialogic/Events/Text/node_name_label.gd" id="3"]
 [ext_resource type="Script" path="res://addons/dialogic/Events/Choice/node_choice_button.gd" id="4"]
@@ -14,7 +14,7 @@
 [ext_resource type="AudioStream" uid="uid://b6c1p14bc20p1" path="res://addons/dialogic/Example Assets/sound-effects/typing1.wav" id="14"]
 [ext_resource type="Script" path="res://addons/dialogic/Events/Choice/node_button_sound.gd" id="18"]
 [ext_resource type="Script" path="res://addons/dialogic/Events/Text/node_next_indicator.gd" id="20_ljcq2"]
-[ext_resource type="Script" path="res://addons/dialogic/Events/DefaultLayouts/ExampleGlossaryPopup.gd" id="20_vmnp2"]
+[ext_resource type="Script" path="res://addons/dialogic/Events/DefaultLayouts/Default/ExampleGlossaryPopup.gd" id="20_vmnp2"]
 [ext_resource type="PackedScene" path="res://addons/dialogic/Events/DefaultLayouts/ExampleHistoryScene.tscn" id="22_854kg"]
 [ext_resource type="Script" path="res://addons/dialogic/Events/TextInput/node_text_input.gd" id="22_ltkcf"]
 [ext_resource type="Script" path="res://addons/dialogic/Events/DefaultLayouts/HideWithChild.gd" id="23"]
@@ -90,27 +90,27 @@ layer = 0
 script = ExtResource("6")
 
 [node name="PortraitPosition1" type="Marker2D" parent="."]
-position = Vector2(106, 604)
+position = Vector2(184, 604)
 script = ExtResource("5")
 position_index = 1
 
 [node name="PortraitPosition2" type="Marker2D" parent="."]
-position = Vector2(302, 601)
+position = Vector2(380, 601)
 script = ExtResource("5")
 position_index = 2
 
 [node name="PortraitPosition3" type="Marker2D" parent="."]
-position = Vector2(497, 603)
+position = Vector2(575, 603)
 script = ExtResource("5")
 position_index = 3
 
 [node name="PortraitPosition4" type="Marker2D" parent="."]
-position = Vector2(683, 603)
+position = Vector2(761, 603)
 script = ExtResource("5")
 position_index = 4
 
 [node name="PortraitPosition5" type="Marker2D" parent="."]
-position = Vector2(887, 605)
+position = Vector2(965, 605)
 script = ExtResource("5")
 position_index = 5
 
@@ -221,11 +221,11 @@ layout_mode = 2
 theme_override_font_sizes/normal_font_size = 15
 bbcode_enabled = true
 text = "Some default text"
+visible_characters_behavior = 1
 script = ExtResource("2")
 
 [node name="DialogicNode_TypeSounds" type="AudioStreamPlayer" parent="DefaultStyle/PanelContainer/DialogicNode_DialogText"]
 script = ExtResource("10")
-sounds = []
 play_every_character = 0
 
 [node name="DNextIndicator" type="Control" parent="DefaultStyle/PanelContainer"]
@@ -318,6 +318,7 @@ layout_mode = 2
 layout_mode = 2
 bbcode_enabled = true
 text = "Some text"
+fit_content = true
 
 [node name="Extra" type="RichTextLabel" parent="DefaultStyle/Glossary/Panel/VBox"]
 layout_mode = 2
@@ -325,6 +326,7 @@ theme_override_colors/default_color = Color(1, 1, 1, 0.584314)
 theme_override_font_sizes/normal_font_size = 15
 bbcode_enabled = true
 text = "[right]Wow, some text!"
+fit_content = true
 
 [node name="Control" type="Control" parent="DefaultStyle/Glossary/Panel"]
 show_behind_parent = true

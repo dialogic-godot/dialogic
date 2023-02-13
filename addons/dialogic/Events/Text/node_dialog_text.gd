@@ -3,7 +3,6 @@ extends RichTextLabel
 
 ## Dialogic node that can reveal text at a given (changeable speed). 
 
-
 signal started_revealing_text()
 signal continued_revealing_text(new_character)
 signal finished_revealing_text()
