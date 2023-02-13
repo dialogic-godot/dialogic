@@ -52,7 +52,7 @@ func create_necessary_group_items(path:String) -> TreeItem:
 		if current_group_nodes.has(item_path+"/"+i):
 			last_item = current_group_nodes[item_path+"/"+i]
 		else:
-			var new_item := add_portrait_group(i, last_item)
+			var new_item:TreeItem = add_portrait_group(i, last_item)
 			current_group_nodes[item_path+"/"+i] = new_item
 			last_item = new_item
 	return last_item

@@ -28,12 +28,13 @@ func _update_portrait(passed_character:DialogicCharacter, passed_portrait:String
 	if passed_character != null:
 		if character == null or character != passed_character:
 			character = passed_character
-		
-	var path :String = character.portraits[portrait].get('image', '')
-	$Portrait.texture = null
-	if !path.is_empty(): $Portrait.texture = load(path)
-	$Portrait.centered = false
-	$Portrait.position = $Portrait.get_rect().size * Vector2(-0.5, -1)
+	
+	if character.portraits.has(portrait):
+		var path :String = character.portraits[portrait].get('image', '')
+		$Portrait.texture = null
+		if !path.is_empty(): $Portrait.texture = load(path)
+		$Portrait.centered = false
+		$Portrait.position = $Portrait.get_rect().size * Vector2(-0.5, -1)
 
 
 ## If implemented, this is called when the mirror changes

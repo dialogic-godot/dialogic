@@ -320,7 +320,6 @@ offset_right = -9.0
 offset_bottom = 40.0
 grow_horizontal = 0
 item_count = 2
-selected = 0
 popup/item_0/text = "Full View"
 popup/item_0/id = 0
 popup/item_1/text = "Real Size"
