@@ -11,7 +11,7 @@ func _ready() -> void:
 	for indexer in DialogicUtil.get_indexers():
 		for layout in indexer._get_layout_scenes():
 			layouts_info[layout['path']] = layout
-	
+
 	%PresetSceneLabel.add_theme_color_override("font_color", get_theme_color("success_color", "Editor"))
 	%ClearCustomization.icon = get_theme_icon("Remove", "EditorIcons")
 	%PresetSelectionButton.icon = get_theme_icon("ListSelect", "EditorIcons")
@@ -25,7 +25,7 @@ func _ready() -> void:
 	get_theme_icon("CreateNewSceneFrom", "EditorIcons")
 	get_theme_icon("Load", "EditorIcons")
 	get_theme_icon("New", "EditorIcons")
-	
+
 	get_theme_icon("NodeInfo", "EditorIcons")
 	get_theme_icon("Unlinked", "EditorIcons")
 
@@ -81,8 +81,11 @@ func _on_preset_selection_pressed() -> void:
 
 func update_presets_list() -> void:
 	%LayoutItemList.clear()
-	
-	var current_path :String = DialogicUtil.get_project_setting('dialogic/layout_scene', "res://addons/dialogic/Example Assets/example-scenes/DialogicDefaultScene.tscn")
+
+	var current_path :String = DialogicUtil.get_project_setting(
+	    'dialogic/layout_scene',
+	    DialogicUtil.get_default_layout()
+	)
 	var index := 0
 	for indexer in DialogicUtil.get_indexers():
 		for layout in indexer._get_layout_scenes():
@@ -96,7 +99,7 @@ func update_presets_list() -> void:
 				%LayoutItemList.set_item_custom_fg_color(index, get_theme_color("accent_color", "Editor"))
 				%LayoutItemList.select(index)
 			%LayoutItemList.set_item_metadata(index, layout)
-			
+
 			index += 1
 	await get_tree().process_frame
 	if %LayoutItemList.get_selected_items().is_empty():
@@ -140,7 +143,7 @@ func _on_close_preset_selection_pressed():
 
 
 ################################################################################
-##				CREATE CUSTOM COPY FROM PRESET 
+##				CREATE CUSTOM COPY FROM PRESET
 ################################################################################
 func _on_make_custom_button_pressed() -> void:
 	%PresetSelection.hide()
@@ -158,7 +161,7 @@ func _on_close_make_custom_button_pressed() -> void:
 
 func _on_create_custom_copy_pressed() -> void:
 	find_parent("EditorView").godot_file_dialog(
-		create_custom_copy, "*", 
+		create_custom_copy, "*",
 		EditorFileDialog.FILE_MODE_OPEN_DIR)
 
 
@@ -205,24 +208,24 @@ func load_layout_scene_customization(custom_scene_path:String = "") -> void:
 		scene = load(ProjectSettings.get_setting('dialogic/layout_scene', DialogicUtil.get_default_layout())).instantiate()
 	if !scene:
 		return
-	
-	for child in %ExportsTabs.get_children(): 
+
+	for child in %ExportsTabs.get_children():
 		child.queue_free()
-	
+
 	var export_overrides :Dictionary = DialogicUtil.get_project_setting('dialogic/layout/export_overrides', {})
 	var current_grid :GridContainer
 	var current_hbox :HBoxContainer
-	
+
 	var label_bg_style = get_theme_stylebox("CanvasItemInfoOverlay", "EditorStyles").duplicate()
 	label_bg_style.content_margin_left = 5
 	label_bg_style.content_margin_right = 5
 	label_bg_style.content_margin_top = 5
-	
+
 	customization_editor_info = {}
 	for i in scene.script.get_script_property_list():
 		if i['usage'] & PROPERTY_USAGE_CATEGORY:
 			continue
-		
+
 		if i['usage'] & PROPERTY_USAGE_GROUP or current_hbox == null:
 			var main_scroll = ScrollContainer.new()
 			main_scroll.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
@@ -239,7 +242,7 @@ func load_layout_scene_customization(custom_scene_path:String = "") -> void:
 				continue
 			else:
 				%ExportsTabs.set_tab_title(main_scroll.get_index(), 'General')
-		
+
 		if i['usage'] & PROPERTY_USAGE_SUBGROUP:
 			var v_scroll := ScrollContainer.new()
 			v_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
@@ -257,7 +260,7 @@ func load_layout_scene_customization(custom_scene_path:String = "") -> void:
 			current_grid = GridContainer.new()
 			current_grid.columns = 3
 			v_box.add_child(current_grid, true)
-		
+
 		if current_grid == null:
 			var v_scroll := ScrollContainer.new()
 			v_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
@@ -265,28 +268,28 @@ func load_layout_scene_customization(custom_scene_path:String = "") -> void:
 			current_grid = GridContainer.new()
 			current_grid.columns = 3
 			v_scroll.add_child(current_grid, true)
-		
+
 		if i['usage'] & PROPERTY_USAGE_EDITOR:
 			var label := Label.new()
 			label.text = str(i['name']).capitalize()
 			current_grid.add_child(label, true)
-			
+
 			var current_value = scene.get(i['name'])
 			customization_editor_info[i['name']] = {}
 			customization_editor_info[i['name']]['orig'] = current_value
-			
+
 			if export_overrides.has(i['name']):
 				current_value = str_to_var(export_overrides[i['name']])
-			
-			var input :Node = DialogicUtil.setup_script_property_edit_node( 
-				i, current_value, 
+
+			var input :Node = DialogicUtil.setup_script_property_edit_node(
+				i, current_value,
 				{'bool':_on_export_bool_submitted, 'color':_on_export_color_submitted, 'enum':_on_export_int_enum_submitted,
 				'int':_on_export_number_submitted, 'float':_on_export_number_submitted, 'file':_on_export_file_submitted,
 				'string':_on_export_input_text_submitted, "string_enum": _on_export_string_enum_submitted})
-			
+
 			input.size_flags_horizontal = SIZE_EXPAND_FILL
 			customization_editor_info[i['name']]['node'] = input
-			
+
 			var reset := Button.new()
 			reset.flat = true
 			reset.icon = get_theme_icon('Clear', 'EditorIcons')
@@ -307,7 +310,7 @@ func set_export_override(property_name:String, value:String = "") -> void:
 	else:
 		export_overrides.erase(property_name)
 		customization_editor_info[property_name]['reset'].disabled = true
-	
+
 	ProjectSettings.set_setting('dialogic/layout/export_overrides', export_overrides)
 
 func _on_export_override_reset(property_name:String) -> void:
