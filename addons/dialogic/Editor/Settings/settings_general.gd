@@ -14,45 +14,31 @@ func _ready() -> void:
 		'background': Color(0.545098, 0.545098, 0.545098, 0.211765)
 	})
 	%ExtensionsFolderPicker.resource_icon = get_theme_icon("Folder", "EditorIcons")
-	
+
 	# Signals
 	%ExtensionsFolderPicker.value_changed.connect(_on_ExtensionsFolder_value_changed)
 	%PhysicsTimerButton.pressed.connect(_on_physics_timer_button_toggled)
-	
+
 	# Colors
 	%ResetColorsButton.button_up.connect(_on_reset_colors_button)
-	
+
 	for n in $"%Colors".get_children():
 		n.color_changed.connect(_on_color_change.bind(n))
-	
+
 	# Extension creator
 	%ExtensionCreator.hide()
 
 func refresh() -> void:
 	%PhysicsTimerButton.button_pressed = DialogicUtil.is_physics_timer()
-	
+
 	%ExtensionsFolderPicker.set_value(DialogicUtil.get_project_setting('dialogic/extensions_folder', 'res://addons/dialogic_additions'))
-	
+
 	# Color Palett
 	color_palette = DialogicUtil.get_color_palette()
 	var _scale := DialogicUtil.get_editor_scale()
 	for n in %Colors.get_children():
 		n.custom_minimum_size = Vector2(50 ,50)*scale
 		n.color = color_palette[n.name]
-
-
-func _on_TestingScene_value_changed(property:String, value:String) -> void:
-	if value == null or value.is_empty():
-		value = "res://addons/dialogic/Example Assets/example-scenes/DialogicDefaultScene.tscn"
-	ProjectSettings.set_setting('dialogic/editor/test_dialog_scene', value)
-	ProjectSettings.save()
-
-
-func _on_DefaultScene_value_changed(property:String, value:String) -> void:
-	if value == null or value.is_empty():
-		value = "res://addons/dialogic/Example Assets/example-scenes/DialogicDefaultScene.tscn"
-	ProjectSettings.set_setting('dialogic/default_dialog_scene', value)
-	ProjectSettings.save()
 
 
 func _on_color_change(color: Color, who) -> void:
@@ -66,8 +52,8 @@ func _on_reset_colors_button() -> void:
 	for n in %Colors.get_children():
 		n.color = color_palette[n.name]
 		# There is a bug when trying to remove existing values, so we have to
-		# set/create new entries for all the colors used. 
-		# If you manage to make it work using the ProjectSettings.clear() 
+		# set/create new entries for all the colors used.
+		# If you manage to make it work using the ProjectSettings.clear()
 		# feel free to open a PR!
 		ProjectSettings.set_setting('dialogic/editor/' + str(n.name), color_palette[n.name])
 	ProjectSettings.save()
@@ -92,7 +78,7 @@ func _on_ExtensionsFolder_value_changed(property:String, value:String) -> void:
 func _on_create_extension_button_pressed() -> void:
 	%CreateExtensionButton.hide()
 	%ExtensionCreator.show()
-	
+
 	%NameEdit.text = ""
 	%NameEdit.grab_focus()
 
@@ -100,13 +86,13 @@ func _on_create_extension_button_pressed() -> void:
 func _on_submit_extension_button_pressed() -> void:
 	if %NameEdit.text.is_empty():
 		return
-	
+
 	var extensions_folder :String = DialogicUtil.get_project_setting('dialogic/extensions_folder', 'res://addons/dialogic_additions')
-	
+
 	extensions_folder = extensions_folder.path_join(%NameEdit.text.to_pascal_case())
 	DirAccess.make_dir_recursive_absolute(extensions_folder)
 	var mode :int= %ExtensionMode.selected
-	
+
 	var file : FileAccess
 	var indexer_content := "@tool\nextends DialogicIndexer\n\n"
 	if mode != 1: # don't add event in Subsystem Only mode
@@ -186,8 +172,8 @@ func load_game_state():
 """)
 	file = FileAccess.open(extensions_folder.path_join('index.gd'), FileAccess.WRITE)
 	file.store_string(indexer_content)
-	
+
 	%ExtensionCreator.hide()
 	%CreateExtensionButton.show()
-	
+
 	find_parent('EditorView').plugin_reference.editor_interface.get_resource_filesystem().scan_sources()

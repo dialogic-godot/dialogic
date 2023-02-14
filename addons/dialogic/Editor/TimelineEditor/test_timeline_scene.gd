@@ -6,7 +6,9 @@ func _ready() -> void:
 		print("Testing locale is: ", ProjectSettings.get_setting('internationalization/locale/test'))
 	$PauseIndictator.hide()
 	var dialog_scene_path: String = DialogicUtil.get_project_setting(
-		'dialogic/editor/custom_testing_layout', "res://addons/dialogic/Example Assets/example-scenes/DialogicDefaultScene.tscn")
+		'dialogic/editor/custom_testing_layout',
+		DialogicUtil.get_default_layout()
+	)
 	var scene: Node = load(dialog_scene_path).instantiate()
 	DialogicUtil.apply_scene_export_overrides(scene, ProjectSettings.get_setting('dialogic/layout/export_overrides', {}))
 	add_child(scene)
@@ -15,7 +17,7 @@ func _ready() -> void:
 			scene.position = get_viewport_rect().size/2.0
 		if scene is Node2D:
 			scene.position = get_viewport_rect().size/2.0
-	
+
 	randomize()
 	var current_timeline: String = ProjectSettings.get_setting('dialogic/editor/current_timeline_path')
 	Dialogic.start_timeline(current_timeline)
@@ -28,7 +30,7 @@ func recieve_event_signal(argument:String) -> void:
 
 func recieve_text_signal(argument:String) -> void:
 	print("[Dialogic] Encountered a signal in text: ", argument)
-	
+
 func _input(event:InputEvent) -> void:
 	if event is InputEventKey and event.pressed and event.keycode == KEY_ESCAPE:
 		Dialogic.paused = !Dialogic.paused
