@@ -33,7 +33,6 @@ func _get_drag_data(position):
 	var prev = load(preview_scene).instantiate()
 	prev.set_text(get_item_name())
 	set_drag_preview(prev)
-
 	return data
 
 func is_variable():

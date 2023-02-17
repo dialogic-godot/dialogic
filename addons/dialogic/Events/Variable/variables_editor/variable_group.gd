@@ -141,7 +141,7 @@ func update():
 		%DeleteButton.hide()
 		%DuplicateButton.hide()
 		%FoldButton.hide()
-		%NameEdit.text = "VAR"
+		%NameEdit.text = "Variables"
 		%NameEdit.editable = false
 		%SearchBar.show()
 		%Dragger.hide()

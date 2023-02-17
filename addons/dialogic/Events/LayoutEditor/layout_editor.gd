@@ -1,13 +1,33 @@
 @tool
-extends VBoxContainer
+extends DialogicEditor
 
 enum LayoutModes {Preset, Custom, None}
 
 var layouts_info := {}
 var customization_editor_info := {}
 
+
+################################################################################
+##						EDITOR REGISTERING
+################################################################################
+## Overwrite. Register to the editor manager in here.
+func _register() -> void:
+	editors_manager.register_simple_editor(self)
+	alternative_text = "Change the look of the dialog in your game"
+
+func _open(argument:Variant = null) -> void:
+	%LayoutMode.select(DialogicUtil.get_project_setting('dialogic/layout/mode', 0))
+	_on_layout_mode_item_selected(%LayoutMode.selected)
+	%MakeCustomPanel.hide()
+
+
+################################################################################
+##							EDITOR FUNCTIONALITY
+################################################################################
 func _ready() -> void:
-	get_parent().set_tab_title(get_index(), 'Layout')
+	
+	
+	
 	for indexer in DialogicUtil.get_indexers():
 		for layout in indexer._get_layout_scenes():
 			layouts_info[layout['path']] = layout
@@ -28,10 +48,12 @@ func _ready() -> void:
 
 	get_theme_icon("NodeInfo", "EditorIcons")
 	get_theme_icon("Unlinked", "EditorIcons")
+	
+	await get_tree().process_frame
+	get_parent().set_tab_title(get_index(), 'Layout')
+	get_parent().set_tab_icon(get_index(), get_theme_icon("MatchCase", "EditorIcons"))
+	#Alternative icon: get_theme_icon("MeshTexture", "EditorIcons")
 
-func refresh() -> void:
-	%LayoutMode.select(DialogicUtil.get_project_setting('dialogic/layout/mode', 0))
-	_on_layout_mode_item_selected(%LayoutMode.selected)
 
 func _on_layout_mode_item_selected(index:int) -> void:
 	ProjectSettings.set_setting('dialogic/layout/mode', index)
@@ -83,8 +105,8 @@ func update_presets_list() -> void:
 	%LayoutItemList.clear()
 
 	var current_path :String = DialogicUtil.get_project_setting(
-	    'dialogic/layout_scene',
-	    DialogicUtil.get_default_layout()
+		'dialogic/layout_scene',
+		DialogicUtil.get_default_layout()
 	)
 	var index := 0
 	for indexer in DialogicUtil.get_indexers():
@@ -140,6 +162,7 @@ func _on_activate_button_pressed() -> void:
 func _on_close_preset_selection_pressed():
 	%PresetSelection.hide()
 	%PresetCustomization.show()
+	%PresetSelectionButton.text = "Change"
 
 
 ################################################################################
@@ -157,6 +180,7 @@ func _on_make_custom_button_pressed() -> void:
 
 func _on_close_make_custom_button_pressed() -> void:
 	%MakeCustomPanel.hide()
+	%MakeCustomButton.text = "Make Custom"
 
 
 func _on_create_custom_copy_pressed() -> void:

@@ -113,6 +113,9 @@ func new_character(path: String) -> void:
 ##############################################################################
 
 func _ready() -> void:
+	get_parent().set_tab_title(get_index(), 'Character')
+	get_parent().set_tab_icon(get_index(), load("res://addons/dialogic/Editor/Images/Resources/character.svg"))
+	
 	setup_portrait_list_tab()
 	
 	setup_portrait_settings_tab()

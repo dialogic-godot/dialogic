@@ -1,17 +1,10 @@
-[gd_scene load_steps=7 format=3 uid="uid://eis5n410bmnl"]
+[gd_scene load_steps=7 format=3 uid="uid://d2piwcvdllqyl"]
 
 [ext_resource type="Texture2D" uid="uid://bjcfcigfdrfex" path="res://addons/dialogic/Example Assets/backgrounds/green-field.png" id="1_it38k"]
-[ext_resource type="Script" path="res://addons/dialogic/Editor/Settings/settings_layouts.gd" id="1_mdhmx"]
+[ext_resource type="Script" path="res://addons/dialogic/Events/LayoutEditor/layout_editor.gd" id="1_mdhmx"]
 [ext_resource type="PackedScene" uid="uid://7mvxuaulctcq" path="res://addons/dialogic/Editor/Events/Fields/FilePicker.tscn" id="2_w32oh"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_y4jru"]
-content_margin_left = 5.0
-content_margin_top = 5.0
-content_margin_right = 5.0
-content_margin_bottom = 5.0
-bg_color = Color(0.545098, 0.545098, 0.545098, 0.211765)
-
-[sub_resource type="Image" id="Image_bd7j1"]
+[sub_resource type="Image" id="Image_5371q"]
 data = {
 "data": PackedByteArray(255, 255, 255, 0, 255, 255, 255, 0, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 131, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 131, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 131, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 231, 255, 93, 93, 55, 255, 97, 97, 58, 255, 93, 93, 233, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 231, 255, 94, 94, 54, 255, 94, 94, 57, 255, 93, 93, 233, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 93, 93, 233, 255, 93, 93, 232, 255, 93, 93, 41, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 93, 93, 233, 255, 93, 93, 232, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 97, 97, 42, 255, 255, 255, 0, 255, 97, 97, 42, 255, 97, 97, 42, 255, 255, 255, 0, 255, 98, 98, 47, 255, 97, 97, 42, 255, 255, 255, 0, 255, 97, 97, 42, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 235, 255, 93, 93, 233, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 94, 94, 46, 255, 93, 93, 236, 255, 93, 93, 233, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 235, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 233, 255, 95, 95, 59, 255, 96, 96, 61, 255, 93, 93, 235, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 233, 255, 95, 95, 59, 255, 96, 96, 61, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0),
 "format": "RGBA8",
@@ -21,71 +14,68 @@ data = {
 }
 
 [sub_resource type="ImageTexture" id="ImageTexture_c0m05"]
-image = SubResource("Image_bd7j1")
+image = SubResource("Image_5371q")
 
-[node name="SettingsLayouts" type="VBoxContainer"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_y4jru"]
+content_margin_left = 5.0
+content_margin_top = 5.0
+content_margin_right = 5.0
+content_margin_bottom = 5.0
+bg_color = Color(0.545098, 0.545098, 0.545098, 0.211765)
+
+[node name="Layout" type="VBoxContainer"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -4.0
-offset_right = -4.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_mdhmx")
 
-[node name="Title" type="Label" parent="."]
-layout_mode = 2
-theme_override_styles/normal = SubResource("StyleBoxFlat_y4jru")
-text = "Layout Scene"
-
-[node name="HBox" type="VBoxContainer" parent="."]
-layout_mode = 2
-
-[node name="VBox" type="HBoxContainer" parent="HBox"]
+[node name="VBox" type="HBoxContainer" parent="."]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="PresetScene" type="HBoxContainer" parent="HBox/VBox"]
+[node name="PresetScene" type="HBoxContainer" parent="VBox"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Label" type="Label" parent="HBox/VBox/PresetScene"]
+[node name="Label" type="Label" parent="VBox/PresetScene"]
 layout_mode = 2
 size_flags_stretch_ratio = 0.5
 text = "Current preset:"
 
-[node name="PresetSceneLabel" type="Label" parent="HBox/VBox/PresetScene"]
+[node name="PresetSceneLabel" type="Label" parent="VBox/PresetScene"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "PresetName"
 horizontal_alignment = 2
 
-[node name="PresetSelectionButton" type="Button" parent="HBox/VBox/PresetScene"]
+[node name="PresetSelectionButton" type="Button" parent="VBox/PresetScene"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 4
 tooltip_text = "Change preset"
 text = "Change"
 
-[node name="MakeCustomButton" type="Button" parent="HBox/VBox/PresetScene"]
+[node name="MakeCustomButton" type="Button" parent="VBox/PresetScene"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 4
 tooltip_text = "Create custom scene from preset"
 text = "Make Custom"
 
-[node name="CustomScene" type="HBoxContainer" parent="HBox/VBox"]
+[node name="CustomScene" type="HBoxContainer" parent="VBox"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Label" type="Label" parent="HBox/VBox/CustomScene"]
+[node name="Label" type="Label" parent="VBox/CustomScene"]
 layout_mode = 2
 size_flags_stretch_ratio = 0.5
 text = "Custom layout scene:"
 
-[node name="CustomScenePicker" parent="HBox/VBox/CustomScene" instance=ExtResource("2_w32oh")]
+[node name="CustomScenePicker" parent="VBox/CustomScene" instance=ExtResource("2_w32oh")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -93,12 +83,12 @@ file_filter = "*.tscn"
 placeholder = "DialogicDefaultScene.tscn"
 resource_icon = SubResource("ImageTexture_c0m05")
 
-[node name="NoScene" type="HBoxContainer" parent="HBox/VBox"]
+[node name="NoScene" type="HBoxContainer" parent="VBox"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Label" type="RichTextLabel" parent="HBox/VBox/NoScene"]
+[node name="Label" type="RichTextLabel" parent="VBox/NoScene"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 0.5
@@ -110,11 +100,11 @@ For testing, the default scene will be used."
 fit_content = true
 autowrap_mode = 2
 
-[node name="HBox" type="HBoxContainer" parent="HBox/VBox"]
+[node name="HBox" type="HBoxContainer" parent="VBox"]
 layout_mode = 2
 alignment = 2
 
-[node name="LayoutMode" type="OptionButton" parent="HBox/VBox/HBox"]
+[node name="LayoutMode" type="OptionButton" parent="VBox/HBox"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 0
@@ -128,16 +118,16 @@ popup/item_1/id = 1
 popup/item_2/text = "No Layout Scene Mode"
 popup/item_2/id = 2
 
-[node name="MakeCustomPanel" type="PanelContainer" parent="HBox"]
+[node name="MakeCustomPanel" type="PanelContainer" parent="."]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="VBoxContainer" type="VBoxContainer" parent="HBox/MakeCustomPanel"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MakeCustomPanel"]
 layout_mode = 2
 
-[node name="Label" type="RichTextLabel" parent="HBox/MakeCustomPanel/VBoxContainer"]
+[node name="Label" type="RichTextLabel" parent="MakeCustomPanel/VBoxContainer"]
 layout_mode = 2
 text = "This allows you to save a custom copy of this preset. You can edit the resulting scene in godot, allowing you to do whatever you want with it. 
 Alternatively you can:
@@ -148,14 +138,14 @@ Alternatively you can:
 If you know what you are doing, feel free to go ahead!"
 fit_content = true
 
-[node name="HBoxContainer" type="HBoxContainer" parent="HBox/MakeCustomPanel/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MakeCustomPanel/VBoxContainer"]
 layout_mode = 2
 
-[node name="MakeCustomButton" type="Button" parent="HBox/MakeCustomPanel/VBoxContainer/HBoxContainer"]
+[node name="MakeCustomButton" type="Button" parent="MakeCustomPanel/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 text = "Create custom copy"
 
-[node name="CloseMakeCustomButton" type="Button" parent="HBox/MakeCustomPanel/VBoxContainer/HBoxContainer"]
+[node name="CloseMakeCustomButton" type="Button" parent="MakeCustomPanel/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 text = "Cancel"
 
@@ -286,11 +276,11 @@ ok_button_text = "Yes, reset"
 dialog_text = "Are you sure you want to reset all customization options? You cannot undo this."
 dialog_autowrap = true
 
-[connection signal="pressed" from="HBox/VBox/PresetScene/PresetSelectionButton" to="." method="_on_preset_selection_pressed"]
-[connection signal="pressed" from="HBox/VBox/PresetScene/MakeCustomButton" to="." method="_on_make_custom_button_pressed"]
-[connection signal="item_selected" from="HBox/VBox/HBox/LayoutMode" to="." method="_on_layout_mode_item_selected"]
-[connection signal="pressed" from="HBox/MakeCustomPanel/VBoxContainer/HBoxContainer/MakeCustomButton" to="." method="_on_create_custom_copy_pressed"]
-[connection signal="pressed" from="HBox/MakeCustomPanel/VBoxContainer/HBoxContainer/CloseMakeCustomButton" to="." method="_on_close_make_custom_button_pressed"]
+[connection signal="pressed" from="VBox/PresetScene/PresetSelectionButton" to="." method="_on_preset_selection_pressed"]
+[connection signal="pressed" from="VBox/PresetScene/MakeCustomButton" to="." method="_on_make_custom_button_pressed"]
+[connection signal="item_selected" from="VBox/HBox/LayoutMode" to="." method="_on_layout_mode_item_selected"]
+[connection signal="pressed" from="MakeCustomPanel/VBoxContainer/HBoxContainer/MakeCustomButton" to="." method="_on_create_custom_copy_pressed"]
+[connection signal="pressed" from="MakeCustomPanel/VBoxContainer/HBoxContainer/CloseMakeCustomButton" to="." method="_on_close_make_custom_button_pressed"]
 [connection signal="pressed" from="PresetSelection/VBoxContainer2/PremadesTitle/ClosePresetSelection" to="." method="_on_close_preset_selection_pressed"]
 [connection signal="item_selected" from="PresetSelection/VBoxContainer2/VSplit/LayoutItemList" to="." method="_on_layout_item_list_item_selected"]
 [connection signal="pressed" from="PresetSelection/VBoxContainer2/VSplit/VBoxContainer/VBoxContainer/HBox/ActivateButton" to="." method="_on_activate_button_pressed"]

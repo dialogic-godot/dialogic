@@ -1,5 +1,5 @@
 @tool
-extends VBoxContainer
+extends DialogicEditor
 
 var current_glossary :DialogicGlossary = null
 var current_entry_name := ""
@@ -7,6 +7,11 @@ var current_entry_name := ""
 ################################################################################
 ##					BASICS
 ################################################################################
+
+func _register() -> void:
+	editors_manager.register_simple_editor(self)
+	alternative_text = "Create and edit glossaries."
+
 func _ready() -> void:
 	%AddGlossaryFile.icon = get_theme_icon('Add', 'EditorIcons')
 	%LoadGlossaryFile.icon = get_theme_icon('Folder', 'EditorIcons')
@@ -20,12 +25,16 @@ func _ready() -> void:
 	
 	%DefaultColor.color_changed.connect(set_setting.bind('dialogic/glossary/default_color'))
 	%DefaultCaseSensitive.toggled.connect(set_setting.bind('dialogic/glossary/default_case_sensitive'))
+	
+	await get_tree().process_frame
+	get_parent().set_tab_title(get_index(), 'Glossary')
+	get_parent().set_tab_icon(get_index(), load(self.get_script().get_path().get_base_dir() + "/definition.svg"))
 
 func set_setting(value, setting:String)  -> void:
 	ProjectSettings.set_setting(setting, value)
 	ProjectSettings.save()
 
-func refresh() -> void:
+func _open(argument:Variant = null) -> void:
 	%DefaultColor.color = DialogicUtil.get_project_setting('dialogic/glossary/default_color', Color.POWDER_BLUE)
 	%DefaultCaseSensitive.button_pressed = DialogicUtil.get_project_setting('dialogic/glossary/default_case_sensitive', true)
 	
@@ -98,7 +107,7 @@ func _on_delete_glossary_file_pressed() -> void:
 			%GlossaryList.get_selected_items()[0]))
 		ProjectSettings.set_setting('dialogic/glossary/glossary_files', list)
 		ProjectSettings.save()
-		refresh()
+		_open()
 
 ################################################################################
 ##					ENTRY LIST
