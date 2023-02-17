@@ -19,6 +19,10 @@ func _get_subsystems() -> Array[Dictionary]:
 	return []
 
 
+func _get_editors() -> Array[String]:
+	return []
+
+
 func _get_settings_pages() -> Array:
 	return []
 

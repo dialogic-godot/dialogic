@@ -13,6 +13,10 @@ func _ready():
 			min_height += box.size.y
 	
 	%VersionLabel.set('theme_override_font_sizes/font_size', 20 * edit_scale)
+	var plugin_cfg := ConfigFile.new()
+	plugin_cfg.load("res://addons/dialogic/plugin.cfg")
+	%VersionLabel.text = plugin_cfg.get_value('plugin', 'version', 'unknown version')
+	
 	$CenterContainer/ScrollContainer.custom_minimum_size.x = 440 *edit_scale
 	%BoxHolder.custom_minimum_size.y = min_height+100*edit_scale
 	set('theme_override_constants/separation', 30*edit_scale)
@@ -28,8 +32,10 @@ func _register():
 			self).pressed.connect(_on_wiki_button_pressed)
 			
 	editors_manager.add_custom_button('Discord', 
-			get_theme_icon("AnimatedSprite3D", "EditorIcons"), 
+			get_theme_icon("CryptoKey", "EditorIcons"), 
 			self).pressed.connect(_on_discord_button_pressed)
+	
+	self.alternative_text = "Welcome to dialogic!"
 
 
 func _on_discord_button_pressed() -> void:

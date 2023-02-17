@@ -1,14 +1,15 @@
 @tool
 extends Control
 
-## Node that manages editors and the sidebar.
+## Node that manages editors, the toolbar and  the sidebar.
 
 signal resource_opened(resource)
 signal editor_changed(previous, current)
 
 ### References
 @onready var sidebar = $HSplit/Sidebar
-@onready var editors_holder = $HSplit/Editors
+@onready var editors_holder = $HSplit/VBox/Editors
+@onready var toolbar = $HSplit/VBox/Toolbar
 var resource_helper: Node:
 	get:
 		return get_node("ResourceHelper")
@@ -25,13 +26,19 @@ var resources := []
 
 ## Asks all childs of the editor holder to register
 func _ready() -> void:
+	
+	# Load custom editors
+	for indexer in DialogicUtil.get_indexers():
+		for editor in indexer._get_editors():
+			editors_holder.add_child(load(editor).instantiate())
+	
 	# Needs to be done here to make sure this node is ready when doing the register calls
 	for editor in editors_holder.get_children():
 		editor.editors_manager = self
 		editor._register()
 	
 	await get_parent().get_parent().ready
-	
+	await get_tree().process_frame
 	load_saved_state()
 
 
@@ -58,7 +65,7 @@ func add_icon_button(icon:Texture, tooltip:String, editor:DialogicEditor) -> Nod
 
 ## Call to add a custom action button. Only visible if editor is visible.
 func add_custom_button(label:String, icon:Texture, editor:DialogicEditor) -> Node:
-	var button: Button = sidebar.add_custom_button(label, icon)
+	var button: Button = toolbar.add_custom_button(label, icon)
 	editors[editor.name]['buttons'].append(button)
 	button.pressed.connect(_on_sidebar_button_pressed.bind(button, editor.name))
 	button.hide()
@@ -134,11 +141,11 @@ func open_editor(editor:DialogicEditor, save_previous: bool = true, extra_info:V
 		var text:String = editor.current_resource.resource_path.get_file()
 		if editor.current_resource_state == DialogicEditor.ResourceStates.Unsaved:
 			text += "(*)"
-		sidebar.set_current_resource_text(text)
+		toolbar.set_current_resource_text(text)
 	else:
-		sidebar.set_current_resource_text('')
+		toolbar.set_current_resource_text(current_editor.alternative_text)
 	
-	sidebar.hide_all_custom_buttons()
+	toolbar.hide_all_custom_buttons()
 	for button in editors[current_editor.name]['buttons']:
 		button.show()
 	
@@ -173,12 +180,12 @@ func save_current_resource() -> void:
 
 ## Change the resource state
 func _on_resource_saved(editor:DialogicEditor):
-	sidebar.set_unsaved_indicator(true)
+	toolbar.set_unsaved_indicator(true)
 
 
 ## Change the resource state
 func _on_resource_unsaved(editor:DialogicEditor):
-	sidebar.set_unsaved_indicator(false)
+	toolbar.set_unsaved_indicator(false)
 
 
 ## Tries opening the last resource

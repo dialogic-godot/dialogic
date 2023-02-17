@@ -1,15 +1,16 @@
 [gd_scene load_steps=10 format=3 uid="uid://cqy73hshqqgga"]
 
 [ext_resource type="Script" path="res://addons/dialogic/Editor/HomePage/home_page.gd" id="1_6g38w"]
-[ext_resource type="Texture2D" uid="uid://6vklqnh10h2l" path="res://addons/dialogic/Example Assets/backgrounds/green-field.png" id="2_3lw3i"]
-[ext_resource type="Texture2D" uid="uid://obluub5vopwh" path="res://addons/dialogic/Editor/Images/dialogic-logo.svg" id="3_3leok"]
+[ext_resource type="Texture2D" uid="uid://bjcfcigfdrfex" path="res://addons/dialogic/Example Assets/backgrounds/green-field.png" id="2_3lw3i"]
+[ext_resource type="Texture2D" uid="uid://bt87p6qlso0ya" path="res://addons/dialogic/Editor/Images/dialogic-logo.svg" id="3_3leok"]
 [ext_resource type="PackedScene" uid="uid://bbaphnheyups7" path="res://addons/dialogic/Editor/HomePage/home_page_box.tscn" id="4_hn0gf"]
-[ext_resource type="Texture2D" uid="uid://bo05fpcssk3on" path="res://addons/dialogic/Example Assets/backgrounds/vn-background-1.png" id="4_jm73p"]
-[ext_resource type="Texture2D" uid="uid://d27q1suc8riu8" path="res://addons/dialogic/Example Assets/backgrounds/vn-background-3.png" id="5_w572g"]
-[ext_resource type="Texture2D" uid="uid://dx4yxfw4u8y7r" path="res://addons/dialogic/Example Assets/backgrounds/vn-background-2.png" id="6_p1dg6"]
+[ext_resource type="Texture2D" uid="uid://bbhj1tkuuwapw" path="res://addons/dialogic/Example Assets/backgrounds/vn-background-1.png" id="4_jm73p"]
+[ext_resource type="Texture2D" uid="uid://ikvwvpcgu1l5" path="res://addons/dialogic/Example Assets/backgrounds/vn-background-3.png" id="5_w572g"]
+[ext_resource type="Texture2D" uid="uid://bk3k0docutll2" path="res://addons/dialogic/Example Assets/backgrounds/vn-background-2.png" id="6_p1dg6"]
 
 [sub_resource type="Gradient" id="Gradient_1gns2"]
-colors = PackedColorArray(0.00784314, 0.00784314, 0.00784314, 0.203922, 1, 1, 1, 0)
+offsets = PackedFloat32Array(0, 0.302013, 0.872483)
+colors = PackedColorArray(0.00661797, 0.033464, 0.0993007, 0.513726, 0.365323, 0.360806, 0.260695, 0, 0, 0, 0, 1)
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_u0aw3"]
 gradient = SubResource("Gradient_1gns2")
@@ -32,11 +33,12 @@ script = ExtResource("1_6g38w")
 
 [node name="Header" type="TextureRect" parent="."]
 self_modulate = Color(0.223529, 0.223529, 0.223529, 1)
+clip_contents = true
 layout_mode = 2
 size_flags_vertical = 3
 size_flags_stretch_ratio = 0.4
 texture = ExtResource("2_3lw3i")
-ignore_texture_size = true
+expand_mode = 1
 stretch_mode = 6
 
 [node name="Vignette" type="TextureRect" parent="Header"]
@@ -44,9 +46,12 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_top = -166.0
+offset_bottom = 166.0
 grow_horizontal = 2
 grow_vertical = 2
 texture = SubResource("GradientTexture2D_u0aw3")
+expand_mode = 1
 
 [node name="Logo" type="TextureRect" parent="Header"]
 layout_mode = 1
@@ -62,7 +67,7 @@ grow_vertical = 2
 size_flags_vertical = 3
 size_flags_stretch_ratio = 0.3
 texture = ExtResource("3_3leok")
-ignore_texture_size = true
+expand_mode = 1
 stretch_mode = 5
 
 [node name="VersionLabel" type="Label" parent="Header"]
@@ -79,6 +84,7 @@ offset_right = 77.0
 offset_bottom = -8.0
 grow_horizontal = 2
 grow_vertical = 0
+theme_override_font_sizes/font_size = 15
 text = "Version 2.0-Alpha-5"
 
 [node name="CenterContainer" type="HBoxContainer" parent="."]
@@ -103,7 +109,7 @@ theme_override_constants/margin_bottom = 10
 
 [node name="BoxHolder" type="VFlowContainer" parent="CenterContainer/ScrollContainer/MarginContainer"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 764)
+custom_minimum_size = Vector2(0, 426)
 layout_mode = 2
 theme_override_constants/h_separation = 20
 theme_override_constants/v_separation = 20

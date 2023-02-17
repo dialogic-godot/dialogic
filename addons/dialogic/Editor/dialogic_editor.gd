@@ -21,6 +21,8 @@ var current_resource_state: ResourceStates:
 			resource_unsaved.emit()
 
 var editors_manager: Control
+# text displayed on the current resource label on non-resource editors
+var alternative_text: String = ""
 
 ## Overwrite. Register to the editor manager in here.
 func _register() -> void:

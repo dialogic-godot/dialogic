@@ -16,6 +16,9 @@ func _ready():
 	var editor_scale = DialogicUtil.get_editor_scale()
 	$VBoxContainer/MarginContainer.set("theme_override_constants/margin_left", 4 * editor_scale)
 	$VBoxContainer/MarginContainer.set("theme_override_constants/margin_bottom", 4 * editor_scale)
+	var plugin_cfg := ConfigFile.new()
+	plugin_cfg.load("res://addons/dialogic/plugin.cfg")
+	%CurrentVersion.text = plugin_cfg.get_value('plugin', 'version', 'unknown version')
 
 ################################################################################
 ## 					EDITOR BUTTONS/LABELS 
@@ -28,30 +31,6 @@ func add_icon_button(icon: Texture, tooltip: String) -> Button:
 	%IconButtons.add_child(button)
 	return button
 
-
-func add_custom_button(label:String, icon:Texture) -> Button:
-	var button := Button.new()
-	button.text = label
-	button.icon = icon
-	%CustomButtons.add_child(button)
-	return button
-
-
-func hide_all_custom_buttons() -> void:
-	for button in %CustomButtons.get_children():
-		button.hide()
-
-
-func set_current_resource_text(text:String) -> void:
-	%CurrentResource.text = text
-	%CurrentResource.visible = not text.is_empty()
-
-
-func set_unsaved_indicator(saved:bool = true) -> void:
-	if saved and %CurrentResource.text.ends_with('(*)'):
-		%CurrentResource.text = %CurrentResource.text.trim_suffix('(*)')
-	if not saved and not %CurrentResource.text.ends_with('(*)'):
-		%CurrentResource.text = %CurrentResource.text+"(*)"
 
 ################################################################################
 ## 						RESOURCE LIST 

@@ -136,7 +136,8 @@ func new_timeline(path:String) -> void:
 
 func _ready():
 	$NoTimelineScreen.add_theme_stylebox_override("panel", get_theme_stylebox("Background", "EditorStyles"))
-
+	get_parent().set_tab_title(get_index(), 'Timeline')
+	get_parent().set_tab_icon(get_index(), get_theme_icon("TripleBar", "EditorIcons"))
 
 func _on_create_timeline_button_pressed():
 	editors_manager.show_add_resource_dialog(
