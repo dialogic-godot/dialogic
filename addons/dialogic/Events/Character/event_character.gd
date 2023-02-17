@@ -368,7 +368,7 @@ func build_event_editor() -> void:
 			{'empty_text' 		: 'Default', 
 			'suggestions_func' 	: get_portrait_suggestions, 
 			'icon' 				: load("res://addons/dialogic/Editor/Images/Resources/portrait.svg")}, 
-			'character != null and !has_no_portraits() and action_type != %s' %ActionTypes.Leave)
+			'should_show_portrait_selector()')
 	add_header_edit('position', ValueType.Integer, ' at position', '', {}, 
 			'character != null and !has_no_portraits() and action_type != %s' %ActionTypes.Leave)
 	
@@ -395,6 +395,9 @@ func build_event_editor() -> void:
 
 func should_show_animation_options() -> bool:
 	return (character != null and !character.portraits.is_empty()) or _character_from_directory == '--All--' 
+
+func should_show_portrait_selector() -> bool:
+	return character != null and len(character.portraits) > 1 and action_type != ActionTypes.Leave
 
 func has_no_portraits() -> bool:
 	return character and character.portraits.is_empty()
