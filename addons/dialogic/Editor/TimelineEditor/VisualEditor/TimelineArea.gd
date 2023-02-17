@@ -6,7 +6,7 @@ var _is_drag_receiving := false
 var _last_event_button_drop_attempt :Variant = '' 
 var _mouse_exited := false
 
-@onready var timeline_editor := find_parent('TimelineVisualEditor')
+@onready var timeline_editor := find_parent('VisualEditor')
 
 
 func _ready():

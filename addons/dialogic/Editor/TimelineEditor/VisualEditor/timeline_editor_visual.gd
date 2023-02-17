@@ -279,7 +279,6 @@ func _on_event_block_gui_input(event, item: Node):
 				move_start_position = null
 			
 			if (moving_piece != null):
-				
 				indent_events()
 			piece_was_dragged = false
 			moving_piece = null
@@ -822,10 +821,10 @@ func scroll_to_piece(piece_index) -> void:
 func indent_events() -> void:
 	var indent: int = 0
 	var event_list: Array = %Timeline.get_children()
-
+	
 	if event_list.size() < 2:
 		return
-
+	
 	var currently_hidden = false
 	var hidden_until = null
 	
@@ -855,12 +854,17 @@ func indent_events() -> void:
 		if event.resource.needs_parent_event:
 			var current_block_above = get_block_above(event)
 			while current_block_above != null and current_block_above.resource is DialogicEndBranchEvent:
+				if current_block_above.parent_node == event:
+					break
 				current_block_above = get_block_above(current_block_above.parent_node)
 				
 			if current_block_above != null and event.resource.is_expected_parent_event(current_block_above.resource):
 				indent += 1
+				event.remove_warning()
+			else:
+				event.set_warning('This event needs a specific parent event!')
 		
-		if event.resource is DialogicEndBranchEvent:
+		elif event.resource is DialogicEndBranchEvent:
 			event.parent_node_changed()
 			delayed_indent -= 1
 			if event.parent_node.resource.needs_parent_event:
