@@ -10,7 +10,7 @@ func _register() -> void:
 func _ready() -> void:
 	await get_tree().process_frame
 	get_parent().set_tab_title(get_index(), 'Variables')
-	get_parent().set_tab_icon(get_index(), load(self.get_script().get_path().get_base_dir().get_base_dir() + "/definition.svg"))
+	get_parent().set_tab_icon(get_index(), load(self.get_script().get_path().get_base_dir().get_base_dir() + "/variable.svg"))
 
 func _open(argument:Variant = null):
 	%MainVariableGroup.update()

@@ -13,7 +13,7 @@ func _register() -> void:
 	alternative_text = "Create and edit glossaries."
 
 func _ready() -> void:
-	%AddGlossaryFile.icon = get_theme_icon('Add', 'EditorIcons')
+	%AddGlossaryFile.icon = load(self.get_script().get_path().get_base_dir() + "/add-glossary.svg")
 	%LoadGlossaryFile.icon = get_theme_icon('Folder', 'EditorIcons')
 	%DeleteGlossaryFile.icon = get_theme_icon('Remove', 'EditorIcons')
 	%DeleteGlossaryEntry.icon = get_theme_icon('Remove', 'EditorIcons')
@@ -30,7 +30,7 @@ func _ready() -> void:
 	%EntryCaseSensitive.icon = get_theme_icon("MatchCase", "EditorIcons")
 	await get_tree().process_frame
 	get_parent().set_tab_title(get_index(), 'Glossary')
-	get_parent().set_tab_icon(get_index(), load(self.get_script().get_path().get_base_dir() + "/definition.svg"))
+	get_parent().set_tab_icon(get_index(), load(self.get_script().get_path().get_base_dir() + "/icon.svg"))
 
 func set_setting(value, setting:String)  -> void:
 	ProjectSettings.set_setting(setting, value)

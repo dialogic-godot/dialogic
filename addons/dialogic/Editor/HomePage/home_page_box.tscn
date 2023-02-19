@@ -1,7 +1,6 @@
-[gd_scene load_steps=5 format=3 uid="uid://bbaphnheyups7"]
+[gd_scene load_steps=4 format=3 uid="uid://bbaphnheyups7"]
 
 [ext_resource type="Script" path="res://addons/dialogic/Editor/HomePage/home_page_box.gd" id="1_tfhxr"]
-[ext_resource type="Texture2D" uid="uid://bo05fpcssk3on" path="res://addons/dialogic/Example Assets/backgrounds/vn-background-1.png" id="2_7vfiv"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_e3ugl"]
 content_margin_top = 7.5
@@ -37,8 +36,7 @@ unique_name_in_owner = true
 self_modulate = Color(0.152941, 0.152941, 0.152941, 1)
 custom_minimum_size = Vector2(0, 37.5)
 layout_mode = 2
-texture = ExtResource("2_7vfiv")
-ignore_texture_size = true
+expand_mode = 1
 stretch_mode = 6
 
 [node name="Title" type="Label" parent="Vbox/Header"]
@@ -50,7 +48,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_font_sizes/font_size = 15
-text = "Welcome!"
+text = "Something"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -68,7 +66,7 @@ layout_mode = 2
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 7
-text = "Welcome to dialogic! Easily create visual novels or dialogs for your game.  "
+text = "Somet text that is interesting."
 autowrap_mode = 3
 
 [node name="Button" type="Button" parent="Vbox/Content/VBox"]

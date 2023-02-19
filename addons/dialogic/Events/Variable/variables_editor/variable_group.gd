@@ -160,9 +160,9 @@ func update() -> void:
 	%DeleteButton.tooltip_text = "Delete Group"
 	%DuplicateButton.icon = get_theme_icon("Duplicate", "EditorIcons")
 	%DuplicateButton.tooltip_text = "Duplicate Group"
-	%NewGroup.icon = get_theme_icon("Folder", "EditorIcons")
+	%NewGroup.icon = load("res://addons/dialogic/Editor/Images/Pieces/add-folder.svg")
 	%NewGroup.tooltip_text = "Add new Group"
-	%NewVariable.icon = get_theme_icon("Add", "EditorIcons")
+	%NewVariable.icon =  load(self.get_script().get_path().get_base_dir().get_base_dir() + "/add-variable.svg")
 	%NewVariable.tooltip_text = "Add new variable"
 	%FoldButton.icon = get_theme_icon("GuiVisibilityVisible", "EditorIcons")
 	%FoldButton.tooltip_text = "Hide/Show content"

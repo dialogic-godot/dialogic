@@ -10,7 +10,7 @@
 
 [sub_resource type="Gradient" id="Gradient_1gns2"]
 offsets = PackedFloat32Array(0, 0.302013, 0.872483)
-colors = PackedColorArray(0.00661797, 0.033464, 0.0993007, 0.513726, 0.365323, 0.360806, 0.260695, 0, 0, 0, 0, 1)
+colors = PackedColorArray(0.0472289, 0.145483, 0.295484, 0.513726, 0.365323, 0.360806, 0.260695, 0, 0.615686, 0.615686, 0.615686, 0.592157)
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_u0aw3"]
 gradient = SubResource("Gradient_1gns2")
@@ -24,7 +24,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = -568.0
 offset_top = 8.0
-offset_right = -568.0
+offset_right = -76.0
 offset_bottom = -1.0
 grow_horizontal = 2
 grow_vertical = 2
@@ -85,18 +85,21 @@ offset_bottom = -8.0
 grow_horizontal = 2
 grow_vertical = 0
 theme_override_font_sizes/font_size = 15
-text = "Version 2.0-Alpha-5"
+text = "2.0-Alpha-6 (for Godot 4 RC1)"
 
 [node name="CenterContainer" type="HBoxContainer" parent="."]
 layout_mode = 2
-size_flags_horizontal = 4
 size_flags_vertical = 3
 alignment = 1
 
-[node name="ScrollContainer" type="ScrollContainer" parent="CenterContainer"]
-custom_minimum_size = Vector2(330, 0)
+[node name="Spacer" type="Control" parent="CenterContainer"]
+custom_minimum_size = Vector2(75, 0)
 layout_mode = 2
-size_flags_horizontal = 6
+
+[node name="ScrollContainer" type="ScrollContainer" parent="CenterContainer"]
+custom_minimum_size = Vector2(500, 0)
+layout_mode = 2
+size_flags_horizontal = 3
 horizontal_scroll_mode = 0
 
 [node name="MarginContainer" type="MarginContainer" parent="CenterContainer/ScrollContainer"]
@@ -107,16 +110,17 @@ theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 10
 
-[node name="BoxHolder" type="VFlowContainer" parent="CenterContainer/ScrollContainer/MarginContainer"]
+[node name="BoxHolder" type="HFlowContainer" parent="CenterContainer/ScrollContainer/MarginContainer"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 426)
 layout_mode = 2
 theme_override_constants/h_separation = 20
 theme_override_constants/v_separation = 20
+alignment = 1
 
 [node name="WelcomeBox" parent="CenterContainer/ScrollContainer/MarginContainer/BoxHolder" instance=ExtResource("4_hn0gf")]
 custom_minimum_size = Vector2(165, 0)
 layout_mode = 2
+size_flags_vertical = 0
 title = "Welcome!"
 content = "Welcome to dialogic! Easily create visual novels or dialogs for your game."
 image = ExtResource("4_jm73p")
@@ -124,6 +128,7 @@ image = ExtResource("4_jm73p")
 [node name="WikiBox" parent="CenterContainer/ScrollContainer/MarginContainer/BoxHolder" instance=ExtResource("4_hn0gf")]
 custom_minimum_size = Vector2(165, 0)
 layout_mode = 2
+size_flags_vertical = 0
 title = "How to start:"
 content = "If you are new to dialogic, check out the beginners guide in the wiki."
 image = ExtResource("6_p1dg6")
@@ -132,6 +137,7 @@ button = "Beginners guide"
 [node name="RestartBox" parent="CenterContainer/ScrollContainer/MarginContainer/BoxHolder" instance=ExtResource("4_hn0gf")]
 custom_minimum_size = Vector2(165, 0)
 layout_mode = 2
+size_flags_vertical = 0
 title = "Just installed?"
 content = "If you've just installed dialogic you might need to restart godot once, so all scripts load correctly!"
 image = ExtResource("2_3lw3i")
@@ -140,6 +146,7 @@ button = "Restart now"
 [node name="BugBox" parent="CenterContainer/ScrollContainer/MarginContainer/BoxHolder" instance=ExtResource("4_hn0gf")]
 custom_minimum_size = Vector2(165, 0)
 layout_mode = 2
+size_flags_vertical = 0
 title = "Something broken!?"
 content = "You found a bug? Or feel like something could be improved? Create a github issue to let us know!"
 image = ExtResource("2_3lw3i")
@@ -148,10 +155,15 @@ button = "New issue"
 [node name="SharingBox" parent="CenterContainer/ScrollContainer/MarginContainer/BoxHolder" instance=ExtResource("4_hn0gf")]
 custom_minimum_size = Vector2(165, 0)
 layout_mode = 2
+size_flags_vertical = 0
 title = "Making something?"
 content = "We always like to hear about cool things being made with dialogic. Let us know what you are using it for!"
 image = ExtResource("5_w572g")
 button = "Join Discord"
+
+[node name="Spacer2" type="Control" parent="CenterContainer"]
+custom_minimum_size = Vector2(75, 0)
+layout_mode = 2
 
 [node name="HBoxContainer" type="ScrollContainer" parent="."]
 visible = false

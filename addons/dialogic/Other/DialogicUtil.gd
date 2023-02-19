@@ -191,7 +191,7 @@ static func get_default_layout() -> String:
 static func apply_scene_export_overrides(node:Node, export_overrides:Dictionary) -> void:
 	for i in export_overrides:
 		if i in node:
-			node.set(i, export_overrides[i])
+			node.set(i, str_to_var(export_overrides[i]))
 
 static func setup_script_property_edit_node(property_info: Dictionary, value:Variant, methods:Dictionary) -> Control:
 	var input :Control = null
@@ -240,6 +240,8 @@ static func setup_script_property_edit_node(property_info: Dictionary, value:Var
 				input = load("res://addons/dialogic/Editor/Events/Fields/FilePicker.tscn").instantiate()
 				input.file_filter = property_info['hint_string']
 				input.property_name = property_info['name']
+				input.placeholder = "Default"
+				input.hide_reset = true
 				if value != null:
 					input.set_value(value)
 				input.value_changed.connect(methods.get('file'))

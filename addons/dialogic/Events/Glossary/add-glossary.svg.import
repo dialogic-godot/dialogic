@@ -2,8 +2,8 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://ckilxvwc34s84"
-path="res://.godot/imported/definition.svg-6038fa05034518bb2a507ec3819f9288.ctex"
+uid="uid://cenut3sc5cul0"
+path="res://.godot/imported/add-glossary.svg-6b912d59990467543b82de8cc081ad40.ctex"
 metadata={
 "editor_dark_theme": true,
 "editor_scale": 0.75,
@@ -13,8 +13,8 @@ metadata={
 
 [deps]
 
-source_file="res://addons/dialogic/Events/Variable/definition.svg"
-dest_files=["res://.godot/imported/definition.svg-6038fa05034518bb2a507ec3819f9288.ctex"]
+source_file="res://addons/dialogic/Events/Glossary/add-glossary.svg"
+dest_files=["res://.godot/imported/add-glossary.svg-6b912d59990467543b82de8cc081ad40.ctex"]
 
 [params]
 

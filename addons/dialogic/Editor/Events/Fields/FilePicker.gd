@@ -20,21 +20,22 @@ var property_name : String
 		else:
 			%Field.theme_type_variation = "LineEditWithIcon"
 var current_value : String
-
+var hide_reset:bool = false
 
 func _ready() -> void:
-	DCSS.style(%Field, {
-		'border-radius': 3,
-		'border-color': get_theme_color("dark_color_3", "Editor"),
-		'border': 1,
-		'background': get_theme_color("dark_color_1", "Editor"),
-		'padding': [5, 5],
-	})
-	$PanelContainer.add_theme_stylebox_override('panel', get_theme_stylebox("normal", "LineEdit"))
+	var focus_style :StyleBoxFlat = get_theme_stylebox("focus", "LineEdit").duplicate()
+	var normal_style :StyleBoxFlat = get_theme_stylebox("normal", "LineEdit").duplicate()
+	normal_style.content_margin_bottom = 0
+	normal_style.content_margin_top = 0
+	focus_style.expand_margin_left = normal_style.content_margin_left
+	focus_style.expand_margin_right = normal_style.content_margin_right
+	$FocusStyle.add_theme_stylebox_override('panel', focus_style)
+	add_theme_stylebox_override('panel', normal_style)
 	%OpenButton.icon = get_theme_icon("Folder", "EditorIcons")
 	%ClearButton.icon = get_theme_icon("Reload", "EditorIcons")
 	%OpenButton.button_down.connect(_on_OpenButton_pressed)
 	%ClearButton.button_up.connect(clear_path)
+	%ClearButton.visible = !hide_reset
 	%Field.set_drag_forwarding(Callable(), self._can_drop_data_fw, self._drop_data_fw)
 	%Field.placeholder_text = placeholder
 
@@ -43,8 +44,8 @@ func set_value(value:String) -> void:
 	current_value = value
 	if file_mode != EditorFileDialog.FILE_MODE_OPEN_DIR:
 		%Field.text = value.get_file()
-		tooltip_text = value
-		%ClearButton.visible = !value.is_empty()
+		%Field.tooltip_text = value
+		%ClearButton.visible = !value.is_empty() and !hide_reset
 	else:
 		%Field.text = value
 
@@ -72,3 +73,10 @@ func _can_drop_data_fw(at_position: Vector2, data: Variant) -> bool:
 
 func _drop_data_fw(at_position: Vector2, data: Variant) -> void:
 	_on_file_dialog_selected(data.files[0])
+
+
+func _on_field_focus_entered():
+	$FocusStyle.show()
+
+func _on_field_focus_exited():
+	$FocusStyle.hide()
