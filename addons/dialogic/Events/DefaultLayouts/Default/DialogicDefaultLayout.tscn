@@ -23,7 +23,7 @@
 [ext_resource type="FontFile" uid="uid://b5c0p00x6g6u5" path="res://addons/dialogic/Example Assets/Fonts/Roboto-Italic.ttf" id="25_wt3bc"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wpkyg"]
-bg_color = Color(0, 0, 0, 0.752941)
+bg_color = Color(1, 1, 1, 1)
 corner_radius_top_left = 5
 corner_radius_top_right = 5
 corner_radius_bottom_right = 5
@@ -34,7 +34,7 @@ expand_margin_right = 5.0
 expand_margin_bottom = 5.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_q3vpc"]
-bg_color = Color(0, 0, 0, 0.752941)
+bg_color = Color(1, 1, 1, 1)
 corner_radius_top_left = 5
 corner_radius_top_right = 5
 corner_radius_bottom_right = 5
@@ -80,6 +80,16 @@ shadow_size = 5
 
 [node name="DefaultDialogNode" type="CanvasLayer"]
 script = ExtResource("1")
+text_size = null
+text_color = null
+bold_font = null
+italic_font = null
+bold_italic_font = null
+box_modulate = null
+name_label_font_size = null
+name_label_font = null
+name_label_use_character_color = null
+name_label_color = null
 
 [node name="DialogicNode_BackgroundHolder" type="CanvasLayer" parent="."]
 layer = -1
@@ -175,7 +185,8 @@ sound_pressed = ExtResource("14")
 sound_hover = ExtResource("11")
 sound_focus = ExtResource("13")
 
-[node name="PanelContainer2" type="PanelContainer" parent="DefaultStyle"]
+[node name="NameLabelPanel" type="PanelContainer" parent="DefaultStyle"]
+unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 7
 anchor_left = 0.5
@@ -194,12 +205,14 @@ metadata/_edit_layout_mode = 1
 metadata/_edit_use_custom_anchors = true
 metadata/_edit_group_ = true
 
-[node name="DialogicNode_NameLabel" type="Label" parent="DefaultStyle/PanelContainer2"]
+[node name="DialogicNode_NameLabel" type="Label" parent="DefaultStyle/NameLabelPanel"]
+unique_name_in_owner = true
 layout_mode = 2
 text = "Name"
 script = ExtResource("3")
 
-[node name="PanelContainer" type="PanelContainer" parent="DefaultStyle"]
+[node name="DialogTextPanel" type="PanelContainer" parent="DefaultStyle"]
+unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 7
 anchor_left = 0.5
@@ -215,7 +228,7 @@ grow_vertical = 0
 theme_override_styles/panel = SubResource("StyleBoxFlat_q3vpc")
 metadata/_edit_layout_mode = 1
 
-[node name="DialogicNode_DialogText" type="RichTextLabel" parent="DefaultStyle/PanelContainer"]
+[node name="DialogicNode_DialogText" type="RichTextLabel" parent="DefaultStyle/DialogTextPanel"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/normal_font_size = 15
@@ -224,11 +237,11 @@ text = "Some default text"
 visible_characters_behavior = 1
 script = ExtResource("2")
 
-[node name="DialogicNode_TypeSounds" type="AudioStreamPlayer" parent="DefaultStyle/PanelContainer/DialogicNode_DialogText"]
+[node name="DialogicNode_TypeSounds" type="AudioStreamPlayer" parent="DefaultStyle/DialogTextPanel/DialogicNode_DialogText"]
 script = ExtResource("10")
 play_every_character = 0
 
-[node name="DNextIndicator" type="Control" parent="DefaultStyle/PanelContainer"]
+[node name="DNextIndicator" type="Control" parent="DefaultStyle/DialogTextPanel"]
 visible = false
 layout_mode = 2
 size_flags_horizontal = 8
@@ -447,5 +460,5 @@ history_font_bold = ExtResource("24_aa4pl")
 history_font_italics = ExtResource("25_wt3bc")
 metadata/_edit_lock_ = true
 
-[connection signal="meta_hover_ended" from="DefaultStyle/PanelContainer/DialogicNode_DialogText" to="DefaultStyle/Glossary" method="_on_dialogic_display_dialog_text_meta_hover_ended"]
-[connection signal="meta_hover_started" from="DefaultStyle/PanelContainer/DialogicNode_DialogText" to="DefaultStyle/Glossary" method="_on_dialogic_display_dialog_text_meta_hover_started"]
+[connection signal="meta_hover_ended" from="DefaultStyle/DialogTextPanel/DialogicNode_DialogText" to="DefaultStyle/Glossary" method="_on_dialogic_display_dialog_text_meta_hover_ended"]
+[connection signal="meta_hover_started" from="DefaultStyle/DialogTextPanel/DialogicNode_DialogText" to="DefaultStyle/Glossary" method="_on_dialogic_display_dialog_text_meta_hover_started"]

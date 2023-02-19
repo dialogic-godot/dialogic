@@ -22,6 +22,7 @@ func _ready():
 	get('theme_override_styles/panel').content_margin_top = 10 * editor_scale
 	%Header.custom_minimum_size.y = 50 * editor_scale
 	%Title.set('theme_override_font_sizes/font_size', 20 * editor_scale)
+	%Title.add_theme_font_override("font", get_theme_font("bold", "EditorFonts"))
 	$Vbox/Content.set('theme_override_constants/margin_left', 10*editor_scale)
 	$Vbox/Content.set('theme_override_constants/margin_right', 10*editor_scale)
 	$Vbox/Content.set('theme_override_constants/margin_down', 10*editor_scale)

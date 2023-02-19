@@ -1,8 +1,9 @@
+@tool
 class_name DialogicGlossary
 extends Resource
 
 ## Resource used to store glossary entries. Can be saved to disc and used as a glossary. 
-## Add/create glossaries fom the settings 
+## Add/create glossaries fom the glossaries editor 
 
 ## Stores all entry information
 @export var entries :Dictionary = {}

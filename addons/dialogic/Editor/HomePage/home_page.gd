@@ -4,6 +4,7 @@ extends DialogicEditor
 ## A Main page in the dialogic editor.
 
 func _ready():
+	$Header/Vignette.modulate = get_theme_color("accent_color", "Editor")
 	var edit_scale := DialogicUtil.get_editor_scale()
 	var min_height := 0
 	for box in %BoxHolder.get_children():
@@ -17,8 +18,7 @@ func _ready():
 	plugin_cfg.load("res://addons/dialogic/plugin.cfg")
 	%VersionLabel.text = plugin_cfg.get_value('plugin', 'version', 'unknown version')
 	
-	$CenterContainer/ScrollContainer.custom_minimum_size.x = 440 *edit_scale
-	%BoxHolder.custom_minimum_size.y = min_height+100*edit_scale
+	$CenterContainer/ScrollContainer.custom_minimum_size.x = 500 *edit_scale
 	set('theme_override_constants/separation', 30*edit_scale)
 
 
