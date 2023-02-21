@@ -2,9 +2,6 @@ extends DialogicSubsystem
 
 ## Subsystem that manages setting voice lines for text events.
 
-
-## The current voice regions
-var voice_regions := []
 ## The current voice timer
 var voice_timer:Timer
 ## The current audio
@@ -43,11 +40,9 @@ func is_voiced(index:int) -> bool:
 	return false
 
 
-func play_voice_region(index:int):
-	if index >= len(voice_regions):
-		return
-	var start:float = voice_regions[index][0]
-	var stop:float = voice_regions[index][1]
+func play_voice():
+	var start:float = 0
+	var stop:float = voice_player.stream.get_length()
 	voice_player.play(start)
 	set_timer(stop - start)
 
@@ -63,11 +58,6 @@ func set_file(path:String):
 
 func set_volume(value:float):
 	voice_player.volume_db = value
-
-
-func set_regions(value:Array):
-	voice_regions = value
-
 
 func set_bus(value:String):
 	voice_player.bus = value
