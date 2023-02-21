@@ -82,13 +82,13 @@ func _save_external_data() -> void:
 		editor_view.editors_manager.save_current_resource()
 
 
-func _handles(object:Variant) -> bool:
+func _handles(object) -> bool:
 	if editor_view != null and editor_view.editors_manager != null and object is Resource:
 		return editor_view.editors_manager.can_edit_resource(object)
 	return false
 
 
-func _edit(object:Variant) -> void:
+func _edit(object) -> void:
 	if object == null:
 		return
 	_make_visible(true)

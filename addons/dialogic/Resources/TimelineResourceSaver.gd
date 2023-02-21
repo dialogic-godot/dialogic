@@ -19,7 +19,7 @@ func _recognize(resource: Resource) -> bool:
 
 
 # Save the resource
-func _save(resource: Resource, path: String = '', flags: int = 0) -> int:
+func _save(resource: Resource, path: String = '', flags: int = 0) -> Error:
 	if resource.get_meta("timeline_not_saved", false):
 #		if len(resource.events) == 0:
 #			printerr("[Dialogic] "+path+": save was called, but there are no events. Timeline will not be saved, to prevent accidental data loss. Please delete the timeline file if you are trying to clear all of the events.")
