@@ -848,7 +848,7 @@ func drop_data(position, data):
 	if data['item_type'] == 'folder':
 		# on a folder
 		if 'Root' in item.get_metadata(0)['editor']:
-			DialogicUtil.move_folder_to_folder(editor_reference.flat_structure, data['orig_path'], get_item_folder(item, data['orig_path'].split('/')[0]))
+			DialogicUtil.move_folder_to_folder(editor_reference.flat_structure, "tree", data['orig_path'], get_item_folder(item, data['orig_path'].split('/')[0]))
 	# dragging a file
 	elif data['item_type'] == 'file':
 		# on a folder
@@ -949,7 +949,7 @@ func _on_item_edited():
 	if "Root" in metadata['editor']:
 		if item.get_text(0) == item_path_before_edit.split("/")[-1]:
 			return 
-		var result = DialogicUtil.rename_folder(editor_reference.flat_structure, item_path_before_edit, item.get_text(0))
+		var result = DialogicUtil.rename_folder(editor_reference.flat_structure, "tree", item_path_before_edit, item.get_text(0))
 		if result != OK:
 			item.set_text(0, item_path_before_edit.split("/")[-1])
 			
