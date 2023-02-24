@@ -75,6 +75,7 @@ func _execute() -> void:
 			if character:
 				if !dialogic.Portraits.is_character_joined(character):
 					var n = dialogic.Portraits.add_portrait(character, portrait, position, mirrored, z_index, extra_data)
+					
 					if n:
 						if animation_name.is_empty():
 							animation_name = DialogicUtil.get_project_setting('dialogic/animations/join_default', 
@@ -89,10 +90,10 @@ func _execute() -> void:
 								await anim.finished
 								dialogic.current_state = Dialogic.states.IDLE
 				else:
-					dialogic.Portraits.change_portrait(character, portrait)
+					dialogic.Portraits.change_portrait(character, portrait, false)
 					if animation_name.is_empty():
 						animation_length = DialogicUtil.get_project_setting('dialogic/animations/join_default_length', 0.5)
-					dialogic.Portraits.move_portrait(character, position, z_index, false, animation_length)
+					dialogic.Portraits.move_portrait(character, position, animation_length)
 		ActionTypes.Leave:
 			if _character_from_directory == '--All--':
 				if animation_name.is_empty():
@@ -132,16 +133,18 @@ func _execute() -> void:
 							dialogic.current_state = Dialogic.states.ANIMATING
 							await anim.finished
 							dialogic.current_state = Dialogic.states.IDLE
-					
 					else:
 						dialogic.Portraits.remove_portrait(character)
-
+			
 		ActionTypes.Update:
 			if character:
 				if dialogic.Portraits.is_character_joined(character):
-					dialogic.Portraits.change_portrait(character, portrait, mirrored, z_index, _update_zindex, extra_data)
+					dialogic.Portraits.change_portrait(character, portrait, false)
+					dialogic.Portraits.change_portrait_mirror(character, mirrored)
+					if _update_zindex:
+						dialogic.Portraits.change_portrait_z_index(character, z_index)
 					if position != 0:
-						dialogic.Portraits.move_portrait(character, position, z_index, _update_zindex, position_move_time)
+						dialogic.Portraits.move_portrait(character, position, position_move_time)
 					
 					if animation_name:
 						var anim = dialogic.Portraits.animate_portrait(character, animation_name, animation_length, animation_repeats)
@@ -385,11 +388,11 @@ func build_event_editor() -> void:
 			'should_show_animation_options() and !animation_name.is_empty()')
 	add_body_edit('animation_repeats', ValueType.Integer, 'Repeat:', '', {},
 			'should_show_animation_options() and !animation_name.is_empty() and action_type == %s)' %ActionTypes.Update)
-	add_body_edit('z_index', ValueType.Integer, 'portrait z-index:', "",{},
+	add_body_edit('z_index', ValueType.Integer, 'Z-index:', "",{},
 			'action_type != %s' %ActionTypes.Leave)
-	add_body_edit('mirrored', ValueType.Bool, 'mirrored:', "",{},
+	add_body_edit('mirrored', ValueType.Bool, 'Mirrored:', "",{},
 			'action_type != %s' %ActionTypes.Leave)
-	add_body_edit('position_move_time', ValueType.Float, 'Transiton time to change position:', '', {}, 
+	add_body_edit('position_move_time', ValueType.Float, 'Movement duration:', '', {}, 
 			'action_type == %s' %ActionTypes.Update)
 
 

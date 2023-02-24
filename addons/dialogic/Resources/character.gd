@@ -31,3 +31,8 @@ func _hide_script_from_inspector() -> bool:
 ## Returns the name of the file (without the extension).
 func get_character_name() -> String:
 	return resource_path.get_file().trim_suffix('.dch')
+
+## Returns the info of the given portrait.
+## Uses the default portrait if the given portrait doesn't exist.
+func get_portrait_info(portrait_name:String) -> Dictionary:
+	return portraits.get(portrait_name, portraits.get(default_portrait, {}))

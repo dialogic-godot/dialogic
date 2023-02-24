@@ -342,7 +342,7 @@ func delete_portrait_item(item:TreeItem) -> void:
 
 
 func duplicate_item(item:TreeItem) -> void:
-	%PortraitTree.add_portrait_item(item.get_text(0)+'_duplicated', item.get_metadata(0), item.get_parent()).select(0)
+	%PortraitTree.add_portrait_item(item.get_text(0)+'_duplicated', item.get_metadata(0).duplicate(true), item.get_parent()).select(0)
 
 
 func _on_portrait_tree_button_clicked(item:TreeItem, column:int, id:int, mouse_button_index:int):

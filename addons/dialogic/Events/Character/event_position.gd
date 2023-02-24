@@ -24,11 +24,6 @@ var movement_time: float = 0
 ## 						EXECUTE
 ################################################################################
 func _execute() -> void:
-	# If for some someone sets it to 0, ignore it entirely. 0 position is used for Update to indicate no change.
-	if action_type != ActionTypes.ResetAll and position == 0:
-		finish()
-		return
-	
 	match action_type:
 		ActionTypes.SetRelative:
 			dialogic.Portraits.move_portrait_position(position, vector, true, movement_time)
@@ -42,12 +37,12 @@ func _execute() -> void:
 	finish()
 
 
-##############################################file_path##################################
+################################################################################
 ## 						INITIALIZE
 ################################################################################
 
 func _init() -> void:
-	event_name = "position"
+	event_name = "Position"
 	set_default_color('Color2')
 	event_category = Category.Main
 	event_sorting_index = 2
@@ -69,7 +64,7 @@ func get_shortcode() -> String:
 func get_shortcode_parameters() -> Dictionary:
 	return {
 		#param_name 	: property_info
-		"action"		:  {"sproperty": "action_type", 		"default": ActionTypes.SetRelative, 
+		"action"		:  {"property": "action_type", 		"default": ActionTypes.SetRelative, 
 								"suggestions": func(): return {"Set Relative":{'value':'0'}, "Set Absolute":{'value':'1'}, "Reset":{'value':'2'}, "Reset All":{'value':'3'}}},
 		"position"		:  {"property": "position", 		"default": 0},
 		"vector"		:  {"property": "vector", 			"default": Vector2()},

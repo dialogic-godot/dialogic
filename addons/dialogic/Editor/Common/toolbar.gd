@@ -27,7 +27,6 @@ func hide_all_custom_buttons() -> void:
 
 func set_current_resource_text(text:String) -> void:
 	%CurrentResource.text = text
-	%CurrentResource.visible = not text.is_empty()
 
 
 func set_unsaved_indicator(saved:bool = true) -> void:
