@@ -69,22 +69,19 @@ func _execute() -> void:
 		dialogic.Portraits.update_rpg_portrait_mode(character, portrait)
 	
 	# RENDER DIALOG
-	# Placeholder wrap. Replace with a loop iterating over text event's lines. - KvaGram
-	var index: int = 0
-	if true:
-		var final_text: String = get_property_translated('text')
-		if dialogic.has_subsystem('VAR'):
-			final_text = dialogic.VAR.parse_variables(final_text)
-		if dialogic.has_subsystem('Glossary'):
-			final_text = dialogic.Glossary.parse_glossary(final_text)
-		
-		dialogic.Text.update_dialog_text(final_text)
-		
-		#Plays the audio region for the current line.
-		if dialogic.has_subsystem('Voice') and dialogic.Voice.is_voiced(dialogic.current_event_idx):
-			dialogic.Voice.play_voice_region(index) #voice data is set by voice event.
-		
-		await dialogic.Text.text_finished
+	var final_text: String = get_property_translated('text')
+	if dialogic.has_subsystem('VAR'):
+		final_text = dialogic.VAR.parse_variables(final_text)
+	if dialogic.has_subsystem('Glossary'):
+		final_text = dialogic.Glossary.parse_glossary(final_text)
+	
+	dialogic.Text.update_dialog_text(final_text)
+	
+	#Plays the audio region for the current line.
+	if dialogic.has_subsystem('Voice') and dialogic.Voice.is_voiced(dialogic.current_event_idx):
+		dialogic.Voice.play_voice()
+	
+	await dialogic.Text.text_finished
 	
 	#end of dialog
 	if dialogic.has_subsystem('Choices') and dialogic.Choices.is_question(dialogic.current_event_idx):
