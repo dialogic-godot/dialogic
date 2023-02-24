@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="DialogicCharacter" load_steps=2 format=3 uid="uid://dj6wkaynevgso"]
+
+[ext_resource type="Script" path="res://addons/dialogic/Resources/character.gd" id="1_qsljv"]
+
+[resource]
+script = ExtResource("1_qsljv")
+display_name = "Preview"
+nicknames = []
+color = Color(0, 0, 0, 1)
+description = ""
+scale = 1.0
+offset = Vector2(0, 0)
+mirror = false
+default_portrait = "preview"
+portraits = {
+"preview": {
+"image": "res://addons/dialogic/Events/Character/preview_character.png"
+}
+}
+custom_info = {}
