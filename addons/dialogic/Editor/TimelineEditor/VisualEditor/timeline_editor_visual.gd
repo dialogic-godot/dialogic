@@ -61,7 +61,7 @@ func save_timeline() -> void:
 	if !get_parent().current_resource:
 		return
 
-	get_parent().current_resource.set_events(new_events)
+	get_parent().events = new_events
 	get_parent().current_resource.events_processed = true
 	var error :int = ResourceSaver.save(get_parent().current_resource, get_parent().current_resource.resource_path)
 	if error != OK:
@@ -83,7 +83,7 @@ func load_timeline(resource:DialogicTimeline) -> void:
 			get_parent().current_resource = get_parent().editors_manager.resource_helper.process_timeline(get_parent().current_resource)
 		if get_parent().current_resource.events.size() == 0:
 			return
-		var data := resource.get_events()
+		var data := resource.events
 		var page := 1
 		var batch_size := 10
 		_batches = []

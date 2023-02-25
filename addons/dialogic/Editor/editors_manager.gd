@@ -19,6 +19,7 @@ var current_editor: DialogicEditor = null
 var previous_editor: DialogicEditor = null
 var editors := {}
 var resources := []
+var used_resources_cache : Array = []
 
 ################################################################################
 ## 						REGISTERING EDITORS
@@ -40,6 +41,11 @@ func _ready() -> void:
 	await get_parent().get_parent().ready
 	await get_tree().process_frame
 	load_saved_state()
+	used_resources_cache = ProjectSettings.get_setting('dialogic/editor/last_resources', [])
+	for res in used_resources_cache:
+		if !FileAccess.file_exists(res):
+			used_resources_cache.erase(res)
+	sidebar.update_resource_list(used_resources_cache)
 
 
 ## Call to register an editor/tab that edits a resource with a custom ending.
@@ -88,20 +94,9 @@ func edit_resource(resource:Resource, save_previous:bool = true) -> void:
 	if current_editor and save_previous:
 		current_editor._save_resource()
 	
-	## Update the latest resource list
-	var used_resources:Array = DialogicUtil.get_project_setting('dialogic/editor/last_resources', [])
-	
-	for res in used_resources:
-		if !FileAccess.file_exists(res):
-			used_resources.erase(res)
-	
-	if resource.resource_path in used_resources:
-		used_resources.erase(resource.resource_path)
-	
-	used_resources.push_front(resource.resource_path)
-	
-	ProjectSettings.set_setting('dialogic/editor/last_resources', used_resources)
-	ProjectSettings.save()
+	if !resource.resource_path in used_resources_cache:
+		used_resources_cache.append(resource.resource_path)
+		sidebar.update_resource_list(used_resources_cache)
 	
 	## Open the correct editor
 	var extension: String = resource.resource_path.get_extension()
@@ -218,4 +213,6 @@ func _on_sidebar_button_pressed(button:Button, editor_name:String) -> void:
 func get_current_editor() -> DialogicEditor:
 	return current_editor
 
-
+func _exit_tree():
+	ProjectSettings.set_setting('dialogic/editor/last/resources', used_resources_cache)
+	ProjectSettings.save()

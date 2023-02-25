@@ -2,8 +2,6 @@
 extends Resource
 class_name DialogicTimeline
 
-@export var dialogic_version:String
-
 
 var events:Array = []:
 	get:
@@ -16,39 +14,10 @@ var events:Array = []:
 var events_processed:bool = false
 
 
-func set_events(_events:Array) -> void:
-	events = _events
-	emit_changed()
-	notify_property_list_changed()
-
-
-func add_event(event, at_position:int =-1) -> void:
-	var idx : int = at_position if at_position > -1 else events.size()
-	events.insert(idx, event)
-	emit_changed()
-	notify_property_list_changed()
-
-
-func erase_event(event) -> void:
-	events.erase(event)
-	emit_changed()
-	notify_property_list_changed()
-
-
-func remove_event(position:int) -> void:
-	events.erase(position)
-	emit_changed()
-	notify_property_list_changed()
-
-
 func get_event(index):
 	if index >= len(events):
 		return null
 	return events[index]
-
-
-func get_events() -> Array:
-	return events.duplicate()
 
 
 func _set(property, value):
@@ -61,11 +30,7 @@ func _set(property, value):
 		
 		emit_changed()
 		notify_property_list_changed()
-	
-	if property == "events":
-		set_events(value)
-		return true
-	
+
 	return false
 
 func _get(property):
