@@ -131,7 +131,10 @@ func new_timeline(path:String) -> void:
 	_save_resource()
 	var new_timeline := DialogicTimeline.new()
 	new_timeline.resource_path = path
-	_open_resource(new_timeline)
+	new_timeline.set_meta('timeline_not_saved', true)
+	var err := ResourceSaver.save(new_timeline)
+	editors_manager.resource_helper.rebuild_timeline_directory()
+	editors_manager.edit_resource(new_timeline)
 
 
 func _ready():
