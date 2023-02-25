@@ -224,7 +224,7 @@ func erase_translations() -> void:
 		# clear the timeline events of their translation_id's
 		var tml:DialogicTimeline = load(timeline_path)
 		tml = await settings_editor.editors_manager.resource_helper.process_timeline(tml)
-		for event in tml.get_events():
+		for event in tml.events:
 			if event._translation_id:
 				event.remove_translation_id()
 				event.update_text_version()

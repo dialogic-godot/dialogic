@@ -71,7 +71,7 @@ func start_timeline(timeline_resource:Variant, label_or_idx:Variant = "") -> voi
 	timeline_resource = process_timeline(timeline_resource)
 	
 	current_timeline = timeline_resource
-	current_timeline_events = current_timeline.get_events()
+	current_timeline_events = current_timeline.events
 	current_event_idx = -1
 	
 	if typeof(label_or_idx) == TYPE_STRING:
