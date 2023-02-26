@@ -17,7 +17,7 @@ extends Button
 
 
 func _ready() -> void:
-	toggle_name()
+#	toggle_name()
 	tooltip_text = visible_name
 	
 	custom_minimum_size = Vector2(get_theme_font("font", 'Label').get_string_size(text).x+35,30)* DialogicUtil.get_editor_scale()
@@ -62,8 +62,8 @@ func _get_drag_data(position:Vector2) -> Variant:
 	
 	return { "source": "EventButton", "resource": resource }
 
-func toggle_name():
-	if text != "":
+func toggle_name(on:= false) -> void:
+	if !on:
 		text = ""
 		custom_minimum_size = Vector2(40, 40)*DialogicUtil.get_editor_scale()
 		var style := get_theme_stylebox('normal', 'Button')
