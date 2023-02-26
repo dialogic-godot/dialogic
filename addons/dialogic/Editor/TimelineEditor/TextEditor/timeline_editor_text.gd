@@ -19,7 +19,7 @@ var completion_text_character_getter_regex := RegEx.new()
 
 # Stores references to all shortcode events for parameter and value suggestions
 var completion_shortcodes := {}
-
+var completion_text_effects := {}
  
 func _ready():
 	syntax_highlighter = load("res://addons/dialogic/Editor/TimelineEditor/TextEditor/syntax_highlighter.gd").new()
@@ -241,6 +241,10 @@ func _request_code_completion(force):
 		for event in get_parent().editors_manager.resource_helper.event_script_cache:
 			if event.get_shortcode() != 'default_shortcode':
 				completion_shortcodes[event.get_shortcode()] = event
+	if completion_text_effects.is_empty():
+		for idx in DialogicUtil.get_indexers():
+			for effect in idx._get_text_effects():
+				completion_text_effects[effect['command']] = effect
 	
 	# fill helpers
 	var line := get_code_completion_line()
@@ -336,13 +340,9 @@ func _request_code_completion(force):
 			var character := completion_text_character_getter_regex.search(line).get_string('name')
 			suggest_portraits(character)
 		if symbol == '[':
-			add_code_completion_option(CodeEdit.KIND_MEMBER, 'speed (custom)', 'speed=', syntax_highlighter.normal_color, get_theme_icon("RichTextEffect", "EditorIcons"))
-			add_code_completion_option(CodeEdit.KIND_MEMBER, 'speed (default)', 'speed', syntax_highlighter.normal_color, get_theme_icon("RichTextEffect", "EditorIcons"), ']')
-			add_code_completion_option(CodeEdit.KIND_MEMBER, 'pause (custom)', 'pause=', syntax_highlighter.normal_color, get_theme_icon("RichTextEffect", "EditorIcons"))
-			add_code_completion_option(CodeEdit.KIND_MEMBER, 'pause (default)', 'pause', syntax_highlighter.normal_color, get_theme_icon("RichTextEffect", "EditorIcons"), ']')
-			add_code_completion_option(CodeEdit.KIND_MEMBER, 'portrait', 'portrait=', syntax_highlighter.normal_color, get_theme_icon("RichTextEffect", "EditorIcons"))
-			add_code_completion_option(CodeEdit.KIND_MEMBER, 'br', 'br', syntax_highlighter.normal_color, get_theme_icon("RichTextEffect", "EditorIcons"), ']')
-			add_code_completion_option(CodeEdit.KIND_MEMBER, 'signal', 'signal=', syntax_highlighter.normal_color, get_theme_icon("RichTextEffect", "EditorIcons"))
+			suggest_bbcode()
+			for effect in completion_text_effects:
+				add_code_completion_option(CodeEdit.KIND_MEMBER, effect, effect, syntax_highlighter.normal_color, get_theme_icon("RichTextEffect", "EditorIcons"), ']')
 		if symbol == '{':
 			suggest_variables()
 	
@@ -370,6 +370,11 @@ func suggest_variables():
 	for variable in DialogicUtil.list_variables(DialogicUtil.get_project_setting('dialogic/variables')):
 		add_code_completion_option(CodeEdit.KIND_MEMBER, variable, variable, syntax_highlighter.variable_color, get_theme_icon("MemberProperty", "EditorIcons"), '}')
 
+
+func suggest_bbcode():
+	for i in [['b (bold)', 'b'], ['i (italics)', 'i'], ['color', 'color='], ['font size','font_size=']]:
+		add_code_completion_option(CodeEdit.KIND_MEMBER, i[0], i[1],  syntax_highlighter.normal_color, get_theme_icon("RichTextEffect", "EditorIcons"),)
+		add_code_completion_option(CodeEdit.KIND_CLASS, 'end '+i[0], '/'+i[1],  syntax_highlighter.normal_color, get_theme_icon("RichTextEffect", "EditorIcons"), ']')
 
 # Filters the list of all possible options, depending on what was typed
 # Purpose of the different Kinds is explained in [_request_code_completion]
