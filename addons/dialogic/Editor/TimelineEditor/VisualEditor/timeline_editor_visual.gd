@@ -309,22 +309,22 @@ func _input(event):
 	
 	if get_viewport().gui_get_focus_owner() is TextEdit || get_viewport().gui_get_focus_owner() is LineEdit: 
 		return
-	
-	if (event is InputEventKey and event is InputEventWithModifiers and is_visible_in_tree()):
-		# CTRL Z ->  UNDO
-		if is_event_pressed(event, KEY_Z, false, false, true):
+	if !((event is InputEventKey or !event is InputEventWithModifiers) and is_visible_in_tree()):
+		return
+	if !event.pressed:
+		return
+	match event.as_text():
+		"Ctrl+Z": # UNDO
 			TimelineUndoRedo.undo()
 			indent_events()
 			get_viewport().set_input_as_handled()
-	if (event is InputEventKey and event is InputEventWithModifiers and is_visible_in_tree()):
-		# CTRL +SHIFT+ Z // CTRL + Y -> REDO
-		if is_event_pressed(event, KEY_Z, false, true, true) or is_event_pressed(event, KEY_Y, false, false, true):
+		
+		"Ctrl+Shift+Z", "Ctrl+Y": # REDO
 			TimelineUndoRedo.redo()
 			indent_events()
 			get_viewport().set_input_as_handled()
-	if (event is InputEventKey and event is InputEventWithModifiers and is_visible_in_tree()):
-		# UP -> select previous
-		if is_event_pressed(event, KEY_UP, false, false, false):
+		
+		"Up": #select previous
 			if (len(selected_items) == 1):
 				var prev = max(0, selected_items[0].get_index() - 1)
 				var prev_node = %Timeline.get_child(prev)
@@ -332,9 +332,8 @@ func _input(event):
 					selected_items = []
 					select_item(prev_node)
 				get_viewport().set_input_as_handled()
-			
-		# DOWN -> select next
-		if is_event_pressed(event, KEY_DOWN, false, false, false):
+		
+		"Down": #select next
 			if (len(selected_items) == 1):
 				var next = min(%Timeline.get_child_count() - 1, selected_items[0].get_index() + 1)
 				var next_node = %Timeline.get_child(next)
@@ -342,9 +341,8 @@ func _input(event):
 					selected_items = []
 					select_item(next_node)
 				get_viewport().set_input_as_handled()
-			
-		# DELETE
-		if is_event_pressed(event, KEY_DELETE, false, false, false):
+		
+		"Delete":
 			if (len(selected_items) != 0):
 				var events_indexed = get_events_indexed(selected_items)
 				TimelineUndoRedo.create_action("[D] Deleting "+str(len(selected_items))+" event(s).")
@@ -352,32 +350,27 @@ func _input(event):
 				TimelineUndoRedo.add_undo_method(add_events_indexed.bind(events_indexed))
 				TimelineUndoRedo.commit_action()
 				get_viewport().set_input_as_handled()
-			
-		# CTRL T -> Add text event
-		if is_event_pressed(event, KEY_T, false, false, true):
+		
+		"Ctrl+T": # Add text event
 			_add_event_button_pressed(DialogicTextEvent.new())
 			get_viewport().set_input_as_handled()
-			
-		# CTRL A -> select all
-		if is_event_pressed(event, KEY_A, false, false, true):
+		
+		"Ctrl+A": # select all
 			if (len(selected_items) != 0):
 				select_all_items()
 			get_viewport().set_input_as_handled()
 		
-		# CTRL SHIFT A -> deselect all
-		if is_event_pressed(event, KEY_A, false, true, true):
+		"Ctrl+Shift+A": # deselect all
 			if (len(selected_items) != 0):
 				deselect_all_items()
 			get_viewport().set_input_as_handled()
 		
-		# CTRL C
-		if is_event_pressed(event, KEY_C, false, false, true):
+		"Ctrl+C":
 			copy_selected_events()
 			get_viewport().set_input_as_handled()
 		
-		# CTRL V
-		if is_event_pressed(event, KEY_V, false, false, true):
-			var events_list = paste_check()
+		"Ctrl+V":
+			var events_list := paste_check()
 			var paste_position = -1
 			if selected_items:
 				paste_position = selected_items[-1].get_index()
@@ -390,47 +383,36 @@ func _input(event):
 				TimelineUndoRedo.commit_action()
 				get_viewport().set_input_as_handled()
 		
-		# CTRL X
-		if is_event_pressed(event, KEY_X, false, false, true):
-			var events_indexed = get_events_indexed(selected_items)
+		"Ctrl+X":
+			var events_indexed := get_events_indexed(selected_items)
 			TimelineUndoRedo.create_action("[D] Cut "+str(len(selected_items))+" event(s).")
 			TimelineUndoRedo.add_do_method(cut_events_indexed.bind(events_indexed))
 			TimelineUndoRedo.add_undo_method(add_events_indexed.bind(events_indexed))
 			TimelineUndoRedo.commit_action()
 			get_viewport().set_input_as_handled()
 		
-		# CTRL D
-		if is_event_pressed(event, KEY_D, false, false, true):
+		"Ctrl+D":
 			if len(selected_items) > 0:
-				var events = get_events_indexed(selected_items).values()
-				var at_index = selected_items[-1].get_index()
+				var events := get_events_indexed(selected_items).values()
+				var at_index :int= selected_items[-1].get_index()
 				TimelineUndoRedo.create_action("[D] Duplicate "+str(len(events))+" event(s).")
 				TimelineUndoRedo.add_do_method(add_events_at_index.bind(events, at_index))
 				TimelineUndoRedo.add_undo_method(remove_events_at_index.bind(at_index, len(events)))
 				TimelineUndoRedo.commit_action()
 			get_viewport().set_input_as_handled()
 		
-		# ALT UP -> move selected up
-		if is_event_pressed(event, KEY_UP, true, false, false):
+		"Alt+Up":
 			if (len(selected_items) == 1):
 				move_block_up(selected_items[0])
 				indent_events()
 				get_viewport().set_input_as_handled()
 			
-		# ALT DOWN -> move selected down
-		if is_event_pressed(event, KEY_DOWN, true, false, false):
+		"Alt+Down":
 			if (len(selected_items) == 1):
 				move_block_down(selected_items[0])
 				indent_events()
 				get_viewport().set_input_as_handled()
 
-# helper to make the above methods shorter
-func is_event_pressed(event, keycode, alt:bool, shift:bool, ctrl_or_meta:bool):
-	return (event.pressed and event.alt_pressed == alt 
-			and event.shift_pressed == shift 
-			and (event.ctrl_pressed or event.meta_pressed ) == ctrl_or_meta
-			and event.keycode == keycode
-			and event.echo == false)
 
 ## *****************************************************************************
 ##					 	DELETING, COPY, PASTE
@@ -543,9 +525,9 @@ func copy_selected_events():
 		}))
 
 
-func paste_check():
-	var _json = JSON.new()
-	var clipboard_parse = _json.parse(DisplayServer.clipboard_get())
+func paste_check() -> Array:
+	var _json := JSON.new()
+	var clipboard_parse :Variant= _json.parse(DisplayServer.clipboard_get())
 	if clipboard_parse == OK:
 		clipboard_parse = _json.get_data()
 		if clipboard_parse.has("project_name"):
@@ -553,6 +535,7 @@ func paste_check():
 				print("[D] Be careful when copying from another project!")
 		if clipboard_parse.has('events'):
 			return clipboard_parse.events
+	return []
 
 
 func remove_events_at_index(at_index:int, amount:int = 1)-> void:
@@ -579,12 +562,12 @@ func add_events_at_index(event_list:Array, at_index:int) -> void:
 					if i._test_event_string(item):
 						resource = i.duplicate()
 						break
+				if resource['event_name'] == 'Character' or resource['event_name'] == 'Text':
+					resource.set_meta('editor_character_directory', get_parent().editors_manager.resource_helper.character_directory)
+				resource.from_text(item)
 			else:
 				printerr("[Dialogic] Unable to access resource_helper!")
 				continue
-			if resource['event_name'] == 'Character' or resource['event_name'] == 'Text':
-				resource.set_meta('editor_character_directory', find_parent('EditorView').character_directory)
-			resource.from_text(item)
 			if item:
 				new_items.append(add_event_node(resource))
 	selected_items = new_items
