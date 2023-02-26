@@ -776,8 +776,8 @@ func new_timeline():
 # it will be added to the selected folder (if it's a character folder) or the Character root folder
 func new_character():
 	var character = editor_reference.get_node("MainPanel/CharacterEditor").create_character()
-	var folder = get_item_folder(get_selected(), "Characters")
-	DialogicUtil.add_file_to_folder(folder, character['metadata']['file'])
+	var folder = get_selected().get_metadata(0)
+	DialogicUtil.add_file_to_folder(editor_reference.flat_structure, "Characters",folder, character['metadata']['file'])
 	build_characters(character['metadata']['file'])
 	rename_selected()
 
@@ -785,8 +785,8 @@ func new_character():
 # it will be added to the selected folder (if it's a theme folder) or the Theme root folder
 func new_theme():
 	var theme_file = editor_reference.get_node("MainPanel/ThemeEditor").create_theme()
-	var folder = get_item_folder(get_selected(), "Themes")
-	DialogicUtil.add_file_to_folder(folder, theme_file)
+	var folder = get_selected().get_metadata(0)
+	DialogicUtil.add_file_to_folder(editor_reference.flat_structure, "Themes",folder, theme_file)
 	build_themes(theme_file)
 	rename_selected()
 
@@ -794,8 +794,8 @@ func new_theme():
 # it will be added to the selected folder (if it's a definition folder) or the Definition root folder
 func new_value_definition():
 	var definition_id = editor_reference.get_node("MainPanel/ValueEditor").create_value()
-	var folder = get_item_folder(get_selected(), "Definitions")
-	DialogicUtil.add_file_to_folder(folder, definition_id)
+	var folder = get_selected().get_metadata(0)
+	DialogicUtil.add_file_to_folder(editor_reference.flat_structure, "Definitions",folder, definition_id)
 	build_definitions(definition_id)
 	rename_selected()
 
@@ -803,8 +803,8 @@ func new_value_definition():
 # it will be added to the selected folder (if it's a definition folder) or the Definition root folder
 func new_glossary_entry():
 	var definition_id = editor_reference.get_node("MainPanel/GlossaryEntryEditor").create_glossary_entry()
-	var folder = get_item_folder(get_selected(), "Definitions")
-	DialogicUtil.add_file_to_folder(folder, definition_id)
+	var folder = get_selected().get_metadata(0)
+	DialogicUtil.add_file_to_folder(editor_reference.flat_structure, "Definitions",folder, definition_id)
 	build_definitions(definition_id)
 	rename_selected()
 	
@@ -851,19 +851,19 @@ func drop_data(position, data):
 	if data['item_type'] == 'folder':
 		# on a folder
 		if 'Root' in item.get_metadata(0)['editor']:
-			DialogicUtil.move_folder_to_folder(editor_reference.flat_structure, item.get_metadata(0)['category'], data['orig_path'], item.get_metadata(0))
+			DialogicUtil.move_folder_to_folder(editor_reference.flat_structure, item.get_metadata(0)['category'], data, item.get_metadata(0))
 	# dragging a file
 	elif data['item_type'] == 'file':
 		# on a folder
 		if 'Root' in item.get_metadata(0)['editor']:
 			if data.has('file_name'):
-				DialogicUtil.move_file_to_folder(data['file_name'], data['orig_path'], get_item_folder(item, data['orig_path'].split('/')[0]))
+				DialogicUtil.move_file_to_folder(editor_reference.flat_structure, item.get_metadata(0)['category'], data, item.get_metadata(0))
 			elif data.has('resource_id'):
-				DialogicUtil.move_file_to_folder(data['resource_id'], data['orig_path'], get_item_folder(item, data['orig_path'].split('/')[0]))
+				DialogicUtil.move_file_to_folder(editor_reference.flat_structure, item.get_metadata(0)['category'], data, item.get_metadata(0))
 				pass # WORK TODO
 		# on a file
 		else:
-			DialogicUtil.move_file_to_folder(data['file_name'], data['orig_path'], get_item_folder(item, data['orig_path'].split('/')[0]))
+			DialogicUtil.move_file_to_folder(editor_reference.flat_structure, item.get_metadata(0)['category'], data, item.get_metadata(0))
 	dragging_item.queue_free()
 	dragging_item = null
 	build_full_tree()

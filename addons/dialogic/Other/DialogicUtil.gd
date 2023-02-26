@@ -319,22 +319,35 @@ static func move_folder_to_folder(flat_structure:Dictionary, tree:String, origin
 	return OK
 
 ## FILE FUNCTIONS
-static func move_file_to_folder(file_name, orig_folder, target_folder):
-	remove_file_from_folder(orig_folder, file_name)
+static func move_file_to_folder(flat_structure:Dictionary, tree:String, original_data:Dictionary, destination_data:Dictionary):
+	#remove_file_from_folder(orig_folder, file_name)
 	#add_file_to_folder(target_folder, file_name)
+	remove_file_from_folder(flat_structure, tree,original_data)
+	add_file_to_folder(flat_structure,tree,destination_data, "",original_data)
+	
+	flat_structure = editor_array_to_flat_structure(flat_structure, tree)
+	DialogicResources.save_resource_folder_flat_structure(flat_structure)
 
-static func add_file_to_folder(flat_structure:Dictionary, tree:String,  path:Dictionary, file_name:String):
-	var new_data = {}
-	new_data['key'] = path['path'] + "/" + path['name'] + file_name
-	new_data['value'] = {'name': file_name, "color": null, 'file': file_name, 'path': new_data['key']}	
-	flat_structure[tree + "_Array"].insert(path['step'] + 1, new_data)
+static func add_file_to_folder(flat_structure:Dictionary, tree:String,  path:Dictionary, file_name:String, existing_data:Dictionary = {}):
+	if existing_data.empty():
+		var new_data = {}
+		new_data['key'] = path['path'] + "/" + path['name'] + file_name
+		new_data['value'] = {'name': file_name, "color": null, 'file': file_name, 'path': new_data['key']}	
+		flat_structure[tree + "_Array"].insert(path['step'] + 1, new_data)
+	else:
+		existing_data['key'] = path['path'] + "/" + existing_data['value']['name']
+		existing_data['value']['path'] = path['path']
+		flat_structure[tree + "_Array"].insert(path['step'] + 1, existing_data)
+	
 	flat_structure = editor_array_to_flat_structure(flat_structure,tree)
 	DialogicResources.save_resource_folder_flat_structure(flat_structure)
 
-static func remove_file_from_folder(folder_path, file_name):
-	var folder_data = get_folder_at_path(folder_path)
-	folder_data["files"].erase(file_name)
-	set_folder_at_path(folder_path, folder_data)
+static func remove_file_from_folder(flat_structure:Dictionary, tree:String,  path:Dictionary):
+	flat_structure[tree +"_Array"].remove(path['step'])
+	
+	flat_structure = editor_array_to_flat_structure(flat_structure, tree)
+	DialogicResources.save_resource_folder_flat_structure(flat_structure)
+
 
 
 ## STRUCTURE UPDATES
