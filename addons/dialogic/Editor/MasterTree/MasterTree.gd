@@ -766,8 +766,8 @@ func _on_DocumentationPopupMenu_id_pressed(id):
 # it will be added to the selected folder (if it's a timeline folder) or the Timeline root folder
 func new_timeline():
 	var timeline = editor_reference.get_node('MainPanel/TimelineEditor').create_timeline()
-	var folder = get_item_folder(get_selected(), "Timelines")
-	DialogicUtil.add_file_to_folder(folder, timeline['metadata']['file'])
+	var folder = get_selected().get_metadata(0)
+	DialogicUtil.add_file_to_folder(editor_reference.flat_structure, "Timelines",folder, timeline['metadata']['file'])
 	build_timelines(timeline['metadata']['file'])
 	rename_selected()
 
