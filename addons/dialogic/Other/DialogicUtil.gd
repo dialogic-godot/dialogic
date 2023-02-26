@@ -324,9 +324,6 @@ static func move_file_to_folder(flat_structure:Dictionary, tree:String, original
 	#add_file_to_folder(target_folder, file_name)
 	remove_file_from_folder(flat_structure, tree,original_data)
 	add_file_to_folder(flat_structure,tree,destination_data, "",original_data)
-	
-	flat_structure = editor_array_to_flat_structure(flat_structure, tree)
-	DialogicResources.save_resource_folder_flat_structure(flat_structure)
 
 static func add_file_to_folder(flat_structure:Dictionary, tree:String,  path:Dictionary, file_name:String, existing_data:Dictionary = {}):
 	if existing_data.empty():
