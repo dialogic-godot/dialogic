@@ -120,6 +120,8 @@ func _init() -> void:
 ################################################################################
 
 func to_text() -> String:
+	var text_to_use := text.replace('\n', '\\\n')
+	text_to_use = text_to_use.replace(':', '\\:')
 	if character:
 		var name = ""
 		for path in _character_directory.keys():
@@ -129,9 +131,9 @@ func to_text() -> String:
 		if name.count(" ") > 0:
 			name = '"' + name + '"'
 		if not portrait.is_empty():
-			return name+" ("+portrait+"): "+text.replace("\n", "\\\n")
-		return name+": "+text.replace("\n", "\\\n")
-	return text.replace("\n", "\\\n")
+			return name+" ("+portrait+"): "+text_to_use
+		return name+": "+text_to_use
+	return text_to_use
 
 
 func from_text(string:String) -> void:
@@ -175,7 +177,7 @@ func from_text(string:String) -> void:
 			portrait = result.get_string('portrait').strip_edges()
 	
 	if result:
-		text = result.get_string('text').replace("\\\n", "\n").strip_edges()
+		text = result.get_string('text').replace("\\\n", "\n").replace('\\:', ':').strip_edges()
 
 
 func is_valid_event(string:String) -> bool:
@@ -213,7 +215,7 @@ func build_event_editor():
 			'icon' 				: load("res://addons/dialogic/Editor/Images/Resources/character.svg")})
 	add_header_edit('portrait', ValueType.ComplexPicker, '', '', 
 			{'suggestions_func' : get_portrait_suggestions, 
-			'placeholder' 		: "Don't change", 
+			'placeholder' 		: "(Don't change)", 
 			'icon' 				: load("res://addons/dialogic/Editor/Images/Resources/portrait.svg")}, 
 			'character != null and !has_no_portraits()')
 	add_body_edit('text', ValueType.MultilineText)

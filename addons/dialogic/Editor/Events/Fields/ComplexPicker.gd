@@ -78,12 +78,6 @@ func _ready():
 	if resource_icon == null:
 		self.resource_icon = null
 	
-	%Search.placeholder_text = 'Select Resource'
-	if file_extension == '.dch':
-		%Search.placeholder_text = 'Select Character'
-	if file_extension == '.dtl':
-		%Search.placeholder_text = 'Select Timeline'
-	
 	editor_reference = find_parent('EditorView')
 
 

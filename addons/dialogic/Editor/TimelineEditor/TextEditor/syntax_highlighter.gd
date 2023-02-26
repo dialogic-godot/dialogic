@@ -63,7 +63,12 @@ func _init():
 	shortcode_regex.compile("\\W*\\[(?<id>\\w*)(?<args>[^\\]]*)?")
 	shortcode_param_regex.compile('((?<parameter>[^\\s=]*)\\s*=\\s*"(?<value>([^=]|\\\\=)*)(?<!\\\\)")')
 	text_event_regex.compile("\\W*((\")?(?<name>(?(2)[^\"\\n]*|[^(: \\n]*))(?(2)\"|)(\\W*\\((?<portrait>.*)\\))?\\s*(?<!\\\\):)?(?<text>.*)")
-	text_effects_regex.compile("(?<!\\\\)\\[\\s*(?<command>mood|portrait|speed|signal|pause|br)\\s*(=\\s*(?<value>.+?)\\s*)?\\]")
+	var text_effects := ""
+	for idx in DialogicUtil.get_indexers():
+		for effect in idx._get_text_effects():
+			text_effects+= effect['command']+'|'
+	text_effects += "b|i|u|s|code|p|center|left|right|fill|indent|url|img|font|font_size|opentype_features|color|bg_color|fg_color|outline_size|outline_color|table|cell|ul|ol|lb|rb"
+	text_effects_regex.compile("(?<!\\\\)\\[\\s*/?(?<command>"+text_effects+")\\s*(=\\s*(?<value>.+?)\\s*)?\\]")
 	character_event_regex.compile("(?<type>Join|Update|Leave)\\s*(\")?(?<name>(?(2)[^\"\\n]*|[^(: \\n]*))(?(2)\"|)(\\W*\\((?<portrait>.*)\\))?(\\s*(?<position>\\d))?(\\s*\\[(?<shortcode>.*)\\])?")
 
 func _get_line_syntax_highlighting(line:int) -> Dictionary:

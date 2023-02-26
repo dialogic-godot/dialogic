@@ -19,7 +19,7 @@ var completion_text_character_getter_regex := RegEx.new()
 
 # Stores references to all shortcode events for parameter and value suggestions
 var completion_shortcodes := {}
-
+var completion_text_effects := {}
  
 func _ready():
 	syntax_highlighter = load("res://addons/dialogic/Editor/TimelineEditor/TextEditor/syntax_highlighter.gd").new()
@@ -116,6 +116,8 @@ func _gui_input(event):
 			move_line(-1)
 		"Alt+Down":
 			move_line(1)
+		"Ctrl+Shift+D":
+			duplicate_line()
 		_:
 			return
 	get_viewport().set_input_as_handled()
@@ -176,6 +178,24 @@ func move_line(offset: int) -> void:
 	text_changed.emit()
 
 
+func duplicate_line() -> void:
+	var cursor: Vector2 = Vector2(get_caret_column(), get_caret_line())
+	var from: int = cursor.y
+	var to: int = cursor.y+1
+	if has_selection():
+		from = get_selection_from_line()
+		to = get_selection_to_line()+1
+
+	var lines := text.split("\n")
+	var lines_to_dupl: PackedStringArray = lines.slice(from, to)
+	
+	text = "\n".join(lines.slice(0, from)+lines_to_dupl+lines.slice(from))
+
+	set_caret_line(cursor.y+to-from)
+	set_caret_column(cursor.x)
+	text_changed.emit()
+
+
 # Allows dragging files into the editor
 func _can_drop_data(at_position:Vector2, data:Variant) -> bool:
 	if typeof(data) == TYPE_DICTIONARY and 'files' in data.keys() and len(data.files) == 1:
@@ -221,6 +241,10 @@ func _request_code_completion(force):
 		for event in get_parent().editors_manager.resource_helper.event_script_cache:
 			if event.get_shortcode() != 'default_shortcode':
 				completion_shortcodes[event.get_shortcode()] = event
+	if completion_text_effects.is_empty():
+		for idx in DialogicUtil.get_indexers():
+			for effect in idx._get_text_effects():
+				completion_text_effects[effect['command']] = effect
 	
 	# fill helpers
 	var line := get_code_completion_line()
@@ -316,13 +340,9 @@ func _request_code_completion(force):
 			var character := completion_text_character_getter_regex.search(line).get_string('name')
 			suggest_portraits(character)
 		if symbol == '[':
-			add_code_completion_option(CodeEdit.KIND_MEMBER, 'speed (custom)', 'speed=', syntax_highlighter.normal_color, get_theme_icon("RichTextEffect", "EditorIcons"))
-			add_code_completion_option(CodeEdit.KIND_MEMBER, 'speed (default)', 'speed', syntax_highlighter.normal_color, get_theme_icon("RichTextEffect", "EditorIcons"), ']')
-			add_code_completion_option(CodeEdit.KIND_MEMBER, 'pause (custom)', 'pause=', syntax_highlighter.normal_color, get_theme_icon("RichTextEffect", "EditorIcons"))
-			add_code_completion_option(CodeEdit.KIND_MEMBER, 'pause (default)', 'pause', syntax_highlighter.normal_color, get_theme_icon("RichTextEffect", "EditorIcons"), ']')
-			add_code_completion_option(CodeEdit.KIND_MEMBER, 'portrait', 'portrait=', syntax_highlighter.normal_color, get_theme_icon("RichTextEffect", "EditorIcons"))
-			add_code_completion_option(CodeEdit.KIND_MEMBER, 'br', 'br', syntax_highlighter.normal_color, get_theme_icon("RichTextEffect", "EditorIcons"), ']')
-			add_code_completion_option(CodeEdit.KIND_MEMBER, 'signal', 'signal=', syntax_highlighter.normal_color, get_theme_icon("RichTextEffect", "EditorIcons"))
+			suggest_bbcode()
+			for effect in completion_text_effects:
+				add_code_completion_option(CodeEdit.KIND_MEMBER, effect, effect, syntax_highlighter.normal_color, get_theme_icon("RichTextEffect", "EditorIcons"), ']')
 		if symbol == '{':
 			suggest_variables()
 	
@@ -350,6 +370,11 @@ func suggest_variables():
 	for variable in DialogicUtil.list_variables(DialogicUtil.get_project_setting('dialogic/variables')):
 		add_code_completion_option(CodeEdit.KIND_MEMBER, variable, variable, syntax_highlighter.variable_color, get_theme_icon("MemberProperty", "EditorIcons"), '}')
 
+
+func suggest_bbcode():
+	for i in [['b (bold)', 'b'], ['i (italics)', 'i'], ['color', 'color='], ['font size','font_size=']]:
+		add_code_completion_option(CodeEdit.KIND_MEMBER, i[0], i[1],  syntax_highlighter.normal_color, get_theme_icon("RichTextEffect", "EditorIcons"),)
+		add_code_completion_option(CodeEdit.KIND_CLASS, 'end '+i[0], '/'+i[1],  syntax_highlighter.normal_color, get_theme_icon("RichTextEffect", "EditorIcons"), ']')
 
 # Filters the list of all possible options, depending on what was typed
 # Purpose of the different Kinds is explained in [_request_code_completion]
