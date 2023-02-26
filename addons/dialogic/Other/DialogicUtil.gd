@@ -288,38 +288,30 @@ static func rename_folder(flat_structure: Dictionary, tree:String, path:Dictiona
 		return ERR_PRINTER_ON_FIRE
 		
 	flat_structure[tree + "_Array"][path['step']]['key'] = new_path
-	#gotta split up the dictionary and reassemble it to change a key's name
-	var tree_keys = flat_structure[tree].keys()
-	var tree_values = flat_structure[tree].values()
-	tree_keys[path['step'] + 1] = new_path
 	
-	var new_dictionary = {}
-	for i in tree_keys.size():
-		new_dictionary[tree_keys[i]] = tree_values[i]
-	
-	flat_structure[tree] = new_dictionary
+	flat_structure = editor_array_to_flat_structure(flat_structure, tree)
 	
 	DialogicResources.save_resource_folder_flat_structure(flat_structure)
 
 	return OK
 
-static func move_folder_to_folder(flat_structure:Dictionary, tree:String, original_path:Dictionary, destination_path:Dictionary):
+static func move_folder_to_folder(flat_structure:Dictionary, tree:String, original_data:Dictionary, destination_data:Dictionary):
 	# check if the name is allowed
-	var new_path = destination_path['path']
+	var new_path = destination_data['path']
 	
 	if new_path in flat_structure[tree]:
-		print("[D] A folder with the name '"+destination_path['path'].split("/")[-1]+"' already exists in the target folder '"+original_path['path']+"'.")
+		print("[D] A folder with the name '"+destination_data['path'].split("/")[-1]+"' already exists in the target folder '"+original_data['path']+"'.")
 		return ERR_ALREADY_EXISTS
 
 	
 	# remove the old folder BUT DON'T DELETE THE FILES!!!!!!!!!!!
 	# took me ages to find this when I forgot it..
-	remove_folder(flat_structure, tree,original_path, false)
+	remove_folder(flat_structure, tree,original_data, false)
 	
 	# add the new folder
-	var folder_name = destination_path['path'].split("/")[-1]
+	var folder_name = destination_data['path'].split("/")[-1]
 	
-	add_folder(flat_structure, tree, destination_path, new_path)
+	add_folder(flat_structure, tree, destination_data, new_path)
 
 	
 	DialogicResources.save_resource_folder_flat_structure(flat_structure)

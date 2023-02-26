@@ -851,7 +851,7 @@ func drop_data(position, data):
 	if data['item_type'] == 'folder':
 		# on a folder
 		if 'Root' in item.get_metadata(0)['editor']:
-			DialogicUtil.move_folder_to_folder(editor_reference.flat_structure, "tree", data['orig_path'], get_item_folder(item, data['orig_path'].split('/')[0]))
+			DialogicUtil.move_folder_to_folder(editor_reference.flat_structure, item.get_metadata(0)['category'], data['orig_path'], item.get_metadata(0))
 	# dragging a file
 	elif data['item_type'] == 'file':
 		# on a folder
