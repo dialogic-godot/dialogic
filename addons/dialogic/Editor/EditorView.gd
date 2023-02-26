@@ -16,7 +16,7 @@ var editor_scene_cache = {}
 func _ready():
 	# Updating the folder structure
 	flat_structure = DialogicUtil.get_flat_folders_list() 
-	flat_structure_to_editor_array()
+	flat_structure = DialogicUtil.flat_structure_to_editor_array(flat_structure)
 	
 	# Adding file dialog to get used by Events
 	editor_file_dialog = EditorFileDialog.new()
@@ -112,24 +112,6 @@ func _ready():
 	$MainPanel/MasterTreeContainer/FilterMasterTreeEdit.right_icon = get_icon("Search", "EditorIcons")
 	$MainPanel/MasterTreeContainer/MasterTree.build_full_tree()
 
-func flat_structure_to_editor_array():
-	flat_structure['Timelines_Array'] = []
-	flat_structure['Characters_Array'] = []
-	flat_structure['Definitions_Array'] = []
-	flat_structure['Themes_Array'] = []
-	
-	for key in flat_structure['Timelines'].keys():
-		flat_structure['Timelines_Array'].push_back({'key': key, 'value': flat_structure['Timelines'][key]})
-
-	for key in flat_structure['Characters'].keys():
-		flat_structure['Characters_Array'].push_back({'key': key, 'value': flat_structure['Characters'][key]})
-		
-	for key in flat_structure['Definitions'].keys():
-		flat_structure['Definitions_Array'].push_back({'key': key, 'value': flat_structure['Definitions'][key]})
-		
-	for key in flat_structure['Themes'].keys():
-		flat_structure['Themes_Array'].push_back({'key': key, 'value': flat_structure['Themes'][key]})
-
 func on_master_tree_editor_selected(editor: String):
 	$ToolBar/FoldTools.visible = editor == 'timeline'
 	$ToolBar/DocumentationNavigation.visible = editor == 'documentation'
@@ -158,8 +140,8 @@ func popup_remove_confirmation(what):
 
 func _on_RemoveFolderConfirmation_confirmed():
 	var item_path = $MainPanel/MasterTreeContainer/MasterTree.get_item_path($MainPanel/MasterTreeContainer/MasterTree.get_selected())
-	DialogicUtil.remove_folder(flat_structure, item_path)
-	flat_structure_to_editor_array()
+	DialogicUtil.remove_folder(flat_structure, "tree", item_path)
+	flat_structure = DialogicUtil.flat_structure_to_editor_array(flat_structure)
 	$MainPanel/MasterTreeContainer/MasterTree.build_full_tree()
 
 

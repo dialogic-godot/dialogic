@@ -386,6 +386,62 @@ static func beautify_filename(animation_name: String) -> String:
 	else:
 		a_string = a_string.capitalize()
 	return a_string
+	
+static func flat_structure_to_editor_array(flat_structure: Dictionary, tree:String="all") -> Dictionary:
+	if tree != "all":
+		flat_structure[tree + '_Array'] = []
+		
+		for key in flat_structure[tree].keys():
+			flat_structure[tree+ '_Array'].push_back({'key': key, 'value': flat_structure[tree][key]})
+	else:
+		
+		flat_structure['Timelines_Array'] = []
+		flat_structure['Characters_Array'] = []
+		flat_structure['Definitions_Array'] = []
+		flat_structure['Themes_Array'] = []
+		
+		for key in flat_structure['Timelines'].keys():
+			flat_structure['Timelines_Array'].push_back({'key': key, 'value': flat_structure['Timelines'][key]})
+
+		for key in flat_structure['Characters'].keys():
+			flat_structure['Characters_Array'].push_back({'key': key, 'value': flat_structure['Characters'][key]})
+			
+		for key in flat_structure['Definitions'].keys():
+			flat_structure['Definitions_Array'].push_back({'key': key, 'value': flat_structure['Definitions'][key]})
+			
+		for key in flat_structure['Themes'].keys():
+			flat_structure['Themes_Array'].push_back({'key': key, 'value': flat_structure['Themes'][key]})
+			
+	return flat_structure
+	
+static func editor_array_to_flat_structure(flat_structure: Dictionary, tree:String="all") -> Dictionary:
+	if tree != "all":
+		flat_structure[tree] = {}
+		
+		for idx in flat_structure[tree + '_Array'].size():
+			flat_structure[tree][flat_structure[tree + '_Array'][idx]['key']] = flat_structure[tree + '_Array'][idx]['value']
+		
+	else:
+		flat_structure['Timelines'] = {}
+		flat_structure['Characters'] = {}
+		flat_structure['Definitions'] = {}
+		flat_structure['Themes'] = {}
+		
+		for idx in flat_structure['Timelines_Array'].size():
+			flat_structure['Timelines'][flat_structure['Timelines_Array'][idx]['key']] = flat_structure['Timelines_Array'][idx]['value']
+			
+		for idx in flat_structure['Characters_Array'].size():
+			flat_structure['Characters'][flat_structure['Characters_Array'][idx]['key']] = flat_structure['Characters_Array'][idx]['value']
+			
+		for idx in flat_structure['Definitions_Array'].size():
+			flat_structure['Definitions'][flat_structure['Definitions_Array'][idx]['key']] = flat_structure['Definitions_Array'][idx]['value']
+			
+		for idx in flat_structure['Themes_Array'].size():
+			flat_structure['Themes'][flat_structure['Themes_Array'][idx]['key']] = flat_structure['Themes_Array'][idx]['value']
+			
+		
+	return flat_structure
+
 
 ## *****************************************************************************
 ##								USEFUL FUNCTIONS

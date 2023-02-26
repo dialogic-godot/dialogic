@@ -218,11 +218,16 @@ func build_flat_tree_items(current_tree: String=''):
 			var resource_data = entry['value']
 			
 			var item = tree.create_item(current_root)
+			item['category']= current_tree
 			# set the text
 			if resource_data.has('name'):
 				item.set_text(0, resource_data['name'])
+				item['path'] = entry['key'].rstrip(resource_data['name'])
+				item['current_name'] = resource_data['name']
 			else:
 				item.set_text(0, resource_data['file'])
+				item['path'] = entry['key'].rstrip(resource_data['file'])
+				item['current_name'] = resource_data['file']
 			if not get_constant("dark_theme", "Editor"):
 				item.set_icon_modulate(0, get_color("property_color", "Editor"))
 			# set it as editable
