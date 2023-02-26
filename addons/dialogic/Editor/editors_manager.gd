@@ -91,21 +91,25 @@ func _on_editors_tab_changed(tab:int) -> void:
 
 
 func edit_resource(resource:Resource, save_previous:bool = true) -> void:
-	if current_editor and save_previous:
-		current_editor._save_resource()
-	
-	if !resource.resource_path in used_resources_cache:
-		used_resources_cache.append(resource.resource_path)
-		sidebar.update_resource_list(used_resources_cache)
-	
-	## Open the correct editor
-	var extension: String = resource.resource_path.get_extension()
-	for editor in editors.values():
-		if editor.get('extension', '') == extension:
-			editor['node']._open_resource(resource)
-			open_editor(editor['node'], false)
-	
-	resource_opened.emit(resource)
+	if resource:
+		if current_editor and save_previous:
+			current_editor._save_resource()
+		
+		if !resource.resource_path in used_resources_cache:
+			used_resources_cache.append(resource.resource_path)
+			sidebar.update_resource_list(used_resources_cache)
+		
+		## Open the correct editor
+		var extension: String = resource.resource_path.get_extension()
+		for editor in editors.values():
+			if editor.get('extension', '') == extension:
+				editor['node']._open_resource(resource)
+				open_editor(editor['node'], false)
+		
+		resource_opened.emit(resource)
+	else: 
+		# The resource doesn't exists, show an error
+		print('[Dialogic] The resource you are trying to edit doesn\'t exists any more.')
 
 
 ## Only works if there was a different editor opened previously

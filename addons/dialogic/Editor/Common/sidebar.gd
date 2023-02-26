@@ -10,6 +10,7 @@ signal file_activated(file_path)
 
 func _ready():
 	%ResourcesList.item_selected.connect(_on_resources_list_item_selected)
+	%ResourcesList.item_clicked.connect(_on_resources_list_item_clicked)
 	editors_manager.resource_opened.connect(_on_editors_resource_opened)
 	editors_manager.editor_changed.connect(_on_editors_editor_changed)
 	%Search.right_icon = get_theme_icon("Search", "EditorIcons")
@@ -86,6 +87,16 @@ func _on_resources_list_item_selected(index:int) -> void:
 		return
 	editors_manager.edit_resource(load(%ResourcesList.get_item_metadata(index)))
 
+
+func _on_resources_list_item_clicked(index: int, at_position: Vector2, mouse_button_index: int):
+	# If clicked with the middle mouse button, remove the item from the list
+	if mouse_button_index == 3:
+		var new_list = []
+		for entry in ProjectSettings.get_setting('dialogic/editor/last_resources', []):
+			if entry != %ResourcesList.get_item_metadata(index):
+				new_list.append(entry)
+		ProjectSettings.set_setting('dialogic/editor/last_resources', new_list)
+		%ResourcesList.remove_item(index)
 
 func _on_search_text_changed(new_text:String) -> void:
 	update_resource_list()
