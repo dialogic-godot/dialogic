@@ -213,7 +213,7 @@ func build_event_editor():
 			'icon' 				: load("res://addons/dialogic/Editor/Images/Resources/character.svg")})
 	add_header_edit('portrait', ValueType.ComplexPicker, '', '', 
 			{'suggestions_func' : get_portrait_suggestions, 
-			'placeholder' 		: "Don't change", 
+			'placeholder' 		: "(Same)", 
 			'icon' 				: load("res://addons/dialogic/Editor/Images/Resources/portrait.svg")}, 
 			'character != null and !has_no_portraits()')
 	add_body_edit('text', ValueType.MultilineText)
