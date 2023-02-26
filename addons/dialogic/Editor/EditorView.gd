@@ -15,8 +15,7 @@ var editor_scene_cache = {}
 
 func _ready():
 	# Updating the folder structure
-	flat_structure = DialogicUtil.get_flat_folders_list() 
-	flat_structure = DialogicUtil.flat_structure_to_editor_array(flat_structure)
+	flat_structure = DialogicUtil.flat_structure_to_editor_array(DialogicUtil.get_flat_folders_list())
 	
 	# Adding file dialog to get used by Events
 	editor_file_dialog = EditorFileDialog.new()
@@ -139,9 +138,8 @@ func popup_remove_confirmation(what):
 
 
 func _on_RemoveFolderConfirmation_confirmed():
-	var item_path = $MainPanel/MasterTreeContainer/MasterTree.get_item_path($MainPanel/MasterTreeContainer/MasterTree.get_selected())
-	DialogicUtil.remove_folder(flat_structure, "tree", item_path)
-	flat_structure = DialogicUtil.flat_structure_to_editor_array(flat_structure)
+	var item_data = $MainPanel/MasterTreeContainer/MasterTree.get_selected().get_metadata(0)
+	DialogicUtil.remove_folder(flat_structure, "tree", item_data)
 	$MainPanel/MasterTreeContainer/MasterTree.build_full_tree()
 
 

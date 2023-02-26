@@ -244,30 +244,35 @@ static func get_folder_meta(folder_path: String, key:String):
 ## FOLDER FUNCTIONS
 static func add_folder(flat_structure:Dictionary, tree:String, path:Dictionary, folder_name:String):
 	# check if the name is allowed
-	var new_path = path['path'] + "/" + folder_name + "/."
+	var new_path = path['path'] + "/" + path['name'] + "/" + folder_name + "/."
 	
 	if new_path in flat_structure[tree]:
 		print("[D] A folder with the name '"+folder_name+"' already exists in the target folder '"+path['path']+"'.")
 		return ERR_ALREADY_EXISTS
 	
-	flat_structure[tree][new_path] = {'color':null, 'folded':false}
 	flat_structure[tree + "_Array"].insert(path['step'] + 1, {'key': new_path, "value":{'color':null, 'folded':false}})
+	flat_structure = editor_array_to_flat_structure(flat_structure,tree)
 	
 	DialogicResources.save_resource_folder_flat_structure(flat_structure)
 	return OK
 
-static func remove_folder(flat_structure: Dictionary, tree:String, folder_path:Dictionary, delete_files:bool = true):
+static func remove_folder(flat_structure: Dictionary, tree:String, folder_data:Dictionary, delete_files:bool = true):
 	#print("[D] Removing 'Folder' "+folder_path)
 	
-	flat_structure[tree].erase(folder_path['path'])
-	flat_structure[tree +"_Array"].remove(folder_path['step'])
+	flat_structure[tree +"_Array"].remove(folder_data['step'])
 	
 	if delete_files:
-		var folder_root = folder_path['step'].rstrip("/.")
+		var folder_root = folder_data['path'] + "/" + folder_data['name'] + "/" 
 		
-		for key in flat_structure[tree].keys():
-			if folder_root in key:
-				flat_structure.erase(key)
+		var new_array = []
+		
+		for idx in flat_structure[tree +"_Array"].size():
+			if not folder_root in flat_structure[tree +"_Array"][idx]['key']:
+				new_array.push_back(flat_structure[tree +"_Array"][idx])
+				
+		flat_structure[tree +"_Array"] = new_array	
+	
+	flat_structure = editor_array_to_flat_structure(flat_structure, tree)
 
 		
 	DialogicResources.save_resource_folder_flat_structure(flat_structure)

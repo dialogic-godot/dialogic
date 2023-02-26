@@ -203,11 +203,13 @@ func build_flat_tree_items(current_tree: String=''):
 			# folder add
 			var folder_item:TreeItem= tree.create_item(current_root)
 			# set text and icon
-			folder_item.set_text(0, entry['key'].split("/")[-2])
+			var folder_name = entry['key'].split("/")[-2]
+			folder_item.set_text(0, folder_name)
 			folder_item.set_icon(0, get_icon("Folder", "EditorIcons"))
 			folder_item.set_icon_modulate(0, get_color("folder_icon_modulate", "FileDialog"))
 			# set metadata
-			folder_item.set_metadata(0, {'editor': editor, 'editable': true, "path": entry['key'].rstrip("/."), "category": current_tree, 'step': step})
+			var stripped_path = entry['key'].rstrip("/.").rstrip(folder_name)
+			folder_item.set_metadata(0, {'editor': editor, 'editable': true, "path": stripped_path, "name": folder_name, "category": current_tree, 'step': step})
 			# set collapsed
 			folder_item.collapsed = entry['value']['folded']
 			current_root = folder_item	
@@ -218,16 +220,15 @@ func build_flat_tree_items(current_tree: String=''):
 			var resource_data = entry['value']
 			
 			var item = tree.create_item(current_root)
-			item['category']= current_tree
+			item['resource_data']= current_tree
 			# set the text
 			if resource_data.has('name'):
 				item.set_text(0, resource_data['name'])
-				item['path'] = entry['key'].rstrip(resource_data['name'])
-				item['current_name'] = resource_data['name']
+				resource_data['path'] = entry['key'].rstrip(resource_data['name'])
 			else:
 				item.set_text(0, resource_data['file'])
-				item['path'] = entry['key'].rstrip(resource_data['file'])
-				item['current_name'] = resource_data['file']
+				resource_data['path'] = entry['key'].rstrip(resource_data['file'])
+				resource_data['name'] = resource_data['file']
 			if not get_constant("dark_theme", "Editor"):
 				item.set_icon_modulate(0, get_color("property_color", "Editor"))
 			# set it as editable
@@ -309,7 +310,7 @@ func _add_folder_item(parent_item: TreeItem, folder_name: String, editor:String,
 	folder_item.set_icon(0, get_icon("Folder", "EditorIcons"))
 	folder_item.set_icon_modulate(0, get_color("folder_icon_modulate", "FileDialog"))
 	# set metadata
-	folder_item.set_metadata(0, {'editor': editor, 'editable': true, "path:": parent_path + "/" + folder_name, "category": current_tree})
+	folder_item.set_metadata(0, {'editor': editor, 'editable': true, "name": folder_name, "path:": parent_path, "category": current_tree})
 	# set collapsed
 	if filter_tree_term.empty():
 		folder_item.collapsed = meta_folder_info['folded']
@@ -319,6 +320,7 @@ func _add_folder_item(parent_item: TreeItem, folder_name: String, editor:String,
 
 
 func _add_resource_item(resource_type, parent_item, resource_data, select):
+	resource_data['category'] = resource_type
 	# create item
 	var item = tree.create_item(parent_item)
 	# set the text
@@ -703,8 +705,7 @@ func _on_TimelineRootPopupMenu_id_pressed(id):
 	if id == 0: # Add Timeline
 		new_timeline()
 	if id == 1: # add subfolder
-		print(get_item_path(get_selected()))
-		DialogicUtil.add_folder(editor_reference.flat_structure, "Timelines", get_item_path(get_selected()), "New Folder "+str(OS.get_unix_time()))
+		DialogicUtil.add_folder(editor_reference.flat_structure, "Timelines", get_selected().get_metadata(0), "New Folder "+str(OS.get_unix_time()))
 		build_flat_tree_items("Timelines")
 	if id == 2: # remove folder and substuff
 		if get_selected().get_parent() == get_root():
@@ -717,8 +718,7 @@ func _on_CharacterRootPopupMenu_id_pressed(id):
 	if id == 0: # Add Character
 		new_character()
 	if id == 1: # add subfolder
-		print(get_item_path(get_selected()))
-		DialogicUtil.add_folder(editor_reference.flat_structure, "Characters", get_item_path(get_selected()), "New Folder "+str(OS.get_unix_time()))
+		DialogicUtil.add_folder(editor_reference.flat_structure, "Characters", get_selected().get_metadata(0), "New Folder "+str(OS.get_unix_time()))
 		
 		build_flat_tree_items("Characters")
 	if id == 2: # remove folder and substuff
@@ -734,8 +734,7 @@ func _on_DefinitionRootPopupMenu_id_pressed(id):
 	if id == 1: # Add Glossary Definition
 		new_glossary_entry()
 	if id == 2: # add subfolder
-		print(get_item_path(get_selected()))
-		DialogicUtil.add_folder(editor_reference.flat_structure, "Definitions", get_item_path(get_selected()), "New Folder "+str(OS.get_unix_time()))
+		DialogicUtil.add_folder(editor_reference.flat_structure, "Definitions", get_selected().get_metadata(0), "New Folder "+str(OS.get_unix_time()))
 		build_flat_tree_items("Definitions")
 	if id == 3: # remove folder and substuff
 		if get_selected().get_parent() == get_root():
@@ -748,8 +747,7 @@ func _on_ThemeRootPopupMenu_id_pressed(id):
 	if id == 0: # Add Theme
 		new_theme()
 	if id == 1: # add subfolder
-		print(get_item_path(get_selected()))
-		DialogicUtil.add_folder(editor_reference.flat_structure, "Themes", get_item_path(get_selected()), "New Folder "+str(OS.get_unix_time()))
+		DialogicUtil.add_folder(editor_reference.flat_structure, "Themes", get_selected().get_metadata(0), "New Folder "+str(OS.get_unix_time()))
 		build_flat_tree_items("Themes")
 	if id == 2: # remove folder and substuff
 		if get_selected().get_parent() == get_root():
