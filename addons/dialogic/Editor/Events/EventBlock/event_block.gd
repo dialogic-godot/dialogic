@@ -113,15 +113,6 @@ func _set_event_icon(icon: Texture) -> void:
 	custom_style.corner_radius_bottom_right = 5 * _scale
 
 
-func _request_selection() -> void:
-	# TODO doesn't work. I'm sure - JS
-	var timeline_editor = editor_reference.get_node_or_null('MainPanel/TimelineEditor')
-	if (timeline_editor != null):
-		# @todo select item and clear selection is marked as "private" in TimelineEditor.gd
-		# consider to make it "public" or add a public helper function
-		timeline_editor.select_item(self)
-
-
 # called to inform event parts, that a focus is wanted
 func focus():
 	pass
@@ -129,8 +120,7 @@ func focus():
 
 func toggle_collapse(toggled:bool) -> void:
 	collapsed = toggled
-	$PanelContainer/VBoxContainer/CollapsedBody.visible = toggled
-	var timeline_editor = find_parent('TimelineVisualEditor')
+	var timeline_editor = find_parent('VisualEditor')
 	if (timeline_editor != null):
 		# @todo select item and clear selection is marked as "private" in TimelineEditor.gd
 		# consider to make it "public" or add a public helper function
@@ -356,7 +346,6 @@ func _ready():
 	
 	if resource:
 		if resource.event_name:
-			#title_label.text = DTS.translate(resource.event_name)
 			title_label.text = resource.event_name
 		if resource._get_icon() != null:
 			_set_event_icon(resource._get_icon())
@@ -364,18 +353,6 @@ func _ready():
 		%IconPanel.self_modulate = resource.event_color
 		
 		_on_ExpandButton_toggled(resource.expand_by_default)
-		
-		# Only create this if it can collapse children events
-		if resource.can_contain_events:
-			var cb:HBoxContainer = HBoxContainer.new()
-			cb.name = 'CollapsedBody'
-			cb.visible = false
-			var cb_label:Label = Label.new()
-			cb_label.text = 'Contains Events (currently hidden)'
-			cb_label.size_flags_horizontal = 3
-			cb_label.horizontal_alignment = 1
-			cb.add_child(cb_label)
-			$PanelContainer/VBoxContainer.add_child(cb)
 	
 	set_focus_mode(1) # Allowing this node to grab focus
 	

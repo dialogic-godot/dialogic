@@ -49,6 +49,7 @@ func _ready():
 	
 	## BOX SETTINGS
 	%DialogTextPanel.self_modulate = box_modulate
+	%TextInputPanel.self_modulate = box_modulate
 	
 	## NAME LABEL SETTINGS
 	%DialogicNode_NameLabel.add_theme_font_size_override("font_size", name_label_font_size)
