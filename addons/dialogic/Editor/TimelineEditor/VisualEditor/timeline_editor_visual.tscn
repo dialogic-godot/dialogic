@@ -9,14 +9,14 @@
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_phyjj"]
 content_margin_top = 10.0
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_8o7ew"]
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_y5dg1"]
 
 [sub_resource type="Theme" id="Theme_ycwn2"]
 PopupMenu/colors/font_color_hover = Color(0.44, 0.73, 0.98, 1)
-PopupMenu/styles/hover = SubResource("StyleBoxEmpty_8o7ew")
+PopupMenu/styles/hover = SubResource("StyleBoxEmpty_y5dg1")
 PopupMenu/styles/panel = ExtResource("4_cqp1m")
 
-[sub_resource type="Image" id="Image_wp5qe"]
+[sub_resource type="Image" id="Image_5sal8"]
 data = {
 "data": PackedByteArray(255, 255, 255, 0, 255, 255, 255, 0, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 131, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 131, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 131, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 231, 255, 93, 93, 55, 255, 97, 97, 58, 255, 93, 93, 233, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 231, 255, 94, 94, 54, 255, 94, 94, 57, 255, 93, 93, 233, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 93, 93, 233, 255, 93, 93, 232, 255, 93, 93, 41, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 93, 93, 233, 255, 93, 93, 232, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 97, 97, 42, 255, 255, 255, 0, 255, 97, 97, 42, 255, 97, 97, 42, 255, 255, 255, 0, 255, 98, 98, 47, 255, 97, 97, 42, 255, 255, 255, 0, 255, 97, 97, 42, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 235, 255, 93, 93, 233, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 94, 94, 46, 255, 93, 93, 236, 255, 93, 93, 233, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 235, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 233, 255, 95, 95, 59, 255, 96, 96, 61, 255, 93, 93, 235, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 233, 255, 95, 95, 59, 255, 96, 96, 61, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0),
 "format": "RGBA8",
@@ -25,10 +25,11 @@ data = {
 "width": 16
 }
 
-[sub_resource type="ImageTexture" id="ImageTexture_4u7aj"]
-image = SubResource("Image_wp5qe")
+[sub_resource type="ImageTexture" id="ImageTexture_cm3pl"]
+image = SubResource("Image_5sal8")
 
 [node name="TimelineVisualEditor" type="MarginContainer"]
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
@@ -65,125 +66,128 @@ unique_name_in_owner = true
 theme = SubResource("Theme_ycwn2")
 item_count = 6
 item_0/text = "Documentation"
-item_0/icon = SubResource("ImageTexture_4u7aj")
+item_0/icon = SubResource("ImageTexture_cm3pl")
 item_0/id = 0
 item_1/text = ""
 item_1/id = -1
 item_1/separator = true
 item_2/text = "Move up"
-item_2/icon = SubResource("ImageTexture_4u7aj")
+item_2/icon = SubResource("ImageTexture_cm3pl")
 item_2/id = 2
 item_3/text = "Move down"
-item_3/icon = SubResource("ImageTexture_4u7aj")
+item_3/icon = SubResource("ImageTexture_cm3pl")
 item_3/id = 3
 item_4/text = ""
 item_4/id = -1
 item_4/separator = true
 item_5/text = "Delete"
-item_5/icon = SubResource("ImageTexture_4u7aj")
+item_5/icon = SubResource("ImageTexture_cm3pl")
 item_5/id = 5
 script = ExtResource("4_ugiq6")
 
-[node name="ScrollContainer" type="ScrollContainer" parent="View"]
-custom_minimum_size = Vector2(150, 0)
+[node name="RightSidebar" type="ScrollContainer" parent="View"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(50, 0)
 layout_mode = 2
+horizontal_scroll_mode = 0
 
-[node name="EventContainer" type="VBoxContainer" parent="View/ScrollContainer"]
+[node name="EventContainer" type="VBoxContainer" parent="View/RightSidebar"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="HBoxContainer6" type="HBoxContainer" parent="View/ScrollContainer/EventContainer"]
+[node name="HBoxContainer6" type="HBoxContainer" parent="View/RightSidebar/EventContainer"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="View/ScrollContainer/EventContainer/HBoxContainer6"]
+[node name="Label" type="Label" parent="View/RightSidebar/EventContainer/HBoxContainer6"]
 layout_mode = 2
 text = "Main"
 
-[node name="HSeparator2" type="HSeparator" parent="View/ScrollContainer/EventContainer/HBoxContainer6"]
+[node name="HSeparator2" type="HSeparator" parent="View/RightSidebar/EventContainer/HBoxContainer6"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="FlexContainer0" type="HFlowContainer" parent="View/ScrollContainer/EventContainer"]
+[node name="FlexContainer0" type="HFlowContainer" parent="View/RightSidebar/EventContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="HBoxContainer5" type="HBoxContainer" parent="View/ScrollContainer/EventContainer"]
+[node name="HBoxContainer5" type="HBoxContainer" parent="View/RightSidebar/EventContainer"]
 layout_mode = 2
 
-[node name="Label2" type="Label" parent="View/ScrollContainer/EventContainer/HBoxContainer5"]
+[node name="Label2" type="Label" parent="View/RightSidebar/EventContainer/HBoxContainer5"]
 layout_mode = 2
 text = "Logic"
 
-[node name="HSeparator2" type="HSeparator" parent="View/ScrollContainer/EventContainer/HBoxContainer5"]
+[node name="HSeparator2" type="HSeparator" parent="View/RightSidebar/EventContainer/HBoxContainer5"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="FlexContainer1" type="HFlowContainer" parent="View/ScrollContainer/EventContainer"]
+[node name="FlexContainer1" type="HFlowContainer" parent="View/RightSidebar/EventContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="HBoxContainer3" type="HBoxContainer" parent="View/ScrollContainer/EventContainer"]
+[node name="HBoxContainer3" type="HBoxContainer" parent="View/RightSidebar/EventContainer"]
 layout_mode = 2
 
-[node name="Label3" type="Label" parent="View/ScrollContainer/EventContainer/HBoxContainer3"]
+[node name="Label3" type="Label" parent="View/RightSidebar/EventContainer/HBoxContainer3"]
 layout_mode = 2
 text = "Timeline"
 
-[node name="HSeparator2" type="HSeparator" parent="View/ScrollContainer/EventContainer/HBoxContainer3"]
+[node name="HSeparator2" type="HSeparator" parent="View/RightSidebar/EventContainer/HBoxContainer3"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="FlexContainer2" type="HFlowContainer" parent="View/ScrollContainer/EventContainer"]
+[node name="FlexContainer2" type="HFlowContainer" parent="View/RightSidebar/EventContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="HBoxContainer4" type="HBoxContainer" parent="View/ScrollContainer/EventContainer"]
+[node name="HBoxContainer4" type="HBoxContainer" parent="View/RightSidebar/EventContainer"]
 layout_mode = 2
 
-[node name="Label4" type="Label" parent="View/ScrollContainer/EventContainer/HBoxContainer4"]
+[node name="Label4" type="Label" parent="View/RightSidebar/EventContainer/HBoxContainer4"]
 layout_mode = 2
 text = "Audio/Visual"
 
-[node name="HSeparator2" type="HSeparator" parent="View/ScrollContainer/EventContainer/HBoxContainer4"]
+[node name="HSeparator2" type="HSeparator" parent="View/RightSidebar/EventContainer/HBoxContainer4"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="FlexContainer3" type="HFlowContainer" parent="View/ScrollContainer/EventContainer"]
+[node name="FlexContainer3" type="HFlowContainer" parent="View/RightSidebar/EventContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="HBoxContainer" type="HBoxContainer" parent="View/ScrollContainer/EventContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="View/RightSidebar/EventContainer"]
 layout_mode = 2
 
-[node name="Label5" type="Label" parent="View/ScrollContainer/EventContainer/HBoxContainer"]
+[node name="Label5" type="Label" parent="View/RightSidebar/EventContainer/HBoxContainer"]
 layout_mode = 2
 text = "Godot"
 
-[node name="HSeparator2" type="HSeparator" parent="View/ScrollContainer/EventContainer/HBoxContainer"]
+[node name="HSeparator2" type="HSeparator" parent="View/RightSidebar/EventContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="FlexContainer4" type="HFlowContainer" parent="View/ScrollContainer/EventContainer"]
+[node name="FlexContainer4" type="HFlowContainer" parent="View/RightSidebar/EventContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="OtherContainer" type="HBoxContainer" parent="View/ScrollContainer/EventContainer"]
+[node name="OtherContainer" type="HBoxContainer" parent="View/RightSidebar/EventContainer"]
 layout_mode = 2
 
-[node name="Label6" type="Label" parent="View/ScrollContainer/EventContainer/OtherContainer"]
+[node name="Label6" type="Label" parent="View/RightSidebar/EventContainer/OtherContainer"]
 layout_mode = 2
 text = "Other"
 
-[node name="HSeparator2" type="HSeparator" parent="View/ScrollContainer/EventContainer/OtherContainer"]
+[node name="HSeparator2" type="HSeparator" parent="View/RightSidebar/EventContainer/OtherContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="FlexContainer5" type="HFlowContainer" parent="View/ScrollContainer/EventContainer"]
+[node name="FlexContainer5" type="HFlowContainer" parent="View/RightSidebar/EventContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Spacer" type="Control" parent="View/ScrollContainer/EventContainer"]
+[node name="Spacer" type="Control" parent="View/RightSidebar/EventContainer"]
 layout_mode = 2
 
 [connection signal="index_pressed" from="View/TimelineArea/EventPopupMenu" to="." method="_on_event_popup_menu_index_pressed"]
+[connection signal="resized" from="View/RightSidebar" to="." method="_on_right_sidebar_resized"]

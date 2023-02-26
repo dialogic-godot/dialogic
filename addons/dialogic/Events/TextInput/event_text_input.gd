@@ -45,7 +45,7 @@ func _on_DialogicTextInput_input_confirmed(input:String) -> void:
 ################################################################################
 
 func _init() -> void:
-	event_name = "text Input"
+	event_name = "Text Input"
 	set_default_color('Color1')
 	event_category = Category.Godot
 	event_sorting_index = 6

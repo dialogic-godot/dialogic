@@ -8,34 +8,42 @@ extends Button
 		return event_icon
 	set(texture):
 		event_icon = texture
-		%Icon.texture = texture
+		icon = event_icon
 @export var event_category:int = 0
 @export var event_sorting_index:int = 0
-@export var resource:Resource
+@export var resource:DialogicEvent
 @export var dialogic_color_name:String = ''
 
-func _ready():
-	self_modulate = Color(1,1,1)
-	if visible_name != '':
-		text = '  ' + visible_name
-	#tooltip_text = DTS.translate(tooltip_text)
-	
-	var _scale = DialogicUtil.get_editor_scale()
-	custom_minimum_size = Vector2(30,30)* _scale
-	icon = null
 
-	%ColorBorder.custom_minimum_size.x = 5 * _scale
-	%IconContainer.custom_minimum_size = custom_minimum_size
+
+func _ready() -> void:
+	toggle_name()
+	tooltip_text = visible_name
+	
+	custom_minimum_size = Vector2(get_theme_font("font", 'Label').get_string_size(text).x+35,30)* DialogicUtil.get_editor_scale()
 	
 	add_theme_color_override("font_color", get_theme_color("font_color", "Editor"))
 	add_theme_color_override("font_color_hover", get_theme_color("accent_color", "Editor"))
-	%Icon.modulate = get_theme_color("font_color", "Button")
-	
-	# TODO godot4 signal was removed. find a way to react to color changes
-	# ProjectSettings.project_settings_changed.connect(_update_color)
+	apply_base_button_style()
 
-func set_color(color):
-	%ColorBorder.self_modulate = color
+func apply_base_button_style() -> void:
+	var scale := DialogicUtil.get_editor_scale()
+	var nstyle :StyleBoxFlat= get_parent().get_theme_stylebox('normal', 'Button').duplicate()
+	nstyle.border_width_left = 5 *scale
+	add_theme_stylebox_override('normal', nstyle)
+	var hstyle :StyleBoxFlat= get_parent().get_theme_stylebox('hover', 'Button').duplicate()
+	hstyle.border_width_left = 5 *scale
+	add_theme_stylebox_override('hover', hstyle)
+	set_color(resource.event_color)
+
+
+func set_color(color:Color) -> void:
+	var style := get_theme_stylebox('normal', 'Button')
+	style.border_color = color
+	add_theme_stylebox_override('normal', style)
+	style = get_theme_stylebox('hover', 'Button')
+	style.border_color = color
+	add_theme_stylebox_override('hover', style)
 
 #func _update_color():
 #	if dialogic_color_name != '':
@@ -43,13 +51,28 @@ func set_color(color):
 #		resource.event_color = new_color
 #		%ColorBorder.self_modulate = DialogicUtil.get_color(dialogic_color_name)
 
-func _get_drag_data(position):
-	var preview_label = Label.new()
+func _get_drag_data(position:Vector2) -> Variant:
+	var preview_label := Label.new()
 	
 	preview_label.text = 'Add Event %s' % [ tooltip_text ]
 	if self.text != '':
 		preview_label.text = text
-		
+	
 	set_drag_preview(preview_label)
 	
 	return { "source": "EventButton", "resource": resource }
+
+func toggle_name():
+	if text != "":
+		text = ""
+		custom_minimum_size = Vector2(40, 40)*DialogicUtil.get_editor_scale()
+		var style := get_theme_stylebox('normal', 'Button')
+		style.bg_color = style.border_color.darkened(0.2)
+		add_theme_stylebox_override('normal', style)
+		style = get_theme_stylebox('hover', 'Button')
+		style.bg_color = style.border_color
+		add_theme_stylebox_override('hover', style)
+	else:
+		text = visible_name
+		custom_minimum_size = Vector2(get_theme_font("font", 'Label').get_string_size(text).x+35,30)* DialogicUtil.get_editor_scale()
+		apply_base_button_style()

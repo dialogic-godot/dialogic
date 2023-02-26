@@ -201,4 +201,4 @@ func get_value_suggestions(filter:String) -> Dictionary:
 func _on_variable_editor_pressed():
 	var editor_manager := _editor_node.find_parent('EditorsManager')
 	if editor_manager:
-		editor_manager.open_editor(editor_manager.editors['Settings']['node'], true, 'VariablesEditor')
+		editor_manager.open_editor(editor_manager.editors['VariablesEditor']['node'], true)

@@ -9,6 +9,7 @@ extends Container
 ################################################################################
 var TimelineUndoRedo := UndoRedo.new()
 var event_node
+var sidebar_collapsed := false
 
 ################################################################################
 ## 				 SIGNALS
@@ -61,7 +62,7 @@ func save_timeline() -> void:
 	if !get_parent().current_resource:
 		return
 
-	get_parent().events = new_events
+	get_parent().current_resource.events = new_events
 	get_parent().current_resource.events_processed = true
 	var error :int = ResourceSaver.save(get_parent().current_resource, get_parent().current_resource.resource_path)
 	if error != OK:
@@ -70,6 +71,9 @@ func save_timeline() -> void:
 	get_parent().current_resource.set_meta("unsaved", false)
 	get_parent().current_resource_state = DialogicEditor.ResourceStates.Saved
 	get_parent().editors_manager.resource_helper.rebuild_timeline_directory()
+	
+	## Also save sidebar size
+	ProjectSettings.set_setting('dialogic/editor/visual_timeline_editor_sidebar', %RightSidebar.size.x)
 
 
 func load_timeline(resource:DialogicTimeline) -> void:
@@ -144,12 +148,7 @@ func _ready():
 	
 	batch_loaded.connect(_on_batch_loaded)
 	
-	# Margins
-	var _scale := DialogicUtil.get_editor_scale()
-	var scroll_container :ScrollContainer = $View/ScrollContainer
-	scroll_container.custom_minimum_size.x = 200 * _scale
-	
-	
+
 	if find_parent('EditorView'): # This prevents the view to turn black if you are editing this scene in Godot
 		%TimelineArea.get_theme_color("background_color", "CodeEdit")
 		
@@ -160,7 +159,7 @@ func load_event_buttons() -> void:
 	var scripts: Array = get_parent().editors_manager.resource_helper.get_event_scripts()
 	
 	# Event buttons
-	var buttonScene = load("res://addons/dialogic/Editor/TimelineEditor/VisualEditor/AddEventButton.tscn")
+	var buttonScene := load("res://addons/dialogic/Editor/TimelineEditor/VisualEditor/AddEventButton.tscn")
 	
 	for event_script in scripts:
 		var event_resource: Variant
@@ -171,9 +170,9 @@ func load_event_buttons() -> void:
 			event_resource = event_script
 		
 		if event_resource.disable_editor_button == true: continue
-		var button = buttonScene.instantiate()
+		var button :Button = buttonScene.instantiate()
 		button.resource = event_resource
-		button.visible_name = '       ' + event_resource.event_name
+		button.visible_name = event_resource.event_name
 		button.event_icon = event_resource._get_icon()
 		button.set_color(event_resource.event_color)
 		button.dialogic_color_name = event_resource.dialogic_color_name
@@ -182,10 +181,15 @@ func load_event_buttons() -> void:
 
 		button.button_up.connect(_add_event_button_pressed.bind(event_resource))
 		
-		get_node("View/ScrollContainer/EventContainer/FlexContainer" + str(button.event_category)).add_child(button)
-		while event_resource.event_sorting_index < get_node("View/ScrollContainer/EventContainer/FlexContainer" + str(button.event_category)).get_child(max(0, button.get_index()-1)).resource.event_sorting_index:
-			get_node("View/ScrollContainer/EventContainer/FlexContainer" + str(button.event_category)).move_child(button, button.get_index()-1)
-
+		%RightSidebar.get_node("EventContainer/FlexContainer" + str(button.event_category)).add_child(button)
+		while event_resource.event_sorting_index < %RightSidebar.get_node("EventContainer/FlexContainer" + str(button.event_category)).get_child(max(0, button.get_index()-1)).resource.event_sorting_index:
+			%RightSidebar.get_node("EventContainer/FlexContainer" + str(button.event_category)).move_child(button, button.get_index()-1)
+	
+	# Margins
+	var _scale := DialogicUtil.get_editor_scale()
+	%RightSidebar.custom_minimum_size.x = 50 * _scale
+	%RightSidebar.size.y = ProjectSettings.get_setting('dialogic/editor/visual_timeline_editor_sidebar', 200)
+	
 
 ################################################################################
 ##				CLEANUP
@@ -825,8 +829,9 @@ func indent_events() -> void:
 	if event_list.size() < 2:
 		return
 	
-	var currently_hidden = false
-	var hidden_until = null
+	var currently_hidden := false
+	var hidden_count := 0
+	var hidden_until :Control= null
 	
 	# will be applied to the indent after the current event
 	var delayed_indent: int = 0
@@ -834,17 +839,22 @@ func indent_events() -> void:
 	for event in event_list:
 		if (not "resource" in event):
 			continue
-			
+		
 		if (not currently_hidden) and event.resource.can_contain_events and event.end_node and event.collapsed:
 			currently_hidden = true
 			hidden_until = event.end_node
+			hidden_count = 0
 		elif currently_hidden and event == hidden_until:
+			event.update_hidden_events_indicator(hidden_count)
 			currently_hidden = false
 			hidden_until = null
 		elif currently_hidden:
 			event.hide()
+			hidden_count += 1
 		else:
 			event.show()
+			if event.resource is DialogicEndBranchEvent:
+				event.update_hidden_events_indicator(0)
 		
 		delayed_indent = 0
 		
@@ -903,3 +913,27 @@ func _on_event_popup_menu_index_pressed(index:int) -> void:
 	elif index == 5:
 		delete_selected_events()
 	indent_events()
+
+
+func _on_right_sidebar_resized() -> void:
+	if %RightSidebar.size.x < 120 and !sidebar_collapsed:
+		sidebar_collapsed = true
+		for con in %RightSidebar.get_node('EventContainer').get_children():
+			if con.get_child_count() == 0:
+				continue
+			if con.get_child(0) is Label:
+				con.get_child(0).hide()
+			elif con.get_child(0) is Button:
+				for button in con.get_children():
+					button.toggle_name()
+		
+	elif  %RightSidebar.size.x > 120 and sidebar_collapsed:
+		sidebar_collapsed = false
+		for con in %RightSidebar.get_node('EventContainer').get_children():
+			if con.get_child_count() == 0:
+				continue
+			if con.get_child(0) is Label:
+				con.get_child(0).show()
+			elif con.get_child(0) is Button:
+				for button in con.get_children():
+					button.toggle_name()
