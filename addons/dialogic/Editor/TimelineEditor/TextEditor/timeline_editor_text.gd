@@ -116,6 +116,8 @@ func _gui_input(event):
 			move_line(-1)
 		"Alt+Down":
 			move_line(1)
+		"Ctrl+Shift+D":
+			duplicate_line()
 		_:
 			return
 	get_viewport().set_input_as_handled()
@@ -172,6 +174,24 @@ func move_line(offset: int) -> void:
 	if reselect:
 		select(from, 0, to, get_line_width(to))
 	set_caret_line(cursor.y)
+	set_caret_column(cursor.x)
+	text_changed.emit()
+
+
+func duplicate_line() -> void:
+	var cursor: Vector2 = Vector2(get_caret_column(), get_caret_line())
+	var from: int = cursor.y
+	var to: int = cursor.y+1
+	if has_selection():
+		from = get_selection_from_line()
+		to = get_selection_to_line()+1
+
+	var lines := text.split("\n")
+	var lines_to_dupl: PackedStringArray = lines.slice(from, to)
+	
+	text = "\n".join(lines.slice(0, from)+lines_to_dupl+lines.slice(from))
+
+	set_caret_line(cursor.y+to-from)
 	set_caret_column(cursor.x)
 	text_changed.emit()
 
