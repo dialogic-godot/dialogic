@@ -1,7 +1,6 @@
-[gd_scene load_steps=5 format=3 uid="uid://depcrpeh3f4rv"]
+[gd_scene load_steps=4 format=3 uid="uid://depcrpeh3f4rv"]
 
 [ext_resource type="Script" path="res://addons/dialogic/Editor/TimelineEditor/VisualEditor/AddEventButton.gd" id="1_s43sc"]
-[ext_resource type="Texture2D" uid="uid://bbqfq3s7qrduv" path="res://icon.svg" id="2_mncsv"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qx31r"]
 content_margin_left = 4.0
@@ -32,14 +31,14 @@ corner_radius_bottom_left = 3
 corner_detail = 5
 
 [node name="AddEventButton" type="Button"]
-custom_minimum_size = Vector2(29.25, 22.5)
+custom_minimum_size = Vector2(44, 30)
 offset_right = 97.0
 offset_bottom = 42.0
+tooltip_text = "S"
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_styles/normal = SubResource("StyleBoxFlat_qx31r")
 theme_override_styles/hover = SubResource("StyleBoxFlat_n1o16")
 text = "S"
-icon = ExtResource("2_mncsv")
 alignment = 0
 expand_icon = true
 script = ExtResource("1_s43sc")
