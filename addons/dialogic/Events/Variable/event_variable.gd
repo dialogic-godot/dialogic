@@ -27,8 +27,8 @@ var random_max: int = 100
 
 func _execute() -> void:
 	if name:
-		var orig = dialogic.VAR.get_variable(name)
-		var the_value = value
+		var orig :Variant= dialogic.VAR.get_variable(name)
+		var the_value :Variant= value
 		if value.begins_with("{"):
 			the_value = dialogic.VAR.get_variable(value)
 		if random_enabled:
@@ -75,7 +75,7 @@ func _init() -> void:
 ################################################################################
 
 func to_text() -> String:
-	var string = "VAR "
+	var string := "VAR "
 	if name:
 		string += "{" + name + "}"
 		match operation:
@@ -101,9 +101,11 @@ func to_text() -> String:
 
 
 func from_text(string:String) -> void:
-	var reg = RegEx.new()
-	reg.compile("VAR (?<name>[^=+\\-*\\/]*)(?<operation>=|\\+=|-=|\\*=|\\/=)(?<value>[^\\[\\n]*)(?<shortcode>\\[.*)?")
-	var result = reg.search(string)
+	var reg := RegEx.new()
+	reg.compile("VAR(?<name>[^=+\\-*\\/]*)(?<operation>=|\\+=|-=|\\*=|\\/=)(?<value>[^\\[\\n]*)(?<shortcode>\\[.*)?")
+	var result := reg.search(string)
+	if !result:
+		return
 	name = result.get_string('name').strip_edges().replace("{", "").replace("}", "")
 	match result.get_string('operation').strip_edges():
 		'=':
@@ -119,14 +121,14 @@ func from_text(string:String) -> void:
 	value = result.get_string('value').strip_edges()
 	
 	if !result.get_string('shortcode').is_empty():
-		var shortcodeparams = parse_shortcode_parameters(result.get_string('shortcode'))
+		var shortcodeparams := parse_shortcode_parameters(result.get_string('shortcode'))
 		random_enabled = true if shortcodeparams.get('random', "True") == "True" else false
 		random_min = DialogicUtil.logical_convert(shortcodeparams.get('min', 0))
 		random_max = DialogicUtil.logical_convert(shortcodeparams.get('max', 100))
 
 
 func is_valid_event(string:String) -> bool:
-	return string.begins_with('VAR ')
+	return string.begins_with('VAR')
 
 
 ################################################################################
