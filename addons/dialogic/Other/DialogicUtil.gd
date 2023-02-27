@@ -244,9 +244,12 @@ static func get_folder_meta(folder_path: String, key:String):
 
 ## FOLDER FUNCTIONS
 static func add_folder(flat_structure:Dictionary, tree:String, path:Dictionary, folder_name:String):
-	# check if the name is allowed
-	var new_path = path['path'] + "/" + path['name'] + "/" + folder_name + "/."
+	print(path)
 	
+	#first find the parent folder from here
+	# check if the name is allowed
+	var new_path = path['path'] + path['name'] + "/" + folder_name + "/."
+	print(new_path)
 	if new_path in flat_structure[tree]:
 		print("[D] A folder with the name '"+folder_name+"' already exists in the target folder '"+path['path']+"'.")
 		return ERR_ALREADY_EXISTS

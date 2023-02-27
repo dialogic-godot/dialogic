@@ -767,7 +767,7 @@ func new_character():
 	var folder = get_selected().get_metadata(0)
 	DialogicUtil.add_file_to_folder(editor_reference.flat_structure, "Characters",folder, character['metadata']['file'])
 	build_characters(character['metadata']['file'])
-	rename_selected()
+	#rename_selected()
 
 # creates a new theme and opens it
 # it will be added to the selected folder (if it's a theme folder) or the Theme root folder
@@ -776,7 +776,7 @@ func new_theme():
 	var folder = get_selected().get_metadata(0)
 	DialogicUtil.add_file_to_folder(editor_reference.flat_structure, "Themes",folder, theme_file)
 	build_themes(theme_file)
-	rename_selected()
+	#rename_selected()
 
 # creates a new value and opens it
 # it will be added to the selected folder (if it's a definition folder) or the Definition root folder
@@ -785,7 +785,7 @@ func new_value_definition():
 	var folder = get_selected().get_metadata(0)
 	DialogicUtil.add_file_to_folder(editor_reference.flat_structure, "Definitions",folder, definition_id)
 	build_definitions(definition_id)
-	rename_selected()
+	#rename_selected()
 
 # creates a new glossary entry and opens it
 # it will be added to the selected folder (if it's a definition folder) or the Definition root folder
@@ -794,7 +794,7 @@ func new_glossary_entry():
 	var folder = get_selected().get_metadata(0)
 	DialogicUtil.add_file_to_folder(editor_reference.flat_structure, "Definitions",folder, definition_id)
 	build_definitions(definition_id)
-	rename_selected()
+	#rename_selected()
 	
 
 func remove_selected():
@@ -915,25 +915,30 @@ func _on_item_edited():
 	var metadata = item.get_metadata(0)
 	if metadata['editor'] == 'Timeline':
 		timeline_editor.timeline_name = item.get_text(0)
+		editor_reference.flat_structure['Timelines_Array'][metadata['step']]['value']['name'] = item.get_text(0)
 		save_current_resource()
 		build_timelines(metadata['file'])
 	if metadata['editor'] == 'Theme':
 		DialogicResources.set_theme_value(metadata['file'], 'settings', 'name', item.get_text(0))
+		editor_reference.flat_structure['Themes_Array'][metadata['step']]['value']['name'] = item.get_text(0)
 		build_themes(metadata['file'])
 	if metadata['editor'] == 'Character':
 		character_editor.nodes['name'].text = item.get_text(0)
+		editor_reference.flat_structure['Characters_Array'][metadata['step']]['value']['name'] = item.get_text(0)
 		save_current_resource()
 		build_characters(metadata['file'])
 	if metadata['editor'] == 'Value':
 		value_editor.nodes['name'].text = item.get_text(0)
 		# Not sure why this signal doesn't triggers
 		value_editor._on_name_changed(item.get_text(0))
+		editor_reference.flat_structure['Definitions_Array'][metadata['step']]['value']['name'] = item.get_text(0)
 		save_current_resource()
 		build_definitions(metadata['id'])
 	if metadata['editor'] == 'GlossaryEntry':
 		glossary_entry_editor.nodes['name'].text = item.get_text(0)
 		# Not sure why this signal doesn't triggers
 		glossary_entry_editor._on_name_changed(item.get_text(0))
+		editor_reference.flat_structure['Definitions_Array'][metadata['step']]['value']['name'] = item.get_text(0)
 		save_current_resource()
 		build_definitions(metadata['id'])
 
@@ -942,7 +947,7 @@ func _on_item_edited():
 			return 
 		var result = DialogicUtil.rename_folder(editor_reference.flat_structure, "tree", item_path_before_edit, item.get_text(0))
 		if result != OK:
-			item.set_text(0, item_path_before_edit.split("/")[-1])
+			item.set_text(0, item.get_text(0))
 			
 ## *****************************************************************************
 ##					 		AUTO SAVING
