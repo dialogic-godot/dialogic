@@ -304,7 +304,7 @@ func _add_folder_item(parent_item: TreeItem, folder_name: String, editor:String,
 	var folder_item:TreeItem= tree.create_item(parent_item)
 	print(parent_item.get_metadata(0))
 	var parent_path = parent_item.get_metadata(0)['path']
-	var current_tree = parent_item.get_metadata(0)['category']
+	var current_tree = parent_item.get_metadata(0)['category'].rstrip("_Array")
 	# set text and icon
 	folder_item.set_text(0, folder_name)
 	folder_item.set_icon(0, get_icon("Folder", "EditorIcons"))
@@ -799,9 +799,10 @@ func new_glossary_entry():
 
 func remove_selected():
 	var item = get_selected()
-	item.free()
-	timelines_tree.select(0)
+	var folder = get_selected().get_metadata(0)
+	DialogicUtil.remove_file_from_folder(editor_reference.flat_structure, folder['category'], folder)
 	settings_editor.update_data()
+	build_flat_tree_items(folder['category'])
 
 
 func rename_selected():
