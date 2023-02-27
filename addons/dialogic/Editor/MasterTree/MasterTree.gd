@@ -209,7 +209,7 @@ func build_flat_tree_items(current_tree: String=''):
 			folder_item.set_icon_modulate(0, get_color("folder_icon_modulate", "FileDialog"))
 			# set metadata
 			var stripped_path = entry['key'].rstrip("/.").rstrip(folder_name)
-			folder_item.set_metadata(0, {'editor': editor, 'editable': true, "path": stripped_path, "name": folder_name, "category": current_tree.rstrip('_Array'), 'step': step})
+			folder_item.set_metadata(0, {'editor': editor,'type': 'folder', 'editable': true, "path": stripped_path, "name": folder_name, "category": current_tree.rstrip('_Array'), 'step': step})
 			# set collapsed
 			folder_item.collapsed = entry['value']['folded']
 			current_root = folder_item	
@@ -221,6 +221,7 @@ func build_flat_tree_items(current_tree: String=''):
 			
 			var item = tree.create_item(current_root)
 			resource_data['category']= current_tree.rstrip('_Array')
+			resource_data['type'] = 'folder'
 			# set the text
 			if resource_data.has('name'):
 				item.set_text(0, resource_data['name'])
@@ -310,7 +311,7 @@ func _add_folder_item(parent_item: TreeItem, folder_name: String, editor:String,
 	folder_item.set_icon(0, get_icon("Folder", "EditorIcons"))
 	folder_item.set_icon_modulate(0, get_color("folder_icon_modulate", "FileDialog"))
 	# set metadata
-	folder_item.set_metadata(0, {'editor': editor, 'editable': true, "name": folder_name, "path:": parent_path, "category": current_tree})
+	folder_item.set_metadata(0, {'editor': editor,'type':'folder', 'editable': true, "name": folder_name, "path:": parent_path, "category": current_tree})
 	# set collapsed
 	if filter_tree_term.empty():
 		folder_item.collapsed = meta_folder_info['folded']
@@ -321,6 +322,7 @@ func _add_folder_item(parent_item: TreeItem, folder_name: String, editor:String,
 
 func _add_resource_item(resource_type, parent_item, resource_data, select):
 	resource_data['category'] = resource_type
+	resource_data['type'] = 'file'
 	# create item
 	var item = tree.create_item(parent_item)
 	# set the text
@@ -800,7 +802,10 @@ func new_glossary_entry():
 func remove_selected():
 	var item = get_selected()
 	var folder = get_selected().get_metadata(0)
-	DialogicUtil.remove_file_from_folder(editor_reference.flat_structure, folder['category'], folder)
+	if folder['type'] == "folder":
+		DialogicUtil.remove_folder(editor_reference.flat_structure, folder['category'], folder, false)
+	else:
+		DialogicUtil.remove_file_from_folder(editor_reference.flat_structure, folder['category'], folder)
 	settings_editor.update_data()
 	build_flat_tree_items(folder['category'])
 
