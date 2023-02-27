@@ -232,10 +232,11 @@ static func set_folder_at_path(path: String, data:Dictionary):
 	return OK
 
 ## FOLDER METADATA
-static func set_folder_meta(folder_path: String, key:String, value):
-	var data = get_folder_at_path(folder_path)
-	data['metadata'][key] = value
-	set_folder_at_path(folder_path, data)
+static func set_folder_meta(flat_structure:Dictionary, item: Dictionary, key:String, value):
+	flat_structure[item['category'] + "_Array"][item['step']]['value'][key] = value
+		
+	flat_structure = editor_array_to_flat_structure(flat_structure,item['category'])
+	DialogicResources.save_resource_folder_flat_structure(flat_structure)
 
 static func get_folder_meta(folder_path: String, key:String):
 	return get_folder_at_path(folder_path)['metadata'][key]
@@ -326,13 +327,31 @@ static func move_file_to_folder(flat_structure:Dictionary, tree:String, original
 	add_file_to_folder(flat_structure,tree,destination_data, "",original_data)
 
 static func add_file_to_folder(flat_structure:Dictionary, tree:String,  path:Dictionary, file_name:String, existing_data:Dictionary = {}):
+	var insert_position_data = flat_structure[tree + "_Array"][path['step']]
+	
 	if existing_data.empty():
 		var new_data = {}
-		new_data['key'] = path['path'] + "/" + path['name'] + file_name
-		new_data['value'] = {'name': file_name, "color": null, 'file': file_name, 'path': new_data['key']}	
+		if "/." in insert_position_data['key']:
+			new_data['key'] = insert_position_data['key'].rstrip('.') + file_name
+			new_data['value'] = {'category': tree, 'name': file_name, "color": null, 'file': file_name, 'path': insert_position_data['key'].rstrip('.')}	
+		else: 
+			new_data['key'] = insert_position_data['value']['path'] + file_name
+			new_data['value'] = {'category': tree, 'name': file_name, "color": null, 'file': file_name, 'path': insert_position_data['value']['path']}	
+		
+		print(" ")
+		print(path)
+		print(file_name)
+		print(new_data['key'])
+		print(" ")
+		print("Existing:")
+		print(flat_structure[tree + "_Array"][path['step']])
+		
+		print("New:")
+		print(new_data)
 		flat_structure[tree + "_Array"].insert(path['step'] + 1, new_data)
 	else:
 		existing_data['key'] = path['path'] + "/" + existing_data['value']['name']
+		print(existing_data['key'])
 		existing_data['value']['path'] = path['path']
 		flat_structure[tree + "_Array"].insert(path['step'] + 1, existing_data)
 	
@@ -689,21 +708,25 @@ static func get_flat_folders_list() -> Dictionary:
 	
 	# populate the data from the resources
 	for timeline in timeline_list:
-		timeline['path'] = structure['Timelines'][timeline['file']] + timeline['name']
-		structure['Timelines'][timeline['file']]= timeline
+		if timeline['file'] in structure['Timelines']:
+			timeline['path'] = structure['Timelines'][timeline['file']] + timeline['name']
+			structure['Timelines'][timeline['file']]= timeline
 	
 	for character in character_list:
-		character['path'] = structure['Characters'][character['file']] + character['name']
-		structure['Characters'][character['file']]= character
+		if character['file'] in structure['Characters']:
+			character['path'] = structure['Characters'][character['file']] + character['name']
+			structure['Characters'][character['file']]= character
 		
 	for definition in definition_list:
-		definition['path'] = structure['Definitions'][definition['id']] + definition['name']
-		structure['Definitions'][definition['id']]= definition
-		definition['file'] = definition['id']
+		if definition['id'] in structure['Definitions']:
+			definition['path'] = structure['Definitions'][definition['id']] + definition['name']
+			structure['Definitions'][definition['id']]= definition
+			definition['file'] = definition['id']
 		
 	for theme in theme_list:
-		theme['path'] = structure['Themes'][theme['file']] + theme['name']
-		structure['Themes'][theme['file']]= theme
+		if theme['file'] in structure['Themes']:
+			theme['path'] = structure['Themes'][theme['file']] + theme['name']
+			structure['Themes'][theme['file']]= theme
 		
 	# After that we put them in the order we need to make the folder paths easiest to use
 	for timeline in structure['Timelines'].keys():

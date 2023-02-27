@@ -558,6 +558,9 @@ static func save_resource_folder_flat_structure(flat_tree) -> Dictionary:
 static func recursive_search(currentCheck, currentDictionary, currentFolder, structure_dictionary):
 	structure_dictionary[currentCheck][currentFolder + "."] = currentDictionary['metadata']
 	
+	for structureFolder in currentDictionary["folders"]:
+		recursive_search(currentCheck, currentDictionary["folders"][structureFolder], currentFolder + structureFolder + "/", structure_dictionary)
+		
 	for structureFile in currentDictionary["files"]:
 		match currentCheck:
 			"Timelines": structure_dictionary['Timelines'][structureFile] = currentFolder
@@ -565,9 +568,6 @@ static func recursive_search(currentCheck, currentDictionary, currentFolder, str
 			"Definitions":  structure_dictionary['Definitions'][structureFile] = currentFolder
 			"Themes":  structure_dictionary['Themes'][structureFile] = currentFolder
 	
-	for structureFolder in currentDictionary["folders"]:
-		recursive_search(currentCheck, currentDictionary["folders"][structureFolder], currentFolder + structureFolder + "/", structure_dictionary)
-		
 	return structure_dictionary
 
 static func recursive_build(build_path, meta, current_dictionary):
@@ -581,7 +581,7 @@ static func recursive_build(build_path, meta, current_dictionary):
 			
 		current_dictionary['folders'][current_step] = recursive_build(build_path.split('/', true, 1)[1], meta,current_dictionary['folders'][current_step])
 		
-		return current_dictionary
+		return current_dictionary		
 	else:
 		if build_path == ".":
 			current_dictionary['metadata'] = meta
@@ -589,3 +589,6 @@ static func recursive_build(build_path, meta, current_dictionary):
 			current_dictionary['files'].append(meta['file'])
 		
 		return current_dictionary
+		
+		
+

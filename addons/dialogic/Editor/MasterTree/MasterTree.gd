@@ -209,7 +209,7 @@ func build_flat_tree_items(current_tree: String=''):
 			folder_item.set_icon_modulate(0, get_color("folder_icon_modulate", "FileDialog"))
 			# set metadata
 			var stripped_path = entry['key'].rstrip("/.").rstrip(folder_name)
-			folder_item.set_metadata(0, {'editor': editor, 'editable': true, "path": stripped_path, "name": folder_name, "category": current_tree, 'step': step})
+			folder_item.set_metadata(0, {'editor': editor, 'editable': true, "path": stripped_path, "name": folder_name, "category": current_tree.rstrip('_Array'), 'step': step})
 			# set collapsed
 			folder_item.collapsed = entry['value']['folded']
 			current_root = folder_item	
@@ -220,7 +220,7 @@ func build_flat_tree_items(current_tree: String=''):
 			var resource_data = entry['value']
 			
 			var item = tree.create_item(current_root)
-			item['resource_data']= current_tree
+			resource_data['category']= current_tree.rstrip('_Array')
 			# set the text
 			if resource_data.has('name'):
 				item.set_text(0, resource_data['name'])
@@ -363,41 +363,29 @@ func _add_resource_item(resource_type, parent_item, resource_data, select):
 func build_timelines(selected_item: String=''):
 	_clear_tree_children(timelines_tree)
 	
-	DialogicUtil.update_resource_folder_structure()
-	var structure = DialogicUtil.get_timelines_folder_structure()
-	build_resource_folder(timelines_tree, structure, selected_item, "Timeline Root", "Timeline")
-
+	build_flat_tree_items("Timelines")
 
 ## CHARACTERS
 func build_characters(selected_item: String=''):
 	_clear_tree_children(characters_tree)
 	
-	DialogicUtil.update_resource_folder_structure()
-	var structure = DialogicUtil.get_characters_folder_structure()
-	build_resource_folder(characters_tree, structure, selected_item, "Character Root", "Character")
-
+	build_flat_tree_items("Characters")
 
 ## DEFINTIONS
 func build_definitions(selected_item: String=''):
 	_clear_tree_children(definitions_tree)
 	
-	DialogicUtil.update_resource_folder_structure()
-	var structure = DialogicUtil.get_definitions_folder_structure()
-	build_resource_folder(definitions_tree, structure, selected_item, "Definition Root", "Definition")
-
+	build_flat_tree_items("Definitions")
 
 ## THEMES
 func build_themes(selected_item: String=''):
 	_clear_tree_children(themes_tree)
 	
-	DialogicUtil.update_resource_folder_structure()
-	var structure = DialogicUtil.get_theme_folder_structure()
-	build_resource_folder(themes_tree, structure, selected_item, "Theme Root", "Theme")
-
+	build_flat_tree_items("Themes")
 
 func _on_item_collapsed(item: TreeItem):
 	if filter_tree_term.empty() and item != null and 'Root' in item.get_metadata(0)['editor'] and not 'Documentation' in item.get_metadata(0)['editor']:
-		DialogicUtil.set_folder_meta(get_item_folder(item, ''), 'folded', item.collapsed)
+		DialogicUtil.set_folder_meta(editor_reference.flat_structure, item.get_metadata(0), 'folded', item.collapsed)
 
 func build_documentation(selected_item: String=''):
 	var child = documentation_tree.get_children()
@@ -769,7 +757,7 @@ func new_timeline():
 	var folder = get_selected().get_metadata(0)
 	DialogicUtil.add_file_to_folder(editor_reference.flat_structure, "Timelines",folder, timeline['metadata']['file'])
 	build_timelines(timeline['metadata']['file'])
-	rename_selected()
+	#rename_selected()
 
 
 # creates a new character and opens it
