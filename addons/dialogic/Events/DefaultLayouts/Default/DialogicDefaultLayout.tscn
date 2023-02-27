@@ -1,11 +1,10 @@
-[gd_scene load_steps=26 format=3 uid="uid://r8jg1cax6dui"]
+[gd_scene load_steps=25 format=3 uid="uid://r8jg1cax6dui"]
 
 [ext_resource type="Script" path="res://addons/dialogic/Events/DefaultLayouts/Default/DialogicDefaultLayout.gd" id="1"]
 [ext_resource type="Script" path="res://addons/dialogic/Events/Text/node_dialog_text.gd" id="2"]
 [ext_resource type="Script" path="res://addons/dialogic/Events/Text/node_name_label.gd" id="3"]
 [ext_resource type="Script" path="res://addons/dialogic/Events/Character/node_portrait_container.gd" id="3_dbhei"]
 [ext_resource type="Script" path="res://addons/dialogic/Events/Choice/node_choice_button.gd" id="4"]
-[ext_resource type="Resource" path="res://characters/Emilio.dch" id="4_58a6h"]
 [ext_resource type="Script" path="res://addons/dialogic/Events/Background/node_background_holder.gd" id="5_uvb2c"]
 [ext_resource type="Script" path="res://addons/dialogic/Events/Text/node_type_sound.gd" id="10"]
 [ext_resource type="AudioStream" uid="uid://c2viukvbub6v6" path="res://addons/dialogic/Example Assets/sound-effects/typing4.wav" id="11"]
@@ -108,7 +107,6 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("3_dbhei")
 size_mode = 0
-mirrored = true
 
 [node name="DialogicNode_PortraitContainer2" type="Control" parent="Portraits/Control"]
 layout_mode = 1
@@ -122,7 +120,6 @@ grow_vertical = 2
 script = ExtResource("3_dbhei")
 position_index = 1
 size_mode = 0
-debug_character = ExtResource("4_58a6h")
 
 [node name="DialogicNode_PortraitContainer3" type="Control" parent="Portraits/Control"]
 layout_mode = 1
@@ -136,7 +133,6 @@ grow_vertical = 2
 script = ExtResource("3_dbhei")
 position_index = 2
 size_mode = 0
-debug_character = ExtResource("4_58a6h")
 
 [node name="DialogicNode_PortraitContainer4" type="Control" parent="Portraits/Control"]
 layout_mode = 1
@@ -150,7 +146,6 @@ grow_vertical = 2
 script = ExtResource("3_dbhei")
 position_index = 3
 size_mode = 0
-debug_character = ExtResource("4_58a6h")
 
 [node name="DialogicNode_PortraitContainer5" type="Control" parent="Portraits/Control"]
 layout_mode = 1
@@ -165,7 +160,6 @@ grow_vertical = 2
 script = ExtResource("3_dbhei")
 position_index = 4
 size_mode = 0
-debug_character = ExtResource("4_58a6h")
 
 [node name="DefaultStyle" type="Control" parent="."]
 layout_mode = 3
@@ -322,6 +316,7 @@ metadata/_edit_layout_mode = 1
 
 [node name="TextInputPanel" type="PanelContainer" parent="DefaultStyle/DialogicNode_TextInput"]
 unique_name_in_owner = true
+self_modulate = Color(0.00784314, 0.00784314, 0.00784314, 0.843137)
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
