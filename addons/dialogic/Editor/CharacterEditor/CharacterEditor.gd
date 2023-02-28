@@ -299,7 +299,9 @@ func _input(event):
 
 func _on_color_changed(color):
 	var item = master_tree.get_selected()
-	item.set_icon_modulate(0, color)
+	if !item == null:
+		self.set_meta('current_color', color)
+		item.set_icon_modulate(0, color)
 
 
 

@@ -233,10 +233,11 @@ static func set_folder_at_path(path: String, data:Dictionary):
 
 ## FOLDER METADATA
 static func set_folder_meta(flat_structure:Dictionary, item: Dictionary, key:String, value):
-	flat_structure[item['category'] + "_Array"][item['step']]['value'][key] = value
-		
-	flat_structure = editor_array_to_flat_structure(flat_structure,item['category'])
-	DialogicResources.save_resource_folder_flat_structure(flat_structure)
+	if 'category' in item:
+		flat_structure[item['category'] + "_Array"][item['step']]['value'][key] = value
+			
+		flat_structure = editor_array_to_flat_structure(flat_structure,item['category'])
+		DialogicResources.save_resource_folder_flat_structure(flat_structure)
 
 static func get_folder_meta(folder_path: String, key:String):
 	return get_folder_at_path(folder_path)['metadata'][key]
@@ -336,10 +337,10 @@ static func add_file_to_folder(flat_structure:Dictionary, tree:String,  path:Dic
 		var new_data = {}
 		if "/." in insert_position_data['key']:
 			new_data['key'] = insert_position_data['key'].rstrip('.') + file_name
-			new_data['value'] = {'category': tree, 'name': file_name, "color": null, 'file': file_name, 'path': insert_position_data['key'].rstrip('.')}	
+			new_data['value'] = {'category': tree, 'name': file_name, "color": Color.white, 'file': file_name, 'path': insert_position_data['key'].rstrip('.')}	
 		else: 
 			new_data['key'] = insert_position_data['value']['path'] + file_name
-			new_data['value'] = {'category': tree, 'name': file_name, "color": null, 'file': file_name, 'path': insert_position_data['value']['path']}	
+			new_data['value'] = {'category': tree, 'name': file_name, "color": Color.white, 'file': file_name, 'path': insert_position_data['value']['path']}	
 		
 		print(" ")
 		print(path)
