@@ -91,7 +91,7 @@ func _ready():
 		# set info
 		sub_tree.set_text(0, tree_info[0])
 		sub_tree.collapsed = DialogicUtil.get_folder_meta(tree_info[0], 'folded')
-		sub_tree.set_metadata(0, {'editor': tree_info[1]})
+		sub_tree.set_metadata(0, {'editor': tree_info[1], 'path': '/', 'step': 0})
 		# set the correct tree variable
 		match tree_info[0]:
 			"Timelines":
