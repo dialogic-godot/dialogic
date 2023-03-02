@@ -964,6 +964,8 @@ func _on_item_edited():
 		if result != OK:
 			item.set_text(0, item.get_text(0))
 			
+		build_flat_tree_items(metadata['category'])
+			
 ## *****************************************************************************
 ##					 		AUTO SAVING
 ## *****************************************************************************

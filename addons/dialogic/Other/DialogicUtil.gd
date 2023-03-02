@@ -286,14 +286,17 @@ static func rename_folder(flat_structure: Dictionary, tree:String, path:Dictiona
 	# check if the name is allowed
 	var new_path = path['path']  + new_folder_name + "/."
 	
-	
 	if new_path in flat_structure[tree]:
 		print("[D] A folder with the name '"+new_folder_name+"' already exists in the target folder '"++path['path']+"'.")
 		return ERR_ALREADY_EXISTS
 	elif new_folder_name.empty():
 		return ERR_PRINTER_ON_FIRE
 		
+	var old_path = flat_structure[tree + "_Array"][path['step']]['key'].rstrip("/.")
 	flat_structure[tree + "_Array"][path['step']]['key'] = new_path
+	
+	for idx in flat_structure[tree + "_Array"].size():
+		flat_structure[tree + "_Array"][idx]['key'] = flat_structure[tree + "_Array"][idx]['key'].replace(old_path, new_path.rstrip("/."))
 	
 	flat_structure = editor_array_to_flat_structure(flat_structure, tree)
 	
