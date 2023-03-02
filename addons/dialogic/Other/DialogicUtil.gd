@@ -284,7 +284,8 @@ static func remove_folder(flat_structure: Dictionary, tree:String, folder_data:D
 
 static func rename_folder(flat_structure: Dictionary, tree:String, path:Dictionary, new_folder_name:String):
 	# check if the name is allowed
-	var new_path = path['path'] + "/" + new_folder_name + "/."
+	var new_path = path['path']  + new_folder_name + "/."
+	
 	
 	if new_path in flat_structure[tree]:
 		print("[D] A folder with the name '"+new_folder_name+"' already exists in the target folder '"++path['path']+"'.")

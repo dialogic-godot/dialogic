@@ -960,7 +960,7 @@ func _on_item_edited():
 	if "Root" in metadata['editor']:
 		if item.get_text(0) == item_path_before_edit.split("/")[-1]:
 			return 
-		var result = DialogicUtil.rename_folder(editor_reference.flat_structure, "tree", item_path_before_edit, item.get_text(0))
+		var result = DialogicUtil.rename_folder(editor_reference.flat_structure, metadata['category'], metadata, item.get_text(0))
 		if result != OK:
 			item.set_text(0, item.get_text(0))
 			
