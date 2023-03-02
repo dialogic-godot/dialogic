@@ -332,6 +332,18 @@ static func move_file_to_folder(flat_structure:Dictionary, tree:String, original
 
 static func add_file_to_folder(flat_structure:Dictionary, tree:String,  path:Dictionary, file_name:String, existing_data:Dictionary = {}):
 	var insert_position_data = flat_structure[tree + "_Array"][path['step']]
+	var insert_position = path['step']
+	#advance the position to scroll past the subfolders if inserting from top of a folder
+	
+	var current_position = flat_structure[tree + "_Array"][insert_position]['key'].rstrip("/.")
+	if insert_position == 0:
+		current_position = "/"
+	while insert_position + 1 < flat_structure[tree + "_Array"].size():
+		
+		var next_position = flat_structure[tree + "_Array"][insert_position + 1]['key']
+		if  next_position.trim_prefix(current_position).count('/') == 0 or next_position.trim_prefix(current_position) == next_position:
+			break
+		insert_position = insert_position + 1
 	
 	if existing_data.empty():
 		var new_data = {}
@@ -342,22 +354,11 @@ static func add_file_to_folder(flat_structure:Dictionary, tree:String,  path:Dic
 			new_data['key'] = insert_position_data['value']['path'] + file_name
 			new_data['value'] = {'category': tree, 'name': file_name, "color": Color.white, 'file': file_name, 'path': insert_position_data['value']['path']}	
 		
-		print(" ")
-		print(path)
-		print(file_name)
-		print(new_data['key'])
-		print(" ")
-		print("Existing:")
-		print(flat_structure[tree + "_Array"][path['step']])
-		
-		print("New:")
-		print(new_data)
-		flat_structure[tree + "_Array"].insert(path['step'] + 1, new_data)
+		flat_structure[tree + "_Array"].insert(insert_position + 1, new_data)
 	else:
 		existing_data['key'] = path['path'] + "/" + existing_data['value']['name']
-		print(existing_data['key'])
 		existing_data['value']['path'] = path['path']
-		flat_structure[tree + "_Array"].insert(path['step'] + 1, existing_data)
+		flat_structure[tree + "_Array"].insert(insert_position + 1, existing_data)
 	
 	flat_structure = editor_array_to_flat_structure(flat_structure,tree)
 	DialogicResources.save_resource_folder_flat_structure(flat_structure)

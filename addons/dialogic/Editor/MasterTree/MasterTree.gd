@@ -91,7 +91,7 @@ func _ready():
 		# set info
 		sub_tree.set_text(0, tree_info[0])
 		sub_tree.collapsed = DialogicUtil.get_folder_meta(tree_info[0], 'folded')
-		sub_tree.set_metadata(0, {'editor': tree_info[1], 'path': '/', 'step': 0})
+		sub_tree.set_metadata(0, {'editor': tree_info[1], 'path': '', 'step': 0, "name": ""})
 		# set the correct tree variable
 		match tree_info[0]:
 			"Timelines":
@@ -205,6 +205,7 @@ func build_flat_tree_items(current_tree: String=''):
 			# set text and icon
 			var folder_name = entry['key'].split("/")[-2]
 			folder_item.set_text(0, folder_name)
+			folder_item.set_tooltip(0, entry['key'])
 			folder_item.set_icon(0, get_icon("Folder", "EditorIcons"))
 			folder_item.set_icon_modulate(0, get_color("folder_icon_modulate", "FileDialog"))
 			# set metadata
@@ -261,6 +262,7 @@ func build_flat_tree_items(current_tree: String=''):
 					resource_data['step'] = step
 			
 			item.set_metadata(0, resource_data)
+			item.set_tooltip(0, entry['key'])
 	
 
 func _clear_tree_children(parent: TreeItem):
