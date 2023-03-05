@@ -234,10 +234,11 @@ static func set_folder_at_path(path: String, data:Dictionary):
 ## FOLDER METADATA
 static func set_folder_meta(flat_structure:Dictionary, item: Dictionary, key:String, value):
 	if 'category' in item:
-		flat_structure[item['category'] + "_Array"][item['step']]['value'][key] = value
+		if flat_structure[item['category'] + "_Array"][item['step']]['value'][key] != value:
+			flat_structure[item['category'] + "_Array"][item['step']]['value'][key] = value
 			
-		flat_structure = editor_array_to_flat_structure(flat_structure,item['category'])
-		DialogicResources.save_resource_folder_flat_structure(flat_structure)
+			flat_structure = editor_array_to_flat_structure(flat_structure,item['category'])
+			DialogicResources.save_resource_folder_flat_structure(flat_structure)
 
 static func get_folder_meta(folder_path: String, key:String):
 	return get_folder_at_path(folder_path)['metadata'][key]

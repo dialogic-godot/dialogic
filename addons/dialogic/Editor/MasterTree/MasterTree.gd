@@ -91,7 +91,7 @@ func _ready():
 		# set info
 		sub_tree.set_text(0, tree_info[0])
 		sub_tree.collapsed = DialogicUtil.get_folder_meta(tree_info[0], 'folded')
-		sub_tree.set_metadata(0, {'editor': tree_info[1], 'path': '', 'step': 0, "name": ""})
+		sub_tree.set_metadata(0, {'editor': tree_info[1], 'path': '', 'step': 0, "name": "", 'category': tree_info[0]})
 		# set the correct tree variable
 		match tree_info[0]:
 			"Timelines":
@@ -191,6 +191,11 @@ func build_flat_tree_items(current_tree: String=''):
 		step = step + 1
 		#Skip the root folder 
 		if entry['key'] == "/.":
+			continue
+		
+		if (filter_tree_term == '') or (filter_tree_term.to_lower() in entry['key'].to_lower()):
+			pass
+		else:
 			continue
 		
 		#check where we are in the stack
@@ -1007,15 +1012,12 @@ func _on_filter_tree_edit_changed(value):
 		definitions_tree.collapsed = false
 		themes_tree.collapsed = false
 	else:
-		timelines_tree.collapsed = DialogicUtil.get_folder_meta('Timelines', 'folded')
-		characters_tree.collapsed = DialogicUtil.get_folder_meta('Timelines', 'folded')
-		definitions_tree.collapsed = DialogicUtil.get_folder_meta('Timelines', 'folded')
-		themes_tree.collapsed = DialogicUtil.get_folder_meta('Timelines', 'folded')
+		timelines_tree.collapsed = editor_reference.flat_structure['Timelines']['/.']['folded']
+		characters_tree.collapsed = editor_reference.flat_structure['Characters']['/.']['folded']
+		definitions_tree.collapsed = editor_reference.flat_structure['Definitions']['/.']['folded']
+		themes_tree.collapsed = editor_reference.flat_structure['Themes']['/.']['folded']
 	
-	if get_selected():
-		build_full_tree(get_selected().get_metadata(0).get('file', ''))
-	else:
-		build_full_tree()
+	build_full_tree()
 	
 	# This was merged, not sure if it is properly placed
 	build_documentation()
