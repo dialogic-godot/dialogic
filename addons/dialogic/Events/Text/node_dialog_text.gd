@@ -39,13 +39,13 @@ func reveal_text(_text:String) -> void:
 # called by the timer -> reveals more text
 func continue_reveal() -> void:
 	if visible_characters < get_total_character_count():
-		visible_characters += 1
-		emit_signal("continued_revealing_text", text[visible_characters-1])
 		revealing = false
 		await Dialogic.Text.execute_effects(visible_characters, self, false)
 		revealing = true
+		visible_characters += 1
+		print("revealed ", get_parsed_text()[visible_characters-1])
+		emit_signal("continued_revealing_text", get_parsed_text()[visible_characters-1])
 	else:
-		
 		finish_text()
 
 # shows all the text imidiatly
@@ -63,6 +63,7 @@ func _process(delta:float) -> void:
 	if !revealing or Dialogic.paused:
 		return
 	speed_counter += delta
-	while speed_counter > 0 and revealing and !Dialogic.paused:
+	print("new frame ", speed_counter)
+	while speed_counter > speed and revealing and !Dialogic.paused:
 		speed_counter -= speed
 		continue_reveal()
