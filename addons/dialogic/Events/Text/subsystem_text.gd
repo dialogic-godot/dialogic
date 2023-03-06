@@ -39,19 +39,6 @@ func load_game_state() -> void:
 	if character:
 		update_name_label(character)
 
-
-func pause() -> void:
-	for text_node in get_tree().get_nodes_in_group('dialogic_dialog_text'):
-		if text_node.is_visible_in_tree():
-			text_node.pause()
-
-
-func resume() -> void:
-	for text_node in get_tree().get_nodes_in_group('dialogic_dialog_text'):
-		if text_node.is_visible_in_tree():
-			text_node.resume()
-
-
 ####################################################################################################
 ##					MAIN METHODS
 ####################################################################################################
@@ -59,8 +46,8 @@ func resume() -> void:
 ## Shows the given text on all visible DialogText nodes.
 ## Instant can be used to skip all reveiling.
 func update_dialog_text(text:String, instant:bool= false) -> void:
-	text = parse_text_effects(text)
 	text = parse_text_modifiers(text)
+	text = parse_text_effects(text)
 	text = color_names(text)
 	
 	if !instant: dialogic.current_state = dialogic.states.SHOWING_TEXT
@@ -169,6 +156,7 @@ func execute_effects(current_index:int, text_node:Control, skipping:bool= false)
 		if current_index == -1 or current_index < parsed_text_effect_info[0]['index']:
 			return
 		var effect :Dictionary=  parsed_text_effect_info.pop_front()
+		print(effect)
 		await (effect['execution_info']['callable'] as Callable).call(text_node, skipping, effect['value'])
 
 

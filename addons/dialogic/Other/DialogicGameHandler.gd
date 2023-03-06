@@ -207,9 +207,6 @@ func get_full_state() -> Dictionary:
 	else:
 		current_state_info['current_event_idx'] = -1
 		current_state_info['current_timeline'] = null
-	if has_subsystem('Portraits'):
-		current_state_info['current_portrait_positions'] = self.Portraits.current_positions
-		current_state_info['default_portrait_positions'] = self.Portraits._default_positions
 	if has_subsystem('History'):
 		if self.History.full_history_enabled:
 			self.History.strip_events_from_full_history()
@@ -226,10 +223,6 @@ func load_full_state(state_info:Dictionary) -> void:
 	current_state_info = state_info
 	if current_state_info.get('current_timeline', null):
 		start_timeline(current_state_info.current_timeline, current_state_info.get('current_event_idx', 0))
-	if has_subsystem('Portraits'):
-		if current_state_info.get('current_portrait_positions', null):
-			self.Portraits.current_positions = current_state_info['current_portrait_positions']
-			self.Portraits._default_positions = current_state_info['default_portrait_positions']
 	if has_subsystem('History'):
 		if self.History.full_history_enabled:
 			self.History.full_history = current_state_info['full_history'] 
