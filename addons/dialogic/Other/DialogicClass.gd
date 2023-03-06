@@ -100,9 +100,19 @@ static func start(timeline: String = '', default_timeline: String ='', dialog_sc
 	
 	# else get the file from the name
 	var timeline_file = _get_timeline_file_from_name(timeline)
-	if timeline_file:
+	if timeline_file != "":
 		dialog_node.timeline = timeline_file
 		dialog_node.timeline_name = timeline
+		return returned_dialog_node
+	else:
+		dialog_node.dialog_script = {
+			"events":[
+				{"event_id":'dialogic_001',
+				"character":"",
+				"portrait":"",
+				"text":"[Dialogic Error] Loading dialog [color=red]" + timeline + "[/color]. It seems like the timeline doesn't exists. Maybe the name is wrong?"
+			}]
+		}
 		return returned_dialog_node
 	
 	# Just in case everything else fails.
@@ -149,7 +159,7 @@ static func next_event(discreetly: bool = false):
 ## does not. 
 static func timeline_exists(timeline: String):
 	var timeline_file = _get_timeline_file_from_name(timeline)
-	if timeline_file:
+	if timeline_file != "":
 		return true
 	else:
 		return false
@@ -465,6 +475,9 @@ static func set_variable_from_id(id: String, value: String, operation: String) -
 
 # tries to find the path of a given timeline 
 static func _get_timeline_file_from_name(timeline_name_path: String) -> String:
+	if timeline_name_path == "":
+		return ""
+	
 	#First add the leading slash if it is missing so algorithm works properly
 	if(timeline_name_path.left(1) != '/'):
 		timeline_name_path = "/" + timeline_name_path
@@ -476,7 +489,11 @@ static func _get_timeline_file_from_name(timeline_name_path: String) -> String:
 	var timelines = Engine.get_main_loop().get_meta('dialogic_tree')['Timelines']
 	
 	if timeline_name_path in timelines:
-		return timelines[timeline_name_path]['file']
+		if 'file' in timelines[timeline_name_path]:
+			return timelines[timeline_name_path]['file']
+		else:
+			#return an invalid filename
+			return "not_found.json"
 	else:
 		#step through each one in turn to find the first matching string
 		for path in timelines.keys():
