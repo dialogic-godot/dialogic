@@ -828,6 +828,7 @@ func rename_selected():
 	yield(get_tree(), "idle_frame")
 	_start_rename()
 	edit_selected()
+	hide_all_editors()
 
 ## *****************************************************************************
 ##					 		DRAGGING ITEMS
@@ -969,7 +970,10 @@ func _on_item_edited():
 		if result != OK:
 			item.set_text(0, item.get_text(0))
 			
+		
 		build_flat_tree_items(metadata['category'])
+		
+	hide_all_editors()
 			
 ## *****************************************************************************
 ##					 		AUTO SAVING
