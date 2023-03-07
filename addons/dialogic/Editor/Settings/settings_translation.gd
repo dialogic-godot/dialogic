@@ -152,7 +152,7 @@ func update_csv_files() -> void:
 	## ADD CREATION/UPDATE OF CHARACTER NAMES FILE HERE!
 	
 	# trigger reimport
-	find_parent('EditorView').plugin_reference.editor_interface.get_resource_filesystem().scan_sources()
+	find_parent('EditorView').plugin_reference.get_editor_interface().get_resource_filesystem().scan_sources()
 	%StatusMessage.text = "Indexed "+str(counts[0])+" new events ("+str(counts[2])+" were updated). \nAdded "+str(counts[1])+" new csv files ("+str(counts[3])+" were updated)."
 
 
@@ -235,7 +235,7 @@ func erase_translations() -> void:
 	ProjectSettings.set_setting('internationalization/locale/translations', PackedStringArray(trans_files))
 	ProjectSettings.save()
 	
-	find_parent('EditorView').plugin_reference.editor_interface.get_resource_filesystem().scan_sources()
+	find_parent('EditorView').plugin_reference.get_editor_interface().get_resource_filesystem().scan_sources()
 	
 	%StatusMessage.text = "Removed "+str(counts[0])+" csv files, "+str(counts[1])+" translations and all translation id's."
 	refresh()

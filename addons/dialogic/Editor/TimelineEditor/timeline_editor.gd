@@ -94,7 +94,7 @@ func play_timeline():
 	ProjectSettings.set_setting('dialogic/editor/current_timeline_path', current_resource.resource_path)
 	ProjectSettings.save()
 	
-	DialogicUtil.get_dialogic_plugin().editor_interface.play_custom_scene("res://addons/dialogic/Editor/TimelineEditor/test_timeline_scene.tscn")
+	DialogicUtil.get_dialogic_plugin().get_editor_interface().play_custom_scene("res://addons/dialogic/Editor/TimelineEditor/test_timeline_scene.tscn")
 
 
 ## Method to switch from visual to text editor (and vice versa). Connected to the button in the sidebar.

@@ -176,4 +176,4 @@ func load_game_state():
 	%ExtensionCreator.hide()
 	%CreateExtensionButton.show()
 
-	find_parent('EditorView').plugin_reference.editor_interface.get_resource_filesystem().scan_sources()
+	find_parent('EditorView').plugin_reference.get_editor_interface().get_resource_filesystem().scan_sources()

@@ -9,7 +9,7 @@ class_name DialogicUtil
 ##					EDITOR
 ################################################################################
 static func get_editor_scale() -> float:
-	return get_dialogic_plugin().editor_interface.get_editor_scale()
+	return get_dialogic_plugin().get_editor_interface().get_editor_scale()
 
 
 static func get_dialogic_plugin() -> Node:

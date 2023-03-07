@@ -37,7 +37,7 @@ var shortcode_value_color : Color
 func _init():
 	# Load colors from editor settings
 	if DialogicUtil.get_dialogic_plugin():
-		var editor_settings = DialogicUtil.get_dialogic_plugin().editor_interface.get_editor_settings()
+		var editor_settings = DialogicUtil.get_dialogic_plugin().get_editor_interface().get_editor_settings()
 		normal_color = editor_settings.get('text_editor/theme/highlighting/text_color')
 		comment_color = editor_settings.get('text_editor/theme/highlighting/comment_color')
 		text_effect_color = normal_color.darkened(0.5)

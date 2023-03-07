@@ -13,9 +13,6 @@ const MainPanel := preload("res://addons/dialogic/Editor/editor_main.tscn")
 # the root of the dialogic editor
 var editor_view: Control
 
-# multiple editor compononents/helper classes
-var editor_interface : EditorInterface
-
 # emitted if godot wants us to save
 signal dialogic_save
 
@@ -45,7 +42,6 @@ func _enter_tree() -> void:
 	editor_view = MainPanel.instantiate()
 	editor_view.plugin_reference = self
 	editor_view.hide()
-	editor_interface = get_editor_interface()
 	get_editor_interface().get_editor_main_screen().add_child(editor_view)
 	_make_visible(false)
 
