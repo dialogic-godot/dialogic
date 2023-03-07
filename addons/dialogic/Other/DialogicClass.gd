@@ -47,7 +47,7 @@ static func start(timeline: String = '', default_timeline: String ='', dialog_sc
 	var canvas_dialog_node = null
 	var returned_dialog_node = null
 	
-	if !Engine.get_main_loop().has_meta('dialogic_tree_loaded'):
+	if !Engine.get_main_loop().has_meta('dialogic_tree'):
 		prepare()
 	
 	if use_canvas_instead:
