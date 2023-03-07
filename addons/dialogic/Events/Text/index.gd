@@ -24,11 +24,14 @@ func _get_text_effects() -> Array[Dictionary]:
 		{'command':'pause', 'subsystem':'Text', 'method':'effect_pause'},
 		{'command':'signal', 'subsystem':'Text', 'method':'effect_signal'},
 		{'command':'mood', 'subsystem':'Text', 'method':'effect_mood'},
+		{'command':'aa', 'subsystem':'Text', 'method':'effect_autoadvance'},
+		{'command':'ns', 'subsystem':'Text', 'method':'effect_noskip'},
 	]
 
 
 func _get_text_modifiers() -> Array[Dictionary]:
 	return [
 		{'subsystem':'Text', 'method':'modifier_random_selection'},
-		{'subsystem':'Text', 'method':"modifier_break"},
+		{'subsystem':'Text', 'method':"modifier_break", 'command':'br'},
+		
 	]

@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=3 uid="uid://r8jg1cax6dui"]
+[gd_scene load_steps=26 format=3 uid="uid://r8jg1cax6dui"]
 
 [ext_resource type="Script" path="res://addons/dialogic/Events/DefaultLayouts/Default/DialogicDefaultLayout.gd" id="1"]
 [ext_resource type="Script" path="res://addons/dialogic/Events/Text/node_dialog_text.gd" id="2"]
@@ -11,6 +11,7 @@
 [ext_resource type="Script" path="res://addons/dialogic/Events/Style/node_style.gd" id="12"]
 [ext_resource type="AudioStream" uid="uid://dwcre3fjf3cj8" path="res://addons/dialogic/Example Assets/sound-effects/typing5.wav" id="13"]
 [ext_resource type="AudioStream" uid="uid://b6c1p14bc20p1" path="res://addons/dialogic/Example Assets/sound-effects/typing1.wav" id="14"]
+[ext_resource type="Script" path="res://addons/dialogic/Events/DefaultLayouts/Default/autoadvance_indicator.gd" id="15_ptoy3"]
 [ext_resource type="Script" path="res://addons/dialogic/Events/Choice/node_button_sound.gd" id="18"]
 [ext_resource type="Script" path="res://addons/dialogic/Events/Text/node_next_indicator.gd" id="20_ljcq2"]
 [ext_resource type="Script" path="res://addons/dialogic/Events/DefaultLayouts/Default/ExampleGlossaryPopup.gd" id="20_vmnp2"]
@@ -294,6 +295,17 @@ size_flags_vertical = 8
 script = ExtResource("20_ljcq2")
 show_on_questions = true
 metadata/_edit_layout_mode = 1
+
+[node name="AutoAdvanceProgressbar" type="ProgressBar" parent="DefaultStyle/DialogTextPanel"]
+modulate = Color(1, 1, 1, 0.188235)
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+size_flags_vertical = 8
+max_value = 1.0
+step = 0.001
+value = 0.5
+show_percentage = false
+script = ExtResource("15_ptoy3")
 
 [node name="DialogicNode_TextInput" type="Control" parent="DefaultStyle"]
 layout_mode = 1
