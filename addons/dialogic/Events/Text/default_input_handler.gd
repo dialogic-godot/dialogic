@@ -44,3 +44,10 @@ func is_autoadvancing() -> bool:
 
 func get_autoadvance_time_left() -> float:
 	return autoadvance_timer.time_left
+
+
+func pause() -> void:
+	autoadvance_timer.paused = true
+
+func resume() -> void:
+	autoadvance_timer.paused = false

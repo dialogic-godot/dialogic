@@ -71,7 +71,6 @@ var _character_directory: Dictionary = {}
 func _execute() -> void:
 	match action_type:
 		ActionTypes.Join:
-			
 			if character:
 				if !dialogic.Portraits.is_character_joined(character):
 					var n = dialogic.Portraits.add_portrait(character, portrait, position, mirrored, z_index, extra_data)
@@ -89,11 +88,17 @@ func _execute() -> void:
 								dialogic.current_state = Dialogic.states.ANIMATING
 								await anim.finished
 								dialogic.current_state = Dialogic.states.IDLE
+						
+						if dialogic.has_subsystem('History'):
+							dialogic.History.store_simple_history_entry(character.display_name + " joined", event_name, {'character': character.display_name, 'mode':'Join'})
+					
 				else:
 					dialogic.Portraits.change_portrait(character, portrait, false)
 					if animation_name.is_empty():
 						animation_length = DialogicUtil.get_project_setting('dialogic/animations/join_default_length', 0.5)
 					dialogic.Portraits.move_portrait(character, position, animation_length)
+					
+					
 		ActionTypes.Leave:
 			if _character_from_directory == '--All--':
 				if animation_name.is_empty():
@@ -116,6 +121,10 @@ func _execute() -> void:
 				else:
 					for chara in dialogic.Portraits.get_joined_characters():
 						dialogic.Portraits.remove_portrait(chara)
+				
+				if dialogic.has_subsystem('History'):
+					dialogic.History.store_simple_history_entry("Everyone left", event_name, {'character': "All", 'mode':'Leave'})
+					
 			elif character:
 				if dialogic.Portraits.is_character_joined(character):
 					if animation_name.is_empty():
@@ -135,6 +144,8 @@ func _execute() -> void:
 							dialogic.current_state = Dialogic.states.IDLE
 					else:
 						dialogic.Portraits.remove_portrait(character)
+					if dialogic.has_subsystem('History'):
+						dialogic.History.store_simple_history_entry(character.display_name+" left", event_name, {'character': character.display_name, 'mode':'Leave'})
 			
 		ActionTypes.Update:
 			if character:
