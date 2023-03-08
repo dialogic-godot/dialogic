@@ -318,7 +318,7 @@ func is_character_joined(character:DialogicCharacter) -> bool:
 
 
 func get_joined_characters() -> Array[DialogicCharacter]:
-	var chars := []
+	var chars :Array[DialogicCharacter]= []
 	for char_path in dialogic.current_state_info.get('portraits', {}).keys():
 		chars.append(load(char_path))
 	return chars

@@ -9,10 +9,10 @@ signal finished_revealing_text()
 enum ALIGNMENT {LEFT, CENTER, RIGHT}
 
 @export var alignment : ALIGNMENT = ALIGNMENT.LEFT
-@onready var timer :Timer = null
 
-
+var revealing := false
 var speed:float = 0.01
+var speed_counter:float = 0
 
 func _ready() -> void:
 	# add to necessary
@@ -20,14 +20,7 @@ func _ready() -> void:
 	
 	bbcode_enabled = true
 	text = ""
-	
-	# setup my timer
-	timer = Timer.new()
-	add_child(timer)
-	timer.wait_time = 0.01
-	timer.one_shot = true
-	DialogicUtil.update_timer_process_callback(timer)
-	timer.timeout.connect(continue_reveal)
+
 
 
 # this is called by the DialogicGameHandler to set text
@@ -39,25 +32,19 @@ func reveal_text(_text:String) -> void:
 	elif alignment == ALIGNMENT.RIGHT:
 		text = '[right]'+text
 	visible_characters = 0
-	if speed <= 0:
-		timer.start(0.01)
-	else:
-		timer.start(speed) 
+	revealing = true
+	speed_counter = 0
 	emit_signal('started_revealing_text')
 
 # called by the timer -> reveals more text
 func continue_reveal() -> void:
 	if visible_characters < get_total_character_count():
-		visible_characters += 1
-		emit_signal("continued_revealing_text", text[visible_characters-1])
+		revealing = false
 		await Dialogic.Text.execute_effects(visible_characters, self, false)
-		if timer.is_stopped():
-			if speed <= 0:
-				continue_reveal()
-			else:
-				timer.start(speed)
+		revealing = true
+		visible_characters += 1
+		emit_signal("continued_revealing_text", get_parsed_text()[visible_characters-1])
 	else:
-		
 		finish_text()
 
 # shows all the text imidiatly
@@ -65,13 +52,16 @@ func continue_reveal() -> void:
 func finish_text() -> void:
 	visible_ratio = 1
 	Dialogic.Text.execute_effects(-1, self, true)
-	timer.stop()
+	revealing = false
 	Dialogic.current_state = Dialogic.states.IDLE
 	emit_signal("finished_revealing_text")
 
 
-func pause() -> void: 
-	timer.stop()
-
-func resume() -> void:
-	continue_reveal()
+# Calls continue_reveal. Used instead of a timer to allow multiple reveals per frame.
+func _process(delta:float) -> void:
+	if !revealing or Dialogic.paused:
+		return
+	speed_counter += delta
+	while speed_counter > speed and revealing and !Dialogic.paused:
+		speed_counter -= speed
+		continue_reveal()
