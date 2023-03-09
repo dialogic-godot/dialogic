@@ -2,17 +2,20 @@ extends Control
 
 ## Example scene for viewing the History
 ## Implements most of the visual options from 1.x History mode
-
+@export_group('Open &Close Button')
 @export var show_open_button: bool = true
 @export var show_close_button: bool = true
+
+@export_group('Event visibility')
 @export var show_all_choices: bool = true
-@export var show_selected_choice: bool = true
 @export var show_join_and_leave: bool = true
+
+@export_group('Presentation')
 @export var scroll_to_bottom: bool = true
 @export var show_name_colors: bool = true
-@export var oldest_items_first: bool = true
 @export var name_delimeter: String = ": "
 
+@export_group('Fonts')
 @export var history_font_size: int
 @export var history_font_normal: Font
 @export var history_font_bold: Font
@@ -29,7 +32,7 @@ func _ready():
 
 
 func _process(delta):
-	if scroll_to_bottom_flag and $HistoryBox.visible:
+	if scroll_to_bottom_flag and $HistoryBox.visible and %HistoryLog.get_child_count():
 		await get_tree().process_frame
 		%HistoryBox.ensure_control_visible(%HistoryLog.get_children()[-1])
 		scroll_to_bottom_flag = false
