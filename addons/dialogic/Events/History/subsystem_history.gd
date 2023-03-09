@@ -18,7 +18,7 @@ signal full_event_history_changed
 ## Read text history 
 ## Stores which text events and choices have already been visited
 var already_read_history_enabled := false
-var already_read_history_content := []
+var already_read_history_content := {}
 signal already_read_event_reached
 signal not_read_event_reached
 
@@ -75,7 +75,7 @@ func store_full_event(event:DialogicEvent) -> void:
 
 func event_was_read(event:DialogicEvent) -> void:
 	if !already_read_history_enabled: return
-	already_read_history_content.append(Dialogic.current_timeline.resource_path+str(Dialogic.current_event_idx))
+	already_read_history_content[Dialogic.current_timeline.resource_path+str(Dialogic.current_event_idx)] = Dialogic.current_event_idx
 
 
 # called on each event 
