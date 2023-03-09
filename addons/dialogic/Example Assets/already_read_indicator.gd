@@ -1,5 +1,4 @@
-extends TextureRect
-
+extends Control
 
 func _ready():
 	if Dialogic.has_subsystem('History'):

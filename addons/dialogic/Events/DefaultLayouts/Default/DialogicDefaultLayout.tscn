@@ -1,13 +1,11 @@
-[gd_scene load_steps=28 format=3 uid="uid://r8jg1cax6dui"]
+[gd_scene load_steps=26 format=3 uid="uid://r8jg1cax6dui"]
 
 [ext_resource type="Script" path="res://addons/dialogic/Events/DefaultLayouts/Default/DialogicDefaultLayout.gd" id="1"]
 [ext_resource type="Script" path="res://addons/dialogic/Events/Text/node_dialog_text.gd" id="2"]
 [ext_resource type="Script" path="res://addons/dialogic/Events/Text/node_name_label.gd" id="3"]
 [ext_resource type="Script" path="res://addons/dialogic/Events/Character/node_portrait_container.gd" id="3_dbhei"]
 [ext_resource type="Script" path="res://addons/dialogic/Events/Choice/node_choice_button.gd" id="4"]
-[ext_resource type="Texture2D" uid="uid://bbqfq3s7qrduv" path="res://icon.svg" id="5_5ebbd"]
 [ext_resource type="Script" path="res://addons/dialogic/Events/Background/node_background_holder.gd" id="5_uvb2c"]
-[ext_resource type="Script" path="res://addons/dialogic/Events/DefaultLayouts/Default/already_read_indicator.gd" id="6_e5duj"]
 [ext_resource type="Script" path="res://addons/dialogic/Events/Text/node_type_sound.gd" id="10"]
 [ext_resource type="AudioStream" uid="uid://c2viukvbub6v6" path="res://addons/dialogic/Example Assets/sound-effects/typing4.wav" id="11"]
 [ext_resource type="Script" path="res://addons/dialogic/Events/Style/node_style.gd" id="12"]
@@ -172,16 +170,6 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("12")
-
-[node name="AlreadyReadIndicator" type="TextureRect" parent="DefaultStyle"]
-layout_mode = 0
-offset_left = 7.0
-offset_top = 7.0
-offset_right = 33.0
-offset_bottom = 33.0
-texture = ExtResource("5_5ebbd")
-expand_mode = 1
-script = ExtResource("6_e5duj")
 
 [node name="Choices" type="VBoxContainer" parent="DefaultStyle"]
 layout_mode = 1

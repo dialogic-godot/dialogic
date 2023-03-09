@@ -4,14 +4,13 @@ extends DialogicSubsystem
 
 
 ## Simple history that stores limited information
-## Used for the hitstory display
+## Used for the history display
 var simple_history_enabled := true
 var simple_history_content : Array[Dictionary] = []
 signal simple_history_changed
 
 ## Full event history (can be used for undo)
 var full_event_history_enabled := false
-var full_event_history_length := 50
 var full_event_history_content := []
 signal full_event_history_changed
 
