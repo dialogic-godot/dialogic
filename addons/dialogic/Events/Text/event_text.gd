@@ -75,7 +75,7 @@ func _execute() -> void:
 	if dialogic.has_subsystem('Glossary'):
 		final_text = dialogic.Glossary.parse_glossary(final_text)
 	
-	dialogic.Text.update_dialog_text(final_text)
+	final_text = dialogic.Text.update_dialog_text(final_text)
 	
 	#Plays the audio region for the current line.
 	if dialogic.has_subsystem('Voice') and dialogic.Voice.is_voiced(dialogic.current_event_idx):
@@ -94,7 +94,12 @@ func _execute() -> void:
 	else:
 		dialogic.Text.show_next_indicators()
 		finish()
-
+	if dialogic.has_subsystem('History'):
+		if character:
+			dialogic.History.store_simple_history_entry(final_text, event_name, {'character':character.display_name, 'character_color':character.color})
+		else:
+			dialogic.History.store_simple_history_entry(final_text, event_name)
+		dialogic.History.event_was_read(self)
 
 ################################################################################
 ## 						INITIALIZE

@@ -43,13 +43,22 @@ func load_game_state() -> void:
 	if character:
 		update_name_label(character)
 
+
+func pause() -> void:
+	input_handler_node.pause()
+
+
+func resume() -> void:
+	input_handler_node.resume()
+
+
 ####################################################################################################
 ##					MAIN METHODS
 ####################################################################################################
 
 ## Shows the given text on all visible DialogText nodes.
 ## Instant can be used to skip all reveiling.
-func update_dialog_text(text:String, instant:bool= false) -> void:
+func update_dialog_text(text:String, instant:bool= false) -> String:
 	text = parse_text_modifiers(text)
 	text = parse_text_effects(text)
 	text = color_names(text)
@@ -69,6 +78,7 @@ func update_dialog_text(text:String, instant:bool= false) -> void:
 	set_autoadvance(false, 1, true)
 	set_skippable(true, true)
 	set_manualadvance(true, true)
+	return text
 
 func _on_dialog_text_finished():
 	text_finished.emit()

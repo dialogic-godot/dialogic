@@ -43,7 +43,7 @@ func continue_reveal() -> void:
 		await Dialogic.Text.execute_effects(visible_characters, self, false)
 		revealing = true
 		visible_characters += 1
-		emit_signal("continued_revealing_text", get_parsed_text()[visible_characters-1])
+		emit_signal("continued_revealing_text", get_parsed_text()[visible_characters-2])
 	else:
 		finish_text()
 

@@ -35,9 +35,6 @@ func _execute() -> void:
 			the_value = randi()%(random_max-random_min)+random_min
 		
 		if orig != null:
-			if Dialogic.has_subsystem('History'):
-				if Dialogic.History.full_history_enabled:
-					Dialogic.History.full_history[0]['previous_value'] = orig
 			
 			if operation != Operations.Set and orig.is_valid_float() and value.is_valid_float():
 				orig = orig.to_float()

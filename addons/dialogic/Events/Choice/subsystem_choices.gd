@@ -5,6 +5,8 @@ extends DialogicSubsystem
 ## Used to block choices from being clicked for a couple of seconds (if delay is set in settings).
 var choice_blocker = Timer.new()
 
+var last_question_info := {}
+
 func _ready():
 	choice_blocker.one_shot = true
 	DialogicUtil.update_timer_process_callback(choice_blocker)
@@ -34,9 +36,10 @@ func hide_all_choices() -> void:
 ## Lists all current choices and shows buttons.
 func show_current_choices() -> void:
 	hide_all_choices()
-	var button_idx = 1
+	var button_idx := 1
+	last_question_info = {'choices':[]}
 	for choice_index in get_current_choice_indexes():
-		var choice_event = dialogic.current_timeline_events[choice_index]
+		var choice_event :DialogicEvent= dialogic.current_timeline_events[choice_index]
 		# check if condition is false
 		if not choice_event.condition.is_empty() and not dialogic.execute_condition(choice_event.condition):
 			if choice_event.else_action == DialogicChoiceEvent.ElseActions.Default:
@@ -46,23 +49,23 @@ func show_current_choices() -> void:
 			if choice_event.else_action == DialogicChoiceEvent.ElseActions.Disable:
 				if !choice_event.disabled_text.is_empty():
 					show_choice(button_idx, choice_event.get_property_translated('disabled_text'), false, choice_index)
+					last_question_info['choices'].append(choice_event.get_property_translated('disabled_text')+'#disabled')
 				else:
 					show_choice(button_idx, choice_event.get_property_translated('text'), false, choice_index)
+					last_question_info['choices'].append(choice_event.get_property_translated('text')+'#disabled')
 				button_idx += 1
 		# else just show it
 		else:
 			show_choice(button_idx, choice_event.get_property_translated('text'), true, choice_index)
+			last_question_info['choices'].append(choice_event.get_property_translated('text'))
 			button_idx += 1
 	
-	if typeof(DialogicUtil.get_project_setting('dialogic/choices/delay')) != TYPE_FLOAT:
-		choice_blocker.start(DialogicUtil.get_project_setting('dialogic/choices/delay', 0.2).to_float())
-	else:
-		choice_blocker.start(DialogicUtil.get_project_setting('dialogic/choices/delay', 0.2))
+	choice_blocker.start(float(DialogicUtil.get_project_setting('dialogic/choices/delay', 0.2)))
 
 
 ## Adds a button with the given text that leads to the given event.
 func show_choice(button_index:int, text:String, enabled:bool, event_index:int) -> void:
-	var idx = 1
+	var idx := 1
 	for node in get_tree().get_nodes_in_group('dialogic_choice_button'):
 		if !node.get_parent().is_visible_in_tree():
 			continue
@@ -77,8 +80,8 @@ func show_choice(button_index:int, text:String, enabled:bool, event_index:int) -
 				node.grab_focus()
 			
 			if DialogicUtil.get_project_setting('dialogic/choices/hotkey_behaviour', 0) == 1 and idx < 10:
-				var shortcut = Shortcut.new()
-				var input_key = InputEventKey.new()
+				var shortcut := Shortcut.new()
+				var input_key := InputEventKey.new()
 				input_key.scancode = OS.find_keycode_from_string(str(idx))
 				shortcut.shortcut = input_key
 				node.shortcut = shortcut
@@ -109,9 +112,9 @@ func is_question(index:int) -> bool:
 	return false
 
 func get_current_choice_indexes() -> Array:
-	var choices = []
-	var evt_idx = dialogic.current_event_idx
-	var ignore = 0
+	var choices := []
+	var evt_idx :int= dialogic.current_event_idx
+	var ignore := 0
 	while true:
 		
 		evt_idx += 1
