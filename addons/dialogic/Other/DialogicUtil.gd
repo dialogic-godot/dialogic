@@ -246,8 +246,6 @@ static func get_folder_meta(folder_path: String, key:String):
 
 ## FOLDER FUNCTIONS
 static func add_folder(flat_structure:Dictionary, tree:String, path:Dictionary, folder_name:String):
-	print(path)
-	
 	#first find the parent folder from here
 	# check if the name is allowed
 	var new_path = path['path'] + path['name'] + "/" + folder_name + "/."
@@ -352,12 +350,17 @@ static func add_file_to_folder(flat_structure:Dictionary, tree:String,  path:Dic
 	
 	if existing_data.empty():
 		var new_data = {}
+		
 		if "/." in insert_position_data['key']:
 			new_data['key'] = insert_position_data['key'].rstrip('.') + file_name
 			new_data['value'] = {'category': tree, 'name': file_name, "color": Color.white, 'file': file_name, 'path': insert_position_data['key'].rstrip('.')}	
 		else: 
 			new_data['key'] = insert_position_data['value']['path'] + file_name
 			new_data['value'] = {'category': tree, 'name': file_name, "color": Color.white, 'file': file_name, 'path': insert_position_data['value']['path']}	
+		
+		if tree == "Definitions":
+			new_data['value']['type'] = path['type']
+			new_data['value']['id'] = file_name
 		
 		flat_structure[tree + "_Array"].insert(insert_position + 1, new_data)
 	else:

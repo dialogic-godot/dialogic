@@ -796,6 +796,7 @@ func new_theme():
 func new_value_definition():
 	var definition_id = editor_reference.get_node("MainPanel/ValueEditor").create_value()
 	var folder = get_selected().get_metadata(0)
+	folder['type'] = 0
 	DialogicUtil.add_file_to_folder(editor_reference.flat_structure, "Definitions",folder, definition_id)
 	build_definitions(definition_id)
 	hide_all_editors()
@@ -806,6 +807,7 @@ func new_value_definition():
 func new_glossary_entry():
 	var definition_id = editor_reference.get_node("MainPanel/GlossaryEntryEditor").create_glossary_entry()
 	var folder = get_selected().get_metadata(0)
+	folder['type'] = 1
 	DialogicUtil.add_file_to_folder(editor_reference.flat_structure, "Definitions",folder, definition_id)
 	build_definitions(definition_id)
 	hide_all_editors()
