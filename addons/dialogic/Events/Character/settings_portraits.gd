@@ -1,17 +1,19 @@
 @tool
 extends HBoxContainer
 
-var current_animation_path = ""
+var current_animation_path := ""
 
 func _ready():
 	%JoinDefault.get_suggestions_func = get_join_animation_suggestions
 	%JoinDefault.enable_pretty_name = true
 	%LeaveDefault.get_suggestions_func = get_leave_animation_suggestions
 	%LeaveDefault.enable_pretty_name = true
-	
+	%CustomAnimationsFolder.value_changed.connect(custom_anims_folder_selected)
+
+
 func refresh():
-	%CustomAnimationsFolderOpener.icon = get_theme_icon("Folder", "EditorIcons")
-	%CustomAnimationsFolder.text = DialogicUtil.get_project_setting('dialogic/animations/custom_folder', 'res://addons/dialogic_additions/Animations')
+	%CustomAnimationsFolder.resource_icon = get_theme_icon("Folder", "EditorIcons")
+	%CustomAnimationsFolder.set_value(DialogicUtil.get_project_setting('dialogic/animations/custom_folder', 'res://addons/dialogic_additions/Animations'))
 	%PortraitMode.select(DialogicUtil.get_project_setting('dialogic/portrait_mode', 0))
 	
 	%JoinDefault.resource_icon = get_theme_icon("Animation", "EditorIcons")
@@ -73,12 +75,7 @@ func list_animations() -> Array:
 	list.append_array(DialogicUtil.listdir(DialogicUtil.get_project_setting('dialogic/animations/custom_folder', 'res://addons/dialogic_additions/Animations'), true, false, true))
 	return list
 
-
-func _on_CustomAnimationsFolderOpener_pressed():
-	find_parent('EditorView').godot_file_dialog(custom_anims_folder_selected, '', EditorFileDialog.FILE_MODE_OPEN_DIR, 'Select custom animation folder')
-
-func custom_anims_folder_selected(path):
-	%CustomAnimationsFolder.text = path
+func custom_anims_folder_selected(setting:String, path:String):
 	ProjectSettings.set_setting('dialogic/animations/custom_folder', path)
 	ProjectSettings.save()
 
