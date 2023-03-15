@@ -4,7 +4,7 @@ extends HBoxContainer
 ## Event block field part for the Array field.
 
 signal value_changed()
-W
+
 
 func set_value(value:String):
 	$Value.text = str(value)
