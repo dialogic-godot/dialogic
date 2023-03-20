@@ -496,7 +496,7 @@ func process_timeline(timeline: DialogicTimeline) -> DialogicTimeline:
 ################################################################################
 func start(timeline, single_instance = true):
 	var dialog_scene_path: String = DialogicUtil.get_project_setting(
-		'dialogic/layout_scene', DialogicUtil.get_default_layout())
+		'dialogic/layout/layout_scene', DialogicUtil.get_default_layout())
 	if single_instance:
 		if get_tree().get_nodes_in_group('dialogic_main_node').is_empty():
 			var scene = load(dialog_scene_path).instantiate()

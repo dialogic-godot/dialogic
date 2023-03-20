@@ -15,6 +15,7 @@ func _register() -> void:
 	editors_manager.register_simple_editor(self)
 	alternative_text = "Change the look of the dialog in your game"
 
+
 func _open(argument:Variant = null) -> void:
 	%LayoutMode.select(DialogicUtil.get_project_setting('dialogic/layout/mode', 0))
 	_on_layout_mode_item_selected(%LayoutMode.selected)
@@ -25,19 +26,17 @@ func _open(argument:Variant = null) -> void:
 ##							EDITOR FUNCTIONALITY
 ################################################################################
 func _ready() -> void:
-	
-	
-	
 	for indexer in DialogicUtil.get_indexers():
 		for layout in indexer._get_layout_scenes():
 			layouts_info[layout['path']] = layout
-
+	
 	%PresetSceneLabel.add_theme_color_override("font_color", get_theme_color("success_color", "Editor"))
 	%ClearCustomization.icon = get_theme_icon("Remove", "EditorIcons")
 	%PresetSelectionButton.icon = get_theme_icon("ListSelect", "EditorIcons")
 	%MakeCustomButton.icon = get_theme_icon("Override", "EditorIcons")
 	%ClosePresetSelection.icon = get_theme_icon("GuiClose", "EditorIcons")
 	%CustomScenePicker.resource_icon = get_theme_icon("PlayScene", "EditorIcons")
+	%CustomScenePicker.value_changed.connect(_on_custom_scene_picker_value_changed)
 	%PresetSelection.add_theme_stylebox_override('panel', get_theme_stylebox("Background", "EditorStyles"))
 	%MakeCustomPanel.add_theme_stylebox_override('panel', get_theme_stylebox("Background", "EditorStyles"))
 	%PreviewTitle.add_theme_font_override("font", get_theme_font("bold", "EditorFonts"))
@@ -61,10 +60,10 @@ func _on_layout_mode_item_selected(index:int) -> void:
 	match index:
 		LayoutModes.Preset:
 			%PresetScene.show()
-			if layouts_info.has(DialogicUtil.get_project_setting('dialogic/layout_scene', DialogicUtil.get_default_layout())):
-				%PresetSceneLabel.text = layouts_info.get(DialogicUtil.get_project_setting('dialogic/layout_scene', DialogicUtil.get_default_layout()), {}).get('name', 'Invalid Preset!')
+			if layouts_info.has(DialogicUtil.get_project_setting('dialogic/layout/layout_scene', DialogicUtil.get_default_layout())):
+				%PresetSceneLabel.text = layouts_info.get(DialogicUtil.get_project_setting('dialogic/layout/layout_scene', DialogicUtil.get_default_layout()), {}).get('name', 'Invalid Preset!')
 				%PresetCustomization.show()
-				load_layout_scene_customization(DialogicUtil.get_project_setting('dialogic/layout_scene', DialogicUtil.get_default_layout()))
+				load_layout_scene_customization(DialogicUtil.get_project_setting('dialogic/layout/layout_scene', DialogicUtil.get_default_layout()))
 			else:
 				%PresetSceneLabel.text = 'Select a preset!'
 				_on_preset_selection_pressed()
@@ -74,7 +73,7 @@ func _on_layout_mode_item_selected(index:int) -> void:
 		LayoutModes.Custom:
 			%PresetScene.hide()
 			%CustomScene.show()
-			%CustomScenePicker.set_value(DialogicUtil.get_project_setting('dialogic/layout_scene', DialogicUtil.get_default_layout()))
+			%CustomScenePicker.set_value(DialogicUtil.get_project_setting('dialogic/layout/layout_scene', DialogicUtil.get_default_layout()))
 			%NoScene.hide()
 			%PresetCustomization.hide()
 		LayoutModes.None:
@@ -84,6 +83,11 @@ func _on_layout_mode_item_selected(index:int) -> void:
 			%NoScene.show()
 			%PresetCustomization.hide()
 	%MakeCustomPanel.hide()
+
+
+func _on_custom_scene_picker_value_changed(property_name:String, value:String):
+	ProjectSettings.set_setting('dialogic/layout/layout_scene', value)
+	ProjectSettings.save()
 
 
 ################################################################################
@@ -105,7 +109,7 @@ func update_presets_list() -> void:
 	%LayoutItemList.clear()
 
 	var current_path :String = DialogicUtil.get_project_setting(
-		'dialogic/layout_scene',
+		'dialogic/layout/layout_scene',
 		DialogicUtil.get_default_layout()
 	)
 	var index := 0
@@ -150,8 +154,7 @@ func get_selected_preset_info() -> Dictionary:
 
 func _on_activate_button_pressed() -> void:
 	var current_info := get_selected_preset_info()
-	ProjectSettings.set_setting('dialogic/layout_scene', current_info.get('path', ''))
-	ProjectSettings.set_setting('dialogic/editor/custom_testing_layout', current_info.get('path', ''))
+	ProjectSettings.set_setting('dialogic/layout/layout_scene', current_info.get('path', ''))
 	ProjectSettings.save()
 	%PresetSceneLabel.text = current_info.get('name', 'Mysterious Layout')
 	%PresetSelection.hide()
@@ -190,7 +193,7 @@ func _on_create_custom_copy_pressed() -> void:
 
 
 func create_custom_copy(folder_path:String) -> void:
-	var current_preset_info :Dictionary = layouts_info[ProjectSettings.get_setting('dialogic/layout_scene', DialogicUtil.get_default_layout())]
+	var current_preset_info :Dictionary = layouts_info[ProjectSettings.get_setting('dialogic/layout/layout_scene', DialogicUtil.get_default_layout())]
 	var folder_to_copy : String = current_preset_info.get('folder_to_copy', null)
 	if folder_to_copy == null:
 		return
@@ -199,11 +202,11 @@ func create_custom_copy(folder_path:String) -> void:
 	for file in DialogicUtil.listdir(folder_to_copy, true, false, true):
 		if file == current_preset_info.get('path', ''):
 			var export_overrides:Dictionary = DialogicUtil.get_project_setting('dialogic/layout/export_overrides', {})
-			var orig_scene = load(file).instantiate()
+			var orig_scene :Node = load(file).instantiate()
 			DialogicUtil.apply_scene_export_overrides(orig_scene, export_overrides)
 			orig_scene._ready()
 			var packed_scene := PackedScene.new()
-			var result = packed_scene.pack(orig_scene)
+			var result := packed_scene.pack(orig_scene)
 			if result == OK:
 				result = ResourceSaver.save(packed_scene, folder_path.path_join(new_folder_name).path_join('custom_'+file.get_file()))
 				if result != OK:
@@ -215,10 +218,11 @@ func create_custom_copy(folder_path:String) -> void:
 				folder_path.path_join(new_folder_name).path_join(file.get_file())
 			)
 	%MakeCustomPanel.hide()
-	ProjectSettings.set_setting('dialogic/layout_scene', folder_path.path_join(new_folder_name).path_join(current_preset_info['path'].get_file()))
+	ProjectSettings.set_setting('dialogic/layout/layout_scene', folder_path.path_join(new_folder_name).path_join(current_preset_info['path'].get_file()))
 	%LayoutMode.select(LayoutModes.Custom)
 	_on_layout_mode_item_selected(LayoutModes.Custom)
 	find_parent('EditorView').plugin_reference.get_editor_interface().get_resource_filesystem().scan()
+
 
 
 ################################################################################
@@ -229,7 +233,7 @@ func load_layout_scene_customization(custom_scene_path:String = "") -> void:
 	if !custom_scene_path.is_empty() and FileAccess.file_exists(custom_scene_path):
 		scene = load(custom_scene_path).instantiate()
 	else:
-		scene = load(ProjectSettings.get_setting('dialogic/layout_scene', DialogicUtil.get_default_layout())).instantiate()
+		scene = load(ProjectSettings.get_setting('dialogic/layout/layout_scene', DialogicUtil.get_default_layout())).instantiate()
 	if !scene:
 		return
 
