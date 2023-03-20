@@ -211,7 +211,7 @@ func build_event_editor():
 			{'file_extension' 	: '.dch', 
 			'suggestions_func' 	: get_character_suggestions, 
 			'empty_text' 		: '(No one)',
-			'icon' 				: load("res://addons/dialogic/Editor/Images/Resources/character.svg")})
+			'icon' 				: load("res://addons/dialogic/Editor/Images/Resources/character.svg")}, 'do_any_characters_exist()')
 	add_header_edit('portrait', ValueType.ComplexPicker, '', '', 
 			{'suggestions_func' : get_portrait_suggestions, 
 			'placeholder' 		: "(Don't change)", 
@@ -219,6 +219,8 @@ func build_event_editor():
 			'character != null and !has_no_portraits()')
 	add_body_edit('text', ValueType.MultilineText)
 
+func do_any_characters_exist() -> bool:
+	return !DialogicUtil.list_resources_of_type(".dch").is_empty()
 
 func has_no_portraits() -> bool:
 	return character and character.portraits.is_empty()

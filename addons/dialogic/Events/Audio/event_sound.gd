@@ -33,7 +33,7 @@ func _execute() -> void:
 func _init() -> void:
 	event_name = "Sound"
 	set_default_color('Color5')
-	event_category = Category.AudioVisual
+	event_category = Category.Audio
 	event_sorting_index = 3
 	expand_by_default = false
 	help_page_path = "https://dialogic.coppolaemilio.com"

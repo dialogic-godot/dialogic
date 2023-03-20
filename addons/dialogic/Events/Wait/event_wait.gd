@@ -35,8 +35,8 @@ func _execute() -> void:
 func _init() -> void:
 	event_name = "Wait"
 	set_default_color('Color6')
-	event_category = Category.Timeline
-	event_sorting_index = 5
+	event_category = Category.Other
+	event_sorting_index = 10
 	expand_by_default = false
 
 

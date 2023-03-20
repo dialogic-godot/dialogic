@@ -21,7 +21,7 @@ func _execute() -> void:
 
 func _init() -> void:
 	event_name = "End Timeline"
-	set_default_color('Color4')
+	set_default_color('Color6')
 	event_category = Category.Timeline
 	event_sorting_index = 10
 

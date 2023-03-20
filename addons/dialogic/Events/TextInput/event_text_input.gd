@@ -46,8 +46,8 @@ func _on_DialogicTextInput_input_confirmed(input:String) -> void:
 
 func _init() -> void:
 	event_name = "Text Input"
-	set_default_color('Color1')
-	event_category = Category.Godot
+	set_default_color('Color3')
+	event_category = Category.Other
 	event_sorting_index = 6
 	continue_at_end = true
 	expand_by_default = false
@@ -76,13 +76,13 @@ func get_shortcode_parameters() -> Dictionary:
 ################################################################################
 
 func build_event_editor() -> void:
-	add_header_label('Show an input field. The value will be stored to')
+	add_header_label('Shows an input field. The value will be stored to')
 	add_header_edit('variable', ValueType.ComplexPicker, '', '', 
 			{'suggestions_func'	: get_var_suggestions, 
 			'editor_icon'		: ["ClassList", "EditorIcons"]})
-	add_body_edit('text', ValueType.SinglelineText, 'text:')
-	add_body_edit('placeholder', ValueType.SinglelineText, 'placeholder:')
-	add_body_edit('default', ValueType.SinglelineText, 'default:')
+	add_body_edit('text', ValueType.SinglelineText, 'Text:')
+	add_body_edit('placeholder', ValueType.SinglelineText, 'Placeholder:')
+	add_body_edit('default', ValueType.SinglelineText, 'Default:')
 	add_body_edit('allow_empty', ValueType.Bool, 'Allow empty:')
 
 
