@@ -6,7 +6,7 @@ func _ready() -> void:
 		print("Testing locale is: ", ProjectSettings.get_setting('internationalization/locale/test'))
 	$PauseIndictator.hide()
 	var dialog_scene_path: String = DialogicUtil.get_project_setting(
-		'dialogic/editor/custom_testing_layout',
+		'dialogic/layout/layout_scene',
 		DialogicUtil.get_default_layout()
 	)
 	var scene: Node = load(dialog_scene_path).instantiate()

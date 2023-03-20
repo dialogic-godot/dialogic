@@ -155,7 +155,6 @@ func get_selected_preset_info() -> Dictionary:
 func _on_activate_button_pressed() -> void:
 	var current_info := get_selected_preset_info()
 	ProjectSettings.set_setting('dialogic/layout/layout_scene', current_info.get('path', ''))
-	ProjectSettings.set_setting('dialogic/editor/custom_testing_layout', current_info.get('path', ''))
 	ProjectSettings.save()
 	%PresetSceneLabel.text = current_info.get('name', 'Mysterious Layout')
 	%PresetSelection.hide()
