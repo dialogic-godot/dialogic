@@ -3,7 +3,7 @@ extends Control
 
 ## Event block field for selecting a file or directory.
 
-signal value_changed
+signal value_changed(property_name:String, value:String)
 var property_name : String
 
 @export var file_filter := ""
