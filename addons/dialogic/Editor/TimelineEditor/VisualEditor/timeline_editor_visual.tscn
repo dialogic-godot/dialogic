@@ -9,14 +9,14 @@
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_phyjj"]
 content_margin_top = 10.0
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_y5dg1"]
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ncv0v"]
 
 [sub_resource type="Theme" id="Theme_ycwn2"]
 PopupMenu/colors/font_color_hover = Color(0.44, 0.73, 0.98, 1)
-PopupMenu/styles/hover = SubResource("StyleBoxEmpty_y5dg1")
+PopupMenu/styles/hover = SubResource("StyleBoxEmpty_ncv0v")
 PopupMenu/styles/panel = ExtResource("4_cqp1m")
 
-[sub_resource type="Image" id="Image_5sal8"]
+[sub_resource type="Image" id="Image_wmnvf"]
 data = {
 "data": PackedByteArray(255, 255, 255, 0, 255, 255, 255, 0, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 131, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 131, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 131, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 231, 255, 93, 93, 55, 255, 97, 97, 58, 255, 93, 93, 233, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 231, 255, 94, 94, 54, 255, 94, 94, 57, 255, 93, 93, 233, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 93, 93, 233, 255, 93, 93, 232, 255, 93, 93, 41, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 93, 93, 233, 255, 93, 93, 232, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 97, 97, 42, 255, 255, 255, 0, 255, 97, 97, 42, 255, 97, 97, 42, 255, 255, 255, 0, 255, 98, 98, 47, 255, 97, 97, 42, 255, 255, 255, 0, 255, 97, 97, 42, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 235, 255, 93, 93, 233, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 94, 94, 46, 255, 93, 93, 236, 255, 93, 93, 233, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 235, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 233, 255, 95, 95, 59, 255, 96, 96, 61, 255, 93, 93, 235, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 233, 255, 95, 95, 59, 255, 96, 96, 61, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0),
 "format": "RGBA8",
@@ -25,8 +25,8 @@ data = {
 "width": 16
 }
 
-[sub_resource type="ImageTexture" id="ImageTexture_cm3pl"]
-image = SubResource("Image_5sal8")
+[sub_resource type="ImageTexture" id="ImageTexture_o5wl4"]
+image = SubResource("Image_wmnvf")
 
 [node name="TimelineVisualEditor" type="MarginContainer"]
 anchors_preset = 15
@@ -66,22 +66,22 @@ unique_name_in_owner = true
 theme = SubResource("Theme_ycwn2")
 item_count = 6
 item_0/text = "Documentation"
-item_0/icon = SubResource("ImageTexture_cm3pl")
+item_0/icon = SubResource("ImageTexture_o5wl4")
 item_0/id = 0
 item_1/text = ""
 item_1/id = -1
 item_1/separator = true
 item_2/text = "Move up"
-item_2/icon = SubResource("ImageTexture_cm3pl")
+item_2/icon = SubResource("ImageTexture_o5wl4")
 item_2/id = 2
 item_3/text = "Move down"
-item_3/icon = SubResource("ImageTexture_cm3pl")
+item_3/icon = SubResource("ImageTexture_o5wl4")
 item_3/id = 3
 item_4/text = ""
 item_4/id = -1
 item_4/separator = true
 item_5/text = "Delete"
-item_5/icon = SubResource("ImageTexture_cm3pl")
+item_5/icon = SubResource("ImageTexture_o5wl4")
 item_5/id = 5
 script = ExtResource("4_ugiq6")
 
@@ -100,6 +100,7 @@ size_flags_vertical = 3
 layout_mode = 2
 
 [node name="Label" type="Label" parent="View/RightSidebar/EventContainer/HBoxContainer6"]
+visible = false
 layout_mode = 2
 text = "Main"
 
@@ -115,6 +116,7 @@ size_flags_horizontal = 3
 layout_mode = 2
 
 [node name="Label2" type="Label" parent="View/RightSidebar/EventContainer/HBoxContainer5"]
+visible = false
 layout_mode = 2
 text = "Logic"
 
@@ -130,6 +132,7 @@ size_flags_horizontal = 3
 layout_mode = 2
 
 [node name="Label3" type="Label" parent="View/RightSidebar/EventContainer/HBoxContainer3"]
+visible = false
 layout_mode = 2
 text = "Timeline"
 
@@ -145,8 +148,9 @@ size_flags_horizontal = 3
 layout_mode = 2
 
 [node name="Label4" type="Label" parent="View/RightSidebar/EventContainer/HBoxContainer4"]
+visible = false
 layout_mode = 2
-text = "Audio/Visual"
+text = "Audio"
 
 [node name="HSeparator2" type="HSeparator" parent="View/RightSidebar/EventContainer/HBoxContainer4"]
 layout_mode = 2
@@ -160,6 +164,7 @@ size_flags_horizontal = 3
 layout_mode = 2
 
 [node name="Label5" type="Label" parent="View/RightSidebar/EventContainer/HBoxContainer"]
+visible = false
 layout_mode = 2
 text = "Godot"
 
@@ -175,6 +180,7 @@ size_flags_horizontal = 3
 layout_mode = 2
 
 [node name="Label6" type="Label" parent="View/RightSidebar/EventContainer/OtherContainer"]
+visible = false
 layout_mode = 2
 text = "Other"
 
@@ -183,6 +189,22 @@ layout_mode = 2
 size_flags_horizontal = 3
 
 [node name="FlexContainer5" type="HFlowContainer" parent="View/RightSidebar/EventContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="HelpersContainer" type="HBoxContainer" parent="View/RightSidebar/EventContainer"]
+layout_mode = 2
+
+[node name="Label6" type="Label" parent="View/RightSidebar/EventContainer/HelpersContainer"]
+visible = false
+layout_mode = 2
+text = "Helpers"
+
+[node name="HSeparator2" type="HSeparator" parent="View/RightSidebar/EventContainer/HelpersContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="FlexContainer6" type="HFlowContainer" parent="View/RightSidebar/EventContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 

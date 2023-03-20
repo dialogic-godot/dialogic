@@ -33,9 +33,13 @@ func _execute() -> void:
 
 func _init() -> void:
 	event_name = "Save"
-	set_default_color('Color2')
-	event_category = Category.Main
-	event_sorting_index = 2
+	set_default_color('Color6')
+	event_category = Category.Other
+	event_sorting_index = 9
+
+
+func _get_icon() -> Resource:
+	return load(self.get_script().get_path().get_base_dir().path_join('icon.svg'))
 
 
 ################################################################################

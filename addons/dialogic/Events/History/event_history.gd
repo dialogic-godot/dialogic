@@ -35,8 +35,8 @@ func _execute() -> void:
 func _init() -> void:
 	event_name = "History"
 	set_default_color('Color6')
-	event_category = Category.AudioVisual
-	event_sorting_index = 0
+	event_category = Category.Other
+	event_sorting_index = 20
 	expand_by_default = false
 
 

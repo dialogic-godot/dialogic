@@ -73,7 +73,7 @@ var help_page_path : String = ""
 var _editor_node : Control = null
 
 ## The categories and which one to put it in (in the visual editor sidebar)
-enum Category {Main, Logic, Timeline, AudioVisual, Godot, Other}
+enum Category {Main, Logic, Timeline, Audio, Godot, Other, Helpers}
 var event_category:int = Category.Other
 
 

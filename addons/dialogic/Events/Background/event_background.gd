@@ -34,7 +34,7 @@ func _execute() -> void:
 func _init() -> void:
 	event_name = "Background"
 	set_default_color('Color4')
-	event_category = Category.AudioVisual
+	event_category = Category.Other
 	event_sorting_index = 0
 	expand_by_default = false
 

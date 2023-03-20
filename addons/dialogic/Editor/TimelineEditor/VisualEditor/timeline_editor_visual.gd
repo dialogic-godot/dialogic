@@ -190,7 +190,7 @@ func load_event_buttons() -> void:
 	%RightSidebar.custom_minimum_size.x = 50 * _scale
 	
 	$View.split_offset = -ProjectSettings.get_setting('dialogic/editor/visual_timeline_editor_sidebar', 200)
-	sidebar_collapsed = !%RightSidebar.size.y < 120
+	sidebar_collapsed = !%RightSidebar.size.y < 150*_scale
 	_on_right_sidebar_resized()
 
 ################################################################################
@@ -901,7 +901,8 @@ func _on_event_popup_menu_index_pressed(index:int) -> void:
 
 
 func _on_right_sidebar_resized() -> void:
-	if %RightSidebar.size.x < 120 and !sidebar_collapsed:
+	var _scale := DialogicUtil.get_editor_scale()
+	if %RightSidebar.size.x < 150*_scale and !sidebar_collapsed:
 		sidebar_collapsed = true
 		for con in %RightSidebar.get_node('EventContainer').get_children():
 			if con.get_child_count() == 0:
@@ -912,7 +913,7 @@ func _on_right_sidebar_resized() -> void:
 				for button in con.get_children():
 					button.toggle_name(false)
 		
-	elif  %RightSidebar.size.x > 120 and sidebar_collapsed:
+	elif  %RightSidebar.size.x > 150*_scale and sidebar_collapsed:
 		sidebar_collapsed = false
 		for con in %RightSidebar.get_node('EventContainer').get_children():
 			if con.get_child_count() == 0:
