@@ -51,7 +51,8 @@ func _ready() -> void:
 	collect_subsystems()
 
 	clear()
-
+	
+	timeline_ended.connect(_on_timeline_ended)
 
 
 ################################################################################
@@ -82,7 +83,7 @@ func start_timeline(timeline_resource:Variant, label_or_idx:Variant = "") -> voi
 		if label_or_idx >-1:
 			current_event_idx = label_or_idx -1
 	
-	emit_signal('timeline_started')
+	timeline_started.emit()
 	handle_next_event()
 
 
@@ -105,7 +106,7 @@ func end_timeline() -> void:
 	current_timeline = null
 	current_timeline_events = []
 	clear()
-	emit_signal("timeline_ended")
+	timeline_ended.emit()
 
 
 func handle_next_event(ignore_argument:Variant = "") -> void:
@@ -148,10 +149,6 @@ func handle_event(event_index:int) -> void:
 func clear() -> bool:
 	for subsystem in get_children():
 		subsystem.clear_game_state()
-		
-	# Clearing existing Dialogic main nodes
-	for i in get_tree().get_nodes_in_group('dialogic_main_node'):
-				i.queue_free()
 	
 	# Resetting variables
 	current_timeline = null
@@ -494,18 +491,44 @@ func process_timeline(timeline: DialogicTimeline) -> DialogicTimeline:
 ################################################################################
 ##						FOR END USER
 ################################################################################
-func start(timeline, single_instance = true):
-	var dialog_scene_path: String = DialogicUtil.get_project_setting(
-		'dialogic/layout/layout_scene', DialogicUtil.get_default_layout())
+func start(timeline, single_instance = true) -> Node:
+	var scene :Node = null
 	if single_instance:
-		if get_tree().get_nodes_in_group('dialogic_main_node').is_empty():
-			var scene = load(dialog_scene_path).instantiate()
-			DialogicUtil.apply_scene_export_overrides(scene, ProjectSettings.get_setting('dialogic/layout/export_overrides', {}))
+		# if none exists, create a new one
+		if !is_instance_valid(get_tree().get_meta('dialogic_layout_node', '')):
+			scene = load(DialogicUtil.get_project_setting(
+							'dialogic/layout/layout_scene', 
+							DialogicUtil.get_default_layout())
+						).instantiate()
+			DialogicUtil.apply_scene_export_overrides(
+				scene, 
+				ProjectSettings.get_setting('dialogic/layout/export_overrides', {})
+				)
 			get_parent().call_deferred("add_child", scene)
+			get_tree().set_meta('dialogic_layout_node', scene)
+		# otherwise use existing scene
+		else:
+			scene = get_tree().get_meta('dialogic_layout_node', null)
+			scene.show()
 	Dialogic.start_timeline(timeline)
+	return scene
 
 
-func is_running() -> bool:
-	if get_tree().get_nodes_in_group('dialogic_main_node').is_empty():
+func get_layout_node() -> Node:
+	return get_tree().get_meta('dialogic_layout_node', null)
+
+
+func _on_timeline_ended():
+	print("wowie")
+	if is_instance_valid(get_tree().get_meta('dialogic_layout_node', '')):
+		match ProjectSettings.get_setting('dialogic/layout/end_behaviour', 0):
+			0:
+				get_tree().get_meta('dialogic_layout_node', '').queue_free()
+			1:
+				get_tree().get_meta('dialogic_layout_node', '').hide()
+
+
+func has_active_layout_node() -> bool:
+	if !is_instance_valid(get_tree().get_meta('dialogic_layout_node', null)) or !get_tree().get_meta('dialogic_layout_node').visible:
 		return false
 	return true
