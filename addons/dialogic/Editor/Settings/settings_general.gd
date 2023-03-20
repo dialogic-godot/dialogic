@@ -30,10 +30,10 @@ func _ready() -> void:
 
 func refresh() -> void:
 	%PhysicsTimerButton.button_pressed = DialogicUtil.is_physics_timer()
-
-	%ExtensionsFolderPicker.set_value(DialogicUtil.get_project_setting('dialogic/extensions_folder', 'res://addons/dialogic_additions'))
-
-	# Color Palett
+	%LayoutNodeEndBehaviour.select(ProjectSettings.get_setting('dialogic/layout/end_behaviour', 0))
+	%ExtensionsFolderPicker.set_value(ProjectSettings.get_setting('dialogic/extensions_folder', 'res://addons/dialogic_additions'))
+	
+	# Color Palette
 	color_palette = DialogicUtil.get_color_palette()
 	var _scale := DialogicUtil.get_editor_scale()
 	for n in %Colors.get_children():
@@ -70,6 +70,12 @@ func _on_ExtensionsFolder_value_changed(property:String, value:String) -> void:
 		value = 'res://addons/dialogic_additions'
 	ProjectSettings.set_setting('dialogic/extensions_folder', value)
 	ProjectSettings.save()
+
+
+func _on_layout_node_end_behaviour_item_selected(index:int) -> void:
+	ProjectSettings.set_setting('dialogic/layout/end_behaviour', index)
+	ProjectSettings.save()
+
 
 ################################################################################
 ## 					EXTENSION CREATOR
@@ -177,3 +183,4 @@ func load_game_state():
 	%CreateExtensionButton.show()
 
 	find_parent('EditorView').plugin_reference.get_editor_interface().get_resource_filesystem().scan_sources()
+
