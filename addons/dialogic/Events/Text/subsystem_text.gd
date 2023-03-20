@@ -29,7 +29,7 @@ func clear_game_state() -> void:
 	dialogic.current_state_info['character'] = null
 	dialogic.current_state_info['text'] = ''
 	
-	set_skippable(ProjectSettings.get_setting('dialogic/text/skippable'))
+	set_skippable(ProjectSettings.get_setting('dialogic/text/skippable', true))
 	set_autoadvance(ProjectSettings.get_setting('dialogic/text/autoadvance', false), ProjectSettings.get_setting('dialogic/text/autocontinue_delay', 1))
 	set_manualadvance(true)
 
