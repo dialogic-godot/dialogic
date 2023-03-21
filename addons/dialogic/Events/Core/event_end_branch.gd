@@ -21,7 +21,7 @@ func find_next_index():
 	var ignore: int = 1
 	while true:
 		idx += 1
-		var event = dialogic.current_timeline.get_event(idx)
+		var event :DialogicEvent= dialogic.current_timeline.get_event(idx)
 		if not event:
 			return idx
 		if event is DialogicEndBranchEvent:

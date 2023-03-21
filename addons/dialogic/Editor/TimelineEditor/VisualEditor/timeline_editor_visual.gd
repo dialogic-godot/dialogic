@@ -855,7 +855,7 @@ func indent_events() -> void:
 				
 			if current_block_above != null and event.resource.is_expected_parent_event(current_block_above.resource):
 				indent += 1
-				event.remove_warning()
+				event.set_warning()
 			else:
 				event.set_warning('This event needs a specific parent event!')
 		

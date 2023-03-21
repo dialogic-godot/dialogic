@@ -12,11 +12,22 @@ enum Operations {Set, Add, Substract, Multiply, Divide}
 ## Name/Path of the variable that should be changed.
 var name: String = ""
 ## The operation to perform.
-var operation: int = Operations.Set
+var operation: int = Operations.Set:
+	set(value):
+		operation = value
+		if operation != Operations.Set and _value_type == 0:
+			_value_type = 1
+			ui_update_needed.emit()
+		update_editor_warning()
+
 ## The value that is used. Can be a variable as well.
-var value: String = ""
+var value: Variant = ""
+var _value_type := 0 :# helper for the ui 0 = string, 1= float, 2= variable 3= expression, 4= random int (a special expression)
+	set(value):
+		_value_type = value
+		update_editor_warning()
+
 ## If true, a random number between [random_min] and [random_max] is used instead of [value].
-var random_enabled: bool = false
 var random_min: int = 0
 var random_max: int = 100
 
@@ -28,14 +39,9 @@ var random_max: int = 100
 func _execute() -> void:
 	if name:
 		var orig :Variant= dialogic.VAR.get_variable(name)
-		var the_value :Variant= value
-		if value.begins_with("{"):
-			the_value = dialogic.VAR.get_variable(value)
-		if random_enabled:
-			the_value = randi()%(random_max-random_min)+random_min
+		if value and orig != null:
+			var the_value :Variant = dialogic.Expression.execute_string(value)
 		
-		if orig != null:
-			
 			if operation != Operations.Set and orig.is_valid_float() and value.is_valid_float():
 				orig = orig.to_float()
 				the_value = value.to_float()
@@ -51,7 +57,10 @@ func _execute() -> void:
 			elif operation == Operations.Set:
 				dialogic.VAR.set_variable(name, str(the_value))
 			else:
-				printerr("Dialogic: Set Variable event failed because one value wasn't a float!")
+				printerr("Dialogic: Set Variable event failed because one value wasn't a float! [", orig, ", ",the_value,"]")
+		else:
+			printerr("Dialogic: Set Variable event failed because one value wasn't set!")
+			
 	finish()
 
 
@@ -86,20 +95,24 @@ func to_text() -> String:
 				string+= " *= "
 			Operations.Divide:
 				string+= " /= "
-		string += value
-	if random_enabled:
-		string += ' [random="True"'
-		if random_min != 0:
-			string += ' min="'+str(random_min)+'"' 
-		if random_max != 100:
-			string += ' max="'+str(random_max)+'"' 
-		string += "]"
+		
+		value = str(value)
+		match _value_type:
+			0: # String
+				string += '"'+value.replace('"', '\\"')+'"'
+			1,3: # Float or Expression
+				string += str(value)
+			2: # Variable
+				string += '{'+value+'}'
+			4:
+				string += 'range('+str(random_min)+','+str(random_max)+').pick_random()'
+	
 	return string
 
 
 func from_text(string:String) -> void:
 	var reg := RegEx.new()
-	reg.compile("VAR(?<name>[^=+\\-*\\/]*)(?<operation>=|\\+=|-=|\\*=|\\/=)(?<value>[^\\[\\n]*)(?<shortcode>\\[.*)?")
+	reg.compile("VAR(?<name>[^=+\\-*\\/]*)?(?<operation>=|\\+=|-=|\\*=|\\/=)?(?<value>.*)")
 	var result := reg.search(string)
 	if !result:
 		return
@@ -115,13 +128,27 @@ func from_text(string:String) -> void:
 			operation = Operations.Multiply
 		'/=':
 			operation = Operations.Divide
-	value = result.get_string('value').strip_edges()
 	
-	if !result.get_string('shortcode').is_empty():
-		var shortcodeparams := parse_shortcode_parameters(result.get_string('shortcode'))
-		random_enabled = true if shortcodeparams.get('random', "True") == "True" else false
-		random_min = DialogicUtil.logical_convert(shortcodeparams.get('min', 0))
-		random_max = DialogicUtil.logical_convert(shortcodeparams.get('max', 100))
+	if result.get_string('value'):
+		value = result.get_string('value').strip_edges()
+		if value.begins_with('"') and value.ends_with('"') and value.count('"')-value.count('\\"') == 2:
+			value = result.get_string('value').strip_edges().replace('"', '')
+			_value_type = 0
+		elif value.begins_with('{') and value.ends_with('}') and value.count('{') == 1:
+			value = result.get_string('value').strip_edges().trim_suffix('}').trim_prefix('{')
+			_value_type = 2
+		elif value.begins_with('random('):
+			_value_type = 4
+			var randinf := str(value).trim_prefix('random(').trim_suffix(')').split(',')
+			random_min = int(randinf[0])
+			random_max = int(randinf[1])
+		else:
+			value = result.get_string('value').strip_edges()
+			if value.is_valid_float():
+				_value_type = 1
+			else:
+				_value_type = 3
+
 
 
 func is_valid_event(string:String) -> bool:
@@ -142,38 +169,59 @@ func build_event_editor():
 				'label': 'to be',
 				'icon': load("res://addons/dialogic/Editor/Images/Dropdown/set.svg"),
 				'value': Operations.Set
-			},
-			{
+			},{
 				'label': 'to itself plus',
 				'icon': load("res://addons/dialogic/Editor/Images/Dropdown/plus.svg"),
 				'value': Operations.Add
-			},
-			{
+			},{
 				'label': 'to itself minus',
 				'icon': load("res://addons/dialogic/Editor/Images/Dropdown/minus.svg"),
 				'value': Operations.Substract
-			},
-			{
+			},{
 				'label': 'to itself multiplied by',
 				'icon': load("res://addons/dialogic/Editor/Images/Dropdown/multiply.svg"),
 				'value': Operations.Multiply
-			},
-			{
+			},{
 				'label': 'to itself divided by',
 				'icon': load("res://addons/dialogic/Editor/Images/Dropdown/divide.svg"),
 				'value': Operations.Divide
 			}
 		]
 	}, '!name.is_empty()')
+	add_header_edit('_value_type', ValueType.FixedOptionSelector, '', '', {
+		'selector_options': [
+			{
+				'label': 'String',
+				'icon': ["String", "EditorIcons"],
+				'value': 0
+			},{
+				'label': 'Number',
+				'icon': ["float", "EditorIcons"],
+				'value': 1
+			},{
+				'label': 'Variable',
+				'icon': ["ClassList", "EditorIcons"],
+				'value': 2
+			},{
+				'label': 'Expression',
+				'icon': ["Variant", "EditorIcons"],
+				'value': 3
+			},{
+				'label': 'Random Number',
+				'icon': ["RandomNumberGenerator", "EditorIcons"],
+				'value': 4
+			}],
+		'symbol_only':true}, 
+		'!name.is_empty()')
+	add_header_edit('value', ValueType.SinglelineText, '', '', {}, '!name.is_empty() and (_value_type == 0 or _value_type == 3) ')
+	add_header_edit('value', ValueType.Float, '', '', {}, '!name.is_empty()  and _value_type == 1')
 	add_header_edit('value', ValueType.ComplexPicker, '', '', 
-			{'suggestions_func'	: get_value_suggestions, 
-			'editor_icon' 		: ["Variant", "EditorIcons"], }, 
-			'!name.is_empty() and not random_enabled')
-	add_header_label('a random integer', 'random_enabled')
-	add_header_button('', _on_variable_editor_pressed, 'Variable Editor', ["EditAddRemove", "EditorIcons"])
-	add_body_edit('random_enabled', ValueType.Bool, 'Use Random Integer:', '', {}, '!name.is_empty()')
-	add_body_edit('random_min', ValueType.Integer, 'Min:', '', {}, '!name.is_empty() and random_enabled')
-	add_body_edit('random_max', ValueType.Integer, 'Max:', '', {}, '!name.is_empty() and random_enabled')
+			{'suggestions_func' : get_value_suggestions}, 
+			'!name.is_empty() and _value_type == 2')
+	add_header_label('an int between', '_value_type == 4')
+	add_header_edit('random_min', ValueType.Integer, '', 'and', {}, '!name.is_empty() and  _value_type == 4')
+	add_header_edit('random_max', ValueType.Integer, '', '', {}, '!name.is_empty() and _value_type == 4')
+	add_header_button('', _on_variable_editor_pressed, 'Variable Editor', ["ExternalLink", "EditorIcons"])
 
 func get_var_suggestions(filter:String) -> Dictionary:
 	var suggestions := {}
@@ -189,8 +237,6 @@ func get_var_suggestions(filter:String) -> Dictionary:
 func get_value_suggestions(filter:String) -> Dictionary:
 	var suggestions := {}
 	
-	if filter:
-		suggestions[filter] = {'value':filter, 'editor_icon':["GuiScrollArrowRight", "EditorIcons"]}
 	var vars: Dictionary = DialogicUtil.get_project_setting('dialogic/variables', {})
 	for var_path in DialogicUtil.list_variables(vars):
 		suggestions[var_path] = {'value':var_path, 'editor_icon':["ClassList", "EditorIcons"]}
@@ -201,3 +247,10 @@ func _on_variable_editor_pressed():
 	var editor_manager := _editor_node.find_parent('EditorsManager')
 	if editor_manager:
 		editor_manager.open_editor(editor_manager.editors['VariablesEditor']['node'], true)
+
+
+func update_editor_warning() -> void:
+	if _value_type == 0 and operation != Operations.Set:
+		ui_update_warning.emit('You cannot do this operation with a string!')
+	else:
+		ui_update_warning.emit('')

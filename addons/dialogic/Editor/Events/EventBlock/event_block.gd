@@ -29,7 +29,7 @@ var body_was_build := false
 var has_body_content := false
 
 # list that stores visibility conditions 
-var field_conditions_list := []
+var field_list := []
 
 # for choice and condition
 var end_node:Node = null:
@@ -75,13 +75,11 @@ func load_data(data:DialogicEvent) -> void:
 	resource = data
 
 
-func set_warning(text:String) -> void:
-	warning.show()
-	warning.tooltip_text = text
-
-
-func remove_warning(text := '') -> void:
-	if warning.tooltip_text == text or text == '':
+func set_warning(text:String= "") -> void:
+	if !text.is_empty():
+		warning.show()
+		warning.tooltip_text = text
+	else:
 		warning.hide()
 
 
@@ -206,10 +204,9 @@ func build_editor(build_header:bool = true, build_body:bool = false) ->  void:
 			editor_node.use_decibel_mode()
 		elif p.dialogic_type == resource.ValueType.FixedOptionSelector:
 			editor_node = load("res://addons/dialogic/Editor/Events/Fields/OptionSelector.tscn").instantiate()
-			if p.display_info.has('selector_options'):
-				editor_node.options = p.display_info.selector_options
-			if p.display_info.has('disabled'):
-				editor_node.disabled = p.display_info.disabled
+			editor_node.options = p.display_info.get('selector_options', [])
+			editor_node.disabled = p.display_info.get('disabled', false)
+			editor_node.symbol_only = p.display_info.get('symbol_only', false)
 		
 		elif p.dialogic_type == resource.ValueType.Vector2:
 			editor_node = load("res://addons/dialogic/Editor/Events/Fields/Vector2.tscn").instantiate()
@@ -252,13 +249,14 @@ func build_editor(build_header:bool = true, build_body:bool = false) ->  void:
 		
 		### --------------------------------------------------------------------
 		### 3. FILL THE NEW NODE WITH INFORMATION AND LISTEN TO CHANGES
+		field_list.append({'node':editor_node})
 		if "event_resource" in editor_node:
 			editor_node.event_resource = resource
 		if 'property_name' in editor_node:
 			editor_node.property_name = p.name
+			field_list[-1]['property'] = p.name
 		if editor_node.has_method('set_value'):
-			if resource.get(p.name) != null: # Got an error here saying that "Cannot convert argument 1 from Nil to bool." so I'm adding this check
-				editor_node.set_value(resource.get(p.name))
+			editor_node.set_value(resource.get(p.name))
 		if editor_node.has_signal('value_changed'):
 			editor_node.value_changed.connect(set_property)
 		var left_label :Label = null 
@@ -275,9 +273,11 @@ func build_editor(build_header:bool = true, build_body:bool = false) ->  void:
 			location.move_child(right_label, editor_node.get_index()+1)
 		
 		if p.has('condition'):
-			field_conditions_list.append([p.condition, [editor_node]])
-			if left_label: field_conditions_list[-1][1].append(left_label)
-			if right_label: field_conditions_list[-1][1].append(right_label)
+			field_list[-1]['condition'] = p.condition
+			if left_label: 
+				field_list.append({'node': left_label, 'condition':p.condition})
+			if right_label: 
+				field_list.append({'node': right_label, 'condition':p.condition})
 	
 	if build_body:
 		has_body_content = true
@@ -290,20 +290,18 @@ func build_editor(build_header:bool = true, build_body:bool = false) ->  void:
 
 
 func recalculate_field_visibility() -> void:
-	for node_con in field_conditions_list:
-		if node_con[0].is_empty():
-			for node in node_con[1]: node.show()
+	for p in field_list:
+		if !p.has('condition') or p.condition.is_empty():
+			p.node.show()
 		else:
-			var expr = Expression.new()
-			expr.parse(node_con[0])
+			var expr := Expression.new()
+			expr.parse(p.condition)
 			if expr.execute([], resource):
-				for node in node_con[1]: node.show()
+				p.node.show()
 			else:
-				for node in node_con[1]: node.hide()
+				p.node.hide()
 			if expr.has_execute_failed():
-				var name :String= "unnamed" if "property_name" not in node_con[1][0] else node_con[1][0].property_name
-				printerr("[Dialogic] Failed executing visibility condition for '",name,"': " + expr.get_error_text())
-	
+				printerr("[Dialogic] Failed executing visibility condition for '",p.get('property', 'unnamed'),"': " + expr.get_error_text())
 	%ExpandButton.visible = false
 	if body_content_container != null:
 		for node in body_content_container.get_children():
@@ -320,6 +318,12 @@ func set_property(property_name:String, value:Variant) -> void:
 		end_node.parent_node_changed()
 
 
+func _on_resource_ui_update_needed() -> void:
+	for node_info in field_list:
+		if node_info.node.has_method('set_value'):
+			node_info.node.set_value(resource.get(node_info.property))
+		
+
 func _update_color() -> void:
 	if resource.dialogic_color_name != '':
 		%IconPanel.self_modulate = DialogicUtil.get_color(resource.dialogic_color_name)
@@ -335,6 +339,7 @@ func _ready():
 	$PanelContainer.self_modulate = get_theme_color("accent_color", "Editor")
 	warning.texture = get_theme_icon("NodeWarning", "EditorIcons")
 	warning.size = Vector2(16 * _scale, 16 * _scale)
+	warning.position = Vector2(-5 * _scale, -10 * _scale)
 	title_label.add_theme_color_override("font_color", Color(1,1,1,1))
 	if not get_theme_constant("dark_theme", "Editor"):
 		title_label.add_theme_color_override("font_color", get_theme_color("font_color", "Editor"))
@@ -349,6 +354,8 @@ func _ready():
 			title_label.text = resource.event_name
 		if resource._get_icon() != null:
 			_set_event_icon(resource._get_icon())
+		resource.ui_update_needed.connect(_on_resource_ui_update_needed)
+		resource.ui_update_warning.connect(set_warning)
 
 		%IconPanel.self_modulate = resource.event_color
 		
