@@ -57,13 +57,10 @@ func _on_dialog_text_started_revealing_text():
 		custom_minimum_size.x = min(max_width, longest_line_len)
 		# a margin has to be added vertically as well because of the stylebox
 		custom_minimum_size.y = line_height*min(lines, max_lines)
-		print(custom_minimum_size)
 		if Dialogic.Choices.is_question(Dialogic.current_event_idx):
-			print("choice!")
 			custom_minimum_size.y += 80
 			$DialogText.offset_bottom = -25
 		
-		print(custom_minimum_size)
 		# Enable Scroll bar when more then max lines
 		$DialogText.scroll_active = lines > max_lines
 

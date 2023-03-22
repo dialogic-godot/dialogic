@@ -51,7 +51,7 @@ func parse_variables(text:String) -> String:
 	return text
 
 
-func set_variable(variable_name: String, value: String) -> bool:
+func set_variable(variable_name: String, value: Variant) -> bool:
 	variable_name = variable_name.trim_prefix('{').trim_suffix('}')
 	
 	# Getting all the autoloads
@@ -87,29 +87,17 @@ func get_variable(variable_path:String, default = null) -> Variant:
 	if variable_path in dialogic.current_state_info['variables'].keys():
 		return dialogic.current_state_info['variables'][variable_path]
 	
-	if '.' in variable_path:
-		var query := variable_path.split('.')
-		var from := query[0]
-		var variable = query[1]
-		for a in autoloads:
-			if a.name == from:
-				var myvar :Variant= a.get(variable)
-				if myvar != null:
-					return myvar
-				else:
-					printerr("Dialogic: Tried accessing non-existant variable '"+variable_path+"'.")
-					return default
-		
-		# if none is found, try getting it from the dialogic variables
+	else:
 		var value :=  _get_value_in_dictionary(variable_path, dialogic.current_state_info['variables']) 
 		if value != null:
 			return value
-		else:
-			printerr("Dialogic: Tried accessing non-existant variable '"+variable_path+"'.")
-			return default
-	else:
-		printerr("Dialogic: Tried accessing non-existant variable '"+variable_path+"'.")
-		return default
+	
+		value = dialogic.Expression.execute_string(variable_path, null)
+		if value != null:
+			return value
+		
+	printerr("Dialogic: Failed accessing '"+variable_path+"'.")
+	return default
 	
 
 # this will set a value in a dictionary (or a sub-dictionary based on the path)

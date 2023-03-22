@@ -41,21 +41,20 @@ func _execute() -> void:
 		var orig :Variant= dialogic.VAR.get_variable(name)
 		if value and orig != null:
 			var the_value :Variant = dialogic.Expression.execute_string(value)
-		
-			if operation != Operations.Set and orig.is_valid_float() and value.is_valid_float():
-				orig = orig.to_float()
-				the_value = value.to_float()
+			if operation != Operations.Set and str(orig).is_valid_float() and str(value).is_valid_float():
+				orig = float(orig)
+				the_value = float(the_value)
 				match operation:
 					Operations.Add:
-						dialogic.VAR.set_variable(name, str(orig+the_value))
+						dialogic.VAR.set_variable(name, orig+the_value)
 					Operations.Substract:
-						dialogic.VAR.set_variable(name, str(orig-the_value))
+						dialogic.VAR.set_variable(name, orig-the_value)
 					Operations.Multiply:
-						dialogic.VAR.set_variable(name, str(orig*the_value))
+						dialogic.VAR.set_variable(name, orig*the_value)
 					Operations.Divide:
-						dialogic.VAR.set_variable(name, str(orig/the_value))
+						dialogic.VAR.set_variable(name, orig/the_value)
 			elif operation == Operations.Set:
-				dialogic.VAR.set_variable(name, str(the_value))
+				dialogic.VAR.set_variable(name, the_value)
 			else:
 				printerr("Dialogic: Set Variable event failed because one value wasn't a float! [", orig, ", ",the_value,"]")
 		else:
