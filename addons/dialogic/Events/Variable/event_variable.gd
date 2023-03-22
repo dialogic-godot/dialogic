@@ -40,8 +40,8 @@ func _execute() -> void:
 	if name:
 		var orig :Variant= dialogic.VAR.get_variable(name)
 		if value and orig != null:
-			var the_value :Variant = dialogic.Expression.execute_string(value)
-			if operation != Operations.Set and str(orig).is_valid_float() and str(value).is_valid_float():
+			var the_value :Variant = dialogic.VAR.get_variable(value)
+			if operation != Operations.Set and str(orig).is_valid_float() and str(the_value).is_valid_float():
 				orig = float(orig)
 				the_value = float(the_value)
 				match operation:
@@ -136,9 +136,9 @@ func from_text(string:String) -> void:
 		elif value.begins_with('{') and value.ends_with('}') and value.count('{') == 1:
 			value = result.get_string('value').strip_edges().trim_suffix('}').trim_prefix('{')
 			_value_type = 2
-		elif value.begins_with('random('):
+		elif value.begins_with('range(') and value.ends_with(').pick_random()'):
 			_value_type = 4
-			var randinf := str(value).trim_prefix('random(').trim_suffix(')').split(',')
+			var randinf := str(value).trim_prefix('range(').trim_suffix(').pick_random()').split(',')
 			random_min = int(randinf[0])
 			random_max = int(randinf[1])
 		else:
