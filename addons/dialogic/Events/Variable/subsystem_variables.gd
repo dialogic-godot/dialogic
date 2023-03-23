@@ -41,27 +41,26 @@ func parse_variables(text:String) -> String:
 	
 	if '{' in text: # Otherwise, why bother?
 		# Trying to extract the curly brackets from the text
-		var regex = RegEx.new()
-		regex.compile("\\{(?<variable>[^{}]*)\\}")
-		var parsed = text
+		var regex := RegEx.new()
+		regex.compile("(?<!\\\\)\\{(?<variable>([^{}]|\\{.*\\})*)\\}")
+		var parsed := text.replace('\\{', '{')
 		for result in regex.search_all(text):
-			var value = get_variable(result.get_string('variable'), "<NOT FOUND>")
+			var value := get_variable(result.get_string('variable'), "<NOT FOUND>")
 			parsed = parsed.replace("{"+result.get_string('variable')+"}", str(value))
 		return parsed
 	return text
 
 
-func set_variable(variable_name: String, value: String) -> bool:
-	if variable_name.left(1) == "{" and variable_name.right(1) == "}":
-		variable_name = variable_name.substr(1,variable_name.length()-2)
+func set_variable(variable_name: String, value: Variant) -> bool:
+	variable_name = variable_name.trim_prefix('{').trim_suffix('}')
 	
 	# Getting all the autoloads
-	var autoloads = get_autoloads()
+	var autoloads := get_autoloads()
 	
 	if '.' in variable_name:
-		var query = variable_name.split('.')
-		var from = query[0]
-		var variable = query[1]
+		var query := variable_name.split('.')
+		var from := query[0]
+		var variable := query[1]
 		for a in autoloads:
 			if a.name == from:
 				a.set(variable, value)
@@ -78,45 +77,34 @@ func set_variable(variable_name: String, value: String) -> bool:
 		printerr("Dialogic: Tried accessing non-existant variable '"+variable_name+"'.")
 	return false
 
+
 func get_variable(variable_path:String, default = null) -> Variant:
-	if variable_path.left(1) == "{" and variable_path.right(1) == "}":
-		variable_path = variable_path.substr(1,variable_path.length()-2)
+	variable_path = variable_path.trim_prefix('{').trim_suffix('}')
+	
 	# Getting all the autoloads
-	var autoloads = get_autoloads()
+	var autoloads := get_autoloads()
 	
 	if variable_path in dialogic.current_state_info['variables'].keys():
 		return dialogic.current_state_info['variables'][variable_path]
 	
-	if '.' in variable_path:
-		var query = variable_path.split('.')
-		var from = query[0]
-		var variable = query[1]
-		for a in autoloads:
-			if a.name == from:
-				var myvar = a.get(variable)
-				if myvar != null:
-					return myvar
-				else:
-					printerr("Dialogic: Tried accessing non-existant variable '"+variable_path+"'.")
-					return default
-		
-		# if none is found, try getting it from the dialogic variables
-		var value =  _get_value_in_dictionary(variable_path, dialogic.current_state_info['variables']) 
+	else:
+		var value :=  _get_value_in_dictionary(variable_path, dialogic.current_state_info['variables']) 
 		if value != null:
 			return value
-		else:
-			printerr("Dialogic: Tried accessing non-existant variable '"+variable_path+"'.")
-			return default
-	else:
-		printerr("Dialogic: Tried accessing non-existant variable '"+variable_path+"'.")
-		return default
+	
+		value = dialogic.Expression.execute_string(variable_path, null)
+		if value != null:
+			return value
+		
+	printerr("Dialogic: Failed accessing '"+variable_path+"'.")
+	return default
 	
 
 # this will set a value in a dictionary (or a sub-dictionary based on the path)
 # e.g. it could set "Something.Something.Something" in {'Something':{'Something':{'Someting':"value"}}}
 func _set_value_in_dictionary(path:String, dictionary:Dictionary, value):
 	if '.' in path:
-		var from = path.split('.')[0]
+		var from := path.split('.')[0]
 		if from in dictionary.keys():
 			dictionary[from] = _set_value_in_dictionary(path.trim_prefix(from+"."), dictionary[from], value)
 	else:
@@ -124,11 +112,12 @@ func _set_value_in_dictionary(path:String, dictionary:Dictionary, value):
 			dictionary[path] = value
 	return dictionary
 
+
 # this will get a value in a dictionary (or a sub-dictionary based on the path)
 # e.g. it could get "Something.Something.Something" in {'Something':{'Something':{'Someting':"value"}}}
-func _get_value_in_dictionary(path:String, dictionary:Dictionary, default= null):
+func _get_value_in_dictionary(path:String, dictionary:Dictionary, default= null) -> Variant:
 	if '.' in path:
-		var from = path.split('.')[0]
+		var from := path.split('.')[0]
 		if from in dictionary.keys():
 			return _get_value_in_dictionary(path.trim_prefix(from+"."), dictionary[from], default)
 	else:
@@ -137,22 +126,24 @@ func _get_value_in_dictionary(path:String, dictionary:Dictionary, default= null)
 	return default
 
 func get_autoloads() -> Array:
-	var autoloads = []
+	var autoloads := []
 	for c in get_tree().root.get_children():
 		autoloads.append(c)
 	return autoloads
 
 
 # allows to set dialogic built-in variables 
-func _set(property, value):
+func _set(property, value) -> bool:
 	property = str(property)
-	var variables = dialogic.current_state_info['variables']
+	var variables: Dictionary = dialogic.current_state_info['variables']
 	if property in variables.keys():
 		if typeof(variables[property]) != TYPE_DICTIONARY:
 			variables[property] = value
 			return true
 		if value is VariableFolder:
 			return true 
+	return false
+
 
 # allows to get dialogic built-in variables 
 func _get(property):

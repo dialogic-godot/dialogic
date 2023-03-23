@@ -158,38 +158,6 @@ func clear() -> bool:
 	return true
 
 
-################################################################################
-## 						STATE
-################################################################################
-
-func execute_condition(condition:String) -> bool:
-	var regex: RegEx = RegEx.new()
-	regex.compile('{(\\w.*)}')
-	var result := regex.search_all(condition)
-	if result:
-		for res in result:
-			var r_string: String = res.get_string()
-			var value: String = self.VAR.get_variable(r_string)
-			if !value.is_valid_float():
-				value = '"'+value+'"'
-			condition = condition.replace(r_string, value)
-	var expr: Expression = Expression.new()
-	# this doesn't work currently, not sure why. However you can still use autoloads in conditions
-	# you have to put them in {} brackets tho. E.g. `if {MyAutoload.my_var} > 20:`
-#	var autoload_names: Array = []
-#	var autoloads: Array = []
-#	for c in get_tree().root.get_children():
-#		autoloads.append(c)
-#		autoload_names.append(c.name)
-#	expr.parse(condition, autoload_names)
-#	if expr.execute(autoloads, self):
-	expr.parse(condition)
-	if expr.execute([], self):
-		return true
-	if expr.has_execute_failed():
-		printerr('Dialogic: Condition failed to execute: ', expr.get_error_text())
-	return false
-
 
 ################################################################################
 ## 						SAVING & LOADING
@@ -519,7 +487,6 @@ func get_layout_node() -> Node:
 
 
 func _on_timeline_ended():
-	print("wowie")
 	if is_instance_valid(get_tree().get_meta('dialogic_layout_node', '')):
 		match ProjectSettings.get_setting('dialogic/layout/end_behaviour', 0):
 			0:

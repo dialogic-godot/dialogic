@@ -180,9 +180,9 @@ func color_word(dict:Dictionary, color:Color, line:String, word:String, from:int
 
 func color_region(dict:Dictionary, color:Color, line:String, start:String, end:String, from:int = 0, to:int = 0) -> Dictionary:
 	if end.is_empty():
-		region_regex.compile(start+".*")
+		region_regex.compile("(?<!\\\\)"+start+".*")
 	else:
-		region_regex.compile(start+"(.(?!"+end+"))*."+end)
+		region_regex.compile("(?<!\\\\)"+start+"(.(?!"+end+"))*."+end)
 	if to <= from: 
 		to = len(line)-1
 	for region in region_regex.search_all(line.substr(from, to-from+2)):

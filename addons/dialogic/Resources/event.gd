@@ -101,6 +101,9 @@ enum ValueType {
 }
 ## List that stores the fields for the editor
 var editor_list : Array = []
+## Singal that notifies the visual editor block to update
+signal ui_update_needed
+signal ui_update_warning(text)
 
 
 ## Makes this resource printable.

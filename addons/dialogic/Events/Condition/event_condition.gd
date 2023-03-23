@@ -24,25 +24,22 @@ func _execute() -> void:
 	
 	if condition.is_empty(): condition = "true"
 	
-	var result = dialogic.execute_condition(condition)
+	var result :bool= dialogic.Expression.execute_condition(condition)
 	if not result:
-		var idx = dialogic.current_event_idx
-		var ignore = 1
+		var idx :int= dialogic.current_event_idx
+		var ignore := 1
 		while true:
 			idx += 1
-			if not dialogic.current_timeline.get_event(idx):
+			if not dialogic.current_timeline.get_event(idx) or ignore == 0:
 				break
-			if ignore == 0 and dialogic.current_timeline.get_event(idx) is DialogicConditionEvent:
-				break
-			if dialogic.current_timeline.get_event(idx).can_contain_events:
+			elif dialogic.current_timeline.get_event(idx).can_contain_events:
 				ignore += 1
 			elif dialogic.current_timeline.get_event(idx) is DialogicEndBranchEvent:
 				ignore -= 1
-			elif ignore == 0:
-				break
 		
 		dialogic.current_event_idx = idx-1
 	finish()
+
 
 ## only called if the previous event was an end-branch event
 ## return true if this event should be executed if the previous event was an end-branch event

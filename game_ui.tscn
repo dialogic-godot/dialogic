@@ -1,14 +1,11 @@
-[gd_scene load_steps=10 format=3 uid="uid://bodlkbe7qcbqs"]
+[gd_scene load_steps=7 format=3 uid="uid://bodlkbe7qcbqs"]
 
 [ext_resource type="Script" path="res://addons/dialogic/Events/Background/node_background_holder.gd" id="1_7xoxi"]
 [ext_resource type="Script" path="res://addons/dialogic/Events/Text/node_dialog_text.gd" id="1_pyeja"]
 [ext_resource type="Script" path="res://addons/dialogic/Events/Choice/node_choice_button.gd" id="2_0chsi"]
 [ext_resource type="Script" path="res://addons/dialogic/Events/Text/node_next_indicator.gd" id="2_8o2ju"]
-[ext_resource type="Script" path="res://addons/dialogic/Events/Text/node_input_handler.gd" id="2_cul8m"]
 [ext_resource type="Texture2D" uid="uid://bvqgwmds7enrv" path="res://icon.svg" id="3_y357o"]
 [ext_resource type="Script" path="res://addons/dialogic/Events/Text/node_name_label.gd" id="3_yr5sj"]
-[ext_resource type="Script" path="res://addons/dialogic/Events/Character/node_portrait_position.gd" id="7_sijvi"]
-[ext_resource type="Script" path="res://addons/dialogic/Events/Character/node_portrait_holder.gd" id="8_mhj1c"]
 
 [node name="GameUI" type="CanvasLayer"]
 
@@ -135,17 +132,3 @@ flat = true
 alignment = 0
 expand_icon = true
 script = ExtResource("2_0chsi")
-
-[node name="DialogicNode_InputHandler" type="Node" parent="."]
-script = ExtResource("2_cul8m")
-
-[node name="DialogicNode_PortraitPosition" type="Marker2D" parent="."]
-position = Vector2(148, 656)
-script = ExtResource("7_sijvi")
-
-[node name="DialogicNode_PortraitPosition2" type="Marker2D" parent="."]
-position = Vector2(983, 656)
-script = ExtResource("7_sijvi")
-
-[node name="DialogicNode_PortraitHolder" type="CanvasLayer" parent="."]
-script = ExtResource("8_mhj1c")

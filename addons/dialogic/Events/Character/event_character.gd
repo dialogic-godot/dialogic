@@ -196,11 +196,6 @@ func to_text() -> String:
 		ActionTypes.Leave: result_string += "Leave "
 		ActionTypes.Update: result_string += "Update "
 	
-#	print('to_string')
-	
-#	print('character ', character)
-#	print('characterfrom ', _character_from_directory)
-	
 	if character or _character_from_directory == '--All--':
 		if action_type == ActionTypes.Leave and _character_from_directory == '--All--':
 			result_string += "--All--"
@@ -376,7 +371,7 @@ func build_event_editor() -> void:
 			'file_extension' 	: '.dch', 
 			'suggestions_func' 	: get_character_suggestions, 
 			'icon' 				: load("res://addons/dialogic/Editor/Images/Resources/character.svg")})
-	add_header_button('', _on_character_edit_pressed, 'Edit character', ["Edit", "EditorIcons"], 'character != null and _character_from_directory != "--All--"')
+	add_header_button('', _on_character_edit_pressed, 'Edit character', ["ExternalLink", "EditorIcons"], 'character != null and _character_from_directory != "--All--"')
 	
 	add_header_edit('portrait', ValueType.ComplexPicker, '', '', 
 			{'empty_text' 		: 'Default', 

@@ -1,5 +1,5 @@
 @tool
-extends Control
+extends MenuButton
 
 ## Event block field for constant options. For varying options use ComplexPicker.
 
@@ -7,45 +7,57 @@ signal value_changed
 var property_name : String
 
 var options : Array = []
-var disabled = false:
-	get:
-		return disabled
-	set(_disabled):
-		disabled = _disabled
-		$MenuButton.disabled = disabled
-		$MenuButton.focus_mode = FOCUS_NONE
 
-func _ready():
-	$MenuButton.add_theme_stylebox_override("normal", get_theme_stylebox("normal", "LineEdit"))
-	$MenuButton.add_theme_stylebox_override("hover", get_theme_stylebox("normal", "LineEdit"))
+## if true, only the symbol will be displayed. In the dropdown text will be visible.
+## Useful for making UI simpler
+var symbol_only := false:
+	set(value):
+		symbol_only = value
+		if value: text = ""
+
+var current_value :Variant = -1
+
+func _ready() -> void:
+	add_theme_stylebox_override("normal", get_theme_stylebox("normal", "LineEdit"))
+	add_theme_stylebox_override("hover", get_theme_stylebox("normal", "LineEdit"))
 	
-	$MenuButton.add_theme_stylebox_override("focus", get_theme_stylebox("focus", "LineEdit"))
-	$MenuButton.add_theme_stylebox_override("disabled", get_theme_stylebox("normal", "LineEdit"))
-	$MenuButton.add_theme_color_override("font_disabled_color", get_theme_color("font_color", "MenuButton"))
-	$MenuButton.about_to_popup.connect(insert_options)
-	$MenuButton.get_popup().index_pressed.connect(index_pressed)
+	add_theme_stylebox_override("focus", get_theme_stylebox("focus", "LineEdit"))
+	add_theme_stylebox_override("disabled", get_theme_stylebox("normal", "LineEdit"))
+	add_theme_color_override("font_disabled_color", get_theme_color("font_color", "MenuButton"))
+	about_to_popup.connect(insert_options)
+	get_popup().index_pressed.connect(index_pressed)
 
 
-func set_value(value):
+func set_value(value) -> void:
 	for option in options:
 		if option['value'] == value:
-			$MenuButton.text = option['label']
-			$MenuButton.icon = option.get('icon', load("res://addons/dialogic/Editor/Images/Dropdown/default.svg"))
+			if typeof(option.get('icon')) == TYPE_ARRAY:
+				option.icon = callv('get_theme_icon', option.get('icon'))
+			if !symbol_only:
+				text = option['label']
+			icon = option.get('icon', load("res://addons/dialogic/Editor/Images/Dropdown/default.svg"))
+			current_value = value
 
-func get_value():
-	return $MenuButton.text
 
-func insert_options():
-	$MenuButton.get_popup().clear()
+func get_value() -> Variant:
+	return current_value
+
+
+func insert_options() -> void:
+	get_popup().clear()
 	
-	var idx = 0
+	var idx := 0
 	for option in options:
-		$MenuButton.get_popup().add_icon_item(option.get('icon',load("res://addons/dialogic/Editor/Images/Dropdown/default.svg")), option['label'])
-		$MenuButton.get_popup().set_item_metadata(idx, option['value'])
+		if typeof(option.get('icon')) == TYPE_ARRAY:
+			option.icon = callv('get_theme_icon', option.get('icon'))
+		get_popup().add_icon_item(option.get('icon',load("res://addons/dialogic/Editor/Images/Dropdown/default.svg")), option['label'])
+		get_popup().set_item_metadata(idx, option['value'])
 		idx += 1
 
-func index_pressed(idx):
-	$MenuButton.text = $MenuButton.get_popup().get_item_text(idx)
-	$MenuButton.icon = $MenuButton.get_popup().get_item_icon(idx)
-	
-	emit_signal("value_changed", property_name, $MenuButton.get_popup().get_item_metadata(idx))
+
+func index_pressed(idx:int) -> void:
+	current_value = idx
+	if !symbol_only: 
+		text = get_popup().get_item_text(idx)
+	icon = get_popup().get_item_icon(idx)
+	value_changed.emit(property_name, get_popup().get_item_metadata(idx))
