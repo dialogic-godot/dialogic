@@ -55,6 +55,8 @@ func update_resource_list(resources_list:PackedStringArray = []) -> void:
 	var timeline_directory: Dictionary = editors_manager.resource_helper.timeline_directory
 	if resources_list.is_empty():
 		resources_list = ProjectSettings.get_setting('dialogic/editor/last_resources', [])
+		if !current_file in resources_list:
+			resources_list.append(current_file)
 	
 	%ResourcesList.clear()
 	var idx := 0
@@ -80,13 +82,14 @@ func update_resource_list(resources_list:PackedStringArray = []) -> void:
 					%ResourcesList.set_item_custom_fg_color(idx, get_theme_color("accent_color", "Editor"))
 				idx += 1
 	%ResourcesList.sort_items_by_text()
+	ProjectSettings.set_setting('dialogic/editor/last_resources', resources_list)
 
 
 func _on_resources_list_item_selected(index:int) -> void:
 	if %ResourcesList.get_item_metadata(index) == null:
 		return
 	editors_manager.edit_resource(load(%ResourcesList.get_item_metadata(index)))
-
+	
 
 func _on_resources_list_item_clicked(index: int, at_position: Vector2, mouse_button_index: int):
 	# If clicked with the middle mouse button, remove the item from the list
