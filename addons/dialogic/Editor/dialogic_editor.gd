@@ -35,7 +35,7 @@ func _open_resource(resource:Resource) -> void:
 
 
 ## If this editor supports editing resources, save them here (overwrite in subclass)
-func _save_resource() -> void:
+func _save() -> void:
 	pass
 
 
