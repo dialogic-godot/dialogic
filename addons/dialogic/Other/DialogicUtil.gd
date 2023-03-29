@@ -73,7 +73,7 @@ static func guess_resource(extension:String, identifier:String) -> String:
 	for resource_path in resources:
 		if resource_path.get_file().trim_suffix(extension) == identifier:
 			return resource_path
-	return null
+	return ""
 
 
 ## TODO remove this since ProjectSetting.get_setting supports default arg now.
