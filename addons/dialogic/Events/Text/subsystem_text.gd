@@ -94,12 +94,12 @@ func update_name_label(character:DialogicCharacter) -> void:
 				name_label.text = character.display_name
 			if !'use_character_color' in name_label or name_label.use_character_color:
 				name_label.self_modulate = character.color
-			speaking_character.emit(name_label.text)
+			speaking_character.emit(character)
 		else:
 			dialogic.current_state_info['character'] = null
 			name_label.text = ''
 			name_label.self_modulate = Color(1,1,1,1)
-			speaking_character.emit("(Nobody)")
+			speaking_character.emit(null)
 
 
 func set_autoadvance(enabled:=true, wait_time:Variant=1.0, temp:= false) -> void:
