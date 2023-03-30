@@ -20,7 +20,7 @@ func _execute() -> void:
 func _init() -> void:
 	event_name = "Glossary"
 	set_default_color('Color6')
-	event_category = Category.AudioVisual
+	event_category = Category.Other
 	event_sorting_index = 0
 	expand_by_default = false
 
