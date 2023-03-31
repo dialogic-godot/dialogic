@@ -361,7 +361,13 @@ static func add_file_to_folder(flat_structure:Dictionary, tree:String,  path:Dic
 		if tree == "Definitions":
 			new_data['value']['type'] = path['type']
 			new_data['value']['id'] = file_name
-		
+			if path['type'] == 0:
+				new_data['value']['name'] = "New value"
+				new_data['key'] = insert_position_data['key'].rstrip('.') + "New value"
+			elif path['type'] == 1:
+				new_data['value']['name'] = "New glossary entry"
+				new_data['key'] = insert_position_data['key'].rstrip('.') + "New glossary entry"
+				
 		flat_structure[tree + "_Array"].insert(insert_position + 1, new_data)
 	else:
 		existing_data['key'] = path['path'] + "/" + existing_data['value']['name']
@@ -377,7 +383,14 @@ static func remove_file_from_folder(flat_structure:Dictionary, tree:String,  pat
 	flat_structure = editor_array_to_flat_structure(flat_structure, tree)
 	DialogicResources.save_resource_folder_flat_structure(flat_structure)
 
+static func rename_file(flat_structure:Dictionary, tree:String,  path:Dictionary, new_name:String):
+	var insert_position = path['step']
 
+	flat_structure[tree + "_Array"][insert_position]['key'] = flat_structure[tree + "_Array"][insert_position]['value']['path'] + new_name
+	flat_structure[tree + "_Array"][insert_position]['value']['name'] = new_name
+
+	flat_structure = editor_array_to_flat_structure(flat_structure,tree)
+	DialogicResources.save_resource_folder_flat_structure(flat_structure)
 
 ## STRUCTURE UPDATES
 #should be called when files got deleted and on program start
