@@ -249,7 +249,6 @@ static func add_folder(flat_structure:Dictionary, tree:String, path:Dictionary, 
 	#first find the parent folder from here
 	# check if the name is allowed
 	var new_path = path['path'] + path['name'] + "/" + folder_name + "/."
-	print(new_path)
 	if new_path in flat_structure[tree]:
 		print("[D] A folder with the name '"+folder_name+"' already exists in the target folder '"+path['path']+"'.")
 		return ERR_ALREADY_EXISTS
@@ -261,7 +260,6 @@ static func add_folder(flat_structure:Dictionary, tree:String, path:Dictionary, 
 	return OK
 
 static func remove_folder(flat_structure: Dictionary, tree:String, folder_data:Dictionary, delete_files:bool = true):
-	#print("[D] Removing 'Folder' "+folder_path)
 	
 	flat_structure[tree +"_Array"].remove(folder_data['step'])
 	

@@ -310,7 +310,7 @@ func build_resource_folder(parent_folder_item:TreeItem, folder_data:Dictionary, 
 func _add_folder_item(parent_item: TreeItem, folder_name: String, editor:String, meta_folder_info:Dictionary):
 	# create item
 	var folder_item:TreeItem= tree.create_item(parent_item)
-	print(parent_item.get_metadata(0))
+
 	var parent_path = parent_item.get_metadata(0)['path']
 	var current_tree = parent_item.get_metadata(0)['category'].rstrip("_Array")
 	# set text and icon
@@ -630,7 +630,6 @@ func get_item_path(item: TreeItem) -> Dictionary:
 	if item == null:
 		return {'path': "", 'step': '0'}
 	
-	print(item.get_metadata(0)['path'])
 	if 	!'path' in item.get_metadata(0):
 		return {'path': "/", 'step': '0'}
 	return {'path': item.get_metadata(0)['path'], 'step': item.get_metadata(0)['step']}
