@@ -746,8 +746,8 @@ static func get_flat_folders_list() -> Dictionary:
 	for definition in definition_list:
 		if definition['id'] in structure['Definitions']:
 			definition['path'] = structure['Definitions'][definition['id']] + definition['name']
-			structure['Definitions'][definition['id']]= definition
 			definition['file'] = definition['id']
+			structure['Definitions'][definition['id']]= definition
 		
 	for theme in theme_list:
 		if theme['file'] in structure['Themes']:
@@ -769,7 +769,8 @@ static func get_flat_folders_list() -> Dictionary:
 
 
 	for definition in structure['Definitions'].keys():
-		if ".json" in definition:
+		
+		if !"/." in definition:
 			definition_folder_breakdown[structure['Definitions'][definition]['path']] = structure['Definitions'][definition]
 		else:
 			definition_folder_breakdown[definition] = structure['Definitions'][definition]

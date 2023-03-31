@@ -813,6 +813,9 @@ func new_glossary_entry():
 	hide_all_editors()
 	#rename_selected()
 	
+func update_definition_entry(text):
+	# special funciton needed for name changes to the two definition types
+	var current = get_selected().get_metadata(0)
 
 func remove_selected():
 	var item = get_selected()
@@ -938,30 +941,30 @@ func _on_item_edited():
 	var metadata = item.get_metadata(0)
 	if metadata['editor'] == 'Timeline':
 		timeline_editor.timeline_name = item.get_text(0)
-		editor_reference.flat_structure['Timelines_Array'][metadata['step']]['value']['name'] = item.get_text(0)
+		DialogicUtil.rename_file(editor_reference.flat_structure, 'Timelines', metadata, item.get_text(0))
 		save_current_resource()
 		build_timelines(metadata['file'])
 	if metadata['editor'] == 'Theme':
 		DialogicResources.set_theme_value(metadata['file'], 'settings', 'name', item.get_text(0))
-		editor_reference.flat_structure['Themes_Array'][metadata['step']]['value']['name'] = item.get_text(0)
+		DialogicUtil.rename_file(editor_reference.flat_structure, 'Themes', metadata, item.get_text(0))
 		build_themes(metadata['file'])
 	if metadata['editor'] == 'Character':
 		character_editor.nodes['name'].text = item.get_text(0)
-		editor_reference.flat_structure['Characters_Array'][metadata['step']]['value']['name'] = item.get_text(0)
+		DialogicUtil.rename_file(editor_reference.flat_structure, 'Characters', metadata, item.get_text(0))
 		save_current_resource()
 		build_characters(metadata['file'])
 	if metadata['editor'] == 'Value':
 		value_editor.nodes['name'].text = item.get_text(0)
 		# Not sure why this signal doesn't triggers
 		value_editor._on_name_changed(item.get_text(0))
-		editor_reference.flat_structure['Definitions_Array'][metadata['step']]['value']['name'] = item.get_text(0)
+		DialogicUtil.rename_file(editor_reference.flat_structure, 'Definitions', metadata, item.get_text(0))
 		save_current_resource()
 		build_definitions(metadata['id'])
 	if metadata['editor'] == 'GlossaryEntry':
 		glossary_entry_editor.nodes['name'].text = item.get_text(0)
 		# Not sure why this signal doesn't triggers
 		glossary_entry_editor._on_name_changed(item.get_text(0))
-		editor_reference.flat_structure['Definitions_Array'][metadata['step']]['value']['name'] = item.get_text(0)
+		DialogicUtil.rename_file(editor_reference.flat_structure, 'Definitions', metadata, item.get_text(0))
 		save_current_resource()
 		build_definitions(metadata['id'])
 
