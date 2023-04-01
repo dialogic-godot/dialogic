@@ -260,7 +260,7 @@ static func add_folder(flat_structure:Dictionary, tree:String, path:Dictionary, 
 	return OK
 
 static func remove_folder(flat_structure: Dictionary, tree:String, folder_data:Dictionary, delete_files:bool = true):
-	
+	print(folder_data)
 	flat_structure[tree +"_Array"].remove(folder_data['step'])
 	
 	if delete_files:
@@ -295,6 +295,7 @@ static func rename_folder(flat_structure: Dictionary, tree:String, path:Dictiona
 	for idx in flat_structure[tree + "_Array"].size():
 		flat_structure[tree + "_Array"][idx]['key'] = flat_structure[tree + "_Array"][idx]['key'].replace(old_path, new_path.rstrip("/."))
 	
+	
 	flat_structure = editor_array_to_flat_structure(flat_structure, tree)
 	
 	DialogicResources.save_resource_folder_flat_structure(flat_structure)
@@ -302,9 +303,14 @@ static func rename_folder(flat_structure: Dictionary, tree:String, path:Dictiona
 	return OK
 
 static func move_folder_to_folder(flat_structure:Dictionary, tree:String, original_data:Dictionary, destination_data:Dictionary):
+	#abort if its trying to move folder to wrong tree
+	if original_data['category'] != destination_data['category']:
+		return ERR_INVALID_DATA
+	
+	
 	# check if the name is allowed
 	var new_path = destination_data['path']
-	
+
 	if new_path in flat_structure[tree]:
 		print("[D] A folder with the name '"+destination_data['path'].split("/")[-1]+"' already exists in the target folder '"+original_data['path']+"'.")
 		return ERR_ALREADY_EXISTS
@@ -312,13 +318,33 @@ static func move_folder_to_folder(flat_structure:Dictionary, tree:String, origin
 	
 	# remove the old folder BUT DON'T DELETE THE FILES!!!!!!!!!!!
 	# took me ages to find this when I forgot it..
-	remove_folder(flat_structure, tree,original_data, false)
 	
-	# add the new folder
-	var folder_name = destination_data['path'].split("/")[-1]
+	var new_array=[]
+	var rename_array = []
 	
-	add_folder(flat_structure, tree, destination_data, new_path)
-
+	var original_folder = original_data['orig_path'] + original_data['name']
+	var replace_folder = destination_data['path'] + destination_data['name'] + '/' + original_data['name']
+	
+	
+	#first iterate through and find all the items that need to be renamed
+	for idx in flat_structure[tree +"_Array"].size():
+		if original_folder in flat_structure[tree +"_Array"][idx]['key']:
+			var item = flat_structure[tree +"_Array"][idx]
+			item['key'] = item['key'].replace(original_folder, replace_folder)
+			if 'path' in item['value']:
+				item['value']['path'] = item['value']['path'].replace(original_folder, replace_folder)
+			rename_array.append(item)
+		else:
+			new_array.append(flat_structure[tree +"_Array"][idx])
+			
+	
+	#now merge in and replace the original ones		
+	while rename_array.size() > 0:
+		new_array.insert(destination_data['step'] + 1, rename_array.pop_back())
+	
+	flat_structure[tree +"_Array"] = new_array	
+	
+	flat_structure = editor_array_to_flat_structure(flat_structure, tree)
 	
 	DialogicResources.save_resource_folder_flat_structure(flat_structure)
 	

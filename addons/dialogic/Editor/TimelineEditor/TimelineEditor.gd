@@ -816,10 +816,8 @@ func create_event(event_id: String, data: Dictionary = {'no-data': true} , inden
 	
 	# load the piece with data
 	piece.editor_reference = editor_reference
-	print(editor_reference)
 	if data.has('no-data') == false:
 		piece.event_data = data
-	print(piece)
 	if at_index == -1:
 		if len(selected_items) != 0:
 			timeline.add_child_below_node(selected_items[0], piece)

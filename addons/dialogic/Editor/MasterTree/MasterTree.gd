@@ -886,7 +886,7 @@ func get_drag_data(position):
 	# if it is a folder and it's not one of the root folders
 	if 'Root' in item.get_metadata(0)['editor'] and item.get_parent().get_parent():
 		instance_drag_preview(item.get_icon(0), item.get_text(0))
-		return {'item_type': 'folder', 'orig_path': get_item_folder(item, "")}
+		return {'item_type': 'folder', 'name': item.get_metadata(0)['name'], 'orig_path': get_item_folder(item, ""), 'category': item.get_metadata(0)['category']}
 	else:
 		if item.get_metadata(0).has('file'):
 			instance_drag_preview(item.get_icon(0), item.get_text(0))
