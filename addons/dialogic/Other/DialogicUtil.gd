@@ -352,10 +352,20 @@ static func move_folder_to_folder(flat_structure:Dictionary, tree:String, origin
 
 ## FILE FUNCTIONS
 static func move_file_to_folder(flat_structure:Dictionary, tree:String, original_data:Dictionary, destination_data:Dictionary):
-	#remove_file_from_folder(orig_folder, file_name)
-	#add_file_to_folder(target_folder, file_name)
-	remove_file_from_folder(flat_structure, tree,original_data)
-	add_file_to_folder(flat_structure,tree,destination_data, "",original_data)
+	#abort if its trying to move folder to wrong tree
+	if original_data['category'] != destination_data['category']:
+		return ERR_INVALID_DATA
+
+	
+	var moving = flat_structure[tree +"_Array"].pop_at(original_data['original_step'])
+	moving['key'] = moving['key'].replace(original_data['orig_path'], destination_data['path'])
+	moving['value']['path'] = destination_data['path']
+	flat_structure[tree +"_Array"].insert(destination_data['step'], moving)
+	
+	
+	flat_structure = editor_array_to_flat_structure(flat_structure,tree)
+	DialogicResources.save_resource_folder_flat_structure(flat_structure)
+
 
 static func add_file_to_folder(flat_structure:Dictionary, tree:String,  path:Dictionary, file_name:String, existing_data:Dictionary = {}):
 	var insert_position_data = flat_structure[tree + "_Array"][path['step']]

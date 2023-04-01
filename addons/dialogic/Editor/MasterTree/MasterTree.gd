@@ -845,8 +845,9 @@ func can_drop_data(position, data) -> bool:
 	# if the data isn't empty and it's a valid DICT
 	if data != null and data is Dictionary and data.has('item_type'):
 		# if it's not trying to add a folder to a file
-		if not (data['item_type'] == "folder" and not 'Root' in item.get_metadata(0)["editor"]):
+		if not (data['item_type'] == "folder" and item.get_metadata(0)["editortype"] == "file"):
 			# if it's the same type of folder as before
+			return true
 			if get_item_folder(item, '').split("/")[0] == data['orig_path'].split("/")[0]:
 				# make sure the folder/item is not a subfolder of the original folder
 				if data['item_type'] == "file" or (not get_item_folder(item, '').begins_with(data['orig_path'])):
@@ -890,10 +891,10 @@ func get_drag_data(position):
 	else:
 		if item.get_metadata(0).has('file'):
 			instance_drag_preview(item.get_icon(0), item.get_text(0))
-			return {'item_type': 'file', 'orig_path': get_item_folder(item, ""), 'file_name':item.get_metadata(0)['file']}
+			return {'item_type': 'file', 'orig_path': item.get_metadata(0)['path'], 'file_name':item.get_metadata(0)['file'], 'category': item.get_metadata(0)['category'], 'name': item.get_metadata(0)['name'], 'original_step': item.get_metadata(0)['step']}
 		elif item.get_metadata(0).has('id'):
 			instance_drag_preview(item.get_icon(0), item.get_text(0))
-			return {'item_type': 'file', 'orig_path': get_item_folder(item, ""), 'resource_id':item.get_metadata(0)['id']}
+			return {'item_type': 'file', 'orig_path': item.get_metadata(0)['path'], 'resource_id':item.get_metadata(0)['id'], 'category': item.get_metadata(0)['category'], 'name': item.get_metadata(0)['name'], 'original_step': item.get_metadata(0)['step']}
 	return null
 
 func instance_drag_preview(icon, text):
