@@ -324,6 +324,22 @@ func get_joined_characters() -> Array[DialogicCharacter]:
 	return chars
 
 
+func get_character_info(character:DialogicCharacter) -> Dictionary:
+	if is_character_joined(character):
+		var info :Dictionary = dialogic.current_state_info['portraits'][character.resource_path]
+		info ['joined'] = true
+		return info
+	else:
+		return {'joined':false}
+
+
+func get_character_resource(character_name:String) -> DialogicCharacter:
+	var path :String = DialogicUtil.guess_resource('.dch', character_name)
+	if path: 
+		return load(path)
+	return null
+
+
 func update_rpg_portrait_mode(character:DialogicCharacter = null, portrait:String = "") -> void:
 	if DialogicUtil.get_project_setting('dialogic/portrait_mode', 0) == DialogicCharacterEvent.PortraitModes.RPG:
 		if !Dialogic.current_state_info.has('rpg_last_portrait'):

@@ -28,7 +28,7 @@ static func listdir(path: String, files_only: bool = true, throw_error:bool = tr
 	if DirAccess.dir_exists_absolute(path):
 		var dir := DirAccess.open(path)
 		dir.list_dir_begin()
-		var file_name = dir.get_next()
+		var file_name := dir.get_next()
 		while file_name != "":
 			if not file_name.begins_with("."):
 				if files_only:
@@ -68,15 +68,16 @@ static func scan_folder(path:String, extension:String) -> Array:
 	return list
 
 
-static func guess_resource(extension, identifier):
-	var resources = list_resources_of_type(extension)
+static func guess_resource(extension:String, identifier:String) -> String:
+	var resources := list_resources_of_type(extension)
 	for resource_path in resources:
 		if resource_path.get_file().trim_suffix(extension) == identifier:
 			return resource_path
+	return ""
 
 
 ## TODO remove this since ProjectSetting.get_setting supports default arg now.
-static func get_project_setting(setting:String, default = null):
+static func get_project_setting(setting:String, default :Variant= null) -> Variant:
 	return ProjectSettings.get_setting(setting) if ProjectSettings.has_setting(setting) else default
 
 
@@ -103,7 +104,7 @@ static func get_indexers(include_custom := true, force_reload := false) -> Array
 
 
 static func pretty_name(script:String) -> String:
-	var _name = script.get_file().trim_suffix("."+script.get_extension())
+	var _name := script.get_file().trim_suffix("."+script.get_extension())
 	_name = _name.replace('_', ' ')
 	_name = _name.capitalize()
 	return _name
@@ -113,7 +114,7 @@ static func str_to_bool(boolstring:String) -> bool:
 	return true if boolstring == "true" else false
 
 
-static func logical_convert(value):
+static func logical_convert(value:String) -> Variant:
 	if typeof(value) == TYPE_STRING:
 		if value.is_valid_int():
 			return value.to_int()
@@ -134,7 +135,7 @@ static func get_color_palette(default:bool = false) -> Dictionary:
 	#  ./core/rid.h:151 - Condition "!id_map.has(p_rid.get_data())" is true. Returned: nullptr
 	# over and over again.
 	# Might revisit this in Godot 4, but don't have any high hopes for it improving.
-	var colors = [
+	var colors := [
 		Color('#3b8bf2'), # Blue
 		Color('#00b15f'), # Green
 		Color('#9468e8'), # Purple
@@ -142,10 +143,10 @@ static func get_color_palette(default:bool = false) -> Dictionary:
 		Color('#fa952a'), # Orange
 		Color('#7C7C7C')  # Gray
 	]
-	var color_dict = {}
-	var index = 1
+	var color_dict := {}
+	var index := 1
 	for n in colors:
-		var color_name = 'Color' + str(index)
+		var color_name := 'Color' + str(index)
 		color_dict[color_name] = n
 		if !default:
 			if ProjectSettings.has_setting('dialogic/editor/' + color_name):
@@ -156,11 +157,11 @@ static func get_color_palette(default:bool = false) -> Dictionary:
 
 
 static func get_color(value:String) -> Color:
-	var colors = get_color_palette()
+	var colors := get_color_palette()
 	return colors[value]
 
 
-static func is_physics_timer()->bool:
+static func is_physics_timer() -> bool:
 	return get_project_setting('dialogic/timer/process_in_physics', false)
 	
 
