@@ -68,7 +68,7 @@ func _open_resource(resource:Resource) -> void:
 	character_loaded.emit(resource.resource_path)
 
 
-func _save_resource() -> void:
+func _save() -> void:
 	if ! visible or not current_resource:
 		return
 	

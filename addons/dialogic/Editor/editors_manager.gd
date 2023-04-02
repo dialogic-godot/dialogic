@@ -93,7 +93,7 @@ func _on_editors_tab_changed(tab:int) -> void:
 func edit_resource(resource:Resource, save_previous:bool = true) -> void:
 	if resource:
 		if current_editor and save_previous:
-			current_editor._save_resource()
+			current_editor._save()
 		
 		if !resource.resource_path in used_resources_cache:
 			used_resources_cache.append(resource.resource_path)
@@ -124,7 +124,7 @@ func toggle_editor(editor) -> void:
 func open_editor(editor:DialogicEditor, save_previous: bool = true, extra_info:Variant = null) -> void:
 	
 	if current_editor and save_previous:
-		current_editor._save_resource()
+		current_editor._save()
 	
 	if current_editor:
 		current_editor._close()
@@ -155,7 +155,7 @@ func open_editor(editor:DialogicEditor, save_previous: bool = true, extra_info:V
 ## Rarely used to completely clear a editor.
 func clear_editor(editor:DialogicEditor, save:bool = false) -> void:
 	if save:
-		editor._save_resource()
+		editor._save()
 	
 	editor._clear()
 
@@ -171,10 +171,9 @@ func show_add_resource_dialog(accept_callable:Callable, filter:String = "*", tit
 	)
 
 
-## If the current editor edits a resource, icurrent_editort will try to save
+## Called by the plugin.gd script on CTRL+S or Debug Game start
 func save_current_resource() -> void: 
-	if current_editor and editors[current_editor.name].has('extension'):
-		current_editor._save_resource()
+	current_editor._save()
 
 
 ## Change the resource state

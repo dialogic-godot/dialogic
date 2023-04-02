@@ -16,7 +16,9 @@ func _open(argument:Variant = null):
 	%MainVariableGroup.update()
 	%MainVariableGroup.load_data('Variables', DialogicUtil.get_project_setting('dialogic/variables', {}))
 
-
-func _close():
+func _save():
 	ProjectSettings.set_setting('dialogic/variables', %MainVariableGroup.get_data())
 	ProjectSettings.save()
+
+func _close():
+	_save()

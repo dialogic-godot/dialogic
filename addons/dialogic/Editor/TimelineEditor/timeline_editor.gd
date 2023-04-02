@@ -69,7 +69,7 @@ func _open_resource(resource:Resource) -> void:
 
 
 ## If this editor supports editing resources, save them here (overwrite in subclass)
-func _save_resource() -> void:
+func _save() -> void:
 	match current_editor_mode:
 		0:
 			$VisualEditor.save_timeline()
@@ -86,7 +86,7 @@ func _input(event: InputEvent) -> void:
 
 ## Method to play the current timeline. Connected to the button in the sidebar.
 func play_timeline():
-	_save_resource()
+	_save()
 	
 	var dialogic_plugin = DialogicUtil.get_dialogic_plugin()
 	
@@ -128,7 +128,7 @@ func _on_resource_saved():
 
 
 func new_timeline(path:String) -> void:
-	_save_resource()
+	_save()
 	var new_timeline := DialogicTimeline.new()
 	new_timeline.resource_path = path
 	new_timeline.set_meta('timeline_not_saved', true)
