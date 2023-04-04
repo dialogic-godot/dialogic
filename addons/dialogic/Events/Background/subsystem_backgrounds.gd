@@ -2,7 +2,10 @@ extends DialogicSubsystem
 
 ## Subsystem for managing backgrounds. 
 
-var default_background_scene = load(get_script().resource_path.get_base_dir().path_join('default_background.tscn'))
+signal background_changed(info:Dictionary)
+
+
+var default_background_scene :PackedScene = load(get_script().resource_path.get_base_dir().path_join('default_background.tscn'))
 ####################################################################################################
 ##					STATE
 ####################################################################################################
@@ -29,6 +32,7 @@ func load_game_state():
 ## To do so implement [_should_do_background_update()] on the custom background scene.
 ## Then  [_update_background()] will be called directly on that previous scene.
 func update_background(scene:String = '', argument:String = '', fade_time:float = 0.0) -> void:
+	var info := {'scene':scene, 'argument':argument, 'fade_time':fade_time, 'same_scene':false}
 	for node in get_tree().get_nodes_in_group('dialogic_background_holders'):
 		if node.visible:
 			var bg_set: bool = false
@@ -38,6 +42,7 @@ func update_background(scene:String = '', argument:String = '', fade_time:float 
 						if old_bg.has_method('_update_background'):
 							old_bg._update_background(argument, fade_time)
 							bg_set = true
+							info['same_scene'] = true
 			if !bg_set:
 				# remove previous backgrounds
 				for old_bg in node.get_children():
@@ -70,8 +75,9 @@ func update_background(scene:String = '', argument:String = '', fade_time:float 
 					
 					elif "modulate" in new_node:
 						new_node.modulate = Color.TRANSPARENT
-						var tween = new_node.create_tween()
+						var tween := new_node.create_tween()
 						tween.tween_property(new_node, "modulate", Color.WHITE, fade_time)
 	
 	dialogic.current_state_info['background_scene'] = scene
 	dialogic.current_state_info['background_argument'] = argument
+	background_changed.emit(info)

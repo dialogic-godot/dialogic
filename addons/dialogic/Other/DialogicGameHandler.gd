@@ -122,7 +122,7 @@ func handle_event(event_index:int) -> void:
 	
 	if event_index >= len(current_timeline_events):
 		if has_subsystem('Jump') and !self.Jump.is_jump_stack_empty():
-			self.Jump.resume_from_latst_jump()
+			self.Jump.resume_from_last_jump()
 			return
 		else:
 			end_timeline()

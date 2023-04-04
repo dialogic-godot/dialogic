@@ -2,8 +2,12 @@ extends DialogicSubsystem
 
 ## Subsystem that manages showing and activating of choices.
 
+signal choice_selected(info:Dictionary)
+signal choices_shown(info:Dictionary)
+
+
 ## Used to block choices from being clicked for a couple of seconds (if delay is set in settings).
-var choice_blocker = Timer.new()
+var choice_blocker := Timer.new()
 
 var last_question_info := {}
 
@@ -29,8 +33,8 @@ func clear_game_state():
 func hide_all_choices() -> void:
 	for node in get_tree().get_nodes_in_group('dialogic_choice_button'):
 		node.hide()
-		if node.is_connected('button_up', self.choice_selected):
-			node.disconnect('button_up', self.choice_selected)
+		if node.is_connected('button_up', _on_ChoiceButton_choice_selected):
+			node.disconnect('button_up', _on_ChoiceButton_choice_selected)
 
 
 ## Lists all current choices and shows buttons.
@@ -59,7 +63,7 @@ func show_current_choices() -> void:
 			show_choice(button_idx, choice_event.get_property_translated('text'), true, choice_index)
 			last_question_info['choices'].append(choice_event.get_property_translated('text'))
 			button_idx += 1
-	
+	choices_shown.emit(last_question_info)
 	choice_blocker.start(float(DialogicUtil.get_project_setting('dialogic/choices/delay', 0.2)))
 
 
@@ -87,29 +91,22 @@ func show_choice(button_index:int, text:String, enabled:bool, event_index:int) -
 				node.shortcut = shortcut
 			
 			node.disabled = not enabled
-			node.button_up.connect(choice_selected.bind(event_index))
+			node.button_up.connect(_on_ChoiceButton_choice_selected.bind(event_index, 
+				{'button_index':button_index, 'text':text, 'enabled':enabled, 'event_index':event_index}))
 			
 		if node.choice_index > 0:
 			idx = node.choice_index
 		idx += 1
 
-####################################################################################################
-##					HELPERS
-####################################################################################################
-func choice_selected(event_index:int) -> void:
+
+func _on_ChoiceButton_choice_selected(event_index:int, choice_info:={}) -> void:
 	if Dialogic.paused or not choice_blocker.is_stopped():
 		return
+	choice_selected.emit(choice_info)
 	hide_all_choices()
 	dialogic.current_state = dialogic.states.IDLE
 	dialogic.handle_event(event_index)
-
-## QUESTION/CHOICES
-func is_question(index:int) -> bool:
-	if dialogic.current_timeline_events[index] is DialogicTextEvent:
-		if len(dialogic.current_timeline_events)-1 != index:
-			if dialogic.current_timeline_events[index+1] is DialogicChoiceEvent:
-				return true
-	return false
+	
 
 func get_current_choice_indexes() -> Array:
 	var choices := []
@@ -133,3 +130,15 @@ func get_current_choice_indexes() -> Array:
 		if dialogic.current_timeline_events[evt_idx] is DialogicEndBranchEvent:
 			ignore -= 1
 	return choices
+
+####################################################################################################
+##					HELPERS
+####################################################################################################
+
+func is_question(index:int) -> bool:
+	if dialogic.current_timeline_events[index] is DialogicTextEvent:
+		if len(dialogic.current_timeline_events)-1 != index:
+			if dialogic.current_timeline_events[index+1] is DialogicChoiceEvent:
+				return true
+	return false
+

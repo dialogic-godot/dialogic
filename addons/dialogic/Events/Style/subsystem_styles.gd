@@ -2,6 +2,7 @@ extends DialogicSubsystem
 
 ## Subsystem that manages showing and hiding style nodes.
 
+signal style_changed(info:Dictionary)
 
 ####################################################################################################
 ##					STATE
@@ -36,3 +37,4 @@ func change_style(style_name:String) -> void:
 		for style_node in get_tree().get_nodes_in_group('dialogic_styles'):
 			if style_node.style_name == last_style:
 				style_node.show()
+		style_changed.emit({'style_name':style_name})

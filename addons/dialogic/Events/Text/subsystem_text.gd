@@ -3,13 +3,14 @@ extends DialogicSubsystem
 ## Subsystem that handles showing of dialog text (+text effects & modifiers), name label, and next indicator
 
 
-signal text_finished
-signal speaking_character(argument)
+signal text_finished(info:Dictionary)
+signal speaker_updated(character:DialogicCharacter)
+signal textbox_visibility_changed(visible:bool)
 
 # used to color names without searching for all characters each time
 var character_colors := {}
 var color_regex := RegEx.new()
-var text_already_read:bool = false
+var text_already_read := false
 
 var text_effects := {}
 var parsed_text_effect_info : Array[Dictionary]= []
@@ -80,11 +81,14 @@ func update_dialog_text(text:String, instant:bool= false) -> String:
 	set_manualadvance(true, true)
 	return text
 
+
 func _on_dialog_text_finished():
-	text_finished.emit()
+	text_finished.emit({'text':dialogic.current_state_info['text'], 'character':dialogic.current_state_info['character']})
 
 
 func update_name_label(character:DialogicCharacter) -> void:
+	if character.resource_path == dialogic.current_state_info['character']:
+		return
 	for name_label in get_tree().get_nodes_in_group('dialogic_name_label'):
 		if character:
 			dialogic.current_state_info['character'] = character.resource_path
@@ -94,12 +98,12 @@ func update_name_label(character:DialogicCharacter) -> void:
 				name_label.text = character.display_name
 			if !'use_character_color' in name_label or name_label.use_character_color:
 				name_label.self_modulate = character.color
-			speaking_character.emit(character)
+			speaker_updated.emit(character)
 		else:
 			dialogic.current_state_info['character'] = null
 			name_label.text = ''
 			name_label.self_modulate = Color(1,1,1,1)
-			speaking_character.emit(null)
+			speaker_updated.emit(null)
 
 
 func set_autoadvance(enabled:=true, wait_time:Variant=1.0, temp:= false) -> void:
@@ -130,7 +134,6 @@ func set_skippable(skippable:= true, temp:=false) -> void:
 		dialogic.current_state_info['skippable']['enabled'] = skippable
 
 
-
 func update_typing_sound_mood(mood:Dictionary = {}) -> void:
 	for typing_sound in get_tree().get_nodes_in_group('dialogic_type_sounds'):
 		typing_sound.load_overwrite(mood)
@@ -141,11 +144,13 @@ func hide_text_boxes() -> void:
 		name_label.text = ""
 	for text_node in get_tree().get_nodes_in_group('dialogic_dialog_text'):
 		text_node.get_parent().visible = false
+	textbox_visibility_changed.emit(false)
 
 
 func show_text_boxes() -> void:
 	for text_node in get_tree().get_nodes_in_group('dialogic_dialog_text'):
 		text_node.get_parent().visible = true
+	textbox_visibility_changed.emit(true)
 
 
 func show_next_indicators(question=false, autocontinue=false) -> void:
@@ -293,7 +298,7 @@ func collect_character_names() -> void:
 	
 	character_colors = {}
 	for dch_path in DialogicUtil.list_resources_of_type('.dch'):
-		var dch = (load(dch_path) as DialogicCharacter)
+		var dch := (load(dch_path) as DialogicCharacter)
 
 		if dch.display_name:
 			character_colors[dch.display_name] = dch.color
@@ -342,6 +347,7 @@ func effect_noskip(text_node:Control, skipped:bool, argument:String) -> void:
 	set_skippable(false, true)
 	set_manualadvance(false, true)
 	effect_autoadvance(text_node, skipped, argument)
+
 
 func effect_autoadvance(text_node:Control, skipped:bool, argument:String) -> void:
 	if argument.is_empty() or !(argument.is_valid_float() or argument.begins_with('v')):

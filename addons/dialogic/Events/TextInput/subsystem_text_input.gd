@@ -4,6 +4,7 @@ extends DialogicSubsystem
 
 ## Signal that is fired when a confirmation button was pressed.
 signal input_confirmed(input:String)
+signal input_shown(info:Dictionary)
 
 
 ####################################################################################################
@@ -25,6 +26,7 @@ func show_text_input(text:String = '', default:String = '', placeholder:String =
 		if node.has_method('set_text'): node.set_text(text)
 		if node.has_method('set_default'): node.set_default(default)
 		if node.has_method('set_placeholder'): node.set_placeholder(placeholder)
+	input_shown.emit({'text':text, 'default':default, 'placeholder':placeholder, 'allow_empty':allow_empty})
 
 
 func hide_text_input() -> void:

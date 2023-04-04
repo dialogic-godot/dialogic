@@ -58,8 +58,10 @@ func _execute() -> void:
 						dialogic.VAR.set_variable(name, orig*the_value)
 					Operations.Divide:
 						dialogic.VAR.set_variable(name, orig/the_value)
+				dialogic.VAR.variable_was_set.emit({'variable':name, 'new_value':the_value, 'value':value})
 			elif operation == Operations.Set:
 				dialogic.VAR.set_variable(name, the_value)
+				dialogic.VAR.variable_was_set.emit({'variable':name, 'new_value':the_value, 'value':value})
 			else:
 				printerr("Dialogic: Set Variable event failed because one value wasn't a float! [", orig, ", ",the_value,"]")
 		else:

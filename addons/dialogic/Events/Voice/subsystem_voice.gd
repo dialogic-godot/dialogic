@@ -2,11 +2,14 @@ extends DialogicSubsystem
 
 ## Subsystem that manages setting voice lines for text events.
 
-## The current voice timer
-var voice_timer:Timer
-## The current audio
-var current_audio_file:String
 
+signal voiceline_started(info:Dictionary)
+signal voiceline_finished(info:Dictionary)
+# Emitted if the voiceline didn't end but was cut off
+signal voiceline_stopped(info:Dictionary)
+
+
+var current_audio_file:String
 var voice_player := AudioStreamPlayer.new()
 
 ####################################################################################################
@@ -15,14 +18,10 @@ var voice_player := AudioStreamPlayer.new()
 
 func pause() -> void:
 	voice_player.stream_paused = true
-	if voice_timer:
-		voice_timer.paused = true
 
 
 func resume() -> void:
 	voice_player.stream_paused = false
-	if voice_timer:
-		voice_timer.paused = false
 
 
 ####################################################################################################
@@ -31,6 +30,7 @@ func resume() -> void:
 
 func _ready() -> void:
 	add_child(voice_player)
+	voice_player.finished.connect(_on_voice_finnished)
 
 
 func is_voiced(index:int) -> bool:
@@ -41,10 +41,8 @@ func is_voiced(index:int) -> bool:
 
 
 func play_voice():
-	var start:float = 0
-	var stop:float = voice_player.stream.get_length()
-	voice_player.play(start)
-	set_timer(stop - start)
+	voice_player.play()
+	voiceline_started.emit({'file':current_audio_file})
 
 
 func set_file(path:String):
@@ -52,36 +50,31 @@ func set_file(path:String):
 		return
 	current_audio_file = path
 	var audio:AudioStream = load(path)
-	#TODO: check for faults in loaded audio
 	voice_player.stream = audio
 
 
 func set_volume(value:float):
 	voice_player.volume_db = value
 
+
 func set_bus(value:String):
 	voice_player.bus = value
 
 
 func stop_audio():
+	if voice_player.playing:
+		voiceline_stopped.emit({'file':current_audio_file, 'remaining_time':get_remaining_time()})
 	voice_player.stop()
 
 
-func set_timer(time:float):
-	if !voice_timer:
-		voice_timer = Timer.new()
-		DialogicUtil.update_timer_process_callback(voice_timer)
-		voice_timer.one_shot = true
-		add_child(voice_timer)
-		voice_timer.timeout.connect(stop_audio)
-	voice_timer.stop()
-	voice_timer.start(time)
+func _on_voice_finnished():
+	voiceline_finished.emit({'file':current_audio_file, 'remaining_time':get_remaining_time()})
 
 
 func get_remaining_time() -> float:
-	if not voice_timer or voice_timer.is_stopped():
-		return 0.0 #contingency
-	return voice_timer.time_left
+	if not voice_player or !voice_player.playing:
+		return 0.0
+	return voice_player.stream.get_length()-voice_player.get_playback_position()
 
 
 func is_running() -> bool:
