@@ -29,7 +29,7 @@ func _ready() -> void:
 	autoadvance_timer.timeout.connect(_on_autoadvance_timer_timeout)
 
 
-func _on_text_finished() -> void:
+func _on_text_finished(info:Dictionary) -> void:
 	if Dialogic.Text.should_autoadvance():
 		autoadvance_timer.start(Dialogic.Text.get_autoadvance_time())
 

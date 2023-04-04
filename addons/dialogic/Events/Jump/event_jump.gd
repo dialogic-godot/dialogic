@@ -39,6 +39,7 @@ func _execute() -> void:
 	if return_after:
 		dialogic.Jump.push_to_jump_stack()
 	if timeline and timeline != dialogic.current_timeline:
+		dialogic.Jump.switched_timeline.emit({'previous_timeline':dialogic.current_timeline, 'timeline':timeline, 'label':label_name})
 		dialogic.start_timeline(timeline, label_name)
 	else:
 		if label_name:

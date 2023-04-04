@@ -2,6 +2,9 @@ extends DialogicSubsystem
 
 ## Subsystem that manages music and sounds.
 
+signal music_started(info:Dictionary)
+signal sound_started(info:Dictionary)
+
 var base_music_player := AudioStreamPlayer.new()
 var base_sound_player := AudioStreamPlayer.new()
 
@@ -43,7 +46,7 @@ func _ready() -> void:
 ## Updates the background music. Will fade out previous music.
 func update_music(path:String = '', volume:float = 0.0, audio_bus:String = "Master", fade_time:float = 0.0, loop:bool = true) -> void:
 	dialogic.current_state_info['music'] = {'path':path, 'volume':volume, 'audio_bus':audio_bus, 'loop':loop}
-	
+	music_started.emit(dialogic.current_state_info['music'])
 	var fader: Tween = null
 	if base_music_player.playing or !path.is_empty():
 		fader = create_tween()
@@ -77,6 +80,7 @@ func update_music(path:String = '', volume:float = 0.0, audio_bus:String = "Mast
 ## Plays a given sound file.
 func play_sound(path:String, volume:float = 0.0, audio_bus:String = "Master", loop :bool= false) -> void:
 	if base_sound_player != null and !path.is_empty():
+		sound_started.emit({'path':path, 'volume':volume, 'audio_bus':audio_bus, 'loop':loop})
 		var new_sound_node := base_sound_player.duplicate()
 		new_sound_node.name = "Sound"
 		new_sound_node.stream = load(path)

@@ -1,5 +1,13 @@
 extends DialogicSubsystem
 
+## Subsystem that manages variables and allows to access them.
+
+# Emitted if a dialogic variable changes
+signal variable_changed(info:Dictionary)
+# Emitted on any set variable event
+signal variable_was_set(info:Dictionary)
+
+
 ####################################################################################################
 ##					STATE
 ####################################################################################################
@@ -68,17 +76,19 @@ func set_variable(variable_name: String, value: Variant) -> bool:
 		
 		# if none is found, try getting it from the dialogic variables
 		_set_value_in_dictionary(variable_name, dialogic.current_state_info['variables'], value) 
+		variable_changed.emit({'variable':variable_name, 'new_value':value})
 	
 	elif variable_name in dialogic.current_state_info['variables'].keys():
 		if typeof(dialogic.current_state_info['variables'][variable_name]) == TYPE_STRING:
 			dialogic.current_state_info['variables'][variable_name] = value
+			variable_changed.emit({'variable':variable_name, 'new_value':value})
 			return true
 	else:
 		printerr("Dialogic: Tried accessing non-existant variable '"+variable_name+"'.")
 	return false
 
 
-func get_variable(variable_path:String, default = null) -> Variant:
+func get_variable(variable_path:String, default :Variant= null) -> Variant:
 	variable_path = variable_path.trim_prefix('{').trim_suffix('}')
 	
 	# Getting all the autoloads
