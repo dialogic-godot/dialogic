@@ -1,0 +1,63 @@
+[gd_scene load_steps=4 format=3 uid="uid://drykvc0hkb8vx"]
+
+[ext_resource type="Script" path="res://addons/dialogic/Events/LayoutEditor/Components/ThemeItem.gd" id="1_j7q17"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1qs0w"]
+draw_center = false
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.470588, 0.470588, 0.470588, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vsdsw"]
+draw_center = false
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.396078, 0.576471, 0.376471, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[node name="ThemeItem" type="HBoxContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -823.0
+offset_bottom = -563.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 2
+script = ExtResource("1_j7q17")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 2
+expand_mode = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="Name" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+text = "Dialogic Theme"
+
+[node name="Author" type="Label" parent="VBoxContainer"]
+self_modulate = Color(1, 1, 1, 0.6)
+layout_mode = 2
+text = "Emi"
+
+[node name="Button" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_colors/font_pressed_color = Color(0.396078, 0.576471, 0.376471, 1)
+theme_override_styles/normal = SubResource("StyleBoxFlat_1qs0w")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_vsdsw")
+toggle_mode = true
+text = "Active"
