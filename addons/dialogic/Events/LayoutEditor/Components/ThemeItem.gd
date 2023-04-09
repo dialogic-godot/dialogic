@@ -5,6 +5,7 @@ var theme_name := 'Dialogic Theme'
 var author := 'Emi'
 var preview_image = null
 var path: String
+var description: String = ""
 
 signal activate_theme
 
@@ -16,6 +17,7 @@ func _ready() -> void:
 	%Author.self_modulate = Color(1,1,1,0.6)
 	%ActiveButton.pressed.connect(_on_button_pressed)
 	$TextureRect.texture = preview_image
+	tooltip_text = description
 
 
 func active_state(value: bool) -> void:

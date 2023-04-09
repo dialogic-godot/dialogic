@@ -7,13 +7,14 @@ var ListItem = preload("res://addons/dialogic/Events/LayoutEditor/Components/The
 @onready var active_layout = DialogicUtil.get_project_setting('dialogic/layout/layout_scene', DialogicUtil.get_default_layout())
 
 
-func add_item(scene) -> void:
+func add_item(data) -> void:
 	var l = ListItem.instantiate()
-	l.theme_name = scene.get('name', 'Mysterious Layout')
-	l.author = scene.get('author', 'Unknown')
-	l.path = scene.path
-	if scene.has('preview_image'):
-		l.preview_image = load(scene.preview_image[0])
+	l.theme_name = data.get('name', 'Mysterious Layout')
+	l.author = data.get('author', 'Unknown')
+	l.path = data.path
+	l.description = data.description
+	if data.has('preview_image'):
+		l.preview_image = load(data.preview_image[0])
 	else:
 		l.preview_image = load("res://addons/dialogic/Editor/Images/Unknown.png")
 	if l.path == active_layout:
