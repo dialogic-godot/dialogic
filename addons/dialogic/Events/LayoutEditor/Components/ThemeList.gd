@@ -15,15 +15,15 @@ func add_item(scene) -> void:
 	else:
 		l.preview_image = load("res://addons/dialogic/Editor/Images/Unknown.png")
 	if l.path == active_layout:
-		l.get_node('VBoxContainer/Button').button_pressed = true
+		l.active_state(true)
 	l.activate_theme.connect(_on_activate_theme)
 	$HBoxContainer.add_child(l)
 
 
 func _on_activate_theme(item):
 	for i in $HBoxContainer.get_children():
-		i.get_node('VBoxContainer/Button').button_pressed = false
-	item.get_node('VBoxContainer/Button').button_pressed = true
+		i.active_state(false)
+	item.active_state(true)
 	ProjectSettings.set_setting('dialogic/layout/layout_scene', item.path)
 	ProjectSettings.save()
 	

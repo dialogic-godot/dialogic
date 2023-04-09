@@ -10,12 +10,16 @@ signal activate_theme
 
 
 func _ready() -> void:
-	$VBoxContainer/Name.text = theme_name
-	$VBoxContainer/Name.add_theme_font_override("font", get_theme_font("bold", "EditorFonts"))
-	$VBoxContainer/Author.text = author
-	$VBoxContainer/Author.self_modulate = Color(1,1,1,0.6)
-	$VBoxContainer/Button.pressed.connect(_on_button_pressed)
+	%Name.text = theme_name
+	%Name.add_theme_font_override("font", get_theme_font("bold", "EditorFonts"))
+	%Author.text = author
+	%Author.self_modulate = Color(1,1,1,0.6)
+	%ActiveButton.pressed.connect(_on_button_pressed)
 	$TextureRect.texture = preview_image
+
+
+func active_state(value: bool) -> void:
+	%ActiveButton.button_pressed = value
 
 
 func _on_button_pressed() -> void:
