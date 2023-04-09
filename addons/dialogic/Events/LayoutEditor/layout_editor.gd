@@ -44,8 +44,8 @@ func _ready() -> void:
 	get_theme_icon("Unlinked", "EditorIcons")
 	
 	await get_tree().process_frame
-	get_parent().set_tab_title(get_index(), 'Layout')
-	get_parent().set_tab_icon(get_index(), get_theme_icon("MatchCase", "EditorIcons"))
+	get_parent().set_tab_title(get_index(), 'Style')
+	get_parent().set_tab_icon(get_index(), load("res://addons/dialogic/Events/LayoutEditor/styles_icon.svg"))
 	#Alternative icon: get_theme_icon("MeshTexture", "EditorIcons")
 	$ThemeList.active_theme_changed.connect(_on_active_theme_changed)
 

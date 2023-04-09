@@ -1,7 +1,7 @@
-[gd_scene load_steps=4 format=3 uid="uid://d2l4yc12tm3av"]
+[gd_scene load_steps=4 format=3]
 
-[ext_resource type="Script" path="res://addons/dialogic/Events/DefaultLayouts/ExampleHistoryItem.gd" id="1_dgoja"]
-[ext_resource type="Texture2D" uid="uid://bbqfq3s7qrduv" path="res://icon.svg" id="2_ywvym"]
+[ext_resource type="Script" path="res://addons/dialogic/Events/DefaultStyles/ExampleHistoryItem.gd" id="1_dgoja"]
+[ext_resource type="Texture2D" uid="uid://cgyp4v74falt4" path="res://icon.svg" id="2_ywvym"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_upgjp"]
 content_margin_left = 5.0
