@@ -87,11 +87,12 @@ func _on_dialog_text_finished():
 
 
 func update_name_label(character:DialogicCharacter) -> void:
-	if character.resource_path == dialogic.current_state_info['character']:
+	var character_path = character.resource_path if character else null
+	if character_path == dialogic.current_state_info.get('character'):
 		return
 	for name_label in get_tree().get_nodes_in_group('dialogic_name_label'):
 		if character:
-			dialogic.current_state_info['character'] = character.resource_path
+			dialogic.current_state_info['character'] = character_path
 			if dialogic.has_subsystem('VAR'):
 				name_label.text = dialogic.VAR.parse_variables(character.display_name)
 			else:

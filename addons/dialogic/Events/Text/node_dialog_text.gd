@@ -41,6 +41,8 @@ func continue_reveal() -> void:
 	if visible_characters < get_total_character_count():
 		revealing = false
 		await Dialogic.Text.execute_effects(visible_characters, self, false)
+		if visible_characters == -1:
+			return
 		revealing = true
 		visible_characters += 1
 		emit_signal("continued_revealing_text", get_parsed_text()[visible_characters-2])
