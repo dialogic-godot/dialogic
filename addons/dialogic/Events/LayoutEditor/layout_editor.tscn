@@ -16,7 +16,7 @@ data = {
 [sub_resource type="ImageTexture" id="ImageTexture_w5n58"]
 image = SubResource("Image_i1bnf")
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3digy"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tongn"]
 content_margin_left = 4.0
 content_margin_top = 0.0
 content_margin_right = 4.0
@@ -77,7 +77,7 @@ text = "Custom layout scene:"
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_styles/panel = SubResource("StyleBoxFlat_3digy")
+theme_override_styles/panel = SubResource("StyleBoxFlat_tongn")
 file_filter = "*.tscn"
 placeholder = "DialogicDefaultScene.tscn"
 resource_icon = SubResource("ImageTexture_w5n58")

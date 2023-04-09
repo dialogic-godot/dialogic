@@ -47,6 +47,7 @@ func _ready() -> void:
 	get_parent().set_tab_title(get_index(), 'Layout')
 	get_parent().set_tab_icon(get_index(), get_theme_icon("MatchCase", "EditorIcons"))
 	#Alternative icon: get_theme_icon("MeshTexture", "EditorIcons")
+	$ThemeList.active_theme_changed.connect(_on_active_theme_changed)
 
 
 
@@ -78,6 +79,9 @@ func _on_custom_scene_picker_value_changed(property_name:String, value:String):
 	ProjectSettings.set_setting('dialogic/layout/layout_scene', value)
 	ProjectSettings.save()
 
+
+func _on_active_theme_changed(custom_scene_path:String) -> void:
+	load_layout_scene_customization(custom_scene_path)
 
 ################################################################################
 ##					SELECT PRESET

@@ -1,6 +1,8 @@
 @tool
 extends ScrollContainer
 
+signal active_theme_changed
+
 var ListItem = preload("res://addons/dialogic/Events/LayoutEditor/Components/ThemeItem.tscn")
 @onready var active_layout = DialogicUtil.get_project_setting('dialogic/layout/layout_scene', DialogicUtil.get_default_layout())
 
@@ -26,6 +28,7 @@ func _on_activate_theme(item):
 	item.active_state(true)
 	ProjectSettings.set_setting('dialogic/layout/layout_scene', item.path)
 	ProjectSettings.save()
+	emit_signal('active_theme_changed', item.path)
 	
 	#CALL THIS ON PARENT
 	#layouts_info.get(DialogicUtil.get_project_setting('dialogic/layout/layout_scene', DialogicUtil.get_default_layout()), {}).get('name', 'Invalid Preset!')
