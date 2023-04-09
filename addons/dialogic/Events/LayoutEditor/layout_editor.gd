@@ -29,7 +29,7 @@ func _ready() -> void:
 	for indexer in DialogicUtil.get_indexers():
 		for layout in indexer._get_layout_scenes():
 			layouts_info[layout['path']] = layout
-			$ThemeList.add_item(layout)
+			$StyleList.add_item(layout)
 	
 	%ClearCustomization.icon = get_theme_icon("Remove", "EditorIcons")
 	%MakeCustomButton.icon = get_theme_icon("Override", "EditorIcons")
@@ -44,10 +44,9 @@ func _ready() -> void:
 	get_theme_icon("Unlinked", "EditorIcons")
 	
 	await get_tree().process_frame
-	get_parent().set_tab_title(get_index(), 'Style')
+	get_parent().set_tab_title(get_index(), 'Styles')
 	get_parent().set_tab_icon(get_index(), load("res://addons/dialogic/Events/LayoutEditor/styles_icon.svg"))
-	#Alternative icon: get_theme_icon("MeshTexture", "EditorIcons")
-	$ThemeList.active_theme_changed.connect(_on_active_theme_changed)
+	$StyleList.active_theme_changed.connect(_on_active_theme_changed)
 
 
 
@@ -82,15 +81,6 @@ func _on_custom_scene_picker_value_changed(property_name:String, value:String):
 
 func _on_active_theme_changed(custom_scene_path:String) -> void:
 	load_layout_scene_customization(custom_scene_path)
-
-################################################################################
-##					SELECT PRESET
-################################################################################
-
-#await get_tree().process_frame
-
-# Creo que es esto:
-# load_layout_scene_customization(current_info.get('path', ''))
 
 
 ################################################################################
