@@ -186,6 +186,6 @@ horizontal_alignment = 1
 script = ExtResource("7_xx1xf")
 
 [connection signal="continued_revealing_text" from="DialogText" to="." method="_on_DialogText_continued_revealing_text"]
-[connection signal="finished_revealing_text" from="DialogText" to="." method="_on_DialogText_continued_revealing_text"]
 [connection signal="finished_revealing_text" from="DialogText" to="." method="_on_dialog_text_finished_revealing_text"]
+[connection signal="finished_revealing_text" from="DialogText" to="." method="_on_DialogText_continued_revealing_text"]
 [connection signal="started_revealing_text" from="DialogText" to="." method="_on_dialog_text_started_revealing_text"]

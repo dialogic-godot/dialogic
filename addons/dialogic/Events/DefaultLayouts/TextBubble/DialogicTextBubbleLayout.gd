@@ -43,6 +43,7 @@ func _on_DialogText_continued_revealing_text(new_character = ""):
 
 
 func _on_dialog_text_started_revealing_text():
+	print($NameLabel/DialogicNode_NameLabel.text)
 	if sizing_mode == SizingModes.AdjustOnStart:
 		var font = $DialogText.get_theme_font("normal_font")
 		var line_height = font.get_height()
