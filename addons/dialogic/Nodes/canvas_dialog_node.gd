@@ -16,6 +16,7 @@ signal text_complete(text_event)
 signal dialogic_signal(value)
 signal letter_displayed(lastLetter)
 signal auto_advance_toggled(toggle_value)
+signal portrait_changed(portrait_path)
 
 var _dialog_node_scene = load("res://addons/dialogic/Nodes/DialogNode.tscn")
 var dialog_node = null
@@ -43,6 +44,8 @@ func set_dialog_node_scene(scene) -> void:
 		_err = dialog_node.connect("letter_displayed", self, "_on_letter_displayed")
 		assert(_err == OK)
 		_err = dialog_node.connect("auto_advance_toggled", self, "_on_auto_advance_toggle")
+		assert(_err == OK)
+		_err = dialog_node.connect("portrait_changed", self, "_on_portrait_changed")
 		assert(_err == OK)
 
 func _enter_tree() -> void:  
@@ -95,3 +98,6 @@ func _on_letter_displayed(last_letter):
 
 func _on_auto_advance_toggle(toggle_value) -> void:
 	emit_signal("auto_advance_toggled", toggle_value)
+
+func _on_portrait_changed(portrait_path):
+	emit_signal("portrait_changed", portrait_path)
