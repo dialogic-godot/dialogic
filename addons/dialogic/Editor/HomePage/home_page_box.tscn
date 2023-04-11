@@ -1,0 +1,77 @@
+[gd_scene load_steps=4 format=3 uid="uid://bbaphnheyups7"]
+
+[ext_resource type="Script" path="res://addons/dialogic/Editor/HomePage/home_page_box.gd" id="1_tfhxr"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_e3ugl"]
+content_margin_top = 7.5
+bg_color = Color(0.0745098, 0.0745098, 0.0745098, 1)
+border_width_top = 12
+border_color = Color(0.701961, 0.701961, 0.701961, 0.447059)
+border_blend = true
+corner_radius_top_left = 7
+corner_radius_top_right = 7
+corner_radius_bottom_right = 15
+corner_radius_bottom_left = 15
+shadow_color = Color(0.415686, 0.415686, 0.415686, 0.0784314)
+shadow_size = 10
+
+[sub_resource type="Texture" id="Texture_gbhvd"]
+resource_local_to_scene = false
+resource_name = ""
+
+[node name="HomePageBox" type="PanelContainer"]
+self_modulate = Color(0, 0, 0, 1)
+custom_minimum_size = Vector2(187.5, 0)
+theme_override_styles/panel = SubResource("StyleBoxFlat_e3ugl")
+script = ExtResource("1_tfhxr")
+title = "Something"
+image = SubResource("Texture_gbhvd")
+
+[node name="Vbox" type="VBoxContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Header" type="TextureRect" parent="Vbox"]
+unique_name_in_owner = true
+self_modulate = Color(0.152941, 0.152941, 0.152941, 1)
+custom_minimum_size = Vector2(0, 37.5)
+layout_mode = 2
+expand_mode = 1
+stretch_mode = 6
+
+[node name="Title" type="Label" parent="Vbox/Header"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 15
+text = "Something"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Content" type="MarginContainer" parent="Vbox"]
+layout_mode = 2
+theme_override_constants/margin_left = 7
+theme_override_constants/margin_top = 7
+theme_override_constants/margin_right = 7
+theme_override_constants/margin_bottom = 10
+
+[node name="VBox" type="VBoxContainer" parent="Vbox/Content"]
+layout_mode = 2
+
+[node name="Content" type="Label" parent="Vbox/Content/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 7
+text = "Somet text that is interesting."
+autowrap_mode = 3
+
+[node name="Button" type="Button" parent="Vbox/Content/VBox"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+
+[connection signal="pressed" from="Vbox/Content/VBox/Button" to="." method="_on_button_pressed"]

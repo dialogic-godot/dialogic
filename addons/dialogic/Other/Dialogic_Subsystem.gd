@@ -13,3 +13,11 @@ func clear_game_state():
 # This is called when a save is loaded
 func load_game_state():
 	pass
+
+# To be overriden by sub-classes
+func pause() -> void:
+	pass
+
+# To be overriden by sub-classes
+func resume() -> void:
+	pass

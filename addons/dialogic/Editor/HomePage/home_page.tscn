@@ -1,0 +1,186 @@
+[gd_scene load_steps=10 format=3 uid="uid://cqy73hshqqgga"]
+
+[ext_resource type="Script" path="res://addons/dialogic/Editor/HomePage/home_page.gd" id="1_6g38w"]
+[ext_resource type="Texture2D" uid="uid://bjcfcigfdrfex" path="res://addons/dialogic/Example Assets/backgrounds/green-field.png" id="2_3lw3i"]
+[ext_resource type="Texture2D" uid="uid://bt87p6qlso0ya" path="res://addons/dialogic/Editor/Images/dialogic-logo.svg" id="3_3leok"]
+[ext_resource type="PackedScene" uid="uid://bbaphnheyups7" path="res://addons/dialogic/Editor/HomePage/home_page_box.tscn" id="4_hn0gf"]
+[ext_resource type="Texture2D" uid="uid://bbhj1tkuuwapw" path="res://addons/dialogic/Example Assets/backgrounds/vn-background-1.png" id="4_jm73p"]
+[ext_resource type="Texture2D" uid="uid://ikvwvpcgu1l5" path="res://addons/dialogic/Example Assets/backgrounds/vn-background-3.png" id="5_w572g"]
+[ext_resource type="Texture2D" uid="uid://bk3k0docutll2" path="res://addons/dialogic/Example Assets/backgrounds/vn-background-2.png" id="6_p1dg6"]
+
+[sub_resource type="Gradient" id="Gradient_1gns2"]
+offsets = PackedFloat32Array(0, 0.302013, 0.872483)
+colors = PackedColorArray(0.0472289, 0.145483, 0.295484, 0.513726, 0.365323, 0.360806, 0.260695, 0, 0.615686, 0.615686, 0.615686, 0.592157)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_u0aw3"]
+gradient = SubResource("Gradient_1gns2")
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(1, 1)
+
+[node name="HomePage" type="VBoxContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -568.0
+offset_top = 8.0
+offset_right = -76.0
+offset_bottom = -1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 22
+script = ExtResource("1_6g38w")
+
+[node name="Header" type="TextureRect" parent="."]
+self_modulate = Color(0.223529, 0.223529, 0.223529, 1)
+clip_contents = true
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.4
+texture = ExtResource("2_3lw3i")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="Vignette" type="TextureRect" parent="Header"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -166.0
+offset_bottom = 166.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_u0aw3")
+expand_mode = 1
+
+[node name="Logo" type="TextureRect" parent="Header"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 21.0
+offset_top = 25.0
+offset_right = -21.0
+offset_bottom = -25.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.3
+texture = ExtResource("3_3leok")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="VersionLabel" type="Label" parent="Header"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -73.0
+offset_top = -34.0
+offset_right = 77.0
+offset_bottom = -8.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_font_sizes/font_size = 15
+text = "2.0-Alpha-6 (for Godot 4 RC1)"
+
+[node name="CenterContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+size_flags_vertical = 3
+alignment = 1
+
+[node name="Spacer" type="Control" parent="CenterContainer"]
+custom_minimum_size = Vector2(75, 0)
+layout_mode = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="CenterContainer"]
+custom_minimum_size = Vector2(500, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+horizontal_scroll_mode = 0
+
+[node name="MarginContainer" type="MarginContainer" parent="CenterContainer/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="BoxHolder" type="HFlowContainer" parent="CenterContainer/ScrollContainer/MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/h_separation = 20
+theme_override_constants/v_separation = 20
+alignment = 1
+
+[node name="WelcomeBox" parent="CenterContainer/ScrollContainer/MarginContainer/BoxHolder" instance=ExtResource("4_hn0gf")]
+custom_minimum_size = Vector2(165, 0)
+layout_mode = 2
+size_flags_vertical = 0
+title = "Welcome!"
+content = "Welcome to dialogic! Easily create visual novels or dialogs for your game."
+image = ExtResource("4_jm73p")
+
+[node name="WikiBox" parent="CenterContainer/ScrollContainer/MarginContainer/BoxHolder" instance=ExtResource("4_hn0gf")]
+custom_minimum_size = Vector2(165, 0)
+layout_mode = 2
+size_flags_vertical = 0
+title = "How to start:"
+content = "If you are new to dialogic, check out the beginners guide in the wiki."
+image = ExtResource("6_p1dg6")
+button = "Beginners guide"
+
+[node name="RestartBox" parent="CenterContainer/ScrollContainer/MarginContainer/BoxHolder" instance=ExtResource("4_hn0gf")]
+custom_minimum_size = Vector2(165, 0)
+layout_mode = 2
+size_flags_vertical = 0
+title = "Just installed?"
+content = "If you've just installed dialogic you might need to restart godot once, so all scripts load correctly!"
+image = ExtResource("2_3lw3i")
+button = "Restart now"
+
+[node name="BugBox" parent="CenterContainer/ScrollContainer/MarginContainer/BoxHolder" instance=ExtResource("4_hn0gf")]
+custom_minimum_size = Vector2(165, 0)
+layout_mode = 2
+size_flags_vertical = 0
+title = "Something broken!?"
+content = "You found a bug? Or feel like something could be improved? Create a github issue to let us know!"
+image = ExtResource("2_3lw3i")
+button = "New issue"
+
+[node name="SharingBox" parent="CenterContainer/ScrollContainer/MarginContainer/BoxHolder" instance=ExtResource("4_hn0gf")]
+custom_minimum_size = Vector2(165, 0)
+layout_mode = 2
+size_flags_vertical = 0
+title = "Making something?"
+content = "We always like to hear about cool things being made with dialogic. Let us know what you are using it for!"
+image = ExtResource("5_w572g")
+button = "Join Discord"
+
+[node name="Spacer2" type="Control" parent="CenterContainer"]
+custom_minimum_size = Vector2(75, 0)
+layout_mode = 2
+
+[node name="HBoxContainer" type="ScrollContainer" parent="."]
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+
+[node name="MarginContainer" type="HBoxContainer" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+alignment = 1
+
+[node name="AspectRatioContainer" type="AspectRatioContainer" parent="HBoxContainer/MarginContainer"]
+layout_mode = 2
+
+[connection signal="button_pressed" from="CenterContainer/ScrollContainer/MarginContainer/BoxHolder/WikiBox" to="." method="_on_wiki_box_button_pressed"]
+[connection signal="button_pressed" from="CenterContainer/ScrollContainer/MarginContainer/BoxHolder/RestartBox" to="." method="_on_restart_box_button_pressed"]
+[connection signal="button_pressed" from="CenterContainer/ScrollContainer/MarginContainer/BoxHolder/BugBox" to="." method="_on_bug_box_button_pressed"]
+[connection signal="button_pressed" from="CenterContainer/ScrollContainer/MarginContainer/BoxHolder/SharingBox" to="." method="_on_sharing_box_button_pressed"]

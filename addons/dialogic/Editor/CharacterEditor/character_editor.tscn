@@ -1,0 +1,492 @@
+[gd_scene load_steps=15 format=3 uid="uid://dlskc36c5hrwv"]
+
+[ext_resource type="Script" path="res://addons/dialogic/Editor/CharacterEditor/character_editor.gd" id="2"]
+[ext_resource type="PackedScene" uid="uid://dpwhshre1n4t6" path="res://addons/dialogic/Editor/Events/Fields/ComplexPicker.tscn" id="2_01va3"]
+[ext_resource type="Script" path="res://addons/dialogic/Editor/CharacterEditor/character_editor_ptab_image.gd" id="2_cusvj"]
+[ext_resource type="Script" path="res://addons/dialogic/Editor/CharacterEditor/character_editor_portrait_tree.gd" id="2_vad0i"]
+[ext_resource type="Script" path="res://addons/dialogic/Editor/CharacterEditor/character_editor_ptab_scene.gd" id="4_6tltp"]
+[ext_resource type="PackedScene" uid="uid://7mvxuaulctcq" path="res://addons/dialogic/Editor/Events/Fields/FilePicker.tscn" id="4_a4bcu"]
+[ext_resource type="Script" path="res://addons/dialogic/Editor/CharacterEditor/character_editor_ptab_layout.gd" id="5_eicvp"]
+[ext_resource type="Script" path="res://addons/dialogic/Editor/CharacterEditor/character_editor_ptab_exports.gd" id="7_4enie"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_defg7"]
+content_margin_left = 10.0
+content_margin_top = 4.0
+content_margin_right = 10.0
+content_margin_bottom = 4.0
+bg_color = Color(0, 0, 0, 1)
+border_width_top = 2
+border_color = Color(1, 1, 1, 0.75)
+corner_detail = 1
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fv43a"]
+content_margin_left = 7.5
+content_margin_top = 7.5
+content_margin_right = 7.5
+content_margin_bottom = 7.5
+bg_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+
+[sub_resource type="Image" id="Image_cjbmo"]
+data = {
+"data": PackedByteArray(255, 255, 255, 0, 255, 255, 255, 0, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 131, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 131, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 131, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 231, 255, 93, 93, 55, 255, 97, 97, 58, 255, 93, 93, 233, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 231, 255, 94, 94, 54, 255, 94, 94, 57, 255, 93, 93, 233, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 93, 93, 233, 255, 93, 93, 232, 255, 93, 93, 41, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 93, 93, 233, 255, 93, 93, 232, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 97, 97, 42, 255, 255, 255, 0, 255, 97, 97, 42, 255, 97, 97, 42, 255, 255, 255, 0, 255, 98, 98, 47, 255, 97, 97, 42, 255, 255, 255, 0, 255, 97, 97, 42, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 235, 255, 93, 93, 233, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 94, 94, 46, 255, 93, 93, 236, 255, 93, 93, 233, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 235, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 233, 255, 95, 95, 59, 255, 96, 96, 61, 255, 93, 93, 235, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 233, 255, 95, 95, 59, 255, 96, 96, 61, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0),
+"format": "RGBA8",
+"height": 16,
+"mipmaps": false,
+"width": 16
+}
+
+[sub_resource type="ImageTexture" id="ImageTexture_mpcxh"]
+image = SubResource("Image_cjbmo")
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_4xgdx"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_q0yo5"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(1, 0.365, 0.365, 1)
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+corner_detail = 1
+
+[node name="CharacterEditor" type="MarginContainer"]
+self_modulate = Color(0, 0, 0, 1)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 0
+theme_override_constants/margin_bottom = 0
+script = ExtResource("2")
+
+[node name="Split" type="HSplitContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Editor" type="VSplitContainer" parent="Split"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 11
+
+[node name="EditorScroll" type="ScrollContainer" parent="Split/Editor"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.0
+vertical_scroll_mode = 0
+
+[node name="MainEditTabs" type="TabContainer" parent="Split/Editor/EditorScroll"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/side_margin = 5
+theme_override_styles/tab_selected = SubResource("StyleBoxFlat_defg7")
+theme_override_styles/panel = SubResource("StyleBoxFlat_fv43a")
+
+[node name="PortraitListSection" type="TabContainer" parent="Split/Editor"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/side_margin = 5
+theme_override_styles/tab_selected = SubResource("StyleBoxFlat_defg7")
+theme_override_styles/panel = SubResource("StyleBoxFlat_fv43a")
+
+[node name="Portraits" type="VBoxContainer" parent="Split/Editor/PortraitListSection"]
+layout_mode = 2
+
+[node name="PortraitListTools" type="HBoxContainer" parent="Split/Editor/PortraitListSection/Portraits"]
+layout_mode = 2
+
+[node name="AddPortraitButton" type="Button" parent="Split/Editor/PortraitListSection/Portraits/PortraitListTools"]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "Add portrait"
+icon = SubResource("ImageTexture_mpcxh")
+
+[node name="AddPortraitGroupButton" type="Button" parent="Split/Editor/PortraitListSection/Portraits/PortraitListTools"]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "Add Group"
+icon = SubResource("ImageTexture_mpcxh")
+
+[node name="ImportPortraitsButton" type="Button" parent="Split/Editor/PortraitListSection/Portraits/PortraitListTools"]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "Import images from folder"
+icon = SubResource("ImageTexture_mpcxh")
+
+[node name="PortraitSearch" type="LineEdit" parent="Split/Editor/PortraitListSection/Portraits/PortraitListTools"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+placeholder_text = "Search"
+expand_to_text_length = true
+clear_button_enabled = true
+right_icon = SubResource("ImageTexture_mpcxh")
+caret_blink = true
+caret_blink_interval = 0.5
+
+[node name="Panel" type="PanelContainer" parent="Split/Editor/PortraitListSection/Portraits"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxEmpty_4xgdx")
+
+[node name="PortraitTree" type="Tree" parent="Split/Editor/PortraitListSection/Portraits/Panel"]
+unique_name_in_owner = true
+layout_mode = 2
+allow_rmb_select = true
+hide_root = true
+drop_mode_flags = 1
+script = ExtResource("2_vad0i")
+
+[node name="P Settings" type="VBoxContainer" parent="Split/Editor/PortraitListSection"]
+visible = false
+layout_mode = 2
+
+[node name="DefaultPortrait" type="HBoxContainer" parent="Split/Editor/PortraitListSection/P Settings"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label5" type="Label" parent="Split/Editor/PortraitListSection/P Settings/DefaultPortrait"]
+layout_mode = 2
+text = "Default:"
+
+[node name="DefaultPortraitPicker" parent="Split/Editor/PortraitListSection/P Settings/DefaultPortrait" instance=ExtResource("2_01va3")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "Select Portrait"
+
+[node name="HSeparator" type="HSeparator" parent="Split/Editor/PortraitListSection/P Settings"]
+layout_mode = 2
+
+[node name="PortraitMainSettings" type="HFlowContainer" parent="Split/Editor/PortraitListSection/P Settings"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="Split/Editor/PortraitListSection/P Settings/PortraitMainSettings"]
+layout_mode = 2
+text = "Scale"
+
+[node name="MainScale" type="SpinBox" parent="Split/Editor/PortraitListSection/P Settings/PortraitMainSettings"]
+unique_name_in_owner = true
+layout_mode = 2
+value = 100.0
+allow_greater = true
+suffix = "%"
+
+[node name="Offset" type="HBoxContainer" parent="Split/Editor/PortraitListSection/P Settings/PortraitMainSettings"]
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="Split/Editor/PortraitListSection/P Settings/PortraitMainSettings/Offset"]
+layout_mode = 2
+text = "Offset"
+
+[node name="MainOffsetX" type="SpinBox" parent="Split/Editor/PortraitListSection/P Settings/PortraitMainSettings/Offset"]
+unique_name_in_owner = true
+layout_mode = 2
+allow_greater = true
+allow_lesser = true
+suffix = "X"
+
+[node name="MainOffsetY" type="SpinBox" parent="Split/Editor/PortraitListSection/P Settings/PortraitMainSettings/Offset"]
+unique_name_in_owner = true
+layout_mode = 2
+allow_greater = true
+allow_lesser = true
+suffix = "Y"
+
+[node name="MirrorOption" type="HBoxContainer" parent="Split/Editor/PortraitListSection/P Settings/PortraitMainSettings"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Split/Editor/PortraitListSection/P Settings/PortraitMainSettings/MirrorOption"]
+layout_mode = 2
+text = "Mirror"
+
+[node name="MainMirror" type="CheckBox" parent="Split/Editor/PortraitListSection/P Settings/PortraitMainSettings/MirrorOption"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="RightSection" type="VSplitContainer" parent="Split"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 1.5
+
+[node name="PortraitPreviewSection" type="Panel" parent="Split/RightSection"]
+unique_name_in_owner = true
+clip_contents = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_fv43a")
+
+[node name="Node2D" type="Node2D" parent="Split/RightSection/PortraitPreviewSection"]
+position = Vector2(13, 17)
+
+[node name="RealPreviewPivot" type="Sprite2D" parent="Split/RightSection/PortraitPreviewSection/Node2D"]
+unique_name_in_owner = true
+position = Vector2(330, 405)
+texture = SubResource("ImageTexture_mpcxh")
+
+[node name="ScenePreviewWarning" type="Label" parent="Split/RightSection/PortraitPreviewSection"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -143.0
+offset_top = -44.5
+offset_right = 143.0
+offset_bottom = 85.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "Custom scenes can only be viewed in \"Full mode\" if they are in @tool mode and override _get_covered_rect"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+metadata/_edit_layout_mode = 1
+
+[node name="PreviewReal" type="CenterContainer" parent="Split/RightSection/PortraitPreviewSection"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -302.0
+offset_top = -139.0
+offset_right = 302.0
+grow_horizontal = 2
+grow_vertical = 0
+metadata/_edit_layout_mode = 1
+
+[node name="Control" type="Control" parent="Split/RightSection/PortraitPreviewSection/PreviewReal"]
+layout_mode = 2
+
+[node name="RealSizeRemotePivotTransform" type="RemoteTransform2D" parent="Split/RightSection/PortraitPreviewSection/PreviewReal/Control"]
+unique_name_in_owner = true
+remote_path = NodePath("../../../Node2D/RealPreviewPivot")
+update_position = false
+update_rotation = false
+update_scale = false
+
+[node name="FullPreviewAvailableRect" type="Control" parent="Split/RightSection/PortraitPreviewSection"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 10.0
+offset_top = 13.0
+offset_right = -10.0
+offset_bottom = -16.0
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_layout_mode = 1
+
+[node name="PreviewLabel" type="Label" parent="Split/RightSection/PortraitPreviewSection"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+text = "No portrait to preview."
+
+[node name="PreviewMode" type="OptionButton" parent="Split/RightSection/PortraitPreviewSection"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -121.0
+offset_top = 9.0
+offset_right = -9.0
+offset_bottom = 40.0
+grow_horizontal = 0
+item_count = 2
+popup/item_0/text = "Full View"
+popup/item_0/id = 0
+popup/item_1/text = "Real Size"
+popup/item_1/id = 1
+metadata/_edit_layout_mode = 1
+
+[node name="TextureRect" type="TextureRect" parent="Split/RightSection/PortraitPreviewSection"]
+layout_mode = 0
+offset_top = -12.0
+offset_right = 597.0
+offset_bottom = -12.0
+
+[node name="PortraitSettingsSection" type="TabContainer" parent="Split/RightSection"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.3
+theme_override_constants/side_margin = 5
+theme_override_styles/tab_selected = SubResource("StyleBoxFlat_defg7")
+theme_override_styles/panel = SubResource("StyleBoxFlat_fv43a")
+
+[node name="Image" type="ScrollContainer" parent="Split/RightSection/PortraitSettingsSection"]
+custom_minimum_size = Vector2(0, 35)
+layout_mode = 2
+horizontal_scroll_mode = 0
+script = ExtResource("2_cusvj")
+
+[node name="Flow" type="HFlowContainer" parent="Split/RightSection/PortraitSettingsSection/Image"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="GridContainer" type="GridContainer" parent="Split/RightSection/PortraitSettingsSection/Image/Flow"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+columns = 2
+
+[node name="Label" type="Label" parent="Split/RightSection/PortraitSettingsSection/Image/Flow/GridContainer"]
+layout_mode = 2
+text = "Image: "
+
+[node name="ImagePicker" parent="Split/RightSection/PortraitSettingsSection/Image/Flow/GridContainer" instance=ExtResource("4_a4bcu")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+file_filter = "*.png, *.svg"
+resource_icon = SubResource("ImageTexture_mpcxh")
+
+[node name="Scene" type="ScrollContainer" parent="Split/RightSection/PortraitSettingsSection"]
+visible = false
+custom_minimum_size = Vector2(0, 35)
+layout_mode = 2
+horizontal_scroll_mode = 0
+script = ExtResource("4_6tltp")
+
+[node name="Flow" type="HFlowContainer" parent="Split/RightSection/PortraitSettingsSection/Scene"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="GridContainer" type="GridContainer" parent="Split/RightSection/PortraitSettingsSection/Scene/Flow"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+columns = 2
+
+[node name="Label" type="Label" parent="Split/RightSection/PortraitSettingsSection/Scene/Flow/GridContainer"]
+layout_mode = 2
+text = "Scene: "
+
+[node name="ScenePicker" parent="Split/RightSection/PortraitSettingsSection/Scene/Flow/GridContainer" instance=ExtResource("4_a4bcu")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+file_filter = "*.tscn"
+placeholder = "Default scene"
+resource_icon = SubResource("ImageTexture_mpcxh")
+
+[node name="Label2" type="Label" parent="Split/RightSection/PortraitSettingsSection/Scene/Flow/GridContainer"]
+layout_mode = 2
+text = "Ignore scale: "
+
+[node name="IgnoreScale" type="CheckBox" parent="Split/RightSection/PortraitSettingsSection/Scene/Flow/GridContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Layout" type="ScrollContainer" parent="Split/RightSection/PortraitSettingsSection"]
+visible = false
+custom_minimum_size = Vector2(0, 35)
+layout_mode = 2
+horizontal_scroll_mode = 0
+script = ExtResource("5_eicvp")
+
+[node name="Flow" type="HFlowContainer" parent="Split/RightSection/PortraitSettingsSection/Layout"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Split/RightSection/PortraitSettingsSection/Layout/Flow"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Split/RightSection/PortraitSettingsSection/Layout/Flow/HBoxContainer"]
+layout_mode = 2
+text = "Scale:"
+
+[node name="PortraitScale" type="SpinBox" parent="Split/RightSection/PortraitSettingsSection/Layout/Flow/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+value = 100.0
+allow_greater = true
+suffix = "%"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="Split/RightSection/PortraitSettingsSection/Layout/Flow"]
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="Split/RightSection/PortraitSettingsSection/Layout/Flow/HBoxContainer2"]
+layout_mode = 2
+text = "Offset:"
+
+[node name="PortraitOffsetX" type="SpinBox" parent="Split/RightSection/PortraitSettingsSection/Layout/Flow/HBoxContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+allow_greater = true
+allow_lesser = true
+suffix = "X"
+
+[node name="PortraitOffsetY" type="SpinBox" parent="Split/RightSection/PortraitSettingsSection/Layout/Flow/HBoxContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+allow_greater = true
+allow_lesser = true
+suffix = "Y"
+
+[node name="MirrorOption" type="HBoxContainer" parent="Split/RightSection/PortraitSettingsSection/Layout/Flow"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Split/RightSection/PortraitSettingsSection/Layout/Flow/MirrorOption"]
+layout_mode = 2
+text = "Mirror:"
+
+[node name="PortraitMirror" type="CheckBox" parent="Split/RightSection/PortraitSettingsSection/Layout/Flow/MirrorOption"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Exports" type="ScrollContainer" parent="Split/RightSection/PortraitSettingsSection"]
+visible = false
+custom_minimum_size = Vector2(0, 35)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_q0yo5")
+horizontal_scroll_mode = 0
+script = ExtResource("7_4enie")
+
+[node name="Grid" type="GridContainer" parent="Split/RightSection/PortraitSettingsSection/Exports"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/h_separation = 10
+columns = 2
+
+[connection signal="button_clicked" from="Split/Editor/PortraitListSection/Portraits/Panel/PortraitTree" to="." method="_on_portrait_tree_button_clicked"]
+[connection signal="resized" from="Split/RightSection/PortraitPreviewSection/FullPreviewAvailableRect" to="." method="_on_full_preview_available_rect_resized"]
+[connection signal="value_changed" from="Split/RightSection/PortraitSettingsSection/Image/Flow/GridContainer/ImagePicker" to="Split/RightSection/PortraitSettingsSection/Image" method="_on_image_picker_value_changed"]
+[connection signal="value_changed" from="Split/RightSection/PortraitSettingsSection/Scene/Flow/GridContainer/ScenePicker" to="Split/RightSection/PortraitSettingsSection/Scene" method="_on_scene_picker_value_changed"]
+[connection signal="toggled" from="Split/RightSection/PortraitSettingsSection/Scene/Flow/GridContainer/IgnoreScale" to="Split/RightSection/PortraitSettingsSection/Scene" method="_on_ignore_scale_toggled"]
+[connection signal="value_changed" from="Split/RightSection/PortraitSettingsSection/Layout/Flow/HBoxContainer/PortraitScale" to="Split/RightSection/PortraitSettingsSection/Layout" method="_on_portrait_scale_value_changed"]
+[connection signal="value_changed" from="Split/RightSection/PortraitSettingsSection/Layout/Flow/HBoxContainer2/PortraitOffsetX" to="Split/RightSection/PortraitSettingsSection/Layout" method="_on_portrait_offset_x_value_changed"]
+[connection signal="value_changed" from="Split/RightSection/PortraitSettingsSection/Layout/Flow/HBoxContainer2/PortraitOffsetY" to="Split/RightSection/PortraitSettingsSection/Layout" method="_on_portrait_offset_y_value_changed"]
+[connection signal="toggled" from="Split/RightSection/PortraitSettingsSection/Layout/Flow/MirrorOption/PortraitMirror" to="Split/RightSection/PortraitSettingsSection/Layout" method="_on_portrait_mirror_toggled"]

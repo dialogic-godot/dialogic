@@ -1,0 +1,183 @@
+[gd_scene load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://addons/dialogic/Events/Text/settings_text.gd" id="2"]
+[ext_resource type="PackedScene" uid="uid://dpwhshre1n4t6" path="res://addons/dialogic/Editor/Events/Fields/ComplexPicker.tscn" id="3"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_oy8x6"]
+content_margin_left = 5.0
+content_margin_top = 5.0
+content_margin_right = 5.0
+content_margin_bottom = 5.0
+bg_color = Color(0.545098, 0.545098, 0.545098, 0.211765)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_5tav8"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_mamwx"]
+
+[node name="DialogText" type="HBoxContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource("2")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+offset_right = 506.0
+offset_bottom = 600.0
+size_flags_horizontal = 3
+
+[node name="Title" type="Label" parent="VBoxContainer"]
+offset_right = 506.0
+offset_bottom = 36.0
+theme_override_styles/normal = SubResource("StyleBoxFlat_oy8x6")
+text = "Dialog Text Settings"
+
+[node name="DefaultSpeed" type="HBoxContainer" parent="VBoxContainer"]
+offset_top = 40.0
+offset_right = 506.0
+offset_bottom = 71.0
+
+[node name="Label" type="Label" parent="VBoxContainer/DefaultSpeed"]
+offset_top = 2.0
+offset_right = 419.0
+offset_bottom = 28.0
+size_flags_horizontal = 3
+text = "Default speed"
+
+[node name="DefaultSpeed" type="SpinBox" parent="VBoxContainer/DefaultSpeed"]
+unique_name_in_owner = true
+offset_left = 423.0
+offset_right = 506.0
+offset_bottom = 31.0
+step = 0.001
+
+[node name="InputAction" type="HBoxContainer" parent="VBoxContainer"]
+offset_top = 75.0
+offset_right = 506.0
+offset_bottom = 108.0
+
+[node name="Label2" type="Label" parent="VBoxContainer/InputAction"]
+offset_top = 3.0
+offset_right = 302.0
+offset_bottom = 29.0
+size_flags_horizontal = 3
+text = "Input action"
+
+[node name="InputAction" parent="VBoxContainer/InputAction" instance=ExtResource("3")]
+unique_name_in_owner = true
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 306.0
+offset_right = 506.0
+offset_bottom = 33.0
+
+[node name="Skippable" type="HBoxContainer" parent="VBoxContainer"]
+offset_top = 112.0
+offset_right = 506.0
+offset_bottom = 138.0
+
+[node name="Label3" type="Label" parent="VBoxContainer/Skippable"]
+offset_right = 478.0
+offset_bottom = 26.0
+size_flags_horizontal = 3
+text = "Skippable"
+
+[node name="Skippable" type="CheckBox" parent="VBoxContainer/Skippable"]
+unique_name_in_owner = true
+offset_left = 482.0
+offset_right = 506.0
+offset_bottom = 26.0
+
+[node name="ColorNames" type="HBoxContainer" parent="VBoxContainer"]
+offset_top = 142.0
+offset_right = 506.0
+offset_bottom = 168.0
+
+[node name="Label4" type="Label" parent="VBoxContainer/ColorNames"]
+offset_right = 478.0
+offset_bottom = 26.0
+size_flags_horizontal = 3
+text = "Autocolor names"
+
+[node name="AutocolorNames" type="CheckBox" parent="VBoxContainer/ColorNames"]
+unique_name_in_owner = true
+offset_left = 482.0
+offset_right = 506.0
+offset_bottom = 26.0
+
+[node name="AutoContinue" type="HBoxContainer" parent="VBoxContainer"]
+offset_top = 172.0
+offset_right = 506.0
+offset_bottom = 203.0
+
+[node name="Label5" type="Label" parent="VBoxContainer/AutoContinue"]
+offset_top = 2.0
+offset_right = 391.0
+offset_bottom = 28.0
+size_flags_horizontal = 3
+text = "Autocontinue"
+
+[node name="Autocontinue" type="CheckBox" parent="VBoxContainer/AutoContinue"]
+unique_name_in_owner = true
+offset_left = 395.0
+offset_right = 419.0
+offset_bottom = 31.0
+
+[node name="AutocontinueDelay" type="SpinBox" parent="VBoxContainer/AutoContinue"]
+unique_name_in_owner = true
+offset_left = 423.0
+offset_right = 506.0
+offset_bottom = 31.0
+step = 0.01
+suffix = "s"
+
+[node name="VSeparator" type="VSeparator" parent="."]
+offset_left = 510.0
+offset_right = 514.0
+offset_bottom = 600.0
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="."]
+offset_left = 518.0
+offset_right = 1024.0
+offset_bottom = 600.0
+size_flags_horizontal = 3
+
+[node name="Title" type="Label" parent="VBoxContainer2"]
+offset_right = 506.0
+offset_bottom = 36.0
+theme_override_styles/normal = SubResource("StyleBoxFlat_oy8x6")
+text = "Tipps and tricks:"
+
+[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer2"]
+offset_top = 40.0
+offset_right = 506.0
+offset_bottom = 600.0
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+
+[node name="Info" type="RichTextLabel" parent="VBoxContainer2/ScrollContainer"]
+unique_name_in_owner = true
+offset_right = 506.0
+offset_bottom = 560.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_colors/default_color = Color(1, 1, 1, 0.611765)
+theme_override_styles/focus = SubResource("StyleBoxEmpty_5tav8")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_mamwx")
+bbcode_enabled = true
+text = "There are a number of useful commands you can use in text events:
+- [b][speed=x][/b] changes the speed until the next speed command or the end of the text
+- [b][br][/b] adds a line break
+- [b][Word, Other Word][/b] selects a random entry from the comma separated list. You can write \\, if one of the entry should contain a comma.
+- [b][portrait=sad][/b] changes the portrait of the speaker to the given portrait.
+- [b][pause=x][/b] pauses for x seconds.
+- [b][mood=sad][/b] changes the typing sound mood.
+- [b][signal=arg][/b] emits the Dialogic.text_signal signal with the given argument.
+
+Also you can use the bbcode commands like [i][ i ] [/i], [b][ b ][/b], [u][ u ] [/u], [color=orange][ color=orange ][/color], [[wave]wave[/wave]], or [ img] [img=30x30]res://addons/dialogic/Editor/Images/plugin-icon.svg[/img] [/img].
+Learn more about bbcode in the official godot docs."
+
+[connection signal="value_changed" from="VBoxContainer/DefaultSpeed/DefaultSpeed" to="." method="_on_DefaultSpeed_value_changed"]
+[connection signal="value_changed" from="VBoxContainer/InputAction/InputAction" to="." method="_on_InputAction_value_changed"]
+[connection signal="toggled" from="VBoxContainer/Skippable/Skippable" to="." method="_on_Skippable_toggled"]
+[connection signal="toggled" from="VBoxContainer/ColorNames/AutocolorNames" to="." method="_on_AutocolorNames_toggled"]
+[connection signal="toggled" from="VBoxContainer/AutoContinue/Autocontinue" to="." method="_on_Autocontinue_toggled"]
+[connection signal="value_changed" from="VBoxContainer/AutoContinue/AutocontinueDelay" to="." method="_on_AutocontinueDelay_value_changed"]

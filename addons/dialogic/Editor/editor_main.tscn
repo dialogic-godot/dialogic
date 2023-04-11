@@ -1,0 +1,136 @@
+[gd_scene load_steps=13 format=3 uid="uid://de6yhw4r8jqb3"]
+
+[ext_resource type="Script" path="res://addons/dialogic/Editor/editor_main.gd" id="1_x88ov"]
+[ext_resource type="Script" path="res://addons/dialogic/Editor/editors_manager.gd" id="2_pe2tl"]
+[ext_resource type="PackedScene" uid="uid://cwe3r2tbh2og1" path="res://addons/dialogic/Editor/Common/side_bar.tscn" id="3_lp6hj"]
+[ext_resource type="Script" path="res://addons/dialogic/Editor/Common/toolbar.gd" id="4_6cx8s"]
+[ext_resource type="PackedScene" uid="uid://cqy73hshqqgga" path="res://addons/dialogic/Editor/HomePage/home_page.tscn" id="4_vey4f"]
+[ext_resource type="PackedScene" uid="uid://crce0na84rhfd" path="res://addons/dialogic/Editor/TimelineEditor/timeline_editor.tscn" id="5_e5v7u"]
+[ext_resource type="PackedScene" uid="uid://dlskc36c5hrwv" path="res://addons/dialogic/Editor/CharacterEditor/character_editor.tscn" id="6_y5x3e"]
+[ext_resource type="Script" path="res://addons/dialogic/Editor/directory_holder.gd" id="7_1xvr0"]
+[ext_resource type="PackedScene" uid="uid://dganirw26brfb" path="res://addons/dialogic/Editor/Settings/settings_editor.tscn" id="7_lqfl7"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7lxu4"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 6.0
+content_margin_bottom = 6.0
+bg_color = Color(0.081961, 0.0884312, 0.097059, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.14902, 0.160784, 0.176471, 1)
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+expand_margin_left = 2.0
+expand_margin_top = 2.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jhojw"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(1, 0.365, 0.365, 1)
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+corner_detail = 1
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_1qqdn"]
+
+[node name="EditorView" type="ColorRect"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+color = Color(0, 0, 0, 1)
+script = ExtResource("1_x88ov")
+editor_tab_bg = SubResource("StyleBoxFlat_7lxu4")
+
+[node name="Margin" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_right = 1
+theme_override_constants/margin_bottom = 2
+
+[node name="EditorsManager" type="VBoxContainer" parent="Margin"]
+layout_mode = 2
+script = ExtResource("2_pe2tl")
+
+[node name="HSplit" type="HSplitContainer" parent="Margin/EditorsManager"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 0
+split_offset = 150
+
+[node name="Sidebar" parent="Margin/EditorsManager/HSplit" instance=ExtResource("3_lp6hj")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(20, 0)
+layout_mode = 2
+split_offset = 0
+
+[node name="VBox" type="VBoxContainer" parent="Margin/EditorsManager/HSplit"]
+layout_mode = 2
+
+[node name="Toolbar" type="HBoxContainer" parent="Margin/EditorsManager/HSplit/VBox"]
+custom_minimum_size = Vector2(0, 31)
+layout_mode = 2
+mouse_filter = 2
+script = ExtResource("4_6cx8s")
+
+[node name="CurrentResource" type="Label" parent="Margin/EditorsManager/HSplit/VBox/Toolbar"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Jowan.dch"
+
+[node name="Panel" type="PanelContainer" parent="Margin/EditorsManager/HSplit/VBox/Toolbar"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_jhojw")
+
+[node name="CustomButtons" type="HBoxContainer" parent="Margin/EditorsManager/HSplit/VBox/Toolbar/Panel"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Editors" type="TabContainer" parent="Margin/EditorsManager/HSplit/VBox"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_7lxu4")
+theme_override_styles/tabbar_background = SubResource("StyleBoxEmpty_1qqdn")
+
+[node name="HomePage" parent="Margin/EditorsManager/HSplit/VBox/Editors" instance=ExtResource("4_vey4f")]
+visible = false
+layout_mode = 2
+metadata/_tab_name = ""
+
+[node name="Timeline Editor" parent="Margin/EditorsManager/HSplit/VBox/Editors" instance=ExtResource("5_e5v7u")]
+visible = false
+layout_mode = 2
+
+[node name="Character Editor" parent="Margin/EditorsManager/HSplit/VBox/Editors" instance=ExtResource("6_y5x3e")]
+layout_mode = 2
+
+[node name="Settings" parent="Margin/EditorsManager/HSplit/VBox/Editors" instance=ExtResource("7_lqfl7")]
+visible = false
+layout_mode = 2
+
+[node name="ResourceHelper" type="Node" parent="Margin/EditorsManager"]
+script = ExtResource("7_1xvr0")
+
+[node name="SaveConfirmationDialog" type="AcceptDialog" parent="."]
+size = Vector2i(207, 100)
+
+[connection signal="tab_changed" from="Margin/EditorsManager/HSplit/VBox/Editors" to="Margin/EditorsManager" method="_on_editors_tab_changed"]
+[connection signal="confirmed" from="SaveConfirmationDialog" to="." method="_on_SaveConfirmationDialog_confirmed"]
+[connection signal="custom_action" from="SaveConfirmationDialog" to="." method="_on_SaveConfirmationDialog_custom_action"]

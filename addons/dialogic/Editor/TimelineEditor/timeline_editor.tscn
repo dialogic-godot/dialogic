@@ -1,0 +1,68 @@
+[gd_scene load_steps=7 format=3 uid="uid://crce0na84rhfd"]
+
+[ext_resource type="Script" path="res://addons/dialogic/Editor/TimelineEditor/timeline_editor.gd" id="1_4aceh"]
+[ext_resource type="PackedScene" uid="uid://ysqbusmy0qma" path="res://addons/dialogic/Editor/TimelineEditor/VisualEditor/timeline_editor_visual.tscn" id="2_qs7vc"]
+[ext_resource type="PackedScene" uid="uid://defdeav8rli6o" path="res://addons/dialogic/Editor/TimelineEditor/TextEditor/timeline_editor_text.tscn" id="3_up2bn"]
+[ext_resource type="Script" path="res://addons/dialogic/Editor/TimelineEditor/TextEditor/syntax_highlighter.gd" id="4_1t6bf"]
+
+[sub_resource type="SyntaxHighlighter" id="SyntaxHighlighter_uisma"]
+script = ExtResource("4_1t6bf")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_j03ud"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(1, 0.365, 0.365, 1)
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+corner_detail = 1
+
+[node name="Timeline" type="MarginContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_4aceh")
+
+[node name="VisualEditor" parent="." instance=ExtResource("2_qs7vc")]
+layout_mode = 2
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 0
+theme_override_constants/margin_bottom = 0
+
+[node name="TextEditor" parent="." instance=ExtResource("3_up2bn")]
+layout_mode = 2
+syntax_highlighter = SubResource("SyntaxHighlighter_uisma")
+symbol_lookup_on_click = true
+line_folding = false
+gutters_draw_fold_gutter = false
+
+[node name="NoTimelineScreen" type="PanelContainer" parent="."]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_j03ud")
+
+[node name="CenterContainer" type="CenterContainer" parent="NoTimelineScreen"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="NoTimelineScreen/CenterContainer"]
+custom_minimum_size = Vector2(250, 0)
+layout_mode = 2
+
+[node name="Label" type="Label" parent="NoTimelineScreen/CenterContainer/VBoxContainer"]
+layout_mode = 2
+text = "No timeline opened. 
+Create a timeline or double-click one in the file system dock."
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="CreateTimelineButton" type="Button" parent="NoTimelineScreen/CenterContainer/VBoxContainer"]
+layout_mode = 2
+text = "Create New Timeline"
+
+[connection signal="pressed" from="NoTimelineScreen/CenterContainer/VBoxContainer/CreateTimelineButton" to="." method="_on_create_timeline_button_pressed"]

@@ -1,24 +1,19 @@
 @tool
 extends Control
 
-var property_name : String
-signal value_changed
+## Event block field for a vector.
 
-func _ready():
+signal value_changed
+var property_name : String
+
+func _ready() -> void:
 	$X.value_changed.connect(_on_value_changed)
 	$Y.value_changed.connect(_on_value_changed)
 
-func _on_value_changed(property, value):
+func _on_value_changed(property:String, value:float) -> void:
 	emit_signal("value_changed", property_name, Vector2($X.value, $Y.value))
 
-func set_right_text(value):
-	$RightText.text = str(value)
-	$RightText.visible = !value.is_empty()
 
-func set_left_text(value):
-	$LeftText.text = str(value)
-	$LeftText.visible = !value.is_empty()
-
-func set_value(value:Vector2):
+func set_value(value:Vector2) -> void:
 	$X.set_value(value.x)
 	$Y.set_value(value.y)

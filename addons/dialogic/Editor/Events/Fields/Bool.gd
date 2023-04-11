@@ -1,23 +1,19 @@
 @tool
-extends HBoxContainer
+extends CheckButton
 
-var property_name : String
+## Event block field for boolean values.
+
 signal value_changed
-
-func _ready():
-	$Toggle.toggled.connect(_on_value_changed)
+var property_name : String
 
 
-func set_value(value:bool):
-	$Toggle.button_pressed = value
+func _ready() -> void:
+	toggled.connect(_on_value_changed)
 
 
-func _on_value_changed(value):
-	emit_signal("value_changed", property_name, value)
+func set_value(value:bool) -> void:
+	button_pressed = value
 
 
-func set_right_text(value):
-	$RightText.text = str(value)
-
-func set_left_text(value):
-	$LeftText.text = str(value)
+func _on_value_changed(value:bool) -> void:
+	value_changed.emit(property_name, value)

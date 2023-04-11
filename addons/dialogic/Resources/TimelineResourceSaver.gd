@@ -7,7 +7,7 @@ func _get_recognized_extensions(resource: Resource) -> PackedStringArray:
 	return PackedStringArray(["dtl"])
 
 
-# Return true if this resource should be loaded as a DialogicCharacter 
+# Return true if this resource should be loaded as a DialogicTimeline 
 func _recognize(resource: Resource) -> bool:
 	# Cast instead of using "is" keyword in case is a subclass
 	resource = resource as DialogicTimeline
@@ -19,114 +19,42 @@ func _recognize(resource: Resource) -> bool:
 
 
 # Save the resource
-func _save(resource: Resource, path: String = '', flags: int = 0) -> int:
+func _save(resource: Resource, path: String = '', flags: int = 0) -> Error:
 	if resource.get_meta("timeline_not_saved", false):
-		if len(resource.events) == 0:
-			printerr("[Dialogic] Timeline save was called, but there are no events. Timeline will not be saved, to prevent accidental data loss. Please delete the timeline file if you are trying to clear all of the events.")
-			return ERR_INVALID_DATA
-		# Do not do this if the timeline's not in a ready state, so it doesn't accidentally save it blank
-		elif !resource.events_processed:
-			print('[Dialogic] Beginning saving timeline. Safety checks will be performed before writing, and temporary file will be created and removed if saving is successful...')
+
+		var timeline_as_text :String = ""
+		# if events are resources, create text
+		if resource.events_processed:
 			
-			#prepare everything before writing, we will only open the file if it's successfuly prepared, as that will clear the file contents
-			#var result = events_to_text(resource.events)
-			var result := ""
 			var indent := 0
-
 			for idx in range(0, len(resource.events)):
-				var event = resource.events[idx]
-
-
-				if event['event_name'] == 'End Branch':
-					indent -=1
-					continue
-
-				if event != null:
-					result += "\t".repeat(indent)+ event['event_node_as_text'] + "\n"
-				if event.can_contain_events:
-					indent += 1
-				if indent < 0: 
-					indent = 0
-				#result += "\t".repeat(indent)+"\n"
-				result += "\n"
-				
-			if (len(result) > 0):
-				var file := FileAccess.open(path.replace(".dtl", ".tmp"), FileAccess.WRITE)
-				file.store_string(result)
-				file = null
-				
-				var dir = DirAccess.open("res://")
-				if  dir.file_exists(path.replace(".dtl", ".tmp")):
-					file = FileAccess.open(path.replace(".dtl", ".tmp"), FileAccess.READ)
-					var check_length = file.get_length()
-					if check_length > 0:
-						var check_result = file.get_as_text()
-						if result == check_result:
-							dir.remove(path)
-							dir.rename(path.replace(".dtl", ".tmp"), path)
-							print('[Dialogic] Completed saving timeline "' , path, '"')
-						else:
-							printerr("[Dialogic] " + path + ": Temporary timeline file contents do not match what was written! Temporary file was saved as .tmp extension, please check to see if it matches your timeline, and rename to .dtl manually.")
-							return ERR_INVALID_DATA
-					else:
-						printerr("[Dialogic] " + path + ": Temporary timeline file is empty! Timeline was not saved!")
-						dir.remove(path.replace(".dtl", ".tmp"))
-						return ERR_INVALID_DATA
-				else:
-					printerr("[Dialogic] " + path + ": Temporary timeline file failed to create! Timeline was not saved!")
-					return ERR_INVALID_DATA
-				
-				
-				
-			else: 
-				printerr("[Dialogic] " + path + ": Timeline failed to convert to text for saving! Timeline was not saved!")
-				return ERR_INVALID_DATA
-				
-			# Checking for translation updates 
-			var trans_updates := {}
-			var translate :bool= DialogicUtil.get_project_setting('dialogic/translation_enabled', false)
-			for idx in range(0, len(resource.events)):
-				var event = resource.events[idx]
-
-				if event != null:
-					if translate and event.can_be_translated():
-						if event.translation_id:
-							trans_updates[event.translation_id] = event.get_original_translation_text()
-						else:
-							trans_updates[event.add_translation_id()] = event.get_original_translation_text()
-
-	#		if translate:
-	#			update_translations(path, trans_updates)
-			return OK
-		else: 
-			printerr("[Dialogic] " + path + ": Timeline was not in ready state for saving! Timeline was not saved!")
-			return ERR_INVALID_DATA
-	else:
-		return OK
-
-func update_translations(path:String, translation_updates:Dictionary):
-	if translation_updates.is_empty():
-		return
-	
-	var file_path :String = path.trim_suffix('.dtl')+'_translation.csv'
-	if DialogicUtil.get_project_setting('dialogic/translation_path', '').ends_with('.csv'):
-		file_path = ProjectSettings.get_setting('dialogic/translation_path')
-	
-	
-	var csv_lines := []
-	if FileAccess.file_exists(file_path):
-		var trans_file := FileAccess.open(file_path, FileAccess.READ)
+				if resource.events[idx]:
+					var event : DialogicEvent = resource.events[idx]
+					if event.event_name == 'End Branch':
+						indent -=1
+						continue
+					
+					for i in event.empty_lines_above:
+						timeline_as_text += '\t'.repeat(indent) + '\n'
+						
+					if event != null:
+						timeline_as_text += "\t".repeat(indent)+ event.event_node_as_text + "\n"
+					if event.can_contain_events:
+						indent += 1
+					if indent < 0: 
+						indent = 0
 		
-		while !trans_file.eof_reached():
-			csv_lines.append(trans_file.get_csv_line())
-			if csv_lines[-1][0] in translation_updates.keys():
-				csv_lines[-1][1] = translation_updates[csv_lines[-1][0]]
-				translation_updates.erase(csv_lines[-1][0])
-	else:
-		var trans_file := FileAccess.open(file_path, FileAccess.WRITE)
-		for line in csv_lines:
-			if line and line[0]:
-				trans_file.store_csv_line(line)
-		for key in translation_updates.keys():
-			trans_file.store_csv_line([key, translation_updates[key]])
-		print('[Dialogic] Updated translations for "', path ,'"')
+		# if events are string lines, just save them
+		else:
+			for event in resource.events:
+				timeline_as_text += event + "\n"
+		
+		# Now do the actual saving
+		var file := FileAccess.open(path, FileAccess.WRITE)
+		if !file:
+			print(FileAccess.get_open_error())
+			return ERR_CANT_OPEN
+		file.store_string(timeline_as_text)
+		file.close()
+
+	return OK

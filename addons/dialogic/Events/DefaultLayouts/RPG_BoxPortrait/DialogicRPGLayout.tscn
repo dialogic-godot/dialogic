@@ -1,0 +1,111 @@
+[gd_scene load_steps=7 format=3 uid="uid://8kce10038du4"]
+
+[ext_resource type="Script" path="res://addons/dialogic/Events/Character/node_portrait_container.gd" id="2_ih78e"]
+[ext_resource type="Script" path="res://addons/dialogic/Events/Text/node_dialog_text.gd" id="3"]
+[ext_resource type="Resource" path="res://characters/Jowan.dch" id="3_minbo"]
+[ext_resource type="Script" path="res://addons/dialogic/Events/Text/node_name_label.gd" id="6"]
+[ext_resource type="Texture2D" uid="uid://dch8fuekijffp" path="res://addons/dialogic/Example Assets/backgrounds/rpg_box.webp" id="7"]
+[ext_resource type="Script" path="res://addons/dialogic/Events/Choice/node_choice_button.gd" id="9"]
+
+[node name="RPG_ExampleNode" type="CanvasLayer"]
+layer = 3
+
+[node name="TextureRect" type="TextureRect" parent="."]
+self_modulate = Color(0.435294, 0.32549, 0.168627, 1)
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -354.0
+offset_top = -206.0
+offset_right = 362.0
+offset_bottom = -47.0
+grow_horizontal = 2
+grow_vertical = 0
+texture = ExtResource("7")
+expand_mode = 1
+
+[node name="ColorRect" type="ColorRect" parent="TextureRect"]
+show_behind_parent = true
+layout_mode = 0
+offset_left = 6.0
+offset_top = 6.0
+offset_right = 152.0
+offset_bottom = 152.0
+color = Color(0.0705882, 0.0705882, 0.0705882, 1)
+
+[node name="DialogicNode_PortraitContainer" type="Control" parent="TextureRect"]
+anchors_preset = 0
+offset_left = 9.0
+offset_top = 10.0
+offset_right = 147.0
+offset_bottom = 149.0
+script = ExtResource("2_ih78e")
+size_mode = 2
+debug_character = ExtResource("3_minbo")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="TextureRect"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 164.0
+offset_top = 12.0
+offset_right = -20.0
+offset_bottom = -16.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="DialogicNode_NameLabel" type="Label" parent="TextureRect/VBoxContainer"]
+layout_mode = 2
+text = "Name"
+script = ExtResource("6")
+
+[node name="DialogicNode_DialogText" type="RichTextLabel" parent="TextureRect/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+bbcode_enabled = true
+text = "Some text"
+scroll_following = true
+script = ExtResource("3")
+
+[node name="VBoxContainer" type="HBoxContainer" parent="TextureRect/VBoxContainer"]
+layout_mode = 2
+alignment = 2
+
+[node name="DialogicNode_ChoiceButton" type="Button" parent="TextureRect/VBoxContainer/VBoxContainer"]
+layout_mode = 2
+text = "Text"
+flat = true
+script = ExtResource("9")
+
+[node name="DialogicNode_ChoiceButton2" type="Button" parent="TextureRect/VBoxContainer/VBoxContainer"]
+layout_mode = 2
+text = "Text"
+flat = true
+script = ExtResource("9")
+
+[node name="DialogicNode_ChoiceButton3" type="Button" parent="TextureRect/VBoxContainer/VBoxContainer"]
+layout_mode = 2
+text = "Text"
+flat = true
+script = ExtResource("9")
+
+[node name="DialogicNode_ChoiceButton4" type="Button" parent="TextureRect/VBoxContainer/VBoxContainer"]
+layout_mode = 2
+text = "Text"
+flat = true
+script = ExtResource("9")
+
+[node name="DialogicNode_ChoiceButton5" type="Button" parent="TextureRect/VBoxContainer/VBoxContainer"]
+layout_mode = 2
+text = "Text"
+flat = true
+script = ExtResource("9")
+
+[node name="DialogicNode_ChoiceButton6" type="Button" parent="TextureRect/VBoxContainer/VBoxContainer"]
+layout_mode = 2
+text = "Text"
+flat = true
+script = ExtResource("9")

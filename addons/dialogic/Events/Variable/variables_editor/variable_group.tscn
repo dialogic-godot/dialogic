@@ -1,0 +1,166 @@
+[gd_scene load_steps=6 format=3 uid="uid://csplvb14r32wj"]
+
+[ext_resource type="Script" path="res://addons/dialogic/Events/Variable/variables_editor/variable_group.gd" id="1"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7k4ja"]
+content_margin_left = 5.0
+content_margin_top = 5.0
+content_margin_right = 5.0
+content_margin_bottom = 5.0
+bg_color = Color(0.466667, 0.466667, 0.466667, 0.137255)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+corner_radius_top_left = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="Image" id="Image_guklb"]
+data = {
+"data": PackedByteArray(255, 255, 255, 0, 255, 255, 255, 0, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 131, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 131, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 131, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 94, 94, 127, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 128, 128, 4, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 231, 255, 93, 93, 55, 255, 97, 97, 58, 255, 93, 93, 233, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 231, 255, 94, 94, 54, 255, 94, 94, 57, 255, 93, 93, 233, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 93, 93, 233, 255, 93, 93, 232, 255, 93, 93, 41, 255, 255, 255, 0, 255, 255, 255, 0, 255, 97, 97, 42, 255, 93, 93, 233, 255, 93, 93, 232, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 97, 97, 42, 255, 255, 255, 0, 255, 97, 97, 42, 255, 97, 97, 42, 255, 255, 255, 0, 255, 98, 98, 47, 255, 97, 97, 42, 255, 255, 255, 0, 255, 97, 97, 42, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 96, 96, 45, 255, 93, 93, 235, 255, 93, 93, 233, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 94, 94, 46, 255, 93, 93, 236, 255, 93, 93, 233, 255, 97, 97, 42, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 235, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 233, 255, 95, 95, 59, 255, 96, 96, 61, 255, 93, 93, 235, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 233, 255, 95, 95, 59, 255, 96, 96, 61, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 93, 93, 255, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 93, 93, 252, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0, 255, 255, 255, 0),
+"format": "RGBA8",
+"height": 16,
+"mipmaps": false,
+"width": 16
+}
+
+[sub_resource type="ImageTexture" id="ImageTexture_kw5ug"]
+image = SubResource("Image_guklb")
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_rhdj5"]
+
+[node name="VariableGroup" type="PanelContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_7k4ja")
+script = ExtResource("1")
+
+[node name="VBox" type="VBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="MainBar" type="HBoxContainer" parent="VBox"]
+layout_mode = 2
+
+[node name="Dragger" type="TextureRect" parent="VBox/MainBar"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_default_cursor_shape = 6
+texture = SubResource("ImageTexture_kw5ug")
+expand_mode = 2
+stretch_mode = 3
+
+[node name="NameEdit" type="LineEdit" parent="VBox/MainBar"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_styles/read_only = SubResource("StyleBoxEmpty_rhdj5")
+text = "NewFolder"
+editable = false
+expand_to_text_length = true
+
+[node name="Spacer" type="Control" parent="VBox/MainBar"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="SearchBar" type="LineEdit" parent="VBox/MainBar"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.5
+placeholder_text = "Search"
+
+[node name="NewVariable" type="Button" parent="VBox/MainBar"]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "Add new variable"
+icon = SubResource("ImageTexture_kw5ug")
+flat = true
+
+[node name="NewGroup" type="Button" parent="VBox/MainBar"]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "Add new Group"
+icon = SubResource("ImageTexture_kw5ug")
+flat = true
+
+[node name="DuplicateButton" type="Button" parent="VBox/MainBar"]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "Duplicate Group"
+icon = SubResource("ImageTexture_kw5ug")
+flat = true
+
+[node name="DeleteButton" type="Button" parent="VBox/MainBar"]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "Delete Group"
+icon = SubResource("ImageTexture_kw5ug")
+flat = true
+
+[node name="FoldButton" type="Button" parent="VBox/MainBar"]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "Hide/Show content"
+toggle_mode = true
+icon = SubResource("ImageTexture_kw5ug")
+flat = true
+
+[node name="ContentKeeper" type="HBoxContainer" parent="VBox"]
+layout_mode = 2
+
+[node name="DragSpacer" type="TextureRect" parent="VBox/ContentKeeper"]
+unique_name_in_owner = true
+modulate = Color(0, 0, 0, 0.5)
+custom_minimum_size = Vector2(20, 0)
+layout_mode = 2
+expand_mode = 1
+stretch_mode = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBox/ContentKeeper"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Labels" type="HBoxContainer" parent="VBox/ContentKeeper/VBoxContainer"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="VBox/ContentKeeper/VBoxContainer/Labels"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 5
+text = "Name"
+
+[node name="Label2" type="Label" parent="VBox/ContentKeeper/VBoxContainer/Labels"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 5
+text = "Default value"
+
+[node name="Space2" type="Control" parent="VBox/ContentKeeper/VBoxContainer/Labels"]
+layout_mode = 2
+
+[node name="Content" type="VBoxContainer" parent="VBox/ContentKeeper/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 0
+
+[connection signal="gui_input" from="." to="." method="_on_VariableGroup_gui_input"]
+[connection signal="mouse_exited" from="." to="." method="_on_VariableGroup_mouse_exited"]
+[connection signal="focus_exited" from="VBox/MainBar/NameEdit" to="." method="_on_NameEdit_focus_exited"]
+[connection signal="gui_input" from="VBox/MainBar/NameEdit" to="." method="_on_NameEdit_gui_input"]
+[connection signal="text_submitted" from="VBox/MainBar/NameEdit" to="." method="_on_name_edit_text_submitted"]
+[connection signal="gui_input" from="VBox/MainBar/Spacer" to="." method="_on_spacer_gui_input"]
+[connection signal="text_changed" from="VBox/MainBar/SearchBar" to="." method="_on_SearchBar_text_changed"]
+[connection signal="pressed" from="VBox/MainBar/NewVariable" to="." method="_on_NewVariable_pressed"]
+[connection signal="pressed" from="VBox/MainBar/NewGroup" to="." method="_on_NewGroup_pressed"]
+[connection signal="pressed" from="VBox/MainBar/DuplicateButton" to="." method="_on_DuplicateButton_pressed"]
+[connection signal="pressed" from="VBox/MainBar/DeleteButton" to="." method="_on_DeleteButton_pressed"]
+[connection signal="toggled" from="VBox/MainBar/FoldButton" to="." method="_on_FoldButton_toggled"]

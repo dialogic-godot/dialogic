@@ -1,9 +1,16 @@
 @tool
 extends Control
 
-@export var placeholder_text : String = "Select Resource"
+## Event block field for resources/options.
+
+
+# this signal is on all event parts and informs the event that a change happened.
+signal value_changed(property_name, value)
+var property_name : String
+var event_resource : DialogicEvent = null
 
 ### SETTINGS FOR THE RESOURCE PICKER
+@export var placeholder_text : String = "Select Resource"
 var file_extension : String = ""
 var get_suggestions_func : Callable = get_default_suggestions
 var empty_text : String = ""
@@ -17,34 +24,19 @@ var resource_icon : Texture = null:
 		%Icon.texture = new_icon
 
 ## STORING VALUE AND REFERENCE TO RESOURCE
-var event_resource : DialogicEvent = null
-var property_name : String
-var current_value # Dynamic
+var current_value :Variant # Dynamic
 var editor_reference
 
 var current_selected = 0
 
-# this signal is on all event parts and informs the event that a change happened.
-signal value_changed(property_name, value)
-
 ################################################################################
 ## 						BASIC EVENT PART FUNCTIONS
 ################################################################################
-# These functions have to be implemented by all scenes that are used to display 
-# values on the events.
 
-func set_left_text(value:String) -> void:
-	$LeftText.text = str(value)
-	$LeftText.visible = !value.is_empty()
-
-func set_right_text(value:String) -> void:
-	$RightText.text = str(value)
-	$RightText.visible = !value.is_empty()
-
-func set_value(value, text : String = '') -> void:
+func set_value(value:Variant, text : String = '') -> void:
 	if value == null:
 		%Search.text = empty_text
-	elif file_extension != "" && file_extension != ".dch" && file_extension != ".dtl":
+	elif file_extension != "" and file_extension != ".dch" and file_extension != ".dtl":
 		%Search.text = value.resource_path
 		%Search.tooltip_text = value.resource_path
 	elif value:
@@ -85,13 +77,14 @@ func _ready():
 	%Suggestions.item_clicked.connect(suggestion_selected)
 	if resource_icon == null:
 		self.resource_icon = null
-	set_left_text('')
-	set_right_text('')
+	
 	editor_reference = find_parent('EditorView')
+
 
 func _exit_tree():
 	# Explicitly free any open cache resources on close, so we don't get leaked resource errors on shutdown
 	event_resource = null
+
 
 ################################################################################
 ## 						SEARCH & SUGGESTION POPUP
@@ -112,12 +105,12 @@ func _on_Search_text_changed(new_text:String, just_update:bool = false) -> void:
 	if new_text == "" and !just_update:
 		changed_to_empty()
 
-	var suggestions = get_suggestions_func.call(new_text)
+	var suggestions :Dictionary = get_suggestions_func.call(new_text)
 	
 	var line_length:int = 0
 	var idx:int = 0
 	for element in suggestions:
-		if new_text.is_empty() or new_text.to_lower() in element.to_lower() or new_text.to_lower() in str(suggestions[element].value).to_lower():
+		if new_text.is_empty() or new_text.to_lower() in element.to_lower() or new_text.to_lower() in str(suggestions[element].value).to_lower() or new_text.to_lower() in suggestions[element].get('tooltip', '').to_lower():
 			line_length = max(get_theme_font('font', 'Label').get_string_size(element, HORIZONTAL_ALIGNMENT_LEFT, -1, get_theme_font_size("font_size", 'Label')).x+80, line_length)
 			%Suggestions.add_item(element)
 			if suggestions[element].has('icon'):
@@ -127,7 +120,7 @@ func _on_Search_text_changed(new_text:String, just_update:bool = false) -> void:
 
 			%Suggestions.set_item_tooltip(idx, suggestions[element].get('tooltip', ''))
 			%Suggestions.set_item_metadata(idx, suggestions[element].value)
-		idx += 1
+			idx += 1
 	
 	if not %Suggestions.visible:
 		%Suggestions.show()
@@ -169,7 +162,7 @@ func suggestion_selected(index : int, position:=Vector2(), button_index:=MOUSE_B
 		current_value = null
 	
 	# if this is a resource, then load it instead of assigning the string:
-	elif file_extension != "" && file_extension != ".dch" && file_extension != ".dtl":
+	elif file_extension != "" and file_extension != ".dch" and file_extension != ".dtl":
 		var file = load(%Suggestions.get_item_metadata(index))
 		current_value = file
 	else:

@@ -1,7 +1,11 @@
 @tool
 extends Control
 
+## Event block field for integers and floats. Improved version of the native spinbox.
+
+signal value_changed
 var property_name : String
+
 @export var allow_string :bool = false
 @export var step:float = 0.1
 @export var enforce_step:bool = true
@@ -9,7 +13,6 @@ var property_name : String
 @export var max:float= 999
 @export var value = 0
 @export var suffix := ""
-signal value_changed
 
 func _ready():
 	if $Value.text.is_empty():
@@ -18,13 +21,6 @@ func _ready():
 	$Value.add_theme_stylebox_override('normal', get_theme_stylebox('normal', 'LineEdit'))
 	$Value.add_theme_stylebox_override('focus', get_theme_stylebox('focus', 'LineEdit'))
 
-func set_right_text(value):
-	$RightText.text = str(value)
-	$RightText.visible = !value.is_empty()
-
-func set_left_text(value):
-	$LeftText.text = str(value)
-	$LeftText.visible = !value.is_empty()
 
 func set_value(new_value) -> void:
 	if new_value:
