@@ -37,6 +37,7 @@ var _signals_to_copy = [
 	'dialogic_signal',
 	'letter_displayed',
 	'auto_advance_toggled',
+	'portrait_changed',
 ]
 ## -----------------------------------------------------------------------------
 ## 						SIGNALS (proxy copy of DialogNode signals)
@@ -54,3 +55,4 @@ signal timeline_changed(old_timeline_name, new_timeline_name)
 signal dialogic_signal(value)
 signal letter_displayed(lastLetter)
 signal auto_advance_toggled(toggleValue)
+signal portrait_changed(portrait_path)

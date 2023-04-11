@@ -63,6 +63,7 @@ var audio_data = {}
 
 # References
 var button_container = null
+var current_portrait = null
 
 ## -----------------------------------------------------------------------------
 ## 						SCENES
@@ -89,6 +90,7 @@ signal dialogic_signal(value)
 # Utility
 signal letter_displayed(lastLetter)
 signal auto_advance_toggled()
+signal portrait_changed(portrait_path)
 
 
 ## -----------------------------------------------------------------------------
@@ -1301,12 +1303,15 @@ func grab_portrait_focus(character_data, event: Dictionary = {}) -> bool:
 		if portrait.character_data.get("file", "something") == character_data.get("file", "none"):
 			exists = true
 			portrait.focus()
+			emit_signal("portrait_changed", portrait)
 			if event.has('portrait'):
 				portrait.set_portrait(get_portrait_name(event))
 				if settings.get_value('dialog', 'recenter_portrait', true):
 					portrait.move_to_position(portrait.direction)
 		else:
 			portrait.focusout(Color(current_theme.get_value('animation', 'dim_color', '#ff808080')))
+	if !exists:
+		emit_signal("portrait_changed", null)
 	return exists
 
 # returns true if the a portrait for that character already exists
