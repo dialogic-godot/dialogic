@@ -6,6 +6,7 @@
 * portrait_changed signal added. Emitted whenever a new portrait takes focus. Returns a reference to the portrait.
 * Un-hard coded the position offsets for the character positions. They now are relative to the viewport. Thanks @rretureau for the work 1000 commits ago!
 * The entire file structure has been changed to use dictionaries keyed to the 'folder path', removing vast amounts of looping and drastically increasing editor speed for large projects with many folders [[thebardsrc](https://github.com/thebardsrc)]
+* Changing the DB value in an audio event no longer overwrites the value in the Audio Bus. It now adjusts the current value instead.
 
 
 ## v1.4.5
