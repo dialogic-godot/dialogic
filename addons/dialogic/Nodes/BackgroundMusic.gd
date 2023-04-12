@@ -28,8 +28,12 @@ func crossfade_to(path: String, audio_bus:String, volume:float, fade_length: flo
 	fade_in_track.bus = audio_bus
 	fade_in_track.volume_db = -60
 	
+	var busId = AudioServer.get_bus_index(audio_bus)
+	var busVol = AudioServer.get_bus_volume_db(busId)
+	
 	
 	$Tween.interpolate_property(fade_out_track, "volume_db", null, -60, fade_length, Tween.TRANS_EXPO)
+	$Tween.interpolate_property(fade_in_track, "volume_db", -60, busVol + volume, fade_length, Tween.TRANS_EXPO)
 	$Tween.interpolate_property(fade_in_track, "volume_db", -60, volume, fade_length, Tween.TRANS_EXPO)
 	$Tween.start()
 	
