@@ -19,6 +19,7 @@ var text_modifiers := []
 
 var input_handler_node :Node = null
 
+var autopauses := {} 
 
 ####################################################################################################
 ##					STATE
@@ -275,6 +276,11 @@ func _ready():
 	collect_text_modifiers()
 	Dialogic.event_handled.connect(hide_next_indicators)
 	input_handler_node = Node.new()
+	autopauses = {}
+	var autopause_data :Dictionary= ProjectSettings.get_setting('dialogic/text/autopauses', {})
+	for i in autopause_data.keys():
+		autopauses[RegEx.create_from_string('(?<!(\\[|\\{))['+i+'](?![\\w\\s]*[\\]\\}])')] = autopause_data[i]
+		
 	input_handler_node.set_script(load(get_script().resource_path.get_base_dir().path_join('default_input_handler.gd')))
 	add_child(input_handler_node)
 
@@ -371,3 +377,12 @@ func modifier_random_selection(text:String) -> String:
 
 func modifier_break(text:String) -> String:
 	return text.replace('[br]', '\n')
+
+
+func modifier_autopauses(text:String) -> String:
+	for i in autopauses.keys():
+		var offset := 0
+		for result in i.search_all(text):
+			text = text.insert(result.get_end()+offset, '[pause='+str(autopauses[i])+']')
+			offset += len('[pause='+str(autopauses[i])+']')
+	return text
