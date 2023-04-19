@@ -91,10 +91,10 @@ func _on_resources_list_item_selected(index:int) -> void:
 	editors_manager.edit_resource(load(%ResourcesList.get_item_metadata(index)))
 	
 
-func _on_resources_list_item_clicked(index: int, at_position: Vector2, mouse_button_index: int):
+func _on_resources_list_item_clicked(index: int, at_position: Vector2, mouse_button_index: int) -> void:
 	# If clicked with the middle mouse button, remove the item from the list
 	if mouse_button_index == 3:
-		var new_list = []
+		var new_list := []
 		for entry in ProjectSettings.get_setting('dialogic/editor/last_resources', []):
 			if entry != %ResourcesList.get_item_metadata(index):
 				new_list.append(entry)
