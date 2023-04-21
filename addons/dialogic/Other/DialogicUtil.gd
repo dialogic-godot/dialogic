@@ -186,7 +186,7 @@ static func list_variables(dict:Dictionary, path := "") -> Array:
 
 
 static func get_default_layout() -> String:
-	return "res://addons/dialogic/Events/DefaultLayouts/Default/DialogicDefaultLayout.tscn"
+	return "res://addons/dialogic/Events/DefaultStyles/Default/DialogicDefaultLayout.tscn"
 
 
 static func apply_scene_export_overrides(node:Node, export_overrides:Dictionary) -> void:
