@@ -11,8 +11,8 @@ func add_item(data) -> void:
 	var l = ListItem.instantiate()
 	l.theme_name = data.get('name', 'Mysterious Layout')
 	l.author = data.get('author', 'Unknown')
-	l.path = data.path
-	l.description = data.description
+	l.path = data.get('path', '')
+	l.description = data.get('description', '')
 	if data.has('preview_image'):
 		l.preview_image = load(data.preview_image[0])
 	else:
