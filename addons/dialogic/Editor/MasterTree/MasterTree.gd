@@ -144,6 +144,8 @@ func _ready():
 ## *****************************************************************************
 
 func build_full_tree(selected_item: String = ''):
+
+	
 	# Adding timelines
 	build_flat_tree_items("Timelines")
 	# Adding characters
@@ -210,7 +212,7 @@ func build_flat_tree_items(current_tree: String=''):
 			# set text and icon
 			var folder_name = entry['key'].split("/")[-2]
 			folder_item.set_text(0, folder_name)
-			folder_item.set_tooltip(0, entry['key'])
+			folder_item.set_tooltip(0, str(step) + ": " + entry['key'])
 			folder_item.set_icon(0, get_icon("Folder", "EditorIcons"))
 			folder_item.set_icon_modulate(0, get_color("folder_icon_modulate", "FileDialog"))
 			# set metadata
@@ -267,7 +269,7 @@ func build_flat_tree_items(current_tree: String=''):
 					resource_data['step'] = step
 			
 			item.set_metadata(0, resource_data)
-			item.set_tooltip(0, entry['key'])
+			item.set_tooltip(0, str(step) + ": " +entry['key'])
 	
 
 func _clear_tree_children(parent: TreeItem):
@@ -839,19 +841,22 @@ func rename_selected():
 ## *****************************************************************************
 
 func can_drop_data(position, data) -> bool:
+	if tree.drop_mode_flags == DROP_MODE_DISABLED:
+		tree.set_drop_mode_flags(DROP_MODE_ON_ITEM | DROP_MODE_INBETWEEN)
+		
 	var item = get_item_at_position(position)
 	if item == null:
 		return false
 	# if the data isn't empty and it's a valid DICT
 	if data != null and data is Dictionary and data.has('item_type'):
-		# if it's not trying to add a folder to a file
-		if not (data['item_type'] == "folder" and item.get_metadata(0)["editortype"] == "file"):
-			# if it's the same type of folder as before
-			return true
-			if get_item_folder(item, '').split("/")[0] == data['orig_path'].split("/")[0]:
-				# make sure the folder/item is not a subfolder of the original folder
-				if data['item_type'] == "file" or (not get_item_folder(item, '').begins_with(data['orig_path'])):
-					return true
+		# if the item is the same category as the original
+		if item.get_metadata(0)['category'] == data['category']:
+			#if we're moving to the root, no further checks needed
+			if item.get_metadata(0)['step'] == 0:
+				return true
+			# if the folders not moving a root folder into a subfolder of itself
+			if not ((data['item_type'] == "folder" and item.get_metadata(0)["editortype"] == "folder") and (data['orig_path'] + data['name']) in item.get_metadata(0)['path']):
+				return true
 	return false
 
 func drop_data(position, data):
@@ -859,27 +864,26 @@ func drop_data(position, data):
 	var drop_section = get_drop_section_at_position(position)
 	if not data.has('item_type'):
 		return
-	if data['orig_path'] == get_item_folder(item, ''):
-		return
 	# dragging a folder
 	if data['item_type'] == 'folder':
 		# on a folder
 		if 'Root' in item.get_metadata(0)['editor']:
-			DialogicUtil.move_folder_to_folder(editor_reference.flat_structure, item.get_metadata(0)['category'], data, item.get_metadata(0))
+			DialogicUtil.move_folder_to_folder(editor_reference.flat_structure, item.get_metadata(0)['category'], data, item.get_metadata(0), drop_section)
 	# dragging a file
 	elif data['item_type'] == 'file':
 		# on a folder
 		if 'Root' in item.get_metadata(0)['editor']:
 			if data.has('file_name'):
-				DialogicUtil.move_file_to_folder(editor_reference.flat_structure, item.get_metadata(0)['category'], data, item.get_metadata(0))
+				DialogicUtil.move_file_to_folder(editor_reference.flat_structure, item.get_metadata(0)['category'], data, item.get_metadata(0), drop_section)
 			elif data.has('resource_id'):
-				DialogicUtil.move_file_to_folder(editor_reference.flat_structure, item.get_metadata(0)['category'], data, item.get_metadata(0))
+				DialogicUtil.move_file_to_folder(editor_reference.flat_structure, item.get_metadata(0)['category'], data, item.get_metadata(0), drop_section)
 				pass # WORK TODO
 		# on a file
 		else:
-			DialogicUtil.move_file_to_folder(editor_reference.flat_structure, item.get_metadata(0)['category'], data, item.get_metadata(0))
+			DialogicUtil.move_file_to_folder(editor_reference.flat_structure, item.get_metadata(0)['category'], data, item.get_metadata(0), drop_section)
 	dragging_item.queue_free()
 	dragging_item = null
+	
 	build_full_tree()
 
 func get_drag_data(position):
@@ -911,6 +915,7 @@ func _process(delta):
 		else:
 			dragging_item.queue_free()
 			dragging_item = null
+
 
 
 ## *****************************************************************************

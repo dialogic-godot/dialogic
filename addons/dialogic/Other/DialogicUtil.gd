@@ -302,7 +302,7 @@ static func rename_folder(flat_structure: Dictionary, tree:String, path:Dictiona
 
 	return OK
 
-static func move_folder_to_folder(flat_structure:Dictionary, tree:String, original_data:Dictionary, destination_data:Dictionary):
+static func move_folder_to_folder(flat_structure:Dictionary, tree:String, original_data:Dictionary, destination_data:Dictionary, drop_position = 0):
 	#abort if its trying to move folder to wrong tree
 	if original_data['category'] != destination_data['category']:
 		return ERR_INVALID_DATA
@@ -322,9 +322,16 @@ static func move_folder_to_folder(flat_structure:Dictionary, tree:String, origin
 	var new_array=[]
 	var rename_array = []
 	
-	var original_folder = original_data['orig_path'] + original_data['name']
-	var replace_folder = destination_data['path'] + destination_data['name'] + '/' + original_data['name']
-	
+	#where we drop it will depend on the position. if we're targeting either above or below, we want to put it at the same level, not subfolder
+	var original_folder = ""
+	var replace_folder = ""
+	if drop_position != -1:
+		original_folder = original_data['orig_path'] + original_data['name']
+		replace_folder = destination_data['path'] + destination_data['name'] + '/' + original_data['name']
+	else: 
+		destination_data['step'] = destination_data['step'] - 1
+		original_folder = original_data['orig_path'] + original_data['name']
+		replace_folder = destination_data['path'] + original_data['name']
 	
 	#first iterate through and find all the items that need to be renamed
 	for idx in flat_structure[tree +"_Array"].size():
@@ -351,16 +358,70 @@ static func move_folder_to_folder(flat_structure:Dictionary, tree:String, origin
 	return OK
 
 ## FILE FUNCTIONS
-static func move_file_to_folder(flat_structure:Dictionary, tree:String, original_data:Dictionary, destination_data:Dictionary):
+static func move_file_to_folder(flat_structure:Dictionary, tree:String, original_data:Dictionary, destination_data:Dictionary, drop_position = 0):
 	#abort if its trying to move folder to wrong tree
+	print("Move:")
+	print (original_data)
+	print("To:")
+	print(destination_data)
+	print("Position:")
+	print(drop_position)
 	if original_data['category'] != destination_data['category']:
 		return ERR_INVALID_DATA
 
+	var insert_position = destination_data['step']
+	#adjust for the drop position
+	if 	drop_position != -1:
+		insert_position = insert_position + 1	
+	
+	#check to make sure the next item is a file, because if not we need to roll down to the next file at the same level
+	if 'folded' in flat_structure[tree +"_Array"][destination_data['step']]['value']:
+		var destination_folder = ""
+		if drop_position == -1:
+			print("moving to before item: " + flat_structure[tree +"_Array"][insert_position]['key'])
+			destination_folder = destination_data['path']
+		else:
+			print("moving into item: " + flat_structure[tree +"_Array"][insert_position]['key'])
+			destination_folder = destination_data['path'] + destination_data['name'] + "/"
+		print(flat_structure[tree +"_Array"][insert_position]['key'])
+		
+		#var destination_path = 
+		var searching = true
+		while searching:
+			insert_position = insert_position + 1
+			if 'folded' in flat_structure[tree +"_Array"][insert_position]['value']:
+				if ! destination_folder in flat_structure[tree +"_Array"][insert_position]['key']:
+					searching = false
+			else: 
+				if flat_structure[tree +"_Array"][insert_position]['value']['path'] == destination_folder: 
+					searching = false
+			continue
+				#if flat_structure[tree +"_Array"][insert_position]['key']:
+					#flat_structure[tree +"_Array"][insert_position]['value']['path'] != destination_data['path'] + destination_data['folder'] + "/"
+					
+		print("Final move position: " + str(insert_position))
+
+	#if the file came from before where we are moving it to, we need to decrease the position since orders being changed
+	if original_data['original_step'] < destination_data['step']:
+		insert_position = insert_position - 1
+		
+	print("inserting to: " + str(insert_position))
 	
 	var moving = flat_structure[tree +"_Array"].pop_at(original_data['original_step'])
-	moving['key'] = moving['key'].replace(original_data['orig_path'], destination_data['path'])
-	moving['value']['path'] = destination_data['path']
-	flat_structure[tree +"_Array"].insert(destination_data['step'], moving)
+	
+	if destination_data['editortype'] == "folder":
+		if drop_position != 1:
+			moving['key'] = moving['key'].replace(original_data['orig_path'], destination_data['path'] + destination_data['name'] + "/")
+			moving['value']['path'] = destination_data['path'] + destination_data['name'] + "/"
+		else:
+			moving['key'] = moving['key'].replace(original_data['orig_path'], destination_data['path'])
+			moving['value']['path'] = destination_data['path']
+		
+	else:
+		moving['key'] = moving['key'].replace(original_data['orig_path'], destination_data['path'])
+		moving['value']['path'] = destination_data['path']
+	
+	flat_structure[tree +"_Array"].insert(insert_position, moving)
 	
 	
 	flat_structure = editor_array_to_flat_structure(flat_structure,tree)
