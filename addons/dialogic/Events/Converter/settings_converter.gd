@@ -169,10 +169,11 @@ func _on_verify_pressed():
 			%OutputLog.text += "Folders are being created in " + conversionRootFolder + ". Converted files will be located there.\r\n"
 			var directory = DirAccess.open("res://")
 			directory.make_dir(conversionRootFolder)
-			directory.open(conversionRootFolder)	
-			directory.make_dir("characters")
-			directory.make_dir("timelines")
-			directory.make_dir("themes")
+			var sub_directory = DirAccess.open(conversionRootFolder)
+			sub_directory.open(conversionRootFolder)	
+			sub_directory.make_dir("characters")
+			sub_directory.make_dir("timelines")
+			sub_directory.make_dir("themes")
 		
 		conversionReady = true
 		$RightPanel/Begin.disabled = false
@@ -306,7 +307,7 @@ func convertTimelines():
 								var split = event['text'].split('\n')
 								for splitItem in split:
 									if has_character == false && splitItem.find(' ') > 0 && splitItem.find(':') > 0 && (splitItem.find(' ') > splitItem.find(':')):
-										splitItem = splitItem.insert("\\", splitItem.find(':'))
+										splitItem = splitItem.insert(splitItem.find(':'), "\\" )
 									if splitCount == 0:
 										file.store_line(eventLine + splitItem + "\\")
 									else:
@@ -315,7 +316,7 @@ func convertTimelines():
 							else: 
 								var text_line  = variableNameConversion(event['text'])
 								if has_character == false && text_line.find(' ') > 0 && text_line.find(':') > 0 && (text_line.find(' ') > text_line.find(':')):
-										text_line = text_line.insert("\\", text_line.find(':'))
+										text_line = text_line.insert(text_line.find(':'), "\\" )
 								file.store_string(eventLine + text_line)
 						"dialogic_002":
 							# Character event
@@ -442,7 +443,7 @@ func convertTimelines():
 								eventLine += ": "
 							if '\n' in event['question']:
 								var splitCount = 0
-								var split = event['text'].split('\n')
+								var split = event['question'].split('\n')
 								for splitItem in split:
 									if splitCount == 0:
 										file.store_line(eventLine + splitItem + "\\")
@@ -1026,5 +1027,6 @@ func convertSettings():
 
 
 func _on_check_box_toggled(button_pressed):
+	print("box checked")
 	prefixCharacters = button_pressed
 	%OutputLog.text += "\r\n\r\nToggling this will add a prefix to all character filenames, which will have letters from each folder depth they are in. Characters in the root folder will have no prefix. \r\n"
