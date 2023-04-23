@@ -168,7 +168,9 @@ func is_valid_event(string:String) -> bool:
 func build_event_editor():
 	add_header_edit('name', ValueType.ComplexPicker, '', '', 
 			{'suggestions_func' 	: get_var_suggestions, 
-			'editor_icon' 			: ["ClassList", "EditorIcons"]})
+			'editor_icon' 			: ["ClassList", "EditorIcons"],
+			'placeholder'			:'Select Variable'}
+			)
 	add_header_edit('operation', ValueType.FixedOptionSelector, '', '', {
 		'selector_options': [
 			{
