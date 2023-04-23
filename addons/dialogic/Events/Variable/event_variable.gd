@@ -224,7 +224,7 @@ func build_event_editor():
 	add_header_edit('value', ValueType.ComplexPicker, '', '', 
 			{'suggestions_func' : get_value_suggestions}, 
 			'!name.is_empty() and _value_type == 2')
-	add_header_label('an int between', '_value_type == 4')
+	add_header_label('a number between', '_value_type == 4')
 	add_header_edit('random_min', ValueType.Integer, '', 'and', {}, '!name.is_empty() and  _value_type == 4')
 	add_header_edit('random_max', ValueType.Integer, '', '', {}, '!name.is_empty() and _value_type == 4')
 	add_header_button('', _on_variable_editor_pressed, 'Variable Editor', ["ExternalLink", "EditorIcons"])
