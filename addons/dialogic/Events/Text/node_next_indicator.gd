@@ -8,7 +8,7 @@ extends Control
 ## If true the next indicator will also be shown if the text is a question.
 @export var show_on_questions := false
 ## If true the next indicator will be shown even if dialogic will autocontinue.
-@export var show_on_autocontinue := false
+@export var show_on_autoadvance := false
 
 ## What animation should the indicator do.
 @export_enum('bounce', 'blink', 'none') var animation := 0

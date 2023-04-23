@@ -32,7 +32,7 @@ func clear_game_state() -> void:
 	dialogic.current_state_info['text'] = ''
 	
 	set_skippable(ProjectSettings.get_setting('dialogic/text/skippable', true))
-	set_autoadvance(ProjectSettings.get_setting('dialogic/text/autoadvance', false), ProjectSettings.get_setting('dialogic/text/autocontinue_delay', 1))
+	set_autoadvance(ProjectSettings.get_setting('dialogic/text/autoadvance', false), ProjectSettings.get_setting('dialogic/text/autoadvance_delay', 1))
 	set_manualadvance(true)
 
 
@@ -155,10 +155,10 @@ func show_text_boxes() -> void:
 	textbox_visibility_changed.emit(true)
 
 
-func show_next_indicators(question=false, autocontinue=false) -> void:
+func show_next_indicators(question=false, autoadvance=false) -> void:
 	for next_indicator in get_tree().get_nodes_in_group('dialogic_next_indicator'):
 		if (question and 'show_on_questions' in next_indicator and next_indicator.show_on_questions) or \
-			(autocontinue and 'show_on_autocontinue' in next_indicator and next_indicator.show_on_autocontinue) or (!question and !autocontinue):
+			(autoadvance and 'show_on_autoadvance' in next_indicator and next_indicator.show_on_autoadvance) or (!question and !autoadvance):
 			next_indicator.show()
 
 
@@ -358,7 +358,7 @@ func effect_noskip(text_node:Control, skipped:bool, argument:String) -> void:
 
 func effect_autoadvance(text_node:Control, skipped:bool, argument:String) -> void:
 	if argument.is_empty() or !(argument.is_valid_float() or argument.begins_with('v')):
-		set_autoadvance(true, ProjectSettings.get_setting('dialogic/text/autocontinue_delay', 1), true)
+		set_autoadvance(true, ProjectSettings.get_setting('dialogic/text/autoadvance_delay', 1), true)
 	else:
 		set_autoadvance(true, argument, true)
 
