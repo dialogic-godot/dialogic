@@ -6,8 +6,8 @@ func refresh():
 	
 	%DefaultSpeed.value = DialogicUtil.get_project_setting('dialogic/text/speed', 0.01)
 	%Skippable.button_pressed = DialogicUtil.get_project_setting('dialogic/text/skippable', true)
-	%Autocontinue.button_pressed = DialogicUtil.get_project_setting('dialogic/text/autocontinue', false)
-	%AutocontinueDelay.value = DialogicUtil.get_project_setting('dialogic/text/autocontinue_delay', 1)
+	%Autoadvance.button_pressed = DialogicUtil.get_project_setting('dialogic/text/autoadvance', false)
+	%AutoadvanceDelay.value = DialogicUtil.get_project_setting('dialogic/text/autoadvance_delay', 1)
 	%AutocolorNames.button_pressed = DialogicUtil.get_project_setting('dialogic/text/autocolor_names', false)
 	%InputAction.resource_icon = get_theme_icon("Mouse", "EditorIcons")
 	%InputAction.set_value(DialogicUtil.get_project_setting('dialogic/text/input_action', 'dialogic_default_action'))
@@ -18,13 +18,13 @@ func refresh():
 func _about_to_close():
 	save_autopauses()
 
-func _on_AutocontinueDelay_value_changed(value):
-	ProjectSettings.set_setting('dialogic/text/autocontinue_delay', value)
+func _on_AutoadvanceDelay_value_changed(value):
+	ProjectSettings.set_setting('dialogic/text/autoadvance_delay', value)
 	ProjectSettings.save()
 
 
-func _on_Autocontinue_toggled(button_pressed):
-	ProjectSettings.set_setting('dialogic/text/autocontinue', button_pressed)
+func _on_Autoadvance_toggled(button_pressed):
+	ProjectSettings.set_setting('dialogic/text/autoadvance', button_pressed)
 	ProjectSettings.save()
 
 
