@@ -32,13 +32,8 @@ func _register() -> void:
 			load("res://addons/dialogic/Editor/Images/Toolbar/add-character.svg"),
 			'Add Character',
 			self)
-	add_character_button.pressed.connect(
-			editors_manager.show_add_resource_dialog.bind(
-			new_character, 
-			'*.dch; DialogicCharacter',
-			'Create new character',
-			'character',
-			))
+	add_character_button.pressed.connect(_on_create_timeline_button_pressed)
+	$NoCharacterScreen.show()
 
 
 # Called when a character is opened somehow
@@ -66,6 +61,8 @@ func _open_resource(resource:Resource) -> void:
 	
 	loading = false
 	character_loaded.emit(resource.resource_path)
+	
+	$NoCharacterScreen.hide()
 
 
 func _save() -> void:
@@ -116,6 +113,8 @@ func _ready() -> void:
 	get_parent().set_tab_title(get_index(), 'Character')
 	get_parent().set_tab_icon(get_index(), load("res://addons/dialogic/Editor/Images/Resources/character.svg"))
 	
+	$NoCharacterScreen.color = get_theme_color("dark_color_2", "Editor")
+	
 	setup_portrait_list_tab()
 	
 	setup_portrait_settings_tab()
@@ -125,7 +124,7 @@ func _ready() -> void:
 	_on_PreviewMode_item_selected(%PreviewMode.selected)
 	
 	## General Styling
-	var panel_style = DCSS.inline({
+	var panel_style := DCSS.inline({
 		'border-radius': 3,
 		'border': 0,
 		'border_color':get_theme_color("dark_color_3", "Editor"),
@@ -511,4 +510,13 @@ func _on_PreviewMode_item_selected(index:int) -> void:
 func _on_full_preview_available_rect_resized():
 	if current_preview_mode == PreviewModes.Full:
 		update_preview()
+
+
+func _on_create_timeline_button_pressed():
+	editors_manager.show_add_resource_dialog(
+			new_character, 
+			'*.dch; DialogicCharacter',
+			'Create new character',
+			'character',
+			)
 

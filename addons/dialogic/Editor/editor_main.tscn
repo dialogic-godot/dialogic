@@ -15,19 +15,19 @@ content_margin_left = 4.0
 content_margin_top = 4.0
 content_margin_right = 6.0
 content_margin_bottom = 6.0
-bg_color = Color(0.081961, 0.0884312, 0.097059, 1)
+bg_color = Color(0, 0, 0, 1)
 border_width_left = 2
 border_width_top = 2
 border_width_right = 2
 border_width_bottom = 2
-border_color = Color(0.14902, 0.160784, 0.176471, 1)
+border_color = Color(0, 0, 0, 1)
 corner_radius_top_right = 5
 corner_radius_bottom_right = 5
 corner_radius_bottom_left = 5
 expand_margin_left = 2.0
 expand_margin_top = 2.0
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jhojw"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_n8d6a"]
 content_margin_left = 4.0
 content_margin_top = 4.0
 content_margin_right = 4.0
@@ -93,11 +93,11 @@ script = ExtResource("4_6cx8s")
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
-text = "Jowan.dch"
+text = "Change the look of the dialog in your game"
 
 [node name="Panel" type="PanelContainer" parent="Margin/EditorsManager/HSplit/VBox/Toolbar"]
 layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_jhojw")
+theme_override_styles/panel = SubResource("StyleBoxFlat_n8d6a")
 
 [node name="CustomButtons" type="HBoxContainer" parent="Margin/EditorsManager/HSplit/VBox/Toolbar/Panel"]
 unique_name_in_owner = true
@@ -112,14 +112,18 @@ theme_override_styles/tabbar_background = SubResource("StyleBoxEmpty_1qqdn")
 [node name="HomePage" parent="Margin/EditorsManager/HSplit/VBox/Editors" instance=ExtResource("4_vey4f")]
 visible = false
 layout_mode = 2
+theme_override_constants/separation = 60
 metadata/_tab_name = ""
 
 [node name="Timeline Editor" parent="Margin/EditorsManager/HSplit/VBox/Editors" instance=ExtResource("5_e5v7u")]
 visible = false
 layout_mode = 2
+metadata/_tab_name = "Timeline"
 
 [node name="Character Editor" parent="Margin/EditorsManager/HSplit/VBox/Editors" instance=ExtResource("6_y5x3e")]
+visible = false
 layout_mode = 2
+metadata/_tab_name = "Character"
 
 [node name="Settings" parent="Margin/EditorsManager/HSplit/VBox/Editors" instance=ExtResource("7_lqfl7")]
 visible = false

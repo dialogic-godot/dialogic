@@ -48,7 +48,7 @@ func show_history() -> void:
 		child.queue_free()
 	
 	for info in Dialogic.History.get_simple_history():
-		var history_item :Control= load('res://addons/dialogic/Events/DefaultLayouts/ExampleHistoryItem.tscn').instantiate()
+		var history_item :Control= load('res://addons/dialogic/Events/DefaultStyles/ExampleHistoryItem.tscn').instantiate()
 		history_item.prepare_textbox(self)
 		match info.event_type:
 			"Text":

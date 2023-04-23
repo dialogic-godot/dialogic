@@ -19,6 +19,7 @@ var text_modifiers := []
 
 var input_handler_node :Node = null
 
+var autopauses := {} 
 
 ####################################################################################################
 ##					STATE
@@ -31,7 +32,7 @@ func clear_game_state() -> void:
 	dialogic.current_state_info['text'] = ''
 	
 	set_skippable(ProjectSettings.get_setting('dialogic/text/skippable', true))
-	set_autoadvance(ProjectSettings.get_setting('dialogic/text/autoadvance', false), ProjectSettings.get_setting('dialogic/text/autocontinue_delay', 1))
+	set_autoadvance(ProjectSettings.get_setting('dialogic/text/autoadvance', false), ProjectSettings.get_setting('dialogic/text/autoadvance_delay', 1))
 	set_manualadvance(true)
 
 
@@ -154,10 +155,10 @@ func show_text_boxes() -> void:
 	textbox_visibility_changed.emit(true)
 
 
-func show_next_indicators(question=false, autocontinue=false) -> void:
+func show_next_indicators(question=false, autoadvance=false) -> void:
 	for next_indicator in get_tree().get_nodes_in_group('dialogic_next_indicator'):
 		if (question and 'show_on_questions' in next_indicator and next_indicator.show_on_questions) or \
-			(autocontinue and 'show_on_autocontinue' in next_indicator and next_indicator.show_on_autocontinue) or (!question and !autocontinue):
+			(autoadvance and 'show_on_autoadvance' in next_indicator and next_indicator.show_on_autoadvance) or (!question and !autoadvance):
 			next_indicator.show()
 
 
@@ -275,6 +276,11 @@ func _ready():
 	collect_text_modifiers()
 	Dialogic.event_handled.connect(hide_next_indicators)
 	input_handler_node = Node.new()
+	autopauses = {}
+	var autopause_data :Dictionary= ProjectSettings.get_setting('dialogic/text/autopauses', {})
+	for i in autopause_data.keys():
+		autopauses[RegEx.create_from_string('(?<!(\\[|\\{))['+i+'](?![\\w\\s]*[\\]\\}])')] = autopause_data[i]
+		
 	input_handler_node.set_script(load(get_script().resource_path.get_base_dir().path_join('default_input_handler.gd')))
 	add_child(input_handler_node)
 
@@ -352,7 +358,7 @@ func effect_noskip(text_node:Control, skipped:bool, argument:String) -> void:
 
 func effect_autoadvance(text_node:Control, skipped:bool, argument:String) -> void:
 	if argument.is_empty() or !(argument.is_valid_float() or argument.begins_with('v')):
-		set_autoadvance(true, ProjectSettings.get_setting('dialogic/text/autocontinue_delay', 1), true)
+		set_autoadvance(true, ProjectSettings.get_setting('dialogic/text/autoadvance_delay', 1), true)
 	else:
 		set_autoadvance(true, argument, true)
 
@@ -371,3 +377,12 @@ func modifier_random_selection(text:String) -> String:
 
 func modifier_break(text:String) -> String:
 	return text.replace('[br]', '\n')
+
+
+func modifier_autopauses(text:String) -> String:
+	for i in autopauses.keys():
+		var offset := 0
+		for result in i.search_all(text):
+			text = text.insert(result.get_end()+offset, '[pause='+str(autopauses[i])+']')
+			offset += len('[pause='+str(autopauses[i])+']')
+	return text

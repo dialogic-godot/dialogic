@@ -1,6 +1,6 @@
-[gd_scene load_steps=3 format=3 uid="uid://b1xv3pg0ptobj"]
+[gd_scene load_steps=3 format=3]
 
-[ext_resource type="Script" path="res://addons/dialogic/Events/DefaultLayouts/ExampleHistoryScene.gd" id="1_o5tfq"]
+[ext_resource type="Script" path="res://addons/dialogic/Events/DefaultStyles/ExampleHistoryScene.gd" id="1_o5tfq"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1hdvb"]
 content_margin_left = 10.0

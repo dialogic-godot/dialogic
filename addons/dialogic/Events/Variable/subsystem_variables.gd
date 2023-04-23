@@ -79,10 +79,9 @@ func set_variable(variable_name: String, value: Variant) -> bool:
 		variable_changed.emit({'variable':variable_name, 'new_value':value})
 	
 	elif variable_name in dialogic.current_state_info['variables'].keys():
-		if typeof(dialogic.current_state_info['variables'][variable_name]) == TYPE_STRING:
-			dialogic.current_state_info['variables'][variable_name] = value
-			variable_changed.emit({'variable':variable_name, 'new_value':value})
-			return true
+		dialogic.current_state_info['variables'][variable_name] = value
+		variable_changed.emit({'variable':variable_name, 'new_value':value})
+		return true
 	else:
 		printerr("Dialogic: Tried accessing non-existant variable '"+variable_name+"'.")
 	return false

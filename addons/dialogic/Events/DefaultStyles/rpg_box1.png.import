@@ -3,22 +3,22 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://bnc5unptt5uod"
-path="res://.godot/imported/rpg_box1.png-9bea5638b571067abc539d984a446e5f.ctex"
+path="res://.godot/imported/rpg_box1.png-a449cd614b86970556070ad54f41ebde.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://addons/dialogic/Events/DefaultLayouts/rpg_box1.png"
-dest_files=["res://.godot/imported/rpg_box1.png-9bea5638b571067abc539d984a446e5f.ctex"]
+source_file="res://addons/dialogic/Events/DefaultStyles/rpg_box1.png"
+dest_files=["res://.godot/imported/rpg_box1.png-a449cd614b86970556070ad54f41ebde.ctex"]
 
 [params]
 
 compress/mode=0
+compress/high_quality=false
 compress/lossy_quality=0.7
 compress/hdr_compression=1
-compress/bptc_ldr=0
 compress/normal_map=0
 compress/channel_pack=0
 mipmaps/generate=false

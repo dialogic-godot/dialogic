@@ -79,7 +79,8 @@ func build_event_editor() -> void:
 	add_header_label('Shows an input field. The value will be stored to')
 	add_header_edit('variable', ValueType.ComplexPicker, '', '', 
 			{'suggestions_func'	: get_var_suggestions, 
-			'editor_icon'		: ["ClassList", "EditorIcons"]})
+			'editor_icon'		: ["ClassList", "EditorIcons"],
+			'placeholder':'Select Variable'})
 	add_body_edit('text', ValueType.SinglelineText, 'Text:')
 	add_body_edit('placeholder', ValueType.SinglelineText, 'Placeholder:')
 	add_body_edit('default', ValueType.SinglelineText, 'Default:')

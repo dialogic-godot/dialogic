@@ -62,13 +62,13 @@ func get_shortcode_parameters() -> Dictionary:
 
 func build_event_editor():
 	add_header_edit('argument', ValueType.File, '', '', 
-			{'file_filter':'*.tscn, *.scn, *.jpg, *.jpeg, *.png, *.webp, *.tga, *svg, *.bmp, *.dds, *.exr, *.hdr', 
+			{'file_filter':'*.jpg, *.jpeg, *.png, *.webp, *.tga, *svg, *.bmp, *.dds, *.exr, *.hdr', 
 			'placeholder': "No background", 
 			'editor_icon':["Image", "EditorIcons"]}, 
 			'scene == ""')
 	add_header_edit('argument', ValueType.SinglelineText, 'Argument:', '', {}, 'scene != ""')
-	add_body_edit("fade", ValueType.Float, "fade time: ")
-	add_body_edit("scene", ValueType.File, 'scene:', '', 
+	add_body_edit("fade", ValueType.Float, "Fade Time: ")
+	add_body_edit("scene", ValueType.File, 'Scene:', '', 
 			{'file_filter':'*.tscn, *.scn',
 			'placeholder': "Default scene", 
 			'editor_icon':["PackedScene", "EditorIcons"]})

@@ -169,10 +169,11 @@ func _on_verify_pressed():
 			%OutputLog.text += "Folders are being created in " + conversionRootFolder + ". Converted files will be located there.\r\n"
 			var directory = DirAccess.open("res://")
 			directory.make_dir(conversionRootFolder)
-			directory.open(conversionRootFolder)	
-			directory.make_dir("characters")
-			directory.make_dir("timelines")
-			directory.make_dir("themes")
+			var sub_directory = DirAccess.open(conversionRootFolder)
+			sub_directory.open(conversionRootFolder)	
+			sub_directory.make_dir("characters")
+			sub_directory.make_dir("timelines")
+			sub_directory.make_dir("themes")
 		
 		conversionReady = true
 		$RightPanel/Begin.disabled = false
@@ -250,23 +251,25 @@ func convertTimelines():
 			var fileName = contents["metadata"]["name"]
 			%OutputLog.text += "Name: " + fileName + ", " + str(contents["events"].size()) + " timeline events"
 			
-			
-			if not DirAccess.dir_exists_absolute(conversionRootFolder + "/timelines" + folderPath): 
-				var directory = DirAccess.open(conversionRootFolder + "/timelines")
+			var dir_timelines = conversionRootFolder + "/timelines"
+			if not DirAccess.dir_exists_absolute(dir_timelines + folderPath): 
+				var directory = DirAccess.open(dir_timelines)
+				if not DirAccess.dir_exists_absolute(dir_timelines):
+					DirAccess.make_dir_absolute(dir_timelines)
 				
 				var progresiveDirectory = ""
 				for pathItem in folderPath.split('/'):
-					directory.open(conversionRootFolder + "/timelines" + progresiveDirectory)
+					directory.open(dir_timelines + progresiveDirectory)
 					if pathItem!= "":
 						progresiveDirectory += "/" + pathItem
-					if !directory.dir_exists(conversionRootFolder + "/timelines" + progresiveDirectory):
-						directory.make_dir(conversionRootFolder + "/timelines" + progresiveDirectory)
+					if !directory.dir_exists(dir_timelines + progresiveDirectory):
+						directory.make_dir(dir_timelines + progresiveDirectory)
 				
 			#just double check because sometimes its making double slashes at the final filename
 			if folderPath.right(1) == "/":
 				folderPath = folderPath.left(-1)
 			# we will save it as an intermediary file first, then on second pass cleanup make it the .dtl	
-			var newFilePath = conversionRootFolder + "/timelines" + folderPath + "/" + fileName + ".cnv"	
+			var newFilePath = dir_timelines + folderPath + "/" + fileName + ".cnv"	
 			
 			file = FileAccess.open(newFilePath, FileAccess.WRITE)
 			
@@ -304,7 +307,7 @@ func convertTimelines():
 								var split = event['text'].split('\n')
 								for splitItem in split:
 									if has_character == false && splitItem.find(' ') > 0 && splitItem.find(':') > 0 && (splitItem.find(' ') > splitItem.find(':')):
-										splitItem = splitItem.insert("\\", splitItem.find(':'))
+										splitItem = splitItem.insert(splitItem.find(':'), "\\" )
 									if splitCount == 0:
 										file.store_line(eventLine + splitItem + "\\")
 									else:
@@ -313,13 +316,17 @@ func convertTimelines():
 							else: 
 								var text_line  = variableNameConversion(event['text'])
 								if has_character == false && text_line.find(' ') > 0 && text_line.find(':') > 0 && (text_line.find(' ') > text_line.find(':')):
-										text_line = text_line.insert("\\", text_line.find(':'))
+										text_line = text_line.insert(text_line.find(':'), "\\" )
 								file.store_string(eventLine + text_line)
 						"dialogic_002":
 							# Character event
 							
 							#For some reason this is loading as a float, and the match is failing. so hard casting as string
-							var eventType:String = str(event['type'])
+							var eventType:String
+							if 'type' in event:
+								eventType = str(event['type'])
+							else:
+								eventType = "0"
 							
 							match eventType:
 								"0":
@@ -337,7 +344,7 @@ func convertTimelines():
 										if (event['animation'] != "[Default]" && event['animation'] != "") || ('z_index' in event) || ('mirror_portrait' in event):
 											# Note: due to Anima changes, animations will be converted into a default. Times and wait will be perserved
 											eventLine += " ["
-											if (event['animation'] != "[Default]" && event['animation'] != ""):
+											if ('animation' in event && event['animation'] != "[Default]" && event['animation'] != ""):
 												eventLine += " [animation=\"Instant In Or Out\" "
 												eventLine += "length=\"" +  str(event['animation_length']) + "\""
 												if "animation_wait" in event:
@@ -436,7 +443,7 @@ func convertTimelines():
 								eventLine += ": "
 							if '\n' in event['question']:
 								var splitCount = 0
-								var split = event['text'].split('\n')
+								var split = event['question'].split('\n')
 								for splitItem in split:
 									if splitCount == 0:
 										file.store_line(eventLine + splitItem + "\\")
@@ -752,17 +759,19 @@ func convertCharacters():
 
 				
 			
-			
-			if not DirAccess.dir_exists_absolute(conversionRootFolder + "/characters" + folderPath): 
-				var directory = DirAccess.open(conversionRootFolder + "/characters")
+			var dir_char = conversionRootFolder + "/characters"
+			if not DirAccess.dir_exists_absolute(dir_char + folderPath):
+				if not DirAccess.dir_exists_absolute(dir_char):
+					DirAccess.make_dir_absolute(dir_char)
+				var directory = DirAccess.open(dir_char)
 				
 				var progresiveDirectory = ""
 				for pathItem in folderPath.split('/'):
-					directory.open(conversionRootFolder + "/characters" + progresiveDirectory)
+					directory.open(dir_char + progresiveDirectory)
 					if pathItem!= "":
 						progresiveDirectory += "/" + pathItem
-					if !directory.dir_exists(conversionRootFolder + "/characters" + progresiveDirectory):
-						directory.make_dir(conversionRootFolder + "/characters" + progresiveDirectory)
+					if !directory.dir_exists(dir_char + progresiveDirectory):
+						directory.make_dir(dir_char + progresiveDirectory)
 			
 			#add the prefix if the prefix option is enabled
 			if prefixCharacters:
@@ -774,7 +783,7 @@ func convertCharacters():
 			# using the resource constructor for this one
 			
 			var current_character = DialogicCharacter.new()
-			current_character.resource_path = conversionRootFolder + "/characters" + folderPath + "/" + fileName + ".dch"
+			current_character.resource_path = dir_char + folderPath + "/" + fileName + ".dch"
 			# Everything needs to be in exact order
 
 			current_character.color = Color(contents["color"].right(6))
@@ -918,7 +927,7 @@ func convertVariables():
 		ProjectSettings.save()
 		
 		#rebuild the data in the other tabs, so it doesnt override it
-		find_parent('SettingsEditor').refresh()
+		refresh()
 		%OutputLog.text += str(convertedVariables) + " variables converted, and saved to project!\r\n"
 	else:
 		%OutputLog.text += "[color=yellow]Variable subsystem is not present! Variables were not converted![/color]\r\n"
@@ -1018,5 +1027,6 @@ func convertSettings():
 
 
 func _on_check_box_toggled(button_pressed):
+	print("box checked")
 	prefixCharacters = button_pressed
 	%OutputLog.text += "\r\n\r\nToggling this will add a prefix to all character filenames, which will have letters from each folder depth they are in. Characters in the root folder will have no prefix. \r\n"

@@ -1,11 +1,11 @@
-[gd_scene load_steps=14 format=3 uid="uid://dvfqggirw3uab"]
+[gd_scene load_steps=14 format=3]
 
-[ext_resource type="Script" path="res://addons/dialogic/Events/DefaultLayouts/TextBubble/DialogicTextBubbleLayout.gd" id="1_502mo"]
+[ext_resource type="Script" path="res://addons/dialogic/Events/DefaultStyles/TextBubble/DialogicTextBubbleLayout.gd" id="1_502mo"]
 [ext_resource type="Texture2D" uid="uid://b3sccqj6l42w6" path="res://addons/dialogic/Example Assets/backgrounds/BubbleEnd.png" id="2_sqahx"]
 [ext_resource type="Script" path="res://addons/dialogic/Events/Text/node_dialog_text.gd" id="3_ou07r"]
 [ext_resource type="Script" path="res://addons/dialogic/Events/Text/node_type_sound.gd" id="4_6ctnn"]
 [ext_resource type="Script" path="res://addons/dialogic/Events/Choice/node_choice_button.gd" id="5_d7df1"]
-[ext_resource type="Script" path="res://addons/dialogic/Events/DefaultLayouts/HideWithChild.gd" id="6_dlfb7"]
+[ext_resource type="Script" path="res://addons/dialogic/Events/DefaultStyles/HideWithChild.gd" id="6_dlfb7"]
 [ext_resource type="Script" path="res://addons/dialogic/Events/Text/node_name_label.gd" id="7_xx1xf"]
 
 [sub_resource type="StyleBoxFlat" id="11"]
@@ -186,6 +186,6 @@ horizontal_alignment = 1
 script = ExtResource("7_xx1xf")
 
 [connection signal="continued_revealing_text" from="DialogText" to="." method="_on_DialogText_continued_revealing_text"]
-[connection signal="finished_revealing_text" from="DialogText" to="." method="_on_DialogText_continued_revealing_text"]
 [connection signal="finished_revealing_text" from="DialogText" to="." method="_on_dialog_text_finished_revealing_text"]
+[connection signal="finished_revealing_text" from="DialogText" to="." method="_on_DialogText_continued_revealing_text"]
 [connection signal="started_revealing_text" from="DialogText" to="." method="_on_dialog_text_started_revealing_text"]

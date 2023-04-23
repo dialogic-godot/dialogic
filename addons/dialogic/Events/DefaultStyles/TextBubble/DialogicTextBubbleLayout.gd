@@ -6,9 +6,11 @@ enum SizingModes {AdjustAlways, AdjustOnStart, Fixed}
 @export var max_width :float= 0
 @export var max_lines = 10
 
+
 func _ready():
 	if max_width <= 0:
 		max_width = get_viewport().size.x/2
+
 
 func _on_DialogText_continued_revealing_text(new_character = ""):
 	if sizing_mode == SizingModes.AdjustAlways:
@@ -41,6 +43,7 @@ func _on_DialogText_continued_revealing_text(new_character = ""):
 
 
 func _on_dialog_text_started_revealing_text():
+	print($NameLabel/DialogicNode_NameLabel.text)
 	if sizing_mode == SizingModes.AdjustOnStart:
 		var font = $DialogText.get_theme_font("normal_font")
 		var line_height = font.get_height()

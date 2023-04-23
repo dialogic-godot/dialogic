@@ -265,8 +265,9 @@ func change_portrait_z_index(character:DialogicCharacter, z_index:int, update_zi
 
 func remove_portrait(character:DialogicCharacter) -> void:
 	character_left.emit({'character':character})
-	dialogic.current_state_info['portraits'][character.resource_path].node.queue_free()
-	dialogic.current_state_info['portraits'].erase(character.resource_path)
+	if dialogic.current_state_info['portraits'].has(character.resource_path):
+		dialogic.current_state_info['portraits'][character.resource_path].node.queue_free()
+		dialogic.current_state_info['portraits'].erase(character.resource_path)
 
 
 ## Creates a new portrait container node. 

@@ -3,22 +3,22 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://ptlnkdsl67tf"
-path="res://.godot/imported/default_layout.png-2a0b2f55340b9fb3150f7541e60fc4bc.ctex"
+path="res://.godot/imported/default_layout.png-efe681abecdd9eb7051c60bf26916795.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://addons/dialogic/Events/DefaultLayouts/default_layout.png"
-dest_files=["res://.godot/imported/default_layout.png-2a0b2f55340b9fb3150f7541e60fc4bc.ctex"]
+source_file="res://addons/dialogic/Events/DefaultStyles/default_layout.png"
+dest_files=["res://.godot/imported/default_layout.png-efe681abecdd9eb7051c60bf26916795.ctex"]
 
 [params]
 
 compress/mode=0
+compress/high_quality=false
 compress/lossy_quality=0.7
 compress/hdr_compression=1
-compress/bptc_ldr=0
 compress/normal_map=0
 compress/channel_pack=0
 mipmaps/generate=false
