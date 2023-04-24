@@ -86,7 +86,7 @@ func _draw():
 			continue
 		
 		if !event.resource is DialogicEndBranchEvent:
-			if event.has_body_content or event.resource.can_contain_events:
+			if event.has_any_enabled_body_content or event.resource.can_contain_events:
 				var icon_panel_height := 32*_scale
 				var rect_position :Vector2= event.get_node('%IconPanel').global_position+Vector2(0,1)*event.get_node('%IconPanel').size+Vector2(0,-4)
 				var color :Color= event.resource.event_color
