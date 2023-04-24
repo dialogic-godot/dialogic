@@ -202,39 +202,42 @@ func _on_tree_item_selected() -> void:
 	if metadata is Dictionary:
 		%Title.text = selected_item.get_text(0)
 		$Settings/EventDefaultsPanel.hide()
+		%Icon.texture = null
 		%ExternalLink.hide()
 		match metadata.type:
 			'Event':
 				%GeneralInfo.text = "Events are can be used in timelines and do all kinds of things. They often interact with subsystems and dialogic nodes."
-				$Settings/EventDefaultsPanel.show()
 				
 				load_event_settings(metadata.event)
+				if %EventDefaults.get_child_count():
+					$Settings/EventDefaultsPanel.show()
+				
 				if metadata.event.help_page_path:
 					%ExternalLink.show()
 					%ExternalLink.set_meta('url', metadata.event.help_page_path)
 				%Icon.texture = metadata.event._get_icon()
+			# -------------------------------------------------
 			'Subsystem':
-				%GeneralInfo.text = "Subsystems hold more complex functionality. They mostly manage communication between events and dialogic nodes. Often they provide handy methods that can be accessed by the user like this: Dialogic.Subsystem.a_method()."
-				%Icon.texture = get_theme_icon("Callable", "EditorIcons")
+				%GeneralInfo.text = "Subsystems hold specialized functionality. They mostly manage communication between events and dialogic nodes. Often they provide handy methods that can be accessed by the user like this: Dialogic.Subsystem.a_method()."
+			# -------------------------------------------------
 			'Effect':
 				%GeneralInfo.text = "Text effects can be used in text events. They will be executed once reached and can take a single argument."
-				%Icon.texture = get_theme_icon("RichTextEffect", "EditorIcons")
+			# -------------------------------------------------
 			'Modifier':
 				%GeneralInfo.text = "Modifiers can modify text from text events before it is shown."
-				%Icon.texture = get_theme_icon("RichTextEffect", "EditorIcons")
+			# -------------------------------------------------
 			'Style':
 				%GeneralInfo.text = "Style presets can be activated and modified in the Styles editor. They provide the design of the dialog interface in your game."
-				%Icon.texture = get_theme_icon("PopupMenu", "EditorIcons")
+			# -------------------------------------------------
 			'Editor':
 				%GeneralInfo.text = "Editors provide a user interface for editing dialogic data."
-				%Icon.texture = get_theme_icon("ConfirmationDialog", "EditorIcons")
+			# -------------------------------------------------
 			'Settings':
 				%GeneralInfo.text = "Settings pages provide settings that are usually used by subsystems, events and dialogic nodes."
-				%Icon.texture = get_theme_icon("PluginScript", "EditorIcons")
-			
+			# -------------------------------------------------
 			'_':
 				%GeneralInfo.text = ""
-				%Icon.texture = null
+				
 
 
 func _on_external_link_pressed():
@@ -275,6 +278,7 @@ func load_event_settings(event:DialogicEvent) -> void:
 					for i in params[prop].suggestions.call():
 						editor_node.add_item(i, int(params[prop].suggestions.call()[i].value))
 					editor_node.select(int(current_value))
+					editor_node.item_selected.connect(_on_event_default_option_selected.bind(editor_node, params[prop].property))
 				else:
 					editor_node = SpinBox.new()
 					
@@ -286,15 +290,24 @@ func load_event_settings(event:DialogicEvent) -> void:
 						editor_node.step = 0.001
 				
 					editor_node.value = float(current_value)
+					editor_node.value_changed.connect(_on_event_default_number_changed.bind(params[prop].property))
+			
 			TYPE_VECTOR2:
 				editor_node = load("res://addons/dialogic/Editor/Events/Fields/Vector2.tscn").instantiate()
 				editor_node.set_value(current_value)
+				editor_node.property_name = params[prop].property
+				editor_node.value_changed.connect(_on_event_default_value_changed)
+				
 			TYPE_BOOL:
 				editor_node = CheckBox.new()
 				editor_node.button_pressed = bool(current_value)
+				editor_node.toggled.connect(_on_event_default_bool_toggled.bind(params[prop].property))
+				
 			TYPE_ARRAY:
 				editor_node = load("res://addons/dialogic/Editor/Events/Fields/Array.tscn").instantiate()
 				editor_node.set_value(current_value)
+				editor_node.property_name = params[prop].property
+				editor_node.value_changed.connect(_on_event_default_value_changed)
 		
 		%EventDefaults.add_child(editor_node)
 
@@ -314,3 +327,14 @@ func set_event_default_override(prop:String, value:Variant) -> void:
 func _on_event_default_string_submitted(text:String, prop:String) -> void:
 	set_event_default_override(prop, text)
 
+func _on_event_default_option_selected(index:int, option_button:OptionButton, prop:String) -> void:
+	set_event_default_override(prop, option_button.get_item_id(index))
+
+func _on_event_default_number_changed(value:float, prop:String) -> void:
+	set_event_default_override(prop, value)
+
+func _on_event_default_value_changed(prop:String, value:Vector2) -> void:
+	set_event_default_override(prop, value)
+
+func _on_event_default_bool_toggled(value:bool, prop:String) -> void:
+	set_event_default_override(prop, value)

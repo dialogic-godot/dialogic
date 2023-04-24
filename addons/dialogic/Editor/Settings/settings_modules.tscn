@@ -177,10 +177,6 @@ unique_name_in_owner = true
 layout_mode = 2
 columns = 2
 
-[node name="Control" type="Control" parent="Settings"]
-layout_mode = 2
-size_flags_vertical = 3
-
 [node name="GeneralInfo" type="Label" parent="Settings"]
 unique_name_in_owner = true
 layout_mode = 2
