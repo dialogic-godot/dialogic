@@ -257,3 +257,13 @@ static func setup_script_property_edit_node(property_info: Dictionary, value:Var
 				input.text = value
 			input.text_submitted.connect(methods.get('string').bind(property_info['name']))
 	return input
+
+
+static func get_custom_event_defaults(event_name:String) -> Dictionary:
+	if Engine.is_editor_hint():
+		return ProjectSettings.get_setting('dialogic/editor/event_default_overrides', {}).get(event_name, {})
+	else:
+		if !Engine.get_main_loop().has_meta('dialogic_event_defaults'):
+			Engine.get_main_loop().set_meta('dialogic_event_defaults', ProjectSettings.get_setting('dialogic/editor/event_default_overrides', {}))
+		return Engine.get_main_loop().get_meta('dialogic_event_defaults').get(event_name, {})
+

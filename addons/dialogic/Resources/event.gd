@@ -222,13 +222,20 @@ func update_text_version() -> void:
 
 ## Used by timeline processor (DGH).
 func _load_from_string(string:String) -> void:
+	_load_custom_defaults()
 	if '#id:' in string and can_be_translated():
 		_translation_id = string.get_slice('#id:', 1).strip_edges()
 		from_text(string.get_slice('#id:', 0))
-		event_node_ready = true
 	else:
 		from_text(string)
-		event_node_ready = true
+	event_node_ready = true
+
+
+## Assigns the custom defaults
+func _load_custom_defaults():
+	for default_prop in DialogicUtil.get_custom_event_defaults(event_name):
+		if default_prop in self:
+			set(default_prop, DialogicUtil.get_custom_event_defaults(event_name)[default_prop])
 
 
 ## Used by the timeline processor (DGH).
@@ -258,8 +265,9 @@ func get_shortcode_parameters() -> Dictionary:
 func to_text() -> String:
 	var result_string : String = "["+self.get_shortcode()
 	var params : Dictionary = get_shortcode_parameters()
+	var custom_defaults :Dictionary = DialogicUtil.get_custom_event_defaults(event_name)
 	for parameter in params.keys():
-		if get(params[parameter]["property"]) != params[parameter]["default"]:
+		if get(params[parameter].property) != custom_defaults.get(params[parameter].property, params[parameter].default):
 			if typeof(get(params[parameter]["property"])) == TYPE_OBJECT:
 				result_string += " "+parameter+'="'+str(get(params[parameter]["property"]).resource_path)+'"'
 			elif typeof(get(params[parameter]["property"])) == TYPE_STRING:
