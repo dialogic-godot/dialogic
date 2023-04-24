@@ -26,7 +26,7 @@ var expanded := true
 var body_was_build := false
 
 # does the body have elements?
-var has_body_content := false
+var has_any_enabled_body_content := false
 
 # list that stores visibility conditions 
 var field_list := []
@@ -137,8 +137,11 @@ func build_editor(build_header:bool = true, build_body:bool = false) ->  void:
 		body_was_build = true
 	
 	for p in resource.get_event_editor_info():
+		field_list.append({'node':null, 'location':p.location})
+		if p.has('condition'):
+			field_list[-1]['condition'] = p.condition
+		
 		if !build_body and p.location == 1:
-			has_body_content = true
 			continue
 		elif !build_header and p.location == 0:
 			continue
@@ -149,6 +152,7 @@ func build_editor(build_header:bool = true, build_body:bool = false) ->  void:
 		
 		### LINEBREAK
 		if p.name == "linebreak":
+			field_list.remove_at(field_list.size()-1)
 			if !current_body_container.get_child_count():
 				current_body_container.queue_free()
 			current_body_container = HFlowContainer.new()
@@ -249,7 +253,7 @@ func build_editor(build_header:bool = true, build_body:bool = false) ->  void:
 		
 		### --------------------------------------------------------------------
 		### 3. FILL THE NEW NODE WITH INFORMATION AND LISTEN TO CHANGES
-		field_list.append({'node':editor_node})
+		field_list[-1]['node'] = editor_node 
 		if "event_resource" in editor_node:
 			editor_node.event_resource = resource
 		if 'property_name' in editor_node:
@@ -275,14 +279,14 @@ func build_editor(build_header:bool = true, build_body:bool = false) ->  void:
 		if p.has('condition'):
 			field_list[-1]['condition'] = p.condition
 			if left_label: 
-				field_list.append({'node': left_label, 'condition':p.condition})
+				field_list.append({'node': left_label, 'condition':p.condition, 'location':p.location})
 			if right_label: 
-				field_list.append({'node': right_label, 'condition':p.condition})
+				field_list.append({'node': right_label, 'condition':p.condition, 'location':p.location})
 	
 	if build_body:
-		has_body_content = true
+#		has_body_content = true
 		if current_body_container.get_child_count() == 0:
-			has_body_content = false
+#			has_body_content = false
 			expanded = false
 			body_container.visible = false
 		
@@ -290,25 +294,27 @@ func build_editor(build_header:bool = true, build_body:bool = false) ->  void:
 
 
 func recalculate_field_visibility() -> void:
+	has_any_enabled_body_content = false
 	for p in field_list:
 		if !p.has('condition') or p.condition.is_empty():
-			p.node.show()
+			if p.node != null:
+				p.node.show()
+			if p.location == 1:
+				has_any_enabled_body_content = true
 		else:
 			var expr := Expression.new()
 			expr.parse(p.condition)
 			if expr.execute([], resource):
-				p.node.show()
+				if p.node != null:
+					p.node.show()
+				if p.location == 1:
+					has_any_enabled_body_content = true
 			else:
-				p.node.hide()
+				if p.node != null:
+					p.node.hide()
 			if expr.has_execute_failed():
 				printerr("[Dialogic] Failed executing visibility condition for '",p.get('property', 'unnamed'),"': " + expr.get_error_text())
-	%ExpandButton.visible = false
-	if body_content_container != null:
-		for node in body_content_container.get_children():
-			for sub_node in node.get_children():
-				if sub_node.visible:
-					%ExpandButton.visible = true
-					break
+	%ExpandButton.visible = has_any_enabled_body_content
 
 
 func set_property(property_name:String, value:Variant) -> void:
@@ -392,7 +398,7 @@ func _on_EventNode_gui_input(event:InputEvent) -> void:
 	if event is InputEventMouseButton and event.is_pressed() and event.button_index == 1:
 		grab_focus() # Grab focus to avoid copy pasting text or events
 		if event.double_click:
-			if has_body_content:
+			if has_any_enabled_body_content:
 				_on_ExpandButton_toggled(!expanded)
 	# For opening the context menu
 	if event is InputEventMouseButton:
