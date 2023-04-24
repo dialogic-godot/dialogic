@@ -53,7 +53,7 @@ var _character_from_directory: String:
 			if _character_directory[item]['resource'] == character:
 				return item
 				break
-		return ""
+		return _character_from_directory
 	set(value): 
 		_character_from_directory = value
 		if value in _character_directory.keys():
@@ -196,6 +196,8 @@ func to_text() -> String:
 		ActionTypes.Leave: result_string += "Leave "
 		ActionTypes.Update: result_string += "Update "
 	
+	var default_values := DialogicUtil.get_custom_event_defaults(event_name)
+	
 	if character or _character_from_directory == '--All--':
 		if action_type == ActionTypes.Leave and _character_from_directory == '--All--':
 			result_string += "--All--"
@@ -208,12 +210,13 @@ func to_text() -> String:
 			if name.count(" ") > 0:
 				name = '"' + name + '"'
 			result_string += name
-			if !portrait.is_empty() and action_type != ActionTypes.Leave:
+			if portrait.strip_edges() != default_values.get('portrait', '') and action_type != ActionTypes.Leave:
 				result_string+= " ("+portrait+")"
 	
-	if action_type != ActionTypes.Leave:
+	if action_type != ActionTypes.Leave and position != default_values.get('position', 1):
 		result_string += " "+str(position)
-	if animation_name != "" or z_index != 0 or mirrored != false or position_move_time != 0.0 or extra_data != "":
+	
+	if animation_name != "" or z_index != default_values.get('z_index', 0) or mirrored != default_values.get('mirrored', false) or position_move_time != default_values.get('position_move_time', 0) or extra_data != default_values.get('extra_data', ""):
 		result_string += " ["
 		if animation_name:
 			result_string += 'animation="'+DialogicUtil.pretty_name(animation_name)+'"'
@@ -247,11 +250,16 @@ func from_text(string:String) -> void:
 		_character_directory = Dialogic.character_directory
 	else:
 		_character_directory = self.get_meta("editor_character_directory")
-		
+	
+	# load default character
+	if !_character_from_directory.is_empty() and _character_directory != null and _character_directory.size() > 0:
+		if _character_from_directory in _character_directory.keys():
+			character = _character_directory[_character_from_directory]['resource']
+	
 	var regex := RegEx.new()
 	
 	# Reference regex without Godot escapes: (?<type>Join|Update|Leave)\s*(")?(?<name>(?(2)[^"\n]*|[^(: \n]*))(?(2)"|)(\W*\((?<portrait>.*)\))?(\s*(?<position>\d))?(\s*\[(?<shortcode>.*)\])?
-	regex.compile("(?<type>Join|Update|Leave)\\s*(\")?(?<name>(?(2)[^\"\\n]*|[^(: \\n]*))(?(2)\"|)(\\W*\\((?<portrait>.*)\\))?(\\s*(?<position>\\d))?(\\s*\\[(?<shortcode>.*)\\])?")
+	regex.compile("(?<type>Join|Update|Leave)\\s*(\")?(?<name>(?(2)[^\"\\n]*|[^(: \\n]*))(?(2)\"|)(\\W*(?<portrait>\\(.*\\)))?(\\s*(?<position>\\d))?(\\s*\\[(?<shortcode>.*)\\])?")
 	
 	var result := regex.search(string)
 	
@@ -269,32 +277,30 @@ func from_text(string:String) -> void:
 		else: 
 			var name := result.get_string('name').strip_edges()
 			
-
-			if _character_directory != null:
-				if _character_directory.size() > 0:
-					character = null
-					if _character_directory.has(name):
-						character = _character_directory[name]['resource']
-					else:
-						name = name.replace('"', "")
-						# First do a full search to see if more of the path is there then necessary:
-						for character in _character_directory:
-							if name in _character_directory[character]['full_path']:
-								character = _character_directory[character]['resource']
-								break
-						
-						# If it doesn't exist, we'll consider it a guest and create a temporary character
-						if character == null:
-							if Engine.is_editor_hint() == false:
-								character = DialogicCharacter.new()
-								character.display_name = name
-								var entry:Dictionary = {}
-								entry['resource'] = character
-								entry['full_path'] = "runtime://" + name
-								Dialogic.character_directory[name] = entry
+			if _character_directory != null and _character_directory.size() > 0:
+				character = null
+				if _character_directory.has(name):
+					character = _character_directory[name]['resource']
+				else:
+					name = name.replace('"', "")
+					# First do a full search to see if more of the path is there then necessary:
+					for character in _character_directory:
+						if name in _character_directory[character]['full_path']:
+							character = _character_directory[character]['resource']
+							break
+					
+					# If it doesn't exist, we'll consider it a guest and create a temporary character
+					if character == null:
+						if Engine.is_editor_hint() == false:
+							character = DialogicCharacter.new()
+							character.display_name = name
+							var entry:Dictionary = {}
+							entry['resource'] = character
+							entry['full_path'] = "runtime://" + name
+							Dialogic.character_directory[name] = entry
 	
-	if result.get_string('portrait').strip_edges():
-		portrait = result.get_string('portrait').strip_edges()
+	if !result.get_string('portrait').is_empty():
+		portrait = result.get_string('portrait').strip_edges().trim_prefix('(').trim_suffix(')')
 
 	if result.get_string('position'):
 		position = result.get_string('position').to_int()
@@ -336,8 +342,36 @@ func from_text(string:String) -> void:
 		extra_data = shortcode_params.get('extra_data', "")
 
 
+# this is only here to provide a list of default values
+# this way the module manager can add custom default overrides to this event.
+# this is also why some properties are commented out, 
+# because it's not recommended to overwrite them this way
+func get_shortcode_parameters() -> Dictionary:
+	return {
+		#param_name 	: property_info
+		"action_type" 	: {"property": "action_type", 					"default": 0, 
+							"suggestions": func(): return {'Join':
+										{'value':ActionTypes.Join}, 
+										'Leave':{'value':ActionTypes.Leave}, 
+										'Update':{'value':ActionTypes.Update}}},
+		"character" 	: {"property": "_character_from_directory", 	"default": ""},
+		"portrait" 		: {"property": "portrait", 						"default": ""},
+		"position" 		: {"property": "position", 						"default": 1},
+		
+#		"animation_name"	: {"property": "animation_name", 			"default": ""},
+#		"animation_length"	: {"property": "animation_length", 			"default": 0.5},
+#		"animation_wait" 	: {"property": "animation_wait", 			"default": false},
+		"animation_repeats"	: {"property": "animation_repeats", 		"default": 1},
+		
+		"z_index" 		: {"property": "z_index", 						"default": 0},
+		"move_time"		: {"property": "position_move_time", 			"default": 0.0},
+		"mirrored"		: {"property": "mirrored", 						"default": false},
+		"extra_data"	: {"property": "extra_data", 					"default": ""},
+	}
+
+
 func is_valid_event(string:String) -> bool:
-	if string.begins_with("Join ") or string.begins_with("Leave ") or string.begins_with("Update "):
+	if string.begins_with("Join") or string.begins_with("Leave") or string.begins_with("Update"):
 		return true
 	return false
 

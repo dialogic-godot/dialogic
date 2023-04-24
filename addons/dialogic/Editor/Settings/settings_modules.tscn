@@ -136,48 +136,54 @@ size_flags_vertical = 3
 allow_reselect = true
 hide_root = true
 
-[node name="Settings" type="VBoxContainer" parent="."]
+[node name="Scroll" type="ScrollContainer" parent="."]
 layout_mode = 2
 size_flags_horizontal = 3
+horizontal_scroll_mode = 0
 
-[node name="HBox" type="HBoxContainer" parent="Settings"]
+[node name="Settings" type="VBoxContainer" parent="Scroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="HBox" type="HBoxContainer" parent="Scroll/Settings"]
 layout_mode = 2
 
-[node name="Icon" type="TextureRect" parent="Settings/HBox"]
+[node name="Icon" type="TextureRect" parent="Scroll/Settings/HBox"]
 unique_name_in_owner = true
 layout_mode = 2
 expand_mode = 3
 
-[node name="Title" type="Label" parent="Settings/HBox"]
+[node name="Title" type="Label" parent="Scroll/Settings/HBox"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="ExternalLink" type="Button" parent="Settings/HBox"]
+[node name="ExternalLink" type="Button" parent="Scroll/Settings/HBox"]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 icon = SubResource("ImageTexture_vaa32")
 flat = true
 
-[node name="EventDefaultsPanel" type="PanelContainer" parent="Settings"]
+[node name="EventDefaultsPanel" type="PanelContainer" parent="Scroll/Settings"]
 visible = false
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_tga5r")
 
-[node name="VBox" type="VBoxContainer" parent="Settings/EventDefaultsPanel"]
+[node name="VBox" type="VBoxContainer" parent="Scroll/Settings/EventDefaultsPanel"]
 layout_mode = 2
 
-[node name="Title" type="Label" parent="Settings/EventDefaultsPanel/VBox"]
+[node name="Title" type="Label" parent="Scroll/Settings/EventDefaultsPanel/VBox"]
 layout_mode = 2
 text = "Edit event defaults:"
 
-[node name="EventDefaults" type="GridContainer" parent="Settings/EventDefaultsPanel/VBox"]
+[node name="EventDefaults" type="GridContainer" parent="Scroll/Settings/EventDefaultsPanel/VBox"]
 unique_name_in_owner = true
 layout_mode = 2
 columns = 2
 
-[node name="GeneralInfo" type="Label" parent="Settings"]
+[node name="GeneralInfo" type="Label" parent="Scroll/Settings"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
@@ -194,4 +200,4 @@ autowrap_mode = 3
 [connection signal="toggled" from="Overview/ScrollContainer/HBox/Collapse" to="." method="_on_collapse_toggled"]
 [connection signal="button_clicked" from="Overview/Tree" to="." method="_on_tree_button_clicked"]
 [connection signal="item_selected" from="Overview/Tree" to="." method="_on_tree_item_selected"]
-[connection signal="pressed" from="Settings/HBox/ExternalLink" to="." method="_on_external_link_pressed"]
+[connection signal="pressed" from="Scroll/Settings/HBox/ExternalLink" to="." method="_on_external_link_pressed"]

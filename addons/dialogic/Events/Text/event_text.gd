@@ -166,7 +166,7 @@ func from_text(string:String) -> void:
 				for character in _character_directory:
 					if name in _character_directory[character]['full_path']:
 						character = _character_directory[character]['resource']
-						break								
+						break
 				
 				# If it doesn't exist,  at runtime we'll consider it a guest and create a temporary character
 				if character == null:
@@ -180,8 +180,6 @@ func from_text(string:String) -> void:
 
 		if !result.get_string('portrait').is_empty():
 			portrait = result.get_string('portrait').strip_edges().trim_prefix('(').trim_suffix(')')
-			if portrait.is_empty():
-				portrait = character.default_portrait
 		
 	if result:
 		text = result.get_string('text').replace("\\\n", "\n").replace('\\:', ':').strip_edges()

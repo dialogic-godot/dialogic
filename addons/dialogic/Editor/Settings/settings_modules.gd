@@ -19,12 +19,13 @@ func _ready() -> void:
 	%GeneralInfo.add_theme_color_override("font_color", get_theme_color("accent_color", "Editor"))
 	%GeneralInfo.add_theme_font_override("font", get_theme_font("doc_italic", "EditorFonts"))
 	
-	$Settings/EventDefaultsPanel.add_theme_stylebox_override('panel', get_theme_stylebox("Background", "EditorStyles"))
+	$Scroll/Settings/EventDefaultsPanel.add_theme_stylebox_override('panel', get_theme_stylebox("Background", "EditorStyles"))
 	
 	%ExternalLink.icon = get_theme_icon("Help", "EditorIcons")
 
 
 func refresh() -> void:
+	$Scroll/Settings/EventDefaultsPanel.hide()
 	load_modules_tree()
 
 
@@ -184,7 +185,7 @@ func _on_tree_item_selected() -> void:
 	
 	if metadata is Dictionary:
 		%Title.text = selected_item.get_text(0)
-		$Settings/EventDefaultsPanel.hide()
+		$Scroll/Settings/EventDefaultsPanel.hide()
 		%Icon.texture = null
 		%ExternalLink.hide()
 		match metadata.type:
@@ -193,7 +194,7 @@ func _on_tree_item_selected() -> void:
 				
 				load_event_settings(metadata.event)
 				if %EventDefaults.get_child_count():
-					$Settings/EventDefaultsPanel.show()
+					$Scroll/Settings/EventDefaultsPanel.show()
 				
 				if metadata.event.help_page_path:
 					%ExternalLink.show()
