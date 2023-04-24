@@ -23,7 +23,8 @@ signal timeline_loaded
 ## 				 TIMELINE LOADING
 ################################################################################
 var _batches := []
-var _building_timeline := true
+var _building_timeline := false
+var _timeline_changed_while_loading := false
 
 
 ################################################################################
@@ -77,8 +78,14 @@ func save_timeline() -> void:
 
 
 func load_timeline(resource:DialogicTimeline) -> void:
+	if _building_timeline:
+		_timeline_changed_while_loading = true
+		await batch_loaded
+		_timeline_changed_while_loading = false
+		_building_timeline = false
+	
 	clear_timeline_nodes()
-	_building_timeline = true
+	
 	if get_parent().current_resource.events.size() == 0:
 		pass
 	else: 
@@ -91,6 +98,7 @@ func load_timeline(resource:DialogicTimeline) -> void:
 		var page := 1
 		var batch_size := 10
 		_batches = []
+		_building_timeline = true
 		while batch_events(data, batch_size, page).size() != 0:
 			_batches.append(batch_events(data, batch_size, page))
 			page += 1
@@ -119,6 +127,8 @@ func load_batch(data:Array) -> void:
 	batch_loaded.emit()
 
 func _on_batch_loaded():
+	if _timeline_changed_while_loading:
+		return
 	if _batches.size() > 0:
 		indent_events()
 		await get_tree().process_frame
