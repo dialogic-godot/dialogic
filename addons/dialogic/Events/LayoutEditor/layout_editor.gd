@@ -167,7 +167,7 @@ func load_layout_scene_customization(custom_scene_path:String = "") -> void:
 				i, current_value,
 				{'bool':_on_export_bool_submitted, 'color':_on_export_color_submitted, 'enum':_on_export_int_enum_submitted,
 				'int':_on_export_number_submitted, 'float':_on_export_number_submitted, 'file':_on_export_file_submitted,
-				'string':_on_export_input_text_submitted, "string_enum": _on_export_string_enum_submitted})
+				'string':_on_export_input_text_submitted, "string_enum": _on_export_string_enum_submitted, 'vector2':_on_export_vector_submitted})
 
 			input.size_flags_horizontal = SIZE_EXPAND_FILL
 			customization_editor_info[i['name']]['node'] = input
@@ -238,3 +238,6 @@ func _on_export_file_submitted(property_name:String, value:String) -> void:
 
 func _on_export_string_enum_submitted(value:int, property_name:String, list:PackedStringArray):
 	set_export_override(property_name, var_to_str(list[value]))
+
+func _on_export_vector_submitted(property_name:String, value:Vector2) -> void:
+	set_export_override(property_name, var_to_str(value))

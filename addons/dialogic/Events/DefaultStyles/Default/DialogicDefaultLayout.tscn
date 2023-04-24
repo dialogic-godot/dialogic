@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=3]
+[gd_scene load_steps=26 format=3 uid="uid://djcsxx8txhtlk"]
 
 [ext_resource type="Script" path="res://addons/dialogic/Events/DefaultStyles/Default/DialogicDefaultLayout.gd" id="1"]
 [ext_resource type="Script" path="res://addons/dialogic/Events/Text/node_dialog_text.gd" id="2"]
@@ -15,23 +15,12 @@
 [ext_resource type="Script" path="res://addons/dialogic/Events/Choice/node_button_sound.gd" id="18"]
 [ext_resource type="Script" path="res://addons/dialogic/Events/Text/node_next_indicator.gd" id="20_ljcq2"]
 [ext_resource type="Script" path="res://addons/dialogic/Events/DefaultStyles/Default/ExampleGlossaryPopup.gd" id="20_vmnp2"]
-[ext_resource type="PackedScene" uid="uid://b1xv3pg0ptobj" path="res://addons/dialogic/Events/DefaultStyles/ExampleHistoryScene.tscn" id="22_854kg"]
+[ext_resource type="PackedScene" path="res://addons/dialogic/Events/DefaultStyles/ExampleHistoryScene.tscn" id="22_854kg"]
 [ext_resource type="Script" path="res://addons/dialogic/Events/TextInput/node_text_input.gd" id="22_ltkcf"]
 [ext_resource type="Script" path="res://addons/dialogic/Events/DefaultStyles/HideWithChild.gd" id="23"]
 [ext_resource type="FontFile" uid="uid://vrrmdx83skor" path="res://addons/dialogic/Example Assets/Fonts/Roboto-Regular.ttf" id="23_gyqve"]
 [ext_resource type="FontFile" uid="uid://cc4xli25271fd" path="res://addons/dialogic/Example Assets/Fonts/Roboto-Bold.ttf" id="24_aa4pl"]
 [ext_resource type="FontFile" uid="uid://b5c0p00x6g6u5" path="res://addons/dialogic/Example Assets/Fonts/Roboto-Italic.ttf" id="25_wt3bc"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wpkyg"]
-bg_color = Color(1, 1, 1, 1)
-corner_radius_top_left = 5
-corner_radius_top_right = 5
-corner_radius_bottom_right = 5
-corner_radius_bottom_left = 5
-expand_margin_left = 5.0
-expand_margin_top = 5.0
-expand_margin_right = 5.0
-expand_margin_bottom = 5.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_q3vpc"]
 bg_color = Color(1, 1, 1, 1)
@@ -43,6 +32,17 @@ expand_margin_left = 15.0
 expand_margin_top = 15.0
 expand_margin_right = 15.0
 expand_margin_bottom = 15.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wpkyg"]
+bg_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+expand_margin_left = 5.0
+expand_margin_top = 5.0
+expand_margin_right = 5.0
+expand_margin_bottom = 5.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_a3cyk"]
 bg_color = Color(0.12549, 0.12549, 0.12549, 1)
@@ -81,6 +81,7 @@ shadow_size = 5
 [node name="DefaultDialogNode" type="CanvasLayer"]
 script = ExtResource("1")
 name_label_box_modulate = Color(0.00784314, 0.00784314, 0.00784314, 0.843137)
+name_label_alignment = null
 
 [node name="DialogicNode_BackgroundHolder" type="CanvasLayer" parent="."]
 layer = -1
@@ -223,48 +224,19 @@ sound_pressed = ExtResource("14")
 sound_hover = ExtResource("11")
 sound_focus = ExtResource("13")
 
-[node name="NameLabelPanel" type="PanelContainer" parent="DefaultStyle"]
-unique_name_in_owner = true
-self_modulate = Color(0.00784314, 0.00784314, 0.00784314, 0.843137)
-layout_mode = 1
-anchors_preset = 7
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-offset_left = -276.0
-offset_top = -190.0
-offset_right = -209.0
-offset_bottom = -160.0
-grow_horizontal = 2
-grow_vertical = 0
-theme_override_styles/panel = SubResource("StyleBoxFlat_wpkyg")
-script = ExtResource("23")
-metadata/_edit_layout_mode = 1
-metadata/_edit_use_custom_anchors = true
-metadata/_edit_group_ = true
-
-[node name="DialogicNode_NameLabel" type="Label" parent="DefaultStyle/NameLabelPanel"]
-unique_name_in_owner = true
-layout_mode = 2
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_font_sizes/font_size = 15
-text = "Name"
-script = ExtResource("3")
-
 [node name="DialogTextPanel" type="PanelContainer" parent="DefaultStyle"]
 unique_name_in_owner = true
 self_modulate = Color(0.00784314, 0.00784314, 0.00784314, 0.843137)
 layout_mode = 1
-anchors_preset = 7
+anchors_preset = -1
 anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = -266.0
-offset_top = -136.0
-offset_right = 286.0
-offset_bottom = -27.0
+offset_left = -2.0
+offset_top = -43.0
+offset_right = 2.0
+offset_bottom = -33.0
 grow_horizontal = 2
 grow_vertical = 0
 theme_override_styles/panel = SubResource("StyleBoxFlat_q3vpc")
@@ -306,6 +278,43 @@ step = 0.001
 value = 0.5
 show_percentage = false
 script = ExtResource("15_ptoy3")
+
+[node name="NameLabelHolder" type="Control" parent="DefaultStyle/DialogTextPanel"]
+layout_mode = 2
+
+[node name="NameLabelPanel" type="PanelContainer" parent="DefaultStyle/DialogTextPanel/NameLabelHolder"]
+unique_name_in_owner = true
+self_modulate = Color(0.00784314, 0.00784314, 0.00784314, 0.843137)
+layout_mode = 1
+offset_left = -10.0
+offset_top = -49.0
+offset_right = 1.0
+offset_bottom = -24.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_wpkyg")
+script = ExtResource("23")
+metadata/_edit_layout_mode = 1
+metadata/_edit_use_custom_anchors = true
+metadata/_edit_group_ = true
+
+[node name="DialogicNode_NameLabel" type="Label" parent="DefaultStyle/DialogTextPanel/NameLabelHolder/NameLabelPanel"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 15
+text = "S"
+script = ExtResource("3")
+
+[node name="Something" type="Control" parent="DefaultStyle"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -2.0
+offset_right = 2.0
+grow_horizontal = 2
+grow_vertical = 0
 
 [node name="DialogicNode_TextInput" type="Control" parent="DefaultStyle"]
 layout_mode = 1
