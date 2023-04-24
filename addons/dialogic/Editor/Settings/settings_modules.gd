@@ -2,22 +2,6 @@
 extends HSplitContainer
 
 
-# get_theme_icon("Folder", "EditorIcons")
-# get_theme_icon("Favorites", "EditorIcons")
-# get_theme_icon("RichTextEffect", "EditorIcons")
-# get_theme_icon("EditorHandleDisabled", "EditorIcons")
-# get_theme_icon("Callable", "EditorIcons")
-# get_theme_icon("CombineLines", "EditorIcons")
-# get_theme_icon("ScriptCreateDialog", "EditorIcons")
-# get_theme_icon("Search", "EditorIcons")
-# get_theme_icon("GDScript", "EditorIcons")
-# get_theme_icon("MatchCase", "EditorIcons")
-# get_theme_icon("NodeInfo", "EditorIcons")
-# get_theme_icon("PluginScript", "EditorIcons")
-# get_theme_icon("PopupMenu", "EditorIcons")
-
-
-
 func _ready() -> void:
 	%Refresh.icon = get_theme_icon("Loop", "EditorIcons")
 	%Search.right_icon = get_theme_icon("Search", "EditorIcons")
@@ -37,8 +21,7 @@ func _ready() -> void:
 	
 	$Settings/EventDefaultsPanel.add_theme_stylebox_override('panel', get_theme_stylebox("Background", "EditorStyles"))
 	
-	%ExternalLink.icon = get_theme_icon("ExternalLink", "EditorIcons")
-
+	%ExternalLink.icon = get_theme_icon("Help", "EditorIcons")
 
 
 func refresh() -> void:
@@ -206,7 +189,7 @@ func _on_tree_item_selected() -> void:
 		%ExternalLink.hide()
 		match metadata.type:
 			'Event':
-				%GeneralInfo.text = "Events are can be used in timelines and do all kinds of things. They often interact with subsystems and dialogic nodes."
+				%GeneralInfo.text = "Events can be used in timelines and do all kinds of things. They often interact with subsystems and dialogic nodes."
 				
 				load_event_settings(metadata.event)
 				if %EventDefaults.get_child_count():

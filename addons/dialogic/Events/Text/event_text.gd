@@ -29,7 +29,7 @@ var _character_from_directory: String:
 			if _character_directory[item]['resource'] == character:
 				return item
 				break
-		return ""
+		return _character_from_directory
 	set(value): 
 		_character_from_directory = value
 		if value in _character_directory.keys():
@@ -141,40 +141,48 @@ func from_text(string:String) -> void:
 		_character_directory = Dialogic.character_directory
 	else:
 		_character_directory = self.get_meta("editor_character_directory")
+	
+	# load default character
+	if !_character_from_directory.is_empty() and _character_directory != null and _character_directory.size() > 0:
+		if _character_from_directory in _character_directory.keys():
+			character = _character_directory[_character_from_directory]['resource']
+	
 	var reg := RegEx.new()
 	
 	# Reference regex without Godot escapes: ((")?(?<name>(?(2)[^"\n]*|[^(: \n]*))(?(2)"|)(\W*\((?<portrait>.*)\))?\s*(?<!\\):)?(?<text>(.|\n)*)
-	reg.compile("((\")?(?<name>(?(2)[^\"\\n]*|[^(: \\n]*))(?(2)\"|)(\\W*\\((?<portrait>.*)\\))?\\s*(?<!\\\\):)?(?<text>(.|\\n)*)")
+	reg.compile("((\")?(?<name>(?(2)[^\"\\n]*|[^(: \\n]*))(?(2)\"|)(\\W*(?<portrait>\\(.*\\)))?\\s*(?<!\\\\):)?(?<text>(.|\\n)*)")
 	var result := reg.search(string)
 	if result and !result.get_string('name').is_empty():
 		var name := result.get_string('name').strip_edges()
-		
-		if _character_directory != null:
-			if _character_directory.size() > 0:
-				character = null
-				if _character_directory.has(name):
-					character = _character_directory[name]['resource']
-				else:
-					name = name.replace('"', "")
-					# First do a full search to see if more of the path is there then necessary:
-					for character in _character_directory:
-						if name in _character_directory[character]['full_path']:
-							character = _character_directory[character]['resource']
-							break								
-					
-					# If it doesn't exist,  at runtime we'll consider it a guest and create a temporary character
-					if character == null:
-						if Engine.is_editor_hint() == false:
-							character = DialogicCharacter.new()
-							character.display_name = name
-							var entry: Dictionary = {}
-							entry['resource'] = character
-							entry['full_path'] = "runtime://" + name
-							_character_directory[name] = entry
-							
+		if name == '_':
+			character = null
+		elif _character_directory != null and _character_directory.size() > 0:
+			character = null
+			if _character_directory.has(name):
+				character = _character_directory[name]['resource']
+			else:
+				name = name.replace('"', "")
+				# First do a full search to see if more of the path is there then necessary:
+				for character in _character_directory:
+					if name in _character_directory[character]['full_path']:
+						character = _character_directory[character]['resource']
+						break								
+				
+				# If it doesn't exist,  at runtime we'll consider it a guest and create a temporary character
+				if character == null:
+					if Engine.is_editor_hint() == false:
+						character = DialogicCharacter.new()
+						character.display_name = name
+						var entry: Dictionary = {}
+						entry['resource'] = character
+						entry['full_path'] = "runtime://" + name
+						_character_directory[name] = entry
+
 		if !result.get_string('portrait').is_empty():
-			portrait = result.get_string('portrait').strip_edges()
-	
+			portrait = result.get_string('portrait').strip_edges().trim_prefix('(').trim_suffix(')')
+			if portrait.is_empty():
+				portrait = character.default_portrait
+		
 	if result:
 		text = result.get_string('text').replace("\\\n", "\n").replace('\\:', ':').strip_edges()
 
@@ -186,6 +194,15 @@ func is_valid_event(string:String) -> bool:
 func is_string_full_event(string:String) -> bool:
 	return !string.ends_with('\\')
 
+
+# this is only here to provide a list of default values
+# this way the module manager can add custom default overrides to this event.
+func get_shortcode_parameters() -> Dictionary:
+	return {
+		#param_name 	: property_info
+		"character"		: {"property": "_character_from_directory", "default": ""},
+		"portrait"		: {"property": "portrait", 					"default": ""},
+	}
 
 ################################################################################
 ## 						TRANSLATIONS
