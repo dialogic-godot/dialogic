@@ -227,6 +227,11 @@ static func setup_script_property_edit_node(property_info: Dictionary, value:Var
 			input.value_changed.connect(methods.get('float').bind(property_info['name']))
 			if value != null:
 				input.value = value
+		TYPE_VECTOR2:
+			input = load("res://addons/dialogic/Editor/Events/Fields/Vector2.tscn").instantiate()
+			input.set_value(value)
+			input.property_name = property_info['name']
+			input.value_changed.connect(methods.get('vector2'))
 		TYPE_STRING:
 			if property_info['hint'] & PROPERTY_HINT_ENUM:
 				input = OptionButton.new()

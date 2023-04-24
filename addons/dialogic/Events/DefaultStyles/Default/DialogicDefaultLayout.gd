@@ -15,6 +15,7 @@ enum Alignments {Left, Center, Right}
 
 @export_subgroup("Box")
 @export var box_modulate : Color = Color(0.00784313771874, 0.00784313771874, 0.00784313771874, 0.84313726425171)
+@export var box_size : Vector2 = Vector2(550, 110)
 
 @export_subgroup("Name Label")
 #@export var name_label_alignment = Alignments.Left
@@ -23,6 +24,7 @@ enum Alignments {Left, Center, Right}
 @export var name_label_use_character_color := true
 @export var name_label_color := Color.WHITE
 @export var name_label_box_modulate : Color = box_modulate
+@export var name_label_alignment := Alignments.Left
 
 ## FOR TESTING PURPOSES
 func _ready():
@@ -49,6 +51,7 @@ func _ready():
 	
 	## BOX SETTINGS
 	%DialogTextPanel.self_modulate = box_modulate
+	%DialogTextPanel.custom_minimum_size = box_size
 	%TextInputPanel.self_modulate = box_modulate
 	
 	## NAME LABEL SETTINGS
@@ -62,3 +65,7 @@ func _ready():
 	%DialogicNode_NameLabel.use_character_color = name_label_use_character_color
 	
 	%NameLabelPanel.self_modulate = name_label_box_modulate
+	
+	%NameLabelPanel.anchor_left = name_label_alignment/2.0
+	%NameLabelPanel.anchor_right = name_label_alignment/2.0
+	%NameLabelPanel.grow_horizontal = [1, 2, 0][name_label_alignment]
