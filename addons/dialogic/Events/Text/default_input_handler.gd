@@ -10,13 +10,16 @@ func _input(event:InputEvent) -> void:
 	if Input.is_action_just_pressed(DialogicUtil.get_project_setting('dialogic/text/input_action', 'dialogic_default_action')):
 		if Dialogic.paused: return
 		
-		if Dialogic.current_state == Dialogic.states.IDLE and Dialogic.Text.can_manual_advance():
-			Dialogic.handle_next_event()
-			autoadvance_timer.stop()
-		
-		elif Dialogic.current_state == Dialogic.states.SHOWING_TEXT:
-			if Dialogic.Text.can_skip():
-				Dialogic.Text.skip_text_animation()
+		match Dialogic.current_state:
+			Dialogic.states.IDLE:
+				if Dialogic.Text.can_manual_advance():
+					Dialogic.handle_next_event()
+					autoadvance_timer.stop()
+			Dialogic.states.SHOWING_TEXT:
+				if Dialogic.Text.can_skip():
+					Dialogic.Text.skip_text_animation()
+			Dialogic.states.JUST_BY_ACTION:
+				Dialogic.current_state = Dialogic.states.SHOWING_TEXT
 
 
 ####################################################################################################
