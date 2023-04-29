@@ -330,9 +330,12 @@ func parse_shortcode_parameters(shortcode : String) -> Dictionary:
 ################################################################################
 
 func _get_icon() -> Resource:
+	var _icon_file_name = "res://addons/dialogic/Editor/Images/Pieces/closed-icon.svg" # Default
 	if FileAccess.file_exists(self.get_script().get_path().get_base_dir() + "/icon.png"):
-		return load(self.get_script().get_path().get_base_dir() + "/icon.png")
-	return load("res://addons/dialogic/Editor/Images/Pieces/closed-icon.svg")
+		_icon_file_name = self.get_script().get_path().get_base_dir() + "/icon.png"
+	if FileAccess.file_exists(self.get_script().get_path().get_base_dir() + "/icon.svg"):
+		_icon_file_name = self.get_script().get_path().get_base_dir() + "/icon.svg"
+	return load(_icon_file_name)
 
 
 func set_default_color(value) -> void:
