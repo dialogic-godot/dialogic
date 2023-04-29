@@ -9,11 +9,12 @@ func refresh():
 	%Autoadvance.button_pressed = DialogicUtil.get_project_setting('dialogic/text/autoadvance', false)
 	%AutoadvanceDelay.value = DialogicUtil.get_project_setting('dialogic/text/autoadvance_delay', 1)
 	%AutocolorNames.button_pressed = DialogicUtil.get_project_setting('dialogic/text/autocolor_names', false)
+	%TextboxHidden.button_pressed = ProjectSettings.get_setting('dialogic/text/hide_empty_textbox', true)
 	%InputAction.resource_icon = get_theme_icon("Mouse", "EditorIcons")
 	%InputAction.set_value(DialogicUtil.get_project_setting('dialogic/text/input_action', 'dialogic_default_action'))
 	%InputAction.get_suggestions_func = suggest_actions
 	load_autopauses(DialogicUtil.get_project_setting('dialogic/text/autopauses', {}))
-
+	
 
 func _about_to_close():
 	save_autopauses()
@@ -50,8 +51,13 @@ func suggest_actions(search:String) -> Dictionary:
 	return suggs
 
 
-func _on_AutocolorNames_toggled(button_pressed):
+func _on_AutocolorNames_toggled(button_pressed:bool) -> void:
 	ProjectSettings.set_setting('dialogic/text/autocolor_names', button_pressed)
+	ProjectSettings.save()
+
+
+func _on_textbox_hidden_toggled(button_pressed:bool) -> void:
+	ProjectSettings.set_setting('dialogic/text/hide_empty_textbox', button_pressed)
 	ProjectSettings.save()
 
 
@@ -91,3 +97,4 @@ func add_autopause_set(text:String, time:float) -> void:
 	spin_box.step = 0.01
 	spin_box.value = time
 	hbox.add_child(spin_box)
+

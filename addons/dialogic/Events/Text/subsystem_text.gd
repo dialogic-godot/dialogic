@@ -6,6 +6,9 @@ extends DialogicSubsystem
 signal text_finished(info:Dictionary)
 signal speaker_updated(character:DialogicCharacter)
 signal textbox_visibility_changed(visible:bool)
+signal animation_textbox_new_text
+signal animation_textbox_show
+signal animation_textbox_hide
 
 # used to color names without searching for all characters each time
 var character_colors := {}
@@ -64,6 +67,16 @@ func update_dialog_text(text:String, instant:bool= false) -> String:
 	text = parse_text_modifiers(text)
 	text = parse_text_effects(text)
 	text = color_names(text)
+	
+	if ProjectSettings.get_setting('dialogic/text/hide_empty_textbox', true):
+		if text.is_empty():
+			await hide_text_boxes(instant)
+		else:
+			await show_text_boxes(instant)
+			if !dialogic.current_state_info['text'].is_empty():
+				animation_textbox_new_text.emit()
+				if Dialogic.Animation.is_animating():
+					await Dialogic.Animation.finished
 	
 	if !instant: dialogic.current_state = dialogic.states.SHOWING_TEXT
 	dialogic.current_state_info['text'] = text
@@ -141,18 +154,39 @@ func update_typing_sound_mood(mood:Dictionary = {}) -> void:
 		typing_sound.load_overwrite(mood)
 
 
-func hide_text_boxes() -> void:
+# instant skips the signal and thus possible animations
+func hide_text_boxes(instant:=false) -> void:
+	var emitted := instant
 	for name_label in get_tree().get_nodes_in_group('dialogic_name_label'):
 		name_label.text = ""
+	if !emitted and !get_tree().get_nodes_in_group('dialogic_dialog_text').is_empty() and get_tree().get_nodes_in_group('dialogic_dialog_text')[0].get_parent().visible:
+		animation_textbox_hide.emit()
+		if Dialogic.Animation.is_animating():
+			await Dialogic.Animation.finished
 	for text_node in get_tree().get_nodes_in_group('dialogic_dialog_text'):
+		if text_node.get_parent().visible and !emitted:
+			textbox_visibility_changed.emit(false)
+			emitted = true
 		text_node.get_parent().visible = false
-	textbox_visibility_changed.emit(false)
 
 
-func show_text_boxes() -> void:
+func is_textbox_visible() -> bool:
+	return get_tree().get_nodes_in_group('dialogic_dialog_text').any(func(x): return x.get_parent().visible)
+
+
+# instant skips the signal and thus possible animations
+func show_text_boxes(instant:=false) -> void:
+	var emitted := instant
 	for text_node in get_tree().get_nodes_in_group('dialogic_dialog_text'):
-		text_node.get_parent().visible = true
-	textbox_visibility_changed.emit(true)
+		if !text_node.get_parent().visible and !emitted:
+			animation_textbox_show.emit()
+			text_node.get_parent().set_deferred('visible', true)
+			if Dialogic.Animation.is_animating():
+				await Dialogic.Animation.finished
+			textbox_visibility_changed.emit(true)
+			emitted = true
+		else:
+			text_node.get_parent().visible = true
 
 
 func show_next_indicators(question=false, autoadvance=false) -> void:

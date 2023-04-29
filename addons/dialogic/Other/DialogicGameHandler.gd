@@ -474,11 +474,13 @@ func start(timeline, single_instance = true) -> Node:
 				)
 			get_parent().call_deferred("add_child", scene)
 			get_tree().set_meta('dialogic_layout_node', scene)
+			scene.ready.connect(clear)
+			scene.ready.connect(start_timeline.bind(timeline))
 		# otherwise use existing scene
 		else:
 			scene = get_tree().get_meta('dialogic_layout_node', null)
 			scene.show()
-	Dialogic.start_timeline(timeline)
+			Dialogic.start_timeline(timeline)
 	return scene
 
 
