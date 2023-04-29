@@ -302,7 +302,7 @@ func from_text(string:String) -> void:
 ## has to return true, if the given string can be interpreted as this event
 ## by default it uses the shortcode formta, but can be overridden
 func is_valid_event(string:String) -> bool:
-	if string.strip_edges().begins_with('['+get_shortcode()):
+	if string.strip_edges().begins_with('['+get_shortcode()+' ') or string.strip_edges().begins_with('['+get_shortcode()+']'):
 		return true
 	return false
 
