@@ -255,7 +255,7 @@ func load_event_settings(event:DialogicEvent) -> void:
 				editor_node = LineEdit.new()
 				editor_node.custom_minimum_size.x = 150
 				editor_node.text = str(current_value)
-				editor_node.text_submitted.connect(_on_event_default_string_submitted.bind(params[prop].property))
+				editor_node.text_changed.connect(_on_event_default_string_submitted.bind(params[prop].property))
 			TYPE_INT, TYPE_FLOAT:
 				if params[prop].has('suggestions'):
 					editor_node = OptionButton.new()
