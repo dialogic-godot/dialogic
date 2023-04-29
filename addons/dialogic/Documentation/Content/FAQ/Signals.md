@@ -92,7 +92,7 @@ func start_dialog():
 	add_node(dialog)
 
 func _on_portrait_changed(portraitRef):
-	print('Portrait Changed! path to portrait is here ', portrait_path)
+	print('Portrait Changed! Portrait Reference scene: ', portraitRef)
 	portraitRef.custom_instance.MY_CUSTOM_FUNCTION('My Arg')
 ```
 
