@@ -71,8 +71,8 @@ func build_event_editor():
 			{'file_filter' 	: '*.mp3, *.ogg, *.wav', 
 			'placeholder' 	: "Select file", 
 			'editor_icon' 	: ["AudioStreamPlayer", "EditorIcons"]})
-	add_body_edit('volume', ValueType.Decibel, 'volume:', '', {}, '!file_path.is_empty()')
-	add_body_edit('audio_bus', ValueType.SinglelineText, 'audio_bus:', '', {}, '!file_path.is_empty()')
+	add_body_edit('volume', ValueType.Decibel, 'Volume:', '', {}, '!file_path.is_empty()')
+	add_body_edit('audio_bus', ValueType.SinglelineText, 'Audio Bus:', '', {}, '!file_path.is_empty()')
 
 func get_bus_suggestions() -> Dictionary:
 	var bus_name_list := {}

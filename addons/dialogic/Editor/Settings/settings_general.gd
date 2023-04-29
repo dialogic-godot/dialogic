@@ -28,6 +28,7 @@ func _ready() -> void:
 	# Extension creator
 	%ExtensionCreator.hide()
 
+
 func refresh() -> void:
 	%PhysicsTimerButton.button_pressed = DialogicUtil.is_physics_timer()
 	%LayoutNodeEndBehaviour.select(ProjectSettings.get_setting('dialogic/layout/end_behaviour', 0))

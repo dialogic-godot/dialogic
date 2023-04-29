@@ -675,13 +675,15 @@ func _add_event_button_pressed(event_resource:DialogicEvent):
 		at_index = %Timeline.get_child_count()
 	
 	var remove_event_index := 1
+	var resource := event_resource.duplicate()
+	resource._load_custom_defaults()
 	
 	TimelineUndoRedo.create_action("[D] Add "+event_resource.event_name+" event.")
 	if event_resource.can_contain_events:
-		TimelineUndoRedo.add_do_method(add_event_with_end_branch.bind(event_resource.duplicate(), at_index, true, true))
+		TimelineUndoRedo.add_do_method(add_event_with_end_branch.bind(resource, at_index, true, true))
 		TimelineUndoRedo.add_undo_method(remove_events_at_index.bind(at_index, 2))
 	else:
-		TimelineUndoRedo.add_do_method(add_event_node.bind(event_resource.duplicate(), at_index, true, true))
+		TimelineUndoRedo.add_do_method(add_event_node.bind(resource, at_index, true, true))
 		TimelineUndoRedo.add_undo_method(remove_events_at_index.bind(at_index, 1))
 	TimelineUndoRedo.commit_action()
 	
