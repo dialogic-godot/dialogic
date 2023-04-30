@@ -30,10 +30,13 @@ var _character_from_directory: String:
 				return item
 				break
 		return _character_from_directory
-	set(value): 
+	set(value):
 		_character_from_directory = value
-		if value in _character_directory.keys():
+		if value.is_empty():
+			character = null
+		elif value in _character_directory.keys():
 			character = _character_directory[value]['resource']
+		
 ## Used by [_character_from_directory] to fetch the unique name_identifier or resource.
 var _character_directory: Dictionary = {}
 
@@ -122,7 +125,7 @@ func to_text() -> String:
 	var text_to_use := text.replace('\n', '\\\n')
 	text_to_use = text_to_use.replace(':', '\\:')
 	if character:
-		var name = ""
+		var name := ""
 		for path in _character_directory.keys():
 			if _character_directory[path]['resource'] == character:
 				name = path
