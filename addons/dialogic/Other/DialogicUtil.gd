@@ -266,9 +266,31 @@ static func setup_script_property_edit_node(property_info: Dictionary, value:Var
 
 static func get_custom_event_defaults(event_name:String) -> Dictionary:
 	if Engine.is_editor_hint():
-		return ProjectSettings.get_setting('dialogic/editor/event_default_overrides', {}).get(event_name, {})
+		return ProjectSettings.get_setting('dialogic/event_default_overrides', {}).get(event_name, {})
 	else:
 		if !Engine.get_main_loop().has_meta('dialogic_event_defaults'):
-			Engine.get_main_loop().set_meta('dialogic_event_defaults', ProjectSettings.get_setting('dialogic/editor/event_default_overrides', {}))
+			Engine.get_main_loop().set_meta('dialogic_event_defaults', ProjectSettings.get_setting('dialogic/event_default_overrides', {}))
 		return Engine.get_main_loop().get_meta('dialogic_event_defaults').get(event_name, {})
 
+
+static func set_editor_setting(setting:String, value:Variant) -> void:
+	var cfg := ConfigFile.new()
+	if FileAccess.file_exists('user://dialogic/editor_settings.cfg'):
+		cfg.load('user://dialogic/editor_settings.cfg')
+	
+	cfg.set_value('DES', setting, value)
+	
+	if !DirAccess.dir_exists_absolute('user://dialogic'):
+		DirAccess.make_dir_absolute('user://dialogic')
+	cfg.save('user://dialogic/editor_settings.cfg')
+
+
+static func get_editor_setting(setting:String, default:Variant=null) -> Variant:
+	var cfg := ConfigFile.new()
+	if !FileAccess.file_exists('user://dialogic/editor_settings.cfg'):
+		return default
+	
+	if !cfg.load('user://dialogic/editor_settings.cfg') == OK:
+		return default
+	
+	return cfg.get_value('DES', setting, default)

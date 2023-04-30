@@ -74,7 +74,7 @@ func save_timeline() -> void:
 	get_parent().editors_manager.resource_helper.rebuild_timeline_directory()
 	
 	## Also save sidebar size
-	ProjectSettings.set_setting('dialogic/editor/visual_timeline_editor_sidebar', %RightSidebar.size.x)
+	DialogicUtil.set_editor_setting('visual_timeline_editor_sidebar', %RightSidebar.size.x)
 
 
 func load_timeline(resource:DialogicTimeline) -> void:
@@ -199,7 +199,7 @@ func load_event_buttons() -> void:
 	var _scale := DialogicUtil.get_editor_scale()
 	%RightSidebar.custom_minimum_size.x = 50 * _scale
 	
-	$View.split_offset = -ProjectSettings.get_setting('dialogic/editor/visual_timeline_editor_sidebar', 200)
+	$View.split_offset = -DialogicUtil.get_editor_setting('visual_timeline_editor_sidebar', 200)
 	sidebar_collapsed = !%RightSidebar.size.y < 160*_scale
 	_on_right_sidebar_resized()
 

@@ -63,7 +63,7 @@ func _on_layout_mode_item_selected(index:int) -> void:
 			%CustomScene.show()
 			%CustomScenePicker.set_value(DialogicUtil.get_project_setting('dialogic/layout/layout_scene', DialogicUtil.get_default_layout()))
 		LayoutModes.None:
-			ProjectSettings.set_setting('dialogic/editor/layout/mode', 2)
+			ProjectSettings.set_setting('dialogic/layout/mode', 2)
 			%NoScene.show()
 
 
