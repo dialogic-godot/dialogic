@@ -25,6 +25,7 @@ static func get_dialogic_plugin() -> Node:
 ################################################################################
 static func listdir(path: String, files_only: bool = true, throw_error:bool = true, full_file_path:bool = false) -> Array:
 	var files: Array = []
+	if path.is_empty(): path = "res://"
 	if DirAccess.dir_exists_absolute(path):
 		var dir := DirAccess.open(path)
 		dir.list_dir_begin()

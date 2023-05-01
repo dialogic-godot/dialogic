@@ -81,7 +81,6 @@ shadow_size = 5
 [node name="DefaultDialogNode" type="CanvasLayer"]
 script = ExtResource("1")
 name_label_box_modulate = Color(0.00784314, 0.00784314, 0.00784314, 0.843137)
-name_label_alignment = null
 
 [node name="DialogicNode_BackgroundHolder" type="CanvasLayer" parent="."]
 layer = -1
@@ -227,6 +226,7 @@ sound_focus = ExtResource("13")
 [node name="DialogTextPanel" type="PanelContainer" parent="DefaultStyle"]
 unique_name_in_owner = true
 self_modulate = Color(0.00784314, 0.00784314, 0.00784314, 0.843137)
+custom_minimum_size = Vector2(550, 110)
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.5
