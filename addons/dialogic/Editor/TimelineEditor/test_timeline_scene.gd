@@ -5,7 +5,7 @@ func _ready() -> void:
 	if !ProjectSettings.get_setting('internationalization/locale/test', "").is_empty():
 		print("Testing locale is: ", ProjectSettings.get_setting('internationalization/locale/test'))
 	$PauseIndictator.hide()
-	var dialog_scene_path: String = DialogicUtil.get_project_setting(
+	var dialog_scene_path: String = ProjectSettings.get_setting(
 		'dialogic/layout/layout_scene',
 		DialogicUtil.get_default_layout()
 	)

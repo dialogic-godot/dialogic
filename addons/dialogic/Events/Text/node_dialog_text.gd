@@ -25,7 +25,7 @@ func _ready() -> void:
 
 # this is called by the DialogicGameHandler to set text
 func reveal_text(_text:String) -> void:
-	speed = DialogicUtil.get_project_setting('dialogic/text/speed', 0.01)
+	speed = ProjectSettings.get_setting('dialogic/text/speed', 0.01)
 	text = _text
 	if alignment == ALIGNMENT.CENTER:
 		text = '[center]'+text

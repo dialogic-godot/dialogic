@@ -202,7 +202,7 @@ func save_current_state() -> void:
 	for editor in editors.values():
 		if editor['node'].current_resource != null:
 			current_resources[editor['node'].name] = editor['node'].current_resource.resource_path
-	DialogicUtil.get_editor_setting('current_resources', current_resources)
+	DialogicUtil.set_editor_setting('current_resources', current_resources)
 
 
 ################################################################################

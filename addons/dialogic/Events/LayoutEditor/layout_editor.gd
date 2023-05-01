@@ -17,7 +17,7 @@ func _register() -> void:
 
 
 func _open(argument:Variant = null) -> void:
-	%LayoutMode.select(DialogicUtil.get_project_setting('dialogic/layout/mode', 0))
+	%LayoutMode.select(ProjectSettings.get_setting('dialogic/layout/mode', 0))
 	_on_layout_mode_item_selected(%LayoutMode.selected)
 
 
@@ -57,11 +57,11 @@ func _on_layout_mode_item_selected(index:int) -> void:
 		LayoutModes.Preset:
 			%PresetCustomization.show()
 			%StyleList.show()
-			if layouts_info.has(DialogicUtil.get_project_setting('dialogic/layout/layout_scene', DialogicUtil.get_default_layout())):
-				load_layout_scene_customization(DialogicUtil.get_project_setting('dialogic/layout/layout_scene', DialogicUtil.get_default_layout()))
+			if layouts_info.has(ProjectSettings.get_setting('dialogic/layout/layout_scene', DialogicUtil.get_default_layout())):
+				load_layout_scene_customization(ProjectSettings.get_setting('dialogic/layout/layout_scene', DialogicUtil.get_default_layout()))
 		LayoutModes.Custom:
 			%CustomScene.show()
-			%CustomScenePicker.set_value(DialogicUtil.get_project_setting('dialogic/layout/layout_scene', DialogicUtil.get_default_layout()))
+			%CustomScenePicker.set_value(ProjectSettings.get_setting('dialogic/layout/layout_scene', DialogicUtil.get_default_layout()))
 		LayoutModes.None:
 			ProjectSettings.set_setting('dialogic/layout/mode', 2)
 			%NoScene.show()
@@ -91,7 +91,7 @@ func load_layout_scene_customization(custom_scene_path:String = "") -> void:
 	for child in %ExportsTabs.get_children():
 		child.queue_free()
 
-	var export_overrides :Dictionary = DialogicUtil.get_project_setting('dialogic/layout/export_overrides', {})
+	var export_overrides :Dictionary = ProjectSettings.get_setting('dialogic/layout/export_overrides', {})
 	var current_grid :GridContainer
 	var current_hbox :HBoxContainer
 
@@ -186,7 +186,7 @@ func load_layout_scene_customization(custom_scene_path:String = "") -> void:
 
 
 func set_export_override(property_name:String, value:String = "") -> void:
-	var export_overrides:Dictionary = DialogicUtil.get_project_setting('dialogic/layout/export_overrides', {})
+	var export_overrides:Dictionary = ProjectSettings.get_setting('dialogic/layout/export_overrides', {})
 	if !value.is_empty():
 		export_overrides[property_name] = value
 		customization_editor_info[property_name]['reset'].disabled = false
@@ -197,7 +197,7 @@ func set_export_override(property_name:String, value:String = "") -> void:
 	ProjectSettings.set_setting('dialogic/layout/export_overrides', export_overrides)
 
 func _on_export_override_reset(property_name:String) -> void:
-	var export_overrides:Dictionary = DialogicUtil.get_project_setting('dialogic/layout/export_overrides', {})
+	var export_overrides:Dictionary = ProjectSettings.get_setting('dialogic/layout/export_overrides', {})
 	export_overrides.erase(property_name)
 	ProjectSettings.set_setting('dialogic/layout/export_overrides', export_overrides)
 	customization_editor_info[property_name]['reset'].disabled = true

@@ -55,13 +55,13 @@ func _on_OpenButton_pressed() -> void:
 
 
 func _on_file_dialog_selected(path:String) -> void:
-	emit_signal("value_changed", property_name, path)
 	set_value(path)
+	emit_signal("value_changed", property_name, path)
 
 
 func clear_path() -> void:
-	emit_signal("value_changed", property_name, "")
 	set_value("")
+	emit_signal("value_changed", property_name, "")
 
 func _can_drop_data_fw(at_position: Vector2, data: Variant) -> bool:
 	if typeof(data) == TYPE_DICTIONARY and data.has('files') and len(data.files) == 1:

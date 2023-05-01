@@ -4,15 +4,15 @@ extends HBoxContainer
 func refresh():
 	%Info.add_theme_color_override('default_color', get_theme_color("accent_color", "Editor"))
 	
-	%DefaultSpeed.value = DialogicUtil.get_project_setting('dialogic/text/speed', 0.01)
-	%Skippable.button_pressed = DialogicUtil.get_project_setting('dialogic/text/skippable', true)
-	%Autoadvance.button_pressed = DialogicUtil.get_project_setting('dialogic/text/autoadvance', false)
-	%AutoadvanceDelay.value = DialogicUtil.get_project_setting('dialogic/text/autoadvance_delay', 1)
-	%AutocolorNames.button_pressed = DialogicUtil.get_project_setting('dialogic/text/autocolor_names', false)
+	%DefaultSpeed.value = ProjectSettings.get_setting('dialogic/text/speed', 0.01)
+	%Skippable.button_pressed = ProjectSettings.get_setting('dialogic/text/skippable', true)
+	%Autoadvance.button_pressed = ProjectSettings.get_setting('dialogic/text/autoadvance', false)
+	%AutoadvanceDelay.value = ProjectSettings.get_setting('dialogic/text/autoadvance_delay', 1)
+	%AutocolorNames.button_pressed = ProjectSettings.get_setting('dialogic/text/autocolor_names', false)
 	%InputAction.resource_icon = get_theme_icon("Mouse", "EditorIcons")
-	%InputAction.set_value(DialogicUtil.get_project_setting('dialogic/text/input_action', 'dialogic_default_action'))
+	%InputAction.set_value(ProjectSettings.get_setting('dialogic/text/input_action', 'dialogic_default_action'))
 	%InputAction.get_suggestions_func = suggest_actions
-	load_autopauses(DialogicUtil.get_project_setting('dialogic/text/autopauses', {}))
+	load_autopauses(ProjectSettings.get_setting('dialogic/text/autopauses', {}))
 
 
 func _about_to_close():

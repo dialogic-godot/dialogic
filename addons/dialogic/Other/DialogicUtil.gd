@@ -76,9 +76,6 @@ static func guess_resource(extension:String, identifier:String) -> String:
 	return ""
 
 
-## TODO remove this since ProjectSetting.get_setting supports default arg now.
-static func get_project_setting(setting:String, default :Variant= null) -> Variant:
-	return ProjectSettings.get_setting(setting) if ProjectSettings.has_setting(setting) else default
 
 
 static func get_indexers(include_custom := true, force_reload := false) -> Array[DialogicIndexer]:
@@ -162,7 +159,7 @@ static func get_color(value:String) -> Color:
 
 
 static func is_physics_timer() -> bool:
-	return get_project_setting('dialogic/timer/process_in_physics', false)
+	return ProjectSettings.get_setting('dialogic/timer/process_in_physics', false)
 	
 
 static func update_timer_process_callback(timer:Timer) -> void:
@@ -170,8 +167,8 @@ static func update_timer_process_callback(timer:Timer) -> void:
 
 
 static func get_next_translation_id() -> String:
-	ProjectSettings.set_setting('dialogic/translation/id_counter', get_project_setting('dialogic/translation/id_counter', 16)+1)
-	return '%x' % get_project_setting('dialogic/translation/id_counter', 16)
+	ProjectSettings.set_setting('dialogic/translation/id_counter', ProjectSettings.get_setting('dialogic/translation/id_counter', 16)+1)
+	return '%x' % ProjectSettings.get_setting('dialogic/translation/id_counter', 16)
 
 
 # helper that converts a nested variable dictionary into an array with paths

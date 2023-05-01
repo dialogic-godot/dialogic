@@ -8,9 +8,9 @@ func _ready() -> void:
 
 
 func refresh() -> void:
-	%SimpleHistoryEnabled.button_pressed = DialogicUtil.get_project_setting('dialogic/history/simple_history_enabled', false)
-	%FullHistoryEnabled.button_pressed = DialogicUtil.get_project_setting('dialogic/history/full_history_enabled', false)
-	%AlreadyReadHistoryEnabled.button_pressed = DialogicUtil.get_project_setting('dialogic/history/already_read_history_enabled', false)
+	%SimpleHistoryEnabled.button_pressed = ProjectSettings.get_setting('dialogic/history/simple_history_enabled', false)
+	%FullHistoryEnabled.button_pressed = ProjectSettings.get_setting('dialogic/history/full_history_enabled', false)
+	%AlreadyReadHistoryEnabled.button_pressed = ProjectSettings.get_setting('dialogic/history/already_read_history_enabled', false)
 
 
 func setting_toggled(button_pressed:bool, setting:String) -> void:

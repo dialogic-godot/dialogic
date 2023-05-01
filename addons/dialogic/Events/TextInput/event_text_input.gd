@@ -93,7 +93,7 @@ func get_var_suggestions(filter:String) -> Dictionary:
 		suggestions[filter] = {
 			'value'			: filter, 
 			'editor_icon'	: ["GuiScrollArrowRight", "EditorIcons"]}
-	var vars :Dictionary = DialogicUtil.get_project_setting('dialogic/variables', {})
+	var vars :Dictionary = ProjectSettings.get_setting('dialogic/variables', {})
 	for var_path in DialogicUtil.list_variables(vars):
 		suggestions[var_path] = {'value':var_path, 'editor_icon':["ClassList", "EditorIcons"]}
 	return suggestions

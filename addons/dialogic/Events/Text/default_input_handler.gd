@@ -7,7 +7,7 @@ var autoadvance_timer := Timer.new()
 ## 						INPUT
 ################################################################################
 func _input(event:InputEvent) -> void:
-	if Input.is_action_just_pressed(DialogicUtil.get_project_setting('dialogic/text/input_action', 'dialogic_default_action')):
+	if Input.is_action_just_pressed(ProjectSettings.get_setting('dialogic/text/input_action', 'dialogic_default_action')):
 		if Dialogic.paused: return
 		
 		if Dialogic.current_state == Dialogic.states.IDLE and Dialogic.Text.can_manual_advance():
