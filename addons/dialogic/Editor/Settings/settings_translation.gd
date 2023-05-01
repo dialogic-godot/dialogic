@@ -42,7 +42,6 @@ func store_changes(fake_arg = "", fake_arg2 = "") -> void:
 	ProjectSettings.set_setting('dialogic/translation/original_locale', %OrigLocale.current_value)
 	ProjectSettings.set_setting('dialogic/translation/file_mode', %TransMode.selected)
 	ProjectSettings.set_setting('dialogic/translation/translation_folder', %TransFolderPicker.current_value)
-	print(%TransFolderPicker.current_value)
 	ProjectSettings.set_setting('internationalization/locale/test', %TestingLocale.current_value)
 	ProjectSettings.save()
 
@@ -74,7 +73,6 @@ func update_csv_files() -> void:
 	# collect old lines in per project mode 
 	if translation_mode == TranslationModes.PerProject:
 		var file_path :String= ProjectSettings.get_setting('dialogic/translation/translation_folder', 'res://').path_join('dialogic_translations.csv')
-		print(file_path)
 		if FileAccess.file_exists(file_path):
 			file = FileAccess.open(file_path,FileAccess.READ_WRITE)
 			counts[3] += 1
