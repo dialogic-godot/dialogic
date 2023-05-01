@@ -115,11 +115,13 @@ func toggle_editor_mode():
 
 
 func _on_resource_unsaved():
-	current_resource.set_meta("timeline_not_saved", true)
+	if current_resource:
+		current_resource.set_meta("timeline_not_saved", true)
 
 
 func _on_resource_saved():
-	current_resource.set_meta("timeline_not_saved", false)
+	if current_resource:
+		current_resource.set_meta("timeline_not_saved", false)
 
 
 func new_timeline(path:String) -> void:

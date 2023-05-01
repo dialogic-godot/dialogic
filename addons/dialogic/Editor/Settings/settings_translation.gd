@@ -143,7 +143,7 @@ func update_csv_files() -> void:
 			# in case there might be translations for this line already, 
 			# add them at the end again (orig locale text is replaced).
 			if line[0] in old_csv_lines:
-				file.store_csv_line(line+old_csv_lines[line[0]].slice(2))
+				file.store_csv_line(PackedStringArray(line)+old_csv_lines[line[0]].slice(2))
 				counts[2] += 1
 			else:
 				file.store_csv_line(line)
