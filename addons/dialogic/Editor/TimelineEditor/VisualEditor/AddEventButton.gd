@@ -15,7 +15,6 @@ extends Button
 @export var dialogic_color_name:String = ''
 
 
-
 func _ready() -> void:
 	tooltip_text = visible_name
 	
@@ -24,6 +23,7 @@ func _ready() -> void:
 	add_theme_color_override("font_color", get_theme_color("font_color", "Editor"))
 	add_theme_color_override("font_color_hover", get_theme_color("accent_color", "Editor"))
 	apply_base_button_style()
+
 
 func apply_base_button_style() -> void:
 	var scale := DialogicUtil.get_editor_scale()
@@ -44,22 +44,6 @@ func set_color(color:Color) -> void:
 	style.border_color = color
 	add_theme_stylebox_override('hover', style)
 
-#func _update_color():
-#	if dialogic_color_name != '':
-#		var new_color = DialogicUtil.get_color(dialogic_color_name)
-#		resource.event_color = new_color
-#		%ColorBorder.self_modulate = DialogicUtil.get_color(dialogic_color_name)
-
-func _get_drag_data(position:Vector2) -> Variant:
-	var preview_label := Label.new()
-	
-	preview_label.text = 'Add Event %s' % [ tooltip_text ]
-	if self.text != '':
-		preview_label.text = text
-	
-	set_drag_preview(preview_label)
-	
-	return { "source": "EventButton", "resource": resource }
 
 func toggle_name(on:= false) -> void:
 	if !on:
@@ -75,3 +59,7 @@ func toggle_name(on:= false) -> void:
 		text = visible_name
 		custom_minimum_size = Vector2(get_theme_font("font", 'Label').get_string_size(text).x+35,30)* DialogicUtil.get_editor_scale()
 		apply_base_button_style()
+
+
+func _on_button_down():
+	find_parent('VisualEditor').get_node('%TimelineArea').start_dragging(1, resource)

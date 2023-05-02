@@ -124,6 +124,8 @@ func _init() -> void:
 func to_text() -> String:
 	var text_to_use := text.replace('\n', '\\\n')
 	text_to_use = text_to_use.replace(':', '\\:')
+	if text_to_use.is_empty():
+		text_to_use = "<Empty Text Event>"
 	if character:
 		var name := ""
 		for path in _character_directory.keys():
@@ -186,6 +188,8 @@ func from_text(string:String) -> void:
 		
 	if result:
 		text = result.get_string('text').replace("\\\n", "\n").replace('\\:', ':').strip_edges()
+		if text == '<Empty Text Event>':
+			text = ""
 
 
 func is_valid_event(string:String) -> bool:

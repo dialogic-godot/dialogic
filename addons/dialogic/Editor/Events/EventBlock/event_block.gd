@@ -44,6 +44,9 @@ var collapsed := false
 ### extarnal node references
 var editor_reference
 
+### Icon size
+var icon_size := 32
+
 ### the indent size
 var indent_size := 22
 var current_indent_level := 1
@@ -62,10 +65,12 @@ func visual_select() -> void:
 	selected = true
 	%IconPanel.self_modulate = resource.event_color
 
+
 func visual_deselect() -> void:
 	$PanelContainer.add_theme_stylebox_override('panel', load("res://addons/dialogic/Editor/Events/styles/unselected_stylebox.tres"))
 	selected = false
 	%IconPanel.self_modulate = resource.event_color.lerp(Color.DARK_SLATE_GRAY, 0.3)
+
 
 func is_selected() -> bool:
 	return selected
@@ -94,17 +99,17 @@ func set_indent(indent: int) -> void:
 
 func _set_event_icon(icon: Texture) -> void:
 	icon_texture.texture = icon
-	var _scale = DialogicUtil.get_editor_scale()
-	var ip = %IconPanel
-	var ipc = icon_texture
+	var _scale := DialogicUtil.get_editor_scale()
+	var ip := %IconPanel
+	var ipc := icon_texture
 	
 	# Resizing the icon acording to the scale
-	var icon_size = 32
+	
 	ip.custom_minimum_size = Vector2(icon_size, icon_size) * _scale
 	ipc.custom_minimum_size = ip.custom_minimum_size
 	
 	# Updating the theme properties to scale
-	var custom_style = ip.get_theme_stylebox('panel')
+	var custom_style :StyleBox = ip.get_theme_stylebox('panel')
 	custom_style.corner_radius_top_left = 5 * _scale
 	custom_style.corner_radius_top_right = 5 * _scale
 	custom_style.corner_radius_bottom_left = 5 * _scale
@@ -328,18 +333,17 @@ func _on_resource_ui_update_needed() -> void:
 	for node_info in field_list:
 		if node_info.node.has_method('set_value'):
 			node_info.node.set_value(resource.get(node_info.property))
-		
+
 
 func _update_color() -> void:
 	if resource.dialogic_color_name != '':
 		%IconPanel.self_modulate = DialogicUtil.get_color(resource.dialogic_color_name)
-	
-## *****************************************************************************
-##								OVERRIDES
-## *****************************************************************************
+
+
+######################## OVERRIDES #############################################
+################################################################################
 
 func _ready():
-	
 	## DO SOME STYLING
 	var _scale := DialogicUtil.get_editor_scale()
 	$PanelContainer.self_modulate = get_theme_color("accent_color", "Editor")
@@ -382,8 +386,7 @@ func _ready():
 	%CollapseButton.toggled.connect(toggle_collapse)
 	%CollapseButton.icon = get_theme_icon("Collapse", "EditorIcons")
 	%CollapseButton.hide()
-	await get_tree().process_frame
-	body_container.add_theme_constant_override("margin_left", title_label.position.x)
+
 
 func _on_ExpandButton_toggled(button_pressed:bool) -> void:
 	if button_pressed and !body_was_build:
@@ -392,6 +395,7 @@ func _on_ExpandButton_toggled(button_pressed:bool) -> void:
 	expanded = button_pressed
 	body_container.visible = button_pressed
 	get_parent().get_parent().queue_redraw()
+	body_container.add_theme_constant_override("margin_left", icon_size*DialogicUtil.get_editor_scale())
 
 
 func _on_EventNode_gui_input(event:InputEvent) -> void:
