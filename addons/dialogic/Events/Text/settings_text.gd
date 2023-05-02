@@ -9,6 +9,7 @@ func refresh():
 	%Autoadvance.button_pressed = ProjectSettings.get_setting('dialogic/text/autoadvance', false)
 	%AutoadvanceDelay.value = ProjectSettings.get_setting('dialogic/text/autoadvance_delay', 1)
 	%AutocolorNames.button_pressed = ProjectSettings.get_setting('dialogic/text/autocolor_names', false)
+	%TextboxHidden.button_pressed = ProjectSettings.get_setting('dialogic/text/hide_empty_textbox', true)
 	%InputAction.resource_icon = get_theme_icon("Mouse", "EditorIcons")
 	%InputAction.set_value(ProjectSettings.get_setting('dialogic/text/input_action', 'dialogic_default_action'))
 	%InputAction.get_suggestions_func = suggest_actions
