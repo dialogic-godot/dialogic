@@ -1,6 +1,7 @@
 extends Node
 
 enum states {IDLE, SHOWING_TEXT, ANIMATING, AWAITING_CHOICE, WAITING}
+enum ClearFlags {FullClear=0, KeepVariables=1, TimelineInfoOnly=2}
 
 var current_timeline: Variant = null
 var current_timeline_events: Array = []
@@ -105,7 +106,7 @@ func preload_timeline(timeline_resource:Variant) -> Variant:
 func end_timeline() -> void:
 	current_timeline = null
 	current_timeline_events = []
-	clear()
+	clear(ClearFlags.TimelineInfoOnly)
 	timeline_ended.emit()
 
 
@@ -145,10 +146,14 @@ func handle_event(event_index:int) -> void:
 	event_handled.emit(current_timeline_events[event_index])
 
 
-
-func clear() -> bool:
-	for subsystem in get_children():
-		subsystem.clear_game_state()
+# resets dialogics state fully or partially
+# by using the clear flags you can specify what info should be kept
+# for example at timeline end usually it doesn't clear node or subsystem info
+func clear(clear_flags:=ClearFlags.FullClear) -> bool:
+	
+	if !clear_flags & ClearFlags.TimelineInfoOnly:
+		for subsystem in get_children():
+			subsystem.clear_game_state(clear_flags)
 	
 	# Resetting variables
 	current_timeline = null
@@ -156,8 +161,6 @@ func clear() -> bool:
 	current_timeline_events = []
 	current_state = states.IDLE
 	return true
-
-
 
 ################################################################################
 ## 						SAVING & LOADING
@@ -174,8 +177,7 @@ func get_full_state() -> Dictionary:
 
 
 func load_full_state(state_info:Dictionary) -> void:
-	for subsystem in get_children():
-		subsystem.clear_game_state()
+	clear()
 	current_state_info = state_info
 	if current_state_info.get('current_timeline', null):
 		start_timeline(current_state_info.current_timeline, current_state_info.get('current_event_idx', 0))
@@ -474,7 +476,8 @@ func start(timeline, single_instance = true) -> Node:
 				)
 			get_parent().call_deferred("add_child", scene)
 			get_tree().set_meta('dialogic_layout_node', scene)
-			scene.ready.connect(clear)
+			print("howdie")
+			scene.ready.connect(clear.bind(ClearFlags.KeepVariables))
 			scene.ready.connect(start_timeline.bind(timeline))
 		# otherwise use existing scene
 		else:

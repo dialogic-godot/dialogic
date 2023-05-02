@@ -12,9 +12,11 @@ signal variable_was_set(info:Dictionary)
 ##					STATE
 ####################################################################################################
 
-func clear_game_state():
+func clear_game_state(clear_flag:=Dialogic.ClearFlags.FullClear):
 	# loading default variables
-	dialogic.current_state_info['variables'] = DialogicUtil.get_project_setting('dialogic/variables', {})
+	if ! clear_flag & Dialogic.ClearFlags.KeepVariables:
+		dialogic.current_state_info['variables'] = DialogicUtil.get_project_setting('dialogic/variables', {}).duplicate()
+
 
 func load_game_state():
 	dialogic.current_state_info['variables'] = merge_folder(dialogic.current_state_info['variables'], DialogicUtil.get_project_setting('dialogic/variables', {}))

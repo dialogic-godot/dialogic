@@ -21,7 +21,7 @@ func _ready():
 ##					STATE
 ####################################################################################################
 
-func clear_game_state():
+func clear_game_state(clear_flag:=Dialogic.ClearFlags.FullClear):
 	hide_all_choices()
 
 
