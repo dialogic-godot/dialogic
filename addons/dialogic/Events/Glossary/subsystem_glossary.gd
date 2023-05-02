@@ -12,7 +12,7 @@ var enabled := true
 ##					STATE
 ####################################################################################################
 
-func clear_game_state() -> void:
+func clear_game_state(clear_flag:=Dialogic.ClearFlags.FullClear) -> void:
 	glossaries = []
 	for path in ProjectSettings.get_setting('dialogic/glossary/glossary_files', []):
 		add_glossary(path)

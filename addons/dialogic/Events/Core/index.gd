@@ -7,4 +7,7 @@ func _get_events() -> Array:
 
 
 func _get_subsystems() -> Array:
-	return [{'name':'Expression', 'script':this_folder.path_join('subsystem_expression.gd')}]
+	return [
+		{'name':'Expression', 'script':this_folder.path_join('subsystem_expression.gd')},
+		{'name':'Animation', 'script':this_folder.path_join('subsystem_animation.gd')},
+		]

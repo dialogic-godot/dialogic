@@ -8,7 +8,7 @@ signal style_changed(info:Dictionary)
 ##					STATE
 ####################################################################################################
 
-func clear_game_state():
+func clear_game_state(clear_flag:=Dialogic.ClearFlags.FullClear):
 	change_style('')
 
 

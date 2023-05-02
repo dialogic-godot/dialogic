@@ -19,7 +19,7 @@ var _portrait_holder_reference: Node = null
 ##					STATE
 ####################################################################################################
 
-func clear_game_state():
+func clear_game_state(clear_flag:=Dialogic.ClearFlags.FullClear):
 	for character in dialogic.current_state_info.get('portraits', {}).keys():
 		remove_portrait(load(character))
 	dialogic.current_state_info['portraits'] = {}

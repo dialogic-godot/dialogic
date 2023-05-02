@@ -12,7 +12,7 @@ var base_sound_player := AudioStreamPlayer.new()
 ##					STATE
 ####################################################################################################
 
-func clear_game_state():
+func clear_game_state(clear_flag:=Dialogic.ClearFlags.FullClear):
 	update_music()
 	stop_all_sounds()
 
