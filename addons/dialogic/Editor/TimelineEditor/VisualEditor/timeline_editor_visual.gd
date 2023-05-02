@@ -73,10 +73,7 @@ func save_timeline() -> void:
 	get_parent().current_resource_state = DialogicEditor.ResourceStates.Saved
 	get_parent().editors_manager.resource_helper.rebuild_timeline_directory()
 	
-	
-	## Also save sidebar size
-	DialogicUtil.set_editor_setting('visual_timeline_editor_sidebar', %RightSidebar.size.x)
-	print("Saving SIZE OF RIGHT SIDEBAR ", %RightSidebar.size.x)
+
 
 func load_timeline(resource:DialogicTimeline) -> void:
 	if _building_timeline:
@@ -143,15 +140,7 @@ func _on_batch_loaded():
 	indent_events()
 	_building_timeline = false
 	add_extra_scroll_area_to_timeline()
-	
-	# Resize RightSidebar
-	var _scale := DialogicUtil.get_editor_scale()
-	%RightSidebar.custom_minimum_size.x = 50 * _scale
-	
-	%RightSidebar.size.x = DialogicUtil.get_editor_setting('visual_timeline_editor_sidebar', 200)
-	print("LOADING RIGHTSIDEBAR SIZE", DialogicUtil.get_editor_setting('visual_timeline_editor_sidebar', 200))
-	sidebar_collapsed = !%RightSidebar.size.x < 160*_scale
-	_on_right_sidebar_resized()
+
 
 
 func clear_timeline_nodes():
@@ -174,6 +163,8 @@ func _ready():
 		%TimelineArea.get_theme_color("background_color", "CodeEdit")
 		
 	%TimelineArea.resized.connect(add_extra_scroll_area_to_timeline)
+	
+
 
 
 func load_event_buttons() -> void:
@@ -206,6 +197,12 @@ func load_event_buttons() -> void:
 		while event_resource.event_sorting_index < %RightSidebar.get_node("EventContainer/FlexContainer" + str(button.event_category)).get_child(max(0, button.get_index()-1)).resource.event_sorting_index:
 			%RightSidebar.get_node("EventContainer/FlexContainer" + str(button.event_category)).move_child(button, button.get_index()-1)
 	
+	# Resize RightSidebar
+	var _scale := DialogicUtil.get_editor_scale()
+	%RightSidebar.custom_minimum_size.x = 50 * _scale
+	
+	$View.split_offset = -200*_scale
+	_on_right_sidebar_resized()
 	
 
 ################################################################################
@@ -918,7 +915,6 @@ func _on_event_popup_menu_index_pressed(index:int) -> void:
 
 
 func _on_right_sidebar_resized():
-	print("rsb sc ", %RightSidebar.size.x)
 	var _scale := DialogicUtil.get_editor_scale()
 	if %RightSidebar.size.x < 160*_scale and !sidebar_collapsed:
 		sidebar_collapsed = true
