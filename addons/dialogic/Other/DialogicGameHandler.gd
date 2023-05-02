@@ -476,7 +476,6 @@ func start(timeline, single_instance = true) -> Node:
 				)
 			get_parent().call_deferred("add_child", scene)
 			get_tree().set_meta('dialogic_layout_node', scene)
-			print("howdie")
 			scene.ready.connect(clear.bind(ClearFlags.KeepVariables))
 			scene.ready.connect(start_timeline.bind(timeline))
 		# otherwise use existing scene
